@@ -6,17 +6,17 @@ Every worker reads it from the fetched `origin/main` before writing, merging,
 building, or pushing.  Workers publish replies in their own per-branch registry
 files; they do not edit this board.
 
-## Checkpoint 2026-08-25 18:44 PDT
+## Checkpoint 2026-08-25 19:13 PDT
 
 ```text
-observed main before this directive: ba2be1b782b8aa77979c40eb5c43a1b102e20b81
+observed main before this directive: 407da44a69a56aa8c1de5e817aa1792af5ed0a46
 coordinator branch: codex/fabius-coordinator-20260825
 integration mode: feature branches -> coordinator -> fast-forward main
 main write owner: coordinator
 codexbox build owner: coordinator (IDLE -- reserved, no worker target)
 EVO build owner: codex/fabius-exposition-integration (frontier pdflatex only)
-documentation owner: codex/fabius-exposition-integration (frontier paths only)
-next poll: after the three-pass frontier PDF/evidence checkpoint
+documentation owner: codex/fabius-exposition-integration (frontier PDF/registry checkpoint only)
+next poll: after the fresh three-pass frontier PDF/evidence checkpoint
 ```
 
 The previously approved curvature, generalizations, lower-Lambert,
@@ -47,10 +47,11 @@ cherry-pick is needed.
    feature branches only; the coordinator is the sole `main` writer.  Never
    force.
 2. The codexbox build token is idle and coordinator-reserved.  On EVO, only the
-   exposition branch may use the host token, and only for the staged TeX build
-   authorized below.  Other workers may edit and commit unvalidated work, but
-   launch no Lean, Lake, TeX, PDF, or cache-mutating process; label such commits
-   and registry reports `Not yet validated`.  Do not terminate another process.
+   exposition branch may use the host token, and only for the fresh staged TeX
+   build authorized below.  Other workers may edit and commit unvalidated work,
+   but launch no Lean, Lake, TeX, PDF, or cache-mutating process; label such
+   commits and registry reports `Not yet validated`.  Do not terminate another
+   process.
 3. The following remain serialized and require an explicit board grant:
    `AGENTS.md`, `README.md`, `docs/COLLABORATION.md`,
    `docs/MULTI_AGENT_COORDINATION_PROPOSAL.md`, `docs/PAPER_COVERAGE.md`,
@@ -143,8 +144,7 @@ forbidden-declaration scan are clean.  The `GlobalExtension.lean` lease is
 released.  The branch may begin another ordinary nonoverlapping claim, but
 must still receive a host token before running any validation process.
 
-Clean feature tip `c41a52283` now publishes four additional, explicitly
-unvalidated source units on top of current main:
+Exact feature tip `c41a52283` published four additional source units:
 
 - dyadic-cast relocation `09b360531` across
   `Lean/FabiusFunction/GlobalDyadic.lean` and
@@ -157,13 +157,30 @@ unvalidated source units on top of current main:
   `Lean/FabiusFunction/PeriodicRegularity.lean` and
   `Lean/FabiusFunction/PeriodicSmooth.lean`.
 
-`GlobalExtension.lean` also has a doc-comment-only terminology edit.  These
-seven source paths and the branch registry are frozen at `c41a52283` pending
-independent review and coordinator-held codexbox validation.  No worker may
-claim or modify them, and this branch must not expand the tranche or run Lean,
-Lake, TeX, or PDF tools.  It may advertise unrelated ordinary work only after
-the frozen tip is preserved and the new claim is disjoint from every listed
-path.
+`GlobalExtension.lean` also has a doc-comment-only terminology edit.  Three
+independent static reviews found no theorem, API, placement, duplicate,
+dependency, import, or scope blocker.  The coordinator merged exactly
+`c41a52283`, rather than the moving branch tip, at immutable integration merge
+`04d619814`.  All eight focused targets and both minimal paper facades then
+passed serially with `LAKE_JOBS=1`:
+
+- `+FabiusFunction.DyadicAnalytic` (2772 jobs);
+- `+FabiusFunction.GlobalExtension` (2765 jobs);
+- `+FabiusFunction.GlobalDyadic` (2785 jobs);
+- `+FabiusFunction.OriginalPaperSupplement` (3210 jobs);
+- `+FabiusFunction.BoseFinitePartIntegral` (3268 jobs);
+- `+FabiusFunction.PeriodicMean` (3269 jobs);
+- `+FabiusFunction.PeriodicRegularity` (3295 jobs);
+- `+FabiusFunction.PeriodicSmooth` (3297 jobs);
+- `+FabiusFunction.Paper05442` (3417 jobs); and
+- `+FabiusFunction.PaperFabiusAsymptotic` (3957 jobs).
+
+Every invocation exited 0.  The seven source-path leases are released, and the
+three corresponding proposal-era entries in `AUDIT_FINDINGS.md` are closed in
+place.  The later Fourier-zero registry claim is a separate, unvalidated work
+unit: it may continue on the feature branch under its advertised
+`FourierProduct.lean` path, but it is not part of this integration and receives
+no build token.
 
 ### `codex/fabius-theorem-polish-20260825`
 
@@ -252,7 +269,8 @@ coordinator checkpoint; it does not change an exposition or frontier artifact.
 That registry's useful audit body is retained, while its `cffe24808` snapshot
 and expired current-tree/page-count statements are now labeled explicitly.
 
-**Single-owner frontier lease.**  This branch may now write only:
+**Single-owner frontier lease.**  The complete frontier tranche remains owned
+by this branch and spans only:
 
 - `docs/non-formalized-research-frontiers/README.md`;
 - `docs/non-formalized-research-frontiers/non-formalized-research-frontiers.tex`;
@@ -275,23 +293,55 @@ implementation routes are restored.  Static audit reports 986 unique labels,
 targets, 1201 balanced environment pairs, 20 candidates, 20 obligations, and
 seven parts; `git diff --check` is green and no path is unmerged.
 
-**Stage-two grant.**  This branch now holds the sole EVO tool token for the
-canonical frontier only.  From clean tip `e1c087738`, run exactly three
-sequential `pdflatex` passes on
-`non-formalized-research-frontiers.tex`; launch no Lean, Lake, `latexmk`, or
-other TeX build.  Require settled references and citations, zero duplicate
-labels, zero overfull boxes, and no fatal/error diagnostics.  Inspect the
-rendered page-10 running head and every changed cluster, record exact command,
-tip, log predicates, page count, PDF hash, and visual-inspection evidence in
-the branch registry, then commit only the regenerated frontier PDF plus that
-registry and push the feature branch.  If any predicate fails, do not perform
-a fourth pass or broaden the source edit: preserve the log, report the exact
-failure in the registry, and stop for a new board disposition.  Never select a
-predecessor PDF or push `main`.
+**Stage-two result.**  The branch merged this board cleanly at `1ca2a09be`
+without changing the accepted TeX, then ran exactly the three authorized
+sequential `pdflatex` passes with a fresh `_stage2` job name.  All exited 0;
+page counts were 178, 186, and 186.  The third pass settled every reference and
+citation and reported no duplicate label, horizontal overfull box, rerun,
+changed-label, fatal, or LaTeX-error diagnostic.  It did report exactly one
+`Overfull \\vbox (59.28255pt too high)` immediately before output page 184.
+The worker correctly stopped without a fourth pass, TeX/README edit, canonical
+PDF replacement, or primary cleanup.  Checkpoint `e6ac85e2f` records the exact
+evidence; the rejected PDF and log remain sidecar-preserved under `_stage2`.
+No validation claim or PDF acceptance is made from that run, and its EVO tool
+token is released.
 
-The frontier README/TeX are frozen during stage two, and the 57-page primary
-exposition remains fully frozen until the complete frontier tranche is
-reviewed and integrated.
+**Narrow source-repair result.**  After merging the repair directive cleanly,
+source commit `5fee1bb90` changes exactly one locally scoped token in the
+single indivisible formal-background `tabularx`: `\\small` becomes
+`\\footnotesize` inside its existing group.  The preserved log/PDF show that
+this table was deferred from page 183 and exceeded a fresh page 184 by
+59.28255pt; shrinking roughly sixty local baselines directly addresses that
+measured excess.  No row, prose, mathematics, status, label, reference,
+citation, environment, README, PDF, or global typography changes.  The new
+TeX SHA-256 is
+`D6791ED6AA0246EE9986D67BDF0BCC9823D431E46CAEA1FEE34409FEB25D16DA`.
+Checkpoint `87bf890d3` is clean, records unchanged static predicates, and is
+independently accepted for a fresh build.
+
+**Stage-three grant.**  This branch again holds the sole EVO tool token for the
+canonical frontier only.  From clean tip `87bf890d3`, use a fresh
+`non-formalized-research-frontiers_stage3` job name and run exactly three
+sequential invocations of the same recorded `pdflatex` command.  Run no Lean,
+Lake, `latexmk`, other TeX compiler, or fourth pass.  The third pass must have
+settled references/citations, zero rerun or changed-label diagnostics, zero
+duplicate labels, zero overfull horizontal **and vertical** boxes, and no
+fatal/LaTeX error.  After the third pass only, read-only `pdfinfo`, `pdffonts`,
+text extraction, and page rasterization are permitted for validation.  Require
+all fonts embedded; inspect page 184 for table legibility, clipping, footer
+collision, and surrounding page breaks, and recheck page 10 plus every changed
+semantic cluster.
+
+If every gate passes, replace the canonical frontier PDF with the exact settled
+stage-three bytes, record the three commands/exits/page counts, log/PDF hashes
+and sizes, all diagnostic counts, font/text/raster evidence, visual inspection,
+Git blob, and clean status in the branch registry, then commit only that PDF
+and registry and push the feature branch.  If any gate fails, do not perform a
+fourth pass or edit source: preserve the artifacts, report the exact failure in
+the registry, and stop.  Never push `main` or begin primary cleanup.
+
+The frontier README/TeX and the 57-page primary exposition remain fully frozen
+during stage three.
 
 ### `codex/fabius-theorem-refinements`
 
@@ -332,11 +382,9 @@ a requested path is serialized, hot, frozen, single-owner, or already claimed.
 
 ## Collision and integration queue
 
-1. Receive and audit the authorized three-pass frontier PDF/evidence checkpoint.
-2. Complete the independent review and serialized codexbox validation of the
-   four frozen both-papers source units at `c41a52283`.
-3. Integrate the complete green frontier tranche through the coordinator.
-4. Only after the frontier stabilizes, assign the primary exposition's four
+1. Receive and audit the fresh three-pass frontier PDF/evidence checkpoint.
+2. Integrate the complete green frontier tranche through the coordinator.
+3. Only after the frontier stabilizes, assign the primary exposition's four
    narrow citation/attribution corrections and matching PDF rebuild.
 
 ## Build-token log
@@ -403,6 +451,27 @@ jobs), `+FabiusFunction.ThueMorseApproximation` (3307 jobs),
 `+FabiusFunction.ThueMorseExponential` (2086 jobs), and
 `+FabiusFunction.PaperKFoldThueMorse` (3327 jobs).  All exited 0.
 
+At exact both-papers integration merge `04d619814`, the coordinator ran ten
+separate serialized targets: `+FabiusFunction.DyadicAnalytic` (2772 jobs),
+`+FabiusFunction.GlobalExtension` (2765), `+FabiusFunction.GlobalDyadic`
+(2785), `+FabiusFunction.OriginalPaperSupplement` (3210),
+`+FabiusFunction.BoseFinitePartIntegral` (3268),
+`+FabiusFunction.PeriodicMean` (3269),
+`+FabiusFunction.PeriodicRegularity` (3295),
+`+FabiusFunction.PeriodicSmooth` (3297), `+FabiusFunction.Paper05442` (3417),
+and `+FabiusFunction.PaperFabiusAsymptotic` (3957).  All used `LAKE_JOBS=1`
+and exited 0.
+
+On EVO, stage two at source tip `1ca2a09be` ran exactly three sequential
+frontier `pdflatex` passes under the authorized fresh `_stage2` job name.  All
+three exited 0 and produced 178, 186, and 186 pages.  The third pass was
+reference/citation-stable and free of duplicate labels, horizontal overfull
+boxes, rerun requests, changed labels, and fatal/LaTeX errors, but it contained
+one 59.28255pt overfull `\\vbox` immediately before page 184.  The worker
+stopped and preserved the rejected PDF/log without touching the canonical PDF.
+This run fails the zero-overfull-box gate and grants no PDF validation; its
+token is released pending a source-only repair checkpoint.
+
 Before those green runs, one command launched from the wrong directory was a
 no-op, and the first correctly rooted attempt exhausted the filesystem while
 creating a fresh `.lake`; it exited 1 and supplied no validation evidence.
@@ -413,12 +482,13 @@ worker checkpoint, `/home/codex/src/Proofs` also launched an unassigned
 evidence.
 
 No validation process is now running on codexbox.  Its token is idle and
-coordinator-reserved.  The sole EVO token is assigned to
-`codex/fabius-exposition-integration` for exactly the three frontier
-`pdflatex` passes specified above; no other EVO branch may run Lean, Lake,
-TeX, PDF, or cache-mutating tools.  Other branches may edit, checkpoint, and
-push ordinary claimed work under the open protocol, but may not run validation
-tools until this board assigns the applicable physical-host token.
+coordinator-reserved.  The sole EVO token is assigned to the exposition branch
+for exactly the three stage-three frontier `pdflatex` passes and subsequent
+read-only artifact inspections specified above; no other EVO branch may run
+Lean, Lake, TeX, PDF, or cache-mutating tools.  Other branches may edit,
+checkpoint, and push ordinary claimed work under the open protocol, but may
+not run validation tools until this board assigns the applicable physical-host
+token.
 
 ## Worktree maintenance log
 
