@@ -167,10 +167,96 @@ the branch merged current coordinator checkpoint `fc63c3978`; the detailed,
 conflict-free merge commit `b7edc7ce2` is pushed.  Existing untracked
 reciprocity sidecars and the `tmp/` render tree remain untouched.
 
-The next bounded source step is the already claimed
-`Lean/FabiusFunction/FabiusInverseAsymptotic.lean`: specialize the generic
-engine to the exact Fabius lower-Lambert phase, derive the logarithmic inverse
-formula and explicit left equivalent, and transport it to the right endpoint
-by exact inverse reflection.  After that source and the claimed paper-facade
-import are frozen and independently reviewed, request serial builds of the
-generic, endpoint, and facade modules in that dependency order.
+The claimed endpoint source and paper facade are now frozen, committed, and
+pushed.  No further Lean source edit remains in the current tranche.  The next
+bounded step is to publish this registry handoff and request the serialized EVO
+Lean/Lake token for the exact immutable Lean tree at `d6464f6c8`.  No root
+aggregate, canonical-document, TeX, or PDF lane is requested.
+
+## Sharp endpoint and facade source checkpoints
+
+The endpoint specialization is committed and pushed as
+`6ee65a167434fa1b76ab724e195e98dab619c6f3`.  It adds only
+`Lean/FabiusFunction/FabiusInverseAsymptotic.lean`.  The immutable source is
+429 lines and 17,420 bytes, with Git blob
+`bf78aedb8cce1f88c0f8409000dbdd27026e455a` and SHA-256
+`2920F950A552FC7AD61DA994948DCA92B99B05181AA1EC7E90B816A2273BB07F`.
+
+The module defines the three advertised main terms and proves all five
+advertised endpoint results:
+
+- `fabiusInverseQuadraticPhaseMain`;
+- `fabiusInverseLogAsymptoticMain`;
+- `fabiusInverseAsymptoticMain`;
+- `fabiusLambertPhase_fabiusInv_sub_fabiusInverseQuadraticPhaseMain_isBigO`;
+- `tendsto_fabiusLambertPhase_fabiusInv_sub_fabiusInverseQuadraticPhaseMain`;
+- `tendsto_log_fabiusInv_sub_fabiusInverseLogAsymptoticMain`;
+- `fabiusInv_isEquivalent_fabiusInverseAsymptoticMain`; and
+- `one_sub_fabiusInv_isEquivalent_fabiusInverseAsymptoticMain_one_sub`.
+
+The quantitative theorem has exactly the advertised
+`O(log (-log y) / sqrt (-log y))` error.  The logarithmic theorem retains the
+exact constant `-1 - log (log 2) / 2`, the left theorem gives the explicit
+positive equivalent, and the right theorem applies that same main term to
+`1 - y`, as required by inverse reflection.
+
+Read-only validation of the immutable endpoint blob is static rather than
+compiler evidence.  The preservation commit records a clean targeted cached
+diff, zero `sorry`, `admit`, `axiom`, or `opaque` declarations, and no line
+over 100 characters.  Independent mathematical and API reviews accepted the
+formulas, constants, endpoint domains, filters, and dependency route.  A
+Mathlib elaboration preflight found four hazards in earlier snapshots: the
+namespace of `isLittleO_log_rpow_atTop`, the explicit real codomain of
+`isLittleO_one_left_iff`, the congruence depth needed to expose the square-root
+radicand, and the simplifier set needed for the scaled zero limit.  All four
+are repaired in blob `bf78aedb8`; the final source/API preflight is clean.
+The remaining risk is unexecuted elaboration and compiler validation.
+
+After fetching exact `origin/main`
+`fc63c39788ab4c31694e4f57efe05b543165675a`, the requested merge was explicitly
+attempted again.  It was a no-op because that commit was already an ancestor
+through pushed merge `b7edc7ce2`; there were no conflicts, no tree changes, and
+no additional merge commit.
+
+The paper-facade wiring is committed and pushed as
+`d6464f6c8482bdb4b771e96b224b0ff1d9c7ec9e`.  It changes only
+`Lean/FabiusFunction/PaperFabiusAsymptotic.lean`, adding the
+`FabiusInverseAsymptotic` import and nine lines of exact claim-level prose.
+The resulting facade is 114 lines and 6,833 bytes, with Git blob
+`7259480a72391e59f3d303ed586b67c4d199c1fe` and SHA-256
+`24254045EB1C3A45FC2911B99FAFA880AE5658FED8B6EE9B05C187ADBAC398A2`.
+Its read-only audit found no declaration collision or dependency cycle;
+targeted diff, whitespace, line-length, and forbidden-declaration checks are
+clean.  The serialized root aggregate remains untouched: its existing import
+of `PaperFabiusAsymptotic` now exposes the generic engine and endpoint API
+transitively.
+
+The generic source remains unchanged from commit `9b7affe68`, with blob
+`c03608742d1f4c023ffc46ee13e3298395b21320` and SHA-256
+`A3B54BEC9CDA5D190F664B8924FC55FCE5198E084EF55B2C3166110A8735AF94`.
+
+No Lean, Lake, TeX, PDF, or cache-mutating command has run in this worktree.
+The board at `origin/main` assigns codexbox Lean/Lake to the coordinator and
+leaves EVO Lean/Lake idle but unassigned; therefore this branch still has no
+authority to compile.  Documentation is unassigned and every canonical
+document remains frozen.
+
+### Serialized validation request
+
+Assign the EVO Lean/Lake token to this branch for exact source tip
+`d6464f6c8482bdb4b771e96b224b0ff1d9c7ec9e`, or have the current build owner
+validate that immutable commit in an isolated worktree.  From the repository
+root, run exactly these three separate invocations, in dependency order, with
+no overlapping Lean/Lake process:
+
+```text
+LAKE_JOBS=1 lake build +FabiusFunction.QuadraticAsymptoticInversion
+LAKE_JOBS=1 lake build +FabiusFunction.FabiusInverseAsymptotic
+LAKE_JOBS=1 lake build +FabiusFunction.PaperFabiusAsymptotic
+```
+
+Record the exact commit, command, exit code, and diagnostics for each
+invocation, then release the token.  A failure supplies diagnostic evidence
+only and should be repaired on the feature branch before another assigned
+serialized run.  Request no `+FabiusFunction` aggregate, root-aggregate edit,
+TeX/PDF pass, canonical-document lease, or `main` write at this stage.
