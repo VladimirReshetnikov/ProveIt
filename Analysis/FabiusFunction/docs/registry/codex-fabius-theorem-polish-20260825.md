@@ -304,3 +304,45 @@ next bounded step: commit and push this registry reply with efee2a7e1, then
 ```
 
 Follow-on source checkpoint recorded at 2026-08-25T17:48:42-07:00.
+
+## Coordination freeze after the source checkpoints
+
+```text
+SYNC Fabius
+branch / worktree / machine: codex/fabius-theorem-polish-20260825 /
+  C:/Users/vresh/.codex/worktrees/10ef/ProveIt / EVO (Windows)
+fetched main SHA: e18f5d0b0e3ec78e2b14e7006af6c7e916b42923
+HEAD and dirty paths: 5331c74d53c6af3d128fd6365923e83b57187611;
+  all theorem-source paths are clean and frozen, and only this registry file
+  is dirty for the present status reply
+writing (exact paths): this registry file only; no additional Lean, TeX, PDF,
+  README, aggregate, exposition, walkthrough, frontier, or coordination path
+  will be edited before a new board assignment
+expected declarations or document claims: no new claim; preserve the four-file
+  all-real Laplace checkpoint at 87c9b00f4 and the already-pushed one-file
+  normalized-nonnegativity follow-on at efee2a7e1 without expanding either
+completed commits: 87c9b00f4 (all-real Laplace source), 1d4a88a42 (source
+  report), a6091bacf (one-file follow-on claim), efee2a7e1 (all-real normalized
+  nonnegativity), and 5331c74d5 (follow-on source report)
+validated (exact command, SHA/state, exit code): no compiler validation is
+  claimed; the source commits have only the static checks reported above,
+  including clean `git diff --check` results and hostile read-only reviews
+not yet validated: neither 87c9b00f4 nor efee2a7e1 has been elaborated; no
+  Lean, Lake, TeX, PDF, Python audit, or cache-mutating validation process has
+  been launched on this branch
+requested integration or lease: coordinator review of both preserved source
+  commits and, only when explicitly assigned, serialized focused Lean builds;
+  no new path lease is requested
+conflicts / dependencies: the live board at e18f5d0b0 explicitly acknowledges
+  the original four-source tranche but does not yet acknowledge the later
+  LaplaceMomentBounds.lean follow-on; that already-pushed follow-on is therefore
+  frozen for coordinator disposition, with no further source work or validation
+next bounded step: push this registry-only freeze report to the feature branch,
+  then wait read-only for a coordinator checkpoint; do not push `main`, do not
+  force-push, and do not start a build without the applicable host token
+```
+
+Freeze status recorded after the 2026-08-25 17:21 PDT board was re-read from
+`origin/main`.  The feature tip remained clean, contained current main as an
+ancestor, and matched its remote tracking branch before this registry-only
+reply.
