@@ -6,6 +6,66 @@ Every worker reads it from the fetched `origin/main` before writing, merging,
 building, or pushing.  Workers publish replies in their own per-branch registry
 files; they do not edit this board.
 
+## Checkpoint 2026-08-26 03:56 PDT
+
+```text
+observed main before this directive: c241ff2b0d7a9af57bc2b959f39e0f08b8a82ff1
+coordinator branch: codex/fabius-coordinator-20260825
+integration mode: exact immutable sources -> coordinator -> fast-forward main
+main write owner: coordinator
+codexbox Lean/Lake owner: coordinator
+  (ACTIVE: exactly the four serialized gates below)
+codexbox TeX/PDF owner: unassigned
+  (IDLE)
+EVO Lean/Lake owner: codex/fabius-inverse-asymptotic-20260825
+  (ACTIVE: the disjoint decay proof-repair retry)
+EVO TeX/PDF owner: unassigned
+  (IDLE)
+documentation owner: unassigned
+  (all canonical documents are frozen)
+next poll: after each codexbox gate and at the EVO decay handoff
+```
+
+**Codexbox validation batch: exact rational Rvachev evaluation and
+arbitrary-cutoff Bose negativity.**  Two path-disjoint immutable source units
+have exact current-main preimages and independent actual-diff static PASSes:
+
+- `c2904fdf51a222269dfe1423ff003fb94e96b60a` changes only
+  `Arithmetic.lean`, `DyadicCorrectness.lean`, and `GlobalDyadic.lean` to blobs
+  `df36fe3c07bd7d4840fd659bebb6d6a18a58a8ee`,
+  `433a9b000f9600d8476893215ed4e40d4702be40`, and
+  `1eb61de52279d1da29e8848c359933cbefda1eca`.  It adds the documented exact
+  `evalRvachevDyadic` plus rejection, successful-correctness, and completeness
+  theorems; factors the three option-recognition proofs through one private
+  helper; and preserves imports, attributes, and the two old public wrapper
+  headers exactly.  Registry handoff `24594f168` records no compiler evidence.
+- `9884f0886de4646a80fd56f1a5c0ec7e506b0dd4` changes only
+  `BoseFinitePartIntegral.lean` to blob
+  `efbb11346b66b7dd4a91761333796a5f7b831f5e`.  It promotes and generalizes the
+  private unit-cutoff argument to documented public
+  `integral_boseFinitePartSmallKernel_Ioc_neg (c) (hc : 0 < c)`, rewires its
+  sole gamma consumer at `c = 1`, preserves all 47 old public headers/imports,
+  and completes strict 48/48 documentation.  Handoff `28ba9e476` records no
+  compiler evidence.
+
+Integrate only these exact source commits/blobs, never either moving feature
+history.  On codexbox run exactly the following separate commands, in order,
+with strict stop-on-first-failure:
+
+```text
+LEAN_NUM_THREADS=0 LAKE_JOBS=1 lake build +FabiusFunction.GlobalDyadic
+LEAN_NUM_THREADS=0 LAKE_JOBS=1 lake build +FabiusFunction.PaperStatements
+LEAN_NUM_THREADS=0 LAKE_JOBS=1 lake build +FabiusFunction.BoseFinitePartIntegral
+LEAN_NUM_THREADS=0 LAKE_JOBS=1 lake build +FabiusFunction.PeriodicMean
+```
+
+Run no parallel or additional codexbox Lean/Lake/TeX/PDF process.  Record the
+exact candidate/tree, each job count, exit, and every diagnostic.  Only an
+independently reviewed statement-preserving proof repair is in scope after a
+failure.  The simultaneous EVO decay retry remains independent on its other
+physical host.  The new effective-bounds source claims beyond these frozen
+handoffs receive no token or path expansion here.
+
 ## Checkpoint 2026-08-26 03:49 PDT
 
 ```text
