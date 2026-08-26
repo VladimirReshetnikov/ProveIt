@@ -5,9 +5,11 @@ all-order approximation source unit is integrated, compiled, and released.
 The ordinary three-file signed-reflection source claim is implemented at
 `d887c8101`, integrated by the coordinator as `f66ef224b`, and compiler-green
 in both requested focused targets.  All source leases are released.
-Coordinator checkpoint `0bc0bf551` grants this branch the exact five-path
-human-readable counterpart tranche and sole EVO TeX/PDF lane; source editing
-and artifact validation are now in progress under that grant.**
+Coordinator checkpoint `0bc0bf551` granted this branch the exact five-path
+human-readable counterpart tranche and sole EVO TeX/PDF lane.  That work is
+preserved at `f67446278`; current-main checkpoint `d33c4f44b` releases the
+lane, freezes every canonical document, and leaves the checkpoint pending
+coordinator disposition.**
 The exact claim was published before source work, coordinator checkpoint
 `893d4c25d` explicitly acknowledged it as the first nonoverlapping claim for
 the module, and source commit `00ff41a5e` now implements precisely that bounded
@@ -1078,3 +1080,32 @@ No Lean or Lake command ran under this document grant.  No frontier, README,
 AGENTS, control-plane, audit, Lean/root, peer-registry, or other frozen path was
 edited.  The five content/artifact paths above plus this own registry are now
 frozen for the requested current-main merge and coordinator handoff.
+
+## Current-main synchronization after document-lane release
+
+Preservation commit `f67446278424d75662bc6f6e9de52c31df9d3cb2` was pushed
+before synchronization.  The live remote `main` was repinned immediately
+before the merge; after a second fetch its exact tip was
+`d33c4f44b3d08f14b15c1514d687a32898569475`.  Read-only comparison from merge
+base `0bc0bf55135d2dea10c5fb8320e69a00ab55ded0` found nine incoming paths and
+six branch paths with an empty intersection, and a three-way merge-tree scan
+found no conflict signal.
+
+Merge `64afa6c5f71cedd40657f56285954a5a3f20d19c`, tree
+`67ed1c9a9761730e41398f6d01e2578d6affb81c`, has exact parents
+`f67446278424d75662bc6f6e9de52c31df9d3cb2` and
+`d33c4f44b3d08f14b15c1514d687a32898569475`.  Git's `ort` strategy completed
+without a conflict; the unmerged index and tracked worktree are empty, and the
+fetched main is an ancestor of the merge.  No serialized control-plane file
+was locally resolved or edited.
+
+The merge preserves the five document artifact identities recorded above
+byte-for-byte.  It brings in only the four current-main Lean modifications,
+four new research-frontier draft inputs, and the coordinator board.  No Lean,
+Lake, TeX, PDF, or document-audit process ran for the merge itself.
+
+The incoming board releases this branch's documentation ownership and EVO
+TeX/PDF stream.  Accordingly, all coverage, primary, walkthrough, and
+canonical PDF paths remain frozen after `f67446278`; this branch requests
+coordinator review of that exact preservation checkpoint and will perform no
+further document or TeX/PDF work without a fresh explicit grant.
