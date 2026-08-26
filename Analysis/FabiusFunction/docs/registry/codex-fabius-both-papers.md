@@ -52,7 +52,11 @@ requested integration or lease: after this unvalidated source checkpoint is
 conflicts / dependencies: all advertised Fabius heads and their registries
   were checked; no branch claims GlobalExtension and the only overlap is the
   existing even/odd ingredients and downstream special cases that this API
-  packages without modifying; documentation remains serialized and unclaimed
+  packages without modifying; local coordinator candidate merge
+  `8d27ea2079ca4146d02ae104dfd48b06f388f49c` contains the pre-correction source
+  checkpoint `34fec97bd` but does not contain correction `0095fb161`, so it
+  must not be published as the final source integration without first taking
+  the corrected feature tip; documentation remains serialized and unclaimed
 next bounded step: await an assigned build token for the four serialized
   targets; leave documentation and downstream source paths untouched
 ```
