@@ -153,3 +153,65 @@ next bounded step: push this registry-only claim, re-read the fetched board
 Claim published at 2026-08-25T17:18:35-07:00.  Subagents remained read-only:
 they did not edit, stage, commit, merge, push, run Lean or Lake, or mutate
 caches and build outputs.
+
+## All-real Laplace source checkpoint
+
+```text
+SYNC Fabius
+branch / worktree / machine: codex/fabius-theorem-polish-20260825 /
+  C:/Users/vresh/.codex/worktrees/10ef/ProveIt / EVO (Windows)
+fetched main SHA: e18f5d0b0e3ec78e2b14e7006af6c7e916b42923
+HEAD and dirty paths: 87c9b00f4dc7e0f6e69c22db3dc8c07f6ccf13e7;
+  source is clean and only this registry file is dirty for the status reply
+writing (exact paths): completed source checkpoint writes only
+  Lean/FabiusFunction/NegativeLaplace.lean,
+  Lean/FabiusFunction/LaplaceMoments.lean,
+  Lean/FabiusFunction/NegativeLaplaceDerivatives.lean, and
+  Lean/FabiusFunction/NegativeLaplaceVertical.lean; this reply writes only
+  docs/registry/codex-fabius-theorem-polish-20260825.md
+expected declarations or document claims: generatingFunction_neg_pos and
+  fabiusLaplaceMoment_zero_pos retain their exact public signatures in more
+  upstream modules; new one_le_generatingFunction_of_nonneg,
+  generatingFunction_pos, fabiusLaplaceMoment_zero_pos_all,
+  normalizedLaplaceMoment_zero_all,
+  normalizedLaplaceMoment_hasDerivAt_all,
+  deriv_normalizedLaplaceMoment_all,
+  contDiff_normalizedLaplaceMoment, and
+  continuous_normalizedLaplaceMoment establish positivity and smooth quotient
+  calculus on the whole real line; the old positive-scale normalized APIs
+  remain compatibility wrappers
+completed commits: 87c9b00f4 (four-file all-real Laplace source checkpoint),
+  based on clean merge 5f1b35c90 of acknowledged board main e18f5d0b0;
+  prior registry claim ca387fea0 and synchronization merge 8e4862b2b are
+  already pushed
+validated (exact command, SHA/state, exit code): no compiler validation is
+  claimed; `git diff --check` exited 0 before commit, the exact four changed
+  files had no `sorry`, `admit`, `axiom`, or `opaque`, and three independent
+  hostile source reviews checked Mathlib signatures, import reachability,
+  public binder compatibility, duplicate names, proof regimes, and prose
+  domain claims without finding a blocker
+not yet validated: 87c9b00f4 has not been elaborated; no Lean, Lake, TeX, PDF,
+  Python audit, or cache-mutating command was launched because no EVO build
+  token is assigned to this branch
+requested integration or lease: request coordinator review of 87c9b00f4 and
+  a serialized EVO token for one-target builds, in topological order, of
+  +FabiusFunction.NegativeLaplace, +FabiusFunction.LaplaceMoments,
+  +FabiusFunction.NegativeLaplaceDerivatives, and
+  +FabiusFunction.NegativeLaplaceVertical, followed if requested by the cheap
+  direct consumer +FabiusFunction.FabiusSaddleReduction; request no document
+  or serialized-path lease
+conflicts / dependencies: current board e18f5d0b0 explicitly acknowledges
+  this four-path claim and reports no competitor; the canonical exposition,
+  walkthrough, PAPER_COVERAGE, frontier, README, coordination files, and root
+  aggregate remain untouched; future document-owner synchronization should
+  state all-real G positivity, M_0 positivity, normalized smoothness, and the
+  quotient recurrence while retaining the positive-scale domain of the
+  negative-Laplace product logarithm
+next bounded step: commit and push this registry reply with 87c9b00f4, then
+  keep the source frozen for coordinator review and token-assigned validation;
+  do not launch any build or edit a human-document path meanwhile
+```
+
+Source checkpoint recorded at 2026-08-25T17:36:09-07:00.  Three subagents
+implemented disjoint leased files and then independently reviewed the combined
+tranche; none staged, committed, merged, pushed, or ran a validation process.
