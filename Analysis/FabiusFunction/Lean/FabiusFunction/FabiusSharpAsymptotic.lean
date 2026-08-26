@@ -370,7 +370,7 @@ private theorem
     exp_negativeLaplacePsi_comp_fabiusLambertPhase_isBigO_one :
     (fun x : ℝ =>
         Real.exp (negativeLaplacePsi (fabiusLambertPhase x)))
-      =O[nhdsWithin 0 (Ioi 0)] (fun _ : ℝ => 1) := by
+      =O[nhdsWithin 0 (Ioi 0)] (fun _ : ℝ => (1 : ℝ)) := by
   apply IsBigO.of_bound (Real.exp negativeLaplacePsiPeriodMax)
   filter_upwards with x
   rw [Real.norm_eq_abs, abs_of_pos (Real.exp_pos _), norm_one, mul_one]
@@ -422,11 +422,11 @@ theorem mapClusterPt_fabiusWikipediaLambertRatio_nhdsGT_zero_iff
   have hperiodic :
       Function.Periodic
         (fun t : ℝ => Real.exp (negativeLaplacePsi t)) 1 := by
-    simpa only [Function.comp_apply] using
+    simpa only [Function.comp_def] using
       negativeLaplacePsi_periodic.comp Real.exp
   have hcontinuous :
       Continuous (fun t : ℝ => Real.exp (negativeLaplacePsi t)) := by
-    simpa only [Function.comp_apply] using
+    simpa only [Function.comp_def] using
       Real.continuous_exp.comp continuous_negativeLaplacePsi
   calc
     MapClusterPt z (nhdsWithin 0 (Ioi 0))
@@ -437,7 +437,7 @@ theorem mapClusterPt_fabiusWikipediaLambertRatio_nhdsGT_zero_iff
       mapClusterPt_iff_of_tendsto_sub_zero
         (tendsto_fabiusWikipediaLambertRatio_sub_periodic F hF)
     _ ↔ z ∈ range (fun t : ℝ => Real.exp (negativeLaplacePsi t)) := by
-      simpa only [Function.comp_apply] using
+      simpa only [Function.comp_def] using
         (mapClusterPt_periodic_comp_fabiusLambertPhase_iff
           hperiodic hcontinuous (z := z))
     _ ↔ z ∈ Icc (Real.exp negativeLaplacePsiPeriodMin)
@@ -458,7 +458,7 @@ private theorem fabiusWikipediaLambertRatio_isBoundedUnder_le
       Real.exp_le_exp.mpr
         (negativeLaplacePsi_value_le_periodMax (fabiusLambertPhase x)))
   have hsum := isBoundedUnder_le_add herror hperiodic
-  simpa only [Pi.add_apply, sub_add_cancel] using hsum
+  simpa only [Pi.add_def, sub_add_cancel] using hsum
 
 private theorem fabiusWikipediaLambertRatio_isBoundedUnder_ge
     (F : BoundedFabius) (hF : IsFabius F) :
@@ -474,7 +474,7 @@ private theorem fabiusWikipediaLambertRatio_isBoundedUnder_ge
       Real.exp_le_exp.mpr
         (negativeLaplacePsiPeriodMin_le_value (fabiusLambertPhase x)))
   have hsum := isBoundedUnder_ge_add herror hperiodic
-  simpa only [Pi.add_apply, sub_add_cancel] using hsum
+  simpa only [Pi.add_def, sub_add_cancel] using hsum
 
 /-- The lower limit of the literal-factor quotient is the exponential of the
 global minimum of the centered periodic correction. -/
@@ -494,7 +494,7 @@ theorem liminf_fabiusWikipediaLambertRatio_nhdsGT_zero_eq
     (u := fabiusWikipediaLambertRatio F)
     hboundedAbove.isCoboundedUnder_ge hboundedBelow
   apply le_antisymm
-  · exact hleast.2 _
+  · exact hleast.2
       ((mapClusterPt_fabiusWikipediaLambertRatio_nhdsGT_zero_iff F hF).mpr
         (left_mem_Icc.mpr hleExp))
   · exact
@@ -522,7 +522,7 @@ theorem limsup_fabiusWikipediaLambertRatio_nhdsGT_zero_eq
   · exact
       ((mapClusterPt_fabiusWikipediaLambertRatio_nhdsGT_zero_iff F hF).mp
         hgreatest.1).2
-  · exact hgreatest.2 _
+  · exact hgreatest.2
       ((mapClusterPt_fabiusWikipediaLambertRatio_nhdsGT_zero_iff F hF).mpr
         (right_mem_Icc.mpr hleExp))
 

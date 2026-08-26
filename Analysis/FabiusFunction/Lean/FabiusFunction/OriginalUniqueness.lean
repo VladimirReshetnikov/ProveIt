@@ -363,10 +363,6 @@ theorem originalFourier_eq_of_isOriginalFabius {ψ : ℝ → ℝ} {ℓ : ℝ}
 private noncomputable def schwartzMap : 𝓢(ℝ, ℂ) :=
   h.complex_hasCompactSupport.toSchwartzMap h.complex_contDiff
 
-@[simp]
-private theorem schwartzMap_apply (x : ℝ) :
-    h.schwartzMap x = complexFunction φ x := rfl
-
 /-- Fourier injectivity makes the function in the original characterization
 unique, independently of the initially unspecified constants. -/
 theorem eq_of_isOriginalFabius {ψ : ℝ → ℝ} {ℓ : ℝ}
