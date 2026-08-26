@@ -1825,3 +1825,79 @@ next bounded step: commit and push this registry-only claim without force;
   the two claimed sources while three agents independently verify exact proof
   preservation, rewrite orientation, public interfaces, consumers, and prose
 ```
+
+## Source checkpoint: public negative-Laplace kernel normal form
+
+Exact source commit `ab1d4c35d` completes the two-file visibility and
+deduplication claim.  Its result objects are:
+
+- `NegativeLaplace.lean`: Git blob
+  `6713f2fd4cdd7b58462eb522d5345d8ef4ee6e9a`, content SHA-256
+  `86E0D813192C17D9DF76B642640120C67A4BFB215C2FB5ED6C3CA79B86F75324`;
+- `BoseFinitePartIntegral.lean`: Git blob
+  `c2d246ecea21c4cf59268a5c2cea3026776ab6ad`, content SHA-256
+  `52EAEB9E14C6E01D6B3D47FE62827F852E72FF828C59959477EE012FAADCFB03`.
+
+The NegativeLaplace change is exactly a documented private-to-public
+promotion.  The theorem statement and entire existing proof body are
+byte-preserved, no simp attribute was added, and adjacent helpers remain
+private.  Its source comment states the exact factorization and the strict
+positive-domain hypothesis that supplies both nonzero arguments to
+`Real.log_div`.
+
+The Bose theorem keeps its public declaration comment and header exactly, but
+its duplicated positivity and logarithm-of-a-quotient proof is replaced by the
+single deterministic line
+
+`rw [boseLogKernel, negativeLaplaceKernel_eq_log_sub_log x hx, sub_add_cancel]`.
+
+This exposes the numerator logarithm and cancels the scale logarithm literally.
+The internal multiplicative-correction consumer in NegativeLaplace and both
+finite-part consumers in Bose remain unchanged.  All imports, all other public
+headers/bodies, namespaces, and attributes are exact.
+
+Three independent exact-byte reviews pass.  They verified the nonzero
+conditions, `Real.log_div` orientation, the final additive normalization,
+visibility and name collision, the acyclic transitive import path, every
+consumer, and exact interface preservation.  No source-level blocker remains.
+
+```text
+SYNC Fabius
+branch / worktree / machine: codex/fabius-effective-bounds-20260825 /
+  /home/codex/.codex/worktrees/d6d3/Proofs / codexbox
+fetched main SHA: fc63c39788ab4c31694e4f57efe05b543165675a
+HEAD and dirty paths: ab1d4c35d; source checkpoint is clean and pushed; only
+  this registry is dirty for the immutable handoff
+writing (exact paths): completed source checkpoint writes only
+  Lean/FabiusFunction/NegativeLaplace.lean and
+  Lean/FabiusFunction/BoseFinitePartIntegral.lean; this report writes only this
+  branch registry; both Lean sources are now frozen
+expected declarations or document claims: the existing kernel normal form is
+  now public and documented exactly once; the duplicated Bose body is removed;
+  every old import/public header/attribute and every consumer is exact; no
+  canonical document, facade, root, or audit-ledger write
+completed commits: b7282f4d5 (registry-first claim) and ab1d4c35d (two-file
+  source/proof/documentation checkpoint); six earlier pending source tranches
+  remain separately frozen and requested for coordinator validation
+validated (exact command, SHA/state, exit code): git diff --check exited 0;
+  whitespace, CR, forbidden-placeholder, TODO/FIXME, exact-name, simp,
+  adjacent-private-helper, import, declaration, and consumer scans are clean;
+  exact result blobs/hashes are recorded above; three independent exact-byte
+  static reviews pass against pinned Mathlib; this is not compiler evidence
+not yet validated: source commit ab1d4c35d has not been elaborated; no Lean,
+  Lake, TeX, PDF, or cache-mutating process ran because this branch has no host
+  build token
+requested integration or lease: independently review and preserve exact source
+  commit ab1d4c35d / blobs 6713f2fd4 and c2d246ece, then assign separate
+  serialized LAKE_JOBS=1 builds of +FabiusFunction.NegativeLaplace,
+  +FabiusFunction.BoseFinitePartIntegral, and direct consumer
+  +FabiusFunction.PeriodicMean; request no document or main-write lease
+conflicts / dependencies: exact preimages are the current-main blobs recorded
+  in the claim; Bose reaches NegativeLaplace through an existing one-way
+  transitive import chain and introduces no cycle; the formula is deliberately
+  restricted to positive input; all frozen local paths and active external
+  claims are disjoint; only the coordinator may advance main
+next bounded step: commit and push this immutable handoff; freeze both sources
+  for coordinator validation; refresh main and the full ownership board before
+  choosing any further ordinary source unit
+```
