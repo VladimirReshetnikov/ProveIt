@@ -633,6 +633,13 @@ def rvachevDyadic (n : ℕ) (a : ℤ) : ℚ :=
   else
     0
 
+/-- Rational-input wrapper for the exact Rvachev dyadic evaluator.  It returns
+`none` precisely when the reduced denominator is not a power of two. -/
+def evalRvachevDyadic (x : ℚ) : Option ℚ :=
+  match dyadicExponent? x with
+  | none => none
+  | some exponent => some (rvachevDyadic exponent x.num)
+
 /-- The positive odd numerators at dyadic level `n`. -/
 def oddDyadicNumerators (n : ℕ) : Finset ℕ :=
   (Icc 1 (2 ^ n - 1)).filter Odd

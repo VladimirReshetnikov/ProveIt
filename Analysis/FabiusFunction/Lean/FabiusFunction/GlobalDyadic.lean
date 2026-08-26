@@ -13,7 +13,9 @@ consequence, the natural-numerator closed formula is independent of the
 chosen dyadic presentation; convenient one-step and iterated refinement
 forms are recorded below.  The signed integer-numerator evaluator is also
 identified with Rvachev's function on the whole dyadic grid, including points
-outside the compact support where both sides vanish.
+outside the compact support where both sides vanish.  Finally, an exact
+rational-input wrapper recognizes precisely the dyadic rationals and returns
+the corresponding analytic Rvachev value.
 -/
 
 open scoped BigOperators ContDiff Interval
@@ -387,5 +389,46 @@ theorem rvachevDyadic_cast_global
       have hxabs : |(a : ℝ) / (2 : ℝ) ^ n| < 1 := (abs_lt).2 hx
       linarith
     rw [rvachevDyadic, if_neg ha, Rat.cast_zero, hzero]
+
+/-! ## Rational-input Rvachev evaluator -/
+
+/-- A successful rational-input evaluation has the correct Rvachev value. -/
+theorem evalRvachevDyadic_eq_some_correct
+    (F : BoundedFabius) (hF : IsFabius F)
+    (x value : ℚ) (hvalue : evalRvachevDyadic x = some value) :
+    (value : ℝ) = rvachevUp F (x : ℝ) := by
+  unfold evalRvachevDyadic at hvalue
+  split at hvalue
+  · simp at hvalue
+  · rename_i exponent hexponent
+    injection hvalue with hvalue
+    subst value
+    have hden : x.den = 2 ^ exponent := by
+      unfold dyadicExponent? at hexponent
+      dsimp only at hexponent
+      split at hexponent
+      · rename_i h
+        injection hexponent with he
+        simpa [he] using h
+      · simp at hexponent
+    rw [rvachevDyadic_cast_global F hF]
+    congr 1
+    rw [Rat.cast_def, hden]
+    norm_num
+
+/-- Every dyadic rational has an explicitly computed rational value equal to
+the analytic Rvachev function. -/
+theorem evalRvachevDyadic_complete_correct
+    (F : BoundedFabius) (hF : IsFabius F) (x : ℚ)
+    (hx : IsDyadicRational x) :
+    ∃ value : ℚ,
+      evalRvachevDyadic x = some value ∧
+        (value : ℝ) = rvachevUp F (x : ℝ) := by
+  obtain ⟨exponent, hexponent⟩ := (dyadicExponent?_exists_iff x).2 hx
+  let value := rvachevDyadic exponent x.num
+  have hvalue : evalRvachevDyadic x = some value := by
+    simp [evalRvachevDyadic, hexponent, value]
+  exact ⟨value, hvalue,
+    evalRvachevDyadic_eq_some_correct F hF x value hvalue⟩
 
 end Fabius

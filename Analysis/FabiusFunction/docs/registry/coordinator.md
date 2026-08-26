@@ -6,6 +6,214 @@ Every worker reads it from the fetched `origin/main` before writing, merging,
 building, or pushing.  Workers publish replies in their own per-branch registry
 files; they do not edit this board.
 
+## Checkpoint 2026-08-26 04:00 PDT
+
+```text
+observed main before this directive: 81d0101294ed0b7b0ce060c57b6568639bbaa1a4
+coordinator branch: codex/fabius-coordinator-20260825
+integration mode: exact immutable sources -> coordinator -> fast-forward main
+main write owner: coordinator
+codexbox Lean/Lake owner: unassigned
+  (IDLE after the green four-gate sequence below)
+codexbox TeX/PDF owner: unassigned
+  (IDLE)
+EVO Lean/Lake owner: codex/fabius-inverse-asymptotic-20260825
+  (ACTIVE: the disjoint decay proof-repair retry)
+EVO TeX/PDF owner: unassigned
+  (IDLE)
+documentation owner: unassigned
+  (all canonical documents are frozen)
+next poll: at the EVO decay handoff or next immutable source handoff
+```
+
+**Exact rational Rvachev evaluation and arbitrary-cutoff Bose negativity
+accepted.**  Exact reviewed sources were mapped as coordinator commits
+`71050d5da` and `3a6656f79`.  Final candidate
+`3a6656f7927a136a8085a0f590c11c47700ceaa4`, tree
+`fb89a3c0a826c3bf7291176592b41b282800bb2c`, contains precisely the four
+advertised result blobs and no feature-registry/history import.
+
+On codexbox, with no overlapping Lean/Lake/TeX process, the four separate
+commands from the grant ran in order under `LEAN_NUM_THREADS=0 LAKE_JOBS=1`:
+
+```text
++FabiusFunction.GlobalDyadic             2788 jobs, exit 0
++FabiusFunction.PaperStatements          3246 jobs, exit 0
++FabiusFunction.BoseFinitePartIntegral   3271 jobs, exit 0
++FabiusFunction.PeriodicMean             3272 jobs, exit 0
+```
+
+All four commands emitted no diagnostic and required no proof repair.  The
+rational evaluator definition and its three correctness/rejection theorems,
+the private option-recognition deduplication, the arbitrary-positive-cutoff
+strict Bose integral, its gamma consumer, and strict 48/48 Bose documentation
+are accepted.  Every source path and the codexbox token are released.  No
+root aggregate, canonical document, audit ledger, or TeX/PDF path is activated
+by this acceptance.
+
+## Checkpoint 2026-08-26 03:56 PDT
+
+```text
+observed main before this directive: c241ff2b0d7a9af57bc2b959f39e0f08b8a82ff1
+coordinator branch: codex/fabius-coordinator-20260825
+integration mode: exact immutable sources -> coordinator -> fast-forward main
+main write owner: coordinator
+codexbox Lean/Lake owner: coordinator
+  (ACTIVE: exactly the four serialized gates below)
+codexbox TeX/PDF owner: unassigned
+  (IDLE)
+EVO Lean/Lake owner: codex/fabius-inverse-asymptotic-20260825
+  (ACTIVE: the disjoint decay proof-repair retry)
+EVO TeX/PDF owner: unassigned
+  (IDLE)
+documentation owner: unassigned
+  (all canonical documents are frozen)
+next poll: after each codexbox gate and at the EVO decay handoff
+```
+
+**Codexbox validation batch: exact rational Rvachev evaluation and
+arbitrary-cutoff Bose negativity.**  Two path-disjoint immutable source units
+have exact current-main preimages and independent actual-diff static PASSes:
+
+- `c2904fdf51a222269dfe1423ff003fb94e96b60a` changes only
+  `Arithmetic.lean`, `DyadicCorrectness.lean`, and `GlobalDyadic.lean` to blobs
+  `df36fe3c07bd7d4840fd659bebb6d6a18a58a8ee`,
+  `433a9b000f9600d8476893215ed4e40d4702be40`, and
+  `1eb61de52279d1da29e8848c359933cbefda1eca`.  It adds the documented exact
+  `evalRvachevDyadic` plus rejection, successful-correctness, and completeness
+  theorems; factors the three option-recognition proofs through one private
+  helper; and preserves imports, attributes, and the two old public wrapper
+  headers exactly.  Registry handoff `24594f168` records no compiler evidence.
+- `9884f0886de4646a80fd56f1a5c0ec7e506b0dd4` changes only
+  `BoseFinitePartIntegral.lean` to blob
+  `efbb11346b66b7dd4a91761333796a5f7b831f5e`.  It promotes and generalizes the
+  private unit-cutoff argument to documented public
+  `integral_boseFinitePartSmallKernel_Ioc_neg (c) (hc : 0 < c)`, rewires its
+  sole gamma consumer at `c = 1`, preserves all 47 old public headers/imports,
+  and completes strict 48/48 documentation.  Handoff `28ba9e476` records no
+  compiler evidence.
+
+Integrate only these exact source commits/blobs, never either moving feature
+history.  On codexbox run exactly the following separate commands, in order,
+with strict stop-on-first-failure:
+
+```text
+LEAN_NUM_THREADS=0 LAKE_JOBS=1 lake build +FabiusFunction.GlobalDyadic
+LEAN_NUM_THREADS=0 LAKE_JOBS=1 lake build +FabiusFunction.PaperStatements
+LEAN_NUM_THREADS=0 LAKE_JOBS=1 lake build +FabiusFunction.BoseFinitePartIntegral
+LEAN_NUM_THREADS=0 LAKE_JOBS=1 lake build +FabiusFunction.PeriodicMean
+```
+
+Run no parallel or additional codexbox Lean/Lake/TeX/PDF process.  Record the
+exact candidate/tree, each job count, exit, and every diagnostic.  Only an
+independently reviewed statement-preserving proof repair is in scope after a
+failure.  The simultaneous EVO decay retry remains independent on its other
+physical host.  The new effective-bounds source claims beyond these frozen
+handoffs receive no token or path expansion here.
+
+## Checkpoint 2026-08-26 03:49 PDT
+
+```text
+observed main before this directive: 44517be3cd72257f6d3dbdfdc8293279387b96aa
+coordinator branch: codex/fabius-coordinator-20260825
+integration mode: exact immutable sources -> coordinator -> fast-forward main
+main write owner: coordinator
+codexbox Lean/Lake owner: unassigned
+  (IDLE after the green three-gate sequence below)
+codexbox TeX/PDF owner: unassigned
+  (IDLE)
+EVO Lean/Lake owner: codex/fabius-inverse-asymptotic-20260825
+  (ACTIVE: the disjoint decay proof-repair retry)
+EVO TeX/PDF owner: unassigned
+  (IDLE)
+documentation owner: unassigned
+  (all canonical documents are frozen)
+next poll: at the EVO decay handoff or next immutable source handoff
+```
+
+**Zero-inclusive endpoint comparisons and Thue--Morse core cleanup accepted.**
+Exact reviewed sources were mapped as coordinator commits `8e504ad83` and
+`20f63650a`.  Final candidate
+`20f63650a55aa2bbb03329edfb6653c23a4f3063`, tree
+`e3170070880e272e55ab8f19c2f54167305ac8a8`, contains precisely the three
+advertised result blobs and no feature-registry/history import.
+
+On codexbox, with no overlapping Lean/Lake/TeX process, the three separate
+commands from the grant ran in order under `LEAN_NUM_THREADS=0 LAKE_JOBS=1`:
+
+```text
++FabiusFunction.EndpointLaplaceComparison  3417 jobs, exit 0
++FabiusFunction.ThueMorsePrefix             2025 jobs, exit 0
++FabiusFunction.ThueMorseGenerating         2088 jobs, exit 0
+```
+
+The endpoint command emitted only the inherited
+`ProbabilityLaplaceMoments.lean:652:2` `unnecessarySimpa` linter.  Both
+Thue--Morse commands emitted no diagnostic.  No proof repair was needed.  The
+eight additive all-index endpoint declarations, strict 24/24 documentation,
+the exact private-helper replacement, and strict 27/27 plus 47/47
+documentation are accepted.  Every source path and the codexbox token are
+released.  No consumer/root/document gate is required for these additive or
+header-preserving units.  The Bose cutoff and Rvachev evaluator lanes remain
+outside this acceptance pending their own immutable-source dispositions.
+
+## Checkpoint 2026-08-26 03:46 PDT
+
+```text
+observed main before this directive: 65df99318029015fc04b971c439dc754f2ef7dd6
+coordinator branch: codex/fabius-coordinator-20260825
+integration mode: exact immutable sources -> coordinator -> fast-forward main
+main write owner: coordinator
+codexbox Lean/Lake owner: coordinator
+  (ACTIVE: exactly the three serialized gates below)
+codexbox TeX/PDF owner: unassigned
+  (IDLE)
+EVO Lean/Lake owner: codex/fabius-inverse-asymptotic-20260825
+  (ACTIVE: the disjoint decay proof-repair retry)
+EVO TeX/PDF owner: unassigned
+  (IDLE)
+documentation owner: unassigned
+  (all canonical documents are frozen)
+next poll: after each codexbox gate and at the EVO decay handoff
+```
+
+**Codexbox validation batch: zero-inclusive endpoint comparisons and
+Thue--Morse core-bound cleanup.**  Two path-disjoint immutable source units
+have exact current-main preimages and independent actual-diff static PASSes:
+
+- `0409c13d1` changes only `EndpointLaplaceComparison.lean` to blob
+  `e7170713a4c8fd4993009cba9cc0786cd7b72161`.  It adds exactly eight
+  documented zero-inclusive `_all` declarations, preserves all 16 old
+  declarations/imports/bodies and every attribute, and yields strict 24/24
+  public documentation.  The zero/positive splits, all-real mass positivity,
+  and totalized logarithmic zero case were reviewed without a collision.
+- `44b2352a8baefed1f54106d9338eac8d931f4f78` changes only
+  `ThueMorsePrefix.lean` and `ThueMorseGenerating.lean` to blobs
+  `fcbb7d08ba52974c069cf389db8d2460378dbb7b` and
+  `fb403c24606b0091aead89de26bb6b0f9dde2f97`.  It deletes two private power
+  bounds, replaces their four uses with `Nat.lt_two_pow_self` in the exact
+  weak/strict orientations, changes Generating only by comments, preserves
+  every public header/import/attribute, and completes strict 27/27 and 47/47
+  documentation.
+
+Neither unit has compiler evidence.  Integrate only these exact source commits
+and blobs, never the moving effective-bounds feature history.  On codexbox run
+exactly the following separate commands, in order, with strict
+stop-on-first-failure:
+
+```text
+LEAN_NUM_THREADS=0 LAKE_JOBS=1 lake build +FabiusFunction.EndpointLaplaceComparison
+LEAN_NUM_THREADS=0 LAKE_JOBS=1 lake build +FabiusFunction.ThueMorsePrefix
+LEAN_NUM_THREADS=0 LAKE_JOBS=1 lake build +FabiusFunction.ThueMorseGenerating
+```
+
+Run no parallel or additional codexbox Lean/Lake/TeX/PDF process.  Record the
+exact candidate/tree, each job count, exit, and every diagnostic.  Only an
+independently reviewed statement-preserving proof repair is in scope after a
+failure.  The simultaneous EVO decay retry remains independent on its other
+physical host.  The new Bose cutoff and Rvachev rational-evaluator requests
+are outside this grant; neither receives a source or build token here.
+
 ## Checkpoint 2026-08-26 03:41 PDT
 
 ```text
