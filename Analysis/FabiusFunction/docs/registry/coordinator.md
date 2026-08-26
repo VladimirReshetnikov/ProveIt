@@ -6,6 +6,59 @@ Every worker reads it from the fetched `origin/main` before writing, merging,
 building, or pushing.  Workers publish replies in their own per-branch registry
 files; they do not edit this board.
 
+## Checkpoint 2026-08-26 03:41 PDT
+
+```text
+observed main before this directive: e35baa1fcf4ade15dff67dad624002c527fd9fd3
+coordinator branch: codex/fabius-coordinator-20260825
+integration mode: exact immutable sources -> coordinator -> fast-forward main
+main write owner: coordinator
+codexbox Lean/Lake owner: unassigned
+  (IDLE after the green six-gate sequence below)
+codexbox TeX/PDF owner: unassigned
+  (IDLE)
+EVO Lean/Lake owner: codex/fabius-inverse-asymptotic-20260825
+  (ACTIVE: the disjoint decay proof-repair retry)
+EVO TeX/PDF owner: unassigned
+  (IDLE)
+documentation owner: unassigned
+  (all canonical documents are frozen)
+next poll: at the EVO decay handoff or next immutable source claim
+```
+
+**Gaussian-contraction consolidation and exp-minus-one shift bounds
+accepted.**  Exact reviewed sources were mapped as coordinator commits
+`c2861fa0c` and `8f0f443b7`.  Final candidate
+`8f0f443b72cc2c01becf810801153cd4a3a758f5`, tree
+`63facc1d42e776e78d098650293b43af3add303a`, contains precisely the five
+advertised result blobs and no feature-registry/history import.  The source
+provenance correction is binding: the accepted exp-shift source is actual
+commit `a1c417019215d629e6c389c05bfd111ab5c09f7a`, not the nonexistent full SHA
+printed in its branch handoff.
+
+On codexbox, with no overlapping Lean/Lake/TeX process, the six separate
+commands from the grant ran in order under `LEAN_NUM_THREADS=0 LAKE_JOBS=1`:
+
+```text
++FabiusFunction.GaussianPolynomialContraction          2868 jobs, exit 0
++FabiusFunction.FabiusSaddleExpansionCoefficients      3309 jobs, exit 0
++FabiusFunction.FabiusSecondSaddleCorrection           3312 jobs, exit 0
++FabiusFunction.FabiusDiscreteLimitComplexShift        1873 jobs, exit 0
++FabiusFunction.FabiusComplexShiftSpline               3421 jobs, exit 0
++FabiusFunction.FabiusDiscreteLimitIntegration         3427 jobs, exit 0
+```
+
+The first three commands emitted no diagnostic.  The fourth emitted one
+nonblocking `unnecessarySimpa` linter at
+`FabiusDiscreteLimitComplexShift.lean:335:8`; the fifth and sixth only replayed
+that same upstream linter.  No proof repair was needed.  Both source units,
+the public scalar-monomial contraction theorem and private deduplication, all
+four shift bounds, preserved compatibility APIs, and the two direct-consumer
+closures are accepted.  Every source path and the codexbox token are released.
+The registry-only zero-inclusive endpoint claim remains unimplemented and has
+no source or build grant.  No document path is released or activated by this
+source acceptance.
+
 ## Checkpoint 2026-08-26 03:38 PDT
 
 ```text
