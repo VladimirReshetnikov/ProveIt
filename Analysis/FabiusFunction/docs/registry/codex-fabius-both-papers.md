@@ -1329,3 +1329,36 @@ The paper facade covers the direct `PaperStatements` consumer.  A later
 separately owned documentation pass should map the two exact names to the
 listed frozen-draft equations without marking their unproved companions
 formalized.
+
+Source checkpoint `1992f0c14` implements the exact advertised one-file
+tranche.  The resulting `Parity.lean` Git blob is
+`92ca2ea3ad73cff04749709d5a142d3bd01ea270`, with content SHA-256
+`0D195658E07BDB6D90294F62B8FD2230F5E7EDE9D6C48C2859D5D881CE64C13E`.
+The source delta is 74 insertions and one overview-line deletion.
+
+The private `choose_pow_two_mod_two_div` theorem performs the Lucas induction
+in quotient-residue form.  Public `choose_pow_two_mod_two` then rewrites that
+residue as `List.getD` of the base-two digits.  The private
+`sum_getD_range_length` lemma identifies the finite indexed digit sum with
+the list sum, and `thueMorseSign_pascalPowTwo` applies `Nat.ModEq.sum` and the
+two directions of `neg_one_pow_eq_pow_mod_two` to recover the signed formula.
+The direct `Mathlib.Algebra.BigOperators.ModEq` import is narrowly required by
+the protected finite-sum congruence theorem and introduces no project edge.
+
+Three independent exact-byte static reviews pass the Lucas successor
+normalization, generalized induction hypothesis, quotient association,
+`Nat.getD_digits` orientation, first-term list induction, finite congruence
+sum, definitional `binaryWeight` change, exponent-rewrite direction, and all
+edge cases including `n = 0`, `j = 0`, and columns beyond the digit length.
+They also pass the two-public/two-private API boundary, names, placement,
+necessary import, declaration comments, finite-versus-infinite human formula,
+direct reverse importers, and ownership scan.
+
+`git diff --check`, line-length, import-use, public-header delta,
+forbidden-declaration, conflict-marker, exact-name, semantic-shape, and all-tip
+registry scans are clean.  No existing declaration or attribute changes, and
+neither public theorem is a simp rule.  No Lean, Lake, TeX, PDF, or
+cache-mutating process ran, so these reviews are not compiler evidence.  The
+source is frozen pending coordinator review and the two serialized gates
+above.  On document thaw, map only the digit-probe and signed exponent
+identities; the cosine-product and zero-one companions remain open.
