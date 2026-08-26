@@ -66,17 +66,6 @@ lemma negativeLaplaceForwardTermDeriv_succ (k : ℕ) (s : ℝ) (n : ℕ) :
   simp [forwardDerivativeQuotientPolynomial,
     negativeLaplaceForwardTermFirst]
 
-private lemma forwardExp_hasDerivAt (s : ℝ) (n : ℕ) :
-    HasDerivAt (fun x : ℝ => Real.exp (-(x * (2 : ℝ) ^ n)))
-      (-((2 : ℝ) ^ n) * Real.exp (-(s * (2 : ℝ) ^ n))) s := by
-  simpa only [Pi.neg_apply, id_eq, one_mul, mul_comm] using
-    (((hasDerivAt_id s).mul_const ((2 : ℝ) ^ n)).neg.exp)
-
-private lemma forwardExp_ne_one (s : ℝ) (hs : 0 < s) (n : ℕ) :
-    Real.exp (-(s * (2 : ℝ) ^ n)) ≠ 1 := by
-  rw [ne_eq, Real.exp_eq_one_iff]
-  exact neg_ne_zero.mpr (mul_ne_zero hs.ne' (by positivity))
-
 theorem negativeLaplaceForwardTermDeriv_hasDerivAt
     (k : ℕ) (s : ℝ) (hs : 0 < s) (n : ℕ) :
     HasDerivAt (fun x : ℝ => negativeLaplaceForwardTermDeriv k x n)
@@ -92,14 +81,14 @@ theorem negativeLaplaceForwardTermDeriv_hasDerivAt
       let z := Real.exp (-(s * a))
       let p := forwardDerivativeQuotientPolynomial k
       have hz : HasDerivAt (fun x : ℝ => Real.exp (-(x * a))) (-a * z) s := by
-        simpa [a, z] using forwardExp_hasDerivAt s n
+        simpa [a, z] using hasDerivAt_exp_neg_mul_two_pow s n
       have hp : HasDerivAt
           (fun x : ℝ => p.eval (Real.exp (-(x * a))))
           (p.derivative.eval z * (-a * z)) s := by
         exact (p.hasDerivAt z).comp s hz
       have hu := (hasDerivAt_const s (1 : ℝ)).sub hz
       have hune : 1 - z ≠ 0 := sub_ne_zero.mpr (by
-        simpa [a, z] using (forwardExp_ne_one s hs n).symm)
+        simpa [a, z] using (exp_neg_mul_two_pow_ne_one s hs.ne' n).symm)
       have hnum :=
         (((hz.const_mul (a ^ (k + 1))).mul hp))
       have hbase := hnum.div (hu.pow (k + 1)) (pow_ne_zero _ hune)
@@ -133,20 +122,6 @@ lemma exists_bound_abs_forwardDerivativeQuotientPolynomial (k : ℕ) :
   intro y hy
   exact hmax hy
 
-private lemma forwardExp_le
-    (a s : ℝ) (_ha : 0 < a) (has : a ≤ s) (n : ℕ) :
-    Real.exp (-(s * (2 : ℝ) ^ n)) ≤
-      Real.exp (-(a * (2 : ℝ) ^ n)) := by
-  apply Real.exp_le_exp.mpr
-  have hn : 0 < (2 : ℝ) ^ n := by positivity
-  nlinarith
-
-private lemma forwardDenominator_pos (s : ℝ) (hs : 0 < s) (n : ℕ) :
-    0 < 1 - Real.exp (-(s * (2 : ℝ) ^ n)) := by
-  rw [sub_pos, ← Real.exp_zero]
-  apply Real.exp_lt_exp.mpr
-  exact neg_lt_zero.mpr (mul_pos hs (by positivity))
-
 theorem exists_norm_negativeLaplaceForwardTermDeriv_succ_le
     (a : ℝ) (ha : 0 < a) (k : ℕ) :
     ∃ C : ℝ, 0 ≤ C ∧ ∀ s, a ≤ s → ∀ n : ℕ,
@@ -176,7 +151,7 @@ theorem exists_norm_negativeLaplaceForwardTermDeriv_succ_le
     rw [← Real.exp_zero]
     exact Real.exp_le_exp.mpr (neg_nonpos.mpr (mul_nonneg hs.le hA.le))
   have hzza : z ≤ za := by
-    simpa [A, z, za] using forwardExp_le a s ha has n
+    simpa [A, z, za] using exp_neg_mul_two_pow_le_of_le has n
   have hpoly : |(forwardDerivativeQuotientPolynomial k).eval z| ≤ B :=
     hB z ⟨hz0, hz1⟩
   have hden : d ≤ 1 - z := by
@@ -188,7 +163,7 @@ theorem exists_norm_negativeLaplaceForwardTermDeriv_succ_le
     exact sub_le_sub_left (hzza.trans hza) 1
   have hdenz : 0 < 1 - z := by
     dsimp [z, A]
-    exact forwardDenominator_pos s hs n
+    exact one_sub_exp_neg_mul_two_pow_pos s hs n
   rw [negativeLaplaceForwardTermDeriv_succ]
   dsimp only
   change ‖A ^ (k + 1) * z *

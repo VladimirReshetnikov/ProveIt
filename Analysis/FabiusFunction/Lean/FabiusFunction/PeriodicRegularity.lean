@@ -19,6 +19,9 @@ two derivatives of the normalized correction, the regularity input needed by
 the sharp dyadic phase expansion.  The four termwise derivative tails are
 identified explicitly with successive ordinary derivatives, giving later
 all-orders arguments a reusable bridge from `HasDerivAt` to `deriv`.
+The elementary dyadic-exponential derivative, monotonicity, nonunit, and
+positive-denominator facts are exposed here for reuse by all later periodic
+modules.
 -/
 
 set_option autoImplicit false
@@ -85,12 +88,14 @@ noncomputable def negativeLaplaceForwardTermFourth (s : ℝ) (n : ℕ) : ℝ :=
         Real.exp (-(s * (2 : ℝ) ^ n)) ^ 2) /
     (1 - Real.exp (-(s * (2 : ℝ) ^ n))) ^ 4)
 
-private lemma forward_exp_ne_one (s : ℝ) (hs : 0 < s) (n : ℕ) :
+/-- The forward dyadic exponential is nonunit at every nonzero scale. -/
+theorem exp_neg_mul_two_pow_ne_one (s : ℝ) (hs : s ≠ 0) (n : ℕ) :
     Real.exp (-(s * (2 : ℝ) ^ n)) ≠ 1 := by
   rw [ne_eq, Real.exp_eq_one_iff]
-  exact neg_ne_zero.mpr (mul_ne_zero hs.ne' (by positivity))
+  exact neg_ne_zero.mpr (mul_ne_zero hs (by positivity))
 
-private lemma forward_exp_hasDerivAt (s : ℝ) (n : ℕ) :
+/-- Derivative in the scale of the forward dyadic exponential. -/
+theorem hasDerivAt_exp_neg_mul_two_pow (s : ℝ) (n : ℕ) :
     HasDerivAt (fun x : ℝ => Real.exp (-(x * (2 : ℝ) ^ n)))
       (-((2 : ℝ) ^ n) * Real.exp (-(s * (2 : ℝ) ^ n))) s := by
   simpa only [Pi.neg_apply, id_eq, one_mul, mul_comm] using
@@ -103,10 +108,10 @@ lemma negativeLaplaceForwardTerm_hasDerivAt
   let a := (2 : ℝ) ^ n
   let z := Real.exp (-(s * a))
   have hz : HasDerivAt (fun x : ℝ => Real.exp (-(x * a))) (-a * z) s := by
-    simpa [a, z] using forward_exp_hasDerivAt s n
+    simpa [a, z] using hasDerivAt_exp_neg_mul_two_pow s n
   have hu := (hasDerivAt_const s (1 : ℝ)).sub hz
   have hune : 1 - z ≠ 0 := sub_ne_zero.mpr (by
-    simpa [a, z] using (forward_exp_ne_one s hs n).symm)
+    simpa [a, z] using (exp_neg_mul_two_pow_ne_one s hs.ne' n).symm)
   have hlog := hu.log hune
   simpa [negativeLaplaceForwardTerm, negativeLaplaceForwardTermFirst, a, z,
     sub_eq_add_neg, mul_comm] using hlog
@@ -118,10 +123,10 @@ lemma negativeLaplaceForwardTermFirst_hasDerivAt
   let a := (2 : ℝ) ^ n
   let z := Real.exp (-(s * a))
   have hz : HasDerivAt (fun x : ℝ => Real.exp (-(x * a))) (-a * z) s := by
-    simpa [a, z] using forward_exp_hasDerivAt s n
+    simpa [a, z] using hasDerivAt_exp_neg_mul_two_pow s n
   have hu := (hasDerivAt_const s (1 : ℝ)).sub hz
   have hune : 1 - z ≠ 0 := sub_ne_zero.mpr (by
-    simpa [a, z] using (forward_exp_ne_one s hs n).symm)
+    simpa [a, z] using (exp_neg_mul_two_pow_ne_one s hs.ne' n).symm)
   have h := (hz.const_mul a).div hu hune
   change HasDerivAt
     (fun x : ℝ => a * Real.exp (-(x * a)) / (1 - Real.exp (-(x * a))))
@@ -141,10 +146,10 @@ lemma negativeLaplaceForwardTermSecond_hasDerivAt
   let a := (2 : ℝ) ^ n
   let z := Real.exp (-(s * a))
   have hz : HasDerivAt (fun x : ℝ => Real.exp (-(x * a))) (-a * z) s := by
-    simpa [a, z] using forward_exp_hasDerivAt s n
+    simpa [a, z] using hasDerivAt_exp_neg_mul_two_pow s n
   have hu := (hasDerivAt_const s (1 : ℝ)).sub hz
   have hune : 1 - z ≠ 0 := sub_ne_zero.mpr (by
-    simpa [a, z] using (forward_exp_ne_one s hs n).symm)
+    simpa [a, z] using (exp_neg_mul_two_pow_ne_one s hs.ne' n).symm)
   have hbase := (((hz.const_mul (a ^ 2)).div (hu.pow 2) (pow_ne_zero 2 hune)).neg)
   change HasDerivAt
     (fun x : ℝ => -(a ^ 2 * Real.exp (-(x * a)) /
@@ -165,10 +170,10 @@ lemma negativeLaplaceForwardTermThird_hasDerivAt
   let a := (2 : ℝ) ^ n
   let z := Real.exp (-(s * a))
   have hz : HasDerivAt (fun x : ℝ => Real.exp (-(x * a))) (-a * z) s := by
-    simpa [a, z] using forward_exp_hasDerivAt s n
+    simpa [a, z] using hasDerivAt_exp_neg_mul_two_pow s n
   have hu := (hasDerivAt_const s (1 : ℝ)).sub hz
   have hune : 1 - z ≠ 0 := sub_ne_zero.mpr (by
-    simpa [a, z] using (forward_exp_ne_one s hs n).symm)
+    simpa [a, z] using (exp_neg_mul_two_pow_ne_one s hs.ne' n).symm)
   have hnum := ((hz.const_mul (a ^ 3)).mul
     ((hasDerivAt_const s (1 : ℝ)).add hz))
   have hbase := hnum.div (hu.pow 3) (pow_ne_zero 3 hune)
@@ -184,8 +189,9 @@ lemma negativeLaplaceForwardTermThird_hasDerivAt
   · filter_upwards with x
     rfl
 
-private lemma forward_exp_le
-    (a s : ℝ) (_ha : 0 < a) (has : a ≤ s) (n : ℕ) :
+/-- The forward dyadic exponential is antitone in its scale. -/
+theorem exp_neg_mul_two_pow_le_of_le
+    {a s : ℝ} (has : a ≤ s) (n : ℕ) :
     Real.exp (-(s * (2 : ℝ) ^ n)) ≤
       Real.exp (-(a * (2 : ℝ) ^ n)) := by
   apply Real.exp_le_exp.mpr
@@ -193,12 +199,13 @@ private lemma forward_exp_le
   nlinarith
 
 private lemma forward_denominator_le
-    (a s : ℝ) (ha : 0 < a) (has : a ≤ s) (n : ℕ) :
+    (a s : ℝ) (has : a ≤ s) (n : ℕ) :
     1 - Real.exp (-(a * (2 : ℝ) ^ n)) ≤
       1 - Real.exp (-(s * (2 : ℝ) ^ n)) :=
-  sub_le_sub_left (forward_exp_le a s ha has n) 1
+  sub_le_sub_left (exp_neg_mul_two_pow_le_of_le has n) 1
 
-private lemma forward_denominator_pos (s : ℝ) (hs : 0 < s) (n : ℕ) :
+/-- The forward dyadic denominator is positive at every positive scale. -/
+theorem one_sub_exp_neg_mul_two_pow_pos (s : ℝ) (hs : 0 < s) (n : ℕ) :
     0 < 1 - Real.exp (-(s * (2 : ℝ) ^ n)) := by
   rw [sub_pos, ← Real.exp_zero]
   apply Real.exp_lt_exp.mpr
@@ -210,19 +217,19 @@ lemma norm_negativeLaplaceForwardTermFirst_le
       (1 / (1 - Real.exp (-a))) *
         (((2 : ℝ) ^ n) ^ 1 * Real.exp (-(a * (2 : ℝ) ^ n))) := by
   have hs : 0 < s := ha.trans_le has
-  have hz := forward_exp_le a s ha has n
+  have hz := exp_neg_mul_two_pow_le_of_le has n
   have hza : Real.exp (-(a * (2 : ℝ) ^ n)) ≤ Real.exp (-a) := by
     apply Real.exp_le_exp.mpr
     have hn : (1 : ℝ) ≤ (2 : ℝ) ^ n := one_le_pow₀ (by norm_num)
     nlinarith
-  have hd := forward_denominator_le a s ha has n
+  have hd := forward_denominator_le a s has n
   have hd' : 1 - Real.exp (-a) ≤
       1 - Real.exp (-(s * (2 : ℝ) ^ n)) :=
     (sub_le_sub_left hza 1).trans hd
   have hdpos : 0 < 1 - Real.exp (-a) := by
     rw [sub_pos, ← Real.exp_zero]
     exact Real.exp_lt_exp.mpr (by linarith)
-  have hdspos := forward_denominator_pos s hs n
+  have hdspos := one_sub_exp_neg_mul_two_pow_pos s hs n
   unfold negativeLaplaceForwardTermFirst
   rw [Real.norm_eq_abs, abs_div, abs_mul,
     abs_of_pos (by positivity : 0 < (2 : ℝ) ^ n),
@@ -245,19 +252,19 @@ lemma norm_negativeLaplaceForwardTermSecond_le
       (1 / (1 - Real.exp (-a)) ^ 2) *
         (((2 : ℝ) ^ n) ^ 2 * Real.exp (-(a * (2 : ℝ) ^ n))) := by
   have hs : 0 < s := ha.trans_le has
-  have hz := forward_exp_le a s ha has n
+  have hz := exp_neg_mul_two_pow_le_of_le has n
   have hza : Real.exp (-(a * (2 : ℝ) ^ n)) ≤ Real.exp (-a) := by
     apply Real.exp_le_exp.mpr
     have hn : (1 : ℝ) ≤ (2 : ℝ) ^ n := one_le_pow₀ (by norm_num)
     nlinarith
-  have hd := forward_denominator_le a s ha has n
+  have hd := forward_denominator_le a s has n
   have hd' : 1 - Real.exp (-a) ≤
       1 - Real.exp (-(s * (2 : ℝ) ^ n)) :=
     (sub_le_sub_left hza 1).trans hd
   have hdpos : 0 < 1 - Real.exp (-a) := by
     rw [sub_pos, ← Real.exp_zero]
     exact Real.exp_lt_exp.mpr (by linarith)
-  have hdspos := forward_denominator_pos s hs n
+  have hdspos := one_sub_exp_neg_mul_two_pow_pos s hs n
   have hdpow : (1 - Real.exp (-a)) ^ 2 ≤
       (1 - Real.exp (-(s * (2 : ℝ) ^ n))) ^ 2 :=
     pow_le_pow_left₀ hdpos.le hd' 2
@@ -280,7 +287,7 @@ lemma norm_negativeLaplaceForwardTermThird_le
       (2 / (1 - Real.exp (-a)) ^ 3) *
         (((2 : ℝ) ^ n) ^ 3 * Real.exp (-(a * (2 : ℝ) ^ n))) := by
   have hs : 0 < s := ha.trans_le has
-  have hz := forward_exp_le a s ha has n
+  have hz := exp_neg_mul_two_pow_le_of_le has n
   have hza : Real.exp (-(a * (2 : ℝ) ^ n)) ≤ Real.exp (-a) := by
     apply Real.exp_le_exp.mpr
     have hn : (1 : ℝ) ≤ (2 : ℝ) ^ n := one_le_pow₀ (by norm_num)
@@ -289,14 +296,14 @@ lemma norm_negativeLaplaceForwardTermThird_le
     rw [← Real.exp_zero]
     apply Real.exp_le_exp.mpr
     exact (neg_nonpos.mpr (mul_nonneg hs.le (by positivity)))
-  have hd := forward_denominator_le a s ha has n
+  have hd := forward_denominator_le a s has n
   have hd' : 1 - Real.exp (-a) ≤
       1 - Real.exp (-(s * (2 : ℝ) ^ n)) :=
     (sub_le_sub_left hza 1).trans hd
   have hdpos : 0 < 1 - Real.exp (-a) := by
     rw [sub_pos, ← Real.exp_zero]
     exact Real.exp_lt_exp.mpr (by linarith)
-  have hdspos := forward_denominator_pos s hs n
+  have hdspos := one_sub_exp_neg_mul_two_pow_pos s hs n
   have hdpow : (1 - Real.exp (-a)) ^ 3 ≤
       (1 - Real.exp (-(s * (2 : ℝ) ^ n))) ^ 3 :=
     pow_le_pow_left₀ hdpos.le hd' 3
@@ -329,7 +336,7 @@ lemma norm_negativeLaplaceForwardTermFourth_le
       (6 / (1 - Real.exp (-a)) ^ 4) *
         (((2 : ℝ) ^ n) ^ 4 * Real.exp (-(a * (2 : ℝ) ^ n))) := by
   have hs : 0 < s := ha.trans_le has
-  have hz := forward_exp_le a s ha has n
+  have hz := exp_neg_mul_two_pow_le_of_le has n
   have hza : Real.exp (-(a * (2 : ℝ) ^ n)) ≤ Real.exp (-a) := by
     apply Real.exp_le_exp.mpr
     have hn : (1 : ℝ) ≤ (2 : ℝ) ^ n := one_le_pow₀ (by norm_num)
@@ -344,14 +351,14 @@ lemma norm_negativeLaplaceForwardTermFourth_le
   have hzpoly : 1 + 4 * z + z ^ 2 ≤ 6 := by
     have hzsq : z ^ 2 ≤ 1 := by nlinarith [mul_self_le_mul_self hz0 hz1]
     nlinarith
-  have hd := forward_denominator_le a s ha has n
+  have hd := forward_denominator_le a s has n
   have hd' : 1 - Real.exp (-a) ≤
       1 - Real.exp (-(s * (2 : ℝ) ^ n)) :=
     (sub_le_sub_left hza 1).trans hd
   have hdpos : 0 < 1 - Real.exp (-a) := by
     rw [sub_pos, ← Real.exp_zero]
     exact Real.exp_lt_exp.mpr (by linarith)
-  have hdspos := forward_denominator_pos s hs n
+  have hdspos := one_sub_exp_neg_mul_two_pow_pos s hs n
   have hdpow : (1 - Real.exp (-a)) ^ 4 ≤
       (1 - Real.exp (-(s * (2 : ℝ) ^ n))) ^ 4 :=
     pow_le_pow_left₀ hdpos.le hd' 4
@@ -554,7 +561,7 @@ theorem continuousOn_negativeLaplaceForwardTermFourth (n : ℕ) :
   apply ContinuousAt.continuousWithinAt
   unfold negativeLaplaceForwardTermFourth
   have hden : 1 - Real.exp (-(s * (2 : ℝ) ^ n)) ≠ 0 :=
-    (forward_denominator_pos s hs n).ne'
+    (one_sub_exp_neg_mul_two_pow_pos s hs n).ne'
   have hdenpow : (1 - Real.exp (-(s * (2 : ℝ) ^ n))) ^ 4 ≠ 0 :=
     pow_ne_zero 4 hden
   fun_prop (disch := assumption)
