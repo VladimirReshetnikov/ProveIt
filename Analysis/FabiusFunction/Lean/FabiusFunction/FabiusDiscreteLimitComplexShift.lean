@@ -14,8 +14,9 @@ formula for the signed global Fabius function.  A branch is a normalized
 finite Thue--Morse power sum with a fixed cutoff.  Translating its argument
 has an exact finite Taylor expansion in the lower-degree branches.  Under a
 unit bound for those lower branches, this gives a uniform exponential
-translation estimate in every degree, including degree zero, where the branch
-is independent of its complex argument.
+translation estimate with no constant term in the translation increment.  The
+estimate holds in every degree, including degree zero, where the branch is
+independent of its complex argument.
 -/
 
 set_option autoImplicit false
@@ -247,44 +248,33 @@ private theorem norm_complex_two_choose_factor_le
             ((a + 1 - d).factorial : ℝ) := by
         exact div_le_div_of_nonneg_right hratio (by positivity)
 
-private theorem reflected_factorial_sum_le_exp
+private theorem reflected_factorial_sum_le_exp_sub_one
     (R : ℝ) (hR : 0 ≤ R) (p : ℕ) :
     (∑ d ∈ Finset.range p,
-        R ^ (p - d) / ((p - d).factorial : ℝ)) ≤ Real.exp R := by
+        R ^ (p - d) / ((p - d).factorial : ℝ)) ≤ Real.exp R - 1 := by
   let f : ℕ → ℝ := fun j => R ^ j / (j.factorial : ℝ)
-  let g : ℕ → ℝ := fun j => f (j + 1)
-  have hindex {d : ℕ} (hd : d ∈ Finset.range p) :
-      p - d = (p - 1 - d) + 1 := by
-    have hpos : 0 < p - d := Nat.sub_pos_of_lt (Finset.mem_range.mp hd)
-    calc
-      p - d = (p - d - 1) + 1 :=
-        (Nat.sub_one_add_one (Nat.ne_of_gt hpos)).symm
-      _ = (p - 1 - d) + 1 := by
-        have hsub : p - d - 1 = p - 1 - d := by
-          rw [Nat.sub_sub, Nat.sub_sub, Nat.add_comm d 1]
-        rw [hsub]
   calc
     (∑ d ∈ Finset.range p,
         R ^ (p - d) / ((p - d).factorial : ℝ)) =
-        ∑ d ∈ Finset.range p, g (p - 1 - d) := by
-      apply Finset.sum_congr rfl
-      intro d hd
-      rw [hindex hd]
-    _ = ∑ j ∈ Finset.range p, g j := Finset.sum_range_reflect g p
-    _ ≤ ∑ j ∈ Finset.range (p + 1), f j := by
-      rw [Finset.sum_range_succ']
-      exact le_add_of_nonneg_right (by simp [f])
-    _ ≤ Real.exp R := Real.sum_le_exp_of_nonneg hR (p + 1)
+        ∑ j ∈ Finset.Ico 1 (p + 1), f j := by
+      simpa [f, Nat.Ico_zero_eq_range] using
+        (Finset.sum_Ico_reflect f 0 (m := p) (n := p) (Nat.le_succ p))
+    _ ≤ Real.exp R - 1 := by
+      rw [Finset.sum_Ico_eq_sub f
+        (Nat.succ_le_succ (Nat.zero_le p))]
+      simpa [f] using
+        sub_le_sub_right (Real.sum_le_exp_of_nonneg hR (p + 1)) 1
 
-/-- Uniform quantitative control of a complex translation of one branch.
-The factor `(1/2)^(p-1)` is independent of the real branch and tends to zero. -/
-theorem norm_normalizedThueMorseSplineBranch_add_sub_le_half_pow_mul_exp
+/-- A complex branch translation is controlled by the exponential increment.
+The reflected Taylor order starts at one, so the majorant has no constant term
+in `δ`. -/
+theorem norm_normalizedThueMorseSplineBranch_add_sub_le_half_pow_mul_exp_sub_one
     (p M : ℕ) (z δ : ℂ) (hp : 1 ≤ p)
     (hbound : ∀ d ∈ Finset.range p,
       ‖normalizedThueMorseSplineBranch d M z‖ ≤ 1) :
     ‖normalizedThueMorseSplineBranch p M (z + δ) -
         normalizedThueMorseSplineBranch p M z‖ ≤
-      (1 / 2 : ℝ) ^ (p - 1) * Real.exp ‖δ‖ := by
+      (1 / 2 : ℝ) ^ (p - 1) * (Real.exp ‖δ‖ - 1) := by
   calc
     ‖normalizedThueMorseSplineBranch p M (z + δ) -
         normalizedThueMorseSplineBranch p M z‖ ≤
@@ -308,10 +298,45 @@ theorem norm_normalizedThueMorseSplineBranch_add_sub_le_half_pow_mul_exp
       apply Finset.sum_congr rfl
       intro d hd
       ring
-    _ ≤ (1 / 2 : ℝ) ^ (p - 1) * Real.exp ‖δ‖ :=
+    _ ≤ (1 / 2 : ℝ) ^ (p - 1) * (Real.exp ‖δ‖ - 1) :=
       mul_le_mul_of_nonneg_left
-        (reflected_factorial_sum_le_exp ‖δ‖ (norm_nonneg δ) p)
+        (reflected_factorial_sum_le_exp_sub_one ‖δ‖ (norm_nonneg δ) p)
         (by positivity)
+
+/-- Uniform quantitative control of a complex translation of one branch.
+The factor `(1/2)^(p-1)` is independent of the real branch and tends to zero. -/
+theorem norm_normalizedThueMorseSplineBranch_add_sub_le_half_pow_mul_exp
+    (p M : ℕ) (z δ : ℂ) (hp : 1 ≤ p)
+    (hbound : ∀ d ∈ Finset.range p,
+      ‖normalizedThueMorseSplineBranch d M z‖ ≤ 1) :
+    ‖normalizedThueMorseSplineBranch p M (z + δ) -
+        normalizedThueMorseSplineBranch p M z‖ ≤
+      (1 / 2 : ℝ) ^ (p - 1) * Real.exp ‖δ‖ := by
+  exact
+    (norm_normalizedThueMorseSplineBranch_add_sub_le_half_pow_mul_exp_sub_one
+      p M z δ hp hbound).trans
+      (mul_le_mul_of_nonneg_left
+        (sub_le_self (Real.exp ‖δ‖) zero_le_one) (by positivity))
+
+/-- The exponential-increment translation bound holds in every degree.  At
+`p = 0` the branch difference and its finite Taylor majorant both vanish. -/
+theorem
+    norm_normalizedThueMorseSplineBranch_add_sub_le_half_pow_mul_exp_sub_one_all
+    (p M : ℕ) (z δ : ℂ)
+    (hbound : ∀ d ∈ Finset.range p,
+      ‖normalizedThueMorseSplineBranch d M z‖ ≤ 1) :
+    ‖normalizedThueMorseSplineBranch p M (z + δ) -
+        normalizedThueMorseSplineBranch p M z‖ ≤
+      (1 / 2 : ℝ) ^ (p - 1) * (Real.exp ‖δ‖ - 1) := by
+  rcases Nat.eq_zero_or_pos p with rfl | hp
+  · exact le_trans
+      (norm_normalizedThueMorseSplineBranch_add_sub_le 0 M z δ hbound)
+      (by
+        simpa using
+          sub_nonneg.mpr (Real.one_le_exp (norm_nonneg δ)))
+  · exact
+      norm_normalizedThueMorseSplineBranch_add_sub_le_half_pow_mul_exp_sub_one
+        p M z δ hp hbound
 
 /-- Uniform quantitative control of a complex branch translation in every
 degree.  At `p = 0` the branch is independent of its complex argument, the
@@ -324,14 +349,11 @@ theorem norm_normalizedThueMorseSplineBranch_add_sub_le_half_pow_mul_exp_all
     ‖normalizedThueMorseSplineBranch p M (z + δ) -
         normalizedThueMorseSplineBranch p M z‖ ≤
       (1 / 2 : ℝ) ^ (p - 1) * Real.exp ‖δ‖ := by
-  rcases Nat.eq_zero_or_pos p with rfl | hp
-  · exact le_trans
-      (norm_normalizedThueMorseSplineBranch_add_sub_le 0 M z δ hbound)
-      (by
-        simpa using Real.exp_nonneg ‖δ‖)
-  · exact
-      norm_normalizedThueMorseSplineBranch_add_sub_le_half_pow_mul_exp
-        p M z δ hp hbound
+  exact
+    (norm_normalizedThueMorseSplineBranch_add_sub_le_half_pow_mul_exp_sub_one_all
+      p M z δ hbound).trans
+      (mul_le_mul_of_nonneg_left
+        (sub_le_self (Real.exp ‖δ‖) zero_le_one) (by positivity))
 
 end
 
