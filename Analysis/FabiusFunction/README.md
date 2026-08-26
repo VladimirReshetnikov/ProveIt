@@ -1,14 +1,13 @@
 # Fabius function
 
-> **Multi-agent coordination: inactive.**  The coordination campaign in this
-> directory concluded on 2026-08-26; its branches were merged or archived and
-> the live board was retired.  The framework is retained for future campaigns
-> — the (deactivated) protocol in [`AGENTS.md`](AGENTS.md), the rationale in
-> [`docs/COLLABORATION.md`](docs/COLLABORATION.md), and the dormant board
-> template at [`docs/registry/coordinator.md`](docs/registry/coordinator.md)
-> — and can be re-enabled as described in those files.  The engineering
-> policies in `AGENTS.md` (documentation, Lean builds, invariants) remain in
-> effect at all times.
+> **Multi-agent coordination: OFF.**  A single switch file,
+> [`docs/coordination/STATUS.md`](docs/coordination/STATUS.md), states
+> whether the coordination framework is in effect; flipping it — plus
+> creating or deleting the off-`main` board branch it names — is the entire
+> enable/disable procedure.  The lightweight protocol it switches is
+> [`docs/coordination/PROTOCOL.md`](docs/coordination/PROTOCOL.md).  The
+> engineering policies in [`AGENTS.md`](AGENTS.md) (documentation, Lean
+> builds, invariants) apply at all times.
 
 This project formalizes the Fabius function and the results in both papers by
 Juan Arias de Reyna:
@@ -662,8 +661,8 @@ compiled PDF is committed alongside its source.
   reserved for repository bookkeeping that contains no displayed mathematics:
   this README, [`AGENTS.md`](AGENTS.md),
   [`docs/PAPER_COVERAGE.md`](docs/PAPER_COVERAGE.md),
-  [`docs/COLLABORATION.md`](docs/COLLABORATION.md), and the per-branch files in
-  `docs/registry/`.
+  [`docs/COLLABORATION.md`](docs/COLLABORATION.md), and the coordination
+  files in `docs/coordination/`.
 - **Style.** New documents reuse the preamble of
   [`Fabius_Function_and_Rvachev_Up.tex`](docs/Fabius_Function_and_Rvachev_Up/Fabius_Function_and_Rvachev_Up.tex)
   verbatim — the same geometry, fonts, colours, `hyperref` setup, running
@@ -709,14 +708,18 @@ compiled PDF is committed alongside its source.
 
 The operational entry point is [`AGENTS.md`](AGENTS.md): its documentation
 policy, Lean build guidance, and invariants apply to all work in this
-directory.  The multi-agent coordination protocol it also contains is
-currently **inactive** — there is no live board and no registry claim is
-required.  The detailed [collaboration guide](docs/COLLABORATION.md) records
-the protocol and the failures that motivated it, and the longer
-[coordination design](docs/MULTI_AGENT_COORDINATION_PROPOSAL.md) remains
-useful background; both are retained so that a future campaign can re-enable
-the framework through the dormant
-[board template](docs/registry/coordinator.md).
+directory.  Multi-agent coordination is switched by the single file
+[`docs/coordination/STATUS.md`](docs/coordination/STATUS.md) (currently OFF)
+and specified by
+[`docs/coordination/PROTOCOL.md`](docs/coordination/PROTOCOL.md): claim-free
+optimistic Lean work with first-landed-wins integration, one standing owner
+per canonical document with a fast path for small fixes, a lock-file build
+mutex, a 2-hour integration-latency cap, bookkeeping on a dedicated orphan
+branch off `main`, and a built-in overhead assessment with explicit authority
+to delete rules that stop paying for themselves.  The heavier v1 protocol of
+the 2026-08 campaign and its rationale are archived in
+[`docs/COLLABORATION.md`](docs/COLLABORATION.md) and
+[`docs/MULTI_AGENT_COORDINATION_PROPOSAL.md`](docs/MULTI_AGENT_COORDINATION_PROPOSAL.md).
 
 ## Checking
 

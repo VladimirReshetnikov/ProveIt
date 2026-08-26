@@ -1,8 +1,11 @@
 # Proposal: multi-agent coordination for `Analysis/FabiusFunction`
 
-> **Status:** Dormant — not in effect.  A variant of this design was piloted
-> by the multi-agent campaign that concluded on 2026-08-26; the document is
-> retained as design background for future campaigns.<br>
+> **Status:** Historical — not in effect.  A variant of this design was
+> piloted by the multi-agent campaign that concluded on 2026-08-26; the
+> operative framework is now the lightweight v2 in
+> [`coordination/PROTOCOL.md`](coordination/PROTOCOL.md), switched by
+> [`coordination/STATUS.md`](coordination/STATUS.md).  Retained as design
+> background.<br>
 > **Scope:** `Analysis/FabiusFunction` only<br>
 > **Audience:** maintainers, theorem authors, documentation contributors,
 > integration agents, and reviewers<br>

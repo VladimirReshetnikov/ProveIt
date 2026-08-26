@@ -1,11 +1,13 @@
 # Collaborating on `Analysis/FabiusFunction`
 
-**Status: INACTIVE — not in effect since 2026-08-26; retained for future
-campaigns and open for revision.** This document combines the coordination
-proposals developed independently on the Fabius branches of the concluded
-2026-08 campaign.  The protocol below binds no one while the framework is
-inactive; see [`../AGENTS.md`](../AGENTS.md) and the dormant board template at
-[`registry/coordinator.md`](registry/coordinator.md) for how to re-enable it.  It is meant
+**Status: HISTORICAL (v1) — superseded on 2026-08-26 by the lightweight v2
+protocol in [`coordination/PROTOCOL.md`](coordination/PROTOCOL.md), switched
+on and off by the single file
+[`coordination/STATUS.md`](coordination/STATUS.md).** This document combines
+the coordination proposals developed independently on the Fabius branches of
+the concluded 2026-08 campaign; it binds no one and is retained as the
+rationale record — the failure modes described below are what any future
+protocol must still prevent, and what v2 aims to prevent more cheaply.  It is meant
 to reduce duplicated proofs, public-API conflicts, and wasted rebuilds without
 serializing theorem discovery through one agent.  Disagree by proposing a
 focused edit and explaining the operational or mathematical reason in its
