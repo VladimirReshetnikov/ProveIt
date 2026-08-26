@@ -6,15 +6,15 @@ Every worker reads it from the fetched `origin/main` before writing, merging,
 building, or pushing.  Workers publish replies in their own per-branch registry
 files; they do not edit this board.
 
-## Checkpoint 2026-08-25 21:25 PDT
+## Checkpoint 2026-08-25 21:36 PDT
 
 ```text
-observed main before this directive: b97b7f108ca3c3c0a20e9958ddf672385c7647ab
+observed main before this directive: ff675711f02a84c365cf4824c257ad593933e46d
 coordinator branch: codex/fabius-coordinator-20260825
 integration mode: feature branches -> coordinator -> fast-forward main
 main write owner: coordinator
 codexbox Lean/Lake owner: coordinator
-  (IDLE after normalized Laplace-reflection validation)
+  (IDLE after signed dyadic-reflection validation)
 codexbox TeX/PDF owner: unassigned
   (IDLE; no active documentation agent)
 EVO Lean/Lake owner: unassigned
@@ -441,6 +441,26 @@ coordinator integrated it as `77e2f55d4`; serialized builds of
 `+FabiusFunction.PaperStatements` (3242 jobs) both exited 0 without warnings.
 Both paths and the codexbox token are released.
 
+Registry-first claim `c31f3d733` advertises a disjoint ordinary one-file
+tranche in `FabiusBinaryReductionSeries.lean`.  The six proposed names are
+`norm_binaryReductionRemainder_le_total`,
+`norm_globalBinaryReductionSum_sub_extendedFabius_le_total`,
+`globalBinaryReductionSummand_eq_remainder_sub_all`,
+`norm_globalBinaryReductionSummand_le_of_one_le_all`,
+`summable_norm_globalBinaryReductionSummand_all`, and
+`summable_globalBinaryReductionSummand_all`.  Exact preflight accepts the
+scale-zero and all-real bounds, geometric summability, dependencies, API, and
+duplicate scan.  Two conditions are binding: the summand/remainder identity
+must retain `1 ≤ m`, because it is false at `m = 0`; and the inactive
+serialized proposal to add a `Regularity` import and deduplicate a private
+helper is excluded.  The final source report must also replace stale
+complex-shift request fields in the branch registry.  Tip `c31f3d733` is
+registry-only: ordinary source work may proceed in this file plus the own
+registry, with every existing restricted header/attribute preserved, but no
+build token is granted.  After an immutable reviewed handoff, the intended
+gates are `+FabiusFunction.FabiusBinaryReductionSeries` and then its smallest
+direct consumer `+FabiusFunction.FabiusGlobalQBinomialSeries`.
+
 ### `codex/fabius-theorem-polish-20260825`
 
 The prior task is complete and its complete source tranche is integrated on
@@ -597,6 +617,24 @@ Separate serialized builds of `+FabiusFunction.FabiusSaddleReferenceTail`
 0 without warnings.  The source lease and codexbox token are released;
 `FabiusLambertRates.lean` was not changed by this tranche.
 
+Registry-first claim `0cf2a0df0` advertises a disjoint ordinary follow-up in
+`QuantitativeSaddle.lean`.  It will add
+`norm_normalized_integral_sub_reference_le_of_L1` and
+`norm_normalized_integral_sub_one_le_of_L1`, exposing the exact pointwise
+Gaussian-normalized `L¹` estimate already embedded in the generic filter-level
+proof.  It may refactor the proof of
+`normalized_integral_sub_reference_isBigO_of_L1`, but that theorem's header and
+every other public header must remain exact.  Independent preflight accepts the
+normalization constant, positivity, integrability hypotheses, mass
+specialization, imports, naming, and duplicate scan.  The inactive serialized
+proposal to relocate `norm_standardGaussian` is explicitly excluded, as are
+all imports, facades, root files, and documents.  Tip `0cf2a0df0` is
+registry-only: the worker may implement only this source file plus its own
+registry under the ordinary-work protocol, but receives no build token yet.
+After an immutable reviewed source handoff, the intended gates are
+`+FabiusFunction.QuantitativeSaddle` and then its direct API consumer
+`+FabiusFunction.SaddleAllOrders`.
+
 ### `codex/fabius-shifted-prefix-grid`
 
 The one-file source claim is implemented at checkpoint
@@ -739,14 +777,18 @@ tranche in `DyadicClosedForm.lean`, `ThueMorsePrefix.lean`, and
 attributes, and add `iteratedPrefix_dyadic_reverse_window` plus
 `iteratedPrefix_dyadic_reverse_window_eq_zero_iff`.  Read-only preflight accepts
 the signed reflection formula, edge cases, import direction, consumer path,
-and absence of a competing declaration.  Latest tip `daadac394` contains only
-the claim and a synchronization merge: none of the three source files is
-changed yet.  Under the ordinary-work protocol the worker may synchronize this
-checkpoint and implement exactly those three source paths plus its own
-registry, but it receives no Lean/Lake token and no future coverage, primary,
-walkthrough, TeX, or PDF lease.  After a frozen source handoff and independent
-review, the intended gates are `+FabiusFunction.ThueMorsePrefix` followed by
-`+FabiusFunction.FabiusRawQBinomialFormula`.
+and absence of a competing declaration.  Exact source commit `d887c8101`
+relocates the complete complement theorem block byte-for-byte and adds the two
+advertised Prefix theorems; registry checkpoint `66a4961d2` records exact blobs
+and a clean current-main merge.  Two independent source audits accept every
+saturated-subtraction edge case, both induction dimensions, zero-locus
+cancellation, imports, API, and consumer topology.  The coordinator integrated
+only the exact source as `f66ef224b`.  Separate serialized builds of
+`+FabiusFunction.ThueMorsePrefix` (2019 jobs) and
+`+FabiusFunction.FabiusRawQBinomialFormula` (3319 jobs) both exited 0 without
+warnings.  All three source paths and the codexbox token are released.  The
+future coverage, primary, walkthrough, TeX, and PDF request remains ungranted;
+all canonical documents stay frozen.
 
 ### `codex/fabius-exposition-integration`
 
@@ -912,10 +954,12 @@ and released.  The all-degree complex branch theorem, its downstream all-real
 continuation, and the disjoint coarse eighth-order reference-tail tranche are
 integrated, compiled, and released.
 
-The both-papers product-positivity consolidation and theorem-polish normalized
-Laplace-reflection tranche are also integrated and green.  The shifted-prefix
-branch holds the only current ordinary source lease, for the three-file signed
-dyadic-reflection tranche; no implementation handoff or build token exists yet.
+The both-papers product-positivity consolidation, theorem-polish normalized
+Laplace-reflection tranche, and shifted-prefix signed dyadic-reflection tranche
+are also integrated and green.  Two current ordinary source leases are
+disjoint and still unimplemented: effective-bounds owns the one-file exact
+normalized-`L¹` tranche, and both-papers owns the one-file total binary-reduction
+tranche.  Neither has a build token yet.
 
 Theorem-polish source commit `665b6bce` is integrated as `c80f61c90`, repaired
 without statement changes at `6b6757e90`, and accepted after its focused
@@ -1099,6 +1143,11 @@ For normalized Laplace reflection, a serialized build at `853a09a80` of
 `+FabiusFunction.ProbabilityLaplaceMoments` completed 3188 jobs and exited 0.
 It reported one nonblocking `unnecessarySimpa` linter in the new reflection
 proof and no other warning.
+
+For signed dyadic-prefix reflection, separate serialized builds at
+`f66ef224b` of `+FabiusFunction.ThueMorsePrefix` (2019 jobs) and
+`+FabiusFunction.FabiusRawQBinomialFormula` (3319 jobs) both exited 0 without
+warnings.
 
 On EVO, exact shifted-prefix merge `4367a7f86` and tree `db635e6a073b`
 preserved source commits `8021c555f` and `f7152d5fc`.  Separate sequential
