@@ -6,17 +6,17 @@ Every worker reads it from the fetched `origin/main` before writing, merging,
 building, or pushing.  Workers publish replies in their own per-branch registry
 files; they do not edit this board.
 
-## Checkpoint 2026-08-25 19:26 PDT
+## Checkpoint 2026-08-25 19:41 PDT
 
 ```text
-observed main before this directive: c2aa5a25c82e50149ab8887f95e7c5bcd6fe62eb
+observed main before this directive: 6397a0d6a352cd72286592d366e901d242c6017b
 coordinator branch: codex/fabius-coordinator-20260825
 integration mode: feature branches -> coordinator -> fast-forward main
 main write owner: coordinator
 codexbox build owner: coordinator (IDLE -- reserved, no worker target)
-EVO build owner: codex/fabius-exposition-integration (three primary pdflatex compile passes only)
-documentation owner: codex/fabius-exposition-integration (own registry evidence only)
-next poll: after the three-pass primary compile-only checkpoint
+EVO build owner: IDLE -- reserved, no worker target
+documentation owner: none; canonical frontier and primary paths remain serialized
+next poll: after the next advertised source/document checkpoint
 ```
 
 The previously approved curvature, generalizations, lower-Lambert,
@@ -46,20 +46,19 @@ cherry-pick is needed.
    paths below, work may begin without coordinator acknowledgement.  Push
    feature branches only; the coordinator is the sole `main` writer.  Never
    force.
-2. The codexbox token is idle and coordinator-reserved.  On EVO, only the
-   exposition branch may use the host token, and only for the three primary
-   compile passes authorized below.
-   Other workers may edit and commit unvalidated work, but launch no Lean,
-   Lake, TeX, PDF, or cache-mutating process; label such commits and registry
-   reports `Not yet validated`.  Do not terminate another process.
+2. Both physical-host build tokens are idle and coordinator-reserved.  Workers
+   may edit and commit unvalidated work, but launch no Lean, Lake, TeX, PDF, or
+   cache-mutating process; label such commits and registry reports `Not yet
+   validated`.  Do not terminate another process.
 3. The following remain serialized and require an explicit board grant:
    `AGENTS.md`, `README.md`, `docs/COLLABORATION.md`,
    `docs/MULTI_AGENT_COORDINATION_PROPOSAL.md`, `docs/PAPER_COVERAGE.md`,
    `docs/AUDIT_FINDINGS.md`, this board, the root aggregate
    `Lean/FabiusFunction.lean`, and every primary-exposition, walkthrough, or
    canonical-frontier TeX/PDF path.  Any path marked hot, frozen, or
-   single-owner below is also unavailable to ordinary claims.  The active
-   frontier lease remains exclusive to `codex/fabius-exposition-integration`.
+   single-owner below is also unavailable to ordinary claims.  The former
+   exposition frontier lease is released, but those canonical paths remain
+   frozen until the successor workstream is identified on this board.
 4. Preserve dirty work before merging.  Never stash, reset, discard, or
    overwrite it.  A checkpoint/WIP commit is acceptable on a feature branch if
    its message states exactly what remains uncompiled or unfinished.  After a
@@ -225,13 +224,23 @@ registry.  The five source leases are released.  The branch may begin another
 ordinary nonoverlapping claim after reading this board; no EVO validation token
 is granted.
 
-New clean tip `b59e9b7b7` advertises a separate unvalidated two-path unit at
-source commit `0f7d53e8c` in `FabiusDiscreteLimitToeplitz.lean` and
-`FabiusDiscreteLimitIntegration.lean`.  It proposes eight finite-depth value,
-nonconstancy, shift-difference, and outer-index-one comparison results.  The
-paths are frozen pending coordinator review; no Lean/Lake token or main push is
-yet granted.  Its requested topological gates are Toeplitz first and
-Integration second, each in a separate invocation.
+Source commit `0f7d53e8c` is a separate two-path unit in
+`FabiusDiscreteLimitToeplitz.lean` and
+`FabiusDiscreteLimitIntegration.lean`.  It adds eight finite-depth value,
+nonconstancy, shift-difference, and outer-index-one comparison results.  Two
+independent reviews found the mathematics, domains, indexing, `RCLike`
+transport, API, placement, imports, duplicates, and scope green.  The
+coordinator cherry-picked only that source as `de8707b44`.
+
+The first Toeplitz build exposed proof elaboration defects in the two concrete
+natural-floor evaluations and final generic-field normalization; it grants no
+validation evidence.  Repair `8e09c4d98` supplies explicit `Nat.floor_eq_iff`
+witnesses and `push_cast` before `ring`, changing no public statement.  At that
+repaired immutable tree, serialized `LAKE_JOBS=1` builds of
+`+FabiusFunction.FabiusDiscreteLimitToeplitz` (3320 jobs) and
+`+FabiusFunction.FabiusDiscreteLimitIntegration` (3422 jobs) both exit 0 with
+no warnings.  The two source leases are released; the branch may sync and
+begin a new ordinary nonoverlapping claim, but receives no build token.
 
 ### `codex/fabius-shifted-prefix-grid`
 
@@ -386,27 +395,29 @@ work and all primary claim/layout auditing stop in this task; another worker
 owns any frontier continuation.  The frontier lease and stage-three token are
 released.
 
-This branch now holds one compile-only EVO token for exactly three passes over
-the unchanged primary source at clean feature tip `984a0ccc4`: Git blob
-`e3a0df24e`, SHA-256
+**Primary compile-only result.**  The branch merged main `682222de1`
+conflict-free at clean pushed tip `6397a0d6a`.  The unchanged primary source
+has Git blob `e3a0df24e` and SHA-256
 `F4EE348F21524C2EDB8880E16E50802CCC6A3A831D38C8426F23AF7607EA64F1`.
-From `docs/Fabius_Function_and_Rvachev_Up`, run exactly three sequential
-invocations with a fresh sidecar job name:
+Exactly three fresh `pdflatex` passes used the authorized sidecar job name and
+all exited 0.  The final output has 57 pages, with zero undefined
+references/citations, rerun requests, changed-label warnings, fatal errors, or
+LaTeX errors.  Its extracted text is byte-identical to the tracked canonical
+PDF, so the worker correctly avoided timestamp-only canonical-PDF churn.  No
+primary source/PDF or generated frontier PDF was staged.  This is compile
+confirmation only, not a claim/layout audit.
 
-```text
-pdflatex -interaction=nonstopmode -halt-on-error -file-line-error -jobname=Fabius_Function_and_Rvachev_Up_compilecheck Fabius_Function_and_Rvachev_Up.tex
-```
+After that scope close, merge tip `6397a0d6a` independently advanced `main`
+and made the branch's frontier README, TeX, and registry source checkpoint
+reachable.  It changed neither the frontier PDF nor any primary path.  Preserve
+the forward history, but do not treat the resulting mismatched frontier
+TeX/PDF pair as a validated final artifact: the user-designated successor owns
+its disposition and any matching rebuild.
 
-Success means all three exits are 0 and the third log has no fatal,
-emergency-stop, or LaTeX-error diagnostic; reference, layout, and claim
-diagnostics are explicitly outside this narrow compile-only check.  Do not run
-a fourth pass, `latexmk`, another TeX compiler, Lean/Lake, visual/layout
-inspection, or source edit.  Do not replace or stage the canonical primary
-PDF; preserve the generated output/log only as sidecars.  Record the exact
-source blob/hash, three commands/exits/page counts, final log hash, the
-compile-only limitation, and clean status in the branch registry, commit only
-that registry, push the feature branch, and stop.  No frontier or primary
-artifact is accepted or integrated by this task.
+The exposition task is complete under the user's narrowed scope.  Its EVO
+token and all document ownership are released.  Do not resume its frontier or
+primary work; any successor frontier owner must be identified separately on
+this board.
 
 ### `codex/fabius-theorem-refinements`
 
@@ -447,9 +458,11 @@ a requested path is serialized, hot, frozen, single-owner, or already claimed.
 
 ## Collision and integration queue
 
-1. Receive the three-pass primary compile-only registry checkpoint and close the
-   exposition task without integrating a frontier or primary artifact.
-2. Complete the finite-jet coefficient-bridge validation and disposition.
+No reviewed Lean tranche is currently waiting for integration.  Frontier
+source checkpoint `6397a0d6a` is already on `main` without a matching rebuilt
+PDF and remains frozen until the user-designated successor workstream
+advertises its branch and exact paths; ordinary nonoverlapping feature claims
+may continue under the shared protocol.
 
 ## Build-token log
 
@@ -526,6 +539,20 @@ separate serialized targets: `+FabiusFunction.DyadicAnalytic` (2772 jobs),
 and `+FabiusFunction.PaperFabiusAsymptotic` (3957).  All used `LAKE_JOBS=1`
 and exited 0.
 
+At finite-jet source checkpoint `62ab80d03`, the coordinator ran
+`+FabiusFunction.ThueMorseGenerating` (2085 jobs),
+`+FabiusFunction.ThueMorseApproximation` (3307),
+`+FabiusFunction.ThueMorseExponential` (2086), and
+`+FabiusFunction.PaperKFoldThueMorse` (3327) serially; all exited 0.  The
+Approximation module reports only the two documented nonblocking compatibility
+linters.
+
+For the discrete-shift tranche, the first Toeplitz attempt at `de8707b44`
+failed on proof elaboration and supplies no validation evidence.  After repair
+`8e09c4d98`, `+FabiusFunction.FabiusDiscreteLimitToeplitz` (3320 jobs) and
+`+FabiusFunction.FabiusDiscreteLimitIntegration` (3422 jobs) both exited 0
+without warnings.
+
 On EVO, stage two at source tip `1ca2a09be` ran exactly three sequential
 frontier `pdflatex` passes under the authorized fresh `_stage2` job name.  All
 three exited 0 and produced 178, 186, and 186 pages.  The third pass was
@@ -542,6 +569,12 @@ push the user explicitly ended frontier work in that task.  The generated PDF
 and log remain sidecars.  They are not reviewed or accepted here, and no
 frontier validation or integration claim follows from them.
 
+The subsequent compile-only primary check at source blob `e3a0df24e` ran three
+fresh `pdflatex` passes, all exit 0.  Final output was 57 pages with no undefined
+reference/citation, rerun, changed-label, fatal, or LaTeX-error diagnostic.
+Extracted text matched the tracked canonical PDF byte-for-byte, so no PDF was
+replaced or staged.  This closes only the requested compilation confirmation.
+
 Before those green runs, one command launched from the wrong directory was a
 no-op, and the first correctly rooted attempt exhausted the filesystem while
 creating a fresh `.lake`; it exited 1 and supplied no validation evidence.
@@ -552,12 +585,10 @@ worker checkpoint, `/home/codex/src/Proofs` also launched an unassigned
 evidence.
 
 No validation process is now running on codexbox.  Its token is idle and
-coordinator-reserved.  The sole EVO token is assigned to the exposition branch
-for exactly the three primary `pdflatex` compile passes specified above; no
-other EVO branch may run Lean, Lake, TeX, PDF, or cache-mutating tools.  Other
-branches may edit, checkpoint, and push ordinary claimed work under the open
-protocol, but may not run validation tools until this board assigns the
-applicable physical-host token.
+coordinator-reserved.  No validation process is assigned on EVO; its token is
+also idle and coordinator-reserved.  Other branches may edit, checkpoint, and
+push ordinary claimed work under the open protocol, but may not run validation
+tools until this board assigns the applicable physical-host token.
 
 ## Worktree maintenance log
 

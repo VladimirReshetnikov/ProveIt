@@ -11,6 +11,15 @@ the resulting limit with the already proved binary telescope and literal
 global q-binomial series.  Exact empty-prefix vanishing extends the main
 convergence theorem and both final series identifications from the nonnegative
 axis to every real input; the older half-line forms remain compatibility APIs.
+
+The shift-independence is asymptotic rather than termwise: any two fixed real
+or complex translations become pairwise indistinguishable, although the
+depth-one row at `x = 1 / 3` already distinguishes `q = 0` from `q = 1`.
+Moreover, at `q = 0` that discrete row differs from the binary—and hence
+literal global-q—partial sum at the same outer truncation index `n = N = 1`.
+Thus the discrete-limit sequence shares their common limit without agreeing at
+every common outer truncation index with those two pointwise-identical
+partial-sum constructions.
 -/
 
 set_option autoImplicit false
@@ -157,6 +166,19 @@ theorem fabiusDiscreteLimitApproximationComplex_tendsto_globalFabius_all
       exact extendedFabius_eq_zero_of_nonpos fabius fabius_spec hx
     simp [happ, hglobal]
 
+/-- Any two fixed complex translations of the discrete-limit formula become
+asymptotically indistinguishable on the whole real line.  This is the precise
+limit counterpart to the finite-row dependence exhibited at depth one. -/
+theorem fabiusDiscreteLimitApproximationComplex_sub_tendsto_zero_all
+    (q₁ q₂ : ℂ) (x : ℝ) :
+    Tendsto
+      (fun n => fabiusDiscreteLimitApproximationComplex q₁ x n -
+        fabiusDiscreteLimitApproximationComplex q₂ x n)
+      atTop (𝓝 0) := by
+  simpa only [sub_self] using
+    (fabiusDiscreteLimitApproximationComplex_tendsto_globalFabius_all q₁ x).sub
+      (fabiusDiscreteLimitApproximationComplex_tendsto_globalFabius_all q₂ x)
+
 /-- Gaussian-rational translations. -/
 theorem fabiusDiscreteLimitApproximationGaussianRat_tendsto_globalFabius
     (a b : ℚ) {x : ℝ} (hx : 0 ≤ x) :
@@ -220,6 +242,18 @@ theorem fabiusDiscreteLimitApproximationReal_tendsto_globalFabius_all
       change extendedFabius fabius x = 0
       exact extendedFabius_eq_zero_of_nonpos fabius fabius_spec hx
     simp [happ, hglobal]
+
+/-- Any two fixed real translations of the discrete-limit formula become
+asymptotically indistinguishable on the whole real line. -/
+theorem fabiusDiscreteLimitApproximationReal_sub_tendsto_zero_all
+    (q₁ q₂ x : ℝ) :
+    Tendsto
+      (fun n => fabiusDiscreteLimitApproximationReal q₁ x n -
+        fabiusDiscreteLimitApproximationReal q₂ x n)
+      atTop (𝓝 0) := by
+  simpa only [sub_self] using
+    (fabiusDiscreteLimitApproximationReal_tendsto_globalFabius_all q₁ x).sub
+      (fabiusDiscreteLimitApproximationReal_tendsto_globalFabius_all q₂ x)
 
 /-- Rational translations, stated first in the original real form. -/
 theorem fabiusDiscreteLimitApproximationRat_tendsto_globalFabius
@@ -360,6 +394,49 @@ theorem extendedFabius_eq_qBinomial_telescope_add_remainder
       F hF x hx N)
   push_cast at h
   simpa only [qBinomialFabiusGlobalSummand_eq] using h
+
+/-- At `x = 1 / 3`, the zero-translation discrete row with outer index `n = 1`
+is not the binary partial sum with outer index `N = 1` (through scale one): the
+former is `2 / 9`, while both binary summands in the latter vanish.  This gives
+an explicit mismatch at the common outer truncation index `n = N = 1`. -/
+theorem
+    fabiusDiscreteLimitApproximationReal_zero_one_third_depth_one_ne_binaryPartialSum :
+    fabiusDiscreteLimitApproximationReal 0 (1 / 3 : ℝ) 1 ≠
+      ∑ m ∈ Finset.range 2,
+        globalBinaryReductionSummand (1 / 3 : ℝ) m := by
+  have hzero :
+      globalBinaryReductionSummand (1 / 3 : ℝ) 0 = 0 :=
+    globalBinaryReductionSummand_zero_of_lt_one (1 / 3 : ℝ) (by norm_num)
+  have hprefix : binaryPrefix (1 / 3 : ℝ) 1 = 0 := by
+    rw [binaryPrefix, Nat.floor_eq_zero]
+    norm_num
+  have hcoefficient :
+      globalBinaryReductionCoefficient (1 / 3 : ℝ) 1 = 0 := by
+    apply globalBinaryReductionCoefficient_eq_zero_of_mod_two_eq_zero
+    simp only [hprefix, Nat.zero_mod]
+  have hone :
+      globalBinaryReductionSummand (1 / 3 : ℝ) 1 = 0 := by
+    rw [globalBinaryReductionSummand, hcoefficient, zero_mul]
+  rw [fabiusDiscreteLimitApproximationReal_zero_one_third_depth_one]
+  norm_num [Finset.sum_range_succ, Finset.sum_range_zero, hzero, hone]
+
+/-- The same outer-index-one row also differs from the literal global-q
+partial sum over every `RCLike` coefficient field and for every series
+parameter `q`.  The real zero-translation row is embedded into that field.
+The proof uses the pointwise equality between each global-q summand and its
+binary counterpart; it does not assert that those two series differ. -/
+theorem
+    fabiusDiscreteLimitApproximationReal_zero_one_third_depth_one_ne_qBinomialPartialSum
+    (K : Type*) [RCLike K] (q : K) :
+    (fabiusDiscreteLimitApproximationReal 0 (1 / 3 : ℝ) 1 : K) ≠
+      ∑ m ∈ Finset.range 2,
+        qBinomialFabiusGlobalSummand K q (1 / 3 : ℝ) m := by
+  intro h
+  apply
+    fabiusDiscreteLimitApproximationReal_zero_one_third_depth_one_ne_binaryPartialSum
+  exact RCLike.ofReal_injective (K := K) (by
+    simpa only [RCLike.ofReal_sum,
+      qBinomialFabiusGlobalSummand_eq] using h)
 
 /-- Canonical complex finite telescope for the user's translation `q`. -/
 theorem globalFabius_eq_qBinomial_telescope_add_remainder_complex
