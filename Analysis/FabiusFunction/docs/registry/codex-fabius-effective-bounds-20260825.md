@@ -4091,3 +4091,61 @@ conflicts / dependencies: active Gaussian/shift validation is disjoint; source
 next bounded step: commit/push claim, repeat name scan, author only the claimed
   module, freeze for independent review, then checkpoint/handoff
 ```
+
+## Handoff: arbitrary-cutoff Bose small-kernel negativity and source parity
+
+Source checkpoint `9884f0886` implements the preceding claim exactly and was
+pushed without force.  `BoseFinitePartIntegral.lean` is frozen at blob
+`efbb11346b66b7dd4a91761333796a5f7b831f5e`, content SHA-256
+`D6F1CCA2BAB3F82BC3ECFE4F4D34A6F9425A9FDA12C02C267AC78600894BB32D`,
+38,287 bytes / 837 lines.  Relative to the claimed preimage the exact diff is
+41 additions and 14 deletions.
+
+The old private unit-cutoff helper is gone.  Its proof is generalized to the
+public `integral_boseFinitePartSmallKernel_Ioc_neg (c : ℝ) (hc : 0 < c)`;
+the sole gamma consumer instantiates it at `c = 1`.  The support argument uses
+the existing arbitrary-cutoff integrability result, strict pointwise
+negativity, `setIntegral_pos_iff_support_of_nonneg_ae`, `measure_mono`, and
+`Real.volume_Ioc` followed by `ENNReal.ofReal_pos`.  Two independent hostile
+reviews checked the exact API orientation and confirmed that `simpa using hc`
+closes the resulting positive-volume goal.  They also confirmed that the
+positive-cutoff condition is sharp because `Ioc 0 c` is empty for `c ≤ 0`.
+
+The ten inherited public documentation gaps and the new theorem are now
+documented, giving a strict inventory of 48 public declarations / 48 adjacent
+comments / zero missing and zero private declarations.  All imports and all
+47 old public headers/attributes are byte-preserved; no old body changed
+except the authorized gamma consumer.  The new name occurs exactly at its
+definition and that consumer.  Source diff, staged diff, whitespace, CR,
+placeholder, conflict-marker, name, header, import, and documentation scans
+are green.  No Lean/Lake command ran; compiler validation remains outstanding.
+
+```text
+SYNC Fabius
+branch / worktree / machine: codex/fabius-effective-bounds-20260825 /
+  /home/codex/.codex/worktrees/d6d3/Proofs / codexbox
+fetched main SHA: e35baa1fcf4ade15dff67dad624002c527fd9fd3
+HEAD and dirty paths: 9884f0886; clean before this registry-only handoff;
+  source checkpoint pushed
+writing (exact paths): this branch registry for immutable handoff only;
+  BoseFinitePartIntegral.lean is frozen at the stated blob
+expected declarations or document claims: exact public arbitrary-cutoff
+  negativity theorem, private-unit-helper deletion/rewire, strict 48/48 docs;
+  no old public API, import, facade, root, script, or canonical-doc change
+completed commits: registry claim f0ac96ed1; source checkpoint 9884f0886;
+  both pushed without force
+validated (exact command, SHA/state, exit code): exact baseline/current hashes;
+  120-ref/registry collision scan; local/staged diff --check; strict doc,
+  header, import, hygiene, and name scans; author audit; two independent
+  exact-byte hostile source reviews
+not yet validated: no Lean/Lake target or downstream importer was built on
+  this branch; static proof/API review is not compiler evidence
+requested integration or lease: request serialized
+  +FabiusFunction.BoseFinitePartIntegral then +FabiusFunction.PeriodicMean;
+  request coordinator review/selective integration; no main-write lease
+conflicts / dependencies: source blob is immutable pending disposition;
+  coordinator's current Gaussian/complex-shift gates are disjoint; only the
+  coordinator advances main or assigns Lean/Lake
+next bounded step: push this handoff, refresh shared state, and continue on a
+  disjoint cold source/documentation path while this checkpoint awaits build
+```
