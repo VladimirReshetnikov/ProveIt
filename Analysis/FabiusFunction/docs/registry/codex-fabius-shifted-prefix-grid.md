@@ -2,9 +2,11 @@
 
 **Status: every earlier shifted-prefix, finite-jet, finite-Appell, and
 all-order approximation source unit is integrated, compiled, and released.
-The next ordinary three-file source claim below advertises a full signed
-reflection theorem for every value before a dyadic prefix-row zero run; no
-source edit has begun, and no Lean/Lake or documentation token is held.**
+The ordinary three-file source claim below is implemented and frozen at
+`d887c8101`: it proves a full signed reflection theorem for every value before
+a dyadic prefix-row zero run.  Static and computational review is green, but
+the checkpoint is not compiler-validated; no Lean/Lake or documentation token
+is held.**
 The exact claim was published before source work, coordinator checkpoint
 `893d4c25d` explicitly acknowledged it as the first nonoverlapping claim for
 the module, and source commit `00ff41a5e` now implements precisely that bounded
@@ -755,3 +757,84 @@ lease refreshed: 2026-08-25 21:07 PDT
 git owner / build owner: root / none; EVO token requested only after a frozen
   source checkpoint
 ```
+
+## Frozen signed-reflection source handoff
+
+Source commit `d887c81010847c80d7a380f9d787335e3ba455a7`, tree
+`61f00f9ce6ad29a3c8619a495a09eae1879d83f9`, changes exactly the three
+advertised Lean files.  It relocates the existing public
+`thueMorseSign_dyadic_complement` theorem to `DyadicClosedForm.lean` with its
+complete declaration, documentation, and proof text byte-for-byte unchanged.
+`FabiusRawQBinomialFormula.lean` continues to receive the theorem through its
+existing transitive dependency and keeps its sole caller unchanged.
+
+In `ThueMorsePrefix.lean`, the new
+`iteratedPrefix_dyadic_reverse_window` states that whenever `k <= r` and
+`k + d < 2^r`,
+
+```text
+iteratedPrefix k (2^r - k - 1 - d)
+  = (-1)^(r-k) * iteratedPrefix k d.
+```
+
+The proof inducts first on the prefix order and then on the forward offset.
+The zero-order case is exactly dyadic complementation of the Thue--Morse sign;
+the zero-offset case is the already proved sharp left boundary.  In the
+successor/successor case, the same-order induction hypothesis reflects the
+preceding value, the lower-order hypothesis reflects the forward difference,
+and two applications of `iteratedPrefix_succ_sub` close the recurrence.  The
+corollary `iteratedPrefix_dyadic_reverse_window_eq_zero_iff` cancels the
+nonzero power of `-1`, showing that reflection preserves every internal zero.
+
+The exact committed source identities are:
+
+```text
+DyadicClosedForm.lean
+  Git blob 8772a5a504a0c9c2741ed65a31911a03f849fae6
+  SHA-256 B2BF0FBBCE30A7B0934E66CDF9269491490B29A488040544A6079F9574DBDD28
+ThueMorsePrefix.lean
+  Git blob 88f361d5a724bd08022754308d1d7a962de837f8
+  SHA-256 C6B4747FD53DD338B83C5303CC7700743CFAC6E35D466C72B5FA70E52E2322BC
+FabiusRawQBinomialFormula.lean
+  Git blob 22cde562739da8fbb372b4cbca99374de26d6d29
+  SHA-256 F4A60EA90B2C421E79D709BE6E89B73FAF622515562B8E7F2C44F2A332104794
+```
+
+Static validation at the source checkpoint is green:
+
+- `git diff --check` and `git diff --cached --check` exited 0;
+- the forbidden added-token scan found no `sorry`, `admit`, `axiom`, or
+  `opaque`;
+- `doc_audit.py --baseline docs/doc_audit_baseline.json` scanned 189 files and
+  3521 public declarations, retained the exact 132 baseline omissions, and
+  exited 0;
+- mechanical extraction compared the old and relocated complement theorem
+  blocks as exactly equal;
+- a finite independent evaluator exhausted every admissible `(k,r,d)` through
+  `r = 9` and found zero counterexamples;
+- three read-only proof/API preflights accepted the formula, all boundary
+  cases, induction-hypothesis shapes, natural-subtraction normalizations,
+  rewrite order, tactic closure, declaration placement, imports, API
+  preservation, and duplicate scan.
+
+After the source checkpoint was pushed, conflict-free merge
+`1104098d8cd59bccfba068ff9d9a80e24da52bbc` incorporated current main
+`2f306d00b477f24457e3fbc1d1de411e8382e51a` as its second parent.  Its tree
+is `1620b5edbc06e8c879f6eb1712d4b3f87c39fe1d`; the upstream delta is disjoint
+from all three claimed files, the unmerged index is empty, and all three source
+blobs above are preserved exactly.
+
+No Lean, Lake, TeX, or PDF command has run for this checkpoint.  The refreshed
+coordinator board accepts the ordinary source scope and names the intended
+focused gates, but still leaves EVO unassigned.  This branch therefore requests
+the sole EVO Lean/Lake token for exactly two separate sequential invocations:
+
+```text
+LAKE_JOBS=1 lake build +FabiusFunction.ThueMorsePrefix
+LAKE_JOBS=1 lake build +FabiusFunction.FabiusRawQBinomialFormula
+```
+
+All three source paths are frozen pending that assignment and validation.
+The future coverage/primary/walkthrough request remains only a request: no
+serialized document or PDF path has been edited, and no document or TeX/PDF
+lane is claimed.
