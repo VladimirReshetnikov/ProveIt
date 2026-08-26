@@ -677,20 +677,6 @@ lemma rvachevCandidate_even :
     Function.Even (Fabius.rvachevUp boundedCandidate) := by
   exact Fabius.rvachevUp_even boundedCandidate
 
-private lemma rvachevCandidate_hasDerivAt_of_neg {x : ℝ} (hx : x < 0) :
-    HasDerivAt (Fabius.rvachevUp boundedCandidate)
-      (2 * Fabius.rvachevUp boundedCandidate (2 * x + 1)) x := by
-  have hshift := (boundedCandidate_hasDerivAt (x + 1)).comp_add_const x 1
-  have hshift' : HasDerivAt
-      (fun y : ℝ => Fabius.fabiusReal boundedCandidate (y + 1))
-      (2 * Fabius.rvachevUp boundedCandidate (2 * x + 1)) x := by
-    have harg : 2 * (x + 1) - 1 = 2 * x + 1 := by ring
-    rw [harg] at hshift
-    exact hshift
-  apply hshift'.congr_of_eventuallyEq
-  filter_upwards [Iio_mem_nhds hx] with y hy
-  rw [Fabius.rvachevUp, if_pos hy.le]
-
 /-- Rvachev's dyadic differential refinement equation for the candidate: at
 every real `x`, writing `u` for `rvachevUp boundedCandidate`, the derivative of
 `u` at `x` is `2 * (u (2 * x + 1) - u (2 * x - 1))`.  This is the hypothesis
@@ -699,70 +685,9 @@ lemma rvachevCandidate_hasDerivAt (x : ℝ) :
     HasDerivAt (Fabius.rvachevUp boundedCandidate)
       (2 * (Fabius.rvachevUp boundedCandidate (2 * x + 1) -
         Fabius.rvachevUp boundedCandidate (2 * x - 1))) x := by
-  rcases lt_trichotomy x 0 with hx | rfl | hx
-  · have hmain := rvachevCandidate_hasDerivAt_of_neg hx
-    have hsecond : Fabius.rvachevUp boundedCandidate (2 * x - 1) = 0 := by
-      rw [Fabius.rvachevUp, if_pos (by linarith),
-        boundedCandidate_zero_of_nonpos (by linarith)]
-    rw [hsecond]
-    simpa using hmain
-  · have hone_add : HasDerivAt (Fabius.fabiusReal boundedCandidate) 0
-        ((0 : ℝ) + 1) := by simpa using boundedCandidate_hasDerivAt_one
-    have hl0 := hone_add.comp_add_const (0 : ℝ) 1
-    have hl : HasDerivWithinAt (Fabius.rvachevUp boundedCandidate) 0
-        (Iic (0 : ℝ)) 0 := by
-      have h : HasDerivWithinAt
-          (fun y : ℝ => Fabius.fabiusReal boundedCandidate (y + 1)) 0
-          (Iic (0 : ℝ)) 0 := by simpa using hl0.hasDerivWithinAt
-      refine h.congr_of_mem ?_ (by simp)
-      intro y hy
-      change y ≤ 0 at hy
-      rw [Fabius.rvachevUp, if_pos hy]
-    have hone_sub : HasDerivAt (Fabius.fabiusReal boundedCandidate) 0
-        ((1 : ℝ) - 0) := by simpa using boundedCandidate_hasDerivAt_one
-    have hr0 := hone_sub.comp_const_sub 1 (0 : ℝ)
-    have hr : HasDerivWithinAt (Fabius.rvachevUp boundedCandidate) 0
-        (Ici (0 : ℝ)) 0 := by
-      have h : HasDerivWithinAt
-          (fun y : ℝ => Fabius.fabiusReal boundedCandidate (1 - y)) 0
-          (Ici (0 : ℝ)) 0 := by simpa using hr0.hasDerivWithinAt
-      refine h.congr_of_mem ?_ (by simp)
-      intro y hy
-      by_cases hy0 : y = 0
-      · subst y
-        simp [Fabius.rvachevUp]
-      · have hypos : 0 < y := lt_of_le_of_ne hy (Ne.symm hy0)
-        simp [Fabius.rvachevUp, not_le.mpr hypos]
-    have hu := hl.union hr
-    rw [Iic_union_Ici] at hu
-    have hplus : Fabius.rvachevUp boundedCandidate 1 = 0 := by
-      simp [Fabius.rvachevUp]
-    have hminus : Fabius.rvachevUp boundedCandidate (-1) = 0 := by
-      simp [Fabius.rvachevUp]
-    simpa [hplus, hminus] using hu
-  · have hneg := rvachevCandidate_hasDerivAt_of_neg
-      (show -x < 0 by linarith)
-    have hneg' : HasDerivAt (Fabius.rvachevUp boundedCandidate)
-        (2 * Fabius.rvachevUp boundedCandidate (2 * (-x) + 1))
-        ((0 : ℝ) - x) := by simpa using hneg
-    have hcomp := hneg'.comp_const_sub 0 x
-    have hup : HasDerivAt (Fabius.rvachevUp boundedCandidate)
-        (-(2 * Fabius.rvachevUp boundedCandidate (2 * (-x) + 1))) x := by
-      apply hcomp.congr_of_eventuallyEq
-      filter_upwards with y
-      simpa using (rvachevCandidate_even y).symm
-    convert hup using 1
-    have hfar : Fabius.rvachevUp boundedCandidate (2 * x + 1) = 0 := by
-      rw [Fabius.rvachevUp, if_neg (by linarith),
-        boundedCandidate_zero_of_nonpos (by linarith)]
-    rw [hfar]
-    have heven := rvachevCandidate_even (2 * x - 1)
-    have heq : Fabius.rvachevUp boundedCandidate (2 * (-x) + 1) =
-        Fabius.rvachevUp boundedCandidate (2 * x - 1) := by
-      convert heven using 1
-      ring_nf
-    rw [heq]
-    ring
+  exact Fabius.rvachevUp_hasDerivAt_of_fabiusReal_hasDerivAt
+    boundedCandidate (fun _x hx => boundedCandidate_zero_of_nonpos hx)
+    boundedCandidate_hasDerivAt x
 
 /-- The folded candidate is `C^∞` on `ℝ`, obtained by feeding its refinement
 equation to `contDiff_of_hasDerivAt_dyadic_refinement`. -/
