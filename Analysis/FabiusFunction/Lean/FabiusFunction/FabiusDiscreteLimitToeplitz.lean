@@ -12,6 +12,12 @@ variation, and supplies a general finite-row Toeplitz convergence theorem.
 The range-length convention uses a half-cell correction.  In particular it
 continues to encode the original inclusive upper bound when that bound is
 negative, without introducing an ill-formed finite range.
+
+Finite rows genuinely retain the translation parameter.  At depth one and
+`x = 1 / 3`, the generic `RCLike` approximant is the quadratic
+`q ^ 2 / 2 - q / 3 + 2 / 9`; in particular its real values at `q = 0` and
+`q = 1` are different.  The companion integration module proves that this
+finite dependence disappears pairwise in the limit.
 -/
 
 set_option autoImplicit false
@@ -111,6 +117,55 @@ def fabiusDiscreteLimitApproximationReal
 def fabiusDiscreteLimitApproximationComplex
     (q : ℂ) (x : ℝ) (n : ℕ) : ℂ :=
   fabiusDiscreteLimitApproximation ℂ q x n
+
+/-- At depth one and `x = 1 / 3`, the translated approximant over any
+`RCLike` field is an explicit quadratic in the translation parameter.  This
+concrete nonconstant row is the finite-stage counterpart to the
+asymptotic shift-independence proved in `FabiusDiscreteLimitIntegration`. -/
+theorem fabiusDiscreteLimitApproximation_one_third_depth_one
+    (K : Type*) [RCLike K] (q : K) :
+    fabiusDiscreteLimitApproximation K q (1 / 3 : ℝ) 1 =
+      q ^ 2 / 2 - q / 3 + 2 / 9 := by
+  have hlen_one :
+      fabiusDiscreteLimitRangeLength (1 / 3 : ℝ) 1 = 1 := by
+    norm_num [fabiusDiscreteLimitRangeLength]
+  have hlen_two :
+      fabiusDiscreteLimitRangeLength (1 / 3 : ℝ) 2 = 1 := by
+    norm_num [fabiusDiscreteLimitRangeLength]
+  have hpochhammer : halfQPochhammer 1 = (1 / 2 : ℚ) := by
+    norm_num [halfQPochhammer_succ]
+  have hbit : thueMorseBit 0 = 0 := by
+    norm_num [thueMorseBit, binaryWeight, Nat.digits_zero]
+  rw [fabiusDiscreteLimitApproximation]
+  norm_num [hlen_one, hlen_two, hpochhammer, hbit,
+    Finset.sum_range_succ] <;>
+    ring
+
+/-- With zero translation, the depth-one row at `x = 1 / 3` equals
+`2 / 9`. -/
+@[simp] theorem fabiusDiscreteLimitApproximationReal_zero_one_third_depth_one :
+    fabiusDiscreteLimitApproximationReal 0 (1 / 3 : ℝ) 1 = 2 / 9 := by
+  rw [fabiusDiscreteLimitApproximationReal,
+    fabiusDiscreteLimitApproximation_one_third_depth_one]
+  norm_num
+
+/-- With unit translation, the depth-one row at `x = 1 / 3` equals
+`7 / 18`. -/
+@[simp] theorem fabiusDiscreteLimitApproximationReal_one_one_third_depth_one :
+    fabiusDiscreteLimitApproximationReal 1 (1 / 3 : ℝ) 1 = 7 / 18 := by
+  rw [fabiusDiscreteLimitApproximationReal,
+    fabiusDiscreteLimitApproximation_one_third_depth_one]
+  norm_num
+
+/-- The depth-one real approximant at `x = 1 / 3` genuinely depends on its
+translation parameter: the zero and unit translations give unequal rows. -/
+theorem
+    fabiusDiscreteLimitApproximationReal_zero_ne_one_at_one_third_depth_one :
+    fabiusDiscreteLimitApproximationReal 0 (1 / 3 : ℝ) 1 ≠
+      fabiusDiscreteLimitApproximationReal 1 (1 / 3 : ℝ) 1 := by
+  rw [fabiusDiscreteLimitApproximationReal_zero_one_third_depth_one,
+    fabiusDiscreteLimitApproximationReal_one_one_third_depth_one]
+  norm_num
 
 /-- Every inner prefix in the generic discrete-limit approximant is empty
 at and to the left of the origin. -/
