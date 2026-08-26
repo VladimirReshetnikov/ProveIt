@@ -3410,3 +3410,84 @@ next bounded step: commit and push this registry-only claim without force;
   while independent agents audit coefficient-zero semantics, attribute/comment
   placement, old-header preservation, imports, and direct consumer behavior
 ```
+
+## Handoff: positive-index exponential-coefficient extensionality
+
+Source checkpoint `60e633940` implements the complete two-file claim and is
+pushed to `origin/codex/fabius-effective-bounds-20260825`.
+
+The new public theorem `expCoeff_eq_of_forall_pos` states that two exponent
+families which agree at every positive index generate exactly the same
+recursive exponential-coefficient family.  It packages the existing finite
+locality theorem by function extensionality and makes the ignored zeroth input
+explicit at the family level; at coefficient zero both sides are normalized
+to one.  `logCoeff_expCoeff_of_pos` now uses this theorem instead of repeating
+the family-level `funext` argument, with its complete public header and every
+other proof step unchanged.
+
+`SaddleExpansionAlgebra.lean` now has exact adjacent prose for all 46 public
+declarations.  The 12 repaired gaps state the base coefficient, recursive
+successor formula, power-series coefficient bridges, formal differential
+equation, and finite partial-sum laws.  The expanded module guide records the
+coefficient-locality, algebra-map, rescaling, Cauchy-convolution, evaluation,
+parity, eventual-equality, pullback, and continuous-linear transports already
+proved in the module.
+
+Exact frozen artifacts:
+
+- `SaddleExpansionAlgebra.lean`: Git blob
+  `06febd7843297461eea08451198620e269a47805`, content SHA-256
+  `CA99026BEC8B62F99154114B0C2DAF4CBEB2140CE86CB8B47749973BA2A2C96D`;
+- `SaddleLogExpansionAlgebra.lean`: Git blob
+  `dc8ed947850a5a45e49c260d8cb0a83390f089f9`, content SHA-256
+  `054A723A2260B3CFABC18A146526AD4282561D62CEAC2E42F4440EFC9FA79E31`.
+
+The exact source delta is 48 comment/theorem lines added in the core algebra
+and a 2-insertion/3-deletion local proof replacement in the logarithmic
+consumer.  Header extraction reports exactly the one claimed new declaration,
+all 45 old core headers and all 23 logarithmic headers unchanged, and
+byte-identical imports.  Strict and repository audits report 46 public / zero
+missing in the core module.  The comment governed by
+`omit [Algebra ℚ R] in` is correctly inside that scoped command and before the
+existing simp attribute.  Two independent hostile exact-byte reviews and the
+author audit agree on index-zero behavior, positive-index orientation,
+consumer rewriting, comment attachment and formulas, and API compatibility.
+Local and staged `git diff --check` passed.  No Lean, Lake, TeX, PDF, cache
+mutation, canonical-document edit, or main write ran.
+
+```text
+SYNC Fabius
+branch / worktree / machine: codex/fabius-effective-bounds-20260825 /
+  /home/codex/.codex/worktrees/d6d3/Proofs / codexbox
+fetched main SHA: c7dfc250fe42bf66a241b59e1fa11eb5dd340d0f
+HEAD and dirty paths: 60e633940; clean after exact-path source commit;
+  checkpoint pushed
+writing (exact paths): this branch registry for immutable handoff only; both
+  source paths above are frozen at the stated blobs
+expected declarations or document claims: exact theorem, proof deduplication,
+  and complete SaddleExpansionAlgebra source parity described above; no old
+  public-header, attribute, import, facade, audit-script, or canonical-doc
+  change
+completed commits: registry-first claim 3af93f2c6; source checkpoint
+  60e633940; both pushed without force
+validated (exact command, SHA/state, exit code): all-visible-ref post-claim
+  scan found the proposed name only in this branch registry before authoring;
+  strict and repository audits report 46 public / zero missing; header/import
+  comparison and local/staged git diff --check exited 0; two independent
+  hostile exact-byte reviews plus author review are green; exact blob/SHA
+  evidence is recorded above
+not yet validated: no Lean/Lake target or broad importer was built on this
+  branch; static proof/API review is not compiler evidence
+requested integration or lease: request serialized
+  +FabiusFunction.SaddleExpansionAlgebra followed by
+  +FabiusFunction.SaddleLogExpansionAlgebra and, if desired, the representative
+  broad gate +FabiusFunction.PaperFabiusAsymptotic; request coordinator review
+  and selective integration; request no main-write or document lease
+conflicts / dependencies: all active coordinator build paths are disjoint;
+  the broad import cone makes these source blobs immutable pending disposition;
+  only the coordinator may advance main
+next bounded step: push this registry handoff, fetch and reread main, then
+  continue on a separately advertised cold path; the Gaussian monomial
+  contraction deduplication and periodic-jet documentation remain independent
+  audited candidates rather than additions to this checkpoint
+```
