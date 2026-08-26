@@ -1736,6 +1736,23 @@ Separate the first factor, or the first \(m\) factors, in
 identity; it also follows directly from \eqref{eq:tau-recursion}.
 \end{proof}
 
+\emph{Formal versions.}  \path{ThueMorseMahler.lean} proves the Mahler
+equation \eqref{eq:E-Mahler} exactly, as an identity of formal power
+series under \texttt{PowerSeries.expand}
+(\lean{Fabius.thueMorseSeries\_mahler}), and the dissection
+\eqref{eq:E-dissection} at every level with the substitution realized as
+the \(m\)-th iterate of \(z\mapsto z^2\)
+(\lean{Fabius.thueMorseSeries\_dissection},
+\lean{Fabius.coe\_thueMorseBlockPolynomial\_series}).  The bridge
+\eqref{eq:T-from-E} is formal in the cleared form
+\((1-z)\bigl(2T(z)+E(z)\bigr)=1\)
+(\lean{Fabius.one\_sub\_X\_mul\_bridge}: the combination \(2T+E\)
+is the geometric series).  The coefficientwise content of
+\cref{thm:infinite-product} has long been formal as the stabilization
+lemma \lean{Fabius.coeff\_finite\_thueMorse\_product}
+(\path{ThueMorseGenerating.lean}); the analytic convergence statement
+and the lacunary quotient expansion remain unformalized.
+
 Iterating the inhomogeneous bit equation yields a useful lacunary sum.
 
 \begin{theorem}[Lacunary quotient expansion]
@@ -3250,6 +3267,14 @@ The prefix generating function is unusually simple:
 \end{equation}
 The middle equality is the Mahler equation.
 
+\emph{Formal versions.}  The first and last members of
+\eqref{eq:prefix-generating-first} are formal:
+\lean{Fabius.thueMorsePrefixSeries\_eq}
+(\path{ThueMorseMahler.lean}) proves
+\(\sum_NS(N)z^N=z\,E(z^2)\) directly from the exact prefix collapse,
+which under the dissection is `\(z\prod_{j\ge1}(1-z^{2^j})\)' at every
+truncation level.
+
 \subsection{Iterated inclusive prefixes}
 
 Define discrete antiderivatives by
@@ -3765,6 +3790,15 @@ equation is a coefficient-level renormalization law for that singular
 continuous measure: the measure has no closed-form distribution function,
 yet its Fourier data satisfies a two-term finite recursion.
 
+\emph{Formal versions.}  \path{ThueMorseMahler.lean} proves a
+\emph{finite-level} Mahler equation sharper than
+\eqref{eq:autocorrelation-mahler}: with
+\(C_m(z)=\sum_kA_m(k)z^k\) the unnormalized dyadic autocorrelation
+series of \cref{prop:finite-autocorrelation},
+\(zC_{m+1}(z)=2^m-(1-z)^2C_m(z^2)\) holds exactly at every level
+(\lean{Fabius.autocorrelationSeries\_mahler}); dividing by
+\(2^{m+1}\) recovers \eqref{eq:autocorrelation-mahler} in the limit.
+
 \section[Word combinatorics and dynamics]{Combinatorics and dynamics of the infinite word}
 \label{sec:words-dynamics}
 
@@ -4004,6 +4038,14 @@ eventually \(0\bmod 2^k\), and for example
 orbit of \(2\) is a fixed cycle and the products in
 \eqref{eq:rarefied-filter} grow geometrically.
 
+\emph{Formal versions.}  The algebraic skeleton of the filter's
+vanishing is
+\lean{Fabius.sum\_thueMorseSign\_mul\_pow\_eq\_zero\_of\_pow\_eq\_one}
+(\path{ThueMorseRarefied.lean}): over any commutative ring the signed
+block sum vanishes at any point with \(z^{2^j}=1\) for some \(j<m\).
+The complex filter identity \eqref{eq:rarefied-filter} itself remains
+unformalized; modulo three it is subsumed by the closed vectors.
+
 \subsection{Complete evaluation modulo three}
 
 For \(q=3\) everything is explicit, because
@@ -4132,6 +4174,15 @@ discrete Fourier transform on \(\Z/q\Z\) reproduces
 \eqref{eq:rarefied-filter}.  For \(q=3\) the eigenvalues have modulus
 \(\sqrt3\), which is the growth rate seen in
 \cref{thm:mod3-rarefaction}.
+
+\emph{Formal versions.}  The recursion
+\eqref{eq:rarefied-matrix-recursion} is
+\lean{Fabius.rarefiedSum\_succ\_of\_odd}
+(\path{ThueMorseRarefied.lean}), proved for \emph{every} odd modulus
+with the halving realized by \(2^{-1}=(q+1)/2\); the invertibility of
+doubling modulo an odd modulus is isolated as
+\lean{Fabius.two\_mul\_mod\_iff}.  Modulo three it specializes to
+\lean{Fabius.rarefiedSum\_three\_succ}.
 
 \subsection{The global Newman theorem and the arithmetic frontier}
 
@@ -4631,7 +4682,7 @@ valuation, carry, and Pascal-row formulas remain genuinely base-two features.
 \subsection{Formalized modules (August 2026)}
 \label{sec:formalized-modules}
 
-The first tranches of the formalization now exist as eighteen compiled Lean
+The first tranches of the formalization now exist as nineteen compiled Lean
 modules in \repo{}, complementing the corpus modules
 (\path{Parity.lean}, \path{TwoAdic.lean}, \path{ThueMorsePrefix.lean},
 \path{ThueMorseGenerating.lean}, \path{ThueMorseExponential.lean},
@@ -4663,6 +4714,7 @@ Module & Contents \\
 \path{ThueMorseAutocorrelation.lean} & Finite autocorrelation recursion in exact integer form, zero-shift value, closed values at shifts one and two. \\
 \path{ThueMorseOverlapFree.lean} & Thue's overlap-freeness theorem with cube-freeness, the attained critical exponent two, and constructive complement and reversal closure of the factor language. \\
 \path{ThueMorseRecurrence.lean} & Full block-concatenation laws for weight and bit, all two-letter factors in every seventeen-letter window, uniform recurrence with an explicit linear bound. \\
+\path{ThueMorseMahler.lean} & Mahler equation and dyadic dissection for the signed series, cleared zero--one bridge, prefix generating function, finite-level autocorrelation Mahler equation. \\
 \bottomrule
 \end{tabularx}
 \end{center}
