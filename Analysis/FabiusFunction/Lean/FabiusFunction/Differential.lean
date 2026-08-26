@@ -153,13 +153,10 @@ theorem fabius_hasDerivAt_half (F : BoundedFabius) (hF : IsFabius F) :
   have harg : 2 * (1 / 2 : ℝ) - 1 = 0 := by norm_num
   simpa [harg, rvachevUp_zero F hF] using h
 
-set_option linter.unusedVariables false in
-/--
-Reflected form of the defining differential equation on the whole second half
-of the unit interval, endpoints included.
--/
-theorem fabius_hasDerivAt_secondHalf (F : BoundedFabius) (hF : IsFabius F)
-    {t : ℝ} (htlow : 1 / 2 ≤ t) (hthigh : t ≤ 1) :
+/-- Reflected form of the defining differential equation on the whole ray
+`[1/2, ∞)`.  Beyond `1`, both the derivative and the reflected value vanish. -/
+theorem fabius_hasDerivAt_reflected_of_half_le
+    (F : BoundedFabius) (hF : IsFabius F) {t : ℝ} (ht : 1 / 2 ≤ t) :
     HasDerivAt (fabiusReal F) (2 * fabiusReal F (2 - 2 * t)) t := by
   have h := fabius_hasDerivAt F hF t
   have hup : rvachevUp F (2 * t - 1) = fabiusReal F (2 - 2 * t) := by
@@ -170,6 +167,17 @@ theorem fabius_hasDerivAt_secondHalf (F : BoundedFabius) (hF : IsFabius F)
       congr 1
       ring
   rwa [hup] at h
+
+set_option linter.unusedVariables false in
+/--
+Closed-unit-interval compatibility form of
+`fabius_hasDerivAt_reflected_of_half_le`.  The hypothesis `hthigh` is retained
+for API compatibility.
+-/
+theorem fabius_hasDerivAt_secondHalf (F : BoundedFabius) (hF : IsFabius F)
+    {t : ℝ} (htlow : 1 / 2 ≤ t) (hthigh : t ≤ 1) :
+    HasDerivAt (fabiusReal F) (2 * fabiusReal F (2 - 2 * t)) t := by
+  exact fabius_hasDerivAt_reflected_of_half_le F hF htlow
 
 /-- Closed form for the derivative of the bounded Fabius function. -/
 theorem deriv_fabiusReal (F : BoundedFabius) (hF : IsFabius F) :
