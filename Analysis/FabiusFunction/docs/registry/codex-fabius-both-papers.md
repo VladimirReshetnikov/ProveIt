@@ -8,14 +8,20 @@ SYNC Fabius
 branch / worktree / machine: codex/fabius-both-papers /
   /home/codex/src/Proofs / codexbox
 fetched main SHA: 148990f0a2a9b665edaf3394656be1e7c46caf7e
-HEAD and dirty paths: 9458b1949cfb1b0a0290c0ab533a50d2e8ff908d;
-  clean before this registry-only validation handoff
+HEAD and dirty paths: 656126476ac58061bae0e022dffa547c6b3ffb99;
+  clean before this ordinary two-source claim
 writing (exact paths):
+  Lean/FabiusFunction/PeriodicRegularity.lean;
+  Lean/FabiusFunction/PeriodicSmooth.lean;
   docs/registry/codex-fabius-both-papers.md
 expected declarations or document claims:
-  `fabiusAtInverseTwoPow_cast`, the generic real-cast bridge identifying the
-  exact rational inverse-power evaluator with every bounded Fabius solution at
-  `2⁻ⁿ`, including `n = 0`
+  promote the shared dyadic-exponential calculus to
+  `exp_neg_mul_two_pow_ne_one`, `hasDerivAt_exp_neg_mul_two_pow`,
+  `exp_neg_mul_two_pow_le_of_le`, and
+  `one_sub_exp_neg_mul_two_pow_pos`; delete the four byte-identical private
+  copies in `PeriodicSmooth`; drop only the provably unused positivity argument
+  from the scale-monotonicity helper and its private denominator consequence;
+  preserve every existing public signature
 completed commits: Lower-Lambert source checkpoint `1da2fde2285e3970267b7dc2561bcd0d897be1b4`
   was integrated by coordinator merge `046946a974467e83244fd3a183a3e084e70d3379`;
   registry handoff `225f5338de9ea92489ed6a2c0c371c6edb4f5db9`
@@ -103,10 +109,15 @@ conflicts / dependencies: all advertised Fabius heads and their registries
   or semantic public inverse-power cast bridge, and no active claim on
   `DyadicAnalytic.lean`; existing scalar q-binomial cast theorems have different
   right-hand sides, while the same mathematics occurs only behind private
-  wrappers in `DyadicAnalytic`
-next bounded step: push this registry handoff, await serialized validation of
-  the three independent source tranches, and begin only a new collision-free
-  ordinary claim after another fetched-main/registry sweep
+  wrappers in `DyadicAnalytic`; the periodic helper family is already recorded
+  as an unimplemented high-confidence deduplication in `AUDIT_FINDINGS.md`, and
+  a fresh sweep of every advertised Fabius tip and registry finds no production
+  declaration, alternate public API, or live claim on either periodic module;
+  the only registry mention is a closed historical read-only list
+next bounded step: push this exact two-source claim, perform the mechanical
+  promotion/deduplication without running a build, obtain independent static
+  review, and hand the source checkpoint to the coordinator for serialized
+  `+FabiusFunction.PeriodicSmooth` validation
 ```
 
 ## Coordinator natural-knot integration disposition
