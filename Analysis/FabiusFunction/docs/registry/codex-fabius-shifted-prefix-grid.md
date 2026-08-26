@@ -1,21 +1,20 @@
 # Workstream registry: `codex/fabius-shifted-prefix-grid`
 
-**Status: exact one-file source lease active; implementation in progress.**
-The claim was published before source work, and coordinator checkpoint
-`12e7137a8` subsequently opened ordinary, nonoverlapping feature-branch work
-without a separate acknowledgement.  This continuation branch starts directly
-from accepted main checkpoint `431f6c173` and carries none of the historical
-`codex/fabius-theorem-refinements` divergence.
+**Status: source checkpoint pushed; serialized Lean validation requested.**
+The exact claim was published before source work, coordinator checkpoint
+`893d4c25d` explicitly acknowledged it as the first nonoverlapping claim for
+the module, and source commit `00ff41a5e` now implements precisely that bounded
+tranche.  The source is frozen pending compiler validation.
 
 ```text
 SYNC Fabius
 branch / worktree / machine: codex/fabius-shifted-prefix-grid / c9a3 / EVO
   (Windows)
-fetched main SHA: 12e7137a897b8ec99ddf8935f64fff9f35977617
-HEAD and dirty paths: 3b605f5e4a0e9b6ff6160b0b1097c737f849dfc5;
-  clean before this lease refresh
-writing (exact paths): docs/registry/codex-fabius-shifted-prefix-grid.md and
-  Lean/FabiusFunction/ThueMorseGenerating.lean
+fetched main SHA: e18f5d0b0e3ec78e2b14e7006af6c7e916b42923
+HEAD and dirty paths: 047a03b638aafccf591d7ea5ac494d7ff8c8d9a4;
+  clean after pushing the source checkpoint
+writing (exact paths): docs/registry/codex-fabius-shifted-prefix-grid.md only;
+  Lean/FabiusFunction/ThueMorseGenerating.lean is frozen at 00ff41a5e
 expected declarations or document claims: shiftedPrefixGridValue;
   shiftedPrefixGridValue_zero; shiftedPrefixGridValue_one;
   shiftedPrefixGridValue_succ_sub;
@@ -24,34 +23,41 @@ expected declarations or document claims: shiftedPrefixGridValue;
   shiftedPrefixGridValue_equation_of_pos; retain the eight existing
   paperPrefixGridValue_* and correctedPrefixGridValue_* theorem statements
   exactly as compatibility wrappers
-completed commits: 6fb8dc8e9 publishes the exact one-file claim; 11cff7386
-  and 3b605f5e4 merge successive coordinator checkpoints from origin/main
-validated (exact command, SHA/state, exit code): no build launched; three
-  independent read-only source/API reviews agreed on the abstraction and one
-  hostile review required preserving both legacy definitions verbatim; exact
-  duplicate searches covered current main, all 15 advertised Fabius remote
-  tips, their registries, and reachable history
-not yet validated: proposed Lean source is not written or compiled; the
-  coordinator-reserved build token was not used
-requested integration or lease: the ordinary exact-path source claim is active
-  under checkpoint 12e7137a8; request later serialized targets
+completed commits: 6fb8dc8e9 publishes the exact one-file claim; ba0048023
+  activates it under the open protocol; 00ff41a5e adds the seven generic
+  declarations and converts all eight legacy proofs to wrappers; 047a03b63
+  merges origin/main e18f5d0b0 and is pushed to the feature branch
+validated (exact command, SHA/state, exit code): at source snapshot SHA-256
+  784F6C4F389FE0F2FA08616FFAFBFA3917CCC9F6D2C86CE98D3D877B5F0DD14C,
+  git diff --check and git diff --cached --check exited 0; python
+  Analysis/FabiusFunction/scripts/doc_audit.py --baseline
+  Analysis/FabiusFunction/docs/doc_audit_baseline.json scanned 189 files and
+  3462 public declarations, found the same 132 baseline omissions, and exited
+  0; normalized type comparison matched all eight legacy theorem statements;
+  two independent hostile source/tactic reviews found no blocker; duplicate
+  searches covered all 17 locally present Fabius remote-tracking tips
+not yet validated: no Lean or Lake process was launched because no EVO build
+  token is granted; the three requested module targets remain uncompiled
+requested integration or lease: retain the source path through validation and
+  assign this branch, or an authorized build owner checking commit 00ff41a5e,
+  serialized targets
   +FabiusFunction.ThueMorseGenerating,
   +FabiusFunction.ThueMorseApproximation, and
-  +FabiusFunction.ThueMorseExponential when the board assigns the EVO token
+  +FabiusFunction.ThueMorseExponential
 conflicts / dependencies: no overlap with the active frontier-document lease;
   no AGENTS, README, collaboration, aggregate, TeX, PDF, canonical frontier,
   primary exposition, hot foundational module, or peer registry path requested;
   current EVO build ownership remains with codex/fabius-exposition-integration
-next bounded step: implement the seven advertised generic declarations and
-  reduce the eight legacy proof bodies to compatibility specializations
-lease refreshed: 2026-08-25 17:18 PDT; refresh at source checkpoint or within
-  30 minutes
+next bounded step: keep the source frozen, poll the coordinator board, and run
+  the three targets one at a time only after an explicit build-token handoff
+lease refreshed: 2026-08-25 17:32 PDT; source frozen pending validation
 git owner / build owner: root / no build owner assigned to this branch
 ```
 
-## Proposed bounded refactor
+## Completed bounded refactor
 
-`ThueMorseGenerating.lean` currently proves four theorem pairs independently:
+Before `00ff41a5e`, `ThueMorseGenerating.lean` proved four theorem pairs
+independently:
 
 - `paperPrefixGridValue_succ_sub` and
   `correctedPrefixGridValue_succ_sub`;
@@ -63,7 +69,7 @@ git owner / build owner: root / no build owner assigned to this branch
   `correctedPrefixGridValue_equation_of_pos`.
 
 After replacing only the two grid identifiers by a neutral token and
-normalizing whitespace, each pair is alpha-identical.  The intended
+normalizing whitespace, each pair was alpha-identical.  The implemented
 abstraction is the normalized grid whose inclusive-prefix order is shifted by
 an arbitrary natural number while its denominator and abscissa remain at the
 same grid level:
@@ -73,15 +79,14 @@ def shiftedPrefixGridValue (s k j : ℕ) : ℚ :=
   (iteratedPrefix (k + s) j : ℚ) / (2 : ℚ) ^ k.choose 2
 ```
 
-The source tranche would prove the forward-difference law, its
-denominator-cleared form, the equation paired with the exact unit-interval
-domain condition, and the positive-level reindexing once for arbitrary `s`.
-Shift zero and shift one recover the literal paper grid and the corrected
-inclusive-prefix grid.
+The source tranche proves the forward-difference law, its denominator-cleared
+form, the equation paired with the exact unit-interval domain condition, and
+the positive-level reindexing once for arbitrary `s`.  Shift zero and shift one
+recover the literal paper grid and the corrected inclusive-prefix grid.
 
 ## Compatibility boundary
 
-The existing public definitions will remain textually unchanged:
+The existing public definitions remain textually unchanged:
 
 ```lean
 def paperPrefixGridValue (k j : ℕ) : ℚ :=
@@ -92,12 +97,12 @@ def correctedPrefixGridValue (k j : ℕ) : ℚ :=
 ```
 
 This preserves both definitional reduction and the behavior of client proofs
-that explicitly unfold either name.  Two one-way simp bridges will normalize
+that explicitly unfold either name.  Two one-way simp bridges normalize
 `shiftedPrefixGridValue 0` to `paperPrefixGridValue` and
 `shiftedPrefixGridValue 1` to `correctedPrefixGridValue`; reverse simp rules
-will not be added.  The eight existing theorem headers, binder order,
-hypotheses, conjunction order, attributes, and result syntax will also remain
-unchanged.  Only their duplicated proof bodies become specializations of the
+were not added.  The eight existing theorem headers, binder order, hypotheses,
+conjunction order, attributes, and result syntax also remain unchanged.  Only
+their duplicated proof bodies became specializations of the
 generic family.
 
 The generic recurrence is not an endpoint or convergence theorem.  The shift
@@ -132,18 +137,18 @@ The reviews checked:
 - the counterexample showing why `0 < k` cannot be dropped; and
 - the absence of new simplifier loops or changed public theorem signatures.
 
-No new import is expected.  The module has two direct consumers,
+No new import was required.  The module has two direct consumers,
 `ThueMorseApproximation.lean` and `ThueMorseExponential.lean`; no source file
 outside `ThueMorseGenerating.lean` calls any of the eight wrapper theorems.
 
 ## Duplicate search and deferred opportunities
 
-The exact proposed names and plausible `shifted`/`offset` aliases were searched
-on current main, all 15 locally advertised Fabius branch tips, every registry
-at those tips, and reachable history.  No equivalent declaration or active
-claim exists.  This is distinct from the human document's Appell family and
-from the translated Thue--Morse polynomial degree API already integrated from
-`a95bd1913`.
+The exact names and plausible `shifted`/`offset` aliases were searched on
+current main, all 17 locally present Fabius remote-tracking tips, every
+available registry at those tips, and reachable history.  No equivalent
+declaration or competing claim exists.  This is distinct from the human
+document's Appell family and from the translated Thue--Morse polynomial degree
+API already integrated from `a95bd1913`.
 
 Three worthwhile but intentionally separate follow-ups were identified:
 
@@ -154,6 +159,6 @@ Three worthwhile but intentionally separate follow-ups were identified:
 3. translated Thue--Morse blocks satisfy finite addition and formal-derivative
    laws, furnishing a genuine polynomial translation calculus.
 
-None is included in this lease request.  Keeping the first commit to one
+None is included in this source checkpoint.  Keeping the first commit to one
 mechanically evidenced duplication class makes the review, build attribution,
 and rollback boundary exact.
