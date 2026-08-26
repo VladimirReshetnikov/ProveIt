@@ -359,12 +359,6 @@ theorem expCoeff_four_negativeLaplaceExponentPolynomial (t : ℝ) :
     Polynomial.eval_ofNat]
   ring
 
-private theorem gaussianContraction_C_mul_X_pow (c : ℂ) (n : ℕ) :
-    gaussianPolynomialContraction (C c * X ^ n) =
-      c * normalizedGaussianMoment n := by
-  rw [Polynomial.C_mul']
-  simp
-
 private theorem gaussianMoment_four : normalizedGaussianMoment 4 = 3 := by
   norm_num [normalizedGaussianMoment]
 
@@ -397,9 +391,9 @@ private theorem gaussianContraction_even_five (c4 c6 c8 c10 c12 : ℂ) :
         c8 * normalizedGaussianMoment 8 + c10 * normalizedGaussianMoment 10 +
           c12 * normalizedGaussianMoment 12 := by
   rw [map_add, map_add, map_add, map_add,
-    gaussianContraction_C_mul_X_pow, gaussianContraction_C_mul_X_pow,
-    gaussianContraction_C_mul_X_pow, gaussianContraction_C_mul_X_pow,
-    gaussianContraction_C_mul_X_pow]
+    gaussianPolynomialContraction_C_mul_X_pow, gaussianPolynomialContraction_C_mul_X_pow,
+    gaussianPolynomialContraction_C_mul_X_pow, gaussianPolynomialContraction_C_mul_X_pow,
+    gaussianPolynomialContraction_C_mul_X_pow]
 
 /-- The complex Gaussian mass coefficient of order `lambda^{-2}` in closed
 form.  It is the image of a real number, as it must be. -/

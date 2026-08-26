@@ -6,6 +6,123 @@ Every worker reads it from the fetched `origin/main` before writing, merging,
 building, or pushing.  Workers publish replies in their own per-branch registry
 files; they do not edit this board.
 
+## Checkpoint 2026-08-26 03:41 PDT
+
+```text
+observed main before this directive: e35baa1fcf4ade15dff67dad624002c527fd9fd3
+coordinator branch: codex/fabius-coordinator-20260825
+integration mode: exact immutable sources -> coordinator -> fast-forward main
+main write owner: coordinator
+codexbox Lean/Lake owner: unassigned
+  (IDLE after the green six-gate sequence below)
+codexbox TeX/PDF owner: unassigned
+  (IDLE)
+EVO Lean/Lake owner: codex/fabius-inverse-asymptotic-20260825
+  (ACTIVE: the disjoint decay proof-repair retry)
+EVO TeX/PDF owner: unassigned
+  (IDLE)
+documentation owner: unassigned
+  (all canonical documents are frozen)
+next poll: at the EVO decay handoff or next immutable source claim
+```
+
+**Gaussian-contraction consolidation and exp-minus-one shift bounds
+accepted.**  Exact reviewed sources were mapped as coordinator commits
+`c2861fa0c` and `8f0f443b7`.  Final candidate
+`8f0f443b72cc2c01becf810801153cd4a3a758f5`, tree
+`63facc1d42e776e78d098650293b43af3add303a`, contains precisely the five
+advertised result blobs and no feature-registry/history import.  The source
+provenance correction is binding: the accepted exp-shift source is actual
+commit `a1c417019215d629e6c389c05bfd111ab5c09f7a`, not the nonexistent full SHA
+printed in its branch handoff.
+
+On codexbox, with no overlapping Lean/Lake/TeX process, the six separate
+commands from the grant ran in order under `LEAN_NUM_THREADS=0 LAKE_JOBS=1`:
+
+```text
++FabiusFunction.GaussianPolynomialContraction          2868 jobs, exit 0
++FabiusFunction.FabiusSaddleExpansionCoefficients      3309 jobs, exit 0
++FabiusFunction.FabiusSecondSaddleCorrection           3312 jobs, exit 0
++FabiusFunction.FabiusDiscreteLimitComplexShift        1873 jobs, exit 0
++FabiusFunction.FabiusComplexShiftSpline               3421 jobs, exit 0
++FabiusFunction.FabiusDiscreteLimitIntegration         3427 jobs, exit 0
+```
+
+The first three commands emitted no diagnostic.  The fourth emitted one
+nonblocking `unnecessarySimpa` linter at
+`FabiusDiscreteLimitComplexShift.lean:335:8`; the fifth and sixth only replayed
+that same upstream linter.  No proof repair was needed.  Both source units,
+the public scalar-monomial contraction theorem and private deduplication, all
+four shift bounds, preserved compatibility APIs, and the two direct-consumer
+closures are accepted.  Every source path and the codexbox token are released.
+The registry-only zero-inclusive endpoint claim remains unimplemented and has
+no source or build grant.  No document path is released or activated by this
+source acceptance.
+
+## Checkpoint 2026-08-26 03:38 PDT
+
+```text
+observed main before this directive: f8464b2d4a2aa250d716dabbb435d269c759bba9
+coordinator branch: codex/fabius-coordinator-20260825
+integration mode: exact immutable sources -> coordinator -> fast-forward main
+main write owner: coordinator
+codexbox Lean/Lake owner: coordinator
+  (ACTIVE: exactly the six serialized gates below)
+codexbox TeX/PDF owner: unassigned
+  (IDLE)
+EVO Lean/Lake owner: codex/fabius-inverse-asymptotic-20260825
+  (ACTIVE: the disjoint decay proof-repair retry)
+EVO TeX/PDF owner: unassigned
+  (IDLE)
+documentation owner: unassigned
+  (all canonical documents are frozen)
+next poll: after each codexbox gate and at the EVO decay handoff
+```
+
+**Codexbox validation batch: Gaussian-contraction helper consolidation and
+exp-minus-one complex-shift bounds.**  Two path-disjoint immutable source
+units have exact current-main preimages and independent hostile static PASSes:
+
+- `8f0dbf7eae03a096368a9afc00d8139b7cf79f19` changes only
+  `GaussianPolynomialContraction.lean`,
+  `FabiusSaddleExpansionCoefficients.lean`, and
+  `FabiusSecondSaddleCorrection.lean`, to blobs
+  `6e466f4ea2bf325e33980376400dba50eb8fec6e`,
+  `9e5d94a7cf6016935a373c7677076b97dbd81cb4`, and
+  `c9a762985186e06030d789b1774ac01af8f3fa76`.  It exposes the reviewed
+  scalar-monomial Gaussian-contraction simp theorem, deletes two private
+  duplicates, rewires all six consumers, preserves imports and old public
+  headers, and completes the advertised declaration comments.
+- The exp-shift handoff abbreviates its source correctly as `a1c417019` but
+  records a nonexistent full SHA.  The actual immutable source is
+  `a1c417019215d629e6c389c05bfd111ab5c09f7a`; only that commit is accepted for
+  validation.  It changes `FabiusDiscreteLimitComplexShift.lean` and
+  `FabiusComplexShiftSpline.lean` to blobs
+  `c12704bab4fe31bbf9580f519e99e07b56814733` and
+  `4b687921f5dd7ba586d1a10ac75355874aa5e644`, adding four reviewed public
+  exp-minus-one bounds while preserving all six legacy plain-exponential
+  headers, imports, attributes, and boundary cases.
+
+Neither unit has compiler evidence.  Integrate only these exact source
+commits/blobs, never either moving feature history.  On codexbox run exactly
+the following separate commands, in order, with strict stop-on-first-failure:
+
+```text
+LEAN_NUM_THREADS=0 LAKE_JOBS=1 lake build +FabiusFunction.GaussianPolynomialContraction
+LEAN_NUM_THREADS=0 LAKE_JOBS=1 lake build +FabiusFunction.FabiusSaddleExpansionCoefficients
+LEAN_NUM_THREADS=0 LAKE_JOBS=1 lake build +FabiusFunction.FabiusSecondSaddleCorrection
+LEAN_NUM_THREADS=0 LAKE_JOBS=1 lake build +FabiusFunction.FabiusDiscreteLimitComplexShift
+LEAN_NUM_THREADS=0 LAKE_JOBS=1 lake build +FabiusFunction.FabiusComplexShiftSpline
+LEAN_NUM_THREADS=0 LAKE_JOBS=1 lake build +FabiusFunction.FabiusDiscreteLimitIntegration
+```
+
+Run no parallel or additional codexbox Lean/Lake/TeX/PDF process.  Record the
+exact candidate/tree, each job count, exit, and every diagnostic.  Only an
+independently reviewed statement-preserving proof repair is in scope after a
+failure.  The simultaneous EVO decay retry remains independent on its other
+physical host.  The zero-inclusive endpoint comparison request remains a
+registry-only design claim and receives no source lease or build token here.
+
 ## Checkpoint 2026-08-26 03:27 PDT
 
 ```text
