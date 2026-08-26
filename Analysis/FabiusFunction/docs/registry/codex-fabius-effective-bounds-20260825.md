@@ -1661,3 +1661,94 @@ next bounded step: commit and push this registry-only claim without force;
   generic reindexing proof, both consumer families, interface preservation,
   and the five formula comments
 ```
+
+## Source checkpoint: generic zero-odd subsequence summation
+
+Exact source commit `6818db074` completes the two-file common-lemma tranche.
+Its result objects are:
+
+- `AnalyticMoments.lean`: Git blob
+  `a5ce5ca3b5bf62d858ef1e8a4eb6818a04a17a8f`, content SHA-256
+  `4B893BB0DE22E16E5A48724A0DB48A2713768B12DDEB68BF14EE7EB61E19EE9B`;
+- `FabiusLegendreSeries.lean`: Git blob
+  `af2423bed82b7c97bfeed5234f0ac31d95ac2614`, content SHA-256
+  `4E4A3D1A6059E8862E8A02C223CA54152A23869B53E73E1EF51FD7B2935A619A`.
+
+AnalyticMoments now exposes exactly one documented
+`hasSum_even_of_odd_eq_zero` theorem under the minimal assumptions
+`[AddCommMonoid E] [TopologicalSpace E]`.  The proof explicitly changes the
+goal to composition with the injective map `n ↦ 2*n`, rewrites with
+`Function.Injective.hasSum_iff`, and proves that every index outside the range
+is odd.  It introduces no norm, completeness, uniqueness, or auxiliary
+summability premise.
+
+`rvachevFourier_eq_momentSeries` now obtains its even-indexed series in one
+application of the shared result.  This deletes the manual even summability,
+zero odd-series, recombination, uniqueness, and tsum rewrite without changing
+the theorem header or later moment identification.  FabiusLegendreSeries
+removes its private normed/complete copy and the empty section heading; both
+its pointwise real and uniform continuous-map calls remain byte-identical and
+resolve through the existing import cone.
+
+The five claimed public documentation gaps in AnalyticMoments now display
+their exact formulas and hypotheses.  In particular, the half-line statement
+records both conjuncts, the inverse-dyadic result records `1 ≤ n`, and the
+Proposition 2 comment uses the totalized `complexExpm1Div` factor at `z = 0`.
+The overview records the reusable parity-summation principle.  Hosting the
+helper in AnalyticMoments, rather than the older `AUDIT_FINDINGS.md` suggestion
+of MomentPowerSeries, avoids adding an otherwise unrelated infinite-sum import
+to that lower algebra module; the coordinator may close that finding on
+integration.
+
+Three independent source/API audits pass on the exact final bytes.  They
+verified the pinned `hasSum_iff` orientation and rewrite side-goal order,
+`range_two_mul`/odd-index normalization, Fourier unification, both Legendre
+codomains, transitive one-way import cone, exact old imports and public
+headers, formula prose, names, and current-ref collisions.  No source-level
+blocker remains.
+
+```text
+SYNC Fabius
+branch / worktree / machine: codex/fabius-effective-bounds-20260825 /
+  /home/codex/.codex/worktrees/d6d3/Proofs / codexbox
+fetched main SHA: fc63c39788ab4c31694e4f57efe05b543165675a
+HEAD and dirty paths: 6818db074; source checkpoint is clean and pushed; only
+  this registry is dirty for the immutable handoff
+writing (exact paths): completed source checkpoint writes only
+  Lean/FabiusFunction/AnalyticMoments.lean and
+  Lean/FabiusFunction/FabiusLegendreSeries.lean; this report writes only this
+  branch registry; both Lean sources are now frozen
+expected declarations or document claims: the one claimed generic theorem is
+  implemented exactly once; the private duplicate and manual Fourier proof
+  are removed; every old import/public header/attribute is exact; five existing
+  theorem comments and the new theorem/module prose state their Lean formulas
+  in human-readable form; no canonical document, facade, root, or audit-ledger
+  write
+completed commits: 94c52a6ae (registry-first claim) and 6818db074 (two-file
+  source/proof/documentation checkpoint); four earlier pending source tranches
+  remain separately frozen and requested for coordinator validation
+validated (exact command, SHA/state, exit code): git diff --check exited 0;
+  whitespace, CR, forbidden-placeholder, TODO/FIXME, duplicate-name, stale
+  split-helper, import, attribute, and declaration scans are clean; exact
+  result blobs/hashes are recorded above; three independent exact-current-byte
+  static reviews pass against pinned Mathlib; this is not compiler evidence
+not yet validated: source commit 6818db074 has not been elaborated; no Lean,
+  Lake, TeX, PDF, or cache-mutating process ran because this branch has no host
+  build token
+requested integration or lease: independently review and preserve exact source
+  commit 6818db074 / blobs a5ce5ca3b and af2423bed, then assign separate
+  serialized LAKE_JOBS=1 builds of +FabiusFunction.AnalyticMoments,
+  +FabiusFunction.FabiusLegendreSeries, and one direct consumer such as
+  +FabiusFunction.FabiusTranslatedLegendreSeries or
+  +FabiusFunction.FabiusLegendreLeastSquares; request no document or main-write
+  lease
+conflicts / dependencies: exact preimages are the current-main blobs recorded
+  in the claim; the generic theorem depends only on an established Mathlib
+  reindexing equivalence; Legendre already reaches AnalyticMoments transitively
+  with no reverse edge; all frozen local paths and active external claims are
+  disjoint; only the coordinator may advance main
+next bounded step: commit and push this immutable handoff; freeze both sources
+  for coordinator validation; continue with the audited private kernel-normal-
+  form promotion in two disjoint released modules after a clean registry-first
+  claim and fresh collision scan
+```
