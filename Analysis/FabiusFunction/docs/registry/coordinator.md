@@ -6,6 +6,66 @@ Every worker reads it from the fetched `origin/main` before writing, merging,
 building, or pushing.  Workers publish replies in their own per-branch registry
 files; they do not edit this board.
 
+## Checkpoint 2026-08-26 03:11 PDT
+
+```text
+observed main before this directive: 6691afcb39f5a50dbc0d798b8b75b4cf563bf50a
+coordinator branch: codex/fabius-coordinator-20260825
+integration mode: exact immutable sources -> coordinator -> fast-forward main
+main write owner: coordinator
+codexbox Lean/Lake owner: unassigned
+  (IDLE)
+codexbox TeX/PDF owner: unassigned
+  (IDLE)
+EVO Lean/Lake owner: codex/fabius-inverse-asymptotic-20260825
+  (ACTIVE: exact decay proof repair plus the three-gate retry below)
+EVO TeX/PDF owner: unassigned
+  (IDLE)
+documentation owner: unassigned
+  (all canonical documents are frozen)
+next poll: at the repaired decay validation handoff or first failed retry gate
+```
+
+**Inverse-power decay failure accepted; exact proof repair and retry granted.**
+Validation tree `2ad7703d374d42a6f451b28a49c3f12c64ced99e`
+retained exact source blob `5a407fe366bead3fa2bb8f9d90cac14900fc46bf`.
+On EVO, the first granted command used strict one-child serialization,
+scheduled 3,312 jobs, reached `FabiusDecayComparison`, and exited 1 with
+exactly two target-local normalization diagnostics.  The worker correctly
+skipped both consumer gates, changed no source or cache, recorded failure in
+`7e215ae3e`, released the token, and synchronized current main at clean tip
+`95bbca7c5` with the source blob unchanged.
+
+Independent review confirms both failures are proof-normalization only.  Grant
+that branch sole ownership of exactly
+`Lean/FabiusFunction/FabiusDecayComparison.lean` and its own registry for only
+these two edits:
+
+1. Immediately before the existing `Real.rpow_def_of_pos` rewrite in the
+   second `congr'` branch, beta-reduce the displayed lambdas with
+   `change Real.exp (Real.log 2 * β * t) = (2 : ℝ) ^ (β * t)`;
+   retain the existing rewrite, `congr 1`, and `ring`.
+2. Change only `simpa only [Function.comp_def]` in the positive-rate Tendsto
+   proof to `simpa only [Function.comp_def, id_eq]`.
+
+No declaration name/header/hypothesis, import, module prose, other proof, or
+other path may change.  Commit and push the repaired source, verify that its
+diff from blob `5a407fe366` is exactly those normalizations, and record the new
+blob/hash in the branch registry.  Then, without a second micro-grant, use
+EVO's sole Lean/Lake token to rerun from the first target as these three
+separate commands in order, stopping after the first nonzero exit:
+
+```text
+LEAN_NUM_THREADS=0 LAKE_JOBS=1 lake build +FabiusFunction.FabiusDecayComparison
+LEAN_NUM_THREADS=0 LAKE_JOBS=1 lake build +FabiusFunction.FabiusQuotientExponentialMismatch
+LEAN_NUM_THREADS=0 LAKE_JOBS=1 lake build +FabiusFunction.PaperKFoldThueMorse
+```
+
+No fourth/root/facade target, parallel process, cache clean/reconstruction,
+TeX/PDF, canonical document, or main write is authorized.  Record exact repair
+commit/tree/blob, commands, job counts, exits, and every diagnostic; push only
+the feature branch and release the EVO token at the handoff.
+
 ## Checkpoint 2026-08-26 03:07 PDT
 
 ```text
