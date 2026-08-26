@@ -728,3 +728,51 @@ at every nondyadic input or every finite row, or independence of a separate
 synchronized construction remain research-frontier obligations.  No canonical
 document path is authorized for this branch, so this is a handoff rather than
 a prose edit.
+
+## Coordination checkpoint after main `682222de1`
+
+The clean feature tip `b59e9b7b7` was pushed before synchronization.  After a
+fresh fetch, both mandatory policy files were reread with `git show`; the merge
+preview found no conflict or overlap in either frozen source path or this
+registry.  Merge commit `ca787ce1a7a17f8f2051a1206ea77985b0f7bc37`
+incorporates `origin/main` `682222de194637f3a5650b7c1ffce349577cb5ae`
+without changing the two-file source checkpoint `0f7d53e8c`.
+
+The current board explicitly recognizes the eight-result tranche, freezes
+`FabiusDiscreteLimitToeplitz.lean` and
+`FabiusDiscreteLimitIntegration.lean` pending coordinator review, and grants
+neither an EVO Lean/Lake token nor a `main` push.  This branch therefore makes
+no source or canonical-document edit and launches no Lean, Lake, TeX, PDF,
+Python audit, or cache-mutating process.
+
+```text
+SYNC Fabius
+branch / worktree / machine: codex/fabius-theorem-polish-20260825 /
+  C:/Users/vresh/.codex/worktrees/10ef/ProveIt / EVO (Windows)
+fetched main SHA: 682222de194637f3a5650b7c1ffce349577cb5ae
+HEAD and dirty paths: ca787ce1a7a17f8f2051a1206ea77985b0f7bc37;
+  clean immediately after the conflict-free merge, then only this registry is
+  dirty for the present coordination report
+writing (exact paths): this branch registry only; both claimed Lean source
+  paths remain frozen at source commit 0f7d53e8c
+expected declarations or document claims: unchanged eight-result package;
+  no expansion of the write set
+completed commits: 0f7d53e8c (unelaborated two-source theorem checkpoint),
+  b59e9b7b7 (pushed source/status checkpoint), ca787ce1a (conflict-free merge
+  of coordinator main 682222de1)
+validated (exact command, SHA/state, exit code): merge preview and merge were
+  conflict-free; mandatory AGENTS.md and coordinator board were reread from
+  origin/main 682222de1; prior read-only static and hostile-review evidence
+  remains as recorded above
+not yet validated: source commit 0f7d53e8c remains wholly unelaborated; no
+  Lean/Lake/TeX/PDF/cache-mutating validation has run for this tranche
+requested integration or lease: coordinator review, then separately serialized
+  +FabiusFunction.FabiusDiscreteLimitToeplitz followed by
+  +FabiusFunction.FabiusDiscreteLimitIntegration only after this exact branch
+  receives an explicit EVO build token
+conflicts / dependencies: no merge conflict; the source paths are board-frozen
+  pending review; canonical documentation, coordination, README, root
+  aggregate, frontier, TeX, and PDF paths remain untouched
+next bounded step: commit and push this registry-only checkpoint to the feature
+  branch, then continue read-only polling; do not build and do not push main
+```
