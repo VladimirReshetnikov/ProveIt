@@ -6,19 +6,20 @@ Every worker reads it from the fetched `origin/main` before writing, merging,
 building, or pushing.  Workers publish replies in their own per-branch registry
 files; they do not edit this board.
 
-## Checkpoint 2026-08-25 20:06 PDT
+## Checkpoint 2026-08-25 20:16 PDT
 
 ```text
-observed main before this directive: b0b896e397696dbead0905db24bec0056fd2e51d
+observed main before this directive: 99b67cf5b5b8084d097205d1f701d13285ecd3b7
 coordinator branch: codex/fabius-coordinator-20260825
 integration mode: feature branches -> coordinator -> fast-forward main
 main write owner: coordinator
 codexbox build owner: codex/fabius-frontier-successor-20260825
   (exactly three frontier pdflatex passes; no Lean/Lake/fourth pass)
-EVO build owner: IDLE -- reserved, no worker target
+EVO build owner: codex/fabius-shifted-prefix-grid
+  (three separate Lean targets pinned below; no TeX/PDF/parallel target)
 documentation owner: codex/fabius-frontier-successor-20260825
   (frontier PDF stage only; every primary path frozen)
-next poll: after the frontier three-pass checkpoint or a frozen Lean checkpoint
+next poll: after either assigned host reports its validation checkpoint
 ```
 
 The previously approved curvature, generalizations, lower-Lambert,
@@ -412,9 +413,9 @@ one-term.  Mechanical comparison proves that every byte outside the two
 leading module comments is unchanged; the coordinator integrated this exact
 commit as `5d779327a`, so no Lean build is required for that prose-only unit.
 
-The branch's current ordinary claim is accepted for exactly three source
-paths: `FabiusQBinomialTaylor.lean`, `ThueMorseGenerating.lean`, and
-`ThueMorseApproximation.lean`.  The seven not-yet-implemented declarations are
+The branch's ordinary claim covered exactly three source paths:
+`FabiusQBinomialTaylor.lean`, `ThueMorseGenerating.lean`, and
+`ThueMorseApproximation.lean`.  The seven declarations are
 the four translated-power-sum Appell APIs
 `thueMorseTranslatedPowerSumPolynomial_comp_X_add_C`,
 `thueMorseTranslatedPowerSumPolynomial_hasseDeriv`,
@@ -428,14 +429,38 @@ plausible-name claim was found.  The earlier convolution bridges and
 and compiled context; do not reimplement them.  The corrected Generating blob
 evidence is `2908f1f1652e` / SHA-256 `04F8F9AB...A8D9C`.
 
-This branch may edit, commit, and push those claimed sources, but has no build
-token.  Freeze and advertise each source tranche before requesting serialized
-validation; the requested eventual target order remains
-`+FabiusFunction.FabiusQBinomialTaylor`,
-`+FabiusFunction.ThueMorseGenerating`,
-`+FabiusFunction.ThueMorseApproximation`,
-`+FabiusFunction.ThueMorseExponential`, and
-`+FabiusFunction.PaperKFoldThueMorse`.
+Source commit `8021c555f` implements the four Appell declarations in
+`FabiusQBinomialTaylor.lean`; its parent matches main blob `4032b5184` and its
+result blob is `52492287b`.  Two independent reviews accept the finite
+translation law, total Hasse law, derivative specializations, every boundary
+case, imports, API, placement, and duplicate scan.
+
+Source commit `f7152d5fc` independently implements the three total
+approximation declarations in `ThueMorseApproximation.lean`; its parent matches
+main blob `87023172f` and its result blob is `d2e85228f`.  Two independent
+reviews accept the polynomial and formal-series identities at `k = 0`, the
+case-free coefficient and normalized-step bridges, the strict cutoff, private
+helper deletion, and exact preservation of all old public wrapper headers and
+attributes.  Registry tip `b52fa523e` freezes both source units on a branch
+already synchronized through main `99b67cf5b`.
+
+**EVO validation grant.**  This branch now holds the sole EVO token.  From a
+clean pushed tree, merge this coordinator checkpoint, verify that the two
+source blobs remain exactly `52492287b` and `d2e85228f`, and run these as three
+separate sequential invocations with `LAKE_JOBS=1`:
+
+```text
+lake build +FabiusFunction.FabiusQBinomialTaylor
+lake build +FabiusFunction.ThueMorseApproximation
+lake build +FabiusFunction.PaperKFoldThueMorse
+```
+
+Do not run them in parallel and run no additional Lean/Lake/TeX/PDF target.  If
+one fails, do not run the later targets or edit source under the same token;
+record the complete first failure in the own registry, push, and stop.  If all
+three pass, record exact SHA/tree, commands, job counts, warnings, and exits in
+the own registry, push, and stop for coordinator integration.  Never push
+`main`.
 
 ### `codex/fabius-exposition-integration`
 
@@ -591,20 +616,26 @@ a requested path is serialized, hot, frozen, single-owner, or already claimed.
 
 ## Collision and integration queue
 
-No fully reviewed Lean tranche is currently waiting for integration.  The four
+Two reviewed Lean workstreams are waiting on assigned validation or token
+availability.  The four
 disjoint both-papers units are integrated and validated as recorded above;
 continue to avoid merging that moving feature branch wholesale.  Its next
-`PeriodicSmooth.lean` bridge claim is advertised but not implemented.  The
-shifted-prefix branch's seven declarations are likewise advertised but not
-implemented, so neither workstream has a validation item yet.
+`PeriodicSmooth.lean` bridge source is now frozen at exact commit `c5f0bb3a3`.
+Independent review accepts all six `[simp]` statements and proof algebra, but
+codexbox is occupied by the frontier PDF lane, so that one-file unit remains
+unintegrated and uncompiled.  The shifted-prefix branch's seven declarations
+are frozen at `8021c555f` plus `f7152d5fc` and hold the exact EVO validation
+grant above.
 
 Frontier source checkpoint `6397a0d6a` is already on `main` without a matching
 rebuilt PDF.  The successor is now assigned a fresh-base, three-hunk
 source-only phase above and has pushed exact source checkpoint `7bbd84752`.
 Independent source review passes, so the sole codexbox token is now assigned
-for the exact three-pass PDF stage above.  EVO remains idle.  Ordinary
+for the exact three-pass PDF stage above.  EVO is independently assigned to
+the three shifted-prefix targets above.  Ordinary
 nonoverlapping feature claims may continue under the shared protocol, but no
-other codexbox validation process may start until this token is released.
+other validation process may start on either physical host until its token is
+released.
 
 ## Build-token log
 
@@ -746,11 +777,11 @@ evidence.
 
 No validation process was running on codexbox when this grant was published.
 Its token is now exclusively assigned to the frontier successor's exact
-three-pass job above; no other codexbox validator may start.  No validation
-process is assigned on EVO; its token remains idle and coordinator-reserved.
-Other branches may edit, checkpoint, and push ordinary claimed work under the
-open protocol, but may not run validation tools until this board assigns the
-applicable physical-host token.
+three-pass job above; no other codexbox validator may start.  EVO's token is
+independently assigned to the shifted-prefix branch's three exact sequential
+targets.  Other branches may edit, checkpoint, and push ordinary claimed work
+under the open protocol, but may not run validation tools until this board
+assigns the applicable physical-host token.
 
 ## Worktree maintenance log
 
