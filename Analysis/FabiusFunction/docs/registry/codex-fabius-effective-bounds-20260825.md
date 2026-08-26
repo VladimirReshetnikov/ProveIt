@@ -2326,3 +2326,29 @@ next bounded step: commit and push this immutable handoff; freeze both sources
   for coordinator validation; refresh main and reread the full ownership board
   before choosing another ordinary source unit
 ```
+
+## Synchronization after coordinator checkpoint 948bf3f37
+
+Clean merge commit `9741ac546` incorporates fetched `origin/main`
+`948bf3f377472c068f9539e0569d383ddc35f617` after a complete reread of the
+1,814-line ownership board.  The merge was automatic and conflict-free.  Its
+only source overlap was `FabiusWikipediaObstruction.lean`: the merged result
+retains main's newly compiled generic periodic cluster-point engine and this
+branch's disjoint simultaneous-vanishing error theorem and Big-O wrapper
+refactor.
+
+The coordinator has selectively integrated and compiled the earlier
+constant-three binary-reduction checkpoint as main commit `942fd6b68`; that
+path is therefore released and no longer appears in this branch's net source
+delta.  Main also brought the unrelated inverse-asymptotic stack, exact Lambert
+cluster interval, and dead-private-helper deletion; all are preserved without
+feature-side edits.
+
+Relative to the merged main, this branch now has exactly eleven frozen Lean
+source paths plus this own registry: the alternating/convex Laplace checkpoint,
+formal Lambert fixed point and remainder deduplication, generic even-subsequence
+summation and Legendre deduplication, negative-Laplace normal-form promotion,
+Proposition 22 comments, simultaneous-vanishing Wikipedia obstruction, and
+real affine Prouhet/spline deduplication.  No build or document process ran;
+all remain immutable pending the validation requests in their individual
+handoffs.  Canonical documents, build lanes, and main writes remain unclaimed.
