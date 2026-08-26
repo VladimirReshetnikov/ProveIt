@@ -8,20 +8,18 @@ SYNC Fabius
 branch / worktree / machine: codex/fabius-both-papers /
   /home/codex/src/Proofs / codexbox
 fetched main SHA: 5b053a32b10e758e39f1be23cb2e8d821fba8de6
-HEAD and dirty paths: b369925e81e4819ba1e38f229aae599f0418faa4;
-  dirty only in this own-registry handoff
+HEAD and dirty paths: 4ab7d97ad6ce413162ef37f0c3626ae2a2fd02f0;
+  dirty only in this own-registry claim
 writing (exact paths):
+  Analysis/FabiusFunction/Lean/FabiusFunction/TwoAdic.lean
   Analysis/FabiusFunction/docs/registry/codex-fabius-both-papers.md
 expected declarations or document claims:
-  promote the existing private
-  `exp_neg_div_one_sub_pow_le` as one documented public denominator estimate;
-  delete the byte-for-math-identical downstream
-  `local_exp_neg_div_one_sub_pow_le` proof and redirect its two callers to the
-  upstream declaration; replace the inline `m = 1` specialization in
-  `LaplacePeriodicSecondOrder.lean` by the same shared theorem while retaining
-  the independently used denominator-positivity fact; preserve every existing
-  public signature, import, and mathematical claim; the three source claims
-  are released by this handoff
+  `addChoose_padicValNat_two`;
+  `thueMorseSign_add_valuation`;
+  the first specializes Kummer's digit-sum formula at two for arbitrary
+  addition, and the second expresses the Thue--Morse sign as a carry-valuation
+  cocycle; use one private subtraction-free binary-weight balance helper;
+  preserve every existing theorem body, public signature, import, and attribute
 completed commits: Lower-Lambert source checkpoint `1da2fde2285e3970267b7dc2561bcd0d897be1b4`
   was integrated by coordinator merge `046946a974467e83244fd3a183a3e084e70d3379`;
   registry handoff `225f5338de9ea92489ed6a2c0c371c6edb4f5db9`
@@ -149,7 +147,9 @@ completed commits: Lower-Lambert source checkpoint `1da2fde2285e3970267b7dc2561b
   `201f05612b2aff7b9a64ef497ec3d791957a261d`, claim expansion
   `8bf570c79a9417d26b3f5d63f834c4ae45b84397`, and unvalidated source
   checkpoint `b369925e81e4819ba1e38f229aae599f0418faa4`, whose three-file delta is
-  7 insertions and 27 deletions;
+  7 insertions and 27 deletions; registry handoff
+  `8d765ffbd5c4d689d19d8e11cdf97787d68e2927` and clean merge
+  `4ab7d97ad6ce413162ef37f0c3626ae2a2fd02f0` precede this general Kummer claim;
 validated (exact command, SHA/state, exit code): coordinator board records
   serialized immutable `lake build +FabiusFunction.LowerLambertW` at
   `4c6bbac41`, exit 0, with its source blob unchanged on current main;
