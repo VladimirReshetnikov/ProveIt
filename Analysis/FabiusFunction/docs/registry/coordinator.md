@@ -6,17 +6,17 @@ Every worker reads it from the fetched `origin/main` before writing, merging,
 building, or pushing.  Workers publish replies in their own per-branch registry
 files; they do not edit this board.
 
-## Checkpoint 2026-08-25 18:29 PDT
+## Checkpoint 2026-08-25 18:32 PDT
 
 ```text
-observed main before this directive: 15b922326a51e47e2462f512f5c68c8b70b3816a
+observed main before this directive: c9eac55c5a9e10723cea061393d192e7a1134392
 coordinator branch: codex/fabius-coordinator-20260825
 integration mode: feature branches -> coordinator -> fast-forward main
 main write owner: coordinator
 codexbox build owner: coordinator (IDLE -- reserved, no worker target)
 EVO build owner: none (frontier TeX stage awaits source-review disposition)
 documentation owner: codex/fabius-exposition-integration (frontier paths only)
-next poll: after the frontier correction checkpoint
+next poll: after the frontier correction and both-papers source reviews
 ```
 
 The previously approved curvature, generalizations, lower-Lambert,
@@ -142,6 +142,28 @@ covers `PaperStatements` and `Paper06487Supplement`; `git diff --check` and the
 forbidden-declaration scan are clean.  The `GlobalExtension.lean` lease is
 released.  The branch may begin another ordinary nonoverlapping claim, but
 must still receive a host token before running any validation process.
+
+Clean feature tip `c41a52283` now publishes four additional, explicitly
+unvalidated source units on top of current main:
+
+- dyadic-cast relocation `09b360531` across
+  `Lean/FabiusFunction/GlobalDyadic.lean` and
+  `Lean/FabiusFunction/OriginalPaperSupplement.lean`;
+- strict Gamma--zeta sign API `ec23d663f` / `991add419` in
+  `Lean/FabiusFunction/BoseFinitePartIntegral.lean`;
+- inverse-power cast bridge `9458b1949` in
+  `Lean/FabiusFunction/DyadicAnalytic.lean`;
+- periodic dyadic-exponential helper consolidation `c7c2321bc` across
+  `Lean/FabiusFunction/PeriodicRegularity.lean` and
+  `Lean/FabiusFunction/PeriodicSmooth.lean`.
+
+`GlobalExtension.lean` also has a doc-comment-only terminology edit.  These
+seven source paths and the branch registry are frozen at `c41a52283` pending
+independent review and coordinator-held codexbox validation.  No worker may
+claim or modify them, and this branch must not expand the tranche or run Lean,
+Lake, TeX, or PDF tools.  It may advertise unrelated ordinary work only after
+the frozen tip is preserved and the new claim is disjoint from every listed
+path.
 
 ### `codex/fabius-theorem-polish-20260825`
 
@@ -319,9 +341,11 @@ a requested path is serialized, hot, frozen, single-owner, or already claimed.
 1. Receive the four-part narrow frontier source correction required by the
    completed audit; keep
    PDF generation withheld until that correction is reviewed.
-2. After a green corrected-source audit, receive the frontier three-pass PDF/evidence
+2. Complete the independent review and serialized codexbox validation of the
+   four frozen both-papers source units at `c41a52283`.
+3. After a green corrected-source audit, receive the frontier three-pass PDF/evidence
    checkpoint and integrate the complete frontier tranche.
-3. Only after the frontier stabilizes, assign the primary exposition's four
+4. Only after the frontier stabilizes, assign the primary exposition's four
    narrow citation/attribution corrections and matching PDF rebuild.
 
 ## Build-token log
