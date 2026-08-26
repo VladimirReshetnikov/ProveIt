@@ -1,6 +1,45 @@
 # Registry: `codex/fabius-frontier-successor-20260825`
 
-Updated: 2026-08-25 20:05 PDT
+Updated: 2026-08-25 20:14 PDT
+
+## Matching three-pass PDF checkpoint
+
+Coordinator checkpoint `99b67cf5b` granted this branch the sole document
+build token after the frozen source was merged with the board at
+`e90162aaf02dc7dd9a44fbf15040f961469d73b2`.  From that exact clean source,
+the following command was run exactly three times in sequence, with no fourth
+pass or alternate compiler:
+
+```text
+pdflatex -interaction=nonstopmode -halt-on-error -file-line-error -jobname=non-formalized-research-frontiers_successor_7bbd84752 non-formalized-research-frontiers.tex
+```
+
+All three passes exited 0 and produced 180, 188, and 188 pages.  The settled
+third-pass log is 53,541 bytes with SHA-256
+`cce4792399eb3254a0e167a0f8d9e1c1d93767dabe29a3c390ae5881dd07dd0d`.
+It contains zero undefined references or citations, rerun requests, changed or
+multiply-defined labels, LaTeX/fatal/emergency errors, overfull hboxes, and
+overfull vboxes.
+
+The settled sidecar PDF is an A4, 188-page document of 1,479,271 bytes with
+SHA-256
+`225f8e17f9f8512dfcfbd9491ad5d2ca612537b66f1571dfa6f115fa76d904b8`.
+All 45 reported font rows are embedded and subsetted, and extracted text has no
+rendered `??`.  Visual inspection passes on page 10 (front matter), page 95
+(the corrected frontier-status paragraph), and page 184 (the boundary that
+failed the earlier build), with no clipping, collision, or detached text.
+
+The settled sidecar bytes were copied exactly to the canonical PDF.  The
+canonical artifact has Git blob
+`d2dd1702220ebaf4c5d48cf8e302af303ffa6186`, the same SHA-256 and size as the
+sidecar, and compares byte-for-byte equal.  The frozen TeX remains Git blob
+`6812dbf9caeab2c02fe92288f0524fa52256325b` with SHA-256
+`0AE36755EA52945E5032EF9005EA89CB59AAFA91EB36A1AC770FF2F0B53C63AB`;
+the README remains blob `be3865b4b7fabbf09f3af9ce96f7e72098c0cb08`.
+No source, README, Lean, primary-document, or other repository path changed in
+the artifact installation step.  Generated sidecars are removed before the
+commit, leaving exactly this registry and the canonical PDF staged for review
+and coordinator integration.
 
 ## Coordinator resolution of the reference-token ambiguity
 
