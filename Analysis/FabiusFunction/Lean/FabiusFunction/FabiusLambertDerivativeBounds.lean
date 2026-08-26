@@ -140,18 +140,6 @@ theorem isBounded_range_negativeLaplacePsiThird :
   negativeLaplacePsiThird_periodic.isBounded_of_continuous one_ne_zero
     continuous_negativeLaplacePsiThird
 
-private theorem exists_nonneg_bound_abs_of_isBounded_range
-    (f : ℝ → ℝ) (hf : Bornology.IsBounded (range f)) :
-    ∃ C : ℝ, 0 ≤ C ∧ ∀ t : ℝ, |f t| ≤ C := by
-  rcases (Metric.isBounded_iff_subset_closedBall 0).mp hf with ⟨C, hC⟩
-  have hzero := hC (mem_range_self (0 : ℝ))
-  have hC0 : 0 ≤ C := by
-    have : |f 0| ≤ C := by
-      simpa [Metric.mem_closedBall, Real.dist_eq] using hzero
-    exact (abs_nonneg _).trans this
-  refine ⟨C, hC0, fun t => ?_⟩
-  simpa [Metric.mem_closedBall, Real.dist_eq] using hC (mem_range_self t)
-
 /-- Some nonnegative constant bounds `|Ψ'|` at every real point.  The constant
 is only asserted to exist and is never named.  This is the first-derivative
 analogue of `exists_bound_abs_secondDeriv_negativeLaplacePsi`; all three
