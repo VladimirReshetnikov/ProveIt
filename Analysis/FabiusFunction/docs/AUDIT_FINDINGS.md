@@ -1225,9 +1225,14 @@ So the true count is 6 private declarations of identity 1 plus 11 inline instanc
 
 **Verifier.** Every cited declaration exists at the stated line with the stated signature (verified all 11). The six identity-1 copies are byte-identical modulo binder letter and all are `private`, which in Lean 4 is module-scoped, so they genuinely cannot see one another. All three identities are true, including at the n=0 boundary where truncated subtraction ...
 
-#### `integral_unitInterval_max_sub_mul_pow` is dead code duplicating `intervalIntegral_max_sub_mul_pow` in the same file
+#### DONE — `integral_unitInterval_max_sub_mul_pow` is dead code duplicating `intervalIntegral_max_sub_mul_pow` in the same file
 
 Confidence high.  `FabiusUniformSpline.lean:422`, `FabiusUniformSpline.lean:444`, `FabiusUniformSpline.lean:707`
+
+**DONE** in source commit `6f8c8c046`, integrated as `b16fc9a6d`.
+The unused private 22-line helper is deleted; the live interval-integral helper,
+all public declarations, imports, and callers are unchanged.  A serialized
+`+FabiusFunction.FabiusUniformSpline` build completes 3415 jobs, exit 0.
 
 **Why.** `rg` over the whole 174-module tree finds `integral_unitInterval_max_sub_mul_pow` only on its own declaration line — it is never used. Its proof is the proof of `intervalIntegral_max_sub_mul_pow` (the `intervalIntegral.integral_comp_sub_mul` step plus the same `intervalIntegral_max_pow` rewrite and `field_simp`) with a three-line subtype-to-interval preface glued on the front. The only user of the pair, `fabiusUniformPositiveSpline_smoothing` at line 707, calls the interval version.
 
