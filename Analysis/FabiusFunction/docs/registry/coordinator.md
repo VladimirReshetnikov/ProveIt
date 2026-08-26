@@ -6,10 +6,10 @@ Every worker reads it from the fetched `origin/main` before writing, merging,
 building, or pushing.  Workers publish replies in their own per-branch registry
 files; they do not edit this board.
 
-## Checkpoint 2026-08-25 21:10 PDT
+## Checkpoint 2026-08-25 21:15 PDT
 
 ```text
-observed main before this directive: 34ca81c9427110e608f7be92c591201739d30fd6
+observed main before this directive: a3cbe179443df1593b50a8034ce456729a004f9d
 coordinator branch: codex/fabius-coordinator-20260825
 integration mode: feature branches -> coordinator -> fast-forward main
 main write owner: coordinator
@@ -416,6 +416,18 @@ nonoverlapping and may proceed in that one Lean file plus the own registry,
 without Lean/Lake.  Keep the stronger `exp ‖δ‖ - 1` estimate open and touch no
 audit ledger, document, facade, root, or other path.  An immutable source
 checkpoint still requires exact review before any validation token.
+
+Exact source commit `3c2d1e926` implements that continuation and was integrated
+as `19ee18206`.  Two independent reviews accept all five declarations, including
+the degree-zero, zero-coordinate, and nonpositive-real cases; exact source
+blobs, imports, attributes, existing public headers, and the upstream all-degree
+dependency were checked.  The old restricted theorem bodies remain
+byte-preserved rather than being rewritten as literal wrappers, which is a
+nonblocking compatibility choice.  A serialized
+`+FabiusFunction.FabiusComplexShiftSpline` build completed 3417 jobs and exited
+0 without warnings at the integrated tree.  This downstream continuation is
+accepted, and its source lease and codexbox token are released.  The stronger
+`exp ‖δ‖ - 1` frontier estimate remains open.
 
 ### `codex/fabius-theorem-polish-20260825`
 
@@ -848,9 +860,10 @@ spline cleanup, reflected Laplace moments, and the shifted-prefix seven-name
 tranche are integrated and validated as recorded above.  Continue to avoid
 merging either moving feature history wholesale.  The generic Rvachev bridge
 and Lambert-rate equivalence tranches are also integrated, repaired, compiled,
-and released.  The all-degree complex branch theorem is integrated and green;
-its downstream all-real continuation and the disjoint eighth-order
-reference-tail tranche have source-only ownership and no build token.
+and released.  The all-degree complex branch theorem and its downstream
+all-real continuation are integrated and green.  The disjoint eighth-order
+reference-tail tranche has an immutable source handoff under exact review and
+no build token.
 
 Theorem-polish source commit `665b6bce` is integrated as `c80f61c90`, repaired
 without statement changes at `6b6757e90`, and accepted after its focused
@@ -1015,6 +1028,10 @@ For the all-degree complex branch estimate, separate serialized builds at
 `f6cb1efd8` of `+FabiusFunction.FabiusDiscreteLimitComplexShift` (1873 jobs)
 and `+FabiusFunction.FabiusComplexShiftSpline` (3417 jobs) both exited 0
 without warnings.
+
+For the downstream all-real complex-spline continuation, a serialized build at
+`19ee18206` of `+FabiusFunction.FabiusComplexShiftSpline` completed 3417 jobs
+and exited 0 without warnings.
 
 On EVO, exact shifted-prefix merge `4367a7f86` and tree `db635e6a073b`
 preserved source commits `8021c555f` and `f7152d5fc`.  Separate sequential
