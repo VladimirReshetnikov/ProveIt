@@ -6,16 +6,17 @@ Every worker reads it from the fetched `origin/main` before writing, merging,
 building, or pushing.  Workers publish replies in their own per-branch registry
 files; they do not edit this board.
 
-## Checkpoint 2026-08-25 16:56 PDT
+## Checkpoint 2026-08-25 17:00 PDT
 
 ```text
-observed main before this directive: f3719da05973a0f45bcd882890166ea7b6d8cbab
+observed main before this directive: 9887ea58460aaeb928ffe27a39e50b39d6d4feb7
 coordinator branch: codex/fabius-coordinator-20260825
 integration mode: feature branches -> coordinator -> fast-forward main
 main write owner: coordinator
-codexbox build owner: coordinator (ASSIGNED -- +FabiusFunction retry)
-documentation owner: coordinator (FREEZE on canonical frontier and exposition)
-next poll: after the syntax-fix commit completes its root build
+codexbox build owner: coordinator (IDLE -- reserved, no worker target)
+EVO build owner: codex/fabius-exposition-integration (TeX only, staged below)
+documentation owner: codex/fabius-exposition-integration (frontier paths only)
+next poll: after the semantic frontier source checkpoint is pushed
 ```
 
 The previously approved curvature, generalizations, lower-Lambert,
@@ -29,18 +30,21 @@ registry updates are accepted.  The exposition and theorem-refinements
 registries are retained with snapshot corrections, and the sole coverage-link
 defect is fixed forward.  The first exact root build then caught one parse-only
 defect: a new `partialSum_smul` doc comment sat between `@[simp]` and `theorem`.
-The syntax-fix commit moves the comment before the attribute.  No revert or
-duplicate cherry-pick is needed.
+The syntax-fix commit moves the comment before the attribute.  The retry at
+immutable `9887ea584` passed the complete `+FabiusFunction` aggregate (4008
+jobs, exit 0).  The integration incident is closed; no revert or duplicate
+cherry-pick is needed.
 
 ## Immediate shared instructions
 
-1. The coordinator now owns the sole codexbox build target
-   `LAKE_JOBS=1 lake build +FabiusFunction`.  Every worker must launch no Lean,
-   Lake, `pdflatex`, or cache-mutating job; merge neither `origin/main` nor any
-   peer branch; and push nothing to `main` until the result is recorded.
-   Preserve feature-branch state exactly.  Do not terminate another process.
-2. Feature-branch pushes are limited to preservation of work that already
-   existed before this checkpoint; do not create new source or document edits.
+1. The integration incident is closed.  Every branch remains read-only except
+   the exact frontier-document lease under `codex/fabius-exposition-integration`
+   below.  Push feature branches only; the coordinator remains the sole main
+   writer.  Never force.
+2. The codexbox build token is idle and coordinator-reserved.  On EVO, only the
+   exposition branch may use the host token, and only for the staged TeX build
+   authorized below.  Every other worker launches no Lean, Lake, TeX, PDF, or
+   cache-mutating process.  Do not terminate another process.
 3. Freeze `AGENTS.md`, `README.md`, `docs/COLLABORATION.md`,
    `docs/MULTI_AGENT_COORDINATION_PROPOSAL.md`, this board, the root aggregate
    `Lean/FabiusFunction.lean`, and every primary-exposition, walkthrough, or
@@ -119,17 +123,41 @@ only `docs/registry/codex-fabius-exposition-integration.md` relative to the
 coordinator checkpoint; it does not change an exposition or frontier artifact.
 That registry's useful audit body is retained, while its `cffe24808` snapshot
 and expired current-tree/page-count statements are now labeled explicitly.
-The task remains stopped.  Freeze all exposition and canonical-frontier paths;
-no further document build or main push is authorized.  The 57-page
-primary exposition and 203-page canonical frontier now on `main` are preserved
-inputs, not the final reconciliation.  Read-only comparison with the 172-page
-walkthrough checkpoint is complete: current is the authority, while the
-walkthrough's six-part structural deduplication must be replayed semantically.
-Its false claim that the sharper `exp(…)-1` complex-shift estimate is formalized
-must not survive, and current q-Appell, curvature, plot, provenance, status,
-and gap-register material must be retained.  One owner will resolve TeX,
-correct the running head, and rebuild the PDF in three passes; neither PDF will
-be conflict-resolved.
+
+**Single-owner frontier lease.**  This branch may now write only:
+
+- `docs/non-formalized-research-frontiers/README.md`;
+- `docs/non-formalized-research-frontiers/non-formalized-research-frontiers.tex`;
+- its matching `.pdf`; and
+- `docs/registry/codex-fabius-exposition-integration.md`.
+
+The clean feature tip `47f5c368e` is an ancestor of current main.  First fetch
+and fast-forward the clean feature branch to this board; do not create a merge
+commit and do not proceed if the worktree is dirty.  Use current main's
+203-page source as semantic authority and `8142ccb19` only as a donor.  Leave
+the root README and every primary/walkthrough path untouched.
+
+The source checkpoint must preserve current q-Appell/Bromwich material,
+sparse-bit qualification, random-law warning, Thue--Morse cancellation and
+plots, all twelve provenance rows, curvature/inverse-endpoint results, and the
+complete gap register.  Preserve the formalization boundary: Lean proves the
+plain exponential complex-shift bound, while the sharper `exp(…)-1` estimate
+and its `p = 2` edge case remain frontier obligations.  Replay the donor's
+six-part structural handoffs, normalized-mass definition and real-log domain,
+finite-level floor-profile certificates and dilation notation, alternate
+recurrence path, and specialist open-obligation organization without
+duplicating mathematics already present.  Organize the result as six thematic
+syntheses plus the post-audit gap register.
+
+Stage one is TeX/README only: run conflict-marker, label/reference, provenance,
+status-wording, and changed-cluster audits; commit and push the feature source
+checkpoint.  Stage two may then use the sole EVO token for exactly three
+`pdflatex` passes, correct the page-10 running head, require settled references
+and citations, no duplicate labels or overfull boxes, and inspect every changed
+cluster.  Commit the regenerated PDF and exact evidence to the feature branch;
+never select either predecessor PDF or push `main`.  The 57-page primary
+exposition remains frozen until this frontier tranche is reviewed and
+integrated.
 
 ### `codex/fabius-theorem-refinements`
 
@@ -167,15 +195,14 @@ it here.
 
 ## Collision and integration queue
 
-1. Publish the forward-only acceptance ledger and three narrow documentation
-   corrections; retain the reconciled history and every reviewed blob.
-2. Publish the one-line doc-comment ordering fix, then rerun the sole serialized
-   root aggregate `LAKE_JOBS=1 lake build +FabiusFunction` at that immutable
-   commit.
-3. Record the exact build result and close the integration incident before
-   reopening any worker lease.
-4. Resume the one-owner canonical-frontier semantic reconciliation using
-   current as authority and `8142ccb19` only as a donor.
+1. Publish the green exact-tree aggregate result and reopen only the single
+   frontier-document lease above.
+2. Receive and audit the semantic frontier TeX/README checkpoint before any PDF
+   is regenerated.
+3. Receive the three-pass PDF/evidence checkpoint, then integrate the complete
+   frontier tranche through the coordinator.
+4. Only after the frontier stabilizes, assign the primary exposition's four
+   narrow citation/attribution corrections and matching PDF rebuild.
 
 ## Build-token log
 
@@ -212,9 +239,15 @@ after `@[simp]`; Lean expected the declaration immediately after the attribute.
 All other jobs in that invocation passed.  The retry is assigned only after the
 comment is moved before the attribute in a new immutable commit.
 
-No Lean, Lake, `pdflatex`, or `latexmk` process was observed at 16:56 PDT.  The
-codexbox token is assigned to the coordinator's exact-tree root aggregate.
-The other physical machine's token remains frozen by the shared stop above.
+At syntax-fix commit `9887ea584`, the retry
+`LAKE_JOBS=1 lake build +FabiusFunction` completed all 4008 jobs and exited 0.
+This is exact-tree validation of every current Lean module and closes the
+integration incident.
+
+No Lean, Lake, `pdflatex`, or `latexmk` process was observed at 17:00 PDT.  The
+codexbox token is idle and coordinator-reserved.  The EVO token is reserved to
+the exposition branch's staged frontier build; every other branch remains
+frozen.
 
 ## Worker reply template
 

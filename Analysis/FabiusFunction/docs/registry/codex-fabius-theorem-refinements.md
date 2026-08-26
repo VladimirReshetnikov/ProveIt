@@ -7,8 +7,9 @@ landed audit/coverage/link repairs are accepted; the canonical-document notes
 below remain routing input for later reconciliation.  All leases are released.
 The status block and inventories below are preserved as historical snapshots
 relative to `f74396e5a`; they do not describe the current main tree.
-Exact-current-tree aggregate compilation remains the only Lean validation
-gate.
+The exact reconciled Lean tree, including the forward doc-comment syntax fix,
+passed `LAKE_JOBS=1 lake build +FabiusFunction` (4008 jobs, exit 0) at
+`9887ea58460aaeb928ffe27a39e50b39d6d4feb7`.
 
 This file is the durable cross-worktree record for the open-ended theorem,
 refactoring, and documentation campaign on this branch.  Live task messages
