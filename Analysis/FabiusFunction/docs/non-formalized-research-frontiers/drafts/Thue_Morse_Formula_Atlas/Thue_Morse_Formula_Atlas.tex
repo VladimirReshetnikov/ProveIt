@@ -118,7 +118,7 @@
 \large Digital, valuative, Pascal, automatic, finite-difference, spectral, and analytic representations}
 \author{Merged and expanded companion report to the Fabius--Rvachev formal development\\
 \small Vladimir Reshetnikov's \texttt{ProveIt} repository}
-\date{26 August 2026\\
+\date{26 August 2026, with the second consolidation pass of the same day\\
 \small source snapshot at commit \nolinkurl{29e5861c6109207739c41754e1e8bcfce32e84f1}}
 
 \begin{document}
@@ -168,6 +168,20 @@ super-polynomial flatness
  =-\frac{\log^2(1/t)}{2\log2}+\bigO(\log(1/t))
  \qquad(t\downarrow0).
 \]
+A second consolidation pass merged three parallel sibling atlases into this
+document.  It contributed the weighted digit enumerator
+\(\prod_j(1+uz^{2^j})\) and the subtraction/borrow cocycle; a self-contained
+proof that the unit circle is a natural boundary, with the Hankel-determinant
+rigidity theorem and the sharp irrationality exponent
+\(\mu(\Theta_b)=2\) of the Thue--Morse--Mahler numbers stated from the
+literature; a Mahler functional equation for the autocorrelation series; a
+chapter on the combinatorics and dynamics of the infinite word (uniform
+recurrence, aperiodicity, Thue's overlap theorem, critical exponent two,
+linear factor complexity); and a chapter on rarefied sums --- exact
+residue-class sums modulo three, Gelfond's optimal exponent
+\(\log_43\), a matrix recursion for odd moduli, and Newman's positivity
+phenomenon with its modern extensions along primes, squares, and cubes.
+
 Every elementary assertion is proved in the text; deeper historical results
 about transcendence, substitution spectra, and evaluated products are clearly
 identified and cited.  No mathematical priority is claimed for identities
@@ -259,6 +273,12 @@ interesting differences.  The unified text therefore follows three rules.
       novelty rhetoric.  The report claims derivation, not historical priority.
 \end{enumerate}
 
+This unified atlas was itself produced in parallel: three sibling
+consolidations of the same four drafts were written independently, and a
+second merge pass (26 August 2026) folded their distinctive material into the
+present document under the same three rules.  The additions are listed in the
+abstract and in the concordance of \cref{app:draft-concordance}.
+
 \begin{boxedremark}
 \textbf{Proof-status convention.}
 The repository already contains formal developments of the binary recurrence,
@@ -312,6 +332,16 @@ Walsh transform & A length-\(2^m\) block is one Walsh frequency. \\
 Ordinary DFT & \(\widehat\eps_m(k)=\prod_{j<m}(1-\e^{-2\pi\ii k2^j/2^m})\). \\
 Riesz density & \(2^{-m}|P_m(\e^{2\pi\ii x})|^2=\prod_{j<m}(1-\cos(2\pi2^jx))\). \\
 Characteristic two & \((1+x)^3T(x)^2+(1+x)^2T(x)+x=0\) in \(\Ftwo[[x]]\). \\
+Weighted enumerator & \(\sum_nu^{\wt(n)}z^n=\prod_j(1+uz^{2^j})\). \\
+Subtraction cocycle & \(\eps_{a-b}=\eps_a\eps_b(-1)^{\vtwo\binom ab}\) for \(b\le a\). \\
+Autocorrelation Mahler & \(2zC(z)=1-(1-z)^2C(z^2)\). \\
+Natural boundary & \(E\) continues across no arc of \(|z|=1\). \\
+Hankel rigidity & \(\det(\eps_{i+j})_{i,j<r}\ne0\) for every \(r\). \\
+Rarefaction mod 3 & \(\bigl(A^{(3)}_{2u,r}\bigr)_r=3^{u-1}(2,-1,-1)\). \\
+Gelfond exponent & \(3^{m/2}\le\sup_x|P_m(\e^{2\pi\ii x})|\le\tfrac2{\sqrt3}3^{m/2}\). \\
+Newman positivity & \(\sum_{n<X,\,3\mid n}\eps_n>0\) for all \(X\ge1\). \\
+Critical exponent & Overlap-free; squares occur, exponent exactly \(2\). \\
+Factor complexity & \(\ell+1\le p(\ell)<8\ell\). \\
 Dirichlet--Mellin & \(D(s,a)=\Gamma(s)^{-1}\int_0^\infty t^{s-1}\e^{-at}E(\e^{-t})\dd t\). \\
 \bottomrule
 \end{longtable}
@@ -1000,6 +1030,27 @@ Apply Legendre's formula to
 \(N!/(a_1!\cdots a_r!)\) and then take parity.
 \end{proof}
 
+\subsection{Subtraction and borrow counts}
+
+Kummer's theorem has a mirror statement for subtraction.  For
+\(0\le b\le a\), the same Legendre computation applied to
+\(\binom ab=a!/(b!\,(a-b)!)\) gives
+\begin{equation}
+  \vtwo\binom ab=\wt(b)+\wt(a-b)-\wt(a),
+  \label{eq:borrow-count}
+\end{equation}
+which counts the borrow operations, including propagated borrows, in the
+binary subtraction \(a-b\).  Therefore
+\begin{equation}
+  \boxed{
+  \eps_{a-b}=\eps_a\eps_b(-1)^{\vtwo\binom ab}.}
+  \label{eq:borrow-sign}
+\end{equation}
+Addition and subtraction thus carry the same sign correction, read from the
+two-adic valuation of the binomial coefficient whose top entry is the larger
+of the numbers involved; \eqref{eq:carry-sign} is recovered from
+\eqref{eq:borrow-sign} by renaming \(a+b\) as the top entry.
+
 \section[Pascal support and Boolean inversion]{Pascal support, residue formulae, multinomials, and Boolean inversion}
 \label{sec:pascal}
 
@@ -1561,6 +1612,57 @@ After \(M\) iterations of \eqref{eq:T-Mahler},
 On compact subdisks \(P_M\) is bounded and \(T(z^{2^M})\to T(0)=0\).
 \end{proof}
 
+\subsection{A weighted digit enumerator}
+
+Both \(E\) and the geometric series are specializations of one umbrella
+product that keeps the whole digit sum, not only its parity.
+
+\begin{theorem}[Weighted enumerator]
+\label{thm:weighted-enumerator}
+For \(|z|<1\) and any scalar \(u\), and coefficientwise as formal series,
+\begin{equation}
+  \boxed{
+  F_u(z):=\sum_{n\ge0}u^{\wt(n)}z^n
+  =\prod_{j\ge0}\bigl(1+uz^{2^j}\bigr),}
+  \label{eq:Fu-definition}
+\end{equation}
+with the Mahler equation
+\begin{equation}
+  F_u(z)=(1+uz)F_u(z^2).
+  \label{eq:Fu-mahler}
+\end{equation}
+The specializations \(u=1\) and \(u=-1\) are
+\begin{equation}
+  F_1(z)=\frac1{1-z},
+  \qquad
+  F_{-1}(z)=E(z).
+  \label{eq:Fu-special}
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+Expanding the product chooses a finite set of bit positions; by uniqueness of
+binary expansions each exponent \(n\) arises exactly once, with coefficient
+\(u^{\wt(n)}\).  Peeling the first factor gives \eqref{eq:Fu-mahler}.  At
+\(u=1\) every \(n\) receives coefficient one, which restates the uniqueness
+of binary expansions; at \(u=-1\) the coefficient is \(\eps_n\).
+\end{proof}
+
+Differentiating \eqref{eq:Fu-definition} with respect to \(u\) at \(u=1\)
+gives the ordinary generating function of the digit sum itself:
+\begin{equation}
+  \boxed{
+  \sum_{n\ge0}\wt(n)z^n
+  =\frac1{1-z}\sum_{j\ge0}\frac{z^{2^j}}{1+z^{2^j}}.}
+  \label{eq:digit-sum-ogf}
+\end{equation}
+Higher derivatives at \(u=1\) generate the falling-factorial moments
+\(\wt(n)(\wt(n)-1)\cdots(\wt(n)-r+1)\) in the same way.  The lacunary sum in
+\eqref{eq:digit-sum-ogf} is the characteristic-zero twin of the
+Artin--Schreier solution \eqref{eq:Y-explicit} below: the same series
+\(\sum_jz^{2^j}/(1+z^{2^j})\) computes the digit sum with integer
+coefficients and the digit parity in characteristic two.
+
 \subsection{Thue--Morse constants in every base}
 
 For a real \(b>1\), put
@@ -1879,6 +1981,162 @@ sequence's Artin--Schreier equation.  This suggests a reusable discovery
 method: search for integral algebraic lifts of finite-field automatic series.
 \end{remark}
 
+\section[Natural boundary and Hankel rigidity]{Natural boundary, Hankel determinants, and Diophantine consequences}
+\label{sec:boundary-hankel}
+
+The algebraic picture of the previous section is completed by three
+analytic-arithmetic facts: the series \(E\) cannot be continued across any
+boundary point, its Hankel determinants never vanish, and its values at
+algebraic points are transcendental with the smallest possible irrationality
+exponent.  The first fact is proved here in full; the other two are deep
+literature theorems, stated with references and not reproved.
+
+\subsection{The unit circle is a natural boundary}
+
+A \emph{natural boundary} of a power series is a curve through which no
+analytic continuation across any arc is possible.
+
+\begin{theorem}[Natural boundary]
+\label{thm:natural-boundary}
+Every point of the unit circle is a singular point of \(E\); the circle is a
+natural boundary.  Consequently \(E\) and \(T\) are transcendental over the
+field \(\C(z)\) of rational functions.
+\end{theorem}
+
+\begin{proof}
+Let \(\zeta\) be a root of unity of two-power order, say \(\zeta^{2^r}=1\).
+For \(0<\rho<1\), split the product \eqref{eq:infinite-product} at index
+\(r\): the head has \(r\) factors, each of modulus at most \(2\), while every
+tail factor \(1-(\rho\zeta)^{2^j}=1-\rho^{2^j}\) with \(j\ge r\) is a real
+number in \((0,1)\).  Hence
+\[
+ |E(\rho\zeta)|\le2^r\bigl(1-\rho^{2^r}\bigr)
+ \xrightarrow[\rho\uparrow1]{}0.
+\]
+Such roots of unity are dense on the circle.  If \(E\) continued
+analytically through some open boundary arc, the continued function would
+vanish on a set with an accumulation point inside its domain, hence would
+vanish identically by the identity theorem, contradicting \(E(0)=1\).  An
+algebraic function over \(\C(z)\) has only finitely many singular points on
+the Riemann sphere, so it cannot have a natural boundary; and \(T\) differs
+from \(-E/2\) by the rational function in \eqref{eq:T-from-E}.
+\end{proof}
+
+\begin{remark}
+Two softer routes to the same conclusion deserve mention.  The
+P\'olya--Carlson theorem \cite{carlson1921} says that a power series with
+integer coefficients and radius of convergence one is either rational or has
+the unit circle as a natural boundary, and \(E\) is visibly not rational
+because its coefficient sequence is not eventually periodic
+(\cref{sec:words-dynamics}).  For Mahler functions there is also a general
+rational-or-natural-boundary dichotomy \cite{bellCoonsRowland2013}.  The
+radial-zero argument above is preferred here because it is self-contained.
+\end{remark}
+
+The contrast with \cref{sec:F2-series} is worth displaying:
+\begin{equation}
+ \begin{array}{c|c}
+ \text{over }\Ftwo(z) &
+ \Theta(z)\text{ is algebraic of degree two},\\[0.2em]
+ \text{over }\C(z) &
+ T(z)\text{ is transcendental with a natural boundary}.
+ \end{array}
+ \label{eq:characteristic-contrast}
+\end{equation}
+Automaticity is algebraicity in the matching finite characteristic, not in
+characteristic zero.
+
+\subsection{Hankel determinants never vanish}
+
+For a sequence \(c=(c_n)_{n\ge0}\), the order-\(r\) \emph{Hankel
+determinant} is the determinant of the \(r\times r\) matrix whose
+\((i,j)\)-entry is \(c_{i+j}\):
+\begin{equation}
+  H_r(c)=\det\bigl(c_{i+j}\bigr)_{0\le i,j<r}.
+  \label{eq:hankel-definition}
+\end{equation}
+For the signed sequence the first values are
+\begin{equation}
+  H_1,H_2,\ldots=
+  1,\,-2,\,4,\,8,\,-16,\,-32,\,-64,\,128,\,-256,\,-1536,\ldots.
+  \label{eq:hankel-first-values}
+\end{equation}
+Unlike the Hessenberg matrix of \cref{thm:Hessenberg-determinant}, which was
+engineered from the ruler weights precisely so that its determinant would
+telescope, these matrices sample the raw signs and have no visible
+triangular structure.
+
+\begin{theorem}[Allouche--Peyri\`ere--Wen--Wen; literature theorem]
+\label{thm:hankel-nonzero}
+For every \(r\ge1\),
+\begin{equation}
+  \boxed{H_r(\eps)\ne0.}
+  \label{eq:hankel-nonzero}
+\end{equation}
+\end{theorem}
+
+The original proof runs a closed finite system of determinant recurrences
+\cite{apww1998}; later proofs include Han's Hankel continued-fraction
+calculus \cite{han2014} and a combinatorial argument of Bugeaud and Han
+\cite{bugeaudHan2014}.  The statement is a strong rigidity property: no
+finite window of the sequence ever satisfies an accidental low-order linear
+relation of Hankel type.
+
+Nonvanishing has a standard approximation-theoretic reading.  A \emph{Pad\'e
+approximant of type \([r-1/r]\)} to \(E\) is a rational function
+\(A(z)/B(z)\) with \(\deg A\le r-1\) and \(\deg B\le r\) whose Taylor
+expansion agrees with \(E\) to the maximal possible order.  When
+\(H_r(\eps)\ne0\), this approximant exists and the agreement is exact
+through order \(z^{2r-1}\) with a nonzero discrepancy coefficient at
+\(z^{2r}\); the whole diagonal Pad\'e table of \(E\) is therefore normal,
+with no degenerate blocks.
+
+\subsection{Transcendental values and the sharp irrationality exponent}
+\label{sec:mahler-values}
+
+Beyond transcendence of the function, Mahler's method gives transcendence of
+its values.  The Mahler equation \eqref{eq:E-Mahler} relates \(z\) to
+\(z^2\), and for an algebraic \(\alpha\) with \(0<|\alpha|<1\) the forward
+orbit \(\alpha,\alpha^2,\alpha^4,\ldots\) stays in the unit disk and never
+meets the zero of the rational cofactor \(1-z\).
+
+\begin{theorem}[Mahler; literature theorem]
+\label{thm:mahler-values}
+If \(\alpha\) is algebraic and \(0<|\alpha|<1\), then \(E(\alpha)\) is
+transcendental; consequently so is \(T(\alpha)\)
+\cite{mahler1929}.
+\end{theorem}
+
+In particular, every base-\(b\) Thue--Morse constant
+\(\Theta_b\) of \eqref{eq:base-b-constant-definition} is transcendental for
+integer \(b\ge2\).  How well such a constant can be approximated by
+rationals is measured by its \emph{irrationality exponent}
+\(\mu(\xi)\): the supremum of all real \(\mu\) such that
+\(|\xi-p/q|<q^{-\mu}\) holds for infinitely many fractions \(p/q\).  Every
+irrational number has \(\mu\ge2\), by Dirichlet's pigeonhole theorem, and
+Lebesgue-almost every real number has \(\mu=2\).
+
+\begin{theorem}[Bugeaud; literature theorem]
+\label{thm:irrationality-exponent}
+For every integer \(b\ge2\),
+\begin{equation}
+  \boxed{\mu(\Theta_b)=2.}
+  \label{eq:irrationality-exponent}
+\end{equation}
+\end{theorem}
+
+Thus the Thue--Morse--Mahler numbers are transcendental yet approximate as
+badly as possible for irrational numbers.  Bugeaud's proof
+\cite{bugeaud2011} runs the Pad\'e approximants of the previous subsection
+through the Mahler equation: iterating \(z\mapsto z^2\) transports one good
+rational approximation at \(z=1/b\) to a whole geometric family, and the
+nonvanishing Hankel determinants guarantee that the approximation orders
+have no long gaps.  Earlier partial bounds and the general determinant
+framework are surveyed in
+\cite{bugeaudQueffelec2013,bugeaudHanWenYao2015}.  This is the cleanest
+place where the determinant rigidity of \cref{thm:hankel-nonzero} pays an
+explicitly Diophantine dividend.
+
 \section[Finite differences and moments]{Finite differences, Prouhet cancellation, and all dyadic moments}
 \label{sec:finite-differences}
 
@@ -2029,6 +2287,25 @@ Then
 \end{equation}
 which is Prouhet's classical equal-sums-of-like-powers construction.  At
 \(r=m\), the difference is nonzero, so the cancellation order is exact.
+
+\begin{remark}[The Prouhet--Tarry--Escott problem]
+\label{rem:pte}
+Equation \eqref{eq:prouhet-partition} is the historical origin of the
+\emph{Prouhet--Tarry--Escott problem}: given a degree \(d\), find two
+disjoint multisets \(A\ne B\) of integers of equal size with
+\(\sum_{a\in A}a^r=\sum_{b\in B}b^r\) for all \(0\le r\le d\).  A solution
+is called \emph{ideal} when its size is \(d+1\), the smallest conceivable.
+Prouhet's partition \eqref{eq:prouhet-sets} solves degree \(d=m-1\) with the
+much larger size \(2^{m-1}\), but it does so uniformly for every degree ---
+still the only completely elementary construction that scales
+\cite{prouhet1851,borweinIngalls1994,wikipediaPTE}.  Ideal solutions are
+known for all \(d\le9\) and for \(d=11\); their existence for every degree
+is open.  The sparse Prouhet theorem of \cref{sec:sparse-prouhet} produces
+further nonconsecutive solutions: for any \(n\) with \(\wt(n)=s\), splitting
+the submasks of \(n\) by sign parity gives two sets of size \(2^{s-1}\)
+with equal power sums through degree \(s-1\), supported on the odd positions
+of Pascal row \(n\) rather than on an interval.
+\end{remark}
 
 \subsection{The finite exponential transform}
 
@@ -2917,7 +3194,408 @@ convergence.  Pass to the limit and evaluate recursively.
 The numbers \(\eta(k)\) are the Fourier coefficients of
 \(\mu_{\mathrm{TM}}\).  Thus the substitution recursion, autocorrelation, and
 Riesz product are exact combinatorial, coefficient, and measure-theoretic
-forms of the same spectral object.
+forms of the same spectral object.  Extending by evenness,
+\(\eta(-k)=\eta(k)\), the first values are
+\begin{equation}
+ 1,\;-\tfrac13,\;-\tfrac13,\;\tfrac13,\;-\tfrac13,\;0,\;\tfrac13,\;0,\;
+ -\tfrac13,\;\tfrac16,\;0,\;-\tfrac16,\;\tfrac13,\;-\tfrac16,\;0,\;\tfrac16.
+ \label{eq:eta-first-values}
+\end{equation}
+
+\subsection{A Mahler equation for the autocorrelation series}
+
+The autocorrelation sequence has its own generating function, and the
+recursion of \cref{thm:limiting-autocorrelation} compresses into a single
+functional equation of Mahler type.
+
+\begin{theorem}[Autocorrelation Mahler equation]
+\label{thm:autocorrelation-mahler}
+Let \(C(z)=\sum_{n\ge0}\eta(n)z^n\) for \(|z|<1\).  Then
+\begin{equation}
+  \boxed{
+  2zC(z)=1-(1-z)^2C(z^2).}
+  \label{eq:autocorrelation-mahler}
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+Split the series by parity of the index and insert
+\eqref{eq:eta-even} and \eqref{eq:eta-odd}:
+\begin{align*}
+ C(z)
+ &=\sum_{n\ge0}\eta(2n)z^{2n}
+  +\sum_{n\ge0}\eta(2n+1)z^{2n+1}\\
+ &=C(z^2)
+  -\frac z2\sum_{n\ge0}\eta(n)z^{2n}
+  -\frac z2\sum_{n\ge0}\eta(n+1)z^{2n}\\
+ &=C(z^2)-\frac z2C(z^2)
+  -\frac1{2z}\bigl(C(z^2)-1\bigr).
+\end{align*}
+Multiply by \(2z\) and collect the \(C(z^2)\) terms into
+\(-(1-z)^2C(z^2)\).
+\end{proof}
+
+Equation \eqref{eq:autocorrelation-mahler} places the autocorrelation beside
+\(E\) and \(T\) in the same Mahler framework; the square \((1-z)^2\)
+reflects the fact that \(\eta\) averages products of two signs.  Since the
+\(\eta(k)\) are also the Fourier coefficients of the spectral measure, the
+equation is a coefficient-level renormalization law for that singular
+continuous measure: the measure has no closed-form distribution function,
+yet its Fourier data satisfies a two-term finite recursion.
+
+\section[Word combinatorics and dynamics]{Combinatorics and dynamics of the infinite word}
+\label{sec:words-dynamics}
+
+The sequence read as an infinite binary \emph{word}
+\(\mathbf t=\tau(0)\tau(1)\tau(2)\cdots\) has a second life in combinatorics
+on words.  A \emph{factor} of \(\mathbf t\) is a finite block
+\(\tau(i)\tau(i+1)\cdots\tau(i+\ell-1)\) occurring at some position \(i\);
+the word-combinatorial theory studies which factors occur, how often, and
+with which repetitions.  This section proves the elementary statements in
+full and states the two classical deep ones with references.
+
+\subsection{Uniform recurrence and letter frequencies}
+
+Recall from \eqref{eq:thue-morphism} that \(\mathbf t\) is the fixed point,
+starting with \(0\), of the substitution
+\(\mu:0\mapsto01,\ 1\mapsto10\).  Iterating,
+\(\mathbf t=\lim_m\mu^m(0)\), and \(\mu^m(0)\), \(\mu^m(1)\) are the
+length-\(2^m\) blocks \(W_m,\overline{W_m}\) of
+\eqref{eq:word-recursion}, called the level-\(m\) \emph{supertiles}.
+
+\begin{proposition}[Uniform recurrence]
+\label{prop:uniform-recurrence}
+The word \(\mathbf t\) is \emph{uniformly recurrent}: for every factor
+\(w\) there is a length \(L(w)\) such that every window of \(L(w)\)
+consecutive letters of \(\mathbf t\) contains an occurrence of \(w\).
+\end{proposition}
+
+\begin{proof}
+A factor \(w\) of length \(\ell\) occurs inside some supertile
+\(\mu^k(a)\) with \(2^k\ge\ell\) and \(a\in\{0,1\}\).  Both letters occur
+in \(\mu(0)=01\), so every supertile of level \(k+1\) contains both
+\(\mu^k(0)\) and \(\mu^k(1)\); in particular every level-\((k+1)\)
+supertile contains \(w\).  Since \(\mathbf t\) is tiled by consecutive
+level-\((k+1)\) supertiles, every window of length \(L(w)=2^{k+2}\) contains
+a complete one.
+\end{proof}
+
+Uniform recurrence says every pattern that occurs once occurs with bounded
+gaps.  In dynamical terms, the closure of the shift orbit of
+\(\mathbf t\) is a minimal, uniquely ergodic system; that standard
+consequence of primitive constant-length substitutions
+\cite{queffelec2010} is what guarantees the existence of the limiting
+frequencies and autocorrelations used above.  The two letters have
+frequency exactly \(\tfrac12\): at dyadic lengths this is the exact balance
+\(A(2q)=q\) of \eqref{eq:ones-prefix-cases}, and general lengths deviate by
+at most one by \cref{cor:interval-discrepancy}.
+
+\subsection{Aperiodicity}
+
+\begin{proposition}[No eventual period]
+\label{prop:aperiodicity}
+The sequence \((\eps_n)\) is not eventually periodic.  In particular it is
+not periodic.
+\end{proposition}
+
+\begin{proof}
+Suppose \(p\ge1\) were a period valid from some index \(N_0\) on.  For any
+\(r\ge0\), choose \(m\) with \(2^m>r+p\) and \(2^m+r\ge N_0\).  Block
+concatenation \eqref{eq:block-sign} gives
+\(\eps_{2^m+r}=-\eps_r\) and \(\eps_{2^m+r+p}=-\eps_{r+p}\); eventual
+periodicity equates the left sides, so \(\eps_{r+p}=\eps_r\) for every
+\(r\ge0\), and \(p\) is a global period.  Now compare reflections: by
+\eqref{eq:block-reflection}, for every \(m\) with \(2^m>p\),
+\[
+ -1=\eps_{2^m}=\eps_{2^m-p}
+ =\eps_{(2^m-1)-(p-1)}=(-1)^m\eps_{p-1}.
+\]
+The right side changes sign between consecutive \(m\), while the left side
+is constant --- a contradiction.
+\end{proof}
+
+\subsection{Overlap-freeness and the critical exponent}
+
+A \emph{square} is a nonempty word repeated twice in immediate succession,
+\(ww\); a \emph{cube} is \(www\); an \emph{overlap} is a word of the form
+\(axaxa\) with \(a\) a single letter and \(x\) a possibly empty word ---
+equivalently, a square \(ww\) prolonged by one further letter of the same
+period.  The \emph{critical exponent} of an infinite word is the supremum,
+over its factors \(w\), of \(|w|/p\), where \(p\) is the smallest period of
+\(w\) and \(|w|\) its length.
+
+\begin{theorem}[Thue; literature theorem]
+\label{thm:overlap-free}
+The Thue--Morse word contains no overlap.  Consequently it contains no cube,
+and no factor has exponent strictly greater than \(2\); since squares of
+arbitrarily great length do occur (apply \(\mu^m\) to the square
+\(\tau(1)\tau(2)=11\)), the critical exponent equals
+\begin{equation}
+  \boxed{2,}
+  \label{eq:critical-exponent}
+\end{equation}
+and it is attained.
+\end{theorem}
+
+This is Thue's foundational theorem \cite{thue1906}; a modern proof by
+desubstitution --- a shortest overlap in \(\mu(\mathbf t)\) would force a
+shorter one in \(\mathbf t\) after a finite boundary check --- appears in
+\cite{alloucheShallit2003}.  Overlap-freeness is far stronger than the
+directly visible absence of the cubes \(000\) and \(111\), and it was the
+original reason for the word's construction, decades before its automatic,
+spectral, and Diophantine roles emerged.
+
+\subsection{Complement and reversal closure}
+
+Complementing every letter commutes with the substitution up to swapping
+the seeds \(0\leftrightarrow1\); hence with every factor \(w\) the language
+of \(\mathbf t\) also contains its bitwise complement \(\overline w\).  For
+reversal, the reflection formula \eqref{eq:block-reflection} says that
+reading the length-\(2^m\) prefix backwards reproduces it when \(m\) is
+even and complements it when \(m\) is odd --- in signed terms this is the
+reciprocity of \cref{prop:reciprocity}.  Every factor sits inside some such
+prefix, so the factor language is closed under reversal as well.  By unique
+ergodicity, complementary factors occur with equal frequencies; the exact
+prefix balance of \cref{thm:exact-prefix} is the one-letter case.
+
+\subsection{Linear factor complexity}
+
+Let \(p(\ell)\) denote the \emph{factor complexity}: the number of distinct
+factors of length \(\ell\).
+
+\begin{proposition}[Elementary linear bound]
+\label{prop:complexity-bound}
+For every \(\ell\ge2\),
+\begin{equation}
+  \boxed{\ell+1\le p(\ell)<8\ell.}
+  \label{eq:complexity-bound}
+\end{equation}
+\end{proposition}
+
+\begin{proof}
+Choose \(k\) minimal with \(2^k\ge\ell\), so \(2^k<2\ell\).  The word is a
+concatenation of level-\(k\) supertiles, so every length-\(\ell\) factor
+lies inside a pair of consecutive supertiles \(\mu^k(a)\mu^k(b)\).  There
+are at most four choices of \((a,b)\) and at most \(2^k\) starting offsets,
+whence \(p(\ell)\le4\cdot2^k<8\ell\).  The lower bound is the
+Morse--Hedlund theorem \cite{morseHedlund1938}: an infinite word with
+\(p(\ell)\le\ell\) for some \(\ell\) is eventually periodic, which
+\cref{prop:aperiodicity} forbids; hence \(p(\ell)\ge\ell+1\) for all
+\(\ell\).
+\end{proof}
+
+Linear complexity has two immediate consequences.  The topological entropy,
+\(\lim_\ell\ell^{-1}\log p(\ell)\), is zero.  And the word is not
+\emph{normal}: a normal binary word contains all \(2^\ell\) blocks of every
+length \(\ell\), which is incompatible with \eqref{eq:complexity-bound}.
+Exact piecewise-linear formulas for \(p(\ell)\) are known
+\cite{alloucheShallit2003}; the elementary bound above suffices for every
+use in this atlas.  The pointed contrast with \cref{sec:rarefied-newman}
+below is worth savoring: the word itself is combinatorially rigid, yet its
+arithmetic subsequences behave pseudorandomly.
+
+\section[Rarefied sums and Newman's phenomenon]{Rarefied sums, arithmetic progressions, and Newman's phenomenon}
+\label{sec:rarefied-newman}
+
+Prefix sums of \(\eps\) are bounded by \cref{thm:exact-prefix}, and sums
+over aligned dyadic blocks vanish.  Restricting instead to an arithmetic
+progression destroys this balance in a striking way: along multiples of
+three one sign is \emph{always} in excess, with a power-law surplus.  The
+finite product \(P_m\) evaluated at roots of unity controls the whole
+phenomenon.
+
+\subsection{Root-of-unity filters at dyadic endpoints}
+
+For a modulus \(q\ge2\) and residue \(0\le r<q\), define
+\begin{equation}
+  A^{(q)}_{m,r}
+  =\sum_{\substack{0\le n<2^m\\ n\equiv r\ (\mathrm{mod}\ q)}}\eps_n.
+  \label{eq:rarefied-definition}
+\end{equation}
+Let \(\zeta_q=\e^{2\pi\ii/q}\), a primitive \(q\)-th root of unity.
+Averaging the geometric identity
+\(\smash{\frac1q\sum_{\ell<q}\zeta_q^{(n-r)\ell}}=\ind_{q\mid n-r}\)
+against \eqref{eq:finite-product} gives the exact finite formula
+\begin{equation}
+  \boxed{
+  A^{(q)}_{m,r}
+  =\frac1q\sum_{\ell=0}^{q-1}\zeta_q^{-r\ell}
+   P_m\bigl(\zeta_q^{\ell}\bigr)
+  =\frac1q\sum_{\ell=0}^{q-1}\zeta_q^{-r\ell}
+   \prod_{j=0}^{m-1}\bigl(1-\zeta_q^{\ell2^j}\bigr).}
+  \label{eq:rarefied-filter}
+\end{equation}
+For \(m\ge1\) the term \(\ell=0\) vanishes, and the exponents
+\(\ell2^j\) move along the orbit of multiplication by two modulo \(q\).
+For \emph{even} moduli the phenomenon collapses: powers of two are
+eventually \(0\bmod 2^k\), and for example
+\(A^{(2)}_{m,0}=\sum_{k<2^{m-1}}\eps_{2k}=S(2^{m-1})=0\) for \(m\ge2\) by
+\eqref{eq:exact-prefix}.  Odd moduli are the interesting case: there the
+orbit of \(2\) is a fixed cycle and the products in
+\eqref{eq:rarefied-filter} grow geometrically.
+
+\subsection{Complete evaluation modulo three}
+
+For \(q=3\) everything is explicit, because
+\(2^j\equiv1,2,1,2,\ldots\pmod3\) and, with
+\(\omega=\zeta_3=\e^{2\pi\ii/3}\),
+\begin{equation}
+  (1-\omega)(1-\omega^2)=3.
+  \label{eq:omega-pair-product}
+\end{equation}
+
+\begin{theorem}[Exact dyadic rarefaction modulo three]
+\label{thm:mod3-rarefaction}
+For \(u\ge1\),
+\begin{equation}
+  \boxed{
+  \bigl(A^{(3)}_{2u,0},A^{(3)}_{2u,1},A^{(3)}_{2u,2}\bigr)
+  =3^{u-1}\,(2,-1,-1),}
+  \label{eq:mod3-even-level}
+\end{equation}
+and for \(u\ge0\),
+\begin{equation}
+  \boxed{
+  \bigl(A^{(3)}_{2u+1,0},A^{(3)}_{2u+1,1},A^{(3)}_{2u+1,2}\bigr)
+  =3^{u}\,(1,-1,0).}
+  \label{eq:mod3-odd-level}
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+At even level \(m=2u\), the factors of \(P_m(\omega)\) pair into \(u\)
+copies of \eqref{eq:omega-pair-product}, so
+\(P_{2u}(\omega)=P_{2u}(\omega^2)=3^u\).  At odd level one factor is left
+over:
+\(P_{2u+1}(\omega)=3^u(1-\omega)\) and
+\(P_{2u+1}(\omega^2)=3^u(1-\omega^2)\).  Insert these values into
+\eqref{eq:rarefied-filter} with \(q=3\) and simplify with
+\(1+\omega+\omega^2=0\).
+\end{proof}
+
+The first vectors are
+\[
+ (1,-1,0),\quad(2,-1,-1),\quad(3,-3,0),\quad(6,-3,-3),\quad(9,-9,0),
+\]
+growing by a factor of three every two levels.  Writing \(X=2^m\) for the
+endpoint, the excess on multiples of three is
+\begin{equation}
+  A^{(3)}_{m,0}
+  =c_m\,X^{\alpha},
+  \qquad
+  \alpha=\log_43=\frac{\log3}{\log4}=0.79248\ldots,
+  \label{eq:newman-exponent}
+\end{equation}
+where the constant \(c_m\) equals \(\tfrac23\) for even \(m\) and
+\(\tfrac1{\sqrt3}\) for odd \(m\): a clean two-scale oscillation around the
+power law.
+
+\subsection{Gelfond's uniform exponent}
+
+The rarefied sums are finitely many samples of the trigonometric polynomial
+\(p_m(x)=P_m(\e^{2\pi\ii x})\), whose modulus is the sine product
+\eqref{eq:finite-Fourier-magnitude}.  How large can it get?  Evaluating at
+\(x=\tfrac13\) gives, by \eqref{eq:omega-pair-product},
+\begin{equation}
+  \sup_{x\in\R}|p_m(x)|
+  \ge|P_m(\omega)|
+  =3^{m/2}
+  \qquad(m\ge0),
+  \label{eq:gelfond-lower}
+\end{equation}
+since the factors have modulus \(|1-\omega|=|1-\omega^2|=\sqrt3\) in every
+position.  Gelfond's theorem \cite{gelfond1968} shows this is sharp up to a
+bounded factor:
+\begin{equation}
+  \boxed{
+  \sup_{x\in\R}|p_m(x)|
+  \le\frac2{\sqrt3}\,3^{m/2}
+  =\frac2{\sqrt3}\,\bigl(2^m\bigr)^{\log_43}.}
+  \label{eq:gelfond-upper}
+\end{equation}
+Decomposing an arbitrary range \([0,N)\) into at most one dyadic block per
+binary digit of \(N\) and applying \eqref{eq:gelfond-upper} blockwise gives
+\begin{equation}
+  \sup_{x\in\R}
+  \left|\sum_{n=0}^{N-1}\eps_n\e^{2\pi\ii nx}\right|
+  =\bigO\bigl(N^{\log_43}\bigr),
+  \label{eq:gelfond-general}
+\end{equation}
+so \(\log_43\) is the optimal uniform growth exponent of Thue--Morse
+exponential sums \cite{gelfond1968,queffelec2018}.  At \(x=0\) the sum
+collapses to the bounded prefix values --- the supremum and the special
+value differ by a full power of \(N\).
+
+\subsection{A matrix recursion for odd moduli}
+
+For a fixed odd \(q\), the vector
+\(\mathbf A_m=(A^{(q)}_{m,r})_{0\le r<q}\) obeys a linear recursion.
+Splitting \eqref{eq:rarefied-definition} by the parity of \(n\), and
+writing \(2^{-1}\) for the inverse of \(2\) modulo \(q\) (which exists
+because \(q\) is odd),
+\begin{equation}
+  A^{(q)}_{m+1,r}
+  =A^{(q)}_{m,\,2^{-1}r\bmod q}
+  -A^{(q)}_{m,\,2^{-1}(r-1)\bmod q},
+  \label{eq:rarefied-matrix-recursion}
+\end{equation}
+since even \(n=2n'\equiv r\) forces \(n'\equiv2^{-1}r\) with
+\(\eps_n=\eps_{n'}\), and odd \(n=2n'+1\equiv r\) forces
+\(n'\equiv2^{-1}(r-1)\) with \(\eps_n=-\eps_{n'}\).  Thus
+\(\mathbf A_{m+1}=M_q\mathbf A_m\) for a fixed matrix \(M_q\) with one
+entry \(+1\) and one entry \(-1\) per row; diagonalizing \(M_q\) by the
+discrete Fourier transform on \(\Z/q\Z\) reproduces
+\eqref{eq:rarefied-filter}.  For \(q=3\) the eigenvalues have modulus
+\(\sqrt3\), which is the growth rate seen in
+\cref{thm:mod3-rarefaction}.
+
+\subsection{The global Newman theorem and the arithmetic frontier}
+
+Theorem \ref{thm:mod3-rarefaction} evaluates the excess at dyadic
+endpoints.  Newman's theorem extends the positivity to \emph{every}
+endpoint.  The following results are literature theorems, stated here to
+locate the atlas's exact identities inside modern analytic number theory;
+none is reproved.
+
+\begin{theorem}[Newman; literature theorem]
+\label{thm:newman}
+For every real \(X\ge1\),
+\begin{equation}
+  \boxed{
+  N_3(X):=\sum_{\substack{0\le n<X\\ 3\mid n}}\eps_n>0.}
+  \label{eq:newman-positivity}
+\end{equation}
+Moreover
+\(\tfrac1{20}X^{\log_43}\le N_3(X)\le5X^{\log_43}\) for \(X\ge2\).
+\end{theorem}
+
+Among multiples of three below any cutoff, integers of even binary weight
+always outnumber those of odd binary weight \cite{newman1969}.  Coquet
+determined the precise structure:
+\(N_3(X)=X^{\log_43}\,\Psi(\log_4X)+\bigO(1)\) with \(\Psi\) a continuous,
+nowhere-differentiable periodic function \cite{coquet1983}.  Rarefactions
+along other progressions and for generalized digit characters were analyzed
+by Drmota and Skalba \cite{drmotaSkalba2000} and Drmota and Stoll
+\cite{drmotaStoll2008}; a recent automata-theoretic treatment mechanizes
+such evaluations \cite{shallit2023}.
+
+Beyond arithmetic progressions, the same digit-parity character is now
+understood along much thinner sequences.  Mauduit and Rivat proved
+Gelfond's conjecture that the parity is equidistributed along the primes:
+\(\sum_{p\le x}\eps_p=\smallo(\pi(x))\), the sum running over primes with
+\(\pi(x)\) their count \cite{mauduitRivat2010}.  Drmota, Mauduit, and Rivat
+proved that along the squares the word
+\((\tau(n^2))_{n\ge0}\) is \emph{normal} --- every binary block of length
+\(L\) occurs with limiting frequency \(2^{-L}\)
+\cite{drmotaMauduitRivat2019} --- in sharp contrast with the non-normality
+of the word itself (\cref{prop:complexity-bound}).  Spiegelhofer
+established a level-of-distribution result covering
+\(\tau(\lfloor n^c\rfloor)\) for \(1<c<2\) \cite{spiegelhofer2020} and the
+one-symbol balance along the cubes \cite{spiegelhofer2023}.  The
+deterministic word is combinatorially rigid, yet its polynomial and prime
+subsequences behave like fair coin flips: that tension is the modern face
+of Gelfond's problems, and every one of these theorems begins from the
+finite product and carry structure catalogued in this atlas.
 
 \section[Mellin--Dirichlet continuation]{Boundary flatness, shifted Dirichlet series, and Mellin continuation}
 \label{sec:dirichlet-mellin}
@@ -3478,6 +4156,8 @@ Proposed module & Main declarations \\
 \path{ThueMorseFormalSeriesF2.lean} & Artin--Schreier equation and explicit solution. \\
 \path{ThueMorseFourier.lean} & Finite DFT, Walsh transform, product-to-sum identities. \\
 \path{ThueMorseDirichlet.lean} & Boundary flatness, Mellin integral, entire continuation. \\
+\path{ThueMorseRarefied.lean} & Root-of-unity filters, modulo-three closed forms, odd-modulus matrix recursion. \\
+\path{ThueMorseWords.lean} & Uniform recurrence, aperiodicity, and the elementary complexity bounds. \\
 \bottomrule
 \end{tabularx}
 \end{center}
@@ -3634,6 +4314,49 @@ Starting with \(\eta(0)=1\), the fixed-point equation at one gives
 These are simultaneously combinatorial averages and Fourier coefficients of
 the singular continuous Thue--Morse measure.
 
+\subsection{A complete four-bit block}
+
+At \(m=4\),
+\begin{align}
+  P_4(z)
+  &=1-z-z^2+z^3-z^4+z^5+z^6-z^7
+  \notag\\
+  &\quad{}-z^8+z^9+z^{10}-z^{11}+z^{12}-z^{13}-z^{14}+z^{15}
+  \notag\\
+  &=(1-z)(1-z^2)(1-z^4)(1-z^8).
+  \label{eq:P4-example}
+\end{align}
+The factor \((1-z)^4\) divides the product, so
+\begin{equation}
+  \sum_{n<16}\eps_nn^r=0
+  \quad(0\le r<4),
+  \qquad
+  \sum_{n<16}\eps_nn^4=4!\,2^{\binom42}=1536,
+  \label{eq:P4-moments}
+\end{equation}
+the sign being positive because \((-1)^4=1\).  The residue-class sums modulo
+three are, by \cref{thm:mod3-rarefaction} at level \(m=4\),
+\begin{equation}
+  \bigl(A^{(3)}_{4,0},A^{(3)}_{4,1},A^{(3)}_{4,2}\bigr)=(6,-3,-3).
+  \label{eq:P4-rarefied}
+\end{equation}
+Their total is zero, as block balance requires, yet the distribution among
+residue classes is already strongly skewed toward the multiples of three.
+
+\subsection{A carry-corrected addition}
+
+Take \(a=13=(1101)_2\) and \(b=7=(0111)_2\).  Then
+\(\eps_{13}=\eps_7=-1\), while \(a+b=20=(10100)_2\) has
+\(\eps_{20}=+1\).  Kummer's formula \eqref{eq:kummer-digit-sum} counts
+\begin{equation}
+  \vtwo\binom{20}{13}=\wt(13)+\wt(7)-\wt(20)=3+3-2=4
+  \label{eq:carry-example}
+\end{equation}
+carries, and the correction \((-1)^4=1\) in \eqref{eq:carry-sign} restores
+multiplicativity: \(\eps_{20}=(-1)(-1)(+1)\).  The example shows why a
+yes/no record of ``was there a carry'' cannot suffice: the sign needs the
+carry count with propagation, taken modulo two.
+
 \section[Conclusion]{Concluding synthesis}
 \label{sec:conclusion}
 
@@ -3773,6 +4496,11 @@ Draft 2 & Sparse power-of-two Pascal columns; all-order dyadic moments; automato
 Draft 3 & Multinomial support and exact \(r\)-nomial logarithms; sparse Prouhet theorem on arbitrary Pascal rows; autocorrelation recurrences; Artin--Schreier series over \(\mathbb F_2\); Catalan and fractional-part formulae. \\
 Draft 4 & Logarithm-free modulo-three Pascal formula; sinc-product interval signs; evil/odious enumerators; integer algebraic lift; trigonometric product-to-sum identities; explicit iterated-prefix/Fabius bridge. \\
 Unified additions & Dyadic weight-distribution chapter; centered-moment parity selection; all sparse Pascal-support moments; elementary boundary asymptotic for \(E(\e^{-t})\); entire shifted Dirichlet family, its nonpositive-integer zeros, and its derivative bridge to exponent products; sharp first moment for the general base-\(q\) character. \\
+\midrule
+Parallel atlas 1 & Self-contained natural-boundary proof; supertile arguments for uniform recurrence and the linear complexity bound \(p(\ell)<8\ell\); the literature panorama of arithmetic subsequences (primes, squares, cubes, level of distribution). \\
+Parallel atlas 2 & Gelfond's sharp uniform exponent with the lower bound at cube roots of unity; the odd-modulus matrix recursion; the autocorrelation Mahler equation; subtraction/borrow cocycle; weighted digit enumerator; Hankel/Pad\'e framing of irrationality measure. \\
+Parallel atlas 3 & Exact modulo-three rarefaction vectors with the two-scale constants; Newman positivity framing; complement/reversal closure of the factor language; critical exponent statement; Mahler value transcendence and \(\mu=2\) exposition; four-bit block and carry-corrected worked examples. \\
+Second-pass additions & Even-modulus collapse of rarefied sums from exact prefix identities; the characteristic-zero/characteristic-two reading of the lacunary digit-sum series \eqref{eq:digit-sum-ogf}; Morse--Hedlund lower complexity bound paired with the elementary upper bound. \\
 \bottomrule
 \end{longtable}
 \renewcommand{\arraystretch}{1}
@@ -3871,6 +4599,131 @@ J.-P.~Allouche, S.~Riasat, and J.~Shallit,
 \newblock More infinite products: Thue--Morse and the gamma function,
 \newblock \emph{Ramanujan Journal} \textbf{49} (2019), 115--128;
 \newblock arXiv:\nolinkurl{1709.03398}.
+
+\bibitem{borweinIngalls1994}
+P.~Borwein and C.~Ingalls,
+\newblock The Prouhet--Tarry--Escott problem revisited,
+\newblock \emph{L'Enseignement Math\'ematique} \textbf{40} (1994), 3--27.
+
+\bibitem{wikipediaPTE}
+Wikipedia,
+\newblock Prouhet--Tarry--Escott problem,
+\newblock \url{https://en.wikipedia.org/wiki/Prouhet%E2%80%93Tarry%E2%80%93Escott_problem},
+accessed 26 August 2026.
+
+\bibitem{morseHedlund1938}
+M.~Morse and G.~A.~Hedlund,
+\newblock Symbolic dynamics,
+\newblock \emph{American Journal of Mathematics} \textbf{60} (1938),
+815--866.
+
+\bibitem{carlson1921}
+F.~Carlson,
+\newblock \"Uber Potenzreihen mit ganzzahligen Koeffizienten,
+\newblock \emph{Mathematische Zeitschrift} \textbf{9} (1921), 1--13.
+
+\bibitem{bellCoonsRowland2013}
+J.~P.~Bell, M.~Coons, and E.~Rowland,
+\newblock The rational--transcendental dichotomy of Mahler functions,
+\newblock \emph{Journal of Integer Sequences} \textbf{16} (2013),
+Article 13.2.10.
+
+\bibitem{apww1998}
+J.-P.~Allouche, J.~Peyri\`ere, Z.-X.~Wen, and Z.-Y.~Wen,
+\newblock Hankel determinants of the Thue--Morse sequence,
+\newblock \emph{Annales de l'Institut Fourier} \textbf{48} (1998), 1--27.
+
+\bibitem{han2014}
+G.-N.~Han,
+\newblock Hankel determinant calculus for the Thue--Morse and related
+sequences,
+\newblock arXiv:\nolinkurl{1406.1586}, 2014.
+
+\bibitem{bugeaudHan2014}
+Y.~Bugeaud and G.-N.~Han,
+\newblock A combinatorial proof of the non-vanishing of Hankel determinants
+of the Thue--Morse sequence,
+\newblock \emph{Electronic Journal of Combinatorics} \textbf{21}(3) (2014),
+Paper 3.26.
+
+\bibitem{bugeaud2011}
+Y.~Bugeaud,
+\newblock On the rational approximation to the Thue--Morse--Mahler numbers,
+\newblock \emph{Annales de l'Institut Fourier} \textbf{61} (2011),
+2065--2076.
+
+\bibitem{bugeaudQueffelec2013}
+Y.~Bugeaud and M.~Queff\'elec,
+\newblock On the rational approximation to the binary Thue--Morse--Mahler
+number,
+\newblock \emph{Journal of Integer Sequences} \textbf{16} (2013),
+Article 13.2.1.
+
+\bibitem{bugeaudHanWenYao2015}
+Y.~Bugeaud, G.-N.~Han, Z.-Y.~Wen, and J.-Y.~Yao,
+\newblock Hankel determinants, Pad\'e approximations, and irrationality
+exponents,
+\newblock arXiv:\nolinkurl{1503.02797}, 2015.
+
+\bibitem{gelfond1968}
+A.~O.~Gelfond,
+\newblock Sur les nombres qui ont des propri\'et\'es additives et
+multiplicatives donn\'ees,
+\newblock \emph{Acta Arithmetica} \textbf{13} (1968), 259--265.
+
+\bibitem{queffelec2018}
+M.~Queff\'elec,
+\newblock Questions around the Thue--Morse sequence,
+\newblock \emph{Uniform Distribution Theory} \textbf{13} (2018), 1--25.
+
+\bibitem{newman1969}
+D.~J.~Newman,
+\newblock On the number of binary digits in a multiple of three,
+\newblock \emph{Proceedings of the American Mathematical Society}
+\textbf{21} (1969), 719--721.
+
+\bibitem{coquet1983}
+J.~Coquet,
+\newblock A summation formula related to the binary digits,
+\newblock \emph{Inventiones Mathematicae} \textbf{73} (1983), 107--115.
+
+\bibitem{drmotaSkalba2000}
+M.~Drmota and M.~Skalba,
+\newblock Rarified sums of the Thue--Morse sequence,
+\newblock \emph{Transactions of the American Mathematical Society}
+\textbf{352} (2000), 609--642.
+
+\bibitem{drmotaStoll2008}
+M.~Drmota and T.~Stoll,
+\newblock Newman's phenomenon for generalized Thue--Morse sequences,
+\newblock \emph{Discrete Mathematics} \textbf{308} (2008), 1191--1208.
+
+\bibitem{shallit2023}
+J.~Shallit,
+\newblock Rarefied Thue--Morse sums via automata theory and logic,
+\newblock arXiv:\nolinkurl{2302.09436}, 2023.
+
+\bibitem{mauduitRivat2010}
+C.~Mauduit and J.~Rivat,
+\newblock Sur un probl\`eme de Gelfond: la somme des chiffres des nombres
+premiers,
+\newblock \emph{Annals of Mathematics} \textbf{171} (2010), 1591--1646.
+
+\bibitem{drmotaMauduitRivat2019}
+M.~Drmota, C.~Mauduit, and J.~Rivat,
+\newblock Normality along squares,
+\newblock \emph{Journal of the European Mathematical Society} \textbf{21}
+(2019), 507--548.
+
+\bibitem{spiegelhofer2020}
+L.~Spiegelhofer,
+\newblock The level of distribution of the Thue--Morse sequence,
+\newblock \emph{Compositio Mathematica} \textbf{156} (2020), 2560--2587.
+
+\bibitem{spiegelhofer2023}
+L.~Spiegelhofer,
+\newblock Thue--Morse along the sequence of cubes,
+\newblock arXiv:\nolinkurl{2308.09498}, 2023.
 
 \end{thebibliography}
 
