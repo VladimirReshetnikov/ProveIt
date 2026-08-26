@@ -776,3 +776,64 @@ conflicts / dependencies: no merge conflict; the source paths are board-frozen
 next bounded step: commit and push this registry-only checkpoint to the feature
   branch, then continue read-only polling; do not build and do not push main
 ```
+
+## Coordinator integration and focused validation
+
+Coordinator checkpoint `c9d20ed14c7572d4f3f1361c7883085eaf5bb0d8`
+integrates the two-source theorem unit.  The coordinator cherry-picked source
+commit `0f7d53e8c` as `de8707b44`, then the first Toeplitz build exposed three
+proof-elaboration defects: both concrete natural-floor evaluations needed
+explicit `Nat.floor_eq_iff` witnesses, and the final generic `RCLike`
+normalization needed `push_cast` before `ring`.  That failed attempt supplies no
+validation evidence.
+
+Repair `8e09c4d98ff1a42fe5d8f1ebf9099a8b0d25d9` changes no public
+statement.  At that immutable repaired tree the coordinator ran the two
+requested gates separately with `LAKE_JOBS=1`:
+
+```text
+lake build +FabiusFunction.FabiusDiscreteLimitToeplitz   # 3320 jobs, exit 0
+lake build +FabiusFunction.FabiusDiscreteLimitIntegration # 3422 jobs, exit 0
+```
+
+Both completed without warnings.  Feature merge
+`f1e1ddf8bf539fbeee68eeebb6e1c5229736d90c` incorporates that validated
+mainline result.  Its sole content conflict was the pre-repair Toeplitz proof;
+the resolution retains the coordinator repair and is byte-identical to the
+validated main blob `d1927c1ae8ff43af1f5dc41541b2cd4df1a4d4cb`.
+
+```text
+SYNC Fabius
+branch / worktree / machine: codex/fabius-theorem-polish-20260825 /
+  C:/Users/vresh/.codex/worktrees/10ef/ProveIt / EVO (Windows)
+fetched main SHA: c9d20ed14c7572d4f3f1361c7883085eaf5bb0d8
+HEAD and dirty paths: f1e1ddf8bf539fbeee68eeebb6e1c5229736d90c;
+  clean immediately after the validated-main merge, then only this registry is
+  dirty for the present report
+writing (exact paths): this branch registry only; both Lean source paths are
+  released and no canonical document path is claimed
+expected declarations or document claims: all eight advertised declarations
+  are integrated on main with unchanged public statements
+completed commits: de8707b44 (coordinator source cherry-pick), 8e09c4d98
+  (statement-preserving elaboration repair), c9d20ed14 (published coordinator
+  disposition), f1e1ddf8b (feature synchronization and exact-blob conflict
+  resolution)
+validated (exact command, SHA/state, exit code): at immutable coordinator tree
+  8e09c4d98, separate LAKE_JOBS=1 builds of
+  +FabiusFunction.FabiusDiscreteLimitToeplitz (3320 jobs) and
+  +FabiusFunction.FabiusDiscreteLimitIntegration (3422 jobs) both exited 0
+  without warnings; resolved Toeplitz blob equals main blob d1927c1ae
+not yet validated: the earlier Toeplitz attempt at de8707b44 failed and is not
+  evidence; this EVO worktree launched no Lean/Lake/TeX/PDF/Python audit or
+  cache-mutating validator
+requested integration or lease: source integration is complete and both source
+  leases are released; request a separately identified successor owner and
+  exact-path grant for the frozen human-readable reciprocity handoff above
+conflicts / dependencies: the sole source conflict was resolved wholly inside
+  this branch's former claim to the already validated main blob; canonical
+  exposition, walkthrough, frontier, glossary, coverage, README, aggregate,
+  TeX, and PDF paths remain unclaimed and untouched by this branch
+next bounded step: commit and push this registry-only report; await the
+  coordinator's exact successor-document or new-source disposition; run no
+  validator without an explicit EVO token and never push main
+```
