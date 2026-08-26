@@ -1616,3 +1616,57 @@ LEAN_NUM_THREADS=0 LAKE_JOBS=1 lake build +FabiusFunction.PaperFabiusAsymptotic
 Stop after the first nonzero exit.  The source path is released to the
 coordinator for exact-commit integration but remains unavailable for further
 feature-branch edits until disposition.
+
+## Claim: hoist and reuse the uniform-coordinate laws
+
+Fresh `origin/main` `7cfc103ff85b73070625f0556652442af7819c14`
+has `ProbabilityRepresentation.lean` blob
+`c38042d1095ffdcb9797671b52a781f68a766c1b`, identical to this branch before
+the claim.  The exact prospective write set is:
+
+- `Lean/FabiusFunction/ProbabilityRepresentation.lean`;
+- this branch's own registry.
+
+The module currently declares the documented public lemmas
+`independent_uniform_coordinates` and `coordinate_has_uniform_law` near its
+end, roughly 650 lines after their definitions permit them and after four
+earlier proof sites re-establish their content.  This deletion-oriented
+refactor will move those two declarations byte-for-byte to immediately after
+the `IsProbabilityMeasure uniformProduct` instance, the earliest
+dependency-safe point in their defining module.  It will then:
+
+- replace the local independence reconstruction in `independent_head_tail`
+  with `have hi := independent_uniform_coordinates`;
+- replace the two local first-coordinate law proofs in
+  `uniformProduct_map_head_tail` and `uniformProduct_map_head_tailSum` with
+  `have hhead := coordinate_has_uniform_law 0`;
+- rewrite the first-coordinate null event in
+  `weightedSumCDF_zero_of_nonpos` directly by `coordinate_has_uniform_law`.
+
+The public names, doc comments, statements, proof bodies, attributes, and
+namespace remain exact; only declaration order and the four internal uses
+change.  No import, theorem statement, facade, aggregate, or canonical
+document changes.  The projected direct source delta is seventeen insertions
+and twenty-five deletions, net minus eight lines.  This is the exact cleanup
+recorded as a high-confidence open finding in frozen `AUDIT_FINDINGS.md`;
+that ledger is not part of the claim.
+
+Exact-name, proof-body, path-history, advertised-tip, and every-registry scans
+find no competing implementation or active/frozen ownership.  All modern
+tips retain the exact current-main source blob.  The only external source use
+of `coordinate_has_uniform_law` is already the same direct rewrite idiom in
+`FabiusUniformSpline.lean`; no caller depends on the declarations' textual
+position.  The direct importers are `Paper05442.lean`,
+`ProbabilityLaplaceMoments.lean`, and `FabiusUniformSpline.lean`.
+
+No Lean, Lake, TeX, PDF, or cache-mutating process is authorized or has run
+for this claim.  After an immutable reviewed source checkpoint, the requested
+separate serialized gates are:
+
+```text
+LEAN_NUM_THREADS=0 LAKE_JOBS=1 lake build +FabiusFunction.ProbabilityRepresentation
+LEAN_NUM_THREADS=0 LAKE_JOBS=1 lake build +FabiusFunction.FabiusUniformSpline
+```
+
+The second target exercises the existing downstream public-name rewrite.
+Stop after the first nonzero exit and run no additional target.
