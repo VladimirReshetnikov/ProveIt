@@ -927,3 +927,57 @@ next bounded step:
   commit matching TeX/PDF artifacts together
 git owner / document owner / build owner: root / unassigned / none
 ```
+
+## Accepted signed-reciprocity documentation grant
+
+Coordinator checkpoint `0bc0bf55135d2dea10c5fb8320e69a00ab55ded0`
+assigns this branch sole ownership of the previously requested coverage,
+primary-exposition, and Lean-walkthrough tranche.  Clean merge
+`8b48a970aa2f01df8bbcd33f73da01db7ed17a2a`, tree
+`f9c6bc11111e3592bb2b9510816eb25a4426f705`, has exact parents
+`80acec347c09437f9820835388f68c0a20452776` and
+`0bc0bf55135d2dea10c5fb8320e69a00ab55ded0`; the fetched main is an
+ancestor, the unmerged index is empty, and the feature tip is pushed.
+
+Before any document edit, every granted artifact is identical to the merged
+current-main base:
+
+```text
+docs/PAPER_COVERAGE.md
+  Git blob 8bde174e2a8328fecfe6ccd6ca857e674f6629ab
+  SHA-256 50612814C67D97B013212740A795D564865B6F6E4AC2051C3BA86A2CE56FF5EA
+docs/Fabius_Function_and_Rvachev_Up/Fabius_Function_and_Rvachev_Up.tex
+  Git blob e3a0df24ef2697d6ad12300ce2e57f22f5fddde8
+  SHA-256 F4EE348F21524C2EDB8880E16E50802CCC6A3A831D38C8426F23AF7607EA64F1
+docs/Fabius_Function_and_Rvachev_Up/Fabius_Function_and_Rvachev_Up.pdf
+  Git blob 93af1982d22666570eee76314f14251468567381
+  SHA-256 59B8B06825F89B81A33F6352196CEBE7C0CAF4C436170FEB15FFDD9336E72908
+  1,007,180 bytes; 57 A4 pages
+docs/fabius_lean_walkthrough/fabius_lean_walkthrough.tex
+  Git blob 878eda9c17348eefa06e65e2ccb964f259449c85
+  SHA-256 57F9815D51BD0D57F753A734C95321535E4DD5154E9FC62849E5EE4DAFB7E3E8
+docs/fabius_lean_walkthrough/fabius_lean_walkthrough.pdf
+  Git blob 6bb528a47aa6015d35659e73dc46a8e6cda07c92
+  SHA-256 FD54291F49DB36365AEDD44062DAA56A443D627C46C76A4DFB45105D4F5F36E5
+  656,023 bytes; 89 A4 pages
+```
+
+The active write set is exactly those five paths plus this registry.  The
+bounded content change will document the literal hypotheses and signed
+pre-run reciprocity, its reflected-zero equivalence, the `k = 0` dyadic-sign
+base, and the `d = 0` left-boundary specialization.  It will keep the terminal
+zero run and right boundary logically separate, add the missing
+`ThueMorsePrefix.lean` walkthrough row, and introduce neither a zero-free
+claim nor an unformalized polynomial-palindromicity claim.
+
+This branch holds the sole lightweight EVO TeX/PDF stream for the tranche.
+After source and static review, it will run at least three sequential
+`pdflatex` passes for the primary exposition, then at least three sequential
+passes for the walkthrough, with no overlapping TeX process and no Lean or
+Lake invocation.  Matching PDFs will be installed only from the settled owned
+sources and will undergo label/reference/citation, environment, log, font,
+text-extraction, and changed-page visual checks before commit.
+
+No TeX, PDF, Lean, or Lake process has run for this acceptance checkpoint.
+Every frontier, README, AGENTS, control-plane, audit, Lean/root, peer-registry,
+and other path remains frozen.
