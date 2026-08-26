@@ -260,3 +260,65 @@ invocation, then release the token.  A failure supplies diagnostic evidence
 only and should be repaired on the feature branch before another assigned
 serialized run.  Request no `+FabiusFunction` aggregate, root-aggregate edit,
 TeX/PDF pass, canonical-document lease, or `main` write at this stage.
+
+## Registry amendment: complete inverse scale hierarchy
+
+The next exact frontier corollary is
+`inverse:cor:inverse-scale-hierarchy`.  For every pair of real parameters
+`α > 0` and `m > 0`, it places the inverse Fabius function strictly between
+all positive algebraic powers and all negative logarithmic powers at zero:
+
+```text
+y^α = o(fabiusInv F hF y),
+fabiusInv F hF y = o((-log y)^(-m)).
+```
+
+This is a source-only public-surface expansion on the already claimed inverse
+module and facade.  It does not widen the path lease to `FabiusInverse.lean`,
+the root aggregate, or any canonical document.
+
+```text
+SYNC Fabius
+branch / worktree / machine: codex/fabius-inverse-asymptotic-20260825 /
+  C:/Users/vresh/.codex/worktrees/c9a3/ProveIt / EVO (Windows)
+fetched main SHA: fc63c39788ab4c31694e4f57efe05b543165675a
+HEAD and dirty paths: 85928891fdb6e686ecc916e14fcd57238d7ec0f2;
+  tracked worktree and index clean before this registry amendment; unrelated
+  reciprocity sidecars and tmp/ remain untracked and untouched
+writing (exact paths):
+  Lean/FabiusFunction/FabiusInverseAsymptotic.lean, adding exactly two public
+    scale-hierarchy theorems;
+  Lean/FabiusFunction/PaperFabiusAsymptotic.lean, extending only the existing
+    inverse claim-level paragraph with the hierarchy; and
+  this registry
+expected declarations or document claims:
+  rpow_isLittleO_fabiusInv_at_zero_right: for every α > 0,
+    (fun y : ℝ => y ^ α) =o[nhdsGT 0] fabiusInv F hF;
+  fabiusInv_isLittleO_negLog_rpow_at_zero_right: for every m > 0,
+    fabiusInv F hF =o[nhdsGT 0] (fun y : ℝ => (-Real.log y) ^ (-m));
+  the facade prose will identify these as the complete elementary scale
+    hierarchy and will not claim an unproved quantitative remainder
+completed commits: generic engine 9b7affe68; current-main merge b7edc7ce2;
+  endpoint source 6ee65a167; facade d6464f6c8; source handoff 85928891f
+validated (exact command, SHA/state, exit code): no compiler command.  The
+  existing endpoint source has three independent static reviews; current-main,
+  exact-name, plausible-name, latest advertised-tip, and exact-path scans find
+  only the canonical frontier label and no implemented or claimed hierarchy
+  theorem.  The latest effective-bounds, both-papers, theorem-polish, and
+  shifted-prefix tips change disjoint Lean paths
+not yet validated: neither the existing inverse source nor this hierarchy has
+  Lean/Lake evidence.  The coordinator has not answered the serialized build
+  request.  No Lean, Lake, TeX, PDF, or cache-mutating command has run here
+requested integration or lease: advertise this declaration-level expansion on
+  the two already claimed Lean paths.  Retain the earlier request for one
+  serialized three-target Lean/Lake sequence, updated to the eventual frozen
+  hierarchy source tip.  Request no document, root-aggregate, or main-write
+  lane
+conflicts / dependencies: the proof will use the explicit inverse equivalent,
+  exponential-gap little-o comparison, and IsEquivalent transfer.  The older
+  inverse flatness API is read-only; no theorem is inferred by naively
+  inverting a forward equivalence.  Canonical TeX/PDF remains frozen
+next bounded step: commit and push this registry amendment, finish the two
+  independent API/collision reviews, then implement only the two advertised
+  theorems and the narrow facade paragraph without launching a build
+```
