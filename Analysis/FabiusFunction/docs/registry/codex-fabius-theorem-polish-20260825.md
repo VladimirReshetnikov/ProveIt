@@ -1546,3 +1546,66 @@ next bounded step: commit and push this registry-only claim; fetch and reread
   collision-free, implement the exact online-main bridge without launching an
   unassigned build
 ```
+
+## Source checkpoint: exact compact Lambert-W obstruction
+
+Source commit `b0600193b8f33bea28cec01a07bca2688a175441` implements exactly the
+advertised two-path/six-declaration tranche.  It preserves the established
+corrected main definition and adds a separate totalized definition for the
+logarithm of the compact nonperiodic online expression, with its positive
+lower-branch interpretation stated explicitly in the doc comment.  The exact
+decomposition into that main plus `negativeLaplacePsi` is definitional.
+
+The final module now factors the shared analytic argument through
+`isEquivalent_exp_iff_tendsto_log_sub`.  Subtracting the already-proved
+corrected logarithmic limit exposes precisely the sampled periodic correction;
+its existing phase-sampling theorem therefore gives the new nonconvergence,
+sharp-rate failure, and direct ratio-one non-equivalence results without a new
+saddle estimate.  The old elementary-expansion theorem is unchanged.
+
+Two independent strict read-only preflights accept the exact diff: the
+constant signs, lower branch, positive-side filter, totalization caveat,
+declaration order, imports, Mathlib APIs, and subtraction/congruence proof
+shape are all consistent with already-used code in the same module.  This is
+source-level evidence only.  No Lean/Lake token is assigned, so the checkpoint
+is deliberately and explicitly uncompiled.
+
+```text
+SYNC Fabius
+branch / worktree / machine: codex/fabius-theorem-polish-20260825 /
+  C:/Users/vresh/.codex/worktrees/10ef/ProveIt / EVO (Windows)
+fetched main SHA: c5ee98fc72489312e042eb0a4f2280827ee96457
+HEAD and dirty paths: b0600193b8f33bea28cec01a07bca2688a175441;
+  source checkpoint clean, then only this own registry is dirty for the
+  immutable handoff report
+writing (exact paths): frozen after source checkpoint; the implemented paths
+  are Lean/FabiusFunction/FabiusWikipediaMain.lean and
+  Lean/FabiusFunction/FabiusSharpAsymptotic.lean; this report writes only
+  docs/registry/codex-fabius-theorem-polish-20260825.md
+expected declarations or document claims: all six advertised declarations are
+  implemented; no canonical document claim is active
+completed commits: b0600193b (exact two-source implementation); c673f4f16
+  (conflict-free merge of the then-current main); 8c6456646 (registry-first
+  claim)
+validated (exact command, SHA/state, exit code): at b0600193b, `git diff
+  --check` exited 0 before commit; targeted forbidden-declaration scan found no
+  sorry/admit/axiom/opaque; two independent strict read-only actual-diff
+  preflights found no mathematical, branch, domain, filter, API, import,
+  declaration-order, or likely elaboration blocker.  Source blobs are
+  61ae4480ff0e8548cc6b9a8b400e845860bae113 and
+  e6939d6e8ed76a71c635ef67118c73867ebe2800
+not yet validated: no Lean/Lake process has compiled b0600193b; no current
+  `.olean`, focused target, facade, aggregate, or remote CI claim is made.  No
+  LaTeX/PDF process ran
+requested integration or lease: request independent source review, then one
+  serialized EVO `LAKE_JOBS=1 lake build
+  +FabiusFunction.FabiusSharpAsymptotic`; after source acceptance and green
+  validation, activate only the already-conditional primary TeX/PDF reservation
+conflicts / dependencies: refreshed audit of all advertised Fabius/Claude tips
+  and registries was green.  No active path overlap or candidate-name duplicate
+  exists.  The historical FabiusSharpAsymptotic lease is integrated/released.
+  Every canonical document remains frozen
+next bounded step: commit and push this registry handoff to the feature branch,
+  then stop source writes for independent review and an explicit build-token
+  decision
+```
