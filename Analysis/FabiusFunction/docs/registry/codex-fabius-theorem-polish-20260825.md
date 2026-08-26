@@ -2079,3 +2079,100 @@ next bounded step: commit and push this registry-only request to the feature
   branch, notify the coordinator, and remain read-only until the exact
   primary-document lease and EVO TeX/PDF token are granted
 ```
+
+## Atomic primary-document handoff and lease release
+
+The board grant at main commit `1eadfd565` assigned exactly the canonical
+primary TeX/PDF pair, this registry, and EVO's sole sequential TeX/PDF lane.
+Feature merge `bb7cfc3e0` incorporates that grant without conflict and leaves
+the canonical starting blobs unchanged.  Atomic document commit
+`1a92da84465726ce2ae1c16892677f9a3c9ae6be` then changes only the owned
+TeX/PDF pair.
+
+The document now gives the exact human-readable closed extremal answer to the
+online ratio question.  It defines the literal-factor quotient
+`R_MSE = F / A_MSE`, defines `m_Psi` and `M_Psi` as the attained minimum and
+maximum of the explicit periodic correction on `[0,1]`, proves the additive
+periodic quotient model, identifies the complete cluster interval
+`[exp m_Psi, exp M_Psi]`, states the strict liminf/limsup endpoint chain, and
+rules out every real constant normalization.  It explicitly distinguishes the
+ordinary quotient interpretation for nonzero constants from Mathlib's
+little-o formulation at zero.  The generic continuous periodic phase sampler
+and all supporting range, bound, attainment, and strictness declarations are
+also stated and mapped.  In total, all 25 public declarations added by the
+literal-factor/cluster tranche have direct human-readable counterparts.
+
+The accepted candidate identities are:
+
+- TeX: Git blob `b953cdd98010b882bfecb2b251861f65218c6329`, SHA-256
+  `BC9B7298AE82C84D94C4856722073D6AB43C8F031251B913DD3AD956B10CC367`,
+  200,759 bytes;
+- PDF: Git blob `d7fc37be89ce21dfab2630f62b682e273b4c6b99`, SHA-256
+  `973C6F003C719C90BBF0078F78992EF0496EEFFEE235189C488AFD73834BAC2B`,
+  1,025,979 bytes, 60 A4 pages.
+
+The three authorized, strictly sequential commands were each run from the
+primary document directory against one fresh external staging directory:
+
+```text
+pdflatex -interaction=nonstopmode -halt-on-error
+  -output-directory=C:/Users/vresh/AppData/Local/Temp/codex-fabius-cluster-7e54a2a1
+  Fabius_Function_and_Rvachev_Up.tex
+```
+
+All three exited 0 and produced 58, 60, and 60 pages.  The third pass had zero
+undefined references or citations, rerun requests, changed-label diagnostics,
+fatal or LaTeX errors, emergency stops, and overfull boxes.  Its sole underfull
+diagnostic is the inherited unchanged module-map cell at final source line
+4311.  The settled PDF reports `Suspects: no`, A4 geometry, zero rendered
+`??`, and all listed fonts embedded and subsetted.  Text comparison found the
+only pre-insertion changed page to be contents page 3.  Raster review covered
+that page and every affected page 50--60, with full-resolution review of pages
+50--52, 58, and 60; no clipping, overlap, malformed glyph, broken link text,
+or layout defect was found.
+
+Static checks found 380 unique labels, all references resolved, 22 unique
+bibliography keys, all citations resolved, and 449 balanced begin/end
+environments.  The five advertised labels each occur once.  The formal-source
+citation now points to validated immutable snapshot `948bf3f37`; the three
+relevant source blobs there are byte-identical to current main.  Three
+independent final read-only audits of mathematics, declaration coverage,
+citation integrity, and source/PDF synchronization are GREEN.
+
+```text
+SYNC Fabius
+branch / worktree / machine: codex/fabius-theorem-polish-20260825 /
+  C:/Users/vresh/.codex/worktrees/10ef/ProveIt / EVO (Windows)
+fetched main SHA: 1eadfd565db2e4c49310dbaa68c7b4648cb563b8
+HEAD and dirty paths: 1a92da84465726ce2ae1c16892677f9a3c9ae6be;
+  clean after the atomic TeX/PDF commit, then only this own registry is dirty
+  for the handoff and lease release
+writing (exact paths): only
+  docs/registry/codex-fabius-theorem-polish-20260825.md; the canonical TeX/PDF
+  pair is frozen at the exact blobs above
+expected declarations or document claims: completed exact human-readable
+  counterpart for the corrected quotient model, generic phase sampler, full
+  cluster interval, variational liminf/limsup formulas, strict gap, and
+  every-real-constant obstruction; no numerical, sign, uniqueness, or finite
+  elementary evaluation claim
+completed commits: 627931a0b (lease request), bb7cfc3e0 (grant/main
+  synchronization), and 1a92da844 (atomic canonical TeX/PDF candidate)
+validated (exact command, SHA/state, exit code): three strictly sequential
+  `pdflatex -interaction=nonstopmode -halt-on-error` passes against the final
+  TeX all exited 0 and produced 58/60/60 pages; final log and PDF static,
+  text, font, metadata, and changed-page raster gates passed as detailed above;
+  `git diff --check` passed; three independent final audits are GREEN
+not yet validated: no Lean/Lake process ran in this worktree; source compiler
+  evidence remains the coordinator's exact repaired 3891/3931/3960-job gates;
+  coordinator document integration and independent acceptance remain pending
+requested integration or lease: integrate atomic document commit 1a92da844
+  and this registry release only; the primary TeX/PDF ownership and EVO
+  TeX/PDF stream are explicitly released now, with no successor path or token
+  request
+conflicts / dependencies: none; current main is an ancestor of the feature,
+  the document was rebuilt only from the owned current-main TeX, no binary
+  conflict was resolved, and no auxiliary is tracked
+next bounded step: commit and push this registry-only handoff, notify the
+  coordinator with the exact blobs and validation evidence, and remain
+  read-only pending integration disposition
+```
