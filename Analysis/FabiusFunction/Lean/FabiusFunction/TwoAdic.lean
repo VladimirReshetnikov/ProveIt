@@ -15,6 +15,9 @@ The final section converts the parity result into the dyadic valuation of the
 Fabius value at `2⁻ⁿ`, the valuation component of Theorem 21.  Parameter-free
 forms isolate the exceptional zeroth half moment, and Legendre's formula at
 `p = 2` removes the remaining factorial valuation in favor of binary weight.
+Kummer's theorem also identifies that binary weight with the two-adic
+valuation of a central binomial coefficient, giving a one-coefficient formula
+for the Thue--Morse sign.
 -/
 
 set_option autoImplicit false
@@ -396,6 +399,34 @@ theorem factorial_padicVal_two (n : ℕ) :
   rw [padicValRat.of_nat]
   have h := sub_one_mul_padicValNat_factorial (p := 2) n
   simpa [binaryWeight] using congrArg (fun k : ℕ => (k : ℤ)) h
+
+/-- Kummer's theorem at `p = 2`: the two-adic valuation of the central
+binomial coefficient is the binary weight. -/
+theorem centralChoose_padicValNat_two (n : ℕ) :
+    padicValNat 2 (Nat.choose (2 * n) n) = binaryWeight n := by
+  have hKummer :=
+    sub_one_mul_padicValNat_choose_eq_sub_sum_digits'
+      (p := 2) (n := n) (k := n)
+  have hdouble :
+      (Nat.digits 2 (2 * n)).sum = (Nat.digits 2 n).sum := by
+    by_cases hn : n = 0
+    · simp [hn]
+    · rw [Nat.digits_base_mul Nat.one_lt_two (Nat.pos_of_ne_zero hn)]
+      simp
+  calc
+    padicValNat 2 (Nat.choose (2 * n) n) =
+        (Nat.digits 2 n).sum + (Nat.digits 2 n).sum -
+          (Nat.digits 2 (2 * n)).sum := by
+      simpa [two_mul] using hKummer
+    _ = binaryWeight n := by
+      rw [hdouble]
+      simp [binaryWeight]
+
+/-- A single central binomial coefficient recovers the Thue--Morse sign. -/
+theorem thueMorseSign_centralChoose (n : ℕ) :
+    thueMorseSign n =
+      (-1 : ℤ) ^ padicValNat 2 (Nat.choose (2 * n) n) := by
+  rw [centralChoose_padicValNat_two, thueMorseSign]
 
 /-- The two-adic valuation of the Fabius value at `2⁻ⁿ`, i.e. the
 valuation equality in Theorem 21. -/
