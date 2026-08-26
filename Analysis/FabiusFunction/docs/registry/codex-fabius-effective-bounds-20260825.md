@@ -273,3 +273,88 @@ next bounded step: commit and push this exact registry report, merge current
   same-branch registry or already-integrated Lambert repair, push the merge,
   and freeze both completed source tranches pending serialized validation
 ```
+
+## Coordinator integration and validation result
+
+The coordinator integrated exact source commit `933121538` as `f85409a18`.
+At that immutable mainline tree, separate serialized builds of
+`+FabiusFunction.FabiusSaddleReferenceTail` (3432 jobs) and its smallest direct
+importer `+FabiusFunction.GaussianPolynomialTail` (3436 jobs) both exited zero
+without warnings.  The old order-one theorem header and both direct consumer
+interfaces remained byte-identical.  The earlier Lambert-rate source is also
+integrated, repaired only for definitional function shape, and green in its
+focused and direct-consumer builds.  Both source leases are released.
+
+This branch merged the validating coordinator checkpoint `b97b7f108` at
+`6cf7d1e7b`; the committed `FabiusSaddleReferenceTail.lean` blob is identical
+to current main.  No local Lean/Lake process was needed or launched.
+
+## Ordinary follow-on claim: exact normalized `L¹` transfer
+
+Claim prepared on the validated mainline base after three independent
+cold-path audits compared disjoint opportunities in Lambert all-order algebra,
+unit-interval Laplace moments, and quantitative saddle integration.  This
+bounded one-file tranche exposes the exact pointwise inequality already
+embedded in the generic Big-O transfer, with the smallest elaboration surface
+and immediate simplification payoff.
+
+For `M = sqrt (2 * pi)`, the intended human-readable statement is
+
+```text
+‖M⁻¹ ∫ K - M⁻¹ ∫ R‖ ≤ M⁻¹ ∫ ‖K - R‖.
+```
+
+When `∫ R = M`, this becomes the corresponding bound on
+`‖M⁻¹ ∫ K - 1‖`.  Both statements require only integrability of the two
+kernels, plus the displayed mass identity for the second.
+
+```text
+SYNC Fabius
+branch / worktree / machine: codex/fabius-effective-bounds-20260825 /
+  /home/codex/.codex/worktrees/d6d3/Proofs / codexbox
+fetched main SHA: b97b7f108ca3c3c0a20e9958ddf672385c7647ab
+HEAD and dirty paths: 6cf7d1e7bf1a8d404faf16684d8bbc57f5ef2538;
+  branch is clean and contains current main; only this registry is dirty for
+  the registry-first claim
+writing (exact paths): this registry initially; after this claim is pushed and
+  the repeated board/registry/tip scan remains green, only
+  Lean/FabiusFunction/QuantitativeSaddle.lean and this registry
+expected declarations or document claims:
+  norm_normalized_integral_sub_reference_le_of_L1, exposing the pointwise
+    Gaussian-normalized L1 Lipschitz inequality with factor
+    (sqrt (2*pi))^(-1);
+  norm_normalized_integral_sub_one_le_of_L1, specializing the same inequality
+    to an integrable reference whose integral is the Gaussian mass;
+  preserve the exact normalized_integral_sub_reference_isBigO_of_L1 header and
+    shorten its proof through the new pointwise API; preserve every other
+    public header;
+  expand the module overview and both declaration comments with the displayed
+    mathematics, hypotheses, and relation to the filter-level wrappers; no
+    canonical TeX/PDF, walkthrough, facade, root, or campaign-wide document
+    path is claimed
+completed commits: 933121538 was integrated as f85409a18 and validated as
+  recorded above; this is the registry-first claim for the third source tranche
+validated (exact command, SHA/state, exit code): current HEAD and origin/main
+  share QuantitativeSaddle.lean blob 0fef8b8a0efd3a05ac0728def6e0ef6145cb319c;
+  exact-name/semantic/path scans of current main, every fetched Fabius tip, and
+  every registry found no public pointwise duplicate or active path claim;
+  an independent read-only proof/API/dependency/doc audit derived the exact
+  signatures and proof route; this is not compiler evidence for the proposal
+not yet validated: the two pointwise declarations and Big-O refactor do not
+  exist yet; no Lean, Lake, TeX, PDF, or cache-mutating process is authorized
+  or running for this branch
+requested integration or lease: advertise the one ordinary source path and
+  two exact names above; after an immutable reviewed source checkpoint, request
+  separate serialized builds of +FabiusFunction.QuantitativeSaddle and its
+  direct API consumer +FabiusFunction.SaddleAllOrders; no document or main-write
+  lease
+conflicts / dependencies: the inactive AUDIT_FINDINGS proposal to relocate
+  norm_standardGaussian into this module is explicitly excluded; no such
+  declaration, import change, downstream edit, Lambert algebra, Laplace-moment,
+  canonical-document, facade, root, or control-plane path belongs to this claim;
+  only the coordinator may advance main
+next bounded step: commit and push this registry-only claim without force;
+  fetch and reread the board, repeat the all-tip collision scan, then lease the
+  single source file to one author while two agents independently audit the
+  final proof and documentation; run no build without an explicit host token
+```
