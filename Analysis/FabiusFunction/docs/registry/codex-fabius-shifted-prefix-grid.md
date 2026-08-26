@@ -28,13 +28,12 @@ follow-up.
 SYNC Fabius
 branch / worktree / machine: codex/fabius-shifted-prefix-grid / c9a3 / EVO
   (Windows)
-latest fetched main SHA: de303339202ef0b7fb99da83003d4b841eef9b80
+latest fetched main SHA: 187c54109fbb25b0ca8503389e0306c8ddf65656
 validation-base main SHA merged into 4367a7f86:
   2183cfb113765197042628524690794bdf8d07c4
-HEAD and dirty paths: 4367a7f8664e0bcabf87b514f0a3b50a3413fa94;
-  docs/registry/codex-fabius-shifted-prefix-grid.md only, recording the exact
-  coordinator-authorized immutable validation evidence before the user-requested
-  second merge of newly advanced origin/main
+HEAD and dirty paths: a5892f438ef2e2e6c72b39c8fdb6de1b16d2a844;
+  docs/registry/codex-fabius-shifted-prefix-grid.md only, recording the clean
+  post-validation user-requested synchronization with current origin/main
 writing (exact paths): docs/registry/codex-fabius-shifted-prefix-grid.md only;
   no source path remains writable after this registry checkpoint is pushed;
   FabiusQBinomialTaylor.lean, ThueMorseGenerating.lean, and
@@ -119,7 +118,9 @@ completed commits: 6fb8dc8e9 publishes the exact one-file claim; ba0048023
   clean handoff state; 405586607 merges main 99b67cf5b without conflicts;
   b52fa523e records and pushes the final pre-validation handoff; 4367a7f86
   merges coordinator checkpoint 2183cfb11 without conflicts and preserves all
-  three feature blobs byte-for-byte
+  three feature blobs byte-for-byte; b28da9013 records and pushes the immutable
+  three-target validation evidence; a5892f438 merges current main 187c54109
+  without conflicts after validation
 validated (exact command, SHA/state, exit code): at source snapshot SHA-256
   784F6C4F389FE0F2FA08616FFAFBFA3917CCC9F6D2C86CE98D3D877B5F0DD14C,
   git diff --check and git diff --cached --check exited 0; python
@@ -200,7 +201,9 @@ validated (exact command, SHA/state, exit code): at source snapshot SHA-256
   linter warnings at lines 149 and 236; +FabiusFunction.PaperKFoldThueMorse
   completed 3327 jobs, exit 0, replaying only those same two warnings
 not yet validated: no aggregate +FabiusFunction build or additional target was
-  authorized or run; the exact three-target validation grant is complete
+  authorized or run; the exact three-target validation grant is complete at
+  tree db635e6a073b, while the newer synchronization merge a5892f438 is not
+  itself compiler-validated and makes no such claim
 requested integration or lease: integrate the frozen source commits 8021c555f
   and f7152d5fc from exact validated merge 4367a7f86; release this branch's EVO
   token after accepting this registry checkpoint
@@ -218,11 +221,10 @@ conflicts / dependencies: no overlap with the active frontier-document lease;
   analogous private dyadic-kernel family is mathematically distinct; no path
   expansion beyond the three now-frozen source files and this branch registry
   is requested
-next bounded step: commit and push this registry-only validation checkpoint,
-  then honor the explicit user request by merging newly advanced origin/main
-  de3033392, update only this own registry, and push; perform no further build
+next bounded step: commit and push this registry-only synchronization
+  checkpoint, then stop for coordinator integration; perform no further build
   or source edit under the completed grant
-lease refreshed: 2026-08-25 20:40 PDT; all three source paths remain frozen;
+lease refreshed: 2026-08-25 20:49 PDT; all three source paths remain frozen;
   FabiusQBinomialTaylor.lean at 8021c555f and ThueMorseApproximation.lean at
   f7152d5fc are compiled and pending coordinator integration;
   ThueMorseGenerating.lean has no further unintegrated source delta
@@ -634,3 +636,13 @@ frontier TeX/PDF and successor registry, and the coordinator board, all
 disjoint from this branch's feature sources and own registry.  The explicit
 user-requested synchronization will follow this preservation checkpoint, but
 no compiler claim will be transferred to the resulting newer merge tree.
+
+The subsequent fresh fetch advanced `origin/main` once more to
+`187c54109fbb25b0ca8503389e0306c8ddf65656`.  User-requested merge
+`a5892f438ef2e2e6c72b39c8fdb6de1b16d2a844` has exact parents `b28da9013` and
+`187c54109`; Git's `ort` strategy reported no conflict, the unmerged index is
+empty, and `origin/main` is an ancestor.  Its tree is
+`c517e826e905fb7ddf696a95a6df08a505f46a9a`.  The two validated source blobs
+remain exactly `52492287b5bb` and `d2e85228f16a`.  This synchronization adds no
+source delta of this branch and was intentionally not followed by another
+build: the compiler evidence remains scoped to immutable tree `db635e6a073b`.
