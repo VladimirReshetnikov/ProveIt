@@ -3,7 +3,7 @@ import Mathlib.RingTheory.PowerSeries.WellKnown
 import Mathlib.Topology.Instances.Rat
 
 /-!
-# Thue--Morse generating series and the literal prefix grid
+# Thue--Morse generating series and shifted prefix grids
 
 The signed Thue--Morse sequence is `t(n) = (-1)^w(n)`, with `w(n)` the binary
 digit sum, and `S^k` is its `k`-fold *inclusive* prefix sum, defined in
@@ -29,13 +29,14 @@ function, and `FabiusFunction.ThueMorseExponential` builds the exponential
 generating series for centered and rationally translated Thue--Morse power
 sums from the sharp affine coefficient formula on the same import.
 
-The second half of the module reads the draft's equation (1) literally: grid
-value `S^k_j / 2^(C(k,2))` at abscissa `j / 2^k`.  It proves the discrete
-functional equation (2) together with the index condition `j < 2^q` that the
-draft omits, and then refutes the printed normalization -- at the right
-endpoint the literal value is `-1 / 2^(C(k,2))` at every level, hence stays
-negative, so neither the grid nor the polygon through it can converge to
-`F(1) = 1`.
+The second half of the module studies the shifted grid
+`S^(k+s)_j / 2^(C(k,2))` at abscissa `j / 2^k`.  Its discrete functional
+equation is independent of the prefix-order shift `s`.  At `s=0` the grid is
+exactly the draft's equation (1) and the recurrence becomes equation (2);
+`s=1` gives the correction suggested by inclusive prefix sums.  The literal
+specialization is then shown not to converge to the required right-endpoint
+value: its value there is `-1 / 2^(C(k,2))`, hence stays negative rather than
+tending to `F(1) = 1`.
 
 ## Main results
 
@@ -45,9 +46,10 @@ negative, so neither the grid nor the polygon through it can converge to
 * `iteratedPrefixSeries_eq`, `one_sub_X_pow_mul_iteratedPrefixSeries`, and
   `coeff_eq6_finite` -- the convolution half of equation (6) for every order
   `k`, including `k = 0`, in quotient, cleared, and coefficient form.
-* `paperPrefixGridValue`, `prefixGridPoint`, `paperPrefixGridValue_equation`,
-  and `paperPrefixGridValue_equation_of_pos` -- equations (1) and (2) with
-  the admissible index range made explicit.
+* `shiftedPrefixGridValue`, `shiftedPrefixGridValue_equation`, and
+  `shiftedPrefixGridValue_equation_of_pos` -- the prefix-grid recurrence for
+  every prefix-order shift, with the admissible index range made explicit;
+  the paper and corrected grids are the shift-zero and shift-one cases.
 * `paperPrefixGridValue_endpoint`, `one_lt_paperPrefixGridValue_endpoint_error`,
   `paperPrefixGridValue_endpoint_not_tendsto_one`, and
   `paperPrefixPolygonReal_endpoint_not_tendsto_one` -- the endpoint
@@ -61,14 +63,17 @@ negative, so neither the grid nor the polygon through it can converge to
 `C(k,2)` is `k.choose 2`.  Prefix sums are inclusive, so `S^k_j` already
 contains the term at index `j`; the recurrences are stated at level `q + 1`,
 and the `_of_pos` variants restate them in the draft's own positive-level
-indexing.  `correctedPrefixGridValue` is the one-index shift `S^(k+1)` under
-the level-`k` normalization, recorded here only to show it obeys the same
-recurrence -- the approximation that this shift actually makes converge is
-proved in `FabiusFunction.ThueMorseApproximation`, over `ℝ`, from a separate
-definition.  Both polygons take `⌊x * 2^k⌋₊` in `ℕ` and so are meant for
-`x >= 0`; they are the interpolation the draft describes in words, not the
-step function its printed floor formula defines.  The nonconvergence results
-come in a rational and a real form, the first in the order topology on `ℚ`.
+indexing.  The shift changes only the prefix order: denominator and abscissa
+remain at level `k`.  Endpoint and convergence statements are therefore not
+shift-generic.  In particular, `correctedPrefixGridValue` is the one-index
+shift `S^(k+1)` under the level-`k` normalization, recorded here only to show
+it obeys the same recurrence -- the approximation that this shift actually
+makes converge is proved in `FabiusFunction.ThueMorseApproximation`, over `ℝ`,
+from a separate definition.  Both polygons take `⌊x * 2^k⌋₊` in `ℕ` and so
+are meant for `x >= 0`; they are the interpolation the draft describes in
+words, not the step function its printed floor formula defines.  The
+nonconvergence results come in a rational and a real form, the first in the
+order topology on `ℚ`.
 -/
 
 set_option autoImplicit false
@@ -201,6 +206,11 @@ theorem coeff_eq6_finite (k r n : ℕ) (hn : n < 2 ^ r) :
   rw [one_sub_X_pow_mul_iteratedPrefixSeries]
   exact (coeff_finite_thueMorse_product r n hn).symm
 
+/-- The level-`k` prefix grid with its prefix order shifted by `s` while its
+normalization remains `2^(k.choose 2)`. -/
+def shiftedPrefixGridValue (s k j : ℕ) : ℚ :=
+  (iteratedPrefix (k + s) j : ℚ) / (2 : ℚ) ^ k.choose 2
+
 /-- Equation (1), interpreted literally at its dyadic grid points. -/
 def paperPrefixGridValue (k j : ℕ) : ℚ :=
   (iteratedPrefix k j : ℚ) / (2 : ℚ) ^ k.choose 2
@@ -210,17 +220,38 @@ convention: use `S^(k+1)` with the normalization printed for level `k`. -/
 def correctedPrefixGridValue (k j : ℕ) : ℚ :=
   (iteratedPrefix (k + 1) j : ℚ) / (2 : ℚ) ^ k.choose 2
 
+/-- The generic shifted grid at shift zero is definitionally the literal grid. -/
+@[simp] theorem shiftedPrefixGridValue_zero (k j : ℕ) :
+    shiftedPrefixGridValue 0 k j = paperPrefixGridValue k j := by
+  rfl
+
+/-- The generic shifted grid at shift one is definitionally the corrected grid. -/
+@[simp] theorem shiftedPrefixGridValue_one (k j : ℕ) :
+    shiftedPrefixGridValue 1 k j = correctedPrefixGridValue k j := by
+  rfl
+
 /-- Dyadic abscissa belonging to a grid index. -/
 def prefixGridPoint (k j : ℕ) : ℚ :=
   (j : ℚ) / (2 : ℚ) ^ k
+
+/-- Unscaled forward difference for every prefix-order shift. -/
+theorem shiftedPrefixGridValue_succ_sub (s q j : ℕ) :
+    shiftedPrefixGridValue s (q + 1) (j + 1) -
+        shiftedPrefixGridValue s (q + 1) j =
+      shiftedPrefixGridValue s q (j + 1) / (2 : ℚ) ^ q := by
+  rw [shiftedPrefixGridValue, shiftedPrefixGridValue,
+    shiftedPrefixGridValue]
+  have horder : q + 1 + s = q + s + 1 := by omega
+  simp only [horder]
+  rw [← sub_div, ← Int.cast_sub, iteratedPrefix_succ_sub]
+  rw [choose_succ_two, pow_add, div_div]
 
 /-- Unscaled forward difference for the literal normalization. -/
 theorem paperPrefixGridValue_succ_sub (q j : ℕ) :
     paperPrefixGridValue (q + 1) (j + 1) - paperPrefixGridValue (q + 1) j =
       paperPrefixGridValue q (j + 1) / (2 : ℚ) ^ q := by
-  rw [paperPrefixGridValue, paperPrefixGridValue, paperPrefixGridValue]
-  rw [← sub_div, ← Int.cast_sub, iteratedPrefix_succ_sub]
-  rw [choose_succ_two, pow_add, div_div]
+  simpa only [shiftedPrefixGridValue_zero] using
+    shiftedPrefixGridValue_succ_sub 0 q j
 
 /-- The corrected grid obeys the same normalization recurrence, with each
 prefix order shifted up by one. -/
@@ -228,10 +259,19 @@ theorem correctedPrefixGridValue_succ_sub (q j : ℕ) :
     correctedPrefixGridValue (q + 1) (j + 1) -
         correctedPrefixGridValue (q + 1) j =
       correctedPrefixGridValue q (j + 1) / (2 : ℚ) ^ q := by
-  rw [correctedPrefixGridValue, correctedPrefixGridValue,
-    correctedPrefixGridValue]
-  rw [← sub_div, ← Int.cast_sub, iteratedPrefix_succ_sub]
-  rw [choose_succ_two, pow_add, div_div]
+  simpa only [shiftedPrefixGridValue_one] using
+    shiftedPrefixGridValue_succ_sub 1 q j
+
+/-- The denominator-cleared forward-difference identity for every prefix-order
+shift, before restricting the lower-level argument to `[0,1]`. -/
+theorem shiftedPrefixGridValue_scaledDifference (s q j : ℕ) :
+    (2 : ℚ) ^ (q + 1) *
+        (shiftedPrefixGridValue s (q + 1) (j + 1) -
+          shiftedPrefixGridValue s (q + 1) j) =
+      2 * shiftedPrefixGridValue s q (j + 1) := by
+  rw [shiftedPrefixGridValue_succ_sub, pow_succ]
+  have hpow : (2 : ℚ) ^ q ≠ 0 := by positivity
+  field_simp
 
 /-- The exact forward-difference identity, before restricting the argument of
 the lower-level grid value to `[0,1]`. -/
@@ -240,9 +280,8 @@ theorem paperPrefixGridValue_scaledDifference (q j : ℕ) :
         (paperPrefixGridValue (q + 1) (j + 1) -
           paperPrefixGridValue (q + 1) j) =
       2 * paperPrefixGridValue q (j + 1) := by
-  rw [paperPrefixGridValue_succ_sub, pow_succ]
-  have hpow : (2 : ℚ) ^ q ≠ 0 := by positivity
-  field_simp
+  simpa only [shiftedPrefixGridValue_zero] using
+    shiftedPrefixGridValue_scaledDifference 0 q j
 
 /-- Corrected-grid version of the exact scaled forward difference. -/
 theorem correctedPrefixGridValue_scaledDifference (q j : ℕ) :
@@ -250,9 +289,8 @@ theorem correctedPrefixGridValue_scaledDifference (q j : ℕ) :
         (correctedPrefixGridValue (q + 1) (j + 1) -
           correctedPrefixGridValue (q + 1) j) =
       2 * correctedPrefixGridValue q (j + 1) := by
-  rw [correctedPrefixGridValue_succ_sub, pow_succ]
-  have hpow : (2 : ℚ) ^ q ≠ 0 := by positivity
-  field_simp
+  simpa only [shiftedPrefixGridValue_one] using
+    shiftedPrefixGridValue_scaledDifference 1 q j
 
 /-- Arithmetic identification of the lower-level argument appearing in the
 paper's equation (2). -/
@@ -275,6 +313,17 @@ theorem prefixGridPoint_lower_argument_mem (q j : ℕ) (hj : j < 2 ^ q) :
     rw [div_le_one (by positivity : (0 : ℚ) < (2 : ℚ) ^ q)]
     norm_cast
 
+/-- The shifted prefix-grid equation with the exact condition placing its
+lower-level argument in the unit interval. -/
+theorem shiftedPrefixGridValue_equation (s q j : ℕ) (hj : j < 2 ^ q) :
+    (2 : ℚ) ^ (q + 1) *
+        (shiftedPrefixGridValue s (q + 1) (j + 1) -
+          shiftedPrefixGridValue s (q + 1) j) =
+      2 * shiftedPrefixGridValue s q (j + 1) ∧
+    prefixGridPoint q (j + 1) ∈ Set.Icc (0 : ℚ) 1 :=
+  ⟨shiftedPrefixGridValue_scaledDifference s q j,
+    prefixGridPoint_lower_argument_mem q j hj⟩
+
 /-- Equation (2) for the literal grid, with the indexing and unit-interval
 domain made explicit. Its level is `k=q+1`, and its admissible indices are
 exactly `j < 2^q`. -/
@@ -283,9 +332,9 @@ theorem paperPrefixGridValue_equation (q j : ℕ) (hj : j < 2 ^ q) :
         (paperPrefixGridValue (q + 1) (j + 1) -
           paperPrefixGridValue (q + 1) j) =
       2 * paperPrefixGridValue q (j + 1) ∧
-    prefixGridPoint q (j + 1) ∈ Set.Icc (0 : ℚ) 1 :=
-  ⟨paperPrefixGridValue_scaledDifference q j,
-    prefixGridPoint_lower_argument_mem q j hj⟩
+    prefixGridPoint q (j + 1) ∈ Set.Icc (0 : ℚ) 1 := by
+  simpa only [shiftedPrefixGridValue_zero] using
+    shiftedPrefixGridValue_equation 0 q j hj
 
 /-- The corresponding exact equation for the corrected grid. -/
 theorem correctedPrefixGridValue_equation (q j : ℕ) (hj : j < 2 ^ q) :
@@ -293,9 +342,23 @@ theorem correctedPrefixGridValue_equation (q j : ℕ) (hj : j < 2 ^ q) :
         (correctedPrefixGridValue (q + 1) (j + 1) -
           correctedPrefixGridValue (q + 1) j) =
       2 * correctedPrefixGridValue q (j + 1) ∧
-    prefixGridPoint q (j + 1) ∈ Set.Icc (0 : ℚ) 1 :=
-  ⟨correctedPrefixGridValue_scaledDifference q j,
-    prefixGridPoint_lower_argument_mem q j hj⟩
+    prefixGridPoint q (j + 1) ∈ Set.Icc (0 : ℚ) 1 := by
+  simpa only [shiftedPrefixGridValue_one] using
+    shiftedPrefixGridValue_equation 1 q j hj
+
+/-- The shifted prefix-grid equation in positive-level indexing.  Positivity is
+essential: at level zero, an arbitrary shift need not satisfy the equation. -/
+theorem shiftedPrefixGridValue_equation_of_pos (s k j : ℕ) (hk : 0 < k)
+    (hj : j < 2 ^ (k - 1)) :
+    (2 : ℚ) ^ k *
+        (shiftedPrefixGridValue s k (j + 1) - shiftedPrefixGridValue s k j) =
+      2 * shiftedPrefixGridValue s (k - 1) (j + 1) ∧
+    prefixGridPoint (k - 1) (j + 1) ∈ Set.Icc (0 : ℚ) 1 := by
+  cases k with
+  | zero => omega
+  | succ q =>
+      simpa [Nat.succ_eq_add_one] using
+        shiftedPrefixGridValue_equation s q j hj
 
 /-- Literal equation (2) in the paper's own positive-level indexing. -/
 theorem paperPrefixGridValue_equation_of_pos (k j : ℕ) (hk : 0 < k)
@@ -304,10 +367,8 @@ theorem paperPrefixGridValue_equation_of_pos (k j : ℕ) (hk : 0 < k)
         (paperPrefixGridValue k (j + 1) - paperPrefixGridValue k j) =
       2 * paperPrefixGridValue (k - 1) (j + 1) ∧
     prefixGridPoint (k - 1) (j + 1) ∈ Set.Icc (0 : ℚ) 1 := by
-  cases k with
-  | zero => omega
-  | succ q =>
-      simpa [Nat.succ_eq_add_one] using paperPrefixGridValue_equation q j hj
+  simpa only [shiftedPrefixGridValue_zero] using
+    shiftedPrefixGridValue_equation_of_pos 0 k j hk hj
 
 /-- Corrected equation in the paper's own positive-level indexing. -/
 theorem correctedPrefixGridValue_equation_of_pos (k j : ℕ) (hk : 0 < k)
@@ -316,10 +377,8 @@ theorem correctedPrefixGridValue_equation_of_pos (k j : ℕ) (hk : 0 < k)
         (correctedPrefixGridValue k (j + 1) - correctedPrefixGridValue k j) =
       2 * correctedPrefixGridValue (k - 1) (j + 1) ∧
     prefixGridPoint (k - 1) (j + 1) ∈ Set.Icc (0 : ℚ) 1 := by
-  cases k with
-  | zero => omega
-  | succ q =>
-      simpa [Nat.succ_eq_add_one] using correctedPrefixGridValue_equation q j hj
+  simpa only [shiftedPrefixGridValue_one] using
+    shiftedPrefixGridValue_equation_of_pos 1 k j hk hj
 
 /-- The literal endpoint has the wrong sign and scale: at `x=1` it is the
 negative reciprocal of the printed normalization. -/
