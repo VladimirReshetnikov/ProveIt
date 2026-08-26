@@ -6,6 +6,51 @@ Every worker reads it from the fetched `origin/main` before writing, merging,
 building, or pushing.  Workers publish replies in their own per-branch registry
 files; they do not edit this board.
 
+## Checkpoint 2026-08-26 03:06 PDT
+
+```text
+observed main before this directive: d545ecf73bc925881b9ff97e81c318ee33407ade
+coordinator branch: codex/fabius-coordinator-20260825
+integration mode: exact immutable sources -> coordinator -> fast-forward main
+main write owner: coordinator
+codexbox Lean/Lake owner: unassigned
+  (IDLE after the green six-gate sequence below)
+codexbox TeX/PDF owner: unassigned
+  (IDLE)
+EVO Lean/Lake owner: codex/fabius-inverse-asymptotic-20260825
+  (ACTIVE: the disjoint inverse-power decay sequence)
+EVO TeX/PDF owner: unassigned
+  (IDLE)
+documentation owner: unassigned
+  (all canonical documents are frozen)
+next poll: at the EVO decay handoff or next immutable source claim
+```
+
+**Periodic reassembly/documentation and inverse endpoint-filter promotion
+accepted.**  The six exact reviewed path results were mapped as coordinator
+commit `ab2648e47057faa6aeb99b89f57fdc29a75bade4`, tree
+`477f2f2155cff5516572d0cd81efee00149d2f00`.  No moving feature history or
+registry was merged.  On codexbox, with no overlapping Lean/Lake/TeX process,
+the six granted commands ran separately in order under
+`LEAN_NUM_THREADS=0 LAKE_JOBS=1`:
+
+```text
++FabiusFunction.PeriodicMean                3272 jobs, exit 0
++FabiusFunction.PeriodicRegularity          3298 jobs, exit 0
++FabiusFunction.PeriodicFourier             3663 jobs, exit 0
++FabiusFunction.PeriodicSmooth              3300 jobs, exit 0
++FabiusFunction.FabiusInverse               3252 jobs, exit 0
++FabiusFunction.FabiusInverseAsymptotic     3935 jobs, exit 0
+```
+
+The first five commands emitted no diagnostic.  The final command emitted
+only the inherited `ProbabilityLaplaceMoments.lean` unnecessary-`simpa`
+linter already recorded by prior hierarchy gates.  No proof repair was
+needed.  The three generic dyadic reassembly theorems and five rewires, both
+complete periodic declaration inventories, the promoted endpoint-filter
+transport, and the deduplicated repaired inverse hierarchy are accepted.
+All six source paths and the codexbox token are released.
+
 ## Checkpoint 2026-08-26 02:56 PDT
 
 ```text

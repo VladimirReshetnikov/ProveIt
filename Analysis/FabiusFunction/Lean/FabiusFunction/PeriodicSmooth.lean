@@ -20,6 +20,14 @@ identified with the ordinary iterated derivatives on `(0, ∞)`, and generic
 lemmas propagate smooth periodicity to every iterated derivative.  Specialized
 corollaries give continuous, one-periodic, globally bounded derivatives of
 all orders for both the exact correction and its centered normalization.
+
+The API proceeds from recursive formulas for individual summands, through
+uniform positive-half-line bounds and summable termwise derivatives, to global
+`C∞` dyadic composites and smooth periodic saddle jets.  The summand and tail
+definitions are total, while their summability and differentiation theorems
+require a positive Laplace parameter.  Here `C∞` means smoothness rather than
+analyticity, period one is not asserted to be least, and bounded-range results
+are qualitative unless a bound is displayed.
 -/
 
 set_option autoImplicit false
@@ -48,10 +56,16 @@ noncomputable def negativeLaplaceForwardTermDeriv : ℕ → ℝ → ℕ → ℝ
           (forwardDerivativeQuotientPolynomial k).eval z /
         (1 - z) ^ (k + 1)
 
+/-- At order zero, the unified forward-term sequence is the original summand:
+`negativeLaplaceForwardTermDeriv 0 = negativeLaplaceForwardTerm`. -/
 @[simp] lemma negativeLaplaceForwardTermDeriv_zero :
     negativeLaplaceForwardTermDeriv 0 = negativeLaplaceForwardTerm := by
   rfl
 
+/-- Writing `a = (2 : ℝ) ^ n` and `z = exp (-(s * a))`, the positive-order
+unified summand is
+`a ^ (k + 1) * z * (forwardDerivativeQuotientPolynomial k).eval z /
+  (1 - z) ^ (k + 1)`. -/
 lemma negativeLaplaceForwardTermDeriv_succ (k : ℕ) (s : ℝ) (n : ℕ) :
     negativeLaplaceForwardTermDeriv (k + 1) s n =
       let a := (2 : ℝ) ^ n
@@ -61,6 +75,9 @@ lemma negativeLaplaceForwardTermDeriv_succ (k : ℕ) (s : ℝ) (n : ℕ) :
         (1 - z) ^ (k + 1) := by
   rfl
 
+/-- The order-one unified forward summand is the explicit first-derivative
+formula:
+`negativeLaplaceForwardTermDeriv 1 s n = negativeLaplaceForwardTermFirst s n`. -/
 @[simp] lemma negativeLaplaceForwardTermDeriv_one (s : ℝ) (n : ℕ) :
     negativeLaplaceForwardTermDeriv 1 s n =
       negativeLaplaceForwardTermFirst s n := by
@@ -119,6 +136,9 @@ lemma negativeLaplaceForwardTermDeriv_succ (k : ℕ) (s : ℝ) (n : ℕ) :
     negativeLaplaceForwardTermFourth]
   all_goals ring
 
+/-- For `s > 0`, differentiating the order-`k` forward summand at `s` raises
+the order by one, with derivative
+`negativeLaplaceForwardTermDeriv (k + 1) s n`. -/
 theorem negativeLaplaceForwardTermDeriv_hasDerivAt
     (k : ℕ) (s : ℝ) (hs : 0 < s) (n : ℕ) :
     HasDerivAt (fun x : ℝ => negativeLaplaceForwardTermDeriv k x n)
@@ -164,6 +184,10 @@ theorem negativeLaplaceForwardTermDeriv_hasDerivAt
       · filter_upwards with x
         rfl
 
+/-- For every `k`, the quotient polynomial is uniformly bounded in absolute
+value on `[0, 1]`: some `C ≥ 0` satisfies
+`|(forwardDerivativeQuotientPolynomial k).eval z| ≤ C` for every
+`z ∈ Icc 0 1`. -/
 lemma exists_bound_abs_forwardDerivativeQuotientPolynomial (k : ℕ) :
     ∃ C : ℝ, 0 ≤ C ∧ ∀ z ∈ Icc (0 : ℝ) 1,
       |(forwardDerivativeQuotientPolynomial k).eval z| ≤ C := by
@@ -175,6 +199,11 @@ lemma exists_bound_abs_forwardDerivativeQuotientPolynomial (k : ℕ) :
   intro y hy
   exact hmax hy
 
+/-- For `a > 0`, the order-`k + 1` forward summands admit a uniform
+superexponential majorant on `s ≥ a`: some `C ≥ 0` satisfies
+`‖negativeLaplaceForwardTermDeriv (k + 1) s n‖ ≤
+  C * (((2 : ℝ) ^ n) ^ (k + 1) * exp (-(a * (2 : ℝ) ^ n)))`
+for every `s ≥ a` and `n`. -/
 theorem exists_norm_negativeLaplaceForwardTermDeriv_succ_le
     (a : ℝ) (ha : 0 < a) (k : ℕ) :
     ∃ C : ℝ, 0 ≤ C ∧ ∀ s, a ≤ s → ∀ n : ℕ,
@@ -241,11 +270,15 @@ theorem exists_norm_negativeLaplaceForwardTermDeriv_succ_le
 noncomputable def negativeLaplaceForwardTailDeriv (k : ℕ) (s : ℝ) : ℝ :=
   ∑' n : ℕ, negativeLaplaceForwardTermDeriv k s n
 
+/-- The order-zero termwise forward tail is the original forward tail:
+`negativeLaplaceForwardTailDeriv 0 s = negativeLaplaceForwardTail s`. -/
 @[simp] lemma negativeLaplaceForwardTailDeriv_zero (s : ℝ) :
     negativeLaplaceForwardTailDeriv 0 s =
       negativeLaplaceForwardTail s := by
   rfl
 
+/-- For every derivative order `k` and every `s > 0`, the sequence
+`n ↦ negativeLaplaceForwardTermDeriv k s n` is summable. -/
 theorem summable_negativeLaplaceForwardTermDeriv
     (k : ℕ) (s : ℝ) (hs : 0 < s) :
     Summable (negativeLaplaceForwardTermDeriv k s) := by
@@ -260,6 +293,8 @@ theorem summable_negativeLaplaceForwardTermDeriv
         (summable_forward_derivative_majorant s hs (k + 1)).mul_left C
       exact hmajor.of_norm_bounded (hC s le_rfl)
 
+/-- For `s > 0`, the termwise order-`k` forward tail has derivative
+`negativeLaplaceForwardTailDeriv (k + 1) s` at `s`. -/
 theorem negativeLaplaceForwardTailDeriv_hasDerivAt
     (k : ℕ) (s : ℝ) (hs : 0 < s) :
     HasDerivAt (negativeLaplaceForwardTailDeriv k)
@@ -311,6 +346,8 @@ theorem iteratedDeriv_negativeLaplaceForwardTail_eq
       exact ((negativeLaplaceForwardTailDeriv_hasDerivAt k s hs).congr_of_eventuallyEq
         heq).deriv
 
+/-- For all natural orders `m` and `k`, the termwise order-`k` forward tail
+`negativeLaplaceForwardTailDeriv k` is `C^m` on `(0, ∞)`. -/
 theorem contDiffOn_negativeLaplaceForwardTailDeriv_nat
     (m k : ℕ) :
     ContDiffOn ℝ m (negativeLaplaceForwardTailDeriv k) (Ioi 0) := by
@@ -342,6 +379,8 @@ theorem contDiffOn_infty_negativeLaplaceForwardTail :
   rw [← heq]
   exact contDiffOn_negativeLaplaceForwardTailDeriv_nat m 0
 
+/-- If the bounded function `F` satisfies `IsFabius F`, then every moment
+`s ↦ fabiusLaplaceMoment F k s` is `C∞` on `ℝ`. -/
 theorem contDiff_infty_fabiusLaplaceMoment
     (F : BoundedFabius) (hF : IsFabius F) (k : ℕ) :
     ContDiff ℝ ∞ (fabiusLaplaceMoment F k) := by
@@ -349,6 +388,8 @@ theorem contDiff_infty_fabiusLaplaceMoment
   intro n
   exact contDiff_fabiusLaplaceMoment_nat F hF n k
 
+/-- The dyadic composition
+`t ↦ negativeLaplaceLog ((2 : ℝ) ^ t)` is `C∞` on `ℝ`. -/
 theorem contDiff_infty_negativeLaplaceLog_two_rpow :
     ContDiff ℝ ∞ (fun t : ℝ => negativeLaplaceLog ((2 : ℝ) ^ t)) := by
   let F : BoundedFabius := Existence.boundedCandidate
@@ -372,6 +413,8 @@ theorem contDiff_infty_negativeLaplaceLog_two_rpow :
   rw [heq]
   exact hlog
 
+/-- The forward-tail dyadic composition
+`t ↦ negativeLaplaceForwardTail ((2 : ℝ) ^ t)` is `C∞` on `ℝ`. -/
 theorem contDiff_infty_negativeLaplaceForwardTail_two_rpow :
     ContDiff ℝ ∞
       (fun t : ℝ => negativeLaplaceForwardTail ((2 : ℝ) ^ t)) := by
@@ -404,6 +447,8 @@ theorem contDiff_infty_negativeLaplacePsi :
   unfold negativeLaplacePsi
   exact contDiff_infty_negativeLaplacePeriodicCorrection.sub contDiff_const
 
+/-- If `f : ℝ → ℝ` is `C∞`, then its derivative `deriv f` is also `C∞` on
+`ℝ`. -/
 lemma contDiff_infty_deriv
     {f : ℝ → ℝ} (hf : ContDiff ℝ ∞ f) :
     ContDiff ℝ ∞ (deriv f) := by
@@ -426,6 +471,8 @@ lemma contDiff_infty_iteratedDeriv
       rw [heq]
       exact contDiff_infty_deriv ih
 
+/-- If a `C∞` real function is one-periodic, then its derivative is
+one-periodic: `deriv f (t + 1) = deriv f t`. -/
 lemma periodic_deriv_of_contDiff_infty
     {f : ℝ → ℝ} (hp : Function.Periodic f 1)
     (hf : ContDiff ℝ ∞ f) :
@@ -543,17 +590,24 @@ theorem isBounded_range_negativeLaplacePeriodicJet (n : ℕ) :
   (negativeLaplacePeriodicJet_periodic n).isBounded_of_continuous one_ne_zero
     (contDiff_infty_negativeLaplacePeriodicJet n).continuous
 
+/-- Every bounded-exponent jet is one-periodic:
+`negativeLaplaceBoundedExponentJet n (t + 1) =
+  negativeLaplaceBoundedExponentJet n t`. -/
 theorem negativeLaplaceBoundedExponentJet_periodic (n : ℕ) :
     Function.Periodic (negativeLaplaceBoundedExponentJet n) 1 := by
   intro t
   simp only [negativeLaplaceBoundedExponentJet]
   rw [negativeLaplacePeriodicJet_periodic n t]
 
+/-- Every bounded-exponent jet `negativeLaplaceBoundedExponentJet n` is `C∞`
+on `ℝ`. -/
 theorem contDiff_infty_negativeLaplaceBoundedExponentJet (n : ℕ) :
     ContDiff ℝ ∞ (negativeLaplaceBoundedExponentJet n) := by
   unfold negativeLaplaceBoundedExponentJet
   exact (contDiff_infty_negativeLaplacePeriodicJet n).add contDiff_const
 
+/-- Every bounded-exponent jet has globally bounded range:
+`range (negativeLaplaceBoundedExponentJet n)` is bounded. -/
 theorem isBounded_range_negativeLaplaceBoundedExponentJet (n : ℕ) :
     Bornology.IsBounded (range (negativeLaplaceBoundedExponentJet n)) :=
   (negativeLaplaceBoundedExponentJet_periodic n).isBounded_of_continuous

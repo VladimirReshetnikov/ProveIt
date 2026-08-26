@@ -139,9 +139,11 @@ quotient from zero to one.
   `le_two_pow_div_factorial_mul_fabiusInv_pow` — the transported flatness
   bounds, with `le_two_pow_mul_fabiusInv_pow_of_le` restating the scale
   hypothesis on the argument.
-* `id_isLittleO_fabiusInv_pow_at_zero_right` and
-  `one_sub_isLittleO_one_sub_fabiusInv_pow_at_one_left` — the inverse outruns
-  every root asymptotically at both clamping endpoints, in root-free form.
+* `tendsto_one_sub_nhdsLT_one_nhdsGT_zero` records `1 - y → 0⁺` as `y → 1⁻`;
+  `id_isLittleO_fabiusInv_pow_at_zero_right` and
+  `one_sub_isLittleO_one_sub_fabiusInv_pow_at_one_left` then say that the
+  inverse outruns every root asymptotically at both clamping endpoints, in
+  root-free form.
 * `mul_lt_fabiusInv`, `tendsto_fabiusInv_div_atTop`, and their reflected
   companions — effective and limiting forms of infinite steepness at both
   endpoints.
@@ -806,8 +808,8 @@ theorem id_isLittleO_fabiusInv_pow_at_zero_right
   exact fabiusReal_fabiusInv F hF ⟨hy0.le, hy1.le⟩
 
 /-- Reflection carries the left-hand neighborhood of one to the right-hand
-neighborhood of zero. -/
-private theorem tendsto_one_sub_nhdsLT_one_nhdsGT_zero :
+neighborhood of zero: `1 - y → 0⁺` as `y → 1⁻`. -/
+theorem tendsto_one_sub_nhdsLT_one_nhdsGT_zero :
     Tendsto (fun y : ℝ => 1 - y) (𝓝[<] (1 : ℝ)) (𝓝[>] (0 : ℝ)) := by
   rw [tendsto_nhdsWithin_iff]
   constructor
