@@ -18,7 +18,7 @@ since: 2026-08-26
 
 While `state: OFF`, agents work in this directory one at a time and no
 coordination rule binds anyone.  The engineering policy in
-[`../../AGENTS.md`](../../AGENTS.md) (documentation, Lean builds, invariants)
+[`../AGENTS.md`](../AGENTS.md) (documentation, Lean builds, invariants)
 applies at all times regardless of this switch.
 
 ## Campaign history
@@ -27,4 +27,4 @@ One row per campaign, newest first; keep at most five rows.
 
 | Campaign | Dates | Retrospective (one line) |
 | --- | --- | --- |
-| v1 — registry/board on `main` | 2026-08-24 – 2026-08-26 | Quality held (serialized builds, dual review, no invariant regressions) but overhead was severe: ~18k lines of bookkeeping, grant queues, audited work stranded behind leases; replaced by v2.  Archive: [`../COLLABORATION.md`](../COLLABORATION.md), [`../MULTI_AGENT_COORDINATION_PROPOSAL.md`](../MULTI_AGENT_COORDINATION_PROPOSAL.md), and `git log -- Analysis/FabiusFunction/docs/registry/`. |
+| v1 — registry/board on `main` | 2026-08-24 – 2026-08-26 | Quality held (serialized builds, dual review, no invariant regressions) but overhead was severe: ~18k lines of bookkeeping, grant queues, audited work stranded behind leases; replaced by v2.  Archive: git history — the deleted `docs/COLLABORATION.md` and `docs/MULTI_AGENT_COORDINATION_PROPOSAL.md`, and `git log -- Analysis/FabiusFunction/docs/registry/`. |

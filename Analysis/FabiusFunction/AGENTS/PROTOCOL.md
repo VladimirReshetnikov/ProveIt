@@ -5,7 +5,7 @@ Whether this protocol is in effect is stated by exactly one file:
 file binds anyone.  When the user flips it to `state: ON`, the campaign rules
 below apply to `Analysis/FabiusFunction`.  Durable engineering policy
 (documentation and LaTeX rules, Lean build guidance, invariants) lives in
-[`../../AGENTS.md`](../../AGENTS.md) and applies at all times regardless of
+[`../AGENTS.md`](../AGENTS.md) and applies at all times regardless of
 this switch.
 
 Design goals, in priority order: **(1)** throughput of correct mathematics;
@@ -15,9 +15,9 @@ spent several lines of bookkeeping per line of content, ran grant queues with
 multi-step ceremonies, and stranded fully audited work behind leases.  v2
 keeps v1's two proven inventions — rebuild-don't-resolve for binary
 artifacts, and exact-source-unit integration — at a fraction of the ceremony.
-v1 is archived in [`../COLLABORATION.md`](../COLLABORATION.md),
-[`../MULTI_AGENT_COORDINATION_PROPOSAL.md`](../MULTI_AGENT_COORDINATION_PROPOSAL.md),
-and the git history of `docs/registry/`.
+v1 is archived in git history: the deleted `docs/COLLABORATION.md` and
+`docs/MULTI_AGENT_COORDINATION_PROPOSAL.md`, and
+`git log -- Analysis/FabiusFunction/docs/registry/`.
 
 ## Self-limits
 

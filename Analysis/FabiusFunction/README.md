@@ -1,11 +1,11 @@
 # Fabius function
 
 > **Multi-agent coordination: OFF.**  A single switch file,
-> [`docs/coordination/STATUS.md`](docs/coordination/STATUS.md), states
+> [`AGENTS/STATUS.md`](AGENTS/STATUS.md), states
 > whether the coordination framework is in effect; flipping it — plus
 > creating or deleting the off-`main` board branch it names — is the entire
 > enable/disable procedure.  The lightweight protocol it switches is
-> [`docs/coordination/PROTOCOL.md`](docs/coordination/PROTOCOL.md).  The
+> [`AGENTS/PROTOCOL.md`](AGENTS/PROTOCOL.md).  The
 > engineering policies in [`AGENTS.md`](AGENTS.md) (documentation, Lean
 > builds, invariants) apply at all times.
 
@@ -67,11 +67,10 @@ layer additionally proves the corrected sharp small-argument expansion with
 its nonconstant Gamma--zeta periodic term, together with its complete
 all-orders saddle expansion.
 
-Several agents develop this directory concurrently in separate worktrees.  If
-you are one of them, please read [`AGENTS.md`](AGENTS.md) and the proposal in
-[`docs/COLLABORATION.md`](docs/COLLABORATION.md), which records the collisions
-that have already happened, the working rules suggested to avoid them, and a
-list of claimable future work.  Feedback on that proposal is invited.
+Several agents sometimes develop this directory concurrently in separate
+worktrees.  If you are one of them, read [`AGENTS.md`](AGENTS.md) first;
+whether the multi-agent coordination framework is currently in effect is
+stated by the single switch file [`AGENTS/STATUS.md`](AGENTS/STATUS.md).
 
 ## Design
 
@@ -660,9 +659,8 @@ compiled PDF is committed alongside its source.
 - **Format.** Mathematics is written in `*.tex`, never in Markdown. Markdown is
   reserved for repository bookkeeping that contains no displayed mathematics:
   this README, [`AGENTS.md`](AGENTS.md),
-  [`docs/PAPER_COVERAGE.md`](docs/PAPER_COVERAGE.md),
-  [`docs/COLLABORATION.md`](docs/COLLABORATION.md), and the coordination
-  files in `docs/coordination/`.
+  [`docs/PAPER_COVERAGE.md`](docs/PAPER_COVERAGE.md), and the coordination
+  files in `AGENTS/`.
 - **Style.** New documents reuse the preamble of
   [`Fabius_Function_and_Rvachev_Up.tex`](docs/Fabius_Function_and_Rvachev_Up/Fabius_Function_and_Rvachev_Up.tex)
   verbatim — the same geometry, fonts, colours, `hyperref` setup, running
@@ -715,17 +713,17 @@ compiled PDF is committed alongside its source.
 The operational entry point is [`AGENTS.md`](AGENTS.md): its documentation
 policy, Lean build guidance, and invariants apply to all work in this
 directory.  Multi-agent coordination is switched by the single file
-[`docs/coordination/STATUS.md`](docs/coordination/STATUS.md) (currently OFF)
+[`AGENTS/STATUS.md`](AGENTS/STATUS.md) (currently OFF)
 and specified by
-[`docs/coordination/PROTOCOL.md`](docs/coordination/PROTOCOL.md): claim-free
+[`AGENTS/PROTOCOL.md`](AGENTS/PROTOCOL.md): claim-free
 optimistic Lean work with first-landed-wins integration, one standing owner
 per canonical document with a fast path for small fixes, a lock-file build
 mutex, a 2-hour integration-latency cap, bookkeeping on a dedicated orphan
 branch off `main`, and a built-in overhead assessment with explicit authority
 to delete rules that stop paying for themselves.  The heavier v1 protocol of
-the 2026-08 campaign and its rationale are archived in
-[`docs/COLLABORATION.md`](docs/COLLABORATION.md) and
-[`docs/MULTI_AGENT_COORDINATION_PROPOSAL.md`](docs/MULTI_AGENT_COORDINATION_PROPOSAL.md).
+the 2026-08 campaign and its rationale survive only in git history (the
+deleted `docs/COLLABORATION.md` and
+`docs/MULTI_AGENT_COORDINATION_PROPOSAL.md`).
 
 ## Checking
 
