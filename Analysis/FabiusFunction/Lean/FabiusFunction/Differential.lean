@@ -220,9 +220,15 @@ theorem rvachevUp_hasDerivAt_of_fabiusReal_hasDerivAt
       rw [rvachevUp, if_pos (by linarith), hzero _ (by linarith)]
     rw [hsecond]
     simpa using hmain
-  · have hl0 := rvachevUp_left_hasDerivAt_of_hasDerivAt F hderiv (x := 0)
+  · have hupOne : rvachevUp F 1 = 0 := by
+      rw [rvachevUp, if_neg (by norm_num), show (1 : ℝ) - 1 = 0 by norm_num]
+      exact hzero 0 le_rfl
+    have hupNegOne : rvachevUp F (-1) = 0 := by
+      rw [rvachevUp, if_pos (by norm_num), show (-1 : ℝ) + 1 = 0 by norm_num]
+      exact hzero 0 le_rfl
+    have hl0 := rvachevUp_left_hasDerivAt_of_hasDerivAt F hderiv (x := 0)
     have hcoef : 2 * rvachevUp F (2 * (0 : ℝ) + 1) = 0 := by
-      simp [rvachevUp, hzero]
+      norm_num [hupOne]
     rw [hcoef] at hl0
     have hl : HasDerivWithinAt (rvachevUp F) 0 (Iic (0 : ℝ)) 0 := by
       have h : HasDerivWithinAt (fun y : ℝ => fabiusReal F (y + 1)) 0
@@ -232,7 +238,9 @@ theorem rvachevUp_hasDerivAt_of_fabiusReal_hasDerivAt
       change y ≤ 0 at hy
       rw [rvachevUp, if_pos hy]
     have hone : HasDerivAt (fabiusReal F) 0 1 := by
-      simpa [rvachevUp, hzero] using hderiv 1
+      have h := hderiv 1
+      rw [show 2 * (1 : ℝ) - 1 = 1 by norm_num, hupOne, mul_zero] at h
+      exact h
     have hone' : HasDerivAt (fabiusReal F) 0 ((1 : ℝ) - 0) := by simpa using hone
     have hr0 := hone'.comp_const_sub 1 (0 : ℝ)
     have hr : HasDerivWithinAt (rvachevUp F) 0 (Ici (0 : ℝ)) 0 := by
@@ -247,11 +255,7 @@ theorem rvachevUp_hasDerivAt_of_fabiusReal_hasDerivAt
         simp [rvachevUp, not_le.mpr hypos]
     have hu := hl.union hr
     rw [Iic_union_Ici] at hu
-    have honeZero : rvachevUp F 1 = 0 := by
-      simp [rvachevUp, hzero]
-    have hnegoneZero : rvachevUp F (-1) = 0 := by
-      simp [rvachevUp, hzero]
-    simpa [honeZero, hnegoneZero] using hu
+    simpa [hupOne, hupNegOne] using hu
   · have hneg := rvachevUp_hasDerivAt_of_neg_of_hasDerivAt F hderiv
       (show -x < 0 by linarith)
     have hneg' : HasDerivAt (rvachevUp F)
