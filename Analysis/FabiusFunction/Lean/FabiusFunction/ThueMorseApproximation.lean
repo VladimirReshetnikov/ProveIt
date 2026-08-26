@@ -11,7 +11,7 @@ then asymptotically along moving cells.  It includes the exceptional right
 endpoint, natural-floor clamping on the nonpositive half-line, and the
 rescaling that recovers the Fabius function on `[0,1]`.  The exact coefficient
 identification covers every prefix order: at order zero the dyadic cutoff
-forces the sole coefficient at index zero, where both sides equal one.
+admits only index zero, where both sides equal one.
 -/
 
 set_option autoImplicit false
