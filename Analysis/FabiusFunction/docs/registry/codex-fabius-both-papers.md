@@ -7,11 +7,10 @@ This file implements the per-branch registry fallback in
 SYNC Fabius
 branch / worktree / machine: codex/fabius-both-papers /
   /home/codex/src/Proofs / codexbox
-fetched main SHA: 5b053a32b10e758e39f1be23cb2e8d821fba8de6
-HEAD and dirty paths: 4ab7d97ad6ce413162ef37f0c3626ae2a2fd02f0;
-  dirty only in this own-registry claim
+fetched main SHA: 741db6b4b777abc3fb4ca9ba6a6f0f098399c1bb
+HEAD and dirty paths: 48024a1d4ee468e4d76f3e7d93b98f1c342c5b37;
+  dirty only in this own-registry handoff
 writing (exact paths):
-  Analysis/FabiusFunction/Lean/FabiusFunction/TwoAdic.lean
   Analysis/FabiusFunction/docs/registry/codex-fabius-both-papers.md
 expected declarations or document claims:
   `addChoose_padicValNat_two`;
@@ -19,7 +18,8 @@ expected declarations or document claims:
   the first specializes Kummer's digit-sum formula at two for arbitrary
   addition, and the second expresses the Thue--Morse sign as a carry-valuation
   cocycle; use one private subtraction-free binary-weight balance helper;
-  preserve every existing theorem body, public signature, import, and attribute
+  preserve every existing theorem body, public signature, import, and
+  attribute; the `TwoAdic.lean` source claim is released by this handoff
 completed commits: Lower-Lambert source checkpoint `1da2fde2285e3970267b7dc2561bcd0d897be1b4`
   was integrated by coordinator merge `046946a974467e83244fd3a183a3e084e70d3379`;
   registry handoff `225f5338de9ea92489ed6a2c0c371c6edb4f5db9`
@@ -149,7 +149,9 @@ completed commits: Lower-Lambert source checkpoint `1da2fde2285e3970267b7dc2561b
   checkpoint `b369925e81e4819ba1e38f229aae599f0418faa4`, whose three-file delta is
   7 insertions and 27 deletions; registry handoff
   `8d765ffbd5c4d689d19d8e11cdf97787d68e2927` and clean merge
-  `4ab7d97ad6ce413162ef37f0c3626ae2a2fd02f0` precede this general Kummer claim;
+  `4ab7d97ad6ce413162ef37f0c3626ae2a2fd02f0` precede general Kummer claim
+  `e5ec81bd13458ce677ccbf7ca054857feb828710` and unvalidated source checkpoint
+  `48024a1d4ee468e4d76f3e7d93b98f1c342c5b37`;
 validated (exact command, SHA/state, exit code): coordinator board records
   serialized immutable `lake build +FabiusFunction.LowerLambertW` at
   `4c6bbac41`, exit 0, with its source blob unchanged on current main;
@@ -203,9 +205,17 @@ validated (exact command, SHA/state, exit code): coordinator board records
   independent read-only reviews of `b369925e8` accept the generic theorem,
   all `m = 1, 2, 3` specializations, retained denominator-positivity fact,
   imports, public-header preservation, collision scan, residual-duplicate
-  scan, and diff hygiene
-not yet validated: the denominator-consolidation source checkpoint
-  `b369925e81e4819ba1e38f229aae599f0418faa4` has not been elaborated or built;
+  scan, and diff hygiene; coordinator integration `a7946a7a9` records the exact
+  denominator source, and serialized builds of
+  `+FabiusFunction.NegativeLaplaceDerivativeBounds` (3419 jobs) and
+  `+FabiusFunction.FabiusLambertDerivativeBounds` (3501 jobs) both exit 0;
+  each reports only the inherited nonblocking `ProbabilityLaplaceMoments`
+  linter; three independent read-only reviews of `48024a1d4` accept both
+  general Kummer statements, the private factorial-valuation balance, all zero
+  cases, natural-subtraction handling, parity algebra, imports, collision scan,
+  and diff hygiene
+not yet validated: the general Kummer/carry-cocycle source checkpoint
+  `48024a1d4ee468e4d76f3e7d93b98f1c342c5b37` has not been elaborated or built;
   the historical validation-state paragraphs below are
   superseded by the coordinator board and retained only as provenance: the
   moved dyadic theorem body was already compiled in its
@@ -303,20 +313,19 @@ historical integration requests, all superseded by the current coordinator
   handoff;
   serialized README/primary/walkthrough/coverage paths are deliberately not
   claimed yet
-requested integration or lease: integrate exact denominator-consolidation
-  source checkpoint `b369925e81e4819ba1e38f229aae599f0418faa4` and run
-  serialized `LAKE_JOBS=1 lake build
-  +FabiusFunction.NegativeLaplaceDerivativeBounds`, followed by
-  `LAKE_JOBS=1 lake build +FabiusFunction.FabiusLambertDerivativeBounds`;
-  all three source claims are released by this handoff; canonical README,
-  AUDIT_FINDINGS, PAPER_COVERAGE, primary, walkthrough, frontier, and
-  user-supplied draft paths remain frozen and unclaimed
+requested integration or lease: integrate exact general Kummer/carry-cocycle
+  source checkpoint `48024a1d4ee468e4d76f3e7d93b98f1c342c5b37` and run
+  serialized `LAKE_JOBS=1 lake build +FabiusFunction.TwoAdic`, followed by
+  `LAKE_JOBS=1 lake build +FabiusFunction.Paper06487`; the `TwoAdic.lean`
+  source claim is released by this handoff; canonical README, AUDIT_FINDINGS,
+  PAPER_COVERAGE, primary, walkthrough, frontier, and user-supplied draft paths
+  remain frozen and unclaimed
 conflicts / dependencies: fresh current-main, all-tip, and registry scans find
-  no public declaration, alternate same-domain estimate, or competing claim
-  on any of the three denominator-consolidation paths; the superficially
-  similar `NegativeLaplaceMinorArc` estimate has the genuinely weaker
-  `log 2 ≤ x` domain and is not interchangeable; all advertised Fabius heads
-  and their registries
+  no exact or semantic general-addition Kummer/sign implementation or competing
+  `TwoAdic.lean` claim; the prior central-binomial source is integrated,
+  validated, and released; the normalized-moment positivity candidate was
+  rejected because `origin/codex/fabius-effective-bounds-20260825` already
+  claimed and implemented it; all advertised Fabius heads and their registries
   were checked; no branch claims GlobalExtension and the only overlap is the
   existing even/odd ingredients and downstream special cases that this API
   packages without modifying; local coordinator candidate merge
@@ -370,9 +379,37 @@ conflicts / dependencies: fresh current-main, all-tip, and registry scans find
   the downstream module directly imports the upstream home, and a theorem-only
   factoring is insufficient because its `expCoeff`, finite quotient, and degree
   proofs consume the polynomial family itself
-next bounded step: coordinator integration and the two serialized focused
-  builds for `b369925e8`; after acceptance, correct the frozen audit ledger
-  only under a future document grant
+next bounded step: coordinator integration and the two serialized focused and
+  paper-facade builds for `48024a1d4`; future frozen-document mapping must
+  distinguish the formalized valuation/sign formulas from the still-open
+  bit/XOR corollaries
+```
+
+## General Kummer carry-cocycle handoff
+
+At fetched main `741db6b4b777abc3fb4ca9ba6a6f0f098399c1bb`, the
+project exposed only the diagonal central-binomial specialization of Kummer's
+theorem.  Source checkpoint
+`48024a1d4ee468e4d76f3e7d93b98f1c342c5b37` adds
+`addChoose_padicValNat_two` for arbitrary `a,b : ℕ` and derives
+`thueMorseSign_add_valuation`, the carry-valuation cocycle for ordinary
+addition.  A private factorial-valuation lemma supplies the subtraction-free
+balance needed because Kummer's public natural-number formula uses truncated
+subtraction.  Both statements include zero arguments without side conditions.
+
+The exact `TwoAdic.lean` result blob is
+`5d81c77b33279f8dade6f3825c36747813d4e6f1`; the one-file delta is 69
+insertions and 3 deletions, with imports and every existing declaration body,
+header, and attribute preserved.  Current-main, advertised-tip, and registry
+scans find no competing implementation or active claim.  Three independent
+static audits accept the Kummer normalization, factorial identity, protected
+valuation multiplication, `omega` balance, parity calculation, edge cases,
+API, and hygiene.  No Lean/Lake process was run.  The requested serialized
+gates are:
+
+```text
+LAKE_JOBS=1 lake build +FabiusFunction.TwoAdic
+LAKE_JOBS=1 lake build +FabiusFunction.Paper06487
 ```
 
 ## Negative-Laplace denominator consolidation handoff
