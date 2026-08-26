@@ -2430,3 +2430,63 @@ the first nonzero exit; no root or document build is required.  After compiled
 integration, the already-frozen audit-ledger finding may be marked resolved by
 a separately assigned documentation owner, but no mathematical exposition
 needs changing.
+
+## Claim: export local finiteness of the signed translate family
+
+Fresh `origin/main` `e3821d5cfdde997bfce41d62670764239419551d` has the
+exact prospective source blob
+
+```text
+GlobalExtension.lean  9fa1c4e8d208e923ce27b1fba69ef90ccf246ac6
+```
+
+The exact prospective write set is:
+
+- `Lean/FabiusFunction/GlobalExtension.lean`;
+- this branch's own registry.
+
+The new documented public declaration will be
+
+```text
+extendedFabius_summand_hasFiniteSupport
+```
+
+with conclusion `Function.HasFiniteSupport` for the natural-number-indexed
+Thue--Morse-weighted Rvachev translate appearing in `extendedFabius F x`.
+Its proof factors the finite-cutoff argument already embedded in
+`extendedFabius_summable` through the existing private tail-zero lemma.  The
+old summability theorem retains its exact public name, binders, and result type
+and becomes the direct consequence `summable_of_hasFiniteSupport`.
+
+This is the literal missing formal counterpart to the primary paper's
+statement that only finitely many summands are nonzero at fixed `x` and to the
+frontier subsection “Local finiteness of the signed translate family,” whose
+obligation explicitly asks to export the internal eventual-zero or
+finite-support fact.  One public theorem is API-minimal: the private pointwise
+tail-zero helper remains an implementation detail, and no redundant eventual
+filter alias is introduced.
+
+Exact-name, plausible finite-support-shape, target-path, source-history, every
+advertised-tip, and every-registry scans find no competing implementation or
+claim.  Every modern source tip has the same prospective blob.  The historical
+natural-knot `GlobalExtension.lean` work is integrated, compiled, and
+explicitly released by the coordinator; the current vertical-log and other
+source lanes are disjoint.  The branch was cleanly synchronized with current
+main at merge `2b626348bab132975a7022ed1a47076c1948e069` before this claim.
+
+No import, namespace, attribute, simp rule, facade, aggregate, canonical
+document, TeX, or PDF change is claimed.  Canonical documents remain frozen;
+a later documentation owner may retire the now-exact frontier obligation only
+after compiled integration.
+
+No Lean, Lake, TeX, PDF, or cache-mutating process is authorized or has run for
+this claim.  After an immutable reviewed source checkpoint, the requested
+separate serialized gate is:
+
+```text
+LEAN_NUM_THREADS=0 LAKE_JOBS=1 lake build +FabiusFunction.GlobalExtension
+```
+
+The optional smallest direct-importer smoke test is
+`+FabiusFunction.GlobalBounds`.  Stop after the first nonzero exit; no root or
+document build is requested.
