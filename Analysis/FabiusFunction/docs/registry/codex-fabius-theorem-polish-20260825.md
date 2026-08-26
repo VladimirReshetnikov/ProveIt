@@ -1777,3 +1777,55 @@ conflicts / dependencies: none.  The feature branch merged the exact active
 next bounded step: commit and push this registry-only release to the feature
   branch, notify the coordinator, and remain read-only pending disposition
 ```
+
+## Coordinator acceptance and final feature synchronization
+
+Coordinator checkpoint `fc63c39788ab4c31694e4f57efe05b543165675a`
+accepts the complete compact Lambert-W tranche.  The atomic primary TeX/PDF
+integration is `260d66fce3ce8434b4f6f90d90f9bc6e01ad8d34`, and the
+narrow release-block integration is
+`ff41c127a3a960d63b8fcea213f814a0eaf352f0`.  Feature merge
+`7cb3ea5338cdf037292b59378dcf27e51b93ba15` incorporates that current main.
+Its sole conflict was this branch's own registry: the resolution preserves the
+complete feature history and retains the accepted handoff block exactly once.
+
+The compact-Lambert source, document, build, and process leases are all
+released.  Both primary artifacts now have identical blobs on the synchronized
+feature and main histories: TeX `5071d1f32f5f732e7cc59f569190532b6d815d57`
+and PDF `4529d9c453d647e4068e2ff5527c417f5564f5d0`.  The stronger
+cluster-set, liminf/limsup, arbitrary-multiplier, literal-factorization, and
+certified-extremum statements remain possible future theorem work, not claims
+of this completed tranche.
+
+```text
+SYNC Fabius
+branch / worktree / machine: codex/fabius-theorem-polish-20260825 /
+  C:/Users/vresh/.codex/worktrees/10ef/ProveIt / EVO (Windows)
+fetched main SHA: fc63c39788ab4c31694e4f57efe05b543165675a
+HEAD and dirty paths: 7cb3ea5338cdf037292b59378dcf27e51b93ba15;
+  clean after the current-main merge, then only this own registry is dirty for
+  the final acceptance record
+writing (exact paths): only
+  docs/registry/codex-fabius-theorem-polish-20260825.md
+expected declarations or document claims: no new declaration or document
+  claim; the compact Lambert-W source and primary exposition are accepted and
+  integrated
+completed commits: 8d928a55f (validated source integration), 2546fe21b
+  (feature TeX/PDF checkpoint), 581da767f (feature lease release), 260d66fce
+  (main TeX/PDF integration), ff41c127a (main registry integration),
+  fc63c3978 (coordinator acceptance), and 7cb3ea533 (feature synchronization)
+validated (exact command, SHA/state, exit code): coordinator
+  `LAKE_JOBS=1 lake build +FabiusFunction.FabiusSharpAsymptotic` at
+  8d928a55f completed 3891 jobs and exited 0 with only the inherited
+  nonblocking linter; three settled sequential pdflatex passes at the exact
+  2546fe21b document content all exited 0 and produced the accepted 59-page PDF
+not yet validated: no new validation is required for this synchronization;
+  this worktree ran no new Lean, Lake, LaTeX, or PDF process
+requested integration or lease: none; all source, build, document, and
+  TeX/PDF ownership is released
+conflicts / dependencies: the sole own-registry conflict is resolved; every
+  canonical document remains frozen and no build token is assigned
+next bounded step: commit and push this final registry record to the feature
+  branch, then freeze it; undertake no further source, document, or build work
+  without a fresh exact claim and any required board grant
+```
