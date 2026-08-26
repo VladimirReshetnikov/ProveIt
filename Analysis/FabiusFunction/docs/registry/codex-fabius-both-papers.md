@@ -7,20 +7,12 @@ This file implements the per-branch registry fallback in
 SYNC Fabius
 branch / worktree / machine: codex/fabius-both-papers /
   /home/codex/src/Proofs / codexbox
-fetched main SHA: de303339202ef0b7fb99da83003d4b841eef9b80
-HEAD and dirty paths: 777550a18f16d55f5586616e2194658f59a58bc3;
-  clean before this ordinary generic-derivative claim
-writing (exact paths):
-  Lean/FabiusFunction/Differential.lean;
-  Lean/FabiusFunction/Existence.lean;
-  docs/registry/codex-fabius-both-papers.md
-expected declarations or document claims:
-  add `rvachevUp_hasDerivAt_of_fabiusReal_hasDerivAt`, deriving Rvachev's
-  refinement equation from only left-tail vanishing and the global bounded
-  derivative identity; keep `rvachev_hasDerivAt` unchanged as its `IsFabius`
-  specialization; delete the duplicate private negative-branch helper and
-  full three-case proof in `Existence.lean`, making
-  `rvachevCandidate_hasDerivAt` a direct application of the generic theorem
+fetched main SHA: 1401f2d9b6cfd02e0b6a72ee60869b6df0bb776c
+HEAD and dirty paths: a69159a65f447778fc25d30a5a5a4b591f53af1a;
+  dirty only in this own-registry handoff after the clean merge
+writing (exact paths): none; the generic derivative source claim is released
+expected declarations or document claims: none in flight; the generic
+  Rvachev derivative bridge is frozen at the source checkpoint below
 completed commits: Lower-Lambert source checkpoint `1da2fde2285e3970267b7dc2561bcd0d897be1b4`
   was integrated by coordinator merge `046946a974467e83244fd3a183a3e084e70d3379`;
   registry handoff `225f5338de9ea92489ed6a2c0c371c6edb4f5db9`
@@ -96,7 +88,12 @@ completed commits: Lower-Lambert source checkpoint `1da2fde2285e3970267b7dc2561b
   `integral_unitInterval_max_sub_mul_pow` declaration and no other source line;
   clean merge `347ea497c3814b30131b4133c2a3eb564a0b93f6` incorporates fetched main
   `de3033392` and resolves the sole periodic overlap by retaining main's exact
-  serialized-build-validated `PeriodicSmooth.lean` blob
+  serialized-build-validated `PeriodicSmooth.lean` blob; generic derivative
+  claim `1686a1a06930199f037902131495b08fcc7aab11` precedes source checkpoint
+  `dbb7ace603bbdb87915d35c8c06623a479a63298`, which extracts the Rvachev
+  refinement bridge and removes the duplicate fixed-point proof; clean merge
+  `a69159a65f447778fc25d30a5a5a4b591f53af1a` incorporates fetched main
+  `1401f2d9b`
 validated (exact command, SHA/state, exit code): coordinator board records
   serialized immutable `lake build +FabiusFunction.LowerLambertW` at
   `4c6bbac41`, exit 0, with its source blob unchanged on current main;
@@ -111,7 +108,10 @@ validated (exact command, SHA/state, exit code): coordinator board records
   differs from that green proof-bearing blob only in doc-comment words;
   read-only review of `09b360531` confirmed the moved block is byte-identical,
   imports and namespace placement suffice, the downstream theorem resolves
-  through its existing direct import, and all static hygiene checks pass
+  through its existing direct import, and all static hygiene checks pass;
+  coordinator integration `b16fc9a6d` records the exact private-only spline
+  cleanup, and `+FabiusFunction.FabiusUniformSpline` completes 3415 jobs,
+  exit 0
 not yet validated: the moved dyadic theorem body was already compiled in its
   downstream home by the green
   aggregate at `9887ea584`, but its new module ownership/import context has not
@@ -159,7 +159,12 @@ not yet validated: the moved dyadic theorem body was already compiled in its
   normalization, odd/natural witness orientations, successor projection,
   false-at-zero valuation boundary, public-signature preservation, placement,
   collision sweep, imports, facade exposure, documentation, forbidden markers,
-  and diff hygiene, but has not been elaborated or built
+  and diff hygiene, but has not been elaborated or built; the generic Rvachev
+  bridge checkpoint has two independent read-only reviews covering all three
+  sign branches, endpoint derivative gluing, the four conditional simplifier
+  reductions, wrapper inference, specialization, imports, dependency
+  acyclicity, collisions, public-signature preservation, and diff hygiene, but
+  has not been elaborated or built
 requested integration or lease: the dyadic relocation needs serialized
   `+FabiusFunction.GlobalDyadic`
   and `+FabiusFunction.OriginalPaperSupplement` validation; this new ordinary
@@ -189,7 +194,9 @@ requested integration or lease: the dyadic relocation needs serialized
   the all-index oddness checkpoint needs serialized
   `+FabiusFunction.Paper06487Supplement` followed by
   `+FabiusFunction.Paper06487`, and its source writing claim is released by
-  this handoff;
+  this handoff; the generic Rvachev derivative checkpoint needs serialized
+  `+FabiusFunction.Existence`, which transitively covers `Differential`, and
+  both source writing claims are released by this handoff;
   serialized README/primary/walkthrough/coverage paths are deliberately not
   claimed yet
 conflicts / dependencies: all advertised Fabius heads and their registries
@@ -237,10 +244,37 @@ conflicts / dependencies: all advertised Fabius heads and their registries
   semantic equivalent, or active claim on `Differential.lean` or
   `Existence.lean`; the only matching text is the unimplemented serialized
   audit proposal, and the board has released both ordinary source paths
-next bounded step: push this exact two-source-file claim, implement the generic
-  derivative bridge and fixed-point deduplication without running a build,
-  obtain independent review, and request serialized
-  `+FabiusFunction.Existence` validation
+next bounded step: push this synchronized generic-derivative handoff, request
+  serialized `+FabiusFunction.Existence` validation, and begin the next
+  ordinary nonoverlapping audit
+```
+
+## Generic Rvachev derivative bridge handoff
+
+Source checkpoint `dbb7ace603bbdb87915d35c8c06623a479a63298`
+adds the public theorem
+`rvachevUp_hasDerivAt_of_fabiusReal_hasDerivAt`.  Its only hypotheses are
+left-tail vanishing of `fabiusReal F` and the global identity
+`F'(x) = 2 up(2x-1)`.  The proof treats negative inputs directly, glues the
+two one-sided derivatives at zero, and reflects positive inputs using the
+hypothesis-free evenness of `rvachevUp`.
+
+The existing `rvachev_hasDerivAt` keeps its exact name and signature as the
+`IsFabius` specialization.  In `Existence.lean`, the private negative-branch
+helper and the duplicate three-case derivative proof are deleted;
+`rvachevCandidate_hasDerivAt` keeps its exact public signature as a direct
+application of the generic bridge.  The two-file patch is 46 insertions and
+100 deletions, a net reduction of 54 lines.
+
+Two independent read-only audits pass.  They checked the `x < 0`, `x = 0`,
+and `x > 0` branches, endpoint zeros, coefficient signs, `simp` obligations,
+wrapper inference, transitive import path
+`Existence -> DyadicAnalytic -> Differential -> Basic`, collision hygiene,
+and preservation of every existing public signature.  `git diff --check` is
+clean.  No Lean/Lake process was run.  The requested serialized gate is:
+
+```text
+LAKE_JOBS=1 lake build +FabiusFunction.Existence
 ```
 
 ## Dead uniform-spline helper cleanup handoff
@@ -262,6 +296,10 @@ requested future serialized gate is:
 ```text
 LAKE_JOBS=1 lake build +FabiusFunction.FabiusUniformSpline
 ```
+
+The coordinator subsequently integrated the exact checkpoint as `b16fc9a6d`.
+That target completed 3415 jobs with exit code 0, so the earlier unvalidated
+request is superseded and the source path is released.
 
 ## Coordinator natural-knot integration disposition
 
