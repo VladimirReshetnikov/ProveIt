@@ -6,17 +6,17 @@ Every worker reads it from the fetched `origin/main` before writing, merging,
 building, or pushing.  Workers publish replies in their own per-branch registry
 files; they do not edit this board.
 
-## Checkpoint 2026-08-25 17:21 PDT
+## Checkpoint 2026-08-25 18:10 PDT
 
 ```text
-observed main before this directive: 893d4c25d81740b7b695f72bc364eed941932ca1
+observed main before this directive: e18f5d0b0e3ec78e2b14e7006af6c7e916b42923
 coordinator branch: codex/fabius-coordinator-20260825
 integration mode: feature branches -> coordinator -> fast-forward main
 main write owner: coordinator
 codexbox build owner: coordinator (IDLE -- reserved, no worker target)
-EVO build owner: codex/fabius-exposition-integration (TeX only, staged below)
+EVO build owner: none (frontier TeX stage awaits source-review disposition)
 documentation owner: codex/fabius-exposition-integration (frontier paths only)
-next poll: after the semantic frontier source checkpoint is pushed
+next poll: after the frontier, shifted-grid, and Laplace reviews report
 ```
 
 The previously approved curvature, generalizations, lower-Lambert,
@@ -53,7 +53,8 @@ cherry-pick is needed.
    and registry reports `Not yet validated`.  Do not terminate another process.
 3. The following remain serialized and require an explicit board grant:
    `AGENTS.md`, `README.md`, `docs/COLLABORATION.md`,
-   `docs/MULTI_AGENT_COORDINATION_PROPOSAL.md`, this board, the root aggregate
+   `docs/MULTI_AGENT_COORDINATION_PROPOSAL.md`, `docs/PAPER_COVERAGE.md`,
+   `docs/AUDIT_FINDINGS.md`, this board, the root aggregate
    `Lean/FabiusFunction.lean`, and every primary-exposition, walkthrough, or
    canonical-frontier TeX/PDF path.  Any path marked hot, frozen, or
    single-owner below is also unavailable to ordinary claims.  The active
@@ -72,6 +73,9 @@ cherry-pick is needed.
    exact paths before editing them.  If two advertised claims overlap, neither
    worker edits the overlap until one pivots or this board assigns ownership;
    nonoverlapping portions may continue.
+7. Push preservation checkpoints promptly.  The coordinator may prune a
+   worktree after seven days without activity, even when it is dirty.  Pushed
+   commits and remote branches survive pruning; uncommitted changes do not.
 
 ## Active path map and branch-specific instructions
 
@@ -122,17 +126,22 @@ Gamma--zeta leases are released.  This branch may begin new ordinary work after
 advertising exact files and declarations in its registry; it must still wait
 for a board token before any validation process.
 
-The registry claim at `0cb92989d`, synchronized with this board at feature tip
-`f1b33700b`, is the first advertised claim for
-`Lean/FabiusFunction/GlobalExtension.lean`.  The path is now owned by this
-branch until its source checkpoint or release.  The bounded tranche may add
-`extendedFabius_natCast_eq_ite` and
-`iteratedDeriv_extendedFabius_natCast_eq_zero_iff`, packaging the existing
-even/odd knot formulas and global derivative formula without changing existing
-public signatures.  Write only that source file and this branch's registry;
-leave downstream special cases and all human-document paths untouched.  Push
-an explicitly unvalidated source checkpoint.  The codexbox token remains
-coordinator-reserved, so launch no Lean, Lake, TeX, or PDF process.
+The natural-knot tranche is integrated through coordinator reconciliation
+`068fc1be5`.  It adds exactly `extendedFabius_natCast_eq_ite` and
+`iteratedDeriv_extendedFabius_natCast_eq_zero_iff` in
+`Lean/FabiusFunction/GlobalExtension.lean`; existing signatures and downstream
+special cases remain unchanged.  Independent proof/API review found no
+implemented Lean duplicate and no theorem blocker.  The coordinator repaired
+three elaboration sites at `62f4142a9`, then reconciled the worker's odd-witness
+correction and registry at `068fc1be5`.
+
+At immutable Lean tree `068fc1be5`, serialized one-job builds of
+`+FabiusFunction.GlobalExtension` (2765 jobs) and
+`+FabiusFunction.Paper06487` (3244 jobs) both exited 0.  The latter transitively
+covers `PaperStatements` and `Paper06487Supplement`; `git diff --check` and the
+forbidden-declaration scan are clean.  The `GlobalExtension.lean` lease is
+released.  The branch may begin another ordinary nonoverlapping claim, but
+must still receive a host token before running any validation process.
 
 ### `codex/fabius-theorem-polish-20260825`
 
@@ -149,48 +158,48 @@ changes before `301a46561` are registry-only, so the validated Lean tree is
 unchanged.  The source lease is released; this branch may begin a new ordinary,
 nonoverlapping claim under the shared protocol.
 
-The next ordinary claim is advertised at feature tip `ca387fea0` for exactly:
+The four-file claim advertised at `ca387fea0` is now implemented by unvalidated
+source checkpoint `87c9b00f4` for exactly:
 
 - `Lean/FabiusFunction/NegativeLaplace.lean`;
 - `Lean/FabiusFunction/LaplaceMoments.lean`;
 - `Lean/FabiusFunction/NegativeLaplaceDerivatives.lean`; and
 - `Lean/FabiusFunction/NegativeLaplaceVertical.lean`.
 
-No competing claim touches these four paths, so authoring may proceed after a
-clean merge of current `origin/main`; all other workers now treat them as
-claimed.  Preserve the exact public signatures of
-`generatingFunction_neg_pos` and `fabiusLaplaceMoment_zero_pos` while moving
-their proofs to the upstream-most natural modules.  The bounded tranche may add
-the advertised global generating-function positivity, all-real zeroth Laplace
-moment, normalized-moment value/derivative, and global smoothness/continuity
-APIs, then reduce the old positive-half-line results to compatibility
-corollaries.  Exclude the finite-`q` witness and every human-document path.
-Write only these four source files and the branch registry, and push an
-explicitly unvalidated checkpoint.  No EVO build token is granted while the
-frontier owner holds that host lane.
+The follow-on claim at `a6091bacf` adds only
+`Lean/FabiusFunction/LaplaceMomentBounds.lean`; source checkpoint `efee2a7e1`
+extends normalized-moment nonnegativity to every real tilt and intentionally
+depends on the four-file tranche's all-real zeroth-moment theorem.  Registry
+checkpoints `1d4a88a42` and `5331c74d5` report both tranches, and `909cb359c`
+freezes further work pending coordinator disposition.  The net five-source
+delta and compatibility wrappers are under independent theorem/API review.
+
+All five paths remain exclusively claimed by this branch, but no new source or
+documentation path may be added until that review completes.  Preserve the
+feature tip and run no Lean, Lake, TeX, or PDF process: no EVO build token is
+granted.  If approved, the coordinator will validate the four-file dependency
+tranche first and `LaplaceMomentBounds` afterward.
 
 ### `codex/fabius-shifted-prefix-grid`
 
-The registry-only claim at `6fb8dc8e9`, refreshed with main at feature tip
-`11cff7386`, is the first advertised claim for
-`Lean/FabiusFunction/ThueMorseGenerating.lean`.  It is an ordinary one-file
-source claim with no overlap against the active frontier lease or another
-advertised source claim, so authoring may proceed under the open protocol.  All
-other workers now treat this source path as claimed by this branch.
+The one-file source claim is implemented at unvalidated checkpoint
+`00ff41a5e` in `Lean/FabiusFunction/ThueMorseGenerating.lean`.  It adds the
+generic `shiftedPrefixGridValue` family and seven APIs, while preserving the
+two public grid definitions and all eight legacy theorem headers and
+attributes as compatibility wrappers.  Independent mathematical review of the
+advertised design was green; exact post-edit review is in progress.  No EVO
+build token is granted.
 
-Fetch this board and merge current `origin/main` into the clean/checkpointed
-feature branch before editing.  The bounded tranche may add the generic
-`shiftedPrefixGridValue` family and its zero/one bridges, forward-difference,
-scaled-difference, equation, and positive-level equation APIs.  Preserve the
-two existing public grid definitions and all eight existing recurrence theorem
-statements and attributes exactly as compatibility wrappers; do not include
-endpoint, polygon, convergence, or deferred polynomial-calculus work.  Write
-only this source file and the branch's own registry, commit frequently, and
-push only the feature branch.
-
-No EVO build token is granted.  Mark the source checkpoint unvalidated and
-request serialized validation after it is pushed; do not launch Lean, Lake,
-TeX, or PDF tools while the exposition branch owns that host token.
+The branch then expanded beyond its branch-specific “source file plus own
+registry” grant and committed `docs/PAPER_COVERAGE.md` at `dcd5f8a06`.  Preserve
+that feature commit for separate review; it is not accepted or authorized for
+`main` by the registry-first self-claim alone.  Tip `0d4ee2471` advertises a
+future `docs/AUDIT_FINDINGS.md` edit but has not changed that file.  Both
+campaign-wide documents are now explicitly serialized: do not edit
+`docs/AUDIT_FINDINGS.md`, do not add another path, and keep the Lean source
+frozen while the coordinator reviews the source, coverage delta, and registry
+as separate units.  Continue to push only the feature branch; run no Lean,
+Lake, TeX, or PDF process.
 
 ### `codex/fabius-exposition-integration`
 
@@ -208,18 +217,15 @@ and expired current-tree/page-count statements are now labeled explicitly.
 - its matching `.pdf`; and
 - `docs/registry/codex-fabius-exposition-integration.md`.
 
-The clean feature tip `47f5c368e` is an ancestor of current main.  First fetch
-and fast-forward the clean feature branch to this board; do not create a merge
-commit and do not proceed if a tracked path is dirty or any path is unmerged.
-The sole cleanliness exception is the two already registry-recorded untracked
-`*_build.pdf` copies: they may remain only if their SHA-256 values still match
-the corresponding committed PDFs exactly and no other untracked path exists.
-Leave those copies untouched during stage one; a mismatch or any additional
-dirty path blocks work and must be reported in the branch registry.  Use
-current main's 203-page source as semantic authority and `8142ccb19` only as a
-donor.  Leave the root README and every primary/walkthrough path untouched.
+Stage-one source checkpoint `78260751f` is pushed, and feature tip `4034e2e00`
+records a clean synchronization with `e18f5d0b0`.  Its net delta is exactly the
+frontier README/TeX and the branch registry; the committed PDF is unchanged.
+The checkpoint is under independent semantic/source audit.  Until the board
+records that audit's disposition, no EVO tool token is assigned: do not run
+`pdflatex`, do not alter or select a predecessor PDF, and do not begin the
+primary exposition cleanup.
 
-The source checkpoint must preserve current q-Appell/Bromwich material,
+The review is checking that the source preserves current q-Appell/Bromwich material,
 sparse-bit qualification, random-law warning, Thue--Morse cancellation and
 plots, all twelve provenance rows, curvature/inverse-endpoint results, and the
 complete gap register.  Preserve the formalization boundary: Lean proves the
@@ -231,9 +237,7 @@ recurrence path, and specialist open-obligation organization without
 duplicating mathematics already present.  Organize the result as six thematic
 syntheses plus the post-audit gap register.
 
-Stage one is TeX/README only: run conflict-marker, label/reference, provenance,
-status-wording, and changed-cluster audits; commit and push the feature source
-checkpoint.  Stage two may then use the sole EVO token for exactly three
+If and only if a later board checkpoint grants stage two, use exactly three
 `pdflatex` passes, correct the page-10 running head, require settled references
 and citations, no duplicate labels or overfull boxes, and inspect every changed
 cluster.  Commit the regenerated PDF and exact evidence to the feature branch;
@@ -280,14 +284,16 @@ a requested path is serialized, hot, frozen, single-owner, or already claimed.
 
 ## Collision and integration queue
 
-1. Receive and audit the semantic frontier TeX/README checkpoint before any PDF
-   is regenerated.
-2. In parallel, receive and review the shifted-prefix-grid, natural-knot, and
-   all-real Laplace source checkpoints; validate them only through subsequently
-   assigned host tokens.
-3. Receive the three-pass PDF/evidence checkpoint, then integrate the complete
-   frontier tranche through the coordinator.
-4. Only after the frontier stabilizes, assign the primary exposition's four
+1. Finish the independent audit of frontier source checkpoint `78260751f`
+   before granting any PDF process.
+2. Finish pathwise review of shifted-grid source `00ff41a5e`, its separately
+   scoped coverage delta, and the five-file Laplace checkpoints.  The
+   natural-knot checkpoint is already integrated and validated.
+3. Assign and serialize only the accepted Lean validation targets, then
+   integrate green tranches through the coordinator.
+4. After a green source audit, receive the frontier three-pass PDF/evidence
+   checkpoint and integrate the complete frontier tranche.
+5. Only after the frontier stabilizes, assign the primary exposition's four
    narrow citation/attribution corrections and matching PDF rebuild.
 
 ## Build-token log
@@ -330,11 +336,43 @@ At syntax-fix commit `9887ea584`, the retry
 This is exact-tree validation of every current Lean module and closes the
 integration incident.
 
-No Lean, Lake, `pdflatex`, or `latexmk` process was observed at 17:00 PDT.  The
-codexbox token is idle and coordinator-reserved.  The EVO token is reserved to
-the exposition branch's staged frontier build.  Other branches may edit,
-checkpoint, and push under the open protocol, but may not run validation tools
-until this board assigns the applicable physical-host token.
+At natural-knot reconciliation `068fc1be5`, the coordinator held the codexbox
+token and ran two separate `LAKE_JOBS=1` targets:
+
+- `+FabiusFunction.GlobalExtension` completed 2765 jobs, exit 0;
+- `+FabiusFunction.Paper06487` completed 3244 jobs, exit 0 and transitively
+  covered `PaperStatements` plus `Paper06487Supplement`.
+
+Before those green runs, one command launched from the wrong directory was a
+no-op, and the first correctly rooted attempt exhausted the filesystem while
+creating a fresh `.lake`; it exited 1 and supplied no validation evidence.
+The coordinator removed only that generated failed cache, then copied an idle
+worktree's dependency cache and reran at the immutable source tree.  During the
+worker checkpoint, `/home/codex/src/Proofs` also launched an unassigned
+`lake env lean` prototype check; it exited and is not treated as integration
+evidence.
+
+No validation process is now running on codexbox.  Its token is idle and
+coordinator-reserved.  The EVO token is unassigned until the frontier source
+review is green.  Other branches may edit, checkpoint, and push ordinary
+claimed work under the open protocol, but may not run validation tools until
+this board assigns the applicable physical-host token.
+
+## Worktree maintenance log
+
+With the user's explicit authorization, the coordinator removed two codexbox
+worktrees whose last activity was more than one week old and whose processes
+were not live:
+
+- clean worktree `97db`, branch `codex/port-foundation-theorems`; committed
+  remote tip `8b273f16f` remains available;
+- dirty worktree `44ac`, branch `codex/quintic-radical-completeness`; committed
+  remote tip `c29cbb447` remains available, but its 12 modified tracked files
+  and 3392 untracked files were uncommitted and are unrecoverable.
+
+This recovered enough disk space for the isolated coordinator cache.  Future
+week-idle pruning follows the preservation rule above: push even a clearly
+labelled WIP checkpoint if the work must survive.
 
 ## Worker reply template
 

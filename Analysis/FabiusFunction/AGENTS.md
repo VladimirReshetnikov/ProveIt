@@ -54,7 +54,10 @@ During the current campaign:
    merge fresh `origin/main` into their own clean/checkpointed feature branch.
    Resolve only conflicts wholly inside the branch's uncontested claim; stop
    and report a conflict involving another claim, a serialized path, or a
-   generated artifact.
+   generated artifact.  Push preservation checkpoints promptly: the
+   coordinator may prune any worktree that has been inactive for at least
+   seven days, including a dirty worktree.  A pushed branch preserves commits;
+   uncommitted changes in a pruned dirty worktree are not recoverable.
 5. **Build tokens are per physical host.** On `codexbox`, no agent starts Lean,
    Lake, `pdflatex`, or another cache-mutating validation job unless the board
    assigns the token.  Let an already-running job finish; do not kill another
@@ -66,10 +69,10 @@ During the current campaign:
 7. **Campaign-critical paths remain serialized.** Only an explicit board
    grant permits edits to `AGENTS.md`, the root `README.md`, campaign-wide
    coordination files, `docs/registry/coordinator.md`, the root aggregate
-   `Lean/FabiusFunction.lean`, canonical exposition/walkthrough/frontier
-   TeX/PDF artifacts, or any path currently marked hot, frozen, or
-   single-owner.  Ordinary self-service claims cover all other nonoverlapping
-   paths.
+   `Lean/FabiusFunction.lean`, `docs/PAPER_COVERAGE.md`,
+   `docs/AUDIT_FINDINGS.md`, canonical exposition/walkthrough/frontier TeX/PDF
+   artifacts, or any path currently marked hot, frozen, or single-owner.
+   Ordinary self-service claims cover all other nonoverlapping paths.
 
 Status replies use the `SYNC Fabius` template in `docs/COLLABORATION.md`, are
 committed only to the worker's feature branch, and are pushed promptly.  The

@@ -9,6 +9,8 @@
 > branches, and push those branches without waiting for approval.  Only the
 > designated coordinator advances `main`, and no worker runs Lean/Lake or
 > TeX/PDF build tools without the physical-host token recorded on the board.
+> Push preservation checkpoints promptly: the coordinator may prune a
+> worktree after seven days without activity, even when it is dirty.
 
 This project formalizes the Fabius function and the results in both papers by
 Juan Arias de Reyna:
