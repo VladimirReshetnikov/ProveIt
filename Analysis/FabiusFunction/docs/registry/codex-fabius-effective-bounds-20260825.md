@@ -4507,3 +4507,90 @@ conflicts / dependencies: source blob is immutable pending disposition;
 next bounded step: push this handoff, refresh the board, and continue only on
   a separately advertised disjoint path while both source units await gates
 ```
+
+## Claim: logarithmic-coefficient family extensionality and full parity
+
+Claimed at 2026-08-26 from merged branch checkpoint `e45b33515`, after
+refreshing `origin/main` `6cfb66a57064`.  This ordinary one-source claim owns
+exactly `Lean/FabiusFunction/SaddleLogExpansionAlgebra.lean` plus this branch
+registry.
+
+Add immediately after `logCoeff_congr_of_pos` the documented, non-simp theorem
+
+```lean
+theorem logCoeff_eq_of_forall_pos {a b : ℕ → R}
+    (hab : ∀ j, 0 < j → a j = b j) :
+    logCoeff a = logCoeff b := by
+  funext n
+  apply logCoeff_congr_of_pos n
+  intro j hj _hjle
+  exact hab j hj
+```
+
+This is the exact logarithmic mirror of the accepted
+`expCoeff_eq_of_forall_pos`: `logCoeff` ignores input coefficient zero, so
+pointwise agreement at every positive index gives equality of the complete
+coefficient families, including their common normalized value zero at index
+zero.  Replace only the local manual `funext`/bounded-congruence proof of
+`hlog` inside `expCoeff_logCoeff_of_pos` by this theorem; preserve that public
+header and every other calc line.  The new theorem's only initial consumer is
+this local proof.
+
+Close the exact ten strict documentation gaps:
+
+- `logCoeff_zero`, `logCoeff_succ`, `logCoeff_one`, `logCoeff_two`;
+- `coeff_massSeries`, `coeff_logSeries`, `constantCoeff_logSeries`;
+- `derivative_logSeries_mul_massSeries`, `logSeries_unique`; and
+- `logCoeff_apply`.
+
+The `coeff_massSeries` comment must be inside the existing
+`omit [Algebra ℚ R] in` scope and immediately before its `[simp]` attribute;
+the other attributed comments likewise precede their attributes.  Add the new
+theorem's comment and minimally name it in the existing Main-results locality
+bullet.  Preserve the sole import, all 28 old public headers/attributes, all
+other bodies, and every other module-guide claim.  Strict parity moves from
+28 public / 18 documented to 29/29; there are zero private declarations.  The
+repository auditor reports only five current gaps because it misses five
+attributed/scoped declarations, so the strict count is binding.
+
+The exact current-main preimage is blob
+`dc8ed947850a5a45e49c260d8cb0a83390f089f9`, content SHA-256
+`054A723A2260B3CFABC18A146526AD4282561D62CEAC2E42F4440EFC9FA79E31`,
+20,589 bytes / 497 lines.  The authoritative all-visible-ref scan finds zero
+occurrence of the proposed name; source/worktree/registry scans find no
+semantic competitor or live path claim.  Historical SaddleLog algebra work
+was accepted and explicitly released; the active finite-CDF and immutable
+VerticalLog paths are disjoint.
+
+No Lean/Lake/TeX/PDF/main-write token is claimed.  Requested later serialized
+gates are `+FabiusFunction.SaddleLogExpansionAlgebra`, then direct importer
+`+FabiusFunction.SaddleLogExpansionPowerSeries`; optional smoke targets are
+`+FabiusFunction.FabiusSaddleExpansionCoefficients` and
+`+FabiusFunction.FabiusLambertFormalLog`.
+
+```text
+SYNC Fabius
+branch / worktree / machine: codex/fabius-effective-bounds-20260825 /
+  /home/codex/.codex/worktrees/d6d3/Proofs / codexbox
+fetched main SHA: 6cfb66a57064
+HEAD and dirty paths: e45b33515; only this branch registry is being written
+  for the registry-first claim
+writing (exact paths): SaddleLogExpansionAlgebra.lean after claim push; this
+  branch registry for claim/handoff
+expected declarations or document claims: one positive-index family
+  extensionality theorem, one local hlog dedup, strict 29/29 docs; no import,
+  downstream, facade, root, script, or canonical-doc change
+completed commits: merged current origin/main as e45b33515; source not yet
+  authored
+validated (exact command, SHA/state, exit code): exact current-main preimage;
+  all-visible-ref new-name scan zero; registry/path/consumer/import and
+  theorem/doc-placement audits independently green
+not yet validated: no live diff, exact-byte hostile review, or Lean/Lake
+  compiler evidence exists for this tranche
+requested integration or lease: ordinary exact one-source claim only; later
+  request dependency-ordered focused gates and coordinator selective review
+conflicts / dependencies: active finite-CDF and immutable vertical-log units
+  are disjoint; current dc8ed947 baseline is mandatory; only coordinator builds
+next bounded step: commit/push claim, repeat name/path scan, author only the
+  claimed module, freeze, and obtain two independent exact-byte reviews
+```
