@@ -13,8 +13,11 @@ key estimate is
 where `R_k=M_k/M_0` is the normalized tilted moment.  Hölder log-convexity
 at the intermediate tilt `3s/4`, together with the exact dyadic product
 factor between `s/2` and `s`, proves the estimate without any periodic
-regularity input.  The cases `k=2,3,4` discharge both hypotheses of
-`EndpointLaplaceComparison` and give an unconditional sharp dyadic formula
+regularity input.  Before imposing the positive-scale hypotheses needed by
+those quantitative bounds, the module records that every `R_k(s)` is
+nonnegative for every real tilt.  The cases `k=2,3,4` discharge both
+hypotheses of `EndpointLaplaceComparison` and give an unconditional sharp
+dyadic formula
 with its exact cumulant correction.  The measure-generic Cauchy--Schwarz and
 factorial-absorption engine lives in `UnitLaplaceMomentBounds`; this module
 specializes it to Fabius moments.  Pointwise, the two transfer inputs are
@@ -104,7 +107,19 @@ lemma fabiusLaplaceMoment_zero_half_le_mul
   rw [div_le_iff₀ hs0] at hmul
   simpa [mul_comm] using hmul
 
-/-- Normalization by the positive zeroth moment preserves nonnegativity. -/
+/-- Every normalized tilted Fabius moment is nonnegative at every real tilt.
+Its raw numerator is nonnegative and its zeroth-moment denominator is strictly
+positive, so their quotient is nonnegative. -/
+lemma normalizedLaplaceMoment_nonneg_all
+    (F : BoundedFabius) (hF : IsFabius F)
+    (k : ℕ) (s : ℝ) :
+    0 ≤ normalizedLaplaceMoment F k s := by
+  unfold normalizedLaplaceMoment
+  exact div_nonneg (fabiusLaplaceMoment_nonneg F hF k s)
+    (fabiusLaplaceMoment_zero_pos_all F hF s).le
+
+/-- Positive-scale compatibility form of
+`normalizedLaplaceMoment_nonneg_all`. -/
 lemma normalizedLaplaceMoment_nonneg
     (F : BoundedFabius) (hF : IsFabius F)
     (k : ℕ) {s : ℝ} (hs : 0 < s) :
