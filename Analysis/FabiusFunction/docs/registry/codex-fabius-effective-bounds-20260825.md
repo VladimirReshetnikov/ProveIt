@@ -2247,3 +2247,82 @@ next bounded step: commit and push this registry-only claim without force;
   private-stack deletion, imports, call sites, old interfaces, docs, and edge
   cases
 ```
+
+## Source checkpoint: real affine Prouhet API and spline deduplication
+
+Exact source commit `15c8fbf4f` completes the atomic two-file tranche.  Its
+result objects are:
+
+- `ThueMorsePrefix.lean`: Git blob
+  `265c7986be9f37dbec0fbbb3504ae305e6b1f537`, content SHA-256
+  `624DA63CA30A05297D14E087054409DEF1E10E3C4482A5D19C2C7531549C8932`;
+- `FabiusUniformSpline.lean`: Git blob
+  `6b3ec4c427e614fca70c99f4241f8cced504aad6`, content SHA-256
+  `2498A4BB66C9DB1B2666EDC13A61E45649FAECBFAC4A175AA242B063E377361C`.
+
+`ThueMorsePrefix` now exposes exactly the documented public real theorems
+`thueMorse_affine_power_sum_eq_zero_real` and
+`thueMorse_affine_power_sum_self_real`.  The first annihilates every affine
+power below the block exponent.  The second extracts the sharp real boundary
+value with the exact `y ^ r` slope factor.  Its coefficient-zero and positive
+tail binomial terms are separated explicitly; the surviving signed power sum
+is transported from the established rational result.  The proof includes
+`r = 0`, zero slope, and arbitrary negative translations and slopes without a
+division or nonzero hypothesis.
+
+`FabiusUniformSpline` retains every old import and adds the direct Prefix import,
+deletes exactly the six claimed private declarations, and changes only the two
+existing Prouhet call sites.  The lower-degree call resolves to the new public
+theorem unchanged; the sharp call supplies slope `1` and simplifies the
+result.  Net source effect is 111 insertions and 130 deletions.  No two-power
+cleanup, unified wrapper, facade, canonical prose, or unrelated declaration
+was touched.
+
+Three independent exact-current-byte hostile reviews pass.  They checked the
+`add_pow` indexing, `Finset.sum_eq_single` branches, `y ^ r` factorization,
+rational-to-real exact casts, signs and factorial normalization, all edge
+cases, exact deletion boundary, import acyclicity, name resolution, both
+callers, docs, and byte-preservation of every old public header and attribute.
+No source-level blocker remains.
+
+```text
+SYNC Fabius
+branch / worktree / machine: codex/fabius-effective-bounds-20260825 /
+  /home/codex/.codex/worktrees/d6d3/Proofs / codexbox
+fetched main SHA: fc63c39788ab4c31694e4f57efe05b543165675a
+HEAD and dirty paths: 15c8fbf4f; source checkpoint is clean and pushed; only
+  this registry is dirty for the immutable handoff
+writing (exact paths): completed source checkpoint writes only
+  Lean/FabiusFunction/ThueMorsePrefix.lean and
+  Lean/FabiusFunction/FabiusUniformSpline.lean; this report writes only this
+  branch registry; both Lean sources are now frozen
+expected declarations or document claims: exactly two public real affine
+  Prouhet theorems are present with formula-bearing docs; exactly six private
+  duplicates are absent; two existing spline callers use the shared API; every
+  old public header/attribute and unrelated source declaration is exact
+completed commits: ab31862b7 (registry-first claim) and 15c8fbf4f (atomic
+  two-file theorem/dedup/documentation checkpoint); earlier pending source
+  tranches remain separately frozen and requested for coordinator validation
+validated (exact command, SHA/state, exit code): git diff --check exited 0;
+  whitespace, CR, tab, placeholder, exact-name, private-declaration, import,
+  declaration-header, sum-index, cast, algebra, edge-case, caller, consumer,
+  and documentation scans are clean; exact result blobs/hashes are recorded
+  above; three independent exact-byte static reviews pass; this is not compiler
+  evidence
+not yet validated: source commit 15c8fbf4f has not been elaborated; no Lean,
+  Lake, TeX, PDF, or cache-mutating process ran because this branch has no host
+  build token
+requested integration or lease: independently review and preserve exact source
+  commit 15c8fbf4f / blobs 265c7986b and 6b3ec4c42, then assign sequential
+  LAKE_JOBS=1 builds of +FabiusFunction.ThueMorsePrefix,
+  +FabiusFunction.FabiusUniformSpline, and direct consumers
+  +FabiusFunction.FabiusComplexShiftSpline and
+  +FabiusFunction.FabiusComputability; request no document or main-write lease
+conflicts / dependencies: exact preimages are the current-main blobs recorded
+  in the claim; the new direct import is acyclic; public promotion and private
+  deletion are atomic in the checkpoint; all frozen local paths and active
+  external claims are disjoint; only the coordinator may advance main
+next bounded step: commit and push this immutable handoff; freeze both sources
+  for coordinator validation; refresh main and reread the full ownership board
+  before choosing another ordinary source unit
+```
