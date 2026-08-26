@@ -6,15 +6,15 @@ Every worker reads it from the fetched `origin/main` before writing, merging,
 building, or pushing.  Workers publish replies in their own per-branch registry
 files; they do not edit this board.
 
-## Checkpoint 2026-08-25 22:31 PDT
+## Checkpoint 2026-08-25 23:08 PDT
 
 ```text
-observed main before this directive: d33c4f44b3d08f14b15c1514d687a32898569475
+observed main before this directive: 5b053a32b10e758e39f1be23cb2e8d821fba8de6
 coordinator branch: codex/fabius-coordinator-20260825
 integration mode: feature branches -> coordinator -> fast-forward main
 main write owner: coordinator
 codexbox Lean/Lake owner: coordinator
-  (IDLE after compact-Lambert and central-binomial validation)
+  (IDLE after strict-moment and all-real cumulant validation)
 codexbox TeX/PDF owner: unassigned
   (IDLE)
 EVO Lean/Lake owner: unassigned
@@ -23,7 +23,7 @@ EVO TeX/PDF owner: codex/fabius-theorem-polish-20260825
   (ACTIVE for one sequential primary-exposition stream only)
 documentation owner: codex/fabius-theorem-polish-20260825
   (ACTIVE for the primary TeX/PDF pair only; all other documents frozen)
-next poll: after the theorem-polish primary source/render checkpoint or next Lean handoff
+next poll: after the theorem-polish primary checkpoint or next source handoff
 ```
 
 The previously approved curvature, generalizations, lower-Lambert,
@@ -536,10 +536,29 @@ that source as `430aaac90`.  Separate serialized builds of
 `+FabiusFunction.TwoAdic` (2017 jobs) and
 `+FabiusFunction.Paper06487` (3244 jobs) both exited 0 without warnings.  The
 source path and codexbox token are released; no document path is granted.
-Worker handoff `eb90a1f7a` has one nonblocking provenance error: it calls
-`a585d729f` the source blob, but that is the preimage.  The accepted result
-blob is `7295874def860ce52feb88655cae2338aa648078`; the worker should correct
-only its own registry when next active.
+Worker handoff `eb90a1f7a` initially called `a585d729f` the source blob, but
+that is the preimage; later own-registry handoff `8d765ffbd` correctly records
+the accepted result blob `7295874def860ce52feb88655cae2338aa648078`.
+
+Claims `201f05612` and `8bf570c79` then advertised the exact three-path
+negative-Laplace denominator consolidation.  Source `b369925e8` promotes the
+existing private `exp_neg_div_one_sub_pow_le`, deletes the downstream local
+copy, and redirects the two higher-derivative plus one periodic-second-order
+callers.  Handoff `8d765ffbd` and clean sync `4ab7d97ad` preserve exact result
+blobs `e5ddbd82d`, `10fcaaa74`, and `b343d7221`.  Independent review accepts
+the all-natural-power estimate including `m = 0`, all three specializations,
+the retained denominator-positivity fact, import topology, exact preimages,
+eight consolidated calls, API preservation, and collision scan.  The
+coordinator integrated only the isolated source as `a7946a7a9`.  Separate
+serialized builds of `+FabiusFunction.NegativeLaplaceDerivativeBounds` (3419
+jobs) and `+FabiusFunction.FabiusLambertDerivativeBounds` (3501 jobs) both
+exited 0; the latter transitively rebuilt the edited
+`LaplacePeriodicSecondOrder`.  Both reported only the inherited nonblocking
+`ProbabilityLaplaceMoments.lean` linter.  The first gate's unrelated existing
+`StepMeasureBridge` import took 728 seconds while broad abandoned search
+processes caused temporary disk contention; serialization remained intact and
+the build completed normally.  All three paths and the codexbox token are
+released; no document, audit-ledger, facade, root, or other path is granted.
 
 ### `codex/fabius-theorem-polish-20260825`
 
@@ -833,6 +852,64 @@ preserving every old header.  No build token or document/facade/root lease is
 granted.  After an immutable reviewed handoff, the intended serialized gates
 are `+FabiusFunction.FabiusLambertAllOrderAlgebra` and then its sole direct
 importer `+FabiusFunction.FabiusLambertFormalLog`.
+
+Exact source `8f47687e5` and handoff `3e17e4e48` implement that complete
+two-name claim in the sole module, with result blob `08e5a2d9475746a517d8d835b699c00d8c00c0a9`.
+Three independent static audits accept the degree bound, exceptional empty
+base, positive-index unique top summand, closed leading coefficient, imports,
+API, exact preimage, and collision scan.  The coordinator integrated only the
+source as `5cc6970fd`.  Its first focused build exposed five elaboration-only
+normal-form failures and supplies no validation evidence: the two successor
+case targets were already normalized, the natural casts in the head coefficient
+were opaque to `ring`, the positivity of a `Fin.succ` value did not unfold, and
+the coefficient of the head-plus-tail polynomial had not distributed over
+addition.
+
+Statement-preserving repair `128890b71` removes the two redundant rewrites,
+uses explicit `push_cast` and the target's cast shape, proves the successor
+positivity directly, and adds `Polynomial.coeff_add` before the finite-sum
+coefficient rewrite.  Independent post-fix review accepts that exact repair.
+At the repaired immutable tree, separate serialized builds of
+`+FabiusFunction.FabiusLambertAllOrderAlgebra` (3249 jobs) and
+`+FabiusFunction.FabiusLambertFormalLog` (3253 jobs) both exited 0 without
+warnings.  The source path and codexbox token are released; the corrected
+`n >= 1` recurrence qualification remains binding for future prose.
+
+Registry claim `02c913b2d`, exact source `caf654097`, and handoff `fd53d0928`
+then strengthen `LaplaceMomentBounds.lean` with
+`fabiusLaplaceMoment_strictAnti` and `normalizedLaplaceMoment_pos_all`.
+Independent review accepts the derivative-sign argument, strict-order
+orientation, quotient positivity at every degree and real tilt, exact preimage
+and result blob `007c2ed04697ab56d3fd0654da477d32d360a61b`, imports, and collision scan.
+Both established nonnegativity lemma headers remain textually exact as
+compatibility consequences, with the deliberately retained positive-scale
+hypothesis confined under a declaration-local linter scope.  The coordinator
+integrated only the isolated source as `63e7334ec`.  A serialized build of
+`+FabiusFunction.LaplaceMomentBounds` (3417 jobs) exited 0, and the later
+shared downstream `+FabiusFunction.NegativeLaplaceDerivativeBounds` gate
+(3419 jobs) also exited 0.  Both reported only the inherited nonblocking
+`ProbabilityLaplaceMoments.lean` linter.  This source path and the codexbox
+token are released.
+
+Registry claim `7bba02fea`, exact source `d07e8ad3b`, and handoff `295c75b93`
+globalize the normalized cumulant-polynomial differential chain in
+`NegativeLaplaceDerivatives.lean`: the three new `_all` theorems prove
+`kappa_1' = kappa_2`, `kappa_2' = kappa_3`, and `kappa_3' = kappa_4` at every
+real tilt.  Three independent reviews accept every sign and coefficient,
+including the third-order function-equality transport, exact result blob
+`80f3e80c1e9777405499a50da808bef5c71fa372`, import topology, collision scan,
+and the distinction between global cumulant algebra and the still-positive
+domain for identifying it with derivatives of `negativeLaplaceLog`.  All
+three old positive-scale theorem headers remain byte-exact wrappers, with
+their retained hypotheses under declaration-local linter scopes.  The
+coordinator integrated only the isolated source as `5100bc049`, after the
+strict-moment source rather than inheriting the moving branch history.  A
+serialized build of `+FabiusFunction.NegativeLaplaceDerivatives` (2858 jobs)
+exited 0, followed by the shared downstream
+`+FabiusFunction.NegativeLaplaceDerivativeBounds` build (3419 jobs), also exit
+0; only the inherited linter appeared.  The source path and codexbox token are
+released.  No document, facade, root, import, or other path is granted by
+either tranche.
 
 ### `codex/fabius-shifted-prefix-grid`
 
@@ -1177,9 +1254,15 @@ and its 3891-job focused build is green.  Its Lean lease is released; its sole
 active ownership is now the exact primary TeX/PDF correction above.  The
 both-papers central-binomial valuation tranche is likewise integrated at
 `430aaac90`, green through its 2017-job focused and 3244-job paper-facade
-builds, and released.  Effective-bounds has a disjoint corrected registry-only
-all-order Lambert-polynomial claim; its local dirty draft is not an immutable
-handoff and receives no token yet.
+builds, and released.  The effective-bounds all-order Lambert-polynomial
+tranche is integrated at `5cc6970fd`, repaired at `128890b71`, green through
+its 3249-job focused and 3253-job direct-consumer builds, and released.  The
+subsequent both-papers denominator consolidation is integrated at `a7946a7a9`,
+green through its 3419-job upstream and 3501-job downstream builds, and also
+released.  The effective-bounds strict-moment source is integrated at
+`63e7334ec`, and its all-real cumulant successor at `5100bc049`; their separate
+3417-job and 2858-job focused builds plus the shared 3419-job downstream gate
+are green, and both leases are released.
 
 Theorem-polish source commit `665b6bce` is integrated as `c80f61c90`, repaired
 without statement changes at `6b6757e90`, and accepted after its focused
@@ -1444,7 +1527,21 @@ for `+FabiusFunction.FabiusSharpAsymptotic` (3891 jobs, exit 0; inherited
 `ProbabilityLaplaceMoments.lean` linter only), then
 `+FabiusFunction.TwoAdic` (2017 jobs, exit 0) and
 `+FabiusFunction.Paper06487` (3244 jobs, exit 0), with no overlap between
-processes.  EVO's Lean/Lake token is now idle and unassigned; its sole active
+processes.  It later ran the repaired all-order Lambert gates
+`+FabiusFunction.FabiusLambertAllOrderAlgebra` (3249 jobs) and
+`+FabiusFunction.FabiusLambertFormalLog` (3253 jobs), then the denominator
+consolidation gates `+FabiusFunction.NegativeLaplaceDerivativeBounds` (3419
+jobs) and `+FabiusFunction.FabiusLambertDerivativeBounds` (3501 jobs), all
+sequential and exit 0.  The sole diagnostics in the latter pair were the
+inherited `ProbabilityLaplaceMoments.lean` linter.  The superseded initial
+all-order Lambert build failed only at the five proof-normalization sites
+repaired by `128890b71` and provides no theorem validation.  On the later
+combined strict-moment/cumulant tree it ran, still serially,
+`+FabiusFunction.LaplaceMomentBounds` (3417 jobs),
+`+FabiusFunction.NegativeLaplaceDerivatives` (2858 jobs), and the shared
+downstream `+FabiusFunction.NegativeLaplaceDerivativeBounds` (3419 jobs), all
+exit 0 with only the inherited linter.  EVO's Lean/Lake token is now idle and
+unassigned; its sole active
 tool lane is the theorem-polish branch's sequential primary TeX/PDF stream.
 Other branches may edit, checkpoint, and push ordinary claimed work under the
 open protocol, but may not run Lean/Lake or a document tool stream until this
