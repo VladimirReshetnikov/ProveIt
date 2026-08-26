@@ -22,7 +22,9 @@ Consequently:
   itself;
 * the support of `up` is exactly `(-1,1)`, not merely contained in `[-1,1]`;
 * `up` is strictly increasing on `[-1,0]`, strictly decreasing on `[0,1]`, and
-  attains its maximum `1` only at the origin.
+  attains its maximum `1` only at the origin; and
+* throughout `[-1,1]`, the order and equality of `up` values are characterized
+  exactly by the reverse order and equality of their distances from the origin.
 
 The positivity and one-sided statements are also upgraded to `iff` form.
 -/
@@ -334,6 +336,52 @@ theorem strictMonoOn_rvachevUp (F : BoundedFabius) (hF : IsFabius F) :
   exact strictAntiOn_rvachevUp F hF
     ⟨by linarith [hy.2], by linarith [hy.1]⟩
     ⟨by linarith [hx.2], by linarith [hx.1]⟩ (by linarith)
+
+/-! ## Radial ordering of Rvachev's function -/
+
+private lemma rvachevUp_abs_apply (F : BoundedFabius) (x : ℝ) :
+    rvachevUp F |x| = rvachevUp F x := by
+  rcases le_total 0 x with hx | hx
+  · rw [abs_of_nonneg hx]
+  · rw [abs_of_nonpos hx, rvachevUp_even F x]
+
+/-- On its closed support, Rvachev's function is reverse-ordered by distance
+from the origin. -/
+theorem rvachevUp_le_rvachevUp_iff_abs_le
+    (F : BoundedFabius) (hF : IsFabius F) {x y : ℝ}
+    (hx : x ∈ Icc (-1 : ℝ) 1) (hy : y ∈ Icc (-1 : ℝ) 1) :
+    rvachevUp F x ≤ rvachevUp F y ↔ |y| ≤ |x| := by
+  have hxabs : |x| ∈ Icc (0 : ℝ) 1 :=
+    ⟨abs_nonneg x, abs_le.mpr hx⟩
+  have hyabs : |y| ∈ Icc (0 : ℝ) 1 :=
+    ⟨abs_nonneg y, abs_le.mpr hy⟩
+  rw [← rvachevUp_abs_apply F x, ← rvachevUp_abs_apply F y]
+  exact (strictAntiOn_rvachevUp F hF).le_iff_ge hxabs hyabs
+
+/-- Strict form of radial reverse ordering on the closed support. -/
+theorem rvachevUp_lt_rvachevUp_iff_abs_lt
+    (F : BoundedFabius) (hF : IsFabius F) {x y : ℝ}
+    (hx : x ∈ Icc (-1 : ℝ) 1) (hy : y ∈ Icc (-1 : ℝ) 1) :
+    rvachevUp F x < rvachevUp F y ↔ |y| < |x| := by
+  have hxabs : |x| ∈ Icc (0 : ℝ) 1 :=
+    ⟨abs_nonneg x, abs_le.mpr hx⟩
+  have hyabs : |y| ∈ Icc (0 : ℝ) 1 :=
+    ⟨abs_nonneg y, abs_le.mpr hy⟩
+  rw [← rvachevUp_abs_apply F x, ← rvachevUp_abs_apply F y]
+  exact (strictAntiOn_rvachevUp F hF).lt_iff_gt hxabs hyabs
+
+/-- Values on the closed support agree exactly at equal distances from the
+origin. -/
+theorem rvachevUp_eq_rvachevUp_iff_abs_eq
+    (F : BoundedFabius) (hF : IsFabius F) {x y : ℝ}
+    (hx : x ∈ Icc (-1 : ℝ) 1) (hy : y ∈ Icc (-1 : ℝ) 1) :
+    rvachevUp F x = rvachevUp F y ↔ |x| = |y| := by
+  have hxabs : |x| ∈ Icc (0 : ℝ) 1 :=
+    ⟨abs_nonneg x, abs_le.mpr hx⟩
+  have hyabs : |y| ∈ Icc (0 : ℝ) 1 :=
+    ⟨abs_nonneg y, abs_le.mpr hy⟩
+  rw [← rvachevUp_abs_apply F x, ← rvachevUp_abs_apply F y]
+  exact ((strictAntiOn_rvachevUp F hF).eq_iff_eq hxabs hyabs).trans eq_comm
 
 /-- Rvachev's function is strictly below one away from the origin. -/
 theorem rvachevUp_lt_one_of_ne_zero (F : BoundedFabius) (hF : IsFabius F)

@@ -253,23 +253,12 @@ theorem halfQPochhammer_eq_mersenne_div (n : ℕ) :
         half_factor_eq, hchoose, pow_add]
       ring
 
-private theorem square_eq_choose_sum (n : ℕ) :
-    n * n = (n + 1).choose 2 + n.choose 2 := by
-  induction n with
-  | zero => simp
-  | succ n ih =>
-      have htop : (n + 2).choose 2 = (n + 1).choose 2 + (n + 1) := by
-        simpa only [Nat.succ_eq_add_one] using choose_succ_two (n + 1)
-      have hbottom : (n + 1).choose 2 = n.choose 2 + n := choose_succ_two n
-      rw [htop, hbottom]
-      nlinarith
-
 /-- The full prefactor denominator in the requested formula has no hidden
 division: `2^(n^2) (1/2;1/2)_n = 2^(choose n 2) ∏_{j=1}^n (2^j-1)`. -/
 theorem two_pow_sq_mul_halfQPochhammer (n : ℕ) :
     (2 : ℚ) ^ (n * n) * halfQPochhammer n =
       (2 : ℚ) ^ (n.choose 2) * halfMersenneProduct n := by
-  rw [halfQPochhammer_eq_mersenne_div, square_eq_choose_sum, pow_add]
+  rw [halfQPochhammer_eq_mersenne_div, choose_square_split, pow_add]
   field_simp
 
 /-- The same normalization, with the Wolfram expression `n^2` transcribed

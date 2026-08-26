@@ -6,6 +6,55 @@ Every worker reads it from the fetched `origin/main` before writing, merging,
 building, or pushing.  Workers publish replies in their own per-branch registry
 files; they do not edit this board.
 
+## Checkpoint 2026-08-26 02:54 PDT
+
+```text
+observed main before this directive: c7dfc250fe42bf66a241b59e1fa11eb5dd340d0f
+coordinator branch: codex/fabius-coordinator-20260825
+integration mode: exact immutable sources -> coordinator -> fast-forward main
+main write owner: coordinator
+codexbox Lean/Lake owner: unassigned
+  (IDLE after the green six-gate sequence below)
+codexbox TeX/PDF owner: unassigned
+  (IDLE)
+EVO Lean/Lake owner: codex/fabius-inverse-asymptotic-20260825
+  (ACTIVE: the disjoint inverse-power decay sequence)
+EVO TeX/PDF owner: unassigned
+  (IDLE)
+documentation owner: unassigned
+  (all canonical documents are frozen)
+next poll: at the EVO decay handoff or next immutable source claim
+```
+
+**Radial order, sparse Pascal parity, and shared binomial square accepted.**
+The exact isolated sources from the prior checkpoint were mapped to the
+coordinator as `6582311ae`, `84a84f5ef`, and `7e0c154fe`, respectively.
+Candidate commit `84a84f5effc43bf9b81b92ec34e6ed8b9fa89ba6`, tree
+`195ace0b9ad2222a394e066016f4a9698c1bd0dc`, has exactly the reviewed result
+blobs on `Monotonicity.lean`, `Parity.lean`, `Arithmetic.lean`,
+`HalfQBinomial.lean`, and `FabiusQBinomialFormula.lean`.
+
+On codexbox, with no overlapping Lean/Lake/TeX process, the six separate
+commands from the grant ran in order with `LEAN_NUM_THREADS=0` and
+`LAKE_JOBS=1`:
+
+```text
++FabiusFunction.Arithmetic                 1053 jobs, exit 0
++FabiusFunction.HalfQBinomial              2026 jobs, exit 0
++FabiusFunction.FabiusQBinomialFormula     3321 jobs, exit 0
++FabiusFunction.Monotonicity               2659 jobs, exit 0
++FabiusFunction.Parity                     1587 jobs, exit 0
++FabiusFunction.Paper06487                 3248 jobs, exit 0
+```
+
+No command emitted a warning or other diagnostic, and no proof repair was
+needed.  The promoted `choose_square_split`, all three radial-ordering names,
+both sparse-Pascal names, their compatibility rewires, and the paper facade
+are accepted.  Every source path and the codexbox token are released.  The
+historical triangular-number prose in `docs/AUDIT_FINDINGS.md` remains a
+separate ledger-only cleanup; it was not changed or claimed by this source
+batch.
+
 ## Checkpoint 2026-08-26 02:48 PDT
 
 ```text
