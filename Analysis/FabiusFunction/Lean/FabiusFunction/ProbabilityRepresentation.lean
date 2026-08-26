@@ -58,6 +58,20 @@ instance : IsProbabilityMeasure uniformProduct := by
   unfold uniformProduct
   infer_instance
 
+/-- The coordinate projections are mutually independent uniform random
+variables.  This is the prose proposition following Theorem 3 in the paper. -/
+lemma independent_uniform_coordinates :
+    iIndepFun (fun n : ℕ => fun ω : SampleSpace => ω n) uniformProduct := by
+  unfold uniformProduct
+  exact iIndepFun_infinitePi (X := fun _ x => x) (fun _ => measurable_id)
+
+/-- Each coordinate projection has the uniform probability law on `[0,1]`. -/
+lemma coordinate_has_uniform_law (n : ℕ) :
+    uniformProduct.map (fun ω : SampleSpace => ω n) =
+      (volume : Measure (Set.Icc (0 : ℝ) 1)) := by
+  unfold uniformProduct
+  rw [Measure.infinitePi_map_eval]
+
 /-- The random series `X₁/2 + X₂/4 + ⋯`, with zero-based Lean indexing. -/
 noncomputable def weightedCoordinateSum (ω : SampleSpace) : ℝ :=
   ∑' n : ℕ, (ω n : ℝ) / 2 / (2 : ℝ) ^ n
@@ -134,9 +148,7 @@ lemma uniformProduct_map_tail : uniformProduct.map tail = uniformProduct := by
 
 private lemma independent_head_tail :
     IndepFun (fun ω : SampleSpace => ω 0) tail uniformProduct := by
-  have hi : iIndepFun (fun n : ℕ => fun ω : SampleSpace => ω n) uniformProduct := by
-    unfold uniformProduct
-    exact iIndepFun_infinitePi (X := fun _ x => x) (fun _ => measurable_id)
+  have hi := independent_uniform_coordinates
   apply IndepFun.indepFun_process (measurable_pi_apply 0)
     (fun n => measurable_pi_apply (Nat.succ n))
   intro s
@@ -168,10 +180,7 @@ lemma uniformProduct_map_head_tail :
   have h := independent_head_tail.map_prod_eq_prod_map_map
     (measurable_pi_apply 0).aemeasurable measurable_tail.aemeasurable
   rw [uniformProduct_map_tail] at h
-  have hhead : uniformProduct.map (fun ω : SampleSpace => ω 0) =
-      (volume : Measure (Set.Icc (0 : ℝ) 1)) := by
-    unfold uniformProduct
-    rw [Measure.infinitePi_map_eval]
+  have hhead := coordinate_has_uniform_law 0
   rwa [hhead] at h
 
 /-- One step of the recurrence: the random series at `ω` equals
@@ -226,10 +235,7 @@ lemma uniformProduct_map_head_tailSum :
   have hind := independent_head_tail.comp measurable_id measurable_weightedCoordinateSum
   have h := hind.map_prod_eq_prod_map_map (measurable_pi_apply 0).aemeasurable
     (measurable_weightedCoordinateSum.comp measurable_tail).aemeasurable
-  have hhead : uniformProduct.map (fun ω : SampleSpace => ω 0) =
-      (volume : Measure (Set.Icc (0 : ℝ) 1)) := by
-    unfold uniformProduct
-    rw [Measure.infinitePi_map_eval]
+  have hhead := coordinate_has_uniform_law 0
   have htail : uniformProduct.map (weightedCoordinateSum ∘ tail) =
       weightedSumDistribution := by
     rw [← Measure.map_map measurable_weightedCoordinateSum measurable_tail,
@@ -474,7 +480,7 @@ lemma weightedSumCDF_zero_of_nonpos {x : ℝ} (hx : x ≤ 0) :
           (measurableSet_singleton (0 : Set.Icc (0 : ℝ) 1))]
         rfl
       _ = (volume : Measure (Set.Icc (0 : ℝ) 1)) {0} := by
-        rw [uniformProduct, Measure.infinitePi_map_eval]
+        rw [coordinate_has_uniform_law]
       _ = 0 := measure_singleton _
   apply measureReal_mono_null hsubset
   rw [measureReal_def, hzero]
@@ -709,20 +715,6 @@ theorem ofReal_fabiusReal_eq_weightedSum_probability
     ENNReal.ofReal (fabiusReal F x) =
       uniformProduct {ω : SampleSpace | weightedCoordinateSum ω ≤ x} := by
   rw [fabiusReal_eq_weightedSum_probability F hF, ofReal_measureReal]
-
-/-- The coordinate projections are mutually independent uniform random
-variables.  This is the prose proposition following Theorem 3 in the paper. -/
-lemma independent_uniform_coordinates :
-    iIndepFun (fun n : ℕ => fun ω : SampleSpace => ω n) uniformProduct := by
-  unfold uniformProduct
-  exact iIndepFun_infinitePi (X := fun _ x => x) (fun _ => measurable_id)
-
-/-- Each coordinate projection has the uniform probability law on `[0,1]`. -/
-lemma coordinate_has_uniform_law (n : ℕ) :
-    uniformProduct.map (fun ω : SampleSpace => ω n) =
-      (volume : Measure (Set.Icc (0 : ℝ) 1)) := by
-  unfold uniformProduct
-  rw [Measure.infinitePi_map_eval]
 
 /-- Theorem 3 of arXiv:1702.05442, in its source-facing real-probability form
 on `[-1,0]`.  The unrestricted strengthening is

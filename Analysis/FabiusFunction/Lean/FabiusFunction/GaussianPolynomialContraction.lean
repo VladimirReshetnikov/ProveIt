@@ -10,6 +10,10 @@ This module identifies normalized integration against the standard Gaussian
 with a linear functional on complex polynomials.  It also records the basic
 integrability and pointwise coefficient estimates reused by the Gaussian-tail
 modules.
+
+Its scalar-monomial rule is
+`gaussianPolynomialContraction (Polynomial.C c * Polynomial.X ^ n) =
+  c * normalizedGaussianMoment n`.
 -/
 
 set_option autoImplicit false
@@ -56,6 +60,8 @@ theorem norm_standardGaussian (v : ℝ) :
   rw [QuantitativeSaddle.standardGaussian, Complex.norm_real,
     Real.norm_eq_abs, abs_of_pos (Real.exp_pos _)]
 
+/-- The zeroth real Gaussian moment is the total Gaussian mass:
+`realGaussianMoment 0 = Real.sqrt (2 * Real.pi)`. -/
 theorem realGaussianMoment_zero :
     realGaussianMoment 0 = Real.sqrt (2 * Real.pi) := by
   unfold realGaussianMoment
@@ -69,6 +75,8 @@ theorem realGaussianMoment_zero :
   · congr 1
     ring
 
+/-- Every odd real Gaussian moment vanishes:
+`realGaussianMoment (2 * j + 1) = 0`. -/
 theorem realGaussianMoment_odd (j : ℕ) :
     realGaussianMoment (2 * j + 1) = 0 := by
   apply neg_eq_self.mp
@@ -87,6 +95,8 @@ theorem realGaussianMoment_odd (j : ℕ) :
   rw [hfun, integral_neg'] at hinvariant
   simpa only [realGaussianMoment] using hinvariant
 
+/-- Gaussian integration by parts gives the two-step recurrence
+`realGaussianMoment (n + 2) = (n + 1) * realGaussianMoment n`. -/
 theorem realGaussianMoment_add_two (n : ℕ) :
     realGaussianMoment (n + 2) = (n + 1 : ℝ) * realGaussianMoment n := by
   let u : ℝ → ℝ := fun x => x ^ (n + 1)
@@ -149,16 +159,25 @@ def normalizedGaussianMoment : ℕ → ℂ
   | 1 => 0
   | n + 2 => (n + 1 : ℂ) * normalizedGaussianMoment n
 
+/-- The normalized zeroth Gaussian moment equals one:
+`normalizedGaussianMoment 0 = 1`. -/
 @[simp] theorem normalizedGaussianMoment_zero :
     normalizedGaussianMoment 0 = 1 := rfl
 
+/-- The normalized first Gaussian moment vanishes:
+`normalizedGaussianMoment 1 = 0`. -/
 @[simp] theorem normalizedGaussianMoment_one :
     normalizedGaussianMoment 1 = 0 := rfl
 
+/-- The normalized moments satisfy
+`normalizedGaussianMoment (n + 2) =
+  (n + 1) * normalizedGaussianMoment n`. -/
 @[simp] theorem normalizedGaussianMoment_add_two (n : ℕ) :
     normalizedGaussianMoment (n + 2) =
       (n + 1 : ℂ) * normalizedGaussianMoment n := rfl
 
+/-- Every normalized odd Gaussian moment vanishes:
+`normalizedGaussianMoment (2 * j + 1) = 0`. -/
 @[simp] theorem normalizedGaussianMoment_odd (j : ℕ) :
     normalizedGaussianMoment (2 * j + 1) = 0 := by
   induction j with
@@ -167,6 +186,10 @@ def normalizedGaussianMoment : ℕ → ℂ
       rw [show 2 * (j + 1) + 1 = (2 * j + 1) + 2 by omega,
         normalizedGaussianMoment_add_two, ih, mul_zero]
 
+/-- The normalized even Gaussian moment is the corresponding double
+factorial:
+`normalizedGaussianMoment (2 * j) =
+  (Nat.doubleFactorial (2 * j - 1) : ℂ)`. -/
 @[simp] theorem normalizedGaussianMoment_even (j : ℕ) :
     normalizedGaussianMoment (2 * j) =
       (Nat.doubleFactorial (2 * j - 1) : ℂ) := by
@@ -177,6 +200,10 @@ def normalizedGaussianMoment : ℕ → ℂ
         normalizedGaussianMoment_add_two, ih]
       exact_mod_cast (Nat.doubleFactorial_add_one (2 * j)).symm
 
+/-- The unnormalized real moment is the normalized complex moment multiplied
+by the total Gaussian mass:
+`(realGaussianMoment n : ℂ) =
+  (Real.sqrt (2 * Real.pi) : ℂ) * normalizedGaussianMoment n`. -/
 theorem realGaussianMoment_eq_normalizedGaussianMoment (n : ℕ) :
     (realGaussianMoment n : ℂ) =
       (Real.sqrt (2 * Real.pi) : ℂ) * normalizedGaussianMoment n := by
@@ -191,6 +218,8 @@ theorem realGaussianMoment_eq_normalizedGaussianMoment (n : ℕ) :
       rw [hn]
       ring
 
+/-- Every normalized Gaussian moment is fixed by complex conjugation:
+`star (normalizedGaussianMoment n) = normalizedGaussianMoment n`. -/
 theorem normalizedGaussianMoment_conj (n : ℕ) :
     star (normalizedGaussianMoment n) = normalizedGaussianMoment n := by
   induction n using Nat.twoStepInduction with
@@ -216,31 +245,58 @@ noncomputable def gaussianPolynomialContraction : Polynomial ℂ →ₗ[ℂ] ℂ
 def conjugatePolynomial (p : Polynomial ℂ) : Polynomial ℂ :=
   p.map (starRingEnd ℂ)
 
+/-- Contraction of a monomial multiplies its coefficient by the corresponding
+normalized Gaussian moment:
+`gaussianPolynomialContraction (Polynomial.monomial n c) =
+  c * normalizedGaussianMoment n`. -/
 @[simp] theorem gaussianPolynomialContraction_monomial (n : ℕ) (c : ℂ) :
     gaussianPolynomialContraction (Polynomial.monomial n c) =
       c * normalizedGaussianMoment n := by
   simp [gaussianPolynomialContraction, monomialGaussianContraction]
 
+/-- Contraction restricts to the identity on constant polynomials:
+`gaussianPolynomialContraction (Polynomial.C c) = c`. -/
 @[simp] theorem gaussianPolynomialContraction_C (c : ℂ) :
     gaussianPolynomialContraction (Polynomial.C c) = c := by
   rw [← Polynomial.monomial_zero_left,
     gaussianPolynomialContraction_monomial, normalizedGaussianMoment_zero, mul_one]
 
+/-- Contraction of `X ^ n` is the normalized `n`th Gaussian moment:
+`gaussianPolynomialContraction (Polynomial.X ^ n) =
+  normalizedGaussianMoment n`. -/
 @[simp] theorem gaussianPolynomialContraction_X_pow (n : ℕ) :
     gaussianPolynomialContraction (Polynomial.X ^ n) =
       normalizedGaussianMoment n := by
   rw [← Polynomial.monomial_one_right_eq_X_pow,
     gaussianPolynomialContraction_monomial, one_mul]
 
+/-- Contracting a scalar monomial multiplies its coefficient by the
+corresponding normalized Gaussian moment:
+`gaussianPolynomialContraction (Polynomial.C c * Polynomial.X ^ n) =
+  c * normalizedGaussianMoment n`. -/
+@[simp] theorem gaussianPolynomialContraction_C_mul_X_pow (c : ℂ) (n : ℕ) :
+    gaussianPolynomialContraction
+        (Polynomial.C c * Polynomial.X ^ n) =
+      c * normalizedGaussianMoment n := by
+  rw [Polynomial.C_mul_X_pow_eq_monomial,
+    gaussianPolynomialContraction_monomial]
+
+/-- Contraction annihilates every odd power of `X`:
+`gaussianPolynomialContraction (Polynomial.X ^ (2 * j + 1)) = 0`. -/
 @[simp] theorem gaussianPolynomialContraction_X_pow_odd (j : ℕ) :
     gaussianPolynomialContraction (Polynomial.X ^ (2 * j + 1)) = 0 := by
   simp
 
+/-- Contraction of an even power of `X` is its double factorial:
+`gaussianPolynomialContraction (Polynomial.X ^ (2 * j)) =
+  (Nat.doubleFactorial (2 * j - 1) : ℂ)`. -/
 @[simp] theorem gaussianPolynomialContraction_X_pow_even (j : ℕ) :
     gaussianPolynomialContraction (Polynomial.X ^ (2 * j)) =
       (Nat.doubleFactorial (2 * j - 1) : ℂ) := by
   simp
 
+/-- For every `n`, the complex function
+`x ↦ standardGaussian x * (x : ℂ) ^ n` is integrable on the real line. -/
 theorem integrable_standardGaussian_mul_pow (n : ℕ) :
     Integrable (fun x : ℝ =>
       QuantitativeSaddle.standardGaussian x * (x : ℂ) ^ n) := by
@@ -252,6 +308,8 @@ theorem integrable_standardGaussian_mul_pow (n : ℕ) :
   simp only [QuantitativeSaddle.standardGaussian, Complex.ofReal_mul,
     Complex.ofReal_pow]
 
+/-- For every complex polynomial `p`, the function
+`x ↦ standardGaussian x * p.eval (x : ℂ)` is integrable on the real line. -/
 theorem integrable_standardGaussian_mul_eval (p : Polynomial ℂ) :
     Integrable (fun x : ℝ =>
       QuantitativeSaddle.standardGaussian x * p.eval (x : ℂ)) := by
@@ -290,6 +348,10 @@ theorem norm_standardGaussian_mul_eval_le (p : Polynomial ℂ) (v : ℝ) :
         Real.norm_eq_abs]
       ring
 
+/-- Integrating the standard Gaussian against `x ^ n` gives its normalized
+moment times the total Gaussian mass:
+`∫ x, standardGaussian x * (x : ℂ) ^ n =
+  (Real.sqrt (2 * Real.pi) : ℂ) * normalizedGaussianMoment n`. -/
 theorem integral_standardGaussian_mul_pow (n : ℕ) :
     (∫ x : ℝ, QuantitativeSaddle.standardGaussian x * (x : ℂ) ^ n) =
       (Real.sqrt (2 * Real.pi) : ℂ) * normalizedGaussianMoment n := by
@@ -306,6 +368,10 @@ theorem integral_standardGaussian_mul_pow (n : ℕ) :
     _ = (realGaussianMoment n : ℂ) := by
       rfl
 
+/-- Integrating the standard Gaussian against a polynomial evaluates its
+Gaussian contraction:
+`∫ x, standardGaussian x * p.eval (x : ℂ) =
+  (Real.sqrt (2 * Real.pi) : ℂ) * gaussianPolynomialContraction p`. -/
 theorem integral_standardGaussian_mul_eval (p : Polynomial ℂ) :
     (∫ x : ℝ, QuantitativeSaddle.standardGaussian x * p.eval (x : ℂ)) =
       (Real.sqrt (2 * Real.pi) : ℂ) * gaussianPolynomialContraction p := by
@@ -354,6 +420,9 @@ theorem gaussianPolynomialContraction_eq_integral (p : Polynomial ℂ) :
       rw [mul_assoc]
     _ = gaussianPolynomialContraction p := by rw [inv_mul_cancel₀ hsqrt, one_mul]
 
+/-- Gaussian contraction commutes with coefficientwise complex conjugation:
+`star (gaussianPolynomialContraction p) =
+  gaussianPolynomialContraction (conjugatePolynomial p)`. -/
 theorem gaussianPolynomialContraction_conjugate (p : Polynomial ℂ) :
     star (gaussianPolynomialContraction p) =
       gaussianPolynomialContraction (conjugatePolynomial p) := by
@@ -368,6 +437,9 @@ theorem gaussianPolynomialContraction_conjugate (p : Polynomial ℂ) :
         starRingEnd_apply, gaussianPolynomialContraction_monomial]
       ring
 
+/-- If `conjugatePolynomial p = p`, then the contraction is fixed by complex
+conjugation:
+`star (gaussianPolynomialContraction p) = gaussianPolynomialContraction p`. -/
 theorem gaussianPolynomialContraction_star_eq_self
     {p : Polynomial ℂ} (hp : conjugatePolynomial p = p) :
     star (gaussianPolynomialContraction p) = gaussianPolynomialContraction p := by

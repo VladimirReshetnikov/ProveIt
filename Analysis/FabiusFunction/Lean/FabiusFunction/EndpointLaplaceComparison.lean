@@ -26,6 +26,9 @@ The explicit logarithmic correction is
 
 which is `n/2` times the normalized second tilted moment.
 
+Each finite comparison is also exposed by a zero-inclusive `_all` theorem;
+the original positive-index names remain compatibility interfaces.
+
 The imported probability bridge also records the survival identity on the full
 nonnegative ray and separates reflection invariance from the zero-tilt and
 degree-zero moment normalizations.
@@ -38,6 +41,8 @@ open scoped Topology
 
 namespace Fabius
 
+/-- On `[0, 1/2]`, the quadratic Taylor truncation of `log (1 - x)` has
+absolute remainder at most `2 * x^3 / 3`. -/
 lemma abs_log_one_sub_second_remainder_le {x : ℝ}
     (hx0 : 0 ≤ x) (hx : x ≤ 1 / 2) :
     |Real.log (1 - x) + x + x ^ 2 / 2| ≤ 2 * x ^ 3 / 3 := by
@@ -76,6 +81,8 @@ lemma abs_log_one_sub_second_remainder_le {x : ℝ}
           norm_num
         _ = 2 * x ^ 3 / 3 := by ring
 
+/-- For nonnegative `u`, `exp (-u)` differs from its linear truncation
+`1 - u` by at most `u^2`. -/
 lemma abs_exp_neg_sub_one_add_le_sq (u : ℝ) (hu : 0 ≤ u) :
     |Real.exp (-u) - (1 - u)| ≤ u ^ 2 := by
   by_cases hu1 : u ≤ 1
@@ -90,6 +97,7 @@ lemma abs_exp_neg_sub_one_add_le_sq (u : ℝ) (hu : 0 ≤ u) :
     rw [abs_of_nonneg (by linarith)]
     nlinarith
 
+/-- The real exponential is `1`-Lipschitz between two nonpositive exponents. -/
 lemma abs_exp_sub_exp_le_abs_of_nonpos {a b : ℝ} (ha : a ≤ 0) (hb : b ≤ 0) :
     |Real.exp a - Real.exp b| ≤ |a - b| := by
   wlog hab : a ≤ b generalizing a b
@@ -338,6 +346,19 @@ lemma abs_one_sub_pow_sub_exp_quadratic_le
         mul_le_mul_of_nonneg_left hmain (Real.exp_pos _).le
       _ = 16 * Real.exp (-N * x) * (N * x ^ 3 + N ^ 2 * x ^ 4) := by ring
 
+/-- Zero-inclusive pointwise endpoint/Laplace comparison.  At `n = 0` both
+sides vanish; positive indices are covered by
+`abs_one_sub_pow_sub_exp_quadratic_le`. -/
+lemma abs_one_sub_pow_sub_exp_quadratic_le_all
+    (n : ℕ) {x : ℝ} (hx0 : 0 ≤ x) (hx1 : x ≤ 1) :
+    |(1 - x) ^ n - Real.exp (-(n : ℝ) * x) *
+        (1 - (n : ℝ) * x ^ 2 / 2)| ≤
+      16 * Real.exp (-(n : ℝ) * x) *
+        ((n : ℝ) * x ^ 3 + (n : ℝ) ^ 2 * x ^ 4) := by
+  rcases Nat.eq_zero_or_pos n with rfl | hn
+  · norm_num
+  · exact abs_one_sub_pow_sub_exp_quadratic_le n (by omega) hx0 hx1
+
 /-- Integrated second-order comparison between an endpoint moment kernel and its
 Laplace kernel.  This form only needs local finiteness of the measure; the support
 restriction is expressed by the set integral. -/
@@ -360,6 +381,22 @@ lemma abs_integral_one_sub_pow_sub_exp_quadratic_le
   filter_upwards [ae_restrict_mem measurableSet_Icc] with x hx
   rw [Real.norm_eq_abs]
   exact abs_one_sub_pow_sub_exp_quadratic_le n hn hx.1 hx.2
+
+/-- Zero-inclusive integrated endpoint/Laplace comparison.  At `n = 0` both
+integrands vanish, while positive indices are covered by
+`abs_integral_one_sub_pow_sub_exp_quadratic_le`. -/
+lemma abs_integral_one_sub_pow_sub_exp_quadratic_le_all
+    (μ : Measure ℝ) [IsFiniteMeasureOnCompacts μ]
+    (n : ℕ) :
+    |∫ x in Icc (0 : ℝ) 1,
+        ((1 - x) ^ n - Real.exp (-(n : ℝ) * x) *
+          (1 - (n : ℝ) * x ^ 2 / 2)) ∂μ| ≤
+      ∫ x in Icc (0 : ℝ) 1,
+        16 * Real.exp (-(n : ℝ) * x) *
+          ((n : ℝ) * x ^ 3 + (n : ℝ) ^ 2 * x ^ 4) ∂μ := by
+  rcases Nat.eq_zero_or_pos n with rfl | hn
+  · simp
+  · exact abs_integral_one_sub_pow_sub_exp_quadratic_le μ n (by omega)
 
 /-- The integrated endpoint/Laplace comparison, expanded into raw Laplace moments. -/
 lemma abs_endpointMoment_sub_laplace_secondOrder_le
@@ -447,6 +484,27 @@ lemma abs_endpointMoment_sub_laplace_secondOrder_le
   rw [← hkernel, ← hbound]
   exact h
 
+/-- Zero-inclusive raw integral form of the endpoint/Laplace comparison.  The
+boundary case `n = 0` is an exact identity, and positive indices are covered by
+`abs_endpointMoment_sub_laplace_secondOrder_le`. -/
+lemma abs_endpointMoment_sub_laplace_secondOrder_le_all
+    (μ : Measure ℝ) [IsFiniteMeasureOnCompacts μ]
+    (n : ℕ) :
+    |(∫ x in Icc (0 : ℝ) 1, (1 - x) ^ n ∂μ) -
+        ((∫ x in Icc (0 : ℝ) 1, Real.exp (-(n : ℝ) * x) ∂μ) -
+          (n : ℝ) / 2 *
+            ∫ x in Icc (0 : ℝ) 1,
+              Real.exp (-(n : ℝ) * x) * x ^ 2 ∂μ)| ≤
+      16 * ((n : ℝ) *
+          ∫ x in Icc (0 : ℝ) 1,
+            Real.exp (-(n : ℝ) * x) * x ^ 3 ∂μ +
+        (n : ℝ) ^ 2 *
+          ∫ x in Icc (0 : ℝ) 1,
+            Real.exp (-(n : ℝ) * x) * x ^ 4 ∂μ) := by
+  rcases Nat.eq_zero_or_pos n with rfl | hn
+  · simp
+  · exact abs_endpointMoment_sub_laplace_secondOrder_le μ n (by omega)
+
 /-- Raw-moment formulation of the endpoint/Laplace comparison. -/
 lemma abs_unitEndpointMoment_sub_unitLaplace_secondOrder_le
     (μ : Measure ℝ) [IsFiniteMeasureOnCompacts μ]
@@ -458,6 +516,20 @@ lemma abs_unitEndpointMoment_sub_unitLaplace_secondOrder_le
         (n : ℝ) ^ 2 * unitLaplaceMoment μ n 4) := by
   simpa [unitEndpointMoment, unitLaplaceMoment] using
     abs_endpointMoment_sub_laplace_secondOrder_le μ n hn
+
+/-- Zero-inclusive raw-moment formulation of the endpoint/Laplace comparison.
+At degree zero the endpoint and Laplace kernels coincide and the displayed
+remainder vanishes. -/
+lemma abs_unitEndpointMoment_sub_unitLaplace_secondOrder_le_all
+    (μ : Measure ℝ) [IsFiniteMeasureOnCompacts μ]
+    (n : ℕ) :
+    |unitEndpointMoment μ n -
+        (unitLaplaceMoment μ n 0 -
+          (n : ℝ) / 2 * unitLaplaceMoment μ n 2)| ≤
+      16 * ((n : ℝ) * unitLaplaceMoment μ n 3 +
+        (n : ℝ) ^ 2 * unitLaplaceMoment μ n 4) := by
+  simpa [unitEndpointMoment, unitLaplaceMoment] using
+    abs_endpointMoment_sub_laplace_secondOrder_le_all μ n
 
 /-- Fully quantitative logarithmic endpoint/Laplace comparison.  The smallness
 hypothesis is exactly what is needed to enter the radius `1 / 2` logarithm
@@ -504,6 +576,51 @@ lemma abs_log_unitEndpointMoment_sub_log_unitLaplace_add_le
   simpa only [M, B, a, ε] using
     abs_log_sub_log_add_le_two_sq_add hM hB hε hsmall happrox
 
+/-- Zero-inclusive quantitative logarithmic endpoint/Laplace comparison.  The
+explicit positivity and logarithm-chart hypotheses suffice at every natural
+index, including the exact boundary identity at `n = 0`. -/
+lemma abs_log_unitEndpointMoment_sub_log_unitLaplace_add_le_all
+    (μ : Measure ℝ) [IsFiniteMeasureOnCompacts μ]
+    (n : ℕ)
+    (hM : 0 < unitEndpointMoment μ n)
+    (hB : 0 < unitLaplaceMoment μ n 0)
+    (hsmall :
+      |(n : ℝ) / 2 * unitLaplaceMoment μ n 2 /
+          unitLaplaceMoment μ n 0| +
+        16 * ((n : ℝ) * unitLaplaceMoment μ n 3 +
+          (n : ℝ) ^ 2 * unitLaplaceMoment μ n 4) /
+            unitLaplaceMoment μ n 0 ≤ 1 / 2) :
+    |Real.log (unitEndpointMoment μ n) -
+        Real.log (unitLaplaceMoment μ n 0) +
+        (n : ℝ) / 2 * unitLaplaceMoment μ n 2 /
+          unitLaplaceMoment μ n 0| ≤
+      2 * ((n : ℝ) / 2 * unitLaplaceMoment μ n 2 /
+          unitLaplaceMoment μ n 0) ^ 2 +
+        2 * (16 * ((n : ℝ) * unitLaplaceMoment μ n 3 +
+          (n : ℝ) ^ 2 * unitLaplaceMoment μ n 4) /
+            unitLaplaceMoment μ n 0) := by
+  let M := unitEndpointMoment μ n
+  let B := unitLaplaceMoment μ n 0
+  let a := (n : ℝ) / 2 * unitLaplaceMoment μ n 2 / B
+  let ε := 16 * ((n : ℝ) * unitLaplaceMoment μ n 3 +
+    (n : ℝ) ^ 2 * unitLaplaceMoment μ n 4) / B
+  have hB0 : 0 ≤ B := hB.le
+  have h3 : 0 ≤ unitLaplaceMoment μ n 3 := unitLaplaceMoment_nonneg _ _ _
+  have h4 : 0 ≤ unitLaplaceMoment μ n 4 := unitLaplaceMoment_nonneg _ _ _
+  have hε : 0 ≤ ε := by
+    dsimp [ε]
+    positivity
+  have happrox : |M / B - (1 - a)| ≤ ε := by
+    have hraw := abs_unitEndpointMoment_sub_unitLaplace_secondOrder_le_all μ n
+    have heq : M / B - (1 - a) =
+        (M - (B - (n : ℝ) / 2 * unitLaplaceMoment μ n 2)) / B := by
+      dsimp [M, B, a]
+      field_simp [hB.ne']
+    rw [heq, abs_div, abs_of_pos hB]
+    exact (div_le_div_of_nonneg_right hraw hB0)
+  simpa only [M, B, a, ε] using
+    abs_log_sub_log_add_le_two_sq_add hM hB hε hsmall happrox
+
 
 /-- Endpoint/Laplace comparison expressed entirely through the canonical
 Fabius half moment and tilted moments. -/
@@ -522,6 +639,24 @@ theorem abs_halfMoment_sub_fabiusLaplace_secondOrder_le
   simpa only [ProbabilityRepresentation.unitLaplaceMoment_weightedSumDistribution_eq_fabiusLaplaceMoment
     F hF] using h
 
+/-- Zero-inclusive endpoint/Laplace comparison for the canonical Fabius half
+moment.  The probability-law bridge identifies the exact boundary case as
+well as every positive index. -/
+theorem abs_halfMoment_sub_fabiusLaplace_secondOrder_le_all
+    (F : BoundedFabius) (hF : IsFabius F)
+    (n : ℕ) :
+    |(halfMoment n : ℝ) -
+        (fabiusLaplaceMoment F 0 n -
+          (n : ℝ) / 2 * fabiusLaplaceMoment F 2 n)| ≤
+      16 * ((n : ℝ) * fabiusLaplaceMoment F 3 n +
+        (n : ℝ) ^ 2 * fabiusLaplaceMoment F 4 n) := by
+  have h := abs_unitEndpointMoment_sub_unitLaplace_secondOrder_le_all
+    ProbabilityRepresentation.weightedSumDistribution n
+  rw [ProbabilityRepresentation.unitEndpointMoment_weightedSumDistribution_eq_halfMoment
+      F hF n] at h
+  simpa only [ProbabilityRepresentation.unitLaplaceMoment_weightedSumDistribution_eq_fabiusLaplaceMoment
+    F hF] using h
+
 /-- Relative endpoint/Laplace comparison. -/
 theorem abs_halfMoment_div_fabiusLaplace_sub_secondOrder_le
     (F : BoundedFabius) (hF : IsFabius F)
@@ -533,6 +668,44 @@ theorem abs_halfMoment_div_fabiusLaplace_sub_secondOrder_le
   have hn0 : (0 : ℝ) < n := by exact_mod_cast (show 0 < n by omega)
   have hB := fabiusLaplaceMoment_zero_pos F hF hn0
   have hraw := abs_halfMoment_sub_fabiusLaplace_secondOrder_le F hF n hn
+  unfold normalizedLaplaceMoment
+  have heq :
+      (halfMoment n : ℝ) / fabiusLaplaceMoment F 0 n -
+          (1 - (n : ℝ) / 2 *
+            (fabiusLaplaceMoment F 2 n / fabiusLaplaceMoment F 0 n)) =
+        ((halfMoment n : ℝ) -
+          (fabiusLaplaceMoment F 0 n -
+            (n : ℝ) / 2 * fabiusLaplaceMoment F 2 n)) /
+              fabiusLaplaceMoment F 0 n := by
+    field_simp [hB.ne']
+  rw [heq, abs_div, abs_of_pos hB]
+  calc
+    |(halfMoment n : ℝ) -
+          (fabiusLaplaceMoment F 0 n -
+            (n : ℝ) / 2 * fabiusLaplaceMoment F 2 n)| /
+        fabiusLaplaceMoment F 0 n ≤
+        (16 * ((n : ℝ) * fabiusLaplaceMoment F 3 n +
+          (n : ℝ) ^ 2 * fabiusLaplaceMoment F 4 n)) /
+            fabiusLaplaceMoment F 0 n :=
+      div_le_div_of_nonneg_right hraw hB.le
+    _ = 16 * ((n : ℝ) *
+          (fabiusLaplaceMoment F 3 n / fabiusLaplaceMoment F 0 n) +
+        (n : ℝ) ^ 2 *
+          (fabiusLaplaceMoment F 4 n / fabiusLaplaceMoment F 0 n)) := by
+      field_simp [hB.ne']
+
+/-- Zero-inclusive relative endpoint/Laplace comparison.  The zeroth Laplace
+moment is globally positive, so normalization remains valid at `n = 0`, where
+both sides vanish. -/
+theorem abs_halfMoment_div_fabiusLaplace_sub_secondOrder_le_all
+    (F : BoundedFabius) (hF : IsFabius F)
+    (n : ℕ) :
+    |(halfMoment n : ℝ) / fabiusLaplaceMoment F 0 n -
+        (1 - (n : ℝ) / 2 * normalizedLaplaceMoment F 2 n)| ≤
+      16 * ((n : ℝ) * normalizedLaplaceMoment F 3 n +
+        (n : ℝ) ^ 2 * normalizedLaplaceMoment F 4 n) := by
+  have hB := fabiusLaplaceMoment_zero_pos_all F hF n
+  have hraw := abs_halfMoment_sub_fabiusLaplace_secondOrder_le_all F hF n
   unfold normalizedLaplaceMoment
   have heq :
       (halfMoment n : ℝ) / fabiusLaplaceMoment F 0 n -
@@ -619,6 +792,37 @@ theorem abs_dyadicEndpointLaplaceLogError_add_secondOrder_le
   rw [← negativeLaplaceLog_eq_log_laplaceMoment F hF hn0] at hlog
   rw [ha] at hlog
   simpa only [dyadicEndpointLaplaceLogError, ε] using hlog
+
+/-- Zero-inclusive finite dyadic endpoint/Laplace logarithm estimate.  At
+`n = 0` the endpoint error and every displayed correction vanish exactly;
+positive indices are covered by
+`abs_dyadicEndpointLaplaceLogError_add_secondOrder_le`. -/
+theorem abs_dyadicEndpointLaplaceLogError_add_secondOrder_le_all
+    (F : BoundedFabius) (hF : IsFabius F)
+    (n : ℕ)
+    (hsmall :
+      |(n : ℝ) / 2 *
+          (negativeLaplaceLogSecond F n +
+            negativeLaplaceLogFirst F n ^ 2)| +
+        16 * ((n : ℝ) * normalizedLaplaceMoment F 3 n +
+          (n : ℝ) ^ 2 * normalizedLaplaceMoment F 4 n) ≤ 1 / 2) :
+    |dyadicEndpointLaplaceLogError n +
+        (n : ℝ) / 2 *
+          (negativeLaplaceLogSecond F n +
+            negativeLaplaceLogFirst F n ^ 2)| ≤
+      2 * ((n : ℝ) / 2 *
+          (negativeLaplaceLogSecond F n +
+            negativeLaplaceLogFirst F n ^ 2)) ^ 2 +
+        2 * (16 * ((n : ℝ) * normalizedLaplaceMoment F 3 n +
+          (n : ℝ) ^ 2 * normalizedLaplaceMoment F 4 n)) := by
+  cases n with
+  | zero =>
+      have hlog0 : negativeLaplaceLog 0 = 0 := by
+        simp [negativeLaplaceLog, negativeLaplaceTerm, negativeLaplaceKernel]
+      simp [dyadicEndpointLaplaceLogError, halfMoment_zero, hlog0]
+  | succ n =>
+      exact abs_dyadicEndpointLaplaceLogError_add_secondOrder_le
+        F hF (n + 1) (by omega) hsmall
 
 /-- Conditional sharp `O(1/n)` endpoint expansion.  Its two hypotheses are
 exactly the quantitative derivative/moment estimates left to the periodic

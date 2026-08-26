@@ -122,12 +122,7 @@ theorem fabiusFirstSaddleCorrection_eq_jets (u : ℝ) :
       -negativeLaplaceBoundedExponentJet 0 u ^ 2 / 2 -
         negativeLaplaceBoundedExponentJet 0 u -
         negativeLaplaceBoundedExponentJet 1 u / 2 - 1 / 12 := by
-  have hL : Real.log 2 ≠ 0 := (Real.log_pos (by norm_num)).ne'
-  rw [negativeLaplaceBoundedExponentJet_zero,
-    negativeLaplaceBoundedExponentJet_one]
-  unfold fabiusFirstSaddleCorrection
-  field_simp
-  ring
+  exact fabiusFirstSaddleCorrection_eq_boundedExponentJets u
 
 namespace SaddleExpansion
 
@@ -359,12 +354,6 @@ theorem expCoeff_four_negativeLaplaceExponentPolynomial (t : ℝ) :
     Polynomial.eval_ofNat]
   ring
 
-private theorem gaussianContraction_C_mul_X_pow (c : ℂ) (n : ℕ) :
-    gaussianPolynomialContraction (C c * X ^ n) =
-      c * normalizedGaussianMoment n := by
-  rw [Polynomial.C_mul']
-  simp
-
 private theorem gaussianMoment_four : normalizedGaussianMoment 4 = 3 := by
   norm_num [normalizedGaussianMoment]
 
@@ -397,9 +386,9 @@ private theorem gaussianContraction_even_five (c4 c6 c8 c10 c12 : ℂ) :
         c8 * normalizedGaussianMoment 8 + c10 * normalizedGaussianMoment 10 +
           c12 * normalizedGaussianMoment 12 := by
   rw [map_add, map_add, map_add, map_add,
-    gaussianContraction_C_mul_X_pow, gaussianContraction_C_mul_X_pow,
-    gaussianContraction_C_mul_X_pow, gaussianContraction_C_mul_X_pow,
-    gaussianContraction_C_mul_X_pow]
+    gaussianPolynomialContraction_C_mul_X_pow, gaussianPolynomialContraction_C_mul_X_pow,
+    gaussianPolynomialContraction_C_mul_X_pow, gaussianPolynomialContraction_C_mul_X_pow,
+    gaussianPolynomialContraction_C_mul_X_pow]
 
 /-- The complex Gaussian mass coefficient of order `lambda^{-2}` in closed
 form.  It is the image of a real number, as it must be. -/
@@ -534,16 +523,8 @@ This pointwise form is convenient for asymptotic estimates that do not need a
 named or sharp bound. -/
 theorem exists_bound_abs_fabiusSecondSaddleCorrection :
     ∃ C : ℝ, 0 ≤ C ∧ ∀ u : ℝ, |fabiusSecondSaddleCorrection u| ≤ C := by
-  rcases (Metric.isBounded_iff_subset_closedBall 0).mp
-      isBounded_range_fabiusSecondSaddleCorrection with ⟨C, hC⟩
-  have hzero := hC (Set.mem_range_self (0 : ℝ))
-  have hC0 : 0 ≤ C := by
-    have : |fabiusSecondSaddleCorrection 0| ≤ C := by
-      simpa [Metric.mem_closedBall, Real.dist_eq] using hzero
-    exact (abs_nonneg _).trans this
-  refine ⟨C, hC0, fun u => ?_⟩
-  simpa [Metric.mem_closedBall, Real.dist_eq] using
-    hC (Set.mem_range_self u)
+  exact exists_nonneg_bound_abs_of_isBounded_range
+    fabiusSecondSaddleCorrection isBounded_range_fabiusSecondSaddleCorrection
 
 end
 

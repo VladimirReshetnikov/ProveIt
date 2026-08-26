@@ -18,6 +18,16 @@ works in every commutative rational algebra, in particular for
 `Polynomial ℂ`, and is identified with substitution into Mathlib's universal
 formal exponential series at every finite truncation order.
 
+The core interface has three layers: `exponentSeries` packages the exponent,
+`expCoeff` computes its exponential coefficients recursively, and `expSeries`
+packages those coefficients as a power series.  The congruence lemmas record
+that the coefficient of order `n` sees only `E j` for `1 ≤ j ≤ n`, so changing
+the unused constant coefficient does not change the generated family.
+The algebraic transport API covers rational-algebra maps, rescaling, addition
+through Cauchy convolution, evaluation, and parity.  For asymptotic expansions,
+the module supplies coefficientwise algebra, eventual-equality and pullback
+transports, and functoriality through continuous linear maps and equivalences.
+
 The final section defines a full Poincaré expansion with bounded,
 parameter-dependent coefficients, suitable for periodic saddle phases.  This
 notion is stable under bounded parameter-dependent scalar multiplication,
@@ -51,10 +61,15 @@ def expCoeff (E : ℕ → R) : ℕ → R
 termination_by n => n
 decreasing_by omega
 
+/-- The exponential-coefficient recurrence is normalized by
+`expCoeff E 0 = 1`. -/
 @[simp]
 theorem expCoeff_zero (E : ℕ → R) : expCoeff E 0 = 1 := by
   rw [expCoeff]
 
+/-- At positive order the exponential coefficients obey
+`expCoeff E (n + 1) = (n + 1)⁻¹ • ∑ j < n + 1,
+  (j + 1) * E (j + 1) * expCoeff E (n - j)`. -/
 theorem expCoeff_succ (E : ℕ → R) (n : ℕ) :
     expCoeff E (n + 1) =
       ((n + 1 : ℚ)⁻¹) •
@@ -67,22 +82,28 @@ def expSeries (E : ℕ → R) : PowerSeries R :=
   PowerSeries.mk (expCoeff E)
 
 omit [Algebra ℚ R] in
+/-- The coefficient of `Xⁿ` in `exponentSeries E` is exactly `E n`. -/
 @[simp]
 theorem coeff_exponentSeries (E : ℕ → R) (n : ℕ) :
     PowerSeries.coeff n (exponentSeries E) = E n := by
   rw [exponentSeries, PowerSeries.coeff_mk]
 
+/-- The coefficient of `Xⁿ` in `expSeries E` is `expCoeff E n`. -/
 @[simp]
 theorem coeff_expSeries (E : ℕ → R) (n : ℕ) :
     PowerSeries.coeff n (expSeries E) = expCoeff E n := by
   rw [expSeries, PowerSeries.coeff_mk]
 
+/-- The generated exponential series has constant coefficient one:
+`constantCoeff (expSeries E) = 1`. -/
 @[simp]
 theorem constantCoeff_expSeries (E : ℕ → R) :
     PowerSeries.constantCoeff (expSeries E) = 1 := by
   rw [← PowerSeries.coeff_zero_eq_constantCoeff_apply]
   simp
 
+/-- The generated exponential series solves the formal differential equation
+`(expSeries E)' = (exponentSeries E)' * expSeries E`. -/
 theorem derivative_expSeries (E : ℕ → R) :
     d⁄dX R (expSeries E) =
       d⁄dX R (exponentSeries E) * expSeries E := by
@@ -215,6 +236,16 @@ theorem expCoeff_congr_of_pos {E F : ℕ → R} (n : ℕ)
           intro k hkpos hk
           exact hEF k hkpos (by omega)
 
+/-- Exponent families agreeing at every positive index generate the same
+exponential-coefficient family; index zero is ignored. -/
+theorem expCoeff_eq_of_forall_pos {E F : ℕ → R}
+    (hEF : ∀ j, 0 < j → E j = F j) :
+    expCoeff E = expCoeff F := by
+  funext n
+  apply expCoeff_congr_of_pos n
+  intro j hj _hjle
+  exact hEF j hj
+
 /-- The coefficient of order `n` only uses exponent coefficients through
 order `n`. -/
 theorem expCoeff_congr {E F : ℕ → R} (n : ℕ)
@@ -336,18 +367,26 @@ def partialSum (scale : α → 𝕜) (coeff : ℕ → α → ℰ)
     (N : ℕ) (x : α) : ℰ :=
   ∑ k ∈ range N, scale x ^ k • coeff k x
 
+/-- The order-zero partial sum is empty:
+`partialSum scale coeff 0 x = 0`. -/
 @[simp]
 theorem partialSum_zero (scale : α → 𝕜) (coeff : ℕ → α → ℰ)
     (x : α) :
     partialSum scale coeff 0 x = 0 := by
   simp [partialSum]
 
+/-- Increasing the truncation order appends its new highest-order term:
+`partialSum scale coeff (N + 1) x = partialSum scale coeff N x +
+  scale x ^ N • coeff N x`. -/
 theorem partialSum_succ (scale : α → 𝕜) (coeff : ℕ → α → ℰ)
     (N : ℕ) (x : α) :
     partialSum scale coeff (N + 1) x =
       partialSum scale coeff N x + scale x ^ N • coeff N x := by
   rw [partialSum, partialSum, sum_range_succ]
 
+/-- Finite partial sums distribute over pointwise addition of coefficients:
+`partialSum scale (coeff + coeff') N x =
+  partialSum scale coeff N x + partialSum scale coeff' N x`. -/
 @[simp]
 theorem partialSum_add (scale : α → 𝕜)
     (coeff coeff' : ℕ → α → ℰ) (N : ℕ) (x : α) :
@@ -367,6 +406,9 @@ theorem partialSum_smul (c scale : α → 𝕜)
   intro k _hk
   exact smul_comm (scale x ^ k) (c x) (coeff k x)
 
+/-- Constant scalar multiplication passes through finite partial sums:
+`partialSum scale (fun k x => c • coeff k x) N x =
+  c • partialSum scale coeff N x`. -/
 @[simp]
 theorem partialSum_const_smul (c : 𝕜) (scale : α → 𝕜)
     (coeff : ℕ → α → ℰ) (N : ℕ) (x : α) :
@@ -374,6 +416,9 @@ theorem partialSum_const_smul (c : 𝕜) (scale : α → 𝕜)
       c • partialSum scale coeff N x := by
   exact partialSum_smul (fun _ : α => c) scale coeff N x
 
+/-- Finite partial sums commute with pointwise negation:
+`partialSum scale (fun k x => -coeff k x) N x =
+  -partialSum scale coeff N x`. -/
 @[simp]
 theorem partialSum_neg (scale : α → 𝕜) (coeff : ℕ → α → ℰ)
     (N : ℕ) (x : α) :
@@ -381,6 +426,9 @@ theorem partialSum_neg (scale : α → 𝕜) (coeff : ℕ → α → ℰ)
       -partialSum scale coeff N x := by
   simp [partialSum, ← Finset.sum_neg_distrib]
 
+/-- Finite partial sums distribute over pointwise subtraction:
+`partialSum scale (fun k x => coeff k x - coeff' k x) N x =
+  partialSum scale coeff N x - partialSum scale coeff' N x`. -/
 @[simp]
 theorem partialSum_sub (scale : α → 𝕜)
     (coeff coeff' : ℕ → α → ℰ) (N : ℕ) (x : α) :
