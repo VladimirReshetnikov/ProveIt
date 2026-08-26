@@ -21,9 +21,10 @@ The payload is the finite q-binomial theorem at `q = 1/2`,
 `∑_{k=0}^n (-1)^k (1/2)^(C(k,2)) * halfQBinomial n k * z^k = (z; 1/2)_n`,
 
 proved from the q-Pascal recurrence, together with its values at the dyadic
-nodes `z = 2^m`: for `m < n` the factor `1 - 2^m (1/2)^m` vanishes and the
-sum is zero, while for `n ≤ m` the product is an exact signed quotient of
-Mersenne products.  At `z = 2^n` this specializes to
+nodes `z = 2^m`.  More generally, its complete rational root locus is
+`z = 2^j` for `j < n`.  At a dyadic node below degree, the corresponding
+factor `1 - 2^m (1/2)^m` vanishes; for `n ≤ m` the product is an exact signed
+quotient of Mersenne products.  At `z = 2^n` this specializes to
 `(-1)^n 2^(C(n+1,2)) (1/2;1/2)_n`.  The vanishing and endpoint evaluations are the
 interpolation data that `FabiusFunction.FabiusQBinomialFormula` feeds to its
 Lagrange argument at the nodes `-(2^k)`, and the theorem itself is what
@@ -43,6 +44,11 @@ statements of the whole `Fabius*QBinomial*` family.
   positivity for `k ≤ n`, the reflection `k ↦ n - k`, and both orientations
   of the q-Pascal recurrence.
 * `halfQBinomial_theorem` -- the q-binomial theorem displayed above.
+* `finiteQPochhammer_eq_zero_iff`,
+  `finiteQPochhammer_half_eq_zero_iff`,
+  `halfQBinomial_sum_eq_zero_iff`, and
+  `qBinomial_half_sum_eq_zero_iff` -- the general product-zero criterion and
+  the complete rational root locus `2^j` for `j < n` at `q = 1/2`.
 * `halfQBinomial_two_pow_sum_eq_qPochhammer` -- the all-index dyadic-node
   specialization, with an exact piecewise Mersenne-product form and the
   existing zero/endpoint interpolation boundaries.
@@ -63,7 +69,9 @@ Caveat: `qBinomial n k q` is the q-Pochhammer quotient, not the polynomial
 Gaussian binomial.  The two agree whenever the denominator is nonzero, which
 holds at `q = 1/2`, the only specialization used here, but fails at a root of
 unity.  Natural subtraction is truncated, so the quotient lemmas carry
-`k ≤ n` hypotheses, and `C(k,2)` above is Lean's `k.choose 2`.
+`k ≤ n` hypotheses, and `C(k,2)` above is Lean's `k.choose 2`.  The root-locus
+theorems classify rational arguments; they do not package complex roots or
+root multiplicities.
 -/
 
 set_option autoImplicit false
@@ -104,6 +112,42 @@ theorem qPochhammer_succ (a q : ℚ) (n : ℕ) :
     qPochhammer a q (n + 1) =
       qPochhammer a q n * (1 - a * q ^ n) :=
   finiteQPochhammer_succ a q n
+
+/-- A finite q-Pochhammer product vanishes exactly when one of its factors
+vanishes.  No nonzero or positivity hypothesis on `q` is needed. -/
+theorem finiteQPochhammer_eq_zero_iff (a q : ℚ) (n : ℕ) :
+    finiteQPochhammer a q n = 0 ↔
+      ∃ j < n, a * q ^ j = 1 := by
+  unfold finiteQPochhammer
+  rw [Finset.prod_eq_zero_iff]
+  constructor
+  · rintro ⟨j, hj, hzero⟩
+    exact ⟨j, Finset.mem_range.mp hj, (sub_eq_zero.mp hzero).symm⟩
+  · rintro ⟨j, hj, hone⟩
+    exact ⟨j, Finset.mem_range.mpr hj, sub_eq_zero.mpr hone.symm⟩
+
+private theorem mul_half_pow_eq_one_iff (z : ℚ) (j : ℕ) :
+    z * (1 / 2 : ℚ) ^ j = 1 ↔ z = (2 : ℚ) ^ j := by
+  constructor
+  · intro h
+    apply mul_right_cancel₀ (pow_ne_zero j (by norm_num : (1 / 2 : ℚ) ≠ 0))
+    rw [h, ← mul_pow]
+    norm_num
+  · rintro rfl
+    rw [← mul_pow]
+    norm_num
+
+/-- At `q = 1/2`, the finite q-Pochhammer product vanishes at exactly the
+rational points `2^j` with `j < n`. -/
+theorem finiteQPochhammer_half_eq_zero_iff (z : ℚ) (n : ℕ) :
+    finiteQPochhammer z (1 / 2) n = 0 ↔
+      ∃ j < n, z = (2 : ℚ) ^ j := by
+  rw [finiteQPochhammer_eq_zero_iff]
+  constructor
+  · rintro ⟨j, hj, hterm⟩
+    exact ⟨j, hj, (mul_half_pow_eq_one_iff z j).1 hterm⟩
+  · rintro ⟨j, hj, hz⟩
+    exact ⟨j, hj, (mul_half_pow_eq_one_iff z j).2 hz⟩
 
 /-- The specialization `QPochhammer[1/2,1/2,n]`. -/
 noncomputable def halfQPochhammer (n : ℕ) : ℚ :=
@@ -566,6 +610,25 @@ theorem qBinomial_half_theorem (n : ℕ) (z : ℚ) :
         qBinomial n k (1 / 2) * z ^ k) =
       qPochhammer z (1 / 2) n := by
   simpa only [qBinomial_half_eq] using halfQBinomial_theorem n z
+
+/-- The half-q binomial sum indexed by `n` vanishes exactly at the rational
+points `2^j` with `j < n`. -/
+theorem halfQBinomial_sum_eq_zero_iff (n : ℕ) (z : ℚ) :
+    (∑ k ∈ Finset.range (n + 1),
+      (-1 : ℚ) ^ k * (1 / 2 : ℚ) ^ (k.choose 2) *
+        halfQBinomial n k * z ^ k) = 0 ↔
+      ∃ j < n, z = (2 : ℚ) ^ j := by
+  rw [halfQBinomial_theorem n z,
+    finiteQPochhammer_half_eq_zero_iff]
+
+/-- Literal `QBinomial[n,k,1/2]` form of the complete rational root locus. -/
+theorem qBinomial_half_sum_eq_zero_iff (n : ℕ) (z : ℚ) :
+    (∑ k ∈ Finset.range (n + 1),
+      (-1 : ℚ) ^ k * (1 / 2 : ℚ) ^ (k.choose 2) *
+        qBinomial n k (1 / 2) * z ^ k) = 0 ↔
+      ∃ j < n, z = (2 : ℚ) ^ j := by
+  simpa only [qBinomial_half_eq] using
+    halfQBinomial_sum_eq_zero_iff n z
 
 /-! ## Dyadic-node specializations -/
 
