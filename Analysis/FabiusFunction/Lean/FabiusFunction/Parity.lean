@@ -1,4 +1,5 @@
 import FabiusFunction.Arithmetic
+import Mathlib.Algebra.BigOperators.ModEq
 import Mathlib.Data.Nat.Choose.Lucas
 
 /-!
@@ -13,7 +14,9 @@ the prime `2` gives the binary recurrences for odd binomial coefficients;
 the recurrence defining `momentNumerator` then reduces modulo `2` to one of
 those counts.  Besides the full-row formulas, the module records the exact
 truncated odd-coefficient count used by the two-adic half-moment recurrence
-and a reusable bridge between filters on `Fin N` and `range N`.
+and a reusable bridge between filters on `Fin N` and `range N`.  Lucas's
+theorem also shows that a power-of-two column probes one binary digit of the
+row index; summing those columns recovers the Thue--Morse sign.
 -/
 
 set_option autoImplicit false
@@ -84,6 +87,76 @@ theorem not_odd_choose_two_mul_odd (n k : ℕ) :
 theorem even_choose_two_mul_add_one (n k : ℕ) :
     Even (Nat.choose (2 * n) (2 * k + 1)) :=
   Nat.not_odd_iff_even.mp (not_odd_choose_two_mul_odd n k)
+
+private theorem choose_pow_two_mod_two_div (n j : ℕ) :
+    Nat.choose n (2 ^ j) % 2 = n / 2 ^ j % 2 := by
+  induction j generalizing n with
+  | zero => simp [Nat.choose_one_right]
+  | succ j ih =>
+      letI : Fact (Nat.Prime 2) := ⟨Nat.prime_two⟩
+      have h := @Choose.choose_modEq_choose_mod_mul_choose_div_nat
+        n (2 ^ (j + 1)) 2 inferInstance
+      change Nat.choose n (2 ^ (j + 1)) % 2 = _ at h
+      calc
+        Nat.choose n (2 ^ (j + 1)) % 2 =
+            Nat.choose (n / 2) (2 ^ j) % 2 := by
+              simpa [pow_succ] using h
+        _ = (n / 2) / 2 ^ j % 2 := ih (n := n / 2)
+        _ = n / 2 ^ (j + 1) % 2 := by
+              rw [Nat.div_div_eq_div_mul, pow_succ']
+
+/-- Lucas at a power-of-two column: the binomial residue is the corresponding
+binary digit of the row index. -/
+theorem choose_pow_two_mod_two (n j : ℕ) :
+    Nat.choose n (2 ^ j) % 2 = (Nat.digits 2 n).getD j 0 := by
+  rw [Nat.getD_digits n j (by norm_num : 2 ≤ 2)]
+  exact choose_pow_two_mod_two_div n j
+
+private lemma sum_getD_range_length (L : List ℕ) :
+    (∑ j ∈ range L.length, L.getD j 0) = L.sum := by
+  induction L with
+  | nil => simp
+  | cons a L ih =>
+      rw [List.length_cons, Finset.sum_range_succ']
+      simp only [List.getD_cons_succ, List.getD_cons_zero, List.sum_cons]
+      rw [ih]
+      exact Nat.add_comm _ _
+
+/-- The Thue--Morse sign is the parity character of the power-of-two columns
+in the corresponding row of Pascal's triangle.  The range stops at the binary
+digit length; every omitted `2 ^ j` exceeds `n`, so its binomial coefficient
+vanishes. -/
+theorem thueMorseSign_pascalPowTwo (n : ℕ) :
+    thueMorseSign n =
+      (-1 : ℤ) ^ ∑ j ∈ range (Nat.digits 2 n).length,
+        Nat.choose n (2 ^ j) := by
+  have hsum : Nat.ModEq 2
+      (∑ j ∈ range (Nat.digits 2 n).length, Nat.choose n (2 ^ j))
+      (∑ j ∈ range (Nat.digits 2 n).length,
+        (Nat.digits 2 n).getD j 0) := by
+    apply Nat.ModEq.sum
+    intro j _hj
+    change Nat.choose n (2 ^ j) % 2 = (Nat.digits 2 n).getD j 0 % 2
+    rw [choose_pow_two_mod_two,
+      Nat.getD_digits n j (by norm_num : 2 ≤ 2), Nat.mod_mod]
+  rw [sum_getD_range_length] at hsum
+  change
+    (∑ j ∈ range (Nat.digits 2 n).length,
+      Nat.choose n (2 ^ j)) % 2 = binaryWeight n % 2 at hsum
+  rw [thueMorseSign]
+  calc
+    (-1 : ℤ) ^ binaryWeight n =
+        (-1 : ℤ) ^ (binaryWeight n % 2) :=
+      neg_one_pow_eq_pow_mod_two (R := ℤ) (binaryWeight n)
+    _ = (-1 : ℤ) ^
+        ((∑ j ∈ range (Nat.digits 2 n).length,
+          Nat.choose n (2 ^ j)) % 2) := by
+      rw [hsum]
+    _ = (-1 : ℤ) ^ ∑ j ∈ range (Nat.digits 2 n).length,
+        Nat.choose n (2 ^ j) :=
+      (neg_one_pow_eq_pow_mod_two (R := ℤ)
+        (∑ j ∈ range (Nat.digits 2 n).length,
+          Nat.choose n (2 ^ j))).symm
 
 /-- The indices of the odd coefficients in row `n` of Pascal's triangle. -/
 def oddBinomialIndices (n : ℕ) : Finset ℕ :=
