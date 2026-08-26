@@ -854,3 +854,82 @@ next bounded step: commit and push this registry-only claim without force;
   edit only the claimed Lean source while subagents independently inspect the
   live proof, documentation parity, and possible regressions
 ```
+
+## Source checkpoint: strict raw order and normalized positivity
+
+Exact source commit `caf654097` implements the complete two-name claim in the
+sole leased module.  The committed `LaplaceMomentBounds.lean` is Git blob
+`007c2ed04697ab56d3fd0654da477d32d360a61b`, with content SHA-256
+`66686398FB67A05B4D60ADF737DF5FA99A8FA6773F2EB24AAE9C88D13D7A6084`.
+
+The new theorem `fabiusLaplaceMoment_strictAnti` applies Mathlib's direct
+`HasDerivAt` strict-antitonicity principle to the already exact identity
+
+```text
+M_k'(s) = -M_(k+1)(s).
+```
+
+The imported all-degree/all-tilt positivity theorem makes this derivative
+strictly negative for every `s`, so the result covers `k = 0` and every real
+tilt without an endpoint or sign exception.  The second theorem,
+`normalizedLaplaceMoment_pos_all`, divides the positive `k`th raw moment by
+the positive zeroth raw moment and therefore proves `0 < R_k(s)` on the same
+full domain.
+
+Both existing nonnegativity declarations retain their exact public kinds,
+binders, hypotheses, conclusions, and imports.  Their bodies are now one-line
+compatibility consequences of strict positivity.  The deliberately retained
+positive-scale hypothesis is documented and enclosed in the same local
+unused-variable-linter pattern already used by this module.  The module
+overview and all four declaration comments state the strict results and the
+compatibility roles in human-readable form.
+
+Three independent read-only reviews accept the live result's mathematics,
+strict-order orientation, derivative sign, `k = 0` and negative-tilt cases,
+Mathlib API shape, transitive import, exact old headers, declaration kinds,
+names, linter scope, direct-import topology, and documentation.  No review
+found a source-level blocker after the local linter scope was added.
+
+```text
+SYNC Fabius
+branch / worktree / machine: codex/fabius-effective-bounds-20260825 /
+  /home/codex/.codex/worktrees/d6d3/Proofs / codexbox
+fetched main SHA: 5b053a32b10e758e39f1be23cb2e8d821fba8de6
+HEAD and dirty paths: caf65409703d4fa7f5350c2fcfad22e20d2e0059;
+  source checkpoint is clean and pushed; only this registry is dirty for the
+  immutable handoff
+writing (exact paths): completed source checkpoint writes only
+  Lean/FabiusFunction/LaplaceMomentBounds.lean; this report writes only this
+  branch registry; that Lean source is now frozen
+expected declarations or document claims: fabiusLaplaceMoment_strictAnti and
+  normalizedLaplaceMoment_pos_all are implemented; both old nonnegativity APIs
+  are preserved as compatibility consequences; source-level documentation
+  states each new Lean theorem; no canonical document, facade, root, import,
+  or other source claim
+completed commits: 02c913b2d (registry-first claim) and caf654097 (one-file
+  source/proof/documentation checkpoint); preceding all-order Lambert source
+  8f47687e5 remains separately frozen and unmodified
+validated (exact command, SHA/state, exit code): git diff --check exited 0;
+  forbidden-placeholder scan is clean; the added-public-declaration scan
+  finds exactly the two advertised names; both old nonnegativity headers and
+  all three imports are preserved; three independent exact static reviews
+  pass; this is not compiler evidence
+not yet validated: source commit caf654097 has not been elaborated; no Lean,
+  Lake, TeX, PDF, or cache-mutating process ran because both host Lean/Lake
+  tokens remain unassigned/coordinator-controlled for this branch
+requested integration or lease: independently review and preserve exact
+  source commit caf654097 / blob 007c2ed04697, then assign separate serialized
+  LAKE_JOBS=1 builds of +FabiusFunction.LaplaceMomentBounds and its direct
+  importer +FabiusFunction.NegativeLaplaceDerivativeBounds; request no
+  document or main-write lease
+conflicts / dependencies: exact parent preimage is current-main blob
+  9b6398320300; the other direct importer is FabiusDyadicSharpCumulant; no
+  existing caller uses either new name; all active document work, pending
+  all-order Lambert source, compact Lambert source, central valuation source,
+  and moving shifted-prefix history are disjoint; only the coordinator may
+  advance main
+next bounded step: commit and push this exact immutable handoff; keep both
+  pending Lean sources frozen for coordinator review/validation, and begin
+  only read-only audits of disjoint cold paths until a new registry-first
+  claim is justified
+```
