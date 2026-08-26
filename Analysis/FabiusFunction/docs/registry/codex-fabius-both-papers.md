@@ -1236,3 +1236,35 @@ The second target is a direct consumer and paper-facing smoke gate.  Canonical
 documents remain frozen; a later separately assigned documentation pass may
 add the radial comparison family to the shape discussion, but no existing
 human claim becomes false from this additive source unit.
+
+Source checkpoint `3463c9cb4ceaf1988c05e65954eefe1e350a91d5`
+implements the exact advertised one-file family.  The resulting
+`Monotonicity.lean` Git blob is
+`aff1231e56d4c30bf40189c222c1c0fb8333e33c`, with content SHA-256
+`021F5A034C32577673E45A8E9C2474AC13FACB10EE7D79A0D7BB59F6D4B0C66A`.
+The source delta is 49 insertions and one prose-line deletion.
+
+The private `rvachevUp_abs_apply` lemma folds either sign of a real argument
+to its absolute value using the hypothesis-free evenness theorem.  Each
+public comparison proves that both radii lie in `[0,1]`, rewrites the two
+function values once, and applies the matching exact-order interface of
+`strictAntiOn_rvachevUp`.  The equality proof intentionally composes
+`StrictAntiOn.eq_iff_eq` with `eq_comm`, because Mathlib's strict-antitone
+equality interface returns its argument equality in reverse order.
+
+Three independent exact-byte reviews pass the mathematics, every inequality
+orientation, the absolute-value interval facts, endpoint/origin/opposite-point
+cases, necessary support domain, helper visibility, names, comments, facade
+exposure, and pinned Mathlib API shapes.  The canonical primary exposition
+already states the fold identity and strict unimodality, so this is exact API
+packaging of existing human substance rather than a new unmapped mathematical
+claim.  A later optional document pass may display the compact three-way
+radial equivalence after the shape theorem.
+
+`git diff --check`, line-length, import preservation, public-header delta,
+forbidden-declaration, conflict-marker, exact-name, semantic-shape, and all-tip
+ownership scans are clean.  The only declaration delta is the advertised
+private helper and three documented public theorems; no attribute or simp rule
+changed.  No Lean, Lake, TeX, PDF, or cache-mutating process ran, so these
+reviews are not compiler evidence.  The source path is frozen pending
+coordinator review and the two serialized gates above.
