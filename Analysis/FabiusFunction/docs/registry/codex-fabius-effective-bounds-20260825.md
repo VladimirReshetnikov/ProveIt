@@ -4439,6 +4439,97 @@ next bounded step: commit/push claim, repeat name/path scan, author only the
   claimed module, freeze, and obtain two independent exact-byte reviews
 ```
 
+## Claim: reflected Fabius derivative on the full right half-line
+
+Claimed at 2026-08-26 from merged branch checkpoint `b9e7584c6`, after
+refreshing `origin/main` `3f9761614`.  This ordinary two-source claim owns
+exactly `Lean/FabiusFunction/Differential.lean`,
+`Lean/FabiusFunction/DyadicAnalytic.lean`, and this branch registry.
+
+Add immediately after `fabius_hasDerivAt_half` the documented theorem
+
+```lean
+theorem fabius_hasDerivAt_reflected_of_half_le
+    (F : BoundedFabius) (hF : IsFabius F)
+    {t : ℝ} (ht : 1 / 2 ≤ t) :
+    HasDerivAt (fabiusReal F)
+      (2 * fabiusReal F (2 - 2 * t)) t
+```
+
+Its proof is the exact existing body of `fabius_hasDerivAt_secondHalf`, with
+the lower-bound hypothesis renamed to `ht` and the genuinely unused upper
+bound removed.  The global derivative identity converts to the reflected
+formula at every `t ≥ 1/2`: equality at the endpoint uses
+`rvachevUp_zero` and `F(1) = 1`, while strict inequality uses
+`rvachevUp_of_pos`.  For `t > 1`, the same formula remains true because both
+the derivative and the reflected Fabius value vanish.  The domain is sharp in
+general; no claim is made below `1/2`.
+
+Preserve the exact public header, binder order, and scoped linter setting of
+`fabius_hasDerivAt_secondHalf`; revise its prose to identify it as the closed
+unit-interval compatibility form and replace only its proof by a forward to
+`fabius_hasDerivAt_reflected_of_half_le F hF htlow`.  Preserve all other
+imports, declarations, attributes, headers, formulas, and bodies.
+`Differential.lean` moves from strict 20/20 to 21/21 documented public
+declarations and retains its three private helpers.
+
+In the sole source consumer inside private
+`analytic_scale_recurrence_one`, delete the now-redundant three-line proof of
+`inverseTwoPowReal 1 + z < 1` and call the full-half-line theorem with the
+existing lower-bound proof.  Preserve every public declaration and comment in
+`DyadicAnalytic.lean`; its strict 4/4 public documentation remains unchanged.
+No import or dependency edge changes.
+
+The exact current-main preimages are:
+
+- `Differential.lean`: blob
+  `bf4538d0278eb734c2d901befb4d863f7151fabc`, content SHA-256
+  `A436FF0701BFD06DFF15A0B97718B3ED4ABF9CE3CD846386803260884493A69D`;
+- `DyadicAnalytic.lean`: blob
+  `c29db45a83fa5f3789403c5731e24c5534fbf956`, content SHA-256
+  `AC904EC362B82DF8B79674A9F9C72E475E8C71BBBE66664E3BB3BF584D073981`.
+
+The authoritative scan of all 120 visible refs finds zero occurrence of the
+new name.  Current source and registry scans find no semantic competitor or
+live path claim.  Historical Differential/Dyadic work is integrated and
+explicitly released; the coordinator's active inverse-asymptotic lease is
+disjoint.  Two independent mathematical/API audits converged on this exact
+scope and proof.
+
+No Lean/Lake/TeX/PDF/main-write token is claimed.  Requested later serialized
+gates are `+FabiusFunction.Differential`, then the sole refactored consumer
+`+FabiusFunction.DyadicAnalytic`; optional downstream smokes are
+`+FabiusFunction.GlobalDyadic` and `+FabiusFunction.AnalyticMoments`.
+
+```text
+SYNC Fabius
+branch / worktree / machine: codex/fabius-effective-bounds-20260825 /
+  /home/codex/.codex/worktrees/d6d3/Proofs / codexbox
+fetched main SHA: 3f9761614b93
+HEAD and dirty paths: b9e7584c6; only this branch registry is being written
+  for the registry-first claim
+writing (exact paths): Differential.lean and DyadicAnalytic.lean after claim
+  push; this branch registry for claim/handoff
+expected declarations or document claims: one sharp full-half-line derivative
+  theorem, one exact-header compatibility wrapper, one private consumer
+  simplification, Differential strict 21/21; no import/facade/root/script or
+  canonical-document change
+completed commits: merged current origin/main as b9e7584c6; source not yet
+  authored
+validated (exact command, SHA/state, exit code): exact current-main preimages;
+  all-120-visible-ref new-name scan zero; registry/path/consumer/import and
+  proof/domain audits independently green
+not yet validated: no live diff, exact-byte hostile review, or Lean/Lake
+  compiler evidence exists for this tranche
+requested integration or lease: ordinary exact two-source claim only; later
+  request dependency-ordered focused gates and coordinator selective review
+conflicts / dependencies: active inverse-asymptotic paths are disjoint;
+  accepted VerticalLog/Parity paths and build token are released; only the
+  coordinator builds or advances main
+next bounded step: commit/push claim, repeat name/path scan, author only the
+  claimed modules, freeze, and obtain two independent exact-byte reviews
+```
+
 ## Handoff: logarithmic-coefficient family extensionality and full parity
 
 Source checkpoint `71d1a856c` implements the preceding claim exactly and was
