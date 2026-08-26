@@ -4439,6 +4439,71 @@ next bounded step: commit/push claim, repeat name/path scan, author only the
   claimed module, freeze, and obtain two independent exact-byte reviews
 ```
 
+## Handoff: logarithmic-coefficient family extensionality and full parity
+
+Source checkpoint `71d1a856c` implements the preceding claim exactly and was
+pushed without force.  `SaddleLogExpansionAlgebra.lean` is frozen at blob
+`4d2ff29ae31f19101998cfaa4816f5b1448714ad`, content SHA-256
+`7F0BA19F52867DE725984AD5C432D31BC42F739AB8C4363718F59583E27EBA4D`,
+21,976 bytes / 523 lines.  Relative to the claimed accepted-main preimage the
+exact diff is +34/-8.
+
+The documented `logCoeff_eq_of_forall_pos` sits immediately after the bounded
+positive-index congruence theorem and before its unrestricted compatibility
+wrapper.  Its `funext` proof applies the bounded theorem at each index and
+forgets only the redundant upper-bound premise; index zero is valid because
+both families have the fixed normalized coefficient zero.  The sole local
+`hlog` proof in `expCoeff_logCoeff_of_pos` now applies this theorem and proves
+positive-index equality with the existing normalized input family.  The
+public theorem header, conclusion, and every calc line are preserved.
+
+All ten inherited strict gaps now have formula/hypothesis-bearing adjacent
+comments, including the five attributed/scoped declarations missed by the
+repository lexical count.  The `coeff_massSeries` comment is correctly inside
+the `omit [Algebra ℚ R] in` command and before its `[simp]` attribute.  The
+unit-constant hypothesis is explicit in the uniqueness comment.  Strict source
+parity is 29 public / 29 adjacent docs / zero private, and the repository-wide
+documentation audit now reports zero missing comments in every scanned file.
+
+All 28 old public header/attribute blocks and the sole import are byte-exact;
+the local `hlog` is the only changed old proof body.  Author checks and two
+independent hostile exact-byte reviews agree on theorem orientation,
+index-zero behavior, hlog direction, all comment attachments/formulas,
+declaration counts, and preservation scope.  Local/staged diff checks and
+name/import/header/hygiene scans are green.  No Lean/Lake command ran, so
+compiler elaboration and direct-importer validation remain outstanding.
+
+```text
+SYNC Fabius
+branch / worktree / machine: codex/fabius-effective-bounds-20260825 /
+  /home/codex/.codex/worktrees/d6d3/Proofs / codexbox
+fetched main SHA: 6cfb66a57064
+HEAD and dirty paths: 71d1a856c; clean before this registry-only handoff;
+  source checkpoint pushed
+writing (exact paths): this branch registry for immutable handoff only;
+  SaddleLogExpansionAlgebra.lean is frozen at the stated blob
+expected declarations or document claims: one whole-family positive-index
+  extensionality theorem, one local hlog dedup, strict 29/29 docs and global
+  repository doc-audit zero; no import/downstream/facade/root/script change
+completed commits: registry claim 0cfad91a3; source checkpoint 71d1a856c;
+  both pushed without force
+validated (exact command, SHA/state, exit code): exact preimage/current hashes;
+  all-visible-ref/registry collision scan; local/staged diff --check; official
+  and strict docs; import/header/name/hygiene scans; author audit; two
+  independent exact-byte hostile source reviews
+not yet validated: no Lean/Lake target or downstream importer was built on
+  this branch; static proof/API review is not compiler evidence
+requested integration or lease: request serialized
+  +FabiusFunction.SaddleLogExpansionAlgebra then
+  +FabiusFunction.SaddleLogExpansionPowerSeries; optional smoke
+  +FabiusFunction.FabiusSaddleExpansionCoefficients or
+  +FabiusFunction.FabiusLambertFormalLog; coordinator review/integration
+conflicts / dependencies: source blob is immutable pending disposition;
+  active finite-CDF and vertical-log paths are disjoint; only coordinator builds
+next bounded step: push this handoff, refresh main/board, and choose the next
+  disjoint theorem improvement only after current validation disposition
+```
+
 ## Handoff: off-axis zero-freeness and all-line vertical logarithm
 
 Source checkpoint `1e41c69e2` implements the preceding one-file claim exactly
