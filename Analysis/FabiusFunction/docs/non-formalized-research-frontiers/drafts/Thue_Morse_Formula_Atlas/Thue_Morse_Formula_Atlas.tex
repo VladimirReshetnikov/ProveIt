@@ -1639,6 +1639,31 @@ is a zero of multiplicity \(m-q\) when \(0\le q<m\).  This multiplicity table
 simultaneously explains Prouhet cancellation at \(z=1\) and the systematic
 zeros in the dyadic discrete Fourier transform.
 
+\emph{Formal versions.}  \path{ThueMorseBlockAlgebra.lean} proves the
+reciprocity \eqref{eq:Pm-reciprocity} in two forms: as the coefficient-word
+reversal \lean{Fabius.reverse\_thueMorseBlockPolynomial}
+(\(P_m^{\mathrm{rev}}=(-1)^mP_m\) through \texttt{Polynomial.reverse}) and
+as the evaluation identity
+\lean{Fabius.sum\_thueMorseSign\_mul\_pow\_reflect} over an arbitrary
+commutative ring, which is \eqref{eq:Pm-reciprocity} cleared of the
+denominator \(z^{2^m-1}\).  The degree data feeding it ---
+\(\deg P_m=2^m-1\), top and leading coefficient \((-1)^m\),
+\(P_m\ne0\) --- are \lean{Fabius.natDegree\_thueMorseBlockPolynomial},
+\lean{Fabius.coeff\_thueMorseBlockPolynomial\_top},
+\lean{Fabius.leadingCoeff\_thueMorseBlockPolynomial}, and
+\lean{Fabius.thueMorseBlockPolynomial\_ne\_zero}.  The
+difference-of-squares ladder \eqref{eq:Pm-difference-squares} is
+\lean{Fabius.prod\_one\_sub\_two\_pow\_eq\_ladder}, valid over any
+commutative ring and built on the telescope
+\((1-z)\prod_{i<j}(1+z^{2^i})=1-z^{2^j}\)
+(\lean{Fabius.one\_sub\_mul\_prod\_one\_add\_two\_pow}); the
+resulting Prouhet divisibility \((1-X)^m\mid P_m\) is
+\lean{Fabius.one\_sub\_X\_pow\_dvd\_thueMorseBlockPolynomial}.  The
+cyclotomic table \eqref{eq:Pm-cyclotomic} is
+\lean{Fabius.thueMorseBlockPolynomial\_eq\_cyclotomic\_prod}, resting on
+\(\Phi_{2^{q+1}}=1+z^{2^q}\)
+(\lean{Fabius.cyclotomic\_two\_pow\_succ}, over any commutative ring).
+
 \subsection{The infinite product and Mahler equation}
 
 For \(|z|<1\), define
@@ -2514,6 +2539,22 @@ The order-\(m\) zero at \(t=0\) immediately gives
   \label{eq:first-surviving-moment}
 \end{equation}
 
+\emph{Formal versions.}  The vanishing and sharp value
+\eqref{eq:first-surviving-moment} have long been formal --- for an
+\emph{arbitrary} rational translation --- as
+\lean{Fabius.thueMorseTranslatedPowerSum\_eq\_zero\_of\_lt} and
+\lean{Fabius.thueMorseTranslatedPowerSum\_self}
+(\path{ThueMorseExponential.lean}); the raw moments
+\(M_{m,r}\) are the translation \(c=2^m\) of that interface,
+\lean{Fabius.thueMorseTranslatedPowerSum\_two\_pow}
+(\path{ThueMorseMoments.lean}).  The transform \eqref{eq:moment-egf}
+itself is formal at the coefficient level: the dictionary
+\([t^r]\sum_{n<2^m}\eps_n\e^{nt}=M_{m,r}/r!\) is
+\lean{Fabius.coeff\_sum\_thueMorseSign\_exp\_pow}, and the right-hand
+product is the algebraic master product evaluated at
+\(z=\e^{t}\in\mathbb Q[[t]]\) --- no convergence argument is used
+anywhere.
+
 \subsection{All power moments: a finite composition formula}
 
 \begin{theorem}[Complete moment composition]
@@ -2553,6 +2594,26 @@ Factor the lowest-order term from each factor in \eqref{eq:moment-egf}:
 Extract \(t^r\) and multiply by \(r!\).  Set \(p_j=q_j+1\) for the second
 form.
 \end{proof}
+
+\emph{Formal versions.}  \path{ThueMorseMoments.lean} proves
+\cref{thm:moment-composition} as
+\lean{Fabius.sum\_thueMorseSign\_mul\_pow\_add}: for all \(d\ge0\),
+\[
+ \sum_{n<2^m}\eps_n n^{m+d}
+ =(-1)^m(m+d)!\sum_{\substack{q_0,\ldots,q_{m-1}\ge0\\
+                  q_0+\cdots+q_{m-1}=d}}
+  \prod_{j=0}^{m-1}\frac{(2^{j})^{q_j+1}}{(q_j+1)!},
+\]
+with the compositions realized as finitely supported functions
+(\texttt{Finset.finsuppAntidiag}).  Factoring
+\((2^j)^{q_j+1}=2^j\cdot2^{jq_j}\) across the product recovers the boxed
+constant \(2^{\binom m2}\) of \eqref{eq:moment-composition}, and
+\(p_j=q_j+1\) gives \eqref{eq:moment-positive-compositions}.  The formal
+proof substitutes \(z=\e^{t}\) into the algebraic master product ---
+each factor becomes \(-t\) times an explicit entire series
+(\lean{Fabius.one\_sub\_exp\_two\_pow},
+\lean{Fabius.prod\_one\_sub\_exp\_two\_pow}) --- and extracts the
+\(t^{m+d}\) coefficient through \texttt{PowerSeries.coeff\_prod}.
 
 \subsection{Bell-polynomial compression and cumulants}
 
@@ -2665,6 +2726,35 @@ linear term.  Coefficient comparison proves the selection rule and the first
 coefficient.
 \end{proof}
 
+\begin{remark}[Reflection proof of the selection rule]
+\label{rem:reflection-parity}
+The parity cancellation \eqref{eq:centered-parity-zero} needs no
+exponential transform.  Reindex \(n\mapsto2^m-1-n\) in
+\(S_r=\sum_{n<2^m}\eps_n(n-c_m)^r\): the reflection formula
+\eqref{eq:block-reflection} gives \(\eps_{2^m-1-n}=(-1)^m\eps_n\),
+while \((2^m-1-n)-c_m=-(n-c_m)\).  Hence \(S_r=(-1)^{m+r}S_r\), and
+\(S_r=0\) whenever \(m+r\) is odd.  The same reindexing at an
+\emph{arbitrary} translation \(x\) yields the functional equation
+\[
+ \sum_{n<2^m}\eps_n(x+n)^r
+ =(-1)^{m+r}\sum_{n<2^m}\eps_n\bigl(n-x-(2^m-1)\bigr)^r,
+\]
+valid over any commutative ring; the selection rule is its fixed point at
+the self-reflective translation \(x=-c_m\).
+\end{remark}
+
+\emph{Formal versions.}  The reflection functional equation is
+\lean{Fabius.sum\_thueMorseSign\_mul\_add\_pow\_reflect}
+(\path{ThueMorseMoments.lean}, any commutative ring); the selection rule
+\eqref{eq:centered-parity-zero} for odd \(m+r\) is
+\lean{Fabius.sum\_thueMorseSign\_mul\_midpoint\_pow\_eq\_zero},
+proved by the reflection argument of \cref{rem:reflection-parity} rather
+than through \eqref{eq:centered-sinh}; the complementary case \(r<m\)
+of either parity is
+\lean{Fabius.thueMorseTranslatedPowerSum\_eq\_zero\_of\_lt}.  The
+first coefficient \eqref{eq:centered-first} is
+\lean{Fabius.sum\_thueMorseSign\_mul\_midpoint\_pow\_self}.
+
 This extra parity cancellation is invisible in the uncentered Prouhet
 statement.  It is a consequence of combining dyadic reflection with moment
 cancellation.
@@ -2707,6 +2797,46 @@ while
 \]
 Compare coefficients.
 \end{proof}
+
+\begin{corollary}[Integer composition form]
+\label{cor:binomial-moment-composition}
+For all \(m,\ell\ge0\),
+\begin{equation}
+  B_{m,m+\ell}=(-1)^m
+  \sum_{\substack{q_0,\ldots,q_{m-1}\ge0\\
+                  q_0+\cdots+q_{m-1}=\ell}}
+  \prod_{j=0}^{m-1}\binom{2^j}{q_j+1}.
+  \label{eq:binomial-moment-composition}
+\end{equation}
+\end{corollary}
+
+\begin{proof}
+In \eqref{eq:binomial-moment-product} each normalized factor is, up to its
+constant \(2^j\), the geometric sum
+\(\bigl((1+u)^{2^j}-1\bigr)/u=\sum_{i<2^j}(1+u)^i\), whose \(q\)-th
+coefficient is \(\sum_{i<2^j}\binom iq=\binom{2^j}{q+1}\) by the
+hockey-stick identity.  Multiplying the \(m\) factors and collecting the
+coefficient of \(u^\ell\) gives
+\eqref{eq:binomial-moment-composition}.  The single composition at
+\(\ell=0\) recovers \eqref{eq:first-binomial-moment}, since
+\(\binom{2^j}1=2^j\) multiplies to \(2^{\binom m2}\).  Unlike the
+power-moment composition \eqref{eq:moment-composition}, every summand
+here is an integer.
+\end{proof}
+
+\emph{Formal versions.}  \path{ThueMorseBlockAlgebra.lean} proves the
+substitution identity behind \eqref{eq:binomial-moment-product} as
+\lean{Fabius.sum\_thueMorseSign\_mul\_one\_add\_X\_pow} (over any
+commutative ring), the vanishing \(B_{m,r}=0\) for \(r<m\) as
+\lean{Fabius.sum\_thueMorseSign\_mul\_choose\_eq\_zero}, and the
+sharp value \eqref{eq:first-binomial-moment} as
+\lean{Fabius.sum\_thueMorseSign\_mul\_choose\_self}, each with an
+integer specialization.  The complete composition form
+\eqref{eq:binomial-moment-composition} is
+\lean{Fabius.sum\_thueMorseSign\_mul\_choose\_add}
+(\path{ThueMorseMoments.lean}), with the hockey-stick column sum
+\(\sum_{i<N}\binom iq=\binom N{q+1}\) isolated as the reusable
+\lean{Fabius.sum\_range\_choose\_eq\_choose\_succ}.
 
 The binomial basis is often preferable in discrete formalization because
 finite differences obey the simple lowering rule
@@ -4264,7 +4394,7 @@ valuation, carry, and Pascal-row formulas remain genuinely base-two features.
 \subsection{Formalized modules (August 2026)}
 \label{sec:formalized-modules}
 
-The first tranche of the formalization now exists as seven compiled Lean
+The first tranches of the formalization now exist as nine compiled Lean
 modules in \repo{}, complementing the corpus modules
 (\path{Parity.lean}, \path{TwoAdic.lean}, \path{ThueMorsePrefix.lean},
 \path{ThueMorseGenerating.lean}, \path{ThueMorseExponential.lean},
@@ -4285,6 +4415,8 @@ Module & Contents \\
 \path{ThueMorseSparseProuhet.lean} & Arbitrary-weight Prouhet annihilation and sharp moment (\cref{thm:arbitrary-weights}), Thue--Morse specializations, bit supports, sparse submask identities. \\
 \path{ThueMorseRarefied.lean} & Modulo-three rarefaction recursion and closed vectors, Newman positivity at dyadic endpoints, block balance, even-modulus collapse. \\
 \path{ThueMorseAperiodicity.lean} & Block-flip identities and non-eventual-periodicity. \\
+\path{ThueMorseBlockAlgebra.lean} & Telescope and multiplicity ladder, degree and leading data of \(P_m\), reciprocity (\texttt{reverse} and evaluation forms), cyclotomic multiplicity table, binomial-basis vanishing and sharp moment over any commutative ring. \\
+\path{ThueMorseMoments.lean} & Hockey-stick column sum, complete binomial moment composition (\cref{cor:binomial-moment-composition}), reflection functional equation, midpoint parity selection rule, sharp centered moment, complete power-moment composition formula. \\
 \bottomrule
 \end{tabularx}
 \end{center}
