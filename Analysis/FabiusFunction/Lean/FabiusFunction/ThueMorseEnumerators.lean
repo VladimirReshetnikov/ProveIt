@@ -58,13 +58,13 @@ theorem card_filter_binaryWeight_eq (m r : ℕ) :
   have henum :=
     sum_pow_binaryWeight_eq_one_add_pow (Polynomial.X : Polynomial ℕ) m
   have hcoeff := congrArg (fun p : Polynomial ℕ => p.coeff r) henum
-  simp only [Polynomial.finset_sum_coeff, Polynomial.coeff_X_pow,
+  simp only [Polynomial.finsetSum_coeff, Polynomial.coeff_X_pow,
     Polynomial.coeff_one_add_X_pow, Nat.cast_id] at hcoeff
   rw [Finset.card_filter, ← hcoeff]
   refine Finset.sum_congr rfl fun n _ => ?_
   by_cases h : binaryWeight n = r
   · simp [h]
-  · simp [eq_comm, h]
+  · simp [eq_comm]
 
 /-! ## Evil and odious numbers -/
 

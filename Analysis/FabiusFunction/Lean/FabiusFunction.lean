@@ -11,6 +11,7 @@ import FabiusFunction.ThueMorseAperiodicity
 import FabiusFunction.ThueMorseSparseProuhet
 import FabiusFunction.ThueMorseBlockAlgebra
 import FabiusFunction.ThueMorseMoments
+import FabiusFunction.ThueMorseArtinSchreier
 import FabiusFunction.NegativeLaplace
 import FabiusFunction.ProbabilityLaplaceMoments
 import FabiusFunction.UnitLaplaceMomentBounds
