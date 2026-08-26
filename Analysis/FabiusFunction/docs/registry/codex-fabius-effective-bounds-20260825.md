@@ -1752,3 +1752,76 @@ next bounded step: commit and push this immutable handoff; freeze both sources
   form promotion in two disjoint released modules after a clean registry-first
   claim and fresh collision scan
 ```
+
+## Claim: public negative-Laplace kernel normal form and Bose deduplication
+
+This very small ordinary tranche is restricted to
+`Lean/FabiusFunction/NegativeLaplace.lean` and
+`Lean/FabiusFunction/BoseFinitePartIntegral.lean`.  It promotes the existing
+private, already-used normal form
+
+```lean
+theorem negativeLaplaceKernel_eq_log_sub_log (s : ℝ) (hs : 0 < s) :
+    negativeLaplaceKernel s =
+      Real.log (1 - Real.exp (-s)) - Real.log s
+```
+
+without changing its statement or proof, adds exact positive-domain prose,
+and replaces the duplicated logarithm-of-a-quotient argument in
+`boseLogKernel_eq_negativeLaplaceKernel_add_log` by one application of the
+promoted theorem.  The latter theorem's public header remains exact and its
+two downstream Bose consumers remain unchanged.  No adjacent helper, simp
+attribute, import, facade, or canonical document is claimed.
+
+The positivity assumption is intentional: it supplies both nonzero arguments
+needed by `Real.log_div`.  In particular, this tranche does not state the
+split at `s = 0`, where the totalized definitions do not support the displayed
+positive-domain factorization.
+
+```text
+SYNC Fabius
+branch / worktree / machine: codex/fabius-effective-bounds-20260825 /
+  /home/codex/.codex/worktrees/d6d3/Proofs / codexbox
+fetched main SHA: fc63c39788ab4c31694e4f57efe05b543165675a
+HEAD and dirty paths: 4265436a4; clean before this registry-only claim
+writing (exact paths): Lean/FabiusFunction/NegativeLaplace.lean;
+  Lean/FabiusFunction/BoseFinitePartIntegral.lean; this branch registry for
+  claim/handoff only
+expected declarations or document claims: expose exactly the existing
+  negativeLaplaceKernel_eq_log_sub_log name as a documented public theorem;
+  preserve its statement/proof, preserve every old public header/attribute and
+  import, replace only the duplicated Bose proof body, and add no source claim
+  beyond the theorem's exact human-readable formula
+completed commits: all prior source checkpoints and handoffs are clean and
+  pushed; five earlier pending tranches remain separately frozen and requested
+  for coordinator validation; this is a disjoint registry-first two-file claim
+validated (exact command, SHA/state, exit code): current HEAD and origin/main
+  share NegativeLaplace blob b25e7901e46086b2fc31cc1b7d8ed997941c4cb2,
+  content SHA-256
+  C60FDCDFC68F245D02E3C0DB5682C9889C9216F8E2885FD63D9DC9311ED963FD,
+  and BoseFinitePartIntegral blob
+  7d7076eb4a68ae65fdbb16b56482ba371f7eca03, content SHA-256
+  B48D102245DEE9035521FF0509BA3BBFB6E6CBBB15CE7467C08624E5EAB6AAB5;
+  all active fetched Fabius tips share these blobs; exact-name, semantic-name,
+  path, and every-registry scans find only the intended private declaration
+  and no public implementation or competing lease; coordinator records both
+  historical leases compiled and released; two independent proof/import audits
+  confirm the Real.log_div conditions and one-way import cone; this is not
+  compiler evidence
+not yet validated: visibility, documentation, and Bose refactor are not
+  implemented; no Lean, Lake, TeX, PDF, or cache-mutating process is authorized
+  or running for this branch
+requested integration or lease: advertise this ordinary two-source claim;
+  after an immutable independently reviewed checkpoint, request separate
+  serialized builds of +FabiusFunction.NegativeLaplace,
+  +FabiusFunction.BoseFinitePartIntegral, and the direct consumer
+  +FabiusFunction.PeriodicMean; request no document or main-write lease
+conflicts / dependencies: Bose reaches NegativeLaplace through the existing
+  MellinFinitePart/MellinBose/PeriodicCorrection chain, with no reverse edge or
+  import cycle; all frozen local paths and active external claims are disjoint;
+  only the coordinator may advance main
+next bounded step: commit and push this registry-only claim without force;
+  fetch and reread any changed board, repeat collision checks, then edit only
+  the two claimed sources while three agents independently verify exact proof
+  preservation, rewrite orientation, public interfaces, consumers, and prose
+```
