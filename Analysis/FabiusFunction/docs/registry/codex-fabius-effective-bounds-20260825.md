@@ -190,3 +190,86 @@ next bounded step: commit and push this registry-only follow-on claim; fetch
   and reread the live board; repeat the all-tip collision scan; only then edit
   FabiusSaddleReferenceTail.lean
 ```
+
+## Source checkpoint: expose the coarse eighth-order reference tail
+
+Source commit `933121538cd4e3294b487edcfdabc6b128a425ef` implements the
+approved follow-on in exactly one Lean module.  Its committed
+`FabiusSaddleReferenceTail.lean` blob is
+`7dc2cd616a259c16eb69fdb412d45e7e9bba75e2`, with content SHA-256
+`5000DA5029799F697AC7FC816564349D937F9EF07D59085F4F84996BEA187F86`.
+
+The source promotes the unchanged exact standard-radius identity
+`exp_neg_sq_centralRadius_div_four`, adds the effective pointwise bound
+`integral_norm_gaussian_add_oddCorrection_standardRadius_le_inv_pow_eight`,
+and packages it as the arbitrary-filter result
+`integral_norm_gaussian_add_oddCorrection_standardRadius_isBigO_inv_pow_eight`.
+The existing
+`integral_norm_gaussian_add_oddCorrection_standardRadius_isBigO` declaration
+header is unchanged and its proof now factors through the stronger rate by
+transitivity.
+
+Following the coordinator correction at `origin/main` `34ca81c94`, the module
+consistently calls `b⁻⁸` a **coarse eighth-order algebraic rate**, not a sharp
+rate.  Its overview and declaration comments state the exact identity,
+threshold, explicit constant `2 + 2 * Clinear + 12 * Ccubic`, arbitrary-filter
+transport, discarded `1 / fabiusSaddleCentralRadius b` factor, and compatibility
+wrapper in human-readable form.  They also qualify the exact identity by
+`1 ≤ b`, which matters because the real square root truncates a negative
+radicand.  The canonical TeX/PDF paths remain frozen; their future owner can
+map these exact declaration names without guessing at the formal strength.
+
+The private downstream
+`Fabius.SaddleExpansion.exp_neg_sq_orderRadius_div_four` in
+`GaussianPolynomialTailAllOrders.lean` is a known, nonblocking semantic
+overlap: it evaluates the order-dependent radius for arbitrary `N`, while the
+new public lemma records the standard-radius identity in the lower-dependency
+namespace used here.  No competing public declaration or active edit of the
+claimed source path was found on any fetched advertised tip.
+
+Two independent read-only reviews accepted the exact constant arithmetic,
+coefficient bounds, denominator signs, `IsBigO.of_bound` packaging, arbitrary
+and degenerate filter behavior, rate-comparison orientation, public API,
+documentation, and collision status.  The second review identified the
+missing `1 ≤ b` prose qualification; it is fixed in the committed source.  The
+legacy declaration header was also compared directly with its parent and is
+identical.
+
+```text
+SYNC Fabius
+branch / worktree / machine: codex/fabius-effective-bounds-20260825 /
+  /home/codex/.codex/worktrees/d6d3/Proofs / codexbox
+fetched main SHA: 34ca81c9427110e608f7be92c591201739d30fd6
+HEAD and dirty paths: 933121538cd4e3294b487edcfdabc6b128a425ef;
+  the one-file Lean source checkpoint is committed, clean, and pushed; only
+  this registry report is dirty
+writing (exact paths): completed source write only
+  Lean/FabiusFunction/FabiusSaddleReferenceTail.lean; this report writes only
+  this branch registry; FabiusLambertRates.lean remains frozen
+expected declarations or document claims: all three advertised public names
+  are implemented; the old O(b^(-1)) theorem header remains unchanged; module
+  and declaration documentation give human-readable counterparts; no
+  canonical document claim
+completed commits: f3f9785fe (pushed registry-first follow-on claim) and
+  933121538 (pushed one-file coarse eighth-order source checkpoint)
+validated (exact command, SHA/state, exit code): git diff --check exited 0;
+  exact old-header comparison exited 0; forbidden-placeholder scan was clean;
+  current-main/all-fetched-Fabius-tip public-name/path scan found no collision;
+  two independent static theorem/API/edge-case/doc reviews passed after the
+  prose qualification was fixed; this is not compiler evidence
+not yet validated: commit 933121538 has not been elaborated; no Lean, Lake,
+  TeX, PDF, or other cache-mutating process ran because neither idle host token
+  is assigned to this branch
+requested integration or lease: preserve and review exact source commit
+  933121538, then assign separate serialized builds of
+  +FabiusFunction.FabiusSaddleReferenceTail and its smallest direct importer
+  +FabiusFunction.GaussianPolynomialTail; no document or main-write lease
+conflicts / dependencies: the private all-orders radius identity above is
+  recorded semantic context, not a public duplicate; all active/frozen
+  Differential, Lambert, polynomial, canonical-document, facade, root, and
+  control-plane paths remain excluded; only the coordinator may advance main
+next bounded step: commit and push this exact registry report, merge current
+  origin/main into the clean preserved feature branch, resolve only any
+  same-branch registry or already-integrated Lambert repair, push the merge,
+  and freeze both completed source tranches pending serialized validation
+```
