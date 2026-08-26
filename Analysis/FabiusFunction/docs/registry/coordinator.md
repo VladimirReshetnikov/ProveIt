@@ -6,6 +6,65 @@ Every worker reads it from the fetched `origin/main` before writing, merging,
 building, or pushing.  Workers publish replies in their own per-branch registry
 files; they do not edit this board.
 
+## Checkpoint 2026-08-26 04:33 PDT
+
+```text
+observed main before this directive: 4007afd41918721ad0b0092e629d439f325ee0cf
+coordinator branch: codex/fabius-coordinator-20260825
+integration mode: exact immutable sources -> coordinator -> fast-forward main
+main write owner: coordinator
+codexbox Lean/Lake owner: unassigned
+  (IDLE after the accepted repaired four-gate sequence below)
+codexbox TeX/PDF owner: unassigned
+  (IDLE)
+EVO Lean/Lake owner: unassigned
+  (IDLE)
+EVO TeX/PDF owner: unassigned
+  (IDLE)
+documentation owner: unassigned
+  (all canonical documents are frozen)
+next poll: at an immutable inverse-source handoff or the next source handoff
+```
+
+**All-line vertical logarithm and Parity private deduplication accepted.**
+The exact reviewed sources were mapped as coordinator commits `331f7ce40`
+and `56e31e195`.  The first defining-module gate reached the vertical source
+and exited 1 after 3,198 jobs on one proof-normalization mismatch: after
+`Complex.div_re` and `norm_num`, Lean expected the pair
+`z.re != 0` and `a != 0`, while the source supplied a proof of the
+pre-normalized quotient's nonzeroness.  No later gate ran, and that failed
+attempt supplies no validation evidence.
+
+Two independent reviews approved statement-preserving repair `ed20c8d3f`,
+which replaces only that quotient proof with `exact ⟨hz, ha'.ne'⟩`.  It changes
+no theorem statement, import, attribute, or prose.  Final candidate
+`ed20c8d3fbbd60a9473c130db64f86927e7b54af`, tree
+`024c815f2262c1e746e937bda053d8791c1a15a3`, has repaired vertical blob
+`22971c6c003db0a5f41e642006179b14c3c15072` and exact Parity blob
+`d8bd78412254dc3b87e80a2bd817daec6d713254`.
+
+On that repaired cumulative tree, with no overlapping Lean/Lake/TeX process,
+codexbox ran the complete sequence separately under
+`LEAN_NUM_THREADS=0 LAKE_JOBS=1`:
+
+```text
++FabiusFunction.NegativeLaplaceVerticalLog             3198 jobs, exit 0
++FabiusFunction.FabiusComplexMGF                       3337 jobs, exit 0
++FabiusFunction.NegativeLaplaceVerticalAllOrderBound   3449 jobs, exit 0
++FabiusFunction.Parity                                 1587 jobs, exit 0
+```
+
+The defining vertical module and Parity emitted no diagnostic.  The two
+vertical consumers replayed only the inherited
+`ProbabilityLaplaceMoments.lean:652:2` unnecessary-`simpa` linter.  The eight
+all-line declarations, all seven exact compatibility wrappers, strict 22/22
+documentation, both direct vertical consumer routes, and the type-identical
+Parity private-helper replacement are accepted.  Both source paths and the
+codexbox token are released.  The inverse endpoint follow-on retains only its
+ordinary source-authoring lease from the preceding checkpoint; it has no build
+or document token.  No root, facade, audit-ledger, canonical document, or
+TeX/PDF path is activated.
+
 ## Checkpoint 2026-08-26 04:27 PDT
 
 ```text
