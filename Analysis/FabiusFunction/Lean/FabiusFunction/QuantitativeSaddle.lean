@@ -10,6 +10,16 @@ argument.  After rescaling, a kernel is compared with an integrable reference
 of Gaussian mass.  Bounds on a measurable central set and its complement give
 the relative estimate `1 + O(1 / b)`.
 
+The nonasymptotic core is an exact `L¹`-to-mass transfer.  Writing
+`M = sqrt (2 * pi)`, integrable complex kernels `K` and `R` satisfy
+
+`‖M⁻¹ * ∫ K - M⁻¹ * ∫ R‖ ≤ M⁻¹ * ∫ ‖K - R‖`.
+
+This is `norm_normalized_integral_sub_reference_le_of_L1`; when `R` has mass
+`M`, `norm_normalized_integral_sub_one_le_of_L1` identifies the second
+normalized integral with `1`.  Thus the Gaussian normalization uses the
+explicit factor `1 / sqrt (2 * pi)`, rather than an unspecified constant.
+
 At this precision one must normally retain the first odd correction: its
 absolute integral is `O(1 / √b)`, although its signed integral vanishes.  The
 theorem `normalized_integral_sub_one_isBigO_of_central_tail_odd_correction`
@@ -98,9 +108,72 @@ theorem norm_integral_sub_le_of_pointwise
   rw [← integral_sub hK hG]
   exact norm_integral_le_of_norm_le hg (Filter.Eventually.of_forall hbound)
 
+/-- Gaussian-normalized integration is Lipschitz for `L¹` distance with the
+explicit factor `1 / sqrt (2 * pi)`.  More precisely, for integrable
+complex-valued kernels `K` and `reference`,
+
+`‖(sqrt (2 * pi))⁻¹ * ∫ K - (sqrt (2 * pi))⁻¹ * ∫ reference‖`
+
+is at most
+
+`(sqrt (2 * pi))⁻¹ * ∫ ‖K - reference‖`.
+
+This is the effective, nonasymptotic inequality underlying
+`normalized_integral_sub_reference_isBigO_of_L1`; it requires no indexing
+filter or comparison rate. -/
+theorem norm_normalized_integral_sub_reference_le_of_L1
+    (K reference : ℝ → ℂ)
+    (hK : Integrable K) (hreference : Integrable reference) :
+    ‖(Real.sqrt (2 * Real.pi) : ℂ)⁻¹ * (∫ v : ℝ, K v) -
+        (Real.sqrt (2 * Real.pi) : ℂ)⁻¹ *
+          (∫ v : ℝ, reference v)‖ ≤
+      (Real.sqrt (2 * Real.pi))⁻¹ *
+        ∫ v : ℝ, ‖K v - reference v‖ := by
+  let gaussianMass : ℝ := Real.sqrt (2 * Real.pi)
+  have hmass : 0 < gaussianMass := by
+    dsimp [gaussianMass]
+    positivity
+  have hdiffInt : Integrable (fun v => ‖K v - reference v‖) :=
+    (hK.sub hreference).norm
+  have hnorm := norm_integral_sub_le_of_pointwise K reference
+    (fun v => ‖K v - reference v‖) hK hreference hdiffInt
+    (fun _ => le_rfl)
+  change ‖(gaussianMass : ℂ)⁻¹ * (∫ v : ℝ, K v) -
+      (gaussianMass : ℂ)⁻¹ * (∫ v : ℝ, reference v)‖ ≤
+        gaussianMass⁻¹ * ∫ v : ℝ, ‖K v - reference v‖
+  rw [← mul_sub, norm_mul, norm_inv, Complex.norm_real,
+    Real.norm_eq_abs, abs_of_pos hmass]
+  exact mul_le_mul_of_nonneg_left hnorm (inv_nonneg.mpr hmass.le)
+
+/-- If an integrable reference has total mass `sqrt (2 * pi)`, then the
+distance from the Gaussian-normalized integral of `K` to `1` is at most
+`1 / sqrt (2 * pi)` times the `L¹` distance from `K` to that reference:
+
+`‖(sqrt (2 * pi))⁻¹ * ∫ K - 1‖ ≤
+  (sqrt (2 * pi))⁻¹ * ∫ ‖K - reference‖`.
+
+This is the pointwise counterpart of
+`normalized_integral_sub_one_isBigO_of_L1`. -/
+theorem norm_normalized_integral_sub_one_le_of_L1
+    (K reference : ℝ → ℂ)
+    (hK : Integrable K) (hreference : Integrable reference)
+    (hreferenceMass :
+      (∫ v : ℝ, reference v) = (Real.sqrt (2 * Real.pi) : ℂ)) :
+    ‖(Real.sqrt (2 * Real.pi) : ℂ)⁻¹ * (∫ v : ℝ, K v) - 1‖ ≤
+      (Real.sqrt (2 * Real.pi))⁻¹ *
+        ∫ v : ℝ, ‖K v - reference v‖ := by
+  have h := norm_normalized_integral_sub_reference_le_of_L1
+    K reference hK hreference
+  rw [hreferenceMass] at h
+  have hmass : (Real.sqrt (2 * Real.pi) : ℂ) ≠ 0 := by
+    exact_mod_cast (ne_of_gt (by positivity : 0 < Real.sqrt (2 * Real.pi)))
+  simpa only [inv_mul_cancel₀ hmass] using h
+
 /-- An `L¹` approximation of a complex kernel by any integrable reference
 gives the same-order approximation of their Gaussian-normalized integrals.
-The comparison rate and indexing filter are completely arbitrary. -/
+The comparison rate and indexing filter are completely arbitrary.  This is
+the asymptotic wrapper around
+`norm_normalized_integral_sub_reference_le_of_L1`. -/
 theorem normalized_integral_sub_reference_isBigO_of_L1
     {α : Type*} (l : Filter α) (rate : α → ℝ)
     (K reference : α → ℝ → ℂ)
@@ -113,31 +186,22 @@ theorem normalized_integral_sub_reference_isBigO_of_L1
           (∫ v : ℝ, reference i v)) =O[l] rate := by
   rw [isBigO_iff] at herror ⊢
   obtain ⟨C, hC⟩ := herror
-  let gaussianMass : ℝ := Real.sqrt (2 * Real.pi)
-  have hmass : 0 < gaussianMass := by
-    dsimp [gaussianMass]
-    positivity
-  refine ⟨gaussianMass⁻¹ * C, ?_⟩
+  refine ⟨(Real.sqrt (2 * Real.pi))⁻¹ * C, ?_⟩
   filter_upwards [hK, hreference, hC] with i hKi hRi hi
-  have hdiffInt : Integrable (fun v => ‖K i v - reference i v‖) :=
-    (hKi.sub hRi).norm
   have hnonneg : 0 ≤ ∫ v : ℝ, ‖K i v - reference i v‖ :=
     integral_nonneg fun _ => norm_nonneg _
   rw [Real.norm_eq_abs, abs_of_nonneg hnonneg] at hi
-  have hnorm := norm_integral_sub_le_of_pointwise (K i) (reference i)
-    (fun v => ‖K i v - reference i v‖) hKi hRi hdiffInt
-    (fun _ => le_rfl)
-  change ‖(gaussianMass : ℂ)⁻¹ * (∫ v : ℝ, K i v) -
-      (gaussianMass : ℂ)⁻¹ * (∫ v : ℝ, reference i v)‖ ≤ _
-  rw [← mul_sub, norm_mul, norm_inv, Complex.norm_real,
-    Real.norm_eq_abs, abs_of_pos hmass]
+  have hnorm := norm_normalized_integral_sub_reference_le_of_L1
+    (K i) (reference i) hKi hRi
   calc
-    gaussianMass⁻¹ *
-          ‖(∫ v : ℝ, K i v) - ∫ v : ℝ, reference i v‖
-        ≤ gaussianMass⁻¹ *
-          (∫ v : ℝ, ‖K i v - reference i v‖) := by gcongr
-    _ ≤ gaussianMass⁻¹ * (C * ‖rate i‖) := by gcongr
-    _ = (gaussianMass⁻¹ * C) * ‖rate i‖ := by ring
+    ‖(Real.sqrt (2 * Real.pi) : ℂ)⁻¹ * (∫ v : ℝ, K i v) -
+        (Real.sqrt (2 * Real.pi) : ℂ)⁻¹ *
+          (∫ v : ℝ, reference i v)‖ ≤
+        (Real.sqrt (2 * Real.pi))⁻¹ *
+          (∫ v : ℝ, ‖K i v - reference i v‖) := hnorm
+    _ ≤ (Real.sqrt (2 * Real.pi))⁻¹ * (C * ‖rate i‖) := by
+      exact mul_le_mul_of_nonneg_left hi (by positivity)
+    _ = ((Real.sqrt (2 * Real.pi))⁻¹ * C) * ‖rate i‖ := by ring
 
 /-- Central-set plus complementary-tail form of the arbitrary-reference
 normalized-integral estimate. -/
