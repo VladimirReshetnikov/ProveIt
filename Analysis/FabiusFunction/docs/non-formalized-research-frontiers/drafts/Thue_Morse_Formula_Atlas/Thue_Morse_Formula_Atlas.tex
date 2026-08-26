@@ -288,15 +288,23 @@ results natural Lean targets, but do not assert that those declarations already
 exist.  A dependency-aware formalization map is given in
 \cref{sec:formalization}.
 
-Since 26 August 2026 the formalization of this atlas is underway in the same
-repository: seven new compiled Lean modules cover the Boolean-cube master
-identities, the valuation and digit chapters, the enumerators, the general
-finite-difference engine, the sparse Prouhet identities, the modulo-three
-rarefaction, and aperiodicity.  Statements proved in Lean carry their
-declaration names in the text, typeset as \lean{Fabius.thueMorseSign}; see
-\cref{sec:formalized-modules} for the module map.  Several are proved in
-Lean in *more* generality than stated here, and the text records the stronger
-forms.
+Since 26 August 2026 the formalization of this atlas is underway in the
+same repository: nineteen new compiled Lean modules now cover the
+Boolean-cube master identities, the valuation and digit chapters, the
+enumerators, block-polynomial algebra with reciprocity and the cyclotomic
+table, the complete power, binomial, centered, and sparse moment
+composition formulas, the general finite-difference engine, the sparse
+Prouhet identities, Lucas's submask criterion and the Walsh spectrum, the
+\(\Ftwo\) Artin--Schreier layer with uniqueness and the integer-lift
+parity, the Euler transform of the ruler function with the prefix and
+discrepancy theory, rarefaction for every odd modulus, the finite
+autocorrelation and Mahler equations, and the words layer ---
+aperiodicity, Thue's overlap-freeness, and uniform recurrence with a
+linear bound.  Statements proved in Lean carry their declaration names in
+the text, typeset as \lean{Fabius.thueMorseSign}; see
+\cref{sec:formalized-modules} for the module map.  Many are proved in
+Lean in \emph{more} generality than stated here, and the text records
+the stronger forms.
 \end{boxedremark}
 
 \subsection{A compact formula index}
@@ -4720,9 +4728,11 @@ Module & Contents \\
 \end{center}
 
 Wherever the Lean statement is stronger than the prose --- arbitrary
-weights, arbitrary coefficient rings, hypothesis-free autocorrelation ---
-the text above records the stronger form.  The module proposals in the
-table below remain the plan for the layers not yet reached.
+weights, arbitrary coefficient rings, arbitrary moduli and supports ---
+the text above records the stronger form.  The original proposal table
+further below is retained with its planned module boundaries for
+comparison; most rows have since been delivered under the module names
+above, as marked row by row.
 
 \subsection{Which representation is best?}
 
@@ -4826,25 +4836,26 @@ Possible module boundaries are
 \toprule
 Proposed module & Main declarations \\
 \midrule
-\path{ThueMorseValuation.lean} & Factorial, central-binomial, Catalan, successor, and carry formulae. \\
-\path{ThueMorsePascal.lean} & Lucas submasks, Glaisher count, sparse probes, modulo-three formula. \\
-\path{ThueMorseMultinomial.lean} & Frobenius factorization and \(O_r(n)=r^{\wt(n)}\). \\
-\path{ThueMorseBooleanMobius.lean} & Submask incidence algebra and inverse parity matrix. \\
-\path{ThueMorseGeneratingProduct.lean} & \(P_m\), cyclotomic multiplicities, Mahler equations. \\
-\path{ThueMorseProuhetMoments.lean} & Difference operators, all moments, centered parity. \\
-\path{ThueMorseSparseProuhet.lean} & Arbitrary Pascal-support products and sparse moments. \\
-\path{ThueMorseFormalSeriesF2.lean} & Artin--Schreier equation and explicit solution. \\
-\path{ThueMorseFourier.lean} & Finite DFT, Walsh transform, product-to-sum identities. \\
-\path{ThueMorseDirichlet.lean} & Boundary flatness, Mellin integral, entire continuation. \\
-\path{ThueMorseRarefied.lean} & Root-of-unity filters, modulo-three closed forms, odd-modulus matrix recursion. \\
-\path{ThueMorseWords.lean} & Uniform recurrence, aperiodicity, and the elementary complexity bounds. \\
+\path{ThueMorseValuation.lean} & Factorial, central-binomial, Catalan, successor, and carry formulae.  \emph{Delivered.} \\
+\path{ThueMorsePascal.lean} & Lucas submasks, Glaisher count, sparse probes, modulo-three formula.  \emph{Delivered} (in \path{Parity.lean}, \path{ThueMorseBinomialLog.lean}, \path{ThueMorseLucasSupport.lean}). \\
+\path{ThueMorseMultinomial.lean} & Frobenius factorization and \(O_r(n)=r^{\wt(n)}\).  \emph{Open.} \\
+\path{ThueMorseBooleanMobius.lean} & Submask incidence algebra and inverse parity matrix.  \emph{Open} (the enumerator layer is delivered). \\
+\path{ThueMorseGeneratingProduct.lean} & \(P_m\), cyclotomic multiplicities, Mahler equations.  \emph{Delivered} (\path{ThueMorseBlockAlgebra.lean}, \path{ThueMorseMahler.lean}). \\
+\path{ThueMorseProuhetMoments.lean} & Difference operators, all moments, centered parity.  \emph{Delivered} (\path{ThueMorseMoments.lean}, \path{ThueMorseMixedDifference.lean}). \\
+\path{ThueMorseSparseProuhet.lean} & Arbitrary Pascal-support products and sparse moments.  \emph{Delivered} (plus \path{ThueMorseSparseMoments.lean}). \\
+\path{ThueMorseFormalSeriesF2.lean} & Artin--Schreier equation and explicit solution.  \emph{Delivered} (\path{ThueMorseArtinSchreier.lean}, with uniqueness and the integer lift). \\
+\path{ThueMorseFourier.lean} & Finite DFT, Walsh transform, product-to-sum identities.  \emph{Walsh delivered}; the complex DFT layer is open. \\
+\path{ThueMorseDirichlet.lean} & Boundary flatness, Mellin integral, entire continuation.  \emph{Open.} \\
+\path{ThueMorseRarefied.lean} & Root-of-unity filters, modulo-three closed forms, odd-modulus matrix recursion.  \emph{Delivered} (the complex filter identity itself remains open). \\
+\path{ThueMorseWords.lean} & Uniform recurrence, aperiodicity, and the elementary complexity bounds.  \emph{Delivered} except the complexity bounds (\path{ThueMorseAperiodicity.lean}, \path{ThueMorseOverlapFree.lean}, \path{ThueMorseRecurrence.lean}). \\
 \bottomrule
 \end{tabularx}
 \end{center}
 
-The last module is analytically the heaviest.  The first seven are finite or
-formal and can deliver useful lemmas to the existing Fabius development
-without waiting for measure theory or complex Mellin infrastructure.
+Of the planned layers, only the multinomial, Boolean--M\"obius,
+complex-Fourier, Dirichlet--Mellin, and factor-complexity rows remain
+open; everything finite or formal has been delivered, in most cases in
+greater generality than proposed.
 
 \subsection{Proof-dependency graph}
 
