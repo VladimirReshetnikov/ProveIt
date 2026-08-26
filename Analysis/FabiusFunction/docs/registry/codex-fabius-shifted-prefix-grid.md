@@ -4,9 +4,10 @@
 all-order approximation source unit is integrated, compiled, and released.
 The ordinary three-file signed-reflection source claim is implemented at
 `d887c8101`, integrated by the coordinator as `f66ef224b`, and compiler-green
-in both requested focused targets.  All source leases are released.  The exact
-five-path human-readable counterpart request below now awaits an explicit
-documentation-owner and TeX/PDF-lane assignment.**
+in both requested focused targets.  All source leases are released.
+Coordinator checkpoint `0bc0bf551` grants this branch the exact five-path
+human-readable counterpart tranche and sole EVO TeX/PDF lane; source editing
+and artifact validation are now in progress under that grant.**
 The exact claim was published before source work, coordinator checkpoint
 `893d4c25d` explicitly acknowledged it as the first nonoverlapping claim for
 the module, and source commit `00ff41a5e` now implements precisely that bounded
@@ -981,3 +982,99 @@ text-extraction, and changed-page visual checks before commit.
 No TeX, PDF, Lean, or Lake process has run for this acceptance checkpoint.
 Every frontier, README, AGENTS, control-plane, audit, Lean/root, peer-registry,
 and other path remains frozen.
+
+## Completed signed-reciprocity documentation checkpoint
+
+The bounded human-readable counterpart is complete on feature base
+`059b45ed5480353bed86ca73f7230c14110f3a43`.  The coverage map now separates
+signed pre-run reciprocity, reflected-zero invariance, the terminal zero run,
+and both boundary values.  The primary exposition states the literal
+hypotheses `k <= r` and `k + d < 2^r`, proves the signed identity and zero iff,
+and explains the outer prefix-order / inner offset induction.  The walkthrough
+records the exact declaration mapping and adds the missing
+`ThueMorsePrefix.lean` module row.  Both documents explicitly avoid claiming
+that the reflected pre-run window is zero-free and keep the terminal block and
+right boundary logically independent.
+
+The final owned document artifacts before the registry record are:
+
+```text
+docs/PAPER_COVERAGE.md
+  Git blob f7f60ee56e557bb2680be504bb9a95e815b84ac6
+  SHA-256 1E4110C5646E9B20FAC1B05D817FD36D217C9BCC11E790BBE1FD0C1A98D89ED4
+  38,537 bytes
+docs/Fabius_Function_and_Rvachev_Up/Fabius_Function_and_Rvachev_Up.tex
+  Git blob 0d3873b96f13bfad2f17e496eeba92df15ea534d
+  SHA-256 E8D4E696946BC47A33923C1016648DCFACA8CB3CF58231A1CAF509ECAB8B1907
+  195,235 bytes
+docs/Fabius_Function_and_Rvachev_Up/Fabius_Function_and_Rvachev_Up.pdf
+  Git blob b7e0831e6a9d1fb9b2b0dd10ada28d2544bd046c
+  SHA-256 67C239002A029602935FCED6B5E47A98A3107E86401700E9142127E7467533FE
+  1,016,174 bytes; 59 A4 pages
+docs/fabius_lean_walkthrough/fabius_lean_walkthrough.tex
+  Git blob 118a7efdf7ac9d29c4b62615419135e93e95dbb4
+  SHA-256 C6C0B1B162E7F0202DFE255CCA0E949841CEACF6A0024C57C9CD0637C9005EA5
+  239,252 bytes
+docs/fabius_lean_walkthrough/fabius_lean_walkthrough.pdf
+  Git blob 33124801992bd2b230af197578fae41dfc1fd7df
+  SHA-256 507ABC736A5B1D5099DD528A31856765420AFDED1F78F1463DB053A540A7067C
+  1,051,056 bytes; 87 A4 pages
+```
+
+Static validation is green at this source checkpoint:
+
+- `git diff --check` exited 0 and the unmerged index was empty;
+- `python Analysis/FabiusFunction/scripts/doc_audit.py --baseline
+  Analysis/FabiusFunction/docs/doc_audit_baseline.json` scanned 189 files and
+  3,541 public declarations, retained the exact 132 baseline omissions, and
+  exited 0;
+- the primary source has 370 unique labels, 283 resolved reference targets,
+  18 resolved citations, and 442 balanced environment pairs, with no duplicate
+  or missing target;
+- the walkthrough has 31 unique labels, 15 resolved reference targets, and
+  120 balanced environment pairs, with no duplicate or missing target; and
+- every cited Lean declaration occurs uniquely in its stated current module.
+
+The primary was built from a fresh sidecar job name by three separate,
+strictly sequential invocations:
+
+```text
+pdflatex -interaction=nonstopmode -halt-on-error -file-line-error
+  -jobname=Fabius_Function_and_Rvachev_Up_reciprocity_059b45ed5
+  Fabius_Function_and_Rvachev_Up.tex
+```
+
+All three invocations exited 0 and produced 56, 59, and 59 pages.  The settled
+third-pass log has no undefined reference/citation, rerun request, changed or
+duplicate label, fatal/LaTeX error, or overfull box.  It retains one inherited
+underfull box, ten benign `hyperref` PDF-string warnings, and inherited
+informational `Infinite glue shrinkage` messages around long page-breaking
+material; none is a new overflow or artifact failure.
+
+Only after the primary settled, the walkthrough was built by three separate,
+strictly sequential invocations:
+
+```text
+pdflatex -interaction=nonstopmode -halt-on-error -file-line-error
+  -jobname=fabius_lean_walkthrough_reciprocity_059b45ed5
+  fabius_lean_walkthrough.tex
+```
+
+All three invocations exited 0 and produced 82, 87, and 87 pages.  Its settled
+third-pass log has no warning, undefined reference/citation, rerun request,
+changed or duplicate label, fatal/LaTeX error, underfull box, or overfull box.
+
+Poppler inspection confirms both canonical PDFs have the recorded A4 page
+counts and byte sizes.  Every reported font is embedded and subsetted, and
+text extraction contains no rendered `??`.  All primary pages 1--59 and all
+walkthrough pages 1--87 were rasterized and visually inspected through
+whole-document contact sheets; high-resolution inspection additionally
+covered primary pages 2, 38, and 40--42 and walkthrough pages 55--56 and 77.
+No blank, missing, clipped, overlapping, corrupt, or visibly broken page,
+header, footer, formula, identifier, or table row was found.  The canonical
+PDFs are byte-identical to the settled sidecars.
+
+No Lean or Lake command ran under this document grant.  No frontier, README,
+AGENTS, control-plane, audit, Lean/root, peer-registry, or other frozen path was
+edited.  The five content/artifact paths above plus this own registry are now
+frozen for the requested current-main merge and coordinator handoff.
