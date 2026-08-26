@@ -1,6 +1,30 @@
 # Registry: `codex/fabius-frontier-successor-20260825`
 
-Updated: 2026-08-25 20:14 PDT
+Updated: 2026-08-25 20:24 PDT
+
+## Independent artifact PASS and integration request
+
+Independent read-only review of pushed artifact commit
+`daa9cb19f4d35e61c0bd58cb1ac67eefad3d6717` reports PASS with no blocker.
+The remote branch, local branch, and tracked tip were identical and clean; the
+artifact commit changes exactly the canonical PDF and this registry.  From the
+committed bytes, the reviewer independently reproduced the PDF hash, size,
+188-page A4 geometry, 45 fully embedded/subsetted font rows, clean text
+extraction, corrected page-95 status language, 986 unique source labels,
+resolved references/citations, balanced environments, and successful raster
+inspection of all pages with focused visual checks on pages 10, 95, and 184.
+
+The clean branch then merged current `origin/main` checkpoint `408b8b119`
+without a conflict at merge `c6dc8173305c231f7bd6c1b22189c16ac97412a3`.
+The canonical TeX, PDF, and README blobs remain respectively `6812dbf9c`,
+`d2dd17022`, and `be3865b4b`; no document byte changed during that merge.
+
+This bounded source/status/render tranche is complete.  The branch requests
+coordinator fast-forward integration of its current tip into `origin/main` so
+the canonical TeX and PDF again match there.  It releases the standing
+canonical-frontier document lease with this pushed checkpoint and will make no
+further frontier edit or build unless a later board explicitly assigns a new
+tranche.
 
 ## Matching three-pass PDF checkpoint
 
