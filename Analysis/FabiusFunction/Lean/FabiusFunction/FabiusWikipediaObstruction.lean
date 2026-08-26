@@ -10,9 +10,12 @@ phase visits every sufficiently far integer translate of any fixed phase.
 Consequently this oscillation does not tend to zero as `x → 0⁺`, and in
 particular cannot be absorbed into an `O(1 / (-log x))` error.
 
-The final theorems turn this into a source-facing statement: once a corrected
-asymptotic with that error is known, deleting the periodic term makes the same
-error estimate impossible.
+The final theorems turn this into source-facing statements.  If the corrected
+error `q(x) - fabiusExplicitCorrectedWikipediaMain(x)` tends to zero, then the
+uncorrected error `q(x) - fabiusWikipediaElementaryMain(x)` cannot tend to
+zero: subtracting the two errors recovers the nonvanishing periodic
+correction.  The corresponding obstruction for every Big-O scale that tends
+to zero, and in particular for `1 / (-log x)`, follows as a corollary.
 -/
 
 set_option autoImplicit false
@@ -164,6 +167,24 @@ theorem negativeLaplacePsi_comp_fabiusLambertPhase_not_isBigO :
     tendsto_neg_atBot_atTop.comp Real.tendsto_log_nhdsGT_zero
   exact hO.trans_tendsto (tendsto_inv_atTop_zero.comp hlog)
 
+/-- A corrected and an uncorrected logarithmic approximation cannot both have
+vanishing errors at `x → 0⁺`.  Indeed, the uncorrected error minus the
+corrected error is exactly
+`negativeLaplacePsi (fabiusLambertPhase x)`, which does not tend to zero. -/
+theorem fabiusWikipediaElementaryMain_error_not_tendsto_zero_of_corrected
+    (q : ℝ → ℝ)
+    (hcorrected : Tendsto
+      (fun x : ℝ => q x - fabiusExplicitCorrectedWikipediaMain x)
+      (nhdsWithin 0 (Ioi 0)) (nhds 0)) :
+    ¬ Tendsto (fun x : ℝ => q x - fabiusWikipediaElementaryMain x)
+        (nhdsWithin 0 (Ioi 0)) (nhds 0) := by
+  intro huncorrected
+  apply negativeLaplacePsi_comp_fabiusLambertPhase_not_tendsto_zero
+  have hdiff := huncorrected.sub hcorrected
+  simpa only [sub_zero] using hdiff.congr' (Eventually.of_forall fun x => by
+    simp only [fabiusExplicitCorrectedWikipediaMain, Function.comp_apply]
+    ring)
+
 /-- If an error scale tends to zero, an approximation containing the exact
 periodic correction and an approximation omitting it cannot both have that
 error scale. -/
@@ -176,12 +197,8 @@ theorem fabiusWikipediaElementaryMain_error_not_isBigO_of_corrected_of_tendsto
     ¬ ((fun x : ℝ => q x - fabiusWikipediaElementaryMain x)
         =O[nhdsWithin 0 (Ioi 0)] g) := by
   intro huncorrected
-  apply negativeLaplacePsi_comp_fabiusLambertPhase_not_tendsto_zero
-  have hdiff := huncorrected.sub hcorrected
-  apply (hdiff.congr' ?_ Filter.EventuallyEq.rfl).trans_tendsto hg
-  filter_upwards with x
-  simp only [fabiusExplicitCorrectedWikipediaMain, Function.comp_apply]
-  ring
+  exact fabiusWikipediaElementaryMain_error_not_tendsto_zero_of_corrected q
+    (hcorrected.trans_tendsto hg) (huncorrected.trans_tendsto hg)
 
 /-- Once an approximation contains the exact periodic correction with an
 `O(1 / (-log x))` remainder, deleting that correction cannot preserve the
