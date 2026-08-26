@@ -8,23 +8,17 @@ SYNC Fabius
 branch / worktree / machine: codex/fabius-both-papers /
   /home/codex/src/Proofs / codexbox
 fetched main SHA: e18f5d0b0e3ec78e2b14e7006af6c7e916b42923
-HEAD and dirty paths: aaca79f866509b99271ae2c633f81c8162845e16;
-  `Lean/FabiusFunction/GlobalExtension.lean` and this registry are dirty for a
-  terminology-only clarification from “knot” to “integer grid point”
+HEAD and dirty paths: 45d38dc41054968a6d11c7de0341d5a752f95bad;
+  clean before this registry-only claim expansion
 writing (exact paths):
-  Lean/FabiusFunction/GlobalExtension.lean;
-  Lean/FabiusFunction/GlobalDyadic.lean;
-  Lean/FabiusFunction/OriginalPaperSupplement.lean;
+  Lean/FabiusFunction/BoseFinitePartIntegral.lean;
   docs/registry/codex-fabius-both-papers.md
 expected declarations or document claims:
-  `extendedFabius_natCast_eq_ite`, the exact all-natural value formula
-  (zero at even grid points and the Thue--Morse sign indexed by `m / 2` at odd
-  grid points); `iteratedDeriv_extendedFabius_natCast_eq_zero_iff`, the sharp
-  classification by positive derivative order or even grid point;
-  relocate `rvachevDyadic_cast_global` unchanged from
-  `OriginalPaperSupplement.lean` to immediately after the restricted
-  `rvachevDyadic_cast` in `GlobalDyadic.lean`, preserving both public names and
-  exposing the total theorem to evaluator clients
+  `boseFinitePartSmallKernel_neg`, `boseLogKernel_neg`, and
+  `boseFinitePartLargeKernel_neg`, the strict sign profile of both convergent
+  finite-part kernels; `gammaZetaConstant_neg`, strict negativity of the
+  Euler--Stieltjes finite-part constant; `firstStieltjesConstant_lt`, the
+  resulting strict unconditional upper bound
 completed commits: Lower-Lambert source checkpoint `1da2fde2285e3970267b7dc2561bcd0d897be1b4`
   was integrated by coordinator merge `046946a974467e83244fd3a183a3e084e70d3379`;
   registry handoff `225f5338de9ea92489ed6a2c0c371c6edb4f5db9`
@@ -45,7 +39,9 @@ completed commits: Lower-Lambert source checkpoint `1da2fde2285e3970267b7dc2561b
   `09b360531d69a9bc93dba1babc3d5ecc6a396347` moves the theorem upstream
   byte-for-byte and preserves its single public declaration site; registry
   handoff `aaca79f866509b99271ae2c633f81c8162845e16` records the clean relocation
-  review
+  review; terminology checkpoint
+  `45d38dc41054968a6d11c7de0341d5a752f95bad` replaces the ambiguous “natural
+  knot” shorthand by “nonnegative integer grid point” without changing code
 validated (exact command, SHA/state, exit code): coordinator board records
   serialized immutable `lake build +FabiusFunction.LowerLambertW` at
   `4c6bbac41`, exit 0, with its source blob unchanged on current main;
@@ -63,15 +59,19 @@ not yet validated: no focused Lake target, downstream module, public facade,
   dyadic theorem body was already compiled in its downstream home by the green
   aggregate at `9887ea584`, but its new module ownership/import context has not
   been compiled; only the exact integer-grid module elaboration plus read-only
-  source/collision/marker/diff checks are currently validated
-requested integration or lease: integer-grid source is ready for integration;
+  source/collision/marker/diff checks are currently validated; the proposed
+  Gamma--zeta sign tranche has only a previously green `/tmp` prototype and is
+  not yet implemented or validated in production
+requested integration or lease: the integer-grid and dyadic source checkpoints
+  are ready for integration and their ordinary source paths are released;
   request the codexbox token for serialized targets
   `+FabiusFunction.GlobalExtension`, `+FabiusFunction.PaperStatements`,
   `+FabiusFunction.Paper06487Supplement`, and `+FabiusFunction.Paper06487`;
-  this claim expands to the ordinary, nonoverlapping paths
-  `GlobalDyadic.lean` and `OriginalPaperSupplement.lean`, whose relocation will
-  later need serialized `+FabiusFunction.GlobalDyadic` and
-  `+FabiusFunction.OriginalPaperSupplement` validation;
+  the dyadic relocation also needs serialized `+FabiusFunction.GlobalDyadic`
+  and `+FabiusFunction.OriginalPaperSupplement` validation; this new ordinary
+  claim covers only `BoseFinitePartIntegral.lean` and the five advertised
+  strict public sign theorems, with only the set-integral strictness lemma kept
+  private;
   serialized README/primary/walkthrough/coverage paths are deliberately not
   claimed yet
 conflicts / dependencies: all advertised Fabius heads and their registries
@@ -83,9 +83,13 @@ conflicts / dependencies: all advertised Fabius heads and their registries
   supplies both the literal odd witness and explicit rewrite arguments;
   read-only audit across advertised tips found no competing claim or alternate
   total dyadic-cast bridge on either relocation path; documentation remains
-  serialized and unclaimed
-next bounded step: await focused/downstream build tokens for both source
-  checkpoints and the integer-grid documentation lease
+  serialized and unclaimed; a refreshed exact-name, semantic-shape, path, and
+  registry sweep across every advertised remote Fabius tip found no existing
+  strict Gamma--zeta sign theorem and no competing claim on
+  `BoseFinitePartIntegral.lean`; the board explicitly releases old Gamma--zeta
+  leases
+next bounded step: push this exact claim, then implement the private sign chain
+  and the two strict public consequences without running a production build
 ```
 
 Source-only subagents inspect and prototype in `/tmp`; they do not edit the
