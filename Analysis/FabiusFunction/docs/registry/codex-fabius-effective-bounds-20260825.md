@@ -1569,3 +1569,95 @@ next bounded step: commit and push this immutable handoff; keep all three
   new registry-first claim on a disjoint released path after a clean fetch and
   coordinator-board refresh
 ```
+
+## Claim: generic even-subsequence summation and moment-series deduplication
+
+This ordinary two-file tranche is restricted to
+`Lean/FabiusFunction/AnalyticMoments.lean` and
+`Lean/FabiusFunction/FabiusLegendreSeries.lean`.  It will promote the common
+summation principle currently proved privately in the Legendre module:
+
+```lean
+theorem hasSum_even_of_odd_eq_zero
+    {E : Type*} [AddCommMonoid E] [TopologicalSpace E]
+    {f : ℕ → E} {a : E}
+    (h : HasSum f a) (hodd : ∀ n, f (2 * n + 1) = 0) :
+    HasSum (fun n ↦ f (2 * n)) a
+```
+
+The theorem needs neither a norm nor completeness: injective reindexing by
+`n ↦ 2*n` preserves the sum because every term outside its range is odd and
+therefore zero.  Its proof will use Mathlib's
+`Function.Injective.hasSum_iff`, whose exact orientation is
+`HasSum (f ∘ g) a ↔ HasSum f a`.
+
+In AnalyticMoments, the new result replaces the separate summability,
+odd-subseries, even/odd recombination, uniqueness, and tsum-rewrite block in
+`rvachevFourier_eq_momentSeries` with one direct application.  In
+FabiusLegendreSeries, the more restrictive private normed/complete helper is
+deleted; its pointwise and uniform call sites resolve unchanged to the shared
+generic result through the existing import cone.  No import or old public
+declaration header changes are planned.
+
+While AnalyticMoments is leased, formula-bearing declaration comments will be
+added to its five current public prose gaps:
+`moment_eq_integral_formula`, `halfMoment_eq_fabius_formula`,
+`halfIntegral_eq_rvachev_dyadic_formula`,
+`moment_halfIntegral_eq_rvachev_dyadic_formula`, and
+`proposition_two_formula`.  The final comment will state the totalized
+`complexExpm1Div` identity rather than an invalid unqualified quotient at
+`z = 0`.  The module overview will record the reusable zero-odd-subsequence
+principle.  No canonical document is claimed.
+
+```text
+SYNC Fabius
+branch / worktree / machine: codex/fabius-effective-bounds-20260825 /
+  /home/codex/.codex/worktrees/d6d3/Proofs / codexbox
+fetched main SHA: fc63c39788ab4c31694e4f57efe05b543165675a
+HEAD and dirty paths: bb6e66ad8f9d; clean before this registry-only claim
+writing (exact paths): Lean/FabiusFunction/AnalyticMoments.lean;
+  Lean/FabiusFunction/FabiusLegendreSeries.lean; this branch registry for
+  claim/handoff only
+expected declarations or document claims: exactly one new public declaration,
+  hasSum_even_of_odd_eq_zero; replace one independent Fourier proof block,
+  remove one private Legendre duplicate, preserve every old public
+  header/attribute and import, and add source-level formula prose for the new
+  theorem plus the five named existing declarations
+completed commits: all prior source checkpoints and handoffs are clean and
+  pushed; binary, strict-Laplace, and formal-Lambert sources remain separately
+  frozen and requested for coordinator validation; this is a disjoint
+  registry-first two-file claim
+validated (exact command, SHA/state, exit code): current HEAD and origin/main
+  share AnalyticMoments blob f0985d5b6e5b20c14683413bff9916e89ebd9932,
+  content SHA-256
+  EE720F2922A24159F12C78063972E4C484E99BDD4068FFECE2F136A045002D86,
+  and FabiusLegendreSeries blob
+  77982a661e75d73bf9b3dcc4d276776a855310e0, content SHA-256
+  7B752F2647D0377717155038E5164E3AA9D06117205F27D96C7058DD8E4086CB;
+  all active fetched Fabius tips share these blobs; exact-name, semantic-name,
+  path, and every-registry scans find only the intended private Legendre helper
+  and no public implementation or competing lease; the coordinator records
+  the earlier AnalyticMoments source unit integrated, compiled, and released;
+  two independent pinned-API preflights confirm the minimal typeclasses and
+  hasSum_iff orientation; this is not compiler evidence
+not yet validated: the public helper, proof contractions, and comments are not
+  implemented; no Lean, Lake, TeX, PDF, or cache-mutating process is authorized
+  or running for this branch
+requested integration or lease: advertise this ordinary two-source claim;
+  after an immutable independently reviewed checkpoint, request separate
+  serialized builds of +FabiusFunction.AnalyticMoments,
+  +FabiusFunction.FabiusLegendreSeries, and one direct Legendre consumer
+  (+FabiusFunction.FabiusTranslatedLegendreSeries or
+  +FabiusFunction.FabiusLegendreLeastSquares); request no document or
+  main-write lease
+conflicts / dependencies: the theorem is purely topological/additive and does
+  not require summability side conditions beyond HasSum; the two target files
+  are in an existing one-way transitive import relation with no reverse edge;
+  all frozen local paths and active external claims are disjoint; only the
+  coordinator may advance main
+next bounded step: commit and push this registry-only claim without force;
+  fetch and reread any changed board, repeat collision checks, then edit only
+  the two claimed Lean sources while three agents independently audit the
+  generic reindexing proof, both consumer families, interface preservation,
+  and the five formula comments
+```
