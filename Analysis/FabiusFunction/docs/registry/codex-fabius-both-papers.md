@@ -2166,3 +2166,77 @@ LEAN_NUM_THREADS=0 LAKE_JOBS=1 lake build +FabiusFunction.FabiusSecondSaddleCorr
 Stop after the first nonzero exit.  This is a proof/API consolidation with no
 mathematical-document change; only the matching frozen audit-ledger finding
 needs later disposition by a separately assigned documentation owner.
+
+## Claim: all-real finite-CDF approximation rates
+
+Fresh `origin/main` `81d0101294ed0b7b0ce060c57b6568639bbaa1a4`
+and the clean feature tip have the exact prospective source blob
+
+```text
+FabiusComputability.lean  3c67fb12de08af9afbecdf58f18abac6ee3f1918
+```
+
+The exact prospective write set is:
+
+- `Lean/FabiusFunction/FabiusComputability.lean`;
+- this branch's own registry.
+
+The branch claims three documented, untagged public declarations:
+
+- `abs_uniformPartialCDF_sub_fabiusReal_le`;
+- `abs_uniformCenteredPartialCDF_sub_fabiusReal_le`;
+- `uniformCenteredPartialCDF_error_bound_eq_half_uniformPartialCDF_error_bound`.
+
+The first theorem gives, for every `p : ℕ` and `x : ℝ`, the uncentered finite
+CDF error bound
+
+```text
+|uniformPartialCDF p x - fabiusReal F x| ≤ 2 * ((2 : ℝ) ^ p)⁻¹.
+```
+
+It combines `uniformPartialCDF_sandwich` with the all-real identity
+`weightedSumCDF_eq_fabiusReal` and the global Lipschitz estimate
+`abs_fabiusReal_sub_le`.  The second theorem gives the midpoint-corrected
+all-real bound
+
+```text
+|uniformCenteredPartialCDF p x - fabiusReal F x| ≤ ((2 : ℝ) ^ p)⁻¹.
+```
+
+It packages the existing centered-sandwich/Lipschitz proof independently of
+the spline bridge.  The third theorem states exactly that the centered
+certified majorant is half the uncentered certified majorant.  It compares
+the displayed upper bounds only: no equality between actual pointwise errors,
+optimality, or best-constant assertion is made.
+
+Both existing spline approximation theorem headers and comments are retained
+exactly.  Their proof bodies will become direct compatibility wrappers through
+`fabiusUniformSpline_eq_centeredPartialCDF` and its all-degree form, eliminating
+the duplicated centered estimate and the separate degree-zero argument.  The
+module overview may be extended to name the all-real finite-CDF rates.  No
+import, namespace, attribute, simp rule, facade, aggregate, or canonical
+document change is claimed.
+
+This is the exact Lean counterpart requested by the frozen frontier subsection
+on the factor-two finite-CDF comparison and by the primary exposition's
+midpoint-correction discussion.  Canonical documents remain frozen: a later
+separately assigned documentation tranche should retire that frontier gap and
+attach these names to the primary and coverage crosswalks.
+
+All-advertised-tip exact-name, plausible semantic-shape, target-path, and every
+registry scan found no implementation or live claim.  Every modern source tip
+has the same prospective blob, historical `FabiusComputability` work is
+integrated and explicitly released, and the active evaluator, Bose, inverse,
+and bounded-range lanes are path-disjoint.
+
+No Lean, Lake, TeX, PDF, or cache-mutating process is authorized or has run for
+this claim.  After an immutable reviewed source checkpoint, the requested
+separate serialized gates are:
+
+```text
+LEAN_NUM_THREADS=0 LAKE_JOBS=1 lake build +FabiusFunction.FabiusComputability
+LEAN_NUM_THREADS=0 LAKE_JOBS=1 lake build +FabiusFunction.FabiusComputableSpline
+```
+
+Stop after the first nonzero exit.  No root, facade, or document build is
+requested.
