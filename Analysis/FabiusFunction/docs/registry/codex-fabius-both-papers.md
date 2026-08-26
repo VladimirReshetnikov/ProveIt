@@ -1557,3 +1557,62 @@ LEAN_NUM_THREADS=0 LAKE_JOBS=1 lake build +FabiusFunction.PaperFabiusAsymptotic
 
 Stop after the first nonzero exit and run no additional target.  Until the
 coordinator grants a host token, validation remains static only.
+
+## Handoff: absolute summability of the parity-power presentation
+
+Exact source checkpoint `5ed786a92dfebeaf158def6089da73ad107834b5`
+implements the advertised one-file, two-theorem tranche.  Its tree is
+`cd3a6315c83d11a8086784132f8045c05ff86425`; the resulting
+`FabiusParityPowerSeries.lean` artifact is:
+
+```text
+Git blob  a5ba001cc339c840108f21d9bfbc85ee7a8a7361
+SHA-256   4F92E4AFE8F5490D59148A581F7A1F8E89712B7657941EBAA3F7AE89335CC8C5
+```
+
+The exact source delta is twenty insertions and three overview-line deletions.
+The overview now states whole-real absolute summability, and the convergence
+block adds exactly documented, untagged
+`summable_norm_fabiusParityPowerSummand_all` followed by the nonnegative
+compatibility theorem `summable_norm_fabiusParityPowerSummand`.  No import,
+namespace, attribute, simp rule, existing declaration, facade, aggregate, or
+canonical-document path changes.
+
+The all-real proof applies the established
+`summable_norm_globalBinaryReductionSummand_all fabius fabius_spec x` and
+uses `Summable.congr` to rewrite the parity side through the exact pointwise
+bridge.  The compatibility theorem specializes the all-real result at
+`max x 0` and simplifies with `max_eq_left hx`, exactly matching the two
+existing compiled compatibility wrappers in this module.  This covers the
+zero series on the nonpositive half-line, the restored scale-zero term at
+`x = 1`, and every positive and negative real input without a hidden domain
+hypothesis.
+
+Three independent exact-live static audits pass the `Summable.congr` equality
+orientation, rewrite under the norm, all-real upstream signature, compatibility
+specialization, edge cases, API family, placement, documentation wording,
+imports, linter risk, public-declaration delta, reverse cone, and ownership.
+`git diff --check`, line-length, forbidden-declaration, conflict-marker,
+exact-name, semantic-shape, and all-advertised-tip registry scans are clean.
+The exact names occur only at the two declarations, the compatibility call,
+and this branch's own registry claim; no competing implementation exists.
+
+This source supplies precisely the absolute-convergence half missing from the
+primary theorem's existing `HasSum` formalization.  Canonical documents remain
+frozen.  On a later separately assigned document pass, retire the exact
+frontier obligation at lines 13747--13764, add both names to coverage row 168,
+and attach the compatibility name to the primary claim at lines 2445--2451;
+do not broaden adjacent frontier claims.
+
+No Lean, Lake, TeX, PDF, or cache-mutating process ran, so this handoff is not
+compiler evidence.  The source is frozen pending coordinator review and these
+separate serialized gates:
+
+```text
+LEAN_NUM_THREADS=0 LAKE_JOBS=1 lake build +FabiusFunction.FabiusParityPowerSeries
+LEAN_NUM_THREADS=0 LAKE_JOBS=1 lake build +FabiusFunction.PaperFabiusAsymptotic
+```
+
+Stop after the first nonzero exit.  The source path is released to the
+coordinator for exact-commit integration but remains unavailable for further
+feature-branch edits until disposition.
