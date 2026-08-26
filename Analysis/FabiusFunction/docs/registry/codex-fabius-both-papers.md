@@ -7,14 +7,17 @@ This file implements the per-branch registry fallback in
 SYNC Fabius
 branch / worktree / machine: codex/fabius-both-papers /
   /home/codex/src/Proofs / codexbox
-fetched main SHA: b0b896e39a7af565d14d56cbc7cd653db1c3ba68
-HEAD and dirty paths: a203c1c30c103f809cc75c0480a54c4deb98d144;
-  only this registry handoff is dirty
+fetched main SHA: 99b67cf5b5b8084d097205d1f701d13285ecd3b7
+HEAD and dirty paths: dfd3ace136da91776e2bd13d5de2234c55466078;
+  clean after merging current fetched main and before this ordinary claim
 writing (exact paths):
+  Lean/FabiusFunction/Paper06487Supplement.lean;
   docs/registry/codex-fabius-both-papers.md
 expected declarations or document claims:
-  record the completed periodic bridge checkpoint and request its focused
-  serialized validation; the `PeriodicSmooth.lean` writing claim is released
+  `theorem_twenty_one_odd_all`, proving that every Reshetnikov number is an odd
+  natural number, including the boundary value `R_0 = 1`; rederive the existing
+  `theorem_nine_all` from this strictly stronger all-index theorem without
+  changing its public signature
 completed commits: Lower-Lambert source checkpoint `1da2fde2285e3970267b7dc2561bcd0d897be1b4`
   was integrated by coordinator merge `046946a974467e83244fd3a183a3e084e70d3379`;
   registry handoff `225f5338de9ea92489ed6a2c0c371c6edb4f5db9`
@@ -77,7 +80,8 @@ completed commits: Lower-Lambert source checkpoint `1da2fde2285e3970267b7dc2561b
   quotient polynomials and reconciles unified derivative orders two through
   four with their explicit summands; clean merge
   `c744af2614600020710c47dcfa7fdab7bcf082da` incorporates current fetched main
-  `b0b896e39`
+  `b0b896e39`; clean merge `dfd3ace136da91776e2bd13d5de2234c55466078`
+  incorporates current fetched main `99b67cf5b`
 validated (exact command, SHA/state, exit code): coordinator board records
   serialized immutable `lake build +FabiusFunction.LowerLambertW` at
   `4c6bbac41`, exit 0, with its source blob unchanged on current main;
@@ -205,9 +209,10 @@ conflicts / dependencies: all advertised Fabius heads and their registries
   `not_isEquivalent` theorem and no competing claim on
   `FabiusSharpAsymptotic.lean`; the coordinator explicitly released its prior
   generalizations lease
-next bounded step: push this source handoff, then inspect and claim the strongest
-  available ordinary nonoverlapping theorem or deduplication tranche while the
-  coordinator retains the build token
+next bounded step: push this exact ordinary claim, finish the advertised
+  cross-tip collision scan, implement the all-index oddness theorem without
+  running a build, and request serialized
+  `+FabiusFunction.Paper06487Supplement` validation
 ```
 
 ## Coordinator natural-knot integration disposition
