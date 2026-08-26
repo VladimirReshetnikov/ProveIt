@@ -120,7 +120,7 @@
 \author{Human-readable synthesis of the formal development\\
 \small Vladimir Reshetnikov's \texttt{ProveIt} repository}
 \date{Repository snapshot: 25 August 2026\\
-\small commit \nolinkurl{eaea1b9afe2b7ff0b7dd880bd1710e303dec6d80}}
+\small commit \nolinkurl{8d928a55ff19a856e1d7a9083e5e102fff857804}}
 
 \begin{document}
 \maketitle
@@ -3756,6 +3756,101 @@ identity is \lean{generatingFunction_neg_div_eq_laplace}.  All three occur in
 \path{LaplaceTransform.lean} and \path{FabiusBromwichInput.lean} with the positivity and
 integrability hypotheses shown there.
 
+\subsection{The compact online formula and its missing periodic factor}
+\label{sec:compact-online-lambert}
+
+A January 2022 comment in a Mathematics Stack Exchange discussion asked whether the
+preceding calculation implied a particularly compact lower-Lambert formula for the
+endpoint behavior \cite{reshetnikovMSEasymptotic}.  With the notation of
+\eqref{eq:W-def}, its logarithmic main term is
+\begin{equation}
+ \mathcal W_{\mathrm{MSE}}(x)=
+ -\frac{7L}{12}-\frac12\log(\pi x)
+ +\frac1L\left(
+   \gamma_1+\frac{\gamma^2}{2}-\frac{\pi^2}{12}
+   -W-\frac{W^2}{2}
+ \right).
+                                                               \label{eq:mse-lambert-log-main}
+\end{equation}
+This is the human-readable form of definition \lean{fabiusWikipediaLambertMain} in
+\path{FabiusWikipediaMain.lean}.  Written in ordinary mathematical notation, the
+exponential of this logarithmic encoding is the expression printed in the discussion:
+\begin{equation}
+ A_{\mathrm{MSE}}(x)=
+ \frac{1}{2^{7/12}\sqrt{\pi x}}
+ \exp\!\left[
+  \frac1L\left(
+   \gamma_1+\frac{\gamma^2}{2}-\frac{\pi^2}{12}
+   -W-\frac{W^2}{2}
+  \right)
+ \right].                                                     \label{eq:mse-lambert-main}
+\end{equation}
+The proposed symbol \(F(x)\sim A_{\mathrm{MSE}}(x)\) means that the ratio should tend
+to \(1\) as \(x\downarrow0\).
+
+That ratio-one claim is false.  The answer on the cited page first derives a Gamma--zeta
+periodic term, then explicitly omits it from the subsequent approximation while noting
+that it must be retained for more precise asymptotics.  The exact formal decomposition
+shows what is lost: on the positive lower-Lambert domain,
+\begin{equation}
+ \mathcal M(x)=\mathcal W_{\mathrm{MSE}}(x)+\Psi(\lambda(x)).
+                                                               \label{eq:mse-corrected-log-main}
+\end{equation}
+Here \lean{fabiusCorrectedWikipediaMain_eq_WikipediaLambertMain_add} is the all-real
+identity between the two named compact definitions, while
+\lean{fabiusCorrectedWikipediaMain_eq_sharpLambertMain} identifies the corrected one
+with \(\mathcal M\) on the stated domain.  Consequently the proved ratio-one asymptotic
+is
+\begin{equation}
+ \boxed{\begin{aligned}
+ F(x)\sim{}&
+ \frac{1}{2^{7/12}\sqrt{\pi x}}
+ \exp\!\left[
+  \frac1L\left(
+   \gamma_1+\frac{\gamma^2}{2}-\frac{\pi^2}{12}
+   -W-\frac{W^2}{2}
+  \right)
+ \right]\\
+ &{}\times\exp\!\left(\Psi(-W/L)\right)
+ \end{aligned}}
+ \qquad(x\downarrow0).                                      \label{eq:mse-lambert-corrected}
+\end{equation}
+This is \lean{fabius_isEquivalent_exp_correctedWikipediaMain}, combined with the exact
+decomposition above.  The plus sign in \eqref{eq:mse-corrected-log-main} is essential:
+the missing multiplier is \(\exp(\Psi(\lambda(x)))\), with
+\(\lambda(x)=-W/L\).
+
+The logical bridge from logarithmic error to ratio-one equivalence is itself formalized.
+Along any filter, if \(f\) is eventually positive, then
+\begin{equation}
+ f\sim\exp(g)\quad\Longleftrightarrow\quad \log f-g\longrightarrow0.
+                                                               \label{eq:exp-equivalent-log-error}
+\end{equation}
+This is \lean{isEquivalent_exp_iff_tendsto_log_sub}.  In the present case Lean proves
+both
+\begin{equation}
+ \log F(x)-\mathcal W_{\mathrm{MSE}}(x)\not\longrightarrow0
+ \qquad(x\downarrow0)                                       \label{eq:mse-log-error-nonzero}
+\end{equation}
+and that the same residual is not
+\(\bigO(({-\log x})^{-1})\).  These are respectively
+\lean{log_fabius_sub_WikipediaLambertMain_not_tendsto_zero} and
+\lean{log_fabius_sub_WikipediaLambertMain_not_isBigO}.  Applying
+\eqref{eq:exp-equivalent-log-error} gives the direct theorem
+\begin{equation}
+ F\not\sim A_{\mathrm{MSE}},                                 \label{eq:mse-not-equivalent}
+\end{equation}
+namely \lean{fabius_not_isEquivalent_exp_WikipediaLambertMain}.  The criterion and all
+three obstruction declarations in this paragraph occur in
+\path{FabiusSharpAsymptotic.lean}.  Thus the nonconvergence of the sampled periodic
+correction, rather than its numerical size, is decisive for ratio-one equivalence.
+
+\begin{warning}
+The declarations in this subsection refute the multiplier-one statement
+\(F\sim A_{\mathrm{MSE}}\).  They do not by themselves state the stronger assertion that
+every constant multiple of \(A_{\mathrm{MSE}}\) fails; no such stronger claim is used here.
+\end{warning}
+
 \subsection{The first two periodic saddle corrections}
 
 Define
@@ -4163,7 +4258,8 @@ Endpoint asymptotics &
 \path{MellinBose.lean}, \path{MellinFinitePart.lean},
 \path{BoseFinitePartIntegral.lean},
 \path{LowerLambertW.lean}, \path{FabiusLambertPhase.lean},
-\path{FabiusLambertSaddle.lean}, \path{FabiusDecayComparison.lean},
+\path{FabiusLambertSaddle.lean}, \path{FabiusWikipediaMain.lean},
+\path{FabiusDecayComparison.lean},
 \path{FabiusSharpAsymptotic.lean}, \path{FabiusFullAsymptoticExpansion.lean},
 \path{LaplaceMomentBounds.lean}, \path{FabiusDyadicSharpCumulant.lean},
 \path{SaddleLogExpansionAlgebra.lean}, \path{SaddleLogExpansionPowerSeries.lean},
@@ -4315,6 +4411,13 @@ V.~Reshetnikov,
   rationals,
 \newblock Mathematics Stack Exchange, question 3283519, 5 July 2019.
 
+\bibitem{reshetnikovMSEasymptotic}
+V.~Reshetnikov,
+\newblock Extracting an asymptotic from a sequence defined by a recurrence relation,
+\newblock Mathematics Stack Exchange, question 4354350, 11 January 2022.
+\newblock Compact Fabius formula in the author's 13 January comment on the answer by
+  user321120; \url{https://math.stackexchange.com/q/4354350}.
+
 \bibitem{reshetnikovMO}
 V.~Reshetnikov,
 \newblock A conjecture about certain values of the Fabius function,
@@ -4325,8 +4428,8 @@ V.~Reshetnikov,
 V.~Reshetnikov,
 \newblock \emph{ProveIt: Analysis/FabiusFunction},
 \newblock Lean~4 formal development, source snapshot
-\texttt{eaea1b9afe2b7ff0b7dd880bd1710e303dec6d80}, consulted 25 August 2026.
-\newblock \url{https://github.com/VladimirReshetnikov/ProveIt/tree/eaea1b9afe2b7ff0b7dd880bd1710e303dec6d80/Analysis/FabiusFunction}.
+\texttt{8d928a55ff19a856e1d7a9083e5e102fff857804}, consulted 25 August 2026.
+\newblock \url{https://github.com/VladimirReshetnikov/ProveIt/tree/8d928a55ff19a856e1d7a9083e5e102fff857804/Analysis/FabiusFunction}.
 
 \end{thebibliography}
 
