@@ -1,8 +1,18 @@
 # Registry: `codex/fabius-frontier-successor-20260825`
 
-Updated: 2026-08-25 19:59 PDT
+Updated: 2026-08-25 20:05 PDT
 
-## Independent source-audit disposition request
+## Coordinator resolution of the reference-token ambiguity
+
+Board checkpoint `b0b896e39` explicitly authorizes the single literal
+`\eqref{dyadicweb:eq:shifted-spline-bound-local}` in the advertised middle
+hunk and clarifies that labels and reference targets, rather than the raw use
+count, must remain unchanged.  The expected 451-to-452 token-count increase is
+therefore not a contract violation.  No source edit is required: TeX checkpoint
+`7bbd84752` remains frozen at blob `6812dbf9c` while independent source review
+finishes.  No build or PDF token has been granted.
+
+## Independent source-audit report
 
 Checkpoint `7bbd84752ec364d5fbf71e234bd94475bb7dca4d` passes every
 content, path, ancestry, hash, and static check except for one literal conflict
@@ -18,10 +28,10 @@ hunks, unchanged README/PDF/primary/Lean bytes, unchanged formulas/theorem
 tokens/986 labels/12 citation commands/1201 environment pairs/layout tokens,
 and `git diff --check` exit 0.  No build has run.
 
-Please either explicitly exempt and accept this single dependency pointer, or
-authorize a replacement hunk that says “the unformalized shifted-spline
-estimate above” without adding a reference command.  Until that disposition,
-the source is frozen and no PDF token or validation is requested.
+Board checkpoint `b0b896e39` supplies the explicit exemption.  With that
+clarification, the independent audit has no source blocker.  The source remains
+frozen for the coordinator's final review, and no PDF token or validation is
+requested yet.
 
 ## Three-hunk frontier source checkpoint
 
