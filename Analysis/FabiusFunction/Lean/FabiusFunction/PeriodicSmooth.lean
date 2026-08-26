@@ -72,20 +72,25 @@ lemma negativeLaplaceForwardTermDeriv_succ (k : ℕ) (s : ℝ) (n : ℕ) :
 /-- The first recursively generated forward-derivative quotient polynomial. -/
 @[simp] theorem forwardDerivativeQuotientPolynomial_one :
     forwardDerivativeQuotientPolynomial 1 = -1 := by
-  rw [show 1 = 0 + 1 by omega, forwardDerivativeQuotientPolynomial]
-  norm_num [forwardDerivativeQuotientPolynomial] <;> ring
+  apply Polynomial.funext
+  intro x
+  simp [forwardDerivativeQuotientPolynomial]
 
 /-- The second recursively generated forward-derivative quotient polynomial. -/
 @[simp] theorem forwardDerivativeQuotientPolynomial_two :
     forwardDerivativeQuotientPolynomial 2 = 1 + X := by
-  rw [show 2 = 1 + 1 by omega, forwardDerivativeQuotientPolynomial]
-  norm_num [forwardDerivativeQuotientPolynomial_one] <;> ring
+  apply Polynomial.funext
+  intro x
+  simp [forwardDerivativeQuotientPolynomial]
+  ring
 
 /-- The third recursively generated forward-derivative quotient polynomial. -/
 @[simp] theorem forwardDerivativeQuotientPolynomial_three :
     forwardDerivativeQuotientPolynomial 3 = -(1 + C 4 * X + X ^ 2) := by
-  rw [show 3 = 2 + 1 by omega, forwardDerivativeQuotientPolynomial]
-  norm_num [forwardDerivativeQuotientPolynomial_two] <;> ring
+  apply Polynomial.funext
+  intro x
+  simp [forwardDerivativeQuotientPolynomial]
+  ring
 
 /-- The unified second-derivative summand agrees with the explicit one. -/
 @[simp] lemma negativeLaplaceForwardTermDeriv_two (s : ℝ) (n : ℕ) :
@@ -93,8 +98,8 @@ lemma negativeLaplaceForwardTermDeriv_succ (k : ℕ) (s : ℝ) (n : ℕ) :
       negativeLaplaceForwardTermSecond s n := by
   simp only [negativeLaplaceForwardTermDeriv,
     forwardDerivativeQuotientPolynomial_one, eval_neg, eval_one,
-    negativeLaplaceForwardTermSecond] <;>
-  ring
+    negativeLaplaceForwardTermSecond]
+  all_goals ring
 
 /-- The unified third-derivative summand agrees with the explicit one. -/
 @[simp] lemma negativeLaplaceForwardTermDeriv_three (s : ℝ) (n : ℕ) :
@@ -102,8 +107,7 @@ lemma negativeLaplaceForwardTermDeriv_succ (k : ℕ) (s : ℝ) (n : ℕ) :
       negativeLaplaceForwardTermThird s n := by
   simp only [negativeLaplaceForwardTermDeriv,
     forwardDerivativeQuotientPolynomial_two, eval_add, eval_one, eval_X,
-    negativeLaplaceForwardTermThird] <;>
-  ring
+    negativeLaplaceForwardTermThird]
 
 /-- The unified fourth-derivative summand agrees with the explicit one. -/
 @[simp] lemma negativeLaplaceForwardTermDeriv_four (s : ℝ) (n : ℕ) :
@@ -112,8 +116,8 @@ lemma negativeLaplaceForwardTermDeriv_succ (k : ℕ) (s : ℝ) (n : ℕ) :
   simp only [negativeLaplaceForwardTermDeriv,
     forwardDerivativeQuotientPolynomial_three, eval_neg, eval_add,
     eval_mul, eval_one, eval_C, eval_X, eval_pow,
-    negativeLaplaceForwardTermFourth] <;>
-  ring
+    negativeLaplaceForwardTermFourth]
+  all_goals ring
 
 theorem negativeLaplaceForwardTermDeriv_hasDerivAt
     (k : ℕ) (s : ℝ) (hs : 0 < s) (n : ℕ) :
