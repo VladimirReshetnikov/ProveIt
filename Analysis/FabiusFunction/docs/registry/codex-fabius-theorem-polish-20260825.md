@@ -837,3 +837,58 @@ next bounded step: commit and push this registry-only report; await the
   coordinator's exact successor-document or new-source disposition; run no
   validator without an explicit EVO token and never push main
 ```
+
+## Coordination checkpoint after fetched main `b0b896e39`
+
+At `2026-08-25T20:07:08-07:00`, this branch stopped all expansion and reread
+both mandatory policy files directly from fetched `origin/main` with
+`git show`.  The exact branch instruction says that the preceding source unit
+is integrated and validated, all former source leases are released, this
+branch has no EVO build token, and a future ordinary source lane would require
+a new registry-first claim.  No such claim is made here.
+
+The local feature checkpoint was clean at
+`6c1047eabad48d2860d43250e7745dd30eb02e9e`, which preserves the earlier
+conflict-free merge of coordinator checkpoint `f556a126e`.  Fetched main has
+since advanced to `b0b896e39a7af565d14d56cbc7cd653db1c3ba68`; it is left
+unmerged under this coordination freeze.  No dirty work was stashed, reset,
+discarded, overwritten, or merged over.
+
+```text
+SYNC Fabius
+branch / worktree / machine: codex/fabius-theorem-polish-20260825 /
+  C:/Users/vresh/.codex/worktrees/10ef/ProveIt / EVO (Windows)
+fetched main SHA: b0b896e39a7af565d14d56cbc7cd653db1c3ba68
+HEAD and dirty paths: 6c1047eabad48d2860d43250e7745dd30eb02e9e;
+  the worktree was clean before this reply, and only this registry file is
+  dirty for the present status checkpoint
+writing (exact paths):
+  docs/registry/codex-fabius-theorem-polish-20260825.md only
+expected declarations or document claims: none; the prior eight-result
+  discrete-limit unit is integrated and its source leases are released; a
+  read-only survey of a possible all-order Laplace-moment reflection identity
+  remains unclaimed and has produced no source or human-document edit
+completed commits: f1e1ddf8b (feature merge of the repaired, validated
+  discrete-limit source), 3102741f2 (published integration disposition), and
+  6c1047eab (conflict-free feature merge of coordinator main f556a126e)
+validated (exact command, SHA/state, exit code): no new validation was run in
+  this worktree; the prior coordinator evidence remains the two separate
+  LAKE_JOBS=1 builds at repaired tree 8e09c4d98,
+  +FabiusFunction.FabiusDiscreteLimitToeplitz (3320 jobs, exit 0) and
+  +FabiusFunction.FabiusDiscreteLimitIntegration (3422 jobs, exit 0), both
+  without warnings
+not yet validated: local merge 6c1047eab has not been compiled as an
+  immutable tree by this worktree; the unclaimed Laplace-reflection proof plan
+  has neither been written nor elaborated; no Lean, Lake, LaTeX, PDF, Python
+  audit, or cache-mutating validation command was launched at this checkpoint
+requested integration or lease: none; no source/document lease and no EVO
+  build token are requested by this frozen status reply
+conflicts / dependencies: fetched main b0b896e39 is not merged; relative to
+  local HEAD it changes four unrelated reviewed Lean modules plus the
+  coordinator and theorem-polish registries.  Canonical exposition,
+  walkthrough, frontier TeX/PDF, README, coordination files, coverage/audit
+  files, and the root Fabius aggregate remain untouched
+next bounded step: commit and push this status only to the feature branch,
+  never to main and never with force; then remain read-only until the board
+  grants an exact source path or physical-host build token
+```
