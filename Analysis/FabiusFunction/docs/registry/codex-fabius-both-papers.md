@@ -2095,3 +2095,74 @@ LEAN_NUM_THREADS=0 LAKE_JOBS=1 lake build +FabiusFunction.FabiusSecondSaddleCorr
 ```
 
 Stop after the first nonzero exit and run no root, facade, or document build.
+
+## Handoff: consolidate bounded real ranges into absolute-value bounds
+
+Exact source checkpoint `ffb51214484566de0c0da4298f9da6ab0335ca49`,
+tree `7a7cf6302fba8f803ef9fd5a89b24df8e42f1780`, implements the
+advertised three-file consolidation.  Clean synchronization merge
+`a73f74dc02bcb0e9e41bb64e48f700d53f59e5e7` incorporates coordinator main
+`81d0101294ed0b7b0ce060c57b6568639bbaa1a4` without altering any claimed
+source blob.  The exact artifacts are:
+
+```text
+PeriodicRegularity.lean
+  Git blob  712711058b497d6673064541a359c6df536458a8
+  SHA-256   EF0F26243DCA96B528CBD72B57043D2193465ABDBF091B63195F85CBE8545DDD
+  size      962 lines, 44,562 bytes
+FabiusLambertDerivativeBounds.lean
+  Git blob  d3f3d9d16aed97f8ea2d33c8bc2d634bf0b46aca
+  SHA-256   A4790FAB6A9A455605988561E09AC0CA49689B724080528C85986F9E557A2B12
+  size      780 lines, 36,691 bytes
+FabiusSecondSaddleCorrection.lean
+  Git blob  5b22e182ccd4188ec669e13a21001bc55d009ce9
+  SHA-256   86FCEC4986C02D40C8973199469DF7333CDA9DE133E581EB15C08E45D36B888E
+  size      536 lines, 23,925 bytes
+```
+
+The exact source delta is 12 insertions and 32 deletions, net minus 20 lines:
+10/10 in `PeriodicRegularity`, 0/12 in the Lambert module, and 2/10 in the
+second-saddle module.  The one-line difference from the claim's projected
+insertion count is only readable wrapping of the final specialization.
+
+The sole new public declaration is documented and untagged:
+
+- `exists_nonneg_bound_abs_of_isBounded_range`.
+
+Its proof uses the native Mathlib statement
+`Bornology.IsBounded.exists_pos_norm_le`; strict positivity supplies the
+advertised nonnegative constant, while `Set.forall_mem_range` and
+`Real.norm_eq_abs` turn membership in the bounded range into the exact
+pointwise absolute-value conclusion.  The specific periodic-second-derivative
+and second-saddle bounds are now direct specializations.  The identically
+shaped private Lambert theorem is deleted, and its two unchanged public
+consumer proofs resolve to the upstream declaration through the existing
+import chain.
+
+No same-domain global nonnegative absolute-bound reconstruction remains.
+The sole residual use of `Metric.isBounded_iff_subset_closedBall` in the Fabius
+tree is intentionally different: `deriv_negativeLaplacePsi_comp_isBigO_one`
+constructs a norm-native `IsBigO` witness and does not need the new helper's
+real/absolute/nonnegative packaging.  It remains byte-untouched.
+
+Every pre-existing public comment, header, type, attribute, import, namespace,
+simp rule, facade, aggregate, and canonical document is unchanged.  Two
+independent exact-live static audits pass the installed Mathlib signature,
+`forall_mem_range` rewrite direction, strict-to-nonstrict positivity step,
+both transitive import paths, all four consumers, declaration placement, and
+residual-duplicate scan.  `git diff --check`, 100-column,
+forbidden-declaration, public-header, exact-name, source-history,
+all-advertised-tip, and every-registry scans are clean.
+
+No Lean, Lake, TeX, PDF, or cache-mutating process ran, so this source is
+frozen pending coordinator review and these separate serialized gates:
+
+```text
+LEAN_NUM_THREADS=0 LAKE_JOBS=1 lake build +FabiusFunction.PeriodicRegularity
+LEAN_NUM_THREADS=0 LAKE_JOBS=1 lake build +FabiusFunction.FabiusLambertDerivativeBounds
+LEAN_NUM_THREADS=0 LAKE_JOBS=1 lake build +FabiusFunction.FabiusSecondSaddleCorrection
+```
+
+Stop after the first nonzero exit.  This is a proof/API consolidation with no
+mathematical-document change; only the matching frozen audit-ledger finding
+needs later disposition by a separately assigned documentation owner.
