@@ -6,17 +6,18 @@ Every worker reads it from the fetched `origin/main` before writing, merging,
 building, or pushing.  Workers publish replies in their own per-branch registry
 files; they do not edit this board.
 
-## Checkpoint 2026-08-25 19:41 PDT
+## Checkpoint 2026-08-25 19:55 PDT
 
 ```text
-observed main before this directive: 6397a0d6a352cd72286592d366e901d242c6017b
+observed main before this directive: c9d20ed14c7572d4f3f1361c7883085eaf5bb0d8
 coordinator branch: codex/fabius-coordinator-20260825
 integration mode: feature branches -> coordinator -> fast-forward main
 main write owner: coordinator
 codexbox build owner: coordinator (IDLE -- reserved, no worker target)
 EVO build owner: IDLE -- reserved, no worker target
-documentation owner: none; canonical frontier and primary paths remain serialized
-next poll: after the next advertised source/document checkpoint
+documentation source owner: codex/fabius-frontier-successor-20260825
+  (frontier source phase only; canonical PDF and every primary path frozen)
+next poll: after the frontier source checkpoint or a frozen Lean checkpoint
 ```
 
 The previously approved curvature, generalizations, lower-Lambert,
@@ -57,8 +58,9 @@ cherry-pick is needed.
    `Lean/FabiusFunction.lean`, and every primary-exposition, walkthrough, or
    canonical-frontier TeX/PDF path.  Any path marked hot, frozen, or
    single-owner below is also unavailable to ordinary claims.  The former
-   exposition frontier lease is released, but those canonical paths remain
-   frozen until the successor workstream is identified on this board.
+   exposition frontier lease is released.  The successor source workstream is
+   identified below, but only the exact source phase granted there is open;
+   the canonical frontier PDF and both host build tokens remain frozen.
 4. Preserve dirty work before merging.  Never stash, reset, discard, or
    overwrite it.  A checkpoint/WIP commit is acceptable on a feature branch if
    its message states exactly what remains uncompiled or unfinished.  After a
@@ -96,24 +98,48 @@ upper-bound lemma whose name should survive as a wrapper.
 
 ### `codex/fabius-lean-walkthrough-merge`
 
-The prior task is paused.  This branch may begin unrelated ordinary work under
-the shared protocol, but the three canonical-frontier paths remain exclusively
-leased elsewhere:
+Registry checkpoint `db4ef7a31` is accepted as the sole advertised successor
+request for the canonical frontier.  The live branch tree itself is not an
+acceptable integration base: it is 195 main commits behind the reviewed
+checkpoint, contains the obsolete six-part/172-page document pair, and a
+read-only merge conflicts in exactly the frontier README, TeX, and PDF.  Do not
+merge that stale tree, select either PDF side, or resolve those conflicts.
+
+The workstream must preserve its pushed historical branch, then create a fresh
+continuation branch named `codex/fabius-frontier-successor-20260825` from the
+coordinator checkpoint carrying this directive.  The pinned input blobs are:
+
+- frontier README `be3865b4b7fabbf09f3af9ce96f7e72098c0cb08`;
+- frontier TeX `b284a5e4b7eaef66cf8c38637484b7ac109e945a`;
+- inherited, mismatched and frozen PDF
+  `0cd676c1d8d1f590acadd813ad42669c8faa5aba`.
+
+**Source-phase grant.**  On that fresh base, this successor owns only the
+frontier TeX and its existing branch registry for one checkpoint.  Apply
+exactly the three advertised prose hunks around TeX lines 7317--7333: qualify
+the blanket direct-corollary introduction, mark `dyadicweb:eq:D-error` as
+frontier-dependent on the unformalized shifted-spline estimate, and qualify the
+closing blanket paragraph.  Change no formula, theorem, label, reference,
+citation, environment, layout token, README, PDF, Lean file, primary document,
+or other path.  Correct the registry's stale fetched-main/HEAD fields and state
+explicitly that this is a separate successor task with no primary scope.
+Commit and push the TeX plus own-registry source checkpoint, then stop for an
+independent source audit.
+
+No TeX/PDF/build token is granted.  The canonical PDF remains frozen.  Only
+after that exact source checkpoint passes review may the board separately
+grant one host token for exactly three sequential `pdflatex` passes and the
+post-render inspection.  The eventual render must rebuild the PDF; it must
+never reuse or conflict-resolve the old binary.
+
+Historical inputs remain preserved on the old branch:
 
 - `docs/non-formalized-research-frontiers/README.md`
 - `docs/non-formalized-research-frontiers/non-formalized-research-frontiers.tex`
 - `docs/non-formalized-research-frontiers/non-formalized-research-frontiers.pdf`
 
 The preserved 172-page rewrite source is `8142ccb19`; its registry handoff is
-`8a53bd10a`, and the clean paused branch tip is `15ada17e3`.  Do not overwrite
-or resolve its PDF or resume those paths.  Before unrelated work, fetch and
-merge current `main` only from a clean/checkpointed state under the shared
-rules.  The coordinator's semantic comparison is complete and its integration
-findings are summarized under `codex/fabius-exposition-integration` below.
-
-Observed `codexbox` state at 16:02 PDT: there is no `MERGE_HEAD` and no
-unmerged path.  If a task UI still labels it as conflict resolution, that
-label is stale for this worktree.  Do not start a new merge to reproduce it.
+`8a53bd10a`.  Those bytes are evidence only, not the successor source base.
 
 ### `codex/fabius-both-papers`
 
@@ -242,6 +268,13 @@ repaired immutable tree, serialized `LAKE_JOBS=1` builds of
 no warnings.  The two source leases are released; the branch may sync and
 begin a new ordinary nonoverlapping claim, but receives no build token.
 
+Synchronized registry tip `3102741f2` correctly records that acceptance.  Its
+request for human-readable counterparts to the eight new declarations is a
+frontier-document backlog item, not a renewed theorem-polish document lease.
+The designated frontier successor may advertise that mapping as a later,
+separate source phase only after the current three-hunk source/PDF disposition;
+do not fold it into the narrowly granted checkpoint above.
+
 ### `codex/fabius-shifted-prefix-grid`
 
 The one-file source claim is implemented at checkpoint
@@ -303,6 +336,38 @@ and content SHA-256 is
 `04F8F9AB915928A98FC422C3A5048C53110FD67C29007CE55483A853561A8D9C`,
 not the recorded `2412e544b` / `499A7D...`.  No build token or campaign-wide
 document lease is granted for the follow-up.
+
+Comment-only source commit `ef2430205` corrects two guide-level descriptions:
+the infinite-product notation is a coefficientwise finite stabilization, and
+the order-zero cutoff admits only index zero rather than making the series
+one-term.  Mechanical comparison proves that every byte outside the two
+leading module comments is unchanged; the coordinator integrated this exact
+commit as `5d779327a`, so no Lean build is required for that prose-only unit.
+
+The branch's current ordinary claim is accepted for exactly three source
+paths: `FabiusQBinomialTaylor.lean`, `ThueMorseGenerating.lean`, and
+`ThueMorseApproximation.lean`.  The seven not-yet-implemented declarations are
+the four translated-power-sum Appell APIs
+`thueMorseTranslatedPowerSumPolynomial_comp_X_add_C`,
+`thueMorseTranslatedPowerSumPolynomial_hasseDeriv`,
+`thueMorseTranslatedPowerSumPolynomial_derivative`, and
+`thueMorseTranslatedPowerSumPolynomial_derivative_succ`, plus
+`one_sub_X_pow_mul_approximationPolynomialInt_all`,
+`thueMorseBlockPolynomial_mul_invOneSubPow_eq_approximationPolynomialInt`, and
+`correctedPrefixCoefficient_eq_stepApproximant_all`.  No competing path or
+plausible-name claim was found.  The earlier convolution bridges and
+`iteratedPrefix_eq_approximationPolynomial_coeff_all` are already integrated
+and compiled context; do not reimplement them.  The corrected Generating blob
+evidence is `2908f1f1652e` / SHA-256 `04F8F9AB...A8D9C`.
+
+This branch may edit, commit, and push those claimed sources, but has no build
+token.  Freeze and advertise each source tranche before requesting serialized
+validation; the requested eventual target order remains
+`+FabiusFunction.FabiusQBinomialTaylor`,
+`+FabiusFunction.ThueMorseGenerating`,
+`+FabiusFunction.ThueMorseApproximation`,
+`+FabiusFunction.ThueMorseExponential`, and
+`+FabiusFunction.PaperKFoldThueMorse`.
 
 ### `codex/fabius-exposition-integration`
 
@@ -458,11 +523,18 @@ a requested path is serialized, hot, frozen, single-owner, or already claimed.
 
 ## Collision and integration queue
 
-No reviewed Lean tranche is currently waiting for integration.  Frontier
-source checkpoint `6397a0d6a` is already on `main` without a matching rebuilt
-PDF and remains frozen until the user-designated successor workstream
-advertises its branch and exact paths; ordinary nonoverlapping feature claims
-may continue under the shared protocol.
+No fully reviewed Lean tranche is currently waiting for integration.  Three
+separate committed units from `codex/fabius-both-papers` are under pathwise
+review at exact commits `64a95d363` (`FourierProduct.lean`), `a987b3bb9`
+(`HalfQBinomial.lean`), and `d2df7eaa7` (`AnalyticMoments.lean`); do not merge
+that moving feature branch wholesale.  Its newer dirty
+`FabiusSharpAsymptotic.lean` claim is a distinct uncheckpointed unit.
+
+Frontier source checkpoint `6397a0d6a` is already on `main` without a matching
+rebuilt PDF.  The successor is now assigned a fresh-base, three-hunk
+source-only phase above.  The PDF and both tool tokens remain frozen until the
+pushed source passes independent review.  Ordinary nonoverlapping feature
+claims may continue under the shared protocol.
 
 ## Build-token log
 
