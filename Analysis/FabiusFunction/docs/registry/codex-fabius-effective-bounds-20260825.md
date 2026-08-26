@@ -2981,3 +2981,78 @@ next bounded step: commit and push this registry-only claim without force;
   independently verify every attached declaration, formula, hypothesis,
   domain, sign, derivative order, and overclaim boundary
 ```
+
+## Handoff: complete source documentation for periodic C⁴ regularity
+
+Source checkpoint `e82b55cef1c8dcf581fce41a2cd420c0ba920be6` implements the
+complete claimed tranche and is pushed to
+`origin/codex/fabius-effective-bounds-20260825`.
+
+`PeriodicRegularity.lean` now has adjacent, formula-and-hypothesis-bearing
+comments for all 56 public declarations: the 15 existing comments remain
+exact, and the 41 names in the claim are newly documented.  The module guide
+now explains the four public layers from superexponential majorants through
+explicit derivative terms and uniform bounds, termwise tail differentiation,
+and the resulting C⁴/periodic/continuous/bounded-jet API.
+
+The comments record the exact alternating derivative signs, Eulerian
+numerators, denominator powers, majorant constants `1, 1, 2, 6`, positive-
+scale and half-line hypotheses, tail derivative indices, `C^n`, `C⁴`, and
+`C³` orders, period-one statements, and qualitative bounded-range conclusions.
+They distinguish totalized definitions from the positive-scale theorems and
+do not claim sharpness, analyticity, a least period, or an explicit bound
+where Lean proves none.
+
+Exact frozen source artifact:
+
+- `PeriodicRegularity.lean`: Git blob
+  `394e2ba61edb76f65c44e90fd722c6f448b56253`, content SHA-256
+  `4C961CC50C7312C77CF156449BF57ED9944C431939F69BD29D9A90993A695CD7`.
+
+The exact diff is 120 inserted comment lines and zero deleted baseline lines.
+A lexical comparison proves the entire non-comment Lean token stream is
+identical to baseline blob `8eb0647ebbcb5d5d7a274332ab16b5e39da96076`.
+The official repository audit reports `module_header=True`, 56 public
+declarations, and zero missing comments for this file; the corpus-wide missing
+count falls by 41.  Three independent exact-current-byte semantic reviews are
+green across all formulas, hypotheses, constants, signs, domains, regularity
+orders, attachments, overclaim boundaries, imports, headers, and whitespace.
+Local and staged `git diff --check` passed.  No Lean, Lake, TeX, PDF, cache-
+mutating process, canonical-document edit, or main write ran.
+
+The private proof helper `forward_denominator_le` remains outside the explicit
+public-declaration checkpoint; it is recorded as future private-helper prose
+debt rather than silently included after the registry-first claim.
+
+```text
+SYNC Fabius
+branch / worktree / machine: codex/fabius-effective-bounds-20260825 /
+  /home/codex/.codex/worktrees/d6d3/Proofs / codexbox
+fetched main SHA: a949e2efaa485283e66a7d2130fc723168c01efa
+HEAD and dirty paths: e82b55cef1c8dcf581fce41a2cd420c0ba920be6;
+  clean after exact-path source commit; checkpoint pushed
+writing (exact paths): this branch registry for immutable handoff only; the
+  source path above is frozen at the stated blob
+expected declarations or document claims: exact public source-prose parity
+  for all 56 declarations and module guide recorded above; no Lean-token,
+  facade, import, or canonical-doc surface
+completed commits: registry-first claim a4f707fde; source checkpoint
+  e82b55cef; both pushed without force
+validated (exact command, SHA/state, exit code): repository doc_audit now
+  reports 56 public / 0 missing for PeriodicRegularity; local and staged git
+  diff --check exited 0; lexical non-comment comparison matches the baseline;
+  three independent exact-current-byte semantic reviews are green; exact
+  blob/SHA evidence is recorded above
+not yet validated: no Lean/Lake target or downstream importer was built on
+  this branch; comment-only and static review are not compiler evidence
+requested integration or lease: request one serialized LAKE_JOBS=1 build of
+  +FabiusFunction.PeriodicRegularity and optional direct-import smoke target
+  +FabiusFunction.PeriodicSmooth; request coordinator review and selective
+  integration; request no main-write or document lease
+conflicts / dependencies: this source remains disjoint from the active
+  Wikipedia and inverse validation targets and from all other frozen local
+  blobs; only the coordinator may advance main
+next bounded step: freeze the source blob, push this handoff, fetch main,
+  reread any board delta, and choose another disjoint theorem or source-parity
+  tranche; do not expand this checkpoint to its private helper retroactively
+```
