@@ -803,3 +803,125 @@ conflicts / dependencies: the inverse hierarchy is now integrated, green, and
 next bounded step: commit and push this immutable handoff, notify the
   coordinator, and launch no Lean/Lake process before an explicit board grant
 ```
+
+## EVO validation handoff: target-local normalization failure, token released
+
+Coordinator checkpoint `0f9a6db8313d626c52dc0e4ef31b42158bbd1bb0`
+granted exactly three strictly sequential gates.  This branch merged that
+checkpoint as validation tree
+`2ad7703d374d42a6f451b28a49c3f12c64ced99e`, pushed it, verified no preexisting
+Lean/Lake/Elan process, and rechecked the granted source blob and digest:
+
+```text
+FabiusDecayComparison.lean blob:
+  5a407fe366bead3fa2bb8f9d90cac14900fc46bf
+FabiusDecayComparison.lean SHA-256:
+  50D055DFE92CCB49DB871DC7E0CA0DCCB1A26B8874DDEB4CD0CD413075D8DA9D
+```
+
+The first granted command was then run from the repository root:
+
+```powershell
+$env:LEAN_NUM_THREADS = '0'
+$env:LAKE_JOBS = '1'
+lake build +FabiusFunction.FabiusDecayComparison
+```
+
+Lake scheduled 3,312 jobs.  Host snapshots throughout the run showed the
+single Elan launcher/toolchain-Lake pair and at most one `lean.exe` child; the
+sampled children included `DyadicAnalytic.lean` and `TaylorReduction.lean`.
+Thus `LEAN_NUM_THREADS=0` supplied the intended strict serialization.  Twenty
+reported rebuilt prerequisites completed successfully, including
+`FabiusLogSquaredAsymptotic` and `FabiusSmallArgumentScale`, before the exact
+endpoint target ran.
+
+The endpoint target exited `1` after 18 seconds with exactly these two source
+diagnostics:
+
+```text
+Analysis/FabiusFunction/Lean/FabiusFunction/FabiusDecayComparison.lean:50:10:
+Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  2 ^ ?y
+in the target expression
+  (fun x => Real.exp (Real.log 2 * β * x)) t =
+    (fun t => 2 ^ (β * t)) t
+
+F : BoundedFabius
+hF : IsFabius F
+β : ℝ
+hβ : 0 < β
+t : ℝ
+⊢ (fun x => Real.exp (Real.log 2 * β * x)) t =
+    (fun t => 2 ^ (β * t)) t
+```
+
+```text
+Analysis/FabiusFunction/Lean/FabiusFunction/FabiusDecayComparison.lean:64:4:
+Type mismatch: After simplification, term
+  Tendsto.comp
+    (tendsto_rpow_atTop_of_base_gt_one 2 ...)
+    (Tendsto.const_mul_atTop hβ tendsto_id)
+has type
+  @Tendsto ℝ ℝ (fun x => 2 ^ (β * id x)) atTop atTop
+but is expected to have type
+  @Tendsto ℝ ℝ (fun t => 2 ^ (β * t)) atTop atTop
+```
+
+Lean then reported:
+
+```text
+error: Lean exited with code 1
+Some required targets logged failures:
+- FabiusFunction.FabiusDecayComparison
+error: build failed
+```
+
+These are statement-preserving proof-normalization defects, not mathematical,
+API, import, or dependency failures.  The first goal retains unapplied lambda
+applications, so the direct `rw [Real.rpow_def_of_pos ...]` cannot see the
+right-hand `rpow`.  The second retains `id x` after unfolding composition.
+The exact proposed repair is limited to:
+
+```lean
+  · exact Filter.Eventually.of_forall fun t => by
+      change Real.exp (Real.log 2 * β * t) =
+        (2 : ℝ) ^ (β * t)
+      rw [Real.rpow_def_of_pos (by norm_num : (0 : ℝ) < 2)]
+      congr 1
+      ring
+```
+
+and adding `id_eq` to the second normalization:
+
+```lean
+    simpa only [Function.comp_def, id_eq] using
+      (tendsto_rpow_atTop_of_base_gt_one (2 : ℝ) (by norm_num)).comp
+        (tendsto_id.const_mul_atTop hβ)
+```
+
+No public statement, name, hypothesis, import, module prose, other proof, or
+other path needs to change.  Per the stop-on-first-failure rule,
+`+FabiusFunction.FabiusQuotientExponentialMismatch` and
+`+FabiusFunction.PaperKFoldThueMorse` were not launched.  No cache clean,
+reconstruction, source repair, TeX/PDF command, or fourth target was attempted.
+All Lean/Lake/Elan processes exited, tracked files remained clean, the source
+blob/digest remained exact, and the EVO Lean/Lake token is explicitly released.
+
+```text
+SYNC Fabius
+branch / worktree / machine: codex/fabius-inverse-asymptotic-20260825 /
+  C:/Users/vresh/.codex/worktrees/c9a3/ProveIt / EVO (Windows)
+fetched and merged grant SHA: 0f9a6db8313d626c52dc0e4ef31b42158bbd1bb0
+failed validation tree: 2ad7703d374d42a6f451b28a49c3f12c64ced99e
+writing: this registry only; source remains frozen at blob 5a407fe366
+validated: strict host serialization, 3,311 prerequisite jobs, exact target
+  reachability, and the two complete target-local elaboration diagnostics
+not yet validated: the changed endpoint target and both direct consumers
+released: EVO Lean/Lake token; no Lean/Lake/Elan process remains
+requested next source action: apply only the two statement-preserving
+  normalization repairs displayed above, then publish a new immutable blob
+conflicts / dependencies: no mathematical/source-path collision was exposed;
+  the effective-bounds inverse-helper handoff remains a separate future lane
+next bounded step: commit and push this failure handoff, notify the coordinator,
+  and perform no repair or retry until the board records its disposition
+```
