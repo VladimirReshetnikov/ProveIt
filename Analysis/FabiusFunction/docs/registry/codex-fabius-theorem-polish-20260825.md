@@ -1988,3 +1988,94 @@ next bounded step: push this registry-only immutable handoff and remain
   build-idle until the coordinator board assigns the EVO token; then run only
   the one requested focused target and preserve exact diagnostics
 ```
+
+## Validated cluster-set acceptance and primary-document lease request
+
+The coordinator integrated the exact three-source sequence as `0e283d01f`,
+`9830baf09`, and `508341204`, then applied the statement-preserving proof
+repair `e332a58fd`.  At that repaired tree, the serialized focused build
+`+FabiusFunction.FabiusSharpAsymptotic` completed 3891 jobs and exited 0;
+fresh downstream builds of `+FabiusFunction.FabiusInverseAsymptotic` (3931
+jobs) and `+FabiusFunction.PaperFabiusAsymptotic` (3960 jobs) also exited 0.
+All three runs reported only the inherited nonblocking
+`ProbabilityLaplaceMoments.lean` linter.  No theorem statement changed in the
+repair.
+
+Feature merge `1af1aa904c2d971632d9e5a3498fad5b67811cb3` incorporates current
+`origin/main` `948bf3f377472c068f9539e0569d383ddc35f617`.  Its two source
+conflicts were wholly inside this branch's released claim and were resolved to
+the exact compiler-validated main forms.  The synchronized final blobs are:
+
+- `FabiusWikipediaMain.lean`:
+  `c8b9cb20e9e9d95bd6445dce615649e3420357af`;
+- `FabiusWikipediaObstruction.lean`:
+  `f69e4d35ad244dc5cb095b8d3e963e64df490ad8`; and
+- `FabiusSharpAsymptotic.lean`:
+  `ad9ca03afa73a9ac4788e5eb14db13e8f2bf2f89`.
+
+The next bounded unit requests an explicit canonical-document lease for
+exactly:
+
+- `docs/Fabius_Function_and_Rvachev_Up/Fabius_Function_and_Rvachev_Up.tex`;
+- `docs/Fabius_Function_and_Rvachev_Up/Fabius_Function_and_Rvachev_Up.pdf`;
+  and
+- this branch registry.
+
+The starting canonical blobs remain the accepted TeX
+`5071d1f32f5f732e7cc59f569190532b6d815d57` and PDF
+`4529d9c453d647e4068e2ff5527c417f5564f5d0`.  Under a grant, the document will
+replace the now-obsolete multiplier-one warning with one formalization-backed
+theorem, **Exact cluster interval of the online quotient**, and the labels
+`thm:mse-lambert-ratio-cluster`, `eq:mse-lambert-ratio-model`,
+`eq:mse-lambert-cluster-interval`, `eq:mse-lambert-liminf-limsup`, and
+`eq:mse-lambert-no-constant`.  It will state the corrected ratio-one model,
+the complete cluster interval
+`[exp negativeLaplacePsiPeriodMin, exp negativeLaplacePsiPeriodMax]`, the exact
+liminf and limsup, their strict separation, and failure of every real constant
+normalization.  The adjacent Lean guide will name the exact declarations in
+the validated three-module tranche.  It will make no numerical-extremum,
+unique-phase, sign-of-extrema, or finite-elementary-closed-form claim.
+
+```text
+SYNC Fabius
+branch / worktree / machine: codex/fabius-theorem-polish-20260825 /
+  C:/Users/vresh/.codex/worktrees/10ef/ProveIt / EVO (Windows)
+fetched main SHA: 948bf3f377472c068f9539e0569d383ddc35f617
+HEAD and dirty paths: 1af1aa904c2d971632d9e5a3498fad5b67811cb3;
+  clean after the current-main merge, then only this own registry is dirty for
+  the lease request
+writing (exact paths): now only
+  docs/registry/codex-fabius-theorem-polish-20260825.md; after an explicit
+  board grant, exactly the canonical primary TeX/PDF pair listed above plus
+  this own registry
+expected declarations or document claims: no new Lean declaration; one exact
+  human-readable counterpart for the validated corrected quotient model,
+  complete cluster interval, liminf/limsup formulas, strict gap, and
+  every-constant obstruction, with the five collision-free labels listed above
+completed commits: 305d71e3f (literal factor), 46a8e3d8f (phase-cluster
+  engine), ba7eebad0 (ratio cluster set and extremal limits), 0e283d01f /
+  9830baf09 / 508341204 (coordinator source integrations), e332a58fd
+  (statement-preserving repair), and 1af1aa904 (feature synchronization)
+validated (exact command, SHA/state, exit code): on the repaired coordinator
+  tree, serialized `LAKE_JOBS=1 lake build
+  +FabiusFunction.FabiusSharpAsymptotic` completed 3891 jobs and exited 0;
+  fresh serialized `+FabiusFunction.FabiusInverseAsymptotic` and
+  `+FabiusFunction.PaperFabiusAsymptotic` gates completed 3931 and 3960 jobs
+  and exited 0; only the inherited nonblocking linter appeared
+not yet validated: this worktree launched no Lean, Lake, LaTeX, or PDF process;
+  the proposed exposition has not been edited or rendered because the pair is
+  frozen and no document token is assigned
+requested integration or lease: grant exactly the canonical primary TeX/PDF
+  paths above and the sole lightweight sequential EVO TeX/PDF lane; authorize
+  three sequential `pdflatex -interaction=nonstopmode -halt-on-error` passes
+  plus static, text, font, and raster inspection; no Lean/Lake token, frontier,
+  README, root aggregate, facade, coverage, audit, walkthrough, or coordination
+  path is requested
+conflicts / dependencies: the feature contains current main and is clean
+  except for this registry request; the two merge conflicts were confined to
+  the released source claim and resolved byte-for-byte to validated main; the
+  canonical starting TeX/PDF blobs still match the board
+next bounded step: commit and push this registry-only request to the feature
+  branch, notify the coordinator, and remain read-only until the exact
+  primary-document lease and EVO TeX/PDF token are granted
+```
