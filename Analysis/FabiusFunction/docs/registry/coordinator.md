@@ -6,15 +6,15 @@ Every worker reads it from the fetched `origin/main` before writing, merging,
 building, or pushing.  Workers publish replies in their own per-branch registry
 files; they do not edit this board.
 
-## Checkpoint 2026-08-25 21:15 PDT
+## Checkpoint 2026-08-25 21:19 PDT
 
 ```text
-observed main before this directive: a3cbe179443df1593b50a8034ce456729a004f9d
+observed main before this directive: a515f57abf854e3ce86b312e0ca3e6e64354003c
 coordinator branch: codex/fabius-coordinator-20260825
 integration mode: feature branches -> coordinator -> fast-forward main
 main write owner: coordinator
 codexbox Lean/Lake owner: coordinator
-  (IDLE after all-degree complex-branch validation)
+  (IDLE after coarse eighth-order reference-tail validation)
 codexbox TeX/PDF owner: unassigned
   (IDLE; no active documentation agent)
 EVO Lean/Lake owner: unassigned
@@ -556,14 +556,18 @@ and lack of competing active path claim.  Two corrections are binding:
   `exp_neg_sq_orderRadius_div_four` all-orders identity as known nonblocking
   semantic overlap rather than claiming no semantic match.
 
-**Source-only claim approved:** after rereading this checkpoint, the worker may
-edit only `FabiusSaddleReferenceTail.lean` and its registry, keep
-`FabiusLambertRates.lean` frozen, preserve the old Big-O theorem header, and
-push an immutable source checkpoint without Lean/Lake.  No document, facade,
-root, or other path is authorized.  Later validation, after exact review, is
-`+FabiusFunction.FabiusSaddleReferenceTail` followed separately by its smallest
-direct importer `+FabiusFunction.GaussianPolynomialTail`; no build token is
-granted now.
+Exact source commit `933121538` implements the claim and was integrated as
+`f85409a18`.  Three independent reviews accept the identity, constants, signs,
+threshold, arbitrary-filter packaging, and weakening from `O(b⁻⁸)` to
+`O(b⁻¹)`.  The source has the exact current-main preimage, changes only the
+claimed module, and promotes the former private identity while adding the two
+advertised estimates.  The old order-one Big-O theorem header and both direct
+consumer interfaces remain byte-identical.  The prose correctly calls the rate
+coarse and records the discarded `1/A` factor and downstream private overlap.
+Separate serialized builds of `+FabiusFunction.FabiusSaddleReferenceTail`
+(3432 jobs) and `+FabiusFunction.GaussianPolynomialTail` (3436 jobs) both exited
+0 without warnings.  The source lease and codexbox token are released;
+`FabiusLambertRates.lean` was not changed by this tranche.
 
 ### `codex/fabius-shifted-prefix-grid`
 
@@ -860,10 +864,9 @@ spline cleanup, reflected Laplace moments, and the shifted-prefix seven-name
 tranche are integrated and validated as recorded above.  Continue to avoid
 merging either moving feature history wholesale.  The generic Rvachev bridge
 and Lambert-rate equivalence tranches are also integrated, repaired, compiled,
-and released.  The all-degree complex branch theorem and its downstream
-all-real continuation are integrated and green.  The disjoint eighth-order
-reference-tail tranche has an immutable source handoff under exact review and
-no build token.
+and released.  The all-degree complex branch theorem, its downstream all-real
+continuation, and the disjoint coarse eighth-order reference-tail tranche are
+integrated, compiled, and released.
 
 Theorem-polish source commit `665b6bce` is integrated as `c80f61c90`, repaired
 without statement changes at `6b6757e90`, and accepted after its focused
@@ -1032,6 +1035,12 @@ without warnings.
 For the downstream all-real complex-spline continuation, a serialized build at
 `19ee18206` of `+FabiusFunction.FabiusComplexShiftSpline` completed 3417 jobs
 and exited 0 without warnings.
+
+For the coarse eighth-order reference-tail tranche, separate serialized builds
+at `f85409a18` of `+FabiusFunction.FabiusSaddleReferenceTail` (3432 jobs) and
+`+FabiusFunction.GaussianPolynomialTail` (3436 jobs) both exited 0 without
+warnings.  An earlier command issued from a directory without a Lake project
+configuration exited before invoking Lean and supplies no validation evidence.
 
 On EVO, exact shifted-prefix merge `4367a7f86` and tree `db635e6a073b`
 preserved source commits `8021c555f` and `f7152d5fc`.  Separate sequential
