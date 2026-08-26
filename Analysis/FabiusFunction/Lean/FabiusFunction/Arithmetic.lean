@@ -68,6 +68,15 @@ theorem two_mul_choose_two_add (n : ℕ) :
       rw [hstep, ih]
       ring
 
+/-- A natural-number square splits into two adjacent second binomial coefficients. -/
+theorem choose_square_split (n : ℕ) :
+    n * n = (n + 1).choose 2 + n.choose 2 := by
+  rw [choose_succ_two]
+  calc
+    n * n = n ^ 2 := by ring
+    _ = 2 * n.choose 2 + n := (two_mul_choose_two_add n).symm
+    _ = (n.choose 2 + n) + n.choose 2 := by ring
+
 /-- The shifted form of `choose_succ_two`, stated at `n + 2` because several
 dyadic recursions index their blocks from one rather than zero. -/
 theorem choose_add_two_two (n : ℕ) :

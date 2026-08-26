@@ -360,24 +360,6 @@ private theorem qBinomialThueMorseNumerator_eq_weighted (n : ℕ) :
       norm_num
       field_simp
 
-private theorem choose_square_split (n : ℕ) :
-    n * n = (n + 1).choose 2 + n.choose 2 := by
-  induction n with
-  | zero => simp
-  | succ n ih =>
-      have htop : (n + 2).choose 2 = (n + 1).choose 2 + (n + 1) := by
-        rw [show n + 2 = (n + 1) + 1 by omega,
-          show 2 = 1 + 1 by omega, Nat.choose_succ_succ]
-        simp [Nat.choose_one_right]
-        omega
-      have hbottom : (n + 1).choose 2 = n.choose 2 + n := by
-        rw [show n + 1 = n + 1 by rfl,
-          show 2 = 1 + 1 by omega, Nat.choose_succ_succ]
-        simp [Nat.choose_one_right]
-        omega
-      rw [htop, hbottom]
-      nlinarith
-
 /-- The requested right-hand side reduces to the established recurrence
 normalization for every natural `n`, including zero. -/
 theorem qBinomialThueMorseFormula_eq_recurrenceSequence (n : ℕ) :
