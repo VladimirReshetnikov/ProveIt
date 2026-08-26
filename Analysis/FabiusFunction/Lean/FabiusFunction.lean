@@ -26,6 +26,7 @@ import FabiusFunction.ThueMorseMultinomial
 import FabiusFunction.ThueMorseFourier
 import FabiusFunction.ThueMorseSineProduct
 import FabiusFunction.ThueMorseFourierInversion
+import FabiusFunction.ThueMorseParseval
 import FabiusFunction.NegativeLaplace
 import FabiusFunction.ProbabilityLaplaceMoments
 import FabiusFunction.UnitLaplaceMomentBounds
