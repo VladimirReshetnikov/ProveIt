@@ -8,11 +8,19 @@ SYNC Fabius
 branch / worktree / machine: codex/fabius-both-papers /
   /home/codex/src/Proofs / codexbox
 fetched main SHA: de303339202ef0b7fb99da83003d4b841eef9b80
-HEAD and dirty paths: 347ea497c3814b30131b4133c2a3eb564a0b93f6;
-  dirty only in this own-registry synchronization after the clean merge
-writing (exact paths): none; the uniform-spline source claim is released
-expected declarations or document claims: none in flight; the dead-helper
-  cleanup is frozen at the source checkpoint below
+HEAD and dirty paths: 777550a18f16d55f5586616e2194658f59a58bc3;
+  clean before this ordinary generic-derivative claim
+writing (exact paths):
+  Lean/FabiusFunction/Differential.lean;
+  Lean/FabiusFunction/Existence.lean;
+  docs/registry/codex-fabius-both-papers.md
+expected declarations or document claims:
+  add `rvachevUp_hasDerivAt_of_fabiusReal_hasDerivAt`, deriving Rvachev's
+  refinement equation from only left-tail vanishing and the global bounded
+  derivative identity; keep `rvachev_hasDerivAt` unchanged as its `IsFabius`
+  specialization; delete the duplicate private negative-branch helper and
+  full three-case proof in `Existence.lean`, making
+  `rvachevCandidate_hasDerivAt` a direct application of the generic theorem
 completed commits: Lower-Lambert source checkpoint `1da2fde2285e3970267b7dc2561bcd0d897be1b4`
   was integrated by coordinator merge `046946a974467e83244fd3a183a3e084e70d3379`;
   registry handoff `225f5338de9ea92489ed6a2c0c371c6edb4f5db9`
@@ -224,10 +232,15 @@ conflicts / dependencies: all advertised Fabius heads and their registries
   advertised Fabius tip find no implemented uncorrected-Wikipedia
   `not_isEquivalent` theorem and no competing claim on
   `FabiusSharpAsymptotic.lean`; the coordinator explicitly released its prior
-  generalizations lease
-next bounded step: push this synchronized handoff, request serialized
-  `+FabiusFunction.FabiusUniformSpline` validation, and advertise the next
-  ordinary nonoverlapping source claim after the required collision sweep
+  generalizations lease; a refreshed sweep of current main and every advertised
+  Codex/Claude Fabius tip finds no generic Rvachev derivative bridge, alternate
+  semantic equivalent, or active claim on `Differential.lean` or
+  `Existence.lean`; the only matching text is the unimplemented serialized
+  audit proposal, and the board has released both ordinary source paths
+next bounded step: push this exact two-source-file claim, implement the generic
+  derivative bridge and fixed-point deduplication without running a build,
+  obtain independent review, and request serialized
+  `+FabiusFunction.Existence` validation
 ```
 
 ## Dead uniform-spline helper cleanup handoff
