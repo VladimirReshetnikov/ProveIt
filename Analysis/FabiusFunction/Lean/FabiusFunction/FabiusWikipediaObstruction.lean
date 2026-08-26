@@ -1,6 +1,8 @@
 import FabiusFunction.PeriodicFourier
 import FabiusFunction.FabiusExplicitSharpTransfer
 import Mathlib.Analysis.SpecialFunctions.Pow.Asymptotics
+import Mathlib.Topology.Bases
+import Mathlib.Topology.Instances.Real.Lemmas
 
 /-!
 # The periodic obstruction to the uncorrected Wikipedia asymptotic
@@ -72,24 +74,20 @@ lemma fabiusLambertPhase_inverse_on_lower_branch
   dsimp [u]
   field_simp [hL.ne']
 
-/-- Nonconstancy supplies a phase at which the centered correction is
-nonzero. -/
-lemma exists_negativeLaplacePsi_ne_zero :
-    ∃ a : ℝ, negativeLaplacePsi a ≠ 0 := by
-  by_contra h
-  apply negativeLaplacePsi_not_constant
-  refine ⟨0, fun t => ?_⟩
-  by_contra ht
-  exact h ⟨t, ht⟩
+/-- Every value of a one-periodic function is a cluster value when the
+function is sampled at the exact positive lower-Lambert phase near zero.
 
-/-- The periodic fluctuation sampled at the exact lower-Lambert phase does
-not tend to zero as `x → 0⁺`.  This is the intrinsic obstruction behind all
-of the rate-specific results below. -/
-theorem negativeLaplacePsi_comp_fabiusLambertPhase_not_tendsto_zero :
-    ¬ Tendsto (negativeLaplacePsi ∘ fabiusLambertPhase)
-        (nhdsWithin 0 (Ioi 0)) (nhds 0) := by
-  intro hzero
-  obtain ⟨a, ha⟩ := exists_negativeLaplacePsi_ne_zero
+Indeed, after moving the chosen phase `a` far enough onto the lower branch,
+the arguments
+`x_n = (a + N + n) * 2 ^ (-(a + N + n))` tend to zero from the right, the
+Lambert phase of `x_n` is exactly `a + N + n`, and periodicity makes every
+sample equal to `p a`.  No separation or continuity assumption on the
+codomain is needed for this inclusion. -/
+theorem mapClusterPt_periodic_comp_fabiusLambertPhase
+    {α : Type*} [TopologicalSpace α] {p : ℝ → α}
+    (hp : Function.Periodic p 1) (a : ℝ) :
+    MapClusterPt (p a) (nhdsWithin 0 (Ioi 0))
+      (p ∘ fabiusLambertPhase) := by
   obtain ⟨N : ℕ, hN⟩ := exists_nat_gt (1 / Real.log 2 - a)
   have hlogTwo : 0 < Real.log 2 := Real.log_pos (by norm_num)
   have hbase : 1 < Real.log 2 * (a + (N : ℝ)) := by
@@ -133,27 +131,62 @@ theorem negativeLaplacePsi_comp_fabiusLambertPhase_not_tendsto_zero :
   have hphase : ∀ n : ℕ, fabiusLambertPhase (x n) = y n := by
     intro n
     exact fabiusLambertPhase_inverse_on_lower_branch (hyLower n)
-  have hperiod : ∀ n : ℕ, negativeLaplacePsi (y n) = negativeLaplacePsi a := by
+  have hsample : ∀ n : ℕ,
+      (p ∘ fabiusLambertPhase) (x n) = p a := by
     intro n
-    have hp : Function.Periodic negativeLaplacePsi 1 :=
-      negativeLaplacePsi_add_one
+    rw [Function.comp_apply, hphase n]
     simpa [y] using hp.nat_mul (N + n) a
-  have hcomposed : ∀ n : ℕ,
-      (negativeLaplacePsi ∘ fabiusLambertPhase) (x n) =
-        negativeLaplacePsi a := by
-    intro n
-    simp only [Function.comp_apply, hphase n, hperiod n]
-  have hpsiZero : Tendsto
-      (fun n : ℕ => (negativeLaplacePsi ∘ fabiusLambertPhase) (x n))
-      atTop (nhds 0) :=
-    hzero.comp hxWithin
-  have hpsiA : Tendsto
-      (fun n : ℕ => (negativeLaplacePsi ∘ fabiusLambertPhase) (x n))
-      atTop (nhds (negativeLaplacePsi a)) := by
-    simpa only [hcomposed] using
-      (tendsto_const_nhds : Tendsto (fun _ : ℕ => negativeLaplacePsi a)
-        atTop (nhds (negativeLaplacePsi a)))
-  exact ha (tendsto_nhds_unique hpsiA hpsiZero)
+  have hsampleTendsto :
+      Tendsto ((p ∘ fabiusLambertPhase) ∘ x) atTop (nhds (p a)) := by
+    apply (tendsto_const_nhds :
+      Tendsto (fun _ : ℕ => p a) atTop (nhds (p a))).congr'
+    filter_upwards with n
+    exact (hsample n).symm
+  exact hsampleTendsto.mapClusterPt.of_comp hxWithin
+
+/-- For a continuous one-periodic map into a Hausdorff space, the cluster
+values obtained by sampling at the exact lower-Lambert phase near zero are
+exactly the full range of the periodic map. -/
+theorem mapClusterPt_periodic_comp_fabiusLambertPhase_iff
+    {α : Type*} [TopologicalSpace α] [T2Space α] {p : ℝ → α}
+    (hp : Function.Periodic p 1) (hcont : Continuous p) {z : α} :
+    MapClusterPt z (nhdsWithin 0 (Ioi 0))
+        (p ∘ fabiusLambertPhase) ↔
+      z ∈ range p := by
+  constructor
+  · intro hz
+    have hcompact : IsCompact (range p) :=
+      hp.compact_of_continuous one_ne_zero hcont
+    exact hcompact.isClosed.mem_of_mapClusterPt hz
+      (Eventually.of_forall fun x => ⟨fabiusLambertPhase x, rfl⟩)
+  · rintro ⟨a, rfl⟩
+    exact mapClusterPt_periodic_comp_fabiusLambertPhase hp a
+
+/-- Nonconstancy supplies a phase at which the centered correction is
+nonzero. -/
+lemma exists_negativeLaplacePsi_ne_zero :
+    ∃ a : ℝ, negativeLaplacePsi a ≠ 0 := by
+  by_contra h
+  apply negativeLaplacePsi_not_constant
+  refine ⟨0, fun t => ?_⟩
+  by_contra ht
+  exact h ⟨t, ht⟩
+
+/-- The periodic fluctuation sampled at the exact lower-Lambert phase does
+not tend to zero as `x → 0⁺`.  This is the intrinsic obstruction behind all
+of the rate-specific results below. -/
+theorem negativeLaplacePsi_comp_fabiusLambertPhase_not_tendsto_zero :
+    ¬ Tendsto (negativeLaplacePsi ∘ fabiusLambertPhase)
+      (nhdsWithin 0 (Ioi 0)) (nhds 0) := by
+  intro hzero
+  obtain ⟨a, ha⟩ := exists_negativeLaplacePsi_ne_zero
+  have hcluster : MapClusterPt (negativeLaplacePsi a)
+      (nhdsWithin 0 (Ioi 0))
+      (negativeLaplacePsi ∘ fabiusLambertPhase) :=
+    mapClusterPt_periodic_comp_fabiusLambertPhase
+      negativeLaplacePsi_add_one a
+  obtain ⟨x, hpsiA, hxWithin⟩ := hcluster.exists_seq_tendsto
+  exact ha (tendsto_nhds_unique hpsiA (hzero.comp hxWithin))
 
 /-- The periodic fluctuation sampled at the exact lower-Lambert phase cannot
 be hidden in an `O(1 / (-log x))` remainder at `x → 0⁺`. -/

@@ -177,12 +177,6 @@ theorem abs_eval_le_one_of_legendre_ode
       linarith
     _ ≤ 1 := henergyLe
 
-private lemma legendre_weight_at_neg_one :
-    (1 - (-1 : ℝ) ^ 2) = 0 := by norm_num
-
-private lemma legendre_weight_at_one :
-    (1 - (1 : ℝ) ^ 2) = 0 := by norm_num
-
 /-- Green's identity for the Legendre Sturm--Liouville operator.
 
 No endpoint flatness is needed: the boundary terms vanish because the weight

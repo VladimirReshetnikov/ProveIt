@@ -24,6 +24,21 @@ noncomputable def fabiusWikipediaLambertMain (x : ℝ) : ℝ :=
   -7 * Real.log 2 / 12 - Real.log (Real.pi * x) / 2 +
     (gammaZetaConstant - W - W ^ 2 / 2) / Real.log 2
 
+/-- The literal multiplicative Lambert-W expression printed in the online
+source.
+
+The exponent `(7 / 12 : ℝ)` is deliberately a real power.  As with
+`fabiusWikipediaLambertMain`, this definition is totalized, but its source
+interpretation is on the positive lower-Lambert branch domain. -/
+noncomputable def fabiusWikipediaLambertFactor (x : ℝ) : ℝ :=
+  let W := lowerLambertW (-(Real.log 2 * x));
+  1 / ((2 : ℝ) ^ (7 / 12 : ℝ) * Real.sqrt (Real.pi * x)) *
+    Real.exp
+      ((firstStieltjesConstant +
+            Real.eulerMascheroniConstant ^ 2 / 2 - Real.pi ^ 2 / 12 -
+            W - W ^ 2 / 2) /
+        Real.log 2)
+
 /-- Corrected compact form of the Wikipedia small-argument main term. -/
 noncomputable def fabiusCorrectedWikipediaMain (x : ℝ) : ℝ :=
   let W := lowerLambertW (-(Real.log 2 * x));
@@ -38,6 +53,56 @@ theorem fabiusCorrectedWikipediaMain_eq_WikipediaLambertMain_add (x : ℝ) :
       fabiusWikipediaLambertMain x +
         negativeLaplacePsi (fabiusLambertPhase x) := by
   rfl
+
+/-- On the positive half-line, exponentiating the compact logarithmic main
+term gives exactly the literal multiplicative expression printed online. -/
+theorem exp_fabiusWikipediaLambertMain_eq_WikipediaLambertFactor
+    {x : ℝ} (hx : 0 < x) :
+    Real.exp (fabiusWikipediaLambertMain x) =
+      fabiusWikipediaLambertFactor x := by
+  have hpix : 0 < Real.pi * x := mul_pos Real.pi_pos hx
+  have htwo :
+      Real.exp (-7 * Real.log 2 / 12) =
+        ((2 : ℝ) ^ (7 / 12 : ℝ))⁻¹ := by
+    rw [Real.rpow_def_of_pos (by norm_num : (0 : ℝ) < 2),
+      ← Real.exp_neg]
+    congr 1
+    ring
+  have hsqrt :
+      Real.exp (Real.log (Real.pi * x) / 2) =
+        Real.sqrt (Real.pi * x) := by
+    rw [← Real.log_sqrt hpix.le,
+      Real.exp_log (Real.sqrt_pos.2 hpix)]
+  have hgamma :
+      gammaZetaConstant =
+        firstStieltjesConstant +
+          Real.eulerMascheroniConstant ^ 2 / 2 - Real.pi ^ 2 / 12 := by
+    unfold gammaZetaConstant
+    ring
+  unfold fabiusWikipediaLambertMain fabiusWikipediaLambertFactor
+  dsimp only
+  rw [hgamma, Real.exp_add, Real.exp_sub, htwo, hsqrt]
+  simp only [div_eq_mul_inv, mul_inv_rev]
+  ring
+
+/-- The literal online factor is strictly positive on its intended positive
+domain. -/
+theorem fabiusWikipediaLambertFactor_pos {x : ℝ} (hx : 0 < x) :
+    0 < fabiusWikipediaLambertFactor x := by
+  rw [← exp_fabiusWikipediaLambertMain_eq_WikipediaLambertFactor hx]
+  exact Real.exp_pos _
+
+/-- Exponentiating the corrected logarithmic main multiplies the literal
+online factor by the missing periodic correction. -/
+theorem
+    exp_fabiusCorrectedWikipediaMain_eq_WikipediaLambertFactor_mul_periodic
+    {x : ℝ} (hx : 0 < x) :
+    Real.exp (fabiusCorrectedWikipediaMain x) =
+      fabiusWikipediaLambertFactor x *
+        Real.exp (negativeLaplacePsi (fabiusLambertPhase x)) := by
+  rw [fabiusCorrectedWikipediaMain_eq_WikipediaLambertMain_add,
+    Real.exp_add,
+    exp_fabiusWikipediaLambertMain_eq_WikipediaLambertFactor hx]
 
 /-- Logarithmic form of the exact saddle equation `λ 2⁻λ = x`. -/
 theorem log_fabiusLambertArgument {x : ℝ} (hx : 0 < x)
