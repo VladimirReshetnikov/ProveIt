@@ -4253,3 +4253,74 @@ conflicts / dependencies: Second must retain post-Gaussian blob c9a762...;
 next bounded step: commit/push claim, repeat the name/path scan, author only
   the three claimed modules, freeze, and obtain two exact-byte reviews
 ```
+
+## Handoff: first saddle correction in bounded exponent jets
+
+Source checkpoint `081bf8d05` implements the preceding claim exactly and was
+pushed without force.  The immutable source artifacts are:
+
+- Recurrence blob `e95172a31fd69cccc5c5d04324597f7e0384d5ff`,
+  SHA-256 `D79E9336308EE86B0995C95027FF292AE6AB0033EA86CF5FC809C2DC7551BABA`,
+  10,475 bytes / 258 lines;
+- First blob `dfe540d1ce518cffaf5174d7e2c4ad6c388fa015`,
+  SHA-256 `013C257D819315C3CE862427DCE1C6ED873FF96FE3651AF1746512BF7E05E791`,
+  5,272 bytes / 135 lines;
+- Second blob `af434a59f772a6335847d36127dc095e74802ea0`,
+  SHA-256 `223D06756A781054DE28713A300B83E137496E29C1752170B34D596AD1A3DE5D`,
+  24,117 bytes / 539 lines.
+
+The new First API identifies the odd linear coefficient with `d₀`, the even
+quadratic coefficient with `-d₁/2`, and the full correction with
+`-d₀²/2 - d₀ - d₁/2 - 1/12`.  The component proofs consume the existing
+zero/one jet formulas; the even identity explicitly discharges
+`Real.log 2 ≠ 0` before field normalization.  The full identity rewrites the
+existing Gaussian-contraction theorem through both components and closes by
+rational-ring normalization.  The old Second theorem has its exact header,
+comment, and conclusion and now forwards to this First theorem.
+
+Exact baseline diffs are Recurrence +8/-0 (comments only), First +36/-1
+(the claimed import replacement, three theorem blocks, and eight comments),
+and Second +1/-6 (only the duplicate compatibility proof body).  Independent
+hash anchors prove that the Second prefix through the preserved theorem header
+and every byte from `namespace SaddleExpansion` onward match the accepted
+post-Gaussian baseline.  The strict public documentation inventories are
+21/21, 12/12, and 21/21.  No proposed name collides; occurrences are only the
+three definitions and intended internal/compatibility uses.
+
+Author checks and two independent hostile exact-byte reviews agree on every
+sign, `log 2` power, rational constant, import edge, legacy consumer, strict
+count, and post-Gaussian preservation boundary.  Local and staged diff checks,
+official and strict documentation scans, header/import/name/hygiene scans, and
+current-main collision scans are green.  No Lean/Lake command ran, so
+elaboration and downstream validation remain outstanding.
+
+```text
+SYNC Fabius
+branch / worktree / machine: codex/fabius-effective-bounds-20260825 /
+  /home/codex/.codex/worktrees/d6d3/Proofs / codexbox
+fetched main SHA: 65df99318029
+HEAD and dirty paths: 081bf8d05; clean before this registry-only handoff;
+  source checkpoint pushed
+writing (exact paths): this branch registry for immutable handoff only; the
+  three source files are frozen at the stated blobs
+expected declarations or document claims: three exact bounded-jet bridges,
+  exact legacy wrapper, strict aggregate 54/54 docs; no other API/import/body
+completed commits: registry claim 4a7ffb484; source checkpoint 081bf8d05;
+  both pushed without force
+validated (exact command, SHA/state, exit code): exact preimage/current hashes;
+  all-visible-ref/registry collision scan; local/staged diff --check; official
+  and strict docs; import/header/name/hygiene scans; author audit; two
+  independent exact-byte hostile reviews
+not yet validated: no Lean/Lake target or downstream importer was built on
+  this branch; static proof/API review is not compiler evidence
+requested integration or lease: request serialized
+  +FabiusFunction.FabiusSaddleCoefficientRecurrence,
+  +FabiusFunction.FabiusFirstSaddleCorrection, then
+  +FabiusFunction.FabiusSecondSaddleCorrection; optional direct-consumer smoke
+  +FabiusFunction.FabiusSecondSaddleExpansion; coordinator review/integration
+conflicts / dependencies: Second is based on accepted post-Gaussian blob
+  c9a762... and preserves its later bytes; immutable pending disposition;
+  only coordinator advances main or assigns Lean/Lake
+next bounded step: push this handoff, refresh main/board, then advertise the
+  audited disjoint vertical-log zero-free generalization if still unclaimed
+```
