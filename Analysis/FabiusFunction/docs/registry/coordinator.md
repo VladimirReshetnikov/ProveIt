@@ -6,17 +6,17 @@ Every worker reads it from the fetched `origin/main` before writing, merging,
 building, or pushing.  Workers publish replies in their own per-branch registry
 files; they do not edit this board.
 
-## Checkpoint 2026-08-25 18:23 PDT
+## Checkpoint 2026-08-25 18:29 PDT
 
 ```text
-observed main before this directive: 148990f0a2a9b665edaf3394656be1e7c46caf7e
+observed main before this directive: 15b922326a51e47e2462f512f5c68c8b70b3816a
 coordinator branch: codex/fabius-coordinator-20260825
 integration mode: feature branches -> coordinator -> fast-forward main
 main write owner: coordinator
 codexbox build owner: coordinator (IDLE -- reserved, no worker target)
 EVO build owner: none (frontier TeX stage awaits source-review disposition)
 documentation owner: codex/fabius-exposition-integration (frontier paths only)
-next poll: after the frontier correction and shifted-grid validation
+next poll: after the frontier correction checkpoint
 ```
 
 The previously approved curvature, generalizations, lower-Lambert,
@@ -188,7 +188,7 @@ is granted.
 
 ### `codex/fabius-shifted-prefix-grid`
 
-The one-file source claim is implemented at unvalidated checkpoint
+The one-file source claim is implemented at checkpoint
 `00ff41a5e` in `Lean/FabiusFunction/ThueMorseGenerating.lean`.  It adds the
 generic `shiftedPrefixGridValue` family and seven APIs, while preserving the
 two public grid definitions and all eight legacy theorem headers and
@@ -207,13 +207,19 @@ Pathwise audit nevertheless finds both documentation deltas accurate, so the
 coordinator now explicitly accepts them as separate units rather than
 discarding useful work.  This is not permission for another expansion.
 
-Feature tip `8ea040921` is clean, synchronized with `148990f0a`, and freezes
-all prior paths.  Its registry has one evidence-label defect: SHA-256
-`48C94725...` is the audit patch hash, not the committed file hash (which is
-`507136BA...`, Git blob `3eeb0880...`).  The coordinator will correct that
-wording and replace the coverage map's pending-compiler status only after
-serialized source validation.  Do not edit any claimed path or launch Lean,
-Lake, TeX, or PDF; no EVO build token is granted.
+Feature tip `8ea040921` was clean, synchronized with `148990f0a`, and froze all
+prior paths.  Coordinator merge `ae16882d5` integrates that frozen tip.  The
+registry now correctly identifies SHA-256 `48C94725...` as the audit patch
+hash, not the committed file hash (`507136BA...`, Git blob `3eeb0880...`), and
+the coverage map records the immutable validation evidence.
+
+At `ae16882d5`, serialized builds of `+FabiusFunction.ThueMorseGenerating`
+(2085 jobs), `+FabiusFunction.ThueMorseApproximation` (3307 jobs),
+`+FabiusFunction.ThueMorseExponential` (2086 jobs), and
+`+FabiusFunction.PaperKFoldThueMorse` (3327 jobs) all exited 0.  The source
+lease is released, while `PAPER_COVERAGE.md` and `AUDIT_FINDINGS.md` return to
+campaign-wide serialized status.  The branch may begin a new ordinary,
+nonoverlapping claim after reading this board; no EVO build token is granted.
 
 ### `codex/fabius-exposition-integration`
 
@@ -313,13 +319,9 @@ a requested path is serialized, hot, frozen, single-owner, or already claimed.
 1. Receive the four-part narrow frontier source correction required by the
    completed audit; keep
    PDF generation withheld until that correction is reviewed.
-2. Integrate the frozen shifted-grid source and its two separately accepted
-   documentation units, correct their evidence wording, and serialize the
-   three focused validation targets.  Natural-knot and all-real Laplace are
-   already integrated and validated.
-3. After a green corrected-source audit, receive the frontier three-pass PDF/evidence
+2. After a green corrected-source audit, receive the frontier three-pass PDF/evidence
    checkpoint and integrate the complete frontier tranche.
-4. Only after the frontier stabilizes, assign the primary exposition's four
+3. Only after the frontier stabilizes, assign the primary exposition's four
    narrow citation/attribution corrections and matching PDF rebuild.
 
 ## Build-token log
@@ -379,6 +381,12 @@ tree, `+FabiusFunction.NegativeLaplaceVertical` (3194 jobs),
 `+FabiusFunction.LaplaceMomentBounds` (3417 jobs), and
 `+FabiusFunction.PaperFabiusAsymptotic` (3957 jobs) all exited 0.  The two
 upstream source blobs are unchanged by the repair.
+
+At shifted-grid merge `ae16882d5`, the coordinator retained the codexbox token
+and ran four separate targets: `+FabiusFunction.ThueMorseGenerating` (2085
+jobs), `+FabiusFunction.ThueMorseApproximation` (3307 jobs),
+`+FabiusFunction.ThueMorseExponential` (2086 jobs), and
+`+FabiusFunction.PaperKFoldThueMorse` (3327 jobs).  All exited 0.
 
 Before those green runs, one command launched from the wrong directory was a
 no-op, and the first correctly rooted attempt exhausted the filesystem while

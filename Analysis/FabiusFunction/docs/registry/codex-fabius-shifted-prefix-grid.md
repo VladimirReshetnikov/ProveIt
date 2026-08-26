@@ -63,7 +63,7 @@ validated (exact command, SHA/state, exit code): at source snapshot SHA-256
   all 59 newly cited qualified declarations resolve, all four changed table
   rows have exactly four unescaped separators, git diff --cached --check
   exited 0, the doc audit retained its exact baseline, and an independent
-  binder-level review found no correction; for audit-ledger blob SHA-256
+  binder-level review found no correction; for audit-ledger patch SHA-256
   48C94725FB082D492CCE495D01ADDED851C357DB4D4DED4AB375C3C7E7504E4,
   exactly four headings and four closure markers changed, every status row has
   four unescaped separators, git diff --cached --check exited 0, the doc audit
@@ -201,3 +201,31 @@ Three worthwhile but intentionally separate follow-ups were identified:
 None is included in this source checkpoint.  Keeping the first commit to one
 mechanically evidenced duplication class makes the review, build attribution,
 and rollback boundary exact.
+
+## Coordinator shifted-grid integration disposition
+
+The Lean source, coverage-map delta, and audit-ledger delta are accepted as
+three separately reviewed units.  The two documentation commits exceeded the
+branch's earlier exact “source plus own registry” grant, but both are accurate;
+the coordinator therefore accepts them explicitly rather than discarding the
+work.  This does not authorize another path expansion.  The source review
+found all seven declarations true, both simp bridges one-way and safe, the
+positive-level hypothesis necessary, all eight legacy theorem types and
+attributes unchanged, and no duplicate or competing implementation.
+
+At immutable coordinator merge `ae16882d5`, with the sole codexbox token and
+`LAKE_JOBS=1`, these separate targets exited 0:
+
+```text
+lake build +FabiusFunction.ThueMorseGenerating       # 2085 jobs
+lake build +FabiusFunction.ThueMorseApproximation    # 3307 jobs
+lake build +FabiusFunction.ThueMorseExponential      # 2086 jobs
+lake build +FabiusFunction.PaperKFoldThueMorse       # 3327 jobs
+```
+
+`git diff --check` exits 0 and the edited Lean source contains no `sorry`,
+`admit`, `axiom`, or `opaque`.  The audit evidence value `48C94725...` above is
+now correctly identified as the patch SHA-256; the committed file SHA-256 is
+`507136BAD10E56CE0C40876C75FE70F3A9884F6205A4E471D59A1638D52B2E9D`
+(Git blob `3eeb0880b8437d7d449ed70af6d5b9c451de9abf`).  The source lease is
+released; both campaign-wide documentation paths return to serialized status.
