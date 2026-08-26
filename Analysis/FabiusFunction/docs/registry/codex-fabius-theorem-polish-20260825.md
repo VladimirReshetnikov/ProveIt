@@ -1442,3 +1442,107 @@ conflicts / dependencies: merge completed without conflict; incoming ordinary
 next bounded step: commit and push this registry-only sync to the feature
   branch, then await a fresh exact board assignment
 ```
+
+## Claim: exact compact Lambert-W obstruction
+
+The exact source supplied by the user is the 13 January 2022 comment on
+<https://math.stackexchange.com/questions/4354350/extracting-an-asymptotic-from-a-sequence-defined-by-a-recurrence-relation>.
+Here `~` explicitly means that the ratio tends to one as `x` tends to zero
+from the right.  The displayed nonperiodic constant, prefactor, lower branch,
+and Lambert polynomial are correct, but the claimed equivalence is false: the
+answer immediately above first derives a tiny nonconstant periodic term and
+then says it will be ignored.  Its small amplitude does not make it tend to
+zero.
+
+This ordinary source claim is exactly:
+
+- `Lean/FabiusFunction/FabiusWikipediaMain.lean`;
+- `Lean/FabiusFunction/FabiusSharpAsymptotic.lean`; and
+- this branch registry.
+
+The proposed public surface is exactly:
+
+1. `fabiusWikipediaLambertMain` -- the logarithm of the precise compact
+   uncorrected expression in the user's screenshot;
+2. `fabiusCorrectedWikipediaMain_eq_WikipediaLambertMain_add` -- the exact
+   decomposition of the already-proved corrected main as the online main plus
+   `negativeLaplacePsi (fabiusLambertPhase x)`;
+3. `isEquivalent_exp_iff_tendsto_log_sub` -- for an eventually positive
+   function, the reusable equivalence between a ratio-one exponential
+   asymptotic and a vanishing logarithmic error;
+4. `log_fabius_sub_WikipediaLambertMain_not_tendsto_zero` -- the omitted
+   periodic logarithmic residual does not vanish;
+5. `log_fabius_sub_WikipediaLambertMain_not_isBigO` -- in particular the
+   exact compact online residual is not `O(1 / (-log x))`; and
+6. `fabius_not_isEquivalent_exp_WikipediaLambertMain` -- the exact
+   exponentiated expression in the screenshot is not an asymptotic equivalent
+   of the Fabius function.
+
+The existing theorem `fabius_isEquivalent_exp_correctedWikipediaMain` already
+proves the corrected compact expression.  No saddle estimate or constant is
+being reproved.  The new proof will expose the online main verbatim, reuse the
+existing exact corrected equivalence and phase-sampling obstruction, and
+factor the repeated log/ratio conversion through the new generic iff.  The
+body of `fabius_not_isEquivalent_exp_WikipediaElementaryMain` may be shortened
+through that iff, but its declaration, hypotheses, conclusion, and attributes
+will remain unchanged.
+
+Static Fourier comparison also identifies the answer's discarded term
+exactly: with `chi_k = 2*pi*i*k/log 2`, the identity
+`Gamma(1-chi_k) = -chi_k*Gamma(-chi_k)` turns its coefficient into the proved
+Fourier coefficient of `negativeLaplacePsi`.  At the endpoint saddle its
+argument is the exact phase `-W_{-1}(-x*log 2)/log 2`.  Thus the corrected
+ratio-one expression multiplies the screenshot's right-hand side by the
+exponential of that periodic value; no arbitrary constant multiplier repairs
+the omitted oscillation.
+
+No document path is claimed here.  The 21:59 PDT live board now records the
+user-directed release of the former documentation owner: every canonical
+document remains frozen, and no TeX/PDF lane is assigned.  It conditionally
+reserves only the primary TeX/PDF pair for this branch after the exact
+two-source Lean checkpoint is implemented, independently reviewed, and
+accepted.  Until a later board checkpoint activates that lease, coverage,
+primary, walkthrough, frontier, and every matching PDF remain untouched.
+
+```text
+SYNC Fabius
+branch / worktree / machine: codex/fabius-theorem-polish-20260825 /
+  C:/Users/vresh/.codex/worktrees/10ef/ProveIt / EVO (Windows)
+fetched main SHA: 29791005881f1563eba9618e6d75b9db50b045a2
+HEAD and dirty paths: ea42818d6856d88c73ddb041e55a9325b5d4d1c8;
+  only this branch registry is dirty for the exact two-source/six-name claim;
+  fetched main advanced after the prior clean merge and will be merged only
+  after this preservation checkpoint is committed and pushed
+writing (exact paths): after this claim is committed and pushed, only
+  Lean/FabiusFunction/FabiusWikipediaMain.lean and
+  Lean/FabiusFunction/FabiusSharpAsymptotic.lean; this claim writes only
+  docs/registry/codex-fabius-theorem-polish-20260825.md
+expected declarations or document claims: the six exact public declarations
+  listed above; no canonical document claim until the board activates its
+  conditional primary reservation
+completed commits: ea42818d6 (conflict-free merge of current main 0bc0bf551);
+  no source commit exists for this claim
+validated (exact command, SHA/state, exit code): strict read-only mathematical,
+  source/API, online-source, Fourier-normalization, proof-architecture, and
+  all-tip name/path collision audits only.  The target current-main blobs are
+  1bbc728a8d3d4c44c58659b0913805e925c4e116 and
+  15b1132214ba9d804abd919b465d7d5346f8d42e; no fetched active tip carries a
+  competing name or current unique edit to either released source path
+not yet validated: the six declarations are unedited and uncompiled; no local
+  Lean, Lake, LaTeX, PDF, Python audit, or cache-mutating process has run
+requested integration or lease: advertise this ordinary two-source claim.
+  After an immutable reviewed checkpoint, request one serialized EVO
+  `LAKE_JOBS=1 lake build +FabiusFunction.FabiusSharpAsymptotic`.  Separately,
+  await activation of the board's conditional primary TeX/PDF reservation;
+  request no other document, facade, root, aggregate, or build lane now
+conflicts / dependencies: the former generalizations claim touching
+  FabiusSharpAsymptotic.lean is integrated and explicitly released.  Historical
+  Claude tips are older blobs, not active unique claims.  Current effective-
+  bounds and both-papers paths are disjoint.  The former document-owner lease
+  is released, but every canonical document remains frozen until an explicit
+  board grant
+next bounded step: commit and push this registry-only claim; fetch and reread
+  the board plus every advertised tip; if the two ordinary source paths remain
+  collision-free, implement the exact online-main bridge without launching an
+  unassigned build
+```
