@@ -57,7 +57,8 @@ separate all-orders expansion in `-log x` and `log (-log x)`.
 The sharp expansion is also inverted at both endpoints.  As `y -> 0+`, the
 lower-Lambert phase at `fabiusInv F hF y` differs from
 `fabiusInverseQuadraticPhaseMain y` by
-`O(log (-log y) / sqrt (-log y))`.  Its logarithm differs from
+`O(log (-log y) / sqrt (-log y))`.
+`Real.log (fabiusInv F hF y)` differs from
 `fabiusInverseLogAsymptoticMain y` by `o(1)`, and `fabiusInv F hF` is
 asymptotic to `fabiusInverseAsymptoticMain`.  At `y -> 1-`, reflection
 makes `1 - fabiusInv F hF y` asymptotic to

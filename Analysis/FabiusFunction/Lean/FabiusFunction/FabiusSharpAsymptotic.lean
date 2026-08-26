@@ -4,6 +4,9 @@ import FabiusFunction.FabiusWikipediaObstruction
 import FabiusFunction.FabiusDyadicSharpAsymptotic
 import FabiusFunction.PeriodicFourier
 import FabiusFunction.FabiusQuotientExponentialMismatch
+import Mathlib.Topology.Order.Compact
+import Mathlib.Topology.Order.LiminfLimsup
+import Mathlib.Topology.Ultrafilter
 
 /-!
 # Sharp small-argument asymptotics of the Fabius function
@@ -232,5 +235,345 @@ theorem fabius_not_isEquivalent_exp_WikipediaElementaryMain
   simpa only [sub_zero] using hdiff.congr' (Eventually.of_forall fun x => by
     simp only [fabiusExplicitCorrectedWikipediaMain, Function.comp_apply]
     ring)
+
+/-! ## The literal online factor and its exact oscillatory quotient -/
+
+/-- The corrected sharp asymptotic can be written directly with the literal
+multiplicative factor printed in the online source.  The missing factor is the
+exponential of the centered periodic correction at the exact Lambert phase. -/
+theorem fabius_isEquivalent_WikipediaLambertFactor_mul_periodic
+    (F : BoundedFabius) (hF : IsFabius F) :
+    (fun x : ℝ => fabiusReal F x) ~[nhdsWithin 0 (Ioi 0)]
+      (fun x : ℝ => fabiusWikipediaLambertFactor x *
+        Real.exp (negativeLaplacePsi (fabiusLambertPhase x))) := by
+  refine (fabius_isEquivalent_exp_correctedWikipediaMain F hF).congr_right ?_
+  filter_upwards [self_mem_nhdsWithin] with x hx
+  exact
+    exp_fabiusCorrectedWikipediaMain_eq_WikipediaLambertFactor_mul_periodic hx
+
+/-- The least value of the centered negative-Laplace correction on one closed
+period.  Periodicity makes this the global minimum as well. -/
+noncomputable def negativeLaplacePsiPeriodMin : ℝ :=
+  sInf (negativeLaplacePsi '' Icc (0 : ℝ) 1)
+
+/-- The greatest value of the centered negative-Laplace correction on one
+closed period.  Periodicity makes this the global maximum as well. -/
+noncomputable def negativeLaplacePsiPeriodMax : ℝ :=
+  sSup (negativeLaplacePsi '' Icc (0 : ℝ) 1)
+
+private theorem image_Icc_negativeLaplacePsi_eq_periodExtrema :
+    negativeLaplacePsi '' Icc (0 : ℝ) 1 =
+      Icc negativeLaplacePsiPeriodMin negativeLaplacePsiPeriodMax := by
+  simpa only [negativeLaplacePsiPeriodMin, negativeLaplacePsiPeriodMax] using
+    continuous_negativeLaplacePsi.continuousOn.image_Icc
+      (by norm_num : (0 : ℝ) ≤ 1)
+
+/-- The global range of the centered periodic correction is exactly the
+closed interval between its extrema on one period. -/
+theorem range_negativeLaplacePsi_eq_Icc_periodMin_periodMax :
+    range negativeLaplacePsi =
+      Icc negativeLaplacePsiPeriodMin negativeLaplacePsiPeriodMax := by
+  rw [← negativeLaplacePsi_periodic.image_Icc one_pos 0]
+  simpa only [zero_add] using image_Icc_negativeLaplacePsi_eq_periodExtrema
+
+/-- The period minimum is no larger than any value of the correction. -/
+theorem negativeLaplacePsiPeriodMin_le_value (t : ℝ) :
+    negativeLaplacePsiPeriodMin ≤ negativeLaplacePsi t := by
+  have ht : negativeLaplacePsi t ∈ range negativeLaplacePsi := ⟨t, rfl⟩
+  rw [range_negativeLaplacePsi_eq_Icc_periodMin_periodMax] at ht
+  exact ht.1
+
+/-- Every value of the correction is no larger than the period maximum. -/
+theorem negativeLaplacePsi_value_le_periodMax (t : ℝ) :
+    negativeLaplacePsi t ≤ negativeLaplacePsiPeriodMax := by
+  have ht : negativeLaplacePsi t ∈ range negativeLaplacePsi := ⟨t, rfl⟩
+  rw [range_negativeLaplacePsi_eq_Icc_periodMin_periodMax] at ht
+  exact ht.2
+
+/-- The minimum endpoint lies below the maximum endpoint. -/
+theorem negativeLaplacePsiPeriodMin_le_periodMax :
+    negativeLaplacePsiPeriodMin ≤ negativeLaplacePsiPeriodMax :=
+  (negativeLaplacePsiPeriodMin_le_value 0).trans
+    (negativeLaplacePsi_value_le_periodMax 0)
+
+/-- The period minimum is attained on the canonical interval `[0, 1]`. -/
+theorem exists_mem_Icc_negativeLaplacePsi_eq_periodMin :
+    ∃ t ∈ Icc (0 : ℝ) 1,
+      negativeLaplacePsi t = negativeLaplacePsiPeriodMin := by
+  have hmin : negativeLaplacePsiPeriodMin ∈
+      negativeLaplacePsi '' Icc (0 : ℝ) 1 := by
+    rw [image_Icc_negativeLaplacePsi_eq_periodExtrema]
+    exact left_mem_Icc.mpr negativeLaplacePsiPeriodMin_le_periodMax
+  exact hmin
+
+/-- The period maximum is attained on the canonical interval `[0, 1]`. -/
+theorem exists_mem_Icc_negativeLaplacePsi_eq_periodMax :
+    ∃ t ∈ Icc (0 : ℝ) 1,
+      negativeLaplacePsi t = negativeLaplacePsiPeriodMax := by
+  have hmax : negativeLaplacePsiPeriodMax ∈
+      negativeLaplacePsi '' Icc (0 : ℝ) 1 := by
+    rw [image_Icc_negativeLaplacePsi_eq_periodExtrema]
+    exact right_mem_Icc.mpr negativeLaplacePsiPeriodMin_le_periodMax
+  exact hmax
+
+/-- The two extrema are distinct because the periodic correction is genuinely
+nonconstant. -/
+theorem negativeLaplacePsiPeriodMin_lt_periodMax :
+    negativeLaplacePsiPeriodMin < negativeLaplacePsiPeriodMax := by
+  refine lt_of_le_of_ne negativeLaplacePsiPeriodMin_le_periodMax ?_
+  intro heq
+  apply negativeLaplacePsi_not_constant
+  refine ⟨negativeLaplacePsiPeriodMin, fun t => ?_⟩
+  exact le_antisymm
+    ((negativeLaplacePsi_value_le_periodMax t).trans_eq heq.symm)
+    (negativeLaplacePsiPeriodMin_le_value t)
+
+/-- Exponentiation transports the exact range interval of the correction to
+the exact positive range interval of its multiplicative periodic factor. -/
+theorem range_exp_negativeLaplacePsi_eq_Icc_periodExtrema :
+    range (fun t : ℝ => Real.exp (negativeLaplacePsi t)) =
+      Icc (Real.exp negativeLaplacePsiPeriodMin)
+        (Real.exp negativeLaplacePsiPeriodMax) := by
+  rw [Set.range_comp' Real.exp negativeLaplacePsi,
+    range_negativeLaplacePsi_eq_Icc_periodMin_periodMax,
+    Real.image_exp_Icc]
+
+/-- The quotient of a bounded Fabius solution by the literal online Lambert
+factor.  Its failure to converge is precisely the omitted periodic factor. -/
+noncomputable def fabiusWikipediaLambertRatio
+    (F : BoundedFabius) (x : ℝ) : ℝ :=
+  fabiusReal F x / fabiusWikipediaLambertFactor x
+
+/-- The literal-factor quotient is asymptotically equivalent to the exact
+positive periodic factor sampled at the Lambert phase. -/
+theorem fabiusWikipediaLambertRatio_isEquivalent_periodic
+    (F : BoundedFabius) (hF : IsFabius F) :
+    fabiusWikipediaLambertRatio F ~[nhdsWithin 0 (Ioi 0)]
+      (fun x : ℝ =>
+        Real.exp (negativeLaplacePsi (fabiusLambertPhase x))) := by
+  have hquotient :
+      fabiusWikipediaLambertRatio F ~[nhdsWithin 0 (Ioi 0)]
+        (fun x : ℝ =>
+          (fabiusWikipediaLambertFactor x *
+              Real.exp (negativeLaplacePsi (fabiusLambertPhase x))) /
+            fabiusWikipediaLambertFactor x) :=
+    (fabius_isEquivalent_WikipediaLambertFactor_mul_periodic F hF).div
+      (IsEquivalent.refl :
+        (fun x : ℝ => fabiusWikipediaLambertFactor x)
+          ~[nhdsWithin 0 (Ioi 0)]
+            (fun x : ℝ => fabiusWikipediaLambertFactor x))
+  refine hquotient.congr_right ?_
+  filter_upwards [self_mem_nhdsWithin] with x hx
+  exact mul_div_cancel_left₀ _ (fabiusWikipediaLambertFactor_pos hx).ne'
+
+private theorem
+    exp_negativeLaplacePsi_comp_fabiusLambertPhase_isBigO_one :
+    (fun x : ℝ =>
+        Real.exp (negativeLaplacePsi (fabiusLambertPhase x)))
+      =O[nhdsWithin 0 (Ioi 0)] (fun _ : ℝ => (1 : ℝ)) := by
+  apply IsBigO.of_bound (Real.exp negativeLaplacePsiPeriodMax)
+  filter_upwards with x
+  rw [Real.norm_eq_abs, abs_of_pos (Real.exp_pos _), norm_one, mul_one]
+  exact Real.exp_le_exp.mpr
+    (negativeLaplacePsi_value_le_periodMax (fabiusLambertPhase x))
+
+/-- More precisely than asymptotic equivalence, the literal-factor quotient
+minus its periodic model tends additively to zero.  This is the form used to
+transport the full cluster set. -/
+theorem tendsto_fabiusWikipediaLambertRatio_sub_periodic
+    (F : BoundedFabius) (hF : IsFabius F) :
+    Tendsto
+      (fun x : ℝ => fabiusWikipediaLambertRatio F x -
+        Real.exp (negativeLaplacePsi (fabiusLambertPhase x)))
+      (nhdsWithin 0 (Ioi 0)) (nhds 0) := by
+  rw [← isLittleO_one_iff ℝ]
+  exact
+    (fabiusWikipediaLambertRatio_isEquivalent_periodic F hF).isLittleO.trans_isBigO
+      exp_negativeLaplacePsi_comp_fabiusLambertPhase_isBigO_one
+
+private theorem mapClusterPt_iff_of_tendsto_sub_zero
+    {a : Type*} {l : Filter a} {f g : a → ℝ} {z : ℝ}
+    (h : Tendsto (fun x => f x - g x) l (nhds 0)) :
+    MapClusterPt z l f ↔ MapClusterPt z l g := by
+  have hdist : Tendsto (fun x => dist (f x) (g x)) l (nhds 0) := by
+    simpa only [Real.dist_eq, abs_zero] using h.abs
+  constructor
+  · intro hf
+    rw [mapClusterPt_iff_ultrafilter] at hf ⊢
+    rcases hf with ⟨U, hU, hfU⟩
+    exact ⟨U, hU, hfU.congr_dist (hdist.mono_left hU)⟩
+  · intro hg
+    rw [mapClusterPt_iff_ultrafilter] at hg ⊢
+    rcases hg with ⟨U, hU, hgU⟩
+    refine ⟨U, hU, hgU.congr_dist ?_⟩
+    exact (hdist.mono_left hU).congr'
+      (Eventually.of_forall fun x => dist_comm (f x) (g x))
+
+/-- The cluster values of the literal-factor quotient at `x → 0⁺` are
+exactly the closed interval swept out by the omitted positive periodic factor.
+Thus the compact expression does not merely miss a constant normalization: it
+misses a continuum of limiting quotient values. -/
+theorem mapClusterPt_fabiusWikipediaLambertRatio_nhdsGT_zero_iff
+    (F : BoundedFabius) (hF : IsFabius F) {z : ℝ} :
+    MapClusterPt z (nhdsWithin 0 (Ioi 0))
+        (fabiusWikipediaLambertRatio F) ↔
+      z ∈ Icc (Real.exp negativeLaplacePsiPeriodMin)
+        (Real.exp negativeLaplacePsiPeriodMax) := by
+  have hperiodic :
+      Function.Periodic
+        (fun t : ℝ => Real.exp (negativeLaplacePsi t)) 1 := by
+    simpa only [Function.comp_def] using
+      negativeLaplacePsi_periodic.comp Real.exp
+  have hcontinuous :
+      Continuous (fun t : ℝ => Real.exp (negativeLaplacePsi t)) := by
+    simpa only [Function.comp_def] using
+      Real.continuous_exp.comp continuous_negativeLaplacePsi
+  calc
+    MapClusterPt z (nhdsWithin 0 (Ioi 0))
+        (fabiusWikipediaLambertRatio F) ↔
+        MapClusterPt z (nhdsWithin 0 (Ioi 0))
+          (fun x : ℝ =>
+            Real.exp (negativeLaplacePsi (fabiusLambertPhase x))) :=
+      mapClusterPt_iff_of_tendsto_sub_zero
+        (tendsto_fabiusWikipediaLambertRatio_sub_periodic F hF)
+    _ ↔ z ∈ range (fun t : ℝ => Real.exp (negativeLaplacePsi t)) := by
+      simpa only [Function.comp_def] using
+        (mapClusterPt_periodic_comp_fabiusLambertPhase_iff
+          hperiodic hcontinuous (z := z))
+    _ ↔ z ∈ Icc (Real.exp negativeLaplacePsiPeriodMin)
+          (Real.exp negativeLaplacePsiPeriodMax) := by
+      rw [range_exp_negativeLaplacePsi_eq_Icc_periodExtrema]
+
+private theorem fabiusWikipediaLambertRatio_isBoundedUnder_le
+    (F : BoundedFabius) (hF : IsFabius F) :
+    IsBoundedUnder (· ≤ ·) (nhdsWithin 0 (Ioi 0))
+      (fabiusWikipediaLambertRatio F) := by
+  have herror :=
+    (tendsto_fabiusWikipediaLambertRatio_sub_periodic F hF).isBoundedUnder_le
+  have hperiodic :
+      IsBoundedUnder (· ≤ ·) (nhdsWithin 0 (Ioi 0))
+        (fun x : ℝ =>
+          Real.exp (negativeLaplacePsi (fabiusLambertPhase x))) :=
+    isBoundedUnder_of_eventually_le (Eventually.of_forall fun x =>
+      Real.exp_le_exp.mpr
+        (negativeLaplacePsi_value_le_periodMax (fabiusLambertPhase x)))
+  have hsum := isBoundedUnder_le_add herror hperiodic
+  simpa only [Pi.add_def, sub_add_cancel] using hsum
+
+private theorem fabiusWikipediaLambertRatio_isBoundedUnder_ge
+    (F : BoundedFabius) (hF : IsFabius F) :
+    IsBoundedUnder (· ≥ ·) (nhdsWithin 0 (Ioi 0))
+      (fabiusWikipediaLambertRatio F) := by
+  have herror :=
+    (tendsto_fabiusWikipediaLambertRatio_sub_periodic F hF).isBoundedUnder_ge
+  have hperiodic :
+      IsBoundedUnder (· ≥ ·) (nhdsWithin 0 (Ioi 0))
+        (fun x : ℝ =>
+          Real.exp (negativeLaplacePsi (fabiusLambertPhase x))) :=
+    isBoundedUnder_of_eventually_ge (Eventually.of_forall fun x =>
+      Real.exp_le_exp.mpr
+        (negativeLaplacePsiPeriodMin_le_value (fabiusLambertPhase x)))
+  have hsum := isBoundedUnder_ge_add herror hperiodic
+  simpa only [Pi.add_def, sub_add_cancel] using hsum
+
+/-- The lower limit of the literal-factor quotient is the exponential of the
+global minimum of the centered periodic correction. -/
+theorem liminf_fabiusWikipediaLambertRatio_nhdsGT_zero_eq
+    (F : BoundedFabius) (hF : IsFabius F) :
+    liminf (fabiusWikipediaLambertRatio F)
+        (nhdsWithin 0 (Ioi 0)) =
+      Real.exp negativeLaplacePsiPeriodMin := by
+  have hleExp : Real.exp negativeLaplacePsiPeriodMin ≤
+      Real.exp negativeLaplacePsiPeriodMax :=
+    Real.exp_le_exp.mpr negativeLaplacePsiPeriodMin_le_periodMax
+  have hboundedAbove :=
+    fabiusWikipediaLambertRatio_isBoundedUnder_le F hF
+  have hboundedBelow :=
+    fabiusWikipediaLambertRatio_isBoundedUnder_ge F hF
+  have hleast := isLeast_mapClusterPt_liminf
+    (u := fabiusWikipediaLambertRatio F)
+    hboundedAbove.isCoboundedUnder_ge hboundedBelow
+  apply le_antisymm
+  · exact hleast.2
+      ((mapClusterPt_fabiusWikipediaLambertRatio_nhdsGT_zero_iff F hF).mpr
+        (left_mem_Icc.mpr hleExp))
+  · exact
+      ((mapClusterPt_fabiusWikipediaLambertRatio_nhdsGT_zero_iff F hF).mp
+        hleast.1).1
+
+/-- The upper limit of the literal-factor quotient is the exponential of the
+global maximum of the centered periodic correction. -/
+theorem limsup_fabiusWikipediaLambertRatio_nhdsGT_zero_eq
+    (F : BoundedFabius) (hF : IsFabius F) :
+    limsup (fabiusWikipediaLambertRatio F)
+        (nhdsWithin 0 (Ioi 0)) =
+      Real.exp negativeLaplacePsiPeriodMax := by
+  have hleExp : Real.exp negativeLaplacePsiPeriodMin ≤
+      Real.exp negativeLaplacePsiPeriodMax :=
+    Real.exp_le_exp.mpr negativeLaplacePsiPeriodMin_le_periodMax
+  have hboundedAbove :=
+    fabiusWikipediaLambertRatio_isBoundedUnder_le F hF
+  have hboundedBelow :=
+    fabiusWikipediaLambertRatio_isBoundedUnder_ge F hF
+  have hgreatest := isGreatest_mapClusterPt_limsup
+    (u := fabiusWikipediaLambertRatio F)
+    hboundedBelow.isCoboundedUnder_le hboundedAbove
+  apply le_antisymm
+  · exact
+      ((mapClusterPt_fabiusWikipediaLambertRatio_nhdsGT_zero_iff F hF).mp
+        hgreatest.1).2
+  · exact hgreatest.2
+      ((mapClusterPt_fabiusWikipediaLambertRatio_nhdsGT_zero_iff F hF).mpr
+        (right_mem_Icc.mpr hleExp))
+
+/-! ## Why no constant normalization can repair the online factor -/
+
+/-- The literal multiplicative Lambert-W factor printed online is not an
+asymptotic equivalent of a bounded Fabius solution. -/
+theorem fabius_not_isEquivalent_WikipediaLambertFactor
+    (F : BoundedFabius) (hF : IsFabius F) :
+    ¬ ((fun x : ℝ => fabiusReal F x) ~[nhdsWithin 0 (Ioi 0)]
+      (fun x : ℝ => fabiusWikipediaLambertFactor x)) := by
+  intro hequiv
+  apply fabius_not_isEquivalent_exp_WikipediaLambertMain F hF
+  refine hequiv.congr_right ?_
+  filter_upwards [self_mem_nhdsWithin] with x hx
+  exact (exp_fabiusWikipediaLambertMain_eq_WikipediaLambertFactor hx).symm
+
+/-- No constant multiplier repairs the literal online factor.  If such a
+multiplier existed, the quotient would converge to that constant; its strict,
+explicitly identified liminf/limsup gap rules this out, including for the zero
+multiplier. -/
+theorem fabius_not_isEquivalent_const_mul_WikipediaLambertFactor
+    (F : BoundedFabius) (hF : IsFabius F) (c : ℝ) :
+    ¬ ((fun x : ℝ => fabiusReal F x) ~[nhdsWithin 0 (Ioi 0)]
+      (fun x : ℝ => c * fabiusWikipediaLambertFactor x)) := by
+  intro hequiv
+  have hquotient :
+      fabiusWikipediaLambertRatio F ~[nhdsWithin 0 (Ioi 0)]
+        (fun x : ℝ =>
+          (c * fabiusWikipediaLambertFactor x) /
+            fabiusWikipediaLambertFactor x) :=
+    hequiv.div
+      (IsEquivalent.refl :
+        (fun x : ℝ => fabiusWikipediaLambertFactor x)
+          ~[nhdsWithin 0 (Ioi 0)]
+            (fun x : ℝ => fabiusWikipediaLambertFactor x))
+  have hratioConst :
+      fabiusWikipediaLambertRatio F ~[nhdsWithin 0 (Ioi 0)]
+        (fun _ : ℝ => c) := by
+    refine hquotient.congr_right ?_
+    filter_upwards [self_mem_nhdsWithin] with x hx
+    exact mul_div_cancel_right₀ c (fabiusWikipediaLambertFactor_pos hx).ne'
+  have htendsto :
+      Tendsto (fabiusWikipediaLambertRatio F)
+        (nhdsWithin 0 (Ioi 0)) (nhds c) :=
+    hratioConst.tendsto_const
+  have hinf := htendsto.liminf_eq
+  have hsup := htendsto.limsup_eq
+  rw [liminf_fabiusWikipediaLambertRatio_nhdsGT_zero_eq F hF] at hinf
+  rw [limsup_fabiusWikipediaLambertRatio_nhdsGT_zero_eq F hF] at hsup
+  exact (ne_of_lt (Real.exp_lt_exp.mpr
+    negativeLaplacePsiPeriodMin_lt_periodMax)) (hinf.trans hsup.symm)
 
 end Fabius

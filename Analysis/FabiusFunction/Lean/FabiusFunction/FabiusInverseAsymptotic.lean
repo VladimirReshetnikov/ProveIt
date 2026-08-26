@@ -35,6 +35,7 @@ weakest input they need.
 set_option autoImplicit false
 
 open Filter Set Asymptotics
+open scoped Topology
 
 namespace Fabius
 
@@ -121,15 +122,16 @@ private theorem fabius_inverse_quadratic_input
           (fun _ : ℝ => (1 : ℝ)) := by
     apply hforward.congr'
     · filter_upwards [self_mem_nhdsWithin,
-        nhdsWithin_le_nhds (Iio_mem_nhds (zero_lt_one : (0 : ℝ) < 1))]
-        with y hy0 hy1
+      nhdsWithin_le_nhds (Iio_mem_nhds (zero_lt_one : (0 : ℝ) < 1))]
+      with y hy0 hy1
+      simp only [Function.comp_def]
       rw [fabiusReal_fabiusInv F hF ⟨hy0.le, hy1.le⟩]
       simp [fabiusSharpLambertExpansion, fabiusSaddleLogPartialSum]
     · filter_upwards with y
       simp
   have honeLog :
       (fun _ : ℝ => (1 : ℝ)) =O[l] (fun y => Real.log (lam y)) := by
-    simpa only [Function.comp_apply] using
+    simpa only [Function.comp_def] using
       ((Real.isLittleO_const_log_atTop
         (c := (1 : ℝ))).comp_tendsto hlam).isBigO
   have hlogHalf :
@@ -269,7 +271,7 @@ private theorem log_two_mul_sqrt_two_mul_div_log_two
       (Real.log 2 * Real.sqrt (2 * T / Real.log 2)) ^ 2 =
         (Real.sqrt (2 * Real.log 2 * T)) ^ 2 := by
     rw [mul_pow, Real.sq_sqrt hleftArg, Real.sq_sqrt hrightArg]
-    field_simp [hL.ne'] <;> ring
+    field_simp [hL.ne']
   have hleftNonneg :
       0 ≤ Real.log 2 * Real.sqrt (2 * T / Real.log 2) :=
     mul_nonneg hL.le (Real.sqrt_nonneg _)
@@ -309,7 +311,8 @@ theorem tendsto_log_fabiusInv_sub_fabiusInverseLogAsymptoticMain
         apply hphase.congr'
         filter_upwards with y
         unfold fabiusInverseQuadraticPhaseMain
-        congr 3 <;> ring)
+        congr 3
+        all_goals ring)
   have hraw := hlogPhase.sub (hphase.const_mul (Real.log 2))
   have hinv := tendsto_fabiusInv_nhdsGT_zero F hF
   have hinvSmall :
@@ -334,9 +337,15 @@ theorem tendsto_log_fabiusInv_sub_fabiusInverseLogAsymptoticMain
     rw [log_fabiusLambertArgument hxPos hsmall]
     unfold fabiusInverseQuadraticPhaseMain
       fabiusInverseLogAsymptoticMain
-    rw [log_two_mul_sqrt_two_mul_div_log_two _ hTPos.le,
-      Real.log_div (by norm_num : (2 : ℝ) ≠ 0) hL.ne']
-    field_simp [hL.ne'] <;> ring)
+    have hsqrt :
+        Real.log 2 * Real.sqrt (-(Real.log y * 2 / Real.log 2)) =
+          Real.sqrt (-(Real.log y * 2 * Real.log 2)) := by
+      convert log_two_mul_sqrt_two_mul_div_log_two
+        (-Real.log y) hTPos.le using 1
+      all_goals ring_nf
+    rw [Real.log_div (by norm_num : (2 : ℝ) ≠ 0) hL.ne']
+    field_simp [hL.ne']
+    nlinarith [hsqrt])
 
 private theorem exp_fabiusInverseLogAsymptoticMain_eq
     {y : ℝ} (hy0 : 0 < y) (hy1 : y < 1) :
@@ -526,7 +535,7 @@ theorem rpow_isLittleO_fabiusInv_at_zero_right
         (fun y : ℝ =>
           fabiusInverseLogAsymptoticMain y - Real.log y * α)
         l atTop := by
-    apply (tendsto_fabiusInversePowerGap_atTop hα).comp hT |>.congr'
+    apply ((tendsto_fabiusInversePowerGap_atTop hα).comp hT).congr'
     filter_upwards with y
     unfold fabiusInverseLogAsymptoticMain
     ring
@@ -563,7 +572,7 @@ theorem fabiusInv_isLittleO_negLog_rpow_at_zero_right
         (fun y : ℝ => Real.log (-Real.log y) * r -
           fabiusInverseLogAsymptoticMain y)
         l atTop := by
-    apply (tendsto_fabiusInverseLogPowerGap_atTop r).comp hT |>.congr'
+    apply ((tendsto_fabiusInverseLogPowerGap_atTop r).comp hT).congr'
     filter_upwards with y
     unfold fabiusInverseLogAsymptoticMain
     ring
@@ -592,7 +601,9 @@ private theorem tendsto_one_sub_nhdsLT_one_nhdsGT_zero :
       simpa only [sub_self] using hat
     exact hat'.mono_left nhdsWithin_le_nhds
   · filter_upwards [self_mem_nhdsWithin] with y hy
-    exact sub_pos.mpr hy
+    change y < 1 at hy
+    change 0 < 1 - y
+    linarith
 
 /-- **Reflected sharp equivalent at the right endpoint.**
 
