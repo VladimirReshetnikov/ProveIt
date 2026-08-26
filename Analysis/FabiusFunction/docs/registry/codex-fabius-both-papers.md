@@ -7,11 +7,10 @@ This file implements the per-branch registry fallback in
 SYNC Fabius
 branch / worktree / machine: codex/fabius-both-papers /
   /home/codex/src/Proofs / codexbox
-fetched main SHA: 36672c4677bc3556f89057bb74ed59e4ac86a5fb
-HEAD and dirty paths: fed5c2302c5e81ae5b2338a53714cff893d7c497;
-  dirty only in this own-registry claim
+fetched main SHA: 0bc0bf55135d2dea10c5fb8320e69a00ab55ded0
+HEAD and dirty paths: 18c5e2b40ab88909362b7a126f4886e26411f66d;
+  dirty only in this own-registry handoff
 writing (exact paths):
-  Analysis/FabiusFunction/Lean/FabiusFunction/PoissonSummation.lean;
   Analysis/FabiusFunction/docs/registry/codex-fabius-both-papers.md
 expected declarations or document claims:
   rvachevFourier_real_iteratedDeriv_shiftedDecay;
@@ -122,6 +121,13 @@ completed commits: Lower-Lambert source checkpoint `1da2fde2285e3970267b7dc2561b
   `ff675711f02a84c365cf4824c257ad593933e46d` without changing the source blob;
   clean merge `fed5c2302c5e81ae5b2338a53714cff893d7c497` incorporates validated current
   main `36672c4677bc3556f89057bb74ed59e4ac86a5fb` before the shifted-decay claim;
+  shifted-decay claim `29e4653628e503a2d9b8729c45ea89e3c52ef34c`
+  precedes source checkpoint `fe7756703806aa4e32f3d00df8fd3142ac56ed6a`,
+  which extracts the shared real-axis Schwartz realization, preserves both
+  existing homogeneous rapid-decay APIs, and adds the two advertised
+  conventional shifted estimates; clean merge
+  `18c5e2b40ab88909362b7a126f4886e26411f66d` incorporates fetched main
+  `0bc0bf55135d2dea10c5fb8320e69a00ab55ded0` without touching the source path;
 validated (exact command, SHA/state, exit code): coordinator board records
   serialized immutable `lake build +FabiusFunction.LowerLambertW` at
   `4c6bbac41`, exit 0, with its source blob unchanged on current main;
@@ -156,9 +162,14 @@ validated (exact command, SHA/state, exit code): coordinator board records
   coordinator integration `9f4b6be52` records the exact total binary-reduction
   source, and separate builds of `+FabiusFunction.FabiusBinaryReductionSeries`
   (2819 jobs) and `+FabiusFunction.FabiusGlobalQBinomialSeries` (3323 jobs)
-  both exit 0 without warnings
-not yet validated: the shifted Fourier-decay claim is registry-only and has no
-  source checkpoint yet; the historical validation-state paragraphs below are
+  both exit 0 without warnings; three independent read-only reviews of
+  `fe7756703` pass the extracted Schwartz realization, exact finite-seminorm
+  inequality, real/complex norm conversion, reciprocal-power orientation,
+  `k = 0` edge case, order-zero specialization, existing-API preservation,
+  imports, collisions, and static source hygiene
+not yet validated: the shifted Fourier-decay source checkpoint
+  `fe7756703806aa4e32f3d00df8fd3142ac56ed6a` has not been elaborated or built;
+  the historical validation-state paragraphs below are
   superseded by the coordinator board and retained only as provenance: the
   moved dyadic theorem body was already compiled in its
   downstream home by the green
@@ -255,10 +266,12 @@ historical integration requests, all superseded by the current coordinator
   handoff;
   serialized README/primary/walkthrough/coverage paths are deliberately not
   claimed yet
-requested integration or lease: none until the advertised shifted-decay source
-  checkpoint is implemented and independently reviewed; canonical
-  AUDIT_FINDINGS, PAPER_COVERAGE, primary, walkthrough, and frontier paths
-  remain frozen and unclaimed
+requested integration or lease: integrate the exact shifted-decay source
+  checkpoint and run serialized `LAKE_JOBS=1 lake build
+  +FabiusFunction.PoissonSummation`, followed by `LAKE_JOBS=1 lake build
+  +FabiusFunction.Paper05442`; the `PoissonSummation.lean` source claim is
+  released by this handoff; canonical README, AUDIT_FINDINGS, PAPER_COVERAGE,
+  primary, walkthrough, and frontier paths remain frozen and unclaimed
 conflicts / dependencies: all advertised Fabius heads and their registries
   were checked; no branch claims GlobalExtension and the only overlap is the
   existing even/odd ingredients and downstream special cases that this API
@@ -308,9 +321,34 @@ conflicts / dependencies: all advertised Fabius heads and their registries
   positive-degree complex branch estimate, no `_all` or semantic-equivalent
   theorem, and no active claim on `FabiusDiscreteLimitComplexShift.lean`; the
   exact `_all` name occurs only in the unimplemented serialized audit proposal
-next bounded step: push this exact one-source-file shifted-decay claim, extract
-  the common real-axis Schwartz realization, implement and independently
-  review both declarations, then request serialized focused/facade validation
+next bounded step: coordinator integration and serialized focused/facade
+  validation of `fe7756703`; if accepted, update the frozen human documents
+  only under a future exact board grant
+```
+
+## Shifted real-axis Fourier-decay handoff
+
+Source checkpoint `fe7756703806aa4e32f3d00df8fd3142ac56ed6a`
+factors the common real-axis Fourier--Schwartz realization into one private
+definition and equality lemma.  The existing homogeneous
+`rvachevFourier_real_iteratedDeriv_rapidDecay` theorem retains its exact public
+header and now reuses that realization.
+
+The checkpoint adds
+`rvachevFourier_real_iteratedDeriv_shiftedDecay`, giving the conventional
+`C * ((1 + |x|) ^ k)⁻¹` bound for every real-axis iterated derivative, and
+`rvachevFourier_real_shiftedDecay`, its order-zero transform specialization.
+The proof applies Mathlib's finite-supremum Schwartz seminorm estimate directly;
+`max C₀ 1` supplies a strictly positive constant, including at `k = 0`.
+
+Three independent static audits pass the exact Mathlib signature, derivative
+norm conversion, reciprocal inequality, all edge cases, naming, placement,
+collision scan, imports, preservation of old APIs, and source hygiene.  No
+Lean/Lake process was run.  The requested serialized gates are:
+
+```text
+LAKE_JOBS=1 lake build +FabiusFunction.PoissonSummation
+LAKE_JOBS=1 lake build +FabiusFunction.Paper05442
 ```
 
 ## All-degree complex branch-translation handoff
