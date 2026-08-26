@@ -999,22 +999,22 @@ locus to the inverse-shape discussion in the primary exposition and
 walkthrough, rebuild their PDFs, and optionally extend the README API list.
 No `PAPER_COVERAGE.md` row is warranted for this derived shape corollary.
 
-## Odd-binomial-count modulo-three claim
+## Odd-binomial-count modulo-three handoff
 
-After the clean merge of fetched main, current feature HEAD is
-`72bbc7deb98aa64b548f38cd939f8a78cecc6ed1` over `origin/main`
-`948bf3f377472c068f9539e0569d383ddc35f617`.  The claimed source
-`Lean/FabiusFunction/ThueMorseBinomialLog.lean` has feature preimage blob
-`0b86ab776c879af607990c281224168698782520`, which includes the already
-published Walsh-character checkpoint `e91a2828c`; current main and the other
-modern tips share the older blob `d32b2788d3bdd58a7e347f155d3a0edfb1fcea3f`.
+Source checkpoint `df9ed711e35b2d0159088cf18fccdf3114e2529d`
+produces `Lean/FabiusFunction/ThueMorseBinomialLog.lean` blob
+`f112b1965d6bf3a8a5f4dfc6522951c88f11d1c4`.  It is stacked after the
+already published Walsh-character checkpoint `e91a2828c`; current main and
+the other modern tips shared older preimage blob
+`d32b2788d3bdd58a7e347f155d3a0edfb1fcea3f`, while the immediate feature
+preimage was Walsh blob `0b86ab776c879af607990c281224168698782520`.
 
 The exact write set is:
 
 - `Lean/FabiusFunction/ThueMorseBinomialLog.lean`;
 - this branch's own registry.
 
-The source checkpoint will add one private period-two helper for
+The source checkpoint adds one private period-two helper for
 `2 ^ r % 3 = r % 2 + 1` and exactly four documented public declarations:
 
 - `card_oddBinomialIndices_mod_three_eq_bit_add_one`;
@@ -1026,7 +1026,7 @@ The core theorem states
 `(oddBinomialIndices n).card % 3 = thueMorseBit n + 1`.  Rewriting it gives
 the draft's literal zero-one formula as subtraction by one, its signed formula
 through `thueMorseSign_eq_one_sub_two_mul_bit`, and the assertion that the
-residue is never zero.  The private helper will use `Nat.twoStepInduction`, so
+residue is never zero.  The private helper uses `Nat.twoStepInduction`, so
 the proof exposes the actual two-cycle of powers of two modulo three rather
 than relying on an opaque arithmetic computation.
 
@@ -1034,7 +1034,7 @@ This family formalizes exactly the theorem labelled `eq:odd-count-mod3` in
 the frozen draft
 `Further_Formulae_for_the_Thue_Morse_Sequence-4.tex`, lines 664--688.  It does
 not claim the subsequent omitted-binomial-sum or trigonometric corollaries.
-The module overview and declaration comments will record the new theorem in
+The module overview and declaration comments record the new theorem in
 human-readable form; no canonical draft, TeX, PDF, README, coverage, facade,
 aggregate, import, existing public header, or attribute edit is claimed.
 
@@ -1045,8 +1045,19 @@ other advertised modern tip retains the older source blob above; this branch's
 Walsh checkpoint is the only newer source generation and is already frozen in
 its own handoff.
 
-No Lean/Lake token is assigned.  This is a registry-first claim, not compiler
-evidence.  Later serialized validation should run:
+The patch is 57 insertions in one source file.  No import, existing public
+header, attribute, facade, aggregate, or serialized-document path changes.
+Three independent live-diff audits pass every two-step-induction calculation,
+the `Nat.mul_mod` orientation, strict modulus bound, definitional core
+reduction, Nat-subtraction and nonzero corollaries, integer-cast sign algebra,
+`n = 0`, API, placement, human parity, ownership, and source hygiene.
+`git diff --check`, exact public-header delta, line-length scan, and the
+forbidden-declaration scan are clean.
+
+No Lean/Lake token is assigned, so no compiler or cache-mutating process was
+run.  The source is frozen at the exact checkpoint above pending coordinator
+integration after its Walsh dependency.  Later serialized validation should
+run:
 
 ```text
 LAKE_JOBS=1 lake build +FabiusFunction.ThueMorseBinomialLog
