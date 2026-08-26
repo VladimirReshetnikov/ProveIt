@@ -2687,3 +2687,76 @@ The two direct importers retain byte-identical public signatures, so no
 mandatory downstream gate is requested.  The codexbox lane is now idle but
 unassigned; this handoff starts no process without a later board grant.  No
 root, facade, audit-ledger, canonical document, TeX, or PDF work is requested.
+
+## Claim: expose the binary-series right endpoint
+
+Fresh `origin/main` `51601c0fa6db76cb0f8044a5fd4cff55de250bf3` has the
+exact prospective source blob
+
+```text
+FabiusBinaryReductionSeries.lean  637e4bb0ad439ecec43cdbef7895237484c8d315
+```
+
+The exact prospective write set is:
+
+- `Lean/FabiusFunction/FabiusBinaryReductionSeries.lean`;
+- this branch's own registry.
+
+This claim adds exactly three documented public declarations:
+
+```text
+@[simp] binaryPrefix_one
+globalBinaryReductionCoefficient_one_eq_zero_of_one_le
+globalBinaryReductionSummand_one_eq_zero_of_one_le
+```
+
+They state respectively that the scale-`m` prefix at `x = 1` is `2 ^ m`, and
+that every positive-scale coefficient and analytic summand vanishes at the
+right endpoint.  Existing `globalBinaryReductionSummand_one_zero` supplies the
+essential exceptional scale-zero value `1`, so no redundant support-set or
+all-index `if` restatement is introduced.
+
+The proof follows the canonical frontier obligation literally.  The prefix is
+the natural floor of the cast natural power `2 ^ m`; at `m ≥ 1`, that power is
+divisible by two, so
+`globalBinaryReductionCoefficient_eq_zero_of_mod_two_eq_zero` applies; the
+summand result then unfolds `globalBinaryReductionSummand` and multiplies by
+the zero coefficient.  The positive-index hypothesis is necessary because the
+existing scale-zero summand equals one.  Only the unconditional prefix identity
+is a simp theorem; the two conditional vanishing results remain unattributed,
+matching the generic coefficient-zero API and the existing deliberate
+endpoint simp restraint.
+
+This is the exact missing formal counterpart to canonical frontier subsection
+“The binary-series right endpoint,” which states `B₀(1) = 1`, asks for public
+coefficient/summand vanishing at all `m ≥ 1`, and explicitly prescribes the
+prefix/zero-coefficient/unfolding proof.  The existing theorem is called out
+there as covering only scale zero.
+
+All 69 visible main/remote/campaign refs and every registry tree were scanned
+for the exact names and semantic forms `binaryPrefix 1`,
+`globalBinaryReductionCoefficient 1`, and positive-scale
+`globalBinaryReductionSummand 1`; no implementation or competing claim
+exists.  Historical binary-series totalization and constant-three tranches are
+integrated, compiled, and explicitly released.  Current derivative, inverse,
+and other source leases are disjoint.  The endpoint compatibility and signed
+translate tranches on this branch are now integrated and green.
+
+No import, existing declaration, attribute, namespace, facade, aggregate,
+canonical document, TeX, or PDF change is claimed.  The two direct importers
+are `FabiusGlobalQBinomialSeries` and `FabiusParityPowerSeries`; no dependency
+cycle or new edge is introduced.
+
+No Lean, Lake, TeX, PDF, or cache-mutating process is authorized or has run for
+this claim.  After an immutable reviewed source checkpoint, request these
+separate serialized gates in order:
+
+```text
+LEAN_NUM_THREADS=0 LAKE_JOBS=1 lake build +FabiusFunction.FabiusBinaryReductionSeries
+LEAN_NUM_THREADS=0 LAKE_JOBS=1 lake build +FabiusFunction.FabiusGlobalQBinomialSeries
+```
+
+The second is the established smallest direct-consumer smoke test.  Stop after
+the first nonzero exit; no root/facade/document process is requested.  All
+canonical documents remain frozen, and a later documentation owner may retire
+the exact frontier obligation only after compiled integration.
