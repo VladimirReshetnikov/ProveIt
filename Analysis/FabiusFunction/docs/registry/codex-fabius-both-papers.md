@@ -1798,3 +1798,85 @@ LEAN_NUM_THREADS=0 LAKE_JOBS=1 lake build +FabiusFunction.FabiusDiscreteLimitInt
 ```
 
 Stop after the first nonzero exit and run no broader facade/root target.
+
+## Handoff: remove the constant term from the complex-shift majorant
+
+Exact source checkpoint `a1c4170194a479b464812990412531ead799896f`,
+tree `6520ecf3303e1296cfbbc91e718bb736aeb46087`, implements the advertised
+two-file strengthening.  Clean synchronization merge
+`990284a395f524aa25e386b463e5be8c157d2f8e` incorporates current main
+`ed8d996b78e9858d1282c7c5622c9b4ac61796da` without touching either claimed
+source.  The exact artifacts are:
+
+```text
+FabiusDiscreteLimitComplexShift.lean
+  Git blob  c12704bab4fe31bbf9580f519e99e07b56814733
+  SHA-256   1AB2F1EC28FF7472151821F703FB4E96B394053489F74A157A2FD7F07872CB59
+  size      360 lines, 14,890 bytes
+FabiusComplexShiftSpline.lean
+  Git blob  4b687921f5dd7ba586d1a10ac75355874aa5e644
+  SHA-256   9203B022CE30DEFBEB44549E011C8FDF385B3960596531782F5B21E81BE75F0A
+  size      471 lines, 20,471 bytes
+```
+
+The exact source delta is 115 insertions and 53 deletions, net 62 lines:
+60/38 upstream and 55/15 downstream.  It adds exactly the four claimed
+documented, untagged public declarations:
+
+- `norm_normalizedThueMorseSplineBranch_add_sub_le_half_pow_mul_exp_sub_one`;
+- `norm_normalizedThueMorseSplineBranch_add_sub_le_half_pow_mul_exp_sub_one_all`;
+- `norm_fabiusComplexShiftSpline_sub_center_le_half_pow_mul_exp_sub_one_of_bound_all`;
+- `norm_fabiusComplexShiftSpline_sub_center_le_half_pow_mul_exp_sub_one_all`.
+
+The private reflected-factorial proof now exposes the mathematics directly.
+`Finset.sum_Ico_reflect` identifies the Taylor orders with `Ico 1 (p + 1)`;
+`Finset.sum_Ico_eq_sub` removes the zeroth summand from the ordinary partial
+exponential series; and `Real.sum_le_exp_of_nonneg` gives
+`sum_(j=1)^p R^j/j! <= exp R - 1`.  This proof removes the earlier auxiliary
+shift function and truncated-subtraction index argument while strengthening
+the conclusion.
+
+The upstream positive-degree theorem reuses the exact existing coefficient
+comparison and factorization.  Its all-degree companion splits only at
+`p = 0`: the generic Taylor norm sum is empty, while
+`1 <= exp ‖δ‖` makes the new right side nonnegative.  The downstream
+conditional theorem substitutes `δ = 1/2 - q`; `norm_neg` gives the advertised
+`‖q - 1/2‖`.  The global theorem uses the already-proved branch norm bound for
+`0 <= x` and exact spline vanishing for `x <= 0`.  Thus degree zero, centered
+shift, the origin, and the negative half-line are all covered without extra
+hypotheses.  At `q = 1/2` the strengthened right side is exactly zero.
+
+All six existing plain-exponential public declarations retain byte-identical
+headers through `:= by`.  The upstream positive/all and downstream
+conditional-all/global-all bodies are now direct compatibility consequences
+of `exp R - 1 <= exp R`; the two existing positive-domain downstream bodies
+remain unchanged.  Imports, namespaces, attributes, simp rules, facades,
+aggregate, and canonical documents are unchanged.  Source prose calls the
+new estimates strengthened and says only that there is no zeroth-order term in
+the translation increment; it makes no optimality claim and does not confuse
+that order with the lower branch degree `d = 0`.
+
+Two independent exact-live static audits pass the installed-Mathlib signatures
+for `sum_Ico_reflect`, `sum_Ico_eq_sub`, `Real.sum_le_exp_of_nonneg`, and
+`Real.one_le_exp`; every inequality direction; the complex shift orientation;
+all boundary cases; API minimality; legacy-header preservation; import closure;
+documentation wording; and actual-diff scope.  `git diff --check`, the
+100-column, forbidden-declaration, exact-name, declaration-count, and
+all-advertised-tip collision scans are clean.  Exact proposed names occur on no
+other source tip or registry; only this branch's published claim owns them.
+
+No Lean, Lake, TeX, PDF, or cache-mutating process ran, so this remains static
+evidence rather than compiler validation.  The two source paths are frozen
+pending coordinator review and the requested separate serialized gates:
+
+```text
+LEAN_NUM_THREADS=0 LAKE_JOBS=1 lake build +FabiusFunction.FabiusDiscreteLimitComplexShift
+LEAN_NUM_THREADS=0 LAKE_JOBS=1 lake build +FabiusFunction.FabiusComplexShiftSpline
+LEAN_NUM_THREADS=0 LAKE_JOBS=1 lake build +FabiusFunction.FabiusDiscreteLimitIntegration
+```
+
+Stop after the first nonzero exit.  After compiled integration, a separately
+assigned document owner should replace the primary exposition's pending note
+near its complex-shift estimate, retire the exact exponential-minus-one
+frontier obligation, update the coverage crosswalk, and rebuild the matching
+canonical PDFs.  No document path is part of this handoff.
