@@ -3493,6 +3493,21 @@ Hence
   \label{eq:finite-Fourier-magnitude}
 \end{equation}
 
+\emph{Formal versions.}  \eqref{eq:finite-Fourier-product-raw} is the
+master product \lean{Fabius.prod\_one\_sub\_pow\_eq\_sum\_thueMorseSign}
+evaluated at \(z=\e^{\ii\theta}\in\mathbb C\).  The sine form
+\eqref{eq:finite-Fourier-sine} is
+\lean{Fabius.sum\_thueMorseSign\_exp\_eq\_sin\_prod}
+(\path{ThueMorseSineProduct.lean}), built on the half-angle
+factorization \(1-\e^{\ii u}=-2\ii\e^{\ii u/2}\sin(u/2)\)
+(\lean{Fabius.one\_sub\_exp\_mul\_I}, proved by pure exponential
+algebra).  The magnitude \eqref{eq:finite-Fourier-magnitude} is carried
+in squared form by the Riesz factorization
+\lean{Fabius.normSq\_sum\_thueMorseSign\_exp}
+(\path{ThueMorseFourier.lean}), whose factors are
+\(|1-\e^{\ii\theta}|^2=2-2\cos\theta\)
+(\lean{Fabius.normSq\_one\_sub\_exp}).
+
 \subsection{Sine and cosine products as Thue--Morse sums}
 
 A rescaling of \eqref{eq:finite-Fourier-sine} gives exact finite
@@ -3585,6 +3600,16 @@ Evaluate \eqref{eq:finite-product} at
 \(j=m-1\) is \(1-(-1)^k=0\).  For odd \(k\), apply
 \(1-\e^{-\ii u}=2\ii\e^{-\ii u/2}\sin(u/2)\) factorwise and sum the phases.
 \end{proof}
+
+\emph{Formal versions.}  The product form \eqref{eq:DFT-product} is the
+master product at \(z=\e^{-2\pi\ii k/2^m}\); the closed sine form
+\eqref{eq:DFT-odd} is the specialization of
+\lean{Fabius.sum\_thueMorseSign\_exp\_eq\_sin\_prod} at
+\(x=-2\pi k/2^m\) (the atlas phase convention conjugates it).  The
+vanishing at even frequencies is
+\lean{Fabius.sum\_thueMorseSign\_mul\_pow\_eq\_zero\_of\_pow\_eq\_one}
+(\path{ThueMorseRarefied.lean}); the Fourier inversion formula
+\eqref{eq:DFT-inversion} remains unformalized.
 
 For \(m\ge1\), Fourier inversion gives a root-of-unity formula for every
 individual term:
@@ -3701,6 +3726,13 @@ Use \(|1-\e^{\ii\theta}|^2=2(1-\cos\theta)\) in
  =2^{-m}\sum_{n<2^m}|\eps_n|^2=1.
 \]
 \end{proof}
+
+\emph{Formal versions.}  The factorization \eqref{eq:Riesz-product} is
+\lean{Fabius.normSq\_sum\_thueMorseSign\_exp}
+(\path{ThueMorseFourier.lean}) after normalizing by \(2^m\) and
+rescaling the variable, with nonnegativity
+\lean{Fabius.prod\_two\_sub\_two\_cos\_nonneg}.  The Parseval mass
+\eqref{eq:Riesz-mass} awaits the integration layer.
 
 The finite measures converge weakly to the Thue--Morse spectral measure.  The
 formal notation
@@ -4739,8 +4771,8 @@ valuation, carry, and Pascal-row formulas remain genuinely base-two features.
 \subsection{Formalized modules (August 2026)}
 \label{sec:formalized-modules}
 
-The first tranches of the formalization now exist as twenty-one compiled
-Lean modules in \repo{}, complementing the corpus modules
+The first tranches of the formalization now exist as twenty-three
+compiled Lean modules in \repo{}, complementing the corpus modules
 (\path{Parity.lean}, \path{TwoAdic.lean}, \path{ThueMorsePrefix.lean},
 \path{ThueMorseGenerating.lean}, \path{ThueMorseExponential.lean},
 \path{ThueMorseBinomialLog.lean}) that already covered the recursion,
@@ -4778,6 +4810,8 @@ Module & Contents \\
 \path{ThueMorseMahler.lean} & Mahler equation and dyadic dissection for the signed series, cleared zero--one bridge, prefix generating function, finite-level autocorrelation Mahler equation. \\
 \path{ThueMorseBooleanMobius.lean} & Lattice isomorphism of the two-power encoding, submask weight enumerators, reconstruction and inversion-polynomial identities, nested binomial formula, Boolean M\"obius inversion on finsets and on submasks. \\
 \path{ThueMorseMultinomial.lean} & Kummer's criterion for multinomial coefficients, the multinomial support count \(O_r(n)=r^{\wt(n)}\), the signed \(r\)-nomial row formula, the exact \(r\)-nomial logarithm. \\
+\path{ThueMorseFourier.lean} & The circle factor \(|1-\e^{\ii\theta}|^2=2-2\cos\theta\) and the finite Riesz product with its nonnegativity. \\
+\path{ThueMorseSineProduct.lean} & The half-angle factorization and the sine-product closed form of the Thue--Morse trigonometric polynomial. \\
 \bottomrule
 \end{longtable}}
 
@@ -4898,7 +4932,7 @@ Proposed module & Main declarations \\
 \path{ThueMorseProuhetMoments.lean} & Difference operators, all moments, centered parity.  \emph{Delivered} (\path{ThueMorseMoments.lean}, \path{ThueMorseMixedDifference.lean}). \\
 \path{ThueMorseSparseProuhet.lean} & Arbitrary Pascal-support products and sparse moments.  \emph{Delivered} (plus \path{ThueMorseSparseMoments.lean}). \\
 \path{ThueMorseFormalSeriesF2.lean} & Artin--Schreier equation and explicit solution.  \emph{Delivered} (\path{ThueMorseArtinSchreier.lean}, with uniqueness and the integer lift). \\
-\path{ThueMorseFourier.lean} & Finite DFT, Walsh transform, product-to-sum identities.  \emph{Walsh delivered}; the complex DFT layer is open. \\
+\path{ThueMorseFourier.lean} & Finite DFT, Walsh transform, product-to-sum identities.  \emph{Delivered} except Fourier inversion and the integral layer (Walsh, Riesz factorization, and the sine-product DFT closed form are formal). \\
 \path{ThueMorseDirichlet.lean} & Boundary flatness, Mellin integral, entire continuation.  \emph{Open.} \\
 \path{ThueMorseRarefied.lean} & Root-of-unity filters, modulo-three closed forms, odd-modulus matrix recursion.  \emph{Delivered} (the complex filter identity itself remains open). \\
 \path{ThueMorseWords.lean} & Uniform recurrence, aperiodicity, and the elementary complexity bounds.  \emph{Delivered} except the complexity bounds (\path{ThueMorseAperiodicity.lean}, \path{ThueMorseOverlapFree.lean}, \path{ThueMorseRecurrence.lean}). \\
@@ -4906,9 +4940,10 @@ Proposed module & Main declarations \\
 \end{tabularx}
 \end{center}
 
-Of the planned layers, only the complex-Fourier, Dirichlet--Mellin, and
-factor-complexity rows remain open; every finite or formal layer has
-been delivered, in most cases in greater generality than proposed.
+Of the planned layers, only the Dirichlet--Mellin and factor-complexity
+rows remain open (plus the integral and inversion parts of the Fourier
+row); every finite or formal layer has been delivered, in most cases in
+greater generality than proposed.
 
 \subsection{Proof-dependency graph}
 
