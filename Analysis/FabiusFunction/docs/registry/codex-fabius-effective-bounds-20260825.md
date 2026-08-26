@@ -1305,3 +1305,89 @@ next bounded step: commit and push this registry-only claim without force;
   signed-power normalization, the derivative criterion, exact header/import
   preservation, and source-level documentation
 ```
+
+## Source checkpoint: strict alternating derivatives and convexity
+
+Exact source commit `b044a0ec9` implements the complete two-name claim in the
+sole leased module.  The committed `LaplaceMomentBounds.lean` is Git blob
+`2ffeb693335c3b4baa1a7865e1a3e3e0ea1085f5`, with content SHA-256
+`646D942F8D0C442890E4F6BB25699BF0C6C301272178250CD10FA4E59C70DE45`.
+
+The new public declarations are exactly:
+
+- `iteratedDeriv_fabiusLaplaceMoment_alternating_pos`;
+- `strictConvexOn_fabiusLaplaceMoment`.
+
+The first proves for every `k,n : ℕ` and `s : ℝ` that
+
+`0 < (-1 : ℝ)^n * iteratedDeriv n (fabiusLaplaceMoment F k) s`.
+
+Rewriting the existing exact iterated-derivative formula leaves two copies of
+`(-1)^n`; reassociation, exponent addition, and the evenness of `n+n` cancel
+them to one.  The remaining quantity is precisely the already-established
+strictly positive moment `M_(k+n)(s)`.  This includes `n = 0` and imposes no
+sign or asymptotic condition on `s`.
+
+The second proves `StrictConvexOn ℝ Set.univ (fabiusLaplaceMoment F k)`.  Since
+`M_k' = -M_(k+1)` and `M_(k+1)` is strictly decreasing on the whole line, the
+derivative of `M_k` is strictly increasing.  Mathlib's whole-line derivative
+criterion then yields strict convexity; equivalently, the all-order identity
+gives `M_k'' = M_(k+2) > 0` everywhere.
+
+The source directly imports `Mathlib.Analysis.Convex.Deriv`, retains all three
+previous import lines in their original order, and places the two results
+immediately after the existing strict-antitonicity theorem.  All twenty old
+public declaration headers, attributes, and bodies are byte-preserved.  The
+module and declaration prose display the alternating derivative identity,
+strict sign, unrestricted domain, zero-order case, and strict-convexity
+mechanism.  Neither new structural theorem is marked simp.
+
+Two independent hostile reviews pass on the exact final bytes.  They checked
+the sign cancellation for zero, odd, and even orders; the strict-order
+orientation after negation; exact pinned `StrictMono.strictConvexOn_univ_of_deriv`
+arguments; whole-line continuity and differentiability; imports; placement;
+names; collisions; direct consumers; exact old source; and human-readable
+documentation.  No source-level blocker remains.
+
+```text
+SYNC Fabius
+branch / worktree / machine: codex/fabius-effective-bounds-20260825 /
+  /home/codex/.codex/worktrees/d6d3/Proofs / codexbox
+fetched main SHA: fc63c39788ab4c31694e4f57efe05b543165675a
+HEAD and dirty paths: b044a0ec9f3d61788eb0db518cd48db2b085aed7;
+  source checkpoint is clean and pushed; only this registry is dirty for the
+  immutable handoff
+writing (exact paths): completed source checkpoint writes only
+  Lean/FabiusFunction/LaplaceMomentBounds.lean; this report writes only this
+  branch registry; that Lean source is now frozen
+expected declarations or document claims: both advertised declarations are
+  implemented; every old public header/body is exact; source-level prose states
+  both Lean theorems in human-readable form; no canonical document, facade,
+  root, audit ledger, or other source claim
+completed commits: a8ae1e7d5 (registry-first claim) and b044a0ec9 (one-file
+  source/proof/documentation checkpoint); the disjoint constant-three binary
+  source 51b9ad393 and handoff 9e7f4df02 remain separately frozen and pending
+  coordinator validation
+validated (exact command, SHA/state, exit code): git diff --check exited 0;
+  forbidden-placeholder and duplicate-name scans are clean; mechanical diff
+  comparison confirms all twenty old public declarations and all old imports;
+  exact final blob/hash are recorded above; two independent exact-current-byte
+  static reviews pass; this is not compiler evidence
+not yet validated: source commit b044a0ec9 has not been elaborated; no Lean,
+  Lake, TeX, PDF, or cache-mutating process ran because this branch has no host
+  build token
+requested integration or lease: independently review and preserve exact source
+  commit b044a0ec9 / blob 2ffeb693335c, then assign separate serialized
+  LAKE_JOBS=1 builds of +FabiusFunction.LaplaceMomentBounds and the direct
+  consumer +FabiusFunction.NegativeLaplaceDerivativeBounds; request no
+  document or main-write lease
+conflicts / dependencies: exact parent preimage is current-main blob
+  007c2ed04697; the all-order sign depends only on already-green derivative and
+  positivity APIs; the explicit Convex.Deriv import is acyclic; both direct
+  importers retain every old interface; the frozen binary source and every
+  active external claim are disjoint; only the coordinator may advance main
+next bounded step: commit and push this immutable handoff; keep both pending
+  source paths frozen for coordinator validation; reserve the two-file formal
+  Lambert fixed-point/dedup tranche as the next ordinary claim while continuing
+  read-only audits of other released paths
+```
