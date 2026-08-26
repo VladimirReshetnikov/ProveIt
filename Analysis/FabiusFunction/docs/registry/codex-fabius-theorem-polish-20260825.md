@@ -636,3 +636,95 @@ next bounded step: commit and push this registry-only claim; reread the board
   and every advertised registry/tip; then edit only the two exact Lean sources
   and this registry, without launching validation
 ```
+
+## Source checkpoint: exact finite dependence and pairwise limit independence
+
+Source commit `0f7d53e8c28100f6c883798e352919466fbe49ba` implements the
+advertised two-file package.  Its source hashes are:
+
+```text
+d4d5d565f101a4a33c209877e4cdc2b701217c97  FabiusDiscreteLimitToeplitz.lean
+193cd7d36a05059494b4293a8eda4b81f3f91990  FabiusDiscreteLimitIntegration.lean
+```
+
+The Toeplitz module proves the depth-one identity at `x = 1 / 3` over an
+arbitrary `RCLike` field,
+`D₁(q) = q ^ 2 / 2 - q / 3 + 2 / 9`, records its exact real values `2 / 9`
+and `7 / 18` at `q = 0` and `q = 1`, and proves those rows unequal.  The
+integration module proves that the difference between any two fixed complex
+rows, and separately any two fixed real rows, tends to zero at every fixed
+real input.  At the common outer truncation index `n = N = 1`, it also proves
+that the real zero-shift row differs from the binary partial sum.  By
+`qBinomialFabiusGlobalSummand_eq`, `RCLike.ofReal_sum`, and injectivity of the
+real embedding, the final theorem strengthens that comparison to every
+literal global-q partial sum over every `RCLike` coefficient field and every
+series parameter.
+
+Four independent read-only reviews checked the calculation, limit API,
+finite-sum convention, imports, public naming, simp attributes, real-embedding
+bridge, and current-main/all-tip collision state.  They found no theorem or
+signature blocker.  Review did find and correct two documentation defects
+before commit: a false claim that the `x = 1 / 3` comparison was globally the
+smallest row-versus-sum witness, and ambiguous wording that could confuse a
+common outer truncation index with equal internal spline scales.  The final
+source says only what the new declarations and existing pointwise summand
+identity prove.
+
+```text
+SYNC Fabius
+branch / worktree / machine: codex/fabius-theorem-polish-20260825 /
+  C:/Users/vresh/.codex/worktrees/10ef/ProveIt / EVO (Windows)
+fetched main SHA: c2aa5a25c82e50149ab8887f95e7c5bcd6fe62eb
+HEAD and dirty paths: 2e8a247a8eaa0353fe5143f7b093b4aaab2ca7d3;
+  conflict-free merge of current main is committed, both claimed sources are
+  clean, and only this registry is dirty for the present report
+writing (exact paths): this registry only for the report; the two claimed
+  Lean sources remain leased but frozen at source commit 0f7d53e8c
+expected declarations or document claims: all eight advertised declarations
+  are implemented; the final q-binomial comparison is stronger than the claim
+  draft because it quantifies over arbitrary RCLike K and q : K
+completed commits: 137c546b9 (exact-path claim), 0f7d53e8c (two-source
+  theorem/documentation checkpoint), 2e8a247a8 (conflict-free merge of
+  coordinator main c2aa5a25c)
+validated (exact command, SHA/state, exit code): git diff --check and git diff
+  --cached --check exited 0 before the source commit; forbidden-declaration
+  scans found no sorry, admit, axiom, or opaque; every advertised Fabius tip
+  was compared with its merge base and none changes either claimed source;
+  four independent hostile/source/API reviews found no remaining blocker
+not yet validated: 0f7d53e8c has not been elaborated; no Lean, Lake, TeX,
+  PDF, Python audit, or cache-mutating process was launched for this tranche
+  because the sole EVO token remains assigned to the frontier PDF lane
+requested integration or lease: independent coordinator review, followed by
+  serialized +FabiusFunction.FabiusDiscreteLimitToeplitz and then
+  +FabiusFunction.FabiusDiscreteLimitIntegration at an immutable accepted
+  source tree when the EVO token is explicitly assigned; retain both source
+  leases until disposition
+conflicts / dependencies: current main changed neither claimed source; the
+  canonical primary, walkthrough, glossary, PAPER_COVERAGE, AUDIT_FINDINGS,
+  README, root aggregate, frontier, TeX, PDF, AGENTS, and coordinator paths
+  remain frozen and untouched by this branch
+next bounded step: commit and push this registry report, then freeze source
+  and poll the board read-only for review/token disposition; do not launch a
+  validator and do not push main
+```
+
+### Frozen human-readable reciprocity handoff
+
+After the declarations are compiled and integrated, the primary exposition,
+Lean walkthrough, glossary, coverage matrix, paper facade documentation, and
+root README should state the exact depth-one quadratic and the values `2 / 9`
+and `7 / 18`; pairwise difference convergence for fixed shifts and fixed real
+input; and the outer-index-one discrete-row/binary/global-q inequalities.  The
+wording must say `n = N = 1`, not “matching internal scales”: the discrete row
+internally samples degrees `{1, 2}`, whereas the partial sums use scales
+`{0, 1}`.  It must also say explicitly that the binary and literal global-q
+summands are pointwise equal to each other—the discrete row is the construction
+that differs.
+
+The pairwise limit theorems are pointwise in a fixed input and fixed shifts.
+They prove no uniformity and no convergence rate.  Claims of an
+`O_Q(4 ^ (-n))` rate, eventual exact stabilization at dyadic inputs, dependence
+at every nondyadic input or every finite row, or independence of a separate
+synchronized construction remain research-frontier obligations.  No canonical
+document path is authorized for this branch, so this is a handoff rather than
+a prose edit.
