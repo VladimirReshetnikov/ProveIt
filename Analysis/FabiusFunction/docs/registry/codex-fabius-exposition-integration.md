@@ -698,3 +698,38 @@ source trust and axiom-set audit, and the serialized aggregate
 record the limits of automation and a human claim-level audit of mathematical
 prose. Only those gates can support the universal completion claim required by
 this workstream.
+
+## Stage-two frontier PDF checkpoint: stopped on the box predicate
+
+The coordinator's `383bc9672` board grant was merged cleanly into this branch
+at `1ca2a09be`. The canonical frontier TeX remained byte-for-byte identical
+to the independently accepted source (SHA-256
+`8562CF91CDB48132C1DBF127B80886D9EFF8D46057805A200B4579A42E054546`). From
+that clean, pushed tip I ran exactly three sequential invocations of:
+
+```text
+pdflatex -interaction=nonstopmode -halt-on-error -file-line-error -jobname=non-formalized-research-frontiers_stage2 non-formalized-research-frontiers.tex
+```
+
+All three invocations exited `0`. Starting from a fresh stage-two auxiliary
+set, their output page counts were respectively 178, 186, and 186 pages. The
+third-pass log has SHA-256
+`24785261A0D440E67AD136FF894A26E2A4CE55A957BC86CC36FCEDCD334E3442` and is
+64,125 bytes. Its settled predicates are:
+
+- zero undefined-reference or undefined-citation diagnostics;
+- zero cross-reference rerun requests and zero changed-label diagnostics;
+- zero multiply-defined-label diagnostics;
+- zero fatal, emergency-stop, or LaTeX-error diagnostics;
+- zero overfull horizontal boxes; but
+- exactly one `Overfull \\vbox (59.28255pt too high)` while the output routine
+  was active, immediately before output page 184.
+
+The last predicate violates the board's required zero-overfull-box gate. I
+therefore did not run a fourth pass, did not edit the frozen TeX/README, did
+not replace or stage the canonical PDF, and did not begin primary-exposition
+cleanup. The rejected stage-two PDF is 186 pages, 2,056,681 bytes, SHA-256
+`E01692CE1D160F2697E0471284C3B9E1C2D37F79C2C8D3B68286FF2B3286D231`; it and
+the matching log remain preserved under their `_stage2` job name for
+diagnosis. A new coordinator disposition is required before any source
+repair, additional TeX invocation, or canonical-PDF replacement.
