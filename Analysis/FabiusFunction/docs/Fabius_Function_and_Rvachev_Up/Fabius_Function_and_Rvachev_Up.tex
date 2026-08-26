@@ -3785,6 +3785,12 @@ exponential of this logarithmic encoding is the expression printed in the discus
   \right)
  \right].                                                     \label{eq:mse-lambert-main}
 \end{equation}
+For \(x>0\), this factor is strictly positive.  Lean names it
+\lean{fabiusWikipediaLambertFactor};
+\lean{exp_fabiusWikipediaLambertMain_eq_WikipediaLambertFactor} identifies it
+with \(\exp(\mathcal W_{\mathrm{MSE}}(x))\), and
+\lean{fabiusWikipediaLambertFactor_pos} proves its positivity.  All three
+declarations occur in \path{FabiusWikipediaMain.lean}.
 The proposed symbol \(F(x)\sim A_{\mathrm{MSE}}(x)\) means that the ratio should tend
 to \(1\) as \(x\downarrow0\).
 
@@ -3815,10 +3821,13 @@ is
  \end{aligned}}
  \qquad(x\downarrow0).                                      \label{eq:mse-lambert-corrected}
 \end{equation}
-This is \lean{fabius_isEquivalent_exp_correctedWikipediaMain}, combined with the exact
-decomposition above.  The plus sign in \eqref{eq:mse-corrected-log-main} is essential:
-the missing multiplier is \(\exp(\Psi(\lambda(x)))\), with
-\(\lambda(x)=-W/L\).
+This is the direct theorem
+\lean{fabius_isEquivalent_WikipediaLambertFactor_mul_periodic} in
+\path{FabiusSharpAsymptotic.lean}; the underlying exact positive-side factorization is
+\lean{exp_fabiusCorrectedWikipediaMain_eq_WikipediaLambertFactor_mul_periodic}
+in \path{FabiusWikipediaMain.lean}.  The plus sign in
+\eqref{eq:mse-corrected-log-main} is essential: the missing multiplier is
+\(\exp(\Psi(\lambda(x)))\), with \(\lambda(x)=-W/L\).
 
 The logical bridge from logarithmic error to ratio-one equivalence is itself formalized.
 Along any filter, if \(f\) is eventually positive, then
@@ -3840,16 +3849,84 @@ and that the same residual is not
 \begin{equation}
  F\not\sim A_{\mathrm{MSE}},                                 \label{eq:mse-not-equivalent}
 \end{equation}
-namely \lean{fabius_not_isEquivalent_exp_WikipediaLambertMain}.  The criterion and all
-three obstruction declarations in this paragraph occur in
+namely \lean{fabius_not_isEquivalent_exp_WikipediaLambertMain}; its direct
+literal-factor form is \lean{fabius_not_isEquivalent_WikipediaLambertFactor}.
+The criterion and all four obstruction declarations in this paragraph occur in
 \path{FabiusSharpAsymptotic.lean}.  Thus the nonconvergence of the sampled periodic
 correction, rather than its numerical size, is decisive for ratio-one equivalence.
 
-\begin{warning}
-The declarations in this subsection refute the multiplier-one statement
-\(F\sim A_{\mathrm{MSE}}\).  They do not by themselves state the stronger assertion that
-every constant multiple of \(A_{\mathrm{MSE}}\) fails; no such stronger claim is used here.
-\end{warning}
+\begin{theorem}[Exact cluster interval for the online quotient]
+\label{thm:mse-lambert-ratio-cluster}
+For \(x>0\), put
+\[
+ R_{\mathrm{MSE}}(x):=\frac{F(x)}{A_{\mathrm{MSE}}(x)},\qquad
+ m_\Psi:=\min_{0\le t\le1}\Psi(t),\qquad
+ M_\Psi:=\max_{0\le t\le1}\Psi(t).
+\]
+Then \(m_\Psi<M_\Psi\), and the quotient has the sharper additive asymptotic model
+\begin{equation}
+ R_{\mathrm{MSE}}(x)-\exp\!\bigl(\Psi(\lambda(x))\bigr)\longrightarrow0
+ \qquad(x\downarrow0).                                      \label{eq:mse-lambert-ratio-model}
+\end{equation}
+Write \(\operatorname{Cl}_{0^+}(R_{\mathrm{MSE}})\) for the set of all \(z\in\R\)
+for which there is a sequence \(x_n\to0\), eventually positive, such that
+\(R_{\mathrm{MSE}}(x_n)\to z\).  Its complete cluster set is
+\begin{equation}
+ \operatorname{Cl}_{0^+}(R_{\mathrm{MSE}})
+   =[\exp(m_\Psi),\exp(M_\Psi)].                            \label{eq:mse-lambert-cluster-interval}
+\end{equation}
+In particular,
+\begin{equation}
+ \liminf_{x\downarrow0}R_{\mathrm{MSE}}(x)=\exp(m_\Psi)
+ <\exp(M_\Psi)=\limsup_{x\downarrow0}R_{\mathrm{MSE}}(x).  \label{eq:mse-lambert-liminf-limsup}
+\end{equation}
+Consequently no real constant repairs the omitted factor: in Mathlib's
+filter-theoretic asymptotic-equivalence relation,
+\begin{equation}
+ \forall c\in\R,\qquad
+ F\not\sim cA_{\mathrm{MSE}}\quad(x\downarrow0).             \label{eq:mse-lambert-no-constant}
+\end{equation}
+For \(c\ne0\), the last assertion is the usual failure of
+\(F(x)/(cA_{\mathrm{MSE}}(x))\to1\).  The formal declaration also includes
+\(c=0\), without interpreting a quotient by zero.
+\end{theorem}
+
+The online discussion supplies \(A_{\mathrm{MSE}}\); the exact cluster interval is a
+consequence of the corrected formal asymptotic.  The endpoint descriptions
+\(\exp(m_\Psi)\) and \(\exp(M_\Psi)\) are exact variational formulas in terms of the
+explicit periodic correction.  No finite elementary evaluation, numerical certification,
+sign claim for the extrema, or uniqueness claim for their phases is asserted here.
+
+The phase-sampling mechanism is reusable.  Every value of a one-periodic map \(p\) is a
+cluster value of \(p(\lambda(x))\) as \(x\downarrow0\); if \(p\) is continuous and its
+codomain is Hausdorff, the complete cluster set is exactly \(p(\R)\).  These statements
+are \lean{mapClusterPt_periodic_comp_fabiusLambertPhase} and
+\lean{mapClusterPt_periodic_comp_fabiusLambertPhase_iff} in
+\path{FabiusWikipediaObstruction.lean}.
+
+For the specialization above, \(R_{\mathrm{MSE}}\) is
+\lean{fabiusWikipediaLambertRatio}, while \(m_\Psi\) and \(M_\Psi\) are
+\lean{negativeLaplacePsiPeriodMin} and \lean{negativeLaplacePsiPeriodMax}.  The exact
+global range, pointwise extremal bounds, and endpoint order are respectively
+\lean{range_negativeLaplacePsi_eq_Icc_periodMin_periodMax},
+\lean{negativeLaplacePsiPeriodMin_le_value},
+\lean{negativeLaplacePsi_value_le_periodMax}, and
+\lean{negativeLaplacePsiPeriodMin_le_periodMax}; attainment and strict separation are
+\lean{exists_mem_Icc_negativeLaplacePsi_eq_periodMin},
+\lean{exists_mem_Icc_negativeLaplacePsi_eq_periodMax}, and
+\lean{negativeLaplacePsiPeriodMin_lt_periodMax}.  Exponentiation of the exact range is
+\lean{range_exp_negativeLaplacePsi_eq_Icc_periodExtrema}.
+
+The ratio-one comparison with the sampled periodic model is
+\lean{fabiusWikipediaLambertRatio_isEquivalent_periodic}, and the stronger additive
+statement \eqref{eq:mse-lambert-ratio-model} is
+\lean{tendsto_fabiusWikipediaLambertRatio_sub_periodic}.  The interval identity
+\eqref{eq:mse-lambert-cluster-interval} is
+\lean{mapClusterPt_fabiusWikipediaLambertRatio_nhdsGT_zero_iff}; the two endpoint limits
+are \lean{liminf_fabiusWikipediaLambertRatio_nhdsGT_zero_eq} and
+\lean{limsup_fabiusWikipediaLambertRatio_nhdsGT_zero_eq}; and the universal obstruction
+is \lean{fabius_not_isEquivalent_const_mul_WikipediaLambertFactor}.  These declarations
+all occur in \path{FabiusSharpAsymptotic.lean}.
 
 \subsection{The first two periodic saddle corrections}
 
@@ -4428,8 +4505,8 @@ V.~Reshetnikov,
 V.~Reshetnikov,
 \newblock \emph{ProveIt: Analysis/FabiusFunction},
 \newblock Lean~4 formal development, source snapshot
-\texttt{8d928a55ff19a856e1d7a9083e5e102fff857804}, consulted 25 August 2026.
-\newblock \url{https://github.com/VladimirReshetnikov/ProveIt/tree/8d928a55ff19a856e1d7a9083e5e102fff857804/Analysis/FabiusFunction}.
+\texttt{948bf3f377472c068f9539e0569d383ddc35f617}, consulted 26 August 2026.
+\newblock \url{https://github.com/VladimirReshetnikov/ProveIt/tree/948bf3f377472c068f9539e0569d383ddc35f617/Analysis/FabiusFunction}.
 
 \end{thebibliography}
 
