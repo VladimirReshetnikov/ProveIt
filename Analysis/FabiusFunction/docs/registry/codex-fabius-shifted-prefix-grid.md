@@ -1,7 +1,8 @@
 # Workstream registry: `codex/fabius-shifted-prefix-grid`
 
 **Status: finite-jet source checkpoint implemented and frozen pending
-coordinator review and compiler validation.**
+coordinator review; a narrow same-path all-order refinement is advertised for
+the next released checkpoint.**
 The exact claim was published before source work, coordinator checkpoint
 `893d4c25d` explicitly acknowledged it as the first nonoverlapping claim for
 the module, and source commit `00ff41a5e` now implements precisely that bounded
@@ -14,19 +15,24 @@ completed and pushed before coordinator checkpoint `148990f0a` newly serialized
 both campaign-wide Markdown paths.  Those paths remain serialized.  After
 merging current main at `77c15879f`, this branch now advertises the exact
 two-file finite-jet claim below before editing either source.  Source commit
-`51af7f7e1` now implements exactly that claim.
+`51af7f7e1` now implements exactly that claim.  After merging current main at
+`1381df9bb`, the branch records below the precise module-guide corrections and
+two all-order approximation declarations proposed for the next bounded
+checkpoint.  Neither frozen source file will be edited until the coordinator
+releases `51af7f7e1`.
 
 ```text
 SYNC Fabius
 branch / worktree / machine: codex/fabius-shifted-prefix-grid / c9a3 / EVO
   (Windows)
-fetched main SHA: 383bc967268df018cc0bc1634b997114863c1658
-HEAD and dirty paths: 51af7f7e192b9dbf2b8590b0bfd7f8d4802ec532;
-  docs/registry/codex-fabius-shifted-prefix-grid.md only, recording the immutable
-  source checkpoint and requesting validation
+fetched main SHA: 407da44a69a56aa8c1de5e817aa1792af5ed0a46
+HEAD and dirty paths: 1381df9bb1c42943840be5e47323d2cddea05cbc;
+  docs/registry/codex-fabius-shifted-prefix-grid.md only, publishing the next
+  exact same-path source proposal while the current checkpoint stays frozen
 writing (exact paths): docs/registry/codex-fabius-shifted-prefix-grid.md only;
+  after coordinator release, the proposed next claim is exactly
   Lean/FabiusFunction/ThueMorseGenerating.lean and
-  Lean/FabiusFunction/ThueMorseApproximation.lean are frozen at 51af7f7e1
+  Lean/FabiusFunction/ThueMorseApproximation.lean
 expected declarations or document claims:
   coeff_thueMorseBlockPolynomial_mul_eq_thueMorseSeries_mul and
   coeff_thueMorseBlockPolynomial_mul_invOneSubPow_eq_iteratedPrefix in the
@@ -36,12 +42,25 @@ expected declarations or document claims:
   coeff_thueMorseSeries_mul_inv_eq_finite; retain the exact public header,
   binders, argument order, type, and attributes of
   iteratedPrefix_eq_approximationPolynomial_coeff as a compatibility wrapper;
-  simplify its sole downstream caller to use the all-order theorem
-expected documentation claims: add precise declaration doc comments and
-  module-guide prose explaining the finite-jet invariant, its strict sharp
-  cutoff, the independent block-depth/prefix-order parameters, and the genuine
-  order-zero approximation boundary; do not edit a campaign-wide Markdown,
-  TeX, PDF, root aggregate, or other serialized path
+  simplify its sole downstream caller to use the all-order theorem;
+  in the proposed follow-up, add
+  one_sub_X_pow_mul_approximationPolynomialInt_all and
+  thueMorseBlockPolynomial_mul_invOneSubPow_eq_approximationPolynomialInt,
+  making the polynomial and power-series factorizations uniform at order zero
+  and turning iteratedPrefix_eq_approximationPolynomial_coeff_all into one
+  case-free coefficient calculation; add
+  correctedPrefixCoefficient_eq_stepApproximant_all without a positivity
+  hypothesis, retain the exact header and type of
+  correctedPrefixCoefficient_eq_stepApproximant as a compatibility wrapper,
+  and route the moving-cell caller through the all-order form
+expected documentation claims: correct two guide-level precision issues in the
+  proposed follow-up: distinguish the literal formal-power-series prefix
+  identity from coefficientwise finite stabilization of the infinite-product
+  shorthand in ThueMorseGenerating.lean, and say that the order-zero cutoff
+  admits only index zero rather than suggesting the series has only one
+  coefficient in ThueMorseApproximation.lean; document both new all-order
+  factorizations and the all-order histogram bridge; do not edit a
+  campaign-wide Markdown, TeX, PDF, root aggregate, or other serialized path
 completed commits: 6fb8dc8e9 publishes the exact one-file claim; ba0048023
   activates it under the open protocol; 00ff41a5e adds the seven generic
   declarations and converts all eight legacy proofs to wrappers; 047a03b63
@@ -57,7 +76,9 @@ completed commits: 6fb8dc8e9 publishes the exact one-file claim; ba0048023
   publishes the exact two-file claim; 122788a95 merges the frontier
   build-authorization checkpoint 383bc9672 before source work; 585f8f8ba moves
   both convolution bridges to their minimal generating-series dependency;
-  51af7f7e1 implements the complete two-file source tranche
+  51af7f7e1 implements the complete two-file source tranche; 7c6eaeff9 records
+  its validation request; 1381df9bb merges the exact current main checkpoint
+  407da44a6 without conflicts
 validated (exact command, SHA/state, exit code): at source snapshot SHA-256
   784F6C4F389FE0F2FA08616FFAFBFA3917CCC9F6D2C86CE98D3D877B5F0DD14C,
   git diff --check and git diff --cached --check exited 0; python
@@ -98,11 +119,13 @@ validated (exact command, SHA/state, exit code): at source snapshot SHA-256
   499A7D176C691135FA24550CC73CF335D8D1E6C6A7C001A3F7B931D6B099B5DF)
   and Approximation b27b38fbc (SHA-256
   1108CE8C50AAEF02A8C5A7705916D1D70A0AD993005F33AAC27AE83C76E783FE)
-not yet validated: source commit 51af7f7e1 has not been compiled; no Lean or
-  Lake process was launched because the sole EVO token is assigned to frontier
-  pdflatex and no coordinator-held codexbox target is assigned
-requested integration or lease: review source commit 51af7f7e1 and assign the
-  coordinator-held serialized targets +FabiusFunction.ThueMorseGenerating,
+not yet validated: source commit 51af7f7e1 has not been compiled; the proposed
+  all-order follow-up has not been implemented; no Lean or Lake process is
+  authorized because both physical-host tokens remain coordinator-reserved
+requested integration or lease: review and validate source commit 51af7f7e1;
+  then release its two source paths so the exactly advertised follow-up may be
+  implemented, reviewed, and frozen before assigning the final
+  coordinator-held targets +FabiusFunction.ThueMorseGenerating,
   +FabiusFunction.ThueMorseApproximation,
   +FabiusFunction.ThueMorseExponential, and
   +FabiusFunction.PaperKFoldThueMorse at that immutable checkpoint or its exact
@@ -114,12 +137,15 @@ conflicts / dependencies: no overlap with the active frontier-document lease;
   serialized; current main explicitly releases the prior source lease; a
   post-claim scan pinned all 16 locally available Fabius worker tips plus
   origin/main and found no competing claim or proposed declaration under an
-  exact or plausible alternate name; both source paths are now frozen pending
-  review, and no further path expansion is requested
-next bounded step: push this exact source handoff, keep both source files and
-  every serialized document frozen, and poll the board for review/build
-  disposition
-lease refreshed: 2026-08-25 18:57 PDT; two-file source checkpoint frozen
+  exact or plausible alternate name; a fresh collision review for the proposed
+  follow-up names and same-path claim is in progress; both source paths remain
+  frozen at 51af7f7e1, and no path expansion beyond those two source files and
+  this branch registry is requested
+next bounded step: push this exact proposal, keep both source files and every
+  serialized document frozen, finish the read-only proof/API/collision reviews,
+  and poll the coordinator board for source release and build disposition
+lease refreshed: 2026-08-25 19:13 PDT; registry-only proposal, with both source
+  files still frozen at 51af7f7e1
 git owner / build owner: root / no build owner assigned to this branch
 ```
 
