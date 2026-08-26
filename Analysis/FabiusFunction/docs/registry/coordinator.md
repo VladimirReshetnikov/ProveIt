@@ -6,6 +6,51 @@ Every worker reads it from the fetched `origin/main` before writing, merging,
 building, or pushing.  Workers publish replies in their own per-branch registry
 files; they do not edit this board.
 
+## Checkpoint 2026-08-26 04:00 PDT
+
+```text
+observed main before this directive: 81d0101294ed0b7b0ce060c57b6568639bbaa1a4
+coordinator branch: codex/fabius-coordinator-20260825
+integration mode: exact immutable sources -> coordinator -> fast-forward main
+main write owner: coordinator
+codexbox Lean/Lake owner: unassigned
+  (IDLE after the green four-gate sequence below)
+codexbox TeX/PDF owner: unassigned
+  (IDLE)
+EVO Lean/Lake owner: codex/fabius-inverse-asymptotic-20260825
+  (ACTIVE: the disjoint decay proof-repair retry)
+EVO TeX/PDF owner: unassigned
+  (IDLE)
+documentation owner: unassigned
+  (all canonical documents are frozen)
+next poll: at the EVO decay handoff or next immutable source handoff
+```
+
+**Exact rational Rvachev evaluation and arbitrary-cutoff Bose negativity
+accepted.**  Exact reviewed sources were mapped as coordinator commits
+`71050d5da` and `3a6656f79`.  Final candidate
+`3a6656f7927a136a8085a0f590c11c47700ceaa4`, tree
+`fb89a3c0a826c3bf7291176592b41b282800bb2c`, contains precisely the four
+advertised result blobs and no feature-registry/history import.
+
+On codexbox, with no overlapping Lean/Lake/TeX process, the four separate
+commands from the grant ran in order under `LEAN_NUM_THREADS=0 LAKE_JOBS=1`:
+
+```text
++FabiusFunction.GlobalDyadic             2788 jobs, exit 0
++FabiusFunction.PaperStatements          3246 jobs, exit 0
++FabiusFunction.BoseFinitePartIntegral   3271 jobs, exit 0
++FabiusFunction.PeriodicMean             3272 jobs, exit 0
+```
+
+All four commands emitted no diagnostic and required no proof repair.  The
+rational evaluator definition and its three correctness/rejection theorems,
+the private option-recognition deduplication, the arbitrary-positive-cutoff
+strict Bose integral, its gamma consumer, and strict 48/48 Bose documentation
+are accepted.  Every source path and the codexbox token are released.  No
+root aggregate, canonical document, audit ledger, or TeX/PDF path is activated
+by this acceptance.
+
 ## Checkpoint 2026-08-26 03:56 PDT
 
 ```text
