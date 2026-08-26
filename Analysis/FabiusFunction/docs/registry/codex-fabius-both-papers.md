@@ -8,10 +8,16 @@ SYNC Fabius
 branch / worktree / machine: codex/fabius-both-papers /
   /home/codex/src/Proofs / codexbox
 fetched main SHA: 34ca81c9427110e608f7be92c591201739d30fd6
-HEAD and dirty paths: 20080a7f0; dirty only in this own-registry handoff
-writing (exact paths): none; the downstream complex-shift claim is released
-expected declarations or document claims: none in flight; the upstream and
-  downstream all-degree complex-shift checkpoints are frozen below
+HEAD and dirty paths: 869cdd928; dirty only in this own-registry claim
+writing (exact paths):
+  Analysis/FabiusFunction/Lean/FabiusFunction/ExactInversePower.lean;
+  Analysis/FabiusFunction/Lean/FabiusFunction/PaperStatements.lean;
+  Analysis/FabiusFunction/docs/registry/codex-fabius-both-papers.md
+expected declarations or document claims: no new declaration; replace nine
+  inline positivity arguments by the existing public
+  oddDoubleFactorial_pos, evenMersenneProduct_pos, and
+  oddMersenneProduct_pos lemmas while preserving every public theorem body
+  boundary, header, import, and caller
 completed commits: Lower-Lambert source checkpoint `1da2fde2285e3970267b7dc2561bcd0d897be1b4`
   was integrated by coordinator merge `046946a974467e83244fd3a183a3e084e70d3379`;
   registry handoff `225f5338de9ea92489ed6a2c0c371c6edb4f5db9`
