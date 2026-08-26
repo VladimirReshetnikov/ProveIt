@@ -6,24 +6,24 @@ Every worker reads it from the fetched `origin/main` before writing, merging,
 building, or pushing.  Workers publish replies in their own per-branch registry
 files; they do not edit this board.
 
-## Checkpoint 2026-08-25 22:23 PDT
+## Checkpoint 2026-08-25 22:31 PDT
 
 ```text
-observed main before this directive: 14af01588ade513eb7e8c580e3ae2d3c0ab1870d
+observed main before this directive: d33c4f44b3d08f14b15c1514d687a32898569475
 coordinator branch: codex/fabius-coordinator-20260825
 integration mode: feature branches -> coordinator -> fast-forward main
 main write owner: coordinator
 codexbox Lean/Lake owner: coordinator
-  (IDLE after saddle continuous-polynomial validation)
+  (IDLE after compact-Lambert and central-binomial validation)
 codexbox TeX/PDF owner: unassigned
   (IDLE)
-EVO Lean/Lake owner: codex/fabius-theorem-polish-20260825
-  (ACTIVE for exactly +FabiusFunction.FabiusSharpAsymptotic)
-EVO TeX/PDF owner: unassigned
-  (IDLE after user-directed release of the shifted-prefix document grant)
-documentation owner: unassigned
-  (all canonical documents frozen; conditional primary reservation below)
-next poll: after the theorem-polish EVO build checkpoint or next source handoff
+EVO Lean/Lake owner: unassigned
+  (IDLE; the coordinator supplied the accepted compact-Lambert gate)
+EVO TeX/PDF owner: codex/fabius-theorem-polish-20260825
+  (ACTIVE for one sequential primary-exposition stream only)
+documentation owner: codex/fabius-theorem-polish-20260825
+  (ACTIVE for the primary TeX/PDF pair only; all other documents frozen)
+next poll: after the theorem-polish primary source/render checkpoint or next Lean handoff
 ```
 
 The previously approved curvature, generalizations, lower-Lambert,
@@ -66,20 +66,21 @@ compiled, integrated, deleted, or moved while documentation is frozen.
    and registry reports `Not yet validated`.  A board-assigned document owner
    may run one sequential LaTeX/PDF tool stream on its assigned host without
    consuming that host's Lean token, and that stream may coexist with the one
-   assigned Lean build.  No document owner or TeX/PDF stream is currently
-   assigned.  Do not launch a TeX pass or terminate another process.
+   assigned Lean build.  The theorem-polish branch currently owns EVO's one
+   sequential TeX/PDF stream for only the primary pair named below.  No other
+   document worker or TeX stream is assigned.  Do not launch a parallel TeX
+   pass or terminate another process.
 3. The following remain serialized and require an explicit board grant:
    `AGENTS.md`, `README.md`, `docs/COLLABORATION.md`,
    `docs/MULTI_AGENT_COORDINATION_PROPOSAL.md`, `docs/PAPER_COVERAGE.md`,
    `docs/AUDIT_FINDINGS.md`, this board, the root aggregate
    `Lean/FabiusFunction.lean`, and every primary-exposition, walkthrough, or
    canonical-frontier TeX/PDF path.  Any path marked hot, frozen, or
-   single-owner below is also unavailable to ordinary claims.  There is no
-   open document exception: coverage, primary, walkthrough, and frontier are
-   all frozen.  The primary TeX/PDF pair is conditionally reserved for the
-   theorem-polish request below, but that is not an editing or tool grant.
-   Host Lean/Lake ownership is tracked separately from any future lightweight
-   document lane.
+   single-owner below is also unavailable to ordinary claims.  The sole open
+   document exception is the exact theorem-polish primary TeX/PDF lease below;
+   coverage, walkthrough, frontier, every draft, and every other canonical
+   document remain frozen.  Host Lean/Lake ownership is tracked separately
+   from the lightweight document lane.
 4. Preserve dirty work before merging.  Never stash, reset, discard, or
    overwrite it.  A checkpoint/WIP commit is acceptable on a feature branch if
    its message states exactly what remains uncompiled or unfinished.  After a
@@ -524,6 +525,22 @@ are released.  This accepts the core deduplication but does not claim that the
 audit proposal's optional three-name public surface was implemented verbatim;
 the audit ledger itself remains unchanged and frozen.
 
+Exact source `e8aa10cda` is the later one-file central-binomial valuation
+tranche in `TwoAdic.lean`.  It adds
+`centralChoose_padicValNat_two` and `thueMorseSign_centralChoose`, specializing
+Kummer's digit-sum identity at two and then rewriting the defining
+Thue--Morse sign.  Two independent actual-diff reviews accept the natural
+subtraction, binary-digit shift, `n = 0` case, sign orientation, exact current
+preimage, imports, API, and collision scan.  The coordinator integrated only
+that source as `430aaac90`.  Separate serialized builds of
+`+FabiusFunction.TwoAdic` (2017 jobs) and
+`+FabiusFunction.Paper06487` (3244 jobs) both exited 0 without warnings.  The
+source path and codexbox token are released; no document path is granted.
+Worker handoff `eb90a1f7a` has one nonblocking provenance error: it calls
+`a585d729f` the source blob, but that is the preimage.  The accepted result
+blob is `7295874def860ce52feb88655cae2338aa648078`; the worker should correct
+only its own registry when next active.
+
 ### `codex/fabius-theorem-polish-20260825`
 
 The prior task is complete and its complete source tranche is integrated on
@@ -649,34 +666,61 @@ two files; handoff `20751d800` freezes result blobs `61ae4480f` and
 `e6939d6e8`.  Two independent actual-diff reviews accept the formula, totalized
 definition, plus sign, arbitrary-filter log-ratio iff, residual subtraction,
 Big-O implication, positive-side domain, imports, API compatibility, current
-preimages, and collision scan.  The source is accepted for validation but not
-yet integrated or compiled.  The theorem-polish branch holds the sole EVO
-Lean/Lake token for exactly one command after merging this board/current main
-and verifying those two blobs remain exact:
+preimages, and collision scan.  The coordinator integrated only that immutable
+source as `8d928a55f`.  At the resulting exact tree, the sole serialized
+command
 
 ```text
 LAKE_JOBS=1 lake build +FabiusFunction.FabiusSharpAsymptotic
 ```
 
-It must run no second target or document process.  On failure, record and stop;
-on success, record the exact tree, job count, exit, and warnings, push only the
-own registry, and release the token.  The primary reservation remains inactive
-until the coordinator integrates the source and accepts this build evidence.
+completed 3891 jobs and exited 0.  Its only diagnostic was the inherited
+nonblocking `unnecessarySimpa` linter in `ProbabilityLaplaceMoments.lean`.
+Both Lean source paths and both host Lean/Lake tokens are released.
 
-**Conditional primary-document reservation.**  At the user's direction, the
-primary exposition TeX/PDF pair is reserved for a future bounded
-theorem-polish correction after that branch publishes its exact two-source Lean
-checkpoint and the coordinator accepts it on review.  The proposed section may
-then print the exact 2022 MSE compact uncorrected Lambert formula, explain that
-its ratio is not one because it omits the nonconstant periodic `Psi`, print the
-corrected compact formula retaining `W_{-1}`, and cross-reference only exact
-accepted Lean names.  This reservation is **not** an active document lease or
-TeX token: until a later board checkpoint activates it,
-`docs/Fabius_Function_and_Rvachev_Up/Fabius_Function_and_Rvachev_Up.tex` and
-its matching PDF remain frozen.  The branch must first advertise and implement
-the exact two Lean paths/declarations in its own registry, push an immutable
-source handoff, and obtain source review.  It may not touch coverage,
-walkthrough, frontier, README/AGENTS, control files, or any other document.
+**Active relaxed primary-document lease.**  At the user's direction, this
+branch now holds sole ownership of exactly:
+
+- `docs/Fabius_Function_and_Rvachev_Up/Fabius_Function_and_Rvachev_Up.tex`;
+- its matching `Fabius_Function_and_Rvachev_Up.pdf`; and
+- its own theorem-polish registry.
+
+First merge this coordinator checkpoint into a clean pushed feature branch.
+The current canonical bases are TeX blob `e3a0df24ef2697d6ad12300ce2e57f22f5fddde8`
+(SHA-256 `F4EE348F21524C2EDB8880E16E50802CCC6A3A831D38C8426F23AF7607EA64F1`)
+and PDF blob `93af1982d22666570eee76314f14251468567381`
+(SHA-256 `59B8B06825F89B81A33F6352196CEBE7C0CAF4C436170FEB15FFDD9336E72908`,
+57 A4 pages).  Never take either document from an old branch or resolve a PDF
+conflict.
+
+The bounded semantic scope is the compact Lambert-W correction only.  Print
+the exact 2022 MSE uncorrected formula; identify its logarithm with
+`fabiusWikipediaLambertMain`; state that multiplier-one equivalence fails
+because the compact expression omits the nonconstant sampled periodic term;
+print the corrected compact formula with `W_{-1}` and
+`negativeLaplacePsi (fabiusLambertPhase x)`; and map the prose to the six
+accepted names above.  Preserve the positive-side `x -> 0+` domain and the
+plus sign.  Do not claim that these six declarations exclude every arbitrary
+constant multiplier.  If the Fourier functional equation is mentioned,
+state `Gamma(1-chi_k) = -chi_k Gamma(-chi_k)` only for `k != 0`, with the zero
+mode handled separately.
+
+Within those exact paths the sole owner may edit, commit, push feature
+checkpoints, diagnose, and make sequential repair/rebuild iterations without a
+new per-hunk grant.  It holds EVO's one lightweight TeX/PDF stream and may run
+no Lean/Lake or parallel TeX process.  After each source revision, run at least
+three sequential `pdflatex -interaction=nonstopmode -halt-on-error
+-file-line-error` passes; if a repair follows, restart and settle that
+document's sequence.  Use a sidecar job name until the artifact passes.  Final
+gates are exit 0, settled references/citations, no undefined/rerun/
+changed-label/fatal/LaTeX-error diagnostic, no new or local box overflow,
+embedded fonts, no rendered `??`, and clean text/raster inspection of every
+changed page.  Install the matching settled PDF only after those gates, commit
+the TeX/PDF pair plus own registry without auxiliaries, and push the feature
+branch only.  Coverage, walkthrough, frontier, the draft inbox, README/AGENTS,
+all campaign-wide Markdown/control files, Lean, facades, root, peer registries,
+and `main` remain excluded.  Release the document lease explicitly in the own
+registry at handoff.
 
 ### `codex/fabius-effective-bounds-20260825`
 
@@ -1110,7 +1154,7 @@ a requested path is serialized, hot, frozen, single-owner, or already claimed.
 
 ## Collision and integration queue
 
-No reviewed Lean workstream is waiting on an assigned validation token.  The
+No reviewed Lean workstream is waiting on a validation token.  The
 four disjoint both-papers units, periodic bridges, all-index oddness, private
 spline cleanup, reflected Laplace moments, and the shifted-prefix seven-name
 tranche are integrated and validated as recorded above.  Continue to avoid
@@ -1128,11 +1172,14 @@ released as well.  The disjoint both-papers shifted-Fourier tranche is also
 integrated, compiled, and released; it grants no document ownership.  The
 subsequent two-file saddle continuous-polynomial deduplication is integrated,
 compiled, and released under its explicitly narrowed two-name public surface.
-The theorem-polish compact Lambert-W obstruction is a disjoint ordinary claim
-now implemented at frozen source `b0600193b`; exact review is
-green and its one EVO validation target is active.  The primary document lease
-remains inactive.  Effective-bounds has a disjoint corrected registry-only
-all-order Lambert-polynomial claim with no source checkpoint or token yet.
+The theorem-polish compact Lambert-W obstruction is integrated at `8d928a55f`
+and its 3891-job focused build is green.  Its Lean lease is released; its sole
+active ownership is now the exact primary TeX/PDF correction above.  The
+both-papers central-binomial valuation tranche is likewise integrated at
+`430aaac90`, green through its 2017-job focused and 3244-job paper-facade
+builds, and released.  Effective-bounds has a disjoint corrected registry-only
+all-order Lambert-polynomial claim; its local dirty draft is not an immutable
+handoff and receives no token yet.
 
 Theorem-polish source commit `665b6bce` is integrated as `c80f61c90`, repaired
 without statement changes at `6b6757e90`, and accepted after its focused
@@ -1142,12 +1189,11 @@ released.
 Frontier source checkpoint `6397a0d6a` is already on `main` without a matching
 rebuilt PDF historically; accepted merge `192c423bb` now closes that mismatch
 with the reviewed 188-page artifact.  The user-directed shifted-prefix document
-release leaves every canonical document path frozen and both TeX/PDF lanes
-idle.  The primary pair is only conditionally reserved for theorem-polish after
-its exact two-source Lean checkpoint is implemented and accepted; it is not
-currently writable.  Ordinary nonoverlapping feature claims may continue under
-the shared protocol, but no Lean/Lake or document process may start on either
-physical host until this board assigns that host's currently idle token.
+release leaves every other canonical document path frozen.  The theorem-polish
+branch now holds the sole active document lease and EVO TeX/PDF stream for the
+exact primary pair; codexbox TeX remains idle.  Ordinary nonoverlapping feature
+claims may continue under the shared protocol.  Both host Lean/Lake tokens are
+idle, and no worker may start a Lean/Lake process until a later board grant.
 
 ## Build-token log
 
@@ -1393,10 +1439,16 @@ No validation process was running on codexbox when the original PDF grant was
 published.  A lightweight sequential TeX/PDF lane is independent of the
 one-process codexbox Lean/Lake token when the board assigns a document owner;
 both codexbox lanes are currently idle, and the Lean/Lake token remains
-coordinator-owned.  EVO's Lean/Lake token is also idle and unassigned after
-the completed shifted-prefix run.  Other branches may edit, checkpoint, and
-push ordinary claimed work under the open protocol, but may not run Lean/Lake
-or a document tool stream until this board assigns the applicable lane.
+coordinator-owned.  The coordinator used that token at exact integrated trees
+for `+FabiusFunction.FabiusSharpAsymptotic` (3891 jobs, exit 0; inherited
+`ProbabilityLaplaceMoments.lean` linter only), then
+`+FabiusFunction.TwoAdic` (2017 jobs, exit 0) and
+`+FabiusFunction.Paper06487` (3244 jobs, exit 0), with no overlap between
+processes.  EVO's Lean/Lake token is now idle and unassigned; its sole active
+tool lane is the theorem-polish branch's sequential primary TeX/PDF stream.
+Other branches may edit, checkpoint, and push ordinary claimed work under the
+open protocol, but may not run Lean/Lake or a document tool stream until this
+board assigns the applicable lane.
 
 ## Worktree maintenance log
 
