@@ -14,12 +14,14 @@ summation over the signed Thue--Morse sequence*:
 `sum_n t(n) X^n = prod_{j>=0} (1 - X^(2^j))`, and
 `sum_n S^k_n X^n = (sum_n t(n) X^n) / (1 - X)^k`.
 
-Both are proved as identities of formal power series over `ℤ`, so no complex
-variable and no convergence hypothesis is involved.  The infinite product is
-rendered coefficientwise, as a finite stabilization: the first `r` factors
-already fix every coefficient of degree below `2^r`, even after right
-multiplication by an arbitrary power series.  Division by `(1 - X)^k` uses
-Mathlib's unit `PowerSeries.invOneSubPow`, and the denominator-cleared identity
+The prefix identity is proved as an equality in `PowerSeries ℤ`, so no complex
+variable or convergence hypothesis is involved.  The infinite-product notation
+is only shorthand: it is represented by finite blocks, with equality to
+`thueMorseSeries` proved coefficientwise once the block depth is large enough.
+More precisely, the first `r` factors determine every coefficient of index
+below `2^r`, even after right multiplication by an arbitrary element of
+`PowerSeries ℤ`.  Division by `(1 - X)^k` uses Mathlib's unit
+`PowerSeries.invOneSubPow`, and the denominator-cleared identity
 `(1 - X)^k * sum_n S^k_n X^n = sum_n t(n) X^n` avoids inverses altogether.
 
 These identities exist as a separate layer because
