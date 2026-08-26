@@ -8,9 +8,8 @@ SYNC Fabius
 branch / worktree / machine: codex/fabius-both-papers /
   /home/codex/src/Proofs / codexbox
 fetched main SHA: e18f5d0b0e3ec78e2b14e7006af6c7e916b42923
-HEAD and dirty paths: f546c38e5b6ddde6f68825798ab34c003e5c6930;
-  `Lean/FabiusFunction/GlobalExtension.lean` and this registry are dirty for a
-  post-checkpoint static-proof correction and status refresh
+HEAD and dirty paths: 0095fb161db5e6ef03df7bd391fbf45e96efc792;
+  clean before this registry-only status refresh
 writing (exact paths):
   Lean/FabiusFunction/GlobalExtension.lean;
   docs/registry/codex-fabius-both-papers.md
@@ -29,7 +28,9 @@ completed commits: Lower-Lambert source checkpoint `1da2fde2285e3970267b7dc2561b
   fetched main; source checkpoint `34fec97bd4d5ff0b034c305fef6a9e7d26fec2f7`
   implements both declarations and is explicitly unvalidated; merge
   `f546c38e5b6ddde6f68825798ab34c003e5c6930` synchronizes that checkpoint with
-  current fetched main `e18f5d0b0`
+  current fetched main `e18f5d0b0`; static-proof correction
+  `0095fb161db5e6ef03df7bd391fbf45e96efc792` aligns the odd branch with the
+  literal `2 * b + 1` witness and is pushed on the feature branch
 validated (exact command, SHA/state, exit code): coordinator board records
   serialized immutable `lake build +FabiusFunction.LowerLambertW` at
   `4c6bbac41`, exit 0, with its source blob unchanged on current main;
@@ -52,9 +53,8 @@ conflicts / dependencies: all advertised Fabius heads and their registries
   were checked; no branch claims GlobalExtension and the only overlap is the
   existing even/odd ingredients and downstream special cases that this API
   packages without modifying; documentation remains serialized and unclaimed
-next bounded step: commit and push the static-proof correction, then await an
-  assigned build token for the four serialized targets; leave documentation
-  and downstream source paths untouched
+next bounded step: await an assigned build token for the four serialized
+  targets; leave documentation and downstream source paths untouched
 ```
 
 Source-only subagents inspect and prototype in `/tmp`; they do not edit the
