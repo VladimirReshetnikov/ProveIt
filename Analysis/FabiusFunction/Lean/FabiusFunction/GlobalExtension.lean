@@ -9,9 +9,9 @@ This module proves that the Thue–Morse translate series defining
 `extendedFabius` is locally finite.  It then derives the global differential
 equation and the closed formulas for all iterated derivatives of both the
 signed extension and Rvachev's compactly supported function.  A cell-coordinate
-form of the locally finite series records its exact values at every even and
-odd nonnegative integer knot, and these values yield a sharp classification of
-all derivative zeros on the natural-number grid.
+form of the locally finite series records its exact values at every
+nonnegative integer grid point, and these values yield a sharp classification
+of all derivative zeros on that grid.
 -/
 
 open scoped BigOperators ContDiff
@@ -72,7 +72,7 @@ theorem extendedFabius_two_mul_add (F : BoundedFabius) (hF : IsFabius F)
   convert h using 1
   ring_nf
 
-/-- The signed extension vanishes at every nonnegative even integer knot. -/
+/-- The signed extension vanishes at every nonnegative even integer grid point. -/
 theorem extendedFabius_two_mul_nat (F : BoundedFabius) (hF : IsFabius F)
     (b : ℕ) : extendedFabius F (2 * (b : ℝ)) = 0 := by
   simpa [rvachevUp_neg_one F hF] using
@@ -87,7 +87,8 @@ theorem extendedFabius_two_mul_nat_add_one
     extendedFabius_two_mul_add F hF b 1 (by constructor <;> norm_num)
 
 /-- Exact value of the signed extension at every nonnegative integer.  Even
-knots vanish, while an odd knot retains the Thue--Morse sign of its cell. -/
+grid points vanish, while an odd grid point retains the Thue--Morse sign of its
+cell. -/
 theorem extendedFabius_natCast_eq_ite
     (F : BoundedFabius) (hF : IsFabius F) (m : ℕ) :
     extendedFabius F (m : ℝ) =
@@ -338,8 +339,8 @@ theorem iteratedDeriv_extendedFabius
       rw [show k + 1 + 1 = k + 2 by omega, hchoose, pow_add]
       ring_nf
 
-/-- At a nonnegative integer knot, an iterated derivative of the signed
-extension vanishes exactly in positive order or at an even knot. -/
+/-- At a nonnegative integer grid point, an iterated derivative of the signed
+extension vanishes exactly in positive order or at an even grid point. -/
 theorem iteratedDeriv_extendedFabius_natCast_eq_zero_iff
     (F : BoundedFabius) (hF : IsFabius F) (order m : ℕ) :
     iteratedDeriv order (extendedFabius F) (m : ℝ) = 0 ↔
