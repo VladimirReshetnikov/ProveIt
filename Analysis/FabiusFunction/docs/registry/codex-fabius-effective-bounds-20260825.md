@@ -4149,3 +4149,107 @@ conflicts / dependencies: source blob is immutable pending disposition;
 next bounded step: push this handoff, refresh shared state, and continue on a
   disjoint cold source/documentation path while this checkpoint awaits build
 ```
+
+## Claim: first saddle correction in bounded exponent jets
+
+Claimed at 2026-08-26 after merging accepted main checkpoint `65df99318029`
+as branch merge `d91e04b0e`.  This ordinary claim owns exactly:
+
+- `Lean/FabiusFunction/FabiusSaddleCoefficientRecurrence.lean`;
+- `Lean/FabiusFunction/FabiusFirstSaddleCorrection.lean`;
+- `Lean/FabiusFunction/FabiusSecondSaddleCorrection.lean`; and
+- this branch registry for claim and handoff.
+
+Expose in `FabiusFirstSaddleCorrection.lean` the documented bridges
+
+```lean
+theorem fabiusFirstSaddleOddLinear_eq_boundedExponentJet_zero (u : ℝ) :
+    fabiusFirstSaddleOddLinear u =
+      negativeLaplaceBoundedExponentJet 0 u
+
+theorem fabiusFirstSaddleEvenQuadratic_eq_neg_half_boundedExponentJet_one
+    (u : ℝ) :
+    fabiusFirstSaddleEvenQuadratic u =
+      -negativeLaplaceBoundedExponentJet 1 u / 2
+
+theorem fabiusFirstSaddleCorrection_eq_boundedExponentJets (u : ℝ) :
+    fabiusFirstSaddleCorrection u =
+      -negativeLaplaceBoundedExponentJet 0 u ^ 2 / 2 -
+        negativeLaplaceBoundedExponentJet 0 u -
+        negativeLaplaceBoundedExponentJet 1 u / 2 - 1 / 12
+```
+
+The first equality is the order-zero bounded-jet formula.  For `L = log 2`,
+the explicit first jet is
+`d₁ = 1/2 - 1/L - Ψ'/L + Ψ''/L²`, whose negative half is exactly the
+existing even-quadratic coefficient.  The correction identity follows by
+substituting both component bridges into the existing Gaussian-contraction
+formula and normalizing the rational polynomial.  Replace the sole First
+import `PeriodicRegularity` by `FabiusSaddleCoefficientRecurrence`; the latter
+already imports the former and has no reverse path, so the dependency remains
+acyclic.
+
+Preserve the exact public header and comment of the existing
+`fabiusFirstSaddleCorrection_eq_jets` in Second and replace only its duplicate
+manual algebra body by the new First theorem.  Its later same-module consumer
+remains unchanged.  Pin Second to the accepted post-Gaussian blob below; the
+stale pre-Gaussian source is not an admissible base.
+
+Complete strict declaration documentation in the same cohesive source scope:
+
+- Recurrence: document the two attributed zero formulas and zero/successor/
+  one periodicity, taking the module from 21/16 to 21/21;
+- First: document its five inherited periodicity/continuity/boundedness gaps
+  plus the three new bridges, taking it from 9/4 to 12/12;
+- Second remains strict 21/21.
+
+After the claim the three-file strict inventory is 54/54.  Preserve every old
+public header/attribute/body outside the one authorized Second wrapper,
+preserve all Recurrence and Second imports, and make no downstream, facade,
+root, script, canonical-document, or audit-ledger edit.
+
+Exact merged-main preimages are:
+
+- Recurrence blob `640c4d8330d18281e58ea5bbae960a83d63fe71f`,
+  SHA-256 `FEF031E5845B9C2664489D654982C0414573E46C7E0F86517DE23A7F4DA4BA18`;
+- First blob `7cbba52f5afc40511b660c04f30de111a955f1c2`,
+  SHA-256 `0524B009B37B28BEC2E135B13F9E53559333A9D58EABD0F888EEA3AB821559DD`;
+- Second post-Gaussian blob `c9a762985186e06030d789b1774ac01af8f3fa76`,
+  SHA-256 `BFDA37C9F13F528B38D20F4ECFF54E98EC9F8FDBF0104EDADB35491F025D629F`.
+
+All-visible-ref and registry scans find zero occurrence of all three proposed
+names.  Historical path records are closed; coordinator checkpoint 03:41 PDT
+explicitly accepts and releases the Gaussian source paths and codexbox token.
+No Lean/Lake/TeX/PDF/main-write token is claimed.  Requested later serialized
+gates are `+FabiusFunction.FabiusSaddleCoefficientRecurrence`, then
+`+FabiusFunction.FabiusFirstSaddleCorrection`, then
+`+FabiusFunction.FabiusSecondSaddleCorrection`; optional smoke target is
+`+FabiusFunction.FabiusSecondSaddleExpansion`.
+
+```text
+SYNC Fabius
+branch / worktree / machine: codex/fabius-effective-bounds-20260825 /
+  /home/codex/.codex/worktrees/d6d3/Proofs / codexbox
+fetched main SHA: 65df99318029
+HEAD and dirty paths: d91e04b0e; only this branch registry is being written
+  for the registry-first claim
+writing (exact paths): the three Lean sources above after claim push; this
+  branch registry for claim/handoff
+expected declarations or document claims: three exact bounded-jet bridges,
+  one exact compatibility-wrapper body refactor, strict 21/21 + 12/12 +
+  21/21 docs; no other public API/import change
+completed commits: merged current origin/main as d91e04b0e; source not yet
+  authored
+validated (exact command, SHA/state, exit code): exact current-main preimages;
+  all-visible-ref proposed-name scan has zero hits; registry/path/import graph,
+  formulas, consumers, strict counts, and proof architecture independently
+  reviewed green
+not yet validated: no live diff, exact-byte hostile review, or Lean/Lake
+  compiler evidence exists for this tranche
+requested integration or lease: ordinary exact three-path claim only; later
+  request three serialized dependency-ordered builds and coordinator review
+conflicts / dependencies: Second must retain post-Gaussian blob c9a762...;
+  active EVO decay retry is disjoint; only coordinator advances main/builds
+next bounded step: commit/push claim, repeat the name/path scan, author only
+  the three claimed modules, freeze, and obtain two exact-byte reviews
+```
