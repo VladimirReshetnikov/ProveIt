@@ -1,6 +1,6 @@
 # Workstream registry: `codex/fabius-shifted-prefix-grid`
 
-**Status: source checkpoint pushed; serialized Lean validation requested.**
+**Status: source validation requested; coverage-map claim advertised.**
 The exact claim was published before source work, coordinator checkpoint
 `893d4c25d` explicitly acknowledged it as the first nonoverlapping claim for
 the module, and source commit `00ff41a5e` now implements precisely that bounded
@@ -14,7 +14,8 @@ fetched main SHA: e18f5d0b0e3ec78e2b14e7006af6c7e916b42923
 HEAD and dirty paths: 047a03b638aafccf591d7ea5ac494d7ff8c8d9a4;
   clean after pushing the source checkpoint
 writing (exact paths): docs/registry/codex-fabius-shifted-prefix-grid.md only;
-  Lean/FabiusFunction/ThueMorseGenerating.lean is frozen at 00ff41a5e
+  Lean/FabiusFunction/ThueMorseGenerating.lean is frozen at 00ff41a5e;
+  requested future documentation path is docs/PAPER_COVERAGE.md
 expected declarations or document claims: shiftedPrefixGridValue;
   shiftedPrefixGridValue_zero; shiftedPrefixGridValue_one;
   shiftedPrefixGridValue_succ_sub;
@@ -23,6 +24,11 @@ expected declarations or document claims: shiftedPrefixGridValue;
   shiftedPrefixGridValue_equation_of_pos; retain the eight existing
   paperPrefixGridValue_* and correctedPrefixGridValue_* theorem statements
   exactly as compatibility wrappers
+expected documentation claims: add the seven shiftedPrefixGridValue mappings
+  without generic endpoint/convergence claims; add exact all-degree centered
+  finite-spline geometry; replace the stale x >= 0 discrete-limit row by its
+  all-real APIs; extend the lower-Lambert row to the closed branch endpoint and
+  the sharp 1 / log 2 threshold classification
 completed commits: 6fb8dc8e9 publishes the exact one-file claim; ba0048023
   activates it under the open protocol; 00ff41a5e adds the seven generic
   declarations and converts all eight legacy proofs to wrappers; 047a03b63
@@ -47,10 +53,14 @@ requested integration or lease: retain the source path through validation and
 conflicts / dependencies: no overlap with the active frontier-document lease;
   no AGENTS, README, collaboration, aggregate, TeX, PDF, canonical frontier,
   primary exposition, hot foundational module, or peer registry path requested;
-  current EVO build ownership remains with codex/fabius-exposition-integration
-next bounded step: keep the source frozen, poll the coordinator board, and run
-  the three targets one at a time only after an explicit build-token handoff
-lease refreshed: 2026-08-25 17:32 PDT; source frozen pending validation
+  current EVO build ownership remains with codex/fabius-exposition-integration;
+  searches of every advertised registry/tip found only historical notes that
+  PAPER_COVERAGE is stale, not a current claim for that path
+next bounded step: push this exact Markdown claim, fetch and reread the board
+  and registries, then reconcile only docs/PAPER_COVERAGE.md while keeping the
+  Lean source frozen and polling for an explicit build-token handoff
+lease refreshed: 2026-08-25 17:35 PDT; source frozen pending validation;
+  documentation claim awaits its registry-first push
 git owner / build owner: root / no build owner assigned to this branch
 ```
 
