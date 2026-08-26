@@ -1,9 +1,8 @@
 # Workstream registry: `codex/fabius-shifted-prefix-grid`
 
-**Status: finite-jet source checkpoint implemented and frozen pending
-coordinator review; a narrow same-path all-order refinement is advertised for
-the next released checkpoint.  A disjoint one-file finite-Appell claim is now
-advertised for ordinary work while that review is pending.**
+**Status: finite-jet source checkpoint accepted, compiled, and released; the
+advertised same-path all-order refinement and disjoint one-file finite-Appell
+claim are active without a local build token.**
 The exact claim was published before source work, coordinator checkpoint
 `893d4c25d` explicitly acknowledged it as the first nonoverlapping claim for
 the module, and source commit `00ff41a5e` now implements precisely that bounded
@@ -18,22 +17,22 @@ merging current main at `77c15879f`, this branch now advertises the exact
 two-file finite-jet claim below before editing either source.  Source commit
 `51af7f7e1` now implements exactly that claim.  After merging current main at
 `1381df9bb`, the branch records below the precise module-guide corrections and
-two all-order approximation declarations proposed for the next bounded
-checkpoint.  Neither frozen source file will be edited until the coordinator
-releases `51af7f7e1`.
+three all-order approximation declarations proposed for the next bounded
+checkpoint.  Coordinator extraction `62ab80d03` validates the finite-jet
+source, and checkpoint `682222de1` releases both paths for that advertised
+follow-up.
 
 ```text
 SYNC Fabius
 branch / worktree / machine: codex/fabius-shifted-prefix-grid / c9a3 / EVO
   (Windows)
-fetched main SHA: c2aa5a25c82e50149ab8887f95e7c5bcd6fe62eb
-HEAD and dirty paths: a0b289ee7777b2d70d1895c864f16e6941b37a75;
-  docs/registry/codex-fabius-shifted-prefix-grid.md only, publishing the exact
-  disjoint finite-Appell claim before any source edit
+fetched main SHA: 682222de194637f3a5650b7c1ffce349577cb5ae
+HEAD and dirty paths: 6413191f128684b966347a284218a54547fddab7;
+  docs/registry/codex-fabius-shifted-prefix-grid.md only, recording coordinator
+  validation/release and correcting the finite-jet Generating blob evidence
 writing (exact paths): docs/registry/codex-fabius-shifted-prefix-grid.md only;
-  after this claim is pushed, exactly
-  Lean/FabiusFunction/FabiusQBinomialTaylor.lean; the future same-path claim
-  after coordinator release remains exactly
+  after this registry correction is pushed, exactly
+  Lean/FabiusFunction/FabiusQBinomialTaylor.lean,
   Lean/FabiusFunction/ThueMorseGenerating.lean and
   Lean/FabiusFunction/ThueMorseApproximation.lean
 expected declarations or document claims:
@@ -48,7 +47,7 @@ expected declarations or document claims:
   convenience form, matching the established dyadic-kernel API;
   add the direct Mathlib.Algebra.Polynomial.HasseDeriv import and one accurate
   module-guide sentence identifying the finite translation/Appell structure;
-  proposed same-path follow-up after coordinator release:
+  active released same-path follow-up:
   coeff_thueMorseBlockPolynomial_mul_eq_thueMorseSeries_mul and
   coeff_thueMorseBlockPolynomial_mul_invOneSubPow_eq_iteratedPrefix in the
   upstream generating-series module;
@@ -100,7 +99,9 @@ completed commits: 6fb8dc8e9 publishes the exact one-file claim; ba0048023
   without conflicts; 4ade2afd7 advertises the all-order same-path follow-up
   without unfreezing source; 5e7ee8309 merges coordinator checkpoint
   c2aa5a25c without conflicts and preserves both frozen source blobs;
-  a0b289ee7 records the synchronized 25-ref collision audit
+  a0b289ee7 records the synchronized 25-ref collision audit; e38876942
+  publishes the disjoint finite-Appell claim; 6413191f1 merges the validated
+  finite-jet acceptance checkpoint 682222de1 without conflicts
 validated (exact command, SHA/state, exit code): at source snapshot SHA-256
   784F6C4F389FE0F2FA08616FFAFBFA3917CCC9F6D2C86CE98D3D877B5F0DD14C,
   git diff --check and git diff --cached --check exited 0; python
@@ -137,23 +138,28 @@ validated (exact command, SHA/state, exit code): at source snapshot SHA-256
   3476 public declarations with the unchanged 132 baseline omissions, exit 0;
   two independent hostile source/Mathlib reviews found no mathematical,
   declaration-order, tactic, compatibility, simplifier, or documentation
-  blocker; implemented blobs are Generating 2412e544b (SHA-256
-  499A7D176C691135FA24550CC73CF335D8D1E6C6A7C001A3F7B931D6B099B5DF)
+  blocker; corrected implemented blobs are Generating 2908f1f1652e (SHA-256
+  04F8F9AB915928A98FC422C3A5048C53110FD67C29007CE55483A853561A8D9C)
   and Approximation b27b38fbc (SHA-256
   1108CE8C50AAEF02A8C5A7705916D1D70A0AD993005F33AAC27AE83C76E783FE);
   the follow-up collision audit covered all 25 concrete locally fetched origin
   refs, every current registry, and reachable exact-name history: no peer owns
   either path, no source defines a proposed name, and the sole registry
   occurrence is this branch's proposal; git diff --check at merge 5e7ee8309
-  exits 0 with no unmerged or dirty path
-not yet validated: source commit 51af7f7e1 has not been compiled; the proposed
-  all-order follow-up and the active finite-Appell claim have not been
-  implemented; no Lean or Lake process is authorized because both
-  physical-host tokens remain coordinator-reserved
-requested integration or lease: review and validate source commit 51af7f7e1;
-  then release its two source paths so the exactly advertised follow-up may be
-  implemented, reviewed, and frozen before assigning the final
-  coordinator-held targets +FabiusFunction.ThueMorseGenerating,
+  exits 0 with no unmerged or dirty path; coordinator source extraction
+  62ab80d03 ran serialized LAKE_JOBS=1 builds of
+  +FabiusFunction.ThueMorseGenerating (2085 jobs),
+  +FabiusFunction.ThueMorseApproximation (3307 jobs),
+  +FabiusFunction.ThueMorseExponential (2086 jobs), and
+  +FabiusFunction.PaperKFoldThueMorse (3327 jobs), all exit 0, and released both
+  finite-jet paths at main checkpoint 682222de1
+not yet validated: the active all-order follow-up and finite-Appell claim have
+  not been implemented or compiled; no Lean or Lake process is authorized
+  because both physical-host tokens remain coordinator-reserved
+requested integration or lease: after both active source tranches are
+  implemented, reviewed, and frozen, assign the coordinator-held targets
+  +FabiusFunction.FabiusQBinomialTaylor,
+  +FabiusFunction.ThueMorseGenerating,
   +FabiusFunction.ThueMorseApproximation,
   +FabiusFunction.ThueMorseExponential, and
   +FabiusFunction.PaperKFoldThueMorse at that immutable checkpoint or its exact
@@ -162,24 +168,24 @@ conflicts / dependencies: no overlap with the active frontier-document lease;
   no AGENTS, README, collaboration, aggregate, TeX, PDF, canonical frontier,
   primary exposition, hot foundational module, or peer registry path requested;
   current main keeps docs/PAPER_COVERAGE.md and docs/AUDIT_FINDINGS.md
-  serialized; current main explicitly releases the prior source lease; a
+  serialized; main checkpoint 682222de1 explicitly accepts and releases the
+  finite-jet source paths for the advertised all-order refinement; a
   post-claim scan pinned all 16 locally available Fabius worker tips plus
   origin/main and found no competing claim or proposed declaration under an
   exact or plausible alternate name; the fresh 25-ref review reaches the same
-  conclusion; coordinator checkpoint c2aa5a25c accepts other frozen source
-  units but still does not acknowledge or release 51af7f7e1; both source paths
-  therefore remain frozen; FabiusQBinomialTaylor.lean has no live peer claim,
+  conclusion; FabiusQBinomialTaylor.lean has no live peer claim,
   none of the four exact Appell names exists in any fetched source, and the
   analogous private dyadic-kernel family is mathematically distinct; no path
-  expansion beyond this one active source file, the two frozen future source
-  files, and this branch registry is requested
-next bounded step: push this exact one-file claim, fetch and reread the board,
-  implement the four finite-Appell declarations and their source documentation,
-  obtain two independent read-only reviews, then freeze and push the source
-  checkpoint without invoking an unassigned validator
-lease refreshed: 2026-08-25 19:34 PDT; registry-only until pushed, then
-  FabiusQBinomialTaylor.lean active for 30 minutes; both finite-jet source files
-  remain frozen at 51af7f7e1
+  expansion beyond the three active source files and this branch registry is
+  requested
+next bounded step: push this validation/release correction, fetch and reread
+  the board, implement the module-guide corrections and four finite-Appell
+  declarations, then implement the all-order approximation tranche; obtain two
+  independent read-only reviews and freeze each source checkpoint without
+  invoking an unassigned validator
+lease refreshed: 2026-08-25 19:38 PDT; registry-only until pushed, then
+  FabiusQBinomialTaylor.lean, ThueMorseGenerating.lean, and
+  ThueMorseApproximation.lean are active for 30 minutes
 git owner / build owner: root / no build owner assigned to this branch
 ```
 
@@ -389,8 +395,9 @@ is `-1`.  No relation between `r` and `k` is needed, and both `r = 0` and
 direction against the current project and Mathlib sources; two separate hostile
 reviews found no mathematical, API, tactic, dependency, or simplifier blocker.
 Commit `51af7f7e1` implements the design with the exact source blobs recorded in
-the `SYNC Fabius` block.  This is source-complete static evidence, not compiler
-validation.
+the `SYNC Fabius` block.  Coordinator extraction `62ab80d03` subsequently
+compiled all four requested targets successfully and released both source
+paths at `682222de1`.
 
 ## Claimed finite-Appell calculus
 
