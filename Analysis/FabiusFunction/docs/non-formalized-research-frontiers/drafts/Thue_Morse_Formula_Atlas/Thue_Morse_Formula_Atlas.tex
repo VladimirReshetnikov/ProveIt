@@ -287,6 +287,16 @@ binomial--logarithm evaluator.  The paper proofs below make many additional
 results natural Lean targets, but do not assert that those declarations already
 exist.  A dependency-aware formalization map is given in
 \cref{sec:formalization}.
+
+Since 26 August 2026 the formalization of this atlas is underway in the same
+repository: seven new compiled Lean modules cover the Boolean-cube master
+identities, the valuation and digit chapters, the enumerators, the general
+finite-difference engine, the sparse Prouhet identities, the modulo-three
+rarefaction, and aperiodicity.  Statements proved in Lean carry their
+declaration names in the text, typeset as \lean{Fabius.thueMorseSign}; see
+\cref{sec:formalized-modules} for the module map.  Several are proved in
+Lean in *more* generality than stated here, and the text records the stronger
+forms.
 \end{boxedremark}
 
 \subsection{A compact formula index}
@@ -477,6 +487,13 @@ The first summand is termwise \(\eps_a\).  For the second, put
 \(\binom mr\) masks of weight \(r\).
 \end{proof}
 
+\emph{Formal versions.}  \lean{Fabius.sum\_thueMorseSign\_mul\_xor} (the
+autocorrelation, which the Lean proof establishes termwise from the
+character identity, with no alignment hypothesis on \(a\)) and
+\lean{Fabius.sum\_thueMorseSign\_hammingSphere} (the sphere sums, by
+reindexing along the XOR involution), in
+\path{ThueMorseEnumerators.lean}.
+
 \subsection{Finite automata, matrices, and tensor powers}
 
 The recurrence gives a two-state automaton: begin in state \(+1\), read the
@@ -558,6 +575,15 @@ Multiplication gives \((1+u)^m\); coefficient extraction and the standard
 binomial moments give the remaining statements.
 \end{proof}
 
+\emph{Formal versions.}  The enumerator is
+\lean{Fabius.sum_pow_binaryWeight_eq_one_add_pow}, proved over an arbitrary
+commutative semiring, and the count \eqref{eq:weight-distribution} is
+\lean{Fabius.card_filter_binaryWeight_eq}, extracted from it exactly as in
+the proof above: read the enumerator in \(\N[z]\) and compare the
+coefficient of \(z^r\).  Both live in \path{ThueMorseEnumerators.lean};
+the underlying Boolean-cube machinery is described after
+\cref{thm:finite-product}.
+
 Setting \(u=-1\) gives exact sign balance for \(m\ge1\).  More generally, the
 characteristic function of the weight is
 \begin{equation}
@@ -618,6 +644,23 @@ By definition \(\tau(\mathcal E_n)=0\) and
 \(\tau(\mathcal O_n)=1\).  Substitute these values into
 \eqref{eq:evil-odious} with the new index.
 \end{proof}
+
+\emph{Formal versions.}  In \path{ThueMorseEnumerators.lean} the
+enumerations are \lean{Fabius.evilEnum} and \lean{Fabius.odiousEnum}, with
+landing lemmas \lean{Fabius.thueMorseBit\_evilEnum},
+\lean{Fabius.thueMorseBit\_odiousEnum}, strict monotonicity
+\lean{Fabius.evilEnum\_strictMono}, \lean{Fabius.odiousEnum\_strictMono},
+difference and sum \lean{Fabius.odiousEnum\_sub\_evilEnum},
+\lean{Fabius.evilEnum\_add\_odiousEnum}, and the four composition laws.
+The Lean proof of surjectivity isolates a detail worth recording in prose:
+for \emph{every} \(m\) with \(\tau(m)=0\) one has
+\(\mathcal E_{\lfloor m/2\rfloor}=m\)
+(\lean{Fabius.evilEnum\_div\_two}) --- the same index \(\lfloor
+m/2\rfloor\) works whether \(m\) is even (then \(\tau(m/2)=0\) and the
+\(\tau\)-summand vanishes) or odd (then \(\tau((m-1)/2)=1\) and the
+summand supplies the missing one) --- and dually for odious \(m\)
+(\lean{Fabius.odiousEnum\_div\_two}).  Monotone enumerations that hit
+everything are complete, so no separate counting argument is needed.
 
 \section[Digit and trigonometric formulae]{Digit, floor, fractional-part, and trigonometric formulas}
 \label{sec:digits}
@@ -730,6 +773,23 @@ Equivalently,
 By \eqref{eq:floor-sum-all}, the exponent differs from \(\wt(n)\) by an even
 integer.
 \end{proof}
+
+\emph{Formal versions.}  \path{ThueMorseDigits.lean} proves the additive
+Legendre formula \(\wt(n)+\vtwo(n!)=n\)
+(\lean{Fabius.binaryWeight\_add\_padicValNat\_factorial}), the floor sums
+in truncation-free form
+(\lean{Fabius.binaryWeight\_add\_sum\_div\_two\_pow},
+\lean{Fabius.sum\_div\_two\_pow\_add\_binaryWeight}), the floor-parity
+formula \eqref{eq:floor-formulas}
+(\lean{Fabius.thueMorseSign\_eq\_neg\_one\_pow\_sum\_div}), the bound
+\(\wt(n)\le n\) (\lean{Fabius.binaryWeight\_le\_self}), and the
+bit-extraction bridge
+\(\wt(n)=\sum_{j<m}b_j(n)\)
+(\lean{Fabius.binaryWeight\_eq\_sum\_testBit}) together with the digit
+product \eqref{eq:digit-product}
+(\lean{Fabius.thueMorseSign\_eq\_prod\_testBit}).  Natural-number
+subtraction being awkward, every Lean statement is phrased additively; the
+prose forms above are recovered by moving one term across.
 
 There is also a genuinely infinite real-valued representation whose sum is
 nevertheless always an integer.
@@ -861,6 +921,16 @@ The bit transition changes the weight by one minus the number of trailing
 ones.  Exponentiate \((-1)\), then telescope from \(\eps_0=1\).
 \end{proof}
 
+\emph{Formal versions.}  The successor law in additive form
+\(\wt(n+1)+\vtwo(n+1)=\wt(n)+1\) is
+\lean{Fabius.binaryWeight\_succ\_add\_padicValNat}; the adjacent-sign
+readout \eqref{eq:ruler-adjacent} is
+\lean{Fabius.thueMorseSign\_mul\_succ}, the recursion
+\eqref{eq:eps-successor} is \lean{Fabius.thueMorseSign\_succ\_eq}, and
+the telescoped ruler product \eqref{eq:ruler-product} is
+\lean{Fabius.thueMorseSign\_eq\_prod\_ruler}, all in
+\path{ThueMorseValuation.lean}.
+
 \section[Valuations and carries]{Factorial valuations, central binomials, Catalan numbers, and carries}
 \label{sec:valuations}
 
@@ -970,6 +1040,13 @@ By \cref{thm:central-binomial},
 \eqref{eq:weight-successor} rewrites this as \(\wt(n+1)-1\).
 \end{proof}
 
+\emph{Formal versions.}  \lean{Fabius.catalan\_padicValNat\_two\_add\_one}
+(stated additively as \(\vtwo(\Cat_n)+1=\wt(n+1)\)) and the sign form
+\lean{Fabius.thueMorseSign\_succ\_eq\_neg\_catalan}, in
+\path{ThueMorseValuation.lean}.  The Lean proof derives the positivity of
+Catalan numbers inline from \((n+1)\Cat_n=\binom{2n}n\) rather than
+importing it.
+
 \subsection{Kummer's carry cocycle}
 
 \begin{theorem}[Addition with carries]
@@ -1050,6 +1127,17 @@ Addition and subtraction thus carry the same sign correction, read from the
 two-adic valuation of the binomial coefficient whose top entry is the larger
 of the numbers involved; \eqref{eq:carry-sign} is recovered from
 \eqref{eq:borrow-sign} by renaming \(a+b\) as the top entry.
+
+\emph{Formal versions.}  Kummer's carry formula and cocycle were already in
+the corpus (\lean{Fabius.addChoose\_padicValNat\_two},
+\lean{Fabius.thueMorseSign\_add\_valuation}, in \path{TwoAdic.lean});
+\path{ThueMorseValuation.lean} adds the truncation-free additive form
+\lean{Fabius.binaryWeight\_add\_addChoose\_padicValNat}, the weight
+subadditivity \(\wt(a+b)\le\wt(a)+\wt(b)\)
+(\lean{Fabius.binaryWeight\_add\_le}, itself proved by a four-way parity
+induction), and the borrow pair
+\lean{Fabius.subChoose\_padicValNat\_two\_add},
+\lean{Fabius.thueMorseSign\_sub\_valuation}.
 
 \section[Pascal support and Boolean inversion]{Pascal support, residue formulae, multinomials, and Boolean inversion}
 \label{sec:pascal}
@@ -1495,6 +1583,25 @@ The first statement is coefficient stabilization in the finite products.  The
 second is \cref{thm:block-concatenation} summed over \(r\).
 \end{proof}
 
+\emph{Formal versions.}  The corpus proves the finite factorization as
+\lean{Fabius.thueMorseBlockPolynomial\_eq\_product}
+(\path{ThueMorseGenerating.lean}); \path{ThueMorseBooleanCube.lean} now
+proves it over an \emph{arbitrary} commutative ring as
+\lean{Fabius.prod\_one\_sub\_pow\_eq\_sum\_thueMorseSign}, as the
+specialization \(u=-1\) of a two-parameter identity
+\[
+ \prod_{j<m}\bigl(1+u\,z^{2^j}\bigr)
+ =\sum_{n<2^m}u^{\wt(n)}z^{n}
+ \qquad(\lean{Fabius.prod\_one\_add\_mul\_pow}),
+\]
+valid in any commutative semiring with no convergence hypothesis.  Its
+engine is a reindexing kernel identifying the dyadic block with the
+powerset of \(\{0,\dots,m-1\}\)
+(\lean{Fabius.sum\_powerset\_two\_pow}) together with the digit
+dictionary \lean{Fabius.binaryWeight\_sum\_two\_pow},
+\lean{Fabius.sum\_two\_pow\_lt\_two\_pow}: exactly the Boolean-cube
+structure this section exploits informally.
+
 \subsection{Reciprocity and cyclotomic multiplicities}
 
 The reflection symmetry becomes a reciprocal-polynomial identity.
@@ -1662,6 +1769,12 @@ Higher derivatives at \(u=1\) generate the falling-factorial moments
 Artin--Schreier solution \eqref{eq:Y-explicit} below: the same series
 \(\sum_jz^{2^j}/(1+z^{2^j})\) computes the digit sum with integer
 coefficients and the digit parity in characteristic two.
+The umbrella product itself is formalized in full generality as
+\lean{Fabius.prod\_one\_add\_mul\_pow}
+(\path{ThueMorseBooleanCube.lean}); the specializations
+\eqref{eq:Fu-special} are the \(z=1\) and \(u=-1\) readings recorded
+there as \lean{Fabius.sum\_pow\_binaryWeight\_eq\_one\_add\_pow} and
+\lean{Fabius.prod\_one\_sub\_pow\_eq\_sum\_thueMorseSign}.
 
 \subsection{Thue--Morse constants in every base}
 
@@ -2247,6 +2360,77 @@ Use \(f(y)=(a+y)^{-s}\), for which
 Exponentiation gives the product inequality.
 \end{proof}
 
+\subsection{Arbitrary translation weights}
+\label{sec:arbitrary-weights}
+
+The dyadic steps \(h,2h,4h,\dots\) give the identities above their
+Thue--Morse reading, but the cancellation mechanism does not use them.  The
+formalization isolates the general statement, which is worth recording: it
+subsumes the ordinary and sparse Prouhet identities simultaneously and
+explains exactly where the powers of two matter (only in the value of the
+sharp moment, never in the vanishing).
+
+\begin{theorem}[Arbitrary-weight Prouhet identities]
+\label{thm:arbitrary-weights}
+Let \(R\) be a commutative ring, \(S\) a finite index set,
+\(w\colon S\to R\) arbitrary weights, and \(x\in R\).  For every
+polynomial \(p\in R[y]\) with \(\deg p<|S|\),
+\begin{equation}
+  \sum_{T\subseteq S}(-1)^{|T|}
+   \,p\Bigl(x+\sum_{j\in T}w_j\Bigr)=0,
+  \label{eq:arbitrary-weight-cancel}
+\end{equation}
+and at the first surviving degree,
+\begin{equation}
+  \boxed{
+  \sum_{T\subseteq S}(-1)^{|T|}
+   \Bigl(x+\sum_{j\in T}w_j\Bigr)^{\!|S|}
+  =(-1)^{|S|}\,|S|!\,\prod_{j\in S}w_j.}
+  \label{eq:arbitrary-weight-sharp}
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+For \eqref{eq:arbitrary-weight-cancel}, induct on \(S\).  If
+\(S=\varnothing\) there is nothing of degree below zero.  For
+\(S\cup\{a\}\) with \(a\notin S\), split the subsets by membership
+of \(a\) and pair \(T\) with \(T\cup\{a\}\):
+\[
+ \sum_{T\subseteq S\cup\{a\}}(-1)^{|T|}p(x+w_T)
+ =\sum_{T\subseteq S}(-1)^{|T|}\,q(x+w_T),
+ \qquad
+ q(y):=p(y)-p(y+w_a),
+\]
+where \(w_T:=\sum_{j\in T}w_j\).  The translation \(p(y+w_a)\) has the
+same degree and the same leading coefficient as \(p\), so
+\(\deg q<\deg p\) (and \(q=0\) when \(p\) is constant).  The
+induction hypothesis applied to \(q\) finishes.
+
+For \eqref{eq:arbitrary-weight-sharp}, induct on \(S\) again with
+\(p(y)=y^{s+1}\), \(s=|S|\).  The same pairing produces
+\(q(y)=y^{s+1}-(y+w_a)^{s+1}
+=-\sum_{k\le s}\binom{s+1}{k}w_a^{\,s+1-k}y^{k}\)
+by the binomial theorem, the top term cancelling.  Summing over
+\(T\subseteq S\) and exchanging the two finite sums, every row
+\(k<s\) vanishes by \eqref{eq:arbitrary-weight-cancel}, and the row
+\(k=s\) contributes
+\(-\binom{s+1}{s}w_a\cdot(-1)^{s}s!\prod_{j\in S}w_j\) by the
+induction hypothesis.  Since \(\binom{s+1}{s}=s+1\), the total is
+\((-1)^{s+1}(s+1)!\,w_a\prod_{j\in S}w_j\), as claimed.
+\end{proof}
+
+\emph{Formal versions.}
+\lean{Fabius.sum\_powerset\_neg\_one\_pow\_eval} and
+\lean{Fabius.sum\_powerset\_neg\_one\_pow\_pow\_card}, in
+\path{ThueMorseSparseProuhet.lean}; the degree drop is
+Mathlib's \lean{Polynomial.taylor} bookkeeping.  Specializing
+\(w_j=2^jh\) over \(S=\{0,\dots,m-1\}\) and transporting along the
+Boolean-cube kernel yields the Thue--Morse forms over any commutative
+ring: \lean{Fabius.sum\_thueMorseSign\_mul\_affine\_pow\_eq\_zero} and
+\lean{Fabius.sum\_thueMorseSign\_mul\_affine\_pow\_card}, the latter
+with the familiar constant
+\(\prod_{j<m}2^jh=2^{\binom m2}h^m\).
+
 \subsection{Prouhet cancellation and the first surviving moment}
 
 \begin{theorem}[Prouhet polynomial annihilation]
@@ -2611,6 +2795,17 @@ Every factor in \eqref{eq:signed-Pascal-support} has a simple zero at
 The derivative/falling-factorial proof of \cref{thm:prouhet} applies with the
 sum restricted to submasks.
 \end{proof}
+
+\emph{Formal versions.}  In \path{ThueMorseSparseProuhet.lean} the
+submasks of \(n\) are parametrized by the subsets of the bit support
+\lean{Fabius.bitSupport} (with dictionary
+\lean{Fabius.mem\_bitSupport},
+\lean{Fabius.sum\_two\_pow\_bitSupport},
+\lean{Fabius.card\_bitSupport}); the sparse cancellation and the sharp
+moment are \lean{Fabius.sum\_submask\_neg\_one\_pow\_eval} and
+\lean{Fabius.sum\_submask\_neg\_one\_pow\_pow}, both instances of the
+arbitrary-weight engine of \cref{thm:arbitrary-weights} with
+\(w_j=2^jh\) running over \(J(n)\), over any commutative ring.
 
 \begin{corollary}[Sparse operator identity]
 \label{cor:sparse-operator}
@@ -3314,6 +3509,14 @@ The right side changes sign between consecutive \(m\), while the left side
 is constant --- a contradiction.
 \end{proof}
 
+\emph{Formal versions.}  \path{ThueMorseAperiodicity.lean} follows this
+argument verbatim: \lean{Fabius.thueMorseSign\_two\_pow} and the
+block-flip \lean{Fabius.thueMorseSign\_two\_pow\_add} transport an
+eventual period back to a global one
+(\lean{Fabius.thueMorseSign\_period\_of\_eventually}), and
+\lean{Fabius.thueMorseSign\_not\_eventually\_periodic} plays the
+reflection at two consecutive block levels exactly as above.
+
 \subsection{Overlap-freeness and the critical exponent}
 
 A \emph{square} is a nonempty word repeated twice in immediate succession,
@@ -3472,6 +3675,20 @@ over:
 \eqref{eq:rarefied-filter} with \(q=3\) and simplify with
 \(1+\omega+\omega^2=0\).
 \end{proof}
+
+\emph{Formal versions.}  \path{ThueMorseRarefied.lean} proves the closed
+vectors \eqref{eq:mod3-even-level}--\eqref{eq:mod3-odd-level} as
+\lean{Fabius.rarefiedSum\_three\_closed} --- and does so without any root
+of unity: the one-step halving recursion
+\(A_{m+1,r}=A_{m,\,2r\bmod3}-A_{m,\,(2r+1)\bmod3}\)
+(\lean{Fabius.rarefiedSum\_three\_succ}; the hypothesis \(r<3\) is
+necessary, as the recursion is false for out-of-range residues) is
+iterated over paired levels by pure integer induction, so the filter
+argument above is subsumed rather than formalized.  Newman positivity at
+dyadic endpoints is \lean{Fabius.rarefiedSum\_three\_zero\_pos}, the
+full-block balance is
+\lean{Fabius.sum\_thueMorseSign\_range\_two\_pow}, and the even-modulus
+collapse of the surrounding text is \lean{Fabius.rarefiedSum\_two\_zero}.
 
 The first vectors are
 \[
@@ -4043,6 +4260,39 @@ valuation, carry, and Pascal-row formulas remain genuinely base-two features.
 
 \section[Formula selection and Lean roadmap]{Formula selection, computational checks, and a Lean roadmap}
 \label{sec:formalization}
+
+\subsection{Formalized modules (August 2026)}
+\label{sec:formalized-modules}
+
+The first tranche of the formalization now exists as seven compiled Lean
+modules in \repo{}, complementing the corpus modules
+(\path{Parity.lean}, \path{TwoAdic.lean}, \path{ThueMorsePrefix.lean},
+\path{ThueMorseGenerating.lean}, \path{ThueMorseExponential.lean},
+\path{ThueMorseBinomialLog.lean}) that already covered the recursion,
+XOR, reflection, Lucas/Glaisher, binomial--logarithm, modulo-three
+formula, generating products, Prouhet moments, and prefix theory:
+
+\begin{center}
+\small
+\begin{tabularx}{0.94\textwidth}{@{}>{\raggedright\arraybackslash}p{0.34\textwidth}>{\raggedright\arraybackslash}X@{}}
+\toprule
+Module & Contents \\
+\midrule
+\path{ThueMorseBooleanCube.lean} & Powerset reindexing kernel, digit dictionary, two-parameter master product over any commutative semiring, signed product over any commutative ring, weight enumerator. \\
+\path{ThueMorseValuation.lean} & Successor law, weight subadditivity, ruler product, Catalan valuation, additive Kummer, borrow cocycle. \\
+\path{ThueMorseDigits.lean} & Additive Legendre, floor sums, floor-parity formula, `testBit` bridge, digit product. \\
+\path{ThueMorseEnumerators.lean} & Weight distribution, evil/odious enumerations and composition laws, XOR autocorrelation, signed Hamming spheres. \\
+\path{ThueMorseSparseProuhet.lean} & Arbitrary-weight Prouhet annihilation and sharp moment (\cref{thm:arbitrary-weights}), Thue--Morse specializations, bit supports, sparse submask identities. \\
+\path{ThueMorseRarefied.lean} & Modulo-three rarefaction recursion and closed vectors, Newman positivity at dyadic endpoints, block balance, even-modulus collapse. \\
+\path{ThueMorseAperiodicity.lean} & Block-flip identities and non-eventual-periodicity. \\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+Wherever the Lean statement is stronger than the prose --- arbitrary
+weights, arbitrary coefficient rings, hypothesis-free autocorrelation ---
+the text above records the stronger form.  The module proposals in the
+table below remain the plan for the layers not yet reached.
 
 \subsection{Which representation is best?}
 
