@@ -1,4 +1,4 @@
-import FabiusFunction.PeriodicRegularity
+import FabiusFunction.FabiusSaddleCoefficientRecurrence
 
 /-!
 # The first periodic saddle correction for the Fabius function
@@ -65,12 +65,44 @@ theorem fabiusFirstSaddleCorrection_eq_gaussian_contraction (u : ℝ) :
   field_simp [hL]
   ring
 
+/-- The odd linear saddle coefficient is the zeroth bounded exponent jet. -/
+theorem fabiusFirstSaddleOddLinear_eq_boundedExponentJet_zero (u : ℝ) :
+    fabiusFirstSaddleOddLinear u =
+      negativeLaplaceBoundedExponentJet 0 u := by
+  simp [fabiusFirstSaddleOddLinear]
+
+/-- The even quadratic saddle coefficient is negative one half of the first
+bounded exponent jet. -/
+theorem fabiusFirstSaddleEvenQuadratic_eq_neg_half_boundedExponentJet_one
+    (u : ℝ) :
+    fabiusFirstSaddleEvenQuadratic u =
+      -negativeLaplaceBoundedExponentJet 1 u / 2 := by
+  have hL : Real.log 2 ≠ 0 := (Real.log_pos (by norm_num)).ne'
+  rw [negativeLaplaceBoundedExponentJet_one]
+  unfold fabiusFirstSaddleEvenQuadratic
+  field_simp [hL]
+  ring
+
+/-- In bounded exponent jets, the first saddle correction is
+`-d₀^2 / 2 - d₀ - d₁ / 2 - 1 / 12`. -/
+theorem fabiusFirstSaddleCorrection_eq_boundedExponentJets (u : ℝ) :
+    fabiusFirstSaddleCorrection u =
+      -negativeLaplaceBoundedExponentJet 0 u ^ 2 / 2 -
+        negativeLaplaceBoundedExponentJet 0 u -
+        negativeLaplaceBoundedExponentJet 1 u / 2 - 1 / 12 := by
+  rw [fabiusFirstSaddleCorrection_eq_gaussian_contraction,
+    fabiusFirstSaddleOddLinear_eq_boundedExponentJet_zero,
+    fabiusFirstSaddleEvenQuadratic_eq_neg_half_boundedExponentJet_one]
+  ring
+
+/-- The odd linear saddle coefficient is one-periodic. -/
 theorem fabiusFirstSaddleOddLinear_periodic :
     Function.Periodic fabiusFirstSaddleOddLinear 1 := by
   intro u
   unfold fabiusFirstSaddleOddLinear
   rw [negativeLaplacePsi_deriv_periodic u]
 
+/-- The even quadratic saddle coefficient is one-periodic. -/
 theorem fabiusFirstSaddleEvenQuadratic_periodic :
     Function.Periodic fabiusFirstSaddleEvenQuadratic 1 := by
   intro u
@@ -78,6 +110,7 @@ theorem fabiusFirstSaddleEvenQuadratic_periodic :
   rw [negativeLaplacePsi_deriv_periodic u,
     negativeLaplacePsi_secondDeriv_periodic u]
 
+/-- The first saddle correction is one-periodic. -/
 theorem fabiusFirstSaddleCorrection_periodic :
     Function.Periodic fabiusFirstSaddleCorrection 1 := by
   intro u
@@ -85,6 +118,7 @@ theorem fabiusFirstSaddleCorrection_periodic :
   rw [negativeLaplacePsi_deriv_periodic u,
     negativeLaplacePsi_secondDeriv_periodic u]
 
+/-- The first saddle correction is continuous. -/
 theorem continuous_fabiusFirstSaddleCorrection :
     Continuous fabiusFirstSaddleCorrection := by
   unfold fabiusFirstSaddleCorrection
@@ -92,6 +126,7 @@ theorem continuous_fabiusFirstSaddleCorrection :
     ((continuous_secondDeriv_negativeLaplacePsi.add
       (continuous_deriv_negativeLaplacePsi.pow 2)).div_const _)
 
+/-- The first saddle correction has globally bounded range. -/
 theorem isBounded_range_fabiusFirstSaddleCorrection :
     Bornology.IsBounded (Set.range fabiusFirstSaddleCorrection) :=
   fabiusFirstSaddleCorrection_periodic.isBounded_of_continuous one_ne_zero
