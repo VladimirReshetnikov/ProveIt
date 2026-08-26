@@ -177,4 +177,118 @@ theorem rarefiedSum_two_zero (m : ℕ) (hm : 2 ≤ m) :
   rw [Finset.sum_congr rfl hterm]
   exact sum_thueMorseSign_range_two_pow k (by omega)
 
+/-! ## The matrix recursion for arbitrary odd moduli -/
+
+/-- Doubling is invertible modulo an odd modulus:
+`2j ≡ 2a (mod q) ↔ j ≡ a (mod q)` for odd `q`. -/
+theorem two_mul_mod_iff (q : ℕ) (hq : q % 2 = 1) (j a : ℕ) :
+    (2 * j) % q = (2 * a) % q ↔ j % q = a % q := by
+  have hkey : ∀ x : ℕ, ((q + 1) / 2 * (2 * x)) % q = x % q := by
+    intro x
+    have hexp : (q + 1) / 2 * (2 * x) = x + x * q := by
+      have h2 : (q + 1) / 2 * 2 = q + 1 := by omega
+      calc (q + 1) / 2 * (2 * x) = ((q + 1) / 2 * 2) * x := by ring
+        _ = (q + 1) * x := by rw [h2]
+        _ = x + x * q := by ring
+    rw [hexp, Nat.add_mul_mod_self_right]
+  constructor
+  · intro h
+    have h3 : ((q + 1) / 2 * (2 * j)) % q = ((q + 1) / 2 * (2 * a)) % q :=
+      Nat.ModEq.mul_left ((q + 1) / 2) h
+    rw [hkey j, hkey a] at h3
+    exact h3
+  · intro h
+    exact Nat.ModEq.mul_left 2 h
+
+/-- **One-step recursion for every odd modulus** (the atlas's matrix
+recursion): splitting a dyadic block by the lowest binary digit sends the
+residue class `r` to the classes `2⁻¹r` (even indices, same sign) and
+`2⁻¹(r-1)` (odd indices, opposite sign), the halving realized by
+`2⁻¹ = (q+1)/2 (mod q)`.  Modulo three this specializes to
+`rarefiedSum_three_succ`. -/
+theorem rarefiedSum_succ_of_odd (q : ℕ) (hq : q % 2 = 1)
+    (r m : ℕ) (hr : r < q) :
+    rarefiedSum q r (m + 1) =
+      rarefiedSum q (((q + 1) / 2 * r) % q) m -
+        rarefiedSum q (((q + 1) / 2 * (r + q - 1)) % q) m := by
+  have hinv : ∀ x : ℕ, (2 * ((q + 1) / 2 * x)) % q = x % q := by
+    intro x
+    have hexp : 2 * ((q + 1) / 2 * x) = x + x * q := by
+      have h2 : (q + 1) / 2 * 2 = q + 1 := by omega
+      calc 2 * ((q + 1) / 2 * x) = ((q + 1) / 2 * 2) * x := by ring
+        _ = (q + 1) * x := by rw [h2]
+        _ = x + x * q := by ring
+    rw [hexp, Nat.add_mul_mod_self_right]
+  have hsplit : rarefiedSum q r (m + 1) =
+      ∑ j ∈ range (2 ^ m),
+        ((if (2 * j) % q = r then thueMorseSign (2 * j) else 0) +
+          (if (2 * j + 1) % q = r then thueMorseSign (2 * j + 1) else 0)) := by
+    rw [rarefiedSum, pow_succ, mul_comm (2 ^ m) 2,
+      sum_range_two_mul (2 ^ m)
+        (fun n => if n % q = r then thueMorseSign n else 0)]
+  rw [hsplit, rarefiedSum, rarefiedSum, ← Finset.sum_sub_distrib]
+  apply Finset.sum_congr rfl
+  intro j _
+  have hje : (2 * j) % q = r ↔ j % q = ((q + 1) / 2 * r) % q := by
+    constructor
+    · intro h
+      refine (two_mul_mod_iff q hq j ((q + 1) / 2 * r)).mp ?_
+      rw [hinv r, Nat.mod_eq_of_lt hr]
+      exact h
+    · intro h
+      have h2 := (two_mul_mod_iff q hq j ((q + 1) / 2 * r)).mpr h
+      rwa [hinv r, Nat.mod_eq_of_lt hr] at h2
+  have hjo : (2 * j + 1) % q = r ↔
+      j % q = ((q + 1) / 2 * (r + q - 1)) % q := by
+    have hshift : (2 * j + 1) % q = r ↔ (2 * j) % q = (r + q - 1) % q := by
+      constructor
+      · intro h
+        have hm : (2 * j + 1) % q = r % q := by
+          rw [Nat.mod_eq_of_lt hr]; exact h
+        have h1 : (2 * j + 1 + (q - 1)) % q = (r + (q - 1)) % q :=
+          Nat.ModEq.add_right (q - 1) hm
+        rwa [show 2 * j + 1 + (q - 1) = 2 * j + q by omega,
+          Nat.add_mod_right, show r + (q - 1) = r + q - 1 by omega] at h1
+      · intro h
+        have h1 : (2 * j + 1) % q = (r + q - 1 + 1) % q :=
+          Nat.ModEq.add_right 1 h
+        rwa [show r + q - 1 + 1 = r + q by omega, Nat.add_mod_right,
+          Nat.mod_eq_of_lt hr] at h1
+    rw [hshift]
+    constructor
+    · intro h
+      refine (two_mul_mod_iff q hq j ((q + 1) / 2 * (r + q - 1))).mp ?_
+      rw [hinv (r + q - 1)]
+      exact h
+    · intro h
+      have h2 := (two_mul_mod_iff q hq j ((q + 1) / 2 * (r + q - 1))).mpr h
+      rwa [hinv (r + q - 1)] at h2
+  rw [thueMorseSign_two_mul, thueMorseSign_two_mul_add_one]
+  by_cases he : j % q = ((q + 1) / 2 * r) % q <;>
+    by_cases ho : j % q = ((q + 1) / 2 * (r + q - 1)) % q
+  · rw [if_pos (hje.mpr he), if_pos (hjo.mpr ho), if_pos he, if_pos ho]
+    ring
+  · rw [if_pos (hje.mpr he), if_neg (fun h => ho (hjo.mp h)),
+      if_pos he, if_neg ho]
+    ring
+  · rw [if_neg (fun h => he (hje.mp h)), if_pos (hjo.mpr ho),
+      if_neg he, if_pos ho]
+    ring
+  · rw [if_neg (fun h => he (hje.mp h)), if_neg (fun h => ho (hjo.mp h)),
+      if_neg he, if_neg ho]
+    ring
+
+/-! ## Root-of-unity vanishing -/
+
+/-- **Root-of-unity vanishing.**  Over any commutative ring, the signed
+block sum `∑_{n<2^m} ε(n)·z^n` vanishes whenever `z^(2^j) = 1` for some
+`j < m` — the algebraic skeleton of the vanishing of the dyadic discrete
+Fourier transform at all non-primitive frequencies. -/
+theorem sum_thueMorseSign_mul_pow_eq_zero_of_pow_eq_one {R : Type*}
+    [CommRing R] (z : R) (m j : ℕ) (hj : j < m) (hz : z ^ 2 ^ j = 1) :
+    ∑ n ∈ range (2 ^ m), ((thueMorseSign n : ℤ) : R) * z ^ n = 0 := by
+  rw [← prod_one_sub_pow_eq_sum_thueMorseSign]
+  refine Finset.prod_eq_zero (Finset.mem_range.mpr hj) ?_
+  rw [hz, sub_self]
+
 end Fabius
