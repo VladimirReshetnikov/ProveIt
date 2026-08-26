@@ -15,13 +15,16 @@ coordinator review.
 SYNC Fabius
 branch / worktree / machine: codex/fabius-exposition-integration /
   C:\Users\vresh\.codex\worktrees\8f3f\ProveIt / EVO
-fetched main SHA: e18f5d0b0e3ec78e2b14e7006af6c7e916b42923
-HEAD and dirty paths: source checkpoint 78260751f was pushed, then merge
-  18f8eadd4 incorporated origin/main at e18f5d0b0 with no conflicts. The
-  parent of this registry update is 18f8eadd4; git ls-files -u is empty and
-  only this registry is dirty. The two redundant build-copy PDFs were moved
-  reversibly outside the worktree after their hashes were reverified against
-  the committed PDFs.
+fetched main SHA: 148990f0a2a9b665edaf3394656be1e7c46caf7e
+HEAD and dirty paths: source checkpoint 78260751f was pushed, merge
+  18f8eadd4 incorporated origin/main at e18f5d0b0 with no conflicts, and
+  registry checkpoint 4034e2e00 was pushed. The parent of this follow-up is
+  4034e2e00; git ls-files -u is empty and only the frontier TeX and this
+  registry are dirty. A final pre-checkpoint fetch found that origin/main
+  advanced to 148990f0a; the audited source follow-up will be checkpointed and
+  pushed before that main tip is merged. The two redundant build-copy PDFs
+  were moved reversibly outside the worktree after their hashes were
+  reverified against the committed PDFs.
 writing (exact paths):
   Analysis/FabiusFunction/docs/non-formalized-research-frontiers/README.md
   Analysis/FabiusFunction/docs/non-formalized-research-frontiers/non-formalized-research-frontiers.tex
@@ -33,17 +36,23 @@ expected declarations or document claims: no Lean edits. Reconcile the
   preserve the false all-real raw-spline recurrence found during review.
 completed commits: 78260751f is the pushed stage-one semantic source
   checkpoint; 18f8eadd4 cleanly merges current origin/main into the feature
-  branch without a content conflict or binary resolution.
+  branch without a content conflict or binary resolution; 4034e2e00 records
+  the clean post-merge provenance. This follow-up source checkpoint adds the
+  two remaining claim-level gaps found by the completed primary audit.
 validated (exact command, SHA/state, exit code): on TeX SHA-256
-  237206887D8500F6AB02A945609266E285B9930E36A1142E2704B5BF08007CA8,
+  B8B609F12EDBB59205A0349E93CD3C811FCE1DD0D903C916A739992B5F5D5161,
   git diff --check exited 0 and git ls-files -u was empty. Independent
   case-sensitive static audit found 985 unique labels / 0 duplicates, 617
   reference targets / 0 missing, 52 bibliography keys / 0 duplicates, 20
   citation targets / 0 missing, balanced environments and delimiters, exactly
   seven parts, no conflict markers, and no escaped-backslash corruption.
   Independent semantic audit found all required donor/current clusters, all
-  twelve source hashes, correct formal/frontier status, 18 candidate and 18
-  obligation environments, and no blocker. Independent editorial review
+  twelve source hashes, correct formal/frontier status, 20 candidate and 20
+  obligation environments, and no blocker. Exact-source follow-up audits
+  confirmed that the centered uniform-coordinate laws differ from the
+  symmetric two-atom convolution laws and that the ordinary-closed level-one
+  value is mathematically 2 but appears only in Lean comments. Independent
+  editorial review
   found and then rechecked fixes for one false raw recurrence, missing prefix
   hypotheses, ambiguous factor-two wording, and one Markdown punctuation
   defect; final verdict PASS. The full Fabius aggregate previously passed at
@@ -52,21 +61,27 @@ not yet validated: stage one intentionally ran no Lean, Lake, pdflatex,
   latexmk, or PDF process. The committed frontier PDF still corresponds to
   the pre-reconciliation TeX and must not be integrated to main in this state.
   The primary TeX/PDF remains frozen pending coordinator review.
-requested integration or lease: review the pushed source checkpoint, then
+requested integration or lease: review the pushed source checkpoints, including
+  this two-gap follow-up, then
   confirm stage two under the already reserved EVO TeX token for exactly
   three pdflatex passes, rendered inspection, and a matching PDF checkpoint.
   After frontier integration, grant the primary TeX/PDF correction tranche.
-conflicts / dependencies: the three incoming main commits changed only
+conflicts / dependencies: the earlier three incoming main commits changed only
   AGENTS.md, the campaign README, and the coordinator board and merged with no
-  conflict. There are no unresolved paths. The preserved sidecars are at
+  conflict. Origin/main has since advanced through 148990f0a with changes to
+  AGENTS.md, the campaign README, GlobalExtension.lean, and coordination
+  registries; merge and conflict resolution are the next step after preserving
+  this source checkpoint. There are currently no unresolved paths. The
+  preserved sidecars are at
   C:\Users\vresh\.codex\preserved\fabius-exposition-sidecars-8f3f-20260825T1700;
   their SHA-256 values are
   59B8B06825F89B81A33F6352196CEBE7C0CAF4C436170FEB15FFDD9336E72908
   and CD91C680DFA7D96F110106F7A6ADCACC5CBA10E188DF1BD0A4484218FA8FA39C,
   exactly matching the two previously committed canonical PDFs.
-next bounded step: commit and push this post-merge registry update, then await
-  coordinator stage-two review; never select a predecessor PDF wholesale and
-  never push main.
+next bounded step: commit and push this two-gap frontier follow-up, merge
+  origin/main at 148990f0a, resolve any conflicts, and record the result. Then
+  await coordinator stage-two review; never select a predecessor PDF wholesale
+  and never push main.
 ~~~
 
 **Historical coordinator disposition at `7aed3c8c7`.**  The detailed status block and
@@ -392,7 +407,7 @@ The consolidated register records claim-level promotion obligations for:
 - stars-and-bars and convolution interpretations of prefix kernels;
 - literal iterated derivatives of the Thue--Morse block polynomial at one;
 - construction of an actual infinite formal product, rather than finite
-  coefficient stabilization alone; and
+  coefficient stabilization alone;
 - the explicit all-block triangular fold of the signed dyadic evaluator;
 - the least-common-denominator two-adic valuation consequence;
 - an exact reduced-rational input wrapper for Rvachev's up-function;
@@ -400,13 +415,17 @@ The consolidated register records claim-level promotion obligations for:
   recurrence;
 - a precise theorem identifying which certified error bounds the midpoint
   correction improves by a factor of two;
+- a probability-measure weak limit for the midpoint-corrected continuous
+  partial-sum laws, derived from their uniform CDF rate;
 - public finite-support packaging for the signed translate family;
 - exact histogram-cell tiling, including the distinction between defining
   cells and exact function support;
+- the ordinary-closed level-one, zero-coordinate double-counting
+  counterexample;
 - independent failure witnesses for the prefix-order and centered-coordinate
   corrections;
 - positive-scale endpoint vanishing for the global binary-reduction series;
-- norm summability of the parity-power presentation; and
+- norm summability of the parity-power presentation;
 - the formal-background crosswalk explaining why nearby declarations do not
   yet discharge those obligations.
 

@@ -13541,6 +13541,33 @@ intended.  The sandwich theorems
 threshold displacements, but do not yet state these Lipschitz corollaries.
 \end{obligation}
 
+\subsection{Uniform CDF control and weak convergence}
+
+The centered-spline error estimate and pointwise CDF convergence are public Lean results.
+The removed prose also compared the uniform estimate with weak convergence for the same
+finite laws:
+\begin{candidate}
+For \(p\ge1\), let \(\mu_p\) be the law of the finite weighted uniform-coordinate sum,
+translated to the right by \(2^{-p-1}\), and let \(\mu\) be the
+weighted-infinite-sum law.  Their CDFs are respectively \(C_p\) and \(F\), and
+\[
+ \sup_{x\in\R}|C_p(x)-F(x)|\le 2^{-p}.
+\]
+On \([0,1]\), the identification \(C_p=S_p\) recovers the centered-spline estimate.
+Consequently \(\mu_p\) converges weakly to \(\mu\), with the displayed uniform-CDF rate
+providing quantitative information beyond the resulting unquantified convergence statement.
+\end{candidate}
+\begin{obligation}
+Bundle the translated finite laws and the limiting law as probability measures; identify
+their CDFs; combine the existing interval estimate with support facts to obtain the displayed
+all-real bound; and prove that the bound implies convergence in the probability-measure weak
+topology.  If the phrase \emph{strictly stronger} is retained, define the intended comparison
+and prove the required nonconverse as well.  Do not use
+\lean{finiteConvolutionProbability_tendsto} as this bridge: that theorem concerns a different
+sequence of symmetric two-atom convolution laws and the limiting measure with density
+\(\Up\), not the continuous uniform-coordinate partial laws whose centered CDF is \(C_p\).
+\end{obligation}
+
 \subsection{Local finiteness of the signed translate family}
 
 For fixed \(x\in\R\), consider
@@ -13581,6 +13608,28 @@ Package adjacency, finite interval coverage, and both endpoint calculations as a
 theorem.  If ``support'' means \(\operatorname{Function.support}\) of the step approximant
 rather than the union of its defining cells, also prove positivity of every in-range
 coefficient: the current support theorem is only an enclosure.
+\end{obligation}
+
+\subsection{Why half-endpoint cells are needed}
+
+The public step approximant uses half weight at each cell endpoint.  The elementary
+counterexample that motivated that convention was removed because it has not itself been
+packaged as a theorem:
+\begin{candidate}
+Modify the level-one step approximant by replacing its half-endpoint representatives with
+ordinary closed-interval indicators, leaving its coefficients and normalization unchanged.
+At \(x=0\), the cells \([-1/2,0]\) and \([0,1/2]\) then each contribute one, so the modified
+value is \(2\), rather than the intended value \(1\).
+\end{candidate}
+\begin{obligation}
+Define the ordinary-closed variant and prove its level-one value at zero.  The public Lean API
+proves the endpoint values and adjacency law in
+\lean{halfEndpointIntervalIndicator_self_left},
+\lean{halfEndpointIntervalIndicator_self_right}, and
+\lean{halfEndpointIntervalIndicator_add_adjacent}, as well as the corrected value in
+\lean{stepApproximant_one_zero}; it neither defines the ordinary-closed variant nor states
+the displayed double-counting result.  A source comment explaining why the convention is
+useful is not a theorem.
 \end{obligation}
 
 \subsection{Independent roles of the order and coordinate corrections}
@@ -13779,6 +13828,14 @@ Centered finite-CDF integral and spline bridge &
 Uncentered and centered probability sandwiches &
 \lean{uniformPartialCDF_sandwich} and \lean{uniformCenteredPartialCDF_sandwich} in
 \path{FabiusUniformSpline.lean}\\
+Centered uniform-CDF control and pointwise convergence &
+\lean{abs_fabiusUniformSpline_sub_fabiusReal_le_all},
+\lean{uniformCenteredPartialCDF_tendsto_weightedSumCDF}, and
+\lean{weightedSumCDF_eq_fabiusReal} in \path{FabiusComputability.lean},
+\path{FabiusUniformSpline.lean}, and \path{ProbabilityRepresentation.lean}\\
+Separate symmetric-atomic-law weak limit &
+\lean{finiteConvolutionProbability_tendsto} and
+\lean{finiteConvolutionProbability_tendsto_fabius} in \path{WeakConvergence.lean}\\
 Signed translate summability and one-block evaluation &
 \lean{extendedFabius_summable} and \lean{extendedFabius_eq_single_translate} in
 \path{GlobalExtension.lean}\\
@@ -13786,6 +13843,13 @@ Step-approximant support enclosure and cell coordinates &
 \lean{support_stepApproximant_subset}, \lean{polynomialAtomLocation}, and
 \lean{stepApproximant_at_polynomialAtomLocation} in \path{StepApproximationLimit.lean},
 \path{EarlyApproximants.lean}, and \path{ThueMorseApproximation.lean}\\
+Half-endpoint cell gluing and the level-one value &
+\lean{halfEndpointIntervalIndicator_self_left},
+\lean{halfEndpointIntervalIndicator_self_right},
+\lean{halfEndpointIntervalIndicator_add_adjacent}, and
+\lean{stepIntervalRight_eq_left_succ}, together with
+\lean{stepApproximant_one_zero}, in \path{EarlyApproximants.lean} and
+\path{StepApproximationLimit.lean}\\
 Corrected prefix order and centered sampling &
 \lean{iteratedPrefix_eq_approximationPolynomial_coeff},
 \lean{correctedPrefixCoefficient_eq_stepApproximant}, and
