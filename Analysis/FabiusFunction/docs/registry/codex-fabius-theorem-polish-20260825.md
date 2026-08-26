@@ -1314,3 +1314,93 @@ next bounded step: commit and push this registry report with source checkpoint
   493575690, notify the coordinator, freeze the source, and run no build until
   an explicit exact-tree EVO assignment appears on the board
 ```
+
+## Accepted checkpoint: normalized reflection hierarchy
+
+The coordinator integrated source commit `493575690f17c8c7d85e8b1b61edaf321d581a68`
+as mainline commit `853a09a80`.  On the assigned codexbox build host, the exact
+serialized command
+
+```text
+LAKE_JOBS=1 lake build +FabiusFunction.ProbabilityLaplaceMoments
+```
+
+completed all 3188 jobs with exit code 0.  The build emitted one nonblocking
+`unnecessarySimpa` linter suggestion in the new normalized-reflection proof;
+that style-only cleanup is not claimed here and would require a fresh exact
+source claim before any edit.  The coordinator has released both the source
+lease and the build token.
+
+Feature merge `74ff5586db124f542ffa1c70eea09d2801fc8259` incorporates
+`origin/main` at `ff675711f02a84c365cf4824c257ad593933e46d`.  The merged
+`ProbabilityLaplaceMoments.lean` remains byte-identical to the compiled source,
+with Git blob `8a1d896e324a45f2681259f2c83e50fdfb78e238` and content SHA-256
+`6A684C17CBC0965DEE6EC2B19EAC577F36D3F0A8D4B12020C56BDCB0EF0FD260`.
+
+A strict read-only reciprocity audit found that the mathematics is coherent
+but the theorem-to-exposition correspondence is not yet complete.  Only
+`fabiusLaplaceMoment_zero_reflection` and
+`fabiusLaplaceMoment_zero_centered_even` currently have both their exact
+formulas and exact Lean-name cross-references in the canonical exposition.
+The generic integral and unit-moment reflection lemmas, the all-order Fabius
+raw transform, and all four normalized consequences still need exact prose
+statements and name references.  Existing probability-law reflection prose
+also needs the exact names `uniformProduct_map_reflectCoordinates`,
+`weightedCoordinateSum_reflect`, `weightedSumDistribution_reflection`, and
+`weightedSumCDF_symmetry` attached to it.
+
+The audit additionally identified two genuine correspondence hazards for a
+future document owner.  The frontier's complex identity
+`A(z) = exp(z) A(-z)` has no exact public complex Lean theorem; the real
+zeroth-moment theorem is not a substitute.  The walkthrough's unconditional
+derivative interpretation of the first normalized moment exceeds the current
+positive-scale hypothesis of `negativeLaplaceLog_hasDerivAt`; its all-real
+content must presently be phrased as the algebraic identity defining
+`negativeLaplaceLogFirst`.  Future prose should use a distinct normalized
+notation such as `R_k = M_k / M_0`, retain the alternating signs in the raw and
+normalized transforms, and state that `R_2 - R_1^2` is even rather than
+incorrectly claiming that `R_2` itself is even.
+
+No canonical document path is claimed.  The exact insertion map is ready for
+the primary exposition's reflection and formal-proof paragraphs, the Lean
+walkthrough's probability/reflection and logarithmic-derivative sections, and
+the frontier companion's reflection and module-ledger sections, but all such
+paths remain frozen until the board grants a document lease.
+
+```text
+SYNC Fabius
+branch / worktree / machine: codex/fabius-theorem-polish-20260825 /
+  C:/Users/vresh/.codex/worktrees/10ef/ProveIt / EVO (Windows)
+fetched main SHA: ff675711f02a84c365cf4824c257ad593933e46d
+HEAD and dirty paths: 74ff5586db124f542ffa1c70eea09d2801fc8259;
+  clean after the conflict-free main merge, then only this branch registry is
+  dirty for the acceptance report
+writing (exact paths): this status reply writes only
+  docs/registry/codex-fabius-theorem-polish-20260825.md
+expected declarations or document claims: the accepted public source set is
+  normalizedLaplaceMoment_reflection,
+  normalizedLaplaceMoment_one_complement,
+  normalizedLaplaceMoment_one_sub_half_odd, and
+  negativeLaplaceLogSecond_even; no canonical document claim
+completed commits: 493575690 (feature source), 853a09a80 (coordinator
+  integration), and 74ff5586d (feature merge through main ff675711f)
+validated (exact command, SHA/state, exit code): coordinator build at the
+  integrated source, LAKE_JOBS=1 lake build
+  +FabiusFunction.ProbabilityLaplaceMoments, 3188 jobs, exit 0, with one
+  nonblocking unnecessarySimpa linter; merged feature source has identical Git
+  blob 8a1d896e324a45f2681259f2c83e50fdfb78e238
+not yet validated: this EVO worktree ran no Lean, Lake, LaTeX, PDF, Python
+  audit, or cache-mutating process; canonical document reciprocity remains
+  incomplete and no future theorem sketch is represented as compiled
+requested integration or lease: none; source and build leases are released,
+  and no document, aggregate, facade, coordination, or further source lease is
+  held
+conflicts / dependencies: none in the ff675711f merge.  Canonical TeX/PDF,
+  README, coverage/audit, coordination, walkthrough, and root aggregate paths
+  remain unedited.  A future document pass must not identify the complex
+  reflection claim with its real-axis restriction or overstate the domain of
+  the logarithmic derivative theorem
+next bounded step: commit and push this registry-only acceptance checkpoint to
+  the feature branch, then freeze the write set and await a fresh exact board
+  assignment before any source, document, or build action
+```
