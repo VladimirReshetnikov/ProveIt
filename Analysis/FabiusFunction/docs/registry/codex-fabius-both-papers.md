@@ -998,3 +998,62 @@ assigned pass should add the inverse-versus-diagonal inequalities and fixed
 locus to the inverse-shape discussion in the primary exposition and
 walkthrough, rebuild their PDFs, and optionally extend the README API list.
 No `PAPER_COVERAGE.md` row is warranted for this derived shape corollary.
+
+## Odd-binomial-count modulo-three claim
+
+After the clean merge of fetched main, current feature HEAD is
+`72bbc7deb98aa64b548f38cd939f8a78cecc6ed1` over `origin/main`
+`948bf3f377472c068f9539e0569d383ddc35f617`.  The claimed source
+`Lean/FabiusFunction/ThueMorseBinomialLog.lean` has feature preimage blob
+`0b86ab776c879af607990c281224168698782520`, which includes the already
+published Walsh-character checkpoint `e91a2828c`; current main and the other
+modern tips share the older blob `d32b2788d3bdd58a7e347f155d3a0edfb1fcea3f`.
+
+The exact write set is:
+
+- `Lean/FabiusFunction/ThueMorseBinomialLog.lean`;
+- this branch's own registry.
+
+The source checkpoint will add one private period-two helper for
+`2 ^ r % 3 = r % 2 + 1` and exactly four documented public declarations:
+
+- `card_oddBinomialIndices_mod_three_eq_bit_add_one`;
+- `thueMorseBit_eq_card_oddBinomialIndices_mod_three_sub_one`;
+- `thueMorseSign_eq_three_sub_two_mul_card_oddBinomialIndices_mod_three`;
+- `card_oddBinomialIndices_mod_three_ne_zero`.
+
+The core theorem states
+`(oddBinomialIndices n).card % 3 = thueMorseBit n + 1`.  Rewriting it gives
+the draft's literal zero-one formula as subtraction by one, its signed formula
+through `thueMorseSign_eq_one_sub_two_mul_bit`, and the assertion that the
+residue is never zero.  The private helper will use `Nat.twoStepInduction`, so
+the proof exposes the actual two-cycle of powers of two modulo three rather
+than relying on an opaque arithmetic computation.
+
+This family formalizes exactly the theorem labelled `eq:odd-count-mod3` in
+the frozen draft
+`Further_Formulae_for_the_Thue_Morse_Sequence-4.tex`, lines 664--688.  It does
+not claim the subsequent omitted-binomial-sum or trigonometric corollaries.
+The module overview and declaration comments will record the new theorem in
+human-readable form; no canonical draft, TeX, PDF, README, coverage, facade,
+aggregate, import, existing public header, or attribute edit is claimed.
+
+Fresh exact-name, `% 3` semantic, source-tip, history, and registry scans find
+no implementation or competing live claim.  The sole path mention is the
+integrated and explicitly released historical generalizations lease.  Every
+other advertised modern tip retains the older source blob above; this branch's
+Walsh checkpoint is the only newer source generation and is already frozen in
+its own handoff.
+
+No Lean/Lake token is assigned.  This is a registry-first claim, not compiler
+evidence.  Later serialized validation should run:
+
+```text
+LAKE_JOBS=1 lake build +FabiusFunction.ThueMorseBinomialLog
+LAKE_JOBS=1 lake build +FabiusFunction.PaperKFoldThueMorse
+```
+
+When documents thaw, a separately assigned pass should map all four names to
+the three exact assertions in `eq:odd-count-mod3`, rebuild the relevant
+frontier/draft disposition target, and keep the later corollaries explicitly
+unformalized until their own Lean counterparts exist.
