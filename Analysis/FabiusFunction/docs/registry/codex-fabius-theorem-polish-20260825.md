@@ -991,3 +991,71 @@ next bounded step: commit and push this registry-only claim; fetch and reread
   audits; only then edit the one claimed source file, checkpointing it
   explicitly as not compiled
 ```
+
+## Source checkpoint: the complete reflected moment hierarchy
+
+Source commit `665b6bceaad5e455384a32a172747242a89268ce` implements the
+advertised one-file claim.  The committed
+`ProbabilityLaplaceMoments.lean` blob is
+`6c5f6b96ac3fd6c5038c4421e2ffc3d34a303989`, with content SHA-256
+`E6AE0E4A2F8A3D32367E1743906AE6E7D264FF9126A5952AD361B6C60CC29E9B`.
+
+The source extracts reflection of the unit-interval restriction as a reusable
+expectation theorem, proves the signed binomial reflection transform in every
+raw-moment degree for measures finite on compact sets, and transports the
+identity to the Fabius probability law.  No ambient support or global finite-
+measure hypothesis is imposed on the generic all-order theorem.  Every old
+zero-reflection and centered-even public signature remains unchanged; the
+Fabius zero theorem is now the degree-zero compatibility specialization.
+
+The module guide and all three new declaration comments give human-readable
+statements and explain the reflection mechanism.  A later canonical-document
+owner should map the all-order formula and its degree-one and degree-two
+specializations to the three exact new names.  The normalized first-moment
+complement and centered oddness are deliberately not claimed as delivered:
+they are high-value downstream consequences requiring separately advertised
+Lean declarations before they enter the primary exposition or walkthrough.
+
+```text
+SYNC Fabius
+branch / worktree / machine: codex/fabius-theorem-polish-20260825 /
+  C:/Users/vresh/.codex/worktrees/10ef/ProveIt / EVO (Windows)
+fetched main SHA: 2183cfb113765197042628524690794bdf8d07c4
+HEAD and dirty paths: 665b6bceaad5e455384a32a172747242a89268ce;
+  the claimed source is clean and only this registry is dirty for the report
+writing (exact paths): completed source checkpoint writes only
+  Lean/FabiusFunction/ProbabilityLaplaceMoments.lean; this status reply writes
+  only docs/registry/codex-fabius-theorem-polish-20260825.md
+expected declarations or document claims:
+  integral_unit_eq_integral_one_sub_of_reflection,
+  unitLaplaceMoment_reflection, and fabiusLaplaceMoment_reflection are all
+  implemented with the advertised assumptions and statements; existing zero
+  and centered-even theorem signatures are preserved
+completed commits: db9e26b66 (pushed exact-path/declaration claim) and
+  665b6bcea (one-file source, proof, and module-documentation checkpoint)
+validated (exact command, SHA/state, exit code): no compiler validation is
+  claimed; git diff --check exited 0, the source contains no sorry, admit,
+  axiom, or opaque, every new declaration has a doc comment, and three
+  independent read-only reviews checked current Mathlib signatures, the
+  restrict_map orientation, interval preimage, local-finiteness instance,
+  binomial signs and indices, exponential factorization, finite-sum
+  integrability, Fabius transport, k = 0 simplification, public API, prose,
+  and every advertised branch tip without finding a blocker
+not yet validated: commit 665b6bcea has not been elaborated; no Lean, Lake,
+  LaTeX, PDF, Python audit, or cache-mutating process was launched.  The live
+  20:16 board assigns EVO exclusively to codex/fabius-shifted-prefix-grid
+requested integration or lease: independent coordinator source review,
+  followed only after an explicit later EVO assignment by one serialized
+  LAKE_JOBS=1 build of +FabiusFunction.ProbabilityLaplaceMoments; request no
+  document, aggregate, or other serialized-path lease
+conflicts / dependencies: while the source was dirty, origin/main advanced to
+  2183cfb11 and the shifted-prefix tip to 4367a7f86; both retain target blob
+  916b0bb13, have no branch-relative target edit, and claim none of the three
+  names.  No merge was attempted over dirty work.  All canonical TeX/PDF,
+  README, coverage/audit, coordination, walkthrough, and root aggregate paths
+  remain untouched
+next bounded step: commit and push this registry report with source checkpoint
+  665b6bcea to the feature branch; keep the source frozen and request review
+  and a future EVO token.  Do not merge current main until the checkpoint is
+  clean and remotely preserved, and do not launch validation unassigned
+```
