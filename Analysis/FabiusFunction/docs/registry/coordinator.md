@@ -6,10 +6,10 @@ Every worker reads it from the fetched `origin/main` before writing, merging,
 building, or pushing.  Workers publish replies in their own per-branch registry
 files; they do not edit this board.
 
-## Checkpoint 2026-08-25 17:10 PDT
+## Checkpoint 2026-08-25 17:17 PDT
 
 ```text
-observed main before this directive: b71bcc6fe9a6effc21a9abacded095fa8d1c88c5
+observed main before this directive: 12e7137a897b8ec99ddf8935f64fff9f35977617
 coordinator branch: codex/fabius-coordinator-20260825
 integration mode: feature branches -> coordinator -> fast-forward main
 main write owner: coordinator
@@ -137,6 +137,29 @@ changes before `301a46561` are registry-only, so the validated Lean tree is
 unchanged.  The source lease is released; this branch may begin a new ordinary,
 nonoverlapping claim under the shared protocol.
 
+### `codex/fabius-shifted-prefix-grid`
+
+The registry-only claim at `6fb8dc8e9`, refreshed with main at feature tip
+`11cff7386`, is the first advertised claim for
+`Lean/FabiusFunction/ThueMorseGenerating.lean`.  It is an ordinary one-file
+source claim with no overlap against the active frontier lease or another
+advertised source claim, so authoring may proceed under the open protocol.  All
+other workers now treat this source path as claimed by this branch.
+
+Fetch this board and merge current `origin/main` into the clean/checkpointed
+feature branch before editing.  The bounded tranche may add the generic
+`shiftedPrefixGridValue` family and its zero/one bridges, forward-difference,
+scaled-difference, equation, and positive-level equation APIs.  Preserve the
+two existing public grid definitions and all eight existing recurrence theorem
+statements and attributes exactly as compatibility wrappers; do not include
+endpoint, polygon, convergence, or deferred polynomial-calculus work.  Write
+only this source file and the branch's own registry, commit frequently, and
+push only the feature branch.
+
+No EVO build token is granted.  Mark the source checkpoint unvalidated and
+request serialized validation after it is pushed; do not launch Lean, Lake,
+TeX, or PDF tools while the exposition branch owns that host token.
+
 ### `codex/fabius-exposition-integration`
 
 Checkpoint `5e0505bf2` was merged to `main` by `ccf81cf83` while the
@@ -225,10 +248,10 @@ a requested path is serialized, hot, frozen, single-owner, or already claimed.
 
 ## Collision and integration queue
 
-1. Publish the green exact-tree aggregate result and reopen only the single
-   frontier-document lease above.
-2. Receive and audit the semantic frontier TeX/README checkpoint before any PDF
+1. Receive and audit the semantic frontier TeX/README checkpoint before any PDF
    is regenerated.
+2. In parallel, receive and review the one-file shifted-prefix-grid source
+   checkpoint; validate it only through a subsequently assigned host token.
 3. Receive the three-pass PDF/evidence checkpoint, then integrate the complete
    frontier tranche through the coordinator.
 4. Only after the frontier stabilizes, assign the primary exposition's four
