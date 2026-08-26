@@ -1,6 +1,7 @@
 import FabiusFunction.DyadicSharpConditional
 import FabiusFunction.UnitLaplaceMomentBounds
 import Mathlib.Analysis.Complex.ExponentialBounds
+import Mathlib.Analysis.Convex.Deriv
 
 /-!
 # Quantitative normalized Laplace-moment bounds
@@ -15,7 +16,13 @@ at the intermediate tilt `3s/4`, together with the exact dyadic product
 factor between `s/2` and `s`, proves the estimate without any periodic
 regularity input.  Before imposing the positive-scale hypotheses needed by
 those quantitative bounds, the module records that every raw moment `M_k` is
-strictly positive and strictly decreasing on the whole real line, and hence
+strictly positive and strictly decreasing on the whole real line.  The exact
+iterated-derivative identity sharpens this to
+
+`(-1)^n M_k^(n)(s) = M_(k+n)(s) > 0`
+
+for every `k`, `n`, and real `s`; in particular, every raw moment is strictly
+convex on the whole real line.  Dividing by the positive zeroth moment shows
 that every `R_k(s)` is strictly positive for every real tilt.  The cases
 `k=2,3,4` discharge both
 hypotheses of `EndpointLaplaceComparison` and give an unconditional sharp
@@ -120,6 +127,36 @@ theorem fabiusLaplaceMoment_strictAnti
     (fabiusLaplaceMoment_hasDerivAt F hF k)
     (fun s => neg_lt_zero.mpr
       (fabiusLaplaceMoment_pos_all F hF (k + 1) s))
+
+/-- Every signed iterated derivative of a Fabius Laplace moment is strictly
+positive on the whole real line:
+`0 < (-1 : ℝ) ^ n * iteratedDeriv n (fabiusLaplaceMoment F k) s`.
+By the exact iterated-derivative identity, the signed derivative is precisely
+the strictly positive successor moment of degree `k + n`.  This includes
+`n = 0` and imposes no sign restriction on the tilt. -/
+theorem iteratedDeriv_fabiusLaplaceMoment_alternating_pos
+    (F : BoundedFabius) (hF : IsFabius F)
+    (k n : ℕ) (s : ℝ) :
+    0 < (-1 : ℝ) ^ n *
+      iteratedDeriv n (fabiusLaplaceMoment F k) s := by
+  rw [iteratedDeriv_fabiusLaplaceMoment F hF k n s,
+    ← mul_assoc, ← pow_add,
+    Even.neg_one_pow ⟨n, rfl⟩, one_mul]
+  exact fabiusLaplaceMoment_pos_all F hF (k + n) s
+
+/-- Every Fabius Laplace moment is strictly convex on the whole real line.
+Its derivative is the negative successor moment, which is strictly increasing
+because that successor moment is strictly decreasing. -/
+theorem strictConvexOn_fabiusLaplaceMoment
+    (F : BoundedFabius) (hF : IsFabius F) (k : ℕ) :
+    StrictConvexOn ℝ Set.univ (fabiusLaplaceMoment F k) := by
+  refine StrictMono.strictConvexOn_univ_of_deriv
+    (continuous_fabiusLaplaceMoment F hF k) ?_
+  intro s t hst
+  rw [(fabiusLaplaceMoment_hasDerivAt F hF k s).deriv,
+    (fabiusLaplaceMoment_hasDerivAt F hF k t).deriv]
+  exact neg_lt_neg
+    (fabiusLaplaceMoment_strictAnti F hF (k + 1) hst)
 
 /-- Every normalized tilted Fabius moment is strictly positive at every real
 tilt: `0 < normalizedLaplaceMoment F k s`.  Both its raw numerator and its

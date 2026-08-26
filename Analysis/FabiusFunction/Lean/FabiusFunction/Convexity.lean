@@ -25,6 +25,11 @@ profile
 It is positive exactly on `(0,1/2)`, negative exactly on `(1/2,1)`, and zero
 off `(0,1)` and at the midpoint.  Thus the inflection statement is recorded
 both as strict setwise shape and as a complete second-derivative sign locus.
+
+Strict convexity also places the graph strictly below the diagonal on
+`(0,1/2)`; reflection places it strictly above the diagonal on `(1/2,1)`.
+Together with the constant tails, this shows that the graph meets the diagonal
+exactly at `0`, `1/2`, and `1`.
 -/
 
 set_option autoImplicit false
@@ -410,5 +415,77 @@ theorem strictConcaveOn_fabiusReal_secondHalf (F : BoundedFabius) (hF : IsFabius
     exact strictAntiOn_deriv_fabiusReal F hF
   exact hanti.strictConcaveOn_of_deriv (convex_Icc _ _)
     hF.contDiff.continuous.continuousOn
+
+/-! ## The graph and the diagonal -/
+
+/-- On the open first half of the unit interval, the Fabius graph lies
+strictly below the diagonal. -/
+theorem fabiusReal_lt_self_of_mem_Ioo_zero_half
+    (F : BoundedFabius) (hF : IsFabius F) {x : ℝ}
+    (hx : x ∈ Ioo (0 : ℝ) (1 / 2)) :
+    fabiusReal F x < x := by
+  have hstrict := strictConvexOn_fabiusReal_firstHalf F hF
+  unfold StrictConvexOn at hstrict
+  rcases hstrict with ⟨_, hstrict⟩
+  have h := hstrict
+    (x := (0 : ℝ)) (y := (1 / 2 : ℝ))
+    (a := 1 - 2 * x) (b := 2 * x)
+    (by norm_num) (by norm_num) (by norm_num)
+    (by linarith [hx.2]) (by linarith [hx.1]) (by ring)
+  have harg :
+      (1 - 2 * x) • (0 : ℝ) + (2 * x) • (1 / 2 : ℝ) = x := by
+    simp only [smul_eq_mul]
+    ring
+  have hval :
+      (1 - 2 * x) • fabiusReal F 0 +
+          (2 * x) • fabiusReal F (1 / 2 : ℝ) = x := by
+    rw [hF.zero_of_nonpos 0 le_rfl, fabius_half F hF]
+    simp only [smul_eq_mul]
+    ring
+  rw [harg, hval] at h
+  exact h
+
+/-- On the open second half of the unit interval, the Fabius graph lies
+strictly above the diagonal. -/
+theorem self_lt_fabiusReal_of_mem_Ioo_half_one
+    (F : BoundedFabius) (hF : IsFabius F) {x : ℝ}
+    (hx : x ∈ Ioo (1 / 2 : ℝ) 1) :
+    x < fabiusReal F x := by
+  have hleft := fabiusReal_lt_self_of_mem_Ioo_zero_half F hF
+    (x := 1 - x) (show 1 - x ∈ Ioo (0 : ℝ) (1 / 2) by
+      constructor <;> linarith [hx.1, hx.2])
+  rw [hF.symmetry_all x] at hleft
+  linarith
+
+/-- The bounded Fabius function meets the diagonal exactly at the two
+endpoints and the midpoint. -/
+theorem fabiusReal_eq_self_iff
+    (F : BoundedFabius) (hF : IsFabius F) (x : ℝ) :
+    fabiusReal F x = x ↔ x = 0 ∨ x = 1 / 2 ∨ x = 1 := by
+  constructor
+  · intro hfix
+    by_cases hx0 : x ≤ 0
+    · left
+      rw [hF.zero_of_nonpos x hx0] at hfix
+      exact hfix.symm
+    by_cases hx1 : 1 ≤ x
+    · right
+      right
+      rw [hF.one_of_one_le x hx1] at hfix
+      exact hfix.symm
+    have hxunit : x ∈ Ioo (0 : ℝ) 1 :=
+      ⟨lt_of_not_ge hx0, lt_of_not_ge hx1⟩
+    rcases lt_trichotomy x (1 / 2 : ℝ) with hx | hx | hx
+    · exact False.elim
+        ((fabiusReal_lt_self_of_mem_Ioo_zero_half F hF
+          ⟨hxunit.1, hx⟩).ne hfix)
+    · exact Or.inr (Or.inl hx)
+    · exact False.elim
+        ((self_lt_fabiusReal_of_mem_Ioo_half_one F hF
+          ⟨hx, hxunit.2⟩).ne' hfix)
+  · rintro (rfl | rfl | rfl)
+    · exact hF.zero_of_nonpos 0 le_rfl
+    · exact fabius_half F hF
+    · exact hF.one_of_one_le 1 le_rfl
 
 end Fabius
