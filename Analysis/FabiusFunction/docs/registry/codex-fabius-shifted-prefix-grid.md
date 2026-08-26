@@ -27,8 +27,8 @@ follow-up.
 SYNC Fabius
 branch / worktree / machine: codex/fabius-shifted-prefix-grid / c9a3 / EVO
   (Windows)
-fetched main SHA: b0b896e39a7af565d14d56cbc7cd653db1c3ba68
-HEAD and dirty paths: c55f8a331819a6f88dec027445fb114aec61d53d;
+fetched main SHA: 99b67cf5b5b8084d097205d1f701d13285ecd3b7
+HEAD and dirty paths: 405586607b43f2a23ac2a43779e6ef80344b7785;
   docs/registry/codex-fabius-shifted-prefix-grid.md only, recording the
   clean post-merge synchronization of the independently reviewed all-order
   approximation source checkpoint
@@ -112,7 +112,8 @@ completed commits: 6fb8dc8e9 publishes the exact one-file claim; ba0048023
   f556a126e without conflicts; f7152d5fc implements the three advertised
   all-order approximation declarations and simplifies both coefficient bridges;
   1a6db9d91 freezes and reports the complete seven-declaration handoff;
-  c55f8a331 merges main b0b896e39 without conflicts
+  c55f8a331 merges main b0b896e39 without conflicts; 3a33e10c6 refreshes the
+  clean handoff state; 405586607 merges main 99b67cf5b without conflicts
 validated (exact command, SHA/state, exit code): at source snapshot SHA-256
   784F6C4F389FE0F2FA08616FFAFBFA3917CCC9F6D2C86CE98D3D877B5F0DD14C,
   git diff --check and git diff --cached --check exited 0; python
@@ -216,7 +217,7 @@ next bounded step: push this complete seven-declaration source handoff, fetch
   and reread the board, and await coordinator-owned serialized validation;
   perform only read-only opportunity scouting until a new exact claim is
   advertised or these frozen checkpoints receive disposition
-lease refreshed: 2026-08-25 20:07 PDT; all three source paths are frozen;
+lease refreshed: 2026-08-25 20:08 PDT; all three source paths are frozen;
   FabiusQBinomialTaylor.lean at 8021c555f and ThueMorseApproximation.lean at
   f7152d5fc are pending coordinator validation; ThueMorseGenerating.lean has no
   further unintegrated source delta
