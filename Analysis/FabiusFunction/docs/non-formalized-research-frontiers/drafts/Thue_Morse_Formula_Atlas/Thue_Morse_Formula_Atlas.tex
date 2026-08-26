@@ -3644,6 +3644,20 @@ halves reduce to \(\eps_j\eps_{j+r}\).  For an odd shift, they reduce to
 \(-\eps_j\eps_{j+r}\) and \(-\eps_j\eps_{j+r+1}\), respectively.
 \end{proof}
 
+\emph{Formal versions.}  \path{ThueMorseAutocorrelation.lean} proves the
+recursion \eqref{eq:eta-finite-even}--\eqref{eq:eta-finite-odd} in
+unnormalized integer form (\(A_m(k)=2^m\eta_m(k)\)):
+\lean{Fabius.thueMorseAutocorrelation\_succ\_even} and
+\lean{Fabius.thueMorseAutocorrelation\_succ\_odd}, with
+\(A_m(0)=2^m\)
+(\lean{Fabius.thueMorseAutocorrelation\_zero\_shift}) and the closed
+shift values \(3A_m(1)=-2^m-2(-1)^m\) and
+\(3A_{m+1}(2)=-2^{m+1}-4(-1)^m\)
+(\lean{Fabius.three\_mul\_thueMorseAutocorrelation\_one},
+\lean{Fabius.three\_mul\_thueMorseAutocorrelation\_two}) --- the
+exact finite forms of \(\eta(1)=\eta(2)=-\tfrac13\).  The existence
+of the limit and its spectral consequences remain analytic frontiers.
+
 \begin{theorem}[Limiting autocorrelation]
 \label{thm:limiting-autocorrelation}
 For every fixed \(k\ge0\), the limit
@@ -3826,7 +3840,7 @@ period.  The \emph{critical exponent} of an infinite word is the supremum,
 over its factors \(w\), of \(|w|/p\), where \(p\) is the smallest period of
 \(w\) and \(|w|\) its length.
 
-\begin{theorem}[Thue; literature theorem]
+\begin{theorem}[Thue]
 \label{thm:overlap-free}
 The Thue--Morse word contains no overlap.  Consequently it contains no cube,
 and no factor has exponent strictly greater than \(2\); since squares of
@@ -3847,6 +3861,23 @@ directly visible absence of the cubes \(000\) and \(111\), and it was the
 original reason for the word's construction, decades before its automatic,
 spectral, and Diophantine roles emerged.
 
+\emph{Formal versions.}  Thue's theorem is no longer only a literature
+theorem here: \path{ThueMorseOverlapFree.lean} contains a complete
+formal proof, \lean{Fabius.thueMorseBit\_not\_overlap} (with packaged
+forms \lean{Fabius.thueMorseBit\_overlap\_free} and, for the signs,
+\lean{Fabius.thueMorseSign\_overlap\_free}).  The formal proof
+descends through the two-scale laws directly rather than by
+desubstitution: an even period halves by reading one parity class of the
+window (the seed fact is \(\tau(2k)\ne\tau(2k+1)\),
+\lean{Fabius.thueMorseBit\_pair\_ne}); an odd period forces
+\(\tau(l)=\tau(l+1)\) along a run of consecutive \(l\), which for
+\(p\ge5\) contradicts the absence of triples
+(\lean{Fabius.thueMorseBit\_no\_triple}), while \(p\in\{1,3\}\)
+die by a Boolean analysis of the window.  Cube-freeness is
+\lean{Fabius.thueMorseBit\_cube\_free}, and the dyadic squares showing
+that the exponent \(2\) is attained are
+\lean{Fabius.thueMorseBit\_square\_two\_pow}.
+
 \subsection{Complement and reversal closure}
 
 Complementing every letter commutes with the substitution up to swapping
@@ -3859,6 +3890,14 @@ reciprocity of \cref{prop:reciprocity}.  Every factor sits inside some such
 prefix, so the factor language is closed under reversal as well.  By unique
 ergodicity, complementary factors occur with equal frequencies; the exact
 prefix balance of \cref{thm:exact-prefix} is the one-letter case.
+
+\emph{Formal versions.}  Both closures are formal with fully explicit
+witnesses: \lean{Fabius.thueMorseBit\_exists\_complement} places the
+complemented factor at a shift by a large power of two, and
+\lean{Fabius.thueMorseBit\_exists\_reversal} places the reversed
+factor at the reflection of the window through an even-exponent dyadic
+block, where \eqref{eq:block-reflection} carries the sign \(+1\)
+(\path{ThueMorseOverlapFree.lean}).
 
 \subsection{Linear factor complexity}
 
@@ -4563,7 +4602,7 @@ valuation, carry, and Pascal-row formulas remain genuinely base-two features.
 \subsection{Formalized modules (August 2026)}
 \label{sec:formalized-modules}
 
-The first tranches of the formalization now exist as fifteen compiled Lean
+The first tranches of the formalization now exist as seventeen compiled Lean
 modules in \repo{}, complementing the corpus modules
 (\path{Parity.lean}, \path{TwoAdic.lean}, \path{ThueMorsePrefix.lean},
 \path{ThueMorseGenerating.lean}, \path{ThueMorseExponential.lean},
@@ -4592,6 +4631,8 @@ Module & Contents \\
 \path{ThueMorseWalsh.lean} & All-ones digit patterns and masked two-power sums, \(\eps\) as a Walsh character, character orthogonality on the block, the one-point Walsh spectrum. \\
 \path{ThueMorseSparseMoments.lean} & Hypothesis-free weight and sign laws, master product on arbitrary supports, complete sparse moment composition subsuming the block and submask cases. \\
 \path{ThueMorseMixedDifference.lean} & The dyadic mixed-difference operator and the finite-difference factorization for arbitrary functions from an additive monoid into an additive group, with the powerset expansion. \\
+\path{ThueMorseAutocorrelation.lean} & Finite autocorrelation recursion in exact integer form, zero-shift value, closed values at shifts one and two. \\
+\path{ThueMorseOverlapFree.lean} & Thue's overlap-freeness theorem with cube-freeness, the attained critical exponent two, and constructive complement and reversal closure of the factor language. \\
 \bottomrule
 \end{tabularx}
 \end{center}

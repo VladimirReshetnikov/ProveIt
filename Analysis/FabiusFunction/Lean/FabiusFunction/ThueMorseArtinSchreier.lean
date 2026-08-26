@@ -2,7 +2,9 @@ import FabiusFunction.ThueMorseEnumerators
 import Mathlib.Algebra.CharP.Two
 import Mathlib.Algebra.CharP.Lemmas
 import Mathlib.Data.ZMod.Basic
+import Mathlib.Algebra.Field.ZMod
 import Mathlib.RingTheory.PowerSeries.Basic
+import Mathlib.RingTheory.PowerSeries.NoZeroDivisors
 
 /-!
 # The Thue–Morse bit series over 𝔽₂ and its Artin–Schreier equation
@@ -27,6 +29,16 @@ denominator-free form:
 * `artinSchreier_one_add_X_mul` — the normalized **Artin–Schreier form**:
   `Y = (1+z)Θ` satisfies `(1+z)(Y² + Y) = z`, the denominator-cleared
   version of `Y² + Y = z/(1+z)`.
+* `artinSchreier_solution_unique` — **uniqueness**: the bit series is the
+  only zero-constant-term solution of the quadratic, because the
+  difference of two solutions `D` satisfies
+  `(1+z)²D((1+z)D + 1) = 0` in the domain `𝔽₂[[z]]`.
+* `integerLift_parity` / `integerLift_modEq` — the **integer algebraic
+  lift**: any integer sequence `c` with `c(0)=0` whose generating series
+  satisfies `(1-z)³C² + (1-z)²C = z` reduces mod `2` to the Thue–Morse
+  bits, `c(n) ≡ τ(n) (mod 2)` — reduction modulo two turns the equation
+  into the Artin–Schreier quadratic, and uniqueness identifies the
+  solution.
 * `sum_pow_two_pow_sq_add` — the finite **Artin–Schreier telescope** in any
   commutative ring of characteristic two:
   `S_J² + S_J = a^(2^J) + a` for `S_J = ∑_{j<J} a^(2^j)`.  This is the
@@ -244,6 +256,93 @@ theorem artinSchreier_one_add_X_mul :
           (1 + PowerSeries.X) ^ 3 * thueMorseBitSeries ^ 2) +
           PowerSeries.X := by ring
     _ = PowerSeries.X := by rw [add_self_eq_zero', zero_add]
+
+/-! ### Uniqueness of the Artin–Schreier solution and the integer lift -/
+
+private theorem one_add_X_ne_zero :
+    (1 + PowerSeries.X : PowerSeries (ZMod 2)) ≠ 0 := by
+  intro h
+  have := congrArg PowerSeries.constantCoeff h
+  simp at this
+
+/-- **Uniqueness.**  The Thue–Morse bit series is the only power series
+over `𝔽₂` with zero constant term satisfying the Artin–Schreier quadratic
+`(1+z)³Y² + (1+z)²Y + z = 0`. -/
+theorem artinSchreier_solution_unique (Y : PowerSeries (ZMod 2))
+    (h0 : PowerSeries.constantCoeff Y = 0)
+    (hY : (1 + PowerSeries.X) ^ 3 * Y ^ 2 +
+      (1 + PowerSeries.X) ^ 2 * Y + PowerSeries.X = 0) :
+    Y = thueMorseBitSeries := by
+  haveI : Fact (Nat.Prime 2) := ⟨Nat.prime_two⟩
+  have hT := thueMorseBitSeries_quadratic
+  have hsq : Y ^ 2 - thueMorseBitSeries ^ 2 =
+      (Y - thueMorseBitSeries) ^ 2 := by
+    linear_combination (Y * thueMorseBitSeries - thueMorseBitSeries ^ 2) *
+      two_eq_zero
+  have hfac : (1 + PowerSeries.X) ^ 2 * (Y - thueMorseBitSeries) *
+      ((1 + PowerSeries.X) * (Y - thueMorseBitSeries) + 1) = 0 := by
+    linear_combination hY - hT - (1 + PowerSeries.X) ^ 3 * hsq
+  rcases mul_eq_zero.mp hfac with h | h
+  · rcases mul_eq_zero.mp h with h' | h'
+    · exact absurd h' (pow_ne_zero 2 one_add_X_ne_zero)
+    · exact sub_eq_zero.mp h'
+  · exfalso
+    have hc := congrArg PowerSeries.constantCoeff h
+    have hY0 : PowerSeries.constantCoeff thueMorseBitSeries = 0 := by
+      have : PowerSeries.constantCoeff thueMorseBitSeries =
+          PowerSeries.coeff 0 thueMorseBitSeries := by
+        rw [PowerSeries.coeff_zero_eq_constantCoeff]
+      rw [this, coeff_thueMorseBitSeries]
+      simp [thueMorseBit, binaryWeight]
+    simp only [map_add, map_mul, map_one, map_zero,
+      PowerSeries.constantCoeff_X, map_sub, hY0, h0] at hc
+    simp at hc
+
+/-- **Parity of the integer algebraic lift.**  Any integer sequence `c`
+with `c(0) = 0` whose generating series satisfies
+`(1-z)³C² + (1-z)²C = z` reduces modulo two to the Thue–Morse bit
+sequence: `c(n) ≡ τ(n) (mod 2)`, so `ε(n) = (-1)^(c(n))`. -/
+theorem integerLift_parity (c : ℕ → ℤ) (h0 : c 0 = 0)
+    (heq : (1 - PowerSeries.X) ^ 3 * (PowerSeries.mk c) ^ 2 +
+      (1 - PowerSeries.X) ^ 2 * PowerSeries.mk c = PowerSeries.X) :
+    ∀ n, ((c n : ZMod 2)) = (thueMorseBit n : ZMod 2) := by
+  set φ := PowerSeries.map (Int.castRingHom (ZMod 2)) (PowerSeries.mk c)
+    with hφ
+  have hcoeff : ∀ n, PowerSeries.coeff n φ = ((c n : ZMod 2)) := by
+    intro n
+    rw [hφ, PowerSeries.coeff_map, PowerSeries.coeff_mk]
+    rfl
+  have hsub : (1 : PowerSeries (ZMod 2)) - PowerSeries.X =
+      1 + PowerSeries.X := by
+    have h := add_self_eq_zero' (PowerSeries.X : PowerSeries (ZMod 2))
+    linear_combination -h
+  have hmapped : (1 + PowerSeries.X) ^ 3 * φ ^ 2 +
+      (1 + PowerSeries.X) ^ 2 * φ + PowerSeries.X = 0 := by
+    have h := congrArg (PowerSeries.map (Int.castRingHom (ZMod 2))) heq
+    simp only [map_add, map_mul, map_pow, map_sub, map_one,
+      PowerSeries.map_X] at h
+    rw [hsub] at h
+    have hX := add_self_eq_zero' (PowerSeries.X : PowerSeries (ZMod 2))
+    linear_combination h + hX
+  have h0' : PowerSeries.constantCoeff φ = 0 := by
+    have := hcoeff 0
+    rw [PowerSeries.coeff_zero_eq_constantCoeff] at this
+    rw [this, h0]
+    simp
+  have huniq := artinSchreier_solution_unique φ h0' hmapped
+  intro n
+  have := congrArg (fun ψ => PowerSeries.coeff n ψ) huniq
+  simpa [hcoeff n] using this
+
+/-- The integer lift in congruence form: `c(n) ≡ τ(n) (mod 2)`. -/
+theorem integerLift_modEq (c : ℕ → ℤ) (h0 : c 0 = 0)
+    (heq : (1 - PowerSeries.X) ^ 3 * (PowerSeries.mk c) ^ 2 +
+      (1 - PowerSeries.X) ^ 2 * PowerSeries.mk c = PowerSeries.X)
+    (n : ℕ) : c n ≡ (thueMorseBit n : ℤ) [ZMOD 2] := by
+  have h := integerLift_parity c h0 heq n
+  rwa [show ((thueMorseBit n : ℕ) : ZMod 2) =
+      (((thueMorseBit n : ℕ) : ℤ) : ZMod 2) by push_cast; rfl,
+    ZMod.intCast_eq_intCast_iff] at h
 
 /-! ### The finite Artin–Schreier telescope -/
 
