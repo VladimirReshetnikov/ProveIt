@@ -1137,9 +1137,9 @@ validated (exact command, SHA/state, exit code): current HEAD and origin/main
   lease; the coordinator explicitly records the prior six-name binary tranche
   as integrated, built, and released, with this Regularity/private-helper
   cleanup excluded; read-only arithmetic audit verifies
-  2*A + 2*(2*A)⁻¹ = 3*A after A is identified with 2^(m-1), and the public
-  Regularity theorem has exactly the needed nonnegativity hypothesis; this is
-  not compiler evidence
+  2 * (2^(m-1))⁻¹ + 2 * (2^m)⁻¹ = 3 * (2^(m-1))⁻¹, and the
+  public Regularity theorem has exactly the needed nonnegativity hypothesis;
+  this is not compiler evidence
 not yet validated: the proposed declaration and cleanup do not exist yet; no
   Lean, Lake, TeX, PDF, or cache-mutating process is authorized or running for
   this branch
@@ -1160,4 +1160,88 @@ next bounded step: commit and push this registry-only claim without force;
   edit only the claimed Lean source while three agents independently review
   proof arithmetic, exact header preservation, imports, and source-level
   documentation
+```
+
+## Source checkpoint: constant-three binary-reduction decay
+
+Exact source commit `51b9ad393` implements the advertised one-name theorem,
+compatibility refactor, regularity deduplication, and source documentation in
+the sole leased module.  The committed `FabiusBinaryReductionSeries.lean` is
+Git blob `637e4bb0ad439ecec43cdbef7895237484c8d315`, with content SHA-256
+`92FCDB215915F68A2458A42885046B3A31A71CEC03BE34AC5B5A11C9BD0E0626`.
+
+The new public declaration is exactly
+`norm_globalBinaryReductionSummand_le_three_mul_inv_pow`.  For every real
+input and every `1 ≤ m`, it proves
+
+`‖globalBinaryReductionSummand x m‖ ≤ 3 * ((2 : ℝ) ^ (m - 1))⁻¹`.
+
+Its proof uses the all-real residual telescope, bounds the consecutive
+residuals at scales `m - 1` and `m` by the already-totalized estimates, and
+keeps the resulting arithmetic as an equality rather than weakening constant
+`3` to `4`.  In particular the edge case `m = 1` correctly invokes the total
+bound at scale zero.  The existing constant-four declarations
+`norm_globalBinaryReductionSummand_le_ge_two` and
+`norm_globalBinaryReductionSummand_le_of_one_le_all` retain their exact public
+headers as documented compatibility consequences.  The all-real absolute-
+summability proof now compares against `3 * (1/2)^j`.
+
+The module explicitly imports `FabiusFunction.Regularity`, deletes only the
+private 19-line `fabiusReal_le_two_mul_of_mem_Icc_half` re-proof, and calls the
+public `fabiusReal_le_two_mul` theorem at its sole former use.  The interval
+transport helpers needed by the restricted remainder API remain in place.
+Module and declaration prose states the full all-real positive-scale formula,
+the constant-four compatibility bounds, and that no optimality of constant
+`3` is claimed.  A complete scan finds an adjacent human-readable comment for
+every public definition and theorem in the touched module.
+
+Two independent hostile reviews pass on the exact final bytes.  They checked
+the `m = 1` and nonpositive-input cases, residual-bound orientations,
+power/inverse arithmetic, summability shift, import acyclicity, exact old
+headers, tightly scoped unused-argument linter, deleted-helper callers,
+downstream imports, naming, collisions, and source-document parity.  No
+source-level blocker remains.
+
+```text
+SYNC Fabius
+branch / worktree / machine: codex/fabius-effective-bounds-20260825 /
+  /home/codex/.codex/worktrees/d6d3/Proofs / codexbox
+fetched main SHA: 741db6b4b777abc3fb4ca9ba6a6f0f098399c1bb
+HEAD and dirty paths: 51b9ad3936dbdd51423704e8f50fb8e9c77f9801;
+  source checkpoint is clean and pushed; only this registry is dirty for the
+  immutable handoff
+writing (exact paths): completed source checkpoint writes only
+  Lean/FabiusFunction/FabiusBinaryReductionSeries.lean; this report writes
+  only this branch registry; that Lean source is now frozen
+expected declarations or document claims: the single advertised constant-
+  three theorem is implemented; both old constant-four headers remain exact;
+  source-level documentation states every changed and new mathematical result;
+  no canonical document, facade, root, audit ledger, or other source claim
+completed commits: 5e696cc56 (registry-first claim), 736987748 (conflict-
+  resolved merge of coordinator main, taking the validated Lambert proof
+  repair), and 51b9ad393 (one-file source/proof/documentation checkpoint);
+  the preceding Lambert, strict-moment, and cumulant handoffs are now integrated
+  and compiler-green on main
+validated (exact command, SHA/state, exit code): git diff --check exited 0;
+  forbidden-placeholder scan is clean; exact header comparison confirms both
+  compatibility APIs; the added-public-declaration scan finds exactly the
+  advertised name; exact final blob/hash are recorded above; two independent
+  exact-current-byte static reviews pass; this is not compiler evidence
+not yet validated: source commit 51b9ad393 has not been elaborated; no Lean,
+  Lake, TeX, PDF, or cache-mutating process ran because this branch has no host
+  build token
+requested integration or lease: independently review and preserve exact source
+  commit 51b9ad393 / blob 637e4bb0ad43, then assign separate serialized
+  LAKE_JOBS=1 builds of +FabiusFunction.FabiusBinaryReductionSeries and its
+  smallest direct consumer +FabiusFunction.FabiusGlobalQBinomialSeries;
+  request no document or main-write lease
+conflicts / dependencies: exact parent preimage is current-main blob
+  9944118b1cfa; `1 ≤ m` remains essential because the telescope step is false
+  at `m = 0`; Regularity is acyclic and the old direct importers keep every
+  compatibility API; all other active source/document claims are disjoint;
+  only the coordinator may advance main
+next bounded step: commit and push this immutable handoff; keep the binary
+  source frozen for coordinator validation and continue read-only auditing of
+  disjoint released paths, reserving strict convexity and the formal Lambert
+  fixed point until their now-integrated dependencies are separately claimed
 ```
