@@ -25,10 +25,10 @@ releases `51af7f7e1`.
 SYNC Fabius
 branch / worktree / machine: codex/fabius-shifted-prefix-grid / c9a3 / EVO
   (Windows)
-fetched main SHA: 407da44a69a56aa8c1de5e817aa1792af5ed0a46
-HEAD and dirty paths: 1381df9bb1c42943840be5e47323d2cddea05cbc;
-  docs/registry/codex-fabius-shifted-prefix-grid.md only, publishing the next
-  exact same-path source proposal while the current checkpoint stays frozen
+fetched main SHA: c2aa5a25c82e50149ab8887f95e7c5bcd6fe62eb
+HEAD and dirty paths: 5e7ee830916a41b59a83610bc25a25445cb08915;
+  docs/registry/codex-fabius-shifted-prefix-grid.md only, recording the
+  conflict-free synchronization and completed collision review
 writing (exact paths): docs/registry/codex-fabius-shifted-prefix-grid.md only;
   after coordinator release, the proposed next claim is exactly
   Lean/FabiusFunction/ThueMorseGenerating.lean and
@@ -77,8 +77,10 @@ completed commits: 6fb8dc8e9 publishes the exact one-file claim; ba0048023
   build-authorization checkpoint 383bc9672 before source work; 585f8f8ba moves
   both convolution bridges to their minimal generating-series dependency;
   51af7f7e1 implements the complete two-file source tranche; 7c6eaeff9 records
-  its validation request; 1381df9bb merges the exact current main checkpoint
-  407da44a6 without conflicts
+  its validation request; 1381df9bb merges the main checkpoint 407da44a6
+  without conflicts; 4ade2afd7 advertises the all-order same-path follow-up
+  without unfreezing source; 5e7ee8309 merges coordinator checkpoint
+  c2aa5a25c without conflicts and preserves both frozen source blobs
 validated (exact command, SHA/state, exit code): at source snapshot SHA-256
   784F6C4F389FE0F2FA08616FFAFBFA3917CCC9F6D2C86CE98D3D877B5F0DD14C,
   git diff --check and git diff --cached --check exited 0; python
@@ -118,7 +120,12 @@ validated (exact command, SHA/state, exit code): at source snapshot SHA-256
   blocker; implemented blobs are Generating 2412e544b (SHA-256
   499A7D176C691135FA24550CC73CF335D8D1E6C6A7C001A3F7B931D6B099B5DF)
   and Approximation b27b38fbc (SHA-256
-  1108CE8C50AAEF02A8C5A7705916D1D70A0AD993005F33AAC27AE83C76E783FE)
+  1108CE8C50AAEF02A8C5A7705916D1D70A0AD993005F33AAC27AE83C76E783FE);
+  the follow-up collision audit covered all 25 concrete locally fetched origin
+  refs, every current registry, and reachable exact-name history: no peer owns
+  either path, no source defines a proposed name, and the sole registry
+  occurrence is this branch's proposal; git diff --check at merge 5e7ee8309
+  exits 0 with no unmerged or dirty path
 not yet validated: source commit 51af7f7e1 has not been compiled; the proposed
   all-order follow-up has not been implemented; no Lean or Lake process is
   authorized because both physical-host tokens remain coordinator-reserved
@@ -137,14 +144,16 @@ conflicts / dependencies: no overlap with the active frontier-document lease;
   serialized; current main explicitly releases the prior source lease; a
   post-claim scan pinned all 16 locally available Fabius worker tips plus
   origin/main and found no competing claim or proposed declaration under an
-  exact or plausible alternate name; a fresh collision review for the proposed
-  follow-up names and same-path claim is in progress; both source paths remain
-  frozen at 51af7f7e1, and no path expansion beyond those two source files and
-  this branch registry is requested
-next bounded step: push this exact proposal, keep both source files and every
-  serialized document frozen, finish the read-only proof/API/collision reviews,
-  and poll the coordinator board for source release and build disposition
-lease refreshed: 2026-08-25 19:13 PDT; registry-only proposal, with both source
+  exact or plausible alternate name; the fresh 25-ref review reaches the same
+  conclusion; coordinator checkpoint c2aa5a25c accepts other frozen source
+  units but still does not acknowledge or release 51af7f7e1; both source paths
+  therefore remain frozen, and no path expansion beyond those two source files
+  and this branch registry is requested
+next bounded step: push this synchronized collision checkpoint, keep both
+  source files and every serialized document frozen, finish the disjoint
+  finite-Appell preflight, and poll the coordinator board for source release
+  and build disposition
+lease refreshed: 2026-08-25 19:25 PDT; registry-only proposal, with both source
   files still frozen at 51af7f7e1
 git owner / build owner: root / no build owner assigned to this branch
 ```
