@@ -27,9 +27,9 @@ SYNC Fabius
 branch / worktree / machine: codex/fabius-shifted-prefix-grid / c9a3 / EVO
   (Windows)
 fetched main SHA: 682222de194637f3a5650b7c1ffce349577cb5ae
-HEAD and dirty paths: 6413191f128684b966347a284218a54547fddab7;
-  docs/registry/codex-fabius-shifted-prefix-grid.md only, recording coordinator
-  validation/release and correcting the finite-jet Generating blob evidence
+HEAD and dirty paths: ef243020506387aed083870525899ab392c7aab2;
+  docs/registry/codex-fabius-shifted-prefix-grid.md only, recording the
+  independently reviewed comment-only precision checkpoint
 writing (exact paths): docs/registry/codex-fabius-shifted-prefix-grid.md only;
   after this registry correction is pushed, exactly
   Lean/FabiusFunction/FabiusQBinomialTaylor.lean,
@@ -101,7 +101,9 @@ completed commits: 6fb8dc8e9 publishes the exact one-file claim; ba0048023
   c2aa5a25c without conflicts and preserves both frozen source blobs;
   a0b289ee7 records the synchronized 25-ref collision audit; e38876942
   publishes the disjoint finite-Appell claim; 6413191f1 merges the validated
-  finite-jet acceptance checkpoint 682222de1 without conflicts
+  finite-jet acceptance checkpoint 682222de1 without conflicts; c93bb20ae
+  activates the released source claims and corrects the Generating evidence;
+  ef2430205 applies only the two advertised module-guide precision corrections
 validated (exact command, SHA/state, exit code): at source snapshot SHA-256
   784F6C4F389FE0F2FA08616FFAFBFA3917CCC9F6D2C86CE98D3D877B5F0DD14C,
   git diff --check and git diff --cached --check exited 0; python
@@ -152,7 +154,12 @@ validated (exact command, SHA/state, exit code): at source snapshot SHA-256
   +FabiusFunction.ThueMorseApproximation (3307 jobs),
   +FabiusFunction.ThueMorseExponential (2086 jobs), and
   +FabiusFunction.PaperKFoldThueMorse (3327 jobs), all exit 0, and released both
-  finite-jet paths at main checkpoint 682222de1
+  finite-jet paths at main checkpoint 682222de1; for comment-only checkpoint
+  ef2430205, git diff --check and git diff --cached --check exited 0,
+  doc_audit.py scanned 189 files and 3486 public declarations with the unchanged
+  132 baseline omissions, the forbidden added-token scan was clean, and an
+  independent audit proved all normalized bytes outside the leading module
+  docs identical to HEAD in both files
 not yet validated: the active all-order follow-up and finite-Appell claim have
   not been implemented or compiled; no Lean or Lake process is authorized
   because both physical-host tokens remain coordinator-reserved
@@ -178,12 +185,11 @@ conflicts / dependencies: no overlap with the active frontier-document lease;
   analogous private dyadic-kernel family is mathematically distinct; no path
   expansion beyond the three active source files and this branch registry is
   requested
-next bounded step: push this validation/release correction, fetch and reread
-  the board, implement the module-guide corrections and four finite-Appell
-  declarations, then implement the all-order approximation tranche; obtain two
-  independent read-only reviews and freeze each source checkpoint without
-  invoking an unassigned validator
-lease refreshed: 2026-08-25 19:38 PDT; registry-only until pushed, then
+next bounded step: push the comment-only precision checkpoint, fetch and reread
+  the board, implement the four finite-Appell declarations, then implement the
+  all-order approximation tranche; obtain two independent read-only reviews
+  and freeze each source checkpoint without invoking an unassigned validator
+lease refreshed: 2026-08-25 19:41 PDT;
   FabiusQBinomialTaylor.lean, ThueMorseGenerating.lean, and
   ThueMorseApproximation.lean are active for 30 minutes
 git owner / build owner: root / no build owner assigned to this branch
