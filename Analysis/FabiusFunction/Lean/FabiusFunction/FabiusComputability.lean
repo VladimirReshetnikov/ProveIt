@@ -16,7 +16,9 @@ This module formalizes the two clauses in the computable-analysis definition
 of a computable real function: effective uniform continuity and preservation
 of computable sequences.  The analytic clause is obtained from the global
 derivative equation.  The algorithmic clause evaluates finite centered
-splines on dyadic grids and rounds them with an explicit error bound.
+splines on dyadic grids and rounds them with an explicit error bound.  The
+uncentered and midpoint-corrected finite CDFs have respective all-real error
+majorants `2 * 2⁻ᵖ` and `2⁻ᵖ`; the latter is exactly half the former.
 The same splines approximate the signed extension uniformly on the whole
 real line, with sup-norm error at most `2⁻ᵖ` at order `p`.
 -/
@@ -53,50 +55,84 @@ theorem fabiusReal_lipschitzWith_two
     LipschitzWith 2 (fabiusReal F) :=
   lipschitzWith_fabiusReal F hF
 
-/-- The centered order-`p` uniform spline approximates the bounded Fabius
-function with the explicit error `2⁻ᵖ`. -/
-theorem abs_fabiusUniformSpline_sub_fabiusReal_le
-    (F : BoundedFabius) (hF : IsFabius F) (p : ℕ) (hp : 0 < p)
-    {x : ℝ} (hx : x ∈ Icc (0 : ℝ) 1) :
-    |fabiusUniformSpline p x - fabiusReal F x| ≤ ((2 : ℝ) ^ p)⁻¹ := by
+/-- The uncentered order-`p` finite CDF has the all-real Lipschitz error
+majorant `2 * 2⁻ᵖ`. -/
+theorem abs_uniformPartialCDF_sub_fabiusReal_le
+    (F : BoundedFabius) (hF : IsFabius F) (p : ℕ) (x : ℝ) :
+    |ProbabilityRepresentation.uniformPartialCDF p x - fabiusReal F x| ≤
+      2 * ((2 : ℝ) ^ p)⁻¹ := by
+  have hs := ProbabilityRepresentation.uniformPartialCDF_sandwich p x
+  rw [ProbabilityRepresentation.weightedSumCDF_eq_fabiusReal F hF,
+    ProbabilityRepresentation.weightedSumCDF_eq_fabiusReal F hF] at hs
+  rw [abs_of_nonneg (sub_nonneg.mpr hs.1)]
+  calc
+    ProbabilityRepresentation.uniformPartialCDF p x - fabiusReal F x ≤
+        fabiusReal F (x + 1 / (2 : ℝ) ^ p) - fabiusReal F x :=
+      sub_le_sub_right hs.2 _
+    _ ≤ |fabiusReal F (x + 1 / (2 : ℝ) ^ p) - fabiusReal F x| :=
+      le_abs_self _
+    _ ≤ 2 * |x + 1 / (2 : ℝ) ^ p - x| :=
+      abs_fabiusReal_sub_le F hF _ _
+    _ = 2 * ((2 : ℝ) ^ p)⁻¹ := by
+      rw [show x + 1 / (2 : ℝ) ^ p - x = 1 / (2 : ℝ) ^ p by ring,
+        abs_of_nonneg (by positivity), one_div]
+
+/-- The midpoint-corrected order-`p` finite CDF has the all-real Lipschitz
+error majorant `2⁻ᵖ`. -/
+theorem abs_uniformCenteredPartialCDF_sub_fabiusReal_le
+    (F : BoundedFabius) (hF : IsFabius F) (p : ℕ) (x : ℝ) :
+    |ProbabilityRepresentation.uniformCenteredPartialCDF p x - fabiusReal F x| ≤
+      ((2 : ℝ) ^ p)⁻¹ := by
   let δ : ℝ := 1 / (2 : ℝ) ^ (p + 1)
   have hs := ProbabilityRepresentation.uniformCenteredPartialCDF_sandwich p x
-  rw [← ProbabilityRepresentation.fabiusUniformSpline_eq_centeredPartialCDF p hp hx,
-    ProbabilityRepresentation.weightedSumCDF_eq_fabiusReal F hF,
+  rw [ProbabilityRepresentation.weightedSumCDF_eq_fabiusReal F hF,
     ProbabilityRepresentation.weightedSumCDF_eq_fabiusReal F hF] at hs
-  have hleft := (fabiusReal_lipschitzWith_two F hF).dist_le_mul (x - δ) x
-  have hright := (fabiusReal_lipschitzWith_two F hF).dist_le_mul (x + δ) x
   have hδ : 2 * |δ| = ((2 : ℝ) ^ p)⁻¹ := by
     dsimp [δ]
     rw [abs_of_nonneg (by positivity), pow_succ]
     field_simp
   have hleft' : |fabiusReal F (x - δ) - fabiusReal F x| ≤
       ((2 : ℝ) ^ p)⁻¹ := by
-    rw [Real.dist_eq, Real.dist_eq] at hleft
     calc
-      |fabiusReal F (x - δ) - fabiusReal F x| ≤ 2 * |x - δ - x| := by
-        simpa only [NNReal.coe_ofNat] using hleft
+      |fabiusReal F (x - δ) - fabiusReal F x| ≤ 2 * |x - δ - x| :=
+        abs_fabiusReal_sub_le F hF _ _
       _ = ((2 : ℝ) ^ p)⁻¹ := by
         rw [show x - δ - x = -δ by ring, abs_neg, hδ]
   have hright' : |fabiusReal F (x + δ) - fabiusReal F x| ≤
       ((2 : ℝ) ^ p)⁻¹ := by
-    rw [Real.dist_eq, Real.dist_eq] at hright
     calc
-      |fabiusReal F (x + δ) - fabiusReal F x| ≤ 2 * |x + δ - x| := by
-        simpa only [NNReal.coe_ofNat] using hright
+      |fabiusReal F (x + δ) - fabiusReal F x| ≤ 2 * |x + δ - x| :=
+        abs_fabiusReal_sub_le F hF _ _
       _ = ((2 : ℝ) ^ p)⁻¹ := by
         rw [show x + δ - x = δ by ring, hδ]
   rw [abs_le]
   constructor
   · have hleftLower : -((2 : ℝ) ^ p)⁻¹ ≤
-        fabiusReal F (x - δ) - fabiusReal F x :=
-      (abs_le.mp hleft').1
+        fabiusReal F (x - δ) - fabiusReal F x := (abs_le.mp hleft').1
     dsimp [δ] at hs
     linarith [hs.1]
   · have hrightUpper : fabiusReal F (x + δ) - fabiusReal F x ≤
         ((2 : ℝ) ^ p)⁻¹ := (abs_le.mp hright').2
     dsimp [δ] at hs
     linarith [hs.2]
+
+/-- The centered certified majorant is exactly half the uncentered certified
+majorant.  This compares the bounds, not the actual pointwise errors, and
+makes no optimality claim. -/
+theorem uniformCenteredPartialCDF_error_bound_eq_half_uniformPartialCDF_error_bound
+    (p : ℕ) :
+    ((2 : ℝ) ^ p)⁻¹ =
+      (1 / 2 : ℝ) * (2 * ((2 : ℝ) ^ p)⁻¹) := by
+  ring
+
+/-- The centered order-`p` uniform spline approximates the bounded Fabius
+function with the explicit error `2⁻ᵖ`. -/
+theorem abs_fabiusUniformSpline_sub_fabiusReal_le
+    (F : BoundedFabius) (hF : IsFabius F) (p : ℕ) (hp : 0 < p)
+    {x : ℝ} (hx : x ∈ Icc (0 : ℝ) 1) :
+    |fabiusUniformSpline p x - fabiusReal F x| ≤ ((2 : ℝ) ^ p)⁻¹ := by
+  rw [ProbabilityRepresentation.fabiusUniformSpline_eq_centeredPartialCDF p hp hx]
+  exact abs_uniformCenteredPartialCDF_sub_fabiusReal_le F hF p x
 
 /-- The same explicit spline error estimate in every degree.  At degree zero,
 both the elementary step spline and the bounded Fabius function take values in
@@ -105,18 +141,8 @@ theorem abs_fabiusUniformSpline_sub_fabiusReal_le_all
     (F : BoundedFabius) (hF : IsFabius F) (p : ℕ)
     {x : ℝ} (hx : x ∈ Icc (0 : ℝ) 1) :
     |fabiusUniformSpline p x - fabiusReal F x| ≤ ((2 : ℝ) ^ p)⁻¹ := by
-  cases p with
-  | zero =>
-      have hspline : fabiusUniformSpline 0 x ∈ Icc (0 : ℝ) 1 := by
-        rw [ProbabilityRepresentation.fabiusUniformSpline_zero_eq_centeredPartialCDF_of_mem_Icc
-          hx]
-        exact ⟨ProbabilityTheory.cdf_nonneg _ _, ProbabilityTheory.cdf_le_one _ _⟩
-      rw [pow_zero, inv_one, abs_le]
-      constructor
-      · linarith [hspline.1, fabiusReal_le_one F x]
-      · linarith [hspline.2, fabiusReal_nonneg F x]
-  | succ p =>
-      exact abs_fabiusUniformSpline_sub_fabiusReal_le F hF (p + 1) (by omega) hx
+  rw [ProbabilityRepresentation.fabiusUniformSpline_eq_centeredPartialCDF_all p hx]
+  exact abs_uniformCenteredPartialCDF_sub_fabiusReal_le F hF p x
 
 /-- The centered order-`p` uniform spline approximates the signed extension
 on the whole real line with the same error `2⁻ᵖ` as on `[0,1]`.  Nonpositive
