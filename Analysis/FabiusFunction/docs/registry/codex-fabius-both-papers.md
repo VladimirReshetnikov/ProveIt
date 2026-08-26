@@ -8,14 +8,16 @@ SYNC Fabius
 branch / worktree / machine: codex/fabius-both-papers /
   /home/codex/src/Proofs / codexbox
 fetched main SHA: 2183cfb113765197042628524690794bdf8d07c4
-HEAD and dirty paths: c50c161b15fd3d1f313cf57a14d184c97bef23ca;
-  only this registry handoff is dirty
+HEAD and dirty paths: c32bd6276a778c981b2bf985826696c8f5538141;
+  clean before this ordinary private-only claim
 writing (exact paths):
+  Lean/FabiusFunction/FabiusUniformSpline.lean;
   docs/registry/codex-fabius-both-papers.md
 expected declarations or document claims:
-  record the completed all-index oddness checkpoint and request its focused
-  serialized validation; the `Paper06487Supplement.lean` writing claim is
-  released
+  delete the dead private `integral_unitInterval_max_sub_mul_pow`, whose name
+  has no call site and whose proof duplicates the adjacent live
+  `intervalIntegral_max_sub_mul_pow`; preserve every public declaration,
+  import, attribute, and caller unchanged
 completed commits: Lower-Lambert source checkpoint `1da2fde2285e3970267b7dc2561bcd0d897be1b4`
   was integrated by coordinator merge `046946a974467e83244fd3a183a3e084e70d3379`;
   registry handoff `225f5338de9ea92489ed6a2c0c371c6edb4f5db9`
@@ -222,9 +224,9 @@ conflicts / dependencies: all advertised Fabius heads and their registries
   `not_isEquivalent` theorem and no competing claim on
   `FabiusSharpAsymptotic.lean`; the coordinator explicitly released its prior
   generalizations lease
-next bounded step: push this source handoff, then inspect and claim the strongest
-  available ordinary nonoverlapping theorem or deduplication tranche while the
-  coordinator retains the build token
+next bounded step: push this exact private-only claim, delete the dead helper,
+  obtain independent read-only review without running a build, and request
+  serialized `+FabiusFunction.FabiusUniformSpline` validation
 ```
 
 ## Coordinator natural-knot integration disposition
