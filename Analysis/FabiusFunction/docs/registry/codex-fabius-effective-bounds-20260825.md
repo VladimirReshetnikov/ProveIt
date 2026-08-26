@@ -57,6 +57,97 @@ next bounded step: commit and push this registry-only claim without force;
   only then edit the single claimed Lean module
 ```
 
+## Claim: scalar-monomial Gaussian contraction and private-helper deduplication
+
+Claimed at 2026-08-26 03:12 PDT from merged branch checkpoint
+`a15d9fc66`, after refreshing `origin/main` to `6691afcb3`.  This is an
+ordinary three-source claim on exactly:
+
+- `Lean/FabiusFunction/GaussianPolynomialContraction.lean`;
+- `Lean/FabiusFunction/FabiusSaddleExpansionCoefficients.lean`;
+- `Lean/FabiusFunction/FabiusSecondSaddleCorrection.lean`.
+
+The core module will expose the documented simp theorem
+
+```lean
+@[simp] theorem gaussianPolynomialContraction_C_mul_X_pow
+    (c : ℂ) (n : ℕ) :
+    gaussianPolynomialContraction
+        (Polynomial.C c * Polynomial.X ^ n) =
+      c * normalizedGaussianMoment n
+```
+
+immediately after `gaussianPolynomialContraction_X_pow`.  Its proof rewrites
+the scalar monomial with `Polynomial.C_mul_X_pow_eq_monomial` and applies the
+existing monomial-contraction theorem.  The core module will also receive
+adjacent, formula- and hypothesis-bearing comments for its 21 currently
+undocumented public declarations plus the new theorem and one concise module
+guide sentence.  The strict attribute-aware invariant will therefore become
+31 public declarations / 31 adjacent docs; the repository lexical audit
+currently undercounts ten same-line attributed declarations.
+
+The exact private declaration of the new name in
+`FabiusSaddleExpansionCoefficients.lean` will be deleted; its sole existing
+call remains textually unchanged and resolves through `open SaddleExpansion`.
+The shorter private `gaussianContraction_C_mul_X_pow` in
+`FabiusSecondSaddleCorrection.lean` will be deleted, and its five uses in the
+retained `gaussianContraction_even_five` normalization will be replaced by the
+public fully qualified theorem.  Every old public header, attribute, import,
+and other proof body in all three files is frozen; no facade, canonical prose,
+audit script, root module, or unrelated helper is in scope.
+
+Exact merged-main preimages are:
+
+- Gaussian core: blob `bdfd8c151b8c51b4705e312a619fdbd43f1cb553`,
+  SHA-256
+  `528C7A4A6DE1D92602985030D985E14761FE9F8B875B8470AD09C9E70FEE44FA`;
+- expansion-coefficients consumer: blob
+  `9ae47083dac0f5c81724304d57e08e9199a2e3ba`, SHA-256
+  `4313D00221D9F2399DA81468CDDACAE31B708709CAB3F0FCE2788FFECEA70214`;
+- second-correction consumer: blob
+  `3d191d64e088d93632191376ea7df186b1bbe71e`, SHA-256
+  `1BD4A3492F8C9F2A79B4A64E9593CAA8B3B878C860D40BE352B8FE658819FD13`.
+
+The pre-claim scan of current source, five visible worktrees, all visible Git
+refs, and all registries found no public declaration or competing path/name
+claim.  The exact proposed name occurs only as the intended private downstream
+duplicate on existing refs.  A separate inline scalar-monomial rewrite in
+`FabiusSaddleLeadingCoefficient.lean` is deliberately deferred to keep this
+claim atomic.  No Lean, Lake, TeX, PDF, cache, or main-write token is claimed.
+Requested later serialized gates are the three touched modules, followed by
+`+FabiusFunction.FabiusSaddleLeadingCoefficient` as a simp-interaction smoke
+test and optionally `+FabiusFunction.FabiusSecondSaddleExpansion`.
+
+```text
+SYNC Fabius
+branch / worktree / machine: codex/fabius-effective-bounds-20260825 /
+  /home/codex/.codex/worktrees/d6d3/Proofs / codexbox
+fetched main SHA: 6691afcb39f5a50dbc0d798b8b75b4cf563bf50a
+HEAD and dirty paths: a15d9fc66; only this branch registry is being written
+  for the registry-first claim
+writing (exact paths): the three Lean source paths listed above after this
+  claim is committed and pushed; this branch registry for claim/handoff
+expected declarations or document claims: one public simp contraction rule,
+  strict 31/31 core source docs, and deletion/rewiring of two private duplicate
+  helpers; no old public API or import change
+completed commits: merged current origin/main as a15d9fc66; source not yet
+  authored
+validated (exact command, SHA/state, exit code): source/worktree/all-visible-ref
+  and registry collision scans are clear except for the two intended private
+  helpers; three preimage SHA-256 values above match merged origin/main;
+  mathematical/API/static design audits are green
+not yet validated: no Lean/Lake build; no live source diff or post-author
+  exact-byte review exists yet
+requested integration or lease: ordinary exact-path claim only; later request
+  serialized focused builds and coordinator selective integration
+conflicts / dependencies: no live path lease; core algebra checkpoint is
+  immutable but disjoint; only the coordinator may advance main or assign
+  Lean/Lake
+next bounded step: commit/push this claim, repeat the name/ref scan, author
+  exactly the three files, freeze them for independent hostile review, then
+  checkpoint and publish a registry handoff
+```
+
 ## Source checkpoint: exact reciprocal-scale equivalences
 
 Source commit `a8421fd7f16b71c7cbd867d0fc71c616c1b274aa` implements the
