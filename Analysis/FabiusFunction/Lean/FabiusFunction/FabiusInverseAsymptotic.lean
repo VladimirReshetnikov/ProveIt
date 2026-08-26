@@ -27,9 +27,10 @@ The same logarithmic formula places the inverse strictly between every
 positive real power of the endpoint argument and every real power of its
 logarithmic scale.
 
-Only the phase estimate retains the quantitative error.  The logarithmic and
-exponentiated statements use its immediate `o(1)` consequence, which is the
-weakest input they need.
+Among the explicit leading inverse formulas, only the phase estimate retains
+the quantitative `O(log T / sqrt T)` error.  The logarithmic and exponentiated
+statements use its immediate `o(1)` consequence, which is the weakest input
+they need.
 -/
 
 set_option autoImplicit false
@@ -78,7 +79,7 @@ private theorem tendsto_fabiusInv_nhdsGT_zero
 /-- **Full sharp expansion pulled back to inverse coordinates.**
 
 As `y -> 0+`, the logarithmic defect of the sharp Lambert main at the exact
-inverse point has the full Poincare expansion inherited from the forward
+inverse point has the full Poincaré expansion inherited from the forward
 Fabius function.  Its scale and coefficients remain evaluated at the exact
 phase `fabiusLambertPhase (fabiusInv F hF y)`; this theorem is an implicit
 inverse-coordinate expansion, not an explicit all-orders reversion of that
@@ -605,6 +606,67 @@ theorem rpow_isLittleO_fabiusInv_at_zero_right
   exact hpowExp.trans_isEquivalent
     (fabiusInv_isEquivalent_exp_fabiusInverseLogAsymptoticMain F hF).symm
 
+/-- **Quotient form of positive-power separation at zero.**
+
+For every `α > 0`, the inverse Fabius function divided by `y ^ α` tends to
+positive infinity as `y -> 0+`.  This is the sharp limit formulation of the
+fact that the inverse outruns every positive real power. -/
+theorem tendsto_fabiusInv_div_rpow_atTop_at_zero_right
+    (F : BoundedFabius) (hF : IsFabius F)
+    {α : ℝ} (hα : 0 < α) :
+    Tendsto (fun y : ℝ => fabiusInv F hF y / y ^ α)
+      (𝓝[>] (0 : ℝ)) atTop := by
+  have hzero :
+      Tendsto (fun y : ℝ => y ^ α / fabiusInv F hF y)
+        (𝓝[>] (0 : ℝ)) (𝓝 0) :=
+    (rpow_isLittleO_fabiusInv_at_zero_right F hF hα).tendsto_div_nhds_zero
+  have hpos :
+      ∀ᶠ y : ℝ in 𝓝[>] (0 : ℝ),
+        0 < y ^ α / fabiusInv F hF y := by
+    filter_upwards [Ioo_mem_nhdsGT zero_lt_one] with y hy
+    exact div_pos
+      (Real.rpow_pos_of_pos hy.1 α)
+      (fabiusInv_mem_Ioo F hF hy).1
+  have hwithin :
+      Tendsto (fun y : ℝ => y ^ α / fabiusInv F hF y)
+        (𝓝[>] (0 : ℝ)) (𝓝[>] (0 : ℝ)) :=
+    tendsto_nhdsWithin_iff.2 ⟨hzero, hpos⟩
+  simpa only [Pi.inv_apply, inv_div] using
+    hwithin.inv_tendsto_nhdsGT_zero
+
+/-- The inverse Fabius function is not `O(y ^ α)` at zero for any positive
+real exponent `α`. -/
+theorem fabiusInv_not_isBigO_rpow_at_zero_right
+    (F : BoundedFabius) (hF : IsFabius F)
+    {α : ℝ} (hα : 0 < α) :
+    ¬ ((fabiusInv F hF) =O[𝓝[>] (0 : ℝ)]
+      (fun y : ℝ => y ^ α)) := by
+  have hne :
+      ∀ᶠ y : ℝ in 𝓝[>] (0 : ℝ), y ^ α ≠ 0 := by
+    filter_upwards [self_mem_nhdsWithin] with y hy
+    exact (Real.rpow_pos_of_pos hy α).ne'
+  exact
+    (rpow_isLittleO_fabiusInv_at_zero_right F hF hα).not_isBigO
+      hne.frequently
+
+/-- **Failure of every positive-order local Hölder bound at zero.**
+
+For `α > 0`, no positive constants `C` and `δ` bound the inverse by
+`C * y ^ α` throughout the closed endpoint interval `[0, δ]`. -/
+theorem not_exists_fabiusInv_le_const_mul_rpow_near_zero
+    (F : BoundedFabius) (hF : IsFabius F)
+    {α : ℝ} (hα : 0 < α) :
+    ¬ ∃ C > 0, ∃ δ > 0, ∀ y ∈ Set.Icc (0 : ℝ) δ,
+      fabiusInv F hF y ≤ C * y ^ α := by
+  rintro ⟨C, _hC, δ, hδ, hbound⟩
+  apply fabiusInv_not_isBigO_rpow_at_zero_right F hF hα
+  apply IsBigO.of_bound C
+  filter_upwards [Icc_mem_nhdsGT hδ] with y hy
+  simpa only [
+    Real.norm_of_nonneg (fabiusInv_nonneg F hF y),
+    Real.norm_of_nonneg (Real.rpow_nonneg hy.1 α)
+  ] using hbound y hy
+
 /-- The inverse Fabius function is negligible beside every real power of its
 endpoint logarithmic scale:
 
@@ -641,6 +703,47 @@ theorem fabiusInv_isLittleO_negLog_rpow_at_zero_right
     have hTPos : 0 < -Real.log y :=
       neg_pos.mpr (Real.log_neg hy.1 hy.2)
     rw [Real.rpow_def_of_pos hTPos]
+
+/-- Every positive real power of the remaining distance to one is negligible
+beside the inverse Fabius deficiency:
+
+`(1 - y) ^ α = o(1 - fabiusInv F hF y)` for every `α > 0` as `y -> 1-`. -/
+theorem one_sub_rpow_isLittleO_one_sub_fabiusInv_at_one_left
+    (F : BoundedFabius) (hF : IsFabius F)
+    {α : ℝ} (hα : 0 < α) :
+    (fun y : ℝ => (1 - y) ^ α) =o[𝓝[<] (1 : ℝ)]
+      (fun y : ℝ => 1 - fabiusInv F hF y) := by
+  simpa only [Function.comp_def, fabiusInv_one_sub] using
+    (rpow_isLittleO_fabiusInv_at_zero_right F hF hα).comp_tendsto
+      tendsto_one_sub_nhdsLT_one_nhdsGT_zero
+
+/-- The inverse Fabius deficiency is negligible beside every real power of
+the reflected endpoint logarithmic scale:
+
+`1 - fabiusInv F hF y = o((-log (1 - y)) ^ r)` for every `r : ℝ` as
+`y -> 1-`. -/
+theorem one_sub_fabiusInv_isLittleO_negLog_one_sub_rpow_at_one_left
+    (F : BoundedFabius) (hF : IsFabius F) (r : ℝ) :
+    (fun y : ℝ => 1 - fabiusInv F hF y) =o[𝓝[<] (1 : ℝ)]
+      (fun y : ℝ => (-Real.log (1 - y)) ^ r) := by
+  simpa only [Function.comp_def, fabiusInv_one_sub] using
+    (fabiusInv_isLittleO_negLog_rpow_at_zero_right F hF r).comp_tendsto
+      tendsto_one_sub_nhdsLT_one_nhdsGT_zero
+
+/-- **Reflected quotient divergence for every positive real exponent.**
+
+For every `α > 0`, the inverse deficiency divided by `(1 - y) ^ α` tends to
+positive infinity as `y -> 1-`. -/
+theorem tendsto_one_sub_fabiusInv_div_one_sub_rpow_atTop_at_one_left
+    (F : BoundedFabius) (hF : IsFabius F)
+    {α : ℝ} (hα : 0 < α) :
+    Tendsto
+      (fun y : ℝ => (1 - fabiusInv F hF y) / (1 - y) ^ α)
+      (𝓝[<] (1 : ℝ)) atTop := by
+  have h :=
+    (tendsto_fabiusInv_div_rpow_atTop_at_zero_right F hF hα).comp
+      tendsto_one_sub_nhdsLT_one_nhdsGT_zero
+  simpa only [Function.comp_def, fabiusInv_one_sub] using h
 
 /-- **Reflected sharp equivalent at the right endpoint.**
 
