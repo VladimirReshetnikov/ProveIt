@@ -22,6 +22,7 @@ import FabiusFunction.ThueMorseOverlapFree
 import FabiusFunction.ThueMorseRecurrence
 import FabiusFunction.ThueMorseMahler
 import FabiusFunction.ThueMorseBooleanMobius
+import FabiusFunction.ThueMorseMultinomial
 import FabiusFunction.NegativeLaplace
 import FabiusFunction.ProbabilityLaplaceMoments
 import FabiusFunction.UnitLaplaceMomentBounds
