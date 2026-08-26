@@ -4004,3 +4004,90 @@ next bounded step: push this handoff, refresh shared state, then continue on a
   disjoint cold path such as the audited Bose arbitrary-cutoff negativity
   generalization while this pair awaits compiler validation
 ```
+
+## Claim: arbitrary-cutoff Bose small-kernel negativity and source parity
+
+Claimed at 2026-08-26 03:41 PDT from merged branch checkpoint
+`a26cd803e`, after refreshing `origin/main` to `e35baa1fc`.  This ordinary
+one-source claim owns exactly
+`Lean/FabiusFunction/BoseFinitePartIntegral.lean` plus this branch registry.
+
+Replace the private unit-cutoff helper by the documented public strengthening
+
+```lean
+lemma integral_boseFinitePartSmallKernel_Ioc_neg
+    (c : ℝ) (hc : 0 < c) :
+    (∫ x : ℝ in Ioc 0 c, boseFinitePartSmallKernel x) < 0
+```
+
+The existing support-measure proof generalizes literally from `Ioc 0 1` to
+`Ioc 0 c`: use `integrableOn_boseFinitePartSmallKernel_Ioc c`, strict pointwise
+negativity on the positive interval, measure monotonicity of the full support,
+and `Real.volume_Ioc` with `ENNReal.ofReal_pos` to discharge positive volume
+from `hc`.  The hypothesis is necessary because `Ioc 0 c` is empty for
+nonpositive `c`.  Delete the old private unit name and change only its sole use
+in `gammaZetaConstant_neg` to the new theorem at cutoff one.  No compatibility
+wrapper is needed for a formerly private declaration.
+
+Complete strict source documentation by adding adjacent formula/domain
+comments to the ten existing gaps:
+
+- `continuousOn_boseFinitePartSmallKernel`;
+- `continuousOn_boseFinitePartLargeKernel`;
+- `tendsto_small_regularized_bose_integral`;
+- `tendsto_large_regularized_bose_integral`;
+- `integrableOn_small_weighted_kernel`;
+- `integrableOn_large_weighted_kernel`;
+- `integrableOn_rpow_sub_one_mul_log_Ioc`;
+- `tendsto_rpow_nhdsGT_zero_of_pos`;
+- `integral_rpow_sub_one_mul_log_Ioc`; and
+- `integrableOn_small_weighted_bose`.
+
+Together with the new theorem comment this moves the module from 47 public /
+37 documented to strict 48/48.  There are no attributed-declaration blind
+spots.  Existing module prose is already accurate; at most one sentence may
+mention arbitrary positive cutoffs.  Preserve every old public header,
+attribute, import, and every proof body except the single gamma consumer line.
+No downstream, facade, root, script, canonical document, or audit-ledger path
+is in scope.
+
+The exact current/main preimage is blob
+`c2d246ecea21c4cf59268a5c2cea3026776ab6ad`, content SHA-256
+`52EAEB9E14C6E01D6B3D47FE62827F852E72FF828C59959477EE012FAADCFB03`,
+36,929 bytes.  The authoritative 120-ref scan finds zero occurrence of the new
+name; the old private unit helper appears only on historical/current refs at
+its local definition and gamma use.  Full registry/board scans show only
+historical integrated and explicitly released Bose work; no live path/name
+claim exists.  Direct downstream importer `PeriodicMean` remains unchanged.
+
+No Lean, Lake, TeX, PDF, cache, or main-write token is claimed.  Requested
+later serialized gates are `+FabiusFunction.BoseFinitePartIntegral`, then
+`+FabiusFunction.PeriodicMean`.
+
+```text
+SYNC Fabius
+branch / worktree / machine: codex/fabius-effective-bounds-20260825 /
+  /home/codex/.codex/worktrees/d6d3/Proofs / codexbox
+fetched main SHA: e35baa1fcf4ade15dff67dad624002c527fd9fd3
+HEAD and dirty paths: a26cd803e; only this branch registry is being written
+  for the registry-first claim
+writing (exact paths): BoseFinitePartIntegral.lean after claim push; this
+  branch registry for claim/handoff
+expected declarations or document claims: one arbitrary-positive-cutoff
+  strict-negativity theorem, deletion/rewire of its private unit predecessor,
+  strict 48/48 docs; no old public API/import change
+completed commits: merged current origin/main as a26cd803e; source not yet
+  authored
+validated (exact command, SHA/state, exit code): exact current/main preimage;
+  120-ref new-name scan has zero hits and identifies only the intended private
+  predecessor; registry/path/consumer/import and mathematical proof audit is
+  green, including the sharp positive-cutoff condition
+not yet validated: no live diff, exact-byte hostile review, or Lean/Lake
+  compiler evidence exists yet
+requested integration or lease: ordinary exact one-path claim only; later
+  request two serialized focused builds and coordinator selective integration
+conflicts / dependencies: active Gaussian/shift validation is disjoint; source
+  will be immutable after handoff; only coordinator advances main/assigns Lake
+next bounded step: commit/push claim, repeat name scan, author only the claimed
+  module, freeze for independent review, then checkpoint/handoff
+```
