@@ -8,16 +8,19 @@ SYNC Fabius
 branch / worktree / machine: codex/fabius-both-papers /
   /home/codex/src/Proofs / codexbox
 fetched main SHA: fc63c39788ab4c31694e4f57efe05b543165675a
-HEAD and dirty paths: b330296cf9faae487ccfb234fc1e6fb50b35273d;
-  dirty only in this own-registry handoff
+HEAD and dirty paths: c239802ddbd6ad22275bcfdaef310158d093e299;
+  dirty only in this own-registry claim
 writing (exact paths):
+  Analysis/FabiusFunction/Lean/FabiusFunction/Convexity.lean
   Analysis/FabiusFunction/docs/registry/codex-fabius-both-papers.md
 expected declarations or document claims:
-  freeze and release exact Lambert-tail source checkpoint
-  `b330296cf9faae487ccfb234fc1e6fb50b35273d`; record the byte-identical
-  all-order theorem relocation, the order-one specialization, exact result
-  blobs, three independent static reviews, and requested serialized gates;
-  change no source, document, facade, root, or other registry in this handoff
+  `fabiusReal_lt_self_of_mem_Ioo_zero_half`, placing the graph strictly below
+  the diagonal on `(0, 1/2)` by strict convexity;
+  `self_lt_fabiusReal_of_mem_Ioo_half_one`, transferring the strict inequality
+  to `(1/2, 1)` by reflection symmetry;
+  `fabiusReal_eq_self_iff`, classifying the complete all-real fixed-point locus
+  as exactly `0`, `1/2`, and `1`; add no simp attribute or import, preserve all
+  existing declarations, and change no facade, root, document, or other source
 completed commits: Lower-Lambert source checkpoint `1da2fde2285e3970267b7dc2561bcd0d897be1b4`
   was integrated by coordinator merge `046946a974467e83244fd3a183a3e084e70d3379`;
   registry handoff `225f5338de9ea92489ed6a2c0c371c6edb4f5db9`
@@ -172,6 +175,9 @@ completed commits: Lower-Lambert source checkpoint `1da2fde2285e3970267b7dc2561b
   `b330296cf9faae487ccfb234fc1e6fb50b35273d`, which moves the all-order proof
   verbatim, derives its order-one specialization, removes 38 net lines, and
   preserves the union of public declarations and every existing caller;
+  Lambert registry handoff
+  `c239802ddbd6ad22275bcfdaef310158d093e299` freezes that source, records its
+  three independent static reviews, and releases both Lambert source paths;
 validated (exact command, SHA/state, exit code): coordinator board records
   serialized immutable `lake build +FabiusFunction.LowerLambertW` at
   `4c6bbac41`, exit 0, with its source blob unchanged on current main;
@@ -373,7 +379,10 @@ requested integration or lease: integrate exact private-deletion checkpoint
   `LAKE_JOBS=1 lake build +FabiusFunction.FabiusFullAsymptoticExpansion`
   gates; both Lambert source claims are released by this handoff; canonical
   README, AUDIT_FINDINGS, PAPER_COVERAGE, primary, walkthrough, frontier, and
-  user-supplied draft paths remain frozen and unclaimed
+  user-supplied draft paths remain frozen and unclaimed; this checkpoint also
+  claims the one ordinary `Convexity.lean` path above for exactly the three
+  advertised diagonal theorems, requests no Lean/Lake token, and requests no
+  integration until an immutable reviewed source handoff is published
 conflicts / dependencies: the central-binomial and general-addition Kummer
   sources are integrated, validated, and released; the normalized-moment
   positivity candidate was
@@ -458,11 +467,17 @@ conflicts / dependencies: the central-binomial and general-addition Kummer
   `711343f161925610027c593ae7b0ec487f9baf6c` for
   `FabiusSharpLambertTransfer.lean` and
   `83e2a348f98625ab9ec47d6df97a3aa891d0d85f` for
-  `FabiusLambertTailFlat.lean`
-next bounded step: push this immutable Lambert-tail registry handoff, await
-  coordinator integration/serialized validation of the three pending reviewed
-  source checkpoints, and continue read-only preflight of the unclaimed
-  diagonal fixed-point classification
+  `FabiusLambertTailFlat.lean`; current main and all advertised tips contain no
+  exact or semantic-equivalent diagonal theorem, and no registry claims
+  `Convexity.lean`; the only source prose match is the already-true but
+  declaration-free `FabiusInverse.lean` statement that the midpoint is the
+  unique interior fixed point; current main, this branch, and the freshly
+  advanced theorem-polish and inverse-asymptotic tips all retain exact
+  `Convexity.lean` blob `4bdd9e7b8c5cb040915a3f0531dbe110c4683011`
+next bounded step: push this registry-first diagonal claim, then implement the
+  two strict half-interval inequalities and their global fixed-point iff at the
+  end of `Convexity.lean`, obtain independent static reviews, and run no
+  Lean/Lake or document process without a later board grant
 ```
 
 ## General Kummer carry-cocycle handoff
