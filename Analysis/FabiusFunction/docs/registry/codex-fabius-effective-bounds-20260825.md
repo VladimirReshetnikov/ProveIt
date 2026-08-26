@@ -590,3 +590,18 @@ next bounded step: commit and push this exact registry report, merge any newer
   verify both source blobs remain exact, and freeze both unvalidated source
   checkpoints pending serialized coordinator validation
 ```
+
+## Coordinator result: normalized `L¹` transfer accepted
+
+The coordinator integrated exact source commit `24f1eee30` as `caed8800e`.
+Separate serialized builds of `+FabiusFunction.QuantitativeSaddle` (2782 jobs)
+and its direct API consumer `+FabiusFunction.SaddleAllOrders` (2783 jobs) both
+exited zero without warnings.  The existing Big-O theorem header and every
+other public interface remained unchanged.
+
+Feature merge `3ede563b6` incorporates accepting main checkpoint `0bc0bf551`.
+The merged `QuantitativeSaddle.lean` remains byte-identical to the compiled
+source: Git blob `378617cc9a68c555442cb8a48c088c17c2af35ec`, content SHA-256
+`E91A83AEE58545499F5CC8C319679959E8CDD857510BBF64EF5A65C2CC172D6B`.
+That source lease and the coordinator build token are released.  Only the
+disjoint Unit-Laplace tilt checkpoint `d9598f3b6` remains unelaborated.
