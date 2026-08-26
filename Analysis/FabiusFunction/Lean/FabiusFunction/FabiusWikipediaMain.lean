@@ -1,16 +1,28 @@
 import FabiusFunction.FabiusSharpLambertMain
 
 /-!
-# The corrected compact Wikipedia main term
+# Corrected and uncorrected compact Lambert-W main terms
 
-The source formula is most compact in the lower real Lambert-W coordinate.
-This module defines that expression, includes the centered periodic correction,
-and proves that it is exactly the Lambert-coordinate saddle main term.
+The source formula is most compact in the lower real Lambert-W coordinate.  The
+online expression omits the centered periodic correction, so this module names
+both its nonperiodic logarithmic main and the corrected main.  Their exact
+decomposition isolates the missing term, while the existing saddle identity
+proves that the corrected expression is the canonical Lambert-coordinate main.
 -/
 
 set_option autoImplicit false
 
 namespace Fabius
+
+/-- Logarithmic form, on the positive lower-Lambert branch domain, of the
+compact nonperiodic expression printed in the online source.
+
+The definition is totalized together with `Real.log` and `lowerLambertW`; the
+small-positive-argument theorems use it only on its natural asymptotic domain. -/
+noncomputable def fabiusWikipediaLambertMain (x : ℝ) : ℝ :=
+  let W := lowerLambertW (-(Real.log 2 * x));
+  -7 * Real.log 2 / 12 - Real.log (Real.pi * x) / 2 +
+    (gammaZetaConstant - W - W ^ 2 / 2) / Real.log 2
 
 /-- Corrected compact form of the Wikipedia small-argument main term. -/
 noncomputable def fabiusCorrectedWikipediaMain (x : ℝ) : ℝ :=
@@ -18,6 +30,14 @@ noncomputable def fabiusCorrectedWikipediaMain (x : ℝ) : ℝ :=
   -7 * Real.log 2 / 12 - Real.log (Real.pi * x) / 2 +
     (gammaZetaConstant - W - W ^ 2 / 2) / Real.log 2 +
       negativeLaplacePsi (fabiusLambertPhase x)
+
+/-- The corrected compact main is exactly the online nonperiodic main plus the
+centered periodic correction at the exact lower-Lambert phase. -/
+theorem fabiusCorrectedWikipediaMain_eq_WikipediaLambertMain_add (x : ℝ) :
+    fabiusCorrectedWikipediaMain x =
+      fabiusWikipediaLambertMain x +
+        negativeLaplacePsi (fabiusLambertPhase x) := by
+  rfl
 
 /-- Logarithmic form of the exact saddle equation `λ 2⁻λ = x`. -/
 theorem log_fabiusLambertArgument {x : ℝ} (hx : 0 < x)
