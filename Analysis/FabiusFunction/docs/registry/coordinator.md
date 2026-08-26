@@ -6,6 +6,126 @@ Every worker reads it from the fetched `origin/main` before writing, merging,
 building, or pushing.  Workers publish replies in their own per-branch registry
 files; they do not edit this board.
 
+## Checkpoint 2026-08-26 04:49 PDT
+
+```text
+observed main before this directive: 38a476c882d516005aec39c7e3baa5b8a64b0c52
+coordinator branch: codex/fabius-coordinator-20260825
+integration mode: exact immutable sources -> coordinator -> fast-forward main
+main write owner: coordinator
+codexbox Lean/Lake owner: unassigned
+  (IDLE after the green endpoint gate below)
+codexbox TeX/PDF owner: unassigned
+  (IDLE)
+EVO Lean/Lake owner: unassigned
+  (IDLE)
+EVO TeX/PDF owner: unassigned
+  (IDLE)
+documentation owner: unassigned
+  (all canonical documents are frozen)
+next poll: at an immutable inverse/derivative handoff or the next source handoff
+```
+
+**Endpoint positive-index compatibility consolidation accepted.**  Exact
+reviewed source `145b75f64` was mapped as coordinator commit `e2ade7b9b`.
+Final candidate `e2ade7b9b314c3c9187607f1885f1e49ca434981`, tree
+`c5b6cdb64fef856c1e629a5d93aabebfcbce8797`, contains exact
+`EndpointLaplaceComparison.lean` blob
+`876f3700f5fce63489ff66051333eaaaf5b5e4ed` and no worker registry or
+feature history.
+
+With no overlapping compiler or document process, codexbox ran the sole
+granted command under `LEAN_NUM_THREADS=0 LAKE_JOBS=1`:
+
+```text
++FabiusFunction.EndpointLaplaceComparison    3417 jobs, exit 0
+```
+
+The target replayed only the inherited
+`ProbabilityLaplaceMoments.lean:652:2` unnecessary-`simpa` linter.  The
+endpoint module itself emitted no diagnostic and required no proof repair.
+All four byte-preserved `_all` theorem bodies, the four exact-header
+compatibility forwards, declaration-local linter scopes, all later callers,
+and the unchanged 24-name public API are accepted.  The endpoint source path
+and codexbox token are released.  The full-ray derivative and inverse endpoint
+packages retain ordinary source-authoring leases only and have no build or
+document token.  No root, facade, audit-ledger, canonical document, TeX/PDF,
+or other path is activated.
+
+## Checkpoint 2026-08-26 04:46 PDT
+
+```text
+observed main before this directive: b70be2f1e6fa4e621d483e52701b666960e203fd
+coordinator branch: codex/fabius-coordinator-20260825
+integration mode: exact immutable sources -> coordinator -> fast-forward main
+main write owner: coordinator
+codexbox Lean/Lake owner: coordinator
+  (ACTIVE: exactly the one serialized gate below)
+codexbox TeX/PDF owner: unassigned
+  (IDLE)
+EVO Lean/Lake owner: unassigned
+  (IDLE)
+EVO TeX/PDF owner: unassigned
+  (IDLE)
+documentation owner: unassigned
+  (all canonical documents are frozen)
+next poll: after the endpoint gate or at an immutable inverse/derivative handoff
+```
+
+**Codexbox validation: endpoint positive-index compatibility
+consolidation.**  Independent actual-diff review accepts exact isolated source
+`145b75f649a53075a04bc723a1375fe7f383718b`, changing only
+`EndpointLaplaceComparison.lean` from exact current-main blob
+`e7170713a4c8fd4993009cba9cc0786cd7b72161` to
+`876f3700f5fce63489ff66051333eaaaf5b5e4ed`, SHA-256
+`C41D6FB30020A4C1990A77B3FCC6BE0FADF218C52972AAD2C5E3E3FFF568CB0C`.
+Handoff `a83682280` records the exact 45-insertion/93-deletion artifact and no
+compiler evidence.
+
+All four zero-inclusive theorem blocks are byte-preserved and moved before
+their restricted compatibility names.  All four restricted comments, names,
+declaration kinds, named `hn` binders, binder order, hypotheses, conclusions,
+and external API remain exact; only their proofs become direct forwards under
+declaration-local unused-variable linter scopes.  Imports, attributes,
+namespace, later callers, and the 24-name declaration multiset are unchanged.
+
+Integrate only that exact source commit/blob, never the moving branch or
+registry.  On codexbox run exactly this command from the repository root:
+
+```text
+LEAN_NUM_THREADS=0 LAKE_JOBS=1 lake build +FabiusFunction.EndpointLaplaceComparison
+```
+
+Stop after any nonzero exit.  Run no additional importer, Lean, Lake, cache,
+root, facade, TeX, PDF, audit, or document operation.  Record the exact
+candidate/tree, job count, exit, and every diagnostic.  Only an independently
+reviewed statement-preserving proof repair is in scope after failure.
+
+**Full-ray reflected derivative approved for ordinary source authoring
+only.**  Registry claim `72d856dea` reserves exactly `Differential.lean` at
+blob `bf4538d0278eb734c2d901befb4d863f7151fabc`,
+`DyadicAnalytic.lean` at blob
+`c29db45a83fa5f3789403c5731e24c5534fbf956`, and its own registry.  The
+reviewed `fabius_hasDerivAt_reflected_of_half_le` statement is valid for every
+`t >= 1/2`; the old second-half theorem may retain its exact header as a
+forward, and the sole private dyadic consumer may drop its redundant upper
+bound.  Existing imports suffice and no collision or active path overlap is
+visible.  Publish an immutable two-source checkpoint and handoff for actual
+diff review before requesting the later separate `Differential` and
+`DyadicAnalytic` gates.  The visible dirty draft is permitted authoring but is
+not source or validation evidence.
+
+**Inverse endpoint package remains in authoring, not validation.**  Visible
+source checkpoint `637460d19` changes only `FabiusInverseAsymptotic.lean` and
+implements the first two of the eight granted declarations plus the private
+order-zero deduplication.  The six endpoint/reflection declarations and the
+promised `PaperFabiusAsymptotic.lean` prose are still absent, and no registry
+handoff follows the source.  Complete and freeze the granted package, publish
+an exact handoff, and obtain actual-diff review before either of its two gates.
+No partial inverse build token is assigned.  No grant here touches
+`FabiusInverse.lean`, root, canonical documents, TeX/PDF, or the deferred
+Newton reversion.
+
 ## Checkpoint 2026-08-26 04:42 PDT
 
 ```text
