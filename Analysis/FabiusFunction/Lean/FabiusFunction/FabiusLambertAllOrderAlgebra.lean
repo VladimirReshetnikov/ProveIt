@@ -153,8 +153,7 @@ private lemma dyadicLambertDisplacementPolynomial_natDegree_le (n : ℕ) :
             (Polynomial.natDegree_C_mul_le (Real.log 2)⁻¹
               (X : Polynomial ℝ))
       | succ n =>
-          rw [Nat.succ_eq_add_one,
-            dyadicLambertDisplacementPolynomial_succ]
+          rw [dyadicLambertDisplacementPolynomial_succ]
           refine (Polynomial.natDegree_sub_le _ _).trans ?_
           rw [max_le_iff]
           constructor
@@ -236,6 +235,7 @@ private lemma dyadicLambertDisplacementPolynomial_coeff_succ (n : ℕ) :
                 dyadicLambertDisplacementPolynomial_natDegree_le (n + 1)),
           dyadicLambertDisplacementPolynomial_zero,
           Polynomial.coeff_C_mul, Polynomial.coeff_X_one]
+        push_cast
         ring
       have htail (j : Fin n) :
           (C (((n + 1) - (j.succ : ℕ) : ℕ) : ℝ) *
@@ -266,12 +266,14 @@ private lemma dyadicLambertDisplacementPolynomial_coeff_succ (n : ℕ) :
                 ((n + 1) - (j.succ : ℕ)))
           _ < n + 2 := by
             have hjlt : (j.succ : ℕ) < n + 1 := j.succ.isLt
-            have hjone : 1 ≤ (j.succ : ℕ) := by omega
+            have hjone : 1 ≤ (j.succ : ℕ) :=
+              Nat.succ_le_succ (Nat.zero_le (j : ℕ))
             have hsubone : 1 ≤ (n + 1) - (j.succ : ℕ) := by omega
             rw [max_eq_left hjone, max_eq_left hsubone]
             omega
       rw [dyadicLambertDisplacementPolynomial_succ]
       simp only [Polynomial.coeff_sub, Polynomial.coeff_C_mul,
+        Polynomial.coeff_add,
         Polynomial.finsetSum_coeff, Fin.sum_univ_succ,
         Fin.val_zero, Nat.sub_zero]
       rw [hlinear, hhead]
@@ -282,15 +284,16 @@ private lemma dyadicLambertDisplacementPolynomial_coeff_succ (n : ℕ) :
           (Real.log 2)⁻¹ ^ (n + 2) * (Real.log 2)⁻¹ by
         rw [show n + 3 = n + 2 + 1 by omega, pow_succ]]
       calc
-        -((n + 2 : ℝ)⁻¹ *
+        -(((((n + 1 : ℕ) : ℝ) + 1)⁻¹) *
             ((n + 1 : ℝ) * (Real.log 2)⁻¹ *
               ((-1 : ℝ) ^ n * (n + 1 : ℝ)⁻¹ *
                 (Real.log 2)⁻¹ ^ (n + 2)))) =
-            -(n + 2 : ℝ)⁻¹ *
+            -((((n + 1 : ℕ) : ℝ) + 1)⁻¹) *
               ((n + 1 : ℝ) * (n + 1 : ℝ)⁻¹) *
                 ((-1 : ℝ) ^ n *
                   ((Real.log 2)⁻¹ ^ (n + 2) * (Real.log 2)⁻¹)) := by ring
-        _ = (-1 : ℝ) ^ (n + 1) * (n + 2 : ℝ)⁻¹ *
+        _ = (-1 : ℝ) ^ (n + 1) *
+              ((((n + 1 : ℕ) : ℝ) + 1)⁻¹) *
               ((Real.log 2)⁻¹ ^ (n + 2) * (Real.log 2)⁻¹) := by
           rw [mul_inv_cancel₀ hn1, mul_one,
             show (-1 : ℝ) ^ (n + 1) = (-1 : ℝ) ^ n * (-1 : ℝ) by
@@ -308,8 +311,7 @@ polynomial is `max n 1`; equivalently, the degree sequence begins
       exact Polynomial.natDegree_C_mul_X _
         (inv_ne_zero (Real.log_pos (by norm_num)).ne')
   | succ n =>
-      rw [show Nat.succ n = n + 1 by omega,
-        max_eq_left (by omega : 1 ≤ n + 1)]
+      rw [max_eq_left (by omega : 1 ≤ n + 1)]
       apply Polynomial.natDegree_eq_of_le_of_coeff_ne_zero
       · simpa using
           dyadicLambertDisplacementPolynomial_natDegree_le (n + 1)
