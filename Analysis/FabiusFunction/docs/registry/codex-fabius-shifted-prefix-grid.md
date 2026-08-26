@@ -28,10 +28,11 @@ follow-up.
 SYNC Fabius
 branch / worktree / machine: codex/fabius-shifted-prefix-grid / c9a3 / EVO
   (Windows)
-latest fetched main SHA: 187c54109fbb25b0ca8503389e0306c8ddf65656
+latest fetched main SHA: 1401f2d9b6cfd02e0b6a72ee60869b6df0bb776c
 validation-base main SHA merged into 4367a7f86:
   2183cfb113765197042628524690794bdf8d07c4
-HEAD and dirty paths: a5892f438ef2e2e6c72b39c8fdb6de1b16d2a844;
+pre-recording HEAD and dirty paths:
+  20117164321e9cecf431fca9d6eb4025489c29b2;
   docs/registry/codex-fabius-shifted-prefix-grid.md only, recording the clean
   post-validation user-requested synchronization with current origin/main
 writing (exact paths): docs/registry/codex-fabius-shifted-prefix-grid.md only;
@@ -120,7 +121,8 @@ completed commits: 6fb8dc8e9 publishes the exact one-file claim; ba0048023
   merges coordinator checkpoint 2183cfb11 without conflicts and preserves all
   three feature blobs byte-for-byte; b28da9013 records and pushes the immutable
   three-target validation evidence; a5892f438 merges current main 187c54109
-  without conflicts after validation
+  without conflicts after validation; 2c317f595 records that synchronization;
+  201171643 merges the final board clarification 1401f2d9b without conflicts
 validated (exact command, SHA/state, exit code): at source snapshot SHA-256
   784F6C4F389FE0F2FA08616FFAFBFA3917CCC9F6D2C86CE98D3D877B5F0DD14C,
   git diff --check and git diff --cached --check exited 0; python
@@ -202,7 +204,7 @@ validated (exact command, SHA/state, exit code): at source snapshot SHA-256
   completed 3327 jobs, exit 0, replaying only those same two warnings
 not yet validated: no aggregate +FabiusFunction build or additional target was
   authorized or run; the exact three-target validation grant is complete at
-  tree db635e6a073b, while the newer synchronization merge a5892f438 is not
+  tree db635e6a073b, while the newer synchronization merge 201171643 is not
   itself compiler-validated and makes no such claim
 requested integration or lease: integrate the frozen source commits 8021c555f
   and f7152d5fc from exact validated merge 4367a7f86; release this branch's EVO
@@ -224,7 +226,7 @@ conflicts / dependencies: no overlap with the active frontier-document lease;
 next bounded step: commit and push this registry-only synchronization
   checkpoint, then stop for coordinator integration; perform no further build
   or source edit under the completed grant
-lease refreshed: 2026-08-25 20:49 PDT; all three source paths remain frozen;
+lease refreshed: 2026-08-25 20:54 PDT; all three source paths remain frozen;
   FabiusQBinomialTaylor.lean at 8021c555f and ThueMorseApproximation.lean at
   f7152d5fc are compiled and pending coordinator integration;
   ThueMorseGenerating.lean has no further unintegrated source delta
@@ -639,10 +641,25 @@ no compiler claim will be transferred to the resulting newer merge tree.
 
 The subsequent fresh fetch advanced `origin/main` once more to
 `187c54109fbb25b0ca8503389e0306c8ddf65656`.  User-requested merge
-`a5892f438ef2e2e6c72b39c8fdb6de1b16d2a844` has exact parents `b28da9013` and
-`187c54109`; Git's `ort` strategy reported no conflict, the unmerged index is
-empty, and `origin/main` is an ancestor.  Its tree is
-`c517e826e905fb7ddf696a95a6df08a505f46a9a`.  The two validated source blobs
-remain exactly `52492287b5bb` and `d2e85228f16a`.  This synchronization adds no
-source delta of this branch and was intentionally not followed by another
-build: the compiler evidence remains scoped to immutable tree `db635e6a073b`.
+`a5892f438ef2e2e6c72b39c8fdb6de1b16d2a844` has exact parents
+`b28da90139b4968ea3370ef3ba29fcfa17050757` and
+`187c54109fbb25b0ca8503389e0306c8ddf65656`.  Git's `ort` strategy reported no
+conflict, the unmerged index is empty, and that fetched main is an ancestor.
+Its tree is `c517e826e905fb7ddf696a95a6df08a505f46a9a`.  Every first-parent
+upstream-delta blob is byte-identical to the corresponding second-parent blob,
+while this branch's validated source blobs remain exactly
+`52492287b5bb0df8d0c8c2c7e985a4de8c0393f3` and
+`d2e85228f16a4a2951bb8f91f4fc92555201af5e`.  The synchronization does not
+alter either feature-source blob and was intentionally not followed by another
+build: the compiler evidence remains scoped to immutable tree
+`db635e6a073bc6069e1bb0b913fb3a739c14452c`.
+
+Latest board-only merge before this registry update,
+`20117164321e9cecf431fca9d6eb4025489c29b2`, incorporates fetched main
+`1401f2d9b6cfd02e0b6a72ee60869b6df0bb776c`
+as its second parent after the coordinator clarified that no document phase is
+open.  Its first parent is `2c317f59574430818c60298279e5b53db314a247`
+and its tree is `8e8ca522ec30eb4bce58acf60d2081c1960243e9`.
+The delta is only the canonical coordinator board; the unmerged index remains
+empty and both frozen source blobs are unchanged.  This board synchronization
+likewise carries no new compiler claim.
