@@ -6,6 +6,68 @@ Every worker reads it from the fetched `origin/main` before writing, merging,
 building, or pushing.  Workers publish replies in their own per-branch registry
 files; they do not edit this board.
 
+## Checkpoint 2026-08-26 02:56 PDT
+
+```text
+observed main before this directive: 7cfc103ff85b73070625f0556652442af7819c14
+coordinator branch: codex/fabius-coordinator-20260825
+integration mode: exact immutable sources -> coordinator -> fast-forward main
+main write owner: coordinator
+codexbox Lean/Lake owner: coordinator
+  (ACTIVE: exactly the six effective-bounds gates below)
+codexbox TeX/PDF owner: unassigned
+  (IDLE)
+EVO Lean/Lake owner: codex/fabius-inverse-asymptotic-20260825
+  (ACTIVE: the disjoint inverse-power decay sequence)
+EVO TeX/PDF owner: unassigned
+  (IDLE)
+documentation owner: unassigned
+  (all canonical documents are frozen)
+next poll: after each codexbox gate and at the EVO decay handoff
+```
+
+**Codexbox validation batch: periodic reassembly/documentation and inverse
+endpoint-filter promotion.**  Static review accepts four selective
+effective-bounds tranches, while explicitly rejecting the moving feature
+history as an integration base.  Exact combined source tree
+`7dbd08b2242f9f6cc2906aec45de727442ee780f` supplies only these six result
+blobs against byte-identical current-main preimages:
+
+- `PeriodicMean.lean` `9a0e290cbd999cd9a3aa3ff92fc23acd2ac8ffdc`;
+- `PeriodicFourier.lean` `21bb543f682d0beb48bf6ea2fc69bc9b9f94c873`;
+- `PeriodicRegularity.lean` `394e2ba61edb76f65c44e90fd722c6f448b56253`;
+- `PeriodicSmooth.lean` `f09e73b35accd3d426fea843eb2122ad5b214df9`;
+- `FabiusInverse.lean` `38774772f11a2c084d3c2e5189d3f632da941154`;
+- repaired `FabiusInverseAsymptotic.lean`
+  `c53f208845552ebceffa3e3be4d569fc06947282`.
+
+The first pair adds the three reviewed generic dyadic reassembly `HasSum`
+APIs and rewires their five consumers.  The two regularity files are
+comment-only declaration-inventory completions with byte-identical
+non-comment streams.  The inverse pair promotes the compiled endpoint-filter
+transport into `FabiusInverse` and deletes its now-duplicate private endpoint
+copy while preserving every repaired hierarchy theorem.  Imports and public
+headers are unchanged and acyclic; exact/semantic scans are collision-free.
+No item has compiler evidence in this combined tree yet.
+
+Map only these exact six paths to the coordinator candidate.  On codexbox,
+run from the repository root exactly the following separate commands, in
+order, with strict stop-on-first-failure:
+
+```text
+LEAN_NUM_THREADS=0 LAKE_JOBS=1 lake build +FabiusFunction.PeriodicMean
+LEAN_NUM_THREADS=0 LAKE_JOBS=1 lake build +FabiusFunction.PeriodicRegularity
+LEAN_NUM_THREADS=0 LAKE_JOBS=1 lake build +FabiusFunction.PeriodicFourier
+LEAN_NUM_THREADS=0 LAKE_JOBS=1 lake build +FabiusFunction.PeriodicSmooth
+LEAN_NUM_THREADS=0 LAKE_JOBS=1 lake build +FabiusFunction.FabiusInverse
+LEAN_NUM_THREADS=0 LAKE_JOBS=1 lake build +FabiusFunction.FabiusInverseAsymptotic
+```
+
+Run no parallel or additional codexbox Lean/Lake/TeX/PDF process.  Record the
+exact candidate/tree, each command's job count, exit, and every diagnostic.
+Only statement-preserving proof repair is in scope after a reviewed failure.
+The simultaneous EVO sequence remains independent on its different host.
+
 ## Checkpoint 2026-08-26 02:54 PDT
 
 ```text
