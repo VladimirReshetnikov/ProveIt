@@ -7,6 +7,7 @@ import FabiusFunction.FabiusSharpAsymptotic
 import FabiusFunction.FabiusSharpExactReduction
 import FabiusFunction.FabiusFullAsymptoticExpansion
 import FabiusFunction.FabiusLambertAllOrderSmallArgument
+import FabiusFunction.FabiusInverseAsymptotic
 import FabiusFunction.FabiusRecurrenceSequence
 import FabiusFunction.FabiusInverseDyadicClosedForm
 import FabiusFunction.FabiusQBinomialFormula
@@ -53,6 +54,14 @@ machinery, and branch-safe vertical Taylor estimates used to refine this
 formula to all orders.  For every `N`, the exact lower-Lambert expansion has
 an `O(lambda^-N)` remainder; the lower-Lambert phase itself also has a
 separate all-orders expansion in `-log x` and `log (-log x)`.
+The sharp expansion is also inverted at both endpoints.  As `y -> 0+`, the
+lower-Lambert phase at `fabiusInv F hF y` differs from
+`fabiusInverseQuadraticPhaseMain y` by
+`O(log (-log y) / sqrt (-log y))`.  Its logarithm differs from
+`fabiusInverseLogAsymptoticMain y` by `o(1)`, and `fabiusInv F hF` is
+asymptotic to `fabiusInverseAsymptoticMain`.  At `y -> 1-`, reflection
+makes `1 - fabiusInv F hF y` asymptotic to
+`fabiusInverseAsymptoticMain (1 - y)`.
 The inverse-dyadic recurrence is additionally solved as a finite weighted
 path sum.  Equivalently, `F(2⁻ⁿ)` is an explicit product-sum over all
 ordered compositions of `n`; the empty composition makes this closed formula
