@@ -102,41 +102,6 @@ private theorem map_finiteExpSubstitutionQuotient
   unfold finiteExpSubstitutionQuotient
   rw [map_iterate_divX, map_finiteExpSubstitutionDefect]
 
-private def negativeLaplaceBoundedExponentJetContinuousMap'
-    (n : ℕ) : C(ℝ, ℂ) where
-  toFun t := (negativeLaplaceBoundedExponentJet n t : ℂ)
-  continuous_toFun := Complex.continuous_ofReal.comp
-    (contDiff_infty_negativeLaplaceBoundedExponentJet n).continuous
-
-private def negativeLaplaceExponentPolynomialContinuous'
-    (m : ℕ) : Polynomial C(ℝ, ℂ) :=
-  match m with
-  | 0 => 0
-  | n + 1 =>
-      Polynomial.C
-          ((Complex.I ^ (n + 1) / ((n + 1).factorial : ℕ)) •
-            negativeLaplaceBoundedExponentJetContinuousMap' n) *
-            Polynomial.X ^ (n + 1) +
-        Polynomial.C (ContinuousMap.const ℝ
-          (Complex.I ^ (n + 3) * (negativeLaplaceJetSlope (n + 2) : ℂ) /
-            ((n + 3).factorial : ℕ))) * Polynomial.X ^ (n + 3)
-
-private theorem negativeLaplaceExponentPolynomialContinuous'_map
-    (m : ℕ) (t : ℝ) :
-    (negativeLaplaceExponentPolynomialContinuous' m).map
-        (ContinuousMap.evalAlgHom ℚ ℂ t).toRingHom =
-      negativeLaplaceExponentPolynomial m t := by
-  cases m with
-  | zero => simp [negativeLaplaceExponentPolynomialContinuous',
-      negativeLaplaceExponentPolynomial]
-  | succ n =>
-      simp [negativeLaplaceExponentPolynomialContinuous',
-        negativeLaplaceExponentPolynomial,
-        negativeLaplaceBoundedExponentJetContinuousMap']
-      rw [← Polynomial.C_mul]
-      congr 1
-      ring
-
 /-- For fixed order `n` and degree `d`, the map sending the saddle phase `t`
 to the degree-`d` coefficient of the polynomial
 `expCoeff (fun m => negativeLaplaceExponentPolynomial m t) n` is continuous.
@@ -146,25 +111,25 @@ theorem continuous_negativeLaplaceExpCoeff_coeff (n d : ℕ) :
     Continuous (fun t : ℝ =>
       (expCoeff (fun m => negativeLaplaceExponentPolynomial m t) n).coeff d) := by
   let p : Polynomial C(ℝ, ℂ) :=
-    expCoeff negativeLaplaceExponentPolynomialContinuous' n
+    expCoeff negativeLaplaceExponentPolynomialContinuous n
   let c : C(ℝ, ℂ) := p.coeff d
   have hc (t : ℝ) : c t =
       (expCoeff (fun m => negativeLaplaceExponentPolynomial m t) n).coeff d := by
-    change ((expCoeff negativeLaplaceExponentPolynomialContinuous' n).coeff d) t = _
+    change ((expCoeff negativeLaplaceExponentPolynomialContinuous n).coeff d) t = _
     calc
-      ((expCoeff negativeLaplaceExponentPolynomialContinuous' n).coeff d) t =
-          ((expCoeff negativeLaplaceExponentPolynomialContinuous' n).map
+      ((expCoeff negativeLaplaceExponentPolynomialContinuous n).coeff d) t =
+          ((expCoeff negativeLaplaceExponentPolynomialContinuous n).map
             (ContinuousMap.evalAlgHom ℚ ℂ t).toRingHom).coeff d := by simp
       _ = (expCoeff (fun m => negativeLaplaceExponentPolynomial m t) n).coeff d := by
         change ((Polynomial.mapAlgHom (ContinuousMap.evalAlgHom ℚ ℂ t))
-          (expCoeff negativeLaplaceExponentPolynomialContinuous' n)).coeff d = _
+          (expCoeff negativeLaplaceExponentPolynomialContinuous n)).coeff d = _
         rw [map_expCoeff
           (Polynomial.mapAlgHom (ContinuousMap.evalAlgHom ℚ ℂ t))
-          negativeLaplaceExponentPolynomialContinuous' n]
+          negativeLaplaceExponentPolynomialContinuous n]
         congr 1
         apply expCoeff_congr n
         intro m _hm
-        exact negativeLaplaceExponentPolynomialContinuous'_map m t
+        exact negativeLaplaceExponentPolynomialContinuous_map m t
   have hfun : (c : ℝ → ℂ) = fun t : ℝ =>
       (expCoeff (fun m => negativeLaplaceExponentPolynomial m t) n).coeff d := by
     funext t
@@ -195,27 +160,27 @@ theorem isBounded_range_negativeLaplaceExpCoeff_coeff (n d : ℕ) :
     one_ne_zero (continuous_negativeLaplaceExpCoeff_coeff n d)
 
 private theorem negativeLaplaceExpCoeff_eq_map (n : ℕ) (t : ℝ) :
-    (expCoeff negativeLaplaceExponentPolynomialContinuous' n).map
+    (expCoeff negativeLaplaceExponentPolynomialContinuous n).map
         (ContinuousMap.evalAlgHom ℚ ℂ t).toRingHom =
       expCoeff (fun m => negativeLaplaceExponentPolynomial m t) n := by
   change (Polynomial.mapAlgHom (ContinuousMap.evalAlgHom ℚ ℂ t))
-      (expCoeff negativeLaplaceExponentPolynomialContinuous' n) = _
+      (expCoeff negativeLaplaceExponentPolynomialContinuous n) = _
   calc
     _ = expCoeff (fun m =>
         (Polynomial.mapAlgHom (ContinuousMap.evalAlgHom ℚ ℂ t))
-          (negativeLaplaceExponentPolynomialContinuous' m)) n :=
+          (negativeLaplaceExponentPolynomialContinuous m)) n :=
       map_expCoeff
         (Polynomial.mapAlgHom (ContinuousMap.evalAlgHom ℚ ℂ t))
-        negativeLaplaceExponentPolynomialContinuous' n
+        negativeLaplaceExponentPolynomialContinuous n
     _ = _ := by
       apply expCoeff_congr n
       intro m _hm
-      exact negativeLaplaceExponentPolynomialContinuous'_map m t
+      exact negativeLaplaceExponentPolynomialContinuous_map m t
 
 private def negativeLaplaceFiniteExpQuotientContinuous
     (L : ℕ) : Polynomial (Polynomial C(ℝ, ℂ)) :=
   finiteExpSubstitutionQuotient
-    negativeLaplaceExponentPolynomialContinuous' L
+    negativeLaplaceExponentPolynomialContinuous L
 
 private theorem negativeLaplaceFiniteExpQuotientContinuous_map
     (L : ℕ) (t : ℝ) :
@@ -227,22 +192,22 @@ private theorem negativeLaplaceFiniteExpQuotientContinuous_map
   let f : Polynomial C(ℝ, ℂ) →ₐ[ℚ] Polynomial ℂ :=
     Polynomial.mapAlgHom (ContinuousMap.evalAlgHom ℚ ℂ t)
   change (finiteExpSubstitutionQuotient
-      negativeLaplaceExponentPolynomialContinuous' L).map f.toRingHom = _
+      negativeLaplaceExponentPolynomialContinuous L).map f.toRingHom = _
   have hmap : (finiteExpSubstitutionQuotient
-      negativeLaplaceExponentPolynomialContinuous' L).map f.toRingHom =
+      negativeLaplaceExponentPolynomialContinuous L).map f.toRingHom =
       finiteExpSubstitutionQuotient
-        (fun m => f (negativeLaplaceExponentPolynomialContinuous' m)) L :=
+        (fun m => f (negativeLaplaceExponentPolynomialContinuous m)) L :=
     map_finiteExpSubstitutionQuotient f
-      negativeLaplaceExponentPolynomialContinuous' L
+      negativeLaplaceExponentPolynomialContinuous L
   calc
     _ = finiteExpSubstitutionQuotient
-        (fun m => f (negativeLaplaceExponentPolynomialContinuous' m)) L := hmap
+        (fun m => f (negativeLaplaceExponentPolynomialContinuous m)) L := hmap
     _ = _ := by
       congr 1
       funext m
-      change (negativeLaplaceExponentPolynomialContinuous' m).map
+      change (negativeLaplaceExponentPolynomialContinuous m).map
           (ContinuousMap.evalAlgHom ℚ ℂ t).toRingHom = _
-      exact negativeLaplaceExponentPolynomialContinuous'_map m t
+      exact negativeLaplaceExponentPolynomialContinuous_map m t
 
 private theorem negativeLaplaceFiniteExpQuotient_periodic (L : ℕ) :
     Function.Periodic (fun t : ℝ =>
@@ -312,7 +277,7 @@ noncomputable def fabiusSaddleReferencePolynomial
 
 private def fabiusSaddleReferenceDegree (K : ℕ) : ℕ :=
   ∑ k ∈ Finset.range K,
-    (expCoeff negativeLaplaceExponentPolynomialContinuous' k).natDegree
+    (expCoeff negativeLaplaceExponentPolynomialContinuous k).natDegree
 
 private theorem natDegree_fabiusSaddleReferencePolynomial_le
     (K : ℕ) (t : ℝ) (eps : ℂ) :
@@ -326,7 +291,7 @@ private theorem natDegree_fabiusSaddleReferencePolynomial_le
   refine Polynomial.natDegree_map_le.trans ?_
   exact Finset.single_le_sum
     (fun j _hj => Nat.zero_le
-      (expCoeff negativeLaplaceExponentPolynomialContinuous' j).natDegree) hk
+      (expCoeff negativeLaplaceExponentPolynomialContinuous j).natDegree) hk
 
 /-- A fixed-degree polynomial family with uniformly bounded coefficients has
 uniformly bounded factorial Gaussian coefficient weight. -/
