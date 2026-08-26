@@ -8,18 +8,22 @@ SYNC Fabius
 branch / worktree / machine: codex/fabius-both-papers /
   /home/codex/src/Proofs / codexbox
 fetched main SHA: fc63c39788ab4c31694e4f57efe05b543165675a
-HEAD and dirty paths: e91a2828c8046a0fca49d857314e60f7f4ba5da2;
-  dirty only in this own-registry handoff
+HEAD and dirty paths: 4524f04c87ae2de940007e15185ad62d044b0f2c;
+  dirty only in this own-registry claim
 writing (exact paths):
+  Analysis/FabiusFunction/Lean/FabiusFunction/FabiusSharpLambertTransfer.lean
+  Analysis/FabiusFunction/Lean/FabiusFunction/FabiusLambertTailFlat.lean
   Analysis/FabiusFunction/docs/registry/codex-fabius-both-papers.md
 expected declarations or document claims:
-  `thueMorseSign_xor`, proving that the signed Thue--Morse sequence is a
-  multiplicative character of bitwise xor;
-  `thueMorseBit_xor`, proving that the zero-one Thue--Morse sequence carries
-  bitwise xor to bitwise xor; add only the exact upstream Mathlib bitwise import
-  and the direct downstream `DyadicClosedForm` import, preserve every existing
-  declaration/import/attribute otherwise, add no simp attributes, and release
-  both Lean source claims by this handoff
+  relocate the existing public all-order theorem
+  `negativeLaplaceTailError_dyadicLambert_isBigO_inv_pow` into
+  `FabiusSharpLambertTransfer.lean`, beside and before its order-one
+  specialization `negativeLaplaceTailError_dyadicLambert_isBigO_inv`;
+  replace the latter's duplicate forty-line proof by the literal `N = 1`
+  corollary; import the sharp-transfer module from `FabiusLambertTailFlat.lean`
+  and delete the moved declaration there; preserve both public theorem names,
+  statements, attributes, and all callers exactly; add no declaration and
+  change no document, facade, root, or serialized path
 completed commits: Lower-Lambert source checkpoint `1da2fde2285e3970267b7dc2561bcd0d897be1b4`
   was integrated by coordinator merge `046946a974467e83244fd3a183a3e084e70d3379`;
   registry handoff `225f5338de9ea92489ed6a2c0c371c6edb4f5db9`
@@ -166,7 +170,9 @@ completed commits: Lower-Lambert source checkpoint `1da2fde2285e3970267b7dc2561b
   exact Walsh-character claim
   `171f5ae0a842d21803cd7cfe7ff932aca237b75a` precedes unvalidated source
   checkpoint `e91a2828c8046a0fca49d857314e60f7f4ba5da2`, which adds exactly the two
-  advertised declarations and two import edges;
+  advertised declarations and two import edges; Walsh registry handoff
+  `4524f04c87ae2de940007e15185ad62d044b0f2c` freezes that source, records its
+  three independent static reviews, and releases both Walsh source paths;
 validated (exact command, SHA/state, exit code): coordinator board records
   serialized immutable `lake build +FabiusFunction.LowerLambertW` at
   `4c6bbac41`, exit 0, with its source blob unchanged on current main;
@@ -354,7 +360,11 @@ requested integration or lease: integrate exact private-deletion checkpoint
   `LAKE_JOBS=1 lake build +FabiusFunction.PaperKFoldThueMorse` gates; all four
   source claims are released by these handoffs; canonical README,
   AUDIT_FINDINGS, PAPER_COVERAGE, primary, walkthrough, frontier, and
-  user-supplied draft paths remain frozen and unclaimed
+  user-supplied draft paths remain frozen and unclaimed; this registry
+  checkpoint additionally claims the two exact Lambert-tail source paths above
+  for an ordinary dependency-preserving theorem relocation, requests no
+  Lean/Lake token yet, and requests no integration until an immutable reviewed
+  source handoff is published
 conflicts / dependencies: the central-binomial and general-addition Kummer
   sources are integrated, validated, and released; the normalized-moment
   positivity candidate was
@@ -426,11 +436,20 @@ conflicts / dependencies: the central-binomial and general-addition Kummer
   the newly advertised inverse-asymptotic branch is disjoint; exact Walsh
   result blobs are `ae7b4e553e09163c690b4cc71a3c00a29e6abe48` for
   `DyadicClosedForm.lean` and `0b86ab776c879af607990c281224168698782520`
-  for `ThueMorseBinomialLog.lean`
-next bounded step: coordinator integration and serialized validation of the
-  private-deletion and Walsh-character checkpoints; continue read-only
-  preflight of the queued Lambert-tail consolidation and diagonal fixed-point
-  classification without claiming either yet
+  for `ThueMorseBinomialLog.lean`; refreshed scans of current main, all
+  advertised Codex/Claude Fabius tips, and every tip's registries find no
+  competing Lambert-tail relocation or active claim on either newly claimed
+  source path; all current Codex tips, including the inverse-asymptotic branch,
+  have exact blobs `6c7133188933b09c320ae4407c334968bf9463fb` and
+  `801565d3404b1fc6f4828849c3482c0b9efefba5`; the sole historical
+  `FabiusSharpLambertTransfer.lean` registry mention explicitly reports its
+  thirteen-path source tranche integrated and requests no further lease; the
+  coordinator board releases that work and names the order-one/all-order
+  relationship as a future cleanup
+next bounded step: push this exact registry-first Lambert-tail claim, then move
+  the all-order theorem upstream verbatim, make the order-one theorem its
+  `pow_one` corollary, redirect the downstream import, and obtain independent
+  static reviews without running Lean/Lake
 ```
 
 ## General Kummer carry-cocycle handoff
