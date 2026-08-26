@@ -1,5 +1,6 @@
 import FabiusFunction.LaplaceMoments
 import FabiusFunction.ProbabilityRepresentation
+import Mathlib.Data.Nat.Choose.Sum
 
 /-!
 # Probability-law Laplace moments
@@ -13,9 +14,11 @@ provides:
 * its survival function on the full nonnegative ray;
 * a general compact-probability Fubini identity for expectations of
   differentiable functions, expressed through the survival function;
-* an expectation-level reflection principle, centered Laplace functional
-  equations, and exact degree-zero normalizations for arbitrary probability
-  laws supported on the unit interval; and
+* reflection principles for unrestricted and unit-restricted integrals, and
+  the resulting signed binomial transform of the complete tilted-moment
+  hierarchy;
+* centered Laplace functional equations and exact degree-zero normalizations
+  for arbitrary probability laws supported on the unit interval; and
 * the resulting identifications with `fabiusLaplaceMoment` and
   `halfMoment`, including the reflection and degree-zero normalizations.
 
@@ -28,7 +31,7 @@ re-export the complete API.
 set_option autoImplicit false
 
 open Filter Set MeasureTheory
-open scoped Topology
+open scoped BigOperators Topology
 
 namespace Fabius
 
@@ -181,6 +184,120 @@ theorem integral_eq_integral_one_sub_of_reflection
     _ = ∫ x : ℝ, g (1 - x) ∂μ := by
       simpa only [r] using
         integral_map hr.aemeasurable hg.aestronglyMeasurable
+
+/-- Reflection invariance passes to the restriction of a measure to `[0,1]`,
+because `x ↦ 1 - x` preserves that interval.  Thus every continuous
+unit-interval observable has the same integral after reflection, without any
+support, finiteness, or probability-normalization hypothesis on the ambient
+measure. -/
+theorem integral_unit_eq_integral_one_sub_of_reflection
+    (μ : Measure ℝ) (hreflect : μ.map (fun x : ℝ => 1 - x) = μ)
+    (g : ℝ → ℝ) (hg : Continuous g) :
+    (∫ x in Icc (0 : ℝ) 1, g x ∂μ) =
+      ∫ x in Icc (0 : ℝ) 1, g (1 - x) ∂μ := by
+  let ν : Measure ℝ := μ.restrict (Icc (0 : ℝ) 1)
+  have hpreimage :
+      (fun x : ℝ => 1 - x) ⁻¹' Icc (0 : ℝ) 1 =
+        Icc (0 : ℝ) 1 := by
+    ext x
+    simp only [mem_preimage, mem_Icc]
+    constructor <;> rintro ⟨h0, h1⟩ <;> constructor <;> linarith
+  have hνreflect : ν.map (fun x : ℝ => 1 - x) = ν := by
+    dsimp only [ν]
+    calc
+      (μ.restrict (Icc (0 : ℝ) 1)).map (fun x : ℝ => 1 - x) =
+          (μ.restrict
+            ((fun x : ℝ => 1 - x) ⁻¹' Icc (0 : ℝ) 1)).map
+              (fun x : ℝ => 1 - x) := by
+            rw [hpreimage]
+      _ = (μ.map (fun x : ℝ => 1 - x)).restrict
+            (Icc (0 : ℝ) 1) :=
+        (Measure.restrict_map
+          (μ := μ) (f := fun x : ℝ => 1 - x)
+          (by fun_prop) measurableSet_Icc).symm
+      _ = μ.restrict (Icc (0 : ℝ) 1) := by
+        rw [hreflect]
+  change (∫ x : ℝ, g x ∂ν) = ∫ x : ℝ, g (1 - x) ∂ν
+  exact integral_eq_integral_one_sub_of_reflection ν hνreflect g hg
+
+/-- For a reflection-invariant measure finite on compact sets, reflection of
+`X` to `1 - X` carries the complete tilted raw-moment hierarchy by the signed
+binomial transform
+
+`Mₖ(s) = exp(-s) * ∑ j ≤ k, (-1)^j * choose k j * Mⱼ(-s)`.
+
+Only the restriction to `[0,1]` enters the moments, so no global support
+hypothesis is needed. -/
+theorem unitLaplaceMoment_reflection
+    (μ : Measure ℝ) [IsFiniteMeasureOnCompacts μ]
+    (hreflect : μ.map (fun x : ℝ => 1 - x) = μ)
+    (k : ℕ) (s : ℝ) :
+    unitLaplaceMoment μ s k =
+      Real.exp (-s) *
+        ∑ j ∈ Finset.range (k + 1),
+          (-1 : ℝ) ^ j * (k.choose j : ℝ) *
+            unitLaplaceMoment μ (-s) j := by
+  have hmoment (j : ℕ) :
+      Integrable
+        (fun x : ℝ => Real.exp (-(-s) * x) * x ^ j)
+        (μ.restrict (Icc (0 : ℝ) 1)) := by
+    exact
+      (by
+        fun_prop :
+        Continuous (fun x : ℝ => Real.exp (-(-s) * x) * x ^ j)).integrableOn_Icc
+  have hpow (x : ℝ) :
+      (1 - x) ^ k =
+        ∑ j ∈ Finset.range (k + 1),
+          (-1 : ℝ) ^ j * (k.choose j : ℝ) * x ^ j := by
+    rw [show 1 - x = -x + 1 by ring, add_pow]
+    apply Finset.sum_congr rfl
+    intro j _hj
+    have hneg : (-x) ^ j = (-1 : ℝ) ^ j * x ^ j := neg_pow x j
+    rw [hneg, one_pow, mul_one]
+    ring
+  unfold unitLaplaceMoment
+  calc
+    (∫ x in Icc (0 : ℝ) 1,
+        Real.exp (-s * x) * x ^ k ∂μ) =
+        ∫ x in Icc (0 : ℝ) 1,
+          Real.exp (-s * (1 - x)) * (1 - x) ^ k ∂μ :=
+      integral_unit_eq_integral_one_sub_of_reflection
+        μ hreflect
+        (fun x : ℝ => Real.exp (-s * x) * x ^ k)
+        (by fun_prop)
+    _ = Real.exp (-s) *
+        ∫ x in Icc (0 : ℝ) 1,
+          Real.exp (-(-s) * x) * (1 - x) ^ k ∂μ := by
+      rw [← MeasureTheory.integral_const_mul]
+      apply integral_congr_ae
+      filter_upwards with x
+      rw [show -s * (1 - x) = -s + -(-s) * x by ring,
+        Real.exp_add]
+      ring
+    _ = Real.exp (-s) *
+        ∫ x in Icc (0 : ℝ) 1,
+          ∑ j ∈ Finset.range (k + 1),
+            (-1 : ℝ) ^ j * (k.choose j : ℝ) *
+              (Real.exp (-(-s) * x) * x ^ j) ∂μ := by
+      congr 1
+      apply integral_congr_ae
+      filter_upwards with x
+      rw [hpow x, Finset.mul_sum]
+      apply Finset.sum_congr rfl
+      intro j _hj
+      ring
+    _ = Real.exp (-s) *
+        ∑ j ∈ Finset.range (k + 1),
+          (-1 : ℝ) ^ j * (k.choose j : ℝ) *
+            (∫ x in Icc (0 : ℝ) 1,
+              Real.exp (-(-s) * x) * x ^ j ∂μ) := by
+      congr 1
+      rw [integral_finsetSum]
+      · apply Finset.sum_congr rfl
+        intro j _hj
+        rw [MeasureTheory.integral_const_mul]
+      · intro j _hj
+        exact (hmoment j).const_mul _
 
 /-- A measure supported on `[0,1]` and invariant under reflection about
 `1/2` has equal endpoint and ordinary moments. -/
@@ -470,19 +587,31 @@ theorem unitEndpointMoment_weightedSumDistribution_eq_halfMoment
 
 end ProbabilityRepresentation
 
+/-- Reflection symmetry of the Fabius probability law carries every tilted
+raw moment by the signed binomial transform
+
+`Mₖ(s) = exp(-s) * ∑ j ≤ k, (-1)^j * choose k j * Mⱼ(-s)`. -/
+theorem fabiusLaplaceMoment_reflection
+    (F : BoundedFabius) (hF : IsFabius F) (k : ℕ) (s : ℝ) :
+    fabiusLaplaceMoment F k s =
+      Real.exp (-s) *
+        ∑ j ∈ Finset.range (k + 1),
+          (-1 : ℝ) ^ j * (k.choose j : ℝ) *
+            fabiusLaplaceMoment F j (-s) := by
+  simpa only [
+    ProbabilityRepresentation.unitLaplaceMoment_weightedSumDistribution_eq_fabiusLaplaceMoment
+      F hF] using
+    unitLaplaceMoment_reflection
+      ProbabilityRepresentation.weightedSumDistribution
+      ProbabilityRepresentation.weightedSumDistribution_reflection k s
+
 /-- Reflection symmetry of the Fabius law gives the exact functional equation
 `M₀(s) = exp(-s) M₀(-s)` for its bilateral zeroth Laplace moment. -/
 theorem fabiusLaplaceMoment_zero_reflection
     (F : BoundedFabius) (hF : IsFabius F) (s : ℝ) :
     fabiusLaplaceMoment F 0 s =
       Real.exp (-s) * fabiusLaplaceMoment F 0 (-s) := by
-  simpa only [
-    ProbabilityRepresentation.unitLaplaceMoment_weightedSumDistribution_eq_fabiusLaplaceMoment
-      F hF] using
-    unitLaplaceMoment_zero_reflection
-      ProbabilityRepresentation.weightedSumDistribution
-      ProbabilityRepresentation.ae_weightedSumDistribution_mem_Icc
-      ProbabilityRepresentation.weightedSumDistribution_reflection s
+  simpa using fabiusLaplaceMoment_reflection F hF 0 s
 
 /-- After centering at the mean `1/2`, the zeroth Fabius Laplace moment is an
 even function of the tilt. -/
