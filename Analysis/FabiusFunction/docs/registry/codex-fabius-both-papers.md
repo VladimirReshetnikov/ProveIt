@@ -8,18 +8,13 @@ SYNC Fabius
 branch / worktree / machine: codex/fabius-both-papers /
   /home/codex/src/Proofs / codexbox
 fetched main SHA: c2aa5a25c82e50149ab8887f95e7c5bcd6fe62eb
-HEAD and dirty paths: d2df7eaa72ca032ebbf5f7fc731e665edc6087b3;
-  clean source checkpoint before this registry handoff
+HEAD and dirty paths: 47d5758467a367eb6962fa0aa11b8834ef10f680;
+  clean after merging fetched main
 writing (exact paths):
   docs/registry/codex-fabius-both-papers.md
 expected declarations or document claims:
-  no public declaration, signature, or import change;
-  delete the three private Rvachev endpoint clones and use the existing
-  `Basic.lean` API directly;
-  delete the dead private `rvachev_intervalIntegrable`;
-  add one private generic support-localization helper, then replace the two
-  duplicated whole-line-to-`[-1,1]` integral proofs by thin applications while
-  retaining both existing private wrapper names and every caller unchanged
+  no active source claim; the completed AnalyticMoments source lease is
+  released while the next disjoint ordinary candidate is audited
 completed commits: Lower-Lambert source checkpoint `1da2fde2285e3970267b7dc2561bcd0d897be1b4`
   was integrated by coordinator merge `046946a974467e83244fd3a183a3e084e70d3379`;
   registry handoff `225f5338de9ea92489ed6a2c0c371c6edb4f5db9`
@@ -68,7 +63,8 @@ completed commits: Lower-Lambert source checkpoint `1da2fde2285e3970267b7dc2561b
   private-only claim `5510369dd` precedes source checkpoint
   `d2df7eaa72ca032ebbf5f7fc731e665edc6087b3`, which factors the two support
   localization proofs and removes redundant/dead helpers for a net reduction
-  of 47 lines
+  of 47 lines; clean merge `47d5758467a367eb6962fa0aa11b8834ef10f680`
+  incorporates fetched main `c2aa5a25c`
 validated (exact command, SHA/state, exit code): coordinator board records
   serialized immutable `lake build +FabiusFunction.LowerLambertW` at
   `4c6bbac41`, exit 0, with its source blob unchanged on current main;
@@ -173,10 +169,9 @@ conflicts / dependencies: all advertised Fabius heads and their registries
   the public endpoint and support lemmas needed for the consolidation already
   live upstream in `Basic.lean`; fetched main `c2aa5a25c` retains the exact
   pre-cleanup AnalyticMoments blob used as the source base
-next bounded step: push this source-and-registry handoff, merge freshly fetched
-  `origin/main` from the clean feature tip, and then select another disjoint
-  ordinary theorem or private consolidation while validation remains
-  coordinator-owned
+next bounded step: push this synchronization checkpoint, select and advertise
+  another disjoint ordinary theorem or private consolidation, and continue
+  source-only work while validation remains coordinator-owned
 ```
 
 ## Coordinator natural-knot integration disposition
