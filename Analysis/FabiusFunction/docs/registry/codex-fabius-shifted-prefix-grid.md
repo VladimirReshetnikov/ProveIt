@@ -1,6 +1,6 @@
 # Workstream registry: `codex/fabius-shifted-prefix-grid`
 
-**Status: source validation requested; exact audit-ledger claim advertised.**
+**Status: source validation requested; audit-ledger reconciliation complete.**
 The exact claim was published before source work, coordinator checkpoint
 `893d4c25d` explicitly acknowledged it as the first nonoverlapping claim for
 the module, and source commit `00ff41a5e` now implements precisely that bounded
@@ -13,12 +13,12 @@ SYNC Fabius
 branch / worktree / machine: codex/fabius-shifted-prefix-grid / c9a3 / EVO
   (Windows)
 fetched main SHA: e18f5d0b0e3ec78e2b14e7006af6c7e916b42923
-HEAD and dirty paths: ad6aa0120add472232ea517289e0bdb6e84fcec0;
-  clean after pushing the coverage-map completion record
+HEAD and dirty paths: faf1fcaf6309dcac98053c510dd424ecba65e825;
+  clean after pushing the audit-ledger checkpoint
 writing (exact paths): docs/registry/codex-fabius-shifted-prefix-grid.md only;
   Lean/FabiusFunction/ThueMorseGenerating.lean is frozen at 00ff41a5e;
   docs/PAPER_COVERAGE.md is complete at dcd5f8a06 and its claim is released;
-  requested future documentation path is docs/AUDIT_FINDINGS.md
+  docs/AUDIT_FINDINGS.md is complete at faf1fcaf6 and its claim is released
 expected declarations or document claims: shiftedPrefixGridValue;
   shiftedPrefixGridValue_zero; shiftedPrefixGridValue_one;
   shiftedPrefixGridValue_succ_sub;
@@ -41,7 +41,9 @@ completed commits: 6fb8dc8e9 publishes the exact one-file claim; ba0048023
   activates it under the open protocol; 00ff41a5e adds the seven generic
   declarations and converts all eight legacy proofs to wrappers; 047a03b63
   merges origin/main e18f5d0b0; e2d1db43f advertises the exact coverage-map
-  reconciliation; dcd5f8a06 completes and releases that documentation tranche
+  reconciliation; dcd5f8a06 completes and releases that documentation tranche;
+  0d4ee2471 advertises the exact four-finding audit claim; faf1fcaf6 closes
+  those four stale entries and records their compiler provenance
 validated (exact command, SHA/state, exit code): at source snapshot SHA-256
   784F6C4F389FE0F2FA08616FFAFBFA3917CCC9F6D2C86CE98D3D877B5F0DD14C,
   git diff --check and git diff --cached --check exited 0; python
@@ -55,26 +57,29 @@ validated (exact command, SHA/state, exit code): at source snapshot SHA-256
   all 59 newly cited qualified declarations resolve, all four changed table
   rows have exactly four unescaped separators, git diff --cached --check
   exited 0, the doc audit retained its exact baseline, and an independent
-  binder-level review found no correction
+  binder-level review found no correction; for audit-ledger blob SHA-256
+  48C94725FB082D492CCE495D01ADDED851C357DB4D4DED4AB375C3C7E7504E4,
+  exactly four headings and four closure markers changed, every status row has
+  four unescaped separators, git diff --cached --check exited 0, the doc audit
+  retained its exact baseline, and independent review verified each signature,
+  source blob, implementation commit, and immutable build checkpoint
 not yet validated: no Lean or Lake process was launched because no EVO build
   token is granted; the three requested module targets remain uncompiled
 requested integration or lease: retain the source path through validation;
-  review dcd5f8a06 for integration; assign this branch, or an authorized build
-  owner checking commit 00ff41a5e, serialized targets
+  review dcd5f8a06 and faf1fcaf6 for integration; assign this branch, or an
+  authorized build owner checking commit 00ff41a5e, serialized targets
   +FabiusFunction.ThueMorseGenerating,
   +FabiusFunction.ThueMorseApproximation, and
   +FabiusFunction.ThueMorseExponential
 conflicts / dependencies: no overlap with the active frontier-document lease;
   no AGENTS, README, collaboration, aggregate, TeX, PDF, canonical frontier,
   primary exposition, hot foundational module, or peer registry path requested;
-  current EVO build ownership remains with codex/fabius-exposition-integration;
-  fresh searches of all 16 locally present Fabius remote-tracking tips found
-  no active docs/AUDIT_FINDINGS.md claim
-next bounded step: push this exact four-finding claim, fetch and reread the
-  board, then edit only docs/AUDIT_FINDINGS.md while keeping the Lean source
-  frozen and polling for an explicit build-token handoff
-lease refreshed: 2026-08-25 18:02 PDT; source frozen pending validation;
-  exact docs/AUDIT_FINDINGS.md claim awaits its registry-first push
+  current EVO build ownership remains with codex/fabius-exposition-integration
+next bounded step: push this completion record, poll for the requested source
+  validation, and advertise a fresh exact nonoverlapping source claim only
+  after rechecking the current board and all advertised tips
+lease refreshed: 2026-08-25 18:10 PDT; source frozen pending validation;
+  documentation claims completed and released
 git owner / build owner: root / no build owner assigned to this branch
 ```
 
