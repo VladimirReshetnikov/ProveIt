@@ -8,8 +8,8 @@ SYNC Fabius
 branch / worktree / machine: codex/fabius-both-papers /
   /home/codex/src/Proofs / codexbox
 fetched main SHA: e18f5d0b0e3ec78e2b14e7006af6c7e916b42923
-HEAD and dirty paths: 45d38dc41054968a6d11c7de0341d5a752f95bad;
-  clean before this registry-only claim expansion
+HEAD and dirty paths: 991add419fb7fda185f4a79cb87cae59f3b37205;
+  clean before this registry-only source-checkpoint handoff
 writing (exact paths):
   Lean/FabiusFunction/BoseFinitePartIntegral.lean;
   docs/registry/codex-fabius-both-papers.md
@@ -40,8 +40,12 @@ completed commits: Lower-Lambert source checkpoint `1da2fde2285e3970267b7dc2561b
   byte-for-byte and preserves its single public declaration site; registry
   handoff `aaca79f866509b99271ae2c633f81c8162845e16` records the clean relocation
   review; terminology checkpoint
-  `45d38dc41054968a6d11c7de0341d5a752f95bad` replaces the ambiguous “natural
-  knot” shorthand by “nonnegative integer grid point” without changing code
+  `45d38dc4147eb7e67a9c6f5cdced1328926b719d` replaces the ambiguous “natural
+  knot” shorthand by “nonnegative integer grid point” without changing code;
+  exact Gamma--zeta claim `1f40ac305983c01f789642e714d56eef6d48519c`
+  precedes source checkpoint `ec23d663f1ff478c8d99719a2dc43aa83afe4d30`,
+  and proof/docstring polish `991add419fb7fda185f4a79cb87cae59f3b37205`
+  leaves the final five-theorem strict API
 validated (exact command, SHA/state, exit code): coordinator board records
   serialized immutable `lake build +FabiusFunction.LowerLambertW` at
   `4c6bbac41`, exit 0, with its source blob unchanged on current main;
@@ -59,9 +63,11 @@ not yet validated: no focused Lake target, downstream module, public facade,
   dyadic theorem body was already compiled in its downstream home by the green
   aggregate at `9887ea584`, but its new module ownership/import context has not
   been compiled; only the exact integer-grid module elaboration plus read-only
-  source/collision/marker/diff checks are currently validated; the proposed
-  Gamma--zeta sign tranche has only a previously green `/tmp` prototype and is
-  not yet implemented or validated in production
+  source/collision/marker/diff checks are currently validated; the Gamma--zeta
+  sign source checkpoint is implemented and has independent term-level static
+  review, but has not been elaborated or built in production; its predecessor
+  non-strict `/tmp` proof was green, while the strict logarithmic and large
+  kernel upgrades are statically reviewed only
 requested integration or lease: the integer-grid and dyadic source checkpoints
   are ready for integration and their ordinary source paths are released;
   request the codexbox token for serialized targets
@@ -71,7 +77,8 @@ requested integration or lease: the integer-grid and dyadic source checkpoints
   and `+FabiusFunction.OriginalPaperSupplement` validation; this new ordinary
   claim covers only `BoseFinitePartIntegral.lean` and the five advertised
   strict public sign theorems, with only the set-integral strictness lemma kept
-  private;
+  private; request serialized `+FabiusFunction.BoseFinitePartIntegral` followed
+  by its sole non-facade direct importer `+FabiusFunction.PeriodicMean`;
   serialized README/primary/walkthrough/coverage paths are deliberately not
   claimed yet
 conflicts / dependencies: all advertised Fabius heads and their registries
@@ -88,8 +95,10 @@ conflicts / dependencies: all advertised Fabius heads and their registries
   strict Gamma--zeta sign theorem and no competing claim on
   `BoseFinitePartIntegral.lean`; the board explicitly releases old Gamma--zeta
   leases
-next bounded step: push this exact claim, then implement the private sign chain
-  and the two strict public consequences without running a production build
+next bounded step: push this source-checkpoint handoff and await the focused
+  serialized builds; after validation/integration, request the human-document
+  lease needed to close the existing audit finding without racing the canonical
+  exposition owner
 ```
 
 Source-only subagents inspect and prototype in `/tmp`; they do not edit the
