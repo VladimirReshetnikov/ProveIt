@@ -47,10 +47,12 @@ to evaluate centered and translated exponential generating series.
   a block sum against a rational polynomial of degree at most `r` returns its
   degree-`r` coefficient times that factor; affine powers have a single
   formula covering both the vanishing range and the sharp degree.
-* `iteratedPrefix_dyadic_zero_run`, `iteratedPrefix_before_dyadic_run`,
-  `iteratedPrefix_at_dyadic` -- for `1 <= k <= r` the `k` values
-  `S^k(2^r - k + i)`, `i < k`, all vanish, and the run is exactly that long:
-  the entry just before it is `(-1)^(r - k)` and `S^k(2^r) = -1`.
+* `iteratedPrefix_dyadic_reverse_window`,
+  `iteratedPrefix_dyadic_reverse_window_eq_zero_iff`, and the endpoint
+  theorems -- on the `2^r-k` entries preceding the final `k` zeros of a
+  dyadic block, the order-`k` prefix row is reciprocal up to the sign
+  `(-1)^(r-k)`; the zero locus is reflected with it, the boundary value is
+  `(-1)^(r-k)`, and `S^k(2^r) = -1`.
 
 The remaining public declarations are the definitional unfolding
 `iteratedPrefix_succ` and the half-block recurrence
@@ -496,6 +498,76 @@ theorem iteratedPrefix_before_dyadic_run (k r : ℕ) (hkr : k ≤ r) :
         linarith
       rw [hvalue, show r - k = (r - (k + 1)) + 1 by omega, pow_succ]
       ring
+
+/-- On the entries preceding its final `k` zeros, the order-`k` prefix row of
+a dyadic block is reciprocal up to the sign `(-1)^(r-k)`. -/
+theorem iteratedPrefix_dyadic_reverse_window
+    (k r d : ℕ) (hkr : k ≤ r) (hkd : k + d < 2 ^ r) :
+    iteratedPrefix k (2 ^ r - k - 1 - d) =
+      (-1 : ℤ) ^ (r - k) * iteratedPrefix k d := by
+  induction k generalizing r d with
+  | zero =>
+      have hd : d < 2 ^ r := by omega
+      simpa only [Nat.sub_zero, iteratedPrefix_zero] using
+        thueMorseSign_dyadic_complement r d hd
+  | succ k ih =>
+      induction d generalizing r with
+      | zero =>
+          simpa only [Nat.succ_eq_add_one, Nat.sub_zero,
+            iteratedPrefix_at_zero, mul_one] using
+            iteratedPrefix_before_dyadic_run (k + 1) r hkr
+      | succ d ihd =>
+          have hsame :
+              iteratedPrefix (k + 1)
+                  (2 ^ r - (k + 1) - 1 - d) =
+                (-1 : ℤ) ^ (r - (k + 1)) *
+                  iteratedPrefix (k + 1) d := by
+            simpa only [Nat.succ_eq_add_one] using
+              ihd (r := r) hkr (by omega)
+          have hlower :=
+            ih (r := r) (d := d + 1) (by omega) (by omega)
+          let n := 2 ^ r - (k + 1) - 1 - (d + 1)
+          have hnSucc :
+              n + 1 = 2 ^ r - (k + 1) - 1 - d := by
+            dsimp [n]
+            omega
+          have hlowerIndex :
+              2 ^ r - k - 1 - (d + 1) =
+                2 ^ r - (k + 1) - 1 - d := by
+            omega
+          rw [hlowerIndex] at hlower
+          have hleft :
+              iteratedPrefix (k + 1) n =
+                iteratedPrefix (k + 1) (n + 1) -
+                  iteratedPrefix k (n + 1) := by
+            have hdelta := iteratedPrefix_succ_sub k n
+            linarith only [hdelta]
+          rw [hnSucc, hsame, hlower] at hleft
+          rw [show r - k = (r - (k + 1)) + 1 by omega, pow_succ] at hleft
+          have hright := iteratedPrefix_succ_sub k d
+          change
+            iteratedPrefix (k + 1) n =
+              (-1 : ℤ) ^ (r - (k + 1)) *
+                iteratedPrefix (k + 1) (d + 1)
+          rw [hleft, ← hright]
+          ring
+
+/-- Dyadic reversal preserves the zero locus inside the pre-run window of an
+iterated prefix row. -/
+theorem iteratedPrefix_dyadic_reverse_window_eq_zero_iff
+    (k r d : ℕ) (hkr : k ≤ r) (hkd : k + d < 2 ^ r) :
+    iteratedPrefix k (2 ^ r - k - 1 - d) = 0 ↔
+      iteratedPrefix k d = 0 := by
+  have hreflect :=
+    iteratedPrefix_dyadic_reverse_window k r d hkr hkd
+  have hsign : (-1 : ℤ) ^ (r - k) ≠ 0 :=
+    pow_ne_zero _ (by norm_num)
+  constructor
+  · intro hzero
+    rw [hreflect] at hzero
+    exact (mul_eq_zero.mp hzero).resolve_left hsign
+  · intro hzero
+    rw [hreflect, hzero, mul_zero]
 
 /-- Every iterated prefix sum through the admissible order has value `-1` at
 the first index after its dyadic zero run. -/
