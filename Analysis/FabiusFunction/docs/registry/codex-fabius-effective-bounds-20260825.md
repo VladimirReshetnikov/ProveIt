@@ -2770,3 +2770,72 @@ next bounded step: commit and push this registry-only claim without force;
   other agents independently verify proof identity, filter orientation,
   deletion boundary, imported name resolution, interfaces, and docs
 ```
+
+## Handoff: reflected endpoint-filter map promotion
+
+Source checkpoint `fbdc07445a269da7f1236099a2f3d5f6284bf6d9` implements the
+complete claimed tranche and is pushed to
+`origin/codex/fabius-effective-bounds-20260825`.
+
+`FabiusInverse.lean` now exposes the public theorem
+`tendsto_one_sub_nhdsLT_one_nhdsGT_zero`.  Its signature and proof are the
+previously established private declaration unchanged in substance; its
+formula comment and Main-results bullet state `1 - y → 0⁺` as `y → 1⁻`.
+Exactly the independent private copy in `FabiusInverseAsymptotic.lean` was
+deleted.  Its reflected sharp-equivalent consumer is byte-unchanged and now
+resolves the theorem through the module's existing direct import of
+`FabiusInverse`.
+
+Every import, every pre-existing public header/attribute/body, both upstream
+consumers, and the downstream consumer remain exact.  No arbitrary-center
+affine API or unrelated inverse helper was promoted.
+
+Exact frozen source artifacts:
+
+- `FabiusInverse.lean`: Git blob
+  `38774772f11a2c084d3c2e5189d3f632da941154`, content SHA-256
+  `0FC4033016CB998D2D8B6A57293EB56C209555BD52C9539E224323FE39B592D9`;
+- `FabiusInverseAsymptotic.lean`: Git blob
+  `ab7333c2a7f937b2fb5ff19c57173bf08d886f13`, content SHA-256
+  `BB60877D8116F865EBC3C836591D4B9C9A9CC15658651A1F06651845E0895903`.
+
+Three independent exact-current-byte static reviews are green.  They checked
+the one-sided-filter direction, continuity and positivity components,
+byte-identical promoted proof, public namespace placement, exact deletion
+boundary, all three unchanged consumers, direct-import resolution, collision
+scan, old-interface/import preservation, documentation, and whitespace.
+Local and staged `git diff --check` passed.  No Lean, Lake, TeX, PDF,
+cache-mutating process, canonical-document edit, or main write ran.
+
+```text
+SYNC Fabius
+branch / worktree / machine: codex/fabius-effective-bounds-20260825 /
+  /home/codex/.codex/worktrees/d6d3/Proofs / codexbox
+fetched main SHA: 1eadfd565db2e4c49310dbaa68c7b4648cb563b8
+HEAD and dirty paths: fbdc07445a269da7f1236099a2f3d5f6284bf6d9;
+  clean after exact-path source commit; checkpoint pushed
+writing (exact paths): this branch registry for immutable handoff only; the
+  two source paths above are frozen at the stated blobs
+expected declarations or document claims: exactly the one public endpoint
+  filter theorem, exact prose, and downstream duplicate deletion recorded
+  above; no facade or canonical-doc surface
+completed commits: registry-first claim 826c0b194; source checkpoint
+  fbdc07445; both pushed without force
+validated (exact command, SHA/state, exit code): local and staged git diff
+  --check exited 0; three independent exact-current-byte static reviews are
+  green; exact blob/SHA evidence is recorded above
+not yet validated: no Lean/Lake target or downstream importer was built on
+  this branch; static review is not compiler evidence
+requested integration or lease: request serialized LAKE_JOBS=1 builds of
+  +FabiusFunction.FabiusInverse and
+  +FabiusFunction.FabiusInverseAsymptotic; optionally smoke
+  +FabiusFunction.PaperFabiusAsymptotic after both pass; request coordinator
+  review and selective integration; request no main-write or document lease
+conflicts / dependencies: the downstream module already directly imports the
+  upstream theorem's module; both paths were released after compiled inverse
+  work on main; all local frozen paths, external claims, and the sole primary-
+  document owner are disjoint; only the coordinator may advance main
+next bounded step: freeze both source blobs, push this handoff, fetch main,
+  reread any ownership-board delta, and choose the next disjoint theorem or
+  source-documentation parity tranche before editing it
+```
