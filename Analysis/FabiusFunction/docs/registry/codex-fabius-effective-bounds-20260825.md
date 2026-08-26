@@ -605,3 +605,19 @@ source: Git blob `378617cc9a68c555442cb8a48c088c17c2af35ec`, content SHA-256
 `E91A83AEE58545499F5CC8C319679959E8CDD857510BBF64EF5A65C2CC172D6B`.
 That source lease and the coordinator build token are released.  Only the
 disjoint Unit-Laplace tilt checkpoint `d9598f3b6` remains unelaborated.
+
+## Coordinator result: all-tilt moment comparison accepted
+
+The coordinator integrated exact source commit `d9598f3b6` as `7b892b41c`.
+Separate serialized builds of `+FabiusFunction.UnitLaplaceMomentBounds` (3189
+jobs) and its sole direct importer `+FabiusFunction.LaplaceMomentBounds` (3417
+jobs) both exited zero.  They reported only the inherited, previously recorded
+nonblocking `unnecessarySimpa` linter in `ProbabilityLaplaceMoments.lean`; the
+new module emitted no distinct warning.
+
+Feature merge `9507c0ac9` incorporates accepting main checkpoint `4b3ddc7db`.
+The merged `UnitLaplaceMomentBounds.lean` is byte-identical to the compiled
+source: Git blob `ac0349d2c96460ddc758a6069fca79fe2359b5c2`, content SHA-256
+`3F609EA6B099602C3503831919F21A0357746618FDE14887C2B9564A36F22ED9`.
+Every source and build lease held by this branch is now released.  No local
+Lean/Lake invocation was launched during any tranche.
