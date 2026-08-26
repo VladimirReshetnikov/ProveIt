@@ -167,6 +167,25 @@ $\pi^2/4$ and $4928.2$ for variance $\pi^2/2$---shows that Document~1 is
 correct and that the published equation~(4.5) omits the Parseval factor
 $\tfrac12$: the constants in the published Theorems~1.1 and~1.2 should
 each be divided by $\sqrt2$.
+
+Two interpretations are developed beyond what any of the four documents
+attempts.  The envelope-of-lobe-maxima reading
+(\cref{sec:lobes}): the peak sequence $E_n$ reproduces the decay
+spectrum in miniature---limsup envelope $\kappa_\infty$, zero liminf on
+that scale, Ces\`aro exponent $\kappa_1$ via a new peak--integral
+comparison lemma (with the measured rigidity
+$\sum_{\mathrm{shell}}E_n/\int_{\mathrm{shell}}|f|=1.9237$, stable to
+five digits across six octaves), and a density-one $\kappa_0$ law with
+a central limit theorem whose finite-size right-tail truncation is
+explained quantitatively by the Gelfond cap.  The root-mean-square
+reading (\cref{sec:rms}): the $q=2$ layer is exactly solvable---the
+transfer operator has the closed subleading eigenvalue $-\tfrac14$ with
+eigenfunctions $\sin2\pi x$ and $1+3\cos2\pi x$, making the RMS envelope
+constant $A_2=0.103008918$ converge at the alternating geometric rate
+$(-\tfrac12)^k$---yet the all-$t$ Ces\`aro limit still fails (singular
+eigenmeasure, profile $[0.894,1.192]$), and the total energy check
+$\int_\R f^2=\tfrac12+\sum_mf(m+\tfrac12)^2=0.808873535967972$ closes to
+$2\cdot10^{-15}$.
 \end{abstract}
 
 \tableofcontents
@@ -197,7 +216,7 @@ The audit method follows the repository's engineering policy, with one
 governing principle: \textbf{every adjudication in this document rests on
 a proof; numerical experiments serve only as insight and as validation of
 conclusions reached rigorously.}  Where a verdict is stated
-(\cref{thm:variance,thm:lil-correct,thm:impossible,thm:logmean},
+(\cref{thm:variance,thm:lil-correct,thm:impossible,thm:logmean,thm:peak-layers,thm:rms-answer},
 \cref{find:ahl}), a proof or a complete proof architecture is given, with
 the imported classical inputs named explicitly
 (\cref{ssec:imported}).  Independently of that, every quantitative
@@ -292,7 +311,8 @@ envelope of \emph{all} lobe maxima $E_n$
  & none
  & impossible even after passing to local maxima: the peaks straight after
    $2^k$ decay with the doubled quadratic coefficient $-1/\log2$
-   (Docs.~2, 4; verified \cref{ssec:valleys}) \\[0.35em]
+   (Docs.~2, 4; verified \cref{ssec:valleys}); full four-layer analysis
+   in \cref{sec:lobes} \\[0.35em]
 largest lobe in $[2^k,2^{k+1}]$
  & $\kappa_\infty=2.3590148791$
  & sharp as a limsup; the true annular maximum carries a second log-normal
@@ -309,7 +329,8 @@ arithmetic mean = the literal question
 root mean square
  & $\kappa_2=\log_2(2\pi)=2.6514961295$
  & exact identity $\int_0^1\prod_{j<n}\sin^2(\pi2^jt)\dd t=2^{-n}$; this is
-   precisely the exponent of the deleted draft (Docs.~3, 4) \\
+   precisely the exponent of the deleted draft (Docs.~3, 4); exactly
+   solvable layer, developed in \cref{sec:rms} \\
 \bottomrule
 \end{tabularx}
 \end{center}
@@ -799,6 +820,512 @@ the eigenmeasure near the preimages of the Gelfond-maximizing cycle
 $\{1/3,2/3\}$.}
 \label{fig:profile}
 \end{figure}
+
+\section{Interpretation in detail, I: the envelope of the lobe maxima}
+\label{sec:lobes}
+
+The zeros of $f$ at the integers divide $(0,\infty)$ into unit lobes, and
+$|f|$ has exactly one maximum
+\[
+ E_n=\max_{n\le x\le n+1}|f(x)|=|f(\xi_n)|,
+ \qquad \xi_n\in(n,n+1),
+\]
+per lobe, with signed value $(-1)^{s_2(n)}E_n$ (audited; the sign law is
+also the Atlas's ``sign of the Fabius sinc product'').  Reading the
+question as ``find the envelope of the sequence $E_n$'' is natural --- it
+is literally the subject of the companion question \cite{mse-extrema} ---
+and this section shows exactly how far that reading can be pushed.  The
+outcome is structural: \emph{the peak sequence reproduces the whole decay
+spectrum of \cref{sec:interpretations} in miniature}, so it has a sharp
+limsup envelope, a zero liminf on that envelope's scale, a Ces\`aro
+envelope with the same exponent $\kappa_1$ as $|f|$ itself, and a
+density-one law with the typical exponent $\kappa_0$ --- but no single
+envelope.
+
+\subsection{Geometry of one lobe, and a peak--integral comparison}
+
+Two audited facts anchor everything: away from the integers
+\begin{equation}
+ (\log|f|)'(x)=-2x\sum_{k\ge1}\frac{1+\vtwo(k)}{k^2-x^2},
+ \qquad
+ (\log|f|)''(x)=-2\sum_{k\ge1}(1+\vtwo(k))\frac{k^2+x^2}{(k^2-x^2)^2}<0,
+ \label{eq:lobe-derivatives}
+\end{equation}
+so every lobe of $|f|$ is strictly log-concave with a unique peak.  The
+following comparison is the workhorse of the mean layer; it does not
+appear in any of the four documents.
+
+\begin{lemma}[peak--integral comparison]
+\label[lemma]{lem:peak-integral}
+There is an absolute constant $C$ such that for all $n\ge2$,
+\[
+ \int_n^{n+1}|f|\;\le\;E_n\;\le\;C\,(1+\log n)^{3}\int_n^{n+1}|f|.
+\]
+\end{lemma}
+
+\begin{proof}
+The left inequality is trivial.  For the right one, write
+$d_0=1+\vtwo(n)$, $d_1=1+\vtwo(n+1)$, $\delta_0=\xi_n-n$,
+$\delta_1=n+1-\xi_n$, and note $d_0,d_1\le1+\log_2(n+1)$.  Splitting off
+the $k=n$ and $k=n+1$ terms of \eqref{eq:lobe-derivatives} and bounding
+the rest crudely ($|k^2-x^2|\ge|k-x|\,n$ for $k\le2n$, quadratic tail
+beyond, $1+\vtwo(k)\le1+\log_2k$) gives, for $x$ in the middle segment
+$[n+\delta_0/2,\,n+1-\delta_1/2]$,
+\[
+ (\log|f|)'(x)=\frac{d_0}{x-n}\theta_0(x)-\frac{d_1}{n+1-x}\theta_1(x)
+ +\bigO(\log^2n),
+ \qquad
+ \theta_i(x)\in[\tfrac9{10},\tfrac65],
+\]
+and
+\[
+ \bigl|(\log|f|)''(x)\bigr|
+ \le\frac{3d_0}{(x-n)^2}+\frac{3d_1}{(n+1-x)^2}+C\log n .
+\]
+At the peak the derivative vanishes; since one of $\delta_0,\delta_1$ is
+at least $\tfrac12$, the vanishing forces the other to satisfy
+$d_i/\delta_i\le C\log^2n$, whence
+$\delta_{\min}\ge c/\log^2 n$ and, on the middle segment around
+$\xi_n$, the curvature is at most $\Lambda\le C\log^5n$.  By
+log-concavity, $|f(\xi_n\pm s)|\ge E_n\e^{-\Lambda s^2/2}\ge E_n/\e$ for
+$s\le\min(\Lambda^{-1/2},\delta_{\min}/2)\ge c\,(1+\log n)^{-5/2}$, and
+integrating over that subinterval gives
+$\int_n^{n+1}|f|\ge c\,E_n(1+\log n)^{-5/2}$, which is stronger than
+claimed.
+\end{proof}
+
+Numerically the comparison is far tamer than the worst-case bound: over
+the shells $k=9$--$13$ the per-lobe ratio $E_n/\int_n^{n+1}|f|$ has
+median $1.992$, and its maximum ($4.55$ at $k=9$, $5.93$ at $k=13$,
+growing roughly linearly in $k$) is attained each time by the lobe
+\emph{abutting} $2^{k+1}$, i.e.\ the lobe pressed against the
+highest-multiplicity zero of the shell --- the same two-adic geometry as
+the valleys.
+
+\subsection{The peak sequence is the spectrum in miniature}
+
+\begin{theorem}[four layers of the peak sequence]
+\label{thm:peak-layers}
+Let $\mathcal E(x)=\exp(-(\log x)^2/(2\log2))$.
+\begin{enumerate}
+\item \emph{Sharp upper envelope.}
+$\limsup_{n\to\infty}\bigl(\log E_n+\tfrac{(\log n)^2}{2\log2}\bigr)/\log
+n=-\kappa_\infty$, and no larger exponent works: the limsup is attained
+along the lobes containing $2^k\cdot\tfrac43$ (equivalently
+$2^k\cdot\tfrac23$).  At second order the annular maxima carry the
+Lambert-$W$ correction of Documents 1--2, beginning
+$-(\log\log x)^2/(2\log2)$.
+\item \emph{Zero liminf on that scale.}
+$\liminf E_n/\bigl(\mathcal E(n)n^{-\kappa_\infty}\bigr)=0$: along
+$n=2^k$ (and $n=m2^k$, odd $m$) the peaks obey the two-adic law
+$E_{m2^k}\sim\frac{H(1)|H(m)|}{\e(k+1)}(m2^k)^{-(k+1)}$, whose leading
+quadratic coefficient $-1/\log2$ is twice the universal one.  Within the
+shell $[2^k,2^{k+1})$ the deepest lobe observed is the one abutting
+$2^{k+1}$ (zero multiplicity $k+2$; confirmed at $k\in\{9,11,13\}$ by
+computing every lobe of the shell), with the lobe after $2^k$
+(multiplicity $k+1$) its two-adic twin at the left edge; the two-adic
+law itself is verified through $k=16$ (\cref{ssec:valleys}).
+\item \emph{Mean layer: exponent $\kappa_1$ again.}  By
+\cref{lem:peak-integral},
+\[
+ \int_{2^k}^{2^{k+1}}|f|\;\le\;\sum_{2^k\le n<2^{k+1}}E_n
+ \;\le\;C\,k^{3}\int_{2^k}^{2^{k+1}}|f|,
+\]
+so the shell means of the peak sequence have the same power
+$\kappa_1=2.748070\ldots$ as the shell means of $|f|$, and every
+Ces\`aro-type statement of \cref{thm:audit-answer} transfers to the peak
+sequence up to the polylogarithmic slack.  Numerically the slack is a
+sharp constant: over $k=9,\dots,14$,
+\[
+ \frac{\sum_{2^k\le n<2^{k+1}}E_n}{\int_{2^k}^{2^{k+1}}|f|\,\dd x}
+ =1.9238,\;1.9237,\;1.9237,\;1.9237,\;1.9237,\;1.9238\,(\pm3\cdot10^{-5}),
+\]
+supporting the conjecture that the ratio converges to a constant
+$\Theta_{\mathrm{peak}}=1.92372(3)$; granting it, the peak sequence has
+the Ces\`aro gauge $A_1^{\mathrm{peak}}\,x^{-\kappa_1}\mathcal E(x)$ with
+$A_1^{\mathrm{peak}}=\Theta_{\mathrm{peak}}A_1=0.175569\ldots$
+\item \emph{Typical layer: exponent $\kappa_0$.}  For every
+$\varepsilon>0$,
+\[
+ \frac{1}{2^k}\,\#\Bigl\{2^k\le n<2^{k+1}:
+ \Bigl|\log E_n+\frac{(\log n)^2}{2\log2}+\kappa_0\log n\Bigr|
+ \le\varepsilon k\Bigr\}\longrightarrow1 .
+\]
+\end{enumerate}
+\end{theorem}
+
+\begin{proof}
+(i) The upper bound is the uniform envelope (audited); sharpness is the
+exact ray $y=4/3$.  (ii) is Documents 2 and 4's theorem (audited;
+verified numerically with the slow $1/k$-type approach documented in
+\cref{ssec:valleys}).  (iii) is immediate from \cref{lem:peak-integral}
+after summing over the shell.  (iv) requires an argument, given now.
+
+\emph{Lower half (few lobes are too small).}  Write $x=2^ky$,
+$z=y-1$, so that by the factorization and the $\kappa$-algebra,
+\[
+ \log|f(x)|+\frac{(\log x)^2}{2\log2}+\kappa_0\log x
+ =\Sigma_{k+1}(z)+\Psi(y),
+ \qquad
+ \Sigma_m(z):=\sum_{j=0}^{m-1}\psi(\T^jz),
+\]
+with $\psi=\log|2\sin\pi\cdot|$ centered and $\Psi$ bounded on
+$[1,2)$.  By the Birkhoff theorem $\Sigma_m/m\to0$ a.e., hence in
+measure: $\mathrm{Leb}\{z:|\Sigma_{k+1}(z)|>\tfrac\varepsilon2k\}\to0$.
+A lobe occupies a $z$-cell of length $2^{-k}$; if the cell contains a
+point of the good set, then $E_n\ge|f|$ there exceeds the
+$\kappa_0$-line by more than $-\varepsilon k$.  The number of cells
+disjoint from the good set is at most $2^k\cdot\mathrm{Leb}(\text{bad})
+=\smallo(2^k)$.
+
+\emph{Upper half (few lobes are too large).}  Call a cell $J$
+\emph{regular} if for every $j\le k':=k-4\lceil\log_2k\rceil$ the image
+$2^jJ$ keeps distance at least $k^2\,2^{j-k}$ from $\Z$.  For each $j$
+the offending set is $2^j$ intervals of length $2k^22^{-k}$ each, so at
+most $(2k^2+2)2^j$ cells are irregular at level $j$, and summing over
+$j\le k'$ gives at most $C2^k/k^2=\smallo(2^k)$ irregular cells.  On a
+regular cell every retained factor has logarithmic oscillation at most
+$\pi/k^2$ across the cell (length times $\pi2^j\cot$-bound), so
+\[
+ \max_{J}P_{k+1}\le\e^{\pi/k}\,P_{k'}(z_J)
+ \qquad\text{for every } z_J\in J,
+\]
+after discarding the last $4\lceil\log_2k\rceil$ factors, each bounded by
+one.  Now fix $\varepsilon$ and choose $q\in(0,1)$ with
+$\log\varrho_q<-q(1-\tfrac\varepsilon2)\log2$, possible because
+$(\log\varrho_q)/(q\log2)\to-1$ as $q\downarrow0$ (the pressure slope at
+the Lebesgue equilibrium; with the RPF package for $\Lop_q$ on
+bounded-variation functions --- the weights $s^q$ have total variation
+$2$ uniformly in $q\in[0,1]$ --- this is standard perturbation theory,
+and it is the one imported input here, the same package as
+\cref{ssec:imported}).  Markov's inequality with
+$I_q(k')\le C_q\varrho_q^{k'}$ then bounds the measure of
+$\{P_{k'}\ge\e^{-(1-\varepsilon)k\log2}\}$ by $\e^{-c(\varepsilon)k}$;
+since on a regular cell all points give comparable $P_{k'}$, the number
+of regular cells whose maximum exceeds the threshold is
+$2^k\e^{-c(\varepsilon)k}=\smallo(2^k)$.  For such good cells,
+$E_n\le C\cdot\text{shell factor}\cdot\e^{-(1-\varepsilon)k\log2}$ lies
+below the $\kappa_0$-line by at most $\varepsilon k\log 2+\bigO(\log k)$.
+Adjusting $\varepsilon$ absorbs the constants.
+\end{proof}
+
+\begin{proposition}[central limit law for the peaks]
+\label[proposition]{prop:peak-clt}
+For every $u\in\R$,
+\[
+ \frac{1}{2^k}\,\#\Bigl\{2^k\le n<2^{k+1}:
+ \log E_n+\frac{(\log n)^2}{2\log2}+\kappa_0\log n
+ \le u\,\frac{\pi}{2}\sqrt{k}\Bigr\}
+ \longrightarrow\Phi(u),
+\]
+where $\Phi$ is the standard normal distribution function.
+\end{proposition}
+
+\begin{proof}
+All ingredients are already on the table.  The continuous CLT
+$\Sigma_k/\sqrt k\Rightarrow\mathcal N(0,\pi^2/4)$ holds by Document 1's
+martingale argument with the variance of \cref{thm:variance}.
+Convergence in distribution under Lebesgue measure transfers to the cell
+ensemble because, outside the $\smallo(2^k)$ irregular cells, all points
+of a cell give the same $\Sigma_{k'}$ up to $\pi/k$, and the discarded
+top factors change $\log E_n$ by at most $\bigO(\log^2k)$ in one
+direction and, in the other, by at least $\log$ of the product of the
+discarded factors on a nested subcell: choosing inside the cell,
+factor by factor from the finest down, the third of the current subcell
+on which the new factor exceeds $\tfrac12$ leaves a nonempty subcell on
+which the discarded product is at least $2^{-4\lceil\log_2k\rceil}$.
+Both corrections are $\bigO(\log^2 k)=\smallo(\sqrt k)$, as is the
+bounded mantissa term, so the cell statistics of $\log E_n$ inherit the
+Gaussian limit with the same normalization.
+\end{proof}
+
+The measured quantiles agree on the left and are compressed on the
+right, exactly as they must be at finite $k$: standardized quantiles at
+$k=13$ are
+$(-1.63,-0.43,+0.05,+0.36,+0.65)$ at levels
+$(5,25,50,75,95)\%$ against the Gaussian
+$(-1.645,-0.674,0,+0.674,+1.645)$.  The median sits on the
+$\kappa_0$-line to within $0.05$ standard units --- the typical exponent
+is visibly $\kappa_0$ --- while the right tail is truncated by the
+deterministic Gelfond cap: no peak can exceed the $\kappa_\infty$-line,
+which sits only
+$(\kappa_0-\kappa_\infty)\log2\cdot\sqrt k/(\pi/2)\approx0.35\sqrt k$
+standard units above the center ($\approx1.26$ at $k=13$).  The
+truncation recedes like $\sqrt k$, so the Gaussian limit opens up only
+logarithmically slowly in $x$ --- the same finite-size phenomenon that
+hides the LIL constant from small-$L$ simulations in \cref{sec:lil}.
+
+\subsection{The discrete dictionary: peaks as Thue--Morse spectra}
+
+Across the shell $[2^k,2^{k+1})$, the lobe of $n=2^k+m$ occupies the
+$z$-cell of $m2^{-k}$, and up to the bounded factors above,
+$E_n$ is the windowed maximum of $P_{k+1}$ there --- that is, of the
+modulus of the Thue--Morse polynomial
+$\sum_{r<2^{k+1}}(-1)^{s_2(r)}\e^{2\pi\ii rz}$ near the dyadic frequency
+$m/2^k$.  The peak-envelope interpretation is thus exactly the question
+of the value distribution of Thue--Morse spectra, and the exact grid
+identities of that world transfer:
+
+\begin{proposition}[two exact grid identities]
+\label[proposition]{prop:grid}
+For every $n\ge1$:
+\[
+ \text{(i)}\quad
+ \prod_{r=1}^{2^n-1}2\sin\frac{\pi r}{2^n}=2^n,
+ \qquad\qquad
+ \text{(ii)}\quad
+ \sum_{m=0}^{2^n-1}P_n\Bigl(\frac{m}{2^n}\Bigr)^2=1 .
+\]
+\end{proposition}
+
+\begin{proof}
+(i) is the classical evaluation $\prod_{r=1}^{N-1}(1-\omega^r)=N$ for
+$\omega=\e^{2\pi\ii/N}$, taken in modulus.  It says that the mean of
+$\psi=\log|2\sin\pi\cdot|$ over the \emph{nonzero} points of the
+$2^n$-grid is $2^{-n}\log2^n\to0$ --- the grid analogue of
+$\int_0^1\psi=0$, which is what makes the discrete Birkhoff sums behave
+like the continuous ones.
+(ii) Let $p(t)=\prod_{j<n}(1-\e^{2\pi\ii2^jt})$, of degree $2^n-1$ with
+coefficients $\pm1$, so $|p|=2^nP_n$.  The $2^n$-point discrete
+Parseval identity gives
+$2^{-n}\sum_m|p(m/2^n)|^2=\sum_r|c_r|^2=2^n$, i.e.\
+$\sum_mP_n(m/2^n)^2=1$.  (Verified to $10^{-12}$ at $n=6,10,14$; even
+$m$ contribute exactly zero.)
+\end{proof}
+
+Identity (ii) is the discrete twin of $\int_0^1P_n^2=2^{-n}$: the
+$q=2$ layer is rigid in both the continuous and the sampled world, a
+point taken up in \cref{sec:rms}.
+
+\subsection{Verdict for this interpretation}
+
+No function $G$ satisfies $E_n/G(n)\to c>0$: the four layers of
+\cref{thm:peak-layers} are separated by genuine powers of $x$, and even
+within one layer the fluctuations are of iterated-logarithm size.  What
+the interpretation \emph{does} admit is exactly what \eqref{eq:Q2}--%
+\eqref{eq:Q3} admit for $|f|$: a bounded Ces\`aro normalization with the
+same exponent $\kappa_1$ (via \cref{lem:peak-integral}), with the
+empirical constant $\Theta_{\mathrm{peak}}=1.9237$ tying the two
+readings together.  For the companion question \cite{mse-extrema}, the
+sharp answers are the limsup envelope
+$x^{-\kappa_\infty}\mathcal E(x)$ and the typical law
+$x^{-\kappa_0+\smallo(1)}\mathcal E(x)$ --- two different formulas,
+necessarily.
+
+\section{Interpretation in detail, II: the root-mean-square amplitude}
+\label{sec:rms}
+
+The RMS reading asks for $g$ such that the quadratic Ces\`aro mean of
+$(f/g)^2$ is tame.  Because $f=\widehat\Up$, the shell RMS of $f$ is the
+energy spectral envelope of the up-function, and this is the one reading
+in which the deleted draft's exponent $\log_2(2\pi)$ is correct.  It is
+also, by a wide margin, the most rigid layer of the whole problem: its
+per-level mean is exact, its subleading spectrum is computable in closed
+form, and its envelope constant converges at a clean geometric rate with
+alternating sign.
+
+\subsection{Exactness at every scale}
+
+The continuous identity $\int_0^1P_n^2=2^{-n}$ (\cref{prop:L2}) and the
+discrete identity $\sum_mP_n(m/2^n)^2=1$ (\cref{prop:grid}) leave no
+asymptotics in the $q=2$ numerator: both the Lebesgue mean and the
+grid mean of $P_n^2$ equal $2^{-n}$ exactly, for every $n$.  All
+remaining structure sits in the bounded mantissa weight, and it too is
+spectrally transparent:
+
+\begin{proposition}[exact subleading spectrum of $\Lop_2$]
+\label[proposition]{prop:L2-spectrum}
+The operator
+$(\Lop_2h)(x)=\tfrac12[\sin^2(\tfrac{\pi x}2)h(\tfrac x2)
++\cos^2(\tfrac{\pi x}2)h(\tfrac{x+1}2)]$ satisfies, exactly,
+\[
+ \Lop_2\mathbf 1=\tfrac12\,\mathbf 1,
+ \qquad
+ \Lop_2\bigl[\sin2\pi x\bigr]=-\tfrac14\sin2\pi x,
+ \qquad
+ \Lop_2\bigl[1+3\cos2\pi x\bigr]=-\tfrac14\bigl(1+3\cos2\pi x\bigr),
+\]
+and on even Fourier modes it acts by frequency halving,
+$\Lop_2\e^{2\pi\ii\,2m x}\mapsto\tfrac12\e^{2\pi\ii mx}$.
+\end{proposition}
+
+\begin{proof}
+With $e_m(x)=\e^{2\pi\ii mx}$: for even frequency $2m$,
+$\e^{2\pi\ii\,2m\frac{x}{2}}=e_m(x)$ on both branches and
+$\sin^2+\cos^2=1$ gives $\Lop_2e_{2m}=\tfrac12e_m$ (the $m=0$ case is
+the first display).  For $m=1$,
+\[
+ \Lop_2e_1
+ =\tfrac12\e^{\pi\ii x}\bigl[\sin^2(\tfrac{\pi x}2)
+ -\cos^2(\tfrac{\pi x}2)\bigr]
+ =-\tfrac12\e^{\pi\ii x}\cos\pi x
+ =-\tfrac14\bigl(e_1+\mathbf 1\bigr),
+\]
+and likewise $\Lop_2e_{-1}=-\tfrac14(e_{-1}+\mathbf1)$.  Hence
+$\{\mathbf1,e_1,e_{-1}\}$ spans an invariant subspace on which $\Lop_2$
+has matrix eigenvalues $\{\tfrac12,-\tfrac14,-\tfrac14\}$; the real
+eigenfunctions for $-\tfrac14$ are
+$\sin2\pi x=(e_1-e_{-1})/2\ii$ and $1+3\cos2\pi x$ (direct check:
+$\Lop_2[3\cos2\pi x]=-\tfrac34(1+\cos2\pi x)$, so
+$\Lop_2[1+3\cos]=\tfrac12-\tfrac34-\tfrac34\cos=-\tfrac14(1+3\cos)$).
+\end{proof}
+
+Collocation places the rest of the spectrum below $3\cdot10^{-4}$ in
+modulus, so the shell-RMS ratios converge at the exact geometric rate
+$\lambda_2/\lambda_1=-\tfrac12$ per shell --- relative error
+$\bigO(1/x)$, with alternating sign.  This is visible to the eye in the
+measurements: the shell means of $(f/g_{\kappa_2})^2$ for
+$k=4,5,6,7,8$ differ from their limit by
+$+1.51\cdot10^{-5}$, $-7.6\cdot10^{-6}$, $+3.8\cdot10^{-6}$,
+$-1.9\cdot10^{-6}$, $+0.94\cdot10^{-6}$ --- each step multiplying the
+error by $-\tfrac12$ to the displayed accuracy --- with limit
+\[
+ A_2^2=0.0106108372\ldots,
+ \qquad
+ A_2=0.103008918\ldots
+\]
+(direct quadrature and the spectral iteration agree; the $L^1$ layer,
+by contrast, has the non-elementary subleading pair
+$-0.13435\pm0.0500\ii$ of modulus $0.1434$, rate
+$|\lambda_2|/\varrho_1=0.217$ per shell).
+
+\subsection{The RMS answer to the averaged question}
+
+\begin{theorem}[RMS version of \cref{thm:audit-answer}]
+\label{thm:rms-answer}
+Let $G_2=A_2\,x^{-\kappa_2}\mathcal E(x)$ with
+$\kappa_2=\log_2(2\pi)$.  Then:
+(i) the quadratic Ces\`aro ratio
+$\frac1{t-t_0}\int_{t_0}^t(f/G_2)^2$ is eventually confined to a compact
+subinterval of $(0,\infty)$ and tends to $1$ along $t=2^k$ with relative
+error $\bigO(2^{-k})$;
+(ii) for $t=2^ky$ with fixed $y\in(1,2)$ it converges to a continuous,
+nonconstant mantissa profile $\mathscr P_2(y)$, so the limit for all
+$t$ fails --- for the same reason as at $q=1$: the $\Lop_2$-eigenmeasure
+$\nu_2$ is atomless and singular;
+(iii) the logarithmic mean
+$\frac1{\log(t/t_0)}\int_{t_0}^t(f/G_2)^2\,\frac{\dd x}{x}$ converges
+for all $t\to\infty$.
+\end{theorem}
+
+\begin{proof}
+(i) and (iii) are verbatim the proofs of
+\cref{thm:audit-answer}(i)--(ii) and \cref{thm:logmean} with
+$(P_n,\varrho_1,W)$ replaced by $(P_n^2,\tfrac12,W_2)$; the improved
+rate in (i) is \cref{prop:L2-spectrum}.  For (ii), only the two measure
+statements change.  \emph{Atomless:} the eigenmeasure equation gives
+$\nu_2(\{\T z\})=\nu_2(\{z\})/\sin^2(\pi z)\ge\nu_2(\{z\})$, with
+equality only at $z=\tfrac12$.  No forward orbit can linger where
+$\sin^2$ is near $1$: if $w\in[\tfrac38,\tfrac58]$ then
+$\T w\in[0,\tfrac14]\cup[\tfrac34,1]$, where $\sin^2\le\tfrac12$; and
+off $[\tfrac38,\tfrac58]$ one has $\sin^2\le\sin^2(\tfrac{3\pi}8)<0.854$.
+So along any orbit the atom mass is nondecreasing and gains a factor
+$\ge1/0.854$ at least every second step, forcing it to zero whether the
+orbit is eventually periodic (mass grows around each loop) or not
+(infinitely many distinct atoms of nonvanishing mass).
+\emph{Singular:} an absolutely continuous part would have density $r$
+with $\sin^2(\pi z)\,r(\T z)=\tfrac12r(z)$, hence
+$r(\T^nz)=2^{-n}r(z)/P_n(z)^2$; for a.e.\ $z$ the Birkhoff theorem
+gives $P_n(z)^2=\e^{-2n\log2(1+\smallo(1))}$, so on $\{r>0\}$ the
+density grows like $\e^{n(\log2+\smallo(1))}$, contradicting
+$r\in L^1$ by the same Borel--Cantelli argument as before.  (The general
+criterion behind both cases: the $q$-eigenmeasure is singular whenever
+$\varrho_q\e^{q\log2}>1$, i.e.\ whenever $\kappa_q<\kappa_0$; at
+$q=2$ this reads $\tfrac12\cdot4=2>1$.)  The nonconstancy of
+$\mathscr P_2$ then follows as in \cref{thm:impossible}.
+\end{proof}
+
+The measured $L^2$ profile (same transfer computation as
+\cref{fig:profile}, weight $W_2P_{13}^2$) spans
+$[0.894,\,1.192]$ --- wider than the $L^1$ profile
+$[0.925,\,1.113]$, as expected, since squaring weights the singular
+concentration near the Gelfond preimages more heavily.  So even the most
+rigid reading of the question keeps the dyadic phase obstruction; what
+it gains is exact constants and an $\bigO(1/x)$ rate everywhere the
+limit does exist.
+
+\subsection{Plancherel, Poisson, and the total energy}
+
+\begin{proposition}[total energy]
+\label[proposition]{prop:energy}
+\[
+ \int_{\R}f(x)^2\dd x=\int_{\R}\Up(t)^2\dd t
+ =\frac12+\sum_{m=0}^{\infty}f\Bigl(m+\frac12\Bigr)^{2}
+ =0.808873535967972\ldots
+\]
+\end{proposition}
+
+\begin{proof}
+The first equality is Plancherel ($f=\widehat\Up$, real and even).  For
+the second, expand $\Up$, supported in $[-1,1]$, in Fourier series on
+$[-1,1]$: the coefficients are $\tfrac12\widehat\Up(k/2)=\tfrac12f(k/2)$,
+and Parseval gives
+$\int\Up^2=\tfrac12\sum_{k\in\Z}f(k/2)^2$; the even $k\ne0$ terms vanish
+($f$ vanishes at nonzero integers), $k=0$ gives $\tfrac12$, and the odd
+terms pair up.  Numerically the direct quadrature
+$2\int_0^{2^{14}}f^2$ and the series agree to $2\cdot10^{-15}$, the
+displayed value; the series converges with super-Gaussian speed since
+$f(m+\tfrac12)^2$ decays like $\mathcal E(m)^2$.
+\end{proof}
+
+This is a satisfying exactness check on the entire numerical apparatus,
+and a natural first formalization target on the $L^2$ side: the
+ingredients (compact support, the sinc product, Parseval on an interval)
+are all present in the Lean development
+(\lean{FourierProduct}, \lean{PoissonSummation}).
+
+\subsection{The lognormal fallacy, quantified}
+
+Why did plausible heuristics --- the deleted draft included --- land on
+wrong exponents?  Because every mean-type interpretation lives in the
+large-deviation regime of the lacunary product, where the correct
+generating function is the pressure $q\mapsto\log\varrho_q$, not the
+CLT parabola.  The exact offset formula (immediate from the
+definitions) is
+\[
+ \kappa_0-\kappa_q=1+\frac{\log\varrho_q}{q\log2},
+\]
+giving the exact value $\tfrac12$ at $q=2$; a lognormal extrapolation of
+the CLT would instead predict
+$\kappa_0-\kappa_q^{\mathrm{LN}}=q\sigma^2/(2\log2)$ with
+$\sigma^2=\pi^2/4$.  The comparison:
+
+\begin{center}
+\small
+\begin{tabular}{@{}rlll@{}}
+\toprule
+$q$ & $\varrho_q$ & $\kappa_q$ (true) & $\kappa_q^{\mathrm{LN}}$
+(lognormal)\\
+\midrule
+$0.25$ & $0.872813205188$ & $2.936517$ & $2.706533$\\
+$0.5$  & $0.786052008490$ & $2.846103$ & $2.261569$\\
+$1$    & $0.661322602061$ & $2.748070$ & $1.371642$\\
+$2$    & $0.5$ (exact)    & $2.651496$ & $-0.408211$\\
+$4$    & $0.320194101601$ & $2.562241$ & $-3.967919$\\
+$\infty$ & ---            & $2.359015$ & $-\infty$\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+Already at $q=2$ the lognormal prediction is not merely off --- it is
+negative, i.e.\ it predicts moment \emph{growth} relative to the
+typical scale that the function cannot deliver: the deterministic
+Gelfond cap $P_n\le C(\sqrt3/2)^n$ truncates the upper tail that a
+lognormal law would need.  The pressure slope
+$(\log\varrho_q)/(q\log2)$, measured as $-0.785$, $-0.695$,
+$-0.597$ at $q=\tfrac14,\tfrac12,1$, bends away from its $q\to0$ limit
+$-1$ immediately: the moments leave the Gaussian bulk at once.  Three
+consequences deserve record.  First, the draft's exponent is exactly
+the $q=2$ row --- a correct constant attached to the wrong norm.
+Second, the draft's proposed $(\log x)^{-1/2}$ factor is refuted most
+decisively in this, its most favorable, reading: the shell RMS
+normalization converges to the \emph{constant} $A_2$ at a geometric
+rate, so no logarithmic factor of any exponent survives.  Third, the
+spacing of the four headline exponents
+$\kappa_\infty<\kappa_2<\kappa_1<\kappa_0$ is itself the multifractal
+signature of the dyadic dynamics; treating any one of them as ``the''
+decay rate discards the others' regimes, which is precisely the
+category error the original conjecture made.
 
 \section{Audit of the four documents}
 \label{sec:audit}
@@ -1454,7 +1981,15 @@ logarithmic mean.  This composite answer --- not any single formula ---
 is the correct resolution of \cite{mse-decay}; within it, the 2018
 answer of Negometyanov (a truncated $q$-Pochhammer representation,
 useful for bounded-range evaluation) contains no asymptotic law, as the
-question's author already noted at the time.
+question's author already noted at the time.  The two readings the four
+documents left underdeveloped are now treated in full: the lobe-maxima
+envelope decomposes into the same four regimes and rejoins the
+$\kappa_1$ gauge through the peak--integral comparison, with
+$\Theta_{\mathrm{peak}}=1.9237$ tying the peak and integral readings
+together (\cref{sec:lobes}); and the root-mean-square reading is exactly
+solvable --- closed subleading eigenvalue $-\tfrac14$, alternating
+$\bigO(1/x)$ convergence, total-energy identity --- yet still carries
+the dyadic phase obstruction (\cref{sec:rms}).
 \item \textbf{On the four documents.}  All are technically serious, and
 their factual overlap survived every numerical test applied here, in
 several cases to all printed digits.  Documents 3 and 4 answer the
@@ -1503,6 +2038,18 @@ $\varrho_3$ & $0.394896632370234$ & collocation\\
 $\varrho_4$ & $0.320194101601104$ & collocation\\
 $A_1$ & $0.0912661241$ & shell-mean limit (direct = spectral)\\
 $A_1^{\log}$ & $0.0938610$ & logarithmic-shell limit\\
+$A_2$ & $0.103008918$ & RMS shell constant, $A_2^2=0.0106108372$\\
+$\lambda_2(\Lop_2)$ & $-1/4$ (exact, double) & \cref{prop:L2-spectrum};
+rest of spectrum $<3\cdot10^{-4}$\\
+$\lambda_2(\Lop_1)$ & $-0.13435\pm0.0500\,\ii$ & collocation;
+$|\lambda_2|/\varrho_1=0.217$\\
+$\Theta_{\mathrm{peak}}$ & $1.92372(3)$ &
+$\sum_{\mathrm{shell}}E_n/\int_{\mathrm{shell}}|f|$, $k=9$--$14$\\
+$A_1^{\mathrm{peak}}$ & $0.175569$ & $\Theta_{\mathrm{peak}}A_1$
+(conjectural limit)\\
+$\int_\R f^2$ & $0.808873535967972$ & two independent computations,
+\cref{prop:energy}\\
+$L^2$ profile range & $[0.894,1.192]$ & step-$0.025$ grid, $n=13$\\
 profile range & $[0.9249,1.1133]$ & step-$0.025$ grid, $n=13$\\
 $H(1)$ & $0.55377127588881009534$ & 30-digit product\\
 $|H(3)|$ & $0.0462022991$ & direct product\\
@@ -1516,8 +2063,12 @@ LIL constant & $\pi/\sqrt2=2.2214415$ & corrected; printed value $\pi$\\
 \section{Verification scripts}
 \label{app:scripts}
 
-The complete scripts (\texttt{stage1.py}--\texttt{stage5.py}) are short,
-self-contained NumPy/SymPy programs; the essential kernels follow.
+The complete scripts (\texttt{stage1.py}--\texttt{stage6b.py}, in
+\nolinkurl{verification_scripts/}) are short, self-contained NumPy/SymPy
+programs; \texttt{stage6.py}/\texttt{stage6b.py} produce the lobe-maxima
+statistics, the $\Lop_2$ spectrum, the RMS constants and profile, the
+Plancherel check, and the $\kappa_q$ table of
+\cref{sec:lobes,sec:rms}.  The essential kernels follow.
 
 \begin{lstlisting}[style=pseudo,caption={Evaluation of $\log|f|$ and the
 exact-orbit variance measurement}]
