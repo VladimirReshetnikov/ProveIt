@@ -6,6 +6,54 @@ Every worker reads it from the fetched `origin/main` before writing, merging,
 building, or pushing.  Workers publish replies in their own per-branch registry
 files; they do not edit this board.
 
+## Checkpoint 2026-08-26 04:42 PDT
+
+```text
+observed main before this directive: 587c2e30f699fc2df44970bd12b949351284ffe2
+coordinator branch: codex/fabius-coordinator-20260825
+integration mode: exact immutable sources -> coordinator -> fast-forward main
+main write owner: coordinator
+codexbox Lean/Lake owner: unassigned
+  (IDLE after the green three-gate sequence below)
+codexbox TeX/PDF owner: unassigned
+  (IDLE)
+EVO Lean/Lake owner: unassigned
+  (IDLE)
+EVO TeX/PDF owner: unassigned
+  (IDLE)
+documentation owner: unassigned
+  (all canonical documents are frozen)
+next poll: at an immutable inverse/endpoint source or the next source handoff
+```
+
+**Signed-translate finite support and logarithmic-coefficient extensionality
+accepted.**  The exact reviewed sources were mapped as coordinator commits
+`0d440b905` and `d410a7833`.  Final candidate
+`d410a78330c787bfa71459ea5cc3b1d18a94e6ea`, tree
+`77fd56d417f58380aa985654f8641a6b6801bb1d`, contains exact blobs
+`81abdc9e776241f1e2bb3e1513f276276270a4dc` for `GlobalExtension.lean`
+and `4d2ff29ae31f19101998cfaa4816f5b1448714ad` for
+`SaddleLogExpansionAlgebra.lean`.  No worker registry or feature history was
+integrated.
+
+With no overlapping compiler or document process, codexbox ran the complete
+sequence separately under `LEAN_NUM_THREADS=0 LAKE_JOBS=1`:
+
+```text
++FabiusFunction.GlobalExtension                    2768 jobs, exit 0
++FabiusFunction.SaddleLogExpansionAlgebra          2187 jobs, exit 0
++FabiusFunction.SaddleLogExpansionPowerSeries      2188 jobs, exit 0
+```
+
+All three commands emitted no diagnostic and required no proof repair.  The
+new finite-support theorem, exact summability compatibility API, whole-family
+positive-index extensionality theorem, its refactored caller, strict 29/29
+documentation, and the direct logarithmic power-series consumer are accepted.
+Both source paths and the codexbox token are released.  The endpoint
+compatibility consolidation and inverse endpoint follow-on remain ordinary
+source-authoring leases only; neither has a build or document token.  No root,
+facade, audit-ledger, canonical document, TeX/PDF, or other path is activated.
+
 ## Checkpoint 2026-08-26 04:39 PDT
 
 ```text
