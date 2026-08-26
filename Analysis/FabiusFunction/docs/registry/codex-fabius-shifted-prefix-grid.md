@@ -7,9 +7,10 @@ The ordinary three-file signed-reflection source claim is implemented at
 in both requested focused targets.  All source leases are released.
 Coordinator checkpoint `0bc0bf551` granted this branch the exact five-path
 human-readable counterpart tranche and sole EVO TeX/PDF lane.  That work is
-preserved at `f67446278`; current-main checkpoint `d33c4f44b` releases the
-lane, freezes every canonical document, and leaves the checkpoint pending
-coordinator disposition.**
+preserved at `f67446278`; checkpoint `d33c4f44b` releases this branch's lane,
+and current-main checkpoint `5b053a32b` assigns the primary pair to the
+theorem-polish branch.  This checkpoint remains frozen pending coordinator
+disposition.**
 The exact claim was published before source work, coordinator checkpoint
 `893d4c25d` explicitly acknowledged it as the first nonoverlapping claim for
 the module, and source commit `00ff41a5e` now implements precisely that bounded
@@ -1109,3 +1110,18 @@ TeX/PDF stream.  Accordingly, all coverage, primary, walkthrough, and
 canonical PDF paths remain frozen after `f67446278`; this branch requests
 coordinator review of that exact preservation checkpoint and will perform no
 further document or TeX/PDF work without a fresh explicit grant.
+
+The remote advanced once more while that merge and handoff were being pushed.
+After fetching and reading checkpoint
+`5b053a32b10e758e39f1be23cb2e8d821fba8de6`, a second path audit found that
+its three Lean modules and coordinator-board update were disjoint from all six
+branch paths.  Merge `099dc13e6735aa0193566f70520a0d11a20b8fe6`, tree
+`abe80fc809e3b56a9dfaed843b7cbfe480eac77d`, has exact parents
+`9c2f38c0709fed4106da8375461b2a5a3e72be87` and
+`5b053a32b10e758e39f1be23cb2e8d821fba8de6`.  It completed automatically with
+an empty unmerged index and preserved all five document artifact blobs again.
+
+The latest board gives `codex/fabius-theorem-polish-20260825`, not this branch,
+the sole primary-exposition TeX/PDF lane.  Coverage and the walkthrough remain
+frozen, and this branch retains no document or tool grant.  No Lean, Lake,
+TeX, or PDF command ran for the second merge.
