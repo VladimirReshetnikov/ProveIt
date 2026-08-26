@@ -636,9 +636,10 @@ the degree and highest coefficient uniformly: the natural degrees are
 
 Only the `j = 0` convolution summand can reach the new highest degree.  Every
 positive-index summand has degree at most the preceding order, so the top
-coefficient obeys the scalar recurrence
+coefficient obeys, for `n >= 1`, the scalar recurrence
 `L_(n+1) = -(n / (n + 1)) * (log 2)^(-1) * L_n`.  This gives a short
-structural proof rather than expanding individual polynomials.
+structural proof rather than expanding individual polynomials.  The exceptional
+base step has empty convolution and gives `L_1 = (log 2)^(-2)` directly.
 
 ```text
 SYNC Fabius
