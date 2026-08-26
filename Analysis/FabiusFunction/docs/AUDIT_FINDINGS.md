@@ -132,6 +132,9 @@ below rather than deleted.
 | Exact right-half-cell saturation and endpoint normalization of every centered spline | `504ab4055` | Current module blob validated by the same two serialized builds at `60458909a`, both exit 0. |
 | Four redundant `CharZero` binders in `FabiusQBinomialTaylor` | `a95bd1913`; exact source extraction `a6fa59157` | `+FabiusFunction.FabiusQBinomialTaylor` and `+FabiusFunction.PaperFabiusAsymptotic` at `a6fa59157`, both exit 0; later complete `+FabiusFunction` aggregate at `9887ea584`, exit 0. |
 | Sharp lower-Lambert stationary threshold, including the branch endpoint and equality classification | `1da2fde22` | Current module blob validated by serialized `+FabiusFunction.LowerLambertW` at `4c6bbac41`, exit 0. |
+| Public analytic bridge for `fabiusAtInverseTwoPow` | `9458b1949` | Serialized `+FabiusFunction.DyadicAnalytic` and `+FabiusFunction.Paper05442` at integration merge `04d619814`, both exit 0. |
+| Strict sign of `gammaZetaConstant` and strict first-Stieltjes bound | `ec23d663f`, `991add419` | Serialized `+FabiusFunction.BoseFinitePartIntegral`, `+FabiusFunction.PeriodicMean`, and `+FabiusFunction.PaperFabiusAsymptotic` at `04d619814`, all exit 0. |
+| Four duplicated periodic dyadic-exponential helpers | `c7c2321bc` | Serialized `+FabiusFunction.PeriodicRegularity`, `+FabiusFunction.PeriodicSmooth`, and `+FabiusFunction.PaperFabiusAsymptotic` at `04d619814`, all exit 0. |
 
 The original audit workstream's two builds ran on a peer's build slot at the
 SHAs named above, in a sparse detached worktree whose `.lake/packages` is a
@@ -823,7 +826,12 @@ Two corrections to the rationale:
 
 ### Cluster: dyadic
 
-#### The exact value `F(2⁻ⁿ) = fabiusAtInverseTwoPow n` has no public statement, only a private one
+#### DONE — The exact value `F(2⁻ⁿ) = fabiusAtInverseTwoPow n` has no public statement, only a private one
+
+**DONE** in `9458b1949`.  `fabiusAtInverseTwoPow_cast` now states the
+all-`n` bridge publicly in `DyadicAnalytic.lean`, including `n = 0`.  The
+focused module and `Paper05442` both compile at integration merge
+`04d619814`.
 
 Confidence high.  `DyadicAnalytic.lean:287`, `DyadicAnalytic.lean:443`, `AnalyticMoments.lean:451`
 
@@ -939,7 +947,12 @@ theorem ...
 
 ### Cluster: negative-laplace
 
-#### The finite-part integral identity already proves an unconditional sign for the Euler–Stieltjes combination: `gammaZetaConstant ≤ 0`, i.e. `γ₁ ≤ π²/12 − γ²/2`
+#### DONE — The finite-part integral identity already proves an unconditional sign for the Euler–Stieltjes combination: `gammaZetaConstant ≤ 0`, i.e. `γ₁ ≤ π²/12 − γ²/2`
+
+**DONE**, in the stronger strict form, by `ec23d663f` and `991add419`.
+The public APIs are `gammaZetaConstant_neg` and
+`firstStieltjesConstant_lt`; their focused module, direct importer, and
+asymptotic paper facade all compile at integration merge `04d619814`.
 
 Confidence high.  `BoseFinitePartIntegral.lean:536`, `BoseFinitePartIntegral.lean:33`, `BoseFinitePartIntegral.lean:37`, `StieltjesConstant.lean:130`, `NegativeLaplace.lean:52`
 
@@ -1276,7 +1289,14 @@ private theorem ...
 
 ### Cluster: fourier-legendre
 
-#### Four private helper lemmas are byte-identical copies between PeriodicRegularity.lean and PeriodicSmooth.lean
+#### DONE — Four private helper lemmas are byte-identical copies between PeriodicRegularity.lean and PeriodicSmooth.lean
+
+**DONE** in `c7c2321bc`.  The four shared helpers are public in
+`PeriodicRegularity.lean`, the byte-identical `PeriodicSmooth.lean` copies are
+deleted, and all existing public consumer signatures remain unchanged.  The
+implemented nonunit theorem uses the exact domain `s ≠ 0` (strictly broader
+than the proposal-era `0 < s`); the focused modules and asymptotic paper facade
+compile at integration merge `04d619814`.
 
 Confidence high.  `PeriodicRegularity.lean:86`, `PeriodicRegularity.lean:91`, `PeriodicRegularity.lean:185`, `PeriodicRegularity.lean:199`, `PeriodicSmooth.lean:65`
 
