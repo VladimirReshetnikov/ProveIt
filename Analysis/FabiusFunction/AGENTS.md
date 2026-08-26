@@ -2,11 +2,11 @@
 
 This directory is sometimes developed by several agents concurrently.
 Whether multi-agent coordination is in effect is stated by exactly one file:
-[`docs/coordination/STATUS.md`](docs/coordination/STATUS.md).  While it says
+[`AGENTS/STATUS.md`](AGENTS/STATUS.md).  While it says
 `state: OFF` — the current state — agents work here one at a time and no
 coordination rule binds anyone.  When the user flips it to `state: ON`, the
 lightweight campaign protocol in
-[`docs/coordination/PROTOCOL.md`](docs/coordination/PROTOCOL.md) applies:
+[`AGENTS/PROTOCOL.md`](AGENTS/PROTOCOL.md) applies:
 claim-free optimistic Lean work, one standing owner per canonical document, a
 lock-file build mutex, a 2-hour integration-latency cap, and live bookkeeping
 on a dedicated orphan board branch — never on `main`.  The protocol carries
@@ -17,10 +17,10 @@ Everything below — the working rules from experience, the documentation
 policy, and the Lean build guidance — is ordinary project policy and remains
 in effect at all times, campaign or not.
 
-The first (2026-08) campaign ran a heavier v1 protocol, archived in
-[`docs/COLLABORATION.md`](docs/COLLABORATION.md),
-[`docs/MULTI_AGENT_COORDINATION_PROPOSAL.md`](docs/MULTI_AGENT_COORDINATION_PROPOSAL.md),
-and the git history of `docs/registry/`.
+The first (2026-08) campaign ran a heavier v1 protocol; its rules and
+rationale survive only in git history — the deleted `docs/COLLABORATION.md`
+and `docs/MULTI_AGENT_COORDINATION_PROPOSAL.md`, and
+`git log -- Analysis/FabiusFunction/docs/registry/`.
 
 ## Working rules from experience (always in effect)
 
@@ -29,8 +29,8 @@ The rules that have actually cost time so far:
 1. **Fetch and inspect `origin/main` before you start, and again before editing
    any module you did not create.** Merge it when the worktree is clean.  For a
    dirty shared worktree, freeze every writer and follow the path-overlap and
-   Git-owner protocol in `docs/COLLABORATION.md`; never merge or stash behind
-   another writer's back.  The same refactor has already been performed
+   Git-owner protocol (formerly in `docs/COLLABORATION.md`, now in its git
+   history); never merge or stash behind another writer's back.  The same refactor has already been performed
    independently three times by three branches.
 
 2. **A lemma belongs in the upstream-most module that can state it** — facts
@@ -39,8 +39,8 @@ The rules that have actually cost time so far:
    `Arithmetic.lean`, or `Differential.lean` invalidates all 172 modules and
    is the edit class most likely to collide, so announce it (on the board
    during a campaign, to the user otherwise) and batch such moves
-   deliberately; see the placement-cost amendment in
-   `docs/COLLABORATION.md`.
+   deliberately; see the placement-cost amendment preserved in the git
+   history of `docs/COLLABORATION.md`.
 
 3. **Say in the commit message what you actually compiled.** Committing
    uncompiled work is fine and often necessary — a full rebuild costs the
@@ -98,7 +98,7 @@ compiled PDF is committed with it.**
    write-up of a theorem, a derivation, a table of coefficients, a numerical
    study, or an expository account of any part of the development belongs in a
    `.tex` file. Markdown remains correct for `README.md`, `AGENTS.md`,
-   `docs/PAPER_COVERAGE.md`, `docs/COLLABORATION.md`, `docs/coordination/*.md` and
+   `docs/PAPER_COVERAGE.md`, `AGENTS/*.md` and
    similar repository bookkeeping, which contain no displayed mathematics.
 
 2. **Style.** New documents reuse the preamble of
