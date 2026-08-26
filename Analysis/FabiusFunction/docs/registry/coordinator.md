@@ -6,23 +6,23 @@ Every worker reads it from the fetched `origin/main` before writing, merging,
 building, or pushing.  Workers publish replies in their own per-branch registry
 files; they do not edit this board.
 
-## Checkpoint 2026-08-25 21:52 PDT
+## Checkpoint 2026-08-25 22:03 PDT
 
 ```text
-observed main before this directive: 03540bab399836bb87e338ce970b21b4c46f5eaa
+observed main before this directive: 29791005881f1563eba9618e6d75b9db50b045a2
 coordinator branch: codex/fabius-coordinator-20260825
 integration mode: feature branches -> coordinator -> fast-forward main
 main write owner: coordinator
 codexbox Lean/Lake owner: coordinator
-  (IDLE after normalized-L1 validation)
+  (IDLE after shifted-Fourier validation)
 codexbox TeX/PDF owner: unassigned
-  (IDLE; assigned document stream is on EVO)
+  (IDLE)
 EVO Lean/Lake owner: unassigned
   (IDLE after shifted-prefix validation)
-EVO TeX/PDF owner: codex/fabius-shifted-prefix-grid
-  (ACTIVE; one sequential primary/walkthrough stream, may coexist with EVO Lean)
-documentation owner: codex/fabius-shifted-prefix-grid
-  (SOLE OWNER for the exact coverage + primary + walkthrough grant below)
+EVO TeX/PDF owner: unassigned
+  (IDLE after user-directed release of the shifted-prefix document grant)
+documentation owner: unassigned
+  (all canonical documents frozen; conditional primary reservation below)
 next poll: after the next advertised source or documentation checkpoint
 ```
 
@@ -59,21 +59,20 @@ cherry-pick is needed.
    and registry reports `Not yet validated`.  A board-assigned document owner
    may run one sequential LaTeX/PDF tool stream on its assigned host without
    consuming that host's Lean token, and that stream may coexist with the one
-   assigned Lean build.  The current document owner holds the sole EVO stream
-   for the exact primary/walkthrough tranche below.  Do not launch parallel
-   TeX passes or terminate another process.
+   assigned Lean build.  No document owner or TeX/PDF stream is currently
+   assigned.  Do not launch a TeX pass or terminate another process.
 3. The following remain serialized and require an explicit board grant:
    `AGENTS.md`, `README.md`, `docs/COLLABORATION.md`,
    `docs/MULTI_AGENT_COORDINATION_PROPOSAL.md`, `docs/PAPER_COVERAGE.md`,
    `docs/AUDIT_FINDINGS.md`, this board, the root aggregate
    `Lean/FabiusFunction.lean`, and every primary-exposition, walkthrough, or
    canonical-frontier TeX/PDF path.  Any path marked hot, frozen, or
-   single-owner below is also unavailable to ordinary claims.  The exact
-   coverage/primary/walkthrough phase granted below is the sole open document
-   exception.  Every other canonical document path, especially the frontier,
-   remains frozen.  The canonical frontier PDF remains single-owner whenever
-   a future frontier owner is assigned.  Host Lean/Lake ownership is tracked
-   separately from the current lightweight EVO document lane.
+   single-owner below is also unavailable to ordinary claims.  There is no
+   open document exception: coverage, primary, walkthrough, and frontier are
+   all frozen.  The primary TeX/PDF pair is conditionally reserved for the
+   theorem-polish request below, but that is not an editing or tool grant.
+   Host Lean/Lake ownership is tracked separately from any future lightweight
+   document lane.
 4. Preserve dirty work before merging.  Never stash, reset, discard, or
    overwrite it.  A checkpoint/WIP commit is acceptable on a feature branch if
    its message states exactly what remains uncompiled or unfinished.  After a
@@ -476,6 +475,27 @@ the stale request fields.  Separate serialized builds of
 warnings.  The source lease and codexbox token are released; the excluded
 `Regularity`/private-helper cleanup remains outside this tranche.
 
+Registry-only claim `29e465362` advertised a new ordinary one-file tranche in
+`PoissonSummation.lean`.  It proposes
+`rvachevFourier_real_iteratedDeriv_shiftedDecay` for each `(k n : ℕ)`, with a
+strictly positive constant bounding the `n`th real derivative by
+`C * ((1 + |x|) ^ k)⁻¹`, and the order-zero wrapper
+`rvachevFourier_real_shiftedDecay`.  Exact preflight accepts the Schwartz
+seminorm argument, shifted normalization, zero-order and zero-weight cases,
+placement, imports, and duplicate scan.  The constant may depend on
+`F`, `hF`, `k`, and `n`; no uniformity in derivative order or on the complex
+plane may be claimed.  Exact source commit `fe7756703` implements the two
+declarations and factors the existing homogeneous proof through a private
+Schwartz realization while preserving every old public header and import.
+Two independent exact reviews accept the finite-seminorm constant, derivative
+bridge, reciprocal inequality, all zero-order/zero-weight cases, exact
+preimage, API, and collision scan.  The coordinator integrated only that
+source as `49ddce559`.  Separate serialized builds of
+`+FabiusFunction.PoissonSummation` (3195 jobs) and its sole direct public facade
+`+FabiusFunction.Paper05442` (3417 jobs) both exited 0 without warnings.  The
+source path and codexbox token are released.  No document, facade, root, import,
+or other path changed; the branch's historical feature lineage was not merged.
+
 ### `codex/fabius-theorem-polish-20260825`
 
 The prior task is complete and its complete source tranche is integrated on
@@ -576,6 +596,21 @@ coordinator integrated it as `853a09a80`.  A serialized
 reflection proof.  The source lease and codexbox token are released; no
 document, facade, or root path changed.
 
+**Conditional primary-document reservation.**  At the user's direction, the
+primary exposition TeX/PDF pair is reserved for a future bounded
+theorem-polish correction after that branch publishes its exact two-source Lean
+checkpoint and the coordinator accepts it on review.  The proposed section may
+then print the exact 2022 MSE compact uncorrected Lambert formula, explain that
+its ratio is not one because it omits the nonconstant periodic `Psi`, print the
+corrected compact formula retaining `W_{-1}`, and cross-reference only exact
+accepted Lean names.  This reservation is **not** an active document lease or
+TeX token: until a later board checkpoint activates it,
+`docs/Fabius_Function_and_Rvachev_Up/Fabius_Function_and_Rvachev_Up.tex` and
+its matching PDF remain frozen.  The branch must first advertise and implement
+the exact two Lean paths/declarations in its own registry, push an immutable
+source handoff, and obtain source review.  It may not touch coverage,
+walkthrough, frontier, README/AGENTS, control files, or any other document.
+
 ### `codex/fabius-effective-bounds-20260825`
 
 Registry-only claim `bc14ab696` is approved for exactly
@@ -662,12 +697,15 @@ comparison with factors `exp (min (t - s) 0)` and
 `exp (max (t - s) 0)`, positivity transport, the half-moment specialization,
 placement, imports, and duplicate scan; `fabiusLaplaceMoment_zero_pos_all` is
 only its degree-zero special case.  Exact source commit `d9598f3b6` now
-implements the four declarations in the claimed module and is frozen under
-exact review.  It remains unelaborated and has no build token.  After a green
-immutable-source disposition, the intended gates are
-`+FabiusFunction.UnitLaplaceMomentBounds` and then
-`+FabiusFunction.LaplaceMomentBounds`.  No document, facade, root, import, or
-other path is authorized by either source claim.
+implements the four declarations in the claimed module and is integrated as
+`7b892b41c`.  Two independent reviews accept the sign cases, endpoint behavior,
+positivity equivalence, half-moment specialization, exact preimage, imports,
+and API preservation.  Separate serialized builds of
+`+FabiusFunction.UnitLaplaceMomentBounds` (3189 jobs) and its sole direct
+importer `+FabiusFunction.LaplaceMomentBounds` (3417 jobs) both exited 0.  They
+reported only the already-recorded nonblocking `unnecessarySimpa` linter from
+`ProbabilityLaplaceMoments.lean`.  The path and codexbox token are released;
+no document, facade, root, import, or other path was changed.
 
 ### `codex/fabius-shifted-prefix-grid`
 
@@ -823,45 +861,16 @@ only the exact source as `f66ef224b`.  Separate serialized builds of
 warnings.  All three source paths and the codexbox token are released.  The
 former future request is dispositioned by the bounded grant below.
 
-**Relaxed sole documentation grant.**  Registry request `b6ebc310c` passes two
-independent semantic/collision audits.  After merging this current-main
-checkpoint and verifying the unchanged base blobs, this branch is sole owner
-of exactly:
-
-- `docs/PAPER_COVERAGE.md`;
-- `docs/Fabius_Function_and_Rvachev_Up/Fabius_Function_and_Rvachev_Up.tex`
-  and its matching `.pdf`;
-- `docs/fabius_lean_walkthrough/fabius_lean_walkthrough.tex` and its matching
-  `.pdf`; and
-- its own registry.
-
-The owner may make bounded source repairs, commit, push its feature branch, and
-run sequential rebuild iterations without per-hunk micro-grants.  It holds the
-sole lightweight EVO TeX/PDF stream, which may coexist with one separately
-assigned EVO Lean build; it must run no Lean/Lake and no overlapping TeX
-process.  Run at least three sequential `pdflatex` passes for the primary and
-then three for the walkthrough, restarting/settling a document after any TeX
-repair.  Never resolve or copy a PDF side; rebuild each artifact from its owned
-current-main TeX and commit matching TeX/PDF pairs only.
-
-The content must state the literal hypotheses and signed reciprocity formula,
-the reflected-zero iff, and the exact Lean names.  Treat `k = 0` as
-`thueMorseSign_dyadic_complement` and `d = 0` as the statement-level
-specialization recovering the existing left boundary, while keeping the
-terminal zero run and right boundary logically separate.  Do not claim the
-pre-run window is zero-free or assert polynomial palindromicity.  Add the
-missing `ThueMorsePrefix.lean` walkthrough row and make the coverage mapping
-distinguish reciprocity, zero iff, zero-run/endpoint APIs, left boundary, and
-right boundary.
-
-Before handoff, require `git diff --check`, document audit, unique/resolved
-labels/references/citations, balanced environments, settled final logs, font
-and text extraction, and visual inspection of every changed page; reject new
-local overflow or mismatched artifacts.  Record commands, exits, hashes,
-sizes, pages, and diagnostics.  The frontier, README/AGENTS/control/audit,
-Lean/root, peer registries, and every other path remain frozen.  Push feature
-only; the coordinator will integrate the bounded document checkpoint rather
-than wholesale-merging this branch's long history.
+**Released documentation request.**  Registry request `b6ebc310c` passed two
+independent semantic/collision audits and was briefly granted the exact
+coverage/primary/walkthrough paths above.  The user has now clarified that no
+documentation-owner agent is active.  The grant and EVO TeX/PDF stream are
+therefore released before any canonical document edit or render.  At pushed
+feature tip `8b48a970a`, none of the five formerly granted canonical paths
+differs from `main`; only the branch's own registry preserves the request.
+`PAPER_COVERAGE.md`, both primary files, and both walkthrough files return to
+the frozen pool.  The signed-reciprocity mapping remains a documentation
+backlog item and gives this branch no continuing ownership.
 
 ### `codex/fabius-exposition-integration`
 
@@ -1029,10 +1038,10 @@ integrated, compiled, and released.
 
 The both-papers product-positivity consolidation, theorem-polish normalized
 Laplace-reflection tranche, and shifted-prefix signed dyadic-reflection tranche
-are also integrated and green.  The total binary-reduction and normalized-`L¹`
-tranches are now integrated, compiled, and released as well.  Effective-bounds
-has frozen Unit-Laplace tilt-comparison source checkpoint `d9598f3b6` under
-exact review; it has no build token yet.
+are also integrated and green.  The total binary-reduction, normalized-`L¹`,
+and Unit-Laplace tilt-comparison tranches are now integrated, compiled, and
+released as well.  The disjoint both-papers shifted-Fourier tranche is also
+integrated, compiled, and released; it grants no document ownership.
 
 Theorem-polish source commit `665b6bce` is integrated as `c80f61c90`, repaired
 without statement changes at `6b6757e90`, and accepted after its focused
@@ -1041,13 +1050,13 @@ released.
 
 Frontier source checkpoint `6397a0d6a` is already on `main` without a matching
 rebuilt PDF historically; accepted merge `192c423bb` now closes that mismatch
-with the reviewed 188-page artifact.  The shifted-prefix branch holds the sole
-relaxed EVO document lane for the exact coverage/primary/walkthrough grant;
-the frontier and every other canonical path remain frozen.  EVO Lean remains
-idle and may coexist with that one sequential TeX stream.  Ordinary
-nonoverlapping feature claims may continue under the shared protocol, but no
-Lean/Lake process may start on either physical host until this board assigns
-that host's currently idle token.
+with the reviewed 188-page artifact.  The user-directed shifted-prefix document
+release leaves every canonical document path frozen and both TeX/PDF lanes
+idle.  The primary pair is only conditionally reserved for theorem-polish after
+its exact two-source Lean checkpoint is implemented and accepted; it is not
+currently writable.  Ordinary nonoverlapping feature claims may continue under
+the shared protocol, but no Lean/Lake or document process may start on either
+physical host until this board assigns that host's currently idle token.
 
 ## Build-token log
 
@@ -1230,6 +1239,18 @@ warnings.
 For the normalized-`L¹` transfer bounds, separate serialized builds at
 `caed8800e` of `+FabiusFunction.QuantitativeSaddle` (2782 jobs) and
 `+FabiusFunction.SaddleAllOrders` (2783 jobs) both exited 0 without warnings.
+
+For the Unit-Laplace tilt comparison, separate serialized builds at
+`7b892b41c` of `+FabiusFunction.UnitLaplaceMomentBounds` (3189 jobs) and
+`+FabiusFunction.LaplaceMomentBounds` (3417 jobs) both exited 0.  Both reported
+only the inherited nonblocking `unnecessarySimpa` linter in
+`ProbabilityLaplaceMoments.lean`.  Two preliminary commands were issued from
+nested directories without a Lake configuration; both exited before invoking
+Lean and supply no validation evidence.
+
+For shifted real-axis Fourier decay, separate serialized builds at
+`49ddce559` of `+FabiusFunction.PoissonSummation` (3195 jobs) and
+`+FabiusFunction.Paper05442` (3417 jobs) both exited 0 without warnings.
 
 On EVO, exact shifted-prefix merge `4367a7f86` and tree `db635e6a073b`
 preserved source commits `8021c555f` and `f7152d5fc`.  Separate sequential
