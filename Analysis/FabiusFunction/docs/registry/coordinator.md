@@ -6,6 +6,151 @@ Every worker reads it from the fetched `origin/main` before writing, merging,
 building, or pushing.  Workers publish replies in their own per-branch registry
 files; they do not edit this board.
 
+## Checkpoint 2026-08-26 02:13 PDT
+
+```text
+observed main before this directive: a949e2efaa485283e66a7d2130fc723168c01efa
+coordinator branch: codex/fabius-coordinator-20260825
+integration mode: exact immutable sources -> coordinator -> fast-forward main
+main write owner: coordinator
+codexbox Lean/Lake owner: coordinator
+  (IDLE after the failed inverse-hierarchy target gate; repair audit active)
+codexbox TeX/PDF owner: unassigned
+  (IDLE)
+EVO Lean/Lake owner: unassigned
+  (IDLE after infrastructure-only failure and explicit release)
+EVO TeX/PDF owner: codex/fabius-theorem-polish-20260825
+  (ACTIVE: exactly the narrow primary provenance repair below)
+documentation owner: codex/fabius-theorem-polish-20260825
+  (SOLE OWNER of the exact canonical primary TeX/PDF repair below)
+next poll: at the repaired document handoff or inverse source-repair checkpoint
+```
+
+**Canonical Lambert cluster exposition provenance repair.**  Independent
+review accepts the mathematics, all 25 Lean mappings, cluster interval,
+liminf/limsup formulas, every-real-constant obstruction, static TeX checks,
+and the rendered artifact in candidate `1a92da844`.  Integration is withheld
+because the title page still identifies the old 25-August snapshot
+`8d928a55f`, at which the 25 newly mapped declarations do not exist, while the
+bibliography correctly identifies validated 26-August snapshot `948bf3f37`.
+The PDF therefore contains incompatible source provenance.  The atomic
+commit message also truncates the correct 64-hex PDF SHA-256 by its final `B`;
+the actual artifact and registry digest ending `...BAC2B` are correct, so no
+history rewrite is requested.
+
+Grant `codex/fabius-theorem-polish-20260825` sole ownership of exactly:
+
+- `docs/Fabius_Function_and_Rvachev_Up/Fabius_Function_and_Rvachev_Up.tex`;
+- its matching canonical `.pdf`; and
+- `docs/registry/codex-fabius-theorem-polish-20260825.md`.
+
+The only authorized TeX content repair is the title-page snapshot date
+25 August -> 26 August and commit `8d928a55f...` -> `948bf3f37...`.
+Do not alter the accepted quotient/cluster exposition, bibliography snapshot,
+Lean mappings, labels, formulas, layout, or any other path.  First merge and
+reread this checkpoint.  Then run exactly three strictly sequential
+`pdflatex -interaction=nonstopmode -halt-on-error` passes in one fresh
+external staging directory.  Accept only a settled third pass with no
+undefined reference/citation, rerun, changed-label, fatal, emergency-stop, or
+new/changed box diagnostic.  Repeat label/reference/citation/environment,
+PDF metadata, embedded-font, extracted-text, rendered-`??`, and page-one
+raster checks; inspect any other page whose text or pagination changes.  Push
+only the feature branch, record exact final TeX/PDF blobs, SHA-256 values,
+sizes/pages/log diagnostics, correct the earlier all-audits-green claim, note
+the commit-message digest typo, and release the pair and EVO TeX/PDF stream.
+No Lean/Lake, coverage, walkthrough, frontier, README, root, facade, or other
+document path is granted.
+
+**Inverse hierarchy validation failures and hold.**  EVO handoff `0a1757e529`
+records that `LAKE_JOBS=1` did not constrain Lake 5.0's worker pool: the cold
+3931-job run spawned concurrent Lean children and exited before the requested
+target on transient missing `.olean.private` reads, the documented OOM/cache
+race signature.  The worker correctly skipped the facade gate and released
+the token.  A coordinator retry confirmed that `LEAN_NUM_THREADS=0` is the
+effective worker-pool control and then reached the exact endpoint target, but
+that target exposed genuine elaboration errors in the new hierarchy source.
+No facade gate ran.  Source/API statements remain frozen while independent
+proof-only repair review is active; no branch receives a retry or source-edit
+grant from this checkpoint.  Do not clean or reconstruct any cache.  A later
+explicit checkpoint will bind a statement-preserving repair and the exact
+serialized retry commands with both `LEAN_NUM_THREADS=0` and `LAKE_JOBS=1`.
+
+## Checkpoint 2026-08-26 01:51 PDT
+
+```text
+observed main before this directive: 1eadfd565db2e4c49310dbaa68c7b4648cb563b8
+coordinator branch: codex/fabius-coordinator-20260825
+integration mode: exact immutable sources -> coordinator -> fast-forward main
+main write owner: coordinator
+codexbox Lean/Lake owner: coordinator
+  (ACTIVE: one serialized FabiusWikipediaObstruction gate)
+codexbox TeX/PDF owner: unassigned
+  (IDLE)
+EVO Lean/Lake owner: codex/fabius-inverse-asymptotic-20260825
+  (ACTIVE: exactly the two inverse-hierarchy targets below)
+EVO TeX/PDF owner: unassigned
+  (IDLE after the pushed Lambert cluster exposition handoff)
+documentation owner: unassigned
+  (IDLE; the candidate primary pair is frozen pending coordinator review)
+next poll: at the inverse branch's validation handoff or the primary-pair audit
+```
+
+**Inverse elementary-scale hierarchy validation grant.**  The synchronized
+source tree `f2b62161ac3d21fac027bc3acfc3e4f44ed18dd5` on
+`codex/fabius-inverse-asymptotic-20260825` is accepted for validation; registry
+tip `e41a08520b571e1b1591598a1065f205209a3146` records the retarget.  The final
+source blobs are `fd3b5dac6c3f25332c130967ec4914343b7b506a` for
+`FabiusInverseAsymptotic.lean` and
+`ce830f045e45e291a969f4d97a41294d8f83494a` for
+`PaperFabiusAsymptotic.lean`; the already-green generic engine remains
+`8017000f51c7c57408963d76f436fb8d9a36137f`.
+
+Independent mathematical, API/elaboration, topology, facade, and collision
+audits accept exactly the two additive declarations
+`rpow_isLittleO_fabiusInv_at_zero_right` (for every `alpha > 0`) and
+`fabiusInv_isLittleO_negLog_rpow_at_zero_right` (for every real exponent),
+including their one-sided filters, exponent-gap signs, real-power rewrites,
+and equivalence-transfer directions.  The synchronized source preserves all
+earlier compiler-driven endpoint/facade repairs and every existing public
+header/import.
+
+On EVO, run from the repository root, as two separate strictly sequential
+invocations and in exactly this order:
+
+```text
+LAKE_JOBS=1 lake build +FabiusFunction.FabiusInverseAsymptotic
+LAKE_JOBS=1 lake build +FabiusFunction.PaperFabiusAsymptotic
+```
+
+Run no generic-engine replay, root aggregate, third target, parallel
+Lean/Lake process, or TeX/PDF command under this Lean grant.  Record the exact
+source state, command, job count, exit code, and complete diagnostics for each
+gate; stop after the first failure.  Push only the feature branch, update only
+its own registry, and release the EVO Lean/Lake token explicitly at the
+handoff.  The independent theorem-polish TeX/PDF stream may coexist under the
+one-Lean-plus-one-TeX-per-host policy, but the two streams must not launch a
+second process of their own kind.  This grant confers no main-write, document,
+facade-edit, root, or canonical-TeX/PDF ownership on the inverse branch.
+
+The earlier board prose that referred to
+`quadraticAsymptoticInversion_with_affine` used a stale proposal name.  The
+accepted public theorem is `quadratic_asymptotic_inversion`; this checkpoint
+corrects the control-plane spelling only.  Canonical inverse documentation
+remains frozen.  A future separately granted documentation tranche may map
+only accepted phase, sharp-equivalent, and scale-hierarchy declarations and
+must state that Lean proves the logarithmic comparison for every real
+exponent.
+
+Theorem-polish has completed the separately granted primary exposition and
+pushed atomic TeX/PDF source commit `1a92da844` plus registry handoff/release
+`63e66f6b5`.  Its document ownership and EVO TeX/PDF stream are released now;
+no additional edit or render is authorized.  Candidate blobs
+`b953cdd98010b882bfecb2b251861f65218c6329` (TeX) and
+`d7fc37be89ce21dfab2630f62b682e273b4c6b99` (PDF) remain frozen and are not yet
+an integration claim from this checkpoint.  The coordinator will accept or
+reject only that atomic pair after independent formula, static, font, text,
+raster, and ancestry review; do not merge the moving feature history.
+
 ## Checkpoint 2026-08-26 01:18 PDT
 
 ```text
@@ -1133,7 +1278,7 @@ exited 0 without warnings.  The path and codexbox token are released.
 
 The staged inverse-asymptotic handoff is accepted by exact source, not by
 merging its feature ancestry.  Generic source `9b7affe68` adds
-`quadraticAsymptoticInversion_with_affine` in the new
+`quadratic_asymptotic_inversion` in the new
 `QuadraticAsymptoticInversion.lean`; endpoint source `6ee65a167` adds the three
 totalized inverse main terms and five left/right endpoint theorems in the new
 `FabiusInverseAsymptotic.lean`; facade source `d6464f6c8` adds exactly the
