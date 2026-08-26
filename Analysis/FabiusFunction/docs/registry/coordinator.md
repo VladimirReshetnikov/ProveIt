@@ -6,10 +6,10 @@ Every worker reads it from the fetched `origin/main` before writing, merging,
 building, or pushing.  Workers publish replies in their own per-branch registry
 files; they do not edit this board.
 
-## Checkpoint 2026-08-25 17:00 PDT
+## Checkpoint 2026-08-25 17:04 PDT
 
 ```text
-observed main before this directive: 9887ea58460aaeb928ffe27a39e50b39d6d4feb7
+observed main before this directive: 431f6c17376fc89ccd9eded293b65cb5624e5b94
 coordinator branch: codex/fabius-coordinator-20260825
 integration mode: feature branches -> coordinator -> fast-forward main
 main write owner: coordinator
@@ -133,9 +133,14 @@ and expired current-tree/page-count statements are now labeled explicitly.
 
 The clean feature tip `47f5c368e` is an ancestor of current main.  First fetch
 and fast-forward the clean feature branch to this board; do not create a merge
-commit and do not proceed if the worktree is dirty.  Use current main's
-203-page source as semantic authority and `8142ccb19` only as a donor.  Leave
-the root README and every primary/walkthrough path untouched.
+commit and do not proceed if a tracked path is dirty or any path is unmerged.
+The sole cleanliness exception is the two already registry-recorded untracked
+`*_build.pdf` copies: they may remain only if their SHA-256 values still match
+the corresponding committed PDFs exactly and no other untracked path exists.
+Leave those copies untouched during stage one; a mismatch or any additional
+dirty path blocks work and must be reported in the branch registry.  Use
+current main's 203-page source as semantic authority and `8142ccb19` only as a
+donor.  Leave the root README and every primary/walkthrough path untouched.
 
 The source checkpoint must preserve current q-Appell/Bromwich material,
 sparse-bit qualification, random-law warning, Thue--Morse cancellation and
