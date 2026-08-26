@@ -66,21 +66,10 @@ theorem halfMomentNumerator_odd_index_eq (n : ℕ) :
   rw [halfMoment_odd_eq_moment, moment_eq_momentNumerator_div] at hhalf
   rw [show 2 * n + 1 + 1 = 2 * n + 2 by omega, hfac,
     mersenneProduct_split_odd_even] at hhalf
-  have hoddPos : 0 < oddDoubleFactorial (n + 1) := by
-    unfold oddDoubleFactorial
-    apply Finset.prod_pos
-    intro j hj
-    omega
-  have hevenPos : 0 < evenMersenneProduct n := by
-    unfold evenMersenneProduct
-    apply Finset.prod_pos
-    intro j hj
-    exact Nat.sub_pos_of_lt (Nat.one_lt_pow (by omega) (by omega))
-  have hoddMerPos : 0 < oddMersenneProduct n := by
-    unfold oddMersenneProduct
-    apply Finset.prod_pos
-    intro j hj
-    exact Nat.sub_pos_of_lt (Nat.one_lt_pow (by omega) (by omega))
+  have hoddPos : 0 < oddDoubleFactorial (n + 1) :=
+    oddDoubleFactorial_pos (n + 1)
+  have hevenPos : 0 < evenMersenneProduct n := evenMersenneProduct_pos n
+  have hoddMerPos : 0 < oddMersenneProduct n := oddMersenneProduct_pos n
   have hoddNz : ((oddDoubleFactorial (n + 1) : ℕ) : ℚ) ≠ 0 := by
     exact_mod_cast Nat.ne_of_gt hoddPos
   have hevenNz : ((evenMersenneProduct n : ℕ) : ℚ) ≠ 0 := by
