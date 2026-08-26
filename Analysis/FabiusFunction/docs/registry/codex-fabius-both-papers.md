@@ -101,6 +101,34 @@ next bounded step: push this source-checkpoint handoff and await the focused
   exposition owner
 ```
 
+## Coordinator natural-knot integration disposition
+
+The two-declaration source tranche is accepted.  Independent theorem/API
+review found the formulas true at every natural knot and derivative order,
+including `m = 0`, `m = 1`, and `order = 0`; the placement and imports are
+appropriate and no existing public signature changes.  There is no
+implemented Lean duplicate.  The exact iff proposition occurs only as a
+proposal in `docs/AUDIT_FINDINGS.md`, while the existing even/odd and
+power-of-two results are ingredients or special cases.
+
+The coordinator first merged the feature checkpoint at `8d27ea207`, then
+fixed three elaboration sites at `62f4142a9`: the odd witness is kept in the
+literal `2 * b + 1` form, and both downstream rewrites pass `F` and `hF`
+explicitly.  Merge `068fc1be5` reconciles the feature branch's correction and
+registry handoff.  At that exact immutable Lean tree, with the sole codexbox
+token and `LAKE_JOBS=1`, these separate one-target invocations exited 0:
+
+```text
+lake build +FabiusFunction.GlobalExtension       # 2765 jobs
+lake build +FabiusFunction.Paper06487             # 3244 jobs
+```
+
+The facade build transitively covers `PaperStatements` and
+`Paper06487Supplement`.  `git diff --check` exited 0 and the edited source
+contains no `sorry`, `admit`, `axiom`, or `opaque`.  This disposition
+supersedes the worker snapshot's pre-correction warning and unvalidated state;
+the `GlobalExtension.lean` lease is released.
+
 Source-only subagents inspect and prototype in `/tmp`; they do not edit the
 leased production paths, run builds, or mutate Git state.
 
