@@ -7,12 +7,18 @@ This file implements the per-branch registry fallback in
 SYNC Fabius
 branch / worktree / machine: codex/fabius-both-papers /
   /home/codex/src/Proofs / codexbox
-fetched main SHA: 1401f2d9b6cfd02e0b6a72ee60869b6df0bb776c
-HEAD and dirty paths: a69159a65f447778fc25d30a5a5a4b591f53af1a;
-  dirty only in this own-registry handoff after the clean merge
-writing (exact paths): none; the generic derivative source claim is released
-expected declarations or document claims: none in flight; the generic
-  Rvachev derivative bridge is frozen at the source checkpoint below
+fetched main SHA: 39ad356c7a433c1b7dfdaec5bb3e3e4163c9fd35
+HEAD and dirty paths: 9efba031547f243d7922ec56726f7055814bda63;
+  clean before this ordinary all-degree branch-bound claim
+writing (exact paths):
+  Lean/FabiusFunction/FabiusDiscreteLimitComplexShift.lean;
+  docs/registry/codex-fabius-both-papers.md
+expected declarations or document claims:
+  add
+  `norm_normalizedThueMorseSplineBranch_add_sub_le_half_pow_mul_exp_all`,
+  extending the existing positive-degree complex branch-translation estimate
+  to every `p : ℕ`; preserve the positive-degree theorem unchanged and explain
+  in the module prose that the degree-zero branch is constant
 completed commits: Lower-Lambert source checkpoint `1da2fde2285e3970267b7dc2561bcd0d897be1b4`
   was integrated by coordinator merge `046946a974467e83244fd3a183a3e084e70d3379`;
   registry handoff `225f5338de9ea92489ed6a2c0c371c6edb4f5db9`
@@ -243,10 +249,15 @@ conflicts / dependencies: all advertised Fabius heads and their registries
   Codex/Claude Fabius tip finds no generic Rvachev derivative bridge, alternate
   semantic equivalent, or active claim on `Differential.lean` or
   `Existence.lean`; the only matching text is the unimplemented serialized
-  audit proposal, and the board has released both ordinary source paths
-next bounded step: push this synchronized generic-derivative handoff, request
-  serialized `+FabiusFunction.Existence` validation, and begin the next
-  ordinary nonoverlapping audit
+  audit proposal, and the board has released both ordinary source paths; a
+  fresh scan of all sixteen advertised Codex/Claude Fabius tips finds only the
+  positive-degree complex branch estimate, no `_all` or semantic-equivalent
+  theorem, and no active claim on `FabiusDiscreteLimitComplexShift.lean`; the
+  exact `_all` name occurs only in the unimplemented serialized audit proposal
+next bounded step: push this exact one-source-file claim, add the degree-zero
+  totalization and source-local documentation without running a build, obtain
+  independent review, and request serialized
+  `+FabiusFunction.FabiusDiscreteLimitComplexShift` validation
 ```
 
 ## Generic Rvachev derivative bridge handoff
