@@ -2448,3 +2448,74 @@ next bounded step: commit and push this registry-only claim without force;
   iterate/map orientation, ambient assumptions, deletion boundary, consumers,
   imports, interfaces, and docs
 ```
+
+## Handoff: generic iterated-`divX` exactness and functoriality
+
+Source checkpoint `fc52866e4c81da87b8ab4b5868b7ecd8bef8869a` implements the
+complete claimed tranche and is pushed to
+`origin/codex/fabius-effective-bounds-20260825`.
+
+In `SaddleExpansionFiniteRemainder.lean`, the private reconstruction fact is
+now the public, coefficient-ring-generic theorem
+`X_pow_mul_iterate_divX_eq_of_coeff_zero`; the new public theorems `map_divX`
+and `map_iterate_divX` state coefficient-map naturality for one and every
+finite number of divisions by `X`.  All three declarations have explicit
+`CommRing` binders, formula-bearing comments, and no attributes.  Their proof
+bodies are the previously established private proofs in substance.
+
+In `FabiusSaddleReferenceWeight.lean`, exactly the two private naturality
+copies were deleted.  The surviving private quotient-map theorem now rewrites
+explicitly through `SaddleExpansion.map_iterate_divX`.  Every pre-existing
+public declaration header and attribute, and every import in both modules,
+is byte-preserved.
+
+Exact frozen source artifacts:
+
+- `SaddleExpansionFiniteRemainder.lean`: Git blob
+  `91174cc0a22f8e46740b6090b59ad632ca8b7a2d`, content SHA-256
+  `8376DCDDCE84EC1B36EBE1F44D79906EC172E40ED7D2658FFFE9A922ABF7A849`;
+- `FabiusSaddleReferenceWeight.lean`: Git blob
+  `b650c2cb86a31eebc1d9701ac2d726892b4ed6bb`, content SHA-256
+  `F6473562DED477EB89193720A96587460563D98DAFA63CE7F50CEBEFB5CDAE7F`.
+
+Three independent exact-current-byte static reviews are green.  They checked
+the explicit section-independent interfaces, the `L = 0` case, successor
+coefficient shift, multiplication order, ring-map orientation, iteration
+orientation, atomic duplicate deletion, qualified downstream name resolution,
+import and old-header preservation, documentation, and whitespace.  Local
+`git diff --check` and the staged diff check both passed.  No Lean, Lake, TeX,
+PDF, cache-mutating process, canonical-document edit, or main write ran.
+
+```text
+SYNC Fabius
+branch / worktree / machine: codex/fabius-effective-bounds-20260825 /
+  /home/codex/.codex/worktrees/d6d3/Proofs / codexbox
+fetched main SHA: 1eadfd565db2e4c49310dbaa68c7b4648cb563b8
+HEAD and dirty paths: fc52866e4c81da87b8ab4b5868b7ecd8bef8869a;
+  clean after exact-path source commit; checkpoint pushed
+writing (exact paths): this branch registry for immutable handoff only; the
+  two source paths above are frozen at the stated blobs
+expected declarations or document claims: exactly the three public generic
+  divX theorems recorded above; no attributes and no facade or canonical-doc
+  surface
+completed commits: registry-first claim 1d2409e3d; source checkpoint
+  fc52866e4; both pushed without force
+validated (exact command, SHA/state, exit code): git diff --check and staged
+  diff check at the exact frozen bytes exited 0; three independent static
+  reviews are green; exact blob/SHA evidence is recorded above
+not yet validated: no Lean/Lake target or downstream importer was built on
+  this branch; static review is not compiler evidence
+requested integration or lease: request serialized LAKE_JOBS=1 builds of
+  +FabiusFunction.SaddleExpansionFiniteRemainder,
+  +FabiusFunction.FabiusSaddleReferenceWeight, and common direct consumer
+  +FabiusFunction.FabiusSaddleCentralAllOrders; request coordinator review
+  and selective integration after green gates; request no main-write or
+  document lease
+conflicts / dependencies: ReferenceWeight already imports the upstream
+  finite-remainder module; all local frozen paths, current external claims,
+  and the sole primary-document owner are disjoint; only the coordinator may
+  advance main
+next bounded step: freeze both source blobs, push this handoff, fetch main,
+  reread any ownership-board delta, and advertise the disjoint generic
+  vector-valued dyadic set-integral tranche before editing it
+```
