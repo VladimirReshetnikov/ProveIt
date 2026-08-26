@@ -2274,3 +2274,62 @@ next bounded step: commit and push this registry-only final handoff, notify the
   pending integration; after acceptance, merge fresh origin/main into the clean
   feature and perform final ancestry/blob/remote audits
 ```
+
+## Final coordinator acceptance and synchronized feature closeout
+
+Coordinator main checkpoint `fec88296a38c5eff4058fdbc66a54f9d87ffed82`
+accepts the canonical Lambert cluster exposition and integrates exact atomic
+repair `0752e6b5860e253c2b7e85256a7df59a2ca2d91d` as `985865c12`.
+Independent coordinator checks reproduced the 380-label, 22-bibliography-item,
+449-environment, 23/23 embedded-and-subsetted-font, no-suspect, no-rendered-`??`,
+pagewise-text, page-1 raster, and `git diff --check` gates.  The board confirms
+that the accepted theorem exposition, formulas, all 25 Lean mappings,
+bibliography, labels, and non-title-page layout source remain byte-preserved.
+The provenance defect and earlier commit-message digest typo are therefore
+closed.
+
+Feature merge `c11c494615d630e6f126b2ee2b8d0297617beea6` incorporates that
+accepted current main.  Its sole conflict was this branch's own registry; the
+resolution preserves the complete feature history while retaining the final
+handoff once.  The canonical artifacts on the synchronized feature and main
+are byte-identical:
+
+- TeX blob `194881d2cd8c66144f35dd4dca7643656766e686`;
+- PDF blob `3f3fac8fca3caa75bc44ece13db1df124022c6cf`.
+
+`git merge-base --is-ancestor origin/main HEAD` exits 0, and a tree comparison
+against `origin/main` differs only in this branch's intentionally fuller own
+registry.  No Lean, Lake, LaTeX, or other build ran during synchronization.
+
+```text
+SYNC Fabius
+branch / worktree / machine: codex/fabius-theorem-polish-20260825 /
+  C:/Users/vresh/.codex/worktrees/10ef/ProveIt / EVO (Windows)
+fetched main SHA: fec88296a38c5eff4058fdbc66a54f9d87ffed82
+HEAD and dirty paths: c11c494615d630e6f126b2ee2b8d0297617beea6;
+  clean after the accepted-main merge, then only this own registry is dirty
+  for the final synchronized closeout
+writing (exact paths): only
+  docs/registry/codex-fabius-theorem-polish-20260825.md
+expected declarations or document claims: complete; the corrected quotient
+  model, full cluster interval, exact liminf/limsup, strict gap, arbitrary-real-
+  constant obstruction, and all supporting public declarations have accepted
+  human-readable counterparts
+completed commits: 0752e6b58 (final artifact repair), 8b3e8033d (immutable
+  repair handoff), 985865c12 (coordinator artifact integration), and c11c49461
+  (accepted-main synchronization)
+validated (exact command, SHA/state, exit code): coordinator source gates remain
+  the repaired 3891/3931/3960-job exit-0 sequence; final document checks are the
+  accepted worker and independently reproduced coordinator gates above;
+  `git merge-base --is-ancestor origin/main HEAD` exits 0; final canonical blobs
+  match origin/main exactly; `git diff --check` passes
+not yet validated: none for this completed tranche; no claim is made that a
+  finite elementary evaluation of the periodic extrema exists
+requested integration or lease: none; all source/document/build/process leases
+  are released and no successor path or token is requested
+conflicts / dependencies: resolved only in this own registry; canonical binary
+  PDF had no conflict and was never conflict-resolved; the sole final tree
+  difference from origin/main is this branch's fuller own registry history
+next bounded step: commit and push this final registry-only closeout, verify the
+  remote feature tip and main artifact blobs, then end the task
+```
