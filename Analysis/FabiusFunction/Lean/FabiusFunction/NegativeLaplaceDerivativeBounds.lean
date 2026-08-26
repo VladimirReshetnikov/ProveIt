@@ -148,7 +148,9 @@ private lemma exp_neg_le_half {x : ℝ} (hx : 1 ≤ x) :
       exact Real.exp_le_exp.mpr (by linarith)
     _ ≤ 1 / 2 := Real.exp_neg_one_lt_half.le
 
-private lemma exp_neg_div_one_sub_pow_le
+/-- On `1 ≤ x`, replacing each reciprocal factor `1 / (1 - exp (-x))` by `2`
+gives a uniform bound for every natural denominator power. -/
+theorem exp_neg_div_one_sub_pow_le
     (m : ℕ) {x : ℝ} (hx : 1 ≤ x) :
     Real.exp (-x) / (1 - Real.exp (-x)) ^ m ≤
       2 ^ m * Real.exp (-x) := by

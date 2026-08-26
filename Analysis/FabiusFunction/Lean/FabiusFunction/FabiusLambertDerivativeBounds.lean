@@ -169,25 +169,6 @@ theorem exists_bound_abs_negativeLaplacePsiThird :
   exact exists_nonneg_bound_abs_of_isBounded_range negativeLaplacePsiThird
     isBounded_range_negativeLaplacePsiThird
 
-private lemma local_exp_neg_div_one_sub_pow_le
-    (m : ℕ) {x : ℝ} (hx : 1 ≤ x) :
-    Real.exp (-x) / (1 - Real.exp (-x)) ^ m ≤
-      2 ^ m * Real.exp (-x) := by
-  let t := Real.exp (-x)
-  have ht0 : 0 ≤ t := Real.exp_nonneg _
-  have ht : t ≤ 1 / 2 := by
-    calc
-      t = Real.exp (-x) := rfl
-      _ ≤ Real.exp (-1) := Real.exp_le_exp.mpr (by linarith)
-      _ ≤ 1 / 2 := Real.exp_neg_one_lt_half.le
-  have hden : 0 < 1 - t := by linarith
-  rw [div_le_iff₀ (pow_pos hden m)]
-  have hbase : 1 ≤ 2 * (1 - t) := by linarith
-  have hp := pow_le_pow_left₀ (by norm_num : (0 : ℝ) ≤ 1) hbase m
-  rw [one_pow, mul_pow] at hp
-  simpa [t, mul_assoc, mul_left_comm, mul_comm] using
-    (mul_le_mul_of_nonneg_left hp ht0)
-
 private lemma norm_negativeLaplaceForwardTermSecond_le_invCube_geometric
     {s : ℝ} (hs : 1 ≤ s) (n : ℕ) :
     ‖negativeLaplaceForwardTermSecond s n‖ ≤
@@ -200,7 +181,7 @@ private lemma norm_negativeLaplaceForwardTermSecond_le_invCube_geometric
     dsimp [y]
     have ha1 : 1 ≤ a := one_le_pow₀ (by norm_num)
     nlinarith
-  have hfrac := local_exp_neg_div_one_sub_pow_le 2 hy
+  have hfrac := exp_neg_div_one_sub_pow_le 2 hy
   norm_num at hfrac
   have hpow := pow_mul_exp_neg_le_factorial 3 (by positivity : 0 ≤ y)
   norm_num at hpow
@@ -270,7 +251,7 @@ private lemma norm_negativeLaplaceForwardTermThird_le_invFourth_geometric
   have he : Real.exp (-y) ≤ 1 := by
     rw [← Real.exp_zero]
     exact Real.exp_le_exp.mpr (by linarith)
-  have hfrac := local_exp_neg_div_one_sub_pow_le 3 hy
+  have hfrac := exp_neg_div_one_sub_pow_le 3 hy
   norm_num at hfrac
   have hpow := pow_mul_exp_neg_le_factorial 4 (by positivity : 0 ≤ y)
   norm_num at hpow
