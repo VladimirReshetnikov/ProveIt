@@ -489,3 +489,59 @@ next bounded step: push this registry-only post-merge report to the feature
 
 Post-merge status prepared immediately after the board at `148990f0a` was read
 from fetched `origin/main`.
+
+## Coordinator disposition at `15b922326`
+
+```text
+SYNC Fabius
+branch / worktree / machine: codex/fabius-theorem-polish-20260825 /
+  C:/Users/vresh/.codex/worktrees/10ef/ProveIt / EVO (Windows)
+fetched main SHA: 15b922326a51e47e2462f512f5c68c8b70b3816a
+HEAD and dirty paths: afa544674ee97f14ad7c5eb749ad83052955ac91;
+  the worktree was clean before this registry-only disposition reply, and only
+  this registry file is now being written
+writing (exact paths): this registry file only; no source, TeX, PDF, README,
+  aggregate, coverage, audit, exposition, walkthrough, frontier, or
+  coordination path is being changed
+expected declarations or document claims: no new claim; the five-source
+  all-real Laplace tranche is complete on main, its leases are released, and
+  the finite-depth discrete-limit opportunities below remain unclaimed
+completed commits: feature source checkpoints 87c9b00f4 and efee2a7e1;
+  coordinator integration 0d308188c; narrow coordinator elaboration repair
+  c4bc42f16; current main records the completed tranche through 301a46561
+validated (exact command, SHA/state, exit code): coordinator-owned serialized
+  builds, not runs from this feature worktree: at 0d308188c,
+  +FabiusFunction.NegativeLaplace and +FabiusFunction.LaplaceMoments both
+  exited 0; the first +FabiusFunction.NegativeLaplaceDerivatives attempt
+  exited 1 and is not evidence; after the pointwise-quotient ContDiff repair
+  at c4bc42f16, +FabiusFunction.NegativeLaplaceDerivatives,
+  +FabiusFunction.NegativeLaplaceVertical,
+  +FabiusFunction.LaplaceMomentBounds, and
+  +FabiusFunction.PaperFabiusAsymptotic each exited 0
+not yet validated: this feature tip itself was never elaborated and retains
+  the pre-repair ContDiff proof; no Lean, Lake, TeX, PDF, Python audit, or
+  cache-mutating process was launched on EVO in this checkpoint
+requested integration or lease: none; the tranche is integrated, all five
+  leases are released, and this branch has no EVO build token
+conflicts / dependencies: no merge was attempted after fetching 15b922326;
+  current main contains the accepted repair and supersedes the unelaborated
+  proof at this feature tip; there are no dirty source paths to preserve
+next bounded step: commit and push this registry-only disposition to the
+  feature branch, then keep the write set frozen; do not push main, do not
+  force-push, and do not launch validation without an explicit host token
+```
+
+Two final source-only reviews completed before this disposition and made no
+repository changes.  They independently confirmed the proposed finite-stage
+translation witness
+`fabiusDiscreteLimitApproximationReal q (1 / 3) 1 =
+q ^ 2 / 2 - q / 3 + 2 / 9`, hence the unequal specializations `2 / 9` and
+`7 / 18` at `q = 0` and `q = 1`.  They also sharpened the separate prose claim
+about finite approximants: with the existing `Finset.range (N + 1)` convention,
+the discrete row at `q = 0`, `x = 1 / 3`, depth `1` is `2 / 9`, whereas the
+binary (and therefore global-q) partial sum through scale `1` is `0`.  The
+global-q and binary summands themselves are termwise equal by
+`qBinomialFabiusGlobalSummand_eq`; only the same-depth discrete row differs.
+These are uncompiled proof plans, not new claims or validation evidence, and
+must be advertised in exact nonoverlapping source paths before any future
+implementation.
