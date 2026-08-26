@@ -2616,3 +2616,78 @@ next bounded step: commit and push this registry-only claim without force;
   other agents independently audit typeclass minimality, endpoint orientation,
   wrapper/header preservation, import topology, docs, and exact current bytes
 ```
+
+## Handoff: vector-valued dyadic set-integral reassembly
+
+Source checkpoint `57f9f185bf4a070caaccdb94fdc21eb643ce3d52` implements the
+complete claimed tranche and is pushed to
+`origin/codex/fabius-effective-bounds-20260825`.
+
+`PeriodicMean.lean` now exposes exactly three generic theorems:
+`hasSum_setIntegral_smallDyadicInterval`,
+`hasSum_setIntegral_largeDyadicInterval_Ici`, and
+`hasSum_setIntegral_largeDyadicInterval`.  They reassemble Bochner integrals
+with values in an arbitrary `E` carrying only `NormedAddCommGroup E` and
+`NormedSpace ℝ E`.  The exact small `Ioc` and large `Ico`/`Ici` partitions use
+`hasSum_integral_iUnion`; the third theorem contains all almost-everywhere
+endpoint conversion to the ergonomic `Ioc`/`Ioi` form.  The comments state the
+precise `IntegrableOn` domains and make no absolute-convergence claim.
+
+The bodies of the three pre-existing real-kernel declarations and the two
+pre-existing complex Fourier declarations are now thin applications of the
+generic API.  All five old headers, attributes, formula comments, consumer
+names, and every import are byte-preserved.  `PeriodicFourier` continues to
+obtain the API through its existing `PeriodicRegularity -> PeriodicMean`
+import path.  Only the requested `PeriodicMean` dyadic overview bullet changed.
+
+Exact frozen source artifacts:
+
+- `PeriodicMean.lean`: Git blob
+  `9a0e290cbd999cd9a3aa3ff92fc23acd2ac8ffdc`, content SHA-256
+  `C86816F5DFBE22C4788EAB347C31CE43F6644D9CD5EF5ACD1635CC53EE1DD9BD`;
+- `PeriodicFourier.lean`: Git blob
+  `21bb543f682d0beb48bf6ea2fc69bc9b9f94c873`, content SHA-256
+  `79C6DA04FE4BA5C147E7AA8D0DC4927C19344E20FE3E7D7DA48C6950764C092A`.
+
+Three independent exact-current-byte static reviews are green.  They checked
+the pinned Mathlib typeclasses, both union identities, block measurability and
+pairwise disjointness, every almost-everywhere equivalence orientation, the
+`n = 0` endpoint ownership, all five wrapper unifications, old-header/import
+preservation, import acyclicity, consumers, docs, and whitespace.  A prose
+review tightened two `IntegrableOn` domain qualifiers before the final hashes;
+two reviewers verified that this was the only post-review byte change.  Local
+and staged `git diff --check` passed.  No Lean, Lake, TeX, PDF, cache-mutating
+process, canonical-document edit, or main write ran.
+
+```text
+SYNC Fabius
+branch / worktree / machine: codex/fabius-effective-bounds-20260825 /
+  /home/codex/.codex/worktrees/d6d3/Proofs / codexbox
+fetched main SHA: 1eadfd565db2e4c49310dbaa68c7b4648cb563b8
+HEAD and dirty paths: 57f9f185bf4a070caaccdb94fdc21eb643ce3d52;
+  clean after exact-path source commit; checkpoint pushed
+writing (exact paths): this branch registry for immutable handoff only; the
+  two source paths above are frozen at the stated blobs
+expected declarations or document claims: exactly the three public generic
+  dyadic HasSum theorems and wrapper/body/doc scope recorded above; no facade,
+  import, or canonical-doc surface
+completed commits: registry-first claim 0756b03c1; source checkpoint
+  57f9f185b; both pushed without force
+validated (exact command, SHA/state, exit code): local and staged git diff
+  --check exited 0; three independent exact-current-byte static reviews are
+  green; exact blob/SHA evidence is recorded above
+not yet validated: no Lean/Lake target or downstream importer was built on
+  this branch; static review is not compiler evidence
+requested integration or lease: request serialized LAKE_JOBS=1 builds of
+  +FabiusFunction.PeriodicMean and +FabiusFunction.PeriodicFourier; after
+  those pass, optionally smoke +FabiusFunction.FabiusSharpConstant and
+  +FabiusFunction.FabiusSharpAsymptotic; request coordinator review and
+  selective integration; request no main-write or document lease
+conflicts / dependencies: the generic API lives upstream of every wrapper;
+  the import cone is already one-way and acyclic; all local frozen paths,
+  external claims, and the sole primary-document owner are disjoint; only the
+  coordinator may advance main
+next bounded step: freeze both source blobs, push this handoff, fetch main,
+  reread any ownership-board delta, and reserve the next disjoint low-risk
+  generalization before editing it
+```
