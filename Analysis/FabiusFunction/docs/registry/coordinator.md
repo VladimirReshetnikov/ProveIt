@@ -6,10 +6,10 @@ Every worker reads it from the fetched `origin/main` before writing, merging,
 building, or pushing.  Workers publish replies in their own per-branch registry
 files; they do not edit this board.
 
-## Checkpoint 2026-08-25 20:44 PDT
+## Checkpoint 2026-08-25 20:52 PDT
 
 ```text
-observed main before this directive: de303339202ef0b7fb99da83003d4b841eef9b80
+observed main before this directive: 1401f2d9b65ff0ab21ee2e62f1dd7284c42ebfd0
 coordinator branch: codex/fabius-coordinator-20260825
 integration mode: feature branches -> coordinator -> fast-forward main
 main write owner: coordinator
@@ -17,11 +17,11 @@ codexbox Lean/Lake owner: coordinator
   (IDLE after ProbabilityLaplaceMoments validation)
 codexbox TeX/PDF owner: unassigned
   (IDLE; no active documentation agent)
-EVO Lean/Lake owner: codex/fabius-shifted-prefix-grid
-  (three separate Lean targets pinned below; no TeX/PDF/parallel target)
+EVO Lean/Lake owner: unassigned
+  (IDLE after shifted-prefix validation)
 documentation owner: unassigned
   (all canonical documents frozen pending a new exact-path claim and assignment)
-next poll: after EVO validation or the next advertised source checkpoint
+next poll: after the next advertised source checkpoint
 ```
 
 The previously approved curvature, generalizations, lower-Lambert,
@@ -371,6 +371,21 @@ lists, and continued use of every retained import/helper.  The coordinator
 integrated it as `b16fc9a6d`; `+FabiusFunction.FabiusUniformSpline` completes
 3415 jobs, exit 0.  That path is released and its audit finding is closed.
 
+Registry claim `1686a1a06` advertises a new ordinary two-source tranche in
+`Differential.lean` and `Existence.lean`: public generic bridge
+`rvachevUp_hasDerivAt_of_fabiusReal_hasDerivAt`, specialization of the
+unchanged `rvachev_hasDerivAt`, and replacement of the duplicate candidate
+three-case proof while preserving `rvachevCandidate_hasDerivAt` and
+`rvachevCandidate_even` exactly.  Independent preflight finds the hypotheses
+sufficient in the negative, zero, and positive cases, the candidate use
+noncircular, both current-main preimages unchanged, and no competing claim or
+implementation.  **Source-only claim approved:** after merging current main,
+the worker may edit exactly those two Lean files plus its own registry, commit,
+and push without running Lean/Lake.  Do not edit `AUDIT_FINDINGS.md`, change
+imports, or touch any document/root path.  After an immutable reviewed source
+checkpoint, request serialized `+FabiusFunction.Existence`; no build token is
+granted now.
+
 ### `codex/fabius-theorem-polish-20260825`
 
 The prior task is complete and its complete source tranche is integrated on
@@ -454,6 +469,31 @@ or public API.  At that repaired tree,
 `LAKE_JOBS=1 lake build +FabiusFunction.ProbabilityLaplaceMoments` completed
 3187 jobs in 18 seconds and exited 0 without warnings.  The source lease is
 released; this branch has no document or build token.
+
+### `codex/fabius-effective-bounds-20260825`
+
+Registry-only claim `bc14ab696` is approved for exactly
+`Lean/FabiusFunction/FabiusLambertRates.lean` plus its own registry.  The six
+advertised declarations are `eventually_le_dyadicLambertPhase`,
+`dyadicLambertPhase_isEquivalent_id`,
+`dyadicLambertPhase_inv_isEquivalent_inv`,
+`smallArgumentLog_inv_isTheta`,
+`isBigO_lambertScale_iff_smallArgument_log`, and
+`isLittleO_lambertScale_iff_smallArgument_log`.  Independent review finds the
+module/dependency blobs unchanged from the claim base, no competing path or
+semantic duplicate, and the proposed equivalence chain mathematically and
+topologically sound for an arbitrary normed codomain.  The first result must
+be described only as an *eventual* inequality; it supplies no explicit
+numerical cutoff.
+
+**Source-only claim approved:** after fetching and rereading this checkpoint,
+the worker may edit only that Lean module and its registry, preserve every
+existing public header as a wrapper, commit, and push without running
+Lean/Lake.  No facade, root, campaign document, or PDF edit is needed or
+authorized.  After an immutable reviewed source checkpoint, request separate
+serialized builds of `+FabiusFunction.FabiusLambertRates` and then its narrow
+direct consumer `+FabiusFunction.FabiusSharpAsymptoticTransfer`; no build
+token is granted now.
 
 ### `codex/fabius-shifted-prefix-grid`
 
@@ -572,6 +612,23 @@ record the complete first failure in the own registry, push, and stop.  If all
 three pass, record exact SHA/tree, commands, job counts, warnings, and exits in
 the own registry, push, and stop for coordinator integration.  Never push
 `main`.
+
+**Validation and integration result.**  Registry checkpoint `b28da9013`
+records the completed EVO run at exact merge `4367a7f86`, tree `db635e6a073b`.
+The three required separate `LAKE_JOBS=1` targets completed in order:
+
+- `+FabiusFunction.FabiusQBinomialTaylor`: 3320 jobs, exit 0, no warnings;
+- `+FabiusFunction.ThueMorseApproximation`: 3307 jobs, exit 0, only the two
+  known unused-`hk` compatibility linters;
+- `+FabiusFunction.PaperKFoldThueMorse`: 3327 jobs, exit 0, replaying only
+  those two linters.
+
+No later source edit occurred.  The coordinator integrated only exact source
+commit `8021c555f` as `30cc17175`, then exact source commit `f7152d5fc` as
+`ca3a0dca5`; the divergent feature history and registry were not merged.
+Every claimed source path and the EVO token are released.  The branch may sync
+and begin a new ordinary nonoverlapping claim, but has no current source or
+build ownership.
 
 ### `codex/fabius-exposition-integration`
 
@@ -727,14 +784,13 @@ a requested path is serialized, hot, frozen, single-owner, or already claimed.
 
 ## Collision and integration queue
 
-One reviewed Lean workstream is waiting on assigned validation.  The four
-disjoint both-papers units are integrated and validated as recorded above;
-its periodic bridge unit is now repaired, compiled, and released.  Continue to
-avoid merging that moving feature branch wholesale; the all-index oddness and
-private spline cleanup are also integrated, compiled, and released.  The
-shifted-prefix branch's seven declarations
-are frozen at `8021c555f` plus `f7152d5fc` and hold the exact EVO validation
-grant above.
+No reviewed Lean workstream is waiting on an assigned validation token.  The
+four disjoint both-papers units, periodic bridges, all-index oddness, private
+spline cleanup, reflected Laplace moments, and the shifted-prefix seven-name
+tranche are integrated and validated as recorded above.  Continue to avoid
+merging either moving feature history wholesale.  The new generic Rvachev
+bridge and Lambert-rate equivalence claims are approved for source-only work;
+their paths are disjoint, and neither has a build token.
 
 Theorem-polish source commit `665b6bce` is integrated as `c80f61c90`, repaired
 without statement changes at `6b6757e90`, and accepted after its focused
@@ -745,11 +801,11 @@ Frontier source checkpoint `6397a0d6a` is already on `main` without a matching
 rebuilt PDF historically; accepted merge `192c423bb` now closes that mismatch
 with the reviewed 188-page artifact.  No documentation worker or codexbox
 TeX/PDF lane is currently assigned, so every canonical document path is
-frozen pending a new exact-path claim and board assignment.  EVO is
-independently assigned to the three shifted-prefix targets above.  Ordinary
+frozen pending a new exact-path claim and board assignment.  EVO is idle after
+the green shifted-prefix run.  Ordinary
 nonoverlapping feature claims may continue under the shared protocol, but no
-second Lean/Lake process may start on either physical host until its token is
-released.
+Lean/Lake process may start on either physical host until this board assigns
+that host's currently idle token.
 
 ## Build-token log
 
@@ -877,6 +933,15 @@ because bare `simp [neg_pow]` recursively reconsidered its generated
 statement-preserving explicit-identity repair `6b6757e90`, the same serialized
 target completed 3187 jobs in 18 seconds and exited 0 without warnings.
 
+On EVO, exact shifted-prefix merge `4367a7f86` and tree `db635e6a073b`
+preserved source commits `8021c555f` and `f7152d5fc`.  Separate sequential
+`LAKE_JOBS=1` builds of `+FabiusFunction.FabiusQBinomialTaylor` (3320 jobs),
+`+FabiusFunction.ThueMorseApproximation` (3307 jobs), and
+`+FabiusFunction.PaperKFoldThueMorse` (3327 jobs) all exited 0.  The latter two
+reported only the two intentionally retained unused-`hk` compatibility
+linters.  No fourth target or overlapping process ran; the EVO token is
+released.
+
 On EVO, stage two at source tip `1ca2a09be` ran exactly three sequential
 frontier `pdflatex` passes under the authorized fresh `_stage2` job name.  All
 three exited 0 and produced 178, 186, and 186 pages.  The third pass was
@@ -912,11 +977,10 @@ No validation process was running on codexbox when the original PDF grant was
 published.  A lightweight sequential TeX/PDF lane is independent of the
 one-process codexbox Lean/Lake token when the board assigns a document owner;
 both codexbox lanes are currently idle, and the Lean/Lake token remains
-coordinator-owned.  EVO's
-Lean/Lake token is assigned to the shifted-prefix branch's three exact
-sequential targets.  Other branches may edit, checkpoint, and push ordinary
-claimed work under the open protocol, but may not run Lean/Lake or a document
-tool stream until this board assigns the applicable lane.
+coordinator-owned.  EVO's Lean/Lake token is also idle and unassigned after
+the completed shifted-prefix run.  Other branches may edit, checkpoint, and
+push ordinary claimed work under the open protocol, but may not run Lean/Lake
+or a document tool stream until this board assigns the applicable lane.
 
 ## Worktree maintenance log
 

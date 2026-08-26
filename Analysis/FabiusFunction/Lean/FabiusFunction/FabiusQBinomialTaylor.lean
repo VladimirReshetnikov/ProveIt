@@ -1,5 +1,6 @@
 import FabiusFunction.FabiusRawQBinomialFormula
 import FabiusFunction.TaylorReduction
+import Mathlib.Algebra.Polynomial.HasseDeriv
 import Mathlib.Algebra.Polynomial.Roots
 
 /-!
@@ -18,9 +19,12 @@ The individual translated Thue--Morse block has a sharper polynomial
 structure.  Its coefficient of translation degree `j` is `d.choose j` times
 the centered moment of complementary degree `d - j`.  Consequently the block
 is zero for `d < k`, while for `k ≤ d` it has translation degree exactly
-`d - k`.  The boundary cases are made explicit: `k = 0` gives `(X - 1) ^ d`,
-`d < k` gives the zero polynomial (whose `natDegree` is zero), and `d = k`
-gives the nonzero sharp Prouhet constant.
+`d - k`.  These blocks satisfy a finite Appell calculus: translation obeys the
+binomial addition law, and the `j`-th Hasse derivative is `d.choose j` times
+the block of degree `d - j`, without a side condition on `j`.  The boundary
+cases are made explicit: `k = 0` gives `(X - 1) ^ d`, `d < k` gives the zero
+polynomial (whose `natDegree` is zero), and `d = k` gives the nonzero sharp
+Prouhet constant.
 
 For each `n`, the normalized numerator is
 
@@ -84,6 +88,115 @@ coefficient times the centered Thue--Morse moment of complementary degree. -/
   apply Finset.sum_congr rfl
   intro r _hr
   ring
+
+/-- Translation of a translated Thue--Morse block satisfies the finite Appell
+addition law. -/
+theorem thueMorseTranslatedPowerSumPolynomial_comp_X_add_C
+    (c : ℚ) (k d : ℕ) :
+    (thueMorseTranslatedPowerSumPolynomial k d).comp
+        (Polynomial.X + Polynomial.C c) =
+      ∑ j ∈ Finset.range (d + 1),
+        Polynomial.C ((d.choose j : ℚ) * c ^ j) *
+          thueMorseTranslatedPowerSumPolynomial k (d - j) := by
+  apply Polynomial.funext
+  intro q
+  simp only [Polynomial.eval_comp, Polynomial.eval_add, Polynomial.eval_X,
+    Polynomial.eval_C, Polynomial.eval_finsetSum, Polynomial.eval_mul,
+    thueMorseTranslatedPowerSumPolynomial_eval]
+  simp_rw [thueMorseTranslatedPowerSum_eq_sum_range]
+  calc
+    _ = ∑ r ∈ Finset.range (2 ^ k),
+        (thueMorseSign r : ℚ) *
+          (c + ((r : ℚ) - (2 : ℚ) ^ k + q)) ^ d := by
+          apply Finset.sum_congr rfl
+          intro r _hr
+          congr 1
+          ring
+    _ = ∑ r ∈ Finset.range (2 ^ k),
+        (thueMorseSign r : ℚ) *
+          (∑ j ∈ Finset.range (d + 1),
+            c ^ j *
+              ((r : ℚ) - (2 : ℚ) ^ k + q) ^ (d - j) *
+                (d.choose j : ℚ)) := by
+          apply Finset.sum_congr rfl
+          intro r _hr
+          rw [add_pow]
+    _ = ∑ r ∈ Finset.range (2 ^ k),
+        ∑ j ∈ Finset.range (d + 1),
+          (thueMorseSign r : ℚ) *
+            (c ^ j *
+              ((r : ℚ) - (2 : ℚ) ^ k + q) ^ (d - j) *
+                (d.choose j : ℚ)) := by
+          apply Finset.sum_congr rfl
+          intro r _hr
+          rw [Finset.mul_sum]
+    _ = ∑ j ∈ Finset.range (d + 1),
+        ∑ r ∈ Finset.range (2 ^ k),
+          (thueMorseSign r : ℚ) *
+            (c ^ j *
+              ((r : ℚ) - (2 : ℚ) ^ k + q) ^ (d - j) *
+                (d.choose j : ℚ)) := by
+          rw [Finset.sum_comm]
+    _ = _ := by
+          apply Finset.sum_congr rfl
+          intro j _hj
+          rw [Finset.mul_sum]
+          apply Finset.sum_congr rfl
+          intro r _hr
+          ring
+
+/-- The translated Thue--Morse blocks satisfy the Appell Hasse-derivative law.
+The statement is total in `j`; when `d < j`, both sides vanish. -/
+theorem thueMorseTranslatedPowerSumPolynomial_hasseDeriv
+    (k d j : ℕ) :
+    Polynomial.hasseDeriv j
+        (thueMorseTranslatedPowerSumPolynomial k d) =
+      Polynomial.C (d.choose j : ℚ) *
+        thueMorseTranslatedPowerSumPolynomial k (d - j) := by
+  ext m
+  simp only [Polynomial.hasseDeriv_coeff,
+    Polynomial.coeff_C_mul,
+    coeff_thueMorseTranslatedPowerSumPolynomial]
+  have hsub : d - (m + j) = d - j - m := by
+    omega
+  rw [hsub]
+  have hchoose :
+      (d.choose (m + j) : ℚ) * ((m + j).choose j : ℚ) =
+        (d.choose j : ℚ) * ((d - j).choose m : ℚ) := by
+    norm_cast
+    simpa using
+      (Nat.choose_mul (n := d) (k := m + j) (s := j) (by omega))
+  calc
+    _ =
+        ((d.choose (m + j) : ℚ) * ((m + j).choose j : ℚ)) *
+          thueMorseCenteredPowerSum k (d - j - m) := by
+            ring
+    _ =
+        ((d.choose j : ℚ) * ((d - j).choose m : ℚ)) *
+          thueMorseCenteredPowerSum k (d - j - m) := by
+            rw [hchoose]
+    _ = _ := by
+          ring
+
+/-- Ordinary differentiation lowers the exponent by one and multiplies by
+the old exponent.  The `d = 0` case is included. -/
+theorem thueMorseTranslatedPowerSumPolynomial_derivative
+    (k d : ℕ) :
+    (thueMorseTranslatedPowerSumPolynomial k d).derivative =
+      Polynomial.C (d : ℚ) *
+        thueMorseTranslatedPowerSumPolynomial k (d - 1) := by
+  simpa only [Polynomial.hasseDeriv_one', Nat.choose_one_right] using
+    thueMorseTranslatedPowerSumPolynomial_hasseDeriv k d 1
+
+/-- Successor-indexed form of
+`thueMorseTranslatedPowerSumPolynomial_derivative`. -/
+theorem thueMorseTranslatedPowerSumPolynomial_derivative_succ
+    (k d : ℕ) :
+    (thueMorseTranslatedPowerSumPolynomial k (d + 1)).derivative =
+      Polynomial.C ((d + 1 : ℕ) : ℚ) *
+        thueMorseTranslatedPowerSumPolynomial k d := by
+  simpa using
+    thueMorseTranslatedPowerSumPolynomial_derivative k (d + 1)
 
 private theorem coeff_thueMorseTranslatedPowerSumPolynomial_natSub
     (k d : ℕ) (hkd : k ≤ d) :
