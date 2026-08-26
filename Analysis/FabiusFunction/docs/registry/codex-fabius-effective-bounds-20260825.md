@@ -2691,3 +2691,82 @@ next bounded step: freeze both source blobs, push this handoff, fetch main,
   reread any ownership-board delta, and reserve the next disjoint low-risk
   generalization before editing it
 ```
+
+## Claim: reflected endpoint-filter map promotion
+
+Claimed exact source paths:
+
+- `Lean/FabiusFunction/FabiusInverse.lean`;
+- `Lean/FabiusFunction/FabiusInverseAsymptotic.lean`.
+
+This small atomic tranche promotes the already-established upstream endpoint
+reflection fact and removes its independent downstream reproof:
+
+```lean
+theorem tendsto_one_sub_nhdsLT_one_nhdsGT_zero :
+    Tendsto (fun y : ℝ => 1 - y)
+      (𝓝[<] (1 : ℝ)) (𝓝[>] (0 : ℝ))
+```
+
+The proof in `FabiusInverse.lean` remains token-for-token in substance; only
+its visibility and source documentation change.  Its comment and the inverse
+module's right-endpoint overview will state the human formula
+`1 - y → 0⁺` as `y → 1⁻`.  The definitionally identical private theorem in
+`FabiusInverseAsymptotic.lean` is deleted atomically, and its existing sharp
+right-endpoint consumer resolves through the already-direct import of
+`FabiusInverse`.  Every old public header/attribute, every import, and every
+consumer body otherwise remains exact.
+
+An arbitrary-center affine-filter API and promotion of unrelated inverse
+filter helpers are deliberately excluded: they neither remove another copy
+nor preserve the zero-risk character of this visibility/deduplication unit.
+No facade, canonical document, inverse-asymptotic formula, or diagonal theorem
+is claimed.
+
+```text
+SYNC Fabius
+branch / worktree / machine: codex/fabius-effective-bounds-20260825 /
+  /home/codex/.codex/worktrees/d6d3/Proofs / codexbox
+fetched main SHA: 1eadfd565db2e4c49310dbaa68c7b4648cb563b8
+HEAD and dirty paths: 12216ae78d2cb0c1d2c36d01cb393a71c2ad98f7;
+  clean before this registry-only claim; the dyadic API checkpoint and
+  immutable handoff are pushed
+writing (exact paths): Lean/FabiusFunction/FabiusInverse.lean;
+  Lean/FabiusFunction/FabiusInverseAsymptotic.lean; this branch registry for
+  claim/handoff only
+expected declarations or document claims: promote exactly the one theorem
+  above with the same signature/proof and exact endpoint-limit prose; delete
+  exactly the downstream private duplicate; preserve every old public header,
+  attribute, import, and consumer
+completed commits: all earlier checkpoints and handoffs are clean and pushed;
+  this is a disjoint registry-first atomic two-file claim
+validated (exact command, SHA/state, exit code): current HEAD and origin/main
+  share FabiusInverse blob fac45bf09d9e3b44ceebfeca01f4b396f9500805,
+  content SHA-256
+  04135170740A10BF1A6EAE7F84A452F3E739A6DB08E3210E0A4D250660CBF604,
+  and FabiusInverseAsymptotic blob
+  756e7a50ab5c43993be63e6f2bd41efe3c537029, content SHA-256
+  9C3E2117F2D17F650FE51C0F79082908DC9101D2FDF9FDB49A63068267AC4C36;
+  all-visible-ref scans find this exact name only in the two intended private
+  declarations and their consumers; registry scans find no competing claim;
+  the ownership board explicitly releases both inverse paths after their
+  serialized builds; this is not new compiler evidence
+not yet validated: the visibility/doc change and downstream deletion are not
+  implemented; no Lean, Lake, TeX, PDF, or cache-mutating process is
+  authorized or running on this branch
+requested integration or lease: advertise this ordinary atomic two-source
+  claim; after an immutable independently reviewed checkpoint, request
+  serialized LAKE_JOBS=1 builds of +FabiusFunction.FabiusInverse and
+  +FabiusFunction.FabiusInverseAsymptotic, with optional direct aggregate
+  +FabiusFunction.PaperFabiusAsymptotic; request no main-write or document
+  lease
+conflicts / dependencies: FabiusInverseAsymptotic already directly imports
+  FabiusInverse; the dependency is one-way and acyclic; both source paths were
+  released after main's compiled inverse-diagonal update; all local frozen
+  paths, external claims, and the sole primary-document owner are disjoint;
+  only the coordinator may advance main
+next bounded step: commit and push this registry-only claim without force;
+  repeat the collision scan, then edit only the two claimed sources while the
+  other agents independently verify proof identity, filter orientation,
+  deletion boundary, imported name resolution, interfaces, and docs
+```
