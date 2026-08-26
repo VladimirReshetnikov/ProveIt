@@ -8,10 +8,8 @@ SYNC Fabius
 branch / worktree / machine: codex/fabius-both-papers /
   /home/codex/src/Proofs / codexbox
 fetched main SHA: e18f5d0b0e3ec78e2b14e7006af6c7e916b42923
-HEAD and dirty paths: 5db4ab6f9add0aed692e746da0dc0a7fb9ce23fd;
-  `Lean/FabiusFunction/GlobalDyadic.lean`,
-  `Lean/FabiusFunction/OriginalPaperSupplement.lean`, and this registry are
-  dirty for the unvalidated total dyadic-cast relocation checkpoint
+HEAD and dirty paths: 09b360531d69a9bc93dba1babc3d5ecc6a396347;
+  clean before this registry-only status refresh
 writing (exact paths):
   Lean/FabiusFunction/GlobalExtension.lean;
   Lean/FabiusFunction/GlobalDyadic.lean;
@@ -42,7 +40,9 @@ completed commits: Lower-Lambert source checkpoint `1da2fde2285e3970267b7dc2561b
   `c1d681f70dedad3a708a8baa0c06113390bf6a28` matches the coordinator's exact
   directly elaborated module blob; claim expansion
   `5db4ab6f9add0aed692e746da0dc0a7fb9ce23fd` advertises the two exact dyadic
-  relocation paths before authoring
+  relocation paths before authoring; source checkpoint
+  `09b360531d69a9bc93dba1babc3d5ecc6a396347` moves the theorem upstream
+  byte-for-byte and preserves its single public declaration site
 validated (exact command, SHA/state, exit code): coordinator board records
   serialized immutable `lake build +FabiusFunction.LowerLambertW` at
   `4c6bbac41`, exit 0, with its source blob unchanged on current main;
@@ -51,6 +51,9 @@ validated (exact command, SHA/state, exit code): coordinator board records
   edge cases, placement, imports, and public export path; coordinator commit
   `62f4142a9f290c570299e200192a4818dc7529d2` directly ran
   `LAKE_JOBS=1 lake env lean` on the exact corrected module and exited 0
+  read-only review of `09b360531` confirmed the moved block is byte-identical,
+  imports and namespace placement suffice, the downstream theorem resolves
+  through its existing direct import, and all static hygiene checks pass
 not yet validated: no focused Lake target, downstream module, public facade,
   or aggregate build is claimed for the natural-knot checkpoint; the moved
   dyadic theorem body was already compiled in its downstream home by the green
@@ -77,9 +80,8 @@ conflicts / dependencies: all advertised Fabius heads and their registries
   read-only audit across advertised tips found no competing claim or alternate
   total dyadic-cast bridge on either relocation path; documentation remains
   serialized and unclaimed
-next bounded step: finish the read-only relocation review, checkpoint and push
-  the unvalidated source move, then await focused/downstream build tokens and
-  the natural-knot documentation lease
+next bounded step: await focused/downstream build tokens for both source
+  checkpoints and the natural-knot documentation lease
 ```
 
 Source-only subagents inspect and prototype in `/tmp`; they do not edit the
