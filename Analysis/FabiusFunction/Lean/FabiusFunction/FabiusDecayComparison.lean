@@ -47,6 +47,7 @@ theorem fabiusLogProfile_isLittleO_two_rpow_mul
     (mul_pos (Real.log_pos (by norm_num : (1 : ℝ) < 2)) hβ)).congr'
   · exact Filter.Eventually.of_forall fun _ => rfl
   · exact Filter.Eventually.of_forall fun t => by
+      change Real.exp (Real.log 2 * β * t) = (2 : ℝ) ^ (β * t)
       rw [Real.rpow_def_of_pos (by norm_num : (0 : ℝ) < 2)]
       congr 1
       ring
@@ -61,7 +62,7 @@ private theorem tendsto_profile_sub_exp_atBot
     (fabiusLogProfile_isLittleO_two_rpow_mul F hF hβ).bound (half_pos hc)
   have hpow :
       Tendsto (fun t : ℝ => (2 : ℝ) ^ (β * t)) atTop atTop := by
-    simpa only [Function.comp_def] using
+    simpa only [Function.comp_def, id_eq] using
       (tendsto_rpow_atTop_of_base_gt_one (2 : ℝ) (by norm_num)).comp
         (tendsto_id.const_mul_atTop hβ)
   have hminor :
