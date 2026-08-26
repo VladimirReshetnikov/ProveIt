@@ -1180,3 +1180,76 @@ next bounded step: commit and push this registry-only status to the feature
   branch, then stop source/document expansion and launch no build until a later
   exact board assignment
 ```
+
+## Claim: normalized reflection and tilted-variance parity
+
+This is a new ordinary one-source claim, separate from the integrated raw
+reflection tranche.  It claims exactly:
+
+- `Lean/FabiusFunction/ProbabilityLaplaceMoments.lean`; and
+- this branch registry.
+
+The source change will replace that module's direct `LaplaceMoments` import
+with `NegativeLaplaceDerivatives`, retaining its other imports.  Static import-
+closure inspection shows the direction is acyclic and costs the probability
+module exactly one internal dependency.  The reverse direction would make all
+fifty transitive users of `NegativeLaplaceDerivatives` inherit the probability
+representation and existence layers, so it is deliberately avoided.
+
+The exact proposed public declarations are:
+
+1. `normalizedLaplaceMoment_reflection` — reflection at the opposite tilt
+   descends to every normalized moment as the signed binomial transform;
+2. `normalizedLaplaceMoment_one_complement` — normalized means under opposite
+   exponential tilts sum to one;
+3. `normalizedLaplaceMoment_one_sub_half_odd` — centering the normalized tilted
+   mean at `1 / 2` gives an odd function; and
+4. `negativeLaplaceLogSecond_even` — the normalized tilted variance is an even
+   function of the tilt on the whole real line.
+
+The fourth result is the strongest bounded degree-two consequence: reflection
+transports one tilted law to the opposite tilt without changing its variance.
+Equivalent first-cumulant wrappers and third/fourth-cumulant parity are omitted
+to keep this API and its future documentation surface focused.
+
+```text
+SYNC Fabius
+branch / worktree / machine: codex/fabius-theorem-polish-20260825 /
+  C:/Users/vresh/.codex/worktrees/10ef/ProveIt / EVO (Windows)
+fetched main SHA: 39ad356c7a433c1b7dfdaec5bb3e3e4163c9fd35
+HEAD and dirty paths: e0644592affc0fdb798890c16b6c0a1432dec018;
+  clean after merging current main, then only this registry is dirty for the
+  exact-path/declaration claim
+writing (exact paths): after this claim is committed and pushed, only
+  Lean/FabiusFunction/ProbabilityLaplaceMoments.lean; this claim edits only
+  docs/registry/codex-fabius-theorem-polish-20260825.md
+expected declarations or document claims:
+  normalizedLaplaceMoment_reflection,
+  normalizedLaplaceMoment_one_complement,
+  normalizedLaplaceMoment_one_sub_half_odd, and
+  negativeLaplaceLogSecond_even; no document claim
+completed commits: 3bf399e63 (accepted reflected-moment status) and
+  e0644592a (conflict-free merge of current main 39ad356c7); no source commit
+  exists for this new claim
+validated (exact command, SHA/state, exit code): read-only architecture,
+  Mathlib-signature, proof-algebra, and all-tip collision preflight only; all
+  three reviews are green.  The current target blob is
+  488d9fd4c9acfa5100df0dcf04b7f81af967973f on main and has no unique edit on
+  any of 16 audited Fabius/Claude tips
+not yet validated: all four declarations and the import change are unedited
+  and uncompiled; no Lean, Lake, LaTeX, PDF, Python audit, or cache-mutating
+  command has run.  Both host tokens are idle but unassigned, which is not a
+  grant
+requested integration or lease: advertise this single ordinary source path;
+  after a reviewed immutable source checkpoint, request one serialized EVO
+  `LAKE_JOBS=1 lake build +FabiusFunction.ProbabilityLaplaceMoments`; request
+  no document, aggregate, facade, or other serialized-path lease now
+conflicts / dependencies: all 16 fetched Fabius/Claude tips retain their own
+  merge-base target blob or lack the path; all active claims are disjoint.
+  No exact name or semantic duplicate exists.  The prior raw-reflection lease
+  on this path is integrated, validated, and explicitly released
+next bounded step: commit and push this registry-only claim; fetch and reread
+  the board and every advertised tip; only if the collision audit remains
+  green, implement the four results in the one claimed source without running
+  unassigned validation
+```
