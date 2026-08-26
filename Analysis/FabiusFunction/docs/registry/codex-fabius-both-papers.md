@@ -8,21 +8,13 @@ SYNC Fabius
 branch / worktree / machine: codex/fabius-both-papers /
   /home/codex/src/Proofs / codexbox
 fetched main SHA: c9d20ed14c7572d4f3f1361c7883085eaf5bb0d8
-HEAD and dirty paths: 813ea82cf566f409c1ffa42669f32b0556d925f9;
-  clean before this ordinary one-source claim
+HEAD and dirty paths: c5f0bb3a3aebf12d2fa0a8d3d938ba019eb1b7fa;
+  only this registry handoff is dirty
 writing (exact paths):
-  Lean/FabiusFunction/PeriodicSmooth.lean;
   docs/registry/codex-fabius-both-papers.md
 expected declarations or document claims:
-  `forwardDerivativeQuotientPolynomial_one`,
-  `forwardDerivativeQuotientPolynomial_two`,
-  `forwardDerivativeQuotientPolynomial_three`,
-  `negativeLaplaceForwardTermDeriv_two`,
-  `negativeLaplaceForwardTermDeriv_three`, and
-  `negativeLaplaceForwardTermDeriv_four`; these `[simp]` bridges identify the
-  first three quotient polynomials and reconcile the unified all-order
-  derivative family with the existing explicit second-, third-, and
-  fourth-order summands
+  record the completed periodic bridge checkpoint and request its focused
+  serialized validation; the `PeriodicSmooth.lean` writing claim is released
 completed commits: Lower-Lambert source checkpoint `1da2fde2285e3970267b7dc2561bcd0d897be1b4`
   was integrated by coordinator merge `046946a974467e83244fd3a183a3e084e70d3379`;
   registry handoff `225f5338de9ea92489ed6a2c0c371c6edb4f5db9`
@@ -79,7 +71,11 @@ completed commits: Lower-Lambert source checkpoint `1da2fde2285e3970267b7dc2561b
   exponential of the literal uncorrected Wikipedia logarithmic expression is
   not asymptotically equivalent to any bounded Fabius solution at the positive
   zero endpoint; clean merge `4694e0d96ed33da24d5dffeb58a4ce510ff18e98`
-  incorporates current fetched main `c9d20ed14`
+  incorporates current fetched main `c9d20ed14`; exact periodic bridge claim
+  `9cbbbda1a` precedes source checkpoint
+  `c5f0bb3a3aebf12d2fa0a8d3d938ba019eb1b7fa`, which evaluates the first three
+  quotient polynomials and reconciles unified derivative orders two through
+  four with their explicit summands
 validated (exact command, SHA/state, exit code): coordinator board records
   serialized immutable `lake build +FabiusFunction.LowerLambertW` at
   `4c6bbac41`, exit 0, with its source blob unchanged on current main;
@@ -132,7 +128,12 @@ not yet validated: the moved dyadic theorem body was already compiled in its
   positivity, corrected-term sign, limit normalization, congruence
   orientations, theorem placement, collision sweep, facade exposure, module
   prose, forbidden markers, and diff hygiene, but has not been elaborated or
-  built
+  built; the periodic bridge checkpoint has three independent read-only
+  reviews covering its recurrence algebra, exact signs, fixed-index unfolding,
+  polynomial differentiation, coefficient evaluation, ring normalization,
+  unconditional domain, simp orientations, declaration order, collision
+  sweep, facade exposure, doc comments, module prose, forbidden markers, and
+  diff hygiene, but has not been elaborated or built
 requested integration or lease: the dyadic relocation needs serialized
   `+FabiusFunction.GlobalDyadic`
   and `+FabiusFunction.OriginalPaperSupplement` validation; this new ordinary
@@ -156,6 +157,9 @@ requested integration or lease: the dyadic relocation needs serialized
   `+FabiusFunction.FabiusSharpAsymptotic` followed by
   `+FabiusFunction.PaperFabiusAsymptotic`, and its source writing claim is
   released by this handoff;
+  the periodic bridge checkpoint needs serialized
+  `+FabiusFunction.PeriodicSmooth`, and its source writing claim is released by
+  this handoff;
   serialized README/primary/walkthrough/coverage paths are deliberately not
   claimed yet
 conflicts / dependencies: all advertised Fabius heads and their registries
@@ -199,9 +203,9 @@ conflicts / dependencies: all advertised Fabius heads and their registries
   `not_isEquivalent` theorem and no competing claim on
   `FabiusSharpAsymptotic.lean`; the coordinator explicitly released its prior
   generalizations lease
-next bounded step: push this exact ordinary source claim, finish the advertised
-  cross-tip collision scan, implement the six bridge theorems without running
-  a build, and request serialized `+FabiusFunction.PeriodicSmooth` validation
+next bounded step: push this source handoff, then inspect and claim the strongest
+  available ordinary nonoverlapping theorem or deduplication tranche while the
+  coordinator retains the build token
 ```
 
 ## Coordinator natural-knot integration disposition
