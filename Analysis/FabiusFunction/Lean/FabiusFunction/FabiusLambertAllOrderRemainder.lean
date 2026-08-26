@@ -8,10 +8,13 @@ import Mathlib.Analysis.SpecialFunctions.Log.Deriv
 
 This module upgrades the formal coefficient recurrence for the lower-Lambert
 phase to a rigorous asymptotic expansion of every finite order.  It proves
-the formal logarithmic cancellations with truncated power-series
-substitution, bounds the varying-coefficient real Taylor remainder, and then
+the formal logarithmic cancellations using the full formal identities from
+`FabiusLambertFormalLog` through their coefficient and finite-truncation
+consequences, bounds the varying-coefficient real Taylor remainder, and then
 uses stability of `u - log u / log 2` on the large positive branch to compare
-the explicit truncation with the exact Lambert phase.
+the explicit truncation with the exact Lambert phase.  The imported identities
+are purely formal and make no convergence claim; analytic estimates begin
+only after a finite truncation is evaluated at the large parameter.
 -/
 
 set_option autoImplicit false
@@ -177,57 +180,6 @@ private noncomputable def dyadicLambertComposedLogTaylor
     Polynomial.C
       (Polynomial.X * dyadicLambertDisplacementTruncation N)
 
-private theorem massSeries_dyadicLambertUnitSeriesCoefficient :
-    SaddleExpansion.massSeries dyadicLambertUnitSeriesCoefficient =
-      1 + PowerSeries.X * dyadicLambertDisplacementSeries := by
-  ext n
-  cases n with
-  | zero =>
-      simp [SaddleExpansion.coeff_massSeries]
-  | succ n =>
-      simp [SaddleExpansion.coeff_massSeries]
-
-private theorem dyadicLambertFormalLogTruncation_eq (N : ℕ) :
-    PowerSeries.trunc (N + 1)
-        (SaddleExpansion.logSeries dyadicLambertUnitSeriesCoefficient) =
-      Polynomial.C (Polynomial.C (Real.log 2)) *
-        (dyadicLambertDisplacementTruncation N -
-          Polynomial.C (dyadicLambertDisplacementPolynomial 0)) := by
-  apply Polynomial.ext
-  intro m
-  rw [PowerSeries.coeff_trunc]
-  split_ifs with hm
-  · cases m with
-    | zero =>
-        rw [SaddleExpansion.coeff_logSeries,
-          SaddleExpansion.logCoeff_zero, Polynomial.coeff_C_mul,
-          Polynomial.coeff_sub, Polynomial.coeff_C, if_pos rfl]
-        have hp0 : (dyadicLambertDisplacementTruncation N).coeff 0 =
-            dyadicLambertDisplacementPolynomial 0 := by
-          rw [dyadicLambertDisplacementTruncation,
-            PowerSeries.coeff_trunc, if_pos (by omega),
-            coeff_dyadicLambertDisplacementSeries]
-        rw [hp0, sub_self, mul_zero]
-    | succ m =>
-      rw [SaddleExpansion.coeff_logSeries,
-        dyadicLambert_logCoeff_succ,
-        Polynomial.coeff_C_mul, Polynomial.coeff_sub,
-        Polynomial.coeff_C, if_neg (Nat.succ_ne_zero m), sub_zero]
-      rw [dyadicLambertDisplacementTruncation,
-        PowerSeries.coeff_trunc, if_pos hm,
-        coeff_dyadicLambertDisplacementSeries]
-  · have hdeg :
-        (dyadicLambertDisplacementTruncation N).natDegree < N + 1 :=
-        PowerSeries.natDegree_trunc_lt _ N
-    have hzero :
-        (dyadicLambertDisplacementTruncation N).coeff m = 0 :=
-      Polynomial.coeff_eq_zero_of_natDegree_lt
-        (lt_of_lt_of_le hdeg (Nat.le_of_not_gt hm))
-    have hm0 : m ≠ 0 := by omega
-    rw [Polynomial.coeff_C_mul, Polynomial.coeff_sub, hzero,
-      Polynomial.coeff_C, if_neg hm0]
-    simp
-
 private theorem trunc_dyadicLambertComposedLogTaylor (N : ℕ) :
     PowerSeries.trunc (N + 1)
         (dyadicLambertComposedLogTaylor N :
@@ -318,19 +270,20 @@ private theorem X_pow_dvd_dyadicLambertAlgebraicResidual (N : ℕ) :
     (trunc_dyadicLambertComposedLogTaylor N)
   simp only [PowerSeries.coeff_trunc, if_pos hm,
     Polynomial.coeff_coe] at hcomp
-  have hformal := congrArg
-    (fun p : Polynomial (Polynomial ℝ) => p.coeff m)
-    (dyadicLambertFormalLogTruncation_eq N)
-  rw [PowerSeries.coeff_trunc, if_pos hm, Polynomial.coeff_C_mul,
-    Polynomial.coeff_sub] at hformal
+  have htrunc :
+      (dyadicLambertDisplacementTruncation N).coeff m =
+        dyadicLambertDisplacementPolynomial m := by
+    rw [dyadicLambertDisplacementTruncation,
+      PowerSeries.coeff_trunc, if_pos hm,
+      coeff_dyadicLambertDisplacementSeries]
   rw [dyadicLambertAlgebraicResidual, Polynomial.coeff_sub,
-    Polynomial.coeff_sub, Polynomial.coeff_C_mul, hcomp, hformal]
-  apply Polynomial.funext
-  intro ell
-  simp only [Polynomial.eval_sub, Polynomial.eval_mul, Polynomial.eval_C]
-  have hL : Real.log 2 ≠ 0 := (Real.log_pos (by norm_num)).ne'
-  field_simp [hL]
-  simp
+    Polynomial.coeff_sub, Polynomial.coeff_C_mul, htrunc, hcomp,
+    SaddleExpansion.coeff_logSeries,
+    dyadicLambertDisplacementPolynomial_eq_logCoeff]
+  by_cases hm0 : m = 0
+  · subst m
+    simp
+  · simp [hm0]
 
 private theorem dyadicLambertAlgebraicResidual_isBigO (N : ℕ) :
     (fun t : ℝ => nestedLambertEval

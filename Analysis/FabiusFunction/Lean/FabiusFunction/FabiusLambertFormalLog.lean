@@ -5,10 +5,18 @@ import FabiusFunction.SaddleLogExpansionAlgebra
 # Formal-log correctness of the all-order Lambert coefficients
 
 The recursive displacement coefficients are identified with the logarithm
-of the formal unit series `1 + u A(u)`.  This proves coefficientwise that
-`A = a₀ + log(1 + u A) / log 2`, supplying the exact cancellations needed
-to turn the formal lower-Lambert series into arbitrary-order analytic
-approximations.
+of the formal unit series `1 + u A(u)`.  The unit series is packaged exactly
+as
+
+`massSeries dyadicLambertUnitSeriesCoefficient = 1 + X * A`,
+
+and the coefficient recurrence assembles into the full fixed-point equation
+
+`A = C(a₀) + C(C((log 2)⁻¹)) * logSeries(unit)`.
+
+These are identities in formal power series over `Polynomial ℝ`; they make
+no convergence claim.  Their finite truncations supply the exact cancellations
+used downstream in arbitrary-order analytic approximations.
 -/
 
 set_option autoImplicit false
@@ -26,9 +34,12 @@ noncomputable def dyadicLambertUnitSeriesCoefficient : ℕ → Polynomial ℝ
   | 0 => 1
   | n + 1 => dyadicLambertDisplacementPolynomial n
 
+/-- The constant coefficient of the formal Lambert unit series is one. -/
 @[simp] theorem dyadicLambertUnitSeriesCoefficient_zero :
     dyadicLambertUnitSeriesCoefficient 0 = 1 := by rfl
 
+/-- Positive coefficients of the formal Lambert unit series are the
+displacement polynomials, shifted by one index. -/
 @[simp] theorem dyadicLambertUnitSeriesCoefficient_succ (n : ℕ) :
     dyadicLambertUnitSeriesCoefficient (n + 1) =
       dyadicLambertDisplacementPolynomial n := by rfl
@@ -81,10 +92,25 @@ noncomputable def dyadicLambertDisplacementSeries :
     PowerSeries (Polynomial ℝ) :=
   PowerSeries.mk dyadicLambertDisplacementPolynomial
 
+/-- The `n`-th coefficient of the formal Lambert displacement series is the
+recursive displacement polynomial of degree index `n`. -/
 @[simp] theorem coeff_dyadicLambertDisplacementSeries (n : ℕ) :
     PowerSeries.coeff n dyadicLambertDisplacementSeries =
       dyadicLambertDisplacementPolynomial n := by
   rw [dyadicLambertDisplacementSeries, PowerSeries.coeff_mk]
+
+/-- The mass series of the shifted Lambert coefficients is exactly the formal
+unit series `1 + X * A`, where `A` is the displacement series.  This is a
+purely formal identity and carries no convergence assertion. -/
+theorem massSeries_dyadicLambertUnitSeriesCoefficient :
+    SaddleExpansion.massSeries dyadicLambertUnitSeriesCoefficient =
+      1 + PowerSeries.X * dyadicLambertDisplacementSeries := by
+  ext n
+  cases n with
+  | zero =>
+      simp [SaddleExpansion.coeff_massSeries]
+  | succ n =>
+      simp [SaddleExpansion.coeff_massSeries]
 
 /-- Coefficientwise form of the formal fixed-point equation
 `A = a₀ + log(1 + u A) / log 2`. -/
@@ -103,6 +129,25 @@ theorem dyadicLambertDisplacementPolynomial_eq_logCoeff (n : ℕ) :
       intro z
       simp only [eval_mul, eval_C]
       field_simp [hL]
+
+/-- Whole-series form of the formal lower-Lambert fixed-point equation:
+`A = C(a₀) + C(C((log 2)⁻¹)) * logSeries(unit)`.  It is obtained by
+assembling `dyadicLambertDisplacementPolynomial_eq_logCoeff` coefficientwise;
+as an identity of formal power series, it asserts no analytic convergence. -/
+theorem dyadicLambertDisplacementSeries_fixedPoint :
+    dyadicLambertDisplacementSeries =
+      PowerSeries.C (dyadicLambertDisplacementPolynomial 0) +
+        PowerSeries.C (Polynomial.C (Real.log 2)⁻¹) *
+          SaddleExpansion.logSeries
+            dyadicLambertUnitSeriesCoefficient := by
+  ext n
+  rw [coeff_dyadicLambertDisplacementSeries, map_add,
+    PowerSeries.coeff_C, PowerSeries.coeff_C_mul,
+    SaddleExpansion.coeff_logSeries,
+    dyadicLambertDisplacementPolynomial_eq_logCoeff]
+  by_cases hn : n = 0
+  · simp [hn]
+  · simp [hn]
 
 /-- Scalar form of the coefficientwise fixed-point equation: at a real `ell`
 the value `a_0 ell` is `ell / log 2`, while for `n ≠ 0` the value `a_n ell` is
