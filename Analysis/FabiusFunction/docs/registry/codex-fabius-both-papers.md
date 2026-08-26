@@ -7,9 +7,9 @@ This file implements the per-branch registry fallback in
 SYNC Fabius
 branch / worktree / machine: codex/fabius-both-papers /
   /home/codex/src/Proofs / codexbox
-fetched main SHA: 2183cfb113765197042628524690794bdf8d07c4
-HEAD and dirty paths: c32bd6276a778c981b2bf985826696c8f5538141;
-  clean before this ordinary private-only claim
+fetched main SHA: 408b8b11905f3ee260dd739592f0ff8755f1b53e
+HEAD and dirty paths: 6f8c8c04629bd0aa81e34f55449b8d266740179c;
+  dirty only in this own-registry handoff after the clean source checkpoint
 writing (exact paths):
   Lean/FabiusFunction/FabiusUniformSpline.lean;
   docs/registry/codex-fabius-both-papers.md
@@ -87,7 +87,10 @@ completed commits: Lower-Lambert source checkpoint `1da2fde2285e3970267b7dc2561b
   `theorem_twenty_one_odd_all` and rederives `theorem_nine_all` as its
   compatibility corollary; clean merge
   `c50c161b15fd3d1f313cf57a14d184c97bef23ca` incorporates current fetched main
-  `2183cfb11`
+  `2183cfb11`; private-only cleanup claim
+  `c08e1e9a728b8a2d8ce1570f3bbd04c0807ece4f` precedes source checkpoint
+  `6f8c8c04629bd0aa81e34f55449b8d266740179c`, which deletes the unused private
+  `integral_unitInterval_max_sub_mul_pow` declaration and no other source line
 validated (exact command, SHA/state, exit code): coordinator board records
   serialized immutable `lake build +FabiusFunction.LowerLambertW` at
   `4c6bbac41`, exit 0, with its source blob unchanged on current main;
@@ -224,9 +227,29 @@ conflicts / dependencies: all advertised Fabius heads and their registries
   `not_isEquivalent` theorem and no competing claim on
   `FabiusSharpAsymptotic.lean`; the coordinator explicitly released its prior
   generalizations lease
-next bounded step: push this exact private-only claim, delete the dead helper,
-  obtain independent read-only review without running a build, and request
-  serialized `+FabiusFunction.FabiusUniformSpline` validation
+next bounded step: push the independently reviewed source checkpoint, merge
+  current `origin/main`, and request serialized
+  `+FabiusFunction.FabiusUniformSpline` validation
+```
+
+## Dead uniform-spline helper cleanup handoff
+
+Source checkpoint `6f8c8c04629bd0aa81e34f55449b8d266740179c`
+deletes the private, attribute-free
+`integral_unitInterval_max_sub_mul_pow` from `FabiusUniformSpline.lean`.  Its
+name occurred only at its declaration.  The adjacent
+`intervalIntegral_max_sub_mul_pow` is unchanged and remains the exact helper
+used by `fabiusUniformPositiveSpline_smoothing`.
+
+The patch is 22 deletions and no insertions.  It changes no public declaration,
+import, attribute, or call site.  Two independent read-only audits passed,
+`git diff --check` is clean, and the helpers that appeared in the deleted
+subtype-to-interval preface remain used later in the module.  No Lean/Lake
+process was run because the shared build lane is assigned elsewhere.  The
+requested future serialized gate is:
+
+```text
+LAKE_JOBS=1 lake build +FabiusFunction.FabiusUniformSpline
 ```
 
 ## Coordinator natural-knot integration disposition
