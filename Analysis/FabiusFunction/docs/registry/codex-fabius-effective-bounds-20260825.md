@@ -3149,3 +3149,75 @@ next bounded step: commit and push this registry-only claim without force;
   independently verify all 18 attachments, formulas, domains, derivative
   indices, smoothness orders, period/boundedness scope, and token preservation
 ```
+
+## Handoff: complete source documentation for all-orders periodic smoothness
+
+Source checkpoint `32bc6070ee0819f0a465068219ff9893d1bde1d9` implements the
+complete claimed tranche and is pushed to
+`origin/codex/fabius-effective-bounds-20260825`.
+
+`PeriodicSmooth.lean` now has adjacent, mathematically precise comments for
+all 44 public declarations.  The 18 additions include the three same-line
+attributed simp lemmas that the current repository audit does not count.
+The module guide now summarizes the public all-orders chain from recursively
+generated quotient polynomials and termwise derivative majorants to global
+C∞ periodic corrections and bounded exponent jets.
+
+The comments record the exact order-zero and order-one bridges, recursive
+`a = 2^n`, `z = exp (-(s*a))` quotient formula, positive-scale derivative and
+summability hypotheses, compact `[0,1]` polynomial bound, existential
+nonnegative half-line majorant, positive-domain tail smoothness, whole-line
+C∞ compositions, derivative-period transport, and qualitative bounded-range
+claims.  They do not claim analyticity, convergence at nonpositive scale, a
+sharp or explicit existential constant, or a least period.
+
+Exact frozen source artifact:
+
+- `PeriodicSmooth.lean`: Git blob
+  `f09e73b35accd3d426fea843eb2122ad5b214df9`, content SHA-256
+  `2F5CF5589E74D9AF5051C781BC50537E33E0436CEF431B9E669CF8FD1A10388F`.
+
+The exact diff is 54 inserted comment lines and zero deletions.  Strict
+attributed-declaration inventory reports 44 public declarations and 44
+adjacent comments; the official audit's narrower 35-declaration view also
+reports zero missing and no longer lists this module.  Lexical comparison
+shows the non-comment Lean code stream is identical to baseline blob
+`2907aa12ef3e3dfbd7094dc5c39de27b559b4ce8`.  Independent hostile semantic
+review is green across all 18 comments and the module paragraph; author-side
+exact-byte and whitespace checks agree.  Local and staged `git diff --check`
+passed.  No Lean, Lake, TeX, PDF, cache-mutating process, canonical-document
+edit, or main write ran.
+
+```text
+SYNC Fabius
+branch / worktree / machine: codex/fabius-effective-bounds-20260825 /
+  /home/codex/.codex/worktrees/d6d3/Proofs / codexbox
+fetched main SHA: a949e2efaa485283e66a7d2130fc723168c01efa
+HEAD and dirty paths: 32bc6070ee0819f0a465068219ff9893d1bde1d9;
+  clean after exact-path source commit; checkpoint pushed
+writing (exact paths): this branch registry for immutable handoff only; the
+  source path above is frozen at the stated blob
+expected declarations or document claims: exact source-prose parity for all
+  44 public declarations and module guide recorded above; no Lean-token,
+  facade, import, audit-script, or canonical-doc surface
+completed commits: registry-first claim 1c6114950; source checkpoint
+  32bc6070e; both pushed without force
+validated (exact command, SHA/state, exit code): strict scan reports 44 public
+  / 0 missing; official doc_audit reports no PeriodicSmooth gap; local and
+  staged git diff --check exited 0; lexical non-comment comparison matches the
+  baseline; independent semantic and author exact-byte reviews are green;
+  exact blob/SHA evidence is recorded above
+not yet validated: no Lean/Lake target or downstream importer was built on
+  this branch; comment-only and static review are not compiler evidence
+requested integration or lease: request one serialized LAKE_JOBS=1 build of
+  +FabiusFunction.PeriodicSmooth and optional direct-import smoke target
+  selected by the coordinator; request coordinator review and selective
+  integration; request no main-write or document lease
+conflicts / dependencies: this source remains disjoint from active Wikipedia
+  and inverse validation targets and all other frozen local blobs; only the
+  coordinator may advance main
+next bounded step: freeze the source blob, push this handoff, fetch main,
+  reread any board delta, and choose another disjoint theorem or source-parity
+  tranche; the audit-script blind spot remains a separately serialized tool
+  issue rather than an implicit source expansion
+```
