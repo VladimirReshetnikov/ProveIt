@@ -1404,3 +1404,41 @@ next bounded step: commit and push this registry-only acceptance checkpoint to
   the feature branch, then freeze the write set and await a fresh exact board
   assignment before any source, document, or build action
 ```
+
+## Pre-push main synchronization
+
+After the acceptance report was committed as `bdee8a653`, a fresh fetch moved
+`origin/main` to `df3e05c48bd7a4678c6118ba2e26b7d1ec2a6bf2`.  The live
+board still records the normalized-reflection tranche as integrated and green,
+with every lease released.  Clean feature merge
+`bb1a305b9ec41632f552143befa76b752b90a42a` incorporates that mainline
+checkpoint without conflict.  Its incoming signed dyadic-prefix Lean paths are
+disjoint from this completed tranche, and the normalized-reflection source
+blob remains exactly `8a1d896e324a45f2681259f2c83e50fdfb78e238`.
+
+```text
+SYNC Fabius
+branch / worktree / machine: codex/fabius-theorem-polish-20260825 /
+  C:/Users/vresh/.codex/worktrees/10ef/ProveIt / EVO (Windows)
+fetched main SHA: df3e05c48bd7a4678c6118ba2e26b7d1ec2a6bf2
+HEAD and dirty paths: bb1a305b9ec41632f552143befa76b752b90a42a;
+  clean after the main merge, then only this branch registry is dirty for this
+  synchronization record
+writing (exact paths): only
+  docs/registry/codex-fabius-theorem-polish-20260825.md
+expected declarations or document claims: no new declaration or document
+  claim; normalized-reflection acceptance remains unchanged
+completed commits: bdee8a653 (acceptance evidence) and bb1a305b9 (merge of
+  current main df3e05c48)
+validated (exact command, SHA/state, exit code): no new compiler invocation;
+  origin/main is an ancestor of the merge tip, and the normalized-reflection
+  source retains the exact coordinator-compiled Git blob
+not yet validated: no local Lean/Lake/LaTeX/PDF process ran; no future source
+  design or document handoff is represented as implemented or compiled
+requested integration or lease: none; all source, build, document, facade, and
+  aggregate leases remain released
+conflicts / dependencies: merge completed without conflict; incoming ordinary
+  Lean changes are disjoint, and all serialized canonical paths remain frozen
+next bounded step: commit and push this registry-only sync to the feature
+  branch, then await a fresh exact board assignment
+```
