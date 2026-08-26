@@ -45,10 +45,13 @@ integral over `(0, ∞)`.  The remaining elementary piece
   `intervalIntegral_negativeLaplaceForwardTail_two_rpow`, and their sum
   `intervalIntegral_negativeLaplaceLog_add_tail_two_rpow` — the two halves of
   the period integral, and the finite-part integral they add up to.
-* `smallDyadicInterval`, `largeDyadicInterval`, together with their union,
-  disjointness, and `HasSum` countable-additivity lemmas — the dyadic
-  partitions of `(0,1]` and `[1,∞)`.  `FabiusFunction.PeriodicFourier` reuses
-  them unchanged for the Fourier coefficients, which is why they are public.
+* `smallDyadicInterval`, `largeDyadicInterval`, their union and disjointness
+  lemmas, and the generic vector-valued
+  `hasSum_setIntegral_smallDyadicInterval`,
+  `hasSum_setIntegral_largeDyadicInterval_Ici`, and
+  `hasSum_setIntegral_largeDyadicInterval` theorems — the dyadic partitions
+  of `(0,1]` and `[1,∞)`.  `FabiusFunction.PeriodicFourier` reuses them
+  unchanged for the Fourier coefficients, which is why they are public.
 * `negativeLaplacePeriodicCorrection_eq_components` — the three-term
   decomposition of `R` along which the mean computation splits.
 
@@ -262,6 +265,56 @@ lemma pairwise_disjoint_largeDyadicInterval :
   · exact hdis hlt
   · exact (hdis hgt).symm
 
+/-- For any `f : ℝ → E` Bochner-integrable on `(0, 1]`, the series of integrals
+`∑ n, ∫ x in smallDyadicInterval n, f x` has sum
+`∫ x in Ioc 0 1, f x`.  Thus the small dyadic blocks give countable
+additivity over the exact partition `(0, 1] = ⋃ n, smallDyadicInterval n`. -/
+theorem hasSum_setIntegral_smallDyadicInterval
+    {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    (f : ℝ → E) (hf : IntegrableOn f (Ioc (0 : ℝ) 1)) :
+    HasSum (fun n : ℕ => ∫ x : ℝ in smallDyadicInterval n, f x)
+      (∫ x : ℝ in Ioc (0 : ℝ) 1, f x) := by
+  have h := hasSum_integral_iUnion
+    (f := f) (s := smallDyadicInterval)
+    (fun _ => measurableSet_Ioc) pairwise_disjoint_smallDyadicInterval
+    (by simpa [iUnion_smallDyadicInterval] using hf)
+  simpa [iUnion_smallDyadicInterval] using h
+
+/-- For any `f : ℝ → E` Bochner-integrable on `[1, ∞)`, the series of integrals
+`∑ n, ∫ x in largeDyadicInterval n, f x` has sum
+`∫ x in Ici 1, f x`.  This is the exact half-open partition
+`[1, ∞) = ⋃ n, largeDyadicInterval n`, before changing endpoints almost
+everywhere. -/
+theorem hasSum_setIntegral_largeDyadicInterval_Ici
+    {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    (f : ℝ → E) (hf : IntegrableOn f (Ici (1 : ℝ))) :
+    HasSum (fun n : ℕ => ∫ x : ℝ in largeDyadicInterval n, f x)
+      (∫ x : ℝ in Ici (1 : ℝ), f x) := by
+  have h := hasSum_integral_iUnion
+    (f := f) (s := largeDyadicInterval)
+    (fun _ => measurableSet_Ico) pairwise_disjoint_largeDyadicInterval
+    (by simpa [iUnion_largeDyadicInterval] using hf)
+  simpa [iUnion_largeDyadicInterval] using h
+
+/-- For any Bochner-integrable `f : ℝ → E` on `(1, ∞)`, the series
+`∑ n, ∫ x in Ioc (2 ^ n) (2 ^ (n + 1)), f x` has sum
+`∫ x in Ioi 1, f x`.  It is the large dyadic partition with both the block
+endpoints and the endpoint `1` changed only on null sets. -/
+theorem hasSum_setIntegral_largeDyadicInterval
+    {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    (f : ℝ → E) (hf : IntegrableOn f (Ioi (1 : ℝ))) :
+    HasSum
+      (fun n : ℕ => ∫ x : ℝ in
+        Ioc ((2 : ℝ) ^ n) ((2 : ℝ) ^ (n + 1)), f x)
+      (∫ x : ℝ in Ioi (1 : ℝ), f x) := by
+  have hIntIci : IntegrableOn f (Ici (1 : ℝ)) :=
+    IntegrableOn.congr_set_ae hf Ioi_ae_eq_Ici.symm
+  have h' :=
+    (hasSum_setIntegral_largeDyadicInterval_Ici f hIntIci).congr_fun
+      (fun _ => setIntegral_congr_set Ico_ae_eq_Ioc.symm)
+  rw [setIntegral_congr_set Ioi_ae_eq_Ici]
+  exact h'
+
 /-- Countable additivity of `∫_{(0, 1]} boseFinitePartSmallKernel` along
 the small dyadic blocks: the block integrals are summable with that
 integral as their sum.  Uses the integrability of the kernel on `(0, 1]`
@@ -270,11 +323,8 @@ lemma hasSum_integral_smallDyadicInterval :
     HasSum (fun n : ℕ => ∫ x : ℝ in smallDyadicInterval n,
       boseFinitePartSmallKernel x)
       (∫ x : ℝ in Ioc 0 1, boseFinitePartSmallKernel x) := by
-  have h := hasSum_integral_iUnion
-    (f := boseFinitePartSmallKernel) (s := smallDyadicInterval)
-    (fun n => measurableSet_Ioc) pairwise_disjoint_smallDyadicInterval
-    (by simpa [iUnion_smallDyadicInterval] using integrableOn_boseFinitePartSmallKernel)
-  simpa [iUnion_smallDyadicInterval] using h
+  apply hasSum_setIntegral_smallDyadicInterval
+  exact integrableOn_boseFinitePartSmallKernel
 
 /-- Countable additivity for the large dyadic partition in its exact
 `Ico`/`Ici` form, before changing endpoints almost everywhere. -/
@@ -282,14 +332,9 @@ lemma hasSum_integral_largeDyadicInterval_Ici :
     HasSum (fun n : ℕ => ∫ x : ℝ in largeDyadicInterval n,
       boseFinitePartLargeKernel x)
       (∫ x : ℝ in Ici 1, boseFinitePartLargeKernel x) := by
-  have hIntIci : IntegrableOn boseFinitePartLargeKernel (Ici 1) :=
-    IntegrableOn.congr_set_ae integrableOn_boseFinitePartLargeKernel
-      Ioi_ae_eq_Ici.symm
-  have h := hasSum_integral_iUnion
-    (f := boseFinitePartLargeKernel) (s := largeDyadicInterval)
-    (fun n => measurableSet_Ico) pairwise_disjoint_largeDyadicInterval
-    (by simpa [iUnion_largeDyadicInterval] using hIntIci)
-  simpa [iUnion_largeDyadicInterval] using h
+  apply hasSum_setIntegral_largeDyadicInterval_Ici
+  exact IntegrableOn.congr_set_ae integrableOn_boseFinitePartLargeKernel
+    Ioi_ae_eq_Ici.symm
 
 /-- Countable additivity of `∫_{(1, ∞)} boseFinitePartLargeKernel` along
 the large dyadic blocks, stated with the blocks written as
@@ -300,10 +345,8 @@ lemma hasSum_integral_largeDyadicInterval :
     HasSum (fun n : ℕ => ∫ x : ℝ in Ioc ((2 : ℝ) ^ n) ((2 : ℝ) ^ (n + 1)),
       boseFinitePartLargeKernel x)
       (∫ x : ℝ in Ioi 1, boseFinitePartLargeKernel x) := by
-  have h' := hasSum_integral_largeDyadicInterval_Ici.congr_fun (fun n => by
-    exact setIntegral_congr_set Ico_ae_eq_Ioc.symm)
-  rw [setIntegral_congr_set Ioi_ae_eq_Ici]
-  exact h'
+  apply hasSum_setIntegral_largeDyadicInterval
+  exact integrableOn_boseFinitePartLargeKernel
 
 /-- The `n`-th summand of `negativeLaplaceLog (2 ^ t)`, integrated over
 the period `[0, 1]` and scaled by `log 2`, is the integral of
