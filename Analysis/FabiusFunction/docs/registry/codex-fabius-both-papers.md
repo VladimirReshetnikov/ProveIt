@@ -7,19 +7,21 @@ This file implements the per-branch registry fallback in
 SYNC Fabius
 branch / worktree / machine: codex/fabius-both-papers /
   /home/codex/src/Proofs / codexbox
-fetched main SHA: c9eac55c5a9e10723cea061393d192e7a1134392
-HEAD and dirty paths: 64a95d363cec9647cdd6c93bd63bba1d1d5e11da;
-  clean before this registry-only validation handoff
+fetched main SHA: 407da44a69a56aa8c1de5e817aa1792af5ed0a46
+HEAD and dirty paths: 80c6643abc68213ec1bef60db1e13bf9707c3e00;
+  clean before this ordinary one-source claim
 writing (exact paths):
+  Lean/FabiusFunction/HalfQBinomial.lean;
   docs/registry/codex-fabius-both-papers.md
 expected declarations or document claims:
-  `complexSinc_eq_zero_iff`, identifying the zeros of removable complex sinc
-  as the nonzero integral multiples of `π`;
-  `rvachevFourierProduct_eq_zero_iff`, identifying every complex zero of the
-  infinite sinc product as a nonzero embedded integer;
-  `rvachevFourier_eq_zero_iff`, transporting the complete zero locus to the
-  Fourier transform of every bounded Fabius solution;
-  retain the existing integer-sample API as convenient specializations
+  `finiteQPochhammer_eq_zero_iff`, the unrestricted rational product-zero
+  criterion `∃ j < n, a * q^j = 1`;
+  `finiteQPochhammer_half_eq_zero_iff`, identifying all roots at `q = 1/2` as
+  the powers `2^j` with `j < n`;
+  `halfQBinomial_sum_eq_zero_iff` and
+  `qBinomial_half_sum_eq_zero_iff`, transporting the complete arbitrary-rational
+  root locus to the half-q binomial polynomial in both API spellings;
+  retain the existing dyadic-node formulas as useful evaluated specializations
 completed commits: Lower-Lambert source checkpoint `1da2fde2285e3970267b7dc2561bcd0d897be1b4`
   was integrated by coordinator merge `046946a974467e83244fd3a183a3e084e70d3379`;
   registry handoff `225f5338de9ea92489ed6a2c0c371c6edb4f5db9`
@@ -59,7 +61,9 @@ completed commits: Lower-Lambert source checkpoint `1da2fde2285e3970267b7dc2561b
   `c41a522839850a699f7de8a2f07e15180ae45f7d` incorporates validated current
   main `c9eac55c5`; exact complex-zero claim `446911e31` precedes unvalidated
   source checkpoint `64a95d363cec9647cdd6c93bd63bba1d1d5e11da`, which adds the three
-  public iff theorems and one private dyadic-factor bridge
+  public iff theorems and one private dyadic-factor bridge; clean merge
+  `80c6643abc68213ec1bef60db1e13bf9707c3e00` incorporates current main
+  `407da44a6`
 validated (exact command, SHA/state, exit code): coordinator board records
   serialized immutable `lake build +FabiusFunction.LowerLambertW` at
   `4c6bbac41`, exit 0, with its source blob unchanged on current main;
@@ -137,10 +141,15 @@ conflicts / dependencies: all advertised Fabius heads and their registries
   name, semantic-equivalent complete complex zero-locus theorem, or registry
   claim on `FourierProduct.lean`; the current file already contains precisely
   the sinc zero criterion, absolute product convergence, and integer-zero facts
-  needed by the proposed proof
-next bounded step: push this registry handoff, await serialized validation of
-  the independent source checkpoints, and audit another unclaimed ordinary
-  theorem or structural simplification
+  needed by the proposed proof; current main and every advertised remote Fabius
+  or Claude tip contain only the dyadic-input q-Pochhammer iff, not an
+  arbitrary-rational root classification, and no registry claims
+  `HalfQBinomial.lean`; its coefficient-index zero theorem is semantically
+  distinct from this polynomial-root locus
+next bounded step: push this exact one-source claim, implement the four-theorem
+  rational root-locus family without running a build, obtain independent static
+  review, and hand it off for serialized `+FabiusFunction.HalfQBinomial` and
+  `+FabiusFunction.FabiusQBinomialFormula` validation
 ```
 
 ## Coordinator natural-knot integration disposition
