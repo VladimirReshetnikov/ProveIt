@@ -16,11 +16,12 @@ SYNC Fabius
 branch / worktree / machine: codex/fabius-exposition-integration /
   C:\Users\vresh\.codex\worktrees\8f3f\ProveIt / EVO
 fetched main SHA: e18f5d0b0e3ec78e2b14e7006af6c7e916b42923
-HEAD and dirty paths: source work is based on b71bcc6fe; no merge is in
-  progress and git ls-files -u is empty. The only dirty paths are the leased
-  frontier README/TeX and this registry. The two redundant build-copy PDFs
-  were moved reversibly outside the worktree after their hashes were
-  reverified against the committed PDFs.
+HEAD and dirty paths: source checkpoint 78260751f was pushed, then merge
+  18f8eadd4 incorporated origin/main at e18f5d0b0 with no conflicts. The
+  parent of this registry update is 18f8eadd4; git ls-files -u is empty and
+  only this registry is dirty. The two redundant build-copy PDFs were moved
+  reversibly outside the worktree after their hashes were reverified against
+  the committed PDFs.
 writing (exact paths):
   Analysis/FabiusFunction/docs/non-formalized-research-frontiers/README.md
   Analysis/FabiusFunction/docs/non-formalized-research-frontiers/non-formalized-research-frontiers.tex
@@ -30,8 +31,9 @@ expected declarations or document claims: no Lean edits. Reconcile the
   post-audit gap register; preserve every current-only cluster; quarantine all
   primary claims lacking an exact public Lean counterpart; reject rather than
   preserve the false all-real raw-spline recurrence found during review.
-completed commits: this registry accompanies the stage-one source checkpoint
-  based on b71bcc6fe; its immutable commit SHA will be recorded after creation.
+completed commits: 78260751f is the pushed stage-one semantic source
+  checkpoint; 18f8eadd4 cleanly merges current origin/main into the feature
+  branch without a content conflict or binary resolution.
 validated (exact command, SHA/state, exit code): on TeX SHA-256
   237206887D8500F6AB02A945609266E285B9930E36A1142E2704B5BF08007CA8,
   git diff --check exited 0 and git ls-files -u was empty. Independent
@@ -54,19 +56,17 @@ requested integration or lease: review the pushed source checkpoint, then
   confirm stage two under the already reserved EVO TeX token for exactly
   three pdflatex passes, rendered inspection, and a matching PDF checkpoint.
   After frontier integration, grant the primary TeX/PDF correction tranche.
-conflicts / dependencies: fetched origin/main is three nonoverlapping policy
-  commits ahead of b71bcc6fe and changes only AGENTS.md, the campaign README,
-  and the coordinator board. Preserve this coherent source checkpoint before
-  merging it. The preserved sidecars are at
+conflicts / dependencies: the three incoming main commits changed only
+  AGENTS.md, the campaign README, and the coordinator board and merged with no
+  conflict. There are no unresolved paths. The preserved sidecars are at
   C:\Users\vresh\.codex\preserved\fabius-exposition-sidecars-8f3f-20260825T1700;
   their SHA-256 values are
   59B8B06825F89B81A33F6352196CEBE7C0CAF4C436170FEB15FFDD9336E72908
   and CD91C680DFA7D96F110106F7A6ADCACC5CBA10E188DF1BD0A4484218FA8FA39C,
   exactly matching the two previously committed canonical PDFs.
-next bounded step: commit and push this source-only checkpoint, fetch/read the
-  board again, merge origin/main into the clean feature branch, push the
-  feature branch only, and await stage-two review; never select a predecessor
-  PDF wholesale and never push main.
+next bounded step: commit and push this post-merge registry update, then await
+  coordinator stage-two review; never select a predecessor PDF wholesale and
+  never push main.
 ~~~
 
 **Historical coordinator disposition at `7aed3c8c7`.**  The detailed status block and
