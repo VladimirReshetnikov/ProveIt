@@ -1069,7 +1069,7 @@ the three exact assertions in `eq:odd-count-mod3`, rebuild the relevant
 frontier/draft disposition target, and keep the later corollaries explicitly
 unformalized until their own Lean counterparts exist.
 
-## Gaussian-moment integrability consolidation claim
+## Gaussian-moment integrability consolidation handoff
 
 Fresh `origin/main` `1eadfd565db2e4c49310dbaa68c7b4648cb563b8`
 has source blobs `37f40510d31e22365a36cf76a507f3c61e799d9d`,
@@ -1133,6 +1133,49 @@ LAKE_JOBS=1 lake build +FabiusFunction.FabiusSaddleMassAllOrders
 LAKE_JOBS=1 lake build +FabiusFunction.FabiusFullAsymptoticExpansion
 ```
 
-The next bounded step is to commit and push this registry-only claim, fetch
-and reread the coordinator board, repeat the path/collision scan, and only
-then edit the three claimed Lean sources.
+Registry-first claim `9333fbeec` was pushed before any source edit.  Source
+checkpoint `d0e2ea48d22e3b26eb71b0c664849cf8f9e105cb` then implements the exact
+advertised three-file consolidation and is pushed immutably.  Its result blobs
+and content SHA-256 values are:
+
+```text
+FabiusSaddleCentral.lean
+  blob 6d807208f067bed85c46b321013d9e04c2eac49f
+  SHA-256 1BBFFE493EB4FB322CEDA573E53CC18526CE74E528CCA1DFDE96BDC9C3B01D49
+FabiusSaddleReferenceTail.lean
+  blob 7be7685a7fe63a9385db21aca94653dcebb56e81
+  SHA-256 4A6CEAB173C8089BB31DF6683619FF0082E193B8B7742FE245D90E4F4CF29346
+FabiusSaddleMassAllOrders.lean
+  blob 2fe7207eb41e449bbe6776389594a6530c7b78fc
+  SHA-256 6C8225D5B5F39FD433ADFCFA76A7AABC0B6BC86C2738DAF8EF6F3A1C011EB159
+```
+
+The exact source delta is 25 insertions and 52 deletions, net minus 27 lines.
+`FabiusSaddleCentral` gains the one canonical direct import and keeps
+`integrable_gaussian_mul_pow` under its exact public header as a one-line
+forwarder.  `FabiusSaddleReferenceTail` deletes both private integrability
+aliases and inlines the canonical absolute theorem or its `const_mul`
+consequence at every former use.  `FabiusSaddleMassAllOrders` replaces all
+three norm/congruence blocks by literal canonical theorem applications.  The
+two affected source comments now describe the ownership boundary accurately.
+
+Three independent live-diff reviews pass the exact theorem/function shapes,
+the local `let` normalization, every `const_mul` specialization, namespace
+visibility, public-header preservation, private-helper deletion, import DAG,
+and source documentation.  The imported module exports no instances, and its
+simp rules are headed only by its own normalized-moment or contraction
+symbols, none of which occurs in the newly affected existing proofs; there is
+no concrete simp interaction.  A residual sweep finds the substantive signed
+and absolute integrability proofs only in
+`GaussianPolynomialContraction.lean`; the remaining central statement is the
+intentional compatibility wrapper with five existing consumers.
+
+`git diff --check`, line-length, conflict-marker, forbidden-declaration,
+public-declaration, residual-name, exact-path, and all-tip ownership scans are
+clean.  No Lean, Lake, TeX, PDF, or other cache-mutating process was run, so
+these static reviews are not compiler evidence.  The source paths are frozen
+pending coordinator review and the four serialized gates listed above.  After
+accepted validation, their leases are released and a separately authorized
+serialized-document owner should close only the corresponding
+`AUDIT_FINDINGS.md` item; no mathematical exposition or coverage document
+needs revision.
