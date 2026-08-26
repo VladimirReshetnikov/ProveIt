@@ -1,24 +1,28 @@
 # Workstream registry: `codex/fabius-shifted-prefix-grid`
 
-**Status: source validation requested; audit-ledger reconciliation complete.**
+**Status: coordinator disposition requested; all prior paths frozen.**
 The exact claim was published before source work, coordinator checkpoint
 `893d4c25d` explicitly acknowledged it as the first nonoverlapping claim for
 the module, and source commit `00ff41a5e` now implements precisely that bounded
 tranche.  Documentation commit `dcd5f8a06` now reconciles the four advertised
-coverage clusters and releases `docs/PAPER_COVERAGE.md`.  The source remains
-frozen pending compiler validation.
+coverage clusters.  The source remains frozen pending compiler validation.
+Audit-ledger commit `faf1fcaf6` was
+completed and pushed before coordinator checkpoint `148990f0a` newly serialized
+both campaign-wide Markdown paths; both documentation commits are preserved for
+separate review, and this branch is making no further path claim.
 
 ```text
 SYNC Fabius
 branch / worktree / machine: codex/fabius-shifted-prefix-grid / c9a3 / EVO
   (Windows)
-fetched main SHA: e18f5d0b0e3ec78e2b14e7006af6c7e916b42923
-HEAD and dirty paths: faf1fcaf6309dcac98053c510dd424ecba65e825;
-  clean after pushing the audit-ledger checkpoint
+fetched main SHA: 148990f0a2a9b665edaf3394656be1e7c46caf7e
+HEAD and dirty paths: 3161da511ddb6a2434d32d06b2b21e0179c4c354;
+  clean after merging and pushing the current main checkpoint
 writing (exact paths): docs/registry/codex-fabius-shifted-prefix-grid.md only;
   Lean/FabiusFunction/ThueMorseGenerating.lean is frozen at 00ff41a5e;
-  docs/PAPER_COVERAGE.md is complete at dcd5f8a06 and its claim is released;
-  docs/AUDIT_FINDINGS.md is complete at faf1fcaf6 and its claim is released
+  docs/PAPER_COVERAGE.md is preserved at dcd5f8a06 pending review;
+  docs/AUDIT_FINDINGS.md is preserved at faf1fcaf6 pending review;
+  no new source or documentation path is claimed
 expected declarations or document claims: shiftedPrefixGridValue;
   shiftedPrefixGridValue_zero; shiftedPrefixGridValue_one;
   shiftedPrefixGridValue_succ_sub;
@@ -43,7 +47,9 @@ completed commits: 6fb8dc8e9 publishes the exact one-file claim; ba0048023
   merges origin/main e18f5d0b0; e2d1db43f advertises the exact coverage-map
   reconciliation; dcd5f8a06 completes and releases that documentation tranche;
   0d4ee2471 advertises the exact four-finding audit claim; faf1fcaf6 closes
-  those four stale entries and records their compiler provenance
+  those four stale entries and records their compiler provenance; e0302acdf
+  records the completed documentation checkpoints; 3161da511 merges current
+  origin/main 148990f0a without conflicts
 validated (exact command, SHA/state, exit code): at source snapshot SHA-256
   784F6C4F389FE0F2FA08616FFAFBFA3917CCC9F6D2C86CE98D3D877B5F0DD14C,
   git diff --check and git diff --cached --check exited 0; python
@@ -64,22 +70,26 @@ validated (exact command, SHA/state, exit code): at source snapshot SHA-256
   retained its exact baseline, and independent review verified each signature,
   source blob, implementation commit, and immutable build checkpoint
 not yet validated: no Lean or Lake process was launched because no EVO build
-  token is granted; the three requested module targets remain uncompiled
-requested integration or lease: retain the source path through validation;
-  review dcd5f8a06 and faf1fcaf6 for integration; assign this branch, or an
-  authorized build owner checking commit 00ff41a5e, serialized targets
+  token is granted; the three requested module targets remain uncompiled;
+  coordinator review of 00ff41a5e, dcd5f8a06, and faf1fcaf6 is pending
+requested integration or lease: review the source, coverage map, and audit
+  ledger as separate units; if the source is accepted, assign this branch or an
+  authorized build owner checking commit 00ff41a5e the serialized targets
   +FabiusFunction.ThueMorseGenerating,
   +FabiusFunction.ThueMorseApproximation, and
   +FabiusFunction.ThueMorseExponential
 conflicts / dependencies: no overlap with the active frontier-document lease;
   no AGENTS, README, collaboration, aggregate, TeX, PDF, canonical frontier,
   primary exposition, hot foundational module, or peer registry path requested;
-  current EVO build ownership remains with codex/fabius-exposition-integration
-next bounded step: push this completion record, poll for the requested source
-  validation, and advertise a fresh exact nonoverlapping source claim only
-  after rechecking the current board and all advertised tips
-lease refreshed: 2026-08-25 18:10 PDT; source frozen pending validation;
-  documentation claims completed and released
+  checkpoint 148990f0a now serializes docs/PAPER_COVERAGE.md and
+  docs/AUDIT_FINDINGS.md and explicitly forbids this branch from adding another
+  path during review; a read-only two-parameter coefficient-bridge preflight is
+  therefore deferred without a registry claim or source edit
+next bounded step: push this exact handoff, keep every source and serialized
+  document frozen, and poll the board for coordinator review and a build-token
+  assignment; continue only read-only theorem/API preflight meanwhile
+lease refreshed: 2026-08-25 18:14 PDT; all prior paths frozen pending
+  coordinator disposition; no new path claim
 git owner / build owner: root / no build owner assigned to this branch
 ```
 
