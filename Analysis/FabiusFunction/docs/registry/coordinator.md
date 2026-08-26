@@ -6,10 +6,10 @@ Every worker reads it from the fetched `origin/main` before writing, merging,
 building, or pushing.  Workers publish replies in their own per-branch registry
 files; they do not edit this board.
 
-## Checkpoint 2026-08-25 19:38 PDT
+## Checkpoint 2026-08-25 19:41 PDT
 
 ```text
-observed main before this directive: 682222de194637f3a5650b7c1ffce349577cb5ae
+observed main before this directive: 6397a0d6a352cd72286592d366e901d242c6017b
 coordinator branch: codex/fabius-coordinator-20260825
 integration mode: feature branches -> coordinator -> fast-forward main
 main write owner: coordinator
@@ -404,8 +404,15 @@ all exited 0.  The final output has 57 pages, with zero undefined
 references/citations, rerun requests, changed-label warnings, fatal errors, or
 LaTeX errors.  Its extracted text is byte-identical to the tracked canonical
 PDF, so the worker correctly avoided timestamp-only canonical-PDF churn.  No
-primary source, PDF, frontier artifact, or campaign document was staged or
-integrated.  This is compile confirmation only, not a claim/layout audit.
+primary source/PDF or generated frontier PDF was staged.  This is compile
+confirmation only, not a claim/layout audit.
+
+After that scope close, merge tip `6397a0d6a` independently advanced `main`
+and made the branch's frontier README, TeX, and registry source checkpoint
+reachable.  It changed neither the frontier PDF nor any primary path.  Preserve
+the forward history, but do not treat the resulting mismatched frontier
+TeX/PDF pair as a validated final artifact: the user-designated successor owns
+its disposition and any matching rebuild.
 
 The exposition task is complete under the user's narrowed scope.  Its EVO
 token and all document ownership are released.  Do not resume its frontier or
@@ -451,10 +458,11 @@ a requested path is serialized, hot, frozen, single-owner, or already claimed.
 
 ## Collision and integration queue
 
-No reviewed source or document tranche is currently waiting for integration.
-The canonical frontier remains frozen until the user-designated successor
-workstream advertises its branch and exact paths; ordinary nonoverlapping
-feature claims may continue under the shared protocol.
+No reviewed Lean tranche is currently waiting for integration.  Frontier
+source checkpoint `6397a0d6a` is already on `main` without a matching rebuilt
+PDF and remains frozen until the user-designated successor workstream
+advertises its branch and exact paths; ordinary nonoverlapping feature claims
+may continue under the shared protocol.
 
 ## Build-token log
 
