@@ -1901,3 +1901,61 @@ next bounded step: commit and push this immutable handoff; freeze both sources
   for coordinator validation; refresh main and the full ownership board before
   choosing any further ordinary source unit
 ```
+
+## Claim: repair the Proposition 22 source documentation
+
+Claimed exact source path:
+
+- `Lean/FabiusFunction/PaperStatements.lean`.
+
+This comment-only tranche repairs a materially misattached declaration comment.
+The existing prose “Proposition 22: the Bernoulli recurrences for `c_n` and
+`d_n`” currently documents `proposition_twenty_two_initial`, whose conclusion
+is only `moment 0 = 1 ∧ halfMoment 0 = 1`.  The actual recurrence theorem
+`proposition_twenty_two` immediately below it is the module's sole remaining
+undocumented public declaration.
+
+The edit changes exactly two adjacent source comments: the first will state the
+initial conditions `c₀ = d₀ = 1`, represented by the two zero-index moment
+equalities, and the second will define `c_j = moment j`,
+`d_j = halfMoment j`, and `B_j = bernoulli j` and display both exact Bernoulli
+recurrences under `1 ≤ n`.  No import, namespace, attribute, declaration
+header, theorem statement, proof, module overview, facade, audit ledger, or
+canonical document is claimed.
+
+```text
+SYNC Fabius
+branch / worktree / machine: codex/fabius-effective-bounds-20260825 /
+  /home/codex/.codex/worktrees/d6d3/Proofs / codexbox
+fetched main SHA: fc63c39788ab4c31694e4f57efe05b543165675a
+HEAD and dirty paths: fac753e38; clean before this registry-only claim
+writing (exact paths): Lean/FabiusFunction/PaperStatements.lean; this branch
+  registry for claim/handoff only
+expected declarations or document claims: repair the comment on
+  proposition_twenty_two_initial and add the exact formula-bearing comment on
+  proposition_twenty_two; alter no Lean term or public interface
+completed commits: all prior source checkpoints and handoffs are clean and
+  pushed; this is a disjoint registry-first, comment-only claim
+validated (exact command, SHA/state, exit code): current HEAD and origin/main
+  share PaperStatements blob c72b9022da43d728a649a5e81e5083afeb01385e,
+  content SHA-256
+  214B6D572A0F6626A2C231C46CE2C731BEC5120905AA7B2FF22DB4CC3D83516B;
+  exact-path and registry scans find no competing lease or claim; a complete
+  declaration-comment audit identifies proposition_twenty_two as the sole
+  public documentation gap in this paper-facing module; this is not compiler
+  evidence
+not yet validated: the two comments are not implemented; no Lean, Lake, TeX,
+  PDF, or cache-mutating process is authorized or running for this branch
+requested integration or lease: advertise this ordinary one-source claim;
+  after an immutable independently reviewed checkpoint, request the policy
+  gates +FabiusFunction.PaperStatements and direct importer
+  +FabiusFunction.Paper06487Supplement if the coordinator does not waive them
+  for a comment-only diff; request no document or main-write lease
+conflicts / dependencies: comments erase and have no API or consumer effect;
+  all frozen local paths and active external claims are disjoint; only the
+  coordinator may advance main
+next bounded step: commit and push this registry-only claim without force;
+  repeat post-claim collision checks, then edit only the claimed source while
+  independent agents verify exact formula transcription, attachment, and
+  byte-preservation of every Lean term and interface
+```
