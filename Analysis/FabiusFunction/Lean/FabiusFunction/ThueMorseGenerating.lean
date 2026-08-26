@@ -93,6 +93,7 @@ namespace Fabius
 noncomputable def thueMorseBlockPolynomial (r : ℕ) : Polynomial ℤ :=
   ∑ n ∈ Finset.range (2 ^ r), Polynomial.monomial n (thueMorseSign n)
 
+/-- Appending the next dyadic block multiplies by the next binary factor. -/
 theorem thueMorseBlockPolynomial_succ (r : ℕ) :
     thueMorseBlockPolynomial (r + 1) =
       thueMorseBlockPolynomial r * (1 - Polynomial.X ^ (2 ^ r)) := by
@@ -126,10 +127,13 @@ theorem thueMorseBlockPolynomial_eq_product (r : ℕ) :
 def thueMorseSeries : PowerSeries ℤ :=
   PowerSeries.mk thueMorseSign
 
+/-- The coefficients of the formal series are the signed Thue--Morse terms. -/
 @[simp] theorem coeff_thueMorseSeries (n : ℕ) :
     PowerSeries.coeff n thueMorseSeries = thueMorseSign n := by
   simp [thueMorseSeries]
 
+/-- Below the dyadic cutoff, the block polynomial has the corresponding
+signed Thue--Morse coefficient. -/
 theorem coeff_thueMorseBlockPolynomial (r n : ℕ) (hn : n < 2 ^ r) :
     (thueMorseBlockPolynomial r).coeff n = thueMorseSign n := by
   simp [thueMorseBlockPolynomial, Polynomial.coeff_monomial, hn]
@@ -166,6 +170,7 @@ theorem coeff_thueMorseBlockPolynomial_mul_eq_thueMorseSeries_mul
 def iteratedPrefixSeries (k : ℕ) : PowerSeries ℤ :=
   PowerSeries.mk (iteratedPrefix k)
 
+/-- The coefficients of the order-`k` series are its inclusive prefix sums. -/
 @[simp] theorem coeff_iteratedPrefixSeries (k n : ℕ) :
     PowerSeries.coeff n (iteratedPrefixSeries k) = iteratedPrefix k n := by
   simp [iteratedPrefixSeries]
@@ -442,6 +447,7 @@ theorem paperPrefixGridValue_endpoint_error (k : ℕ) :
   rw [abs_of_neg (by linarith)]
   ring
 
+/-- The literal endpoint error strictly exceeds one at every level. -/
 theorem one_lt_paperPrefixGridValue_endpoint_error (k : ℕ) :
     1 < |paperPrefixGridValue k (2 ^ k) - 1| := by
   rw [paperPrefixGridValue_endpoint_error]

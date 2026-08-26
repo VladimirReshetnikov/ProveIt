@@ -93,13 +93,17 @@ def iteratedPrefix : ℕ → ℕ → ℤ
   | 0, n => thueMorseSign n
   | k + 1, n => ∑ j ∈ Finset.range (n + 1), iteratedPrefix k j
 
+/-- At order zero, the iterated prefix is the signed Thue--Morse sequence. -/
 @[simp] theorem iteratedPrefix_zero (n : ℕ) :
     iteratedPrefix 0 n = thueMorseSign n := rfl
 
+/-- One further inclusive prefix iteration sums the preceding row through the
+current index. -/
 theorem iteratedPrefix_succ (k n : ℕ) :
     iteratedPrefix (k + 1) n =
       ∑ j ∈ Finset.range (n + 1), iteratedPrefix k j := rfl
 
+/-- Every iterated inclusive-prefix row starts with value one. -/
 @[simp] theorem iteratedPrefix_at_zero (k : ℕ) :
     iteratedPrefix k 0 = 1 := by
   induction k with
@@ -499,22 +503,6 @@ theorem iteratedPrefix_dyadic_endpoint (k r : ℕ) (hk : 1 ≤ k) (hkr : k ≤ r
     exact (mul_eq_zero.mp hzero).resolve_left (by positivity)
   exact_mod_cast hcast
 
-private lemma self_le_two_pow (n : ℕ) : n ≤ 2 ^ n := by
-  induction n with
-  | zero => simp
-  | succ n ih =>
-      rw [pow_succ]
-      have hone : 1 ≤ 2 ^ n := Nat.one_le_two_pow
-      omega
-
-private lemma succ_le_two_pow (n : ℕ) : n + 1 ≤ 2 ^ n := by
-  induction n with
-  | zero => simp
-  | succ n ih =>
-      rw [pow_succ]
-      have hone : 1 ≤ 2 ^ n := Nat.one_le_two_pow
-      omega
-
 /-- Reverse-indexed form of the full dyadic zero run. -/
 theorem iteratedPrefix_dyadic_zero_reverse (k r d : ℕ)
     (hk : 1 ≤ k) (hkr : k ≤ r) (hd : d < k) :
@@ -529,7 +517,7 @@ theorem iteratedPrefix_dyadic_zero_reverse (k r d : ℕ)
       have hdPred : d < k - 1 := by omega
       have hsame := ih k r hk hkr hdK
       have hlower := ih (k - 1) r hkPred hkPredR hdPred
-      have hrPow : r ≤ 2 ^ r := self_le_two_pow r
+      have hrPow : r ≤ 2 ^ r := (Nat.lt_two_pow_self (n := r)).le
       have hkPow : k ≤ 2 ^ r := hkr.trans hrPow
       let n := 2 ^ r - 1 - (d + 1)
       have hnSucc : n + 1 = 2 ^ r - 1 - d := by
@@ -543,7 +531,7 @@ theorem iteratedPrefix_dyadic_zero_reverse (k r d : ℕ)
 theorem iteratedPrefix_dyadic_zero_run (k r i : ℕ)
     (hk : 1 ≤ k) (hkr : k ≤ r) (hi : i < k) :
     iteratedPrefix k (2 ^ r - k + i) = 0 := by
-  have hrPow : r ≤ 2 ^ r := self_le_two_pow r
+  have hrPow : r ≤ 2 ^ r := (Nat.lt_two_pow_self (n := r)).le
   have hkPow : k ≤ 2 ^ r := hkr.trans hrPow
   have hzero := iteratedPrefix_dyadic_zero_reverse k r (k - 1 - i) hk hkr (by omega)
   have hindex : 2 ^ r - k + i = 2 ^ r - 1 - (k - 1 - i) := by omega
@@ -574,11 +562,9 @@ theorem iteratedPrefix_before_dyadic_run (k r : ℕ) (hkr : k ≤ r) :
   | zero => simp
   | succ k ih =>
       have hkPos : 1 ≤ k + 1 := by omega
-      have hrPow : r ≤ 2 ^ r := self_le_two_pow r
+      have hrPow : r ≤ 2 ^ r := (Nat.lt_two_pow_self (n := r)).le
       have hkPow : k + 1 ≤ 2 ^ r := hkr.trans hrPow
-      have hrPowStrict : r < 2 ^ r := by
-        have := succ_le_two_pow r
-        omega
+      have hrPowStrict : r < 2 ^ r := Nat.lt_two_pow_self (n := r)
       have hkPowStrict : k + 1 < 2 ^ r := hkr.trans_lt hrPowStrict
       have hzero := iteratedPrefix_dyadic_zero_run (k + 1) r 0 hkPos hkr (by omega)
       have hlower := ih (r := r) (by omega)
