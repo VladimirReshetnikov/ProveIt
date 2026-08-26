@@ -146,6 +146,46 @@ theorem binaryWeight_add_pow_two (b h : ℕ) (hh : h < 2 ^ b) :
     thueMorseSign (2 * h + 1) = -thueMorseSign h := by
   simp [thueMorseSign, pow_succ]
 
+/-- Reflecting an index in a dyadic block complements its first `k` binary
+digits and multiplies its Thue--Morse sign by `(-1)^k`. -/
+theorem thueMorseSign_dyadic_complement
+    (k r : ℕ) (hr : r < 2 ^ k) :
+    thueMorseSign (2 ^ k - 1 - r) =
+      (-1 : ℤ) ^ k * thueMorseSign r := by
+  induction k generalizing r with
+  | zero =>
+      have hr0 : r = 0 := by omega
+      subst r
+      norm_num [thueMorseSign, binaryWeight]
+  | succ k ih =>
+      rcases Nat.even_or_odd r with heven | hodd
+      · rcases heven with ⟨s, hs⟩
+        have hrform : r = 2 * s := by omega
+        have hslt : s < 2 ^ k := by
+          rw [pow_succ] at hr
+          omega
+        have hreflect :
+            2 ^ (k + 1) - 1 - r =
+              2 * (2 ^ k - 1 - s) + 1 := by
+          rw [pow_succ]
+          omega
+        rw [hreflect, thueMorseSign_two_mul_add_one,
+          ih s hslt, hrform, thueMorseSign_two_mul, pow_succ]
+        ring
+      · rcases hodd with ⟨s, hs⟩
+        have hrform : r = 2 * s + 1 := by omega
+        have hslt : s < 2 ^ k := by
+          rw [pow_succ] at hr
+          omega
+        have hreflect :
+            2 ^ (k + 1) - 1 - r =
+              2 * (2 ^ k - 1 - s) := by
+          rw [pow_succ]
+          omega
+        rw [hreflect, thueMorseSign_two_mul,
+          ih s hslt, hrform, thueMorseSign_two_mul_add_one, pow_succ]
+        ring
+
 /-- Halving a signed Thue--Morse sum: a sum of `thueMorseSign i * f i` over
 `Fin (2 * a)` collapses to a sum of `thueMorseSign j * (f (2 j) - f (2 j + 1))`
 over `Fin a`, because the sign flips within each adjacent pair.  This is the
