@@ -5,12 +5,22 @@ import Mathlib.MeasureTheory.Integral.MeanInequalities
 /-!
 # Generic bounds for unit-interval Laplace moments
 
-This module proves midpoint log-convexity and factorial absorption for
-`unitLaplaceMoment` of any measure finite on compact sets.  The estimates use
+For `M_k(s) = unitLaplaceMoment μ s k`, this module first proves the exact
+comparison between any two real tilts
+
+`exp (min (t - s) 0) * M_k(t) ≤ M_k(s) ≤
+  exp (max (t - s) 0) * M_k(t)`.
+
+It follows that strict positivity is independent of the tilt.  The
+weighted-sum probability representation then gives the same bounds for
+`fabiusLaplaceMoment`; its positive zero-tilt half moments show that every
+degree is strictly positive at every real tilt.
+
+The module also proves midpoint log-convexity and factorial absorption for
+`unitLaplaceMoment` of any measure finite on compact sets.  These estimates use
 arbitrary real tilts and arbitrary positive amounts subtracted from a tilt; the
 three-quarter formulas used by the Fabius asymptotic layer are retained as
-thin specializations.  Canonical `fabiusLaplaceMoment` corollaries follow from
-the weighted-sum probability representation.
+thin specializations.
 -/
 
 set_option autoImplicit false
@@ -19,6 +29,101 @@ open Filter Set MeasureTheory
 open scoped ENNReal
 
 namespace Fabius
+
+/-- Quantitative comparison of the `k`th unit-interval Laplace moment at any
+two real tilts.  For a measure finite on compact sets and `s t : ℝ`,
+
+`exp (min (t - s) 0) * M_k(t) ≤ M_k(s) ≤
+  exp (max (t - s) 0) * M_k(t)`.
+
+Indeed, changing the tilt from `t` to `s` multiplies the integrand by
+`exp ((t - s) * x)`, whose exponent lies between `min (t - s) 0` and
+`max (t - s) 0` on `[0,1]`. -/
+theorem unitLaplaceMoment_tilt_bounds
+    (μ : Measure ℝ) [IsFiniteMeasureOnCompacts μ]
+    (k : ℕ) (s t : ℝ) :
+    Real.exp (min (t - s) 0) * unitLaplaceMoment μ t k ≤
+        unitLaplaceMoment μ s k ∧
+      unitLaplaceMoment μ s k ≤
+        Real.exp (max (t - s) 0) * unitLaplaceMoment μ t k := by
+  have hIntegrable (u : ℝ) : IntegrableOn
+      (fun x : ℝ => Real.exp (-u * x) * x ^ k) (Icc (0 : ℝ) 1) μ := by
+    apply ContinuousOn.integrableOn_compact isCompact_Icc
+    fun_prop
+  have hLower : IntegrableOn
+      (fun x : ℝ => Real.exp (min (t - s) 0) *
+        (Real.exp (-t * x) * x ^ k)) (Icc (0 : ℝ) 1) μ :=
+    (hIntegrable t).const_mul (Real.exp (min (t - s) 0))
+  have hUpper : IntegrableOn
+      (fun x : ℝ => Real.exp (max (t - s) 0) *
+        (Real.exp (-t * x) * x ^ k)) (Icc (0 : ℝ) 1) μ :=
+    (hIntegrable t).const_mul (Real.exp (max (t - s) 0))
+  have hmul_bounds (x : ℝ) (hx : x ∈ Icc (0 : ℝ) 1) :
+      min (t - s) 0 ≤ (t - s) * x ∧
+        (t - s) * x ≤ max (t - s) 0 := by
+    by_cases hδ : 0 ≤ t - s
+    · rw [min_eq_right hδ, max_eq_left hδ]
+      constructor
+      · exact mul_nonneg hδ hx.1
+      · calc
+          (t - s) * x ≤ (t - s) * 1 :=
+            mul_le_mul_of_nonneg_left hx.2 hδ
+          _ = t - s := mul_one _
+    · have hδ' : t - s ≤ 0 := le_of_not_ge hδ
+      rw [min_eq_left hδ', max_eq_right hδ']
+      constructor
+      · calc
+          t - s = (t - s) * 1 := (mul_one _).symm
+          _ ≤ (t - s) * x := mul_le_mul_of_nonpos_left hx.2 hδ'
+      · exact mul_nonpos_of_nonpos_of_nonneg hδ' hx.1
+  have hpointwise (x : ℝ) (hx : x ∈ Icc (0 : ℝ) 1) :
+      Real.exp (min (t - s) 0) * (Real.exp (-t * x) * x ^ k) ≤
+          Real.exp (-s * x) * x ^ k ∧
+        Real.exp (-s * x) * x ^ k ≤
+          Real.exp (max (t - s) 0) * (Real.exp (-t * x) * x ^ k) := by
+    have hrewrite : Real.exp (-s * x) * x ^ k =
+        Real.exp ((t - s) * x) * (Real.exp (-t * x) * x ^ k) := by
+      rw [show -s * x = (t - s) * x + -t * x by ring, Real.exp_add]
+      ring
+    rw [hrewrite]
+    have hnonneg : 0 ≤ Real.exp (-t * x) * x ^ k :=
+      mul_nonneg (Real.exp_nonneg _) (pow_nonneg hx.1 k)
+    exact ⟨
+      mul_le_mul_of_nonneg_right
+        (Real.exp_le_exp.mpr (hmul_bounds x hx).1) hnonneg,
+      mul_le_mul_of_nonneg_right
+        (Real.exp_le_exp.mpr (hmul_bounds x hx).2) hnonneg⟩
+  unfold unitLaplaceMoment
+  constructor
+  · rw [← MeasureTheory.integral_const_mul]
+    apply integral_mono_ae hLower (hIntegrable s)
+    filter_upwards [ae_restrict_mem measurableSet_Icc] with x hx
+    exact (hpointwise x hx).1
+  · rw [← MeasureTheory.integral_const_mul]
+    apply integral_mono_ae (hIntegrable s) hUpper
+    filter_upwards [ae_restrict_mem measurableSet_Icc] with x hx
+    exact (hpointwise x hx).2
+
+/-- Strict positivity of a unit-interval Laplace moment does not depend on the
+real tilt.  For every natural degree `k` and real tilts `s,t`,
+
+`0 < M_k(s) ↔ 0 < M_k(t)`.
+
+The measure need only be finite on compact sets; in particular, the statement
+also covers a zero measure or a measure whose positive-degree moments vanish. -/
+theorem unitLaplaceMoment_pos_iff
+    (μ : Measure ℝ) [IsFiniteMeasureOnCompacts μ]
+    (k : ℕ) (s t : ℝ) :
+    0 < unitLaplaceMoment μ s k ↔ 0 < unitLaplaceMoment μ t k := by
+  constructor
+  · intro hs
+    exact lt_of_lt_of_le
+      (mul_pos (Real.exp_pos _) hs)
+      (unitLaplaceMoment_tilt_bounds μ k t s).1
+  · intro ht
+    exact lt_of_lt_of_le
+      (mul_pos (Real.exp_pos _) ht)
+      (unitLaplaceMoment_tilt_bounds μ k s t).1
 
 /-- Cauchy--Schwarz midpoint log-convexity for the tilted mass of any measure
 on `[0,1]`, at arbitrary real tilts. -/
@@ -248,6 +353,46 @@ theorem unitLaplaceMoment_le_three_quarters
   have hscale : (1 / (s / 4) : ℝ) = 4 / s := by field_simp
   have htilt : s - s / 4 = 3 * s / 4 := by ring
   simpa only [hscale, htilt] using h
+
+/-- The exact two-tilt comparison for every Fabius Laplace moment.  For any
+bounded Fabius candidate satisfying `IsFabius`, any degree `k`, and real tilts
+`s,t`,
+
+`exp (min (t - s) 0) * M_k(t) ≤ M_k(s) ≤
+  exp (max (t - s) 0) * M_k(t)`.
+
+This is the measure-generic unit-interval estimate transported through the
+weighted-sum probability representation. -/
+theorem fabiusLaplaceMoment_tilt_bounds
+    (F : BoundedFabius) (hF : IsFabius F)
+    (k : ℕ) (s t : ℝ) :
+    Real.exp (min (t - s) 0) * fabiusLaplaceMoment F k t ≤
+        fabiusLaplaceMoment F k s ∧
+      fabiusLaplaceMoment F k s ≤
+        Real.exp (max (t - s) 0) * fabiusLaplaceMoment F k t := by
+  simpa only [
+    ProbabilityRepresentation.unitLaplaceMoment_weightedSumDistribution_eq_fabiusLaplaceMoment
+      F hF] using
+    unitLaplaceMoment_tilt_bounds
+      ProbabilityRepresentation.weightedSumDistribution k s t
+
+/-- Every Fabius Laplace moment is strictly positive: for every natural degree
+`k` and every real tilt `s`,
+
+`0 < fabiusLaplaceMoment F k s`.
+
+At zero tilt this is the positivity of the exact half moment `halfMoment k`;
+`fabiusLaplaceMoment_tilt_bounds` transports it to arbitrary real tilts. -/
+theorem fabiusLaplaceMoment_pos_all
+    (F : BoundedFabius) (hF : IsFabius F)
+    (k : ℕ) (s : ℝ) :
+    0 < fabiusLaplaceMoment F k s := by
+  have hzero : 0 < fabiusLaplaceMoment F k 0 := by
+    rw [fabiusLaplaceMoment_zero_eq_halfMoment F hF]
+    exact_mod_cast halfMoment_pos k
+  exact lt_of_lt_of_le
+    (mul_pos (Real.exp_pos _) hzero)
+    (fabiusLaplaceMoment_tilt_bounds F hF k s 0).1
 
 /-- Midpoint log-convexity for the zeroth tilted moments of any bounded Fabius
 candidate, at arbitrary real tilts. -/
