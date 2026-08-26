@@ -19,7 +19,10 @@ periodic-mean and Fourier-coefficient calculations. Their integrability is
 recorded for arbitrary cutoffs, together with the exact logarithmic correction
 incurred when the cutoff moves.  In particular, the cutoff-indexed finite part
 defined below is independent of every positive choice of split point and is
-always equal to `gammaZetaConstant`.
+always equal to `gammaZetaConstant`.  Both finite-part kernels are strictly
+negative on the positive half-line, so this identity also proves the strict
+sign of `gammaZetaConstant` and an unconditional strict upper bound for the
+first Stieltjes constant.
 -/
 
 set_option autoImplicit false
@@ -40,6 +43,29 @@ noncomputable def boseFinitePartSmallKernel (x : ℝ) : ℝ :=
 /-- The integrable large-`x` kernel `log (1 - exp (-x)) / x`. -/
 noncomputable def boseFinitePartLargeKernel (x : ℝ) : ℝ :=
   boseLogKernel x / x
+
+/-- The regularized small-scale finite-part kernel is strictly negative at
+every positive argument. -/
+theorem boseFinitePartSmallKernel_neg (x : ℝ) (hx : 0 < x) :
+    boseFinitePartSmallKernel x < 0 := by
+  unfold boseFinitePartSmallKernel
+  exact div_neg_of_neg_of_pos (negativeLaplaceKernel_neg x hx) hx
+
+/-- The logarithmic Bose kernel is strictly negative at every positive
+argument. -/
+theorem boseLogKernel_neg (x : ℝ) (hx : 0 < x) :
+    boseLogKernel x < 0 := by
+  unfold boseLogKernel
+  exact Real.log_neg
+    (sub_pos.mpr (Real.exp_lt_one_iff.mpr (neg_lt_zero.mpr hx)))
+    (by linarith [Real.exp_pos (-x)])
+
+/-- The large-scale finite-part kernel is strictly negative at every positive
+argument. -/
+theorem boseFinitePartLargeKernel_neg (x : ℝ) (hx : 0 < x) :
+    boseFinitePartLargeKernel x < 0 := by
+  unfold boseFinitePartLargeKernel
+  exact div_neg_of_neg_of_pos (boseLogKernel_neg x hx) hx
 
 /-- The uncorrected split integral at the cutoff `c`.  Changing `c` moves a
 compact interval from the large kernel to the small kernel, so this quantity
@@ -111,6 +137,28 @@ lemma integrableOn_boseFinitePartSmallKernel_Ioc (c : ℝ) :
 lemma integrableOn_boseFinitePartSmallKernel :
     IntegrableOn boseFinitePartSmallKernel (Ioc 0 1) := by
   simpa using integrableOn_boseFinitePartSmallKernel_Ioc 1
+
+private lemma integral_boseFinitePartSmallKernel_neg :
+    (∫ x : ℝ in Ioc 0 1, boseFinitePartSmallKernel x) < 0 := by
+  have hint : IntegrableOn boseFinitePartSmallKernel (Ioc (0 : ℝ) 1) :=
+    integrableOn_boseFinitePartSmallKernel_Ioc 1
+  have hnonneg : 0 ≤ᵐ[volume.restrict (Ioc (0 : ℝ) 1)]
+      (fun x : ℝ ↦ -boseFinitePartSmallKernel x) := by
+    filter_upwards [ae_restrict_mem measurableSet_Ioc] with x hx
+    exact neg_nonneg.mpr (boseFinitePartSmallKernel_neg x hx.1).le
+  have hpos : 0 < ∫ x : ℝ in Ioc 0 1, -boseFinitePartSmallKernel x := by
+    rw [MeasureTheory.setIntegral_pos_iff_support_of_nonneg_ae hnonneg hint.neg]
+    have hsubset : Ioc (0 : ℝ) 1 ⊆
+        Function.support (fun x : ℝ ↦ -boseFinitePartSmallKernel x) ∩ Ioc 0 1 := by
+      intro x hx
+      refine ⟨?_, hx⟩
+      exact (neg_pos.mpr (boseFinitePartSmallKernel_neg x hx.1)).ne'
+    calc
+      0 < volume (Ioc (0 : ℝ) 1) := by norm_num
+      _ ≤ volume (Function.support (fun x : ℝ ↦ -boseFinitePartSmallKernel x) ∩
+          Ioc 0 1) := measure_mono hsubset
+  rw [MeasureTheory.integral_neg] at hpos
+  linarith
 
 /-- Compatibility form of `abs_boseFinitePartSmallKernel_le_one_of_pos` on the
 small integration interval. -/
@@ -711,6 +759,21 @@ theorem boseFinitePartIntegral_eq_gammaZetaConstant :
   have hJ' : Tendsto J (𝓝[>] 0) (𝓝 gammaZetaConstant) :=
     tendsto_realGamma_mul_zeta_finitePart.congr' heq
   exact tendsto_nhds_unique hJ hJ'
+
+/-- The Euler--Stieltjes finite-part constant is strictly negative. -/
+theorem gammaZetaConstant_neg : gammaZetaConstant < 0 := by
+  rw [← boseFinitePartIntegral_eq_gammaZetaConstant]
+  exact add_neg_of_neg_of_nonpos integral_boseFinitePartSmallKernel_neg
+    (MeasureTheory.setIntegral_nonpos measurableSet_Ioi
+      (fun x hx ↦ (boseFinitePartLargeKernel_neg x (zero_lt_one.trans hx)).le))
+
+/-- A strict unconditional upper bound for the first Stieltjes constant. -/
+theorem firstStieltjesConstant_lt :
+    firstStieltjesConstant <
+      Real.pi ^ 2 / 12 - Real.eulerMascheroniConstant ^ 2 / 2 := by
+  have h := gammaZetaConstant_neg
+  unfold gammaZetaConstant at h
+  linarith
 
 /-- Every positive cutoff gives the same finite part, namely the
 Euler--Stieltjes constant `gammaZetaConstant`. -/
