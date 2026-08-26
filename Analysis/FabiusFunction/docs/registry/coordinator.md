@@ -6,6 +6,71 @@ Every worker reads it from the fetched `origin/main` before writing, merging,
 building, or pushing.  Workers publish replies in their own per-branch registry
 files; they do not edit this board.
 
+## Checkpoint 2026-08-26 03:17 PDT
+
+```text
+observed main before this directive: 59fd2f0a42045547be8aa00070dd94fdb4ab7119
+coordinator branch: codex/fabius-coordinator-20260825
+integration mode: exact immutable sources -> coordinator -> fast-forward main
+main write owner: coordinator
+codexbox Lean/Lake owner: coordinator
+  (ACTIVE: exactly the eight serialized gates below)
+codexbox TeX/PDF owner: unassigned
+  (IDLE)
+EVO Lean/Lake owner: codex/fabius-inverse-asymptotic-20260825
+  (ACTIVE: the disjoint decay proof-repair retry)
+EVO TeX/PDF owner: unassigned
+  (IDLE)
+documentation owner: unassigned
+  (all canonical documents are frozen)
+next poll: after each codexbox gate and at the EVO decay handoff
+```
+
+**Codexbox validation batch: factorized tails, expCoeff extensionality,
+parity-power summability, and probability-law deduplication.**  Four isolated
+sources have exact current-main preimages and independent static PASSes:
+
+- `bbaed0ee6d25d8026a848338c8f47ff967d2a90b` changes only
+  `FabiusSaddleTail.lean` to blob
+  `9712b7a684aa82e21bc0f1a3ff5f533d1eba7fc5`, adding the factorized Big-O
+  theorem, preserving the old wrapper header, and completing 30/30 docs;
+- `60e6339404f7b5fd387b43f56c6fdbd8e1d5f01a` changes
+  `SaddleExpansionAlgebra.lean` to blob
+  `06febd7843297461eea08451198620e269a47805` and
+  `SaddleLogExpansionAlgebra.lean` to
+  `dc8ed947850a5a45e49c260d8cb0a83390f089f9`, exposing the reviewed
+  positive-index `expCoeff_eq_of_forall_pos` and deleting its local reproof;
+- `5ed786a92dfebeaf158def6089da73ad107834b5` changes only
+  `FabiusParityPowerSeries.lean` to
+  `a5ba001cc339c840108f21d9bfbc85ee7a8a7361`, adding all-real absolute
+  summability plus the exact nonnegative compatibility wrapper; and
+- `447ba3be09a20c8988edeb98f7430133f93b1f1e` changes only
+  `ProbabilityRepresentation.lean` to
+  `aefd5cb38a5cf6e719f532dc1cc88f3e2992ba6d`, byte-preserving and hoisting
+  the two coordinate-law declarations and replacing four reconstructions.
+
+All theorem directions, constants, filters, edge cases, imports, existing
+headers/attributes, rewires, comments, and collision scans pass.  No unit has
+compiler evidence yet.  Integrate only these exact commits/blobs, never either
+moving feature history.  On codexbox run exactly the following separate
+commands, in order, with strict stop-on-first-failure:
+
+```text
+LEAN_NUM_THREADS=0 LAKE_JOBS=1 lake build +FabiusFunction.FabiusSaddleTail
+LEAN_NUM_THREADS=0 LAKE_JOBS=1 lake build +FabiusFunction.FabiusLambertMinorArc
+LEAN_NUM_THREADS=0 LAKE_JOBS=1 lake build +FabiusFunction.SaddleExpansionAlgebra
+LEAN_NUM_THREADS=0 LAKE_JOBS=1 lake build +FabiusFunction.SaddleLogExpansionAlgebra
+LEAN_NUM_THREADS=0 LAKE_JOBS=1 lake build +FabiusFunction.FabiusParityPowerSeries
+LEAN_NUM_THREADS=0 LAKE_JOBS=1 lake build +FabiusFunction.PaperFabiusAsymptotic
+LEAN_NUM_THREADS=0 LAKE_JOBS=1 lake build +FabiusFunction.ProbabilityRepresentation
+LEAN_NUM_THREADS=0 LAKE_JOBS=1 lake build +FabiusFunction.FabiusUniformSpline
+```
+
+Run no parallel or additional codexbox Lean/Lake/TeX/PDF process.  Record the
+exact candidate/tree, each job count, exit, and every diagnostic.  Only a
+reviewed statement-preserving proof repair is in scope after failure.  The
+simultaneous EVO retry remains independent on its different physical host.
+
 ## Checkpoint 2026-08-26 03:11 PDT
 
 ```text
