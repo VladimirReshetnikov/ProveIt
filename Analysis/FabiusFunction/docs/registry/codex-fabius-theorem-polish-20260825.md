@@ -1059,3 +1059,48 @@ next bounded step: commit and push this registry report with source checkpoint
   and a future EVO token.  Do not merge current main until the checkpoint is
   clean and remotely preserved, and do not launch validation unassigned
 ```
+
+### Clean synchronization through main `de3033392`
+
+The source and report were first preserved remotely at feature tip
+`b542c2619`.  After a fresh board read, merge preview showed no overlap with
+the claimed source or this registry.  Merge commit
+`6a5d98bd0fbabb9e8bca056cf95b8fd560e09383` incorporates fetched main
+`de303339202ef0b7fb99da83003d4b841eef9b80` without conflict.  Main changed
+only `PeriodicSmooth.lean`, the canonical frontier TeX/PDF pair, the frontier
+successor registry, and the coordinator board; the reflected-moment source
+blob remains exactly `6c5f6b96ac3fd6c5038c4421e2ffc3d34a303989`.
+
+```text
+SYNC Fabius
+branch / worktree / machine: codex/fabius-theorem-polish-20260825 /
+  C:/Users/vresh/.codex/worktrees/10ef/ProveIt / EVO (Windows)
+fetched main SHA: de303339202ef0b7fb99da83003d4b841eef9b80
+HEAD and dirty paths: 6a5d98bd0fbabb9e8bca056cf95b8fd560e09383;
+  clean after the conflict-free merge, then only this registry is dirty for
+  the synchronization report
+writing (exact paths): this registry only; source commit 665b6bcea remains
+  frozen in Lean/FabiusFunction/ProbabilityLaplaceMoments.lean
+expected declarations or document claims: unchanged implemented set of
+  integral_unit_eq_integral_one_sub_of_reflection,
+  unitLaplaceMoment_reflection, and fabiusLaplaceMoment_reflection
+completed commits: 665b6bcea (uncompiled one-source theorem checkpoint),
+  b542c2619 (pushed source report), and 6a5d98bd0 (conflict-free merge of main
+  de3033392)
+validated (exact command, SHA/state, exit code): source-review evidence is
+  unchanged; merge preview and merge were conflict-free, post-merge
+  git diff --check exited 0, and the source blob is byte-identical to the
+  three-review checkpoint
+not yet validated: neither source commit 665b6bcea nor merged feature tree
+  6a5d98bd0 has been elaborated; no Lean, Lake, LaTeX, PDF, Python audit, or
+  cache-mutating process was launched by this worktree
+requested integration or lease: independent review and a later explicit EVO
+  assignment for one LAKE_JOBS=1
+  +FabiusFunction.ProbabilityLaplaceMoments build; no document lease
+conflicts / dependencies: none; the feature's net delta from main is exactly
+  the claimed ProbabilityLaplaceMoments source plus this branch registry.
+  EVO remains assigned to the shifted-prefix branch on the fetched board
+next bounded step: commit and push this post-merge registry checkpoint, notify
+  the coordinator of the exact immutable source commit/blob, and keep the
+  source frozen until review and token disposition
+```
