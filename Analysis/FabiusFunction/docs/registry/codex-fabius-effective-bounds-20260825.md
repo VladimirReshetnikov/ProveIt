@@ -3056,3 +3056,96 @@ next bounded step: freeze the source blob, push this handoff, fetch main,
   reread any board delta, and choose another disjoint theorem or source-parity
   tranche; do not expand this checkpoint to its private helper retroactively
 ```
+
+## Claim: complete source documentation for all-orders periodic smoothness
+
+Claimed exact source path:
+
+- `Lean/FabiusFunction/PeriodicSmooth.lean`.
+
+This one-file, comment-only source-parity tranche supplies adjacent,
+formula-and-hypothesis-bearing documentation for all 18 public declarations
+that currently lack it, plus one short structured module-overview paragraph.
+The official `doc_audit.py` reports only 15 because its column-zero scanner
+misses three same-line `@[simp] lemma` declarations; strict lexical inventory
+and the existing frozen audit finding both identify the complete count as
+18 = 15 + 3.
+
+The exact declaration inventory is:
+
+```text
+negativeLaplaceForwardTermDeriv_zero
+negativeLaplaceForwardTermDeriv_succ
+negativeLaplaceForwardTermDeriv_one
+negativeLaplaceForwardTermDeriv_hasDerivAt
+exists_bound_abs_forwardDerivativeQuotientPolynomial
+exists_norm_negativeLaplaceForwardTermDeriv_succ_le
+negativeLaplaceForwardTailDeriv_zero
+summable_negativeLaplaceForwardTermDeriv
+negativeLaplaceForwardTailDeriv_hasDerivAt
+contDiffOn_negativeLaplaceForwardTailDeriv_nat
+contDiff_infty_fabiusLaplaceMoment
+contDiff_infty_negativeLaplaceLog_two_rpow
+contDiff_infty_negativeLaplaceForwardTail_two_rpow
+contDiff_infty_deriv
+periodic_deriv_of_contDiff_infty
+negativeLaplaceBoundedExponentJet_periodic
+contDiff_infty_negativeLaplaceBoundedExponentJet
+isBounded_range_negativeLaplaceBoundedExponentJet
+```
+
+The comments will state the exact recursive derivative formula, base cases,
+positive-scale derivative and summability hypotheses, compact polynomial
+bound on `z ∈ [0,1]`, existential nonnegative half-line majorant depending on
+`a` and `k`, finite-order tail smoothness on `(0,∞)`, whole-line C∞ results,
+period-one conclusions, and qualitative bounded-range claims.  They will not
+claim analyticity, convergence outside positive scale, a sharp or explicit
+existential constant, a least period, or an explicit global bound.
+
+All existing comments remain intact.  No Lean token, proof, declaration
+header, attribute, import, namespace, consumer, root/facade, canonical
+document, audit script, or control-plane file is claimed.  The separate
+lexical-auditor blind spot is recorded but not repaired inside this source-
+only tranche.
+
+```text
+SYNC Fabius
+branch / worktree / machine: codex/fabius-effective-bounds-20260825 /
+  /home/codex/.codex/worktrees/d6d3/Proofs / codexbox
+fetched main SHA: a949e2efaa485283e66a7d2130fc723168c01efa
+HEAD and dirty paths: 1ae0f9716f8a83033b57762c775073c7169e52dc;
+  clean before this registry-only claim; the PeriodicRegularity parity
+  checkpoint and immutable handoff are pushed
+writing (exact paths): Lean/FabiusFunction/PeriodicSmooth.lean; this branch
+  registry for claim/handoff only
+expected declarations or document claims: exact adjacent comments for the 18
+  names above plus one structured module-overview paragraph; no Lean-token or
+  other-source change
+completed commits: all earlier checkpoints, merges, synchronization notes,
+  and handoffs are clean and pushed; this is a disjoint registry-first one-
+  file source-documentation claim
+validated (exact command, SHA/state, exit code): current HEAD and origin/main
+  share blob 2907aa12ef3e3dfbd7094dc5c39de27b559b4ce8,
+  content SHA-256
+  DAC9E832627970EAE6975B8C9758C19C5BEB178F624DDBC0E38A1C559B8BD563;
+  official doc_audit reports 15 gaps while two independent strict declaration
+  inventories and the frozen audit finding identify the exact 18-name scope;
+  all-visible-ref and registry/path scans find no parity implementation or
+  active claim; the board records historical PeriodicSmooth source work as
+  compiled and released; this is not compiler evidence
+not yet validated: comment wording, attachment, exact mathematical parity,
+  and comment syntax are not implemented; no Lean, Lake, TeX, PDF, or cache-
+  mutating process is authorized or running on this branch
+requested integration or lease: advertise this ordinary one-source comment-
+  only claim; after an immutable independently reviewed checkpoint, request
+  one serialized LAKE_JOBS=1 build of +FabiusFunction.PeriodicSmooth and an
+  optional direct-import smoke target selected by the coordinator; request no
+  main-write or document lease
+conflicts / dependencies: this file is disjoint from active Wikipedia and
+  inverse validation targets and all frozen local source blobs; no canonical
+  document or audit script is touched; only the coordinator may advance main
+next bounded step: commit and push this registry-only claim without force;
+  repeat the path/name audit, then edit comments only while three agents
+  independently verify all 18 attachments, formulas, domains, derivative
+  indices, smoothness orders, period/boundedness scope, and token preservation
+```
