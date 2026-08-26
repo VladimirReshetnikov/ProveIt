@@ -484,35 +484,37 @@ theorem dyadicExponent?_exists_iff (x : ℚ) :
     rw [if_pos]
     rw [hden, Nat.log2_eq_log_two, Nat.log_pow Nat.one_lt_two]
 
-/-- The rational bounded evaluator rejects exactly the non-dyadic inputs. -/
-theorem evalFabiusDyadic_eq_none_iff (x : ℚ) :
-    evalFabiusDyadic x = none ↔ ¬ IsDyadicRational x := by
+private theorem evalDyadic_eq_none_iff
+    (evaluator : ℕ → ℤ → ℚ) (x : ℚ) :
+    (match dyadicExponent? x with
+      | none => none
+      | some exponent => some (evaluator exponent x.num)) = none ↔
+      ¬ IsDyadicRational x := by
   constructor
   · intro heval hdyadic
     obtain ⟨exponent, hexponent⟩ := (dyadicExponent?_exists_iff x).2 hdyadic
-    simp [evalFabiusDyadic, hexponent] at heval
+    simp [hexponent] at heval
   · intro hnondyadic
-    unfold evalFabiusDyadic
     split
     · rfl
     · rename_i exponent hexponent
       exact False.elim <| hnondyadic <|
         (dyadicExponent?_exists_iff x).1 ⟨exponent, hexponent⟩
 
+/-- The rational bounded evaluator rejects exactly the non-dyadic inputs. -/
+theorem evalFabiusDyadic_eq_none_iff (x : ℚ) :
+    evalFabiusDyadic x = none ↔ ¬ IsDyadicRational x := by
+  exact evalDyadic_eq_none_iff fabiusDyadicValue x
+
 /-- The rational global evaluator rejects exactly the non-dyadic inputs. -/
 theorem evalExtendedFabiusDyadic_eq_none_iff (x : ℚ) :
     evalExtendedFabiusDyadic x = none ↔ ¬ IsDyadicRational x := by
-  constructor
-  · intro heval hdyadic
-    obtain ⟨exponent, hexponent⟩ := (dyadicExponent?_exists_iff x).2 hdyadic
-    simp [evalExtendedFabiusDyadic, hexponent] at heval
-  · intro hnondyadic
-    unfold evalExtendedFabiusDyadic
-    split
-    · rfl
-    · rename_i exponent hexponent
-      exact False.elim <| hnondyadic <|
-        (dyadicExponent?_exists_iff x).1 ⟨exponent, hexponent⟩
+  exact evalDyadic_eq_none_iff extendedFabiusDyadicValue x
+
+/-- The rational Rvachev evaluator rejects exactly the non-dyadic inputs. -/
+theorem evalRvachevDyadic_eq_none_iff (x : ℚ) :
+    evalRvachevDyadic x = none ↔ ¬ IsDyadicRational x := by
+  exact evalDyadic_eq_none_iff rvachevDyadic x
 
 /--
 The exact single-step recurrence needed by the bit-recursive evaluator.
