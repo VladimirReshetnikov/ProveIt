@@ -1920,7 +1920,12 @@ The recognition theorem belongs beside the two existing `eq_none_iff`
 wrappers in `DyadicCorrectness`; the analytic correctness and completeness
 theorems belong immediately after `rvachevDyadic_cast_global` in
 `GlobalDyadic`.  These are already ordered dependencies, so no import, facade,
-aggregate, attribute, simp-rule, or existing declaration change is claimed.
+aggregate, attribute, simp-rule, or existing public header/type change is
+claimed.  In `DyadicCorrectness`, one private generic match-recognition lemma
+will replace the duplicated bodies of the existing bounded/global
+`eq_none_iff` theorems and will also prove the new Rvachev form.  Thus the new
+wrapper does not introduce a third copy of the same `none`/`some` case split;
+the two pre-existing public statements and doc comments remain exact.
 
 This family is the exact formal counterpart of the frozen research-frontier
 subsection “Rvachev rational-input wrapper” and completes the three-way exact
