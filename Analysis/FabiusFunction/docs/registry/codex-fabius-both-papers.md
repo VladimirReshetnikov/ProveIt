@@ -8,19 +8,23 @@ SYNC Fabius
 branch / worktree / machine: codex/fabius-both-papers /
   /home/codex/src/Proofs / codexbox
 fetched main SHA: d33c4f44b3d08f14b15c1514d687a32898569475
-HEAD and dirty paths: 0b86b9d77f1814986828cc1ebb72d80ae962fc72;
-  dirty only in this own-registry claim
+HEAD and dirty paths: 201f056124f534702a1a91573be82d375772ee05;
+  source edits in the first two claimed paths plus this own-registry expansion
 writing (exact paths):
   Analysis/FabiusFunction/Lean/FabiusFunction/NegativeLaplaceDerivativeBounds.lean
   Analysis/FabiusFunction/Lean/FabiusFunction/FabiusLambertDerivativeBounds.lean
+  Analysis/FabiusFunction/Lean/FabiusFunction/LaplacePeriodicSecondOrder.lean
   Analysis/FabiusFunction/docs/registry/codex-fabius-both-papers.md
 expected declarations or document claims:
   promote the existing private
   `exp_neg_div_one_sub_pow_le` as one documented public denominator estimate;
   delete the byte-for-math-identical downstream
   `local_exp_neg_div_one_sub_pow_le` proof and redirect its two callers to the
-  upstream declaration; preserve every existing public signature, import,
-  theorem body outside those references, and all mathematical claims
+  upstream declaration; replace the inline `m = 1` specialization in
+  `LaplacePeriodicSecondOrder.lean` by the same shared theorem while retaining
+  the independently used denominator-positivity fact; preserve every existing
+  public signature, import, theorem body outside those references, and all
+  mathematical claims
 completed commits: Lower-Lambert source checkpoint `1da2fde2285e3970267b7dc2561bcd0d897be1b4`
   was integrated by coordinator merge `046946a974467e83244fd3a183a3e084e70d3379`;
   registry handoff `225f5338de9ea92489ed6a2c0c371c6edb4f5db9`
