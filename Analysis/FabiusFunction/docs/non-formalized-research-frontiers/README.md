@@ -9,11 +9,15 @@ The canonical frontier artifacts are:
 - [`non-formalized-research-frontiers.tex`](non-formalized-research-frontiers.tex)
 - [`non-formalized-research-frontiers.pdf`](non-formalized-research-frontiers.pdf)
 
-The volume consolidates the eleven former standalone research notebooks and
-the later primary-exposition gap register. It preserves their natural-language
-arguments, symbolic computations, numerical evidence, warnings, citations,
-provenance, and explicit proof obligations without allowing any of that
-material to be mistaken for the formalization-backed primary exposition.
+The volume consolidates the eleven former standalone research notebooks into
+six thematic syntheses, followed by the later primary-exposition gap register:
+reusable probability/discrete/asymptotic engines, repeated integration, the
+exact dyadic web, dyadic endpoint asymptotics, quantitative Thue–Morse
+convergence, and inverse/small-argument saddle analysis. It preserves their
+natural-language arguments, symbolic computations, numerical evidence,
+warnings, citations, provenance, and explicit proof obligations without
+allowing any of that material to be mistaken for the formalization-backed
+primary exposition.
 
 Some passages use already-formalized results as inputs. That does not certify
 the subsequent deductions. Conversely, when one claim is promoted to the
@@ -51,8 +55,12 @@ directory itself when it becomes empty.
 
 ## Consolidation provenance
 
-The unified source records a provenance banner and SHA-256 checksum for every
-absorbed document. The source snapshots consolidated on 25 August 2026 were:
+The unified source records a provenance banner and the historically supplied
+SHA-256 value for every absorbed document. A printed checksum is provenance
+metadata, not a formalization claim; where no reachable repository blob
+reproduces it, the canonical TeX labels it explicitly as unverified rather than
+silently treating it as authenticated. The source snapshots consolidated on
+25 August 2026 were recorded as follows:
 
 | Former source | SHA-256 |
 | --- | --- |
@@ -69,13 +77,14 @@ absorbed document. The source snapshots consolidated on 25 August 2026 were:
 | `Small_Argument_Asymptotics/Small_Argument_Asymptotics.tex` | `85f51a20fc7b6bdf3b1d049ec4506f508aee3c4cd70554e6a68cbcc30977cb0b` |
 | `Primary_Exposition_Gap_Register/Primary_Exposition_Gap_Register.tex` | `06c7b888d9601b67ad7a5c0aee3f087d44d9ecaaa9abfb3bf3edfda4bd29c0d1` |
 
-The eleven notebooks are represented by seven core or synthesized parts,
-followed by the post-audit gap register. Overlapping dossiers were merged around
-their stronger backbones: independent derivations, sharper later statements,
-distinct warnings, numerical data, figures, and useful provenance remain, while
+The eleven notebooks are represented by six thematic syntheses, followed by
+the post-audit gap register. Overlapping dossiers were merged around their
+stronger backbones: independent derivations, sharper later statements, distinct
+warnings, numerical data, figures, and useful provenance remain, while
 genuinely redundant repetitions are compressed and cross-referenced. The
-original checksums identify every absorbed snapshot; subsequent synthesis and
-status corrections are tracked by Git history in the canonical source.
+recorded checksums identify the intended absorbed snapshots subject to the
+verification qualification above; subsequent synthesis and status corrections
+are tracked by Git history in the canonical source.
 
 ## Maintenance
 
@@ -85,7 +94,9 @@ subdirectory may serve as an inbox during concurrent work, but it must be
 audited, absorbed, and removed promptly.
 
 Build the canonical document with exactly three `pdflatex` passes, inspect the
-rendered PDF, and commit the PDF with its source. Before every push that sends
-a changed frontier TeX source to `origin/main`, the matching rendered PDF must
-already be rebuilt and committed. Never push a TeX/PDF mismatch. Do not commit
-`.aux`, `.log`, `.out`, `.toc`, or rendered page images.
+rendered PDF, and commit the PDF with its source. A coordinator may authorize a
+source-only feature-branch checkpoint for semantic review before the rebuild;
+such a checkpoint is never promoted to `main`. Before integration into
+`origin/main`, the matching rendered PDF must be rebuilt, inspected, and
+committed. Never advance `main` with a TeX/PDF mismatch. Do not commit `.aux`,
+`.log`, `.out`, `.toc`, or rendered page images.

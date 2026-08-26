@@ -4,7 +4,92 @@ This file implements the per-branch registry protocol in
 [`../COLLABORATION.md`](../COLLABORATION.md). It is a status and provenance
 record, not a mathematical exposition.
 
-**Coordinator disposition at `7aed3c8c7`.**  The detailed status block and
+## Active source-stage disposition
+
+The coordinator board fetched at ba2be1b78 grants this branch the single-owner
+frontier README/TeX/PDF lease and its own registry. Stage one is a source-only
+semantic checkpoint; the matching PDF is deliberately deferred until
+coordinator review.
+
+~~~text
+SYNC Fabius
+branch / worktree / machine: codex/fabius-exposition-integration /
+  C:\Users\vresh\.codex\worktrees\8f3f\ProveIt / EVO
+fetched main SHA: ba2be1b782b8aa77979c40eb5c43a1b102e20b81
+HEAD and dirty paths: four-correction source checkpoint 23daad436 is pushed.
+  Merge 64eefd2b6 incorporated origin/main at ba2be1b78 with no conflicts;
+  its parents are 23daad436 and ba2be1b78. The parent of this registry update
+  is 64eefd2b6; git ls-files -u is empty and only this registry is dirty. The
+  two redundant build-copy PDFs remain preserved reversibly outside the
+  worktree after their hashes were reverified against the committed PDFs.
+writing (exact paths):
+  Analysis/FabiusFunction/docs/non-formalized-research-frontiers/README.md
+  Analysis/FabiusFunction/docs/non-formalized-research-frontiers/non-formalized-research-frontiers.tex
+  Analysis/FabiusFunction/docs/registry/codex-fabius-exposition-integration.md
+expected declarations or document claims: no Lean edits. Reconcile the
+  203-page authority with donor 8142ccb19 into six thematic syntheses plus the
+  post-audit gap register; preserve every current-only cluster; quarantine all
+  primary claims lacking an exact public Lean counterpart; reject rather than
+  preserve the false all-real raw-spline recurrence found during review.
+completed commits: 78260751f is the pushed stage-one semantic source
+  checkpoint; 18f8eadd4 cleanly merges current origin/main into the feature
+  branch without a content conflict or binary resolution; 4034e2e00 records
+  that clean post-merge provenance; d343e0e84 adds the two remaining
+  claim-level gaps found by the completed primary audit; 7e31a620f cleanly
+  merges origin/main at 148990f0a; bc2cdd932 records that merge; 754b09ea0
+  cleanly merges origin/main at 15b922326. This source checkpoint implements
+  all four narrow corrections required by the coordinator's independent
+  audit; 23daad436 records and pushes those corrections; 64eefd2b6 cleanly
+  merges origin/main at ba2be1b78 without changing a frontier artifact.
+validated (exact command, SHA/state, exit code): on TeX SHA-256
+  8562CF91CDB48132C1DBF127B80886D9EFF8D46057805A200B4579A42E054546,
+  git diff --check exited 0 and git ls-files -u was empty. Independent
+  case-sensitive static audit found 986 unique labels / 0 duplicates, 625
+  reference targets / 0 missing, 52 bibliography keys / 0 duplicates, 20
+  citation targets / 0 missing, 1201 balanced begin/end environment pairs,
+  exactly seven parts, no conflict markers, and no escaped-backslash
+  corruption. The four coordinator corrections were checked directly: one
+  running-head reset is present; the donor-only probability-product label has
+  zero occurrences; the canonical crosswalk and open-ledger labels each occur
+  exactly once; and both the Composition and finite-convolution
+  implementation routes remain explicit.
+  Independent semantic audit found all required donor/current clusters, all
+  twelve source hashes, correct formal/frontier status, 20 candidate and 20
+  obligation environments, and no blocker. Exact-source follow-up audits
+  confirmed that the centered uniform-coordinate laws differ from the
+  symmetric two-atom convolution laws and that the ordinary-closed level-one
+  value is mathematically 2 but appears only in Lean comments. Independent
+  editorial review
+  found and then rechecked fixes for one false raw recurrence, missing prefix
+  hypotheses, ambiguous factor-two wording, and one Markdown punctuation
+  defect; final verdict PASS. The full Fabius aggregate previously passed at
+  immutable Lean-tree checkpoint 9887ea584 (4008 jobs, exit 0).
+not yet validated: stage one intentionally ran no Lean, Lake, pdflatex,
+  latexmk, or PDF process. The committed frontier PDF still corresponds to
+  the pre-reconciliation TeX and must not be integrated to main in this state.
+  The primary TeX/PDF remains frozen pending coordinator review.
+requested integration or lease: review this pushed four-correction source
+  checkpoint, then grant stage two and the sole EVO tool token for exactly
+  three pdflatex passes, rendered inspection, and a matching PDF checkpoint.
+  After frontier integration, grant the primary TeX/PDF correction tranche.
+conflicts / dependencies: merges through 64eefd2b6 incorporated origin/main
+  without a content conflict, unmerged path, or binary resolution. The
+  placement rules in AGENTS.md and the campaign README remain present.
+  The latest incoming tranche changed shifted-prefix Lean source,
+  campaign-audit documents, the coordinator board, and deleted two unrelated
+  Wikipedia-draft inbox files; it made no frontier artifact change relative
+  to the first merge parent. The preserved sidecars are at
+  C:\Users\vresh\.codex\preserved\fabius-exposition-sidecars-8f3f-20260825T1700;
+  their SHA-256 values are
+  59B8B06825F89B81A33F6352196CEBE7C0CAF4C436170FEB15FFDD9336E72908
+  and CD91C680DFA7D96F110106F7A6ADCACC5CBA10E188DF1BD0A4484218FA8FA39C,
+  exactly matching the two previously committed canonical PDFs.
+next bounded step: commit and push this post-merge registry checkpoint, then
+  await the coordinator's explicit stage-two token; never select a predecessor
+  PDF wholesale and never push main.
+~~~
+
+**Historical coordinator disposition at `7aed3c8c7`.**  The detailed status block and
 continuation audit below are a snapshot at `cffe24808`; they are retained as
 provenance, not as claims about the later Lean tree.  Current main still has
 the exact primary/frontier artifact blobs recorded here, and the proposed
@@ -63,7 +148,7 @@ next bounded step: push this registry-only audit checkpoint to the feature
 Source-only reviewers remained read-only. They did not edit, stage, build,
 commit, merge, or push.
 
-## Current disposition
+## Historical disposition before the current source stage
 
 The original draft-disposition tranche is complete, but the campaign-wide
 document reconciliation and final formal-validation gate are not. The
@@ -327,7 +412,25 @@ The consolidated register records claim-level promotion obligations for:
 - stars-and-bars and convolution interpretations of prefix kernels;
 - literal iterated derivatives of the Thue--Morse block polynomial at one;
 - construction of an actual infinite formal product, rather than finite
-  coefficient stabilization alone; and
+  coefficient stabilization alone;
+- the explicit all-block triangular fold of the signed dyadic evaluator;
+- the least-common-denominator two-adic valuation consequence;
+- an exact reduced-rational input wrapper for Rvachev's up-function;
+- the all-real positive-part centered-spline formula and raw-spline smoothing
+  recurrence;
+- a precise theorem identifying which certified error bounds the midpoint
+  correction improves by a factor of two;
+- a probability-measure weak limit for the midpoint-corrected continuous
+  partial-sum laws, derived from their uniform CDF rate;
+- public finite-support packaging for the signed translate family;
+- exact histogram-cell tiling, including the distinction between defining
+  cells and exact function support;
+- the ordinary-closed level-one, zero-coordinate double-counting
+  counterexample;
+- independent failure witnesses for the prefix-order and centered-coordinate
+  corrections;
+- positive-scale endpoint vanishing for the global binary-reduction series;
+- norm summability of the parity-power presentation;
 - the formal-background crosswalk explaining why nearby declarations do not
   yet discharge those obligations.
 
@@ -595,3 +698,86 @@ source trust and axiom-set audit, and the serialized aggregate
 record the limits of automation and a human claim-level audit of mathematical
 prose. Only those gates can support the universal completion claim required by
 this workstream.
+
+## Stage-two frontier PDF checkpoint: stopped on the box predicate
+
+The coordinator's `383bc9672` board grant was merged cleanly into this branch
+at `1ca2a09be`. The canonical frontier TeX remained byte-for-byte identical
+to the independently accepted source (SHA-256
+`8562CF91CDB48132C1DBF127B80886D9EFF8D46057805A200B4579A42E054546`). From
+that clean, pushed tip I ran exactly three sequential invocations of:
+
+```text
+pdflatex -interaction=nonstopmode -halt-on-error -file-line-error -jobname=non-formalized-research-frontiers_stage2 non-formalized-research-frontiers.tex
+```
+
+All three invocations exited `0`. Starting from a fresh stage-two auxiliary
+set, their output page counts were respectively 178, 186, and 186 pages. The
+third-pass log has SHA-256
+`24785261A0D440E67AD136FF894A26E2A4CE55A957BC86CC36FCEDCD334E3442` and is
+64,125 bytes. Its settled predicates are:
+
+- zero undefined-reference or undefined-citation diagnostics;
+- zero cross-reference rerun requests and zero changed-label diagnostics;
+- zero multiply-defined-label diagnostics;
+- zero fatal, emergency-stop, or LaTeX-error diagnostics;
+- zero overfull horizontal boxes; but
+- exactly one `Overfull \\vbox (59.28255pt too high)` while the output routine
+  was active, immediately before output page 184.
+
+The last predicate violates the board's required zero-overfull-box gate. I
+therefore did not run a fourth pass, did not edit the frozen TeX/README, did
+not replace or stage the canonical PDF, and did not begin primary-exposition
+cleanup. The rejected stage-two PDF is 186 pages, 2,056,681 bytes, SHA-256
+`E01692CE1D160F2697E0471284C3B9E1C2D37F79C2C8D3B68286FF2B3286D231`; it and
+the matching log remain preserved under their `_stage2` job name for
+diagnosis. A new coordinator disposition is required before any source
+repair, additional TeX invocation, or canonical-PDF replacement.
+
+## Narrow page-184 source repair
+
+Coordinator checkpoint `407da44a6` was merged without conflict at
+`51bc2ca24`. Read-only inspection of the preserved third-pass log and rejected
+PDF localized the sole vertical overflow to the formal-background crosswalk at
+TeX lines 13852--13931. The complete crosswalk is one `tabularx`, hence one
+indivisible alignment box: it did not fit below the section opener on page 183,
+was deferred wholesale, and was still 59.28255 pt taller than a fresh page 184.
+The final wrapped Lean-declaration row at lines 13925--13928 consequently
+crossed the footer. The next page was normal.
+
+Source commit `5fee1bb90` makes the minimum local change at line 13853:
+
+```tex
+% before
+\begingroup
+\small
+
+% after
+\begingroup
+\footnotesize
+```
+
+The existing `\endgroup` at line 13931 confines the font-size change to this
+one table. Under the document's 11-point class, the approximately sixty table
+baselines each shrink by about one point, and the narrower glyphs can also
+remove identifier wrapping. This directly targets the measured excess without
+changing any mathematics, formalization status, prose, row, declaration name,
+label, reference, citation, environment structure, global geometry, font, or
+spacing rule. The new TeX SHA-256 is
+`D6791ED6AA0246EE9986D67BDF0BCC9823D431E46CAEA1FEE34409FEB25D16DA`.
+
+Post-edit static checks are unchanged: 986 case-sensitive unique labels and no
+duplicates; 625 reference targets and none missing; 52 unique bibliography
+keys and no duplicates; 20 citation targets and none missing; 1,201 matched
+begin/end environment pairs; 20 candidates, 20 obligations, and seven parts;
+one each of `smallarg:sec:crosswalk`, `smallarg:sec:open`, and the Lean-object
+running-head reset; zero occurrences of the removed probability-product label;
+zero conflict markers; and clean `git diff --check`. Normal `git status
+--short` was empty after moving the rejected PDF copy to the hash-verified
+preservation directory; its matching ignored log also remains preserved there.
+
+This is a source-only checkpoint and is **not yet PDF-validated**. No Lean,
+Lake, TeX, PDF, or cache-mutating process was invoked after the failed
+three-pass checkpoint. The canonical frontier PDF, README, all other TeX
+content, and the primary exposition remain untouched. A new coordinator token
+is required before any validation build.
