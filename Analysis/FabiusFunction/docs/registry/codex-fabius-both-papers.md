@@ -2490,3 +2490,65 @@ LEAN_NUM_THREADS=0 LAKE_JOBS=1 lake build +FabiusFunction.GlobalExtension
 The optional smallest direct-importer smoke test is
 `+FabiusFunction.GlobalBounds`.  Stop after the first nonzero exit; no root or
 document build is requested.
+
+## Handoff: export local finiteness of the signed translate family
+
+Exact source checkpoint `217c0f6e8e8e5e91ddb4d3ee5ba83721a494343e`,
+tree `3925fa266c1bd287269cd375dd02a0b85a5bfa1d`, implements the
+advertised one-file theorem/refactor.  Clean synchronization merge
+`d39cb6ceea54fe399b780b9ba419ab35d46ce6e2` incorporates coordinator main
+`4007afd4184ff8d798c7fe73ccb9a2b8b8ba6e60` without changing the claimed
+source blob.  The exact artifact is:
+
+```text
+GlobalExtension.lean
+  Git blob  81abdc9e776241f1e2bb3e1513f276276270a4dc
+  SHA-256   4A95274EE105EE09EF9D37EFFCD55EC53EDC22CF9C4F8047ABAF878D4770AA30
+  size      489 lines, 21,436 bytes
+```
+
+The exact source delta is 22 insertions and 6 deletions.  It adds the single
+documented public theorem
+
+```text
+extendedFabius_summand_hasFiniteSupport
+```
+
+for every bounded Fabius function, every Fabius witness, and every real input.
+The theorem unfolds `Function.HasFiniteSupport`, places the function support
+inside the finite natural interval `Iio N`, and reuses the existing private
+strict-tail zero lemma.  The public `extendedFabius_summable` name, visibility,
+binders, and result type are byte-preserved; its proof is now the exact
+`summable_of_hasFiniteSupport` consequence.  Its doc comment is tightened to
+describe summability rather than claiming a stronger conclusion than its type.
+
+Two independent exact-live hostile audits pass the support-subset orientation,
+`Function.mem_support` nonzero conversion, Nat/real cast facts, strict cutoff,
+`omega`/`nlinarith` arithmetic shape, finite-support-to-summability direction,
+and all edge cases.  In particular, negative `x` permits `N = 0` and correctly
+forces empty support; `x = 0` receives a positive strict cutoff; and positive
+`x` follows from `x < N ≤ n ≤ 2n`.  Existing imports expose every used API.
+
+The public-surface delta is exactly the one advertised declaration.  Every
+later declaration and caller is unchanged, the five direct importers retain
+the old summability API, and no new import, namespace, attribute, simp rule,
+facade, aggregate, or canonical document is present.  Exact/plausible name,
+semantic finite-support shape, source-history, every-advertised-tip, and
+every-registry scans find no competing implementation or claimant.
+`git diff --check`, 100-column, forbidden-declaration, declaration-multiset,
+path-scope, and residual-old-proof scans are clean.
+
+No Lean, Lake, TeX, PDF, or cache-mutating process ran, so this immutable source
+has static review only and remains uncompiled.  The requested separate
+serialized validation gate is:
+
+```text
+LEAN_NUM_THREADS=0 LAKE_JOBS=1 lake build +FabiusFunction.GlobalExtension
+```
+
+The optional smallest direct-importer smoke test is
+`+FabiusFunction.GlobalBounds`.  The coordinator currently owns codexbox for a
+different four-gate batch, so this handoff requests no overlapping token or
+process.  After compiled integration, a separately assigned documentation
+owner may retire the exact local-finiteness frontier obligation; all canonical
+documents remain frozen now.
