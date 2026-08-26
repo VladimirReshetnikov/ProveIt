@@ -128,18 +128,23 @@ theorem fabiusDiscreteLimitApproximation_one_third_depth_one
       q ^ 2 / 2 - q / 3 + 2 / 9 := by
   have hlen_one :
       fabiusDiscreteLimitRangeLength (1 / 3 : ℝ) 1 = 1 := by
-    norm_num [fabiusDiscreteLimitRangeLength]
+    rw [fabiusDiscreteLimitRangeLength,
+      Nat.floor_eq_iff (by norm_num : (0 : ℝ) ≤ (2 : ℝ) ^ 1 * (1 / 3) + 1 / 2)]
+    norm_num
   have hlen_two :
       fabiusDiscreteLimitRangeLength (1 / 3 : ℝ) 2 = 1 := by
-    norm_num [fabiusDiscreteLimitRangeLength]
+    rw [fabiusDiscreteLimitRangeLength,
+      Nat.floor_eq_iff (by norm_num : (0 : ℝ) ≤ (2 : ℝ) ^ 2 * (1 / 3) + 1 / 2)]
+    norm_num
   have hpochhammer : halfQPochhammer 1 = (1 / 2 : ℚ) := by
     norm_num [halfQPochhammer_succ]
   have hbit : thueMorseBit 0 = 0 := by
     norm_num [thueMorseBit, binaryWeight, Nat.digits_zero]
   rw [fabiusDiscreteLimitApproximation]
   norm_num [hlen_one, hlen_two, hpochhammer, hbit,
-    Finset.sum_range_succ] <;>
-    ring
+    Finset.sum_range_succ]
+  push_cast
+  ring
 
 /-- With zero translation, the depth-one row at `x = 1 / 3` equals
 `2 / 9`. -/
