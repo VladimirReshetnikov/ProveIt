@@ -7,17 +7,12 @@ This file implements the per-branch registry fallback in
 SYNC Fabius
 branch / worktree / machine: codex/fabius-both-papers /
   /home/codex/src/Proofs / codexbox
-fetched main SHA: 408b8b11905f3ee260dd739592f0ff8755f1b53e
-HEAD and dirty paths: 6f8c8c04629bd0aa81e34f55449b8d266740179c;
-  dirty only in this own-registry handoff after the clean source checkpoint
-writing (exact paths):
-  Lean/FabiusFunction/FabiusUniformSpline.lean;
-  docs/registry/codex-fabius-both-papers.md
-expected declarations or document claims:
-  delete the dead private `integral_unitInterval_max_sub_mul_pow`, whose name
-  has no call site and whose proof duplicates the adjacent live
-  `intervalIntegral_max_sub_mul_pow`; preserve every public declaration,
-  import, attribute, and caller unchanged
+fetched main SHA: de303339202ef0b7fb99da83003d4b841eef9b80
+HEAD and dirty paths: 347ea497c3814b30131b4133c2a3eb564a0b93f6;
+  dirty only in this own-registry synchronization after the clean merge
+writing (exact paths): none; the uniform-spline source claim is released
+expected declarations or document claims: none in flight; the dead-helper
+  cleanup is frozen at the source checkpoint below
 completed commits: Lower-Lambert source checkpoint `1da2fde2285e3970267b7dc2561bcd0d897be1b4`
   was integrated by coordinator merge `046946a974467e83244fd3a183a3e084e70d3379`;
   registry handoff `225f5338de9ea92489ed6a2c0c371c6edb4f5db9`
@@ -90,7 +85,10 @@ completed commits: Lower-Lambert source checkpoint `1da2fde2285e3970267b7dc2561b
   `2183cfb11`; private-only cleanup claim
   `c08e1e9a728b8a2d8ce1570f3bbd04c0807ece4f` precedes source checkpoint
   `6f8c8c04629bd0aa81e34f55449b8d266740179c`, which deletes the unused private
-  `integral_unitInterval_max_sub_mul_pow` declaration and no other source line
+  `integral_unitInterval_max_sub_mul_pow` declaration and no other source line;
+  clean merge `347ea497c3814b30131b4133c2a3eb564a0b93f6` incorporates fetched main
+  `de3033392` and resolves the sole periodic overlap by retaining main's exact
+  serialized-build-validated `PeriodicSmooth.lean` blob
 validated (exact command, SHA/state, exit code): coordinator board records
   serialized immutable `lake build +FabiusFunction.LowerLambertW` at
   `4c6bbac41`, exit 0, with its source blob unchanged on current main;
@@ -227,9 +225,9 @@ conflicts / dependencies: all advertised Fabius heads and their registries
   `not_isEquivalent` theorem and no competing claim on
   `FabiusSharpAsymptotic.lean`; the coordinator explicitly released its prior
   generalizations lease
-next bounded step: push the independently reviewed source checkpoint, merge
-  current `origin/main`, and request serialized
-  `+FabiusFunction.FabiusUniformSpline` validation
+next bounded step: push this synchronized handoff, request serialized
+  `+FabiusFunction.FabiusUniformSpline` validation, and advertise the next
+  ordinary nonoverlapping source claim after the required collision sweep
 ```
 
 ## Dead uniform-spline helper cleanup handoff
