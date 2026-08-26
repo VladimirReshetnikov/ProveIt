@@ -10,8 +10,9 @@ The bounded Fabius differential equation yields a finite Taylor recurrence on
 each dyadic scale. Endpoint compatibility determines its inverse-power values,
 and comparison with the exact closed-form recurrence proves that the rational
 dyadic evaluator computes the analytic function.  The final API includes the
-exact right endpoint of every unit dyadic grid as well as total analytic
-correctness for the clamped natural-numerator evaluator.
+exact right endpoint of every unit dyadic grid, a direct real-cast identity for
+the inverse-power table, and total analytic correctness for the clamped
+natural-numerator evaluator.
 -/
 
 set_option autoImplicit false
@@ -468,6 +469,16 @@ theorem fabiusDyadic_cast (F : BoundedFabius) (hF : IsFabius F)
         push_cast at hratCast
         rw [hratCast, hihr]
         exact hana.symm
+
+/-- After coercion to `ℝ`, the exact rational inverse-power value agrees with
+every bounded Fabius solution at `2⁻ⁿ`.  This is the `a = 1` specialization of
+`fabiusDyadic_cast` and includes the endpoint `n = 0`. -/
+theorem fabiusAtInverseTwoPow_cast
+    (F : BoundedFabius) (hF : IsFabius F) (n : ℕ) :
+    (fabiusAtInverseTwoPow n : ℝ) =
+      fabiusReal F (((2 : ℝ) ^ n)⁻¹) := by
+  simpa only [fabiusAtInverseTwoPow, Nat.cast_one, one_div] using
+    fabiusDyadic_cast F hF n 1 Nat.one_le_two_pow
 
 /-- The executable bounded evaluator agrees with the analytic Fabius function
 for every natural dyadic numerator. Numerators beyond the unit grid are

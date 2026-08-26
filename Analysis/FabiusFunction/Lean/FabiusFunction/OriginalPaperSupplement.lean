@@ -555,28 +555,6 @@ theorem original_theorem_seven
     apply (div_le_iff₀ (by positivity : (0 : ℝ) < 2 ^ n)).2
     simpa [mul_comm] using haR
 
-/-- The signed dyadic evaluator agrees with Rvachev's function for every
-integer numerator.  Outside `[-1,1]` both sides vanish, so this removes the
-support restriction from `rvachevDyadic_cast`. -/
-theorem rvachevDyadic_cast_global
-    (F : BoundedFabius) (hF : IsFabius F) (n : ℕ) (a : ℤ) :
-    (rvachevDyadic n a : ℝ) = rvachevUp F (a / (2 : ℝ) ^ n) := by
-  by_cases ha : a.natAbs ≤ 2 ^ n
-  · exact rvachevDyadic_cast F hF n a ha
-  · have halt : 2 ^ n < a.natAbs := Nat.lt_of_not_ge ha
-    have habs : 1 < |(a : ℝ) / (2 : ℝ) ^ n| := by
-      rw [abs_div, abs_of_pos (by positivity : (0 : ℝ) < (2 : ℝ) ^ n)]
-      rw [one_lt_div (by positivity : (0 : ℝ) < (2 : ℝ) ^ n)]
-      have hcast : (2 : ℝ) ^ n < (a.natAbs : ℝ) := by
-        exact_mod_cast halt
-      simpa only [Nat.cast_natAbs, Int.cast_abs] using hcast
-    have hzero : rvachevUp F ((a : ℝ) / (2 : ℝ) ^ n) = 0 := by
-      apply rvachevUp_eq_zero_of_not_mem_Ioo F hF
-      intro hx
-      have hxabs : |(a : ℝ) / (2 : ℝ) ^ n| < 1 := (abs_lt).2 hx
-      linarith
-    rw [rvachevDyadic, if_neg ha, Rat.cast_zero, hzero]
-
 /-- Theorem 7 in its literal global form: Rvachev's function is rational at
 every dyadic point, including the points outside its compact support. -/
 theorem original_theorem_seven_global
