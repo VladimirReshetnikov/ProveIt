@@ -6,7 +6,7 @@ record, not a mathematical exposition.
 
 ## Active source-stage disposition
 
-The coordinator board fetched at 148990f0a grants this branch the single-owner
+The coordinator board fetched at ba2be1b78 grants this branch the single-owner
 frontier README/TeX/PDF lease and its own registry. Stage one is a source-only
 semantic checkpoint; the matching PDF is deliberately deferred until
 coordinator review.
@@ -15,13 +15,16 @@ coordinator review.
 SYNC Fabius
 branch / worktree / machine: codex/fabius-exposition-integration /
   C:\Users\vresh\.codex\worktrees\8f3f\ProveIt / EVO
-fetched main SHA: 148990f0a2a9b665edaf3394656be1e7c46caf7e
-HEAD and dirty paths: source checkpoint d343e0e84 is pushed. Merge 7e31a620f
-  incorporated origin/main at 148990f0a with no conflicts; its parents are
-  d343e0e84 and 148990f0a. The parent of this registry update is 7e31a620f;
-  git ls-files -u is empty and only this registry is dirty. The two redundant
-  build-copy PDFs remain preserved reversibly outside the worktree after their
-  hashes were reverified against the committed PDFs.
+fetched main SHA: ba2be1b782b8aa77979c40eb5c43a1b102e20b81
+HEAD and dirty paths: checkpoints through bc2cdd932 are pushed. Merge
+  754b09ea0 incorporated origin/main at 15b922326 with no conflicts; its
+  parents are bc2cdd932 and 15b922326. The parent of this correction
+  checkpoint is 754b09ea0; git ls-files -u is empty and only the frontier TeX
+  and this registry are dirty. A final fetch found origin/main advanced to
+  ba2be1b78, which will be merged after this audited correction is preserved
+  and pushed. The two redundant build-copy PDFs remain preserved reversibly
+  outside the worktree after their hashes were reverified against the
+  committed PDFs.
 writing (exact paths):
   Analysis/FabiusFunction/docs/non-formalized-research-frontiers/README.md
   Analysis/FabiusFunction/docs/non-formalized-research-frontiers/non-formalized-research-frontiers.tex
@@ -36,14 +39,22 @@ completed commits: 78260751f is the pushed stage-one semantic source
   branch without a content conflict or binary resolution; 4034e2e00 records
   that clean post-merge provenance; d343e0e84 adds the two remaining
   claim-level gaps found by the completed primary audit; 7e31a620f cleanly
-  merges origin/main at 148990f0a.
+  merges origin/main at 148990f0a; bc2cdd932 records that merge; 754b09ea0
+  cleanly merges origin/main at 15b922326. This source checkpoint implements
+  all four narrow corrections required by the coordinator's independent
+  audit.
 validated (exact command, SHA/state, exit code): on TeX SHA-256
-  B8B609F12EDBB59205A0349E93CD3C811FCE1DD0D903C916A739992B5F5D5161,
+  8562CF91CDB48132C1DBF127B80886D9EFF8D46057805A200B4579A42E054546,
   git diff --check exited 0 and git ls-files -u was empty. Independent
-  case-sensitive static audit found 985 unique labels / 0 duplicates, 617
+  case-sensitive static audit found 986 unique labels / 0 duplicates, 625
   reference targets / 0 missing, 52 bibliography keys / 0 duplicates, 20
-  citation targets / 0 missing, balanced environments and delimiters, exactly
-  seven parts, no conflict markers, and no escaped-backslash corruption.
+  citation targets / 0 missing, 1201 balanced begin/end environment pairs,
+  exactly seven parts, no conflict markers, and no escaped-backslash
+  corruption. The four coordinator corrections were checked directly: one
+  running-head reset is present; the donor-only probability-product label has
+  zero occurrences; the canonical crosswalk and open-ledger labels each occur
+  exactly once; and both the Composition and finite-convolution
+  implementation routes remain explicit.
   Independent semantic audit found all required donor/current clusters, all
   twelve source hashes, correct formal/frontier status, 20 candidate and 20
   obligation environments, and no blocker. Exact-source follow-up audits
@@ -59,25 +70,25 @@ not yet validated: stage one intentionally ran no Lean, Lake, pdflatex,
   latexmk, or PDF process. The committed frontier PDF still corresponds to
   the pre-reconciliation TeX and must not be integrated to main in this state.
   The primary TeX/PDF remains frozen pending coordinator review.
-requested integration or lease: review the pushed source checkpoints, including
-  this two-gap follow-up, then
-  grant stage two and the sole EVO tool token for exactly
+requested integration or lease: review this pushed four-correction source
+  checkpoint, then grant stage two and the sole EVO tool token for exactly
   three pdflatex passes, rendered inspection, and a matching PDF checkpoint.
   After frontier integration, grant the primary TeX/PDF correction tranche.
-conflicts / dependencies: origin/main at 148990f0a changed AGENTS.md, the
-  campaign README, GlobalExtension.lean, and coordination registries relative
-  to the previously merged main tip. Merge 7e31a620f incorporated all five
-  paths without a content conflict, unmerged path, or binary resolution. The
-  placement rules in AGENTS.md and the campaign README remain present. The
-  preserved sidecars are at
+conflicts / dependencies: merges through 754b09ea0 incorporated origin/main
+  without a content conflict, unmerged path, or binary resolution. The
+  placement rules in AGENTS.md and the campaign README remain present.
+  Origin/main has since advanced to ba2be1b78 through shifted-prefix and
+  campaign-audit coordination changes; it will be merged after this exact
+  source checkpoint is pushed. The preserved sidecars are at
   C:\Users\vresh\.codex\preserved\fabius-exposition-sidecars-8f3f-20260825T1700;
   their SHA-256 values are
   59B8B06825F89B81A33F6352196CEBE7C0CAF4C436170FEB15FFDD9336E72908
   and CD91C680DFA7D96F110106F7A6ADCACC5CBA10E188DF1BD0A4484218FA8FA39C,
   exactly matching the two previously committed canonical PDFs.
-next bounded step: commit and push this post-merge registry checkpoint, then
-  await the coordinator's source-audit disposition and explicit stage-two
-  token; never select a predecessor PDF wholesale and never push main.
+next bounded step: commit and push this four-correction source checkpoint,
+  merge origin/main at ba2be1b78, record the result, and then await the
+  coordinator's explicit stage-two token; never select a predecessor PDF
+  wholesale and never push main.
 ~~~
 
 **Historical coordinator disposition at `7aed3c8c7`.**  The detailed status block and

@@ -292,6 +292,7 @@ Primary-exposition gap register & Claims removed by exact-counterpart audits & P
 \bottomrule
 \end{longtable}
 
+\markboth{Lean object crosswalk}{}
 \section*{Lean object crosswalk---inputs, not certification}
 \addcontentsline{toc}{section}{Lean object crosswalk---inputs, not certification}
 \begin{longtable}{@{}p{0.24\textwidth}p{0.34\textwidth}p{0.34\textwidth}@{}}
@@ -1102,14 +1103,13 @@ probabilistic and saddle branches can import it independently.
 \end{boxedremark}
 
 The probability chapter hands its zero-th tilted moment directly to the endpoint
-asymptotic synthesis.  Independence of the coordinates gives, for \(s>0\),
-\begin{equation}
- G(-s)=M_0(s)=\E[\e^{-sX}]
- =\prod_{j\ge1}\frac{1-\e^{-s/2^j}}{s/2^j}.
- \label{integration:eq:probability-product-handoff}
-\end{equation}
-Thus the exact negative-Laplace product decomposed in \cref{part:dyadicasym} is the
-Laplace transform of the same product-space law, rather than a second independent model.
+asymptotic synthesis.  At \(k=0\),
+\eqref{integration:eq:law-M-identification} identifies the zero-th tilted law moment with
+\(M_0(s)=G(-s)\).  For \(s>0\), the notation of \cref{part:dyadicasym} calls this same
+negative Laplace transform \(B(s)\); its independent-coordinate product is already recorded
+in \eqref{dyadicasym:eq:B-product}.  Thus the exact negative-Laplace product decomposed there
+is the Laplace transform of the same product-space law, rather than a second independent
+model.
 
 \subsection{From atomic laws to half-endpoint histograms}
 \label{integration:sec:step-measure-bridge}
@@ -10505,11 +10505,37 @@ does not become small modulo the period.
 
 \subsection{Local saddle notation and its crosswalk}
 \label{inverse:sec:notation-crosswalk}
+\label{smallarg:sec:crosswalk}
 
-This final part retains the compact symbols of the inverse/saddle source.  They are local to
-this part: in particular, its \(d_n\) is a bounded saddle jet and is not the half-moment
-sequence \(d_n=\E X^n\) used in the probability and dyadic parts.  The exact correspondence
-is
+Three namings for the same principal saddle objects appear across the specialist source, the
+Wikipedia draft, and the Lean development:
+\begin{center}
+\begin{tabular}{@{}lll@{}}
+\toprule
+this synthesis / the primary article & Wikipedia draft & Lean object\\
+\midrule
+\(\lambda(x)\) & \(\lambda\) & \nolinkurl{fabiusLambertPhase x}\\
+\(\Psi\) & \(\Psi\) & \nolinkurl{negativeLaplacePsi}\\
+\(\mathcal M(x)\) & main term & \nolinkurl{fabiusSharpLambertMain x}\\
+\(A_j\) & \(P_j\) & \nolinkurl{fabiusSaddleLogCoefficient j}\\
+\(a_j\) & \(b_j\) & \nolinkurl{fabiusSaddleMassCoefficient j}\\
+\(A_1\) & \(P_1\) & \nolinkurl{fabiusFirstSaddleCorrection}\\
+\(A_2\) & \(P_2\) & \nolinkurl{fabiusSecondSaddleCorrection}\\
+\(C_F\) & \(C_F\) & \nolinkurl{fabiusSharpAsymptoticConstant}\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+The Wikipedia draft calls the coefficient functions merely continuous.  The direct
+regularity result \cref{inverse:cor:A-structure} makes them smooth, one-periodic, and
+bounded, while \cref{inverse:sec:closed-jets,inverse:sec:coefficient-formulas} constructs
+them from smooth periodic jets.
+
+The local jets and exponent coefficients have no counterpart in the Wikipedia draft.  The
+primary article gives them different letters because \(p\), \(d\), and \(E\) are already
+used there: \(p_j\) is the Lambert phase polynomial and \(p_m\) the binary prefix, \(d_n\)
+is the half-moment sequence, and \(E\) denotes both the tail error and the exponential
+quotient.  The exact correspondence is
 \begin{center}
 \begin{tabular}{@{}lll@{}}
 \toprule
@@ -10518,11 +10544,18 @@ Local symbol & Main-exposition symbol & Lean object \\
 \(p_n\) & \(Z_n\) & \nolinkurl{negativeLaplacePeriodicJet} \\
 \(d_n\) & \(\widetilde Z_n\) & \nolinkurl{negativeLaplaceBoundedExponentJet} \\
 \(E_m\) & \(\Xi_m\) & \nolinkurl{negativeLaplaceExponentCoefficient} \\
+\(\dd/\dd t\) & \(\mathrm D\) & --- \\
 \bottomrule
 \end{tabular}
 \end{center}
-When numerical work later returns to half moments, it writes them as \(h_n\) to keep the
-two roles visibly separate.
+
+The tilde in \(\widetilde Z_n\) is apt: the periodic and bounded jet families differ by the
+single constant \((-1)^{n+1}n!\), by \eqref{inverse:eq:d-from-p}.  In the derivative row,
+\(t\) is the independent variable used by the former specialist source; the consolidated
+synthesis otherwise writes that variable as \(u\) and defines \(D=\dd/\dd u\).  In this
+final part, \(d_n\) is a bounded saddle jet and is not the half-moment sequence
+\(d_n=\E X^n\) used in the probability and dyadic parts.  When numerical work later returns
+to half moments, it writes them as \(h_n\) to keep the two roles visibly separate.
 
 \section{The inverse as a global mathematical object}
 \label{inverse:sec:inverse}
@@ -13025,12 +13058,43 @@ precisions.
 
 \section{Specialist open items}
 \label{inverse:sec:specialist-open}
+\label{smallarg:sec:open}
 The synthesis leaves the following claim-level obligations explicit:
 \begin{enumerate}
-\item package the ordered-composition formula \eqref{inverse:eq:mass-composition} and the
-  corresponding logarithmic composition formula as exact general Lean declarations;
-\item formalize the transfer of the mass top-jet coefficient through the logarithm and the
-  resulting highest-\(\Psi\)-derivative coefficient at every order;
+\item Package \cref{inverse:thm:mass-composition,inverse:cor:log-composition} for the generic
+  \texttt{expCoeff} and \texttt{logCoeff} recursions as exact general Lean declarations.
+  This is the remaining formal composition layer, so it is worth recording what the
+  implementation requires.  Mathlib has \texttt{Composition n} with a \texttt{Fintype}
+  instance.  Writing \(\mathcal C(N)\) for the finite type of ordered compositions of \(N\)
+  into positive parts, the missing ingredient is a first-block decomposition equivalence
+  \[
+   \mathcal C(n+1)\simeq
+   \coprod_{b=1}^{n+1}\mathcal C(n+1-b),
+  \]
+  which is the form needed for induction against the recursion.
+
+  The route that avoids \texttt{Composition} is to work directly with the \(k\)-fold
+  finite-convolution powers \(E^{*k}\), as plain finite sums, and prove
+  \[
+   \operatorname{expCoeff}(E)_n
+   =\sum_{k\le n}\frac1{k!}(E^{*k})_n
+   \qquad(E_0=0).
+  \]
+  At coefficient level the product rule is immediate: writing
+  \((\mathrm DA)_n=nA_n\),
+  \[
+   \mathrm D(A*B)=(\mathrm DA)*B+A*(\mathrm DB)
+  \]
+  is the identity \(n=j+(n-j)\) inside the convolution sum.  Promoting it to
+  \[
+   \mathrm D(E^{*(k+1)})=(k+1)\,E^{*k}*\mathrm DE
+  \]
+  also needs associativity of convolution, a double-sum reindexing not presently packaged
+  for bare sequences.  Either route is a self-contained finite-sum combinatorics project;
+  neither bridge is supplied merely by the displayed natural-language formulas.
+\item formalize the transfer of the mass top-jet coefficient in
+  \cref{inverse:thm:top-jet} through the logarithm and the resulting
+  highest-\(\Psi\)-derivative coefficient at every order;
 \item formalize or independently certify the displayed \(A_3\) and \(A_4\) formulas and
   their numerical checks;
 \item surface effective constants in the fixed-order \(O(\lambda^{-N})\) remainders; and
