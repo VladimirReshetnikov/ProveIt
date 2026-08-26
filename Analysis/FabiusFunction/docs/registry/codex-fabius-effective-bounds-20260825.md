@@ -1391,3 +1391,89 @@ next bounded step: commit and push this immutable handoff; keep both pending
   Lambert fixed-point/dedup tranche as the next ordinary claim while continuing
   read-only audits of other released paths
 ```
+
+## Claim: full Lambert displacement-series fixed point and downstream deduplication
+
+The next ordinary source tranche is restricted to
+`Lean/FabiusFunction/FabiusLambertFormalLog.lean` and
+`Lean/FabiusFunction/FabiusLambertAllOrderRemainder.lean`.  It will promote the
+downstream private mass-series identity to the formal-log API and package the
+existing coefficientwise recurrence as the whole-series fixed-point equation
+
+`A = a₀ + C(C((log 2)⁻¹)) * logSeries(unit)`.
+
+Here `A` is `dyadicLambertDisplacementSeries`, `a₀` is
+`dyadicLambertDisplacementPolynomial 0`, and the promoted mass-series identity
+states that the unit series is `1 + X * A`.  These are identities of formal
+power series; the source prose will explicitly make no convergence claim.
+
+The exact new public, deliberately non-simp declarations are:
+
+- `massSeries_dyadicLambertUnitSeriesCoefficient`;
+- `dyadicLambertDisplacementSeries_fixedPoint`.
+
+The first is the exact statement and proof currently hidden privately in
+`FabiusLambertAllOrderRemainder`.  The second follows coefficientwise from the
+already-integrated theorem
+`dyadicLambertDisplacementPolynomial_eq_logCoeff`, with the constant
+coefficient isolated explicitly.  Downstream, the private promoted duplicate
+and the separate finite-truncation re-proof will be removed; the algebraic
+residual proof will consume the public whole-series identity (or its already
+proved coefficient consequence) while preserving every public declaration
+header.  The FormalLog overview and declaration comments will display both
+formal equations and document its three currently undocumented public simp
+lemmas.  Only the Remainder module overview changes there; no canonical
+document is claimed.
+
+```text
+SYNC Fabius
+branch / worktree / machine: codex/fabius-effective-bounds-20260825 /
+  /home/codex/.codex/worktrees/d6d3/Proofs / codexbox
+fetched main SHA: fc63c39788ab4c31694e4f57efe05b543165675a
+HEAD and dirty paths: 3c34416e4; clean before this registry-only claim
+writing (exact paths):
+  Lean/FabiusFunction/FabiusLambertFormalLog.lean;
+  Lean/FabiusFunction/FabiusLambertAllOrderRemainder.lean;
+  this branch registry for claim/handoff only
+expected declarations or document claims: exactly
+  massSeries_dyadicLambertUnitSeriesCoefficient and
+  dyadicLambertDisplacementSeries_fixedPoint; promote one exact private
+  duplicate, remove the private finite-truncation re-proof, preserve every old
+  public declaration header/attribute, and add source-level formal-equation
+  prose only
+completed commits: all previous source checkpoints and their handoffs are
+  clean and pushed; binary source 51b9ad393 / handoff 9e7f4df02 and strict
+  Laplace source b044a0ec9 / handoff 3c34416e4 remain separately frozen and
+  requested for coordinator validation; this is a disjoint registry-first
+  two-file claim
+validated (exact command, SHA/state, exit code): current HEAD and origin/main
+  share FormalLog blob 4850c483aa1b30b094fcc132ce3979c5beb2336a,
+  content SHA-256
+  FA0C96CF187781761C6373FE21935518D43AB29FC11A935DCCBB63840E7AF902,
+  and AllOrderRemainder blob a34ed0346e28e76c0b96ad2ffdfb080d0aa8d096,
+  content SHA-256
+  0199EB25D79DD1E9EF4FDA51BDE80E0CC3F8EFFF50748874CD4AE2574FC0E75D;
+  all 120 locally visible refs and every registry were scanned: the fixed-point
+  name is absent, while the mass-series name occurs only as the intended
+  private downstream helper; current-source exact-name and path scans agree;
+  this is not compiler evidence
+not yet validated: neither public declaration nor the downstream cleanup is
+  implemented; no Lean, Lake, TeX, PDF, or cache-mutating process is authorized
+  or running for this branch
+requested integration or lease: advertise this ordinary two-source claim;
+  after an immutable independently reviewed checkpoint, request separate
+  serialized builds of +FabiusFunction.FabiusLambertFormalLog,
+  +FabiusFunction.FabiusLambertAllOrderRemainder, and the direct consumer
+  +FabiusFunction.FabiusLambertAllOrderSmallArgument; request no document or
+  main-write lease
+conflicts / dependencies: the equations are purely formal and introduce no
+  analytic/convergence premise; FormalLog's sole direct importer is the
+  claimed Remainder module and Remainder's sole direct importer is
+  AllOrderSmallArgument; the frozen binary and Laplace sources and all active
+  external claims are disjoint; only the coordinator may advance main
+next bounded step: commit and push this registry-only claim without force;
+  fetch and reread any changed board, repeat collision checks, then edit only
+  the two claimed sources while three agents independently inspect coefficient
+  normalization, duplicate removal, exact old-header preservation, consumers,
+  and source-level documentation
+```
