@@ -57,9 +57,9 @@ serves the Gaussian and both odd coefficients at once.
   `FabiusFunction.FabiusSaddleCentralLambert` combines with the central
   estimate to reach the normalized saddle kernel mass asymptotics.
 
-The remaining declarations are private helpers: integrability of
-`exp (-v ^ 2 / 2) * |v| ^ k`, the pointwise exponential majorant, and the
-passage from `b * a ^ 2 ≤ C ^ 2` to `|a| ≤ C / sqrt b`.
+The remaining declarations are private helpers for the pointwise exponential
+majorant and the passage from `b * a ^ 2 ≤ C ^ 2` to
+`|a| ≤ C / sqrt b`.
 
 ## Conventions and caveats
 
@@ -108,13 +108,6 @@ private lemma gaussian_abs_pow_le_exp_tail
       ring
     _ ≤ k.factorial * Real.exp (-(A / 4) * |v|) := by gcongr
 
-private lemma integrable_gaussian_abs_pow (k : ℕ) :
-    Integrable (fun v : ℝ => Real.exp (-(v ^ 2) / 2) * |v| ^ k) := by
-  have h := integrable_gaussian_mul_pow k
-  exact h.norm.congr <| by
-    filter_upwards with v
-    rw [Real.norm_eq_abs, abs_mul, abs_pow, abs_of_pos (Real.exp_pos _)]
-
 /-- Explicit `k`th absolute Gaussian moment outside a symmetric interval:
 for `4 ≤ A`, the integral of `exp (-v ^ 2 / 2) * |v| ^ k` over
 `(Icc (-A) A)ᶜ` is at most `8 * k ! * exp (-A ^ 2 / 4) / A`.  The hypothesis
@@ -136,7 +129,8 @@ lemma integral_gaussian_abs_pow_compl_Icc_le
         Real.exp (-(v ^ 2) / 2) * |v| ^ k) ≤
       ∫ v in (Icc (-A) A)ᶜ,
         (k.factorial : ℝ) * Real.exp (-(A / 4) * |v|) := by
-    apply setIntegral_mono_on (integrable_gaussian_abs_pow k).integrableOn
+    apply setIntegral_mono_on
+      (SaddleExpansion.integrable_realGaussian_mul_abs_pow k).integrableOn
       hmajor.integrableOn measurableSet_Icc.compl
     intro v hv
     apply gaussian_abs_pow_le_exp_tail k hA
@@ -160,11 +154,6 @@ lemma integral_gaussian_abs_pow_compl_Icc_le
       field_simp [hA0.ne']
       ring_nf
 
-private lemma integrable_gaussian_abs_pow_mul_const (k : ℕ) (c : ℝ) :
-    Integrable (fun v : ℝ => c *
-      (Real.exp (-(v ^ 2) / 2) * |v| ^ k)) :=
-  (integrable_gaussian_abs_pow k).const_mul c
-
 /-- Complementary-tail bound for the Gaussian-plus-odd reference.  For
 `4 ≤ A`, the integral of
 `‖standardGaussian v + oddCorrection a c v‖` over `(Icc (-A) A)ᶜ` is at most
@@ -187,9 +176,11 @@ lemma integral_norm_gaussian_add_oddCorrection_compl_Icc_le
     (QuantitativeSaddle.integrable_standardGaussian.add
       (integrable_oddCorrection a c)).norm
   have hmajor : Integrable major := by
-    have h0 := integrable_gaussian_abs_pow 0
-    have h1 := integrable_gaussian_abs_pow_mul_const 1 |a|
-    have h3 := integrable_gaussian_abs_pow_mul_const 3 |c|
+    have h0 := SaddleExpansion.integrable_realGaussian_mul_abs_pow 0
+    have h1 :=
+      (SaddleExpansion.integrable_realGaussian_mul_abs_pow 1).const_mul |a|
+    have h3 :=
+      (SaddleExpansion.integrable_realGaussian_mul_abs_pow 3).const_mul |c|
     apply (h0.add h1 |>.add h3).congr
     filter_upwards with v
     dsimp [major, g]
@@ -228,11 +219,13 @@ lemma integral_norm_gaussian_add_oddCorrection_compl_Icc_le
   have h1 := integral_gaussian_abs_pow_compl_Icc_le 1 hA
   have h3 := integral_gaussian_abs_pow_compl_Icc_le 3 hA
   have hg : Integrable g := by
-    simpa [g] using integrable_gaussian_abs_pow 0
+    simpa [g] using SaddleExpansion.integrable_realGaussian_mul_abs_pow 0
   have haint : Integrable (fun v => |a| * (g v * |v|)) := by
-    simpa [g] using integrable_gaussian_abs_pow_mul_const 1 |a|
+    simpa [g] using
+      (SaddleExpansion.integrable_realGaussian_mul_abs_pow 1).const_mul |a|
   have hcint : Integrable (fun v => |c| * (g v * |v| ^ 3)) := by
-    simpa [g] using integrable_gaussian_abs_pow_mul_const 3 |c|
+    simpa [g] using
+      (SaddleExpansion.integrable_realGaussian_mul_abs_pow 3).const_mul |c|
   calc
     (∫ v in (Icc (-A) A)ᶜ,
       ‖QuantitativeSaddle.standardGaussian v + oddCorrection a c v‖) ≤

@@ -1,5 +1,6 @@
 import FabiusFunction.FabiusSharpLambertMain
 import FabiusFunction.FabiusSaddleReduction
+import Mathlib.Analysis.SpecialFunctions.Pow.Asymptotics
 
 /-!
 # Transfer from the Lambert saddle kernel to the sharp Fabius asymptotic
@@ -10,9 +11,10 @@ scale `x = 2 ^ (-t)`, a relative kernel error of order `1 / lambda` implies
 the corrected sharp logarithmic asymptotic with the same error.
 
 The exponentially small forward tail in the exact negative-Laplace
-decomposition is absorbed unconditionally.  Bernoulli's inequality gives
-`lambda <= 2 ^ lambda` eventually, after which elementary exponential bounds
-show that this tail is `O(1 / lambda)`.
+decomposition is absorbed unconditionally.  Bernoulli's inequality and the
+standard exponential-versus-power comparison show that this tail is smaller
+than every inverse power of `lambda`; the order-one transfer estimate is its
+immediate specialization.
 -/
 
 set_option autoImplicit false
@@ -21,52 +23,67 @@ open Filter Asymptotics
 
 namespace Fabius
 
+/-- Along `x = 2 ^ (-t)`, the forward product tail is smaller than every
+inverse power of the exact lower-Lambert phase. -/
+theorem negativeLaplaceTailError_dyadicLambert_isBigO_inv_pow
+    (N : ℕ) :
+    (fun t : ℝ => negativeLaplaceTailError
+      (fabiusLambertRadius ((2 : ℝ) ^ (-t)))) =O[atTop]
+        (fun t : ℝ =>
+          (fabiusLambertPhase ((2 : ℝ) ^ (-t)))⁻¹ ^ N) := by
+  let b : ℝ → ℝ := fun t => fabiusLambertPhase ((2 : ℝ) ^ (-t))
+  have hbtop : Tendsto b atTop atTop := by
+    simpa [b, fabiusLambertPhase_dyadic] using
+      tendsto_dyadicLambertPhase_atTop
+  have htail :
+      (fun t : ℝ => negativeLaplaceTailError
+          (fabiusLambertRadius ((2 : ℝ) ^ (-t)))) =O[atTop]
+        (fun t : ℝ => Real.exp (-(b t))) := by
+    apply IsBigO.of_bound 4
+    filter_upwards [hbtop.eventually_ge_atTop 1] with t hbt
+    have hbernoulli :
+        1 + b t * 1 ≤ (1 + (1 : ℝ)) ^ (b t) :=
+      one_add_mul_self_le_rpow_one_add (s := (1 : ℝ))
+        (by norm_num) hbt
+    have hbr : b t ≤ fabiusLambertRadius ((2 : ℝ) ^ (-t)) := by
+      rw [show (1 + (1 : ℝ)) = 2 by norm_num] at hbernoulli
+      rw [fabiusLambertRadius_dyadic]
+      rw [show b t = dyadicLambertPhase t by
+        simp only [b, fabiusLambertPhase_dyadic]] at hbernoulli ⊢
+      linarith
+    have hrlog : Real.log 2 ≤
+        fabiusLambertRadius ((2 : ℝ) ^ (-t)) := by
+      have hloglt :=
+        Real.log_lt_sub_one_of_pos (x := (2 : ℝ)) (by norm_num)
+          (by norm_num)
+      norm_num at hloglt
+      exact hloglt.le.trans (hbt.trans hbr)
+    have hexp : Real.exp
+        (-fabiusLambertRadius ((2 : ℝ) ^ (-t))) ≤
+          Real.exp (-(b t)) := Real.exp_le_exp.mpr (neg_le_neg hbr)
+    rw [Real.norm_eq_abs, Real.norm_eq_abs,
+      abs_of_pos (Real.exp_pos _)]
+    exact (abs_negativeLaplaceTailError_le_four_exp _ hrlog).trans
+      (mul_le_mul_of_nonneg_left hexp (by norm_num))
+  have hexp :
+      (fun t : ℝ => Real.exp (-(b t))) =o[atTop]
+        (fun t : ℝ => (b t) ^ (-(N : ℝ))) := by
+    simpa only [Function.comp_def, neg_one_mul] using
+      (isLittleO_exp_neg_mul_rpow_atTop one_pos
+        (-(N : ℝ))).comp_tendsto hbtop
+  apply (htail.trans hexp.isBigO).congr'
+  · exact Filter.EventuallyEq.rfl
+  · filter_upwards [hbtop.eventually_gt_atTop 0] with t _hbt
+    rw [Real.rpow_neg_eq_inv_rpow, Real.rpow_natCast]
+
 /-- Along the lower-Lambert logarithmic coordinate, the forward product tail
 is `O(1 / lambda)`. -/
 theorem negativeLaplaceTailError_dyadicLambert_isBigO_inv :
     (fun t : ℝ => negativeLaplaceTailError
       (fabiusLambertRadius ((2 : ℝ) ^ (-t)))) =O[atTop]
         (fun t : ℝ => (fabiusLambertPhase ((2 : ℝ) ^ (-t)))⁻¹) := by
-  rw [isBigO_iff]
-  refine ⟨4, ?_⟩
-  filter_upwards [eventually_dyadicLambertPhase_domain,
-      tendsto_dyadicLambertPhase_atTop.eventually_ge_atTop 1] with t hsmall hlam1
-  have hx : 0 < (2 : ℝ) ^ (-t) := Real.rpow_pos_of_pos (by norm_num) _
-  have hlam : 0 < fabiusLambertPhase ((2 : ℝ) ^ (-t)) :=
-    fabiusLambertPhase_pos hx hsmall
-  have hr : 0 < fabiusLambertRadius ((2 : ℝ) ^ (-t)) :=
-    fabiusLambertRadius_pos _
-  have hlamr :
-      fabiusLambertPhase ((2 : ℝ) ^ (-t)) ≤
-        fabiusLambertRadius ((2 : ℝ) ^ (-t)) := by
-    have hbernoulli :
-        1 + fabiusLambertPhase ((2 : ℝ) ^ (-t)) * 1 ≤
-          (1 + (1 : ℝ)) ^ fabiusLambertPhase ((2 : ℝ) ^ (-t)) :=
-      one_add_mul_self_le_rpow_one_add (s := (1 : ℝ)) (by norm_num)
-        (by simpa [fabiusLambertPhase_dyadic] using hlam1)
-    rw [show (1 + (1 : ℝ)) = 2 by norm_num] at hbernoulli
-    change 1 + fabiusLambertPhase ((2 : ℝ) ^ (-t)) * 1 ≤
-      fabiusLambertRadius ((2 : ℝ) ^ (-t)) at hbernoulli
-    linarith
-  have hrlog : Real.log 2 ≤ fabiusLambertRadius ((2 : ℝ) ^ (-t)) := by
-    have hloglt :=
-      Real.log_lt_sub_one_of_pos (x := (2 : ℝ)) (by norm_num) (by norm_num)
-    norm_num at hloglt
-    exact hloglt.le.trans (hlam1.trans hlamr)
-  have hexpInv :
-      Real.exp (-fabiusLambertRadius ((2 : ℝ) ^ (-t))) ≤
-        (fabiusLambertRadius ((2 : ℝ) ^ (-t)))⁻¹ := by
-    rw [Real.exp_neg]
-    exact (inv_le_inv₀ (Real.exp_pos _) hr).2
-      ((le_add_of_nonneg_right (by norm_num : (0 : ℝ) ≤ 1)).trans
-        (Real.add_one_le_exp _))
-  have hrInv :
-      (fabiusLambertRadius ((2 : ℝ) ^ (-t)))⁻¹ ≤
-        (fabiusLambertPhase ((2 : ℝ) ^ (-t)))⁻¹ :=
-    (inv_le_inv₀ hr hlam).2 hlamr
-  rw [Real.norm_eq_abs, Real.norm_eq_abs, abs_of_pos (inv_pos.mpr hlam)]
-  exact (abs_negativeLaplaceTailError_le_four_exp _ hrlog).trans
-    (mul_le_mul_of_nonneg_left (hexpInv.trans hrInv) (by norm_num))
+  simpa only [pow_one] using
+    negativeLaplaceTailError_dyadicLambert_isBigO_inv_pow 1
 
 /-- A normalized `O(1 / lambda)` estimate for the Bromwich saddle kernel at
 the explicit lower-Lambert coordinates implies the corrected sharp Fabius

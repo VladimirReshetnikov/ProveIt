@@ -21,7 +21,10 @@ substituting its degree-`L-1` truncation into the degree-`L-1` exponential
 polynomial differs from the recursive coefficient polynomial by an exact
 multiple of `X ^ L`.  The canonical quotient is defined by iterating
 `Polynomial.divX`, so its dependence on parameterized coefficients remains
-algebraic and can be bounded uniformly downstream.
+algebraic and can be bounded uniformly downstream.  The underlying polynomial
+facts are exposed here as well: an initial coefficient gap makes iterated
+`divX` exact after multiplication by the matching power of `X`, and this
+iteration commutes with coefficientwise ring maps.
 -/
 
 /-- The order-`L-1` polynomial truncation of a formal exponent. -/
@@ -156,9 +159,10 @@ defect's first `L` zero coefficients. -/
 def finiteExpSubstitutionQuotient (E : ℕ → R) (L : ℕ) : Polynomial R :=
   (Polynomial.divX^[L]) (finiteExpSubstitutionDefect E L)
 
-omit [Algebra ℚ R] in
-private lemma X_pow_mul_iterate_divX_eq_of_coeff_zero
-    (p : Polynomial R) (L : ℕ)
+/-- Multiplying by `X ^ L` reverses `L` applications of `divX` when the first
+`L` coefficients of the polynomial vanish. -/
+theorem X_pow_mul_iterate_divX_eq_of_coeff_zero
+    {S : Type*} [CommRing S] (p : Polynomial S) (L : ℕ)
     (hzero : ∀ k < L, p.coeff k = 0) :
     Polynomial.X ^ L * (Polynomial.divX^[L]) p = p := by
   induction L generalizing p with
@@ -173,6 +177,24 @@ private lemma X_pow_mul_iterate_divX_eq_of_coeff_zero
       rw [pow_succ']
       rw [mul_assoc, ih (Polynomial.divX p) hdiv]
       simpa [hp0] using Polynomial.X_mul_divX_add p
+
+/-- Dividing a polynomial by `X` commutes with a coefficientwise ring map. -/
+theorem map_divX {A B : Type*} [CommRing A] [CommRing B]
+    (f : A →+* B) (p : Polynomial A) :
+    p.divX.map f = (p.map f).divX := by
+  ext d
+  simp [Polynomial.coeff_divX]
+
+/-- Every finite iterate of `divX` commutes with a coefficientwise ring map. -/
+theorem map_iterate_divX {A B : Type*} [CommRing A] [CommRing B]
+    (f : A →+* B) (L : ℕ) (p : Polynomial A) :
+    ((Polynomial.divX^[L]) p).map f =
+      (Polynomial.divX^[L]) (p.map f) := by
+  induction L generalizing p with
+  | zero => simp
+  | succ L ih =>
+      rw [Function.iterate_succ_apply, Function.iterate_succ_apply,
+        ih, map_divX]
 
 /-- Exact factorization of the finite exponential defect by the first
 omitted power. -/

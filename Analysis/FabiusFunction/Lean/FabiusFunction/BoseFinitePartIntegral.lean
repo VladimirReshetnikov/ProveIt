@@ -526,12 +526,7 @@ small-scale part and the explicit logarithmic singularity. -/
 lemma boseLogKernel_eq_negativeLaplaceKernel_add_log
     (x : ℝ) (hx : 0 < x) :
     boseLogKernel x = negativeLaplaceKernel x + Real.log x := by
-  have hnum : 1 - Real.exp (-x) ≠ 0 := by
-    apply (sub_pos.mpr ?_).ne'
-    rw [← Real.exp_zero]
-    exact Real.exp_lt_exp.mpr (by linarith)
-  rw [boseLogKernel, negativeLaplaceKernel, Real.log_div hnum hx.ne']
-  ring
+  rw [boseLogKernel, negativeLaplaceKernel_eq_log_sub_log x hx, sub_add_cancel]
 
 /-- The two finite-part kernels differ exactly by `log x / x` on the positive
 half-line. -/
