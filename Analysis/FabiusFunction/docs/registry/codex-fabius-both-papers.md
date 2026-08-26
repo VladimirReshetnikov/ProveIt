@@ -7,21 +7,18 @@ This file implements the per-branch registry fallback in
 SYNC Fabius
 branch / worktree / machine: codex/fabius-both-papers /
   /home/codex/src/Proofs / codexbox
-fetched main SHA: ff675711f02a84c365cf4824c257ad593933e46d
-HEAD and dirty paths: 8ca5be2de8de29276b94116e24fc90d55412cbec;
-  dirty only in this own-registry handoff
+fetched main SHA: 36672c4677bc3556f89057bb74ed59e4ac86a5fb
+HEAD and dirty paths: fed5c2302c5e81ae5b2338a53714cff893d7c497;
+  dirty only in this own-registry claim
 writing (exact paths):
-  Analysis/FabiusFunction/docs/registry/codex-fabius-both-papers.md;
-  the FabiusBinaryReductionSeries.lean source claim is released by this handoff
+  Analysis/FabiusFunction/Lean/FabiusFunction/PoissonSummation.lean;
+  Analysis/FabiusFunction/docs/registry/codex-fabius-both-papers.md
 expected declarations or document claims:
-  norm_binaryReductionRemainder_le_total;
-  norm_globalBinaryReductionSum_sub_extendedFabius_le_total;
-  globalBinaryReductionSummand_eq_remainder_sub_all;
-  norm_globalBinaryReductionSummand_le_of_one_le_all;
-  summable_norm_globalBinaryReductionSummand_all;
-  summable_globalBinaryReductionSummand_all;
-  the family removes the scale-zero, positive-input, and index-two artifacts
-  while preserving every existing restricted theorem as compatibility API
+  rvachevFourier_real_iteratedDeriv_shiftedDecay;
+  rvachevFourier_real_shiftedDecay;
+  the first theorem gives the conventional `(1 + |x|) ^ (-k)` Schwartz
+  majorant for every real-axis derivative and the second is its order-zero
+  Fourier-transform specialization; existing rapid-decay APIs stay exact
 completed commits: Lower-Lambert source checkpoint `1da2fde2285e3970267b7dc2561bcd0d897be1b4`
   was integrated by coordinator merge `046946a974467e83244fd3a183a3e084e70d3379`;
   registry handoff `225f5338de9ea92489ed6a2c0c371c6edb4f5db9`
@@ -123,6 +120,8 @@ completed commits: Lower-Lambert source checkpoint `1da2fde2285e3970267b7dc2561b
   condition from the existing uniform-convergence proof; clean merge
   `8ca5be2de8de29276b94116e24fc90d55412cbec` incorporates fetched main
   `ff675711f02a84c365cf4824c257ad593933e46d` without changing the source blob;
+  clean merge `fed5c2302c5e81ae5b2338a53714cff893d7c497` incorporates validated current
+  main `36672c4677bc3556f89057bb74ed59e4ac86a5fb` before the shifted-decay claim;
 validated (exact command, SHA/state, exit code): coordinator board records
   serialized immutable `lake build +FabiusFunction.LowerLambertW` at
   `4c6bbac41`, exit 0, with its source blob unchanged on current main;
@@ -153,14 +152,15 @@ validated (exact command, SHA/state, exit code): coordinator board records
   completes 3417 jobs, exit 0 without warnings; coordinator tree `77e2f55d4`
   records the product-positivity consolidation, and separate builds of
   `+FabiusFunction.ExactInversePower` (2013 jobs) and
-  `+FabiusFunction.PaperStatements` (3242 jobs) both exit 0 without warnings
-not yet validated: source checkpoint `13173290a0e4e0fa4d0f6101795c063cce9839d5`
-  has three independent static reviews covering its scale-zero and negative
-  input cases, exact telescope algebra, geometric majorant, shifted
-  summability, theorem naming, compatibility, source prose, and hygiene, but
-  no Lean or Lake process has elaborated it; the historical validation-state
-  paragraphs below are superseded by the coordinator board and retained only
-  as provenance: the moved dyadic theorem body was already compiled in its
+  `+FabiusFunction.PaperStatements` (3242 jobs) both exit 0 without warnings;
+  coordinator integration `9f4b6be52` records the exact total binary-reduction
+  source, and separate builds of `+FabiusFunction.FabiusBinaryReductionSeries`
+  (2819 jobs) and `+FabiusFunction.FabiusGlobalQBinomialSeries` (3323 jobs)
+  both exit 0 without warnings
+not yet validated: the shifted Fourier-decay claim is registry-only and has no
+  source checkpoint yet; the historical validation-state paragraphs below are
+  superseded by the coordinator board and retained only as provenance: the
+  moved dyadic theorem body was already compiled in its
   downstream home by the green
   aggregate at `9887ea584`, but its new module ownership/import context has not
   been compiled; only read-only source/collision/marker/diff checks are
@@ -255,13 +255,10 @@ historical integration requests, all superseded by the current coordinator
   handoff;
   serialized README/primary/walkthrough/coverage paths are deliberately not
   claimed yet
-requested integration or lease: integrate source checkpoint
-  `13173290a0e4e0fa4d0f6101795c063cce9839d5`; run serialized
-  `LAKE_JOBS=1 lake build +FabiusFunction.FabiusBinaryReductionSeries`, then
-  the smallest direct-consumer smoke target
-  `LAKE_JOBS=1 lake build +FabiusFunction.FabiusGlobalQBinomialSeries`;
-  the source path is released; canonical AUDIT_FINDINGS, PAPER_COVERAGE,
-  COLLABORATION, primary, and walkthrough paths remain frozen and unclaimed
+requested integration or lease: none until the advertised shifted-decay source
+  checkpoint is implemented and independently reviewed; canonical
+  AUDIT_FINDINGS, PAPER_COVERAGE, primary, walkthrough, and frontier paths
+  remain frozen and unclaimed
 conflicts / dependencies: all advertised Fabius heads and their registries
   were checked; no branch claims GlobalExtension and the only overlap is the
   existing even/odd ingredients and downstream special cases that this API
@@ -311,9 +308,9 @@ conflicts / dependencies: all advertised Fabius heads and their registries
   positive-degree complex branch estimate, no `_all` or semantic-equivalent
   theorem, and no active claim on `FabiusDiscreteLimitComplexShift.lean`; the
   exact `_all` name occurs only in the unimplemented serialized audit proposal
-next bounded step: push this independently reviewed binary-reduction handoff,
-  await serialized integration/build validation, and begin the next ordinary
-  nonoverlapping audit
+next bounded step: push this exact one-source-file shifted-decay claim, extract
+  the common real-axis Schwartz realization, implement and independently
+  review both declarations, then request serialized focused/facade validation
 ```
 
 ## All-degree complex branch-translation handoff
@@ -531,3 +528,24 @@ should close the weaker proposal in `AUDIT_FINDINGS.md` and advertise these
 stronger names/domains in `PAPER_COVERAGE.md`, `COLLABORATION.md`, the primary
 exposition, and the walkthrough, rebuilding paired PDFs.  Those existing
 documents remain true but incomplete, so none is claimed by this handoff.
+
+## Shifted real-axis Fourier-decay claim
+
+Fresh main `36672c4677bc3556f89057bb74ed59e4ac86a5fb` has
+`PoissonSummation.lean` blob `e4b29a4cda27c5a395ede069bb356f3b9355dfdb`.
+The exact and plausible-name scan across the current tree, every advertised
+remote Fabius tip, and all branch registries finds no shifted-weight theorem
+or competing path claim.  The coordinator board has only the disjoint
+`QuantitativeSaddle.lean` source lease, so this path is ordinary and available.
+
+The intended source checkpoint adds
+`rvachevFourier_real_iteratedDeriv_shiftedDecay` with bound
+`C * ((1 + |x|) ^ k)⁻¹` for every derivative order, then its order-zero
+specialization `rvachevFourier_real_shiftedDecay`.  The proof will reuse the
+same real-axis Schwartz realization as the existing unshifted rapid-decay
+family and Mathlib's finite-seminorm bound; no import, existing public header,
+attribute, facade, root, or serialized document changes.  Future assigned
+documentation work should discharge the frontier's “Fourier-decay
+normalization” item and add the conventional shifted form to the primary
+exposition, walkthrough, and coverage map.  None of those frozen paths is
+claimed here.
