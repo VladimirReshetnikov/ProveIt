@@ -1102,3 +1102,188 @@ next bounded step: commit and push this green handoff, notify the coordinator,
   merge current main without claiming new compiler evidence, and wait for
   exact-source integration/release before advertising the next source tranche
 ```
+
+## Registry-first claim: sharp inverse-coordinate and endpoint parity
+
+Coordinator checkpoint `6cfb66a57064c27ff2b05a21c4c0ca7d1da2aa26`
+accepts the inverse-power decay repair, releases its source path and EVO token,
+and leaves the inverse asymptotic paths unassigned.  This branch merged that
+checkpoint conflict-free as `df0ca998502150efc58375029812794a1c654368`.
+
+This staged follow-on reserves exactly:
+
+- `Lean/FabiusFunction/FabiusInverseAsymptotic.lean`, current blob
+  `c53f208845552ebceffa3e3be4d569fc06947282`;
+- `Lean/FabiusFunction/PaperFabiusAsymptotic.lean`, current blob
+  `ce830f045e45e291a969f4d97a41294d8f83494a`; and
+- this branch registry.
+
+It deliberately does not claim `FabiusInverse.lean`: main now contains the
+public, focused-build-green endpoint-filter transport
+`tendsto_one_sub_nhdsLT_one_nhdsGT_zero`, and that path is released and remains
+unchanged here.
+
+### Exact inverse-coordinate sharp input
+
+The forward full exact-phase expansion already exists.  The first pair of new
+public declarations pulls it through `fabiusInv`, uses the eventual identity
+`fabiusReal F (fabiusInv F hF y) = y`, and exposes the order-one sharp
+remainder required by the inverse frontier:
+
+```lean
+theorem log_sub_sharpLambertMain_comp_fabiusInv_hasAsymptoticExpansion
+    (F : BoundedFabius) (hF : IsFabius F) :
+    SaddleExpansion.HasAsymptoticExpansion (𝓝[>] (0 : ℝ))
+      (fun y : ℝ =>
+        (fabiusLambertPhase (fabiusInv F hF y))⁻¹)
+      (fun y : ℝ =>
+        Real.log y - fabiusSharpLambertMain (fabiusInv F hF y))
+      (fun j y =>
+        fabiusSaddleLogCoefficient j
+          (fabiusLambertPhase (fabiusInv F hF y)))
+
+theorem log_sub_sharpLambertMain_comp_fabiusInv_isBigO_inv_phase
+    (F : BoundedFabius) (hF : IsFabius F) :
+    (fun y : ℝ =>
+      Real.log y - fabiusSharpLambertMain (fabiusInv F hF y))
+      =O[𝓝[>] (0 : ℝ)]
+        (fun y : ℝ =>
+          (fabiusLambertPhase (fabiusInv F hF y))⁻¹)
+```
+
+The first proof is an exact `HasAsymptoticExpansion.comp_tendsto` followed by
+one eventual inverse rewrite.  The second is `.remainder_isBigO 1`; its sole
+coefficient vanishes by `fabiusSaddleLogCoefficient_zero`.  The existing
+private `fabius_inverse_quadratic_input` will then extract its order-zero bound
+from the new pullback instead of manually repeating composition, inverse
+rewriting, and zero-partial-sum normalization.  No private or public statement
+changes in that simplification.
+
+This pair formalizes the full implicit inverse-coordinate expansion and the
+frontier's `O(lambda⁻¹)` sharp input.  It is not yet an all-orders explicit
+reversion of the phase or of `fabiusInv`.
+
+### Exact no-Hoelder endpoint package and promised reflections
+
+The second group packages the already integrated positive-real-power
+little-o theorem into the exact quotient, Landau, interval, and reflected
+forms required by the frontier:
+
+```lean
+theorem tendsto_fabiusInv_div_rpow_atTop_at_zero_right
+    (F : BoundedFabius) (hF : IsFabius F)
+    {α : ℝ} (hα : 0 < α) :
+    Tendsto (fun y : ℝ => fabiusInv F hF y / y ^ α)
+      (𝓝[>] (0 : ℝ)) atTop
+
+theorem fabiusInv_not_isBigO_rpow_at_zero_right
+    (F : BoundedFabius) (hF : IsFabius F)
+    {α : ℝ} (hα : 0 < α) :
+    ¬ ((fabiusInv F hF) =O[𝓝[>] (0 : ℝ)]
+      (fun y : ℝ => y ^ α))
+
+theorem not_exists_fabiusInv_le_const_mul_rpow_near_zero
+    (F : BoundedFabius) (hF : IsFabius F)
+    {α : ℝ} (hα : 0 < α) :
+    ¬ ∃ C > 0, ∃ δ > 0, ∀ y ∈ Set.Icc (0 : ℝ) δ,
+      fabiusInv F hF y ≤ C * y ^ α
+
+theorem one_sub_rpow_isLittleO_one_sub_fabiusInv_at_one_left
+    (F : BoundedFabius) (hF : IsFabius F)
+    {α : ℝ} (hα : 0 < α) :
+    (fun y : ℝ => (1 - y) ^ α) =o[𝓝[<] (1 : ℝ)]
+      (fun y : ℝ => 1 - fabiusInv F hF y)
+
+theorem one_sub_fabiusInv_isLittleO_negLog_one_sub_rpow_at_one_left
+    (F : BoundedFabius) (hF : IsFabius F) (r : ℝ) :
+    (fun y : ℝ => 1 - fabiusInv F hF y) =o[𝓝[<] (1 : ℝ)]
+      (fun y : ℝ => (-Real.log (1 - y)) ^ r)
+
+theorem tendsto_one_sub_fabiusInv_div_one_sub_rpow_atTop_at_one_left
+    (F : BoundedFabius) (hF : IsFabius F)
+    {α : ℝ} (hα : 0 < α) :
+    Tendsto
+      (fun y : ℝ => (1 - fabiusInv F hF y) / (1 - y) ^ α)
+      (𝓝[<] (1 : ℝ)) atTop
+```
+
+The quotient proof inverts the positive little-o quotient through
+`Tendsto.inv_tendsto_nhdsGT_zero`; the Landau obstruction is
+`IsLittleO.not_isBigO`; and the interval theorem is the exact local-bound
+wrapper.  The literal wrapper is retained because the frontier promotion rule
+requires a declaration matching the displayed quantifiers, closed interval,
+endpoint convention, and conclusion rather than an apparently immediate
+derivation from `¬ IsBigO`.
+
+The final three declarations use the integrated endpoint-filter transport and
+`fabiusInv_one_sub`.  The first two explicitly fulfill and consolidate this
+registry's older unimplemented "reflected inverse scale hierarchy" amendment;
+the quotient is the exact reflected theorem from the frontier.  Thus the old
+amendment is no longer a separate pending source claim.
+
+### Facade prose and boundaries
+
+`PaperFabiusAsymptotic.lean` will receive only two bounded prose additions:
+
+1. identify the full inverse-coordinate pullback and its named
+   `O(lambda⁻¹)` main-defect corollary, while distinguishing the implicit phase
+   equation from explicit all-orders inverse reversion; and
+2. name the quotient, Landau obstruction, literal interval corollary, and
+   reflected hierarchy as the exact no-positive-order endpoint estimate
+   package.
+
+No theorem body, import, root facade, canonical TeX/PDF, primary article,
+frontier ledger, README, or coverage table changes in this source tranche.
+After compiler evidence and coordinator integration, a separately leased
+documentation tranche can promote the exact frontier theorem and add the
+organic primary-exposition mapping.
+
+The already reviewed first explicit Newton reversion
+`fabiusInverseRefinedPhaseMain` and its `o(T⁻¹ᐟ²)` phase theorem are explicitly
+deferred to a second source stage.  They depend on the `O(lambda⁻¹)` theorem
+above and will not be bundled into this compiler-ready pullback/endpoint
+package.
+
+Three independent read-only audits checked current source APIs, filter
+directions, positivity, exact and plausible declaration names, import closure,
+direct consumers, current registries, and visible refs.  No collision or
+missing import is visible.  This is static/source evidence only; none of the
+new declarations has compiler evidence.
+
+After an immutable actual-diff review and an explicit host grant, the complete
+staged source needs exactly these separate serialized gates:
+
+```text
+LEAN_NUM_THREADS=0 LAKE_JOBS=1 lake build +FabiusFunction.FabiusInverseAsymptotic
+LEAN_NUM_THREADS=0 LAKE_JOBS=1 lake build +FabiusFunction.PaperFabiusAsymptotic
+```
+
+No `FabiusInverse`, quadratic, root aggregate, third target, cache,
+TeX/PDF, canonical-document, or main-write lane is requested.
+
+```text
+SYNC Fabius
+branch / worktree / machine: codex/fabius-inverse-asymptotic-20260825 /
+  C:/Users/vresh/.codex/worktrees/c9a3/ProveIt / EVO (Windows)
+fetched and merged main SHA:
+  6cfb66a57064c27ff2b05a21c4c0ca7d1da2aa26
+claim base HEAD: df0ca998502150efc58375029812794a1c654368
+writing after claim acknowledgement:
+  Lean/FabiusFunction/FabiusInverseAsymptotic.lean;
+  Lean/FabiusFunction/PaperFabiusAsymptotic.lean;
+  this registry
+expected declarations: the eight exact public names listed above, plus a
+  proof-only simplification of private fabius_inverse_quadratic_input
+validated: current blob/import/filter/Mathlib/API, exact-name, plausible-name,
+  semantic-overlap, direct-consumer, frontier-parity, and path-release preflight
+not yet validated: no claimed source exists and no Lean/Lake process has run
+requested integration or lease: registry-first ordinary source ownership only;
+  request the two exact serialized gates only after immutable source review
+conflicts / dependencies: consolidates the older reflected-hierarchy promise;
+  depends only on integrated green inverse sources; Newton reversion deferred;
+  no FabiusInverse, root, canonical-document, TeX/PDF, cache, or main claim
+next bounded step: commit and push this registry-only claim, notify the
+  coordinator, keep source frozen until acknowledgement, then implement the
+  pullback/private simplification and endpoint/reflection package as separate
+  detailed source commits before requesting compiler validation
+```
