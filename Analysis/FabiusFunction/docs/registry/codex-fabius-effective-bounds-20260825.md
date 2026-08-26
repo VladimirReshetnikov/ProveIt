@@ -3221,3 +3221,58 @@ next bounded step: freeze the source blob, push this handoff, fetch main,
   tranche; the audit-script blind spot remains a separately serialized tool
   issue rather than an implicit source expansion
 ```
+
+## Claim: factorized standardized saddle-tail asymptotics and source parity
+
+```text
+SYNC Fabius
+branch / worktree / machine: codex/fabius-effective-bounds-20260825 /
+  /home/codex/.codex/worktrees/d6d3/Proofs / codexbox
+fetched main SHA: 4789f05b1a1abc34b5753c166a524be1f62078c3
+HEAD and dirty paths: 7dbd08b22; clean before this registry-only claim
+writing (exact paths):
+  Analysis/FabiusFunction/Lean/FabiusFunction/FabiusSaddleTail.lean
+  Analysis/FabiusFunction/docs/registry/codex-fabius-effective-bounds-20260825.md
+expected declarations or document claims:
+  theorem
+  integral_norm_fabius_scaledSaddleKernel_standardRadius_isBigO_minorArcConstant_mul_inv
+  with the existing standardized complementary-tail function on the left and
+  `negativeLaplaceMinorArcConstant (r i) (2 * m i) * (b i)⁻¹` on the right;
+  it assumes only eventual `0 < r i`, `16 ≤ b i`, and
+  `b i / 4 ≤ (m i : ℝ)`, and therefore exposes the factorized estimate
+  `tail = O(C_i / b_i)` before imposing boundedness of `C_i` or
+  `b -> atTop`;
+  preserve the exact public header of
+  integral_norm_fabius_scaledSaddleKernel_standardRadius_isBigO and refactor
+  its proof as the new theorem followed by the existing minor-arc `O(1)`
+  hypothesis and the inverse-scale reflexive bound;
+  add exact formula/hypothesis-bearing comments to all 17 currently
+  undocumented public declarations and one module sentence for the new
+  factorization, leaving 30 public declarations / 30 adjacent comments /
+  zero missing under a strict declaration scan
+completed commits: merged origin/main checkpoint 4789f05b1 as 7dbd08b22 and
+  pushed it without force; no source commit exists for this claim yet
+validated (exact command, SHA/state, exit code): authoritative all-visible-ref
+  `git grep` finds no occurrence of the proposed theorem name; current source
+  blob is 5f70fc0e17832fc5e5c0412b7c9369c9ee400a6d and content SHA-256 is
+  8348337D5056478A8964B19F8919A1A13CF61A5D75880AD8E303EEA1AD8A2999;
+  repository doc_audit reports exactly 17 gaps in this module; historical
+  generalization registries record the earlier source lease as integrated and
+  released; current board assigns no owner or build token for this path
+not yet validated: the claim is not implemented; no Lean, Lake, TeX, PDF, or
+  cache-mutating process is authorized or running on this branch
+requested integration or lease: advertise this ordinary one-source theorem
+  and comment-parity claim; after an immutable independently reviewed source
+  checkpoint, request one serialized build of +FabiusFunction.FabiusSaddleTail
+  and the smallest direct importer selected by the coordinator; request no
+  main-write or canonical-document lease
+conflicts / dependencies: the path is disjoint from every active board grant
+  and every frozen branch-only source artifact; only the coordinator may
+  advance main; the old Big-O theorem remains source-compatible
+next bounded step: commit and push this registry-only claim without force;
+  repeat the all-ref/name/path scan, then author exactly the new factorized
+  theorem, statement-preserving wrapper refactor, module sentence, and 17
+  declaration comments while independent agents audit proof orientation,
+  constants, filter hypotheses, documentation parity, and exact old-header
+  preservation
+```
