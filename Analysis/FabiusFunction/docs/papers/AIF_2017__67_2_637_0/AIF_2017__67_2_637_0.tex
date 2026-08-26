@@ -1,0 +1,2115 @@
+\documentclass[10pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage[version=4]{mhchem}
+\usepackage{stmaryrd}
+\usepackage{bbold}
+\usepackage{graphicx}
+\usepackage[export]{adjustbox}
+\graphicspath{ {./images/} }
+\usepackage{caption}
+\usepackage{hyperref}
+\hypersetup{colorlinks=true, linkcolor=blue, filecolor=magenta, urlcolor=cyan,}
+\urlstyle{same}
+
+\title{ON EVIL KRONECKER SEQUENCES AND LACUNARY TRIGONOMETRIC PRODUCTS }
+
+\author{by Christoph AISTLEITNER, Roswitha HOFER \& Gerhard LARCHER (*)}
+\date{}
+
+
+%New command to display footnote whose markers will always be hidden
+\let\svthefootnote\thefootnote
+\newcommand\blfootnotetext[1]{%
+  \let\thefootnote\relax\footnote{#1}%
+  \addtocounter{footnote}{-1}%
+  \let\thefootnote\svthefootnote%
+}
+
+%Overriding the \footnotetext command to hide the marker if its value is `0`
+\let\svfootnotetext\footnotetext
+\renewcommand\footnotetext[2][?]{%
+  \if\relax#1\relax%
+    \ifnum\value{footnote}=0\blfootnotetext{#2}\else\svfootnotetext{#2}\fi%
+  \else%
+    \if?#1\ifnum\value{footnote}=0\blfootnotetext{#2}\else\svfootnotetext{#2}\fi%
+    \else\svfootnotetext[#1]{#2}\fi%
+  \fi
+}
+
+\begin{document}
+\maketitle
+\captionsetup{singlelinecheck=false}
+
+
+\begin{abstract}
+An important result of Weyl states that for every sequence $\left(n_{k}\right)_{k \geqslant 1}$ of distinct positive integers the sequence of fractional parts of $\left(n_{k} \alpha\right)_{k \geqslant 1}$ is u.d. mod 1 for almost all $\alpha$. However, in this general case it is usually extremely difficult to measure the speed of convergence of the empirical distribution of $\left(\left\{n_{1} \alpha\right\}, \ldots,\left\{n_{N} \alpha\right\}\right)$ towards the uniform distribution. In this paper we investigate the case when $\left(n_{k}\right)_{k \geqslant 1}$ is the sequence of evil numbers, that is the sequence of non-negative integers having an even sum of digits in base 2. We utilize a connection with lacunary trigonometric products $\prod_{\ell=0}^{L}\left|\sin \pi 2^{\ell} \alpha\right|$, and by giving sharp metric estimates for such products we derive sharp metric estimates for exponential sums of $\left(n_{k} \alpha\right)_{k \geqslant 1}$ and for the discrepancy of $\left(\left\{n_{k} \alpha\right\}\right)_{k \geqslant 1}$. Furthermore, we provide some explicit examples of numbers $\alpha$ for which we can give estimates for the discrepancy of $\left(\left\{n_{k} \alpha\right\}\right)_{k \geqslant 1}$.\\
+RÉsumé. - Un résultat important de Weyl nous dit que pour chaque suite $\left(n_{k}\right)_{k \geqslant 1}$ de nombres entiers positifs différents la suite $\left\{n_{k} \alpha\right\}_{k \geqslant 1}$ est équidistribuée modulo 1 pour presque tous les réels $\alpha$. Dans ce cas, il est d'habitude extrêmement difficile de mesurer la vitesse de convergence de la distribution empirique vers l'équidistribution.\\
+Dans cet article, nous étudions le cas ou $\left(n_{k}\right)_{k \geqslant 1}$ est la suite des nombres entiers « méchants», donc la suite des nombres positifs la une somme de chiffres paire dans la base 2 . Nous relions ce probléme aux produits trigonométriques $\prod_{l=0}^{L}\left\|\sin \pi 2^{l} \alpha\right\|$ en donnant des estimations exactes pour de tels produits et nous obtenons des estimations exactes pour la discrépance de la suite $\left\{n_{k} \alpha\right\}_{k \geqslant 1}$.\\
+En plus, nous donnons des exemples concrets de réels $\alpha$ pour lesquels nous pouvons obtenir des estimations pour la discrépance de la suite $\left\{n_{k} \alpha\right\}_{k \geqslant 1}$.
+\end{abstract}
+
+\footnotetext{Keywords: evil numbers, Thue-Morse sequence, $(n \alpha)$-sequence, discrepancy, lacunary trigonometric products.\\
+Math. classification: 11B85, 11K38, 11B83, 11A63, 68R15.\\
+(*) The first and the third author are supported by the Project I 1751-N26 "Multiplicativity, Determinism, and Randomness", as well as by the Austrian Science Fund (FWF): Project F5507-N26, which is part of the Special Research Program "Quasi-Monte Carlo Methods: Theory and Applications". The second author is supported by the Austrian Science Fund (FWF): Project F5505-N26, which is part of the Special Research Program "Quasi-Monte Carlo Methods: Theory and Applications".
+}\section*{1. Introduction and statement of results}
+Throughout the rest of this paper, we let $s_{2}(n)$ denote the sum-of-digits function of $n$ in base 2, and we let $\left(n_{k}\right)_{k \geqslant 1}$ denote the sequence of nonnegative integers which have an even sum-of-digits function in base 2, sorted in increasing order. Furthermore, we write $\left(m_{k}\right)_{k \geqslant 1}$ for the sequences of those numbers which are not contained in $\left(n_{k}\right)_{k \geqslant 1}$, sorted in increasing order; thus $\left(m_{k}\right)_{k \geqslant 1}=(1,2,4,7,8,11, \ldots)$. The numbers $\left(n_{k}\right)_{k \geqslant 1}$ are called evil numbers, while the numbers $\left(m_{k}\right)_{k \geqslant 1}$ are called odious numbers. These sequences are connected to the well-known Thue-Morse sequence $\left(t_{n}\right)_{n \geqslant 0}=$ (0, 1, 1, 0, 1, 0, 0, 1, 1, 0, 0, 1, 0, 1, 1, 0, . .), a binary sequence which is also defined in terms of $s_{2}(n)$; more precisely, $t_{n}=1$ if $s_{2}(n)$ is odd and $t_{n}=0$ otherwise. The Thue-Morse sequence has many remarkable properties; for an extensive survey see [4]. In our notation we have $n \in\left(n_{k}\right)_{k \geqslant 1}$ if and only if $t_{n}=0$.
+
+In this paper we analyze exponential sums of the form $\sum_{k=1}^{N} e^{2 \pi i n_{k} \alpha}$ for reals $\alpha \in[0,1)$, and - what is intimately connected - products of the form $\prod_{\ell=0}^{L}\left|\sin \pi 2^{\ell} \alpha\right|$, as well as distribution properties of the sequence $\left(\left\{n_{k} \alpha\right\}\right)_{k \geqslant 1}$. To quantify the regularity of the distribution of a finite set of real numbers in [0, 1] we use the notion of the star-discrepancy $D_{N}^{*}$. For given numbers $x_{1}, \ldots, x_{N}$, their star-discrepancy is defined by
+
+$$
+D_{N}^{*}\left(x_{1}, \ldots, x_{N}\right)=\sup _{a \in[0,1]}\left|\frac{1}{N} \sum_{n=1}^{N} \mathbf{1}_{[0, a]}\left(x_{n}\right)-a\right| .
+$$
+
+An infinite sequence $\left(x_{n}\right)_{n \geqslant 1}$ whose discrepancy $D_{N}^{*}$ tends to zero as $N \rightarrow$ $\infty$ is called uniformly distributed modulo one (u.d. mod 1). Informally speaking, the star-discrepancy is a measure for the deviation between the uniform distribution on [0, 1] and the empirical distribution of a given point set; in probabilistic terminology this corresponds to the Kolmogorov-Smirnov statistic. Discrepancy theory is a rich subject, which has close links to number theory, probability theory, ergodic theory and numerical analysis. For more information on discrepancy theory, we refer to the standard monographs [12, 27].
+
+Sequences of the form $(\{n \alpha\})_{n \geqslant 1}$ are called Kronecker sequences. One of the fundamental results of discrepancy theory states that such a sequence is u.d. mod 1 if and only if $\alpha$ is irrational. It is also well-known that the discrepancy of such a sequence depends on Diophantine approximation\\
+properties of $\alpha$. More precisely, we have
+
+$$
+\Omega\left(\sum_{n=1}^{m(N)} a_{n}\right)=N D_{N}^{*}(\{\alpha\}, \ldots,\{N \alpha\})=\mathcal{O}\left(\sum_{n=1}^{m(N)} a_{n}\right)
+$$
+
+as $N \rightarrow \infty$, where $a_{1}, a_{2}, a_{3}, \ldots$ are the continued fraction coefficients of $\alpha$ and where $m(N)$ is defined by $q_{m(N)-1}<N \leqslant q_{m(N)}$ with $q_{1}<q_{2}<q_{3}<$ ... denoting the best approximation denominators of $\alpha$ (see for example [12, Corollary 1.64]). Hence
+
+$$
+N D_{N}^{*}(\{\alpha\}, \ldots,\{N \alpha\})=\mathcal{O}(\log N) \quad \text { as } N \rightarrow \infty
+$$
+
+if $\alpha$ has bounded continued fraction coefficients, and, as a consequence of metric results of Khintchine [26], for every $\varepsilon>0$ we have
+
+$$
+N D_{N}^{*}(\{\alpha\}, \ldots,\{N \alpha\})=\mathcal{O}\left(\frac{\left.(\log N)(\log \log N)^{1+\varepsilon}\right)}{N}\right) \quad \text { as } N \rightarrow \infty
+$$
+
+for almost all $\alpha \in \mathbb{R}$.\\[0pt]
+It is known (see [32]) and it will be re-proved implicitly in this paper (see Section 6) that the sequence $\left(\left\{n_{k} \alpha\right\}\right)_{k \geqslant 1}$, which we will call the evil Kronecker sequence, is also uniformly distributed in the unit interval if and only if $\alpha$ is irrational. However, it turns out to be a very difficult task to give sharp estimates for the discrepancy of this sequence for concrete values of $\alpha$. As we will see, the discrepancy of an evil Kronecker sequence $\left(\left\{n_{k} \alpha\right\}\right)_{k \geqslant 1}$ depends on Diophantine approximation properties and properties of the digit representation of $\alpha$ in base 2. Until now there are only few (nontrivial) cases of $\alpha$ where we have enough information about both of these aspects.
+
+Exponential sums and discrepancy theory are intimately connected. One such connection is Weyl's criterion, two others are the Erdős-Turán inequality and Koksma's inequality. The Erdős-Turán inequality (see for example [12, 27, 38]) states that for points $x_{1}, \ldots, x_{N} \in[0,1]$ we have
+
+
+\begin{equation*}
+D_{N}^{*}\left(x_{1}, \ldots, x_{N}\right) \leqslant \frac{1}{H+1}+\sum_{h=1}^{H} \frac{1}{h}\left|\frac{1}{N} \sum_{k=1}^{N} e^{2 \pi i h x_{k}}\right|, \tag{1.1}
+\end{equation*}
+
+
+where $H$ is an arbitrary positive integer. Koksma's inequality says that
+
+
+\begin{equation*}
+\left|\int_{0}^{1} f(x) d x-\frac{1}{N} \sum_{k=1}^{N} f\left(x_{k}\right)\right| \leqslant\left(\operatorname{Var}_{[0,1]} f\right) D_{N}^{*}\left(x_{1}, \ldots, x_{N}\right), \tag{1.2}
+\end{equation*}
+
+
+for any function $f$ having bounded variation $\operatorname{Var}_{[0,1]} f$ on [0, 1]. When combined, the Erdős-Turán inequality and Koksma's inequality show that exponential sums can be used to obtain both upper and lower bounds for the discrepancy.
+
+As an explicit lower bound from (1.2) we get (compare for example [27]):
+
+
+\begin{equation*}
+D_{N}^{*}\left(x_{1}, \ldots, x_{N}\right) \geqslant \frac{1}{4 H}\left|\frac{1}{N} \sum_{k=1}^{N} e^{2 \pi i H x_{k}}\right|, \tag{1.3}
+\end{equation*}
+
+
+where $H$ is an arbitrary positive integer. Koksma's inequality and its multidimensional generalization are also the cornerstone of the application of low-discrepancy point sets in numerical integration (so-called Quasi-Monte Carlo integration; see for example [11, 34]).
+
+Consequently, in this paper we will mainly be concerned with the problem of investigating exponential sums of the form $\sum_{k=1}^{N} e^{2 \pi i n_{k} \alpha}$. It turns out that this investigation relies on studying lacunary products of the form $\prod_{\ell=0}^{L}\left|\sin \pi 2^{\ell} \alpha\right|$. Furthermore we study the discrepancy of $\left(\left\{n_{k} \alpha\right\}\right)_{k \geqslant 1}$. For all three topics we obtain sharp metric results. The investigation of the lower bound for the discrepancy leads to a challenging open problem in Diophantine approximation. Finally, we consider two concrete non-trivial special examples for $\alpha$.
+
+The main results of this paper are the following. (Throughout the rest of this paper, we write $\exp (x)$ for $e^{x}$.)
+
+Theorem 1.1. - Let $\left(n_{k}\right)_{k \geqslant 1}$ be the sequence of evil numbers, sorted in increasing order, and let $h \neq 0$ be an integer. Let $\varepsilon>0$ be arbitrary. Then for almost all $\alpha \in(0,1)$ we have
+
+
+\begin{equation*}
+\left|\sum_{k=1}^{N} e^{2 \pi i h n_{k} \alpha}\right| \leqslant \exp \left(\left(\frac{\pi}{\sqrt{\log 2}}+\varepsilon\right)(\log N)^{1 / 2}(\log \log \log N)^{1 / 2}\right) \tag{1.4}
+\end{equation*}
+
+
+for all $N \geqslant N_{0}(\alpha, h, \varepsilon)$, and
+
+
+\begin{equation*}
+\left|\sum_{k=1}^{N} e^{2 \pi i h n_{k} \alpha}\right| \geqslant \exp \left(\left(\frac{\pi}{\sqrt{\log 2}}-\varepsilon\right)(\log N)^{1 / 2}(\log \log \log N)^{1 / 2}\right) \tag{1.5}
+\end{equation*}
+
+
+for infinitely many $N$.\\
+Note that the exponential function in (1.4) grows more slowly than any (fixed) power of $N$; but faster than any (fixed) power of $\log N$. In other words, as a consequence of Theorem 1.1 for every $\varepsilon>0$ and every $A>0$\\
+we have
+
+$$
+\Omega\left((\log N)^{A}\right)=\left|\sum_{k=1}^{N} e^{2 \pi i h n_{k} \alpha}\right|=\mathcal{O}\left(N^{\varepsilon}\right) \quad \text { as } N \rightarrow \infty,
+$$
+
+for almost all $\alpha$.\\
+It will turn out that Theorem 1.1 is an almost immediate consequence of the following result on lacunary trigonometric products.
+
+Theorem 1.2. - Let $\varepsilon>0$ be arbitrary. Then for almost all $\alpha \in(0,1)$ we have
+
+
+\begin{equation*}
+\prod_{\ell=0}^{L}\left|2 \sin \pi 2^{\ell} \alpha\right| \leqslant \exp ((\pi+\varepsilon) \sqrt{L \log \log L}) \tag{1.6}
+\end{equation*}
+
+
+for all $L \geqslant L_{0}(\alpha, \varepsilon)$, and
+
+
+\begin{equation*}
+\prod_{\ell=0}^{L}\left|2 \sin \pi 2^{\ell} \alpha\right| \geqslant \exp ((\pi-\varepsilon) \sqrt{L \log \log L}) \tag{1.7}
+\end{equation*}
+
+
+for infinitely many $L$.\\
+This result is a consequence of a more general result, Theorem 2.5, which will be formulated later in Section 2 since it needs some technical prerequisites.
+
+From the lower bound in Theorem 1.1 and formula (1.3) we immediately obtain a metric lower bound for the discrepancy $D_{N}^{*}\left(\left\{n_{1} \alpha\right\}, \ldots,\left\{n_{N} \alpha\right\}\right)$ of this sequence. However in Theorem 1.3 it turns out that the true metric order of the discrepancy $D_{N}^{*}\left(\left\{n_{1} \alpha\right\}, \ldots,\left\{n_{N} \alpha\right\}\right)$ is much larger.
+
+Theorem 1.3. - Let $\left(n_{k}\right)_{k \geqslant 1}$ be the sequence of evil numbers, sorted in increasing order. Let $\varepsilon>0$ be arbitrary. Then for almost all $\alpha \in(0,1)$ we have
+
+
+\begin{equation*}
+N D_{N}^{*}\left(\left\{n_{1} \alpha\right\}, \ldots,\left\{n_{N} \alpha\right\}\right)=\mathcal{O}\left(N^{1+\frac{\log \lambda}{\log 2}+\varepsilon}\right) \quad \text { as } N \rightarrow \infty, \tag{1.8}
+\end{equation*}
+
+
+and
+
+
+\begin{equation*}
+N D_{N}^{*}\left(\left\{n_{1} \alpha\right\}, \ldots,\left\{n_{N} \alpha\right\}\right) \geqslant\left(N^{1+\frac{\log \lambda}{\log 2}-\varepsilon}\right) \quad \text { as } N \rightarrow \infty \tag{1.9}
+\end{equation*}
+
+
+for infinitely many $N$. Here $\lambda$ is a real constant defined below for which it is known that
+
+
+\begin{equation*}
+0.66130<\lambda<0.66135 . \tag{1.10}
+\end{equation*}
+
+
+The number $\lambda$ in Theorem 1.3 appears in a result of Fouvry and Mauduit [18], which states that
+
+
+\begin{equation*}
+I_{1}(L):=\int_{0}^{1} \prod_{\ell=0}^{L-1}\left|\sin \pi 2^{\ell} \alpha\right| d \alpha=\kappa \lambda^{L}(1+o(1)) \tag{1.11}
+\end{equation*}
+
+
+for $L \rightarrow \infty$, with constants $\kappa>0$ and $\lambda$ with $0.654336<\lambda<0.663197$. In Lemma 5.1 in Section 5 we will improve the estimate for $\lambda$ to (1.10). Note that as a consequence of (1.8) and (1.10) we have
+
+$$
+N D_{N}^{*}\left(\left\{n_{1} \alpha\right\}, \ldots,\left\{n_{N} \alpha\right\}\right)=\mathcal{O}\left(N^{0.404}\right) \quad \text { as } N \rightarrow \infty,
+$$
+
+for almost all $\alpha$. This should be compared with the general metric discrepancy bound
+
+
+\begin{equation*}
+N D_{N}^{*}\left(\left\{b_{1} \alpha\right\}, \ldots,\left\{b_{N} \alpha\right\}\right)=\mathcal{O}\left(\sqrt{N}(\log N)^{3 / 2+\varepsilon}\right) \quad \text { as } N \rightarrow \infty \tag{1.12}
+\end{equation*}
+
+
+for almost all $\alpha$, which holds for every strictly increasing sequence of positive integers $\left(b_{k}\right)_{k \geqslant 1}$ (see [6]). It is known that in the general setting the upper bound given by (1.12) is optimal (up to powers of logarithms; see [8]). Thus the upper bound given in Theorem 1.3 is significantly stronger than the general metric discrepancy bound given by (1.12). Furthermore we want to emphasize the fact that the precision of Theorem 1.3 is quite remarkable, in view of the fact that good bounds for the typical order of the discrepancy are only known for a very small number of classes of parametric sequences.
+
+One of the main objectives of Theorems 1.1 and 1.3 is to examine the degree of "pseudorandomness" of the parametric sequences $\left(\left\{n_{k} \alpha\right\}\right)_{k \geqslant 1}$, and consequently also of the sequence of evil numbers and the Thue-Morse sequence. By classical probability theory, for a sequence $X_{1}, X_{2}, \ldots$ of independent, identically distributed (i.i.d.) random variables having uniform distribution on $[0,1]$ we have the law of the iterated logarithm (LIL)
+
+
+\begin{equation*}
+\limsup _{N \rightarrow \infty} \frac{\left|\sum_{k=1}^{N} e^{2 \pi i h X_{k}}\right|}{\sqrt{2 N \log \log N}}=\frac{1}{\sqrt{2}} \quad \text { almost surely (a.s.) } \tag{1.13}
+\end{equation*}
+
+
+and the Chung-Smirnov LIL for the Kolmogorov-Smirnov statistic (that is, for the discrepancy)
+
+
+\begin{equation*}
+\limsup _{N \rightarrow \infty} \frac{N D_{N}^{*}\left(X_{1}, \ldots, X_{N}\right)}{\sqrt{2 N \log \log N}}=\frac{1}{2} \quad \text { a.s.; } \tag{1.14}
+\end{equation*}
+
+
+in other words, for a random sequence of points exponential sums are typically of asymptotic order roughly $\sqrt{N}$, and the discrepancy is typically also of the corresponding asymptotic order. Furthermore, similar results usually hold for exponential sums of $\left(r_{k} \alpha\right)_{k \geqslant 1}$ and for the discrepancy of $\left(\left\{r_{k} \alpha\right\}\right)_{k \geqslant 1}$ when $\left(r_{k}\right)_{k \geqslant 1}$ is a "random" increasing sequence of integers. In the simplest\\
+model, when for every number $n \geqslant 1$ we decide independently and with fair probability whether it should be contained in $\left(r_{k}\right)_{k \geqslant 1}$ or not, then (1.13) holds almost surely (with respect to the probability space over which the $r_{k}$ 's are defined) for almost all $\alpha$. In a similar fashion both results (1.13) and (1.14) essentially remain valid when the random sequence $\left(r_{k}\right)_{k \geqslant 1}$ is constructed in a more complicated fashion (see for example [19, 20, 36]).
+
+Thus Theorem 1.1 and Theorem 1.3 show that almost surely the asymptotic order of exponential sums and of the discrepancy of $\left(\left\{n_{k} \alpha\right\}\right)_{k \geqslant 1}$ for the evil numbers $\left(n_{k}\right)_{k \geqslant 1}$ does not match the corresponding order in the random case, by this means showing an interesting deviation from "pseudorandom" behavior of the sequence $\left(n_{k}\right)_{k \geqslant 1}$ itself. On the other hand, the behavior of $\left(\left\{n_{k} \alpha\right\}\right)_{k \geqslant 1}$ also does not match the behavior of $n \alpha$-sequences for typical values of $\alpha$. More precisely, as already mentioned above, as a consequence of metric results of Khintchine [26] and due to the fact that the discrepancy of $(\{n \alpha\})_{n \geqslant 1}$ can be expressed in terms of the continued fraction expansion of $\alpha$, we have
+
+
+\begin{equation*}
+D_{N}^{*}(\{\alpha\},\{2 \alpha\}, \ldots,\{N \alpha\})=\mathcal{O}\left(\frac{\left.(\log N)(\log \log N)^{1+\varepsilon}\right)}{N}\right) \tag{1.15}
+\end{equation*}
+
+
+as $N \rightarrow \infty$ for almost all $\alpha$. Consequently, by Theorem 1.3, the typical asymptotic order of the discrepancy of parametric sequences $\left(\left\{n_{k} \alpha\right\}\right)_{k \geqslant 1}$ is significantly larger than that of typical $n \alpha$-sequences, and by Theorem 1.1 this is also true for exponential sums. Thus, with respect to exponential sums as well as with respect to the discrepancy, parametric sequences $\left(n_{k} \alpha\right)_{k \geqslant 1}$ generated by the evil numbers $\left(n_{k}\right)_{k \geqslant 1}$ occupy a position somewhere between $n \alpha$-sequences and truly random sequences. We also want to comment on the fact that there is a huge difference between the order of the exponential sums in Theorem 1.1 and the order of the discrepancy in Theorem 1.3. This is a very surprising phenomenon, which is related to problems from metric Diophantine approximation (which are implicit in the proof of Theorem 1.3, and are briefly discussed in the concluding Section 7).
+
+As already mentioned earlier, it is rather difficult to give the right order for the exponential sums in Theorem 1.1, the trigonometric products in Theorem 1.2, and the discrepancy of $\left(\left\{n_{k} \alpha\right\}\right)_{k \geqslant 1}$ for concrete non-trivial examples of $\alpha$. What do we mean by a "non-trivial" example? In the first part of Section 6 we will point out the following facts:
+
+\begin{itemize}
+  \item[-] The order of the discrepancy of the pure Kronecker sequence $(\{n \alpha\})_{n \geqslant 1}$ is never significantly larger than the order of the discrepancy of the evil Kronecker sequences $\left(\left\{n_{k} \alpha\right\}\right)_{k \geqslant 1}$.
+\end{itemize}
+
+\begin{itemize}
+  \item[-] If the order of the discrepancy $D_{N}^{*}$ of the pure Kronecker sequence satisfies $N D_{N}^{*}=\Omega\left(N^{\frac{\log 3}{\log 4}}\right)$ then the discrepancy $\widetilde{D}_{N}^{*}$ of the evil Kronecker sequences is essentially of the same order as the discrepancy of the pure Kronecker sequence.
+  \item[-] If the order of the discrepancy $D_{N}^{*}$ of the pure Kronecker sequence satisfies $N D_{N}^{*}=\mathcal{O}\left(N^{\frac{\log 3}{\log 4}}\right)$ then $\widetilde{D}_{N}^{*}$ satisfies $N \widetilde{D}_{N}^{*}=\mathcal{O}\left(N^{\frac{\log 3}{\log 4}+\varepsilon}\right)$.
+\end{itemize}
+
+Thus an "interesting non-trivial" example means for us an example where $\alpha$ is a "natural" real number such as $\sqrt{2}, e, \pi$ (it seems to us that there is no chance to handle these numbers since we do not have enough information on their digit representation), or where $\alpha$ is such that $\widetilde{D}_{N}^{*}$ and hence $D_{N}^{*}$ is small (say $N \widetilde{D}_{N}^{*}=\mathcal{O}\left(N^{\varepsilon}\right)$ - however we cannot give such examples) or where the quality of the distribution of the sequences $(\{n \alpha\})_{n \geqslant 1}$ and $\left(\left\{n_{k} \alpha\right\}\right)_{k \geqslant 1}$ differ strongly. Two such examples are given in Theorem 1.4. Especially in the first example the difference between $D_{N}^{*}$ and $\widetilde{D}_{N}^{*}$ is of the maximal possible form.
+
+Theorem 1.4.
+
+\begin{itemize}
+  \item[(a)] Let $\alpha=\frac{2}{3}+\sum_{k=1}^{\infty} \frac{1}{4^{2^{k}}}$. Then for the star-discrepancy $D_{N}^{*}$ of the pure Kronecker sequence $(\{n \alpha\})_{n \geqslant 1}$ we have
+$$
+N D_{N}^{*}=\mathcal{O}(\log N),
+$$
+whereas for the star-discrepancy $\widetilde{D}_{N}^{*}$ of the evil Kronecker sequence $\left(\left\{n_{k} \alpha\right\}\right)_{k \geqslant 1}$ we have
+$$
+\begin{aligned}
+N \widetilde{D}_{N}^{*} & =\mathcal{O}\left(N^{\frac{\log 3}{\log 4}+\varepsilon}\right) \\
+\text { and } N \widetilde{D}_{N}^{*} & =\Omega\left(N^{\frac{\log 3}{\log 4}-\varepsilon}\right)
+\end{aligned}
+$$
+for every $\varepsilon>0$.
+  \item[(b)] Let $\gamma=0.1001011001101001 \ldots$ be the Thue-Morse real in base 2. Then for the star-discrepancy $D_{N}^{*}$ of the pure Kronecker sequence $(\{n \gamma\})_{n \geqslant 1}$ we have
+$$
+N D_{N}^{*}=\mathcal{O}\left(N^{\varepsilon}\right) \quad \text { for all } \varepsilon>0,
+$$
+whereas for the star-discrepancy $\widetilde{D}_{N}^{*}$ of the evil Kronecker sequence $\left(\left\{n_{k} \gamma\right\}\right)_{k \geqslant 1}$ we have
+$$
+N \widetilde{D}_{N}^{*}=\Omega\left(N^{0.6178775}\right) .
+$$
+\end{itemize}
+
+We would like to point out here that there is an intimate connection between distribution properties of $\left(\left\{n_{k} \alpha\right\}\right)_{k \geqslant 1}$ and of certain types of hybrid\\[0pt]
+sequences. For some information on the analysis of hybrid sequences see for example [24], [25] and [28].
+
+As already mentioned, the proofs of Theorems 1.1 and 1.3 are based on a connection between exponential sums of $\left(n_{k} \alpha\right)_{k \geqslant 1}$ and the lacunary trigonometric products studied in Theorem 1.2. We will establish this connection in the following lines, and exploit it in Section 2 in more detail. For the time being, we assume that $N$ is of the form $2^{L}$ for some positive integer $L$.
+
+To analyze the exponential sums appearing in Theorem 1.1 and on the right-hand side of (1.1), we define
+
+$$
+S_{h}(N)=\sum_{k=1}^{N} e^{2 \pi i h n_{k} \alpha} .
+$$
+
+By the assumption that $N=2^{L}$ we have
+
+$$
+\begin{aligned}
+S_{h}(N) & =\sum_{n=0}^{2 N-1} \frac{1}{2} \sum_{\delta \in\{0,1\}} \exp \left(2 \pi i \delta \frac{s_{2}(n)}{2}\right) \exp (2 \pi i h n \alpha) \\
+& =\frac{1}{2} \sum_{\delta \in\{0,1\}} \sum_{\left(\eta_{0}, \ldots, \eta_{L}\right) \in\{0,1\}^{L+1}} \exp \left(2 \pi i \sum_{\ell=0}^{L}\left(\delta \frac{\eta_{\ell}}{2}+\eta_{\ell} h 2^{\ell} \alpha\right)\right) \\
+& =\frac{1}{2} \sum_{\delta \in\{0,1\}} \prod_{\ell=0}^{L}\left(\sum_{\eta_{\ell} \in\{0,1\}} \exp \left(2 \pi i \eta_{\ell}\left(\frac{\delta}{2}+h 2^{\ell} \alpha\right)\right)\right),
+\end{aligned}
+$$
+
+which yields
+
+
+\begin{equation*}
+\left|S_{h}(N)\right| \leqslant \frac{1}{2} \prod_{\ell=0}^{L}\left|2 \sin \pi h 2^{\ell} \alpha\right|+\frac{1}{2} \prod_{\ell=0}^{L}\left|2 \cos \pi h 2^{\ell} \alpha\right| \tag{1.16}
+\end{equation*}
+
+
+and
+
+
+\begin{equation*}
+\left|S_{h}(N)\right| \geqslant\left|\frac{1}{2} \prod_{\ell=0}^{L}\right| 2 \sin \pi h 2^{\ell} \alpha\left|-\frac{1}{2} \prod_{\ell=0}^{L}\right| 2 \cos \pi h 2^{\ell} \alpha| | . \tag{1.17}
+\end{equation*}
+
+
+A similar analysis for the sequence $\left(m_{k}\right)_{k \geqslant 1}$ shows that
+
+
+\begin{equation*}
+\left|\sum_{k=1}^{N} e^{2 \pi i h m_{k} \alpha}\right| \leqslant \frac{1}{2} \prod_{\ell=0}^{L}\left|2 \sin \pi h 2^{\ell} \alpha\right|+\frac{1}{2} \prod_{\ell=0}^{L}\left|2 \cos \pi h 2^{\ell} \alpha\right|, \tag{1.18}
+\end{equation*}
+
+
+where again we assume that $N=2^{L}$.\\
+By taking logarithms, we can convert the trigonometric products appearing in (1.16) and (1.18) into so-called lacunary sums; these sums have been\\
+intensively investigated in Fourier analysis, and a wide range of mathematical methods is available for studying them (see the following Section 2). Thus the theory of lacunary sums allows us to obtain an estimate for the size of the exponential sums $S_{h}(N)$ in the case when $N$ is a power of 2; however, it will turn out that we may also drop the condition that $N$ is an integral power of 2 by applying a dyadic decomposition method.
+
+Note that by (1.15) and by the fact that the evil numbers have asymptotic density 1/2 it is easy to show that all the conclusions of Theorem 1.1 and Theorem 1.3 remain valid if we replace the sequence $\left(n_{k}\right)_{k \geqslant 1}$ by the sequence of odious numbers $\left(m_{k}\right)_{k \geqslant 1}$.
+
+The outline of the remaining part of this paper is as follows. In Section 2 we explain the main principles of the theory of lacunary (trigonometric) sums, and state several lemmas as well as Theorem 2.5, which we require for the proofs of Theorem 1.1 and Theorem 1.2. In Section 3 we give the proofs for the results stated in Section 2, and in Section 4 we give the proofs of Theorem 1.1 and Theorem 1.2. In Section 5, we prove Theorem 1.3, and in Section 6 we prove Theorem 1.4. Finally, in Section 7, we briefly mention a problem from metric Diophantine approximation, which was posed by LeVeque in [29] and is related to the proof of Theorem 1.3.
+
+\section*{2. Probabilistic results for lacunary trigonometric products}
+It is a well-known fact that so-called lacunary systems of trigonometric functions, that is, systems of the form $\left(\cos 2 \pi s_{\ell} \alpha\right)_{\ell \geqslant 1}$ or $\left(\sin 2 \pi s_{\ell} \alpha\right)_{\ell \geqslant 1}$ for rapidly increasing $\left(s_{\ell}\right)_{\ell \geqslant 1}$, exhibit properties which are typical of sequences of independent random variables. This similarity includes the central limit theorem, the law of the iterated logarithm, and Kolmogorov's "Three series" convergence theorem. The situation is particularly well understood when $\left(s_{\ell}\right)_{\ell \geqslant 1}$ satisfies the Hadamard gap condition
+
+
+\begin{equation*}
+\frac{s_{\ell+1}}{s_{\ell}} \geqslant q>1, \quad \ell \geqslant 1 . \tag{2.1}
+\end{equation*}
+
+
+To a certain degree this almost-independence property extends to systems $\left(f\left(s_{\ell} \alpha\right)\right)_{\ell \geqslant 1}$ for a function $f$ which is periodic with period one and satisfies certain regularity properties; however, in this case the number-theoretic properties of $\left(s_{\ell}\right)_{\ell \geqslant 1}$ play an important role, and the almost-independent behavior generally fails when (2.1) is relaxed to a weaker growth condition. The case which has been investigated in the greatest detail is that when $f$ has bounded variation on [0, 1], since this case is (by Koksma's\\
+inequality) closely connected to the discrepancy of the sequence of fractional parts $\left(\left\{s_{\ell} \alpha\right\}\right)_{\ell \geqslant 1}$, which in turn can be interpreted as the (one-sided) Kolmogorov-Smirnov statistic adapted to the case of the uniform measure on [0, 1].
+
+To estimate the trigonometric products appearing in (1.16) and (1.18) we will use the equalities
+
+
+\begin{equation*}
+\prod_{\ell=0}^{L-1}\left|2 \sin \pi h 2^{\ell} \alpha\right|=\exp \left(\sum_{\ell=0}^{L-1} \log \left|2 \sin \pi h 2^{\ell} \alpha\right|\right) \tag{2.2}
+\end{equation*}
+
+
+and
+
+
+\begin{equation*}
+\prod_{\ell=0}^{L-1}\left|2 \cos \pi h 2^{\ell} \alpha\right|=\exp \left(\sum_{\ell=0}^{L-1} \log \left|2 \cos \pi h 2^{\ell} \alpha\right|\right), \tag{2.3}
+\end{equation*}
+
+
+respectively, to transform the problem of lacunary trigonometric products into a problem concerning lacunary sums. However, the functions
+
+
+\begin{equation*}
+f_{1}(\alpha):=\log |2 \sin \pi \alpha| \tag{2.4}
+\end{equation*}
+
+
+and
+
+
+\begin{equation*}
+f_{2}(\alpha):=\log |2 \cos \pi \alpha| \tag{2.5}
+\end{equation*}
+
+
+do not have bounded variation in [0, 1] (see the figures below). Consequently, the known results are not applicable in this situation, and we have to adopt the proof techniques in such a way that they can handle this kind of problem. ${ }^{(1)}$
+
+\begin{figure}[h]
+\begin{center}
+  \includegraphics[alt={},max width=\textwidth]{24a36c64-c0d9-4cc2-a5fb-86cd33f09837-11_318_1069_1407_242}
+\captionsetup{labelformat=empty}
+\caption{Figure 2.1. The functions $f_{1}$ (left) and $f_{2}$ (right).}
+\end{center}
+\end{figure}
+
+\footnotetext{${ }^{(1)}$ There exist a few results concerning lacunary series when $f$ is neither required to have bounded variation, nor to be Lipschitz- or Hölder-continuous, nor to have a modulus of continuity of a certain regularity; see for example [31]. However, for these results the growth requirements for $\left(s_{\ell}\right)_{\ell \geqslant 1}$ are much stronger than (2.1), which means that they are not applicable in our case, since by (2.2) and (2.3) we have to deal with lacunary sequences growing exactly with the speed presumed in (2.1), and not faster.
+}In the following we will assume that $f$ is a measurable real function satisfying
+
+
+\begin{equation*}
+f(\alpha+1)=f(\alpha), \quad \int_{0}^{1} f(\alpha) d \alpha=0, \quad \int_{0}^{1} f(\alpha)^{2} d \alpha<\infty \tag{2.6}
+\end{equation*}
+
+
+and that $\left(s_{\ell}\right)_{\ell \geqslant 1}$ is a sequence satisfying (2.1). We write
+
+$$
+f(\alpha) \sim \sum_{j=1}^{\infty} a_{j} \cos 2 \pi j \alpha+b_{j} \sin 2 \pi j \alpha
+$$
+
+for the Fourier series of $f$, and we will assume that the Fourier coefficients of $f$ satisfy
+
+
+\begin{equation*}
+\left|a_{j}\right| \leqslant \frac{1}{j}, \quad\left|b_{j}\right| \leqslant \frac{1}{j}, \quad \text { for } j \geqslant 1 . \tag{2.7}
+\end{equation*}
+
+
+The inequalities in line (2.7) appear frequently in the theory of lacunary series, since the upper bound stated there describes precisely (up to multiplication with a constant) the maximal asymptotic order of the Fourier coefficients of a function of bounded variation (see for example [41, p. 48]). However, even if the function is not of bounded variation the estimates in (2.7) may still be true; this can be seen by the fact that for the (unbounded) functions $f_{1}$ and $f_{2}$ from lines (2.4) and (2.5), respectively, we have
+
+$$
+f_{1}(\alpha) \sim \sum_{j=1}^{\infty} \frac{-1}{j} \cos 2 \pi j \alpha
+$$
+
+and
+
+$$
+f_{2}(\alpha) \sim \sum_{j=1}^{\infty} \frac{(-1)^{j+1}}{j} \cos 2 \pi j \alpha .
+$$
+
+By the way, we note that both $f_{1}$ and $f_{2}$ are even functions, and that both of them satisfy (2.6).
+
+Throughout the remaining part of this paper, we will write $\mathbb{P}$ for the Lebesgue measure on the unit interval. Note that the unit interval, equipped with Borel sets and Lebesgue measure, is a probability space, and that accordingly every measurable function on [0, 1] can be seen as a random variable over this probability space. We also write $\|\cdot\|_{2}$ for the $L^{2}(0,1)$ norm and $\|\cdot\|_{\infty}$ for the supremum norm of a function, respectively.
+
+The main technical tool in this section is the following exponential inequality (Lemma 2.1). Together with the subsequent lemmas it will allow us to give an upper bound for the measure of those $\alpha$ for which (2.2) and (2.3) are large (stated in Lemma 2.4). We state Lemmas 2.1-2.4 in a slightly more general form than necessary for the proofs of Theorem 1.1\\
+and 1.2, and we will use them to prove an additional new theorem, namely Theorem 2.5 below.
+
+Lemma 2.1. - Assume that $f$ is an even measurable function satisfying (2.6), whose Fourier coefficients satisfy (2.7). Furthermore, let $\left(s_{\ell}\right)_{\ell \geqslant 1}$ be a sequence of positive integers satisfying (2.1) for some number $q>1$. Then there exists a number $L_{0}=L_{0}(q)$, such that the following holds. Let $L \geqslant L_{0}$ be given, and write $p(\alpha)$ for the $L^{8}$-th partial sum of the Fourier series of $f$. Then for all
+
+
+\begin{equation*}
+\lambda \in\left[0, L^{-1 / 9}\right] \tag{2.8}
+\end{equation*}
+
+
+we have
+
+$$
+\int_{0}^{1} \exp \left(\lambda \sum_{\ell=1}^{L} p\left(s_{\ell} \alpha\right)\right) d \alpha \leqslant \exp \left(\frac{2 \lambda^{2} \pi^{2} L}{3}\right)
+$$
+
+and
+
+$$
+\int_{0}^{1} \exp \left(\lambda \sum_{\ell=1}^{L} p\left(s_{\ell} \alpha\right)\right) d \alpha \leqslant \exp \left(12 \lambda^{2} \frac{\sqrt{q}}{\sqrt{q}-1}\|p\|_{2}^{1 / 2} L\right) .
+$$
+
+The same two conclusions hold if $f$ is an odd function instead of an even function.
+
+We emphasize the fact that the number $L_{0}$ in the statement of Lemma 2.1 depends only on the growth parameter $q$; it does not depend on the function $f$ or the sequence $\left(s_{\ell}\right)_{\ell \geqslant 1}$. The same will be true for the numbers $L_{0}(q)$ in Lemmas 2.2 and 2.4 below.
+
+From Lemma 2.1 we will deduce the following Lemma 2.2, which is a large-deviation bound for the maximal partial sum of a lacunary sums.
+
+Lemma 2.2. - Let $f$ and $\left(s_{\ell}\right)_{\ell \geqslant 1}$ be as in Lemma 2.1. Then there exists a number $L_{0}=L_{0}(q)$, such that the following holds. Let $L \geqslant L_{0}$ be given, and assume that $L$ is an integral power of 2 . Write $p(\alpha)$ for the $L^{8}$-th partial sum of the Fourier series of $f$. Then we have
+
+$$
+\mathbb{P}\left(\alpha \in(0,1): \max _{1 \leqslant M \leqslant L}\left|\sum_{\ell=1}^{M} p\left(s_{\ell} \alpha\right)\right|>\frac{29 q}{q-1} \sqrt{L \log \log L}\right) \leqslant \frac{48}{(\log L)^{1.4}}
+$$
+
+and, under the additional assumption that $\|p\|_{2}^{1 / 4} \geqslant L^{-1 / 100}$, we also have
+
+$$
+\begin{array}{r}
+\mathbb{P}\left(\alpha \in(0,1): \max _{1 \leqslant M \leqslant L}\left|\sum_{\ell=1}^{M} p\left(s_{\ell} \alpha\right)\right|>43\|p\|_{2}^{1 / 4} \frac{\sqrt{q}}{\sqrt{q}-1} \sqrt{L \log \log L}+\sqrt{L}\right) \\
+\leqslant \frac{45}{(\log L)^{2}} .
+\end{array}
+$$
+
+The same two conclusions hold if $f$ is an odd function instead of an even function.
+
+Lemma 2.3. - Let $f$ and $\left(s_{\ell}\right)_{\ell \geqslant 1}$ be as in Lemma 2.1. Let $L$ be given, and write $r(\alpha)$ for the remainder term of the $L^{8}$-th partial sum of the Fourier series of $f$. Then we have
+
+$$
+\int_{0}^{1}\left(\max _{1 \leqslant M \leqslant L}\left|\sum_{\ell=1}^{M} r\left(s_{\ell} \alpha\right)\right|\right)^{2} d \alpha \leqslant \frac{4}{L^{4}}
+$$
+
+From Lemmas 2.2 and 2.3 we will deduce the following Lemma 2.4.\\
+Lemma 2.4. - Let $f$ and $\left(s_{\ell}\right)_{\ell \geqslant 1}$ be as in Lemma 2.1. Then there exists a number $L_{0}=L_{0}(q)$, such that the following holds. Let $L \geqslant L_{0}$ be given, and assume that $L$ is an integral power of 2 . Then we have
+
+$$
+\mathbb{P}\left(\alpha \in(0,1): \max _{1 \leqslant M \leqslant L}\left|\sum_{\ell=1}^{M} f\left(s_{\ell} \alpha\right)\right|>\left(\frac{30 q}{q-1}\right) \sqrt{L \log \log L}\right) \leqslant \frac{49}{(\log L)^{1.4}}
+$$
+
+and, under the additional assumption that $\|p\|_{2}^{1 / 4} \geqslant L^{-1 / 100}$, we also have
+
+$$
+\begin{array}{r}
+\mathbb{P}\left(\alpha \in(0,1): \max _{1 \leqslant M \leqslant L}\left|\sum_{\ell=1}^{M} p\left(s_{\ell} \alpha\right)\right|>43\|p\|_{2}^{1 / 4} \frac{\sqrt{q}}{\sqrt{q}-1} \sqrt{L \log \log L}+2 \sqrt{L}\right) \\
+\leqslant \frac{46}{(\log L)^{2}} .
+\end{array}
+$$
+
+The same two conclusions hold if $f$ is an odd function instead of an even function.
+
+As a consequence of Lemma 2.4 we obtain the following theorem, which is a bounded law of the iterated logarithm and is of some interest in its own right. As far as we know, this is the first law of the iterated logarithm for Hadamard lacunary function series which can be applied to a class of unbounded functions $f$.
+
+Theorem 2.5. - Assume that $f$ is an even measurable function satisfying (2.6), whose Fourier coefficients satisfy (2.7). Furthermore, let $\left(s_{\ell}\right)_{\ell \geqslant 1}$ be a sequence of positive integers satisfying (2.1) for some number $q>1$. Then we have
+
+$$
+\limsup _{L \rightarrow \infty} \frac{\left|\sum_{\ell=1}^{L} f\left(s_{\ell} \alpha\right)\right|}{\sqrt{L \log \log L}} \leqslant c_{q}
+$$
+
+for almost all $\alpha \in(0,1)$, where we can choose
+
+$$
+c_{q}=\max \left\{\frac{85 q}{q-1}, 122\|f\|_{2}^{1 / 4} \frac{\sqrt{q}}{\sqrt{q}-1}\right\} .
+$$
+
+We note in passing that from our proofs it seems that the conclusion of Theorem 2.5 remains true if the conditions $\left|a_{j}\right| \leqslant j^{-1},\left|b_{j}\right| \leqslant j^{-1}$ in (2.7) are relaxed to $\left|a_{j}\right| \leqslant j^{-1 / 2-\varepsilon},\left|b_{j}\right| \leqslant j^{-1 / 2-\varepsilon}$ for some fixed $\varepsilon>0$; however, in this case the constant $c_{q}$ has to be replaced by some other constant $c_{q, \varepsilon}$ which may also depend on $\varepsilon$. We will not pursue this possible generalization any further in the present paper.
+
+For the proofs of Theorem 1.1 and 1.2 we will also need the following result. It has first been stated by Fortet [17]; a concise proof can be found in [30]. This result can be seen as a special case of the more general results in [1].
+
+Lemma 2.6. - Let $f$ be a function satisfying (2.6), which additionally satisfies a Hölder continuity condition of order $\beta$ for some $\beta>0$. Then
+
+$$
+\limsup _{L \rightarrow \infty} \frac{\sum_{\ell=0}^{L-1} f\left(2^{\ell} \alpha\right)}{\sqrt{2 L \log \log L}}=\sigma_{f} \quad \text { for almost all } \alpha,
+$$
+
+where
+
+
+\begin{equation*}
+\sigma_{f}^{2}=\lim _{m \rightarrow \infty} \frac{1}{m} \int_{0}^{1}\left(f(\alpha)+\cdots+f\left(2^{m-1} \alpha\right)\right)^{2} d \alpha \tag{2.9}
+\end{equation*}
+
+
+\section*{3. Proofs of results from Section 2}
+Proof of Lemma 2.1. — The proof of Lemma 2.1, as well as the proofs of Lemmas 2.2, 2.3, 2.4 and Theorem 2.5, uses methods of Takahashi [40] and Philipp [35].
+
+Assuming that $f$ is even, the $L^{8}$-th partial sum of the Fourier series of $f$ is of the form
+
+$$
+p(\alpha)=\sum_{j=1}^{L^{8}} a_{j} \cos 2 \pi j \alpha,
+$$
+
+where by assumption the coefficients $a_{j}$ satisfy the inequality on the lefthand side of (2.7). We note that (2.7) implies that
+
+
+\begin{equation*}
+\|p\|_{\infty} \leqslant \sum_{j=1}^{L^{8}} \frac{1}{j} \leqslant 1+8 \log L . \tag{3.1}
+\end{equation*}
+
+
+We divide the set of integers $\{1, \ldots, L\}$ into blocks $\Delta_{1}, \ldots, \Delta_{w}$ of consecutive numbers, for some appropriate $w$, such that every block contains $\left\lceil\log _{q}\left(4 L^{8}\right)\right\rceil$ numbers (the last block may contain less). ${ }^{(2)}$ More precisely,
+
+\footnotetext{${ }^{(2)}$ We assume throughout that $L$ is sufficiently large such that all appearing logarithms are well-defined and positive.
+}
+we set
+$$
+w=\left\lceil\frac{L}{\left\lceil\log _{q}\left(4 L^{8}\right)\right\rceil}\right\rceil
+$$
+and
+$$
+\Delta_{i}=\left\{(i-1)\left\lceil\log _{q}\left(4 L^{8}\right)\right\rceil+1, \ldots, i\left\lceil\log _{q}\left(4 L^{8}\right)\right\rceil\right\} \cap\{1, \ldots, L\},
+$$
+for $1 \leqslant i \leqslant w$. We set
+$$
+I_{1}=\int_{0}^{1} \exp \left(2 \lambda \sum_{\substack{1 \leqslant i \leqslant w, i \text { even }}} \sum_{\ell \in \Delta_{i}} p\left(s_{\ell} \alpha\right)\right) d \alpha
+$$
+and
+$$
+I_{2}=\int_{0}^{1} \exp \left(2 \lambda \sum_{\substack{1 \leqslant i \leqslant w, i \text { odd }}} \sum_{\ell \in \Delta_{i}} p\left(s_{\ell} \alpha\right)\right) d \alpha
+$$
+Then by the Cauchy-Schwarz inequality we have
+
+\begin{equation*}
+\int_{0}^{1} \exp \left(\lambda \sum_{\ell=1}^{L} p\left(s_{\ell} \alpha\right)\right) d \alpha \leqslant \sqrt{I_{1} I_{2}} \tag{3.2}
+\end{equation*}
+
+Writing
+$$
+U_{i}=\sum_{\ell \in \Delta_{i}} p\left(s_{\ell} \alpha\right), \quad 1 \leqslant i \leqslant w,
+$$
+and using the inequality
+$$
+e^{x} \leqslant 1+x+x^{2}, \quad \text { which is valid for }|x| \leqslant 1,
+$$
+we have
+
+\begin{align*}
+I_{1} & =\int_{0}^{1} \prod_{\substack{1 \leqslant i \leqslant w, i \text { even }}} \exp \left(2 \lambda \sum_{\ell \in \Delta_{i}} p\left(s_{\ell} \alpha\right)\right) d \alpha  \tag{3.3}\\
+& \leqslant \int_{0}^{1} \prod_{\substack{1 \leqslant i \leqslant w, i \text { even }}}\left(1+2 \lambda U_{i}+4 \lambda^{2} U_{i}^{2}\right) d \alpha
+\end{align*}
+
+where we used the fact that by (2.7), (2.8) and (3.1) we have
+$$
+\begin{aligned}
+\left|2 \lambda U_{i}\right| & \leqslant 2 L^{-1 / 9}\|p\|_{\infty}\left|\Delta_{i}\right| \\
+& \leqslant 2 L^{-1 / 9}(1+8 \log L)\left\lceil\log _{q}\left(4 L^{8}\right)\right\rceil \\
+& \leqslant 1
+\end{aligned}
+$$
+for $L \geqslant L_{0}(q)$
+
+Using the classical trigonometric identity
+
+
+\begin{equation*}
+(\cos y)(\cos z)=\frac{\cos (y+z)+\cos (y-z)}{2}, \quad \text { for } y, z \in \mathbb{R} \tag{3.4}
+\end{equation*}
+
+
+we have
+
+
+\begin{align*}
+U_{i}^{2} & =\left(\sum_{\ell \in \Delta_{i}} \sum_{j=1}^{L^{8}} a_{j} \cos 2 \pi j s_{\ell} \alpha\right)^{2} \\
+& =\sum_{\ell_{1}, \ell_{2} \in \Delta_{i}} \sum_{1 \leqslant j_{1}, j_{2} \leqslant L^{8}} a_{j_{1}} a_{j_{2}}\left(\frac{\cos \left(2 \pi\left(j_{1} s_{\ell_{1}}+j_{2} s_{\ell_{2}}\right)\right)}{2}\right.  \tag{3.5}\\
+& =: V_{i}+W_{i}
+\end{align*}
+
+
+Here we write $V_{i}$ for the sum of all those cosine-functions having frequencies in the interval $\left[s_{\text {min }\left(\Delta_{i}\right)}, 2 L^{8} s_{\text {max }\left(\Delta_{i}\right)}\right]$, where $\min \left(\Delta_{i}\right)$ and $\max \left(\Delta_{i}\right)$ denote the smallest resp. largest element of $\Delta_{i}$, and we write $W_{i}$ for the sum of those cosine-functions having frequencies smaller than $s_{\min \left(\Delta_{i}\right)}$. It is easy to check that no other frequencies can occur in (3.5). We note that all the frequencies of the cosine-functions in $U_{i}$ are also contained in the interval $\left[s_{\min \left(\Delta_{i}\right.}, 2 L^{8} s_{\max \left(\Delta_{i}\right)}\right]$, and write
+
+
+\begin{equation*}
+X_{i}=2 \lambda U_{i}+4 \lambda^{2} V_{i} . \tag{3.7}
+\end{equation*}
+
+
+Using this notation we have
+
+$$
+\prod_{\substack{1 \leqslant i \leqslant w, i \text { even }}}\left(1+2 \lambda U_{i}+4 \lambda^{2} U_{i}^{2}\right)=\prod_{\substack{1 \leqslant i \leqslant w, i \text { even }}}\left(1+X_{i}+4 \lambda^{2} W_{i}\right) .
+$$
+
+From Minkowski's inequality and (2.7) we deduce that
+
+
+\begin{align*}
+W_{i} & \leqslant \frac{1}{2} \sum_{\substack{\ell_{1}, \ell_{2} \in \Delta_{i} \\
+\left|j_{1} s_{\ell_{1}}-j_{2} s_{\ell_{2}}\right|<\min \left(\Delta_{i}\right)}} \sum_{1 \leqslant j_{1}, j_{2} \leqslant L^{8}}\left|a_{j_{1}} a_{j_{2}}\right| \\
+& \leqslant \sum_{\substack{\ell_{1}, \ell_{2} \in \Delta_{i}, \ell_{1} \leqslant \ell_{2}}} \sum_{\substack{1 \leqslant j_{1}, j_{2} \leqslant L^{8}, j_{1}>j_{2} s_{\ell_{2}} / s_{\ell_{1}}-1}}\left|a_{j_{1}} a_{j_{2}}\right|  \tag{3.8}\\
+& \leqslant \sum_{\substack{\ell_{1}, \ell_{2} \in \Delta_{i}, \ell_{1} \leqslant \ell_{2}}} \sum_{\substack{1 \leqslant j_{1}, j_{2} \leqslant L^{8}, j_{1}>j_{2} s \ell_{2} / s_{\ell_{1}}-1}} \frac{1}{j_{1} j_{2}}
+\end{align*}
+
+
+$$
+\begin{aligned}
+& \leqslant \sum_{\substack{\ell_{1}, \ell_{2} \in \Delta_{i}, \ell_{1} \leqslant \ell_{2}}} \sum_{j=1}^{L^{8}} \frac{1}{j} \underbrace{\left\lceil j s_{\ell_{2}} / s_{\ell_{1}}-1\right\rceil}_{\leqslant 2 s_{\ell_{1}} /\left(j s_{\ell_{2}}\right)} \\
+& \leqslant 2 \sum_{\substack{\ell_{1}, \ell_{2} \in \Delta_{i}, \ell_{1} \leqslant \ell_{2}}} \sum_{j=1}^{L^{8}} \frac{s_{\ell_{1}}}{j^{2} s_{\ell_{2}}} \\
+& \leqslant 2\left|\Delta_{i}\right| \frac{q}{q-1} \frac{\pi^{2}}{6} .
+\end{aligned}
+$$
+
+Another way of continuing from line (3.8) is to use the Cauchy-Schwarz inequality, which leads to
+
+
+\begin{align*}
+W_{i} & \leqslant \sum_{\substack{\ell_{1}, \ell_{2} \in \Delta_{i}, 1 \leqslant j_{2} \leqslant L^{8} \\
+\ell_{1} \leqslant \ell_{2}}} \frac{1}{j_{2}} \sum_{\substack{1 \leqslant j_{1} \leqslant L^{8}, j_{1}>j_{2} s_{\ell_{2}} / s_{\ell_{1}}-1}}\left|a_{j_{1}}\right| \\
+& \leqslant \sum_{\substack{\ell_{1}, \ell_{2} \in \Delta_{i}, \ell_{1} \leqslant \ell_{2}}} \sum_{\substack{1 \leqslant j_{2} \leqslant L^{8} \\
+j_{2}}} \frac{1}{\sum_{\substack{1 \leqslant j_{1} \leqslant L^{8}, j_{1}>j_{2} s_{\ell_{2}} / s_{\ell_{1}}-1}} \overbrace{a_{j_{1}}^{2}}})^{1 / j_{1}^{2}})^{1 / 2} \underbrace{\left.\left(\sum_{\substack{1 \leqslant j_{1} \leqslant L^{8}, j_{1}>j_{2} s_{\ell_{2}} / s_{\ell_{1}}-1}} a_{j_{1}}^{2}\right)^{1 / 2}\right)^{1 / 2}}_{\leqslant\|p\|_{2}^{1 / 2}}) \\
+& \leqslant 2 \sum_{\substack{\ell_{1}, \ell_{2} \in \Delta_{2} \\
+\ell_{1} \leqslant \ell_{2}}} \sum_{1 \leqslant j \leqslant L^{8}} \sqrt{\frac{s_{\ell_{1}}}{j^{3} s_{\ell_{2}}}}\|p\|_{2}^{1 / 2} \\
+0) & \leqslant 6 \frac{\sqrt{q}}{\sqrt{q}-1}\|p\|_{2}^{1 / 2} . \tag{3.10}
+\end{align*}
+
+
+Now assume that $i_{1}<i_{2}$ are two indices from the set $\{1, \ldots, w\}$, and that both $i_{1}$ and $i_{2}$ are even. Then by construction the frequency of any trigonometric function in $X_{i_{2}}$ is at least twice as large as the frequency of any trigonometric function in $X_{i_{1}}$. To see why this is the case, we recall that the frequency of the largest trigonometric function in $X_{i_{2}}$ is at most $2 L^{8} s_{\text {max }}\left(\Delta_{i_{1}}\right)$, that the frequency of the smallest trigonometric function in $X_{i_{1}}$ is at least $s_{\min \left(\Delta_{i_{2}}\right)}$, and that by (2.1)
+
+$$
+\begin{aligned}
+\frac{s_{\min \left(\Delta_{i_{2}}\right)}}{s_{\max \left(\Delta_{i_{1}}\right)}} & \geqslant q^{\min \left(\Delta_{i_{2}}\right)-\max \left(\Delta_{i_{1}}\right)} \\
+& =q^{\left\lceil\log _{q}\left(4 L^{8}\right)\right\rceil} \\
+& \geqslant 4 L^{8} .
+\end{aligned}
+$$
+
+As a consequence for every set of distinct indices $i_{1}, \ldots, i_{v}$ (where the cardinality $v$ is arbitrary), all of which are even and are contained in $\{1, \ldots, w\}$, the functions $X_{i_{1}}, \ldots, X_{i_{v}}$ are orthogonal, i.e.,
+
+
+\begin{equation*}
+\int_{0}^{1} X_{i_{1}} \cdots X_{i_{v}} d \alpha=0 \tag{3.11}
+\end{equation*}
+
+
+(this argument is explained in more detail in [35, 40]). Thus by (3.3), (3.6), (3.7), (3.9), and (3.11) we have
+
+$$
+\begin{aligned}
+I_{1} & \leqslant \int_{0}^{1} \prod_{\substack{1 \leqslant i \leqslant w, i \text { even }}}\left(1+X_{i}+4 \lambda^{2} W_{i}\right) d \alpha \\
+& \leqslant \int_{0}^{1} \prod_{\substack{1 \leqslant i \leqslant w, i \text { even }}}\left(1+X_{i}+\frac{4 \lambda^{2}\left|\Delta_{i}\right| \pi^{2}}{3} \frac{q}{q-1}\right) d \alpha \\
+& =\int_{0}^{1} \underbrace{}_{\substack{1 \leqslant i \leqslant w, i \text { even }}}\left(1+\frac{4 \lambda^{2}\left|\Delta_{i}\right| \pi^{2}}{3} \frac{q}{q-1}\right) d \alpha \\
+& \leqslant \prod_{\substack{1 \leqslant i \leqslant w, i \text { even not depend on } \alpha}} \exp \left(\frac{4 \lambda^{2}\left|\Delta_{i}\right| \pi^{2}}{3} \frac{q}{q-1}\right) \\
+& =\exp \left(\sum_{\substack{1 \leqslant i \leqslant w, i \text { even }}} \frac{4 \lambda^{2}\left|\Delta_{i}\right| \pi^{2}}{3} \frac{q}{q-1}\right) .
+\end{aligned}
+$$
+
+In the same way we can get an upper bound for $I_{2}$, and thus by (3.2) we finally obtain
+
+$$
+\begin{aligned}
+& \int_{0}^{1} \exp \left(\lambda \sum_{\ell=1}^{L} p\left(s_{\ell} \alpha\right)\right) d \alpha \\
+& \quad \leqslant \exp \left(\sum_{\substack{1 \leqslant i \leqslant w, i \text { even }}} \frac{2 \lambda^{2}\left|\Delta_{i}\right| \pi^{2}}{3} \frac{q}{q-1}\right) \exp \left(\sum_{\substack{1 \leqslant i \leqslant w, i \text { odd }}} \frac{2 \lambda^{2}\left|\Delta_{i}\right| \pi^{2}}{3} \frac{q}{q-1}\right) \\
+& \quad=\exp \left(\frac{2 \lambda^{2} L \pi^{2}}{3} \frac{q}{q-1}\right)
+\end{aligned}
+$$
+
+This proves the first conclusion of the lemma. In the same way we can use (3.10) (and the corresponding upper bound for $I_{2}$ ) to obtain
+
+$$
+\int_{0}^{1} \exp \left(\lambda \sum_{\ell=1}^{L} p\left(s_{\ell} \alpha\right)\right) d \alpha \leqslant \exp \left(12 \lambda^{2} \frac{\sqrt{q}}{\sqrt{q}-1}\|p\|_{2}^{1 / 2}\right)
+$$
+
+which proves the second conclusion of the lemma.\\
+Thus we have proved both parts of Lemma 2.1 in the case when $f$ is even; the proof in the odd case can be carried out in exactly the same way. \(\square\)
+
+Proof of Lemma 2.2. - By assumption $L$ is an integral power of 2. We set $\nu=\log _{2} L$. By classical dyadic decomposition, we can write every subset $\{1, \ldots, M\}$ of $\{1, \ldots, L\}$ as the disjoint sum of at most one set of cardinality $2^{\nu-1}$, at most one set of cardinality $2^{\nu-2}$, at most one set of cardinality $2^{\nu-3}$, and so on, at most one set of cardinality $2^{\lceil\nu / 4\rceil}$, and additionally at most one set of cardinality at most $2^{\lceil\nu / 4\rceil}$, where all these sets contain consecutive positive integers. To be able to represent every sets $\{1, \ldots, M\}$ in this way, we need $2^{\mu}$ sets of cardinality $2^{\nu-\mu}$, for $\mu \in\{1, \ldots, \nu-\lceil\nu / 4\rceil\}$, and all the sets of cardinality at most $2^{\lceil\nu / 4\rceil}$ starting at an integer multiple of $2^{\lceil\nu / 4\rceil}$. More precisely, the sets of cardinality $2^{\nu-\mu}$ are of the form
+
+$$
+\left\{j 2^{\nu-\mu}+1, \ldots,(j+1) 2^{\nu-\mu}\right\}, \quad j \in\left\{0, \ldots, 2^{\mu}-1\right\}, \mu \in\{1, \ldots, \nu-\lceil\nu / 4\rceil\},
+$$
+
+and the sets of cardinality at most $2^{\nu / 4}$ are of the form
+
+$$
+\begin{aligned}
+\left\{j 2^{\lceil\nu / 4\rceil}+1,, \ldots, j 2^{\lceil\nu / 4\rceil}+w\right\} & , \\
+j & \in\left\{0, \ldots, 2^{\nu-\lceil\nu / 4\rceil}-1\right\}, \quad w \in\left\{1, \ldots, 2^{\lceil\nu / 4\rceil}\right\} .
+\end{aligned}
+$$
+
+For $j \in\left\{0, \ldots, 2^{\mu}-1\right\}$ and $\mu \in\{1, \ldots, \nu-\lceil\nu / 4\rceil\}$, we set
+
+$$
+\begin{aligned}
+& G_{\mu, j}= \\
+& \left\{\alpha \in(0,1): \sum_{\ell=j 2^{\nu-\mu}+1}^{(j+1) 2^{\nu-\mu}} p\left(s_{\ell} \alpha\right)>\frac{8 q}{q-1} \sqrt{2^{\nu-\mu}} \sqrt{\log \log 2^{\nu-\mu}}+\mu \sqrt{2^{\nu-\mu}}\right\}
+\end{aligned}
+$$
+
+Using the first part of Lemma 2.1 with
+
+$$
+\lambda=\frac{\sqrt{\log \log \left(2^{\nu-\mu}\right)}}{\sqrt{2^{\nu-\mu}}}
+$$
+
+(note that by our construction this value of $\lambda$ is admissible in Lemma 2.1, provided that $L$ is sufficiently large) we have
+
+$$
+\begin{aligned}
+\int_{0}^{1} \exp \left(\frac{\sqrt{\log \log \left(2^{\nu-\mu}\right)}}{\sqrt{2^{\nu-\mu}}} \sum_{\ell=j 2^{\nu-\mu}+1}^{(j+1) 2^{\nu-\mu}} p\left(s_{\ell} \alpha\right)\right. & ) d \alpha \\
+& \leqslant \exp \left(\frac{2 \log \log \left(2^{\nu-\mu}\right) q \pi^{2}}{3(q-1)}\right)
+\end{aligned}
+$$
+
+and consequently
+
+$$
+\mathbb{P}\left(G_{\mu, j}\right) \leqslant \exp \left(\left(\frac{2 \pi^{2}}{3}-8\right) \frac{q}{q-1} \log \log \left(2^{\nu-\mu}\right)-\mu\right) \leqslant \frac{1}{e^{\mu}\left(\log \left(2^{\nu-\mu}\right)\right)^{1.4}} .
+$$
+
+Thus we have
+
+
+\begin{align*}
+\mathbb{P}\left(\bigcup_{\mu=1}^{\nu-\lceil\nu / 4\rceil} \bigcup_{j=0}^{2^{\mu}-1} G_{\mu, j}\right) & \leqslant \sum_{\mu=1}^{\nu-\lceil\nu / 4\rceil} \frac{2^{\mu}}{e^{\mu}\left(\log \left(2^{\lceil\nu / 4\rceil}\right)\right)^{1.4}} \\
+& \leqslant \frac{20}{(\log L)^{1.4}} \tag{3.12}
+\end{align*}
+
+
+Now we set
+
+$$
+\begin{aligned}
+H_{j}=\{\alpha \in(0,1): & \left.\max _{\left.1 \leqslant w \leqslant 2^{\lceil\nu / 4}\right\rceil}\left|\sum_{\ell=j 2^{\lceil\nu / 4\rceil}+1}^{j 2^{\lceil\nu / 4\rceil}+w} p\left(s_{\ell} \alpha\right)\right|>\sqrt{L}\right\}, \\
+& j \in\left\{0, \ldots, 2^{\nu-\lceil\nu / 4\rceil}-1\right\} .
+\end{aligned}
+$$
+
+By (2.7), Minkowski's inequality, and the Carleson-Hunt inequality (see for example [37]), we have
+
+
+\begin{align*}
+& \left(\int_{0}^{1} \max _{1 \leqslant w \leqslant 2^{\lceil\nu / 4\rceil}}\left(\sum_{\ell=j 2^{\lceil\nu / 4\rceil}+1}^{j 2^{\lceil\nu / 4}+w} p\left(s_{\ell} \alpha\right)\right)^{6} d \alpha\right)^{1 / 6} \\
+& \leqslant \sum_{j=1}^{L^{8}}\left|a_{j}\right|\left(\int_{0}^{1} \max _{1 \leqslant w \leqslant 2^{\lceil\nu / 4\rceil}}\left(\sum_{\ell=j 2^{\lceil\nu / 4\rceil}+1}^{j 2^{\lceil\nu / 4\rceil}+w} \cos 2 \pi j s_{\ell} \alpha\right)^{6} d \alpha\right)^{1 / 6} \\
+& \leqslant(1+8 \log L) c_{\mathrm{abs}}\left(\int_{0}^{1}\left(\sum_{\ell=j 2^{\lceil\nu / 4\rceil}+1}^{(j+1) 2^{\lceil\nu / 4\rceil}} \cos 2 \pi j s_{\ell} \alpha\right)^{6} d \alpha\right)^{1 / 6} \tag{3.13}
+\end{align*}
+
+
+for some absolute constant $c_{\text {abs }}$. Estimating the integral in (3.13) can be reduced (via (3.4)) to the problem of counting the number of solutions\\
+$\left(\ell_{1}, \ldots, \ell_{6}\right)$ of the Diophantine equation\\
+$s_{\ell_{1}} \pm \cdots \pm s_{\ell_{6}}=0$, for indices $\ell_{1}, \ldots, \ell_{6}$ in the respective index range; we have
+
+$$
+\left(\int_{0}^{1}\left(\sum_{\ell=j 2^{\lceil\nu / 4\rceil}+1}^{(j+1) 2^{\lceil\nu / 4\rceil}} \cos 2 \pi j s_{\ell} \alpha\right)^{6} d \alpha\right)^{1 / 6} \leqslant c_{q}\left(2^{\nu / 4}\right)^{1 / 2}
+$$
+
+for some constant $c_{q}$ depending only on $q$ (see, for example, [16]). As a consequence by Markov's inequality we obtain
+
+$$
+\mathbb{P}\left(H_{j}\right) \leqslant \hat{c}_{q}(1+8 \log L)^{6} \frac{L^{6 / 8}}{L^{3}}=\hat{c}_{q}(1+8 \log L)^{6} L^{-9 / 4}
+$$
+
+and
+
+
+\begin{align*}
+\mathbb{P}\left(\bigcup_{j=0}^{2^{\nu-\lceil\nu / 4\rceil}-1} H_{j}\right) & \leqslant L^{3 / 4} \hat{c}_{q}(1+8 \log L)^{6} L^{-9 / 4} \\
+& =\hat{c}_{q}(1+8 \log L)^{6} L^{-6 / 4} \tag{3.14}
+\end{align*}
+
+
+for some constant $\hat{c}_{q}$ depending only on $q$. We set
+
+$$
+F=\left(\bigcup_{\mu=1}^{\nu-\lceil\nu / 4\rceil} \bigcup_{j=0}^{2^{\mu}-1} G_{\mu, j}\right) \cup\left(\bigcup_{j=0}^{2^{\nu}-\lceil\nu / 4\rceil} H_{j}\right) .
+$$
+
+Then by (3.12) and (3.14) we have
+
+
+\begin{align*}
+\mathbb{P}(F) & \leqslant \frac{23}{(\log L)^{1.4}}+\hat{c}_{q}(1+8 \log L)^{6} L^{-6 / 4}  \tag{3.15}\\
+& \leqslant \frac{24}{(\log L)^{1.4}} \tag{3.16}
+\end{align*}
+
+
+for sufficiently large $L$.\\
+By the dyadic decomposition described at the beginning of this proof, for every $\alpha \in F^{C}$ (where $F^{C}$ denotes the complement of the set $F$ ) we have
+
+$$
+\begin{aligned}
+\sum_{\ell=1}^{M} p\left(s_{\ell} \alpha\right) & \leqslant \sum_{\mu=1}^{\nu-\lceil\nu / 4\rceil}\left(\frac{8 q}{q-1} \sqrt{2^{\nu-\mu}} \sqrt{\log \log 2^{\nu-\mu}}+\mu \sqrt{2^{\nu-\mu}}\right)+\sqrt{L} \\
+& \leqslant \frac{8 q}{q-1}(1+\sqrt{2}) \sqrt{L \log \log L}+(4+3 \sqrt{2}) \sqrt{L}+\sqrt{L} \\
+& \leqslant \frac{29 q}{q-1} \sqrt{L \log \log L}
+\end{aligned}
+$$
+
+for all possible values $M \in\{1, \ldots, L\}$. Thus we have proved that
+
+
+\begin{equation*}
+\mathbb{P}\left(\alpha \in(0,1): \max _{1 \leqslant M \leqslant L}\left(\sum_{\ell=1}^{M} p\left(s_{\ell} \alpha\right)\right)>\frac{29 q}{q-1} \sqrt{L \log \log L}\right) \leqslant \frac{24}{(\log L)^{1.4}} \tag{3.17}
+\end{equation*}
+
+
+for sufficiently large $L$. Note that whenever the function $f$ satisfies the assumptions of Lemma 2.1, then the function $-f$ also satisfies these assumptions. Thus applying exactly the same arguments as above to the functions $-f$ and $-p$ instead of $f$ and $p$ we also obtain
+
+$$
+\mathbb{P}\left(\alpha \in(0,1): \max _{1 \leqslant M \leqslant L}\left(\sum_{\ell=1}^{M}\left(-p\left(s_{\ell} \alpha\right)\right)\right)>\frac{29 q}{q-1} \sqrt{L \log \log L}\right) \leqslant \frac{24}{(\log L)^{1.4}}
+$$
+
+for sufficiently large $L$, which, together with (3.17), proves the first conclusion of Lemma 2.2.
+
+The proof of the second conclusion of Lemma 2.2 is very similar to that of the first conclusion of the lemma. We use the same dyadic decomposition, but now we define
+
+$$
+\begin{array}{r}
+G_{\mu, j}=\left\{\alpha \in(0,1): \sum_{\ell=j 2^{\nu-\mu}+1}^{(j+1) 2^{\nu-\mu}} p\left(s_{\ell} \alpha\right)>\left(14\|p\|_{2}^{1 / 4} \frac{\sqrt{q}}{\sqrt{q}-1}+\|p\|_{2}^{1 / 4} \mu\right)\right. \\
+\left.\times \sqrt{2^{\nu-\mu}} \sqrt{\log \log 2^{\nu-\mu}}\right\}
+\end{array}
+$$
+
+and use the second part of Lemma 2.1 with
+
+$$
+\lambda=\|p\|_{2}^{-1 / 4} \frac{\sqrt{\log \log \left(2^{\nu-\mu}\right)}}{\sqrt{2^{\nu-\mu}}}
+$$
+
+Note that this choice of $\lambda$ is admissible, due to the restrictions that $\mu \leqslant$ $\nu-\lceil\nu / 4\rceil$ and $\|p\|_{2}^{1 / 4} \geqslant L^{-1 / 100}$. We obtain that
+
+$$
+\begin{aligned}
+& \int_{0}^{1} \exp \left(\|p\|_{2}^{-1 / 4} \frac{\sqrt{\log \log \left(2^{\nu-\mu}\right)}}{\sqrt{2^{\nu-\mu}}} \sum_{\ell=j 2^{\nu-\mu}+1}^{(j+1) 2^{\nu-\mu}} p\left(s_{\ell} \alpha\right)\right) d \alpha \\
+& \quad \leqslant \exp \left(\frac{12 \sqrt{q} \log \log \left(2^{\nu-\mu}\right)}{\sqrt{q}-1}\right)
+\end{aligned}
+$$
+
+and consequently
+
+$$
+\mathbb{P}\left(G_{\mu, j}\right) \leqslant \exp \left((12-14) \frac{\sqrt{q}}{\sqrt{q}-1} \log \log \left(2^{\nu-\mu}\right)-\mu\right) \leqslant \frac{1}{e^{\mu}\left(\log \left(2^{\nu-\mu}\right)\right)^{2}} .
+$$
+
+The sets $H_{j}$ can be defined in the same way as in the proof of the first part of the lemma. Using similar calculations we obtain that
+
+$$
+\begin{array}{rl}
+\max _{1 \leqslant L \leqslant M} \mid \sum_{\ell=1}^{M} & p\left(s_{\ell} \alpha\right) \mid \\
+& \leqslant \sum_{\mu=1}^{\infty} 2^{-\mu / 2}\left((14+\mu)\|p\|_{2}^{1 / 4} \frac{\sqrt{q}}{\sqrt{q}-1} \sqrt{L \log \log L}\right)+\sqrt{L} \\
+& \leqslant 43\|p\|_{2}^{1 / 4} \frac{\sqrt{q}}{\sqrt{q}-1} \sqrt{L \log \log L}+\sqrt{L}
+\end{array}
+$$
+
+except for a set of measure at most
+
+$$
+\left(\sum_{\mu=1}^{\infty} \frac{2^{\mu}}{e^{\mu}\left(\log \left(L^{1 / 4}\right)\right)^{2}}\right)+\hat{c}_{q}(1+8 \log L)^{6} L^{-9 / 4} \leqslant \frac{45}{(\log L)^{2}}
+$$
+
+(provided that $L$ is sufficiently large). This proves the second part of Lemma 2.2. \(\square\)
+
+Proof of Lemma 2.3. - The lemma follows from a simple application of Minkowski's inequality. We have
+
+
+\begin{align*}
+\int_{0}^{1}\left(\max _{1 \leqslant M \leqslant L}\left|\sum_{\ell=1}^{M} r\left(s_{\ell} \alpha\right)\right|\right)^{2} d \alpha & \leqslant \sum_{M=1}^{L} \int_{0}^{1}\left(\left|\sum_{\ell=1}^{M} r\left(s_{\ell} \alpha\right)\right|\right)^{2} d \alpha \\
+& \leqslant \sum_{M=1}^{L}\left(\sum_{\ell=1}^{M}\|r\|_{2}\right)^{2} \tag{3.18}
+\end{align*}
+
+
+By (2.7) we have
+
+$$
+\|r\|_{2} \leqslant\left(\sum_{j=L^{8}+1}^{\infty} \frac{2}{j^{2}}\right)^{1 / 2} \leqslant \frac{2}{L^{7 / 2}},
+$$
+
+which implies, together with (3.18), that
+
+$$
+\int_{0}^{1}\left(\max _{1 \leqslant M \leqslant L}\left|\sum_{\ell=1}^{M} r\left(s_{\ell} \alpha\right)\right|\right)^{2} d \alpha \leqslant \frac{4}{L^{4}}
+$$
+
+This proves the lemma. \(\square\)
+
+Proof of Lemma 2.4. - Assume that we have decomposed $f=p+r$ as in Lemmas 2.1, 2.2 and 2.3. By Lemma 2.3 and Markov's inequality we have
+
+$$
+\mathbb{P}\left(\alpha \in(0,1): \max _{1 \leqslant M \leqslant L}\left|\sum_{k=1}^{M} r\left(s_{\ell} \alpha\right)\right|>\sqrt{L}\right) \leqslant \frac{4}{L^{5}} .
+$$
+
+Together with Lemma 2.2 this yields
+
+$$
+\begin{aligned}
+\mathbb{P}\left(\alpha \in(0,1): \max _{1 \leqslant M \leqslant L}\left|\sum_{k=1}^{M} f\left(s_{\ell} \alpha\right)\right|>\right. & \underbrace{\left(\frac{29 q}{q-1}+1\right)}_{\leqslant 30 q /(q-1)} \sqrt{L \log \log L}) \\
+& \leqslant \frac{48}{(\log N)^{1.4}}+\frac{4}{L^{5}} \leqslant \frac{49}{(\log L)^{1.4}}
+\end{aligned}
+$$
+
+for sufficiently large $L$, which is the first part of Lemma 2.4.\\
+In the same way we can deduce the second conclusion of Lemma 2.4 from a combination of the second conclusion of Lemma 2.2 and Lemma 2.3. \(\square\)
+
+Proof of Theorem 2.5. - From Lemma 2.2 and Lemma 2.3 we can easily deduce Theorem 2.5, using standard methods. Let us first assume that $f$ is either even or odd. For $m \geqslant 1$, we let $E_{m}$ denote the set defined by
+
+$$
+E_{m}=\left\{\alpha \in(0,1): \max _{1 \leqslant M \leqslant 2^{m}}\left|\sum_{\ell=1}^{M} f\left(s_{\ell} \alpha\right)\right|>\frac{30 q}{q-1} \sqrt{2^{m} \log \log 2^{m}}\right\} .
+$$
+
+Then by Lemma 2.6 we have
+
+
+\begin{equation*}
+\mathbb{P}\left(E_{m}\right) \leqslant \frac{49}{\left(\log 2^{m}\right)^{1.4}} \tag{3.19}
+\end{equation*}
+
+
+which implies that
+
+$$
+\sum_{m=1}^{\infty} \mathbb{P}\left(E_{m}\right)<\infty .
+$$
+
+Thus by the Borel-Cantelli lemma with probability 1 only finitely many events $E_{m}$ happen; in other words, for almost all $\alpha \in(0,1)$ we have
+
+$$
+\max _{1 \leqslant M \leqslant 2^{m}}\left|\sum_{\ell=1}^{M} f\left(s_{\ell} \alpha\right)\right| \leqslant \frac{30 q}{q-1} \sqrt{2^{m} \log \log 2^{m}} \quad \text { for } m \geqslant m_{0}(\alpha) .
+$$
+
+As a consequence for almost all $\alpha \in(0,1)$ we have
+
+
+\begin{equation*}
+\limsup _{L \rightarrow \infty} \frac{\left|\sum_{\ell=1}^{L} f\left(s_{\ell} \alpha\right)\right|}{\sqrt{L \log \log L}} \leqslant \sqrt{2} \frac{30 q}{q-1}, \tag{3.20}
+\end{equation*}
+
+
+which proves Theorem 2.5 in the case when $f$ is either even or odd. For general $f$ we apply (3.20) to the even and odd part separately, which results in an extra multiplicative factor of 2 . Note that $2 \sqrt{2} \cdot 30 \leqslant 85$.
+
+In the same way we can use the second conclusion of Lemma 2.4 to obtain
+
+
+\begin{equation*}
+\limsup _{L \rightarrow \infty} \frac{\left|\sum_{\ell=1}^{L} f\left(s_{\ell} \alpha\right)\right|}{\sqrt{L \log \log L}} \leqslant \underbrace{2 \sqrt{2} \cdot 43}_{\leqslant 122}\|p\|_{2}^{1 / 4} \frac{\sqrt{q}}{\sqrt{q}-1}, \tag{3.21}
+\end{equation*}
+
+
+for almost all $\alpha \in(0,1)$. Theorem 2.5 now follows from a combination of (3.20) and (3.21). \(\square\)
+
+\section*{4. Exponential Sums and Trigonometric Products: Proofs of Theorem 1.1 and Theorem 1.2}
+Theorem 1.1 and Theorem 1.2 will follow easily from the following lemma, which is a version of Lemma 2.6 in the case when the function $f$ only satisfies (2.7) (instead of being Hölder-continuous). We state it only for the special case of the two functions $f_{1}$ and $f_{2}$ from (2.4) and (2.5).
+
+Lemma 4.1. - For almost all $\alpha$ we have
+
+$$
+\limsup _{L \rightarrow \infty} \frac{\sum_{\ell=0}^{L-1} f_{1}\left(2^{\ell} \alpha\right)}{\sqrt{2 L \log \log L}}=\frac{\pi}{\sqrt{2}}
+$$
+
+and
+
+$$
+\limsup _{L \rightarrow \infty} \frac{\left|\sum_{\ell=0}^{L-1} f_{2}\left(2^{\ell} \alpha\right)\right|}{\sqrt{2 L \log \log L}}=0 .
+$$
+
+Proof. - As already noted, the functions $f_{1}$ and $f_{2}$ satisfy conditions (2.6) and (2.7). Let a number $d$ be given, and write $p_{1}$ for the $d$-th partial sum of the Fourier series of $f_{1}$, and $r_{1}$ for the remainder term. Then by Lemma 2.6 we have
+
+
+\begin{equation*}
+\limsup _{L \rightarrow \infty} \frac{\sum_{\ell=0}^{L-1} p_{1}\left(2^{\ell} \alpha\right)}{\sqrt{2 L \log \log L}}=\sigma_{p_{1}} \quad \text { for almost all } \alpha \tag{4.1}
+\end{equation*}
+
+
+where $\sigma_{p_{1}}$ is defined according to (2.9) (for the function $p_{1}$ ). Note that Lemma 2.6 is applicable since $p$ is a trigonometric polynomial (and consequently is also Lipschitz-continuous). Note furthermore that by (2.7) we have
+
+$$
+\left\|r_{1}\right\|_{2} \leqslant\left(\sum_{j=1}^{d+1} \frac{1}{j^{2}}\right)^{1 / 2} \leqslant d^{-1 / 2}
+$$
+
+Consequently by Theorem 2.5 we have
+
+
+\begin{equation*}
+\limsup _{L \rightarrow \infty} \frac{\left|\sum_{\ell=0}^{L-1} r_{1}\left(2^{\ell} \alpha\right)\right|}{\sqrt{2 L \log \log L}} \leqslant 122 d^{-1 / 8} \frac{\sqrt{2}}{\sqrt{2}-1} \quad \text { for almost all } \alpha . \tag{4.2}
+\end{equation*}
+
+
+Replacing $f_{1}$ by $f_{2}$ and replacing $p_{1}$ and $r_{1}$ by $p_{2}$ and $r_{2}$, respectively, we obtain (4.1) and (4.2) with $p_{1}$ and $r_{1}$ replaced by $p_{2}$ and $r_{2}$, respectively. Some standard calculations show that
+
+$$
+\sigma_{p_{1}} \rightarrow \sigma_{f_{1}} \quad \text { and } \quad \sigma_{p_{2}} \rightarrow \sigma_{f_{2}} \quad \text { as } d \rightarrow \infty .
+$$
+
+Furthermore, the expression on the right-hand side of (4.2) clearly tends to zero as $d \rightarrow \infty$. Thus, overall we have
+
+
+\begin{equation*}
+\limsup _{L \rightarrow \infty} \frac{\sum_{\ell=0}^{L-1} f_{1}\left(2^{\ell} \alpha\right)}{\sqrt{2 L \log \log L}}=\sigma_{f_{1}} \quad \text { for almost all } \alpha \tag{4.3}
+\end{equation*}
+
+
+and
+
+
+\begin{equation*}
+\limsup _{L \rightarrow \infty} \frac{\sum_{\ell=0}^{L-1} f_{2}\left(2^{\ell} \alpha\right)}{\sqrt{2 L \log \log L}}=\sigma_{f_{2}} \quad \text { for almost all } \alpha, \tag{4.4}
+\end{equation*}
+
+
+where $\sigma_{f_{1}}$ and $\sigma_{f_{2}}$ are defined according to (2.9). Calculating the values of $\sigma_{f_{1}}$ and $\sigma_{f_{2}}$ is a simple exercise, using the Fourier series expansion of $f_{1}$ and $f_{2}$, respectively; it turns out that in our specific setting we have
+
+
+\begin{equation*}
+\sigma_{f_{1}}^{2}=\sum_{j=1}^{\infty}\left(\frac{1}{j^{2}}+2 \sum_{r=1}^{\infty} \frac{1}{2^{r} j^{2}}\right)=\frac{\pi^{2}}{2} \tag{4.5}
+\end{equation*}
+
+
+and
+
+
+\begin{equation*}
+\sigma_{f_{2}}^{2}=\sum_{j=1}^{\infty}(\frac{1}{j^{2}}+2 \sum_{r=1}^{\infty} \underbrace{(-1)^{j}(-1)^{2^{r}} j}_{=(-1)^{j}} \frac{1}{2^{r} j^{2}})=0 . \tag{4.6}
+\end{equation*}
+
+
+By applying the same arguments to $-f_{1}$ and $-f_{2}$ instead of $f_{1}$ and $f_{2}$ we can get absolute values in (4.3) and (4.4), if we wish. This proves Lemma 4.1. \(\square\)
+
+Proof of Theorem 1.1 and of Theorem 1.2.\\
+Part 1: upper bounds. - By periodicity it is obviously sufficient to prove Theorem 1.1 for $h=1$. Let $\varepsilon>0$ and $\alpha$ be given, and set $\hat{\varepsilon}=\varepsilon / 2$. We will assume that $\alpha$ is an element of the set of full measure for which the conclusion of Lemma 4.1 holds. Then we have
+
+
+\begin{equation*}
+\left|\sum_{\ell=0}^{L} f_{1}\left(2^{\ell} \alpha\right)\right| \leqslant\left(\frac{\pi}{\sqrt{2}}+\hat{\varepsilon}\right) \sqrt{2 L \log \log L} \tag{4.7}
+\end{equation*}
+
+
+and
+
+
+\begin{equation*}
+\left|\sum_{\ell=0}^{L} f_{2}\left(2^{\ell} \alpha\right)\right| \leqslant \hat{\varepsilon} \sqrt{2 L \log \log L} \tag{4.8}
+\end{equation*}
+
+
+for all $L \geqslant L_{0}(\alpha)$. Equation (4.7) already gives the upper bound in Theorem 1.2. To obtain the upper bound in Theorem 1.1, let $N$ be given, and assume that $N \geqslant 22^{\left(2^{L_{0}}\right)}$. We can write
+
+$$
+N=\eta_{M} 2^{M}+\eta_{M-1} 2^{M-1}+\cdots+\eta_{1} 2+\eta_{0}
+$$
+
+for numbers $\left(\eta_{M}, \ldots, \eta_{0}\right) \in\{0,1\}^{M+1}$, where we assume that $M$ is chosen in such a way that $\eta_{M}=1$; this is simply the binary representation of $N$. For simplicity of writing we set $N_{M+1}=0$ and
+
+$$
+N_{\mu}=\eta_{M} 2^{M}+\eta_{M-1} 2^{M-1}+\cdots+\eta_{\mu} 2^{\mu}, \quad 0 \leqslant \mu \leqslant M .
+$$
+
+Then clearly we have
+
+
+\begin{equation*}
+\sum_{k=1}^{N} e^{2 \pi i n_{k} \alpha}=\sum_{\mu=1}^{M+1} \eta_{\mu-1} \sum_{k=N_{\mu}+1}^{N_{\mu-1}} e^{2 \pi i n_{k} \alpha}=\sum_{\mu=1}^{M+1} \eta_{\mu-1} \sum_{k=1}^{2^{\mu-1}} e^{2 \pi i n_{N_{\mu}+k} \alpha} . \tag{4.9}
+\end{equation*}
+
+
+Note that for the "odious numbers" $m_{k}$ we have, for every $k$, that
+
+$$
+m_{k}= \begin{cases}2 k-1 & \text { if } n_{k}=2 k-2, \\ 2 k-2 & \text { if } n_{k}=2 k-1,\end{cases}
+$$
+
+where $n_{k}$ are the "evil numbers". Furthermore, from the special structure of the Thue-Morse sequence we see that for $1 \leqslant k \leqslant 2^{\mu-1}$ we have
+
+\[
+n_{N_{\mu}+k}= \begin{cases}2 N_{\mu}+n_{k} & \text { if } s_{2}\left(N_{\mu}\right)=0,  \tag{4.10}\\ 2 N_{\mu}+m_{k} & \text { if } s_{2}\left(N_{\mu}\right)=1,\end{cases}
+\]
+
+which together with (1.16), (1.18), (2.2) and (2.3) implies that
+
+$$
+\left|\sum_{k=1}^{2^{\mu-1}} e^{2 \pi i n_{N_{\mu}+k} \alpha}\right| \leqslant\left(\exp \left(\sum_{\ell=0}^{\mu-1} f_{1}\left(2^{\ell} \alpha\right)\right)+\exp \left(\sum_{\ell=0}^{\mu-1} f_{2}\left(2^{\ell} \alpha\right)\right)\right),
+$$
+
+$1 \leqslant \mu \leqslant M+1$. Thus by (4.9) and (4.10) we have
+
+
+\begin{align*}
+\left|\sum_{k=1}^{N} e^{2 \pi i n_{k} \alpha}\right| & \leqslant \sum_{\mu=1}^{M+1}\left|\sum_{k=1}^{2^{\mu-1}} e^{2 \pi i n_{N_{\mu}+k} \alpha}\right|  \tag{4.11}\\
+& \leqslant 4 M+\sum_{\mu=\left\lceil\log _{2} M\right\rceil}^{M+1}\left|\sum_{k=1}^{2^{\mu-1}} e^{2 \pi i n_{N_{\mu}+k} \alpha}\right| \\
+& \leqslant 4 M+\sum_{\mu=\left\lceil\log _{2} M\right\rceil}^{M+1}\left(\exp \left(\sum_{\ell=0}^{\mu-1} f_{1}\left(2^{\ell} \alpha\right)\right)\right.  \tag{4.12}\\
+& \left.+\exp \left(\sum_{\ell=0}^{\mu-1} f_{2}\left(2^{\ell} \alpha\right)\right)\right)
+\end{align*}
+
+
+Using the fact that the assumption $N \geqslant 2^{\left(2^{L_{0}}\right)}$ implies that $\log _{2} M \geqslant L_{0}$, and also using the inequalities (4.7) and (4.8), we obtain
+
+
+\begin{align*}
+& \sum_{\mu=\left\lceil\log _{2} M\right\rceil}^{M+1} \exp \left(\sum_{\ell=0}^{\mu-1} f_{1}\left(2^{\ell} \alpha\right)\right)  \tag{4.13}\\
+& \quad \leqslant \sum_{\mu=\left\lceil\log _{2} M\right\rceil}^{M+1} \exp \left(\left(\frac{\pi}{\sqrt{2}}+\hat{\varepsilon}\right) \sqrt{2(\mu-1) \log \log (\mu-1)}\right) \\
+& \quad \leqslant M \exp \left(\left(\frac{\pi}{\sqrt{2}}+\hat{\varepsilon}\right) \sqrt{2 M \log \log M}\right)
+\end{align*}
+
+
+and
+
+
+\begin{gather*}
+\sum_{\mu=\left\lceil\log _{2} M\right\rceil}^{M+1} \exp \left(\sum_{\ell=0}^{\mu-1} f_{2}\left(2^{\ell} \alpha\right)\right)  \tag{4.14}\\
+\leqslant \sum_{\mu=\left\lceil\log _{2} M\right\rceil}^{M+1} \exp (\hat{\varepsilon} \sqrt{2(\mu-1) \log \log (\mu-1)}) \\
+\leqslant M \exp (\hat{\varepsilon} \sqrt{2 M \log \log M})
+\end{gather*}
+
+
+Combining (4.12), (4.13) and (4.14) we obtain
+
+$$
+\begin{aligned}
+\left|\sum_{k=1}^{N} e^{2 \pi i n_{k} \alpha}\right| & \leqslant 4 M+2 M \exp \left(\left(\frac{\pi}{\sqrt{2}}+\hat{\varepsilon}\right) \sqrt{2 M \log \log M}\right) \\
+& \leqslant 4 M+2 M \exp \left(\left(\frac{\pi}{\sqrt{2}}+\hat{\varepsilon}\right) \sqrt{2\left(\log _{2} N\right) \log \log \left(\log _{2} N\right)}\right) .
+\end{aligned}
+$$
+
+As a consequence we have
+
+$$
+\left|\sum_{k=1}^{N} e^{2 \pi i n_{k} \alpha}\right| \leqslant \exp \left(\left(\frac{\pi}{\sqrt{\log 2}}+\varepsilon\right) \sqrt{(\log N) \log \log \log N}\right)
+$$
+
+for all sufficiently large $N$. This proves the upper bound in Theorem 1.1.\\
+Part 2: lower bounds. - Now we prove the lower bound in Theorems 1.1 and 1.2. Again we assume that $h=1$, that $\alpha$ and $\varepsilon>0$ are fixed, and that $\alpha$ is from the set of full measure for which the conclusion of Lemma 4.1 holds. Again we set $\hat{\varepsilon}=\varepsilon / 2$. Then by Lemma 4.1 there exist infinitely many values of $L$ for which both inequalities
+
+$$
+\sum_{\ell=0}^{L} f_{1}\left(2^{\ell} \alpha\right) \geqslant\left(\frac{\pi}{\sqrt{2}}-\hat{\varepsilon}\right) \sqrt{2 L \log \log L}
+$$
+
+and
+
+$$
+\sum_{\ell=0}^{L} f_{2}\left(2^{\ell} \alpha\right) \leqslant \hat{\varepsilon} \sqrt{2 L \log \log L}
+$$
+
+hold simultaneously. The first relation already gives the lower bound in Theorem 1.2. By (1.16) and (2.2), (2.3) we have
+
+$$
+\left|\sum_{k=1}^{2^{L}} e^{2 \pi i n_{k} \alpha}\right| \geqslant \frac{1}{2} \exp \left(\sum_{\ell=0}^{L} f_{1}\left(2^{\ell} \alpha\right)\right)-\frac{1}{2} \exp \left(\sum_{\ell=0}^{L} f_{2}\left(2^{\ell} \alpha\right)\right) .
+$$
+
+Thus for infinitely many $L$ we have
+
+
+\begin{align*}
+& \left|\sum_{k=1}^{2^{L}} e^{2 \pi i n_{k} \alpha}\right|  \tag{4.15}\\
+& \geqslant \frac{1}{2} \exp \left(\left(\frac{\pi}{\sqrt{2}}-\hat{\varepsilon}\right) \sqrt{2 L \log \log L}\right)-\frac{1}{2} \exp (\hat{\varepsilon} \sqrt{2 L \log \log L}) .
+\end{align*}
+
+
+Consequently we also have
+
+$$
+\left|\sum_{k=1}^{N} e^{2 \pi i n_{k} \alpha}\right| \geqslant \exp \left(\left(\frac{\pi}{\sqrt{\log 2}}-\varepsilon\right) \sqrt{(\log N) \log \log \log N}\right)
+$$
+
+for infinitely many $N$. This proves the lower bound in Theorem 1.1. \(\square\)
+
+\section*{5. Discrepancy of evil Kronecker sequences: Proof of Theorem 1.3}
+For given $L \geqslant 1$, we set
+
+$$
+I_{1}(L)=\int_{0}^{1}\left(\prod_{\ell=0}^{L-1}\left|2 \sin \left(\pi 2^{\ell} \alpha\right)\right|\right) d \alpha
+$$
+
+and
+
+$$
+I_{2}(L)=\int_{0}^{1}\left(\prod_{\ell=0}^{L-1}\left|2 \cos \left(\pi 2^{\ell} \alpha\right)\right|\right) d \alpha
+$$
+
+Integrals of this type have been studied in great detail in [18]. For the integral $I_{1}$ it is proved there that
+
+
+\begin{equation*}
+2^{-L} I_{1}(L)=\kappa \lambda^{L}(1+o(1)) \tag{5.1}
+\end{equation*}
+
+
+where $\kappa, \lambda$ are positive constants with $0.654336 \leqslant \lambda \leqslant 0.663197$ (thereby improving an earlier result of Èminyan [15]).
+
+Hence for every $\varepsilon>0$ for $L$ large enough we have
+
+
+\begin{equation*}
+I_{1}(L) \leqslant\left(2^{L}\right)^{1+\log _{2} \lambda+\varepsilon} . \tag{5.2}
+\end{equation*}
+
+
+We will improve the estimate given for $\lambda$ by Fouvry and Mauduit in the following.
+
+Lemma 5.1. - Let $\lambda$ be defined as in (5.1). Then $0.66130<\lambda<$ 0.66135 .
+
+Proof. - By the formula above of equation (4.2) in [18] we have
+
+$$
+\int_{0}^{1} \prod_{\ell=0}^{L-1}\left|\sin \pi 2^{\ell} \alpha\right| d \alpha=\int_{0}^{1} \phi_{j}(\alpha) \prod_{\ell=0}^{L-j-1}\left|\sin \pi 2^{\ell} \alpha\right| d \alpha
+$$
+
+where $\phi_{0}(\alpha) \equiv 1$ and
+
+$$
+\phi_{j+1}(\alpha)=\frac{1}{2}\left(\left|\sin \pi \frac{\alpha}{2}\right| \phi_{j}\left(\frac{\alpha}{2}\right)+\left|\cos \pi \frac{\alpha}{2}\right| \phi_{j}\left(\frac{\alpha+1}{2}\right)\right) .
+$$
+
+Furthermore, it was shown in [18] that the functions $\phi_{j}$ are symmetric around $\alpha=\frac{1}{2}$ on [0, 1], and that they are concave on [0, 1]. Hence $\phi_{j}(0)=$ $\min _{\alpha \in[0,1]} \phi_{j}(\alpha)$, and $\phi_{j}(1 / 2)=\max _{\alpha \in[0,1]} \phi_{j}(\alpha)$.
+
+Let $q_{j}(\alpha):=\frac{\phi_{j}(\alpha)}{\phi_{j-1}(\alpha)}, m_{j}:=\min _{\alpha \in[0,1]} q_{j}(\alpha)$, and $M_{j}:=\max _{\alpha \in[0,1]} q_{j}(\alpha)$. Note that $q_{j}(\alpha)$ of course also is symmetric around $\alpha=\frac{1}{2}$ in [0, 1]. We have for every $\alpha \in[0,1]$
+
+$$
+\begin{aligned}
+q_{j+1}(\alpha) & =\frac{\phi_{j+1}(\alpha)}{\phi_{j}(\alpha)} \\
+& =\frac{\left|\sin \pi \frac{\alpha}{2}\right| \phi_{j}\left(\frac{\alpha}{2}\right)+\left|\cos \pi \frac{\alpha}{2}\right| \phi_{j}\left(\frac{\alpha+1}{2}\right)}{\left|\sin \pi \frac{\alpha}{2}\right| \phi_{j-1}\left(\frac{\alpha}{2}\right)+\left|\cos \pi \frac{\alpha}{2}\right| \phi_{j-1}\left(\frac{\alpha+1}{2}\right)} \\
+& \leqslant \frac{\left|\sin \pi \frac{\alpha}{2}\right| M_{j} \phi_{j-1}\left(\frac{\alpha}{2}\right)+\left|\cos \pi \frac{\alpha}{2}\right| M_{j} \phi_{j-1}\left(\frac{\alpha+1}{2}\right)}{\left|\sin \pi \frac{\alpha}{2}\right| \phi_{j-1}\left(\frac{\alpha}{2}\right)+\left|\cos \pi \frac{\alpha}{2}\right| \phi_{j-1}\left(\frac{\alpha+1}{2}\right)} \\
+& =M_{j}
+\end{aligned}
+$$
+
+Therefore $M_{j+1}=\max _{\alpha \in[0,1]} q_{j}(\alpha) \leqslant M_{j}$.\\
+Analogously we obtain $q_{j+1}(\alpha) \geqslant m_{j}$ for all $\alpha \in[0,1]$. Altogether $M_{1} \geqslant$ $M_{2} \geqslant M_{3} \geqslant \ldots$ and $m_{1} \leqslant m_{2} \leqslant m_{3} \leqslant \ldots$, and therefore for every $k$ fixed\\
+we have
+
+$$
+\begin{aligned}
+\int_{0}^{1} \prod_{\ell=0}^{L-1}\left|\sin \pi 2^{\ell} \alpha\right| d \alpha & =\int_{0}^{1} \phi_{L}(\alpha) d \alpha \\
+& =\int_{0}^{1} \prod_{j=1}^{L} q_{j}(\alpha) d \alpha \\
+& \leqslant M_{k}^{L-k} \int_{0}^{1} q_{1}(\alpha) \ldots q_{k-1}(\alpha) d \alpha
+\end{aligned}
+$$
+
+Similarly we get
+
+$$
+\int_{0}^{1} \prod_{\ell=0}^{L-1}\left|\sin \pi 2^{\ell} \alpha\right| d \alpha \geqslant m_{k}^{L-k} \int_{0}^{1} q_{1}(\alpha) \ldots q_{k-1}(\alpha) d \alpha .
+$$
+
+Hence
+
+$$
+\begin{aligned}
+m_{k}^{L-k} \int_{0}^{1} q_{1}(\alpha) \ldots & q_{k-1}(\alpha) d \alpha \\
+& \leqslant \kappa \lambda^{L}(1+o(1)) \leqslant M_{k}^{L-k} \int_{0}^{1} q_{1}(\alpha) \ldots q_{k-1}(\alpha) d \alpha
+\end{aligned}
+$$
+
+and consequently
+
+
+\begin{equation*}
+m_{k} \leqslant \lambda \leqslant M_{k} \quad \text { for all } k \geqslant 1 . \tag{5.3}
+\end{equation*}
+
+
+By considering the function $q_{6}(\alpha)$, in the following we will prove that $m_{6}>$ 0.6613 and $M_{6}<0.66135$.
+
+\begin{figure}[h]
+\begin{center}
+  \includegraphics[alt={},max width=\textwidth]{24a36c64-c0d9-4cc2-a5fb-86cd33f09837-32_417_685_1536_434}
+\captionsetup{labelformat=empty}
+\caption{Figure 5.1. The function $q_{6}(\alpha)$.}
+\end{center}
+\end{figure}
+
+Wherever $q_{6}$ is differentiable we have
+
+$$
+\begin{aligned}
+\left|q_{6}{ }^{\prime}(\alpha)\right| & =\left|\frac{\phi_{6}{ }^{\prime}(\alpha) \phi_{5}(\alpha)-\phi_{6}(\alpha) \phi_{5}{ }^{\prime}(\alpha)}{\left(\phi_{5}(\alpha)\right)^{2}}\right| \\
+& \leqslant \frac{\max _{\alpha \in[0,1]}\left|\phi_{6}{ }^{\prime}(\alpha)\right|}{\phi_{5}(0)}+\frac{\phi_{6}\left(\frac{1}{2}\right)}{\left(\phi_{5}(0)\right)^{2}} \max _{\alpha \in[0,1]}\left|\phi_{5}{ }^{\prime}(\alpha)\right| .
+\end{aligned}
+$$
+
+It can easily be checked for example by differentiating $\phi_{5}(\alpha)$ and $\phi_{6}(\alpha)$ with the help of Mathematica that $\phi_{5}{ }^{\prime}(\alpha)$ is the sum resp. difference of
+
+\begin{itemize}
+  \item[-] 32 products of absolute values of sines and cosines, each product weighted by a factor $\frac{\pi}{1024}$,
+  \item[-] 32 such products weighted by $\frac{\pi}{512}$,
+  \item[-] 32 with weight $\frac{\pi}{256}$,
+  \item[-] 32 with weight $\frac{\pi}{128}$,
+  \item[-] 32 products with factor $\frac{\pi}{64}$.
+\end{itemize}
+
+Hence
+
+$$
+\left|\phi_{5}{ }^{\prime}(\alpha)\right| \leqslant 32 \pi\left(\frac{1}{1024}+\frac{1}{512}+\frac{1}{256}+\frac{1}{128}+\frac{1}{64}\right)=\frac{31}{32} \pi .
+$$
+
+In the same way we show that also $\left|\phi_{6}{ }^{\prime}(\alpha)\right| \leqslant \frac{31}{32} \pi$. By combining these estimates with the values of $\phi_{5}(0)$ and $\phi_{6}(1 / 2)$ in (5.4), we finally obtain $\left|q_{6}{ }^{\prime}(\alpha)\right| \leqslant 56.4$.
+
+Now we calculate
+
+$$
+q_{6}\left(\frac{a}{2800000}\right) \text { for } a=0,1, \ldots, 1400000
+$$
+
+with the help of Mathematica and obtain
+
+$$
+\begin{aligned}
+& \max \left\{\left.q_{6}\left(\frac{a}{2800000}\right) \right\rvert\, a=0,1, \ldots, 1400000\right\}=0.66133092 \ldots \\
+& \min \left\{\left.q_{6}\left(\frac{a}{2800000}\right) \right\rvert\, a=0,1, \ldots, 1400000\right\}=0.66131148 \ldots
+\end{aligned}
+$$
+
+Hence
+
+$$
+m_{6} \geqslant 0.66131145-56.4 \frac{1}{5600000}=0.661301 \ldots
+$$
+
+and
+
+$$
+M_{6} \leqslant 0.66133092+56.4 \frac{1}{5600000}=0.661341 \ldots
+$$
+
+By (5.3) this implies Lemma 5.1. \(\square\)
+
+Let us remark that numerical experiments with $q_{15}(\alpha)$ suggest that $\lambda=$ $0.661322602 \ldots$. It is tempting to conjecture that the precise value of $\lambda$ can be expressed in a simple way in terms of the "usual" mathematical constants such as $e, \pi, \log 2$, etc. However, we do not know what such an\\
+expression could look like, and cannot even make a reasonable guess (the numerical argument in the proof of Lemma 5.1 does not give any hints).
+
+Proof of Theorem 1.3.\\
+Part 1: upper bound. - For the integral $I_{2}(L)$ we can use the equality
+
+
+\begin{equation*}
+\prod_{\ell=0}^{L-1}\left|2 \cos \left(\pi 2^{\ell} \alpha\right)\right|=\frac{\left|\sin \pi 2^{L} \alpha\right|}{\sin \pi \alpha} \leqslant \min \left(2^{L}, \frac{1}{\pi \alpha(1-\alpha)}\right) \tag{5.5}
+\end{equation*}
+
+
+which holds for $0<\alpha<1$ and which implies that
+
+$$
+\begin{aligned}
+I_{2}(L) & \leqslant \int_{0}^{1} \frac{\left|\sin \pi 2^{L} \alpha\right|}{\sin \pi \alpha} d \alpha \\
+& \leqslant 2 \int_{0}^{2^{-L}} 2^{L} d \alpha+\int_{2^{-L}}^{1-2^{-L}} \frac{1}{\pi \alpha(1-\alpha)} d \alpha \\
+& \leqslant 2+\frac{2 L \log 2}{\pi}
+\end{aligned}
+$$
+
+(this is essentially a variant of the classical bound for the $L^{1}$-norm of the Dirichlet kernel).
+
+For $\mu \geqslant 1$ and $\varepsilon>0$ we set
+
+
+\begin{equation*}
+G_{\mu}=\left\{\alpha \in(0,1): \sum_{h=1}^{2^{4 \mu}} \frac{1}{h}\left|\sum_{k=1}^{2^{\mu-1}} e^{2 \pi i h n_{k} \alpha}\right|>\left(2^{\mu}\right)^{1+\log _{2} \lambda+\varepsilon}\right\} . \tag{5.7}
+\end{equation*}
+
+
+By (1.16), (5.2) and (5.6) we have
+
+$$
+\begin{aligned}
+\int_{0}^{1} \sum_{h=1}^{2^{4 \mu}} \frac{1}{h}\left|\sum_{k=1}^{2^{\mu-1}} e^{2 \pi i h n_{k} \alpha}\right| d \alpha & =\sum_{h=1}^{2^{4 \mu}} \frac{1}{h} \int_{0}^{1}\left|\sum_{k=1}^{2^{\mu-1}} e^{2 \pi i h n_{k} \alpha}\right| d \alpha \\
+& \leqslant \sum_{h=1}^{2^{4 \mu}} \frac{1}{h}\left(I_{1}(\mu)+I_{2}(\mu)\right) \\
+& \leqslant\left(2^{\mu}\right)^{1+\log _{2} \lambda+\frac{\varepsilon}{2}}
+\end{aligned}
+$$
+
+for sufficiently large $\mu$. Consequently we have
+
+$$
+\mathbb{P}\left(G_{\mu}\right) \leqslant\left(2^{\mu}\right)^{-\frac{\varepsilon}{2}} .
+$$
+
+which implies that by the Borel-Cantelli lemma with probability one only finitely many events $G_{\mu}$ occur. We can show the same result if we replace the sequence $\left(n_{k}\right)_{k \geqslant 1}$ in (5.7) by $\left(m_{k}\right)_{k \geqslant 1}$. In other words, for almost all $\alpha$ we have
+
+
+\begin{equation*}
+\sum_{h=1}^{2^{4 \mu}} \frac{1}{h}\left|\sum_{k=1}^{2^{\mu-1}} e^{2 \pi i h n_{k} \alpha}\right| \leqslant\left(2^{\mu}\right)^{1+\log _{2} \lambda+\varepsilon} \tag{5.8}
+\end{equation*}
+
+
+and the same estimate for $\left(m_{k}\right)_{k \geqslant 1}$ instead of $\left(n_{k}\right)_{k \geqslant 1}$, for all $\mu \geqslant \mu_{0}(\alpha, \varepsilon)$.\\
+Now assume that $\alpha, \varepsilon$ and $N$ are given. Furthermore we assume that for these values of $\alpha$ and $\varepsilon$ the estimate (5.8) and the corresponding estimate for $\left(m_{k}\right)_{k \geqslant 1}$ instead of $\left(n_{k}\right)_{k \geqslant 1}$ hold for $\mu \geqslant \mu_{0}$, and that $N \geqslant 2^{\left(4 \mu_{0}\right)}$. We apply the same dyadic decomposition of $N$ as in the proof of the upper bound of Theorem 1.1 in Section 4. In the same way as we obtained (4.11), together with the Koksma-Erdős-Turán inequality, we can now obtain with $M=\left\lfloor\log _{2}(N)\right\rfloor$
+
+
+\begin{align*}
+& N D_{N}^{*}\left(\left\{n_{1} \alpha\right\}, \ldots,\left\{n_{N} \alpha\right\}\right)  \tag{5.9}\\
+& \quad \leqslant 1+\sum_{h=1}^{N} \frac{1}{h}\left|\sum_{k=1}^{N} e^{2 \pi i h n_{k} \alpha}\right| \\
+& \leqslant 1+\sum_{h=1}^{N} \frac{1}{h} \sum_{\mu=1}^{M+1}\left|\sum_{k=1}^{2^{\mu-1}} e^{2 \pi i h n_{N_{\mu}+k} \alpha}\right| \\
+& \leqslant 1+\underbrace{\left\lceil\sum_{\mu=1}^{\left\lceil\left(\log _{2} N\right) / 4\right\rceil} \sum_{h=1}^{N} \frac{1}{h}\left|\sum_{k=1}^{2^{\mu-1}} e^{2 \pi i h n_{N_{\mu}+k} \alpha}\right|\right.}_{\mu=1} \\
+& \quad+\sum_{\mu=\left\lceil\left(\log _{2} N\right) / 4\right\rceil+1}^{M+1} \sum_{h=1}^{N} \frac{1}{h}\left|\sum_{k=1}^{2^{\mu-1}} e^{2 \pi i h n_{N_{\mu}+k} \alpha}\right|
+\end{align*}
+
+
+For the last term in (5.9) by (4.10) and (5.8) we have
+
+$$
+\begin{gathered}
+\sum_{\mu=\left\lceil\left(\log _{2} N\right) / 4\right\rceil+1}^{M+1} \sum_{h=1}^{N} \frac{1}{h}\left|\sum_{k=1}^{2^{\mu-1}} e^{2 \pi i h n_{N_{\mu}+k} \alpha}\right| \\
+\leqslant \sum_{\mu=\left\lceil\left(\log _{2} N\right) / 4\right\rceil+1}^{M+1} \sum_{h=1}^{2^{4 \mu}} \frac{1}{h}\left|\sum_{k=1}^{2^{\mu-1}} e^{2 \pi i h n_{N_{\mu}+k} \alpha}\right| \\
+\leqslant \underbrace{\sum_{\mu=\left\lceil\left(\log _{2} N\right) / 4\right\rceil+1}^{M+1}\left(2^{\mu}\right)^{1+\log _{2} \lambda+\varepsilon / 2}}_{\ll\left(2^{M}\right)^{1+\log _{2} \lambda+\varepsilon / 2}} .
+\end{gathered}
+$$
+
+Since $M \leqslant \log _{2} N$, together with (5.9) we have proved that
+
+$$
+N D_{N}^{*}\left(\left\{n_{1} \alpha\right\}, \ldots,\left\{n_{N} \alpha\right\}\right) \leqslant N^{1+\log _{2} \lambda+\varepsilon}
+$$
+
+for all sufficiently large $N$, which proves the upper bound in Theorem 1.3.
+
+Part 2: lower bound. - By (1.3) and (1.17) for the discrepancy $D_{N}^{*}$ of the sequence $\left(\left\{n_{k} \alpha\right\}\right)_{k \geqslant 1}$ with $N=2^{L}$ for each positive integer $H$ we have
+
+$$
+\begin{aligned}
+D_{N}^{*} & \geqslant \frac{1}{4 H}\left|\frac{1}{N} \sum_{k=1}^{N} e^{2 \pi i n_{k} H \alpha}\right| \\
+& \geqslant \frac{1}{4 H} \prod_{\ell=0}^{L}\left|\sin \pi H 2^{\ell} \alpha\right|-\underbrace{\frac{1}{4 H} \prod_{\ell=0}^{L}\left|\cos \pi H 2^{\ell} \alpha\right|}_{\ll(H\|H \alpha\|)^{-1}} .
+\end{aligned}
+$$
+
+Let
+
+$$
+f_{L}(\alpha)=\prod_{\ell=0}^{L}\left|\sin \pi 2^{\ell} \alpha\right| .
+$$
+
+We will show below that for any given $\varepsilon>0$ for almost all $\alpha$ there are infinitely many $L$ such that there exists a positive integer $h_{L}$ with $h_{L} \leqslant 2^{L}$ and
+
+
+\begin{equation*}
+\frac{1}{h_{L}} f_{L}\left(h_{L} \alpha\right) \gg \lambda^{L(1+\varepsilon)} . \tag{5.10}
+\end{equation*}
+
+
+It is a well-known fact in metric Diophantine approximation that for almost all $\alpha$ we have $h\|h \alpha\| \geqslant \frac{1}{h^{\varepsilon}}$ for all $h$ large enough. Hence if (5.10) is true for almost all $\alpha$ then there are infinitely many $L$ such that for $N=2^{L}$ we have
+
+
+\begin{align*}
+D_{N}^{*} & \gg \lambda^{L(1+\varepsilon)}-\left(h_{L}\right)^{\varepsilon}  \tag{5.11}\\
+& \gg\left(2^{L}\right)^{(1+\varepsilon) \frac{\log \lambda}{\log 2}}-\left(2^{L}\right)^{\varepsilon} \\
+& \gg N^{(1+\varepsilon) \frac{\log \lambda}{\log 2}},
+\end{align*}
+
+
+and the desired result follows (note that $\log \lambda<0$ ). It remains to show the existence of the numbers $h_{L} \leqslant 2^{L}$ which satisfy (5.10).
+
+Let $\varepsilon>0$ be given. From the definition of $f_{L}(\alpha)$ it is easily seen that
+
+
+\begin{equation*}
+\left|f_{L}\left(\alpha_{1}\right)-f_{L}\left(\alpha_{2}\right)\right| \leqslant 2^{L+1} \pi\left|\alpha_{1}-\alpha_{2}\right| ; \tag{5.12}
+\end{equation*}
+
+
+this follows from the fact that the derivative of the function $\prod_{\ell=0}^{L} \sin \pi 2^{\ell} \alpha$ is bounded uniformly by $2^{L+1} \pi$. Now let $g_{L}(\alpha)$ be the function defined by
+
+$$
+g_{L}(\alpha)=f_{L}\left(j 4^{-L}\right) \quad \text { for } \alpha \in\left[j 4^{-L},(j+1) 4^{-L}\right), \quad \text { for } j=0, \ldots, 4^{L}-1 .
+$$
+
+This definition means that $g_{L}$ is constant on intervals of length $4^{-L}$ which lie between two integer multiples of $4^{-L}$, and coincides with $f_{L}$ on the left endpoint of such intervals. By (5.12) we have
+
+
+\begin{equation*}
+\left|g_{L}-f_{L}\right| \leqslant 2 \pi 2^{-L} \tag{5.13}
+\end{equation*}
+
+
+which means that it is sufficient to prove (5.10) with $f_{L}$ replaced by $g_{L}$ (remember that the value of $\varepsilon>0$ was arbitrary and $\lambda>1 / 2$ ). The reason for using the functions $g_{L}$ instead of $f_{L}$ is that every function $g_{L}$ can be written as a sum of at most $4^{L}$ different characteristic functions of intervals; consequently, we know that the set of values of $\alpha$ where $\left|g_{L}\right|$ is "large" can be written as the union of at most $4^{L}$ intervals, which implies an upper bound for the size of the Fourier coefficients of the characteristic function of this set (see below for details).
+
+Let $Q=Q(\varepsilon)$ be a positive integer which will be chosen in dependence on $\varepsilon$ (we assume that $Q$ is "large"). We define real numbers
+
+$$
+\delta_{i}=\lambda^{1-\frac{i-1 / 2}{Q}}, \quad i=0,1, \ldots, Q+1 .
+$$
+
+Note that $\delta_{0}<\delta_{1}<\ldots<\delta_{Q+1}, \delta_{0}=\lambda^{1+1 /(2 Q)}<\lambda$, and $\delta_{Q+1}>1$. Furthermore, we define
+
+$$
+M_{L}^{(i)}:=\left\{\alpha \in[0,1): \delta_{i}^{L}<\left|g_{L}(\alpha)\right| \leqslant \delta_{i+1}^{L}\right\}
+$$
+
+for $i=0,1, \ldots, Q$.\\
+Then by (5.1) and (5.13) we have
+
+$$
+\begin{aligned}
+\sum_{i=0}^{Q} \mathbb{P}\left(M_{L}^{(i)}\right) \delta_{i+1}^{L}+\left(1-\sum_{i=0}^{Q} \mathbb{P}\left(M_{L}^{(i)}\right)\right)\left(\lambda^{1+\frac{1}{2 Q}}\right)^{L} & \\
+& \geqslant \int_{0}^{1}\left|g_{L}(\alpha)\right| d \alpha>\frac{\kappa}{2} \lambda^{L}
+\end{aligned}
+$$
+
+for sufficiently large $L$, where $\kappa$ is the number from (5.1). Hence we have
+
+$$
+\sum_{i=0}^{Q} \mathbb{P}\left(M_{L}^{(i)}\right) \delta_{i+1}^{L} \geqslant \frac{\kappa}{4} \lambda^{L}
+$$
+
+for sufficiently large $L$. Consequently for every $L$ large enough there is an $i_{L} \in\{0, \ldots, Q\}$ with
+
+$$
+\delta_{i_{L}+1}^{L} \mathbb{P}\left(M_{L}^{\left(i_{L}\right)}\right) \geqslant \frac{\kappa}{4(Q+1)} \lambda^{L}
+$$
+
+which implies that
+
+$$
+\mathbb{P}\left(M_{L}^{\left(i_{L}\right)}\right) \geqslant \frac{\kappa}{4(Q+1)}\left(\frac{\lambda}{\delta_{i_{L}+1}}\right)^{L} .
+$$
+
+Note that, as a consequence of the construction of $g_{L}$, the set $M_{L}^{(i)}$ always is a union of at most $4^{L}$ disjoint intervals. It is easily seen that by trimming the sets $M_{L}^{(i)}$ appropriately we can always find a set $R_{L}^{(i)}$ such that $R_{L}^{(i)} \subset M_{L}^{(i)}$,\\
+such that $R_{L}^{(i)}$ is also the union of at most $4^{L}$ intervals, and such that for the measure of the sets $R_{L}^{(i)}$ we have the exact equality
+
+$$
+\mathbb{P}\left(R_{L}^{\left(i_{L}\right)}\right)=\frac{\kappa}{4(Q+1)}\left(\frac{\lambda}{\delta_{i_{L}+1}}\right)^{L} .
+$$
+
+Let $\eta=\eta(\varepsilon)>0$ be a "small" number. Let $H_{L}$ denote the largest integer such that
+
+
+\begin{equation*}
+H_{L} \leqslant \frac{4(Q+1)}{\kappa}\left(\frac{\delta_{i_{L}+1}}{\lambda}\right)^{L}(1+\eta)^{L} . \tag{5.14}
+\end{equation*}
+
+
+Note that
+
+$$
+\frac{\delta_{i_{L}+1}}{\lambda} \geqslant \lambda^{\frac{1}{2 Q}},
+$$
+
+and consequently we have $H_{L} \geqslant(1+\eta)^{L}$ for $L$ large enough; this means that $H_{L}$ grows exponentially in $L$. Note also that it is easily seen that $H_{L} \leqslant 2^{L}$ for sufficiently large $L$ (provided that $\eta$ is chosen sufficiently small), which is important for (5.11).
+
+We will show that for almost all $\alpha$ for infinitely many $L$ there is a
+
+
+\begin{equation*}
+h \leqslant H_{L} \text { such that }\{h \alpha\} \in R_{L}^{\left(i_{L}\right)} \text {. } \tag{5.15}
+\end{equation*}
+
+
+For these $h$ then we have
+
+$$
+\begin{aligned}
+\frac{\left|g_{L}(h \alpha)\right|}{h} & \geqslant \delta_{i_{L}}^{L} \frac{\kappa}{4(Q+1)}\left(\frac{\lambda}{\delta_{i_{L}+1}}\right)^{L}(1+\eta)^{-L} \\
+& =\frac{\kappa}{4(Q+1)}\left(\frac{\delta_{i_{L}}}{\delta_{i_{L}+1}}\right)^{L}(1+\eta)^{-L} \lambda^{L} \\
+& \gg \lambda^{L(1+\varepsilon)}
+\end{aligned}
+$$
+
+for $Q$ large enough and $\eta$ small enough in dependence on $\varepsilon$. Together with (5.13) this will establish (5.10), as desired.
+
+It remains to show (5.15). Let $\mathbf{1}_{L}(\alpha)$ denote the characteristic function of the set $R_{L}^{(i)}$, extended with period one. Then we know that
+
+
+\begin{equation*}
+\int_{0}^{1} \mathbf{1}_{L}(\alpha) d \alpha=\frac{\kappa}{4 Q}\left(\frac{\lambda}{\delta_{i_{L}+1}}\right)^{L} \tag{5.16}
+\end{equation*}
+
+
+Setting
+
+$$
+\mathbb{I}_{L}(\alpha)=\mathbf{1}_{L}(\alpha)-\int_{0}^{1} \mathbf{1}_{L}(\omega) d \omega
+$$
+
+we clearly have $\int_{0}^{1} \mathbb{I}_{L}(\alpha) d \alpha=0$ and
+
+
+\begin{equation*}
+\operatorname{Var}_{[0,1]} \mathbb{I}_{L} \leqslant 4^{L} . \tag{5.17}
+\end{equation*}
+
+
+From (5.16) we can easily calculate that
+
+
+\begin{align*}
+\left\|\mathbb{I}_{L}\right\|_{2}^{2} & =\int_{0}^{1} \mathbb{I}_{L}(\alpha)^{2} d \alpha=\frac{\kappa}{4 Q}\left(\frac{\lambda}{\delta_{i_{L}+1}}\right)^{L}\left(1-\frac{\kappa}{4 Q}\left(\frac{\lambda}{\delta_{i_{L}+1}}\right)^{L}\right) \\
+& \leqslant \frac{\kappa}{4 Q}\left(\frac{\lambda}{\delta_{i_{L}+1}}\right)^{L} . \tag{5.18}
+\end{align*}
+
+
+We write
+
+$$
+\mathbb{I}_{L}(\alpha) \sim \sum_{j=1}^{\infty}\left(a_{j} \cos 2 \pi j \alpha+b_{j} \sin 2 \pi j \alpha\right)
+$$
+
+for the Fourier series of $\mathbb{I}_{L}$ (note that it has no constant term, since $\mathbb{I}_{L}$ has integral zero). In the sequel, we want to show that the sum
+
+
+\begin{equation*}
+\sum_{h \leqslant H_{L}} \int_{0}^{1} \mathbf{1}_{L}(h \alpha) d \alpha \tag{5.19}
+\end{equation*}
+
+
+is large in comparison with the sum
+
+
+\begin{equation*}
+\sum_{h \leqslant H_{L}} \mathbb{I}_{L}(h \alpha), \tag{5.20}
+\end{equation*}
+
+
+for almost all $\alpha$ and infinitely many $L$. Since
+
+
+\begin{equation*}
+\sum_{h \leqslant H_{L}} \mathbf{1}_{L}(h \alpha)=\sum_{h \leqslant H_{L}} \int_{0}^{1} \mathbf{1}_{L}(\omega) d \omega+\sum_{h \leqslant H_{L}} \mathbb{I}_{L}(h \alpha), \tag{5.21}
+\end{equation*}
+
+
+such an estimate will show that the sum on the left-hand side of (5.21) is large (for almost all $\alpha$, for infinitely many $L$ ), which in turn implies that many of the events described in (5.15) will occur. A lower bound for (5.19) is easy to obtain; to find an asymptotic upper bound for (5.20), we will calculate the $L^{2}$ norm of these sums, and apply the Borel-Cantelli lemma.
+
+From (5.16) we directly obtain
+
+
+\begin{equation*}
+\sum_{h=1}^{H_{L}} \int_{0}^{1} \mathbf{1}_{L}(\alpha) d \alpha=H_{L} \frac{\kappa}{4 Q}\left(\frac{\lambda}{\delta_{i_{L}+1}}\right)^{L} \gg(1+\eta)^{L} \tag{5.22}
+\end{equation*}
+
+
+Next we estimate
+
+$$
+\left\|\sum_{h=1}^{H_{L}} \mathbb{I}_{L}(h \cdot)\right\|_{2},
+$$
+
+which is relatively difficult. As a consequence of (5.17) and a classical inequality for the size of the Fourier coefficients of functions of bounded variation (see for example [41, p. 48]) we have
+
+
+\begin{equation*}
+\left|a_{j}\right| \leqslant \frac{\operatorname{Var}_{[0,1]} \mathbb{I}_{L}}{2 j} \leqslant \frac{4^{L}}{j}, \quad \text { and similarly } \quad\left|b_{j}\right| \leqslant \frac{4^{L}}{j} . \tag{5.23}
+\end{equation*}
+
+
+We split the function $\mathbb{I}_{L}$ into an even and an odd part (that is, into a cosineand a sine-series). In the sequel, we consider only the even part; the odd part can be treated in exactly the same way. Let $p_{L}(\alpha)$ denote the $4^{3 L}$-th partial sum of the Fourier series of the even part of $\mathbb{I}_{L}$, and let $r_{L}(\alpha)$ denote the remainder term. Then by Minkowski's inequality we have
+
+
+\begin{equation*}
+\left\|\sum_{h=1}^{H_{L}} \mathbb{I}_{L}^{(\text {even })}(h \cdot)\right\|_{2} \leqslant\left\|\sum_{h=1}^{H_{L}} p_{L}(h \cdot)\right\|_{2}+\left\|\sum_{h=1}^{H_{L}} r_{L}(h \cdot)\right\|_{2} . \tag{5.24}
+\end{equation*}
+
+
+Furthermore, (5.23), Minkowski's inequality, and Parseval's identity imply that
+
+$$
+\begin{aligned}
+\left\|\sum_{h=1}^{H_{L}} r_{L}(h \cdot)\right\|_{2} & \leqslant H_{L}\left\|r_{L}\right\|_{2} \\
+& \leqslant H_{L} \sqrt{\sum_{j=4^{3 L}+1}^{\infty} \frac{4^{2 L}}{j^{2}}} \\
+& \leqslant H_{L} 2^{-L} \\
+& \ll 1
+\end{aligned}
+$$
+
+To estimate the first term on the right-hand side of (5.24), we expand $p_{L}$ into a Fourier series and use the orthogonality of the trigonometric system. Then we obtain
+
+
+\begin{align*}
+& \left\|\sum_{h=1}^{H_{L}} p_{L}(h \cdot)\right\|_{2}^{2}  \tag{5.26}\\
+& =\underbrace{\sum_{n_{1}, n_{2}=1}^{H_{L}} \sum_{j_{1}, j_{2}=1}^{4^{3 L}} \frac{a_{j_{1}} a_{j_{2}}}{2}}_{j_{1} n_{1}=j_{2} n_{2}} \\
+& \quad=\sum_{j_{1}, j_{2}=1}^{4^{3 L}} \frac{a_{j_{1}} a_{j_{2}}}{2} \#\left\{\left(n_{1}, n_{2}\right): 1 \leqslant n_{1}, n_{2} \leqslant H_{L}, j_{1} n_{1}=j_{2} n_{2}\right\} .
+\end{align*}
+
+
+To estimate the size of the sum on the right-hand size of (5.26), we assume that $j_{1}$ and $j_{2}$ are fixed. In the case $j_{1}=1$ and $j_{2}=1$, we clearly have $j_{1} n_{1}=j_{2} n_{2}$ whenever $n_{1}=n_{2}$; thus the cardinality of the set on the righthand side of (5.26) is $H_{L}$. If $j_{1}=1$ and $j_{2}=2$, then we have to count the number of pairs $\left(n_{1}, n_{2}\right)$ for which $2 n_{1}=n_{2}$; this number is $\left\lfloor H_{L} / 2\right\rfloor$. For the values $j_{1}=2$ and $j_{2}=4$ we also have to count the number of pairs $\left(n_{1}, n_{2}\right)$ for which $2 n_{1}=n_{2}$; so this cardinality also is $\left\lfloor H_{L} / 2\right\rfloor$. The\\
+last example shows that the greatest common divisor of $j_{1}$ and $j_{2}$ plays a role in this calculation. Using similar considerations, in the case of general (fixed) values of $j_{1}$ and $j_{2}$ it turns out that we have $j_{1} n_{1}=j_{2} n_{2}$ whenever
+
+$$
+n_{1}=v \frac{j_{2}}{\operatorname{gcd}\left(j_{1}, j_{2}\right)}, \quad n_{2}=v \frac{j_{1}}{\operatorname{gcd}\left(v_{1}, v_{2}\right)} \quad \text { for some positive integer } v .
+$$
+
+As a consequence we have
+
+$$
+\begin{aligned}
+\#\left\{\left(n_{1}, n_{2}\right):\right. & \left.1 \leqslant n_{1}, n_{2} \leqslant H_{L}, j_{1} n_{1}=j_{2} n_{2}\right\} \\
+& =\#\left\{v \geqslant 1: v \leqslant \min \left(\frac{H_{L} \operatorname{gcd}\left(j_{1}, j_{2}\right)}{j_{2}}, \frac{H_{L} \operatorname{gcd}\left(j_{1}, j_{2}\right)}{j_{1}}\right)\right\} \\
+& =\left\lfloor\frac{H_{L} \operatorname{gcd}\left(j_{1}, j_{2}\right)}{\max \left(j_{1}, j_{2}\right)}\right\rfloor \\
+& \leqslant \frac{H_{L} \operatorname{gcd}\left(j_{1}, j_{2}\right)}{\sqrt{j_{1} j_{2}}} .
+\end{aligned}
+$$
+
+Combining this estimate with (5.26) we obtain
+
+
+\begin{equation*}
+\left\|\sum_{h=1}^{H_{L}} p_{L}(h \cdot)\right\|_{2}^{2} \leqslant H_{L} \sum_{j_{1}, j_{2}=1}^{4^{3 L}} \frac{\left|a_{j_{1}} a_{j_{2}}\right|}{2} \frac{\operatorname{gcd}\left(j_{1}, j_{2}\right)}{\sqrt{j_{1} j_{2}}} . \tag{5.27}
+\end{equation*}
+
+
+The sum on the right-hand side of the last equation is called a GCD sum. It is well-known that such sums play an important role in the metric theory of Diophantine approximation; the particular sum in (5.27) probably appeared for the first time in LeVeque's paper [29] (see also [14] and [2]). A precise upper bound for these sums has been obtained by Hilberdink [23]. ${ }^{(3)}$ Hilberdink's result implies that there exists an absolute constant $c_{\text {abs }}$ such that
+
+$$
+\sum_{j_{1}, j_{2}=1}^{4^{3 L}} \frac{\left|a_{j_{1}} a_{j_{2}}\right|}{2} \frac{\operatorname{gcd}\left(j_{1}, j_{2}\right)}{\sqrt{j_{1} j_{2}}} \ll \exp \left(\frac{c_{\mathrm{abs}} \sqrt{\log \left(4^{3 L}\right)}}{\sqrt{\log \log 4^{3 L}}}\right) \sum_{j=1}^{4^{3 L}} a_{j}^{2} .
+$$
+
+\footnotetext{${ }^{(3)}$ The upper bounds in [23] are formulated in terms bounds for the maximal size of the largest eigenvalue of certain matrices involving greatest common divisors (GCD matrices). In [3] it is explained in detail how these bounds for eigenvalues of GCD matrices can be translated into bounds for GCD sums such as the ones considered here.
+}Combining this estimate with (5.18) and (5.27) (and using Parseval's identity) we have
+
+$$
+\begin{aligned}
+\left\|\sum_{h=1}^{H_{L}} p_{L}(h \cdot)\right\|_{2}^{2} & \ll H_{L} \exp \left(\frac{c_{\mathrm{abs}} \sqrt{\log \left(4^{3 L}\right)}}{\sqrt{\log \log 4^{3 L}}}\right) \frac{\kappa}{4 Q}\left(\frac{\lambda}{\delta_{i_{L}+1}}\right)^{L} \\
+& \ll(1+\eta)^{L} \exp \left(\frac{c_{\mathrm{abs}} \sqrt{\log \left(4^{3 L}\right)}}{\sqrt{\log \log 4^{3 L}}}\right),
+\end{aligned}
+$$
+
+and, together with (5.24) and (5.25), and with a similar argument for the odd part of $\mathbb{I}_{L}$, we obtain
+
+
+\begin{equation*}
+\left\|\sum_{h=1}^{H_{L}} \mathbb{I}_{L}(h \cdot)\right\|_{2}^{2} \ll(1+\eta)^{L} \exp \left(\frac{c_{\mathrm{abs}} \sqrt{\log \left(4^{3 L}\right)}}{\sqrt{\log \log 4^{3 L}}}\right) . \tag{5.28}
+\end{equation*}
+
+
+By Chebyshev's inequality we have
+
+$$
+\mathbb{P}\left(\alpha \in[0,1):\left|\sum_{h=1}^{H_{L}} \mathbb{I}_{L}(h \alpha)\right|>\left(\log H_{L}\right)\left\|\sum_{h=1}^{H_{L}} \mathbb{I}_{L}(h \cdot)\right\|_{2}\right) \leqslant \frac{1}{\left(\log H_{L}\right)^{2}},
+$$
+
+and since $\left(H_{L}\right)_{L \geqslant 1}$ grows exponentially in $L$ these probabilities give a convergent series when summing over $L$. Thus by the Borel-Cantelli lemma with probability one only finitely many events
+
+$$
+\left|\sum_{h=1}^{H_{L}} \mathbb{1}_{L}(h \alpha)\right|>\left(\log H_{L}\right)\left\|\sum_{h=1}^{M} \mathbb{I}_{L}(h \cdot)\right\|_{2}
+$$
+
+happen, which by (5.28) implies that
+
+$$
+\left|\sum_{h=1}^{H_{L}} \mathbb{I}_{L}(h \alpha)\right| \ll(1+\eta)^{L / 2} \exp \left(\frac{\hat{c}_{\mathrm{abs}} \sqrt{L}}{\sqrt{\log L}}\right)
+$$
+
+for some absolute constant $\hat{c}_{\text {abs }}$. Comparing this upper bound with (5.22) and using (5.21) we conclude that
+
+$$
+\sum_{h=1}^{H_{L}} \mathbf{1}_{L}(h \alpha) \gg(1+\eta)^{L} \quad \text { as } L \rightarrow \infty
+$$
+
+for almost all $\alpha$. In particular we have
+
+$$
+\sum_{L=1}^{\infty} \sum_{h=1}^{H_{L}} \mathbf{1}_{L}(h \alpha)=\infty
+$$
+
+for almost all $\alpha$, which means that for almost all $\alpha$ infinitely many events (5.15) occur. As noted after equation (5.15), this proves the theorem. \(\square\)
+
+\section*{6. Concrete Examples: Proof of Theorem 1.4}
+It is known that for all $\alpha$ we have
+
+
+\begin{equation*}
+\prod_{\ell=0}^{L}\left|\sin \pi 2^{\ell} \alpha\right| \leqslant \mathcal{H}^{L} \tag{6.1}
+\end{equation*}
+
+
+for all $L$, where $\mathcal{H}=\frac{\sqrt{3}}{2}=0.866 \ldots$. This inequality appears for example as formula (2.10) in [18], but was already proved earlier in [21] and [33]. Thus from (1.16), (5.5) and the Weyl criterion it follows that $\left(\left\{n_{k} \alpha\right\}\right)_{k \geqslant 1}$ is u.d. mod 1 iff $\alpha$ is irrational.
+
+Hence by (1.1), (1.3), (1.16), and (1.17) for $N$ of the form $N=2^{L}$ we have
+
+$$
+\begin{aligned}
+& \max _{h \leqslant N} \frac{1}{h}\left|\prod_{l=0}^{L}\right| 2 \sin \pi h 2^{l} \alpha\left|-\prod_{l=0}^{L}\right| 2 \cos \pi h 2^{l} \alpha| | \\
+& \ll N \widetilde{D}_{N}^{*} \\
+& \ll \sum_{h=1}^{N} \frac{1}{h\|h \alpha\|}+\sum_{h=1}^{N} \frac{1}{h} \prod_{k=0}^{L}\left|2 \sin \pi 2^{k} h \alpha\right| \\
+& \ll \sum_{h=1}^{N} \frac{1}{h\|h \alpha\|}+(\log N) N^{\frac{\log 3}{\log 4}},
+\end{aligned}
+$$
+
+where we write $\widetilde{D}_{N}^{*}$ for the star-discrepancy of the first $N$ terms of the evil Kronecker sequence.
+
+From the left-hand side of this inequality it is not difficult - but we do not want to go into the details here - to show that
+
+$$
+\max _{n \leqslant N} n \widetilde{D}_{n}^{*} \gg \frac{1}{\log N} \max _{n \leqslant N} n D_{n}^{*}
+$$
+
+for all $N$, where $D_{N}^{*}$ denotes the star-discrepancy of the pure Kronecker sequence.
+
+Furthermore it is easy to show - we again do not go into the details - that
+
+$$
+\sum_{h=1}^{N} \frac{1}{h\|h \alpha\|} \ll(\log N) N D_{N}^{*} \text { for all } N=2^{L} .
+$$
+
+Hence for all $N$ we have
+
+
+\begin{equation*}
+\frac{1}{\log N} \max _{n \leqslant N} n D_{n}^{*} \ll \max _{n \leqslant N} n \widetilde{D}_{n}^{*} \ll(\log N)^{2} \max _{n \leqslant N} n D_{n}^{*}+(\log N)^{2} N^{\frac{\log 3}{\log 4}} . \tag{6.2}
+\end{equation*}
+
+
+From this we conclude that the order of the discrepancy $N \widetilde{D}_{N}^{*}$ of the evil Kronecker sequence always is essentially (up to logarithmic factors) larger\\
+or equal to the order of the discrepancy $N D_{N}^{*}$ of the pure Kronecker sequence. In fact, the order of $N \widetilde{D}_{N}^{*}$ essentially equals the order of $N D_{N}^{*}$ plus an expression which is at most of order $N^{\frac{\log 3}{\log 4}+\varepsilon}$. The order of the additional expression is controlled by lacunary products of sine-functions.
+
+Hence we conclude what we have already announced in Section 1:
+
+\begin{itemize}
+  \item[-] If the order of $D_{N}^{*}$ satisfies $N D_{N}^{*}=\Omega\left(N^{\frac{\log 3}{\log 4}}\right)$ then $\widetilde{D}_{N}^{*}$ essentially is of the same order as $D_{N}^{*}$
+  \item[-] If $D_{N}^{*}$ satisfies $N D_{N}^{*}=\mathcal{O}\left(N^{\frac{\log 3}{\log 4}}\right)$ then $\widetilde{D}_{N}^{*}$ satisfies $N \widetilde{D}_{N}^{*}=$ $\mathcal{O}\left(N^{\frac{\log 3}{\log 4}+\varepsilon}\right)$
+\end{itemize}
+
+Hence the two examples given in Theorem 1.4 show interesting non-trivial cases where we have (almost) best possible distribution for the pure Kronecker sequence with bad distribution for the evil Kronecker sequence. Indeed especially the first example gives essentially the extremal values for $D_{N}^{*}$ and for $\widetilde{D}_{N}^{*}$, and shows that the right-hand side of (6.2) is also essentially optimal.
+
+It remains an open problem to give concrete examples $\alpha$ where the corresponding evil Kronecker sequence has "small" discrepancy $D_{N}^{*}$, e.g., a discrepancy of the metric order given in Theorem 1.3 or smaller. Of course it also remains an open problem to give good estimates for $\widetilde{D}_{N}^{*}$ in the case of "natural" examples of $\alpha$ like $\alpha=\sqrt{2}$.
+
+Proof of Theorem 1.4.\\[0pt]
+(a). — By [39] we know that the continued fraction coefficients of the number $\beta:=\sum_{k=1}^{\infty} \frac{1}{4^{2^{k}}}$ are bounded. This is equivalent to the existence of some $c>0$ such that $\left|\beta-\frac{p}{q}\right|>\frac{c}{q^{2}}$ for all $p, q \in \mathbb{Z}, q \geqslant 1$, i.e., $|q \beta-p|>\frac{c}{q}$ for all such $p$ and $q$.
+
+This implies especially $|3 q \beta+2 q-3 p|>\frac{c}{3 q}$ for all $p, q \in \mathbb{Z}, q \geqslant 1$, i.e., $\left|\beta+\frac{2}{3}-\frac{p}{q}\right|>\frac{\frac{c}{9}}{q^{2}}$ for all such $p, q$, and hence $\alpha=\beta+\frac{2}{3}$ has bounded continued fraction coefficients. So the star-discrepancy of the pure Kronecker sequence $(\{n \alpha\})_{n \geqslant 1}$ satisfies $N D_{N}^{*}=\mathcal{O}(\log N)$.
+
+On the other hand we already know that for the star-discrepancy $\widetilde{D}_{N}^{*}$ of the evil Kronecker sequence $\left(\left\{n_{k} \alpha\right\}\right)_{k \geqslant 1}$ with $N=2^{L}$ we have
+
+$$
+\begin{aligned}
+N \widetilde{D}_{N}^{*} & \gg\left|\sum_{k=1}^{N} \exp \left(2 \pi i n_{k} \alpha\right)\right| \\
+& \gg\left|\prod_{\ell=0}^{L}\right| 2 \sin \pi 2^{\ell} \alpha\left|-\frac{1}{\|\alpha\|}\right| .
+\end{aligned}
+$$
+
+We give a suitable lower bound for
+
+$$
+\begin{aligned}
+\Pi_{L} & :=\prod_{\ell=0}^{L}\left|2 \sin \pi 2^{\ell} \alpha\right| \\
+& =\prod_{\ell=0}^{L}\left|2 \sin \frac{\pi}{3}\right| \prod_{\ell=0}^{L} \frac{\left|\sin \pi 2^{\ell} \alpha\right|}{\left|\sin \frac{\pi}{3}\right|} \\
+& =\sqrt{3} N^{\frac{\log 3}{\log 4}} \prod_{\ell=0}^{L}\left|\cos \left(\pi \delta_{\ell}\right)+\frac{(-1)^{\ell+1}}{\sqrt{3}} \sin \left(\pi \delta_{\ell}\right)\right| .
+\end{aligned}
+$$
+
+Here $\delta_{\ell}:=\left\{2^{\ell} \beta\right\}$ and we have used $\sin (x+y)=\sin x \cdot \cos y+\cos x \cdot \sin y$. Note that the base 2 representation of $\left\{2^{\ell} \alpha\right\}$ has one of the following ten possible forms:
+
+$$
+\begin{aligned}
+& 0.1010 \ldots \\
+& 0.0101 \ldots \\
+& 0.0010 \ldots \\
+& 0.1101 \ldots \\
+& 0.1110 \ldots \\
+& 0.1001 \ldots \\
+& 0.1100 \ldots \\
+& 0.0111 \ldots \\
+& 0.1011 \ldots \\
+& 0.0110 \ldots
+\end{aligned}
+$$
+
+hence $\left\|2^{\ell} \alpha\right\|>\frac{1}{16}$ always and therefore $\frac{\left|\sin \pi 2^{\ell} \alpha\right|}{\left|\sin \frac{\pi}{3}\right|}>0.2$ always.\\
+Because of $|\cos \pi x-1| \leqslant 3 x$ and $|\sin \pi x| \leqslant \pi x$ for $x \geqslant 0$ we have
+
+$$
+\left|\cos \pi \delta_{\ell}+\frac{(-1)^{\ell+1}}{\sqrt{3}} \sin \pi \delta_{\ell}\right| \geqslant 1-\left(3+\frac{\pi}{\sqrt{3}}\right) \delta_{\ell}>1-5 \delta_{\ell} .
+$$
+
+Therefore, noting that $\max (0.2,1-5 x)>e^{-11 x}$ for $x>0$, we also have
+
+$$
+\begin{aligned}
+\prod_{\ell=0}^{L} \frac{\left|\sin \pi 2^{\ell} \alpha\right|}{\left|\sin \frac{\pi}{3}\right|} & >\prod_{\ell=0}^{L} \max \left(0.2,1-5 \delta_{\ell}\right) \\
+& >e^{-11 \sum_{\ell=0}^{L} \delta_{\ell}} \\
+& \gg e^{-22 \log L} .
+\end{aligned}
+$$
+
+So
+
+$$
+\Pi_{L} \gg \frac{1}{L^{22}} N^{\frac{\log 3}{\log 4}} \gg \frac{1}{(\log N)^{22}} N^{\frac{\log 3}{\log 4}}
+$$
+
+and the lower bound for $\widetilde{D}_{N}^{*}$ follows. The upper bound for $\widetilde{D}_{N}^{*}$ follows from (6.2) and from the upper bound for $D_{N}^{*}$.\\[0pt]
+(b). - It was shown in [9] that $\gamma$ has approximation degree 1, hence for the star-discrepancy of the sequence $(\{n \alpha\})_{n \geqslant 1}$ we have $N D_{N}^{*}=\mathcal{O}\left(N^{\varepsilon}\right)$ for every $\varepsilon>0$. To prove the lower bound for the star-discrepancy $\widetilde{D}_{N}^{*}$ of the sequence $\left(\left\{n_{k} \gamma\right\}\right)_{k \geqslant 1}$, like in the proof of part (a) we have to estimate $\Pi_{L}:=\prod_{\ell=0}^{L}\left|2 \sin \pi 2^{\ell} \gamma\right|$ from below. We will give in the following as an additional information also an upper estimate for $\Pi_{L}$ in order to show that our lower estimate is rather sharp.
+
+We may restrict ourselves to $L$ of the form $L=8 U-1$. Then
+
+$$
+\Pi_{L}=\prod_{j=0}^{U-1} \prod_{\ell=8 j}^{8 j+7}\left|2 \sin \pi 2^{\ell} \gamma\right| .
+$$
+
+In the following we use some well-known facts on properties of the Thue-Morse sequence: the base 2 -representation of $\gamma=0, \gamma_{1} \gamma_{2} \gamma_{3} \ldots$ consists of 8-blocks $\gamma_{8 v+1} \ldots \gamma_{8 v+8}$ of the form $A:=10010110$ or $B:=01101001$.
+
+Four such consecutive 8-blocks can occur in the following ten combinations:
+
+$$
+\begin{aligned}
+c_{1} & =A A B A \\
+c_{2} & =A A B B \\
+c_{3} & =A B A A \\
+c_{4} & =A B B A \\
+c_{5} & =A B A B \\
+c_{6} & =B B A B \\
+c_{7} & =B B A A \\
+c_{8} & =B A B B \\
+c_{9} & =B A A B \\
+c_{10} & =B A B A
+\end{aligned}
+$$
+
+Let, for example, $j$ be such that $2^{8 j}=0, c_{1} \ldots$. ( $c_{1}$ is the block of 32 digits defined above)
+
+For $m=0,1,2, \ldots, 7$ let
+
+$$
+x_{1, m}:= \begin{cases}2^{m} \cdot 0, c_{1} & \text { if }\left\{2^{m} \cdot 0, c_{1}\right\}<\frac{1}{2} \\ 2^{m} \cdot\left(0, c_{1}+\frac{1}{2^{32}}\right) & \text { if }\left\{2^{m} \cdot 0, c_{1}\right\}>\frac{1}{2}\end{cases}
+$$
+
+and
+
+$$
+y_{1, m}:= \begin{cases}2^{m} \cdot 0, c_{1} & \text { if }\left\{2^{m} \cdot 0, c_{1}\right\}>\frac{1}{2} \\ 2^{m} \cdot\left(0, c_{1}+\frac{1}{2^{32}}\right) & \text { if }\left\{2^{m} \cdot 0, c_{1}\right\}<\frac{1}{2}\end{cases}
+$$
+
+Then
+
+$$
+\begin{aligned}
+& \prod_{\ell=8 j}^{8 j+7}\left|2 \sin \pi 2^{\ell} \gamma\right|<\prod_{m=0}^{7}\left|2 \sin \pi y_{1, m}\right|=: U\left(c_{1}\right)=33.487710 \ldots \\
+& \prod_{\ell=8 j}^{8 j+7}\left|2 \sin \pi 2^{\ell} \gamma\right|>\prod_{m=0}^{7}\left|2 \sin \pi x_{1, m}\right|=: D\left(c_{1}\right)=33.487705 \ldots
+\end{aligned}
+$$
+
+In the same way we determine
+
+$$
+U\left(c_{i}\right) \text { and } d\left(c_{i}\right) \quad \text { for } i=2,3, \ldots, 10 .
+$$
+
+Using the special structure of the Thue-Morse sequence as a sequence generated by a finite automaton one can use the methods from [5] to show that the asymptotic frequencies $F\left(c_{i}\right)$ of the occurrence of a quadruple $c_{i}$ of 8-blocks in the Thue-Morse sequence are given by
+
+$$
+\begin{aligned}
+F\left(c_{1}\right)=F\left(c_{2}\right)=F\left(c_{3}\right)=F\left(c_{5}\right)= & F\left(c_{6}\right) \\
+& =F\left(c_{7}\right)=F\left(c_{8}\right)=F\left(c_{10}\right)=\frac{1}{12}
+\end{aligned}
+$$
+
+and
+
+$$
+F\left(c_{4}\right)=F\left(c_{9}\right)=\frac{1}{6} .
+$$
+
+Hence we get
+
+$$
+\begin{aligned}
+& (1-\epsilon)^{U} \cdot\left(D\left(c_{1}\right) D\left(c_{2}\right) D\left(c_{3}\right) D\left(c_{5}\right) D\left(c_{6}\right) D\left(c_{7}\right) D\left(c_{8}\right) D\left(c_{10}\right)\right)^{\frac{U}{12}} \\
+& \quad \cdot\left(D\left(c_{4}\right) D\left(c_{9}\right)\right)^{\frac{U}{6}} \\
+& \ll \prod_{\ell=0}^{L}\left|2 \sin \pi 2^{\ell} \gamma\right| \\
+& \ll(1+\epsilon)^{U} \cdot\left(U\left(c_{1}\right) U\left(c_{2}\right) U\left(c_{3}\right) U\left(c_{5}\right) U\left(c_{6}\right) U\left(c_{7}\right) U\left(c_{8}\right) U\left(c_{10}\right)\right)^{\frac{U}{12}} \\
+& \quad \cdot\left(U\left(c_{4}\right) U\left(c_{9}\right)\right)^{\frac{U}{6}}
+\end{aligned}
+$$
+
+which leads to
+
+$$
+N^{0.6178775} \ll \prod_{\ell=0}^{L}\left|2 \sin \pi 2^{\ell} \gamma\right| \ll N^{0.6178777} .
+$$
+
+for $\epsilon$ small and $L$ large enough. This finishes the proof. \(\square\)
+
+\section*{7. An open problem from the theory of metric Diophantine approximation}
+In conclusion, we mention an open problem from the theory of Diophantine approximation which is related to our proof of the lower bound in Theorem 1.3. In metric Diophantine approximation, one is often interested in finding conditions on $(\phi(q))_{q \geqslant 1}$ which guarantee that
+
+$$
+\left|\alpha-\frac{p}{q}\right|<\frac{\phi(q)}{q}
+$$
+
+has infinitely many integer solutions $p, q$ for almost all $\alpha$. Two instances of this problem, either under the additional requirement that $p, q$ are coprime (Duffin-Schaeffer conjecture) or without this additional requirement (Catlin conjecture), constitute probably the two most important open problems in metric number theory. For the origin of the Duffin-Schaeffer conjecture see [13], for the Catlin conjecture see [10]. Problems of this type are discussed in great detail in Glyn Harman's monograph on Metric Number Theory [22]. For a recent survey, see [7].
+
+The problem without the requirement of coprime solutions can also be written in the following form: Let $A_{1}, A_{2}, \ldots$ be intervals of length $\leqslant 1$, which are symmetric around 0 . Let $\psi_{1}, \psi_{2}, \ldots$ denote the Lebesgue measure (that is, the length) of these intervals. Under which conditions on $\psi_{1}, \psi_{2}, \ldots$ do we have
+
+$$
+\sum_{n=1}^{\infty} \mathbf{1}_{A_{n}}(n \alpha)=\infty
+$$
+
+for almost all $\alpha$ ? Here $\mathbf{1}_{A}$ denotes the characteristic function of $A$, extended with period one.
+
+Now in a first step this problem can be generalized to the case when the intervals $A_{1}, A_{2}, \ldots$ are not necessarily symmetric around 0 , which leads to a problem in inhomogeneous Diophantine approximation. This type of question is also quite well-investigated.
+
+Perpetuating this line of thought, it is natural to ask what happens if we do not assume that $A_{1}, A_{2}, \ldots$ are intervals, but if they may denote any\\
+measurable sets in $[0,1]$. Writing $\psi_{1}, \psi_{2}, \ldots$ for the measure of these sets, the question is under which conditions on $\psi_{1}, \psi_{2}, \ldots$ we have
+
+$$
+\sum_{n=1}^{\infty} \mathbf{1}_{A_{n}}(n \alpha)=\infty
+$$
+
+for almost all $\alpha$. Note that a necessary condition is the divergence of the sum of the measures, by the Borel-Cantelli lemma. It seems that hardly anything is known about this general problem. As far as we know, this problem was first stated by LeVeque in [29]. In this paper he answered a conjecture of Erdős, and he formulated a generalized version of Erdős' conjecture. We consider this as a very interesting open problem, and we re-state it below.
+
+Open problem. - Let $A_{1}, A_{2}, \ldots$ be measurable sets in $[0,1]$, and let $\psi_{1}, \psi_{2} \ldots$ denote their measure. Under which conditions on $\left(\psi_{n}\right)_{n \geqslant 1}$ is it true that for almost all $\alpha$ the fractional part $\{n \alpha\}$ is contained in the set $A_{n}$ for infinitely many indices $n$; equivalently, under which conditions is it true that
+
+$$
+\sum_{n=1}^{\infty} \mathbf{1}_{A_{n}}(n \alpha)=\infty \quad \text { almost everywhere }
+$$
+
+where the characteristic functions are extended with period one.\\
+A problem quite similar to this one emerged during the proof of the lower bound of Theorem 1.3. However, the situation was comparatively simple there, for example since we could assume there that the sets $A_{n}$ can be written as the sum of a moderate number of intervals. The general problem seems to be much more complicated; LeVeque wrote that this general problem "seems rather intractable".
+
+\section*{BIBLIOGRAPHY}
+\begin{itemize}
+  \item[] [1] C. Aistleitner, "On the law of the iterated logarithm for the discrepancy of lacunary sequences II", Trans. Amer. Math. Soc. 365 (2013), no. 7, p. 3713-3728.
+  \item[] [2] C. Aistleitner, I. Berkes \& K. Seip, "GCD sums from Poisson integrals and systems of dilated functions", J. Eur. Math. Soc. 17 (2015), no. 6, p. 1517-1546.
+  \item[] [3] C. Aistleitner, I. Berkes, K. Seip \& M. Weber, "Convergence of series of dilated functions and spectral norms of GCD matrices", Acta Arith. 168 (2015), no. 3, p. 221-246 (English).
+  \item[] [4] J.-P. Allouche \& J. Shallit, "The ubiquitous Prouhet-Thue-Morse sequence", in Sequences and their applications. Proceedings of the international conference, SETA '98, Singapore, December 14-17, 1998, London: Springer, 1999, p. 1-16 (English).
+  \item[] [5] - , Automatic sequences. Theory, applications, generalizations, Cambridge: Cambridge University Press, 2003 (English), xvi + 571 pages.
+\end{itemize}
+
+\begin{itemize}
+  \item[] [6] R. C. Baker, "Metric number theory and the large sieve", J. London Math. Soc. 24 (1981), no. 1, p. 34-40.
+  \item[] [7] V. Beresnevich, V. Bernik, M. Dodson \& S. Velani, "Classical metric Diophantine approximation revisited", in Analytic number theory, Cambridge Univ. Press, Cambridge, 2009, p. 38-61.
+  \item[] [8] I. Berkes \& W. Philipp, "The size of trigonometric and Walsh series and uniform distribution mod 1", J. London Math. Soc. 50 (1994), no. 3, p. 454-464.
+  \item[] [9] Y. Bugeaud, "Sur l'approximation rationnelle des nombres de Thue-MorseMahler", Ann. Inst. Fourier 61 (2011), no. 5, p. 2065-2076 (English).
+  \item[] [10] P. A. Catlin, "Two problems in metric Diophantine approximation. I", J. Number Theory 8 (1976), no. 3, p. 282-288.
+  \item[] [11] J. Dick \& F. Pillichshammer, Digital nets and sequences, Cambridge University Press, Cambridge, 2010, Discrepancy theory and quasi-Monte Carlo integration, xviii+600 pages.
+  \item[] [12] M. Drmota \& R. F. Tichy, Sequences, discrepancies and applications, Lecture Notes in Mathematics, vol. 1651, Springer-Verlag, Berlin, 1997, xiv+503 pages.
+  \item[] [13] R. J. Duffin \& A. C. Schaeffer, "Khintchine's problem in metric Diophantine approximation", Duke Math. J. 8 (1941), p. 243-255.
+  \item[] [14] T. Dyer \& G. Harman, "Sums involving common divisors", J. London Math. Soc. 34 (1986), no. 1, p. 1-11.
+  \item[] [15] K. M. Èminyan, "On the problem of Dirichlet divisors in certain sequences of natural numbers", Izv. Akad. Nauk SSSR Ser. Mat. 55 (1991), no. 3, p. 680-686.
+  \item[] [16] P. Erdős \& I. S. GÁl, "On the law of the iterated logarithm. I, II", Nederl. Akad. Wetensch. Proc. Ser. A. 58 = Indag. Math. 17 (1955), p. 65-76, 77-84.
+  \item[] [17] R. M. Fortet, "Sur une suite egalement répartie", Studia Math. 9 (1940), p. 54-70.
+  \item[] [18] E. Fouvry \& C. Mauduit, "Sommes des chiffres et nombres presque premiers", Math. Ann. 305 (1996), no. 3, p. 571-599.
+  \item[] [19] K. Fukuyama, "A central limit theorem and a metric discrepancy result for sequences with bounded gaps", in Dependence in probability, analysis and number theory, Kendrick Press, Heber City, UT, 2010, p. 233-246.
+  \item[] [20] -, "A metric discrepancy result for a lacunary sequence with small gaps", Monatsh. Math. 162 (2011), no. 3, p. 277-288.
+  \item[] [21] A. O. Gelfond, "Sur les nombres qui ont des propriétés additives et multiplicatives données", Acta Arith. 13 (1968), p. 259-265 (French).
+  \item[] [22] G. Harman, Metric number theory, London Mathematical Society Monographs. New Series, vol. 18, The Clarendon Press, Oxford University Press, New York, 1998, xviii+297 pages.
+  \item[] [23] T. Hilberdink, "An arithmetical mapping and applications to $\Omega$-results for the Riemann zeta function", Acta Arith. 139 (2009), no. 4, p. 341-367.
+  \item[] [24] R. Hofer \& P. Kritzer, "On hybrid sequences built from Niederreiter-Halton sequences and Kronecker sequences", Bull. Austral. Math. Soc. 84 (2011), no. 2, p. 238-254.
+  \item[] [25] R. Hofer \& G. Larcher, "Metrical Results on the Discrepancy of Halton-Kronecker Sequences", Mathematische Zeitschrift 271 (2012), no. 1-2, p. 1-11.
+  \item[] [26] A. Y. Khinchin, "Einige Sätze über Kettenbrüche, mit Anwendungen auf die Theorie der Diophantischen Approximationen", Math. Ann. 92 (1924), p. 115-125 (German).
+  \item[] [27] L. Kuipers \& H. Niederreiter, Uniform distribution of sequences, WileyInterscience [John Wiley \& Sons], New York-London-Sydney, 1974, xiv+390 pages.
+  \item[] [28] G. Larcher, "Probabilistic Diophantine Approximation and the Distribution of Halton-Kronecker Sequences", J. Complexity 29 (2013), no. 6, p. 397-423.
+\end{itemize}
+
+[29] W. J. LeVeque, "On the frequency of small fractional parts in certain real sequences III", J. Reine Angew. Math. 202 (1959), p. 215-220.\\[0pt]
+[30] G. Maruyama, "On an asymptotic property of a gap sequence", Kōdai Math. Sem. Rep. 2 (1950), p. 31-32.\\[0pt]
+[31] N. Matsuyama \& S. Takahashi, "The law of the iterated logarithms", Sci. Rep. Kanazawa Univ. 7 (1961), p. 35-39.\\[0pt]
+[32] C. Mauduit, "Automates finis et équirépartition modulo 1. (Finite automata and uniform distribution modulo 1)", C. R. Acad. Sci., Paris, Sér. I 299 (1984), p. 121-123 (French).\\[0pt]
+[33] D. J. Newman \& M. Slater, "Binary digit distribution over naturally defined sequences", Trans. Am. Math. Soc. 213 (1975), p. 71-78 (English).\\[0pt]
+[34] E. Novak \& H. Woźniakowski, Tractability of multivariate problems. Volume II: Standard information for functionals, EMS Tracts in Mathematics, vol. 12, European Mathematical Society (EMS), Zürich, 2010, xviii+657 pages.\\[0pt]
+[35] W. Philipp, "Limit theorems for lacunary series and uniform distribution mod 1", Acta Arith. 26 (1974/75), no. 3, p. 241-251.\\[0pt]
+[36] M. Raseta, "On lacunary series with random gaps", Acta Math. Hungar. 144 (2014), no. 1, p. 150-161.\\[0pt]
+[37] J. Arias de Reyna, Pointwise convergence of Fourier series, Lecture Notes in Mathematics, vol. 1785, Springer-Verlag, Berlin, 2002, xviii+175 pages.\\[0pt]
+[38] J. Rivat \& G. Tenenbaum, "Constantes d'Erdős-Turán", Ramanujan J. 9 (2005), no. 1-2, p. 111-121.\\[0pt]
+[39] J. Shallit, "Simple continued fractions for some irrational numbers", J. Number Theory 11 (1979), p. 209-217 (English).\\[0pt]
+[40] S. Takahashi, "An asymptotic property of a gap sequence", Proc. Japan Acad. 38 (1962), p. 101-104.\\[0pt]
+[41] A. S. Zygmund, Trigonometric series. Vol. I, II, Cambridge Mathematical Library, Cambridge University Press, Cambridge, 1988, Reprint of the 1979 edition, Vol. I: xiv+383 pp.; Vol. II: iv+364 pages.
+
+Manuscrit reçu le 11 janvier 2016,\\
+révisé le 7 avril 2016,\\
+accepté le 12 mai 2016.
+
+Christoph AISTLEITNER\\
+Institute of Financial Mathematics and Applied\\
+Number Theory\\
+Johannes Kepler University Linz\\
+Altenbergerstr. 69, 4040 Linz (Austria)\\
+\href{mailto:aistleitner@math.tugraz.at}{aistleitner@math.tugraz.at}\\
+Roswitha HOFER\\
+Institute of Financial Mathematics and Applied\\
+Number Theory\\
+Johannes Kepler University Linz\\
+Altenbergerstr. 69, 4040 Linz (Austria)\\
+\href{mailto:roswitha.hofer@jku.at}{roswitha.hofer@jku.at}\\
+Gerhard LARCHER\\
+Institute of Financial Mathematics and Applied\\
+Number Theory\\
+Johannes Kepler University Linz\\
+Altenbergerstr. 69, 4040 Linz (Austria)\\
+\href{mailto:gerhard.larcher@jku.at}{gerhard.larcher@jku.at}
+
+
+\end{document}
