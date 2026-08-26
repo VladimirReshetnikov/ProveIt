@@ -7,18 +7,16 @@ This file implements the per-branch registry fallback in
 SYNC Fabius
 branch / worktree / machine: codex/fabius-both-papers /
   /home/codex/src/Proofs / codexbox
-fetched main SHA: e18f5d0b0e3ec78e2b14e7006af6c7e916b42923
-HEAD and dirty paths: 991add419fb7fda185f4a79cb87cae59f3b37205;
-  clean before this registry-only source-checkpoint handoff
+fetched main SHA: 148990f0a2a9b665edaf3394656be1e7c46caf7e
+HEAD and dirty paths: 00f0edfe244ad1ceea964cf3855314b9beeb0e71;
+  clean before this registry-only claim expansion
 writing (exact paths):
-  Lean/FabiusFunction/BoseFinitePartIntegral.lean;
+  Lean/FabiusFunction/DyadicAnalytic.lean;
   docs/registry/codex-fabius-both-papers.md
 expected declarations or document claims:
-  `boseFinitePartSmallKernel_neg`, `boseLogKernel_neg`, and
-  `boseFinitePartLargeKernel_neg`, the strict sign profile of both convergent
-  finite-part kernels; `gammaZetaConstant_neg`, strict negativity of the
-  Euler--Stieltjes finite-part constant; `firstStieltjesConstant_lt`, the
-  resulting strict unconditional upper bound
+  `fabiusAtInverseTwoPow_cast`, the generic real-cast bridge identifying the
+  exact rational inverse-power evaluator with every bounded Fabius solution at
+  `2⁻ⁿ`, including `n = 0`
 completed commits: Lower-Lambert source checkpoint `1da2fde2285e3970267b7dc2561bcd0d897be1b4`
   was integrated by coordinator merge `046946a974467e83244fd3a183a3e084e70d3379`;
   registry handoff `225f5338de9ea92489ed6a2c0c371c6edb4f5db9`
@@ -45,7 +43,8 @@ completed commits: Lower-Lambert source checkpoint `1da2fde2285e3970267b7dc2561b
   exact Gamma--zeta claim `1f40ac305983c01f789642e714d56eef6d48519c`
   precedes source checkpoint `ec23d663f1ff478c8d99719a2dc43aa83afe4d30`,
   and proof/docstring polish `991add419fb7fda185f4a79cb87cae59f3b37205`
-  leaves the final five-theorem strict API
+  leaves the final five-theorem strict API; clean merge
+  `00f0edfe244ad1ceea964cf3855314b9beeb0e71` incorporates validated current main
 validated (exact command, SHA/state, exit code): coordinator board records
   serialized immutable `lake build +FabiusFunction.LowerLambertW` at
   `4c6bbac41`, exit 0, with its source blob unchanged on current main;
@@ -53,32 +52,32 @@ validated (exact command, SHA/state, exit code): coordinator board records
   duplicate across all advertised tips and verified the theorem domains,
   edge cases, placement, imports, and public export path; coordinator commit
   `62f4142a9f290c570299e200192a4818dc7529d2` directly ran
-  `LAKE_JOBS=1 lake env lean` on the corrected module and exited 0; the current
-  source differs from that green proof-bearing blob only in doc-comment words
+  `LAKE_JOBS=1 lake env lean` on the corrected module and exited 0; coordinator
+  acceptance `148990f0a` records separate one-job builds of
+  `+FabiusFunction.GlobalExtension` (2765 jobs) and
+  `+FabiusFunction.Paper06487` (3244 jobs), both exit 0; the current source
+  differs from that green proof-bearing blob only in doc-comment words;
   read-only review of `09b360531` confirmed the moved block is byte-identical,
   imports and namespace placement suffice, the downstream theorem resolves
   through its existing direct import, and all static hygiene checks pass
-not yet validated: no focused Lake target, downstream module, public facade,
-  or aggregate build is claimed for the integer-grid checkpoint; the moved
-  dyadic theorem body was already compiled in its downstream home by the green
+not yet validated: the moved dyadic theorem body was already compiled in its
+  downstream home by the green
   aggregate at `9887ea584`, but its new module ownership/import context has not
-  been compiled; only the exact integer-grid module elaboration plus read-only
-  source/collision/marker/diff checks are currently validated; the Gamma--zeta
+  been compiled; only read-only source/collision/marker/diff checks are
+  currently validated for that relocation; the Gamma--zeta
   sign source checkpoint is implemented and has independent term-level static
   review, but has not been elaborated or built in production; its predecessor
   non-strict `/tmp` proof was green, while the strict logarithmic and large
-  kernel upgrades are statically reviewed only
-requested integration or lease: the integer-grid and dyadic source checkpoints
-  are ready for integration and their ordinary source paths are released;
-  request the codexbox token for serialized targets
-  `+FabiusFunction.GlobalExtension`, `+FabiusFunction.PaperStatements`,
-  `+FabiusFunction.Paper06487Supplement`, and `+FabiusFunction.Paper06487`;
-  the dyadic relocation also needs serialized `+FabiusFunction.GlobalDyadic`
+  kernel upgrades are statically reviewed only; the exact inverse-power bridge
+  has a previously green `/tmp` prototype but is not yet implemented or
+  validated in production
+requested integration or lease: the dyadic relocation needs serialized
+  `+FabiusFunction.GlobalDyadic`
   and `+FabiusFunction.OriginalPaperSupplement` validation; this new ordinary
-  claim covers only `BoseFinitePartIntegral.lean` and the five advertised
-  strict public sign theorems, with only the set-integral strictness lemma kept
-  private; request serialized `+FabiusFunction.BoseFinitePartIntegral` followed
-  by its sole non-facade direct importer `+FabiusFunction.PeriodicMean`;
+  claim covers only `DyadicAnalytic.lean` and the one advertised public cast
+  bridge; the Gamma--zeta checkpoint needs serialized
+  `+FabiusFunction.BoseFinitePartIntegral` followed by its sole non-facade
+  direct importer `+FabiusFunction.PeriodicMean`;
   serialized README/primary/walkthrough/coverage paths are deliberately not
   claimed yet
 conflicts / dependencies: all advertised Fabius heads and their registries
@@ -94,11 +93,14 @@ conflicts / dependencies: all advertised Fabius heads and their registries
   registry sweep across every advertised remote Fabius tip found no existing
   strict Gamma--zeta sign theorem and no competing claim on
   `BoseFinitePartIntegral.lean`; the board explicitly releases old Gamma--zeta
-  leases
-next bounded step: push this source-checkpoint handoff and await the focused
-  serialized builds; after validation/integration, request the human-document
-  lease needed to close the existing audit finding without racing the canonical
-  exposition owner
+  leases; a fresh post-merge sweep across every advertised tip finds no exact
+  or semantic public inverse-power cast bridge, and no active claim on
+  `DyadicAnalytic.lean`; existing scalar q-binomial cast theorems have different
+  right-hand sides, while the same mathematics occurs only behind private
+  wrappers in `DyadicAnalytic`
+next bounded step: push this exact one-file claim, implement the already-green
+  one-line cast specialization, and hand it off without running a production
+  build
 ```
 
 ## Coordinator natural-knot integration disposition
