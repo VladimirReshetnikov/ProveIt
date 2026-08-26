@@ -4087,6 +4087,31 @@ Morse--Hedlund theorem \cite{morseHedlund1938}: an infinite word with
 \(\ell\).
 \end{proof}
 
+\paragraph{Formal versions.}  \Cref{prop:complexity-bound} is fully
+formal in \path{ThueMorseComplexity.lean}.  The complexity is
+\lean{Fabius.thueMorseComplexity}, the cardinality of the set of
+length-\(\ell\) windows.  The upper bound is
+\lean{Fabius.thueMorseComplexity\_lt}: a window of length
+\(\ell\le2^k\) is reconstructed from its offset in the aligned
+level-\(k\) block and the two adjacent block bits
+(\lean{Fabius.thueMorseWindow\_eq\_reconstruct}), so \emph{any}
+collection of windows contains at most \(4\cdot2^k\) distinct ones
+(\lean{Fabius.card\_image\_thueMorseWindow\_le}); taking \(k\)
+minimal gives \(p(\ell)<8\ell\).  The lower bound
+\lean{Fabius.le\_thueMorseComplexity} is the Morse--Hedlund argument
+proved from scratch: complexity is monotone
+(\lean{Fabius.thueMorseComplexity\_mono}), and it grows
+\emph{strictly} (\lean{Fabius.thueMorseComplexity\_lt\_succ}) ---
+were \(p(\ell+1)=p(\ell)\), restriction would be a
+cardinality-preserving surjection and hence injective, every
+length-\(\ell\) factor would extend uniquely to the right, the
+finitely many windows would evolve deterministically, the pigeonhole
+principle would force two equal windows, and the word would be
+eventually periodic --- contradicting the formal aperiodicity theorem.
+Uniform recurrence (\lean{Fabius.thueMorseFactorSet\_eq\_image})
+makes the factor set a computable finite image.  Both bounds hold in
+exactly the stated form; no literature import is needed.
+
 Linear complexity has two immediate consequences.  The topological entropy,
 \(\lim_\ell\ell^{-1}\log p(\ell)\), is zero.  And the word is not
 \emph{normal}: a normal binary word contains all \(2^\ell\) blocks of every
@@ -4781,7 +4806,7 @@ valuation, carry, and Pascal-row formulas remain genuinely base-two features.
 \subsection{Formalized modules (August 2026)}
 \label{sec:formalized-modules}
 
-The first tranches of the formalization now exist as twenty-five
+The first tranches of the formalization now exist as twenty-six
 compiled Lean modules in \repo{}, complementing the corpus modules
 (\path{Parity.lean}, \path{TwoAdic.lean}, \path{ThueMorsePrefix.lean},
 \path{ThueMorseGenerating.lean}, \path{ThueMorseExponential.lean},
@@ -4824,6 +4849,7 @@ Module & Contents \\
 \path{ThueMorseSineProduct.lean} & The half-angle factorization and the sine-product closed form of the Thue--Morse trigonometric polynomial. \\
 \path{ThueMorseFourierInversion.lean} & Root-of-unity orthogonality and finite Fourier inversion over any field with a primitive root, specialized to the dyadic DFT over \(\mathbb C\). \\
 \path{ThueMorseParseval.lean} & Character orthonormality on \([0,1]\) and the Parseval mass \(\int_0^1|P_m(\e^{2\pi\ii x})|^2\,\dd x=2^m\). \\
+\path{ThueMorseComplexity.lean} & Factor complexity: the supertile-pair window parametrization, uniform-recurrence finiteness, and the two-sided bound \(\ell+1\le p(\ell)<8\ell\) with the Morse--Hedlund strict-growth argument. \\
 \bottomrule
 \end{longtable}}
 
@@ -4947,14 +4973,14 @@ Proposed module & Main declarations \\
 \path{ThueMorseFourier.lean} & Finite DFT, Walsh transform, product-to-sum identities.  \emph{Delivered} (Walsh, Riesz factorization and mass, sine-product closed form, and Fourier inversion are all formal). \\
 \path{ThueMorseDirichlet.lean} & Boundary flatness, Mellin integral, entire continuation.  \emph{Open.} \\
 \path{ThueMorseRarefied.lean} & Root-of-unity filters, modulo-three closed forms, odd-modulus matrix recursion.  \emph{Delivered} (the complex filter identity itself remains open). \\
-\path{ThueMorseWords.lean} & Uniform recurrence, aperiodicity, and the elementary complexity bounds.  \emph{Delivered} except the complexity bounds (\path{ThueMorseAperiodicity.lean}, \path{ThueMorseOverlapFree.lean}, \path{ThueMorseRecurrence.lean}). \\
+\path{ThueMorseWords.lean} & Uniform recurrence, aperiodicity, and the elementary complexity bounds.  \emph{Delivered} in full (\path{ThueMorseAperiodicity.lean}, \path{ThueMorseOverlapFree.lean}, \path{ThueMorseRecurrence.lean}, \path{ThueMorseComplexity.lean}). \\
 \bottomrule
 \end{tabularx}
 \end{center}
 
-Of the planned layers, only the Dirichlet--Mellin and factor-complexity
-rows remain open; every other layer has been delivered, in most cases in
-greater generality than proposed.
+Of the planned layers, only the Dirichlet--Mellin row remains open;
+every other layer has been delivered, in most cases in greater
+generality than proposed.
 
 \subsection{Proof-dependency graph}
 
