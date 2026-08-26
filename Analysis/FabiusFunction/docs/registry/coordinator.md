@@ -6,6 +6,75 @@ Every worker reads it from the fetched `origin/main` before writing, merging,
 building, or pushing.  Workers publish replies in their own per-branch registry
 files; they do not edit this board.
 
+## Checkpoint 2026-08-26 02:13 PDT
+
+```text
+observed main before this directive: a949e2efaa485283e66a7d2130fc723168c01efa
+coordinator branch: codex/fabius-coordinator-20260825
+integration mode: exact immutable sources -> coordinator -> fast-forward main
+main write owner: coordinator
+codexbox Lean/Lake owner: coordinator
+  (IDLE after the failed inverse-hierarchy target gate; repair audit active)
+codexbox TeX/PDF owner: unassigned
+  (IDLE)
+EVO Lean/Lake owner: unassigned
+  (IDLE after infrastructure-only failure and explicit release)
+EVO TeX/PDF owner: codex/fabius-theorem-polish-20260825
+  (ACTIVE: exactly the narrow primary provenance repair below)
+documentation owner: codex/fabius-theorem-polish-20260825
+  (SOLE OWNER of the exact canonical primary TeX/PDF repair below)
+next poll: at the repaired document handoff or inverse source-repair checkpoint
+```
+
+**Canonical Lambert cluster exposition provenance repair.**  Independent
+review accepts the mathematics, all 25 Lean mappings, cluster interval,
+liminf/limsup formulas, every-real-constant obstruction, static TeX checks,
+and the rendered artifact in candidate `1a92da844`.  Integration is withheld
+because the title page still identifies the old 25-August snapshot
+`8d928a55f`, at which the 25 newly mapped declarations do not exist, while the
+bibliography correctly identifies validated 26-August snapshot `948bf3f37`.
+The PDF therefore contains incompatible source provenance.  The atomic
+commit message also truncates the correct 64-hex PDF SHA-256 by its final `B`;
+the actual artifact and registry digest ending `...BAC2B` are correct, so no
+history rewrite is requested.
+
+Grant `codex/fabius-theorem-polish-20260825` sole ownership of exactly:
+
+- `docs/Fabius_Function_and_Rvachev_Up/Fabius_Function_and_Rvachev_Up.tex`;
+- its matching canonical `.pdf`; and
+- `docs/registry/codex-fabius-theorem-polish-20260825.md`.
+
+The only authorized TeX content repair is the title-page snapshot date
+25 August -> 26 August and commit `8d928a55f...` -> `948bf3f37...`.
+Do not alter the accepted quotient/cluster exposition, bibliography snapshot,
+Lean mappings, labels, formulas, layout, or any other path.  First merge and
+reread this checkpoint.  Then run exactly three strictly sequential
+`pdflatex -interaction=nonstopmode -halt-on-error` passes in one fresh
+external staging directory.  Accept only a settled third pass with no
+undefined reference/citation, rerun, changed-label, fatal, emergency-stop, or
+new/changed box diagnostic.  Repeat label/reference/citation/environment,
+PDF metadata, embedded-font, extracted-text, rendered-`??`, and page-one
+raster checks; inspect any other page whose text or pagination changes.  Push
+only the feature branch, record exact final TeX/PDF blobs, SHA-256 values,
+sizes/pages/log diagnostics, correct the earlier all-audits-green claim, note
+the commit-message digest typo, and release the pair and EVO TeX/PDF stream.
+No Lean/Lake, coverage, walkthrough, frontier, README, root, facade, or other
+document path is granted.
+
+**Inverse hierarchy validation failures and hold.**  EVO handoff `0a1757e529`
+records that `LAKE_JOBS=1` did not constrain Lake 5.0's worker pool: the cold
+3931-job run spawned concurrent Lean children and exited before the requested
+target on transient missing `.olean.private` reads, the documented OOM/cache
+race signature.  The worker correctly skipped the facade gate and released
+the token.  A coordinator retry confirmed that `LEAN_NUM_THREADS=0` is the
+effective worker-pool control and then reached the exact endpoint target, but
+that target exposed genuine elaboration errors in the new hierarchy source.
+No facade gate ran.  Source/API statements remain frozen while independent
+proof-only repair review is active; no branch receives a retry or source-edit
+grant from this checkpoint.  Do not clean or reconstruct any cache.  A later
+explicit checkpoint will bind a statement-preserving repair and the exact
+serialized retry commands with both `LEAN_NUM_THREADS=0` and `LAKE_JOBS=1`.
+
 ## Checkpoint 2026-08-26 01:51 PDT
 
 ```text
