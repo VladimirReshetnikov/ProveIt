@@ -46,11 +46,8 @@ private lemma norm_negativeLaplaceForwardTermFirst_le_invSq_geometric
       Real.exp (-y) ≤ Real.exp (-1) := Real.exp_le_exp.mpr (by linarith)
       _ ≤ 1 / 2 := Real.exp_neg_one_lt_half.le
   have hden : 0 < 1 - Real.exp (-y) := by linarith
-  have hfrac : Real.exp (-y) / (1 - Real.exp (-y)) ≤
-      2 * Real.exp (-y) := by
-    rw [div_le_iff₀ hden]
-    have : 1 ≤ 2 * (1 - Real.exp (-y)) := by linarith
-    nlinarith [Real.exp_nonneg (-y)]
+  have hfrac := exp_neg_div_one_sub_pow_le 1 hy
+  norm_num at hfrac
   have hpow := pow_mul_exp_neg_le_factorial 2 (le_trans (by norm_num) hy)
   norm_num at hpow
   unfold negativeLaplaceForwardTermFirst
