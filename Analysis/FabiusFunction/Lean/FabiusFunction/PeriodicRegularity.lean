@@ -889,20 +889,20 @@ theorem isBounded_range_secondDeriv_negativeLaplacePsi :
   negativeLaplacePsi_secondDeriv_periodic.isBounded_of_continuous one_ne_zero
     continuous_secondDeriv_negativeLaplacePsi
 
+/-- A bounded real-valued range admits a global nonnegative absolute-value bound. -/
+theorem exists_nonneg_bound_abs_of_isBounded_range
+    (f : ℝ → ℝ) (hf : Bornology.IsBounded (range f)) :
+    ∃ C : ℝ, 0 ≤ C ∧ ∀ t : ℝ, |f t| ≤ C := by
+  obtain ⟨C, hC0, hC⟩ := hf.exists_pos_norm_le
+  exact ⟨C, hC0.le, by
+    simpa only [Set.forall_mem_range, Real.norm_eq_abs] using hC⟩
+
 /-- A global finite bound for the second derivative of the periodic correction. -/
 theorem exists_bound_abs_secondDeriv_negativeLaplacePsi :
     ∃ C : ℝ, 0 ≤ C ∧ ∀ t : ℝ,
       |deriv (deriv negativeLaplacePsi) t| ≤ C := by
-  rcases (Metric.isBounded_iff_subset_closedBall 0).mp
-      isBounded_range_secondDeriv_negativeLaplacePsi with ⟨C, hC⟩
-  have hzero := hC (mem_range_self (0 : ℝ))
-  have hC0 : 0 ≤ C := by
-    have hnorm : |deriv (deriv negativeLaplacePsi) 0| ≤ C := by
-      simpa [Metric.mem_closedBall, Real.dist_eq] using hzero
-    exact (abs_nonneg _).trans hnorm
-  refine ⟨C, hC0, ?_⟩
-  intro t
-  simpa [Metric.mem_closedBall, Real.dist_eq] using hC (mem_range_self t)
+  exact exists_nonneg_bound_abs_of_isBounded_range
+    _ isBounded_range_secondDeriv_negativeLaplacePsi
 
 /-- A global quadratic Taylor bound for the zero-mean periodic correction. -/
 theorem exists_negativeLaplacePsi_first_order_remainder_bound :
