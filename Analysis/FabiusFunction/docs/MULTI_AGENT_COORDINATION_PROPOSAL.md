@@ -1,6 +1,8 @@
 # Proposal: multi-agent coordination for `Analysis/FabiusFunction`
 
-> **Status:** Draft for review — not current project policy<br>
+> **Status:** Dormant — not in effect.  A variant of this design was piloted
+> by the multi-agent campaign that concluded on 2026-08-26; the document is
+> retained as design background for future campaigns.<br>
 > **Scope:** `Analysis/FabiusFunction` only<br>
 > **Audience:** maintainers, theorem authors, documentation contributors,
 > integration agents, and reviewers<br>
@@ -44,7 +46,7 @@ integrating branches, and consuming enough memory to build the development.
 
 ## Why this proposal exists
 
-The current campaign has exposed several concrete failure modes.
+The 2026-08 campaign exposed several concrete failure modes.
 
 - `origin/main` can advance more than once during a single merge-and-validation
   cycle.  Merging a symbolic ref after auditing it can therefore merge a

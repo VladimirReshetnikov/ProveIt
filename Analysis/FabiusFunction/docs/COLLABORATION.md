@@ -1,7 +1,11 @@
 # Collaborating on `Analysis/FabiusFunction`
 
-**Status: proposal, open for revision.** This document combines the coordination
-proposals developed independently on the active Fabius branches.  It is meant
+**Status: INACTIVE — not in effect since 2026-08-26; retained for future
+campaigns and open for revision.** This document combines the coordination
+proposals developed independently on the Fabius branches of the concluded
+2026-08 campaign.  The protocol below binds no one while the framework is
+inactive; see [`../AGENTS.md`](../AGENTS.md) and the dormant board template at
+[`registry/coordinator.md`](registry/coordinator.md) for how to re-enable it.  It is meant
 to reduce duplicated proofs, public-API conflicts, and wasted rebuilds without
 serializing theorem discovery through one agent.  Disagree by proposing a
 focused edit and explaining the operational or mathematical reason in its
@@ -534,28 +538,7 @@ Unclaimed and highest value, in this branch's estimation:
    `IsBigO.of_bound` with a literal constant that is never surfaced, and two of
    them are exact equalities rather than `O`-bounds.
 
-### Status of `claude/fabius-strengthen-generalize`
-
-```text
-SYNC Fabius
-worktree/task: gracious-bardeen-755ac3 — strengthen/generalize Fabius theorems
-branch/base: claude/fabius-strengthen-generalize, level with origin/main
-writing: nothing; working tree clean.  The eight regularity modules
-  (Monotonicity, Regularity, Convexity, EffectiveFlatness, SharpFlatness,
-  GlobalBounds, BoundedDerivatives, NowhereAnalytic) are leased on demand for
-  build fixes only
-reading: whole directory
-completed: all merged to main — the unified global derivative equation, sharp
-  Lipschitz constant 2 with optimality, strict monotonicity and the bijection
-  of [0,1], the exact support of up, convexity of the two halves, sharp
-  attained derivative bounds for all three functions, the exact analytic locus,
-  both flatness bounds, and the de-duplication passes
-validated: sequential topological build in progress; no failures so far
-next: finish the verification pass, then the uniform-convergence cluster if it
-  is still unclaimed
-lease: build ownership for Fabius on this machine, until the pass ends
-git owner / build owner: self / self
-risks: main has moved seven times during this session; every Lean-touching
-  merge discards the whole build pass.  A complete 174-module verification may
-  not land while that rate holds
-```
+Per-branch status reports from the campaign have been cleared with the rest of
+the live records; the format they used is the `SYNC Fabius` template above,
+and the historical reports remain in the Git history of this file and of
+`docs/registry/`.

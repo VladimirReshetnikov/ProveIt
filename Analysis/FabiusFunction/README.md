@@ -1,18 +1,14 @@
 # Fabius function
 
-> **Active multi-agent campaign.** Before editing anything in this directory,
-> read [`AGENTS.md`](AGENTS.md) and the live
-> [coordinator board](docs/registry/coordinator.md).  The board, rather than a
-> chat-local claim, records current leases, collision freezes, the build token,
-> and branch-specific handoffs.  Workers may advertise nonoverlapping exact
-> path/declaration claims, edit and checkpoint freely on their own feature
-> branches, and push those branches without waiting for approval.  Only the
-> designated coordinator advances `main`.  Lean/Lake compilation requires the
-> physical-host token recorded on the board; a separately assigned sequential
-> TeX/PDF lane may coexist with that host's one Lean build.  No worker launches
-> an unassigned tool lane or parallel jobs within a lane.
-> Push preservation checkpoints promptly: the coordinator may prune a
-> worktree after seven days without activity, even when it is dirty.
+> **Multi-agent coordination: inactive.**  The coordination campaign in this
+> directory concluded on 2026-08-26; its branches were merged or archived and
+> the live board was retired.  The framework is retained for future campaigns
+> — the (deactivated) protocol in [`AGENTS.md`](AGENTS.md), the rationale in
+> [`docs/COLLABORATION.md`](docs/COLLABORATION.md), and the dormant board
+> template at [`docs/registry/coordinator.md`](docs/registry/coordinator.md)
+> — and can be re-enabled as described in those files.  The engineering
+> policies in `AGENTS.md` (documentation, Lean builds, invariants) remain in
+> effect at all times.
 
 This project formalizes the Fabius function and the results in both papers by
 Juan Arias de Reyna:
@@ -711,15 +707,16 @@ compiled PDF is committed alongside its source.
 
 ## Contributing and coordination
 
-The current operational entry points are [`AGENTS.md`](AGENTS.md) and the
-[coordinator board](docs/registry/coordinator.md).  The detailed
-[collaboration guide](docs/COLLABORATION.md) records the protocol and the
-failures that motivated it; the longer
-[coordination design](docs/MULTI_AGENT_COORDINATION_PROPOSAL.md) remains useful
-background.  Focused amendments are welcome through a worker's own registry
-file, but neither background document overrides a current board instruction.
-Ordinary nonoverlapping work is self-service after a pushed registry claim;
-campaign-critical or colliding paths require an explicit board assignment.
+The operational entry point is [`AGENTS.md`](AGENTS.md): its documentation
+policy, Lean build guidance, and invariants apply to all work in this
+directory.  The multi-agent coordination protocol it also contains is
+currently **inactive** — there is no live board and no registry claim is
+required.  The detailed [collaboration guide](docs/COLLABORATION.md) records
+the protocol and the failures that motivated it, and the longer
+[coordination design](docs/MULTI_AGENT_COORDINATION_PROPOSAL.md) remains
+useful background; both are retained so that a future campaign can re-enable
+the framework through the dormant
+[board template](docs/registry/coordinator.md).
 
 ## Checking
 

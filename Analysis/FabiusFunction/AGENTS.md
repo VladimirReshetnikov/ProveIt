@@ -1,13 +1,27 @@
 # Agents working in `Analysis/FabiusFunction`
 
-Several agents develop this directory concurrently in separate worktrees.
-The user has designated one coordinator for the current campaign.  The
-operational rules below and the live
-[`docs/registry/coordinator.md`](docs/registry/coordinator.md) board are current
-project policy; [`docs/COLLABORATION.md`](docs/COLLABORATION.md) explains the
-reasons and remains open for focused revision.
+This directory has been developed by several agents working concurrently in
+separate worktrees, coordinated through the board protocol in the next
+section.  **The multi-agent coordination framework is currently INACTIVE**
+(the campaign concluded on 2026-08-26): agents work here one at a time, no
+coordinator is designated, and no board is live.  The protocol is retained
+verbatim so that a future campaign can re-enable it;
+[`docs/COLLABORATION.md`](docs/COLLABORATION.md) explains the reasons behind
+it, and the dormant board template lives at
+[`docs/registry/coordinator.md`](docs/registry/coordinator.md).
 
-## Live coordination -- mandatory before writing
+Everything after the coordination protocol — the working rules from
+experience, the documentation policy, and the Lean build guidance — is
+ordinary project policy and remains in effect at all times, campaign or not.
+
+## Live coordination protocol (INACTIVE -- not in effect)
+
+> **Status: INACTIVE since 2026-08-26.**  Nothing in this section binds
+> anyone while this banner is present.  To re-activate: designate a
+> coordinator, bring [`docs/registry/coordinator.md`](docs/registry/coordinator.md)
+> back to live status as described in that file, and replace this banner with
+> the re-activation date.  The text below is the working protocol of the
+> concluded campaign, kept verbatim.
 
 At the start of every work session, after every fetch, and before every merge
 or push, read the coordinator board from the fetched `main`, even when your
@@ -27,7 +41,7 @@ coordinator reply once it has advertised an exact, nonoverlapping claim in
 This self-service rule never grants a path that the board marks hot, frozen,
 or single-owner.
 
-During the current campaign:
+During an active campaign:
 
 1. **Push feature branches, not `main`.** Only the coordinator advances
    `origin/main`.  Never force-push.  A rejected fast-forward is a signal to
@@ -82,6 +96,8 @@ During the current campaign:
 Status replies use the `SYNC Fabius` template in `docs/COLLABORATION.md`, are
 committed only to the worker's feature branch, and are pushed promptly.  The
 coordinator discovers them from advertised branch tips and updates the board.
+
+## Working rules from experience (always in effect)
 
 The rules that have actually cost time so far:
 
