@@ -1441,3 +1441,59 @@ integrated and released.  The prospective focused gates now start with
 listed.  This correction supersedes only the home of the new public theorem;
 the name, statement, deleted duplicate, consumer rewiring, and no-build status
 remain unchanged.
+
+## Handoff: shared binomial square split
+
+Source checkpoint `43e06524b` implements the corrected upstream-root design,
+and clean synchronization merge `c37ca4b86` incorporates current
+`origin/main` `4789f05b1a1abc34b5753c166a524be1f62078c3`.  The merge's sole
+conflict was the branch's older static-only XOR proof versus the compiler-
+repaired theorem already integrated on main; it was resolved by preserving
+main's explicit-motive proof exactly.  None of the three claimed source
+artifacts changed during synchronization.
+
+Exact frozen artifacts:
+
+```text
+Arithmetic.lean
+  blob 0cde6a592e6f495f518e3b7a0cb1ddc3b5ae33b1
+  SHA-256 4AB814CE67305AB7C76E9A2DA5568A8C52485A537DD6BDC4A8C89BD45B4C3160
+HalfQBinomial.lean
+  blob fc3a7f96e306f72bf05b2a3bd7e715800a9a1631
+  SHA-256 7D61FEC57F1ED9A0C56286DF55776BE44A66473B7BC0CF17D0CC91C53DBFEF94
+FabiusQBinomialFormula.lean
+  blob 8031d4c1171790481bf94adc15bd812931d8ae06
+  SHA-256 A3B46D021E649AEE02A20530D3AB4BA022E3E5670C4476FE7AEE3F7170D48011
+```
+
+The exact source delta is ten insertions and thirty deletions, net minus
+twenty lines.  `Arithmetic` adds one documented, untagged public theorem and
+proves it from the adjacent `choose_succ_two` and
+`two_mul_choose_two_add` identities using only the already-used `ring`
+tactic.  `HalfQBinomial` and `FabiusQBinomialFormula` delete their private
+inductions; their three existing normalization calls now resolve through the
+unchanged transitive/direct import graph.  No import, namespace, attribute,
+simp rule, facade, aggregate, or pre-existing public header changes.
+
+Three independent exact-current static reviews pass the Nat-semiring
+normalization, zero case, statement orientation, import visibility, public
+API placement, root-invalidation policy, declaration/comment hygiene,
+collision scan, and ownership map.  `git diff --check`, line-length,
+forbidden-declaration, public-header, exact-name, residual-private-name, and
+all-tip registry scans are clean.  There is exactly one declaration and three
+uses of `choose_square_split`, and no `square_eq_choose_sum` remains.
+
+No Lean, Lake, TeX, PDF, or cache-mutating process ran, so this checkpoint is
+not compiler evidence.  In light of the coordinator's Lake 5.0 worker-pool
+finding, the requested serialized validation sequence is now:
+
+```text
+LEAN_NUM_THREADS=0 LAKE_JOBS=1 lake build +FabiusFunction.Arithmetic
+LEAN_NUM_THREADS=0 LAKE_JOBS=1 lake build +FabiusFunction.HalfQBinomial
+LEAN_NUM_THREADS=0 LAKE_JOBS=1 lake build +FabiusFunction.FabiusQBinomialFormula
+```
+
+Run the targets separately in that order and stop after the first failure.
+The root invalidation is intentional under the directory's mandatory policy
+for removing existing duplication.  The three source paths are frozen pending
+coordinator review and serialized validation; no document change follows.
