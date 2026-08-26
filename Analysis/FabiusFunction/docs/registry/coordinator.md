@@ -6,22 +6,22 @@ Every worker reads it from the fetched `origin/main` before writing, merging,
 building, or pushing.  Workers publish replies in their own per-branch registry
 files; they do not edit this board.
 
-## Checkpoint 2026-08-25 20:21 PDT
+## Checkpoint 2026-08-25 20:26 PDT
 
 ```text
-observed main before this directive: 2183cfb113765197042628524690794bdf8d07c4
+observed main before this directive: 408b8b11905f3ee260dd739592f0ff8755f1b53e
 coordinator branch: codex/fabius-coordinator-20260825
 integration mode: feature branches -> coordinator -> fast-forward main
 main write owner: coordinator
 codexbox Lean/Lake owner: coordinator
-  (one serialized Lean target at a time; frontier TeX may coexist)
+  (IDLE after PeriodicSmooth validation; frontier TeX may coexist)
 codexbox TeX/PDF owner: codex/fabius-frontier-successor-20260825
   (standing sequential document lane; does not consume the Lean token)
 EVO Lean/Lake owner: codex/fabius-shifted-prefix-grid
   (three separate Lean targets pinned below; no TeX/PDF/parallel target)
 documentation owner: codex/fabius-frontier-successor-20260825
   (standing canonical-frontier lease; every primary/walkthrough path frozen)
-next poll: after either assigned host reports its validation checkpoint
+next poll: after EVO validation or the next advertised source/document checkpoint
 ```
 
 The previously approved curvature, generalizations, lower-Lambert,
@@ -229,6 +229,17 @@ theorem.  The owner may disposition these in coherent frontier tranches under
 the standing lease; it need not fold them into the already-built three-hunk
 checkpoint.
 
+The three-hunk checkpoint is now fully accepted and integrated by coordinator
+merge `192c423bb`.  Source lineage `7bbd84752` and artifact commit `daa9cb19f`
+produce TeX blob `6812dbf9c` and matching PDF blob `d2dd17022`, SHA-256
+`225F8E17F9F8512DFCFBD9491AD5D2CA612537B66F1571DFA6F115FA76D904B8`.
+The canonical artifact is 1,479,271 bytes, A4, and 188 pages.  Three independent
+audits accept the ancestry/path scope, three-pass registry evidence, all 45
+embedded/subsetted fonts, zero rendered `??` or out-of-bounds text, and clean
+raster inspection of pages 1, 10, 83, 86, 95, and 184--188.  The accepted
+source/PDF pair is now the base for the standing frontier lease; the owner may
+continue future tranches without relinquishing that lease.
+
 ### `codex/fabius-both-papers`
 
 The curvature workstream is fully integrated at `09ae23f63`; all old leases are
@@ -318,8 +329,25 @@ Registry tip `9cbbbda1a` now advertises an ordinary one-file follow-up in
 `PeriodicSmooth.lean`: `[simp]` bridges
 `forwardDerivativeQuotientPolynomial_one`, `_two`, and `_three`, plus
 `negativeLaplaceForwardTermDeriv_two`, `_three`, and `_four`.  No source is
-committed yet.  The claim may proceed locally and be committed/pushed on the
-feature branch, but it receives no build token.
+committed at that registry snapshot.  Source commit `c5f0bb3a3` subsequently
+implements exactly those six declarations.  Independent review accepts the
+recurrence algebra, signs, derivative-index mapping, unconditional domains,
+simp directions, placement, imports, and duplicate scan; main had the exact
+parent preimage.
+
+The coordinator integrated the exact source as `af3132a31`.  Its first focused
+build exposed two proof-elaboration defects: polynomial normalization did not
+close the second quotient identity, and a dependent rewrite failed at index
+three.  It supplies no validation evidence.  Repair `8d269396a` proves the
+three small polynomial identities by extensional evaluation and cleans the
+bridge tactics, changing no public statement or attribute.  The retry of
+`+FabiusFunction.PeriodicSmooth` completes 3297 jobs, exit 0, with no warnings.
+The `PeriodicSmooth.lean` lease is released.
+
+The branch has since frozen exact source commit `b27fc5259`, extending the
+Reshetnikov oddness result to every natural index, and advertised a later
+dead-uniform-spline-integral cleanup.  The oddness commit is under independent
+review; the cleanup is only claimed and has no build token.
 
 ### `codex/fabius-theorem-polish-20260825`
 
@@ -661,23 +689,19 @@ a requested path is serialized, hot, frozen, single-owner, or already claimed.
 
 ## Collision and integration queue
 
-Two reviewed Lean workstreams are waiting on assigned validation or token
-availability.  The four
+One reviewed Lean workstream is waiting on assigned validation.  The four
 disjoint both-papers units are integrated and validated as recorded above;
-continue to avoid merging that moving feature branch wholesale.  Its next
-`PeriodicSmooth.lean` bridge source is now frozen at exact commit `c5f0bb3a3`.
-Independent review accepts all six `[simp]` statements and proof algebra; its
-one-file integration/build may use the now-separate codexbox Lean token even
-while the document owner continues lightweight TeX/PDF work.  The
-shifted-prefix branch's seven declarations
+its periodic bridge unit is now repaired, compiled, and released.  Continue to
+avoid merging that moving feature branch wholesale; `b27fc5259` is under
+review and the uniform-spline cleanup is claim-only.  The shifted-prefix
+branch's seven declarations
 are frozen at `8021c555f` plus `f7152d5fc` and hold the exact EVO validation
 grant above.
 
 Frontier source checkpoint `6397a0d6a` is already on `main` without a matching
-rebuilt PDF.  The successor is now assigned a fresh-base, three-hunk
-source-only phase above and has pushed exact source checkpoint `7bbd84752`.
-Independent source review passes, so the standing codexbox document lane is
-assigned above without consuming the distinct codexbox Lean token.  EVO is
+rebuilt PDF historically; accepted merge `192c423bb` now closes that mismatch
+with the reviewed 188-page artifact.  The standing codexbox document lane
+continues above without consuming the distinct codexbox Lean token.  EVO is
 independently assigned to the three shifted-prefix targets above.  Ordinary
 nonoverlapping feature claims may continue under the shared protocol, but no
 second Lean/Lake process may start on either physical host until its token is
@@ -790,6 +814,12 @@ from `Analysis/FabiusFunction/Lean`, which has no Lake configuration.  It
 exited 1 immediately without launching Lean and supplies no evidence.  All
 subsequent commands used the repository root.
 
+For the periodic derivative bridges, the first
+`+FabiusFunction.PeriodicSmooth` attempt at `af3132a31` exited 1 on the two
+documented proof-elaboration defects and supplies no validation evidence.
+After statement-preserving repair `8d269396a`, the same serialized target
+completed 3297 jobs and exited 0 without warnings.
+
 On EVO, stage two at source tip `1ca2a09be` ran exactly three sequential
 frontier `pdflatex` passes under the authorized fresh `_stage2` job name.  All
 three exited 0 and produced 178, 186, and 186 pages.  The third pass was
@@ -823,7 +853,8 @@ evidence.
 
 No validation process was running on codexbox when the original PDF grant was
 published.  Its lightweight sequential TeX/PDF lane is now independent of the
-one-process codexbox Lean/Lake token, which remains coordinator-owned.  EVO's
+one-process codexbox Lean/Lake token, which is currently idle and
+coordinator-owned.  EVO's
 Lean/Lake token is assigned to the shifted-prefix branch's three exact
 sequential targets.  Other branches may edit, checkpoint, and push ordinary
 claimed work under the open protocol, but may not run Lean/Lake or another
