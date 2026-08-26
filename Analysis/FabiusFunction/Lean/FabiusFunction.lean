@@ -23,6 +23,7 @@ import FabiusFunction.ThueMorseRecurrence
 import FabiusFunction.ThueMorseMahler
 import FabiusFunction.ThueMorseBooleanMobius
 import FabiusFunction.ThueMorseMultinomial
+import FabiusFunction.ThueMorseFourier
 import FabiusFunction.NegativeLaplace
 import FabiusFunction.ProbabilityLaplaceMoments
 import FabiusFunction.UnitLaplaceMomentBounds
