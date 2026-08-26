@@ -2519,3 +2519,100 @@ next bounded step: freeze both source blobs, push this handoff, fetch main,
   reread any ownership-board delta, and advertise the disjoint generic
   vector-valued dyadic set-integral tranche before editing it
 ```
+
+## Claim: vector-valued dyadic set-integral reassembly
+
+Claimed exact source paths:
+
+- `Lean/FabiusFunction/PeriodicMean.lean`;
+- `Lean/FabiusFunction/PeriodicFourier.lean`.
+
+This ordinary two-file tranche extracts the countable-additivity argument for
+the dyadic partitions from five existing real- and complex-valued special
+cases.  It adds exactly three documented public theorems in namespace
+`Fabius`:
+
+```lean
+theorem hasSum_setIntegral_smallDyadicInterval
+    {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    (f : ℝ → E) (hf : IntegrableOn f (Ioc (0 : ℝ) 1)) :
+    HasSum (fun n : ℕ => ∫ x : ℝ in smallDyadicInterval n, f x)
+      (∫ x : ℝ in Ioc (0 : ℝ) 1, f x)
+
+theorem hasSum_setIntegral_largeDyadicInterval_Ici
+    {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    (f : ℝ → E) (hf : IntegrableOn f (Ici (1 : ℝ))) :
+    HasSum (fun n : ℕ => ∫ x : ℝ in largeDyadicInterval n, f x)
+      (∫ x : ℝ in Ici (1 : ℝ), f x)
+
+theorem hasSum_setIntegral_largeDyadicInterval
+    {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    (f : ℝ → E) (hf : IntegrableOn f (Ioi (1 : ℝ))) :
+    HasSum
+      (fun n : ℕ => ∫ x : ℝ in Ioc ((2 : ℝ) ^ n) ((2 : ℝ) ^ (n + 1)), f x)
+      (∫ x : ℝ in Ioi (1 : ℝ), f x)
+```
+
+The first two are the exact `Ioc` and `Ico`/`Ici` partition statements.  The
+third isolates all null-endpoint normalization in one reusable corollary.
+Mathlib's `hasSum_integral_iUnion` requires only the displayed normed additive
+group and real normed-space assumptions; no completeness hypothesis is added.
+
+The exact headers, attributes, and formula comments of the existing
+`hasSum_integral_smallDyadicInterval`,
+`hasSum_integral_largeDyadicInterval_Ici`,
+`hasSum_integral_largeDyadicInterval`,
+`hasSum_integral_smallDyadicInterval_fourier`, and
+`hasSum_integral_largeDyadicInterval_fourier` declarations are preserved.
+Only their proof bodies become applications of the generic API.  The
+`PeriodicMean` overview will identify the vector-valued scope.  No import,
+consumer, root/facade, canonical document, specialized integrability lemma, or
+unrelated periodic analysis is claimed.
+
+```text
+SYNC Fabius
+branch / worktree / machine: codex/fabius-effective-bounds-20260825 /
+  /home/codex/.codex/worktrees/d6d3/Proofs / codexbox
+fetched main SHA: 1eadfd565db2e4c49310dbaa68c7b4648cb563b8
+HEAD and dirty paths: 88b44f394d7100f5a97f1afbe9b8b6833b9173c4;
+  clean before this registry-only claim; the preceding divX checkpoint and
+  immutable handoff are pushed
+writing (exact paths): Lean/FabiusFunction/PeriodicMean.lean;
+  Lean/FabiusFunction/PeriodicFourier.lean; this branch registry for
+  claim/handoff only
+expected declarations or document claims: exactly the three generic HasSum
+  declarations above with formula-bearing source comments and the one module
+  overview expansion; refactor only the five named specialized proof bodies;
+  preserve every old header, attribute, import, and consumer
+completed commits: all earlier checkpoints and handoffs are clean and pushed;
+  this is a disjoint registry-first atomic two-file claim
+validated (exact command, SHA/state, exit code): current HEAD and origin/main
+  share PeriodicMean blob ca0b5e14ebe69b80f047afc92b08736de40a8aaa,
+  content SHA-256
+  18499B7EAE5ACA8C6F052EAEDD57BC8A8B6F1DF3DAF49636A8C247025F1A8EEC,
+  and PeriodicFourier blob 957d2bb93f344892242acef9f8bf24acd874688d,
+  content SHA-256
+  2D4731C547FBE3CAE061EBC82EF7E558DC19144DB13D204C17C0076983E93DE3;
+  all-visible-ref exact-name and every-registry path/name scans are clear;
+  the ownership board has only historical PeriodicMean build records and no
+  active claim; exact Mathlib hypotheses and all five wrapper routes have
+  independent read-only preflight; this is not compiler evidence
+not yet validated: the generic declarations, wrapper contractions, and prose
+  are not implemented; no Lean, Lake, TeX, PDF, or cache-mutating process is
+  authorized or running on this branch
+requested integration or lease: advertise this ordinary atomic two-source
+  claim; after an immutable independently reviewed checkpoint, request
+  serialized LAKE_JOBS=1 builds of +FabiusFunction.PeriodicMean and
+  +FabiusFunction.PeriodicFourier, with optional downstream smoke gates
+  +FabiusFunction.FabiusSharpConstant and
+  +FabiusFunction.FabiusSharpAsymptotic; request no main-write or document
+  lease
+conflicts / dependencies: PeriodicFourier already reaches PeriodicMean through
+  PeriodicRegularity; the one-way import cone is acyclic; all local frozen
+  paths, external claims, and the sole primary-document owner are disjoint;
+  only the coordinator may advance main
+next bounded step: commit and push this registry-only claim without force;
+  repeat the collision scan, then edit only the two claimed sources while the
+  other agents independently audit typeclass minimality, endpoint orientation,
+  wrapper/header preservation, import topology, docs, and exact current bytes
+```
