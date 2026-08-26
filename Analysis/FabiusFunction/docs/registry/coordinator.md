@@ -6,15 +6,15 @@ Every worker reads it from the fetched `origin/main` before writing, merging,
 building, or pushing.  Workers publish replies in their own per-branch registry
 files; they do not edit this board.
 
-## Checkpoint 2026-08-25 21:59 PDT
+## Checkpoint 2026-08-25 22:03 PDT
 
 ```text
-observed main before this directive: 4b3ddc7db27680fd78a4c62384acdfe55065a6cb
+observed main before this directive: 29791005881f1563eba9618e6d75b9db50b045a2
 coordinator branch: codex/fabius-coordinator-20260825
 integration mode: feature branches -> coordinator -> fast-forward main
 main write owner: coordinator
 codexbox Lean/Lake owner: coordinator
-  (IDLE after Unit-Laplace validation)
+  (IDLE after shifted-Fourier validation)
 codexbox TeX/PDF owner: unassigned
   (IDLE)
 EVO Lean/Lake owner: unassigned
@@ -475,7 +475,7 @@ the stale request fields.  Separate serialized builds of
 warnings.  The source lease and codexbox token are released; the excluded
 `Regularity`/private-helper cleanup remains outside this tranche.
 
-Registry-only claim `29e465362` advertises a new ordinary one-file tranche in
+Registry-only claim `29e465362` advertised a new ordinary one-file tranche in
 `PoissonSummation.lean`.  It proposes
 `rvachevFourier_real_iteratedDeriv_shiftedDecay` for each `(k n : ℕ)`, with a
 strictly positive constant bounding the `n`th real derivative by
@@ -484,14 +484,17 @@ strictly positive constant bounding the `n`th real derivative by
 seminorm argument, shifted normalization, zero-order and zero-weight cases,
 placement, imports, and duplicate scan.  The constant may depend on
 `F`, `hF`, `k`, and `n`; no uniformity in derivative order or on the complex
-plane may be claimed.  Source work may proceed after merging/rereading current
-main in exactly `Lean/FabiusFunction/PoissonSummation.lean` plus the own
-registry.  Preserve every old header and import; all documents, facades, root
-files, and other paths remain excluded.  No build token is granted before an
-immutable reviewed source handoff.  The later intended serialized gates are
-`+FabiusFunction.PoissonSummation` and `+FabiusFunction.Paper05442`; integrate
-the exact source checkpoint rather than the branch's historical feature
-lineage.
+plane may be claimed.  Exact source commit `fe7756703` implements the two
+declarations and factors the existing homogeneous proof through a private
+Schwartz realization while preserving every old public header and import.
+Two independent exact reviews accept the finite-seminorm constant, derivative
+bridge, reciprocal inequality, all zero-order/zero-weight cases, exact
+preimage, API, and collision scan.  The coordinator integrated only that
+source as `49ddce559`.  Separate serialized builds of
+`+FabiusFunction.PoissonSummation` (3195 jobs) and its sole direct public facade
+`+FabiusFunction.Paper05442` (3417 jobs) both exited 0 without warnings.  The
+source path and codexbox token are released.  No document, facade, root, import,
+or other path changed; the branch's historical feature lineage was not merged.
 
 ### `codex/fabius-theorem-polish-20260825`
 
@@ -1037,8 +1040,8 @@ The both-papers product-positivity consolidation, theorem-polish normalized
 Laplace-reflection tranche, and shifted-prefix signed dyadic-reflection tranche
 are also integrated and green.  The total binary-reduction, normalized-`L¹`,
 and Unit-Laplace tilt-comparison tranches are now integrated, compiled, and
-released as well.  Both-papers has a disjoint registry-only
-`PoissonSummation.lean` claim with no source checkpoint or build token yet.
+released as well.  The disjoint both-papers shifted-Fourier tranche is also
+integrated, compiled, and released; it grants no document ownership.
 
 Theorem-polish source commit `665b6bce` is integrated as `c80f61c90`, repaired
 without statement changes at `6b6757e90`, and accepted after its focused
@@ -1244,6 +1247,10 @@ only the inherited nonblocking `unnecessarySimpa` linter in
 `ProbabilityLaplaceMoments.lean`.  Two preliminary commands were issued from
 nested directories without a Lake configuration; both exited before invoking
 Lean and supply no validation evidence.
+
+For shifted real-axis Fourier decay, separate serialized builds at
+`49ddce559` of `+FabiusFunction.PoissonSummation` (3195 jobs) and
+`+FabiusFunction.Paper05442` (3417 jobs) both exited 0 without warnings.
 
 On EVO, exact shifted-prefix merge `4367a7f86` and tree `db635e6a073b`
 preserved source commits `8021c555f` and `f7152d5fc`.  Separate sequential

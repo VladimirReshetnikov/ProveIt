@@ -18,9 +18,10 @@ statements below.
   disappears.  We state both the unmultiplied identity and the corrected
   multiplied identity.
 
-The same Schwartz realization also yields a public rapid-decay estimate for
-every real-axis derivative of `rvachevFourier`.  The support specialization is
-proved on the full sharp ray `a ≥ 1 / 2`; source-compatible wrappers retain the
+The same Schwartz realization also yields both homogeneous `|x| ^ k` and
+conventionally shifted `(1 + |x|) ^ k` rapid-decay estimates for every
+real-axis derivative of `rvachevFourier`.  The support specialization is proved
+on the full sharp ray `a ≥ 1 / 2`; source-compatible wrappers retain the
 paper's unnecessary upper bound `a ≤ 1`.  Sign-invariant companions cover the
 sharp condition `1 / 2 ≤ |a|` and Poisson summation at zero is exposed for
 every nonzero oriented lattice spacing.
@@ -88,6 +89,21 @@ private lemma fourier_scaledRvachevSchwartz
       push_cast
       ring_nf
 
+/-- The real-axis Fourier transform of Rvachev's function, bundled as a
+Schwartz map. -/
+private noncomputable def rvachevFourierRealSchwartz
+    (F : BoundedFabius) (hF : IsFabius F) : SchwartzMap ℝ ℂ :=
+  𝓕 (scaledRvachevSchwartz F hF 1 (by norm_num))
+
+private lemma rvachevFourierRealSchwartz_coe
+    (F : BoundedFabius) (hF : IsFabius F) :
+    (fun t : ℝ => rvachevFourier F (t : ℂ)) =
+      (rvachevFourierRealSchwartz F hF : ℝ → ℂ) := by
+  funext t
+  dsimp only [rvachevFourierRealSchwartz]
+  rw [fourier_scaledRvachevSchwartz F hF (by norm_num : (0 : ℝ) < 1)]
+  norm_num
+
 /-- Every derivative of the real-axis Fourier transform of Rvachev's function
 is rapidly decreasing. -/
 theorem rvachevFourier_real_iteratedDeriv_rapidDecay
@@ -95,16 +111,9 @@ theorem rvachevFourier_real_iteratedDeriv_rapidDecay
     ∃ C : ℝ, 0 < C ∧ ∀ x : ℝ,
       |x| ^ k *
           ‖iteratedDeriv n (fun t : ℝ => rvachevFourier F (t : ℂ)) x‖ ≤ C := by
-  let φ : SchwartzMap ℝ ℂ :=
-    scaledRvachevSchwartz F hF 1 (by norm_num)
-  let ψ : SchwartzMap ℝ ℂ := 𝓕 φ
-  have hfun : (fun t : ℝ => rvachevFourier F (t : ℂ)) = (ψ : ℝ → ℂ) := by
-    funext t
-    dsimp only [ψ, φ]
-    rw [fourier_scaledRvachevSchwartz F hF (by norm_num : (0 : ℝ) < 1)]
-    norm_num
-  rw [hfun]
-  obtain ⟨C, hC, hbound⟩ := ψ.decay k n
+  rw [rvachevFourierRealSchwartz_coe F hF]
+  obtain ⟨C, hC, hbound⟩ :=
+    (rvachevFourierRealSchwartz F hF).decay k n
   refine ⟨C, hC, ?_⟩
   intro x
   simpa only [Real.norm_eq_abs, norm_iteratedFDeriv_eq_norm_iteratedDeriv] using
@@ -118,6 +127,45 @@ theorem rvachevFourier_real_rapidDecay
       |x| ^ k * ‖rvachevFourier F (x : ℂ)‖ ≤ C := by
   simpa only [iteratedDeriv_zero] using
     rvachevFourier_real_iteratedDeriv_rapidDecay F hF k 0
+
+/-- Every real-axis derivative of Rvachev's Fourier transform has the
+conventional shifted Schwartz bound `C * (1 + |x|)⁻ᵏ`. -/
+theorem rvachevFourier_real_iteratedDeriv_shiftedDecay
+    (F : BoundedFabius) (hF : IsFabius F) (k n : ℕ) :
+    ∃ C : ℝ, 0 < C ∧ ∀ x : ℝ,
+      ‖iteratedDeriv n (fun t : ℝ => rvachevFourier F (t : ℂ)) x‖ ≤
+        C * ((1 + |x|) ^ k)⁻¹ := by
+  let ψ : SchwartzMap ℝ ℂ := rvachevFourierRealSchwartz F hF
+  have hfun : (fun t : ℝ => rvachevFourier F (t : ℂ)) = (ψ : ℝ → ℂ) := by
+    simpa only [ψ] using rvachevFourierRealSchwartz_coe F hF
+  rw [hfun]
+  let C₀ : ℝ := 2 ^ k *
+    (Finset.Iic (k, n)).sup (fun m => SchwartzMap.seminorm ℂ m.1 m.2) ψ
+  refine ⟨max C₀ 1, lt_of_lt_of_le zero_lt_one (le_max_right _ _), ?_⟩
+  intro x
+  have hweighted :
+      (1 + |x|) ^ k * ‖iteratedDeriv n (ψ : ℝ → ℂ) x‖ ≤ C₀ := by
+    dsimp only [C₀]
+    simpa only [Real.norm_eq_abs,
+      norm_iteratedFDeriv_eq_norm_iteratedDeriv] using
+        (SchwartzMap.one_add_le_sup_seminorm_apply
+          (𝕜 := ℂ) (m := (k, n)) le_rfl le_rfl ψ x)
+  have hpow : 0 < (1 + |x|) ^ k := by positivity
+  apply (le_mul_inv_iff₀ hpow).2
+  calc
+    ‖iteratedDeriv n (ψ : ℝ → ℂ) x‖ * (1 + |x|) ^ k =
+        (1 + |x|) ^ k * ‖iteratedDeriv n (ψ : ℝ → ℂ) x‖ := by ring
+    _ ≤ C₀ := hweighted
+    _ ≤ max C₀ 1 := le_max_left _ _
+
+/-- Rvachev's Fourier transform has the conventional shifted Schwartz bound
+`C * (1 + |x|)⁻ᵏ` on the real axis. -/
+theorem rvachevFourier_real_shiftedDecay
+    (F : BoundedFabius) (hF : IsFabius F) (k : ℕ) :
+    ∃ C : ℝ, 0 < C ∧ ∀ x : ℝ,
+      ‖rvachevFourier F (x : ℂ)‖ ≤ C * ((1 + |x|) ^ k)⁻¹ := by
+  simpa only [iteratedDeriv_zero] using
+    rvachevFourier_real_iteratedDeriv_shiftedDecay F hF k 0
 
 /-- Corrected equation (25), i.e. Poisson summation for Rvachev's function.
 The printed exponential in the source accidentally omits the factor `t`. -/
