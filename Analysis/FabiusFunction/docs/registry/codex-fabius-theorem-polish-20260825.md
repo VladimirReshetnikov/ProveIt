@@ -1674,3 +1674,106 @@ next bounded step: commit and push this registry-only failure checkpoint to
   the feature branch, notify the coordinator, and remain read-only pending a
   fresh board instruction
 ```
+
+## Accepted Lean gate and primary-exposition handoff
+
+The coordinator integrated the exact frozen source as
+`8d928a55ff19a856e1d7a9083e5e102fff857804`.  At that immutable tree the sole
+serialized command
+
+```text
+LAKE_JOBS=1 lake build +FabiusFunction.FabiusSharpAsymptotic
+```
+
+completed all 3891 jobs and exited `0`; its only diagnostic was the inherited
+nonblocking `unnecessarySimpa` linter in
+`ProbabilityLaplaceMoments.lean`.  This exact-tree coordinator evidence
+supersedes the preceding EVO cache-failure attempt without erasing that honest
+machine-specific record.  Both Lean source leases and both host Lean/Lake
+tokens are released.
+
+Under the subsequently activated primary-document lease, commit
+`2546fe21b` updates exactly the canonical TeX/PDF pair.  It adds one
+formalization-backed subsection that prints the January 2022 compact
+lower-Lambert expression, explains the multiplier-one failure, prints the
+corrected expression with the essential `+ negativeLaplacePsi` term at phase
+`-W / log 2`, and gives human-readable counterparts for all six accepted
+declarations.  It explicitly says that this tranche does not by itself rule
+out every arbitrary constant multiplier; no liminf, limsup, cluster-set, or
+numerical-extremum claim was added.  The module map now includes
+`FabiusWikipediaMain.lean`, the source provenance is exact, and the document
+snapshot is the validated source commit `8d928a55f`.
+
+The document was built under the sole EVO TeX/PDF stream with sidecar job name
+`Fabius_Function_and_Rvachev_Up_codex_lambert`.  Three sequential invocations
+of
+
+```text
+pdflatex -interaction=nonstopmode -halt-on-error -file-line-error
+  -jobname=Fabius_Function_and_Rvachev_Up_codex_lambert
+  Fabius_Function_and_Rvachev_Up.tex
+```
+
+all exited `0`, producing 57, 59, and 59 pages.  The third pass was settled:
+no undefined reference or citation, rerun request, changed label, duplicate
+label, fatal/LaTeX error, overfull box, or rendered `??` occurred.  Its sole
+underfull diagnostic is the unchanged `Analyticity, inverse, elementary
+obstruction` module-map cell.  `pdfinfo` reports 59 A4 pages; `pdffonts`
+reports every font embedded.  Text extraction found no placeholder, and
+raster inspection covered every changed page: title/contents pages 1--3 and
+pages 50--59 containing the insertion and all shifted downstream material.
+
+The final artifacts are:
+
+- TeX Git blob `5071d1f32f5f732e7cc59f569190532b6d815d57`, SHA-256
+  `D36680516B8F73CAE3B4237477A8B04803A5ED5EBDFA741A86CA6BE7CEA4C2DD`;
+- PDF Git blob `4529d9c453d647e4068e2ff5527c417f5564f5d0`, SHA-256
+  `FA8DAF5CB82DEFB7E807A09EF6FBA43C48C4E312862ACAFC7BDE36340EC36C51`,
+  1,018,335 bytes.
+
+The matching settled PDF was installed only after those gates.  Generated
+sidecar auxiliaries were moved out of the repository, so no `.aux`, `.log`,
+`.out`, `.toc`, or staging PDF remains in the worktree.  This handoff
+explicitly releases the primary-document lease and EVO TeX/PDF stream.
+
+```text
+SYNC Fabius
+branch / worktree / machine: codex/fabius-theorem-polish-20260825 /
+  C:/Users/vresh/.codex/worktrees/10ef/ProveIt / EVO (Windows)
+fetched main SHA: 5b053a32b10e758e39f1be23cb2e8d821fba8de6
+HEAD and dirty paths: 2546fe21b395a469dd0cc3c36c62993cf04f93eb;
+  canonical TeX/PDF pair is clean and only this own registry is dirty for the
+  final handoff and lease release
+writing (exact paths): completed document checkpoint writes only
+  docs/Fabius_Function_and_Rvachev_Up/Fabius_Function_and_Rvachev_Up.tex and
+  its matching PDF; this report writes only this branch registry; all write
+  and process leases are now released
+expected declarations or document claims: human-readable counterparts for
+  exactly the six accepted compact Lambert-W declarations, plus the existing
+  corrected-equivalence theorem needed to print the corrected ratio-one
+  formula; no arbitrary-multiplier, cluster-set, liminf, limsup, or numerical
+  extrema claim
+completed commits: 8d928a55f (coordinator source integration and validated
+  tree), 180fc3c3e (feature merge/preservation checkpoint), and 2546fe21b
+  (settled primary TeX/PDF pair)
+validated (exact command, SHA/state, exit code): coordinator
+  `LAKE_JOBS=1 lake build +FabiusFunction.FabiusSharpAsymptotic` at
+  8d928a55f, 3891 jobs, exit 0, inherited linter only; three sequential
+  sidecar pdflatex passes at the exact 2546fe21b source content, all exit 0,
+  final 59-page artifact with settled references, embedded fonts, clean text
+  checks, and clean raster inspection of every changed page
+not yet validated: no new Lean/Lake invocation was attempted after the
+  coordinator's accepted gate; the mathematically stronger cluster-set and
+  liminf/limsup results remain deliberately outside canonical theorem-status
+  prose until they receive explicit Lean wrappers
+requested integration or lease: review and integrate document commit
+  2546fe21b together with this registry handoff; no new source, document,
+  build, facade, root, coordination, coverage, walkthrough, frontier, or
+  aggregate lease is requested; release the primary-document and EVO TeX/PDF
+  ownership now
+conflicts / dependencies: none.  The feature branch merged the exact active
+  lease base, the canonical starting TeX/PDF hashes matched the board, and no
+  excluded path was touched
+next bounded step: commit and push this registry-only release to the feature
+  branch, notify the coordinator, and remain read-only pending disposition
+```
