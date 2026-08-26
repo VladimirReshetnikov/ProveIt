@@ -7,10 +7,10 @@ This file implements the per-branch registry fallback in
 SYNC Fabius
 branch / worktree / machine: codex/fabius-both-papers /
   /home/codex/src/Proofs / codexbox
-fetched main SHA: 893d4c25d81740b7b695f72bc364eed941932ca1
-HEAD and dirty paths: f1b33700b6da547acea678791e77a06b2e326521;
-  `Lean/FabiusFunction/GlobalExtension.lean` and this registry are dirty for
-  the unvalidated natural-knot source checkpoint
+fetched main SHA: e18f5d0b0e3ec78e2b14e7006af6c7e916b42923
+HEAD and dirty paths: f546c38e5b6ddde6f68825798ab34c003e5c6930;
+  `Lean/FabiusFunction/GlobalExtension.lean` and this registry are dirty for a
+  post-checkpoint static-proof correction and status refresh
 writing (exact paths):
   Lean/FabiusFunction/GlobalExtension.lean;
   docs/registry/codex-fabius-both-papers.md
@@ -25,7 +25,11 @@ completed commits: Lower-Lambert source checkpoint `1da2fde2285e3970267b7dc2561b
   closed that slice and recorded the frozen documentation gaps;
   claim commit `0cb92989d580228917a99293647411ba85d6d452`
   advertised this exact one-source-file tranche; merge
-  `f1b33700b6da547acea678791e77a06b2e326521` synchronized it with fetched main
+  `f1b33700b6da547acea678791e77a06b2e326521` synchronized it with the first
+  fetched main; source checkpoint `34fec97bd4d5ff0b034c305fef6a9e7d26fec2f7`
+  implements both declarations and is explicitly unvalidated; merge
+  `f546c38e5b6ddde6f68825798ab34c003e5c6930` synchronizes that checkpoint with
+  current fetched main `e18f5d0b0`
 validated (exact command, SHA/state, exit code): coordinator board records
   serialized immutable `lake build +FabiusFunction.LowerLambertW` at
   `4c6bbac41`, exit 0, with its source blob unchanged on current main;
@@ -35,7 +39,9 @@ validated (exact command, SHA/state, exit code): coordinator board records
 not yet validated: both natural-knot declarations are implemented in the
   claimed source, but no Lean/Lake/TeX command is authorized or claimed for
   this source checkpoint; only read-only source review, collision search,
-  marker scans, and `git diff --check` are claimed
+  marker scans, and `git diff --check` are claimed; the final read-only review
+  caught and corrected an odd-branch rewrite from `b + b + 1` to the literal
+  witness form `2 * b + 1`
 requested integration or lease: after this unvalidated source checkpoint is
   pushed, request the codexbox token for serialized targets
   `+FabiusFunction.GlobalExtension`, `+FabiusFunction.PaperStatements`,
@@ -46,9 +52,9 @@ conflicts / dependencies: all advertised Fabius heads and their registries
   were checked; no branch claims GlobalExtension and the only overlap is the
   existing even/odd ingredients and downstream special cases that this API
   packages without modifying; documentation remains serialized and unclaimed
-next bounded step: checkpoint and push the explicitly unvalidated source,
-  reread the board, merge current origin/main once more on the clean feature
-  branch, and await an assigned build token
+next bounded step: commit and push the static-proof correction, then await an
+  assigned build token for the four serialized targets; leave documentation
+  and downstream source paths untouched
 ```
 
 Source-only subagents inspect and prototype in `/tmp`; they do not edit the

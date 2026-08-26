@@ -96,10 +96,10 @@ theorem extendedFabius_natCast_eq_ite
   · rw [if_pos (Even.add_self b)]
     simpa only [Nat.cast_add, two_mul] using
       extendedFabius_two_mul_nat F hF b
-  · have hodd : ¬ Even (b + b + 1) := by
-      simpa only [two_mul] using Nat.not_even_two_mul_add_one b
+  · have hodd : ¬ Even (2 * b + 1) :=
+      Nat.not_even_two_mul_add_one b
     rw [if_neg hodd]
-    have hdiv : (b + b + 1) / 2 = b := by omega
+    have hdiv : (2 * b + 1) / 2 = b := by omega
     rw [hdiv]
     simpa only [Nat.cast_add, Nat.cast_one, two_mul] using
       extendedFabius_two_mul_nat_add_one F hF b
