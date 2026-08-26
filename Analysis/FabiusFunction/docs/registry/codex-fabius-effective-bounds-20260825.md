@@ -696,3 +696,91 @@ next bounded step: commit and push this registry-only claim without force;
   edit only the claimed Lean source while three agents independently audit
   proof robustness, alternative cold paths, and human-readable parity
 ```
+
+## Source checkpoint: all-order degree and leading coefficient
+
+Exact source commit `8f47687e5` implements the complete two-name claim in the
+sole leased module.  After merge `14ad82304` incorporated the coordinator's
+claim acknowledgment and the disjoint accepted saddle-polynomial
+deduplication, the committed `FabiusLambertAllOrderAlgebra.lean` remains Git
+blob `08e5a2d9475746a517d8d835b699c00d8c00c0a9`, with content SHA-256
+`A0FDC9D0947438D011FD4BE27E25D22F70E3D254881EBCBDF577FFC7A3C52984`.
+
+The two new public declarations are exactly:
+
+- `dyadicLambertDisplacementPolynomial_natDegree`;
+- `dyadicLambertDisplacementPolynomial_leadingCoeff_succ`.
+
+The first proves the total formula `natDegree a_n = max n 1`, including the
+exceptional degree-one polynomial `a_0`.  The second proves
+
+```text
+leadingCoeff a_(n+1) =
+  (-1)^n * (n+1)^(-1) * (log 2)^(-(n+2)).
+```
+
+A documented private strong-induction helper bounds the degree of every
+recursive summand.  A second documented helper proves the top coefficient by
+ordinary induction: it handles the empty `n = 0` convolution directly, then
+uses `Fin.sum_univ_succ` to split off `j = 0`; the positive-index tail has
+degree one below the new coefficient and therefore vanishes there.  The
+explicit nonzero closed coefficient upgrades the degree bound to equality,
+and `coeff_natDegree` gives the public leading-coefficient corollary.
+
+The module overview now states both formulas and the base exception.  The two
+new public theorems and both proof helpers have formula-bearing comments, and
+the four formerly undocumented public simp evaluations at indices zero, one,
+and two now have human-readable counterparts.  Every old public declaration
+header and body remains byte-preserved.  The only import addition is the
+explicit `Mathlib.Algebra.Polynomial.BigOperators`, which is the stable source
+of the finite-sum degree API.
+
+Three independent read-only reviews audited the live source.  They caught and
+resolved the unqualified `n = 0` recurrence prose, polynomial association in
+the head coefficient, first-occurrence coefficient rewriting, negation
+grouping at the scalar recurrence, the sign-specific `pow_succ` rewrite, and
+an unnecessary implicit `gcongr` dependency.  The corrected tree passes all
+three static reviews for mathematics, indices, pinned APIs, documentation,
+names, imports, simp termination, and compatibility.
+
+```text
+SYNC Fabius
+branch / worktree / machine: codex/fabius-effective-bounds-20260825 /
+  /home/codex/.codex/worktrees/d6d3/Proofs / codexbox
+fetched main SHA: d33c4f44b3d08f14b15c1514d687a32898569475
+HEAD and dirty paths: 14ad82304645021f82d63b62d873dd99a24373ea;
+  clean after the conflict-free main merge; only this registry is dirty for
+  the immutable source handoff
+writing (exact paths): completed source checkpoint writes only
+  Lean/FabiusFunction/FabiusLambertAllOrderAlgebra.lean; this report writes
+  only this branch registry; the Lean source is now frozen
+expected declarations or document claims: both advertised public declarations
+  are implemented; documented private helpers establish the degree bound and
+  exact top coefficient; four missing existing theorem comments are supplied;
+  no canonical document, facade, root, or other source claim
+completed commits: 96e05f698 (registry-first claim), ca227c69e (base-case
+  recurrence correction), 8f47687e5 (one-file source/proof/documentation
+  checkpoint), and 14ad82304 (merge through current main d33c4f44b)
+validated (exact command, SHA/state, exit code): git diff --check exited 0;
+  forbidden-placeholder scan is clean; added-public-declaration scan finds
+  exactly the two advertised names; old public headers/bodies are preserved;
+  repeat all-registry/all-fetched-tip scans find no competing implementation;
+  three independent exact static theorem/API/index/simp/documentation reviews
+  pass after all reported hazards were fixed; this is not compiler evidence
+not yet validated: source commit 8f47687e5 has not been elaborated; no Lean,
+  Lake, TeX, PDF, or cache-mutating process ran because codexbox belongs to the
+  coordinator and EVO is assigned to theorem-polish
+requested integration or lease: independently review and preserve exact source
+  commit 8f47687e5 / blob 08e5a2d94757, then assign separate serialized
+  LAKE_JOBS=1 builds of +FabiusFunction.FabiusLambertAllOrderAlgebra and its
+  sole direct importer +FabiusFunction.FabiusLambertFormalLog; request no
+  document or main-write lease
+conflicts / dependencies: the compact Lambert-W obstruction, saddle
+  continuous-polynomial deduplication, shifted-prefix, frontier drafts, and
+  every canonical document are disjoint; only the coordinator may advance
+  main
+next bounded step: commit and push this exact immutable report and merge;
+  keep the claimed source frozen for coordinator review/validation, and audit
+  the already identified disjoint LaplaceMomentBounds strict-monotonicity
+  follow-on without editing or claiming it until this handoff is preserved
+```
