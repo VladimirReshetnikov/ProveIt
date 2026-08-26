@@ -1,10 +1,10 @@
 # Workstream registry: `codex/fabius-shifted-prefix-grid`
 
-**Status: finite-jet source checkpoint accepted, compiled, and released;
-finite-Appell-calculus and all-order approximation source checkpoints
-implemented, independently reviewed, and compiled at immutable merge
-`4367a7f86`; all claimed source paths remain frozen, and the Appell plus
-all-order approximation source units await coordinator integration.**
+**Status: every earlier shifted-prefix, finite-jet, finite-Appell, and
+all-order approximation source unit is integrated, compiled, and released.
+The next ordinary three-file source claim below advertises a full signed
+reflection theorem for every value before a dyadic prefix-row zero run; no
+source edit has begun, and no Lean/Lake or documentation token is held.**
 The exact claim was published before source work, coordinator checkpoint
 `893d4c25d` explicitly acknowledged it as the first nonoverlapping claim for
 the module, and source commit `00ff41a5e` now implements precisely that bounded
@@ -663,3 +663,95 @@ and its tree is `8e8ca522ec30eb4bce58acf60d2081c1960243e9`.
 The delta is only the canonical coordinator board; the unmerged index remains
 empty and both frozen source blobs are unchanged.  This board synchronization
 likewise carries no new compiler claim.
+
+## Next ordinary claim: signed reflection of a dyadic prefix row
+
+The coordinator has integrated and validated every earlier source unit from
+this branch, released all three former source paths, and returned the EVO
+Lean/Lake lane to the unassigned state.  Clean synchronization merge
+`d95cebff25ce9531f38562b66e9c871928462002` incorporates fetched main
+`39ad356c7a433c1b7dfdaec5bb3e3e4163c9fd35` before this new claim.  The
+following is an ordinary, nonoverlapping source claim; it does not authorize a
+build or any serialized documentation edit.
+
+```text
+SYNC Fabius
+branch / worktree / machine: codex/fabius-shifted-prefix-grid / c9a3 / EVO
+  (Windows)
+fetched main SHA: 39ad356c7a433c1b7dfdaec5bb3e3e4163c9fd35
+claim-base HEAD and dirty paths:
+  d95cebff25ce9531f38562b66e9c871928462002;
+  docs/registry/codex-fabius-shifted-prefix-grid.md only, publishing this
+  registry-first claim before any source edit
+writing (exact paths):
+  Lean/FabiusFunction/DyadicClosedForm.lean;
+  Lean/FabiusFunction/ThueMorsePrefix.lean;
+  Lean/FabiusFunction/FabiusRawQBinomialFormula.lean;
+  docs/registry/codex-fabius-shifted-prefix-grid.md
+expected declarations or document claims:
+  relocate the existing public theorem thueMorseSign_dyadic_complement from
+  FabiusRawQBinomialFormula.lean to its upstream sign-arithmetic home in
+  DyadicClosedForm.lean, preserving its exact name, binders, statement,
+  hypotheses, proof meaning, and absence of attributes;
+  add iteratedPrefix_dyadic_reverse_window in ThueMorsePrefix.lean, proving
+  for k <= r and k + d < 2^r that
+    iteratedPrefix k (2^r - k - 1 - d)
+      = (-1)^(r-k) * iteratedPrefix k d;
+  add iteratedPrefix_dyadic_reverse_window_eq_zero_iff, proving on the same
+  exact window that dyadic reflection preserves the zero locus;
+  advertise the new signed reciprocity in the ThueMorsePrefix module guide;
+  preserve every existing public declaration header and attribute, add no
+  simp attribute to the arithmetic reflection rules, and introduce no import
+completed commits:
+  d95cebff2 merges the post-validation coordinator checkpoint 39ad356c7
+  without conflicts and preserves the complete previous feature history
+validated (exact command, SHA/state, exit code):
+  read-only source and import inspection confirms that ThueMorsePrefix imports
+  DyadicClosedForm directly and FabiusRawQBinomialFormula receives it through
+  FabiusQBinomialFormula, so the relocation creates no import cycle;
+  exact-name and plausible reverse/reflection/palindromic searches across the
+  checked-out source, every checked-out registry, 26 fetched origin refs, and
+  all local heads found no duplicate theorem or live competing claim;
+  the only ThueMorsePrefix registry occurrence is a closed historical
+  read-only survey, and the coordinator board explicitly releases this
+  branch's earlier source paths;
+  two independent read-only proof/API audits identify the signed full-window
+  theorem as strictly stronger than the existing terminal zero-run and
+  left-boundary declarations
+not yet validated:
+  no source edit or compiler claim exists yet; no Lean, Lake, TeX, or PDF
+  process is authorized or running for this claim
+requested integration or lease:
+  activate the ordinary three-source-path claim after this registry checkpoint
+  is pushed; after a frozen source checkpoint and independent preflight,
+  assign the sole EVO Lean/Lake token for separate sequential builds of
+  +FabiusFunction.ThueMorsePrefix and
+  +FabiusFunction.FabiusRawQBinomialFormula;
+  after those exact declarations are compiler-validated, assign one future
+  documentation owner and sequential TeX/PDF lane for the exact primary and
+  walkthrough counterpart paths listed below
+future serialized documentation request (do not edit without board grant):
+  docs/PAPER_COVERAGE.md;
+  docs/Fabius_Function_and_Rvachev_Up/Fabius_Function_and_Rvachev_Up.tex;
+  docs/Fabius_Function_and_Rvachev_Up/Fabius_Function_and_Rvachev_Up.pdf;
+  docs/fabius_lean_walkthrough/fabius_lean_walkthrough.tex;
+  docs/fabius_lean_walkthrough/fabius_lean_walkthrough.pdf;
+  document the full signed reciprocity and zero-locus equivalence, map their
+  exact Lean names alongside the existing endpoint/zero-run/boundary API, and
+  add the currently missing ThueMorsePrefix row to the walkthrough module map
+conflicts / dependencies:
+  no overlap with the approved generic Rvachev bridge or Lambert-rate
+  equivalence claims; no AGENTS, README, collaboration, audit, coverage,
+  aggregate, TeX, PDF, primary, walkthrough, frontier, peer-registry, or other
+  serialized path is part of the ordinary source write set;
+  moving the complement theorem upstream is required to avoid duplicating its
+  thirty-line binary-parity proof and makes it available to ThueMorsePrefix
+  without an import cycle
+next bounded step:
+  push this registry-only claim; reread the fetched board and advertised tips;
+  then relocate the unchanged complement theorem and implement the two exact
+  signed-reflection declarations without running Lean/Lake
+lease refreshed: 2026-08-25 21:07 PDT
+git owner / build owner: root / none; EVO token requested only after a frozen
+  source checkpoint
+```
