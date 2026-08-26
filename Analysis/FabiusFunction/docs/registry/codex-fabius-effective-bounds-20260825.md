@@ -2839,3 +2839,31 @@ next bounded step: freeze both source blobs, push this handoff, fetch main,
   reread any ownership-board delta, and choose the next disjoint theorem or
   source-documentation parity tranche before editing it
 ```
+
+## Synchronization note: inverse-hierarchy integration order
+
+Clean merge `18832d3b3923d3f02786a02ae727a95f775eb766` incorporates
+`origin/main` `a949e2efaa485283e66a7d2130fc723168c01efa`.  The incoming main
+commit changes only the coordinator registry, but its new 01:51 PDT checkpoint
+grants active EVO validation to
+`codex/fabius-inverse-asymptotic-20260825` for an additive
+`FabiusInverseAsymptotic.lean` hierarchy checkpoint.  That branch's accepted
+candidate blob is `fd3b5dac6c3f25332c130967ec4914343b7b506a`, which adds the two
+elementary-scale hierarchy theorems and supporting private lemmas while
+retaining the same private endpoint-filter duplicate deleted by this branch.
+
+Therefore source checkpoint `fbdc07445` remains frozen and mathematically
+compatible, but it must not be selected against the older main preimage in a
+way that discards the hierarchy candidate.  The safe integration order is:
+
+1. finish and, if green, selectively integrate the hierarchy candidate;
+2. retarget or selectively apply this branch's public promotion, two prose
+   edits, and exact 15-line downstream duplicate deletion to that resulting
+   blob; and
+3. run the already-requested inverse and inverse-asymptotic focused gates on
+   the combined source.
+
+No source was changed during this synchronization.  The merge and this note
+claim no validation token, main write, document path, or authority over the
+active inverse branch.  New ordinary source work will stay disjoint from both
+inverse paths until the coordinator resolves that ordering.
