@@ -2333,3 +2333,17 @@ conflicts / dependencies: resolved only in this own registry; canonical binary
 next bounded step: commit and push this final registry-only closeout, verify the
   remote feature tip and main artifact blobs, then end the task
 ```
+
+### Post-closeout latest-main refresh
+
+Before the closeout push, `origin/main` advanced from `fec88296a` to
+`0f9a6db8313d626c52dc0e4ef31b42158bbd1bb0`.  Clean merge
+`8e7d93d439eb28f5237ffbf592501dee6f958c54` incorporates that checkpoint
+without conflict; it changes only the coordinator registry relative to the
+prior feature tip.  The refreshed ancestry check exits 0, the canonical TeX
+and PDF remain exact blobs `194881d2cd8c66144f35dd4dca7643656766e686`
+and `3f3fac8fca3caa75bc44ece13db1df124022c6cf`, and the only tree difference
+from latest main remains this branch's own fuller registry.  No build or
+document process ran.  This addendum supersedes only the fetched-main and merge
+SHA fields in the preceding closeout block; all acceptance and validation
+evidence is unchanged.
