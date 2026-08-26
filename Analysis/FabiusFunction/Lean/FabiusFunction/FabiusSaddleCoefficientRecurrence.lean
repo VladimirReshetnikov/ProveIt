@@ -109,11 +109,15 @@ theorem negativeLaplaceBoundedExponentJet_succ (n : ℕ) (t : ℝ) :
   rw [negativeLaplacePeriodicJet_succ, negativeLaplaceJetSlope_succ]
   ring
 
+/-- At phase `t`, the zeroth periodic jet is
+`1 / 2 + deriv negativeLaplacePsi t / Real.log 2`. -/
 @[simp] lemma negativeLaplacePeriodicJet_zero (t : ℝ) :
     negativeLaplacePeriodicJet 0 t =
       1 / 2 + deriv negativeLaplacePsi t / Real.log 2 := by
   rfl
 
+/-- At phase `t`, the zeroth bounded exponent jet is
+`deriv negativeLaplacePsi t / Real.log 2 - 1 / 2`. -/
 @[simp] lemma negativeLaplaceBoundedExponentJet_zero (t : ℝ) :
     negativeLaplaceBoundedExponentJet 0 t =
       deriv negativeLaplacePsi t / Real.log 2 - 1 / 2 := by
@@ -217,12 +221,15 @@ lemma negativeLaplaceExponentCoefficient_parity
       rw [mul_add]
       congr 1 <;> simp only [div_eq_mul_inv] <;> ac_rfl
 
+/-- The zeroth periodic jet is one-periodic. -/
 lemma negativeLaplacePeriodicJet_zero_periodic :
     Periodic (negativeLaplacePeriodicJet 0) 1 := by
   intro t
   simp only [negativeLaplacePeriodicJet_zero]
   rw [negativeLaplacePsi_deriv_add_one]
 
+/-- If a periodic jet and its derivative are one-periodic, then the successor
+jet defined by the coefficient recurrence is one-periodic as well. -/
 lemma negativeLaplacePeriodicJet_succ_periodic
     (n : ℕ) (hp : Periodic (negativeLaplacePeriodicJet n) 1)
     (hd : Periodic (deriv (negativeLaplacePeriodicJet n)) 1) :
@@ -231,6 +238,7 @@ lemma negativeLaplacePeriodicJet_succ_periodic
   simp only [negativeLaplacePeriodicJet]
   rw [hp t, hd t]
 
+/-- The first periodic jet is one-periodic. -/
 lemma negativeLaplacePeriodicJet_one_periodic :
     Periodic (negativeLaplacePeriodicJet 1) 1 := by
   apply negativeLaplacePeriodicJet_succ_periodic 0

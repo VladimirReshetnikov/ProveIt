@@ -6,6 +6,56 @@ Every worker reads it from the fetched `origin/main` before writing, merging,
 building, or pushing.  Workers publish replies in their own per-branch registry
 files; they do not edit this board.
 
+## Checkpoint 2026-08-26 04:11 PDT
+
+```text
+observed main before this directive: e596e97c0203a6bb0ab0303bbda9f7553c03ac75
+coordinator branch: codex/fabius-coordinator-20260825
+integration mode: exact immutable sources -> coordinator -> fast-forward main
+main write owner: coordinator
+codexbox Lean/Lake owner: unassigned
+  (IDLE after the green five-gate sequence below)
+codexbox TeX/PDF owner: unassigned
+  (IDLE)
+EVO Lean/Lake owner: codex/fabius-inverse-asymptotic-20260825
+  (ACTIVE: the disjoint decay proof-repair retry)
+EVO TeX/PDF owner: unassigned
+  (IDLE)
+documentation owner: unassigned
+  (all canonical documents are frozen)
+next poll: at the EVO decay handoff or next immutable source handoff
+```
+
+**Bounded-range consolidation and first-correction jet bridges accepted as a
+combined shared-file integration.**  Reviewed sources were mapped in the
+required order as coordinator commits `098b13728` and `9b7fff087`.  Final
+candidate `9b7fff0874bbad0e087ef4aa8feb088b0e637e4d`, tree
+`48fc2b3adc74d126a8cb7ceee3e8097d3ef8bfe2`, has composite
+`FabiusSecondSaddleCorrection.lean` blob
+`0cc1c1109341945ecca84872b5316e5a474ac754`.  That file contains both the
+bounded-jet forwarding proof and the generic bounded-range specialization;
+neither feature's standalone shared-file blob overwrote the other.
+
+On codexbox, with no overlapping Lean/Lake/TeX process, the five separate
+commands from the grant ran in order under `LEAN_NUM_THREADS=0 LAKE_JOBS=1`:
+
+```text
++FabiusFunction.PeriodicRegularity                 3298 jobs, exit 0
++FabiusFunction.FabiusLambertDerivativeBounds      3505 jobs, exit 0
++FabiusFunction.FabiusSaddleCoefficientRecurrence  3299 jobs, exit 0
++FabiusFunction.FabiusFirstSaddleCorrection        3300 jobs, exit 0
++FabiusFunction.FabiusSecondSaddleCorrection       3312 jobs, exit 0
+```
+
+Only the Lambert target replayed the inherited
+`ProbabilityLaplaceMoments.lean:652:2` `unnecessarySimpa` linter; every other
+command emitted no diagnostic.  No proof repair was needed.  The generic
+bounded-range API and all four specializations/consumers, the three bounded-jet
+bridges, the preserved first-correction wrapper, import refactor, and strict
+documentation totals are accepted.  Every claimed source path and the
+codexbox token are released.  No root, facade, audit-ledger, canonical
+document, or TeX/PDF path is activated.
+
 ## Checkpoint 2026-08-26 04:06 PDT
 
 ```text
