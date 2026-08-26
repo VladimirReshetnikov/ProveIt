@@ -733,3 +733,51 @@ cleanup. The rejected stage-two PDF is 186 pages, 2,056,681 bytes, SHA-256
 the matching log remain preserved under their `_stage2` job name for
 diagnosis. A new coordinator disposition is required before any source
 repair, additional TeX invocation, or canonical-PDF replacement.
+
+## Narrow page-184 source repair
+
+Coordinator checkpoint `407da44a6` was merged without conflict at
+`51bc2ca24`. Read-only inspection of the preserved third-pass log and rejected
+PDF localized the sole vertical overflow to the formal-background crosswalk at
+TeX lines 13852--13931. The complete crosswalk is one `tabularx`, hence one
+indivisible alignment box: it did not fit below the section opener on page 183,
+was deferred wholesale, and was still 59.28255 pt taller than a fresh page 184.
+The final wrapped Lean-declaration row at lines 13925--13928 consequently
+crossed the footer. The next page was normal.
+
+Source commit `5fee1bb90` makes the minimum local change at line 13853:
+
+```tex
+% before
+\begingroup
+\small
+
+% after
+\begingroup
+\footnotesize
+```
+
+The existing `\endgroup` at line 13931 confines the font-size change to this
+one table. Under the document's 11-point class, the approximately sixty table
+baselines each shrink by about one point, and the narrower glyphs can also
+remove identifier wrapping. This directly targets the measured excess without
+changing any mathematics, formalization status, prose, row, declaration name,
+label, reference, citation, environment structure, global geometry, font, or
+spacing rule. The new TeX SHA-256 is
+`D6791ED6AA0246EE9986D67BDF0BCC9823D431E46CAEA1FEE34409FEB25D16DA`.
+
+Post-edit static checks are unchanged: 986 case-sensitive unique labels and no
+duplicates; 625 reference targets and none missing; 52 unique bibliography
+keys and no duplicates; 20 citation targets and none missing; 1,201 matched
+begin/end environment pairs; 20 candidates, 20 obligations, and seven parts;
+one each of `smallarg:sec:crosswalk`, `smallarg:sec:open`, and the Lean-object
+running-head reset; zero occurrences of the removed probability-product label;
+zero conflict markers; and clean `git diff --check`. Normal `git status
+--short` was empty after moving the rejected PDF copy to the hash-verified
+preservation directory; its matching ignored log also remains preserved there.
+
+This is a source-only checkpoint and is **not yet PDF-validated**. No Lean,
+Lake, TeX, PDF, or cache-mutating process was invoked after the failed
+three-pass checkpoint. The canonical frontier PDF, README, all other TeX
+content, and the primary exposition remain untouched. A new coordinator token
+is required before any validation build.
