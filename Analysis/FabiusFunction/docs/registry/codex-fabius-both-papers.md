@@ -1268,3 +1268,64 @@ private helper and three documented public theorems; no attribute or simp rule
 changed.  No Lean, Lake, TeX, PDF, or cache-mutating process ran, so these
 reviews are not compiler evidence.  The source path is frozen pending
 coordinator review and the two serialized gates above.
+
+## Claim: sparse Pascal power-of-two columns
+
+Fresh `origin/main` `a949e2efaa485283e66a7d2130fc723168c01efa`
+has `Lean/FabiusFunction/Parity.lean` blob
+`74a127f418de83f10740b0a532e286594c5ea168`, content SHA-256
+`1EE425606E037A3E77A053412057877562C00528A731B6961DAB23787F720C70`.
+The radial-order source is separately frozen; this is a disjoint ordinary
+one-file source claim.
+
+The exact prospective write set is:
+
+- `Lean/FabiusFunction/Parity.lean`;
+- this branch's own registry.
+
+The source unit will formalize the power-of-two-column and sparse-Pascal
+identities stated in the frozen Thue--Morse formula drafts.  It adds the
+direct Mathlib big-operator congruence import, two private proof helpers, and
+exactly two documented public declarations:
+
+- `choose_pow_two_mod_two (n j : Nat)`, identifying
+  `choose n (2^j) mod 2` with digit `j` of the base-two expansion of `n`;
+- `thueMorseSign_pascalPowTwo (n : Nat)`, expressing the Thue--Morse sign as
+  `(-1)` raised to the finite sum of the power-of-two columns in Pascal row
+  `n`.
+
+The first proof iterates the existing Lucas congruence already used four times
+in this module, peeling one binary digit at each successor step, then rewrites
+the quotient residue through `Nat.getD_digits`.  The second sums those
+termwise congruences over the exact digit-length range, identifies the sum of
+`List.getD` entries with `binaryWeight`, and uses
+`neg_one_pow_eq_pow_mod_two` in both exponent directions.  At `n = 0` the
+range is empty and the sign is one, so no positivity hypothesis is needed.
+
+This is literal Lean coverage for draft 2's `eq:lucas-power-two`,
+`eq:power-two-column`, and signed half of `thm:sparse-pascal`, together with
+draft 4's `eq:lucas-bit-probe` and signed Pascal-bit-probe formula.  It does
+not claim the zero-one bit identity, real cosine product, or later
+autocorrelation consequences.  Source-level overview and theorem comments
+will state the exact formulas; every canonical document remains frozen.
+
+Exact-name, Lucas-specialization, Pascal-column, advertised-tip, history, and
+every-registry scans find no implementation or competing claim.  No active
+registry owns `Parity.lean`; current Walsh and modulo-three work lives in the
+downstream `ThueMorseBinomialLog.lean` and its earlier source claims are
+frozen/released.  The new direct import is acyclic and is required specifically
+for `Nat.ModEq.sum`; no simp attribute or existing declaration will change.
+
+No Lean, Lake, TeX, PDF, or cache-mutating process is authorized or has run
+for this claim.  After an immutable reviewed source checkpoint, the requested
+serialized gates are:
+
+```text
+LAKE_JOBS=1 lake build +FabiusFunction.Parity
+LAKE_JOBS=1 lake build +FabiusFunction.Paper06487
+```
+
+The paper facade covers the direct `PaperStatements` consumer.  A later
+separately owned documentation pass should map the two exact names to the
+listed frozen-draft equations without marking their unproved companions
+formalized.
