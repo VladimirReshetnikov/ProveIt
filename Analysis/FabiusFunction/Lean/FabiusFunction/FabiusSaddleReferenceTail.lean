@@ -22,8 +22,11 @@ times a power into a pure exponential and yields
 `∫_{|v| > A} exp (-v ^ 2 / 2) * |v| ^ k ≤ 8 * k! * exp (-A ^ 2 / 4) / A`.
 
 At the standard radius `A = fabiusSaddleCentralRadius b = sqrt (32 * log b)`
-this reads `exp (-A ^ 2 / 4) = b⁻¹ ^ 8`, comfortably past the `O(1 / b)` the
-saddle argument asks for.  The slack is deliberate: a single radius then
+and for `1 ≤ b`, this reads exactly
+`exp (-A ^ 2 / 4) = b⁻¹ ^ 8`.  We expose the resulting coarse eighth-order
+algebraic decay in both a pointwise bound and a filter-level `O(b⁻⁸)` theorem;
+the older `O(1 / b)` interface is then a compatibility corollary for the
+saddle argument.  The slack in the radius is deliberate: a single radius
 serves the Gaussian and both odd coefficients at once.
 
 ## Main results
@@ -35,10 +38,19 @@ serves the Gaussian and both odd coefficients at once.
 * `integral_norm_gaussian_add_oddCorrection_compl_Icc_le` -- the same estimate
   assembled for the Gaussian-plus-odd reference, with explicit constants `8`,
   `8 * |a|` and `48 * |c|` multiplying `exp (-A ^ 2 / 4) / A`.
-* `integral_norm_gaussian_add_oddCorrection_standardRadius_isBigO` -- along a
+* `exp_neg_sq_centralRadius_div_four` -- the exact standard-radius identity
+  `exp (-(fabiusSaddleCentralRadius b) ^ 2 / 4) = b⁻¹ ^ 8` for `1 ≤ b`.
+* `integral_norm_gaussian_add_oddCorrection_standardRadius_le_inv_pow_eight`
+  -- a coarse effective pointwise standard-radius tail bound with constant
+  `2 + 2 * Clinear + 12 * Ccubic` and decay `b⁻¹ ^ 8`.
+* `integral_norm_gaussian_add_oddCorrection_standardRadius_isBigO_inv_pow_eight`
+  -- the corresponding arbitrary-filter `O(b⁻⁸)` result under the coefficient
+  hypotheses used by the central saddle theorem.
+* `integral_norm_gaussian_add_oddCorrection_standardRadius_isBigO` -- the
+  compatibility form: along a
   filter on which `b` tends to infinity and the coefficients obey
   `b * a ^ 2 ≤ Clinear ^ 2` and `b * c ^ 2 ≤ Ccubic ^ 2`, the reference tail at
-  the standard radius is `O(1 / b)`.
+  the standard radius is `O(1 / b)`, by comparison with the stronger result.
 * `integral_norm_sub_gaussian_add_oddCorrection_standardRadius_isBigO` -- the
   form consumers use: if the kernel `K` also has an `O(1 / b)` tail, then so
   does `K` minus the reference.  This is the outer-region input that
@@ -46,9 +58,8 @@ serves the Gaussian and both odd coefficients at once.
   estimate to reach the normalized saddle kernel mass asymptotics.
 
 The remaining declarations are private helpers: integrability of
-`exp (-v ^ 2 / 2) * |v| ^ k`, the pointwise exponential majorant, the
-evaluation of `exp (-A ^ 2 / 4)` at the standard radius, and the passage from
-`b * a ^ 2 ≤ C ^ 2` to `|a| ≤ C / sqrt b`.
+`exp (-v ^ 2 / 2) * |v| ^ k`, the pointwise exponential majorant, and the
+passage from `b * a ^ 2 ≤ C ^ 2` to `|a| ≤ C / sqrt b`.
 
 ## Conventions and caveats
 
@@ -56,12 +67,14 @@ The hypothesis `4 ≤ A` is used in every bound and is not cosmetic; the
 exponential majorant fails for small `A`.  The constants are sufficient, not
 sharp: the true Gaussian tail decays like `exp (-A ^ 2 / 2)`, and the weaker
 `exp (-A ^ 2 / 4)` is the price of absorbing the polynomial factor into the
-exponential.  Coefficient bounds are phrased as `b * a ^ 2 ≤ Clinear ^ 2` to
-match the central saddle theorem, although the proofs here only use the
-weaker consequence `|a| ≤ Clinear`.  The odd correction is kept in the
-reference rather than dropped: it has size `O(1 / sqrt b)`, too large to
-discard at the accuracy sought, and keeping it is free because it integrates
-to zero by oddness over the symmetric central interval.
+exponential.  Even the resulting arbitrary-radius estimate retains a factor
+`1 / A` that the coarse `b⁻⁸` corollary discards.  Coefficient bounds are
+phrased as `b * a ^ 2 ≤ Clinear ^ 2` to match the central saddle theorem,
+although the proofs here only use the weaker consequence `|a| ≤ Clinear`.
+The odd correction is kept in the reference rather than dropped: it has size
+`O(1 / sqrt b)`, too large to discard at the accuracy sought, and keeping it
+is free because it integrates to zero by oddness over the symmetric central
+interval.
 -/
 
 set_option autoImplicit false
@@ -248,7 +261,12 @@ lemma integral_norm_gaussian_add_oddCorrection_compl_Icc_le
       norm_num at h0 h1 h3
       gcongr
 
-private lemma exp_neg_sq_centralRadius_div_four
+/-- Exact evaluation of the exponential tail scale at the standard saddle
+radius: if `1 ≤ b`, then
+`exp (-(fabiusSaddleCentralRadius b) ^ 2 / 4) = b⁻¹ ^ 8`.  This is the
+source of the effective eighth-order decay in the standard-radius reference
+tail bounds below. -/
+lemma exp_neg_sq_centralRadius_div_four
     {b : ℝ} (hb : 1 ≤ b) :
     Real.exp (-(fabiusSaddleCentralRadius b ^ 2) / 4) = b⁻¹ ^ 8 := by
   rw [sq_fabiusSaddleCentralRadius hb]
@@ -270,9 +288,108 @@ private lemma coeff_abs_le_div_sqrt
     rw [mul_pow, sq_abs, Real.sq_sqrt hb.le]
   nlinarith [sq_nonneg (Real.sqrt b * |a| - C)]
 
+/-- Coarse effective standard-radius tail bound for the Gaussian-plus-odd
+reference.
+If `exp 1 ≤ b` and the linear and cubic coefficients satisfy the quadratic
+constraints used by the central saddle theorem, then the complementary tail
+is at most
+`(2 + 2 * Clinear + 12 * Ccubic) * b⁻¹ ^ 8`.
+
+The eighth inverse power is exact at the level of the exponential tail scale:
+`exp (-(fabiusSaddleCentralRadius b) ^ 2 / 4) = b⁻¹ ^ 8`.  The displayed
+constant comes from the arbitrary-radius bound and
+`4 ≤ fabiusSaddleCentralRadius b`; no asymptotic notation is involved.  This
+convenient algebraic form discards the stronger factor
+`1 / fabiusSaddleCentralRadius b` from that bound. -/
+theorem integral_norm_gaussian_add_oddCorrection_standardRadius_le_inv_pow_eight
+    (b a c : ℝ) (Clinear Ccubic : ℝ)
+    (hClinear : 0 ≤ Clinear) (hCcubic : 0 ≤ Ccubic)
+    (hb : Real.exp 1 ≤ b)
+    (ha : b * a ^ 2 ≤ Clinear ^ 2)
+    (hc : b * c ^ 2 ≤ Ccubic ^ 2) :
+    (∫ v in (Icc (-fabiusSaddleCentralRadius b)
+        (fabiusSaddleCentralRadius b))ᶜ,
+      ‖QuantitativeSaddle.standardGaussian v + oddCorrection a c v‖) ≤
+        (2 + 2 * Clinear + 12 * Ccubic) * b⁻¹ ^ 8 := by
+  have hb1 : 1 ≤ b := by
+    exact (by have := Real.exp_one_gt_d9; linarith : (1 : ℝ) ≤ Real.exp 1).trans hb
+  have hb0 : 0 < b := zero_lt_one.trans_le hb1
+  have hA : 4 ≤ fabiusSaddleCentralRadius b := by
+    unfold fabiusSaddleCentralRadius
+    have hlog0 : 0 ≤ Real.log b := Real.log_nonneg hb1
+    rw [Real.le_sqrt (by norm_num) (by positivity)]
+    have hlog : 1 ≤ Real.log b :=
+      (Real.le_log_iff_exp_le hb0).2 hb
+    nlinarith
+  have ha' := coeff_abs_le_div_sqrt hb0 hClinear ha
+  have hc' := coeff_abs_le_div_sqrt hb0 hCcubic hc
+  have hsqrt1 : 1 ≤ Real.sqrt b := Real.one_le_sqrt.mpr hb1
+  have hcoeffA : |a| ≤ Clinear :=
+    ha'.trans (div_le_self hClinear hsqrt1)
+  have hcoeffC : |c| ≤ Ccubic :=
+    hc'.trans (div_le_self hCcubic hsqrt1)
+  have htail := integral_norm_gaussian_add_oddCorrection_compl_Icc_le a c hA
+  rw [exp_neg_sq_centralRadius_div_four hb1] at htail
+  have hpow0 : 0 ≤ b⁻¹ ^ 8 := by positivity
+  have hA0 : 0 < fabiusSaddleCentralRadius b := by linarith
+  have hbase : b⁻¹ ^ 8 / fabiusSaddleCentralRadius b ≤ b⁻¹ ^ 8 / 4 :=
+    div_le_div_of_nonneg_left hpow0 (by norm_num) hA
+  have hbase0 : 0 ≤ b⁻¹ ^ 8 / fabiusSaddleCentralRadius b :=
+    div_nonneg hpow0 hA0.le
+  have hcoeff : 8 + 8 * |a| + 48 * |c| ≤
+      8 + 8 * Clinear + 48 * Ccubic := by
+    gcongr
+  have hC : 0 ≤ 8 + 8 * Clinear + 48 * Ccubic := by positivity
+  calc
+    (∫ v in (Icc (-fabiusSaddleCentralRadius b)
+        (fabiusSaddleCentralRadius b))ᶜ,
+      ‖QuantitativeSaddle.standardGaussian v + oddCorrection a c v‖) ≤
+        8 * b⁻¹ ^ 8 / fabiusSaddleCentralRadius b +
+          |a| * (8 * b⁻¹ ^ 8 / fabiusSaddleCentralRadius b) +
+          |c| * (48 * b⁻¹ ^ 8 / fabiusSaddleCentralRadius b) := htail
+    _ = (8 + 8 * |a| + 48 * |c|) *
+        (b⁻¹ ^ 8 / fabiusSaddleCentralRadius b) := by ring
+    _ ≤ (8 + 8 * Clinear + 48 * Ccubic) *
+        (b⁻¹ ^ 8 / fabiusSaddleCentralRadius b) :=
+      mul_le_mul_of_nonneg_right hcoeff hbase0
+    _ ≤ (8 + 8 * Clinear + 48 * Ccubic) * (b⁻¹ ^ 8 / 4) :=
+      mul_le_mul_of_nonneg_left hbase hC
+    _ = (2 + 2 * Clinear + 12 * Ccubic) * b⁻¹ ^ 8 := by ring
+
+/-- Along any filter on which `b` tends to infinity, the standard-radius tail
+of the Gaussian-plus-odd reference has the coarse algebraic rate `O(b⁻⁸)`,
+uniformly under the quadratic coefficient bounds consumed by the central
+saddle theorem.  This is the filter-level form of
+`integral_norm_gaussian_add_oddCorrection_standardRadius_le_inv_pow_eight`. -/
+theorem integral_norm_gaussian_add_oddCorrection_standardRadius_isBigO_inv_pow_eight
+    {α : Type*} (l : Filter α) (b a c : α → ℝ)
+    (Clinear Ccubic : ℝ) (hClinear : 0 ≤ Clinear) (hCcubic : 0 ≤ Ccubic)
+    (hbinfty : Tendsto b l atTop)
+    (ha : ∀ᶠ i in l, b i * (a i) ^ 2 ≤ Clinear ^ 2)
+    (hc : ∀ᶠ i in l, b i * (c i) ^ 2 ≤ Ccubic ^ 2) :
+    (fun i => ∫ v in (Icc (-fabiusSaddleCentralRadius (b i))
+        (fabiusSaddleCentralRadius (b i)))ᶜ,
+      ‖QuantitativeSaddle.standardGaussian v + oddCorrection (a i) (c i) v‖)
+      =O[l] (fun i => (b i)⁻¹ ^ 8) := by
+  let C : ℝ := 2 + 2 * Clinear + 12 * Ccubic
+  apply IsBigO.of_bound C
+  filter_upwards [hbinfty.eventually_ge_atTop (Real.exp 1), ha, hc] with i hb hai hci
+  have htail :=
+    integral_norm_gaussian_add_oddCorrection_standardRadius_le_inv_pow_eight
+      (b i) (a i) (c i) Clinear Ccubic hClinear hCcubic hb hai hci
+  have hintegral0 : 0 ≤ (∫ v in (Icc (-fabiusSaddleCentralRadius (b i))
+      (fabiusSaddleCentralRadius (b i)))ᶜ,
+      ‖QuantitativeSaddle.standardGaussian v + oddCorrection (a i) (c i) v‖) :=
+    integral_nonneg fun _ => norm_nonneg _
+  have hpow0 : 0 ≤ (b i)⁻¹ ^ 8 := by positivity
+  rw [Real.norm_eq_abs, Real.norm_eq_abs, abs_of_nonneg hintegral0,
+    abs_of_nonneg hpow0]
+  simpa [C] using htail
+
 /-- The Gaussian plus the necessary odd correction has an `O(1/b)` tail at
 the standard radius, uniformly under the coefficient bounds consumed by the
-central saddle theorem. -/
+central saddle theorem.  This compatibility result follows by weakening the
+effective `O(b⁻⁸)` estimate above. -/
 theorem integral_norm_gaussian_add_oddCorrection_standardRadius_isBigO
     {α : Type*} (l : Filter α) (b a c : α → ℝ)
     (Clinear Ccubic : ℝ) (hClinear : 0 ≤ Clinear) (hCcubic : 0 ≤ Ccubic)
@@ -283,69 +400,25 @@ theorem integral_norm_gaussian_add_oddCorrection_standardRadius_isBigO
         (fabiusSaddleCentralRadius (b i)))ᶜ,
       ‖QuantitativeSaddle.standardGaussian v + oddCorrection (a i) (c i) v‖)
       =O[l] (fun i => (b i)⁻¹) := by
-  let C : ℝ := 8 + 8 * Clinear + 48 * Ccubic
-  apply IsBigO.of_bound C
-  filter_upwards [hbinfty.eventually_ge_atTop (Real.exp 1), ha, hc] with i hb hai hci
-  have hb1 : 1 ≤ b i := by
-    exact (by have := Real.exp_one_gt_d9; linarith : (1 : ℝ) ≤ Real.exp 1).trans hb
-  have hb0 : 0 < b i := zero_lt_one.trans_le hb1
-  have hA : 4 ≤ fabiusSaddleCentralRadius (b i) := by
-    unfold fabiusSaddleCentralRadius
-    have hlog0 : 0 ≤ Real.log (b i) := Real.log_nonneg hb1
-    rw [Real.le_sqrt (by norm_num) (by positivity)]
-    have hlog : 1 ≤ Real.log (b i) :=
-      (Real.le_log_iff_exp_le hb0).2 hb
-    nlinarith
-  have ha' := coeff_abs_le_div_sqrt hb0 hClinear hai
-  have hc' := coeff_abs_le_div_sqrt hb0 hCcubic hci
-  have htail := integral_norm_gaussian_add_oddCorrection_compl_Icc_le
-    (a i) (c i) hA
-  rw [exp_neg_sq_centralRadius_div_four hb1] at htail
-  have hsqrt1 : 1 ≤ Real.sqrt (b i) := Real.one_le_sqrt.mpr hb1
-  have hcoeffA : |a i| ≤ Clinear :=
-    ha'.trans (div_le_self hClinear hsqrt1)
-  have hcoeffC : |c i| ≤ Ccubic :=
-    hc'.trans (div_le_self hCcubic hsqrt1)
-  have hA1 : 1 ≤ fabiusSaddleCentralRadius (b i) := hA.trans' (by norm_num)
-  have hinvA : (fabiusSaddleCentralRadius (b i))⁻¹ ≤ 1 :=
-    inv_le_one_of_one_le₀ hA1
-  have hbInv0 : 0 ≤ (b i)⁻¹ := by positivity
-  have hbInv1 : (b i)⁻¹ ≤ 1 := inv_le_one_of_one_le₀ hb1
-  have hintegral0 : 0 ≤ (∫ v in (Icc (-fabiusSaddleCentralRadius (b i))
-      (fabiusSaddleCentralRadius (b i)))ᶜ,
-      ‖QuantitativeSaddle.standardGaussian v + oddCorrection (a i) (c i) v‖) :=
-    integral_nonneg fun _ => norm_nonneg _
-  rw [Real.norm_eq_abs, Real.norm_eq_abs, abs_of_nonneg hintegral0,
-    abs_of_nonneg hbInv0]
-  calc
-    (∫ v in (Icc (-fabiusSaddleCentralRadius (b i))
-        (fabiusSaddleCentralRadius (b i)))ᶜ,
-      ‖QuantitativeSaddle.standardGaussian v + oddCorrection (a i) (c i) v‖) ≤
-        8 * (b i)⁻¹ ^ 8 / fabiusSaddleCentralRadius (b i) +
-          |a i| * (8 * (b i)⁻¹ ^ 8 / fabiusSaddleCentralRadius (b i)) +
-          |c i| * (48 * (b i)⁻¹ ^ 8 / fabiusSaddleCentralRadius (b i)) := htail
-    _ ≤ C * (b i)⁻¹ := by
-      dsimp [C]
-      have hpow : (b i)⁻¹ ^ 8 ≤ (b i)⁻¹ := by
-        calc
-          (b i)⁻¹ ^ 8 = (b i)⁻¹ * (b i)⁻¹ ^ 7 := by ring
-          _ ≤ (b i)⁻¹ * 1 := by
-            gcongr
-            exact pow_le_one₀ hbInv0 hbInv1
-          _ = (b i)⁻¹ := mul_one _
-      have hbase : (b i)⁻¹ ^ 8 / fabiusSaddleCentralRadius (b i) ≤ (b i)⁻¹ := by
-        rw [div_eq_mul_inv]
-        exact (mul_le_of_le_one_right (by positivity) hinvA).trans hpow
-      have hbase0 : 0 ≤ (b i)⁻¹ ^ 8 /
-          fabiusSaddleCentralRadius (b i) := by positivity
+  have hstrong :=
+    integral_norm_gaussian_add_oddCorrection_standardRadius_isBigO_inv_pow_eight
+      l b a c Clinear Ccubic hClinear hCcubic hbinfty ha hc
+  have hrate : (fun i => (b i)⁻¹ ^ 8) =O[l] (fun i => (b i)⁻¹) := by
+    apply IsBigO.of_bound 1
+    filter_upwards [hbinfty.eventually_ge_atTop 1] with i hb1
+    have hbInv0 : 0 ≤ (b i)⁻¹ := by positivity
+    have hbInv1 : (b i)⁻¹ ≤ 1 := inv_le_one_of_one_le₀ hb1
+    have hpow : (b i)⁻¹ ^ 8 ≤ (b i)⁻¹ := by
       calc
-        8 * (b i)⁻¹ ^ 8 / fabiusSaddleCentralRadius (b i) +
-              |a i| * (8 * (b i)⁻¹ ^ 8 / fabiusSaddleCentralRadius (b i)) +
-              |c i| * (48 * (b i)⁻¹ ^ 8 / fabiusSaddleCentralRadius (b i)) =
-            (8 + 8 * |a i| + 48 * |c i|) *
-              ((b i)⁻¹ ^ 8 / fabiusSaddleCentralRadius (b i)) := by ring
-        _ ≤ (8 + 8 * Clinear + 48 * Ccubic) * (b i)⁻¹ := by
+        (b i)⁻¹ ^ 8 = (b i)⁻¹ * (b i)⁻¹ ^ 7 := by ring
+        _ ≤ (b i)⁻¹ * 1 := by
           gcongr
+          exact pow_le_one₀ hbInv0 hbInv1
+        _ = (b i)⁻¹ := mul_one _
+    rw [Real.norm_eq_abs, Real.norm_eq_abs, abs_of_nonneg (pow_nonneg hbInv0 8),
+      abs_of_nonneg hbInv0, one_mul]
+    exact hpow
+  exact hstrong.trans hrate
 
 /-- If a saddle kernel and the Gaussian-plus-odd reference each have an
 `O(1/b)` complementary tail, then so does their difference. -/
