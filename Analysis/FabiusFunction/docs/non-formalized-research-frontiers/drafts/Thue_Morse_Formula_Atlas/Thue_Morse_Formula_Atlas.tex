@@ -2391,6 +2391,19 @@ sign is \(\eps_n\).
 This theorem is stronger than any one moment identity: it is an
 inclusion--exclusion formula valid for arbitrary test functions.
 
+\emph{Formal versions.}  \path{ThueMorseMixedDifference.lean} proves
+\cref{thm:finite-difference-master} in full generality: the argument
+space is any additive commutative monoid, the value space any additive
+commutative group, and \(f\) an arbitrary function between them.  The
+operator \(\prod_{j<m}(I-T_{2^jh})\) is
+\lean{Fabius.dyadicMixedDifference}, the boxed identity
+\eqref{eq:operator-product} is
+\lean{Fabius.sum\_thueMorseSign\_smul\_eq\_mixedDifference}, and the
+expanded inclusion--exclusion form is
+\lean{Fabius.sum\_thueMorseSign\_smul\_eq\_sum\_powerset\_smul}.
+The polynomial and exponential specializations recover the Prouhet and
+moment layers formalized earlier.
+
 \subsection{Exact multiple-integral remainder}
 
 \begin{corollary}[Integral cubature formula]
@@ -3064,6 +3077,18 @@ Substitute \(z=\e^t\) in \eqref{eq:signed-Pascal-support}, factor
 \cref{thm:moment-composition}.
 \end{proof}
 
+\emph{Formal versions.}  \path{ThueMorseSparseMoments.lean} proves
+\cref{cor:all-sparse-moments} as
+\lean{Fabius.sum\_submask\_thueMorseSign\_mul\_pow\_add}, the
+special case \(S=J(n)\) of a statement on an \emph{arbitrary} finite
+set \(S\) of bit positions
+(\lean{Fabius.sum\_powerset\_thueMorseSign\_mul\_pow\_add}), which
+also subsumes the dyadic block \(S=\{0,\dots,m-1\}\) of
+\cref{thm:moment-composition}.  The supporting master product on an
+arbitrary support is \lean{Fabius.prod\_one\_sub\_pow\_powerset},
+over any commutative ring, resting on the hypothesis-free weight law
+\lean{Fabius.binaryWeight\_sum\_two\_pow\_eq\_card}.
+
 \begin{example}
 For \(n=13=(1101)_2\),
 \(J(13)=\{0,2,3\}\), \(s=3\), and \(\beta(13)=5\).  The odd positions in
@@ -3195,6 +3220,12 @@ Use \eqref{eq:block-sign} and factor out \(\eps_q\); then apply
 \cref{thm:exact-prefix}.
 \end{proof}
 
+\emph{Formal versions.}  \eqref{eq:partial-block-prefix} and
+\eqref{eq:aligned-block-zero} are
+\lean{Fabius.sum\_thueMorseSign\_block\_prefix} and
+\lean{Fabius.sum\_thueMorseSign\_aligned\_block}
+(\path{ThueMorseEulerTransform.lean}).
+
 The prefix generating function is unusually simple:
 \begin{equation}
   \sum_{N\ge0}S(N)z^N
@@ -3247,6 +3278,15 @@ One inclusive summation multiplies an ordinary generating function by
 \((1-z)^{-k}=\sum_{r\ge0}\binom{r+k-1}{k-1}z^r\) and take the Cauchy product.
 \end{proof}
 
+\emph{Formal versions.}  The corpus module \path{ThueMorsePrefix.lean}
+defines \lean{Fabius.iteratedPrefix} and proves the binomial convolution
+\eqref{eq:iterated-prefix-convolution} as
+\lean{Fabius.iteratedPrefix\_convolution}; the generating identity
+\eqref{eq:iterated-prefix-generating} is formal below every dyadic
+truncation as
+\lean{Fabius.coeff\_thueMorseBlockPolynomial\_mul\_invOneSubPow\_eq\_iteratedPrefix}
+(\path{ThueMorseGenerating.lean}).
+
 \subsection{Terminal zero runs at dyadic boundaries}
 
 The quotient of a finite Prouhet polynomial by \((1-z)^k\) is still a
@@ -3285,6 +3325,20 @@ degree \(2^r-k-1\), proving the zero run.  Its leading coefficient is
 comes from the first omitted factor \(1-z^{2^r}\), or directly from the prefix
 recurrence.
 \end{proof}
+
+\emph{Formal versions.}  All three statements of
+\cref{thm:terminal-zero-run} have long been formal in
+\path{ThueMorsePrefix.lean}:
+\lean{Fabius.iteratedPrefix\_dyadic\_zero\_run} (the run),
+\lean{Fabius.iteratedPrefix\_before\_dyadic\_run}
+(\(S^{(k)}_{2^r-k-1}=(-1)^{r-k}\)), and
+\lean{Fabius.iteratedPrefix\_at\_dyadic} (\(S^{(k)}_{2^r}=-1\)),
+with the endpoint value
+\lean{Fabius.iteratedPrefix\_dyadic\_endpoint}.  The factorization
+behind \eqref{eq:finite-prefix-polynomial} is the geometric ladder
+\lean{Fabius.prod\_one\_sub\_two\_pow\_eq\_geom} and
+\lean{Fabius.thueMorseBlockPolynomial\_eq\_geom\_prod}
+(\path{ThueMorseBlockAlgebra.lean}), over any commutative ring.
 
 \subsection{Why this is the discrete spine of the Fabius theory}
 
@@ -3485,6 +3539,20 @@ to its order \(2^m\).
 
 Thus the broad ordinary Fourier spectrum is a basis-change phenomenon: the
 same block is spectrally pure in the Walsh basis.
+
+\emph{Formal versions.}  \path{ThueMorseWalsh.lean} proves
+\eqref{eq:Walsh-character} as
+\lean{Fabius.thueMorseSign\_eq\_neg\_one\_pow\_land} (the inner
+product realized as \(\wt(a\mathbin{\&}n)\)), the point mass
+\eqref{eq:Walsh-transform} as
+\lean{Fabius.sum\_thueMorseSign\_mul\_walsh}, and the underlying
+character orthogonality
+\(\sum_{n<2^m}(-1)^{\wt(a\mathbin{\&}n)}=2^m\ind_{a=0}\) as
+\lean{Fabius.sum\_neg\_one\_pow\_binaryWeight\_land}.  The bit
+toolkit behind them --- the all-ones digit pattern of \(2^m-1\) and the
+masking of two-power sums --- is \lean{Fabius.sum\_range\_two\_pow},
+\lean{Fabius.testBit\_two\_pow\_sub\_one}, and
+\lean{Fabius.land\_sum\_two\_pow}.
 
 \subsection{Rademacher step functions}
 
@@ -4495,7 +4563,7 @@ valuation, carry, and Pascal-row formulas remain genuinely base-two features.
 \subsection{Formalized modules (August 2026)}
 \label{sec:formalized-modules}
 
-The first tranches of the formalization now exist as twelve compiled Lean
+The first tranches of the formalization now exist as fifteen compiled Lean
 modules in \repo{}, complementing the corpus modules
 (\path{Parity.lean}, \path{TwoAdic.lean}, \path{ThueMorsePrefix.lean},
 \path{ThueMorseGenerating.lean}, \path{ThueMorseExponential.lean},
@@ -4521,6 +4589,9 @@ Module & Contents \\
 \path{ThueMorseArtinSchreier.lean} & Characteristic-two power-series Frobenius, the \(\Ftwo\) bit series with its functional equation, Artin--Schreier quadratic and normalized forms, finite Artin--Schreier telescope. \\
 \path{ThueMorseEulerTransform.lean} & Prefix collapse and ones-count formulas, general residue-class reindexing, ruler-convolution recurrence by finite combinatorics, interval discrepancy bounds. \\
 \path{ThueMorseLucasSupport.lean} & Binary support of two-power sums, Lucas's submask criterion (bit, \texttt{\&\&\&}, and support forms), odd Pascal positions as the submask cube, signed Pascal-support product, balance on odd positions. \\
+\path{ThueMorseWalsh.lean} & All-ones digit patterns and masked two-power sums, \(\eps\) as a Walsh character, character orthogonality on the block, the one-point Walsh spectrum. \\
+\path{ThueMorseSparseMoments.lean} & Hypothesis-free weight and sign laws, master product on arbitrary supports, complete sparse moment composition subsuming the block and submask cases. \\
+\path{ThueMorseMixedDifference.lean} & The dyadic mixed-difference operator and the finite-difference factorization for arbitrary functions from an additive monoid into an additive group, with the powerset expansion. \\
 \bottomrule
 \end{tabularx}
 \end{center}
