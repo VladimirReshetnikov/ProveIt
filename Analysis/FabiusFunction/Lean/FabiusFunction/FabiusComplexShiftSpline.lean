@@ -10,9 +10,11 @@ The discrete-limit formula contains a complex shift `q` inside each finite
 Thue--Morse spline.  This module identifies that expression with a fixed
 polynomial branch, expands it exactly around the centered shift `q = 1/2`,
 and proves a uniform exponential translation bound in every natural degree
-and at every real input.  Consequently every fixed complex shift has the same
-pointwise limit on the whole real line; to the left of the first half-cell the
-finite splines vanish exactly.
+and at every real input.  Removing the absent constant term in the translation
+increment strengthens its exponential factor to `exp ‖q - 1/2‖ - 1`.
+Consequently every fixed complex shift has the same pointwise limit on the
+whole real line; to the left of the first half-cell the finite splines vanish
+exactly.
 -/
 
 set_option autoImplicit false
@@ -158,6 +160,33 @@ theorem norm_fabiusComplexShiftSpline_sub_center_le_half_pow_mul_exp_of_bound
     ((2 : ℂ) ^ p * (x : ℂ) - 1 / 2) ((1 / 2 : ℂ) - q) hp hbound
   simpa only [norm_neg, show (1 / 2 : ℂ) - q = -(q - 1 / 2) by ring] using h
 
+/-- Conditional exponential-increment translation bound in every degree.  It
+vanishes when the shift is already centered. -/
+theorem
+    norm_fabiusComplexShiftSpline_sub_center_le_half_pow_mul_exp_sub_one_of_bound_all
+    (p : ℕ) (q : ℂ) (x : ℝ)
+    (hbound : ∀ d ∈ Finset.range p,
+      ‖normalizedThueMorseSplineBranch d
+        (fabiusDiscreteLimitRangeLength x p)
+        ((2 : ℂ) ^ p * (x : ℂ) - 1 / 2)‖ ≤ 1) :
+    ‖fabiusComplexShiftSpline p q x -
+        fabiusComplexShiftSpline p (1 / 2 : ℂ) x‖ ≤
+      (1 / 2 : ℝ) ^ (p - 1) *
+        (Real.exp ‖q - (1 / 2 : ℂ)‖ - 1) := by
+  rw [fabiusComplexShiftSpline_eq_branch,
+    fabiusComplexShiftSpline_eq_branch]
+  have hargq :
+      (2 : ℂ) ^ p * (x : ℂ) - q =
+        ((2 : ℂ) ^ p * (x : ℂ) - 1 / 2) + ((1 / 2 : ℂ) - q) := by
+    ring
+  rw [hargq]
+  have h :=
+    norm_normalizedThueMorseSplineBranch_add_sub_le_half_pow_mul_exp_sub_one_all
+      p (fabiusDiscreteLimitRangeLength x p)
+      ((2 : ℂ) ^ p * (x : ℂ) - 1 / 2) ((1 / 2 : ℂ) - q) hbound
+  simpa only [norm_neg,
+    show (1 / 2 : ℂ) - q = -(q - 1 / 2) by ring] using h
+
 /-- Conditional quantitative translation bound in every degree, including
 degree zero. -/
 theorem norm_fabiusComplexShiftSpline_sub_center_le_half_pow_mul_exp_of_bound_all
@@ -170,18 +199,12 @@ theorem norm_fabiusComplexShiftSpline_sub_center_le_half_pow_mul_exp_of_bound_al
         fabiusComplexShiftSpline p (1 / 2 : ℂ) x‖ ≤
       (1 / 2 : ℝ) ^ (p - 1) *
         Real.exp ‖q - (1 / 2 : ℂ)‖ := by
-  rw [fabiusComplexShiftSpline_eq_branch,
-    fabiusComplexShiftSpline_eq_branch]
-  have hargq :
-      (2 : ℂ) ^ p * (x : ℂ) - q =
-        ((2 : ℂ) ^ p * (x : ℂ) - 1 / 2) + ((1 / 2 : ℂ) - q) := by
-    ring
-  rw [hargq]
-  have h :=
-    norm_normalizedThueMorseSplineBranch_add_sub_le_half_pow_mul_exp_all
-      p (fabiusDiscreteLimitRangeLength x p)
-      ((2 : ℂ) ^ p * (x : ℂ) - 1 / 2) ((1 / 2 : ℂ) - q) hbound
-  simpa only [norm_neg, show (1 / 2 : ℂ) - q = -(q - 1 / 2) by ring] using h
+  exact
+    (norm_fabiusComplexShiftSpline_sub_center_le_half_pow_mul_exp_sub_one_of_bound_all
+      p q x hbound).trans
+      (mul_le_mul_of_nonneg_left
+        (sub_le_self (Real.exp ‖q - (1 / 2 : ℂ)‖) zero_le_one)
+        (by positivity))
 
 /-- Centering at `q=1/2` recovers the real uniform spline. -/
 theorem fabiusComplexShiftSpline_center (p : ℕ) (x : ℝ) :
@@ -268,6 +291,27 @@ theorem norm_fabiusComplexShiftSpline_sub_center_le_half_pow_mul_exp
       norm_normalizedThueMorseSplineBranch_center_le_one p d
         (Nat.le_of_lt (Finset.mem_range.mp hd)) hx)
 
+/-- Strengthened translation bound in every degree and on the whole real line.
+Its exponential increment is exactly zero at the centered shift. -/
+theorem norm_fabiusComplexShiftSpline_sub_center_le_half_pow_mul_exp_sub_one_all
+    (p : ℕ) (q : ℂ) (x : ℝ) :
+    ‖fabiusComplexShiftSpline p q x -
+        fabiusComplexShiftSpline p (1 / 2 : ℂ) x‖ ≤
+      (1 / 2 : ℝ) ^ (p - 1) *
+        (Real.exp ‖q - (1 / 2 : ℂ)‖ - 1) := by
+  rcases le_total 0 x with hx | hx
+  · exact
+      norm_fabiusComplexShiftSpline_sub_center_le_half_pow_mul_exp_sub_one_of_bound_all
+        p q x (fun d hd =>
+          norm_normalizedThueMorseSplineBranch_center_le_one p d
+            (Nat.le_of_lt (Finset.mem_range.mp hd)) hx)
+  · rw [fabiusComplexShiftSpline_eq_zero_of_nonpos p q hx,
+      fabiusComplexShiftSpline_eq_zero_of_nonpos p (1 / 2 : ℂ) hx,
+      sub_self, norm_zero]
+    exact mul_nonneg (by positivity)
+      (sub_nonneg.mpr
+        (Real.one_le_exp (norm_nonneg (q - (1 / 2 : ℂ)))))
+
 /-- Uniform translation bound in every degree and on the whole real line.
 For nonpositive inputs both splines vanish exactly. -/
 theorem norm_fabiusComplexShiftSpline_sub_center_le_half_pow_mul_exp_all
@@ -276,16 +320,12 @@ theorem norm_fabiusComplexShiftSpline_sub_center_le_half_pow_mul_exp_all
         fabiusComplexShiftSpline p (1 / 2 : ℂ) x‖ ≤
       (1 / 2 : ℝ) ^ (p - 1) *
         Real.exp ‖q - (1 / 2 : ℂ)‖ := by
-  rcases le_total 0 x with hx | hx
-  · exact
-      norm_fabiusComplexShiftSpline_sub_center_le_half_pow_mul_exp_of_bound_all
-        p q x (fun d hd =>
-          norm_normalizedThueMorseSplineBranch_center_le_one p d
-            (Nat.le_of_lt (Finset.mem_range.mp hd)) hx)
-  · rw [fabiusComplexShiftSpline_eq_zero_of_nonpos p q hx,
-      fabiusComplexShiftSpline_eq_zero_of_nonpos p (1 / 2 : ℂ) hx,
-      sub_self, norm_zero]
-    exact mul_nonneg (by positivity) (Real.exp_nonneg _)
+  exact
+    (norm_fabiusComplexShiftSpline_sub_center_le_half_pow_mul_exp_sub_one_all
+      p q x).trans
+      (mul_le_mul_of_nonneg_left
+        (sub_le_self (Real.exp ‖q - (1 / 2 : ℂ)‖) zero_le_one)
+        (by positivity))
 
 private theorem half_pow_sub_one_tendsto_zero :
     Tendsto (fun p : ℕ => (1 / 2 : ℝ) ^ (p - 1)) atTop (nhds 0) := by
