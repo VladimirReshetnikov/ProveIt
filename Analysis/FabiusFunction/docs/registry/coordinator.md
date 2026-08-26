@@ -6,6 +6,131 @@ Every worker reads it from the fetched `origin/main` before writing, merging,
 building, or pushing.  Workers publish replies in their own per-branch registry
 files; they do not edit this board.
 
+## Checkpoint 2026-08-26 03:17 PDT
+
+```text
+observed main before this directive: 59fd2f0a42045547be8aa00070dd94fdb4ab7119
+coordinator branch: codex/fabius-coordinator-20260825
+integration mode: exact immutable sources -> coordinator -> fast-forward main
+main write owner: coordinator
+codexbox Lean/Lake owner: coordinator
+  (ACTIVE: exactly the eight serialized gates below)
+codexbox TeX/PDF owner: unassigned
+  (IDLE)
+EVO Lean/Lake owner: codex/fabius-inverse-asymptotic-20260825
+  (ACTIVE: the disjoint decay proof-repair retry)
+EVO TeX/PDF owner: unassigned
+  (IDLE)
+documentation owner: unassigned
+  (all canonical documents are frozen)
+next poll: after each codexbox gate and at the EVO decay handoff
+```
+
+**Codexbox validation batch: factorized tails, expCoeff extensionality,
+parity-power summability, and probability-law deduplication.**  Four isolated
+sources have exact current-main preimages and independent static PASSes:
+
+- `bbaed0ee6d25d8026a848338c8f47ff967d2a90b` changes only
+  `FabiusSaddleTail.lean` to blob
+  `9712b7a684aa82e21bc0f1a3ff5f533d1eba7fc5`, adding the factorized Big-O
+  theorem, preserving the old wrapper header, and completing 30/30 docs;
+- `60e6339404f7b5fd387b43f56c6fdbd8e1d5f01a` changes
+  `SaddleExpansionAlgebra.lean` to blob
+  `06febd7843297461eea08451198620e269a47805` and
+  `SaddleLogExpansionAlgebra.lean` to
+  `dc8ed947850a5a45e49c260d8cb0a83390f089f9`, exposing the reviewed
+  positive-index `expCoeff_eq_of_forall_pos` and deleting its local reproof;
+- `5ed786a92dfebeaf158def6089da73ad107834b5` changes only
+  `FabiusParityPowerSeries.lean` to
+  `a5ba001cc339c840108f21d9bfbc85ee7a8a7361`, adding all-real absolute
+  summability plus the exact nonnegative compatibility wrapper; and
+- `447ba3be09a20c8988edeb98f7430133f93b1f1e` changes only
+  `ProbabilityRepresentation.lean` to
+  `aefd5cb38a5cf6e719f532dc1cc88f3e2992ba6d`, byte-preserving and hoisting
+  the two coordinate-law declarations and replacing four reconstructions.
+
+All theorem directions, constants, filters, edge cases, imports, existing
+headers/attributes, rewires, comments, and collision scans pass.  No unit has
+compiler evidence yet.  Integrate only these exact commits/blobs, never either
+moving feature history.  On codexbox run exactly the following separate
+commands, in order, with strict stop-on-first-failure:
+
+```text
+LEAN_NUM_THREADS=0 LAKE_JOBS=1 lake build +FabiusFunction.FabiusSaddleTail
+LEAN_NUM_THREADS=0 LAKE_JOBS=1 lake build +FabiusFunction.FabiusLambertMinorArc
+LEAN_NUM_THREADS=0 LAKE_JOBS=1 lake build +FabiusFunction.SaddleExpansionAlgebra
+LEAN_NUM_THREADS=0 LAKE_JOBS=1 lake build +FabiusFunction.SaddleLogExpansionAlgebra
+LEAN_NUM_THREADS=0 LAKE_JOBS=1 lake build +FabiusFunction.FabiusParityPowerSeries
+LEAN_NUM_THREADS=0 LAKE_JOBS=1 lake build +FabiusFunction.PaperFabiusAsymptotic
+LEAN_NUM_THREADS=0 LAKE_JOBS=1 lake build +FabiusFunction.ProbabilityRepresentation
+LEAN_NUM_THREADS=0 LAKE_JOBS=1 lake build +FabiusFunction.FabiusUniformSpline
+```
+
+Run no parallel or additional codexbox Lean/Lake/TeX/PDF process.  Record the
+exact candidate/tree, each job count, exit, and every diagnostic.  Only a
+reviewed statement-preserving proof repair is in scope after failure.  The
+simultaneous EVO retry remains independent on its different physical host.
+
+## Checkpoint 2026-08-26 03:11 PDT
+
+```text
+observed main before this directive: 6691afcb39f5a50dbc0d798b8b75b4cf563bf50a
+coordinator branch: codex/fabius-coordinator-20260825
+integration mode: exact immutable sources -> coordinator -> fast-forward main
+main write owner: coordinator
+codexbox Lean/Lake owner: unassigned
+  (IDLE)
+codexbox TeX/PDF owner: unassigned
+  (IDLE)
+EVO Lean/Lake owner: codex/fabius-inverse-asymptotic-20260825
+  (ACTIVE: exact decay proof repair plus the three-gate retry below)
+EVO TeX/PDF owner: unassigned
+  (IDLE)
+documentation owner: unassigned
+  (all canonical documents are frozen)
+next poll: at the repaired decay validation handoff or first failed retry gate
+```
+
+**Inverse-power decay failure accepted; exact proof repair and retry granted.**
+Validation tree `2ad7703d374d42a6f451b28a49c3f12c64ced99e`
+retained exact source blob `5a407fe366bead3fa2bb8f9d90cac14900fc46bf`.
+On EVO, the first granted command used strict one-child serialization,
+scheduled 3,312 jobs, reached `FabiusDecayComparison`, and exited 1 with
+exactly two target-local normalization diagnostics.  The worker correctly
+skipped both consumer gates, changed no source or cache, recorded failure in
+`7e215ae3e`, released the token, and synchronized current main at clean tip
+`95bbca7c5` with the source blob unchanged.
+
+Independent review confirms both failures are proof-normalization only.  Grant
+that branch sole ownership of exactly
+`Lean/FabiusFunction/FabiusDecayComparison.lean` and its own registry for only
+these two edits:
+
+1. Immediately before the existing `Real.rpow_def_of_pos` rewrite in the
+   second `congr'` branch, beta-reduce the displayed lambdas with
+   `change Real.exp (Real.log 2 * β * t) = (2 : ℝ) ^ (β * t)`;
+   retain the existing rewrite, `congr 1`, and `ring`.
+2. Change only `simpa only [Function.comp_def]` in the positive-rate Tendsto
+   proof to `simpa only [Function.comp_def, id_eq]`.
+
+No declaration name/header/hypothesis, import, module prose, other proof, or
+other path may change.  Commit and push the repaired source, verify that its
+diff from blob `5a407fe366` is exactly those normalizations, and record the new
+blob/hash in the branch registry.  Then, without a second micro-grant, use
+EVO's sole Lean/Lake token to rerun from the first target as these three
+separate commands in order, stopping after the first nonzero exit:
+
+```text
+LEAN_NUM_THREADS=0 LAKE_JOBS=1 lake build +FabiusFunction.FabiusDecayComparison
+LEAN_NUM_THREADS=0 LAKE_JOBS=1 lake build +FabiusFunction.FabiusQuotientExponentialMismatch
+LEAN_NUM_THREADS=0 LAKE_JOBS=1 lake build +FabiusFunction.PaperKFoldThueMorse
+```
+
+No fourth/root/facade target, parallel process, cache clean/reconstruction,
+TeX/PDF, canonical document, or main write is authorized.  Record exact repair
+commit/tree/blob, commands, job counts, exits, and every diagnostic; push only
+the feature branch and release the EVO token at the handoff.
+
 ## Checkpoint 2026-08-26 03:07 PDT
 
 ```text
