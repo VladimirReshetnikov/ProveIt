@@ -1,9 +1,9 @@
 # Workstream registry: `codex/fabius-shifted-prefix-grid`
 
 **Status: finite-jet source checkpoint accepted, compiled, and released;
-finite-Appell-calculus source checkpoint implemented and independently
-reviewed; the advertised same-path all-order refinement remains active without
-a local build token.**
+finite-Appell-calculus and all-order approximation source checkpoints
+implemented and independently reviewed; all claimed source paths are frozen
+without a local build token.**
 The exact claim was published before source work, coordinator checkpoint
 `893d4c25d` explicitly acknowledged it as the first nonoverlapping claim for
 the module, and source commit `00ff41a5e` now implements precisely that bounded
@@ -27,16 +27,16 @@ follow-up.
 SYNC Fabius
 branch / worktree / machine: codex/fabius-shifted-prefix-grid / c9a3 / EVO
   (Windows)
-fetched main SHA: c9d20ed14c7572d4f3f1361c7883085eaf5bb0d8
-HEAD and dirty paths: 8021c555fc2ccc1d22507c304200fa43ecaedc39;
+fetched main SHA: f556a126e990f7d8efd612265dfc608630d50994
+HEAD and dirty paths: f7152d5fc80ba55716131b1bf9595d8fe9bb62fa;
   docs/registry/codex-fabius-shifted-prefix-grid.md only, recording the
-  independently reviewed finite-Appell-calculus source checkpoint
+  independently reviewed all-order approximation source checkpoint
 writing (exact paths): docs/registry/codex-fabius-shifted-prefix-grid.md only;
-  after this registry checkpoint is pushed, exactly
-  Lean/FabiusFunction/ThueMorseGenerating.lean and
-  Lean/FabiusFunction/ThueMorseApproximation.lean
+  no source path remains writable after this registry checkpoint is pushed;
+  FabiusQBinomialTaylor.lean, ThueMorseGenerating.lean, and
+  ThueMorseApproximation.lean are frozen pending coordinator disposition
 expected declarations or document claims:
-  active finite-Appell claim in FabiusQBinomialTaylor.lean:
+  completed finite-Appell checkpoint in FabiusQBinomialTaylor.lean:
   thueMorseTranslatedPowerSumPolynomial_comp_X_add_C, the canonical finite
   translation law with range (d + 1);
   thueMorseTranslatedPowerSumPolynomial_hasseDeriv, total in the derivative
@@ -47,7 +47,7 @@ expected declarations or document claims:
   convenience form, matching the established dyadic-kernel API;
   add the direct Mathlib.Algebra.Polynomial.HasseDeriv import and one accurate
   module-guide sentence identifying the finite translation/Appell structure;
-  active released same-path follow-up:
+  completed all-order same-path follow-up:
   coeff_thueMorseBlockPolynomial_mul_eq_thueMorseSeries_mul and
   coeff_thueMorseBlockPolynomial_mul_invOneSubPow_eq_iteratedPrefix in the
   upstream generating-series module;
@@ -106,7 +106,10 @@ completed commits: 6fb8dc8e9 publishes the exact one-file claim; ba0048023
   ef2430205 applies only the two advertised module-guide precision corrections;
   66c55ada9 records that comment-only checkpoint; a24c25344 merges main
   c9d20ed14 without conflicts; 8021c555f implements the four total
-  finite-Appell-calculus declarations in FabiusQBinomialTaylor.lean
+  finite-Appell-calculus declarations in FabiusQBinomialTaylor.lean;
+  3b419e573 freezes and reports that checkpoint; 778a918d2 merges main
+  f556a126e without conflicts; f7152d5fc implements the three advertised
+  all-order approximation declarations and simplifies both coefficient bridges
 validated (exact command, SHA/state, exit code): at source snapshot SHA-256
   784F6C4F389FE0F2FA08616FFAFBFA3917CCC9F6D2C86CE98D3D877B5F0DD14C,
   git diff --check and git diff --cached --check exited 0; python
@@ -170,13 +173,22 @@ validated (exact command, SHA/state, exit code): at source snapshot SHA-256
   found no mathematical, edge-case, exact-API, elaboration-shape, duplicate,
   import-cycle, attribute, compatibility, or documentation blocker; one review
   mechanically verified that every old source byte outside the direct import
-  and documented contiguous insertion is preserved
-not yet validated: finite-Appell source commit 8021c555f has not been compiled,
-  and the active all-order follow-up has not yet been implemented or compiled;
-  no Lean or Lake process is authorized because both physical-host tokens
-  remain coordinator-reserved
-requested integration or lease: after both active source tranches are
-  implemented, reviewed, and frozen, assign the coordinator-held targets
+  and documented contiguous insertion is preserved; for all-order approximation
+  source commit f7152d5fc, the exact source blob is d2e85228f16a (SHA-256
+  4BBFCB6A579F87FC9A39B9D124F5A18FFED754C56E4FE7E987A829C28B207A8B),
+  git diff --check and git diff --cached --check exited 0, the added-token scan
+  found no sorry/admit/axiom/opaque, and doc_audit.py scanned 189 files and 3499
+  public declarations with the unchanged 132 baseline omissions; three
+  independent read-only reviews found no mathematical, zero-order,
+  sharp-cutoff, coercion, exact-API, rewrite-shape, duplicate, import,
+  attribute, or compatibility blocker and separately verified the two
+  case-free calculations
+not yet validated: finite-Appell source commit 8021c555f and all-order
+  approximation source commit f7152d5fc have not been compiled; no Lean or
+  Lake process is authorized because both physical-host tokens remain
+  coordinator-reserved
+requested integration or lease: both source tranches are now implemented,
+  reviewed, and frozen; assign the coordinator-held targets
   +FabiusFunction.FabiusQBinomialTaylor,
   +FabiusFunction.ThueMorseGenerating,
   +FabiusFunction.ThueMorseApproximation,
@@ -195,16 +207,16 @@ conflicts / dependencies: no overlap with the active frontier-document lease;
   conclusion; FabiusQBinomialTaylor.lean has no live peer claim,
   none of the four exact Appell names exists in any fetched source, and the
   analogous private dyadic-kernel family is mathematically distinct; no path
-  expansion beyond the three active source files and this branch registry is
-  requested
-next bounded step: push this finite-Appell checkpoint and validation request,
-  fetch and reread the board, then implement the all-order approximation
-  tranche; obtain two independent read-only reviews and freeze that source
-  checkpoint without invoking an unassigned validator
-lease refreshed: 2026-08-25 19:53 PDT;
-  ThueMorseGenerating.lean and ThueMorseApproximation.lean are active for
-  30 minutes; FabiusQBinomialTaylor.lean is frozen at 8021c555f pending
-  coordinator validation
+  expansion beyond the three now-frozen source files and this branch registry
+  is requested
+next bounded step: push this complete seven-declaration source handoff, fetch
+  and reread the board, and await coordinator-owned serialized validation;
+  perform only read-only opportunity scouting until a new exact claim is
+  advertised or these frozen checkpoints receive disposition
+lease refreshed: 2026-08-25 20:04 PDT; all three source paths are frozen;
+  FabiusQBinomialTaylor.lean at 8021c555f and ThueMorseApproximation.lean at
+  f7152d5fc are pending coordinator validation; ThueMorseGenerating.lean has no
+  further unintegrated source delta
 git owner / build owner: root / no build owner assigned to this branch
 ```
 
@@ -399,13 +411,13 @@ the semantic `invOneSubPow` specialization, using `iteratedPrefixSeries_eq` and
 The all-order approximation theorem adds the real boundary case hidden by the
 old positivity hypothesis.  At `k = 0`, its cutoff forces `m = 0`, natural
 subtraction makes `k - 1 = 0`, and both sides are one.  The successor proof is
-the finite-block specialization followed by
-`thueMorseBlock_mul_inv_eq_approximationPolynomialInt`.  The existing public
-`iteratedPrefix_eq_approximationPolynomial_coeff` must retain its exact binder
-names, order, hypothesis, conclusion, and attributes as a compatibility
-wrapper; its sole downstream caller can use the all-order form and drop a
-redundant positivity proof.  The narrower private
-`coeff_thueMorseSeries_mul_inv_eq_finite` is then deleted.
+now subsumed by one case-free finite-block coefficient calculation followed by
+`thueMorseBlockPolynomial_mul_invOneSubPow_eq_approximationPolynomialInt`.
+The existing public `iteratedPrefix_eq_approximationPolynomial_coeff` retains
+its exact binder names, order, hypothesis, conclusion, and attributes as a
+compatibility wrapper.  Its sole downstream caller uses the all-order form and
+drops a redundant positivity proof.  The formerly private positive-order
+power-series quotient is deleted in favor of the public total theorem.
 
 The cutoff `m < 2^r` is sharp.  At `m = 2^r`, prefix order zero and multiplier
 one, the finite block coefficient is zero while the new Thue--Morse coefficient
@@ -500,3 +512,64 @@ duplicate names, attributes, theorem placement, and old-source preservation.
 All static gates are green.  No Lean or Lake process ran, so this checkpoint is
 explicitly **not yet compiled**; coordinator-owned focused and facade builds
 remain requested above.
+
+## Implemented all-order approximation factorization
+
+Source checkpoint `f7152d5fc` completes the advertised same-path refinement in
+`ThueMorseApproximation.lean`.  It adds exactly three public declarations:
+
+```lean
+theorem one_sub_X_pow_mul_approximationPolynomialInt_all (k : ℕ) :
+    (1 - Polynomial.X) ^ k * approximationPolynomialInt (k - 1) =
+      thueMorseBlockPolynomial k
+
+theorem thueMorseBlockPolynomial_mul_invOneSubPow_eq_approximationPolynomialInt
+    (k : ℕ) :
+    (thueMorseBlockPolynomial k : PowerSeries ℤ) *
+        (PowerSeries.invOneSubPow ℤ k).val =
+      (approximationPolynomialInt (k - 1) : PowerSeries ℤ)
+
+theorem correctedPrefixCoefficient_eq_stepApproximant_all
+    (k m : ℕ) (hm : m < 2 ^ k) :
+    correctedPrefixCoefficient k m =
+      stepApproximant (k - 1) (polynomialAtomLocation (k - 1) m)
+```
+
+The first theorem isolates the only genuine case distinction.  At `k = 0`,
+both sides are one: the Thue--Morse product is empty and natural predecessor
+saturation selects `approximationPolynomialInt 0`.  At a successor it is
+exactly the established denominator-cleared product theorem.  The second
+theorem is uniform even at zero: after coercing the polynomial identity,
+Mathlib's `one_sub_pow_mul_invOneSubPow_val_add_eq_invOneSubPow_val` at
+`d = 0` cancels `(1-X)^k` against the order-`k` inverse kernel.
+
+These factorizations make both downstream proofs genuinely case-free.  The
+finite-jet coefficient theorem now follows the single semantic chain
+
+```text
+iterated prefix
+  = coefficient of (finite block times the prefix kernel)
+  = coefficient of the integer approximation polynomial.
+```
+
+The corrected histogram theorem then uses the same triangular normalization
+identity at the saturated index `k - 1`; no separate order-zero computation is
+needed.  Its cutoff `m < 2^k` is sharp: at `m = 2^k` the prefix is `-1`, while
+the approximation-polynomial coefficient is zero.  Thus neither all-order
+coefficient bridge can be widened to a non-strict cutoff.
+
+The old positive-order coefficient and histogram theorem headers, binder
+orders, conclusions, and attributes are preserved as compatibility wrappers.
+The moving-cell proof now calls the stronger histogram theorem and no longer
+manufactures a redundant proof that `0 < n + 1`.  No new simp attribute or
+import is introduced.
+
+The committed source has Git blob `d2e85228f16a4a2951bb8f91f4fc92555201af5e`
+and content SHA-256
+`4BBFCB6A579F87FC9A39B9D124F5A18FFED754C56E4FE7E987A829C28B207A8B`.
+Three independent read-only reviews covered every zero-order reduction, the
+sharp endpoint, exact polynomial and power-series coercions, inverse-kernel
+rewrite orientation, triangular-exponent cancellation, duplicate names, and
+public compatibility.  The documentation audit retains the exact baseline.
+No Lean or Lake process ran, so this checkpoint is explicitly **not yet
+compiled**.
