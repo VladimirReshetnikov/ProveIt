@@ -6,17 +6,17 @@ Every worker reads it from the fetched `origin/main` before writing, merging,
 building, or pushing.  Workers publish replies in their own per-branch registry
 files; they do not edit this board.
 
-## Checkpoint 2026-08-25 19:13 PDT
+## Checkpoint 2026-08-25 19:26 PDT
 
 ```text
-observed main before this directive: 407da44a69a56aa8c1de5e817aa1792af5ed0a46
+observed main before this directive: c2aa5a25c82e50149ab8887f95e7c5bcd6fe62eb
 coordinator branch: codex/fabius-coordinator-20260825
 integration mode: feature branches -> coordinator -> fast-forward main
 main write owner: coordinator
 codexbox build owner: coordinator (IDLE -- reserved, no worker target)
-EVO build owner: codex/fabius-exposition-integration (frontier pdflatex only)
-documentation owner: codex/fabius-exposition-integration (frontier PDF/registry checkpoint only)
-next poll: after the fresh three-pass frontier PDF/evidence checkpoint
+EVO build owner: codex/fabius-exposition-integration (three primary pdflatex compile passes only)
+documentation owner: codex/fabius-exposition-integration (own registry evidence only)
+next poll: after the three-pass primary compile-only checkpoint
 ```
 
 The previously approved curvature, generalizations, lower-Lambert,
@@ -46,12 +46,12 @@ cherry-pick is needed.
    paths below, work may begin without coordinator acknowledgement.  Push
    feature branches only; the coordinator is the sole `main` writer.  Never
    force.
-2. The codexbox build token is idle and coordinator-reserved.  On EVO, only the
-   exposition branch may use the host token, and only for the fresh staged TeX
-   build authorized below.  Other workers may edit and commit unvalidated work,
-   but launch no Lean, Lake, TeX, PDF, or cache-mutating process; label such
-   commits and registry reports `Not yet validated`.  Do not terminate another
-   process.
+2. The codexbox token is idle and coordinator-reserved.  On EVO, only the
+   exposition branch may use the host token, and only for the three primary
+   compile passes authorized below.
+   Other workers may edit and commit unvalidated work, but launch no Lean,
+   Lake, TeX, PDF, or cache-mutating process; label such commits and registry
+   reports `Not yet validated`.  Do not terminate another process.
 3. The following remain serialized and require an explicit board grant:
    `AGENTS.md`, `README.md`, `docs/COLLABORATION.md`,
    `docs/MULTI_AGENT_COORDINATION_PROPOSAL.md`, `docs/PAPER_COVERAGE.md`,
@@ -225,6 +225,14 @@ registry.  The five source leases are released.  The branch may begin another
 ordinary nonoverlapping claim after reading this board; no EVO validation token
 is granted.
 
+New clean tip `b59e9b7b7` advertises a separate unvalidated two-path unit at
+source commit `0f7d53e8c` in `FabiusDiscreteLimitToeplitz.lean` and
+`FabiusDiscreteLimitIntegration.lean`.  It proposes eight finite-depth value,
+nonconstancy, shift-difference, and outer-index-one comparison results.  The
+paths are frozen pending coordinator review; no Lean/Lake token or main push is
+yet granted.  Its requested topological gates are Toeplitz first and
+Integration second, each in a separate invocation.
+
 ### `codex/fabius-shifted-prefix-grid`
 
 The one-file source claim is implemented at checkpoint
@@ -260,6 +268,33 @@ lease is released, while `PAPER_COVERAGE.md` and `AUDIT_FINDINGS.md` return to
 campaign-wide serialized status.  The branch may begin a new ordinary,
 nonoverlapping claim after reading this board; no EVO build token is granted.
 
+The later finite-jet source checkpoint `51af7f7e1` changes exactly
+`ThueMorseGenerating.lean` and `ThueMorseApproximation.lean`.  It adds the
+generic finite-block/right-convolution coefficient bridge, its independent
+block-depth/prefix-order specialization, and
+`iteratedPrefix_eq_approximationPolynomial_coeff_all`; the old positive-order
+theorem remains type- and attribute-identical as a wrapper.  Two independent
+reviews found the cutoff, zero-order case, indexing, placement, API,
+duplicates, imports, and scope green.  The coordinator cherry-picked only that
+two-file source unit as `62ab80d03`, excluding the later speculative registry
+history, and ran four serialized `LAKE_JOBS=1` targets:
+
+- `+FabiusFunction.ThueMorseGenerating` (2085 jobs);
+- `+FabiusFunction.ThueMorseApproximation` (3307 jobs);
+- `+FabiusFunction.ThueMorseExponential` (2086 jobs); and
+- `+FabiusFunction.PaperKFoldThueMorse` (3327 jobs).
+
+All exited 0.  The Approximation target and facade report two nonblocking
+linters: an unnecessary `simpa`, and the intentionally retained compatibility
+binder `hk` is not referenced by the wrapper proof.  The two source paths are
+released to this branch's already-advertised all-order same-path refinement
+after it fetches/merges the new main.  Before the next source edit, correct the
+worker registry's Generating evidence: the actual Git blob is `2908f1f1652e`
+and content SHA-256 is
+`04F8F9AB915928A98FC422C3A5048C53110FD67C29007CE55483A853561A8D9C`,
+not the recorded `2412e544b` / `499A7D...`.  No build token or campaign-wide
+document lease is granted for the follow-up.
+
 ### `codex/fabius-exposition-integration`
 
 Checkpoint `5e0505bf2` was merged to `main` by `ccf81cf83` while the
@@ -269,8 +304,8 @@ coordinator checkpoint; it does not change an exposition or frontier artifact.
 That registry's useful audit body is retained, while its `cffe24808` snapshot
 and expired current-tree/page-count statements are now labeled explicitly.
 
-**Single-owner frontier lease.**  The complete frontier tranche remains owned
-by this branch and spans only:
+**Former single-owner frontier lease.**  The staged frontier work had spanned
+only:
 
 - `docs/non-formalized-research-frontiers/README.md`;
 - `docs/non-formalized-research-frontiers/non-formalized-research-frontiers.tex`;
@@ -343,6 +378,36 @@ the registry, and stop.  Never push `main` or begin primary cleanup.
 The frontier README/TeX and the 57-page primary exposition remain fully frozen
 during stage three.
 
+**User scope override.**  The stage-three invocations finished before a later
+explicit narrowing, but their generated frontier PDF was never copied,
+staged, committed, or pushed.  It must remain sidecar-only and receives no
+coordinator review, validation, or integration claim.  All further frontier
+work and all primary claim/layout auditing stop in this task; another worker
+owns any frontier continuation.  The frontier lease and stage-three token are
+released.
+
+This branch now holds one compile-only EVO token for exactly three passes over
+the unchanged primary source at clean feature tip `984a0ccc4`: Git blob
+`e3a0df24e`, SHA-256
+`F4EE348F21524C2EDB8880E16E50802CCC6A3A831D38C8426F23AF7607EA64F1`.
+From `docs/Fabius_Function_and_Rvachev_Up`, run exactly three sequential
+invocations with a fresh sidecar job name:
+
+```text
+pdflatex -interaction=nonstopmode -halt-on-error -file-line-error -jobname=Fabius_Function_and_Rvachev_Up_compilecheck Fabius_Function_and_Rvachev_Up.tex
+```
+
+Success means all three exits are 0 and the third log has no fatal,
+emergency-stop, or LaTeX-error diagnostic; reference, layout, and claim
+diagnostics are explicitly outside this narrow compile-only check.  Do not run
+a fourth pass, `latexmk`, another TeX compiler, Lean/Lake, visual/layout
+inspection, or source edit.  Do not replace or stage the canonical primary
+PDF; preserve the generated output/log only as sidecars.  Record the exact
+source blob/hash, three commands/exits/page counts, final log hash, the
+compile-only limitation, and clean status in the branch registry, commit only
+that registry, push the feature branch, and stop.  No frontier or primary
+artifact is accepted or integrated by this task.
+
 ### `codex/fabius-theorem-refinements`
 
 The task had successfully aborted its earlier conflicted merge, but later
@@ -382,10 +447,9 @@ a requested path is serialized, hot, frozen, single-owner, or already claimed.
 
 ## Collision and integration queue
 
-1. Receive and audit the fresh three-pass frontier PDF/evidence checkpoint.
-2. Integrate the complete green frontier tranche through the coordinator.
-3. Only after the frontier stabilizes, assign the primary exposition's four
-   narrow citation/attribution corrections and matching PDF rebuild.
+1. Receive the three-pass primary compile-only registry checkpoint and close the
+   exposition task without integrating a frontier or primary artifact.
+2. Complete the finite-jet coefficient-bridge validation and disposition.
 
 ## Build-token log
 
@@ -472,6 +536,12 @@ stopped and preserved the rejected PDF/log without touching the canonical PDF.
 This run fails the zero-overfull-box gate and grants no PDF validation; its
 token is released pending a source-only repair checkpoint.
 
+The exposition branch later completed the authorized three stage-three
+frontier passes, but before any canonical copy, staging, evidence commit, or
+push the user explicitly ended frontier work in that task.  The generated PDF
+and log remain sidecars.  They are not reviewed or accepted here, and no
+frontier validation or integration claim follows from them.
+
 Before those green runs, one command launched from the wrong directory was a
 no-op, and the first correctly rooted attempt exhausted the filesystem while
 creating a fresh `.lake`; it exited 1 and supplied no validation evidence.
@@ -483,12 +553,11 @@ evidence.
 
 No validation process is now running on codexbox.  Its token is idle and
 coordinator-reserved.  The sole EVO token is assigned to the exposition branch
-for exactly the three stage-three frontier `pdflatex` passes and subsequent
-read-only artifact inspections specified above; no other EVO branch may run
-Lean, Lake, TeX, PDF, or cache-mutating tools.  Other branches may edit,
-checkpoint, and push ordinary claimed work under the open protocol, but may
-not run validation tools until this board assigns the applicable physical-host
-token.
+for exactly the three primary `pdflatex` compile passes specified above; no
+other EVO branch may run Lean, Lake, TeX, PDF, or cache-mutating tools.  Other
+branches may edit, checkpoint, and push ordinary claimed work under the open
+protocol, but may not run validation tools until this board assigns the
+applicable physical-host token.
 
 ## Worktree maintenance log
 
