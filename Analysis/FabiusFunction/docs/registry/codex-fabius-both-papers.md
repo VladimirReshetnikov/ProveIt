@@ -8,13 +8,21 @@ SYNC Fabius
 branch / worktree / machine: codex/fabius-both-papers /
   /home/codex/src/Proofs / codexbox
 fetched main SHA: c9d20ed14c7572d4f3f1361c7883085eaf5bb0d8
-HEAD and dirty paths: 4694e0d96ed33da24d5dffeb58a4ce510ff18e98;
-  only this registry handoff is dirty
+HEAD and dirty paths: 813ea82cf566f409c1ffa42669f32b0556d925f9;
+  clean before this ordinary one-source claim
 writing (exact paths):
+  Lean/FabiusFunction/PeriodicSmooth.lean;
   docs/registry/codex-fabius-both-papers.md
 expected declarations or document claims:
-  record the completed source checkpoint and request its focused serialized
-  validation; the `FabiusSharpAsymptotic.lean` writing claim is released
+  `forwardDerivativeQuotientPolynomial_one`,
+  `forwardDerivativeQuotientPolynomial_two`,
+  `forwardDerivativeQuotientPolynomial_three`,
+  `negativeLaplaceForwardTermDeriv_two`,
+  `negativeLaplaceForwardTermDeriv_three`, and
+  `negativeLaplaceForwardTermDeriv_four`; these `[simp]` bridges identify the
+  first three quotient polynomials and reconcile the unified all-order
+  derivative family with the existing explicit second-, third-, and
+  fourth-order summands
 completed commits: Lower-Lambert source checkpoint `1da2fde2285e3970267b7dc2561bcd0d897be1b4`
   was integrated by coordinator merge `046946a974467e83244fd3a183a3e084e70d3379`;
   registry handoff `225f5338de9ea92489ed6a2c0c371c6edb4f5db9`
@@ -191,9 +199,9 @@ conflicts / dependencies: all advertised Fabius heads and their registries
   `not_isEquivalent` theorem and no competing claim on
   `FabiusSharpAsymptotic.lean`; the coordinator explicitly released its prior
   generalizations lease
-next bounded step: push this source handoff, then inspect and claim the strongest
-  available ordinary nonoverlapping theorem or deduplication tranche while the
-  coordinator retains the build token
+next bounded step: push this exact ordinary source claim, finish the advertised
+  cross-tip collision scan, implement the six bridge theorems without running
+  a build, and request serialized `+FabiusFunction.PeriodicSmooth` validation
 ```
 
 ## Coordinator natural-knot integration disposition
