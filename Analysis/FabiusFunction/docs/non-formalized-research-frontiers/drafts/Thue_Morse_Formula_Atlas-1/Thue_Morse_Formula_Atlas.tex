@@ -1,0 +1,2064 @@
+\documentclass[11pt,oneside]{article}
+
+\usepackage[a4paper,margin=27mm,headheight=15pt]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\IfFileExists{libertinus.sty}{\usepackage{libertinus}}{\usepackage{lmodern}}
+\usepackage{microtype}
+\usepackage{amsmath,amssymb,amsthm,mathtools,mathrsfs}
+\usepackage{bm}
+\usepackage{booktabs,longtable,array,tabularx}
+\usepackage{xcolor}
+\usepackage{enumitem}
+\usepackage{fancyhdr}
+\usepackage{titlesec}
+\usepackage{listings}
+\usepackage{xurl}
+\usepackage{hyperref}
+\usepackage[nameinlink,noabbrev]{cleveref}
+
+\definecolor{AtlasBlue}{RGB}{31,72,112}
+\definecolor{AtlasGray}{RGB}{90,96,104}
+\definecolor{AtlasLight}{RGB}{241,245,248}
+\hypersetup{
+  colorlinks=true,
+  linkcolor=AtlasBlue,
+  citecolor=AtlasBlue,
+  urlcolor=AtlasBlue,
+  pdftitle={A Formula Atlas for the Thue--Morse Sequence},
+  pdfauthor={Vladimir Reshetnikov / consolidated research draft}
+}
+\setlist{nosep,leftmargin=2em}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0.55em}
+\allowdisplaybreaks
+\numberwithin{equation}{section}
+
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small A Formula Atlas for the Thue--Morse Sequence}
+\fancyhead[R]{\small\thepage}
+\renewcommand{\headrulewidth}{0.35pt}
+\titleformat{\section}{\Large\bfseries\color{AtlasBlue}}{\thesection}{0.7em}{}
+\titleformat{\subsection}{\large\bfseries\color{AtlasBlue}}{\thesubsection}{0.7em}{}
+
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{identity}[theorem]{Identity}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{example}[theorem]{Example}
+\newtheorem{algorithm}[theorem]{Algorithm}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+\newtheorem{literature}[theorem]{Literature theorem}
+
+\newcommand{\N}{\mathbb N}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\Q}{\mathbb Q}
+\newcommand{\R}{\mathbb R}
+\newcommand{\C}{\mathbb C}
+\newcommand{\F}{\mathbb F}
+\newcommand{\wt}{\operatorname{wt}}
+\newcommand{\vtwo}{\nu_2}
+\newcommand{\eps}{\varepsilon}
+\newcommand{\TM}{\tau}
+\newcommand{\ii}{\mathrm i}
+\newcommand{\e}{\mathrm e}
+\newcommand{\dd}{\,\mathrm d}
+\newcommand{\ind}{\mathbf 1}
+\newcommand{\xor}{\mathbin{\mathsf{xor}}}
+\newcommand{\bitand}{\mathbin{\mathsf{and}}}
+\newcommand{\submask}{\preceq_2}
+\newcommand{\Bell}{\mathcal B}
+\newcommand{\fall}[2]{#1^{\underline{#2}}}
+\newcommand{\bigO}{\mathcal O}
+\newcommand{\smallo}{o}
+\newcommand{\resmod}[2]{[\,#1\,]_{#2}}
+\newcommand{\sinc}{\operatorname{sinc}}
+\newcommand{\repo}{\textsc{ProveIt}}
+\newcommand{\lean}[1]{\texttt{#1}}
+\newcommand{\newmaterial}{\textcolor{AtlasBlue}{\textbf{Added in this synthesis.}}\ }
+
+\lstset{
+  basicstyle=\ttfamily\small,
+  columns=fullflexible,
+  frame=single,
+  backgroundcolor=\color{AtlasLight},
+  breaklines=true,
+  showstringspaces=false
+}
+
+\begin{document}
+\pagenumbering{Roman}
+
+\begin{titlepage}
+\centering
+\vspace*{2.2cm}
+{\Huge\bfseries\color{AtlasBlue} A Formula Atlas for the\\[0.25em] Thue--Morse Sequence\par}
+\vspace{1cm}
+{\Large Exact arithmetic, Pascal-triangle, product, Prouhet,\\
+Fourier, spectral, infinite-product, and Fabius representations\par}
+\vspace{1.5cm}
+{\large A consolidated and expanded version of four research drafts\par}
+\vspace{0.4cm}
+{\large in Vladimir Reshetnikov's \repo\ project\par}
+\vfill
+\begin{minipage}{0.82\textwidth}
+\small
+This manuscript merges the four files \emph{Further Formulae for the
+Thue--Morse Sequence--1} through \emph{--4}.  Repeated statements have been
+collapsed, notation has been standardized, proofs have been cross-checked,
+and the material has been arranged as a dependency-respecting atlas rather
+than as four parallel reports.  New material includes a minimal-kernel
+viewpoint, a Catalan-valuation formula, a direct natural-boundary proof,
+entire shifted Dirichlet series, additional Boolean-lattice inversions,
+word-complexity consequences, a base-
+\(B\) root-of-unity Prouhet theorem, and a modern distribution survey.
+No claim of historical priority is intended.
+\end{minipage}
+\vfill
+{\large 26 August 2026\par}
+\end{titlepage}
+\pagenumbering{roman}
+
+\begin{abstract}
+Let \(\TM(n)=\wt(n)\bmod 2\) be the zero--one Thue--Morse bit and
+\(\eps_n=(-1)^{\wt(n)}=1-2\TM(n)\) its signed form.  Almost every useful
+formula becomes transparent after moving among five equivalent objects:
+binary digit parity, a character of the Boolean cube, the finite product
+\(\prod_{j<m}(1-z^{2^j})\), the substitution \(0\mapsto01,1\mapsto10\),
+and a mixed finite-difference operator.  The purpose of this document is to
+make those translations explicit and reusable.  It develops arithmetic and
+Pascal identities, exact prefix discrepancy, valuation recurrences, partition
+and determinant formulas, Prouhet cancellation and all-order moments,
+ordinary and Walsh Fourier transforms, Riesz products and autocorrelation,
+Mahler functions, Dirichlet and product transforms, finite-state and word
+combinatorics, base-\(B\) extensions, and the discrete bridge to the Fabius
+function.  Results imported from the literature are labelled as such; all
+other displayed identities are proved or reduced to a previously proved
+identity in the text.
+\end{abstract}
+
+\tableofcontents
+\clearpage
+\pagenumbering{arabic}
+
+\section{Conventions, provenance, and a one-page map}
+\label{sec:conventions}
+
+Throughout \(\N=\{0,1,2,\ldots\}\).  If
+\[
+ n=\sum_{j\ge0}b_j(n)2^j,\qquad b_j(n)\in\{0,1\},
+\]
+then
+\begin{equation}
+ \wt(n)=\sum_{j\ge0}b_j(n),\qquad
+ \TM(n)=\wt(n)\bmod2,\qquad
+ \eps_n=(-1)^{\wt(n)}=1-2\TM(n).
+ \label{eq:definitions}
+\end{equation}
+The terminology \emph{evil} and \emph{odious} refers respectively to
+\(\TM(n)=0\) and \(\TM(n)=1\).
+
+The four source drafts were independently organized and consequently overlap
+in their basic recurrences, Lucas/Kummer formulas, finite products, Prouhet
+identities, Fourier products, prefix sums, and Woods--Robbins evaluation.  The
+present text retains one proof of each central theorem and places specialized
+consequences immediately after the theorem that generates them.  The source
+files are available at
+\begin{center}
+\url{https://github.com/VladimirReshetnikov/ProveIt/tree/main/Analysis/FabiusFunction/docs/non-formalized-research-frontiers/drafts}.
+\end{center}
+
+\subsection{Formula map}
+
+\begin{longtable}{@{}p{0.20\textwidth}p{0.33\textwidth}p{0.38\textwidth}@{}}
+\toprule
+Viewpoint & Exact representation & Main use \\
+\midrule
+\endhead
+Binary recursion & \(\eps_{2n}=\eps_n,\ \eps_{2n+1}=-\eps_n\) & Fast computation, blocks, automata \\
+Boolean character & \(\eps_n=(-1)^{\bm1\cdot\bm b(n)}\) & XOR, Walsh transform, submasks \\
+Valuation & \(\wt(n)=\vtwo\binom{2n}{n}\) & Binomial/Catalan formulas \\
+Pascal row & \(\#\{k:\binom nk\text{ odd}\}=2^{\wt(n)}\) & Binomial-log and log-free formulas \\
+Finite product & \(P_m(z)=\prod_{j<m}(1-z^{2^j})\) & Moments, DFT, Riesz products \\
+Infinite product & \(E(z)=\prod_{j\ge0}(1-z^{2^j})\) & Mahler equation, constants, transforms \\
+Finite difference & \(\sum_{n<2^m}\eps_nf(n)=(-1)^m\Delta_1\cdots\Delta_{2^{m-1}}f(0)\) & Prouhet, remainders, reciprocal sums \\
+Prefix transform & \(\sum_nS_n^{(k)}z^n=E(z)/(1-z)^k\) & Discrete antiderivatives, Fabius bridge \\
+Spectral measure & \(2^{-m}|P_m(e^{2\pi ix})|^2\dd x\) & Autocorrelation, singular spectrum \\
+\bottomrule
+\end{longtable}
+
+\begin{remark}[Proof status]
+A label ``Literature theorem'' means that only context or a proof sketch is
+given.  ``Added in this synthesis'' means absent from the four source drafts
+as a named result; it does not assert novelty in the historical literature.
+The Lean file names mentioned near the end are a formalization roadmap, not a
+claim that every identity in this atlas is already formalized.
+\end{remark}
+
+\section{Binary recursion, blocks, automata, and uniqueness}
+\label{sec:binary}
+
+\subsection{The two-scale recurrence and substitution}
+
+\begin{theorem}[Fundamental recursion]
+For every \(n\ge0\),
+\begin{equation}
+ \boxed{\eps_{2n}=\eps_n,\qquad \eps_{2n+1}=-\eps_n,}
+ \label{eq:eps-recursion}
+\end{equation}
+and equivalently
+\begin{equation}
+ \TM(2n)=\TM(n),\qquad \TM(2n+1)=1-\TM(n).
+ \label{eq:tau-recursion}
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+Appending a binary zero does not change the digit sum, while appending a
+binary one increases it by one.  Taking parity gives
+\eqref{eq:eps-recursion} and \eqref{eq:tau-recursion}.
+\end{proof}
+
+Starting from \(0\), the morphism
+\begin{equation}
+ \mu(0)=01,\qquad \mu(1)=10
+ \label{eq:morphism}
+\end{equation}
+produces the zero--one word.  In signed notation the corresponding operation
+replaces a block \(W\) by \(W,-W\).  Thus the block of length \(2^{m+1}\) is
+the block of length \(2^m\) followed by its complement.
+
+\subsection{Binary concatenation}
+
+\begin{theorem}[Block multiplicativity]
+If \(m,q\ge0\) and \(0\le r<2^m\), then
+\begin{equation}
+ \boxed{\eps_{2^mq+r}=\eps_q\eps_r,}
+ \qquad
+ \TM(2^mq+r)\equiv \TM(q)+\TM(r)\pmod2.
+ \label{eq:block-multiplicativity}
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+The binary digits of \(2^mq+r\) are the digits of \(q\), shifted by \(m\)
+places, followed by the \(m\)-digit expansion of \(r\); the supports are
+disjoint, so their weights add.
+\end{proof}
+
+In particular,
+\begin{equation}
+ (\eps_{2^m},\ldots,\eps_{2^{m+1}-1})
+ =-(\eps_0,\ldots,\eps_{2^m-1}).
+ \label{eq:complement-block}
+\end{equation}
+
+\subsection{The exact two-kernel and a minimal automaton}
+
+\begin{theorem}[Exact two-kernel]
+For \(e\ge0\) and \(0\le r<2^e\),
+\begin{equation}
+ \eps_{2^en+r}=\eps_r\eps_n.
+ \label{eq:kernel-formula}
+\end{equation}
+Consequently the \(2\)-kernel of the signed sequence consists of exactly the
+two sequences \((\eps_n)_{n\ge0}\) and \((-\eps_n)_{n\ge0}\).
+\end{theorem}
+
+\begin{proof}
+Apply \cref{eq:block-multiplicativity}.  The sign is \(\eps_r\in\{\pm1\}\).
+Both possibilities occur, for example at \(r=0\) and \(r=1\).
+\end{proof}
+
+\newmaterial The preceding theorem makes the minimal automaton completely
+explicit.  Let
+\[
+ M_0=\begin{pmatrix}1&0\\0&1\end{pmatrix},\qquad
+ M_1=\begin{pmatrix}0&1\\1&0\end{pmatrix},\qquad e_0=\binom10.
+\]
+If \(n=\sum_{j=0}^{m-1}b_j2^j\), then
+\begin{equation}
+ v(n)=M_{b_0}\cdots M_{b_{m-1}}e_0
+ =\binom{1-\TM(n)}{\TM(n)},
+ \label{eq:automaton-vector}
+\end{equation}
+so
+\begin{equation}
+ \TM(n)=\begin{pmatrix}0&1\end{pmatrix}v(n),\qquad
+ \eps_n=\begin{pmatrix}1&-1\end{pmatrix}v(n).
+ \label{eq:automaton-output}
+\end{equation}
+The two states record only the parity already read; input \(1\) toggles the
+state and input \(0\) fixes it.  Two states are necessary because the outputs
+at \(0\) and \(1\) differ.
+
+\subsection{Nonperiodicity}
+
+\begin{theorem}[No eventual period]
+The Thue--Morse sequence is not eventually periodic.
+\end{theorem}
+
+\begin{proof}
+Suppose that \(p>0\) were an eventual period.  Fix \(q\ge0\) and choose
+\(k\) so large that \(2^k+q\) and \(2^k+q+p\) lie in the periodic tail and
+\(q+p<2^k\).  Block multiplicativity gives
+\[
+ -\eps_q=\eps_{2^k+q}=\eps_{2^k+q+p}=-\eps_{q+p},
+\]
+so \(p\) would in fact be a period from the beginning.  Choose \(k\) with
+\(2^k>p\).  Periodicity would imply
+\(\eps_{2^k-p}=\eps_{2^k}=-1\).  Yet
+\(2^k-p=(2^k-1)-(p-1)\), so its \(k\) digits are the complements of the
+\(k\) digits of \(p-1\), and
+\[
+ \eps_{2^k-p}=(-1)^{k-\wt(p-1)}.
+\]
+This alternates when \(k\) is increased by one, a contradiction.
+\end{proof}
+
+\section{Floor, fractional-part, trigonometric, and bitwise formulas}
+\label{sec:digits}
+
+\subsection{Digit extraction}
+
+For every \(j\ge0\),
+\begin{equation}
+ b_j(n)=\left\lfloor\frac{n}{2^j}\right\rfloor
+       -2\left\lfloor\frac{n}{2^{j+1}}\right\rfloor.
+ \label{eq:digit-floor}
+\end{equation}
+Therefore, with all but finitely many factors equal to \(1\),
+\begin{equation}
+ \boxed{\eps_n=
+ \prod_{j\ge0}\left(1-2\left\lfloor\frac{n}{2^j}\right\rfloor
+ +4\left\lfloor\frac{n}{2^{j+1}}\right\rfloor\right).}
+ \label{eq:pure-floor-product}
+\end{equation}
+Also,
+\begin{equation}
+ \wt(n)=n-\sum_{j\ge1}\left\lfloor\frac n{2^j}\right\rfloor
+       =\sum_{j\ge1}\left\{\frac n{2^j}\right\},
+ \label{eq:weight-floor-frac}
+\end{equation}
+where \(\{x\}=x-\lfloor x\rfloor\).  The second equality follows because
+\(\sum_{j\ge1}n/2^j=n\).
+
+Consequently,
+\begin{equation}
+ \eps_n=(-1)^{\,n+\sum_{j\ge1}\lfloor n/2^j\rfloor}
+ =\cos\!\left(\pi\sum_{j\ge1}\left\{\frac n{2^j}\right\}\right),
+ \qquad
+ \TM(n)=\frac{1-\eps_n}{2}.
+ \label{eq:floor-trig}
+\end{equation}
+
+\subsection{A sign product and an entire sinc product}
+
+\begin{proposition}[Rademacher--sine sign product]
+For every \(n\ge0\),
+\begin{equation}
+ \boxed{\eps_n=
+  \prod_{j\ge0}\operatorname{sgn}
+  \sin\!\left(\frac{\pi(n+\tfrac12)}{2^j}\right).}
+ \label{eq:sine-sign-product}
+\end{equation}
+Only finitely many factors are negative.
+\end{proposition}
+
+\begin{proof}
+The sign of the \(j\)-th sine is
+\((-1)^{\lfloor(n+1/2)/2^j\rfloor}=(-1)^{\lfloor n/2^j\rfloor}\).
+Multiplying and using \eqref{eq:weight-floor-frac} modulo two gives
+\((-1)^{\wt(n)}\).
+\end{proof}
+
+\newmaterial Define \(\sinc y=\sin y/y\), with \(\sinc0=1\), and
+\begin{equation}
+ \Phi(x)=\prod_{j\ge0}\sinc\!\left(\frac{\pi x}{2^j}\right).
+ \label{eq:Phi-sinc}
+\end{equation}
+The product converges locally uniformly and hence defines an entire function.
+For every integer \(N\ge0\) and \(N<x<N+1\),
+\begin{equation}
+ \boxed{\operatorname{sgn}\Phi(x)=\eps_N.}
+ \label{eq:sinc-sign}
+\end{equation}
+Indeed, the denominator of each factor is positive and the signs of the
+numerators multiply exactly as in \eqref{eq:sine-sign-product}, with \(x\)
+in place of \(N+1/2\).  Thus the Thue--Morse word is the sign itinerary of a
+single canonical entire product between its successive integer zeros.
+
+\subsection{XOR and carry-free multiplication}
+
+For nonnegative integers \(a,b\),
+\begin{equation}
+ \wt(a\xor b)=\wt(a)+\wt(b)-2\wt(a\bitand b).
+ \label{eq:xor-weight}
+\end{equation}
+Hence
+\begin{equation}
+ \boxed{\eps_{a\xor b}=\eps_a\eps_b,\qquad
+ \TM(a\xor b)\equiv\TM(a)+\TM(b)\pmod2.}
+ \label{eq:xor-character}
+\end{equation}
+This says that \(n\mapsto\eps_n\), restricted to \(m\)-bit integers, is the
+Walsh character indexed by the all-ones vector.
+
+If \(a\bitand b=0\), then \(a+b=a\xor b\), and therefore
+\begin{equation}
+ \eps_{a+b}=\eps_a\eps_b.
+ \label{eq:carry-free-addition}
+\end{equation}
+The correction in the presence of carries will appear in
+\cref{sec:valuations}.
+
+\section{Two-adic valuations, carries, and Catalan numbers}
+\label{sec:valuations}
+
+\subsection{Legendre and the central binomial coefficient}
+
+Legendre's formula in base two is
+\begin{equation}
+ \vtwo(n!)=\sum_{j\ge1}\left\lfloor\frac n{2^j}\right\rfloor
+          =n-\wt(n).
+ \label{eq:legendre}
+\end{equation}
+It immediately yields one of the cleanest arithmetic encodings.
+
+\begin{theorem}[Central-binomial valuation]
+For every \(n\ge0\),
+\begin{equation}
+ \boxed{\vtwo\binom{2n}{n}=\wt(n),\qquad
+ \eps_n=(-1)^{\vtwo\binom{2n}{n}}.}
+ \label{eq:central-binomial}
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+By \eqref{eq:legendre},
+\[
+ \vtwo\binom{2n}{n}
+ =(2n-\wt(2n))-2(n-\wt(n))=\wt(n),
+\]
+because \(\wt(2n)=\wt(n)\).
+\end{proof}
+
+\subsection{Catalan valuation}
+
+\begin{theorem}[Catalan-number formula]
+\newmaterial Let \(C_n=\frac1{n+1}\binom{2n}{n}\).  Then
+\begin{equation}
+ \boxed{\vtwo(C_n)=\wt(n+1)-1
+ =\wt(n)-\vtwo(n+1).}
+ \label{eq:catalan-valuation}
+\end{equation}
+Consequently
+\begin{equation}
+ \eps_{n+1}=-(-1)^{\vtwo(C_n)},
+ \qquad
+ \eps_n=(-1)^{\vtwo(C_n)+\vtwo(n+1)}.
+ \label{eq:catalan-thue-morse}
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+Use \eqref{eq:central-binomial} and subtract \(\vtwo(n+1)\).  When one is
+added to \(n\), its trailing block of \(\vtwo(n+1)\) one-bits becomes zero
+and the next zero becomes one, so
+\(\wt(n+1)=\wt(n)+1-\vtwo(n+1)\).
+\end{proof}
+
+\subsection{Kummer carries and multinomials}
+
+Kummer's theorem gives
+\begin{equation}
+ \vtwo\binom{a+b}{a}=\wt(a)+\wt(b)-\wt(a+b),
+ \label{eq:kummer-two}
+\end{equation}
+which is the number of binary carries, counted with multiplicity through
+propagation.  Taking parity yields the exact carry correction
+\begin{equation}
+ \boxed{\eps_{a+b}=\eps_a\eps_b
+ (-1)^{\vtwo\binom{a+b}{a}}.}
+ \label{eq:carry-correction}
+\end{equation}
+More generally, if \(k_1+\cdots+k_r=n\), then
+\begin{equation}
+ \vtwo\binom{n}{k_1,\ldots,k_r}
+ =\sum_{i=1}^r\wt(k_i)-\wt(n),
+ \label{eq:multinomial-valuation}
+\end{equation}
+and therefore
+\begin{equation}
+ \boxed{\eps_n=
+  \left(\prod_{i=1}^r\eps_{k_i}\right)
+  (-1)^{\vtwo\binom{n}{k_1,\ldots,k_r}}.}
+ \label{eq:multinomial-sign}
+\end{equation}
+
+\section{Pascal-triangle formulas and Boolean-lattice inversion}
+\label{sec:pascal}
+
+\subsection{Odd entries and the binomial--logarithm formula}
+
+Lucas's theorem modulo two says
+\begin{equation}
+ \binom nk\equiv1\pmod2
+ \quad\Longleftrightarrow\quad k\submask n,
+ \label{eq:lucas-submask}
+\end{equation}
+meaning that each one-bit of \(k\) is also a one-bit of \(n\).  Hence the
+number of odd entries in row \(n\) of Pascal's triangle is
+\begin{equation}
+ \boxed{\#\left\{0\le k\le n:\binom nk\text{ is odd}\right\}
+ =2^{\wt(n)}.}
+ \label{eq:odd-row-count}
+\end{equation}
+
+Set
+\begin{equation}
+ X(n)=\sum_{k=0}^n(-1)^{\binom nk}.
+ \label{eq:X-def}
+\end{equation}
+Every even entry contributes \(+1\), every odd entry \(-1\), so
+\begin{equation}
+ \boxed{X(n)=n+1-2^{\wt(n)+1}.}
+ \label{eq:X-exact}
+\end{equation}
+This recovers the source document's binomial--logarithm formula:
+\begin{equation}
+ \TM(n)=\frac{1+(-1)^{\log_2(n+1-X(n))}}2,
+ \label{eq:binomial-log}
+\end{equation}
+because \(n+1-X(n)=2^{\wt(n)+1}\).  The logarithm is exact, not numerical.
+
+\subsection{A log-free residue formula}
+
+Let
+\begin{equation}
+ S(n)=1+X(n)=n+2-2^{\wt(n)+1}.
+ \label{eq:S-row}
+\end{equation}
+Since powers of two alternate between \(1\) and \(2\) modulo three,
+\begin{equation}
+ 2n+S(n)\equiv
+ \begin{cases}0\pmod3,&\wt(n)\text{ even},\\
+               1\pmod3,&\wt(n)\text{ odd}.
+ \end{cases}
+\end{equation}
+Thus the least nonnegative residue already is a bit:
+\begin{equation}
+ \boxed{\TM(n)=\resmod{2n+1+\sum_{k=0}^n(-1)^{\binom nk}}{3}.}
+ \label{eq:log-free-mod3}
+\end{equation}
+Equivalently, because the residue can only be \(0\) or \(1\),
+\begin{equation}
+ \TM(n)=\frac2{\sqrt3}
+ \sin\!\left(\frac{2\pi}{3}\left(2n+1+
+ \sum_{k=0}^n(-1)^{\binom nk}\right)\right).
+ \label{eq:log-free-sine}
+\end{equation}
+
+\subsection{Row enumerators, powers-of-two columns, and submasks}
+
+For an indeterminate \(u\), define the parity enumerator
+\[
+ R_n(u)=\sum_{k=0}^n u^{\binom nk\bmod2}.
+\]
+Then
+\begin{equation}
+ \boxed{R_n(u)=n+1+(u-1)2^{\wt(n)}.}
+ \label{eq:row-enumerator}
+\end{equation}
+Specializing \(u=-1\) gives \eqref{eq:X-exact}.
+
+Lucas's theorem at the power-of-two columns reads
+\begin{equation}
+ \binom{n}{2^j}\bmod2=b_j(n).
+ \label{eq:power-two-column}
+\end{equation}
+Therefore
+\begin{equation}
+ \boxed{\eps_n=\prod_{j\ge0}(-1)^{\binom{n}{2^j}}.}
+ \label{eq:power-two-column-product}
+\end{equation}
+
+The complete submask enumerator is
+\begin{equation}
+ \boxed{\sum_{k\submask n}z^{\wt(k)}=(1+z)^{\wt(n)}.}
+ \label{eq:submask-weight-enumerator}
+\end{equation}
+At \(z=-2\),
+\begin{equation}
+ \eps_n=\sum_{k\submask n}(-2)^{\wt(k)}.
+ \label{eq:submask-minus-two}
+\end{equation}
+Combining this with \eqref{eq:central-binomial} and the indicator for oddness
+produces a formula involving only binomial coefficients and two-adic
+valuations:
+\begin{equation}
+ \boxed{\eps_n=\sum_{k=0}^n
+ \frac{1-(-1)^{\binom nk}}2
+ (-2)^{\vtwo\binom{2k}{k}}.}
+ \label{eq:pure-binomial-formula}
+\end{equation}
+
+\subsection{Pascal parity as a zeta matrix}
+
+Let
+\begin{equation}
+ P_{n,k}=\ind_{k\submask n}=\binom nk\bmod2.
+ \label{eq:pascal-zeta}
+\end{equation}
+On every finite initial Boolean lattice, \(P\) is the zeta matrix.  Its inverse
+is the Möbius matrix
+\begin{equation}
+ (P^{-1})_{n,k}=P_{n,k}(-1)^{\wt(n)-\wt(k)}.
+ \label{eq:pascal-inverse}
+\end{equation}
+The first column is precisely
+\begin{equation}
+ (P^{-1})_{n,0}=(-1)^{\wt(n)}=\eps_n.
+ \label{eq:pascal-inverse-first-column}
+\end{equation}
+This places the signed Thue--Morse sequence inside the elementary incidence
+algebra of the Boolean lattice.
+
+\subsection{Odd multinomial support}
+
+For fixed \(r\ge2\), an \(r\)-nomial coefficient
+\(\binom{n}{k_1,\ldots,k_r}\) is odd exactly when each one-bit of \(n\) is
+assigned to exactly one of the \(r\) parts.  Hence
+\begin{equation}
+ \boxed{\#\left\{(k_1,\ldots,k_r):\sum k_i=n,
+ \binom{n}{k_1,\ldots,k_r}\text{ odd}\right\}=r^{\wt(n)}.}
+ \label{eq:odd-multinomial-count}
+\end{equation}
+Since the total number of weak compositions is \(\binom{n+r-1}{r-1}\),
+\begin{equation}
+ \sum_{k_1+\cdots+k_r=n}
+ (-1)^{\binom{n}{k_1,\ldots,k_r}}
+ =\binom{n+r-1}{r-1}-2r^{\wt(n)}.
+ \label{eq:multinomial-signed-sum}
+\end{equation}
+For any odd \(r\equiv-1\pmod4\), the parity of \(\wt(n)\) can again be
+recovered from a small residue of the right-hand side; the case \(r=3\) is the
+multinomial analogue of \eqref{eq:log-free-mod3}.
+
+\section{Exact balance, interval discrepancy, and dyadic blocks}
+\label{sec:balance}
+
+Define the half-open signed prefix discrepancy
+\begin{equation}
+ \mathcal D(N)=\sum_{0\le n<N}\eps_n.
+ \label{eq:prefix-D}
+\end{equation}
+
+\begin{theorem}[Exact prefix discrepancy]
+For every \(q\ge0\),
+\begin{equation}
+ \boxed{\mathcal D(2q)=0,\qquad
+ \mathcal D(2q+1)=\eps_q.}
+ \label{eq:prefix-exact}
+\end{equation}
+In particular \(|\mathcal D(N)|\le1\).
+\end{theorem}
+
+\begin{proof}
+The first \(2q\) terms cancel in pairs because
+\(\eps_{2j}+\eps_{2j+1}=0\).  The next term is
+\(\eps_{2q}=\eps_q\).
+\end{proof}
+
+Let \(A(N)=\sum_{n<N}\TM(n)\) count odious indices in the prefix.  Since
+\(\TM=(1-\eps)/2\),
+\begin{equation}
+ \boxed{A(2q)=q,\qquad A(2q+1)=q+\TM(q).}
+ \label{eq:prefix-one-count}
+\end{equation}
+Thus every even prefix is exactly balanced.
+
+For \(0\le a\le b\),
+\begin{equation}
+ \sum_{n=a}^{b-1}\eps_n=\mathcal D(b)-\mathcal D(a),
+ \qquad
+ \left|\sum_{n=a}^{b-1}\eps_n\right|\le2.
+ \label{eq:interval-discrepancy}
+\end{equation}
+Consequently the number of ones in any interval differs from half the interval
+length by at most one.  The signed bound two is sharp, for example on
+\([1,3)\).
+
+Block multiplicativity strengthens this to an exact local formula.  If
+\(0\le r\le2^m\), then
+\begin{equation}
+ \boxed{\sum_{j=0}^{r-1}\eps_{2^mq+j}=\eps_q\mathcal D(r).}
+ \label{eq:partial-block}
+\end{equation}
+Every aligned block of length \(2^m\), \(m\ge1\), has zero signed sum, and
+every partial block has discrepancy zero or one up to a global sign.
+
+The ordinary generating series of the discrepancy is especially sparse:
+\begin{equation}
+ \sum_{N\ge0}\mathcal D(N)z^N
+ =\frac{z}{1-z}E(z)=zE(z^2)
+ =z\prod_{j\ge1}(1-z^{2^j}),
+ \qquad |z|<1,
+ \label{eq:prefix-generating-D}
+\end{equation}
+where \(E\) is introduced in \cref{sec:products}.  Coefficient comparison
+recovers \eqref{eq:prefix-exact}.
+
+\section{Finite and infinite Euler products}
+\label{sec:products}
+
+\subsection{The finite mother product}
+
+For \(m\ge0\), define
+\begin{equation}
+ P_m(z)=\sum_{n=0}^{2^m-1}\eps_nz^n.
+ \label{eq:Pm-def}
+\end{equation}
+
+\begin{theorem}[Finite Euler product]
+\begin{equation}
+ \boxed{P_m(z)=\prod_{j=0}^{m-1}(1-z^{2^j}).}
+ \label{eq:finite-product}
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+When the product is expanded, choosing \(-z^{2^j}\) from the factors indexed
+by a subset \(J\) produces the unique exponent
+\(n=\sum_{j\in J}2^j\) with coefficient \((-1)^{|J|}=\eps_n\).
+\end{proof}
+
+The recursion
+\begin{equation}
+ P_{m+1}(z)=(1-z^{2^m})P_m(z)
+ \label{eq:Pm-recursion}
+\end{equation}
+is the generating-polynomial form of block complementation.  If
+\(d=2^m-1\), then
+\begin{equation}
+ z^dP_m(z^{-1})=(-1)^mP_m(z),
+ \qquad
+ \eps_{d-n}=(-1)^m\eps_n.
+ \label{eq:Pm-reciprocity}
+\end{equation}
+The cyclotomic factorization is
+\begin{equation}
+ P_m(z)=(1-z)^m\prod_{r=1}^{m-1}\Phi_{2^r}(z)^{m-r},
+ \label{eq:cyclotomic-Pm}
+\end{equation}
+where \(\Phi_d\) denotes the \(d\)-th cyclotomic polynomial.
+
+\subsection{The infinite product and Mahler equation}
+
+For \(|z|<1\), coefficient stabilization gives
+\begin{equation}
+ \boxed{E(z)=\sum_{n\ge0}\eps_nz^n
+ =\prod_{j\ge0}(1-z^{2^j}).}
+ \label{eq:E-product}
+\end{equation}
+It satisfies the first-order Mahler equation
+\begin{equation}
+ \boxed{E(z)=(1-z)E(z^2),\qquad E(0)=1.}
+ \label{eq:E-mahler}
+\end{equation}
+The zero--one generating series is
+\begin{equation}
+ T(z)=\sum_{n\ge0}\TM(n)z^n
+ =\frac12\left(\frac1{1-z}-E(z)\right).
+ \label{eq:T-from-E}
+\end{equation}
+
+\subsection{A direct natural-boundary theorem}
+
+\begin{theorem}[Natural boundary]
+\newmaterial Every point of \(|z|=1\) is a singular point of analytic
+continuation of \(E\).  In particular, the unit circle is a natural boundary,
+and \(E\) is transcendental over \(\C(z)\).
+\end{theorem}
+
+\begin{proof}
+Let \(\zeta\) be a dyadic root of unity, say \(\zeta^{2^r}=1\).  For
+\(0<\rho<1\), the factors with \(j\ge r\) are real numbers in \([0,1]\), and
+\[
+ |E(\rho\zeta)|
+ \le 2^r(1-\rho^{2^r}).
+\]
+Hence \(E(\rho\zeta)\to0\) radially as \(\rho\uparrow1\).  Dyadic roots of
+unity are dense on the circle.  If \(E\) continued through a nonempty arc,
+the continuation would vanish at infinitely many dyadic roots with an
+accumulation point in its domain.  The identity theorem would force it to
+vanish identically, contradicting \(E(0)=1\).  Thus no arc permits
+continuation.  An algebraic function over \(\C(z)\) has only finitely many
+branch points and poles on the Riemann sphere, so it cannot have a natural
+boundary.
+\end{proof}
+
+\begin{remark}
+The general rational-or-natural-boundary dichotomy for Mahler functions is due
+to Rand\'e and has modern proofs by Bell, Coons, and Rowland
+\cite{BellCoonsRowland}.  Here the dense radial-zero argument is specific and
+self-contained.
+\end{remark}
+
+\section{The ruler sequence, coefficient recurrences, partitions, and determinants}
+\label{sec:ruler}
+
+Define the odd ruler values
+\begin{equation}
+ a_r=2^{\vtwo(r)+1}-1\qquad(r\ge1),
+ \label{eq:ruler-a}
+\end{equation}
+so \(a_1,a_2,\ldots=1,3,1,7,1,3,1,15,\ldots\).  Logarithmic expansion of
+\eqref{eq:E-product} gives
+\begin{equation}
+ \boxed{\log E(z)=-\sum_{r\ge1}\frac{a_r}{r}z^r,}
+ \qquad
+ -\frac{zE'(z)}{E(z)}=\sum_{r\ge1}a_rz^r.
+ \label{eq:log-E-ruler}
+\end{equation}
+Indeed, the coefficient at \(z^r\) receives \(-2^j/r\) from every
+\(2^j\mid r\), whose sum is \(-a_r/r\).
+
+Comparing coefficients in \(-zE'=E\sum a_rz^r\) yields a nonbinary
+convolution recurrence:
+\begin{equation}
+ \boxed{n\eps_n=-\sum_{r=1}^na_r\eps_{n-r}\qquad(n\ge1).}
+ \label{eq:ruler-convolution}
+\end{equation}
+The ruler sequence itself obeys
+\begin{equation}
+ a_{2n+1}=1,\qquad a_{2n}=2a_n+1.
+ \label{eq:ruler-recursion}
+\end{equation}
+Its Lambert and Dirichlet series are
+\begin{align}
+ \sum_{r\ge1}a_rz^r
+ &=\sum_{j\ge0}\frac{2^jz^{2^j}}{1-z^{2^j}},
+ \label{eq:ruler-Lambert}\\
+ \sum_{r\ge1}\frac{a_r}{r^s}
+ &=\boxed{\frac{\zeta(s)}{1-2^{1-s}}}\qquad(\Re s>1).
+ \label{eq:ruler-Dirichlet}
+\end{align}
+For the second formula, split \(r=2^ku\) with \(u\) odd and sum a geometric
+series.
+
+\subsection{Partition and Bell-polynomial formulas}
+
+Exponentiating \eqref{eq:log-E-ruler} gives the finite partition sum
+\begin{equation}
+ \boxed{\eps_n=
+ \sum_{\substack{k_1,\ldots,k_n\ge0\\
+                  k_1+2k_2+\cdots+nk_n=n}}
+ \prod_{r=1}^n\frac1{k_r!}
+ \left(-\frac{a_r}{r}\right)^{k_r}.}
+ \label{eq:partition-formula}
+\end{equation}
+The rational summands cancel to exactly \(\pm1\).  In terms of complete
+exponential Bell polynomials,
+\begin{equation}
+ \boxed{\eps_n=\frac1{n!}\Bell_n
+ \bigl(-0!a_1,-1!a_2,\ldots,-(n-1)!a_n\bigr).}
+ \label{eq:Bell-formula}
+\end{equation}
+
+\subsection{A factorial determinant}
+
+For \(n\ge1\), let
+\begin{equation}
+ H_n=\begin{pmatrix}
+ a_1&1&0&\cdots&0\\
+ a_2&a_1&2&\ddots&\vdots\\
+ a_3&a_2&a_1&\ddots&0\\
+ \vdots&\vdots&\ddots&\ddots&n-1\\
+ a_n&a_{n-1}&\cdots&a_2&a_1
+ \end{pmatrix}.
+ \label{eq:Hessenberg}
+\end{equation}
+Then
+\begin{equation}
+ \boxed{\eps_n=\frac{(-1)^n}{n!}\det H_n,\qquad
+ |\det H_n|=n!.}
+ \label{eq:Hessenberg-formula}
+\end{equation}
+To verify it, expand a lower-Hessenberg determinant to obtain
+\[
+ D_n=\sum_{r=1}^n(-1)^{r+1}\frac{(n-1)!}{(n-r)!}a_rD_{n-r},
+ \qquad D_0=1,
+\]
+and set \(c_n=(-1)^nD_n/n!\); then \(c_n\) satisfies
+\eqref{eq:ruler-convolution} with \(c_0=1\).
+
+\section{Prouhet cancellation and a master finite-difference identity}
+\label{sec:prouhet}
+
+\subsection{Exact vanishing order}
+
+Every factor in \eqref{eq:finite-product} has a simple zero at \(z=1\), so
+\begin{equation}
+ P_m(z)=(-1)^m2^{\binom m2}(z-1)^m+\bigO((z-1)^{m+1}).
+ \label{eq:Pm-local}
+\end{equation}
+Thus \(P_m\) has a zero of exact order \(m\) at one.
+
+\begin{theorem}[Prouhet cancellation]
+For every polynomial \(p\) of degree less than \(m\),
+\begin{equation}
+ \boxed{\sum_{n=0}^{2^m-1}\eps_np(n)=0.}
+ \label{eq:prouhet}
+\end{equation}
+Equivalently, the evil and odious subsets of \(\{0,\ldots,2^m-1\}\) have
+equal sums of like powers through degree \(m-1\).
+\end{theorem}
+
+\begin{proof}
+The derivative \(P_m^{(r)}(1)\) equals
+\(\sum_{n<2^m}\eps_n\fall{n}{r}\) and vanishes for \(r<m\).
+Falling factorials form a basis of the polynomial ring.
+\end{proof}
+
+The first surviving moments are
+\begin{align}
+ \boxed{\sum_{n<2^m}\eps_nn^m
+   =(-1)^m m!2^{\binom m2},}
+ \label{eq:first-power-moment}\\
+ \boxed{\sum_{n<2^m}\eps_n\binom nm
+   =(-1)^m2^{\binom m2}.}
+ \label{eq:first-binomial-moment}
+\end{align}
+
+\subsection{The operator formula}
+
+For \(h\in\C\), let \(T_hf(x)=f(x+h)\) and
+\(\Delta_h=T_h-I\).  Expanding a product of commuting shifts proves the
+master identity
+\begin{equation}
+ \boxed{\sum_{n=0}^{2^m-1}\eps_nf(x+nh)
+ =\left[\prod_{j=0}^{m-1}(I-T_{2^jh})f\right](x)
+ =(-1)^m\Delta_h\Delta_{2h}\cdots\Delta_{2^{m-1}h}f(x).}
+ \label{eq:finite-difference-master}
+\end{equation}
+This single equation generates Prouhet cancellation, exact remainders,
+reciprocal-power positivity, and sparse Pascal analogues.
+
+If \(h\ge0\) and \(f\in C^m\), repeated use of the fundamental theorem of
+calculus gives
+\begin{align}
+ \sum_{n<2^m}\eps_nf(x+nh)
+ &=(-1)^m\int_0^h\int_0^{2h}\cdots\int_0^{2^{m-1}h}
+ f^{(m)}(x+t_0+\cdots+t_{m-1})
+ \dd t_{m-1}\cdots\dd t_0,
+ \label{eq:cubical-integral}\\
+ \left|\sum_{n<2^m}\eps_nf(x+nh)\right|
+ &\le 2^{\binom m2}h^m
+ \sup|f^{(m)}|.
+ \label{eq:cubical-bound}
+\end{align}
+
+\begin{corollary}[Positive reciprocal-power sums]
+For \(a,s>0\),
+\begin{equation}
+ \boxed{\sum_{n=0}^{2^m-1}\frac{\eps_n}{(a+n)^s}
+ =(s)_m\int_0^1\int_0^2\cdots\int_0^{2^{m-1}}
+ \frac{\dd t_{m-1}\cdots\dd t_0}
+ {(a+t_0+\cdots+t_{m-1})^{s+m}}>0,}
+ \label{eq:positive-reciprocal}
+\end{equation}
+where \((s)_m=s(s+1)\cdots(s+m-1)\).
+\end{corollary}
+
+\begin{proof}
+Use \eqref{eq:cubical-integral} with \(f(x)=(a+x)^{-s}\).  Its \(m\)-th
+derivative is \((-1)^m(s)_m(a+x)^{-s-m}\), so the signs cancel.
+\end{proof}
+
+\subsection{All higher moments}
+
+Set
+\begin{equation}
+ A_m=\frac{2^m-1}{2},\qquad
+ c_{m,r}=\frac{B_{2r}}{2r(2r)!}
+ \frac{2^{2rm}-1}{2^{2r}-1}\quad(r\ge1),
+ \label{eq:moment-constants}
+\end{equation}
+where \(B_{2r}\) are Bernoulli numbers with \(B_2=1/6\).  Substituting
+\(z=e^t\) in the finite product and using the expansion of
+\(\log(\sinh x/x)\) gives
+\begin{equation}
+ \boxed{\sum_{n<2^m}\eps_ne^{nt}
+ =(-1)^m2^{\binom m2}t^m
+ \exp\!\left(A_mt+\sum_{r\ge1}c_{m,r}t^{2r}\right).}
+ \label{eq:exponential-moment-factor}
+\end{equation}
+Consequently, for every \(\ell\ge0\),
+\begin{equation}
+ \boxed{\sum_{n<2^m}\eps_nn^{m+\ell}
+ =(-1)^m2^{\binom m2}(m+\ell)!
+ [t^\ell]\exp\!\left(A_mt+\sum_{r\ge1}c_{m,r}t^{2r}\right).}
+ \label{eq:all-power-moments}
+\end{equation}
+After centering at \(A_m\), only even corrections survive:
+\begin{equation}
+ \sum_{n<2^m}\eps_ne^{(n-A_m)t}
+ =(-1)^m2^{\binom m2}t^m
+ \exp\!\left(\sum_{r\ge1}c_{m,r}t^{2r}\right).
+ \label{eq:centered-mgf}
+\end{equation}
+Hence
+\begin{equation}
+ \sum_{n<2^m}\eps_n(n-A_m)^q=0
+ \quad\text{unless }q\ge m\text{ and }q\equiv m\pmod2.
+ \label{eq:centered-parity}
+\end{equation}
+This also follows from the reciprocity \eqref{eq:Pm-reciprocity}.
+
+For binomial moments, the exact coefficient generator is
+\begin{equation}
+ \boxed{\sum_{r\ge0}\left(\sum_{n<2^m}\eps_n\binom nr\right)u^r
+ =\prod_{j=0}^{m-1}\left(1-(1+u)^{2^j}\right).}
+ \label{eq:all-binomial-moments}
+\end{equation}
+It displays the zeros for \(r<m\) and the first value
+\eqref{eq:first-binomial-moment} without conversion between power bases.
+
+\section{Sparse Prouhet identities on arbitrary Pascal supports}
+\label{sec:sparse}
+
+Let
+\begin{equation}
+ J(n)=\{j\ge0:b_j(n)=1\},\qquad
+ s=|J(n)|=\wt(n),\qquad
+ \beta(n)=\sum_{j\in J(n)}j.
+ \label{eq:J-beta}
+\end{equation}
+
+\begin{theorem}[Pascal-support product]
+For every \(n\ge0\),
+\begin{equation}
+ \boxed{R_n(z):=\sum_{k\submask n}\eps_kz^k
+ =\prod_{j\in J(n)}(1-z^{2^j}).}
+ \label{eq:sparse-product}
+\end{equation}
+Equivalently,
+\begin{equation}
+ R_n(z)=\sum_{k=0}^n\eps_k
+ \ind_{\binom nk\text{ odd}}z^k.
+ \label{eq:sparse-Pascal}
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+Expand the product.  Each chosen subset of \(J(n)\) gives one submask \(k\)
+and coefficient \((-1)^{\wt(k)}\).  Lucas's criterion gives the second form.
+\end{proof}
+
+The polynomial \(R_n\) has a zero of order \(s\) at one.  Therefore
+\begin{equation}
+ \boxed{\sum_{k\submask n}\eps_kp(k)=0\qquad(\deg p<s),}
+ \label{eq:sparse-prouhet}
+\end{equation}
+and the first surviving moment is
+\begin{equation}
+ \boxed{\sum_{k\submask n}\eps_kk^s
+ =(-1)^ss!2^{\beta(n)}.}
+ \label{eq:sparse-first-moment}
+\end{equation}
+In particular, every nonzero Pascal row has equally many evil and odious
+indices among the positions of its odd entries.
+
+The operator form is
+\begin{equation}
+ \boxed{\sum_{k\submask n}\eps_kf(x+hk)
+ =\prod_{j\in J(n)}(I-T_{2^jh})f(x).}
+ \label{eq:sparse-operator}
+\end{equation}
+For \(f\in C^s\) and \(h\ge0\), its absolute value is at most
+\begin{equation}
+ 2^{\beta(n)}h^s\sup_{x\le y\le x+nh}|f^{(s)}(y)|.
+ \label{eq:sparse-bound}
+\end{equation}
+
+\begin{example}
+For \(n=13=1101_2\), the odd positions of Pascal row 13 are
+\[
+ 0,1,4,5,8,9,12,13.
+\]
+Their signed sums against \(1,k,k^2\) vanish, while
+\[
+ \sum_{k\submask13}\eps_kk^3=-3!\,2^{0+2+3}=-192.
+\]
+\end{example}
+
+\section{The bit series in characteristic two}
+\label{sec:F2}
+
+In \(\F_2[[x]]\), put
+\begin{equation}
+ \Theta(x)=\sum_{n\ge0}\TM(n)x^n.
+ \label{eq:Theta-F2}
+\end{equation}
+Splitting even and odd coefficients gives
+\begin{equation}
+ \Theta(x)=(1+x)\Theta(x^2)+\frac{x}{1+x^2}.
+ \label{eq:F2-functional}
+\end{equation}
+Frobenius says \(\Theta(x^2)=\Theta(x)^2\), and
+\(1+x^2=(1+x)^2\).  Hence
+\begin{equation}
+ \boxed{(1+x)^3\Theta(x)^2+(1+x)^2\Theta(x)+x=0.}
+ \label{eq:F2-quadratic}
+\end{equation}
+With \(Y(x)=(1+x)\Theta(x)\), this is the Artin--Schreier equation
+\begin{equation}
+ \boxed{Y(x)^2+Y(x)=\frac{x}{1+x}.}
+ \label{eq:Artin-Schreier}
+\end{equation}
+Thus the same sequence whose complex generating function is transcendental is
+algebraic of degree two over \(\F_2(x)\), an instructive contrast between
+characteristic zero and characteristic two.
+
+\section{Iterated prefix sums and terminal zero runs}
+\label{sec:iterated-prefix}
+
+Define inclusive discrete antiderivatives by
+\begin{equation}
+ S_n^{(0)}=\eps_n,
+ \qquad
+ S_n^{(k+1)}=\sum_{j=0}^nS_j^{(k)}.
+ \label{eq:iterated-prefix-def}
+\end{equation}
+The first one is explicit:
+\begin{equation}
+ S_{2q}^{(1)}=\eps_q,
+ \qquad
+ S_{2q+1}^{(1)}=0.
+ \label{eq:first-prefix}
+\end{equation}
+Repeated summation gives
+\begin{align}
+ \boxed{S_n^{(k)}=
+ \sum_{j=0}^n\binom{n-j+k-1}{k-1}\eps_j,}
+ \label{eq:prefix-binomial-convolution}\\
+ \boxed{\sum_{n\ge0}S_n^{(k)}z^n=\frac{E(z)}{(1-z)^k}.}
+ \label{eq:prefix-generating}
+\end{align}
+
+\begin{theorem}[Dyadic terminal zero run]
+If \(1\le k\le r\), then
+\begin{equation}
+ S_{2^r-k+i}^{(k)}=0\qquad(0\le i<k),
+ \label{eq:terminal-zero-run}
+\end{equation}
+while
+\begin{equation}
+ S_{2^r-k-1}^{(k)}=(-1)^{r-k},
+ \qquad
+ S_{2^r}^{(k)}=-1.
+ \label{eq:prefix-boundaries}
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+Below degree \(2^r\), replace \(E(z)\) in
+\eqref{eq:prefix-generating} by \(P_r(z)\).  Since
+\[
+ \frac{P_r(z)}{(1-z)^k}
+ =(1-z)^{r-k}\prod_{j=0}^{r-1}(1+z+\cdots+z^{2^j-1})
+\]
+is a polynomial of degree \(2^r-k-1\), the next \(k\) coefficients vanish.
+Its leading coefficient gives the first boundary value; the first omitted
+factor \(1-z^{2^r}\) gives the value at \(2^r\).
+\end{proof}
+
+\section{Walsh, ordinary Fourier, and cyclotomic formulas}
+\label{sec:fourier}
+
+\subsection{The Boolean-cube character}
+
+For \(0\le n<2^m\), let \(\bm b(n)\in\F_2^m\) be its digit vector and let
+\(\bm1=(1,\ldots,1)\).  Then
+\begin{equation}
+ \eps_n=(-1)^{\bm1\cdot\bm b(n)}.
+ \label{eq:walsh-character}
+\end{equation}
+Equivalently, in natural binary order,
+\begin{equation}
+ (\eps_0,\ldots,\eps_{2^m-1})^{\mathsf T}
+ =\binom{1}{-1}^{\!\otimes m}.
+ \label{eq:kronecker}
+\end{equation}
+Thus the finite block is one Walsh--Hadamard character.  Orthogonality gives
+\begin{equation}
+ \boxed{\sum_{n<2^m}\eps_n(-1)^{\bm a\cdot\bm b(n)}
+ =\begin{cases}2^m,&\bm a=\bm1,\\0,&\bm a\ne\bm1.
+ \end{cases}}
+ \label{eq:walsh-transform}
+\end{equation}
+The Walsh spectrum is a point mass even though the ordinary Fourier spectrum
+is spread over all odd frequencies.
+
+For \(x\in[0,1)\), set
+\(r_j(x)=(-1)^{\lfloor2^{j+1}x\rfloor}\).  If
+\(n/2^m\le x<(n+1)/2^m\), then
+\begin{equation}
+ \eps_n=\prod_{j=0}^{m-1}r_j(x).
+ \label{eq:rademacher-product}
+\end{equation}
+
+\subsection{Trigonometric factorization}
+
+Putting \(z=e^{2\pi\ii x}\) in \eqref{eq:finite-product} gives
+\begin{equation}
+ \boxed{P_m(e^{2\pi\ii x})
+ =(-2\ii)^m e^{\pi\ii(2^m-1)x}
+ \prod_{j=0}^{m-1}\sin(\pi2^jx).}
+ \label{eq:trig-factorization}
+\end{equation}
+In particular,
+\begin{equation}
+ |P_m(e^{2\pi\ii x})|
+ =2^m\prod_{j=0}^{m-1}|\sin(\pi2^jx)|.
+ \label{eq:trig-modulus}
+\end{equation}
+This is the finite Fourier counterpart of the sinc products that occur in the
+Fourier transform of the Rvachev up-function.
+
+\subsection{Exact discrete Fourier transform}
+
+For integer \(k\), define
+\begin{equation}
+ \widehat\eps_m(k)=\sum_{n=0}^{2^m-1}\eps_n
+ e^{-2\pi\ii kn/2^m}.
+ \label{eq:DFT-def}
+\end{equation}
+Then
+\begin{equation}
+ \boxed{\widehat\eps_m(k)=
+ \prod_{j=0}^{m-1}\left(1-e^{-2\pi\ii k2^j/2^m}\right).}
+ \label{eq:DFT-product}
+\end{equation}
+Every even mode vanishes.  If \(k\) is odd, no factor vanishes and
+\begin{equation}
+ \widehat\eps_m(k)
+ =(2\ii)^m e^{-\pi\ii k(1-2^{-m})}
+ \prod_{r=1}^{m}\sin\!\left(\frac{\pi k}{2^r}\right).
+ \label{eq:DFT-odd}
+\end{equation}
+Finite Fourier inversion therefore gives a cyclotomic formula for each term:
+\begin{equation}
+ \boxed{\eps_n=2^{-m}\sum_{\substack{0\le k<2^m\\k\text{ odd}}}
+ \widehat\eps_m(k)e^{2\pi\ii kn/2^m}}
+ \qquad(0\le n<2^m).
+ \label{eq:DFT-inversion}
+\end{equation}
+The formula is independent of how large \(m\) is, once \(2^m>n\).
+
+\section{Riesz products, autocorrelation, and spectral type}
+\label{sec:spectral}
+
+Define
+\begin{equation}
+ g_m(x)=2^{-m}|P_m(e^{2\pi\ii x})|^2.
+ \label{eq:gm}
+\end{equation}
+Then
+\begin{equation}
+ \boxed{g_m(x)=\prod_{j=0}^{m-1}
+ \bigl(1-\cos(2\pi2^jx)\bigr).}
+ \label{eq:Riesz-density}
+\end{equation}
+Parseval's identity gives \(\int_0^1g_m(x)\dd x=1\), so
+\(g_m(x)\dd x\) is a probability measure.  Its weak limit is the classical
+Thue--Morse Riesz-product measure \(\mu_{\rm TM}\).
+
+For dyadic averages, put
+\begin{equation}
+ \eta_m(r)=2^{-m}\sum_{n=0}^{2^m-1}\eps_n\eps_{n+r}.
+ \label{eq:finite-correlation}
+\end{equation}
+Even--odd splitting gives the exact recurrences
+\begin{align}
+ \eta_{m+1}(2r)&=\eta_m(r),
+ \label{eq:eta-finite-even}\\
+ \eta_{m+1}(2r+1)&=-\frac{\eta_m(r)+\eta_m(r+1)}2.
+ \label{eq:eta-finite-odd}
+\end{align}
+For each fixed \(r\), the limit \(\eta(r)=\lim_m\eta_m(r)\) exists and is
+characterized by
+\begin{equation}
+ \boxed{\eta(0)=1,\qquad
+ \eta(2r)=\eta(r),\qquad
+ \eta(2r+1)=-\frac{\eta(r)+\eta(r+1)}2.}
+ \label{eq:eta-limit}
+\end{equation}
+For example,
+\begin{equation}
+ \eta(1)=\eta(2)=-\frac13,\qquad
+ \eta(3)=\frac13,\qquad \eta(5)=0.
+ \label{eq:eta-examples}
+\end{equation}
+These are the Fourier coefficients of \(\mu_{\rm TM}\).
+
+\begin{literature}[Purely singular continuous spectrum]
+The Riesz-product measure \(\mu_{\rm TM}\) has no atoms and is singular with
+respect to Lebesgue measure.  Accordingly, the balanced Thue--Morse
+substitution has a purely singular continuous spectral component associated
+with the weight \((1,-1)\); see Queff\'elec \cite{QueffelecSubstitution} and
+Baake--Grimm \cite{BaakeGrimmTM}.  The recursion
+\eqref{eq:eta-limit}, the Riesz product \eqref{eq:Riesz-density}, and the
+substitution dynamical system are three exact descriptions of the same
+measure.
+\end{literature}
+
+\begin{literature}[Gelfond's exponential-sum bound]
+There is an absolute constant \(C\) such that
+\begin{equation}
+ \sup_{x\in\R}|P_m(e^{2\pi\ii x})|
+ \le C\,3^{m/2}.
+ \label{eq:Gelfond-bound}
+\end{equation}
+Equivalently, for arbitrary \(N\),
+\begin{equation}
+ \sup_x\left|\sum_{n<N}\eps_ne^{2\pi\ii nx}\right|
+ \ll N^{\log3/\log4}.
+ \label{eq:Gelfond-exponent}
+\end{equation}
+The exponent \(\log3/\log4\) is sharp.  This estimate, originating in
+Gelfond's work \cite{Gelfond}, is the analytic input behind many distribution
+results for digit sums.
+\end{literature}
+
+\section{Base-\texorpdfstring{\(b\)}{b} Thue--Morse constants and Mahler transcendence}
+\label{sec:constants}
+
+For an integer \(b\ge2\), define
+\begin{equation}
+ \Theta_b=\sum_{n\ge0}\frac{\TM(n)}{b^{n+1}}.
+ \label{eq:Theta-b}
+\end{equation}
+Substituting \(z=1/b\) in \eqref{eq:T-from-E} gives
+\begin{equation}
+ \boxed{\Theta_b=
+ \frac1{2(b-1)}-\frac1{2b}
+ \prod_{j\ge0}(1-b^{-2^j}).}
+ \label{eq:Theta-b-product}
+\end{equation}
+The signed companion is
+\begin{equation}
+ \sum_{n\ge0}\frac{\eps_n}{b^{n+1}}
+ =\frac1b\prod_{j\ge0}(1-b^{-2^j}).
+ \label{eq:signed-b-constant}
+\end{equation}
+For \(b=2\), \(\Theta_2=0.011010011001\ldots{}_2\) is the classical
+Thue--Morse--Mahler constant.
+
+Nonperiodicity already proves that \(\Theta_b\) is irrational: a rational
+number has an eventually periodic base-\(b\) expansion, and the digits here
+are not eventually periodic.  A much deeper statement is known.
+
+\begin{literature}[Mahler]
+For every integer \(b\ge2\), the number \(\Theta_b\) is transcendental.
+Mahler established this through the functional equation
+\(E(z)=(1-z)E(z^2)\); later proofs use automatic sequences, Ridout's theorem,
+or modern Mahler-method machinery.  See Mahler \cite{Mahler1929}, Allouche--
+Shallit \cite{AlloucheShallitBook}, and Bugeaud--Queff\'elec
+\cite{BugeaudQueffelec}.
+\end{literature}
+
+\section{Shifted Dirichlet series and Mellin transforms}
+\label{sec:dirichlet}
+
+For \(a>0\), initially in \(\Re s>0\), define
+\begin{equation}
+ D_a(s)=\sum_{n\ge0}\frac{\eps_n}{(n+a)^s}.
+ \label{eq:Da-def}
+\end{equation}
+The convergence follows from the bounded prefix sums in
+\cref{sec:balance} and Dirichlet summation.
+
+\begin{theorem}[Entire continuation]
+\newmaterial For every \(a>0\), \(D_a(s)\) extends to an entire function of
+\(s\).  It satisfies
+\begin{equation}
+ \boxed{D_a(s)=2^{-s}
+ \left(D_{a/2}(s)-D_{(a+1)/2}(s)\right).}
+ \label{eq:Da-functional}
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+The functional equation follows by separating even and odd indices.  For the
+continuation, group the series into blocks of length \(2^m\):
+\begin{equation}
+ D_a(s)=2^{-ms}\sum_{q\ge0}\eps_q
+ \sum_{r=0}^{2^m-1}\eps_r
+ \left(q+\frac{a+r}{2^m}\right)^{-s}.
+ \label{eq:Da-blocked}
+\end{equation}
+The inner sum is an \(m\)-fold mixed difference of \(x^{-s}\); uniformly for
+\(s\) in a compact set it is \(\bigO(q^{-\Re s-m})\).  Given any compact
+subset of the \(s\)-plane, choose \(m\) large enough to make the outer series
+normally convergent there.  The representations agree where the original
+series converges, so they patch to an entire function.
+\end{proof}
+
+There is also a Mellin representation:
+\begin{equation}
+ \boxed{D_a(s)=\frac1{\Gamma(s)}\int_0^\infty
+ t^{s-1}e^{-at}E(e^{-t})\dd t.}
+ \label{eq:Da-Mellin}
+\end{equation}
+Initially this follows by termwise integration.  Near zero, for every
+\(m\ge1\),
+\begin{equation}
+ 0<E(e^{-t})\le 2^{\binom m2}t^m,
+ \label{eq:E-small-t-flat}
+\end{equation}
+using the first \(m\) factors of the product.  This super-polynomial flatness
+also explains the entire continuation in \eqref{eq:Da-Mellin}.
+
+At \(s=1\), write
+\begin{equation}
+ H(a)=D_a(1)=\sum_{n\ge0}\frac{\eps_n}{n+a}.
+ \label{eq:H-def}
+\end{equation}
+Then
+\begin{equation}
+ \boxed{H(a)=\int_0^1x^{a-1}E(x)\dd x>0,}
+ \label{eq:H-integral}
+\end{equation}
+and
+\begin{equation}
+ H(a)=\frac12H(a/2)-\frac12H((a+1)/2).
+ \label{eq:H-functional}
+\end{equation}
+The positivity is nonobvious in the alternating series but immediate in the
+integral because every factor of \(E(x)\) is positive for \(0<x<1\).
+
+\section{A two-parameter product calculus}
+\label{sec:infinite-products}
+
+For \(a,b>0\), define
+\begin{equation}
+ G(a,b)=\prod_{n\ge0}
+ \left(\frac{n+a}{n+b}\right)^{\eps_n}.
+ \label{eq:G-def}
+\end{equation}
+The logarithm converges by summation by parts: the partial sums of \(\eps_n\)
+are bounded and the first difference of
+\(\log((n+a)/(n+b))\) is summable.  Directly,
+\begin{equation}
+ G(a,a)=1,\qquad G(a,b)G(b,c)=G(a,c),\qquad
+ G(b,a)=G(a,b)^{-1}.
+ \label{eq:G-cocycle}
+\end{equation}
+Pairing even and odd indices yields
+\begin{equation}
+ \boxed{G(a,b)=
+ \frac{G(a/2,b/2)}{G((a+1)/2,(b+1)/2)}.}
+ \label{eq:G-functional}
+\end{equation}
+
+\subsection{The Woods--Robbins product}
+
+The most famous evaluation is
+\begin{equation}
+ \boxed{G\left(\frac12,1\right)=
+ \prod_{n\ge0}\left(\frac{2n+1}{2n+2}\right)^{\eps_n}
+ =\frac1{\sqrt2}.}
+ \label{eq:Woods-Robbins}
+\end{equation}
+For a short proof, put
+\[
+ A=\prod_{n\ge0}\left(\frac{2n+1}{2n+2}\right)^{\eps_n},
+ \qquad
+ B=\prod_{n\ge1}\left(\frac{2n}{2n+1}\right)^{\eps_n}.
+\]
+Splitting the product \(AB\) into even and odd indices gives
+\(AB=\tfrac12A^{-1}B\), hence \(A^2=1/2\), and positivity selects the
+positive root.
+
+A second closed value, proved in the modern product calculus, is
+\begin{equation}
+ \boxed{G\left(\frac14,\frac34\right)=\frac12.}
+ \label{eq:quarter-product}
+\end{equation}
+See Riasat \cite{RiasatProducts} and Allouche--Riasat--Shallit
+\cite{AlloucheRiasatShallit} for systematic extensions.
+
+\subsection{Three dyadic block-product limits}
+
+The product evaluations imply
+\begin{align}
+ \lim_{m\to\infty}\prod_{k=0}^{2^m-1}
+ \left(k+\frac12\right)^{\eps_k}&=\frac12,
+ \label{eq:block-product-half}\\
+ \lim_{m\to\infty}\prod_{k=0}^{2^m-1}(k+1)^{\eps_k}
+ &=\frac1{\sqrt2},
+ \label{eq:block-product-one}\\
+ \lim_{m\to\infty}\prod_{k=0}^{2^m-1}
+ (k+1)^{(-1)^k\eps_k}&=\frac1{2\sqrt2}.
+ \label{eq:block-product-alternating}
+\end{align}
+For example, pairing adjacent factors in the first two finite products gives
+\begin{align*}
+ \prod_{k<2^m}\left(k+\frac12\right)^{\eps_k}
+ &=\prod_{j<2^{m-1}}
+ \left(\frac{j+1/4}{j+3/4}\right)^{\eps_j},\\
+ \prod_{k<2^m}(k+1)^{\eps_k}
+ &=\prod_{j<2^{m-1}}
+ \left(\frac{j+1/2}{j+1}\right)^{\eps_j}.
+\end{align*}
+The third limit is the product of the first two.  Dyadic truncation is natural
+because it preserves the exact self-similar blocks.
+
+\section{Combinatorics on the infinite word}
+\label{sec:words}
+
+\subsection{Uniform recurrence and reversal symmetry}
+
+The substitution matrix of \(\mu(0)=01,\mu(1)=10\) is strictly positive:
+each image contains both letters.  More concretely, every factor occurring in
+the fixed point occurs in some finite word \(\mu^k(0)\); every sufficiently
+large supertile contains copies of both \(\mu^k(0)\) and \(\mu^k(1)\).
+Therefore every factor recurs with bounded gaps.
+
+\begin{proposition}[Uniform recurrence]
+The Thue--Morse word is uniformly recurrent: for every finite factor \(w\),
+there exists \(L(w)\) such that every factor of length \(L(w)\) contains an
+occurrence of \(w\).
+\end{proposition}
+
+The reciprocity \eqref{eq:Pm-reciprocity} gives a precise reversal law for the
+finite blocks.  If \(0\le n<2^m\), then
+\begin{equation}
+ \eps_{2^m-1-n}=(-1)^m\eps_n.
+ \label{eq:block-reversal}
+\end{equation}
+Thus a level-\(m\) signed block is a palindrome when \(m\) is even and the
+negative of its reversal when \(m\) is odd.  In zero--one notation, odd levels
+are complement-palindromes.
+
+\subsection{An elementary linear complexity bound}
+
+Let \(p(\ell)\) denote the number of distinct factors of length \(\ell\).
+Choose \(k\) minimal with \(2^k\ge\ell\).  Every length-\(\ell\) factor lies
+inside two consecutive level-\(k\) supertiles
+\(\mu^k(a)\mu^k(b)\), where \(a,b\in\{0,1\}\).  There are at most four
+choices for \(ab\) and at most \(2^k\) starting offsets.  Hence
+\begin{equation}
+ \boxed{p(\ell)\le4\cdot2^k<8\ell\qquad(\ell\ge2).}
+ \label{eq:complexity-bound}
+\end{equation}
+Sharper exact piecewise-linear formulas are known, but this elementary bound
+already has two consequences: the topological entropy is zero, and the word
+is not normal.  Indeed, a normal binary word contains all \(2^\ell\) words of
+length \(\ell\), incompatible with linear complexity for large \(\ell\).
+
+\begin{literature}[Thue's overlap theorem]
+The infinite Thue--Morse word is overlap-free: it contains no factor of the
+form \(axaxa\), where \(a\) is a letter and \(x\) a possibly empty word.  In
+particular it contains no cube \(www\).  This was one of Thue's foundational
+results in combinatorics on words \cite{Thue1906}; modern treatments appear in
+Allouche--Shallit \cite{AlloucheShallitBook}.  The statement is about factors
+of the original word and should not be confused with the subsequence
+\(\TM(n^3)\) discussed later.
+\end{literature}
+
+\section{Distribution in arithmetic and polynomial subsequences}
+\label{sec:distribution}
+
+The deterministic word has low factor complexity, yet arithmetically sampled
+subsequences can display strong pseudorandomness.  The following theorems are
+not reproved here; they locate the exact identities of the atlas inside modern
+analytic number theory.
+
+\begin{literature}[Newman's phenomenon]
+Let
+\begin{equation}
+ f_{3,0}(N)=\sum_{0\le n<N}\eps_{3n}.
+ \label{eq:Newman-sum}
+\end{equation}
+Then \(f_{3,0}(N)>0\) for every \(N\ge1\): among the first \(N\) multiples of
+three, evil numbers always outnumber odious numbers.  Newman proved the
+quantitative bounds
+\begin{equation}
+ \frac1{20}N^{\log3/\log4}
+ \le f_{3,0}(N)\le5N^{\log3/\log4},
+ \label{eq:Newman-bounds}
+\end{equation}
+and Coquet later described the exact fractal fluctuation
+\cite{Newman,Coquet,ShallitRarefied}.
+\end{literature}
+
+\begin{literature}[Prime indices]
+Mauduit and Rivat proved that binary digit-sum parity is equidistributed along
+the primes.  In signed form,
+\begin{equation}
+ \sum_{p\le x}\eps_p=\smallo(\pi(x)),
+ \label{eq:primes-balance}
+\end{equation}
+so asymptotically half the primes are evil and half odious
+\cite{MauduitRivatPrimes}.
+\end{literature}
+
+\begin{literature}[Squares are normal]
+Drmota, Mauduit, and Rivat proved that the subsequence
+\((\TM(n^2))_{n\ge0}\) is normal: every binary word of length \(L\) occurs
+with limiting frequency \(2^{-L}\) \cite{DrmotaMauduitRivatSquares}.  This is
+far stronger than the one-bit balance
+\(\sum_{n<N}\eps_{n^2}=\smallo(N)\).
+\end{literature}
+
+\begin{literature}[Cubes are simply normal]
+Spiegelhofer proved
+\begin{equation}
+ \#\{n<N:\TM(n^3)=0\}\sim\frac N2,
+ \qquad\text{equivalently}\qquad
+ \sum_{n<N}\eps_{n^3}=\smallo(N).
+ \label{eq:cubes-balance}
+\end{equation}
+As of the cited result, full block normality along cubes was not asserted;
+the theorem establishes one-symbol balance and resolves the cubic parity case
+of a longstanding Gelfond problem \cite{SpiegelhoferCubes}.
+\end{literature}
+
+\begin{literature}[Level of distribution]
+Spiegelhofer proved a Bombieri--Vinogradov-type theorem with level of
+distribution one (up to the endpoint) for the Thue--Morse sequence.  Among its
+applications, \((\TM(\lfloor n^c\rfloor))\) is simply normal for
+\(1<c<2\) \cite{SpiegelhoferLevel}.  This illustrates how the finite Fourier
+product and carry control feed into arithmetic-progressions estimates.
+\end{literature}
+
+\section{Base-\texorpdfstring{\(B\)}{B} root-of-unity generalization}
+\label{sec:baseB}
+
+Let \(B\ge2\), let \(s_B(n)\) be the base-\(B\) digit sum, and let
+\(\zeta\ne1\) be a \(B\)-th root of unity.  Define
+\begin{equation}
+ u_n=\zeta^{s_B(n)}.
+ \label{eq:baseB-sequence}
+\end{equation}
+Then
+\begin{equation}
+ u_{Bn+d}=\zeta^d u_n\qquad(0\le d<B).
+ \label{eq:baseB-recursion}
+\end{equation}
+The finite generating polynomial is
+\begin{equation}
+ \boxed{P_{m,B,\zeta}(z)=\sum_{n<B^m}u_nz^n
+ =\prod_{j=0}^{m-1}\left(\sum_{d=0}^{B-1}
+ \zeta^dz^{dB^j}\right).}
+ \label{eq:baseB-product}
+\end{equation}
+Because \(\zeta^B=1\), each factor can also be written as
+\begin{equation}
+ \sum_{d=0}^{B-1}\zeta^dz^{dB^j}
+ =\frac{1-z^{B^{j+1}}}{1-\zeta z^{B^j}}.
+ \label{eq:baseB-rational-factor}
+\end{equation}
+
+At \(z=1\), every factor has a simple zero and
+\begin{equation}
+ \left.\frac{\dd}{\dd z}\sum_{d=0}^{B-1}
+ \zeta^dz^{dB^j}\right|_{z=1}
+ =-\frac{B^{j+1}}{1-\zeta}.
+ \label{eq:baseB-factor-derivative}
+\end{equation}
+Therefore \(P_{m,B,\zeta}\) has a zero of exact order \(m\), and the
+base-\(B\) Prouhet theorem follows.
+
+\begin{theorem}[Root-of-unity Prouhet hierarchy]
+For every polynomial \(p\) with \(\deg p<m\),
+\begin{equation}
+ \boxed{\sum_{n=0}^{B^m-1}\zeta^{s_B(n)}p(n)=0.}
+ \label{eq:baseB-Prouhet}
+\end{equation}
+The first surviving moment is
+\begin{equation}
+ \boxed{\sum_{n=0}^{B^m-1}\zeta^{s_B(n)}n^m
+ =(-1)^m m!\frac{B^{m(m+1)/2}}{(1-\zeta)^m}.}
+ \label{eq:baseB-first-moment}
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+Differentiate \eqref{eq:baseB-product} at one as in the binary proof.  The
+leading coefficient is the product of
+\eqref{eq:baseB-factor-derivative}.  Falling factorials again form a basis.
+\end{proof}
+
+Fourier inversion over the cyclic group of \(B\)-th roots shows that the
+classes
+\begin{equation}
+ \{0\le n<B^m:s_B(n)\equiv r\pmod B\},\qquad 0\le r<B,
+ \label{eq:baseB-classes}
+\end{equation}
+have equal sums of like powers through degree \(m-1\).  The binary
+Thue--Morse Prouhet partition is exactly \(B=2,\zeta=-1\).
+
+For a prime \(p\), Lucas's theorem similarly gives a Pascal-row extension.  If
+\(n=\sum n_jp^j\), then
+\begin{equation}
+ \#\left\{0\le k\le n:\binom nk\not\equiv0\pmod p\right\}
+ =\prod_j(n_j+1).
+ \label{eq:Lucas-nonzero-p}
+\end{equation}
+Thus the binary count \(2^{\wt(n)}\) is the \(p=2\) specialization of a
+full digitwise product.
+
+\section{The discrete bridge to the Fabius and up-functions}
+\label{sec:fabius}
+
+The appearance of Thue--Morse in the Fabius-function development is governed
+by one algebraic pipeline:
+\begin{equation}
+ \boxed{\text{binary character}
+ \ \Longrightarrow\ P_r(z)=\prod_{j<r}(1-z^{2^j})
+ \ \Longrightarrow\ \frac{P_r(z)}{(1-z)^k}
+ \ \Longrightarrow\ \text{iterated-prefix coefficients}.}
+ \label{eq:fabius-pipeline}
+\end{equation}
+The last arrow is exactly \eqref{eq:prefix-generating}.  The factor
+\((1-z)^r\mid P_r(z)\) is the algebraic source of the terminal zero runs and
+of the high-order flatness that survives after scaling.
+
+On the Fourier side, a normalized factor
+\[
+ \frac{1-e^{-\ii h\xi}}{\ii h\xi}
+ =e^{-\ii h\xi/2}\sinc(h\xi/2)
+\]
+turns a finite difference into a sinc factor.  Iterating over dyadic steps
+produces finite products converging to
+\begin{equation}
+ \Phi(\xi)=\prod_{j\ge0}\sinc\!\left(\frac{\pi\xi}{2^j}\right),
+ \label{eq:up-Fourier-product}
+\end{equation}
+up to the conventional indexing and Fourier normalization.  This is the
+Fourier transform of a compactly supported infinite convolution of uniform
+measures, namely the probability law underlying the Rvachev up-function.
+The sign identity \eqref{eq:sinc-sign} then explains, in a particularly
+literal way, why Thue--Morse signs are encoded in the same sinc product.
+
+After normalization by \(2^{\binom{k}{2}}\), coefficient grids built from
+\(S_n^{(k)}\), together with suitable polygonal or spline interpolation,
+converge to the Fabius/up profile in the companion development.  The exact
+normalization is already visible in the volume factor in
+\eqref{eq:cubical-integral} and in the first surviving moment
+\eqref{eq:first-power-moment}.  The Prouhet zero supplies flatness, while the
+Fourier product supplies compact support and smoothness.  These are not two
+separate coincidences; they are the coefficient-space and frequency-space
+faces of the same product \(P_r\).
+
+\begin{remark}
+The present atlas records the exact algebraic bridge rather than repeating the
+quantitative convergence analysis developed elsewhere in the Fabius-function
+project.  The relevant repository modules named in the source drafts are:
+\begin{center}
+\texttt{ThueMorsePrefix.lean} \qquad and \qquad
+\texttt{ThueMorseGenerating.lean}.
+\end{center}
+\end{remark}
+
+\section{Representation comparison and a Lean roadmap}
+\label{sec:formalization}
+
+\begin{longtable}{@{}p{0.23\textwidth}p{0.31\textwidth}p{0.37\textwidth}@{}}
+\toprule
+Representation & Primitive data & Especially effective for \\
+\midrule
+\endhead
+Binary recursion & parity of appended digit & evaluation, induction, blocks \\
+Two-kernel automaton & two states and digit matrices & automaticity, extraction \\
+XOR character & Boolean group \(\F_2^m\) & Walsh analysis, Hamming spheres \\
+Valuation & \(\vtwo(n!)\), Kummer carries & binomial/Catalan arithmetic \\
+Pascal support & Lucas submask criterion & log-free and sparse identities \\
+Finite Euler product & independent digit choices & Prouhet, DFT, reciprocity \\
+Ruler logarithm & divisors \(2^j\mid n\) & convolution, Bell, determinant \\
+Finite difference & commuting translations & remainders, bounds, positivity \\
+Riesz product & squared Fourier modulus & correlation and spectral measure \\
+Mahler equation & scale map \(z\mapsto z^2\) & constants, transcendence, boundary \\
+Prefix quotient & multiplication by \((1-z)^{-k}\) & discrete integration, Fabius \\
+\bottomrule
+\end{longtable}
+
+A dependency-respecting Lean formalization can proceed in the following order.
+\begin{enumerate}
+ \item Prove the sign normalization and the two recurrences
+       \eqref{eq:eps-recursion}.
+ \item Establish block multiplicativity, the exact two-kernel, XOR
+       multiplicativity, and prefix discrepancy.
+ \item Import or prove Legendre, Lucas, and Kummer specializations; derive the
+       central-binomial and Catalan formulas.
+ \item Define \(P_m\), prove the finite product, reciprocity, and the order of
+       vanishing at one.
+ \item Formalize the shift-operator identity, Prouhet cancellation, the first
+       surviving moment, and the sparse Pascal-support version.
+ \item Develop the logarithmic ruler recurrence; Bell polynomials and the
+       Hessenberg determinant can be later corollaries.
+ \item Add finite DFT and Walsh transforms over \(\mathbb Z/2^m\mathbb Z\) and
+       \(\F_2^m\).
+ \item Connect repeated prefix sums to \(E(z)/(1-z)^k\) and prove terminal
+       zero runs before tackling analytic convergence to Fabius.
+\end{enumerate}
+Likely theorem names should distinguish the bit \(\TM\), the sign \(\eps\),
+and the weight \(\wt\); many informal sign errors arise from silently moving
+between these normalizations.
+
+\appendix
+
+\section{The first 64 terms}
+\label{app:first64}
+
+The following table displays \(\TM(n)\).  Replacing \(0\) by \(+1\) and
+\(1\) by \(-1\) gives \(\eps_n\).
+
+\begin{center}
+\small
+\begin{longtable}{@{}r|*{8}{c}@{}}
+\toprule
+\(n\) & \multicolumn{8}{c}{successive values}\\
+\midrule
+\endhead
+0--7   &0&1&1&0&1&0&0&1\\
+8--15  &1&0&0&1&0&1&1&0\\
+16--23 &1&0&0&1&0&1&1&0\\
+24--31 &0&1&1&0&1&0&0&1\\
+32--39 &1&0&0&1&0&1&1&0\\
+40--47 &0&1&1&0&1&0&0&1\\
+48--55 &0&1&1&0&1&0&0&1\\
+56--63 &1&0&0&1&0&1&1&0\\
+\bottomrule
+\end{longtable}
+\end{center}
+
+Each row of length eight is a copy or complement of the first row according
+to the sign of its block index, as predicted by
+\eqref{eq:block-multiplicativity}.
+
+\section{A compact identity index}
+\label{app:index}
+
+\begin{align*}
+ \TM(n)&\longleftrightarrow \eps_n=1-2\TM(n),\\
+ \eps_n&\longleftrightarrow(-1)^{\wt(n)},\\
+ \wt(n)&\longleftrightarrow n-\vtwo(n!),\\
+ \wt(n)&\longleftrightarrow\vtwo\binom{2n}{n},\\
+ b_j(n)&\longleftrightarrow\binom{n}{2^j}\bmod2,\\
+ k\submask n&\longleftrightarrow\binom nk\text{ odd},\\
+ \eps_n&\longleftrightarrow[z^n]\prod_{j\ge0}(1-z^{2^j}),\\
+ \sum_{n<2^m}\eps_nf(n)
+ &\longleftrightarrow(-1)^m\Delta_1\Delta_2\cdots
+ \Delta_{2^{m-1}}f(0),\\
+ \eta(r)&\longleftrightarrow\widehat\mu_{\rm TM}(r),\\
+ S_n^{(k)}&\longleftrightarrow[z^n]\frac{E(z)}{(1-z)^k}.
+\end{align*}
+
+\section{Executable checks}
+\label{app:code}
+
+The following short Python program checks a representative cross-section of
+the identities.  It deliberately uses integer arithmetic except in the
+Fourier test.
+
+\begin{lstlisting}[language=Python]
+from math import comb, factorial
+import cmath
+
+
+def wt(n: int) -> int:
+    return n.bit_count()
+
+
+def eps(n: int) -> int:
+    return -1 if wt(n) & 1 else 1
+
+
+def v2(n: int) -> int:
+    if n <= 0:
+        raise ValueError("v2 expects a positive integer")
+    return (n & -n).bit_length() - 1
+
+
+def catalan(n: int) -> int:
+    return comb(2*n, n) // (n + 1)
+
+for n in range(1, 500):
+    assert v2(comb(2*n, n)) == wt(n)
+    assert v2(catalan(n)) == wt(n + 1) - 1
+
+for m in range(1, 9):
+    # Prouhet moments.
+    for r in range(m):
+        assert sum(eps(n) * n**r for n in range(2**m)) == 0
+    assert sum(eps(n) * n**m for n in range(2**m)) == \
+           (-1)**m * factorial(m) * 2**(m*(m-1)//2)
+
+    # DFT: every even frequency vanishes.
+    for k in range(0, 2**m, 2):
+        s = sum(eps(n) * cmath.exp(-2j*cmath.pi*k*n/2**m)
+                for n in range(2**m))
+        assert abs(s) < 1e-8
+
+for n in range(1, 200):
+    odd_positions = [k for k in range(n + 1) if comb(n, k) & 1]
+    assert len(odd_positions) == 2**wt(n)
+    assert sum(eps(k) for k in odd_positions) == 0
+
+print("all checks passed")
+\end{lstlisting}
+
+\section{Bibliographic notes}
+
+The Thue--Morse sequence has been rediscovered in number theory,
+combinatorics on words, dynamics, harmonic analysis, automata, and fair
+allocation.  The bibliography below is selective: it emphasizes sources that
+support the formula families merged here and the extra material added in this
+version.  The four repository drafts themselves contain further specialized
+references.
+
+\begin{thebibliography}{99}
+
+\bibitem{AlloucheShallitUbiquitous}
+J.-P. Allouche and J. Shallit,
+\emph{The ubiquitous Prouhet--Thue--Morse sequence},
+in Sequences and Their Applications, Springer, 1999, pp. 1--16.
+
+\bibitem{AlloucheShallitBook}
+J.-P. Allouche and J. Shallit,
+\emph{Automatic Sequences: Theory, Applications, Generalizations},
+Cambridge University Press, 2003.
+
+\bibitem{AlloucheRiasatShallit}
+J.-P. Allouche, S. Riasat, and J. Shallit,
+More infinite products involving the Thue--Morse sequence,
+\emph{J. Integer Sequences} 22 (2019), Article 19.2.3;
+see also arXiv:1709.03398.
+
+\bibitem{BaakeGrimmTM}
+M. Baake and U. Grimm,
+The singular continuous diffraction measure of the Thue--Morse chain,
+\emph{J. Phys. A} 41 (2008), 422001.
+
+\bibitem{BellCoonsRowland}
+J. P. Bell, M. Coons, and E. Rowland,
+The rational--transcendental dichotomy of Mahler functions,
+\emph{J. Integer Sequences} 16 (2013), Article 13.2.10.
+
+\bibitem{BugeaudQueffelec}
+Y. Bugeaud and M. Queff\'elec,
+On the rational approximation to the binary Thue--Morse--Mahler number,
+\emph{J. Integer Sequences} 16 (2013), Article 13.2.1.
+
+\bibitem{Coquet}
+J. Coquet,
+A summation formula related to the binary digits,
+\emph{Invent. Math.} 73 (1983), 107--115.
+
+\bibitem{DrmotaMauduitRivatSquares}
+M. Drmota, C. Mauduit, and J. Rivat,
+The Thue--Morse sequence along the squares is normal,
+preprint dated 2013; published version in the analytic-number-theory
+literature.
+
+\bibitem{Gelfond}
+A. O. Gelfond,
+Sur les nombres qui ont des propri\'et\'es additives et multiplicatives
+donn\'ees,
+\emph{Acta Arith.} 13 (1967/68), 259--265.
+
+\bibitem{Kummer}
+E. E. Kummer,
+\"Uber die Erg\"anzungss\"atze zu den allgemeinen Reciprocit\"atsgesetzen,
+\emph{J. Reine Angew. Math.} 44 (1852), 93--146.
+
+\bibitem{Lucas}
+\'E. Lucas,
+Th\'eorie des fonctions num\'eriques simplement p\'eriodiques,
+\emph{Amer. J. Math.} 1 (1878), 184--240 and 289--321.
+
+\bibitem{Mahler1929}
+K. Mahler,
+Arithmetische Eigenschaften der L\"osungen einer Klasse von
+Funktionalgleichungen,
+\emph{Math. Ann.} 101 (1929), 342--366; corrigendum 103 (1930), 532.
+
+\bibitem{MauduitRivatPrimes}
+C. Mauduit and J. Rivat,
+Sur un probl\`eme de Gelfond: la somme des chiffres des nombres premiers,
+\emph{Ann. of Math.} 171 (2010), 1591--1646.
+
+\bibitem{Morse1921}
+M. Morse,
+Recurrent geodesics on a surface of negative curvature,
+\emph{Trans. Amer. Math. Soc.} 22 (1921), 84--100.
+
+\bibitem{Newman}
+D. J. Newman,
+On the number of binary digits in a multiple of three,
+\emph{Proc. Amer. Math. Soc.} 21 (1969), 719--721.
+
+\bibitem{Prouhet1851}
+E. Prouhet,
+M\'emoire sur quelques relations entre les puissances des nombres,
+\emph{C. R. Acad. Sci. Paris} 33 (1851), 225.
+
+\bibitem{QueffelecSubstitution}
+M. Queff\'elec,
+\emph{Substitution Dynamical Systems -- Spectral Analysis},
+2nd ed., Lecture Notes in Mathematics 1294, Springer, 2010.
+
+\bibitem{RiasatProducts}
+S. Riasat,
+Infinite products involving binary digit sums,
+arXiv:1709.04104, version of 2018.
+
+\bibitem{Robbins}
+D. Robbins,
+Solution to Problem E2692,
+\emph{Amer. Math. Monthly} 86 (1979), 394--395.
+
+\bibitem{ShallitRarefied}
+J. Shallit,
+Rarefied Thue--Morse sums via automata theory and logic,
+arXiv:2302.09436, 2023.
+
+\bibitem{SpiegelhoferCubes}
+L. Spiegelhofer,
+Thue--Morse along the sequence of cubes,
+arXiv:2308.09498, 2023.
+
+\bibitem{SpiegelhoferLevel}
+L. Spiegelhofer,
+The level of distribution of the Thue--Morse sequence,
+\emph{Compos. Math.} 156 (2020), 2560--2587.
+
+\bibitem{Thue1906}
+A. Thue,
+\"Uber unendliche Zeichenreihen,
+\emph{Norske Vid. Selsk. Skr. I. Mat.-Nat. Kl.} 7 (1906), 1--22.
+
+\bibitem{Woods}
+D. R. Woods,
+Problem E2692,
+\emph{Amer. Math. Monthly} 85 (1978), 48.
+
+\bibitem{ReshetnikovRepo}
+V. Reshetnikov,
+\repo: Analysis/FabiusFunction,
+\url{https://github.com/VladimirReshetnikov/ProveIt/tree/main/Analysis/FabiusFunction},
+accessed 26 August 2026.
+
+\end{thebibliography}
+
+\end{document}
