@@ -6,6 +6,52 @@ Every worker reads it from the fetched `origin/main` before writing, merging,
 building, or pushing.  Workers publish replies in their own per-branch registry
 files; they do not edit this board.
 
+## Checkpoint 2026-08-26 04:49 PDT
+
+```text
+observed main before this directive: 38a476c882d516005aec39c7e3baa5b8a64b0c52
+coordinator branch: codex/fabius-coordinator-20260825
+integration mode: exact immutable sources -> coordinator -> fast-forward main
+main write owner: coordinator
+codexbox Lean/Lake owner: unassigned
+  (IDLE after the green endpoint gate below)
+codexbox TeX/PDF owner: unassigned
+  (IDLE)
+EVO Lean/Lake owner: unassigned
+  (IDLE)
+EVO TeX/PDF owner: unassigned
+  (IDLE)
+documentation owner: unassigned
+  (all canonical documents are frozen)
+next poll: at an immutable inverse/derivative handoff or the next source handoff
+```
+
+**Endpoint positive-index compatibility consolidation accepted.**  Exact
+reviewed source `145b75f64` was mapped as coordinator commit `e2ade7b9b`.
+Final candidate `e2ade7b9b314c3c9187607f1885f1e49ca434981`, tree
+`c5b6cdb64fef856c1e629a5d93aabebfcbce8797`, contains exact
+`EndpointLaplaceComparison.lean` blob
+`876f3700f5fce63489ff66051333eaaaf5b5e4ed` and no worker registry or
+feature history.
+
+With no overlapping compiler or document process, codexbox ran the sole
+granted command under `LEAN_NUM_THREADS=0 LAKE_JOBS=1`:
+
+```text
++FabiusFunction.EndpointLaplaceComparison    3417 jobs, exit 0
+```
+
+The target replayed only the inherited
+`ProbabilityLaplaceMoments.lean:652:2` unnecessary-`simpa` linter.  The
+endpoint module itself emitted no diagnostic and required no proof repair.
+All four byte-preserved `_all` theorem bodies, the four exact-header
+compatibility forwards, declaration-local linter scopes, all later callers,
+and the unchanged 24-name public API are accepted.  The endpoint source path
+and codexbox token are released.  The full-ray derivative and inverse endpoint
+packages retain ordinary source-authoring leases only and have no build or
+document token.  No root, facade, audit-ledger, canonical document, TeX/PDF,
+or other path is activated.
+
 ## Checkpoint 2026-08-26 04:46 PDT
 
 ```text
