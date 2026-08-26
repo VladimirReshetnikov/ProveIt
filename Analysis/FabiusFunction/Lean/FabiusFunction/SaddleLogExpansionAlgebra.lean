@@ -53,10 +53,11 @@ Lambert displacement coefficients).
   positive-index forms `expCoeff_logCoeff_of_pos` and
   `logCoeff_expCoeff_of_pos` need no normalization at all, while the
   `..._eq_ite` forms state the exact all-index normalization.
-* `logCoeff_congr_of_pos` -- coefficient `n` depends only on the positive
-  input coefficients through order `n`; `logCoeff_congr` is the convenient
-  unrestricted-index wrapper.  This is what lets a truncated mass polynomial
-  stand in for the full series.
+* `logCoeff_congr_of_pos`, `logCoeff_eq_of_forall_pos` -- coefficient `n`
+  depends only on the positive input coefficients through order `n`, and
+  agreement at every positive index gives equality of the whole generated
+  family; `logCoeff_congr` is the convenient unrestricted-index wrapper.
+  This is what lets a truncated mass polynomial stand in for the full series.
 * `map_logCoeff`, `logCoeff_rescale`, `logCoeff_apply`, `logCoeff_parity` --
   the recurrence commutes with `ℚ`-algebra morphisms, converts the rescaling
   `fun j => c ^ j * a j` into multiplication by `c ^ n`, commutes with
@@ -95,9 +96,13 @@ def logCoeff (a : ℕ → R) : ℕ → R
 termination_by n => n
 decreasing_by omega
 
+/-- The logarithmic recurrence is normalized by `logCoeff a 0 = 0`. -/
 @[simp] theorem logCoeff_zero (a : ℕ → R) : logCoeff a 0 = 0 := by
   rw [logCoeff]
 
+/-- At positive order the logarithmic coefficients obey
+`logCoeff a (n + 1) = a (n + 1) - (n + 1)⁻¹ •
+  ∑ j < n, (n - j) * logCoeff a (n - j) * a (j + 1)`. -/
 theorem logCoeff_succ (a : ℕ → R) (n : ℕ) :
     logCoeff a (n + 1) =
       a (n + 1) - ((n + 1 : ℚ)⁻¹) •
@@ -105,11 +110,14 @@ theorem logCoeff_succ (a : ℕ → R) (n : ℕ) :
           ((n - j : ℕ) : R) * logCoeff a (n - j) * a (j + 1)) := by
   rw [logCoeff]
 
+/-- The first logarithmic coefficient is `a 1`. -/
 @[simp] theorem logCoeff_one (a : ℕ → R) :
     logCoeff a 1 = a 1 := by
   rw [show 1 = 0 + 1 by omega, logCoeff_succ]
   simp
 
+/-- The second logarithmic coefficient is
+`a 2 - (2 : ℚ)⁻¹ • (a 1 * a 1)`. -/
 theorem logCoeff_two (a : ℕ → R) :
     logCoeff a 2 = a 2 - ((2 : ℚ)⁻¹) • (a 1 * a 1) := by
   rw [show 2 = 1 + 1 by omega, logCoeff_succ]
@@ -125,14 +133,17 @@ def logSeries (a : ℕ → R) : PowerSeries R :=
   PowerSeries.mk (logCoeff a)
 
 omit [Algebra ℚ R] in
+/-- The coefficient of `Xⁿ` in `massSeries a` is exactly `a n`. -/
 @[simp] theorem coeff_massSeries (a : ℕ → R) (n : ℕ) :
     PowerSeries.coeff n (massSeries a) = a n := by
   rw [massSeries, PowerSeries.coeff_mk]
 
+/-- The coefficient of `Xⁿ` in `logSeries a` is `logCoeff a n`. -/
 @[simp] theorem coeff_logSeries (a : ℕ → R) (n : ℕ) :
     PowerSeries.coeff n (logSeries a) = logCoeff a n := by
   rw [logSeries, PowerSeries.coeff_mk]
 
+/-- The generated logarithmic series has constant coefficient zero. -/
 @[simp] theorem constantCoeff_logSeries (a : ℕ → R) :
     PowerSeries.constantCoeff (logSeries a) = 0 := by
   rw [← PowerSeries.coeff_zero_eq_constantCoeff_apply]
@@ -189,6 +200,8 @@ theorem massSeries_mul_derivative_logSeries (a : ℕ → R)
   rw [sub_mul, hcancel]
   ring
 
+/-- Commuted correctness identity: if `a 0 = 1`, then the generated series
+satisfy `(logSeries a)' * massSeries a = (massSeries a)'`. -/
 theorem derivative_logSeries_mul_massSeries (a : ℕ → R)
     (ha0 : a 0 = 1) :
     d⁄dX R (logSeries a) * massSeries a = d⁄dX R (massSeries a) := by
@@ -283,6 +296,8 @@ theorem coeff_eq_logCoeff_of_derivative_mul_eq
                   _ = a (n + 1) := by rw [hqi, one_mul]
               rw [mul_sub, hqa]
 
+/-- If `a 0 = 1`, a zero-constant series satisfying
+`massSeries a * B' = (massSeries a)'` is the generated logarithmic series. -/
 theorem logSeries_unique (a : ℕ → R) (ha0 : a 0 = 1)
     {B : PowerSeries R}
     (hderiv : massSeries a * d⁄dX R B = d⁄dX R (massSeries a))
@@ -354,6 +369,16 @@ theorem logCoeff_congr_of_pos {a b : ℕ → R} (n : ℕ)
           · intro k hkpos hk
             exact hab k hkpos (by omega)
 
+/-- Input families agreeing at every positive index generate the same
+logarithmic-coefficient family; index zero is ignored. -/
+theorem logCoeff_eq_of_forall_pos {a b : ℕ → R}
+    (hab : ∀ j, 0 < j → a j = b j) :
+    logCoeff a = logCoeff b := by
+  funext n
+  apply logCoeff_congr_of_pos n
+  intro j hj _hjle
+  exact hab j hj
+
 /-- The coefficient of order `n` depends only on input coefficients through
 order `n`.  This compatibility wrapper retains the original API; use
 `logCoeff_congr_of_pos` when the inputs may differ at index zero. -/
@@ -371,10 +396,9 @@ theorem expCoeff_logCoeff_of_pos (a : ℕ → R) (n : ℕ) (hn : 0 < n) :
   let a' : ℕ → R := fun j => if j = 0 then 1 else a j
   have ha'0 : a' 0 = 1 := by simp [a']
   have hlog : logCoeff a = logCoeff a' := by
-    funext j
-    apply logCoeff_congr_of_pos j
-    intro k hkpos _hk
-    simp [a', Nat.ne_of_gt hkpos]
+    apply logCoeff_eq_of_forall_pos
+    intro j hj
+    simp [a', Nat.ne_of_gt hj]
   calc
     expCoeff (logCoeff a) n = expCoeff (logCoeff a') n := by rw [hlog]
     _ = a' n := expCoeff_logCoeff a' ha'0 n
@@ -474,6 +498,8 @@ theorem logCoeff_rescale (c : R) (a : ℕ → R) (n : ℕ) :
           simp only [Algebra.smul_def]
           ring
 
+/-- Evaluation of function-valued coefficients commutes with the recursive
+logarithmic coefficient engine. -/
 theorem logCoeff_apply {V : Type*} (a : ℕ → V → R) (n : ℕ) (v : V) :
     logCoeff a n v = logCoeff (fun j => a j v) n := by
   simpa using map_logCoeff
