@@ -1423,6 +1423,25 @@ support size, which is \(2r^{\wt(n)}\) by
 \cref{thm:multinomial-support}.
 \end{proof}
 
+\emph{Formal versions.}  \path{ThueMorseMultinomial.lean} proves
+\cref{thm:multinomial-support} as
+\lean{Fabius.card\_filter\_odd\_multinomial}, for an arbitrary finite
+index set, resting on **Kummer's criterion for multinomial
+coefficients** \lean{Fabius.odd\_multinomial\_iff\_binaryWeight}: a
+multinomial coefficient is odd exactly when the binary weights of its
+parts are additive.  The proof uses no polynomial ring: Legendre's
+formula converts oddness into weight additivity, and the induction that
+splits off one part reduces the count to the bivariate submask
+enumerator at \((1,r)\).  The exact logarithm
+\eqref{eq:multinomial-log} is
+\lean{Fabius.thueMorseSign\_eq\_neg\_one\_pow\_log\_card}, and the
+signed row formula \eqref{eq:rnomial-exact} is
+\lean{Fabius.sum\_neg\_one\_pow\_multinomial} (with the generic
+count-parity bridge
+\lean{Fabius.sum\_neg\_one\_pow\_eq\_card\_sub\_two\_mul}); the
+closed value \(\binom{n+r-1}{r-1}\) of the total count is left to the
+reader's Mathlib.
+
 \subsection{Boolean weight enumerators and M\"obius inversion}
 
 The submasks of \(n\) form a Boolean lattice on its set of one-bit positions.
@@ -1488,6 +1507,30 @@ M\"obius function is \((-1)^{\text{rank}}\), and standard M\"obius inversion
 applies.
 \end{proof}
 
+\emph{Formal versions.}  \path{ThueMorseBooleanMobius.lean} proves the
+whole lattice layer.  The enumerators \eqref{eq:submask-enumerator} and
+\eqref{eq:submask-bivariate} are
+\lean{Fabius.sum\_oddBinomialIndices\_pow\_binaryWeight} and
+\lean{Fabius.sum\_oddBinomialIndices\_pow\_pow}, over any commutative
+semiring; \eqref{eq:submask-inversion-polynomial} and the
+reconstruction \eqref{eq:submask-reconstruction} are
+\lean{Fabius.pow\_binaryWeight\_eq\_sum\_oddBinomialIndices} and
+\lean{Fabius.thueMorseSign\_eq\_sum\_oddBinomialIndices\_neg\_two\_pow};
+the count \eqref{eq:submask-count} and the cancellation
+\eqref{eq:submask-cancellation} were already
+\lean{Fabius.card\_oddBinomialIndices} and
+\lean{Fabius.sum\_thueMorseSign\_oddBinomialIndices}.  M\"obius
+inversion itself is proved in two forms: on finsets for any additive
+commutative group (\lean{Fabius.sum\_powerset\_mobius}, with the
+interval sum \lean{Fabius.sum\_filter\_superset\_neg\_one\_pow}),
+and numerically on submasks with the M\"obius function
+\(\eps_{n\xor k}\)
+(\lean{Fabius.submask\_mobius\_inversion}); the underlying lattice
+isomorphism is \lean{Fabius.bitSupport\_sum\_two\_pow} with the
+complement laws \lean{Fabius.sub\_sum\_two\_pow} and
+\lean{Fabius.xor\_sum\_two\_pow}.  The matrix statement
+\eqref{eq:pascal-parity-inverse} is the poset form read row by row.
+
 Let
 \begin{equation}
   P_{n,k}=\ind_{\binom nk\text{ odd}}
@@ -1526,6 +1569,12 @@ The first factor is \(\ind_{k\submask n}\) by
 \cref{thm:central-binomial}.  The sum is therefore exactly
 \eqref{eq:submask-reconstruction}.
 \end{proof}
+
+\emph{Formal versions.}  \eqref{eq:nested-binomial} is
+\lean{Fabius.thueMorseSign\_eq\_sum\_nested\_binomial}
+(\path{ThueMorseBooleanMobius.lean}), from the reconstruction formula
+and the central-binomial valuation
+\lean{Fabius.centralChoose\_padicValNat\_two}.
 
 \section[Generating products]{Finite and infinite generating products}
 \label{sec:generating}
@@ -4690,20 +4739,24 @@ valuation, carry, and Pascal-row formulas remain genuinely base-two features.
 \subsection{Formalized modules (August 2026)}
 \label{sec:formalized-modules}
 
-The first tranches of the formalization now exist as nineteen compiled Lean
-modules in \repo{}, complementing the corpus modules
+The first tranches of the formalization now exist as twenty-one compiled
+Lean modules in \repo{}, complementing the corpus modules
 (\path{Parity.lean}, \path{TwoAdic.lean}, \path{ThueMorsePrefix.lean},
 \path{ThueMorseGenerating.lean}, \path{ThueMorseExponential.lean},
 \path{ThueMorseBinomialLog.lean}) that already covered the recursion,
 XOR, reflection, Lucas/Glaisher, binomial--logarithm, modulo-three
 formula, generating products, Prouhet moments, and prefix theory:
 
-\begin{center}
-\small
-\begin{tabularx}{0.94\textwidth}{@{}>{\raggedright\arraybackslash}p{0.34\textwidth}>{\raggedright\arraybackslash}X@{}}
+{\small
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{0.34\textwidth}>{\raggedright\arraybackslash}p{0.58\textwidth}@{}}
 \toprule
 Module & Contents \\
 \midrule
+\endfirsthead
+\toprule
+Module & Contents \\
+\midrule
+\endhead
 \path{ThueMorseBooleanCube.lean} & Powerset reindexing kernel, digit dictionary, two-parameter master product over any commutative semiring, signed product over any commutative ring, weight enumerator. \\
 \path{ThueMorseValuation.lean} & Successor law, weight subadditivity, ruler product, Catalan valuation, additive Kummer, borrow cocycle. \\
 \path{ThueMorseDigits.lean} & Additive Legendre, floor sums, floor-parity formula, `testBit` bridge, digit product. \\
@@ -4723,9 +4776,10 @@ Module & Contents \\
 \path{ThueMorseOverlapFree.lean} & Thue's overlap-freeness theorem with cube-freeness, the attained critical exponent two, and constructive complement and reversal closure of the factor language. \\
 \path{ThueMorseRecurrence.lean} & Full block-concatenation laws for weight and bit, all two-letter factors in every seventeen-letter window, uniform recurrence with an explicit linear bound. \\
 \path{ThueMorseMahler.lean} & Mahler equation and dyadic dissection for the signed series, cleared zero--one bridge, prefix generating function, finite-level autocorrelation Mahler equation. \\
+\path{ThueMorseBooleanMobius.lean} & Lattice isomorphism of the two-power encoding, submask weight enumerators, reconstruction and inversion-polynomial identities, nested binomial formula, Boolean M\"obius inversion on finsets and on submasks. \\
+\path{ThueMorseMultinomial.lean} & Kummer's criterion for multinomial coefficients, the multinomial support count \(O_r(n)=r^{\wt(n)}\), the signed \(r\)-nomial row formula, the exact \(r\)-nomial logarithm. \\
 \bottomrule
-\end{tabularx}
-\end{center}
+\end{longtable}}
 
 Wherever the Lean statement is stronger than the prose --- arbitrary
 weights, arbitrary coefficient rings, arbitrary moduli and supports ---
@@ -4838,8 +4892,8 @@ Proposed module & Main declarations \\
 \midrule
 \path{ThueMorseValuation.lean} & Factorial, central-binomial, Catalan, successor, and carry formulae.  \emph{Delivered.} \\
 \path{ThueMorsePascal.lean} & Lucas submasks, Glaisher count, sparse probes, modulo-three formula.  \emph{Delivered} (in \path{Parity.lean}, \path{ThueMorseBinomialLog.lean}, \path{ThueMorseLucasSupport.lean}). \\
-\path{ThueMorseMultinomial.lean} & Frobenius factorization and \(O_r(n)=r^{\wt(n)}\).  \emph{Open.} \\
-\path{ThueMorseBooleanMobius.lean} & Submask incidence algebra and inverse parity matrix.  \emph{Open} (the enumerator layer is delivered). \\
+\path{ThueMorseMultinomial.lean} & Frobenius factorization and \(O_r(n)=r^{\wt(n)}\).  \emph{Delivered} (via Kummer's criterion rather than Frobenius). \\
+\path{ThueMorseBooleanMobius.lean} & Submask incidence algebra and inverse parity matrix.  \emph{Delivered} (poset form; the matrix form is its row-by-row reading). \\
 \path{ThueMorseGeneratingProduct.lean} & \(P_m\), cyclotomic multiplicities, Mahler equations.  \emph{Delivered} (\path{ThueMorseBlockAlgebra.lean}, \path{ThueMorseMahler.lean}). \\
 \path{ThueMorseProuhetMoments.lean} & Difference operators, all moments, centered parity.  \emph{Delivered} (\path{ThueMorseMoments.lean}, \path{ThueMorseMixedDifference.lean}). \\
 \path{ThueMorseSparseProuhet.lean} & Arbitrary Pascal-support products and sparse moments.  \emph{Delivered} (plus \path{ThueMorseSparseMoments.lean}). \\
@@ -4852,10 +4906,9 @@ Proposed module & Main declarations \\
 \end{tabularx}
 \end{center}
 
-Of the planned layers, only the multinomial, Boolean--M\"obius,
-complex-Fourier, Dirichlet--Mellin, and factor-complexity rows remain
-open; everything finite or formal has been delivered, in most cases in
-greater generality than proposed.
+Of the planned layers, only the complex-Fourier, Dirichlet--Mellin, and
+factor-complexity rows remain open; every finite or formal layer has
+been delivered, in most cases in greater generality than proposed.
 
 \subsection{Proof-dependency graph}
 

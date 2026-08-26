@@ -1,5 +1,6 @@
 import FabiusFunction.ThueMorseLucasSupport
 import FabiusFunction.ThueMorseSparseMoments
+import FabiusFunction.TwoAdic
 
 /-!
 # Submask weight enumerators and Boolean Möbius inversion
@@ -140,6 +141,18 @@ theorem pow_binaryWeight_eq_sum_oddBinomialIndices {R : Type*} [CommRing R]
       ∑ k ∈ oddBinomialIndices n, (z - 1) ^ binaryWeight k := by
   rw [sum_oddBinomialIndices_pow_binaryWeight n (z - 1)]
   ring_nf
+
+/-- **Nested binomial formula**: combining the reconstruction with the
+central-binomial valuation `ν₂ C(2k,k) = wt(k)` expresses the sign
+through ordinary binomial data only:
+`ε(n) = ∑_{C(n,k) odd} (-2)^(ν₂ C(2k,k))`. -/
+theorem thueMorseSign_eq_sum_nested_binomial (n : ℕ) :
+    thueMorseSign n =
+      ∑ k ∈ oddBinomialIndices n,
+        (-2 : ℤ) ^ padicValNat 2 ((2 * k).choose k) := by
+  rw [thueMorseSign_eq_sum_oddBinomialIndices_neg_two_pow]
+  exact Finset.sum_congr rfl fun k _ => by
+    rw [centralChoose_padicValNat_two]
 
 /-! ### Boolean Möbius inversion -/
 
