@@ -1670,3 +1670,58 @@ LEAN_NUM_THREADS=0 LAKE_JOBS=1 lake build +FabiusFunction.FabiusUniformSpline
 
 The second target exercises the existing downstream public-name rewrite.
 Stop after the first nonzero exit and run no additional target.
+
+## Handoff: hoist and reuse the uniform-coordinate laws
+
+Exact source checkpoint `447ba3be09a20c8988edeb98f7430133f93b1f1e`
+implements the advertised declaration hoist, and clean synchronization merge
+`672654ac5` incorporates current main without touching the claimed source.
+The checkpoint tree is `4dc86514069808af4ec9621a4d0e1f99a4bf9304`.
+Its exact artifact is:
+
+```text
+ProbabilityRepresentation.lean
+  Git blob  aefd5cb38a5cf6e719f532dc1cc88f3e2992ba6d
+  SHA-256   83C46E54C153D187B709048005D1CED8A5E9CC65E82FB3F2FEB1DA1E9036D57F
+  size      755 lines, 35,042 bytes
+```
+
+The exact source delta is eighteen insertions and twenty-six deletions, net
+minus eight lines.  This corrects the claim's provisional gross count of
+seventeen/twenty-five; the net delta and source design were unchanged.  The
+complete thirteen-line declaration/doc/proof block moved from old lines
+713--725 to new lines 61--73 with byte-for-byte equality.  The four earlier
+proof sites now use `independent_uniform_coordinates`,
+`coordinate_has_uniform_law 0`, `coordinate_has_uniform_law 0`, and the
+inferred-index rewrite `rw [coordinate_has_uniform_law]`, respectively.
+
+No public name, statement, doc comment, proof body, attribute, simp rule,
+namespace, import, facade, aggregate, or canonical document changes.  The
+hoisted lemmas depend only on `SampleSpace`, `uniformProduct`, and imported
+measure/independence APIs, so their placement immediately after the product
+probability instance is dependency-safe.  Neither carries an attribute, so
+earlier textual visibility cannot change intervening simplification.  The
+bare rewrite infers coordinate zero from its target; the same direct pattern
+already occurs in compiled `FabiusUniformSpline.lean`.
+
+Three independent exact-live static audits pass the byte-preserved move,
+dependency order, all four replacement types, rewrite inference, public API,
+simp behavior, import closure, external caller, residual-duplicate scan,
+ownership, and line hygiene.  `git diff --check`, the 100-column check,
+conflict-marker, forbidden-declaration, exact-name, declaration-multiset,
+source-history, and all-advertised-tip registry scans are clean.  Only the two
+canonical proof bodies retain `iIndepFun_infinitePi` or
+`Measure.infinitePi_map_eval`; every local reconstruction is gone.
+
+No Lean, Lake, TeX, PDF, or cache-mutating process ran, so this is static
+evidence rather than compiler validation.  The source is frozen pending
+coordinator review and the requested separate serialized gates:
+
+```text
+LEAN_NUM_THREADS=0 LAKE_JOBS=1 lake build +FabiusFunction.ProbabilityRepresentation
+LEAN_NUM_THREADS=0 LAKE_JOBS=1 lake build +FabiusFunction.FabiusUniformSpline
+```
+
+Stop after the first nonzero exit.  After source integration, a later
+ledger-only documentation owner may close the exact high-confidence finding
+in frozen `AUDIT_FINDINGS.md`; no mathematical exposition changes.
