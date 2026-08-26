@@ -6,17 +6,17 @@ Every worker reads it from the fetched `origin/main` before writing, merging,
 building, or pushing.  Workers publish replies in their own per-branch registry
 files; they do not edit this board.
 
-## Checkpoint 2026-08-25 18:10 PDT
+## Checkpoint 2026-08-25 18:23 PDT
 
 ```text
-observed main before this directive: e18f5d0b0e3ec78e2b14e7006af6c7e916b42923
+observed main before this directive: 148990f0a2a9b665edaf3394656be1e7c46caf7e
 coordinator branch: codex/fabius-coordinator-20260825
 integration mode: feature branches -> coordinator -> fast-forward main
 main write owner: coordinator
 codexbox build owner: coordinator (IDLE -- reserved, no worker target)
 EVO build owner: none (frontier TeX stage awaits source-review disposition)
 documentation owner: codex/fabius-exposition-integration (frontier paths only)
-next poll: after the frontier, shifted-grid, and Laplace reviews report
+next poll: after the frontier correction and shifted-grid validation
 ```
 
 The previously approved curvature, generalizations, lower-Lambert,
@@ -158,8 +158,8 @@ changes before `301a46561` are registry-only, so the validated Lean tree is
 unchanged.  The source lease is released; this branch may begin a new ordinary,
 nonoverlapping claim under the shared protocol.
 
-The four-file claim advertised at `ca387fea0` is now implemented by unvalidated
-source checkpoint `87c9b00f4` for exactly:
+The four-file claim advertised at `ca387fea0` is implemented by source
+checkpoint `87c9b00f4` for exactly:
 
 - `Lean/FabiusFunction/NegativeLaplace.lean`;
 - `Lean/FabiusFunction/LaplaceMoments.lean`;
@@ -171,14 +171,20 @@ The follow-on claim at `a6091bacf` adds only
 extends normalized-moment nonnegativity to every real tilt and intentionally
 depends on the four-file tranche's all-real zeroth-moment theorem.  Registry
 checkpoints `1d4a88a42` and `5331c74d5` report both tranches, and `909cb359c`
-freezes further work pending coordinator disposition.  The net five-source
-delta and compatibility wrappers are under independent theorem/API review.
+froze further work pending coordinator disposition.  Independent review found
+no truth, API, dependency, duplicate, or scope blocker.  Coordinator merge
+`0d308188c` then exposed one elaboration-only mismatch in the new global
+`ContDiff` proof; `c4bc42f16` fixes it by changing the goal explicitly to the
+pointwise quotient before applying `ContDiff.div`, without changing any public
+statement.
 
-All five paths remain exclusively claimed by this branch, but no new source or
-documentation path may be added until that review completes.  Preserve the
-feature tip and run no Lean, Lake, TeX, or PDF process: no EVO build token is
-granted.  If approved, the coordinator will validate the four-file dependency
-tranche first and `LaplaceMomentBounds` afterward.
+At the repaired immutable tree, the derivative, vertical, bounds, and
+`PaperFabiusAsymptotic` targets all exit 0; the two upstream focused targets
+also exit 0 with source blobs unchanged by the repair.  Exact job counts and
+the one superseded failed attempt are recorded in the build log and branch
+registry.  The five source leases are released.  The branch may begin another
+ordinary nonoverlapping claim after reading this board; no EVO validation token
+is granted.
 
 ### `codex/fabius-shifted-prefix-grid`
 
@@ -186,20 +192,28 @@ The one-file source claim is implemented at unvalidated checkpoint
 `00ff41a5e` in `Lean/FabiusFunction/ThueMorseGenerating.lean`.  It adds the
 generic `shiftedPrefixGridValue` family and seven APIs, while preserving the
 two public grid definitions and all eight legacy theorem headers and
-attributes as compatibility wrappers.  Independent mathematical review of the
-advertised design was green; exact post-edit review is in progress.  No EVO
-build token is granted.
+attributes as compatibility wrappers.  Independent exact source review is
+green: the seven declarations are true, the zero/one simp bridges are safe,
+the positive-level hypothesis is necessary, every old type and attribute is
+unchanged, and no duplicate or competing source claim exists.
 
 The branch then expanded beyond its branch-specific “source file plus own
 registry” grant and committed `docs/PAPER_COVERAGE.md` at `dcd5f8a06`.  Preserve
-that feature commit for separate review; it is not accepted or authorized for
-`main` by the registry-first self-claim alone.  Tip `0d4ee2471` advertises a
-future `docs/AUDIT_FINDINGS.md` edit but has not changed that file.  Both
-campaign-wide documents are now explicitly serialized: do not edit
-`docs/AUDIT_FINDINGS.md`, do not add another path, and keep the Lean source
-frozen while the coordinator reviews the source, coverage delta, and registry
-as separate units.  Continue to push only the feature branch; run no Lean,
-Lake, TeX, or PDF process.
+that feature commit for separate review; it was not authorized for `main` by
+the registry-first self-claim alone.  Commit `faf1fcaf6` similarly changed
+`docs/AUDIT_FINDINGS.md` 53 seconds before checkpoint `148990f0a` explicitly
+serialized both files, but still exceeded the earlier exact branch grant.
+Pathwise audit nevertheless finds both documentation deltas accurate, so the
+coordinator now explicitly accepts them as separate units rather than
+discarding useful work.  This is not permission for another expansion.
+
+Feature tip `8ea040921` is clean, synchronized with `148990f0a`, and freezes
+all prior paths.  Its registry has one evidence-label defect: SHA-256
+`48C94725...` is the audit patch hash, not the committed file hash (which is
+`507136BA...`, Git blob `3eeb0880...`).  The coordinator will correct that
+wording and replace the coverage map's pending-compiler status only after
+serialized source validation.  Do not edit any claimed path or launch Lean,
+Lake, TeX, or PDF; no EVO build token is granted.
 
 ### `codex/fabius-exposition-integration`
 
@@ -220,22 +234,34 @@ and expired current-tree/page-count statements are now labeled explicitly.
 Stage-one source checkpoint `78260751f` is pushed, and feature tip `4034e2e00`
 records a clean synchronization with `e18f5d0b0`.  Its net delta is exactly the
 frontier README/TeX and the branch registry; the committed PDF is unchanged.
-The checkpoint is under independent semantic/source audit.  Until the board
-records that audit's disposition, no EVO tool token is assigned: do not run
-`pdflatex`, do not alter or select a predecessor PDF, and do not begin the
-primary exposition cleanup.
+Independent audit finds the mathematical/formalization boundary, six-part
+structure, donor clusters, provenance, labels/references/citations, and gap
+register green, but withholds the PDF grant for exactly four narrow TeX
+corrections:
 
-The review is checking that the source preserves current q-Appell/Bromwich material,
-sparse-bit qualification, random-law warning, Thue--Morse cancellation and
-plots, all twelve provenance rows, curvature/inverse-endpoint results, and the
-complete gap register.  Preserve the formalization boundary: Lean proves the
-plain exponential complex-shift bound, while the sharper `exp(…)-1` estimate
-and its `p = 2` edge case remain frontier obligations.  Replay the donor's
-six-part structural handoffs, normalized-mass definition and real-log domain,
-finite-level floor-profile certificates and dilation notation, alternate
-recurrence path, and specialist open-obligation organization without
-duplicating mathematics already present.  Organize the result as six thematic
-syntheses plus the post-audit gap register.
+1. Immediately before `\section*{Lean object crosswalk---inputs, not
+   certification}`, reset the running head with a short mark such as
+   `\markboth{Lean object crosswalk}{}`.
+2. Remove the repeated donor-only display labeled
+   `integration:eq:probability-product-handoff`; replace it with prose
+   cross-references to `integration:eq:law-M-identification` and
+   `dyadicasym:eq:B-product`.
+3. Merge current main's canonical crosswalk block into the shortened inverse
+   crosswalk: restore label `smallarg:sec:crosswalk`, the
+   Wikipedia/article/Lean mappings, the `\dd/\dd t` row, and the tilde
+   explanation; retain the useful donor half-moment clarification and update
+   internal references to the consolidated inverse labels.
+4. Merge current main's canonical open ledger into the donor specialist ledger:
+   restore label `smallarg:sec:open` (the donor label may remain an alias), the
+   detailed `Composition`/finite-convolution implementation roadmap, and the
+   mapped inverse theorem references, while retaining the donor's corrected
+   mass/top-jet/log-transfer distinction and its convergence, Borel,
+   effective-constant, higher-correction, and optimal-truncation obligations.
+
+Write only this narrow TeX correction and the branch registry, repeat the
+static source audits, commit, and push.  Do not change the README or PDF.  No
+EVO tool token is assigned yet; do not run `pdflatex` and do not begin the
+primary exposition cleanup.
 
 If and only if a later board checkpoint grants stage two, use exactly three
 `pdflatex` passes, correct the page-10 running head, require settled references
@@ -284,16 +310,16 @@ a requested path is serialized, hot, frozen, single-owner, or already claimed.
 
 ## Collision and integration queue
 
-1. Finish the independent audit of frontier source checkpoint `78260751f`
-   before granting any PDF process.
-2. Finish pathwise review of shifted-grid source `00ff41a5e`, its separately
-   scoped coverage delta, and the five-file Laplace checkpoints.  The
-   natural-knot checkpoint is already integrated and validated.
-3. Assign and serialize only the accepted Lean validation targets, then
-   integrate green tranches through the coordinator.
-4. After a green source audit, receive the frontier three-pass PDF/evidence
+1. Receive the four-part narrow frontier source correction required by the
+   completed audit; keep
+   PDF generation withheld until that correction is reviewed.
+2. Integrate the frozen shifted-grid source and its two separately accepted
+   documentation units, correct their evidence wording, and serialize the
+   three focused validation targets.  Natural-knot and all-real Laplace are
+   already integrated and validated.
+3. After a green corrected-source audit, receive the frontier three-pass PDF/evidence
    checkpoint and integrate the complete frontier tranche.
-5. Only after the frontier stabilizes, assign the primary exposition's four
+4. Only after the frontier stabilizes, assign the primary exposition's four
    narrow citation/attribution corrections and matching PDF rebuild.
 
 ## Build-token log
@@ -342,6 +368,17 @@ token and ran two separate `LAKE_JOBS=1` targets:
 - `+FabiusFunction.GlobalExtension` completed 2765 jobs, exit 0;
 - `+FabiusFunction.Paper06487` completed 3244 jobs, exit 0 and transitively
   covered `PaperStatements` plus `Paper06487Supplement`.
+
+For the all-real Laplace tranche, `+FabiusFunction.NegativeLaplace` (2831
+jobs) and `+FabiusFunction.LaplaceMoments` (2857 jobs) exited 0 at merge
+`0d308188c`.  The first `+FabiusFunction.NegativeLaplaceDerivatives` attempt
+then exited 1 on a definitional folding mismatch in the new `ContDiff` proof;
+it supplied no validation evidence.  After the narrow elaboration repair at
+`c4bc42f16`, that target completed 2858 jobs and exited 0.  At the same repaired
+tree, `+FabiusFunction.NegativeLaplaceVertical` (3194 jobs),
+`+FabiusFunction.LaplaceMomentBounds` (3417 jobs), and
+`+FabiusFunction.PaperFabiusAsymptotic` (3957 jobs) all exited 0.  The two
+upstream source blobs are unchanged by the repair.
 
 Before those green runs, one command launched from the wrong directory was a
 no-op, and the first correctly rooted attempt exhausted the filesystem while

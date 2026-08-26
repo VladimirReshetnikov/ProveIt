@@ -122,6 +122,28 @@ theorem fabiusLaplaceMoment_zero (F : BoundedFabius) (s : ℝ) :
     fabiusLaplaceMoment F 0 s = generatingFunction F (-s) :=
   rfl
 
+/-- At positive tilt, the zeroth tilted moment is the generating function at
+the corresponding negative argument and is therefore strictly positive.
+Keeping this fact next to the definition lets every normalized-moment consumer
+use the nonvanishing denominator without importing the later vertical-line
+theory. -/
+theorem fabiusLaplaceMoment_zero_pos
+    (F : BoundedFabius) (hF : IsFabius F) {s : ℝ} (hs : 0 < s) :
+    0 < fabiusLaplaceMoment F 0 s := by
+  rw [fabiusLaplaceMoment_zero]
+  exact generatingFunction_neg_pos F hF s hs
+
+/-- The zeroth tilted moment is strictly positive for every real tilt.
+Equivalently, the real generating function has no real zero, so the normalized
+moments `M_k / M_0` are globally well-defined rather than only on the positive
+half-line.  The later probability bridge identifies this generating function
+with the moment-generating function of the Fabius law. -/
+theorem fabiusLaplaceMoment_zero_pos_all
+    (F : BoundedFabius) (hF : IsFabius F) (s : ℝ) :
+    0 < fabiusLaplaceMoment F 0 s := by
+  simpa only [fabiusLaplaceMoment_zero] using
+    generatingFunction_pos F hF (-s)
+
 /-- Definitional unfolding of the successor clause: the `(k+1)`st tilted
 moment is `(k+1)` times the `k`th tilted survival moment minus `s` times the
 `(k+1)`st.  Tagged `simp`. -/
