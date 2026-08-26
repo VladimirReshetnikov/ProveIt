@@ -6,19 +6,22 @@ Every worker reads it from the fetched `origin/main` before writing, merging,
 building, or pushing.  Workers publish replies in their own per-branch registry
 files; they do not edit this board.
 
-## Checkpoint 2026-08-25 20:06 PDT
+## Checkpoint 2026-08-25 20:21 PDT
 
 ```text
-observed main before this directive: b0b896e397696dbead0905db24bec0056fd2e51d
+observed main before this directive: 2183cfb113765197042628524690794bdf8d07c4
 coordinator branch: codex/fabius-coordinator-20260825
 integration mode: feature branches -> coordinator -> fast-forward main
 main write owner: coordinator
-codexbox build owner: codex/fabius-frontier-successor-20260825
-  (exactly three frontier pdflatex passes; no Lean/Lake/fourth pass)
-EVO build owner: IDLE -- reserved, no worker target
+codexbox Lean/Lake owner: coordinator
+  (one serialized Lean target at a time; frontier TeX may coexist)
+codexbox TeX/PDF owner: codex/fabius-frontier-successor-20260825
+  (standing sequential document lane; does not consume the Lean token)
+EVO Lean/Lake owner: codex/fabius-shifted-prefix-grid
+  (three separate Lean targets pinned below; no TeX/PDF/parallel target)
 documentation owner: codex/fabius-frontier-successor-20260825
-  (frontier PDF stage only; every primary path frozen)
-next poll: after the frontier three-pass checkpoint or a frozen Lean checkpoint
+  (standing canonical-frontier lease; every primary/walkthrough path frozen)
+next poll: after either assigned host reports its validation checkpoint
 ```
 
 The previously approved curvature, generalizations, lower-Lambert,
@@ -48,10 +51,13 @@ cherry-pick is needed.
    paths below, work may begin without coordinator acknowledgement.  Push
    feature branches only; the coordinator is the sole `main` writer.  Never
    force.
-2. Both physical-host build tokens are idle and coordinator-reserved.  Workers
-   may edit and commit unvalidated work, but launch no Lean, Lake, TeX, PDF, or
-   cache-mutating process; label such commits and registry reports `Not yet
-   validated`.  Do not terminate another process.
+2. Lean/Lake/cache-mutating compilation remains serialized to one assigned
+   process per physical host.  Workers without a host Lean/Lake grant may edit
+   and commit unvalidated work, but launch no such process; label those commits
+   and registry reports `Not yet validated`.  The standing frontier owner may
+   run one sequential LaTeX/PDF tool stream on codexbox without consuming its
+   Lean token, and that stream may coexist with the one assigned Lean build.
+   Do not launch parallel TeX passes or terminate another process.
 3. The following remain serialized and require an explicit board grant:
    `AGENTS.md`, `README.md`, `docs/COLLABORATION.md`,
    `docs/MULTI_AGENT_COORDINATION_PROPOSAL.md`, `docs/PAPER_COVERAGE.md`,
@@ -61,7 +67,10 @@ cherry-pick is needed.
    single-owner below is also unavailable to ordinary claims.  The former
    exposition frontier lease is released.  The successor source workstream is
    identified below, but only the exact source phase granted there is open;
-   the canonical frontier PDF and both host build tokens remain frozen.
+   the canonical frontier PDF remains single-owner, except that the standing
+   frontier lease below is itself the explicit grant for that workstream's
+   exact README/TeX/PDF paths.  Host Lean/Lake ownership is tracked separately
+   from this lightweight document lane.
 4. Preserve dirty work before merging.  Never stash, reset, discard, or
    overwrite it.  A checkpoint/WIP commit is acceptable on a feature branch if
    its message states exactly what remains uncompiled or unfinished.  After a
@@ -182,6 +191,43 @@ third-pass output and commit/push only that PDF plus the successor registry;
 the already-frozen TeX commit remains unchanged.  If any gate fails, do not
 install a PDF or improvise a fourth pass/source repair: preserve the sidecar,
 report exact diagnostics in the registry, push, and stop.  Never push `main`.
+
+**Standing single-owner amendment.**  At the user's request, the preceding
+per-hunk and exactly-three-pass restrictions are historical gates for
+checkpoint `7bbd84752`/`daa9cb19f`, not the future operating model.  This is
+now the only active documentation agent and holds a standing lease for exactly:
+
+- `docs/non-formalized-research-frontiers/README.md`;
+- `docs/non-formalized-research-frontiers/non-formalized-research-frontiers.tex`;
+- `docs/non-formalized-research-frontiers/non-formalized-research-frontiers.pdf`;
+- `docs/registry/codex-fabius-frontier-successor-20260825.md`.
+
+Within those four paths it may choose and sequence bounded semantic-status,
+human-readable-counterpart, organization, cross-reference, and layout work;
+edit locally; commit and push feature checkpoints; and run the sequential
+`pdflatex` passes plus read-only PDF/text/font/raster inspections needed to
+settle a matching artifact, without requesting a new board acknowledgment for
+each hunk or pass.  Advertise each bounded tranche in the own registry before
+editing so source agents can see what is happening, but coordinator silence is
+not a blocker.  It may update the frontier README and install a source-matched
+canonical PDF when its own documented source/static/render gates pass.
+
+This standing lease does not extend to a primary exposition, walkthrough,
+campaign-wide Markdown/control-plane file, Lean source, or `main`.  It may not
+run Lean/Lake, overlap multiple TeX/PDF processes, use force, or push `main`.
+Its single sequential TeX/PDF stream may coexist with the one board-assigned
+codexbox Lean/Lake build; neither lane may multiply itself.  On a failed
+render, it may diagnose and repair its owned source and rerun as needed rather
+than awaiting a micro-grant, but it must preserve/report rejected artifacts and
+never install a mismatched PDF.  Release the standing lease explicitly in the
+own registry when the frontier workstream is complete or paused.
+
+The current human-readable backlog includes the eight newly validated
+discrete-limit declarations, the complete complex Fourier zero locus, the
+rational half-q root locus, and the uncorrected-Wikipedia non-equivalence
+theorem.  The owner may disposition these in coherent frontier tranches under
+the standing lease; it need not fold them into the already-built three-hunk
+checkpoint.
 
 ### `codex/fabius-both-papers`
 
@@ -412,9 +458,9 @@ one-term.  Mechanical comparison proves that every byte outside the two
 leading module comments is unchanged; the coordinator integrated this exact
 commit as `5d779327a`, so no Lean build is required for that prose-only unit.
 
-The branch's current ordinary claim is accepted for exactly three source
-paths: `FabiusQBinomialTaylor.lean`, `ThueMorseGenerating.lean`, and
-`ThueMorseApproximation.lean`.  The seven not-yet-implemented declarations are
+The branch's ordinary claim covered exactly three source paths:
+`FabiusQBinomialTaylor.lean`, `ThueMorseGenerating.lean`, and
+`ThueMorseApproximation.lean`.  The seven declarations are
 the four translated-power-sum Appell APIs
 `thueMorseTranslatedPowerSumPolynomial_comp_X_add_C`,
 `thueMorseTranslatedPowerSumPolynomial_hasseDeriv`,
@@ -428,14 +474,38 @@ plausible-name claim was found.  The earlier convolution bridges and
 and compiled context; do not reimplement them.  The corrected Generating blob
 evidence is `2908f1f1652e` / SHA-256 `04F8F9AB...A8D9C`.
 
-This branch may edit, commit, and push those claimed sources, but has no build
-token.  Freeze and advertise each source tranche before requesting serialized
-validation; the requested eventual target order remains
-`+FabiusFunction.FabiusQBinomialTaylor`,
-`+FabiusFunction.ThueMorseGenerating`,
-`+FabiusFunction.ThueMorseApproximation`,
-`+FabiusFunction.ThueMorseExponential`, and
-`+FabiusFunction.PaperKFoldThueMorse`.
+Source commit `8021c555f` implements the four Appell declarations in
+`FabiusQBinomialTaylor.lean`; its parent matches main blob `4032b5184` and its
+result blob is `52492287b`.  Two independent reviews accept the finite
+translation law, total Hasse law, derivative specializations, every boundary
+case, imports, API, placement, and duplicate scan.
+
+Source commit `f7152d5fc` independently implements the three total
+approximation declarations in `ThueMorseApproximation.lean`; its parent matches
+main blob `87023172f` and its result blob is `d2e85228f`.  Two independent
+reviews accept the polynomial and formal-series identities at `k = 0`, the
+case-free coefficient and normalized-step bridges, the strict cutoff, private
+helper deletion, and exact preservation of all old public wrapper headers and
+attributes.  Registry tip `b52fa523e` freezes both source units on a branch
+already synchronized through main `99b67cf5b`.
+
+**EVO validation grant.**  This branch now holds the sole EVO token.  From a
+clean pushed tree, merge this coordinator checkpoint, verify that the two
+source blobs remain exactly `52492287b` and `d2e85228f`, and run these as three
+separate sequential invocations with `LAKE_JOBS=1`:
+
+```text
+lake build +FabiusFunction.FabiusQBinomialTaylor
+lake build +FabiusFunction.ThueMorseApproximation
+lake build +FabiusFunction.PaperKFoldThueMorse
+```
+
+Do not run them in parallel and run no additional Lean/Lake/TeX/PDF target.  If
+one fails, do not run the later targets or edit source under the same token;
+record the complete first failure in the own registry, push, and stop.  If all
+three pass, record exact SHA/tree, commands, job counts, warnings, and exits in
+the own registry, push, and stop for coordinator integration.  Never push
+`main`.
 
 ### `codex/fabius-exposition-integration`
 
@@ -591,20 +661,27 @@ a requested path is serialized, hot, frozen, single-owner, or already claimed.
 
 ## Collision and integration queue
 
-No fully reviewed Lean tranche is currently waiting for integration.  The four
+Two reviewed Lean workstreams are waiting on assigned validation or token
+availability.  The four
 disjoint both-papers units are integrated and validated as recorded above;
 continue to avoid merging that moving feature branch wholesale.  Its next
-`PeriodicSmooth.lean` bridge claim is advertised but not implemented.  The
-shifted-prefix branch's seven declarations are likewise advertised but not
-implemented, so neither workstream has a validation item yet.
+`PeriodicSmooth.lean` bridge source is now frozen at exact commit `c5f0bb3a3`.
+Independent review accepts all six `[simp]` statements and proof algebra; its
+one-file integration/build may use the now-separate codexbox Lean token even
+while the document owner continues lightweight TeX/PDF work.  The
+shifted-prefix branch's seven declarations
+are frozen at `8021c555f` plus `f7152d5fc` and hold the exact EVO validation
+grant above.
 
 Frontier source checkpoint `6397a0d6a` is already on `main` without a matching
 rebuilt PDF.  The successor is now assigned a fresh-base, three-hunk
 source-only phase above and has pushed exact source checkpoint `7bbd84752`.
-Independent source review passes, so the sole codexbox token is now assigned
-for the exact three-pass PDF stage above.  EVO remains idle.  Ordinary
+Independent source review passes, so the standing codexbox document lane is
+assigned above without consuming the distinct codexbox Lean token.  EVO is
+independently assigned to the three shifted-prefix targets above.  Ordinary
 nonoverlapping feature claims may continue under the shared protocol, but no
-other codexbox validation process may start until this token is released.
+second Lean/Lake process may start on either physical host until its token is
+released; the one sequential frontier TeX/PDF stream is the stated exception.
 
 ## Build-token log
 
@@ -744,13 +821,13 @@ worker checkpoint, `/home/codex/src/Proofs` also launched an unassigned
 `lake env lean` prototype check; it exited and is not treated as integration
 evidence.
 
-No validation process was running on codexbox when this grant was published.
-Its token is now exclusively assigned to the frontier successor's exact
-three-pass job above; no other codexbox validator may start.  No validation
-process is assigned on EVO; its token remains idle and coordinator-reserved.
-Other branches may edit, checkpoint, and push ordinary claimed work under the
-open protocol, but may not run validation tools until this board assigns the
-applicable physical-host token.
+No validation process was running on codexbox when the original PDF grant was
+published.  Its lightweight sequential TeX/PDF lane is now independent of the
+one-process codexbox Lean/Lake token, which remains coordinator-owned.  EVO's
+Lean/Lake token is assigned to the shifted-prefix branch's three exact
+sequential targets.  Other branches may edit, checkpoint, and push ordinary
+claimed work under the open protocol, but may not run Lean/Lake or another
+document tool stream until this board assigns the applicable lane.
 
 ## Worktree maintenance log
 
