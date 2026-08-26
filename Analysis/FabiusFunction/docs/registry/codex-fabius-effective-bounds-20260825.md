@@ -432,3 +432,77 @@ next bounded step: commit and push this exact registry report, merge current
   origin/main into the clean preserved feature branch, verify the source blob
   is unchanged, and freeze the tranche pending serialized validation
 ```
+
+## Ordinary follow-on claim: quantitative comparison across every tilt
+
+For a measure on `[0,1]`, changing the Laplace tilt from `t` to `s` multiplies
+the integrand by `exp ((t - s) * x)`.  Since `0 <= x <= 1`, its endpoint
+values give the natural two-sided comparison
+
+```text
+exp (min (t - s) 0) * M_k(t) <= M_k(s)
+M_k(s) <= exp (max (t - s) 0) * M_k(t).
+```
+
+This comparison is valid for every degree and every pair of real tilts.  In
+particular, strict positivity at one tilt is equivalent to strict positivity
+at every tilt.  Transport through the weighted-sum probability law and the
+identity `M_k(0) = halfMoment k > 0` then shows that every Fabius Laplace
+moment is strictly positive, with no restriction on its degree or real tilt.
+
+```text
+SYNC Fabius
+branch / worktree / machine: codex/fabius-effective-bounds-20260825 /
+  /home/codex/.codex/worktrees/d6d3/Proofs / codexbox
+fetched main SHA: df3e05c48bd7a4678c6118ba2e26b7d1ec2a6bf2
+HEAD and dirty paths: 0463cde5c1911e01966db1e50b92c0860d18be84;
+  branch is clean, pushed, and contains current main; only this registry is
+  dirty for the registry-first claim
+writing (exact paths): this registry initially; after this claim is pushed and
+  a repeated board/registry/tip scan remains green, only
+  Lean/FabiusFunction/UnitLaplaceMomentBounds.lean and this registry
+expected declarations or document claims:
+  unitLaplaceMoment_tilt_bounds, giving the displayed min/max exponential
+    comparison for any compactly finite measure, natural degree, and real
+    tilts;
+  unitLaplaceMoment_pos_iff, making strict positivity invariant under a change
+    of real tilt;
+  fabiusLaplaceMoment_tilt_bounds, transporting the same two-sided estimate to
+    every bounded Fabius candidate;
+  fabiusLaplaceMoment_pos_all, proving strict positivity for every natural
+    degree and every real tilt from the positive zero-tilt half moment;
+  expand the module overview and declaration comments with the displayed
+    inequalities, hypotheses, and probability-law specialization; preserve
+    every existing public header and import; no canonical document, facade,
+    root, or campaign-wide path is claimed
+completed commits: 24f1eee30 is the frozen normalized-L1 source checkpoint;
+  0463cde5c is the pushed merge through current main; this is the registry-first
+  claim for a disjoint fourth source tranche
+validated (exact command, SHA/state, exit code): current HEAD and origin/main
+  share UnitLaplaceMomentBounds.lean blob
+  d3d5df6ed130f8d509bb38eec183c6dffdd9a3b2, content SHA-256
+  39D1A4E740E22C6F6D29C9ABF6863867160775830F9A4406F97A13AE4969C0C9;
+  exact-name, plausible-semantic-name, path, all-fetched-Fabius-tip, and every
+  registry scan found no implementation or active claim; two independent
+  read-only audits compared this opportunity with the correct but higher-risk
+  all-order Lambert degree/leading-coefficient formulas and recommend this
+  bounded pointwise-integral route; this is not compiler evidence
+not yet validated: none of the four proposed declarations exists yet; no Lean,
+  Lake, TeX, PDF, or cache-mutating process is authorized or running here
+requested integration or lease: advertise the one ordinary source path and
+  four exact names above; after an immutable reviewed source checkpoint,
+  request separate serialized builds of
+  +FabiusFunction.UnitLaplaceMomentBounds and its smallest direct consumer
+  +FabiusFunction.LaplaceMomentBounds; no document or main-write lease
+conflicts / dependencies: the frozen QuantitativeSaddle checkpoint is
+  disjoint and still awaits coordinator integration; current binary-reduction,
+  signed dyadic-reflection, canonical-document, facade, root, and control-plane
+  paths remain excluded; the already proved zeroth-degree theorem
+  fabiusLaplaceMoment_zero_pos_all is a strict special case, not a duplicate;
+  only the coordinator may advance main
+next bounded step: commit and push this registry-only claim without force;
+  fetch and reread any changed board, repeat the all-tip collision scan, then
+  lease the single source file to one author while two agents independently
+  audit proof robustness and human-readable parity; run no build without an
+  explicit host token
+```
