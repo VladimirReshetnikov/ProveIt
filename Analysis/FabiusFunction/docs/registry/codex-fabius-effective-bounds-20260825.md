@@ -1477,3 +1477,95 @@ next bounded step: commit and push this registry-only claim without force;
   normalization, duplicate removal, exact old-header preservation, consumers,
   and source-level documentation
 ```
+
+## Source checkpoint: full formal Lambert fixed point
+
+Exact source commit `06ff742b7` completes the two-file claim.  Its result
+objects are:
+
+- `FabiusLambertFormalLog.lean`: Git blob
+  `198675aab7c2a82f0ea2d7b0739fd80dbc392c7a`, content SHA-256
+  `894623584E166F88DA30C50CDD6DC2372CB75D41707DCA5B31C28D3911164C1A`;
+- `FabiusLambertAllOrderRemainder.lean`: Git blob
+  `cf912c7061bb027ad0309b8c799a35c8ec0d9ff4`, content SHA-256
+  `FB1FCA47491B2655D6369CFC39482F5722B793A1C91928E4A8F8A9E8E797D268`.
+
+FormalLog now exposes exactly the two claimed non-simp declarations.  The
+promoted mass-series theorem identifies the shifted coefficient sequence with
+`1 + X * dyadicLambertDisplacementSeries`.  The fixed-point theorem assembles
+the existing coefficient recurrence into
+
+`A = C(a₀) + C(C((log 2)⁻¹)) * logSeries(unit)`.
+
+Its proof is coefficientwise: `PowerSeries.coeff_C` isolates coefficient zero,
+where `logCoeff_zero` kills the logarithmic term, and
+`PowerSeries.coeff_C_mul` plus `coeff_logSeries` reduces every positive
+coefficient to the established polynomial identity.  The module overview and
+both declaration comments state the equations and explicitly disclaim
+analytic convergence.  The three previously undocumented public simp lemmas
+for the unit coefficients and displacement-series coefficients now have
+formula-bearing prose.
+
+AllOrderRemainder removes the exact private mass-series duplicate and the
+separate forty-line finite-truncation logarithm proof.  Its substitution proof
+uses the promoted public mass identity.  The residual divisibility proof now
+extracts the truncated displacement coefficient and composed-log coefficient
+directly, then closes with the existing public coefficient consequence of the
+fixed point.  This shortens the proof, removes its polynomial evaluation and
+field cancellation tail, and handles `N = 0`, `m = 0`, and positive
+coefficients uniformly.  Every old import and public declaration header is
+byte-preserved; the Remainder module prose accurately distinguishes purely
+formal identities from the analytic estimates after finite evaluation.
+
+Three independent static audits pass on the exact final bytes.  They checked
+the pinned `coeff_C`, `coeff_C_mul`, and `coeff_logSeries` normal forms; zero
+and positive coefficient branches; truncation indices; the `N = 0` boundary;
+private-declaration removal; exact prior imports and public interfaces;
+downstream consumers; names; and human-readable parity.  There is no known
+source-level blocker.
+
+```text
+SYNC Fabius
+branch / worktree / machine: codex/fabius-effective-bounds-20260825 /
+  /home/codex/.codex/worktrees/d6d3/Proofs / codexbox
+fetched main SHA: fc63c39788ab4c31694e4f57efe05b543165675a
+HEAD and dirty paths: 06ff742b7e6f; source checkpoint is clean and pushed;
+  only this registry is dirty for the immutable handoff
+writing (exact paths): completed source checkpoint writes only
+  Lean/FabiusFunction/FabiusLambertFormalLog.lean and
+  Lean/FabiusFunction/FabiusLambertAllOrderRemainder.lean; this report writes
+  only this branch registry; both Lean sources are now frozen
+expected declarations or document claims: both claimed declarations are
+  implemented exactly once and are non-simp; the two private downstream
+  duplicates are gone; every old public header/attribute/import is exact;
+  source prose states every new Lean theorem in human-readable formal-series
+  form; no canonical document, facade, root, or audit-ledger claim
+completed commits: a97ca2b8c (registry-first claim) and 06ff742b7 (two-file
+  source/proof/documentation checkpoint); binary source 51b9ad393 / handoff
+  9e7f4df02 and strict Laplace source b044a0ec9 / handoff 3c34416e4 remain
+  separately frozen and pending coordinator validation
+validated (exact command, SHA/state, exit code): git diff --check exited 0;
+  whitespace, CR, forbidden-placeholder, duplicate-name, simp-registration,
+  and declaration scans are clean; exact result blobs/hashes are recorded
+  above; three independent exact-current-byte static reviews pass against
+  pinned Mathlib APIs; this is not compiler evidence
+not yet validated: source commit 06ff742b7 has not been elaborated; no Lean,
+  Lake, TeX, PDF, or cache-mutating process ran because this branch has no host
+  build token
+requested integration or lease: independently review and preserve exact source
+  commit 06ff742b7 / blobs 198675aab and cf912c706, then assign separate
+  serialized LAKE_JOBS=1 builds of +FabiusFunction.FabiusLambertFormalLog,
+  +FabiusFunction.FabiusLambertAllOrderRemainder, and the direct consumer
+  +FabiusFunction.FabiusLambertAllOrderSmallArgument; request no document or
+  main-write lease
+conflicts / dependencies: exact preimages are the current-main blobs recorded
+  in the claim; the public mass bridge is the former private downstream proof;
+  the fixed point uses only already-integrated coefficient algebra; FormalLog
+  and Remainder have a one-way import relation and no cycle; every frozen local
+  source and active external claim is disjoint; only the coordinator may
+  advance main
+next bounded step: commit and push this immutable handoff; keep all three
+  pending source tranches frozen for coordinator validation; continue with a
+  new registry-first claim on a disjoint released path after a clean fetch and
+  coordinator-board refresh
+```
