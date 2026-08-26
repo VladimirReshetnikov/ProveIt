@@ -7,14 +7,18 @@ This file implements the per-branch registry fallback in
 SYNC Fabius
 branch / worktree / machine: codex/fabius-both-papers /
   /home/codex/src/Proofs / codexbox
-fetched main SHA: c2aa5a25c82e50149ab8887f95e7c5bcd6fe62eb
-HEAD and dirty paths: 47d5758467a367eb6962fa0aa11b8834ef10f680;
-  clean after merging fetched main
+fetched main SHA: 682222de194637f3a5650b7c1ffce349577cb5ae
+HEAD and dirty paths: 1064891788f5fd3717fdb45e28f91436daf4fd42;
+  clean after merging fetched main and before this ordinary one-source claim
 writing (exact paths):
+  Lean/FabiusFunction/FabiusSharpAsymptotic.lean;
   docs/registry/codex-fabius-both-papers.md
 expected declarations or document claims:
-  no active source claim; the completed AnalyticMoments source lease is
-  released while the next disjoint ordinary candidate is audited
+  `fabius_not_isEquivalent_exp_WikipediaElementaryMain`, proving that the
+  literal uncorrected Wikipedia exponential is not an asymptotic equivalent of
+  any bounded Fabius solution at the positive zero endpoint;
+  derive the contradiction directly from the existing corrected log limit and
+  nonvanishing periodic obstruction, with no kernel-mass hypothesis
 completed commits: Lower-Lambert source checkpoint `1da2fde2285e3970267b7dc2561bcd0d897be1b4`
   was integrated by coordinator merge `046946a974467e83244fd3a183a3e084e70d3379`;
   registry handoff `225f5338de9ea92489ed6a2c0c371c6edb4f5db9`
@@ -64,7 +68,9 @@ completed commits: Lower-Lambert source checkpoint `1da2fde2285e3970267b7dc2561b
   `d2df7eaa72ca032ebbf5f7fc731e665edc6087b3`, which factors the two support
   localization proofs and removes redundant/dead helpers for a net reduction
   of 47 lines; clean merge `47d5758467a367eb6962fa0aa11b8834ef10f680`
-  incorporates fetched main `c2aa5a25c`
+  incorporates fetched main `c2aa5a25c`; clean merge
+  `1064891788f5fd3717fdb45e28f91436daf4fd42` incorporates current fetched main
+  `682222de1`
 validated (exact command, SHA/state, exit code): coordinator board records
   serialized immutable `lake build +FabiusFunction.LowerLambertW` at
   `4c6bbac41`, exit 0, with its source blob unchanged on current main;
@@ -168,10 +174,16 @@ conflicts / dependencies: all advertised Fabius heads and their registries
   `AnalyticMoments.lean` and no alternate private generic localization helper;
   the public endpoint and support lemmas needed for the consolidation already
   live upstream in `Basic.lean`; fetched main `c2aa5a25c` retains the exact
-  pre-cleanup AnalyticMoments blob used as the source base
-next bounded step: push this synchronization checkpoint, select and advertise
-  another disjoint ordinary theorem or private consolidation, and continue
-  source-only work while validation remains coordinator-owned
+  pre-cleanup AnalyticMoments blob used as the source base; exact-name,
+  semantic-shape, path, and registry sweeps across current main and every
+  advertised Fabius tip find no implemented uncorrected-Wikipedia
+  `not_isEquivalent` theorem and no competing claim on
+  `FabiusSharpAsymptotic.lean`; the coordinator explicitly released its prior
+  generalizations lease
+next bounded step: push this exact one-source claim, prove the unconditional
+  failure of asymptotic equivalence without running a build, obtain independent
+  term-level review, and request serialized
+  `+FabiusFunction.FabiusSharpAsymptotic` validation
 ```
 
 ## Coordinator natural-knot integration disposition
