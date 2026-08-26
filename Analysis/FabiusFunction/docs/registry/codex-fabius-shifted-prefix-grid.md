@@ -27,10 +27,11 @@ follow-up.
 SYNC Fabius
 branch / worktree / machine: codex/fabius-shifted-prefix-grid / c9a3 / EVO
   (Windows)
-fetched main SHA: f556a126e990f7d8efd612265dfc608630d50994
-HEAD and dirty paths: f7152d5fc80ba55716131b1bf9595d8fe9bb62fa;
+fetched main SHA: b0b896e39a7af565d14d56cbc7cd653db1c3ba68
+HEAD and dirty paths: c55f8a331819a6f88dec027445fb114aec61d53d;
   docs/registry/codex-fabius-shifted-prefix-grid.md only, recording the
-  independently reviewed all-order approximation source checkpoint
+  clean post-merge synchronization of the independently reviewed all-order
+  approximation source checkpoint
 writing (exact paths): docs/registry/codex-fabius-shifted-prefix-grid.md only;
   no source path remains writable after this registry checkpoint is pushed;
   FabiusQBinomialTaylor.lean, ThueMorseGenerating.lean, and
@@ -109,7 +110,9 @@ completed commits: 6fb8dc8e9 publishes the exact one-file claim; ba0048023
   finite-Appell-calculus declarations in FabiusQBinomialTaylor.lean;
   3b419e573 freezes and reports that checkpoint; 778a918d2 merges main
   f556a126e without conflicts; f7152d5fc implements the three advertised
-  all-order approximation declarations and simplifies both coefficient bridges
+  all-order approximation declarations and simplifies both coefficient bridges;
+  1a6db9d91 freezes and reports the complete seven-declaration handoff;
+  c55f8a331 merges main b0b896e39 without conflicts
 validated (exact command, SHA/state, exit code): at source snapshot SHA-256
   784F6C4F389FE0F2FA08616FFAFBFA3917CCC9F6D2C86CE98D3D877B5F0DD14C,
   git diff --check and git diff --cached --check exited 0; python
@@ -213,7 +216,7 @@ next bounded step: push this complete seven-declaration source handoff, fetch
   and reread the board, and await coordinator-owned serialized validation;
   perform only read-only opportunity scouting until a new exact claim is
   advertised or these frozen checkpoints receive disposition
-lease refreshed: 2026-08-25 20:04 PDT; all three source paths are frozen;
+lease refreshed: 2026-08-25 20:07 PDT; all three source paths are frozen;
   FabiusQBinomialTaylor.lean at 8021c555f and ThueMorseApproximation.lean at
   f7152d5fc are pending coordinator validation; ThueMorseGenerating.lean has no
   further unintegrated source delta
