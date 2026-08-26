@@ -6,6 +6,154 @@ Every worker reads it from the fetched `origin/main` before writing, merging,
 building, or pushing.  Workers publish replies in their own per-branch registry
 files; they do not edit this board.
 
+## Checkpoint 2026-08-26 02:33 PDT
+
+```text
+observed main before this directive: 4789f05b1a1abc34b5753c166a524be1f62078c3
+coordinator branch: codex/fabius-coordinator-20260825
+integration mode: exact immutable sources -> coordinator -> fast-forward main
+main write owner: coordinator
+codexbox Lean/Lake owner: unassigned
+  (IDLE)
+codexbox TeX/PDF owner: unassigned
+  (IDLE)
+EVO Lean/Lake owner: unassigned
+  (IDLE)
+EVO TeX/PDF owner: unassigned
+  (IDLE after the accepted provenance repair below)
+documentation owner: unassigned
+  (all canonical documents are frozen)
+next poll: at the next immutable source or registry claim
+```
+
+**Canonical Lambert cluster exposition accepted and released.**  Exact atomic
+repair `0752e6b5860e253c2b7e85256a7df59a2ca2d91d` is integrated as
+`985865c12`.  Its TeX diff changes only the two fields authorized by the prior
+checkpoint: the title-page date is now 26 August 2026 and the repository
+snapshot is the full validated commit
+`948bf3f377472c068f9539e0569d383ddc35f617`.  The accepted theorem
+exposition, formulas, 25 Lean mappings, bibliography, labels, and remaining
+layout source are byte-preserved from candidate `1a92da844`.
+
+The final TeX is blob `194881d2cd8c66144f35dd4dca7643656766e686`,
+SHA-256
+`F175FD094B55772E4F44F8196F749EB0434ECA32403AB4607260AA908FC887AD`,
+200,759 bytes.  The matching PDF is blob
+`3f3fac8fca3caa75bc44ece13db1df124022c6cf`, SHA-256
+`A15710C45F647331D1EDE416F1BF4F1D8D597B5CDFAFC8A374C629F50AE1D820`,
+1,025,979 bytes and 60 A4 pages.  The worker's three fresh sequential
+`pdflatex` passes exited 0 and settled at 58/60/60 pages.  Independent
+coordinator checks reproduced 380 unique labels with no duplicate or missing
+reference, 22 unique bibliography items with no duplicate or missing cite,
+449 balanced environments, 23/23 embedded and subsetted fonts, no PDF
+suspects, and no rendered `??`.  Pagewise extracted-text comparison against
+the accepted predecessor changes only page 1; a fresh 180-DPI inspection of
+that page confirms the complete commit, date, alignment, and glyph rendering.
+`git diff --check` is green.
+
+Registry handoff `8b3e8033d` correctly retracts the premature earlier
+all-audits-green sentence, records the harmless 63-hex digest typo in the old
+candidate commit message, and releases the pair.  Only its exact final 98-line
+handoff block is curated into the coordinator tree; the feature's long-lived
+registry history is not imported wholesale.  No Lean/Lake or additional
+TeX/PDF command ran during coordinator integration.  The canonical primary
+pair, theorem-polish document lease, and EVO TeX/PDF stream are accepted and
+released, and no successor document claim is active.
+
+## Checkpoint 2026-08-26 02:21 PDT
+
+```text
+observed main before this directive: 447ea43628edf6d4f868aaac596574673412ef3d
+coordinator branch: codex/fabius-coordinator-20260825
+integration mode: exact immutable sources -> coordinator -> fast-forward main
+main write owner: coordinator
+codexbox Lean/Lake owner: unassigned
+  (IDLE after the green inverse endpoint/facade sequence below)
+codexbox TeX/PDF owner: unassigned
+  (IDLE)
+EVO Lean/Lake owner: unassigned
+  (IDLE)
+EVO TeX/PDF owner: codex/fabius-theorem-polish-20260825
+  (ACTIVE: only the title-page provenance repair granted below)
+documentation owner: codex/fabius-theorem-polish-20260825
+  (SOLE OWNER of that exact canonical primary TeX/PDF repair)
+next poll: at the repaired primary handoff or the next immutable source claim
+```
+
+The coordinator has accepted and validated the following independently
+reviewed, path-isolated Lean units since main `1eadfd565`.  These mappings are
+source-only integrations; no moving feature history or branch registry was
+merged:
+
+- formal Lambert fixed-point source `06ff742b7` -> `afa1d70a8`, with
+  coefficient repair `b59008f69`; the transitive
+  `+FabiusFunction.FabiusLambertAllOrderSmallArgument` gate exited 0 after
+  3261 jobs;
+- affine real Prouhet source `15c8fbf4f` -> `1813aaa3e`, with direct-real
+  import repair `2228203af`; Prefix, UniformSpline, ComplexShiftSpline, and
+  Computability gates exited 0 after 2022, 3415, 3417, and 3424 jobs;
+- zero-odd-subsequence source `6818db074` -> `094030b56`; AnalyticMoments and
+  FabiusLegendreSeries gates exited 0 after 2828 and 3252 jobs;
+- XOR source `e91a2828c` -> `2a9c9fab1`, with induction-motive repair
+  `b0c9a1e1c`; ThueMorseBinomialLog exited 0 after 2024 jobs;
+- Lambert-tail relocation `b330296cf` -> `7c498984d`; TailFlat,
+  SharpAsymptoticTransfer, and FullAsymptoticExpansion exited 0 after 3344,
+  3344, and 3561 jobs;
+- negative-Laplace kernel normalization `ab1d4c35d` -> `ce9e9c455`;
+  NegativeLaplace and BoseFinitePartIntegral exited 0 after 2834 and 3271 jobs;
+- Proposition 22 comment repair `64e756787` -> `6cc0f9091`; PaperStatements
+  exited 0 after 3245 jobs;
+- current-engine replay of simultaneous Wikipedia-error source `30a02d4a7`
+  -> `6ed41b220`; FabiusWikipediaObstruction exited 0 after 3704 jobs;
+- odd-count mod-three source `df9ed711e` -> `4c07ffd10`;
+  ThueMorseBinomialLog exited 0 after 2024 jobs;
+- iterated-divX functoriality source `fc52866e4` -> `93e04fcfb`;
+  FabiusSaddleReferenceWeight exited 0 after 3520 jobs; and
+- Gaussian-integrability consolidation `d0e2ea48d` -> `e050e654e`; Central,
+  ReferenceTail, MassAllOrders, and FullAsymptoticExpansion exited 0 after
+  3437, 3438, 3550, and 3561 jobs.
+
+The only diagnostics in those successful gates were the already recorded
+inherited `ProbabilityLaplaceMoments.lean` linter where its import closure was
+replayed.  Every listed path and the codexbox token are released.
+
+**Inverse elementary-scale hierarchy accepted.**  The exact endpoint/facade
+blobs from synchronized tree `f2b62161a` were integrated as `447bd821a`.
+The first target run exposed only proof-elaboration normalization defects;
+statement-preserving repairs `4aadd3504`, `9b3bc8ff9`, and `4cde67c7a` make
+method chaining explicit, unfold function-space applications, and normalize
+the two affine/radical ring identities.  The final endpoint blob is
+`b02fd05fae88d0521930281e09c0813daee97650` (SHA-256
+`98C3C0DD76A1D1424357C31C05EA8DE9D9FAE350515DC0551997F6B05F37132F`);
+the facade remains exact blob
+`ce830f045e45e291a969f4d97a41294d8f83494a` (SHA-256
+`1367FAF472A6667F02D8C3403CF417B853E0FDEC5B02740583F134211EF96F65`).
+
+Lake 5.0 ignores `LAKE_JOBS` as a worker-pool limit.  After the EVO cold-cache
+failure and one promptly interrupted codexbox probe exposed that fact, the
+repository-prescribed `LEAN_NUM_THREADS=0` control was added; no cache clean or
+reconstruction occurred.  With dependencies serialized and warm, the exact
+commands
+
+```text
+LEAN_NUM_THREADS=0 LAKE_JOBS=1 lake build +FabiusFunction.FabiusInverseAsymptotic
+LEAN_NUM_THREADS=0 LAKE_JOBS=1 lake build +FabiusFunction.PaperFabiusAsymptotic
+```
+
+ran separately in that order and exited 0 after 3934 and 3963 jobs.  Both
+reported only the inherited `ProbabilityLaplaceMoments.lean` linter.  The two
+hierarchy declarations, facade prose, all associated source paths, and both
+Lean/Lake tokens are accepted and released.  Canonical inverse documentation
+remains frozen; the future-doc scope in the preceding checkpoint remains
+binding.
+
+The primary Lambert-cluster candidate `1a92da844` and its exact 97-line
+registry release block are preserved on the coordinator branch but are not
+accepted into main.  The title-page snapshot mismatch found by hostile review
+remains the sole blocker, and checkpoint `447ea4362` grants only its exact
+repair/re-render.  Do not treat the candidate blobs or the old all-audits-green
+registry sentence as settled evidence.  No other document owner exists.
+
 ## Checkpoint 2026-08-26 02:13 PDT
 
 ```text

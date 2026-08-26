@@ -1,6 +1,7 @@
 import FabiusFunction.ProbabilityRepresentation
 import FabiusFunction.FabiusDiscreteLimitToeplitz
 import FabiusFunction.DyadicClosedForm
+import FabiusFunction.ThueMorsePrefix
 import Mathlib.Analysis.Calculus.Deriv.Basic
 import Mathlib.Analysis.SpecialFunctions.Integrals.Basic
 
@@ -14,7 +15,9 @@ support bounds, saturation on the final half-cell, monotonicity on the
 fundamental interval, and pointwise convergence to the bounded Fabius
 function.  These statements include the degree-zero step spline.  A
 block-translation identity extends the estimates across the nonnegative axis,
-while exact empty-prefix vanishing supplies the nonpositive half-line.
+while exact empty-prefix vanishing supplies the nonpositive half-line.  The
+real affine Prouhet identities used in the translation and complement formulas
+come from `FabiusFunction.ThueMorsePrefix`.
 -/
 
 set_option autoImplicit false
@@ -108,125 +111,6 @@ lemma abs_fabiusUniformSpline_zero_le_one (x : ℝ) :
     |fabiusUniformSpline 0 x| ≤ 1 := by
   rw [fabiusUniformSpline_zero]
   exact abs_sum_range_thueMorseSign_le_one _
-
-private theorem thueMorse_affine_power_sum_eq_zero_real
-    (b d : ℕ) (hd : d < b) (x y : ℝ) :
-    (∑ h : Fin (2 ^ b), (thueMorseSign h.val : ℝ) *
-      (x + y * (h.val : ℝ)) ^ d) = 0 := by
-  simp_rw [add_pow, Finset.mul_sum]
-  rw [Finset.sum_comm]
-  apply Finset.sum_eq_zero
-  intro k hk
-  have hdegree : d - k < b := (Nat.sub_le d k).trans_lt hd
-  have hzeroQ := thuePowerSum_eq_zero_of_lt b (d - k) hdegree
-  change (∑ h : Fin (2 ^ b),
-      (thueMorseSign h.val : ℚ) * (h.val : ℚ) ^ (d - k)) = 0 at hzeroQ
-  have hzeroR : (∑ h : Fin (2 ^ b),
-      (thueMorseSign h.val : ℝ) * (h.val : ℝ) ^ (d - k)) = 0 := by
-    exact_mod_cast hzeroQ
-  have hinner :
-      (∑ h : Fin (2 ^ b),
-        (thueMorseSign h.val : ℝ) *
-          (x ^ k * (y * (h.val : ℝ)) ^ (d - k) * (Nat.choose d k : ℝ))) =
-        (x ^ k * y ^ (d - k) * (Nat.choose d k : ℝ)) *
-          ∑ h : Fin (2 ^ b),
-            (thueMorseSign h.val : ℝ) * (h.val : ℝ) ^ (d - k) := by
-    rw [Finset.mul_sum]
-    apply Finset.sum_congr rfl
-    intro h hh
-    rw [mul_pow]
-    ring
-  rw [hinner, hzeroR, mul_zero]
-
-private def uniformSplineThuePowerSum (b d : ℕ) : ℚ :=
-  ∑ h : Fin (2 ^ b), (thueMorseSign h.val : ℚ) * (h.val : ℚ) ^ d
-
-private lemma uniformSplineThuePowerSum_succ (b d : ℕ) :
-    uniformSplineThuePowerSum (b + 1) d =
-      -(∑ k ∈ Finset.range d,
-        (Nat.choose d k : ℚ) * (2 : ℚ) ^ k *
-          uniformSplineThuePowerSum b k) := by
-  have h := thuePowerSum_succ b d
-  change uniformSplineThuePowerSum (b + 1) d =
-      -(∑ k ∈ Finset.range d,
-        (Nat.choose d k : ℚ) * (2 : ℚ) ^ k *
-          uniformSplineThuePowerSum b k) at h
-  exact h
-
-private lemma uniformSplineThuePowerSum_eq_zero_of_lt
-    (b d : ℕ) (hd : d < b) : uniformSplineThuePowerSum b d = 0 := by
-  have h := thuePowerSum_eq_zero_of_lt b d hd
-  change uniformSplineThuePowerSum b d = 0 at h
-  exact h
-
-private lemma uniformSplineThuePowerSum_self (p : ℕ) :
-    uniformSplineThuePowerSum p p =
-      (-1 : ℚ) ^ p * (2 : ℚ) ^ p.choose 2 * p.factorial := by
-  induction p with
-  | zero =>
-      norm_num [uniformSplineThuePowerSum, thueMorseSign, binaryWeight]
-  | succ p ih =>
-      rw [show p + 1 = p.succ by omega,
-        show p.succ = p + 1 by omega,
-        uniformSplineThuePowerSum_succ, Finset.sum_range_succ]
-      have hzero :
-          (∑ k ∈ Finset.range p,
-            (Nat.choose (p + 1) k : ℚ) * (2 : ℚ) ^ k *
-              uniformSplineThuePowerSum p k) = 0 := by
-        apply Finset.sum_eq_zero
-        intro k hk
-        rw [uniformSplineThuePowerSum_eq_zero_of_lt p k
-          (Finset.mem_range.mp hk), mul_zero]
-      rw [hzero, zero_add, ih]
-      rw [show (p + 1).choose 2 = p.choose 2 + p by
-        rw [Nat.choose_succ_succ]
-        simp [Nat.choose_one_right, Nat.add_comm],
-        pow_add, Nat.factorial_succ, pow_succ]
-      rw [Nat.choose_succ_self_right]
-      push_cast
-      ring
-
-private lemma thueMorse_affine_power_sum_self_real
-    (p : ℕ) (x : ℝ) :
-    (∑ h : Fin (2 ^ p), (thueMorseSign h.val : ℝ) *
-      (x + (h.val : ℝ)) ^ p) =
-      (-1 : ℝ) ^ p * (2 : ℝ) ^ p.choose 2 * p.factorial := by
-  simp_rw [add_pow, Finset.mul_sum]
-  rw [Finset.sum_comm]
-  rw [Finset.sum_eq_single 0]
-  · norm_num only [pow_zero, Nat.choose_zero_right, Nat.cast_one,
-      one_mul, Nat.zero_le, Nat.sub_zero]
-    have h := uniformSplineThuePowerSum_self p
-    change (∑ z : Fin (2 ^ p),
-      (thueMorseSign z.val : ℚ) * (z.val : ℚ) ^ p) =
-        (-1 : ℚ) ^ p * (2 : ℚ) ^ p.choose 2 * p.factorial at h
-    have hR : (∑ z : Fin (2 ^ p),
-        (thueMorseSign z.val : ℝ) * (z.val : ℝ) ^ p) =
-          (-1 : ℝ) ^ p * (2 : ℝ) ^ p.choose 2 * p.factorial := by
-      exact_mod_cast h
-    simpa using hR
-  · intro k hk hk0
-    have hkle : k ≤ p := Nat.le_of_lt_succ (Finset.mem_range.mp hk)
-    have hdegree : p - k < p := Nat.sub_lt (by omega) (by omega)
-    have hzeroQ := uniformSplineThuePowerSum_eq_zero_of_lt p (p - k) hdegree
-    change (∑ z : Fin (2 ^ p),
-      (thueMorseSign z.val : ℚ) * (z.val : ℚ) ^ (p - k)) = 0 at hzeroQ
-    have hzeroR : (∑ h : Fin (2 ^ p),
-        (thueMorseSign h.val : ℝ) * (h.val : ℝ) ^ (p - k)) = 0 := by
-      exact_mod_cast hzeroQ
-    calc
-      (∑ h : Fin (2 ^ p),
-          (thueMorseSign h.val : ℝ) *
-            (x ^ k * (h.val : ℝ) ^ (p - k) * (Nat.choose p k : ℝ))) =
-          (x ^ k * (Nat.choose p k : ℝ)) *
-            ∑ h : Fin (2 ^ p),
-              (thueMorseSign h.val : ℝ) * (h.val : ℝ) ^ (p - k) := by
-        rw [Finset.mul_sum]
-        apply Finset.sum_congr rfl
-        intro h hh
-        ring
-      _ = 0 := by rw [hzeroR, mul_zero]
-  · simp
 
 private lemma fabiusDiscreteLimitRangeLength_two_mul_add
     (p block : ℕ) {y : ℝ} (hy : 0 ≤ y) :
@@ -471,7 +355,7 @@ theorem fabiusUniformSpline_one_add
         (thueMorseSign r : ℝ) *
           ((r : ℝ) - (2 : ℝ) ^ p * (1 + x) + 1 / 2) ^ p) =
         (-1 : ℝ) ^ p * (2 : ℝ) ^ p.choose 2 * p.factorial := by
-    have h := thueMorse_affine_power_sum_self_real p base
+    have h := thueMorse_affine_power_sum_self_real p base 1
     rw [← Fin.sum_univ_eq_sum_range]
     calc
       (∑ r : Fin (2 ^ p),
@@ -483,7 +367,7 @@ theorem fabiusUniformSpline_one_add
         intro r hr
         dsimp only [base]
         ring
-      _ = _ := h
+      _ = _ := by simpa using h
   have hsecond :
       (∑ r ∈ Finset.range count,
         (thueMorseSign (2 ^ p + r) : ℝ) *

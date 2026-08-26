@@ -73,26 +73,6 @@ theorem integral_eigenpolynomial_mul_eq_zero_of_ne
   change I = 0
   exact (mul_eq_zero.mp hproduct).resolve_left (sub_ne_zero.mpr heigenNe)
 
-/-! ## Removing the zero odd subsequence -/
-
-/-- If every odd term of a real series is zero, its sum is already the sum of
-the even subsequence. -/
-private theorem hasSum_even_of_odd_eq_zero
-    {E : Type*} [NormedAddCommGroup E] [CompleteSpace E]
-    {f : ℕ → E} {a : E}
-    (h : HasSum f a) (hodd : ∀ n, f (2 * n + 1) = 0) :
-    HasSum (fun n ↦ f (2 * n)) a := by
-  have heSummable : Summable (fun n ↦ f (2 * n)) :=
-    h.summable.comp_injective (mul_right_injective₀ (two_ne_zero' ℕ))
-  have he := heSummable.hasSum
-  have ho : HasSum (fun n ↦ f (2 * n + 1)) 0 := by
-    convert hasSum_zero
-    exact hodd _
-  have hcombined : HasSum f ((∑' n, f (2 * n)) + 0) := he.even_add_odd ho
-  have hsum : (∑' n, f (2 * n)) = a := by
-    simpa using HasSum.unique hcombined h
-  rwa [hsum] at he
-
 /-! ## Specialization to Rvachev's up function -/
 
 /-- The generic normalized coefficient functional of

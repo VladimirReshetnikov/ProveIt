@@ -307,11 +307,7 @@ lemma integralOn_realGaussian_mul_absPow_mul_isBigO
       Real.exp (-(v ^ 2) / 2) * (|c i| * |v| ^ d)) =O[l] rate := by
   let g : ℝ → ℝ := fun v => Real.exp (-(v ^ 2) / 2) * |v| ^ d
   have hg : Integrable g := by
-    have h := (integrable_realGaussian_mul_pow d).norm
-    apply h.congr
-    filter_upwards with v
-    simp only [g, Real.norm_eq_abs, abs_mul, abs_pow,
-      abs_of_pos (Real.exp_pos _)]
+    simpa only [g] using integrable_realGaussian_mul_abs_pow d
   let I : ℝ := ∫ v : ℝ, g v
   have hI0 : 0 ≤ I := integral_nonneg fun v => by
     dsimp [g]
@@ -1190,12 +1186,8 @@ lemma integralOn_realGaussian_mul_finset_absPow_isBigO
     rw [integral_finsetSum]
     intro d hd
     have hg : Integrable (fun v : ℝ =>
-        Real.exp (-(v ^ 2) / 2) * |v| ^ d) := by
-      have h := (integrable_realGaussian_mul_pow d).norm
-      apply h.congr
-      filter_upwards with v
-      rw [Real.norm_eq_abs, abs_mul, abs_pow,
-        abs_of_pos (Real.exp_pos _)]
+        Real.exp (-(v ^ 2) / 2) * |v| ^ d) :=
+      integrable_realGaussian_mul_abs_pow d
     have heq : (fun v : ℝ =>
         Real.exp (-(v ^ 2) / 2) * (|c d i| * |v| ^ d)) =
         fun v => |c d i| *
@@ -1308,12 +1300,8 @@ theorem integral_dyadicLambertCenteredExponentDefectMajor_isBigO
           exact mul_nonneg (pow_nonneg (dyadicLambertEpsilon_nonneg t) _)
             (abs_nonneg _)
     have hgaussAbs (d : ℕ) : Integrable (fun v : ℝ =>
-        Real.exp (-(v ^ 2) / 2) * |v| ^ d) := by
-      have h := (integrable_realGaussian_mul_pow d).norm
-      apply h.congr
-      filter_upwards with v
-      rw [Real.norm_eq_abs, abs_mul, abs_pow,
-        abs_of_pos (Real.exp_pos _)]
+        Real.exp (-(v ^ 2) / 2) * |v| ^ d) :=
+      integrable_realGaussian_mul_abs_pow d
     have hcomp (c : ℝ) (d : ℕ) : IntegrableOn (fun v : ℝ =>
         Real.exp (-(v ^ 2) / 2) * (c * |v| ^ d)) (central t) := by
       have heq : (fun v : ℝ =>
