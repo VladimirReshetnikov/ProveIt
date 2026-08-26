@@ -6,6 +6,126 @@ Every worker reads it from the fetched `origin/main` before writing, merging,
 building, or pushing.  Workers publish replies in their own per-branch registry
 files; they do not edit this board.
 
+## Checkpoint 2026-08-26 02:48 PDT
+
+```text
+observed main before this directive: 0f9a6db8313d626c52dc0e4ef31b42158bbd1bb0
+coordinator branch: codex/fabius-coordinator-20260825
+integration mode: exact immutable sources -> coordinator -> fast-forward main
+main write owner: coordinator
+codexbox Lean/Lake owner: coordinator
+  (ACTIVE: exactly the six serialized gates below)
+codexbox TeX/PDF owner: unassigned
+  (IDLE)
+EVO Lean/Lake owner: codex/fabius-inverse-asymptotic-20260825
+  (ACTIVE: the disjoint inverse-power decay sequence in the prior checkpoint)
+EVO TeX/PDF owner: unassigned
+  (IDLE)
+documentation owner: unassigned
+  (all canonical documents are frozen)
+next poll: after each codexbox gate and at the EVO decay handoff
+```
+
+**Codexbox validation batch: radial order, sparse Pascal parity, and shared
+binomial square.**  Three path-disjoint immutable sources have independent
+static PASSes and exact current-main preimages:
+
+- radial ordering source `3463c9cb4ceaf1988c05e65954eefe1e350a91d5`
+  changes only `Monotonicity.lean` to blob
+  `aff1231e56d4c30bf40189c222c1c0fb8333e33c`, SHA-256
+  `021F5A034C32577673E45A8E9C2474AC13FACB10EE7D79A0D7BB59F6D4B0C66A`;
+- sparse Pascal source `1992f0c1488b5fd5fb3a22c3ff769e6eb1346000`
+  changes only `Parity.lean` to blob
+  `92ca2ea3ad73cff04749709d5a142d3bd01ea270`, SHA-256
+  `0D195658E07BDB6D90294F62B8FD2230F5E7EDE9D6C48C2859D5D881CE64C13E`;
+- shared-square source `43e06524b1a65e36361f5ca1ce24b6ae71108e61`
+  promotes `choose_square_split` in `Arithmetic.lean` and deletes/rewires the
+  two private duplicates in `HalfQBinomial.lean` and
+  `FabiusQBinomialFormula.lean`.  Final blobs are respectively
+  `0cde6a592e6f495f518e3b7a0cb1ddc3b5ae33b1`,
+  `fc3a7f96e306f72bf05b2a3bd7e715800a9a1631`, and
+  `8031d4c1171790481bf94adc15bd812931d8ae06`.
+
+The reviewed theorem statements, edge cases, signs, imports, existing public
+headers, and call-site rewires are accepted statically; exact-name and
+semantic scans find no collision.  No source has compiler evidence yet.
+Integrate only the three isolated source commits above on the coordinator
+candidate, never the moving both-papers history.  On codexbox, from the
+repository root, run exactly these separate commands in order, stopping at
+the first nonzero exit:
+
+```text
+LEAN_NUM_THREADS=0 LAKE_JOBS=1 lake build +FabiusFunction.Arithmetic
+LEAN_NUM_THREADS=0 LAKE_JOBS=1 lake build +FabiusFunction.HalfQBinomial
+LEAN_NUM_THREADS=0 LAKE_JOBS=1 lake build +FabiusFunction.FabiusQBinomialFormula
+LEAN_NUM_THREADS=0 LAKE_JOBS=1 lake build +FabiusFunction.Monotonicity
+LEAN_NUM_THREADS=0 LAKE_JOBS=1 lake build +FabiusFunction.Parity
+LEAN_NUM_THREADS=0 LAKE_JOBS=1 lake build +FabiusFunction.Paper06487
+```
+
+Run no parallel or additional codexbox Lean/Lake/TeX/PDF process.  Record each
+command, exact candidate commit/tree, scheduled-job count, exit, and every
+diagnostic.  Statement-preserving proof repairs remain coordinator-owned and
+must receive static review before a retry.  The simultaneous EVO sequence is
+independent and may continue on its different physical host.
+
+## Checkpoint 2026-08-26 02:40 PDT
+
+```text
+observed main before this directive: fec88296a38c5eff4058fdbc66a54f9d87ffed82
+coordinator branch: codex/fabius-coordinator-20260825
+integration mode: exact immutable sources -> coordinator -> fast-forward main
+main write owner: coordinator
+codexbox Lean/Lake owner: unassigned
+  (IDLE)
+codexbox TeX/PDF owner: unassigned
+  (IDLE)
+EVO Lean/Lake owner: codex/fabius-inverse-asymptotic-20260825
+  (ACTIVE: exactly the three inverse-power decay gates below)
+EVO TeX/PDF owner: unassigned
+  (IDLE)
+documentation owner: unassigned
+  (all canonical documents are frozen)
+next poll: at the decay branch's validation handoff or first failed gate
+```
+
+**Inverse-power decay validation grant.**  Immutable synchronized candidate
+`1ab32c423531b90ce07db0482f8ad229b2d01db1` and registry request
+`ebfb90d06` are accepted for focused validation.  The isolated source commit
+is `e601015588ad26dd95c860686d5cf1e5ea3bb123`; it changes exactly
+`Lean/FabiusFunction/FabiusDecayComparison.lean` from current-main preimage
+blob `300b7a26b30888c21fbb9301ed939ebfdeecb273` to blob
+`5a407fe366bead3fa2bb8f9d90cac14900fc46bf`, SHA-256
+`50D055DFE92CCB49DB871DC7E0CA0DCCB1A26B8874DDEB4CD0CD413075D8DA9D`.
+Main's intervening document publication changes no Lean path or dependency.
+
+Independent hostile review accepts the five new positive-`beta` APIs, the
+dyadic-rpow and small-argument transfer algebra, all signs and filters, and
+the necessity of `0 < c` and `0 < beta`.  The four existing `beta = 1`
+declaration headers remain textually identical compatibility wrappers.  The
+imports are unchanged and acyclic, no exact or semantic collision is visible,
+and the two direct importers are exactly
+`FabiusQuotientExponentialMismatch` and `PaperKFoldThueMorse`.  This is static
+source evidence only; no Lean/Lake process has yet validated the checkpoint.
+
+Grant this branch EVO's sole Lean/Lake token.  After fetching and rereading
+this board, preserve the exact source blob above and run from the repository
+root exactly these three commands, as separate strictly sequential
+invocations and in this order:
+
+```text
+LEAN_NUM_THREADS=0 LAKE_JOBS=1 lake build +FabiusFunction.FabiusDecayComparison
+LEAN_NUM_THREADS=0 LAKE_JOBS=1 lake build +FabiusFunction.FabiusQuotientExponentialMismatch
+LEAN_NUM_THREADS=0 LAKE_JOBS=1 lake build +FabiusFunction.PaperKFoldThueMorse
+```
+
+Stop after the first nonzero exit.  Do not run a fourth/root/facade target,
+another Lean/Lake process, TeX/PDF, cache clean/reconstruction, or any
+canonical-document operation.  Record exact validation tree/commit, source
+blob, commands, scheduled-job counts, exits, and all diagnostics in only the
+branch registry; push only the feature branch and release the EVO token at the
+handoff.  This grant conveys no source-integration or main-write authority.
+
 ## Checkpoint 2026-08-26 02:33 PDT
 
 ```text
