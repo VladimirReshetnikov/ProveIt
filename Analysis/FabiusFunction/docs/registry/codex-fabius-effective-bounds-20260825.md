@@ -506,3 +506,87 @@ next bounded step: commit and push this registry-only claim without force;
   audit proof robustness and human-readable parity; run no build without an
   explicit host token
 ```
+
+## Source checkpoint: all-degree comparison and positivity across tilts
+
+Source commit `d9598f3b6` implements the advertised one-file tranche.  The
+committed `UnitLaplaceMomentBounds.lean` blob is
+`ac0349d2c96460ddc758a6069fca79fe2359b5c2`, with content SHA-256
+`3F609EA6B099602C3503831919F21A0357746618FDE14887C2B9564A36F22ED9`.
+
+The four new public declarations are exactly:
+
+- `unitLaplaceMoment_tilt_bounds`;
+- `unitLaplaceMoment_pos_iff`;
+- `fabiusLaplaceMoment_tilt_bounds`; and
+- `fabiusLaplaceMoment_pos_all`.
+
+Writing `M_k(u) = unitLaplaceMoment μ u k`, the first theorem proves for
+arbitrary real `s,t`
+
+```text
+exp (min (t - s) 0) * M_k(t) <= M_k(s)
+M_k(s) <= exp (max (t - s) 0) * M_k(t).
+```
+
+Its proof exposes the pointwise identity
+`exp (-s*x) = exp ((t-s)*x) * exp (-t*x)` and integrates the endpoint bounds
+for `(t-s)*x` on `[0,1]`.  The second theorem swaps the lower estimate to show
+that strict positivity is tilt-independent.  The final two declarations
+transport both facts through the weighted-sum probability representation and
+use `fabiusLaplaceMoment F k 0 = halfMoment k > 0` to cover every degree and
+every real Fabius tilt.
+
+The module overview and all four declaration comments display the formulas,
+scope, and hypotheses.  The prose includes the zero/degenerate-measure case
+for the generic positivity equivalence and makes no optimality claim.  Existing
+imports and every prior declaration header are byte-preserved; no wrapper,
+facade, root, or downstream file changed.
+
+Two independent adversarial read-only reviews accept the exponent algebra,
+min/max orientations, `IntegrableOn` witnesses, both `integral_mono_ae`
+directions, positivity swap, probability-law transport, cast of
+`halfMoment_pos`, zero and Dirac measures, every degree, equal and negative
+tilts, names, placement, direct consumer, and human-readable parity.  Static
+checks are green; no compiler process was authorized or launched.
+
+```text
+SYNC Fabius
+branch / worktree / machine: codex/fabius-effective-bounds-20260825 /
+  /home/codex/.codex/worktrees/d6d3/Proofs / codexbox
+fetched main SHA: 03540bab399836bb87e338ce970b21b4c46f5eaa
+HEAD and dirty paths: ebc8b12a8270f8825a3dfab661fcd301a34625df;
+  branch is clean, pushed, and contains current main; only this registry report
+  is dirty
+writing (exact paths): completed source checkpoint writes only
+  Lean/FabiusFunction/UnitLaplaceMomentBounds.lean; this report writes only
+  this branch registry
+expected declarations or document claims: all four advertised declarations
+  are implemented with exact formula-bearing module/declaration docs; every
+  existing header/import remains unchanged; no canonical document claim
+completed commits: 90432f3c6 (registry-first claim), d9598f3b6 (pushed
+  one-file source/proof/documentation checkpoint), and ebc8b12a8 (pushed merge
+  through current main)
+validated (exact command, SHA/state, exit code): git diff --check exited 0;
+  added-public-declaration scan found exactly the four claimed names; forbidden
+  placeholder scan was clean; exact path/header/import comparison was clean;
+  current-main/all-fetched-Fabius-tip public-name/path scan found no collision;
+  two independent static theorem/API/measure/edge-case/doc reviews passed;
+  this is not compiler evidence
+not yet validated: commit d9598f3b6 has not been elaborated; no Lean, Lake,
+  TeX, PDF, or other cache-mutating process ran because neither Lean host token
+  is assigned to this branch
+requested integration or lease: preserve and review exact source commit
+  d9598f3b6, then assign separate serialized builds of
+  +FabiusFunction.UnitLaplaceMomentBounds and its sole direct source importer
+  +FabiusFunction.LaplaceMomentBounds; no document or main-write lease
+conflicts / dependencies: the earlier QuantitativeSaddle source checkpoint
+  24f1eee30 is disjoint and remains frozen pending its own integration/build;
+  the shifted-prefix branch exclusively owns the newly granted canonical
+  documentation paths; all document/facade/root/control-plane paths remain
+  excluded here; only the coordinator may advance main
+next bounded step: commit and push this exact registry report, merge any newer
+  origin/main into the clean preserved feature branch after a full board read,
+  verify both source blobs remain exact, and freeze both unvalidated source
+  checkpoints pending serialized coordinator validation
+```
