@@ -11,7 +11,9 @@ then asymptotically along moving cells.  It includes the exceptional right
 endpoint, natural-floor clamping on the nonpositive half-line, and the
 rescaling that recovers the Fabius function on `[0,1]`.  The exact coefficient
 identification covers every prefix order: at order zero the dyadic cutoff
-admits only index zero, where both sides equal one.
+admits only index zero, where both sides equal one.  Both the finite polynomial
+factorization and its formal-power-series quotient are likewise total at order
+zero, with natural predecessor saturation selecting `p_0`.
 -/
 
 set_option autoImplicit false
@@ -75,32 +77,51 @@ theorem one_sub_X_pow_mul_approximationPolynomialInt (n : ℕ) :
         _ = thueMorseBlockPolynomial (n + 1 + 1) := by
           simpa only using (thueMorseBlockPolynomial_succ (n + 1)).symm
 
-private theorem thueMorseBlock_mul_inv_eq_approximationPolynomialInt (n : ℕ) :
-    (thueMorseBlockPolynomial (n + 1) : PowerSeries ℤ) *
-        (PowerSeries.invOneSubPow ℤ (n + 1)).val =
-      (approximationPolynomialInt n : PowerSeries ℤ) := by
-  have hpoly := one_sub_X_pow_mul_approximationPolynomialInt n
+/-- All-order form of the denominator-cleared finite-product identity.  At
+order zero, natural predecessor saturation selects `p_0` and both sides are
+one. -/
+theorem one_sub_X_pow_mul_approximationPolynomialInt_all (k : ℕ) :
+    (1 - Polynomial.X) ^ k * approximationPolynomialInt (k - 1) =
+      thueMorseBlockPolynomial k := by
+  cases k with
+  | zero =>
+      rw [thueMorseBlockPolynomial_eq_product]
+      simp [approximationPolynomialInt]
+  | succ n =>
+      simpa only [Nat.succ_eq_add_one, Nat.add_sub_cancel] using
+        one_sub_X_pow_mul_approximationPolynomialInt n
+
+/-- Dividing the finite Thue--Morse block by `(1-X)^k` in formal power series
+recovers the integer approximation polynomial at every order, including
+`k = 0`. -/
+theorem thueMorseBlockPolynomial_mul_invOneSubPow_eq_approximationPolynomialInt
+    (k : ℕ) :
+    (thueMorseBlockPolynomial k : PowerSeries ℤ) *
+        (PowerSeries.invOneSubPow ℤ k).val =
+      (approximationPolynomialInt (k - 1) : PowerSeries ℤ) := by
+  have hpoly := one_sub_X_pow_mul_approximationPolynomialInt_all k
   have hcoe :
-      (thueMorseBlockPolynomial (n + 1) : PowerSeries ℤ) =
-        (1 - PowerSeries.X) ^ (n + 1) *
-          (approximationPolynomialInt n : PowerSeries ℤ) := by
+      (thueMorseBlockPolynomial k : PowerSeries ℤ) =
+        (1 - PowerSeries.X) ^ k *
+          (approximationPolynomialInt (k - 1) : PowerSeries ℤ) := by
     rw [← hpoly]
     simp
   rw [hcoe]
   have hunit :
-      (1 - PowerSeries.X) ^ (n + 1) *
-          (PowerSeries.invOneSubPow ℤ (n + 1)).val = 1 := by
+      (1 - PowerSeries.X) ^ k *
+          (PowerSeries.invOneSubPow ℤ k).val = 1 := by
     simpa [PowerSeries.invOneSubPow_zero] using
       (PowerSeries.one_sub_pow_mul_invOneSubPow_val_add_eq_invOneSubPow_val
-        (S := ℤ) (d := 0) (n + 1))
+        (S := ℤ) (d := 0) k)
   calc
-    ((1 - PowerSeries.X) ^ (n + 1) *
-        (approximationPolynomialInt n : PowerSeries ℤ)) *
-        (PowerSeries.invOneSubPow ℤ (n + 1)).val =
-      (approximationPolynomialInt n : PowerSeries ℤ) *
-        ((1 - PowerSeries.X) ^ (n + 1) *
-          (PowerSeries.invOneSubPow ℤ (n + 1)).val) := by ring
-    _ = (approximationPolynomialInt n : PowerSeries ℤ) := by rw [hunit, mul_one]
+    ((1 - PowerSeries.X) ^ k *
+        (approximationPolynomialInt (k - 1) : PowerSeries ℤ)) *
+        (PowerSeries.invOneSubPow ℤ k).val =
+      (approximationPolynomialInt (k - 1) : PowerSeries ℤ) *
+        ((1 - PowerSeries.X) ^ k *
+          (PowerSeries.invOneSubPow ℤ k).val) := by ring
+    _ = (approximationPolynomialInt (k - 1) : PowerSeries ℤ) := by
+      rw [hunit, mul_one]
 
 /-- Below the first omitted dyadic coefficient, the `k`-fold inclusive prefix
 sum is the corresponding coefficient of `p_(k-1)`.  At order zero, natural
@@ -109,27 +130,18 @@ predecessor saturation selects `p_0`, and the cutoff forces the sole index
 theorem iteratedPrefix_eq_approximationPolynomial_coeff_all
     (k m : ℕ) (hm : m < 2 ^ k) :
     iteratedPrefix k m = ((approximationPolynomial (k - 1)).coeff m : ℤ) := by
-  cases k with
-  | zero =>
-      have hm0 : m = 0 := by
-        simpa only [pow_zero, Nat.lt_one_iff] using hm
-      subst m
-      simpa only [Nat.zero_sub, iteratedPrefix_at_zero,
-        approximationPolynomial_zero, Polynomial.coeff_one_zero, Nat.cast_one]
-  | succ n =>
-      rw [show n + 1 - 1 = n by omega]
-      calc
-        iteratedPrefix (n + 1) m =
-            PowerSeries.coeff m
-              ((thueMorseBlockPolynomial (n + 1) : PowerSeries ℤ) *
-                (PowerSeries.invOneSubPow ℤ (n + 1)).val) :=
-          (coeff_thueMorseBlockPolynomial_mul_invOneSubPow_eq_iteratedPrefix
-            (n + 1) (n + 1) m hm).symm
-        _ = PowerSeries.coeff m
-              (approximationPolynomialInt n : PowerSeries ℤ) := by
-            rw [thueMorseBlock_mul_inv_eq_approximationPolynomialInt]
-        _ = ((approximationPolynomial n).coeff m : ℤ) := by
-            simp [approximationPolynomialInt]
+  calc
+    iteratedPrefix k m =
+        PowerSeries.coeff m
+          ((thueMorseBlockPolynomial k : PowerSeries ℤ) *
+            (PowerSeries.invOneSubPow ℤ k).val) :=
+      (coeff_thueMorseBlockPolynomial_mul_invOneSubPow_eq_iteratedPrefix
+        k k m hm).symm
+    _ = PowerSeries.coeff m
+          (approximationPolynomialInt (k - 1) : PowerSeries ℤ) := by
+      rw [thueMorseBlockPolynomial_mul_invOneSubPow_eq_approximationPolynomialInt]
+    _ = ((approximationPolynomial (k - 1)).coeff m : ℤ) := by
+      simp [approximationPolynomialInt]
 
 /-- Positive-order compatibility form of
 `iteratedPrefix_eq_approximationPolynomial_coeff_all`. -/
@@ -204,21 +216,27 @@ noncomputable def correctedPrefixCoefficient (k m : ℕ) : ℝ :=
   (iteratedPrefix k m : ℝ) / (2 : ℝ) ^ ((k - 1).choose 2)
 
 /-- Exact identification of a corrected prefix coefficient with the value of
-the step approximant at the corresponding centered cell. -/
+the step approximant at the corresponding centered cell, at every prefix
+order.  At order zero the dyadic cutoff forces `m = 0`, and both sides equal
+one. -/
+theorem correctedPrefixCoefficient_eq_stepApproximant_all
+    (k m : ℕ) (hm : m < 2 ^ k) :
+    correctedPrefixCoefficient k m =
+      stepApproximant (k - 1) (polynomialAtomLocation (k - 1) m) := by
+  rw [correctedPrefixCoefficient, stepApproximant_at_polynomialAtomLocation,
+    iteratedPrefix_eq_approximationPolynomial_coeff_all k m hm,
+    choose_succ_two, pow_add]
+  push_cast
+  have hpow : (2 : ℝ) ^ (k - 1) ≠ 0 := by positivity
+  field_simp
+
+/-- Positive-order compatibility form of
+`correctedPrefixCoefficient_eq_stepApproximant_all`. -/
 theorem correctedPrefixCoefficient_eq_stepApproximant
     (k m : ℕ) (hk : 0 < k) (hm : m < 2 ^ k) :
     correctedPrefixCoefficient k m =
       stepApproximant (k - 1) (polynomialAtomLocation (k - 1) m) := by
-  cases k with
-  | zero => omega
-  | succ n =>
-      rw [correctedPrefixCoefficient, show n + 1 - 1 = n by omega,
-        stepApproximant_at_polynomialAtomLocation,
-        iteratedPrefix_eq_approximationPolynomial_coeff_all (n + 1) m hm,
-        choose_succ_two, pow_add]
-      push_cast
-      have hpow : (2 : ℝ) ^ n ≠ 0 := by positivity
-      field_simp
+  exact correctedPrefixCoefficient_eq_stepApproximant_all k m hm
 
 /-- The order-`n+1` corrected prefix sample at the left dyadic grid choice
 `floor(2^(n+1) x)`. -/
@@ -321,12 +339,11 @@ theorem correctedPrefixGridSample_eq_stepApproximant
     correctedPrefixGridSample n x =
       stepApproximant n (correctedPrefixCellCenter n x) := by
   rw [correctedPrefixGridSample, correctedPrefixCellCenter]
-  apply correctedPrefixCoefficient_eq_stepApproximant (n + 1)
-  · omega
-  · rw [Nat.floor_lt (mul_nonneg hx0 (by positivity))]
-    rw [Nat.cast_pow, Nat.cast_ofNat]
-    have hpow : (0 : ℝ) < (2 : ℝ) ^ (n + 1) := by positivity
-    nlinarith
+  apply correctedPrefixCoefficient_eq_stepApproximant_all (n + 1)
+  rw [Nat.floor_lt (mul_nonneg hx0 (by positivity))]
+  rw [Nat.cast_pow, Nat.cast_ofNat]
+  have hpow : (0 : ℝ) < (2 : ℝ) ^ (n + 1) := by positivity
+  nlinarith
 
 /-- Pointwise convergence of the step approximants is stable when their
 arguments move toward the evaluation point. The proof uses the common
