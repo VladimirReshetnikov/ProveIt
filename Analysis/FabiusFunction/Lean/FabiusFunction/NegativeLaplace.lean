@@ -540,4 +540,39 @@ theorem exp_negativeLaplaceLog_eq_generatingFunction_neg
   rw [heq] at hconst
   simpa using tendsto_nhds_unique hprod hconst
 
+/-- On the negative real axis, the generating function is strictly positive:
+it is the exponential of the exact negative-Laplace logarithm. -/
+lemma generatingFunction_neg_pos
+    (F : BoundedFabius) (hF : IsFabius F) (r : ℝ) (hr : 0 < r) :
+    0 < generatingFunction F (-r) := by
+  rw [← exp_negativeLaplaceLog_eq_generatingFunction_neg F hF r hr]
+  exact Real.exp_pos _
+
+/-- On the nonnegative real axis, the generating function is at least one.
+
+This estimate uses only the nonnegativity of Rvachev's bump and of the real
+exponential; no functional equation for `F` is needed. -/
+theorem one_le_generatingFunction_of_nonneg
+    (F : BoundedFabius) (x : ℝ) (hx : 0 ≤ x) :
+    1 ≤ generatingFunction F x := by
+  unfold generatingFunction
+  have hIntegral :
+      0 ≤ ∫ t in (0 : ℝ)..1, rvachevUp F t * Real.exp (x * t) :=
+    intervalIntegral.integral_nonneg (by norm_num) fun t _ht =>
+      mul_nonneg (rvachevUp_nonneg F t) (Real.exp_pos _).le
+  exact le_add_of_nonneg_right (mul_nonneg hx hIntegral)
+
+/-- The real generating function is strictly positive everywhere.
+
+For a negative argument this is the exponential-product identity above; for
+a nonnegative argument the defining interval integral is nonnegative, so the
+generating function is at least one. -/
+theorem generatingFunction_pos
+    (F : BoundedFabius) (hF : IsFabius F) (x : ℝ) :
+    0 < generatingFunction F x := by
+  rcases lt_or_ge x 0 with hx | hx
+  · have hneg : 0 < -x := neg_pos.mpr hx
+    simpa only [neg_neg] using generatingFunction_neg_pos F hF (-x) hneg
+  · exact zero_lt_one.trans_le (one_le_generatingFunction_of_nonneg F x hx)
+
 end Fabius

@@ -532,16 +532,6 @@ theorem norm_complexGeneratingFunction_neg_le_real_mul_verticalNorm
         ‖(1 : ℂ) + (θ : ℂ) * Complex.I‖ := by
       field_simp [hr.ne']
 
-/-- For `r > 0` the value `generatingFunction F (-r)` is positive, being the
-exponential of the negative Laplace logarithm.  It is the denominator of the
-normalized bound `norm_complexGeneratingFunction_neg_vertical_div_le`, and is
-reused in `FabiusBromwichInput` and `FabiusSaddleTail`. -/
-lemma generatingFunction_neg_pos
-    (F : BoundedFabius) (hF : IsFabius F) (r : ℝ) (hr : 0 < r) :
-    0 < generatingFunction F (-r) := by
-  rw [← exp_negativeLaplaceLog_eq_generatingFunction_neg F hF r hr]
-  exact Real.exp_pos _
-
 /-- A fully explicit global minor-arc bound.  Extracting `N` dyadic
 factors gives polynomial decay of arbitrary prescribed order; the remaining
 tail costs just one power of the vertical norm. -/
