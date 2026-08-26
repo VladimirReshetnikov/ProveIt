@@ -406,21 +406,6 @@ theorem fabiusInv_isEquivalent_fabiusInverseAsymptoticMain
     with y hy0 hy1
   exact exp_fabiusInverseLogAsymptoticMain_eq hy0 hy1
 
-private theorem tendsto_one_sub_nhdsLT_one_nhdsGT_zero :
-    Tendsto (fun y : ℝ => 1 - y) (𝓝[<] (1 : ℝ)) (𝓝[>] (0 : ℝ)) := by
-  rw [tendsto_nhdsWithin_iff]
-  constructor
-  · have hcontinuous : Continuous (fun y : ℝ => 1 - y) := by fun_prop
-    have hat : Tendsto (fun y : ℝ => 1 - y) (nhds (1 : ℝ))
-        (nhds (1 - (1 : ℝ))) := hcontinuous.continuousAt
-    have hat' : Tendsto (fun y : ℝ => 1 - y) (nhds (1 : ℝ)) (nhds 0) := by
-      simpa only [sub_self] using hat
-    exact hat'.mono_left nhdsWithin_le_nhds
-  · filter_upwards [self_mem_nhdsWithin] with y hy
-    change y < 1 at hy
-    change 0 < 1 - y
-    linarith
-
 /-- **Reflected sharp equivalent at the right endpoint.**
 
 As `y -> 1-`, the distance of the inverse from one is asymptotic to the same
