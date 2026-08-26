@@ -7,7 +7,10 @@ This module upgrades the four-derivative API in `PeriodicRegularity` to
 `C∞`.  The `(k+1)`st derivative of a forward logarithmic summand is encoded
 by a recursively generated polynomial in `z = exp (-s 2^n)`.  On every
 positive half-line these polynomials give a summable superexponential
-majorant, so every derivative of the forward tail may be taken termwise.
+majorant, so every derivative of the forward tail may be taken termwise.  The
+first three quotient polynomials are evaluated explicitly, identifying the
+unified second through fourth derivatives with the formulas from
+`PeriodicRegularity`.
 
 The resulting smoothness of the exact correction and its centered
 normalization is then propagated through the concrete saddle-jet recurrence.
@@ -65,6 +68,52 @@ lemma negativeLaplaceForwardTermDeriv_succ (k : ℕ) (s : ℝ) (n : ℕ) :
     negativeLaplaceForwardTermDeriv_succ]
   simp [forwardDerivativeQuotientPolynomial,
     negativeLaplaceForwardTermFirst]
+
+/-- The first recursively generated forward-derivative quotient polynomial. -/
+@[simp] theorem forwardDerivativeQuotientPolynomial_one :
+    forwardDerivativeQuotientPolynomial 1 = -1 := by
+  rw [show 1 = 0 + 1 by omega, forwardDerivativeQuotientPolynomial]
+  norm_num [forwardDerivativeQuotientPolynomial] <;> ring
+
+/-- The second recursively generated forward-derivative quotient polynomial. -/
+@[simp] theorem forwardDerivativeQuotientPolynomial_two :
+    forwardDerivativeQuotientPolynomial 2 = 1 + X := by
+  rw [show 2 = 1 + 1 by omega, forwardDerivativeQuotientPolynomial]
+  norm_num [forwardDerivativeQuotientPolynomial_one] <;> ring
+
+/-- The third recursively generated forward-derivative quotient polynomial. -/
+@[simp] theorem forwardDerivativeQuotientPolynomial_three :
+    forwardDerivativeQuotientPolynomial 3 = -(1 + C 4 * X + X ^ 2) := by
+  rw [show 3 = 2 + 1 by omega, forwardDerivativeQuotientPolynomial]
+  norm_num [forwardDerivativeQuotientPolynomial_two] <;> ring
+
+/-- The unified second-derivative summand agrees with the explicit one. -/
+@[simp] lemma negativeLaplaceForwardTermDeriv_two (s : ℝ) (n : ℕ) :
+    negativeLaplaceForwardTermDeriv 2 s n =
+      negativeLaplaceForwardTermSecond s n := by
+  simp only [negativeLaplaceForwardTermDeriv,
+    forwardDerivativeQuotientPolynomial_one, eval_neg, eval_one,
+    negativeLaplaceForwardTermSecond] <;>
+  ring
+
+/-- The unified third-derivative summand agrees with the explicit one. -/
+@[simp] lemma negativeLaplaceForwardTermDeriv_three (s : ℝ) (n : ℕ) :
+    negativeLaplaceForwardTermDeriv 3 s n =
+      negativeLaplaceForwardTermThird s n := by
+  simp only [negativeLaplaceForwardTermDeriv,
+    forwardDerivativeQuotientPolynomial_two, eval_add, eval_one, eval_X,
+    negativeLaplaceForwardTermThird] <;>
+  ring
+
+/-- The unified fourth-derivative summand agrees with the explicit one. -/
+@[simp] lemma negativeLaplaceForwardTermDeriv_four (s : ℝ) (n : ℕ) :
+    negativeLaplaceForwardTermDeriv 4 s n =
+      negativeLaplaceForwardTermFourth s n := by
+  simp only [negativeLaplaceForwardTermDeriv,
+    forwardDerivativeQuotientPolynomial_three, eval_neg, eval_add,
+    eval_mul, eval_one, eval_C, eval_X, eval_pow,
+    negativeLaplaceForwardTermFourth] <;>
+  ring
 
 theorem negativeLaplaceForwardTermDeriv_hasDerivAt
     (k : ℕ) (s : ℝ) (hs : 0 < s) (n : ℕ) :
