@@ -925,3 +925,81 @@ conflicts / dependencies: no mathematical/source-path collision was exposed;
 next bounded step: commit and push this failure handoff, notify the coordinator,
   and perform no repair or retry until the board records its disposition
 ```
+
+## EVO proof-repair checkpoint: immutable source published for retry
+
+Coordinator checkpoint `ed8d996b78e9858d1282c7c5622c9b4ac61796da`
+accepted the failed first gate and granted exactly the two proposed
+statement-preserving normalizations plus the original three-gate retry.  The
+branch merged that checkpoint without conflict as `21eb8e11e`, preserving the
+failed source preimage exactly:
+
+```text
+pre-repair FabiusDecayComparison.lean blob:
+  5a407fe366bead3fa2bb8f9d90cac14900fc46bf
+pre-repair SHA-256:
+  50D055DFE92CCB49DB871DC7E0CA0DCCB1A26B8874DDEB4CD0CD413075D8DA9D
+```
+
+Source commit `3d58580ece84aeff4d8e59bd3cd7bfae29d3fb72`
+applies only the authorized proof-normalization delta:
+
+```diff
+@@ fabiusLogProfile_isLittleO_two_rpow_mul
+   · exact Filter.Eventually.of_forall fun t => by
++      change Real.exp (Real.log 2 * β * t) = (2 : ℝ) ^ (β * t)
+       rw [Real.rpow_def_of_pos (by norm_num : (0 : ℝ) < 2)]
+
+@@ tendsto_profile_sub_exp_atBot
+-    simpa only [Function.comp_def] using
++    simpa only [Function.comp_def, id_eq] using
+```
+
+No declaration name, header, hypothesis, import, module prose, other proof, or
+other path changed.  `git diff --check` passed, the commit changes two inserted
+lines and one deleted line, and the immutable repaired source is:
+
+```text
+repaired FabiusDecayComparison.lean blob:
+  bbb6f8f61d30ec738e484b8b012efbf7fdad47ac
+repaired SHA-256:
+  411B46B654A2E8E8A100E01B72D592B344A3F30F4C664EC4D5D26D9967C98377
+```
+
+The source checkpoint was pushed before any compiler retry; remote branch
+verification returned the exact commit `3d58580ec`.  The granted retry remains
+the following three separate strictly sequential invocations, with
+stop-on-first-failure:
+
+```powershell
+$env:LEAN_NUM_THREADS = '0'
+$env:LAKE_JOBS = '1'
+lake build +FabiusFunction.FabiusDecayComparison
+
+lake build +FabiusFunction.FabiusQuotientExponentialMismatch
+
+lake build +FabiusFunction.PaperKFoldThueMorse
+```
+
+No fourth/root/facade target, parallel process, cache clean/reconstruction,
+TeX/PDF operation, canonical-document edit, or main write is authorized.
+
+```text
+SYNC Fabius
+branch / worktree / machine: codex/fabius-inverse-asymptotic-20260825 /
+  C:/Users/vresh/.codex/worktrees/c9a3/ProveIt / EVO (Windows)
+fetched and merged repair-grant SHA:
+  ed8d996b78e9858d1282c7c5622c9b4ac61796da
+immutable repair commit: 3d58580ece84aeff4d8e59bd3cd7bfae29d3fb72
+writing: this registry only; repaired source is frozen at blob bbb6f8f61
+validated: exact authorized source diff, blob/hash, git diff --check, remote
+  source-tip identity, and absence of preexisting Lean/Lake/Elan processes
+not yet validated: repaired defining module and both direct consumers
+requested lease: exercise the already-granted sole EVO Lean/Lake token for
+  exactly the three separate commands above
+conflicts / dependencies: simultaneous codexbox batch is disjoint and runs on
+  another physical host; canonical documents remain frozen
+next bounded step: commit and push this immutable checkpoint, run the three
+  granted gates in order, record every job count/exit/diagnostic, and release
+  the EVO token at the final or first-failure handoff
+```
