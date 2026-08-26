@@ -19,9 +19,10 @@ expected declarations or document claims:
   `exp_neg_mul_two_pow_ne_one`, `hasDerivAt_exp_neg_mul_two_pow`,
   `exp_neg_mul_two_pow_le_of_le`, and
   `one_sub_exp_neg_mul_two_pow_pos`; delete the four byte-identical private
-  copies in `PeriodicSmooth`; drop only the provably unused positivity argument
-  from the scale-monotonicity helper and its private denominator consequence;
-  preserve every existing public signature
+  copies in `PeriodicSmooth`; strengthen the promoted nonunit fact from
+  `0 < s` to the exact `s ≠ 0` condition; drop the provably unused positivity
+  argument from the scale-monotonicity helper and its private denominator
+  consequence; preserve every existing public signature
 completed commits: Lower-Lambert source checkpoint `1da2fde2285e3970267b7dc2561bcd0d897be1b4`
   was integrated by coordinator merge `046946a974467e83244fd3a183a3e084e70d3379`;
   registry handoff `225f5338de9ea92489ed6a2c0c371c6edb4f5db9`
