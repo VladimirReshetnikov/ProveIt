@@ -6,10 +6,10 @@ Every worker reads it from the fetched `origin/main` before writing, merging,
 building, or pushing.  Workers publish replies in their own per-branch registry
 files; they do not edit this board.
 
-## Checkpoint 2026-08-25 21:25 PDT
+## Checkpoint 2026-08-25 21:30 PDT
 
 ```text
-observed main before this directive: b97b7f108ca3c3c0a20e9958ddf672385c7647ab
+observed main before this directive: 2f306d00b477f24457e3fbc1d1de411e8382e51a
 coordinator branch: codex/fabius-coordinator-20260825
 integration mode: feature branches -> coordinator -> fast-forward main
 main write owner: coordinator
@@ -597,6 +597,24 @@ Separate serialized builds of `+FabiusFunction.FabiusSaddleReferenceTail`
 0 without warnings.  The source lease and codexbox token are released;
 `FabiusLambertRates.lean` was not changed by this tranche.
 
+Registry-first claim `0cf2a0df0` advertises a disjoint ordinary follow-up in
+`QuantitativeSaddle.lean`.  It will add
+`norm_normalized_integral_sub_reference_le_of_L1` and
+`norm_normalized_integral_sub_one_le_of_L1`, exposing the exact pointwise
+Gaussian-normalized `L¹` estimate already embedded in the generic filter-level
+proof.  It may refactor the proof of
+`normalized_integral_sub_reference_isBigO_of_L1`, but that theorem's header and
+every other public header must remain exact.  Independent preflight accepts the
+normalization constant, positivity, integrability hypotheses, mass
+specialization, imports, naming, and duplicate scan.  The inactive serialized
+proposal to relocate `norm_standardGaussian` is explicitly excluded, as are
+all imports, facades, root files, and documents.  Tip `0cf2a0df0` is
+registry-only: the worker may implement only this source file plus its own
+registry under the ordinary-work protocol, but receives no build token yet.
+After an immutable reviewed source handoff, the intended gates are
+`+FabiusFunction.QuantitativeSaddle` and then its direct API consumer
+`+FabiusFunction.SaddleAllOrders`.
+
 ### `codex/fabius-shifted-prefix-grid`
 
 The one-file source claim is implemented at checkpoint
@@ -746,7 +764,11 @@ checkpoint and implement exactly those three source paths plus its own
 registry, but it receives no Lean/Lake token and no future coverage, primary,
 walkthrough, TeX, or PDF lease.  After a frozen source handoff and independent
 review, the intended gates are `+FabiusFunction.ThueMorsePrefix` followed by
-`+FabiusFunction.FabiusRawQBinomialFormula`.
+`+FabiusFunction.FabiusRawQBinomialFormula`.  Source commit `d887c8101` was
+published during this coordinator checkpoint and changes exactly the three
+claimed Lean files; it is now frozen under exact source review.  The prior
+registry-only preflight does not validate this implementation, and no build
+token is granted until that review returns.
 
 ### `codex/fabius-exposition-integration`
 
@@ -913,9 +935,11 @@ continuation, and the disjoint coarse eighth-order reference-tail tranche are
 integrated, compiled, and released.
 
 The both-papers product-positivity consolidation and theorem-polish normalized
-Laplace-reflection tranche are also integrated and green.  The shifted-prefix
-branch holds the only current ordinary source lease, for the three-file signed
-dyadic-reflection tranche; no implementation handoff or build token exists yet.
+Laplace-reflection tranche are also integrated and green.  Two current ordinary
+source leases are disjoint: shifted-prefix has frozen source checkpoint
+`d887c8101` for its three-file signed dyadic-reflection tranche under exact
+review, and effective-bounds owns the still-unimplemented one-file exact
+normalized-`L¹` tranche.  Neither has a build token yet.
 
 Theorem-polish source commit `665b6bce` is integrated as `c80f61c90`, repaired
 without statement changes at `6b6757e90`, and accepted after its focused
