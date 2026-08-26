@@ -8,11 +8,9 @@ SYNC Fabius
 branch / worktree / machine: codex/fabius-both-papers /
   /home/codex/src/Proofs / codexbox
 fetched main SHA: fc63c39788ab4c31694e4f57efe05b543165675a
-HEAD and dirty paths: d7c2f7bb20c8e8ed8a0b75e34f18cfacdde302ab;
-  dirty only in this own-registry claim
+HEAD and dirty paths: e91a2828c8046a0fca49d857314e60f7f4ba5da2;
+  dirty only in this own-registry handoff
 writing (exact paths):
-  Analysis/FabiusFunction/Lean/FabiusFunction/DyadicClosedForm.lean;
-  Analysis/FabiusFunction/Lean/FabiusFunction/ThueMorseBinomialLog.lean;
   Analysis/FabiusFunction/docs/registry/codex-fabius-both-papers.md
 expected declarations or document claims:
   `thueMorseSign_xor`, proving that the signed Thue--Morse sequence is a
@@ -20,7 +18,8 @@ expected declarations or document claims:
   `thueMorseBit_xor`, proving that the zero-one Thue--Morse sequence carries
   bitwise xor to bitwise xor; add only the exact upstream Mathlib bitwise import
   and the direct downstream `DyadicClosedForm` import, preserve every existing
-  declaration/import/attribute otherwise, and add no simp attributes
+  declaration/import/attribute otherwise, add no simp attributes, and release
+  both Lean source claims by this handoff
 completed commits: Lower-Lambert source checkpoint `1da2fde2285e3970267b7dc2561bcd0d897be1b4`
   was integrated by coordinator merge `046946a974467e83244fd3a183a3e084e70d3379`;
   registry handoff `225f5338de9ea92489ed6a2c0c371c6edb4f5db9`
@@ -164,6 +163,10 @@ completed commits: Lower-Lambert source checkpoint `1da2fde2285e3970267b7dc2561b
   `ebfcc34d019bc200b3f2f3e17e1f36c0946f599b` freezes that source and releases
   both paths; clean merge `d7c2f7bb20c8e8ed8a0b75e34f18cfacdde302ab`
   incorporates validated main `fc63c39788ab4c31694e4f57efe05b543165675a`;
+  exact Walsh-character claim
+  `171f5ae0a842d21803cd7cfe7ff932aca237b75a` precedes unvalidated source
+  checkpoint `e91a2828c8046a0fca49d857314e60f7f4ba5da2`, which adds exactly the two
+  advertised declarations and two import edges;
 validated (exact command, SHA/state, exit code): coordinator board records
   serialized immutable `lake build +FabiusFunction.LowerLambertW` at
   `4c6bbac41`, exit 0, with its source blob unchanged on current main;
@@ -234,8 +237,14 @@ validated (exact command, SHA/state, exit code): coordinator board records
   affects no later simplification, both surviving `schwartzMap` uses reduce
   definitionally, the endpoint identities are reproved directly at their use
   sites, every surviving declaration/import is unchanged, and diff hygiene is
-  clean
-not yet validated: the private-deletion source checkpoint
+  clean; two independent live-diff reviews of `e91a2828c` accept the exact
+  `Nat.binaryRec` / `Nat.bitCasesOn` binder shapes, all four Boolean xor cases,
+  the redundant `bit false 0` representation, the zero-one sign transfer,
+  mixed natural/integer `omega` closure, import acyclicity, API placement,
+  collision scan, and diff hygiene
+not yet validated: the Walsh-character source checkpoint
+  `e91a2828c8046a0fca49d857314e60f7f4ba5da2` has not been elaborated or built;
+  the private-deletion source checkpoint
   `a72ca3c9290e59b4bf4b3e9c29082d92041cd218` has not been elaborated or built;
   the historical validation-state paragraphs below are
   superseded by the coordinator board and retained only as provenance: the
@@ -338,7 +347,12 @@ requested integration or lease: integrate exact private-deletion checkpoint
   `a72ca3c9290e59b4bf4b3e9c29082d92041cd218` and run separate serialized
   `LAKE_JOBS=1 lake build +FabiusFunction.OriginalUniqueness` and
   `LAKE_JOBS=1 lake build +FabiusFunction.LegendreSeriesConvergence` gates;
-  both source claims are released by that handoff; canonical README,
+  also integrate exact Walsh-character checkpoint
+  `e91a2828c8046a0fca49d857314e60f7f4ba5da2` and run separate serialized
+  `LAKE_JOBS=1 lake build +FabiusFunction.DyadicClosedForm`,
+  `LAKE_JOBS=1 lake build +FabiusFunction.ThueMorseBinomialLog`, and
+  `LAKE_JOBS=1 lake build +FabiusFunction.PaperKFoldThueMorse` gates; all four
+  source claims are released by these handoffs; canonical README,
   AUDIT_FINDINGS, PAPER_COVERAGE, primary, walkthrough, frontier, and
   user-supplied draft paths remain frozen and unclaimed
 conflicts / dependencies: the central-binomial and general-addition Kummer
@@ -409,11 +423,14 @@ conflicts / dependencies: the central-binomial and general-addition Kummer
   registry scans at main `fc63c3978` and every advertised tip find no existing
   Thue--Morse xor theorem or competing claim; the previous signed-reflection
   and historical binomial-log leases are integrated, validated, and released;
-  the newly advertised inverse-asymptotic branch is disjoint
-next bounded step: push this exact Walsh-character claim, then implement and
-  independently review the two declarations without running Lean/Lake;
-  coordinator integration and serialized validation of the private-deletion
-  checkpoint remain separately requested
+  the newly advertised inverse-asymptotic branch is disjoint; exact Walsh
+  result blobs are `ae7b4e553e09163c690b4cc71a3c00a29e6abe48` for
+  `DyadicClosedForm.lean` and `0b86ab776c879af607990c281224168698782520`
+  for `ThueMorseBinomialLog.lean`
+next bounded step: coordinator integration and serialized validation of the
+  private-deletion and Walsh-character checkpoints; continue read-only
+  preflight of the queued Lambert-tail consolidation and diagonal fixed-point
+  classification without claiming either yet
 ```
 
 ## General Kummer carry-cocycle handoff
@@ -469,6 +486,37 @@ LAKE_JOBS=1 lake build +FabiusFunction.LegendreSeriesConvergence
 ```
 
 Both source claims are released by this handoff.
+
+## Thue--Morse Walsh-character handoff
+
+At fetched main `fc63c39788ab4c31694e4f57efe05b543165675a`, source
+checkpoint `e91a2828c8046a0fca49d857314e60f7f4ba5da2` adds
+`thueMorseSign_xor` to `DyadicClosedForm.lean` and `thueMorseBit_xor` to
+`ThueMorseBinomialLog.lean`.  The first proves that the signed sequence is a
+multiplicative character of natural-number bitwise xor; the second proves that
+the zero-one sequence carries bitwise xor to bitwise xor.  These are the exact
+two equations in the supplied Walsh-character theorem.
+
+The source delta is 27 insertions, consisting of the two documented public
+declarations and the exact direct imports they need.  Existing declarations,
+attributes, and imports otherwise remain unchanged, and neither new theorem is
+a simp rule.  The exact result blobs are
+`ae7b4e553e09163c690b4cc71a3c00a29e6abe48` and
+`0b86ab776c879af607990c281224168698782520`.  Two independent live-diff
+reviews accept the binary recursor, all Boolean cases, the zero/noncanonical
+bit cases, zero-one arithmetic transfer, acyclic import edge, API, collision
+scan, and source hygiene.  No Lean/Lake process was run.  The requested
+serialized gates are:
+
+```text
+LAKE_JOBS=1 lake build +FabiusFunction.DyadicClosedForm
+LAKE_JOBS=1 lake build +FabiusFunction.ThueMorseBinomialLog
+LAKE_JOBS=1 lake build +FabiusFunction.PaperKFoldThueMorse
+```
+
+Both source claims are released.  Future frozen-document mapping should mark
+only the two xor equations formalized, not the still-open Walsh-transform,
+autocorrelation, Hamming-sphere, Lucas/Pascal, or carry-law consequences.
 
 ## Negative-Laplace denominator consolidation handoff
 
