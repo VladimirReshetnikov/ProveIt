@@ -358,3 +358,77 @@ next bounded step: commit and push this registry-only claim without force;
   single source file to one author while two agents independently audit the
   final proof and documentation; run no build without an explicit host token
 ```
+
+## Source checkpoint: pointwise normalized `L¹` inequalities
+
+Source commit `24f1eee302bd94a5cc15543cb4b1b6d096baf905` implements the
+advertised one-file tranche.  The committed `QuantitativeSaddle.lean` blob is
+`378617cc9a68c555442cb8a48c088c17c2af35ec`, with content SHA-256
+`E91A83AEE58545499F5CC8C319679959E8CDD857510BBF64EF5A65C2CC172D6B`.
+
+The two new public declarations are exactly:
+
+- `norm_normalized_integral_sub_reference_le_of_L1`; and
+- `norm_normalized_integral_sub_one_le_of_L1`.
+
+The first exposes the explicit pointwise inequality with Gaussian-normalizing
+factor `(sqrt (2 * pi))⁻¹`; the second rewrites the reference term to `1` under
+the standard-mass identity.  Both retain the natural integrability hypotheses,
+which cannot simply be dropped because Lean totalizes nonintegrable Bochner
+integrals to zero.  The existing
+`normalized_integral_sub_reference_isBigO_of_L1` header is byte-identical to
+its parent; its proof is now the arbitrary-filter wrapper around the first
+pointwise result.  No import, downstream file, `norm_standardGaussian`
+declaration, or unrelated API changed.
+
+The module overview and both declaration comments display the whole-line
+integral inequalities, distinguish the arbitrary-reference and standard-mass
+forms, state their hypotheses, and explain their relationship to the existing
+Big-O layer.  They deliberately describe `1 / sqrt (2 * pi)` as the explicit
+normalization factor, not as an independently proved optimal constant.
+
+Two independent read-only reviews accept the norm rewrite chain, complex
+coercions, positive Gaussian mass, `inv_mul_cancel₀` orientation, arbitrary and
+bottom filters, zero rates, Big-O witness multiplication, dependency placement,
+consumer choice, exact old header, names, and human-readable documentation.
+The focused static checks and all-tip scans are green; no build process was
+authorized or launched.
+
+```text
+SYNC Fabius
+branch / worktree / machine: codex/fabius-effective-bounds-20260825 /
+  /home/codex/.codex/worktrees/d6d3/Proofs / codexbox
+fetched main SHA: 2f306d00b477f24457e3fbc1d1de411e8382e51a
+HEAD and dirty paths: 24f1eee302bd94a5cc15543cb4b1b6d096baf905;
+  the one-file Lean source checkpoint is committed, clean, and pushed; only
+  this registry report is dirty
+writing (exact paths): completed source checkpoint writes only
+  Lean/FabiusFunction/QuantitativeSaddle.lean; this report writes only this
+  branch registry
+expected declarations or document claims: both advertised pointwise names are
+  implemented; normalized_integral_sub_reference_isBigO_of_L1 keeps its exact
+  header as a wrapper; module and declaration docs supply human-readable
+  counterparts; no canonical document claim
+completed commits: 0cf2a0df0 (pushed registry-first claim) and 24f1eee30
+  (pushed one-file source/proof/refactor/documentation checkpoint)
+validated (exact command, SHA/state, exit code): git diff --check exited 0;
+  exact old-header comparison exited 0; forbidden-placeholder scan was clean;
+  current-main/all-fetched-Fabius-tip public-name/path scan found no collision;
+  two independent static theorem/API/filter/dependency/doc reviews passed;
+  this is not compiler evidence
+not yet validated: commit 24f1eee30 has not been elaborated; no Lean, Lake,
+  TeX, PDF, or other cache-mutating process ran because neither host token is
+  assigned to this branch
+requested integration or lease: preserve and review exact source commit
+  24f1eee30, then assign separate serialized builds of
+  +FabiusFunction.QuantitativeSaddle and its direct API consumer
+  +FabiusFunction.SaddleAllOrders; no document or main-write lease
+conflicts / dependencies: QuantitativeSaddle.lean had the exact current-main
+  preimage at claim time; newer normalized-reflection, product-positivity, and
+  signed dyadic-reflection paths are disjoint; the inactive
+  norm_standardGaussian relocation and all canonical-document/facade/root/
+  control-plane paths remain excluded; only the coordinator may advance main
+next bounded step: commit and push this exact registry report, merge current
+  origin/main into the clean preserved feature branch, verify the source blob
+  is unchanged, and freeze the tranche pending serialized validation
+```
