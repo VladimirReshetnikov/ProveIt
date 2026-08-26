@@ -8,10 +8,9 @@ SYNC Fabius
 branch / worktree / machine: codex/fabius-both-papers /
   /home/codex/src/Proofs / codexbox
 fetched main SHA: c9eac55c5a9e10723cea061393d192e7a1134392
-HEAD and dirty paths: c41a522839850a699f7de8a2f07e15180ae45f7d;
-  clean before this ordinary one-source claim
+HEAD and dirty paths: 64a95d363cec9647cdd6c93bd63bba1d1d5e11da;
+  clean before this registry-only validation handoff
 writing (exact paths):
-  Lean/FabiusFunction/FourierProduct.lean;
   docs/registry/codex-fabius-both-papers.md
 expected declarations or document claims:
   `complexSinc_eq_zero_iff`, identifying the zeros of removable complex sinc
@@ -58,7 +57,9 @@ completed commits: Lower-Lambert source checkpoint `1da2fde2285e3970267b7dc2561b
   `c7c2321bc6ea7292996b40dd333d4d148f7e75d5`, whose net source delta is 40
   insertions and 58 deletions; clean merge
   `c41a522839850a699f7de8a2f07e15180ae45f7d` incorporates validated current
-  main `c9eac55c5`
+  main `c9eac55c5`; exact complex-zero claim `446911e31` precedes unvalidated
+  source checkpoint `64a95d363cec9647cdd6c93bd63bba1d1d5e11da`, which adds the three
+  public iff theorems and one private dyadic-factor bridge
 validated (exact command, SHA/state, exit code): coordinator board records
   serialized immutable `lake build +FabiusFunction.LowerLambertW` at
   `4c6bbac41`, exit 0, with its source blob unchanged on current main;
@@ -89,7 +90,11 @@ not yet validated: the moved dyadic theorem body was already compiled in its
   the periodic consolidation at `c7c2321bc` has two independent complete static
   reviews covering all call sites, theorem hypotheses, import/facade exposure,
   collisions, markers, and diff hygiene, but neither edited module has been
-  elaborated or built in this production context
+  elaborated or built in this production context; the complex zero-locus
+  checkpoint at `64a95d363` has three independent static reviews covering the
+  sinc simplification, dyadic cancellation, integer/complex coercions,
+  infinite-product nonvanishing API, theorem order, collisions, imports,
+  facade exposure, and source hygiene, but has not been elaborated or built
 requested integration or lease: the dyadic relocation needs serialized
   `+FabiusFunction.GlobalDyadic`
   and `+FabiusFunction.OriginalPaperSupplement` validation; this new ordinary
@@ -101,6 +106,9 @@ requested integration or lease: the dyadic relocation needs serialized
   the periodic checkpoint needs serialized `+FabiusFunction.PeriodicSmooth`,
   which transitively covers its upstream `PeriodicRegularity` dependency; both
   periodic source writing claims are released by this handoff;
+  the Fourier zero-locus checkpoint needs serialized
+  `+FabiusFunction.FourierProduct`, and its source writing claim is released by
+  this handoff;
   serialized README/primary/walkthrough/coverage paths are deliberately not
   claimed yet
 conflicts / dependencies: all advertised Fabius heads and their registries
@@ -130,10 +138,9 @@ conflicts / dependencies: all advertised Fabius heads and their registries
   claim on `FourierProduct.lean`; the current file already contains precisely
   the sinc zero criterion, absolute product convergence, and integer-zero facts
   needed by the proposed proof
-next bounded step: push this exact one-source claim, implement the complete
-  complex zero-locus family without running a build, obtain independent static
-  review, and hand it off for serialized `+FabiusFunction.FourierProduct`
-  validation
+next bounded step: push this registry handoff, await serialized validation of
+  the independent source checkpoints, and audit another unclaimed ordinary
+  theorem or structural simplification
 ```
 
 ## Coordinator natural-knot integration disposition
