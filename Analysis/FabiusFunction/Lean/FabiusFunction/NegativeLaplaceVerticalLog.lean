@@ -62,8 +62,7 @@ lemma negativeLaplaceDyadicFactor_ne_zero_of_re_ne_zero
   have hza : (z / (a : ℂ)).re ≠ 0 := by
     rw [Complex.div_re]
     norm_num
-    exact div_ne_zero (mul_ne_zero hz ha'.ne')
-      (mul_ne_zero ha'.ne' ha'.ne')
+    exact ⟨hz, ha'.ne'⟩
   simpa [a] using hza
 
 /-- Every dyadically rescaled negative-Laplace factor is nonzero in the right half-plane. -/
