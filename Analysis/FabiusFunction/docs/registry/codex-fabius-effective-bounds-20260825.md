@@ -3841,3 +3841,85 @@ next bounded step: push this handoff, refresh main/board, then continue on a
   disjoint cold path such as the audited Thue--Morse core-bound cleanup or Bose
   arbitrary-cutoff negativity generalization
 ```
+
+## Claim: Thue--Morse core power-bound cleanup and strict source parity
+
+Claimed at 2026-08-26 03:35 PDT from merged branch checkpoint
+`47b1c26af`, after refreshing `origin/main` to integrated tip `f8464b2d4`.
+This ordinary source claim owns exactly:
+
+- `Lean/FabiusFunction/ThueMorsePrefix.lean`;
+- `Lean/FabiusFunction/ThueMorseGenerating.lean`; and
+- this branch registry for claim/handoff only.
+
+In `ThueMorsePrefix.lean`, delete the private inductive reproofs
+`self_le_two_pow` and `succ_le_two_pow`.  Replace the three weak-bound uses by
+`(Nat.lt_two_pow_self (n := r)).le` and the sole strict-bound use by
+`Nat.lt_two_pow_self (n := r)`.  The core theorem has the exact required
+directions even at `r = 0`; no import is needed.  No public declaration,
+formula, header, attribute, proof outside those four bound facts, or consumer
+changes.
+
+Complete strict attribute-aware source documentation at the same time:
+
+- Prefix receives adjacent formula comments for `iteratedPrefix_zero`,
+  `iteratedPrefix_succ`, and `iteratedPrefix_at_zero`, becoming 23/23;
+- Generating receives comments for `thueMorseBlockPolynomial_succ`,
+  attributed `coeff_thueMorseSeries`, `coeff_thueMorseBlockPolynomial`,
+  attributed `coeff_iteratedPrefixSeries`, and
+  `one_lt_paperPrefixGridValue_endpoint_error`, becoming 43/43.
+
+The repository lexical audit currently reports only one and three gaps because
+it skips same-line attributed declarations; the strict claim deliberately
+closes all three and five.  Existing module guides are already complete and
+remain unchanged.  No new public API, import, downstream source, facade, audit
+script, canonical document, or root path is in scope.
+
+Exact current/main preimages are:
+
+- Prefix blob `74e7f290a3406dd465e21a811d7eeef77957a603`, SHA-256
+  `6CEF9E0E3CDEB1091ABB0AA4676389D2E2E1962BA8C9AB3804D70126EC8E2EBA`;
+- Generating blob `95149b0e694c96011e689d35a762429c5b41cf9c`, SHA-256
+  `73D76CE7B5161E3592119F93E7D2E69CCC13164FBCF550C9724E0E5A524A329C`.
+
+The authoritative 120-ref path scan finds many expected historical blobs but
+no competing implementation or live reservation.  Current source and
+origin/main match exactly.  Registry references are historical integrated/
+released shifted-grid, finite-block, and real-affine work; this branch's own
+earlier affine claim explicitly excluded the two private helpers and its
+handoff released the path.  `AUDIT_FINDINGS.md` already identifies this exact
+core-lemma deduplication but is frozen analysis debt, not a live lease.  No
+external source uses either private helper.
+
+No Lean, Lake, TeX, PDF, cache, or main-write token is claimed.  Requested
+later serialized gates are `+FabiusFunction.ThueMorsePrefix`, then
+`+FabiusFunction.ThueMorseGenerating`; no broader gate is required.
+
+```text
+SYNC Fabius
+branch / worktree / machine: codex/fabius-effective-bounds-20260825 /
+  /home/codex/.codex/worktrees/d6d3/Proofs / codexbox
+fetched main SHA: f8464b2d4a2aa250d716dabbb435d269c759bba9
+HEAD and dirty paths: 47b1c26af; only this branch registry is being written
+  for the registry-first claim
+writing (exact paths): the two Lean sources above after this claim is pushed;
+  this branch registry for claim/handoff
+expected declarations or document claims: delete two private reproofs, use
+  Nat.lt_two_pow_self at four sites, strict Prefix 23/23 and Generating 43/43;
+  no public API/import change
+completed commits: merged current origin/main as 47b1c26af; source not yet
+  authored
+validated (exact command, SHA/state, exit code): exact current/main preimages
+  match; 120-ref path scan and full registry scan find no competing/live work;
+  theorem directions, four use-site types, strict doc inventory, imports and
+  consumers have static audit approval
+not yet validated: no live source diff, exact-byte hostile review, or
+  Lean/Lake compiler evidence exists yet
+requested integration or lease: ordinary exact two-path claim only; later
+  request two serialized focused builds and coordinator selective integration
+conflicts / dependencies: all coordinator paths/tokens are released or
+  disjoint; sources will be immutable after handoff; only coordinator advances
+  main or assigns Lean/Lake
+next bounded step: commit/push this claim, reread registries, author only the
+  two claimed files, freeze for independent review, then checkpoint/handoff
+```
