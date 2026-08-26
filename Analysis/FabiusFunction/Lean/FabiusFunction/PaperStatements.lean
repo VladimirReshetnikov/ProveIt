@@ -425,16 +425,9 @@ theorem theorem_seven (n : ℕ) :
   have hodd := oddDoubleFactorial_mul_Icc n
   have hoddRat := congrArg (fun z : ℕ => (z : ℚ)) hodd
   push_cast at hoddRat
-  have hoddPos : 0 < oddDoubleFactorial (n + 1) := by
-    unfold oddDoubleFactorial
-    apply Finset.prod_pos
-    intro j hj
-    omega
-  have hevenPos : 0 < evenMersenneProduct n := by
-    unfold evenMersenneProduct
-    apply Finset.prod_pos
-    intro j hj
-    exact Nat.sub_pos_of_lt (Nat.one_lt_pow (by omega) (by omega))
+  have hoddPos : 0 < oddDoubleFactorial (n + 1) :=
+    oddDoubleFactorial_pos (n + 1)
+  have hevenPos : 0 < evenMersenneProduct n := evenMersenneProduct_pos n
   have hden :
       (((oddDoubleFactorial (n + 1) * evenMersenneProduct n : ℕ) : ℚ)) ≠ 0 := by
     exact_mod_cast (Nat.ne_of_gt (Nat.mul_pos hoddPos hevenPos))
@@ -483,15 +476,9 @@ theorem reshetnikov_even_eq_sum (n : ℕ) (hn : 1 ≤ n) :
   have hodd := oddDoubleFactorial_mul_interval (k + 1) (2 * n) (by omega)
   have heven := evenMersenneProduct_mul_interval k n hk_le
   have hdenPos :
-      0 < oddDoubleFactorial (k + 1) * evenMersenneProduct k := by
-    unfold oddDoubleFactorial evenMersenneProduct
-    apply Nat.mul_pos
-    · apply Finset.prod_pos
-      intro j hj
-      omega
-    · apply Finset.prod_pos
-      intro j hj
-      exact Nat.sub_pos_of_lt (Nat.one_lt_pow (by omega) (by omega))
+      0 < oddDoubleFactorial (k + 1) * evenMersenneProduct k :=
+    Nat.mul_pos (oddDoubleFactorial_pos (k + 1))
+      (evenMersenneProduct_pos k)
   have hden :
       (((oddDoubleFactorial (k + 1) * evenMersenneProduct k : ℕ) : ℚ)) ≠ 0 := by
     exact_mod_cast (Nat.ne_of_gt hdenPos)
@@ -566,16 +553,9 @@ theorem theorem_nine (n : ℕ) (hn : 1 ≤ n) :
       (Nat.coprime_two_right.mpr hdenOdd).pow_right (2 * m)
     have hden : (reshetnikov (2 * m)).den = 1 :=
       hcoprime.eq_one_of_dvd hdenDvd
-    have hoddPos : 0 < oddDoubleFactorial (2 * m) := by
-      unfold oddDoubleFactorial
-      apply Finset.prod_pos
-      intro j hj
-      omega
-    have hevenPos : 0 < evenMersenneProduct m := by
-      unfold evenMersenneProduct
-      apply Finset.prod_pos
-      intro j hj
-      exact Nat.sub_pos_of_lt (Nat.one_lt_pow (by omega) (by omega))
+    have hoddPos : 0 < oddDoubleFactorial (2 * m) :=
+      oddDoubleFactorial_pos (2 * m)
+    have hevenPos : 0 < evenMersenneProduct m := evenMersenneProduct_pos m
     have hvaluePos : 0 < reshetnikov (2 * m) := by
       rw [proposition_six (2 * m) (by omega)]
       rw [show (2 * m) / 2 = m by omega]
