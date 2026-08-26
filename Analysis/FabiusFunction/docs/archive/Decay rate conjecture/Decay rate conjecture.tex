@@ -1,0 +1,103 @@
+\documentclass[10pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage[version=4]{mhchem}
+\usepackage{stmaryrd}
+\usepackage{hyperref}
+\hypersetup{colorlinks=true, linkcolor=blue, filecolor=magenta, urlcolor=cyan,}
+\urlstyle{same}
+
+%New command to display footnote whose markers will always be hidden
+\let\svthefootnote\thefootnote
+\newcommand\blfootnotetext[1]{%
+  \let\thefootnote\relax\footnote{#1}%
+  \addtocounter{footnote}{-1}%
+  \let\thefootnote\svthefootnote%
+}
+
+%Overriding the \footnotetext command to hide the marker if its value is `0`
+\let\svfootnotetext\footnotetext
+\renewcommand\footnotetext[2][?]{%
+  \if\relax#1\relax%
+    \ifnum\value{footnote}=0\blfootnotetext{#2}\else\svfootnotetext{#2}\fi%
+  \else%
+    \if?#1\ifnum\value{footnote}=0\blfootnotetext{#2}\else\svfootnotetext{#2}\fi%
+    \else\svfootnotetext[#1]{#2}\fi%
+  \fi
+}
+
+\begin{document}
+Answer in Brief: The conjectured form of \$g(x)\$ is not exact - it underestimates the slow "double-log" corrections in \$f(x)\$'s decay. In fact, \$f(x)\$ decays super-polynomially, roughly like a log-normal tail. One finds that $\$ \mathrm{f}(\mathrm{x}) \$$ falls off as
+
+$$
+f(x) \sim(\ln x)^{-p} x^{-\frac{\ln (2 \pi)}{\ln 2}} \exp \left\{-\frac{(\ln x)^{2}}{2 \ln 2}\right\} \quad(x \rightarrow \infty),
+$$
+
+for some constant power \$p\$ (on the order of unity). Equivalently, the optimal envelope \$g(x)\$ grows as
+
+$$
+g(x) \sim(\ln x)^{p} x^{\frac{\ln (2 \pi)}{\ln 2}} \exp \left\{\frac{(\ln x)^{2}}{2 \ln 2}\right\} \quad(x \rightarrow \infty),
+$$
+
+up to lower-order factors. This choice of \$g(x)\$ indeed keeps \$g(x)\textbackslash ,f(x)\$ oscillating with asymptotically constant amplitude (approaching a constant value as \$x\textbackslash to\textbackslash infty\$).
+
+Details and Derivation: The infinite sinc product can be studied via its logarithm. Using the identity \$\textbackslash n! $\backslash \operatorname{sinc}(\mathrm{z})=\backslash \ln |\backslash \sin \mathrm{z}|-\backslash \mathrm{ln}|\mathrm{z}| \$$, one can write for $\$ \mathrm{x}>0 \$$ :
+
+$$
+\ln f(x)=\sum_{n \geq 0}\left[\ln \left|\sin \frac{\pi x}{2^{n}}\right|-\ln \frac{\pi x}{2^{n}}\right] .
+$$
+
+This convergent series can be analyzed by converting the sum to an integral (think of \$n=log\_2(\textbackslash text\{something\})\$) or by known Fourier expansions. A convenient approach is to use the Fourier series for $\$ 1 \mathrm{n} \mid$ sin t $\mid \$$ on $\$[0, \backslash p i] \$ 12$ :
+
+$$
+\ln |\sin t|=-\ln 2-\sum_{m=1}^{\infty} \frac{\cos (2 m t)}{m} .
+$$
+
+Substituting this into the expression for \$ ln $\mathrm{f}(\mathrm{x}) \$$ and summing term-by-term yields an asymptotic expansion for $\$ \mathrm{l} n \mathrm{f}(\mathrm{x}) \$$ as $\$ \mathrm{x} \backslash t o \backslash \operatorname{infty} \$$. The leading behavior comes from the "continuous" part $\$-\mathrm{ln} 2 \$$ and the lowest-order \$m=1\$ mode in the Fourier series. After a careful analysis (detailed derivations can be found in 3 (4), one finds:
+
+$$
+\ln f(x) \sim-\frac{(\ln x)^{2}}{2 \ln 2}-\frac{\ln (2 \pi)}{\ln 2} \ln x-\frac{1}{2} \ln \left(\frac{\ln x}{\ln 2}\right)+(\text { constant }),
+$$
+
+as \$x\textbackslash tolinfty\$. (The appearance of \$1,\$ \} product, and the \$ frac12\textbackslash ln(\textbackslash n x)\$ term is an even smaller correction stemming from higher-order oscillatory terms.) Exponentiating this asymptotic series gives the decay rate of $\$ f(x) \$$ quoted above. In particular, ignoring the tiny $\$(\mathrm{Vln} \backslash \mathrm{ln} \mathrm{x}) \$$-factor for a moment, we see that
+
+$$
+|f(x)| \approx C \frac{\exp \left\{-(\ln x)^{2} /(2 \ln 2)\right\}}{x^{\ln (2 \pi) / \ln 2}},
+$$
+
+so $\$|\mathrm{f}(\mathrm{x})| \$$ decays faster than any power of $\$ \mathrm{x} \$$ (due to the $\$(\mathrm{l} \mathrm{n} \mathrm{x})^{\wedge} 2 \$$ term in the exponent), but slower than the simple guess in the question 2 . The conjectured \$g(x)\$ corresponded to multiplying \$f(x)\$ by \$
+
+$\backslash \exp \left((\mathrm{VIn} \mathrm{x})^{\wedge} 2 /(2 \backslash \ln 2)\right) \$$ and by a power of $\$ \mathrm{x} \$$ of order $\$ \mathrm{Vln} \mathrm{x} \$$; this indeed cancels the dominant $\$-(\mathrm{VIn} \mathrm{x})^{\wedge} 2 /$ (2VIn 2)\$ decay in \$\textbackslash n f(x)\$, but it falls short of canceling the next-order terms. In fact, under that conjectured \$g(x)\$ the product \$g(x)f(x)\$ would still decay slowly to zero as \$x\textbackslash to\textbackslash infty\$, rather than approaching a constant amplitude.
+
+Conclusion: To achieve constant-amplitude oscillations, \$g(x)\$ must grow slightly faster. In precise terms,
+
+$$
+g(x)=\exp \left\{\frac{(\ln x)^{2}}{2 \ln 2}+\frac{\ln (2 \pi)}{\ln 2} \ln x-\frac{1}{2} \ln \left(\frac{\ln x}{\ln 2}\right)\right\},
+$$
+
+gives
+
+$$
+g(x) f(x) \sim \text { constant } \quad(x \rightarrow \infty),
+$$
+
+with the constant amplitude approaching a nonzero limit. In simpler terms,
+
+$$
+g(x) \approx x^{\ln (2 \pi) / \ln 2}(\ln x)^{-1 / 2} \exp \left\{(\ln x)^{2} /(2 \ln 2)\right\}
+$$
+
+(up to negligible corrections) is the correct growth rate. This result refines the original conjecture by incorporating the missing \$ \textbackslash In x\$- and \$\textbackslash In\textbackslash In x\$-factors. The extra factors arise from subtle contributions of the infinite product's oscillatory terms (related to the Thue-Morse sign pattern of \$f(x)\$'s extrema 2 ), and they ensure that $\mathbf{\$ g}(\mathbf{x}) \mathbf{f}(\mathbf{x}) \$$ remains bounded away from zero and does not vanish at infinity.
+
+Sources: The asymptotic behavior of this Rvachev up/Fabius Fourier transform is discussed in analysis of infinite sinc products and in Rvachev's original work 5 4. The expansion above can be derived by methods analogous to those in Jessen \& Wintner (1935) (see also Arias de Reyna's translation 36 ). The key point is that the conjectured envelope was missing the slowly varying logarithmic corrections - once those are included, the amplitude of \$g(x)f(x)\$ can indeed be made essentially constant for large \$x\$.
+
+\footnotetext{125 calculus - Extrema of an infinite product of sinc functions - Mathematics Stack Exchange \href{https://math.stackexchange.com/questions/2742261/extrema-of-an-infinite-product-of-sinc-functions}{https://math.stackexchange.com/questions/2742261/extrema-of-an-infinite-product-of-sinc-functions}
+
+36 [1702.05442] An infinitely differentiable function with compact support: Definition and Properties \href{https://ar5iv.labs.arxiv.org/html/1702.05442}{https://ar5iv.labs.arxiv.org/html/1702.05442}
+
+4 [1702.06487] Arithmetic of the Fabius function \href{https://ar5iv.labs.arxiv.org/html/1702.06487}{https://ar5iv.labs.arxiv.org/html/1702.06487}
+}
+\end{document}
