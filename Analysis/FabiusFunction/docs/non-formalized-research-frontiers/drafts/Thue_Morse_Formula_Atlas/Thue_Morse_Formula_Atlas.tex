@@ -2194,6 +2194,20 @@ sequence's Artin--Schreier equation.  This suggests a reusable discovery
 method: search for integral algebraic lifts of finite-field automatic series.
 \end{remark}
 
+\emph{Formal versions.}  The uniqueness step is
+\lean{Fabius.artinSchreier\_solution\_unique}
+(\path{ThueMorseArtinSchreier.lean}): the difference of two
+zero-constant solutions factors as \((1+z)^2D\bigl((1+z)D+1\bigr)=0\)
+in the integral domain \(\Ftwo[[z]]\), and the second factor has
+constant term one.  The parity statement \eqref{eq:integer-lift-parity}
+is formal in conditional-universal form: \emph{any} integer sequence
+with \(c_0=0\) whose generating series satisfies
+\eqref{eq:integer-lift-algebraic} has Thue--Morse parity
+(\lean{Fabius.integerLift\_parity},
+\lean{Fabius.integerLift\_modEq}).  The construction of the specific
+solution \eqref{eq:integer-lift-recurrence}--\eqref{eq:integer-lift-closed}
+and the equivalence of its three descriptions remain unformalized.
+
 \section[Natural boundary and Hankel rigidity]{Natural boundary, Hankel determinants, and Diophantine consequences}
 \label{sec:boundary-hankel}
 
@@ -3798,6 +3812,21 @@ frequency exactly \(\tfrac12\): at dyadic lengths this is the exact balance
 \(A(2q)=q\) of \eqref{eq:ones-prefix-cases}, and general lengths deviate by
 at most one by \cref{cor:interval-discrepancy}.
 
+\emph{Formal versions.}  \path{ThueMorseRecurrence.lean} proves
+\cref{prop:uniform-recurrence} in a form sharper than stated: the
+recurrence bound is explicit and \emph{linear} --- a factor of length
+\(\ell\le2^k\) occurs in every window of length \(20\cdot2^k\)
+(\lean{Fabius.thueMorseBit\_uniformly\_recurrent}), so every factor of
+length \(\ell\) recurs with gap at most \(40\ell\).  The route is
+index arithmetic rather than supertiles: the full block-concatenation
+laws \(\wt(q\cdot2^k+r)=\wt(q)+\wt(r)\) and
+\(\tau(q\cdot2^k+r)=\tau(q)\oplus\tau(r)\)
+(\lean{Fabius.binaryWeight\_block\_concat},
+\lean{Fabius.thueMorseBit\_block\_concat}) reduce any window to its
+offset and two block bits, and all four two-letter factors occur in
+every window of seventeen letters
+(\lean{Fabius.exists\_thueMorseBit\_pair}).
+
 \subsection{Aperiodicity}
 
 \begin{proposition}[No eventual period]
@@ -4602,7 +4631,7 @@ valuation, carry, and Pascal-row formulas remain genuinely base-two features.
 \subsection{Formalized modules (August 2026)}
 \label{sec:formalized-modules}
 
-The first tranches of the formalization now exist as seventeen compiled Lean
+The first tranches of the formalization now exist as eighteen compiled Lean
 modules in \repo{}, complementing the corpus modules
 (\path{Parity.lean}, \path{TwoAdic.lean}, \path{ThueMorsePrefix.lean},
 \path{ThueMorseGenerating.lean}, \path{ThueMorseExponential.lean},
@@ -4633,6 +4662,7 @@ Module & Contents \\
 \path{ThueMorseMixedDifference.lean} & The dyadic mixed-difference operator and the finite-difference factorization for arbitrary functions from an additive monoid into an additive group, with the powerset expansion. \\
 \path{ThueMorseAutocorrelation.lean} & Finite autocorrelation recursion in exact integer form, zero-shift value, closed values at shifts one and two. \\
 \path{ThueMorseOverlapFree.lean} & Thue's overlap-freeness theorem with cube-freeness, the attained critical exponent two, and constructive complement and reversal closure of the factor language. \\
+\path{ThueMorseRecurrence.lean} & Full block-concatenation laws for weight and bit, all two-letter factors in every seventeen-letter window, uniform recurrence with an explicit linear bound. \\
 \bottomrule
 \end{tabularx}
 \end{center}
