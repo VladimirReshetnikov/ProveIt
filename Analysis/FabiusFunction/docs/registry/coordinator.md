@@ -6,17 +6,17 @@ Every worker reads it from the fetched `origin/main` before writing, merging,
 building, or pushing.  Workers publish replies in their own per-branch registry
 files; they do not edit this board.
 
-## Checkpoint 2026-08-25 18:29 PDT
+## Checkpoint 2026-08-25 18:44 PDT
 
 ```text
-observed main before this directive: 15b922326a51e47e2462f512f5c68c8b70b3816a
+observed main before this directive: ba2be1b782b8aa77979c40eb5c43a1b102e20b81
 coordinator branch: codex/fabius-coordinator-20260825
 integration mode: feature branches -> coordinator -> fast-forward main
 main write owner: coordinator
 codexbox build owner: coordinator (IDLE -- reserved, no worker target)
-EVO build owner: none (frontier TeX stage awaits source-review disposition)
+EVO build owner: codex/fabius-exposition-integration (frontier pdflatex only)
 documentation owner: codex/fabius-exposition-integration (frontier paths only)
-next poll: after the frontier correction checkpoint
+next poll: after the three-pass frontier PDF/evidence checkpoint
 ```
 
 The previously approved curvature, generalizations, lower-Lambert,
@@ -143,6 +143,28 @@ forbidden-declaration scan are clean.  The `GlobalExtension.lean` lease is
 released.  The branch may begin another ordinary nonoverlapping claim, but
 must still receive a host token before running any validation process.
 
+Clean feature tip `c41a52283` now publishes four additional, explicitly
+unvalidated source units on top of current main:
+
+- dyadic-cast relocation `09b360531` across
+  `Lean/FabiusFunction/GlobalDyadic.lean` and
+  `Lean/FabiusFunction/OriginalPaperSupplement.lean`;
+- strict Gamma--zeta sign API `ec23d663f` / `991add419` in
+  `Lean/FabiusFunction/BoseFinitePartIntegral.lean`;
+- inverse-power cast bridge `9458b1949` in
+  `Lean/FabiusFunction/DyadicAnalytic.lean`;
+- periodic dyadic-exponential helper consolidation `c7c2321bc` across
+  `Lean/FabiusFunction/PeriodicRegularity.lean` and
+  `Lean/FabiusFunction/PeriodicSmooth.lean`.
+
+`GlobalExtension.lean` also has a doc-comment-only terminology edit.  These
+seven source paths and the branch registry are frozen at `c41a52283` pending
+independent review and coordinator-held codexbox validation.  No worker may
+claim or modify them, and this branch must not expand the tranche or run Lean,
+Lake, TeX, or PDF tools.  It may advertise unrelated ordinary work only after
+the frozen tip is preserved and the new claim is disjoint from every listed
+path.
+
 ### `codex/fabius-theorem-polish-20260825`
 
 The prior task is complete and its complete source tranche is integrated on
@@ -237,45 +259,39 @@ and expired current-tree/page-count statements are now labeled explicitly.
 - its matching `.pdf`; and
 - `docs/registry/codex-fabius-exposition-integration.md`.
 
-Stage-one source checkpoint `78260751f` is pushed, and feature tip `4034e2e00`
-records a clean synchronization with `e18f5d0b0`.  Its net delta is exactly the
-frontier README/TeX and the branch registry; the committed PDF is unchanged.
-Independent audit finds the mathematical/formalization boundary, six-part
-structure, donor clusters, provenance, labels/references/citations, and gap
-register green, but withholds the PDF grant for exactly four narrow TeX
-corrections:
+Stage-one source checkpoint `78260751f` and the audit correction
+`23daad436` are pushed; feature tip `e1c087738` is clean and synchronized with
+current main `ba2be1b78`.  Its net delta remains exactly the frontier
+README/TeX and the branch registry; the committed PDF blob is still identical
+to main.  Independent audit accepts the mathematical/formalization boundary,
+six-part structure, donor clusters, provenance, labels/references/citations,
+gap register, and all four required corrections.  In particular the corrected
+TeX SHA-256 is
+`8562CF91CDB48132C1DBF127B80886D9EFF8D46057805A200B4579A42E054546`;
+the running-head reset occurs once, the removed probability-product label
+occurs zero times, both canonical labels occur once, and the two open-ledger
+implementation routes are restored.  Static audit reports 986 unique labels,
+625 resolved references, 52 unique bibliography keys, 20 resolved citation
+targets, 1201 balanced environment pairs, 20 candidates, 20 obligations, and
+seven parts; `git diff --check` is green and no path is unmerged.
 
-1. Immediately before `\section*{Lean object crosswalk---inputs, not
-   certification}`, reset the running head with a short mark such as
-   `\markboth{Lean object crosswalk}{}`.
-2. Remove the repeated donor-only display labeled
-   `integration:eq:probability-product-handoff`; replace it with prose
-   cross-references to `integration:eq:law-M-identification` and
-   `dyadicasym:eq:B-product`.
-3. Merge current main's canonical crosswalk block into the shortened inverse
-   crosswalk: restore label `smallarg:sec:crosswalk`, the
-   Wikipedia/article/Lean mappings, the `\dd/\dd t` row, and the tilde
-   explanation; retain the useful donor half-moment clarification and update
-   internal references to the consolidated inverse labels.
-4. Merge current main's canonical open ledger into the donor specialist ledger:
-   restore label `smallarg:sec:open` (the donor label may remain an alias), the
-   detailed `Composition`/finite-convolution implementation roadmap, and the
-   mapped inverse theorem references, while retaining the donor's corrected
-   mass/top-jet/log-transfer distinction and its convergence, Borel,
-   effective-constant, higher-correction, and optimal-truncation obligations.
+**Stage-two grant.**  This branch now holds the sole EVO tool token for the
+canonical frontier only.  From clean tip `e1c087738`, run exactly three
+sequential `pdflatex` passes on
+`non-formalized-research-frontiers.tex`; launch no Lean, Lake, `latexmk`, or
+other TeX build.  Require settled references and citations, zero duplicate
+labels, zero overfull boxes, and no fatal/error diagnostics.  Inspect the
+rendered page-10 running head and every changed cluster, record exact command,
+tip, log predicates, page count, PDF hash, and visual-inspection evidence in
+the branch registry, then commit only the regenerated frontier PDF plus that
+registry and push the feature branch.  If any predicate fails, do not perform
+a fourth pass or broaden the source edit: preserve the log, report the exact
+failure in the registry, and stop for a new board disposition.  Never select a
+predecessor PDF or push `main`.
 
-Write only this narrow TeX correction and the branch registry, repeat the
-static source audits, commit, and push.  Do not change the README or PDF.  No
-EVO tool token is assigned yet; do not run `pdflatex` and do not begin the
-primary exposition cleanup.
-
-If and only if a later board checkpoint grants stage two, use exactly three
-`pdflatex` passes, correct the page-10 running head, require settled references
-and citations, no duplicate labels or overfull boxes, and inspect every changed
-cluster.  Commit the regenerated PDF and exact evidence to the feature branch;
-never select either predecessor PDF or push `main`.  The 57-page primary
-exposition remains frozen until this frontier tranche is reviewed and
-integrated.
+The frontier README/TeX are frozen during stage two, and the 57-page primary
+exposition remains fully frozen until the complete frontier tranche is
+reviewed and integrated.
 
 ### `codex/fabius-theorem-refinements`
 
@@ -316,12 +332,11 @@ a requested path is serialized, hot, frozen, single-owner, or already claimed.
 
 ## Collision and integration queue
 
-1. Receive the four-part narrow frontier source correction required by the
-   completed audit; keep
-   PDF generation withheld until that correction is reviewed.
-2. After a green corrected-source audit, receive the frontier three-pass PDF/evidence
-   checkpoint and integrate the complete frontier tranche.
-3. Only after the frontier stabilizes, assign the primary exposition's four
+1. Receive and audit the authorized three-pass frontier PDF/evidence checkpoint.
+2. Complete the independent review and serialized codexbox validation of the
+   four frozen both-papers source units at `c41a52283`.
+3. Integrate the complete green frontier tranche through the coordinator.
+4. Only after the frontier stabilizes, assign the primary exposition's four
    narrow citation/attribution corrections and matching PDF rebuild.
 
 ## Build-token log
@@ -398,10 +413,12 @@ worker checkpoint, `/home/codex/src/Proofs` also launched an unassigned
 evidence.
 
 No validation process is now running on codexbox.  Its token is idle and
-coordinator-reserved.  The EVO token is unassigned until the frontier source
-review is green.  Other branches may edit, checkpoint, and push ordinary
-claimed work under the open protocol, but may not run validation tools until
-this board assigns the applicable physical-host token.
+coordinator-reserved.  The sole EVO token is assigned to
+`codex/fabius-exposition-integration` for exactly the three frontier
+`pdflatex` passes specified above; no other EVO branch may run Lean, Lake,
+TeX, PDF, or cache-mutating tools.  Other branches may edit, checkpoint, and
+push ordinary claimed work under the open protocol, but may not run validation
+tools until this board assigns the applicable physical-host token.
 
 ## Worktree maintenance log
 
