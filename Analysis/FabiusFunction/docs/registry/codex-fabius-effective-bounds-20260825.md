@@ -3582,3 +3582,91 @@ next bounded step: push this registry handoff, fetch and reread main, then
   contraction deduplication and periodic-jet documentation remain independent
   audited candidates rather than additions to this checkpoint
 ```
+
+## Handoff: scalar-monomial Gaussian contraction and private-helper deduplication
+
+Source checkpoint `8f0dbf7ea` implements the complete three-file claim and is
+pushed to `origin/codex/fabius-effective-bounds-20260825`.
+
+The new documented simp theorem
+`gaussianPolynomialContraction_C_mul_X_pow` reduces contraction of
+`Polynomial.C c * Polynomial.X ^ n` to
+`c * normalizedGaussianMoment n`.  Its proof first uses Mathlib's exact
+`Polynomial.C_mul_X_pow_eq_monomial` identity, then the existing public
+monomial contraction rule.  This direction strictly reduces the contraction
+expression and introduces no simp loop with the existing constant, power,
+odd, or even rules, including at `c = 0`, `c = 1`, and `n = 0`.
+
+`GaussianPolynomialContraction.lean` now has exact adjacent human-readable
+prose for all 31 public declarations.  The 21 repaired gaps cover raw and
+normalized Gaussian moments, the two-step recurrences and parity formulas,
+the real/complex normalization bridge, scalar and pure monomial contraction,
+Bochner integrability and exact integral identities, and conjugation
+compatibility.  The strict attribute-aware count is 31/31; the repository
+lexical auditor sees only 20 declarations because it intentionally misses 11
+same-line attributed declarations, but reports no remaining violation in this
+module.
+
+The exact private duplicate in `FabiusSaddleExpansionCoefficients.lean` is
+deleted; its sole pre-existing `simp only` consumer is textually unchanged and
+resolves the public theorem through `open SaddleExpansion`.  The shorter
+private duplicate in `FabiusSecondSaddleCorrection.lean` is also deleted, and
+exactly five uses inside the retained five-monomial contraction helper now use
+the public name.  No old public header, attribute, import, or unrelated proof
+body changed.
+
+Exact frozen artifacts are:
+
+- `GaussianPolynomialContraction.lean`: blob
+  `6e466f4ea2bf325e33980376400dba50eb8fec6e`, content SHA-256
+  `2472FF02BD2D3404F95017C4913FA751920284DBC6C6BD62F0F1017C1A09F61A`;
+- `FabiusSaddleExpansionCoefficients.lean`: blob
+  `9e5d94a7cf6016935a373c7677076b97dbd81cb4`, content SHA-256
+  `CA01AD8AE29B1776FAEDFB88FB02C4931884A0344D9C71255AFFB725F8F575DB`;
+- `FabiusSecondSaddleCorrection.lean`: blob
+  `c9a762985186e06030d789b1774ac01af8f3fa76`, content SHA-256
+  `BFDA37C9F13F528B38D20F4ECFF54E98EC9F8FDBF0104EDADB35491F025D629F`.
+
+Author checks and two independent hostile exact-byte reviews agree on the
+Polynomial rewrite orientation, simp termination/confluence, namespace
+resolution, helper deletions and five rewrites, all documentation formulas,
+strict counts, and source compatibility.  Local and staged `git diff --check`,
+hash, header/import, placeholder, whitespace, and documentation audits passed.
+No Lean, Lake, TeX, PDF, cache mutation, canonical-document edit, or main write
+ran; static proof/API review is not compiler evidence.
+
+```text
+SYNC Fabius
+branch / worktree / machine: codex/fabius-effective-bounds-20260825 /
+  /home/codex/.codex/worktrees/d6d3/Proofs / codexbox
+fetched main SHA: 6691afcb39f5a50dbc0d798b8b75b4cf563bf50a
+HEAD and dirty paths: 8f0dbf7ea; clean after exact-path source commit;
+  checkpoint pushed
+writing (exact paths): this branch registry for immutable handoff only; the
+  three source paths above are frozen at the stated blobs
+expected declarations or document claims: the exact public simp theorem,
+  strict 31/31 core documentation, and two-private-helper deduplication above;
+  no old public API/import/facade/audit-script/canonical-doc change
+completed commits: registry-first claim df77ff009; source checkpoint
+  8f0dbf7ea; both pushed without force
+validated (exact command, SHA/state, exit code): 120-visible-ref post-claim
+  scan found zero public collisions and only the intended private helper;
+  strict counts are 31/31, 25/25, 21/21; repository audit has no touched-file
+  violation; header/import comparison, local/staged git diff --check, exact
+  SHA/blob checks, and two independent hostile exact-byte reviews are green
+not yet validated: no Lean/Lake target or downstream importer was built on
+  this branch; static review is not compiler evidence
+requested integration or lease: request serialized
+  +FabiusFunction.GaussianPolynomialContraction,
+  +FabiusFunction.FabiusSaddleExpansionCoefficients,
+  +FabiusFunction.FabiusSecondSaddleCorrection, then the simp-interaction gate
+  +FabiusFunction.FabiusSaddleLeadingCoefficient and optionally
+  +FabiusFunction.FabiusSecondSaddleExpansion; request coordinator review and
+  selective integration; request no main-write/document lease
+conflicts / dependencies: the three blobs are immutable pending coordinator
+  disposition; the separate bounded-jet bridge candidate overlaps
+  FabiusSecondSaddleCorrection and is deferred; only the coordinator may
+  advance main or assign Lean/Lake
+next bounded step: push this handoff, fetch and reread main, then select a
+  disjoint cold path while these exact blobs await serialized compiler gates
+```
