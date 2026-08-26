@@ -8,11 +8,9 @@ SYNC Fabius
 branch / worktree / machine: codex/fabius-both-papers /
   /home/codex/src/Proofs / codexbox
 fetched main SHA: 148990f0a2a9b665edaf3394656be1e7c46caf7e
-HEAD and dirty paths: 656126476ac58061bae0e022dffa547c6b3ffb99;
-  clean before this ordinary two-source claim
+HEAD and dirty paths: c7c2321bc6ea7292996b40dd333d4d148f7e75d5;
+  clean before this registry-only validation handoff
 writing (exact paths):
-  Lean/FabiusFunction/PeriodicRegularity.lean;
-  Lean/FabiusFunction/PeriodicSmooth.lean;
   docs/registry/codex-fabius-both-papers.md
 expected declarations or document claims:
   promote the shared dyadic-exponential calculus to
@@ -55,7 +53,10 @@ completed commits: Lower-Lambert source checkpoint `1da2fde2285e3970267b7dc2561b
   `f858c1bd938932a32c0a73551b5944a3cd3c3a0b` precedes unvalidated source
   checkpoint `9458b1949cfb1b0a0290c0ab533a50d2e8ff908d`, which adds the one-line
   `fabiusAtInverseTwoPow_cast` specialization without changing any existing
-  declaration
+  declaration; periodic consolidation claim `896e25742` and exact-domain
+  expansion `10717109f` precede unvalidated source checkpoint
+  `c7c2321bc6ea7292996b40dd333d4d148f7e75d5`, whose net source delta is 40
+  insertions and 58 deletions
 validated (exact command, SHA/state, exit code): coordinator board records
   serialized immutable `lake build +FabiusFunction.LowerLambertW` at
   `4c6bbac41`, exit 0, with its source blob unchanged on current main;
@@ -82,7 +83,11 @@ not yet validated: the moved dyadic theorem body was already compiled in its
   kernel upgrades are statically reviewed only; the exact inverse-power bridge
   is implemented at `9458b1949`, and its proof, placement, normalization, and
   public API have two independent static reviews plus a previously green
-  `/tmp` prototype, but the production module has not been elaborated or built
+  `/tmp` prototype, but the production module has not been elaborated or built;
+  the periodic consolidation at `c7c2321bc` has two independent complete static
+  reviews covering all call sites, theorem hypotheses, import/facade exposure,
+  collisions, markers, and diff hygiene, but neither edited module has been
+  elaborated or built in this production context
 requested integration or lease: the dyadic relocation needs serialized
   `+FabiusFunction.GlobalDyadic`
   and `+FabiusFunction.OriginalPaperSupplement` validation; this new ordinary
@@ -91,6 +96,9 @@ requested integration or lease: the dyadic relocation needs serialized
   handoff; the Gamma--zeta checkpoint needs serialized
   `+FabiusFunction.BoseFinitePartIntegral` followed by its sole non-facade
   direct importer `+FabiusFunction.PeriodicMean`;
+  the periodic checkpoint needs serialized `+FabiusFunction.PeriodicSmooth`,
+  which transitively covers its upstream `PeriodicRegularity` dependency; both
+  periodic source writing claims are released by this handoff;
   serialized README/primary/walkthrough/coverage paths are deliberately not
   claimed yet
 conflicts / dependencies: all advertised Fabius heads and their registries
@@ -115,10 +123,8 @@ conflicts / dependencies: all advertised Fabius heads and their registries
   a fresh sweep of every advertised Fabius tip and registry finds no production
   declaration, alternate public API, or live claim on either periodic module;
   the only registry mention is a closed historical read-only list
-next bounded step: push this exact two-source claim, perform the mechanical
-  promotion/deduplication without running a build, obtain independent static
-  review, and hand the source checkpoint to the coordinator for serialized
-  `+FabiusFunction.PeriodicSmooth` validation
+next bounded step: push this registry handoff, await serialized validation,
+  and begin only a separately advertised collision-free ordinary tranche
 ```
 
 ## Coordinator natural-knot integration disposition
