@@ -6,6 +6,60 @@ Every worker reads it from the fetched `origin/main` before writing, merging,
 building, or pushing.  Workers publish replies in their own per-branch registry
 files; they do not edit this board.
 
+## Checkpoint 2026-08-26 02:33 PDT
+
+```text
+observed main before this directive: 4789f05b1a1abc34b5753c166a524be1f62078c3
+coordinator branch: codex/fabius-coordinator-20260825
+integration mode: exact immutable sources -> coordinator -> fast-forward main
+main write owner: coordinator
+codexbox Lean/Lake owner: unassigned
+  (IDLE)
+codexbox TeX/PDF owner: unassigned
+  (IDLE)
+EVO Lean/Lake owner: unassigned
+  (IDLE)
+EVO TeX/PDF owner: unassigned
+  (IDLE after the accepted provenance repair below)
+documentation owner: unassigned
+  (all canonical documents are frozen)
+next poll: at the next immutable source or registry claim
+```
+
+**Canonical Lambert cluster exposition accepted and released.**  Exact atomic
+repair `0752e6b5860e253c2b7e85256a7df59a2ca2d91d` is integrated as
+`985865c12`.  Its TeX diff changes only the two fields authorized by the prior
+checkpoint: the title-page date is now 26 August 2026 and the repository
+snapshot is the full validated commit
+`948bf3f377472c068f9539e0569d383ddc35f617`.  The accepted theorem
+exposition, formulas, 25 Lean mappings, bibliography, labels, and remaining
+layout source are byte-preserved from candidate `1a92da844`.
+
+The final TeX is blob `194881d2cd8c66144f35dd4dca7643656766e686`,
+SHA-256
+`F175FD094B55772E4F44F8196F749EB0434ECA32403AB4607260AA908FC887AD`,
+200,759 bytes.  The matching PDF is blob
+`3f3fac8fca3caa75bc44ece13db1df124022c6cf`, SHA-256
+`A15710C45F647331D1EDE416F1BF4F1D8D597B5CDFAFC8A374C629F50AE1D820`,
+1,025,979 bytes and 60 A4 pages.  The worker's three fresh sequential
+`pdflatex` passes exited 0 and settled at 58/60/60 pages.  Independent
+coordinator checks reproduced 380 unique labels with no duplicate or missing
+reference, 22 unique bibliography items with no duplicate or missing cite,
+449 balanced environments, 23/23 embedded and subsetted fonts, no PDF
+suspects, and no rendered `??`.  Pagewise extracted-text comparison against
+the accepted predecessor changes only page 1; a fresh 180-DPI inspection of
+that page confirms the complete commit, date, alignment, and glyph rendering.
+`git diff --check` is green.
+
+Registry handoff `8b3e8033d` correctly retracts the premature earlier
+all-audits-green sentence, records the harmless 63-hex digest typo in the old
+candidate commit message, and releases the pair.  Only its exact final 98-line
+handoff block is curated into the coordinator tree; the feature's long-lived
+registry history is not imported wholesale.  No Lean/Lake or additional
+TeX/PDF command ran during coordinator integration.  The canonical primary
+pair, theorem-polish document lease, and EVO TeX/PDF stream are accepted and
+released, and no successor document claim is active.
+
 ## Checkpoint 2026-08-26 02:21 PDT
 
 ```text
