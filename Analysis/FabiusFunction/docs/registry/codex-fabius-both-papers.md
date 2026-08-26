@@ -7,11 +7,10 @@ This file implements the per-branch registry fallback in
 SYNC Fabius
 branch / worktree / machine: codex/fabius-both-papers /
   /home/codex/src/Proofs / codexbox
-fetched main SHA: 14af01588ade513eb7e8c580e3ae2d3c0ab1870d
-HEAD and dirty paths: 363cf3df1bce90344f0e6f0deeb43106e0d3dd5f;
-  dirty only in this own-registry claim
+fetched main SHA: d33c4f44b3d08f14b15c1514d687a32898569475
+HEAD and dirty paths: e8aa10cda1a01699a6a3569edde71411bbed5407;
+  dirty only in this own-registry handoff
 writing (exact paths):
-  Analysis/FabiusFunction/Lean/FabiusFunction/TwoAdic.lean;
   Analysis/FabiusFunction/docs/registry/codex-fabius-both-papers.md
 expected declarations or document claims:
   `centralChoose_padicValNat_two`;
@@ -136,7 +135,11 @@ completed commits: Lower-Lambert source checkpoint `1da2fde2285e3970267b7dc2561b
   downstream references for a net reduction of 31 source lines; clean merge
   `3575998493dad72c795ffa825c7467d4ea380a0c` incorporates validated current
   main `760b4850fe28a1030f94eecdef131b52a6b04b89` without changing either saddle
-  source path;
+  source path; central-binomial valuation claim
+  `9fd34678704270fd680bee95f43e6b74105f3e80` precedes source checkpoint
+  `e8aa10cda1a01699a6a3569edde71411bbed5407`, which adds the two advertised
+  all-index declarations and the module-header interpretation without changing
+  imports or any existing declaration;
 validated (exact command, SHA/state, exit code): coordinator board records
   serialized immutable `lake build +FabiusFunction.LowerLambertW` at
   `4c6bbac41`, exit 0, with its source blob unchanged on current main;
@@ -180,9 +183,12 @@ validated (exact command, SHA/state, exit code): coordinator board records
   `+FabiusFunction.FabiusSaddleExpansionCoefficients` (3306 jobs) and
   `+FabiusFunction.FabiusSaddleReferenceWeight` (3517 jobs) both exit 0; the
   latter replays only the inherited nonblocking `unnecessarySimpa` linter in
-  `ProbabilityLaplaceMoments.lean`
-not yet validated: the central-binomial valuation claim is registry-only and
-  has no source checkpoint yet;
+  `ProbabilityLaplaceMoments.lean`; three independent read-only reviews of
+  `e8aa10cda` pass the exact primed-Kummer specialization, binary-digit shift,
+  natural subtraction, `n = 0` edge case, sign rewrite, names, placement,
+  imports, collision scan, and static source hygiene
+not yet validated: the central-binomial valuation source checkpoint
+  `e8aa10cda1a01699a6a3569edde71411bbed5407` has not been elaborated or built;
   the historical validation-state paragraphs below are
   superseded by the coordinator board and retained only as provenance: the
   moved dyadic theorem body was already compiled in its
@@ -280,10 +286,13 @@ historical integration requests, all superseded by the current coordinator
   handoff;
   serialized README/primary/walkthrough/coverage paths are deliberately not
   claimed yet
-requested integration or lease: none until the advertised central-binomial
-  source checkpoint is implemented and independently reviewed; canonical
-  README, AUDIT_FINDINGS, PAPER_COVERAGE, primary, walkthrough, frontier, and
-  user-supplied draft paths remain frozen and unclaimed
+requested integration or lease: integrate the exact central-binomial valuation
+  source checkpoint and run serialized `LAKE_JOBS=1 lake build
+  +FabiusFunction.TwoAdic`, followed by `LAKE_JOBS=1 lake build
+  +FabiusFunction.Paper06487`; the `TwoAdic.lean` source claim is released by
+  this handoff; canonical README, AUDIT_FINDINGS, PAPER_COVERAGE, primary,
+  walkthrough, frontier, and user-supplied draft paths remain frozen and
+  unclaimed
 conflicts / dependencies: all advertised Fabius heads and their registries
   were checked; no branch claims GlobalExtension and the only overlap is the
   existing even/odd ingredients and downstream special cases that this API
@@ -338,29 +347,37 @@ conflicts / dependencies: all advertised Fabius heads and their registries
   the downstream module directly imports the upstream home, and a theorem-only
   factoring is insufficient because its `expCoeff`, finite quotient, and degree
   proofs consume the polynomial family itself
-next bounded step: push this exact one-file central-binomial claim, implement
-  and independently review both declarations, then request serialized focused
-  and paper-facade validation
+next bounded step: coordinator integration and serialized focused/paper-facade
+  validation of `e8aa10cda`; future document mapping must distinguish the
+  formalized valuation/sign pair from the still-unnamed bit/trigonometric forms
 ```
 
-## Central-binomial two-adic valuation claim
+## Central-binomial two-adic valuation handoff
 
-At fetched main `14af01588ade513eb7e8c580e3ae2d3c0ab1870d`,
-`TwoAdic.lean` imports Mathlib's digit-sum form of Kummer's theorem but does not
-specialize it to the central binomial coefficient.  The proposed
-`centralChoose_padicValNat_two` proves
+At fetched main `d33c4f44b3d08f14b15c1514d687a32898569475`,
+`TwoAdic.lean` imports Mathlib's digit-sum form of Kummer's theorem but did not
+specialize it to the central binomial coefficient.  Source checkpoint
+`e8aa10cda1a01699a6a3569edde71411bbed5407` adds
+`centralChoose_padicValNat_two`, proving
 `padicValNat 2 (Nat.choose (2 * n) n) = binaryWeight n` for every `n`, including
 zero.  The corollary `thueMorseSign_centralChoose` rewrites the defining sign
 through this valuation.
 
 The source blob is `a585d729f82e801f730f7ec4ade4705b087257b6`.
 Fresh current-main, all-tip, and registry scans find no exact or semantic Lean
-implementation and no active `TwoAdic.lean` claim.  The theorem is explicitly
-listed as unformalized in the frozen user-supplied research drafts, which this
-source-only claim does not edit.  The proof needs only the already-imported
-`sub_one_mul_padicValNat_choose_eq_sub_sum_digits'` and a local binary-digit
-shift identity from `Nat.digits_base_mul`.  No Lean/Lake process is authorized
-or planned.
+implementation and no competing `TwoAdic.lean` claim.  The theorem is
+explicitly listed as unformalized in the frozen user-supplied research drafts,
+which this source-only tranche does not edit.  The proof uses only the
+already-imported `sub_one_mul_padicValNat_choose_eq_sub_sum_digits'` and a local
+binary-digit shift identity from `Nat.digits_base_mul`.  Three independent
+static audits accept every proof step, edge case, public name, import, and
+hygiene check.  No Lean/Lake process was run.  The requested serialized gates
+are:
+
+```text
+LAKE_JOBS=1 lake build +FabiusFunction.TwoAdic
+LAKE_JOBS=1 lake build +FabiusFunction.Paper06487
+```
 
 ## Saddle continuous-map deduplication handoff
 
