@@ -16,15 +16,12 @@ SYNC Fabius
 branch / worktree / machine: codex/fabius-exposition-integration /
   C:\Users\vresh\.codex\worktrees\8f3f\ProveIt / EVO
 fetched main SHA: ba2be1b782b8aa77979c40eb5c43a1b102e20b81
-HEAD and dirty paths: checkpoints through bc2cdd932 are pushed. Merge
-  754b09ea0 incorporated origin/main at 15b922326 with no conflicts; its
-  parents are bc2cdd932 and 15b922326. The parent of this correction
-  checkpoint is 754b09ea0; git ls-files -u is empty and only the frontier TeX
-  and this registry are dirty. A final fetch found origin/main advanced to
-  ba2be1b78, which will be merged after this audited correction is preserved
-  and pushed. The two redundant build-copy PDFs remain preserved reversibly
-  outside the worktree after their hashes were reverified against the
-  committed PDFs.
+HEAD and dirty paths: four-correction source checkpoint 23daad436 is pushed.
+  Merge 64eefd2b6 incorporated origin/main at ba2be1b78 with no conflicts;
+  its parents are 23daad436 and ba2be1b78. The parent of this registry update
+  is 64eefd2b6; git ls-files -u is empty and only this registry is dirty. The
+  two redundant build-copy PDFs remain preserved reversibly outside the
+  worktree after their hashes were reverified against the committed PDFs.
 writing (exact paths):
   Analysis/FabiusFunction/docs/non-formalized-research-frontiers/README.md
   Analysis/FabiusFunction/docs/non-formalized-research-frontiers/non-formalized-research-frontiers.tex
@@ -42,7 +39,8 @@ completed commits: 78260751f is the pushed stage-one semantic source
   merges origin/main at 148990f0a; bc2cdd932 records that merge; 754b09ea0
   cleanly merges origin/main at 15b922326. This source checkpoint implements
   all four narrow corrections required by the coordinator's independent
-  audit.
+  audit; 23daad436 records and pushes those corrections; 64eefd2b6 cleanly
+  merges origin/main at ba2be1b78 without changing a frontier artifact.
 validated (exact command, SHA/state, exit code): on TeX SHA-256
   8562CF91CDB48132C1DBF127B80886D9EFF8D46057805A200B4579A42E054546,
   git diff --check exited 0 and git ls-files -u was empty. Independent
@@ -74,21 +72,21 @@ requested integration or lease: review this pushed four-correction source
   checkpoint, then grant stage two and the sole EVO tool token for exactly
   three pdflatex passes, rendered inspection, and a matching PDF checkpoint.
   After frontier integration, grant the primary TeX/PDF correction tranche.
-conflicts / dependencies: merges through 754b09ea0 incorporated origin/main
+conflicts / dependencies: merges through 64eefd2b6 incorporated origin/main
   without a content conflict, unmerged path, or binary resolution. The
   placement rules in AGENTS.md and the campaign README remain present.
-  Origin/main has since advanced to ba2be1b78 through shifted-prefix and
-  campaign-audit coordination changes; it will be merged after this exact
-  source checkpoint is pushed. The preserved sidecars are at
+  The latest incoming tranche changed shifted-prefix Lean source,
+  campaign-audit documents, the coordinator board, and deleted two unrelated
+  Wikipedia-draft inbox files; it made no frontier artifact change relative
+  to the first merge parent. The preserved sidecars are at
   C:\Users\vresh\.codex\preserved\fabius-exposition-sidecars-8f3f-20260825T1700;
   their SHA-256 values are
   59B8B06825F89B81A33F6352196CEBE7C0CAF4C436170FEB15FFDD9336E72908
   and CD91C680DFA7D96F110106F7A6ADCACC5CBA10E188DF1BD0A4484218FA8FA39C,
   exactly matching the two previously committed canonical PDFs.
-next bounded step: commit and push this four-correction source checkpoint,
-  merge origin/main at ba2be1b78, record the result, and then await the
-  coordinator's explicit stage-two token; never select a predecessor PDF
-  wholesale and never push main.
+next bounded step: commit and push this post-merge registry checkpoint, then
+  await the coordinator's explicit stage-two token; never select a predecessor
+  PDF wholesale and never push main.
 ~~~
 
 **Historical coordinator disposition at `7aed3c8c7`.**  The detailed status block and
