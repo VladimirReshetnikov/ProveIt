@@ -1,7 +1,7 @@
 # Workstream registry: `codex/fabius-shifted-prefix-grid`
 
-**Status: prior tranche accepted and validated; registry-only preflight before
-current-main synchronization.**
+**Status: prior tranche accepted and validated; exact finite-jet claim
+advertised before source work.**
 The exact claim was published before source work, coordinator checkpoint
 `893d4c25d` explicitly acknowledged it as the first nonoverlapping claim for
 the module, and source commit `00ff41a5e` now implements precisely that bounded
@@ -11,40 +11,37 @@ units, records four green focused builds at merge `ae16882d5`, and releases the
 source lease.
 Audit-ledger commit `faf1fcaf6` was
 completed and pushed before coordinator checkpoint `148990f0a` newly serialized
-both campaign-wide Markdown paths.  Those paths remain serialized, and this
-branch is making no further path claim before synchronizing with current main.
+both campaign-wide Markdown paths.  Those paths remain serialized.  After
+merging current main at `77c15879f`, this branch now advertises the exact
+two-file finite-jet claim below before editing either source.
 
 ```text
 SYNC Fabius
 branch / worktree / machine: codex/fabius-shifted-prefix-grid / c9a3 / EVO
   (Windows)
 fetched main SHA: ba2be1b782b8aa77979c40eb5c43a1b102e20b81
-HEAD and dirty paths: c8501fa81c81e3b4e9deab29af98dfa699ec2bb1;
-  merge of current origin/main is in progress, with the sole conflict confined
-  to this uncontested branch registry
-writing (exact paths): docs/registry/codex-fabius-shifted-prefix-grid.md only;
-  Lean/FabiusFunction/ThueMorseGenerating.lean is frozen at 00ff41a5e;
-  docs/PAPER_COVERAGE.md is preserved at dcd5f8a06 pending review;
-  docs/AUDIT_FINDINGS.md is preserved at faf1fcaf6 pending review;
-  no new source or documentation path is claimed
-expected declarations or document claims: shiftedPrefixGridValue;
-  shiftedPrefixGridValue_zero; shiftedPrefixGridValue_one;
-  shiftedPrefixGridValue_succ_sub;
-  shiftedPrefixGridValue_scaledDifference;
-  shiftedPrefixGridValue_equation; and
-  shiftedPrefixGridValue_equation_of_pos; retain the eight existing
-  paperPrefixGridValue_* and correctedPrefixGridValue_* theorem statements
-  exactly as compatibility wrappers
-expected documentation claims: add the seven shiftedPrefixGridValue mappings
-  without generic endpoint/convergence claims; add exact all-degree centered
-  finite-spline geometry; replace the stale x >= 0 discrete-limit row by its
-  all-real APIs; extend the lower-Lambert row to the closed branch endpoint and
-  the sharp 1 / log 2 threshold classification; next, mark exactly four audit
-  findings DONE: all-degree centered-spline range, right-half-cell spline
-  saturation, the sharp lower-Lambert phase threshold, and removal of redundant
-  CharZero binders from four FabiusQBinomialTaylor declarations; record their
-  implementation commits and immutable compiler evidence without changing any
-  other finding, source file, documentation audit, baseline, TeX, or PDF
+HEAD and dirty paths: 77c15879fd63794c7a092addff3c64ac1fc69103;
+  docs/registry/codex-fabius-shifted-prefix-grid.md only, advertising the exact
+  claim before either source file is edited
+writing (exact paths): docs/registry/codex-fabius-shifted-prefix-grid.md now;
+  after this claim is pushed,
+  Lean/FabiusFunction/ThueMorseGenerating.lean and
+  Lean/FabiusFunction/ThueMorseApproximation.lean
+expected declarations or document claims:
+  coeff_thueMorseBlockPolynomial_mul_eq_thueMorseSeries_mul in the upstream
+  generating-series module;
+  coeff_thueMorseBlockPolynomial_mul_invOneSubPow_eq_iteratedPrefix and
+  iteratedPrefix_eq_approximationPolynomial_coeff_all in the approximation
+  module; delete the subsumed private
+  coeff_thueMorseSeries_mul_inv_eq_finite; retain the exact public header,
+  binders, argument order, type, and attributes of
+  iteratedPrefix_eq_approximationPolynomial_coeff as a compatibility wrapper;
+  simplify its sole downstream caller to use the all-order theorem
+expected documentation claims: add precise declaration doc comments and
+  module-guide prose explaining the finite-jet invariant, its strict sharp
+  cutoff, the independent block-depth/prefix-order parameters, and the genuine
+  order-zero approximation boundary; do not edit a campaign-wide Markdown,
+  TeX, PDF, root aggregate, or other serialized path
 completed commits: 6fb8dc8e9 publishes the exact one-file claim; ba0048023
   activates it under the open protocol; 00ff41a5e adds the seven generic
   declarations and converts all eight legacy proofs to wrappers; 047a03b63
@@ -54,7 +51,9 @@ completed commits: 6fb8dc8e9 publishes the exact one-file claim; ba0048023
   those four stale entries and records their compiler provenance; e0302acdf
   records the completed documentation checkpoints; 3161da511 merges current
   origin/main 148990f0a without conflicts; 8ea040921 reports the resulting
-  branch-specific freeze and coordinator handoff
+  branch-specific freeze and coordinator handoff; c8501fa81 preserves the
+  read-only finite-block preflight; 77c15879f semantically resolves the sole
+  own-registry conflict while merging origin/main ba2be1b78
 validated (exact command, SHA/state, exit code): at source snapshot SHA-256
   784F6C4F389FE0F2FA08616FFAFBFA3917CCC9F6D2C86CE98D3D877B5F0DD14C,
   git diff --check and git diff --cached --check exited 0; python
@@ -86,19 +85,21 @@ validated (exact command, SHA/state, exit code): at source snapshot SHA-256
 not yet validated: the future coefficient-bridge design below is static
   preflight only; no Lean or Lake process was launched on EVO and no build
   token is granted
-requested integration or lease: none; preserve this registry-only preflight,
-  synchronize with current main, and advertise any future ordinary source
-  claim separately after fresh collision checks
+requested integration or lease: advertise the exact ordinary two-file source
+  claim above; no coordinator acknowledgement is required if the mandatory
+  post-push collision scan remains clean; request coordinator-held serialized
+  validation only after an immutable source checkpoint is pushed
 conflicts / dependencies: no overlap with the active frontier-document lease;
   no AGENTS, README, collaboration, aggregate, TeX, PDF, canonical frontier,
   primary exposition, hot foundational module, or peer registry path requested;
   current main keeps docs/PAPER_COVERAGE.md and docs/AUDIT_FINDINGS.md
-  serialized; the prior source lease is released, but the two-parameter
-  coefficient-bridge preflight remains unclaimed until after synchronization
-next bounded step: complete and push the current-main merge, then repeat
-  collision checks before advertising a new ordinary source claim
-lease refreshed: 2026-08-25 18:39 PDT; prior source lease released; no new
-  path claim; current merge conflict resolved only in this own registry
+  serialized; current main explicitly releases the prior source lease; all 16
+  locally available Fabius remote-tracking tips and their advertised registries
+  contain no competing claim or proposed declaration under an exact or
+  plausible alternate name
+next bounded step: push this exact claim, fetch and reread the board, repeat
+  the all-tip collision scan, then edit only the two claimed source files
+lease refreshed: 2026-08-25 18:44 PDT; exact two-file ordinary claim advertised
 git owner / build owner: root / no build owner assigned to this branch
 ```
 
@@ -239,21 +240,25 @@ now correctly identified as the patch SHA-256; the committed file SHA-256 is
 (Git blob `3eeb0880b8437d7d449ed70af6d5b9c451de9abf`).  The source lease is
 released; both campaign-wide documentation paths return to serialized status.
 
-## Read-only future design -- not a path claim
+## Claimed finite-jet design
 
 Coordinator checkpoint `c9eac55c5` accepts and validates the prior source and
-documentation tranches and releases the source lease.  The material below is
-nevertheless only a durable preflight record made before merging current main:
-it requests no lease, changes no theorem source, and must be collision-checked
-and advertised separately after synchronization.
+documentation tranches and releases the source lease.  Merge `77c15879f`
+incorporates current main, and the `SYNC Fabius` block above now advertises the
+exact source lease before any theorem edit.
 
-The selected next bounded source candidate is
-`Lean/FabiusFunction/ThueMorseApproximation.lean`, whose current `HEAD` and
+The generic theorem belongs in the upstream-most module that can state it,
+`Lean/FabiusFunction/ThueMorseGenerating.lean`, whose current `HEAD` and
 `origin/main` blob is
+`a670c07ea215cbf85eb76db0886d2898e20d4f6a` (SHA-256
+`784F6C4F389FE0F2FA08616FFAFBFA3917CCC9F6D2C86CE98D3D877B5F0DD14C`).
+Its approximation-specific specializations belong in
+`Lean/FabiusFunction/ThueMorseApproximation.lean`, whose corresponding blob is
 `fb0e20a0e303403df358b925f262f7bead0d03e4` (SHA-256
 `045DF230FA224D417D3ED11AFE55F1569F74402833B30BAF008D8D6828A9F47F`).
-Fresh searches of all 16 locally available Fabius remote-tracking tips found
-neither an active claim for that path nor any of the proposed names.
+Both source blobs match current `origin/main`.  Fresh searches of all 16
+locally available Fabius remote-tracking tips found
+neither an active claim for either path nor any of the proposed names.
 
 Three independent read-only reviews converged on this public API:
 
