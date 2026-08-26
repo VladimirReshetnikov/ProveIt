@@ -1880,3 +1880,70 @@ assigned document owner should replace the primary exposition's pending note
 near its complex-shift estimate, retire the exact exponential-minus-one
 frontier obligation, update the coverage crosswalk, and rebuild the matching
 canonical PDFs.  No document path is part of this handoff.
+
+## Claim: exact rational-input evaluator for Rvachev's function
+
+Fresh `origin/main` `f8464b2d4a2aa250d716dabbb435d269c759bba9`
+has the exact prospective source blobs
+
+```text
+Arithmetic.lean          0cde6a592e6f495f518e3b7a0cb1ddc3b5ae33b1
+DyadicCorrectness.lean   840f372d45388075234244cb6504863db9e9fd9a
+GlobalDyadic.lean        8eef6799a07c9e0aad59384ef1b0049babc842d8
+```
+
+The exact prospective write set is:
+
+- `Lean/FabiusFunction/Arithmetic.lean`;
+- `Lean/FabiusFunction/DyadicCorrectness.lean`;
+- `Lean/FabiusFunction/GlobalDyadic.lean`;
+- this branch's own registry.
+
+The branch claims exactly four documented public declarations:
+
+- `evalRvachevDyadic`;
+- `evalRvachevDyadic_eq_none_iff`;
+- `evalRvachevDyadic_eq_some_correct`;
+- `evalRvachevDyadic_complete_correct`.
+
+`evalRvachevDyadic : ℚ → Option ℚ` will mirror the existing bounded and signed
+global rational wrappers: it asks `dyadicExponent?` for the reduced
+denominator exponent and, on success, returns `rvachevDyadic exponent x.num`.
+The recognition theorem will reuse `dyadicExponent?_exists_iff`; successful
+correctness will combine the already-global theorem `rvachevDyadic_cast_global`
+with `Rat.cast_def`; and completeness will choose the value returned at the
+recognized exponent.  Consequently negative rationals, the two support
+endpoints, and dyadic inputs outside `[-1,1]` require no new cases.
+
+The definition belongs immediately after `rvachevDyadic` in `Arithmetic`.
+The recognition theorem belongs beside the two existing `eq_none_iff`
+wrappers in `DyadicCorrectness`; the analytic correctness and completeness
+theorems belong immediately after `rvachevDyadic_cast_global` in
+`GlobalDyadic`.  These are already ordered dependencies, so no import, facade,
+aggregate, attribute, simp-rule, or existing declaration change is claimed.
+
+This family is the exact formal counterpart of the frozen research-frontier
+subsection “Rvachev rational-input wrapper” and completes the three-way exact
+rational interface described by the primary exposition's
+`rem:dy-rational-interface`.  Every canonical TeX/PDF, coverage ledger, and
+audit document remains frozen.  After compiled integration, a separately
+assigned document owner should retire that frontier obligation and add the
+four names to the primary/coverage crosswalk.
+
+All-advertised-tip exact-name, plausible-name, source-history, path, and every
+registry scan found no competing implementation or live claim.  The only
+historical `DyadicCorrectness` and `GlobalDyadic` path mentions are integrated
+and explicitly released; the earlier `Arithmetic` triangular-identity claim
+on this branch is likewise integrated and released.  Current inverse-decay
+repair and the frozen complex-shift handoff are disjoint.
+
+No Lean, Lake, TeX, PDF, or cache-mutating process is authorized or has run for
+this claim.  After an immutable reviewed source checkpoint, the requested
+separate serialized gates are:
+
+```text
+LEAN_NUM_THREADS=0 LAKE_JOBS=1 lake build +FabiusFunction.GlobalDyadic
+LEAN_NUM_THREADS=0 LAKE_JOBS=1 lake build +FabiusFunction.PaperStatements
+```
+
+Stop after the first nonzero exit and run no root, facade, or document build.
