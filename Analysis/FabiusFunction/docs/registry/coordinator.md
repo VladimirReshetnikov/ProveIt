@@ -6,6 +6,88 @@ Every worker reads it from the fetched `origin/main` before writing, merging,
 building, or pushing.  Workers publish replies in their own per-branch registry
 files; they do not edit this board.
 
+## Checkpoint 2026-08-26 04:39 PDT
+
+```text
+observed main before this directive: 3f9761614b939a33c782308313eba040a892cfad
+coordinator branch: codex/fabius-coordinator-20260825
+integration mode: exact immutable sources -> coordinator -> fast-forward main
+main write owner: coordinator
+codexbox Lean/Lake owner: coordinator
+  (ACTIVE: exactly the three serialized gates below)
+codexbox TeX/PDF owner: unassigned
+  (IDLE)
+EVO Lean/Lake owner: unassigned
+  (IDLE)
+EVO TeX/PDF owner: unassigned
+  (IDLE)
+documentation owner: unassigned
+  (all canonical documents are frozen)
+next poll: after each codexbox gate or at an immutable inverse/endpoint handoff
+```
+
+**Codexbox validation batch: signed-translate finite support and whole-family
+logarithmic-coefficient extensionality.**  Independent actual-diff reviews
+accept two path-disjoint immutable sources with exact current-main preimages:
+
+- `217c0f6e8e8e5e91ddb4d3ee5ba83721a494343e` changes only
+  `GlobalExtension.lean` from blob
+  `9fa1c4e8d208e923ce27b1fba69ef90ccf246ac6` to
+  `81abdc9e776241f1e2bb3e1513f276276270a4dc`, SHA-256
+  `4A95274EE105EE09EF9D37EFFCD55EC53EDC22CF9C4F8047ABAF878D4770AA30`.
+  It adds the documented finite-support theorem for the signed translate
+  sequence and refactors the exact-header summability theorem through it.
+  The support cutoff, including negative inputs and the empty cutoff, all
+  imports, later declarations, attributes, and callers pass static review.
+  Handoff `894d5a7a0` records no compiler evidence.
+- `71d1a856cd85c5ff0f6e28bac5c48c95b2cad5b0` changes only
+  `SaddleLogExpansionAlgebra.lean` from blob
+  `dc8ed947850a5a45e49c260d8cb0a83390f089f9` to
+  `4d2ff29ae31f19101998cfaa4816f5b1448714ad`, SHA-256
+  `7F0BA19F52867DE725984AD5C432D31BC42F739AB8C4363718F59583E27EBA4D`.
+  It adds documented `logCoeff_eq_of_forall_pos`, uses it to replace one
+  local extensionality proof, preserves all 28 old public headers/attributes
+  and the sole import, and completes strict 29/29 public documentation.
+  Index zero is covered by the normalized recurrence.  Handoff `90f42a8ea`
+  records no compiler evidence; its registry ordering defect is nonblocking.
+
+Integrate only those two exact source commits/blobs, never either moving
+feature tip or registry.  On codexbox run exactly these separate commands in
+order under strict stop-on-first-failure:
+
+```text
+LEAN_NUM_THREADS=0 LAKE_JOBS=1 lake build +FabiusFunction.GlobalExtension
+LEAN_NUM_THREADS=0 LAKE_JOBS=1 lake build +FabiusFunction.SaddleLogExpansionAlgebra
+LEAN_NUM_THREADS=0 LAKE_JOBS=1 lake build +FabiusFunction.SaddleLogExpansionPowerSeries
+```
+
+The first target elaborates the new theorem and the refactored summability
+caller; no importer gate is required.  The third target is the narrow direct
+semantic consumer of the logarithmic algebra.  Run no parallel/additional
+Lean, Lake, TeX, PDF, cache, root, facade, audit, or document operation.
+Record the exact candidate/tree, each job count, exit, and every diagnostic.
+Only an independently reviewed statement-preserving proof repair is in scope
+after failure.
+
+**Endpoint compatibility consolidation approved for ordinary source
+authoring only.**  Registry claim `ce8f0477a` reserves exactly
+`EndpointLaplaceComparison.lean` at current blob
+`e7170713a4c8fd4993009cba9cc0786cd7b72161` plus the branch's own registry.
+Claim review confirms that each of the four positive-index results has the
+same conclusion as its zero-inclusive `_all` theorem, with only the redundant
+named `hn` premise.  The worker may reorder each `_all` theorem before its
+compatibility name, byte-preserve the `_all` proofs, and replace the four old
+bodies by direct forwards under declaration-local unused-variable linter
+scopes.  Every old declaration name, comment, binder order, named premise,
+result, import, attribute, later call, and facade remains exact.
+
+This is a source-authoring grant only.  Publish an immutable source and
+registry handoff for actual-diff review before requesting the single later
+`EndpointLaplaceComparison` gate.  No current build token, importer gate,
+root, canonical document, TeX/PDF, or other path is included.  The separate
+inverse endpoint follow-on retains its existing two-source authoring lease
+and likewise has no build or document token.
+
 ## Checkpoint 2026-08-26 04:33 PDT
 
 ```text
