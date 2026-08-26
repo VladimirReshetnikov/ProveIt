@@ -6,6 +6,90 @@ Every worker reads it from the fetched `origin/main` before writing, merging,
 building, or pushing.  Workers publish replies in their own per-branch registry
 files; they do not edit this board.
 
+## Checkpoint 2026-08-26 00:58 PDT
+
+```text
+observed main before this directive: fc63c39788ab4c31694e4f57efe05b543165675a
+coordinator branch: codex/fabius-coordinator-20260825
+integration mode: exact immutable sources -> coordinator -> fast-forward main
+main write owner: coordinator
+codexbox Lean/Lake owner: coordinator
+  (IDLE after the sharp inverse and exact cluster-set validations)
+codexbox TeX/PDF owner: unassigned
+  (IDLE)
+EVO Lean/Lake owner: unassigned
+  (IDLE; both pending requests were validated by the coordinator instead)
+EVO TeX/PDF owner: unassigned
+  (IDLE)
+documentation owner: unassigned
+  (IDLE; every canonical document path is frozen)
+next poll: at the next immutable source or serialized-path claim handoff
+```
+
+Four reviewed source units have been integrated selectively since the prior
+checkpoint; no moving feature history or worker registry was merged wholesale.
+
+1. Effective-bounds source `51b9ad393` sharpens the all-real positive-index
+   binary-reduction summand constant from four to three and removes the single
+   redundant private regularity helper.  It is integrated as `942fd6b68`; the
+   final `FabiusBinaryReductionSeries.lean` blob is `637e4bb0a`, SHA-256
+   `92FCDB215915F68A2458A42885046B3A31A71CEC03BE34AC5B5A11C9BD0E0626`.
+   Separate serialized builds of `+FabiusFunction.FabiusBinaryReductionSeries`
+   (2820 jobs) and `+FabiusFunction.FabiusGlobalQBinomialSeries` (3324 jobs)
+   both exited 0.  One preliminary command from a nested directory had no Lake
+   configuration, exited before launching Lean, and supplies no evidence.
+2. Both-papers source `a72ca3c92` deletes only three unused private lemmas from
+   `LegendreSeriesConvergence.lean` and `OriginalUniqueness.lean`, ten lines in
+   total and no public API.  It is integrated as `611fb96ff`; the result blobs
+   are `2c02832f0` and `b29edf55a`.  Separate serialized builds of
+   `+FabiusFunction.OriginalUniqueness` (3244 jobs) and
+   `+FabiusFunction.LegendreSeriesConvergence` (2715 jobs) both exited 0.
+3. Inverse-asymptotic source `9b7affe68` adds the generic quadratic inversion
+   theorem, endpoint source `6ee65a167` adds the sharp left/right Fabius inverse
+   formulas, and facade source `d6464f6c8` exposes the endpoint module through
+   `PaperFabiusAsymptotic`.  They are integrated as `431425975`, `18e7c6dcf`,
+   and `504ed4892`.  Initial focused compilation exposed only proof-normal-form,
+   missing-topology-scope, and facade-subject wording defects; those attempts
+   supply no validation evidence.  Statement-preserving repairs `863954b6a`
+   and `6d5a6c09c` use explicit function/Pi normal forms, a robust
+   difference-of-squares cancellation, the required topology scope, exact
+   one-sided-set membership, and the accurate subject
+   `Real.log (fabiusInv F hF y)`.  Final blobs are `8017000f5`
+   (`QuadraticAsymptoticInversion.lean`), `756e7a50a`
+   (`FabiusInverseAsymptotic.lean`), and `35a9c87fa`
+   (`PaperFabiusAsymptotic.lean`).  Serialized builds completed
+   `+FabiusFunction.QuadraticAsymptoticInversion` (2011 jobs),
+   `+FabiusFunction.FabiusInverseAsymptotic` (3931 jobs), and
+   `+FabiusFunction.PaperFabiusAsymptotic` (3960 jobs), all exit 0; the latter
+   two replayed only the inherited `ProbabilityLaplaceMoments.lean` linter.
+4. The theorem-polish cluster-set unit is the exact cumulative sequence
+   `305d71e3f`, `46a8e3d8f`, and `ba7eebad0`, integrated in dependency order as
+   `0e283d01f`, `9830baf09`, and `508341204`.  It exposes the literal compact
+   Lambert factor, the exact periodic phase cluster engine, and the full
+   quotient cluster interval/liminf/limsup/no-constant-repair API.  The first
+   focused Sharp build compiled the two upstream modules and exposed only
+   elaboration normal forms in the final module: an untyped constant defaulted
+   to `Nat`, composed functions needed `Function.comp_def`, Pi addition needed
+   `Pi.add_def`, and `IsLeast`/`IsGreatest` bound points were implicit.  Repair
+   `e332a58fd` changes no statement, removes one new unused-simp warning, and
+   produces final blobs `c8b9cb20e`, `f69e4d35a`, and `ad9ca03af`.  The retry
+   of `+FabiusFunction.FabiusSharpAsymptotic` completed 3891 jobs and exited 0.
+   Because the inverse endpoint imports this changed Sharp layer, fresh
+   serialized downstream builds of `+FabiusFunction.FabiusInverseAsymptotic`
+   (3931 jobs) and `+FabiusFunction.PaperFabiusAsymptotic` (3960 jobs) also
+   exited 0.  All three reported at most the already accepted inherited
+   `ProbabilityLaplaceMoments.lean` linter.
+
+All source paths above, the codexbox token, and both requested EVO tokens are
+released.  No source owner, build owner other than the idle coordinator, or
+document owner remains.  In particular, the shifted-prefix reciprocity
+documentation checkpoint is preserved but not integrated: its coverage and
+walkthrough units are semantically sound, while its old primary TeX/PDF pair
+predates and would erase the accepted compact-Lambert section.  The textual
+primary hunks may be proposed later only under a fresh exact-path document
+grant followed by a new matching PDF build.  Do not merge its moving branch or
+install its old primary PDF.  All canonical documents remain frozen.
+
 ## Checkpoint 2026-08-25 23:30 PDT
 
 ```text
@@ -572,6 +656,18 @@ processes caused temporary disk contention; serialization remained intact and
 the build completed normally.  All three paths and the codexbox token are
 released; no document, audit-ledger, facade, root, or other path is granted.
 
+Exact private-cleanup source `a72ca3c92` subsequently deletes only
+`legendre_weight_at_neg_one`, `legendre_weight_at_one`, and
+`schwartzMap_apply` from `LegendreSeriesConvergence.lean` and
+`OriginalUniqueness.lean`.  Each name had no caller; the endpoint values are
+already proved directly and the surviving private Schwartz-map conversions
+are definitional.  The coordinator integrated the isolated source as
+`611fb96ff`.  Separate serialized builds of
+`+FabiusFunction.OriginalUniqueness` (3244 jobs) and
+`+FabiusFunction.LegendreSeriesConvergence` (2715 jobs) both exited 0 without
+warnings.  Both paths and the codexbox token are released; no public API,
+import, facade, root, or document changed.
+
 ### `codex/fabius-theorem-polish-20260825`
 
 The prior task is complete and its complete source tranche is integrated on
@@ -738,6 +834,31 @@ rather than importing the feature's long historical registry.  The primary
 document lease and EVO TeX/PDF stream are released.  No document owner or TeX
 stream remains; every canonical document path is frozen pending a later board
 grant.
+
+The later three-source exact cluster-set tranche consists of source commits
+`305d71e3f` (`FabiusWikipediaMain.lean`), `46a8e3d8f`
+(`FabiusWikipediaObstruction.lean`), and `ba7eebad0`
+(`FabiusSharpAsymptotic.lean`).  Three independent static audits accept all 25
+new documented declarations, the exact range/cluster-set transport,
+liminf/limsup orientations, strict periodic gap, no-arbitrary-constant result,
+API preservation, import topology, exact preimages, and collision scan.  The
+coordinator integrated those isolated commits in order as `0e283d01f`,
+`9830baf09`, and `508341204`, excluding both registry-only checkpoints and the
+moving feature history.
+
+The first focused Sharp build exposed only elaboration-normal-form defects in
+the final module and supplies no validation evidence.  Statement-preserving
+repair `e332a58fd` types the constant comparison in `Real`, unfolds composed
+and pointwise-added functions at function level, passes `IsLeast`/`IsGreatest`
+membership proofs with their comparison points implicit, and removes the one
+new unused simp argument.  At that repaired tree,
+`+FabiusFunction.FabiusSharpAsymptotic` completed 3891 jobs and exited 0.
+Fresh downstream builds of `+FabiusFunction.FabiusInverseAsymptotic` (3931
+jobs) and `+FabiusFunction.PaperFabiusAsymptotic` (3960 jobs) also exited 0;
+only the inherited `ProbabilityLaplaceMoments.lean` linter appeared.  All
+three source paths and both host tokens are released.  This source extension
+does not reactivate the completed primary-document lease; canonical documents
+remain frozen.
 
 ### `codex/fabius-effective-bounds-20260825`
 
@@ -909,6 +1030,48 @@ exited 0, followed by the shared downstream
 released.  No document, facade, root, import, or other path is granted by
 either tranche.
 
+Exact source `51b9ad393` is a subsequent one-file binary-reduction sharpening.
+It exposes the all-real positive-index constant-three estimate, retains both
+old constant-four headers as wrappers, and replaces the private local Fabius
+bound with the canonical `Regularity` API through an explicit acyclic import.
+Independent review accepts the essential `1 ≤ m` edge, exact sum-of-residuals
+constant, `m = 1` and nonpositive-input cases, imports, API, preimage, and
+collision scan.  The coordinator integrated only that source as `942fd6b68`.
+Separate serialized builds of `+FabiusFunction.FabiusBinaryReductionSeries`
+(2820 jobs) and `+FabiusFunction.FabiusGlobalQBinomialSeries` (3324 jobs) both
+exited 0 without warnings.  The path and codexbox token are released.
+
+### `codex/fabius-inverse-asymptotic-20260825`
+
+The staged inverse-asymptotic handoff is accepted by exact source, not by
+merging its feature ancestry.  Generic source `9b7affe68` adds
+`quadraticAsymptoticInversion_with_affine` in the new
+`QuadraticAsymptoticInversion.lean`; endpoint source `6ee65a167` adds the three
+totalized inverse main terms and five left/right endpoint theorems in the new
+`FabiusInverseAsymptotic.lean`; facade source `d6464f6c8` adds exactly the
+endpoint import and accurate prose to `PaperFabiusAsymptotic.lean`.
+Independent reviews accept the quadratic rationalization, affine sign,
+`O(log T / sqrt T)` rate, lower-Lambert specialization, logarithmic constant,
+explicit prefactor, reflection transport, one-sided filters, totalization,
+imports, public surface, and collision scan.
+
+The coordinator integrated those sources as `431425975`, `18e7c6dcf`, and
+`504ed4892`.  Initial focused attempts exposed only function/Pi normal forms,
+one missing `Topology` scope, one square-root identity presentation, explicit
+`Iio` membership, and an ambiguous facade pronoun that incorrectly appeared
+to refer to the Lambert phase; they supply no validation evidence.  Repairs
+`863954b6a` and `6d5a6c09c` preserve every theorem statement and make the
+facade say explicitly that `Real.log (fabiusInv F hF y)` has the stated main
+term.  Serialized builds of
+`+FabiusFunction.QuadraticAsymptoticInversion` (2011 jobs),
+`+FabiusFunction.FabiusInverseAsymptotic` (3931 jobs), and
+`+FabiusFunction.PaperFabiusAsymptotic` (3960 jobs) all exited 0.  After the
+later Sharp cluster-set integration, the latter two were rerun on the final
+cumulative tree and again exited 0 with the same job counts; only the inherited
+`ProbabilityLaplaceMoments.lean` linter appeared.  All three source paths and
+the requested EVO token are released.  No TeX/PDF, root aggregate, or
+canonical-document path was requested or changed.
+
 ### `codex/fabius-shifted-prefix-grid`
 
 The one-file source claim is implemented at checkpoint
@@ -1074,6 +1237,21 @@ its superseded acceptance.
 `PAPER_COVERAGE.md`, both primary files, and both walkthrough files return to
 the frozen pool.  The signed-reciprocity mapping remains a documentation
 backlog item and gives this branch no continuing ownership.
+
+The branch later published preservation checkpoint `f67446278` and release
+checkpoint `9c2f38c07` from the board state it had already merged.  This was a
+synchronization race: the requested five-path scope had been authorized in
+that merged board, but current main had released it 43 seconds before the
+branch-side acceptance.  Independent content audit accepts the signed formula,
+zero iff, declaration mapping, boundary/run distinctions, coverage update,
+walkthrough module row, static TeX predicates, and both rendered artifacts.
+It is nevertheless not an integration base.  Its primary pair starts from the
+old pre-Lambert TeX/PDF and would erase the accepted compact-Lambert section;
+the PDFs conflict and must never be selected or combined.  Preserve the remote
+checkpoint, but merge none of its moving history.  The coverage and walkthrough
+units may be reconsidered later, while the disjoint primary textual hunks need
+a fresh exact-path document grant and a newly rebuilt matching PDF.  No such
+grant is active; all five paths remain frozen.
 
 ### `codex/fabius-exposition-integration`
 
@@ -1264,6 +1442,18 @@ released.  The effective-bounds strict-moment source is integrated at
 `63e7334ec`, and its all-real cumulant successor at `5100bc049`; their separate
 3417-job and 2858-job focused builds plus the shared 3419-job downstream gate
 are green, and both leases are released.
+
+The effective-bounds binary constant-three sharpening is integrated at
+`942fd6b68`, green through 2820-job focused and 3324-job direct-consumer
+builds, and released.  The both-papers private-only deletion is integrated at
+`611fb96ff`, green through independent 3244-job OriginalUniqueness and
+2715-job LegendreSeriesConvergence builds, and released.  The complete staged
+inverse stack is integrated through `6d5a6c09c`, green through the 2011-job
+generic, 3931-job endpoint, and 3960-job paper-facade gates.  The theorem-polish
+exact cluster-set source sequence is integrated through `508341204`, repaired
+at `e332a58fd`, and green through its 3891-job Sharp gate plus fresh 3931/3960
+downstream inverse/facade gates.  Every associated source path and build token
+is released; neither tranche activates a document lease.
 
 Theorem-polish source commit `665b6bce` is integrated as `c80f61c90`, repaired
 without statement changes at `6b6757e90`, and accepted after its focused
@@ -1549,6 +1739,41 @@ TeX/PDF stream for three `pdflatex` passes at document source `2546fe21b`;
 they exited 0 with 57, 59, and 59 pages, and the settled final artifact passed
 the static, font, text, and raster gates recorded above.  That document stream
 is released.  EVO's Lean/Lake and TeX/PDF tokens are now idle and unassigned.
+
+For the binary constant-three follow-up, a preliminary command from a nested
+directory without a Lake configuration exited before Lean and supplies no
+evidence.  From the repository root, separate serialized builds of
+`+FabiusFunction.FabiusBinaryReductionSeries` (2820 jobs) and
+`+FabiusFunction.FabiusGlobalQBinomialSeries` (3324 jobs) both exited 0 without
+warnings.  For the private-only cleanup, separate serialized builds of
+`+FabiusFunction.OriginalUniqueness` (3244 jobs) and
+`+FabiusFunction.LegendreSeriesConvergence` (2715 jobs) both exited 0 without
+warnings.
+
+For generic quadratic inversion, the first correctly rooted build exposed
+only eleven function/Pi/algebra normal-form errors; a repair retry exposed two
+remaining proof-shape errors.  Neither supplies validation evidence.  After
+statement-preserving repair `863954b6a`,
+`+FabiusFunction.QuadraticAsymptoticInversion` completed 2011 jobs, exit 0,
+without warnings.  Endpoint source then had one parse-only missing-scope
+failure followed by three, then one, elaboration-normal-form failures; none
+supplies evidence.  Repair `6d5a6c09c` made no statement change, after which
+`+FabiusFunction.FabiusInverseAsymptotic` completed 3931 jobs and
+`+FabiusFunction.PaperFabiusAsymptotic` completed 3960 jobs, both exit 0 with
+only the inherited `ProbabilityLaplaceMoments.lean` linter.
+
+For the exact cluster-set tranche, one command issued from
+`Analysis/FabiusFunction` found no Lake configuration, launched no Lean, and
+supplies no evidence.  The first repository-root Sharp build compiled the new
+Wikipedia main and obstruction modules but exited 1 at the final module on
+the documented type-inference/function-normal-form sites.  After proof-only
+repair `e332a58fd`, `+FabiusFunction.FabiusSharpAsymptotic` completed 3891
+jobs and exited 0.  Fresh cumulative-tree builds of
+`+FabiusFunction.FabiusInverseAsymptotic` (3931 jobs) and
+`+FabiusFunction.PaperFabiusAsymptotic` (3960 jobs) then both exited 0.  Those
+three final runs reported only the inherited linter.  Every invocation in this
+checkpoint was serialized; the codexbox and EVO tokens are released.
+
 Other branches may edit, checkpoint, and push ordinary claimed work under the
 open protocol, but may not run Lean/Lake or a document tool stream until this
 board assigns the applicable lane.
