@@ -2319,3 +2319,55 @@ Canonical documents remain frozen.  After compiled integration, a separately
 assigned documentation owner should retire the exact frontier obligation and
 add the three names to the primary/coverage crosswalk; the primary mathematical
 factor-two prose itself is already correct.
+
+## Claim: remove the duplicate Mersenne oddness proof
+
+Fresh `origin/main` `e596e97c0203a6bb0ab0303bbda9f7553c03ac75` has the
+exact prospective source blob
+
+```text
+Parity.lean  92ca2ea3ad73cff04749709d5a142d3bd01ea270
+```
+
+The exact prospective write set is:
+
+- `Lean/FabiusFunction/Parity.lean`;
+- this branch's own registry.
+
+`Arithmetic.lean` already exports the documented theorem
+
+```text
+two_pow_sub_one_odd {e : ℕ} (he : 0 < e) : Odd (2 ^ e - 1).
+```
+
+The directly importing `Parity.lean` nevertheless repeats the same statement
+as private `odd_two_pow_sub_one` with a separate six-line induction proof.
+This claim deletes that private declaration and changes its only two call sites
+to the existing public name.  Both callers already supply the exact required
+strictly positive exponent hypotheses.
+
+The projected exact source delta is two insertions and nine deletions, net
+minus seven lines: two name-only call rewrites and deletion of the six-line
+private block plus its redundant separator.  No public declaration, theorem
+type, proof outside those two calls, comment, import, namespace, attribute,
+simp rule, facade, aggregate, or canonical document changes.  No new API is
+introduced.
+
+All fetched source tips retain the same private declaration and its two calls;
+none implements the deletion.  Exact-name, target-path, source-history, and
+every-registry scans find no competing claim.  This branch's earlier sparse
+Pascal `Parity.lean` claim is integrated, compiled, and explicitly released by
+the coordinator's 02:56 checkpoint, so it supplies provenance rather than an
+active lease.  The current finite-CDF, combined-saddle, inverse, and Bose lanes
+are disjoint.
+
+No Lean, Lake, TeX, PDF, or cache-mutating process is authorized or has run for
+this claim.  After an immutable reviewed source checkpoint, the requested
+separate serialized gate is:
+
+```text
+LEAN_NUM_THREADS=0 LAKE_JOBS=1 lake build +FabiusFunction.Parity
+```
+
+The optional paper-facade gate is `+FabiusFunction.Paper06487`; no root or
+document build is requested.  Stop after the first nonzero exit.
