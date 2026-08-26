@@ -6,24 +6,24 @@ Every worker reads it from the fetched `origin/main` before writing, merging,
 building, or pushing.  Workers publish replies in their own per-branch registry
 files; they do not edit this board.
 
-## Checkpoint 2026-08-25 22:03 PDT
+## Checkpoint 2026-08-25 22:23 PDT
 
 ```text
-observed main before this directive: 29791005881f1563eba9618e6d75b9db50b045a2
+observed main before this directive: 14af01588ade513eb7e8c580e3ae2d3c0ab1870d
 coordinator branch: codex/fabius-coordinator-20260825
 integration mode: feature branches -> coordinator -> fast-forward main
 main write owner: coordinator
 codexbox Lean/Lake owner: coordinator
-  (IDLE after shifted-Fourier validation)
+  (IDLE after saddle continuous-polynomial validation)
 codexbox TeX/PDF owner: unassigned
   (IDLE)
-EVO Lean/Lake owner: unassigned
-  (IDLE after shifted-prefix validation)
+EVO Lean/Lake owner: codex/fabius-theorem-polish-20260825
+  (ACTIVE for exactly +FabiusFunction.FabiusSharpAsymptotic)
 EVO TeX/PDF owner: unassigned
   (IDLE after user-directed release of the shifted-prefix document grant)
 documentation owner: unassigned
   (all canonical documents frozen; conditional primary reservation below)
-next poll: after the next advertised source or documentation checkpoint
+next poll: after the theorem-polish EVO build checkpoint or next source handoff
 ```
 
 The previously approved curvature, generalizations, lower-Lambert,
@@ -41,6 +41,13 @@ The syntax-fix commit moves the comment before the attribute.  The retry at
 immutable `9887ea584` passed the complete `+FabiusFunction` aggregate (4008
 jobs, exit 0).  The integration incident is closed; no revert or duplicate
 cherry-pick is needed.
+
+Main commit `c5ee98fc7` adds four user-supplied TeX inputs under
+`docs/non-formalized-research-frontiers/drafts/` and changes no existing
+canonical document, Lean file, registry, or control file.  Preserve those
+7,247 lines as an unreviewed temporary frontier inbox under the existing
+draft-disposition rules.  They confer no document ownership and must not be
+compiled, integrated, deleted, or moved while documentation is frozen.
 
 ## Immediate shared instructions
 
@@ -496,6 +503,27 @@ source as `49ddce559`.  Separate serialized builds of
 source path and codexbox token are released.  No document, facade, root, import,
 or other path changed; the branch's historical feature lineage was not merged.
 
+Claim `84c22af63` then advertised deduplication of the continuous-coefficient
+saddle polynomial across `FabiusSaddleExpansionCoefficients.lean` and its
+direct importer `FabiusSaddleReferenceWeight.lean`.  Exact source
+`036cbe4a2` deletes the 34-line primed private copy and mechanically rewires all
+22 surviving downstream references.  Its initial registry language proposed
+three public names; final handoff `9a5cf19e6` explicitly narrows the public API
+to documented `negativeLaplaceExponentPolynomialContinuous` and
+`negativeLaplaceExponentPolynomialContinuous_map`, retaining
+`negativeLaplaceBoundedExponentJetContinuousMap` as a private constructor.
+Independent audits accept that smaller abstraction boundary: the normalized
+blocks are byte-identical, imports and every old public header/attribute are
+unchanged, no primed reference remains, and there is no competing declaration.
+The coordinator integrated only the exact source as `9aca1aaf3`.  Separate
+serialized builds of `+FabiusFunction.FabiusSaddleExpansionCoefficients`
+(3306 jobs) and `+FabiusFunction.FabiusSaddleReferenceWeight` (3517 jobs) both
+exited 0; the latter replayed only the known nonblocking
+`ProbabilityLaplaceMoments.lean` linter.  The source paths and codexbox token
+are released.  This accepts the core deduplication but does not claim that the
+audit proposal's optional three-name public surface was implemented verbatim;
+the audit ledger itself remains unchanged and frozen.
+
 ### `codex/fabius-theorem-polish-20260825`
 
 The prior task is complete and its complete source tranche is integrated on
@@ -595,6 +623,45 @@ coordinator integrated it as `853a09a80`.  A serialized
 0, reporting only one nonblocking `unnecessarySimpa` linter in the new
 reflection proof.  The source lease and codexbox token are released; no
 document, facade, or root path changed.
+
+Registry-only claim `8c6456646` advertises an ordinary two-source compact
+Lambert-W obstruction tranche in `FabiusWikipediaMain.lean` and
+`FabiusSharpAsymptotic.lean`.  Its six names are
+`fabiusWikipediaLambertMain`,
+`fabiusCorrectedWikipediaMain_eq_WikipediaLambertMain_add`,
+`isEquivalent_exp_iff_tendsto_log_sub`,
+`log_fabius_sub_WikipediaLambertMain_not_tendsto_zero`,
+`log_fabius_sub_WikipediaLambertMain_not_isBigO`, and
+`fabius_not_isEquivalent_exp_WikipediaLambertMain`.  Three independent
+preflights accept the exact 2022 online formula, lower-Lambert phase,
+`+ negativeLaplacePsi` sign, log-ratio iff under eventual positivity,
+nonvanishing/Big-O obstruction chain, import topology, current preimages, and
+collision scan.  Source work may proceed in exactly those two Lean files plus
+the own registry, preserving every old header/import; no build token is granted
+before an immutable reviewed source handoff.  The later minimal gate is
+`+FabiusFunction.FabiusSharpAsymptotic`.  Any Fourier explanation must state
+`Gamma(1-χ_k) = -χ_k Gamma(-χ_k)` only for `k ≠ 0`, with the zero mode handled
+separately, and the six declarations formally refute multiplier one rather
+than every arbitrary multiplier.  No document path is owned by this claim.
+
+Exact source `b0600193b` now implements all six declarations in exactly those
+two files; handoff `20751d800` freezes result blobs `61ae4480f` and
+`e6939d6e8`.  Two independent actual-diff reviews accept the formula, totalized
+definition, plus sign, arbitrary-filter log-ratio iff, residual subtraction,
+Big-O implication, positive-side domain, imports, API compatibility, current
+preimages, and collision scan.  The source is accepted for validation but not
+yet integrated or compiled.  The theorem-polish branch holds the sole EVO
+Lean/Lake token for exactly one command after merging this board/current main
+and verifying those two blobs remain exact:
+
+```text
+LAKE_JOBS=1 lake build +FabiusFunction.FabiusSharpAsymptotic
+```
+
+It must run no second target or document process.  On failure, record and stop;
+on success, record the exact tree, job count, exit, and warnings, push only the
+own registry, and release the token.  The primary reservation remains inactive
+until the coordinator integrates the source and accepts this build evidence.
 
 **Conditional primary-document reservation.**  At the user's direction, the
 primary exposition TeX/PDF pair is reserved for a future bounded
@@ -706,6 +773,22 @@ importer `+FabiusFunction.LaplaceMomentBounds` (3417 jobs) both exited 0.  They
 reported only the already-recorded nonblocking `unnecessarySimpa` linter from
 `ProbabilityLaplaceMoments.lean`.  The path and codexbox token are released;
 no document, facade, root, import, or other path was changed.
+
+Registry claim `96e05f698`, corrected before source work by `ca227c69e`,
+advertises one ordinary tranche in `FabiusLambertAllOrderAlgebra.lean`.  It will
+add `dyadicLambertDisplacementPolynomial_natDegree`, proving degree
+`max n 1`, and
+`dyadicLambertDisplacementPolynomial_leadingCoeff_succ`, with right-hand side
+`(-1 : ℝ)^n * (n + 1 : ℝ)⁻¹ * ((Real.log 2)⁻¹)^(n + 2)`.  Two independent
+preflights accept the unique `j = 0` highest-degree summand, signs, powers,
+noncancellation, imports, placement, preimage, and duplicate scan.  The scalar
+leading-coefficient recurrence is valid only for `n ≥ 1`; `n = 0` has the
+separate empty-convolution base `L₁ = (log 2)⁻²`.  Source work may proceed only
+in that Lean file plus the own registry, using private proof helpers and
+preserving every old header.  No build token or document/facade/root lease is
+granted.  After an immutable reviewed handoff, the intended serialized gates
+are `+FabiusFunction.FabiusLambertAllOrderAlgebra` and then its sole direct
+importer `+FabiusFunction.FabiusLambertFormalLog`.
 
 ### `codex/fabius-shifted-prefix-grid`
 
@@ -866,8 +949,9 @@ independent semantic/collision audits and was briefly granted the exact
 coverage/primary/walkthrough paths above.  The user has now clarified that no
 documentation-owner agent is active.  The grant and EVO TeX/PDF stream are
 therefore released before any canonical document edit or render.  At pushed
-feature tip `8b48a970a`, none of the five formerly granted canonical paths
-differs from `main`; only the branch's own registry preserves the request.
+feature tip `059b45ed5`, none of the five formerly granted canonical paths
+differs from `main`; only the branch's own registry preserves the request and
+its superseded acceptance.
 `PAPER_COVERAGE.md`, both primary files, and both walkthrough files return to
 the frozen pool.  The signed-reciprocity mapping remains a documentation
 backlog item and gives this branch no continuing ownership.
@@ -1041,7 +1125,14 @@ Laplace-reflection tranche, and shifted-prefix signed dyadic-reflection tranche
 are also integrated and green.  The total binary-reduction, normalized-`L¹`,
 and Unit-Laplace tilt-comparison tranches are now integrated, compiled, and
 released as well.  The disjoint both-papers shifted-Fourier tranche is also
-integrated, compiled, and released; it grants no document ownership.
+integrated, compiled, and released; it grants no document ownership.  The
+subsequent two-file saddle continuous-polynomial deduplication is integrated,
+compiled, and released under its explicitly narrowed two-name public surface.
+The theorem-polish compact Lambert-W obstruction is a disjoint ordinary claim
+now implemented at frozen source `b0600193b`; exact review is
+green and its one EVO validation target is active.  The primary document lease
+remains inactive.  Effective-bounds has a disjoint corrected registry-only
+all-order Lambert-polynomial claim with no source checkpoint or token yet.
 
 Theorem-polish source commit `665b6bce` is integrated as `c80f61c90`, repaired
 without statement changes at `6b6757e90`, and accepted after its focused
@@ -1251,6 +1342,12 @@ Lean and supply no validation evidence.
 For shifted real-axis Fourier decay, separate serialized builds at
 `49ddce559` of `+FabiusFunction.PoissonSummation` (3195 jobs) and
 `+FabiusFunction.Paper05442` (3417 jobs) both exited 0 without warnings.
+
+For saddle continuous-polynomial deduplication, separate serialized builds at
+`9aca1aaf3` of `+FabiusFunction.FabiusSaddleExpansionCoefficients` (3306 jobs)
+and `+FabiusFunction.FabiusSaddleReferenceWeight` (3517 jobs) both exited 0.
+The latter replayed only the inherited nonblocking `unnecessarySimpa` linter
+in `ProbabilityLaplaceMoments.lean`.
 
 On EVO, exact shifted-prefix merge `4367a7f86` and tree `db635e6a073b`
 preserved source commits `8021c555f` and `f7152d5fc`.  Separate sequential
