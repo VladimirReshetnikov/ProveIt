@@ -6,10 +6,10 @@ Every worker reads it from the fetched `origin/main` before writing, merging,
 building, or pushing.  Workers publish replies in their own per-branch registry
 files; they do not edit this board.
 
-## Checkpoint 2026-08-25 17:17 PDT
+## Checkpoint 2026-08-25 17:21 PDT
 
 ```text
-observed main before this directive: 12e7137a897b8ec99ddf8935f64fff9f35977617
+observed main before this directive: 893d4c25d81740b7b695f72bc364eed941932ca1
 coordinator branch: codex/fabius-coordinator-20260825
 integration mode: feature branches -> coordinator -> fast-forward main
 main write owner: coordinator
@@ -114,18 +114,30 @@ label is stale for this worktree.  Do not start a new merge to reproduce it.
 ### `codex/fabius-both-papers`
 
 The curvature workstream is fully integrated at `09ae23f63`; all old leases are
-released and the prior task is complete.  The endpoint-inclusive Lower-Lambert source
-commit `1da2fde22` is also integrated; a serialized immutable build of
+released and the prior task is complete.  The endpoint-inclusive Lower-Lambert
+source commit `1da2fde22` is also integrated; a serialized immutable build of
 `+FabiusFunction.LowerLambertW` exited 0 at `4c6bbac41`, and that module's blob
 is unchanged on current `main`.  All Lower-Lambert, inverse-power, and
 Gamma--zeta leases are released.  This branch may begin new ordinary work after
 advertising exact files and declarations in its registry; it must still wait
 for a board token before any validation process.
 
+The registry claim at `0cb92989d`, synchronized with this board at feature tip
+`f1b33700b`, is the first advertised claim for
+`Lean/FabiusFunction/GlobalExtension.lean`.  The path is now owned by this
+branch until its source checkpoint or release.  The bounded tranche may add
+`extendedFabius_natCast_eq_ite` and
+`iteratedDeriv_extendedFabius_natCast_eq_zero_iff`, packaging the existing
+even/odd knot formulas and global derivative formula without changing existing
+public signatures.  Write only that source file and this branch's registry;
+leave downstream special cases and all human-document paths untouched.  Push
+an explicitly unvalidated source checkpoint.  The codexbox token remains
+coordinator-reserved, so launch no Lean, Lake, TeX, or PDF process.
+
 ### `codex/fabius-theorem-polish-20260825`
 
-The prior task is complete and its complete source tranche is integrated on current
-`main` through `301a46561`.  It adds four all-degree centered finite-spline
+The prior task is complete and its complete source tranche is integrated on
+current `main` through `301a46561`.  It adds four all-degree centered finite-spline
 declarations and three all-real discrete-limit declarations while preserving
 the old nonnegative signatures as wrappers.  Independent theorem/API review
 found no blocker.  At immutable merge `60458909a`, serialized builds of
@@ -136,6 +148,26 @@ found no blocker.  At immutable merge `60458909a`, serialized builds of
 changes before `301a46561` are registry-only, so the validated Lean tree is
 unchanged.  The source lease is released; this branch may begin a new ordinary,
 nonoverlapping claim under the shared protocol.
+
+The next ordinary claim is advertised at feature tip `ca387fea0` for exactly:
+
+- `Lean/FabiusFunction/NegativeLaplace.lean`;
+- `Lean/FabiusFunction/LaplaceMoments.lean`;
+- `Lean/FabiusFunction/NegativeLaplaceDerivatives.lean`; and
+- `Lean/FabiusFunction/NegativeLaplaceVertical.lean`.
+
+No competing claim touches these four paths, so authoring may proceed after a
+clean merge of current `origin/main`; all other workers now treat them as
+claimed.  Preserve the exact public signatures of
+`generatingFunction_neg_pos` and `fabiusLaplaceMoment_zero_pos` while moving
+their proofs to the upstream-most natural modules.  The bounded tranche may add
+the advertised global generating-function positivity, all-real zeroth Laplace
+moment, normalized-moment value/derivative, and global smoothness/continuity
+APIs, then reduce the old positive-half-line results to compatibility
+corollaries.  Exclude the finite-`q` witness and every human-document path.
+Write only these four source files and the branch registry, and push an
+explicitly unvalidated checkpoint.  No EVO build token is granted while the
+frontier owner holds that host lane.
 
 ### `codex/fabius-shifted-prefix-grid`
 
@@ -250,8 +282,9 @@ a requested path is serialized, hot, frozen, single-owner, or already claimed.
 
 1. Receive and audit the semantic frontier TeX/README checkpoint before any PDF
    is regenerated.
-2. In parallel, receive and review the one-file shifted-prefix-grid source
-   checkpoint; validate it only through a subsequently assigned host token.
+2. In parallel, receive and review the shifted-prefix-grid, natural-knot, and
+   all-real Laplace source checkpoints; validate them only through subsequently
+   assigned host tokens.
 3. Receive the three-pass PDF/evidence checkpoint, then integrate the complete
    frontier tranche through the coordinator.
 4. Only after the frontier stabilizes, assign the primary exposition's four
