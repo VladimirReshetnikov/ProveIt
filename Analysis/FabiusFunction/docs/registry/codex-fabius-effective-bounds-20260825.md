@@ -3755,3 +3755,89 @@ conflicts / dependencies: active codexbox validation paths are disjoint; the
 next bounded step: commit/push this claim, repeat the name scan, author only
   the claimed module, freeze for independent review, then checkpoint/handoff
 ```
+
+## Handoff: zero-inclusive endpoint/Laplace comparison family
+
+Source checkpoint `0409c13d1` implements the complete one-file claim and is
+pushed to `origin/codex/fabius-effective-bounds-20260825`.  Registry correction
+`12f9dcd17` records the authoritative strict count of 24/24; the initial 23/23
+number was a bookkeeping error only and never changed the eight-name scope.
+
+The module now exposes exactly these documented all-index companions:
+
+- `abs_one_sub_pow_sub_exp_quadratic_le_all`;
+- `abs_integral_one_sub_pow_sub_exp_quadratic_le_all`;
+- `abs_endpointMoment_sub_laplace_secondOrder_le_all`;
+- `abs_unitEndpointMoment_sub_unitLaplace_secondOrder_le_all`;
+- `abs_log_unitEndpointMoment_sub_log_unitLaplace_add_le_all`;
+- `abs_halfMoment_sub_fabiusLaplace_secondOrder_le_all`;
+- `abs_halfMoment_div_fabiusLaplace_sub_secondOrder_le_all`; and
+- `abs_dyadicEndpointLaplaceLogError_add_secondOrder_le_all`.
+
+Every conclusion is the corresponding positive-index conclusion with only
+`hn : 1 ≤ n` removed.  Pointwise and set-integral zero cases reduce to zero;
+the unit and Fabius raw-moment forms use the all-index measure/probability
+bridges; the logarithmic unit theorem retains its explicit mass-positivity and
+chart hypotheses; relative normalization uses
+`fabiusLaplaceMoment_zero_pos_all`; and the dyadic theorem isolates the
+totalized identity `negativeLaplaceLog 0 = 0` before delegating successors to
+the existing positive theorem.  No analytic domain, constant, measure,
+smallness, moment, or filter hypothesis changed elsewhere.
+
+The three previously undocumented generic estimates now state their exact
+logarithmic Taylor remainder, exponential linear remainder, and nonpositive
+one-Lipschitz formulas.  The module guide records the zero-inclusive family
+and the retained compatibility interfaces.  Repository and strict audits now
+agree on 24 public declarations / 24 adjacent comments / zero missing; this
+file has no attributed or private-declaration blind spot.
+
+The exact frozen source is blob
+`e7170713a4c8fd4993009cba9cc0786cd7b72161`, content SHA-256
+`B43C48858428F3D76C002F9CDB86233D253500138D482E36682CFDEF346503DD`,
+40,406 bytes / 922 lines.  Its diff from advertised preimage
+`1622199dc5991f5edcc24baf6d4b1044a615411c` is exactly 204 insertions and
+zero removals, so all 16 old declaration headers, attributes, proof bodies,
+imports, and formatting bytes are preserved.  Author checks and two
+independent hostile exact-byte reviews accept all eight statement copies,
+zero/positive branches, set-integral normalization, totalized logarithm,
+global denominator algebra, documentation, collision surface, and consumer
+compatibility.  Local/staged `git diff --check`, hash, import/header,
+placeholder, whitespace, and documentation scans passed.
+
+No Lean, Lake, TeX, PDF, cache mutation, canonical-document edit, or main
+write ran; static review is not compiler evidence.
+
+```text
+SYNC Fabius
+branch / worktree / machine: codex/fabius-effective-bounds-20260825 /
+  /home/codex/.codex/worktrees/d6d3/Proofs / codexbox
+fetched main SHA: ed8d996b78e9858d1282c7c5622c9b4ac61796da
+HEAD and dirty paths: 0409c13d1; clean after exact-path source commit;
+  checkpoint pushed
+writing (exact paths): this branch registry for immutable handoff only;
+  EndpointLaplaceComparison.lean is frozen at the stated blob
+expected declarations or document claims: the exact eight `_all` names and
+  strict 24/24 source docs above; no old public API/import/downstream/canonical
+  document change
+completed commits: registry claim 013a7a1d1; count correction 12f9dcd17;
+  source checkpoint 0409c13d1; all pushed without force
+validated (exact command, SHA/state, exit code): 120-visible-ref pre/post-claim
+  name scan had zero prior Lean hits; current/main preimage matched; strict and
+  repository audits report 24/24; exact 204-addition/0-removal diff, local and
+  staged git diff --check, hash/header/import/hygiene scans, author audit, and
+  two independent hostile exact-byte reviews are green
+not yet validated: no Lean/Lake target or downstream consumer was built on
+  this branch; static proof/API review is not compiler evidence
+requested integration or lease: request serialized
+  +FabiusFunction.EndpointLaplaceComparison,
+  +FabiusFunction.LaplaceCumulantAsymptotics,
+  +FabiusFunction.DyadicSharpConditional, and
+  +FabiusFunction.LaplaceMomentBounds; request coordinator review/selective
+  integration; request no main-write/document lease
+conflicts / dependencies: active coordinator validation paths remain
+  disjoint; this source blob is immutable pending disposition; only the
+  coordinator may advance main or assign Lean/Lake
+next bounded step: push this handoff, refresh main/board, then continue on a
+  disjoint cold path such as the audited Thue--Morse core-bound cleanup or Bose
+  arbitrary-cutoff negativity generalization
+```
