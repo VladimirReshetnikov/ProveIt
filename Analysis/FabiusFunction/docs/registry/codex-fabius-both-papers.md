@@ -7,12 +7,12 @@ This file implements the per-branch registry fallback in
 SYNC Fabius
 branch / worktree / machine: codex/fabius-both-papers /
   /home/codex/src/Proofs / codexbox
-fetched main SHA: 2f306d00b477f24457e3fbc1d1de411e8382e51a
-HEAD and dirty paths: e29784e5e149b61c8e93842ce2a9e562b245f346;
-  dirty only in this own-registry claim
+fetched main SHA: ff675711f02a84c365cf4824c257ad593933e46d
+HEAD and dirty paths: 8ca5be2de8de29276b94116e24fc90d55412cbec;
+  dirty only in this own-registry handoff
 writing (exact paths):
-  Analysis/FabiusFunction/Lean/FabiusFunction/FabiusBinaryReductionSeries.lean;
-  Analysis/FabiusFunction/docs/registry/codex-fabius-both-papers.md
+  Analysis/FabiusFunction/docs/registry/codex-fabius-both-papers.md;
+  the FabiusBinaryReductionSeries.lean source claim is released by this handoff
 expected declarations or document claims:
   norm_binaryReductionRemainder_le_total;
   norm_globalBinaryReductionSum_sub_extendedFabius_le_total;
@@ -116,7 +116,13 @@ completed commits: Lower-Lambert source checkpoint `1da2fde2285e3970267b7dc2561b
   `3475f5ff0b3f50c05782c160bc111cdcea93fd27`, which replaces nine
   inline Finset-product positivity arguments with the canonical public
   Arithmetic lemmas for a net source reduction of 31 lines; clean merge
-  `5fe852607` incorporates fetched main `a3cbe1794`;
+  `5fe852607` incorporates fetched main `a3cbe1794`; binary-reduction claim
+  `c31f3d733` precedes source checkpoint
+  `13173290a0e4e0fa4d0f6101795c063cce9839d5`, which adds the six advertised
+  total/all-real declarations and removes the eventual positive-scale side
+  condition from the existing uniform-convergence proof; clean merge
+  `8ca5be2de8de29276b94116e24fc90d55412cbec` incorporates fetched main
+  `ff675711f02a84c365cf4824c257ad593933e46d` without changing the source blob;
 validated (exact command, SHA/state, exit code): coordinator board records
   serialized immutable `lake build +FabiusFunction.LowerLambertW` at
   `4c6bbac41`, exit 0, with its source blob unchanged on current main;
@@ -142,8 +148,19 @@ validated (exact command, SHA/state, exit code): coordinator board records
   through its existing direct import, and all static hygiene checks pass;
   coordinator integration `b16fc9a6d` records the exact private-only spline
   cleanup, and `+FabiusFunction.FabiusUniformSpline` completes 3415 jobs,
-  exit 0
-not yet validated: the moved dyadic theorem body was already compiled in its
+  exit 0; coordinator integration `19ee18206` records the exact downstream
+  complex-shift checkpoint, and `+FabiusFunction.FabiusComplexShiftSpline`
+  completes 3417 jobs, exit 0 without warnings; coordinator tree `77e2f55d4`
+  records the product-positivity consolidation, and separate builds of
+  `+FabiusFunction.ExactInversePower` (2013 jobs) and
+  `+FabiusFunction.PaperStatements` (3242 jobs) both exit 0 without warnings
+not yet validated: source checkpoint `13173290a0e4e0fa4d0f6101795c063cce9839d5`
+  has three independent static reviews covering its scale-zero and negative
+  input cases, exact telescope algebra, geometric majorant, shifted
+  summability, theorem naming, compatibility, source prose, and hygiene, but
+  no Lean or Lake process has elaborated it; the historical validation-state
+  paragraphs below are superseded by the coordinator board and retained only
+  as provenance: the moved dyadic theorem body was already compiled in its
   downstream home by the green
   aggregate at `9887ea584`, but its new module ownership/import context has not
   been compiled; only read-only source/collision/marker/diff checks are
@@ -199,7 +216,8 @@ not yet validated: the moved dyadic theorem body was already compiled in its
   reviews covering all nine exact public-lemma substitutions, transitive
   visibility, every unchanged Nat-to-rational consumer, import retention,
   public API identity, and diff hygiene, but has not been elaborated or built
-requested integration or lease: the dyadic relocation needs serialized
+historical integration requests, all superseded by the current coordinator
+  board: the dyadic relocation needs serialized
   `+FabiusFunction.GlobalDyadic`
   and `+FabiusFunction.OriginalPaperSupplement` validation; this new ordinary
   source checkpoint needs serialized `+FabiusFunction.DyadicAnalytic`
@@ -237,6 +255,13 @@ requested integration or lease: the dyadic relocation needs serialized
   handoff;
   serialized README/primary/walkthrough/coverage paths are deliberately not
   claimed yet
+requested integration or lease: integrate source checkpoint
+  `13173290a0e4e0fa4d0f6101795c063cce9839d5`; run serialized
+  `LAKE_JOBS=1 lake build +FabiusFunction.FabiusBinaryReductionSeries`, then
+  the smallest direct-consumer smoke target
+  `LAKE_JOBS=1 lake build +FabiusFunction.FabiusGlobalQBinomialSeries`;
+  the source path is released; canonical AUDIT_FINDINGS, PAPER_COVERAGE,
+  COLLABORATION, primary, and walkthrough paths remain frozen and unclaimed
 conflicts / dependencies: all advertised Fabius heads and their registries
   were checked; no branch claims GlobalExtension and the only overlap is the
   existing even/odd ingredients and downstream special cases that this API
@@ -286,10 +311,9 @@ conflicts / dependencies: all advertised Fabius heads and their registries
   positive-degree complex branch estimate, no `_all` or semantic-equivalent
   theorem, and no active claim on `FabiusDiscreteLimitComplexShift.lean`; the
   exact `_all` name occurs only in the unimplemented serialized audit proposal
-next bounded step: push this independently reviewed all-degree handoff,
-  request serialized `+FabiusFunction.FabiusDiscreteLimitComplexShift` and
-  direct-consumer `+FabiusFunction.FabiusComplexShiftSpline` validation, and
-  begin the next ordinary nonoverlapping audit
+next bounded step: push this independently reviewed binary-reduction handoff,
+  await serialized integration/build validation, and begin the next ordinary
+  nonoverlapping audit
 ```
 
 ## All-degree complex branch-translation handoff
@@ -468,3 +492,42 @@ Read-only Lower-Lambert documentation handoff for the semantic integrator:
 - A future semantic documentation pass must rebuild the primary exposition,
   walkthrough, and canonical-frontier PDFs; no PDF conflict resolution is
   appropriate.
+
+## Total binary-reduction handoff
+
+Source checkpoint `13173290a0e4e0fa4d0f6101795c063cce9839d5` adds six
+public declarations in `FabiusBinaryReductionSeries.lean`:
+
+- `norm_binaryReductionRemainder_le_total`;
+- `norm_globalBinaryReductionSum_sub_extendedFabius_le_total`;
+- `globalBinaryReductionSummand_eq_remainder_sub_all`;
+- `norm_globalBinaryReductionSummand_le_of_one_le_all`;
+- `summable_norm_globalBinaryReductionSummand_all`; and
+- `summable_globalBinaryReductionSummand_all`.
+
+The scale-zero proof puts the nonnegative binary tail in `[0, 1]` and uses
+the global bound `0 <= F <= 1`; nonpositive inputs vanish exactly.  The exact
+finite telescope then gives an all-real residual step, whose two adjacent
+total residual estimates yield the positive-index geometric majorant.  A
+shift-by-one comparison proves absolute summability on all of `Real`.  The
+existing uniform-convergence theorem now uses the total error estimate and no
+longer needs an eventual `1 <= N` side condition.  Every older restricted
+theorem keeps its exact public signature.
+
+Three independent read-only audits pass the mathematics, edge cases, proof
+shape, declaration order, naming, compatibility, collision, documentation,
+and source-hygiene checks.  Merge `8ca5be2de8de29276b94116e24fc90d55412cbec`
+incorporates fetched main `ff675711f02a84c365cf4824c257ad593933e46d`
+without changing the source blob.  No Lean or Lake process was run.  The
+requested serialized gates are:
+
+```text
+LAKE_JOBS=1 lake build +FabiusFunction.FabiusBinaryReductionSeries
+LAKE_JOBS=1 lake build +FabiusFunction.FabiusGlobalQBinomialSeries
+```
+
+The source claim is released.  A later assigned serialized-document pass
+should close the weaker proposal in `AUDIT_FINDINGS.md` and advertise these
+stronger names/domains in `PAPER_COVERAGE.md`, `COLLABORATION.md`, the primary
+exposition, and the walkthrough, rebuilding paired PDFs.  Those existing
+documents remain true but incomplete, so none is claimed by this handoff.
