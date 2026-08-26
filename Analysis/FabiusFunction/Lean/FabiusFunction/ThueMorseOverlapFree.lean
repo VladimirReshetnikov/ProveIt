@@ -225,4 +225,60 @@ theorem thueMorseBit_cube_free :
   rintro ⟨i, p, hp, hcube⟩
   exact thueMorseBit_not_overlap p hp i fun j hj => hcube j (by omega)
 
+/-! ### The critical exponent is attained, and closure of the factors -/
+
+private theorem thueMorseBit_add_pow_two (m n : ℕ) (hn : n < 2 ^ m) :
+    thueMorseBit (2 ^ m + n) = 1 - thueMorseBit n := by
+  have hs := thueMorseSign_add_pow_two m n hn
+  have h1 := thueMorseSign_eq_one_sub_two_mul_bit (2 ^ m + n)
+  have h2 := thueMorseSign_eq_one_sub_two_mul_bit n
+  have b1 := thueMorseBit_le_one (2 ^ m + n)
+  have b2 := thueMorseBit_le_one n
+  omega
+
+/-- **Squares of every dyadic length occur**: the block starting at `2^m`
+repeats immediately, `t(2^m + j) = t(2^m + 2^m + j)` for all `j < 2^m`.
+Together with overlap-freeness this shows the critical exponent of
+Thue–Morse is exactly `2`, attained. -/
+theorem thueMorseBit_square_two_pow (m j : ℕ) (hj : j < 2 ^ m) :
+    thueMorseBit (2 ^ m + j) = thueMorseBit (2 ^ m + 2 ^ m + j) := by
+  rw [thueMorseBit_add_pow_two m j hj,
+    show 2 ^ m + 2 ^ m + j = 2 ^ (m + 1) + j by rw [pow_succ]; ring,
+    thueMorseBit_add_pow_two (m + 1) j
+      (lt_of_lt_of_le hj (by rw [pow_succ]; omega))]
+
+/-- **Complement closure**: every factor of the Thue–Morse word occurs
+bitwise complemented — explicitly, shifted by a large power of two. -/
+theorem thueMorseBit_exists_complement (i L : ℕ) :
+    ∃ i', ∀ j < L, thueMorseBit (i' + j) = 1 - thueMorseBit (i + j) := by
+  refine ⟨2 ^ (i + L) + i, fun j hj => ?_⟩
+  have hlt : i + j < 2 ^ (i + L) :=
+    lt_of_lt_of_le (by omega) (Nat.lt_two_pow_self (n := i + L)).le
+  rw [show 2 ^ (i + L) + i + j = 2 ^ (i + L) + (i + j) by ring,
+    thueMorseBit_add_pow_two (i + L) (i + j) hlt]
+
+/-- **Reversal closure**: every factor of the Thue–Morse word occurs
+reversed — explicitly, at the reflection of the window through an
+even-exponent dyadic block. -/
+theorem thueMorseBit_exists_reversal (i L : ℕ) :
+    ∃ i', ∀ j < L, thueMorseBit (i' + j) = thueMorseBit (i + (L - 1) - j) := by
+  set m := 2 * (i + L + 1) with hm
+  have hpow : i + L < 2 ^ m := by
+    calc i + L < 2 ^ (i + L + 1) := by
+          have := Nat.lt_two_pow_self (n := i + L + 1); omega
+    _ ≤ 2 ^ m := Nat.pow_le_pow_right (by omega) (by omega)
+  refine ⟨2 ^ m - i - L, fun j hj => ?_⟩
+  have hr : i + (L - 1) - j < 2 ^ m := by omega
+  have hrefl := thueMorseSign_dyadic_complement m (i + (L - 1) - j) hr
+  rw [show 2 ^ m - 1 - (i + (L - 1) - j) = 2 ^ m - i - L + j by omega] at hrefl
+  have heven : ((-1 : ℤ)) ^ m = 1 := by
+    rw [hm, pow_mul]
+    norm_num
+  rw [heven, one_mul] at hrefl
+  have h1 := thueMorseSign_eq_one_sub_two_mul_bit (2 ^ m - i - L + j)
+  have h2 := thueMorseSign_eq_one_sub_two_mul_bit (i + (L - 1) - j)
+  have b1 := thueMorseBit_le_one (2 ^ m - i - L + j)
+  have b2 := thueMorseBit_le_one (i + (L - 1) - j)
+  omega
+
 end Fabius
