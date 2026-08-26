@@ -2017,3 +2017,75 @@ next bounded step: commit and push this immutable handoff; freeze the source
   for coordinator disposition; refresh main and the full ownership board before
   claiming the next ordinary theorem tranche
 ```
+
+## Claim: simultaneous-vanishing obstruction for Wikipedia errors
+
+Claimed exact source path:
+
+- `Lean/FabiusFunction/FabiusWikipediaObstruction.lean`.
+
+This tranche extracts the topological core currently hidden inside a
+rate-specific Big-O proof.  It adds exactly the public theorem
+
+```lean
+theorem fabiusWikipediaElementaryMain_error_not_tendsto_zero_of_corrected
+    (q : ℝ → ℝ)
+    (hcorrected : Tendsto
+      (fun x : ℝ => q x - fabiusExplicitCorrectedWikipediaMain x)
+      (nhdsWithin 0 (Ioi 0)) (nhds 0)) :
+    ¬ Tendsto (fun x : ℝ => q x - fabiusWikipediaElementaryMain x)
+        (nhdsWithin 0 (Ioi 0)) (nhds 0)
+```
+
+and refactors only the proof body of
+`fabiusWikipediaElementaryMain_error_not_isBigO_of_corrected_of_tendsto`
+through it, preserving that declaration's header exactly.  The new statement
+is strictly more general than the existing same-rate obstruction: it assumes
+only that the corrected error tends to zero and rules out convergence of the
+uncorrected error, with no shared comparison function or Big-O hypothesis.
+
+The source documentation will display that the difference of the two errors is
+`negativeLaplacePsi (fabiusLambertPhase x)`, whose non-vanishing limit
+obstruction is already proved above.  No import, facade, canonical document,
+adjacent theorem header, or additional claim is included.
+
+```text
+SYNC Fabius
+branch / worktree / machine: codex/fabius-effective-bounds-20260825 /
+  /home/codex/.codex/worktrees/d6d3/Proofs / codexbox
+fetched main SHA: fc63c39788ab4c31694e4f57efe05b543165675a
+HEAD and dirty paths: e05a177e1; clean before this registry-only claim
+writing (exact paths): Lean/FabiusFunction/FabiusWikipediaObstruction.lean;
+  this branch registry for claim/handoff only
+expected declarations or document claims: add exactly
+  fabiusWikipediaElementaryMain_error_not_tendsto_zero_of_corrected; refactor
+  only the body of the existing vanishing-rate Big-O theorem through it;
+  preserve every old header/attribute/import and document the exact difference
+completed commits: all prior source checkpoints and handoffs are clean and
+  pushed; this is a disjoint registry-first one-file claim
+validated (exact command, SHA/state, exit code): current HEAD and origin/main
+  share FabiusWikipediaObstruction blob
+  37d11226b0b626889a01f561640dd94222a886f3, content SHA-256
+  1E23047ED904DBFE11E0B826EC629FFD92A1C289033343DB987D8BD67E1C5FCE;
+  exact-name scans across every visible Lean ref find no implementation;
+  registry/path scans find no competing lease; the related historical
+  Wikipedia/Lambert tranche is integrated and released; an independent
+  proof/API audit verifies the Tendsto subtraction orientation and the existing
+  adjacent congruence pattern; this is not compiler evidence
+not yet validated: theorem, refactor, and prose are not implemented; no Lean,
+  Lake, TeX, PDF, or cache-mutating process is authorized or running for this
+  branch
+requested integration or lease: advertise this ordinary one-source claim;
+  after an immutable independently reviewed checkpoint, request separate
+  serialized builds of +FabiusFunction.FabiusWikipediaObstruction and direct
+  importer +FabiusFunction.FabiusSharpAsymptotic; request no document or
+  main-write lease
+conflicts / dependencies: the new proof packages the already-proved periodic
+  nonconvergence theorem and the same algebra used by an existing longer proof;
+  imports remain exact; all frozen local paths and active external claims are
+  disjoint; only the coordinator may advance main
+next bounded step: commit and push this registry-only claim without force;
+  repeat collision checks, then edit only the claimed source while independent
+  agents verify filter orientation, algebraic identity, old-header preservation,
+  source documentation, and direct-consumer compatibility
+```
