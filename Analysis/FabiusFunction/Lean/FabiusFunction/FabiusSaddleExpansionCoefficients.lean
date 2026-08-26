@@ -358,13 +358,6 @@ private theorem expCoeff_two_negativeLaplaceExponentPolynomial (t : ℝ) :
   ring_nf
   norm_num [Complex.I_sq]
 
-private theorem gaussianPolynomialContraction_C_mul_X_pow
-    (c : ℂ) (n : ℕ) :
-    gaussianPolynomialContraction (Polynomial.C c * Polynomial.X ^ n) =
-      c * normalizedGaussianMoment n := by
-  rw [Polynomial.C_mul']
-  simp
-
 /-- The first complex mass coefficient is the previously computed real
 first-order saddle correction. -/
 theorem fabiusSaddleMassCoefficientComplex_one (t : ℝ) :
