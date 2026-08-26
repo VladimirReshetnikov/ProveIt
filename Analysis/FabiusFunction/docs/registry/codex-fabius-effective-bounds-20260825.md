@@ -2157,3 +2157,93 @@ next bounded step: commit and push this immutable handoff; freeze the source
   for coordinator validation; refresh main and the full ownership board before
   claiming the next ordinary theorem tranche
 ```
+
+## Claim: real affine Prouhet identities and uniform-spline deduplication
+
+Claimed exact source paths:
+
+- `Lean/FabiusFunction/ThueMorsePrefix.lean`;
+- `Lean/FabiusFunction/FabiusUniformSpline.lean`.
+
+This atomic two-file tranche exports the real affine companions of the public
+rational Prouhet API:
+
+```lean
+theorem thueMorse_affine_power_sum_eq_zero_real
+    (r d : ℕ) (hd : d < r) (x y : ℝ) :
+    (∑ h : Fin (2 ^ r), (thueMorseSign h.val : ℝ) *
+      (x + y * (h.val : ℝ)) ^ d) = 0
+
+theorem thueMorse_affine_power_sum_self_real
+    (r : ℕ) (x y : ℝ) :
+    (∑ h : Fin (2 ^ r), (thueMorseSign h.val : ℝ) *
+      (x + y * (h.val : ℝ)) ^ r) =
+      (-1 : ℝ) ^ r * y ^ r * (2 : ℝ) ^ r.choose 2 * r.factorial
+```
+
+The sharp theorem genuinely strengthens the existing downstream private
+slope-one result: translation still disappears, while an arbitrary real slope
+contributes exactly `y ^ r`.  It covers `r = 0` and `y = 0` under Lean's
+`0 ^ 0 = 1` convention.
+
+After adding the two documented public declarations immediately beside their
+rational analogues in `ThueMorsePrefix`, the tranche deletes the complete
+six-declaration duplicate stack in `FabiusUniformSpline`: the two private real
+affine theorems and the private rational power-sum definition, recurrence,
+vanishing theorem, and sharp theorem used only to reprove them.  The existing
+lower-degree caller resolves to the new public result unchanged; the sharp
+caller supplies slope `1`.  `FabiusUniformSpline` adds a direct
+`FabiusFunction.ThueMorsePrefix` import while retaining its independently used
+`DyadicClosedForm` import.  All old public headers and attributes remain exact.
+
+The claim deliberately excludes the unrelated private `self_le_two_pow` and
+`succ_le_two_pow` cleanup in `ThueMorsePrefix`, any unified real conditional
+wrapper, canonical prose, facade changes, and downstream refactors beyond the
+two existing spline call sites.
+
+```text
+SYNC Fabius
+branch / worktree / machine: codex/fabius-effective-bounds-20260825 /
+  /home/codex/.codex/worktrees/d6d3/Proofs / codexbox
+fetched main SHA: fc63c39788ab4c31694e4f57efe05b543165675a
+HEAD and dirty paths: b97519c60; clean before this registry-only claim
+writing (exact paths): Lean/FabiusFunction/ThueMorsePrefix.lean;
+  Lean/FabiusFunction/FabiusUniformSpline.lean; this branch registry for
+  claim/handoff only
+expected declarations or document claims: add exactly the two public real
+  affine Prouhet theorems above; delete exactly the six redundant private
+  declarations downstream; adapt the two existing call sites; update source
+  module/declaration prose; preserve all old public headers/attributes
+completed commits: all prior source checkpoints and handoffs are clean and
+  pushed; this is a disjoint registry-first atomic two-file claim
+validated (exact command, SHA/state, exit code): current HEAD and origin/main
+  share ThueMorsePrefix blob 88f361d5a724bd08022754308d1d7a962de837f8,
+  content SHA-256
+  C6B4747FD53DD338B83C5303CC7700743CFAC6E35D466C72B5FA70E52E2322BC,
+  and FabiusUniformSpline blob
+  fcdd15a3af176d7ff641231e314d58dd89d3db96, content SHA-256
+  84FA8B2D6B21131099B5FAB1329EA1861DDAED8351661C455A2A982ECE5940F2;
+  scans of 54 visible local/remote refs and every registry find the proposed
+  names only as the intended private duplicates and find no public competitor
+  or active path/name lease; the historical Prefix lease is explicitly
+  released; an independent proof/API audit verifies the formulas, edge cases,
+  import graph, callers, and deletion boundary; this is not compiler evidence
+not yet validated: public declarations, deduplication, call-site updates, and
+  prose are not implemented; no Lean, Lake, TeX, PDF, or cache-mutating process
+  is authorized or running for this branch
+requested integration or lease: advertise this ordinary atomic two-source
+  claim; after an immutable independently reviewed checkpoint, request
+  sequential LAKE_JOBS=1 builds of +FabiusFunction.ThueMorsePrefix,
+  +FabiusFunction.FabiusUniformSpline, and direct consumers
+  +FabiusFunction.FabiusComplexShiftSpline and
+  +FabiusFunction.FabiusComputability; request no document or main-write lease
+conflicts / dependencies: the Prefix import graph is acyclic and UniformSpline
+  already receives it transitively; public promotion and private deletion must
+  land atomically to avoid local-name shadowing; all frozen local paths and
+  active external claims are disjoint; only the coordinator may advance main
+next bounded step: commit and push this registry-only claim without force;
+  repeat collision checks, then edit only the two claimed sources while three
+  agents independently audit generalized-slope algebra, exact-cast bridges,
+  private-stack deletion, imports, call sites, old interfaces, docs, and edge
+  cases
+```
