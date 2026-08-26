@@ -8,19 +8,19 @@ SYNC Fabius
 branch / worktree / machine: codex/fabius-both-papers /
   /home/codex/src/Proofs / codexbox
 fetched main SHA: 407da44a69a56aa8c1de5e817aa1792af5ed0a46
-HEAD and dirty paths: a987b3bb9e983ff771729e2ad20699959a72bfb8;
-  clean source checkpoint before this registry handoff
+HEAD and dirty paths: abfcee88b4e5b5ff5e512777fd23647204d97164;
+  clean before this ordinary private-only source claim
 writing (exact paths):
+  Lean/FabiusFunction/AnalyticMoments.lean;
   docs/registry/codex-fabius-both-papers.md
 expected declarations or document claims:
-  `finiteQPochhammer_eq_zero_iff`, the unrestricted rational product-zero
-  criterion `∃ j < n, a * q^j = 1`;
-  `finiteQPochhammer_half_eq_zero_iff`, identifying all roots at `q = 1/2` as
-  the powers `2^j` with `j < n`;
-  `halfQBinomial_sum_eq_zero_iff` and
-  `qBinomial_half_sum_eq_zero_iff`, transporting the complete arbitrary-rational
-  root locus to the half-q binomial polynomial in both API spellings;
-  retain the existing dyadic-node formulas as useful evaluated specializations
+  no public declaration, signature, or import change;
+  delete the three private Rvachev endpoint clones and use the existing
+  `Basic.lean` API directly;
+  delete the dead private `rvachev_intervalIntegrable`;
+  add one private generic support-localization helper, then replace the two
+  duplicated whole-line-to-`[-1,1]` integral proofs by thin applications while
+  retaining both existing private wrapper names and every caller unchanged
 completed commits: Lower-Lambert source checkpoint `1da2fde2285e3970267b7dc2561bcd0d897be1b4`
   was integrated by coordinator merge `046946a974467e83244fd3a183a3e084e70d3379`;
   registry handoff `225f5338de9ea92489ed6a2c0c371c6edb4f5db9`
@@ -156,10 +156,15 @@ conflicts / dependencies: all advertised Fabius heads and their registries
   or Claude tip contain only the dyadic-input q-Pochhammer iff, not an
   arbitrary-rational root classification, and no registry claims
   `HalfQBinomial.lean`; its coefficient-index zero theorem is semantically
-  distinct from this polynomial-root locus
-next bounded step: push this source-and-registry handoff, then after a fresh
-  fetch and board read select and advertise another disjoint ordinary source
-  cleanup while all pending build requests remain coordinator-owned
+  distinct from this polynomial-root locus; a refreshed path/name sweep across
+  current main and every advertised Fabius tip finds no active claim on
+  `AnalyticMoments.lean` and no alternate private generic localization helper;
+  the public endpoint and support lemmas needed for the consolidation already
+  live upstream in `Basic.lean`
+next bounded step: push this exact private-only claim, consolidate the two
+  support-localization proofs without running a build, obtain independent
+  static review, and hand off serialized `+FabiusFunction.AnalyticMoments`
+  validation
 ```
 
 ## Coordinator natural-knot integration disposition
