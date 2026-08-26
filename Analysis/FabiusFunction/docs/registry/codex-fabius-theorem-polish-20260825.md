@@ -1253,3 +1253,64 @@ next bounded step: commit and push this registry-only claim; fetch and reread
   green, implement the four results in the one claimed source without running
   unassigned validation
 ```
+
+## Source checkpoint: normalized reciprocity and variance parity
+
+Source commit `493575690f17c8c7d85e8b1b61edaf321d581a68` implements the
+complete four-name claim.  The committed `ProbabilityLaplaceMoments.lean` blob
+is `8a1d896e324a45f2681259f2c83e50fdfb78e238`, with content SHA-256
+`6A684C17CBC0965DEE6EC2B19EAC577F36D3F0A8D4B12020C56BDCB0EF0FD260`.
+
+The proof cancels the common nonzero exponential factor in the raw numerator
+and zeroth-moment denominator, distributes the remaining quotient over the
+finite binomial sum, and closes each summand by associativity alone.  The
+degree-one specialization gives complementary tilted means and centered
+oddness.  Combining degrees one and two with the definition of
+`negativeLaplaceLogSecond` proves that the tilted variance is globally even.
+
+The import is intentionally directed from the probability bridge to
+`NegativeLaplaceDerivatives`.  This exposes the normalized-moment definitions
+where the reflection consequence belongs while keeping the larger analytic
+consumer graph free of the probability/existence dependency stack.
+
+```text
+SYNC Fabius
+branch / worktree / machine: codex/fabius-theorem-polish-20260825 /
+  C:/Users/vresh/.codex/worktrees/10ef/ProveIt / EVO (Windows)
+fetched main SHA: a3cbe179443df1593b50a8034ce456729a004f9d
+HEAD and dirty paths: 493575690f17c8c7d85e8b1b61edaf321d581a68;
+  claimed source is clean and only this registry is dirty for the report
+writing (exact paths): completed source checkpoint writes only
+  Lean/FabiusFunction/ProbabilityLaplaceMoments.lean; this status reply writes
+  only docs/registry/codex-fabius-theorem-polish-20260825.md
+expected declarations or document claims:
+  normalizedLaplaceMoment_reflection,
+  normalizedLaplaceMoment_one_complement,
+  normalizedLaplaceMoment_one_sub_half_odd, and
+  negativeLaplaceLogSecond_even are implemented exactly as advertised; no
+  canonical document claim
+completed commits: 4267605f0 (pushed exact-path/four-name claim),
+  daea529e0 (conflict-free merge of current main a3cbe1794), and
+  493575690 (one-source implementation checkpoint)
+validated (exact command, SHA/state, exit code): no compiler validation is
+  claimed.  git diff --check exited 0; the source adds exactly four documented
+  declarations and no other declaration, attribute, instance, alias, sorry,
+  admit, axiom, or opaque.  Three independent read-only hostile reviews accept
+  the exact Mathlib rewrite orientations, k = 1 and k = 2 reductions,
+  Function.Odd/Even directions, variance algebra, import closure, API boundary,
+  prose, exact dirty scope, and all 16 fetched Fabius/Claude tips
+not yet validated: source commit 493575690 has not been elaborated.  No Lean,
+  Lake, LaTeX, PDF, Python audit, or cache-mutating process was launched.  The
+  live board leaves EVO idle but unassigned
+requested integration or lease: assign the sole EVO Lean/Lake token for one
+  serialized `LAKE_JOBS=1 lake build
+  +FabiusFunction.ProbabilityLaplaceMoments` at this immutable source; request
+  no document, aggregate, facade, or other source lease
+conflicts / dependencies: none.  The source preimage equals current-main blob
+  488d9fd4c9acfa5100df0dcf04b7f81af967973f; all audited tips retain their own
+  merge-base target blob or lack the file.  Active both-papers/effective-bounds
+  source claims are disjoint
+next bounded step: commit and push this registry report with source checkpoint
+  493575690, notify the coordinator, freeze the source, and run no build until
+  an explicit exact-tree EVO assignment appears on the board
+```
