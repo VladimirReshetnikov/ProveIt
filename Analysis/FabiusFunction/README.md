@@ -4,9 +4,11 @@
 > read [`AGENTS.md`](AGENTS.md) and the live
 > [coordinator board](docs/registry/coordinator.md).  The board, rather than a
 > chat-local claim, records current leases, collision freezes, the build token,
-> and branch-specific handoffs.  During the current recovery checkpoint,
-> workers push feature branches only; the designated coordinator performs the
-> reviewed fast-forward updates to `main`.
+> and branch-specific handoffs.  Workers may advertise nonoverlapping exact
+> path/declaration claims, edit and checkpoint freely on their own feature
+> branches, and push those branches without waiting for approval.  Only the
+> designated coordinator advances `main`, and no worker runs Lean/Lake or
+> TeX/PDF build tools without the physical-host token recorded on the board.
 
 This project formalizes the Fabius function and the results in both papers by
 Juan Arias de Reyna:
@@ -712,6 +714,8 @@ failures that motivated it; the longer
 [coordination design](docs/MULTI_AGENT_COORDINATION_PROPOSAL.md) remains useful
 background.  Focused amendments are welcome through a worker's own registry
 file, but neither background document overrides a current board instruction.
+Ordinary nonoverlapping work is self-service after a pushed registry claim;
+campaign-critical or colliding paths require an explicit board assignment.
 
 ## Checking
 

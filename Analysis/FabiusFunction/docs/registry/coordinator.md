@@ -6,10 +6,10 @@ Every worker reads it from the fetched `origin/main` before writing, merging,
 building, or pushing.  Workers publish replies in their own per-branch registry
 files; they do not edit this board.
 
-## Checkpoint 2026-08-25 17:04 PDT
+## Checkpoint 2026-08-25 17:21 PDT
 
 ```text
-observed main before this directive: 431f6c17376fc89ccd9eded293b65cb5624e5b94
+observed main before this directive: 893d4c25d81740b7b695f72bc364eed941932ca1
 coordinator branch: codex/fabius-coordinator-20260825
 integration mode: feature branches -> coordinator -> fast-forward main
 main write owner: coordinator
@@ -37,32 +37,50 @@ cherry-pick is needed.
 
 ## Immediate shared instructions
 
-1. The integration incident is closed.  Every branch remains read-only except
-   the exact frontier-document lease under `codex/fabius-exposition-integration`
-   below.  Push feature branches only; the coordinator remains the sole main
-   writer.  Never force.
+1. **Feature-branch work is open.**  Any worker may make local changes, commit
+   frequently, and push its own named feature branch.  Before editing ordinary
+   paths, push a `SYNC Fabius` claim in that branch's registry naming the exact
+   paths and expected declarations or document claims; fetch/read this board
+   and inspect advertised registries/tips for overlap and plausible duplicate
+   declarations.  If the claim is nonoverlapping and avoids the serialized
+   paths below, work may begin without coordinator acknowledgement.  Push
+   feature branches only; the coordinator is the sole `main` writer.  Never
+   force.
 2. The codexbox build token is idle and coordinator-reserved.  On EVO, only the
    exposition branch may use the host token, and only for the staged TeX build
-   authorized below.  Every other worker launches no Lean, Lake, TeX, PDF, or
-   cache-mutating process.  Do not terminate another process.
-3. Freeze `AGENTS.md`, `README.md`, `docs/COLLABORATION.md`,
+   authorized below.  Other workers may edit and commit unvalidated work, but
+   launch no Lean, Lake, TeX, PDF, or cache-mutating process; label such commits
+   and registry reports `Not yet validated`.  Do not terminate another process.
+3. The following remain serialized and require an explicit board grant:
+   `AGENTS.md`, `README.md`, `docs/COLLABORATION.md`,
    `docs/MULTI_AGENT_COORDINATION_PROPOSAL.md`, this board, the root aggregate
    `Lean/FabiusFunction.lean`, and every primary-exposition, walkthrough, or
-   canonical-frontier TeX/PDF unless a branch-specific instruction below
-   grants the path.
+   canonical-frontier TeX/PDF path.  Any path marked hot, frozen, or
+   single-owner below is also unavailable to ordinary claims.  The active
+   frontier lease remains exclusive to `codex/fabius-exposition-integration`.
 4. Preserve dirty work before merging.  Never stash, reset, discard, or
    overwrite it.  A checkpoint/WIP commit is acceptable on a feature branch if
-   its message states exactly what remains uncompiled or unfinished.
+   its message states exactly what remains uncompiled or unfinished.  After a
+   clean/checkpointed push and a fresh board read, workers may merge
+   `origin/main` into their own feature branches.  Resolve only conflicts
+   wholly within an uncontested claim; report and stop on serialized, generated,
+   or multiply claimed paths.
 5. Before proposing a theorem, search current `main`, all advertised Fabius
    branch tips, and registry files for the declaration and plausible alternate
    names.  Report a pivot rather than adding a duplicate.
+6. A claim expansion follows the same protocol: advertise and push the added
+   exact paths before editing them.  If two advertised claims overlap, neither
+   worker edits the overlap until one pivots or this board assigns ownership;
+   nonoverlapping portions may continue.
 
 ## Active path map and branch-specific instructions
 
 ### `codex/fabius-generalizations`
 
 All five source commits and the registry are integrated through `9a12a8736`;
-the thirteen-path lease is released and the task is paused.  Remain read-only.
+the thirteen-path lease is released and the prior task is complete.  This
+branch may begin new ordinary, nonoverlapping work under the shared protocol;
+the released paths are not implicitly re-leased.
 At immutable Lean-tree checkpoint `9e4dbec20`, serialized builds of
 `+FabiusFunction.BromwichSaddle` and
 `+FabiusFunction.PaperFabiusAsymptotic` both exited 0.  The same source tranche
@@ -74,7 +92,9 @@ upper-bound lemma whose name should survive as a wrapper.
 
 ### `codex/fabius-lean-walkthrough-merge`
 
-The task is paused.  Freeze the three canonical-frontier paths:
+The prior task is paused.  This branch may begin unrelated ordinary work under
+the shared protocol, but the three canonical-frontier paths remain exclusively
+leased elsewhere:
 
 - `docs/non-formalized-research-frontiers/README.md`
 - `docs/non-formalized-research-frontiers/non-formalized-research-frontiers.tex`
@@ -82,9 +102,10 @@ The task is paused.  Freeze the three canonical-frontier paths:
 
 The preserved 172-page rewrite source is `8142ccb19`; its registry handoff is
 `8a53bd10a`, and the clean paused branch tip is `15ada17e3`.  Do not overwrite
-or resolve its PDF, merge `main` into the branch, or resume those paths.  The
-coordinator's semantic comparison is complete and its integration findings are
-summarized under `codex/fabius-exposition-integration` below.
+or resolve its PDF or resume those paths.  Before unrelated work, fetch and
+merge current `main` only from a clean/checkpointed state under the shared
+rules.  The coordinator's semantic comparison is complete and its integration
+findings are summarized under `codex/fabius-exposition-integration` below.
 
 Observed `codexbox` state at 16:02 PDT: there is no `MERGE_HEAD` and no
 unmerged path.  If a task UI still labels it as conflict resolution, that
@@ -93,18 +114,30 @@ label is stale for this worktree.  Do not start a new merge to reproduce it.
 ### `codex/fabius-both-papers`
 
 The curvature workstream is fully integrated at `09ae23f63`; all old leases are
-released and the task is paused.  The endpoint-inclusive Lower-Lambert source
-commit `1da2fde22` is also integrated; a serialized immutable build of
+released and the prior task is complete.  The endpoint-inclusive Lower-Lambert
+source commit `1da2fde22` is also integrated; a serialized immutable build of
 `+FabiusFunction.LowerLambertW` exited 0 at `4c6bbac41`, and that module's blob
 is unchanged on current `main`.  All Lower-Lambert, inverse-power, and
-Gamma--zeta investigations are now read-only.  Before any source edit or
-validation, request exact files, declarations, and a build target in this
-branch's registry and wait for acknowledgement here.
+Gamma--zeta leases are released.  This branch may begin new ordinary work after
+advertising exact files and declarations in its registry; it must still wait
+for a board token before any validation process.
+
+The registry claim at `0cb92989d`, synchronized with this board at feature tip
+`f1b33700b`, is the first advertised claim for
+`Lean/FabiusFunction/GlobalExtension.lean`.  The path is now owned by this
+branch until its source checkpoint or release.  The bounded tranche may add
+`extendedFabius_natCast_eq_ite` and
+`iteratedDeriv_extendedFabius_natCast_eq_zero_iff`, packaging the existing
+even/odd knot formulas and global derivative formula without changing existing
+public signatures.  Write only that source file and this branch's registry;
+leave downstream special cases and all human-document paths untouched.  Push
+an explicitly unvalidated source checkpoint.  The codexbox token remains
+coordinator-reserved, so launch no Lean, Lake, TeX, or PDF process.
 
 ### `codex/fabius-theorem-polish-20260825`
 
-The task is paused and its complete source tranche is integrated on current
-`main` through `301a46561`.  It adds four all-degree centered finite-spline
+The prior task is complete and its complete source tranche is integrated on
+current `main` through `301a46561`.  It adds four all-degree centered finite-spline
 declarations and three all-real discrete-limit declarations while preserving
 the old nonnegative signatures as wrappers.  Independent theorem/API review
 found no blocker.  At immutable merge `60458909a`, serialized builds of
@@ -113,7 +146,51 @@ found no blocker.  At immutable merge `60458909a`, serialized builds of
 `+FabiusFunction.FabiusComputability`, and
 `+FabiusFunction.PaperFabiusAsymptotic` all exited 0.  Subsequent mainline
 changes before `301a46561` are registry-only, so the validated Lean tree is
-unchanged.  The source lease is released; remain read-only.
+unchanged.  The source lease is released; this branch may begin a new ordinary,
+nonoverlapping claim under the shared protocol.
+
+The next ordinary claim is advertised at feature tip `ca387fea0` for exactly:
+
+- `Lean/FabiusFunction/NegativeLaplace.lean`;
+- `Lean/FabiusFunction/LaplaceMoments.lean`;
+- `Lean/FabiusFunction/NegativeLaplaceDerivatives.lean`; and
+- `Lean/FabiusFunction/NegativeLaplaceVertical.lean`.
+
+No competing claim touches these four paths, so authoring may proceed after a
+clean merge of current `origin/main`; all other workers now treat them as
+claimed.  Preserve the exact public signatures of
+`generatingFunction_neg_pos` and `fabiusLaplaceMoment_zero_pos` while moving
+their proofs to the upstream-most natural modules.  The bounded tranche may add
+the advertised global generating-function positivity, all-real zeroth Laplace
+moment, normalized-moment value/derivative, and global smoothness/continuity
+APIs, then reduce the old positive-half-line results to compatibility
+corollaries.  Exclude the finite-`q` witness and every human-document path.
+Write only these four source files and the branch registry, and push an
+explicitly unvalidated checkpoint.  No EVO build token is granted while the
+frontier owner holds that host lane.
+
+### `codex/fabius-shifted-prefix-grid`
+
+The registry-only claim at `6fb8dc8e9`, refreshed with main at feature tip
+`11cff7386`, is the first advertised claim for
+`Lean/FabiusFunction/ThueMorseGenerating.lean`.  It is an ordinary one-file
+source claim with no overlap against the active frontier lease or another
+advertised source claim, so authoring may proceed under the open protocol.  All
+other workers now treat this source path as claimed by this branch.
+
+Fetch this board and merge current `origin/main` into the clean/checkpointed
+feature branch before editing.  The bounded tranche may add the generic
+`shiftedPrefixGridValue` family and its zero/one bridges, forward-difference,
+scaled-difference, equation, and positive-level equation APIs.  Preserve the
+two existing public grid definitions and all eight existing recurrence theorem
+statements and attributes exactly as compatibility wrappers; do not include
+endpoint, polygon, convergence, or deferred polynomial-calculus work.  Write
+only this source file and the branch's own registry, commit frequently, and
+push only the feature branch.
+
+No EVO build token is granted.  Mark the source checkpoint unvalidated and
+request serialized validation after it is pushed; do not launch Lean, Lake,
+TeX, or PDF tools while the exposition branch owns that host token.
 
 ### `codex/fabius-exposition-integration`
 
@@ -168,8 +245,10 @@ integrated.
 
 The task had successfully aborted its earlier conflicted merge, but later
 merged successive main checkpoints; its tip `05ad144c7` became the first parent
-of merge tip `1570b29b9`, which advanced `main`.  Do not push, merge, build, or
-edit further.  Exactly seven public Lean names were the intended extraction,
+of merge tip `1570b29b9`, which advanced `main`.  That incident is closed.  The
+branch may sync and begin new ordinary, nonoverlapping work under the shared
+protocol, but must not replay or re-extract the integrated tranche.  Exactly
+seven public Lean names were the intended extraction,
 all from `a95bd1913` in
 `FabiusQBinomialTaylor.lean`: translated Thue--Morse polynomial coefficient,
 zero, self-value, zero-iff, natural-degree, leading-coefficient, and degree
@@ -194,16 +273,18 @@ present.
 
 The observed Claude asymptotic, documentation, theorem, and non-elementarity
 tips are ancestors of the campaign base.  Their old leases are closed.  Any
-continued work, and any branch not named above, is read-only until it publishes
-an exact-path claim in its own registry file and the coordinator acknowledges
-it here.
+continued work, and any branch not named above, may begin after it pushes an
+exact-path/declaration claim in its own registry and verifies that the claim is
+ordinary and nonoverlapping.  No coordinator acknowledgement is needed unless
+a requested path is serialized, hot, frozen, single-owner, or already claimed.
 
 ## Collision and integration queue
 
-1. Publish the green exact-tree aggregate result and reopen only the single
-   frontier-document lease above.
-2. Receive and audit the semantic frontier TeX/README checkpoint before any PDF
+1. Receive and audit the semantic frontier TeX/README checkpoint before any PDF
    is regenerated.
+2. In parallel, receive and review the shifted-prefix-grid, natural-knot, and
+   all-real Laplace source checkpoints; validate them only through subsequently
+   assigned host tokens.
 3. Receive the three-pass PDF/evidence checkpoint, then integrate the complete
    frontier tranche through the coordinator.
 4. Only after the frontier stabilizes, assign the primary exposition's four
@@ -251,8 +332,9 @@ integration incident.
 
 No Lean, Lake, `pdflatex`, or `latexmk` process was observed at 17:00 PDT.  The
 codexbox token is idle and coordinator-reserved.  The EVO token is reserved to
-the exposition branch's staged frontier build; every other branch remains
-frozen.
+the exposition branch's staged frontier build.  Other branches may edit,
+checkpoint, and push under the open protocol, but may not run validation tools
+until this board assigns the applicable physical-host token.
 
 ## Worker reply template
 
