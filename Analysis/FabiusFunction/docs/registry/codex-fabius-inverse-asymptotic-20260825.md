@@ -611,3 +611,108 @@ conflicts / dependencies: no source conflict or target-local diagnostic was
 next bounded step: commit and push this failure handoff, notify the coordinator,
   and launch no further Lean/Lake command without a fresh explicit grant
 ```
+
+## Registry-first claim: stretched-exponential Fabius decay hierarchy
+
+This is a new, disjoint ordinary-source tranche.  It does not modify, retry,
+or relax the coordinator's hold on the inverse-hierarchy statements.  The
+claim covers exactly:
+
+- `Lean/FabiusFunction/FabiusDecayComparison.lean`; and
+- this branch registry.
+
+The mathematical strengthening replaces the proof's fixed dyadic exponential
+scale by every positive stretched-exponential scale.  For arbitrary
+`c > 0` and `β > 0`, the target conclusion is
+`exp (-c / x ^ β) = o(F(x))` as `x → 0⁺`.  The proof first exposes the reusable
+fact that the negative-log Fabius profile is little-o of
+`2 ^ (β * t)`, then transfers the resulting comparison from the dyadic
+logarithmic coordinate back to the original variable.
+
+The exact proposed additive public declarations are:
+
+```lean
+theorem fabiusLogProfile_isLittleO_two_rpow_mul
+    (F : BoundedFabius) (hF : IsFabius F)
+    {β : ℝ} (hβ : 0 < β) :
+    fabiusLogProfile F =o[atTop]
+      (fun t : ℝ => (2 : ℝ) ^ (β * t))
+
+theorem exp_neg_two_rpow_mul_isLittleO_fabiusLogPhi
+    (F : BoundedFabius) (hF : IsFabius F)
+    {c β : ℝ} (hc : 0 < c) (hβ : 0 < β) :
+    (fun t : ℝ => Real.exp (-c * (2 : ℝ) ^ (β * t))) =o[atTop]
+      fabiusLogPhi F
+
+theorem exp_neg_two_rpow_mul_isLittleO_fabius
+    {c β : ℝ} (hc : 0 < c) (hβ : 0 < β) :
+    (fun t : ℝ => Real.exp (-c * (2 : ℝ) ^ (β * t))) =o[atTop]
+      fabiusLogPhi fabius
+
+theorem exp_neg_div_rpow_isLittleO_fabiusReal
+    (F : BoundedFabius) (hF : IsFabius F)
+    {c β : ℝ} (hc : 0 < c) (hβ : 0 < β) :
+    (fun x : ℝ => Real.exp (-c / x ^ β))
+      =o[nhdsWithin 0 (Set.Ioi 0)] fabiusReal F
+
+theorem exp_neg_div_rpow_isLittleO_fabius
+    {c β : ℝ} (hc : 0 < c) (hβ : 0 < β) :
+    (fun x : ℝ => Real.exp (-c / x ^ β))
+      =o[nhdsWithin 0 (Set.Ioi 0)] fabiusReal fabius
+```
+
+All four existing public `β = 1` declarations remain source-compatible:
+
+- `exp_neg_two_rpow_isLittleO_fabiusLogPhi`;
+- `exp_neg_two_rpow_isLittleO_fabius`;
+- `exp_neg_div_isLittleO_fabiusReal`; and
+- `exp_neg_div_isLittleO_fabius`.
+
+Their current longer proofs will become direct specializations of the new
+two-parameter theorems.  The module overview and declaration doc comments will
+state the stronger all-positive-`β` result and identify the old declarations
+as compatibility specializations.  No canonical TeX/PDF, coverage map,
+frontier document, root aggregate, facade, or downstream source is claimed.
+
+A read-only collision audit searched the current source tree, all fetched
+registries, and advertised local/remote refs for the exact names, plausible
+alternate names, equivalent formulas, and path claims.  No branch claims
+`FabiusDecayComparison.lean`, no existing declaration proves this positive
+`β` family, and the current coordinator board does not mark the module hot,
+frozen, or single-owner.  The only direct downstream importers are
+`FabiusQuotientExponentialMismatch.lean` and `PaperKFoldThueMorse.lean`; the
+four retained declarations avoid source changes there.
+
+The proposed focused validation, only after an explicit EVO Lean/Lake grant,
+is three separate serialized invocations in dependency order:
+
+```text
+LEAN_NUM_THREADS=0; LAKE_JOBS=1; lake build +FabiusFunction.FabiusDecayComparison
+LEAN_NUM_THREADS=0; LAKE_JOBS=1; lake build +FabiusFunction.FabiusQuotientExponentialMismatch
+LEAN_NUM_THREADS=0; LAKE_JOBS=1; lake build +FabiusFunction.PaperKFoldThueMorse
+```
+
+The environment notation above describes the required controls, not commands
+already run.  No Lean, Lake, TeX, PDF, cache, or generated-artifact process has
+been launched for this claim.
+
+```text
+SYNC Fabius
+branch / worktree / machine: codex/fabius-inverse-asymptotic-20260825 /
+  C:/Users/vresh/.codex/worktrees/c9a3/ProveIt / EVO (Windows)
+fetched main SHA: 447ea43628edf6d4f868aaac596574673412ef3d
+HEAD before this claim: 100abb11efbddfeec26a58def5504490fa123b46;
+  tracked worktree and index clean; unrelated reciprocity sidecars and tmp/
+  remain untracked and untouched
+writing after this registry claim is committed and pushed:
+  Lean/FabiusFunction/FabiusDecayComparison.lean and this registry only
+validated: mathematical reduction, Mathlib API, rpow normalization,
+  dependency, exact-name, semantic-collision, and path-ownership preflight
+not yet validated: no claimed Lean source has been edited or compiled yet
+requested integration or lease: accept the ordinary self-service source claim;
+  later grant exactly the three serialized EVO targets above
+conflicts / dependencies: inverse hierarchy source/API and its validation stay
+  frozen; no build, document, main-write, or serialized path is claimed
+next bounded step: commit and push this registry-first claim, reread fetched
+  main and advertised registries, then implement only the claimed one-file API
+```
