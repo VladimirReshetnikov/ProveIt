@@ -7,18 +7,16 @@ This file implements the per-branch registry fallback in
 SYNC Fabius
 branch / worktree / machine: codex/fabius-both-papers /
   /home/codex/src/Proofs / codexbox
-fetched main SHA: 4b3ddc7dbfd4cc0b4fd981992dc9cd9f7fa2a159
-HEAD and dirty paths: 2a188509272604552bda68e4611271b1fad47ae1;
-  dirty only in this own-registry claim
+fetched main SHA: c5ee98fc72489312e042eb0a4f2280827ee96457
+HEAD and dirty paths: 3575998493dad72c795ffa825c7467d4ea380a0c;
+  dirty only in this own-registry handoff
 writing (exact paths):
-  Analysis/FabiusFunction/Lean/FabiusFunction/FabiusSaddleExpansionCoefficients.lean;
-  Analysis/FabiusFunction/Lean/FabiusFunction/FabiusSaddleReferenceWeight.lean;
   Analysis/FabiusFunction/docs/registry/codex-fabius-both-papers.md
 expected declarations or document claims:
-  promote `negativeLaplaceBoundedExponentJetContinuousMap`,
-  `negativeLaplaceExponentPolynomialContinuous`, and
+  promote `negativeLaplaceExponentPolynomialContinuous` and
   `negativeLaplaceExponentPolynomialContinuous_map` from private shared
-  implementation to documented public upstream declarations;
+  implementation to documented public upstream declarations while retaining
+  `negativeLaplaceBoundedExponentJetContinuousMap` as a private constructor;
   delete the three byte-identical primed private copies in the directly
   importing reference-weight module and rewire its consumers to the upstream
   names; preserve every pre-existing public theorem header and all imports
@@ -132,6 +130,14 @@ completed commits: Lower-Lambert source checkpoint `1da2fde2285e3970267b7dc2561b
   conventional shifted estimates; clean merge
   `18c5e2b40ab88909362b7a126f4886e26411f66d` incorporates fetched main
   `0bc0bf55135d2dea10c5fb8320e69a00ab55ded0` without touching the source path;
+  saddle-dedup claim `84c22af63d77f474123ce1da5080ef80713c9583`
+  precedes source checkpoint `036cbe4a2545eb6783f4a2fa98944d3ffd523d6f`,
+  which promotes the minimal two-declaration continuous-polynomial API,
+  deletes the byte-identical primed block, and rewires all 22 surviving
+  downstream references for a net reduction of 31 source lines; clean merge
+  `3575998493dad72c795ffa825c7467d4ea380a0c` incorporates validated current
+  main `760b4850fe28a1030f94eecdef131b52a6b04b89` without changing either saddle
+  source path;
 validated (exact command, SHA/state, exit code): coordinator board records
   serialized immutable `lake build +FabiusFunction.LowerLambertW` at
   `4c6bbac41`, exit 0, with its source blob unchanged on current main;
@@ -166,13 +172,16 @@ validated (exact command, SHA/state, exit code): coordinator board records
   coordinator integration `9f4b6be52` records the exact total binary-reduction
   source, and separate builds of `+FabiusFunction.FabiusBinaryReductionSeries`
   (2819 jobs) and `+FabiusFunction.FabiusGlobalQBinomialSeries` (3323 jobs)
-  both exit 0 without warnings; three independent read-only reviews of
-  `fe7756703` pass the extracted Schwartz realization, exact finite-seminorm
-  inequality, real/complex norm conversion, reciprocal-power orientation,
-  `k = 0` edge case, order-zero specialization, existing-API preservation,
-  imports, collisions, and static source hygiene
-not yet validated: the shifted Fourier-decay source checkpoint
-  `fe7756703806aa4e32f3d00df8fd3142ac56ed6a` has not been elaborated or built;
+  both exit 0 without warnings; coordinator integration `49ddce559` records
+  the exact shifted Fourier-decay source, and separate builds of
+  `+FabiusFunction.PoissonSummation` (3195 jobs) and
+  `+FabiusFunction.Paper05442` (3417 jobs) both exit 0 without warnings;
+  three independent read-only reviews of `036cbe4a2` pass the byte-identical
+  block comparison, minimal public API, private-helper abstraction boundary,
+  all 22 rewired references, exact public-header preservation, imports,
+  collision scan, reverse cone, and static source hygiene
+not yet validated: the saddle continuous-map deduplication source checkpoint
+  `036cbe4a2545eb6783f4a2fa98944d3ffd523d6f` has not been elaborated or built;
   the historical validation-state paragraphs below are
   superseded by the coordinator board and retained only as provenance: the
   moved dyadic theorem body was already compiled in its
@@ -270,12 +279,13 @@ historical integration requests, all superseded by the current coordinator
   handoff;
   serialized README/primary/walkthrough/coverage paths are deliberately not
   claimed yet
-requested integration or lease: integrate the exact shifted-decay source
-  checkpoint and run serialized `LAKE_JOBS=1 lake build
-  +FabiusFunction.PoissonSummation`, followed by `LAKE_JOBS=1 lake build
-  +FabiusFunction.Paper05442`; the `PoissonSummation.lean` source claim is
-  released by this handoff; canonical README, AUDIT_FINDINGS, PAPER_COVERAGE,
-  primary, walkthrough, and frontier paths remain frozen and unclaimed
+requested integration or lease: integrate the exact saddle continuous-map
+  deduplication checkpoint and run serialized `LAKE_JOBS=1 lake build
+  +FabiusFunction.FabiusSaddleExpansionCoefficients`, followed by
+  `LAKE_JOBS=1 lake build +FabiusFunction.FabiusSaddleReferenceWeight`;
+  both saddle source claims are released by this handoff; canonical README,
+  AUDIT_FINDINGS, PAPER_COVERAGE, primary, walkthrough, and frontier paths
+  remain frozen and unclaimed
 conflicts / dependencies: all advertised Fabius heads and their registries
   were checked; no branch claims GlobalExtension and the only overlap is the
   existing even/odd ingredients and downstream special cases that this API
@@ -325,27 +335,41 @@ conflicts / dependencies: all advertised Fabius heads and their registries
   positive-degree complex branch estimate, no `_all` or semantic-equivalent
   theorem, and no active claim on `FabiusDiscreteLimitComplexShift.lean`; the
   exact `_all` name occurs only in the unimplemented serialized audit proposal
-next bounded step: while serialized validation of `fe7756703` remains queued,
-  implement and independently review the exact two-file saddle continuous-map
-  deduplication advertised above; request its focused upstream/downstream builds
+  and a fresh two-blob/all-tip scan finds the exact saddle duplication on every
+  relevant source tip, no alternate shared API or active saddle-path claim;
+  the downstream module directly imports the upstream home, and a theorem-only
+  factoring is insufficient because its `expCoeff`, finite quotient, and degree
+  proofs consume the polynomial family itself
+next bounded step: coordinator integration and serialized upstream/downstream
+  validation of `036cbe4a2`; canonical human-document changes remain excluded
+  because this refactor changes implementation reuse rather than mathematics
 ```
 
-## Saddle continuous-map deduplication claim
+## Saddle continuous-map deduplication handoff
 
-At fetched main `4b3ddc7dbfd4cc0b4fd981992dc9cd9f7fa2a159`,
+At fetched main `c5ee98fc72489312e042eb0a4f2280827ee96457`,
 `FabiusSaddleReferenceWeight.lean` directly imports
 `FabiusSaddleExpansionCoefficients.lean` but repeats the latter's continuous
 bounded-jet map, continuous-coefficient exponent polynomial, and evaluation
-theorem byte-for-byte modulo a prime suffix.  This claim promotes the unprimed
-upstream declarations with public documentation, deletes the 34-line primed
-block, and rewires only the downstream implementation references.
+theorem byte-for-byte modulo a prime suffix.  Source checkpoint
+`036cbe4a2545eb6783f4a2fa98944d3ffd523d6f` publishes only the reusable
+continuous polynomial and its evaluation theorem, keeps the bounded-jet map
+private, deletes the 34-line primed block, and rewires only downstream
+implementation references.
 
 The current main blobs are `6a7575461d9a491e81e5e0e7d247776c02b83ab6`
 and `64b26061aece6d03da59d2e0e92175459b6c397b`, respectively.
 Fresh path/name/registry inspection found no competing public implementation or
 active claim; the sole registry path mention is a closed historical read-only
-inventory.  No import, attribute, or existing public theorem signature is
-expected to change.  No Lean/Lake process is authorized or planned.
+inventory.  Three independent static audits accept the exact duplicate proof,
+minimal public surface, private-helper boundary, all rewired consumers,
+imports, reverse cone, public-header identity, and source hygiene.  No
+Lean/Lake process was run.  The requested serialized gates are:
+
+```text
+LAKE_JOBS=1 lake build +FabiusFunction.FabiusSaddleExpansionCoefficients
+LAKE_JOBS=1 lake build +FabiusFunction.FabiusSaddleReferenceWeight
+```
 
 ## Shifted real-axis Fourier-decay handoff
 
@@ -364,13 +388,10 @@ The proof applies Mathlib's finite-supremum Schwartz seminorm estimate directly;
 
 Three independent static audits pass the exact Mathlib signature, derivative
 norm conversion, reciprocal inequality, all edge cases, naming, placement,
-collision scan, imports, preservation of old APIs, and source hygiene.  No
-Lean/Lake process was run.  The requested serialized gates are:
-
-```text
-LAKE_JOBS=1 lake build +FabiusFunction.PoissonSummation
-LAKE_JOBS=1 lake build +FabiusFunction.Paper05442
-```
+collision scan, imports, preservation of old APIs, and source hygiene.
+Coordinator integration `49ddce559` retains the exact source, and serialized
+builds of `+FabiusFunction.PoissonSummation` (3195 jobs) and its sole public
+facade `+FabiusFunction.Paper05442` (3417 jobs) both exit 0 without warnings.
 
 ## All-degree complex branch-translation handoff
 
