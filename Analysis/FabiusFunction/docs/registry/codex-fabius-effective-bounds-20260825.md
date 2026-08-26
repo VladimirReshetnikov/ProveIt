@@ -56,3 +56,74 @@ next bounded step: commit and push this registry-only claim without force;
   fetch and reread the live board; inspect every advertised registry/tip again;
   only then edit the single claimed Lean module
 ```
+
+## Source checkpoint: exact reciprocal-scale equivalences
+
+Source commit `a8421fd7f16b71c7cbd867d0fc71c616c1b274aa` implements the
+advertised one-file tranche.  The committed `FabiusLambertRates.lean` blob is
+`1c5137f751bb6ac4fc79b8ab6d3af546d4290a6e`, with content SHA-256
+`49C26F7C46F465B25513DEF0D4EF02B1B447B04C9348718EB8589C5D22A353BA`.
+
+The six new public declarations are exactly:
+
+- `eventually_le_dyadicLambertPhase`;
+- `dyadicLambertPhase_isEquivalent_id`;
+- `dyadicLambertPhase_inv_isEquivalent_inv`;
+- `smallArgumentLog_inv_isTheta`;
+- `isBigO_lambertScale_iff_smallArgument_log`; and
+- `isLittleO_lambertScale_iff_smallArgument_log`.
+
+The existing `dyadicLambertPhase_inv_isBigO_inv` and
+`isBigO_smallArgument_log_of_lambertScale` headers are unchanged.  Their proofs
+now factor through the stronger relation-level API.  The module overview and
+each declaration comment state the mathematics in prose; the canonical
+walkthrough and exposition remain frozen for their designated document owner,
+which should later map the six exact names rather than paraphrasing a stronger
+or weaker claim.
+
+One independent hostile review found and resolved a focused-import blocker:
+`AsymptoticEquivalent` imports the Theta API privately, so the source now
+imports both modules explicitly.  Two independent reviews then accepted the fixed-point
+orientation, reciprocal equivalence, arbitrary-filter Theta statement,
+Big-O/little-o congruence directions, `[Norm E]` generality, zero-scale and
+degenerate-filter cases, public compatibility, names, and documentation.  It
+also corrected “effective” to “eventual order” because the public inequality
+does not expose a numerical threshold.
+
+```text
+SYNC Fabius
+branch / worktree / machine: codex/fabius-effective-bounds-20260825 /
+  /home/codex/.codex/worktrees/d6d3/Proofs / codexbox
+fetched main SHA: de303339202ef0b7fb99da83003d4b841eef9b80
+HEAD and dirty paths: a8421fd7f16b71c7cbd867d0fc71c616c1b274aa;
+  claimed Lean source is committed and clean; only this registry report is
+  dirty
+writing (exact paths): completed source checkpoint writes only
+  Lean/FabiusFunction/FabiusLambertRates.lean; this report writes only this
+  branch registry
+expected declarations or document claims: all six advertised declarations
+  are implemented; the two existing compatibility theorem headers remain
+  unchanged; no canonical document edit is claimed
+completed commits: bc14ab696 (pushed registry-first claim) and a8421fd7f
+  (one-file source, proof, simplification, and module-documentation checkpoint)
+validated (exact command, SHA/state, exit code): git diff --check exited 0;
+  current-main/all-fetched-Fabius-tip path/name/semantic scan was green; an
+  independent read-only theorem/API/import/edge-case/doc review found and
+  resolved the explicit Theta import issue, and a second independent review
+  passed the corrected tree; source contains no sorry, admit, axiom, or
+  opaque; this is not compiler evidence
+not yet validated: a8421fd7f has not been elaborated; no Lean, Lake, TeX, PDF,
+  or other cache-mutating process ran because the codexbox Lean/Lake token is
+  coordinator-owned
+requested integration or lease: independent coordinator review, then one
+  serialized LAKE_JOBS=1 build of +FabiusFunction.FabiusLambertRates and one
+  focused downstream target selected from the actual import graph; no document
+  or main-write lease
+conflicts / dependencies: no target-path or declaration overlap exists on any
+  fetched advertised tip; active probability, spline, Thue--Morse, periodic,
+  frontier, primary, walkthrough, coverage, audit, root-aggregate, and control-
+  plane paths remain excluded; only the coordinator may advance origin/main
+next bounded step: commit and push this exact status with the source checkpoint;
+  keep FabiusLambertRates.lean frozen for review/validation and advertise a
+  separate cold-path effective-bound tranche before any further source edit
+```
