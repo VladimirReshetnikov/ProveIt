@@ -247,4 +247,109 @@ theorem ruler_convolution (n : ℕ) :
   rw [hmain]
   ring
 
+/-! ### Prefix bit counts and interval discrepancy -/
+
+/-- Even-length prefixes contain exactly half ones:
+`∑_{t<2q} τ(t) = q`. -/
+theorem sum_thueMorseBit_range_two_mul (q : ℕ) :
+    ∑ t ∈ range (2 * q), thueMorseBit t = q := by
+  rw [sum_range_two_mul q thueMorseBit]
+  have hterm : ∀ j ∈ range q,
+      thueMorseBit (2 * j) + thueMorseBit (2 * j + 1) = 1 := by
+    intro j _
+    have h1 := thueMorseBit_two_mul j
+    have h2 := thueMorseBit_two_mul_add_one j
+    have h3 := thueMorseBit_le_one j
+    omega
+  rw [Finset.sum_congr rfl hterm, Finset.sum_const, Finset.card_range,
+    smul_eq_mul, mul_one]
+
+/-- Odd-length prefix one-count: `∑_{t<2q+1} τ(t) = q + τ(q)`. -/
+theorem sum_thueMorseBit_range_two_mul_add_one (q : ℕ) :
+    ∑ t ∈ range (2 * q + 1), thueMorseBit t = q + thueMorseBit q := by
+  rw [Finset.sum_range_succ, sum_thueMorseBit_range_two_mul,
+    thueMorseBit_two_mul]
+
+/-- The ones-count and signed prefixes determine each other:
+`2·A(N) + S(N) = N`. -/
+theorem two_mul_sum_thueMorseBit_add_sum_thueMorseSign (N : ℕ) :
+    2 * (∑ t ∈ range N, (thueMorseBit t : ℤ)) +
+      ∑ t ∈ range N, thueMorseSign t = N := by
+  have h : ∀ t ∈ range N, thueMorseSign t = 1 - 2 * (thueMorseBit t : ℤ) :=
+    fun t _ => thueMorseSign_eq_one_sub_two_mul_bit t
+  rw [Finset.sum_congr rfl h, Finset.sum_sub_distrib, ← Finset.mul_sum,
+    Finset.sum_const, Finset.card_range, nsmul_eq_mul, mul_one]
+  ring
+
+/-- The Thue–Morse sign has absolute value one. -/
+theorem abs_thueMorseSign (n : ℕ) : |thueMorseSign n| = 1 := by
+  have h := thueMorseSign_eq_one_sub_two_mul_bit n
+  have hle := thueMorseBit_le_one n
+  rcases Nat.le_one_iff_eq_zero_or_eq_one.mp hle with h0 | h1
+  · rw [h, h0]; norm_num
+  · rw [h, h1]; norm_num
+
+/-- The inclusive signed prefix sum:
+`∑_{t≤N} ε(t) = ε(N/2)` for even `N` and `0` for odd `N`. -/
+theorem sum_thueMorseSign_range_succ (N : ℕ) :
+    ∑ t ∈ range (N + 1), thueMorseSign t =
+      if 2 ∣ N then thueMorseSign (N / 2) else 0 := by
+  rcases Nat.even_or_odd N with ⟨q, rfl⟩ | ⟨q, rfl⟩
+  · rw [Finset.sum_range_succ, sum_thueMorseSign_range,
+      if_pos (by omega : 2 ∣ q + q), zero_add,
+      if_pos (by omega : 2 ∣ q + q),
+      show (q + q) / 2 = q by omega,
+      show q + q = 2 * q by ring, thueMorseSign_two_mul]
+  · rw [Finset.sum_range_succ, sum_thueMorseSign_range,
+      if_neg (by omega : ¬ 2 ∣ 2 * q + 1),
+      if_neg (by omega : ¬ 2 ∣ 2 * q + 1),
+      show (2 * q + 1) / 2 = q by omega, thueMorseSign_two_mul_add_one]
+    ring
+
+/-- **The prefix discrepancy is at most one**: `|S(N)| ≤ 1` for every `N`. -/
+theorem abs_sum_thueMorseSign_range_le_one (N : ℕ) :
+    |∑ t ∈ range N, thueMorseSign t| ≤ 1 := by
+  rw [sum_thueMorseSign_range]
+  split_ifs
+  · simp
+  · rw [abs_thueMorseSign]
+
+/-- Interval sums of signs telescope through prefixes. -/
+theorem sum_thueMorseSign_Ico (a b : ℕ) (hab : a ≤ b) :
+    ∑ n ∈ Finset.Ico a b, thueMorseSign n =
+      (∑ t ∈ range b, thueMorseSign t) - ∑ t ∈ range a, thueMorseSign t :=
+  Finset.sum_Ico_eq_sub _ hab
+
+/-- **Interval discrepancy of the signs**: every interval signed sum has
+absolute value at most two, uniformly in the interval. -/
+theorem abs_sum_thueMorseSign_Ico_le_two (a b : ℕ) (hab : a ≤ b) :
+    |∑ n ∈ Finset.Ico a b, thueMorseSign n| ≤ 2 := by
+  rw [sum_thueMorseSign_Ico a b hab, sub_eq_add_neg]
+  calc |(∑ t ∈ range b, thueMorseSign t) + -∑ t ∈ range a, thueMorseSign t|
+      ≤ |∑ t ∈ range b, thueMorseSign t| +
+          |-∑ t ∈ range a, thueMorseSign t| := abs_add_le _ _
+    _ = |∑ t ∈ range b, thueMorseSign t| +
+          |∑ t ∈ range a, thueMorseSign t| := by rw [abs_neg]
+    _ ≤ 1 + 1 := add_le_add (abs_sum_thueMorseSign_range_le_one b)
+          (abs_sum_thueMorseSign_range_le_one a)
+    _ = 2 := by norm_num
+
+/-- **Interval discrepancy of the bits**, in doubled integer form: the
+ones-count of any interval deviates from half its length by at most one:
+`|2·∑_{a≤n<b} τ(n) - (b-a)| ≤ 2`. -/
+theorem abs_two_mul_sum_thueMorseBit_Ico_sub_le_two (a b : ℕ) (hab : a ≤ b) :
+    |2 * (∑ n ∈ Finset.Ico a b, (thueMorseBit n : ℤ)) - ((b : ℤ) - a)| ≤ 2 := by
+  have hb := two_mul_sum_thueMorseBit_add_sum_thueMorseSign b
+  have ha := two_mul_sum_thueMorseBit_add_sum_thueMorseSign a
+  have hIco : ∑ n ∈ Finset.Ico a b, (thueMorseBit n : ℤ) =
+      (∑ t ∈ range b, (thueMorseBit t : ℤ)) -
+        ∑ t ∈ range a, (thueMorseBit t : ℤ) :=
+    Finset.sum_Ico_eq_sub _ hab
+  have hkey : 2 * (∑ n ∈ Finset.Ico a b, (thueMorseBit n : ℤ)) -
+      ((b : ℤ) - a) = -(∑ n ∈ Finset.Ico a b, thueMorseSign n) := by
+    rw [hIco, sum_thueMorseSign_Ico a b hab]
+    linarith
+  rw [hkey, abs_neg]
+  exact abs_sum_thueMorseSign_Ico_le_two a b hab
+
 end Fabius
