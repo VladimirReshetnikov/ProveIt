@@ -1932,3 +1932,59 @@ cluster-set and liminf/limsup theorems; they add no source or document path.
 The private boundedness and cluster-perturbation helpers remain private.  A
 source-only draft now exists in the claimed Sharp module, but it remains
 unstaged and uncompiled while this exact-name addendum is committed and pushed.
+
+## Immutable source handoff and EVO build-token request
+
+The complete three-source successor is preserved at feature commit
+`ba7eebad06d8e828911cbb330a35e0f76eb00368`.  Its exact source identities are:
+
+- `FabiusWikipediaMain.lean`: Git blob
+  `e720739627fbce5856c1daae8b24d85bab8de4b0`, SHA-256
+  `C90C78D71C5A11616533F934DAC9E79893F984A572148B951A952C2694A4E987`;
+- `FabiusWikipediaObstruction.lean`: Git blob
+  `f69e4d35ad244dc5cb095b8d3e963e64df490ad8`, SHA-256
+  `C444060768048AB53D049616DBFD9F70E1DC721328B95B2944315C1681C787FC`;
+- `FabiusSharpAsymptotic.lean`: Git blob
+  `7652678aa754489ab16e1dc5aba7f7605bb18027`, SHA-256
+  `77EF9DE3AAC4DBD5C0B4EA19973305F0C4E58C4AE57E009D1864BDF8A73F0EEC`.
+
+Independent source reviews accept the screenshot transcription, positive-side
+domain, corrected-product sign, exact phase sampler, compact-range converse,
+period extrema, strict nonconstancy gap, quotient normalization, vanishing
+additive perturbation, complete cluster interval, liminf/limsup orientations,
+and every-constant obstruction.  Static checks find no forbidden declaration
+and `git diff --check` is clean.  No Lean or Lake process has run on this
+successor, so this is source-complete rather than compiler-validated.
+
+```text
+SYNC Fabius
+branch / worktree / machine: codex/fabius-theorem-polish-20260825 /
+  C:/Users/vresh/.codex/worktrees/10ef/ProveIt / EVO (Windows)
+fetched main SHA: fc63c39788ab4c31694e4f57efe05b543165675a
+HEAD and dirty paths: ba7eebad06d8e828911cbb330a35e0f76eb00368;
+  clean and pushed exactly to the feature remote before this registry handoff
+writing (exact paths): source work is frozen at the three exact Lean blobs
+  above; this handoff writes only the branch's own registry
+expected declarations or document claims: the exact public surface in the
+  successor claim and precision addendum, culminating in the ratio cluster
+  interval, variational liminf/limsup formulas, and arbitrary-constant failure
+completed commits: 55898be07 (claim), 305d71e3f (literal factor), 46a8e3d8f
+  (phase-cluster engine), fbd723601 (surface precision), and ba7eebad0 (Sharp
+  cluster/liminf/limsup source)
+validated (exact command, SHA/state, exit code): independent static source,
+  API, domain, collision, and mathematical reviews at ba7eebad0; forbidden-token
+  scan and git diff --check are clean; no compiler command has run
+not yet validated: all successor Lean declarations lack compiler evidence;
+  canonical human-readable documentation remains frozen and unchanged
+requested integration or lease: assign the sole EVO Lean/Lake token for
+  exactly `LAKE_JOBS=1 lake build
+  +FabiusFunction.FabiusSharpAsymptotic` at immutable source ba7eebad0; no
+  second target, parallel process, cache mutation, or document process
+conflicts / dependencies: no active claim or differing live-tip blob exists
+  on the three source paths; origin/main remains an ancestor of the feature;
+  residual risk is only proof elaboration around quotient, ultrafilter, and
+  liminf/limsup APIs
+next bounded step: push this registry-only immutable handoff and remain
+  build-idle until the coordinator board assigns the EVO token; then run only
+  the one requested focused target and preserve exact diagnostics
+```
