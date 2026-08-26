@@ -2,7 +2,8 @@
 
 **Status: finite-jet source checkpoint implemented and frozen pending
 coordinator review; a narrow same-path all-order refinement is advertised for
-the next released checkpoint.**
+the next released checkpoint.  A disjoint one-file finite-Appell claim is now
+advertised for ordinary work while that review is pending.**
 The exact claim was published before source work, coordinator checkpoint
 `893d4c25d` explicitly acknowledged it as the first nonoverlapping claim for
 the module, and source commit `00ff41a5e` now implements precisely that bounded
@@ -26,14 +27,28 @@ SYNC Fabius
 branch / worktree / machine: codex/fabius-shifted-prefix-grid / c9a3 / EVO
   (Windows)
 fetched main SHA: c2aa5a25c82e50149ab8887f95e7c5bcd6fe62eb
-HEAD and dirty paths: 5e7ee830916a41b59a83610bc25a25445cb08915;
-  docs/registry/codex-fabius-shifted-prefix-grid.md only, recording the
-  conflict-free synchronization and completed collision review
+HEAD and dirty paths: a0b289ee7777b2d70d1895c864f16e6941b37a75;
+  docs/registry/codex-fabius-shifted-prefix-grid.md only, publishing the exact
+  disjoint finite-Appell claim before any source edit
 writing (exact paths): docs/registry/codex-fabius-shifted-prefix-grid.md only;
-  after coordinator release, the proposed next claim is exactly
+  after this claim is pushed, exactly
+  Lean/FabiusFunction/FabiusQBinomialTaylor.lean; the future same-path claim
+  after coordinator release remains exactly
   Lean/FabiusFunction/ThueMorseGenerating.lean and
   Lean/FabiusFunction/ThueMorseApproximation.lean
 expected declarations or document claims:
+  active finite-Appell claim in FabiusQBinomialTaylor.lean:
+  thueMorseTranslatedPowerSumPolynomial_comp_X_add_C, the canonical finite
+  translation law with range (d + 1);
+  thueMorseTranslatedPowerSumPolynomial_hasseDeriv, total in the derivative
+  order j and requiring no j <= d or k <= d hypothesis;
+  thueMorseTranslatedPowerSumPolynomial_derivative, the all-d ordinary
+  derivative specialization including d = 0; and the subtraction-free
+  thueMorseTranslatedPowerSumPolynomial_derivative_succ compatibility-style
+  convenience form, matching the established dyadic-kernel API;
+  add the direct Mathlib.Algebra.Polynomial.HasseDeriv import and one accurate
+  module-guide sentence identifying the finite translation/Appell structure;
+  proposed same-path follow-up after coordinator release:
   coeff_thueMorseBlockPolynomial_mul_eq_thueMorseSeries_mul and
   coeff_thueMorseBlockPolynomial_mul_invOneSubPow_eq_iteratedPrefix in the
   upstream generating-series module;
@@ -53,13 +68,17 @@ expected declarations or document claims:
   hypothesis, retain the exact header and type of
   correctedPrefixCoefficient_eq_stepApproximant as a compatibility wrapper,
   and route the moving-cell caller through the all-order form
-expected documentation claims: correct two guide-level precision issues in the
-  proposed follow-up: distinguish the literal formal-power-series prefix
-  identity from coefficientwise finite stabilization of the infinite-product
-  shorthand in ThueMorseGenerating.lean, and say that the order-zero cutoff
-  admits only index zero rather than suggesting the series has only one
-  coefficient in ThueMorseApproximation.lean; document both new all-order
-  factorizations and the all-order histogram bridge; do not edit a
+expected documentation claims: in the active one-file claim, extend the module
+  guide and declaration comments with the block-level Appell mechanism and
+  record its exact relationship to the assembled Appell identities currently
+  stated in the serialized research-frontier document; no frontier edit or PDF
+  build is requested; in the proposed finite-jet follow-up, correct two
+  guide-level precision issues: distinguish the literal formal-power-series
+  prefix identity from coefficientwise finite stabilization of the
+  infinite-product shorthand in ThueMorseGenerating.lean, and say that the
+  order-zero cutoff admits only index zero rather than suggesting the series
+  has only one coefficient in ThueMorseApproximation.lean; document both new
+  all-order factorizations and the all-order histogram bridge; do not edit a
   campaign-wide Markdown, TeX, PDF, root aggregate, or other serialized path
 completed commits: 6fb8dc8e9 publishes the exact one-file claim; ba0048023
   activates it under the open protocol; 00ff41a5e adds the seven generic
@@ -80,7 +99,8 @@ completed commits: 6fb8dc8e9 publishes the exact one-file claim; ba0048023
   its validation request; 1381df9bb merges the main checkpoint 407da44a6
   without conflicts; 4ade2afd7 advertises the all-order same-path follow-up
   without unfreezing source; 5e7ee8309 merges coordinator checkpoint
-  c2aa5a25c without conflicts and preserves both frozen source blobs
+  c2aa5a25c without conflicts and preserves both frozen source blobs;
+  a0b289ee7 records the synchronized 25-ref collision audit
 validated (exact command, SHA/state, exit code): at source snapshot SHA-256
   784F6C4F389FE0F2FA08616FFAFBFA3917CCC9F6D2C86CE98D3D877B5F0DD14C,
   git diff --check and git diff --cached --check exited 0; python
@@ -127,8 +147,9 @@ validated (exact command, SHA/state, exit code): at source snapshot SHA-256
   occurrence is this branch's proposal; git diff --check at merge 5e7ee8309
   exits 0 with no unmerged or dirty path
 not yet validated: source commit 51af7f7e1 has not been compiled; the proposed
-  all-order follow-up has not been implemented; no Lean or Lake process is
-  authorized because both physical-host tokens remain coordinator-reserved
+  all-order follow-up and the active finite-Appell claim have not been
+  implemented; no Lean or Lake process is authorized because both
+  physical-host tokens remain coordinator-reserved
 requested integration or lease: review and validate source commit 51af7f7e1;
   then release its two source paths so the exactly advertised follow-up may be
   implemented, reviewed, and frozen before assigning the final
@@ -147,14 +168,18 @@ conflicts / dependencies: no overlap with the active frontier-document lease;
   exact or plausible alternate name; the fresh 25-ref review reaches the same
   conclusion; coordinator checkpoint c2aa5a25c accepts other frozen source
   units but still does not acknowledge or release 51af7f7e1; both source paths
-  therefore remain frozen, and no path expansion beyond those two source files
-  and this branch registry is requested
-next bounded step: push this synchronized collision checkpoint, keep both
-  source files and every serialized document frozen, finish the disjoint
-  finite-Appell preflight, and poll the coordinator board for source release
-  and build disposition
-lease refreshed: 2026-08-25 19:25 PDT; registry-only proposal, with both source
-  files still frozen at 51af7f7e1
+  therefore remain frozen; FabiusQBinomialTaylor.lean has no live peer claim,
+  none of the four exact Appell names exists in any fetched source, and the
+  analogous private dyadic-kernel family is mathematically distinct; no path
+  expansion beyond this one active source file, the two frozen future source
+  files, and this branch registry is requested
+next bounded step: push this exact one-file claim, fetch and reread the board,
+  implement the four finite-Appell declarations and their source documentation,
+  obtain two independent read-only reviews, then freeze and push the source
+  checkpoint without invoking an unassigned validator
+lease refreshed: 2026-08-25 19:34 PDT; registry-only until pushed, then
+  FabiusQBinomialTaylor.lean active for 30 minutes; both finite-jet source files
+  remain frozen at 51af7f7e1
 git owner / build owner: root / no build owner assigned to this branch
 ```
 
@@ -367,9 +392,51 @@ Commit `51af7f7e1` implements the design with the exact source blobs recorded in
 the `SYNC Fabius` block.  This is source-complete static evidence, not compiler
 validation.
 
-A separate later candidate, also not claimed, is the finite Appell calculus in
-`FabiusQBinomialTaylor.lean`: an addition law for composition with `X + C c`,
-the Hasse-derivative identity
-`hasseDeriv j P_(k,d) = C (d.choose j) * P_(k,d-j)`, and its ordinary
-derivative specialization.  It has different consumers and should remain a
-separate one-file tranche rather than expanding the coefficient-bridge work.
+## Claimed finite-Appell calculus
+
+The disjoint one-file follow-up in `FabiusQBinomialTaylor.lean` exposes the
+translated Thue--Morse blocks as a finite Appell family.  Writing
+`P_(k,d)` for `thueMorseTranslatedPowerSumPolynomial k d`, the exact public
+statements are:
+
+```lean
+theorem thueMorseTranslatedPowerSumPolynomial_comp_X_add_C
+    (c : ℚ) (k d : ℕ) :
+    (thueMorseTranslatedPowerSumPolynomial k d).comp
+        (Polynomial.X + Polynomial.C c) =
+      ∑ j ∈ Finset.range (d + 1),
+        Polynomial.C ((d.choose j : ℚ) * c ^ j) *
+          thueMorseTranslatedPowerSumPolynomial k (d - j)
+
+theorem thueMorseTranslatedPowerSumPolynomial_hasseDeriv
+    (k d j : ℕ) :
+    Polynomial.hasseDeriv j
+        (thueMorseTranslatedPowerSumPolynomial k d) =
+      Polynomial.C (d.choose j : ℚ) *
+        thueMorseTranslatedPowerSumPolynomial k (d - j)
+
+theorem thueMorseTranslatedPowerSumPolynomial_derivative
+    (k d : ℕ) :
+    (thueMorseTranslatedPowerSumPolynomial k d).derivative =
+      Polynomial.C (d : ℚ) *
+        thueMorseTranslatedPowerSumPolynomial k (d - 1)
+```
+
+Writing `P_(k,d)` below is only compact registry prose.  A fourth
+successor-indexed wrapper removes natural subtraction for rewriting.  No
+theorem receives a `simp` attribute: the composition law expands into a sum,
+while the Hasse law is a deliberate semantic bridge.
+
+The composition proof evaluates both sides and applies the ordinary binomial
+theorem inside the finite Thue--Morse sum.  The Hasse proof is coefficientwise:
+`Polynomial.hasseDeriv_coeff` and the existing exact coefficient theorem reduce
+it to `Nat.choose_mul`.  The ordinary derivative is the `j = 1` specialization.
+All statements are total: `j > d`, `d = 0`, `d < k`, `d = k`, `k = 0`, and
+translation `c = 0` need no separate hypotheses or branches.
+
+The exact names and path were absent from every fetched source and live
+registry.  The similarly shaped private dyadic-kernel calculus is a distinct
+polynomial family.  The closest human counterparts are the assembled Appell
+derivative and addition formulas in the serialized research-frontier document;
+the new theorems expose their block-level algebraic mechanism.  This claim does
+not request an edit or build of that TeX/PDF pair.
