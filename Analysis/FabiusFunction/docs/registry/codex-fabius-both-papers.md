@@ -8,8 +8,9 @@ SYNC Fabius
 branch / worktree / machine: codex/fabius-both-papers /
   /home/codex/src/Proofs / codexbox
 fetched main SHA: e18f5d0b0e3ec78e2b14e7006af6c7e916b42923
-HEAD and dirty paths: 09b360531d69a9bc93dba1babc3d5ecc6a396347;
-  clean before this registry-only status refresh
+HEAD and dirty paths: aaca79f866509b99271ae2c633f81c8162845e16;
+  `Lean/FabiusFunction/GlobalExtension.lean` and this registry are dirty for a
+  terminology-only clarification from “knot” to “integer grid point”
 writing (exact paths):
   Lean/FabiusFunction/GlobalExtension.lean;
   Lean/FabiusFunction/GlobalDyadic.lean;
@@ -17,9 +18,9 @@ writing (exact paths):
   docs/registry/codex-fabius-both-papers.md
 expected declarations or document claims:
   `extendedFabius_natCast_eq_ite`, the exact all-natural value formula
-  (zero at even knots and the Thue--Morse sign indexed by `m / 2` at odd
-  knots); `iteratedDeriv_extendedFabius_natCast_eq_zero_iff`, the sharp
-  classification by positive derivative order or even knot;
+  (zero at even grid points and the Thue--Morse sign indexed by `m / 2` at odd
+  grid points); `iteratedDeriv_extendedFabius_natCast_eq_zero_iff`, the sharp
+  classification by positive derivative order or even grid point;
   relocate `rvachevDyadic_cast_global` unchanged from
   `OriginalPaperSupplement.lean` to immediately after the restricted
   `rvachevDyadic_cast` in `GlobalDyadic.lean`, preserving both public names and
@@ -42,25 +43,28 @@ completed commits: Lower-Lambert source checkpoint `1da2fde2285e3970267b7dc2561b
   `5db4ab6f9add0aed692e746da0dc0a7fb9ce23fd` advertises the two exact dyadic
   relocation paths before authoring; source checkpoint
   `09b360531d69a9bc93dba1babc3d5ecc6a396347` moves the theorem upstream
-  byte-for-byte and preserves its single public declaration site
+  byte-for-byte and preserves its single public declaration site; registry
+  handoff `aaca79f866509b99271ae2c633f81c8162845e16` records the clean relocation
+  review
 validated (exact command, SHA/state, exit code): coordinator board records
   serialized immutable `lake build +FabiusFunction.LowerLambertW` at
   `4c6bbac41`, exit 0, with its source blob unchanged on current main;
-  read-only natural-knot audits at `12e7137a8` and refreshed main found no exact or semantic
+  read-only integer-grid audits at `12e7137a8` and refreshed main found no exact or semantic
   duplicate across all advertised tips and verified the theorem domains,
   edge cases, placement, imports, and public export path; coordinator commit
   `62f4142a9f290c570299e200192a4818dc7529d2` directly ran
-  `LAKE_JOBS=1 lake env lean` on the exact corrected module and exited 0
+  `LAKE_JOBS=1 lake env lean` on the corrected module and exited 0; the current
+  source differs from that green proof-bearing blob only in doc-comment words
   read-only review of `09b360531` confirmed the moved block is byte-identical,
   imports and namespace placement suffice, the downstream theorem resolves
   through its existing direct import, and all static hygiene checks pass
 not yet validated: no focused Lake target, downstream module, public facade,
-  or aggregate build is claimed for the natural-knot checkpoint; the moved
+  or aggregate build is claimed for the integer-grid checkpoint; the moved
   dyadic theorem body was already compiled in its downstream home by the green
   aggregate at `9887ea584`, but its new module ownership/import context has not
-  been compiled; only the exact natural-knot module elaboration plus read-only
+  been compiled; only the exact integer-grid module elaboration plus read-only
   source/collision/marker/diff checks are currently validated
-requested integration or lease: natural-knot source is ready for integration;
+requested integration or lease: integer-grid source is ready for integration;
   request the codexbox token for serialized targets
   `+FabiusFunction.GlobalExtension`, `+FabiusFunction.PaperStatements`,
   `+FabiusFunction.Paper06487Supplement`, and `+FabiusFunction.Paper06487`;
@@ -81,7 +85,7 @@ conflicts / dependencies: all advertised Fabius heads and their registries
   total dyadic-cast bridge on either relocation path; documentation remains
   serialized and unclaimed
 next bounded step: await focused/downstream build tokens for both source
-  checkpoints and the natural-knot documentation lease
+  checkpoints and the integer-grid documentation lease
 ```
 
 Source-only subagents inspect and prototype in `/tmp`; they do not edit the
@@ -97,7 +101,7 @@ Read-only prototype inventory reported under the coordinator freeze:
   bound for `firstStieltjesConstant`; no production edit or integration
   request.
 - `/tmp/FabiusNatDerivativeAudit.lean` compiled before the freeze and proves
-  the sharp natural-knot classification
+  the sharp nonnegative-integer-grid classification
   `iteratedDeriv_extendedFabius_natCast_eq_zero_iff`; no production edit or
   integration request.
 
