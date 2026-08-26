@@ -1,7 +1,7 @@
 # Workstream registry: `codex/fabius-shifted-prefix-grid`
 
-**Status: prior tranche accepted and validated; exact finite-jet claim
-advertised before source work.**
+**Status: finite-jet source checkpoint implemented and frozen pending
+coordinator review and compiler validation.**
 The exact claim was published before source work, coordinator checkpoint
 `893d4c25d` explicitly acknowledged it as the first nonoverlapping claim for
 the module, and source commit `00ff41a5e` now implements precisely that bounded
@@ -13,20 +13,20 @@ Audit-ledger commit `faf1fcaf6` was
 completed and pushed before coordinator checkpoint `148990f0a` newly serialized
 both campaign-wide Markdown paths.  Those paths remain serialized.  After
 merging current main at `77c15879f`, this branch now advertises the exact
-two-file finite-jet claim below before editing either source.
+two-file finite-jet claim below before editing either source.  Source commit
+`51af7f7e1` now implements exactly that claim.
 
 ```text
 SYNC Fabius
 branch / worktree / machine: codex/fabius-shifted-prefix-grid / c9a3 / EVO
   (Windows)
 fetched main SHA: 383bc967268df018cc0bc1634b997114863c1658
-HEAD and dirty paths: 122788a9556b82102feb5f1023b9c2c19a8bccf5;
-  docs/registry/codex-fabius-shifted-prefix-grid.md only, refining declaration
-  placement before either source file is edited
-writing (exact paths): docs/registry/codex-fabius-shifted-prefix-grid.md now;
-  after this claim is pushed,
+HEAD and dirty paths: 51af7f7e192b9dbf2b8590b0bfd7f8d4802ec532;
+  docs/registry/codex-fabius-shifted-prefix-grid.md only, recording the immutable
+  source checkpoint and requesting validation
+writing (exact paths): docs/registry/codex-fabius-shifted-prefix-grid.md only;
   Lean/FabiusFunction/ThueMorseGenerating.lean and
-  Lean/FabiusFunction/ThueMorseApproximation.lean
+  Lean/FabiusFunction/ThueMorseApproximation.lean are frozen at 51af7f7e1
 expected declarations or document claims:
   coeff_thueMorseBlockPolynomial_mul_eq_thueMorseSeries_mul and
   coeff_thueMorseBlockPolynomial_mul_invOneSubPow_eq_iteratedPrefix in the
@@ -55,7 +55,9 @@ completed commits: 6fb8dc8e9 publishes the exact one-file claim; ba0048023
   read-only finite-block preflight; 77c15879f semantically resolves the sole
   own-registry conflict while merging origin/main ba2be1b78; 4cb8d7676
   publishes the exact two-file claim; 122788a95 merges the frontier
-  build-authorization checkpoint 383bc9672 before source work
+  build-authorization checkpoint 383bc9672 before source work; 585f8f8ba moves
+  both convolution bridges to their minimal generating-series dependency;
+  51af7f7e1 implements the complete two-file source tranche
 validated (exact command, SHA/state, exit code): at source snapshot SHA-256
   784F6C4F389FE0F2FA08616FFAFBFA3917CCC9F6D2C86CE98D3D877B5F0DD14C,
   git diff --check and git diff --cached --check exited 0; python
@@ -83,14 +85,28 @@ validated (exact command, SHA/state, exit code): at source snapshot SHA-256
   +FabiusFunction.ThueMorseGenerating (2085 jobs),
   +FabiusFunction.ThueMorseApproximation (3307 jobs),
   +FabiusFunction.ThueMorseExponential (2086 jobs), and
-  +FabiusFunction.PaperKFoldThueMorse (3327 jobs), all exit 0
-not yet validated: the future coefficient-bridge design below is static
-  preflight only; no Lean or Lake process was launched on EVO and no build
-  token is granted
-requested integration or lease: advertise the exact ordinary two-file source
-  claim above; no coordinator acknowledgement is required if the mandatory
-  post-push collision scan remains clean; request coordinator-held serialized
-  validation only after an immutable source checkpoint is pushed
+  +FabiusFunction.PaperKFoldThueMorse (3327 jobs), all exit 0; at source commit
+  51af7f7e1, git diff --check and git diff --cached --check exited 0, the
+  forbidden-token scan found no added sorry/admit/axiom/opaque, exact comparison
+  preserved the old public theorem header and absence of attributes, and python
+  Analysis/FabiusFunction/scripts/doc_audit.py --baseline
+  Analysis/FabiusFunction/docs/doc_audit_baseline.json scanned 189 files and
+  3476 public declarations with the unchanged 132 baseline omissions, exit 0;
+  two independent hostile source/Mathlib reviews found no mathematical,
+  declaration-order, tactic, compatibility, simplifier, or documentation
+  blocker; implemented blobs are Generating 2412e544b (SHA-256
+  499A7D176C691135FA24550CC73CF335D8D1E6C6A7C001A3F7B931D6B099B5DF)
+  and Approximation b27b38fbc (SHA-256
+  1108CE8C50AAEF02A8C5A7705916D1D70A0AD993005F33AAC27AE83C76E783FE)
+not yet validated: source commit 51af7f7e1 has not been compiled; no Lean or
+  Lake process was launched because the sole EVO token is assigned to frontier
+  pdflatex and no coordinator-held codexbox target is assigned
+requested integration or lease: review source commit 51af7f7e1 and assign the
+  coordinator-held serialized targets +FabiusFunction.ThueMorseGenerating,
+  +FabiusFunction.ThueMorseApproximation,
+  +FabiusFunction.ThueMorseExponential, and
+  +FabiusFunction.PaperKFoldThueMorse at that immutable checkpoint or its exact
+  coordinator merge
 conflicts / dependencies: no overlap with the active frontier-document lease;
   no AGENTS, README, collaboration, aggregate, TeX, PDF, canonical frontier,
   primary exposition, hot foundational module, or peer registry path requested;
@@ -98,11 +114,12 @@ conflicts / dependencies: no overlap with the active frontier-document lease;
   serialized; current main explicitly releases the prior source lease; a
   post-claim scan pinned all 16 locally available Fabius worker tips plus
   origin/main and found no competing claim or proposed declaration under an
-  exact or plausible alternate name
-next bounded step: push this dependency-minimal placement correction, fetch
-  and reread the board, repeat the all-tip collision scan, then edit only the
-  two claimed source files
-lease refreshed: 2026-08-25 18:49 PDT; exact two-file ordinary claim active
+  exact or plausible alternate name; both source paths are now frozen pending
+  review, and no further path expansion is requested
+next bounded step: push this exact source handoff, keep both source files and
+  every serialized document frozen, and poll the board for review/build
+  disposition
+lease refreshed: 2026-08-25 18:57 PDT; two-file source checkpoint frozen
 git owner / build owner: root / no build owner assigned to this branch
 ```
 
@@ -243,7 +260,7 @@ now correctly identified as the patch SHA-256; the committed file SHA-256 is
 (Git blob `3eeb0880b8437d7d449ed70af6d5b9c451de9abf`).  The source lease is
 released; both campaign-wide documentation paths return to serialized status.
 
-## Claimed finite-jet design
+## Implemented finite-jet design
 
 Coordinator checkpoint `c9eac55c5` accepts and validates the prior source and
 documentation tranches and releases the source lease.  Merge `77c15879f`
@@ -259,8 +276,9 @@ The polynomial-coefficient strengthening and compatibility wrapper belong in
 `Lean/FabiusFunction/ThueMorseApproximation.lean`, whose corresponding blob is
 `fb0e20a0e303403df358b925f262f7bead0d03e4` (SHA-256
 `045DF230FA224D417D3ED11AFE55F1569F74402833B30BAF008D8D6828A9F47F`).
-Both source blobs match current `origin/main`.  Fresh searches of all 16
-locally available Fabius remote-tracking tips found
+These were the exact base blobs and matched current `origin/main` before the
+source edit.  Fresh searches of all 16 locally available Fabius remote-tracking
+tips found
 neither an active claim for either path nor any of the proposed names.
 
 Three independent read-only reviews converged on this public API:
@@ -308,9 +326,11 @@ The cutoff `m < 2^r` is sharp.  At `m = 2^r`, prefix order zero and multiplier
 one, the finite block coefficient is zero while the new Thue--Morse coefficient
 is `-1`.  No relation between `r` and `k` is needed, and both `r = 0` and
 `k = 0` are valid.  This preflight checked every identifier and rewrite
-direction against the current project and Mathlib sources; a separate hostile
-review found no mathematical, API, or simplifier blocker.  It is static
-evidence only, not compiler validation.
+direction against the current project and Mathlib sources; two separate hostile
+reviews found no mathematical, API, tactic, dependency, or simplifier blocker.
+Commit `51af7f7e1` implements the design with the exact source blobs recorded in
+the `SYNC Fabius` block.  This is source-complete static evidence, not compiler
+validation.
 
 A separate later candidate, also not claimed, is the finite Appell calculus in
 `FabiusQBinomialTaylor.lean`: an addition law for composition with `X + C c`,
