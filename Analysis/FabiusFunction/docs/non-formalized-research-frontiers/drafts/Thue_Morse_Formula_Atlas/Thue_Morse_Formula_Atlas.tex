@@ -1198,6 +1198,22 @@ The number \(\nu(n)\) of odd entries in row \(n\) is
 Set \(z=1\) in \eqref{eq:row-support-factorization}.
 \end{proof}
 
+\emph{Formal versions.}  \path{ThueMorseLucasSupport.lean} proves
+\cref{thm:lucas-submask} in three forms:
+\lean{Fabius.odd\_choose\_iff\_testBit} (every set bit of \(k\) is
+set in \(n\)), \lean{Fabius.odd\_choose\_iff\_land}
+(\(k\mathbin{\&}n=k\)), and
+\lean{Fabius.odd\_choose\_iff\_bitSupport\_subset}, by strong
+induction through the parity recursions of Pascal rows rather than
+through \(\Ftwo[z]\).  The supporting fact that a sum of distinct
+two-powers has exactly the prescribed binary support is
+\lean{Fabius.testBit\_sum\_two\_pow}, stated for an arbitrary finite
+set of bit positions.  The Glaisher--Fine count \eqref{eq:glaisher-count}
+has long been formal as \lean{Fabius.card\_oddBinomialIndices}
+(\path{Parity.lean}); the odd row positions are identified with the
+submask cube by
+\lean{Fabius.oddBinomialIndices\_eq\_image\_powerset}.
+
 The source formula is now transparent.  Since even entries contribute \(+1\)
 and odd entries contribute \(-1\),
 \begin{equation}
@@ -1897,6 +1913,43 @@ The weighted convolution on the right always collapses to \(\pm n\).  As an
 evaluator it is inferior to popcount, but it is the natural recurrence attached
 to the Euler product.
 
+\begin{remark}[Combinatorial proof of the recurrence]
+\label{rem:ruler-convolution-combinatorial}
+\Cref{thm:ruler-convolution} also has a purely finite proof which explains
+why the convolution always collapses to \(\pm n\).  Write
+\(a_k=\sum_{j\ge0,\,2^j\mid k}2^j\) as the sum of the binary divisors
+of \(k\) and interchange the two sums:
+\[
+ \sum_{k=1}^{n}a_k\eps_{n-k}
+ =\sum_{j\ge0}2^j\!\!\sum_{\substack{1\le k\le n\\2^j\mid k}}\!\!\eps_{n-k}
+ =\sum_{j\ge0}2^j\!\!\sum_{\substack{0\le m<n\\ m\equiv n\ (\mathrm{mod}\ 2^j)}}\!\!\eps_m.
+\]
+By block concatenation \(\eps_{2^jt+r}=\eps_t\eps_r\) (\(r<2^j\)),
+the residue-class sum equals
+\(\eps_{n\bmod2^j}\sum_{t<\lfloor n/2^j\rfloor}\eps_t\), and the
+prefix sum collapses by pair cancellation to
+\(\ind_{\lfloor n/2^j\rfloor\text{ odd}}\;\eps_{\lfloor n/2^{j+1}\rfloor}\).
+When the \(j\)-th binary digit of \(n\) is \(1\), the odd-successor
+law \(\eps_{2u+1}=-\eps_u\) turns the product back into \(-\eps_n\);
+when it is \(0\), the class sum vanishes.  Hence
+\(\sum_ka_k\eps_{n-k}=-\eps_n\sum_{j:\,b_j(n)=1}2^j=-n\eps_n\):
+the surviving binary divisors reassemble the binary expansion of \(n\).
+\end{remark}
+
+\emph{Formal versions.}  \path{ThueMorseEulerTransform.lean} proves
+\cref{thm:ruler-convolution} as \lean{Fabius.ruler\_convolution},
+following \cref{rem:ruler-convolution-combinatorial} --- no logarithm,
+derivative, or convergence enters.  The reusable pieces are the prefix
+collapse \lean{Fabius.sum\_thueMorseSign\_range}, the residue-class
+collapse \lean{Fabius.sum\_thueMorseSign\_progression}, the
+divisor-sum identification \lean{Fabius.sum\_ite\_two\_pow\_dvd},
+the binary expansion \lean{Fabius.sum\_ite\_odd\_div\_two\_pow},
+and the fully general reindexing
+\lean{Fabius.sum\_filter\_dvd\_sub\_eq\_sum\_progression}, valid
+for any function into any additive commutative monoid and any modulus.
+The Euler transform \eqref{eq:log-E} itself and the partition formula
+remain analytic and unformalized.
+
 \subsection{Partition and Bell-polynomial formulae}
 
 Exponentiating \eqref{eq:log-E} gives a finite partition sum for every
@@ -2061,6 +2114,28 @@ Christol's theorem says that a finite-field sequence is automatic exactly when
 its generating series is algebraic.  Here the degree-two certificate is
 derived directly; it is an algebraic shadow of the two-state automaton
 \cite{christol1980}.
+
+\emph{Formal versions.}  \path{ThueMorseArtinSchreier.lean} proves the
+functional equation \eqref{eq:Theta-functional} in the cleared form
+\(\Theta=(1+z)\Theta^2+z\,G^2\) with \(G=\sum z^n\)
+(\lean{Fabius.thueMorseBitSeries\_functional},
+\lean{Fabius.one\_add\_X\_mul\_geometricSeries}), the boxed quadratic
+\eqref{eq:Theta-quadratic} as
+\lean{Fabius.thueMorseBitSeries\_quadratic}, and the normalized form
+\eqref{eq:Y-Artin-Schreier} cleared of its denominator,
+\((1+z)\bigl(Y^2+Y\bigr)=z\), as
+\lean{Fabius.artinSchreier\_one\_add\_X\_mul}.  The Frobenius step
+\(\Theta(z)^2=\Theta(z^2)\) is isolated as a coefficientwise lemma
+valid over \emph{any} commutative ring of characteristic two
+(\lean{Fabius.coeff\_sq\_charTwo}: the off-diagonal convolution terms
+cancel in pairs), specializing over \(\Ftwo\) to
+\lean{Fabius.coeff\_sq\_zmodTwo}.  Of the explicit solution
+\eqref{eq:Y-explicit} the formalization keeps the finite content: the
+partial sums \(S_J=\sum_{j<J}a^{2^j}\) satisfy
+\(S_J^2+S_J=a^{2^J}+a\) in any commutative ring of characteristic two
+(\lean{Fabius.sum\_pow\_two\_pow\_sq\_add}), so they solve the
+Artin--Schreier equation up to the single tail term, and no \(z\)-adic
+limit is needed for any identity in this subsection.
 
 \subsection{An integral algebraic lift}
 \label{sec:integer-lift}
@@ -2936,6 +3011,14 @@ moment are \lean{Fabius.sum\_submask\_neg\_one\_pow\_eval} and
 \lean{Fabius.sum\_submask\_neg\_one\_pow\_pow}, both instances of the
 arbitrary-weight engine of \cref{thm:arbitrary-weights} with
 \(w_j=2^jh\) running over \(J(n)\), over any commutative ring.
+The generating identity \eqref{eq:signed-Pascal-support} itself is now
+\lean{Fabius.prod\_one\_sub\_pow\_bitSupport}
+(\path{ThueMorseLucasSupport.lean}), the submasks running over the
+powerset of the bit support --- faithfully, by
+\lean{Fabius.sum\_two\_pow\_injOn\_powerset}; through Lucas's
+criterion this index set is exactly \lean{Fabius.oddBinomialIndices},
+and the balance \cref{cor:Pascal-support-balance} is
+\lean{Fabius.sum\_thueMorseSign\_oddBinomialIndices}.
 
 \begin{corollary}[Sparse operator identity]
 \label{cor:sparse-operator}
@@ -3074,6 +3157,24 @@ The interval sum is a difference of two values in \(\{-1,0,1\}\).  Convert
 to zero--one values by \eqref{eq:normalization-bridge}.  For sharpness,
 \(\eps_5+\eps_6=2\).
 \end{proof}
+
+\emph{Formal versions.}  \path{ThueMorseEulerTransform.lean} proves the
+exclusive closed form \eqref{eq:exact-prefix} as
+\lean{Fabius.sum\_thueMorseSign\_range} (even case
+\lean{Fabius.sum\_thueMorseSign\_range\_two\_mul}), the inclusive
+form \eqref{eq:inclusive-prefix} as
+\lean{Fabius.sum\_thueMorseSign\_range\_succ}, the ones-count
+formulas \eqref{eq:ones-prefix-cases} as
+\lean{Fabius.sum\_thueMorseBit\_range\_two\_mul} and
+\lean{Fabius.sum\_thueMorseBit\_range\_two\_mul\_add\_one}, and
+the bridge \(2A(N)+S(N)=N\) as
+\lean{Fabius.two\_mul\_sum\_thueMorseBit\_add\_sum\_thueMorseSign}.
+The discrepancy statements of \cref{cor:interval-discrepancy} are
+\lean{Fabius.abs\_sum\_thueMorseSign\_range\_le\_one}
+(\(|S(N)|\le1\)), \lean{Fabius.sum\_thueMorseSign\_Ico},
+\lean{Fabius.abs\_sum\_thueMorseSign\_Ico\_le\_two}, and, for the
+bits in doubled integer form,
+\lean{Fabius.abs\_two\_mul\_sum\_thueMorseBit\_Ico\_sub\_le\_two}.
 
 \begin{corollary}[Aligned and partial dyadic blocks]
 \label{cor:dyadic-block-prefix}
@@ -4394,7 +4495,7 @@ valuation, carry, and Pascal-row formulas remain genuinely base-two features.
 \subsection{Formalized modules (August 2026)}
 \label{sec:formalized-modules}
 
-The first tranches of the formalization now exist as nine compiled Lean
+The first tranches of the formalization now exist as twelve compiled Lean
 modules in \repo{}, complementing the corpus modules
 (\path{Parity.lean}, \path{TwoAdic.lean}, \path{ThueMorsePrefix.lean},
 \path{ThueMorseGenerating.lean}, \path{ThueMorseExponential.lean},
@@ -4417,6 +4518,9 @@ Module & Contents \\
 \path{ThueMorseAperiodicity.lean} & Block-flip identities and non-eventual-periodicity. \\
 \path{ThueMorseBlockAlgebra.lean} & Telescope and multiplicity ladder, degree and leading data of \(P_m\), reciprocity (\texttt{reverse} and evaluation forms), cyclotomic multiplicity table, binomial-basis vanishing and sharp moment over any commutative ring. \\
 \path{ThueMorseMoments.lean} & Hockey-stick column sum, complete binomial moment composition (\cref{cor:binomial-moment-composition}), reflection functional equation, midpoint parity selection rule, sharp centered moment, complete power-moment composition formula. \\
+\path{ThueMorseArtinSchreier.lean} & Characteristic-two power-series Frobenius, the \(\Ftwo\) bit series with its functional equation, Artin--Schreier quadratic and normalized forms, finite Artin--Schreier telescope. \\
+\path{ThueMorseEulerTransform.lean} & Prefix collapse and ones-count formulas, general residue-class reindexing, ruler-convolution recurrence by finite combinatorics, interval discrepancy bounds. \\
+\path{ThueMorseLucasSupport.lean} & Binary support of two-power sums, Lucas's submask criterion (bit, \texttt{\&\&\&}, and support forms), odd Pascal positions as the submask cube, signed Pascal-support product, balance on odd positions. \\
 \bottomrule
 \end{tabularx}
 \end{center}
