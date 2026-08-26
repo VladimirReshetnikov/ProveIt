@@ -7,19 +7,18 @@ This file implements the per-branch registry fallback in
 SYNC Fabius
 branch / worktree / machine: codex/fabius-both-papers /
   /home/codex/src/Proofs / codexbox
-fetched main SHA: c5ee98fc72489312e042eb0a4f2280827ee96457
-HEAD and dirty paths: 3575998493dad72c795ffa825c7467d4ea380a0c;
-  dirty only in this own-registry handoff
+fetched main SHA: 14af01588ade513eb7e8c580e3ae2d3c0ab1870d
+HEAD and dirty paths: 363cf3df1bce90344f0e6f0deeb43106e0d3dd5f;
+  dirty only in this own-registry claim
 writing (exact paths):
+  Analysis/FabiusFunction/Lean/FabiusFunction/TwoAdic.lean;
   Analysis/FabiusFunction/docs/registry/codex-fabius-both-papers.md
 expected declarations or document claims:
-  promote `negativeLaplaceExponentPolynomialContinuous` and
-  `negativeLaplaceExponentPolynomialContinuous_map` from private shared
-  implementation to documented public upstream declarations while retaining
-  `negativeLaplaceBoundedExponentJetContinuousMap` as a private constructor;
-  delete the three byte-identical primed private copies in the directly
-  importing reference-weight module and rewire its consumers to the upstream
-  names; preserve every pre-existing public theorem header and all imports
+  `centralChoose_padicValNat_two`;
+  `thueMorseSign_centralChoose`;
+  the first specializes Kummer's theorem at `p = 2` to identify the valuation
+  of `Nat.choose (2 * n) n` with `binaryWeight n` for every natural `n`, and
+  the second recovers the Thue--Morse sign from that valuation; no new import
 completed commits: Lower-Lambert source checkpoint `1da2fde2285e3970267b7dc2561bcd0d897be1b4`
   was integrated by coordinator merge `046946a974467e83244fd3a183a3e084e70d3379`;
   registry handoff `225f5338de9ea92489ed6a2c0c371c6edb4f5db9`
@@ -176,12 +175,14 @@ validated (exact command, SHA/state, exit code): coordinator board records
   the exact shifted Fourier-decay source, and separate builds of
   `+FabiusFunction.PoissonSummation` (3195 jobs) and
   `+FabiusFunction.Paper05442` (3417 jobs) both exit 0 without warnings;
-  three independent read-only reviews of `036cbe4a2` pass the byte-identical
-  block comparison, minimal public API, private-helper abstraction boundary,
-  all 22 rewired references, exact public-header preservation, imports,
-  collision scan, reverse cone, and static source hygiene
-not yet validated: the saddle continuous-map deduplication source checkpoint
-  `036cbe4a2545eb6783f4a2fa98944d3ffd523d6f` has not been elaborated or built;
+  coordinator integration `9aca1aaf3` records the exact saddle
+  continuous-polynomial deduplication, and separate builds of
+  `+FabiusFunction.FabiusSaddleExpansionCoefficients` (3306 jobs) and
+  `+FabiusFunction.FabiusSaddleReferenceWeight` (3517 jobs) both exit 0; the
+  latter replays only the inherited nonblocking `unnecessarySimpa` linter in
+  `ProbabilityLaplaceMoments.lean`
+not yet validated: the central-binomial valuation claim is registry-only and
+  has no source checkpoint yet;
   the historical validation-state paragraphs below are
   superseded by the coordinator board and retained only as provenance: the
   moved dyadic theorem body was already compiled in its
@@ -279,13 +280,10 @@ historical integration requests, all superseded by the current coordinator
   handoff;
   serialized README/primary/walkthrough/coverage paths are deliberately not
   claimed yet
-requested integration or lease: integrate the exact saddle continuous-map
-  deduplication checkpoint and run serialized `LAKE_JOBS=1 lake build
-  +FabiusFunction.FabiusSaddleExpansionCoefficients`, followed by
-  `LAKE_JOBS=1 lake build +FabiusFunction.FabiusSaddleReferenceWeight`;
-  both saddle source claims are released by this handoff; canonical README,
-  AUDIT_FINDINGS, PAPER_COVERAGE, primary, walkthrough, and frontier paths
-  remain frozen and unclaimed
+requested integration or lease: none until the advertised central-binomial
+  source checkpoint is implemented and independently reviewed; canonical
+  README, AUDIT_FINDINGS, PAPER_COVERAGE, primary, walkthrough, frontier, and
+  user-supplied draft paths remain frozen and unclaimed
 conflicts / dependencies: all advertised Fabius heads and their registries
   were checked; no branch claims GlobalExtension and the only overlap is the
   existing even/odd ingredients and downstream special cases that this API
@@ -334,16 +332,35 @@ conflicts / dependencies: all advertised Fabius heads and their registries
   fresh scan of all sixteen advertised Codex/Claude Fabius tips finds only the
   positive-degree complex branch estimate, no `_all` or semantic-equivalent
   theorem, and no active claim on `FabiusDiscreteLimitComplexShift.lean`; the
-  exact `_all` name occurs only in the unimplemented serialized audit proposal
-  and a fresh two-blob/all-tip scan finds the exact saddle duplication on every
+  exact `_all` name occurs only in the unimplemented serialized audit proposal;
+  a fresh two-blob/all-tip scan finds the exact saddle duplication on every
   relevant source tip, no alternate shared API or active saddle-path claim;
   the downstream module directly imports the upstream home, and a theorem-only
   factoring is insufficient because its `expCoeff`, finite quotient, and degree
   proofs consume the polynomial family itself
-next bounded step: coordinator integration and serialized upstream/downstream
-  validation of `036cbe4a2`; canonical human-document changes remain excluded
-  because this refactor changes implementation reuse rather than mathematics
+next bounded step: push this exact one-file central-binomial claim, implement
+  and independently review both declarations, then request serialized focused
+  and paper-facade validation
 ```
+
+## Central-binomial two-adic valuation claim
+
+At fetched main `14af01588ade513eb7e8c580e3ae2d3c0ab1870d`,
+`TwoAdic.lean` imports Mathlib's digit-sum form of Kummer's theorem but does not
+specialize it to the central binomial coefficient.  The proposed
+`centralChoose_padicValNat_two` proves
+`padicValNat 2 (Nat.choose (2 * n) n) = binaryWeight n` for every `n`, including
+zero.  The corollary `thueMorseSign_centralChoose` rewrites the defining sign
+through this valuation.
+
+The source blob is `a585d729f82e801f730f7ec4ade4705b087257b6`.
+Fresh current-main, all-tip, and registry scans find no exact or semantic Lean
+implementation and no active `TwoAdic.lean` claim.  The theorem is explicitly
+listed as unformalized in the frozen user-supplied research drafts, which this
+source-only claim does not edit.  The proof needs only the already-imported
+`sub_one_mul_padicValNat_choose_eq_sub_sum_digits'` and a local binary-digit
+shift identity from `Nat.digits_base_mul`.  No Lean/Lake process is authorized
+or planned.
 
 ## Saddle continuous-map deduplication handoff
 
