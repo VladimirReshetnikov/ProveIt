@@ -19,20 +19,20 @@ two-file finite-jet claim below before editing either source.
 SYNC Fabius
 branch / worktree / machine: codex/fabius-shifted-prefix-grid / c9a3 / EVO
   (Windows)
-fetched main SHA: ba2be1b782b8aa77979c40eb5c43a1b102e20b81
-HEAD and dirty paths: 77c15879fd63794c7a092addff3c64ac1fc69103;
-  docs/registry/codex-fabius-shifted-prefix-grid.md only, advertising the exact
-  claim before either source file is edited
+fetched main SHA: 383bc967268df018cc0bc1634b997114863c1658
+HEAD and dirty paths: 122788a9556b82102feb5f1023b9c2c19a8bccf5;
+  docs/registry/codex-fabius-shifted-prefix-grid.md only, refining declaration
+  placement before either source file is edited
 writing (exact paths): docs/registry/codex-fabius-shifted-prefix-grid.md now;
   after this claim is pushed,
   Lean/FabiusFunction/ThueMorseGenerating.lean and
   Lean/FabiusFunction/ThueMorseApproximation.lean
 expected declarations or document claims:
-  coeff_thueMorseBlockPolynomial_mul_eq_thueMorseSeries_mul in the upstream
-  generating-series module;
-  coeff_thueMorseBlockPolynomial_mul_invOneSubPow_eq_iteratedPrefix and
+  coeff_thueMorseBlockPolynomial_mul_eq_thueMorseSeries_mul and
+  coeff_thueMorseBlockPolynomial_mul_invOneSubPow_eq_iteratedPrefix in the
+  upstream generating-series module;
   iteratedPrefix_eq_approximationPolynomial_coeff_all in the approximation
-  module; delete the subsumed private
+  module; delete the subsumed downstream private
   coeff_thueMorseSeries_mul_inv_eq_finite; retain the exact public header,
   binders, argument order, type, and attributes of
   iteratedPrefix_eq_approximationPolynomial_coeff as a compatibility wrapper;
@@ -53,7 +53,9 @@ completed commits: 6fb8dc8e9 publishes the exact one-file claim; ba0048023
   origin/main 148990f0a without conflicts; 8ea040921 reports the resulting
   branch-specific freeze and coordinator handoff; c8501fa81 preserves the
   read-only finite-block preflight; 77c15879f semantically resolves the sole
-  own-registry conflict while merging origin/main ba2be1b78
+  own-registry conflict while merging origin/main ba2be1b78; 4cb8d7676
+  publishes the exact two-file claim; 122788a95 merges the frontier
+  build-authorization checkpoint 383bc9672 before source work
 validated (exact command, SHA/state, exit code): at source snapshot SHA-256
   784F6C4F389FE0F2FA08616FFAFBFA3917CCC9F6D2C86CE98D3D877B5F0DD14C,
   git diff --check and git diff --cached --check exited 0; python
@@ -93,13 +95,14 @@ conflicts / dependencies: no overlap with the active frontier-document lease;
   no AGENTS, README, collaboration, aggregate, TeX, PDF, canonical frontier,
   primary exposition, hot foundational module, or peer registry path requested;
   current main keeps docs/PAPER_COVERAGE.md and docs/AUDIT_FINDINGS.md
-  serialized; current main explicitly releases the prior source lease; all 16
-  locally available Fabius remote-tracking tips and their advertised registries
-  contain no competing claim or proposed declaration under an exact or
-  plausible alternate name
-next bounded step: push this exact claim, fetch and reread the board, repeat
-  the all-tip collision scan, then edit only the two claimed source files
-lease refreshed: 2026-08-25 18:44 PDT; exact two-file ordinary claim advertised
+  serialized; current main explicitly releases the prior source lease; a
+  post-claim scan pinned all 16 locally available Fabius worker tips plus
+  origin/main and found no competing claim or proposed declaration under an
+  exact or plausible alternate name
+next bounded step: push this dependency-minimal placement correction, fetch
+  and reread the board, repeat the all-tip collision scan, then edit only the
+  two claimed source files
+lease refreshed: 2026-08-25 18:49 PDT; exact two-file ordinary claim active
 git owner / build owner: root / no build owner assigned to this branch
 ```
 
@@ -247,12 +250,12 @@ documentation tranches and releases the source lease.  Merge `77c15879f`
 incorporates current main, and the `SYNC Fabius` block above now advertises the
 exact source lease before any theorem edit.
 
-The generic theorem belongs in the upstream-most module that can state it,
-`Lean/FabiusFunction/ThueMorseGenerating.lean`, whose current `HEAD` and
+Both convolution theorems belong in the upstream-most module that can state
+them, `Lean/FabiusFunction/ThueMorseGenerating.lean`, whose current `HEAD` and
 `origin/main` blob is
 `a670c07ea215cbf85eb76db0886d2898e20d4f6a` (SHA-256
 `784F6C4F389FE0F2FA08616FFAFBFA3917CCC9F6D2C86CE98D3D877B5F0DD14C`).
-Its approximation-specific specializations belong in
+The polynomial-coefficient strengthening and compatibility wrapper belong in
 `Lean/FabiusFunction/ThueMorseApproximation.lean`, whose corresponding blob is
 `fb0e20a0e303403df358b925f262f7bead0d03e4` (SHA-256
 `045DF230FA224D417D3ED11AFE55F1569F74402833B30BAF008D8D6828A9F47F`).
