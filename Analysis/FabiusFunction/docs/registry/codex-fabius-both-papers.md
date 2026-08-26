@@ -7,17 +7,12 @@ This file implements the per-branch registry fallback in
 SYNC Fabius
 branch / worktree / machine: codex/fabius-both-papers /
   /home/codex/src/Proofs / codexbox
-fetched main SHA: 34ca81c9427110e608f7be92c591201739d30fd6
-HEAD and dirty paths: 869cdd928; dirty only in this own-registry claim
-writing (exact paths):
-  Analysis/FabiusFunction/Lean/FabiusFunction/ExactInversePower.lean;
-  Analysis/FabiusFunction/Lean/FabiusFunction/PaperStatements.lean;
-  Analysis/FabiusFunction/docs/registry/codex-fabius-both-papers.md
-expected declarations or document claims: no new declaration; replace nine
-  inline positivity arguments by the existing public
-  oddDoubleFactorial_pos, evenMersenneProduct_pos, and
-  oddMersenneProduct_pos lemmas while preserving every public theorem body
-  boundary, header, import, and caller
+fetched main SHA: a3cbe179443df1593b50a8034ce456729a004f9d
+HEAD and dirty paths: 5fe852607f917be5699fd3fc95536694a42f8765;
+  dirty only in this own-registry handoff
+writing (exact paths): none; both positivity-dedup source claims are released
+expected declarations or document claims: none in flight; the proof-only
+  consolidation is frozen at source checkpoint 3475f5ff0
 completed commits: Lower-Lambert source checkpoint `1da2fde2285e3970267b7dc2561bcd0d897be1b4`
   was integrated by coordinator merge `046946a974467e83244fd3a183a3e084e70d3379`;
   registry handoff `225f5338de9ea92489ed6a2c0c371c6edb4f5db9`
@@ -101,12 +96,18 @@ completed commits: Lower-Lambert source checkpoint `1da2fde2285e3970267b7dc2561b
   `1401f2d9b`; clean merge `9efba031547f243d7922ec56726f7055814bda63`
   incorporates fetched main `39ad356c7`; all-degree branch-bound claim
   `04bc271617b4f33ee02015a86dc5b7fb944091c0` precedes source checkpoint
-  `1b0792b2b22ed51b28404cc42175befb45313668`; downstream claim
-  `86c3c746b` precedes source checkpoint `3c2d1e926`, which adds the two
+  `1b0792b2b5773879b94c07742b4e181c6afbe0d8`; downstream claim
+  `86c3c746b` precedes source checkpoint
+  `3c2d1e926a2a8495557c904cda0786d51140779b`, which adds the two
   all-degree/all-real quantitative companions and three all-real typed shift
   specializations while preserving every existing restricted API; clean merge
   `20080a7f0` incorporates fetched main `34ca81c94` and retains its exact
-  serialized-build-validated Rvachev endpoint repair;
+  serialized-build-validated Rvachev endpoint repair; positivity-dedup claim
+  `8c5b842eb` precedes source checkpoint
+  `3475f5ff0b3f50c05782c160bc111cdcea93fd27`, which replaces nine
+  inline Finset-product positivity arguments with the canonical public
+  Arithmetic lemmas for a net source reduction of 31 lines; clean merge
+  `5fe852607` incorporates fetched main `a3cbe1794`;
 validated (exact command, SHA/state, exit code): coordinator board records
   serialized immutable `lake build +FabiusFunction.LowerLambertW` at
   `4c6bbac41`, exit 0, with its source blob unchanged on current main;
@@ -123,6 +124,10 @@ validated (exact command, SHA/state, exit code): coordinator board records
   `+FabiusFunction.Differential` (2653 jobs) and
   `+FabiusFunction.Existence` (2783 jobs), both exit 0 without warnings after
   the statement-preserving endpoint-simplification repair now retained here;
+  coordinator checkpoint `a3cbe1794` records serialized one-job builds of
+  `+FabiusFunction.FabiusDiscreteLimitComplexShift` (1873 jobs) and its
+  direct consumer `+FabiusFunction.FabiusComplexShiftSpline` (3417 jobs), both
+  exit 0 without warnings for the integrated upstream all-degree theorem;
   read-only review of `09b360531` confirmed the moved block is byte-identical,
   imports and namespace placement suffice, the downstream theorem resolves
   through its existing direct import, and all static hygiene checks pass;
@@ -176,13 +181,15 @@ not yet validated: the moved dyadic theorem body was already compiled in its
   normalization, odd/natural witness orientations, successor projection,
   false-at-zero valuation boundary, public-signature preservation, placement,
   collision sweep, imports, facade exposure, documentation, forbidden markers,
-  and diff hygiene, but has not been elaborated or built; the combined
-  all-degree complex-shift checkpoints have independent read-only reviews
-  covering the empty-sum zero case, natural truncated subtraction,
-  positive-degree delegation, the nonpositive real tail, centered-branch
-  discharge, typed real/rational/Gaussian-rational specialization, API
-  compatibility, theorem order, source documentation, collisions, and diff
-  hygiene, but have not been elaborated or built
+  and diff hygiene, but has not been elaborated or built; the downstream
+  complex-shift checkpoint has independent read-only reviews covering the
+  nonpositive real tail, centered-branch discharge, typed
+  real/rational/Gaussian-rational specialization, API compatibility, theorem
+  order, source documentation, collisions, and diff hygiene, but has not been
+  elaborated or built; the positivity-only checkpoint has two independent
+  reviews covering all nine exact public-lemma substitutions, transitive
+  visibility, every unchanged Nat-to-rational consumer, import retention,
+  public API identity, and diff hygiene, but has not been elaborated or built
 requested integration or lease: the dyadic relocation needs serialized
   `+FabiusFunction.GlobalDyadic`
   and `+FabiusFunction.OriginalPaperSupplement` validation; this new ordinary
@@ -212,11 +219,13 @@ requested integration or lease: the dyadic relocation needs serialized
   the all-index oddness checkpoint needs serialized
   `+FabiusFunction.Paper06487Supplement` followed by
   `+FabiusFunction.Paper06487`, and its source writing claim is released by
-  this handoff; the combined all-degree complex-shift checkpoints need
-  serialized
-  `+FabiusFunction.FabiusDiscreteLimitComplexShift` followed by its direct
-  consumer `+FabiusFunction.FabiusComplexShiftSpline`; both source writing
-  claims are released by this handoff;
+  this handoff; the downstream complex-shift checkpoint needs serialized
+  `+FabiusFunction.FabiusComplexShiftSpline` followed by its sole direct
+  consumer `+FabiusFunction.FabiusDiscreteLimitIntegration`; its source claim
+  is released by this handoff; the proof-only positivity checkpoint needs
+  serialized `+FabiusFunction.ExactInversePower` followed by
+  `+FabiusFunction.PaperStatements`; both source claims are released by this
+  handoff;
   serialized README/primary/walkthrough/coverage paths are deliberately not
   claimed yet
 conflicts / dependencies: all advertised Fabius heads and their registries
@@ -276,7 +285,7 @@ next bounded step: push this independently reviewed all-degree handoff,
 
 ## All-degree complex branch-translation handoff
 
-Source checkpoint `1b0792b2b22ed51b28404cc42175befb45313668`
+Source checkpoint `1b0792b2b5773879b94c07742b4e181c6afbe0d8`
 adds
 `norm_normalizedThueMorseSplineBranch_add_sub_le_half_pow_mul_exp_all`
 immediately after the existing positive-degree theorem.  At `p = 0` the branch
@@ -290,17 +299,54 @@ The change is additive: no import, attribute, existing signature, caller, or
 facade changes.  Source-local module and theorem prose explicitly record the
 degree-zero behavior without strengthening the downstream centered-spline
 domain or the still-open `exp ‖δ‖ - 1` frontier estimate.  Three independent
-read-only audits passed, `git diff --check` is clean, and no Lean/Lake process
-was run.  The requested serialized gates are:
-
-```text
-LAKE_JOBS=1 lake build +FabiusFunction.FabiusDiscreteLimitComplexShift
-LAKE_JOBS=1 lake build +FabiusFunction.FabiusComplexShiftSpline
-```
+read-only audits passed and `git diff --check` is clean.  The coordinator
+integrated the source as `f6cb1efd8`; serialized one-job builds of
+`+FabiusFunction.FabiusDiscreteLimitComplexShift` (1873 jobs) and
+`+FabiusFunction.FabiusComplexShiftSpline` (3417 jobs) both exited 0 without
+warnings.
 
 The broader serialized `AUDIT_FINDINGS.md` item also requests two downstream
-companions, so this checkpoint implements only its first part and must not be
-recorded as closing the entire finding.
+companions, so this checkpoint alone implements only its first part.  The
+following downstream checkpoint supplies those companions.
+
+## Downstream complex-shift handoff
+
+Source checkpoint `3c2d1e926a2a8495557c904cda0786d51140779b` adds the
+conditional all-degree spline bound and
+its unconditional all-degree/all-real consequence.  The nonnegative branch
+uses the centered lower-branch estimate, while the nonpositive branch uses
+exact vanishing of both finite splines.  It also adds all-real convergence
+specializations for real, rational, and Gaussian-rational shifts.  Every
+existing restricted theorem remains unchanged.
+
+Two independent static audits pass the degree-zero, nonpositive-tail,
+coercion, theorem-order, compatibility, documentation, collision, and hygiene
+checks.  No Lean/Lake process was run.  The requested serialized gates are:
+
+```text
+LAKE_JOBS=1 lake build +FabiusFunction.FabiusComplexShiftSpline
+LAKE_JOBS=1 lake build +FabiusFunction.FabiusDiscreteLimitIntegration
+```
+
+## Product-positivity deduplication handoff
+
+Source checkpoint `3475f5ff0b3f50c05782c160bc111cdcea93fd27` replaces nine
+inline `Finset.prod_pos` proofs in
+`ExactInversePower.lean` and `PaperStatements.lean` with the existing public
+`oddDoubleFactorial_pos`, `evenMersenneProduct_pos`, and
+`oddMersenneProduct_pos` lemmas.  The retained facts have exactly their old
+natural-number types, so every subsequent cast, nonzero proof, and field
+simplification is unchanged.  The patch adds no declaration or import and
+removes 31 net source lines.
+
+Two independent static audits pass exact signature, visibility, consumer,
+import, API-identity, and hygiene checks.  No Lean/Lake process was run.  The
+requested serialized gates are:
+
+```text
+LAKE_JOBS=1 lake build +FabiusFunction.ExactInversePower
+LAKE_JOBS=1 lake build +FabiusFunction.PaperStatements
+```
 
 ## Generic Rvachev derivative bridge handoff
 
