@@ -58,7 +58,7 @@ theorem boseLogKernel_neg (x : ℝ) (hx : 0 < x) :
   unfold boseLogKernel
   exact Real.log_neg
     (sub_pos.mpr (Real.exp_lt_one_iff.mpr (neg_lt_zero.mpr hx)))
-    (by linarith [Real.exp_pos (-x)])
+    (sub_lt_self 1 (Real.exp_pos (-x)))
 
 /-- The large-scale finite-part kernel is strictly negative at every positive
 argument. -/
@@ -158,7 +158,7 @@ private lemma integral_boseFinitePartSmallKernel_neg :
       _ ≤ volume (Function.support (fun x : ℝ ↦ -boseFinitePartSmallKernel x) ∩
           Ioc 0 1) := measure_mono hsubset
   rw [MeasureTheory.integral_neg] at hpos
-  linarith
+  exact neg_pos.mp hpos
 
 /-- Compatibility form of `abs_boseFinitePartSmallKernel_le_one_of_pos` on the
 small integration interval. -/
@@ -760,14 +760,16 @@ theorem boseFinitePartIntegral_eq_gammaZetaConstant :
     tendsto_realGamma_mul_zeta_finitePart.congr' heq
   exact tendsto_nhds_unique hJ hJ'
 
-/-- The Euler--Stieltjes finite-part constant is strictly negative. -/
+/-- The Euler--Stieltjes combination represented by the finite-part integral
+is strictly negative. -/
 theorem gammaZetaConstant_neg : gammaZetaConstant < 0 := by
   rw [← boseFinitePartIntegral_eq_gammaZetaConstant]
   exact add_neg_of_neg_of_nonpos integral_boseFinitePartSmallKernel_neg
     (MeasureTheory.setIntegral_nonpos measurableSet_Ioi
       (fun x hx ↦ (boseFinitePartLargeKernel_neg x (zero_lt_one.trans hx)).le))
 
-/-- A strict unconditional upper bound for the first Stieltjes constant. -/
+/-- The strict unconditional bound
+`γ₁ < π² / 12 - γ² / 2` for the first Stieltjes constant. -/
 theorem firstStieltjesConstant_lt :
     firstStieltjesConstant <
       Real.pi ^ 2 / 12 - Real.eulerMascheroniConstant ^ 2 / 2 := by
