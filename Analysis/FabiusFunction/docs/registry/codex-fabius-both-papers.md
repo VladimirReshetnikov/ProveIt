@@ -2622,3 +2622,68 @@ The two direct importers are `DyadicSharpConditional` and
 `LaplaceCumulantAsymptotics`; neither requires a mandatory gate because every
 public header remains exact.  The coordinator currently owns codexbox for an
 unrelated four-gate batch, so this claim requests no overlapping process.
+
+## Handoff: consolidate endpoint positive-index compatibility proofs
+
+Exact source checkpoint `145b75f649a53075a04bc723a1375fe7f383718b`,
+tree `406f922ac8fba1de3ef0c93a0da83e9398025c29`, implements the
+advertised one-file four-pair consolidation.  Clean synchronization merge
+`87cac56ca4dc97ff7756050c541c1e81189172cc` incorporates coordinator main
+`3f9761614b939a33c782308313eba040a892cfad` without changing the claimed
+source blob.  The exact artifact is:
+
+```text
+EndpointLaplaceComparison.lean
+  Git blob  876f3700f5fce63489ff66051333eaaaf5b5e4ed
+  SHA-256   C41D6FB30020A4C1990A77B3FCC6BE0FADF218C52972AAD2C5E3E3FFF568CB0C
+  size      874 lines, 38,255 bytes
+```
+
+The exact Git delta is 45 insertions and 93 deletions, net minus 48 lines.
+The claim's projected nonblank accounting was 44/92; the one-line gross-count
+difference in each direction is only a relocated separator blank.  Base and
+result both contain the same number of blank lines, and the net/source size is
+exactly the advertised 922-to-874-line reduction.
+
+All four zero-inclusive `_all` doc/comment/header/body blocks are byte-identical
+to the preimage and merely precede their compatibility declarations.  All four
+positive-index doc blocks and complete headers are likewise byte-identical:
+declaration kind, measure/function binders, instances, named `hn`, positivity
+and smallness binders, binder order, and conclusions are unchanged.  Their
+bodies now call the already-declared stronger theorems in this exact order:
+
+```text
+abs_unitEndpointMoment_sub_unitLaplace_secondOrder_le_all μ n
+abs_log_unitEndpointMoment_sub_log_unitLaplace_add_le_all μ n hM hB hsmall
+abs_halfMoment_sub_fabiusLaplace_secondOrder_le_all F hF n
+abs_halfMoment_div_fabiusLaplace_sub_secondOrder_le_all F hF n
+```
+
+Each compatibility declaration is locally wrapped by
+`set_option linter.unusedVariables false in`, the compiled corpus convention
+for intentionally retained compatibility hypotheses.  The option covers only
+its documented declaration and does not leak or alter theorem metadata.
+
+Two independent exact-live hostile audits pass byte hashes of all eight moved
+blocks/headers, wrapper argument orientation and inference, local option scope,
+the acyclic endpoint/unit/log/Fabius/normalized dependency order, degree-zero
+ownership by the unchanged `_all` proofs, and every later old-name caller.
+The declaration-name multiset, imports, namespaces, theorem attributes, and
+external API are exact.  `git diff --check`, changed-line 100-column,
+forbidden-declaration, source-history, every-tip, every-registry, caller, and
+path-scope scans are clean.  The sole live 104-column line is an inherited
+byte-preserved line; the duplicate copy was removed.
+
+No Lean, Lake, TeX, PDF, or cache-mutating process ran for this source.  The
+earlier green endpoint build validated the stronger theorem bodies at their
+previous arrangement but is not claimed as validation of this reordered
+artifact.  The requested separate serialized gate is therefore:
+
+```text
+LEAN_NUM_THREADS=0 LAKE_JOBS=1 lake build +FabiusFunction.EndpointLaplaceComparison
+```
+
+The two direct importers retain byte-identical public signatures, so no
+mandatory downstream gate is requested.  The codexbox lane is now idle but
+unassigned; this handoff starts no process without a later board grant.  No
+root, facade, audit-ledger, canonical document, TeX, or PDF work is requested.
