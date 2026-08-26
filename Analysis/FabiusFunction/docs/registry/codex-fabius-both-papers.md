@@ -8,22 +8,16 @@ SYNC Fabius
 branch / worktree / machine: codex/fabius-both-papers /
   /home/codex/src/Proofs / codexbox
 fetched main SHA: fc63c39788ab4c31694e4f57efe05b543165675a
-HEAD and dirty paths: 4524f04c87ae2de940007e15185ad62d044b0f2c;
-  dirty only in this own-registry claim
+HEAD and dirty paths: b330296cf9faae487ccfb234fc1e6fb50b35273d;
+  dirty only in this own-registry handoff
 writing (exact paths):
-  Analysis/FabiusFunction/Lean/FabiusFunction/FabiusSharpLambertTransfer.lean
-  Analysis/FabiusFunction/Lean/FabiusFunction/FabiusLambertTailFlat.lean
   Analysis/FabiusFunction/docs/registry/codex-fabius-both-papers.md
 expected declarations or document claims:
-  relocate the existing public all-order theorem
-  `negativeLaplaceTailError_dyadicLambert_isBigO_inv_pow` into
-  `FabiusSharpLambertTransfer.lean`, beside and before its order-one
-  specialization `negativeLaplaceTailError_dyadicLambert_isBigO_inv`;
-  replace the latter's duplicate forty-line proof by the literal `N = 1`
-  corollary; import the sharp-transfer module from `FabiusLambertTailFlat.lean`
-  and delete the moved declaration there; preserve both public theorem names,
-  statements, attributes, and all callers exactly; add no declaration and
-  change no document, facade, root, or serialized path
+  freeze and release exact Lambert-tail source checkpoint
+  `b330296cf9faae487ccfb234fc1e6fb50b35273d`; record the byte-identical
+  all-order theorem relocation, the order-one specialization, exact result
+  blobs, three independent static reviews, and requested serialized gates;
+  change no source, document, facade, root, or other registry in this handoff
 completed commits: Lower-Lambert source checkpoint `1da2fde2285e3970267b7dc2561bcd0d897be1b4`
   was integrated by coordinator merge `046946a974467e83244fd3a183a3e084e70d3379`;
   registry handoff `225f5338de9ea92489ed6a2c0c371c6edb4f5db9`
@@ -173,6 +167,11 @@ completed commits: Lower-Lambert source checkpoint `1da2fde2285e3970267b7dc2561b
   advertised declarations and two import edges; Walsh registry handoff
   `4524f04c87ae2de940007e15185ad62d044b0f2c` freezes that source, records its
   three independent static reviews, and releases both Walsh source paths;
+  exact Lambert-tail claim
+  `60d4f6002cf3f0ae13408f92de6f7e9b349a9848` precedes source checkpoint
+  `b330296cf9faae487ccfb234fc1e6fb50b35273d`, which moves the all-order proof
+  verbatim, derives its order-one specialization, removes 38 net lines, and
+  preserves the union of public declarations and every existing caller;
 validated (exact command, SHA/state, exit code): coordinator board records
   serialized immutable `lake build +FabiusFunction.LowerLambertW` at
   `4c6bbac41`, exit 0, with its source blob unchanged on current main;
@@ -247,8 +246,15 @@ validated (exact command, SHA/state, exit code): coordinator board records
   `Nat.binaryRec` / `Nat.bitCasesOn` binder shapes, all four Boolean xor cases,
   the redundant `bit false 0` representation, the zero-one sign transfer,
   mixed natural/integer `omega` closure, import acyclicity, API placement,
-  collision scan, and diff hygiene
-not yet validated: the Walsh-character source checkpoint
+  collision scan, and diff hygiene; three independent live-diff reviews of
+  `b330296cf` verify the exact 53-line all-order theorem block is byte-identical,
+  the `pow_one` corollary has exact source/target alignment, the import graph is
+  acyclic, all in-tree callers and public exposure remain, result declarations
+  and attributes are unchanged, no competing tip/registry claim exists, and
+  static diff/marker/line-length hygiene is clean
+not yet validated: the Lambert-tail consolidation checkpoint
+  `b330296cf9faae487ccfb234fc1e6fb50b35273d` has not been elaborated or built;
+  the Walsh-character source checkpoint
   `e91a2828c8046a0fca49d857314e60f7f4ba5da2` has not been elaborated or built;
   the private-deletion source checkpoint
   `a72ca3c9290e59b4bf4b3e9c29082d92041cd218` has not been elaborated or built;
@@ -358,13 +364,16 @@ requested integration or lease: integrate exact private-deletion checkpoint
   `LAKE_JOBS=1 lake build +FabiusFunction.DyadicClosedForm`,
   `LAKE_JOBS=1 lake build +FabiusFunction.ThueMorseBinomialLog`, and
   `LAKE_JOBS=1 lake build +FabiusFunction.PaperKFoldThueMorse` gates; all four
-  source claims are released by these handoffs; canonical README,
-  AUDIT_FINDINGS, PAPER_COVERAGE, primary, walkthrough, frontier, and
-  user-supplied draft paths remain frozen and unclaimed; this registry
-  checkpoint additionally claims the two exact Lambert-tail source paths above
-  for an ordinary dependency-preserving theorem relocation, requests no
-  Lean/Lake token yet, and requests no integration until an immutable reviewed
-  source handoff is published
+  source claims are released by these handoffs; additionally integrate exact
+  Lambert-tail checkpoint `b330296cf9faae487ccfb234fc1e6fb50b35273d`
+  and run separate serialized
+  `LAKE_JOBS=1 lake build +FabiusFunction.FabiusSharpLambertTransfer`,
+  `LAKE_JOBS=1 lake build +FabiusFunction.FabiusLambertTailFlat`,
+  `LAKE_JOBS=1 lake build +FabiusFunction.FabiusSharpAsymptoticTransfer`, and
+  `LAKE_JOBS=1 lake build +FabiusFunction.FabiusFullAsymptoticExpansion`
+  gates; both Lambert source claims are released by this handoff; canonical
+  README, AUDIT_FINDINGS, PAPER_COVERAGE, primary, walkthrough, frontier, and
+  user-supplied draft paths remain frozen and unclaimed
 conflicts / dependencies: the central-binomial and general-addition Kummer
   sources are integrated, validated, and released; the normalized-moment
   positivity candidate was
@@ -445,11 +454,15 @@ conflicts / dependencies: the central-binomial and general-addition Kummer
   `FabiusSharpLambertTransfer.lean` registry mention explicitly reports its
   thirteen-path source tranche integrated and requests no further lease; the
   coordinator board releases that work and names the order-one/all-order
-  relationship as a future cleanup
-next bounded step: push this exact registry-first Lambert-tail claim, then move
-  the all-order theorem upstream verbatim, make the order-one theorem its
-  `pow_one` corollary, redirect the downstream import, and obtain independent
-  static reviews without running Lean/Lake
+  relationship as a future cleanup; exact Lambert result blobs are
+  `711343f161925610027c593ae7b0ec487f9baf6c` for
+  `FabiusSharpLambertTransfer.lean` and
+  `83e2a348f98625ab9ec47d6df97a3aa891d0d85f` for
+  `FabiusLambertTailFlat.lean`
+next bounded step: push this immutable Lambert-tail registry handoff, await
+  coordinator integration/serialized validation of the three pending reviewed
+  source checkpoints, and continue read-only preflight of the unclaimed
+  diagonal fixed-point classification
 ```
 
 ## General Kummer carry-cocycle handoff
