@@ -65,14 +65,13 @@ cherry-pick is needed.
    `docs/AUDIT_FINDINGS.md`, this board, the root aggregate
    `Lean/FabiusFunction.lean`, and every primary-exposition, walkthrough, or
    canonical-frontier TeX/PDF path.  Any path marked hot, frozen, or
-   single-owner below is also unavailable to ordinary claims.  The former
-   exposition frontier lease is released.  The successor source workstream is
-   identified below, but only the exact source phase granted there is open;
-   the canonical frontier PDF remains single-owner whenever a document owner
-   is assigned.  The prior standing lease is released below; all canonical
-   document paths are currently frozen until a new exact-path claim is
-   assigned.  Host Lean/Lake ownership is tracked separately from any future
-   lightweight document lane.
+   single-owner below is also unavailable to ordinary claims.  The historical
+   exposition and successor frontier gates are recorded below, but no document
+   source or PDF phase is currently open.  The prior standing lease is
+   released; all canonical document paths are frozen until a new exact-path
+   claim is assigned.  The canonical frontier PDF remains single-owner
+   whenever a future document owner is assigned.  Host Lean/Lake ownership is
+   tracked separately from any future lightweight document lane.
 4. Preserve dirty work before merging.  Never stash, reset, discard, or
    overwrite it.  A checkpoint/WIP commit is acceptable on a feature branch if
    its message states exactly what remains uncompiled or unfinished.  After a
