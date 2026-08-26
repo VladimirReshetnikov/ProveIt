@@ -12,7 +12,10 @@ import Mathlib.Tactic.Ring
 This module isolates the complex-analytic ingredient in the discrete-limit
 formula for the signed global Fabius function.  A branch is a normalized
 finite Thue--Morse power sum with a fixed cutoff.  Translating its argument
-has an exact finite Taylor expansion in the lower-degree branches.
+has an exact finite Taylor expansion in the lower-degree branches.  Under a
+unit bound for those lower branches, this gives a uniform exponential
+translation estimate in every degree, including degree zero, where the branch
+is independent of its complex argument.
 -/
 
 set_option autoImplicit false
@@ -309,6 +312,26 @@ theorem norm_normalizedThueMorseSplineBranch_add_sub_le_half_pow_mul_exp
       mul_le_mul_of_nonneg_left
         (reflected_factorial_sum_le_exp ‖δ‖ (norm_nonneg δ) p)
         (by positivity)
+
+/-- Uniform quantitative control of a complex branch translation in every
+degree.  At `p = 0` the branch is independent of its complex argument, the
+lower-degree hypothesis is vacuous, and the naturally truncated exponent
+`p - 1` is zero. -/
+theorem norm_normalizedThueMorseSplineBranch_add_sub_le_half_pow_mul_exp_all
+    (p M : ℕ) (z δ : ℂ)
+    (hbound : ∀ d ∈ Finset.range p,
+      ‖normalizedThueMorseSplineBranch d M z‖ ≤ 1) :
+    ‖normalizedThueMorseSplineBranch p M (z + δ) -
+        normalizedThueMorseSplineBranch p M z‖ ≤
+      (1 / 2 : ℝ) ^ (p - 1) * Real.exp ‖δ‖ := by
+  rcases Nat.eq_zero_or_pos p with rfl | hp
+  · exact le_trans
+      (norm_normalizedThueMorseSplineBranch_add_sub_le 0 M z δ hbound)
+      (by
+        simpa using Real.exp_nonneg ‖δ‖)
+  · exact
+      norm_normalizedThueMorseSplineBranch_add_sub_le_half_pow_mul_exp
+        p M z δ hp hbound
 
 end
 
