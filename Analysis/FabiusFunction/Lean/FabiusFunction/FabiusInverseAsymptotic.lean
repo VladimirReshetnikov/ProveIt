@@ -75,6 +75,63 @@ private theorem tendsto_fabiusInv_nhdsGT_zero
       with y hy0 hy1
     exact (fabiusInv_mem_Ioo F hF ⟨hy0, hy1⟩).1
 
+/-- **Full sharp expansion pulled back to inverse coordinates.**
+
+As `y -> 0+`, the logarithmic defect of the sharp Lambert main at the exact
+inverse point has the full Poincare expansion inherited from the forward
+Fabius function.  Its scale and coefficients remain evaluated at the exact
+phase `fabiusLambertPhase (fabiusInv F hF y)`; this theorem is an implicit
+inverse-coordinate expansion, not an explicit all-orders reversion of that
+phase. -/
+theorem log_sub_sharpLambertMain_comp_fabiusInv_hasAsymptoticExpansion
+    (F : BoundedFabius) (hF : IsFabius F) :
+    SaddleExpansion.HasAsymptoticExpansion (𝓝[>] (0 : ℝ))
+      (fun y : ℝ =>
+        (fabiusLambertPhase (fabiusInv F hF y))⁻¹)
+      (fun y : ℝ =>
+        Real.log y -
+          fabiusSharpLambertMain (fabiusInv F hF y))
+      (fun j y =>
+        fabiusSaddleLogCoefficient j
+          (fabiusLambertPhase (fabiusInv F hF y))) := by
+  have hcomp :=
+    (log_fabius_sub_sharpLambertMain_hasAsymptoticExpansion F hF).comp_tendsto
+      (fabiusInv F hF) (tendsto_fabiusInv_nhdsGT_zero F hF)
+  have hfun :
+      ((fun x : ℝ =>
+          Real.log (fabiusReal F x) -
+            fabiusSharpLambertMain x) ∘
+          fabiusInv F hF)
+        =ᶠ[𝓝[>] (0 : ℝ)]
+      (fun y : ℝ =>
+        Real.log y -
+          fabiusSharpLambertMain (fabiusInv F hF y)) := by
+    filter_upwards [Ioo_mem_nhdsGT zero_lt_one] with y hy
+    simp only [Function.comp_def]
+    rw [fabiusReal_fabiusInv F hF ⟨hy.1.le, hy.2.le⟩]
+  simpa only [Function.comp_def] using
+    hcomp.congr Filter.EventuallyEq.rfl hfun
+
+/-- The inverse-coordinate sharp-main defect is
+`O(1 / fabiusLambertPhase (fabiusInv F hF y))` as `y -> 0+`.
+
+This is the order-one remainder of the full pullback expansion: its only
+retained coefficient is the identically zero zeroth saddle-log coefficient. -/
+theorem log_sub_sharpLambertMain_comp_fabiusInv_isBigO_inv_phase
+    (F : BoundedFabius) (hF : IsFabius F) :
+    (fun y : ℝ =>
+      Real.log y -
+        fabiusSharpLambertMain (fabiusInv F hF y))
+      =O[𝓝[>] (0 : ℝ)]
+        (fun y : ℝ =>
+          (fabiusLambertPhase (fabiusInv F hF y))⁻¹) := by
+  have h :=
+    (log_sub_sharpLambertMain_comp_fabiusInv_hasAsymptoticExpansion
+      F hF).remainder_isBigO 1
+  simpa only [SaddleExpansion.partialSum, Finset.sum_range_one,
+    pow_zero, one_smul, fabiusSaddleLogCoefficient_zero,
+    sub_zero, pow_one] using h
+
 private theorem tendsto_fabiusLambertPhase_at_zero_right :
     Tendsto fabiusLambertPhase (𝓝[>] (0 : ℝ)) atTop := by
   apply (tendsto_logScale_iff_smallArgument
@@ -114,21 +171,13 @@ private theorem fabius_inverse_quadratic_input
   have hinv := tendsto_fabiusInv_nhdsGT_zero F hF
   have hlam : Tendsto lam l atTop := by
     exact tendsto_fabiusLambertPhase_at_zero_right.comp hinv
-  have hforward :=
-    (log_fabius_sub_sharpLambertExpansion_isBigO F hF 0).comp_tendsto hinv
   have hbase :
       (fun y : ℝ => Real.log y -
         fabiusSharpLambertMain (fabiusInv F hF y)) =O[l]
           (fun _ : ℝ => (1 : ℝ)) := by
-    apply hforward.congr'
-    · filter_upwards [self_mem_nhdsWithin,
-      nhdsWithin_le_nhds (Iio_mem_nhds (zero_lt_one : (0 : ℝ) < 1))]
-      with y hy0 hy1
-      simp only [Function.comp_def]
-      rw [fabiusReal_fabiusInv F hF ⟨hy0.le, hy1.le⟩]
-      simp [fabiusSharpLambertExpansion, fabiusSaddleLogPartialSum]
-    · filter_upwards with y
-      simp
+    simpa only [SaddleExpansion.partialSum_zero, sub_zero, pow_zero] using
+      (log_sub_sharpLambertMain_comp_fabiusInv_hasAsymptoticExpansion
+        F hF).remainder_isBigO 0
   have honeLog :
       (fun _ : ℝ => (1 : ℝ)) =O[l] (fun y => Real.log (lam y)) := by
     simpa only [Function.comp_def] using
