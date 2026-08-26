@@ -325,3 +325,110 @@ next bounded step: commit and push this registry amendment, finish the two
   independent API/collision reviews, then implement only the two advertised
   theorems and the narrow facade paragraph without launching a build
 ```
+
+## Post-integration hierarchy source handoff
+
+The coordinator has now selectively integrated, repaired, and serialized-build
+validated the generic quadratic engine and the original five endpoint
+theorems on `origin/main`.  This branch merged that accepted cumulative source
+at `fa632dcee9a7d7811589afd5f64ace6df0a8237e`, whose second parent is exact
+`origin/main` commit `948bf3f377472c068f9539e0569d383ddc35f617`.
+The merge kept the coordinator's compiler-driven repairs verbatim and retained
+only the subsequently advertised scale-hierarchy expansion.
+
+The complete source/facade checkpoint is immutable commit
+`29f9b0a2bdc2e67c9a79ff3888fa1da244b7e420`.  Its relevant files are:
+
+- `QuadraticAsymptoticInversion.lean`: unchanged accepted-main blob
+  `8017000f51c7c57408963d76f436fb8d9a36137f`, SHA-256
+  `32B6B9602FD53C397DE2B46E8C13030E17F48FFAB0CDA00FCEFB164B61DA1B52`,
+  263 lines and 9,954 bytes;
+- `FabiusInverseAsymptotic.lean`: hierarchy blob
+  `fd3b5dac6c3f25332c130967ec4914343b7b506a`, SHA-256
+  `D38532CE1E52ADF7E5145916E6F758E9F29A0AF6D2A640813BB55CEABD2EDD7B`,
+  624 lines and 24,978 bytes; and
+- `PaperFabiusAsymptotic.lean`: facade blob
+  `ce830f045e45e291a969f4d97a41294d8f83494a`, SHA-256
+  `1367FAF472A6667F02D8C3403CF417B853E0FDEC5B02740583F134211EF96F65`,
+  122 lines and 7,250 bytes.
+
+The endpoint module adds exactly the two advertised declarations:
+
+```lean
+theorem rpow_isLittleO_fabiusInv_at_zero_right
+    (F : BoundedFabius) (hF : IsFabius F)
+    {α : ℝ} (hα : 0 < α) :
+    (fun y : ℝ => y ^ α) =o[𝓝[>] (0 : ℝ)] fabiusInv F hF
+
+theorem fabiusInv_isLittleO_negLog_rpow_at_zero_right
+    (F : BoundedFabius) (hF : IsFabius F) (r : ℝ) :
+    fabiusInv F hF =o[𝓝[>] (0 : ℝ)]
+      (fun y : ℝ => (-Real.log y) ^ r)
+```
+
+The second theorem strictly strengthens the canonical frontier's `r = -m`,
+`m > 0` family.  The facade states both results, explicitly identifies that
+specialization, and does not claim a quantitative remainder.
+
+Three independent read-only audits are green on the hierarchy snapshot:
+
+- the mathematical audit rederived both exact exponent gaps, checked every
+  sign and constant, confirmed the one-sided filters and equivalence-transfer
+  directions, and found the direct exponent-gap architecture shorter and more
+  insightful than the available indirect alternatives;
+- the hostile elaboration preflight checked every new block against exact
+  vendored Mathlib signatures, including constant rescaling, square-root
+  rewriting, eventual equalities, real powers, and exponential little-o, and
+  found no certain or likely elaboration defect; and
+- the facade/provenance audit confirmed exact frontier parity, the stronger
+  all-real logarithmic statement, import acyclicity, path ownership, and the
+  absence of exact or plausible declaration collisions across fetched remote
+  Fabius tips.
+
+Targeted whitespace, line-length, forbidden-declaration, conflict-marker, and
+public-name checks pass.  These are source/static results only.  The inherited
+main blobs have coordinator-recorded compiler evidence, but the new hierarchy
+blob and facade blob do not.
+
+### Superseding serialized validation request
+
+Assign the EVO Lean/Lake token to this branch for exact immutable source tip
+`29f9b0a2bdc2e67c9a79ff3888fa1da244b7e420`, or have the coordinator validate
+that commit in an isolated worktree.  From the repository root, run these two
+separate invocations in order with no overlapping Lean/Lake process:
+
+```text
+LAKE_JOBS=1 lake build +FabiusFunction.FabiusInverseAsymptotic
+LAKE_JOBS=1 lake build +FabiusFunction.PaperFabiusAsymptotic
+```
+
+Record the exact commit, command, exit code, and full diagnostics for each
+invocation, then release the token.  A failure is diagnostic evidence only;
+repair it on this feature branch and publish a new immutable request before
+retrying.  This request supersedes the earlier pre-integration three-target
+request: the generic engine now has exact accepted-main compiler evidence and
+needs no redundant standalone replay.  Request no root aggregate, canonical
+document, TeX/PDF, or `main` write lane.
+
+```text
+SYNC Fabius
+branch / worktree / machine: codex/fabius-inverse-asymptotic-20260825 /
+  C:/Users/vresh/.codex/worktrees/c9a3/ProveIt / EVO (Windows)
+fetched main SHA: 948bf3f377472c068f9539e0569d383ddc35f617
+immutable source/facade tip: 29f9b0a2bdc2e67c9a79ff3888fa1da244b7e420
+tracked worktree and index: clean after source/facade push; unrelated
+  reciprocity sidecars and tmp/ remain untracked and untouched
+writing: this registry only; all three Lean source paths are frozen
+validated: exact accepted-main generic and original endpoint/facade blobs have
+  coordinator-recorded serialized builds; three independent static audits of
+  the new hierarchy/facade snapshot are green
+not yet validated: hierarchy blob fd3b5dac6 and facade blob ce830f045 have no
+  Lean/Lake evidence; no Lean, Lake, TeX, PDF, or cache-mutating command has
+  run in this worktree
+requested lease: one serialized EVO Lean/Lake assignment for the exact two
+  commands above, or coordinator-side isolated validation of the immutable tip
+conflicts / dependencies: no current exact-path or declaration collision;
+  canonical documents and the root aggregate remain frozen and untouched
+next bounded step: commit and push this registry handoff, notify the
+  coordinator, and launch nothing until an explicit host grant appears
+```
