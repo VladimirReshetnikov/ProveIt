@@ -1415,3 +1415,29 @@ LAKE_JOBS=1 lake build +FabiusFunction.FabiusQBinomialFormula
 
 The second target is the rewired direct consumer.  This is implementation/API
 consolidation only; no human mathematical coverage claim changes.
+
+### Placement correction and claim expansion
+
+The directory policy requires an already-duplicated arithmetic identity to
+live in the upstream-most module that can state it, even though doing so pays
+the large root invalidation.  Accordingly, before touching the additional
+path, this claim expands its exact write set to include
+`Lean/FabiusFunction/Arithmetic.lean`.
+
+The final source design will place documented public
+`choose_square_split` beside `choose_succ_two` and
+`two_mul_choose_two_add` in `Arithmetic.lean`, then delete both private copies
+from `HalfQBinomial.lean` and `FabiusQBinomialFormula.lean`.  Both consumers
+already see `Arithmetic` through their existing import graph, so no import
+edge changes.  The root proof will use the two adjacent established
+triangular identities and commutative-ring normalization; it adds no tactic or
+dependency.
+
+Fresh all-tip path and registry scans find no modern branch delta or active
+claim on `Arithmetic.lean`.  Historical Claude/source tips predate current
+main, and the coordinator records the earlier triangular-identity lease as
+integrated and released.  The prospective focused gates now start with
+`+FabiusFunction.Arithmetic`, followed by the two consumer targets already
+listed.  This correction supersedes only the home of the new public theorem;
+the name, statement, deleted duplicate, consumer rewiring, and no-build status
+remain unchanged.
