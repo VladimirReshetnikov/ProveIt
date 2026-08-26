@@ -1,4 +1,5 @@
 import FabiusFunction.FabiusLambertHigherExpansion
+import Mathlib.Algebra.Polynomial.BigOperators
 
 /-!
 # All-order algebra for the lower-Lambert phase
@@ -9,6 +10,13 @@ Writing `ell = log t`, the lower-Lambert solution of
 coefficient polynomials `a_n` by their exact recursive algebra, exposes
 scalar evaluation formulas, and connects the first nontrivial truncation to
 the already proved quantitative Lambert expansion.
+
+The recursion also determines the top of every coefficient polynomial.  Their
+natural degrees are `1, 1, 2, 3, ...`, or exactly `max n 1` at index `n`, and
+the leading coefficient of `a_(n+1)` is
+`(-1)^n * (n+1)^(-1) * (log 2)^(-(n+2))`.  For recurrence indices `n ≥ 1`,
+only the `j = 0` convolution term reaches the new highest degree; the case
+`a_1 = (log 2)^(-2) X` supplies the separate base step.
 -/
 
 set_option autoImplicit false
@@ -36,6 +44,7 @@ If `ell = log t`, the exact phase has the formal expansion
 noncomputable def dyadicLambertDisplacementPolynomial (n : ℕ) : Polynomial ℝ :=
   Nat.strongRec dyadicLambertDisplacementPolynomialStep n
 
+/-- The zeroth displacement polynomial is `(log 2)⁻¹ X`. -/
 @[simp] theorem dyadicLambertDisplacementPolynomial_zero :
     dyadicLambertDisplacementPolynomial 0 = C (Real.log 2)⁻¹ * X := by
   rw [dyadicLambertDisplacementPolynomial, Nat.strongRec_eq]
@@ -62,6 +71,7 @@ noncomputable def dyadicLambertDisplacementCoefficient
     (n : ℕ) (ell : ℝ) : ℝ :=
   (dyadicLambertDisplacementPolynomial n).eval ell
 
+/-- The zeroth scalar displacement coefficient is `ell / log 2`. -/
 @[simp] theorem dyadicLambertDisplacementCoefficient_zero (ell : ℝ) :
     dyadicLambertDisplacementCoefficient 0 ell = ell / Real.log 2 := by
   rw [dyadicLambertDisplacementCoefficient,
@@ -129,6 +139,201 @@ theorem dyadicLambertDisplacementPolynomial_two :
       simp only [eval_sub, eval_mul, eval_C, eval_X, eval_pow]
       ring
 
+/-- Proof helper for the exact degree formula: the recursive polynomial at
+index `n` has natural degree at most `max n 1`.  In each convolution summand,
+the two recursive indices add to `n`; the extra `1` accommodates `a₀`. -/
+private lemma dyadicLambertDisplacementPolynomial_natDegree_le (n : ℕ) :
+    (dyadicLambertDisplacementPolynomial n).natDegree ≤ max n 1 := by
+  induction n using Nat.strong_induction_on with
+  | h n ih =>
+      cases n with
+      | zero =>
+          rw [dyadicLambertDisplacementPolynomial_zero]
+          simpa using
+            (Polynomial.natDegree_C_mul_le (Real.log 2)⁻¹
+              (X : Polynomial ℝ))
+      | succ n =>
+          rw [dyadicLambertDisplacementPolynomial_succ]
+          refine (Polynomial.natDegree_sub_le _ _).trans ?_
+          rw [max_le_iff]
+          constructor
+          · calc
+              (C (Real.log 2)⁻¹ *
+                    dyadicLambertDisplacementPolynomial n).natDegree ≤
+                  (dyadicLambertDisplacementPolynomial n).natDegree :=
+                Polynomial.natDegree_C_mul_le _ _
+              _ ≤ max n 1 := ih n (by omega)
+              _ ≤ max (n + 1) 1 :=
+                max_le_max (Nat.le_succ n) le_rfl
+          · refine (Polynomial.natDegree_C_mul_le _ _).trans ?_
+            apply Polynomial.natDegree_sum_le_of_forall_le
+            intro j _hj
+            calc
+              (C ((n - (j : ℕ) : ℕ) : ℝ) *
+                    dyadicLambertDisplacementPolynomial j *
+                  dyadicLambertDisplacementPolynomial (n - (j : ℕ))).natDegree ≤
+                  (C ((n - (j : ℕ) : ℕ) : ℝ) *
+                      dyadicLambertDisplacementPolynomial j).natDegree +
+                    (dyadicLambertDisplacementPolynomial
+                      (n - (j : ℕ))).natDegree :=
+                Polynomial.natDegree_mul_le
+              _ ≤ (dyadicLambertDisplacementPolynomial j).natDegree +
+                    (dyadicLambertDisplacementPolynomial
+                      (n - (j : ℕ))).natDegree := by
+                exact Nat.add_le_add_right
+                  (Polynomial.natDegree_C_mul_le _ _) _
+              _ ≤ max (j : ℕ) 1 + max (n - (j : ℕ)) 1 :=
+                Nat.add_le_add (ih j (by omega))
+                  (ih (n - (j : ℕ)) (by omega))
+              _ ≤ n + 1 := by
+                by_cases hj0 : (j : ℕ) = 0
+                · have hnpos : 0 < n := by omega
+                  rw [hj0, Nat.sub_zero,
+                    max_eq_right (by omega : 0 ≤ 1),
+                    max_eq_left (by omega : 1 ≤ n)]
+                  omega
+                · have hjone : 1 ≤ (j : ℕ) :=
+                    Nat.one_le_iff_ne_zero.mpr hj0
+                  have hsubone : 1 ≤ n - (j : ℕ) := by omega
+                  rw [max_eq_left hjone, max_eq_left hsubone]
+                  omega
+              _ ≤ max (n + 1) 1 := le_max_left _ _
+
+/-- Proof helper for the leading term.  The base case is
+`a₁ = (log 2)⁻² X`.  In the successor step, whose recurrence index is already
+positive, the `j = 0` summand is the unique term of the new top degree. -/
+private lemma dyadicLambertDisplacementPolynomial_coeff_succ (n : ℕ) :
+    (dyadicLambertDisplacementPolynomial (n + 1)).coeff (n + 1) =
+      (-1 : ℝ) ^ n * (n + 1 : ℝ)⁻¹ *
+        (Real.log 2)⁻¹ ^ (n + 2) := by
+  induction n with
+  | zero =>
+      rw [dyadicLambertDisplacementPolynomial_one]
+      norm_num [Polynomial.coeff_C_mul]
+  | succ n ih =>
+      have hlinear :
+          (dyadicLambertDisplacementPolynomial (n + 1)).coeff (n + 2) = 0 :=
+        Polynomial.coeff_eq_zero_of_natDegree_lt
+          ((dyadicLambertDisplacementPolynomial_natDegree_le (n + 1)).trans_lt
+            (by
+              rw [max_eq_left (by omega : 1 ≤ n + 1)]
+              omega))
+      have hhead :
+          (C ((n + 1 : ℕ) : ℝ) *
+                dyadicLambertDisplacementPolynomial 0 *
+              dyadicLambertDisplacementPolynomial (n + 1)).coeff (n + 2) =
+            (n + 1 : ℝ) * (Real.log 2)⁻¹ *
+              (dyadicLambertDisplacementPolynomial (n + 1)).coeff (n + 1) := by
+        rw [mul_assoc, Polynomial.coeff_C_mul,
+          show n + 2 = 1 + (n + 1) by omega,
+          Polynomial.coeff_mul_add_eq_of_natDegree_le
+            (by
+              simpa using
+                dyadicLambertDisplacementPolynomial_natDegree_le 0)
+            (by
+              simpa using
+                dyadicLambertDisplacementPolynomial_natDegree_le (n + 1)),
+          dyadicLambertDisplacementPolynomial_zero,
+          Polynomial.coeff_C_mul, Polynomial.coeff_X_one]
+        push_cast
+        ring
+      have htail (j : Fin n) :
+          (C (((n + 1) - (j.succ : ℕ) : ℕ) : ℝ) *
+                dyadicLambertDisplacementPolynomial j.succ *
+              dyadicLambertDisplacementPolynomial
+                ((n + 1) - (j.succ : ℕ))).coeff (n + 2) = 0 := by
+        apply Polynomial.coeff_eq_zero_of_natDegree_lt
+        calc
+          (C (((n + 1) - (j.succ : ℕ) : ℕ) : ℝ) *
+                dyadicLambertDisplacementPolynomial j.succ *
+              dyadicLambertDisplacementPolynomial
+                ((n + 1) - (j.succ : ℕ))).natDegree ≤
+              (C (((n + 1) - (j.succ : ℕ) : ℕ) : ℝ) *
+                  dyadicLambertDisplacementPolynomial j.succ).natDegree +
+                (dyadicLambertDisplacementPolynomial
+                  ((n + 1) - (j.succ : ℕ))).natDegree :=
+            Polynomial.natDegree_mul_le
+          _ ≤ (dyadicLambertDisplacementPolynomial j.succ).natDegree +
+                (dyadicLambertDisplacementPolynomial
+                  ((n + 1) - (j.succ : ℕ))).natDegree := by
+            exact Nat.add_le_add_right
+              (Polynomial.natDegree_C_mul_le _ _) _
+          _ ≤ max (j.succ : ℕ) 1 +
+                max ((n + 1) - (j.succ : ℕ)) 1 :=
+            Nat.add_le_add
+              (dyadicLambertDisplacementPolynomial_natDegree_le j.succ)
+              (dyadicLambertDisplacementPolynomial_natDegree_le
+                ((n + 1) - (j.succ : ℕ)))
+          _ < n + 2 := by
+            have hjlt : (j.succ : ℕ) < n + 1 := j.succ.isLt
+            have hjone : 1 ≤ (j.succ : ℕ) :=
+              Nat.succ_le_succ (Nat.zero_le (j : ℕ))
+            have hsubone : 1 ≤ (n + 1) - (j.succ : ℕ) := by omega
+            rw [max_eq_left hjone, max_eq_left hsubone]
+            omega
+      rw [dyadicLambertDisplacementPolynomial_succ]
+      simp only [Polynomial.coeff_sub, Polynomial.coeff_C_mul,
+        Polynomial.coeff_add,
+        Polynomial.finsetSum_coeff, Fin.sum_univ_succ,
+        Fin.val_zero, Nat.sub_zero]
+      rw [hlinear, hhead]
+      simp_rw [htail]
+      simp only [mul_zero, Finset.sum_const_zero, add_zero, zero_sub, ih]
+      have hn1 : (n + 1 : ℝ) ≠ 0 := by positivity
+      rw [show (Real.log 2)⁻¹ ^ (n + 3) =
+          (Real.log 2)⁻¹ ^ (n + 2) * (Real.log 2)⁻¹ by
+        rw [show n + 3 = n + 2 + 1 by omega, pow_succ]]
+      calc
+        -(((((n + 1 : ℕ) : ℝ) + 1)⁻¹) *
+            ((n + 1 : ℝ) * (Real.log 2)⁻¹ *
+              ((-1 : ℝ) ^ n * (n + 1 : ℝ)⁻¹ *
+                (Real.log 2)⁻¹ ^ (n + 2)))) =
+            -((((n + 1 : ℕ) : ℝ) + 1)⁻¹) *
+              ((n + 1 : ℝ) * (n + 1 : ℝ)⁻¹) *
+                ((-1 : ℝ) ^ n *
+                  ((Real.log 2)⁻¹ ^ (n + 2) * (Real.log 2)⁻¹)) := by ring
+        _ = (-1 : ℝ) ^ (n + 1) *
+              ((((n + 1 : ℕ) : ℝ) + 1)⁻¹) *
+              ((Real.log 2)⁻¹ ^ (n + 2) * (Real.log 2)⁻¹) := by
+          rw [mul_inv_cancel₀ hn1, mul_one,
+            show (-1 : ℝ) ^ (n + 1) = (-1 : ℝ) ^ n * (-1 : ℝ) by
+              rw [pow_succ]]
+          ring
+
+/-- The exact natural degree of the `n`th lower-Lambert displacement
+polynomial is `max n 1`; equivalently, the degree sequence begins
+`1, 1, 2, 3, ...`. -/
+@[simp] theorem dyadicLambertDisplacementPolynomial_natDegree (n : ℕ) :
+    (dyadicLambertDisplacementPolynomial n).natDegree = max n 1 := by
+  cases n with
+  | zero =>
+      rw [dyadicLambertDisplacementPolynomial_zero]
+      exact Polynomial.natDegree_C_mul_X _
+        (inv_ne_zero (Real.log_pos (by norm_num)).ne')
+  | succ n =>
+      rw [max_eq_left (by omega : 1 ≤ n + 1)]
+      apply Polynomial.natDegree_eq_of_le_of_coeff_ne_zero
+      · simpa using
+          dyadicLambertDisplacementPolynomial_natDegree_le (n + 1)
+      · have hlog : (Real.log 2)⁻¹ ≠ 0 :=
+          inv_ne_zero (Real.log_pos (by norm_num)).ne'
+        have hnat : (n + 1 : ℝ)⁻¹ ≠ 0 := by positivity
+        rw [dyadicLambertDisplacementPolynomial_coeff_succ]
+        exact mul_ne_zero
+          (mul_ne_zero (pow_ne_zero _ (by norm_num)) hnat)
+          (pow_ne_zero _ hlog)
+
+/-- For every `n`, the leading coefficient of `a_(n+1)` is
+`(-1)^n / ((n+1) * (log 2)^(n+2))`. -/
+@[simp] theorem dyadicLambertDisplacementPolynomial_leadingCoeff_succ (n : ℕ) :
+    (dyadicLambertDisplacementPolynomial (n + 1)).leadingCoeff =
+      (-1 : ℝ) ^ n * (n + 1 : ℝ)⁻¹ *
+        (Real.log 2)⁻¹ ^ (n + 2) := by
+  rw [← Polynomial.coeff_natDegree,
+    dyadicLambertDisplacementPolynomial_natDegree]
+  simpa using dyadicLambertDisplacementPolynomial_coeff_succ n
+
+/-- The first scalar displacement coefficient is `ell / (log 2)²`. -/
 @[simp] theorem dyadicLambertDisplacementCoefficient_one (ell : ℝ) :
     dyadicLambertDisplacementCoefficient 1 ell =
       ell / (Real.log 2) ^ 2 := by
@@ -137,6 +342,8 @@ theorem dyadicLambertDisplacementPolynomial_two :
   simp only [eval_mul, eval_C, eval_X]
   ring
 
+/-- The second scalar displacement coefficient is
+`(ell - ell² / 2) / (log 2)³`. -/
 @[simp] theorem dyadicLambertDisplacementCoefficient_two (ell : ℝ) :
     dyadicLambertDisplacementCoefficient 2 ell =
       (ell - ell ^ 2 / 2) / (Real.log 2) ^ 3 := by
