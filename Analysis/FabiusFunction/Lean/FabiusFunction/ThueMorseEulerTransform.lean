@@ -1,0 +1,250 @@
+import FabiusFunction.ThueMorseEnumerators
+import Mathlib.NumberTheory.Padics.PadicVal.Basic
+
+/-!
+# The Euler transform of the ruler function and the convolution recurrence
+
+Taking the logarithm of the Euler product `E(z) = ∏ (1 - z^(2^j))` produces
+`log E(z) = -∑ (a_k/k) z^k` with `a_k = 2^(ν₂(k)+1) - 1`, and hence the
+**ruler-convolution recurrence** `n·ε(n) = -∑_{k=1}^n a_k ε(n-k)`.  The
+atlas derives this analytically; this module proves the recurrence by pure
+finite combinatorics — no logarithm, no derivative, no convergence — via a
+chain of independently reusable lemmas:
+
+* `sum_thueMorseSign_range_two_mul` and `sum_thueMorseSign_range` — signed
+  **prefix sums collapse**: `∑_{t<N} ε(t)` is `0` for even `N` and
+  `ε(N/2)` for odd `N` (consecutive pairs cancel).
+* `sum_filter_dvd_sub_eq_sum_progression` — a fully general reindexing,
+  for any function into any additive commutative monoid and any modulus
+  `d > 0`: `∑_{1≤k≤n, d∣k} f(n-k) = ∑_{t<⌊n/d⌋} f(d·t + n mod d)`.
+* `sum_ite_two_pow_dvd` — the 2-powers dividing `k` sum to
+  `2^(ν₂(k)+1) - 1`, identifying the atlas coefficient `a_k` as a divisor
+  sum ready for order interchange.
+* `sum_ite_odd_div_two_pow` — the binary expansion as a parity sum:
+  `∑_{j<J} [n/2^j odd]·2^j = n` for `n < 2^J`.
+* `sum_thueMorseSign_progression` — signed sums along a `2^j`-residue
+  class below `n` collapse to `-ε(n)` when bit `j` of `n` is set and `0`
+  otherwise, by the block-concatenation multiplicativity
+  `ε(h·2^j + r) = ε(h)ε(r)`.
+* `ruler_convolution` — the recurrence itself: interchanging the divisor
+  sum and the residue-class sums leaves exactly the set bits of `n`,
+  which sum to `n`.
+
+The proof explains *why* the weighted convolution always collapses to
+`±n`: each 2-power `2^j` contributes `-ε(n)·2^j` precisely when the `j`-th
+binary digit of `n` is `1`.
+-/
+
+set_option autoImplicit false
+
+open Finset
+
+namespace Fabius
+
+/-! ### Signed prefix sums -/
+
+/-- Signed Thue–Morse prefix sums over an even range vanish: the
+consecutive pairs `(2j, 2j+1)` cancel. -/
+theorem sum_thueMorseSign_range_two_mul (M : ℕ) :
+    ∑ t ∈ range (2 * M), thueMorseSign t = 0 := by
+  rw [sum_range_two_mul M thueMorseSign]
+  exact Finset.sum_eq_zero fun j _ => by simp
+
+/-- Closed form of every signed Thue–Morse prefix sum:
+`∑_{t<N} ε(t)` is `0` for even `N` and `ε(N/2)` for odd `N`. -/
+theorem sum_thueMorseSign_range (N : ℕ) :
+    ∑ t ∈ range N, thueMorseSign t =
+      if 2 ∣ N then 0 else thueMorseSign (N / 2) := by
+  rcases Nat.even_or_odd N with ⟨M, rfl⟩ | ⟨M, rfl⟩
+  · rw [show M + M = 2 * M by ring, if_pos (by omega : 2 ∣ 2 * M)]
+    exact sum_thueMorseSign_range_two_mul M
+  · rw [if_neg (by omega : ¬ 2 ∣ 2 * M + 1), Finset.sum_range_succ,
+      sum_thueMorseSign_range_two_mul M, zero_add,
+      show (2 * M + 1) / 2 = M by omega, thueMorseSign_two_mul]
+
+/-! ### General reindexing of divisibility-filtered sums -/
+
+/-- **Residue-class reindexing.**  For any function into any additive
+commutative monoid and any modulus `d > 0`, the divisibility-filtered
+translated sum is a residue-class sum:
+`∑_{1≤k≤n, d∣k} f(n-k) = ∑_{t<⌊n/d⌋} f(d·t + n mod d)`. -/
+theorem sum_filter_dvd_sub_eq_sum_progression {M : Type*} [AddCommMonoid M]
+    (f : ℕ → M) (n d : ℕ) (hd : 0 < d) :
+    ∑ k ∈ (Finset.Icc 1 n).filter (fun k => d ∣ k), f (n - k) =
+      ∑ t ∈ range (n / d), f (d * t + n % d) := by
+  have hkey : ∀ u, u ≤ n / d → n - d * u = d * (n / d - u) + n % d := by
+    intro u hu
+    have hsplit : d * u + d * (n / d - u) = d * (n / d) := by
+      rw [← Nat.mul_add]
+      congr 1
+      omega
+    have hmod := Nat.div_add_mod n d
+    omega
+  have himg : (Finset.Icc 1 n).filter (fun k => d ∣ k) =
+      (Finset.Icc 1 (n / d)).image (fun i => d * i) := by
+    ext k
+    simp only [Finset.mem_filter, Finset.mem_Icc, Finset.mem_image]
+    constructor
+    · rintro ⟨⟨hk1, hkn⟩, i, rfl⟩
+      have hi0 : i ≠ 0 := by rintro rfl; simp at hk1
+      refine ⟨i, ⟨by omega, ?_⟩, rfl⟩
+      exact (Nat.le_div_iff_mul_le hd).mpr (by rw [mul_comm]; exact hkn)
+    · rintro ⟨i, ⟨hi1, hind⟩, rfl⟩
+      have hle : d * i ≤ d * (n / d) := Nat.mul_le_mul_left d hind
+      have hdn : d * (n / d) ≤ n := by
+        rw [mul_comm]
+        exact Nat.div_mul_le_self n d
+      have hpos : 0 < d * i := Nat.mul_pos hd (by omega)
+      exact ⟨⟨by omega, by omega⟩, ⟨i, rfl⟩⟩
+  rw [himg, Finset.sum_image (fun i _ j _ h => Nat.eq_of_mul_eq_mul_left hd h),
+    ← Finset.Ico_add_one_right_eq_Icc, Finset.sum_Ico_eq_sum_range]
+  simp only [Nat.add_sub_cancel]
+  rw [← Finset.sum_range_reflect]
+  refine Finset.sum_congr rfl fun t ht => ?_
+  have htT : t < n / d := Finset.mem_range.mp ht
+  congr 1
+  rw [show 1 + (n / d - 1 - t) = n / d - t by omega,
+    hkey (n / d - t) (by omega),
+    show n / d - (n / d - t) = t by omega]
+
+/-! ### The ruler coefficient as a divisor sum, and the binary expansion -/
+
+/-- The 2-powers dividing `k ≥ 1` sum to `a_k = 2^(ν₂(k)+1) - 1`, for any
+summation range beyond the 2-adic valuation of `k`. -/
+theorem sum_ite_two_pow_dvd (k J : ℕ) (hk : k ≠ 0)
+    (hJ : padicValNat 2 k < J) :
+    ∑ j ∈ range J, (if 2 ^ j ∣ k then (2 : ℤ) ^ j else 0) =
+      2 ^ (padicValNat 2 k + 1) - 1 := by
+  rw [← Finset.sum_filter]
+  have hset : (range J).filter (fun j => 2 ^ j ∣ k) =
+      range (padicValNat 2 k + 1) := by
+    ext j
+    simp only [Finset.mem_filter, Finset.mem_range]
+    constructor
+    · rintro ⟨hjJ, hdvd⟩
+      have := (padicValNat_dvd_iff_le_of_ne_one (by norm_num) hk).mp hdvd
+      omega
+    · intro hj
+      exact ⟨by omega,
+        (padicValNat_dvd_iff_le_of_ne_one (by norm_num) hk).mpr (by omega)⟩
+  rw [hset]
+  have h := geom_sum_mul (2 : ℤ) (padicValNat 2 k + 1)
+  rw [show (2 : ℤ) - 1 = 1 by norm_num, mul_one] at h
+  exact h
+
+/-- **Binary expansion as a parity sum**: for `n < 2^J`,
+`∑_{j<J} [⌊n/2^j⌋ odd]·2^j = n`. -/
+theorem sum_ite_odd_div_two_pow (J : ℕ) :
+    ∀ n < 2 ^ J, ∑ j ∈ range J, (if 2 ∣ n / 2 ^ j then 0 else 2 ^ j) = n := by
+  induction J with
+  | zero =>
+      intro n hn
+      interval_cases n
+      simp
+  | succ J ih =>
+      intro n hn
+      rw [Finset.sum_range_succ']
+      have hstep : ∀ j ∈ range J,
+          (if 2 ∣ n / 2 ^ (j + 1) then 0 else 2 ^ (j + 1)) =
+            2 * (if 2 ∣ (n / 2) / 2 ^ j then 0 else 2 ^ j) := by
+        intro j _
+        have hdiv : n / 2 ^ (j + 1) = (n / 2) / 2 ^ j := by
+          rw [pow_succ, mul_comm (2 ^ j) 2, ← Nat.div_div_eq_div_mul]
+        rw [hdiv]
+        split_ifs <;> ring
+      rw [Finset.sum_congr rfl hstep, ← Finset.mul_sum,
+        ih (n / 2) (by omega)]
+      simp only [pow_zero, Nat.div_one]
+      split_ifs with h <;> omega
+
+/-! ### Signed sums along 2-power residue classes -/
+
+/-- **Residue-class collapse.**  The signed Thue–Morse sum along the class
+`≡ n (mod 2^j)` strictly below `n` is `-ε(n)` when the `j`-th binary digit
+of `n` is `1` (that is, `⌊n/2^j⌋` is odd) and `0` otherwise.  The engine is
+block-concatenation multiplicativity `ε(t·2^j + r) = ε(t)ε(r)` together
+with the prefix collapse. -/
+theorem sum_thueMorseSign_progression (n j : ℕ) :
+    ∑ t ∈ range (n / 2 ^ j), thueMorseSign (2 ^ j * t + n % 2 ^ j) =
+      if 2 ∣ n / 2 ^ j then 0 else -thueMorseSign n := by
+  have hr : n % 2 ^ j < 2 ^ j := Nat.mod_lt _ (Nat.two_pow_pos j)
+  have hconcat : ∀ t ∈ range (n / 2 ^ j),
+      thueMorseSign (2 ^ j * t + n % 2 ^ j) =
+        thueMorseSign t * thueMorseSign (n % 2 ^ j) := by
+    intro t _
+    rw [mul_comm (2 ^ j) t, thueMorseSign_block_concat j t (n % 2 ^ j) hr]
+  rw [Finset.sum_congr rfl hconcat, ← Finset.sum_mul, sum_thueMorseSign_range]
+  split_ifs with hpar
+  · rw [zero_mul]
+  · have hn : n = (n / 2 ^ j) * 2 ^ j + n % 2 ^ j := by
+      have h := Nat.div_add_mod n (2 ^ j)
+      rw [mul_comm] at h
+      exact h.symm
+    have hsign : thueMorseSign n =
+        -(thueMorseSign (n / 2 ^ j / 2) * thueMorseSign (n % 2 ^ j)) := by
+      conv_lhs => rw [hn]
+      rw [thueMorseSign_block_concat j (n / 2 ^ j) (n % 2 ^ j) hr]
+      conv_lhs => rw [show n / 2 ^ j = 2 * (n / 2 ^ j / 2) + 1 by omega]
+      rw [thueMorseSign_two_mul_add_one]
+      ring
+    rw [hsign, neg_neg]
+
+/-! ### The ruler-convolution recurrence -/
+
+/-- **Ruler-convolution recurrence** (Euler transform of the ruler
+function).  With `a_k = 2^(ν₂(k)+1) - 1`,
+`n·ε(n) = -∑_{k=1}^n a_k·ε(n-k)`.
+The atlas derives this by logarithmic differentiation of the Euler
+product; here it is pure finite combinatorics: writing `a_k` as the sum of
+the 2-powers dividing `k` and interchanging sums, each residue class
+`≡ n (mod 2^j)` collapses to `-ε(n)` exactly when the `j`-th bit of `n` is
+set, and the surviving 2-powers reassemble the binary expansion of `n`. -/
+theorem ruler_convolution (n : ℕ) :
+    (n : ℤ) * thueMorseSign n =
+      -∑ k ∈ Finset.Icc 1 n,
+        ((2 : ℤ) ^ (padicValNat 2 k + 1) - 1) * thueMorseSign (n - k) := by
+  rcases Nat.eq_zero_or_pos n with rfl | hn
+  · simp
+  have hmain : ∑ k ∈ Finset.Icc 1 n,
+      ((2 : ℤ) ^ (padicValNat 2 k + 1) - 1) * thueMorseSign (n - k) =
+      -thueMorseSign n * (n : ℤ) := by
+    have hak : ∀ k ∈ Finset.Icc 1 n,
+        ((2 : ℤ) ^ (padicValNat 2 k + 1) - 1) * thueMorseSign (n - k) =
+        ∑ j ∈ range n,
+          (if 2 ^ j ∣ k then (2 : ℤ) ^ j * thueMorseSign (n - k) else 0) := by
+      intro k hk
+      obtain ⟨hk1, hkn⟩ := Finset.mem_Icc.mp hk
+      have hknz : k ≠ 0 := by omega
+      have hlt : padicValNat 2 k < n := by
+        have hd : 2 ^ padicValNat 2 k ∣ k :=
+          (padicValNat_dvd_iff_le_of_ne_one (by norm_num) hknz).mpr le_rfl
+        have h1 : 2 ^ padicValNat 2 k ≤ k := Nat.le_of_dvd (by omega) hd
+        have h3 : padicValNat 2 k < 2 ^ padicValNat 2 k :=
+          Nat.lt_two_pow_self
+        omega
+      rw [← sum_ite_two_pow_dvd k n hknz hlt, Finset.sum_mul]
+      refine Finset.sum_congr rfl fun j _ => ?_
+      split_ifs <;> simp
+    rw [Finset.sum_congr rfl hak, Finset.sum_comm]
+    have hj : ∀ j ∈ range n,
+        ∑ k ∈ Finset.Icc 1 n,
+          (if 2 ^ j ∣ k then (2 : ℤ) ^ j * thueMorseSign (n - k) else 0) =
+        (2 : ℤ) ^ j * (if 2 ∣ n / 2 ^ j then 0 else -thueMorseSign n) := by
+      intro j _
+      rw [← Finset.sum_filter, ← Finset.mul_sum,
+        sum_filter_dvd_sub_eq_sum_progression
+          (fun m => thueMorseSign m) n (2 ^ j) (Nat.two_pow_pos j),
+        sum_thueMorseSign_progression n j]
+    rw [Finset.sum_congr rfl hj]
+    have hcollect : ∀ j ∈ range n,
+        (2 : ℤ) ^ j * (if 2 ∣ n / 2 ^ j then 0 else -thueMorseSign n) =
+        -thueMorseSign n *
+          ((if 2 ∣ n / 2 ^ j then (0 : ℕ) else 2 ^ j : ℕ) : ℤ) := by
+      intro j _
+      split_ifs <;> push_cast <;> ring
+    rw [Finset.sum_congr rfl hcollect, ← Finset.mul_sum, ← Nat.cast_sum,
+      sum_ite_odd_div_two_pow n n Nat.lt_two_pow_self]
+  rw [hmain]
+  ring
+
+end Fabius
