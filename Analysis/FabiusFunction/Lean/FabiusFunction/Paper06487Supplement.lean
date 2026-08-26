@@ -244,17 +244,26 @@ theorem iteratedDeriv_extendedFabius_two_pow_eq_ite
 
 /-! ## Exact arithmetic assertions used inside proofs -/
 
-/-- The literal all-natural-number form of Theorem 9.  The paper's intended
-arithmetic range is positive, but its total definition also gives `R_0 = 1`. -/
-theorem theorem_nine_all (n : ℕ) :
-    IsNatural (reshetnikov n) := by
+/-- The literal all-index form of the oddness half of Theorem 21: every
+Reshetnikov number, including `R_0 = 1`, is an odd natural number.  Only this
+oddness assertion extends to `n = 0`; the valuation half of Theorem 21 still
+requires `1 ≤ n`. -/
+theorem theorem_twenty_one_odd_all (n : ℕ) :
+    IsOddNatural (reshetnikov n) := by
   cases n with
   | zero =>
-      refine ⟨1, ?_⟩
+      refine ⟨1, odd_one, ?_⟩
       norm_num [reshetnikov, fabiusAtInverseTwoPow, fabiusDyadic,
         thueMorseSign, binaryWeight, evenMersenneProduct]
   | succ n =>
-      exact theorem_nine (n + 1) (by omega)
+      exact (theorem_twenty_one (n + 1) (by omega)).1
+
+/-- The literal all-natural-number form of Theorem 9.  It follows from the
+stronger all-index oddness theorem above. -/
+theorem theorem_nine_all (n : ℕ) :
+    IsNatural (reshetnikov n) := by
+  obtain ⟨m, _hm, hm⟩ := theorem_twenty_one_odd_all n
+  exact ⟨m, hm⟩
 
 /-- The odd multiplier `N_n` introduced in the proof of Theorem 20. -/
 def reshetnikovMultiplier (n : ℕ) : ℕ :=

@@ -7,8 +7,10 @@
 > and branch-specific handoffs.  Workers may advertise nonoverlapping exact
 > path/declaration claims, edit and checkpoint freely on their own feature
 > branches, and push those branches without waiting for approval.  Only the
-> designated coordinator advances `main`, and no worker runs Lean/Lake or
-> TeX/PDF build tools without the physical-host token recorded on the board.
+> designated coordinator advances `main`.  Lean/Lake compilation requires the
+> physical-host token recorded on the board; a separately assigned sequential
+> TeX/PDF lane may coexist with that host's one Lean build.  No worker launches
+> an unassigned tool lane or parallel jobs within a lane.
 > Push preservation checkpoints promptly: the coordinator may prune a
 > worktree after seven days without activity, even when it is dirty.
 

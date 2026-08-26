@@ -58,14 +58,19 @@ During the current campaign:
    coordinator may prune any worktree that has been inactive for at least
    seven days, including a dirty worktree.  A pushed branch preserves commits;
    uncommitted changes in a pruned dirty worktree are not recoverable.
-5. **Build tokens are per physical host.** On `codexbox`, no agent starts Lean,
-   Lake, `pdflatex`, or another cache-mutating validation job unless the board
-   assigns the token.  Let an already-running job finish; do not kill another
-   worktree's process.  The other machine maintains the same one-owner rule
-   independently and records its owner on the board.
+5. **Lean/Lake tokens are per physical host.** On `codexbox`, no agent starts
+   Lean, Lake, or another cache-mutating compiler job unless the board assigns
+   that host's Lean/Lake token.  The other machine maintains the same
+   one-process rule independently.  The board may also assign one lightweight,
+   sequential TeX/PDF lane on a host; that document lane may coexist with the
+   one assigned Lean/Lake build, but parallel TeX passes and a second Lean/Lake
+   process remain prohibited.  Let an already-running job finish; do not kill
+   another worktree's process.
 6. **Binary PDFs are never conflict-resolved.** Freeze both sources, integrate
-   the TeX semantically under one owner, then rebuild the PDF once with three
-   passes.  Never take a PDF wholesale from either side of a conflict.
+   the TeX semantically under one owner, then rebuild the PDF from that source.
+   Three passes are the ordinary minimum; a board-designated standing document
+   owner may iterate sequentially until references and layout settle.  Never
+   take a PDF wholesale from either side of a conflict.
 7. **Campaign-critical paths remain serialized.** Only an explicit board
    grant permits edits to `AGENTS.md`, the root `README.md`, campaign-wide
    coordination files, `docs/registry/coordinator.md`, the root aggregate
