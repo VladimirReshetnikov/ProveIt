@@ -12,7 +12,9 @@ This module proves the integral interpretations of the exact moment sequences,
 their inverse-power specializations, and the generating-function dilation
 identity from Proposition 2 of *Arithmetic of the Fabius function*.  The
 source-facing positive-index half-moment identity is complemented by a
-totalized all-index form whose normalized zeroth term is one.
+totalized all-index form whose normalized zeroth term is one.  A generic
+summation lemma also records that deleting identically zero odd terms
+preserves the sum of a convergent series.
 -/
 
 set_option autoImplicit false
@@ -341,6 +343,9 @@ private lemma momentIntegral_original_recurrence
   push_cast
   linear_combination h
 
+/-- The executable rational moment is exactly its analytic integral model:
+`(moment n : ℝ) = momentIntegral F n`, the full-line moment of order `2 * n`
+of Rvachev's function. -/
 theorem moment_eq_integral_formula (F : BoundedFabius) (hF : IsFabius F) (n : ℕ) :
     (moment n : ℝ) = momentIntegral F n := by
   induction n using Nat.strong_induction_on with
@@ -445,6 +450,9 @@ theorem halfMoment_eq_integral_formula (F : BoundedFabius) (hF : IsFabius F)
   obtain ⟨m, rfl⟩ := Nat.exists_eq_add_of_le hn
   exact halfMoment_eq_integral_formula_all F hF (1 + m)
 
+/-- Exact inverse-dyadic formula for every rational half moment:
+`(halfMoment n : ℝ) = n.factorial * 2 ^ n.choose 2 *
+fabiusReal F (((2 : ℝ) ^ n)⁻¹)`. -/
 theorem halfMoment_eq_fabius_formula (F : BoundedFabius) (hF : IsFabius F) (n : ℕ) :
     (halfMoment n : ℝ) =
       n.factorial * 2 ^ n.choose 2 * fabiusReal F (((2 : ℝ) ^ n)⁻¹) := by
@@ -473,6 +481,10 @@ private lemma rvachev_one_sub_inverse_pow_eq_fabius
   congr 1
   ring
 
+/-- For `1 ≤ n`, the weighted half-line moment is the inverse-dyadic value
+`(n : ℝ) * ∫ t in 0..1, t ^ (n - 1) * rvachevUp F t =
+n.factorial * 2 ^ n.choose 2 *
+rvachevUp F (1 - ((2 : ℝ) ^ n)⁻¹)`. -/
 theorem halfIntegral_eq_rvachev_dyadic_formula
     (F : BoundedFabius) (hF : IsFabius F) (n : ℕ) (hn : 1 ≤ n) :
     (n : ℝ) * ∫ t in (0 : ℝ)..1, t ^ (n - 1) * rvachevUp F t =
@@ -493,6 +505,11 @@ theorem halfIntegral_eq_rvachev_dyadic_formula
         rvachevUp F (1 - ((2 : ℝ) ^ n)⁻¹) := by
       rw [rvachev_one_sub_inverse_pow_eq_fabius F n hn]
 
+/-- The half-line even moment is both half of the full moment and an exact
+inverse-dyadic Rvachev value:
+`(moment n : ℝ) / 2 = ∫ t in 0..1, t ^ (2 * n) * rvachevUp F t`, and
+this integral is `(2 * n).factorial * 2 ^ (2 * n + 1).choose 2 *
+rvachevUp F (1 - ((2 : ℝ) ^ (2 * n + 1))⁻¹)`. -/
 theorem moment_halfIntegral_eq_rvachev_dyadic_formula
     (F : BoundedFabius) (hF : IsFabius F) (n : ℕ) :
     (moment n : ℝ) / 2 =
@@ -771,6 +788,10 @@ private lemma rvachevLaplace_scaling
   rw [hderiv] at hparts
   linear_combination hparts
 
+/-- Proposition 2 in complex form: the generating function satisfies
+`complexGeneratingFunction F (2 * z) =
+complexExpm1Div z * complexGeneratingFunction F z`.  The factor
+`complexExpm1Div` gives the totalized value at `z = 0`. -/
 theorem proposition_two_formula (F : BoundedFabius) (hF : IsFabius F) (z : ℂ) :
     complexGeneratingFunction F (2 * z) =
       complexExpm1Div z * complexGeneratingFunction F z := by
@@ -1054,6 +1075,21 @@ private lemma fourierSeriesTerm_even_eq_moment
   push_cast
   ring
 
+/-- A convergent series whose odd terms vanish has the same sum along its
+even subsequence. -/
+theorem hasSum_even_of_odd_eq_zero
+    {E : Type*} [AddCommMonoid E] [TopologicalSpace E]
+    {f : ℕ → E} {a : E}
+    (h : HasSum f a) (hodd : ∀ n, f (2 * n + 1) = 0) :
+    HasSum (fun n ↦ f (2 * n)) a := by
+  change HasSum (f ∘ (fun n : ℕ ↦ 2 * n)) a
+  rw [(mul_right_injective₀ (two_ne_zero' ℕ)).hasSum_iff]
+  · exact h
+  · intro m hm
+    rw [range_two_mul, Set.mem_setOf_eq, Nat.not_even_iff_odd] at hm
+    obtain ⟨n, rfl⟩ := hm
+    exact hodd n
+
 /-- The Fourier transform of Rvachev's function is its even-moment series. -/
 theorem rvachevFourier_eq_momentSeries
     (F : BoundedFabius) (hF : IsFabius F) (z : ℂ) :
@@ -1068,24 +1104,12 @@ theorem rvachevFourier_eq_momentSeries
         (rvachevUp F t : ℂ) *
           Complex.exp ((-2 * Real.pi * Complex.I * z) * t)) := by
     exact rvachevFourier_expansion_hasSum F hF z
-  have hevenSummable : Summable (fun n : ℕ => term (2 * n)) :=
-    hall.summable.comp_injective (mul_right_injective₀ (two_ne_zero' ℕ))
-  have hodd (n : ℕ) : term (2 * n + 1) = 0 := by
-    exact fourierSeriesTerm_odd_eq_zero F hF z n
-  have hoddHas : HasSum (fun n : ℕ => term (2 * n + 1)) 0 := by
-    exact (hasSum_zero : HasSum (fun _ : ℕ => (0 : ℂ)) 0).congr_fun hodd
-  have hsplit := HasSum.even_add_odd hevenSummable.hasSum hoddHas
-  have hevenEq : (∑' n : ℕ, term (2 * n)) =
-      ∫ t in (-1 : ℝ)..1,
-        (rvachevUp F t : ℂ) *
-          Complex.exp ((-2 * Real.pi * Complex.I * z) * t) := by
-    simpa using hsplit.unique hall
   have heven : HasSum (fun n : ℕ => term (2 * n))
       (∫ t in (-1 : ℝ)..1,
         (rvachevUp F t : ℂ) *
-          Complex.exp ((-2 * Real.pi * Complex.I * z) * t)) := by
-    rw [← hevenEq]
-    exact hevenSummable.hasSum
+          Complex.exp ((-2 * Real.pi * Complex.I * z) * t)) :=
+    hasSum_even_of_odd_eq_zero hall fun n =>
+      fourierSeriesTerm_odd_eq_zero F hF z n
   have hmoments : HasSum
       (fun n : ℕ => (-1 : ℂ) ^ n * (moment n : ℂ) /
         ((2 * n).factorial : ℂ) * (2 * Real.pi * z) ^ (2 * n))

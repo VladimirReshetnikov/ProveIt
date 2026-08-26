@@ -75,24 +75,6 @@ private theorem map_finiteExpSubstitutionDefect
   rw [Polynomial.map_sub, map_finiteExpSubstitutionPolynomial,
     map_expCoeffTruncPolynomial]
 
-private theorem map_divX
-    {A B : Type*} [CommRing A] [CommRing B]
-    (f : A →+* B) (p : Polynomial A) :
-    p.divX.map f = (p.map f).divX := by
-  ext d
-  simp [Polynomial.coeff_divX]
-
-private theorem map_iterate_divX
-    {A B : Type*} [CommRing A] [CommRing B]
-    (f : A →+* B) (L : ℕ) (p : Polynomial A) :
-    ((Polynomial.divX^[L]) p).map f =
-      (Polynomial.divX^[L]) (p.map f) := by
-  induction L generalizing p with
-  | zero => simp
-  | succ L ih =>
-      rw [Function.iterate_succ_apply, Function.iterate_succ_apply,
-        ih, map_divX]
-
 private theorem map_finiteExpSubstitutionQuotient
     {A B : Type*} [CommRing A] [CommRing B]
     [Algebra ℚ A] [Algebra ℚ B]
@@ -100,7 +82,7 @@ private theorem map_finiteExpSubstitutionQuotient
     (finiteExpSubstitutionQuotient E L).map f.toRingHom =
       finiteExpSubstitutionQuotient (fun n => f (E n)) L := by
   unfold finiteExpSubstitutionQuotient
-  rw [map_iterate_divX, map_finiteExpSubstitutionDefect]
+  rw [SaddleExpansion.map_iterate_divX, map_finiteExpSubstitutionDefect]
 
 /-- For fixed order `n` and degree `d`, the map sending the saddle phase `t`
 to the degree-`d` coefficient of the polynomial

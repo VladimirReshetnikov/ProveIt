@@ -1,5 +1,6 @@
 import FabiusFunction.DyadicClosedForm
 import Mathlib.Data.Nat.Choose.Sum
+import Mathlib.Data.Real.Basic
 import Mathlib.RingTheory.Polynomial.Pochhammer
 
 /-!
@@ -47,6 +48,10 @@ to evaluate centered and translated exponential generating series.
   a block sum against a rational polynomial of degree at most `r` returns its
   degree-`r` coefficient times that factor; affine powers have a single
   formula covering both the vanishing range and the sharp degree.
+* `thueMorse_affine_power_sum_eq_zero_real` and
+  `thueMorse_affine_power_sum_self_real` -- the corresponding affine
+  cancellation and sharp-degree formula over the reals, for direct use by
+  the analytic spline development.
 * `iteratedPrefix_dyadic_reverse_window`,
   `iteratedPrefix_dyadic_reverse_window_eq_zero_iff`, and the endpoint
   theorems -- on the `2^r-k` entries preceding the final `k` zeros of a
@@ -63,14 +68,15 @@ of the zero run (`iteratedPrefix_dyadic_endpoint`,
 `iteratedPrefix_dyadic_zero_reverse`).
 
 Conventions and caveats.  Prefix sums are inclusive, so `S^(k+1)(n)` ranges
-over `j <= n`; `iteratedPrefix` is `ℤ`-valued while the power sums are
-`ℚ`-valued.  `iteratedPrefix_eq_sum_kernel` assumes `1 <= k`, matching the
-source's positive indexing of `B_k`.  Every zero-run statement assumes
-`k <= r`, that is, a block long enough to absorb `k` cancellations, and says
-nothing for shorter blocks.  `thueMorse_affine_power_sum_self` does not
-depend on the translation, but it carries a factor `y^r` and so vanishes for
-`y = 0` when `r > 0`; at `r = 0`, Lean's `0^0 = 1` convention gives the
-correct one-term sum.  The draft's grid normalization
+over `j <= n`; `iteratedPrefix` is `ℤ`-valued, and the named monomial and
+polynomial power-sum API is `ℚ`-valued.  The two `_real` affine theorems expose
+the same cancellation directly over `ℝ`.  `iteratedPrefix_eq_sum_kernel`
+assumes `1 <= k`, matching the source's positive indexing of `B_k`.  Every
+zero-run statement assumes `k <= r`, that is, a block long enough to absorb
+`k` cancellations, and says nothing for shorter blocks.  The sharp affine
+power-sum formulas do not depend on the translation, but carry a factor
+`y^r` and so vanish for `y = 0` when `r > 0`; at `r = 0`, Lean's `0^0 = 1`
+convention gives the correct one-term sum.  The draft's grid normalization
 `2^C(k,2)` is applied downstream in `FabiusFunction.ThueMorseGenerating`, not
 here.
 -/
@@ -323,6 +329,98 @@ theorem thueMorse_affine_power_sum_of_le
   · subst d
     rw [thueMorse_affine_power_sum_self, if_pos rfl]
   · rw [thueMorse_affine_power_sum_eq_zero r d h x y, if_neg h.ne]
+
+/-- Real affine Prouhet cancellation below the block exponent.  The
+translation and scale are arbitrary: after the binomial expansion, every
+remaining monomial has degree strictly below `r`. -/
+theorem thueMorse_affine_power_sum_eq_zero_real
+    (r d : ℕ) (hd : d < r) (x y : ℝ) :
+    (∑ h : Fin (2 ^ r), (thueMorseSign h.val : ℝ) *
+      (x + y * (h.val : ℝ)) ^ d) = 0 := by
+  simp_rw [add_pow, Finset.mul_sum]
+  rw [Finset.sum_comm]
+  apply Finset.sum_eq_zero
+  intro k hk
+  have hdegree : d - k < r := (Nat.sub_le d k).trans_lt hd
+  have hzeroQ := thueMorsePowerSum_eq_zero_of_lt r (d - k) hdegree
+  change (∑ h : Fin (2 ^ r),
+      (thueMorseSign h.val : ℚ) * (h.val : ℚ) ^ (d - k)) = 0 at hzeroQ
+  have hzeroR : (∑ h : Fin (2 ^ r),
+      (thueMorseSign h.val : ℝ) * (h.val : ℝ) ^ (d - k)) = 0 := by
+    exact_mod_cast hzeroQ
+  have hinner :
+      (∑ h : Fin (2 ^ r),
+        (thueMorseSign h.val : ℝ) *
+          (x ^ k * (y * (h.val : ℝ)) ^ (d - k) * (Nat.choose d k : ℝ))) =
+        (x ^ k * y ^ (d - k) * (Nat.choose d k : ℝ)) *
+          ∑ h : Fin (2 ^ r),
+            (thueMorseSign h.val : ℝ) * (h.val : ℝ) ^ (d - k) := by
+    rw [Finset.mul_sum]
+    apply Finset.sum_congr rfl
+    intro h hh
+    rw [mul_pow]
+    ring
+  rw [hinner, hzeroR, mul_zero]
+
+/-- At the sharp Prouhet degree, a real affine change of variable contributes
+only the `r`th power of its scale.  Thus the sum is independent of the
+translation `x`.  For `r > 0` it vanishes at `y = 0`; for `r = 0`, including
+`y = 0`, Lean's `0 ^ 0 = 1` convention gives the correct one-term sum. -/
+theorem thueMorse_affine_power_sum_self_real (r : ℕ) (x y : ℝ) :
+    (∑ h : Fin (2 ^ r), (thueMorseSign h.val : ℝ) *
+      (x + y * (h.val : ℝ)) ^ r) =
+      (-1 : ℝ) ^ r * y ^ r * (2 : ℝ) ^ r.choose 2 * r.factorial := by
+  simp_rw [add_pow, Finset.mul_sum]
+  rw [Finset.sum_comm]
+  rw [Finset.sum_eq_single 0]
+  · norm_num only [pow_zero, Nat.choose_zero_right, Nat.cast_one,
+      one_mul, mul_one, Nat.zero_le, Nat.sub_zero]
+    have hselfQ := thueMorsePowerSum_self r
+    change (∑ h : Fin (2 ^ r),
+      (thueMorseSign h.val : ℚ) * (h.val : ℚ) ^ r) =
+        (-1 : ℚ) ^ r * (2 : ℚ) ^ r.choose 2 * r.factorial at hselfQ
+    have hselfR : (∑ h : Fin (2 ^ r),
+        (thueMorseSign h.val : ℝ) * (h.val : ℝ) ^ r) =
+          (-1 : ℝ) ^ r * (2 : ℝ) ^ r.choose 2 * r.factorial := by
+      exact_mod_cast hselfQ
+    calc
+      (∑ h : Fin (2 ^ r),
+          (thueMorseSign h.val : ℝ) * (y * (h.val : ℝ)) ^ r) =
+          y ^ r * ∑ h : Fin (2 ^ r),
+            (thueMorseSign h.val : ℝ) * (h.val : ℝ) ^ r := by
+        rw [Finset.mul_sum]
+        apply Finset.sum_congr rfl
+        intro h hh
+        rw [mul_pow]
+        ring
+      _ = y ^ r *
+          ((-1 : ℝ) ^ r * (2 : ℝ) ^ r.choose 2 * r.factorial) := by
+        rw [hselfR]
+      _ = _ := by ring
+  · intro k hk hk0
+    have hkle : k ≤ r := Nat.le_of_lt_succ (Finset.mem_range.mp hk)
+    have hdegree : r - k < r := Nat.sub_lt (by omega) (by omega)
+    have hzeroQ := thueMorsePowerSum_eq_zero_of_lt r (r - k) hdegree
+    change (∑ h : Fin (2 ^ r),
+      (thueMorseSign h.val : ℚ) * (h.val : ℚ) ^ (r - k)) = 0 at hzeroQ
+    have hzeroR : (∑ h : Fin (2 ^ r),
+        (thueMorseSign h.val : ℝ) * (h.val : ℝ) ^ (r - k)) = 0 := by
+      exact_mod_cast hzeroQ
+    calc
+      (∑ h : Fin (2 ^ r),
+          (thueMorseSign h.val : ℝ) *
+            (x ^ k * (y * (h.val : ℝ)) ^ (r - k) *
+              (Nat.choose r k : ℝ))) =
+          (x ^ k * y ^ (r - k) * (Nat.choose r k : ℝ)) *
+            ∑ h : Fin (2 ^ r),
+              (thueMorseSign h.val : ℝ) * (h.val : ℝ) ^ (r - k) := by
+        rw [Finset.mul_sum]
+        apply Finset.sum_congr rfl
+        intro h hh
+        rw [mul_pow]
+        ring
+      _ = 0 := by rw [hzeroR, mul_zero]
+  · simp
 
 /-- Thue--Morse signs annihilate every rational polynomial of degree below the
 dyadic block exponent. -/
