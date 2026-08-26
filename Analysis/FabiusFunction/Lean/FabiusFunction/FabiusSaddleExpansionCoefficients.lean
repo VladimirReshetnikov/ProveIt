@@ -96,7 +96,9 @@ private def negativeLaplaceBoundedExponentJetContinuousMap
   continuous_toFun := Complex.continuous_ofReal.comp
     (contDiff_infty_negativeLaplaceBoundedExponentJet n).continuous
 
-private def negativeLaplaceExponentPolynomialContinuous
+/-- The exponent polynomial with its phase-dependent coefficients bundled as
+continuous maps. -/
+def negativeLaplaceExponentPolynomialContinuous
     (m : ℕ) : Polynomial C(ℝ, ℂ) :=
   match m with
   | 0 => 0
@@ -109,7 +111,9 @@ private def negativeLaplaceExponentPolynomialContinuous
           (Complex.I ^ (n + 3) * (negativeLaplaceJetSlope (n + 2) : ℂ) /
             ((n + 3).factorial : ℕ))) * Polynomial.X ^ (n + 3)
 
-private theorem negativeLaplaceExponentPolynomialContinuous_map
+/-- Evaluating the continuous-coefficient exponent polynomial at a phase
+recovers the corresponding complex exponent polynomial. -/
+theorem negativeLaplaceExponentPolynomialContinuous_map
     (m : ℕ) (t : ℝ) :
     (negativeLaplaceExponentPolynomialContinuous m).map
         (ContinuousMap.evalAlgHom ℚ ℂ t).toRingHom =
