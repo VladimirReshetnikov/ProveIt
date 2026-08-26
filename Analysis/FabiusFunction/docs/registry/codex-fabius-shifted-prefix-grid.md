@@ -1,6 +1,6 @@
 # Workstream registry: `codex/fabius-shifted-prefix-grid`
 
-**Status: source validation requested; coverage-map reconciliation complete.**
+**Status: source validation requested; exact audit-ledger claim advertised.**
 The exact claim was published before source work, coordinator checkpoint
 `893d4c25d` explicitly acknowledged it as the first nonoverlapping claim for
 the module, and source commit `00ff41a5e` now implements precisely that bounded
@@ -13,11 +13,12 @@ SYNC Fabius
 branch / worktree / machine: codex/fabius-shifted-prefix-grid / c9a3 / EVO
   (Windows)
 fetched main SHA: e18f5d0b0e3ec78e2b14e7006af6c7e916b42923
-HEAD and dirty paths: dcd5f8a06992dace076c0c39f368df22c70dd1c9;
-  clean after pushing the coverage-map checkpoint
+HEAD and dirty paths: ad6aa0120add472232ea517289e0bdb6e84fcec0;
+  clean after pushing the coverage-map completion record
 writing (exact paths): docs/registry/codex-fabius-shifted-prefix-grid.md only;
   Lean/FabiusFunction/ThueMorseGenerating.lean is frozen at 00ff41a5e;
-  docs/PAPER_COVERAGE.md is complete at dcd5f8a06 and its claim is released
+  docs/PAPER_COVERAGE.md is complete at dcd5f8a06 and its claim is released;
+  requested future documentation path is docs/AUDIT_FINDINGS.md
 expected declarations or document claims: shiftedPrefixGridValue;
   shiftedPrefixGridValue_zero; shiftedPrefixGridValue_one;
   shiftedPrefixGridValue_succ_sub;
@@ -30,7 +31,12 @@ expected documentation claims: add the seven shiftedPrefixGridValue mappings
   without generic endpoint/convergence claims; add exact all-degree centered
   finite-spline geometry; replace the stale x >= 0 discrete-limit row by its
   all-real APIs; extend the lower-Lambert row to the closed branch endpoint and
-  the sharp 1 / log 2 threshold classification
+  the sharp 1 / log 2 threshold classification; next, mark exactly four audit
+  findings DONE: all-degree centered-spline range, right-half-cell spline
+  saturation, the sharp lower-Lambert phase threshold, and removal of redundant
+  CharZero binders from four FabiusQBinomialTaylor declarations; record their
+  implementation commits and immutable compiler evidence without changing any
+  other finding, source file, documentation audit, baseline, TeX, or PDF
 completed commits: 6fb8dc8e9 publishes the exact one-file claim; ba0048023
   activates it under the open protocol; 00ff41a5e adds the seven generic
   declarations and converts all eight legacy proofs to wrappers; 047a03b63
@@ -61,12 +67,14 @@ requested integration or lease: retain the source path through validation;
 conflicts / dependencies: no overlap with the active frontier-document lease;
   no AGENTS, README, collaboration, aggregate, TeX, PDF, canonical frontier,
   primary exposition, hot foundational module, or peer registry path requested;
-  current EVO build ownership remains with codex/fabius-exposition-integration
-next bounded step: push this completion record, poll for an explicit
-  build-token handoff, and advertise a fresh exact nonoverlapping claim before
-  any further source or documentation edit
-lease refreshed: 2026-08-25 17:58 PDT; source frozen pending validation;
-  documentation claim completed and released
+  current EVO build ownership remains with codex/fabius-exposition-integration;
+  fresh searches of all 16 locally present Fabius remote-tracking tips found
+  no active docs/AUDIT_FINDINGS.md claim
+next bounded step: push this exact four-finding claim, fetch and reread the
+  board, then edit only docs/AUDIT_FINDINGS.md while keeping the Lean source
+  frozen and polling for an explicit build-token handoff
+lease refreshed: 2026-08-25 18:02 PDT; source frozen pending validation;
+  exact docs/AUDIT_FINDINGS.md claim awaits its registry-first push
 git owner / build owner: root / no build owner assigned to this branch
 ```
 
