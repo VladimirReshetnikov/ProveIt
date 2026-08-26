@@ -1497,3 +1497,63 @@ Run the targets separately in that order and stop after the first failure.
 The root invalidation is intentional under the directory's mandatory policy
 for removing existing duplication.  The three source paths are frozen pending
 coordinator review and serialized validation; no document change follows.
+
+## Claim: absolute summability of the parity-power presentation
+
+Fresh `origin/main` `c7dfc250fe42bf66a241b59e1fa11eb5dd340d0f`
+has `FabiusParityPowerSeries.lean` blob
+`070411cb6438edd20b6d9e08a97a8fb70276a4e9`.  Clean synchronization merge
+`5b7313af6` contains that exact source state before this registry-first claim.
+
+The exact prospective write set is:
+
+- `Lean/FabiusFunction/FabiusParityPowerSeries.lean`;
+- this branch's own registry.
+
+The source unit will add exactly two documented, untagged public declarations:
+
+- `summable_norm_fabiusParityPowerSummand_all (x : ℝ)`, asserting absolute
+  summability of the corrected parity-power summands at every real input;
+- `summable_norm_fabiusParityPowerSummand (x : ℝ) (hx : 0 ≤ x)`, retaining
+  the historically stated nonnegative-input domain as a compatibility form.
+
+The all-real proof transports
+`summable_norm_globalBinaryReductionSummand_all fabius fabius_spec x` through
+the existing pointwise equality
+`fabiusParityPowerSummand_eq_globalBinaryReductionSummand`.  The compatibility
+proof follows the module's existing `HasSum` and `tsum` wrapper pattern at
+`max x 0`.  Both results will sit immediately after the scale-zero endpoint
+facts and before the all-real `HasSum` theorem, so the convergence API remains
+ordered as absolute summability, identified sum, and `tsum`.  No import,
+attribute, simp rule, old declaration, facade, aggregate, or document path
+changes.
+
+This closes an exact formal/human mismatch.  The primary exposition already
+states absolute convergence of this corrected parity-power series, while the
+canonical frontier explicitly records the missing norm-summability
+declaration and gives this pointwise-rewrite proof as the outstanding
+obligation.  Canonical documents and `PAPER_COVERAGE.md` remain frozen; after
+source integration a separately assigned documentation owner should remove
+only that obligation and map these names, without broadening any neighboring
+claim.
+
+Exact-name, `Summable`-shape, parity-power convergence, source-history,
+advertised-tip, and every-registry scans find no implementation or competing
+claim.  The sole registry mention is the historical exposition audit that
+labels norm summability as missing.  No active or frozen write set owns
+`FabiusParityPowerSeries.lean`; its source blob is identical on every modern
+advertised tip.  Its only direct source consumer is
+`PaperFabiusAsymptotic.lean`, so the transitive reverse cone consists of those
+two modules plus the root aggregate.
+
+No Lean, Lake, TeX, PDF, or cache-mutating process is authorized or has run
+for this claim.  After an immutable reviewed source checkpoint, the requested
+serialized gates are, separately and in order:
+
+```text
+LEAN_NUM_THREADS=0 LAKE_JOBS=1 lake build +FabiusFunction.FabiusParityPowerSeries
+LEAN_NUM_THREADS=0 LAKE_JOBS=1 lake build +FabiusFunction.PaperFabiusAsymptotic
+```
+
+Stop after the first nonzero exit and run no additional target.  Until the
+coordinator grants a host token, validation remains static only.
