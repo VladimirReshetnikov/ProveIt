@@ -938,22 +938,20 @@ add it to the `Convexity.lean` shape discussion and module-summary row.  The
 README addition is optional.  No frontier or paper-coverage row is required:
 this is a derived shape theorem, not a source-paper or research-frontier claim.
 
-## Inverse diagonal-classification claim
+## Inverse diagonal-classification handoff
 
-Fresh fetched `origin/main` is
-`fc63c39788ab4c31694e4f57efe05b543165675a`; current feature HEAD is
-`860938821eb00158f4f0cb11859897761383cce2`, and the target
-`Lean/FabiusFunction/FabiusInverse.lean` has blob
-`96d24dccfdb70cf2154aa8cb494c495b7dde8811`.  The feature HEAD already
-contains the forward diagonal source checkpoint
-`7e4ec3657c4e068c98f09cfc72ea69b9ab8fe6d1` on which this claim depends.
+Source checkpoint `8ee25ba025cef0319231f524468e3c399d4903a9`
+produces `Lean/FabiusFunction/FabiusInverse.lean` blob
+`fac45bf09d9e3b44ceebfeca01f4b396f9500805`.  It is stacked after the forward
+diagonal source checkpoint `7e4ec3657c4e068c98f09cfc72ea69b9ab8fe6d1`
+on which all three new proofs depend.
 
 The exact write set is:
 
 - `Lean/FabiusFunction/FabiusInverse.lean`;
 - this branch's own registry.
 
-The intended source checkpoint adds exactly the documented public family
+The source checkpoint adds exactly the documented public family
 
 - `self_lt_fabiusInv_of_mem_Ioo_zero_half`;
 - `fabiusInv_lt_self_of_mem_Ioo_half_one`; and
@@ -972,11 +970,23 @@ Exact-name and semantic scans of current main, every fetched advertised
 Fabius/Claude tip, and all branch registries find no implementation or
 competing claim.  The inverse-asymptotic branch owns only its two new
 asymptotic modules plus `PaperFabiusAsymptotic.lean`; its registry explicitly
-keeps the existing `FabiusInverse.lean` read-only, and every relevant tip has
-the target blob above.  The ordinary source path is therefore nonoverlapping.
+keeps the existing `FabiusInverse.lean` read-only.  Before this branch's source
+commit, every relevant tip shared preimage blob
+`96d24dccfdb70cf2154aa8cb494c495b7dde8811`.  The ordinary source path is
+therefore nonoverlapping.
 
-No Lean/Lake token is assigned.  This is a registry-first claim only; later
-validation should run the forward dependency and inverse consumer in order:
+The patch is 46 insertions in one source file.  No import, existing public
+header, attribute, helper declaration, facade, aggregate, or serialized
+document changes.  Two independent live-diff audits pass the comparison-iff
+orientations, interval-membership proofs, all-real fixed-point transfer,
+endpoint cases, names, placement, documentation, collision sweep, and source
+hygiene.  `git diff --check`, the exact public-header delta, line-length scan,
+and forbidden-declaration scan are clean.
+
+No Lean/Lake token is assigned, so no compiler or cache-mutating process was
+run.  The source is frozen at the exact checkpoint above pending coordinator
+integration and validation.  Run the forward dependency and inverse consumer
+in order:
 
 ```text
 LAKE_JOBS=1 lake build +FabiusFunction.Convexity
