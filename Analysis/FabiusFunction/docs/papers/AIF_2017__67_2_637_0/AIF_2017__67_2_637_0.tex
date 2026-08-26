@@ -120,6 +120,14 @@ Consequently, in this paper we will mainly be concerned with the problem of inve
 
 The main results of this paper are the following. (Throughout the rest of this paper, we write $\exp (x)$ for $e^{x}$.)
 
+% ed.: The constant $\pi/\sqrt{\log 2}$ in (1.4)-(1.5) below is erroneous as
+% printed (in both the journal and arXiv versions); the correct constant is
+% $\pi/\sqrt{2\log 2}$.  The error originates in equation (4.5) of this paper,
+% which evaluates the variance functional (2.9) without the Parseval factor
+% 1/2 (giving $\pi^2/2$ instead of the correct $\pi^2/4$).  See the audit
+% docs/non-formalized-research-frontiers/drafts/rvachev_up_fourier_decay/
+% Rvachev_Up_Fourier_Decay_Comparative_Audit/ (Theorem "exact variance" and
+% Finding "erratum-level correction").
 Theorem 1.1. - Let $\left(n_{k}\right)_{k \geqslant 1}$ be the sequence of evil numbers, sorted in increasing order, and let $h \neq 0$ be an integer. Let $\varepsilon>0$ be arbitrary. Then for almost all $\alpha \in(0,1)$ we have
 
 
@@ -147,6 +155,10 @@ $$
 for almost all $\alpha$.\\
 It will turn out that Theorem 1.1 is an almost immediate consequence of the following result on lacunary trigonometric products.
 
+% ed.: The constant $\pi$ in (1.6)-(1.7) below is erroneous as printed; the
+% correct constant is $\pi/\sqrt{2}=2.2214\ldots$, tracing to the missing
+% Parseval factor 1/2 in equation (4.5).  See the editorial note at
+% Theorem 1.1 above.
 Theorem 1.2. - Let $\varepsilon>0$ be arbitrary. Then for almost all $\alpha \in(0,1)$ we have
 
 
@@ -989,6 +1001,9 @@ for almost all $\alpha \in(0,1)$. Theorem 2.5 now follows from a combination of 
 \section*{4. Exponential Sums and Trigonometric Products: Proofs of Theorem 1.1 and Theorem 1.2}
 Theorem 1.1 and Theorem 1.2 will follow easily from the following lemma, which is a version of Lemma 2.6 in the case when the function $f$ only satisfies (2.7) (instead of being Hölder-continuous). We state it only for the special case of the two functions $f_{1}$ and $f_{2}$ from (2.4) and (2.5).
 
+% ed.: The value $\pi/\sqrt{2}$ in the first display below is erroneous as
+% printed; the correct value is $\sigma_{f_1}=\pi/2$, by the corrected
+% evaluation of (2.9) (see the editorial note at (4.5) below).
 Lemma 4.1. - For almost all $\alpha$ we have
 
 $$
@@ -1048,6 +1063,18 @@ and
 where $\sigma_{f_{1}}$ and $\sigma_{f_{2}}$ are defined according to (2.9). Calculating the values of $\sigma_{f_{1}}$ and $\sigma_{f_{2}}$ is a simple exercise, using the Fourier series expansion of $f_{1}$ and $f_{2}$, respectively; it turns out that in our specific setting we have
 
 
+% ed.: Equation (4.5) below is erroneous as printed (identically in the
+% journal and arXiv versions; not an OCR artifact).  Each term omits the
+% Parseval factor 1/2 from $\int_0^1\cos^2(2\pi j\alpha)\,d\alpha=1/2$; the
+% functional (2.9) that it purports to evaluate equals
+% $\sigma_{f_1}^2=\frac{1}{2}\sum_j j^{-2}+2\sum_r 2^{-r}\cdot\frac{1}{2}
+% \sum_j j^{-2}=\pi^2/12+2\cdot\pi^2/12=\pi^2/4$, confirmed by the exact
+% finite-m identity $\int_0^1 S_m^2=(\pi^2/4)m-(\pi^2/3)(1-2^{-m})$ and by
+% direct measurement (Var(S_1000)=2459.5 vs prediction 2464.1).  The same
+% evaluation scheme applied to $f=\cos 2\pi\alpha$ would give a lacunary LIL
+% constant 1 instead of the classical Erdos-Gal $1/\sqrt2$, and the paper's
+% own (1.13) keeps the 1/2 correctly.  Downstream: Lemma 4.1 -> $\pi/2$,
+% Theorem 1.2 -> $\pi/\sqrt2$, Theorem 1.1 -> $\pi/\sqrt{2\log2}$.
 \begin{equation*}
 \sigma_{f_{1}}^{2}=\sum_{j=1}^{\infty}\left(\frac{1}{j^{2}}+2 \sum_{r=1}^{\infty} \frac{1}{2^{r} j^{2}}\right)=\frac{\pi^{2}}{2} \tag{4.5}
 \end{equation*}
