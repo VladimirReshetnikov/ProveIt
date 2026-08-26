@@ -127,3 +127,66 @@ next bounded step: commit and push this exact status with the source checkpoint;
   keep FabiusLambertRates.lean frozen for review/validation and advertise a
   separate cold-path effective-bound tranche before any further source edit
 ```
+
+## Ordinary follow-on claim: expose the eighth-order reference tail
+
+Claim prepared after the branch preserved its first tranche remotely, read the
+new complete board at `origin/main` `39ad356c7`, and merged that checkpoint at
+`8fad13626`.  The target source is unchanged from main at Git blob
+`6d4c8f9a727dfc5616fe405b77453803f61846f6`.  The existing proof derives the
+eighth inverse power explicitly and then discards seven powers when constructing
+its public Big-O result.
+
+```text
+SYNC Fabius
+branch / worktree / machine: codex/fabius-effective-bounds-20260825 /
+  /home/codex/.codex/worktrees/d6d3/Proofs / codexbox
+fetched main SHA: 39ad356c7a433c1b7dfdaec5bb3e3e4163c9fd35
+HEAD and dirty paths: 8fad136269056382417777650976c4b0cad2f34a;
+  branch is clean after the conflict-free origin/main merge, then only this
+  registry is dirty for the follow-on claim
+writing (exact paths): this registry initially; after this claim is pushed and
+  the repeated board/registry/tip audit remains green, only
+  Lean/FabiusFunction/FabiusSaddleReferenceTail.lean and this registry;
+  FabiusLambertRates.lean is frozen at source commit a8421fd7f
+expected declarations or document claims:
+  exp_neg_sq_centralRadius_div_four, promoting the existing private exact
+    identity exp (-(A(b)^2)/4) = b^(-8) at the standard radius;
+  integral_norm_gaussian_add_oddCorrection_standardRadius_le_inv_pow_eight,
+    exposing the pointwise bound
+    tail <= (2 + 2*Clinear + 12*Ccubic) * b^(-8) when exp 1 <= b and the two
+    standard coefficient-square hypotheses hold;
+  integral_norm_gaussian_add_oddCorrection_standardRadius_isBigO_inv_pow_eight,
+    packaging that effective inequality on an arbitrary filter;
+  preserve the old integral_norm_gaussian_add_oddCorrection_standardRadius_isBigO
+    header as an O(b^(-1)) compatibility wrapper derived from the stronger
+    eighth-order theorem;
+  revise the module overview and declaration comments so the exact identity,
+    effective constant, sharp exported rate, and deliberately weaker wrapper
+    are stated in human-readable form; no canonical TeX/PDF, facade, or root
+    path is claimed
+completed commits: bc14ab696 (first claim), a8421fd7f (first source),
+  5473f530d (first report), and 8fad13626 (merge of current main); no follow-on
+  source commit exists yet
+validated (exact command, SHA/state, exit code): read-only proof audit located
+  the complete b^(-8) calculation already inside the old Big-O proof; exact-
+  name/semantic/path scans of current main, every fetched Fabius tip, and every
+  registry found no public duplicate or competing target edit; the only same-
+  name declaration is the private helper being promoted; this is not compiler
+  evidence
+not yet validated: all three public declarations, the compatibility refactor,
+  and documentation changes; no Lean, Lake, TeX, PDF, or cache-mutating process
+  ran because neither idle host token is assigned to this branch
+requested integration or lease: advertise this one ordinary source path and
+  three exact public names; after an immutable reviewed source checkpoint,
+  request separate serialized builds of +FabiusFunction.FabiusSaddleReferenceTail
+  and its narrow direct consumer +FabiusFunction.GaussianPolynomialTail; no
+  document or main-write lease
+conflicts / dependencies: the active Differential/Existence claim and all
+  released or frozen probability, spline, Thue--Morse, Lambert-rate, canonical-
+  document, campaign-wide, and root paths are disjoint and excluded; only the
+  coordinator may advance origin/main
+next bounded step: commit and push this registry-only follow-on claim; fetch
+  and reread the live board; repeat the all-tip collision scan; only then edit
+  FabiusSaddleReferenceTail.lean
+```
