@@ -7,17 +7,21 @@ This file implements the per-branch registry fallback in
 SYNC Fabius
 branch / worktree / machine: codex/fabius-both-papers /
   /home/codex/src/Proofs / codexbox
-fetched main SHA: 0bc0bf55135d2dea10c5fb8320e69a00ab55ded0
-HEAD and dirty paths: 18c5e2b40ab88909362b7a126f4886e26411f66d;
-  dirty only in this own-registry handoff
+fetched main SHA: 4b3ddc7dbfd4cc0b4fd981992dc9cd9f7fa2a159
+HEAD and dirty paths: 2a188509272604552bda68e4611271b1fad47ae1;
+  dirty only in this own-registry claim
 writing (exact paths):
+  Analysis/FabiusFunction/Lean/FabiusFunction/FabiusSaddleExpansionCoefficients.lean;
+  Analysis/FabiusFunction/Lean/FabiusFunction/FabiusSaddleReferenceWeight.lean;
   Analysis/FabiusFunction/docs/registry/codex-fabius-both-papers.md
 expected declarations or document claims:
-  rvachevFourier_real_iteratedDeriv_shiftedDecay;
-  rvachevFourier_real_shiftedDecay;
-  the first theorem gives the conventional `(1 + |x|) ^ (-k)` Schwartz
-  majorant for every real-axis derivative and the second is its order-zero
-  Fourier-transform specialization; existing rapid-decay APIs stay exact
+  promote `negativeLaplaceBoundedExponentJetContinuousMap`,
+  `negativeLaplaceExponentPolynomialContinuous`, and
+  `negativeLaplaceExponentPolynomialContinuous_map` from private shared
+  implementation to documented public upstream declarations;
+  delete the three byte-identical primed private copies in the directly
+  importing reference-weight module and rewire its consumers to the upstream
+  names; preserve every pre-existing public theorem header and all imports
 completed commits: Lower-Lambert source checkpoint `1da2fde2285e3970267b7dc2561bcd0d897be1b4`
   was integrated by coordinator merge `046946a974467e83244fd3a183a3e084e70d3379`;
   registry handoff `225f5338de9ea92489ed6a2c0c371c6edb4f5db9`
@@ -321,10 +325,27 @@ conflicts / dependencies: all advertised Fabius heads and their registries
   positive-degree complex branch estimate, no `_all` or semantic-equivalent
   theorem, and no active claim on `FabiusDiscreteLimitComplexShift.lean`; the
   exact `_all` name occurs only in the unimplemented serialized audit proposal
-next bounded step: coordinator integration and serialized focused/facade
-  validation of `fe7756703`; if accepted, update the frozen human documents
-  only under a future exact board grant
+next bounded step: while serialized validation of `fe7756703` remains queued,
+  implement and independently review the exact two-file saddle continuous-map
+  deduplication advertised above; request its focused upstream/downstream builds
 ```
+
+## Saddle continuous-map deduplication claim
+
+At fetched main `4b3ddc7dbfd4cc0b4fd981992dc9cd9f7fa2a159`,
+`FabiusSaddleReferenceWeight.lean` directly imports
+`FabiusSaddleExpansionCoefficients.lean` but repeats the latter's continuous
+bounded-jet map, continuous-coefficient exponent polynomial, and evaluation
+theorem byte-for-byte modulo a prime suffix.  This claim promotes the unprimed
+upstream declarations with public documentation, deletes the 34-line primed
+block, and rewires only the downstream implementation references.
+
+The current main blobs are `6a7575461d9a491e81e5e0e7d247776c02b83ab6`
+and `64b26061aece6d03da59d2e0e92175459b6c397b`, respectively.
+Fresh path/name/registry inspection found no competing public implementation or
+active claim; the sole registry path mention is a closed historical read-only
+inventory.  No import, attribute, or existing public theorem signature is
+expected to change.  No Lean/Lake process is authorized or planned.
 
 ## Shifted real-axis Fourier-decay handoff
 
