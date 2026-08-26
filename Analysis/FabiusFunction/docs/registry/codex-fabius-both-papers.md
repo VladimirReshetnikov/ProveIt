@@ -1179,3 +1179,60 @@ accepted validation, their leases are released and a separately authorized
 serialized-document owner should close only the corresponding
 `AUDIT_FINDINGS.md` item; no mathematical exposition or coverage document
 needs revision.
+
+## Claim: radial ordering of Rvachev's function
+
+Fresh `origin/main` `a949e2efaa485283e66a7d2130fc723168c01efa`
+has `Lean/FabiusFunction/Monotonicity.lean` blob
+`721e1bc8dce6a06c1c2c3f8685bae13c8716ec68`, content SHA-256
+`DC07BE14E6ADA014AC3D29AE5D9D152006BCBC48E81A1F953D08F701A59FB8FB`.
+This branch contains that checkpoint through merge `42918ae3b`; only this
+registry is initially dirty for the claim.
+
+The exact prospective write set is:
+
+- `Lean/FabiusFunction/Monotonicity.lean`;
+- this branch's own registry.
+
+The source unit will package evenness together with the existing strict
+decrease on `[0,1]` as exact radial comparison laws on the whole closed
+support.  It adds one private absolute-value normalization helper and exactly
+three documented public declarations:
+
+- `rvachevUp_le_rvachevUp_iff_abs_le`;
+- `rvachevUp_lt_rvachevUp_iff_abs_lt`;
+- `rvachevUp_eq_rvachevUp_iff_abs_eq`.
+
+For `x,y in [-1,1]`, these state respectively that `up(x) <= up(y)` iff
+`|y| <= |x|`, that `up(x) < up(y)` iff `|y| < |x|`, and that the two values
+agree iff the radii agree.  The proof folds both points to their absolute
+values with `rvachevUp_even`, verifies those radii lie in `[0,1]`, and invokes
+the exact `StrictAntiOn.le_iff_ge`, `lt_iff_gt`, and `eq_iff_eq` interfaces.
+The support hypotheses are essential because the global zero plateau would
+otherwise invalidate the non-strict and equality classifications.
+
+No import, existing declaration header, attribute, simp rule, facade,
+aggregate, canonical document, or serialized audit path is claimed.  The
+private helper will deliberately remain untagged, so no new global rewrite
+behavior is introduced.  The module overview and theorem comments will state
+the radial interpretation in human-readable form.
+
+Exact-name, `abs`-comparison, semantic radial-order, advertised-tip, history,
+and every-registry scans find no implementation or competing claim.  All
+modern tips share the preimage blob above.  No active registry owns
+`Monotonicity.lean`; the earlier curvature/diagonal tranches consumed its
+public API but did not edit or retain a lease on this path.
+
+No Lean, Lake, TeX, PDF, or cache-mutating process is authorized or has run
+for this claim.  After an immutable reviewed source checkpoint, the requested
+serialized gates are:
+
+```text
+LAKE_JOBS=1 lake build +FabiusFunction.Monotonicity
+LAKE_JOBS=1 lake build +FabiusFunction.PaperStatements
+```
+
+The second target is a direct consumer and paper-facing smoke gate.  Canonical
+documents remain frozen; a later separately assigned documentation pass may
+add the radial comparison family to the shape discussion, but no existing
+human claim becomes false from this additive source unit.
