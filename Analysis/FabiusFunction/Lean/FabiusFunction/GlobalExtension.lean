@@ -96,10 +96,10 @@ theorem extendedFabius_natCast_eq_ite
   · rw [if_pos (Even.add_self b)]
     simpa only [Nat.cast_add, two_mul] using
       extendedFabius_two_mul_nat F hF b
-  · have hodd : ¬ Even (b + b + 1) := by
-      simpa only [two_mul] using Nat.not_even_two_mul_add_one b
+  · have hodd : ¬ Even (2 * b + 1) :=
+      Nat.not_even_two_mul_add_one b
     rw [if_neg hodd]
-    have hdiv : (b + b + 1) / 2 = b := by omega
+    have hdiv : (2 * b + 1) / 2 = b := by omega
     rw [hdiv]
     simpa only [Nat.cast_add, Nat.cast_one, two_mul] using
       extendedFabius_two_mul_nat_add_one F hF b
@@ -350,7 +350,7 @@ theorem iteratedDeriv_extendedFabius_natCast_eq_zero_iff
     · subst order
       have hvalue : extendedFabius F (m : ℝ) = 0 := by
         simpa only [iteratedDeriv_zero] using hzero
-      rw [extendedFabius_natCast_eq_ite] at hvalue
+      rw [extendedFabius_natCast_eq_ite F hF] at hvalue
       by_cases hm : Even m
       · exact Or.inr hm
       · rw [if_neg hm] at hvalue
@@ -371,7 +371,7 @@ theorem iteratedDeriv_extendedFabius_natCast_eq_zero_iff
     have hcast : ((2 ^ order * m : ℕ) : ℝ) =
         (2 : ℝ) ^ order * (m : ℝ) := by
       norm_num
-    rw [← hcast, extendedFabius_natCast_eq_ite, if_pos heven, mul_zero]
+    rw [← hcast, extendedFabius_natCast_eq_ite F hF, if_pos heven, mul_zero]
 
 /-- On the first block the signed extension is literally the translate of
 Rvachev's compactly supported function: `extendedFabius F (x + 1) = up F x`
