@@ -2352,3 +2352,99 @@ Proposition 22 comments, simultaneous-vanishing Wikipedia obstruction, and
 real affine Prouhet/spline deduplication.  No build or document process ran;
 all remain immutable pending the validation requests in their individual
 handoffs.  Canonical documents, build lanes, and main writes remain unclaimed.
+
+## Claim: generic iterated-`divX` exactness and functoriality
+
+Claimed exact source paths:
+
+- `Lean/FabiusFunction/SaddleExpansionFiniteRemainder.lean`;
+- `Lean/FabiusFunction/FabiusSaddleReferenceWeight.lean`.
+
+After clean merge `e358c68c3` of current main `1eadfd565`, this ordinary
+two-file tranche promotes and centralizes three pure polynomial facts in
+namespace `Fabius.SaddleExpansion`:
+
+```lean
+theorem X_pow_mul_iterate_divX_eq_of_coeff_zero
+    {S : Type*} [CommRing S] (p : Polynomial S) (L : ℕ)
+    (hzero : ∀ k < L, p.coeff k = 0) :
+    Polynomial.X ^ L * (Polynomial.divX^[L]) p = p
+
+theorem map_divX
+    {A B : Type*} [CommRing A] [CommRing B]
+    (f : A →+* B) (p : Polynomial A) :
+    p.divX.map f = (p.map f).divX
+
+theorem map_iterate_divX
+    {A B : Type*} [CommRing A] [CommRing B]
+    (f : A →+* B) (L : ℕ) (p : Polynomial A) :
+    ((Polynomial.divX^[L]) p).map f =
+      (Polynomial.divX^[L]) (p.map f)
+```
+
+The first is the existing private exact-division theorem with an explicit
+coefficient-ring binder, so its public interface carries no accidental ambient
+`Algebra ℚ` dependency.  The other two move the definitionally identical
+private naturality proofs from `FabiusSaddleReferenceWeight` to the upstream
+finite-remainder module.  All three existing bodies are retained in substance.
+
+The downstream private `map_divX` and `map_iterate_divX` blocks are deleted
+atomically; `map_finiteExpSubstitutionQuotient` remains private and rewrites
+through the new public iterated theorem.  Every old public header/attribute and
+every import remains exact.  No simp attribute, semiring-level strengthening,
+facade/root edit, canonical document, or unrelated finite-remainder abstraction
+is claimed.
+
+```text
+SYNC Fabius
+branch / worktree / machine: codex/fabius-effective-bounds-20260825 /
+  /home/codex/.codex/worktrees/d6d3/Proofs / codexbox
+fetched main SHA: 1eadfd565db2e4c49310dbaa68c7b4648cb563b8
+HEAD and dirty paths: e358c68c3; clean before this registry-only claim; this
+  merge also incorporates coordinator validation of the alternating-sign and
+  strict-convex Laplace checkpoint, reducing the prior frozen source delta to
+  ten paths
+writing (exact paths): Lean/FabiusFunction/SaddleExpansionFiniteRemainder.lean;
+  Lean/FabiusFunction/FabiusSaddleReferenceWeight.lean; this branch registry
+  for claim/handoff only
+expected declarations or document claims: expose exactly the three generic
+  polynomial theorems above with formula-bearing comments; delete exactly the
+  two downstream private naturality copies; preserve every old public header,
+  attribute, import, and consumer
+completed commits: all earlier source checkpoints and handoffs are clean and
+  pushed; merge e358c68c3 is clean and pushed; this is a disjoint
+  registry-first atomic two-file claim
+validated (exact command, SHA/state, exit code): current HEAD and origin/main
+  share SaddleExpansionFiniteRemainder blob
+  65b54f647f520dee1c6853e153d9daa880945887, content SHA-256
+  0ED5A1C77BEFCFE1568BB88513F14FB9752897C426642EE20F3ECFAE88D9F820,
+  and FabiusSaddleReferenceWeight blob
+  bfbef07dbb8e77d34d7cf42fa3db1b477f512904, content SHA-256
+  38E255FACEE337B41E697536B78011921347B290D11B94BBE47E4DBC27D1D3C9;
+  54-ref exact-name/semantic and every-registry scans find only the three
+  intended private declarations and no public competitor or active lease;
+  historical ReferenceWeight ownership is integrated and released; all proof
+  bodies and import/API shapes have independent static review; this is not
+  compiler evidence
+not yet validated: promotion, relocation, deletion, and prose are not
+  implemented; no Lean, Lake, TeX, PDF, or cache-mutating process is authorized
+  or running for this branch
+requested integration or lease: advertise this ordinary atomic two-source
+  claim; after an immutable independently reviewed checkpoint, request
+  sequential LAKE_JOBS=1 builds of
+  +FabiusFunction.SaddleExpansionFiniteRemainder,
+  +FabiusFunction.FabiusSaddleReferenceWeight, and common direct consumer
+  +FabiusFunction.FabiusSaddleCentralAllOrders; request no document or
+  main-write lease
+conflicts / dependencies: ReferenceWeight already directly imports the
+  upstream module and opens its namespace; explicit theorem binders prevent an
+  accidental ambient algebra dependency; public promotion and private deletion
+  must land atomically; all frozen local paths, the sole primary-document owner,
+  and active external claims are disjoint; only the coordinator may advance
+  main
+next bounded step: commit and push this registry-only claim without force;
+  repeat collision checks, then edit only the two claimed sources while three
+  agents independently verify exact proof preservation, coefficient indexing,
+  iterate/map orientation, ambient assumptions, deletion boundary, consumers,
+  imports, interfaces, and docs
+```
