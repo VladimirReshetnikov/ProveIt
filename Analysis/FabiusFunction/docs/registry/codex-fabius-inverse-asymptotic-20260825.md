@@ -526,3 +526,88 @@ The coordinator now explicitly releases `FabiusInverse.lean` after its focused
 build.  The duplicate private reflection-filter helper can consequently be
 considered for a later registry-first cleanup, but it remains outside the
 advertised reflected-hierarchy tranche and is not silently claimed here.
+
+## EVO validation handoff: dependency-cache failure, token released
+
+The coordinator granted the exact two-target hierarchy gate in main commit
+`a949e2efaa485283e66a7d2130fc723168c01efa`.  This branch merged that immutable
+checkpoint as `eed7fd7defdbe34159375efa0e93e8a130cc6311`.  The merge touched only
+the coordinator board and preserved the three audited Lean blobs exactly:
+
+- `FabiusInverseAsymptotic.lean`: `fd3b5dac6c3f25332c130967ec4914343b7b506a`;
+- `PaperFabiusAsymptotic.lean`: `ce830f045e45e291a969f4d97a41294d8f83494a`;
+  and
+- `QuadraticAsymptoticInversion.lean`:
+  `8017000f51c7c57408963d76f436fb8d9a36137f`.
+
+With no Lean or Lake process present, the first granted invocation was issued
+from the repository root with the requested environment setting:
+
+```text
+LAKE_JOBS=1 lake build +FabiusFunction.FabiusInverseAsymptotic
+```
+
+Lake scheduled 3,931 jobs and exited `1`.  The failure occurred in unrelated
+prerequisites before a successful target gate could be established.  The
+complete final failed-target list was:
+
+```text
+FabiusFunction.StieltjesConstant
+FabiusFunction.GammaSecondOrder
+FabiusFunction.GaussianPolynomialContraction
+FabiusFunction.DyadicAnalytic
+FabiusFunction.FourierAnalytic
+FabiusFunction.GlobalExtension
+FabiusFunction.Monotonicity
+FabiusFunction.SaddleAllOrders
+```
+
+The emitted diagnostics were dependency-cache I/O failures, not theorem or
+elaboration errors.  Representative exact messages were:
+
+```text
+GaussianPolynomialContraction.lean:1:0: failed to read file
+  Mathlib/Algebra/Group/Subgroup/Lattice.olean.private
+DyadicAnalytic.lean:1:0: failed to read file
+  Mathlib/Analysis/Asymptotics/Lemmas.olean.private
+FourierAnalytic.lean:1:0: failed to read file
+  Mathlib/Analysis/Calculus/FDeriv/Analytic.olean.private
+```
+
+A read-only post-exit check found each named private artifact and its ordinary
+`.olean` sibling present.  This is consistent with a transient cache-population
+or scheduling race; it is not evidence that a retry would pass.  Although the
+requested `LAKE_JOBS=1` environment variable was set, Lake 4.32 displayed up
+to twelve additional running jobs, and an OS-level observation found one Lake
+coordinator with ten Lean children.  Thus the invocation did not behave as a
+single-job scheduler on this host.
+
+Per the checkpoint's stop-after-first-failure rule, the second command
+`lake build +FabiusFunction.PaperFabiusAsymptotic` was not launched.  No source,
+facade, cache, toolchain, dependency, or generated artifact was deliberately
+edited or repaired after the failure.  All Lean and Lake processes have exited.
+The EVO Lean/Lake token is explicitly released.
+
+This run supplies no compiler validation for either hierarchy target.  A fresh
+grant should first specify a host-effective serialization control for Lake
+4.32, or move the exact immutable blobs to a known-clean isolated build cache.
+
+```text
+SYNC Fabius
+branch / worktree / machine: codex/fabius-inverse-asymptotic-20260825 /
+  C:/Users/vresh/.codex/worktrees/c9a3/ProveIt / EVO (Windows)
+fetched main SHA: a949e2efaa485283e66a7d2130fc723168c01efa
+validated tree attempt: eed7fd7defdbe34159375efa0e93e8a130cc6311
+tracked worktree and index: clean before and after the attempted build;
+  unrelated reciprocity sidecars and tmp/ remain untracked and untouched
+writing: this registry only; all Lean and facade source remains frozen
+validated: merge ancestry, exact source blobs, and all earlier source/static
+  audits; no compiler gate completed successfully in this attempt
+not yet validated: both requested targets; the first exited 1 on dependency
+  cache I/O failures and the second was not run
+released: EVO Lean/Lake token; no Lean or Lake process remains
+conflicts / dependencies: no source conflict or target-local diagnostic was
+  observed; host-effective build serialization and cache health need review
+next bounded step: commit and push this failure handoff, notify the coordinator,
+  and launch no further Lean/Lake command without a fresh explicit grant
+```
