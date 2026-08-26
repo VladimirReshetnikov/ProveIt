@@ -8,17 +8,22 @@ SYNC Fabius
 branch / worktree / machine: codex/fabius-both-papers /
   /home/codex/src/Proofs / codexbox
 fetched main SHA: e18f5d0b0e3ec78e2b14e7006af6c7e916b42923
-HEAD and dirty paths: d139cc6920fae705528143fa95a132c6bbef78e6;
-  `Lean/FabiusFunction/GlobalExtension.lean` and this registry are dirty while
-  matching the coordinator's directly validated elaboration fix
+HEAD and dirty paths: c1d681f70dedad3a708a8baa0c06113390bf6a28;
+  clean before this registry-only claim expansion
 writing (exact paths):
   Lean/FabiusFunction/GlobalExtension.lean;
+  Lean/FabiusFunction/GlobalDyadic.lean;
+  Lean/FabiusFunction/OriginalPaperSupplement.lean;
   docs/registry/codex-fabius-both-papers.md
 expected declarations or document claims:
   `extendedFabius_natCast_eq_ite`, the exact all-natural value formula
   (zero at even knots and the Thue--Morse sign indexed by `m / 2` at odd
   knots); `iteratedDeriv_extendedFabius_natCast_eq_zero_iff`, the sharp
-  classification by positive derivative order or even knot
+  classification by positive derivative order or even knot;
+  relocate `rvachevDyadic_cast_global` unchanged from
+  `OriginalPaperSupplement.lean` to immediately after the restricted
+  `rvachevDyadic_cast` in `GlobalDyadic.lean`, preserving both public names and
+  exposing the total theorem to evaluator clients
 completed commits: Lower-Lambert source checkpoint `1da2fde2285e3970267b7dc2561bcd0d897be1b4`
   was integrated by coordinator merge `046946a974467e83244fd3a183a3e084e70d3379`;
   registry handoff `225f5338de9ea92489ed6a2c0c371c6edb4f5db9`
@@ -31,7 +36,9 @@ completed commits: Lower-Lambert source checkpoint `1da2fde2285e3970267b7dc2561b
   `f546c38e5b6ddde6f68825798ab34c003e5c6930` synchronizes that checkpoint with
   current fetched main `e18f5d0b0`; static-proof correction
   `0095fb161db5e6ef03df7bd391fbf45e96efc792` aligns the odd branch with the
-  literal `2 * b + 1` witness and is pushed on the feature branch
+  literal `2 * b + 1` witness; checkpoint
+  `c1d681f70dedad3a708a8baa0c06113390bf6a28` matches the coordinator's exact
+  directly elaborated module blob
 validated (exact command, SHA/state, exit code): coordinator board records
   serialized immutable `lake build +FabiusFunction.LowerLambertW` at
   `4c6bbac41`, exit 0, with its source blob unchanged on current main;
@@ -44,10 +51,14 @@ not yet validated: no focused Lake target, downstream module, public facade,
   or aggregate build is claimed for the natural-knot checkpoint; only the
   exact module elaboration plus read-only source/collision/marker/diff checks
   are currently validated
-requested integration or lease: after this unvalidated source checkpoint is
-  pushed, request the codexbox token for serialized targets
+requested integration or lease: natural-knot source is ready for integration;
+  request the codexbox token for serialized targets
   `+FabiusFunction.GlobalExtension`, `+FabiusFunction.PaperStatements`,
   `+FabiusFunction.Paper06487Supplement`, and `+FabiusFunction.Paper06487`;
+  this claim expands to the ordinary, nonoverlapping paths
+  `GlobalDyadic.lean` and `OriginalPaperSupplement.lean`, whose relocation will
+  later need serialized `+FabiusFunction.GlobalDyadic` and
+  `+FabiusFunction.OriginalPaperSupplement` validation;
   serialized README/primary/walkthrough/coverage paths are deliberately not
   claimed yet
 conflicts / dependencies: all advertised Fabius heads and their registries
@@ -57,9 +68,12 @@ conflicts / dependencies: all advertised Fabius heads and their registries
   `8d27ea2079ca4146d02ae104dfd48b06f388f49c` contains the pre-correction source
   checkpoint, while follow-up `62f4142a9f290c570299e200192a4818dc7529d2`
   supplies both the literal odd witness and explicit rewrite arguments;
-  documentation remains serialized and unclaimed
-next bounded step: checkpoint the exact validated module blob, then await the
-  focused/downstream build token and documentation lease
+  read-only audit across advertised tips found no competing claim or alternate
+  total dyadic-cast bridge on either relocation path; documentation remains
+  serialized and unclaimed
+next bounded step: push this exact-path expansion claim, reread the board and
+  advertised tips, then perform only the theorem relocation while validation
+  and documentation leases remain pending
 ```
 
 Source-only subagents inspect and prototype in `/tmp`; they do not edit the
