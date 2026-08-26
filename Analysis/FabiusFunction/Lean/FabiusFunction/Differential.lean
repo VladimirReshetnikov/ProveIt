@@ -6,9 +6,10 @@ import Mathlib.Analysis.Calculus.LocalExtr.Basic
 # Differential identities for the Fabius and Rvachev functions
 
 This module derives the global differential equation for Rvachev's compactly
-supported `up` function from the bounded Fabius characterization.  The proof
-handles the fold point at zero by gluing the two one-sided derivatives, then
-bootstraps the differential equation to smoothness of every finite order.
+supported `up` function from the bounded Fabius derivative identity and
+left-tail vanishing alone.  The proof handles the fold point at zero by gluing
+the two one-sided derivatives, then bootstraps the differential equation to
+smoothness of every finite order.
 It also records the closed constant-tail forms of the Fabius derivative and
 the exact midpoint derivative, so endpoint arguments do not need to reopen
 the global folded formula.
@@ -181,36 +182,47 @@ theorem fabius_differentiable (F : BoundedFabius) (hF : IsFabius F) :
     Differentiable ℝ (fabiusReal F) :=
   fun x => (fabius_hasDerivAt F hF x).differentiableAt
 
-private lemma rvachev_left_hasDerivAt (F : BoundedFabius) (hF : IsFabius F)
+private lemma rvachevUp_left_hasDerivAt_of_hasDerivAt (F : BoundedFabius)
+    (hderiv : ∀ x : ℝ,
+      HasDerivAt (fabiusReal F) (2 * rvachevUp F (2 * x - 1)) x)
     {x : ℝ} :
     HasDerivAt (fun y : ℝ => fabiusReal F (y + 1))
       (2 * rvachevUp F (2 * x + 1)) x := by
-  have h := (fabius_hasDerivAt F hF (x + 1)).comp_add_const x 1
+  have h := (hderiv (x + 1)).comp_add_const x 1
   rw [show 2 * (x + 1) - 1 = 2 * x + 1 by ring] at h
   exact h
 
-private lemma rvachev_hasDerivAt_of_neg (F : BoundedFabius) (hF : IsFabius F)
+private lemma rvachevUp_hasDerivAt_of_neg_of_hasDerivAt (F : BoundedFabius)
+    (hderiv : ∀ x : ℝ,
+      HasDerivAt (fabiusReal F) (2 * rvachevUp F (2 * x - 1)) x)
     {x : ℝ} (hx : x < 0) :
     HasDerivAt (rvachevUp F) (2 * rvachevUp F (2 * x + 1)) x := by
-  have hl := rvachev_left_hasDerivAt F hF (x := x)
+  have hl := rvachevUp_left_hasDerivAt_of_hasDerivAt F hderiv (x := x)
   apply hl.congr_of_eventuallyEq
   filter_upwards [Iio_mem_nhds hx] with y hy
   have hyle : y ≤ 0 := le_of_lt hy
   simp [rvachevUp, hyle]
 
-/-- The differential equation defining Rvachev's function. -/
-theorem rvachev_hasDerivAt (F : BoundedFabius) (hF : IsFabius F) (x : ℝ) :
+/-- Rvachev's refinement equation follows from the global bounded-Fabius
+derivative identity together with vanishing on the left tail; no smoothness,
+symmetry, or fixed-point information is needed. -/
+theorem rvachevUp_hasDerivAt_of_fabiusReal_hasDerivAt
+    (F : BoundedFabius)
+    (hzero : ∀ x : ℝ, x ≤ 0 → fabiusReal F x = 0)
+    (hderiv : ∀ x : ℝ,
+      HasDerivAt (fabiusReal F) (2 * rvachevUp F (2 * x - 1)) x)
+    (x : ℝ) :
     HasDerivAt (rvachevUp F)
       (2 * (rvachevUp F (2 * x + 1) - rvachevUp F (2 * x - 1))) x := by
   rcases lt_trichotomy x 0 with hx | rfl | hx
-  · have hmain := rvachev_hasDerivAt_of_neg F hF hx
+  · have hmain := rvachevUp_hasDerivAt_of_neg_of_hasDerivAt F hderiv hx
     have hsecond : rvachevUp F (2 * x - 1) = 0 := by
-      exact rvachevUp_eq_zero_of_le_neg_one F hF (by linarith)
+      rw [rvachevUp, if_pos (by linarith), hzero _ (by linarith)]
     rw [hsecond]
     simpa using hmain
-  · have hl0 := rvachev_left_hasDerivAt F hF (x := 0)
+  · have hl0 := rvachevUp_left_hasDerivAt_of_hasDerivAt F hderiv (x := 0)
     have hcoef : 2 * rvachevUp F (2 * (0 : ℝ) + 1) = 0 := by
-      simp [rvachevUp, hF.zero_of_nonpos]
+      simp [rvachevUp, hzero]
     rw [hcoef] at hl0
     have hl : HasDerivWithinAt (rvachevUp F) 0 (Iic (0 : ℝ)) 0 := by
       have h : HasDerivWithinAt (fun y : ℝ => fabiusReal F (y + 1)) 0
@@ -219,7 +231,8 @@ theorem rvachev_hasDerivAt (F : BoundedFabius) (hF : IsFabius F) (x : ℝ) :
       intro y hy
       change y ≤ 0 at hy
       rw [rvachevUp, if_pos hy]
-    have hone := fabius_hasDerivAt_one F hF
+    have hone : HasDerivAt (fabiusReal F) 0 1 := by
+      simpa [rvachevUp, hzero] using hderiv 1
     have hone' : HasDerivAt (fabiusReal F) 0 ((1 : ℝ) - 0) := by simpa using hone
     have hr0 := hone'.comp_const_sub 1 (0 : ℝ)
     have hr : HasDerivWithinAt (rvachevUp F) 0 (Ici (0 : ℝ)) 0 := by
@@ -234,12 +247,13 @@ theorem rvachev_hasDerivAt (F : BoundedFabius) (hF : IsFabius F) (x : ℝ) :
         simp [rvachevUp, not_le.mpr hypos]
     have hu := hl.union hr
     rw [Iic_union_Ici] at hu
-    have hzero : rvachevUp F 1 = 0 := by
-      exact rvachevUp_eq_zero_of_one_le F hF le_rfl
-    have hnegone : rvachevUp F (-1) = 0 := by
-      exact rvachevUp_eq_zero_of_le_neg_one F hF le_rfl
-    simpa [hzero, hnegone] using hu
-  · have hneg := rvachev_hasDerivAt_of_neg F hF (show -x < 0 by linarith)
+    have honeZero : rvachevUp F 1 = 0 := by
+      simp [rvachevUp, hzero]
+    have hnegoneZero : rvachevUp F (-1) = 0 := by
+      simp [rvachevUp, hzero]
+    simpa [honeZero, hnegoneZero] using hu
+  · have hneg := rvachevUp_hasDerivAt_of_neg_of_hasDerivAt F hderiv
+      (show -x < 0 by linarith)
     have hneg' : HasDerivAt (rvachevUp F)
         (2 * rvachevUp F (2 * (-x) + 1)) ((0 : ℝ) - x) := by simpa using hneg
     have hcomp := hneg'.comp_const_sub 0 x
@@ -247,10 +261,10 @@ theorem rvachev_hasDerivAt (F : BoundedFabius) (hF : IsFabius F) (x : ℝ) :
         (-(2 * rvachevUp F (2 * (-x) + 1))) x := by
       apply hcomp.congr_of_eventuallyEq
       filter_upwards with y
-      simpa using (rvachev_even F hF y).symm
+      simpa using (rvachevUp_even F y).symm
     convert hup using 1
     · have hfar : rvachevUp F (2 * x + 1) = 0 := by
-        exact rvachevUp_eq_zero_of_one_le F hF (by linarith)
+        rw [rvachevUp, if_neg (by linarith), hzero _ (by linarith)]
       rw [hfar]
       have heven := rvachevUp_even F (2 * x - 1)
       have heq : rvachevUp F (2 * (-x) + 1) = rvachevUp F (2 * x - 1) := by
@@ -258,6 +272,13 @@ theorem rvachev_hasDerivAt (F : BoundedFabius) (hF : IsFabius F) (x : ℝ) :
         ring_nf
       rw [heq]
       ring
+
+/-- The differential equation defining Rvachev's function. -/
+theorem rvachev_hasDerivAt (F : BoundedFabius) (hF : IsFabius F) (x : ℝ) :
+    HasDerivAt (rvachevUp F)
+      (2 * (rvachevUp F (2 * x + 1) - rvachevUp F (2 * x - 1))) x :=
+  rvachevUp_hasDerivAt_of_fabiusReal_hasDerivAt F hF.zero_of_nonpos
+    (fabius_hasDerivAt F hF) x
 
 /-- Pointwise derivative form of Rvachev's differential equation. -/
 theorem deriv_rvachevUp (F : BoundedFabius) (hF : IsFabius F) (x : ℝ) :
