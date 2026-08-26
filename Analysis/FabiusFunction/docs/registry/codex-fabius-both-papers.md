@@ -7,13 +7,10 @@ This file implements the per-branch registry fallback in
 SYNC Fabius
 branch / worktree / machine: codex/fabius-both-papers /
   /home/codex/src/Proofs / codexbox
-fetched main SHA: d33c4f44b3d08f14b15c1514d687a32898569475
-HEAD and dirty paths: 201f056124f534702a1a91573be82d375772ee05;
-  source edits in the first two claimed paths plus this own-registry expansion
+fetched main SHA: 5b053a32b10e758e39f1be23cb2e8d821fba8de6
+HEAD and dirty paths: b369925e81e4819ba1e38f229aae599f0418faa4;
+  dirty only in this own-registry handoff
 writing (exact paths):
-  Analysis/FabiusFunction/Lean/FabiusFunction/NegativeLaplaceDerivativeBounds.lean
-  Analysis/FabiusFunction/Lean/FabiusFunction/FabiusLambertDerivativeBounds.lean
-  Analysis/FabiusFunction/Lean/FabiusFunction/LaplacePeriodicSecondOrder.lean
   Analysis/FabiusFunction/docs/registry/codex-fabius-both-papers.md
 expected declarations or document claims:
   promote the existing private
@@ -23,8 +20,8 @@ expected declarations or document claims:
   upstream declaration; replace the inline `m = 1` specialization in
   `LaplacePeriodicSecondOrder.lean` by the same shared theorem while retaining
   the independently used denominator-positivity fact; preserve every existing
-  public signature, import, theorem body outside those references, and all
-  mathematical claims
+  public signature, import, and mathematical claim; the three source claims
+  are released by this handoff
 completed commits: Lower-Lambert source checkpoint `1da2fde2285e3970267b7dc2561bcd0d897be1b4`
   was integrated by coordinator merge `046946a974467e83244fd3a183a3e084e70d3379`;
   registry handoff `225f5338de9ea92489ed6a2c0c371c6edb4f5db9`
@@ -146,7 +143,13 @@ completed commits: Lower-Lambert source checkpoint `1da2fde2285e3970267b7dc2561b
   `9fd34678704270fd680bee95f43e6b74105f3e80` precedes source checkpoint
   `e8aa10cda1a01699a6a3569edde71411bbed5407`, which adds the two advertised
   all-index declarations and the module-header interpretation without changing
-  imports or any existing declaration;
+  imports or any existing declaration; central registry handoff
+  `eb90a1f7a06135d76b20f9703ec9f2a9b5d832e9` and clean merge
+  `0b86b9d77f1814986828cc1ebb72d80ae962fc72` precede denominator claim
+  `201f05612b2aff7b9a64ef497ec3d791957a261d`, claim expansion
+  `8bf570c79a9417d26b3f5d63f834c4ae45b84397`, and unvalidated source
+  checkpoint `b369925e81e4819ba1e38f229aae599f0418faa4`, whose three-file delta is
+  7 insertions and 27 deletions;
 validated (exact command, SHA/state, exit code): coordinator board records
   serialized immutable `lake build +FabiusFunction.LowerLambertW` at
   `4c6bbac41`, exit 0, with its source blob unchanged on current main;
@@ -193,9 +196,16 @@ validated (exact command, SHA/state, exit code): coordinator board records
   `ProbabilityLaplaceMoments.lean`; three independent read-only reviews of
   `e8aa10cda` pass the exact primed-Kummer specialization, binary-digit shift,
   natural subtraction, `n = 0` edge case, sign rewrite, names, placement,
-  imports, collision scan, and static source hygiene
-not yet validated: the central-binomial valuation source checkpoint
-  `e8aa10cda1a01699a6a3569edde71411bbed5407` has not been elaborated or built;
+  imports, collision scan, and static source hygiene; coordinator integration
+  `430aaac90` records the exact central-binomial source, and serialized builds
+  of `+FabiusFunction.TwoAdic` (2017 jobs) and
+  `+FabiusFunction.Paper06487` (3244 jobs) both exit 0 without warnings; three
+  independent read-only reviews of `b369925e8` accept the generic theorem,
+  all `m = 1, 2, 3` specializations, retained denominator-positivity fact,
+  imports, public-header preservation, collision scan, residual-duplicate
+  scan, and diff hygiene
+not yet validated: the denominator-consolidation source checkpoint
+  `b369925e81e4819ba1e38f229aae599f0418faa4` has not been elaborated or built;
   the historical validation-state paragraphs below are
   superseded by the coordinator board and retained only as provenance: the
   moved dyadic theorem body was already compiled in its
@@ -293,14 +303,20 @@ historical integration requests, all superseded by the current coordinator
   handoff;
   serialized README/primary/walkthrough/coverage paths are deliberately not
   claimed yet
-requested integration or lease: integrate the exact central-binomial valuation
-  source checkpoint and run serialized `LAKE_JOBS=1 lake build
-  +FabiusFunction.TwoAdic`, followed by `LAKE_JOBS=1 lake build
-  +FabiusFunction.Paper06487`; the `TwoAdic.lean` source claim is released by
-  this handoff; canonical README, AUDIT_FINDINGS, PAPER_COVERAGE, primary,
-  walkthrough, frontier, and user-supplied draft paths remain frozen and
-  unclaimed
-conflicts / dependencies: all advertised Fabius heads and their registries
+requested integration or lease: integrate exact denominator-consolidation
+  source checkpoint `b369925e81e4819ba1e38f229aae599f0418faa4` and run
+  serialized `LAKE_JOBS=1 lake build
+  +FabiusFunction.NegativeLaplaceDerivativeBounds`, followed by
+  `LAKE_JOBS=1 lake build +FabiusFunction.FabiusLambertDerivativeBounds`;
+  all three source claims are released by this handoff; canonical README,
+  AUDIT_FINDINGS, PAPER_COVERAGE, primary, walkthrough, frontier, and
+  user-supplied draft paths remain frozen and unclaimed
+conflicts / dependencies: fresh current-main, all-tip, and registry scans find
+  no public declaration, alternate same-domain estimate, or competing claim
+  on any of the three denominator-consolidation paths; the superficially
+  similar `NegativeLaplaceMinorArc` estimate has the genuinely weaker
+  `log 2 ≤ x` domain and is not interchangeable; all advertised Fabius heads
+  and their registries
   were checked; no branch claims GlobalExtension and the only overlap is the
   existing even/odd ingredients and downstream special cases that this API
   packages without modifying; local coordinator candidate merge
@@ -354,9 +370,34 @@ conflicts / dependencies: all advertised Fabius heads and their registries
   the downstream module directly imports the upstream home, and a theorem-only
   factoring is insufficient because its `expCoeff`, finite quotient, and degree
   proofs consume the polynomial family itself
-next bounded step: coordinator integration and serialized focused/paper-facade
-  validation of `e8aa10cda`; future document mapping must distinguish the
-  formalized valuation/sign pair from the still-unnamed bit/trigonometric forms
+next bounded step: coordinator integration and the two serialized focused
+  builds for `b369925e8`; after acceptance, correct the frozen audit ledger
+  only under a future document grant
+```
+
+## Negative-Laplace denominator consolidation handoff
+
+At fetched main `d33c4f44b3d08f14b15c1514d687a32898569475`,
+`NegativeLaplaceDerivativeBounds.lean` contained a private generic estimate
+for powers of `1 - exp (-x)`, while `FabiusLambertDerivativeBounds.lean`
+repeated the proof locally and `LaplacePeriodicSecondOrder.lean` reproved its
+`m = 1` specialization inline.  Source checkpoint
+`b369925e81e4819ba1e38f229aae599f0418faa4` documents and publishes
+`exp_neg_div_one_sub_pow_le`, deletes the local copy, and routes all eight
+applications through the shared theorem.  Every pre-existing public header,
+attribute, import, and mathematical statement is unchanged.  The exact source
+delta is 7 insertions and 27 deletions.
+
+Fresh current-main, advertised-tip, and registry scans find no competing
+public declaration, active path claim, or residual estimate on the same
+`1 ≤ x` domain.  Three independent static audits accept the proof reuse,
+specialization normalization, retained positivity facts, import reachability,
+public API, and source hygiene.  No Lean/Lake process was run.  The requested
+serialized gates are:
+
+```text
+LAKE_JOBS=1 lake build +FabiusFunction.NegativeLaplaceDerivativeBounds
+LAKE_JOBS=1 lake build +FabiusFunction.FabiusLambertDerivativeBounds
 ```
 
 ## Central-binomial two-adic valuation handoff
@@ -370,7 +411,8 @@ specialize it to the central binomial coefficient.  Source checkpoint
 zero.  The corollary `thueMorseSign_centralChoose` rewrites the defining sign
 through this valuation.
 
-The source blob is `a585d729f82e801f730f7ec4ade4705b087257b6`.
+The source preimage blob is `a585d729f82e801f730f7ec4ade4705b087257b6`;
+the accepted result blob is `7295874def860ce52feb88655cae2338aa648078`.
 Fresh current-main, all-tip, and registry scans find no exact or semantic Lean
 implementation and no competing `TwoAdic.lean` claim.  The theorem is
 explicitly listed as unformalized in the frozen user-supplied research drafts,
