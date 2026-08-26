@@ -1014,9 +1014,15 @@ Two changes from the original proposal. First, drop the suggested alternative pl
 
 **Verifier.** Every cited declaration exists at the stated line with the stated signature, quoted verbatim: moment_nonneg (Paper06487Supplement.lean:31, proof `rw [moment_eq_momentNumerator_div]; positivity`), momentNumerator_pos (Parity.lean:357), oddDoubleFactorial_pos (Arithmetic.lean:103), evenMersenneProduct_pos (Arithmetic.lean:115), halfMoment_pos ...
 
-#### `theorem_nine_all` records only naturality at `n = 0`, but `IsOddNatural (reshetnikov n)` holds for every `n` — the `n = 0` case has the same one-line proof
+#### DONE — `theorem_nine_all` records only naturality at `n = 0`, but `IsOddNatural (reshetnikov n)` holds for every `n` — the `n = 0` case has the same one-line proof
 
 Confidence high.  `Paper06487Supplement.lean:213`, `PaperStatements.lean:708`, `Arithmetic.lean:179`
+
+**DONE** in source commit `b27fc5259`, integrated as `6d15d9116`.
+`theorem_twenty_one_odd_all` supplies the all-index oddness statement and
+`theorem_nine_all` is retained with its exact public signature as the weaker
+compatibility corollary.  Serialized builds of `Paper06487Supplement` (3243
+jobs) and `Paper06487` (3244 jobs) both exit 0.
 
 **Why.** The supplement's stated purpose is that "several lemmas deliberately expose stronger boundary cases or weaker hypotheses than the prose needs", and it already does exactly this for Theorem 9. Theorem 21's oddness conjunct is the strictly stronger fact (`IsOddNatural q = ∃ m, Odd m ∧ q = m`, Arithmetic.lean:179, implies `IsNatural q`) and the same `n = 0` boundary case is available, so `theorem_nine_all` is currently a weaker statement than the corpus can prove. Note the *second* conjunct of ...
 
@@ -1044,9 +1050,16 @@ Optionally re-derive the existing `theorem_nine_all n` as
 
 ### Cluster: thuemorse-qbinomial
 
-#### The sharp converse of `qPochhammer_two_pow_eq_zero` is missing: the `q = 1/2` q-binomial polynomial has exactly the `n` roots `1, 2, 4, …, 2^(n-1)`
+#### DONE — The sharp converse of `qPochhammer_two_pow_eq_zero` is missing: the `q = 1/2` q-binomial polynomial has exactly the `n` roots `1, 2, 4, …, 2^(n-1)`
 
 Confidence high.  `HalfQBinomial.lean:457`, `HalfQBinomial.lean:465`, `HalfQBinomial.lean:382`, `HalfQBinomial.lean:448`
+
+**DONE** in source commit `a987b3bb9`, integrated as `29729991e`.
+`finiteQPochhammer_eq_zero_iff`, `finiteQPochhammer_half_eq_zero_iff`,
+`halfQBinomial_sum_eq_zero_iff`, and `qBinomial_half_sum_eq_zero_iff`
+classify the complete rational root locus.  Serialized builds of
+`HalfQBinomial` (2020 jobs) and its direct consumer `FabiusQBinomialFormula`
+(3317 jobs) both exit 0.
 
 **Why.** The corpus proves the vanishing direction (`qPochhammer_two_pow_eq_zero`, `halfQBinomial_two_pow_sum_eq_zero`) and the value at the first non-root (`halfQBinomial_two_pow_sum_eq_self`), but never records that those are *all* the roots. That is exactly the sharpness statement that makes the dyadic-node interpolation in `FabiusQBinomialFormula` (`qWeight_nodes_zero` / `qWeight_nodes_self`, FabiusQBinomialFormula.lean:262/280) non-degenerate: the weights `qWeight n k` are the unique-up-to-scale ...
 
