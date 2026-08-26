@@ -16,6 +16,7 @@ import FabiusFunction.ThueMorseEulerTransform
 import FabiusFunction.ThueMorseLucasSupport
 import FabiusFunction.ThueMorseWalsh
 import FabiusFunction.ThueMorseSparseMoments
+import FabiusFunction.ThueMorseMixedDifference
 import FabiusFunction.NegativeLaplace
 import FabiusFunction.ProbabilityLaplaceMoments
 import FabiusFunction.UnitLaplaceMomentBounds

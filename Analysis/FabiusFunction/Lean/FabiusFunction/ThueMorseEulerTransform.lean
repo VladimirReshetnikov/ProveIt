@@ -334,6 +334,25 @@ theorem abs_sum_thueMorseSign_Ico_le_two (a b : ℕ) (hab : a ≤ b) :
           (abs_sum_thueMorseSign_range_le_one a)
     _ = 2 := by norm_num
 
+/-- **Partial aligned blocks.**  A signed sum over an initial segment of
+an aligned dyadic block factors through the block sign:
+`∑_{r<R} ε(2^m·q + r) = ε(q)·S(R)` for `R ≤ 2^m`. -/
+theorem sum_thueMorseSign_block_prefix (m q R : ℕ) (hR : R ≤ 2 ^ m) :
+    ∑ r ∈ range R, thueMorseSign (2 ^ m * q + r) =
+      thueMorseSign q * ∑ r ∈ range R, thueMorseSign r := by
+  rw [Finset.mul_sum]
+  refine Finset.sum_congr rfl fun r hr => ?_
+  have hrlt : r < 2 ^ m := lt_of_lt_of_le (Finset.mem_range.mp hr) hR
+  rw [show 2 ^ m * q + r = q * 2 ^ m + r by ring,
+    thueMorseSign_block_concat m q r hrlt]
+
+/-- **Aligned dyadic blocks are balanced**: for `m ≥ 1` every aligned
+block sums to zero, `∑_{r<2^m} ε(2^m·q + r) = 0`. -/
+theorem sum_thueMorseSign_aligned_block (m q : ℕ) (hm : 1 ≤ m) :
+    ∑ r ∈ range (2 ^ m), thueMorseSign (2 ^ m * q + r) = 0 := by
+  rw [sum_thueMorseSign_block_prefix m q (2 ^ m) le_rfl,
+    sum_thueMorseSign_range, if_pos (dvd_pow_self 2 (by omega)), mul_zero]
+
 /-- **Interval discrepancy of the bits**, in doubled integer form: the
 ones-count of any interval deviates from half its length by at most one:
 `|2·∑_{a≤n<b} τ(n) - (b-a)| ≤ 2`. -/

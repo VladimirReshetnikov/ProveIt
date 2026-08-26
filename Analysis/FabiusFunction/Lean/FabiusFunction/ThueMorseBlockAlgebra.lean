@@ -303,6 +303,33 @@ theorem sum_thueMorseSign_mul_choose_self_int (m : ℕ) :
       (-1) ^ m * 2 ^ m.choose 2 := by
   simpa using sum_thueMorseSign_mul_choose_self (R := ℤ) m
 
+/-! ### Geometric-sum factorization -/
+
+/-- Geometric form of the ladder: over any commutative ring,
+`∏_{j<r} (1 - z^(2^j)) = (1-z)^r · ∏_{j<r} (1 + z + ⋯ + z^(2^j - 1))`.
+Dividing the block polynomial by `(1-z)^k` for `k ≤ r` therefore leaves a
+polynomial of degree `2^r - k - 1` — the algebra behind the terminal zero
+runs of the iterated prefix sums. -/
+theorem prod_one_sub_two_pow_eq_geom {R : Type*} [CommRing R]
+    (z : R) (r : ℕ) :
+    ∏ j ∈ range r, (1 - z ^ 2 ^ j) =
+      (1 - z) ^ r * ∏ j ∈ range r, ∑ i ∈ range (2 ^ j), z ^ i := by
+  calc ∏ j ∈ range r, (1 - z ^ 2 ^ j)
+      = ∏ j ∈ range r, ((1 - z) * ∑ i ∈ range (2 ^ j), z ^ i) := by
+        refine Finset.prod_congr rfl fun j _ => ?_
+        rw [mul_comm, geom_sum_mul_neg]
+    _ = (1 - z) ^ r * ∏ j ∈ range r, ∑ i ∈ range (2 ^ j), z ^ i := by
+        rw [Finset.prod_mul_distrib, Finset.prod_const, Finset.card_range]
+
+/-- The block polynomial in geometric-product form:
+`P_r = (1-X)^r · ∏_{j<r} (1 + X + ⋯ + X^(2^j-1))`. -/
+theorem thueMorseBlockPolynomial_eq_geom_prod (r : ℕ) :
+    thueMorseBlockPolynomial r =
+      (1 - Polynomial.X) ^ r *
+        ∏ j ∈ range r, ∑ i ∈ range (2 ^ j), (Polynomial.X : Polynomial ℤ) ^ i := by
+  rw [thueMorseBlockPolynomial_eq_product]
+  exact prod_one_sub_two_pow_eq_geom Polynomial.X r
+
 /-! ### Cyclotomic factorization -/
 
 /-- The `2^(q+1)`-st cyclotomic polynomial is `1 + X^(2^q)`. -/
