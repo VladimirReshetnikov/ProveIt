@@ -497,3 +497,32 @@ next bounded step: push this registry-first amendment, keep all source frozen
   until the current build request is acknowledged, then implement only the
   two one-line corollaries and their exact facade sentence
 ```
+
+## Current-main validation retarget
+
+`origin/main` advanced to
+`1eadfd565db2e4c49310dbaa68c7b4648cb563b8`, integrating and validating the
+strict Laplace-sign and forward/inverse diagonal tranches.  This branch merged
+that exact tip conflict-free as
+`f2b62161ac3d21fac027bc3acfc3e4f44ed18dd5` and pushed it.  The hierarchy blob
+remains exactly `fd3b5dac6c3f25332c130967ec4914343b7b506a`, and the facade
+blob remains exactly `ce830f045e45e291a969f4d97a41294d8f83494a`.
+
+The pending serialized request is therefore retargeted to immutable cumulative
+tree `f2b62161ac3d21fac027bc3acfc3e4f44ed18dd5`.  Run the same two separate
+commands, in order, from the repository root:
+
+```text
+LAKE_JOBS=1 lake build +FabiusFunction.FabiusInverseAsymptotic
+LAKE_JOBS=1 lake build +FabiusFunction.PaperFabiusAsymptotic
+```
+
+This retarget supersedes only the older commit coordinate `29f9b0a2b`; it does
+not change the source/facade blobs, theorem surface, commands, host-serialization
+rules, or evidence status.  No Lean/Lake process has run in this worktree and
+no host token has been granted.
+
+The coordinator now explicitly releases `FabiusInverse.lean` after its focused
+build.  The duplicate private reflection-filter helper can consequently be
+considered for a later registry-first cleanup, but it remains outside the
+advertised reflected-hierarchy tranche and is not silently claimed here.
