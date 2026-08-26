@@ -22,28 +22,9 @@ open Set Finset MeasureTheory
 
 namespace Fabius
 
-private lemma rvachev_eq_zero_of_le_neg_one (F : BoundedFabius) (hF : IsFabius F)
-    {x : ℝ} (hx : x ≤ -1) : rvachevUp F x = 0 := by
-  rw [rvachevUp, if_pos (by linarith : x ≤ 0)]
-  exact hF.zero_of_nonpos _ (by linarith)
-
-private lemma rvachev_eq_zero_of_one_le (F : BoundedFabius) (hF : IsFabius F)
-    {x : ℝ} (hx : 1 ≤ x) : rvachevUp F x = 0 := by
-  rw [rvachevUp, if_neg (by linarith : ¬ x ≤ 0)]
-  exact hF.zero_of_nonpos _ (by linarith)
-
-private lemma rvachev_zero (F : BoundedFabius) (hF : IsFabius F) :
-    rvachevUp F 0 = 1 := by
-  rw [rvachevUp, if_pos le_rfl]
-  simpa using hF.one_of_one_le 1 le_rfl
-
 private lemma rvachev_continuous (F : BoundedFabius) (hF : IsFabius F) :
     Continuous (rvachevUp F) :=
   (rvachev_contDiff F hF).continuous
-
-private lemma rvachev_intervalIntegrable (F : BoundedFabius) (hF : IsFabius F)
-    (a b : ℝ) : IntervalIntegrable (rvachevUp F) volume a b :=
-  (rvachev_continuous F hF).intervalIntegrable a b
 
 /-- Every monomial multiple of Rvachev's function is continuous. -/
 theorem pow_mul_rvachev_continuous (F : BoundedFabius) (hF : IsFabius F)
@@ -54,6 +35,15 @@ private lemma pow_mul_rvachev_intervalIntegrable
     (F : BoundedFabius) (hF : IsFabius F) (m : ℕ) (a b : ℝ) :
     IntervalIntegrable (fun x : ℝ => x ^ m * rvachevUp F x) volume a b :=
   (pow_mul_rvachev_continuous F hF m).intervalIntegrable a b
+
+private lemma integral_eq_interval_of_support_subset_rvachevUp
+    {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    (F : BoundedFabius) (hF : IsFabius F) (f : ℝ → E)
+    (hf : Function.support f ⊆ Function.support (rvachevUp F)) :
+    (∫ x : ℝ, f x) = ∫ x in (-1 : ℝ)..1, f x :=
+  (intervalIntegral.integral_eq_integral_of_support_subset
+    (hf.trans ((support_rvachev_subset_Ioo F hF).trans
+      Ioo_subset_Ioc_self))).symm
 
 private lemma integral_pow_mul_rvachev_symm
     (F : BoundedFabius) (hF : IsFabius F) (m : ℕ) :
@@ -90,30 +80,11 @@ private lemma integral_pow_mul_rvachev_eq_interval
     (F : BoundedFabius) (hF : IsFabius F) (m : ℕ) :
     (∫ x : ℝ, x ^ m * rvachevUp F x) =
       ∫ x in (-1 : ℝ)..1, x ^ m * rvachevUp F x := by
-  have hwhole : (∫ x : ℝ, x ^ m * rvachevUp F x) =
-      ∫ x : ℝ in Icc (-1 : ℝ) 1, x ^ m * rvachevUp F x := by
-    rw [← integral_indicator measurableSet_Icc]
-    apply integral_congr_ae
-    filter_upwards with x
-    by_cases hmem : x ∈ Icc (-1 : ℝ) 1
-    · simp [hmem]
-    · have hout : x ≤ -1 ∨ 1 ≤ x := by
-        simp only [Set.mem_Icc, not_and_or, not_le] at hmem
-        rcases hmem with hx | hx
-        · exact Or.inl hx.le
-        · exact Or.inr hx.le
-      rcases hout with hx | hx
-      · rw [rvachev_eq_zero_of_le_neg_one F hF hx]
-        simp [hmem]
-      · rw [rvachev_eq_zero_of_one_le F hF hx]
-        simp [hmem]
-  calc
-    (∫ x : ℝ, x ^ m * rvachevUp F x) =
-        ∫ x : ℝ in Icc (-1 : ℝ) 1, x ^ m * rvachevUp F x := hwhole
-    _ = ∫ x : ℝ in Ioc (-1 : ℝ) 1, x ^ m * rvachevUp F x :=
-      integral_Icc_eq_integral_Ioc
-    _ = ∫ x in (-1 : ℝ)..1, x ^ m * rvachevUp F x := by
-      rw [intervalIntegral.integral_of_le (by norm_num : (-1 : ℝ) ≤ 1)]
+  apply integral_eq_interval_of_support_subset_rvachevUp F hF
+  intro x hx
+  change rvachevUp F x ≠ 0
+  intro hzero
+  exact hx (by simp [hzero])
 
 /-- Rvachev's compactly supported function has total mass one. -/
 theorem integral_rvachev_eq_one (F : BoundedFabius) (hF : IsFabius F) :
@@ -124,7 +95,7 @@ theorem integral_rvachev_eq_one (F : BoundedFabius) (hF : IsFabius F) :
     have hxmem : x ∈ Icc (0 : ℝ) 1 := by
       simpa [Set.uIcc_of_le (by norm_num : (0 : ℝ) ≤ 1)] using hx
     have hfar : rvachevUp F (2 * x + 1) = 0 :=
-      rvachev_eq_zero_of_one_le F hF (by linarith [hxmem.1])
+      rvachevUp_eq_zero_of_one_le F hF (by linarith [hxmem.1])
     convert rvachev_hasDerivAt F hF x using 1
     rw [hfar]
     ring
@@ -136,7 +107,7 @@ theorem integral_rvachev_eq_one (F : BoundedFabius) (hF : IsFabius F) :
   have hsub := intervalIntegral.mul_integral_comp_mul_sub
     (f := rvachevUp F) (a := (0 : ℝ)) (b := 1) 2 1
   have hends : rvachevUp F 1 - rvachevUp F 0 = -1 := by
-    rw [rvachev_eq_zero_of_one_le F hF le_rfl, rvachev_zero F hF]
+    rw [rvachevUp_eq_zero_of_one_le F hF le_rfl, rvachevUp_zero F hF]
     norm_num
   rw [intervalIntegral.integral_const_mul] at hftc
   rw [hends] at hftc
@@ -168,7 +139,7 @@ private lemma scaled_half_moment_identity
     have hxmem : x ∈ Icc (0 : ℝ) 1 := by
       simpa [Set.uIcc_of_le (by norm_num : (0 : ℝ) ≤ 1)] using hx
     have hfar : rvachevUp F (2 * x + 1) = 0 :=
-      rvachev_eq_zero_of_one_le F hF (by linarith [hxmem.1])
+      rvachevUp_eq_zero_of_one_le F hF (by linarith [hxmem.1])
     dsimp [v']
     convert rvachev_hasDerivAt F hF x using 1
     rw [hfar]
@@ -180,7 +151,8 @@ private lemma scaled_half_moment_identity
       (continuous_const.mul continuous_id |>.sub continuous_const))).intervalIntegrable 0 1
   have hparts := intervalIntegral.integral_mul_deriv_eq_deriv_mul hu hv hu_int hv_int
   have hu_zero : u 0 = 0 := by simp [u, Nat.ne_zero_of_lt hr]
-  have hv_zero : rvachevUp F 1 = 0 := rvachev_eq_zero_of_one_le F hF le_rfl
+  have hv_zero : rvachevUp F 1 = 0 :=
+    rvachevUp_eq_zero_of_one_le F hF le_rfl
   have hbyParts : (r : ℝ) *
       (∫ x in (0 : ℝ)..1, x ^ (r - 1) * rvachevUp F x) =
         2 * ∫ x in (0 : ℝ)..1, x ^ r * rvachevUp F (2 * x - 1) := by
@@ -619,7 +591,7 @@ private lemma complexGeneratingFunction_eq_exp_mul_laplace
     have hxmem : x ∈ Icc (0 : ℝ) 1 := by
       simpa [Set.uIcc_of_le (by norm_num : (0 : ℝ) ≤ 1)] using hx
     have hfar : rvachevUp F (2 * x + 1) = 0 :=
-      rvachev_eq_zero_of_one_le F hF (by linarith [hxmem.1])
+      rvachevUp_eq_zero_of_one_le F hF (by linarith [hxmem.1])
     dsimp [uc, u']
     convert rvachev_complex_hasDerivAt F hF x using 1
     rw [hfar]
@@ -660,7 +632,7 @@ private lemma complexGeneratingFunction_eq_exp_mul_laplace
   rw [hfirst, hsecond] at hparts
   have hboundary : uc 1 * e 1 - uc 0 * e 0 = -1 := by
     dsimp [uc, e]
-    rw [rvachev_eq_zero_of_one_le F hF le_rfl, rvachev_zero F hF]
+    rw [rvachevUp_eq_zero_of_one_le F hF le_rfl, rvachevUp_zero F hF]
     norm_num
   rw [hboundary] at hparts
   have hgen : complexGeneratingFunction F z =
@@ -745,8 +717,8 @@ private lemma rvachevLaplace_scaling
   rw [hsecond] at hparts
   have hboundary : uc 1 * e 1 - uc (-1) * e (-1) = 0 := by
     dsimp [uc, e]
-    rw [rvachev_eq_zero_of_one_le F hF le_rfl,
-      rvachev_eq_zero_of_le_neg_one F hF le_rfl]
+    rw [rvachevUp_eq_zero_of_one_le F hF le_rfl,
+      rvachevUp_eq_zero_of_le_neg_one F hF le_rfl]
     norm_num
   rw [hboundary] at hparts
   have hderiv : (∫ t in (-1 : ℝ)..1, u' t * e t) =
@@ -766,7 +738,7 @@ private lemma rvachevLaplace_scaling
       have htmem : t ∈ Icc (-1 : ℝ) 0 := by
         simpa [Set.uIcc_of_le (by norm_num : (-1 : ℝ) ≤ 0)] using ht
       have hfar : rvachevUp F (2 * t - 1) = 0 :=
-        rvachev_eq_zero_of_le_neg_one F hF (by linarith [htmem.2])
+        rvachevUp_eq_zero_of_le_neg_one F hF (by linarith [htmem.2])
       dsimp [u', e]
       rw [hfar]
       norm_num
@@ -780,7 +752,7 @@ private lemma rvachevLaplace_scaling
       have htmem : t ∈ Icc (0 : ℝ) 1 := by
         simpa [Set.uIcc_of_le (by norm_num : (0 : ℝ) ≤ 1)] using ht
       have hfar : rvachevUp F (2 * t + 1) = 0 :=
-        rvachev_eq_zero_of_one_le F hF (by linarith [htmem.1])
+        rvachevUp_eq_zero_of_one_le F hF (by linarith [htmem.1])
       dsimp [u', e]
       rw [hfar]
       norm_num
@@ -959,30 +931,11 @@ private lemma integral_rvachev_mul_eq_interval
     (F : BoundedFabius) (hF : IsFabius F) (g : ℝ → ℂ) :
     (∫ x : ℝ, (rvachevUp F x : ℂ) * g x) =
       ∫ x in (-1 : ℝ)..1, (rvachevUp F x : ℂ) * g x := by
-  have hwhole : (∫ x : ℝ, (rvachevUp F x : ℂ) * g x) =
-      ∫ x : ℝ in Icc (-1 : ℝ) 1, (rvachevUp F x : ℂ) * g x := by
-    rw [← integral_indicator measurableSet_Icc]
-    apply integral_congr_ae
-    filter_upwards with x
-    by_cases hmem : x ∈ Icc (-1 : ℝ) 1
-    · simp [hmem]
-    · have hout : x ≤ -1 ∨ 1 ≤ x := by
-        simp only [Set.mem_Icc, not_and_or, not_le] at hmem
-        rcases hmem with hx | hx
-        · exact Or.inl hx.le
-        · exact Or.inr hx.le
-      rcases hout with hx | hx
-      · rw [rvachev_eq_zero_of_le_neg_one F hF hx]
-        simp [hmem]
-      · rw [rvachev_eq_zero_of_one_le F hF hx]
-        simp [hmem]
-  calc
-    (∫ x : ℝ, (rvachevUp F x : ℂ) * g x) =
-        ∫ x : ℝ in Icc (-1 : ℝ) 1, (rvachevUp F x : ℂ) * g x := hwhole
-    _ = ∫ x : ℝ in Ioc (-1 : ℝ) 1, (rvachevUp F x : ℂ) * g x :=
-      integral_Icc_eq_integral_Ioc
-    _ = ∫ x in (-1 : ℝ)..1, (rvachevUp F x : ℂ) * g x := by
-      rw [intervalIntegral.integral_of_le (by norm_num : (-1 : ℝ) ≤ 1)]
+  apply integral_eq_interval_of_support_subset_rvachevUp F hF
+  intro x hx
+  change rvachevUp F x ≠ 0
+  intro hzero
+  exact hx (by simp [hzero])
 
 private lemma rvachevFourier_expansion_hasSum
     (F : BoundedFabius) (hF : IsFabius F) (z : ℂ) :
