@@ -6,6 +6,63 @@ Every worker reads it from the fetched `origin/main` before writing, merging,
 building, or pushing.  Workers publish replies in their own per-branch registry
 files; they do not edit this board.
 
+## Checkpoint 2026-08-26 03:46 PDT
+
+```text
+observed main before this directive: 65df99318029015fc04b971c439dc754f2ef7dd6
+coordinator branch: codex/fabius-coordinator-20260825
+integration mode: exact immutable sources -> coordinator -> fast-forward main
+main write owner: coordinator
+codexbox Lean/Lake owner: coordinator
+  (ACTIVE: exactly the three serialized gates below)
+codexbox TeX/PDF owner: unassigned
+  (IDLE)
+EVO Lean/Lake owner: codex/fabius-inverse-asymptotic-20260825
+  (ACTIVE: the disjoint decay proof-repair retry)
+EVO TeX/PDF owner: unassigned
+  (IDLE)
+documentation owner: unassigned
+  (all canonical documents are frozen)
+next poll: after each codexbox gate and at the EVO decay handoff
+```
+
+**Codexbox validation batch: zero-inclusive endpoint comparisons and
+Thue--Morse core-bound cleanup.**  Two path-disjoint immutable source units
+have exact current-main preimages and independent actual-diff static PASSes:
+
+- `0409c13d1` changes only `EndpointLaplaceComparison.lean` to blob
+  `e7170713a4c8fd4993009cba9cc0786cd7b72161`.  It adds exactly eight
+  documented zero-inclusive `_all` declarations, preserves all 16 old
+  declarations/imports/bodies and every attribute, and yields strict 24/24
+  public documentation.  The zero/positive splits, all-real mass positivity,
+  and totalized logarithmic zero case were reviewed without a collision.
+- `44b2352a8baefed1f54106d9338eac8d931f4f78` changes only
+  `ThueMorsePrefix.lean` and `ThueMorseGenerating.lean` to blobs
+  `fcbb7d08ba52974c069cf389db8d2460378dbb7b` and
+  `fb403c24606b0091aead89de26bb6b0f9dde2f97`.  It deletes two private power
+  bounds, replaces their four uses with `Nat.lt_two_pow_self` in the exact
+  weak/strict orientations, changes Generating only by comments, preserves
+  every public header/import/attribute, and completes strict 27/27 and 47/47
+  documentation.
+
+Neither unit has compiler evidence.  Integrate only these exact source commits
+and blobs, never the moving effective-bounds feature history.  On codexbox run
+exactly the following separate commands, in order, with strict
+stop-on-first-failure:
+
+```text
+LEAN_NUM_THREADS=0 LAKE_JOBS=1 lake build +FabiusFunction.EndpointLaplaceComparison
+LEAN_NUM_THREADS=0 LAKE_JOBS=1 lake build +FabiusFunction.ThueMorsePrefix
+LEAN_NUM_THREADS=0 LAKE_JOBS=1 lake build +FabiusFunction.ThueMorseGenerating
+```
+
+Run no parallel or additional codexbox Lean/Lake/TeX/PDF process.  Record the
+exact candidate/tree, each job count, exit, and every diagnostic.  Only an
+independently reviewed statement-preserving proof repair is in scope after a
+failure.  The simultaneous EVO decay retry remains independent on its other
+physical host.  The new Bose cutoff and Rvachev rational-evaluator requests
+are outside this grant; neither receives a source or build token here.
+
 ## Checkpoint 2026-08-26 03:41 PDT
 
 ```text
