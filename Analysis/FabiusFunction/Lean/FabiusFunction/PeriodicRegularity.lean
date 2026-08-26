@@ -22,6 +22,14 @@ all-orders arguments a reusable bridge from `HasDerivAt` to `deriv`.
 The elementary dyadic-exponential derivative, monotonicity, nonunit, and
 positive-denominator facts are exposed here for reuse by all later periodic
 modules.
+
+The declarations are organized in four layers: summable superexponential
+majorants; explicit first-through-fourth derivative expressions and uniform
+half-line bounds; termwise differentiation and continuity of their tails; and
+the resulting `C⁴`, periodicity, continuity, and bounded-range API for the
+normalized correction.  The quotient expressions are defined for every real
+scale, while their derivative, summability, and continuity interpretations
+below are asserted on the positive half-line.
 -/
 
 set_option autoImplicit false
@@ -31,6 +39,8 @@ open Set Filter
 
 namespace Fabius
 
+/-- Superexponential decay beats every fixed dyadic power: if `0 < a`, then
+`fun n ↦ (2 : ℝ) ^ (k * n) * Real.exp (-(a * (2 : ℝ) ^ n))` is summable. -/
 lemma summable_two_pow_mul_exp_neg_two_pow
     (a : ℝ) (ha : 0 < a) (k : ℕ) :
     Summable (fun n : ℕ =>
@@ -61,6 +71,9 @@ lemma summable_two_pow_mul_exp_neg_two_pow
         Real.exp_add]
       ring)
 
+/-- The power-of-a-power form of the dyadic superexponential majorant: if
+`0 < a`, then
+`fun n ↦ ((2 : ℝ) ^ n) ^ k * Real.exp (-(a * (2 : ℝ) ^ n))` is summable. -/
 lemma summable_forward_derivative_majorant
     (a : ℝ) (ha : 0 < a) (k : ℕ) :
     Summable (fun n : ℕ =>
@@ -69,19 +82,38 @@ lemma summable_forward_derivative_majorant
   ext n
   rw [← pow_mul, Nat.mul_comm n k]
 
+/-- The total expression used for the first scale derivative of the `n`-th
+forward logarithmic term:
+`2 ^ n * exp (-(s * 2 ^ n)) / (1 - exp (-(s * 2 ^ n)))`.
+Its derivative interpretation is proved below for `s > 0`. -/
 noncomputable def negativeLaplaceForwardTermFirst (s : ℝ) (n : ℕ) : ℝ :=
   (2 : ℝ) ^ n * Real.exp (-(s * (2 : ℝ) ^ n)) /
     (1 - Real.exp (-(s * (2 : ℝ) ^ n)))
 
+/-- The total expression used for the second scale derivative of the `n`-th
+forward logarithmic term:
+`-((2 ^ n) ^ 2 * exp (-(s * 2 ^ n)) / (1 - exp (-(s * 2 ^ n))) ^ 2)`.
+Its derivative interpretation is proved below for `s > 0`. -/
 noncomputable def negativeLaplaceForwardTermSecond (s : ℝ) (n : ℕ) : ℝ :=
   -(((2 : ℝ) ^ n) ^ 2 * Real.exp (-(s * (2 : ℝ) ^ n)) /
     (1 - Real.exp (-(s * (2 : ℝ) ^ n))) ^ 2)
 
+/-- The total expression used for the third scale derivative of the `n`-th
+forward logarithmic term:
+`(2 ^ n) ^ 3 * exp (-(s * 2 ^ n)) * (1 + exp (-(s * 2 ^ n))) /
+  (1 - exp (-(s * 2 ^ n))) ^ 3`.
+Its derivative interpretation is proved below for `s > 0`. -/
 noncomputable def negativeLaplaceForwardTermThird (s : ℝ) (n : ℕ) : ℝ :=
   ((2 : ℝ) ^ n) ^ 3 * Real.exp (-(s * (2 : ℝ) ^ n)) *
       (1 + Real.exp (-(s * (2 : ℝ) ^ n))) /
     (1 - Real.exp (-(s * (2 : ℝ) ^ n))) ^ 3
 
+/-- The total expression used for the fourth scale derivative of the `n`-th
+forward logarithmic term:
+`-((2 ^ n) ^ 4 * exp (-(s * 2 ^ n)) *
+  (1 + 4 * exp (-(s * 2 ^ n)) + exp (-(s * 2 ^ n)) ^ 2) /
+  (1 - exp (-(s * 2 ^ n))) ^ 4)`.
+Its derivative interpretation is proved below for `s > 0`. -/
 noncomputable def negativeLaplaceForwardTermFourth (s : ℝ) (n : ℕ) : ℝ :=
   -(((2 : ℝ) ^ n) ^ 4 * Real.exp (-(s * (2 : ℝ) ^ n)) *
       (1 + 4 * Real.exp (-(s * (2 : ℝ) ^ n)) +
@@ -101,6 +133,8 @@ theorem hasDerivAt_exp_neg_mul_two_pow (s : ℝ) (n : ℕ) :
   simpa only [Pi.neg_apply, id_eq, one_mul, mul_comm] using
     (((hasDerivAt_id s).mul_const ((2 : ℝ) ^ n)).neg.exp)
 
+/-- At every `s > 0`, differentiating the `n`-th forward logarithmic term
+gives `negativeLaplaceForwardTermFirst s n`. -/
 lemma negativeLaplaceForwardTerm_hasDerivAt
     (s : ℝ) (hs : 0 < s) (n : ℕ) :
     HasDerivAt (fun x : ℝ => negativeLaplaceForwardTerm x n)
@@ -116,6 +150,9 @@ lemma negativeLaplaceForwardTerm_hasDerivAt
   simpa [negativeLaplaceForwardTerm, negativeLaplaceForwardTermFirst, a, z,
     sub_eq_add_neg, mul_comm] using hlog
 
+/-- At every `s > 0`, differentiating
+`fun x ↦ negativeLaplaceForwardTermFirst x n` gives
+`negativeLaplaceForwardTermSecond s n`. -/
 lemma negativeLaplaceForwardTermFirst_hasDerivAt
     (s : ℝ) (hs : 0 < s) (n : ℕ) :
     HasDerivAt (fun x : ℝ => negativeLaplaceForwardTermFirst x n)
@@ -139,6 +176,9 @@ lemma negativeLaplaceForwardTermFirst_hasDerivAt
   · filter_upwards with x
     rfl
 
+/-- At every `s > 0`, differentiating
+`fun x ↦ negativeLaplaceForwardTermSecond x n` gives
+`negativeLaplaceForwardTermThird s n`. -/
 lemma negativeLaplaceForwardTermSecond_hasDerivAt
     (s : ℝ) (hs : 0 < s) (n : ℕ) :
     HasDerivAt (fun x : ℝ => negativeLaplaceForwardTermSecond x n)
@@ -163,6 +203,9 @@ lemma negativeLaplaceForwardTermSecond_hasDerivAt
   · filter_upwards with x
     rfl
 
+/-- At every `s > 0`, differentiating
+`fun x ↦ negativeLaplaceForwardTermThird x n` gives
+`negativeLaplaceForwardTermFourth s n`. -/
 lemma negativeLaplaceForwardTermThird_hasDerivAt
     (s : ℝ) (hs : 0 < s) (n : ℕ) :
     HasDerivAt (fun x : ℝ => negativeLaplaceForwardTermThird x n)
@@ -211,6 +254,10 @@ theorem one_sub_exp_neg_mul_two_pow_pos (s : ℝ) (hs : 0 < s) (n : ℕ) :
   apply Real.exp_lt_exp.mpr
   exact neg_lt_zero.mpr (mul_pos hs (by positivity))
 
+/-- Uniform first-derivative summand bound on the half-line `a ≤ s`: if
+`0 < a`, then
+`‖negativeLaplaceForwardTermFirst s n‖ ≤
+  (1 / (1 - exp (-a))) * ((2 ^ n) ^ 1 * exp (-(a * 2 ^ n)))`. -/
 lemma norm_negativeLaplaceForwardTermFirst_le
     (a s : ℝ) (ha : 0 < a) (has : a ≤ s) (n : ℕ) :
     ‖negativeLaplaceForwardTermFirst s n‖ ≤
@@ -246,6 +293,10 @@ lemma norm_negativeLaplaceForwardTermFirst_le
       simp
       ring
 
+/-- Uniform second-derivative summand bound on the half-line `a ≤ s`: if
+`0 < a`, then
+`‖negativeLaplaceForwardTermSecond s n‖ ≤
+  (1 / (1 - exp (-a)) ^ 2) * ((2 ^ n) ^ 2 * exp (-(a * 2 ^ n)))`. -/
 lemma norm_negativeLaplaceForwardTermSecond_le
     (a s : ℝ) (ha : 0 < a) (has : a ≤ s) (n : ℕ) :
     ‖negativeLaplaceForwardTermSecond s n‖ ≤
@@ -281,6 +332,10 @@ lemma norm_negativeLaplaceForwardTermSecond_le
     _ = (1 / (1 - Real.exp (-a)) ^ 2) *
         (((2 : ℝ) ^ n) ^ 2 * Real.exp (-(a * (2 : ℝ) ^ n))) := by ring
 
+/-- Uniform third-derivative summand bound on the half-line `a ≤ s`: if
+`0 < a`, then
+`‖negativeLaplaceForwardTermThird s n‖ ≤
+  (2 / (1 - exp (-a)) ^ 3) * ((2 ^ n) ^ 3 * exp (-(a * 2 ^ n)))`. -/
 lemma norm_negativeLaplaceForwardTermThird_le
     (a s : ℝ) (ha : 0 < a) (has : a ≤ s) (n : ℕ) :
     ‖negativeLaplaceForwardTermThird s n‖ ≤
@@ -330,6 +385,10 @@ lemma norm_negativeLaplaceForwardTermThird_le
     _ = (2 / (1 - Real.exp (-a)) ^ 3) *
         (((2 : ℝ) ^ n) ^ 3 * Real.exp (-(a * (2 : ℝ) ^ n))) := by ring
 
+/-- Uniform fourth-derivative summand bound on the half-line `a ≤ s`: if
+`0 < a`, then
+`‖negativeLaplaceForwardTermFourth s n‖ ≤
+  (6 / (1 - exp (-a)) ^ 4) * ((2 ^ n) ^ 4 * exp (-(a * 2 ^ n)))`. -/
 lemma norm_negativeLaplaceForwardTermFourth_le
     (a s : ℝ) (ha : 0 < a) (has : a ≤ s) (n : ℕ) :
     ‖negativeLaplaceForwardTermFourth s n‖ ≤
@@ -382,18 +441,36 @@ lemma norm_negativeLaplaceForwardTermFourth_le
     _ = (6 / (1 - Real.exp (-a)) ^ 4) *
         (((2 : ℝ) ^ n) ^ 4 * Real.exp (-(a * (2 : ℝ) ^ n))) := by ring
 
+/-- The total first-derivative tail candidate
+`negativeLaplaceForwardTailFirst s =
+  ∑' n, negativeLaplaceForwardTermFirst s n`.
+Its defining series is proved summable below when `s > 0`. -/
 noncomputable def negativeLaplaceForwardTailFirst (s : ℝ) : ℝ :=
   ∑' n : ℕ, negativeLaplaceForwardTermFirst s n
 
+/-- The total second-derivative tail candidate
+`negativeLaplaceForwardTailSecond s =
+  ∑' n, negativeLaplaceForwardTermSecond s n`.
+Its defining series is proved summable below when `s > 0`. -/
 noncomputable def negativeLaplaceForwardTailSecond (s : ℝ) : ℝ :=
   ∑' n : ℕ, negativeLaplaceForwardTermSecond s n
 
+/-- The total third-derivative tail candidate
+`negativeLaplaceForwardTailThird s =
+  ∑' n, negativeLaplaceForwardTermThird s n`.
+Its defining series is proved summable below when `s > 0`. -/
 noncomputable def negativeLaplaceForwardTailThird (s : ℝ) : ℝ :=
   ∑' n : ℕ, negativeLaplaceForwardTermThird s n
 
+/-- The total fourth-derivative tail candidate
+`negativeLaplaceForwardTailFourth s =
+  ∑' n, negativeLaplaceForwardTermFourth s n`.
+Its defining series is proved summable below when `s > 0`. -/
 noncomputable def negativeLaplaceForwardTailFourth (s : ℝ) : ℝ :=
   ∑' n : ℕ, negativeLaplaceForwardTermFourth s n
 
+/-- For every `s > 0`, the series
+`fun n ↦ negativeLaplaceForwardTermFirst s n` is summable. -/
 theorem summable_negativeLaplaceForwardTermFirst (s : ℝ) (hs : 0 < s) :
     Summable (negativeLaplaceForwardTermFirst s) := by
   have hmajor := (summable_forward_derivative_majorant s hs 1).mul_left
@@ -401,6 +478,8 @@ theorem summable_negativeLaplaceForwardTermFirst (s : ℝ) (hs : 0 < s) :
   exact hmajor.of_norm_bounded
     (norm_negativeLaplaceForwardTermFirst_le s s hs le_rfl)
 
+/-- For every `s > 0`, the series
+`fun n ↦ negativeLaplaceForwardTermSecond s n` is summable. -/
 theorem summable_negativeLaplaceForwardTermSecond (s : ℝ) (hs : 0 < s) :
     Summable (negativeLaplaceForwardTermSecond s) := by
   have hmajor := (summable_forward_derivative_majorant s hs 2).mul_left
@@ -408,6 +487,8 @@ theorem summable_negativeLaplaceForwardTermSecond (s : ℝ) (hs : 0 < s) :
   exact hmajor.of_norm_bounded
     (norm_negativeLaplaceForwardTermSecond_le s s hs le_rfl)
 
+/-- For every `s > 0`, the series
+`fun n ↦ negativeLaplaceForwardTermThird s n` is summable. -/
 theorem summable_negativeLaplaceForwardTermThird (s : ℝ) (hs : 0 < s) :
     Summable (negativeLaplaceForwardTermThird s) := by
   have hmajor := (summable_forward_derivative_majorant s hs 3).mul_left
@@ -415,6 +496,8 @@ theorem summable_negativeLaplaceForwardTermThird (s : ℝ) (hs : 0 < s) :
   exact hmajor.of_norm_bounded
     (norm_negativeLaplaceForwardTermThird_le s s hs le_rfl)
 
+/-- For every `s > 0`, the series
+`fun n ↦ negativeLaplaceForwardTermFourth s n` is summable. -/
 theorem summable_negativeLaplaceForwardTermFourth (s : ℝ) (hs : 0 < s) :
     Summable (negativeLaplaceForwardTermFourth s) := by
   have hmajor := (summable_forward_derivative_majorant s hs 4).mul_left
@@ -422,6 +505,9 @@ theorem summable_negativeLaplaceForwardTermFourth (s : ℝ) (hs : 0 < s) :
   exact hmajor.of_norm_bounded
     (norm_negativeLaplaceForwardTermFourth_le s s hs le_rfl)
 
+/-- Termwise differentiation of the forward tail at every `s > 0`:
+`negativeLaplaceForwardTail` has derivative
+`negativeLaplaceForwardTailFirst s` at `s`. -/
 theorem negativeLaplaceForwardTail_hasDerivAt (s : ℝ) (hs : 0 < s) :
     HasDerivAt negativeLaplaceForwardTail
       (negativeLaplaceForwardTailFirst s) s := by
@@ -449,6 +535,9 @@ theorem negativeLaplaceForwardTail_hasDerivAt (s : ℝ) (hs : 0 < s) :
   · exact summable_negativeLaplaceForwardTerm s hs
   · exact show a < s by dsimp [a]; linarith
 
+/-- Termwise differentiation of the first derivative tail at every `s > 0`:
+`negativeLaplaceForwardTailFirst` has derivative
+`negativeLaplaceForwardTailSecond s` at `s`. -/
 theorem negativeLaplaceForwardTailFirst_hasDerivAt (s : ℝ) (hs : 0 < s) :
     HasDerivAt negativeLaplaceForwardTailFirst
       (negativeLaplaceForwardTailSecond s) s := by
@@ -476,6 +565,9 @@ theorem negativeLaplaceForwardTailFirst_hasDerivAt (s : ℝ) (hs : 0 < s) :
   · exact summable_negativeLaplaceForwardTermFirst s hs
   · exact show a < s by dsimp [a]; linarith
 
+/-- Termwise differentiation of the second derivative tail at every `s > 0`:
+`negativeLaplaceForwardTailSecond` has derivative
+`negativeLaplaceForwardTailThird s` at `s`. -/
 theorem negativeLaplaceForwardTailSecond_hasDerivAt (s : ℝ) (hs : 0 < s) :
     HasDerivAt negativeLaplaceForwardTailSecond
       (negativeLaplaceForwardTailThird s) s := by
@@ -503,6 +595,9 @@ theorem negativeLaplaceForwardTailSecond_hasDerivAt (s : ℝ) (hs : 0 < s) :
   · exact summable_negativeLaplaceForwardTermSecond s hs
   · exact show a < s by dsimp [a]; linarith
 
+/-- Termwise differentiation of the third derivative tail at every `s > 0`:
+`negativeLaplaceForwardTailThird` has derivative
+`negativeLaplaceForwardTailFourth s` at `s`. -/
 theorem negativeLaplaceForwardTailThird_hasDerivAt (s : ℝ) (hs : 0 < s) :
     HasDerivAt negativeLaplaceForwardTailThird
       (negativeLaplaceForwardTailFourth s) s := by
@@ -555,6 +650,8 @@ theorem deriv_negativeLaplaceForwardTailThird (s : ℝ) (hs : 0 < s) :
       negativeLaplaceForwardTailFourth s :=
   (negativeLaplaceForwardTailThird_hasDerivAt s hs).deriv
 
+/-- For each `n`, the fourth derivative expression
+`fun s ↦ negativeLaplaceForwardTermFourth s n` is continuous on `(0, ∞)`. -/
 theorem continuousOn_negativeLaplaceForwardTermFourth (n : ℕ) :
     ContinuousOn (fun s : ℝ => negativeLaplaceForwardTermFourth s n) (Ioi 0) := by
   intro s hs
@@ -566,6 +663,8 @@ theorem continuousOn_negativeLaplaceForwardTermFourth (n : ℕ) :
     pow_ne_zero 4 hden
   fun_prop (disch := assumption)
 
+/-- At every `s > 0`, the fourth derivative tail
+`negativeLaplaceForwardTailFourth` is continuous at `s`. -/
 theorem continuousAt_negativeLaplaceForwardTailFourth
     (s : ℝ) (hs : 0 < s) :
     ContinuousAt negativeLaplaceForwardTailFourth s := by
@@ -587,6 +686,8 @@ theorem continuousAt_negativeLaplaceForwardTailFourth
   exact hcont.continuousAt (Icc_mem_nhds (by dsimp [a]; linarith)
     (by dsimp [b]; linarith))
 
+/-- The fourth derivative tail `negativeLaplaceForwardTailFourth` is
+continuous on `(0, ∞)`. -/
 theorem continuousOn_negativeLaplaceForwardTailFourth :
     ContinuousOn negativeLaplaceForwardTailFourth (Ioi 0) := by
   intro s hs
@@ -629,6 +730,9 @@ theorem contDiffOn_negativeLaplaceForwardTail :
   refine ⟨hd0, by simp, ?_⟩
   exact h1.congr fun s hs => deriv_negativeLaplaceForwardTail s hs
 
+/-- Every Fabius Laplace moment has every finite order of smoothness: for
+`IsFabius F` and `n k : ℕ`, the function `fabiusLaplaceMoment F k` is
+`C^n` on `ℝ`. -/
 theorem contDiff_fabiusLaplaceMoment_nat
     (F : BoundedFabius) (hF : IsFabius F) (n k : ℕ) :
     ContDiff ℝ n (fabiusLaplaceMoment F k) := by
@@ -651,6 +755,8 @@ theorem contDiff_fabiusLaplaceMoment_nat
       rw [hderiv]
       exact (ih (k + 1)).neg
 
+/-- The dyadically parametrized logarithm
+`fun t ↦ negativeLaplaceLog ((2 : ℝ) ^ t)` is `C⁴` on `ℝ`. -/
 theorem contDiff_negativeLaplaceLog_two_rpow :
     ContDiff ℝ 4 (fun t : ℝ => negativeLaplaceLog ((2 : ℝ) ^ t)) := by
   let F : BoundedFabius := Existence.boundedCandidate
@@ -674,6 +780,8 @@ theorem contDiff_negativeLaplaceLog_two_rpow :
   rw [heq]
   exact hlog
 
+/-- The dyadically parametrized forward tail
+`fun t ↦ negativeLaplaceForwardTail ((2 : ℝ) ^ t)` is `C⁴` on `ℝ`. -/
 theorem contDiff_negativeLaplaceForwardTail_two_rpow :
     ContDiff ℝ 4 (fun t : ℝ => negativeLaplaceForwardTail ((2 : ℝ) ^ t)) := by
   rw [contDiff_iff_contDiffAt]
@@ -705,16 +813,21 @@ theorem contDiff_negativeLaplacePsi :
   unfold negativeLaplacePsi
   exact contDiff_negativeLaplacePeriodicCorrection.sub contDiff_const
 
+/-- At every `t : ℝ`, the normalized correction has derivative
+`deriv negativeLaplacePsi t` at `t`. -/
 theorem negativeLaplacePsi_hasDerivAt (t : ℝ) :
     HasDerivAt negativeLaplacePsi (deriv negativeLaplacePsi t) t :=
   (contDiff_negativeLaplacePsi.differentiable (by norm_num) t).hasDerivAt
 
+/-- The first derivative `deriv negativeLaplacePsi` is `C³` on `ℝ`. -/
 theorem contDiff_deriv_negativeLaplacePsi :
     ContDiff ℝ 3 (deriv negativeLaplacePsi) := by
   apply ContDiff.deriv'
   simpa only [show (3 : ℕ∞ω) + 1 = 4 by norm_num] using
     contDiff_negativeLaplacePsi
 
+/-- At every `t : ℝ`, the function `deriv negativeLaplacePsi` has derivative
+`deriv (deriv negativeLaplacePsi) t` at `t`. -/
 theorem negativeLaplacePsi_deriv_hasDerivAt (t : ℝ) :
     HasDerivAt (deriv negativeLaplacePsi)
       (deriv (deriv negativeLaplacePsi) t) t :=
@@ -743,27 +856,34 @@ theorem negativeLaplacePsi_secondDeriv_add_one (t : ℝ) :
   simpa using (hshift.congr_of_eventuallyEq heq).unique
     (negativeLaplacePsi_deriv_hasDerivAt t)
 
+/-- The first derivative `deriv negativeLaplacePsi` has period `1`. -/
 theorem negativeLaplacePsi_deriv_periodic :
     Function.Periodic (deriv negativeLaplacePsi) 1 :=
   negativeLaplacePsi_deriv_add_one
 
+/-- The second derivative `deriv (deriv negativeLaplacePsi)` has period `1`. -/
 theorem negativeLaplacePsi_secondDeriv_periodic :
     Function.Periodic (deriv (deriv negativeLaplacePsi)) 1 :=
   negativeLaplacePsi_secondDeriv_add_one
 
+/-- The first derivative `deriv negativeLaplacePsi` is continuous on `ℝ`. -/
 theorem continuous_deriv_negativeLaplacePsi :
     Continuous (deriv negativeLaplacePsi) :=
   contDiff_negativeLaplacePsi.continuous_deriv (by norm_num)
 
+/-- The second derivative `deriv (deriv negativeLaplacePsi)` is continuous
+on `ℝ`. -/
 theorem continuous_secondDeriv_negativeLaplacePsi :
     Continuous (deriv (deriv negativeLaplacePsi)) :=
   contDiff_deriv_negativeLaplacePsi.continuous_deriv (by norm_num)
 
+/-- The range `range (deriv negativeLaplacePsi)` is bounded. -/
 theorem isBounded_range_deriv_negativeLaplacePsi :
     Bornology.IsBounded (range (deriv negativeLaplacePsi)) :=
   negativeLaplacePsi_deriv_periodic.isBounded_of_continuous one_ne_zero
     continuous_deriv_negativeLaplacePsi
 
+/-- The range `range (deriv (deriv negativeLaplacePsi))` is bounded. -/
 theorem isBounded_range_secondDeriv_negativeLaplacePsi :
     Bornology.IsBounded (range (deriv (deriv negativeLaplacePsi))) :=
   negativeLaplacePsi_secondDeriv_periodic.isBounded_of_continuous one_ne_zero

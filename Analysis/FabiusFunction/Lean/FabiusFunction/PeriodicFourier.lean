@@ -821,15 +821,8 @@ lemma hasSum_integral_smallDyadicInterval_fourier (k : ℤ) :
       (∫ x : ℝ in Ioc 0 1,
         (x : ℂ) ^ negativeLaplaceMellinFrequency k *
           (boseFinitePartSmallKernel x : ℂ)) := by
-  have h := hasSum_integral_iUnion
-    (f := fun x : ℝ =>
-      (x : ℂ) ^ negativeLaplaceMellinFrequency k *
-        (boseFinitePartSmallKernel x : ℂ))
-    (s := smallDyadicInterval)
-    (fun n => measurableSet_Ioc) pairwise_disjoint_smallDyadicInterval
-    (by simpa [iUnion_smallDyadicInterval] using
-      integrableOn_small_negativeLaplaceMellinFrequency k)
-  simpa [iUnion_smallDyadicInterval] using h
+  apply hasSum_setIntegral_smallDyadicInterval
+  exact integrableOn_small_negativeLaplaceMellinFrequency k
 
 /-- The Mellin integrals over the blocks `Ioc (2 ^ n) (2 ^ (n + 1))` sum
 to the integral over `(1,∞)`; the half-open `largeDyadicInterval` used in
@@ -841,22 +834,8 @@ lemma hasSum_integral_largeDyadicInterval_fourier (k : ℤ) :
       (∫ x : ℝ in Ioi 1,
         (x : ℂ) ^ negativeLaplaceMellinFrequency k *
           (boseFinitePartLargeKernel x : ℂ)) := by
-  have hIntIci : IntegrableOn (fun x : ℝ =>
-      (x : ℂ) ^ negativeLaplaceMellinFrequency k *
-        (boseFinitePartLargeKernel x : ℂ)) (Ici 1) :=
-    IntegrableOn.congr_set_ae
-      (integrableOn_largeKernel_negativeLaplaceMellinFrequency k) Ioi_ae_eq_Ici.symm
-  have h := hasSum_integral_iUnion
-    (f := fun x : ℝ =>
-      (x : ℂ) ^ negativeLaplaceMellinFrequency k *
-        (boseFinitePartLargeKernel x : ℂ))
-    (s := largeDyadicInterval)
-    (fun n => measurableSet_Ico) pairwise_disjoint_largeDyadicInterval
-    (by simpa [iUnion_largeDyadicInterval] using hIntIci)
-  have h' := h.congr_fun (fun n => setIntegral_congr_set Ico_ae_eq_Ioc.symm)
-  rw [iUnion_largeDyadicInterval] at h'
-  rw [setIntegral_congr_set Ioi_ae_eq_Ici]
-  exact h'
+  apply hasSum_setIntegral_largeDyadicInterval
+  exact integrableOn_largeKernel_negativeLaplaceMellinFrequency k
 
 /-- Continuity of the Fourier weight, used throughout for interval
 integrability of the products it multiplies. -/
