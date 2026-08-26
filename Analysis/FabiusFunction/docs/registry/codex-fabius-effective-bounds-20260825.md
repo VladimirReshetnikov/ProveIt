@@ -933,3 +933,79 @@ next bounded step: commit and push this exact immutable handoff; keep both
   only read-only audits of disjoint cold paths until a new registry-first
   claim is justified
 ```
+
+## Ordinary follow-on claim: the all-real cumulant differential chain
+
+The normalized-moment recurrence is already valid at every real tilt, but its
+first three cumulant-polynomial consequences are still stated only for
+positive tilts.  Their proofs use no logarithmic-product identity: they are
+pure polynomial consequences of
+
+```text
+R_k' = -R_(k+1) + R_k R_1.
+```
+
+Thus the identities `kappa_1' = kappa_2`, `kappa_2' = kappa_3`, and
+`kappa_3' = kappa_4` hold on all of `R`.  Only the separate identification of
+these polynomials with successive derivatives of `negativeLaplaceLog` still
+requires positive scale.
+
+```text
+SYNC Fabius
+branch / worktree / machine: codex/fabius-effective-bounds-20260825 /
+  /home/codex/.codex/worktrees/d6d3/Proofs / codexbox
+fetched main SHA: 5b053a32b10e758e39f1be23cb2e8d821fba8de6
+HEAD and dirty paths: fd53d092874be974217068163129c8f94a332ba5;
+  clean and pushed after both preceding immutable source handoffs; only this
+  registry is dirty for the registry-first claim
+writing (exact paths): this registry initially; after this claim is pushed and
+  a repeated board/registry/all-tip scan remains green, only
+  Lean/FabiusFunction/NegativeLaplaceDerivatives.lean and this registry
+expected declarations or document claims:
+  negativeLaplaceLogFirst_hasDerivAt_all, proving the derivative of the first
+    normalized cumulant polynomial is the second at every real tilt;
+  negativeLaplaceLogSecond_hasDerivAt_all, proving the corresponding second-
+    to-third identity globally;
+  negativeLaplaceLogThird_hasDerivAt_all, proving the third-to-fourth identity
+    globally;
+  preserve the exact headers of negativeLaplaceLogFirst_hasDerivAt,
+    negativeLaplaceLogSecond_hasDerivAt, and
+    negativeLaplaceLogThird_hasDerivAt as positive-scale compatibility
+    wrappers, extracting their shared proof bodies into the new global API;
+  expand the module overview and declaration comments with the three formulas
+    and the precise distinction between globally defined normalized cumulant
+    polynomials and the positive-scale logarithmic-product identification;
+    no canonical document, facade, root, import, or other source path claimed
+completed commits: preceding all-order Lambert source 8f47687e5 and strict
+  Laplace-order source caf654097 are separately frozen and requested for
+  coordinator validation; this is the registry-first claim for a disjoint
+  seventh source unit
+validated (exact command, SHA/state, exit code): current HEAD and origin/main
+  share NegativeLaplaceDerivatives.lean blob
+  7e8c54130ec34a2a97da9637f6fe04ec2f517239, content SHA-256
+  B28A6BCF9E4FAB1D179ED72A5D61917FCCBD3BECD4382FFF2620F0B28DEC68F4;
+  exact-name, plausible-semantic-name, exact-path, every-registry, and all-
+  fetched-Fabius-tip scans found no global cumulant-chain implementation or
+  competing lease; the historical theorem-polish lease is explicitly
+  released; read-only proof audit verifies that the three existing positive-
+  scale bodies become global simply by substituting
+  normalizedLaplaceMoment_hasDerivAt_all for the restricted recurrence, with
+  no import change; this is not compiler evidence
+not yet validated: none of the three proposed declarations exists yet; no
+  Lean, Lake, TeX, PDF, or cache-mutating process is authorized or running for
+  this branch
+requested integration or lease: advertise this ordinary one-source/three-name
+  claim; after an immutable independently reviewed checkpoint, request
+  separate serialized builds of +FabiusFunction.NegativeLaplaceDerivatives
+  and the downstream consumer +FabiusFunction.NegativeLaplaceDerivativeBounds;
+  request no document or main-write lease
+conflicts / dependencies: negativeLaplaceLog_hasDerivAt genuinely remains
+  positive-scale and will not be weakened; existing downstream calls in
+  NegativeLaplaceDerivativeBounds and FabiusLambertDerivativeBounds keep the
+  old compatibility names; the two pending source handoffs and every active
+  document/source claim are disjoint; only the coordinator may advance main
+next bounded step: commit and push this registry-only claim without force;
+  fetch and reread any changed board, repeat all-tip collision checks, then
+  edit only the claimed Lean source while three agents independently review
+  proof extraction, exact header preservation, and source-level documentation
+```
