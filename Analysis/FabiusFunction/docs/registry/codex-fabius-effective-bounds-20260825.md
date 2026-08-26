@@ -3276,3 +3276,81 @@ next bounded step: commit and push this registry-only claim without force;
   constants, filter hypotheses, documentation parity, and exact old-header
   preservation
 ```
+
+## Handoff: factorized standardized saddle-tail asymptotics and source parity
+
+Source checkpoint `bbaed0ee6` implements the complete one-file claim and is
+pushed to `origin/codex/fabius-effective-bounds-20260825`.
+
+The new theorem
+`integral_norm_fabius_scaledSaddleKernel_standardRadius_isBigO_minorArcConstant_mul_inv`
+states the standardized complementary tail as
+`O(negativeLaplaceMinorArcConstant (r i) (2 * m i) * (b i)⁻¹)` under only the
+eventual hypotheses `0 < r i`, `16 ≤ b i`, and
+`b i / 4 ≤ (m i : ℝ)`.  Thus it exposes the pointwise factorization before
+the old theorem additionally assumes `b -> atTop` and a bounded minor-arc
+constant.  The old public theorem header is byte-identical and its proof is
+now the new estimate composed with `C_i = O(1)` and the reflexive inverse-scale
+bound.
+
+All 17 previously undocumented public declarations now have adjacent,
+formula- and hypothesis-bearing comments.  Together with the new theorem,
+the module has 30 public declarations and 30 adjacent comments.  The prose
+covers kernel positivity/evenness/integrability, the exact even-tail and
+exponential-tail identities, the scaled Cauchy mass, logarithmic and
+two-region bounds, standardized-radius estimates, and the natural square
+versus power-of-two inequality without claiming sharpness or unnecessary
+asymptotic hypotheses.
+
+Exact frozen artifact:
+
+- `FabiusSaddleTail.lean`: Git blob
+  `9712b7a684aa82e21bc0f1a3ff5f533d1eba7fc5`, content SHA-256
+  `14914AEF8C600B31E01FF86C5D698D432BFDF8699E9EB013899835562CF24E15`.
+
+The exact diff is 109 insertions and 54 deletions.  Deletions are confined to
+the duplicated old final proof and a corrected compatibility comment.  A
+header extractor reports the sole new declaration, no removed or changed old
+header, and byte-identical imports.  Repository and strict documentation
+audits report 30 public / zero missing.  Two independent hostile exact-byte
+reviews and the author audit agree on the filter orientation, arbitrary-filter
+edge cases, factor `2 * m`, nonnegativity rewrites, constant `16 + 32*pi`,
+minor-arc product composition, consumer compatibility, and all comment
+formulas.  Local and staged `git diff --check` passed.  No Lean, Lake, TeX,
+PDF, cache mutation, canonical-document edit, or main write ran.
+
+```text
+SYNC Fabius
+branch / worktree / machine: codex/fabius-effective-bounds-20260825 /
+  /home/codex/.codex/worktrees/d6d3/Proofs / codexbox
+fetched main SHA: 4789f05b1a1abc34b5753c166a524be1f62078c3
+HEAD and dirty paths: bbaed0ee6; clean after exact-path source commit;
+  checkpoint pushed
+writing (exact paths): this branch registry for immutable handoff only; the
+  source path above is frozen at the stated blob
+expected declarations or document claims: exact theorem and complete source
+  parity described above; no import, facade, audit-script, canonical-doc, or
+  old public-header change
+completed commits: registry-first claim 0105b4a0b; source checkpoint
+  bbaed0ee6; both pushed without force
+validated (exact command, SHA/state, exit code): all-visible-ref post-claim
+  scan found the proposed name only in this branch registry before authoring;
+  repository doc_audit and strict inventory report 30 public / zero missing;
+  header/import comparison and local/staged git diff --check exited 0; two
+  independent hostile exact-byte reviews and author review are green; exact
+  blob/SHA evidence is recorded above
+not yet validated: no Lean/Lake target or downstream importer was built on
+  this branch; static proof/API review is not compiler evidence
+requested integration or lease: request serialized
+  +FabiusFunction.FabiusSaddleTail followed by the sole direct old-theorem
+  consumer +FabiusFunction.FabiusLambertMinorArc; optionally replay
+  +FabiusFunction.FabiusSaddleTailAllOrders; request coordinator review and
+  selective integration; request no main-write or document lease
+conflicts / dependencies: direct importers remain source-compatible; this
+  source is frozen and disjoint from every active board grant; only the
+  coordinator may advance main
+next bounded step: push this registry handoff, fetch and reread main, then
+  continue on a separately advertised cold path; retain SaddleExpansionAlgebra
+  coefficient-family congruence and Gaussian contraction deduplication as
+  audited future candidates rather than broadening this checkpoint
+```
