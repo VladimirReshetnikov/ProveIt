@@ -1068,3 +1068,71 @@ When documents thaw, a separately assigned pass should map all four names to
 the three exact assertions in `eq:odd-count-mod3`, rebuild the relevant
 frontier/draft disposition target, and keep the later corollaries explicitly
 unformalized until their own Lean counterparts exist.
+
+## Gaussian-moment integrability consolidation claim
+
+Fresh `origin/main` `1eadfd565db2e4c49310dbaa68c7b4648cb563b8`
+has source blobs `37f40510d31e22365a36cf76a507f3c61e799d9d`,
+`7dc2cd616a259c16eb69fdb412d45e7e9bba75e2`, and
+`d6a17c783a0fb267313ab48c38ba02893bca1f2a` for, respectively,
+`FabiusSaddleCentral.lean`, `FabiusSaddleReferenceTail.lean`, and
+`FabiusSaddleMassAllOrders.lean`.  The branch contains that mainline
+checkpoint through merge `a993914ba`; only this registry is initially dirty
+for the claim.
+
+The exact prospective write set is:
+
+- `Lean/FabiusFunction/FabiusSaddleCentral.lean`;
+- `Lean/FabiusFunction/FabiusSaddleReferenceTail.lean`;
+- `Lean/FabiusFunction/FabiusSaddleMassAllOrders.lean`;
+- this branch's own registry.
+
+`GaussianPolynomialContraction.lean` already exports the canonical theorems
+`Fabius.SaddleExpansion.integrable_realGaussian_mul_pow` and
+`Fabius.SaddleExpansion.integrable_realGaussian_mul_abs_pow`.  The claimed
+cleanup will add that module as a direct acyclic dependency of
+`FabiusSaddleCentral`, preserve the exact public header
+`Fabius.SaddleCentral.integrable_gaussian_mul_pow` as a compatibility
+forwarder, and update its comment to identify the canonical owner.  It will
+delete the two now-redundant private aliases
+`integrable_gaussian_abs_pow` and
+`integrable_gaussian_abs_pow_mul_const` from `FabiusSaddleReferenceTail`,
+redirecting every caller to the canonical absolute-moment theorem and its
+`const_mul` consequence.  Finally, it will replace the three inline
+norm/congruence re-proofs in `FabiusSaddleMassAllOrders` by direct applications
+of the same canonical theorem.  The ReferenceTail overview will stop claiming
+that Gaussian integrability is one of its private helpers.
+
+No public declaration is added or removed, and no existing public statement,
+attribute, facade, aggregate, canonical document, or serialized audit path is
+claimed.  The sole import addition grows the central module's project closure
+from 52 to 54 modules: `GaussianPolynomialContraction` and
+`SaddleExpansionAlgebra`; the imported closure does not contain
+`FabiusSaddleCentral`, so there is no cycle.  The expected source patch is
+deletion-dominant by roughly thirty lines and removes the complete known set
+of same-domain Gaussian integrability re-proofs in these saddle modules.
+
+Exact-path, theorem-name, proof-shape, advertised-tip, and registry scans find
+no competing implementation or active claim.  Every modern advertised tip
+has the three blobs above.  The only relevant ownership history is the
+effective-bounds ReferenceTail tranche, integrated and validated at
+`f85409a18` and explicitly released; no registry claims Central or
+MassAllOrders.  Canonical human documents remain true because this is an
+implementation consolidation.  When serialized audit documents thaw, the
+assigned owner should close the explicit Gaussian-duplication finding in
+`AUDIT_FINDINGS.md` around lines 1852--1865.
+
+No Lean, Lake, TeX, PDF, or cache-mutating process has run for this claim; no
+build token is assigned.  After an immutable reviewed source checkpoint, the
+requested serialized gates are, in dependency order:
+
+```text
+LAKE_JOBS=1 lake build +FabiusFunction.FabiusSaddleCentral
+LAKE_JOBS=1 lake build +FabiusFunction.FabiusSaddleReferenceTail
+LAKE_JOBS=1 lake build +FabiusFunction.FabiusSaddleMassAllOrders
+LAKE_JOBS=1 lake build +FabiusFunction.FabiusFullAsymptoticExpansion
+```
+
+The next bounded step is to commit and push this registry-only claim, fetch
+and reread the coordinator board, repeat the path/collision scan, and only
+then edit the three claimed Lean sources.
