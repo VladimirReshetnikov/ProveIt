@@ -252,7 +252,8 @@ theorem unitLaplaceMoment_reflection
     rw [show 1 - x = -x + 1 by ring, add_pow]
     apply Finset.sum_congr rfl
     intro j _hj
-    simp only [neg_pow, one_pow, mul_one]
+    have hneg : (-x) ^ j = (-1 : ℝ) ^ j * x ^ j := neg_pow x j
+    rw [hneg, one_pow, mul_one]
     ring
   unfold unitLaplaceMoment
   calc

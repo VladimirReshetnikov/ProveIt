@@ -386,28 +386,6 @@ private lemma intervalIntegral_max_pow (p : ℕ) (hp : 0 < p)
         hleft, hright, zero_add, max_eq_left hb, max_eq_right ha]
       simp
 
-private lemma integral_unitInterval_max_sub_mul_pow (p : ℕ) (hp : 0 < p)
-    (A c : ℝ) (hc : 0 < c) :
-    (∫ u : Set.Icc (0 : ℝ) 1, (max (A - c * (u : ℝ)) 0) ^ p) =
-      ((max A 0) ^ (p + 1) - (max (A - c) 0) ^ (p + 1)) /
-        (c * (p + 1)) := by
-  calc
-    (∫ u : Set.Icc (0 : ℝ) 1, (max (A - c * (u : ℝ)) 0) ^ p) =
-        ∫ u in Set.Icc (0 : ℝ) 1, (max (A - c * u) 0) ^ p := by
-      simpa using (integral_subtype (G := ℝ) measurableSet_Icc
-        (fun u : ℝ => (max (A - c * u) 0) ^ p))
-    _ = ∫ u in (0 : ℝ)..1, (max (A - c * u) 0) ^ p := by
-      rw [integral_Icc_eq_integral_Ioc,
-        intervalIntegral.integral_of_le (by norm_num)]
-    _ = c⁻¹ • ∫ t in A - c * 1..A - c * 0, (max t 0) ^ p := by
-      exact intervalIntegral.integral_comp_sub_mul
-        (fun t : ℝ => max t 0 ^ p) hc.ne' A
-    _ = ((max A 0) ^ (p + 1) - (max (A - c) 0) ^ (p + 1)) /
-        (c * (p + 1)) := by
-      rw [intervalIntegral_max_pow p hp (by linarith)]
-      simp only [smul_eq_mul, mul_zero, sub_zero, mul_one]
-      field_simp
-
 private lemma intervalIntegral_max_sub_mul_pow (p : ℕ) (hp : 0 < p)
     (A c : ℝ) (hc : 0 < c) :
     (∫ u in (0 : ℝ)..1, (max (A - c * u) 0) ^ p) =
