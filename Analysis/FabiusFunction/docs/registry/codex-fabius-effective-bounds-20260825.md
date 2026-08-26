@@ -3708,7 +3708,7 @@ lemmas `abs_log_one_sub_second_remainder_le`,
 `abs_exp_neg_sub_one_add_le_sq`, and
 `abs_exp_sub_exp_le_abs_of_nonpos` will receive exact adjacent formula/
 hypothesis comments.  Together with comments for the eight new declarations,
-the module's strict public documentation invariant becomes 23/23.  No import,
+the module's strict public documentation invariant becomes 24/24.  No import,
 facade, root, audit script, canonical document, or downstream source is in
 scope.
 
@@ -3738,7 +3738,7 @@ HEAD and dirty paths: 098248e02; only this branch registry is being written
 writing (exact paths): EndpointLaplaceComparison.lean after this claim is
   committed/pushed; this branch registry for claim/handoff
 expected declarations or document claims: eight exact `_all` companions and
-  strict 23/23 source docs; every old positive-index API/import remains exact
+  strict 24/24 source docs; every old positive-index API/import remains exact
 completed commits: merged current origin/main as 098248e02; source not yet
   authored
 validated (exact command, SHA/state, exit code): current/main preimage hash
