@@ -1104,3 +1104,79 @@ next bounded step: commit and push this post-merge registry checkpoint, notify
   the coordinator of the exact immutable source commit/blob, and keep the
   source frozen until review and token disposition
 ```
+
+## Coordinator acceptance and repaired synchronization through main `1401f2d9b`
+
+The 20:44 PDT board accepts the reflected-moment tranche.  The coordinator
+integrated source commit `665b6bcea` as `c80f61c90`.  The first focused build
+then exposed one proof-elaboration defect: bare `simp [neg_pow]` recursively
+reconsidered the `(-1)^j` factor it had generated.  That failed invocation
+supplies no validation evidence.  Repair `6b6757e90` replaces the recursive
+simplification with one explicitly typed `neg_pow` identity; it changes no
+theorem statement, formula, import, or public API.
+
+At the repaired immutable tree, the coordinator's serialized command
+`LAKE_JOBS=1 lake build +FabiusFunction.ProbabilityLaplaceMoments` completed
+3187 jobs in 18 seconds, exited 0, and reported no warnings.  The accepted
+source blob is `488d9fd4c9acfa5100df0dcf04b7f81af967973f`.
+
+After fetching and rereading the new board, merge preview found exactly one
+conflict: the original uncompiled `simp only [neg_pow, one_pow, mul_one]` line
+versus the coordinator's accepted explicit identity in the formerly claimed
+source.  Merge `a803a38ea` retains the coordinator repair.  The resulting
+worktree source blob is byte-identical to the accepted mainline blob above.
+No other claimed, serialized, document, registry, or generated path
+conflicted.
+
+Three final read-only reconnaissance lanes identified useful later work but
+made no claim and changed no file.  First, a measurable-equivalence proof can
+remove the continuity hypothesis on the generic reflection integrand entirely;
+a sharper base theorem can also use only finiteness and reflection of the
+unit-interval restriction.  Second, a separately advertised
+`NegativeLaplaceDerivatives.lean` tranche could prove
+`normalizedLaplaceMoment_reflection`,
+`normalizedLaplaceMoment_one_complement`, and
+`normalizedLaplaceMoment_one_sub_half_odd`.  Third, exact insertion points and
+Lean-name cross-references are mapped for the primary exposition, Lean
+walkthrough, and frontier companion.  Those canonical documents remain frozen,
+and none of these uncompiled follow-ons is presented as delivered.
+
+```text
+SYNC Fabius
+branch / worktree / machine: codex/fabius-theorem-polish-20260825 /
+  C:/Users/vresh/.codex/worktrees/10ef/ProveIt / EVO (Windows)
+fetched main SHA: 1401f2d9b6cfd02e0b6a72ee60869b6df0bb776c
+HEAD and dirty paths: a803a38ea after the repaired-main merge; clean before
+  this status update, then only this branch registry is dirty
+writing (exact paths): this status reply writes only
+  docs/registry/codex-fabius-theorem-polish-20260825.md; the merge conflict in
+  Lean/FabiusFunction/ProbabilityLaplaceMoments.lean was resolved to the exact
+  accepted mainline blob and does not expand the source write set
+expected declarations or document claims: the accepted public set remains
+  integral_unit_eq_integral_one_sub_of_reflection,
+  unitLaplaceMoment_reflection, and fabiusLaplaceMoment_reflection; existing
+  zero-reflection and centered-even signatures remain compatibility results
+completed commits: 665b6bcea (original source checkpoint), c704f1ae9 (last
+  remotely preserved feature status), c80f61c90 (coordinator integration),
+  6b6757e90 (statement-preserving coordinator repair), and a803a38ea
+  (feature merge of accepted main and exact repair resolution)
+validated (exact command, SHA/state, exit code): at coordinator repair
+  6b6757e90, LAKE_JOBS=1 lake build
+  +FabiusFunction.ProbabilityLaplaceMoments completed 3187 jobs in 18 seconds,
+  exit 0, no warnings; the merged feature source has the identical Git blob
+  488d9fd4c9acfa5100df0dcf04b7f81af967973f; merge-side git diff --check
+  exited 0
+not yet validated: this EVO worktree launched no Lean, Lake, LaTeX, PDF,
+  Python audit, or cache-mutating process; the three read-only follow-on ideas
+  above are source-designed only and have not been advertised or compiled
+requested integration or lease: none; the source is integrated, repaired,
+  compiled, and released.  This branch has no Lean/Lake, document, aggregate,
+  or serialized-path token
+conflicts / dependencies: the sole merge conflict was confined to the prior
+  claimed source and resolved to the coordinator-validated bytes.  All
+  canonical TeX/PDF, README, coverage/audit, coordination, walkthrough, and
+  root aggregate paths remain unedited by this branch
+next bounded step: commit and push this registry-only status to the feature
+  branch, then stop source/document expansion and launch no build until a later
+  exact board assignment
+```
