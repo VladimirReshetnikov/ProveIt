@@ -128,12 +128,16 @@ below rather than deleted.
 | Missing module headers on twelve modules, stub headers on five | `4c59369fe` | comment-only |
 | Undocumented public declarations: 862 to 176 | `35d14fe40`, `9827b5485`, `ae6176d6e` | comment-only |
 | `expCoeff` values missing from the generic saddle algebra | asymptotic-expansion branch | `FabiusSaddleJetClosedForm` green |
+| All-degree centered-spline CDF identification and `[0,1]` range | `504ab4055` | Current module blob validated by serialized `+FabiusFunction.FabiusUniformSpline` and `+FabiusFunction.PaperFabiusAsymptotic` builds at `60458909a`, both exit 0. |
+| Exact right-half-cell saturation and endpoint normalization of every centered spline | `504ab4055` | Current module blob validated by the same two serialized builds at `60458909a`, both exit 0. |
+| Four redundant `CharZero` binders in `FabiusQBinomialTaylor` | `a95bd1913`; exact source extraction `a6fa59157` | `+FabiusFunction.FabiusQBinomialTaylor` and `+FabiusFunction.PaperFabiusAsymptotic` at `a6fa59157`, both exit 0; later complete `+FabiusFunction` aggregate at `9887ea584`, exit 0. |
+| Sharp lower-Lambert stationary threshold, including the branch endpoint and equality classification | `1da2fde22` | Current module blob validated by serialized `+FabiusFunction.LowerLambertW` at `4c6bbac41`, exit 0. |
 
-Two builds have run, both on a peer's build slot at the SHAs named above, in a
-sparse detached worktree whose `.lake/packages` is a junction to the shared
-Mathlib.  That technique lets one agent validate another's commit without
-either of them merging, and is why these two lines exist at all: this branch
-has started no Lean process.
+The original audit workstream's two builds ran on a peer's build slot at the
+SHAs named above, in a sparse detached worktree whose `.lake/packages` is a
+junction to the shared Mathlib.  The four later closures reuse serialized
+validation recorded by the campaign coordinator at immutable integration
+checkpoints.  This documentation reconciliation launched no Lean process.
 
 ## Summary
 
@@ -214,9 +218,15 @@ and keep `card_odd_inner_binomial_coefficients` unchanged as the compatibility w
 
 ### Cluster: discrete-limits-computability
 
-#### `fabiusUniformSpline_mem_Icc` does not need `0 < p`, and the degree-zero argument is already written out inline in a downstream module
+#### DONE — `fabiusUniformSpline_mem_Icc` does not need `0 < p`, and the degree-zero argument is already written out inline in a downstream module
 
 Confidence high.  `FabiusUniformSpline.lean:1042`, `FabiusUniformSpline.lean:1052`, `FabiusUniformSpline.lean:1199`, `FabiusComputability.lean:99`, `FabiusComputableSpline.lean:417`
+
+**DONE** in `504ab4055`.  The implementation adds
+`fabiusUniformSpline_eq_centeredPartialCDF_all` and
+`fabiusUniformSpline_mem_Icc_all`, retaining the positive-degree declarations
+as compatibility APIs.  The current module blob is covered by serialized
+focused and paper-facade builds at `60458909a`, both exit 0.
 
 **Why.** The `0 < p` hypothesis is an artifact of routing through `fabiusUniformSpline_eq_centeredPartialCDF`, which needs positive degree. But the degree-zero case is separately proved 157 lines further down in the same file as `fabiusUniformSpline_zero_eq_centeredPartialCDF_of_mem_Icc` (line 1199), so nothing is missing. The consequence is visible twice downstream: FabiusComputability.lean:104–112 hand-writes the `p = 0` branch (`rw […fabiusUniformSpline_zero_eq_centeredPartialCDF_of_mem_Icc hx]; ...
 
@@ -746,9 +756,15 @@ Verified true:
 1. Signatures quoted correctly. `neg_one_pow_thueMorseBit` is at FabiusRawQBinomialFormula.lean:33 verbatim; the private `neg_one_pow_thueMorseBit_complex` is at FabiusComplexShiftSpline.lean:59 verbatim (used by `simp_rw` at lines 71 and 170).
 2. The ingredient ...
 
-#### Four declarations in `FabiusQBinomialTaylor` carry a redundant `[CharZero K]`, inconsistently with the 36 sibling declarations in the same cluster
+#### DONE — Four declarations in `FabiusQBinomialTaylor` carry a redundant `[CharZero K]`, inconsistently with the 36 sibling declarations in the same cluster
 
 Confidence medium.  `FabiusQBinomialTaylor.lean:189`, `FabiusQBinomialTaylor.lean:204`, `FabiusQBinomialTaylor.lean:269`, `FabiusQBinomialTaylor.lean:323`
+
+**DONE** in `a95bd1913`, with the byte-identical source independently extracted
+at `a6fa59157`.  All four public declarations now require only `[Field K]
+[Algebra ℚ K]`; the one proof needing natural-cast injectivity synthesizes
+`CharZero K` locally.  Focused and paper-facade builds at `a6fa59157` both
+exited 0, and the later complete aggregate at `9887ea584` exited 0.
 
 **Why.** `Field K` + `Algebra ℚ K` already implies `CharZero K`, and the module's own defs (`qBinomialThueMorseTranslatedNumeratorIn`, `fabiusReductionSumIn`, `qBinomialFabiusReductionPolynomial`) are all declared without it. The first two theorems' proofs are pure `congrArg (algebraMap ℚ K)` + `map_div₀` and never touch characteristic. The inconsistency also makes `qBinomialFabiusReductionPolynomial_zero` (`[CharZero K]`) harder to apply than `qBinomialFabiusReductionPolynomial_eq_sum` (no `[CharZero ...
 
@@ -772,9 +788,15 @@ Confidence medium.  `FabiusQBinomialTaylor.lean:189`, `FabiusQBinomialTaylor.lea
 
 ### Cluster: discrete-limits-computability
 
-#### The centered spline has a stated left support edge but no right one: `fabiusUniformSpline p x = 1` near `x = 1` is missing
+#### DONE — The centered spline has a stated left support edge but no right one: `fabiusUniformSpline p x = 1` near `x = 1` is missing
 
 Confidence high.  `FabiusUniformSpline.lean:47`, `FabiusUniformSpline.lean:1186`, `FabiusUniformSpline.lean:1026`, `FabiusUniformSpline.lean:1199`
+
+**DONE** in `504ab4055`.  The implementation exposes
+`fabiusUniformSpline_eq_one_of_le` on the exact last half-cell and
+`fabiusUniformSpline_one_eq_one` for every degree, including degree zero.  The
+current module blob is covered by serialized focused and paper-facade builds at
+`60458909a`, both exit 0.
 
 **Why.** The module already proves that the spline vanishes to the left of the first half-cell and, via the probabilistic model, that its CDF counterpart is one past the last half-cell — but only the vanishing half is exposed on `fabiusUniformSpline` itself. Without the right-edge statement the API is asymmetric and the sharp support interval `[2^-(p+1), 1 - 2^-(p+1)]` is only half visible. The endpoint value `fabiusUniformSpline p 1 = 1` is also the natural normalization companion of ...
 
@@ -850,9 +872,18 @@ Proof route ...
 
 ### Cluster: lambert-asymptotics
 
-#### The lower-Lambert phase satisfies the sharp branch bound `1 / log 2 < λ`, which is not stated and is re-derived four times in weakened form
+#### DONE — The lower-Lambert phase satisfies the sharp branch bound `1 / log 2 < λ`, which is not stated and is re-derived four times in weakened form
 
 Confidence high.  `LowerLambertW.lean:70`, `LowerLambertW.lean:98`, `LowerLambertW.lean:103`, `FabiusSharpLambertMain.lean:24`, `FabiusLambertPhase.lean:44`
+
+**DONE** in `1da2fde22`, in a stronger endpoint-inclusive form.  The library
+now proves the weak branch bound, equality at and exactly at the branch point,
+and the original strict interior bound through
+`one_div_log_two_le_paperLambertN`,
+`paperLambertN_eq_one_div_log_two`,
+`paperLambertN_eq_one_div_log_two_iff`, and
+`one_div_log_two_lt_paperLambertN`.  The byte-identical current module was
+validated by serialized `+FabiusFunction.LowerLambertW` at `4c6bbac41`, exit 0.
 
 **Why.** `lowerLambertW_lt_neg_one` (LowerLambertW.lean:70) already gives `W(z) < -1` on `Ioo (-exp(-1)) 0`, and `paperLambertN x = -lowerLambertW (-(log 2 * x)) / log 2`, so the sharp bound `λ > 1/log 2 ≈ 1.4427` is immediate — but only `0 < λ` is ever recorded, and even that only in FabiusSharpLambertMain.lean, two modules downstream of `fabiusLambertPhase`'s definition and unusable from FabiusLambertPhase.lean, where positivity is instead re-derived three times by an identical five-line `nlinarith` ...
 
