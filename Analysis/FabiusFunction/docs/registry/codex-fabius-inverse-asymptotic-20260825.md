@@ -273,9 +273,11 @@ y^α = o(fabiusInv F hF y),
 fabiusInv F hF y = o((-log y)^(-m)).
 ```
 
-This is a source-only public-surface expansion on the already claimed inverse
-module and facade.  It does not widen the path lease to `FabiusInverse.lean`,
-the root aggregate, or any canonical document.
+The Lean theorem will strengthen the second half: `fabiusInv` is little-o of
+`(-log y)^r` for every real `r`, with no sign hypothesis.  The frontier result
+is the specialization `r = -m`.  This is a source-only public-surface expansion
+on the already claimed inverse module and facade.  It does not widen the path
+lease to `FabiusInverse.lean`, the root aggregate, or any canonical document.
 
 ```text
 SYNC Fabius
@@ -294,8 +296,9 @@ writing (exact paths):
 expected declarations or document claims:
   rpow_isLittleO_fabiusInv_at_zero_right: for every α > 0,
     (fun y : ℝ => y ^ α) =o[nhdsGT 0] fabiusInv F hF;
-  fabiusInv_isLittleO_negLog_rpow_at_zero_right: for every m > 0,
-    fabiusInv F hF =o[nhdsGT 0] (fun y : ℝ => (-Real.log y) ^ (-m));
+  fabiusInv_isLittleO_negLog_rpow_at_zero_right: for every r : ℝ,
+    fabiusInv F hF =o[nhdsGT 0] (fun y : ℝ => (-Real.log y) ^ r),
+    strictly generalizing the frontier specialization r = -m;
   the facade prose will identify these as the complete elementary scale
     hierarchy and will not claim an unproved quantitative remainder
 completed commits: generic engine 9b7affe68; current-main merge b7edc7ce2;
