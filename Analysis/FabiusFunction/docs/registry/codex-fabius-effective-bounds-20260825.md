@@ -3670,3 +3670,88 @@ conflicts / dependencies: the three blobs are immutable pending coordinator
 next bounded step: push this handoff, fetch and reread main, then select a
   disjoint cold path while these exact blobs await serialized compiler gates
 ```
+
+## Claim: zero-inclusive endpoint/Laplace comparison family
+
+Claimed at 2026-08-26 03:27 PDT from merged branch checkpoint
+`098248e02`, after refreshing `origin/main` to `ed8d996b7`.  This is an
+ordinary one-source claim on exactly
+`Lean/FabiusFunction/EndpointLaplaceComparison.lean` plus this branch
+registry.
+
+The source will add eight documented `_all` companions whose conclusions are
+identical to the existing positive-index estimates but which quantify over
+every `n : ℕ` without `hn : 1 ≤ n`:
+
+- `abs_one_sub_pow_sub_exp_quadratic_le_all`;
+- `abs_integral_one_sub_pow_sub_exp_quadratic_le_all`;
+- `abs_endpointMoment_sub_laplace_secondOrder_le_all`;
+- `abs_unitEndpointMoment_sub_unitLaplace_secondOrder_le_all`;
+- `abs_log_unitEndpointMoment_sub_log_unitLaplace_add_le_all`;
+- `abs_halfMoment_sub_fabiusLaplace_secondOrder_le_all`;
+- `abs_halfMoment_div_fabiusLaplace_sub_secondOrder_le_all`; and
+- `abs_dyadicEndpointLaplaceLogError_add_secondOrder_le_all`.
+
+At index zero the pointwise kernel and every remainder coefficient vanish;
+the endpoint and Laplace masses coincide; `halfMoment 0` and the zeroth
+Laplace mass equal one; and the totalized dyadic logarithmic error is zero.
+Positive indices delegate to the existing theorems.  The logarithmic unit-law
+proof will reuse the new raw all-index estimate, the relative Fabius theorem
+will use the already-public all-real denominator positivity, and the dyadic
+theorem will split zero before invoking the unchanged positive-index result.
+No domain, measure-finiteness, smallness, constant, filter, or moment
+hypothesis is otherwise weakened.
+
+Every existing positive-index declaration header, attribute, proof body, and
+consumer is frozen.  The three currently undocumented generic analytic
+lemmas `abs_log_one_sub_second_remainder_le`,
+`abs_exp_neg_sub_one_add_le_sq`, and
+`abs_exp_sub_exp_le_abs_of_nonpos` will receive exact adjacent formula/
+hypothesis comments.  Together with comments for the eight new declarations,
+the module's strict public documentation invariant becomes 23/23.  No import,
+facade, root, audit script, canonical document, or downstream source is in
+scope.
+
+The exact merged-main preimage is blob
+`1622199dc5991f5edcc24baf6d4b1044a615411c`, content SHA-256
+`41332A9933AEDEA1CDE9EC36FB0B575894D0354C3A2D8CE8B16C4A6FBC833F4C`.
+The authoritative pre-claim scan covered 120 visible refs: none of the eight
+names occurs anywhere.  Seventeen refs carry older path blobs but no proposed
+name or competing implementation; current source and current origin/main are
+byte-identical.  No registry or coordinator lease names this path.  The stale
+`AUDIT_FINDINGS.md` discussion proposed only five weaker primed wrappers and
+is analysis debt, not a live claim; it remains frozen.
+
+No Lean, Lake, TeX, PDF, cache, or main-write token is claimed.  Requested
+later serialized gates are `+FabiusFunction.EndpointLaplaceComparison`, then
+the smallest direct downstream target selected by the coordinator (prefer
+`+FabiusFunction.LaplaceCumulantAsymptotics`; broader paper targets are
+optional integration coverage).
+
+```text
+SYNC Fabius
+branch / worktree / machine: codex/fabius-effective-bounds-20260825 /
+  /home/codex/.codex/worktrees/d6d3/Proofs / codexbox
+fetched main SHA: ed8d996b78e9858d1282c7c5622c9b4ac61796da
+HEAD and dirty paths: 098248e02; only this branch registry is being written
+  for the registry-first claim
+writing (exact paths): EndpointLaplaceComparison.lean after this claim is
+  committed/pushed; this branch registry for claim/handoff
+expected declarations or document claims: eight exact `_all` companions and
+  strict 23/23 source docs; every old positive-index API/import remains exact
+completed commits: merged current origin/main as 098248e02; source not yet
+  authored
+validated (exact command, SHA/state, exit code): current/main preimage hash
+  matches; 120-visible-ref exact-name scan has zero hits; registry/path scan is
+  clear; mathematical/API/design audit covers zero, positive, totalized-log,
+  measure, denominator, and smallness cases
+not yet validated: no live source diff, exact-byte hostile review, or
+  Lean/Lake compiler evidence exists yet
+requested integration or lease: ordinary exact-path claim only; later request
+  serialized focused builds and coordinator selective integration
+conflicts / dependencies: active codexbox validation paths are disjoint; the
+  source will be immutable after handoff; only the coordinator may advance
+  main or assign Lean/Lake
+next bounded step: commit/push this claim, repeat the name scan, author only
+  the claimed module, freeze for independent review, then checkpoint/handoff
+```
