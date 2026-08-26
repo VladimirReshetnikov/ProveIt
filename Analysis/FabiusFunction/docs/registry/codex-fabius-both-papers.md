@@ -2240,3 +2240,82 @@ LEAN_NUM_THREADS=0 LAKE_JOBS=1 lake build +FabiusFunction.FabiusComputableSpline
 
 Stop after the first nonzero exit.  No root, facade, or document build is
 requested.
+
+## Handoff: all-real finite-CDF approximation rates
+
+Exact source checkpoint `eac9c4b33fe74c28f469e06227d62eb40ddd2978`,
+tree `ce235be3c3f65292020e8e967cbf02b1408156b5`, implements the advertised
+one-file theorem family.  Clean synchronization merge
+`74233b03d3d81181c1c410d8b01c819414cbcd63` incorporates current coordinator
+main `e596e97c0203a6bb0ab0303bbda9f7553c03ac75` without changing the claimed
+source blob.  The exact artifact is:
+
+```text
+FabiusComputability.lean
+  Git blob  761c0a4c5a1989d44eda445383eb9113582c6972
+  SHA-256   88E8F4D220057FE0BC401334A2B2891F0AAB20D61D54E22CCDC61C33F6BDC196
+  size      490 lines, 22,198 bytes
+```
+
+The exact source delta is 57 insertions and 31 deletions, net 26 lines.  It
+adds exactly three documented, untagged public theorems, taking this module
+from 20 to 23 public theorems while preserving all ten imports:
+
+- `abs_uniformPartialCDF_sub_fabiusReal_le` proves the all-real estimate
+  `|uniformPartialCDF p x - fabiusReal F x| ≤ 2 * ((2 : ℝ) ^ p)⁻¹`;
+- `abs_uniformCenteredPartialCDF_sub_fabiusReal_le` proves the all-real
+  midpoint-corrected estimate with right-hand side `((2 : ℝ) ^ p)⁻¹`;
+- `uniformCenteredPartialCDF_error_bound_eq_half_uniformPartialCDF_error_bound`
+  records that the second certified majorant is exactly half the first.
+
+Both approximation theorems include degree zero and every real input, with no
+positivity or support hypothesis.  The uncentered proof uses the lower half of
+`uniformPartialCDF_sandwich` to establish the sign, the upper half to compare
+with the shifted limiting CDF, and `abs_fabiusReal_sub_le` to absorb the shift.
+The centered proof combines both halves of the symmetric sandwich with the
+same explicit global Lipschitz theorem.  Its algebraic identity
+`2 * |2^(-(p+1))| = 2^(-p)` is the already-established centered-spline
+calculation, now independent of the spline bridge.  At `p = 0`, these are the
+valid global bounds two and one respectively.
+
+The comments, binders, types, and absence of attributes on
+`abs_fabiusUniformSpline_sub_fabiusReal_le` and its `_all` form are
+byte-preserved.  Their bodies are now two-line compatibility wrappers through
+`fabiusUniformSpline_eq_centeredPartialCDF` and
+`fabiusUniformSpline_eq_centeredPartialCDF_all`.  This removes the duplicated
+centered Lipschitz proof, its distance/`NNReal` normalization, and the old
+degree-zero CDF range split.  No later declaration body or caller changes.
+
+The module overview and all three new comments distinguish certified
+majorants from actual pointwise error ratios and explicitly make no optimality
+claim.  This matches exactly the frozen frontier subsection “What a factor of
+two is intended to compare”: both displayed all-index/all-real estimates plus
+their direct half relation.  No `_all` aliases are needed because the new
+theorems are unconditional from inception.
+
+Two independent exact-live hostile audits pass the current Mathlib signatures,
+rewrite directions, lower/upper inequality orientations, power normalization,
+degree-zero and exterior-input cases, theorem naming, API minimality, legacy
+header preservation, and human/formal parity.  `git diff --check`, 100-column,
+forbidden-declaration, public-declaration, residual-duplicate, exact-name,
+semantic-shape, every-advertised-tip, source-history, and every-registry scans
+are clean.  This branch is the sole exact path/name claimant; the coordinator's
+04:06 board checkpoint independently classifies it as mathematically and
+API-approved ordinary one-file ownership.
+
+No Lean, Lake, TeX, PDF, or cache-mutating process ran, so this immutable source
+is frozen pending coordinator review and these separate serialized gates:
+
+```text
+LEAN_NUM_THREADS=0 LAKE_JOBS=1 lake build +FabiusFunction.FabiusComputability
+LEAN_NUM_THREADS=0 LAKE_JOBS=1 lake build +FabiusFunction.FabiusComputableSpline
+```
+
+Stop after the first nonzero exit.  The second target is the sole direct
+source importer and exercises the retained spline API.  No root, facade, or
+document build is required for this additive/header-preserving unit.
+
+Canonical documents remain frozen.  After compiled integration, a separately
+assigned documentation owner should retire the exact frontier obligation and
+add the three names to the primary/coverage crosswalk; the primary mathematical
+factor-two prose itself is already correct.
