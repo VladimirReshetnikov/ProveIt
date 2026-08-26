@@ -1,19 +1,21 @@
 # Workstream registry: `codex/fabius-shifted-prefix-grid`
 
-**Status: exact one-file source lease requested; read-only pending coordinator
-acknowledgement.**  This continuation branch starts directly from accepted
-main checkpoint `431f6c173` and carries none of the historical
+**Status: exact one-file source lease active; implementation in progress.**
+The claim was published before source work, and coordinator checkpoint
+`12e7137a8` subsequently opened ordinary, nonoverlapping feature-branch work
+without a separate acknowledgement.  This continuation branch starts directly
+from accepted main checkpoint `431f6c173` and carries none of the historical
 `codex/fabius-theorem-refinements` divergence.
 
 ```text
 SYNC Fabius
 branch / worktree / machine: codex/fabius-shifted-prefix-grid / c9a3 / EVO
   (Windows)
-fetched main SHA: 431f6c17376fc89ccd9eded293b65cb5624e5b94
-HEAD and dirty paths: 431f6c17376fc89ccd9eded293b65cb5624e5b94;
-  clean before this registry-only claim
-writing (exact paths): docs/registry/codex-fabius-shifted-prefix-grid.md only;
-  requested future source path is Lean/FabiusFunction/ThueMorseGenerating.lean
+fetched main SHA: 12e7137a897b8ec99ddf8935f64fff9f35977617
+HEAD and dirty paths: 3b605f5e4a0e9b6ff6160b0b1097c737f849dfc5;
+  clean before this lease refresh
+writing (exact paths): docs/registry/codex-fabius-shifted-prefix-grid.md and
+  Lean/FabiusFunction/ThueMorseGenerating.lean
 expected declarations or document claims: shiftedPrefixGridValue;
   shiftedPrefixGridValue_zero; shiftedPrefixGridValue_one;
   shiftedPrefixGridValue_succ_sub;
@@ -22,7 +24,8 @@ expected declarations or document claims: shiftedPrefixGridValue;
   shiftedPrefixGridValue_equation_of_pos; retain the eight existing
   paperPrefixGridValue_* and correctedPrefixGridValue_* theorem statements
   exactly as compatibility wrappers
-completed commits: none on this continuation branch before this registry claim
+completed commits: 6fb8dc8e9 publishes the exact one-file claim; 11cff7386
+  and 3b605f5e4 merge successive coordinator checkpoints from origin/main
 validated (exact command, SHA/state, exit code): no build launched; three
   independent read-only source/API reviews agreed on the abstraction and one
   hostile review required preserving both legacy definitions verbatim; exact
@@ -30,17 +33,20 @@ validated (exact command, SHA/state, exit code): no build launched; three
   tips, their registries, and reachable history
 not yet validated: proposed Lean source is not written or compiled; the
   coordinator-reserved build token was not used
-requested integration or lease: exact write lease for
-  Lean/FabiusFunction/ThueMorseGenerating.lean, with later serialized targets
+requested integration or lease: the ordinary exact-path source claim is active
+  under checkpoint 12e7137a8; request later serialized targets
   +FabiusFunction.ThueMorseGenerating,
   +FabiusFunction.ThueMorseApproximation, and
   +FabiusFunction.ThueMorseExponential when the board assigns the EVO token
 conflicts / dependencies: no overlap with the active frontier-document lease;
   no AGENTS, README, collaboration, aggregate, TeX, PDF, canonical frontier,
-  primary exposition, hot foundational module, or peer registry path requested
-next bounded step: push this registry-only claim to the named feature branch,
-  then remain read-only until the coordinator acknowledges the exact source
-  and build leases
+  primary exposition, hot foundational module, or peer registry path requested;
+  current EVO build ownership remains with codex/fabius-exposition-integration
+next bounded step: implement the seven advertised generic declarations and
+  reduce the eight legacy proof bodies to compatibility specializations
+lease refreshed: 2026-08-25 17:18 PDT; refresh at source checkpoint or within
+  30 minutes
+git owner / build owner: root / no build owner assigned to this branch
 ```
 
 ## Proposed bounded refactor
