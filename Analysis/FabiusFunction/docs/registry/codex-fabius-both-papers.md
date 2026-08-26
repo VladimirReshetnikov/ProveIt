@@ -8,17 +8,13 @@ SYNC Fabius
 branch / worktree / machine: codex/fabius-both-papers /
   /home/codex/src/Proofs / codexbox
 fetched main SHA: 682222de194637f3a5650b7c1ffce349577cb5ae
-HEAD and dirty paths: 1064891788f5fd3717fdb45e28f91436daf4fd42;
-  clean after merging fetched main and before this ordinary one-source claim
+HEAD and dirty paths: 45b4816c06f6d9e735df97de80e98ccb2447023c;
+  only this registry handoff is dirty
 writing (exact paths):
-  Lean/FabiusFunction/FabiusSharpAsymptotic.lean;
   docs/registry/codex-fabius-both-papers.md
 expected declarations or document claims:
-  `fabius_not_isEquivalent_exp_WikipediaElementaryMain`, proving that the
-  literal uncorrected Wikipedia exponential is not an asymptotic equivalent of
-  any bounded Fabius solution at the positive zero endpoint;
-  derive the contradiction directly from the existing corrected log limit and
-  nonvanishing periodic obstruction, with no kernel-mass hypothesis
+  record the completed source checkpoint and request its focused serialized
+  validation; the `FabiusSharpAsymptotic.lean` writing claim is released
 completed commits: Lower-Lambert source checkpoint `1da2fde2285e3970267b7dc2561bcd0d897be1b4`
   was integrated by coordinator merge `046946a974467e83244fd3a183a3e084e70d3379`;
   registry handoff `225f5338de9ea92489ed6a2c0c371c6edb4f5db9`
@@ -70,7 +66,11 @@ completed commits: Lower-Lambert source checkpoint `1da2fde2285e3970267b7dc2561b
   of 47 lines; clean merge `47d5758467a367eb6962fa0aa11b8834ef10f680`
   incorporates fetched main `c2aa5a25c`; clean merge
   `1064891788f5fd3717fdb45e28f91436daf4fd42` incorporates current fetched main
-  `682222de1`
+  `682222de1`; exact non-equivalence claim `9609bee93` precedes source
+  checkpoint `45b4816c06f6d9e735df97de80e98ccb2447023c`, which proves that the
+  exponential of the literal uncorrected Wikipedia logarithmic expression is
+  not asymptotically equivalent to any bounded Fabius solution at the positive
+  zero endpoint
 validated (exact command, SHA/state, exit code): coordinator board records
   serialized immutable `lake build +FabiusFunction.LowerLambertW` at
   `4c6bbac41`, exit 0, with its source blob unchanged on current main;
@@ -117,7 +117,13 @@ not yet validated: the moved dyadic theorem body was already compiled in its
   composition and orientation, open/half-open endpoint handling, real and
   complex support coercions, all endpoint replacements, dead-code removal,
   caller preservation, exact public-declaration identity, imports, markers,
-  and diff hygiene, but has not been elaborated or built
+  and diff hygiene, but has not been elaborated or built; the Wikipedia
+  non-equivalence checkpoint has three independent read-only reviews covering
+  the exact asymptotic-equivalence API, ratio/log transfer, eventual
+  positivity, corrected-term sign, limit normalization, congruence
+  orientations, theorem placement, collision sweep, facade exposure, module
+  prose, forbidden markers, and diff hygiene, but has not been elaborated or
+  built
 requested integration or lease: the dyadic relocation needs serialized
   `+FabiusFunction.GlobalDyadic`
   and `+FabiusFunction.OriginalPaperSupplement` validation; this new ordinary
@@ -137,6 +143,10 @@ requested integration or lease: the dyadic relocation needs serialized
   writing claim is released by that handoff; the private AnalyticMoments
   checkpoint needs serialized `+FabiusFunction.AnalyticMoments`, and the
   `AnalyticMoments.lean` source writing claim is released by this handoff;
+  the Wikipedia non-equivalence checkpoint needs serialized
+  `+FabiusFunction.FabiusSharpAsymptotic` followed by
+  `+FabiusFunction.PaperFabiusAsymptotic`, and its source writing claim is
+  released by this handoff;
   serialized README/primary/walkthrough/coverage paths are deliberately not
   claimed yet
 conflicts / dependencies: all advertised Fabius heads and their registries
@@ -180,10 +190,9 @@ conflicts / dependencies: all advertised Fabius heads and their registries
   `not_isEquivalent` theorem and no competing claim on
   `FabiusSharpAsymptotic.lean`; the coordinator explicitly released its prior
   generalizations lease
-next bounded step: push this exact one-source claim, prove the unconditional
-  failure of asymptotic equivalence without running a build, obtain independent
-  term-level review, and request serialized
-  `+FabiusFunction.FabiusSharpAsymptotic` validation
+next bounded step: push this source handoff, then inspect and claim the strongest
+  available ordinary nonoverlapping theorem or deduplication tranche while the
+  coordinator retains the build token
 ```
 
 ## Coordinator natural-knot integration disposition
