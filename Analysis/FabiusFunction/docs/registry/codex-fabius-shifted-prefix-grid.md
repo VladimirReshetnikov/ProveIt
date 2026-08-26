@@ -1,21 +1,23 @@
 # Workstream registry: `codex/fabius-shifted-prefix-grid`
 
-**Status: source validation requested; coverage-map claim advertised.**
+**Status: source validation requested; coverage-map reconciliation complete.**
 The exact claim was published before source work, coordinator checkpoint
 `893d4c25d` explicitly acknowledged it as the first nonoverlapping claim for
 the module, and source commit `00ff41a5e` now implements precisely that bounded
-tranche.  The source is frozen pending compiler validation.
+tranche.  Documentation commit `dcd5f8a06` now reconciles the four advertised
+coverage clusters and releases `docs/PAPER_COVERAGE.md`.  The source remains
+frozen pending compiler validation.
 
 ```text
 SYNC Fabius
 branch / worktree / machine: codex/fabius-shifted-prefix-grid / c9a3 / EVO
   (Windows)
 fetched main SHA: e18f5d0b0e3ec78e2b14e7006af6c7e916b42923
-HEAD and dirty paths: 047a03b638aafccf591d7ea5ac494d7ff8c8d9a4;
-  clean after pushing the source checkpoint
+HEAD and dirty paths: dcd5f8a06992dace076c0c39f368df22c70dd1c9;
+  clean after pushing the coverage-map checkpoint
 writing (exact paths): docs/registry/codex-fabius-shifted-prefix-grid.md only;
   Lean/FabiusFunction/ThueMorseGenerating.lean is frozen at 00ff41a5e;
-  requested future documentation path is docs/PAPER_COVERAGE.md
+  docs/PAPER_COVERAGE.md is complete at dcd5f8a06 and its claim is released
 expected declarations or document claims: shiftedPrefixGridValue;
   shiftedPrefixGridValue_zero; shiftedPrefixGridValue_one;
   shiftedPrefixGridValue_succ_sub;
@@ -32,7 +34,8 @@ expected documentation claims: add the seven shiftedPrefixGridValue mappings
 completed commits: 6fb8dc8e9 publishes the exact one-file claim; ba0048023
   activates it under the open protocol; 00ff41a5e adds the seven generic
   declarations and converts all eight legacy proofs to wrappers; 047a03b63
-  merges origin/main e18f5d0b0 and is pushed to the feature branch
+  merges origin/main e18f5d0b0; e2d1db43f advertises the exact coverage-map
+  reconciliation; dcd5f8a06 completes and releases that documentation tranche
 validated (exact command, SHA/state, exit code): at source snapshot SHA-256
   784F6C4F389FE0F2FA08616FFAFBFA3917CCC9F6D2C86CE98D3D877B5F0DD14C,
   git diff --check and git diff --cached --check exited 0; python
@@ -41,26 +44,29 @@ validated (exact command, SHA/state, exit code): at source snapshot SHA-256
   3462 public declarations, found the same 132 baseline omissions, and exited
   0; normalized type comparison matched all eight legacy theorem statements;
   two independent hostile source/tactic reviews found no blocker; duplicate
-  searches covered all 17 locally present Fabius remote-tracking tips
+  searches covered all 17 locally present Fabius remote-tracking tips; for
+  documentation blob 2ed0d5ebb0ae9534ecbe0c2694a2313ca9f6f804,
+  all 59 newly cited qualified declarations resolve, all four changed table
+  rows have exactly four unescaped separators, git diff --cached --check
+  exited 0, the doc audit retained its exact baseline, and an independent
+  binder-level review found no correction
 not yet validated: no Lean or Lake process was launched because no EVO build
   token is granted; the three requested module targets remain uncompiled
-requested integration or lease: retain the source path through validation and
-  assign this branch, or an authorized build owner checking commit 00ff41a5e,
-  serialized targets
+requested integration or lease: retain the source path through validation;
+  review dcd5f8a06 for integration; assign this branch, or an authorized build
+  owner checking commit 00ff41a5e, serialized targets
   +FabiusFunction.ThueMorseGenerating,
   +FabiusFunction.ThueMorseApproximation, and
   +FabiusFunction.ThueMorseExponential
 conflicts / dependencies: no overlap with the active frontier-document lease;
   no AGENTS, README, collaboration, aggregate, TeX, PDF, canonical frontier,
   primary exposition, hot foundational module, or peer registry path requested;
-  current EVO build ownership remains with codex/fabius-exposition-integration;
-  searches of every advertised registry/tip found only historical notes that
-  PAPER_COVERAGE is stale, not a current claim for that path
-next bounded step: push this exact Markdown claim, fetch and reread the board
-  and registries, then reconcile only docs/PAPER_COVERAGE.md while keeping the
-  Lean source frozen and polling for an explicit build-token handoff
-lease refreshed: 2026-08-25 17:35 PDT; source frozen pending validation;
-  documentation claim awaits its registry-first push
+  current EVO build ownership remains with codex/fabius-exposition-integration
+next bounded step: push this completion record, poll for an explicit
+  build-token handoff, and advertise a fresh exact nonoverlapping claim before
+  any further source or documentation edit
+lease refreshed: 2026-08-25 17:58 PDT; source frozen pending validation;
+  documentation claim completed and released
 git owner / build owner: root / no build owner assigned to this branch
 ```
 
