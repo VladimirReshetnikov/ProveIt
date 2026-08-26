@@ -6,10 +6,10 @@ Every worker reads it from the fetched `origin/main` before writing, merging,
 building, or pushing.  Workers publish replies in their own per-branch registry
 files; they do not edit this board.
 
-## Checkpoint 2026-08-25 20:26 PDT
+## Checkpoint 2026-08-25 20:38 PDT
 
 ```text
-observed main before this directive: 408b8b11905f3ee260dd739592f0ff8755f1b53e
+observed main before this directive: de303339202ef0b7fb99da83003d4b841eef9b80
 coordinator branch: codex/fabius-coordinator-20260825
 integration mode: feature branches -> coordinator -> fast-forward main
 main write owner: coordinator
@@ -344,10 +344,21 @@ bridge tactics, changing no public statement or attribute.  The retry of
 `+FabiusFunction.PeriodicSmooth` completes 3297 jobs, exit 0, with no warnings.
 The `PeriodicSmooth.lean` lease is released.
 
-The branch has since frozen exact source commit `b27fc5259`, extending the
-Reshetnikov oddness result to every natural index, and advertised a later
-dead-uniform-spline-integral cleanup.  The oddness commit is under independent
-review; the cleanup is only claimed and has no build token.
+The branch next froze exact source commit `b27fc5259`, extending the
+Reshetnikov oddness result to every natural index.  Two independent reviews
+accept the zero and positive cases, the deliberate non-extension of the
+valuation conjunct at zero, imports, API, and compatibility proof of
+`theorem_nine_all`.  The coordinator integrated it as `6d15d9116`; serialized
+builds of `+FabiusFunction.Paper06487Supplement` (3243 jobs) and
+`+FabiusFunction.Paper06487` (3244 jobs) both exit 0.  The path is released and
+the corresponding `AUDIT_FINDINGS.md` entry is closed.
+
+Private-only source commit `6f8c8c046` then deletes the dead 22-line
+`integral_unitInterval_max_sub_mul_pow` helper from `FabiusUniformSpline.lean`.
+Two independent audits verify zero callers, identical public declaration
+lists, and continued use of every retained import/helper.  The coordinator
+integrated it as `b16fc9a6d`; `+FabiusFunction.FabiusUniformSpline` completes
+3415 jobs, exit 0.  That path is released and its audit finding is closed.
 
 ### `codex/fabius-theorem-polish-20260825`
 
@@ -692,11 +703,16 @@ a requested path is serialized, hot, frozen, single-owner, or already claimed.
 One reviewed Lean workstream is waiting on assigned validation.  The four
 disjoint both-papers units are integrated and validated as recorded above;
 its periodic bridge unit is now repaired, compiled, and released.  Continue to
-avoid merging that moving feature branch wholesale; `b27fc5259` is under
-review and the uniform-spline cleanup is claim-only.  The shifted-prefix
-branch's seven declarations
+avoid merging that moving feature branch wholesale; the all-index oddness and
+private spline cleanup are also integrated, compiled, and released.  The
+shifted-prefix branch's seven declarations
 are frozen at `8021c555f` plus `f7152d5fc` and hold the exact EVO validation
 grant above.
+
+Theorem-polish source commit `665b6bce` is a separate one-file
+`ProbabilityLaplaceMoments.lean` reflection tranche with three public
+declarations.  Its exact main preimage matches and independent reviews are in
+progress; it has no build token yet.
 
 Frontier source checkpoint `6397a0d6a` is already on `main` without a matching
 rebuilt PDF historically; accepted merge `192c423bb` now closes that mismatch
@@ -819,6 +835,12 @@ For the periodic derivative bridges, the first
 documented proof-elaboration defects and supplies no validation evidence.
 After statement-preserving repair `8d269396a`, the same serialized target
 completed 3297 jobs and exited 0 without warnings.
+
+For all-index oddness, `+FabiusFunction.Paper06487Supplement` at
+`6d15d9116` completed 3243 jobs and
+`+FabiusFunction.Paper06487` completed 3244 jobs, both exit 0.  For the dead
+private spline-helper cleanup, `+FabiusFunction.FabiusUniformSpline` at
+`b16fc9a6d` completed 3415 jobs, exit 0.
 
 On EVO, stage two at source tip `1ca2a09be` ran exactly three sequential
 frontier `pdflatex` passes under the authorized fresh `_stage2` job name.  All
