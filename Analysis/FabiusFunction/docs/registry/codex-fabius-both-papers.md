@@ -937,3 +937,54 @@ corollary immediately after `thm:shape-convexity`, and the walkthrough should
 add it to the `Convexity.lean` shape discussion and module-summary row.  The
 README addition is optional.  No frontier or paper-coverage row is required:
 this is a derived shape theorem, not a source-paper or research-frontier claim.
+
+## Inverse diagonal-classification claim
+
+Fresh fetched `origin/main` is
+`fc63c39788ab4c31694e4f57efe05b543165675a`; current feature HEAD is
+`860938821eb00158f4f0cb11859897761383cce2`, and the target
+`Lean/FabiusFunction/FabiusInverse.lean` has blob
+`96d24dccfdb70cf2154aa8cb494c495b7dde8811`.  The feature HEAD already
+contains the forward diagonal source checkpoint
+`7e4ec3657c4e068c98f09cfc72ea69b9ab8fe6d1` on which this claim depends.
+
+The exact write set is:
+
+- `Lean/FabiusFunction/FabiusInverse.lean`;
+- this branch's own registry.
+
+The intended source checkpoint adds exactly the documented public family
+
+- `self_lt_fabiusInv_of_mem_Ioo_zero_half`;
+- `fabiusInv_lt_self_of_mem_Ioo_half_one`; and
+- `fabiusInv_eq_self_iff`.
+
+The first two results transport the forward below-/above-diagonal inequalities
+through the existing strict comparison iff theorems for `fabiusInv`.  The
+all-real fixed-point classification transfers an inverse fixed point through
+`fabiusReal_fabiusInv` and `fabiusReal_eq_self_iff`; the reverse direction uses
+the exact inverse values at `0`, `1 / 2`, and `1`.  The source module gains one
+overview bullet and one local section, but no import, attribute, existing
+public signature, facade, aggregate, or serialized-document edit.  In
+particular none of the three theorems is a simp rule.
+
+Exact-name and semantic scans of current main, every fetched advertised
+Fabius/Claude tip, and all branch registries find no implementation or
+competing claim.  The inverse-asymptotic branch owns only its two new
+asymptotic modules plus `PaperFabiusAsymptotic.lean`; its registry explicitly
+keeps the existing `FabiusInverse.lean` read-only, and every relevant tip has
+the target blob above.  The ordinary source path is therefore nonoverlapping.
+
+No Lean/Lake token is assigned.  This is a registry-first claim only; later
+validation should run the forward dependency and inverse consumer in order:
+
+```text
+LAKE_JOBS=1 lake build +FabiusFunction.Convexity
+LAKE_JOBS=1 lake build +FabiusFunction.FabiusInverse
+```
+
+Canonical documentation remains frozen.  After it thaws, a separately
+assigned pass should add the inverse-versus-diagonal inequalities and fixed
+locus to the inverse-shape discussion in the primary exposition and
+walkthrough, rebuild their PDFs, and optionally extend the README API list.
+No `PAPER_COVERAGE.md` row is warranted for this derived shape corollary.
