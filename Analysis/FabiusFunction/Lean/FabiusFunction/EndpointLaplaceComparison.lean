@@ -505,18 +505,6 @@ lemma abs_endpointMoment_sub_laplace_secondOrder_le_all
   · simp
   · exact abs_endpointMoment_sub_laplace_secondOrder_le μ n (by omega)
 
-/-- Raw-moment formulation of the endpoint/Laplace comparison. -/
-lemma abs_unitEndpointMoment_sub_unitLaplace_secondOrder_le
-    (μ : Measure ℝ) [IsFiniteMeasureOnCompacts μ]
-    (n : ℕ) (hn : 1 ≤ n) :
-    |unitEndpointMoment μ n -
-        (unitLaplaceMoment μ n 0 -
-          (n : ℝ) / 2 * unitLaplaceMoment μ n 2)| ≤
-      16 * ((n : ℝ) * unitLaplaceMoment μ n 3 +
-        (n : ℝ) ^ 2 * unitLaplaceMoment μ n 4) := by
-  simpa [unitEndpointMoment, unitLaplaceMoment] using
-    abs_endpointMoment_sub_laplace_secondOrder_le μ n hn
-
 /-- Zero-inclusive raw-moment formulation of the endpoint/Laplace comparison.
 At degree zero the endpoint and Laplace kernels coincide and the displayed
 remainder vanishes. -/
@@ -531,50 +519,17 @@ lemma abs_unitEndpointMoment_sub_unitLaplace_secondOrder_le_all
   simpa [unitEndpointMoment, unitLaplaceMoment] using
     abs_endpointMoment_sub_laplace_secondOrder_le_all μ n
 
-/-- Fully quantitative logarithmic endpoint/Laplace comparison.  The smallness
-hypothesis is exactly what is needed to enter the radius `1 / 2` logarithm
-chart; all other quantities are explicit tilted raw moments. -/
-lemma abs_log_unitEndpointMoment_sub_log_unitLaplace_add_le
+set_option linter.unusedVariables false in
+/-- Raw-moment formulation of the endpoint/Laplace comparison. -/
+lemma abs_unitEndpointMoment_sub_unitLaplace_secondOrder_le
     (μ : Measure ℝ) [IsFiniteMeasureOnCompacts μ]
-    (n : ℕ) (hn : 1 ≤ n)
-    (hM : 0 < unitEndpointMoment μ n)
-    (hB : 0 < unitLaplaceMoment μ n 0)
-    (hsmall :
-      |(n : ℝ) / 2 * unitLaplaceMoment μ n 2 /
-          unitLaplaceMoment μ n 0| +
-        16 * ((n : ℝ) * unitLaplaceMoment μ n 3 +
-          (n : ℝ) ^ 2 * unitLaplaceMoment μ n 4) /
-            unitLaplaceMoment μ n 0 ≤ 1 / 2) :
-    |Real.log (unitEndpointMoment μ n) -
-        Real.log (unitLaplaceMoment μ n 0) +
-        (n : ℝ) / 2 * unitLaplaceMoment μ n 2 /
-          unitLaplaceMoment μ n 0| ≤
-      2 * ((n : ℝ) / 2 * unitLaplaceMoment μ n 2 /
-          unitLaplaceMoment μ n 0) ^ 2 +
-        2 * (16 * ((n : ℝ) * unitLaplaceMoment μ n 3 +
-          (n : ℝ) ^ 2 * unitLaplaceMoment μ n 4) /
-            unitLaplaceMoment μ n 0) := by
-  let M := unitEndpointMoment μ n
-  let B := unitLaplaceMoment μ n 0
-  let a := (n : ℝ) / 2 * unitLaplaceMoment μ n 2 / B
-  let ε := 16 * ((n : ℝ) * unitLaplaceMoment μ n 3 +
-    (n : ℝ) ^ 2 * unitLaplaceMoment μ n 4) / B
-  have hB0 : 0 ≤ B := hB.le
-  have h3 : 0 ≤ unitLaplaceMoment μ n 3 := unitLaplaceMoment_nonneg _ _ _
-  have h4 : 0 ≤ unitLaplaceMoment μ n 4 := unitLaplaceMoment_nonneg _ _ _
-  have hε : 0 ≤ ε := by
-    dsimp [ε]
-    positivity
-  have happrox : |M / B - (1 - a)| ≤ ε := by
-    have hraw := abs_unitEndpointMoment_sub_unitLaplace_secondOrder_le μ n hn
-    have heq : M / B - (1 - a) =
-        (M - (B - (n : ℝ) / 2 * unitLaplaceMoment μ n 2)) / B := by
-      dsimp [M, B, a]
-      field_simp [hB.ne']
-    rw [heq, abs_div, abs_of_pos hB]
-    exact (div_le_div_of_nonneg_right hraw hB0)
-  simpa only [M, B, a, ε] using
-    abs_log_sub_log_add_le_two_sq_add hM hB hε hsmall happrox
+    (n : ℕ) (hn : 1 ≤ n) :
+    |unitEndpointMoment μ n -
+        (unitLaplaceMoment μ n 0 -
+          (n : ℝ) / 2 * unitLaplaceMoment μ n 2)| ≤
+      16 * ((n : ℝ) * unitLaplaceMoment μ n 3 +
+        (n : ℝ) ^ 2 * unitLaplaceMoment μ n 4) := by
+  exact abs_unitEndpointMoment_sub_unitLaplace_secondOrder_le_all μ n
 
 /-- Zero-inclusive quantitative logarithmic endpoint/Laplace comparison.  The
 explicit positivity and logarithm-chart hypotheses suffice at every natural
@@ -621,23 +576,33 @@ lemma abs_log_unitEndpointMoment_sub_log_unitLaplace_add_le_all
   simpa only [M, B, a, ε] using
     abs_log_sub_log_add_le_two_sq_add hM hB hε hsmall happrox
 
+set_option linter.unusedVariables false in
+/-- Fully quantitative logarithmic endpoint/Laplace comparison.  The smallness
+hypothesis is exactly what is needed to enter the radius `1 / 2` logarithm
+chart; all other quantities are explicit tilted raw moments. -/
+lemma abs_log_unitEndpointMoment_sub_log_unitLaplace_add_le
+    (μ : Measure ℝ) [IsFiniteMeasureOnCompacts μ]
+    (n : ℕ) (hn : 1 ≤ n)
+    (hM : 0 < unitEndpointMoment μ n)
+    (hB : 0 < unitLaplaceMoment μ n 0)
+    (hsmall :
+      |(n : ℝ) / 2 * unitLaplaceMoment μ n 2 /
+          unitLaplaceMoment μ n 0| +
+        16 * ((n : ℝ) * unitLaplaceMoment μ n 3 +
+          (n : ℝ) ^ 2 * unitLaplaceMoment μ n 4) /
+            unitLaplaceMoment μ n 0 ≤ 1 / 2) :
+    |Real.log (unitEndpointMoment μ n) -
+        Real.log (unitLaplaceMoment μ n 0) +
+        (n : ℝ) / 2 * unitLaplaceMoment μ n 2 /
+          unitLaplaceMoment μ n 0| ≤
+      2 * ((n : ℝ) / 2 * unitLaplaceMoment μ n 2 /
+          unitLaplaceMoment μ n 0) ^ 2 +
+        2 * (16 * ((n : ℝ) * unitLaplaceMoment μ n 3 +
+          (n : ℝ) ^ 2 * unitLaplaceMoment μ n 4) /
+            unitLaplaceMoment μ n 0) := by
+  exact abs_log_unitEndpointMoment_sub_log_unitLaplace_add_le_all
+    μ n hM hB hsmall
 
-/-- Endpoint/Laplace comparison expressed entirely through the canonical
-Fabius half moment and tilted moments. -/
-theorem abs_halfMoment_sub_fabiusLaplace_secondOrder_le
-    (F : BoundedFabius) (hF : IsFabius F)
-    (n : ℕ) (hn : 1 ≤ n) :
-    |(halfMoment n : ℝ) -
-        (fabiusLaplaceMoment F 0 n -
-          (n : ℝ) / 2 * fabiusLaplaceMoment F 2 n)| ≤
-      16 * ((n : ℝ) * fabiusLaplaceMoment F 3 n +
-        (n : ℝ) ^ 2 * fabiusLaplaceMoment F 4 n) := by
-  have h := abs_unitEndpointMoment_sub_unitLaplace_secondOrder_le
-    ProbabilityRepresentation.weightedSumDistribution n hn
-  rw [ProbabilityRepresentation.unitEndpointMoment_weightedSumDistribution_eq_halfMoment
-      F hF n] at h
-  simpa only [ProbabilityRepresentation.unitLaplaceMoment_weightedSumDistribution_eq_fabiusLaplaceMoment
-    F hF] using h
 
 /-- Zero-inclusive endpoint/Laplace comparison for the canonical Fabius half
 moment.  The probability-law bridge identifies the exact boundary case as
@@ -657,42 +622,18 @@ theorem abs_halfMoment_sub_fabiusLaplace_secondOrder_le_all
   simpa only [ProbabilityRepresentation.unitLaplaceMoment_weightedSumDistribution_eq_fabiusLaplaceMoment
     F hF] using h
 
-/-- Relative endpoint/Laplace comparison. -/
-theorem abs_halfMoment_div_fabiusLaplace_sub_secondOrder_le
+set_option linter.unusedVariables false in
+/-- Endpoint/Laplace comparison expressed entirely through the canonical
+Fabius half moment and tilted moments. -/
+theorem abs_halfMoment_sub_fabiusLaplace_secondOrder_le
     (F : BoundedFabius) (hF : IsFabius F)
     (n : ℕ) (hn : 1 ≤ n) :
-    |(halfMoment n : ℝ) / fabiusLaplaceMoment F 0 n -
-        (1 - (n : ℝ) / 2 * normalizedLaplaceMoment F 2 n)| ≤
-      16 * ((n : ℝ) * normalizedLaplaceMoment F 3 n +
-        (n : ℝ) ^ 2 * normalizedLaplaceMoment F 4 n) := by
-  have hn0 : (0 : ℝ) < n := by exact_mod_cast (show 0 < n by omega)
-  have hB := fabiusLaplaceMoment_zero_pos F hF hn0
-  have hraw := abs_halfMoment_sub_fabiusLaplace_secondOrder_le F hF n hn
-  unfold normalizedLaplaceMoment
-  have heq :
-      (halfMoment n : ℝ) / fabiusLaplaceMoment F 0 n -
-          (1 - (n : ℝ) / 2 *
-            (fabiusLaplaceMoment F 2 n / fabiusLaplaceMoment F 0 n)) =
-        ((halfMoment n : ℝ) -
-          (fabiusLaplaceMoment F 0 n -
-            (n : ℝ) / 2 * fabiusLaplaceMoment F 2 n)) /
-              fabiusLaplaceMoment F 0 n := by
-    field_simp [hB.ne']
-  rw [heq, abs_div, abs_of_pos hB]
-  calc
     |(halfMoment n : ℝ) -
-          (fabiusLaplaceMoment F 0 n -
-            (n : ℝ) / 2 * fabiusLaplaceMoment F 2 n)| /
-        fabiusLaplaceMoment F 0 n ≤
-        (16 * ((n : ℝ) * fabiusLaplaceMoment F 3 n +
-          (n : ℝ) ^ 2 * fabiusLaplaceMoment F 4 n)) /
-            fabiusLaplaceMoment F 0 n :=
-      div_le_div_of_nonneg_right hraw hB.le
-    _ = 16 * ((n : ℝ) *
-          (fabiusLaplaceMoment F 3 n / fabiusLaplaceMoment F 0 n) +
-        (n : ℝ) ^ 2 *
-          (fabiusLaplaceMoment F 4 n / fabiusLaplaceMoment F 0 n)) := by
-      field_simp [hB.ne']
+        (fabiusLaplaceMoment F 0 n -
+          (n : ℝ) / 2 * fabiusLaplaceMoment F 2 n)| ≤
+      16 * ((n : ℝ) * fabiusLaplaceMoment F 3 n +
+        (n : ℝ) ^ 2 * fabiusLaplaceMoment F 4 n) := by
+  exact abs_halfMoment_sub_fabiusLaplace_secondOrder_le_all F hF n
 
 /-- Zero-inclusive relative endpoint/Laplace comparison.  The zeroth Laplace
 moment is globally positive, so normalization remains valid at `n = 0`, where
@@ -731,6 +672,17 @@ theorem abs_halfMoment_div_fabiusLaplace_sub_secondOrder_le_all
         (n : ℝ) ^ 2 *
           (fabiusLaplaceMoment F 4 n / fabiusLaplaceMoment F 0 n)) := by
       field_simp [hB.ne']
+
+set_option linter.unusedVariables false in
+/-- Relative endpoint/Laplace comparison. -/
+theorem abs_halfMoment_div_fabiusLaplace_sub_secondOrder_le
+    (F : BoundedFabius) (hF : IsFabius F)
+    (n : ℕ) (hn : 1 ≤ n) :
+    |(halfMoment n : ℝ) / fabiusLaplaceMoment F 0 n -
+        (1 - (n : ℝ) / 2 * normalizedLaplaceMoment F 2 n)| ≤
+      16 * ((n : ℝ) * normalizedLaplaceMoment F 3 n +
+        (n : ℝ) ^ 2 * normalizedLaplaceMoment F 4 n) := by
+  exact abs_halfMoment_div_fabiusLaplace_sub_secondOrder_le_all F hF n
 
 /-- The raw second tilted moment is `q'' + (q')²`, where
 `q = negativeLaplaceLog`. -/
