@@ -1,23 +1,27 @@
 # Workstream registry: `codex/fabius-shifted-prefix-grid`
 
-**Status: coordinator disposition requested; all prior paths frozen.**
+**Status: prior tranche accepted and validated; registry-only preflight before
+current-main synchronization.**
 The exact claim was published before source work, coordinator checkpoint
 `893d4c25d` explicitly acknowledged it as the first nonoverlapping claim for
 the module, and source commit `00ff41a5e` now implements precisely that bounded
 tranche.  Documentation commit `dcd5f8a06` now reconciles the four advertised
-coverage clusters.  The source remains frozen pending compiler validation.
+coverage clusters.  Coordinator checkpoint `c9eac55c5` accepts all three
+units, records four green focused builds at merge `ae16882d5`, and releases the
+source lease.
 Audit-ledger commit `faf1fcaf6` was
 completed and pushed before coordinator checkpoint `148990f0a` newly serialized
-both campaign-wide Markdown paths; both documentation commits are preserved for
-separate review, and this branch is making no further path claim.
+both campaign-wide Markdown paths.  Those paths remain serialized, and this
+branch is making no further path claim before synchronizing with current main.
 
 ```text
 SYNC Fabius
 branch / worktree / machine: codex/fabius-shifted-prefix-grid / c9a3 / EVO
   (Windows)
-fetched main SHA: 148990f0a2a9b665edaf3394656be1e7c46caf7e
-HEAD and dirty paths: 3161da511ddb6a2434d32d06b2b21e0179c4c354;
-  clean after merging and pushing the current main checkpoint
+fetched main SHA: 714b00ef0cfe052dc91f0f639a53409969d67681
+HEAD and dirty paths: 8ea040921d91e1e1d4a14ecb535e9f7606564620;
+  docs/registry/codex-fabius-shifted-prefix-grid.md only, recording read-only
+  future API preflight without claiming a new path
 writing (exact paths): docs/registry/codex-fabius-shifted-prefix-grid.md only;
   Lean/FabiusFunction/ThueMorseGenerating.lean is frozen at 00ff41a5e;
   docs/PAPER_COVERAGE.md is preserved at dcd5f8a06 pending review;
@@ -49,7 +53,8 @@ completed commits: 6fb8dc8e9 publishes the exact one-file claim; ba0048023
   0d4ee2471 advertises the exact four-finding audit claim; faf1fcaf6 closes
   those four stale entries and records their compiler provenance; e0302acdf
   records the completed documentation checkpoints; 3161da511 merges current
-  origin/main 148990f0a without conflicts
+  origin/main 148990f0a without conflicts; 8ea040921 reports the resulting
+  branch-specific freeze and coordinator handoff
 validated (exact command, SHA/state, exit code): at source snapshot SHA-256
   784F6C4F389FE0F2FA08616FFAFBFA3917CCC9F6D2C86CE98D3D877B5F0DD14C,
   git diff --check and git diff --cached --check exited 0; python
@@ -69,27 +74,28 @@ validated (exact command, SHA/state, exit code): at source snapshot SHA-256
   four unescaped separators, git diff --cached --check exited 0, the doc audit
   retained its exact baseline, and independent review verified each signature,
   source blob, implementation commit, and immutable build checkpoint
-not yet validated: no Lean or Lake process was launched because no EVO build
-  token is granted; the three requested module targets remain uncompiled;
-  coordinator review of 00ff41a5e, dcd5f8a06, and faf1fcaf6 is pending
-requested integration or lease: review the source, coverage map, and audit
-  ledger as separate units; if the source is accepted, assign this branch or an
-  authorized build owner checking commit 00ff41a5e the serialized targets
-  +FabiusFunction.ThueMorseGenerating,
-  +FabiusFunction.ThueMorseApproximation, and
-  +FabiusFunction.ThueMorseExponential
+  coordinator merge ae16882d5 subsequently validated
+  +FabiusFunction.ThueMorseGenerating (2085 jobs),
+  +FabiusFunction.ThueMorseApproximation (3307 jobs),
+  +FabiusFunction.ThueMorseExponential (2086 jobs), and
+  +FabiusFunction.PaperKFoldThueMorse (3327 jobs), all exit 0
+not yet validated: the future coefficient-bridge design below is static
+  preflight only; no Lean or Lake process was launched on EVO and no build
+  token is granted
+requested integration or lease: none; preserve this registry-only preflight,
+  synchronize with current main, and advertise any future ordinary source
+  claim separately after fresh collision checks
 conflicts / dependencies: no overlap with the active frontier-document lease;
   no AGENTS, README, collaboration, aggregate, TeX, PDF, canonical frontier,
   primary exposition, hot foundational module, or peer registry path requested;
-  checkpoint 148990f0a now serializes docs/PAPER_COVERAGE.md and
-  docs/AUDIT_FINDINGS.md and explicitly forbids this branch from adding another
-  path during review; a read-only two-parameter coefficient-bridge preflight is
-  therefore deferred without a registry claim or source edit
-next bounded step: push this exact handoff, keep every source and serialized
-  document frozen, and poll the board for coordinator review and a build-token
-  assignment; continue only read-only theorem/API preflight meanwhile
-lease refreshed: 2026-08-25 18:14 PDT; all prior paths frozen pending
-  coordinator disposition; no new path claim
+  current main keeps docs/PAPER_COVERAGE.md and docs/AUDIT_FINDINGS.md
+  serialized; the prior source lease is released, but the two-parameter
+  coefficient-bridge preflight remains unclaimed until after synchronization
+next bounded step: push this preservation checkpoint, merge current
+  origin/main, reconcile this own-registry overlap semantically, then repeat
+  collision checks before advertising a new ordinary source claim
+lease refreshed: 2026-08-25 18:35 PDT; prior source lease released; no new
+  path claim
 git owner / build owner: root / no build owner assigned to this branch
 ```
 
@@ -201,3 +207,75 @@ Three worthwhile but intentionally separate follow-ups were identified:
 None is included in this source checkpoint.  Keeping the first commit to one
 mechanically evidenced duplication class makes the review, build attribution,
 and rollback boundary exact.
+
+## Read-only future design -- not a path claim
+
+Coordinator checkpoint `c9eac55c5` accepts and validates the prior source and
+documentation tranches and releases the source lease.  The material below is
+nevertheless only a durable preflight record made before merging current main:
+it requests no lease, changes no theorem source, and must be collision-checked
+and advertised separately after synchronization.
+
+The selected next bounded source candidate is
+`Lean/FabiusFunction/ThueMorseApproximation.lean`, whose current `HEAD` and
+`origin/main` blob is
+`fb0e20a0e303403df358b925f262f7bead0d03e4` (SHA-256
+`045DF230FA224D417D3ED11AFE55F1569F74402833B30BAF008D8D6828A9F47F`).
+Fresh searches of all 16 locally available Fabius remote-tracking tips found
+neither an active claim for that path nor any of the proposed names.
+
+Three independent read-only reviews converged on this public API:
+
+```lean
+theorem coeff_thueMorseBlockPolynomial_mul_eq_thueMorseSeries_mul
+    (f : PowerSeries ℤ) (r m : ℕ) (hm : m < 2 ^ r) :
+    PowerSeries.coeff m
+        ((thueMorseBlockPolynomial r : PowerSeries ℤ) * f) =
+      PowerSeries.coeff m (thueMorseSeries * f)
+
+theorem coeff_thueMorseBlockPolynomial_mul_invOneSubPow_eq_iteratedPrefix
+    (r k m : ℕ) (hm : m < 2 ^ r) :
+    PowerSeries.coeff m
+        ((thueMorseBlockPolynomial r : PowerSeries ℤ) *
+          (PowerSeries.invOneSubPow ℤ k).val) =
+      iteratedPrefix k m
+
+theorem iteratedPrefix_eq_approximationPolynomial_coeff_all
+    (k m : ℕ) (hm : m < 2 ^ k) :
+    iteratedPrefix k m =
+      ((approximationPolynomial (k - 1)).coeff m : ℤ)
+```
+
+The first theorem exposes the actual finite-jet invariant: below the first
+omitted dyadic coefficient, right convolution by an arbitrary integer power
+series cannot distinguish the finite block from the infinite Thue--Morse
+series.  Its proof is exactly the existing private antidiagonal argument with
+the formerly conflated block depth and prefix order separated.  The second is
+the semantic `invOneSubPow` specialization, using `iteratedPrefixSeries_eq` and
+`coeff_iteratedPrefixSeries`.  Neither theorem should be a simp rule.
+
+The all-order approximation theorem adds the real boundary case hidden by the
+old positivity hypothesis.  At `k = 0`, its cutoff forces `m = 0`, natural
+subtraction makes `k - 1 = 0`, and both sides are one.  The successor proof is
+the finite-block specialization followed by
+`thueMorseBlock_mul_inv_eq_approximationPolynomialInt`.  The existing public
+`iteratedPrefix_eq_approximationPolynomial_coeff` must retain its exact binder
+names, order, hypothesis, conclusion, and attributes as a compatibility
+wrapper; its sole downstream caller can use the all-order form and drop a
+redundant positivity proof.  The narrower private
+`coeff_thueMorseSeries_mul_inv_eq_finite` is then deleted.
+
+The cutoff `m < 2^r` is sharp.  At `m = 2^r`, prefix order zero and multiplier
+one, the finite block coefficient is zero while the new Thue--Morse coefficient
+is `-1`.  No relation between `r` and `k` is needed, and both `r = 0` and
+`k = 0` are valid.  This preflight checked every identifier and rewrite
+direction against the current project and Mathlib sources; a separate hostile
+review found no mathematical, API, or simplifier blocker.  It is static
+evidence only, not compiler validation.
+
+A separate later candidate, also not claimed, is the finite Appell calculus in
+`FabiusQBinomialTaylor.lean`: an addition law for composition with `X + C c`,
+the Hasse-derivative identity
+`hasseDeriv j P_(k,d) = C (d.choose j) * P_(k,d-j)`, and its ordinary
+derivative specialization.  It has different consumers and should remain a
+separate one-file tranche rather than expanding the coefficient-bridge work.
