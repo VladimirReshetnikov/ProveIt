@@ -4,7 +4,72 @@ This file implements the per-branch registry protocol in
 [`../COLLABORATION.md`](../COLLABORATION.md). It is a status and provenance
 record, not a mathematical exposition.
 
-**Coordinator disposition at `7aed3c8c7`.**  The detailed status block and
+## Active source-stage disposition
+
+The coordinator board fetched at e18f5d0b0 grants this branch the single-owner
+frontier README/TeX/PDF lease and its own registry. Stage one is a source-only
+semantic checkpoint; the matching PDF is deliberately deferred until
+coordinator review.
+
+~~~text
+SYNC Fabius
+branch / worktree / machine: codex/fabius-exposition-integration /
+  C:\Users\vresh\.codex\worktrees\8f3f\ProveIt / EVO
+fetched main SHA: e18f5d0b0e3ec78e2b14e7006af6c7e916b42923
+HEAD and dirty paths: source work is based on b71bcc6fe; no merge is in
+  progress and git ls-files -u is empty. The only dirty paths are the leased
+  frontier README/TeX and this registry. The two redundant build-copy PDFs
+  were moved reversibly outside the worktree after their hashes were
+  reverified against the committed PDFs.
+writing (exact paths):
+  Analysis/FabiusFunction/docs/non-formalized-research-frontiers/README.md
+  Analysis/FabiusFunction/docs/non-formalized-research-frontiers/non-formalized-research-frontiers.tex
+  Analysis/FabiusFunction/docs/registry/codex-fabius-exposition-integration.md
+expected declarations or document claims: no Lean edits. Reconcile the
+  203-page authority with donor 8142ccb19 into six thematic syntheses plus the
+  post-audit gap register; preserve every current-only cluster; quarantine all
+  primary claims lacking an exact public Lean counterpart; reject rather than
+  preserve the false all-real raw-spline recurrence found during review.
+completed commits: this registry accompanies the stage-one source checkpoint
+  based on b71bcc6fe; its immutable commit SHA will be recorded after creation.
+validated (exact command, SHA/state, exit code): on TeX SHA-256
+  237206887D8500F6AB02A945609266E285B9930E36A1142E2704B5BF08007CA8,
+  git diff --check exited 0 and git ls-files -u was empty. Independent
+  case-sensitive static audit found 985 unique labels / 0 duplicates, 617
+  reference targets / 0 missing, 52 bibliography keys / 0 duplicates, 20
+  citation targets / 0 missing, balanced environments and delimiters, exactly
+  seven parts, no conflict markers, and no escaped-backslash corruption.
+  Independent semantic audit found all required donor/current clusters, all
+  twelve source hashes, correct formal/frontier status, 18 candidate and 18
+  obligation environments, and no blocker. Independent editorial review
+  found and then rechecked fixes for one false raw recurrence, missing prefix
+  hypotheses, ambiguous factor-two wording, and one Markdown punctuation
+  defect; final verdict PASS. The full Fabius aggregate previously passed at
+  immutable Lean-tree checkpoint 9887ea584 (4008 jobs, exit 0).
+not yet validated: stage one intentionally ran no Lean, Lake, pdflatex,
+  latexmk, or PDF process. The committed frontier PDF still corresponds to
+  the pre-reconciliation TeX and must not be integrated to main in this state.
+  The primary TeX/PDF remains frozen pending coordinator review.
+requested integration or lease: review the pushed source checkpoint, then
+  confirm stage two under the already reserved EVO TeX token for exactly
+  three pdflatex passes, rendered inspection, and a matching PDF checkpoint.
+  After frontier integration, grant the primary TeX/PDF correction tranche.
+conflicts / dependencies: fetched origin/main is three nonoverlapping policy
+  commits ahead of b71bcc6fe and changes only AGENTS.md, the campaign README,
+  and the coordinator board. Preserve this coherent source checkpoint before
+  merging it. The preserved sidecars are at
+  C:\Users\vresh\.codex\preserved\fabius-exposition-sidecars-8f3f-20260825T1700;
+  their SHA-256 values are
+  59B8B06825F89B81A33F6352196CEBE7C0CAF4C436170FEB15FFDD9336E72908
+  and CD91C680DFA7D96F110106F7A6ADCACC5CBA10E188DF1BD0A4484218FA8FA39C,
+  exactly matching the two previously committed canonical PDFs.
+next bounded step: commit and push this source-only checkpoint, fetch/read the
+  board again, merge origin/main into the clean feature branch, push the
+  feature branch only, and await stage-two review; never select a predecessor
+  PDF wholesale and never push main.
+~~~
+
+**Historical coordinator disposition at `7aed3c8c7`.**  The detailed status block and
 continuation audit below are a snapshot at `cffe24808`; they are retained as
 provenance, not as claims about the later Lean tree.  Current main still has
 the exact primary/frontier artifact blobs recorded here, and the proposed
@@ -63,7 +128,7 @@ next bounded step: push this registry-only audit checkpoint to the feature
 Source-only reviewers remained read-only. They did not edit, stage, build,
 commit, merge, or push.
 
-## Current disposition
+## Historical disposition before the current source stage
 
 The original draft-disposition tranche is complete, but the campaign-wide
 document reconciliation and final formal-validation gate are not. The
@@ -328,6 +393,20 @@ The consolidated register records claim-level promotion obligations for:
 - literal iterated derivatives of the Thue--Morse block polynomial at one;
 - construction of an actual infinite formal product, rather than finite
   coefficient stabilization alone; and
+- the explicit all-block triangular fold of the signed dyadic evaluator;
+- the least-common-denominator two-adic valuation consequence;
+- an exact reduced-rational input wrapper for Rvachev's up-function;
+- the all-real positive-part centered-spline formula and raw-spline smoothing
+  recurrence;
+- a precise theorem identifying which certified error bounds the midpoint
+  correction improves by a factor of two;
+- public finite-support packaging for the signed translate family;
+- exact histogram-cell tiling, including the distinction between defining
+  cells and exact function support;
+- independent failure witnesses for the prefix-order and centered-coordinate
+  corrections;
+- positive-scale endpoint vanishing for the global binary-reduction series;
+- norm summability of the parity-power presentation; and
 - the formal-background crosswalk explaining why nearby declarations do not
   yet discharge those obligations.
 
