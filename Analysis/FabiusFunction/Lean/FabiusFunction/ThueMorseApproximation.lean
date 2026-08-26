@@ -9,7 +9,9 @@ This module identifies the corrected iterated Thue--Morse prefixes with the
 polynomial/histogram approximants, first exactly at dyadic cell centers and
 then asymptotically along moving cells.  It includes the exceptional right
 endpoint, natural-floor clamping on the nonpositive half-line, and the
-rescaling that recovers the Fabius function on `[0,1]`.
+rescaling that recovers the Fabius function on `[0,1]`.  The exact coefficient
+identification covers every prefix order: at order zero the dyadic cutoff
+forces the sole coefficient at index zero, where both sides equal one.
 -/
 
 set_option autoImplicit false
@@ -73,21 +75,6 @@ theorem one_sub_X_pow_mul_approximationPolynomialInt (n : ℕ) :
         _ = thueMorseBlockPolynomial (n + 1 + 1) := by
           simpa only using (thueMorseBlockPolynomial_succ (n + 1)).symm
 
-private theorem coeff_thueMorseSeries_mul_inv_eq_finite
-    (k m : ℕ) (hm : m < 2 ^ k) :
-    PowerSeries.coeff m
-        (thueMorseSeries * (PowerSeries.invOneSubPow ℤ k).val) =
-      PowerSeries.coeff m
-        ((thueMorseBlockPolynomial k : PowerSeries ℤ) *
-          (PowerSeries.invOneSubPow ℤ k).val) := by
-  simp only [PowerSeries.coeff_mul]
-  apply Finset.sum_congr rfl
-  intro ab hab
-  have habsum : ab.1 + ab.2 = m := Finset.mem_antidiagonal.mp hab
-  have halt : ab.1 < 2 ^ k := by omega
-  rw [coeff_thueMorseSeries, Polynomial.coeff_coe,
-    coeff_thueMorseBlockPolynomial k ab.1 halt]
-
 private theorem thueMorseBlock_mul_inv_eq_approximationPolynomialInt (n : ℕ) :
     (thueMorseBlockPolynomial (n + 1) : PowerSeries ℤ) *
         (PowerSeries.invOneSubPow ℤ (n + 1)).val =
@@ -116,28 +103,40 @@ private theorem thueMorseBlock_mul_inv_eq_approximationPolynomialInt (n : ℕ) :
     _ = (approximationPolynomialInt n : PowerSeries ℤ) := by rw [hunit, mul_one]
 
 /-- Below the first omitted dyadic coefficient, the `k`-fold inclusive prefix
-sum is exactly the corresponding coefficient of `p_(k-1)`. -/
-theorem iteratedPrefix_eq_approximationPolynomial_coeff
-    (k m : ℕ) (hk : 0 < k) (hm : m < 2 ^ k) :
+sum is the corresponding coefficient of `p_(k-1)`.  At order zero, natural
+predecessor saturation selects `p_0`, and the cutoff forces the sole index
+`m = 0`. -/
+theorem iteratedPrefix_eq_approximationPolynomial_coeff_all
+    (k m : ℕ) (hm : m < 2 ^ k) :
     iteratedPrefix k m = ((approximationPolynomial (k - 1)).coeff m : ℤ) := by
   cases k with
-  | zero => omega
+  | zero =>
+      have hm0 : m = 0 := by
+        simpa only [pow_zero, Nat.lt_one_iff] using hm
+      subst m
+      simpa only [Nat.zero_sub, iteratedPrefix_at_zero,
+        approximationPolynomial_zero, Polynomial.coeff_one_zero, Nat.cast_one]
   | succ n =>
       rw [show n + 1 - 1 = n by omega]
       calc
         iteratedPrefix (n + 1) m =
-            PowerSeries.coeff m (iteratedPrefixSeries (n + 1)) := by simp
+            PowerSeries.coeff m
+              ((thueMorseBlockPolynomial (n + 1) : PowerSeries ℤ) *
+                (PowerSeries.invOneSubPow ℤ (n + 1)).val) :=
+          (coeff_thueMorseBlockPolynomial_mul_invOneSubPow_eq_iteratedPrefix
+            (n + 1) (n + 1) m hm).symm
         _ = PowerSeries.coeff m
-            (thueMorseSeries * (PowerSeries.invOneSubPow ℤ (n + 1)).val) := by
-              rw [iteratedPrefixSeries_eq]
-        _ = PowerSeries.coeff m
-            ((thueMorseBlockPolynomial (n + 1) : PowerSeries ℤ) *
-              (PowerSeries.invOneSubPow ℤ (n + 1)).val) :=
-                coeff_thueMorseSeries_mul_inv_eq_finite (n + 1) m hm
-        _ = PowerSeries.coeff m (approximationPolynomialInt n : PowerSeries ℤ) := by
-              rw [thueMorseBlock_mul_inv_eq_approximationPolynomialInt]
+              (approximationPolynomialInt n : PowerSeries ℤ) := by
+            rw [thueMorseBlock_mul_inv_eq_approximationPolynomialInt]
         _ = ((approximationPolynomial n).coeff m : ℤ) := by
-          simp [approximationPolynomialInt]
+            simp [approximationPolynomialInt]
+
+/-- Positive-order compatibility form of
+`iteratedPrefix_eq_approximationPolynomial_coeff_all`. -/
+theorem iteratedPrefix_eq_approximationPolynomial_coeff
+    (k m : ℕ) (hk : 0 < k) (hm : m < 2 ^ k) :
+    iteratedPrefix k m = ((approximationPolynomial (k - 1)).coeff m : ℤ) := by
+  exact iteratedPrefix_eq_approximationPolynomial_coeff_all k m hm
 
 private theorem halfEndpointIntervalIndicator_polynomialAtom_eq_ite (n m l : ℕ) :
     halfEndpointIntervalIndicator (stepIntervalLeft n l) (stepIntervalRight n l)
@@ -215,7 +214,7 @@ theorem correctedPrefixCoefficient_eq_stepApproximant
   | succ n =>
       rw [correctedPrefixCoefficient, show n + 1 - 1 = n by omega,
         stepApproximant_at_polynomialAtomLocation,
-        iteratedPrefix_eq_approximationPolynomial_coeff (n + 1) m (by omega) hm,
+        iteratedPrefix_eq_approximationPolynomial_coeff_all (n + 1) m hm,
         choose_succ_two, pow_add]
       push_cast
       have hpow : (2 : ℝ) ^ n ≠ 0 := by positivity
