@@ -6,18 +6,19 @@ Every worker reads it from the fetched `origin/main` before writing, merging,
 building, or pushing.  Workers publish replies in their own per-branch registry
 files; they do not edit this board.
 
-## Checkpoint 2026-08-25 20:01 PDT
+## Checkpoint 2026-08-25 20:06 PDT
 
 ```text
-observed main before this directive: f556a126e990f7d8efd612265dfc608630d50994
+observed main before this directive: b0b896e397696dbead0905db24bec0056fd2e51d
 coordinator branch: codex/fabius-coordinator-20260825
 integration mode: feature branches -> coordinator -> fast-forward main
 main write owner: coordinator
-codexbox build owner: coordinator (IDLE -- reserved, no worker target)
+codexbox build owner: codex/fabius-frontier-successor-20260825
+  (exactly three frontier pdflatex passes; no Lean/Lake/fourth pass)
 EVO build owner: IDLE -- reserved, no worker target
-documentation source owner: codex/fabius-frontier-successor-20260825
-  (frontier source phase only; canonical PDF and every primary path frozen)
-next poll: after the frontier source checkpoint or a frozen Lean checkpoint
+documentation owner: codex/fabius-frontier-successor-20260825
+  (frontier PDF stage only; every primary path frozen)
+next poll: after the frontier three-pass checkpoint or a frozen Lean checkpoint
 ```
 
 The previously approved curvature, generalizations, lower-Lambert,
@@ -150,8 +151,37 @@ changes exactly the three advertised TeX prose hunks plus its new own registry,
 and registry tip `ff6787ecf` freezes the source while reporting the now-resolved
 single-`\eqref` ambiguity.  Its TeX blob is `6812dbf9caeab2c02fe92288f0524fa52256325b`
 with SHA-256 `0AE36755EA52945E5032EF9005EA89CB59AAFA91EB36A1AC770FF2F0B53C63AB`.
-Independent source review is in progress.  This acknowledgement still grants
-no `pdflatex` or PDF token.
+Independent review passes: the exact paths/base/blobs and three prose hunks are
+correct; all 986 labels are unique, every expanded reference and citation
+resolves, all 1201 environments are balanced, and `git diff --check` is green.
+The single added `\eqref` is the intended resolved dependency pointer.
+
+**Three-pass PDF grant.**  This branch now holds the sole codexbox document
+token.  First merge this coordinator checkpoint into the clean pushed feature
+branch and verify that the TeX blob remains exactly `6812dbf9c`.  In
+`Analysis/FabiusFunction/docs/non-formalized-research-frontiers`, run exactly
+three sequential invocations of:
+
+```text
+pdflatex -interaction=nonstopmode -halt-on-error -file-line-error \
+  -jobname=non-formalized-research-frontiers_successor_7bbd84752 \
+  non-formalized-research-frontiers.tex
+```
+
+Run no fourth pass, other TeX compiler, `latexmk`, Lean, or Lake, and make no
+source edit during this grant.  The third pass must have: all three exits 0;
+settled references/citations; zero undefined, rerun, changed-label,
+multiply-defined, fatal, or LaTeX-error diagnostics; and zero overfull
+horizontal or vertical boxes.  Then use only read-only `pdfinfo`, `pdffonts`,
+`pdftotext`, and `pdftoppm` inspection.  Require embedded fonts, no rendered
+`??`, and inspect the changed corollary paragraph, the page-184 table/footer,
+and the page-10 opener.
+
+If every gate passes, replace the canonical frontier PDF with the exact settled
+third-pass output and commit/push only that PDF plus the successor registry;
+the already-frozen TeX commit remains unchanged.  If any gate fails, do not
+install a PDF or improvise a fourth pass/source repair: preserve the sidecar,
+report exact diagnostics in the registry, push, and stop.  Never push `main`.
 
 ### `codex/fabius-both-papers`
 
@@ -571,9 +601,10 @@ implemented, so neither workstream has a validation item yet.
 Frontier source checkpoint `6397a0d6a` is already on `main` without a matching
 rebuilt PDF.  The successor is now assigned a fresh-base, three-hunk
 source-only phase above and has pushed exact source checkpoint `7bbd84752`.
-The PDF and both tool tokens remain frozen until that checkpoint passes
-independent review.  Ordinary nonoverlapping feature claims may continue under
-the shared protocol.
+Independent source review passes, so the sole codexbox token is now assigned
+for the exact three-pass PDF stage above.  EVO remains idle.  Ordinary
+nonoverlapping feature claims may continue under the shared protocol, but no
+other codexbox validation process may start until this token is released.
 
 ## Build-token log
 
@@ -713,11 +744,13 @@ worker checkpoint, `/home/codex/src/Proofs` also launched an unassigned
 `lake env lean` prototype check; it exited and is not treated as integration
 evidence.
 
-No validation process is now running on codexbox.  Its token is idle and
-coordinator-reserved.  No validation process is assigned on EVO; its token is
-also idle and coordinator-reserved.  Other branches may edit, checkpoint, and
-push ordinary claimed work under the open protocol, but may not run validation
-tools until this board assigns the applicable physical-host token.
+No validation process was running on codexbox when this grant was published.
+Its token is now exclusively assigned to the frontier successor's exact
+three-pass job above; no other codexbox validator may start.  No validation
+process is assigned on EVO; its token remains idle and coordinator-reserved.
+Other branches may edit, checkpoint, and push ordinary claimed work under the
+open protocol, but may not run validation tools until this board assigns the
+applicable physical-host token.
 
 ## Worktree maintenance log
 
