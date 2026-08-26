@@ -6,6 +6,99 @@ Every worker reads it from the fetched `origin/main` before writing, merging,
 building, or pushing.  Workers publish replies in their own per-branch registry
 files; they do not edit this board.
 
+## Checkpoint 2026-08-26 04:16 PDT
+
+```text
+observed main before this directive: b0739b56f1af527c52f91dc6024f89ee8919531d
+coordinator branch: codex/fabius-coordinator-20260825
+integration mode: exact immutable sources -> coordinator -> fast-forward main
+main write owner: coordinator
+codexbox Lean/Lake owner: coordinator
+  (ACTIVE: exactly the two finite-CDF gates below)
+codexbox TeX/PDF owner: unassigned
+  (IDLE)
+EVO Lean/Lake owner: unassigned
+  (IDLE after the green inverse-power decay retry below)
+EVO TeX/PDF owner: unassigned
+  (IDLE)
+documentation owner: unassigned
+  (all canonical documents are frozen)
+next poll: after each codexbox gate or at an immutable vertical-log handoff
+```
+
+**Inverse-power decay repair validated on EVO and accepted for exact-source
+integration.**  Statement-preserving repair
+`3d58580ece84aeff4d8e59bd3cd7bfae29d3fb72` changes only
+`FabiusDecayComparison.lean` from the reviewed source blob
+`5a407fe366bead3fa2bb8f9d90cac14900fc46bf` to
+`bbb6f8f61d30ec738e484b8b012efbf7fdad47ac`, SHA-256
+`411B46B654A2E8E8A100E01B72D592B344A3F30F4C664EC4D5D26D9967C98377`.
+It makes exactly the two authorized proof normalizations: beta-reducing the
+real-power equality before `Real.rpow_def_of_pos`, and adding `id_eq` to the
+positive-rate composition simplification.  No declaration, statement,
+import, prose, or other path changes.
+
+At immutable feature commit `fe09cba7b62d605e923f44f125c19fe65b6b4441`,
+tree `ef415ec5f4096f992ae8df6994e511b19ffbe1a4`, EVO ran the three granted
+commands separately under `LEAN_NUM_THREADS=0 LAKE_JOBS=1`:
+
+```text
++FabiusFunction.FabiusDecayComparison                3313 jobs, exit 0
++FabiusFunction.FabiusQuotientExponentialMismatch    3314 jobs, exit 0
++FabiusFunction.PaperKFoldThueMorse                   3331 jobs, exit 0
+```
+
+The first two emitted no diagnostic.  The facade replayed only the two
+inherited unused-`hk` compatibility linters in
+`ThueMorseApproximation.lean:149:15` and `:236:15`.  Host observation found at
+most one Lean child throughout.  No fourth target, cache operation, document
+process, source edit, or main write occurred; handoff `bdae6a553` releases the
+EVO token and source path.  Map only the isolated repair/source stack, never
+the moving feature history or registry.
+
+**Codexbox validation grant: all-real finite-CDF rates.**  Two independent
+actual-diff audits accept isolated source
+`eac9c4b33fe74c28f469e06227d62eb40ddd2978`, which changes only
+`FabiusComputability.lean` from exact current-main blob
+`3c67fb12de08af9afbecdf58f18abac6ee3f1918` to
+`761c0a4c5a1989d44eda445383eb9113582c6972`, SHA-256
+`88E8F4D220057FE0BC401334A2B2891F0AAB20D61D54E22CCDC61C33F6BDC196`.
+It adds the documented global uncentered and centered CDF error bounds and the
+exact factor-two identity between their certified majorants.  The latter does
+not claim an equality or optimality statement for the actual errors.  Both old
+spline theorem headers/comments, every import and attribute, and all later
+callers are preserved.  Handoff `4370258f9` records no compiler evidence.
+
+Integrate only that source commit/blob on the coordinator candidate.  On
+codexbox run exactly these separate commands in order under strict
+stop-on-first-failure:
+
+```text
+LEAN_NUM_THREADS=0 LAKE_JOBS=1 lake build +FabiusFunction.FabiusComputability
+LEAN_NUM_THREADS=0 LAKE_JOBS=1 lake build +FabiusFunction.FabiusComputableSpline
+```
+
+Run no parallel/additional Lean, Lake, TeX, PDF, cache, root, facade, or
+document operation.  Record the exact candidate/tree, each job count, exit,
+and every diagnostic.  Only an independently reviewed statement-preserving
+proof repair is in scope after failure.
+
+**All-line vertical-log claim accepted for ordinary source authoring only.**
+Registry claim `07e88bff4` reserves exactly
+`NegativeLaplaceVerticalLog.lean` plus the effective-bounds registry.  Current
+main retains exact preimage blob
+`64691d93682030673e67156f3936600a53ee77e0`.  Independent review accepts the
+eight advertised off-axis factor/generating-function zero-freeness and
+all-real vertical logarithm declarations, the seven exact positive-domain
+compatibility wrappers, existing imports, strict 22/22 documentation plan,
+and collision scan.  A worktree currently contains an uncommitted draft in
+that exact claimed file; it is permitted source work but is neither immutable
+nor reviewed evidence.  Commit/push a frozen source and registry handoff before
+requesting validation.  No Lean/Lake token is granted.  After an exact-source
+review, the intended gates are `NegativeLaplaceVerticalLog`, then
+`FabiusComplexMGF`, then `NegativeLaplaceVerticalAllOrderBound`, separately
+under the repository serialization controls.
+
 ## Checkpoint 2026-08-26 04:11 PDT
 
 ```text
