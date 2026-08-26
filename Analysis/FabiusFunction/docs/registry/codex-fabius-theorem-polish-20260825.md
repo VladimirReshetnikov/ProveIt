@@ -545,3 +545,38 @@ global-q and binary summands themselves are termwise equal by
 These are uncompiled proof plans, not new claims or validation evidence, and
 must be advertised in exact nonoverlapping source paths before any future
 implementation.
+## Coordinator all-real Laplace integration disposition
+
+The five-source tranche is accepted after independent theorem/API/dependency
+review and serialized validation.  The review found no mathematical,
+signature-compatibility, import-cycle, duplicate, or scope blocker.  Source
+checkpoint `87c9b00f4` supplies the four-file global positivity and smooth
+normalized-moment API; dependent checkpoint `efee2a7e1` supplies the all-real
+normalized nonnegativity theorem.  The later feature commits through
+`d1ce004d4` change only this registry.
+
+Coordinator merge `0d308188c` exposed one elaboration-only defect in
+`contDiff_normalizedLaplaceMoment`: `simpa` did not identify the pointwise
+quotient with the named definition under the inferred normed-space instance.
+Commit `c4bc42f16` fixes it by changing the goal explicitly to the lambda
+quotient before applying `ContDiff.div`; the theorem statement and mathematics
+are unchanged.
+
+With the sole codexbox token and `LAKE_JOBS=1`, these separate one-target
+invocations supplied the final evidence:
+
+```text
+lake build +FabiusFunction.NegativeLaplace             # 2831 jobs, exit 0
+lake build +FabiusFunction.LaplaceMoments              # 2857 jobs, exit 0
+lake build +FabiusFunction.NegativeLaplaceDerivatives  # 2858 jobs, exit 0 after c4bc42f16
+lake build +FabiusFunction.NegativeLaplaceVertical     # 3194 jobs, exit 0
+lake build +FabiusFunction.LaplaceMomentBounds         # 3417 jobs, exit 0
+lake build +FabiusFunction.PaperFabiusAsymptotic       # 3957 jobs, exit 0
+```
+
+The first derivative-module attempt at merge `0d308188c` exited 1 with the
+folding mismatch described above and is not validation evidence.  The first
+two green targets' edited source blobs are unchanged at `c4bc42f16`; every
+target from the repaired derivative module onward ran at that immutable tree.
+`git diff --check` passes and the five edited sources contain no `sorry`,
+`admit`, `axiom`, or `opaque`.  All five source leases are released.
