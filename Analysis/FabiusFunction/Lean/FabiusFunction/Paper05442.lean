@@ -5,6 +5,8 @@ import FabiusFunction.WeakConvergence
 import FabiusFunction.OriginalPaperSupplement
 import FabiusFunction.PoissonSummation
 
+set_option autoImplicit false
+
 /-!
 # *An infinitely differentiable function with compact support*
 

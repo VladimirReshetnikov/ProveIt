@@ -1050,6 +1050,7 @@ theorem rvachevUp_hasDerivAt_of_fabiusReal_hasDerivAt (F : BoundedFabius)
     (hzero : ∀ x : ℝ, x ≤ 0 → fabiusReal F x = 0)
     (hderiv : ∀ x : ℝ, HasDerivAt (fabiusReal F) (2 * rvachevUp F (2 * x - 1)) x)
     ...
+```
 
 **Verifier.** All five cited declarations exist at the stated lines with the quoted signatures (Differential.lean:148/156/166; Existence.lean:552/566), and the supporting lemmas the proposal names are real (`IsFabius.zero_of_nonpos` = Basic.lean:67, `rvachevUp_even` = Basic.lean:155 and genuinely hypothesis-free, `boundedCandidate_zero_of_nonpos` = ...
 

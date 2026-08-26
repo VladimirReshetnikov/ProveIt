@@ -4,38 +4,55 @@ This directory is the quarantine boundary for mathematical claims about the
 Fabius function and Rvachev's up-function that do not yet have an exact,
 audited Lean theorem covering their full hypotheses and conclusions.
 
-The canonical frontier document is:
+The canonical frontier artifacts are:
 
-- `non-formalized-research-frontiers.tex`
-- `non-formalized-research-frontiers.pdf`
+- [`non-formalized-research-frontiers.tex`](non-formalized-research-frontiers.tex)
+- [`non-formalized-research-frontiers.pdf`](non-formalized-research-frontiers.pdf)
 
-It consolidates eleven former standalone research notebooks, including their
-natural-language arguments, symbolic computations, numerical evidence,
-warnings, citations, provenance, and explicit proof obligations. Some passages
-use already-formalized results as inputs; that does not certify the subsequent
-frontier deductions.
+The volume consolidates the eleven former standalone research notebooks and
+the later primary-exposition gap register. It preserves their natural-language
+arguments, symbolic computations, numerical evidence, warnings, citations,
+provenance, and explicit proof obligations without allowing any of that
+material to be mistaken for the formalization-backed primary exposition.
 
-## Promotion rule
+Some passages use already-formalized results as inputs. That does not certify
+the subsequent deductions. Conversely, when one claim is promoted to the
+primary exposition, adjacent exploratory material remains here until its own
+exact proof obligation is discharged.
 
-A claim must remain in this directory until all of the following are true:
+## Placement and promotion rule
 
-1. A current Lean declaration proves the exact mathematical statement,
-   including its domain, normalization, hypotheses, endpoints, and error term.
-2. The declaration and defining module have been independently audited.
-3. The formalization-backed exposition at
-   `../Fabius_Function_and_Rvachev_Up/Fabius_Function_and_Rvachev_Up.tex`
-   records that declaration.
-4. The corresponding obligation in the frontier document is removed or marked
-   as discharged without disturbing adjacent claims that remain unformalized.
+A mathematical claim belongs in the primary exposition only when a current
+public Lean declaration proves the exact statement, including its domain,
+normalization, hypotheses, endpoint convention, and conclusion or error term.
+The declaration and its defining module must be recorded next to the claim or
+in the primary document's audit map.
 
-A related definition, a theorem with weaker conclusions, a paper citation, a
-numerical match, or a plausible natural-language proof is not enough for
-promotion.
+A related definition, a theorem with stronger hypotheses or weaker
+conclusions, an executable computation, a paper citation, a numerical match,
+an `.olean` file, an agent report, or an apparently immediate derivation is not
+an exact counterpart. Material supported only in one of those ways stays in
+this volume, however standard or plausible it appears.
+
+Promotion is claim-by-claim:
+
+1. Verify the exact Lean declaration in current source.
+2. Integrate the supported material organically into
+   [`Fabius_Function_and_Rvachev_Up.tex`](../Fabius_Function_and_Rvachev_Up/Fabius_Function_and_Rvachev_Up.tex)
+   without duplicating material already there.
+3. Remove or relabel the matching frontier obligation while preserving every
+   adjacent claim that remains unformalized.
+4. Rebuild and inspect every affected PDF.
+
+Research drafts are temporary inboxes, not archives. Once every part of a
+draft has either been integrated into the primary exposition or preserved in
+the canonical frontier volume, delete the processed draft. Delete the draft
+directory itself when it becomes empty.
 
 ## Consolidation provenance
 
-The unified source records a SHA-256 checksum and a provenance banner for each
-former document. The inputs consolidated on 25 August 2026 were:
+The unified source records a provenance banner and SHA-256 checksum for every
+absorbed document. The source snapshots consolidated on 25 August 2026 were:
 
 | Former source | SHA-256 |
 | --- | --- |
@@ -50,27 +67,25 @@ former document. The inputs consolidated on 25 August 2026 were:
 | `Repeated_Integration_and_Rvachev_Up/Repeated_Integration_and_Rvachev_Up.tex` | `eadcb4b414ac93723a91acbd5062d44340f78134a2cecbc18f7d7ba67eb2c9be` |
 | `Rvachev_Up_from_Repeated_Integration-2/Rvachev_Up_from_Repeated_Integration.tex` | `fad16072df30d9e6eb5df03da57dd217769180730581f1dfd19fa5be0d16b262` |
 | `Small_Argument_Asymptotics/Small_Argument_Asymptotics.tex` | `85f51a20fc7b6bdf3b1d049ec4506f508aee3c4cd70554e6a68cbcc30977cb0b` |
+| `Primary_Exposition_Gap_Register/Primary_Exposition_Gap_Register.tex` | `06c7b888d9601b67ad7a5c0aee3f087d44d9ecaaa9abfb3bf3edfda4bd29c0d1` |
 
-Overlapping dossiers are retained when they provide independent derivations,
-stronger later statements, sharper constants, or distinct warnings. The
-unified document states which later dossier should be preferred when two
-versions differ.
-
-In particular, the second repeated-integration dossier supplies the sharper
-derivative threshold, and `Fabius_Dyadic_Formulae_to_Asymptotics` is the
-preferred dyadic-to-asymptotic synthesis. The neighboring dossiers remain
-because they preserve independent coefficient, Bromwich, geometric-simplex,
-and proof-sketch routes.
+The eleven notebooks are represented by seven core or synthesized parts,
+followed by the post-audit gap register. Overlapping dossiers were merged around
+their stronger backbones: independent derivations, sharper later statements,
+distinct warnings, numerical data, figures, and useful provenance remain, while
+genuinely redundant repetitions are compressed and cross-referenced. The
+original checksums identify every absorbed snapshot; subsequent synthesis and
+status corrections are tracked by Git history in the canonical source.
 
 ## Maintenance
 
-New unformalized mathematical write-ups should be merged into the canonical
-LaTeX document rather than left as permanent subdirectories. During concurrent
-work a temporary subdirectory may act as an inbox, but it should be merged,
-audited, and deleted promptly.
+New unformalized mathematical write-ups must be merged into the canonical
+LaTeX volume rather than retained as permanent parallel dossiers. A temporary
+subdirectory may serve as an inbox during concurrent work, but it must be
+audited, absorbed, and removed promptly.
 
-Build the document with exactly three `pdflatex` passes and commit the PDF with
-the source. Before every push that sends a changed frontier TeX source to
-`origin/main`, the matching rendered PDF must already be rebuilt and committed;
-never push a TeX/PDF mismatch to the main branch. Do not commit auxiliary
-LaTeX files.
+Build the canonical document with exactly three `pdflatex` passes, inspect the
+rendered PDF, and commit the PDF with its source. Before every push that sends
+a changed frontier TeX source to `origin/main`, the matching rendered PDF must
+already be rebuilt and committed. Never push a TeX/PDF mismatch. Do not commit
+`.aux`, `.log`, `.out`, `.toc`, or rendered page images.

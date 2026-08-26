@@ -1,5 +1,15 @@
 # Fabius function
 
+> **Active multi-agent campaign.** Before editing anything in this directory,
+> read [`AGENTS.md`](AGENTS.md) and the live
+> [coordinator board](docs/registry/coordinator.md).  The board, rather than a
+> chat-local claim, records current leases, collision freezes, the build token,
+> and branch-specific handoffs.  Workers may advertise nonoverlapping exact
+> path/declaration claims, edit and checkpoint freely on their own feature
+> branches, and push those branches without waiting for approval.  Only the
+> designated coordinator advances `main`, and no worker runs Lean/Lake or
+> TeX/PDF build tools without the physical-host token recorded on the board.
+
 This project formalizes the Fabius function and the results in both papers by
 Juan Arias de Reyna:
 
@@ -20,11 +30,15 @@ and as a [rendered PDF](docs/Fabius_Function_and_Rvachev_Up/Fabius_Function_and_
 That primary exposition is deliberately proof-backed: every mathematical claim
 in it must have a proved counterpart in the Lean development.
 
-The corrected small-argument asymptotics, including the general coefficient
-formula for the all-orders expansion, are developed in Lean and summarized in
-the primary exposition.  Longer supplementary derivations are retained in the
-[consolidated research-frontier source](docs/non-formalized-research-frontiers/non-formalized-research-frontiers.tex)
+The formally proved small-argument hierarchy—including the corrected sharp
+asymptotic, the general coefficient algebra for the recursive all-orders
+expansion, and the first two explicit periodic saddle corrections—is integrated
+into the primary exposition. Exploratory derivations, the small-argument
+notebook, and the primary-exposition gap register are preserved in the canonical
+[research-frontier LaTeX volume](docs/non-formalized-research-frontiers/non-formalized-research-frontiers.tex)
 ([PDF](docs/non-formalized-research-frontiers/non-formalized-research-frontiers.pdf)).
+That volume labels claims still awaiting literal Lean counterparts and records
+their exact outstanding proof obligations.
 
 Non-elementarity is treated in
 [*The Fabius Function and Its Inverse are Not Elementary*](docs/Non_Elementarity_of_the_Fabius_Function/Non_Elementarity_of_the_Fabius_Function.tex)
@@ -492,10 +506,13 @@ value `F(1)=1`, so unlike the recurrence this formula holds for every natural
 decomposition.  Public endpoints include
 `Fabius.fabiusAtInverseTwoPow_eq_composition_formula`, the explicitly nested
 `Fabius.fabiusAtInverseTwoPow_eq_composition_formula_by_length`, and generic,
-canonical, and signed-global real corollaries.  A self-contained derivation is
-retained in the
-[consolidated research-frontier source](docs/non-formalized-research-frontiers/non-formalized-research-frontiers.tex)
-and its [rendered PDF](docs/non-formalized-research-frontiers/non-formalized-research-frontiers.pdf).
+canonical, and signed-global real corollaries.  The self-contained derivation
+is integrated into the primary exposition, available as
+[LaTeX source](docs/Fabius_Function_and_Rvachev_Up/Fabius_Function_and_Rvachev_Up.tex)
+and as a
+[rendered PDF](docs/Fabius_Function_and_Rvachev_Up/Fabius_Function_and_Rvachev_Up.pdf).
+The consolidated frontier volume retains longer alternative derivations and
+their provenance without weakening this exact, primary-document integration.
 
 The
 [conjectured finite q-binomial formula](https://math.stackexchange.com/questions/3283519/conjectured-formula-for-the-fabius-function)
@@ -690,12 +707,15 @@ compiled PDF is committed alongside its source.
 
 ## Contributing and coordination
 
-A draft
-[multi-agent coordination proposal](docs/MULTI_AGENT_COORDINATION_PROPOSAL.md)
-describes suggested work ownership, pinned synchronization windows, validation
-scheduling, handoffs, and integration for concurrent Fabius development.  It
-is not current project policy; review, counterexamples, and alternative
-proposals are welcome.
+The current operational entry points are [`AGENTS.md`](AGENTS.md) and the
+[coordinator board](docs/registry/coordinator.md).  The detailed
+[collaboration guide](docs/COLLABORATION.md) records the protocol and the
+failures that motivated it; the longer
+[coordination design](docs/MULTI_AGENT_COORDINATION_PROPOSAL.md) remains useful
+background.  Focused amendments are welcome through a worker's own registry
+file, but neither background document overrides a current board instruction.
+Ordinary nonoverlapping work is self-service after a pushed registry claim;
+campaign-critical or colliding paths require an explicit board assignment.
 
 ## Checking
 

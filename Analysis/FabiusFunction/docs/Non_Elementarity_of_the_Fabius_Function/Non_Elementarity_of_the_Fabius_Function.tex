@@ -103,7 +103,7 @@
 }
 
 \title{\bfseries The Fabius Function and Its Inverse are Not Elementary\\[0.35em]
-\large Density of the analytic locus, and what it survives}
+\large Density of the analytic locus under algebraic branches and inversion}
 \author{Human-readable account of the formal development\\
 \small Vladimir Reshetnikov's \texttt{ProveIt} repository}
 \date{Repository snapshot: 25 August 2026}
@@ -128,29 +128,31 @@ which we prove in the form we need it and no stronger:
 dense open subset of $\R$.}
 \end{center}
 
-Density is exactly right and cannot be improved: $x\mapsto x^{-1}$ and
-$x\mapsto |x|$ are elementary and fail to be analytic at the origin.  The
+Density cannot in general be replaced by analyticity everywhere:
+$x\mapsto x^{-1}$ and $x\mapsto |x|$ are elementary and fail to be analytic at
+the origin.  The
 induction that proves it is short but has one genuinely delicate step, the
 unary one, where a locally constant intermediate value must be separated from
 a locally nonconstant one; the separation is furnished by the isolated-zeros
 theorem for real analytic functions of one variable.
 
 The same conclusion is then proved for two classes the inductive definition
-does not reach.  The first is the algebraic functions: any continuous branch
-of a polynomial equation whose coefficients are elementary and whose leading
-coefficient vanishes nowhere, which covers those not expressible by radicals,
-and which rests on a degree induction that avoids the discriminant --- of
-which \texttt{Mathlib} has no usable theory --- in favour of the analytic
-implicit function theorem, of which it does.
+does not reach.  The first consists of continuous branches, on a nonempty open
+set, of polynomial equations whose coefficients are elementary and whose
+leading coefficient is nonzero throughout that set.  This covers continuous
+algebraic branches, including examples not expressible by radicals, and rests
+on a degree induction that avoids the discriminant, of which
+\texttt{Mathlib} has no usable theory, in favour of the analytic implicit
+function theorem, of which it does.
 
-The second is inverses.  We prove that $F^{-1}$, which exists because $F$ is a
-homeomorphism of $[0,1]$, is itself analytic at no point of $[0,1]$ and hence
-not elementary either; and then that adjoining continuous inverse branches to
-the class, at any depth, changes nothing.  The Lambert $W$ function is such a
-branch, so it is covered.  The organizing observation is that a one-sided
-inverse is an implicit branch of the simplest possible equation, $h(z)-x=0$, so the
-inverse function theorem is the implicit function theorem already in hand and
-no new analysis is required at all.
+The second concerns inverse branches.  We prove that $F^{-1}$, which exists
+because $F$ is a homeomorphism of $[0,1]$, is itself analytic at no point of
+$[0,1]$ and hence not elementary either; and then that adjoining continuous
+inverse branches which are analytic off their open branch domains, at any
+depth, preserves density of the analytic locus.  The organizing observation
+is that the one-sided identity $h(g(x))=x$ makes $g$ a right inverse of $h$
+and an implicit branch of the simplest possible equation, $h(z)-x=0$, so the
+analytic inverse theorem is the implicit function theorem already in hand.
 \end{abstract}
 
 \tableofcontents
@@ -210,8 +212,8 @@ finite table of values.
 \end{remark}
 
 \begin{boxedremark}
-Corollary~\ref{cor:main} is the sharp form of the assertion ``the Fabius function is
-not elementary'', and it is strictly stronger than the bare
+Corollary~\ref{cor:main} is the strengthened form used here of the assertion
+``the Fabius function is not elementary'', and it is strictly stronger than the bare
 non-elementarity of $F$ as a function on $\R$.  The bare statement leaves
 open the possibility that some elementary function agrees with $F$ on all of
 $(0,1)$ and differs from it outside; Corollary~\ref{cor:main} rules that out, and rules
@@ -331,14 +333,17 @@ plausible substitute.
 
 \subsection{What is not claimed}\label{sec:notclaimed}
 
-$\Elem$ is closed under $n$-th roots but not, as defined, under passage to an
-arbitrary algebraic function: Definition~\ref{def:elem} has no clause producing a
-continuous branch of $P(x,y)=0$ for a polynomial $P$ with elementary
-coefficients whose Galois group is not solvable, and Liouville's
+$\Elem$ contains Mathlib's total real-power representatives of the principal
+$n$-th roots on $[0,\infty)$ for positive $n$ and, by
+Warning~\ref{warn:oddroot}, the classical odd-root functions on all of $\R$.
+It is not, as defined, closed under passage
+to an arbitrary algebraic function: Definition~\ref{def:elem} has no clause
+producing a continuous branch of $P(x,y)=0$ for a polynomial $P$ with
+elementary coefficients whose Galois group is not solvable, and Liouville's
 differential-field definition of ``elementary'' does admit such branches.
-\Cref{sec:algebraic} closes that gap, not by enlarging $\Elem$ but by proving
-the conclusion of Corollary~\ref{cor:main} directly for such branches.  What
-remains genuinely outside the result is stated there.
+Section~\ref{sec:algebraic} closes that gap, not by enlarging $\Elem$ but by
+proving the conclusion of Corollary~\ref{cor:main} directly for such branches.
+What remains genuinely outside the result is stated there.
 
 Two smaller gaps are worth naming here.
 
@@ -351,12 +356,12 @@ The second concerns variable exponents.  Definition~\ref{def:elem}
 provides $x\mapsto f(x)^r$ for a \emph{fixed} real $r$, and
 \texttt{IsElementary.rpow\_of\_pos} supplies $f^g$ whenever the base $f$ is
 positive \emph{at every real} --- which covers $(1+x^2)^{\sin x}$ and any base
-with a positive lower bound, but not $x\mapsto x^x$, whose base is positive
-only on $(0,\infty)$.  That case is handled instead by the region statement
-below.
+that is everywhere positive (no uniform lower bound is needed), but not
+$x\mapsto x^x$, whose base is positive only on $(0,\infty)$.  That case is
+handled instead by the region statement below.
 
-The sign of the base is \emph{not} an obstruction, and it is worth being
-precise about what is.  \texttt{Mathlib}'s $x^y$ is sign-dependent at a
+The sign of an everywhere nonvanishing base is not an obstruction.
+\texttt{Mathlib}'s $x^y$ is sign-dependent at a
 negative base --- there $x^y=|x|^y\cos(\pi y)$ --- but a single elementary
 formula covers both signs at once,
 \[
@@ -367,11 +372,12 @@ since $(1-f/|f|)/2$ is the indicator of $f<0$, making the cosine $\cos 0=1$
 where $f>0$ and $\cos(g\pi)$ where $f<0$; no absolute value is needed inside
 the logarithm because \texttt{Mathlib} already sets $\log x=\log|x|$.  This is
 \texttt{IsElementary.rpow\_of\_ne\_zero}, and it needs only that the base never
-vanishes.  The genuine obstruction is precisely the zero set of the base: at
+vanishes.  This is a sufficient uniform closure rule, not a claim that every
+power whose base has a zero is non-elementary: fixed natural powers are
+already covered by other constructors.  At
 $f(x)=0$ the conventions $0^r=0$ for $r\ne0$ and $0^0=1$ are discontinuous in
-the exponent, and no continuous correction factor reproduces them --- which is
-why $x\mapsto x^x$, and not some negative-base example, is the honest
-counterexample.  Nothing is lost for Corollary~\ref{cor:main}, and this is
+the exponent, so the nonvanishing formula does not extend uniformly there.
+Nothing is lost for Corollary~\ref{cor:main}, and this is
 formalized rather than asserted: \texttt{Fabius.eqOn\_rpow\_of\_pos}
 states that on any set where the base is positive, $f^{g}$ agrees pointwise
 with $\exp(\log f\cdot g)$, which is a member of $\Elem$ whenever $f$ and $g$
@@ -523,10 +529,11 @@ at $0$.  So ``nowhere dense'' is the correct description of the exceptional
 set and cannot be improved to ``discrete''.
 \end{remark}
 
-\section{Algebraic functions over the elementary functions}\label{sec:algebraic}
+\section[Algebraic branches]{Algebraic functions over the elementary functions}\label{sec:algebraic}
 
-Definition~\ref{def:elem} reaches the $n$-th roots but not a general algebraic
-function.  This section removes that restriction.  It does so without
+Definition~\ref{def:elem} reaches principal $n$-th roots on nonnegative inputs
+for positive $n$, and classical odd roots on all of $\R$, but not a general
+algebraic function.  This section removes that restriction.  It does so without
 enlarging $\Elem$, for a reason worth stating: an algebraic clause inside the
 inductive definition would cost Proposition~\ref{prop:comp}.  Composing a
 branch $y$ with an elementary $h$ produces a branch over the coefficients
@@ -575,12 +582,12 @@ vacuous rather than positive: the equation reads $a_0(x)=0$ while the leading
 coefficient hypothesis says $a_0(x)\ne0$, so the region is empty.
 
 The implicit function step is \texttt{Mathlib}'s
-\texttt{ContDiffAt.implicitFunction}, which is stated for every smoothness
+\path{ContDiffAt.implicitFunction}, which is stated for every smoothness
 exponent in $\N\cup\{\infty,\omega\}$; instantiating at $\omega$ and converting
-with \texttt{ContDiffAt.analyticAt} gives an analytic implicit function
+with \path{ContDiffAt.analyticAt} gives an analytic implicit function
 theorem.  Its one nontrivial hypothesis, invertibility of the partial
 derivative as a continuous linear map, is discharged in one variable by
-\texttt{HasDerivAt.hasFDerivAt\_equiv} together with uniqueness of the
+\path{HasDerivAt.hasFDerivAt_equiv} together with uniqueness of the
 Fréchet derivative.
 \end{proofidea}
 
@@ -602,14 +609,14 @@ W\subseteq U$.  Now argue as in Corollary~\ref{cor:main}.
 \begin{boxedremark}
 Every hypothesis on the branch in Corollary~\ref{cor:algebraic} is confined to
 $U$, and that is what makes the corollary say what one wants it to say.  A
-version with global hypotheses would be much weaker than it looks: requiring
-$\sum a_i(x)y(x)^i=0$ for \emph{every} real $x$ forces the polynomial
-$w\mapsto\sum a_i(x)w^i$ to be injective along the branch, and for
-$y^5-y-x=0$ --- the standard example of an equation with non-solvable Galois
-group --- no continuous branch on all of $\R$ exists, since $w\mapsto w^5-w$
-is not injective.  The localized statement reaches the branches of that
-equation over $(0,1)$, which are exactly the algebraic functions not
-expressible by radicals.
+version with global hypotheses would be much weaker than it looks.  For the
+standard Bring equation $y^5-y-x=0$, a global continuous branch would be a
+continuous right inverse of $h(w)=w^5-w$.  Such a right inverse is injective;
+its image is an interval, and $h(y(x))=x$ forces that image to be unbounded in
+both directions, hence all of $\R$.  It would therefore force $h$ itself to be
+injective, a contradiction.  The localized statement nevertheless reaches
+the positive real branch over $(0,1)$, an algebraic function not expressible by
+radicals.
 
 The corollary is genuinely stronger than Corollary~\ref{cor:main} in that
 direction, and independent of it in the other: it says nothing about $\exp$ or
@@ -621,20 +628,19 @@ covered only when it can be presented in one of the two forms.
 
 \section{The inverse, and why inverting cannot help}\label{sec:inverse}
 
-$F$ is a homeomorphism of $[0,1]$ onto itself, so it has a continuous inverse
-$F^{-1}$.  Everything above concerned $F$; this section treats $F^{-1}$, and
-then closes the class under inversion.
+$F$ is a homeomorphism of $[0,1]$ onto itself, so it has a continuous inverse.
+We write $F^{-1}\colon\R\to\R$ for the formal development's clamped
+totalization: the inverse on $[0,1]$, the constant $0$ on $(-\infty,0]$, and
+the constant $1$ on $[1,\infty)$.  Everything above concerned $F$; this
+section treats that totalization, and then closes the class under the
+admissible inverse-branch rule.
 
-One convention, since the classes of \Cref{sec:elem} consist of functions on
-all of $\R$.  Throughout, $F^{-1}$ denotes the extension of the inverse
-homeomorphism by its endpoint values, constantly $0$ on $(-\infty,0]$ and
-constantly $1$ on $[1,\infty)$; in the formalization this is
-\texttt{Fabius.fabiusInv}, defined by \texttt{Set.IccExtend} of the order
-isomorphism.  The extension is continuous, so nothing is hidden in the
-gluing, and the constancy outside $[0,1]$ is what the endpoint half of
-\Cref{thm:invnowhere} exploits.
+In the formalization this function is \texttt{Fabius.fabiusInv}, defined by
+\texttt{Set.IccExtend} of the order isomorphism.  The extension is continuous,
+so nothing is hidden in the gluing; its constant tails are what the endpoint
+half of \Cref{thm:invnowhere} exploits.
 
-\subsection{A one-sided inverse is an implicit branch}
+\subsection{A right inverse is an implicit branch}
 
 The observation that organizes this section is that no new analysis is
 needed.  The equation
@@ -663,16 +669,20 @@ exactly $\R\setminus[0,1]$.
 \begin{proofidea}
 In the interior, run \Cref{thm:ift} backwards.  If $F^{-1}$ is analytic at
 $y_0\in(0,1)$ then $F$, being its inverse near that point, is analytic at
-$F^{-1}(y_0)\in(0,1)$ --- provided $F^{-1}$ has no critical point there.  It
-has none.  This is the one place where $F'$ enters at all --- everywhere else
+$F^{-1}(y_0)\in(0,1)$ --- provided $(F^{-1})'(y_0)\ne0$.  It has no critical
+point anywhere in the interior.  This is the one place where $F'$ enters at
+all --- everywhere else
 $F$ is used through its continuity and through its failure to be analytic ---
 and what is needed of it is only that $F'>0$ on $(0,1)$.  Given that, the easy
 half of the inverse function theorem --- the half that assumes the inverse
 already exists --- yields
-\[
-  (F^{-1})'(y)=\frac{1}{F'\bigl(F^{-1}(y)\bigr)}\qquad(0<y<1),
-\]
-a nonzero real number.  \Cref{thm:nowhere} then supplies the contradiction.
+ \[
+   (F^{-1})'(y)=\frac{1}{F'\bigl(F^{-1}(y)\bigr)}\qquad(0<y<1),
+ \]
+ a nonzero real number.  The core inverse module formalizes this reciprocal
+ derivative, its strict positivity, and the stronger fact that $F^{-1}$ is
+ $C^\infty$ throughout $(0,1)$.  \Cref{thm:nowhere} then supplies the
+ contradiction.
 
 The direction deserves to be stated, because the shorter route is circular.
 Differentiating $F^{-1}\circ F=\mathrm{id}$ to obtain
@@ -696,8 +706,9 @@ elementary.
 \begin{boxedremark}
 One might have hoped that inverting improves matters.  $F$ is flat to infinite
 order at the endpoints, so $F^{-1}$ is steep there, and steepness is not
-obviously an obstruction to being elementary --- the real cube root is steep
-at the origin and perfectly elementary.  \Cref{thm:invnowhere} says the hope
+obviously an obstruction to being elementary --- the signed real cube root
+$x\mapsto (x/|x|)|x|^{1/3}$ is steep at the origin and perfectly elementary.
+\Cref{thm:invnowhere} says the hope
 is misplaced, and the reason is structural rather than quantitative: analytic
 functions are closed under inversion wherever the derivative survives, so an
 analytic inverse would hand analyticity straight back.
@@ -706,7 +717,8 @@ analytic inverse would hand analyticity straight back.
 \subsection{Closing the class under inversion}
 
 Nothing about the argument was special to $F$.  The same reasoning shows that
-the invariant of \Cref{thm:density} survives inversion in general.
+the invariant of \Cref{thm:density} survives the admissible inverse-branch rule
+below.
 
 \begin{theorem}\label{thm:invbranch}
 Let $f$ be analytic on a dense set and let $g$ be continuous on a nonempty
@@ -760,6 +772,11 @@ nothing, since the boundary of an open set is nowhere dense, and for $W$ the
 constant extension then satisfies the analyticity clause on all of
 $(-\infty,-1/\e)$.
 
+The Lean result is a conditional criterion for any supplied total function
+satisfying these hypotheses.  Since \texttt{Mathlib} does not define $W$, the
+formalization neither constructs a standard real branch nor verifies a
+particular totalization of it.
+
 That clause is a condition on the chosen extension of the branch past $U$, not
 a fact that comes for free.  Extension by a constant always meets it, and that
 is the honest reading of the rule: a branch is admitted together with a
@@ -793,26 +810,27 @@ are as in \Cref{sec:density}; and the inverse rule splits on whether the test
 set meets $U$.  Given a nonempty open $B$: if $B\cap U\ne\emptyset$ then
 \Cref{thm:invbranch} applies to the nonempty open set $B\cap U$ and produces a
 point of $B$ at which $g$ is analytic; and if $B\cap U=\emptyset$ then
-$B\subseteq U^{c}$, so $B\subseteq\operatorname{int}(U^{c})$ because $B$ is
-open, and every point of $B$ will do by the rule's analyticity clause.
+$B\subseteq U^{\mathsf c}$, so
+$B\subseteq\operatorname{int}(U^{\mathsf c})$ because $B$ is open, and every
+point of $B$ will do by the rule's analyticity clause.
 \end{proof}
 
 \begin{corollary}\label{cor:plusmain}
 Neither $F$ nor $F^{-1}$ agrees with any member of $\Elem^{-1}$ on any subset
 of $[0,1]$ with nonempty interior.  In particular neither is representable on
-$(0,1)$ by elementary functions, their inverses, inverses of those, and the
-elementary operations --- Lambert $W$ included.
+$(0,1)$ by elementary functions, elementary operations, and any finite tower
+of totalized inverse branches satisfying Definition~\ref{def:elemplus}.
 \end{corollary}
 
 \begin{boxedremark}
-It is worth being explicit about what Corollary~\ref{cor:plusmain} does and does not
-rest on.  It does not rest on any property of $W$ beyond its defining
-identity: the formalization states the membership of $W$ in $\Elem^{-1}$ for
-an \emph{arbitrary} continuous branch of $y=z\e^{z}$, because \texttt{Mathlib}
-does not define $W$, and the statement therefore applies to any construction
-of it.  And it does not rest on the inverse being a two-sided one; a
-continuous right inverse on an open set is all that is used, which is the most
-that a multivalued algebraic or transcendental inverse ever provides.
+It is worth being explicit about what Corollary~\ref{cor:plusmain} does and does
+not rest on.  The inverse need not be two-sided: a continuous right inverse on
+an open set is enough.  On the other hand, the conditional Lambert-$W$
+constructor also requires the chosen totalization to be analytic on the
+interior of that open set's complement.  The branch-domain boundary is
+deliberately excluded from this side condition.  Because \texttt{Mathlib} does
+not define $W$, the formalization neither constructs a standard real branch
+nor verifies any particular totalization.
 \end{boxedremark}
 
 \section{The formal development}
@@ -821,118 +839,127 @@ that a multivalued algebraic or transcendental inverse ever provides.
 
 All statements below live in the namespace \texttt{Fabius}.
 
-\begin{center}
-\small
-\begin{tabular}{@{}p{0.40\textwidth}p{0.31\textwidth}p{0.23\textwidth}@{}}
+\begingroup
+\footnotesize
+\setlength\LTleft{0pt}
+\setlength\LTright{0pt}
+\begin{longtable}{@{}
+  >{\raggedright\arraybackslash}p{0.32\textwidth}
+  >{\raggedright\arraybackslash}p{0.37\textwidth}
+  >{\raggedright\arraybackslash}p{0.25\textwidth}@{}}
 \toprule
 \textbf{Object or statement} & \textbf{Lean name} & \textbf{Module} \\
 \midrule
+\endhead
 Elementary functions (Definition~\ref{def:elem})
-  & \texttt{IsElementary}
-  & \texttt{ElementaryFunction} \\
+  & \path{IsElementary}
+  & \path{ElementaryFunction} \\
 Closure under composition (Proposition~\ref{prop:comp})
-  & \texttt{IsElementary.comp}
-  & \texttt{ElementaryFunction} \\
+  & \path{IsElementary.comp}
+  & \path{ElementaryFunction} \\
 Derived closures: $-$, $/$, $x^n$, $\sqrt{\ }$, $|\cdot|$, $\tan$, $\sinh$, $\cosh$, $\tanh$, $\arccos$, $\operatorname{arsinh}$, polynomials
-  & \texttt{IsElementary.sub}, \texttt{.div}, \texttt{.npow}, \texttt{.sqrt}, \texttt{.abs}, \texttt{.tan}, \texttt{.sinh}, \texttt{.cosh}, \texttt{.tanh}, \texttt{.arccos}, \texttt{.arsinh}, \texttt{.polynomial}
-  & \texttt{ElementaryFunction} \\
+  & \path{IsElementary.sub}, \path{.div}, \path{.npow}, \path{.sqrt}, \path{.abs}, \path{.tan}, \path{.sinh}, \path{.cosh}, \path{.tanh}, \path{.arccos}, \path{.arsinh}, \path{.polynomial}
+  & \path{ElementaryFunction} \\
 Analytic locus $\An(f)$
-  & \texttt{analyticLocus}
-  & \texttt{ElementaryFunction} \\
+  & \path{analyticLocus}
+  & \path{ElementaryFunction} \\
 Openness (Lemma~\ref{lem:open})
-  & \texttt{isOpen\_analyticLocus}
-  & \texttt{ElementaryFunction} \\
+  & \path{isOpen_analyticLocus}
+  & \path{ElementaryFunction} \\
 Generators (Lemma~\ref{lem:generators})
-  & \texttt{analyticAt\_log\_of\_ne\_zero}, \texttt{analyticAt\_rpow\_const}, \texttt{analyticAt\_arctan}, \texttt{analyticAt\_arcsin}; for $x\mapsto x^{-1}$, $\exp$, $\sin$, $\cos$ the \texttt{Mathlib} lemmas \texttt{analyticAt\_inv}, \texttt{analyticAt\_rexp}, \texttt{Real.analyticAt\_sin}, \texttt{Real.analyticAt\_cos} are used directly
-  & \texttt{ElementaryFunction} \\
+  & \path{analyticAt_log_of_ne_zero}, \path{analyticAt_rpow_const}, \path{analyticAt_arctan}, \path{analyticAt_arcsin}; for $x\mapsto x^{-1}$, $\exp$, $\sin$, $\cos$ the \texttt{Mathlib} lemmas \path{analyticAt_inv}, \path{analyticAt_rexp}, \path{Real.analyticAt_sin}, \path{Real.analyticAt_cos} are used directly
+  & \path{ElementaryFunction} \\
 Auxiliary: analyticity of $\sqrt{\cdot}$ off $0$ (not used in the induction, which routes $\sqrt{\cdot}$ through \texttt{rpow})
-  & \texttt{analyticAt\_sqrt\_of\_ne\_zero}
-  & \texttt{ElementaryFunction} \\
+  & \path{analyticAt_sqrt_of_ne_zero}
+  & \path{ElementaryFunction} \\
 Signed root, and its defining property (Warning~\ref{warn:oddroot})
-  & \texttt{IsElementary.signedRpow}, \texttt{signedRoot\_pow}
-  & \texttt{ElementaryFunction} \\
+  & \path{IsElementary.signedRpow}, \path{signedRoot_pow}
+  & \path{ElementaryFunction} \\
 Variable exponents at a positive base, and at any nonvanishing base
-  & \texttt{IsElementary.rpow\_of\_pos}, \texttt{IsElementary.rpow\_of\_ne\_zero}, \texttt{eqOn\_rpow\_of\_pos}
-  & \texttt{ElementaryFunction} \\
+  & \path{IsElementary.rpow_of_pos}, \path{IsElementary.rpow_of_ne_zero}, \path{eqOn_rpow_of_pos}
+  & \path{ElementaryFunction} \\
 Membership of the named functions
-  & \texttt{isElementary\_exp}, \texttt{\_log}, \texttt{\_sin}, \texttt{\_cos}, \texttt{\_tan}, \texttt{\_arcsin}, \texttt{\_arccos}, \texttt{\_arctan}, \texttt{\_sinh}, \texttt{\_cosh}, \texttt{\_tanh}, \texttt{\_arsinh}, \texttt{\_sqrt}, \texttt{\_abs}, \texttt{\_inv}, \texttt{\_rpow}, \texttt{\_id}
-  & \texttt{ElementaryFunction} \\
+  & \path{isElementary_exp}, \path{_log}, \path{_sin}, \path{_cos}, \path{_tan}, \path{_arcsin}, \path{_arccos}, \path{_arctan}, \path{_sinh}, \path{_cosh}, \path{_tanh}, \path{_arsinh}, \path{_sqrt}, \path{_abs}, \path{_inv}, \path{_rpow}, \path{_id}
+  & \path{ElementaryFunction} \\
 Key lemma (Lemma~\ref{lem:key})
-  & \texttt{dense\_analyticLocus\_comp}
-  & \texttt{ElementaryFunction} \\
+  & \path{dense_analyticLocus_comp}
+  & \path{ElementaryFunction} \\
 Density (\Cref{thm:density})
-  & \texttt{IsElementary.dense\_analyticLocus}
-  & \texttt{ElementaryFunction} \\
+  & \path{IsElementary.dense_analyticLocus}
+  & \path{ElementaryFunction} \\
 Analytic at a point of any nonempty open set
-  & \texttt{IsElementary.exists\_analyticAt\_of\_isOpen}
-  & \texttt{ElementaryFunction} \\
+  & \path{IsElementary.exists_analyticAt_of_isOpen}
+  & \path{ElementaryFunction} \\
 Exceptional set closed with empty interior
-  & \texttt{isClosed\_compl\_analyticLocus}, \texttt{IsElementary.interior\_compl\_analyticLocus}
-  & \texttt{ElementaryFunction} \\
+  & \path{isClosed_compl_analyticLocus}, \path{IsElementary.interior_compl_analyticLocus}
+  & \path{ElementaryFunction} \\
 Analytic implicit function theorem in two real variables
-  & \texttt{analyticAt\_implicitFunction}, \texttt{analyticAt\_of\_continuous\_branch}
-  & \texttt{AlgebraicBranch} \\
+  & \path{analyticAt_implicitFunction}, \path{analyticAt_of_continuous_branch}
+  & \path{AlgebraicBranch} \\
 Branches of polynomial equations (\Cref{thm:algebraic})
-  & \texttt{analyticDenseOn\_of\_algebraic}, \texttt{dense\_setOf\_analyticAt\_of\_algebraic}, \texttt{branchPoly}, \texttt{AnalyticDenseOn}, \texttt{analyticDenseOn\_of\_inter\_open\_dense}, \texttt{AnalyticDenseOn.not\_eqOn\_of\_forall\_not\_analyticAt}
-  & \texttt{AlgebraicBranch} \\
+  & \path{analyticDenseOn_of_algebraic}, \path{dense_setOf_analyticAt_of_algebraic}, \path{branchPoly}, \path{AnalyticDenseOn}, \path{analyticDenseOn_of_inter_open_dense}, \path{AnalyticDenseOn.not_eqOn_of_forall_not_analyticAt}
+  & \path{AlgebraicBranch} \\
 Algebraic functions over $\Elem$ (Corollary~\ref{cor:algebraic})
-  & \texttt{analyticDenseOn\_of\_isElementary\_coeffs}, \texttt{exists\_analyticAt\_of\_isElementary\_coeffs}, \texttt{not\_algebraicBranch\_eqOn}, \texttt{canonical\_fabius\_not\_algebraicBranch\_on\_Ioo}
-  & \texttt{NotElementary} \\
+  & \path{analyticDenseOn_of_isElementary_coeffs}, \path{exists_analyticAt_of_isElementary_coeffs}, \path{not_algebraicBranch_eqOn}, \path{canonical_fabius_not_algebraicBranch_on_Ioo}
+  & \path{NotElementary} \\
 The obstruction, stated once (proof of Corollary~\ref{cor:main})
-  & \texttt{not\_eqOn\_of\_dense\_analyticLocus}
-  & \texttt{ElementaryFunction} \\
+  & \path{not_eqOn_of_dense_analyticLocus}
+  & \path{ElementaryFunction} \\
 Analytic inverse function theorem (\Cref{thm:ift})
-  & \texttt{analyticAt\_of\_rightInverse}
-  & \texttt{InverseBranch} \\
+  & \path{analyticAt_of_rightInverse}
+  & \path{InverseBranch} \\
 Inverse branches are analytic somewhere (\Cref{thm:invbranch})
-  & \texttt{exists\_analyticAt\_of\_rightInverse}, \texttt{analyticDenseOn\_of\_rightInverse}
-  & \texttt{InverseBranch} \\
+  & \path{exists_analyticAt_of_rightInverse}, \path{analyticDenseOn_of_rightInverse}
+  & \path{InverseBranch} \\
 The class $\Elem^{-1}$ (Definition~\ref{def:elemplus}, \Cref{thm:plusdense})
-  & \texttt{IsElementaryOrInverse}, \texttt{IsElementaryOrInverse.dense\_analyticLocus}
-  & \texttt{InverseBranch} \\
-Lambert $W$ belongs to $\Elem^{-1}$
-  & \texttt{isElementaryOrInverse\_of\_lambertW}
-  & \texttt{InverseBranch} \\
-$F^{-1}$ is differentiable on $(0,1)$ with $(F^{-1})'=1/F'>0$ (\Cref{thm:invnowhere})
-  & \texttt{fabiusInv\_hasDerivAt}, \texttt{deriv\_fabiusInv}, \texttt{deriv\_fabiusInv\_pos}, \texttt{fabiusInv\_mem\_Ioo}, \texttt{fabiusInv\_contDiffOn\_Ioo}
-  & \texttt{FabiusInverse} \\
-Hence no critical point, and nowhere analytic (\Cref{thm:invnowhere})
-  & \texttt{deriv\_fabiusInv\_ne\_zero}, \texttt{fabiusInv\_not\_analyticAt}, \texttt{fabiusInv\_analyticAt\_iff}
-  & \texttt{InverseNotElementary} \\
+  & \path{IsElementaryOrInverse}, \path{IsElementaryOrInverse.dense_analyticLocus}
+  & \path{InverseBranch} \\
+Conditional Lambert-$W$ inverse-branch criterion
+  & \path{isElementaryOrInverse_of_lambertW}
+  & \path{InverseBranch} \\
+Interior calculus and smoothness of $F^{-1}$
+  & \path{fabiusInv_mem_Ioo}, \path{fabiusInv_hasDerivAt}, \path{hasDerivAt_fabiusInv}, \path{deriv_fabiusInv}, \path{deriv_fabiusInv_eq_inv_two_mul_rvachevUp}, \path{deriv_fabiusInv_pos}, \path{fabiusInv_contDiffOn_Ioo}
+  & \path{FabiusInverse} \\
+Exact global differentiability and smoothness locus of the totalized $F^{-1}$
+  & \path{fabiusInv_contDiffAt}, \path{fabiusInv_not_differentiableAt_zero}, \path{fabiusInv_not_differentiableAt_one}, \path{fabiusInv_differentiableAt_iff}, \path{fabiusInv_contDiffAt_iff}, \path{fabiusInv_contDiffAt_infty_iff}, \path{fabiusInv_contDiffOn_compl_endpoints}
+  & \path{FabiusInverse} \\
+$F^{-1}$ has no critical point, and is nowhere analytic (\Cref{thm:invnowhere})
+  & \path{deriv_fabiusInv_ne_zero}, \path{fabiusInv_not_analyticAt}, \path{fabiusInv_analyticAt_iff}
+  & \path{InverseNotElementary} \\
 $F^{-1}$ is not elementary (Corollary~\ref{cor:invmain})
-  & \texttt{canonical\_fabiusInv\_not\_isElementary\_on\_Ioo}, \texttt{fabiusInv\_not\_isElementary}, \texttt{not\_eqOn\_fabiusInv\_of\_analyticDenseOn}, \texttt{not\_eqOn\_fabiusInv\_of\_dense\_analyticLocus}
-  & \texttt{InverseNotElementary} \\
-Neither is reachable by inverting (Corollary~\ref{cor:plusmain})
-  & \texttt{not\_isElementaryOrInverse\_eqOn\_fabius}, \texttt{not\_isElementaryOrInverse\_eqOn\_fabiusInv} (general $U$), \texttt{canonical\_fabius\_not\_isElementaryOrInverse\_on\_Ioo}, \texttt{canonical\_fabiusInv\_not\_isElementaryOrInverse\_on\_Ioo} ($U=(0,1)$)
-  & \texttt{InverseNotElementary} \\
+  & \path{canonical_fabiusInv_not_isElementary_on_Ioo}, \path{fabiusInv_not_isElementary}, \path{not_eqOn_fabiusInv_of_analyticDenseOn}, \path{not_eqOn_fabiusInv_of_dense_analyticLocus}
+  & \path{InverseNotElementary} \\
+Neither is reachable by the inverse-branch closure (Corollary~\ref{cor:plusmain})
+  & \path{not_isElementaryOrInverse_eqOn_fabius}, \path{not_isElementaryOrInverse_eqOn_fabiusInv} (general $U$), \path{canonical_fabius_not_isElementaryOrInverse_on_Ioo}, \path{canonical_fabiusInv_not_isElementaryOrInverse_on_Ioo} ($U=(0,1)$)
+  & \path{InverseNotElementary} \\
 Nowhere analyticity (\Cref{thm:nowhere})
-  & \texttt{canonical\_fabius\_not\_analyticAt}, \texttt{canonical\_fabius\_analyticAt\_iff}
-  & \texttt{NowhereAnalytic} \\
+  & \path{canonical_fabius_not_analyticAt}, \path{canonical_fabius_analyticAt_iff}
+  & \path{NowhereAnalytic} \\
 Main result (Corollary~\ref{cor:main})
-  & \texttt{canonical\_fabius\_not\_isElementary\_eqOn\_of\_interior\_nonempty} (general $U$), \texttt{canonical\_fabius\_not\_isElementary\_on\_Ioo} ($U=(0,1)$)
-  & \texttt{NotElementary} \\
+  & \path{canonical_fabius_not_isElementary_eqOn_of_interior_nonempty} (general $U$), \path{canonical_fabius_not_isElementary_on_Ioo} ($U=(0,1)$)
+  & \path{NotElementary} \\
 Interior form of the obstruction
-  & \texttt{IsElementary.not\_eqOn\_of\_interior\_nonempty}; \texttt{not\_isElementary\_eqOn\_of\_interior\_nonempty}, \texttt{not\_algebraicBranch\_eqOn\_of\_interior\_nonempty}
-  & \texttt{ElementaryFunction}; \texttt{NotElementary} \\
+  & \path{IsElementary.not_eqOn_of_interior_nonempty}; \path{not_isElementary_eqOn_of_interior_nonempty}, \path{not_algebraicBranch_eqOn_of_interior_nonempty}
+  & \path{ElementaryFunction}; \path{NotElementary} \\
 $F$ is not elementary
-  & \texttt{canonical\_fabius\_not\_isElementary}
-  & \texttt{NotElementary} \\
+  & \path{canonical_fabius_not_isElementary}
+  & \path{NotElementary} \\
 General open subset of $[0,1]$
-  & \texttt{not\_isElementary\_eqOn}
-  & \texttt{NotElementary} \\
+  & \path{not_isElementary_eqOn}
+  & \path{NotElementary} \\
 Rvachev's $\Up$ and the signed extension
-  & \texttt{rvachev\_not\_isElementary}, \texttt{extendedFabius\_not\_isElementary}
-  & \texttt{NotElementary} \\
+  & \path{rvachev_not_isElementary}, \path{extendedFabius_not_isElementary}
+  & \path{NotElementary} \\
 \bottomrule
-\end{tabular}
-\end{center}
+\end{longtable}
+\endgroup
 
 All modules are under \texttt{\repo/Lean/FabiusFunction/}.
 
 \subsection{Ingredients taken from \texttt{Mathlib}}
 
-The formalization is short because \texttt{Mathlib} already contains the two
-theorems of substance that the argument consumes.
+The formalization is short because \texttt{Mathlib} supplies the analytic
+infrastructure that the argument consumes.
 
 \begin{itemize}
 \item \texttt{AnalyticAt.eventually\_eq\_zero\_or\_eventually\_ne\_zero} and
@@ -942,7 +969,7 @@ theorems of substance that the argument consumes.
 \item \texttt{isOpen\_analyticAt}: the analytic locus is open, which is
       Lemma~\ref{lem:open} verbatim.  (The pointwise form, analyticity propagating
       from a point to a neighbourhood, is
-      \texttt{AnalyticAt.eventually\_analyticAt}; the development uses the
+      \path{AnalyticAt.eventually_analyticAt}; the development uses the
       set-level statement.)
 \item \texttt{ContDiffAt.analyticAt} together with the family of
       \texttt{contDiffAt\_\ldots} lemmas stated for exponents in
@@ -950,6 +977,9 @@ theorems of substance that the argument consumes.
       obtained, including the two facts that are otherwise awkward over $\R$,
       namely analyticity of $\arctan$ everywhere and of $\arcsin$ off
       $\{\pm1\}$.
+\item \texttt{ContDiffAt.implicitFunction}, instantiated at the analytic
+      exponent $\omega$, supplies the local analytic implicit-function theorem
+      used in Theorem~\ref{thm:algebraic}.
 \end{itemize}
 
 \subsection{Statement of the main theorem in Lean}

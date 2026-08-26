@@ -24,6 +24,8 @@ import FabiusFunction.SaddleExpansionAlgebra
 import FabiusFunction.SaddleAllOrders
 import FabiusFunction.NegativeLaplaceVerticalSmooth
 
+set_option autoImplicit false
+
 /-!
 # Claim-level audit of the local *Fabius Asymptotic* draft
 

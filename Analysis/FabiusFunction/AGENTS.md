@@ -1,9 +1,79 @@
 # Agents working in `Analysis/FabiusFunction`
 
 Several agents develop this directory concurrently in separate worktrees.
-Please read [`docs/COLLABORATION.md`](docs/COLLABORATION.md) before making
-structural changes; it is a proposal, open for revision, and it records which
-collisions have already happened and how they were resolved.
+The user has designated one coordinator for the current campaign.  The
+operational rules below and the live
+[`docs/registry/coordinator.md`](docs/registry/coordinator.md) board are current
+project policy; [`docs/COLLABORATION.md`](docs/COLLABORATION.md) explains the
+reasons and remains open for focused revision.
+
+## Live coordination -- mandatory before writing
+
+At the start of every work session, after every fetch, and before every merge
+or push, read the coordinator board from the fetched `main`, even when your
+worktree is dirty and cannot merge yet:
+
+```sh
+git fetch origin
+git show origin/main:Analysis/FabiusFunction/docs/registry/coordinator.md
+```
+
+The board contains the pinned integration SHA, hot paths, integration queue,
+build ownership, and branch-specific instructions.  An instruction addressed
+to your exact branch is binding until the board releases it.  A listed or
+unlisted branch may start ordinary feature-branch work without waiting for a
+coordinator reply once it has advertised an exact, nonoverlapping claim in
+`docs/registry/<branch-with-slashes-replaced-by-dashes>.md` as described below.
+This self-service rule never grants a path that the board marks hot, frozen,
+or single-owner.
+
+During the current campaign:
+
+1. **Push feature branches, not `main`.** Only the coordinator advances
+   `origin/main`.  Never force-push.  A rejected fast-forward is a signal to
+   fetch and reread the board, not to retry blindly.
+2. **One branch, one registry file.** Each worker edits only its own registry
+   file.  Only the coordinator edits `docs/registry/coordinator.md`, this live
+   section of `AGENTS.md`, the coordination notice in `README.md`, and the
+   campaign-wide coordination documents.
+3. **Advertise ordinary work before editing it.** A claim names exact paths
+   and expected public declarations or document claims; topic names such as
+   "asymptotics" or "documentation" do not claim a directory.  Commit and push
+   the registry claim first, then inspect the board and every advertised
+   Fabius registry/tip for overlap and plausible duplicate declarations.  If
+   no overlap exists and none of the paths is serialized below, begin work
+   without waiting for coordinator acknowledgement.  If an overlap exists,
+   do not edit the shared path: publish the dependency, pivot, or wait for the
+   coordinator to assign ownership.  Advertise every expansion before editing
+   the added path.
+4. **Preserve before synchronizing.** If your worktree is dirty, do not stash,
+   reset, or merge over it.  Stop expanding the edit, make a clearly labelled
+   checkpoint commit on your feature branch when coherent (or an explicit WIP
+   commit when necessary to preserve it), push that branch, and report the
+   exact SHA and validation state in its registry file.  Workers may then
+   merge fresh `origin/main` into their own clean/checkpointed feature branch.
+   Resolve only conflicts wholly inside the branch's uncontested claim; stop
+   and report a conflict involving another claim, a serialized path, or a
+   generated artifact.
+5. **Build tokens are per physical host.** On `codexbox`, no agent starts Lean,
+   Lake, `pdflatex`, or another cache-mutating validation job unless the board
+   assigns the token.  Let an already-running job finish; do not kill another
+   worktree's process.  The other machine maintains the same one-owner rule
+   independently and records its owner on the board.
+6. **Binary PDFs are never conflict-resolved.** Freeze both sources, integrate
+   the TeX semantically under one owner, then rebuild the PDF once with three
+   passes.  Never take a PDF wholesale from either side of a conflict.
+7. **Campaign-critical paths remain serialized.** Only an explicit board
+   grant permits edits to `AGENTS.md`, the root `README.md`, campaign-wide
+   coordination files, `docs/registry/coordinator.md`, the root aggregate
+   `Lean/FabiusFunction.lean`, canonical exposition/walkthrough/frontier
+   TeX/PDF artifacts, or any path currently marked hot, frozen, or
+   single-owner.  Ordinary self-service claims cover all other nonoverlapping
+   paths.
+
+Status replies use the `SYNC Fabius` template in `docs/COLLABORATION.md`, are
+committed only to the worker's feature branch, and are pushed promptly.  The
+coordinator discovers them from advertised branch tips and updates the board.
 
 The rules that have actually cost time so far:
 
@@ -96,7 +166,8 @@ compiled PDF is committed with it.**
 3. **Layout.** One directory per document, named after it, holding the `.tex`
    and the `.pdf` of the same name — as in
    `docs/Fabius_Function_and_Rvachev_Up/` and
-   `docs/Small_Argument_Asymptotics/`.
+   `docs/non-formalized-research-frontiers/`, whose canonical TeX/PDF pair is
+   `non-formalized-research-frontiers.*`.
 
 4. **The PDF is committed.** Build it before committing and commit it in the
    same commit as the source:

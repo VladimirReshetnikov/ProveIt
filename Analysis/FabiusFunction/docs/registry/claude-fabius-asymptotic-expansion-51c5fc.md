@@ -1,5 +1,9 @@
 # Workstream registry: `claude/fabius-asymptotic-expansion-51c5fc`
 
+**Status: closed historical record.** The advertised work is integrated into
+mainline through the pinned synchronization tip `5ed2fc27b`; this file was last
+classified on 2026-08-25 and grants no live source or build lease.
+
 This file implements the per-branch registry fallback proposed in
 [`../COLLABORATION.md`](../COLLABORATION.md) ("one small file per branch,
 `docs/registry/<branch>.md`").  A tracked file is the only channel that
@@ -26,8 +30,9 @@ New files only.  No existing Lean module is edited.
   grounds that a root aggregate appended to by two agents is exactly the
   collision `AGENTS.md` warns about, and that nothing imports it so serializing
   is cheap.
-- `docs/Small_Argument_Asymptotics/Small_Argument_Asymptotics.tex` and its
-  committed `.pdf`
+- the source and committed PDF now preserved as Part “Small-Argument
+  Asymptotics Research Frontiers” of
+  `docs/non-formalized-research-frontiers/non-formalized-research-frontiers.{tex,pdf}`
 - `docs/registry/claude-fabius-asymptotic-expansion-51c5fc.md` (this file)
 - `AGENTS.md` — the documentation policy, plus the build-syntax and
   `ContDiff` traps, claimed after its previous owner's session ended.
@@ -83,8 +88,9 @@ recursions.  This branch closes the chain:
   oscillation with the order.
 
 Details, tables and an independent numerical verification against exact
-rational values of `F(2^-n)` are in
-[`../Small_Argument_Asymptotics/Small_Argument_Asymptotics.tex`](../Small_Argument_Asymptotics/Small_Argument_Asymptotics.tex).
+rational values of `F(2^-n)` are preserved in Part “Small-Argument
+Asymptotics Research Frontiers” of the
+[consolidated frontier source](../non-formalized-research-frontiers/non-formalized-research-frontiers.tex).
 
 ## Status log
 

@@ -8,6 +8,8 @@ import FabiusFunction.FabiusLogSquaredAsymptotic
 import FabiusFunction.FabiusFlatness
 import FabiusFunction.FabiusDecayComparison
 
+set_option autoImplicit false
+
 /-!
 # Claim-level audit of the local K-fold Thue--Morse draft
 

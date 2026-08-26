@@ -7,7 +7,9 @@ import Mathlib.Tactic.FieldSimp
 This module discharges the structural part of the evaluator proof.  Once the
 single-step dyadic recurrence from Proposition 10 is established, strong
 induction proves that the terminating bit recursion agrees with the exact
-closed formula at every point of the unit dyadic grid.
+closed formula at every point of the unit dyadic grid.  The representation API
+also shows that neither a surplus inverse-power table bound nor a different
+dyadic numerator/exponent presentation changes the computed value.
 -/
 
 set_option autoImplicit false
@@ -226,6 +228,18 @@ theorem fabiusTaylorHorner_table_eq_of_le (n maxExponent order : ℕ)
   obtain ⟨extra, rfl⟩ := Nat.exists_eq_add_of_le hn
   exact fabiusTaylorHorner_table_add n extra order horder offset
 
+/-- The Horner polynomial is independent of either table bound once both
+tables contain all coefficients through `order`.  Unlike
+`fabiusTaylorHorner_table_eq_of_le`, this statement does not require the two
+table bounds themselves to be ordered. -/
+theorem fabiusTaylorHorner_table_eq_of_order_le
+    (n m order : ℕ) (hn : order ≤ n) (hm : order ≤ m) (offset : ℚ) :
+    fabiusTaylorHorner (fabiusInversePowTwoTable n) order offset =
+      fabiusTaylorHorner (fabiusInversePowTwoTable m) order offset := by
+  rcases le_total n m with hnm | hmn
+  · exact (fabiusTaylorHorner_table_eq_of_le n m order hnm hn offset).symm
+  · exact fabiusTaylorHorner_table_eq_of_le m n order hmn hm offset
+
 private theorem log2_two_mul (a : ℕ) (ha : a ≠ 0) :
     Nat.log2 (2 * a) = Nat.log2 a + 1 := by
   rw [Nat.log2_eq_log_two, mul_comm, Nat.log_mul_base Nat.one_lt_two ha,
@@ -427,6 +441,26 @@ theorem extendedFabiusDyadicValue_eq_of_rat_eq (n m : ℕ) (a b : ℤ)
       integer_eq_pow_mul_of_dyadic_eq m k b a h.symm
     subst a
     exact extendedFabiusDyadicValue_refine_iter m k b
+
+/-- On nonnegative numerators, the signed-numerator bounded evaluator is
+exactly the natural-numerator unit evaluator. -/
+theorem fabiusDyadicValue_natCast (n a : ℕ) :
+    fabiusDyadicValue n (a : ℤ) = fabiusDyadicUnit n a := by
+  cases a with
+  | zero => simp
+  | succ a => simp [fabiusDyadicValue]
+
+/-- The natural-numerator unit evaluator depends only on the represented
+dyadic rational, even when the two denominator exponents are unrelated. -/
+theorem fabiusDyadicUnit_eq_of_rat_eq (n m a b : ℕ)
+    (h : (a : ℚ) / (2 : ℚ) ^ n = (b : ℚ) / (2 : ℚ) ^ m) :
+    fabiusDyadicUnit n a = fabiusDyadicUnit m b := by
+  have h' : ((a : ℤ) : ℚ) / (2 : ℚ) ^ n =
+      ((b : ℤ) : ℚ) / (2 : ℚ) ^ m := by
+    norm_num only [Int.cast_natCast]
+    exact h
+  simpa only [fabiusDyadicValue_natCast] using
+    fabiusDyadicValue_eq_of_rat_eq n m (a : ℤ) (b : ℤ) h'
 
 /-! ## Detection and rational wrappers -/
 

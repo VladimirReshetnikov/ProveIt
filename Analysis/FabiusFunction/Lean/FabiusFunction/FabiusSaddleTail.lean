@@ -588,6 +588,11 @@ lemma standardized_geometric_tail_le_inv
 noncomputable def fabiusSaddleCentralRadius (b : ℝ) : ℝ :=
   Real.sqrt (32 * Real.log b)
 
+/-- At the endpoint `b = 1`, the standard logarithmic central radius
+collapses to zero. -/
+lemma fabiusSaddleCentralRadius_one : fabiusSaddleCentralRadius 1 = 0 := by
+  simp [fabiusSaddleCentralRadius]
+
 lemma fabiusSaddleCentralRadius_pos {b : ℝ} (hb : 1 < b) :
     0 < fabiusSaddleCentralRadius b := by
   unfold fabiusSaddleCentralRadius

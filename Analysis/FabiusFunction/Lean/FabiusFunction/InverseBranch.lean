@@ -12,15 +12,15 @@ is also closed under passage to a **continuous inverse branch**.
 That closure is what makes the non-elementarity results robust.  Every inverse
 branch admitted by the constructor below preserves dense analyticity, as do
 all later elementary operations.  A function that is analytic at *no* point
-of an interval is therefore outside the entire resulting tower, not merely
-outside its ground floor.
+of a nonempty open interval is therefore outside the entire resulting tower,
+not merely outside its ground floor.
 
 ## The inverse-analyticity theorems
 
 `Fabius.analyticAt_of_rightInverse` is the analytic inverse function theorem,
-and it is obtained here for free.  The observation is that a one-sided inverse
-is an implicit branch of the simplest possible equation: `h (g x) = x` says
-exactly that `g` is a continuous branch of
+and it is obtained here for free.  The one-sided identity `h (g x) = x` makes
+`h` a left inverse of `g`, or equivalently `g` a right inverse of `h`.  Thus
+`g` is a continuous implicit branch of the simplest possible equation:
 
 `P (x, z) = h z - x = 0`,
 
@@ -341,17 +341,18 @@ theorem IsElementaryOrInverse.exists_analyticAt_of_isOpen {f : ℝ → ℝ}
 /-- **A criterion for a Lambert-style inverse branch to belong to the extended
 class.**
 
-Any function satisfying the defining identity `W y * exp (W y) = y` on an open
-set `U`, continuous there and analytic on the interior of the complement of
-`U`, is a member.  For the principal real branch take `U = Ioi (-Real.exp (-1))`:
-the identity holds there, `W` is continuous there, and on
-`interior (Ioi (-Real.exp (-1)))ᶜ = Iio (-Real.exp (-1))` any of the usual
-junk-value conventions is constant, hence analytic.  Note that the branch
-point `-1/e` itself is in neither set, which is exactly why the constructor
-asks for the interior — `W` is not analytic there.
+Any supplied total function satisfying the defining identity
+`W y * exp (W y) = y` on an open set `U`, continuous there and analytic on the
+interior of the complement of `U`, is a member.  The natural domain for the
+principal real branch would be `U = Ioi (-Real.exp (-1))`; with a suitable
+totalization, the complementary-interior premise asks for analyticity only on
+`Iio (-Real.exp (-1))`.  The branch point `-1/e` itself is in neither open set,
+which is exactly why the constructor asks for the interior.
 
-The statement is phrased for an arbitrary such branch because `Mathlib` does
-not define `W`; it applies verbatim to any construction of it. -/
+This theorem is only a conditional criterion.  `Mathlib` does not define a
+standard real Lambert branch here, and this development does not construct or
+verify a particular totalization; callers must supply every stated identity,
+continuity, and analyticity hypothesis. -/
 theorem isElementaryOrInverse_of_lambertW {W : ℝ → ℝ} (U : Set ℝ) (hU : IsOpen U)
     (hW : ContinuousOn W U) (hWinv : ∀ y ∈ U, W y * Real.exp (W y) = y)
     (hWout : ∀ y ∈ interior Uᶜ, AnalyticAt ℝ W y) : IsElementaryOrInverse W :=
