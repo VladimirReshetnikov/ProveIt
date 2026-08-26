@@ -341,13 +341,6 @@ private lemma binaryWeight_pos (n : ℕ) (hn : 0 < n) : 0 < binaryWeight n := by
       rw [binaryWeight_bit b n hn0]
       exact lt_of_lt_of_le (ih (Nat.pos_of_ne_zero hn0)) (Nat.le_add_right _ _)
 
-private lemma odd_two_pow_sub_one {w : ℕ} (hw : 0 < w) : Odd (2 ^ w - 1) := by
-  obtain ⟨v, rfl⟩ := Nat.exists_eq_succ_of_ne_zero (Nat.ne_of_gt hw)
-  apply Nat.Even.sub_odd Nat.one_le_two_pow
-  · rw [pow_succ]
-    simp [Nat.mul_comm]
-  · exact odd_one
-
 /-- Filtering `Fin N` by a predicate on values has the same cardinality as
 filtering `range N` by that predicate. -/
 theorem card_filter_fin_eq_range (N : ℕ) (p : ℕ → Prop) [DecidablePred p] :
@@ -379,7 +372,7 @@ private lemma odd_mersenne_product (a b : ℕ) (ha : 1 ≤ a) :
   · exact fun _ _ => Odd.mul
   · exact odd_one
   · intro j hj
-    exact odd_two_pow_sub_one (by simp only [mem_Ico] at hj; omega)
+    exact two_pow_sub_one_odd (by simp only [mem_Ico] at hj; omega)
 
 /-- Every integral moment numerator `F_n` from Proposition 1 is odd. -/
 theorem momentNumerator_odd (n : ℕ) : Odd (momentNumerator n) := by
@@ -427,7 +420,7 @@ theorem momentNumerator_odd (n : ℕ) : Odd (momentNumerator n) := by
           Odd (((Finset.univ : Finset (Fin (n + 1))).filter
             (fun k => Odd (Nat.choose (2 * (n + 1) + 1) (2 * k.val)))).card) := by
         rw [hfinCard, htruncated]
-        exact odd_two_pow_sub_one (binaryWeight_pos (n + 1) (by omega))
+        exact two_pow_sub_one_odd (binaryWeight_pos (n + 1) (by omega))
       rw [Nat.odd_iff]
       change (∑ k : Fin (n + 1), term k) % 2 = 1
       calc
