@@ -4438,3 +4438,72 @@ conflicts / dependencies: bounded-jet source is disjoint and immutable;
 next bounded step: commit/push claim, repeat name/path scan, author only the
   claimed module, freeze, and obtain two independent exact-byte reviews
 ```
+
+## Handoff: off-axis zero-freeness and all-line vertical logarithm
+
+Source checkpoint `1e41c69e2` implements the preceding one-file claim exactly
+and was pushed without force.  `NegativeLaplaceVerticalLog.lean` is frozen at
+blob `96ff89012844f3735ddef58b3510dbbb65ace507`, content SHA-256
+`263392D2AC88D8F8D6FE72A7C33CD5C9B55E39D8A046D039CC236490C0DB8753`,
+12,411 bytes / 269 lines.  The exact baseline delta is +114/-36.
+
+All eight claimed additions are present once.  The generalized factor proof
+excludes `z = 0` from `z.re ≠ 0`; a hypothetical exponential numerator zero
+forces `exp (-z) = 1`, hence `(-z).re = 0` after taking norms.  Positive real
+dyadic scaling preserves nonzero real part via the exact `Complex.div_re`
+normal form, so the existing nonzero infinite-product argument applies.  The
+natural generating-function orientation is the negative orientation at `-z`.
+
+The all-real curve theorem splits on `r = 0`: the degenerate curve simplifies
+to `complexGeneratingFunction F 0 = 1`, while `r ≠ 0` is the off-axis product
+case because the argument has real part `r`.  The unconditional continuity,
+FTC derivative, and constant-ODE exponential-recovery proofs consume this
+global denominator theorem at every point, including the base point.  Thus
+negative radii and zero radius are both genuinely covered.
+
+All seven old positive-domain headers, binder orders, implicitness, formulas,
+and attributes are byte-preserved as compatibility forwards.  The four now-
+proof-unused `hr` declarations have tightly scoped `unusedVariables`
+suppressions and comments explaining the retained hypothesis.  All seven
+other old declaration bodies and both imports are byte-preserved.  Strict
+documentation is 22 public / 22 adjacent comments / zero missing and zero
+private declarations; the inherited attributed zero-log gap is closed.
+
+Author checks and two independent hostile exact-byte reviews agree on factor
+and product orientations, negation, the `r = 0` simplification, oriented FTC
+filters, every denominator, legacy headers/consumers, local linter scopes,
+strict counts, and source hygiene.  Local/staged diff, official/strict docs,
+import/header/name/collision/placeholder/whitespace scans are green.  No
+Lean/Lake command ran; compiler elaboration and closure validation remain
+outstanding.
+
+```text
+SYNC Fabius
+branch / worktree / machine: codex/fabius-effective-bounds-20260825 /
+  /home/codex/.codex/worktrees/d6d3/Proofs / codexbox
+fetched main SHA: dabcc17abed3
+HEAD and dirty paths: 1e41c69e2; clean before this registry-only handoff;
+  source checkpoint pushed
+writing (exact paths): this branch registry for immutable handoff only;
+  NegativeLaplaceVerticalLog.lean is frozen at the stated blob
+expected declarations or document claims: eight exact off-axis/all-line
+  results, seven exact compatibility wrappers, strict 22/22 docs; no import,
+  downstream, facade, root, script, or canonical-doc change
+completed commits: registry claim 07e88bff4; source checkpoint 1e41c69e2;
+  both pushed without force
+validated (exact command, SHA/state, exit code): exact preimage/current hashes;
+  all-visible-ref/registry collision scan; local/staged diff --check; official
+  and strict docs; import/header/name/hygiene scans; author audit; two
+  independent exact-byte hostile source reviews
+not yet validated: no Lean/Lake target or downstream importer was built on
+  this branch; static proof/API review is not compiler evidence
+requested integration or lease: request serialized
+  +FabiusFunction.NegativeLaplaceVerticalLog,
+  +FabiusFunction.FabiusComplexMGF, then
+  +FabiusFunction.NegativeLaplaceVerticalAllOrderBound; coordinator
+  review/selective integration; no main-write/document lease
+conflicts / dependencies: source blob is immutable pending disposition;
+  bounded-jet checkpoint is disjoint; only coordinator advances main/builds
+next bounded step: push this handoff, refresh the board, and continue only on
+  a separately advertised disjoint path while both source units await gates
+```
