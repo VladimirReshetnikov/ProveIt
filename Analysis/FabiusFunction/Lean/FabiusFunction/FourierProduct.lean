@@ -12,7 +12,9 @@ product, and the Fourier transform satisfies the corresponding finite
 refinement identity.  Passing to the limit identifies the two functions.
 At integer frequencies the product has exact Kronecker-delta samples; the
 all-index formula and its zero criterion are recorded here for reuse without
-the stronger Poisson-summation import.
+the stronger Poisson-summation import.  Absolute convergence of the factor
+deviations also rules out hidden product zeros: on the whole complex plane the
+zeros are exactly the embedded nonzero integers.
 -/
 
 set_option autoImplicit false
@@ -51,13 +53,13 @@ lemma complexSinc_sub_one_isBigO :
 /-- The half-angle factorization of the removable complex sinc function,
 `sinc z = cos (z / 2) * sinc (z / 2)`.
 
-The strictly upstream home for this fact (and for `complexSinc_neg` below)
-would be `FabiusFunction.Basic`, where `complexSinc` itself is defined; it is
-placed here instead because `Basic` sits at the root of the import graph and
-editing it invalidates every module in the development.  This module is the
-earliest one already imported by all three former duplication sites
-(`WeakConvergence`, `PoissonSummation`, `OriginalPaperSupplement`), so no
-import path changes. -/
+The strictly upstream home for the elementary sinc facts would be
+`FabiusFunction.Basic`, where `complexSinc` itself is defined.  Editing that
+root module would invalidate the whole development, however.  This module is
+already the earliest common import of the three former half-angle/evenness
+duplication sites (`WeakConvergence`, `PoissonSummation`, and
+`OriginalPaperSupplement`), and the zero criterion below is a direct input to
+the product's complete zero-locus theorem. -/
 theorem complexSinc_eq_cos_mul (z : ℂ) :
     complexSinc z = Complex.cos (z / 2) * complexSinc (z / 2) := by
   by_cases hz : z = 0
@@ -76,6 +78,15 @@ theorem complexSinc_neg (z : ℂ) : complexSinc (-z) = complexSinc z := by
     simp [complexSinc]
   · simp only [complexSinc, neg_eq_zero, hz, if_false, Complex.sin_neg]
     field_simp
+
+/-- The removable complex sinc vanishes exactly at the nonzero integral
+multiples of `π`. -/
+theorem complexSinc_eq_zero_iff (z : ℂ) :
+    complexSinc z = 0 ↔
+      z ≠ 0 ∧ ∃ k : ℤ, z = (k : ℂ) * Real.pi := by
+  by_cases hz : z = 0
+  · simp [hz, complexSinc]
+  · simp [hz, complexSinc, Complex.sin_eq_zero_iff]
 
 /-- The dyadically scaled Fourier arguments form a summable complex series. -/
 lemma dyadicComplex_summable (z : ℂ) :
@@ -96,6 +107,39 @@ lemma summable_sincFactors_sub_one (z : ℂ) :
     Summable (fun n : ℕ =>
       complexSinc ((Real.pi : ℂ) * z / (2 : ℂ) ^ n) - 1) :=
   complexSinc_sub_one_isBigO.comp_summable (dyadicComplex_summable z)
+
+private lemma sincFactor_ne_zero_of_not_nonzero_int
+    (z : ℂ)
+    (hz : ¬ ∃ m : ℤ, m ≠ 0 ∧ z = (m : ℂ))
+    (n : ℕ) :
+    complexSinc ((Real.pi : ℂ) * z / (2 : ℂ) ^ n) ≠ 0 := by
+  intro hfactor
+  rcases (complexSinc_eq_zero_iff
+      ((Real.pi : ℂ) * z / (2 : ℂ) ^ n)).1 hfactor with
+    ⟨harg0, k, harg⟩
+  have hk : k ≠ 0 := by
+    intro hk
+    apply harg0
+    simpa [hk] using harg
+  have htwo : (2 : ℂ) ^ n ≠ 0 :=
+    pow_ne_zero n (by norm_num)
+  have hpi : (Real.pi : ℂ) ≠ 0 := by
+    exact_mod_cast Real.pi_ne_zero
+  have hmul :
+      (Real.pi : ℂ) * z =
+        ((k : ℂ) * Real.pi) * (2 : ℂ) ^ n :=
+    (div_eq_iff htwo).mp harg
+  have hzdyadic : z = (k : ℂ) * (2 : ℂ) ^ n := by
+    apply mul_left_cancel₀ hpi
+    calc
+      (Real.pi : ℂ) * z =
+          ((k : ℂ) * Real.pi) * (2 : ℂ) ^ n := hmul
+      _ = (Real.pi : ℂ) * ((k : ℂ) * (2 : ℂ) ^ n) := by ring
+  have hm : k * (2 : ℤ) ^ n ≠ 0 :=
+    mul_ne_zero hk (pow_ne_zero n (by norm_num))
+  apply hz
+  refine ⟨k * (2 : ℤ) ^ n, hm, ?_⟩
+  simpa only [Int.cast_mul, Int.cast_pow, Int.cast_ofNat] using hzdyadic
 
 /-- The sinc factors in Rvachev's Fourier product are genuinely multipliable. -/
 lemma sincFactors_multipliable (z : ℂ) :
@@ -305,6 +349,28 @@ theorem rvachevFourierProduct_int_eq_ite (m : ℤ) :
     simp [rvachevFourierProduct, complexSinc]
   · rw [if_neg hm, rvachevFourierProduct_int_eq_zero m hm]
 
+/-- The zeros of Rvachev's infinite sinc product are exactly the nonzero
+integers embedded in `ℂ`. -/
+theorem rvachevFourierProduct_eq_zero_iff (z : ℂ) :
+    rvachevFourierProduct z = 0 ↔
+      ∃ m : ℤ, m ≠ 0 ∧ z = (m : ℂ) := by
+  classical
+  constructor
+  · intro hzero
+    by_contra hz
+    have hne : rvachevFourierProduct z ≠ 0 := by
+      rw [rvachevFourierProduct]
+      have h := tprod_one_add_ne_zero_of_summable
+        (f := fun n : ℕ =>
+          complexSinc ((Real.pi : ℂ) * z / (2 : ℂ) ^ n) - 1)
+        (fun n => by
+          simpa using sincFactor_ne_zero_of_not_nonzero_int z hz n)
+        (by simpa using (summable_sincFactors_sub_one z).norm)
+      simpa using h
+    exact hne hzero
+  · rintro ⟨m, hm, rfl⟩
+    exact rvachevFourierProduct_int_eq_zero m hm
+
 /-- Exact integer-frequency samples of Rvachev's Fourier transform. -/
 theorem rvachevFourier_int_eq_ite
     (F : BoundedFabius) (hF : IsFabius F) (m : ℤ) :
@@ -326,6 +392,15 @@ lemma rvachevFourier_int_eq_zero
     (F : BoundedFabius) (hF : IsFabius F) (m : ℤ) (hm : m ≠ 0) :
     rvachevFourier F (m : ℂ) = 0 :=
   (rvachevFourier_int_eq_zero_iff F hF m).2 hm
+
+/-- The complex Fourier transform of every bounded Fabius solution vanishes
+exactly at the nonzero integers. -/
+theorem rvachevFourier_eq_zero_iff
+    (F : BoundedFabius) (hF : IsFabius F) (z : ℂ) :
+    rvachevFourier F z = 0 ↔
+      ∃ m : ℤ, m ≠ 0 ∧ z = (m : ℂ) := by
+  rw [rvachevFourier_eq_product F hF,
+    rvachevFourierProduct_eq_zero_iff]
 
 end
 

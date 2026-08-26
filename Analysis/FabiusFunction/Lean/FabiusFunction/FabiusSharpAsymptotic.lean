@@ -12,7 +12,8 @@ This module closes the quantitative saddle argument and exposes its
 source-facing consequences.  The elementary expression printed in the linked
 Math Stack Exchange discussion is missing a genuine nonconstant periodic
 term.  Adding `negativeLaplacePsi` at the exact lower-Lambert phase gives an
-`O(1 / (-log x))` error; deleting it does not.
+`O(1 / (-log x))` error; deleting it does not even preserve asymptotic
+equivalence after exponentiation.
 
 The related quotient-of-exponentials approximation is imported here as well.
 It is a useful numerical fit on a compact interval, but its endpoint decay is
@@ -127,5 +128,42 @@ theorem fabius_isEquivalent_exp_explicitCorrectedWikipediaMain
   · filter_upwards [self_mem_nhdsWithin] with x hx
     exact fabius_pos_of_pos F hF hx
   · exact tendsto_log_fabius_sub_explicitCorrectedWikipediaMain F hF
+
+/-- The exponential of the literal uncorrected Wikipedia logarithmic
+expression is not an asymptotic equivalent of the Fabius function. -/
+theorem fabius_not_isEquivalent_exp_WikipediaElementaryMain
+    (F : BoundedFabius) (hF : IsFabius F) :
+    ¬ ((fun x : ℝ => fabiusReal F x) ~[nhdsWithin 0 (Ioi 0)]
+      (fun x : ℝ => Real.exp (fabiusWikipediaElementaryMain x))) := by
+  intro hequiv
+  apply negativeLaplacePsi_comp_fabiusLambertPhase_not_tendsto_zero
+  have hratio :
+      Tendsto
+        (fun x : ℝ => fabiusReal F x /
+          Real.exp (fabiusWikipediaElementaryMain x))
+        (nhdsWithin 0 (Ioi 0)) (nhds 1) :=
+    (isEquivalent_iff_tendsto_one
+      (Eventually.of_forall fun x : ℝ =>
+        Real.exp_ne_zero (fabiusWikipediaElementaryMain x))).mp hequiv
+  have hlogRatio :
+      Tendsto
+        (fun x : ℝ => Real.log (fabiusReal F x /
+          Real.exp (fabiusWikipediaElementaryMain x)))
+        (nhdsWithin 0 (Ioi 0)) (nhds 0) := by
+    simpa using hratio.log one_ne_zero
+  have huncorrected :
+      Tendsto
+        (fun x : ℝ => Real.log (fabiusReal F x) -
+          fabiusWikipediaElementaryMain x)
+        (nhdsWithin 0 (Ioi 0)) (nhds 0) := by
+    apply hlogRatio.congr'
+    filter_upwards [self_mem_nhdsWithin] with x hx
+    rw [Real.log_div (fabius_pos_of_pos F hF hx).ne'
+      (Real.exp_ne_zero _), Real.log_exp]
+  have hdiff := huncorrected.sub
+    (tendsto_log_fabius_sub_explicitCorrectedWikipediaMain F hF)
+  simpa only [sub_zero] using hdiff.congr' (Eventually.of_forall fun x => by
+    simp only [fabiusExplicitCorrectedWikipediaMain, Function.comp_apply]
+    ring)
 
 end Fabius
