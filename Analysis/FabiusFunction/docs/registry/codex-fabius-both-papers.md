@@ -1362,3 +1362,56 @@ cache-mutating process ran, so these reviews are not compiler evidence.  The
 source is frozen pending coordinator review and the two serialized gates
 above.  On document thaw, map only the digit-probe and signed exponent
 identities; the cosine-product and zero-one companions remain open.
+
+## Claim: share the binomial square split
+
+Fresh `origin/main` `447ea43628edf6d4f868aaac596574673412ef3d`
+has `HalfQBinomial.lean` blob
+`20d348c52d2a65daa8989173fdef77b4891c2a75` and
+`FabiusQBinomialFormula.lean` blob
+`4df1be14aa3ceb43f711964cd90fe8613a5e762d`.  This branch contains that
+source state and is clean before this registry-first claim.
+
+The exact prospective write set is:
+
+- `Lean/FabiusFunction/HalfQBinomial.lean`;
+- `Lean/FabiusFunction/FabiusQBinomialFormula.lean`;
+- this branch's own registry.
+
+Both modules currently prove the same natural-number identity
+
+`n * n = choose (n + 1) 2 + choose n 2`
+
+under different private names.  The upstream `HalfQBinomial` proof is already
+used by its denominator normalization, while the direct consumer repeats a
+longer induction before two q-binomial normalizations.  This tranche will
+rename and promote the upstream proof to the documented public theorem
+`choose_square_split`, update its one local call, delete the downstream
+private duplicate, and leave both downstream calls to resolve through the
+existing direct `HalfQBinomial` import.
+
+No existing public header, import, attribute, simp rule, theorem statement,
+facade, aggregate, canonical document, or serialized audit path is claimed.
+The proof term retained upstream is the already-established induction through
+`choose_succ_two`; no arithmetic generalization or new hypothesis is added.
+The expected source delta is deletion-dominant (about seventeen net lines)
+and adds exactly one reusable public arithmetic identity while removing one
+private declaration.
+
+Exact-name, semantic-identity, advertised-tip, history, and every-registry
+scans find only the two inherited private copies on every modern source tip
+and no competing implementation or active path claim.  Historical
+`HalfQBinomial` work is integrated and explicitly released by the coordinator;
+no registry claims `FabiusQBinomialFormula.lean`.
+
+No Lean, Lake, TeX, PDF, or cache-mutating process is authorized or has run
+for this claim.  After an immutable reviewed checkpoint, the requested
+serialized gates are:
+
+```text
+LAKE_JOBS=1 lake build +FabiusFunction.HalfQBinomial
+LAKE_JOBS=1 lake build +FabiusFunction.FabiusQBinomialFormula
+```
+
+The second target is the rewired direct consumer.  This is implementation/API
+consolidation only; no human mathematical coverage claim changes.
