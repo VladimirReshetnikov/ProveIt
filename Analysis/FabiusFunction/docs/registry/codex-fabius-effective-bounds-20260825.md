@@ -1245,3 +1245,63 @@ next bounded step: commit and push this immutable handoff; keep the binary
   disjoint released paths, reserving strict convexity and the formal Lambert
   fixed point until their now-integrated dependencies are separately claimed
 ```
+
+## Claim: strict alternating Laplace derivatives and whole-line convexity
+
+```text
+SYNC Fabius
+branch / worktree / machine: codex/fabius-effective-bounds-20260825 /
+  /home/codex/.codex/worktrees/d6d3/Proofs / codexbox
+fetched main SHA: fc63c39788ab4c31694e4f57efe05b543165675a
+HEAD and dirty paths: 880760fc22252c80c497c3818e7fb72cfda13dca;
+  clean and pushed after merging the general Kummer cocycle and settled
+  primary exposition; only this registry is dirty for the registry-first claim
+writing (exact paths): this registry initially; after this claim is pushed and
+  a repeated board/registry/all-tip scan remains green, only
+  Lean/FabiusFunction/LaplaceMomentBounds.lean and this registry
+expected declarations or document claims:
+  iteratedDeriv_fabiusLaplaceMoment_alternating_pos, proving for every
+    k,n : ℕ and s : ℝ that
+    0 < (-1 : ℝ)^n * iteratedDeriv n (fabiusLaplaceMoment F k) s;
+  strictConvexOn_fabiusLaplaceMoment, proving
+    StrictConvexOn ℝ Set.univ (fabiusLaplaceMoment F k) for every k;
+  add the explicit Mathlib.Analysis.Convex.Deriv import required by the
+    derivative criterion, preserve every existing public header and import,
+    and expand the module/declaration prose with the whole-line alternating-
+    derivative identity, its strict sign, and strict convexity; no canonical
+    document, facade, root, audit ledger, or other source path claimed
+completed commits: the constant-three binary source 51b9ad393 and handoff
+  9e7f4df02 remain separately frozen and requested for coordinator validation;
+  this is the registry-first claim for a disjoint ninth source unit
+validated (exact command, SHA/state, exit code): current HEAD and origin/main
+  share LaplaceMomentBounds.lean blob
+  007c2ed04697ab56d3fd0654da477d32d360a61b, content SHA-256
+  66686398FB67A05B4D60ADF737DF5FA99A8FA6773F2EB24AAE9C88D13D7A6084;
+  exact-name, plausible-semantic-name, exact-path, every-registry, and all-
+  fetched-Fabius-tip scans found no alternating-sign or whole-line strict-
+  convexity implementation or competing lease; the coordinator records this
+  module's strict-order predecessor as integrated, built, and released;
+  read-only API audit confirms StrictMono.strictConvexOn_univ_of_deriv in the
+  pinned Mathlib Convex.Deriv module, and the all-order sign follows directly
+  from iteratedDeriv_fabiusLaplaceMoment plus fabiusLaplaceMoment_pos_all;
+  this is not compiler evidence
+not yet validated: neither proposed declaration exists yet; no Lean, Lake,
+  TeX, PDF, or cache-mutating process is authorized or running for this branch
+requested integration or lease: advertise this ordinary one-source/two-name
+  claim; after an immutable independently reviewed checkpoint, request
+  separate serialized builds of +FabiusFunction.LaplaceMomentBounds and the
+  direct consumer +FabiusFunction.NegativeLaplaceDerivativeBounds; request no
+  document or main-write lease
+conflicts / dependencies: the signed theorem covers n = 0 and every real tilt;
+  the convexity proof uses M_k' = -M_(k+1) and the already-integrated strict
+  decrease of M_(k+1), equivalently M_k'' = M_(k+2) > 0; Mathlib has an
+  AbsolutelyMonotoneOn API but no equally direct complete-monotonicity wrapper,
+  so no reflected-function abstraction is claimed; the frozen binary source
+  and every active external claim are disjoint; only the coordinator may
+  advance main
+next bounded step: commit and push this registry-only claim without force;
+  fetch and reread any changed board, repeat all-tip collision checks, then
+  edit only the claimed Lean source while three agents independently review
+  signed-power normalization, the derivative criterion, exact header/import
+  preservation, and source-level documentation
+```
