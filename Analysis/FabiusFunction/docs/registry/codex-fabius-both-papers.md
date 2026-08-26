@@ -8,18 +8,18 @@ SYNC Fabius
 branch / worktree / machine: codex/fabius-both-papers /
   /home/codex/src/Proofs / codexbox
 fetched main SHA: 741db6b4b777abc3fb4ca9ba6a6f0f098399c1bb
-HEAD and dirty paths: 48024a1d4ee468e4d76f3e7d93b98f1c342c5b37;
-  dirty only in this own-registry handoff
+HEAD and dirty paths: 7f625bcf8999b702294e72e20df14fd21e4738cc;
+  dirty only in this own-registry claim
 writing (exact paths):
+  Analysis/FabiusFunction/Lean/FabiusFunction/OriginalUniqueness.lean;
+  Analysis/FabiusFunction/Lean/FabiusFunction/LegendreSeriesConvergence.lean;
   Analysis/FabiusFunction/docs/registry/codex-fabius-both-papers.md
 expected declarations or document claims:
-  `addChoose_padicValNat_two`;
-  `thueMorseSign_add_valuation`;
-  the first specializes Kummer's digit-sum formula at two for arbitrary
-  addition, and the second expresses the Thue--Morse sign as a carry-valuation
-  cocycle; use one private subtraction-free binary-weight balance helper;
-  preserve every existing theorem body, public signature, import, and
-  attribute; the `TwoAdic.lean` source claim is released by this handoff
+  delete the unused private `[simp]` theorem `schwartzMap_apply` from
+  `OriginalUniqueness.lean` and the unused private lemmas
+  `legendre_weight_at_neg_one` / `legendre_weight_at_one` from
+  `LegendreSeriesConvergence.lean`; change no surviving declaration, import,
+  proof, attribute, or public API
 completed commits: Lower-Lambert source checkpoint `1da2fde2285e3970267b7dc2561bcd0d897be1b4`
   was integrated by coordinator merge `046946a974467e83244fd3a183a3e084e70d3379`;
   registry handoff `225f5338de9ea92489ed6a2c0c371c6edb4f5db9`
@@ -151,7 +151,11 @@ completed commits: Lower-Lambert source checkpoint `1da2fde2285e3970267b7dc2561b
   `8d765ffbd5c4d689d19d8e11cdf97787d68e2927` and clean merge
   `4ab7d97ad6ce413162ef37f0c3626ae2a2fd02f0` precede general Kummer claim
   `e5ec81bd13458ce677ccbf7ca054857feb828710` and unvalidated source checkpoint
-  `48024a1d4ee468e4d76f3e7d93b98f1c342c5b37`;
+  `48024a1d4ee468e4d76f3e7d93b98f1c342c5b37`; registry handoff
+  `8342c3af5deeec94b0fbd2d3344b6f96aae947ca` freezes that source and releases
+  `TwoAdic.lean`; clean merge
+  `7f625bcf8999b702294e72e20df14fd21e4738cc` incorporates fetched main
+  `741db6b4b777abc3fb4ca9ba6a6f0f098399c1bb` without changing its result blob;
 validated (exact command, SHA/state, exit code): coordinator board records
   serialized immutable `lake build +FabiusFunction.LowerLambertW` at
   `4c6bbac41`, exit 0, with its source blob unchanged on current main;
@@ -378,11 +382,14 @@ conflicts / dependencies: fresh current-main, all-tip, and registry scans find
   relevant source tip, no alternate shared API or active saddle-path claim;
   the downstream module directly imports the upstream home, and a theorem-only
   factoring is insufficient because its `expCoeff`, finite quotient, and degree
-  proofs consume the polynomial family itself
-next bounded step: coordinator integration and the two serialized focused and
-  paper-facade builds for `48024a1d4`; future frozen-document mapping must
-  distinguish the formalized valuation/sign formulas from the still-open
-  bit/XOR corollaries
+  proofs consume the polynomial family itself; fresh scans at main
+  `741db6b4b` find each newly claimed private name only at its own declaration,
+  every advertised source tip retains the same three declarations, and no
+  registry claims either source path or deletion
+next bounded step: delete exactly the three advertised unused private
+  declarations, obtain independent live-diff review, then publish an
+  unvalidated source handoff; coordinator integration and the two serialized
+  focused and paper-facade builds for `48024a1d4` remain separately requested
 ```
 
 ## General Kummer carry-cocycle handoff
