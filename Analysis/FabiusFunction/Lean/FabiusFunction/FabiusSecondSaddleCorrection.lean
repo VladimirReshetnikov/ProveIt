@@ -523,16 +523,8 @@ This pointwise form is convenient for asymptotic estimates that do not need a
 named or sharp bound. -/
 theorem exists_bound_abs_fabiusSecondSaddleCorrection :
     ∃ C : ℝ, 0 ≤ C ∧ ∀ u : ℝ, |fabiusSecondSaddleCorrection u| ≤ C := by
-  rcases (Metric.isBounded_iff_subset_closedBall 0).mp
-      isBounded_range_fabiusSecondSaddleCorrection with ⟨C, hC⟩
-  have hzero := hC (Set.mem_range_self (0 : ℝ))
-  have hC0 : 0 ≤ C := by
-    have : |fabiusSecondSaddleCorrection 0| ≤ C := by
-      simpa [Metric.mem_closedBall, Real.dist_eq] using hzero
-    exact (abs_nonneg _).trans this
-  refine ⟨C, hC0, fun u => ?_⟩
-  simpa [Metric.mem_closedBall, Real.dist_eq] using
-    hC (Set.mem_range_self u)
+  exact exists_nonneg_bound_abs_of_isBounded_range
+    fabiusSecondSaddleCorrection isBounded_range_fabiusSecondSaddleCorrection
 
 end
 
