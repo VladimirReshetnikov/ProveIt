@@ -2089,3 +2089,71 @@ next bounded step: commit and push this registry-only claim without force;
   agents verify filter orientation, algebraic identity, old-header preservation,
   source documentation, and direct-consumer compatibility
 ```
+
+## Source checkpoint: simultaneous-vanishing Wikipedia obstruction
+
+Exact source commit `30a02d4a7` completes the one-file strengthening and
+refactor.  Its result for `FabiusWikipediaObstruction.lean` is Git blob
+`15f1f9afc4df48630cd31b5434627db0dd314827`, with content SHA-256
+`9BB093CE27835E7F5551A49BB77F80083D85AEF906E6AE0C21DF9BEC36E3F0AA`.
+
+The new public theorem
+`fabiusWikipediaElementaryMain_error_not_tendsto_zero_of_corrected` states the
+filter-level obstruction without choosing a rate: if the error relative to the
+explicit corrected Wikipedia main term tends to zero at `0⁺`, then the error
+relative to the uncorrected main term does not.  Its proof subtracts the two
+limits, identifies the difference globally with
+`negativeLaplacePsi (fabiusLambertPhase x)`, and invokes the existing intrinsic
+nonconvergence theorem.
+
+The old arbitrary-vanishing-scale Big-O theorem keeps its exact public header
+and is now a two-line corollary obtained by sending both Big-O estimates to
+zero.  All imports and all other old declaration headers/attributes are exact.
+Module and declaration prose state the exact errors, exact difference, and the
+logical progression from simultaneous convergence to vanishing-scale Big-O
+and then the logarithmic scale.
+
+Two independent exact-current-byte hostile reviews pass.  They checked the
+subtraction sign, `Tendsto.sub` and `congr'` orientation, the common
+`nhdsWithin 0 (Ioi 0)` filter, algebra after unfolding the corrected main term,
+both `IsBigO.trans_tendsto` applications, every preserved interface, imports,
+consumers, docs, and name collision.  No source-level blocker remains.
+
+```text
+SYNC Fabius
+branch / worktree / machine: codex/fabius-effective-bounds-20260825 /
+  /home/codex/.codex/worktrees/d6d3/Proofs / codexbox
+fetched main SHA: fc63c39788ab4c31694e4f57efe05b543165675a
+HEAD and dirty paths: 30a02d4a7; source checkpoint is clean and pushed; only
+  this registry is dirty for the immutable handoff
+writing (exact paths): completed source checkpoint writes only
+  Lean/FabiusFunction/FabiusWikipediaObstruction.lean; this report writes only
+  this branch registry; the Lean source is now frozen
+expected declarations or document claims: the claimed Tendsto obstruction is
+  public and documented exactly once; the old Big-O header is preserved and its
+  body factors through the stronger result; imports and all other interfaces
+  are exact
+completed commits: 7fc020e3b (registry-first claim) and 30a02d4a7 (one-file
+  theorem/refactor/documentation checkpoint); earlier pending source tranches
+  remain separately frozen and requested for coordinator validation
+validated (exact command, SHA/state, exit code): git diff --check exited 0;
+  whitespace, CR, tab, placeholder, exact-name, import, declaration-header,
+  proof-orientation, algebra, filter, consumer, and documentation scans are
+  clean; exact result blob/hash is recorded above; two independent exact-byte
+  static reviews pass against pinned APIs and an existing compiled congruence
+  pattern; this is not compiler evidence
+not yet validated: source commit 30a02d4a7 has not been elaborated; no Lean,
+  Lake, TeX, PDF, or cache-mutating process ran because this branch has no host
+  build token
+requested integration or lease: independently review and preserve exact source
+  commit 30a02d4a7 / blob 15f1f9afc, then assign separate serialized builds of
+  +FabiusFunction.FabiusWikipediaObstruction and direct importer
+  +FabiusFunction.FabiusSharpAsymptotic; request no document or main-write lease
+conflicts / dependencies: exact preimage is the current-main blob recorded in
+  the claim; no import changed and the proof packages established local facts;
+  all frozen local paths and active external claims are disjoint; only the
+  coordinator may advance main
+next bounded step: commit and push this immutable handoff; freeze the source
+  for coordinator validation; refresh main and the full ownership board before
+  claiming the next ordinary theorem tranche
+```
