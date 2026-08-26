@@ -8,16 +8,14 @@ SYNC Fabius
 branch / worktree / machine: codex/fabius-both-papers /
   /home/codex/src/Proofs / codexbox
 fetched main SHA: 99b67cf5b5b8084d097205d1f701d13285ecd3b7
-HEAD and dirty paths: dfd3ace136da91776e2bd13d5de2234c55466078;
-  clean after merging current fetched main and before this ordinary claim
+HEAD and dirty paths: b27fc525938db9bfe752a703e9b3b82d2a226532;
+  only this registry handoff is dirty
 writing (exact paths):
-  Lean/FabiusFunction/Paper06487Supplement.lean;
   docs/registry/codex-fabius-both-papers.md
 expected declarations or document claims:
-  `theorem_twenty_one_odd_all`, proving that every Reshetnikov number is an odd
-  natural number, including the boundary value `R_0 = 1`; rederive the existing
-  `theorem_nine_all` from this strictly stronger all-index theorem without
-  changing its public signature
+  record the completed all-index oddness checkpoint and request its focused
+  serialized validation; the `Paper06487Supplement.lean` writing claim is
+  released
 completed commits: Lower-Lambert source checkpoint `1da2fde2285e3970267b7dc2561bcd0d897be1b4`
   was integrated by coordinator merge `046946a974467e83244fd3a183a3e084e70d3379`;
   registry handoff `225f5338de9ea92489ed6a2c0c371c6edb4f5db9`
@@ -81,7 +79,11 @@ completed commits: Lower-Lambert source checkpoint `1da2fde2285e3970267b7dc2561b
   four with their explicit summands; clean merge
   `c744af2614600020710c47dcfa7fdab7bcf082da` incorporates current fetched main
   `b0b896e39`; clean merge `dfd3ace136da91776e2bd13d5de2234c55466078`
-  incorporates current fetched main `99b67cf5b`
+  incorporates current fetched main `99b67cf5b`; exact all-index oddness claim
+  `a446c456e` precedes source checkpoint
+  `b27fc525938db9bfe752a703e9b3b82d2a226532`, which proves
+  `theorem_twenty_one_odd_all` and rederives `theorem_nine_all` as its
+  compatibility corollary
 validated (exact command, SHA/state, exit code): coordinator board records
   serialized immutable `lake build +FabiusFunction.LowerLambertW` at
   `4c6bbac41`, exit 0, with its source blob unchanged on current main;
@@ -139,7 +141,12 @@ not yet validated: the moved dyadic theorem body was already compiled in its
   polynomial differentiation, coefficient evaluation, ring normalization,
   unconditional domain, simp orientations, declaration order, collision
   sweep, facade exposure, doc comments, module prose, forbidden markers, and
-  diff hygiene, but has not been elaborated or built
+  diff hygiene, but has not been elaborated or built; the all-index oddness
+  checkpoint has three independent read-only reviews covering the zero
+  normalization, odd/natural witness orientations, successor projection,
+  false-at-zero valuation boundary, public-signature preservation, placement,
+  collision sweep, imports, facade exposure, documentation, forbidden markers,
+  and diff hygiene, but has not been elaborated or built
 requested integration or lease: the dyadic relocation needs serialized
   `+FabiusFunction.GlobalDyadic`
   and `+FabiusFunction.OriginalPaperSupplement` validation; this new ordinary
@@ -165,6 +172,10 @@ requested integration or lease: the dyadic relocation needs serialized
   released by this handoff;
   the periodic bridge checkpoint needs serialized
   `+FabiusFunction.PeriodicSmooth`, and its source writing claim is released by
+  this handoff;
+  the all-index oddness checkpoint needs serialized
+  `+FabiusFunction.Paper06487Supplement` followed by
+  `+FabiusFunction.Paper06487`, and its source writing claim is released by
   this handoff;
   serialized README/primary/walkthrough/coverage paths are deliberately not
   claimed yet
@@ -209,10 +220,9 @@ conflicts / dependencies: all advertised Fabius heads and their registries
   `not_isEquivalent` theorem and no competing claim on
   `FabiusSharpAsymptotic.lean`; the coordinator explicitly released its prior
   generalizations lease
-next bounded step: push this exact ordinary claim, finish the advertised
-  cross-tip collision scan, implement the all-index oddness theorem without
-  running a build, and request serialized
-  `+FabiusFunction.Paper06487Supplement` validation
+next bounded step: push this source handoff, then inspect and claim the strongest
+  available ordinary nonoverlapping theorem or deduplication tranche while the
+  coordinator retains the build token
 ```
 
 ## Coordinator natural-knot integration disposition
