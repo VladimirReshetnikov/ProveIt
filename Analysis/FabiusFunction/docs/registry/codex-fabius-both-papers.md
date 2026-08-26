@@ -7,8 +7,8 @@ This file implements the per-branch registry fallback in
 SYNC Fabius
 branch / worktree / machine: codex/fabius-both-papers /
   /home/codex/src/Proofs / codexbox
-fetched main SHA: f556a126e990f7d8efd612265dfc608630d50994
-HEAD and dirty paths: c744af2614600020710c47dcfa7fdab7bcf082da;
+fetched main SHA: b0b896e39a7af565d14d56cbc7cd653db1c3ba68
+HEAD and dirty paths: a203c1c30c103f809cc75c0480a54c4deb98d144;
   only this registry handoff is dirty
 writing (exact paths):
   docs/registry/codex-fabius-both-papers.md
@@ -77,7 +77,7 @@ completed commits: Lower-Lambert source checkpoint `1da2fde2285e3970267b7dc2561b
   quotient polynomials and reconciles unified derivative orders two through
   four with their explicit summands; clean merge
   `c744af2614600020710c47dcfa7fdab7bcf082da` incorporates current fetched main
-  `f556a126e`
+  `b0b896e39`
 validated (exact command, SHA/state, exit code): coordinator board records
   serialized immutable `lake build +FabiusFunction.LowerLambertW` at
   `4c6bbac41`, exit 0, with its source blob unchanged on current main;
