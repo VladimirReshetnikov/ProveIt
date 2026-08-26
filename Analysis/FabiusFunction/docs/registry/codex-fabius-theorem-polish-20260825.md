@@ -215,3 +215,47 @@ next bounded step: commit and push this registry reply with 87c9b00f4, then
 Source checkpoint recorded at 2026-08-25T17:36:09-07:00.  Three subagents
 implemented disjoint leased files and then independently reviewed the combined
 tranche; none staged, committed, merged, pushed, or ran a validation process.
+
+## Follow-on ordinary claim: normalized-moment nonnegativity
+
+```text
+SYNC Fabius
+branch / worktree / machine: codex/fabius-theorem-polish-20260825 /
+  C:/Users/vresh/.codex/worktrees/10ef/ProveIt / EVO (Windows)
+fetched main SHA: e18f5d0b0e3ec78e2b14e7006af6c7e916b42923
+HEAD and dirty paths: 1d4a88a42f9ab886ec0b296bbfc684209e871abc;
+  the published all-real Laplace source remains clean and frozen, and only
+  this registry file is dirty for the follow-on claim
+writing (exact paths): this claim initially writes only this registry file;
+  the proposed independent follow-on is limited to
+  Lean/FabiusFunction/LaplaceMomentBounds.lean
+expected declarations or document claims: add
+  normalizedLaplaceMoment_nonneg_all, proving
+  0 <= normalizedLaplaceMoment F k s for every natural k and real s from the
+  already-global raw-moment nonnegativity theorem; preserve the exact name,
+  binders, statement, and proof of normalizedLaplaceMoment_nonneg while
+  documenting it as the positive-scale compatibility form
+completed commits: 87c9b00f4 and registry report 1d4a88a42 are pushed and
+  remain the immutable preceding tranche; no follow-on source commit exists
+validated (exact command, SHA/state, exit code): read-only dependency review
+  found that the proposed proof needs only normalizedLaplaceMoment and
+  fabiusLaplaceMoment_nonneg already present before 87c9b00f4, introduces no
+  import, and is a direct application of div_nonneg; this is static review,
+  not compiler evidence
+not yet validated: no follow-on source has been written or elaborated; no
+  Lean, Lake, TeX, PDF, Python audit, or cache-mutating command will start
+  without the EVO token
+requested integration or lease: advertise the one ordinary source path and
+  declaration above; request no serialized or document path and no immediate
+  build token
+conflicts / dependencies: a read-only scan of all locally advertised Fabius
+  refs and registries found no competing declaration or live claim for
+  LaplaceMomentBounds.lean; the theorem is logically independent of the
+  unvalidated preceding checkpoint, although this branch history descends
+  from it; all frozen paths and the finite-q witness remain excluded
+next bounded step: push this registry-only claim, fetch/read the board, repeat
+  the advertised-tip collision scan, and only then edit the single claimed
+  source file; checkpoint it explicitly as not compiled
+```
+
+Follow-on claim published at 2026-08-25T17:45:06-07:00.
