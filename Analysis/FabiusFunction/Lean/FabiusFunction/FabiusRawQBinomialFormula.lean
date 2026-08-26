@@ -44,46 +44,6 @@ theorem neg_one_pow_thueMorseBit (r : ℕ) :
     (-1 : ℚ) ^ thueMorseBit r = (thueMorseSign r : ℚ) :=
   neg_one_pow_thueMorseBit_ring (R := ℚ) r
 
-/-- Reflecting an index in a dyadic block complements its first `k` binary
-digits and multiplies its Thue--Morse sign by `(-1)^k`. -/
-theorem thueMorseSign_dyadic_complement
-    (k r : ℕ) (hr : r < 2 ^ k) :
-    thueMorseSign (2 ^ k - 1 - r) =
-      (-1 : ℤ) ^ k * thueMorseSign r := by
-  induction k generalizing r with
-  | zero =>
-      have hr0 : r = 0 := by omega
-      subst r
-      norm_num [thueMorseSign, binaryWeight]
-  | succ k ih =>
-      rcases Nat.even_or_odd r with heven | hodd
-      · rcases heven with ⟨s, hs⟩
-        have hrform : r = 2 * s := by omega
-        have hslt : s < 2 ^ k := by
-          rw [pow_succ] at hr
-          omega
-        have hreflect :
-            2 ^ (k + 1) - 1 - r =
-              2 * (2 ^ k - 1 - s) + 1 := by
-          rw [pow_succ]
-          omega
-        rw [hreflect, thueMorseSign_two_mul_add_one,
-          ih s hslt, hrform, thueMorseSign_two_mul, pow_succ]
-        ring
-      · rcases hodd with ⟨s, hs⟩
-        have hrform : r = 2 * s + 1 := by omega
-        have hslt : s < 2 ^ k := by
-          rw [pow_succ] at hr
-          omega
-        have hreflect :
-            2 ^ (k + 1) - 1 - r =
-              2 * (2 ^ k - 1 - s) := by
-          rw [pow_succ]
-          omega
-        rw [hreflect, thueMorseSign_two_mul,
-          ih s hslt, hrform, thueMorseSign_two_mul_add_one, pow_succ]
-        ring
-
 /-- The raw-coordinate inner power sum
 `sum_{r < 2^k} (-1)^ThueMorse[r] (r+q)^d`. -/
 def thueMorseRawTranslatedPowerSum (q : ℚ) (k d : ℕ) : ℚ :=
