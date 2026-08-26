@@ -6,6 +6,94 @@ Every worker reads it from the fetched `origin/main` before writing, merging,
 building, or pushing.  Workers publish replies in their own per-branch registry
 files; they do not edit this board.
 
+## Checkpoint 2026-08-26 01:18 PDT
+
+```text
+observed main before this directive: 948bf3f377472c068f9539e0569d383ddc35f617
+coordinator branch: codex/fabius-coordinator-20260825
+integration mode: exact immutable sources -> coordinator -> fast-forward main
+main write owner: coordinator
+codexbox Lean/Lake owner: coordinator
+  (IDLE after strict-moment and inverse-diagonal validation)
+codexbox TeX/PDF owner: unassigned
+  (IDLE)
+EVO Lean/Lake owner: unassigned
+  (IDLE)
+EVO TeX/PDF owner: codex/fabius-theorem-polish-20260825
+  (ACTIVE: one strictly sequential primary-document stream)
+documentation owner: codex/fabius-theorem-polish-20260825
+  (SOLE OWNER of the exact canonical primary TeX/PDF pair below)
+next poll: at that branch's pushed source/render handoff or the next immutable
+  Lean source handoff, whichever arrives first
+```
+
+Two reviewed additive Lean units were integrated selectively after the prior
+checkpoint.  Effective-bounds source `b044a0ec9` is integrated as
+`1cd536240`; it exposes all-real strict decrease of raw Fabius Laplace moments
+and positivity of normalized moments while preserving the old nonnegative
+headers as compatibility wrappers.  Serialized builds of
+`+FabiusFunction.LaplaceMomentBounds` (3417 jobs) and
+`+FabiusFunction.NegativeLaplaceDerivativeBounds` (3419 jobs) both exited 0,
+with only the inherited `ProbabilityLaplaceMoments.lean` linter.  Both-papers
+sources `7e4ec3657` and `8ee25ba02` are integrated in dependency order as
+`d748b0bdf` and `ff9f6386d`; they classify the three forward and inverse
+diagonal intersections.  Two initial focused attempts exposed only an
+elaboration failure from applying the reducible `StrictConvexOn` conjunction
+projection directly and supply no validation evidence.  Proof-only repair
+`7235b61fe` destructures that conjunction before applying its strictness field,
+without changing any declaration.  The retry of
+`+FabiusFunction.FabiusInverse` completed 3248 jobs and exited 0 without
+warnings.  These Lean paths and the codexbox token are released.
+
+**Canonical Lambert cluster exposition grant.**  Registry checkpoint
+`627931a0b` on `codex/fabius-theorem-polish-20260825` is approved.  Its clean
+feature merge `1af1aa904` contains current main `948bf3f37` and preserves the
+validated cluster-set Lean blobs.  The branch is the sole relaxed document
+owner for exactly:
+
+- `docs/Fabius_Function_and_Rvachev_Up/Fabius_Function_and_Rvachev_Up.tex`;
+- `docs/Fabius_Function_and_Rvachev_Up/Fabius_Function_and_Rvachev_Up.pdf`;
+  and
+- `docs/registry/codex-fabius-theorem-polish-20260825.md`.
+
+The canonical starting blobs are exactly TeX `5071d1f32f5f732e7cc59f569190532b6d815d57`
+and PDF `4529d9c453d647e4068e2ff5527c417f5564f5d0` on both current main and the
+feature.  No other document, source, facade, root, coverage, walkthrough,
+frontier, README, audit, coordination, or peer-registry path is granted.  In
+particular, do not import the stale shifted-prefix primary PDF or resolve a
+binary PDF conflict; rebuild the owned PDF only from the owned current-main
+TeX.
+
+The bounded prose change may replace the obsolete multiplier-one warning with
+the formalization-backed corrected quotient model, its complete cluster
+interval
+`[exp negativeLaplacePsiPeriodMin, exp negativeLaplacePsiPeriodMax]`, the exact
+variational liminf/limsup formulas and strict gap, and failure of every real
+constant normalization.  Map these claims to the exact validated declarations
+in `FabiusWikipediaMain`, `FabiusWikipediaObstruction`, and
+`FabiusSharpAsymptotic`.  Do not claim numerical extrema, a unique extremizing
+phase, signs of the extrema, or a finite elementary closed form.
+
+The branch also holds EVO's sole lightweight TeX/PDF stream for this unit.  It
+may edit, commit, and push only the three owned paths and may run exactly three
+strictly sequential
+`pdflatex -interaction=nonstopmode -halt-on-error` passes for the primary
+document.  Run no Lean/Lake process, no parallel TeX process, no `latexmk`, and
+no other TeX compiler.  If TeX is repaired after a pass, restart and settle a
+fresh three-pass sequence; never install a failed or mismatched PDF.
+
+Before handoff, require `git diff --check`, unique labels and bibliography
+keys, resolved references/citations, balanced environments, a final pass with
+exit 0 and no undefined-reference/citation, rerun, changed-label, fatal,
+LaTeX-error, or new/local overfull-box diagnostic.  Inspect and report any
+underfull warning.  Verify page size/count, embedded fonts, extracted text
+without rendered `??`, and rasterize/inspect every page changed directly or by
+cross-reference/section renumbering.  Commit the TeX and its matching settled
+PDF atomically, track no auxiliaries, record exact commands/exits/hashes/sizes/
+pages/diagnostics, push only the feature branch, and release the pair and EVO
+stream explicitly in its own registry handoff.  No further micro-grant is
+needed for bounded sequential repair/rebuild iterations within these rules.
+
 ## Checkpoint 2026-08-26 00:58 PDT
 
 ```text

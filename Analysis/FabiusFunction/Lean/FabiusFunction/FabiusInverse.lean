@@ -108,6 +108,10 @@ quotient from zero to one.
   every dyadic rational of `[0,1]` exactly, so every such value inverts.  For
   instance `F (1/4) = 5/72`, which is the threshold appearing in
   `mul_lt_fabiusInv` below.
+* `self_lt_fabiusInv_of_mem_Ioo_zero_half`,
+  `fabiusInv_lt_self_of_mem_Ioo_half_one`, and `fabiusInv_eq_self_iff` — the
+  inverse lies above the diagonal on the open first half, below it on the open
+  second half, and meets it exactly at `0`, `1/2`, and `1`.
 * `fabiusInv_eq_zero_of_nonpos`, `fabiusInv_eq_one_of_one_le`, and
   `fabiusInv_one_sub` — the two constant tails and the global reflection law.
 * `fabiusInv_hasDerivAt`, `deriv_fabiusInv`,
@@ -447,6 +451,48 @@ theorem fabiusInv_half (F : BoundedFabius) (hF : IsFabius F) :
   have h := fabiusInv_one_sub F hF ((1 : ℝ) / 2)
   norm_num at h ⊢
   linarith
+
+/-! ## The inverse graph and the diagonal -/
+
+/-- On the open first half of the unit interval, the inverse Fabius graph lies
+strictly above the diagonal. -/
+theorem self_lt_fabiusInv_of_mem_Ioo_zero_half
+    (F : BoundedFabius) (hF : IsFabius F) {y : ℝ}
+    (hy : y ∈ Ioo (0 : ℝ) (1 / 2)) :
+    y < fabiusInv F hF y := by
+  have hyIcc : y ∈ Icc (0 : ℝ) 1 :=
+    ⟨hy.1.le, by linarith [hy.2]⟩
+  exact (fabiusReal_lt_iff_lt_fabiusInv F hF hyIcc hyIcc).mp
+    (fabiusReal_lt_self_of_mem_Ioo_zero_half F hF hy)
+
+/-- On the open second half of the unit interval, the inverse Fabius graph lies
+strictly below the diagonal. -/
+theorem fabiusInv_lt_self_of_mem_Ioo_half_one
+    (F : BoundedFabius) (hF : IsFabius F) {y : ℝ}
+    (hy : y ∈ Ioo (1 / 2 : ℝ) 1) :
+    fabiusInv F hF y < y := by
+  have hyIcc : y ∈ Icc (0 : ℝ) 1 :=
+    ⟨by linarith [hy.1], hy.2.le⟩
+  exact (fabiusInv_lt_iff_lt_fabiusReal F hF hyIcc hyIcc).mpr
+    (self_lt_fabiusReal_of_mem_Ioo_half_one F hF hy)
+
+/-- The totalized inverse Fabius function meets the diagonal exactly at the
+two endpoints and the midpoint. -/
+theorem fabiusInv_eq_self_iff
+    (F : BoundedFabius) (hF : IsFabius F) (y : ℝ) :
+    fabiusInv F hF y = y ↔ y = 0 ∨ y = 1 / 2 ∨ y = 1 := by
+  constructor
+  · intro hfix
+    have hyIcc : y ∈ Icc (0 : ℝ) 1 := by
+      rw [← hfix]
+      exact fabiusInv_mem_Icc F hF y
+    have hforward := fabiusReal_fabiusInv F hF hyIcc
+    rw [hfix] at hforward
+    exact (fabiusReal_eq_self_iff F hF y).mp hforward
+  · rintro (rfl | rfl | rfl)
+    · exact fabiusInv_zero F hF
+    · exact fabiusInv_half F hF
+    · exact fabiusInv_one F hF
 
 /-! ## Curvature on the two halves -/
 
