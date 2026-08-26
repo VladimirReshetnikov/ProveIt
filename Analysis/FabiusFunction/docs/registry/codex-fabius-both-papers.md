@@ -8,19 +8,16 @@ SYNC Fabius
 branch / worktree / machine: codex/fabius-both-papers /
   /home/codex/src/Proofs / codexbox
 fetched main SHA: fc63c39788ab4c31694e4f57efe05b543165675a
-HEAD and dirty paths: c239802ddbd6ad22275bcfdaef310158d093e299;
-  dirty only in this own-registry claim
+HEAD and dirty paths: 7e4ec3657c4e068c98f09cfc72ea69b9ab8fe6d1;
+  dirty only in this own-registry handoff
 writing (exact paths):
-  Analysis/FabiusFunction/Lean/FabiusFunction/Convexity.lean
   Analysis/FabiusFunction/docs/registry/codex-fabius-both-papers.md
 expected declarations or document claims:
-  `fabiusReal_lt_self_of_mem_Ioo_zero_half`, placing the graph strictly below
-  the diagonal on `(0, 1/2)` by strict convexity;
-  `self_lt_fabiusReal_of_mem_Ioo_half_one`, transferring the strict inequality
-  to `(1/2, 1)` by reflection symmetry;
-  `fabiusReal_eq_self_iff`, classifying the complete all-real fixed-point locus
-  as exactly `0`, `1/2`, and `1`; add no simp attribute or import, preserve all
-  existing declarations, and change no facade, root, document, or other source
+  freeze and release exact diagonal-classification checkpoint
+  `7e4ec3657c4e068c98f09cfc72ea69b9ab8fe6d1`; record the three theorem names,
+  exact result blob, direct strict-convex chord proof, reflected inequality,
+  complete all-real fixed-point locus, three independent static reviews, and
+  requested serialized gates; change no source or frozen document here
 completed commits: Lower-Lambert source checkpoint `1da2fde2285e3970267b7dc2561bcd0d897be1b4`
   was integrated by coordinator merge `046946a974467e83244fd3a183a3e084e70d3379`;
   registry handoff `225f5338de9ea92489ed6a2c0c371c6edb4f5db9`
@@ -178,6 +175,11 @@ completed commits: Lower-Lambert source checkpoint `1da2fde2285e3970267b7dc2561b
   Lambert registry handoff
   `c239802ddbd6ad22275bcfdaef310158d093e299` freezes that source, records its
   three independent static reviews, and releases both Lambert source paths;
+  exact diagonal claim
+  `6f78548f559c59b46540660d7f30c588ad8473b5` precedes source checkpoint
+  `7e4ec3657c4e068c98f09cfc72ea69b9ab8fe6d1`, which adds the three advertised
+  declarations and five module-header prose lines without changing any import
+  or existing declaration;
 validated (exact command, SHA/state, exit code): coordinator board records
   serialized immutable `lake build +FabiusFunction.LowerLambertW` at
   `4c6bbac41`, exit 0, with its source blob unchanged on current main;
@@ -257,8 +259,14 @@ validated (exact command, SHA/state, exit code): coordinator board records
   the `pow_one` corollary has exact source/target alignment, the import graph is
   acyclic, all in-tree callers and public exposure remain, result declarations
   and attributes are unchanged, no competing tip/registry claim exists, and
-  static diff/marker/line-length hygiene is clean
-not yet validated: the Lambert-tail consolidation checkpoint
+  static diff/marker/line-length hygiene is clean; three independent live-diff
+  reviews of `7e4ec3657` verify the exact strict-convexity argument order,
+  endpoint weights and evaluations, symmetry orientation, every constant-tail
+  and endpoint case, global theorem scope, names, docs, imports, facade
+  exposure, collision scan, and diff hygiene
+not yet validated: the diagonal-classification checkpoint
+  `7e4ec3657c4e068c98f09cfc72ea69b9ab8fe6d1` has not been elaborated or built;
+  the Lambert-tail consolidation checkpoint
   `b330296cf9faae487ccfb234fc1e6fb50b35273d` has not been elaborated or built;
   the Walsh-character source checkpoint
   `e91a2828c8046a0fca49d857314e60f7f4ba5da2` has not been elaborated or built;
@@ -377,12 +385,14 @@ requested integration or lease: integrate exact private-deletion checkpoint
   `LAKE_JOBS=1 lake build +FabiusFunction.FabiusLambertTailFlat`,
   `LAKE_JOBS=1 lake build +FabiusFunction.FabiusSharpAsymptoticTransfer`, and
   `LAKE_JOBS=1 lake build +FabiusFunction.FabiusFullAsymptoticExpansion`
-  gates; both Lambert source claims are released by this handoff; canonical
+  gates; both Lambert source claims are released by this handoff; additionally
+  integrate exact diagonal checkpoint
+  `7e4ec3657c4e068c98f09cfc72ea69b9ab8fe6d1` and run separate serialized
+  `LAKE_JOBS=1 lake build +FabiusFunction.Convexity` and
+  `LAKE_JOBS=1 lake build +FabiusFunction.FabiusInverse` gates; the
+  `Convexity.lean` source claim is released by this handoff; canonical
   README, AUDIT_FINDINGS, PAPER_COVERAGE, primary, walkthrough, frontier, and
-  user-supplied draft paths remain frozen and unclaimed; this checkpoint also
-  claims the one ordinary `Convexity.lean` path above for exactly the three
-  advertised diagonal theorems, requests no Lean/Lake token, and requests no
-  integration until an immutable reviewed source handoff is published
+  user-supplied draft paths remain frozen and unclaimed
 conflicts / dependencies: the central-binomial and general-addition Kummer
   sources are integrated, validated, and released; the normalized-moment
   positivity candidate was
@@ -473,11 +483,13 @@ conflicts / dependencies: the central-binomial and general-addition Kummer
   declaration-free `FabiusInverse.lean` statement that the midpoint is the
   unique interior fixed point; current main, this branch, and the freshly
   advanced theorem-polish and inverse-asymptotic tips all retain exact
-  `Convexity.lean` blob `4bdd9e7b8c5cb040915a3f0531dbe110c4683011`
-next bounded step: push this registry-first diagonal claim, then implement the
-  two strict half-interval inequalities and their global fixed-point iff at the
-  end of `Convexity.lean`, obtain independent static reviews, and run no
-  Lean/Lake or document process without a later board grant
+  `Convexity.lean` blob `4bdd9e7b8c5cb040915a3f0531dbe110c4683011`;
+  exact diagonal result blob is
+  `3224538b38bbce1c1fe85ca6a7a1d474d69a7a59`
+next bounded step: push this immutable diagonal registry handoff, await
+  coordinator integration/serialized validation of the pending reviewed
+  checkpoints, and scout the natural inverse-versus-diagonal corollaries plus
+  another disjoint proof-cleanup opportunity without claiming either yet
 ```
 
 ## General Kummer carry-cocycle handoff
@@ -902,3 +914,26 @@ documentation work should discharge the frontier's “Fourier-decay
 normalization” item and add the conventional shifted form to the primary
 exposition, walkthrough, and coverage map.  None of those frozen paths is
 claimed here.
+
+## Diagonal-classification handoff
+
+Source checkpoint `7e4ec3657c4e068c98f09cfc72ea69b9ab8fe6d1`
+adds exactly:
+
+- `fabiusReal_lt_self_of_mem_Ioo_zero_half`;
+- `self_lt_fabiusReal_of_mem_Ioo_half_one`; and
+- `fabiusReal_eq_self_iff`.
+
+The first theorem applies strict convexity to the chord from `(0,0)` to
+`(1/2,1/2)`, using weights `1 - 2*x` and `2*x`, so the strict chord bound is
+literally `F(x) < x`.  Reflection gives `x < F(x)` on the open second half.
+The two constant tails then leave exactly `0`, `1/2`, and `1` as all-real
+solutions of `F(x) = x`.  Three independent static reviews pass the theorem
+signatures, coefficient algebra, symmetry, edge cases, API, imports, ownership,
+and hygiene; no Lean/Lake process was run.
+
+When canonical documents thaw, the primary exposition should add this as a
+corollary immediately after `thm:shape-convexity`, and the walkthrough should
+add it to the `Convexity.lean` shape discussion and module-summary row.  The
+README addition is optional.  No frontier or paper-coverage row is required:
+this is a derived shape theorem, not a source-paper or research-frontier claim.
