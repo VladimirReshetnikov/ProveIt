@@ -38,12 +38,12 @@ private theorem quadratic_main_isEquivalent
     T ~[l] (fun i => L / 2 * lam i ^ 2) := by
   have hlinSq :
       lam =o[l] (fun i => lam i ^ 2) := by
-    simpa only [pow_one] using
+    simpa only [Function.comp_def, pow_one] using
       (Asymptotics.isLittleO_pow_pow_atTop_of_lt
         (𝕜 := ℝ) (p := 1) (q := 2) (by norm_num)).comp_tendsto hlam
   have hlogLin :
       (fun i => Real.log (lam i)) =o[l] lam := by
-    simpa only [Function.comp_apply, id_eq] using
+    simpa only [Function.comp_def, id_eq] using
       Real.isLittleO_log_id_atTop.comp_tendsto hlam
   have hlogSq :
       (fun i => Real.log (lam i)) =o[l] (fun i => lam i ^ 2) :=
@@ -108,7 +108,7 @@ private theorem log_div_sqrt_isTheta_log_div_of_isEquivalent_sq
   have hsqrtRaw :
       (fun i => Real.sqrt (T i)) ~[l]
         (fun i => Real.sqrt (c * lam i ^ 2)) := by
-    simpa only [Real.sqrt_eq_rpow] using
+    simpa only [Pi.pow_def, Real.sqrt_eq_rpow] using
       IsEquivalent.rpow
         (r := (1 / 2 : ℝ))
         (fun i => mul_nonneg hc.le (sq_nonneg (lam i))) hT
@@ -126,8 +126,8 @@ private theorem log_div_sqrt_isTheta_log_div_of_isEquivalent_sq
           (Real.log (lam i) / lam i)) := by
     apply hrateRaw.congr_right
     filter_upwards with i
-    simp only [div_eq_mul_inv, mul_inv]
-    ring
+    simp only [Pi.div_apply, div_eq_mul_inv, mul_inv]
+    ring_nf
   have hfactor : 2 / Real.sqrt c ≠ 0 :=
     div_ne_zero (by norm_num) (Real.sqrt_pos.2 hc).ne'
   exact hrate.isTheta.of_const_mul_right hfactor
@@ -169,9 +169,11 @@ theorem quadratic_asymptotic_inversion
       (fun i => 2 * T i / L) ~[l] (fun i => lam i ^ 2) := by
     refine (hscaledRaw.congr_left ?_).congr_right ?_
     · filter_upwards with i
+      simp only [Pi.mul_apply]
       ring
     · filter_upwards with i
-      field_simp [hL.ne'] <;> ring
+      simp only [Pi.mul_apply]
+      field_simp [hL.ne']
   have hsqrtRaw :=
     IsEquivalent.rpow
       (r := (1 / 2 : ℝ))
@@ -180,13 +182,13 @@ theorem quadratic_asymptotic_inversion
       (fun i => Real.sqrt (2 * T i / L)) ~[l] lam := by
     refine (hsqrtRaw.congr_left ?_).congr_right ?_
     · filter_upwards with i
-      simp only [Real.sqrt_eq_rpow]
+      simp only [Pi.pow_apply, Real.sqrt_eq_rpow]
     · filter_upwards [hlam.eventually_gt_atTop 0] with i hi
-      rw [← Real.sqrt_eq_rpow, Real.sqrt_sq_eq_abs, abs_of_pos hi]
+      rw [Pi.pow_apply, ← Real.sqrt_eq_rpow, Real.sqrt_sq_eq_abs, abs_of_pos hi]
 
   have ha :
       (fun _ : α => B / L) =o[l] lam := by
-    simpa only [Function.comp_apply, id_eq] using
+    simpa only [Function.comp_def, id_eq] using
       (Asymptotics.isLittleO_const_id_atTop (B / L)).comp_tendsto hlam
   have hshift :
       (fun i => lam i - B / L) ~[l] lam :=
@@ -196,7 +198,9 @@ theorem quadratic_asymptotic_inversion
       (fun i =>
         (lam i - B / L + Real.sqrt (2 * T i / L)) - 2 * lam i) =o[l]
         lam := by
-    exact hdenDiffRaw.congr_left fun i => by ring
+    exact hdenDiffRaw.congr_left fun i => by
+      simp only [Pi.sub_apply]
+      ring
   have hden :
       (fun i => lam i - B / L + Real.sqrt (2 * T i / L)) ~[l]
         (fun i => 2 * lam i) := by
@@ -210,13 +214,13 @@ theorem quadratic_asymptotic_inversion
   have hdenInv :
       (fun i => (lam i - B / L + Real.sqrt (2 * T i / L))⁻¹) =O[l]
         (fun i => (lam i)⁻¹) := by
-    have h := hdenInvRaw.congr_right fun i => by rw [mul_inv]
+    have h := hdenInvRaw.congr_right fun i => by rw [Pi.inv_apply, mul_inv]
     exact h.of_const_mul_right
 
   have hconst :
       (fun _ : α => B ^ 2 / L ^ 2) =O[l]
         (fun i => Real.log (lam i)) := by
-    simpa only [Function.comp_apply] using
+    simpa only [Function.comp_def] using
       ((Real.isLittleO_const_log_atTop
         (c := B ^ 2 / L ^ 2)).comp_tendsto hlam).isBigO
   have hnumRaw := hconst.add (hquad.const_mul_left (-2 / L))
@@ -229,7 +233,7 @@ theorem quadratic_asymptotic_inversion
     · filter_upwards [hTPos] with i hTi
       rw [Real.sq_sqrt (div_nonneg
         (mul_nonneg (by norm_num) hTi.le) hL.le)]
-      field_simp [hL.ne'] <;> ring
+      field_simp [hL.ne']; ring
     · exact Filter.EventuallyEq.rfl
 
   have hproduct := hnum.mul hdenInv
@@ -239,7 +243,15 @@ theorem quadratic_asymptotic_inversion
         (fun i => Real.log (lam i) / lam i) := by
     apply hproduct.congr'
     · filter_upwards [hdenPos] with i hdi
-      field_simp [hdi.ne', hL.ne'] <;> ring
+      calc
+        ((lam i - B / L) ^ 2 - (Real.sqrt (2 * T i / L)) ^ 2) *
+              (lam i - B / L + Real.sqrt (2 * T i / L))⁻¹ =
+            ((lam i - B / L) - Real.sqrt (2 * T i / L)) *
+              (lam i - B / L + Real.sqrt (2 * T i / L)) *
+              (lam i - B / L + Real.sqrt (2 * T i / L))⁻¹ := by ring
+        _ = (lam i - B / L) - Real.sqrt (2 * T i / L) := by
+          rw [mul_assoc, mul_inv_cancel₀ hdi.ne', mul_one]
+        _ = lam i - (Real.sqrt (2 * T i / L) + B / L) := by ring
     · filter_upwards with i
       simp only [div_eq_mul_inv]
 
