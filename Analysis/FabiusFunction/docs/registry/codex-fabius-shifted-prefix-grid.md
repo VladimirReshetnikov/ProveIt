@@ -2,8 +2,9 @@
 
 **Status: finite-jet source checkpoint accepted, compiled, and released;
 finite-Appell-calculus and all-order approximation source checkpoints
-implemented and independently reviewed; all claimed source paths are frozen
-without a local build token.**
+implemented, independently reviewed, and compiled at immutable merge
+`4367a7f86`; all claimed source paths remain frozen, and the Appell plus
+all-order approximation source units await coordinator integration.**
 The exact claim was published before source work, coordinator checkpoint
 `893d4c25d` explicitly acknowledged it as the first nonoverlapping claim for
 the module, and source commit `00ff41a5e` now implements precisely that bounded
@@ -27,11 +28,13 @@ follow-up.
 SYNC Fabius
 branch / worktree / machine: codex/fabius-shifted-prefix-grid / c9a3 / EVO
   (Windows)
-fetched main SHA: 99b67cf5b5b8084d097205d1f701d13285ecd3b7
-HEAD and dirty paths: 405586607b43f2a23ac2a43779e6ef80344b7785;
-  docs/registry/codex-fabius-shifted-prefix-grid.md only, recording the
-  clean post-merge synchronization of the independently reviewed all-order
-  approximation source checkpoint
+latest fetched main SHA: de303339202ef0b7fb99da83003d4b841eef9b80
+validation-base main SHA merged into 4367a7f86:
+  2183cfb113765197042628524690794bdf8d07c4
+HEAD and dirty paths: 4367a7f8664e0bcabf87b514f0a3b50a3413fa94;
+  docs/registry/codex-fabius-shifted-prefix-grid.md only, recording the exact
+  coordinator-authorized immutable validation evidence before the user-requested
+  second merge of newly advanced origin/main
 writing (exact paths): docs/registry/codex-fabius-shifted-prefix-grid.md only;
   no source path remains writable after this registry checkpoint is pushed;
   FabiusQBinomialTaylor.lean, ThueMorseGenerating.lean, and
@@ -113,7 +116,10 @@ completed commits: 6fb8dc8e9 publishes the exact one-file claim; ba0048023
   all-order approximation declarations and simplifies both coefficient bridges;
   1a6db9d91 freezes and reports the complete seven-declaration handoff;
   c55f8a331 merges main b0b896e39 without conflicts; 3a33e10c6 refreshes the
-  clean handoff state; 405586607 merges main 99b67cf5b without conflicts
+  clean handoff state; 405586607 merges main 99b67cf5b without conflicts;
+  b52fa523e records and pushes the final pre-validation handoff; 4367a7f86
+  merges coordinator checkpoint 2183cfb11 without conflicts and preserves all
+  three feature blobs byte-for-byte
 validated (exact command, SHA/state, exit code): at source snapshot SHA-256
   784F6C4F389FE0F2FA08616FFAFBFA3917CCC9F6D2C86CE98D3D877B5F0DD14C,
   git diff --check and git diff --cached --check exited 0; python
@@ -186,19 +192,18 @@ validated (exact command, SHA/state, exit code): at source snapshot SHA-256
   independent read-only reviews found no mathematical, zero-order,
   sharp-cutoff, coercion, exact-API, rewrite-shape, duplicate, import,
   attribute, or compatibility blocker and separately verified the two
-  case-free calculations
-not yet validated: finite-Appell source commit 8021c555f and all-order
-  approximation source commit f7152d5fc have not been compiled; no Lean or
-  Lake process is authorized because both physical-host tokens remain
-  coordinator-reserved
-requested integration or lease: both source tranches are now implemented,
-  reviewed, and frozen; assign the coordinator-held targets
-  +FabiusFunction.FabiusQBinomialTaylor,
-  +FabiusFunction.ThueMorseGenerating,
-  +FabiusFunction.ThueMorseApproximation,
-  +FabiusFunction.ThueMorseExponential, and
-  +FabiusFunction.PaperKFoldThueMorse at that immutable checkpoint or its exact
-  coordinator merge
+  case-free calculations; at exact commit 4367a7f8664e and tree db635e6a073b,
+  the coordinator-authorized EVO lane ran three separate sequential
+  LAKE_JOBS=1 invocations: +FabiusFunction.FabiusQBinomialTaylor completed 3320
+  jobs, exit 0, with no warnings; +FabiusFunction.ThueMorseApproximation
+  completed 3307 jobs, exit 0, with exactly the two documented unused-variable
+  linter warnings at lines 149 and 236; +FabiusFunction.PaperKFoldThueMorse
+  completed 3327 jobs, exit 0, replaying only those same two warnings
+not yet validated: no aggregate +FabiusFunction build or additional target was
+  authorized or run; the exact three-target validation grant is complete
+requested integration or lease: integrate the frozen source commits 8021c555f
+  and f7152d5fc from exact validated merge 4367a7f86; release this branch's EVO
+  token after accepting this registry checkpoint
 conflicts / dependencies: no overlap with the active frontier-document lease;
   no AGENTS, README, collaboration, aggregate, TeX, PDF, canonical frontier,
   primary exposition, hot foundational module, or peer registry path requested;
@@ -213,15 +218,16 @@ conflicts / dependencies: no overlap with the active frontier-document lease;
   analogous private dyadic-kernel family is mathematically distinct; no path
   expansion beyond the three now-frozen source files and this branch registry
   is requested
-next bounded step: push this complete seven-declaration source handoff, fetch
-  and reread the board, and await coordinator-owned serialized validation;
-  perform only read-only opportunity scouting until a new exact claim is
-  advertised or these frozen checkpoints receive disposition
-lease refreshed: 2026-08-25 20:08 PDT; all three source paths are frozen;
+next bounded step: commit and push this registry-only validation checkpoint,
+  then honor the explicit user request by merging newly advanced origin/main
+  de3033392, update only this own registry, and push; perform no further build
+  or source edit under the completed grant
+lease refreshed: 2026-08-25 20:40 PDT; all three source paths remain frozen;
   FabiusQBinomialTaylor.lean at 8021c555f and ThueMorseApproximation.lean at
-  f7152d5fc are pending coordinator validation; ThueMorseGenerating.lean has no
-  further unintegrated source delta
-git owner / build owner: root / no build owner assigned to this branch
+  f7152d5fc are compiled and pending coordinator integration;
+  ThueMorseGenerating.lean has no further unintegrated source delta
+git owner / build owner: root / EVO grant completed; no build process running;
+  token release requested
 ```
 
 ## Completed bounded refactor
@@ -575,5 +581,56 @@ Three independent read-only reviews covered every zero-order reduction, the
 sharp endpoint, exact polynomial and power-series coercions, inverse-kernel
 rewrite orientation, triangular-exponent cancellation, duplicate names, and
 public compatibility.  The documentation audit retains the exact baseline.
-No Lean or Lake process ran, so this checkpoint is explicitly **not yet
-compiled**.
+No Lean or Lake process ran while producing that source checkpoint; the later
+immutable compiler evidence is recorded below.
+
+## Coordinator-authorized immutable validation
+
+Coordinator checkpoint `2183cfb11` assigned this branch the sole EVO token for
+three exact sequential targets.  Conflict-free merge `4367a7f86` has tree
+`db635e6a073bc6069e1bb0b913fb3a739c14452c` and exact parents
+`b52fa523e559fa386c2b275f1376eaccdd92404c` and
+`2183cfb113765197042628524690794bdf8d07c4`.  An independent post-merge audit
+confirmed zero unmerged entries, a clean index and worktree, and exact
+preservation of all feature blobs:
+
+```text
+FabiusQBinomialTaylor.lean  52492287b5bb0df8d0c8c2c7e985a4de8c0393f3
+ThueMorseApproximation.lean d2e85228f16a4a2951bb8f91f4fc92555201af5e
+branch registry             27043739fb1b217a999ed32f5c77be7a8aef8540
+```
+
+On that immutable tree, PowerShell set `$env:LAKE_JOBS = '1'` immediately
+before each of these three separate invocations, in this exact order:
+
+```text
+lake build +FabiusFunction.FabiusQBinomialTaylor
+lake build +FabiusFunction.ThueMorseApproximation
+lake build +FabiusFunction.PaperKFoldThueMorse
+```
+
+The first completed 3320 jobs and exited 0 with no warnings.  The second
+completed 3307 jobs and exited 0 with exactly the two established compatibility
+linters:
+
+```text
+normalized warning summary: ThueMorseApproximation.lean:149:15, unused `hk`
+normalized warning summary: ThueMorseApproximation.lean:236:15, unused `hk`
+```
+
+The facade completed 3327 jobs and exited 0, replaying only those same two
+warnings from its imported approximation module.  The invocations were
+strictly sequential; no fourth Lean/Lake target, aggregate build, Lean
+prototype, TeX, or PDF process was launched under the EVO grant.  No source
+changed during the grant.  This closes the requested compiler validation for
+source commits `8021c555f` and `f7152d5fc`; both remain frozen for coordinator
+integration.
+
+A post-validation fetch observed that `origin/main` had advanced to
+`de303339202ef0b7fb99da83003d4b841eef9b80`.  That newer main is deliberately
+not folded into the evidence above: the validated tree remains exactly
+`db635e6a073b`.  Its delta is confined to `PeriodicSmooth.lean`, the canonical
+frontier TeX/PDF and successor registry, and the coordinator board, all
+disjoint from this branch's feature sources and own registry.  The explicit
+user-requested synchronization will follow this preservation checkpoint, but
+no compiler claim will be transferred to the resulting newer merge tree.
