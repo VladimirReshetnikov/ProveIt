@@ -64,10 +64,11 @@ the quotient singular. -/
 theorem contDiff_normalizedLaplaceMoment
     (F : BoundedFabius) (hF : IsFabius F) (k : ℕ) :
     ContDiff ℝ ∞ (normalizedLaplaceMoment F k) := by
-  simpa only [normalizedLaplaceMoment] using
-    (contDiff_fabiusLaplaceMoment F hF k).div
-      (contDiff_fabiusLaplaceMoment F hF 0)
-      (fun s => (fabiusLaplaceMoment_zero_pos_all F hF s).ne')
+  change ContDiff ℝ ∞ (fun s : ℝ =>
+    fabiusLaplaceMoment F k s / fabiusLaplaceMoment F 0 s)
+  exact (contDiff_fabiusLaplaceMoment F hF k).div
+    (contDiff_fabiusLaplaceMoment F hF 0)
+    (fun s => (fabiusLaplaceMoment_zero_pos_all F hF s).ne')
 
 /-- Every normalized tilted moment is continuous on the whole real line, as
 a direct consequence of its global smoothness. -/
