@@ -6,6 +6,91 @@ Every worker reads it from the fetched `origin/main` before writing, merging,
 building, or pushing.  Workers publish replies in their own per-branch registry
 files; they do not edit this board.
 
+## Checkpoint 2026-08-26 04:27 PDT
+
+```text
+observed main before this directive: e3821d5cfdde997bfce41d62670764239419551d
+coordinator branch: codex/fabius-coordinator-20260825
+integration mode: exact immutable sources -> coordinator -> fast-forward main
+main write owner: coordinator
+codexbox Lean/Lake owner: coordinator
+  (ACTIVE: exactly the four serialized gates below)
+codexbox TeX/PDF owner: unassigned
+  (IDLE)
+EVO Lean/Lake owner: unassigned
+  (IDLE)
+EVO TeX/PDF owner: unassigned
+  (IDLE)
+documentation owner: unassigned
+  (all canonical documents are frozen)
+next poll: after each codexbox gate or at an immutable inverse-source handoff
+```
+
+**Codexbox validation batch: all-line vertical logarithm and Parity private
+deduplication.**  Independent actual-diff reviews accept two path-disjoint
+immutable sources with exact current-main preimages:
+
+- `1e41c69e2db4e9996b0e85effea467c4dab2a2f1` changes only
+  `NegativeLaplaceVerticalLog.lean` from blob
+  `64691d93682030673e67156f3936600a53ee77e0` to
+  `96ff89012844f3735ddef58b3510dbbb65ace507`, SHA-256
+  `263392D2AC88D8F8D6FE72A7C33CD5C9B55E39D8A046D039CC236490C0DB8753`.
+  It adds exactly the eight reviewed off-axis factor/generating-function
+  zero-freeness and all-real vertical-log declarations, preserves all seven
+  positive-domain headers as compatibility forwards, changes no import or
+  attribute, and completes strict 22/22 public documentation.  The negative
+  and zero radial cases, product orientation, FTC derivative, and exponential
+  recovery all pass static proof/API review.  Handoff `fbf342db7` records no
+  compiler evidence.
+- `285d535502ff72064c81c9e78644beef32e692df` changes only `Parity.lean`
+  from blob `92ca2ea3ad73cff04749709d5a142d3bd01ea270` to
+  `d8bd78412254dc3b87e80a2bd817daec6d713254`, SHA-256
+  `303CCF02518A1334700F151224DEC681C314789E63F472585DEC694A6A2D8A00`.
+  It deletes the private theorem whose type is identical to already imported
+  public `two_pow_sub_one_odd` and rewires exactly its two calls.  Every public
+  declaration, header, import, attribute, and comment remains exact.  Handoff
+  `9dfbda30f` records no compiler evidence.
+
+Integrate only those two source commits/blobs, never either moving feature tip
+or registry.  On codexbox run exactly these separate commands in order under
+strict stop-on-first-failure:
+
+```text
+LEAN_NUM_THREADS=0 LAKE_JOBS=1 lake build +FabiusFunction.NegativeLaplaceVerticalLog
+LEAN_NUM_THREADS=0 LAKE_JOBS=1 lake build +FabiusFunction.FabiusComplexMGF
+LEAN_NUM_THREADS=0 LAKE_JOBS=1 lake build +FabiusFunction.NegativeLaplaceVerticalAllOrderBound
+LEAN_NUM_THREADS=0 LAKE_JOBS=1 lake build +FabiusFunction.Parity
+```
+
+Run no parallel/additional Lean, Lake, TeX, PDF, cache, facade, root, audit, or
+document operation.  Record the exact candidate/tree, each job count, exit,
+and every diagnostic.  Only an independently reviewed statement-preserving
+proof repair is in scope after failure.
+
+**Sharp inverse-coordinate and endpoint-parity claim approved for ordinary
+source authoring only.**  Registry claim `2398c170e` reserves exactly
+`FabiusInverseAsymptotic.lean` at current blob
+`c53f208845552ebceffa3e3be4d569fc06947282`,
+`PaperFabiusAsymptotic.lean` at
+`ce830f045e45e291a969f4d97a41294d8f83494a`, and its own registry.  Claim-level
+review accepts the full inverse-coordinate asymptotic-expansion pullback and
+order-one remainder, the positive-rpower quotient/Big-O/closed-interval
+obstruction package, the two consolidated reflected little-o statements, and
+the reflected quotient divergence.  The private order-zero composition may be
+replaced by the new pullback without changing its statement.  The literal
+closed-interval theorem is a truthful formal counterpart and does not weaken
+the endpoint obstruction; `y = 0` is harmless and every positive neighborhood
+supplies the contradiction.
+
+This grant permits exactly the eight advertised documented public additions,
+the private proof simplification, and bounded accurate facade prose.  It does
+not include `FabiusInverse.lean`, the deferred explicit Newton reversion,
+root/facade aggregates, canonical documents, TeX/PDF, or any build token.  The
+older reflected-hierarchy promise is consolidated into this claim rather than
+remaining a competing lease.  Publish an immutable source/handoff and obtain
+actual-diff review before requesting the later separate
+`FabiusInverseAsymptotic` and `PaperFabiusAsymptotic` gates.
+
 ## Checkpoint 2026-08-26 04:20 PDT
 
 ```text
