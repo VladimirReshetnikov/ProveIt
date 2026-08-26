@@ -1003,3 +1003,102 @@ next bounded step: commit and push this immutable checkpoint, run the three
   granted gates in order, record every job count/exit/diagnostic, and release
   the EVO token at the final or first-failure handoff
 ```
+
+## EVO validation handoff: inverse-power decay repair and consumers green
+
+The three gates granted by coordinator checkpoint
+`ed8d996b78e9858d1282c7c5622c9b4ac61796da` ran from the repository root on
+the exact published validation state:
+
+```text
+validation commit: fe09cba7b62d605e923f44f125c19fe65b6b4441
+validation tree:   ef415ec5f4096f992ae8df6994e511b19ffbe1a4
+repair commit:     3d58580ece84aeff4d8e59bd3cd7bfae29d3fb72
+source blob:       bbb6f8f61d30ec738e484b8b012efbf7fdad47ac
+source SHA-256:    411B46B654A2E8E8A100E01B72D592B344A3F30F4C664EC4D5D26D9967C98377
+```
+
+Each command was a separate invocation with the environment established only
+for that command and removed in `finally`:
+
+```powershell
+$env:LEAN_NUM_THREADS = '0'
+$env:LAKE_JOBS = '1'
+lake build +FabiusFunction.FabiusDecayComparison
+
+lake build +FabiusFunction.FabiusQuotientExponentialMismatch
+
+lake build +FabiusFunction.PaperKFoldThueMorse
+```
+
+All three gates passed:
+
+```text
++FabiusFunction.FabiusDecayComparison
+  3,313 jobs, exit 0, no diagnostic
++FabiusFunction.FabiusQuotientExponentialMismatch
+  3,314 jobs, exit 0, no diagnostic
++FabiusFunction.PaperKFoldThueMorse
+  3,331 jobs, exit 0, only the two inherited diagnostics below
+```
+
+The first gate rebuilt the dependency cone invalidated by newly merged main
+sources before compiling `FabiusDecayComparison` itself in 22 seconds.  Its
+reported rebuilt prerequisites ranged from `Arithmetic` and `Basic` through
+`FabiusLogSquaredAsymptotic` and `FabiusSmallArgumentScale`.  The second gate
+compiled its direct consumer in 67 seconds.  The final gate rebuilt the
+additional Thue--Morse/paper cone and emitted only the two intentionally
+retained compatibility linters already recorded by earlier accepted gates:
+
+```text
+Analysis/FabiusFunction/Lean/FabiusFunction/ThueMorseApproximation.lean:149:15:
+warning: Variable name `hk` is not explicitly referenced.
+
+Analysis/FabiusFunction/Lean/FabiusFunction/ThueMorseApproximation.lean:236:15:
+warning: Variable name `hk` is not explicitly referenced.
+```
+
+Host snapshots throughout every invocation showed exactly the Elan launcher
+and toolchain-Lake parent/child pair, with at most one `lean.exe` child.
+Sampled children included `Arithmetic.lean`, `FourierAnalytic.lean`,
+`FabiusDecayComparison.lean`, `FabiusQuotientExponentialMismatch.lean`,
+`ThueMorsePrefix.lean`, and `PaperKFoldThueMorse.lean`.  Thus
+`LEAN_NUM_THREADS=0` supplied strict serialization; `LAKE_JOBS=1` remains in
+the audit trail although Lake 5 does not use it as the effective control.
+
+After every command, the environment variables were cleared and all
+Lean/Lake/Elan processes exited.  The tracked tree and source blob/hash stayed
+exact.  No fourth/root/facade target, parallel process, cache clean or
+reconstruction, TeX/PDF command, canonical-document edit, source edit, or main
+write occurred.  The EVO Lean/Lake token is explicitly released.
+
+After the immutable validation completed, a read-only fetch observed
+`origin/main` advance to `b0739b56f1af527c52f91dc6024f89ee8919531d`.
+That later main is not part of the exact validation tree above; it will be
+merged only after this handoff is committed and pushed, so the evidence cannot
+be confused with validation of a moving tree.
+
+```text
+SYNC Fabius
+branch / worktree / machine: codex/fabius-inverse-asymptotic-20260825 /
+  C:/Users/vresh/.codex/worktrees/c9a3/ProveIt / EVO (Windows)
+fetched main SHA after validation:
+  b0739b56f1af527c52f91dc6024f89ee8919531d
+validated immutable state:
+  fe09cba7b62d605e923f44f125c19fe65b6b4441 /
+  tree ef415ec5f4096f992ae8df6994e511b19ffbe1a4
+completed source commit: 3d58580ece84aeff4d8e59bd3cd7bfae29d3fb72
+writing: this registry only; source remains frozen at blob bbb6f8f61
+validated: repaired defining module and both direct consumers, all three exact
+  granted commands exit 0 under strict host serialization
+diagnostics: none in the defining/direct quotient targets; only the two
+  inherited unused-`hk` compatibility linters in the paper facade cone
+released: FabiusDecayComparison.lean path and sole EVO Lean/Lake token
+requested integration: map only source commit 3d58580ec / blob bbb6f8f61;
+  do not merge the moving feature history or registry wholesale
+conflicts / dependencies: later main b0739b56f is outside the validation tree;
+  canonical documents remain frozen and the prose parity update is deferred
+next bounded step: commit and push this green handoff, notify the coordinator,
+  merge current main without claiming new compiler evidence, and wait for
+  exact-source integration/release before advertising the next source tranche
+```
