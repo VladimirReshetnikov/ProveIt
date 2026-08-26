@@ -1725,3 +1725,76 @@ LEAN_NUM_THREADS=0 LAKE_JOBS=1 lake build +FabiusFunction.FabiusUniformSpline
 Stop after the first nonzero exit.  After source integration, a later
 ledger-only documentation owner may close the exact high-confidence finding
 in frozen `AUDIT_FINDINGS.md`; no mathematical exposition changes.
+
+## Claim: remove the constant term from the complex-shift majorant
+
+Fresh `origin/main` `59fd2f0a42045547be8aa00070dd94fdb4ab7119`
+retains the exact prospective source blobs
+
+```text
+FabiusDiscreteLimitComplexShift.lean
+  694b3124dcd0b74d8bf3b46107fd7e3570fd2c2c
+FabiusComplexShiftSpline.lean
+  41a53947402c5ad4e02f8dcbabc98ae8b81c3ba5
+```
+
+The exact prospective write set is:
+
+- `Lean/FabiusFunction/FabiusDiscreteLimitComplexShift.lean`;
+- `Lean/FabiusFunction/FabiusComplexShiftSpline.lean`;
+- this branch's own registry.
+
+The branch claims exactly four new documented public declarations:
+
+- `norm_normalizedThueMorseSplineBranch_add_sub_le_half_pow_mul_exp_sub_one`;
+- `norm_normalizedThueMorseSplineBranch_add_sub_le_half_pow_mul_exp_sub_one_all`;
+- `norm_fabiusComplexShiftSpline_sub_center_le_half_pow_mul_exp_sub_one_of_bound_all`;
+- `norm_fabiusComplexShiftSpline_sub_center_le_half_pow_mul_exp_sub_one_all`.
+
+The upstream Taylor difference has no zeroth-order term in the translation
+increment: after reflection its factorial sum is
+`sum_(j=1)^p R^j/j!`, not the sum starting at zero.  The private helper
+`reflected_factorial_sum_le_exp` will therefore become
+`reflected_factorial_sum_le_exp_sub_one`, using the exact shifted-range
+identity followed by `Real.sum_le_exp_of_nonneg`.  This yields the strengthened
+factor `Real.exp ‖δ‖ - 1`, including the vacuous degree-zero case.  The
+downstream branch substitution then gives the corresponding conditional and
+unconditional bounds with `Real.exp ‖q - (1 / 2 : ℂ)‖ - 1` for every degree
+and every real input; nonpositive inputs use exact spline vanishing.
+
+Every existing plain-exponential public declaration and header remains exact.
+The upstream positive-degree and all-degree theorems, together with the
+downstream conditional-all and global-all theorems, become compatibility
+wrappers via `exp R - 1 ≤ exp R`.  The two existing downstream positive-domain
+proofs remain in place.  No import, attribute, simp rule, facade, aggregate,
+or canonical document changes are claimed.  Module prose and declaration doc
+comments will describe four strengthened bounds, never a sharp, optimal, or
+best constant.
+
+The downstream all-real theorem is the exact Lean counterpart of the open
+`exp |Q-1/2| - 1` complex-shift obligation in the frozen research-frontier
+document.  Canonical TeX/PDF, `PAPER_COVERAGE.md`, and `AUDIT_FINDINGS.md`
+remain frozen.  After compiled integration, a separately assigned document
+owner should promote the result in the primary exposition, retire the exact
+frontier obligation, update the coverage crosswalk, and rebuild the matching
+PDFs.
+
+All-advertised-tip exact-name, plausible-name, source-history, path, and every
+registry scan finds no competing implementation or live claim.  The
+coordinator board explicitly records the preceding complex-shift leases as
+released and the exponential-minus-one estimate as still open.  The downstream
+module directly imports the upstream module, so the two-file edit is acyclic;
+its narrow reverse chain continues through `FabiusDiscreteLimitIntegration`
+and `PaperFabiusAsymptotic`.
+
+No Lean, Lake, TeX, PDF, or cache-mutating process is authorized or has run
+for this claim.  After an immutable reviewed source checkpoint, the requested
+separate serialized gates are:
+
+```text
+LEAN_NUM_THREADS=0 LAKE_JOBS=1 lake build +FabiusFunction.FabiusDiscreteLimitComplexShift
+LEAN_NUM_THREADS=0 LAKE_JOBS=1 lake build +FabiusFunction.FabiusComplexShiftSpline
+LEAN_NUM_THREADS=0 LAKE_JOBS=1 lake build +FabiusFunction.FabiusDiscreteLimitIntegration
+```
+
+Stop after the first nonzero exit and run no broader facade/root target.
