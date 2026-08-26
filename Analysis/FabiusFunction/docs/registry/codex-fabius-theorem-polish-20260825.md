@@ -1609,3 +1609,68 @@ next bounded step: commit and push this registry handoff to the feature branch,
   then stop source writes for independent review and an explicit build-token
   decision
 ```
+
+## EVO validation attempt: shared-cache read failure
+
+The coordinator accepted the frozen two-source handoff for validation and
+assigned this exact branch the sole EVO Lean/Lake token for one invocation of
+`+FabiusFunction.FabiusSharpAsymptotic`.  Clean merge
+`2a0487fc9b65e23a9b86666197d18d9bd296438d` incorporates fetched main
+`d33c4f44b3d08f14b15c1514d687a32898569475`.  Immediately before the build,
+the two reviewed source blobs remained byte-identical to the handoff:
+`61ae4480ff0e8548cc6b9a8b400e845860bae113` and
+`e6939d6e8ed76a71c635ef67118c73867ebe2800`; no other Lean or Lake process was
+running on EVO.
+
+The single authorized invocation exited `1`.  It did not expose a theorem or
+proof elaboration error and never reached the requested final module.  Two
+unrelated dependencies failed at their first source position because files in
+the shared Mathlib build cache could not be read:
+
+- `FabiusFunction.FabiusLogMainDefect` could not read
+  `Mathlib/GroupTheory/OrderOfElement.olean.private`;
+- `FabiusFunction.StepMeasureBridge` could not read
+  `Mathlib/Analysis/Normed/Module/Alternating/Basic.olean`.
+
+The invocation reached the final `3891`-job graph with last successful progress
+`[3889/3891]`, then reported exactly those two failed required targets and
+`error: build failed`.  It also replayed the inherited nonblocking
+`unnecessarySimpa` linter at `ProbabilityLaplaceMoments.lean:652`.  Per the
+board's failure instruction, no retry, second target, document process, cache
+repair, or other validation command was launched.  This record releases the
+EVO token and makes no compiler-validation claim for the six new declarations.
+
+```text
+SYNC Fabius
+branch / worktree / machine: codex/fabius-theorem-polish-20260825 /
+  C:/Users/vresh/.codex/worktrees/10ef/ProveIt / EVO (Windows)
+fetched main SHA: d33c4f44b3d08f14b15c1514d687a32898569475
+HEAD and dirty paths: 2a0487fc9b65e23a9b86666197d18d9bd296438d;
+  clean after the conflict-free main merge, then only this own registry is
+  dirty for the failed-build report
+writing (exact paths): this status reply writes only
+  docs/registry/codex-fabius-theorem-polish-20260825.md; both accepted Lean
+  sources remain frozen and byte-identical; no document path is active
+expected declarations or document claims: the same six implemented compact
+  Lambert-W declarations; no new declaration or document claim
+completed commits: b0600193b (exact two-source implementation), 20751d800
+  (immutable handoff), and 2a0487fc9 (conflict-free merge of current main)
+validated (exact command, SHA/state, exit code): at merged HEAD 2a0487fc9 with
+  exact source blobs 61ae4480f and e6939d6e8, the sole authorized command
+  `$env:LAKE_JOBS='1'; lake build
+  +FabiusFunction.FabiusSharpAsymptotic` exited 1 after two shared-Mathlib-cache
+  read failures; no source elaboration failure was reported
+not yet validated: FabiusFunction.FabiusSharpAsymptotic was not built, so none
+  of the six new declarations has compiler evidence on this merged tree; no
+  LaTeX/PDF process ran
+requested integration or lease: report the cache failure and release the EVO
+  token; await coordinator disposition before any cache repair, retry, source
+  edit, integration, or activation of the conditional primary-document lease
+conflicts / dependencies: merge was conflict-free and the accepted source
+  blobs remained exact.  Validation is blocked only by unreadable shared
+  Mathlib artifacts in two unrelated dependency modules.  Every canonical
+  document remains frozen
+next bounded step: commit and push this registry-only failure checkpoint to
+  the feature branch, notify the coordinator, and remain read-only pending a
+  fresh board instruction
+```
