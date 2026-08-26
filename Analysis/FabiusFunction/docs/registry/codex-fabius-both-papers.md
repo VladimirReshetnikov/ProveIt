@@ -2552,3 +2552,73 @@ different four-gate batch, so this handoff requests no overlapping token or
 process.  After compiled integration, a separately assigned documentation
 owner may retire the exact local-finiteness frontier obligation; all canonical
 documents remain frozen now.
+
+## Claim: consolidate endpoint positive-index compatibility proofs
+
+Fresh `origin/main` `4007afd4184ff8d798c7fe73ccb9a2b8b8ba6e60` has the
+exact prospective source blob
+
+```text
+EndpointLaplaceComparison.lean  e7170713a4c8fd4993009cba9cc0786cd7b72161
+```
+
+The exact prospective write set is:
+
+- `Lean/FabiusFunction/EndpointLaplaceComparison.lean`;
+- this branch's own registry.
+
+Current main contains four adjacent positive-index/all-index theorem pairs in
+which the stronger zero-inclusive `_all` declaration repeats the restricted
+proof independently.  This claim reorders each `_all` theorem before its
+positive-index compatibility name, keeps every `_all` proof byte-preserved,
+and replaces the four restricted bodies by direct calls to:
+
+```text
+abs_unitEndpointMoment_sub_unitLaplace_secondOrder_le_all
+abs_log_unitEndpointMoment_sub_log_unitLaplace_add_le_all
+abs_halfMoment_sub_fabiusLaplace_secondOrder_le_all
+abs_halfMoment_div_fabiusLaplace_sub_secondOrder_le_all
+```
+
+The four old positive-index names, doc comments, declaration kinds, binders,
+binder order, named `hn` argument, instance assumptions, and result types are
+preserved exactly.  Because the compatibility premise becomes intentionally
+unused, each wrapper receives the corpus-standard declaration-local
+
+```text
+set_option linter.unusedVariables false in
+```
+
+rather than renaming `hn` and breaking named-argument source compatibility or
+accepting new linter diagnostics.  This is scoped metadata, not a theorem
+attribute.
+
+The projected exact delta is 44 insertions and 92 deletions, net minus 48
+physical lines.  No declaration is added or removed; no import, namespace,
+attribute, simp rule, theorem statement, facade, aggregate, canonical
+document, TeX, or PDF changes.  The internal later calls to the restricted
+names remain unchanged.  Dependency order is acyclic: the raw `_all` theorem
+feeds the logarithmic and Fabius `_all` theorems, and the Fabius raw `_all`
+feeds the normalized `_all` theorem before each compatibility wrapper is
+declared.
+
+Every fetched modern tip retains the same prospective blob; none implements
+the reorder.  Exact-name caller, source-history, target-path, every-tip, and
+every-registry scans find no competing claim.  The prior effective-bounds
+endpoint tranche is accepted, built, and explicitly released by the
+coordinator's 03:49 checkpoint; its registry is provenance, not an active
+lease.  Current vertical-log, inverse, finite-support, and other source lanes
+are disjoint.
+
+No Lean, Lake, TeX, PDF, or cache-mutating process is authorized or has run for
+this claim.  After an immutable reviewed source checkpoint, the requested
+separate serialized gate is:
+
+```text
+LEAN_NUM_THREADS=0 LAKE_JOBS=1 lake build +FabiusFunction.EndpointLaplaceComparison
+```
+
+The two direct importers are `DyadicSharpConditional` and
+`LaplaceCumulantAsymptotics`; neither requires a mandatory gate because every
+public header remains exact.  The coordinator currently owns codexbox for an
+unrelated four-gate batch, so this claim requests no overlapping process.
