@@ -1,6 +1,7 @@
 import FabiusFunction.ThueMorseBlockAlgebra
 import FabiusFunction.ThueMorseExponential
 import Mathlib.RingTheory.PowerSeries.Basic
+import Mathlib.RingTheory.PowerSeries.Exp
 
 /-!
 # Complete moment formulas for the Thue–Morse signs
@@ -36,6 +37,16 @@ closed integer form, plus the reflection principle behind the third.
 The parity rule needs no exponential generating function and no `sinh`
 product: it is pure dyadic reflection combined with the complement sign
 `ε(2^m-1-n) = (-1)^m ε(n)`.
+
+The final section proves the **complete power-moment composition formula**
+`sum_thueMorseSign_mul_pow_add`: for every `d ≥ 0`,
+`∑_{n<2^m} ε(n)·n^(m+d) = (-1)^m (m+d)! · ∑_q ∏_{j<m} (2^j)^(q_j+1)/(q_j+1)!`,
+summed over compositions `q` of `d`.  The route is the substitution
+`z ↦ exp(t)` in the master product: each factor `1 - e^(2^j t)` is `-t`
+times an explicit entire series (`one_sub_exp_two_pow`), so the product
+acquires the factor `(-t)^m` whose cofactor's coefficients are read off by
+`PowerSeries.coeff_prod`.  This makes every power moment of the Thue–Morse
+signs an explicit finite rational sum.
 -/
 
 set_option autoImplicit false
@@ -196,5 +207,112 @@ theorem sum_thueMorseSign_mul_midpoint_pow_self (m : ℕ) :
   refine Finset.sum_congr rfl fun n _ => ?_
   rw [show (n : ℚ) - (2 : ℚ) ^ m + ((2 : ℚ) ^ m + 1) / 2 =
     (n : ℚ) - ((2 : ℚ) ^ m - 1) / 2 from by ring]
+
+/-! ### The complete power-moment composition formula -/
+
+/-- Uncentered power moments through the translated-sum interface:
+`thueMorseTranslatedPowerSum` at translation `2^k` is the raw signed power
+sum `∑_{n<2^k} ε(n)·n^m`. -/
+theorem thueMorseTranslatedPowerSum_two_pow (k m : ℕ) :
+    thueMorseTranslatedPowerSum ((2 : ℚ) ^ k) k m =
+      ∑ n ∈ range (2 ^ k), ((thueMorseSign n : ℤ) : ℚ) * (n : ℚ) ^ m := by
+  rw [thueMorseTranslatedPowerSum_eq_sum_range]
+  refine Finset.sum_congr rfl fun n _ => ?_
+  rw [show (n : ℚ) - (2 : ℚ) ^ k + (2 : ℚ) ^ k = (n : ℚ) from by ring]
+
+/-- Coefficients of powers of the exponential series:
+`[t^q] e^(Nt) = N^q / q!`. -/
+theorem coeff_exp_pow (N q : ℕ) :
+    PowerSeries.coeff q (PowerSeries.exp ℚ ^ N) =
+      (N : ℚ) ^ q / q.factorial := by
+  rw [PowerSeries.exp_pow_eq_rescale_exp, PowerSeries.coeff_rescale,
+    PowerSeries.coeff_exp]
+  simp [div_eq_mul_inv]
+
+/-- The factored exponential block: `1 - e^(2^j t)` is `-t` times the entire
+series `∑_q (2^j)^(q+1)/(q+1)! · t^q`. -/
+theorem one_sub_exp_two_pow (j : ℕ) :
+    (1 : PowerSeries ℚ) - PowerSeries.exp ℚ ^ 2 ^ j =
+      -(PowerSeries.X * PowerSeries.mk fun q =>
+          ((2 : ℚ) ^ j) ^ (q + 1) / (q + 1).factorial) := by
+  ext k
+  rcases k with _ | k
+  · simp
+  · rw [map_sub, map_neg, PowerSeries.coeff_succ_X_mul, PowerSeries.coeff_mk,
+      coeff_exp_pow, PowerSeries.coeff_one]
+    rw [if_neg (Nat.succ_ne_zero k)]
+    push_cast
+    ring
+
+/-- Substituting `z ↦ e^t` in the master product: the moment generating
+series acquires the explicit factor `(-t)^m`, with cofactor a product of
+entire series with factorial-decaying coefficients. -/
+theorem prod_one_sub_exp_two_pow (m : ℕ) :
+    ∏ j ∈ range m, ((1 : PowerSeries ℚ) - PowerSeries.exp ℚ ^ 2 ^ j) =
+      (-1) ^ m * PowerSeries.X ^ m *
+        ∏ j ∈ range m, PowerSeries.mk fun q =>
+          ((2 : ℚ) ^ j) ^ (q + 1) / (q + 1).factorial := by
+  calc ∏ j ∈ range m, ((1 : PowerSeries ℚ) - PowerSeries.exp ℚ ^ 2 ^ j)
+      = ∏ j ∈ range m, (-1 * PowerSeries.X * PowerSeries.mk fun q =>
+          ((2 : ℚ) ^ j) ^ (q + 1) / (q + 1).factorial) := by
+        refine Finset.prod_congr rfl fun j _ => ?_
+        rw [one_sub_exp_two_pow]
+        ring
+    _ = (∏ _j ∈ range m, (-1 * PowerSeries.X : PowerSeries ℚ)) *
+          ∏ j ∈ range m, PowerSeries.mk fun q =>
+            ((2 : ℚ) ^ j) ^ (q + 1) / (q + 1).factorial :=
+        Finset.prod_mul_distrib
+    _ = (-1) ^ m * PowerSeries.X ^ m *
+          ∏ j ∈ range m, PowerSeries.mk fun q =>
+            ((2 : ℚ) ^ j) ^ (q + 1) / (q + 1).factorial := by
+        rw [Finset.prod_const, Finset.card_range, mul_pow]
+
+/-- EGF dictionary: the `r`-th coefficient of the signed exponential sum is
+the `r`-th power moment divided by `r!`. -/
+theorem coeff_sum_thueMorseSign_exp_pow (m r : ℕ) :
+    PowerSeries.coeff r (∑ n ∈ range (2 ^ m),
+        ((thueMorseSign n : ℤ) : PowerSeries ℚ) * PowerSeries.exp ℚ ^ n) =
+      (∑ n ∈ range (2 ^ m), ((thueMorseSign n : ℤ) : ℚ) * (n : ℚ) ^ r) /
+        r.factorial := by
+  rw [map_sum, Finset.sum_div]
+  refine Finset.sum_congr rfl fun n _ => ?_
+  rw [← map_intCast (PowerSeries.C (R := ℚ)) (thueMorseSign n),
+    PowerSeries.coeff_C_mul, coeff_exp_pow, mul_div_assoc]
+
+/-- **Complete power-moment composition formula.**  For every `d ≥ 0`,
+`∑_{n<2^m} ε(n)·n^(m+d)
+  = (-1)^m · (m+d)! · ∑_q ∏_{j<m} (2^j)^(q_j+1)/(q_j+1)!`,
+summed over all finitely supported compositions `q` of `d` on `range m`.
+Together with Prouhet vanishing below `m` this determines every power
+moment of the Thue–Morse signs in closed form; the empty composition at
+`d = 0` recovers the sharp value `(-1)^m · 2^(C(m,2)) · m!`. -/
+theorem sum_thueMorseSign_mul_pow_add (m d : ℕ) :
+    ∑ n ∈ range (2 ^ m), ((thueMorseSign n : ℤ) : ℚ) * (n : ℚ) ^ (m + d) =
+      (-1) ^ m * (m + d).factorial *
+        ∑ q ∈ Finset.finsuppAntidiag (range m) d,
+          ∏ j ∈ range m,
+            ((2 : ℚ) ^ j) ^ (q j + 1) / (q j + 1).factorial := by
+  have h := congrArg (fun φ => PowerSeries.coeff (m + d) φ)
+    (prod_one_sub_pow_eq_sum_thueMorseSign (PowerSeries.exp ℚ) m)
+  simp only [coeff_sum_thueMorseSign_exp_pow] at h
+  rw [prod_one_sub_exp_two_pow, mul_assoc] at h
+  have hC : ((-1 : PowerSeries ℚ)) ^ m =
+      PowerSeries.C (R := ℚ) ((-1 : ℚ) ^ m) := by
+    rw [map_pow, map_neg, map_one]
+  rw [hC, PowerSeries.coeff_C_mul, PowerSeries.coeff_X_pow_mul',
+    if_pos (Nat.le_add_right m d), Nat.add_sub_cancel_left,
+    PowerSeries.coeff_prod] at h
+  have hcoeff : ∀ q ∈ Finset.finsuppAntidiag (range m) d,
+      (∏ j ∈ range m, PowerSeries.coeff (q j) (PowerSeries.mk fun k =>
+        ((2 : ℚ) ^ j) ^ (k + 1) / (k + 1).factorial)) =
+      ∏ j ∈ range m,
+        ((2 : ℚ) ^ j) ^ (q j + 1) / (q j + 1).factorial :=
+    fun q _ => Finset.prod_congr rfl fun j _ => PowerSeries.coeff_mk _ _
+  rw [Finset.sum_congr rfl hcoeff] at h
+  have hfac : ((m + d).factorial : ℚ) ≠ 0 :=
+    Nat.cast_ne_zero.mpr (Nat.factorial_ne_zero _)
+  rw [eq_div_iff hfac] at h
+  rw [← h]
+  ring
 
 end Fabius
