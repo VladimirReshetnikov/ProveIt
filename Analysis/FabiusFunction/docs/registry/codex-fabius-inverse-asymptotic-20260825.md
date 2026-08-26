@@ -52,7 +52,7 @@ expected declarations or document claims:
     T = L/2 * lambda^2 - B * lambda + O(log lambda), with L > 0 and
     lambda -> +infinity, implies
     lambda = sqrt(2*T/L) + B/L + O(log T/sqrt T); its proof will first derive
-    the sharper intrinsic O(log lambda/lambda) estimate by completing the
+    the intrinsic O(log lambda/lambda) estimate by completing the
     square and rationalizing, then transport the error scale through
     T ~ (L/2) * lambda^2;
   fabiusInverseQuadraticPhaseMain, the exact square-root-plus-affine phase
@@ -132,3 +132,45 @@ The related scale-hierarchy corollary in the frontier is a natural follow-on,
 but it is not silently folded into this initial declaration claim.  Any public
 scale-hierarchy expansion will receive its own registry amendment after the
 core inverse endpoint API is implemented and stable.
+
+## Generic inversion source checkpoint
+
+The registry-first claim was committed and pushed as `bdbc63461`.  The first
+source milestone is now committed and pushed as `9b7affe68`: the new module
+`Lean/FabiusFunction/QuadraticAsymptoticInversion.lean` defines exactly the
+advertised public theorem `quadratic_asymptotic_inversion`.  Its immutable Git
+blob is `c03608742d1f4c023ffc46ee13e3298395b21320`, and the source SHA-256 is
+`A3B54BEC9CDA5D190F664B8924FC55FCE5198E084EF55B2C3166110A8735AF94`.
+
+The generic theorem retains the full documented
+`O (log T / sqrt T)` conclusion.  Its proof first isolates the leading
+equivalence `T ~ (L / 2) * lambda^2`, proves that the observable rate is
+Theta-equivalent to the intrinsic `log lambda / lambda` rate, completes the
+square, and rationalizes the positive root.  The sign of the affine correction
+is `+ B / L`, and the theorem remains filter-polymorphic without an unnecessary
+`NeBot` assumption.
+
+Three independent read-only source reviews have completed:
+
+- a hostile mathematical audit rederived the numerator identity, affine sign,
+  denominator asymptotic, positivity obligations, and final rate orientation;
+- an API/style/collision audit found no duplicate declaration, path collision,
+  import blocker, or reason to expose the private structural helpers; and
+- a Mathlib elaboration preflight found three congruence-shape hazards in an
+  earlier snapshot.  All three were repaired before commit, and the final
+  snapshot received a clean static verdict.
+
+This remains source-review evidence, not compiler evidence.  No Lean, Lake,
+TeX, PDF, or cache-mutating process has run in this worktree, because this
+branch has no host build or document token.  The tracked tree was clean when
+the branch merged current coordinator checkpoint `fc63c3978`; the detailed,
+conflict-free merge commit `b7edc7ce2` is pushed.  Existing untracked
+reciprocity sidecars and the `tmp/` render tree remain untouched.
+
+The next bounded source step is the already claimed
+`Lean/FabiusFunction/FabiusInverseAsymptotic.lean`: specialize the generic
+engine to the exact Fabius lower-Lambert phase, derive the logarithmic inverse
+formula and explicit left equivalent, and transport it to the right endpoint
+by exact inverse reflection.  After that source and the claimed paper-facade
+import are frozen and independently reviewed, request serial builds of the
+generic, endpoint, and facade modules in that dependency order.
