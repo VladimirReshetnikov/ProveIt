@@ -930,3 +930,64 @@ conflicts / dependencies: main's only b0b896e39..99b67cf5b delta is the
 next bounded step: push this addendum to the feature branch without force,
   then remain read-only pending an explicit board assignment
 ```
+
+## Ordinary claim: all-order reflection of tilted moments
+
+Claim prepared at `2026-08-25T20:15:34-07:00` after a fresh full read of
+`AGENTS.md` and the coordinator board from `origin/main` `99b67cf5b`, followed
+by the conflict-free merge `44d0ac8827fd086d5512063354d8211880467cca`.
+The target source is byte-identical to current main at Git blob
+`916b0bb137fccea319245d68e197eaba92349904`; no Lean source has yet been
+edited.  This claim converts the previously read-only proof survey into one
+exact ordinary path while leaving all canonical document paths serialized.
+
+```text
+SYNC Fabius
+branch / worktree / machine: codex/fabius-theorem-polish-20260825 /
+  C:/Users/vresh/.codex/worktrees/10ef/ProveIt / EVO (Windows)
+fetched main SHA: 99b67cf5b5b8084d097205d1f701d13285ecd3b7
+HEAD and dirty paths: 44d0ac8827fd086d5512063354d8211880467cca;
+  clean after a conflict-free merge of current main, then only this registry
+  is dirty for the exact-path claim
+writing (exact paths): this registry initially; after this claim is pushed and
+  the required live-tip collision audit remains green, only
+  Lean/FabiusFunction/ProbabilityLaplaceMoments.lean and this registry
+expected declarations or document claims:
+  integral_unit_eq_integral_one_sub_of_reflection, extracting reflection of
+    arbitrary continuous observables against the unit-interval restriction
+    without a global support or finiteness hypothesis;
+  unitLaplaceMoment_reflection, proving for every k and real tilt s the signed
+    binomial transform of the complete unit Laplace-moment hierarchy under
+    reflection, using only finite-on-compacts for termwise integrability;
+  fabiusLaplaceMoment_reflection, transporting that transform to the Fabius
+    probability law;
+  preserve every existing unit/fabius zero-reflection and centered-even public
+    signature, optionally shortening only the Fabius zero proof to the k = 0
+    compatibility specialization if elaboration confirms it;
+  strengthen the module overview and declaration doc comments, but make no
+    canonical TeX/PDF or other human-document edit under this source claim
+completed commits: 44d0ac882 (conflict-free merge of origin/main 99b67cf5b);
+  no source checkpoint exists yet
+validated (exact command, SHA/state, exit code): read-only mathematical and
+  Mathlib-source preflight only; the k = 0, 1, and 2 cases independently
+  confirm the prefactor, signs, binomial indices, and opposite tilt; target
+  source blob equals current main; this is not compiler evidence
+not yet validated: all three proposed declarations and any proof refactor;
+  no Lean, Lake, LaTeX, PDF, Python audit, or cache-mutating command has run,
+  because the EVO token remains idle and coordinator-reserved
+requested integration or lease: advertise the single ordinary source path and
+  three exact declarations above; request no serialized document path and no
+  immediate build token; after an independently reviewed source checkpoint,
+  request one serialized EVO build of
+  +FabiusFunction.ProbabilityLaplaceMoments
+conflicts / dependencies: an earlier all-tip audit at main f556a126e found no
+  exact or semantic duplicate and no branch-unique target edit; a new audit at
+  current main and every newly advertised tip is running and must remain green
+  before the source edit begins.  Canonical exposition, walkthrough, frontier,
+  PAPER_COVERAGE, AUDIT_FINDINGS, README, AGENTS, coordinator files, PDFs, and
+  the root aggregate remain excluded
+next bounded step: commit and push this registry-only claim; fetch and reread
+  the board; finish the current-main/all-tip collision and hostile proof
+  audits; only then edit the one claimed source file, checkpointing it
+  explicitly as not compiled
+```
