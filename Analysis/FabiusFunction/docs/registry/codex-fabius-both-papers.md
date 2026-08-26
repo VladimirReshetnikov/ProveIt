@@ -7,18 +7,20 @@ This file implements the per-branch registry fallback in
 SYNC Fabius
 branch / worktree / machine: codex/fabius-both-papers /
   /home/codex/src/Proofs / codexbox
-fetched main SHA: 741db6b4b777abc3fb4ca9ba6a6f0f098399c1bb
-HEAD and dirty paths: a72ca3c9290e59b4bf4b3e9c29082d92041cd218;
-  dirty only in this own-registry handoff
+fetched main SHA: fc63c39788ab4c31694e4f57efe05b543165675a
+HEAD and dirty paths: d7c2f7bb20c8e8ed8a0b75e34f18cfacdde302ab;
+  dirty only in this own-registry claim
 writing (exact paths):
+  Analysis/FabiusFunction/Lean/FabiusFunction/DyadicClosedForm.lean;
+  Analysis/FabiusFunction/Lean/FabiusFunction/ThueMorseBinomialLog.lean;
   Analysis/FabiusFunction/docs/registry/codex-fabius-both-papers.md
 expected declarations or document claims:
-  delete the unused private `[simp]` theorem `schwartzMap_apply` from
-  `OriginalUniqueness.lean` and the unused private lemmas
-  `legendre_weight_at_neg_one` / `legendre_weight_at_one` from
-  `LegendreSeriesConvergence.lean`; change no surviving declaration, import,
-  proof, attribute, or public API; both source claims are released by this
-  handoff
+  `thueMorseSign_xor`, proving that the signed Thue--Morse sequence is a
+  multiplicative character of bitwise xor;
+  `thueMorseBit_xor`, proving that the zero-one Thue--Morse sequence carries
+  bitwise xor to bitwise xor; add only the exact upstream Mathlib bitwise import
+  and the direct downstream `DyadicClosedForm` import, preserve every existing
+  declaration/import/attribute otherwise, and add no simp attributes
 completed commits: Lower-Lambert source checkpoint `1da2fde2285e3970267b7dc2561bcd0d897be1b4`
   was integrated by coordinator merge `046946a974467e83244fd3a183a3e084e70d3379`;
   registry handoff `225f5338de9ea92489ed6a2c0c371c6edb4f5db9`
@@ -158,7 +160,10 @@ completed commits: Lower-Lambert source checkpoint `1da2fde2285e3970267b7dc2561b
   exact private-deletion claim
   `4f555dbc9ca23d232602ced1670c2d17890c3d67` precedes unvalidated source
   checkpoint `a72ca3c9290e59b4bf4b3e9c29082d92041cd218`, whose complete source delta is
-  ten deletions and zero additions;
+  ten deletions and zero additions; registry handoff
+  `ebfcc34d019bc200b3f2f3e17e1f36c0946f599b` freezes that source and releases
+  both paths; clean merge `d7c2f7bb20c8e8ed8a0b75e34f18cfacdde302ab`
+  incorporates validated main `fc63c39788ab4c31694e4f57efe05b543165675a`;
 validated (exact command, SHA/state, exit code): coordinator board records
   serialized immutable `lake build +FabiusFunction.LowerLambertW` at
   `4c6bbac41`, exit 0, with its source blob unchanged on current main;
@@ -220,7 +225,11 @@ validated (exact command, SHA/state, exit code): coordinator board records
   linter; three independent read-only reviews of `48024a1d4` accept both
   general Kummer statements, the private factorial-valuation balance, all zero
   cases, natural-subtraction handling, parity algebra, imports, collision scan,
-  and diff hygiene; two independent live-diff reviews of `a72ca3c92` verify
+  and diff hygiene; coordinator integration
+  `598ad5850dc8f67c1f25257d645e873fbc0624b9` records that exact source, and
+  serialized builds of `+FabiusFunction.TwoAdic` (2017 jobs) and
+  `+FabiusFunction.Paper06487` (3244 jobs) both exit 0 without warnings; two
+  independent live-diff reviews of `a72ca3c92` verify
   that the removed private names have no callers, the former `[simp]` theorem
   affects no later simplification, both surviving `schwartzMap` uses reduce
   definitionally, the endpoint identities are reproved directly at their use
@@ -228,8 +237,6 @@ validated (exact command, SHA/state, exit code): coordinator board records
   clean
 not yet validated: the private-deletion source checkpoint
   `a72ca3c9290e59b4bf4b3e9c29082d92041cd218` has not been elaborated or built;
-  the general Kummer/carry-cocycle source checkpoint
-  `48024a1d4ee468e4d76f3e7d93b98f1c342c5b37` has not been elaborated or built;
   the historical validation-state paragraphs below are
   superseded by the coordinator board and retained only as provenance: the
   moved dyadic theorem body was already compiled in its
@@ -327,21 +334,16 @@ historical integration requests, all superseded by the current coordinator
   handoff;
   serialized README/primary/walkthrough/coverage paths are deliberately not
   claimed yet
-requested integration or lease: integrate exact general Kummer/carry-cocycle
-  source checkpoint `48024a1d4ee468e4d76f3e7d93b98f1c342c5b37` and run
-  serialized `LAKE_JOBS=1 lake build +FabiusFunction.TwoAdic`, followed by
-  `LAKE_JOBS=1 lake build +FabiusFunction.Paper06487`; also integrate exact
-  private-deletion checkpoint `a72ca3c9290e59b4bf4b3e9c29082d92041cd218`
-  and run separate serialized
+requested integration or lease: integrate exact private-deletion checkpoint
+  `a72ca3c9290e59b4bf4b3e9c29082d92041cd218` and run separate serialized
   `LAKE_JOBS=1 lake build +FabiusFunction.OriginalUniqueness` and
   `LAKE_JOBS=1 lake build +FabiusFunction.LegendreSeriesConvergence` gates;
-  all three Lean source claims are released by this handoff; canonical README,
+  both source claims are released by that handoff; canonical README,
   AUDIT_FINDINGS, PAPER_COVERAGE, primary, walkthrough, frontier, and
   user-supplied draft paths remain frozen and unclaimed
-conflicts / dependencies: fresh current-main, all-tip, and registry scans find
-  no exact or semantic general-addition Kummer/sign implementation or competing
-  `TwoAdic.lean` claim; the prior central-binomial source is integrated,
-  validated, and released; the normalized-moment positivity candidate was
+conflicts / dependencies: the central-binomial and general-addition Kummer
+  sources are integrated, validated, and released; the normalized-moment
+  positivity candidate was
   rejected because `origin/codex/fabius-effective-bounds-20260825` already
   claimed and implemented it; all advertised Fabius heads and their registries
   were checked; no branch claims GlobalExtension and the only overlap is the
@@ -403,10 +405,15 @@ conflicts / dependencies: fresh current-main, all-tip, and registry scans find
   are `b29edf55ab6a2dc6c8abc56048f55324f1a6dc73` for
   `OriginalUniqueness.lean` and
   `2c02832f07dd67ac0a29cb4ab7d17b023a815eb7` for
-  `LegendreSeriesConvergence.lean`
-next bounded step: coordinator integration and serialized validation of the
-  general Kummer and private-deletion checkpoints; continue read-only scouting
-  for the next disjoint ordinary source tranche
+  `LegendreSeriesConvergence.lean`; fresh exact-name, semantic-shape, path, and
+  registry scans at main `fc63c3978` and every advertised tip find no existing
+  Thue--Morse xor theorem or competing claim; the previous signed-reflection
+  and historical binomial-log leases are integrated, validated, and released;
+  the newly advertised inverse-asymptotic branch is disjoint
+next bounded step: push this exact Walsh-character claim, then implement and
+  independently review the two declarations without running Lean/Lake;
+  coordinator integration and serialized validation of the private-deletion
+  checkpoint remain separately requested
 ```
 
 ## General Kummer carry-cocycle handoff
