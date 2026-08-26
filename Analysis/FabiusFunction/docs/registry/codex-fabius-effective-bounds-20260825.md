@@ -784,3 +784,73 @@ next bounded step: commit and push this exact immutable report and merge;
   the already identified disjoint LaplaceMomentBounds strict-monotonicity
   follow-on without editing or claiming it until this handoff is preserved
 ```
+
+## Ordinary follow-on claim: strict Laplace-moment order structure
+
+The newly integrated all-degree/all-tilt positivity theorem turns the exact
+derivative identity
+
+```text
+M_k'(s) = -M_(k+1)(s)
+```
+
+into a global strict order theorem: every raw Fabius Laplace moment is
+strictly decreasing on the whole real line.  The same positivity also shows
+that every normalized moment `R_k(s) = M_k(s) / M_0(s)` is strictly positive,
+strengthening the existing nonnegativity interfaces without narrowing their
+domains.
+
+```text
+SYNC Fabius
+branch / worktree / machine: codex/fabius-effective-bounds-20260825 /
+  /home/codex/.codex/worktrees/d6d3/Proofs / codexbox
+fetched main SHA: 5b053a32b10e758e39f1be23cb2e8d821fba8de6
+HEAD and dirty paths: e25f61fda87b529faca9c326ba389316f6d8fa8d;
+  clean and pushed after merging current main; only this registry is dirty
+  for the registry-first claim
+writing (exact paths): this registry initially; after this claim is pushed and
+  a repeated board/registry/all-tip scan remains green, only
+  Lean/FabiusFunction/LaplaceMomentBounds.lean and this registry
+expected declarations or document claims:
+  fabiusLaplaceMoment_strictAnti, proving
+    StrictAnti (fabiusLaplaceMoment F k) for every natural degree;
+  normalizedLaplaceMoment_pos_all, proving
+    0 < normalizedLaplaceMoment F k s for every natural degree and real tilt;
+  shorten the bodies of normalizedLaplaceMoment_nonneg_all and
+    normalizedLaplaceMoment_nonneg through the strict theorem while preserving
+    both exact public headers;
+  expand the module overview and declaration comments with the derivative,
+    strict-order, and strict-positivity formulas; no canonical document,
+    facade, root, import, or other source path is claimed
+completed commits: the preceding all-order Lambert source is frozen at
+  8f47687e5 / blob 08e5a2d94757 and requested for coordinator validation;
+  merge e25f61fda incorporates current main 5b053a32b while preserving that
+  blob exactly; this is the registry-first claim for a disjoint sixth source
+  unit
+validated (exact command, SHA/state, exit code): current HEAD and origin/main
+  share LaplaceMomentBounds.lean blob
+  9b6398320300ff28e21f5deaf59f4b5d6354d468, content SHA-256
+  04CB8BCA5E9169A2798A68E19B8D2E548244C71C2539DC3EE30CDEC8693D0F89;
+  exact-name, plausible-semantic-name, exact-path, every-registry, and all-
+  fetched-Fabius-tip scans found no implementation or competing lease;
+  read-only inspection confirms that the existing ExponentialBounds import
+  publicly exposes strictAnti_of_hasDerivAt_neg through Log.Deriv/MeanValue;
+  three independent mathematical/API/documentation audits recommend the
+  bounded two-name tranche; this is not compiler evidence
+not yet validated: neither proposed declaration exists yet; no Lean, Lake,
+  TeX, PDF, or cache-mutating process is authorized or running for this branch
+requested integration or lease: advertise this ordinary one-source/two-name
+  claim; after an immutable independently reviewed checkpoint, request a
+  serialized build of +FabiusFunction.LaplaceMomentBounds and then its direct
+  importer +FabiusFunction.NegativeLaplaceDerivativeBounds; request no
+  document or main-write lease
+conflicts / dependencies: the previous theorem-polish lease on this file is
+  explicitly released; current theorem-polish ownership is only the primary
+  TeX/PDF pair; the moving shifted-prefix tip, compact Lambert correction,
+  central valuation source, pending all-order Lambert source, and all active
+  document paths are disjoint; only the coordinator may advance main
+next bounded step: commit and push this registry-only claim without force;
+  fetch and reread any changed board, repeat all-tip collision checks, then
+  edit only the claimed Lean source while subagents independently inspect the
+  live proof, documentation parity, and possible regressions
+```
