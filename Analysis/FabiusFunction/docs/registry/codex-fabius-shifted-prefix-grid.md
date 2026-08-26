@@ -2,11 +2,11 @@
 
 **Status: every earlier shifted-prefix, finite-jet, finite-Appell, and
 all-order approximation source unit is integrated, compiled, and released.
-The ordinary three-file source claim below is implemented and frozen at
-`d887c8101`: it proves a full signed reflection theorem for every value before
-a dyadic prefix-row zero run.  Static and computational review is green, but
-the checkpoint is not compiler-validated; no Lean/Lake or documentation token
-is held.**
+The ordinary three-file signed-reflection source claim is implemented at
+`d887c8101`, integrated by the coordinator as `f66ef224b`, and compiler-green
+in both requested focused targets.  All source leases are released.  The exact
+five-path human-readable counterpart request below now awaits an explicit
+documentation-owner and TeX/PDF-lane assignment.**
 The exact claim was published before source work, coordinator checkpoint
 `893d4c25d` explicitly acknowledged it as the first nonoverlapping claim for
 the module, and source commit `00ff41a5e` now implements precisely that bounded
@@ -838,3 +838,92 @@ All three source paths are frozen pending that assignment and validation.
 The future coverage/primary/walkthrough request remains only a request: no
 serialized document or PDF path has been edited, and no document or TeX/PDF
 lane is claimed.
+
+## Compiler acceptance and core documentation request
+
+Coordinator integration `f66ef224be7e3a02080bd0517ac5694ffb026f73`, tree
+`f2b94b090f5071e46c44ac103285ba3b12903cc4`, applies exactly source commit
+`d887c8101` to main.  The three integrated Git blobs are identical to the
+frozen identities recorded above.  The coordinator then ran two separate
+serialized builds at that immutable integration tree:
+
+```text
+LAKE_JOBS=1 lake build +FabiusFunction.ThueMorsePrefix
+  2019 jobs, exit 0, no warnings
+LAKE_JOBS=1 lake build +FabiusFunction.FabiusRawQBinomialFormula
+  3319 jobs, exit 0, no warnings
+```
+
+This exact compiler evidence closes the source validation request.  All three
+source leases and the coordinator build token are released.  Conflict-free
+merge `8d9105958e8cbfda6b800a5aa6923737bb9b2ff6`, tree
+`b6c3bda3a184a87ad896157df91e2cf17389a286`, brings validated main
+`df3e05c48bd7a4678c6118ba2e26b7d1ec2a6bf2` back into this branch with the
+same three source blobs and no unmerged path.
+
+The full reciprocity and zero-locus theorem are absent from the primary
+exposition, Lean walkthrough, coverage map, and research-frontier source.  The
+primary exposition currently states only the terminal zero run, its single
+left-boundary value, and the separate right-boundary value; the walkthrough
+mentions only unspecified long zero runs and omits `ThueMorsePrefix.lean` from
+its annotated module guide.  A read-only exact documentation audit therefore
+recommends the bounded core request below.  The frontier is intentionally
+excluded: its current claims remain accurate, and a 188-page artifact rebuild
+is unnecessary for this core formalization-backed addition.
+
+```text
+SYNC Fabius
+branch / worktree / machine: codex/fabius-shifted-prefix-grid / c9a3 / EVO
+  (Windows)
+fetched and merged main SHA: df3e05c48bd7a4678c6118ba2e26b7d1ec2a6bf2
+request-base HEAD and dirty paths:
+  8d9105958e8cbfda6b800a5aa6923737bb9b2ff6;
+  docs/registry/codex-fabius-shifted-prefix-grid.md only, publishing this
+  serialized documentation request before touching any requested path
+requested writing (exact paths; frozen until explicit board assignment):
+  docs/PAPER_COVERAGE.md;
+  docs/Fabius_Function_and_Rvachev_Up/Fabius_Function_and_Rvachev_Up.tex;
+  docs/Fabius_Function_and_Rvachev_Up/Fabius_Function_and_Rvachev_Up.pdf;
+  docs/fabius_lean_walkthrough/fabius_lean_walkthrough.tex;
+  docs/fabius_lean_walkthrough/fabius_lean_walkthrough.pdf;
+  docs/registry/codex-fabius-shifted-prefix-grid.md
+expected document claims:
+  in the primary exposition, insert a signed dyadic reciprocity theorem before
+  the existing exact-zero-run theorem, retaining the literal formal hypotheses
+  k <= r and k + d < 2^r and the formula
+    sigma_k(2^r-k-1-d) = (-1)^(r-k) sigma_k(d);
+  state the exact reflected zero iff, map both conclusions to
+  iteratedPrefix_dyadic_reverse_window and
+  iteratedPrefix_dyadic_reverse_window_eq_zero_iff in
+  ThueMorsePrefix.lean, and map the k=0 base to
+  thueMorseSign_dyadic_complement in DyadicClosedForm.lean;
+  identify the existing left-boundary formula as the d=0 specialization using
+  iteratedPrefix_at_zero, without suggesting that reciprocity proves the
+  separate terminal zero run or right-boundary theorem;
+  in the Lean walkthrough, state the same exact formula and zero criterion,
+  cite the three Lean names above, and add the currently missing
+  ThueMorsePrefix.lean row to the annotated module guide;
+  in PAPER_COVERAGE.md, replace the incomplete three-name zero-run mapping by
+  one row distinguishing signed pre-run reciprocity from the separate terminal
+  zero-run and right-boundary results and listing their exact declarations;
+  change no mathematical claim outside this theorem family and add no
+  unformalized polynomial-palindromicity assertion to the primary exposition
+validated prerequisite:
+  coordinator integration f66ef224b; separate focused builds 2019/3319 jobs,
+  both exit 0 without warnings; exact source blobs recorded above
+requested integration or lease:
+  assign this branch sole documentation ownership for exactly the five
+  serialized coverage/primary/walkthrough paths above and its own registry;
+  assign one sequential TeX/PDF lane on the coordinator-selected host for the
+  two matching PDF rebuilds, with no concurrent TeX process
+conflicts / dependencies:
+  no frontier, README, AGENTS, collaboration, audit, aggregate, Lean source,
+  peer registry, or other path requested; every requested document path remains
+  untouched until the board explicitly grants this exact scope
+next bounded step:
+  push this registry-only request and stop all document writes; after an exact
+  board assignment, merge its checkpoint, edit only the granted source pairs,
+  run sequential three-pass PDF builds, inspect the rendered changes, and
+  commit matching TeX/PDF artifacts together
+git owner / document owner / build owner: root / unassigned / none
+```
