@@ -3,6 +3,7 @@ import FabiusFunction.ThueMorseBooleanCube
 import FabiusFunction.ThueMorseGenerating
 import Mathlib.Algebra.Ring.GeomSum
 import Mathlib.Algebra.Polynomial.Reverse
+import Mathlib.RingTheory.Polynomial.Cyclotomic.Basic
 
 /-!
 # Algebra of the Thue–Morse block polynomial
@@ -28,6 +29,11 @@ statement in the formula atlas.  This module proves its basic algebra:
   coefficient word multiplies `P_m` by `(-1)^m`, the polynomial form of the
   complement symmetry `ε(2^m-1-n) = (-1)^m ε(n)`; and its evaluation form
   `sum_thueMorseSign_mul_pow_reflect` over any commutative ring.
+* `thueMorseBlockPolynomial_eq_cyclotomic_prod` — the **cyclotomic
+  multiplicity table** `P_m = (-1)^m · ∏_{q<m} Φ_{2^q}^(m-q)` over `ℤ`: a
+  primitive `2^q`-th root of unity is a zero of `P_m` of multiplicity
+  `m - q`, which simultaneously explains Prouhet cancellation at `z = 1`
+  and the systematic zeros of the dyadic discrete Fourier transform.
 * the **binomial-basis moments**: substituting `z ↦ 1 + X` in the master
   product turns each factor into `-X` times a geometric sum
   (`sum_thueMorseSign_mul_one_add_X_pow`), so the signed binomial sums
@@ -296,5 +302,46 @@ theorem sum_thueMorseSign_mul_choose_self_int (m : ℕ) :
     ∑ n ∈ range (2 ^ m), thueMorseSign n * (n.choose m : ℤ) =
       (-1) ^ m * 2 ^ m.choose 2 := by
   simpa using sum_thueMorseSign_mul_choose_self (R := ℤ) m
+
+/-! ### Cyclotomic factorization -/
+
+/-- The `2^(q+1)`-st cyclotomic polynomial is `1 + X^(2^q)`. -/
+theorem cyclotomic_two_pow_succ (R : Type*) [CommRing R] (q : ℕ) :
+    Polynomial.cyclotomic (2 ^ (q + 1)) R = 1 + Polynomial.X ^ 2 ^ q := by
+  rw [Polynomial.cyclotomic_prime_pow_eq_geom_sum Nat.prime_two]
+  simp [Finset.sum_range_succ]
+
+/-- **Cyclotomic multiplicity table.**  Over `ℤ`,
+`P_m = (-1)^m · ∏_{q<m} Φ_{2^q}^(m-q)`: the block polynomial is, up to sign,
+a product of `2`-power cyclotomic polynomials, a primitive `2^q`-th root of
+unity being a zero of multiplicity exactly `m - q` for `0 ≤ q < m`. -/
+theorem thueMorseBlockPolynomial_eq_cyclotomic_prod (m : ℕ) :
+    thueMorseBlockPolynomial m =
+      (-1) ^ m *
+        ∏ q ∈ range m, Polynomial.cyclotomic (2 ^ q) ℤ ^ (m - q) := by
+  cases m with
+  | zero => norm_num [thueMorseBlockPolynomial, thueMorseSign, binaryWeight]
+  | succ k =>
+      have hL : thueMorseBlockPolynomial (k + 1) =
+          (1 - Polynomial.X) ^ (k + 1) *
+            ∏ i ∈ range k,
+              ((1 : Polynomial ℤ) + Polynomial.X ^ 2 ^ i) ^ (k - i) := by
+        rw [thueMorseBlockPolynomial_eq_ladder, Finset.prod_range_succ]
+        simp only [Nat.add_sub_cancel]
+        rw [Nat.sub_self, pow_zero, mul_one]
+      have hR : ∏ q ∈ range (k + 1),
+            Polynomial.cyclotomic (2 ^ q) ℤ ^ (k + 1 - q) =
+          (Polynomial.X - 1) ^ (k + 1) *
+            ∏ i ∈ range k,
+              ((1 : Polynomial ℤ) + Polynomial.X ^ 2 ^ i) ^ (k - i) := by
+        rw [Finset.prod_range_succ']
+        simp only [pow_zero, Polynomial.cyclotomic_one, Nat.sub_zero,
+          Nat.add_sub_add_right]
+        rw [mul_comm]
+        congr 1
+        refine Finset.prod_congr rfl fun i _ => ?_
+        rw [cyclotomic_two_pow_succ]
+      rw [hL, hR, ← neg_sub Polynomial.X 1, neg_pow]
+      ring
 
 end Fabius
