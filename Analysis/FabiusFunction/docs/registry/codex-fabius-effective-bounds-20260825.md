@@ -1009,3 +1009,86 @@ next bounded step: commit and push this registry-only claim without force;
   edit only the claimed Lean source while three agents independently review
   proof extraction, exact header preservation, and source-level documentation
 ```
+
+## Source checkpoint: all-real cumulant-chain derivatives
+
+Exact source commit `d07e8ad3b` implements the complete three-name claim in
+the sole leased module.  The committed `NegativeLaplaceDerivatives.lean` is Git
+blob `80f3e80c1e9777405499a50da808bef5c71fa372`, with content SHA-256
+`47A566FBBC19DCD7713F9BBF17ADE9BB349FE0D9AB6BAB21730A90A9EF8734CC`.
+
+The new declarations are exactly:
+
+- `negativeLaplaceLogFirst_hasDerivAt_all`;
+- `negativeLaplaceLogSecond_hasDerivAt_all`;
+- `negativeLaplaceLogThird_hasDerivAt_all`.
+
+They prove the global differential chain among the first four normalized
+cumulant polynomials by substituting
+`normalizedLaplaceMoment_hasDerivAt_all` into the already established
+polynomial proofs.  The first theorem negates the `R_1` recurrence, the second
+differentiates `R_2 - R_1^2`, and the third differentiates
+`-R_3 + 3 R_1 R_2 - 2 R_1^3`.  Its normalized result is exactly
+`R_4 - 4 R_1 R_3 - 3 R_2^2 + 12 R_1^2 R_2 - 6 R_1^4`.
+
+All three previous positive-scale declarations preserve their textual public
+headers and theorem kinds.  Their bodies are now thin calls to the global
+results, with tightly scoped unused-variable linter suppressions explaining
+why each compatibility hypothesis remains.  The import is byte-unchanged.
+Module and declaration prose explicitly separates the global cumulant
+polynomial identities from the still-positive-scale identification with
+successive derivatives of `negativeLaplaceLog`.
+
+Two independent hostile reviews accept the live result.  Both checked the
+first and second `congr_deriv` algebra, the third theorem's explicit derivative
+normalization and `congr_of_eventuallyEq` orientation, every real-tilt edge
+case, exact old headers and implicit binders, linter scopes, import sufficiency,
+downstream call compatibility, naming, and documentation.  No source-level
+blocker remains.
+
+```text
+SYNC Fabius
+branch / worktree / machine: codex/fabius-effective-bounds-20260825 /
+  /home/codex/.codex/worktrees/d6d3/Proofs / codexbox
+fetched main SHA: 5b053a32b10e758e39f1be23cb2e8d821fba8de6
+HEAD and dirty paths: d07e8ad3b2b53a4a1b4903b5e3f088bc95c6cb2d;
+  source checkpoint is clean and pushed; only this registry is dirty for the
+  immutable handoff
+writing (exact paths): completed source checkpoint writes only
+  Lean/FabiusFunction/NegativeLaplaceDerivatives.lean; this report writes only
+  this branch registry; that Lean source is now frozen
+expected declarations or document claims: all three advertised `_all`
+  declarations are implemented; the three exact old positive-scale headers
+  remain as compatibility wrappers; source-level documentation states each
+  new Lean theorem and makes no global logarithmic-product claim; no canonical
+  document, facade, root, import, or other source claim
+completed commits: 7bba02fea (registry-first claim) and d07e8ad3b (one-file
+  source/proof/documentation checkpoint); preceding all-order Lambert source
+  8f47687e5 and strict Laplace-order source caf654097 remain separately frozen
+  and unmodified
+validated (exact command, SHA/state, exit code): git diff --check exited 0;
+  forbidden-placeholder scan is clean; the added-public-declaration scan
+  finds exactly the three advertised names; textual comparison confirms all
+  three old headers and the import are unchanged; two independent exact
+  static reviews pass after checking the delicate third-order proof; this is
+  not compiler evidence
+not yet validated: source commit d07e8ad3b has not been elaborated; no Lean,
+  Lake, TeX, PDF, or cache-mutating process ran because this branch has no host
+  build token
+requested integration or lease: independently review and preserve exact
+  source commit d07e8ad3b / blob 80f3e80c1e97, then assign separate serialized
+  LAKE_JOBS=1 builds of +FabiusFunction.NegativeLaplaceDerivatives and the
+  downstream consumer +FabiusFunction.NegativeLaplaceDerivativeBounds;
+  request no document or main-write lease
+conflicts / dependencies: exact parent preimage is current-main blob
+  7e8c54130ec3; existing calls in NegativeLaplaceDerivativeBounds and
+  FabiusLambertDerivativeBounds continue through the exact old APIs;
+  negativeLaplaceLog_hasDerivAt intentionally remains positive-scale; the two
+  other pending source handoffs and all current external branch changes are
+  disjoint; only the coordinator may advance main
+next bounded step: commit and push this immutable handoff; keep all three
+  pending source paths frozen for coordinator review/validation; reserve the
+  whole-line strict-convexity and formal Lambert fixed-point follow-ons until
+  their current direct dependency gates are integrated and released, and
+  continue read-only auditing of other disjoint cold paths
+```
