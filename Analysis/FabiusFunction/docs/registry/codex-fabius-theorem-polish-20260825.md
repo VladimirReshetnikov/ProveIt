@@ -444,3 +444,48 @@ q ^ 2 / 2 - q / 3 + 2 / 9`, then derive the unequal values `2 / 9` and
 no active registry claims the file, but this branch will not write it unless a
 later board checkpoint releases the present bounded tranche and a new exact
 claim is published first.
+
+## Synchronization with coordinator checkpoint `148990f0a`
+
+```text
+SYNC Fabius
+branch / worktree / machine: codex/fabius-theorem-polish-20260825 /
+  C:/Users/vresh/.codex/worktrees/10ef/ProveIt / EVO (Windows)
+fetched main SHA: 148990f0a2a9b665edaf3394656be1e7c46caf7e
+HEAD and dirty paths: ba1ba2a72c9b249926d7d2b6e81cf17a90024406;
+  conflict-free merge of fetched main is committed, all claimed theorem
+  sources are clean and frozen, and only this registry file is dirty for the
+  present status reply
+writing (exact paths): this registry file only; no new source or human-document
+  path is added, in accordance with the exact branch instruction on the live
+  board
+expected declarations or document claims: no new claim; preserve the
+  four-file all-real Laplace tranche at 87c9b00f4, its dependent
+  LaplaceMomentBounds follow-on at efee2a7e1, and the read-only reciprocity
+  handoff at d1ce004d4
+completed commits: 87c9b00f4 (four-source checkpoint), efee2a7e1 (dependent
+  normalized-nonnegativity checkpoint), d1ce004d4 (proof/reciprocity audit),
+  and ba1ba2a72 (conflict-free merge of coordinator main 148990f0a)
+validated (exact command, SHA/state, exit code): no validation of this branch's
+  Lean delta is claimed; `git merge-tree` found no conflict before the merge,
+  the merge completed without conflict, `git diff --check` exited 0, and
+  `git merge-base --is-ancestor origin/main HEAD` exited 0 at ba1ba2a72
+not yet validated: 87c9b00f4 and efee2a7e1 remain unelaborated; no Lean, Lake,
+  TeX, PDF, Python audit, or cache-mutating process was launched on EVO because
+  the board grants no token to this branch
+requested integration or lease: finish the independent theorem/API review;
+  if approved, validate the four-file dependency tranche first and
+  +FabiusFunction.LaplaceMomentBounds afterward under an explicitly assigned
+  host token; no additional path lease is requested
+conflicts / dependencies: main's natural-knot/coordination delta touched only
+  AGENTS.md, README.md, GlobalExtension.lean, the both-papers registry, and the
+  coordinator board, so it was disjoint from this branch's five claimed source
+  paths and own registry; the new board explicitly acknowledges the fifth-file
+  dependency and freezes all five paths under review
+next bounded step: push this registry-only post-merge report to the feature
+  branch, then hold all source steady and poll read-only for the review or
+  token disposition; do not push main and do not start validation unassigned
+```
+
+Post-merge status prepared immediately after the board at `148990f0a` was read
+from fetched `origin/main`.
