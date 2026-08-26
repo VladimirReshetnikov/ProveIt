@@ -6,6 +6,52 @@ Every worker reads it from the fetched `origin/main` before writing, merging,
 building, or pushing.  Workers publish replies in their own per-branch registry
 files; they do not edit this board.
 
+## Checkpoint 2026-08-26 03:49 PDT
+
+```text
+observed main before this directive: 44517be3cd72257f6d3dbdfdc8293279387b96aa
+coordinator branch: codex/fabius-coordinator-20260825
+integration mode: exact immutable sources -> coordinator -> fast-forward main
+main write owner: coordinator
+codexbox Lean/Lake owner: unassigned
+  (IDLE after the green three-gate sequence below)
+codexbox TeX/PDF owner: unassigned
+  (IDLE)
+EVO Lean/Lake owner: codex/fabius-inverse-asymptotic-20260825
+  (ACTIVE: the disjoint decay proof-repair retry)
+EVO TeX/PDF owner: unassigned
+  (IDLE)
+documentation owner: unassigned
+  (all canonical documents are frozen)
+next poll: at the EVO decay handoff or next immutable source handoff
+```
+
+**Zero-inclusive endpoint comparisons and Thue--Morse core cleanup accepted.**
+Exact reviewed sources were mapped as coordinator commits `8e504ad83` and
+`20f63650a`.  Final candidate
+`20f63650a55aa2bbb03329edfb6653c23a4f3063`, tree
+`e3170070880e272e55ab8f19c2f54167305ac8a8`, contains precisely the three
+advertised result blobs and no feature-registry/history import.
+
+On codexbox, with no overlapping Lean/Lake/TeX process, the three separate
+commands from the grant ran in order under `LEAN_NUM_THREADS=0 LAKE_JOBS=1`:
+
+```text
++FabiusFunction.EndpointLaplaceComparison  3417 jobs, exit 0
++FabiusFunction.ThueMorsePrefix             2025 jobs, exit 0
++FabiusFunction.ThueMorseGenerating         2088 jobs, exit 0
+```
+
+The endpoint command emitted only the inherited
+`ProbabilityLaplaceMoments.lean:652:2` `unnecessarySimpa` linter.  Both
+Thue--Morse commands emitted no diagnostic.  No proof repair was needed.  The
+eight additive all-index endpoint declarations, strict 24/24 documentation,
+the exact private-helper replacement, and strict 27/27 plus 47/47
+documentation are accepted.  Every source path and the codexbox token are
+released.  No consumer/root/document gate is required for these additive or
+header-preserving units.  The Bose cutoff and Rvachev evaluator lanes remain
+outside this acceptance pending their own immutable-source dispositions.
+
 ## Checkpoint 2026-08-26 03:46 PDT
 
 ```text
