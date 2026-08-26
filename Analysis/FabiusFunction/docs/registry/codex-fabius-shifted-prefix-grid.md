@@ -1,8 +1,9 @@
 # Workstream registry: `codex/fabius-shifted-prefix-grid`
 
-**Status: finite-jet source checkpoint accepted, compiled, and released; the
-advertised same-path all-order refinement and disjoint one-file finite-Appell
-claim are active without a local build token.**
+**Status: finite-jet source checkpoint accepted, compiled, and released;
+finite-Appell-calculus source checkpoint implemented and independently
+reviewed; the advertised same-path all-order refinement remains active without
+a local build token.**
 The exact claim was published before source work, coordinator checkpoint
 `893d4c25d` explicitly acknowledged it as the first nonoverlapping claim for
 the module, and source commit `00ff41a5e` now implements precisely that bounded
@@ -26,13 +27,12 @@ follow-up.
 SYNC Fabius
 branch / worktree / machine: codex/fabius-shifted-prefix-grid / c9a3 / EVO
   (Windows)
-fetched main SHA: 682222de194637f3a5650b7c1ffce349577cb5ae
-HEAD and dirty paths: ef243020506387aed083870525899ab392c7aab2;
+fetched main SHA: c9d20ed14c7572d4f3f1361c7883085eaf5bb0d8
+HEAD and dirty paths: 8021c555fc2ccc1d22507c304200fa43ecaedc39;
   docs/registry/codex-fabius-shifted-prefix-grid.md only, recording the
-  independently reviewed comment-only precision checkpoint
+  independently reviewed finite-Appell-calculus source checkpoint
 writing (exact paths): docs/registry/codex-fabius-shifted-prefix-grid.md only;
-  after this registry correction is pushed, exactly
-  Lean/FabiusFunction/FabiusQBinomialTaylor.lean,
+  after this registry checkpoint is pushed, exactly
   Lean/FabiusFunction/ThueMorseGenerating.lean and
   Lean/FabiusFunction/ThueMorseApproximation.lean
 expected declarations or document claims:
@@ -103,7 +103,10 @@ completed commits: 6fb8dc8e9 publishes the exact one-file claim; ba0048023
   publishes the disjoint finite-Appell claim; 6413191f1 merges the validated
   finite-jet acceptance checkpoint 682222de1 without conflicts; c93bb20ae
   activates the released source claims and corrects the Generating evidence;
-  ef2430205 applies only the two advertised module-guide precision corrections
+  ef2430205 applies only the two advertised module-guide precision corrections;
+  66c55ada9 records that comment-only checkpoint; a24c25344 merges main
+  c9d20ed14 without conflicts; 8021c555f implements the four total
+  finite-Appell-calculus declarations in FabiusQBinomialTaylor.lean
 validated (exact command, SHA/state, exit code): at source snapshot SHA-256
   784F6C4F389FE0F2FA08616FFAFBFA3917CCC9F6D2C86CE98D3D877B5F0DD14C,
   git diff --check and git diff --cached --check exited 0; python
@@ -159,10 +162,19 @@ validated (exact command, SHA/state, exit code): at source snapshot SHA-256
   doc_audit.py scanned 189 files and 3486 public declarations with the unchanged
   132 baseline omissions, the forbidden added-token scan was clean, and an
   independent audit proved all normalized bytes outside the leading module
-  docs identical to HEAD in both files
-not yet validated: the active all-order follow-up and finite-Appell claim have
-  not been implemented or compiled; no Lean or Lake process is authorized
-  because both physical-host tokens remain coordinator-reserved
+  docs identical to HEAD in both files; for finite-Appell source commit
+  8021c555f, the exact source blob is 52492287b5bb (SHA-256
+  5785DD8D85D553A397347464D92C73AFD409DA0580C7DB68A8A1F538F4EC2C6A),
+  git diff --check and git diff --cached --check exited 0, the added-token scan
+  found no sorry/admit/axiom/opaque, and three independent read-only reviews
+  found no mathematical, edge-case, exact-API, elaboration-shape, duplicate,
+  import-cycle, attribute, compatibility, or documentation blocker; one review
+  mechanically verified that every old source byte outside the direct import
+  and documented contiguous insertion is preserved
+not yet validated: finite-Appell source commit 8021c555f has not been compiled,
+  and the active all-order follow-up has not yet been implemented or compiled;
+  no Lean or Lake process is authorized because both physical-host tokens
+  remain coordinator-reserved
 requested integration or lease: after both active source tranches are
   implemented, reviewed, and frozen, assign the coordinator-held targets
   +FabiusFunction.FabiusQBinomialTaylor,
@@ -185,13 +197,14 @@ conflicts / dependencies: no overlap with the active frontier-document lease;
   analogous private dyadic-kernel family is mathematically distinct; no path
   expansion beyond the three active source files and this branch registry is
   requested
-next bounded step: push the comment-only precision checkpoint, fetch and reread
-  the board, implement the four finite-Appell declarations, then implement the
-  all-order approximation tranche; obtain two independent read-only reviews
-  and freeze each source checkpoint without invoking an unassigned validator
-lease refreshed: 2026-08-25 19:41 PDT;
-  FabiusQBinomialTaylor.lean, ThueMorseGenerating.lean, and
-  ThueMorseApproximation.lean are active for 30 minutes
+next bounded step: push this finite-Appell checkpoint and validation request,
+  fetch and reread the board, then implement the all-order approximation
+  tranche; obtain two independent read-only reviews and freeze that source
+  checkpoint without invoking an unassigned validator
+lease refreshed: 2026-08-25 19:53 PDT;
+  ThueMorseGenerating.lean and ThueMorseApproximation.lean are active for
+  30 minutes; FabiusQBinomialTaylor.lean is frozen at 8021c555f pending
+  coordinator validation
 git owner / build owner: root / no build owner assigned to this branch
 ```
 
@@ -408,7 +421,7 @@ paths at `682222de1`.
 ## Claimed finite-Appell calculus
 
 The disjoint one-file follow-up in `FabiusQBinomialTaylor.lean` exposes the
-translated Thue--Morse blocks as a finite Appell family.  Writing
+finite Appell calculus satisfied by the translated Thue--Morse blocks.  Writing
 `P_(k,d)` for `thueMorseTranslatedPowerSumPolynomial k d`, the exact public
 statements are:
 
@@ -453,3 +466,37 @@ polynomial family.  The closest human counterparts are the assembled Appell
 derivative and addition formulas in the serialized research-frontier document;
 the new theorems expose their block-level algebraic mechanism.  This claim does
 not request an edit or build of that TeX/PDF pair.
+
+## Implemented finite-Appell calculus
+
+Source checkpoint `8021c555f` implements exactly the advertised one-file
+claim.  It adds the rational-translation binomial law, the total Hasse
+derivative law, its total ordinary-derivative specialization, and the
+subtraction-free successor wrapper.  The source deliberately says that the
+blocks *satisfy an Appell calculus* rather than calling them a strict Appell
+sequence: at fixed positive block depth the first `k` polynomials vanish and
+the surviving polynomial indexed by `d` has degree `d - k`.
+
+The Hasse proof is coefficientwise and needs no bound on the derivative order.
+`Polynomial.hasseDeriv_coeff` reduces it to
+
+```text
+d.choose (m + j) * (m + j).choose j
+  = d.choose j * (d - j).choose m,
+```
+
+which is exactly `Nat.choose_mul`.  Thus the same proof handles `j > d`,
+`d < k`, and `d = 0` without artificial case splits.  The composition proof
+evaluates polynomials and applies `add_pow` only after rewriting the affine
+coordinate as `c + (r - 2^k + q)`, so the exponent `j` belongs to the shift
+`c` and the complementary exponent `d - j` belongs to the lower block.
+
+The committed source has Git blob `52492287b5bb0df8d0c8c2c7e985a4de8c0393f3`
+and content SHA-256
+`5785DD8D85D553A397347464D92C73AFD409DA0580C7DB68A8A1F538F4EC2C6A`.
+Three independent read-only reviews covered all boundary cases, exact Mathlib
+term shapes, the explicit narrow `HasseDeriv` import and its acyclic closure,
+duplicate names, attributes, theorem placement, and old-source preservation.
+All static gates are green.  No Lean or Lake process ran, so this checkpoint is
+explicitly **not yet compiled**; coordinator-owned focused and facade builds
+remain requested above.
