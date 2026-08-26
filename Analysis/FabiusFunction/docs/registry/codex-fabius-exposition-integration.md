@@ -6,7 +6,7 @@ record, not a mathematical exposition.
 
 ## Active source-stage disposition
 
-The coordinator board fetched at e18f5d0b0 grants this branch the single-owner
+The coordinator board fetched at 148990f0a grants this branch the single-owner
 frontier README/TeX/PDF lease and its own registry. Stage one is a source-only
 semantic checkpoint; the matching PDF is deliberately deferred until
 coordinator review.
@@ -16,15 +16,12 @@ SYNC Fabius
 branch / worktree / machine: codex/fabius-exposition-integration /
   C:\Users\vresh\.codex\worktrees\8f3f\ProveIt / EVO
 fetched main SHA: 148990f0a2a9b665edaf3394656be1e7c46caf7e
-HEAD and dirty paths: source checkpoint 78260751f was pushed, merge
-  18f8eadd4 incorporated origin/main at e18f5d0b0 with no conflicts, and
-  registry checkpoint 4034e2e00 was pushed. The parent of this follow-up is
-  4034e2e00; git ls-files -u is empty and only the frontier TeX and this
-  registry are dirty. A final pre-checkpoint fetch found that origin/main
-  advanced to 148990f0a; the audited source follow-up will be checkpointed and
-  pushed before that main tip is merged. The two redundant build-copy PDFs
-  were moved reversibly outside the worktree after their hashes were
-  reverified against the committed PDFs.
+HEAD and dirty paths: source checkpoint d343e0e84 is pushed. Merge 7e31a620f
+  incorporated origin/main at 148990f0a with no conflicts; its parents are
+  d343e0e84 and 148990f0a. The parent of this registry update is 7e31a620f;
+  git ls-files -u is empty and only this registry is dirty. The two redundant
+  build-copy PDFs remain preserved reversibly outside the worktree after their
+  hashes were reverified against the committed PDFs.
 writing (exact paths):
   Analysis/FabiusFunction/docs/non-formalized-research-frontiers/README.md
   Analysis/FabiusFunction/docs/non-formalized-research-frontiers/non-formalized-research-frontiers.tex
@@ -37,8 +34,9 @@ expected declarations or document claims: no Lean edits. Reconcile the
 completed commits: 78260751f is the pushed stage-one semantic source
   checkpoint; 18f8eadd4 cleanly merges current origin/main into the feature
   branch without a content conflict or binary resolution; 4034e2e00 records
-  the clean post-merge provenance. This follow-up source checkpoint adds the
-  two remaining claim-level gaps found by the completed primary audit.
+  that clean post-merge provenance; d343e0e84 adds the two remaining
+  claim-level gaps found by the completed primary audit; 7e31a620f cleanly
+  merges origin/main at 148990f0a.
 validated (exact command, SHA/state, exit code): on TeX SHA-256
   B8B609F12EDBB59205A0349E93CD3C811FCE1DD0D903C916A739992B5F5D5161,
   git diff --check exited 0 and git ls-files -u was empty. Independent
@@ -63,25 +61,23 @@ not yet validated: stage one intentionally ran no Lean, Lake, pdflatex,
   The primary TeX/PDF remains frozen pending coordinator review.
 requested integration or lease: review the pushed source checkpoints, including
   this two-gap follow-up, then
-  confirm stage two under the already reserved EVO TeX token for exactly
+  grant stage two and the sole EVO tool token for exactly
   three pdflatex passes, rendered inspection, and a matching PDF checkpoint.
   After frontier integration, grant the primary TeX/PDF correction tranche.
-conflicts / dependencies: the earlier three incoming main commits changed only
-  AGENTS.md, the campaign README, and the coordinator board and merged with no
-  conflict. Origin/main has since advanced through 148990f0a with changes to
-  AGENTS.md, the campaign README, GlobalExtension.lean, and coordination
-  registries; merge and conflict resolution are the next step after preserving
-  this source checkpoint. There are currently no unresolved paths. The
+conflicts / dependencies: origin/main at 148990f0a changed AGENTS.md, the
+  campaign README, GlobalExtension.lean, and coordination registries relative
+  to the previously merged main tip. Merge 7e31a620f incorporated all five
+  paths without a content conflict, unmerged path, or binary resolution. The
+  placement rules in AGENTS.md and the campaign README remain present. The
   preserved sidecars are at
   C:\Users\vresh\.codex\preserved\fabius-exposition-sidecars-8f3f-20260825T1700;
   their SHA-256 values are
   59B8B06825F89B81A33F6352196CEBE7C0CAF4C436170FEB15FFDD9336E72908
   and CD91C680DFA7D96F110106F7A6ADCACC5CBA10E188DF1BD0A4484218FA8FA39C,
   exactly matching the two previously committed canonical PDFs.
-next bounded step: commit and push this two-gap frontier follow-up, merge
-  origin/main at 148990f0a, resolve any conflicts, and record the result. Then
-  await coordinator stage-two review; never select a predecessor PDF wholesale
-  and never push main.
+next bounded step: commit and push this post-merge registry checkpoint, then
+  await the coordinator's source-audit disposition and explicit stage-two
+  token; never select a predecessor PDF wholesale and never push main.
 ~~~
 
 **Historical coordinator disposition at `7aed3c8c7`.**  The detailed status block and
