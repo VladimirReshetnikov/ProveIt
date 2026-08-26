@@ -6,6 +6,73 @@ Every worker reads it from the fetched `origin/main` before writing, merging,
 building, or pushing.  Workers publish replies in their own per-branch registry
 files; they do not edit this board.
 
+## Checkpoint 2026-08-26 04:06 PDT
+
+```text
+observed main before this directive: dabcc17abed360ce9d9d6e68688ed41d35015c54
+coordinator branch: codex/fabius-coordinator-20260825
+integration mode: exact immutable sources -> coordinator -> fast-forward main
+main write owner: coordinator
+codexbox Lean/Lake owner: coordinator
+  (ACTIVE: exactly the five serialized gates below)
+codexbox TeX/PDF owner: unassigned
+  (IDLE)
+EVO Lean/Lake owner: codex/fabius-inverse-asymptotic-20260825
+  (ACTIVE: the disjoint decay proof-repair retry)
+EVO TeX/PDF owner: unassigned
+  (IDLE)
+documentation owner: unassigned
+  (all canonical documents are frozen)
+next poll: after each codexbox gate and at the EVO decay handoff
+```
+
+**Combined codexbox validation: bounded-range helper consolidation and
+first-correction bounded-jet bridges.**  Two reviewed source units share
+`FabiusSecondSaddleCorrection.lean` at the same exact main preimage
+`c9a762985186e06030d789b1774ac01af8f3fa76`, but their hunks are disjoint and
+must both survive:
+
+- `ffb51214484566de0c0da4298f9da6ab0335ca49` adds documented public
+  `exists_nonneg_bound_abs_of_isBounded_range` in `PeriodicRegularity.lean`,
+  deletes the private Lambert duplicate, and rewires its two Lambert consumers
+  plus the final second-saddle global-bound proof.  Its individual result blobs
+  are Periodic `712711058b497d6673064541a359c6df536458a8`, Lambert
+  `d3f3d9d16aed97f8ea2d33c8bc2d634bf0b46aca`, and second-saddle
+  `5b22e182ccd4188ec669e13a21001bc55d009ce9`.
+- `081bf8d052e13c5f6d08b4d2f2967b725d91c88a` documents the recurrence
+  interfaces, changes `FabiusFirstSaddleCorrection` to import the recurrence
+  module, adds the three reviewed bounded-jet bridge theorems, and replaces
+  only the earlier duplicate first-correction proof in the second-saddle
+  module.  Its individual result blobs are recurrence
+  `e95172a31fd69cccc5c5d04324597f7e0384d5ff`, first-correction
+  `dfe540d1ce518cffaf5174d7e2c4ad6c388fa015`, and second-saddle
+  `af434a59f772a6335847d36127dc095e74802ea0`.
+
+Map the bounded-range source first and then the jet source onto current main;
+accept neither individual second-saddle blob as the final combined file.
+Verify the resulting file contains both the bounded-jet forwarding proof and
+the generic bounded-range specialization.  Do not merge either moving feature
+tip or registry history.
+
+On codexbox run exactly the following separate commands, in order, under
+strict stop-on-first-failure:
+
+```text
+LEAN_NUM_THREADS=0 LAKE_JOBS=1 lake build +FabiusFunction.PeriodicRegularity
+LEAN_NUM_THREADS=0 LAKE_JOBS=1 lake build +FabiusFunction.FabiusLambertDerivativeBounds
+LEAN_NUM_THREADS=0 LAKE_JOBS=1 lake build +FabiusFunction.FabiusSaddleCoefficientRecurrence
+LEAN_NUM_THREADS=0 LAKE_JOBS=1 lake build +FabiusFunction.FabiusFirstSaddleCorrection
+LEAN_NUM_THREADS=0 LAKE_JOBS=1 lake build +FabiusFunction.FabiusSecondSaddleCorrection
+```
+
+Run no parallel or additional codexbox Lean/Lake/TeX/PDF process.  Record the
+combined candidate/tree/blob, each job count, exit, and every diagnostic.
+Only an independently reviewed statement-preserving proof repair is in scope
+after failure.  The simultaneous EVO decay retry remains independent on its
+other physical host.  The all-real finite-CDF rate claim is mathematically and
+API-approved as ordinary one-file ownership, but its visible draft is not an
+immutable reviewed source and receives no token here.
+
 ## Checkpoint 2026-08-26 04:00 PDT
 
 ```text
