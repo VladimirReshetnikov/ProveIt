@@ -2371,3 +2371,62 @@ LEAN_NUM_THREADS=0 LAKE_JOBS=1 lake build +FabiusFunction.Parity
 
 The optional paper-facade gate is `+FabiusFunction.Paper06487`; no root or
 document build is requested.  Stop after the first nonzero exit.
+
+## Handoff: remove the duplicate Mersenne oddness proof
+
+Exact source checkpoint `285d535502ff72064c81c9e78644beef32e692df`,
+tree `1d4c1d1a36a16af7895b63a0f4c0d7cc0f899b0d`, implements the
+advertised Parity-only cleanup.  Clean synchronization merge
+`613c92a6bbd1d5183f23490428c16eb69978f068` incorporates coordinator main
+`b0739b56f1af527c52f91dc6024f89ee8919531d` without changing the claimed
+source blob.  The exact artifact is:
+
+```text
+Parity.lean
+  Git blob  d8bd78412254dc3b87e80a2bd817daec6d713254
+  SHA-256   303CCF02518A1334700F151224DEC681C314789E63F472585DEC694A6A2D8A00
+  size      444 lines, 18,632 bytes
+```
+
+The exact source delta is two insertions and nine deletions, net minus seven
+lines.  It deletes only
+
+```text
+private lemma odd_two_pow_sub_one {w : ℕ} (hw : 0 < w) :
+  Odd (2 ^ w - 1)
+```
+
+and replaces its two calls with the directly imported public theorem
+`two_pow_sub_one_odd`, whose type is identical modulo the bound-variable name.
+The product call still proves positivity of `2 * j` from `j ∈ Ico a b` and
+`1 ≤ a`; the moment-numerator call still supplies
+`binaryWeight_pos (n + 1)`.  No proof obligation or mathematical statement is
+weakened.
+
+The preimage exact-name count is exactly one private declaration plus two
+consumers, and the result has no `odd_two_pow_sub_one` occurrence.  The public
+declaration multiset, every existing theorem header/body outside the two
+name-only calls, all imports, comments, namespaces, attributes, simp rules,
+facades, aggregates, and canonical documents are unchanged.  No new API is
+introduced.
+
+An independent immutable-source audit passes the exact imported signature,
+both call-site hypotheses, direct `Parity -> Arithmetic` visibility, source
+delta, and public-surface preservation.  `git diff --check`, 100-column,
+forbidden-declaration, exact-name, source-history, every-advertised-tip, and
+every-registry scans are clean.  This branch's sparse-Pascal provenance is an
+integrated, compiled, explicitly released historical claim; there is no other
+current path owner.
+
+No Lean, Lake, TeX, PDF, or cache-mutating process ran, so this immutable source
+is frozen pending coordinator review.  The requested serialized gate is:
+
+```text
+LEAN_NUM_THREADS=0 LAKE_JOBS=1 lake build +FabiusFunction.Parity
+```
+
+The optional direct paper facade is `+FabiusFunction.Paper06487`.  Stop after
+the first nonzero exit; no root or document build is required.  After compiled
+integration, the already-frozen audit-ledger finding may be marked resolved by
+a separately assigned documentation owner, but no mathematical exposition
+needs changing.
