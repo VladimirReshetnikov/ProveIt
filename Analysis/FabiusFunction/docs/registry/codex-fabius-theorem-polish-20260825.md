@@ -1908,3 +1908,27 @@ next bounded step: commit and push this registry-only claim; fetch and reread
   without running Lean/Lake, obtain independent source reviews, checkpoint the
   immutable result, and request the sole EVO Lean/Lake token
 ```
+
+### Public-surface precision addendum (no path expansion)
+
+Static implementation design made the necessary bridge API precise.  The
+claimed paths are unchanged.  In addition to the names already advertised,
+the exact public Sharp declarations are:
+
+- `fabius_isEquivalent_WikipediaLambertFactor_mul_periodic`;
+- `range_negativeLaplacePsi_eq_Icc_periodMin_periodMax`;
+- `negativeLaplacePsiPeriodMin_le_value`;
+- `negativeLaplacePsi_value_le_periodMax`;
+- `negativeLaplacePsiPeriodMin_le_periodMax`;
+- `exists_mem_Icc_negativeLaplacePsi_eq_periodMin`;
+- `exists_mem_Icc_negativeLaplacePsi_eq_periodMax`;
+- `negativeLaplacePsiPeriodMin_lt_periodMax`;
+- `range_exp_negativeLaplacePsi_eq_Icc_periodExtrema`;
+- `fabiusWikipediaLambertRatio_isEquivalent_periodic`; and
+- `tendsto_fabiusWikipediaLambertRatio_sub_periodic`.
+
+These declarations expose the reusable facts required by the already claimed
+cluster-set and liminf/limsup theorems; they add no source or document path.
+The private boundedness and cluster-perturbation helpers remain private.  A
+source-only draft now exists in the claimed Sharp module, but it remains
+unstaged and uncompiled while this exact-name addendum is committed and pushed.
