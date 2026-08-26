@@ -674,6 +674,12 @@ compiled PDF is committed alongside its source.
   `pdflatex` passes so that the cross-references and the table of contents
   settle; the `.aux`, `.log`, `.out` and `.toc` files are not committed. A
   `.tex` change without a rebuilt `.pdf` is an incomplete commit.
+- **Prose is Libertinus.** The preamble falls back to Latin Modern silently
+  when the font package is missing, so builders verify the committed PDF with
+  `pdffonts`, install Libertinus first when it is absent, and — only when
+  installation fails — commit a fallback build together with a `README.md`
+  beside the PDF requesting a rebuild on a Libertinus-equipped machine. Math
+  stays Computer Modern by decision. `AGENTS.md` states the full rule.
 - **Check the rendered PDF.** Never write LaTeX through a shell heredoc or a
   script that round-trips through `unicode_escape`: both silently destroy
   backslashes, and LaTeX will not complain — it renders something plausible and

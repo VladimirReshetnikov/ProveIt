@@ -164,6 +164,28 @@ compiled PDF is committed with it.**
    never select either side's binary. This is engineering policy, campaign or
    not.
 
+9. **Prose is Libertinus, and committed PDFs must prove it.** Every LaTeX
+   document under this directory sets its text in Libertinus. The shared
+   preamble line
+   `\IfFileExists{libertinus.sty}{\usepackage{libertinus}}{\usepackage{lmodern}}`
+   falls back to Latin Modern *silently*, so a successful build proves
+   nothing about fonts — after building, check
+   `pdffonts <doc>.pdf | grep -c Libertinus`; zero means the fallback fired.
+   Build on a machine with the Libertinus (type 1) packages installed. If
+   they are missing, first attempt to install them (MiKTeX:
+   `miktex packages install libertinus libertinus-type1`; TeX Live:
+   `tlmgr install libertinus libertinus-type1`). Only if installation fails
+   may a fallback-font PDF be committed, and that commit must also add or
+   update a `README.md` beside the PDF requesting a rebuild on a machine
+   with Libertinus installed; when a coordination campaign is active, relay
+   the same rebuild request to the agents on other machines through the
+   board. Remove the note when a Libertinus rebuild lands. Math
+   intentionally remains Computer Modern (user decision, 2026-08-26): do not
+   add `libertinust1math` without an explicit new user decision — and should
+   that ever change, it must be loaded *after* `amssymb`/`bm`, because the
+   reverse order corrupts the wide-accent glyph chain (`\widehat`,
+   `\widetilde` render as a stray vertical stroke).
+
 ## Building Lean
 
 Build one module per `lake` invocation, in topological order. `LAKE_JOBS=1` is
