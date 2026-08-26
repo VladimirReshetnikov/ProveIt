@@ -545,6 +545,7 @@ global-q and binary summands themselves are termwise equal by
 These are uncompiled proof plans, not new claims or validation evidence, and
 must be advertised in exact nonoverlapping source paths before any future
 implementation.
+
 ## Coordinator all-real Laplace integration disposition
 
 The five-source tranche is accepted after independent theorem/API/dependency
@@ -580,3 +581,58 @@ two green targets' edited source blobs are unchanged at `c4bc42f16`; every
 target from the repaired derivative module onward ran at that immutable tree.
 `git diff --check` passes and the five edited sources contain no `sorry`,
 `admit`, `axiom`, or `opaque`.  All five source leases are released.
+
+## Claim: finite-depth shift dependence and asymptotic independence
+
+Claim advertised at 2026-08-25 18:49 PDT after fetching and merging
+`origin/main` `383bc967268df018cc0bc1634b997114863c1658` into the clean
+feature branch.  A current-main and all-advertised-tip path audit found that no
+branch changes either claimed source after its merge base, no active registry
+leases either path, and no existing declaration or plausible alternate name
+implements this package.  This claim promotes the source-only handoff above;
+it does not present the finite-depth witness as a newly discovered idea.
+
+```text
+SYNC Fabius
+branch / worktree / machine: codex/fabius-theorem-polish-20260825 /
+  C:/Users/vresh/.codex/worktrees/10ef/ProveIt / EVO (Windows)
+fetched main SHA: 383bc967268df018cc0bc1634b997114863c1658
+HEAD and dirty paths: 8fb9d79de2974ffc41f5c602ca6023669259de8a;
+  clean before this registry-only exact-path claim
+writing (exact paths):
+  Lean/FabiusFunction/FabiusDiscreteLimitToeplitz.lean;
+  Lean/FabiusFunction/FabiusDiscreteLimitIntegration.lean;
+  this branch registry
+expected declarations or document claims:
+  fabiusDiscreteLimitApproximation_one_third_depth_one;
+  fabiusDiscreteLimitApproximationReal_zero_one_third_depth_one;
+  fabiusDiscreteLimitApproximationReal_one_one_third_depth_one;
+  fabiusDiscreteLimitApproximationReal_zero_ne_one_at_one_third_depth_one;
+  fabiusDiscreteLimitApproximationComplex_sub_tendsto_zero_all;
+  fabiusDiscreteLimitApproximationReal_sub_tendsto_zero_all;
+  fabiusDiscreteLimitApproximationReal_zero_one_third_depth_one_ne_binaryPartialSum;
+  fabiusDiscreteLimitApproximationReal_zero_one_third_depth_one_ne_qBinomialPartialSum;
+  source-level prose will distinguish (i) genuine finite-row q-dependence,
+  (ii) pairwise asymptotic shift-independence, and (iii) nonidentity between a
+  same-depth discrete row and the binary/global-q partial sums, whose summands
+  are themselves pointwise equal
+completed commits: prior all-real Laplace tranche accepted on main; merge
+  checkpoints 6cb9ff8f0, 4b1f51468, and 8fb9d79de synchronize this branch
+  through the current coordinator checkpoint
+validated (exact command, SHA/state, exit code): read-only ownership and
+  duplicate audits only; every advertised Fabius tip was compared with its
+  merge base for both claimed paths, and no branch-unique edit was found
+not yet validated: no declaration in this claim has been written or
+  elaborated; no Lean, Lake, TeX, PDF, Python audit, or cache-mutating process
+  has run for this tranche
+requested integration or lease: advertise this ordinary nonoverlapping
+  two-source lease under the self-service protocol; later request serialized
+  focused validation after a source checkpoint is independently reviewed
+conflicts / dependencies: the canonical primary, walkthrough, glossary,
+  coverage, audit, frontier, root aggregate, README, AGENTS, coordinator, TeX,
+  and PDF paths remain untouched and frozen; the EVO token belongs exclusively
+  to codex/fabius-exposition-integration for its three frontier pdflatex passes
+next bounded step: commit and push this registry-only claim; reread the board
+  and every advertised registry/tip; then edit only the two exact Lean sources
+  and this registry, without launching validation
+```
