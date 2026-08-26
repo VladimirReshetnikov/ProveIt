@@ -7,12 +7,21 @@ This file implements the per-branch registry fallback in
 SYNC Fabius
 branch / worktree / machine: codex/fabius-both-papers /
   /home/codex/src/Proofs / codexbox
-fetched main SHA: a3cbe179443df1593b50a8034ce456729a004f9d
-HEAD and dirty paths: 5fe852607f917be5699fd3fc95536694a42f8765;
-  dirty only in this own-registry handoff
-writing (exact paths): none; both positivity-dedup source claims are released
-expected declarations or document claims: none in flight; the proof-only
-  consolidation is frozen at source checkpoint 3475f5ff0
+fetched main SHA: 2f306d00b477f24457e3fbc1d1de411e8382e51a
+HEAD and dirty paths: e29784e5e149b61c8e93842ce2a9e562b245f346;
+  dirty only in this own-registry claim
+writing (exact paths):
+  Analysis/FabiusFunction/Lean/FabiusFunction/FabiusBinaryReductionSeries.lean;
+  Analysis/FabiusFunction/docs/registry/codex-fabius-both-papers.md
+expected declarations or document claims:
+  norm_binaryReductionRemainder_le_total;
+  norm_globalBinaryReductionSum_sub_extendedFabius_le_total;
+  globalBinaryReductionSummand_eq_remainder_sub_all;
+  norm_globalBinaryReductionSummand_le_of_one_le_all;
+  summable_norm_globalBinaryReductionSummand_all;
+  summable_globalBinaryReductionSummand_all;
+  the family removes the scale-zero, positive-input, and index-two artifacts
+  while preserving every existing restricted theorem as compatibility API
 completed commits: Lower-Lambert source checkpoint `1da2fde2285e3970267b7dc2561bcd0d897be1b4`
   was integrated by coordinator merge `046946a974467e83244fd3a183a3e084e70d3379`;
   registry handoff `225f5338de9ea92489ed6a2c0c371c6edb4f5db9`
