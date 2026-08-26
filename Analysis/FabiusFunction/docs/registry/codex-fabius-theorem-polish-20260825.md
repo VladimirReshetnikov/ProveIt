@@ -90,3 +90,66 @@ lake build +FabiusFunction.PaperFabiusAsymptotic
 `sorry`, `admit`, `axiom`, or `opaque`.  The earlier registry sentence that
 the merged tip had not been compiled is retained above as an accurate record
 of the worker's checkpoint state and is superseded by this disposition.
+
+## Next ordinary claim: all-real normalized Laplace moments
+
+```text
+SYNC Fabius
+branch / worktree / machine: codex/fabius-theorem-polish-20260825 /
+  C:/Users/vresh/.codex/worktrees/10ef/ProveIt / EVO (Windows)
+fetched main SHA: 12e7137a897b8ec99ddf8935f64fff9f35977617
+HEAD and dirty paths: 12e7137a897b8ec99ddf8935f64fff9f35977617
+  after a clean fast-forward from 1772688b9; only this registry file is dirty
+  for the present claim, and no theorem or document source has been edited
+writing (exact paths): this registry file only at this coordination checkpoint;
+  the proposed next ordinary claim is limited to
+  Lean/FabiusFunction/NegativeLaplace.lean,
+  Lean/FabiusFunction/LaplaceMoments.lean,
+  Lean/FabiusFunction/NegativeLaplaceDerivatives.lean, and
+  Lean/FabiusFunction/NegativeLaplaceVertical.lean; no TeX, PDF, README,
+  aggregate, primary-exposition, walkthrough, frontier, or coordination path
+  is claimed
+expected declarations or document claims: preserve the exact public
+  signatures of generatingFunction_neg_pos and
+  fabiusLaplaceMoment_zero_pos while relocating them to their upstream-most
+  natural modules; add one_le_generatingFunction_of_nonneg,
+  generatingFunction_pos, fabiusLaplaceMoment_zero_pos_all,
+  normalizedLaplaceMoment_zero_all,
+  normalizedLaplaceMoment_hasDerivAt_all,
+  deriv_normalizedLaplaceMoment_all,
+  contDiff_normalizedLaplaceMoment, and
+  continuous_normalizedLaplaceMoment; remove the now-redundant downstream
+  positivity proofs and make the positive-half-line continuity result a
+  compatibility corollary of global continuity
+completed commits: the prior theorem-polish tranche is integrated through
+  301a46561 and independently validated at 60458909a; this branch has only
+  fast-forwarded to the live-board commit 12e7137a for the new claim, so no
+  source checkpoint exists yet
+validated (exact command, SHA/state, exit code): coordinator evidence on
+  fetched main records `LAKE_JOBS=1 lake build +FabiusFunction` at immutable
+  9887ea584, all 4008 jobs completed, exit 0; subsequent changes through
+  12e7137a do not alter the Lean tree; three independent read-only audits of
+  the proposed tranche found an acyclic placement and no mathematical or API
+  blocker, but they are preflight evidence rather than compiler validation
+not yet validated: every proposed declaration above; no Lean, Lake, TeX, PDF,
+  or cache-mutating command was launched, because the EVO build token remains
+  unavailable to this branch
+requested integration or lease: advertise the exact four ordinary source
+  paths above as a nonoverlapping claim; no serialized path is requested;
+  request an EVO Lean build token only after a coherent source checkpoint is
+  available for focused validation
+conflicts / dependencies: the claim deliberately consolidates two identical
+  positivity proofs now split between NegativeLaplaceDerivatives and
+  NegativeLaplaceVertical; canonical exposition and coverage synchronization
+  remain deferred to their document owner while those paths are frozen; the
+  separate finite-q dependence witness discovered during reconnaissance is
+  not part of this claim
+next bounded step: push this registry-only claim, re-read the fetched board
+  and audit every advertised registry/tip for path or declaration overlap;
+  preserve a read-only source state until the current coordination stop is
+  explicitly released, and launch no validation without the board token
+```
+
+Claim published at 2026-08-25T17:18:35-07:00.  Subagents remained read-only:
+they did not edit, stage, commit, merge, push, run Lean or Lake, or mutate
+caches and build outputs.
