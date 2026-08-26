@@ -7,21 +7,11 @@ This file implements the per-branch registry fallback in
 SYNC Fabius
 branch / worktree / machine: codex/fabius-both-papers /
   /home/codex/src/Proofs / codexbox
-fetched main SHA: 39ad356c7a433c1b7dfdaec5bb3e3e4163c9fd35
-HEAD and dirty paths: 66c1573d654c3b2ce9c64e51aac035472e7273cb;
-  dirty only in this own-registry claim
-writing (exact paths):
-  Analysis/FabiusFunction/Lean/FabiusFunction/FabiusComplexShiftSpline.lean;
-  Analysis/FabiusFunction/docs/registry/codex-fabius-both-papers.md
-expected declarations or document claims:
-  norm_fabiusComplexShiftSpline_sub_center_le_half_pow_mul_exp_of_bound_all;
-  norm_fabiusComplexShiftSpline_sub_center_le_half_pow_mul_exp_all;
-  fabiusComplexShiftSpline_tendsto_globalFabius_real_all;
-  fabiusComplexShiftSpline_tendsto_globalFabius_rat_all;
-  fabiusComplexShiftSpline_tendsto_globalFabius_gaussianRat_all;
-  this is an ordinary downstream continuation of source checkpoint
-  1b0792b2b22ed51b28404cc42175befb45313668 and preserves every existing
-  restricted theorem signature as a compatibility API
+fetched main SHA: 34ca81c9427110e608f7be92c591201739d30fd6
+HEAD and dirty paths: 20080a7f0; dirty only in this own-registry handoff
+writing (exact paths): none; the downstream complex-shift claim is released
+expected declarations or document claims: none in flight; the upstream and
+  downstream all-degree complex-shift checkpoints are frozen below
 completed commits: Lower-Lambert source checkpoint `1da2fde2285e3970267b7dc2561bcd0d897be1b4`
   was integrated by coordinator merge `046946a974467e83244fd3a183a3e084e70d3379`;
   registry handoff `225f5338de9ea92489ed6a2c0c371c6edb4f5db9`
@@ -105,7 +95,12 @@ completed commits: Lower-Lambert source checkpoint `1da2fde2285e3970267b7dc2561b
   `1401f2d9b`; clean merge `9efba031547f243d7922ec56726f7055814bda63`
   incorporates fetched main `39ad356c7`; all-degree branch-bound claim
   `04bc271617b4f33ee02015a86dc5b7fb944091c0` precedes source checkpoint
-  `1b0792b2b22ed51b28404cc42175befb45313668`
+  `1b0792b2b22ed51b28404cc42175befb45313668`; downstream claim
+  `86c3c746b` precedes source checkpoint `3c2d1e926`, which adds the two
+  all-degree/all-real quantitative companions and three all-real typed shift
+  specializations while preserving every existing restricted API; clean merge
+  `20080a7f0` incorporates fetched main `34ca81c94` and retains its exact
+  serialized-build-validated Rvachev endpoint repair;
 validated (exact command, SHA/state, exit code): coordinator board records
   serialized immutable `lake build +FabiusFunction.LowerLambertW` at
   `4c6bbac41`, exit 0, with its source blob unchanged on current main;
@@ -118,6 +113,10 @@ validated (exact command, SHA/state, exit code): coordinator board records
   `+FabiusFunction.GlobalExtension` (2765 jobs) and
   `+FabiusFunction.Paper06487` (3244 jobs), both exit 0; the current source
   differs from that green proof-bearing blob only in doc-comment words;
+  coordinator checkpoint `34ca81c94` records serialized one-job builds of
+  `+FabiusFunction.Differential` (2653 jobs) and
+  `+FabiusFunction.Existence` (2783 jobs), both exit 0 without warnings after
+  the statement-preserving endpoint-simplification repair now retained here;
   read-only review of `09b360531` confirmed the moved block is byte-identical,
   imports and namespace placement suffice, the downstream theorem resolves
   through its existing direct import, and all static hygiene checks pass;
@@ -171,16 +170,13 @@ not yet validated: the moved dyadic theorem body was already compiled in its
   normalization, odd/natural witness orientations, successor projection,
   false-at-zero valuation boundary, public-signature preservation, placement,
   collision sweep, imports, facade exposure, documentation, forbidden markers,
-  and diff hygiene, but has not been elaborated or built; the generic Rvachev
-  bridge checkpoint has two independent read-only reviews covering all three
-  sign branches, endpoint derivative gluing, the four conditional simplifier
-  reductions, wrapper inference, specialization, imports, dependency
-  acyclicity, collisions, public-signature preservation, and diff hygiene, but
-  has not been elaborated or built; the all-degree complex branch checkpoint
-  has three independent read-only reviews covering the empty-sum zero case,
-  natural truncated subtraction, positive-degree delegation, inference,
-  hypothesis vacuity, API placement, source documentation, collisions, and
-  diff hygiene, but has not been elaborated or built
+  and diff hygiene, but has not been elaborated or built; the combined
+  all-degree complex-shift checkpoints have independent read-only reviews
+  covering the empty-sum zero case, natural truncated subtraction,
+  positive-degree delegation, the nonpositive real tail, centered-branch
+  discharge, typed real/rational/Gaussian-rational specialization, API
+  compatibility, theorem order, source documentation, collisions, and diff
+  hygiene, but have not been elaborated or built
 requested integration or lease: the dyadic relocation needs serialized
   `+FabiusFunction.GlobalDyadic`
   and `+FabiusFunction.OriginalPaperSupplement` validation; this new ordinary
@@ -210,13 +206,11 @@ requested integration or lease: the dyadic relocation needs serialized
   the all-index oddness checkpoint needs serialized
   `+FabiusFunction.Paper06487Supplement` followed by
   `+FabiusFunction.Paper06487`, and its source writing claim is released by
-  this handoff; the generic Rvachev derivative checkpoint needs serialized
-  `+FabiusFunction.Existence`, which transitively covers `Differential`, and
-  both source writing claims are released by this handoff; the all-degree
-  complex branch checkpoint needs serialized
+  this handoff; the combined all-degree complex-shift checkpoints need
+  serialized
   `+FabiusFunction.FabiusDiscreteLimitComplexShift` followed by its direct
-  consumer `+FabiusFunction.FabiusComplexShiftSpline`, and its source writing
-  claim is released by this handoff;
+  consumer `+FabiusFunction.FabiusComplexShiftSpline`; both source writing
+  claims are released by this handoff;
   serialized README/primary/walkthrough/coverage paths are deliberately not
   claimed yet
 conflicts / dependencies: all advertised Fabius heads and their registries
