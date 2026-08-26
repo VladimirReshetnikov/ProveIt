@@ -7,11 +7,10 @@ This file implements the per-branch registry fallback in
 SYNC Fabius
 branch / worktree / machine: codex/fabius-both-papers /
   /home/codex/src/Proofs / codexbox
-fetched main SHA: 407da44a69a56aa8c1de5e817aa1792af5ed0a46
-HEAD and dirty paths: abfcee88b4e5b5ff5e512777fd23647204d97164;
-  clean before this ordinary private-only source claim
+fetched main SHA: c2aa5a25c82e50149ab8887f95e7c5bcd6fe62eb
+HEAD and dirty paths: d2df7eaa72ca032ebbf5f7fc731e665edc6087b3;
+  clean source checkpoint before this registry handoff
 writing (exact paths):
-  Lean/FabiusFunction/AnalyticMoments.lean;
   docs/registry/codex-fabius-both-papers.md
 expected declarations or document claims:
   no public declaration, signature, or import change;
@@ -65,7 +64,11 @@ completed commits: Lower-Lambert source checkpoint `1da2fde2285e3970267b7dc2561b
   `407da44a6`; exact half-q root-locus claim `301ca2d60` precedes source
   checkpoint `a987b3bb9e983ff771729e2ad20699959a72bfb8`, whose 67 insertions and four
   deletions add the generic rational product-zero criterion, its complete
-  `q = 1/2` rational specialization, and both q-binomial transports
+  `q = 1/2` rational specialization, and both q-binomial transports; exact
+  private-only claim `5510369dd` precedes source checkpoint
+  `d2df7eaa72ca032ebbf5f7fc731e665edc6087b3`, which factors the two support
+  localization proofs and removes redundant/dead helpers for a net reduction
+  of 47 lines
 validated (exact command, SHA/state, exit code): coordinator board records
   serialized immutable `lake build +FabiusFunction.LowerLambertW` at
   `4c6bbac41`, exit 0, with its source blob unchanged on current main;
@@ -106,7 +109,13 @@ not yet validated: the moved dyadic theorem body was already compiled in its
   orientations, half-power cancellation, q-binomial transports, `n = 0`,
   `j = 0`, `q = 0`, `q = 1`, arbitrary rational arguments, API placement,
   rational-only documentation, collisions, forbidden markers, and diff
-  hygiene, but no Lean or Lake process has elaborated the production file
+  hygiene, but no Lean or Lake process has elaborated the production file;
+  the private AnalyticMoments checkpoint at `d2df7eaa7` has three independent
+  read-only reviews covering the hidden real normed-space requirement, support
+  composition and orientation, open/half-open endpoint handling, real and
+  complex support coercions, all endpoint replacements, dead-code removal,
+  caller preservation, exact public-declaration identity, imports, markers,
+  and diff hygiene, but has not been elaborated or built
 requested integration or lease: the dyadic relocation needs serialized
   `+FabiusFunction.GlobalDyadic`
   and `+FabiusFunction.OriginalPaperSupplement` validation; this new ordinary
@@ -123,7 +132,9 @@ requested integration or lease: the dyadic relocation needs serialized
   that handoff; the half-q root-locus checkpoint needs serialized
   `+FabiusFunction.HalfQBinomial` followed by its direct consumer
   `+FabiusFunction.FabiusQBinomialFormula`, and the `HalfQBinomial.lean` source
-  writing claim is released by this handoff;
+  writing claim is released by that handoff; the private AnalyticMoments
+  checkpoint needs serialized `+FabiusFunction.AnalyticMoments`, and the
+  `AnalyticMoments.lean` source writing claim is released by this handoff;
   serialized README/primary/walkthrough/coverage paths are deliberately not
   claimed yet
 conflicts / dependencies: all advertised Fabius heads and their registries
@@ -160,11 +171,12 @@ conflicts / dependencies: all advertised Fabius heads and their registries
   current main and every advertised Fabius tip finds no active claim on
   `AnalyticMoments.lean` and no alternate private generic localization helper;
   the public endpoint and support lemmas needed for the consolidation already
-  live upstream in `Basic.lean`
-next bounded step: push this exact private-only claim, consolidate the two
-  support-localization proofs without running a build, obtain independent
-  static review, and hand off serialized `+FabiusFunction.AnalyticMoments`
-  validation
+  live upstream in `Basic.lean`; fetched main `c2aa5a25c` retains the exact
+  pre-cleanup AnalyticMoments blob used as the source base
+next bounded step: push this source-and-registry handoff, merge freshly fetched
+  `origin/main` from the clean feature tip, and then select another disjoint
+  ordinary theorem or private consolidation while validation remains
+  coordinator-owned
 ```
 
 ## Coordinator natural-knot integration disposition
