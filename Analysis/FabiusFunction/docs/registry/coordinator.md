@@ -6,15 +6,15 @@ Every worker reads it from the fetched `origin/main` before writing, merging,
 building, or pushing.  Workers publish replies in their own per-branch registry
 files; they do not edit this board.
 
-## Checkpoint 2026-08-25 21:19 PDT
+## Checkpoint 2026-08-25 21:25 PDT
 
 ```text
-observed main before this directive: a515f57abf854e3ce86b312e0ca3e6e64354003c
+observed main before this directive: b97b7f108ca3c3c0a20e9958ddf672385c7647ab
 coordinator branch: codex/fabius-coordinator-20260825
 integration mode: feature branches -> coordinator -> fast-forward main
 main write owner: coordinator
 codexbox Lean/Lake owner: coordinator
-  (IDLE after coarse eighth-order reference-tail validation)
+  (IDLE after normalized Laplace-reflection validation)
 codexbox TeX/PDF owner: unassigned
   (IDLE; no active documentation agent)
 EVO Lean/Lake owner: unassigned
@@ -429,6 +429,18 @@ nonblocking compatibility choice.  A serialized
 accepted, and its source lease and codexbox token are released.  The stronger
 `exp ‖δ‖ - 1` frontier estimate remains open.
 
+Exact source commit `3475f5ff0` is a later proof-only consolidation in
+`ExactInversePower.lean` and `PaperStatements.lean`.  It replaces nine inline
+`Finset.prod_pos` arguments with the canonical public
+`oddDoubleFactorial_pos`, `evenMersenneProduct_pos`, and
+`oddMersenneProduct_pos` lemmas, deleting 31 net lines.  Exact review verifies
+that each replacement has the identical natural-number proposition and that
+no declaration, header, attribute, import, caller, or docstring changes.  The
+coordinator integrated it as `77e2f55d4`; serialized builds of
+`+FabiusFunction.ExactInversePower` (2013 jobs) and
+`+FabiusFunction.PaperStatements` (3242 jobs) both exited 0 without warnings.
+Both paths and the codexbox token are released.
+
 ### `codex/fabius-theorem-polish-20260825`
 
 The prior task is complete and its complete source tranche is integrated on
@@ -512,6 +524,22 @@ or public API.  At that repaired tree,
 `LAKE_JOBS=1 lake build +FabiusFunction.ProbabilityLaplaceMoments` completed
 3187 jobs in 18 seconds and exited 0 without warnings.  The source lease is
 released; this branch has no document or build token.
+
+Registry-first claim `4267605f0` then advertised a disjoint normalized
+reflection follow-up in the same released module.  Exact source commit
+`493575690` replaces the direct `LaplaceMoments` import with the acyclic
+`NegativeLaplaceDerivatives` import and adds exactly
+`normalizedLaplaceMoment_reflection`,
+`normalizedLaplaceMoment_one_complement`,
+`normalizedLaplaceMoment_one_sub_half_odd`, and
+`negativeLaplaceLogSecond_even`.  Independent exact review accepts the signed
+binomial cancellation, degree-one complement, oddness/evenness orientations,
+degree-two variance algebra, imports, API, and duplicate scan.  The
+coordinator integrated it as `853a09a80`.  A serialized
+`+FabiusFunction.ProbabilityLaplaceMoments` build completed 3188 jobs and exited
+0, reporting only one nonblocking `unnecessarySimpa` linter in the new
+reflection proof.  The source lease and codexbox token are released; no
+document, facade, or root path changed.
 
 ### `codex/fabius-effective-bounds-20260825`
 
@@ -704,6 +732,22 @@ Every claimed source path and the EVO token are released.  The branch may sync
 and begin a new ordinary nonoverlapping claim, but has no current source or
 build ownership.
 
+Registry-first claim `cb51e8fb5` advertises a new, disjoint three-source
+tranche in `DyadicClosedForm.lean`, `ThueMorsePrefix.lean`, and
+`FabiusRawQBinomialFormula.lean`.  It will relocate the existing public
+`thueMorseSign_dyadic_complement` upstream without changing its header or
+attributes, and add `iteratedPrefix_dyadic_reverse_window` plus
+`iteratedPrefix_dyadic_reverse_window_eq_zero_iff`.  Read-only preflight accepts
+the signed reflection formula, edge cases, import direction, consumer path,
+and absence of a competing declaration.  Latest tip `daadac394` contains only
+the claim and a synchronization merge: none of the three source files is
+changed yet.  Under the ordinary-work protocol the worker may synchronize this
+checkpoint and implement exactly those three source paths plus its own
+registry, but it receives no Lean/Lake token and no future coverage, primary,
+walkthrough, TeX, or PDF lease.  After a frozen source handoff and independent
+review, the intended gates are `+FabiusFunction.ThueMorsePrefix` followed by
+`+FabiusFunction.FabiusRawQBinomialFormula`.
+
 ### `codex/fabius-exposition-integration`
 
 Checkpoint `5e0505bf2` was merged to `main` by `ccf81cf83` while the
@@ -867,6 +911,11 @@ and Lambert-rate equivalence tranches are also integrated, repaired, compiled,
 and released.  The all-degree complex branch theorem, its downstream all-real
 continuation, and the disjoint coarse eighth-order reference-tail tranche are
 integrated, compiled, and released.
+
+The both-papers product-positivity consolidation and theorem-polish normalized
+Laplace-reflection tranche are also integrated and green.  The shifted-prefix
+branch holds the only current ordinary source lease, for the three-file signed
+dyadic-reflection tranche; no implementation handoff or build token exists yet.
 
 Theorem-polish source commit `665b6bce` is integrated as `c80f61c90`, repaired
 without statement changes at `6b6757e90`, and accepted after its focused
@@ -1041,6 +1090,15 @@ at `f85409a18` of `+FabiusFunction.FabiusSaddleReferenceTail` (3432 jobs) and
 `+FabiusFunction.GaussianPolynomialTail` (3436 jobs) both exited 0 without
 warnings.  An earlier command issued from a directory without a Lake project
 configuration exited before invoking Lean and supplies no validation evidence.
+
+For the product-positivity consolidation, separate serialized builds at
+`77e2f55d4` of `+FabiusFunction.ExactInversePower` (2013 jobs) and
+`+FabiusFunction.PaperStatements` (3242 jobs) both exited 0 without warnings.
+
+For normalized Laplace reflection, a serialized build at `853a09a80` of
+`+FabiusFunction.ProbabilityLaplaceMoments` completed 3188 jobs and exited 0.
+It reported one nonblocking `unnecessarySimpa` linter in the new reflection
+proof and no other warning.
 
 On EVO, exact shifted-prefix merge `4367a7f86` and tree `db635e6a073b`
 preserved source commits `8021c555f` and `f7152d5fc`.  Separate sequential
