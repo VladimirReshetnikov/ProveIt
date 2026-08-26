@@ -7,8 +7,8 @@ This file implements the per-branch registry fallback in
 SYNC Fabius
 branch / worktree / machine: codex/fabius-both-papers /
   /home/codex/src/Proofs / codexbox
-fetched main SHA: 682222de194637f3a5650b7c1ffce349577cb5ae
-HEAD and dirty paths: 45b4816c06f6d9e735df97de80e98ccb2447023c;
+fetched main SHA: c9d20ed14c7572d4f3f1361c7883085eaf5bb0d8
+HEAD and dirty paths: 4694e0d96ed33da24d5dffeb58a4ce510ff18e98;
   only this registry handoff is dirty
 writing (exact paths):
   docs/registry/codex-fabius-both-papers.md
@@ -70,7 +70,8 @@ completed commits: Lower-Lambert source checkpoint `1da2fde2285e3970267b7dc2561b
   checkpoint `45b4816c06f6d9e735df97de80e98ccb2447023c`, which proves that the
   exponential of the literal uncorrected Wikipedia logarithmic expression is
   not asymptotically equivalent to any bounded Fabius solution at the positive
-  zero endpoint
+  zero endpoint; clean merge `4694e0d96ed33da24d5dffeb58a4ce510ff18e98`
+  incorporates current fetched main `c9d20ed14`
 validated (exact command, SHA/state, exit code): coordinator board records
   serialized immutable `lake build +FabiusFunction.LowerLambertW` at
   `4c6bbac41`, exit 0, with its source blob unchanged on current main;
