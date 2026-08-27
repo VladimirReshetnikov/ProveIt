@@ -33,6 +33,7 @@ import FabiusFunction.ThueMorseHessenberg
 import FabiusFunction.ThueMorsePartition
 import FabiusFunction.ThueMorseIntegerLift
 import FabiusFunction.ThueMorseBoundaryFlatness
+import FabiusFunction.ThueMorseDirichlet
 import FabiusFunction.LacunaryRieszIntegral
 import FabiusFunction.GelfondLogisticBound
 import FabiusFunction.GeometricScaleProducts
