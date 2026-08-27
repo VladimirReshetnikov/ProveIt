@@ -14,8 +14,9 @@ Fourier--Laplace ``Wick rotation'' into a theorem on the whole complex plane:
 `exp (-z/2) * G(z) = Q(i z/2)`.
 
 The module also records the finite products and their exact shell
-factorization.  Thus the centered tail has no first-order exponential term;
-it is literally a smaller copy of the same centered entire function.
+factorization.  Thus the centered shell law has no separate exponential
+prefactor: its tail is literally a smaller copy of the same centered entire
+function.
 -/
 
 set_option autoImplicit false
