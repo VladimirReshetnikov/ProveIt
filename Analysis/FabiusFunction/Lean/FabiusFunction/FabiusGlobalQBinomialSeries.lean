@@ -106,25 +106,41 @@ theorem qBinomialFabiusGlobalSummand_independent
   rw [qBinomialFabiusGlobalSummand_eq,
     qBinomialFabiusGlobalSummand_eq]
 
-/-- The norms of the literal summands are summable for every nonnegative real
+/-- The norms of the literal q-binomial summands are summable at every real
 input and every real or complex translation. -/
+theorem summable_norm_qBinomialFabiusGlobalSummand_all
+    (K : Type*) [RCLike K] (q : K) (x : ℝ) :
+    Summable (fun m : ℕ => ‖qBinomialFabiusGlobalSummand K q x m‖) := by
+  exact (summable_norm_globalBinaryReductionSummand_all
+    fabius fabius_spec x).congr
+      (fun m => by rw [qBinomialFabiusGlobalSummand_eq]; simp)
+
+set_option linter.unusedVariables false in
+/-- Compatibility form of absolute summability on nonnegative inputs.  The
+Fabius witness and domain hypothesis are retained for source compatibility. -/
 theorem summable_norm_qBinomialFabiusGlobalSummand
     (K : Type*) [RCLike K]
     (F : BoundedFabius) (hF : IsFabius F)
     (q : K) (x : ℝ) (hx : 0 ≤ x) :
-    Summable (fun m : ℕ => ‖qBinomialFabiusGlobalSummand K q x m‖) := by
-  exact (summable_norm_globalBinaryReductionSummand F hF x hx).congr
-    (fun m => by rw [qBinomialFabiusGlobalSummand_eq]; simp)
+    Summable (fun m : ℕ => ‖qBinomialFabiusGlobalSummand K q x m‖) :=
+  summable_norm_qBinomialFabiusGlobalSummand_all K q x
 
-/-- The literal formula is absolutely summable for every nonnegative real
-input and every real or complex translation. -/
+/-- The literal q-binomial series is summable at every real input and every
+real or complex translation. -/
+theorem summable_qBinomialFabiusGlobalSummand_all
+    (K : Type*) [RCLike K] (q : K) (x : ℝ) :
+    Summable (qBinomialFabiusGlobalSummand K q x) :=
+  Summable.of_norm
+    (summable_norm_qBinomialFabiusGlobalSummand_all K q x)
+
+set_option linter.unusedVariables false in
+/-- Compatibility form of summability on nonnegative inputs. -/
 theorem summable_qBinomialFabiusGlobalSummand
     (K : Type*) [RCLike K]
     (F : BoundedFabius) (hF : IsFabius F)
     (q : K) (x : ℝ) (hx : 0 ≤ x) :
     Summable (qBinomialFabiusGlobalSummand K q x) :=
-  Summable.of_norm
-    (summable_norm_qBinomialFabiusGlobalSummand K F hF q x hx)
+  summable_qBinomialFabiusGlobalSummand_all K q x
 
 /-- All-real `HasSum` core of the source-literal identity, simultaneously
 over `ℝ` and `ℂ`.  Nonpositive inputs give the zero series. -/
