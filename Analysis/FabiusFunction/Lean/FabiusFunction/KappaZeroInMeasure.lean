@@ -112,7 +112,7 @@ theorem measureReal_log_prod_ge_le {ε : ℝ} (hε : 0 < ε) {n : ℕ}
     constructor
     · intro h
       by_contra hc
-      push_neg at hc
+      push Not at hc
       have hsq := pow_lt_pow_left₀ hc (abs_nonneg _) two_ne_zero
       rw [sq_abs] at hsq
       linarith

@@ -7,9 +7,9 @@ import Mathlib.Topology.MetricSpace.Pseudo.Constructions
 This module packages the finite q-binomial coefficients that arise after
 reindexing the proposed discrete-limit formula.  It identifies the complete
 row generating polynomial and its dyadic roots, derives exact q-Richardson
-cancellation, proves that every row has mass one, gives both an exact formula
-and a uniform bound for its total variation, and supplies a general finite-row
-Toeplitz convergence theorem.
+cancellation for sequences in arbitrary `ℚ`-modules, proves that every row has
+mass one, gives both an exact formula and a uniform bound for its total
+variation, and supplies a general finite-row Toeplitz convergence theorem.
 
 The range-length convention uses a half-cell correction.  In particular it
 continues to encode the original inclusive upper bound when that bound is
@@ -306,11 +306,110 @@ theorem sum_range_discreteLimitWeight_mul_pow_eq_zero_iff
       z / 2 = (2 : ℚ) ^ (r + 1) / 2 := by rw [hz]
       _ = (2 : ℚ) ^ r := by rw [pow_succ]; ring
 
-/-- Exact q-Richardson cancellation on the dyadic geometric grid.  If the
-error of a rational sequence is a linear combination of the first `n` modes
-`p ↦ 2 ^ (-(r + 1) * p)`, then the `n`-th Toeplitz row applied at the samples
-`2 * n - j` recovers the constant term exactly.  The coefficient `a r`
-corresponds to the mode with ratio `2 ^ (-(r + 1))`. -/
+private theorem sum_range_discreteLimitWeight_mul_dyadicMode
+    (n r : ℕ) (hr : r < n) :
+    (∑ j ∈ Finset.range (n + 1),
+      discreteLimitWeight n j *
+        (1 / 2 : ℚ) ^ ((r + 1) * (2 * n - j))) = 0 := by
+  have hroot :
+      (∑ j ∈ Finset.range (n + 1),
+        discreteLimitWeight n j * ((2 : ℚ) ^ (r + 1)) ^ j) = 0 :=
+    (sum_range_discreteLimitWeight_mul_pow_eq_zero_iff n
+      ((2 : ℚ) ^ (r + 1))).2 ⟨r, hr, rfl⟩
+  have hsplit (j : ℕ) (hj : j ∈ Finset.range (n + 1)) :
+      (1 / 2 : ℚ) ^ ((r + 1) * (2 * n - j)) =
+        (1 / 2 : ℚ) ^ ((r + 1) * (2 * n)) *
+          ((2 : ℚ) ^ (r + 1)) ^ j := by
+    have hjle : j ≤ n :=
+      Nat.le_of_lt_succ (Finset.mem_range.mp hj)
+    have hsubadd : 2 * n - j + j = 2 * n :=
+      Nat.sub_add_cancel (by omega)
+    have hexponents :
+        (r + 1) * (2 * n - j) + (r + 1) * j =
+          (r + 1) * (2 * n) := by
+      rw [← Nat.mul_add, hsubadd]
+    have hinverse :
+        ((2 : ℚ) ^ (r + 1)) ^ j *
+            (1 / 2 : ℚ) ^ ((r + 1) * j) = 1 := by
+      calc
+        ((2 : ℚ) ^ (r + 1)) ^ j *
+              (1 / 2 : ℚ) ^ ((r + 1) * j) =
+            (2 : ℚ) ^ ((r + 1) * j) *
+              (1 / 2 : ℚ) ^ ((r + 1) * j) := by
+          rw [← pow_mul]
+        _ = ((2 : ℚ) * (1 / 2 : ℚ)) ^ ((r + 1) * j) := by
+          rw [mul_pow]
+        _ = 1 := by norm_num
+    calc
+      (1 / 2 : ℚ) ^ ((r + 1) * (2 * n - j)) =
+          (1 / 2 : ℚ) ^ ((r + 1) * (2 * n - j)) * 1 := by ring
+      _ = (1 / 2 : ℚ) ^ ((r + 1) * (2 * n - j)) *
+            (((2 : ℚ) ^ (r + 1)) ^ j *
+              (1 / 2 : ℚ) ^ ((r + 1) * j)) := by
+          rw [hinverse]
+      _ = ((1 / 2 : ℚ) ^ ((r + 1) * (2 * n - j)) *
+            (1 / 2 : ℚ) ^ ((r + 1) * j)) *
+              ((2 : ℚ) ^ (r + 1)) ^ j := by ring
+      _ = (1 / 2 : ℚ) ^ ((r + 1) * (2 * n)) *
+            ((2 : ℚ) ^ (r + 1)) ^ j := by
+          rw [← pow_add, hexponents]
+  calc
+    (∑ j ∈ Finset.range (n + 1),
+        discreteLimitWeight n j *
+          (1 / 2 : ℚ) ^ ((r + 1) * (2 * n - j))) =
+        (1 / 2 : ℚ) ^ ((r + 1) * (2 * n)) *
+          ∑ j ∈ Finset.range (n + 1),
+            discreteLimitWeight n j * ((2 : ℚ) ^ (r + 1)) ^ j := by
+      rw [Finset.mul_sum]
+      apply Finset.sum_congr rfl
+      intro j hj
+      rw [hsplit j hj]
+      ring
+    _ = 0 := by rw [hroot, mul_zero]
+
+/-- A Toeplitz row annihilates each dyadic geometric mode below its order,
+after the scalar coefficient of that mode acts on an arbitrary vector in a
+`ℚ`-module.  This is the reusable linear core of exact q-Richardson
+cancellation. -/
+theorem sum_range_discreteLimitWeight_mul_geometricMode_smul_eq_zero
+    {M : Type*} [AddCommMonoid M] [Module ℚ M]
+    (n r : ℕ) (hr : r < n) (v : M) :
+    (∑ j ∈ Finset.range (n + 1),
+      (discreteLimitWeight n j *
+        (1 / 2 : ℚ) ^ ((r + 1) * (2 * n - j))) • v) = 0 := by
+  rw [← Finset.sum_smul,
+    sum_range_discreteLimitWeight_mul_dyadicMode n r hr, zero_smul]
+
+/-- Exact q-Richardson cancellation on the dyadic geometric grid in an
+arbitrary `ℚ`-module.  If a module-valued sequence has error in the span of
+the first `n` modes `p ↦ (1 / 2) ^ ((r + 1) * p)`, then the `n`-th Toeplitz
+row recovers its constant term exactly. -/
+theorem discreteLimitWeight_qRichardson_exact_module
+    {M : Type*} [AddCommMonoid M] [Module ℚ M]
+    (n : ℕ) (u : ℕ → M) (L : M) (a : ℕ → M)
+    (hu : ∀ p, u p =
+      L + ∑ r ∈ Finset.range n,
+        (1 / 2 : ℚ) ^ ((r + 1) * p) • a r) :
+    (∑ j ∈ Finset.range (n + 1),
+      discreteLimitWeight n j • u (2 * n - j)) = L := by
+  have herror :
+      (∑ r ∈ Finset.range n, ∑ j ∈ Finset.range (n + 1),
+        discreteLimitWeight n j •
+          ((1 / 2 : ℚ) ^ ((r + 1) * (2 * n - j)) • a r)) = 0 := by
+    apply Finset.sum_eq_zero
+    intro r hr
+    simpa only [smul_smul] using
+      (sum_range_discreteLimitWeight_mul_geometricMode_smul_eq_zero
+        n r (Finset.mem_range.mp hr) (a r))
+  simp_rw [hu, smul_add, Finset.smul_sum]
+  rw [Finset.sum_add_distrib, ← Finset.sum_smul,
+    sum_range_discreteLimitWeight, one_smul,
+    Finset.sum_comm, herror, add_zero]
+
+/-- Rational specialization of exact q-Richardson cancellation.  If the
+error is a linear combination of the first `n` dyadic geometric modes, then
+the `n`-th Toeplitz row at the samples `2 * n - j` recovers the constant term
+exactly. -/
 theorem discreteLimitWeight_qRichardson_exact
     (n : ℕ) (u : ℕ → ℚ) (L : ℚ) (a : ℕ → ℚ)
     (hu : ∀ p, u p =
@@ -318,87 +417,22 @@ theorem discreteLimitWeight_qRichardson_exact
         a r * (1 / 2 : ℚ) ^ ((r + 1) * p)) :
     (∑ j ∈ Finset.range (n + 1),
       discreteLimitWeight n j * u (2 * n - j)) = L := by
-  have hmode (r : ℕ) (hr : r < n) :
-      (∑ j ∈ Finset.range (n + 1),
-        discreteLimitWeight n j *
-          (1 / 2 : ℚ) ^ ((r + 1) * (2 * n - j))) = 0 := by
-    have hroot :
-        (∑ j ∈ Finset.range (n + 1),
-          discreteLimitWeight n j * ((2 : ℚ) ^ (r + 1)) ^ j) = 0 :=
-      (sum_range_discreteLimitWeight_mul_pow_eq_zero_iff n
-        ((2 : ℚ) ^ (r + 1))).2 ⟨r, hr, rfl⟩
-    have hsplit (j : ℕ) (hj : j ∈ Finset.range (n + 1)) :
-        (1 / 2 : ℚ) ^ ((r + 1) * (2 * n - j)) =
-          (1 / 2 : ℚ) ^ ((r + 1) * (2 * n)) *
-            ((2 : ℚ) ^ (r + 1)) ^ j := by
-      have hjle : j ≤ n :=
-        Nat.le_of_lt_succ (Finset.mem_range.mp hj)
-      have hsubadd : 2 * n - j + j = 2 * n :=
-        Nat.sub_add_cancel (by omega)
-      have hexponents :
-          (r + 1) * (2 * n - j) + (r + 1) * j =
-            (r + 1) * (2 * n) := by
-        rw [← Nat.mul_add, hsubadd]
-      have hinverse :
-          ((2 : ℚ) ^ (r + 1)) ^ j *
-              (1 / 2 : ℚ) ^ ((r + 1) * j) = 1 := by
-        calc
-          ((2 : ℚ) ^ (r + 1)) ^ j *
-                (1 / 2 : ℚ) ^ ((r + 1) * j) =
-              (2 : ℚ) ^ ((r + 1) * j) *
-                (1 / 2 : ℚ) ^ ((r + 1) * j) := by
-            rw [← pow_mul]
-          _ = ((2 : ℚ) * (1 / 2 : ℚ)) ^ ((r + 1) * j) := by
-            rw [mul_pow]
-          _ = 1 := by norm_num
-      calc
-        (1 / 2 : ℚ) ^ ((r + 1) * (2 * n - j)) =
-            (1 / 2 : ℚ) ^ ((r + 1) * (2 * n - j)) * 1 := by ring
-        _ = (1 / 2 : ℚ) ^ ((r + 1) * (2 * n - j)) *
-              (((2 : ℚ) ^ (r + 1)) ^ j *
-                (1 / 2 : ℚ) ^ ((r + 1) * j)) := by
-            rw [hinverse]
-        _ = ((1 / 2 : ℚ) ^ ((r + 1) * (2 * n - j)) *
-              (1 / 2 : ℚ) ^ ((r + 1) * j)) *
-                ((2 : ℚ) ^ (r + 1)) ^ j := by ring
-        _ = (1 / 2 : ℚ) ^ ((r + 1) * (2 * n)) *
-              ((2 : ℚ) ^ (r + 1)) ^ j := by
-            rw [← pow_add, hexponents]
+  have hu' : ∀ p, u p =
+      L + ∑ r ∈ Finset.range n,
+        (1 / 2 : ℚ) ^ ((r + 1) * p) • a r := by
+    intro p
     calc
-      (∑ j ∈ Finset.range (n + 1),
-          discreteLimitWeight n j *
-            (1 / 2 : ℚ) ^ ((r + 1) * (2 * n - j))) =
-          (1 / 2 : ℚ) ^ ((r + 1) * (2 * n)) *
-            ∑ j ∈ Finset.range (n + 1),
-              discreteLimitWeight n j * ((2 : ℚ) ^ (r + 1)) ^ j := by
-        rw [Finset.mul_sum]
+      u p = L + ∑ r ∈ Finset.range n,
+          a r * (1 / 2 : ℚ) ^ ((r + 1) * p) := hu p
+      _ = L + ∑ r ∈ Finset.range n,
+          (1 / 2 : ℚ) ^ ((r + 1) * p) • a r := by
+        refine congrArg (fun x : ℚ => L + x) ?_
         apply Finset.sum_congr rfl
-        intro j hj
-        rw [hsplit j hj]
-        ring
-      _ = 0 := by rw [hroot, mul_zero]
-  have herror :
-      (∑ r ∈ Finset.range n, ∑ j ∈ Finset.range (n + 1),
-        discreteLimitWeight n j *
-          (a r * (1 / 2 : ℚ) ^ ((r + 1) * (2 * n - j)))) = 0 := by
-    apply Finset.sum_eq_zero
-    intro r hr
-    calc
-      (∑ j ∈ Finset.range (n + 1),
-          discreteLimitWeight n j *
-            (a r * (1 / 2 : ℚ) ^ ((r + 1) * (2 * n - j)))) =
-          a r * ∑ j ∈ Finset.range (n + 1),
-            discreteLimitWeight n j *
-              (1 / 2 : ℚ) ^ ((r + 1) * (2 * n - j)) := by
-        rw [Finset.mul_sum]
-        apply Finset.sum_congr rfl
-        intro j _hj
-        ring
-      _ = 0 := by
-        rw [hmode r (Finset.mem_range.mp hr), mul_zero]
-  simp_rw [hu, mul_add, Finset.mul_sum]
-  rw [Finset.sum_add_distrib, ← Finset.sum_mul,
-    sum_range_discreteLimitWeight, one_mul, Finset.sum_comm, herror, add_zero]
+        intro r _hr
+        simpa only [smul_eq_mul] using
+          (mul_comm (a r) ((1 / 2 : ℚ) ^ ((r + 1) * p)))
+  simpa only [smul_eq_mul] using
+    (discreteLimitWeight_qRichardson_exact_module n u L a hu')
 
 private theorem quarter_add_pow_le_halfQPochhammer_succ (n : ℕ) :
     (1 / 4 : ℚ) + (1 / 2 : ℚ) ^ (n + 2) ≤

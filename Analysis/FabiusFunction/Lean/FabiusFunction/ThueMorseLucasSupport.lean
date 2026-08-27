@@ -330,6 +330,7 @@ private theorem sum_oddBinomialIndices_thueMorseSign_mul_eq_sum_powerset
   refine Finset.sum_congr rfl fun T _ => ?_
   rw [thueMorseSign_sum_two_pow]
   push_cast
+  rfl
 
 /-- **Actual-index sparse Prouhet cancellation.**  Let `k` run over the
 indices for which `C(n,k)` is odd, equivalently over the natural-number

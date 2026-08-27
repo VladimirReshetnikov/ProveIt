@@ -37,6 +37,8 @@ with the integer having exactly those binary digits.
 * `mixedDifference_insert` -- the recurrence
   `Δ_(insert i s) f x = Δ_s f x - Δ_s f (step i +ᵥ x)`.
 * `mixedDifference_eq_sum_powerset_smul` -- its full powerset expansion.
+* `mixedDifference_polynomial_eq_coeff_card` -- the exact bridge to the
+  arbitrary-step polynomial coefficient extractor.
 * `dyadicMixedDifference` -- the compatibility specialization at the dyadic
   steps `2^j • h`.
 * `sum_thueMorseSign_smul_eq_mixedDifference` -- the dyadic Thue--Morse
@@ -119,6 +121,25 @@ theorem mixedDifference_insert
     (mixedDifference_insert (step := step) (s := (∅ : Finset ι))
       (f := f) (x := x) (i := i) (hi := by simp))
 
+/-- **Polynomial mixed differences extract one coefficient.**  For an
+arbitrary finite family of ring-valued steps and a polynomial of degree at
+most the number of steps, the order-free mixed difference is its top
+coefficient times the universal factorial-step product.
+
+This theorem is the exact bridge between the operator API of this module and
+the arbitrary-step Prouhet engine of `ThueMorseSparseProuhet`; neither
+dyadic arithmetic nor distinctness or nonzeroness of the steps is needed. -/
+theorem mixedDifference_polynomial_eq_coeff_card
+    {R ι : Type*} [CommRing R] (step : ι → R) (s : Finset ι)
+    (p : Polynomial R) (hdeg : p.natDegree ≤ s.card) (x : R) :
+    mixedDifference step s (fun y => p.eval y) x =
+      p.coeff s.card *
+        ((-1 : R) ^ s.card * (s.card.factorial : R) * ∏ i ∈ s, step i) := by
+  rw [mixedDifference_eq_sum_powerset_smul]
+  simpa only [vadd_eq_add, add_comm, zsmul_eq_mul, Int.cast_pow, Int.cast_neg,
+    Int.cast_one] using
+      sum_powerset_neg_one_pow_eval_eq_coeff_card s step p hdeg x
+
 /-! ## Dyadic specialization -/
 
 /-- The dyadic mixed-difference operator `∏_(j<m) (I - T_(2^j h))`, now
@@ -139,7 +160,7 @@ theorem dyadicMixedDifference_succ {M A : Type*} [AddCommMonoid M]
       dyadicMixedDifference h m f x -
         dyadicMixedDifference h m f (x + 2 ^ m • h) := by
   unfold dyadicMixedDifference
-  rw [Finset.range_succ, mixedDifference_insert (hi := by simp)]
+  rw [Finset.range_add_one, mixedDifference_insert (hi := by simp)]
   simp only [vadd_eq_add]
   rw [add_comm (2 ^ m • h) x]
 
