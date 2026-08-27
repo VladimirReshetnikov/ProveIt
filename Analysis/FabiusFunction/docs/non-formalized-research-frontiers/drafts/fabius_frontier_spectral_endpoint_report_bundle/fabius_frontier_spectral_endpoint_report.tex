@@ -1392,6 +1392,24 @@ $4^r-1$.  Since
 \]
 the denominator geometry is again governed by a base-$1/4$ $q$-Pochhammer symbol.
 
+\paragraph{Post-snapshot Lean status.}
+The universal algebraic shape of \eqref{eq:partition-moments} is now
+formalized in \texttt{ExponentialPartition.lean}: with
+\[
+ E_r=\frac{2^{2r-1}B_{2r}}{r(4^r-1)(2r)!},
+\]
+\texttt{partitionExpSum\_eq\_sum\_div} identifies
+\(\texttt{partitionExpSum}\ E\ N\) with the displayed partition sum
+before multiplication by \((2N)!\).
+\texttt{ExponentialBell.lean} further identifies that coefficient
+function with \texttt{SaddleExpansion.expCoeff}.
+\texttt{MomentCumulantAlgebra.lean} supplies the corresponding generic
+complete-Bell and inverse moment--cumulant transforms, their recurrence,
+and normalized inverse laws.  These are universal coefficient identities
+only: the displayed cumulant formula, its identification with \(c_N\),
+and the specialized Bernoulli--Mersenne recurrence remain separate formal
+obligations.  The \statusN\ classifications above therefore remain unchanged.
+
 \subsection{A direct proof of the first-harmonic scale}
 For $k\ne0$, Stirling's formula on vertical lines gives
 \[
