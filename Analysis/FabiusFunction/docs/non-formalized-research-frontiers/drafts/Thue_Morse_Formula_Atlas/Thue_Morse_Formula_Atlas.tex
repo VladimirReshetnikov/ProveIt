@@ -563,6 +563,135 @@ epsilon := 1 - 2*tau
 \end{lstlisting}
 \end{algorithm}
 
+\subsection{The sequence is primitive recursive}
+\label{sec:primitive-recursive}
+
+The automaton above bounds the \emph{memory} needed to generate the
+sequence.  The following statement bounds the \emph{recursion} needed to
+define it, and it is what licenses the fixed, computable step count of
+Algorithm~\ref{alg:xor-fold}.
+
+\begin{theorem}[Primitive recursiveness]
+\label{thm:primitive-recursive}
+The binary weight \(\wt\), the zero--one sequence \(\tau\), and the
+signed sequence \(\eps\) are primitive recursive functions.
+Consequently all three are computable, and the evil and odious sets are
+decidable.
+\end{theorem}
+
+This is not quite the content of \eqref{eq:tau-recursion}.  That
+recurrence computes \(\tau(n)\) from \(\tau(\lfloor n/2\rfloor)\),
+whereas the official definition of a primitive recursive function permits
+a recursive call only at the immediate predecessor \(n-1\).  A recursion
+that descends by halving is a \emph{course-of-values} recursion, and the
+device that reduces it to the official scheme is to carry the entire
+history along.  We isolate that device once, in the generality every
+base-\(b\) digit recursion needs.
+
+\begin{lemma}[Recursion along a primitive recursive descent]
+\label{lem:descent-recursion}
+Let \(d\) be primitive recursive with \(d(n)<n\) for every
+\(n\ge1\), let \(g\) be primitive recursive, and let \(z\) be a
+constant.  Then the unique function \(f\) satisfying
+\begin{equation}
+  f(0)=z,
+  \qquad
+  f(n)=g\bigl(n,f(d(n))\bigr)\quad(n\ge1)
+  \label{eq:descent-recursion}
+\end{equation}
+is primitive recursive.  No hypothesis is imposed on \(d(0)\).
+\end{lemma}
+
+\begin{proof}
+Let \(F(n)\) code the list \(\langle f(0),\ldots,f(n-1)\rangle\) of
+all values below \(n\), and let \(\lambda(L,i)\) be the primitive
+recursive lookup that returns the \(i\)-th entry of the list coded by
+\(L\) when \(i\) is in range, and reports failure otherwise.  Then
+\(F\) obeys an \emph{ordinary} primitive recursion,
+\[
+  F(0)=\langle\;\rangle,
+  \qquad
+  F(n+1)=F(n)\frown
+  \begin{cases}
+    g\bigl(n,\lambda(F(n),d(n))\bigr)
+      &\text{if that lookup succeeds},\\
+    z&\text{otherwise.}
+  \end{cases}
+\]
+For \(n\ge1\) the entry demanded carries index \(d(n)<n\) and is
+therefore already present in the length-\(n\) list \(F(n)\), so the
+appended value is \(g(n,f(d(n)))=f(n)\); at \(n=0\) the list is empty,
+every lookup fails, and the appended value is \(z=f(0)\).  Note that the
+fallback must guard the \emph{whole} step expression rather than the
+lookup alone --- defaulting only the lookup would append \(g(0,z)\)
+instead of \(z\) --- and that this is exactly what frees the statement
+from any assumption on \(d(0)\).  Hence \(F\) is primitive recursive,
+and so is \(f(n)=\lambda(F(n+1),n)\).
+\end{proof}
+
+\begin{proof}[Proof of \Cref{thm:primitive-recursive}]
+Deleting the last binary digit of \(n\) deletes exactly that digit from
+the digit sum, so
+\begin{equation}
+  \wt(n)=\wt\bigl(\lfloor n/2\rfloor\bigr)+(n\bmod2),
+  \label{eq:weight-halving}
+\end{equation}
+an identity that holds at \(n=0\) as well, both sides being zero.  This
+is \eqref{eq:descent-recursion} with \(d(n)=\lfloor n/2\rfloor\),
+which is primitive recursive and satisfies \(d(n)<n\) for \(n\ge1\);
+with \(z=0\); and with \(g(n,s)=s+(n\bmod2)\), primitive recursive
+because addition and remainder are.  Lemma~\ref{lem:descent-recursion} then
+makes \(\wt\) primitive recursive, whence \(\tau=\wt\bmod2\) is
+primitive recursive by composition, and so is \(\eps=1-2\tau\) by
+\eqref{eq:normalizations}.  Primitive recursive functions are total and
+computable, and a set whose characteristic function is primitive recursive
+is decidable.
+\end{proof}
+
+\begin{remark}
+Identity \eqref{eq:weight-halving} is the unsigned form of
+\eqref{eq:tau-recursion}: reducing it modulo two gives
+\(\tau(n)=\tau(\lfloor n/2\rfloor)\xor(n\bmod2)\), which is the two
+clauses \(\tau(2n)=\tau(n)\) and \(\tau(2n+1)=1-\tau(n)\) written as
+one.  The bounded expression
+\(\wt(n)=\sum_{i<n}\bigl(\lfloor n/2^i\rfloor\bmod2\bigr)\) yields a
+second, recursion-free proof, because bounded sums of primitive recursive
+functions are primitive recursive; the descent formulation is preferred
+here because it is the one that survives the passage to base \(q\) in
+\Cref{sec:base-q}.
+\end{remark}
+
+\emph{Formal versions.}  \Cref{thm:primitive-recursive} and
+Lemma~\ref{lem:descent-recursion} are fully formal
+(\path{ThueMorseComputability.lean}).  The descent scheme is
+\lean{Fabius.primrec\_of\_descent}, stated for an arbitrary primitive
+recursive \(d\) with \(d(n)<n\) and an arbitrary \texttt{Primcodable}
+codomain --- more general than the halving case needed here, which is
+recorded separately as \lean{Fabius.primrec\_of\_halving}.  The halving
+identity \eqref{eq:weight-halving} is
+\lean{Fabius.binaryWeight\_div\_two}, and the three
+primitive-recursiveness statements are
+\lean{Fabius.primrec\_binaryWeight},
+\lean{Fabius.primrec\_thueMorseBit}, and
+\lean{Fabius.primrec\_thueMorseSign};
+\lean{Fabius.nat\_primrec\_binaryWeight} and
+\lean{Fabius.nat\_primrec\_thueMorseBit} record the same facts in the
+textbook form \texttt{Nat.Primrec} for functions
+\(\mathbb N\to\mathbb N\).  The computability corollaries are
+\lean{Fabius.computable\_thueMorseBit} and
+\lean{Fabius.computable\_thueMorseSign}, and decidability of the odious
+set is \lean{Fabius.primrecPred\_thueMorseBool}.  The signed sequence
+needs no integer arithmetic at all: every function out of \texttt{Bool}
+is primitive recursive, so \(\eps\) is the Boolean word followed by
+\(b\mapsto\pm1\).  The Boolean word itself
+(\lean{Fabius.thueMorseBool}) carries the automaticity clauses
+\lean{Fabius.thueMorseBool\_two\_mul} and
+\lean{Fabius.thueMorseBool\_two\_mul\_add\_one}.  Finally
+\lean{Fabius.primrec\_thueMorsePrefix} states that
+\(n\mapsto\tau(0)\tau(1)\cdots\tau(n-1)\) is primitive recursive:
+the infinite word can be \emph{generated}, not merely decided one letter
+at a time.
+
 \subsection{Exact weight distribution in a dyadic block}
 \label{sec:weight-distribution}
 
@@ -5775,7 +5904,7 @@ valuation, carry, and Pascal-row formulas remain genuinely base-two features.
 \subsection{Formalized modules (August 2026)}
 \label{sec:formalized-modules}
 
-The first tranches of the formalization now exist as fifty-six
+The first tranches of the formalization now exist as fifty-seven
 compiled Lean modules in \repo{}, complementing the corpus modules
 (\path{Parity.lean}, \path{TwoAdic.lean}, \path{ThueMorsePrefix.lean},
 \path{ThueMorseGenerating.lean}, \path{ThueMorseExponential.lean},
@@ -5843,6 +5972,7 @@ Module & Contents \\
 \path{ThueMorseQuarterProduct.lean} & The quarter product \(G(1/4,3/4)=1/2\) from Woods--Robbins by parity splitting, and the value \(1/2\) of the half-shifted block product. \\
 \path{ThueMorseDiscSeries.lean} & The Thue--Morse power series as a holomorphic function on the unit disc: locally uniform convergence, the analytic Mahler equation and its iterate, and the real-ray bound \(|F(x)|\le1-x\). \\
 \path{ThueMorseNaturalBoundary.lean} & The natural-boundary theorem: radial vanishing at dyadic roots of unity, two-power roots approximating every circle point, and the double identity-theorem argument. \\
+\path{ThueMorseComputability.lean} & Primitive recursiveness: the descent-recursion scheme for course-of-values recursions, the halving identity for the binary weight, and the primitive recursive and computable forms of \(\wt\), \(\tau\), and \(\eps\). \\
 \path{ThueMorseNewman.lean} & Newman's positivity theorem: residue-class sign sums, the modulo-three parity system, the base-four collapse with disjoint boundary corrections, and the strong induction. \\
 \path{ThueMorseGelfond.lean} & Gelfond's sharp uniform bound: the one-variable sum-of-squares inequality \(\varphi^2(t)\varphi(2t)\le3\sqrt3\), the telescoped doubling-orbit product bound, and the exponential-sum form with constant \(2/\sqrt3\). \\
 \path{PeriodDoublingHankel.lean} & The mod-two Hankel engine: reusable block-determinant eliminations, parity interleavings, the period-doubling bit, and the four determinant halvings forcing every \(\mathbb F_2\)-determinant to equal one. \\
