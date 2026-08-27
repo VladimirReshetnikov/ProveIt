@@ -1,4 +1,3 @@
-import FabiusFunction.PolynomialMomentFunctional
 import FabiusFunction.GeometricLagrange
 import FabiusFunction.Paper05442
 import FabiusFunction.Paper06487
