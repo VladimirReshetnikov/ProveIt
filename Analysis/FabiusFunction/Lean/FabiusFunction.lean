@@ -72,6 +72,7 @@ import FabiusFunction.GeometricCesaro
 import FabiusFunction.LogSineMeanZero
 import FabiusFunction.LogTanMeanZero
 import FabiusFunction.SquareLogIntegrable
+import FabiusFunction.MartingaleOrthogonality
 import FabiusFunction.ShellLinearity
 import FabiusFunction.BoundaryLayerMax
 import FabiusFunction.VarianceBookkeeping
