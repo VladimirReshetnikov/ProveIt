@@ -83,6 +83,7 @@ import FabiusFunction.LogFactorConcavity
 import FabiusFunction.BoundednessSkeleton
 import FabiusFunction.TransferOperatorStep
 import FabiusFunction.LasotaYorkeIteration
+import FabiusFunction.DiagonalSelection
 import FabiusFunction.NegativeLaplace
 import FabiusFunction.ProbabilityLaplaceMoments
 import FabiusFunction.UnitLaplaceMomentBounds
