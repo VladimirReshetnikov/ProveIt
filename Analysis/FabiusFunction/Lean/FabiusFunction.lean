@@ -64,6 +64,8 @@ import FabiusFunction.GeometricCesaro
 import FabiusFunction.LogSineMeanZero
 import FabiusFunction.ShellLinearity
 import FabiusFunction.BoundaryLayerMax
+import FabiusFunction.VarianceBookkeeping
+import FabiusFunction.SharpGelfondEquality
 import FabiusFunction.NegativeLaplace
 import FabiusFunction.ProbabilityLaplaceMoments
 import FabiusFunction.UnitLaplaceMomentBounds

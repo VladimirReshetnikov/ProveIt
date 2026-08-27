@@ -100,4 +100,25 @@ theorem integral_comp_doubling (g : ℝ → ℝ) (hg : Continuous g) :
         refine intervalIntegral.integral_congr fun t _ => ?_
         norm_num
 
+/-- **The covariance-halving mechanism**: if the observable satisfies
+the Perron halving law `f(x/2) + f((x+1)/2) = f(x)` — as the doubling
+cocycle `ψ = log (2 sin π·)` does, by
+`DoublingCocycleIdentities.log_two_sin_half_add` — then pairing it with
+any function of the doubled angle halves the pairing:
+`∫₀¹ f·(g∘T) = ½ ∫₀¹ f·g`.  Iterating over `r` doubling steps, this is
+the exact geometric decay `c_r = c_0/2^r` of the doubling covariances
+behind the audit's variance `π²/4` (here in its continuous-observable
+form; the cocycle itself requires the `L²` extension). -/
+theorem integral_mul_comp_doubling_of_halving {f g : ℝ → ℝ}
+    (hf : Continuous f) (hg : Continuous g)
+    (hhalf : ∀ x, f (x / 2) + f ((x + 1) / 2) = f x) :
+    ((∫ t in (0:ℝ)..(1/2:ℝ), f t * g (2 * t)) +
+      ∫ t in (1/2:ℝ)..1, f t * g (2 * t - 1)) =
+    (1 / 2) * ∫ t in (0:ℝ)..1, f t * g t := by
+  rw [integral_mul_comp_doubling f g hf hg,
+    ← intervalIntegral.integral_const_mul]
+  refine intervalIntegral.integral_congr fun t _ => ?_
+  rw [hhalf t]
+  ring
+
 end Fabius
