@@ -1,3 +1,4 @@
+import FabiusFunction.FinitePolynomialFunctional
 import Mathlib.Algebra.BigOperators.Intervals
 import Mathlib.Algebra.BigOperators.Ring.Finset
 import Mathlib.LinearAlgebra.Lagrange
@@ -30,11 +31,15 @@ degree or positive starting-index assumption is used, so `n = 0` and
 
 * `sum_lagrangeEvalWeight_mul_eval` reproduces a degree-bounded polynomial at
   an arbitrary evaluation point.
+* `eq_lagrangeEvalWeight_of_moments` characterizes the Lagrange weights as
+  the unique finite row on the prescribed node set with those moments.
 * `sum_lagrangeEvalWeight_mul_pow_card` gives the exact first omitted moment.
 * `sum_geometricLagrangeWeight_mul_pow` gives all geometric moments through
   degree `n`, including the `0 ^ 0` boundary.
 * `sum_geometricLagrangeWeight_mul_pow_succ` evaluates the first surviving
   moment.
+* `sum_geometricLagrangeWeight_mul_shifted_pow_eq_zero` transports the
+  vanishing moments to a geometric block beginning at any index.
 * `geometricLagrange_richardson_exact` is module-valued finite Richardson
   exactness at an arbitrary starting index.
 -/
@@ -78,6 +83,61 @@ theorem sum_lagrangeEvalWeight_mul_eval
       exact mul_comm _ _
     _ = p.eval x := by
       rw [← Lagrange.eq_interpolate hvs hp]
+
+/-- **Moment characterization of Lagrange evaluation weights.**  On a finite
+family of distinct nodes, the Lagrange row is the unique row on `s` whose
+monomial moments through degree `s.card - 1` equal evaluation at `x`.
+
+The statement is pointwise and imposes no nonzeroness condition on the
+candidate weights.  Membership of `i` makes the node family nonempty, so the
+degree-`s.card - 1` expansion also covers singleton families without a
+separate case. -/
+theorem eq_lagrangeEvalWeight_of_moments
+    {F : Type*} [Field F] {ι : Type*}
+    (s : Finset ι) (v : ι → F) (x : F) (hvs : Set.InjOn v s)
+    (weight : ι → F)
+    (hmoment : ∀ d < s.card,
+      ∑ j ∈ s, weight j * v j ^ d = x ^ d)
+    {i : ι} (hi : i ∈ s) :
+    weight i = lagrangeEvalWeight s v x i := by
+  classical
+  let p := Lagrange.basis s v i
+  have hcard : 0 < s.card := Finset.card_pos.mpr ⟨i, hi⟩
+  have hpred : s.card - 1 + 1 = s.card := by omega
+  have hdegree_eq : p.natDegree = s.card - 1 := by
+    simpa only [p] using Lagrange.natDegree_basis hvs hi
+  have hdegree : p.natDegree ≤ s.card - 1 := hdegree_eq.le
+  have hdegree' : p.natDegree < s.card := by omega
+  have hexpand := sum_weight_mul_eval₂_eq_sum_coeff_mul_moment
+    (RingHom.id F) s weight v p (s.card - 1) hdegree
+  rw [hpred] at hexpand
+  have hfunctional :
+      (∑ j ∈ s, weight j * p.eval (v j)) = p.eval x := by
+    calc
+      (∑ j ∈ s, weight j * p.eval (v j)) =
+          ∑ d ∈ Finset.range s.card,
+            p.coeff d * ∑ j ∈ s, weight j * v j ^ d := by
+        simpa only [Polynomial.eval₂_id, RingHom.id_apply] using hexpand
+      _ = ∑ d ∈ Finset.range s.card, p.coeff d * x ^ d := by
+        apply Finset.sum_congr rfl
+        intro d hd
+        rw [hmoment d (Finset.mem_range.mp hd)]
+      _ = p.eval x := (Polynomial.eval_eq_sum_range' hdegree' x).symm
+  calc
+    weight i = ∑ j ∈ s, weight j * p.eval (v j) := by
+      symm
+      rw [← Finset.add_sum_erase _ _ hi,
+        show p.eval (v i) = 1 by
+          simpa only [p] using Lagrange.eval_basis_self hvs hi,
+        mul_one, add_eq_left]
+      apply Finset.sum_eq_zero
+      intro j hj
+      rcases Finset.mem_erase.mp hj with ⟨hji, hjs⟩
+      rw [show p.eval (v j) = 0 by
+          simpa only [p] using Lagrange.eval_basis_of_ne hji.symm hjs,
+        mul_zero]
+    _ = p.eval x := hfunctional
+    _ = lagrangeEvalWeight s v x i := rfl
 
 /-- Monomial form of finite Lagrange exactness.  Every moment of degree
 `d < s.card` reproduces `x ^ d`. -/
@@ -215,6 +275,31 @@ theorem sum_geometricLagrangeWeight_mul_pow_eq_zero
   simpa only [zero_pow hdpos.ne'] using
     sum_geometricLagrangeWeight_mul_pow q n d hnode hd
 
+/-- Vanishing of a positive geometric mode on an arbitrarily shifted block.
+The common factor `q ^ start` is pulled out, so no nonzero hypothesis on `q`
+or positivity hypothesis on `start` is needed. -/
+theorem sum_geometricLagrangeWeight_mul_shifted_pow_eq_zero
+    {F : Type*} [Field F] (q : F) (n start d : ℕ)
+    (hnode : Set.InjOn (fun k : ℕ => q ^ k) (Finset.range (n + 1)))
+    (hdpos : 0 < d) (hd : d ≤ n) :
+    (∑ k ∈ Finset.range (n + 1),
+      geometricLagrangeWeight q n k * (q ^ (start + k)) ^ d) = 0 := by
+  calc
+    (∑ k ∈ Finset.range (n + 1),
+        geometricLagrangeWeight q n k * (q ^ (start + k)) ^ d) =
+        (q ^ start) ^ d *
+          ∑ k ∈ Finset.range (n + 1),
+            geometricLagrangeWeight q n k * (q ^ k) ^ d := by
+      rw [Finset.mul_sum]
+      apply Finset.sum_congr rfl
+      intro k _hk
+      rw [show q ^ (start + k) = q ^ start * q ^ k by rw [pow_add],
+        mul_pow]
+      ac_rfl
+    _ = 0 := by
+      rw [sum_geometricLagrangeWeight_mul_pow_eq_zero
+        q n d hnode hdpos hd, mul_zero]
+
 /-- Product form of the first surviving geometric moment.  It is the exact
 degree-`n + 1` interpolation defect at zero and remains valid for `n = 0`. -/
 theorem sum_geometricLagrangeWeight_mul_pow_succ_product
@@ -260,26 +345,6 @@ theorem geometricLagrange_richardson_exact
       (limit + ∑ d ∈ Finset.range n,
         (q ^ (start + k)) ^ (d + 1) • coeff d)) = limit := by
   classical
-  have hmode (d : ℕ) (hd : d < n) :
-      (∑ k ∈ Finset.range (n + 1),
-        geometricLagrangeWeight q n k *
-          (q ^ (start + k)) ^ (d + 1)) = 0 := by
-    calc
-      (∑ k ∈ Finset.range (n + 1),
-          geometricLagrangeWeight q n k *
-            (q ^ (start + k)) ^ (d + 1)) =
-          (q ^ start) ^ (d + 1) *
-            ∑ k ∈ Finset.range (n + 1),
-              geometricLagrangeWeight q n k * (q ^ k) ^ (d + 1) := by
-        rw [Finset.mul_sum]
-        apply Finset.sum_congr rfl
-        intro k _hk
-        rw [show q ^ (start + k) = q ^ start * q ^ k by rw [pow_add],
-          mul_pow]
-        ac_rfl
-      _ = 0 := by
-        rw [sum_geometricLagrangeWeight_mul_pow_eq_zero q n (d + 1)
-          hnode (Nat.succ_pos d) (Nat.succ_le_iff.mpr hd), mul_zero]
   have herror :
       (∑ k ∈ Finset.range (n + 1), geometricLagrangeWeight q n k •
         (∑ d ∈ Finset.range n,
@@ -304,7 +369,9 @@ theorem geometricLagrange_richardson_exact
       _ = 0 := by
         apply Finset.sum_eq_zero
         intro d hd
-        rw [hmode d (Finset.mem_range.mp hd), zero_smul]
+        rw [sum_geometricLagrangeWeight_mul_shifted_pow_eq_zero
+          q n start (d + 1) hnode (Nat.succ_pos d)
+            (Nat.succ_le_iff.mpr (Finset.mem_range.mp hd)), zero_smul]
   calc
     (∑ k ∈ Finset.range (n + 1), geometricLagrangeWeight q n k •
         (limit + ∑ d ∈ Finset.range n,

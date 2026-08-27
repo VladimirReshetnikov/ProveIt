@@ -120,7 +120,7 @@
 \author{Human-readable synthesis of the formal development\\
 \small Vladimir Reshetnikov's \texttt{ProveIt} repository}
 \date{Repository snapshot: 27 August 2026\\
-\small commit \nolinkurl{540d360b64a461652dbd799da961a0b7cd96a50d}}
+\small commit \nolinkurl{570ae6ef4f893fed6cafac00c19a1a242ecd4a08}}
 
 \begin{document}
 \maketitle
@@ -1723,6 +1723,93 @@ reindexing is \lean{evenMersenneProduct_eq_prod_Ico}, and positivity is
 \lean{momentNumerator_pos}.  Thus \eqref{eq:moment-natural-normalization} records the
 proved natural normalization, not a claim that the displayed denominator is already
 reduced.
+
+\subsection{Universal Bell and cumulant transforms}
+\label{sec:moment-cumulant-algebra}
+
+The algebra converting moments to cumulants is independent of the particular Fabius
+law.  Let \(R\) be any commutative \(\Q\)-algebra and let \(a:\N\to R\).  Write
+\begin{equation}
+ (\mathcal Na)_n=\frac{a_n}{n!},
+ \qquad
+ (\mathcal Da)_n=n!a_n.                                  \label{eq:factorial-normalization}
+\end{equation}
+These changes of coefficient convention are mutually inverse.  For cumulants
+\(\kappa:\N\to R\) and moments \(\mu:\N\to R\), define the complete Bell and
+moment--cumulant transforms by the formal identities
+\begin{align}
+ \mathcal B(\kappa)_n
+   &=n![X^n]\exp\!\left(\sum_{j\ge1}\kappa_j\frac{X^j}{j!}\right),
+                                                               \label{eq:complete-bell-transform}\\
+ \mathcal K(\mu)_n
+   &=n![X^n]\log\!\left(1+\sum_{j\ge1}\mu_j\frac{X^j}{j!}\right).
+                                                               \label{eq:moment-cumulant-transform}
+\end{align}
+Here the exponential and logarithm are formal power series implemented by finite
+coefficient recurrences; no topology or field structure on \(R\) is being assumed.
+
+\begin{proposition}[Bell recurrence and exact inversion]
+\label{thm:moment-cumulant-algebra}
+For every \(n\in\N\),
+\begin{align}
+ \mathcal B(\kappa)_0&=1,
+ &\mathcal K(\mu)_0&=0,                                  \label{eq:bell-cumulant-zero}\\
+ \mathcal B(\kappa)_{n+1}
+   &=\sum_{j=0}^{n}\binom nj\kappa_{j+1}
+       \mathcal B(\kappa)_{n-j}.                         \label{eq:complete-bell-recurrence}
+\end{align}
+At every index, including zero, the two composites are exactly
+\begin{align}
+ \mathcal B(\mathcal K(\mu))_n
+   &=\begin{cases}1,&n=0,\\ \mu_n,&n>0,\end{cases}
+ &
+ \mathcal K(\mathcal B(\kappa))_n
+   &=\begin{cases}0,&n=0,\\ \kappa_n,&n>0.\end{cases}    \label{eq:bell-cumulant-inverses}
+\end{align}
+Consequently the transforms are inverse as functions when \(\mu_0=1\) and
+\(\kappa_0=0\), respectively.  More precisely, if \(f:R\to S\) is a morphism of
+commutative \(\Q\)-algebras, then
+\begin{align}
+ f\!\left(\mathcal B_R(\kappa)_n\right)
+   &=\mathcal B_S(f\circ\kappa)_n,
+ &
+ f\!\left(\mathcal K_R(\mu)_n\right)
+   &=\mathcal K_S(f\circ\mu)_n.                           \label{eq:bell-cumulant-naturality}
+\end{align}
+
+More generally, if \(E\) and \(A\) are ordinary coefficient sequences for the formal
+exponent and mass series, then the coefficient-convention bridge is
+\begin{equation}
+ \mathcal B(\mathcal D E)=\mathcal D(\lean{expCoeff}(E)),
+ \qquad
+ \mathcal K(\mathcal D A)=\mathcal D(\lean{logCoeff}(A)). \label{eq:bell-ordinary-bridge}
+\end{equation}
+Thus the same theorem applies without modification to polynomial rings, function rings,
+and scalar extensions, not only to real- or rational-valued moment sequences.
+\end{proposition}
+
+\begin{proof}[Formal proof]
+The operations \(\mathcal N,\mathcal D,\mathcal B,\mathcal K\) are respectively
+\lean{factorialNormalize}, \lean{factorialDenormalize},
+\lean{completeBellPolynomial}, and \lean{momentCumulant}.  The two identities following
+\eqref{eq:factorial-normalization} are
+\lean{factorialNormalize_factorialDenormalize} and
+\lean{factorialDenormalize_factorialNormalize}.  The zero values and
+\eqref{eq:complete-bell-recurrence} are \lean{completeBellPolynomial_zero},
+\lean{momentCumulant_zero}, and \lean{completeBellPolynomial_succ}.
+
+Equation \eqref{eq:bell-cumulant-inverses} is
+\lean{completeBellPolynomial_momentCumulant} together with
+\lean{momentCumulant_completeBellPolynomial}; its normalized function-level forms are
+\lean{completeBellPolynomial_momentCumulant_of_zero_eq_one} and
+\lean{momentCumulant_completeBellPolynomial_of_zero_eq_zero}.  The bridge
+\eqref{eq:bell-ordinary-bridge} is
+\lean{completeBellPolynomial_factorialDenormalize} and
+\lean{momentCumulant_factorialDenormalize}.  Finally, functoriality is
+\eqref{eq:bell-cumulant-naturality}, formalized by
+\lean{map_completeBellPolynomial} and \lean{map_momentCumulant}.  All declarations are in
+\path{MomentCumulantAlgebra.lean} and assume only a commutative \(\Q\)-algebra.
+\end{proof}
 
 \subsection{The probability--Laplace bridge}
 \label{sec:probability-laplace-bridge}
@@ -4935,7 +5022,7 @@ Moments and exact arithmetic &
 \path{Arithmetic.lean}, \path{AnalyticMoments.lean},
 \path{MomentPowerSeries.lean}, \path{UnitLaplaceMomentBounds.lean},
 \path{NormalizedEvenMoments.lean},
-\path{BernoulliRecurrences.lean},
+\path{BernoulliRecurrences.lean}, \path{MomentCumulantAlgebra.lean},
 \path{ExactInversePower.lean}, \path{Parity.lean}, \path{TwoAdic.lean}\\
 Dyadic and \(q\)-binomial formulas &
 \path{DyadicClosedForm.lean}, \path{DyadicAnalytic.lean}, \path{GlobalDyadic.lean},
@@ -5131,8 +5218,8 @@ V.~Reshetnikov,
 V.~Reshetnikov,
 \newblock \emph{ProveIt: Analysis/FabiusFunction},
 \newblock Lean~4 formal development, source snapshot
-\texttt{540d360b64a461652dbd799da961a0b7cd96a50d}, consulted 27 August 2026.
-\newblock \url{https://github.com/VladimirReshetnikov/ProveIt/tree/540d360b64a461652dbd799da961a0b7cd96a50d/Analysis/FabiusFunction}.
+\texttt{570ae6ef4f893fed6cafac00c19a1a242ecd4a08}, consulted 27 August 2026.
+\newblock \url{https://github.com/VladimirReshetnikov/ProveIt/tree/570ae6ef4f893fed6cafac00c19a1a242ecd4a08/Analysis/FabiusFunction}.
 
 \end{thebibliography}
 

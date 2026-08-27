@@ -2409,21 +2409,44 @@ lacunary product.
 
 \emph{Formal versions.}  \Cref{thm:partition-formula} is
 \lean{Fabius.thueMorse\_partition\_formula} and
-\cref{cor:Bell-coefficient} is \lean{Fabius.thueMorse\_bell\_formula}
-(\path{ThueMorsePartition.lean}), both over \(\mathbb Q\) with the
-weighted partitions realized as the finset
-\lean{Fabius.weightedPartitions} of multiplicity vectors.  The
-formalization replaces the analytic exponentiation argument by finite
-combinatorics: the partition sum obeys the \emph{marked-part
-recurrence} \(nP(n)=\sum_{j\le n}jx_jP(n-j)\) --- proved for an
-arbitrary coefficient sequence into any characteristic-zero field
-(\lean{Fabius.partitionExpSum\_recurrence}) by distributing the
-weight \(n=\sum jm_j\) over the parts and removing the marked part
---- while the ruler convolution (\cref{thm:ruler-convolution}) says
-the sign sequence obeys the same recurrence at \(x_j=-a_j/j\); the
-division-by-\(n\) uniqueness lemma
+\cref{cor:Bell-coefficient} is \lean{Fabius.thueMorse\_bell\_formula};
+their \texttt{\_field} companions hold over every characteristic-zero
+field.  These Thue--Morse specializations remain in
+\path{ThueMorsePartition.lean}.
+
+The reusable finite combinatorics has been extracted to
+\path{ExponentialPartition.lean}.  For a coefficient sequence
+\(E\colon\mathbb N\to R\) in any commutative \(\mathbb Q\)-algebra,
+\lean{Fabius.partitionExpSum} uses rational reciprocal factorials acting
+by scalars and satisfies both the marked-part recurrence
+\[
+ nP_E(n)=\sum_{j=1}^{n}jE_jP_E(n-j)
+\]
+(\lean{Fabius.partitionExpSum\_recurrence}) and its normalized successor
+form (\lean{Fabius.partitionExpSum\_succ}).  No cancellation in \(R\) is
+used, so rings with zero divisors are allowed.
+\lean{Fabius.partitionExpSum\_eq\_sum\_div} recovers the familiar
+quotient notation over characteristic-zero fields.
+
+Finally, \path{ExponentialBell.lean} proves the function equality
+\[
+ \lean{Fabius.partitionExpSum}\ E
+   =\lean{Fabius.SaddleExpansion.expCoeff}\ E
+\]
+over the same generality.  Thus the recursive all-orders saddle
+coefficient engine has a finite weighted-partition expansion.  The later
+module \path{MomentCumulantAlgebra.lean} factorially normalizes that layer
+into the named transforms \lean{Fabius.completeBellPolynomial} and
+\lean{Fabius.momentCumulant}, proves the classical Bell recurrence and
+their normalized inverse laws, and establishes functoriality over
+commutative \(\mathbb Q\)-algebras.  This remains generic formal algebra:
+it supplies no Thue--Morse-specific probabilistic interpretation.
+
+For \(E_j=-a_j/j\), the ruler convolution
+(\cref{thm:ruler-convolution}) says that the sign sequence obeys the same
+recurrence; the division-by-\(n\) uniqueness lemma
 \lean{Fabius.eq\_of\_ruler\_recurrence} then identifies the two.
-No power series, exponentials, or convergence enter the proof.
+No power series, exponentials, or convergence enter this specialization.
 
 \subsection{A Hessenberg determinant}
 
@@ -6026,7 +6049,7 @@ valuation, carry, and Pascal-row formulas remain genuinely base-two features.
 \subsection{Formalized modules (August 2026)}
 \label{sec:formalized-modules}
 
-The first tranches of the formalization now exist as sixty-eight
+The first tranches of the formalization now exist as seventy-one
 compiled Lean modules in \repo{}, complementing the corpus modules
 (\path{Parity.lean}, \path{TwoAdic.lean}, \path{ThueMorsePrefix.lean},
 \path{ThueMorseGenerating.lean}, \path{ThueMorseExponential.lean},
@@ -6077,7 +6100,10 @@ Module & Contents \\
 \path{ThueMorseArithmeticFilter.lean} & The root-of-unity filter for arithmetic progressions over any field (division-free form), the boxed rarefied formula, and the even-modulus collapse. \\
 \path{ToeplitzHessenberg.lean} & Cramer's rule for a known solution over any commutative ring; the triangular and the lower Toeplitz--Hessenberg band matrices of arbitrary band data; the triangular determinant \(\prod_{i<n}d_i\); and the expansion-free Toeplitz--Hessenberg determinant formula, read off from any solution of the convolution system, in matrix and in scalar-recurrence form. \\
 \path{ThueMorseHessenberg.lean} & The ruler convolution as an instance of that band system: the triangular ruler system with determinant \(n!\), the Hessenberg formula \(\det H_n=(-1)^nn!\,\eps_n\) for every \(n\ge0\) by one column rotation, and the sharp absolute value \(|\det H_n|=n!\). \\
-\path{ThueMorsePartition.lean} & Weighted partitions, the marked-part recurrence of \(\exp(\sum x_jz^j)\) over any characteristic-zero field, recurrence uniqueness, and the partition and Bell formulae for \(\eps_n\). \\
+\path{ExponentialPartition.lean} & Weighted multiplicity vectors and reciprocal-factorial partition sums over every commutative \(\mathbb Q\)-algebra; the marked-part and normalized successor recurrences; and the quotient-notation bridge for characteristic-zero fields. \\
+\path{ThueMorsePartition.lean} & Ruler-recurrence uniqueness and the partition and explicit Bell-polynomial formulae for \(\eps_n\), obtained by specializing the generic partition engine. \\
+\path{ExponentialBell.lean} & Equality of the finite weighted-partition coefficient function with \path{SaddleExpansion.expCoeff} over every commutative \(\mathbb Q\)-algebra, by recurrence uniqueness. \\
+\path{MomentCumulantAlgebra.lean} & Factorial normalization and denormalization; the complete Bell and inverse moment--cumulant transforms; their classical recurrence, normalized all-index inverse laws, and functoriality over every commutative \(\mathbb Q\)-algebra. \\
 \path{ThueMorseIntegerLift.lean} & The integral algebraic lift constructed in closed Catalan--binomial form; Catalan parity at Mersenne indices; the unconditional parity theorem \(c_n\equiv\tau(n)\), \(\eps_n=(-1)^{c_n}\). \\
 \path{ThueMorseBoundaryFlatness.lean} & The lacunary product \(\mathcal E(t)\) as an infinite product: self-similarity, positivity, monotonicity, the effective upper bound \(\mathcal E(t)\le2^{\binom m2}t^m\) at every level \(m\), and the matching lower bound \(2^{\binom m2}(t/2)^m\mathcal E(\frac12)\le\mathcal E(t)\) under the dyadic matching \(\frac12\le2^mt\le2\). \\
 \path{ThueMorseDirichlet.lean} & The shifted Dirichlet series in the real regime: conditional convergence for every \(\sigma>0\) by Dirichlet's test, and the dyadic parameter equation \(D(\sigma,a)=2^{-\sigma}(D(\sigma,\frac a2)-D(\sigma,\frac{a+1}2))\). \\
