@@ -14,9 +14,9 @@ product `rvachevFourierProduct`.  This module transfers its headline results
 to the Fourier transform `rvachevFourier F` of any bounded Fabius solution.
 
 The facade covers the canonical product, dyadic shell factorization, baseline
-and global gauge bounds, the strict global peak at zero, the exact extremal
-peak ray, side- and central-lobe maxima, the Thue--Morse lobe sign, and the
-exact real zero order.
+decay, positive-ray and two-sided global gauge bounds, the strict global peak
+at zero, the exact extremal peak ray, side- and central-lobe maxima, the
+Thue--Morse lobe sign, and the exact real zero order.
 Normalization, evenness, real-axis real-valuedness, and the zero set already
 have direct `rvachevFourier` theorems in `FourierProduct`, so they are not
 duplicated here.
@@ -60,6 +60,19 @@ theorem rvachevFourier_two_pow_mul
         rvachevFourier F z := by
   simpa only [rvachevFourier_eq_product F hF] using
     rvachevFourierProduct_two_pow_mul k z
+
+/-- Total cross-multiplied real-axis shell identity for the actual Fourier
+transform.  It includes both the zero ray `y = 0` and the empty shell
+`k = 0`. -/
+theorem norm_rvachevFourier_two_pow_mul_cross
+    (F : BoundedFabius) (hF : IsFabius F) (k : ℕ) (y : ℝ) :
+    ((2 : ℝ) ^ (k * (k + 1) / 2) * (Real.pi * |y|) ^ k) *
+        ‖rvachevFourier F ((2 : ℂ) ^ k * (y : ℂ))‖ =
+      (∏ j ∈ Finset.range k,
+        |Real.sin ((2 : ℝ) ^ (j + 1) * Real.pi * y)|) *
+        ‖rvachevFourier F (y : ℂ)‖ := by
+  simpa only [rvachevFourier_eq_product F hF] using
+    norm_rvachevFourierProduct_two_pow_mul_cross k y
 
 /-- Exact real-axis modulus factorization along a nonzero dyadic ray. -/
 theorem norm_rvachevFourier_two_pow_mul
@@ -123,6 +136,16 @@ theorem norm_rvachevFourier_le_decayGauge
       ‖rvachevFourier F (x : ℂ)‖ ≤ C * decayGauge kappaInf x := by
   simpa only [rvachevFourier_eq_product F hF] using
     norm_rvachevFourierProduct_le_decayGauge
+
+/-- Two-sided global `kappaInf`-gauge envelope for the actual Fourier
+transform: one positive constant controls both real-frequency tails in the
+form `‖rvachevFourier F x‖ ≤ C · E_{kappaInf}(|x|)` whenever `1 ≤ |x|`. -/
+theorem norm_rvachevFourier_le_decayGauge_abs
+    (F : BoundedFabius) (hF : IsFabius F) :
+    ∃ C : ℝ, 0 < C ∧ ∀ x : ℝ, 1 ≤ |x| →
+      ‖rvachevFourier F (x : ℂ)‖ ≤ C * decayGauge kappaInf |x| := by
+  simpa only [rvachevFourier_eq_product F hF] using
+    norm_rvachevFourierProduct_le_decayGauge_abs
 
 /-! ## Exact extremal peak ray -/
 
