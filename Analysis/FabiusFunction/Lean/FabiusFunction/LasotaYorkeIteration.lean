@@ -134,6 +134,32 @@ theorem lasota_yorke_iterate_of_lt {α β C : ℝ} (hα : 0 ≤ α)
           (mul_le_mul_of_nonneg_left hSle hC) hNφ)
     _ = α ^ n * L φ + C / (β - α) * β ^ n * N φ := by ring
 
+/-- **The invariant ball of a Lasota–Yorke pair**: for weak rate
+`β ≤ 1` and contraction `α < 1`, the operator maps the two-seminorm
+ball `{φ | N φ ≤ M, L φ ≤ C·M/(1-α)}` into itself.  This is the
+convex, uniformly Lipschitz (hence, by Arzelà–Ascoli, relatively
+compact) set on which the Perron eigenfunction of the RPF layer is to
+be located. -/
+theorem lasota_yorke_invariant_ball {α β C M : ℝ} (hα : 0 ≤ α)
+    (hα1 : α < 1) (hβ1 : β ≤ 1) (hC : 0 ≤ C)
+    (hL : ∀ ψ, L (T ψ) ≤ α * L ψ + C * N ψ)
+    (hN : ∀ ψ, N (T ψ) ≤ β * N ψ) (φ : E) (hNφ0 : 0 ≤ N φ)
+    (hφN : N φ ≤ M) (hφL : L φ ≤ C * M / (1 - α)) :
+    N (T φ) ≤ M ∧ L (T φ) ≤ C * M / (1 - α) := by
+  have h1α : 0 < 1 - α := by linarith
+  have hball : α * (C * M / (1 - α)) + C * M = C * M / (1 - α) := by
+    field_simp
+    ring
+  refine ⟨?_, ?_⟩
+  · calc N (T φ) ≤ β * N φ := hN φ
+      _ ≤ 1 * M := mul_le_mul hβ1 hφN hNφ0 zero_le_one
+      _ = M := one_mul M
+  · calc L (T φ) ≤ α * L φ + C * N φ := hL φ
+      _ ≤ α * (C * M / (1 - α)) + C * M :=
+          add_le_add (mul_le_mul_of_nonneg_left hφL hα)
+            (mul_le_mul_of_nonneg_left hφN hC)
+      _ = C * M / (1 - α) := hball
+
 /-- The concrete Doeblin–Fortet constant of the arithmetic transfer
 operator `𝓛₁` (`TransferOperatorStep`): with contraction `α = √2/4`,
 weak rate `β = √2/2` and coupling `C = π/2`, the remainder constant is
