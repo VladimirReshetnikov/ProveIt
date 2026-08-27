@@ -194,9 +194,17 @@ A targeted literature search located general Richardson-extrapolation theory and
 Every substantial assertion is tagged implicitly by its placement:
 \begin{itemize}
 \item Results in Sections~\ref{sec:tail}--\ref{sec:thue-morse-transfer} are \statusproved.
-\item The phase-locked Lambert transform in Section~\ref{sec:lambert} is \statusconditional: the interpolation algebra is proved here, while the input all-orders expansion is inherited from the frontier analysis.
+\item The phase-locked Lambert transform in Section~\ref{sec:lambert} is \statusconditional:
+the interpolation algebra is proved here, while the all-orders endpoint input is inherited
+from the formally verified endpoint theory.
 \item Items in Section~\ref{sec:open} are explicitly conjectural or open.
 \end{itemize}
+Here ``proved'' means proved in this mathematical report, not necessarily formalized in
+Lean.  In particular, the endpoint input is represented by
+\texttt{fabiusSaddleLogCoefficient},
+\path{log_fabius_sub_sharpLambertMain_hasAsymptoticExpansion}, and
+\path{log_fabius_sub_sharpLambertExpansion_isBigO} in the Lean development,
+whereas the sinc-tail and phase-extraction transforms remain formalization obligations.
 
 \section{Notation and structural background}
 \label{sec:notation}
@@ -348,7 +356,11 @@ The series is absolutely convergent and strictly positive for $t\ne0$.
 \end{theorem}
 
 \begin{proof}
-For $k\ge N+1$ we have $|t|/b^k\le\rho_N<\pi$, so every omitted sinc factor is positive. Hence truncation and limit have the same sign. Applying \cref{lem:logsinc} and using absolute convergence,
+For $k\ge N+1$ we have $|t|/b^k\le\rho_N<\pi$, so every omitted sinc factor is positive.
+Moreover, the logarithms of the omitted factors are absolutely summable by
+\cref{lem:logsinc}; their product therefore converges to a strictly positive, nonzero
+limit.  Hence truncation and limit have the same sign.  Applying the same expansion and
+using absolute convergence,
 \begin{align*}
 \log|P_b(t)|-\log|P_{b,N}(t)|
 &=\sum_{k=N+1}^{\infty}\log\sinc(t/b^k)\\
@@ -1290,7 +1302,15 @@ The analytic side can then proceed as follows:
 \item add termwise differentiation on compact zero-free intervals.
 \end{enumerate}
 
-The Lambert extraction theorem should remain in the frontier namespace until the exact all-orders endpoint expansion, including uniformity in phase and the precise main-term normalization, has a matching Lean theorem. The interpolation algebra itself can be formalized independently now.
+The endpoint input is already formalized with its exact phase and every finite remainder:
+the periodic coefficient functions are
+\texttt{fabiusSaddleLogCoefficient}, and the expansion is proved in
+\path{FabiusFullAsymptoticExpansion.lean}.  What remains in the frontier namespace is the
+phase-locked extraction transform itself and the verification that its weighted use of
+those uniform remainders has precisely the strength asserted in
+\cref{thm:Psi-extraction}.  The arbitrary-node interpolation foundation is already
+available in \path{GeometricLagrange.lean}; the closed reciprocal-grid weights and their
+all-residual moments are the next algebraic obligations.
 
 \section{Open problems and next frontier steps}
 \label{sec:open}
@@ -1307,19 +1327,45 @@ Because $\kappa_r(q)$ converges, the optimal $r$ may be much larger than in ordi
 
 \subsection{Monotonicity within each bracket parity}
 
-\begin{conjecture}[Nested parity brackets]
-For fixed admissible $(b,N,t)$,
+The sign theorem places every even level above the limit in modulus and every odd level
+below it, but it does not order two levels of the same parity.  In fact, such an ordering is
+false over the full parameter range $b>1$.  To see this directly, take
 \[
-|\widehat P_{b;N,0}|>|\widehat P_{b;N,2}|>
-|\widehat P_{b;N,4}|>\cdots>|P_b|
+ q=\frac45,\qquad b=q^{-1/2}=\frac{\sqrt5}{2},\qquad N=0,
+ \qquad \rho_0=\pi\sqrt{\frac{99}{100}},
+ \qquad t=b\rho_0=\pi\sqrt{\frac{99}{80}}.
 \]
-and
+This is admissible because $\rho_0<\pi$, and $P_{b,0}=1$ is the nonzero empty product.
+Substitution in the absolutely convergent series \eqref{eq:E-explicit}, with
+$a=(\rho_0/\pi)^2=99/100$, gives
 \[
-|\widehat P_{b;N,1}|<|\widehat P_{b;N,3}|<
-|\widehat P_{b;N,5}|<\cdots<|P_b|.
+\begin{array}{c|rrrr}
+r&0&1&2&3\\ \hline
+E_{b;0,r}(t)
+& 13.5220607386&-12.9320597704&16.5469385988&-14.7912158217.
+\end{array}
 \]
-\end{conjecture}
-The sign theorem proves only that each parity lies on the correct side. Nestedness would turn the transform into a canonical sequence of shrinking intervals and appears approachable from total positivity of the geometric interpolation kernel.
+Thus $E_{b;0,2}>E_{b;0,0}>0$ and
+$E_{b;0,3}<E_{b;0,1}<0$: both proposed same-parity monotonicities fail.
+These numbers are reproducible by summing the terms through $m=5000$ in
+\eqref{eq:E-explicit}.  The same majorization used in \cref{thm:error-bound} bounds the
+discarded tail, for each $0\le r\le3$, by
+\[
+ \frac{q^{r(r+1)/2}\zeta(2)}
+ {(q;q)_r(1-q)(5001)}\frac{a^{5001}}{1-a}<2\times10^{-22}.
+\]
+
+The correctly parameterized open question is therefore: for which pairs
+$(q,a)\in(0,1)^2$, and for which levels $s$, do
+\[
+ E_{2s}(q,a)>E_{2s+2}(q,a)>0,
+ \qquad
+ E_{2s+1}(q,a)<E_{2s+3}(q,a)<0,
+\]
+where $E_r(q,a)$ denotes the right-hand side of \eqref{eq:E-explicit} after replacing
+$(\rho_N/\pi)^2$ by $a$?  No nonempty parameter regime for these additional inequalities
+is asserted here.  Whenever they do hold, consecutive same-parity levels sharpen the
+certified brackets of \cref{cor:brackets}.
 
 \subsection{Global continuation across zeros}
 
@@ -1349,10 +1395,14 @@ The two mechanisms are complementary. One is globally algebraic in the truncatio
 
 \appendix
 
-\section{Complete audited TeX inventory}
+\section{Original audited TeX inventory}
 \label{app:inventory}
 
-This appendix lists the 57 distinct \texttt{.tex} paths included in the repository-wide overlap audit. Historical files are frozen versions and were treated as prior art even when their content has since been consolidated elsewhere.
+This appendix records the 57 distinct \texttt{.tex} paths included in the original
+repository-wide overlap audit.  It is provenance for that audit, not a current corpus
+index: subsequent frontier reports increased the present tree to 67 TeX sources.
+Historical files are frozen versions and were treated as prior art even when their content
+has since been consolidated elsewhere.
 
 \subsection{Living top-level and canonical sources (6)}
 \begin{enumerate}
