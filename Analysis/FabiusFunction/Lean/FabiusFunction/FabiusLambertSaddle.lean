@@ -117,12 +117,29 @@ theorem fabiusLambertPhase_gt_inv_log_two {x : ℝ}
     (div_lt_div_iff_of_pos_right hL).2 (by linarith)
   simpa only [one_div] using hdiv
 
+/-- On the full lower-branch domain, the phase lies at or beyond the turning
+value `1 / log 2`. -/
+theorem one_div_log_two_le_fabiusLambertPhase {x : ℝ} (hx : 0 < x)
+    (hsmall : Real.log 2 * x ≤ Real.exp (-1)) :
+    1 / Real.log 2 ≤ fabiusLambertPhase x := by
+  simpa only [fabiusLambertPhase] using
+    one_div_log_two_le_paperLambertN hx hsmall
+
 /-- Positivity of the lower-Lambert phase on its natural argument domain. -/
 theorem fabiusLambertPhase_pos_of_mem {x : ℝ}
     (hx : x ∈ Ioo (0 : ℝ) (Real.exp (-1) / Real.log 2)) :
     0 < fabiusLambertPhase x :=
   (inv_pos.mpr (Real.log_pos (by norm_num))).trans
     (fabiusLambertPhase_gt_inv_log_two hx)
+
+/-- Positivity of the lower-Lambert phase on the full lower-branch domain,
+including the finite branch point. -/
+theorem fabiusLambertPhase_pos_of_le {x : ℝ} (hx : 0 < x)
+    (hsmall : Real.log 2 * x ≤ Real.exp (-1)) :
+    0 < fabiusLambertPhase x := by
+  have hL : 0 < Real.log 2 := Real.log_pos (by norm_num)
+  exact lt_of_lt_of_le (one_div_pos.mpr hL)
+    (one_div_log_two_le_fabiusLambertPhase hx hsmall)
 
 /-- The derivative denominator `1 - log 2 * lambda` is strictly negative on
 the lower branch, equivalently `lambda` lies beyond the turning point. -/
