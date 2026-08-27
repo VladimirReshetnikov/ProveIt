@@ -23,6 +23,10 @@ integral term by term; absolute convergence justifies the interchange.
 * `thueMorseDirichlet_mellin` — **the Mellin representation**
   (the `D(s,a)` display of the atlas's Dirichlet–Mellin row, real
   regime).
+
+The two facts this file used to re-derive inline — `|ε(n)| = 1` and
+`e^(-t)^n = e^(-n·t)` — are now `abs_thueMorseSign_real` and
+`exp_neg_nat_mul` from `ThueMorseBoundaryFlatness`.
 -/
 
 set_option autoImplicit false
@@ -67,12 +71,8 @@ theorem thueMorseDirichlet_eq_tsum (σ a : ℝ) (hσ : 1 < σ) (ha : 0 < a) :
       (fun n => ?_) hp
     have hpos : (0 : ℝ) < (n : ℝ) + a := by positivity
     rw [norm_mul, Real.norm_eq_abs, Real.norm_eq_abs]
-    have h1 : |(thueMorseSign n : ℝ)| = 1 := by
-      rw [thueMorseSign]
-      rcases Nat.even_or_odd (binaryWeight n) with h | h
-      · rw [h.neg_one_pow]; norm_num
-      · rw [h.neg_one_pow]; norm_num
-    rw [h1, mul_one, abs_of_nonneg (Real.rpow_nonneg hpos.le _),
+    rw [abs_thueMorseSign_real n, mul_one,
+      abs_of_nonneg (Real.rpow_nonneg hpos.le _),
       Real.rpow_neg hpos.le, abs_of_pos hpos, one_div]
   have htend := hsummable.hasSum.tendsto_sum_nat
   exact Filter.Tendsto.limUnder_eq htend
@@ -95,11 +95,7 @@ theorem thueMorseDirichlet_mellin (σ a : ℝ) (hσ : 1 < σ) (ha : 0 < a) :
     rw [← tsum_thueMorseSign_exp_eq_lacunaryExpProduct t ht0,
       ← tsum_mul_left]
     refine tsum_congr fun n => ?_
-    have hxp : Real.exp (-t) ^ n = Real.exp (-((n : ℝ) * t)) := by
-      rw [← Real.exp_nat_mul]
-      congr 1
-      ring
-    rw [hxp]
+    rw [exp_neg_nat_mul]
     have hcomb : Real.exp (-(a * t)) * Real.exp (-((n : ℝ) * t)) =
         Real.exp (-(((n : ℝ) + a) * t)) := by
       rw [← Real.exp_add]
@@ -136,13 +132,8 @@ theorem thueMorseDirichlet_mellin (σ a : ℝ) (hσ : 1 < σ) (ha : 0 < a) :
     refine MeasureTheory.setIntegral_congr_fun measurableSet_Ioi
       fun t ht => ?_
     have ht0 : (0 : ℝ) < t := ht
-    have h1 : |(thueMorseSign n : ℝ)| = 1 := by
-      rw [thueMorseSign]
-      rcases Nat.even_or_odd (binaryWeight n) with h | h
-      · rw [h.neg_one_pow]; norm_num
-      · rw [h.neg_one_pow]; norm_num
     rw [norm_mul, norm_mul, Real.norm_eq_abs, Real.norm_eq_abs,
-      Real.norm_eq_abs, h1, one_mul,
+      Real.norm_eq_abs, abs_thueMorseSign_real n, one_mul,
       abs_of_nonneg (Real.rpow_nonneg ht0.le _),
       abs_of_nonneg (Real.exp_pos _).le]
   have hnormsum : Summable (fun n : ℕ =>

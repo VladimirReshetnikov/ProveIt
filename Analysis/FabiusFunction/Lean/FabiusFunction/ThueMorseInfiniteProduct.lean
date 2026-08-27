@@ -22,6 +22,10 @@ any commutative ring), while both partial scales converge.
   `hasProd_one_sub_pow_two_pow` and
   `tendsto_prod_one_sub_pow_two_pow` restate it as convergence of the
   partial products to the sum of the series.
+* `sum_range_two_pow_thueMorseSign_exp` — the *finite* identity on the
+  exponential ray, `∑_{n<2^m} ε(n)e^(-nt) = ∏_{j<m}(1 - e^(-2^j·t))`,
+  valid for every real `t`: the shared dyadic-partial-sum lemma of the
+  Mellin/Dirichlet layer.
 * `summable_thueMorseSign_mul_exp` — absolute convergence of the
   signed series at `e^(-t)`.
 * `tsum_thueMorseSign_exp_eq_lacunaryExpProduct` —
@@ -47,15 +51,8 @@ theorem summable_thueMorseSign_mul_pow {x : ℝ} (hx : |x| < 1) :
     summable_geometric_of_lt_one (abs_nonneg x) hx
   refine Summable.of_nonneg_of_le (fun n => norm_nonneg _)
     (fun n => ?_) hgeom
-  rw [norm_mul, norm_pow, Real.norm_eq_abs, Real.norm_eq_abs]
-  have hsign : |(thueMorseSign n : ℝ)| = 1 := by
-    rw [thueMorseSign]
-    rcases Nat.even_or_odd (binaryWeight n) with h | h
-    · rw [h.neg_one_pow]
-      norm_num
-    · rw [h.neg_one_pow]
-      norm_num
-  rw [hsign, one_mul]
+  rw [norm_mul, norm_pow, Real.norm_eq_abs, Real.norm_eq_abs,
+    abs_thueMorseSign_real n, one_mul]
 
 /-- The lacunary powers `x^(2^j)` are summable for `|x| < 1`: they are
 dominated by `|x|^j`, because `j ≤ 2^j`. -/
@@ -138,6 +135,31 @@ theorem abs_exp_neg_lt_one {t : ℝ} (ht : 0 < t) :
   rw [abs_of_pos (Real.exp_pos _)]
   exact Real.exp_lt_one_iff.mpr (by linarith)
 
+/-- **The dyadic partial sums on the exponential ray**: for every real
+`t` and every level `m`,
+`∑_{n<2^m} ε(n)·e^(-n·t) = ∏_{j<m}(1 - e^(-2^j·t))`.
+
+This is the finite identity `prod_one_sub_pow_eq_sum_thueMorseSign` at
+`x = e^(-t)`, both sides transported by `exp_neg_nat_mul` and
+`exp_neg_two_pow_mul`.  No convergence hypothesis is needed, so it also
+serves the dominated-convergence arguments downstream, where the
+partial products are exactly the objects trapped in `[0,1]`. -/
+theorem sum_range_two_pow_thueMorseSign_exp (t : ℝ) (m : ℕ) :
+    ∑ n ∈ range (2 ^ m),
+        (thueMorseSign n : ℝ) * Real.exp (-((n : ℝ) * t)) =
+      ∏ j ∈ range m, (1 - Real.exp (-((2 : ℝ) ^ j * t))) := by
+  calc ∑ n ∈ range (2 ^ m),
+      (thueMorseSign n : ℝ) * Real.exp (-((n : ℝ) * t))
+      = ∑ n ∈ range (2 ^ m),
+          (thueMorseSign n : ℝ) * Real.exp (-t) ^ n := by
+        refine Finset.sum_congr rfl fun n _ => ?_
+        rw [exp_neg_nat_mul]
+    _ = ∏ j ∈ range m, (1 - Real.exp (-t) ^ (2 ^ j)) :=
+        (prod_one_sub_pow_eq_sum_thueMorseSign (Real.exp (-t)) m).symm
+    _ = ∏ j ∈ range m, (1 - Real.exp (-((2 : ℝ) ^ j * t))) := by
+        refine Finset.prod_congr rfl fun j _ => ?_
+        rw [exp_neg_two_pow_mul]
+
 /-- Absolute convergence: `∑ ε(n)·e^(-nt)` is summable for `t > 0`. -/
 theorem summable_thueMorseSign_mul_exp (t : ℝ) (ht : 0 < t) :
     Summable (fun n : ℕ => (thueMorseSign n : ℝ) * Real.exp (-t) ^ n) :=
@@ -147,7 +169,7 @@ theorem summable_thueMorseSign_mul_exp (t : ℝ) (ht : 0 < t) :
 (`thm:infinite-product`): for every `t > 0`,
 `∑' n, ε(n)·e^(-nt) = ∏_{j≥0} (1 - e^(-2^j·t)) = 𝓔(t)`.  This is the
 general identity `tsum_thueMorseSign_mul_pow` at `x = e^(-t)`, the
-factors being rewritten by `e^(-t)^(2^j) = e^(-2^j·t)`. -/
+factors being rewritten by `exp_neg_two_pow_mul`. -/
 theorem tsum_thueMorseSign_exp_eq_lacunaryExpProduct (t : ℝ) (ht : 0 < t) :
     ∑' n : ℕ, (thueMorseSign n : ℝ) * Real.exp (-t) ^ n =
       lacunaryExpProduct t := by
@@ -155,10 +177,6 @@ theorem tsum_thueMorseSign_exp_eq_lacunaryExpProduct (t : ℝ) (ht : 0 < t) :
       ∏' j : ℕ, (1 - Real.exp (-(2 ^ j * t))) := rfl
   rw [tsum_thueMorseSign_mul_pow (abs_exp_neg_lt_one ht), hE]
   refine tprod_congr fun j => ?_
-  congr 1
-  rw [← Real.exp_nat_mul]
-  congr 1
-  push_cast
-  ring
+  rw [exp_neg_two_pow_mul]
 
 end Fabius

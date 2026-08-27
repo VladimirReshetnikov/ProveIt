@@ -25,6 +25,10 @@ theorem (and, eventually, Mahler-method arguments) rest:
   the sum is the lacunary product, and the first factor already
   vanishes at the boundary.
 * `thueMorseDiscSeries_zero` — `F(0) = 1`.
+
+The real-sign lemma `abs_thueMorseSign_real` used by
+`norm_thueMorseSign_complex` now lives in `ThueMorseBoundaryFlatness`,
+the common ancestor of the lacunary-exponential modules that share it.
 -/
 
 set_option autoImplicit false
@@ -36,15 +40,6 @@ namespace Fabius
 /-- The Thue–Morse power series `F(z) = ∑ ε(n)·zⁿ`. -/
 noncomputable def thueMorseDiscSeries (z : ℂ) : ℂ :=
   ∑' n : ℕ, (thueMorseSign n : ℂ) * z ^ n
-
-/-- The Thue–Morse sign has absolute value one over `ℝ`. -/
-theorem abs_thueMorseSign_real (n : ℕ) : |(thueMorseSign n : ℝ)| = 1 := by
-  rw [thueMorseSign]
-  rcases Nat.even_or_odd (binaryWeight n) with h | h
-  · rw [h.neg_one_pow]
-    norm_num
-  · rw [h.neg_one_pow]
-    norm_num
 
 /-- The Thue–Morse sign has norm one over `ℂ`. -/
 theorem norm_thueMorseSign_complex (n : ℕ) :
