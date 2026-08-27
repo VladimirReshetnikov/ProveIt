@@ -290,7 +290,7 @@ private theorem wrC_two_mul (N : ℕ) :
       ring
     rw [hsign1, hsign2, if_neg (by omega : ¬ 2 * j + 1 = 0)]
     rcases Nat.eq_zero_or_pos j with rfl | hj
-    · simp only [if_pos rfl, mul_zero, zero_add]
+    · simp only [mul_zero, zero_add]
       push_cast
       ring_nf
     · rw [if_neg (by omega : ¬ 2 * j = 0), if_neg (by omega)]
