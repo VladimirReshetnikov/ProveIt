@@ -107,6 +107,7 @@ import FabiusFunction.KappaZeroInMeasure
 import FabiusFunction.LogProductMoments
 import FabiusFunction.BaselineDecay
 import FabiusFunction.FluctuationTightness
+import FabiusFunction.LatticeFiber
 import FabiusFunction.BoundednessSkeleton
 import FabiusFunction.TransferOperatorStep
 import FabiusFunction.LasotaYorkeIteration
