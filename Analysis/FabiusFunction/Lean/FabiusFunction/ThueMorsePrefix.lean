@@ -20,8 +20,14 @@ at the right end of every dyadic block.  Those zero runs come from Prouhet
 cancellation, so the module also gives the block power sums
 `sum_{h < 2^r} t_h * h^d` a public name, `thueMorsePowerSum`
 (`DyadicClosedForm` proves the monomial statements only for a private copy),
-and upgrades them from monomials to arbitrary rational polynomials and to
-affine substitutions.
+and upgrades them from monomials to arbitrary polynomials and to affine
+substitutions.
+
+The block power sums have integer values, so the whole power-sum layer lives
+over an arbitrary commutative ring: `thueMorsePowerSumRing R` is the same sum
+computed in `R`, every identity is proved once over `ℤ` and transported along
+the unique ring map `ℤ → R`, and the rational and real statements are the
+instances `R = ℚ` and `R = ℝ`.
 
 It is a separate module because it is the base of the draft's whole discrete
 chain.  `FabiusFunction.ThueMorseGenerating` turns `iteratedPrefix` into a
@@ -43,15 +49,30 @@ to evaluate centered and translated exponential generating series.
 * `thueMorsePowerSum_eq_zero_of_lt`, `thueMorsePowerSum_self` -- Prouhet
   cancellation for `d < r`, and the sharp boundary value
   `(-1)^r * 2^C(r,2) * r!` at `d = r`.
+* `thueMorsePowerSumRing`, `thueMorsePowerSumRing_intCast` -- the same block
+  power sum with values in an arbitrary commutative ring `R`, and its
+  identification with the image of the integer instance `R = ℤ` under the
+  unique ring map `ℤ → R`.
+* `thueMorsePowerSumRing_succ`, `thueMorsePowerSumRing_eq_zero_of_lt`,
+  `thueMorsePowerSumRing_self` -- the half-block recurrence, Prouhet
+  cancellation and the sharp boundary value over `R`.
+* `thueMorse_polynomial_sum_eq_coeff_ring`,
+  `thueMorse_polynomial_sum_eq_zero_ring`,
+  `thueMorse_affine_power_sum_eq_zero_ring`,
+  `thueMorse_affine_power_sum_self_ring`,
+  `thueMorse_affine_power_sum_of_le_ring` -- coefficient extraction against a
+  polynomial of degree at most `r`, and the affine Prouhet formulas, over an
+  arbitrary commutative ring.
 * `thueMorse_polynomial_sum_eq_coeff`, `thueMorse_polynomial_sum_eq_zero`,
   `thueMorse_affine_power_sum_self`, and `thueMorse_affine_power_sum_of_le` --
-  a block sum against a rational polynomial of degree at most `r` returns its
-  degree-`r` coefficient times that factor; affine powers have a single
-  formula covering both the vanishing range and the sharp degree.
+  the rational instances: a block sum against a rational polynomial of degree
+  at most `r` returns its degree-`r` coefficient times that factor; affine
+  powers have a single formula covering both the vanishing range and the
+  sharp degree.
 * `thueMorse_affine_power_sum_eq_zero_real` and
-  `thueMorse_affine_power_sum_self_real` -- the corresponding affine
-  cancellation and sharp-degree formula over the reals, for direct use by
-  the analytic spline development.
+  `thueMorse_affine_power_sum_self_real` -- the real instances of the same
+  affine cancellation and sharp-degree formula, for direct use by the
+  analytic spline development.
 * `iteratedPrefix_dyadic_reverse_window`,
   `iteratedPrefix_dyadic_reverse_window_eq_zero_iff`, and the endpoint
   theorems -- on the `2^r-k` entries preceding the final `k` zeros of a
@@ -60,8 +81,9 @@ to evaluate centered and translated exponential generating series.
   `(-1)^(r-k)`, and `S^k(2^r) = -1`.
 
 The remaining public declarations are the definitional unfolding
-`iteratedPrefix_succ` and the half-block recurrence
-`thueMorsePowerSum_succ`, the `simp` normal forms (`iteratedPrefix_zero`,
+`iteratedPrefix_succ`, the half-block recurrence `thueMorsePowerSum_succ`,
+the bridge `thueMorsePowerSum_eq_ring` between the rational power sum and the
+ring-valued one, the `simp` normal forms (`iteratedPrefix_zero`,
 `iteratedPrefix_at_zero`, `iteratedPrefix_one_two_mul_add_one`,
 `thueMorseSign_two_pow_sub_one`), and the endpoint and reverse-indexed forms
 of the zero run (`iteratedPrefix_dyadic_endpoint`,
@@ -69,16 +91,17 @@ of the zero run (`iteratedPrefix_dyadic_endpoint`,
 
 Conventions and caveats.  Prefix sums are inclusive, so `S^(k+1)(n)` ranges
 over `j <= n`; `iteratedPrefix` is `ℤ`-valued, and the named monomial and
-polynomial power-sum API is `ℚ`-valued.  The two `_real` affine theorems expose
-the same cancellation directly over `ℝ`.  `iteratedPrefix_eq_sum_kernel`
-assumes `1 <= k`, matching the source's positive indexing of `B_k`.  Every
-zero-run statement assumes `k <= r`, that is, a block long enough to absorb
-`k` cancellations, and says nothing for shorter blocks.  The sharp affine
-power-sum formulas do not depend on the translation, but carry a factor
-`y^r` and so vanish for `y = 0` when `r > 0`; at `r = 0`, Lean's `0^0 = 1`
-convention gives the correct one-term sum.  The draft's grid normalization
-`2^C(k,2)` is applied downstream in `FabiusFunction.ThueMorseGenerating`, not
-here.
+polynomial power-sum API comes in a ring-valued form `thueMorsePowerSumRing`
+together with its rational specialization `thueMorsePowerSum`.  The `_real`
+affine theorems are now one-line instances of the ring-valued ones, not
+separate proofs.  `iteratedPrefix_eq_sum_kernel` assumes `1 <= k`, matching
+the source's positive indexing of `B_k`.  Every zero-run statement assumes
+`k <= r`, that is, a block long enough to absorb `k` cancellations, and says
+nothing for shorter blocks.  The sharp affine power-sum formulas do not
+depend on the translation, but carry a factor `y^r` and so vanish for `y = 0`
+when `r > 0`; at `r = 0`, Lean's `0^0 = 1` convention gives the correct
+one-term sum.  The draft's grid normalization `2^C(k,2)` is applied
+downstream in `FabiusFunction.ThueMorseGenerating`, not here.
 -/
 
 set_option autoImplicit false
@@ -235,25 +258,123 @@ theorem thueMorsePowerSum_self (r : ℕ) :
       push_cast
       ring
 
+/-! ### The block power sum over an arbitrary commutative ring
+
+The summand `thueMorseSign h * h ^ d` is an integer, so the whole power-sum
+layer is the image of one integer identity under the unique ring map
+`ℤ → R`.  The definition below records that sum in `R`; the rational
+`thueMorsePowerSum` is its instance at `R = ℚ`. -/
+
+/-- The signed power sum over a complete dyadic Thue--Morse block, computed in
+an arbitrary commutative ring `R`.  At `R = ℚ` this is `thueMorsePowerSum`,
+and `thueMorsePowerSumRing_intCast` identifies the general value as the image
+of the integer one. -/
+def thueMorsePowerSumRing (R : Type*) [CommRing R] (r d : ℕ) : R :=
+  ∑ h : Fin (2 ^ r), (thueMorseSign h.val : R) * (h.val : R) ^ d
+
+/-- The rational block power sum is the instance `R = ℚ` of the ring-valued
+one. -/
+theorem thueMorsePowerSum_eq_ring (r d : ℕ) :
+    thueMorsePowerSum r d = thueMorsePowerSumRing ℚ r d := rfl
+
+section Ring
+
+variable {R : Type*} [CommRing R]
+
+/-- The ring-valued block power sum is the image of the integer block power
+sum under the unique ring map `ℤ → R`.  Every identity in this section is
+proved once over `ℤ` and transported along this equation. -/
+theorem thueMorsePowerSumRing_intCast (r d : ℕ) :
+    ((thueMorsePowerSumRing ℤ r d : ℤ) : R) =
+      thueMorsePowerSumRing R r d := by
+  simp only [thueMorsePowerSumRing]
+  push_cast
+  rfl
+
+/-- The rational block power sum written as the cast of the integer one; this
+is the shape `exact_mod_cast` needs when descending from `ℚ` to `ℤ`. -/
+private theorem thueMorsePowerSum_eq_intCast (r d : ℕ) :
+    thueMorsePowerSum r d = ((thueMorsePowerSumRing ℤ r d : ℤ) : ℚ) := by
+  rw [thueMorsePowerSum_eq_ring, thueMorsePowerSumRing_intCast]
+
+/-- Splitting a dyadic block in half gives a recurrence in lower power sums,
+over an arbitrary commutative ring. -/
+theorem thueMorsePowerSumRing_succ (r d : ℕ) :
+    thueMorsePowerSumRing R (r + 1) d =
+      -(∑ k ∈ Finset.range d,
+        (Nat.choose d k : R) * (2 : R) ^ k *
+          thueMorsePowerSumRing R r k) := by
+  have hZ : thueMorsePowerSumRing ℤ (r + 1) d =
+      -(∑ k ∈ Finset.range d,
+        (Nat.choose d k : ℤ) * (2 : ℤ) ^ k *
+          thueMorsePowerSumRing ℤ r k) := by
+    have hQ : ((thueMorsePowerSumRing ℤ (r + 1) d : ℤ) : ℚ) =
+        ((-(∑ k ∈ Finset.range d,
+            (Nat.choose d k : ℤ) * (2 : ℤ) ^ k *
+              thueMorsePowerSumRing ℤ r k) : ℤ) : ℚ) := by
+      rw [thueMorsePowerSumRing_intCast, ← thueMorsePowerSum_eq_ring,
+        thueMorsePowerSum_succ, Int.cast_neg, Int.cast_sum, neg_inj]
+      refine Finset.sum_congr rfl fun k _ => ?_
+      rw [thueMorsePowerSum_eq_intCast]
+      push_cast
+      rfl
+    exact_mod_cast hQ
+  rw [← thueMorsePowerSumRing_intCast, hZ, Int.cast_neg, Int.cast_sum,
+    neg_inj]
+  refine Finset.sum_congr rfl fun k _ => ?_
+  push_cast [thueMorsePowerSumRing_intCast]
+  rfl
+
+/-- Prouhet cancellation for monomials below the block exponent, over an
+arbitrary commutative ring. -/
+theorem thueMorsePowerSumRing_eq_zero_of_lt (r d : ℕ) (hd : d < r) :
+    thueMorsePowerSumRing R r d = 0 := by
+  have hZ : thueMorsePowerSumRing ℤ r d = 0 := by
+    have hQ : ((thueMorsePowerSumRing ℤ r d : ℤ) : ℚ) = 0 := by
+      rw [thueMorsePowerSumRing_intCast, ← thueMorsePowerSum_eq_ring]
+      exact thueMorsePowerSum_eq_zero_of_lt r d hd
+    exact_mod_cast hQ
+  rw [← thueMorsePowerSumRing_intCast, hZ, Int.cast_zero]
+
+/-- The sharp boundary case of Prouhet cancellation, over an arbitrary
+commutative ring: the first power a dyadic block does not annihilate has the
+explicit value `(-1)^r * 2^C(r,2) * r!`. -/
+theorem thueMorsePowerSumRing_self (r : ℕ) :
+    thueMorsePowerSumRing R r r =
+      (-1 : R) ^ r * (2 : R) ^ r.choose 2 * r.factorial := by
+  have hZ : thueMorsePowerSumRing ℤ r r =
+      (-1 : ℤ) ^ r * (2 : ℤ) ^ r.choose 2 * r.factorial := by
+    have hQ : ((thueMorsePowerSumRing ℤ r r : ℤ) : ℚ) =
+        (((-1 : ℤ) ^ r * (2 : ℤ) ^ r.choose 2 *
+          r.factorial : ℤ) : ℚ) := by
+      rw [thueMorsePowerSumRing_intCast, ← thueMorsePowerSum_eq_ring,
+        thueMorsePowerSum_self]
+      push_cast
+      rfl
+    exact_mod_cast hQ
+  rw [← thueMorsePowerSumRing_intCast, hZ]
+  push_cast
+  rfl
+
 /-- On polynomials of degree at most `r`, summation against a dyadic
 Thue--Morse block extracts the degree-`r` coefficient, up to the explicit
-nonzero Prouhet factor. -/
-theorem thueMorse_polynomial_sum_eq_coeff (r : ℕ) (p : Polynomial ℚ)
+Prouhet factor.  The coefficients may lie in any commutative ring. -/
+theorem thueMorse_polynomial_sum_eq_coeff_ring (r : ℕ) (p : Polynomial R)
     (hp : p.natDegree ≤ r) :
     (∑ h : Fin (2 ^ r),
-        (thueMorseSign h.val : ℚ) * p.eval (h.val : ℚ)) =
+        (thueMorseSign h.val : R) * p.eval (h.val : R)) =
       p.coeff r *
-        ((-1 : ℚ) ^ r * (2 : ℚ) ^ r.choose 2 * r.factorial) := by
+        ((-1 : R) ^ r * (2 : R) ^ r.choose 2 * r.factorial) := by
   simp_rw [Polynomial.eval_eq_sum, Polynomial.sum_def, Finset.mul_sum]
   rw [Finset.sum_comm]
   have hexpand :
       (∑ d ∈ p.support, ∑ h : Fin (2 ^ r),
-          (thueMorseSign h.val : ℚ) *
-            (p.coeff d * (h.val : ℚ) ^ d)) =
-        ∑ d ∈ p.support, p.coeff d * thueMorsePowerSum r d := by
+          (thueMorseSign h.val : R) *
+            (p.coeff d * (h.val : R) ^ d)) =
+        ∑ d ∈ p.support, p.coeff d * thueMorsePowerSumRing R r d := by
     apply Finset.sum_congr rfl
     intro d hd
-    rw [thueMorsePowerSum, Finset.mul_sum]
+    rw [thueMorsePowerSumRing, Finset.mul_sum]
     apply Finset.sum_congr rfl
     intro h hh
     ring
@@ -261,11 +382,11 @@ theorem thueMorse_polynomial_sum_eq_coeff (r : ℕ) (p : Polynomial ℚ)
   classical
   by_cases hr : r ∈ p.support
   · rw [Finset.sum_eq_single r]
-    · rw [thueMorsePowerSum_self]
+    · rw [thueMorsePowerSumRing_self]
     · intro d hd hdr
       have hdr' : d < r :=
         lt_of_le_of_ne (Polynomial.le_natDegree_of_mem_supp d hd |>.trans hp) hdr
-      rw [thueMorsePowerSum_eq_zero_of_lt r d hdr', mul_zero]
+      rw [thueMorsePowerSumRing_eq_zero_of_lt r d hdr', mul_zero]
     · exact fun h => (h hr).elim
   · have hcoeff : p.coeff r = 0 := by
       simpa only [Polynomial.mem_support_iff, not_ne_iff] using hr
@@ -275,164 +396,173 @@ theorem thueMorse_polynomial_sum_eq_coeff (r : ℕ) (p : Polynomial ℚ)
     have hdr : d ≠ r := fun h => hr (h ▸ hd)
     have hdr' : d < r :=
       lt_of_le_of_ne (Polynomial.le_natDegree_of_mem_supp d hd |>.trans hp) hdr
-    rw [thueMorsePowerSum_eq_zero_of_lt r d hdr', mul_zero]
+    rw [thueMorsePowerSumRing_eq_zero_of_lt r d hdr', mul_zero]
+
+/-- Thue--Morse signs annihilate every polynomial of degree below the dyadic
+block exponent, over an arbitrary commutative ring. -/
+theorem thueMorse_polynomial_sum_eq_zero_ring (r : ℕ) (p : Polynomial R)
+    (hp : p.natDegree < r) :
+    (∑ h : Fin (2 ^ r),
+      (thueMorseSign h.val : R) * p.eval (h.val : R)) = 0 := by
+  rw [thueMorse_polynomial_sum_eq_coeff_ring r p hp.le,
+    Polynomial.coeff_eq_zero_of_natDegree_lt hp, zero_mul]
+
+/-- Affine Prouhet cancellation below the block exponent, over an arbitrary
+commutative ring.  The translation and scale are arbitrary: after the
+binomial expansion, every remaining monomial has degree strictly below
+`r`. -/
+theorem thueMorse_affine_power_sum_eq_zero_ring
+    (r d : ℕ) (hd : d < r) (x y : R) :
+    (∑ h : Fin (2 ^ r), (thueMorseSign h.val : R) *
+      (x + y * (h.val : R)) ^ d) = 0 := by
+  simp_rw [add_pow, Finset.mul_sum]
+  rw [Finset.sum_comm]
+  apply Finset.sum_eq_zero
+  intro k hk
+  have hdegree : d - k < r := (Nat.sub_le d k).trans_lt hd
+  have hinner :
+      (∑ h : Fin (2 ^ r),
+        (thueMorseSign h.val : R) *
+          (x ^ k * (y * (h.val : R)) ^ (d - k) * (Nat.choose d k : R))) =
+        (x ^ k * y ^ (d - k) * (Nat.choose d k : R)) *
+          thueMorsePowerSumRing R r (d - k) := by
+    rw [thueMorsePowerSumRing, Finset.mul_sum]
+    apply Finset.sum_congr rfl
+    intro h hh
+    rw [mul_pow]
+    ring
+  rw [hinner, thueMorsePowerSumRing_eq_zero_of_lt r (d - k) hdegree, mul_zero]
+
+/-- At the sharp Prouhet degree, an affine change of variable contributes only
+the `r`th power of its scale, over an arbitrary commutative ring.  Thus the
+sum is independent of the translation `x`.  For `r > 0` it vanishes at
+`y = 0`; for `r = 0`, including `y = 0`, Lean's `0 ^ 0 = 1` convention gives
+the correct one-term sum. -/
+theorem thueMorse_affine_power_sum_self_ring (r : ℕ) (x y : R) :
+    (∑ h : Fin (2 ^ r), (thueMorseSign h.val : R) *
+      (x + y * (h.val : R)) ^ r) =
+      (-1 : R) ^ r * y ^ r * (2 : R) ^ r.choose 2 * r.factorial := by
+  simp_rw [add_pow, Finset.mul_sum]
+  rw [Finset.sum_comm]
+  rw [Finset.sum_eq_single 0]
+  · norm_num only [pow_zero, Nat.choose_zero_right, Nat.cast_one,
+      one_mul, mul_one, Nat.zero_le, Nat.sub_zero]
+    calc
+      (∑ h : Fin (2 ^ r),
+          (thueMorseSign h.val : R) * (y * (h.val : R)) ^ r) =
+          y ^ r * thueMorsePowerSumRing R r r := by
+        rw [thueMorsePowerSumRing, Finset.mul_sum]
+        apply Finset.sum_congr rfl
+        intro h hh
+        rw [mul_pow]
+        ring
+      _ = y ^ r *
+          ((-1 : R) ^ r * (2 : R) ^ r.choose 2 * r.factorial) := by
+        rw [thueMorsePowerSumRing_self]
+      _ = _ := by ring
+  · intro k hk hk0
+    have hkle : k ≤ r := Nat.le_of_lt_succ (Finset.mem_range.mp hk)
+    have hdegree : r - k < r := Nat.sub_lt (by omega) (by omega)
+    calc
+      (∑ h : Fin (2 ^ r),
+          (thueMorseSign h.val : R) *
+            (x ^ k * (y * (h.val : R)) ^ (r - k) *
+              (Nat.choose r k : R))) =
+          (x ^ k * y ^ (r - k) * (Nat.choose r k : R)) *
+            thueMorsePowerSumRing R r (r - k) := by
+        rw [thueMorsePowerSumRing, Finset.mul_sum]
+        apply Finset.sum_congr rfl
+        intro h hh
+        rw [mul_pow]
+        ring
+      _ = 0 := by
+        rw [thueMorsePowerSumRing_eq_zero_of_lt r (r - k) hdegree, mul_zero]
+  · simp
+
+/-- Unified Prouhet formula for affine powers through the sharp degree, over
+an arbitrary commutative ring.  Below degree `r` the block sum vanishes; at
+degree `r` it is the sharp value from
+`thueMorse_affine_power_sum_self_ring`.  The formula includes `r = d = 0`,
+where Lean's power convention makes `y ^ 0 = 1` even when `y = 0`. -/
+theorem thueMorse_affine_power_sum_of_le_ring
+    (r d : ℕ) (hd : d ≤ r) (x y : R) :
+    (∑ h : Fin (2 ^ r), (thueMorseSign h.val : R) *
+      (x + y * (h.val : R)) ^ d) =
+      if d = r then
+        (-1 : R) ^ r * y ^ r * (2 : R) ^ r.choose 2 * r.factorial
+      else 0 := by
+  rcases eq_or_lt_of_le hd with h | h
+  · subst d
+    rw [thueMorse_affine_power_sum_self_ring, if_pos rfl]
+  · rw [thueMorse_affine_power_sum_eq_zero_ring r d h x y, if_neg h.ne]
+
+end Ring
+
+/-- On polynomials of degree at most `r`, summation against a dyadic
+Thue--Morse block extracts the degree-`r` coefficient, up to the explicit
+nonzero Prouhet factor.  Rational instance of
+`thueMorse_polynomial_sum_eq_coeff_ring`. -/
+theorem thueMorse_polynomial_sum_eq_coeff (r : ℕ) (p : Polynomial ℚ)
+    (hp : p.natDegree ≤ r) :
+    (∑ h : Fin (2 ^ r),
+        (thueMorseSign h.val : ℚ) * p.eval (h.val : ℚ)) =
+      p.coeff r *
+        ((-1 : ℚ) ^ r * (2 : ℚ) ^ r.choose 2 * r.factorial) :=
+  thueMorse_polynomial_sum_eq_coeff_ring r p hp
 
 /-- At the sharp Prouhet degree, an affine change of variable contributes only
 the expected power of its linear coefficient.  In particular, the sum is
 independent of the translation `x`; for positive `r` it vanishes when that
-coefficient is zero. -/
+coefficient is zero.  Rational instance of
+`thueMorse_affine_power_sum_self_ring`. -/
 theorem thueMorse_affine_power_sum_self (r : ℕ) (x y : ℚ) :
     (∑ h : Fin (2 ^ r), (thueMorseSign h.val : ℚ) *
       (x + y * (h.val : ℚ)) ^ r) =
-      (-1 : ℚ) ^ r * y ^ r * (2 : ℚ) ^ r.choose 2 * r.factorial := by
-  let p : Polynomial ℚ :=
-    (Polynomial.C x + Polynomial.C y * Polynomial.X) ^ r
-  have hlinear :
-      (Polynomial.C x + Polynomial.C y * Polynomial.X).natDegree ≤ 1 := by
-    calc
-      (Polynomial.C x + Polynomial.C y * Polynomial.X).natDegree ≤
-          max (Polynomial.C x).natDegree
-            (Polynomial.C y * Polynomial.X).natDegree :=
-        Polynomial.natDegree_add_le _ _
-      _ ≤ 1 := by
-        apply max_le
-        · simp
-        · simpa only [pow_one] using
-            Polynomial.natDegree_C_mul_X_pow_le y 1
-  have hp : p.natDegree ≤ r := by
-    dsimp [p]
-    simpa only [Nat.mul_one] using
-      Polynomial.natDegree_pow_le_of_le r hlinear
-  have hsum := thueMorse_polynomial_sum_eq_coeff r p hp
-  have hcoeff : p.coeff r = y ^ r := by
-    dsimp [p]
-    simpa using
-      (Polynomial.coeff_pow_of_natDegree_le
-        (p := Polynomial.C x + Polynomial.C y * Polynomial.X)
-        (m := r) (n := 1) hlinear)
-  calc
-    (∑ h : Fin (2 ^ r), (thueMorseSign h.val : ℚ) *
-        (x + y * (h.val : ℚ)) ^ r) =
-        p.coeff r *
-          ((-1 : ℚ) ^ r * (2 : ℚ) ^ r.choose 2 * r.factorial) := by
-      simpa [p] using hsum
-    _ = _ := by rw [hcoeff]; ring
+      (-1 : ℚ) ^ r * y ^ r * (2 : ℚ) ^ r.choose 2 * r.factorial :=
+  thueMorse_affine_power_sum_self_ring r x y
 
 /-- Unified Prouhet formula for affine powers through the sharp degree.  Below
 degree `r` the block sum vanishes; at degree `r` it is the sharp value from
 `thueMorse_affine_power_sum_self`.  The formula includes `r = d = 0`, where
-Lean's power convention makes `y ^ 0 = 1` even when `y = 0`. -/
+Lean's power convention makes `y ^ 0 = 1` even when `y = 0`.  Rational
+instance of `thueMorse_affine_power_sum_of_le_ring`. -/
 theorem thueMorse_affine_power_sum_of_le
     (r d : ℕ) (hd : d ≤ r) (x y : ℚ) :
     (∑ h : Fin (2 ^ r), (thueMorseSign h.val : ℚ) *
       (x + y * (h.val : ℚ)) ^ d) =
       if d = r then
         (-1 : ℚ) ^ r * y ^ r * (2 : ℚ) ^ r.choose 2 * r.factorial
-      else 0 := by
-  rcases eq_or_lt_of_le hd with h | h
-  · subst d
-    rw [thueMorse_affine_power_sum_self, if_pos rfl]
-  · rw [thueMorse_affine_power_sum_eq_zero r d h x y, if_neg h.ne]
+      else 0 :=
+  thueMorse_affine_power_sum_of_le_ring r d hd x y
 
 /-- Real affine Prouhet cancellation below the block exponent.  The
 translation and scale are arbitrary: after the binomial expansion, every
-remaining monomial has degree strictly below `r`. -/
+remaining monomial has degree strictly below `r`.  Real instance of
+`thueMorse_affine_power_sum_eq_zero_ring`. -/
 theorem thueMorse_affine_power_sum_eq_zero_real
     (r d : ℕ) (hd : d < r) (x y : ℝ) :
     (∑ h : Fin (2 ^ r), (thueMorseSign h.val : ℝ) *
-      (x + y * (h.val : ℝ)) ^ d) = 0 := by
-  simp_rw [add_pow, Finset.mul_sum]
-  rw [Finset.sum_comm]
-  apply Finset.sum_eq_zero
-  intro k hk
-  have hdegree : d - k < r := (Nat.sub_le d k).trans_lt hd
-  have hzeroQ := thueMorsePowerSum_eq_zero_of_lt r (d - k) hdegree
-  change (∑ h : Fin (2 ^ r),
-      (thueMorseSign h.val : ℚ) * (h.val : ℚ) ^ (d - k)) = 0 at hzeroQ
-  have hzeroR : (∑ h : Fin (2 ^ r),
-      (thueMorseSign h.val : ℝ) * (h.val : ℝ) ^ (d - k)) = 0 := by
-    exact_mod_cast hzeroQ
-  have hinner :
-      (∑ h : Fin (2 ^ r),
-        (thueMorseSign h.val : ℝ) *
-          (x ^ k * (y * (h.val : ℝ)) ^ (d - k) * (Nat.choose d k : ℝ))) =
-        (x ^ k * y ^ (d - k) * (Nat.choose d k : ℝ)) *
-          ∑ h : Fin (2 ^ r),
-            (thueMorseSign h.val : ℝ) * (h.val : ℝ) ^ (d - k) := by
-    rw [Finset.mul_sum]
-    apply Finset.sum_congr rfl
-    intro h hh
-    rw [mul_pow]
-    ring
-  rw [hinner, hzeroR, mul_zero]
+      (x + y * (h.val : ℝ)) ^ d) = 0 :=
+  thueMorse_affine_power_sum_eq_zero_ring r d hd x y
 
 /-- At the sharp Prouhet degree, a real affine change of variable contributes
 only the `r`th power of its scale.  Thus the sum is independent of the
 translation `x`.  For `r > 0` it vanishes at `y = 0`; for `r = 0`, including
-`y = 0`, Lean's `0 ^ 0 = 1` convention gives the correct one-term sum. -/
+`y = 0`, Lean's `0 ^ 0 = 1` convention gives the correct one-term sum.  Real
+instance of `thueMorse_affine_power_sum_self_ring`. -/
 theorem thueMorse_affine_power_sum_self_real (r : ℕ) (x y : ℝ) :
     (∑ h : Fin (2 ^ r), (thueMorseSign h.val : ℝ) *
       (x + y * (h.val : ℝ)) ^ r) =
-      (-1 : ℝ) ^ r * y ^ r * (2 : ℝ) ^ r.choose 2 * r.factorial := by
-  simp_rw [add_pow, Finset.mul_sum]
-  rw [Finset.sum_comm]
-  rw [Finset.sum_eq_single 0]
-  · norm_num only [pow_zero, Nat.choose_zero_right, Nat.cast_one,
-      one_mul, mul_one, Nat.zero_le, Nat.sub_zero]
-    have hselfQ := thueMorsePowerSum_self r
-    change (∑ h : Fin (2 ^ r),
-      (thueMorseSign h.val : ℚ) * (h.val : ℚ) ^ r) =
-        (-1 : ℚ) ^ r * (2 : ℚ) ^ r.choose 2 * r.factorial at hselfQ
-    have hselfR : (∑ h : Fin (2 ^ r),
-        (thueMorseSign h.val : ℝ) * (h.val : ℝ) ^ r) =
-          (-1 : ℝ) ^ r * (2 : ℝ) ^ r.choose 2 * r.factorial := by
-      exact_mod_cast hselfQ
-    calc
-      (∑ h : Fin (2 ^ r),
-          (thueMorseSign h.val : ℝ) * (y * (h.val : ℝ)) ^ r) =
-          y ^ r * ∑ h : Fin (2 ^ r),
-            (thueMorseSign h.val : ℝ) * (h.val : ℝ) ^ r := by
-        rw [Finset.mul_sum]
-        apply Finset.sum_congr rfl
-        intro h hh
-        rw [mul_pow]
-        ring
-      _ = y ^ r *
-          ((-1 : ℝ) ^ r * (2 : ℝ) ^ r.choose 2 * r.factorial) := by
-        rw [hselfR]
-      _ = _ := by ring
-  · intro k hk hk0
-    have hkle : k ≤ r := Nat.le_of_lt_succ (Finset.mem_range.mp hk)
-    have hdegree : r - k < r := Nat.sub_lt (by omega) (by omega)
-    have hzeroQ := thueMorsePowerSum_eq_zero_of_lt r (r - k) hdegree
-    change (∑ h : Fin (2 ^ r),
-      (thueMorseSign h.val : ℚ) * (h.val : ℚ) ^ (r - k)) = 0 at hzeroQ
-    have hzeroR : (∑ h : Fin (2 ^ r),
-        (thueMorseSign h.val : ℝ) * (h.val : ℝ) ^ (r - k)) = 0 := by
-      exact_mod_cast hzeroQ
-    calc
-      (∑ h : Fin (2 ^ r),
-          (thueMorseSign h.val : ℝ) *
-            (x ^ k * (y * (h.val : ℝ)) ^ (r - k) *
-              (Nat.choose r k : ℝ))) =
-          (x ^ k * y ^ (r - k) * (Nat.choose r k : ℝ)) *
-            ∑ h : Fin (2 ^ r),
-              (thueMorseSign h.val : ℝ) * (h.val : ℝ) ^ (r - k) := by
-        rw [Finset.mul_sum]
-        apply Finset.sum_congr rfl
-        intro h hh
-        rw [mul_pow]
-        ring
-      _ = 0 := by rw [hzeroR, mul_zero]
-  · simp
+      (-1 : ℝ) ^ r * y ^ r * (2 : ℝ) ^ r.choose 2 * r.factorial :=
+  thueMorse_affine_power_sum_self_ring r x y
 
 /-- Thue--Morse signs annihilate every rational polynomial of degree below the
-dyadic block exponent. -/
+dyadic block exponent.  Rational instance of
+`thueMorse_polynomial_sum_eq_zero_ring`. -/
 lemma thueMorse_polynomial_sum_eq_zero (r : ℕ) (p : Polynomial ℚ)
     (hp : p.natDegree < r) :
-    (∑ h : Fin (2 ^ r), (thueMorseSign h.val : ℚ) * p.eval (h.val : ℚ)) = 0 := by
-  rw [thueMorse_polynomial_sum_eq_coeff r p hp.le,
-    Polynomial.coeff_eq_zero_of_natDegree_lt hp, zero_mul]
+    (∑ h : Fin (2 ^ r), (thueMorseSign h.val : ℚ) * p.eval (h.val : ℚ)) = 0 :=
+  thueMorse_polynomial_sum_eq_zero_ring r p hp
 
 private noncomputable def prefixEndpointPolynomial (N k : ℕ) : Polynomial ℚ :=
   (ascPochhammer ℚ k).comp (Polynomial.C (N : ℚ) - Polynomial.X)

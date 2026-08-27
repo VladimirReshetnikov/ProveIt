@@ -1,20 +1,32 @@
 import FabiusFunction.ThueMorseValuation
+import FabiusFunction.ThueMorseOverlapFree
 
 /-!
 # Aperiodicity of the Thue--Morse sequence
 
 The signed Thue--Morse sequence is not eventually periodic.  This is the
-elementary combinatorial heart of the atlas's words chapter: the proof
-needs only two exact identities of the corpus, block concatenation and
-dyadic reflection.
+elementary combinatorial heart of the atlas's words chapter.
 
-The argument follows the atlas.  First, an eventual period upgrades to a
-global one: adding `2^m` to the index only flips every sign, so a
-periodicity valid beyond `2^m` reflects back to the whole sequence.
-Second, a global period `p` is impossible: reflection in dyadic blocks
-gives `ε(2^m - p) = (-1)^m ε(p-1)`, while periodicity forces this to be
-`ε(2^m) = -1` for every large `m` — and the right side changes sign
-between consecutive `m`.
+Aperiodicity is now a corollary of the strictly stronger overlap-freeness
+proved in `ThueMorseOverlapFree`, through the general word-combinatorial
+implication `not_eventually_periodic_of_overlap_free`, valid over any
+alphabet: an eventual period `p ≥ 1` from a threshold `N` on turns the
+window `f(N), …, f(N + 2p)` into an overlap of period `p`, because every
+index `N + j` with `j ≤ p` already lies past the threshold.  Here that
+implication is instantiated at `thueMorseSign`.
+
+The file also keeps the dyadic block-flip identities on which the earlier
+self-contained proof of aperiodicity ran, and which remain useful on
+their own:
+
+* `thueMorseSign_two_pow` — a single one-bit gives `ε(2^m) = -1`.
+* `thueMorseSign_two_pow_add` — adding a full block length flips every
+  sign: `ε(2^m + x) = -ε(x)` for `x < 2^m`.
+* `thueMorseSign_period_of_eventually` — an eventual period is already a
+  global one: the block-flip identity reflects a periodicity valid beyond
+  any threshold back to the whole sequence.
+* `thueMorseSign_not_eventually_periodic` — the theorem, deduced from
+  `thueMorseSign_overlap_free`.
 -/
 
 set_option autoImplicit false
@@ -61,31 +73,14 @@ theorem thueMorseSign_period_of_eventually (p N : ℕ)
   exact this
 
 /-- **Aperiodicity.**  The signed Thue--Morse sequence is not eventually
-periodic: no positive period is valid from any threshold on. -/
+periodic: no positive period is valid from any threshold on.  This is the
+specialization to `thueMorseSign` of the general implication
+`not_eventually_periodic_of_overlap_free`, fed with Thue's theorem
+`thueMorseSign_overlap_free`. -/
 theorem thueMorseSign_not_eventually_periodic :
     ¬ ∃ p N : ℕ, 0 < p ∧
-      ∀ n, N ≤ n → thueMorseSign (n + p) = thueMorseSign n := by
-  rintro ⟨p, N, hp, h⟩
-  have hglobal := thueMorseSign_period_of_eventually p N h
-  -- Reflection identity: for every `m` with `p ≤ 2^m`,
-  -- `-1 = ε(2^m) = ε(2^m - p) = (-1)^m ε(p-1)`.
-  have key : ∀ m : ℕ, p ≤ 2 ^ m →
-      (-1 : ℤ) ^ m * thueMorseSign (p - 1) = -1 := by
-    intro m hm
-    have hper : thueMorseSign (2 ^ m - p + p) = thueMorseSign (2 ^ m - p) :=
-      hglobal (2 ^ m - p)
-    rw [show 2 ^ m - p + p = 2 ^ m by omega] at hper
-    have hrefl := thueMorseSign_dyadic_complement m (p - 1)
-      (by have := Nat.one_le_two_pow (n := m); omega)
-    rw [show 2 ^ m - 1 - (p - 1) = 2 ^ m - p by omega] at hrefl
-    rw [← hper, thueMorseSign_two_pow] at hrefl
-    exact hrefl.symm
-  -- The right side flips between consecutive block levels.
-  obtain ⟨m, hm⟩ : ∃ m, p ≤ 2 ^ m :=
-    ⟨p, le_of_lt Nat.lt_two_pow_self⟩
-  have h1 := key m hm
-  have h2 := key (m + 1) (le_trans hm (Nat.pow_le_pow_right (by omega) (by omega)))
-  rw [pow_succ] at h2
-  nlinarith [h1, h2]
+      ∀ n, N ≤ n → thueMorseSign (n + p) = thueMorseSign n :=
+  not_eventually_periodic_of_overlap_free thueMorseSign
+    thueMorseSign_overlap_free
 
 end Fabius

@@ -1,4 +1,5 @@
 import FabiusFunction.ThueMorseMahler
+import Mathlib.RingTheory.PowerSeries.WellKnown
 
 /-!
 # The lacunary quotient expansion of the bit series
@@ -13,10 +14,20 @@ series — the dyadic geometric series — so no denominators ever occur:
 
 * `dyadicGeometricSeries j` — `G_j = ∑_k z^(k·2^j)`, the inverse of
   `1 - z^(2^j)` (`one_sub_X_pow_mul_dyadicGeometric`).
+* `dyadicGeometricSeries_eq_expand` — `G_j` is the substitution
+  `z ↦ z^(2^j)` applied to the plain geometric series `∑_k z^k`.  Both
+  the inverse property and the shift `G_j ↦ G_(j+1)`
+  (`expand_dyadicGeometric`) are read off from this together with
+  Mathlib's `PowerSeries.mk_one_mul_one_sub_eq_one` and
+  `PowerSeries.expand_mul`.
 * `thueMorseBitZSeries_mahler` — the inhomogeneous Mahler equation
   `T = (1-z)·T(z²) + z·G_1` (`eq:T-Mahler`).
 * `thueMorseBitZSeries_lacunary_quotient` — the level-`M` expansion
   (`thm:lacunary-quotient`, exact finite form).
+
+The substitution bookkeeping — `two_ne_zero'`, `iterate_expand_mul`
+and `iterate_expand_one_sub_X` — is imported from `ThueMorseMahler`
+rather than duplicated here.
 -/
 
 set_option autoImplicit false
@@ -25,83 +36,69 @@ open Finset
 
 namespace Fabius
 
-private theorem two_ne : (2 : ℕ) ≠ 0 := by omega
-
 /-- The dyadic geometric series `G_j = ∑_k z^(k·2^j)`. -/
 def dyadicGeometricSeries (j : ℕ) : PowerSeries ℤ :=
   PowerSeries.mk fun n => if 2 ^ j ∣ n then 1 else 0
 
-/-- `G_j` inverts `1 - z^(2^j)`. -/
-theorem one_sub_X_pow_mul_dyadicGeometric (j : ℕ) :
-    (1 - PowerSeries.X ^ 2 ^ j) * dyadicGeometricSeries j = 1 := by
-  have hexp : (1 - PowerSeries.X ^ 2 ^ j) * dyadicGeometricSeries j =
-      dyadicGeometricSeries j -
-        PowerSeries.X ^ 2 ^ j * dyadicGeometricSeries j := by
-    ring
-  rw [hexp]
-  ext n
-  rw [map_sub, PowerSeries.coeff_X_pow_mul', dyadicGeometricSeries,
-    PowerSeries.coeff_mk, PowerSeries.coeff_mk, PowerSeries.coeff_one]
-  have hpow : 1 ≤ 2 ^ j := Nat.one_le_two_pow
-  rcases Nat.eq_zero_or_pos n with rfl | hn
-  · rw [if_pos (dvd_zero _), if_neg (by omega), if_pos rfl]
-    ring
-  · rw [if_neg (show ¬ n = 0 by omega)]
-    by_cases hdvd : 2 ^ j ∣ n
-    · have hge : 2 ^ j ≤ n := Nat.le_of_dvd hn hdvd
-      rw [if_pos hdvd, if_pos hge,
-        if_pos (Nat.dvd_sub hdvd dvd_rfl)]
-      ring
-    · rw [if_neg hdvd]
-      split_ifs with h1 h2
-      · exfalso
-        have := Nat.dvd_add h2 (dvd_refl (2 ^ j))
-        rw [Nat.sub_add_cancel h1] at this
-        exact hdvd this
-      · ring
-      · ring
+/-- The side condition of the substitution `z ↦ z^(2^j)`. -/
+private theorem two_pow_ne_zero' (j : ℕ) : (2 : ℕ) ^ j ≠ 0 := by
+  have h : 1 ≤ 2 ^ j := Nat.one_le_two_pow
+  omega
 
-/-- The Mahler substitution shifts the dyadic geometric series. -/
-theorem expand_dyadicGeometric (j : ℕ) :
-    PowerSeries.expand 2 two_ne (dyadicGeometricSeries j) =
-      dyadicGeometricSeries (j + 1) := by
+/-- Two substitutions `PowerSeries.expand` whose exponents are equal —
+but not syntactically identical — agree. -/
+private theorem expand_exp_congr {p q : ℕ} (hpq : p = q) (hp : p ≠ 0)
+    (hq : q ≠ 0) (φ : PowerSeries ℤ) :
+    PowerSeries.expand p hp φ = PowerSeries.expand q hq φ := by
+  subst hpq
+  rfl
+
+/-- `G_j` is the substitution `z ↦ z^(2^j)` applied to the plain
+geometric series `∑_k z^k`. -/
+theorem dyadicGeometricSeries_eq_expand (j : ℕ) (hj : (2 : ℕ) ^ j ≠ 0) :
+    dyadicGeometricSeries j =
+      PowerSeries.expand (2 ^ j) hj (PowerSeries.mk fun _ => (1 : ℤ)) := by
   ext n
   simp only [dyadicGeometricSeries, PowerSeries.coeff_expand,
     PowerSeries.coeff_mk]
-  by_cases h2 : 2 ∣ n
-  · rw [if_pos h2]
-    by_cases hj : 2 ^ j ∣ n / 2
-    · obtain ⟨k, hk⟩ := hj
-      have hnk : n = 2 ^ (j + 1) * k := by
-        have h1 : n = 2 * (n / 2) := by omega
-        rw [h1, hk, pow_succ]
+
+/-- `G_j` inverts `1 - z^(2^j)`. -/
+theorem one_sub_X_pow_mul_dyadicGeometric (j : ℕ) :
+    (1 - PowerSeries.X ^ 2 ^ j) * dyadicGeometricSeries j = 1 := by
+  have hj : (2 : ℕ) ^ j ≠ 0 := two_pow_ne_zero' j
+  have hgeom : (PowerSeries.mk fun _ => (1 : ℤ)) * (1 - PowerSeries.X) = 1 :=
+    PowerSeries.mk_one_mul_one_sub_eq_one ℤ
+  calc (1 - PowerSeries.X ^ 2 ^ j) * dyadicGeometricSeries j
+      = PowerSeries.expand (2 ^ j) hj
+          ((PowerSeries.mk fun _ => (1 : ℤ)) * (1 - PowerSeries.X)) := by
+        rw [map_mul, map_sub, map_one, PowerSeries.expand_X,
+          ← dyadicGeometricSeries_eq_expand j hj]
         ring
-      rw [if_pos ⟨k, hk⟩, if_pos ⟨k, hnk⟩]
-    · rw [if_neg hj, if_neg ?_]
-      rintro ⟨k, hk⟩
-      apply hj
-      refine ⟨k, ?_⟩
-      have : n = 2 * (2 ^ j * k) := by rw [hk, pow_succ]; ring
-      omega
-  · rw [if_neg h2, if_neg ?_]
-    rintro ⟨k, hk⟩
-    apply h2
-    refine ⟨2 ^ j * k, ?_⟩
-    rw [hk, pow_succ]
-    ring
+    _ = 1 := by rw [hgeom, map_one]
+
+/-- The Mahler substitution shifts the dyadic geometric series. -/
+theorem expand_dyadicGeometric (j : ℕ) :
+    PowerSeries.expand 2 two_ne_zero' (dyadicGeometricSeries j) =
+      dyadicGeometricSeries (j + 1) := by
+  have hpow : (2 : ℕ) * 2 ^ j = 2 ^ (j + 1) := by rw [pow_succ]; ring
+  rw [dyadicGeometricSeries_eq_expand j (two_pow_ne_zero' j),
+    dyadicGeometricSeries_eq_expand (j + 1) (two_pow_ne_zero' (j + 1)),
+    ← PowerSeries.expand_mul 2 two_ne_zero' (2 ^ j) (two_pow_ne_zero' j)
+      (PowerSeries.mk fun _ => (1 : ℤ))]
+  exact expand_exp_congr hpow _ _ _
 
 /-- The inhomogeneous Mahler equation of the bit series
 (`eq:T-Mahler`): `T = (1-z)·T(z²) + z·G_1`. -/
 theorem thueMorseBitZSeries_mahler :
     thueMorseBitZSeries =
       (1 - PowerSeries.X) *
-          PowerSeries.expand 2 two_ne thueMorseBitZSeries +
+          PowerSeries.expand 2 two_ne_zero' thueMorseBitZSeries +
         PowerSeries.X * dyadicGeometricSeries 1 := by
   have hexp : (1 - PowerSeries.X) *
-      PowerSeries.expand 2 two_ne thueMorseBitZSeries +
+      PowerSeries.expand 2 two_ne_zero' thueMorseBitZSeries +
       PowerSeries.X * dyadicGeometricSeries 1 =
-      PowerSeries.expand 2 two_ne thueMorseBitZSeries -
-        PowerSeries.X * PowerSeries.expand 2 two_ne thueMorseBitZSeries +
+      PowerSeries.expand 2 two_ne_zero' thueMorseBitZSeries -
+        PowerSeries.X * PowerSeries.expand 2 two_ne_zero' thueMorseBitZSeries +
         PowerSeries.X * dyadicGeometricSeries 1 := by
     ring
   rw [hexp]
@@ -144,38 +141,18 @@ theorem thueMorseBitZSeries_mahler :
       rw [h1]
       ring
 
-private theorem iterate_expand_mul' (m : ℕ) (a b : PowerSeries ℤ) :
-    (⇑(PowerSeries.expand 2 two_ne (R := ℤ)))^[m] (a * b) =
-      (⇑(PowerSeries.expand 2 two_ne (R := ℤ)))^[m] a *
-        (⇑(PowerSeries.expand 2 two_ne (R := ℤ)))^[m] b := by
-  induction m generalizing a b with
-  | zero => rfl
-  | succ m ih =>
-      rw [Function.iterate_succ_apply, Function.iterate_succ_apply,
-        Function.iterate_succ_apply, map_mul, ih]
-
 private theorem iterate_expand_add' (m : ℕ) (a b : PowerSeries ℤ) :
-    (⇑(PowerSeries.expand 2 two_ne (R := ℤ)))^[m] (a + b) =
-      (⇑(PowerSeries.expand 2 two_ne (R := ℤ)))^[m] a +
-        (⇑(PowerSeries.expand 2 two_ne (R := ℤ)))^[m] b := by
+    (⇑(PowerSeries.expand 2 two_ne_zero' (R := ℤ)))^[m] (a + b) =
+      (⇑(PowerSeries.expand 2 two_ne_zero' (R := ℤ)))^[m] a +
+        (⇑(PowerSeries.expand 2 two_ne_zero' (R := ℤ)))^[m] b := by
   induction m generalizing a b with
   | zero => rfl
   | succ m ih =>
       rw [Function.iterate_succ_apply, Function.iterate_succ_apply,
         Function.iterate_succ_apply, map_add, ih]
 
-private theorem iterate_expand_one_sub_X' (m : ℕ) :
-    (⇑(PowerSeries.expand 2 two_ne (R := ℤ)))^[m] (1 - PowerSeries.X) =
-      1 - PowerSeries.X ^ 2 ^ m := by
-  induction m with
-  | zero => simp
-  | succ m ih =>
-      rw [Function.iterate_succ_apply', ih, map_sub, map_one, map_pow,
-        PowerSeries.expand_X, ← pow_mul,
-        show 2 * 2 ^ m = 2 ^ (m + 1) by rw [pow_succ]; ring]
-
 private theorem iterate_expand_X' (m : ℕ) :
-    (⇑(PowerSeries.expand 2 two_ne (R := ℤ)))^[m] PowerSeries.X =
+    (⇑(PowerSeries.expand 2 two_ne_zero' (R := ℤ)))^[m] PowerSeries.X =
       PowerSeries.X ^ 2 ^ m := by
   induction m with
   | zero => simp
@@ -185,7 +162,7 @@ private theorem iterate_expand_X' (m : ℕ) :
         show 2 * 2 ^ m = 2 ^ (m + 1) by rw [pow_succ]; ring]
 
 private theorem iterate_expand_dyadic (m j : ℕ) :
-    (⇑(PowerSeries.expand 2 two_ne (R := ℤ)))^[m]
+    (⇑(PowerSeries.expand 2 two_ne_zero' (R := ℤ)))^[m]
         (dyadicGeometricSeries j) =
       dyadicGeometricSeries (j + m) := by
   induction m with
@@ -203,25 +180,25 @@ theorem thueMorseBitZSeries_lacunary_quotient (M : ℕ) :
         (∏ h ∈ range j, (1 - PowerSeries.X ^ 2 ^ h)) *
           (PowerSeries.X ^ 2 ^ j * dyadicGeometricSeries (j + 1))) +
       (∏ h ∈ range M, (1 - PowerSeries.X ^ 2 ^ h)) *
-        (⇑(PowerSeries.expand 2 two_ne (R := ℤ)))^[M]
+        (⇑(PowerSeries.expand 2 two_ne_zero' (R := ℤ)))^[M]
           thueMorseBitZSeries := by
   induction M with
   | zero => simp
   | succ M ih =>
       -- expand the tail one more level
-      have hstep : (⇑(PowerSeries.expand 2 two_ne (R := ℤ)))^[M]
+      have hstep : (⇑(PowerSeries.expand 2 two_ne_zero' (R := ℤ)))^[M]
           thueMorseBitZSeries =
           (1 - PowerSeries.X ^ 2 ^ M) *
-            (⇑(PowerSeries.expand 2 two_ne (R := ℤ)))^[M + 1]
+            (⇑(PowerSeries.expand 2 two_ne_zero' (R := ℤ)))^[M + 1]
               thueMorseBitZSeries +
           PowerSeries.X ^ 2 ^ M * dyadicGeometricSeries (M + 1) := by
         conv_lhs => rw [show thueMorseBitZSeries =
           (1 - PowerSeries.X) *
-              PowerSeries.expand 2 two_ne thueMorseBitZSeries +
+              PowerSeries.expand 2 two_ne_zero' thueMorseBitZSeries +
             PowerSeries.X * dyadicGeometricSeries 1 from
           thueMorseBitZSeries_mahler]
-        rw [iterate_expand_add', iterate_expand_mul', iterate_expand_mul',
-          iterate_expand_one_sub_X', iterate_expand_X',
+        rw [iterate_expand_add', iterate_expand_mul, iterate_expand_mul,
+          iterate_expand_one_sub_X, iterate_expand_X',
           iterate_expand_dyadic, show (1 : ℕ) + M = M + 1 by ring,
           ← Function.iterate_succ_apply]
       conv_lhs => rw [ih, hstep]

@@ -22,6 +22,28 @@ open Finset
 
 namespace Fabius
 
+/-- **Boundary peel for a self-convolution.**  If `a 0 = 1`, the `n`-th
+self-convolution of `a` splits off its two boundary terms `i = 0` and
+`i = n`.  Only the unit law and the commutativity of addition are used,
+so the same peel serves the `ℕ`-valued Catalan numbers and the
+`ℤ`-valued substituted series. -/
+private theorem sum_range_self_conv_peel {M : Type*} [AddCommMonoid M]
+    [MulOneClass M] (a : ℕ → M) (ha : a 0 = 1) (n : ℕ) (hn : 1 ≤ n) :
+    ∑ i ∈ range (n + 1), a i * a (n - i) =
+      a n + (a n + ∑ i ∈ Icc 1 (n - 1), a i * a (n - i)) := by
+  have h0mem : (0 : ℕ) ∈ range (n + 1) := Finset.mem_range.mpr (by omega)
+  have hnmem : n ∈ (range (n + 1)).erase 0 := by
+    rw [Finset.mem_erase, Finset.mem_range]
+    omega
+  have herase2 : ((range (n + 1)).erase 0).erase n = Icc 1 (n - 1) := by
+    ext x
+    simp only [Finset.mem_erase, Finset.mem_range, Finset.mem_Icc]
+    omega
+  rw [← Finset.add_sum_erase _ (fun i => a i * a (n - i)) h0mem,
+    ha, Nat.sub_zero, one_mul,
+    ← Finset.add_sum_erase _ (fun i => a i * a (n - i)) hnmem,
+    Nat.sub_self, ha, mul_one, herase2]
+
 /-- **Interior Catalan convolution**: stripping the two boundary terms
 from the Catalan recurrence,
 `∑_{s=1}^{u-1} Cat(s)·Cat(u-s) = Cat(u+1) - 2·Cat(u)` for `u ≥ 1`. -/
@@ -34,21 +56,10 @@ theorem catalan_conv_interior (u : ℕ) (hu : 1 ≤ u) :
       ← Fin.sum_univ_eq_sum_range (fun i => catalan i * catalan (u - i))
         (u + 1)]
   -- peel the two boundary terms `i = 0` and `i = u`
-  have h0mem : (0 : ℕ) ∈ range (u + 1) := Finset.mem_range.mpr (by omega)
-  have humem : u ∈ (range (u + 1)).erase 0 := by
-    rw [Finset.mem_erase, Finset.mem_range]
-    omega
-  have herase2 : ((range (u + 1)).erase 0).erase u = Icc 1 (u - 1) := by
-    ext x
-    simp only [Finset.mem_erase, Finset.mem_range, Finset.mem_Icc]
-    omega
   have hpeel : ∑ i ∈ range (u + 1), catalan i * catalan (u - i) =
       catalan u + (catalan u +
-        ∑ i ∈ Icc 1 (u - 1), catalan i * catalan (u - i)) := by
-    rw [← Finset.add_sum_erase _ (fun i => catalan i * catalan (u - i))
-      h0mem, catalan_zero, Nat.sub_zero, Nat.one_mul,
-      ← Finset.add_sum_erase _ (fun i => catalan i * catalan (u - i))
-      humem, Nat.sub_self, catalan_zero, Nat.mul_one, herase2]
+        ∑ i ∈ Icc 1 (u - 1), catalan i * catalan (u - i)) :=
+    sum_range_self_conv_peel catalan catalan_zero u hu
   have hcast := congrArg (fun t : ℕ => (t : ℤ)) (hrec.trans hpeel)
   push_cast at hcast
   linarith [hcast]
@@ -118,25 +129,13 @@ theorem catalanSeriesDelta_conv (m : ℕ) :
   · simp [catalanSeriesDelta_one]
   rw [if_neg (by omega)]
   -- peel the boundary terms `p = 0` and `p = m`
-  have h0mem : (0 : ℕ) ∈ range (m + 1) := Finset.mem_range.mpr (by omega)
-  have hmmem : m ∈ (range (m + 1)).erase 0 := by
-    rw [Finset.mem_erase, Finset.mem_range]
-    omega
-  have herase2 : ((range (m + 1)).erase 0).erase m = Icc 1 (m - 1) := by
-    ext x
-    simp only [Finset.mem_erase, Finset.mem_range, Finset.mem_Icc]
-    omega
   have hpeel : ∑ p ∈ range (m + 1),
       catalanSeriesDelta p * catalanSeriesDelta (m - p) =
       catalanSeriesDelta m + (catalanSeriesDelta m +
         ∑ p ∈ Icc 1 (m - 1),
-          catalanSeriesDelta p * catalanSeriesDelta (m - p)) := by
-    rw [← Finset.add_sum_erase _
-      (fun p => catalanSeriesDelta p * catalanSeriesDelta (m - p)) h0mem,
-      catalanSeriesDelta_zero, Nat.sub_zero, one_mul,
-      ← Finset.add_sum_erase _
-      (fun p => catalanSeriesDelta p * catalanSeriesDelta (m - p)) hmmem,
-      Nat.sub_self, catalanSeriesDelta_zero, mul_one, herase2]
+          catalanSeriesDelta p * catalanSeriesDelta (m - p)) :=
+    sum_range_self_conv_peel catalanSeriesDelta catalanSeriesDelta_zero m
+      (by omega)
   rw [hpeel]
   -- the interior double sum, collapsed through the diagonal Vandermonde
   have hexpand : ∑ p ∈ Icc 1 (m - 1),
