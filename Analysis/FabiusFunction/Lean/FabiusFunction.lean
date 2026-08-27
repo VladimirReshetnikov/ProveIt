@@ -34,6 +34,8 @@ import FabiusFunction.ThueMorsePartition
 import FabiusFunction.ThueMorseIntegerLift
 import FabiusFunction.LacunaryRieszIntegral
 import FabiusFunction.GelfondLogisticBound
+import FabiusFunction.GeometricScaleProducts
+import FabiusFunction.SincProductShells
 import FabiusFunction.NegativeLaplace
 import FabiusFunction.ProbabilityLaplaceMoments
 import FabiusFunction.UnitLaplaceMomentBounds
