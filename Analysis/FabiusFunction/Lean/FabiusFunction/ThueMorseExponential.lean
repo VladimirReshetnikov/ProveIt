@@ -589,9 +589,7 @@ theorem thueMorseTranslatedShiftedPowerSeries_eq_expm1_product
               PowerSeries.rescale (-(2 : ℚ) ^ j)
                 rationalExpm1DivSeries) := by ring
     _ = _ := by
-      rw [PowerSeries.exp_mul_exp_eq_exp_add]
-      congr 2
-      ring
+      rw [PowerSeries.exp_mul_exp_eq_exp_add, sub_eq_add_neg]
 
 /-- Iterating `A(2X) = ((exp X - 1) / X) A(X)` along the negative dyadic
 orbit absorbs the finite product occurring above. -/
