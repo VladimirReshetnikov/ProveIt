@@ -44,6 +44,7 @@ import FabiusFunction.ThueMorseMellin
 import FabiusFunction.ThueMorseWoodsRobbins
 import FabiusFunction.ThueMorseMasterProduct
 import FabiusFunction.ThueMorseBlockProducts
+import FabiusFunction.ThueMorseEntireContinuation
 import FabiusFunction.LacunaryRieszIntegral
 import FabiusFunction.GelfondLogisticBound
 import FabiusFunction.GeometricScaleProducts
