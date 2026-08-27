@@ -1,9 +1,11 @@
 import FabiusFunction.GeometricLagrange
+import FabiusFunction.LagrangeResidualMoments
 import FabiusFunction.Paper05442
 import FabiusFunction.Paper06487
 import FabiusFunction.PaperFabiusAsymptotic
 import FabiusFunction.PaperKFoldThueMorse
 import FabiusFunction.FinitePolynomialFunctional
+import FabiusFunction.CompleteHomogeneous
 import FabiusFunction.FiniteQBinomialCore
 import FabiusFunction.WeightedScaleMultiplicity
 import FabiusFunction.MomentCumulantAlgebra

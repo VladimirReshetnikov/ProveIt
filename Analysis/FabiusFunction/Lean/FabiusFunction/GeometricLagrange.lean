@@ -106,27 +106,14 @@ theorem eq_lagrangeEvalWeight_of_moments
     weight i = lagrangeEvalWeight s v x i := by
   classical
   let p := Lagrange.basis s v i
-  have hcard : 0 < s.card := Finset.card_pos.mpr ⟨i, hi⟩
-  have hpred : s.card - 1 + 1 = s.card := by omega
-  have hdegree_eq : p.natDegree = s.card - 1 := by
-    simpa only [p] using Lagrange.natDegree_basis hvs hi
-  have hdegree : p.natDegree ≤ s.card - 1 := hdegree_eq.le
-  have hdegree' : p.natDegree < s.card := by omega
-  have hexpand := sum_weight_mul_eval₂_eq_sum_coeff_mul_moment
-    (RingHom.id F) s weight v p (s.card - 1) hdegree
-  rw [hpred] at hexpand
+  have hdegree : p.degree < (s.card : WithBot ℕ) := by
+    dsimp only [p]
+    rw [Lagrange.degree_basis hvs hi]
+    exact_mod_cast Nat.pred_lt (Finset.card_ne_zero_of_mem hi)
   have hfunctional :
       (∑ j ∈ s, weight j * p.eval (v j)) = p.eval x := by
-    calc
-      (∑ j ∈ s, weight j * p.eval (v j)) =
-          ∑ d ∈ Finset.range s.card,
-            p.coeff d * ∑ j ∈ s, weight j * v j ^ d := by
-        simpa only [Polynomial.eval₂_id, RingHom.id_apply] using hexpand
-      _ = ∑ d ∈ Finset.range s.card, p.coeff d * x ^ d := by
-        apply Finset.sum_congr rfl
-        intro d hd
-        rw [hmoment d (Finset.mem_range.mp hd)]
-      _ = p.eval x := (Polynomial.eval_eq_sum_range' hdegree' x).symm
+    exact sum_weight_mul_eval_eq_eval_of_moments
+      s weight v x s.card hmoment p hdegree
   calc
     weight i = ∑ j ∈ s, weight j * p.eval (v j) := by
       symm
