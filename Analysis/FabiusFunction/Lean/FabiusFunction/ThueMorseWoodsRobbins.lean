@@ -1,5 +1,4 @@
-import FabiusFunction.ThueMorseDirichlet
-import FabiusFunction.RealZPowProduct
+import FabiusFunction.ThueMorseMasterProduct
 
 /-!
 # The Woods–Robbins product
@@ -17,8 +16,18 @@ and interleaving the even-length partials of `L_C` through
 `ε(2j) = ε(j)`, `ε(2j+1) = -ε(j)` gives `L_C = L_B - L_A`.  Hence
 `L_A = -(log 2)/2`, and exponentiating evaluates the product.
 
+The first of the three is not a new series: `wrA` *is* the master log-series
+`mpLog` of `ThueMorseMasterProduct` at the parameters `(1/2, 1)`, termwise,
+because `(n+1/2)/(n+1) = (2n+1)/(2n+2)`.  Its convergence is therefore the
+`(1/2, 1)` instance of `mpLog_cauchy`, and the evaluation below identifies the
+master limit there.  Only `wrB` and `wrC`, which are guarded at `n = 0`
+because their parameter `a` degenerates to `0`, need their own treatment.
+
 * `wrA`, `wrB`, `wrC` — the three partial log-sums.
+* `mpLog_one_half_eq_wrA` — `wrA` is the master log-series at `(1/2, 1)`.
 * `tendsto_wrA` — `L_A = -(log 2)/2`.
+* `mpLimit_one_half_one` — hence `L(1/2, 1) = -(log 2)/2`, the one closed
+  value of the master series the atlas pins down directly.
 * `woods_robbins` — **the product evaluation** (`thm:Woods-Robbins`).
 -/
 
@@ -100,40 +109,24 @@ private theorem cauchySeq_guarded (f : ℕ → ℝ)
   rw [hkey]
   exact hshift
 
-private theorem wrA_cauchy : CauchySeq wrA := by
-  have hneg : wrA = fun N => -∑ n ∈ range N,
-      Real.log ((2 * (n : ℝ) + 2) / (2 * (n : ℝ) + 1)) •
-        (thueMorseSign n : ℝ) := by
-    funext N
-    rw [← Finset.sum_neg_distrib]
-    refine Finset.sum_congr rfl fun n _ => ?_
-    rw [smul_eq_mul,
-      show (2 * (n : ℝ) + 2) / (2 * (n : ℝ) + 1) =
-        ((2 * (n : ℝ) + 1) / (2 * (n : ℝ) + 2))⁻¹ from by
-          rw [inv_div],
-      Real.log_inv]
+/-- **The Woods--Robbins series is the master series at `(1/2, 1)`.**
+Termwise `log((n+1/2)/(n+1)) = log((2n+1)/(2n+2))`: the two ratios agree
+after clearing denominators. -/
+theorem mpLog_one_half_eq_wrA (N : ℕ) :
+    mpLog (1 / 2 : ℝ) 1 N = wrA N := by
+  rw [mpLog, wrA]
+  refine Finset.sum_congr rfl fun n _ => ?_
+  have harg : ((n : ℝ) + 1 / 2) / ((n : ℝ) + 1) =
+      (2 * (n : ℝ) + 1) / (2 * (n : ℝ) + 2) := by
+    rw [div_eq_div_iff (by positivity) (by positivity)]
     ring
-  rw [hneg]
-  refine CauchySeq.neg ?_
-  refine Antitone.cauchySeq_series_mul_of_tendsto_zero_of_bounded
-    ?_ ?_ (b := 1) norm_sum_thueMorseSign_le_one
-  · intro p q hpq
-    have h1 : (0 : ℝ) < 2 * (p : ℝ) + 1 := by positivity
-    have h1q : (0 : ℝ) < 2 * (q : ℝ) + 1 := by positivity
-    apply Real.log_le_log (by positivity)
-    rw [div_le_div_iff₀ h1q h1]
-    have hle : (p : ℝ) ≤ (q : ℝ) := Nat.cast_le.mpr hpq
-    nlinarith
-  · have heq : ∀ n : ℕ, (2 * (n : ℝ) + 2) / (2 * (n : ℝ) + 1) =
-        1 + 1 / (2 * (n : ℝ) + 1) := by
-      intro n
-      have h0 : (0 : ℝ) < 2 * (n : ℝ) + 1 := by positivity
-      field_simp
-      ring
-    simp only [heq]
-    refine tendsto_log_one_add_inv _ ?_
-    apply tendsto_atTop_add_const_right
-    exact (tendsto_natCast_atTop_atTop).const_mul_atTop (by norm_num)
+  rw [harg]
+
+/-- Convergence of the Woods--Robbins partials is the `(1/2, 1)` instance of
+`mpLog_cauchy`; no separate Dirichlet-test argument is needed. -/
+private theorem wrA_cauchy : CauchySeq wrA := by
+  have h := mpLog_cauchy (1 / 2 : ℝ) 1 (by norm_num) (by norm_num)
+  rwa [funext mpLog_one_half_eq_wrA] at h
 
 private theorem wrB_cauchy : CauchySeq wrB := by
   have hneg : wrB = fun N => -∑ n ∈ range N,
@@ -327,6 +320,16 @@ theorem tendsto_wrA : Tendsto wrA atTop (𝓝 (-Real.log 2 / 2)) := by
     linarith
   rw [← hval]
   exact hA
+
+/-- The master log-series has the closed value `-(log 2)/2` at the parameters
+`(1/2, 1)`: it is the Woods--Robbins series there, and `tendsto_wrA` evaluates
+it.  This is the only closed value of `L(a,b)` the atlas pins down without an
+auxiliary product identity. -/
+theorem mpLimit_one_half_one :
+    mpLimit (1 / 2 : ℝ) 1 = -Real.log 2 / 2 :=
+  tendsto_nhds_unique
+    (tendsto_mpLimit (1 / 2 : ℝ) 1 (by norm_num) (by norm_num))
+    (tendsto_wrA.congr fun N => (mpLog_one_half_eq_wrA N).symm)
 
 /-- **The Woods–Robbins product** (`thm:Woods-Robbins`):
 `∏_{n<N} ((2n+1)/(2n+2))^(ε(n)) ⟶ 1/√2`. -/

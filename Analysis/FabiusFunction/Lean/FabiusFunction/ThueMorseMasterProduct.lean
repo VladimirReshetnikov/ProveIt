@@ -1,4 +1,5 @@
-import FabiusFunction.ThueMorseWoodsRobbins
+import FabiusFunction.ThueMorseDirichlet
+import FabiusFunction.RealZPowProduct
 
 /-!
 # The two-parameter master product
