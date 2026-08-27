@@ -80,4 +80,32 @@ theorem rms_transfer_one_add_cos_eigen (x : ℝ) :
   rw [hC4, hC]
   linear_combination (3 * Real.cos (π * x / 2) ^ 2 - 1) * hpy
 
+/-- **Even cosine modes halve**: `𝓛₂ (cos (2π(2m)·)) = ½·cos (2πmx)`
+— the audit's mode map `e_{2m} ↦ ½·e_m`, the reason the `𝓛₂`-spectrum
+is exactly computable on trigonometric polynomials. -/
+theorem rms_transfer_cos_even_mode (m : ℕ) (x : ℝ) :
+    (Real.sin (π * x / 2) ^ 2 * Real.cos (2 * π * (2 * (m:ℝ)) * (x / 2)) +
+      Real.cos (π * x / 2) ^ 2 *
+        Real.cos (2 * π * (2 * (m:ℝ)) * ((x + 1) / 2))) / 2 =
+    (1 / 2) * Real.cos (2 * π * (m:ℝ) * x) := by
+  have hpy := Real.sin_sq_add_cos_sq (π * x / 2)
+  rw [show 2 * π * (2 * (m:ℝ)) * ((x + 1) / 2) =
+      2 * π * (m:ℝ) * x + ((m : ℤ) : ℝ) * (2 * π) by push_cast; ring,
+    Real.cos_add_int_mul_two_pi,
+    show 2 * π * (2 * (m:ℝ)) * (x / 2) = 2 * π * (m:ℝ) * x by ring]
+  linear_combination (Real.cos (2 * π * (m:ℝ) * x) / 2) * hpy
+
+/-- **Even sine modes halve**: `𝓛₂ (sin (2π(2m)·)) = ½·sin (2πmx)`. -/
+theorem rms_transfer_sin_even_mode (m : ℕ) (x : ℝ) :
+    (Real.sin (π * x / 2) ^ 2 * Real.sin (2 * π * (2 * (m:ℝ)) * (x / 2)) +
+      Real.cos (π * x / 2) ^ 2 *
+        Real.sin (2 * π * (2 * (m:ℝ)) * ((x + 1) / 2))) / 2 =
+    (1 / 2) * Real.sin (2 * π * (m:ℝ) * x) := by
+  have hpy := Real.sin_sq_add_cos_sq (π * x / 2)
+  rw [show 2 * π * (2 * (m:ℝ)) * ((x + 1) / 2) =
+      2 * π * (m:ℝ) * x + ((m : ℤ) : ℝ) * (2 * π) by push_cast; ring,
+    Real.sin_add_int_mul_two_pi,
+    show 2 * π * (2 * (m:ℝ)) * (x / 2) = 2 * π * (m:ℝ) * x by ring]
+  linear_combination (Real.sin (2 * π * (m:ℝ) * x) / 2) * hpy
+
 end Fabius
