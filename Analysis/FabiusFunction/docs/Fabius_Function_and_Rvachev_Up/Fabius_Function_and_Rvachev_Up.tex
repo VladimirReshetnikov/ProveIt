@@ -119,8 +119,8 @@
 \large Exact arithmetic, probability, Fourier analysis, and corrected sharp asymptotics}
 \author{Human-readable synthesis of the formal development\\
 \small Vladimir Reshetnikov's \texttt{ProveIt} repository}
-\date{Repository snapshot: 26 August 2026\\
-\small commit \nolinkurl{948bf3f377472c068f9539e0569d383ddc35f617}}
+\date{Repository snapshot: 27 August 2026\\
+\small commit \nolinkurl{552f76a235e883e5b44212dec5325b0589be1395}}
 
 \begin{document}
 \maketitle
@@ -1170,6 +1170,16 @@ The finite-product refinement and its infinite limit are
 \lean{rvachevFourier_eq_finite_product} and
 \lean{rvachevFourier_eq_product} in \path{FourierProduct.lean}.
 The refinement equation is \lean{rvachevFourier_scaling} in the same module.
+Writing \(\Phi\) for the first product in \eqref{eq:sinc-product}, the
+standalone one-step and \(n\)-fold
+renormalizations
+\[
+ \Phi(z)=\sinc(\pi z)\Phi(z/2),\qquad
+ \Phi(z)=\left(\prod_{j<n}\sinc(\pi z/2^j)\right)\Phi(z/2^n)
+\]
+are \lean{rvachevFourierProduct_scaling} and
+\lean{rvachevFourierProduct_shell} in
+\path{RenormalizationIdentity.lean}.
 The whole-plane analyticity theorem is
 \lean{rvachevFourier_analyticOnNhd} in
 \path{FourierAnalytic.lean}.  The weighted cosine product is
@@ -1177,6 +1187,62 @@ The whole-plane analyticity theorem is
 \path{OriginalPaperSupplement.lean}; its finite telescoping identity is proved internally in
 the same module.
 \end{proof}
+
+\begin{theorem}[Dyadic shell factorization]
+\label{thm:fourier-dyadic-shell}
+For every \(k\in\N\) and \(z\in\C\), dilation by \(2^k\) extracts exactly the first
+\(k\) factors of the sinc product:
+\begin{equation}
+ \widehat{\Up}(2^kz)
+ =\left(\prod_{j=0}^{k-1}\sinc\!\left(\pi 2^{j+1}z\right)\right)
+   \widehat{\Up}(z).                                      \label{eq:fourier-dyadic-shell}
+\end{equation}
+\end{theorem}
+
+\begin{proof}[Formal proof]
+This is \lean{rvachevFourier_two_pow_mul} in
+\path{RvachevFourierDecay.lean}.  Its standalone-product form is
+\lean{rvachevFourierProduct_two_pow_mul} in \path{SincProductShells.lean}.
+\end{proof}
+
+The mean-value input behind shell estimates is more general than the dyadic case.
+Let \(m_0,m_1,\ldots\) be positive integer frequencies satisfying
+\(2m_j\le m_{j+1}\).  Then, for every \(n\in\N\),
+\begin{align}
+ \int_0^1\prod_{j=0}^{n-1}\sin^2(\pi m_jt)\,\dd t
+   &=\left(\frac12\right)^n,                              \label{eq:lacunary-square-mean}\\
+ \int_0^1\prod_{j=0}^{n-1}|\sin(\pi m_jt)|\,\dd t
+   &\le\left(\frac{\sqrt2}{2}\right)^n.                  \label{eq:lacunary-abs-mean}
+\end{align}
+The exact square mean is \lean{integral_prod_sin_sq} in
+\path{LacunaryRieszIntegral.lean}.  Applying Cauchy--Schwarz to it gives
+\lean{integral_prod_abs_sin_le_sqrt_two} in
+\path{LacunaryMeanSharp.lean}.  The geometric-base and dyadic specializations are
+\lean{integral_prod_abs_sin_pow_le_sqrt_two} and
+\lean{integral_prod_abs_sin_two_pow_le_sqrt_two}.
+
+For a quantitative global form, set
+\begin{equation}
+ \kappa_\infty=\frac32+\frac{\log(\pi/\sqrt3)}{\log2},
+ \qquad
+ E_\kappa(x)=\exp\!\left(-\frac{(\log x)^2}{2\log2}\right)x^{-\kappa}
+ \quad(x>0).                                               \label{eq:fourier-decay-gauge}
+\end{equation}
+There is a constant \(C>0\) such that the single two-sided estimate
+\begin{equation}
+ |\widehat{\Up}(x)|\le C E_{\kappa_\infty}(|x|)
+ \qquad(|x|\ge1)                                          \label{eq:fourier-two-sided-envelope}
+\end{equation}
+holds on both real tails.  This is
+\lean{norm_rvachevFourier_le_decayGauge_abs} in
+\path{RvachevFourierDecay.lean}.  On the distinguished dyadic ray the same gauge occurs
+in an exact identity:
+\begin{equation}
+ |\widehat{\Up}(2^k\,2/3)|
+ =\frac{|\widehat{\Up}(2/3)|}{E_{\kappa_\infty}(2/3)}
+   E_{\kappa_\infty}(2^k\,2/3),                           \label{eq:fourier-peak-ray-envelope}
+\end{equation}
+namely \lean{norm_rvachevFourier_peak_ray_envelope} in the same module.
 
 The transform also has the exact conjugation, parity, and real-axis identities
 \begin{equation}
@@ -1188,12 +1254,51 @@ These are \lean{rvachevFourier_conj} in \path{FourierAnalytic.lean} and
 \lean{rvachevFourier_neg}, \lean{rvachevFourier_ofReal_im_eq_zero} in
 \path{FourierProduct.lean}.
 
-A consequence needed for Poisson summation is the formally proved integer-zero statement
+\begin{theorem}[Exact Fourier zero set and positive-integer zero orders]
+\label{thm:fourier-zeros}
+The complex zeros of the Fourier transform are precisely the nonzero integers:
 \begin{equation}
- \widehat{\Up}(m)=0\qquad(m\in\Z\setminus\{0\}).           \label{eq:fourier-integer-zeros}
+ \widehat{\Up}(z)=0
+ \quad\Longleftrightarrow\quad
+ \exists\,m\in\Z\setminus\{0\}\text{ such that }z=m,
+ \qquad z\in\C.                                           \label{eq:fourier-integer-zeros}
 \end{equation}
-This is exactly \lean{rvachevFourier_int_eq_zero}.  No converse or zero-multiplicity
-classification is asserted here.
+At every positive integer \(m\), its real-axis zero order is exactly
+\(\vtwo(m)+1\), in the following quantitative sense: there is a constant
+\(C_m>0\) such that
+\begin{equation}
+ \lim_{\substack{x\to m\\x\ne m}}
+ \frac{\left|\widehat{\Up}(x)\right|}
+      {|x-m|^{\vtwo(m)+1}}
+ =C_m.                                                     \label{eq:fourier-zero-order}
+\end{equation}
+The corresponding canonical product records all of these orders at once:
+\begin{equation}
+ \widehat{\Up}(z)=\prod_{r=0}^{\infty}
+ \left(1-\frac{z^2}{(r+1)^2}\right)^{1+\vtwo(r+1)}.       \label{eq:fourier-canonical-product}
+\end{equation}
+\end{theorem}
+
+\begin{proof}[Formal proof]
+The complete complex zero-set equivalence is
+\lean{rvachevFourier_eq_zero_iff} in \path{FourierProduct.lean}.
+The positive-integer limit is
+\lean{tendsto_norm_rvachevFourier_div_pow_zero_order} in
+\path{RvachevFourierDecay.lean}; its limiting constant is exhibited there as
+an exponential, and is therefore strictly positive.  The canonical product is
+\lean{rvachevFourier_eq_canonical} in the same facade module, built from
+\lean{rvachevFourierProduct_eq_canonical} in \path{SincCanonicalProduct.lean}.
+\end{proof}
+
+On each positive real lobe the sign and peak are also exact.  If \(m\in\N\) and
+\(m<x<m+1\), then
+\begin{equation}
+ \widehat{\Up}(x)=\varepsilon_m|\widehat{\Up}(x)|,        \label{eq:fourier-lobe-sign}
+\end{equation}
+by \lean{rvachevFourier_eq_thueMorse_sign_mul_norm}.  If moreover \(m\ge1\),
+there is exactly one point of \((m,m+1)\) maximizing the modulus over that open lobe, by
+\lean{existsUnique_isMaxOn_rvachevFourier_lobe}.  Both facade declarations are in
+\path{RvachevFourierDecay.lean}.
 
 \subsection{Rapid decay and inversion}
 
@@ -1879,6 +1984,38 @@ For every \(k\ge0\) and \(Q\in\Q\),
 
 \begin{proof}[Formal proof]
 Apply \lean{thueMorse_affine_power_sum_self} with \(X=Q\) and \(Y=1\).
+\end{proof}
+
+\begin{proposition}[Centered reflection and the characteristic-two boundary]
+\label{prop:thue-morse-centered-reflection}
+Let \(R\) be a commutative ring, let \(c\in R\) satisfy
+\(c+c=2^m-1\), and put
+\begin{equation}
+ S_{m,r}(c)=\sum_{n=0}^{2^m-1}\varepsilon_n(n-c)^r\in R.
+                                                                    \label{eq:thue-centered-moment}
+\end{equation}
+Then
+\begin{equation}
+ S_{m,r}(c)=(-1)^{m+r}S_{m,r}(c).                         \label{eq:thue-centered-reflect}
+\end{equation}
+Consequently, if \(m+r\) is odd, then \(2S_{m,r}(c)=0\).  This is the
+characteristic-free conclusion: in a ring with \(2\)-torsion one cannot in general cancel
+the factor \(2\).  Over \(\Q\), taking \(c=(2^m-1)/2\) gives the familiar parity rule
+\begin{equation}
+ \sum_{n=0}^{2^m-1}\varepsilon_n
+   \left(n-\frac{2^m-1}{2}\right)^r=0
+ \qquad(m+r\ \text{odd}).                                \label{eq:thue-midpoint-parity}
+\end{equation}
+\end{proposition}
+
+\begin{proof}[Formal proof]
+The fixed-point identity is
+\lean{sum_thueMorseSign_mul_centered_pow_reflect}, and its universal
+\(2\)-torsion consequence is
+\lean{two_mul_sum_thueMorseSign_mul_centered_pow_eq_zero}.  The rational
+specialization, including the legitimate cancellation of \(2\ne0\), is
+\lean{sum_thueMorseSign_mul_midpoint_pow_eq_zero}.  All three declarations are in
+\path{ThueMorseMoments.lean}.
 \end{proof}
 
 The centered specialization \(Q=-2^k\) is therefore
@@ -4322,8 +4459,9 @@ That rule explains several choices made above:
       weak-convergence API, not an unformalized continuous box-convolution density.
 \item Step cells use the formal half-endpoint indicator, including its point value at a
       shared boundary.
-\item The Fourier chapter states integer zeros but neither a complete zero classification nor
-      multiplicities.
+\item The Fourier chapter states the exact complex zero classification and canonical product,
+      and the exact positive-integer zero order in its proved real punctured-limit form; it
+      does not promote that real limit to an unstated complex local-multiplicity theorem.
 \item Flatness uses natural powers, and the analytic-locus claims use precisely the domains
       proved in \path{NowhereAnalytic.lean}.
 \item The \(q\)-calculus is restricted to the half-base identities actually present in Lean.
@@ -4385,7 +4523,10 @@ Probability and finite approximants &
 \path{FabiusUniformSpline.lean}, \path{FabiusComputability.lean}\\
 Fourier analysis &
 \path{FourierProduct.lean}, \path{FourierAnalytic.lean},
-\path{OriginalPaperSupplement.lean}, \path{PoissonSummation.lean}\\
+\path{OriginalPaperSupplement.lean}, \path{PoissonSummation.lean},
+\path{RenormalizationIdentity.lean}, \path{SincProductShells.lean},
+\path{SincCanonicalProduct.lean}, \path{PhiZeroOrder.lean},
+\path{ThueMorseLobeSign.lean}, \path{RvachevProductContinuity.lean}\\
 Global derivatives and flatness &
 \path{GlobalExtension.lean}, \path{GlobalBounds.lean},
 \path{BoundedDerivatives.lean}, \path{EffectiveFlatness.lean},
@@ -4587,8 +4728,8 @@ V.~Reshetnikov,
 V.~Reshetnikov,
 \newblock \emph{ProveIt: Analysis/FabiusFunction},
 \newblock Lean~4 formal development, source snapshot
-\texttt{948bf3f377472c068f9539e0569d383ddc35f617}, consulted 26 August 2026.
-\newblock \url{https://github.com/VladimirReshetnikov/ProveIt/tree/948bf3f377472c068f9539e0569d383ddc35f617/Analysis/FabiusFunction}.
+\texttt{552f76a235e883e5b44212dec5325b0589be1395}, consulted 27 August 2026.
+\newblock \url{https://github.com/VladimirReshetnikov/ProveIt/tree/552f76a235e883e5b44212dec5325b0589be1395/Analysis/FabiusFunction}.
 
 \end{thebibliography}
 

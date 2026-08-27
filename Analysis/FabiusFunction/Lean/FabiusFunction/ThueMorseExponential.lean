@@ -38,8 +38,9 @@ bridge lemmas record this once and for all,
 and every centered statement whose translated counterpart is available is
 derived from that counterpart through them.  The translated family is
 therefore developed *before* the centered specializations; the genuinely
-centered-only results (the integer lift, the halving recurrence, and the
-product factorizations) keep their own proofs.
+centered-only results (the integer lift and the halving recurrence) keep their
+own proofs; the translated product factorization is instead derived from the
+centered one.
 -/
 
 set_option autoImplicit false
@@ -370,11 +371,15 @@ noncomputable def thueMorseTranslatedShiftedPowerSeries
   PowerSeries.mk fun n =>
     thueMorseTranslatedPowerSum c k (n + k) / (n + k).factorial
 
+/-- The degree-`n` coefficient of the shifted centered series is the
+normalized centered power sum in degree `n + k`. -/
 @[simp] theorem coeff_thueMorseShiftedPowerSeries (k n : ℕ) :
     PowerSeries.coeff n (thueMorseShiftedPowerSeries k) =
       thueMorseCenteredPowerSum k (n + k) / (n + k).factorial := by
   simp [thueMorseShiftedPowerSeries]
 
+/-- The degree-`n` coefficient of the shifted translated series is the
+normalized translated power sum in degree `n + k`. -/
 @[simp] theorem coeff_thueMorseTranslatedShiftedPowerSeries
     (c : ℚ) (k n : ℕ) :
     PowerSeries.coeff n (thueMorseTranslatedShiftedPowerSeries c k) =
@@ -491,6 +496,7 @@ theorem X_pow_mul_thueMorseShiftedPowerSeries_eq_product (k : ℕ) :
 noncomputable def rationalExpm1DivSeries : PowerSeries ℚ :=
   PowerSeries.mk fun n => 1 / ((n + 1).factorial : ℚ)
 
+/-- The degree-`n` coefficient of `(exp X - 1) / X` is `1 / (n + 1)!`. -/
 @[simp] theorem coeff_rationalExpm1DivSeries (n : ℕ) :
     PowerSeries.coeff n rationalExpm1DivSeries =
       1 / ((n + 1).factorial : ℚ) := by
@@ -555,6 +561,37 @@ theorem thueMorseShiftedPowerSeries_eq_expm1_product (k : ℕ) :
   change PowerSeries.C ((-1 : ℚ) ^ k) * _ = _
   rw [map_mul]
   ring
+
+/-- Normalized product factorization for an arbitrary rational translation.
+Translation replaces the centered factor `exp (-X)` by `exp ((c - 1)X)` and
+leaves the scalar normalization and finite `(exp X - 1) / X` product
+unchanged. -/
+theorem thueMorseTranslatedShiftedPowerSeries_eq_expm1_product
+    (c : ℚ) (k : ℕ) :
+    thueMorseTranslatedShiftedPowerSeries c k =
+      PowerSeries.C (((-1 : ℚ) ^ k) * (2 : ℚ) ^ k.choose 2) *
+        (PowerSeries.rescale (c - 1) (PowerSeries.exp ℚ) *
+          ∏ j ∈ Finset.range k,
+            PowerSeries.rescale (-(2 : ℚ) ^ j) rationalExpm1DivSeries) := by
+  rw [thueMorseTranslatedShiftedPowerSeries_eq_exp_mul,
+    thueMorseShiftedPowerSeries_eq_expm1_product]
+  calc
+    PowerSeries.rescale c (PowerSeries.exp ℚ) *
+          (PowerSeries.C (((-1 : ℚ) ^ k) * (2 : ℚ) ^ k.choose 2) *
+            (PowerSeries.rescale (-1 : ℚ) (PowerSeries.exp ℚ) *
+              ∏ j ∈ Finset.range k,
+                PowerSeries.rescale (-(2 : ℚ) ^ j)
+                  rationalExpm1DivSeries)) =
+        PowerSeries.C (((-1 : ℚ) ^ k) * (2 : ℚ) ^ k.choose 2) *
+          ((PowerSeries.rescale c (PowerSeries.exp ℚ) *
+              PowerSeries.rescale (-1 : ℚ) (PowerSeries.exp ℚ)) *
+            ∏ j ∈ Finset.range k,
+              PowerSeries.rescale (-(2 : ℚ) ^ j)
+                rationalExpm1DivSeries) := by ring
+    _ = _ := by
+      rw [PowerSeries.exp_mul_exp_eq_exp_add]
+      congr 2
+      ring
 
 /-- Iterating `A(2X) = ((exp X - 1) / X) A(X)` along the negative dyadic
 orbit absorbs the finite product occurring above. -/
