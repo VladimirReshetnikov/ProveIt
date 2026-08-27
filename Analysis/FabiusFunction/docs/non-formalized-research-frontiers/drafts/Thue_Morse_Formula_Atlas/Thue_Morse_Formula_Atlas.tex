@@ -360,7 +360,7 @@ Gelfond exponent & \(3^{m/2}\le\sup_x|P_m(\e^{2\pi\ii x})|\le\tfrac2{\sqrt3}3^{m
 Newman positivity & \(\sum_{n<X,\,3\mid n}\eps_n>0\) for all \(X\ge1\). \\
 Critical exponent & Overlap-free; squares occur, exponent exactly \(2\). \\
 Factor complexity & \(\ell+1\le p(\ell)<8\ell\). \\
-Dirichlet--Mellin & \(D(s,a)=\Gamma(s)^{-1}\int_0^\infty t^{s-1}\e^{-at}E(\e^{-t})\dd t\). \\
+Dirichlet--Mellin & \(D(s,a)=\Gamma(s)^{-1}\int_0^\infty t^{s-1}\e^{-at}E(\e^{-t})\dd t\).  \emph{Delivered} for the boundary-flatness input (\path{ThueMorseBoundaryFlatness.lean}); the Mellin integral and continuation remain open. \\
 \bottomrule
 \end{longtable}
 \renewcommand{\arraystretch}{1}
@@ -4519,6 +4519,33 @@ Sharper asymptotic expansions contain a bounded log-periodic fluctuation in
 part needed for Mellin continuation: super-polynomial flatness.
 \end{remark}
 
+\emph{Formal versions.}  \Cref{thm:boundary-flatness} is formal in
+effective two-sided form (\path{ThueMorseBoundaryFlatness.lean}).  The
+product \(\mathcal E\) is \lean{Fabius.lacunaryExpProduct},
+identified with the exponential of its log series and hence positive
+and at most one.  The key structural fact is the \emph{self-similarity}
+\(\mathcal E(t)=\prod_{j<m}(1-\e^{-2^jt})\cdot\mathcal E(2^mt)\)
+(\lean{Fabius.lacunaryExpProduct\_eq\_prod\_mul}); combining it with
+the reusable sandwich \(x/2\le1-\e^{-x}\le x\) on \([0,1]\)
+(\lean{Fabius.half\_le\_one\_sub\_exp\_neg},
+\lean{Fabius.one\_sub\_exp\_neg\_le} --- the lower half proved from
+\(\e^{-x}\le1/(1+x)\), no series expansion) gives, for \emph{every}
+level \(m\),
+\[
+  2^{\binom m2}(t/2)^m\,\mathcal E(\tfrac12)
+  \;\le\;\mathcal E(t)\;\le\;2^{\binom m2}t^m ,
+\]
+the lower bound under the dyadic matching \(\tfrac12\le2^mt\le2\)
+(\lean{Fabius.le\_lacunaryExpProduct},
+\lean{Fabius.lacunaryExpProduct\_le}).  Taking logarithms at the
+matching level recovers \eqref{eq:boundary-log-asymptotic} with
+explicit constants, and the upper bound alone is
+\eqref{eq:superpolynomial-flatness} in effective form.  Monotonicity
+in \(t\) (\lean{Fabius.lacunaryExpProduct\_mono}) and summability of
+the factor logarithms
+(\lean{Fabius.summable\_log\_one\_sub\_exp}) are proved along the
+way.
+
 \subsection{The shifted Dirichlet family}
 
 For \(a>0\), define initially in the half-plane \(\Re s>0\)
@@ -4890,7 +4917,7 @@ valuation, carry, and Pascal-row formulas remain genuinely base-two features.
 \subsection{Formalized modules (August 2026)}
 \label{sec:formalized-modules}
 
-The first tranches of the formalization now exist as thirty
+The first tranches of the formalization now exist as thirty-one
 compiled Lean modules in \repo{}, complementing the corpus modules
 (\path{Parity.lean}, \path{TwoAdic.lean}, \path{ThueMorsePrefix.lean},
 \path{ThueMorseGenerating.lean}, \path{ThueMorseExponential.lean},
@@ -4938,6 +4965,7 @@ Module & Contents \\
 \path{ThueMorseHessenberg.lean} & Cramer's rule for a known solution over any commutative ring, the triangular ruler system with determinant \(n!\), and the Hessenberg formula \(\det H_n=(-1)^nn!\,\eps_n\) via one column rotation. \\
 \path{ThueMorsePartition.lean} & Weighted partitions, the marked-part recurrence of \(\exp(\sum x_jz^j)\) over any characteristic-zero field, recurrence uniqueness, and the partition and Bell formulae for \(\eps_n\). \\
 \path{ThueMorseIntegerLift.lean} & The integral algebraic lift constructed in closed Catalan--binomial form; Catalan parity at Mersenne indices; the unconditional parity theorem \(c_n\equiv\tau(n)\), \(\eps_n=(-1)^{c_n}\). \\
+\path{ThueMorseBoundaryFlatness.lean} & The lacunary product \(\mathcal E(t)\) as an infinite product: self-similarity, positivity, monotonicity, and the effective two-sided flatness \(2^{\binom m2}(t/2)^m\mathcal E(\frac12)\le\mathcal E(t)\le2^{\binom m2}t^m\). \\
 \bottomrule
 \end{longtable}}
 
