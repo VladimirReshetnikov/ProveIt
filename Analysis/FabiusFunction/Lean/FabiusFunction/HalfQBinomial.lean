@@ -1,4 +1,5 @@
 import FabiusFunction.FinitePolynomialFunctional
+import FabiusFunction.FiniteQBinomialCore
 import FabiusFunction.ThueMorsePrefix
 import Mathlib.Tactic.FieldSimp
 
@@ -105,6 +106,12 @@ namespace Fabius
 /-- The finite Wolfram-language `QPochhammer[a,q,n]`, over `ℚ`. -/
 noncomputable def finiteQPochhammer (a q : ℚ) (n : ℕ) : ℚ :=
   ∏ j ∈ Finset.range n, (1 - a * q ^ j)
+
+/-- The generic commutative-ring q-Pochhammer product specializes
+definitionally to the established rational API. -/
+@[simp] theorem finiteQPochhammerIn_rat_eq (a q : ℚ) (n : ℕ) :
+    finiteQPochhammerIn a q n = finiteQPochhammer a q n := by
+  rfl
 
 /-- The empty finite q-Pochhammer product is one. -/
 @[simp] theorem finiteQPochhammer_zero (a q : ℚ) :
@@ -554,94 +561,36 @@ theorem halfQBinomial_succ_succ' (n k : ℕ) :
         halfQBinomial_eq_zero_of_lt hnk]
       ring
 
-private noncomputable def halfQBinomialSummand (n : ℕ) (z : ℚ) (k : ℕ) : ℚ :=
-  (-1 : ℚ) ^ k * (1 / 2 : ℚ) ^ (k.choose 2) *
-    halfQBinomial n k * z ^ k
+/-- The denominator-free Gaussian coefficient from
+`FiniteQBinomialCore` specializes at `q = 1/2` to the established rational
+half-q coefficient.  This makes the generic theorem the common
+finite-product engine, with compatibility certified by the established
+half-base q-Pascal recurrence. -/
+theorem gaussianBinomial_half_eq_halfQBinomial (n k : ℕ) :
+    gaussianBinomial (1 / 2 : ℚ) n k = halfQBinomial n k := by
+  induction n generalizing k with
+  | zero =>
+      cases k with
+      | zero => simp
+      | succ k => simp
+  | succ n ih =>
+      cases k with
+      | zero => simp
+      | succ k =>
+          rw [gaussianBinomial_succ_succ, halfQBinomial_succ_succ',
+            ih (k + 1), ih k]
 
-@[simp] private theorem halfQBinomialSummand_zero (n : ℕ) (z : ℚ) :
-    halfQBinomialSummand n z 0 = 1 := by
-  simp [halfQBinomialSummand]
-
-private theorem halfQBinomialSummand_succ_succ
-    (n k : ℕ) (hk : k ≤ n) (z : ℚ) :
-    halfQBinomialSummand (n + 1) z (k + 1) =
-      halfQBinomialSummand n z (k + 1) -
-        z * (1 / 2 : ℚ) ^ n * halfQBinomialSummand n z k := by
-  rw [halfQBinomialSummand, halfQBinomialSummand,
-    halfQBinomialSummand, halfQBinomial_succ_succ']
-  rw [choose_succ_two, pow_add, pow_succ, pow_succ]
-  have hsum : k + (n - k) = n := Nat.add_sub_of_le hk
-  have hknpow : (1 / 2 : ℚ) ^ k * (1 / 2 : ℚ) ^ (n - k) =
-      (1 / 2 : ℚ) ^ n := by
-    rw [← pow_add, hsum]
-  ring_nf
-  linear_combination
-    -(halfQBinomial n k * z * z ^ k * (-1 : ℚ) ^ k *
-      (1 / 2 : ℚ) ^ (k.choose 2)) * hknpow
-
-private theorem halfQBinomialSummand_above (n : ℕ) (z : ℚ) :
-    halfQBinomialSummand n z (n + 1) = 0 := by
-  rw [halfQBinomialSummand, halfQBinomial_eq_zero_of_lt (Nat.lt_succ_self n)]
-  ring
-
-/-- The finite q-binomial theorem specialized to `q = 1/2`. -/
+/-- The finite q-binomial theorem specialized to `q = 1/2`.  Its proof is
+now the direct rational specialization of the denominator-free
+commutative-ring theorem. -/
 theorem halfQBinomial_theorem (n : ℕ) (z : ℚ) :
     (∑ k ∈ Finset.range (n + 1),
       (-1 : ℚ) ^ k * (1 / 2 : ℚ) ^ (k.choose 2) *
         halfQBinomial n k * z ^ k) =
       finiteQPochhammer z (1 / 2) n := by
-  change (∑ k ∈ Finset.range (n + 1), halfQBinomialSummand n z k) = _
-  induction n with
-  | zero => simp [finiteQPochhammer]
-  | succ n ih =>
-      have hrec :
-          (∑ k ∈ Finset.range (n + 1),
-              halfQBinomialSummand (n + 1) z (k + 1)) =
-            ∑ k ∈ Finset.range (n + 1),
-              (halfQBinomialSummand n z (k + 1) -
-                z * (1 / 2 : ℚ) ^ n * halfQBinomialSummand n z k) := by
-        apply Finset.sum_congr rfl
-        intro k hk
-        exact halfQBinomialSummand_succ_succ n k
-          (by simpa using Finset.mem_range.mp hk) z
-      have htail :
-          1 + (∑ k ∈ Finset.range (n + 1),
-              halfQBinomialSummand n z (k + 1)) =
-            ∑ k ∈ Finset.range (n + 1), halfQBinomialSummand n z k := by
-        calc
-          1 + (∑ k ∈ Finset.range (n + 1),
-              halfQBinomialSummand n z (k + 1)) =
-              ∑ k ∈ Finset.range (n + 2), halfQBinomialSummand n z k := by
-            have hs := (Finset.sum_range_succ'
-              (fun k => halfQBinomialSummand n z k) (n + 1)).symm
-            rw [show n + 1 + 1 = n + 2 by omega] at hs
-            simpa [add_comm] using hs
-          _ = (∑ k ∈ Finset.range (n + 1), halfQBinomialSummand n z k) +
-                halfQBinomialSummand n z (n + 1) := by
-            exact Finset.sum_range_succ _ _
-          _ = _ := by rw [halfQBinomialSummand_above, add_zero]
-      rw [show n + 1 + 1 = n + 2 by omega, Finset.sum_range_succ']
-      rw [halfQBinomialSummand_zero, hrec, Finset.sum_sub_distrib]
-      rw [← Finset.mul_sum]
-      calc
-        (∑ x ∈ Finset.range (n + 1), halfQBinomialSummand n z (x + 1)) -
-              z * (1 / 2 : ℚ) ^ n *
-                (∑ i ∈ Finset.range (n + 1), halfQBinomialSummand n z i) + 1 =
-            (1 + ∑ x ∈ Finset.range (n + 1),
-                halfQBinomialSummand n z (x + 1)) -
-              z * (1 / 2 : ℚ) ^ n *
-                (∑ i ∈ Finset.range (n + 1), halfQBinomialSummand n z i) := by
-          ring
-        _ = (∑ i ∈ Finset.range (n + 1), halfQBinomialSummand n z i) -
-              z * (1 / 2 : ℚ) ^ n *
-                (∑ i ∈ Finset.range (n + 1), halfQBinomialSummand n z i) := by
-          rw [htail]
-        _ = (1 - z * (1 / 2 : ℚ) ^ n) *
-              (∑ i ∈ Finset.range (n + 1), halfQBinomialSummand n z i) := by
-          ring
-        _ = finiteQPochhammer z (1 / 2) (n + 1) := by
-          rw [ih, finiteQPochhammer_succ]
-          ring
+  simpa only [gaussianBinomial_half_eq_halfQBinomial,
+    finiteQPochhammerIn_rat_eq] using
+      finite_qBinomial_theorem (1 / 2 : ℚ) z n
 
 /-- Notation-faithful form of the finite q-binomial theorem at `q = 1/2`. -/
 theorem qBinomial_half_theorem (n : ℕ) (z : ℚ) :

@@ -119,7 +119,7 @@
 \author{Merged and expanded companion report to the Fabius--Rvachev formal development\\
 \small Vladimir Reshetnikov's \texttt{ProveIt} repository}
 \date{Repository snapshot: 27 August 2026\\
-\small source snapshot at commit \nolinkurl{649f5e936c5f8311016c5b62c9c9f0839705ff69}}
+\small source snapshot at commit \nolinkurl{24da985eba70e46d862acdaddd476793a428213e}}
 
 \begin{document}
 \maketitle
@@ -3162,7 +3162,7 @@ polynomial \(p\in R[y]\) with \(\deg p<|S|\),
    \,p\Bigl(x+\sum_{j\in T}w_j\Bigr)=0,
   \label{eq:arbitrary-weight-cancel}
 \end{equation}
-and at the first surviving degree,
+and at the first potentially surviving degree,
 \begin{equation}
   \boxed{
   \sum_{T\subseteq S}(-1)^{|T|}
@@ -3171,6 +3171,15 @@ and at the first surviving degree,
   \label{eq:arbitrary-weight-sharp}
 \end{equation}
 \end{theorem}
+
+The word ``potentially'' is essential over a general commutative ring.
+Equation~\eqref{eq:arbitrary-weight-sharp} is an unconditional identity, but
+its displayed factor can vanish: a step may be zero or a zero divisor, and
+the image of \(|S|!\) may vanish in positive characteristic.  Thus the
+formula identifies the exact top moment without asserting that the
+cancellation order is always exactly \(|S|\).  For the classical unit-step
+dyadic weights \(w_j=2^j\) over \(\mathbb Z\), all of these factors are
+nonzero.
 
 \begin{proof}
 For \eqref{eq:arbitrary-weight-cancel}, induct on \(S\).  If
@@ -3209,15 +3218,16 @@ natural-degree companion is \lean{Fabius.sum\_powerset\_neg\_one\_pow\_eval}.  T
 moment is
 \lean{Fabius.sum\_powerset\_neg\_one\_pow\_pow\_card}, in
 \path{ThueMorseSparseProuhet.lean}; the degree drop is
-Mathlib's \lean{Polynomial.taylor} bookkeeping.  Specializing
-\(w_j=2^jh\) over \(S=\{0,\dots,m-1\}\) and transporting along the
-Boolean-cube kernel yields the Thue--Morse forms over any commutative
-ring: the full polynomial statement is
-\lean{Fabius.sum\_thueMorseSign\_mul\_affine\_eval\_of\_degree\_lt}, while
-\lean{Fabius.sum\_thueMorseSign\_mul\_affine\_pow\_eq\_zero} and
-\lean{Fabius.sum\_thueMorseSign\_mul\_affine\_pow\_card}, the latter
-with the familiar constant
-\(\prod_{j<m}2^jh=2^{\binom m2}h^m\).
+Mathlib's \lean{Polynomial.taylor} bookkeeping.  The reusable passage from
+lower monomial moments to polynomial extraction is isolated in
+\path{FinitePolynomialFunctional.lean}: in particular
+\lean{Fabius.sum\_weight\_mul\_eval\_eq\_coeff\_mul\_of\_moments}
+and
+\lean{Fabius.sum\_weight\_mul\_eval\_eq\_zero\_of\_degree\_lt}
+are its same-ring extraction and cancellation interfaces.  The module also
+supplies scalar-extension forms; none assumes distinct nodes or a nonzero
+top moment.  The direct dyadic block wrappers obtained by specializing
+\(w_j=2^jh\) are recorded next.
 
 \subsection{Prouhet cancellation and the first surviving moment}
 
@@ -3244,6 +3254,54 @@ Every \(m\)-fold finite difference annihilates a polynomial of degree below
 \(m!c\), so \eqref{eq:unit-cube-cubature} gives the sharp value.
 \end{proof}
 
+\begin{theorem}[Commutative-ring dyadic block extraction]
+\label{thm:prouhet-block-extraction}
+Let \(R\) be a commutative ring, let \(p\in R[y]\) have degree at most
+\(m\), and let \(x,h\in R\).  With the integer signs mapped canonically
+into \(R\), the whole affine block is the degree-\(m\) coefficient
+functional
+\begin{equation}
+ \boxed{
+ \sum_{n=0}^{2^m-1}\eps_n\,p(x+nh)
+ =[y^m]p\;
+   \bigl((-1)^m(m!\cdot1_R)2^{\binom m2}h^m\bigr).}
+ \label{eq:prouhet-block-extraction}
+\end{equation}
+Consequently, with the degree of the zero polynomial understood as
+\(-\infty\),
+\begin{equation}
+ \deg p<m
+ \quad\Longrightarrow\quad
+ \sum_{n=0}^{2^m-1}\eps_n\,p(x+nh)=0.
+ \label{eq:prouhet-block-cancellation}
+\end{equation}
+Both statements include \(m=0\): the extraction formula is evaluation of a
+constant polynomial, while the strict-degree hypothesis then admits only the
+zero polynomial.
+\end{theorem}
+
+\begin{proof}
+Expand \(p\) in monomials and interchange the two finite sums.  The moments
+below \(m\) vanish by \eqref{eq:arbitrary-weight-cancel}, and
+\eqref{eq:arbitrary-weight-sharp} gives the degree-\(m\) moment for the steps
+\(2^jh\).  Thus only \([y^m]p\) remains.  The cancellation statement is the
+same calculation with that coefficient equal to zero.
+\end{proof}
+
+\emph{Formal versions.}  The extraction identity
+\eqref{eq:prouhet-block-extraction} is
+\lean{Fabius.sum\_thueMorseSign\_mul\_affine\_eval\_eq\_coeff\_card};
+the degree-valued cancellation
+\eqref{eq:prouhet-block-cancellation} is
+\lean{Fabius.sum\_thueMorseSign\_mul\_affine\_eval\_of\_degree\_lt}.
+Their monomial corollaries are
+\lean{Fabius.sum\_thueMorseSign\_mul\_affine\_pow\_eq\_zero} and
+\lean{Fabius.sum\_thueMorseSign\_mul\_affine\_pow\_card}, all in
+\path{ThueMorseSparseProuhet.lean}.  These are exact identities over every
+commutative ring.  In positive characteristic the scalar
+\((m!\cdot1_R)2^{\binom m2}h^m\) may be zero, so the formal theorem deliberately
+does not claim that a nonzero top coefficient produces a nonzero block sum.
+
 For \(h=1\), let
 \begin{equation}
   A_m=\{0\le n<2^m:\tau(n)=0\},
@@ -3257,8 +3315,9 @@ Then
   \qquad 0\le r<m,
   \label{eq:prouhet-partition}
 \end{equation}
-which is Prouhet's classical equal-sums-of-like-powers construction.  At
-\(r=m\), the difference is nonzero, so the cancellation order is exact.
+which is Prouhet's classical equal-sums-of-like-powers construction.  Over
+\(\mathbb Z\), at \(r=m\) the difference is nonzero, so the cancellation
+order of this classical unit-step partition is exact.
 
 \begin{remark}[The Prouhet--Tarry--Escott problem]
 \label{rem:pte}
@@ -4067,6 +4126,43 @@ behind \eqref{eq:finite-prefix-polynomial} is the geometric ladder
 \lean{Fabius.prod\_one\_sub\_two\_pow\_eq\_geom} and
 \lean{Fabius.thueMorseBlockPolynomial\_eq\_geom\_prod}
 (\path{ThueMorseBlockAlgebra.lean}), over any commutative ring.
+
+\begin{corollary}[Signed reversal before the terminal run]
+\label{cor:iterated-prefix-reverse-window}
+If \(0\le k\le r\) and \(k+d<2^r\), then the admissible coefficient
+window before the final \(k\) zeros is reciprocal up to the parity sign
+\((-1)^{r-k}\):
+\begin{equation}
+ \boxed{
+ S_{2^r-k-1-d}^{(k)}=(-1)^{r-k}S_d^{(k)}.}
+ \label{eq:iterated-prefix-reverse-window}
+\end{equation}
+In particular, reversal preserves its zero locus exactly:
+\begin{equation}
+ S_{2^r-k-1-d}^{(k)}=0
+ \quad\Longleftrightarrow\quad
+ S_d^{(k)}=0.
+ \label{eq:iterated-prefix-reverse-window-zero-iff}
+\end{equation}
+The case \(k=0\) is the usual dyadic complement law for the signs, and
+\(d=0\) recovers the value immediately preceding the terminal run.
+\end{corollary}
+
+\begin{proof}
+Compare opposite coefficients in the reciprocal form of
+\eqref{eq:finite-prefix-polynomial}.  The only multiplier is
+\((-1)^{r-k}\), which is a unit in \(\mathbb Z\); hence multiplication by
+it preserves and reflects vanishing.
+\end{proof}
+
+\emph{Formal versions.}  The signed identity
+\eqref{eq:iterated-prefix-reverse-window} is
+\lean{Fabius.iteratedPrefix\_dyadic\_reverse\_window}, and its exact
+zero-locus consequence
+\eqref{eq:iterated-prefix-reverse-window-zero-iff} is
+\lean{Fabius.iteratedPrefix\_dyadic\_reverse\_window\_eq\_zero\_iff}
+in the corpus module \path{ThueMorsePrefix.lean}.  Both statements retain
+the boundary cases \(k=0\) and \(d=0\).
 
 \subsection{Why this is the discrete spine of the Fabius theory}
 
@@ -6109,7 +6205,8 @@ Module & Contents \\
 \path{ThueMorseValuation.lean} & Successor law, weight subadditivity, ruler product, Catalan valuation, additive Kummer, borrow cocycle. \\
 \path{ThueMorseDigits.lean} & Additive Legendre, floor sums, floor-parity formula, `testBit` bridge, digit product. \\
 \path{ThueMorseEnumerators.lean} & Weight distribution, evil/odious enumerations and composition laws, XOR autocorrelation, signed Hamming spheres. \\
-\path{ThueMorseSparseProuhet.lean} & Arbitrary-weight Prouhet annihilation and sharp moment (\cref{thm:arbitrary-weights}), degree-valued wrappers covering the zero polynomial on empty supports, Thue--Morse specializations, bit supports, and all-index sparse submask identities. \\
+\path{FinitePolynomialFunctional.lean} & Moment expansion for finite weighted polynomial evaluations, selected-, top-, and constant-coefficient extraction, scalar-extension forms, degree-valued strict cancellation, and same-ring conveniences over commutative semirings; repeated nodes and a zero surviving moment are allowed. \\
+\path{ThueMorseSparseProuhet.lean} & Arbitrary-weight Prouhet annihilation and exact top-moment formula (\cref{thm:arbitrary-weights}), degree-valued wrappers covering the zero polynomial on empty supports, the direct affine block extraction and cancellation API (\cref{thm:prouhet-block-extraction}), bit supports, and all-index sparse submask identities. \\
 \path{ThueMorseRarefied.lean} & Modulo-three rarefaction recursion and closed vectors, Newman positivity at dyadic endpoints, block balance, even-modulus collapse. \\
 \path{ThueMorseAperiodicity.lean} & Block-flip identities, promotion of an eventual period to a global one, and non-eventual-periodicity --- the last now deduced from overlap-freeness rather than from the reflection argument. \\
 \path{ThueMorseBlockAlgebra.lean} & Telescope and multiplicity ladder, degree and leading data of \(P_m\), reciprocity (\texttt{reverse} and evaluation forms), cyclotomic multiplicity table, binomial-basis vanishing and sharp moment over any commutative ring. \\
@@ -6212,6 +6309,7 @@ Pascal-row interpretation & Glaisher count or modulo-three residue & Uses the od
 Higher-dimensional Pascal & Multinomial count \eqref{eq:multinomial-support} & Works with any number of variables. \\
 Formal power series & Finite/infinite products & Coefficients, Mahler equations, and zeros become immediate. \\
 Nonlocal coefficient formulas & Euler/Bell/determinant forms & Eliminate explicit digit notation and expose ruler convolutions. \\
+Finite polynomial row & Moment-functional extraction & Separates polynomial coefficients from row moments, supports scalar extension, and does not require distinct nodes or a nonzero surviving moment. \\
 Polynomial cancellation & Mixed finite differences & Proves all Prouhet moments in one operator identity. \\
 Arbitrary Pascal row & Sparse signed product \eqref{eq:signed-Pascal-support} & Restricts finite differences to the odd row support. \\
 Finite harmonic analysis & Walsh character & The entire block is one pure frequency. \\
@@ -6271,10 +6369,12 @@ spine before introducing analysis.
 \item \textbf{Polynomial layer.}  Define \(P_m\), prove the finite product,
       reciprocity, cyclotomic multiplicities, and signed Pascal-support
       products over a suitable coefficient ring.
-\item \textbf{Difference and moment layer.}  Derive mixed finite differences,
-      Prouhet cancellation, sharp moments, composition formulas, and sparse
-      moments.  Most statements can be done over \(\Q\) before any topology is
-      imported.
+\item \textbf{Difference and moment layer.}  First isolate finite weighted
+      polynomial functionals and their coefficient-extraction rules over
+      commutative semirings.  Then derive the ring-valued mixed differences,
+      Prouhet cancellation, exact top moments, composition formulas, and sparse
+      moments.  No topology or characteristic-zero hypothesis belongs in this
+      algebraic layer unless a surviving scalar is explicitly cancelled.
 \item \textbf{Formal-series layer.}  Add the Mahler equations, Euler transform,
       ruler convolution, Bell/determinant forms, and the Artin--Schreier
       equation over \(\Ftwo[[z]]\).
@@ -6657,7 +6757,7 @@ Second-pass additions & Even-modulus collapse of rarefied sums from exact prefix
 V.~Reshetnikov,
 \newblock \emph{ProveIt: Analysis/FabiusFunction},
 \newblock GitHub repository, source snapshot
-\nolinkurl{649f5e936c5f8311016c5b62c9c9f0839705ff69}, 2026.
+\nolinkurl{24da985eba70e46d862acdaddd476793a428213e}, 2026.
 
 \bibitem{prouhet1851}
 E.~Prouhet,
