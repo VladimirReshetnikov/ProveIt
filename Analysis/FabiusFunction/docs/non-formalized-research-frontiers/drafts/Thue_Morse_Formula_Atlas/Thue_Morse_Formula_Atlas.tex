@@ -2350,9 +2350,23 @@ unconditionally along the route of
 \lean{Fabius.integerLift\_cast\_zmod},
 \lean{Fabius.integerLift\_emod\_two}, and
 \lean{Fabius.thueMorseSign\_eq\_neg\_one\_pow\_integerLift}.
-The equivalence of the closed form with the recurrence
-\eqref{eq:integer-lift-recurrence} and the algebraic equation
-\eqref{eq:integer-lift-algebraic} remains unformalized.
+The algebraic equation \eqref{eq:integer-lift-algebraic} is now
+proved for the constructed series
+(\lean{Fabius.integerLiftSeries\_algebraic},
+\path{ThueMorseIntegerLiftEquation.lean}) by pure finite
+combinatorics: the second difference of the lift equals the
+substituted alternating Catalan series
+(\lean{Fabius.integerLift\_delta\_bridge}, double Pascal), the
+interior product sum collapses through a reusable \emph{diagonal
+Vandermonde} identity
+(\lean{Fabius.sum\_range\_choose\_mul\_choose}), the substituted
+series satisfies the quadratic convolution identity
+\(\sum_{p+q=m}h_ph_q=h_m-h_{m+1}-[m{=}0]\)
+(\lean{Fabius.catalanSeriesDelta\_conv}) --- the coefficient form of
+\(H=1-uH^2\) --- and cancelling the non-zero-divisor \(1-z\) in the
+domain \(\mathbb Z[[z]]\) yields the boxed equation.  Only the
+equivalence with the three-term recurrence
+\eqref{eq:integer-lift-recurrence} remains unformalized.
 
 \section[Natural boundary and Hankel rigidity]{Natural boundary, Hankel determinants, and Diophantine consequences}
 \label{sec:boundary-hankel}
@@ -4933,7 +4947,7 @@ valuation, carry, and Pascal-row formulas remain genuinely base-two features.
 \subsection{Formalized modules (August 2026)}
 \label{sec:formalized-modules}
 
-The first tranches of the formalization now exist as thirty-two
+The first tranches of the formalization now exist as thirty-five
 compiled Lean modules in \repo{}, complementing the corpus modules
 (\path{Parity.lean}, \path{TwoAdic.lean}, \path{ThueMorsePrefix.lean},
 \path{ThueMorseGenerating.lean}, \path{ThueMorseExponential.lean},
@@ -4983,6 +4997,9 @@ Module & Contents \\
 \path{ThueMorseIntegerLift.lean} & The integral algebraic lift constructed in closed Catalan--binomial form; Catalan parity at Mersenne indices; the unconditional parity theorem \(c_n\equiv\tau(n)\), \(\eps_n=(-1)^{c_n}\). \\
 \path{ThueMorseBoundaryFlatness.lean} & The lacunary product \(\mathcal E(t)\) as an infinite product: self-similarity, positivity, monotonicity, and the effective two-sided flatness \(2^{\binom m2}(t/2)^m\mathcal E(\frac12)\le\mathcal E(t)\le2^{\binom m2}t^m\). \\
 \path{ThueMorseDirichlet.lean} & The shifted Dirichlet series in the real regime: conditional convergence for every \(\sigma>0\) by Dirichlet's test, and the dyadic parameter equation \(D(\sigma,a)=2^{-\sigma}(D(\sigma,\frac a2)-D(\sigma,\frac{a+1}2))\). \\
+\path{ThueMorseCatalanSeries.lean} & The diagonal Vandermonde identity \(\sum_iC(i,p)C(M{-}i,q)=C(M{+}1,p{+}q{+}1)\) and the second-difference bridge from the lift to the substituted Catalan series. \\
+\path{ThueMorseCatalanConvolution.lean} & The interior Catalan convolution and the quadratic identity \(\sum_{p+q=m}h_ph_q=h_m-h_{m+1}-[m{=}0]\) of the substituted series. \\
+\path{ThueMorseIntegerLiftEquation.lean} & The boxed algebraic equation \((1-z)^3C^2+(1-z)^2C=z\) in \(\mathbb Z[[z]]\) for the constructed lift, by identification with the substituted series and cancellation. \\
 \bottomrule
 \end{longtable}}
 
