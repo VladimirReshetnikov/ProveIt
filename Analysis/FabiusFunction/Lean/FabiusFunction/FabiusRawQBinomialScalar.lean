@@ -10,8 +10,9 @@ constant, so it can be evaluated at an arbitrary element of any field carrying
 an `ℚ`-algebra structure.  In particular, the formula holds for every real or
 complex translation, not merely for rational or Gaussian-rational ones.
 
-The generic algebraic theorem is accompanied by real- and complex-valued
-Fabius-function wrappers and fully expanded finite-sum statements.
+The generic algebraic theorem is accompanied by one `RCLike`-valued
+Fabius-function wrapper, with real and complex compatibility forms and fully
+expanded finite-sum statements.
 The constant-polynomial proof is also exposed coefficientwise, and rational
 translations commute exactly with scalar evaluation already at numerator
 level.
@@ -42,6 +43,8 @@ def qBinomialThueMorseRawTranslatedNumeratorPolynomial
         ((4 : ℚ) ^ k.choose 2 * ((n + k).factorial : ℚ))) *
       thueMorseRawTranslatedPowerSumPolynomial k (n + k)
 
+/-- Rational evaluation of the raw power-sum polynomial recovers the original
+raw translated Thue--Morse power sum. -/
 @[simp] theorem thueMorseRawTranslatedPowerSumPolynomial_eval
     (q : ℚ) (k d : ℕ) :
     (thueMorseRawTranslatedPowerSumPolynomial k d).eval q =
@@ -52,6 +55,8 @@ def qBinomialThueMorseRawTranslatedNumeratorPolynomial
     Polynomial.eval_C, Polynomial.eval_pow, Polynomial.eval_add,
     Polynomial.eval_X]
 
+/-- Rational evaluation of the complete raw numerator polynomial recovers the
+original rational raw numerator. -/
 @[simp] theorem qBinomialThueMorseRawTranslatedNumeratorPolynomial_eval
     (q : ℚ) (n : ℕ) :
     (qBinomialThueMorseRawTranslatedNumeratorPolynomial n).eval q =
@@ -217,14 +222,27 @@ theorem fabiusAtInverseTwoPow_cast_eq_qBinomialThueMorse_rawTranslated_sum
     q n, qBinomialThueMorseRawTranslatedFormulaIn,
     qBinomialThueMorseRawTranslatedNumeratorIn_eq_wolfram_sum]
 
+/-- `RCLike` wrapper for every bounded function satisfying the Fabius
+characterization and every scalar translation.  This simultaneously covers
+real and complex shifts. -/
+theorem fabiusFunction_inverse_two_pow_eq_qBinomialThueMorseRawTranslatedFormulaIn
+    {K : Type*} [RCLike K]
+    (F : BoundedFabius) (hF : IsFabius F) (q : K) (n : ℕ) :
+    (fabiusReal F (((2 : ℝ) ^ n)⁻¹) : K) =
+      qBinomialThueMorseRawTranslatedFormulaIn q n := by
+  rw [qBinomialThueMorseRawTranslatedFormulaIn_eq_centered]
+  have h := congrArg (fun y : ℝ => (y : K))
+    (fabiusFunction_inverse_two_pow_eq_qBinomialThueMorseFormula F hF n)
+  push_cast at h
+  exact h
+
 /-- Real-shift form for every bounded Fabius function. -/
 theorem fabiusFunction_inverse_two_pow_eq_qBinomialThueMorseRawTranslatedFormula_real
     (F : BoundedFabius) (hF : IsFabius F) (q : ℝ) (n : ℕ) :
     fabiusReal F (((2 : ℝ) ^ n)⁻¹) =
       qBinomialThueMorseRawTranslatedFormulaIn q n := by
-  rw [qBinomialThueMorseRawTranslatedFormulaIn_eq_centered,
-    fabiusFunction_inverse_two_pow_eq_qBinomialThueMorseFormula F hF]
-  rfl
+  exact fabiusFunction_inverse_two_pow_eq_qBinomialThueMorseRawTranslatedFormulaIn
+    F hF q n
 
 /-- Canonical real-shift theorem. -/
 theorem fabius_inverse_two_pow_eq_qBinomialThueMorseRawTranslatedFormula_real
@@ -239,10 +257,8 @@ theorem fabiusFunction_inverse_two_pow_eq_qBinomialThueMorseRawTranslatedFormula
     (F : BoundedFabius) (hF : IsFabius F) (q : ℂ) (n : ℕ) :
     (fabiusReal F (((2 : ℝ) ^ n)⁻¹) : ℂ) =
       qBinomialThueMorseRawTranslatedFormulaIn q n := by
-  rw [qBinomialThueMorseRawTranslatedFormulaIn_eq_centered]
-  have h := congrArg (fun y : ℝ => (y : ℂ))
-    (fabiusFunction_inverse_two_pow_eq_qBinomialThueMorseFormula F hF n)
-  simpa using h
+  exact fabiusFunction_inverse_two_pow_eq_qBinomialThueMorseRawTranslatedFormulaIn
+    F hF q n
 
 /-- Canonical complex-shift theorem. -/
 theorem fabius_inverse_two_pow_eq_qBinomialThueMorseRawTranslatedFormula_complex
