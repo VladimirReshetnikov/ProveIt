@@ -5,6 +5,7 @@ import FabiusFunction.PaperFabiusAsymptotic
 import FabiusFunction.FinitePolynomialFilterExactness
 import FabiusFunction.GeometricLagrangeWeights
 import FabiusFunction.GeometricLagrangeQBinomial
+import FabiusFunction.GeometricLagrangeQMoments
 import FabiusFunction.FabiusDiscreteLimitRates
 import FabiusFunction.EndpointTransferPolynomials
 import FabiusFunction.PerturbedLowerLambert
