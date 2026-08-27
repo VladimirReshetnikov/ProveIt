@@ -14,6 +14,7 @@ import FabiusFunction.MomentCumulantAlgebra
 import FabiusFunction.ThueMorseBooleanCube
 import FabiusFunction.ThueMorseValuation
 import FabiusFunction.DyadicZeroMultiplicity
+import FabiusFunction.PascalDyadicMultiplicity
 import FabiusFunction.ThueMorseDigits
 import FabiusFunction.ThueMorseEnumerators
 import FabiusFunction.ThueMorseRarefied
