@@ -11,10 +11,29 @@ fails with *misleading* errors of the form ::
 
 which are swap-thrash symptoms, not corruption: the same module compiles on a
 serial retry.  ``lake build -j1`` is not a workaround -- Lake 5.0.0 removed the
-``-j`` flag and the invocation fails *with exit code 0* -- and neither is
-``LAKE_JOBS=1``.  Even a single target parallelizes its own stale dependency
-chain, so the only reliable serialization is one ``lake build`` invocation per
-module, in topological order, with every dependency already built.
+``-j`` flag and rejects ``--jobs`` too -- so the worker limits have to be set
+in the environment, and this driver sets both: ``LAKE_JOBS=1`` bounds how many
+``lean.exe`` *processes* Lake starts, ``LEAN_NUM_THREADS=0`` bounds the worker
+pool *inside* each one.
+
+Both of those, plus one ``lake build`` invocation per module in topological
+order with every dependency already built.  Belt and braces: the per-module
+walk is what makes the peak memory predictable, and the environment limits are
+what keep a single invocation from fanning out when its dependency chain turns
+out to be stale.
+
+A note on measuring this, because it is easy to conclude that ``LAKE_JOBS``
+does nothing: several agent sessions build in this repository at once, so
+``Get-Process lean`` counts *their* workers alongside yours.  Attribute by
+parent process before drawing conclusions --
+
+    Get-CimInstance Win32_Process -Filter "Name='lean.exe'" |
+      Select-Object ProcessId, ParentProcessId, CommandLine
+
+Measured 2026-08-27: a facade build with a stale dependency chain ran 11
+concurrent ``lean.exe`` with no limits set, and exactly one of its own under
+``LAKE_JOBS=1`` (a second worker seen machine-wide traced back to a ``lake.exe``
+belonging to a different session).
 
 Usage
 -----
@@ -94,11 +113,25 @@ def toposort(deps: dict[str, list[str]]) -> list[str]:
     return order
 
 
+def serial_env() -> dict:
+    """The environment that keeps one `lake build` to a single Lean worker.
+
+    `LAKE_JOBS` bounds how many `lean.exe` processes Lake starts;
+    `LEAN_NUM_THREADS` bounds the worker pool inside each one.  They are
+    independent, so both are set.  Lake 5.0.0 has no command-line equivalent.
+    """
+    env = dict(os.environ)
+    env["LAKE_JOBS"] = "1"
+    env["LEAN_NUM_THREADS"] = "0"
+    return env
+
+
 def build(root: str, target: str, retries: int, pause: float) -> str:
     """Return 'ok', 'fail' or 'giveup'; print diagnostics on failure."""
+    env = serial_env()
     for attempt in range(retries):
         proc = subprocess.run(
-            ["lake", "build", "+" + target], cwd=root,
+            ["lake", "build", "+" + target], cwd=root, env=env,
             capture_output=True, text=True, encoding="utf-8", errors="replace")
         out = (proc.stdout or "") + (proc.stderr or "")
         errors = [ln for ln in out.splitlines() if "error:" in ln]
