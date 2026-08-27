@@ -58,7 +58,7 @@
 
 \pagestyle{fancy}
 \fancyhf{}
-\fancyhead[L]{\small\color{navy}Spectral Arithmetic and the Pascal--Rvachev Hierarchy}
+\fancyhead[L]{\small\color{navy}Pascal--Rvachev hierarchy}
 \fancyhead[R]{\small\color{teal}\nouppercase{\leftmark}}
 \fancyfoot[C]{\small\thepage}
 \renewcommand{\headrulewidth}{0.35pt}
@@ -557,6 +557,16 @@ The factor at scale $h$ vanishes at $n$ precisely when $2^h\mid n$, and then con
 $\sum_n\mu_r(n)n^{-2}<\infty$, a consequence of \cref{thm:zeta-r} below.
 \end{proof}
 
+\paragraph{Formalization boundary.}
+The finite arithmetic equality in \eqref{eq:mu-r} is now machine-checked:
+\path{weightedScaleMultiplicity_choose} in
+\path{WeightedScaleMultiplicity.lean}, specialized to base $2$ and Lean's
+Pascal index $r-1$, proves
+$\sum_{h=0}^{\nu_2(n)}\binom h{r-1}=\binom{\nu_2(n)+1}r$.
+It does \emph{not} by itself prove that this number is the analytic zero
+order of $\Phi_r$, nor does it establish \eqref{eq:canonical-r} or normal
+convergence.  Those assertions remain in the analytic frontier.
+
 Thus $\Phi_r$ has a zero at $n$ exactly when $2^{r-1}\mid n$.  Higher rank does not spread the zeros; it thins their locations while increasing their multiplicities according to the $r$th binomial coefficient in $\nu_2(n)+1$.
 
 \subsection{Finite scale and a Pascal tail formula}
@@ -707,6 +717,14 @@ Equation \eqref{eq:Nr-floor} counts the zeros supplied by each scale.  Expanding
 \end{align*}
 Apply \cref{lem:pascal-tail}.  The contribution of $2^{j+1}$ is $2N$, and the remaining term is $S_r(N)$.
 \end{proof}
+
+The floor-sum half \eqref{eq:Nr-floor} is now formally covered by
+\path{sum_range_padicValNat_choose} in
+\path{WeightedScaleMultiplicity.lean}; its finite sum over $h<N$ equals the
+displayed infinite sum because all later natural quotients vanish.  The
+binary digit formula \eqref{eq:Nr-digital}, the sharp discrepancy statements,
+and their parity consequences are not consequences of that generic layer-cake
+theorem and remain to be formalized.
 
 \begin{corollary}[Sharp discrepancy range]\label{cor:discrepancy-range}
 For $0\le N<2^m$,
@@ -1869,7 +1887,13 @@ and derive an Edgeworth expansion from \eqref{eq:standard-cumulants}.  Determine
 
 \subsection{Beyond the binary Pascal ladder}
 
-Two extensions are natural but presently speculative.  Replacing $2$ by a base $b\ge2$ preserves the scale generating function but changes the integer zero arithmetic; replacing the integral rank by a fractional exponent would require a branch-consistent entire-product theory.  Either extension should be attempted only after the integer binary hierarchy is formalized and its endpoint transseries is settled.
+The finite weighted arithmetic already works over every natural base, even a
+composite one: \path{WeightedScaleMultiplicity.lean} proves the scale-shift,
+divisibility-filter, layer-count, and Pascal floor identities without a
+primality hypothesis.  What remains speculative is the \emph{analytic}
+base-$b$ hierarchy---its entire products, zero divisors, Fourier asymptotics,
+and endpoint theory.  Replacing integral rank by a fractional exponent would
+additionally require a branch-consistent entire-product theory.
 
 \section{Lean formalization roadmap}\label{sec:lean}
 
@@ -1880,12 +1904,16 @@ The new results have very different formalization costs.  A useful strategy is t
 This tier is the fastest route to certified novelty and needs little measure theory.
 
 \begin{enumerate}[label=\textbf{I.\arabic*}]
-\item Define
+\item \textbf{Completed generically.}  The definition
 \[
- \texttt{pascalZeroMult r n := Nat.choose (padicValNat 2 n + 1) r}
+ \texttt{weightedScaleMultiplicity b w n}
 \]
-for $n>0$, with a totalized convention at zero.
-\item Prove the hockey-stick identity behind \eqref{eq:mu-r} and the scale-count identity \eqref{eq:Nr-floor}.
+works in every additive commutative monoid and specializes at
+$b=2$, $w(h)=\binom h{r-1}$ to the proposed Pascal multiplicity, with a
+documented totalized convention at zero.
+\item \textbf{Completed generically.}  The hockey-stick identity behind
+\eqref{eq:mu-r} is \path{weightedScaleMultiplicity_choose}; the scale-count
+identity \eqref{eq:Nr-floor} is \path{sum_range_padicValNat_choose}.
 \item Formalize \cref{lem:pascal-tail} as a finite subset count; this avoids delicate algebraic normalization.
 \item Derive \eqref{eq:Nr-digital}, the discrepancy extremum, and optimal order.
 \item Prove parity collapse using the alternating partial-binomial identity or Lucas's theorem already available in Mathlib.
@@ -1896,6 +1924,8 @@ Candidate theorem names include
 \begin{center}
 \begin{minipage}{0.88\textwidth}
 \small
+\path{weightedScaleMultiplicity_choose}\\
+\path{sum_range_padicValNat_choose}\\
 \path{pascalZeroMult_eq_choose}\\
 \path{zeroCount_eq_twoMul_sub_digitWeight}\\
 \path{digitWeight_modTwo}\\
@@ -1940,7 +1970,13 @@ The canonical product, meromorphic continuation, Mellin contour shift, and de Br
 The endpoint transseries should not be formalized before its paper proof is complete.  By contrast, Tiers I and II are self-contained and already expose the main Thue--Morse and $q$-arithmetic novelty.
 
 \begin{statusbox}[Recommended first formalization target]
-The single best first target is \cref{thm:digital-count,lem:parity-collapse,thm:prouhet-r} as one finite-combinatorial file.  It has no analytic dependencies, gives exact machine-checkable statements, and certifies the new spectral interpretation of generalized Thue--Morse signs.  The probability hierarchy can then be developed in a second file with those arithmetic definitions already fixed.
+The weighted-scale and Pascal floor foundations are complete.  The best next
+finite target is therefore the still-open digital part of
+\cref{thm:digital-count}, together with
+\cref{lem:pascal-tail,lem:parity-collapse,thm:prouhet-r}.  It has no analytic
+dependencies and would certify the generalized Thue--Morse sign layer.  The
+probability hierarchy can then be developed with the generic arithmetic API
+already fixed.
 \end{statusbox}
 
 \section{Conclusion}\label{sec:conclusion}
@@ -1952,7 +1988,7 @@ $C_r=((r+1)!(\log2)^r)^{-1}$ governs sharp Fourier decay and endpoint small devi
 
 The most consequential structural result is the common scale zeta factor.  It converts a scale enumeration into the entire zero divisor, the local Fourier logarithm, all even cumulants, and the endpoint Mellin transform.  Its real pole at zero determines the main logarithmic degree; its imaginary dyadic lattice determines periodic corrections; and the resulting endpoint saddle is inverted by $W_{-1}$.  This places the Thue--Morse, $q$-binomial, sinc-product, and Lambert-$W$ phenomena within one exact analytic mechanism.
 
-The principal unresolved frontier is now sharply delimited: carry the explicit Mellin residue polynomial through nonlinear saddle inversion to obtain a complete higher-rank endpoint transseries, and connect its coefficients to exact dyadic $q$-formulae.  The finite spectral arithmetic is ready for immediate Lean formalization, while the analytic endpoint program supplies a longer-term test bed for new formal Mellin and Tauberian infrastructure.
+The principal unresolved frontier is now sharply delimited: carry the explicit Mellin residue polynomial through nonlinear saddle inversion to obtain a complete higher-rank endpoint transseries, and connect its coefficients to exact dyadic $q$-formulae.  The generic weighted-scale and Pascal floor foundations are formalized; the finite digital/sign layer and the analytic endpoint program remain, with the latter supplying a longer-term test bed for new formal Mellin and Tauberian infrastructure.
 
 
 \appendix
