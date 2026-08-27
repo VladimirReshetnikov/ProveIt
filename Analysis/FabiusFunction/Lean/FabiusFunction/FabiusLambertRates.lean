@@ -78,7 +78,7 @@ theorem dyadicLambertPhase_inv_isBigO_inv :
 zero.  This is the small-argument transport of
 `tendsto_dyadicLambertPhase_atTop`. -/
 theorem tendsto_fabiusLambertPhase_nhdsGT_zero_atTop :
-    Tendsto fabiusLambertPhase (𝓝[>] (0 : ℝ)) atTop := by
+    Tendsto fabiusLambertPhase (nhdsWithin (0 : ℝ) (Ioi 0)) atTop := by
   apply (tendsto_logScale_iff_smallArgument
     fabiusLambertPhase atTop).mp
   simpa only [fabiusLogArgument, fabiusLambertPhase_dyadic] using
@@ -88,7 +88,7 @@ theorem tendsto_fabiusLambertPhase_nhdsGT_zero_atTop :
 endpoint. -/
 theorem tendsto_inv_fabiusLambertPhase_nhdsGT_zero :
     Tendsto (fun x : ℝ => (fabiusLambertPhase x)⁻¹)
-      (𝓝[>] (0 : ℝ)) (𝓝 0) :=
+      (nhdsWithin (0 : ℝ) (Ioi 0)) (nhds 0) :=
   tendsto_inv_atTop_zero.comp
     tendsto_fabiusLambertPhase_nhdsGT_zero_atTop
 
