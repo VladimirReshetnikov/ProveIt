@@ -99,6 +99,7 @@ import FabiusFunction.LogFactorConcavity
 import FabiusFunction.CentralLobeConcavity
 import FabiusFunction.CentralLobeOnePeak
 import FabiusFunction.CentralLobePeakAtZero
+import FabiusFunction.LobeLogFactorization
 import FabiusFunction.BoundednessSkeleton
 import FabiusFunction.TransferOperatorStep
 import FabiusFunction.LasotaYorkeIteration
