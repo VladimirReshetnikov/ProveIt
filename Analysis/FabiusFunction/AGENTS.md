@@ -6,6 +6,22 @@
 > Do not launch background build loops, pass a batch of targets, or use
 > parallel runners such as `xargs -P`. A dozen concurrent Lean processes will
 > exhaust memory and often fail with misleading missing-`.olean` errors.
+>
+> One invocation is not by itself one process: Lake sizes its worker pool to
+> hardware concurrency and starts one `lean.exe` **per core** whenever the
+> target has a stale dependency set. Set both limits on every build —
+>
+> ```bash
+> LAKE_JOBS=1 LEAN_NUM_THREADS=0 lake build +FabiusFunction.Module
+> ```
+>
+> `LAKE_JOBS` bounds the number of `lean.exe` processes, `LEAN_NUM_THREADS`
+> bounds the threads inside each one; they are independent. Lake `5.0.0`
+> accepts neither `-j` nor `--jobs`. Measured 2026-08-27: a facade build ran
+> 11 concurrent `lean.exe` without `LAKE_JOBS`, and exactly one with it.
+> After interrupting a build, check for survivors with
+> `Get-Process lean,lake -ErrorAction SilentlyContinue` before starting the
+> next one.
 
 This directory is sometimes developed by several agents concurrently.
 Whether multi-agent coordination is in effect is stated by exactly one file:
