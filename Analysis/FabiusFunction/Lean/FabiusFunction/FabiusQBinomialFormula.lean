@@ -22,7 +22,9 @@ mandatory `c = 1/2` expression and the centered/unshifted `c = 0` expression
 have the same value.  At arbitrary dyadic arguments, the resulting finite
 formula depends only on the represented rational number: numerator and
 denominator exponent may be refined, and even the common translation may be
-changed simultaneously.
+changed simultaneously.  The degenerate grids are explicit as well: zero
+numerator always gives zero, while at denominator exponent zero the formula
+is the Thue--Morse-signed indicator of the odd integers.
 -/
 
 set_option autoImplicit false
@@ -916,6 +918,15 @@ theorem fabiusDyadic_eq_qBinomialThueMorseDyadicFormula (m n : ℕ) :
     coeff_dyadicNumeratorPrefixSeries_mul_recurrenceSeries]
   field_simp
 
+/-- At zero numerator the centered arbitrary-dyadic formula vanishes, for
+every denominator exponent. -/
+@[simp] theorem qBinomialThueMorseDyadicFormula_zero (n : ℕ) :
+    qBinomialThueMorseDyadicFormula 0 n = 0 := by
+  calc
+    qBinomialThueMorseDyadicFormula 0 n = fabiusDyadic n 0 :=
+      (fabiusDyadic_eq_qBinomialThueMorseDyadicFormula 0 n).symm
+    _ = 0 := fabiusDyadic_arg_zero n
+
 /-- At numerator one, the arbitrary-dyadic q-binomial formula is exactly the
 inverse-dyadic formula. -/
 theorem qBinomialThueMorseDyadicFormula_one (n : ℕ) :
@@ -1166,6 +1177,14 @@ theorem qBinomialThueMorseDyadicTranslatedFormula_eq_centered
     qBinomialThueMorseDyadicFormula,
     qBinomialThueMorseDyadicTranslatedNumerator_eq]
 
+/-- At zero numerator every translated arbitrary-dyadic formula vanishes,
+independently of the translation and denominator exponent. -/
+@[simp] theorem qBinomialThueMorseDyadicTranslatedFormula_zero
+    (c : ℚ) (n : ℕ) :
+    qBinomialThueMorseDyadicTranslatedFormula c 0 n = 0 := by
+  rw [qBinomialThueMorseDyadicTranslatedFormula_eq_centered,
+    qBinomialThueMorseDyadicFormula_zero]
+
 /-- Exact rational arbitrary-numerator formula for every common rational
 translation. -/
 theorem fabiusDyadic_eq_qBinomialThueMorseDyadicTranslatedFormula
@@ -1174,6 +1193,26 @@ theorem fabiusDyadic_eq_qBinomialThueMorseDyadicTranslatedFormula
       qBinomialThueMorseDyadicTranslatedFormula c m n := by
   rw [qBinomialThueMorseDyadicTranslatedFormula_eq_centered,
     fabiusDyadic_eq_qBinomialThueMorseDyadicFormula]
+
+/-- At denominator exponent zero the translated formula vanishes on even
+integers and, on an odd integer `m`, is the Thue--Morse sign of the binary
+prefix `m / 2`.  The value is independent of the common translation. -/
+@[simp] theorem qBinomialThueMorseDyadicTranslatedFormula_exponent_zero
+    (c : ℚ) (m : ℕ) :
+    qBinomialThueMorseDyadicTranslatedFormula c m 0 =
+      if Even m then 0 else (thueMorseSign (m / 2) : ℚ) := by
+  rw [← fabiusDyadic_eq_qBinomialThueMorseDyadicTranslatedFormula]
+  apply Rat.cast_injective (α := ℝ)
+  push_cast
+  calc
+    (fabiusDyadic 0 m : ℝ) =
+        extendedFabius fabius ((m : ℝ) / (2 : ℝ) ^ 0) :=
+      fabiusDyadic_cast_extended_nat fabius fabius_spec 0 m
+    _ = extendedFabius fabius (m : ℝ) := by norm_num
+    _ = if Even m then 0 else (-1 : ℝ) ^ binaryWeight (m / 2) :=
+      extendedFabius_natCast_eq_ite fabius fabius_spec m
+    _ = if Even m then 0 else (thueMorseSign (m / 2) : ℝ) := by
+      simp [thueMorseSign]
 
 /-- The fully displayed arbitrary-rational-translation identity.  This is the
 Wolfram-language formula with its common inner translation represented by

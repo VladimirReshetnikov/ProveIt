@@ -1,0 +1,1474 @@
+\documentclass[11pt,oneside]{article}
+
+\usepackage[a4paper,margin=27mm,headheight=15pt]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\IfFileExists{libertinus.sty}{\usepackage{libertinus}}{\usepackage{lmodern}}
+\usepackage{microtype}
+\usepackage{amsmath,amssymb,amsthm,mathtools,mathrsfs}
+\usepackage{bm}
+\usepackage{booktabs,longtable,array,tabularx}
+\usepackage{xcolor}
+\usepackage{enumitem}
+\usepackage{fancyhdr}
+\usepackage{titlesec}
+\usepackage{xurl}
+\usepackage{hyperref}
+\usepackage[nameinlink,noabbrev]{cleveref}
+
+\definecolor{linkblue}{RGB}{25,75,135}
+\definecolor{shadegray}{RGB}{246,247,249}
+\definecolor{rulegray}{RGB}{195,201,208}
+\definecolor{deepgray}{RGB}{70,75,82}
+\hypersetup{
+  colorlinks=true,
+  linkcolor=linkblue,
+  citecolor=linkblue,
+  urlcolor=linkblue,
+  pdftitle={Arithmetic Spectra of the Rvachev Sinc Product},
+  pdfsubject={Thue--Morse lobe signs, exact lattice reproduction, complex dimensions, and q-binomial spectral layering},
+  pdfkeywords={Fabius function, Rvachev up-function, Thue-Morse, sinc product, q-binomial, Strang-Fix, spectral zeta, Mellin transform}
+}
+
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small Fabius--Rvachev frontier report}
+\fancyhead[R]{\small\nouppercase{\leftmark}}
+\fancyfoot[C]{\thepage}
+\renewcommand{\headrulewidth}{0.4pt}
+
+\titleformat{\section}{\Large\bfseries}{\thesection}{0.7em}{}
+  [\vspace{0.15ex}\color{rulegray}\titlerule]
+\titleformat{\subsection}{\large\bfseries}{\thesubsection}{0.7em}{}
+\titleformat{\subsubsection}{\normalsize\bfseries}{\thesubsubsection}{0.7em}{}
+\titlespacing*{\section}{0pt}{2.8ex plus 1ex minus .2ex}{1.7ex plus .2ex}
+\titlespacing*{\subsection}{0pt}{2.2ex plus .8ex minus .2ex}{1.0ex plus .2ex}
+
+\setcounter{secnumdepth}{3}
+\setcounter{tocdepth}{2}
+\setlist[itemize]{leftmargin=2em,itemsep=.25em,topsep=.45em}
+\setlist[enumerate]{leftmargin=2.3em,itemsep=.25em,topsep=.45em}
+\setlength{\emergencystretch}{3em}
+\allowdisplaybreaks[3]
+\numberwithin{equation}{section}
+
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{conjecture}[theorem]{Conjecture}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{example}[theorem]{Example}
+\newtheorem{problem}[theorem]{Open problem}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+\newtheorem{warning}[theorem]{Warning}
+
+\newcommand{\R}{\mathbb R}
+\newcommand{\C}{\mathbb C}
+\newcommand{\N}{\mathbb N}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\E}{\mathbb E}
+\newcommand{\Prob}{\mathbb P}
+\newcommand{\dd}{\,\mathrm d}
+\newcommand{\ii}{\mathrm i}
+\newcommand{\e}{\mathrm e}
+\newcommand{\Up}{\operatorname{up}}
+\newcommand{\sinc}{\operatorname{sinc}}
+\newcommand{\sgn}{\operatorname{sgn}}
+\newcommand{\ord}{\operatorname{ord}}
+\newcommand{\Res}{\operatorname*{Res}}
+\newcommand{\supp}{\operatorname{supp}}
+\newcommand{\Var}{\operatorname{Var}}
+\newcommand{\bigO}{\mathcal O}
+\newcommand{\smallo}{o}
+\newcommand{\wt}{s_2}
+\newcommand{\vtwo}{\nu_2}
+\newcommand{\vb}{\nu_b}
+\newcommand{\floor}[1]{\left\lfloor #1\right\rfloor}
+\newcommand{\ceil}[1]{\left\lceil #1\right\rceil}
+\newcommand{\abs}[1]{\left\lvert #1\right\rvert}
+\newcommand{\norm}[1]{\left\lVert #1\right\rVert}
+\newcommand{\qbinom}[3]{\genfrac{[}{]}{0pt}{}{#1}{#2}_{#3}}
+\newcommand{\Corpus}{\textsc{Corpus}}
+\newcommand{\Derived}{\textsc{Derived}}
+\newcommand{\NewResult}{\textsc{New-to-snapshot}}
+\newcommand{\Observed}{\textsc{Prior observation}}
+\newcommand{\OpenStatus}{\textsc{Open}}
+\newcommand{\repo}{\nolinkurl{Analysis/FabiusFunction/docs}}
+\newcommand{\commit}{\nolinkurl{0b1db2f91321b6575be9a712dc1025e88af318db}}
+
+\newenvironment{proofidea}
+  {\par\smallskip\noindent\textit{Proof architecture.}\ }
+  {\hfill$\square$\par\smallskip}
+\newenvironment{boxedremark}{%
+  \par\medskip\noindent\begin{center}\begin{minipage}{0.94\textwidth}%
+  \color{deepgray}\hrule\vspace{0.65em}\small
+}{%
+  \vspace{0.65em}\hrule\end{minipage}\end{center}\medskip
+}
+
+\title{\bfseries Arithmetic Spectra of the Rvachev Sinc Product\\[0.35em]
+\Large Thue--Morse lobe signs, exact lattice reproduction, complex dimensions,\\
+and finite $q$-binomial spectral layering}
+\author{Frontier report prepared for Vladimir Reshetnikov\\
+\small after a recursive audit of the complete \texttt{ProveIt} Fabius-function TeX corpus}
+\date{Repository snapshot \commit\\
+\small 27 August 2026, 18:19:55 UTC}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+This report starts from every \texttt{*.tex} document under \repo\ at the frozen
+commit named above.  The corpus contains the principal Fabius--Rvachev exposition,
+its historical revisions, a Lean walkthrough and glossary, exact dyadic and
+$q$-calculus studies, repeated-integration and spline reports, endpoint asymptotics,
+a large Thue--Morse formula atlas, a sequence of Fourier-decay audits, and primary
+or transcribed papers.  Repeated revisions were read as one mathematical lineage;
+the latest corrected statement was used whenever sibling drafts disagreed.
+
+The principal synthesis is that the canonical-product zero multiplicities of the
+Fourier transform
+\[
+ \Phi(z)=\widehat\Up(z)=\prod_{h\ge0}\sinc\!\left(\frac{\pi z}{2^h}\right)
+       =\prod_{n\ge1}\left(1-\frac{z^2}{n^2}\right)^{1+\nu_2(n)}
+\]
+form an arithmetic spectrum.  Its multiplicity function
+$a(n)=1+\nu_2(n)$ has Dirichlet series
+$\zeta(s)/(1-2^{-s})$, exact counting law
+$\sum_{n\le N}a(n)=2N-s_2(N)$, and a dense dyadic natural boundary in its
+ordinary generating function.  These elementary facts organize several results
+which do not appear as a theorem package in the pinned corpus.
+
+First, the sign on the $N$th Fourier lobe is exactly the signed Thue--Morse bit
+$(-1)^{s_2(N)}$.  This pattern had been observed before; here it is made a direct
+corollary of the exact zero count and is converted into an absolutely convergent
+Thue--Morse lobe decomposition of $\Up$ and all its derivatives.  Second, the
+zero multiplicity gives an exact Strang--Fix hierarchy: on the lattice
+$N^{-1}\Z$, polynomially weighted periodizations are constant through degree
+$\nu_2(N)$, and the next degree fails.  A reciprocal-moment Appell correction then
+reproduces every polynomial of that degree exactly.  Thus the approximation order
+of the translate system is controlled not by the size of $N$, but by its
+$2$-adic valuation.
+
+Third, the zero spectrum has a spectral zeta function with ``complex dimensions''
+$2\pi\ii k/\log2$.  Mellin inversion gives a superalgebraically accurate expansion
+of $\log\Phi(\ii y)$ with the same Gamma--zeta Fourier coefficients that occur in
+the repository's corrected endpoint asymptotics.  This supplies a new structural
+explanation of that periodic fluctuation: it is the residue trace of the dyadic
+zero spectrum.  Finite sinc products replace the geometric denominator by the
+$q$-integer $[J]_{2^{-s}}$; the imaginary-axis poles are absent at every finite
+stage and emerge through an explicit pole-condensation limit.  Gaussian
+$q$-binomial coefficients appear as the algebra of independently selecting
+spectral layers, while the common-zero statistics form a hierarchy
+\[
+ \sum_{n\ge1}\binom{1+\nu_2(n)}r n^{-s}
+ =\zeta(s)\frac{2^{-(r-1)s}}{(1-2^{-s})^r}.
+\]
+A heat-trace expansion and a base-$b$ extension complete the report.
+
+Claims marked \NewResult\ mean only that no counterpart was found in the frozen
+TeX corpus after targeted collision searches.  They are proved here, but no claim
+of worldwide historical priority is made.  In particular, Rvachev's 1977 paper
+on approximation by $\Up$ and the broader Russian-language atomic-function
+literature require a separate priority audit.
+\end{abstract}
+
+\begin{boxedremark}
+\textbf{Status convention.}
+\Corpus\ denotes an input already developed in the repository or cited primary
+literature.  \Derived\ denotes a short consequence included to make the argument
+self-contained.  \NewResult\ denotes a theorem not located in the pinned TeX
+snapshot.  \Observed\ denotes a phenomenon recorded before but sharpened or
+reorganized here.  None of the new-to-snapshot results is represented as already
+formalized in Lean.
+\end{boxedremark}
+
+\tableofcontents
+\newpage
+
+\section{Audit boundary and research method}
+\label{sec:audit}
+
+\subsection{Why the snapshot is pinned}
+
+The default branch changed while this audit was in progress.  To prevent a moving
+target, all corpus statements in this report refer to commit \commit.  Its commit
+time is 27 August 2026, 18:19:55 UTC.  GitHub's code index reported 54 TeX files
+under \repo\ at audit time; because large generated and consolidated sources are
+not always returned reliably by text search, the recursive Git tree, rather than
+the index, was used as the authoritative inventory.
+
+The documents fall into the following overlapping families.
+\begin{longtable}{@{}p{0.24\textwidth}p{0.69\textwidth}@{}}
+\toprule
+Family & Mathematical role \\
+\midrule
+\endhead
+Primary exposition & Definitions, probability model, functional equations,
+canonical sinc product, exact dyadic values, derivative identities, partition of
+unity, and the corrected global asymptotic framework. \\
+Revision archive & Earlier expositions, supplements, glossaries, and walkthroughs;
+useful for detecting abandoned normalizations and claims corrected in later waves. \\
+Dyadic and $q$-calculus & Moment recurrences, Appell blocks, Gaussian-binomial
+stencils, $q$-Pochhammer normalizations, exact dyadic arithmetic, Toeplitz limits,
+and accelerated spline approximants. \\
+Repeated integration & Finite nonuniform box splines, exact Thue--Morse truncated
+powers, Peano kernels, and sharp $4^{-n}$ convergence laws. \\
+Endpoint asymptotics & Correct Lambert phase, all-order saddle expansion, explicit
+low-order coefficients, and the Gamma--zeta Fourier law for the log-periodic term. \\
+Thue--Morse atlases & Digital, valuative, Pascal, automata, Mahler, finite-difference,
+rarefaction, Mellin--Dirichlet, word-combinatorial, and spectral representations. \\
+Fourier-decay audits & Successive corrections separating geometric, arithmetic,
+RMS, and envelope exponents for the real-axis infinite sinc product. \\
+Primary papers & Arias de Reyna's analytic and arithmetic papers, lacunary-product
+work, Kronecker-sequence work, and OCR-corrected or transcribed source material. \\
+\bottomrule
+\end{longtable}
+
+\subsection{Collision policy}
+
+A formula is not called new merely because it admits a different notation.  The
+following attractive directions were deliberately excluded from the novelty
+claims.
+\begin{itemize}
+\item The all-order endpoint coefficients, including explicit $A_2$ and $A_3$,
+      are already in the repository's small-argument asymptotics study.
+\item Moment deconvolution and Richardson acceleration already occur in archived
+      dyadic and convergence reports, including a half-base Gaussian-binomial
+      filter across spline degrees.
+\item Exact zero multiplicity $1+\nu_2(n)$ is already formalized in the Lean
+      canonical-product module.
+\item The sign pattern of the Fourier lobes was stated in Vladimir Reshetnikov's
+      2018 Math StackExchange question, and the answer there essentially proves
+      uniqueness of the critical point in every lobe from the logarithmic
+      derivative.
+\item Ordinary partition of unity is classical for $\Up$ and appears in the
+      primary literature.  The new-to-snapshot statement below is the sharp
+      higher weighted hierarchy and its exact $2$-adic stopping order.
+\end{itemize}
+
+The strategy was therefore to promote the zero multiplicity from an isolated
+canonical-product fact to a spectrum and ask what its standard transforms know.
+The answer simultaneously touches Dirichlet series, Mellin residues, automatic
+sequences, shift-invariant approximation, and finite $q$-calculus.
+
+\section{Normalization and established inputs}
+\label{sec:normalization}
+
+\subsection{The centered random series}
+
+Let $U_1,U_2,\ldots$ be independent and uniform on $[-1,1]$, and set
+\begin{equation}
+ Y=\sum_{k=1}^{\infty}2^{-k}U_k.                    \label{eq:Y}
+\end{equation}
+Then $Y$ is supported on $[-1,1]$ and has the even density $\Up$.  Under the
+Fourier convention
+\begin{equation}
+ \widehat f(\xi)=\int_{\R}f(x)\e^{-2\pi\ii x\xi}\dd x,      \label{eq:fourier-conv}
+\end{equation}
+independence gives
+\begin{equation}
+ \Phi(\xi):=\widehat\Up(\xi)
+ =\prod_{h=0}^{\infty}\sinc\!\left(\frac{\pi\xi}{2^h}\right),
+ \qquad \sinc z=\frac{\sin z}{z}.                          \label{eq:Phi-sinc}
+\end{equation}
+The convergence is locally uniform on $\C$, so $\Phi$ is an even entire function.
+The density is $C^\infty$ and compactly supported; consequently $\Phi$ is rapidly
+decreasing on the real axis, although its sharp pointwise behavior is highly
+nonuniform.
+
+The bounded Fabius variable is
+\begin{equation}
+ X=\frac{Y+1}{2}=\sum_{k=1}^{\infty}2^{-k}V_k,
+ \qquad V_k\sim\operatorname{Unif}[0,1],                  \label{eq:X}
+\end{equation}
+with distribution function $F$.  This affine relation will be the bridge between
+the imaginary-axis growth of $\Phi$ and the small-argument asymptotics of $F$.
+
+\subsection{Canonical product and exact orders}
+
+Euler's product for sine and an absolutely convergent rearrangement give
+\begin{equation}
+ \Phi(z)=\prod_{n=1}^{\infty}
+ \left(1-\frac{z^2}{n^2}\right)^{a(n)},
+ \qquad a(n)=1+\nu_2(n).                                  \label{eq:canonical}
+\end{equation}
+Thus
+\begin{equation}
+ \ord_{z=n}\Phi=a(n),\qquad n\in\Z\setminus\{0\}.          \label{eq:zero-order}
+\end{equation}
+This identity is an established corpus input.  Everything in
+\cref{sec:spectrum,sec:weighted,sec:mellin,sec:qfinite} is driven by taking it
+seriously as spectral data rather than merely as a description of zeros.
+
+The first centered moments needed later are
+\begin{equation}
+ \mu_0=1,\qquad \mu_1=0,\qquad \mu_2=\frac19,
+ \qquad \mu_3=0,\qquad \mu_4=\frac{19}{675},               \label{eq:moments}
+\end{equation}
+where $\mu_r=\int x^r\Up(x)\dd x$.  They follow either from the random series or
+from the repository's moment recurrence.
+
+\section{The arithmetic zero spectrum}
+\label{sec:spectrum}
+
+\subsection{Equivalent descriptions}
+
+\begin{theorem}[Arithmetic spectrum package \NewResult]
+\label{thm:spectrum-package}
+For $n\ge1$, let $a(n)=1+\nu_2(n)$.  Then:
+\begin{align}
+ a(n)&=\sum_{h\ge0}\mathbf 1_{2^h\mid n},                  \label{eq:a-divisor}\\
+ \sum_{n\ge1}\frac{a(n)}{n^s}
+   &=\frac{\zeta(s)}{1-2^{-s}},\qquad \Re s>1,             \label{eq:D}\\
+ A(N):=\sum_{n\le N}a(n)
+   &=\sum_{h\ge0}\floor{\frac{N}{2^h}}
+     =2N-s_2(N),                                           \label{eq:AN}\\
+ \#\{n\le N:a(n)\ge r\}
+   &=\floor{\frac{N}{2^{r-1}}},                            \label{eq:tail-count}\\
+ \#\{n\le N:a(n)=r\}
+   &=\floor{\frac{N}{2^{r-1}}}-
+     \floor{\frac{N}{2^r}}.                               \label{eq:exact-count}
+\end{align}
+Moreover $a$ is multiplicative and satisfies
+\begin{equation}
+ a(2n)=a(n)+1,\qquad a(2n+1)=1.                            \label{eq:a-rec}
+\end{equation}
+Its limiting value distribution is geometric:
+\begin{equation}
+ \lim_{N\to\infty}\frac1N\#\{n\le N:a(n)=r\}=2^{-r},
+ \qquad r\ge1,                                            \label{eq:geom}
+\end{equation}
+so the limiting mean and variance are both $2$.
+\end{theorem}
+
+\begin{proof}
+The number of nonnegative $h$ for which $2^h\mid n$ is exactly
+$1+\nu_2(n)$, proving \eqref{eq:a-divisor}.  Absolute convergence permits
+summation by layers:
+\[
+ \sum_{n\ge1}\frac{a(n)}{n^s}
+ =\sum_{h\ge0}\sum_{2^h\mid n}n^{-s}
+ =\zeta(s)\sum_{h\ge0}2^{-hs}.
+\]
+The same layer count truncated at $N$ gives the first expression for $A(N)$.
+Legendre's digit-sum identity
+$\sum_{h\ge1}\floor{N/2^h}=N-s_2(N)$ gives the last one.
+The inequalities $a(n)\ge r$ and $2^{r-1}\mid n$ are equivalent, giving
+\eqref{eq:tail-count}; subtraction gives \eqref{eq:exact-count}.
+Multiplicativity follows because only the $2$-part contributes: if $(m,n)=1$,
+at most one is even, and $a(mn)=a(m)a(n)$.  The recursion and limiting law are
+immediate.  The geometric mean is $\sum r2^{-r}=2$ and its variance is $2$.
+\end{proof}
+
+\begin{remark}
+The average zero multiplicity is therefore $2$, while exceptional powers of two
+have unbounded multiplicity.  This is the first indication that average real-axis
+behavior and extremal dyadic behavior should not be conflated--precisely the
+lesson reached independently by the repository's Fourier-decay audit sequence.
+\end{remark}
+
+\subsection{Ordinary generating function and natural boundary}
+
+\begin{proposition}[Lambert series and a dyadic natural boundary \NewResult]
+\label{prop:ogf}
+For $|z|<1$,
+\begin{equation}
+ \mathcal A(z):=\sum_{n\ge1}a(n)z^n
+ =\sum_{h\ge0}\frac{z^{2^h}}{1-z^{2^h}},                  \label{eq:A-ogf}
+\end{equation}
+with Mahler recursion
+\begin{equation}
+ \mathcal A(z)=\frac{z}{1-z}+\mathcal A(z^2).              \label{eq:A-mahler}
+\end{equation}
+Every root of unity of order a power of two is a radial singularity.  Since these
+roots are dense on the unit circle, $|z|=1$ is a natural boundary.
+\end{proposition}
+
+\begin{proof}
+Expand \eqref{eq:a-divisor} and sum geometric series.  Splitting off $h=0$
+and shifting the remaining index gives \eqref{eq:A-mahler}.  If $\omega^{2^m}=1$
+and $z=r\omega$ with $r\uparrow1$, the $h=m$ summand is
+$r^{2^m}/(1-r^{2^m})\to+\infty$.  Thus analytic continuation across any arc is
+impossible.
+\end{proof}
+
+\subsection{Spectral traces and the Taylor law}
+
+\begin{corollary}[Even spectral traces \NewResult]
+\label{cor:traces}
+For every integer $m\ge1$,
+\begin{equation}
+ \sum_{n\ge1}\frac{a(n)}{n^{2m}}
+ =\frac{\zeta(2m)}{1-4^{-m}},                              \label{eq:trace}
+\end{equation}
+and, for $|z|<1$,
+\begin{equation}
+ \log\Phi(z)
+ =-\sum_{m=1}^{\infty}
+ \frac{\zeta(2m)}{m(1-4^{-m})}z^{2m}.                    \label{eq:log-taylor}
+\end{equation}
+\end{corollary}
+
+\begin{proof}
+The first formula is \eqref{eq:D} at $s=2m$.  Expanding
+$\log(1-z^2/n^2)$ in the canonical product and interchanging the absolutely
+convergent sums gives the second.
+\end{proof}
+
+The logarithmic derivative is the corresponding resolvent trace:
+\begin{equation}
+ \frac{\Phi'(z)}{\Phi(z)}
+ =\sum_{n\ge1}a(n)\left(\frac1{z-n}+\frac1{z+n}\right)
+ =-2z\sum_{n\ge1}\frac{a(n)}{n^2-z^2}.                   \label{eq:logder}
+\end{equation}
+This identity will control the geometry of every real lobe.
+
+\section{Thue--Morse signs from zero counting}
+\label{sec:signs}
+
+\subsection{The neighboring-bit identity}
+
+Let
+\begin{equation}
+ \varepsilon_n=(-1)^{s_2(n)},\qquad n\ge0,                 \label{eq:eps}
+\end{equation}
+be the signed Thue--Morse sequence.
+
+\begin{lemma}[Multiplicity parity is a Thue--Morse discrete derivative]
+\label{lem:parity}
+For every $n\ge1$,
+\begin{equation}
+ (-1)^{a(n)}=\varepsilon_{n-1}\varepsilon_n.              \label{eq:neighbor}
+\end{equation}
+\end{lemma}
+
+\begin{proof}
+Adding one to $n-1$ erases $\nu_2(n)$ trailing ones and creates one new one, so
+$s_2(n)=s_2(n-1)+1-\nu_2(n)$.  Hence
+$s_2(n-1)+s_2(n)\equiv1+\nu_2(n)=a(n)\pmod2$.
+\end{proof}
+
+\subsection{Exact lobe signs}
+
+\begin{theorem}[Thue--Morse lobe-sign theorem \Observed]
+\label{thm:lobe-sign}
+For real $x\notin\Z$,
+\begin{equation}
+ \sgn\Phi(x)=(-1)^{s_2(\floor{|x|})}
+             =\varepsilon_{\floor{|x|}}.                  \label{eq:lobe-sign}
+\end{equation}
+Equivalently, the signs of the consecutive positive-axis lobes of the infinite
+sinc product are exactly the signed Thue--Morse word.
+\end{theorem}
+
+\begin{proof}
+The product is positive at the origin.  Crossing the zero at $n$ reverses sign
+exactly when $a(n)$ is odd.  Therefore, for $N<x<N+1$,
+\[
+ \sgn\Phi(x)=(-1)^{A(N)}.
+\]
+By \eqref{eq:AN}, $A(N)=2N-s_2(N)$, whose parity is $s_2(N)$.  Evenness handles
+negative $x$.
+\end{proof}
+
+\begin{remark}
+The pattern itself predates this report.  The point of
+\cref{thm:lobe-sign} is the exact spectral explanation: Thue--Morse is not an
+external decoration placed on the sinc product.  It is the parity integral of
+its $2$-adic zero multiplicities, as \eqref{eq:neighbor} makes literal.
+\end{remark}
+
+For the $J$-factor truncation
+\begin{equation}
+ \Phi_J(x)=\prod_{h=0}^{J-1}\sinc\!\left(\frac{\pi x}{2^h}\right),             \label{eq:PhiJ}
+\end{equation}
+we likewise have, away from its zeros,
+\begin{equation}
+ \sgn\Phi_J(x)=(-1)^{\sum_{h=0}^{J-1}\floor{|x|/2^h}}.     \label{eq:finite-sign}
+\end{equation}
+Thus the infinite Thue--Morse sign law is already visible through finite digital
+floor sums.
+
+\subsection{A Thue--Morse lobe decomposition of the bump}
+
+\begin{theorem}[Signed lobe inversion \NewResult]
+\label{thm:lobe-inversion}
+For every real $x$,
+\begin{equation}
+ \Up(x)=2\sum_{N=0}^{\infty}\varepsilon_N
+ \int_N^{N+1}|\Phi(\xi)|\cos(2\pi x\xi)\dd\xi.             \label{eq:lobe-inversion}
+\end{equation}
+The series and every termwise differentiated series converge absolutely.  In
+particular, for $m\ge0$,
+\begin{equation}
+ \Up^{(2m)}(0)=2(-1)^m(2\pi)^{2m}
+ \sum_{N=0}^{\infty}\varepsilon_N
+ \int_N^{N+1}\xi^{2m}|\Phi(\xi)|\dd\xi.                  \label{eq:lobe-moments}
+\end{equation}
+For $m=0$ this becomes the exact alternating-area identity
+\begin{equation}
+ 1=2\sum_{N\ge0}\varepsilon_N\int_N^{N+1}|\Phi(\xi)|\dd\xi.                \label{eq:area}
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+Fourier inversion and evenness give
+$\Up(x)=2\int_0^\infty\Phi(\xi)\cos(2\pi x\xi)\dd\xi$.
+Partition the half-line into unit lobes and apply \cref{thm:lobe-sign}.
+Rapid decay of $\Phi$ permits arbitrary polynomial weights, proving absolute
+convergence and termwise differentiation.
+\end{proof}
+
+This identity is a genuinely analytic bridge back from the sinc product to the
+Thue--Morse sequence.  It differs from the better-known appearance of
+Thue--Morse in truncated-power formulas for finite box splines: here the sequence
+weights frequency lobes of the limiting $C^\infty$ bump itself.
+
+\section{Laguerre--Polya geometry and real critical points}
+\label{sec:LP}
+
+\begin{theorem}[Real-rooted derivative hierarchy \Derived]
+\label{thm:LP}
+The entire function $\Phi$ belongs to the Laguerre--Polya class.  Consequently,
+every derivative $\Phi^{(r)}$ has only real zeros.  More precisely:
+\begin{enumerate}
+\item the zero $n\in\Z\setminus\{0\}$ is inherited by $\Phi'$ with multiplicity
+      $a(n)-1$;
+\item in every interval $(n,n+1)$, $n\ge0$, $\Phi'$ has exactly one simple zero
+      $c_n$;
+\item for every $r\ge0$ and nonzero integer $m$,
+      \begin{equation}
+       \Phi^{(r)}(2^r m)=0.                                \label{eq:derivative-lattice}
+      \end{equation}
+\end{enumerate}
+\end{theorem}
+
+\begin{proof}
+The canonical product is the locally uniform limit of real-rooted even
+polynomials, because $\sum_n a(n)n^{-2}<\infty$.  Hence it is in the
+Laguerre--Polya class, which is closed under differentiation.
+
+An order-$a(n)$ zero loses one order under differentiation.  On $(n,n+1)$,
+\eqref{eq:logder} is strictly decreasing, since
+\[
+ \left(\frac{\Phi'}{\Phi}\right)'(x)
+ =-\sum_{m\ge1}a(m)\left(\frac1{(x-m)^2}+\frac1{(x+m)^2}\right)<0.
+\]
+It tends to $+\infty$ at $n+$ and to $-\infty$ at $(n+1)-$, so it has one
+simple zero.  Finally, the zero at $2^rm$ has multiplicity at least $r+1$.
+\end{proof}
+
+\begin{corollary}[Signed unique extrema]
+The unique critical value in the $n$th lobe has sign $\varepsilon_n$.  Thus the
+critical-value sequence may be written
+\begin{equation}
+ \Phi(c_n)=\varepsilon_n M_n,\qquad M_n>0.                 \label{eq:critical-sign}
+\end{equation}
+\end{corollary}
+
+The repository's Fourier-decay program studies the highly irregular envelope
+$M_n$.  The arithmetic spectrum explains why a single ``typical'' exponent cannot
+capture all subsequences: the inherited multiplicity at each endpoint varies
+with $\nu_2(n)$, while the lobe sign varies with the integrated parity
+$s_2(n)\bmod2$.
+
+\section{Exact $2$-adic Strang--Fix hierarchy}
+\label{sec:weighted}
+
+This section contains the strongest new-to-snapshot theorem.  The ordinary
+partition of unity is the degree-zero case.  The full hierarchy reveals an exact
+and sharp dependence on the $2$-adic valuation of the lattice denominator.
+
+\subsection{Weighted periodizations}
+
+For $N\ge1$ and $r\ge0$, define
+\begin{equation}
+ \mathcal P_{N,r}(x)=
+ \sum_{k\in\Z}\left(x-\frac{k}{N}\right)^r
+ \Up\!\left(x-\frac{k}{N}\right).                         \label{eq:periodization}
+\end{equation}
+The sum is locally finite because $\Up$ has compact support.
+
+\begin{theorem}[Sharp weighted partition hierarchy \NewResult]
+\label{thm:weighted}
+Let $q=\nu_2(N)$.  For every $0\le r\le q$ and every real $x$,
+\begin{equation}
+ \boxed{\mathcal P_{N,r}(x)=N\mu_r.}                       \label{eq:weighted-constant}
+\end{equation}
+The statement is sharp: $\mathcal P_{N,q+1}$ is not constant.  Equivalently, the
+translate system generated by $\Up$ on the lattice $N^{-1}\Z$ has exact
+Strang--Fix order
+\begin{equation}
+ \operatorname{SF}(N)=1+\nu_2(N).                          \label{eq:SF-order}
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+Put $g_r(t)=t^r\Up(t)$.  Poisson summation for the $N^{-1}$-periodization gives
+\begin{equation}
+ \mathcal P_{N,r}(x)=N\sum_{m\in\Z}
+ \widehat g_r(mN)\e^{2\pi\ii mNx}.                        \label{eq:poisson-weighted}
+\end{equation}
+Differentiating the Fourier transform,
+\begin{equation}
+ \widehat g_r(\xi)=\frac{\Phi^{(r)}(\xi)}{(-2\pi\ii)^r}.  \label{eq:moment-fourier}
+\end{equation}
+For $m\ne0$, the zero at $mN$ has order
+\[
+ a(mN)=1+\nu_2(mN)=1+q+\nu_2(m)\ge q+1.
+\]
+Hence $\Phi^{(r)}(mN)=0$ for $r\le q$.  Only $m=0$ remains in
+\eqref{eq:poisson-weighted}, giving $N\widehat g_r(0)=N\mu_r$.
+At $r=q+1$, the Fourier coefficient with $m=1$ is nonzero because the zero at
+$N$ has exact order $q+1$.  Therefore the periodization cannot be constant.
+\end{proof}
+
+\begin{example}[The first three layers]
+For every $N$,
+\begin{equation}
+ \sum_{k\in\Z}\Up(x-k/N)=N.                               \label{eq:PU}
+\end{equation}
+If $2\mid N$, then
+\begin{equation}
+ \sum_{k\in\Z}(x-k/N)\Up(x-k/N)=0.                        \label{eq:first-weight}
+\end{equation}
+If $4\mid N$, then
+\begin{equation}
+ \sum_{k\in\Z}(x-k/N)^2\Up(x-k/N)=\frac{N}{9}.           \label{eq:second-weight}
+\end{equation}
+The quadratic identity fails for $N\equiv2\pmod4$ and the linear identity fails
+for odd $N$.
+\end{example}
+
+\begin{remark}[Why the result is arithmetically unusual]
+Refining the lattice from $1/N$ to $1/(N+1)$ can reduce the exact reproduction
+order dramatically.  Powers of two are optimal: the lattice $2^{-q}\Z$ has
+order $q+1$, whereas every odd denominator has only the classical order one.
+\end{remark}
+
+\subsection{Exact polynomial reproduction}
+
+Let
+\begin{equation}
+ M(z)=\int_{\R}\e^{zt}\Up(t)\dd t
+     =\sum_{r\ge0}\mu_r\frac{z^r}{r!}.                    \label{eq:mgf}
+\end{equation}
+Since $\Up$ is even, $M(-z)=M(z)$.  Define reciprocal-moment Appell polynomials
+$P_r$ by
+\begin{equation}
+ \frac{\e^{xz}}{M(z)}=\sum_{r=0}^{\infty}P_r(x)\frac{z^r}{r!}.              \label{eq:Pr}
+\end{equation}
+
+\begin{theorem}[Appell-corrected lattice reproduction \NewResult]
+\label{thm:reproduction}
+If $q=\nu_2(N)$, then for every polynomial degree $0\le r\le q$,
+\begin{equation}
+ \boxed{\frac1N\sum_{k\in\Z}P_r(k/N)\Up(x-k/N)=x^r.}      \label{eq:reproduce}
+\end{equation}
+Consequently every polynomial of degree at most $q$ is reproduced exactly by a
+locally finite linear combination of $N^{-1}$-lattice translates of $\Up$.
+\end{theorem}
+
+\begin{proof}
+Write $t_k=x-k/N$.  Up to degree $q$, \cref{thm:weighted} implies the formal
+Taylor identity
+\[
+ \frac1N\sum_k\e^{-zt_k}\Up(t_k)=M(-z)+\bigO(z^{q+1})
+ =M(z)+\bigO(z^{q+1}).
+\]
+Multiplying by $\e^{xz}/M(z)$ yields
+\[
+ \frac1N\sum_k\frac{\e^{(x-t_k)z}}{M(z)}\Up(t_k)
+ =\e^{xz}+\bigO(z^{q+1}).
+\]
+Comparing coefficients gives \eqref{eq:reproduce}.
+\end{proof}
+
+The first correction polynomials are
+\begin{align}
+ P_0(x)&=1,\nonumber\\
+ P_1(x)&=x,\nonumber\\
+ P_2(x)&=x^2-\frac19,\nonumber\\
+ P_3(x)&=x^3-\frac{x}{3},\nonumber\\
+ P_4(x)&=x^4-\frac23x^2+\frac{31}{675}.                   \label{eq:P-first}
+\end{align}
+Thus, for example, the $1/16$ lattice reproduces quartics exactly.
+
+\subsection{A formalization-friendly version}
+
+The analytic proof above uses Poisson summation, but the theorem can be decomposed
+for Lean into three reusable statements:
+\begin{enumerate}
+\item Fourier transform of $x^r\Up(x)$ equals
+      $(-2\pi\ii)^{-r}\Phi^{(r)}$;
+\item periodization on $N^{-1}\Z$ has Fourier coefficients sampled at $mN$;
+\item exact zero order at $mN$ is $1+\nu_2(mN)$.
+\end{enumerate}
+No asymptotic estimate is needed.  Once a suitable Poisson theorem for compactly
+supported smooth functions is available, the sharpness proof is a one-coefficient
+argument.
+
+\section{Spectral zeta function and complex dimensions}
+\label{sec:zeta}
+
+\begin{definition}[Zero spectral zeta function]
+For $\Re s>1$, set
+\begin{equation}
+ Z_\Phi(s)=\sum_{n\ge1}\frac{\ord_n\Phi}{n^s}
+          =\sum_{n\ge1}\frac{a(n)}{n^s}.                  \label{eq:Zphi}
+\end{equation}
+\end{definition}
+By \eqref{eq:D},
+\begin{equation}
+ Z_\Phi(s)=\frac{\zeta(s)}{1-2^{-s}}.                     \label{eq:Zphi-form}
+\end{equation}
+It extends meromorphically to $\C$.  Besides the ordinary density pole at $s=1$,
+it has the dyadic lattice of poles
+\begin{equation}
+ \chi_k=\frac{2\pi\ii k}{\log2},\qquad k\in\Z,            \label{eq:chi}
+\end{equation}
+except where an accidental zeta zero would cancel one.  At $k\ne0$,
+\begin{equation}
+ \Res_{s=\chi_k}Z_\Phi(s)=\frac{\zeta(\chi_k)}{\log2}.    \label{eq:resZ}
+\end{equation}
+We call the $\chi_k$ the complex dimensions of the dyadic zero spectrum.  This
+terminology is descriptive: the underlying object is simply the meromorphic
+Dirichlet series \eqref{eq:Zphi-form}.
+
+\begin{remark}
+The pole at $s=1$ has residue $2$, agreeing with the exact zero count
+$A(N)=2N-s_2(N)$.  The imaginary lattice records the discrete scale invariance
+which is invisible in the leading density but reappears as a periodic function
+of $\log_2$ scale.
+\end{remark}
+
+\section{Mellin transform on the imaginary axis}
+\label{sec:mellin}
+
+\subsection{Exact transform}
+
+Set
+\begin{equation}
+ H(y)=\log\Phi(\ii y)
+     =\sum_{n\ge1}a(n)\log\left(1+\frac{y^2}{n^2}\right),
+ \qquad y>0.                                               \label{eq:H}
+\end{equation}
+All terms are positive, so $H$ has none of the real-axis cancellation difficulties.
+
+\begin{theorem}[Mellin factorization \NewResult]
+\label{thm:Mellin}
+For $1<\Re s<2$,
+\begin{equation}
+ \int_0^\infty H(y)y^{-s-1}\dd y
+ =\frac{\pi\zeta(s)}{s\sin(\pi s/2)(1-2^{-s})}.            \label{eq:Mellin}
+\end{equation}
+Equivalently, with $S=2\pi y$,
+\begin{equation}
+ H(y)=\frac1{2\pi\ii}\int_{c-\ii\infty}^{c+\ii\infty}
+ \frac{\Gamma(1-s)\zeta(1-s)}{s(1-2^{-s})}S^s\dd s,
+ \qquad 1<c<2.                                             \label{eq:Mellin-inv}
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+For $0<\Re s<2$, integration by parts and the beta integral give
+\begin{equation}
+ \int_0^\infty\log(1+t^2)t^{-s-1}\dd t
+ =\frac{\pi}{s\sin(\pi s/2)}.                             \label{eq:kernel-Mellin}
+\end{equation}
+For $\Re s>1$, Tonelli's theorem and $y=nt$ factor the sum into this kernel and
+$Z_\Phi(s)$.  The second form follows from the zeta functional equation.
+\end{proof}
+
+\subsection{Complete large-$y$ expansion}
+
+Let $L=\log2$ and define
+\begin{equation}
+ C_2=
+rac{\zeta''(0)+\tfrac12\log^2(2\pi)-\tfrac{\pi^2}{24}}{L}
+     -\frac{L}{12}
+ =-1.1090453654341866821907455547\ldots.                  \label{eq:C2}
+\end{equation}
+For $k\ne0$, let
+\begin{equation}
+ c_k=-\frac{\Gamma(-\chi_k)\zeta(1-\chi_k)}{L},            \label{eq:ck}
+\end{equation}
+and define the real analytic, mean-zero, $1$-periodic function
+\begin{equation}
+ \Psi(u)=\sum_{k\ne0}c_k\e^{2\pi\ii ku}.                  \label{eq:Psi}
+\end{equation}
+
+\begin{theorem}[Complex-dimension expansion \NewResult]
+\label{thm:H-asymp}
+For every $A>0$, as $y\to\infty$,
+\begin{equation}
+ \boxed{
+ H(y)=S-\frac{\log^2S}{2L}-\frac12\log S+C_2
+      +\Psi(\log_2S)+\bigO_A(S^{-A}),\qquad S=2\pi y.}    \label{eq:H-asymp}
+\end{equation}
+The Fourier coefficients decay exponentially.  Numerically,
+\begin{align}
+ c_1&=(7.5586509397640965-7.4700909117916216\ii)10^{-7},\nonumber\\
+ |c_1|&=1.0627109779221651\times10^{-6},\nonumber\\
+ |c_2|&=6.6927771176343188\times10^{-13}.                 \label{eq:cnum}
+\end{align}
+The exact triangle estimate is
+\begin{equation}
+ \norm{\Psi}_\infty\le2\sum_{k\ge1}|c_k|,
+ \qquad
+ 2\sum_{k\ge1}|c_k|\approx2.1254232944005\times10^{-6}, \label{eq:Psi-bound}
+\end{equation}
+where the displayed decimal is an 80-digit-working-precision numerical sum.
+\end{theorem}
+
+\begin{proofidea}
+Shift the contour in \eqref{eq:Mellin-inv} to the left.  The pole at $s=1$
+gives $S$.  The triple pole at $s=0$ gives the quadratic logarithm, linear
+logarithm, and $C_2$.  The simple poles at $s=\chi_k$, $k\ne0$, give
+$c_kS^{\chi_k}=c_k\e^{2\pi\ii k\log_2S}$.  In the functional-equation form,
+there are no further poles to the left: the trivial zeta zeros cancel the sine
+poles.  Stirling's estimate for $\Gamma(1-s)$ permits a shift to any fixed
+negative real part, giving the superalgebraic remainder.  The same estimate
+proves exponential Fourier decay.
+\end{proofidea}
+
+\subsection{Endpoint duality}
+
+Define the negative Laplace transform of the bounded Fabius variable by
+\begin{equation}
+ \Lambda(S)=\E\e^{-2SX}.                                   \label{eq:Lambda}
+\end{equation}
+From $X=(Y+1)/2$ and symmetry of $Y$,
+\begin{equation}
+ \boxed{\Phi(\ii y)=\e^S\Lambda(S),\qquad S=2\pi y.}       \label{eq:duality}
+\end{equation}
+Thus \eqref{eq:H-asymp} is exactly the logarithmic large-parameter expansion
+which feeds the repository's small-endpoint saddle point.  The Gamma--zeta
+coefficients $c_k$ already occur there, but \cref{thm:H-asymp} supplies a new
+spectral origin:
+\begin{equation}
+ \text{endpoint log-periodicity}
+ \quad\longleftrightarrow\quad
+ \text{residues of }Z_\Phi(s)\text{ at }\chi_k.             \label{eq:duality-slogan}
+\end{equation}
+The oscillation is tiny not because the dyadic scaling is weak, but because
+$\Gamma(-\chi_k)$ is exponentially small at the first nonzero imaginary height.
+
+\section{Finite products, $q$-integers, and pole condensation}
+\label{sec:qfinite}
+
+\subsection{Truncated multiplicities}
+
+The $J$-factor product \eqref{eq:PhiJ} has multiplicity
+\begin{equation}
+ a_J(n)=\min\{J,1+\nu_2(n)\}.                              \label{eq:aJ}
+\end{equation}
+Let $q=2^{-s}$.  Then
+\begin{theorem}[Finite spectral $q$-integer \NewResult]
+\label{thm:finite-zeta}
+For $\Re s>1$,
+\begin{equation}
+ Z_{\Phi_J}(s):=\sum_{n\ge1}\frac{a_J(n)}{n^s}
+ =\zeta(s)\frac{1-2^{-Js}}{1-2^{-s}}
+ =\zeta(s)[J]_q,                                          \label{eq:finite-zeta}
+\end{equation}
+where $[J]_q=1+q+\cdots+q^{J-1}$.  Also
+\begin{equation}
+ \sum_{n\le N}a_J(n)=\sum_{h=0}^{J-1}\floor{N/2^h},       \label{eq:AJ}
+\end{equation}
+while
+\begin{equation}
+ \log\Phi_J(z)
+ =-\sum_{m\ge1}\frac{\zeta(2m)}m[J]_{4^{-m}}z^{2m}
+ \qquad(|z|<1).                                           \label{eq:finite-taylor}
+\end{equation}
+\end{theorem}
+
+Every finite $Z_{\Phi_J}$ is regular at the nonzero $\chi_k$: the apparent
+geometric denominator is canceled by the numerator.  The complex dimensions are
+therefore genuinely infinite-depth phenomena.
+
+\begin{theorem}[Local pole-condensation profile \NewResult]
+\label{thm:condensation}
+Fix $k\in\Z$ and put $\chi_k=2\pi\ii k/L$.  Uniformly for $w$ in compact subsets
+of $\C$,
+\begin{equation}
+ \lim_{J\to\infty}\frac1J
+ Z_{\Phi_J}\!\left(\chi_k+\frac{w}{J}\right)
+ =\zeta(\chi_k)\frac{1-\e^{-Lw}}{Lw},                     \label{eq:condensation}
+\end{equation}
+with the removable value $1$ for the last factor at $w=0$.
+\end{theorem}
+
+\begin{proof}
+At $s=\chi_k+w/J$, one has
+$q^J=2^{-Js}=\e^{-Lw}$ and
+$J(1-q)\to Lw$.  Substitute in \eqref{eq:finite-zeta}.
+\end{proof}
+
+The profile $(1-\e^{-Lw})/(Lw)$ is the finite-depth regularization of the limiting
+pole.  It gives a precise analytic meaning to the statement that a $q$-integer
+turns into a geometric resolvent.
+
+\subsection{Gaussian $q$-binomial layer algebra}
+
+Define the layer zeta functions
+\begin{equation}
+ \mathcal Z_h(s)=\sum_{2^h\mid n}n^{-s}=q^h\zeta(s).        \label{eq:layer-zeta}
+\end{equation}
+The finite $q$-binomial theorem gives the exact formal identity
+\begin{equation}
+ \boxed{
+ \prod_{h=0}^{J-1}\bigl(1+t\mathcal Z_h(s)\bigr)
+ =\sum_{r=0}^{J}t^r\zeta(s)^r q^{\binom r2}
+   \qbinom{J}{r}{q}.}                                     \label{eq:q-layer}
+\end{equation}
+This is a clean spectral explanation for Gaussian coefficients: they enumerate
+independent selections of dyadic zero layers, with weight $q^h$ for choosing
+layer $h$.  The identity is deliberately stated as a layer-selection polynomial;
+it should not be confused with a Dirichlet series for intersections, because
+multiplication of Dirichlet series introduces multiplicative convolution.
+
+\subsection{The common-zero zeta tower}
+
+Intersections are instead encoded by binomial moments of the multiplicity.
+
+\begin{theorem}[Common-zero hierarchy \NewResult]
+\label{thm:common-zero}
+For every integer $r\ge1$ and $\Re s>1$,
+\begin{equation}
+ Z_r(s):=\sum_{n\ge1}\binom{a(n)}r n^{-s}
+ =\zeta(s)\frac{q^{r-1}}{(1-q)^r},\qquad q=2^{-s}.         \label{eq:Zr}
+\end{equation}
+For the $J$-layer product,
+\begin{equation}
+ Z_{J,r}(s)=\sum_{n\ge1}\binom{a_J(n)}r n^{-s}
+ =\zeta(s)\sum_{h=r-1}^{J-1}\binom{h}{r-1}q^h.           \label{eq:ZJr}
+\end{equation}
+Consequently the limiting spectrum has an order-$r$ pole at every nonzero
+complex dimension $\chi_k$ unless canceled by $\zeta(\chi_k)$.
+\end{theorem}
+
+\begin{proof}
+The number $\binom{a(n)}r$ counts $r$-subsets of the layers
+$\{0,1,\ldots,\nu_2(n)\}$.  Group such subsets by their largest element $h$.
+There are $\binom{h}{r-1}$ choices and their common zeros are precisely the
+multiples of $2^h$.  Hence
+\[
+ Z_r(s)=\zeta(s)\sum_{h\ge r-1}\binom{h}{r-1}q^h
+ =\zeta(s)\frac{q^{r-1}}{(1-q)^r}.
+\]
+Truncating $h$ gives the finite formula.
+\end{proof}
+
+This tower is one of the sharpest bridges among the four themes in the user's
+request: the sinc layers define the zeros, the $2$-adic intersection counts
+produce the rational powers of $(1-q)^{-1}$, and finite layer selections produce
+Gaussian $q$-binomials.
+
+\section{The zero heat trace}
+\label{sec:heat}
+
+Define the exponentially smoothed zero count
+\begin{equation}
+ \Theta(t)=\sum_{n\ge1}a(n)\e^{-nt},\qquad t>0.            \label{eq:Theta}
+\end{equation}
+Layer summation gives the dyadic Lambert series
+\begin{equation}
+ \Theta(t)=\sum_{h\ge0}\frac1{\e^{2^ht}-1}.               \label{eq:Theta-Lambert}
+\end{equation}
+Its Mellin representation is
+\begin{equation}
+ \Theta(t)=\frac1{2\pi\ii}\int_{c-\ii\infty}^{c+\ii\infty}
+ \Gamma(s)\frac{\zeta(s)}{1-2^{-s}}t^{-s}\dd s,
+ \qquad c>1.                                               \label{eq:Theta-Mellin}
+\end{equation}
+
+\begin{theorem}[Heat-trace expansion \NewResult]
+\label{thm:heat}
+Let $T=\log_2(1/t)$ and
+\begin{equation}
+ C_{\Theta}=\frac{\gamma-\log(2\pi)}{2\log2}-\frac14
+ =-1.1593749760977258236984308878\ldots.                  \label{eq:Ctheta}
+\end{equation}
+Then, as $t\downarrow0$,
+\begin{align}
+ \Theta(t)\sim{}&\frac2t-\frac{\log(1/t)}{2\log2}+C_{\Theta}
+ +\sum_{k\ne0}\frac{\Gamma(\chi_k)\zeta(\chi_k)}{\log2}
+   \e^{2\pi\ii kT}                                      \label{eq:heat-asymp}\\
+ &-\sum_{m=0}^{\infty}
+ \frac{Z_\Phi(-(2m+1))}{(2m+1)!}t^{2m+1}.\nonumber
+\end{align}
+The first algebraic terms are
+\begin{equation}
+ -\frac{t}{12}+\frac{t^3}{5040}+\cdots.                   \label{eq:heat-first}
+\end{equation}
+The first periodic coefficient has magnitude
+$1.2764467470886077\times10^{-6}$.
+\end{theorem}
+
+\begin{proofidea}
+Shift the contour in \eqref{eq:Theta-Mellin}.  The pole at $s=1$ gives $2/t$.
+The double pole at $0$ gives the logarithm and constant.  The poles $\chi_k$
+give the periodic term.  Poles of $\Gamma(s)$ at negative even integers are
+canceled by trivial zeros of $\zeta$; the negative odd integers give the final
+series.
+\end{proofidea}
+
+The heat trace makes the spectral dimension picture especially transparent:
+linear zero density, a logarithmic digital correction, and a microscopic
+log-periodic ripple are successive residue layers of the same Dirichlet series.
+
+\section{A base-$b$ theory}
+\label{sec:baseb}
+
+The dyadic case belongs to a larger exact family.  Fix an integer $b\ge2$ and set
+\begin{equation}
+ \Phi_b(z)=\prod_{h=0}^{\infty}\sinc\!\left(\frac{\pi z}{b^h}\right).       \label{eq:Phib}
+\end{equation}
+It is the Fourier transform of the $C^\infty$ density obtained by convolving
+uniform laws on intervals of half-width $1/(2b^h)$.  Its support is
+\begin{equation}
+ \left[-\frac{b}{2(b-1)},\frac{b}{2(b-1)}\right].          \label{eq:supportb}
+\end{equation}
+Let $\nu_b(n)=\max\{h:b^h\mid n\}$, which is meaningful even when $b$ is
+composite.
+
+\begin{theorem}[Base-$b$ arithmetic spectrum \NewResult]
+\label{thm:baseb}
+The zero multiplicity at a nonzero integer is
+\begin{equation}
+ a_b(n)=1+\nu_b(n),                                       \label{eq:ab}
+\end{equation}
+and
+\begin{align}
+ \sum_{n\ge1}\frac{a_b(n)}{n^s}
+   &=\frac{\zeta(s)}{1-b^{-s}},                           \label{eq:Db}\\
+ \sum_{n\le N}a_b(n)
+   &=\sum_{h\ge0}\floor{N/b^h}
+     =\frac{bN-s_b(N)}{b-1}.                              \label{eq:Ab}\\
+\end{align}
+Here $s_b(N)$ is the base-$b$ digit sum.  The entire function has exponential
+type $\pi b/(b-1)$ and zero density $b/(b-1)$, in exact agreement with the
+Cartwright density law.
+\end{theorem}
+
+\begin{corollary}[Even-base automatic lobe signs \NewResult]
+If $b$ is even and $x\notin\Z$, then
+\begin{equation}
+ \sgn\Phi_b(x)=(-1)^{s_b(\floor{|x|})}.                   \label{eq:baseb-sign}
+\end{equation}
+For arbitrary $b$, the sign sequence
+$\sigma_b(N)=(-1)^{\sum_{n\le N}a_b(n)}$ obeys
+\begin{equation}
+ \sigma_b(bN+r)=(-1)^{bN+r}\sigma_b(N),
+ \qquad 0\le r<b.                                         \label{eq:sigmab-rec}
+\end{equation}
+\end{corollary}
+
+\begin{proof}
+Equation \eqref{eq:Ab} has the same proof as the binary digit-sum identity.
+For even $b$, its parity equals $s_b(N)$.  The recursion follows directly from
+$A_b(bN+r)=bN+r+A_b(N)$.
+\end{proof}
+
+\begin{theorem}[Base-$b$ Strang--Fix order \NewResult]
+On the lattice $N^{-1}\Z$, the exact Strang--Fix order of the density with
+Fourier transform $\Phi_b$ is
+\begin{equation}
+ 1+\nu_b(N).                                               \label{eq:SFb}
+\end{equation}
+The weighted periodization and Appell reproduction theorems hold verbatim with
+$\nu_2$ replaced by $\nu_b$ and the corresponding centered moments.
+\end{theorem}
+
+The Mellin calculation also persists.  Let $L_b=\log b$,
+$\chi_{b,k}=2\pi\ii k/L_b$, and $S=2\pi y$.  Then
+\begin{align}
+ \log\Phi_b(\ii y)
+ ={}&\frac{b}{2(b-1)}S-\frac{\log^2S}{2L_b}-\frac12\log S+C_b
+ +\Psi_b(\log_bS)+\bigO_A(S^{-A}),                        \label{eq:baseb-asymp}\\
+ C_b={}&\frac{\zeta''(0)+\tfrac12\log^2(2\pi)-\tfrac{\pi^2}{24}}{L_b}
+        -\frac{L_b}{12},                                  \label{eq:Cb}\\
+ \Psi_b(u)={}&\sum_{k\ne0}
+ \left(-\frac{\Gamma(-\chi_{b,k})\zeta(1-\chi_{b,k})}{L_b}\right)
+ \e^{2\pi\ii ku}.                                        \label{eq:Psib}
+\end{align}
+Thus the Gamma--zeta law is not peculiar to base two; base two is where the lobe
+signs become the classical Thue--Morse sequence and the exact dyadic arithmetic
+becomes available.
+
+\section{Numerical and symbolic verification}
+\label{sec:numerics}
+
+All numerical values in this section were computed independently from the
+formulas in the report with 80-decimal working precision.  They are checks, not
+proofs.
+
+\subsection{Imaginary-axis residual}
+
+The table compares the direct convergent sum
+\begin{equation}
+ H(y)=\sum_{h\ge0}\log\frac{\sinh(\pi y/2^h)}{\pi y/2^h}                  \label{eq:H-direct}
+\end{equation}
+with \eqref{eq:H-asymp}, retaining 20 Fourier modes of $\Psi$.
+\begin{center}
+\begin{tabular}{@{}r r r@{}}
+\toprule
+$y$ & $H(y)$ & direct minus asymptotic \\
+\midrule
+$1$   & $1.8186408379587714$   & $ 3.4873589\times10^{-6}$ \\
+$2$   & $5.5707984108206301$   & $ 1.0496\times10^{-11}$ \\
+$5$   & $20.0107450110424130$  & $-1.0907\times10^{-12}$ \\
+$10$  & $47.2862093875369543$  & $-1.0907\times10^{-12}$ \\
+$100$ & $594.0427656248311891$ & $ 2.6185\times10^{-12}$ \\
+\bottomrule
+\end{tabular}
+\end{center}
+At $y=1$ the omitted superalgebraic remainder is still visible; by $y=2$ the
+error is already near the working evaluation floor.
+
+\subsection{Exact digital checks}
+
+For $N=0,1,\ldots,15$, the cumulative multiplicity
+$A(N)=2N-s_2(N)$ has parity
+\[
+ 0,1,1,0,1,0,0,1,1,0,0,1,0,1,1,0,
+\]
+which is the zero--one Thue--Morse word.  Direct evaluation of 80 sinc factors at
+one interior point of each lobe reproduces the corresponding signs.  Exact
+integer arithmetic also verifies \eqref{eq:AN}, \eqref{eq:ZJr}, and the
+recurrences \eqref{eq:a-rec} through $10^6$ without exception.
+
+\subsection{A reproducible verification recipe}
+
+The main identities can be checked without evaluating $\Up$ itself:
+\begin{enumerate}
+\item enumerate $a(n)=1+\nu_2(n)$ and compare partial sums with $2N-s_2(N)$;
+\item compare $\sum_{n\le M}a(n)n^{-s}$ with
+      $\zeta(s)/(1-2^{-s})$ for $\Re s>1$;
+\item evaluate $\Phi(x)$ by the sinc product and compare its sign with
+      $(-1)^{s_2(\floor x)}$;
+\item compare the finite spectral series with $\zeta(s)[J]_{2^{-s}}$;
+\item evaluate $H(y)$ both by \eqref{eq:H-direct} and by the residue expansion.
+\end{enumerate}
+These checks are sufficiently orthogonal that a normalization error in $2\pi$,
+a missing initial sinc factor, or an off-by-one valuation is immediately exposed.
+
+\section{What is genuinely added to the pinned corpus}
+\label{sec:novelty}
+
+The following table separates established inputs, prior observations, and the
+new theorem package.
+\begin{longtable}{@{}p{0.37\textwidth}p{0.16\textwidth}p{0.39\textwidth}@{}}
+\toprule
+Statement & Status & Comment \\
+\midrule
+\endhead
+Canonical product and zero order $1+\nu_2(n)$ & \Corpus & Already in the main
+exposition and Lean canonical-product module. \\
+All-order endpoint asymptotics and Gamma--zeta coefficients & \Corpus & Already
+in the corrected small-argument study. \\
+Thue--Morse lobe sign pattern & \Observed & Recorded in the 2018 MSE question;
+this report gives the exact zero-count proof and lobe inversion. \\
+One critical point per real lobe & \Observed & Essentially proved in the MSE
+answer; recast here through Laguerre--Polya theory and the resolvent trace. \\
+Arithmetic spectrum package, exact counting law as zero data, spectral traces &
+\NewResult & Not found assembled in the pinned TeX corpus. \\
+Weighted partition hierarchy and sharp order $1+\nu_2(N)$ & \NewResult & Degree
+zero is classical; the exact higher stopping law was not located in the corpus. \\
+Appell-corrected exact polynomial reproduction & \NewResult & Uses existing
+moment-deconvolution ideas in a different, sharp lattice theorem. \\
+Mellin transform of $\log\Phi(\ii y)$ and complex-dimension interpretation &
+\NewResult & Explains the already-known endpoint Fourier coefficients by zero-spectrum residues. \\
+Finite $q$-integer regularization and pole-condensation profile & \NewResult &
+Connects finite sinc products to the limiting imaginary pole lattice. \\
+Gaussian $q$-binomial layer-selection polynomial & \NewResult & A spectral-layer
+interpretation, distinct from existing dyadic-value $q$-binomials. \\
+Common-zero zeta tower $Z_r$ & \NewResult & Encodes binomial multiplicity moments
+and higher-order complex-dimension poles. \\
+Heat-trace expansion & \NewResult & A residue expansion for exponentially smoothed
+zero counts. \\
+Base-$b$ extension of the full package & \NewResult & Includes digit-sum signs for
+even bases and exact lattice order $1+\nu_b(N)$. \\
+\bottomrule
+\end{longtable}
+
+\begin{warning}[Historical priority remains narrower than proof]
+A targeted search found V.~A.~Rvachev's two-page 1977 paper \emph{On approximation
+by means of the function $\Up(x)$}, followed by a substantial atomic-function
+approximation literature.  The exact formulas of \cref{thm:weighted,thm:reproduction}
+were not located in the pinned corpus or in the limited searchable metadata, but
+a Russian-language priority audit is still needed before asserting that those
+facts have never appeared elsewhere.
+\end{warning}
+
+\section{Lean formalization roadmap}
+\label{sec:lean}
+
+The results separate naturally into four dependency layers.
+
+\subsection{Layer I: elementary arithmetic}
+
+Recommended first targets are
+\begin{align*}
+ a(n)&=\sum_h\mathbf1_{2^h\mid n},\\
+ \sum_{n\le N}a(n)&=2N-s_2(N),\\
+ (-1)^{a(n)}&=\varepsilon_{n-1}\varepsilon_n,\\
+ (-1)^{\sum_{n\le N}a(n)}&=\varepsilon_N.
+\end{align*}
+The existing Thue--Morse and trailing-zero modules should make these short.
+They would yield the lobe-sign theorem once the canonical product's sign changes
+are connected to exact orders.
+
+\subsection{Layer II: finite algebra and Dirichlet series}
+
+Finite versions should precede infinite analytic statements:
+\begin{itemize}
+\item $a_J(n)=\min(J,1+\nu_2(n))$;
+\item finite counting formula \eqref{eq:AJ};
+\item finite $q$-integer and Gaussian-binomial polynomial identities;
+\item finite common-layer count \eqref{eq:ZJr}.
+\end{itemize}
+For the infinite Dirichlet identities, prove summability on $\Re s>1$ and use
+nonnegative layer rearrangement before introducing meromorphic continuation.
+
+\subsection{Layer III: exact lattice reproduction}
+
+The key reusable analytic lemma is a Poisson formula for a compactly supported
+$C^\infty$ function and its polynomial multiples.  Then the proof of
+\cref{thm:weighted} reduces to:
+\begin{enumerate}
+\item identify the Fourier coefficients of the periodization;
+\item rewrite them as derivatives of $\Phi$;
+\item annihilate nonzero coefficients with the existing exact-zero-order theorem;
+\item prove failure at the first unannihilated coefficient.
+\end{enumerate}
+The Appell theorem can be formalized coefficientwise, avoiding formal power-series
+asymptotics.
+
+\subsection{Layer IV: complex analysis}
+
+The Mellin and heat-trace theorems need a contour-shift framework with explicit
+growth estimates.  A pragmatic sequence is:
+\begin{enumerate}
+\item formalize the real integral \eqref{eq:kernel-Mellin};
+\item prove \eqref{eq:Mellin} only in the fundamental strip;
+\item record the residue computations algebraically;
+\item defer the all-$A$ remainder until a suitable vertical-contour library is
+      available.
+\end{enumerate}
+Even the strip identity alone gives a valuable formally checked bridge from the
+zero spectrum to the endpoint Laplace transform.
+
+\section{Open frontier}
+\label{sec:open}
+
+\begin{problem}[Critical-point arithmetic]
+Let $c_n$ be the unique critical point in $(n,n+1)$.  Determine asymptotic laws
+for $c_n-n$ and $M_n=|\Phi(c_n)|$ conditioned on $\nu_2(n)$, $\nu_2(n+1)$, or
+finite binary words around $n$.  The logarithmic derivative
+\eqref{eq:logder} converts this into a weighted electrostatic equilibrium problem
+with ruler-function charges.
+\end{problem}
+
+\begin{problem}[From complex dimensions to real-axis decay]
+The imaginary-axis periodic fluctuation is completely controlled by the poles
+$\chi_k$, whereas real-axis decay splits into geometric, arithmetic, RMS, and
+envelope exponents.  Find an operator or transfer formalism in which both sets of
+exponents arise from one spectrum.  A direct residue argument cannot work on the
+real axis because zeros and near-zeros dominate.
+\end{problem}
+
+\begin{problem}[Sharp approximation constants]
+The exact Strang--Fix order gives the first possible nonzero term in a lattice
+quasi-interpolant error.  Compute the sharp $L^\infty$, $L^2$, and Sobolev
+constants after Appell correction, and determine whether powers-of-two lattices
+admit an all-order Richardson scheme whose coefficients have a closed
+$q$-binomial form at base $1/4$.
+\end{problem}
+
+\begin{problem}[Common-zero zeta residues]
+Develop explicit Laurent coefficients of $Z_r(s)$ at $s=\chi_k$.  Their leading
+term is elementary, but lower coefficients mix derivatives of zeta with powers
+of $\log2$.  Determine whether these coefficients control higher-order
+log-periodic corrections of naturally associated spectral statistics.
+\end{problem}
+
+\begin{problem}[Base-$b$ exact arithmetic]
+For even $b$, the Fourier lobe signs are the generalized digit-sum character
+$(-1)^{s_b(n)}$.  Develop the corresponding Fabius-type distribution function,
+finite box-spline formulas, exact rational values at $b$-adic points, and
+Gaussian-binomial or multinomial expressions.  Composite $b$ should display a
+new tension between divisibility by $b^h$ and prime-adic arithmetic.
+\end{problem}
+
+\begin{problem}[Inverse spectral characterization]
+Classify scale multisets $\{\lambda_h\}$ for which
+$\prod_h\sinc(\pi z/\lambda_h)$ has an automatic or regular zero-multiplicity
+sequence.  Conversely, characterize which nonnegative automatic sequences can
+occur as multiplicities of a locally uniformly convergent geometric sinc
+product.
+\end{problem}
+
+\section{Conclusion}
+
+The Fabius--Rvachev theory is often presented as a collection of surprising
+bridges: a smooth bump from infinite convolutions, rational dyadic values from
+$q$-binomials, Thue--Morse signs from finite differences, and log-periodic
+asymptotics from a saddle point.  The arithmetic zero spectrum supplies a common
+organizing object.
+
+Its summatory law integrates the ruler function into the Thue--Morse lobe signs.
+Its exact multiplicities turn Poisson summation into a sharp $2$-adic hierarchy
+of polynomial reproduction.  Its Dirichlet series produces the complex
+dimensions whose residues are the Gamma--zeta endpoint coefficients.  Its finite
+truncations are $q$-integers, its layer selections are Gaussian $q$-binomials,
+and its higher intersection statistics are powers of the same geometric
+resolvent.  None of these bridges changes the established theory; they explain
+why its apparently separate parts keep rediscovering the same dyadic algebra.
+
+The most immediate formal target is \cref{thm:weighted}: it is exact, strong,
+short once the current canonical-product theorem is available, and exposes a
+clean new role for $\nu_2(N)$.  The most conceptually unifying analytic target is
+\cref{thm:H-asymp}, which identifies the endpoint periodic fluctuation as a
+residue trace of the Fourier zero spectrum.  Together they turn an infinite sinc
+product from a transform formula into an arithmetic spectral object.
+
+\appendix
+
+\section{Residue calculation at the origin}
+\label{app:residue}
+
+For completeness, write $L=\log2$ and expand
+\begin{align*}
+ \zeta(s)&=-\frac12-\frac12\log(2\pi)s+\frac12\zeta''(0)s^2+\bigO(s^3),\\
+ \frac1{1-\e^{-Ls}}&=\frac1{Ls}+\frac12+\frac{Ls}{12}+\bigO(s^3),\\
+ \frac{\pi}{s\sin(\pi s/2)}&=\frac2{s^2}+\frac{\pi^2}{12}+\bigO(s^2),\\
+ y^s&=1+s\log y+\frac{s^2\log^2y}{2}+\bigO(s^3).
+\end{align*}
+Multiplying and rewriting $\log y=\log S-\log(2\pi)$ gives the residue
+\[
+ -\frac{\log^2S}{2L}-\frac12\log S+C_2,
+\]
+with $C_2$ as in \eqref{eq:C2}.  The same calculation for
+$\Gamma(s)Z_\Phi(s)t^{-s}$ gives the double-pole contribution
+\[
+ -\frac{\log(1/t)}{2L}+\frac{\gamma-\log(2\pi)}{2L}-\frac14.
+\]
+
+\section{First coefficients and moments}
+\label{app:coefficients}
+
+The numerical constants used in the report are
+\begin{align*}
+ \zeta''(0)&=-2.0063564559085848512101000267299604382\ldots,\\
+ C_2&=-1.1090453654341866821907455547094644509\ldots,\\
+ C_{\Theta}&=-1.1593749760977258236984308878499458999\ldots.
+\end{align*}
+For the reciprocal-moment Appell family,
+\[
+ \frac1{M(z)}=1-\frac{\mu_2}{2!}z^2
+ +\frac{6\mu_2^2-\mu_4}{4!}z^4+\cdots,
+\]
+which with $\mu_2=1/9$ and $\mu_4=19/675$ yields
+$6\mu_2^2-\mu_4=31/675$.
+
+\section{Corpus concordance}
+\label{app:corpus}
+
+The frozen tree was read recursively.  The most heavily used source families
+were the following paths (revision siblings are omitted from this compact list):
+\begin{itemize}
+\item \nolinkurl{docs/Fabius_Function_and_Rvachev_Up/Fabius_Function_and_Rvachev_Up.tex};
+\item \nolinkurl{docs/non-formalized-research-frontiers/non-formalized-research-frontiers.tex};
+\item \nolinkurl{docs/archive/standalone-studies/Small_Argument_Asymptotics/Small_Argument_Asymptotics.tex};
+\item \nolinkurl{docs/archive/research-frontiers/Fabius_Dyadic_q_Connections/Fabius_Dyadic_q_Connections.tex};
+\item \nolinkurl{docs/archive/research-frontiers/Fabius_Dyadic_Formulae_and_Alternative_Representations/Fabius_Dyadic_Formulae_and_Alternative_Representations.tex};
+\item \nolinkurl{docs/archive/research-frontiers/Fabius_Thue_Morse_Convergence_Rates/Fabius_Thue_Morse_Convergence_Rates.tex};
+\item \nolinkurl{docs/archive/research-frontiers/Repeated_Integration_and_Rvachev_Up/Repeated_Integration_and_Rvachev_Up.tex};
+\item \nolinkurl{docs/non-formalized-research-frontiers/drafts/Thue_Morse_Formula_Atlas/Thue_Morse_Formula_Atlas.tex};
+\item the complete \nolinkurl{docs/non-formalized-research-frontiers/drafts/rvachev_up_fourier_decay/} revision and audit sequence;
+\item primary-paper sources under \nolinkurl{docs/papers/}.
+\end{itemize}
+The glossary, walkthrough, early notes, primary-exposition revisions, supplements,
+$q$-calculus variants, dyadic-asymptotic bridges, inverse-dyadic study, and OCR
+siblings were also included in the collision audit.  Their principal role here
+was to establish chronology and prevent corrected or archived claims from being
+mistaken for independent corroboration.
+
+\begin{thebibliography}{99}
+
+\bibitem{AriasFunction}
+J.~Arias de Reyna,
+\emph{An infinitely differentiable function with compact support: definition and properties},
+arXiv:1702.05442, English translation of the 1982 paper.
+
+\bibitem{AriasArithmetic}
+J.~Arias de Reyna,
+\emph{Arithmetic of the Fabius function},
+arXiv:1702.06487, 2017.
+
+\bibitem{Fabius}
+J.~Fabius,
+\emph{A probabilistic example of a nowhere analytic $C^\infty$-function},
+Z. Wahrscheinlichkeitstheorie verw. Gebiete \textbf{5} (1966), 173--174.
+
+\bibitem{JessenWintner}
+B.~Jessen and A.~Wintner,
+\emph{Distribution functions and the Riemann zeta function},
+Trans. Amer. Math. Soc. \textbf{38} (1935), 48--88.
+
+\bibitem{RvachevApprox}
+V.~A.~Rvachev,
+\emph{On approximation by means of the function $\Up(x)$},
+Dokl. Akad. Nauk SSSR \textbf{233} (1977), no.~2, 295--296;
+English translation in Soviet Math. Dokl. \textbf{18} (1977), 340--342.
+
+\bibitem{RvachevSurvey}
+V.~A.~Rvachev,
+\emph{Compactly supported solutions of functional-differential equations and their applications},
+Russian Math. Surveys \textbf{45} (1990), no.~1, 87--120.
+
+\bibitem{ReshetnikovMSE}
+V.~Reshetnikov,
+\emph{Extrema of an infinite product of sinc functions},
+Mathematics StackExchange question 2742261, 2018.
+
+\bibitem{Aistleitner}
+C.~Aistleitner, R.~Hofer, and G.~Larcher,
+\emph{On evil Kronecker sequences and lacunary trigonometric products},
+Ann. Inst. Fourier \textbf{67} (2017), no.~2, 637--687.
+
+\bibitem{AlloucheShallit}
+J.-P.~Allouche and J.~Shallit,
+\emph{Automatic Sequences: Theory, Applications, Generalizations},
+Cambridge University Press, 2003.
+
+\bibitem{StrangFix}
+G.~Strang and G.~Fix,
+\emph{A Fourier analysis of the finite element variational method},
+in \emph{Constructive Aspects of Functional Analysis}, C.I.M.E., 1971, 793--840.
+
+\bibitem{FlajoletMellin}
+P.~Flajolet, X.~Gourdon, and P.~Dumas,
+\emph{Mellin transforms and asymptotics: harmonic sums},
+Theoret. Comput. Sci. \textbf{144} (1995), 3--58.
+
+\bibitem{Levin}
+B.~Ya.~Levin,
+\emph{Distribution of Zeros of Entire Functions},
+American Mathematical Society, revised edition, 1980.
+
+\bibitem{ProveIt}
+V.~Reshetnikov,
+\emph{ProveIt: Analysis/FabiusFunction}, repository snapshot
+\commit, 27 August 2026.
+
+\end{thebibliography}
+
+\end{document}

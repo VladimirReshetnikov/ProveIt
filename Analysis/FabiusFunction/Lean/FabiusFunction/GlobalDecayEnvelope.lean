@@ -5,14 +5,18 @@ import FabiusFunction.RvachevProductContinuity
 # The global `κ∞` decay envelope
 
 `PeakRayEnvelope` shows the exponent `κ∞` is *attained* along the ray
-`2ᵏ·(2/3)`.  This file proves the matching upper bound on the whole
+`2ᵏ·(2/3)`.  This file proves the matching upper bound on the positive
 half-line: there is a constant `C` with
 
 `‖Φ(x)‖ ≤ C · E_{κ∞}(x)`  for every `x ≥ 1`,
 
-`E_κ(x) = exp(−log²x/(2 log 2))·x^{−κ}`.  Together the two say that
-`κ∞` is exactly the envelope exponent of the Fourier decay: no larger
-exponent holds, and this one holds globally.
+`E_κ(x) = exp(−log²x/(2 log 2))·x^{−κ}`.  Evenness then gives the
+two-sided real-axis form
+
+`‖Φ(x)‖ ≤ C · E_{κ∞}(|x|)`  whenever `|x| ≥ 1`.
+
+Thus the global upper envelope uses the same `κ∞` gauge that the
+distinguished dyadic peak ray attains exactly.
 
 Three ingredients: the gauge identity of the peak ray holds at *every*
 base point (`gauge_ratio_identity` — the `y = 2/3` specialisation was
@@ -25,7 +29,9 @@ the compact mantissa window `[1,2]`.
 * `continuousOn_decayGauge` — continuity of the gauge.
 * `exists_bound_on_mantissa_window` — the compact-window constant.
 * `exists_dyadic_decomposition` — `x = 2ⁿ·y`, `y ∈ [1,2)`.
-* `norm_rvachevFourierProduct_le_decayGauge` — **the envelope**.
+* `norm_rvachevFourierProduct_le_decayGauge` — the positive-ray envelope.
+* `norm_rvachevFourierProduct_le_decayGauge_abs` — **the two-sided
+  real-axis envelope**.
 -/
 
 set_option autoImplicit false
@@ -263,5 +269,25 @@ theorem norm_rvachevFourierProduct_le_decayGauge :
     _ = Real.sqrt (5/3) * M * (R * decayGauge kappaInf y) := by ring
     _ = Real.sqrt (5/3) * M * decayGauge kappaInf ((2:ℝ) ^ n * y) := by
         rw [hid]
+
+/-- **The two-sided global `κ∞` envelope**: one positive constant controls
+the Fourier modulus on both real tails,
+`‖Φ(x)‖ ≤ C · E_{κ∞}(|x|)` whenever `1 ≤ |x|`.
+
+This is the natural whole-real-axis form of
+`norm_rvachevFourierProduct_le_decayGauge`: apply the positive-frequency
+bound at `|x|`, then use evenness of the sinc product on the negative tail. -/
+theorem norm_rvachevFourierProduct_le_decayGauge_abs :
+    ∃ C : ℝ, 0 < C ∧ ∀ x : ℝ, 1 ≤ |x| →
+      ‖rvachevFourierProduct (x : ℂ)‖ ≤ C * decayGauge kappaInf |x| := by
+  obtain ⟨C, hC, hbound⟩ := norm_rvachevFourierProduct_le_decayGauge
+  refine ⟨C, hC, ?_⟩
+  intro x hx
+  have h := hbound |x| hx
+  by_cases hx0 : 0 ≤ x
+  · simpa only [abs_of_nonneg hx0] using h
+  · have hxnonpos : x ≤ 0 := (lt_of_not_ge hx0).le
+    simpa only [abs_of_nonpos hxnonpos,
+      norm_rvachevFourierProduct_neg] using h
 
 end Fabius

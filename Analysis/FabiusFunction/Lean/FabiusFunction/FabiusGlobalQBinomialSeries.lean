@@ -184,6 +184,16 @@ theorem extendedFabius_eq_tsum_qBinomialFabiusGlobalSummand
     extendedFabius_eq_tsum_qBinomialFabiusGlobalSummand_all
       K F hF q (max x 0)
 
+/-- Canonical signed-global q-binomial series at every real input, over any
+real or complex scalar field and for every scalar translation. -/
+theorem globalFabius_eq_tsum_qBinomialFabiusGlobalSummand_all
+    (K : Type*) [RCLike K] (q : K) (x : ℝ) :
+    (globalFabius x : K) =
+      ∑' m : ℕ, qBinomialFabiusGlobalSummand K q x m := by
+  simpa only [globalFabius] using
+    extendedFabius_eq_tsum_qBinomialFabiusGlobalSummand_all
+      K fabius fabius_spec q x
+
 /-- Canonical signed-global formula for every real translation. -/
 theorem globalFabius_eq_tsum_qBinomialFabiusGlobalSummand_real
     (q x : ℝ) (hx : 0 ≤ x) :
