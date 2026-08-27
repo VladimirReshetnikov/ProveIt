@@ -11,6 +11,8 @@ import FabiusFunction.PerturbedLowerLambert
 import FabiusFunction.PaperKFoldThueMorse
 import FabiusFunction.FinitePolynomialFunctional
 import FabiusFunction.MomentCumulantAlgebra
+import FabiusFunction.SaddleLogProductAlgebra
+import FabiusFunction.CenteredMomentCumulants
 import FabiusFunction.ThueMorseBooleanCube
 import FabiusFunction.ThueMorseValuation
 import FabiusFunction.DyadicZeroMultiplicity
