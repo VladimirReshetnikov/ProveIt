@@ -61,6 +61,19 @@ theorem rvachevFourier_two_pow_mul
   simpa only [rvachevFourier_eq_product F hF] using
     rvachevFourierProduct_two_pow_mul k z
 
+/-- Total cross-multiplied real-axis shell identity for the actual Fourier
+transform.  It includes both the zero ray `y = 0` and the empty shell
+`k = 0`. -/
+theorem norm_rvachevFourier_two_pow_mul_cross
+    (F : BoundedFabius) (hF : IsFabius F) (k : ℕ) (y : ℝ) :
+    ((2 : ℝ) ^ (k * (k + 1) / 2) * (Real.pi * |y|) ^ k) *
+        ‖rvachevFourier F ((2 : ℂ) ^ k * (y : ℂ))‖ =
+      (∏ j ∈ Finset.range k,
+        |Real.sin ((2 : ℝ) ^ (j + 1) * Real.pi * y)|) *
+        ‖rvachevFourier F (y : ℂ)‖ := by
+  simpa only [rvachevFourier_eq_product F hF] using
+    norm_rvachevFourierProduct_two_pow_mul_cross k y
+
 /-- Exact real-axis modulus factorization along a nonzero dyadic ray. -/
 theorem norm_rvachevFourier_two_pow_mul
     (F : BoundedFabius) (hF : IsFabius F)
