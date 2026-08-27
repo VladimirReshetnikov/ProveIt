@@ -4463,11 +4463,13 @@ doubling modulo an odd modulus is isolated as
 
 Theorem \ref{thm:mod3-rarefaction} evaluates the excess at dyadic
 endpoints.  Newman's theorem extends the positivity to \emph{every}
-endpoint.  The following results are literature theorems, stated here to
-locate the atlas's exact identities inside modern analytic number theory;
-none is reproved.
+endpoint.  The positivity assertion of Newman's theorem is proved
+below by a short base-four induction --- and is formalized; the
+quantitative refinements, and the deeper equidistribution results that
+follow, are literature theorems, stated here to locate the atlas's
+exact identities inside modern analytic number theory.
 
-\begin{theorem}[Newman; literature theorem]
+\begin{theorem}[Newman]
 \label{thm:newman}
 For every real \(X\ge1\),
 \begin{equation}
@@ -4479,11 +4481,56 @@ Moreover
 \(\tfrac1{20}X^{\log_43}\le N_3(X)\le5X^{\log_43}\) for \(X\ge2\).
 \end{theorem}
 
+\begin{proof}[Proof of the positivity]
+It suffices to treat integer cutoffs \(N\ge1\).  Write
+\(T_r(N)=\sum_{n<N,\;n\equiv r\,(3)}\eps_n\) and
+\(E(N)=\sum_{n<N}\eps_n\); consecutive pairs cancel, so
+\(E(2M)=0\) and \(E(2M+1)=\eps_{2M}=\pm1\) --- in particular
+\(|E|\le1\) everywhere.  The parity split \(\eps_{2j}=\eps_j\),
+\(\eps_{2j+1}=-\eps_j\) gives the one-step system
+\[
+  T_0(2M)=T_0(M)-T_1(M),\qquad
+  T_1(2M)=T_2(M)-T_0(M),
+\]
+and composing two steps and eliminating
+\(T_1(M)+T_2(M)=E(M)-T_0(M)\) collapses to
+\[
+  T_0(4M+s)=3\,T_0(M)-E(M)+c_s(M),
+  \qquad s\in\{0,1,2,3\},
+\]
+where the boundary correction \(c_s(M)\) collects at most three
+single signs: \(\eps_M\) from the term \(n=4M\) (alive only when
+\(M\equiv0\)), \(-\eps_M\) from the odd term of the second
+halving (alive only when \(M\equiv2\)), and \(-\eps_M\) from the
+term \(n=4M+2\) (alive only when \(M\equiv1\), since
+\(4M+2\equiv M+2\), and \(\eps_{4M+2}=-\eps_M\)).  The three
+supports are pairwise disjoint residue classes of \(M\), so
+\(|c_s(M)|\le1\).  By strong induction \(T_0(M)\ge1\) for all
+\(M\ge1\) --- the cases \(N\le4\) are read off the signs
+\(+,-,-,+\) --- whence
+\(T_0(4M+s)\ge3\cdot1-1-1=1\): the three-fold amplification
+absorbs all boundary noise.  The quantitative bounds are Newman's
+refinement of the same induction and are not reproved here.
+\end{proof}
+
 Among multiples of three below any cutoff, integers of even binary weight
 always outnumber those of odd binary weight \cite{newman1969}.  Coquet
 determined the precise structure:
 \(N_3(X)=X^{\log_43}\,\Psi(\log_4X)+\bigO(1)\) with \(\Psi\) a continuous,
-nowhere-differentiable periodic function \cite{coquet1983}.  Rarefactions
+nowhere-differentiable periodic function \cite{coquet1983}.
+
+\emph{Formal versions.}  The boxed positivity
+\eqref{eq:newman-positivity} is fully formal, with the proof above
+(\lean{Fabius.newman\_positivity}, \path{ThueMorseNewman.lean}): the
+residue-class sign sums are \lean{Fabius.thueMorseResidueSum} (defined
+for every modulus), the parity system is
+\lean{Fabius.thueMorseResidueSum\_three\_zero\_two\_mul} and its
+companion, the three sums recombine to the prefix sum by
+\lean{Fabius.thueMorseResidueSum\_three\_add}, and the prefix-sum
+bound \(|E|\le1\) is \lean{Fabius.abs\_sum\_thueMorseSign\_le\_one}.
+The quantitative bounds \(\tfrac1{20}X^{\log_43}\le
+N_3(X)\le5X^{\log_43}\) and Coquet's oscillation remain literature
+imports.  Rarefactions
 along other progressions and for generalized digit characters were analyzed
 by Drmota and Skalba \cite{drmotaSkalba2000} and Drmota and Stoll
 \cite{drmotaStoll2008}; a recent automata-theoretic treatment mechanizes
@@ -5162,7 +5209,7 @@ valuation, carry, and Pascal-row formulas remain genuinely base-two features.
 \subsection{Formalized modules (August 2026)}
 \label{sec:formalized-modules}
 
-The first tranches of the formalization now exist as forty-eight
+The first tranches of the formalization now exist as forty-nine
 compiled Lean modules in \repo{}, complementing the corpus modules
 (\path{Parity.lean}, \path{TwoAdic.lean}, \path{ThueMorsePrefix.lean},
 \path{ThueMorseGenerating.lean}, \path{ThueMorseExponential.lean},
@@ -5228,6 +5275,7 @@ Module & Contents \\
 \path{ThueMorseQuarterProduct.lean} & The quarter product \(G(1/4,3/4)=1/2\) from Woods--Robbins by parity splitting, and the value \(1/2\) of the half-shifted block product. \\
 \path{ThueMorseDiscSeries.lean} & The Thue--Morse power series as a holomorphic function on the unit disc: locally uniform convergence, the analytic Mahler equation and its iterate, and the real-ray bound \(|F(x)|\le1-x\). \\
 \path{ThueMorseNaturalBoundary.lean} & The natural-boundary theorem: radial vanishing at dyadic roots of unity, two-power roots approximating every circle point, and the double identity-theorem argument. \\
+\path{ThueMorseNewman.lean} & Newman's positivity theorem: residue-class sign sums, the modulo-three parity system, the base-four collapse with disjoint boundary corrections, and the strong induction. \\
 \bottomrule
 \end{longtable}}
 
