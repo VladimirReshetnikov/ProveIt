@@ -2229,6 +2229,37 @@ This part of the repository illustrates a mature use of formalization.  A failed
 \subsection{Exact finite identities}
 The Thue--Morse modules prove prefix-sum cancellation, long zero runs of finite differences, convolution formulas, and generating-series identities.  Repeated finite difference annihilates polynomials below a threshold degree, which explains the high-order cancellation of the sign sequence.
 
+The full row-level symmetry is sharper than the endpoint cancellation.  If
+$k,r,d\in\N$, $k\le r$, and $k+d<2^r$, then
+\[
+ \sigma_k(2^r-k-1-d)=(-1)^{r-k}\sigma_k(d),
+ \qquad
+ \sigma_k(2^r-k-1-d)=0\ \Longleftrightarrow\ \sigma_k(d)=0.
+\]
+These are exactly
+\nolinkurl{iteratedPrefix_dyadic_reverse_window} and
+\nolinkurl{iteratedPrefix_dyadic_reverse_window_eq_zero_iff} in
+\nolinkurl{ThueMorsePrefix.lean}.  At $k=0$, the identity is the binary
+complement theorem \nolinkurl{thueMorseSign_dyadic_complement} from
+\nolinkurl{DyadicClosedForm.lean}; at $d=0$, the statement specializes, using
+\nolinkurl{iteratedPrefix_at_zero}, namely $\sigma_k(0)=1$, to the sharp left
+boundary \nolinkurl{iteratedPrefix_before_dyadic_run} of the final dyadic zero run.  The
+terminal zero run and the value $-1$ at its right boundary are separate
+theorems, exposed by \nolinkurl{iteratedPrefix_dyadic_endpoint},
+\nolinkurl{iteratedPrefix_dyadic_zero_reverse},
+\nolinkurl{iteratedPrefix_dyadic_zero_run}, and
+\nolinkurl{iteratedPrefix_at_dyadic}.  In particular, the reflected-zero
+equivalence pairs zeros in the pre-run window but does not assert that the
+window is zero-free.
+
+The proof mirrors the finite-difference geometry.  Dyadic bit complementation
+settles order zero, the left boundary seeds offset zero, and a nested induction
+uses
+$\sigma_{k+1}(n+1)-\sigma_{k+1}(n)=\sigma_k(n+1)$ to propagate the same signed
+reflection in both prefix order and offset.  Since the sign is always
+$\pm1$, the zero-locus equivalence follows without any cancellation
+hypothesis.
+
 The formal proofs use induction on binary depth and repeated even/odd splitting.  Convolution associativity is kept finite, so all sums are over \nolinkurl{Finset.range} and can be reindexed explicitly.  Generating polynomials turn convolution into multiplication, allowing coefficient comparison to replace nested sum manipulations.
 
 \nolinkurl{ThueMorseBinomialLog.lean} also makes the zero--one convention
@@ -2996,6 +3027,7 @@ Module & Role in the development \\
 \addlinespace[0.45em]
 \multicolumn{2}{l}{\textbf{K-fold Thue--Morse audit and auxiliary asymptotics}}\\[0.25em]
 \nolinkurl{ThueMorseApproximation.lean} & Exact identification of corrected grid samples with moving-center step approximants and pointwise convergence, including the endpoint. \\
+\nolinkurl{ThueMorsePrefix.lean} & Iterated prefix recurrences, Prouhet cancellation, exact terminal dyadic zero runs and boundary values, and full signed pre-run reciprocity with its reflected zero-locus equivalence. \\
 \nolinkurl{ThueMorseGenerating.lean} & Formal power-series identities, shifted grid recurrence, and exact endpoint refutation of the literal grid and polygonal limits. \\
 \nolinkurl{ThueMorseBinomialLog.lean} & Exact integer signed-binomial sum and rational binomial--log formula for the zero--one bit, including the power-of-two log argument and ring-general bridge to the signed convention. \\
 \nolinkurl{DraftCounterexamples.lean} & Exact and asymptotic counterexamples to false literal claims in the informal draft. \\

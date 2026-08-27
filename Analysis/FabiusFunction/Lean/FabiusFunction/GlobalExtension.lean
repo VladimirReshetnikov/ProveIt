@@ -28,18 +28,34 @@ private lemma extendedSummand_eq_zero_of_lt_two_mul
   rw [rvachevUp_eq_zero_of_le_neg_one F hF (by linarith)]
   ring
 
-/-- At each point, only finitely many translates in the signed extension are nonzero. -/
+/-- For fixed `x`, the signed translate sequence defining `extendedFabius F x`
+has finite support in its natural-number index. -/
+theorem extendedFabius_summand_hasFiniteSupport
+    (F : BoundedFabius) (hF : IsFabius F) (x : ℝ) :
+    Function.HasFiniteSupport (fun n : ℕ =>
+      (-1 : ℝ) ^ binaryWeight n *
+        rvachevUp F (x - 2 * (n : ℝ) - 1)) := by
+  rw [Function.HasFiniteSupport]
+  obtain ⟨N, hN⟩ := exists_nat_gt x
+  refine (Set.finite_Iio N).subset ?_
+  intro n hn
+  have hnne := Function.mem_support.mp hn
+  change n < N
+  by_contra hnlt
+  have hnN : N ≤ n := by omega
+  have hnR : (N : ℝ) ≤ n := by exact_mod_cast hnN
+  have hn0 : (0 : ℝ) ≤ n := by positivity
+  apply hnne
+  apply extendedSummand_eq_zero_of_lt_two_mul F hF
+  nlinarith
+
+/-- The finitely supported signed translate sequence defining
+`extendedFabius F x` is summable. -/
 lemma extendedFabius_summable (F : BoundedFabius) (hF : IsFabius F) (x : ℝ) :
     Summable (fun n : ℕ => (-1 : ℝ) ^ binaryWeight n *
       rvachevUp F (x - 2 * (n : ℝ) - 1)) := by
-  obtain ⟨N, hN⟩ := exists_nat_gt x
-  apply summable_of_ne_finset_zero (s := range N)
-  intro n hn
-  have hnN : N ≤ n := by simpa using hn
-  have hnR : (N : ℝ) ≤ n := by exact_mod_cast hnN
-  have hn0 : (0 : ℝ) ≤ n := by positivity
-  apply extendedSummand_eq_zero_of_lt_two_mul F hF
-  nlinarith
+  exact summable_of_hasFiniteSupport
+    (extendedFabius_summand_hasFiniteSupport F hF x)
 
 /-- On each interval `[2b, 2b+2]`, the global series has just one nonzero translate. -/
 theorem extendedFabius_eq_single_translate (F : BoundedFabius)

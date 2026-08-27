@@ -54,6 +54,15 @@ machinery, and branch-safe vertical Taylor estimates used to refine this
 formula to all orders.  For every `N`, the exact lower-Lambert expansion has
 an `O(lambda^-N)` remainder; the lower-Lambert phase itself also has a
 separate all-orders expansion in `-log x` and `log (-log x)`.
+The full exact-phase logarithmic expansion also pulls back through
+`fabiusInv`.  For every fixed order, as `y -> 0+`, the defect
+`Real.log y - fabiusSharpLambertMain (fabiusInv F hF y)` has the same finite
+coefficient expansion in inverse powers of the exact inverse phase.  In
+particular it is `O(lambda^-1)`, where
+`lambda = fabiusLambertPhase (fabiusInv F hF y)`.  This remains an implicit
+inverse-coordinate expansion: the exact phase and periodic coefficient
+samples are not reverted into an explicit all-orders series for the phase or
+for `fabiusInv`.
 The sharp expansion is also inverted at both endpoints.  As `y -> 0+`, the
 lower-Lambert phase at `fabiusInv F hF y` differs from
 `fabiusInverseQuadraticPhaseMain y` by
@@ -63,13 +72,21 @@ lower-Lambert phase at `fabiusInv F hF y` differs from
 asymptotic to `fabiusInverseAsymptoticMain`.  At `y -> 1-`, reflection
 makes `1 - fabiusInv F hF y` asymptotic to
 `fabiusInverseAsymptoticMain (1 - y)`.
-The two resulting little-o theorems formalize the canonical frontier's
+The zero-endpoint little-o pair formalizes the canonical frontier's
 complete elementary inverse scale hierarchy at zero, with a stronger Lean
 statement on the logarithmic side.  For every real `α > 0`,
 `y ^ α = o(fabiusInv F hF y)`, while
 `fabiusInv F hF y = o((-Real.log y) ^ r)` for every `r : ℝ`.
 The frontier's negative-logarithmic-power family is recovered by taking
 `r = -m` with `m > 0`.
+The positive-power comparison is also exposed in exact endpoint forms.  For
+every `α > 0`, `fabiusInv F hF y / y ^ α` tends to `+∞` as `y -> 0+`;
+consequently `fabiusInv F hF` is not `O(y ^ α)`, and no `C, δ > 0` bounds it
+by `C * y ^ α` throughout `[0, δ]`.  Reflection gives both
+`(1 - y) ^ α = o(1 - fabiusInv F hF y)` and
+`1 - fabiusInv F hF y = o((-Real.log (1 - y)) ^ r)` for every `r : ℝ`,
+together with divergence of
+`(1 - fabiusInv F hF y) / (1 - y) ^ α` as `y -> 1-`.
 The inverse-dyadic recurrence is additionally solved as a finite weighted
 path sum.  Equivalently, `F(2⁻ⁿ)` is an explicit product-sum over all
 ordered compositions of `n`; the empty composition makes this closed formula

@@ -1,18 +1,13 @@
 # Fabius function
 
-> **Active multi-agent campaign.** Before editing anything in this directory,
-> read [`AGENTS.md`](AGENTS.md) and the live
-> [coordinator board](docs/registry/coordinator.md).  The board, rather than a
-> chat-local claim, records current leases, collision freezes, the build token,
-> and branch-specific handoffs.  Workers may advertise nonoverlapping exact
-> path/declaration claims, edit and checkpoint freely on their own feature
-> branches, and push those branches without waiting for approval.  Only the
-> designated coordinator advances `main`.  Lean/Lake compilation requires the
-> physical-host token recorded on the board; a separately assigned sequential
-> TeX/PDF lane may coexist with that host's one Lean build.  No worker launches
-> an unassigned tool lane or parallel jobs within a lane.
-> Push preservation checkpoints promptly: the coordinator may prune a
-> worktree after seven days without activity, even when it is dirty.
+> **Multi-agent coordination: OFF.**  A single switch file,
+> [`AGENTS/STATUS.md`](AGENTS/STATUS.md), states
+> whether the coordination framework is in effect; flipping it — plus
+> creating or deleting the off-`main` board branch it names — is the entire
+> enable/disable procedure.  The lightweight protocol it switches is
+> [`AGENTS/PROTOCOL.md`](AGENTS/PROTOCOL.md).  The
+> engineering policies in [`AGENTS.md`](AGENTS.md) (documentation, Lean
+> builds, invariants) apply at all times.
 
 This project formalizes the Fabius function and the results in both papers by
 Juan Arias de Reyna:
@@ -72,11 +67,10 @@ layer additionally proves the corrected sharp small-argument expansion with
 its nonconstant Gamma--zeta periodic term, together with its complete
 all-orders saddle expansion.
 
-Several agents develop this directory concurrently in separate worktrees.  If
-you are one of them, please read [`AGENTS.md`](AGENTS.md) and the proposal in
-[`docs/COLLABORATION.md`](docs/COLLABORATION.md), which records the collisions
-that have already happened, the working rules suggested to avoid them, and a
-list of claimable future work.  Feedback on that proposal is invited.
+Several agents sometimes develop this directory concurrently in separate
+worktrees.  If you are one of them, read [`AGENTS.md`](AGENTS.md) first;
+whether the multi-agent coordination framework is currently in effect is
+stated by the single switch file [`AGENTS/STATUS.md`](AGENTS/STATUS.md).
 
 ## Design
 
@@ -665,9 +659,8 @@ compiled PDF is committed alongside its source.
 - **Format.** Mathematics is written in `*.tex`, never in Markdown. Markdown is
   reserved for repository bookkeeping that contains no displayed mathematics:
   this README, [`AGENTS.md`](AGENTS.md),
-  [`docs/PAPER_COVERAGE.md`](docs/PAPER_COVERAGE.md),
-  [`docs/COLLABORATION.md`](docs/COLLABORATION.md), and the per-branch files in
-  `docs/registry/`.
+  [`docs/PAPER_COVERAGE.md`](docs/PAPER_COVERAGE.md), and the coordination
+  files in `AGENTS/`.
 - **Style.** New documents reuse the preamble of
   [`Fabius_Function_and_Rvachev_Up.tex`](docs/Fabius_Function_and_Rvachev_Up/Fabius_Function_and_Rvachev_Up.tex)
   verbatim — the same geometry, fonts, colours, `hyperref` setup, running
@@ -679,6 +672,12 @@ compiled PDF is committed alongside its source.
   `pdflatex` passes so that the cross-references and the table of contents
   settle; the `.aux`, `.log`, `.out` and `.toc` files are not committed. A
   `.tex` change without a rebuilt `.pdf` is an incomplete commit.
+- **Prose is Libertinus.** The preamble falls back to Latin Modern silently
+  when the font package is missing, so builders verify the committed PDF with
+  `pdffonts`, install Libertinus first when it is absent, and — only when
+  installation fails — commit a fallback build together with a `README.md`
+  beside the PDF requesting a rebuild on a Libertinus-equipped machine. Math
+  stays Computer Modern by decision. `AGENTS.md` states the full rule.
 - **Check the rendered PDF.** Never write LaTeX through a shell heredoc or a
   script that round-trips through `unicode_escape`: both silently destroy
   backslashes, and LaTeX will not complain — it renders something plausible and
@@ -711,15 +710,20 @@ compiled PDF is committed alongside its source.
 
 ## Contributing and coordination
 
-The current operational entry points are [`AGENTS.md`](AGENTS.md) and the
-[coordinator board](docs/registry/coordinator.md).  The detailed
-[collaboration guide](docs/COLLABORATION.md) records the protocol and the
-failures that motivated it; the longer
-[coordination design](docs/MULTI_AGENT_COORDINATION_PROPOSAL.md) remains useful
-background.  Focused amendments are welcome through a worker's own registry
-file, but neither background document overrides a current board instruction.
-Ordinary nonoverlapping work is self-service after a pushed registry claim;
-campaign-critical or colliding paths require an explicit board assignment.
+The operational entry point is [`AGENTS.md`](AGENTS.md): its documentation
+policy, Lean build guidance, and invariants apply to all work in this
+directory.  Multi-agent coordination is switched by the single file
+[`AGENTS/STATUS.md`](AGENTS/STATUS.md) (currently OFF)
+and specified by
+[`AGENTS/PROTOCOL.md`](AGENTS/PROTOCOL.md): claim-free
+optimistic Lean work with first-landed-wins integration, one standing owner
+per canonical document with a fast path for small fixes, a lock-file build
+mutex, a 2-hour integration-latency cap, bookkeeping on a dedicated orphan
+branch off `main`, and a built-in overhead assessment with explicit authority
+to delete rules that stop paying for themselves.  The heavier v1 protocol of
+the 2026-08 campaign and its rationale survive only in git history (the
+deleted `docs/COLLABORATION.md` and
+`docs/MULTI_AGENT_COORDINATION_PROPOSAL.md`).
 
 ## Checking
 

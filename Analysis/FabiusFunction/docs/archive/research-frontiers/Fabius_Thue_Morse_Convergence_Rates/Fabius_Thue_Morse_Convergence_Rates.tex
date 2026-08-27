@@ -1,0 +1,1250 @@
+\documentclass[11pt,oneside]{article}
+
+\usepackage[a4paper,margin=27mm,headheight=15pt]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\IfFileExists{libertinus.sty}{\usepackage{libertinus}}{\usepackage{lmodern}}
+\usepackage{microtype}
+\usepackage{amsmath,amssymb,amsthm,mathtools,mathrsfs}
+\usepackage{bm}
+\usepackage{booktabs,longtable,array,tabularx}
+\usepackage{graphicx}
+\usepackage{pgfplots}
+\usepackage{xcolor}
+\usepackage{enumitem}
+\usepackage{fancyhdr}
+\usepackage{titlesec}
+\usepackage{listings}
+\usepackage{xurl}
+\usepackage{hyperref}
+\usepackage[nameinlink,noabbrev]{cleveref}
+
+\definecolor{linkblue}{RGB}{25,75,135}
+\definecolor{shadegray}{RGB}{246,247,249}
+\definecolor{rulegray}{RGB}{195,201,208}
+\pgfplotsset{compat=1.18}
+\hypersetup{
+  colorlinks=true,
+  linkcolor=linkblue,
+  citecolor=linkblue,
+  urlcolor=linkblue,
+  pdftitle={Signed Thue--Morse Prefix Sums and the Fabius Function},
+  pdfsubject={Sharp convergence rates for discrete Fabius approximants},
+  pdfkeywords={Fabius function, Rvachev up-function, Thue-Morse, prefix sums, convergence rate, Fourier deconvolution}
+}
+
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small Fabius--Thue--Morse convergence}
+\fancyhead[R]{\small\nouppercase{\leftmark}}
+\fancyfoot[C]{\thepage}
+\renewcommand{\headrulewidth}{0.4pt}
+
+\titleformat{\section}{\Large\bfseries}{\thesection}{0.7em}{}
+\titleformat{\subsection}{\large\bfseries}{\thesubsection}{0.7em}{}
+\titleformat{\subsubsection}{\normalsize\bfseries}{\thesubsubsection}{0.7em}{}
+\setcounter{secnumdepth}{3}
+\setcounter{tocdepth}{2}
+\setlist[itemize]{leftmargin=2em,itemsep=0.25em,topsep=0.4em}
+\setlist[enumerate]{leftmargin=2.3em,itemsep=0.25em,topsep=0.4em}
+\setlength{\emergencystretch}{2em}
+
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{conjecture}[theorem]{Conjecture}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{algorithm}[theorem]{Algorithm}
+\newtheorem{example}[theorem]{Example}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+\newtheorem{warning}[theorem]{Warning}
+
+\newcommand{\R}{\mathbb R}
+\newcommand{\C}{\mathbb C}
+\newcommand{\N}{\mathbb N}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\Up}{\operatorname{up}}
+\newcommand{\wt}{\operatorname{wt}_2}
+\newcommand{\e}{\mathrm e}
+\newcommand{\ii}{\mathrm i}
+\newcommand{\dd}{\,\mathrm d}
+\newcommand{\Var}{\operatorname{Var}}
+\newcommand{\E}{\mathbb E}
+\newcommand{\bigO}{\mathcal O}
+\newcommand{\smallo}{o}
+\newcommand{\supp}{\operatorname{supp}}
+\newcommand{\dist}{\operatorname{dist}}
+\newcommand{\repo}{\nolinkurl{Analysis/FabiusFunction}}
+\newcommand{\fract}[1]{\left\{#1\right\}}
+\newcommand{\Deltah}{\Delta_h}
+
+\newenvironment{proofidea}{\par\smallskip\noindent\textit{Proof architecture.}\ }{\hfill$\square$\par\smallskip}
+\newenvironment{boxedremark}{%
+  \par\smallskip\noindent\begin{center}\begin{minipage}{0.94\textwidth}%
+  \color{black}\hrule\vspace{0.6em}\small
+}{%
+  \vspace{0.6em}\hrule\end{minipage}\end{center}\smallskip
+}
+
+\lstdefinestyle{pseudo}{
+  basicstyle=\ttfamily\small,
+  backgroundcolor=\color{shadegray},
+  frame=single,
+  rulecolor=\color{rulegray},
+  columns=fullflexible,
+  keepspaces=true,
+  showstringspaces=false,
+  xleftmargin=0.7em,
+  xrightmargin=0.7em,
+  aboveskip=0.8em,
+  belowskip=0.8em
+}
+
+\title{\bfseries Signed Thue--Morse Prefix Sums and the Fabius Function\\[0.35em]
+\large Sharp convergence rates, lattice deconvolution, and exact grid drift}
+\author{A quantitative supplement to the formal development\\
+\small Vladimir Reshetnikov's \texttt{ProveIt} repository}
+\date{Repository snapshot: 25 August 2026}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+Let $\varepsilon_m=(-1)^{\wt(m)}$ be the signed Thue--Morse sequence and let
+$\sigma_{k+1}(m)=\sum_{j=0}^{m}\sigma_k(j)$ be its inclusive iterated prefix sums.  The
+formal development in \repo\ proves that a shifted and normalized order-$(n+1)$ prefix row
+is exactly the coefficient row of a finite product of discrete uniform laws, and that its
+associated histogram converges pointwise to Rvachev's compactly supported function $\Up$.
+Sampling the same row at $\lfloor 2^n x\rfloor$ consequently converges to the bounded Fabius
+function $F(x)$.  The existing argument is deliberately qualitative and supplies no rate.
+
+This report makes the convergence quantitative.  At the natural cell centers, the normalized
+prefix coefficients admit a uniform deconvolution expansion
+\[
+ H_n(\lambda)=\Up(\lambda)
+ -\frac{3n+4}{72\,4^n}\Up''(\lambda)
+ +\left(\frac{15n+16}{43200\,16^n}
+       +\frac{(3n+4)^2}{10368\,16^n}\right)\Up^{(4)}(\lambda)
+ +\bigO\!\left(\frac{n^3}{64^n}\right).
+\]
+It follows that the sharp uniform center-grid error is
+$\frac13 n4^{-n}(1+o(1))$; the same rate holds after piecewise-linear interpolation.
+The piecewise-constant histogram is less accurate because of cell quantization:
+$\|\mathcal W_n-\Up\|_\infty=2^{-n}+\bigO(n4^{-n})$.
+Most strikingly, the literal dyadic-floor approximation
+\[
+ A_n(x)=\frac{\sigma_{n+1}(\lfloor2^n x\rfloor)}{2^{\binom n2}}
+\]
+has a still larger, entirely geometric first-order error.  Uniformly on $[0,1]$,
+\[
+ A_n(x)=F(x)+\frac{n+2-2\fract{2^nx}}{2^{n+1}}F'(x)
+          +\bigO\!\left(\frac{n^2}{4^n}\right),
+\]
+and therefore
+\[
+ \left\|\frac{2^{n+1}}n(A_n-F)-F'\right\|_\infty\longrightarrow0,
+ \qquad
+ \frac{2^n}{n}\|A_n-F\|_\infty\longrightarrow1.
+\]
+The factor $n$ comes from the exact inward displacement of the finite support, not from slow
+weak convergence.  At $x=1/2$ the phenomenon has the closed form
+$A_n(1/2)-1/2=(n+2)2^{-n}-2^{-\binom n2}$.
+
+The bridge identities used as input are formalized in Lean.  The Fourier asymptotic expansion,
+its sharp constants, and the accelerated finite-difference constructions developed here are
+new analytic deductions and are not claimed to have been formalized in the repository.
+\end{abstract}
+
+\tableofcontents
+\newpage
+
+\section{Scope, conventions, and the answer in one table}
+\label{sec:scope}
+
+The source article \cite{reshetnikovExposition} isolates the connection between iterated
+prefix sums and $\Up$, corrects two index/normalization defects in a naive formulation, and
+proves pointwise convergence.  It also says explicitly that its monotonicity-and-continuity
+argument gives no uniform rate.  The purpose of this supplement is to determine that rate,
+including its leading constant, and to explain why several superficially similar readings of
+the same integer row have different orders of accuracy.
+
+We use the source article's normalization throughout:
+\begin{itemize}
+\item $F$ is the bounded distribution function, equal to $0$ on $(-\infty,0]$ and to $1$ on
+      $[1,\infty)$;
+\item $\Up$ is the even compactly supported density on $[-1,1]$, with
+      $\Up(x-1)=F(x)$ for $0\le x\le1$;
+\item the Fourier transform is
+      $\widehat f(\xi)=\int_{\R}f(x)\e^{-2\pi\ii x\xi}\dd x$.
+\end{itemize}
+The sharp derivative theorem from the source gives
+\begin{equation}
+ \|F^{(r)}\|_\infty=\|\Up^{(r)}\|_\infty
+ =2^{\binom{r+1}{2}}.                                      \label{eq:sharp-derivatives}
+\end{equation}
+In particular $\|F'\|_\infty=\|\Up'\|_\infty=2$ and
+$\|\Up''\|_\infty=8$.
+
+\begin{boxedremark}
+\textbf{The three natural rates.}
+Put $h_n=2^{-n}$.  The same normalized prefix row produces three different errors.
+\begin{center}
+\begin{tabularx}{0.95\textwidth}{@{}>{\raggedright\arraybackslash}p{0.23\textwidth}
+>{\raggedright\arraybackslash}p{0.30\textwidth}X@{}}
+\toprule
+Reading of the row & Sharp uniform error & Dominant mechanism\\
+\midrule
+Natural center values, or their linear interpolant
+& $\displaystyle \frac13 n h_n^2(1+o(1))$
+& Deconvolution of the omitted mean-zero Bernoulli tail; its variance is of order $nh_n^2$.\\[0.35em]
+Piecewise-constant histogram $\mathcal W_n$
+& $\displaystyle h_n+\bigO(nh_n^2)$
+& Horizontal quantization by half a cell, amplified by the optimal slope $2$.\\[0.35em]
+Dyadic-floor Fabius sample $A_n$
+& $\displaystyle n h_n(1+o(1))$
+& The finite support is shorter than $[-1,1]$ by $(n+2)h_n/2$ at each end, producing an inward drift.\\
+\bottomrule
+\end{tabularx}
+\end{center}
+Thus the pointwise floor formula is not the most accurate reconstruction of the function from
+the prefix row.  It is worse than the histogram by a factor asymptotic to $n$, while a
+centered linear reconstruction is better than the histogram by a factor asymptotic to
+$3\cdot2^n/n$.
+\end{boxedremark}
+
+\subsection{What is formalized and what is new here}
+
+The exact prefix convolution law, Prouhet cancellation, zero runs, generating-series identity,
+coefficient bridge, corrected cell centers, and pointwise limit are developed in
+\path{ThueMorsePrefix.lean} and \path{ThueMorseApproximation.lean}; the finite atomic and step
+approximants are developed in \path{EarlyApproximants.lean},
+\path{EarlyMeasureBridge.lean}, \path{StepMeasureBridge.lean}, and
+\path{StepApproximationLimit.lean} \cite{proveit}.  These are the algebraic and
+measure-theoretic inputs used below.
+
+The new ingredient is a quantitative inversion of the finite cosine product on its natural
+Nyquist interval.  It yields a complete asymptotic expansion in even derivatives of $\Up$.
+The first two nonzero terms are enough to determine all sharp rates stated in the abstract.
+No part of that new expansion is represented here as already machine-checked.
+
+\section{The exact discrete bridge}
+\label{sec:bridge}
+
+\subsection{Signed Thue--Morse prefixes}
+
+Let
+\begin{equation}
+ \varepsilon_m=(-1)^{\wt(m)},\qquad m\ge0,                 \label{eq:tm-sign}
+\end{equation}
+where $\wt(m)$ is the number of ones in the binary expansion of $m$.  Define inclusive
+iterated prefix sums by
+\begin{equation}
+ \sigma_0(m)=\varepsilon_m,
+ \qquad
+ \sigma_{k+1}(m)=\sum_{j=0}^{m}\sigma_k(j).                \label{eq:prefix-def}
+\end{equation}
+The word \emph{inclusive} matters: one has
+\begin{equation}
+ \sigma_{k+1}(m+1)-\sigma_{k+1}(m)=\sigma_k(m+1),          \label{eq:forward-difference}
+\end{equation}
+with the lower-order value at the new index.
+
+Repeated summation is convolution with the discrete truncated-power kernel.  For $k\ge1$,
+\begin{equation}
+ \sigma_k(m)=\sum_{r=0}^{m}\binom{m-r+k-1}{k-1}\varepsilon_r. \label{eq:prefix-convolution}
+\end{equation}
+The signed generating series is
+\begin{equation}
+ \sum_{m\ge0}\varepsilon_m z^m=\prod_{j\ge0}(1-z^{2^j}),
+ \qquad
+ \sum_{m\ge0}\sigma_k(m)z^m
+ =\frac{\prod_{j\ge0}(1-z^{2^j})}{(1-z)^k}.               \label{eq:prefix-generating}
+\end{equation}
+All identities in this paragraph are formal power-series identities over $\Z$.
+
+\subsection{The finite polynomial and the one-order shift}
+
+For $n\ge0$ put
+\begin{equation}
+ P_n(z)=\prod_{i=1}^{n}(1+z+\cdots+z^{2^i-1}),
+ \qquad
+ g_n=\deg P_n=2^{n+1}-n-2.                                \label{eq:Pn}
+\end{equation}
+The cancellation of the first $n+1$ factors in \eqref{eq:prefix-generating} gives the exact
+coefficient identity
+\begin{equation}
+ [z^m]P_n(z)=\sigma_{n+1}(m),
+ \qquad 0\le m<2^{n+1}.                                   \label{eq:coefficient-bridge}
+\end{equation}
+This is the source of the order shift: the polynomial indexed by $n$ corresponds to the
+$(n+1)$st, not the $n$th, prefix row.
+
+Every factor of $P_n$ is palindromic, hence
+\begin{equation}
+ [z^m]P_n=[z^{g_n-m}]P_n,
+ \qquad
+ P_n(1)=2^{\binom{n+1}{2}}.                               \label{eq:Pn-symmetry-mass}
+\end{equation}
+The coefficients are nonnegative integers.  Thus, after normalization, they form a symmetric
+probability mass function.
+
+\subsection{Natural centers, atomic law, and histogram}
+
+Set
+\begin{equation}
+ h_n=2^{-n},
+ \qquad
+ \lambda_{n,m}=\frac{2m-g_n}{2^{n+1}}
+ =h_n\left(m-\frac{g_n}{2}\right).                        \label{eq:center}
+\end{equation}
+The points $\lambda_{n,m}$ lie on a translate of the lattice $h_n\Z$.  Define
+\begin{equation}
+ p_{n,m}=2^{-\binom{n+1}{2}}[z^m]P_n,
+ \qquad
+ \mu_n=\sum_{m\in\Z}p_{n,m}\,\delta_{\lambda_{n,m}},    \label{eq:atomic-law}
+\end{equation}
+where coefficients outside $0\le m\le g_n$ are understood to be zero.  Then $\mu_n$ is a
+probability measure.  Its mass density relative to the lattice spacing is
+\begin{equation}
+ H_n(\lambda_{n,m})=\frac{p_{n,m}}{h_n}
+ =\frac{[z^m]P_n}{2^{\binom n2}}.                          \label{eq:Hn}
+\end{equation}
+By \eqref{eq:coefficient-bridge}, this is exactly
+\begin{equation}
+ H_n(\lambda_{n,m})
+ =\frac{\sigma_{n+1}(m)}{2^{\binom n2}},
+ \qquad 0\le m<2^{n+1}.                                  \label{eq:Hn-prefix}
+\end{equation}
+
+Let $I_{n,m}$ be the cell of width $h_n$ centered at $\lambda_{n,m}$.  Spreading each atom of
+$\mu_n$ uniformly over its cell gives the step density
+\begin{equation}
+ \mathcal W_n(x)=\sum_m H_n(\lambda_{n,m})\mathbf 1_{I_{n,m}}(x), \label{eq:Wn}
+\end{equation}
+with half weight from each adjacent cell at a shared endpoint.  In the interior of a cell,
+$\mathcal W_n$ is simply the corresponding normalized prefix coefficient.  The formal
+repository proves
+\begin{equation}
+ \mathcal W_n(x)\longrightarrow\Up(x)                     \label{eq:qualitative-W}
+\end{equation}
+pointwise.  The rest of this report quantifies \eqref{eq:qualitative-W} and the moving-center
+sample derived from it.
+
+\section{The hidden Bernoulli tail}
+\label{sec:tail}
+
+\subsection{Rademacher factorization}
+
+Let $R_{\ell,r}$ be independent Rademacher variables, each taking $\pm1$ with probability
+$1/2$.  The binary factorization of every discrete uniform variable in \eqref{eq:Pn} gives
+an equivalent representation of \eqref{eq:atomic-law}:
+\begin{equation}
+ X_n=\sum_{\ell=1}^{n}\sum_{r=1}^{\ell}
+       2^{-\ell-1}R_{\ell,r},
+ \qquad \mathcal L(X_n)=\mu_n.                            \label{eq:Xn}
+\end{equation}
+Consequently
+\begin{equation}
+ \widehat{\mu_n}(\xi)
+ =\prod_{\ell=1}^{n}
+  \left(\cos\frac{\pi\xi}{2^\ell}\right)^\ell.          \label{eq:finite-cosine}
+\end{equation}
+The complete series
+\begin{equation}
+ Y=\sum_{\ell=1}^{\infty}\sum_{r=1}^{\ell}
+       2^{-\ell-1}R_{\ell,r}                              \label{eq:Y}
+\end{equation}
+converges absolutely, and its density is $\Up$.  Equivalently,
+\begin{equation}
+ \widehat\Up(\xi)
+ =\prod_{\ell=1}^{\infty}
+  \left(\cos\frac{\pi\xi}{2^\ell}\right)^\ell.          \label{eq:infinite-cosine}
+\end{equation}
+This cosine representation is equivalent to the more familiar infinite sinc product.
+
+Write
+\begin{equation}
+ T_n=Y-X_n
+ =\sum_{\ell>n}\sum_{r=1}^{\ell}2^{-\ell-1}R_{\ell,r}.    \label{eq:Tn}
+\end{equation}
+Then $X_n$ and $T_n$ are independent and
+\begin{equation}
+ \Up(x)\dd x=\mu_n*\mathcal L(T_n).                        \label{eq:tail-convolution}
+\end{equation}
+Thus $\mu_n$ is obtained by deleting a small, symmetric smoothing tail from the target law.
+The center-grid asymptotics are an exact lattice version of deconvolving that tail.
+
+\subsection{Exact support radius and variance}
+
+\begin{proposition}[Geometry and second moment of the omitted tail]
+\label{prop:tail-moments}
+The tail $T_n$ has mean zero, support contained in $[-r_n,r_n]$, and variance $v_n$, where
+\begin{align}
+ r_n&=\sum_{\ell>n}\ell2^{-\ell-1}
+     =\frac{n+2}{2^{n+1}},                                  \label{eq:rn}\\
+ v_n&=\sum_{\ell>n}\ell2^{-2\ell-2}
+     =\frac{3n+4}{36\,4^n}.                                 \label{eq:vn}
+\end{align}
+Both support endpoints occur.
+\end{proposition}
+
+\begin{proof}
+The mean vanishes by symmetry.  The maximal possible absolute value is obtained by taking
+all signs equal, so it is the first displayed sum.  The geometric-tail identity
+\[
+ \sum_{\ell=n+1}^{\infty}\ell q^\ell
+ =q^{n+1}\frac{(n+1)-nq}{(1-q)^2}
+\]
+with $q=1/2$ gives \eqref{eq:rn}.  Independence and $\Var(R_{\ell,r})=1$ give the variance
+sum, and the same identity with $q=1/4$, followed by the extra factor $1/4$, gives
+\eqref{eq:vn}.
+\end{proof}
+
+The support of $\mu_n$ is therefore
+\begin{equation}
+ \supp\mu_n=[-1+r_n,1-r_n]\cap\bigl(h_n(\Z-g_n/2)\bigr),  \label{eq:support-mun}
+\end{equation}
+because $g_n/2^{n+1}=1-r_n$.  Two scales should be distinguished:
+\begin{equation}
+ r_n\sim\frac n2h_n,
+ \qquad
+ \sqrt{v_n}\sim\sqrt{\frac n{12}}\,h_n.                  \label{eq:two-tail-scales}
+\end{equation}
+The support radius is a worst-case all-signs quantity, while the standard deviation is the
+typical scale.  The floor-indexed approximation will inherit the former; the correctly
+centered deconvolution error will inherit the variance itself.
+
+\subsection{Why the leading center correction is second order}
+
+If a smooth density $f$ is convolved with a small mean-zero law of variance $v$, then formally
+\[
+ f*\nu=f+\frac v2f''+\cdots.
+\]
+Solving backward gives $f-\frac v2f''+\cdots$.  Since \eqref{eq:tail-convolution} smooths the
+atomic row by the tail law, one should expect
+\begin{equation}
+ H_n(\lambda)-\Up(\lambda)
+ \approx-\frac{v_n}{2}\Up''(\lambda)
+ =-\frac{3n+4}{72\,4^n}\Up''(\lambda).                    \label{eq:heuristic-leading}
+\end{equation}
+The sign is that of deconvolution: in a convex region the unsmoothed profile lies below the
+smoothed one.  The next sections make \eqref{eq:heuristic-leading} uniform and rigorous and
+compute the fourth-derivative term.
+
+\section{Fourier inversion on the moving lattice}
+\label{sec:fourier}
+
+The main technical point is that one must invert the finite atomic law on exactly one period
+of its lattice Fourier series.  Ordinary Fourier inversion of a density cannot be applied
+directly to $\mu_n$.
+
+\subsection{A shifted-lattice inversion formula}
+
+\begin{lemma}[Nyquist inversion for a shifted lattice]
+\label{lem:lattice-inversion}
+Let $\mu=\sum_{k\in\Z}p_k\delta_{a+hk}$ be a finite measure on a translate of $h\Z$, and let
+$\widehat\mu(\xi)=\sum_kp_k\e^{-2\pi\ii(a+hk)\xi}$.  Then, for every $m\in\Z$,
+\begin{equation}
+ \frac{p_m}{h}
+ =\int_{-1/(2h)}^{1/(2h)}
+   \widehat\mu(\xi)\e^{2\pi\ii(a+hm)\xi}\dd\xi.          \label{eq:lattice-inversion}
+\end{equation}
+\end{lemma}
+
+\begin{proof}
+Insert the finite sum defining $\widehat\mu$ and integrate term by term.  The $k$th term is
+\[
+ p_k\int_{-1/(2h)}^{1/(2h)}\e^{2\pi\ii h(m-k)\xi}\dd\xi,
+\]
+which is $p_m/h$ when $k=m$ and zero otherwise.  The shift $a$ cancels from the phase.
+\end{proof}
+
+For $\mu_n$, the interval in \eqref{eq:lattice-inversion} is
+\begin{equation}
+ B_n=[-2^{n-1},2^{n-1}].                                   \label{eq:Bn}
+\end{equation}
+Combining \eqref{eq:Hn} and \eqref{eq:lattice-inversion} gives
+\begin{equation}
+ H_n(\lambda_{n,m})
+ =\int_{B_n}\widehat{\mu_n}(\xi)
+   \e^{2\pi\ii\lambda_{n,m}\xi}\dd\xi.                  \label{eq:Hn-inversion}
+\end{equation}
+
+\subsection{The exact deconvolution multiplier}
+
+On $B_n$, all factors in the omitted cosine tail are positive: for $\ell>n$,
+$|\pi\xi/2^\ell|\le\pi/4$.  Hence one may divide \eqref{eq:infinite-cosine} by
+\eqref{eq:finite-cosine} and write
+\begin{equation}
+ \widehat{\mu_n}(\xi)=\widehat\Up(\xi)R_n(\xi),
+ \qquad
+ R_n(\xi)=\prod_{\ell>n}
+  \left(\sec\frac{\pi\xi}{2^\ell}\right)^\ell,
+ \qquad \xi\in B_n.                                      \label{eq:Rn}
+\end{equation}
+The multiplier $R_n$ is the reciprocal characteristic function of the omitted tail on the
+frequency range where lattice inversion needs it.
+
+There is a useful global bound.  Put $t=\pi\xi/2^n$, so $|t|\le\pi/2$.  Reindexing
+$\ell=n+r$ and using Vi\`ete's product
+$\prod_{r\ge1}\cos(t/2^r)=\sin t/t$ gives
+\begin{equation}
+ R_n(\xi)
+ =\left(\frac{t}{\sin t}\right)^n
+   \prod_{r=1}^{\infty}\sec(t/2^r)^r.                     \label{eq:Rn-viete}
+\end{equation}
+The second product is bounded uniformly for $|t|\le\pi/2$, while
+$t/\sin t\le\pi/2$.  Thus there is an absolute $C_*$ such that
+\begin{equation}
+ 1\le R_n(\xi)\le C_*\left(\frac\pi2\right)^n,
+ \qquad \xi\in B_n.                                      \label{eq:Rn-global-bound}
+\end{equation}
+This exponential growth is harmless because $\widehat\Up$ decays faster than every power.
+Indeed, compact support and smoothness give, for each $M\ge1$,
+\begin{equation}
+ |\widehat\Up(\xi)|
+ \le\frac{\|\Up^{(M)}\|_1}{(2\pi|\xi|)^M}
+ \le\frac{2^{1+\binom{M+1}{2}}}{(2\pi|\xi|)^M}
+ \qquad(\xi\ne0),                                        \label{eq:fourier-rapid}
+\end{equation}
+where \eqref{eq:sharp-derivatives} was used in the second inequality.
+
+\section{Sharp center-grid asymptotics}
+\label{sec:center-rate}
+
+\subsection{Expansion of the reciprocal tail product}
+
+For $|u|<\pi/2$,
+\begin{equation}
+ \log\sec u=\frac{u^2}{2}+\frac{u^4}{12}+\bigO(u^6).       \label{eq:logsec}
+\end{equation}
+The two geometric tails needed below are
+\begin{align}
+ \frac12\sum_{\ell>n}\ell4^{-\ell}
+ &=\frac{3n+4}{18\,4^n}=:\alpha_n,                        \label{eq:alpha-n}\\
+ \frac1{12}\sum_{\ell>n}\ell16^{-\ell}
+ &=\frac{15n+16}{2700\,16^n}=: \beta_n.                  \label{eq:beta-n}
+\end{align}
+Therefore, on a low-frequency range growing sufficiently slowly with $n$,
+\begin{equation}
+ \log R_n(\xi)
+ =\alpha_n(\pi\xi)^2+\beta_n(\pi\xi)^4
+  +\bigO\!\left(\frac{n}{64^n}|\xi|^6\right),            \label{eq:log-Rn}
+\end{equation}
+and exponentiation gives
+\begin{equation}
+ R_n(\xi)=1+\alpha_n(\pi\xi)^2
+ +\left(\beta_n+\frac{\alpha_n^2}{2}\right)(\pi\xi)^4
+ +\bigO\!\left(\frac{n^3}{64^n}|\xi|^6\right).          \label{eq:Rn-expansion}
+\end{equation}
+
+\subsection{The uniform expansion}
+
+\begin{theorem}[Two-term lattice deconvolution expansion]
+\label{thm:center-expansion}
+Uniformly for all lattice centers $\lambda=\lambda_{n,m}$,
+\begin{align}
+ H_n(\lambda)
+={}&\Up(\lambda)
+ -\frac{3n+4}{72\,4^n}\Up''(\lambda) \notag\\
+ &+\left(
+   \frac{15n+16}{43200\,16^n}
+  +\frac{(3n+4)^2}{10368\,16^n}
+  \right)\Up^{(4)}(\lambda)
+ +\bigO\!\left(\frac{n^3}{64^n}\right).                 \label{eq:center-expansion}
+\end{align}
+The implicit constant is absolute and effective.  In particular,
+\begin{equation}
+ H_n(\lambda)-\Up(\lambda)
+ =-\frac{3n+4}{72\,4^n}\Up''(\lambda)
+  +\bigO\!\left(\frac{n^2}{16^n}\right)                 \label{eq:center-leading}
+\end{equation}
+uniformly on the moving lattice.
+\end{theorem}
+
+\begin{proof}
+Use \eqref{eq:Hn-inversion} and \eqref{eq:Rn} and split the integral at
+$|\xi|=2^{n/4}$.  On the inner interval, \eqref{eq:Rn-expansion} is uniform.  Since
+$\int_{\R}|\xi|^6|\widehat\Up(\xi)|\dd\xi<\infty$, its integrated remainder is
+$\bigO(n^3 64^{-n})$ uniformly in the phase $\lambda$.
+
+On the complementary part of $B_n$, combine \eqref{eq:Rn-global-bound} with
+\eqref{eq:fourier-rapid}.  Taking, for example, $M=32$ makes the resulting integral
+$o(64^{-n})$.  The tails of the three polynomial Fourier integrals outside $B_n$ are even
+smaller.  We may therefore replace the truncated integrals of the displayed polynomial terms
+by integrals over all of $\R$.
+
+With the chosen Fourier convention,
+\begin{equation*}
+ \int_{\R}(\pi\xi)^2\widehat\Up(\xi)\e^{2\pi\ii\lambda\xi}\dd\xi
+ =-\frac14\Up''(\lambda),
+ \qquad
+ \int_{\R}(\pi\xi)^4\widehat\Up(\xi)\e^{2\pi\ii\lambda\xi}\dd\xi
+ =\frac1{16}\Up^{(4)}(\lambda).
+\end{equation*}
+Substituting \eqref{eq:alpha-n} and \eqref{eq:beta-n} gives
+\eqref{eq:center-expansion}.  Omitting the fourth-derivative term and using
+\eqref{eq:sharp-derivatives} gives \eqref{eq:center-leading}.
+\end{proof}
+
+\begin{remark}[Variance form]
+Because $\alpha_n=2v_n$, the leading term is exactly
+\begin{equation}
+ H_n=\Up-\frac{v_n}{2}\Up''+\cdots,                        \label{eq:variance-form}
+\end{equation}
+which confirms the deconvolution heuristic \eqref{eq:heuristic-leading}.
+\end{remark}
+
+\subsection{Sharp norm constant}
+
+\begin{corollary}[Sharp center-grid rate]
+\label{cor:center-sharp}
+One has the uniform profile limit
+\begin{equation}
+ \sup_{m\in\Z}
+ \left|
+  \frac{4^n}{n}\bigl(H_n(\lambda_{n,m})-\Up(\lambda_{n,m})\bigr)
+  +\frac1{24}\Up''(\lambda_{n,m})
+ \right|\longrightarrow0.                                \label{eq:center-profile-limit}
+\end{equation}
+Consequently,
+\begin{equation}
+ \lim_{n\to\infty}\frac{4^n}{n}
+ \sup_{m\in\Z}|H_n(\lambda_{n,m})-\Up(\lambda_{n,m})|
+ =\frac13.                                                 \label{eq:center-sharp-norm}
+\end{equation}
+\end{corollary}
+
+\begin{proof}
+The coefficient $(3n+4)/(72n)$ tends to $1/24$, while the remainder in
+\eqref{eq:center-leading}, after multiplication by $4^n/n$, tends uniformly to zero.  The
+lattices become dense, and $\Up''$ is continuous with exact supremum $8$.  This supremum
+is attained; for example, the attained-point form of the sharp derivative theorem gives
+$\Up''(-3/4)=F''(1/4)=8$.  Hence the norm limit is $8/24=1/3$.
+\end{proof}
+
+\subsection{A continuous reconstruction with the same rate}
+
+Let $L_n$ be the piecewise-linear interpolant through the points
+$(\lambda_{n,m},H_n(\lambda_{n,m}))$, with zero values continued outside the finite support.
+The ordinary interpolation error for a $C^2$ function is at most
+$h_n^2\|\Up''\|_\infty/8=h_n^2$.  This is smaller by a factor $1/n$ than the leading
+center bias.
+
+\begin{corollary}[Sharp continuous linear reconstruction]
+\label{cor:linear-rate}
+Uniformly on $\R$,
+\begin{equation}
+ \frac{4^n}{n}(L_n-\Up)\longrightarrow-\frac1{24}\Up'',   \label{eq:linear-profile}
+\end{equation}
+in the supremum norm.  In particular,
+\begin{equation}
+ \|L_n-\Up\|_\infty=\frac n{3\,4^n}(1+o(1)).              \label{eq:linear-sharp}
+\end{equation}
+\end{corollary}
+
+Thus iterated prefix sums do not merely converge to $\Up$ after a qualitative passage through
+histograms.  Read at their actual centers and interpolated linearly, they give a continuous
+approximation with a fully determined, curvature-shaped leading error.
+
+\subsection{The all-orders pattern}
+
+The same proof is not tied to fourth order.  Write
+\begin{equation}
+ \log\sec z=\sum_{r\ge1}c_rz^{2r}
+ \quad(c_1=1/2,\ c_2=1/12,\ c_3=1/45,\ldots)              \label{eq:logsec-full}
+\end{equation}
+and put
+\begin{equation}
+ s_{r,n}=c_r\sum_{\ell>n}\ell2^{-2r\ell}.                 \label{eq:srn}
+\end{equation}
+For a fixed $M$, expand
+\begin{equation}
+ \exp\left(\sum_{r=1}^{M-1}s_{r,n}z^{2r}\right)
+ =\sum_{j=0}^{M-1}b_{j,n}z^{2j}+\bigO(z^{2M}).             \label{eq:bjn}
+\end{equation}
+Then the lattice inversion argument gives
+\begin{equation}
+ H_n(\lambda)
+ =\sum_{j=0}^{M-1}\frac{(-1)^j b_{j,n}}{4^j}
+    \Up^{(2j)}(\lambda)
+ +\bigO_M\!\left(n^M4^{-Mn}\right),                      \label{eq:all-orders}
+\end{equation}
+uniformly on the center lattice.  Each $b_{j,n}$ is an explicit polynomial in the geometric
+tails $s_{r,n}$.  Thus the connection admits a full asymptotic differential expansion, not
+just a big-$O$ convergence estimate.
+
+\section{The histogram: a sharp first-order quantization error}
+\label{sec:histogram-rate}
+
+The center values are exceptionally accurate, but $\mathcal W_n$ holds each value constant
+across a cell.  That reconstruction injects a larger first-order horizontal error.
+
+For a point $x$ in the interior of a cell, let $c_n(x)$ denote that cell's center and define
+the sawtooth phase
+\begin{equation}
+ \rho_n(x)=\frac{c_n(x)-x}{h_n},
+ \qquad -\frac12<\rho_n(x)<\frac12.                       \label{eq:rho}
+\end{equation}
+Then \eqref{eq:center-leading} and Taylor's theorem give, uniformly away from the shared cell
+endpoints,
+\begin{equation}
+ \mathcal W_n(x)-\Up(x)
+ =h_n\rho_n(x)\Up'(x)+\bigO(nh_n^2).                      \label{eq:hist-local}
+\end{equation}
+At a shared endpoint, the half-weight convention averages the two adjacent center values and
+cancels the first-order odd displacement, leaving only $\bigO(nh_n^2)$ there.
+
+\begin{theorem}[Sharp histogram rate]
+\label{thm:hist-sharp}
+The step approximants satisfy
+\begin{equation}
+ \|\mathcal W_n-\Up\|_\infty
+ =2^{-n}+\bigO\!\left(\frac n{4^n}\right).                \label{eq:hist-sharp}
+\end{equation}
+Equivalently,
+\begin{equation}
+ \lim_{n\to\infty}2^n\|\mathcal W_n-\Up\|_\infty=1.      \label{eq:hist-limit-constant}
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+For an interior point, combine \eqref{eq:center-leading} with the optimal Lipschitz bound
+$\|\Up'\|_\infty=2$:
+\[
+ |\mathcal W_n(x)-\Up(x)|
+ \le \bigO(nh_n^2)+2|c_n(x)-x|
+ \le h_n+\bigO(nh_n^2).
+\]
+At a shared endpoint the averaged value obeys the same bound.  There remains only the thin
+uncovered strip between the support of $\mathcal W_n$ and an endpoint of $[-1,1]$.
+Its width is at most $r_n+h_n/2=\bigO(nh_n)$.  Since $\Up$ and all of its
+derivatives vanish at $\pm1$, Taylor's theorem with the sharp bounded third derivative gives
+\[
+ |\Up(\pm1\mp s)|\le \frac{\|\Up^{(3)}\|_\infty}{6}s^3
+ =\bigO(n^3h_n^3)=\smallo(nh_n^2)
+ \qquad(0\le s\le r_n+h_n/2).
+\]
+Outside $[-1,1]$ both functions vanish.  This completes the upper estimate globally.
+
+For the lower estimate, choose cells whose centers tend to $-1/2$, where
+$\Up'(-1/2)=2$, and approach one edge of each chosen cell from its interior.  The center error
+is $\bigO(nh_n^2)$, while the change of $\Up$ across half a cell is
+$h_n+\bigO(h_n^2)$.  Taking the supremum gives
+$\|\mathcal W_n-\Up\|_\infty\ge h_n-\bigO(nh_n^2)$.
+\end{proof}
+
+\begin{remark}
+The pointwise proof in the source article could not reveal \eqref{eq:hist-sharp}: weak
+convergence plus unimodality controls values through fixed comparison points but does not
+track a moving point at distance $h_n/2$ from a cell center.  The rate is a local geometric
+phenomenon, and the sharp constant comes from the sharp derivative bound.
+\end{remark}
+
+\section{The floor-prefix approximation to the bounded Fabius function}
+\label{sec:floor-rate}
+
+\subsection{Definition and exact moving-center displacement}
+
+The source theorem obtains $F$ from the prefix row by evaluating its $\Up$ approximation at
+half the argument.  Define
+\begin{equation}
+ A_n(x)=\mathcal J_n(x/2)
+ =\frac{\sigma_{n+1}(\lfloor2^nx\rfloor)}{2^{\binom n2}},
+ \qquad 0\le x\le1.                                      \label{eq:An}
+\end{equation}
+Let
+\begin{equation}
+ \theta_n(x)=\fract{2^nx}=2^nx-\lfloor2^nx\rfloor.        \label{eq:theta}
+\end{equation}
+The normalized prefix value in \eqref{eq:An} is not located at $x-1$.  Its actual center is
+\begin{align}
+ \lambda_n(x)
+ &=\lambda_{n,\lfloor2^nx\rfloor} \notag\\
+ &=x-1+\delta_n(x),                                        \label{eq:lambda-drift}\\
+ \delta_n(x)
+ &=\frac{n+2-2\theta_n(x)}{2^{n+1}}.                       \label{eq:delta}
+\end{align}
+This identity, not merely the fact that $\lambda_n(x)\to x-1$, determines the dominant error.
+It also gives
+\begin{equation}
+ \frac{n}{2^{n+1}}<\delta_n(x)\le\frac{n+2}{2^{n+1}}.     \label{eq:delta-range}
+\end{equation}
+In terms of the omitted-tail support radius \eqref{eq:rn},
+\begin{equation}
+ \delta_n(x)=r_n-\theta_n(x)h_n.                           \label{eq:delta-rn}
+\end{equation}
+Thus the index $\lfloor2^nx\rfloor$ compensates for the ordinary fractional cell position but
+not for the shortening of the finite support.  The residual is roughly $r_n\sim nh_n/2$,
+which is much larger than either the cell width error of the histogram or the variance-scale
+center bias.
+
+\subsection{First- and second-order expansions}
+
+\begin{theorem}[Uniform floor-prefix expansion]
+\label{thm:floor-expansion}
+Uniformly for $x\in[0,1]$,
+\begin{equation}
+ A_n(x)
+ =F(x)+\delta_n(x)F'(x)
+  +\bigO\!\left(\frac{n^2}{4^n}\right).                  \label{eq:floor-first}
+\end{equation}
+More precisely,
+\begin{align}
+ A_n(x)
+={}&F(x)+\delta_n(x)F'(x) \notag\\
+ &+\left(
+    \frac{\delta_n(x)^2}{2}
+    -\frac{3n+4}{72\,4^n}
+   \right)F''(x)
+ +\bigO\!\left(\frac{n^3}{8^n}\right).                  \label{eq:floor-second}
+\end{align}
+All remainder constants are independent of $x$ and $n$.
+\end{theorem}
+
+\begin{proof}
+By the exact coefficient identification,
+$A_n(x)=H_n(\lambda_n(x))$.  Apply \eqref{eq:center-leading} at
+$\lambda_n(x)=x-1+\delta_n(x)$, use $\Up(x-1)=F(x)$ and the same identity for derivatives,
+and Taylor-expand around $x-1$.  Since $\delta_n=\bigO(n2^{-n})$, the first omitted Taylor
+term in \eqref{eq:floor-first} is $\bigO(n^2 4^{-n})$.
+
+For \eqref{eq:floor-second}, retain the quadratic Taylor term and the leading center-bias
+term.  The remainders are
+$\bigO(\delta_n^3)$, $\bigO(n4^{-n}\delta_n)$, and
+$\bigO(n^2 16^{-n})$, all absorbed by $\bigO(n^3 8^{-n})$.
+\end{proof}
+
+\begin{corollary}[Uniform profile and sharp norm rate]
+\label{cor:floor-sharp}
+The entire rescaled error profile converges uniformly:
+\begin{equation}
+ \left\|\frac{2^{n+1}}n(A_n-F)-F'\right\|_\infty
+ \longrightarrow0.                                       \label{eq:floor-profile}
+\end{equation}
+Consequently,
+\begin{equation}
+ \lim_{n\to\infty}\frac{2^n}{n}\|A_n-F\|_\infty=1.       \label{eq:floor-sharp}
+\end{equation}
+For each fixed $x$,
+\begin{equation}
+ \lim_{n\to\infty}\frac{2^{n+1}}n\bigl(A_n(x)-F(x)\bigr)
+ =F'(x).                                                   \label{eq:floor-pointwise-profile}
+\end{equation}
+\end{corollary}
+
+\begin{proof}
+By \eqref{eq:delta},
+\[
+ \frac{2^{n+1}}n\delta_n(x)
+ =1+\frac{2-2\theta_n(x)}n\longrightarrow1
+\]
+uniformly in $x$.  Multiplying the remainder in \eqref{eq:floor-first} by
+$2^{n+1}/n$ gives $\bigO(n2^{-n})$.  This proves \eqref{eq:floor-profile}.  Taking norms and
+using $\|F'\|_\infty=2$ gives \eqref{eq:floor-sharp}.
+\end{proof}
+
+\subsection{The equivalent statement for the \texorpdfstring{$\Up$}{Up} sample}
+
+The source notation uses
+\begin{equation}
+ \mathcal J_n(u)
+ =\frac{\sigma_{n+1}(\lfloor2^{n+1}u\rfloor)}{2^{\binom n2}}.
+\end{equation}
+For $0\le u<1$ put $\vartheta_n(u)=\fract{2^{n+1}u}$ and
+\begin{equation}
+ d_n(u)=\frac{n+2-2\vartheta_n(u)}{2^{n+1}}.
+\end{equation}
+Then
+\begin{equation}
+ \mathcal J_n(u)
+ =\Up(2u-1)+d_n(u)\Up'(2u-1)
+  +\bigO\!\left(\frac{n^2}{4^n}\right).                  \label{eq:J-expansion}
+\end{equation}
+At $u=1$, the prefix coefficient identity is outside its range and the exact zero-run value is
+$-2^{-\binom n2}$; since $\Up(1)=\Up'(1)=0$, this exceptional endpoint is much smaller than
+the uniform principal scale and does not change the norm asymptotic.
+
+\section{An exact midpoint identity}
+\label{sec:midpoint}
+
+The sharp constant in \eqref{eq:floor-sharp} can be seen without asymptotic analysis at the
+single point where $F'$ attains its maximum.
+
+\begin{theorem}[Exact floor-prefix error at $x=1/2$]
+\label{thm:midpoint-exact}
+For every $n\ge2$,
+\begin{equation}
+ A_n\!\left(\frac12\right)
+ =\frac12+\frac{n+2}{2^n}-2^{-\binom n2}.                 \label{eq:midpoint-exact}
+\end{equation}
+Equivalently,
+\begin{equation}
+ \frac{2^n}{n}
+ \left(A_n\!\left(\frac12\right)-\frac12\right)
+ =1+\frac2n-\frac{2^{n-\binom n2}}n.                     \label{eq:midpoint-scaled}
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+Put $M=2^{n-1}$ and write $Q=P_{n-1}=\sum_{r=0}^{d}q_rz^r$, where
+$d=g_{n-1}=2^n-n-1$, extending $q_r$ by zero outside $0\le r\le d$.  Since $M<2^n$,
+multiplication by the last factor of $P_n$ gives
+\begin{equation}
+ [z^M]P_n=\sum_{r=0}^{M}q_r=:C.                            \label{eq:midpoint-C}
+\end{equation}
+The polynomial $Q$ is palindromic and has total mass
+\begin{equation}
+ T=Q(1)=2^{\binom n2}.                                     \label{eq:midpoint-T}
+\end{equation}
+By symmetry,
+\begin{equation}
+ 2C-T=\sum_{r=d-M}^{M}q_r.                                 \label{eq:midpoint-band}
+\end{equation}
+The band in \eqref{eq:midpoint-band} has $n+2$ coefficients.  To evaluate them, write
+$Q=P_{n-2}(1+\cdots+z^{2^{n-1}-1})$.  Put
+$T_0=P_{n-2}(1)=2^{\binom{n-1}{2}}$.  The $n$ interior coefficients of the band are all
+$T_0$, because the convolution window contains all coefficients of $P_{n-2}$.  Each of the
+two boundary coefficients is $T_0-1$: its window omits only the monic leading coefficient of
+$P_{n-2}$, and palindromicity gives the same value at the opposite boundary.  Hence
+\begin{equation}
+ 2C-T=(n+2)T_0-2.                                         \label{eq:midpoint-band-value}
+\end{equation}
+Since $T/T_0=2^{n-1}$,
+\[
+ \frac CT=\frac12+\frac{n+2}{2^n}-\frac1T.
+\]
+Finally, \eqref{eq:coefficient-bridge} and \eqref{eq:An} identify $C/T$ with
+$A_n(1/2)$, proving \eqref{eq:midpoint-exact}.
+\end{proof}
+
+\begin{table}[htbp]
+\centering
+\caption{Exact midpoint error and its sharp-rate normalization.}
+\label{tab:midpoint}
+\begin{tabular}{@{}rcc@{}}
+\toprule
+$n$ & $A_n(1/2)-1/2$ & $2^n\bigl(A_n(1/2)-1/2\bigr)/n$\\
+\midrule
+2  & $0.5$                 & $1.000000000000$\\
+3  & $0.5$                 & $1.333333333333$\\
+4  & $0.359375$            & $1.437500000000$\\
+5  & $0.2177734375$        & $1.393750000000$\\
+6  & $0.124969482421875$   & $1.333007812500$\\
+8  & $0.0390624962747097$  & $1.249999880791$\\
+10 & $0.0117187499999716$  & $1.199999999997$\\
+12 & $0.0034179687500000$  & $1.166666666667$\\
+16 & $0.0002746582031250$  & $1.125000000000$\\
+20 & $0.00002098083496094$ & $1.100000000000$\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+The exact identity also explains an otherwise puzzling numerical observation: after a few
+levels, the error is almost indistinguishable from the tangent displacement
+$2\delta_n(1/2)=(n+2)2^{-n}$.  The remaining defect is the super-exponentially small term
+$2^{-\binom n2}$.
+
+\subsection{Correct centering can be exact at the same point}
+
+The large error in \eqref{eq:midpoint-exact} is not an unavoidable defect of the prefix row.
+It is caused by reading the wrong index as the point $-1/2$ on the $\Up$ axis.  When $n$ is
+even, $-1/2$ itself is a lattice center, with index
+\begin{equation}
+ m_n^*=2^{n-1}-\frac{n+2}{2}.                              \label{eq:midpoint-correct-index}
+\end{equation}
+For this index, $m_n^*=(g_{n-1}-1)/2$.  Since $P_{n-1}$ is palindromic of odd degree, exactly
+half of its total coefficient mass lies at indices at most $m_n^*$.  The last-factor prefix
+identity therefore gives
+\begin{equation}
+ H_n(-1/2)=\frac12=\Up(-1/2) \qquad(n\ \text{even}).       \label{eq:midpoint-centered-exact}
+\end{equation}
+The floor rule instead uses $M=2^{n-1}$, which is $(n+2)/2$ whole cells to the right of
+$m_n^*$.  This is the discrete form of the support drift.
+
+\section{Bias removal and accelerated prefix reconstructions}
+\label{sec:acceleration}
+
+The expansion \eqref{eq:center-expansion} can be used constructively.  It tells us how to
+remove the leading deconvolution bias using only neighboring prefix coefficients.
+
+For a function on the center lattice, define the centered second difference
+\begin{equation}
+ \Deltah^2H(\lambda)
+ =\frac{H(\lambda+h_n)-2H(\lambda)+H(\lambda-h_n)}{h_n^2}. \label{eq:discrete-laplacian}
+\end{equation}
+Put
+\begin{equation}
+ c_n=\frac{3n+4}{72}h_n^2
+\end{equation}
+and define the corrected grid
+\begin{equation}
+ H_n^{[1]}(\lambda)=H_n(\lambda)+c_n\Deltah^2H_n(\lambda). \label{eq:corrected-grid}
+\end{equation}
+Every value in \eqref{eq:corrected-grid} is a rational linear combination of three normalized
+iterated-prefix values.
+
+\begin{theorem}[One-step deconvolution acceleration]
+\label{thm:accelerated}
+Uniformly on the center lattice,
+\begin{equation}
+ H_n^{[1]}(\lambda)-\Up(\lambda)
+ =-\frac{n^2}{1152\,16^n}\Up^{(4)}(\lambda)
+  +\smallo\!\left(\frac{n^2}{16^n}\right).                \label{eq:accelerated-profile}
+\end{equation}
+Consequently,
+\begin{equation}
+ \lim_{n\to\infty}\frac{16^n}{n^2}
+ \sup_{\lambda\in h_n(\Z-g_n/2)}
+ |H_n^{[1]}(\lambda)-\Up(\lambda)|
+ =\frac89.                                                 \label{eq:accelerated-norm}
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+For a smooth function,
+\begin{equation}
+ \Deltah^2f=f''+\frac{h_n^2}{12}f^{(4)}+\bigO(h_n^4).      \label{eq:second-difference-expansion}
+\end{equation}
+Write \eqref{eq:center-expansion} as
+$H_n=\Up-c_n\Up''+d_n\Up^{(4)}+\bigO(n^3h_n^6)$, where
+\[
+ d_n=\left(\frac{15n+16}{43200}
+          +\frac{(3n+4)^2}{10368}\right)h_n^4.
+\]
+Substitute this into \eqref{eq:corrected-grid} and use
+\eqref{eq:second-difference-expansion}.  If the uniform remainder is denoted by $R_n$, then
+$\|\Deltah^2R_n\|_\infty\le4h_n^{-2}\|R_n\|_\infty$; hence
+$c_n\Deltah^2R_n=\bigO(n^4h_n^6)=\smallo(n^2h_n^4)$.  Thus the remainder remains negligible
+at the claimed scale.  The second-derivative terms cancel, and the coefficient of
+$\Up^{(4)}$ is
+\begin{equation*}
+ d_n-c_n^2+\frac{c_nh_n^2}{12}
+ =-\frac{n^2}{1152}h_n^4+\bigO(nh_n^4).
+\end{equation*}
+This proves \eqref{eq:accelerated-profile}.  By \eqref{eq:sharp-derivatives},
+$\|\Up^{(4)}\|_\infty=2^{10}=1024$, so the sharp norm constant is
+$1024/1152=8/9$.
+\end{proof}
+
+Higher corrections follow by replacing the reciprocal-tail multiplier with successively
+longer polynomials in the lattice Laplacian.  The all-orders expansion
+\eqref{eq:all-orders} supplies the coefficients recursively.  To preserve the accelerated
+rate in a continuous reconstruction, one should use interpolation of sufficiently high order:
+piecewise-linear interpolation has an $\bigO(h_n^2)$ geometric error and would mask the
+$\bigO(n^2h_n^4)$ corrected lattice error, whereas local cubic interpolation has
+$\bigO(h_n^4)$ error and retains the latter as the dominant term.
+
+\section{Conceptual synthesis}
+\label{sec:synthesis}
+
+\subsection{One row, three coordinate choices}
+
+The normalized integer row
+\begin{equation}
+ m\longmapsto\frac{\sigma_{n+1}(m)}{2^{\binom n2}}        \label{eq:one-row}
+\end{equation}
+contains highly accurate samples, but the meaning of $m$ must be specified.
+
+\begin{enumerate}
+\item The intrinsic coordinate is the center
+$\lambda_{n,m}=h_n(m-g_n/2)$.  At that coordinate the row differs from $\Up$ by a curvature
+term of order $nh_n^2$.
+\item Holding a center value constant across its width-$h_n$ cell changes the coordinate by
+at most $h_n/2$.  The target has maximal slope $2$, so the histogram error is $h_n$.
+\item Replacing the intrinsic coordinate by the naive dyadic coordinate implicit in
+$m=\lfloor2^nx\rfloor$ overlooks the support deficit $r_n$.  It changes the coordinate by
+roughly $nh_n/2$, so the Fabius error is roughly $nh_nF'(x)/2$.
+\end{enumerate}
+The three rates are therefore compatible, not contradictory.  They measure distinct
+reconstructions of the same discrete data.
+
+\subsection{Variance versus support radius}
+
+The center expansion sees the omitted tail only through its even cumulants.  Its mean is zero,
+so the first nonzero effect is its variance $v_n\asymp nh_n^2$.  The floor-coordinate drift,
+by contrast, sees the extreme support loss $r_n\asymp nh_n$.  This is why a centered analytic
+argument is exponentially more accurate than a support-aligned but miscentered index rule.
+
+This distinction is common in lattice approximation.  Weak convergence controls averages,
+and moment matching controls smooth centered observables, but an endpoint-derived coordinate
+can retain a worst-case support defect long after the bulk distribution has become extremely
+close.
+
+\subsection{Why the \texorpdfstring{$n$}{n} is structural}
+
+The degree
+\begin{equation}
+ g_n=2^{n+1}-n-2
+\end{equation}
+is shorter than the naive value $2^{n+1}$ by exactly $n+2$.  After scaling by
+$2^{n+1}$ and centering, half of this deficit appears at each endpoint.  Hence the factor $n$
+in the floor rate is already encoded in the elementary degree formula for $P_n$.  No delicate
+property of $F$ is needed to predict its presence; the analytic work is needed to turn the
+horizontal deficit into the sharp vertical profile $F'$ and to control the smaller terms.
+
+\subsection{A practical recommendation}
+
+For numerical reconstruction from a computed prefix row:
+\begin{itemize}
+\item do not use $m/2^n$ as the physical coordinate;
+\item attach each value to $\lambda_{n,m}$ from \eqref{eq:center};
+\item use at least linear interpolation rather than a histogram;
+\item if another factor of roughly $4^n/n$ is valuable, apply the three-point correction
+      \eqref{eq:corrected-grid} and use cubic interpolation.
+\end{itemize}
+The coefficients remain exact rationals until the final interpolation or evaluation stage.
+
+\section{A Lean formalization roadmap}
+\label{sec:lean-roadmap}
+
+The new proof separates naturally into reusable lemmas.  A formalization need not begin with
+the full asymptotic theorem.
+
+\begin{enumerate}
+\item \textbf{Shifted-lattice Fourier inversion.}  Formalize \cref{lem:lattice-inversion} for
+a finitely supported measure on $a+h\Z$.  This is a finite-sum orthogonality calculation.
+\item \textbf{Rademacher realization.}  Refine the existing finite-measure bridge to the
+triangular Rademacher array \eqref{eq:Xn}; obtain \eqref{eq:finite-cosine} and the independent
+tail decomposition \eqref{eq:Tn}.
+\item \textbf{Exact geometric tails.}  Add the closed forms \eqref{eq:rn}, \eqref{eq:vn},
+\eqref{eq:alpha-n}, and \eqref{eq:beta-n}.  These reduce to finite manipulations of geometric
+series.
+\item \textbf{Uniform $\log\sec$ remainder.}  Prove a sixth-order Taylor bound on
+$[-1/4,1/4]$ and use it scale by scale.  The low-frequency cutoff can be chosen as
+$2^{n/4}$ or replaced by any convenient dyadic integer bound.
+\item \textbf{Rapid Fourier decay.}  Package repeated integration by parts for compactly
+supported $C^\infty$ functions and instantiate it with the already formalized sharp derivative
+bounds.
+\item \textbf{Center expansion.}  Combine the preceding lemmas with Fourier derivative
+identities.  The first-order version \eqref{eq:center-leading} is substantially shorter than
+the fourth-order theorem and already proves all three basic rates.
+\item \textbf{Exact drift.}  Formalize \eqref{eq:lambda-drift} by integer-floor arithmetic.
+Then \eqref{eq:floor-first} is a direct Taylor estimate.
+\item \textbf{Midpoint identity.}  Prove \cref{thm:midpoint-exact} independently of Fourier
+analysis from palindromicity and the central coefficient plateau.  It is an especially useful
+regression test for index conventions.
+\end{enumerate}
+
+The formal theorem statements should distinguish three domains: values at the center lattice,
+the step function on all reals, and the floor sample on $[0,1]$.  Combining them into one
+statement would obscure exactly the coordinate issue responsible for the different rates.
+
+\section{Conclusion}
+\label{sec:conclusion}
+
+Iterated summation of the signed Thue--Morse sequence does more than produce a sequence that
+happens to resemble the Fabius function.  After the correct one-order shift, its finite row is
+an exact lattice deconvolution of $\Up$.  The omitted part is an explicit triangular Bernoulli
+tail with support radius $(n+2)2^{-n-1}$ and variance $(3n+4)/(36\,4^n)$.  Those two exact
+numbers govern two different approximation regimes.
+
+At the natural centers, the mean-zero tail leaves a variance-scale curvature bias, yielding
+the sharp rate $n/(3\,4^n)$.  Holding the values constant across cells introduces the larger
+sharp rate $2^{-n}$.  Reading the same row at the naive dyadic floor leaves the full support
+deficit as a coordinate drift and yields the still larger sharp rate $n2^{-n}$.  The latter
+has the uniform error profile $F'$ and an exact midpoint formula.
+
+The main conceptual correction is therefore simple but consequential: the integer index is
+not itself the continuum coordinate.  Once the genuine center map is retained, the
+Thue--Morse prefix construction is far more accurate than its original pointwise formulation
+suggests, and its error admits a complete, explicitly computable differential expansion.
+
+\appendix
+
+\section{Elementary geometric-tail formulas}
+\label{app:tails}
+
+For $|q|<1$ and $n\ge0$,
+\begin{equation}
+ \sum_{\ell=n+1}^{\infty}\ell q^\ell
+ =q\frac{\dd}{\dd q}\left(\frac{q^{n+1}}{1-q}\right)
+ =q^{n+1}\frac{(n+1)-nq}{(1-q)^2}.                        \label{eq:geometric-tail}
+\end{equation}
+The specializations used in the text are
+\begin{align}
+ \sum_{\ell>n}\ell2^{-\ell}&=(n+2)2^{-n},\\
+ \sum_{\ell>n}\ell4^{-\ell}&=\frac{3n+4}{9\,4^n},\\
+ \sum_{\ell>n}\ell16^{-\ell}&=\frac{15n+16}{225\,16^n},\\
+ \sum_{\ell>n}\ell64^{-\ell}&=\frac{63n+64}{3969\,64^n}.
+\end{align}
+These identities make every coefficient in the all-orders expansion elementary: no
+unevaluated infinite tail sum is necessary.
+
+\section{A short exact-arithmetic algorithm}
+\label{app:algorithm}
+
+The coefficient row $[z^m]P_n$ can be built without polynomial multiplication.  Multiplication
+by $1+\cdots+z^{2^i-1}$ is a sliding-window sum.  The following pseudocode maintains exact
+integers and costs $\bigO(2^n)$ arithmetic operations per level.
+
+\begin{lstlisting}[style=pseudo]
+coeff := [1]
+for i := 1,...,n:
+    width := 2^i
+    nextLength := length(coeff) + width - 1
+    next := array(nextLength, 0)
+    window := 0
+    for m := 0,...,nextLength-1:
+        if m < length(coeff):
+            window := window + coeff[m]
+        if m >= width:
+            window := window - coeff[m-width]
+        next[m] := window
+    coeff := next
+
+# Normalized prefix sample:
+H_n(m) := coeff[m] / 2^(n(n-1)/2)
+# Physical coordinate:
+lambda_n(m) := (2m - (2^(n+1)-n-2)) / 2^(n+1)
+\end{lstlisting}
+
+The midpoint identity \eqref{eq:midpoint-exact}, symmetry
+$\mathtt{coeff[m]}=\mathtt{coeff[g_n-m]}$, the total mass
+$2^{\binom{n+1}{2}}$, and the central maximum $2^{\binom n2}$ provide independent exact
+checks of an implementation.
+
+\begin{thebibliography}{99}
+
+\bibitem{fabius1966}
+J.~Fabius,
+\newblock A probabilistic example of a nowhere analytic $C^\infty$-function,
+\newblock \emph{Zeitschrift f\"ur Wahrscheinlichkeitstheorie und Verwandte Gebiete}
+  \textbf{5} (1966), 173--174.
+\newblock DOI: \nolinkurl{10.1007/BF00536652}.
+
+\bibitem{arias1982}
+J.~Arias de Reyna,
+\newblock Definici\'on y estudio de una funci\'on indefinidamente diferenciable de soporte
+  compacto,
+\newblock \emph{Revista de la Real Academia de Ciencias Exactas, F\'isicas y Naturales de
+  Madrid} \textbf{76} (1982), no.~1, 21--38.
+\newblock English translation: \emph{An infinitely differentiable function with compact
+support: Definition and properties}, arXiv:\nolinkurl{1702.05442} (2017).
+
+\bibitem{allouche2003}
+J.-P.~Allouche and J.~Shallit,
+\newblock \emph{Automatic Sequences: Theory, Applications, Generalizations},
+\newblock Cambridge University Press, 2003.
+
+\bibitem{reshetnikovExposition}
+V.~Reshetnikov,
+\newblock \emph{The Fabius Function and Rvachev's Up-Function: Exact arithmetic,
+probability, Fourier analysis, and corrected sharp asymptotics},
+\newblock human-readable synthesis in the \texttt{ProveIt} repository, snapshot
+25 August 2026.
+\newblock \url{https://github.com/VladimirReshetnikov/ProveIt/blob/e4aa81a0b6b7e4f9943c3a5789c4a781ee120be4/Analysis/FabiusFunction/docs/Fabius_Function_and_Rvachev_Up/Fabius_Function_and_Rvachev_Up.tex}.
+
+\bibitem{proveit}
+V.~Reshetnikov,
+\newblock \emph{ProveIt: Analysis/FabiusFunction},
+\newblock Lean~4 formal development, repository snapshot
+\path{e4aa81a0b6b7e4f9943c3a5789c4a781ee120be4}, 25 August 2026.
+\newblock \url{https://github.com/VladimirReshetnikov/ProveIt/tree/e4aa81a0b6b7e4f9943c3a5789c4a781ee120be4/Analysis/FabiusFunction}.
+
+\end{thebibliography}
+
+\end{document}

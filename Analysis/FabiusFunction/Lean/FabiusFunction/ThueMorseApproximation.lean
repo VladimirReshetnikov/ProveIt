@@ -14,6 +14,25 @@ identification covers every prefix order: at order zero the dyadic cutoff
 admits only index zero, where both sides equal one.  Both the finite polynomial
 factorization and its formal-power-series quotient are likewise total at order
 zero, with natural predecessor saturation selecting `p_0`.
+
+Main results:
+
+* `one_sub_X_pow_mul_approximationPolynomialInt_all`: the denominator-cleared
+  finite-product identity at every order.
+* `thueMorseBlockPolynomial_mul_invOneSubPow_eq_approximationPolynomialInt`:
+  the formal-power-series quotient form of the same identity.
+* `iteratedPrefix_eq_approximationPolynomial_coeff_all`: the iterated prefix
+  sums are the coefficients of `p_(k-1)` below the dyadic cutoff.
+* `correctedPrefixCoefficient_eq_stepApproximant_all`: the corrected prefix
+  coefficients are exactly the step-approximant values at cell centers.
+* `tendsto_moving_of_unimodal_of_tendsto`: the abstract squeeze lemma that
+  transports pointwise convergence of a unimodal family to a moving argument.
+* `stepApproximant_moving_tendsto`: its specialization to the step
+  approximants and Rvachev's up function.
+* `correctedPrefixGridSample_tendsto_rvachevUp_of_le_one` and
+  `correctedPrefixGridSample_tendsto_fabius_of_le_one`: half-line pointwise
+  convergence of the corrected dyadic-floor samples, together with their
+  `Set.Icc` corollaries.
 -/
 
 set_option autoImplicit false
@@ -144,11 +163,13 @@ theorem iteratedPrefix_eq_approximationPolynomial_coeff_all
       simp [approximationPolynomialInt]
 
 /-- Positive-order compatibility form of
-`iteratedPrefix_eq_approximationPolynomial_coeff_all`. -/
+`iteratedPrefix_eq_approximationPolynomial_coeff_all`.  The positivity
+hypothesis is not needed by the proof and is retained only so that the
+statement matches the source. -/
 theorem iteratedPrefix_eq_approximationPolynomial_coeff
-    (k m : ℕ) (hk : 0 < k) (hm : m < 2 ^ k) :
-    iteratedPrefix k m = ((approximationPolynomial (k - 1)).coeff m : ℤ) := by
-  exact iteratedPrefix_eq_approximationPolynomial_coeff_all k m hm
+    (k m : ℕ) (_hk : 0 < k) (hm : m < 2 ^ k) :
+    iteratedPrefix k m = ((approximationPolynomial (k - 1)).coeff m : ℤ) :=
+  iteratedPrefix_eq_approximationPolynomial_coeff_all k m hm
 
 private theorem halfEndpointIntervalIndicator_polynomialAtom_eq_ite (n m l : ℕ) :
     halfEndpointIntervalIndicator (stepIntervalLeft n l) (stepIntervalRight n l)
@@ -168,15 +189,8 @@ private theorem halfEndpointIntervalIndicator_polynomialAtom_eq_ite (n m l : ℕ
         have hle : ((l + 1 : ℕ) : ℝ) ≤ (m : ℝ) := by exact_mod_cast hleNat
         push_cast at hle ⊢
         linarith
-      have hleft : stepIntervalLeft n l < polynomialAtomLocation n m :=
-        (stepIntervalLeft_lt_right n l).trans hright
-      rw [halfEndpointIntervalIndicator]
-      split_ifs with hboundary hinterior
-      · rcases hboundary with hboundary | hboundary
-        · exact (ne_of_gt hleft hboundary).elim
-        · exact (ne_of_gt hright hboundary).elim
-      · exact (not_lt_of_ge hright.le hinterior.2).elim
-      · rfl
+      exact halfEndpointIntervalIndicator_eq_zero_of_right_lt
+        (stepIntervalLeft_lt_right n l) hright
     · have hleft : polynomialAtomLocation n m < stepIntervalLeft n l := by
         unfold stepIntervalLeft polynomialAtomLocation
         apply (div_lt_div_iff_of_pos_right hden).2
@@ -184,15 +198,8 @@ private theorem halfEndpointIntervalIndicator_polynomialAtom_eq_ite (n m l : ℕ
         have hle : ((m + 1 : ℕ) : ℝ) ≤ (l : ℝ) := by exact_mod_cast hleNat
         push_cast at hle ⊢
         linarith
-      have hright : polynomialAtomLocation n m < stepIntervalRight n l :=
-        hleft.trans (stepIntervalLeft_lt_right n l)
-      rw [halfEndpointIntervalIndicator]
-      split_ifs with hboundary hinterior
-      · rcases hboundary with hboundary | hboundary
-        · exact (ne_of_lt hleft hboundary).elim
-        · exact (ne_of_lt hright hboundary).elim
-      · exact (not_lt_of_ge hleft.le hinterior.1).elim
-      · rfl
+      exact halfEndpointIntervalIndicator_eq_zero_of_lt_left
+        (stepIntervalLeft_lt_right n l) hleft
 
 /-- At the center of the `m`-th cell, the step approximant is precisely its
 normalized polynomial coefficient. This remains true outside the polynomial
@@ -231,12 +238,14 @@ theorem correctedPrefixCoefficient_eq_stepApproximant_all
   field_simp
 
 /-- Positive-order compatibility form of
-`correctedPrefixCoefficient_eq_stepApproximant_all`. -/
+`correctedPrefixCoefficient_eq_stepApproximant_all`.  The positivity
+hypothesis is not needed by the proof and is retained only so that the
+statement matches the source. -/
 theorem correctedPrefixCoefficient_eq_stepApproximant
-    (k m : ℕ) (hk : 0 < k) (hm : m < 2 ^ k) :
+    (k m : ℕ) (_hk : 0 < k) (hm : m < 2 ^ k) :
     correctedPrefixCoefficient k m =
-      stepApproximant (k - 1) (polynomialAtomLocation (k - 1) m) := by
-  exact correctedPrefixCoefficient_eq_stepApproximant_all k m hm
+      stepApproximant (k - 1) (polynomialAtomLocation (k - 1) m) :=
+  correctedPrefixCoefficient_eq_stepApproximant_all k m hm
 
 /-- The order-`n+1` corrected prefix sample at the left dyadic grid choice
 `floor(2^(n+1) x)`. -/
@@ -345,16 +354,23 @@ theorem correctedPrefixGridSample_eq_stepApproximant
   have hpow : (0 : ℝ) < (2 : ℝ) ^ (n + 1) := by positivity
   nlinarith
 
-/-- Pointwise convergence of the step approximants is stable when their
-arguments move toward the evaluation point. The proof uses the common
-unimodal shape and continuity of the limit, not a uniform rate. -/
-theorem stepApproximant_moving_tendsto
-    (F : BoundedFabius) (hF : IsFabius F) (u : ℕ → ℝ) (y : ℝ)
-    (hu : Tendsto u atTop (nhds y)) :
-    Tendsto (fun n : ℕ => stepApproximant n (u n))
-      atTop (nhds (rvachevUp F y)) := by
-  have hgcont : ContinuousAt (rvachevUp F) y :=
-    (rvachev_contDiff F hF).continuous.continuousAt
+/-- Abstract moving-argument squeeze for a unimodal family.  A family `f` of
+real functions that increases on `Iio 0`, decreases on `Ioi 0`, matches the
+limit at the origin, never exceeds the peak value `g 0`, and converges
+pointwise to `g` along a filter `l`, also converges to `g y` when evaluated
+along any sequence `u` tending to `y`, provided only that `g` is continuous
+at `y`.  No quantitative uniform rate is used: the two-sided monotone shape
+is what transports the pointwise limits to the moving arguments. -/
+theorem tendsto_moving_of_unimodal_of_tendsto
+    {ι : Type*} {l : Filter ι} (f : ι → ℝ → ℝ) (g : ℝ → ℝ)
+    (hfmono : ∀ n, MonotoneOn (f n) (Iio 0))
+    (hfanti : ∀ n, AntitoneOn (f n) (Ioi 0))
+    (hfzero : ∀ n, f n 0 = g 0)
+    (hfle : ∀ n x, f n x ≤ g 0)
+    (hpt : ∀ x : ℝ, Tendsto (fun n => f n x) l (nhds (g x)))
+    (u : ι → ℝ) (y : ℝ) (hgcont : ContinuousAt g y)
+    (hu : Tendsto u l (nhds y)) :
+    Tendsto (fun n => f n (u n)) l (nhds (g y)) := by
   rw [Metric.tendsto_nhds]
   intro ε hε
   rcases lt_trichotomy y 0 with hy | rfl | hy
@@ -369,56 +385,50 @@ theorem stepApproximant_moving_tendsto
     have hdy : d ≤ -y / 2 := min_le_right _ _
     have ha0 : y - d < 0 := by linarith
     have hb0 : y + d < 0 := by linarith
-    have hga : dist (rvachevUp F (y - d)) (rvachevUp F y) < ε / 2 := by
+    have hga : dist (g (y - d)) (g y) < ε / 2 := by
       apply hgδ
       simpa [Real.dist_eq, abs_of_nonneg hd.le] using hdδ
-    have hgb : dist (rvachevUp F (y + d)) (rvachevUp F y) < ε / 2 := by
+    have hgb : dist (g (y + d)) (g y) < ε / 2 := by
       apply hgδ
       simpa [Real.dist_eq, abs_of_nonneg hd.le] using hdδ
     have hua := (Metric.tendsto_nhds.1 hu) d hd
-    have hfa := (Metric.tendsto_nhds.1
-      (stepApproximant_tendsto_rvachevUp F hF (y - d))) (ε / 2) (by positivity)
-    have hfb := (Metric.tendsto_nhds.1
-      (stepApproximant_tendsto_rvachevUp F hF (y + d))) (ε / 2) (by positivity)
+    have hfa := (Metric.tendsto_nhds.1 (hpt (y - d))) (ε / 2) (by positivity)
+    have hfb := (Metric.tendsto_nhds.1 (hpt (y + d))) (ε / 2) (by positivity)
     filter_upwards [hua, hfa, hfb] with n hun hfan hfbn
     rw [Real.dist_eq, abs_lt] at hun hfan hfbn hga hgb ⊢
     have hau : y - d ≤ u n := by linarith [hun.1]
     have hub : u n ≤ y + d := by linarith [hun.2]
     have hu0 : u n < 0 := lt_of_le_of_lt hub hb0
-    have hlower := stepApproximant_monotoneOn_Iio n ha0 hu0 hau
-    have hupper := stepApproximant_monotoneOn_Iio n hu0 hb0 hub
+    have hlower := hfmono n ha0 hu0 hau
+    have hupper := hfmono n hu0 hb0 hub
     constructor <;> linarith
   · rcases (Metric.continuousAt_iff.1 hgcont) (ε / 2) (by positivity) with
       ⟨δ, hδ, hgδ⟩
     let d : ℝ := δ / 2
     have hd : 0 < d := by dsimp [d]; positivity
     have hdδ : d < δ := by dsimp [d]; linarith
-    have hga : dist (rvachevUp F (-d)) (rvachevUp F 0) < ε / 2 := by
+    have hga : dist (g (-d)) (g 0) < ε / 2 := by
       apply hgδ
       simpa [Real.dist_eq, abs_of_nonneg hd.le] using hdδ
-    have hgb : dist (rvachevUp F d) (rvachevUp F 0) < ε / 2 := by
+    have hgb : dist (g d) (g 0) < ε / 2 := by
       apply hgδ
       simpa [Real.dist_eq, abs_of_nonneg hd.le] using hdδ
     have hua := (Metric.tendsto_nhds.1 hu) d hd
-    have hfa := (Metric.tendsto_nhds.1
-      (stepApproximant_tendsto_rvachevUp F hF (-d))) (ε / 2) (by positivity)
-    have hfb := (Metric.tendsto_nhds.1
-      (stepApproximant_tendsto_rvachevUp F hF d)) (ε / 2) (by positivity)
+    have hfa := (Metric.tendsto_nhds.1 (hpt (-d))) (ε / 2) (by positivity)
+    have hfb := (Metric.tendsto_nhds.1 (hpt d)) (ε / 2) (by positivity)
     filter_upwards [hua, hfa, hfb] with n hun hfan hfbn
     rw [Real.dist_eq, abs_lt] at hun hfan hfbn hga hgb ⊢
     have hleft : -d < u n := by linarith [hun.1]
     have hright : u n < d := by linarith [hun.2]
-    have hlower : rvachevUp F 0 - ε < stepApproximant n (u n) := by
+    have hlower : g 0 - ε < f n (u n) := by
       rcases lt_trichotomy (u n) 0 with huneg | huzero | hupos
-      · have hmono := stepApproximant_monotoneOn_Iio n (neg_neg_of_pos hd) huneg hleft.le
+      · have hmono := hfmono n (neg_neg_of_pos hd) huneg hleft.le
         linarith
-      · rw [huzero, stepApproximant_apply_zero, rvachev_zero F hF]
+      · rw [huzero, hfzero n]
         linarith
-      · have hanti := stepApproximant_antitoneOn_Ioi n hupos hd hright.le
+      · have hanti := hfanti n hupos hd hright.le
         linarith
-    have hupper : stepApproximant n (u n) ≤ rvachevUp F 0 := by
-      rw [rvachev_zero F hF]
-      exact stepApproximant_le_one n (u n)
+    have hupper : f n (u n) ≤ g 0 := hfle n (u n)
     constructor <;> linarith
   · rcases (Metric.continuousAt_iff.1 hgcont) (ε / 2) (by positivity) with
       ⟨δ, hδ, hgδ⟩
@@ -431,25 +441,42 @@ theorem stepApproximant_moving_tendsto
     have hdy : d ≤ y / 2 := min_le_right _ _
     have ha0 : 0 < y - d := by linarith
     have hb0 : 0 < y + d := by linarith
-    have hga : dist (rvachevUp F (y - d)) (rvachevUp F y) < ε / 2 := by
+    have hga : dist (g (y - d)) (g y) < ε / 2 := by
       apply hgδ
       simpa [Real.dist_eq, abs_of_nonneg hd.le] using hdδ
-    have hgb : dist (rvachevUp F (y + d)) (rvachevUp F y) < ε / 2 := by
+    have hgb : dist (g (y + d)) (g y) < ε / 2 := by
       apply hgδ
       simpa [Real.dist_eq, abs_of_nonneg hd.le] using hdδ
     have hua := (Metric.tendsto_nhds.1 hu) d hd
-    have hfa := (Metric.tendsto_nhds.1
-      (stepApproximant_tendsto_rvachevUp F hF (y - d))) (ε / 2) (by positivity)
-    have hfb := (Metric.tendsto_nhds.1
-      (stepApproximant_tendsto_rvachevUp F hF (y + d))) (ε / 2) (by positivity)
+    have hfa := (Metric.tendsto_nhds.1 (hpt (y - d))) (ε / 2) (by positivity)
+    have hfb := (Metric.tendsto_nhds.1 (hpt (y + d))) (ε / 2) (by positivity)
     filter_upwards [hua, hfa, hfb] with n hun hfan hfbn
     rw [Real.dist_eq, abs_lt] at hun hfan hfbn hga hgb ⊢
     have hau : y - d ≤ u n := by linarith [hun.1]
     have hub : u n ≤ y + d := by linarith [hun.2]
     have hu0 : 0 < u n := lt_of_lt_of_le ha0 hau
-    have hlower := stepApproximant_antitoneOn_Ioi n hu0 hb0 hub
-    have hupper := stepApproximant_antitoneOn_Ioi n ha0 hu0 hau
+    have hlower := hfanti n hu0 hb0 hub
+    have hupper := hfanti n ha0 hu0 hau
     constructor <;> linarith
+
+/-- Pointwise convergence of the step approximants is stable when their
+arguments move toward the evaluation point. The proof uses the common
+unimodal shape and continuity of the limit, not a uniform rate: it is the
+specialization of `tendsto_moving_of_unimodal_of_tendsto` to the step
+approximants. -/
+theorem stepApproximant_moving_tendsto
+    (F : BoundedFabius) (hF : IsFabius F) (u : ℕ → ℝ) (y : ℝ)
+    (hu : Tendsto u atTop (nhds y)) :
+    Tendsto (fun n : ℕ => stepApproximant n (u n))
+      atTop (nhds (rvachevUp F y)) :=
+  tendsto_moving_of_unimodal_of_tendsto stepApproximant (rvachevUp F)
+    stepApproximant_monotoneOn_Iio stepApproximant_antitoneOn_Ioi
+    (fun _ => by rw [stepApproximant_apply_zero, rvachev_zero F hF])
+    (fun n x => by
+      rw [rvachev_zero F hF]
+      exact stepApproximant_le_one n x)
+    (stepApproximant_tendsto_rvachevUp F hF) u y
+    (rvachev_contDiff F hF).continuous.continuousAt hu
 
 /-- Interior and left-endpoint convergence of the corrected dyadic-floor
 samples. The right endpoint is separate because its floor index is the first
@@ -552,18 +579,29 @@ theorem correctedPrefixGridSample_tendsto_rvachevUp
       atTop (nhds (rvachevUp F (2 * x - 1))) := by
   exact correctedPrefixGridSample_tendsto_rvachevUp_of_le_one F hF hx.2
 
+/-- Half-line form of the first-half rescaling: sampling at `x/2` recovers
+the Fabius function for every `x ≤ 1`, with no lower bound on `x`.  Below
+zero both sides vanish, by natural-floor clamping on the left and by the
+support of `rvachevUp` on the right. -/
+theorem correctedPrefixGridSample_tendsto_fabius_of_le_one
+    (F : BoundedFabius) (hF : IsFabius F) {x : ℝ} (hx : x ≤ 1) :
+    Tendsto (fun n : ℕ => correctedPrefixGridSample n (x / 2))
+      atTop (nhds (fabiusReal F x)) := by
+  have h := correctedPrefixGridSample_tendsto_rvachevUp_of_le_one F hF
+    (show x / 2 ≤ 1 by linarith)
+  have harg : 2 * (x / 2) - 1 ≤ 0 := by linarith
+  rw [rvachevUp, if_pos harg] at h
+  convert h using 1
+  ring_nf
+
 /-- Equivalent first-half rescaling: sample at `x/2` to recover the Fabius
-function itself on `[0,1]`. -/
+function itself on `[0,1]`.  Compatibility corollary of
+`correctedPrefixGridSample_tendsto_fabius_of_le_one`. -/
 theorem correctedPrefixGridSample_tendsto_fabius
     (F : BoundedFabius) (hF : IsFabius F) {x : ℝ}
     (hx : x ∈ Set.Icc (0 : ℝ) 1) :
     Tendsto (fun n : ℕ => correctedPrefixGridSample n (x / 2))
       atTop (nhds (fabiusReal F x)) := by
-  have hxhalf : x / 2 ∈ Set.Icc (0 : ℝ) 1 := by constructor <;> linarith [hx.1, hx.2]
-  have h := correctedPrefixGridSample_tendsto_rvachevUp F hF hxhalf
-  have harg : 2 * (x / 2) - 1 ≤ 0 := by linarith [hx.2]
-  rw [rvachevUp, if_pos harg] at h
-  convert h using 1
-  ring_nf
+  exact correctedPrefixGridSample_tendsto_fabius_of_le_one F hF hx.2
 
 end Fabius

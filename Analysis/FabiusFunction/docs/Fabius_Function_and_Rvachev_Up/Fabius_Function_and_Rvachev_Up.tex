@@ -2801,8 +2801,9 @@ after a dyadic normalization the resulting integer grid reproduces, in the
 limit, the Rvachev bump and hence $F$.
 
 This section develops that construction: the convolution law and its explicit binomial
-kernel, the exact zero runs forced by Prouhet cancellation, the two generating-series
-identities, the discrete functional equation satisfied by the normalized grid, and the
+kernel, the signed dyadic reflection preceding each terminal zero run, the zero runs
+themselves and their exact boundary values, the two generating-series identities, the
+discrete functional equation satisfied by the normalized grid, and the
 precise sense in which the normalized grid converges.  The convergence statement requires
 one shift of the prefix order and the centered reading of the grid cells; the literal
 normalization does not converge, and that failure is recorded separately in
@@ -2895,7 +2896,7 @@ definition of the other.  Both are recorded here because the coefficient form is
 actually evaluates, while the series form is what one manipulates.
 \end{remark}
 
-\subsection{Prouhet annihilation and exact dyadic zero runs}
+\subsection{Prouhet annihilation, signed dyadic reciprocity, and exact zero runs}
 \label{tm:sub-zero-runs}
 
 \Cref{eq:thue-affine-cancel} already records that a complete dyadic block of Thue--Morse
@@ -2960,6 +2961,32 @@ order \(r\); this is \lean{order_thueMorseCenteredPowerSeries}.  For the binomia
 coefficient-extraction theorem \lean{thueMorse_polynomial_sum_eq_coeff}, displayed in
 \eqref{eq:tm-polynomial-extract}.
 
+\begin{theorem}[Signed dyadic reciprocity]
+\label{thm:tm-dyadic-reciprocity}
+Let $k,r,d\in\N$ satisfy $k\le r$ and $k+d<2^r$.  Then the part of the
+order-$k$ prefix row immediately preceding its final $k$ positions is the
+initial part of that row, read backwards and multiplied by one fixed sign:
+\begin{equation}
+ \sigma_k\bigl(2^r-k-1-d\bigr)
+   =(-1)^{r-k}\sigma_k(d).                                \label{eq:tm-dyadic-reciprocity}
+\end{equation}
+Consequently reflection preserves, rather than excludes, its zero locus:
+\begin{equation}
+ \sigma_k\bigl(2^r-k-1-d\bigr)=0
+ \quad\Longleftrightarrow\quad
+ \sigma_k(d)=0.                                           \label{eq:tm-dyadic-zero-iff}
+\end{equation}
+\end{theorem}
+
+The identity \eqref{eq:tm-dyadic-reciprocity} and equivalence
+\eqref{eq:tm-dyadic-zero-iff} are formalized respectively as
+\lean{iteratedPrefix_dyadic_reverse_window} and
+\lean{iteratedPrefix_dyadic_reverse_window_eq_zero_iff}.  At $k=0$ the first
+identity is precisely the dyadic bit-complement law
+\lean{thueMorseSign_dyadic_complement}.  Its proof below uses the independently
+established left boundary in \cref{thm:tm-zero-run} as the seed for the prefix
+recurrence.
+
 \begin{theorem}[Exact dyadic zero runs]
 \label{thm:tm-zero-run}
 Let $1\le k\le r$.  Then
@@ -2974,7 +3001,16 @@ zero run terminating at $2^r-1$ has length exactly $k$: it is bounded on the lef
 of modulus one and on the right by the value $-1$.
 \end{theorem}
 
-\begin{proof}
+\begin{proof}[Formal proof and Lean correspondence]
+The terminal block is formalized by
+\lean{iteratedPrefix_dyadic_zero_run}; its endpoint and reverse-indexed forms
+are \lean{iteratedPrefix_dyadic_endpoint} and
+\lean{iteratedPrefix_dyadic_zero_reverse}.  Its left and right boundaries are
+\lean{iteratedPrefix_before_dyadic_run} and
+\lean{iteratedPrefix_at_dyadic}.  All five declarations are in
+\path{ThueMorsePrefix.lean}.  The mathematical argument behind them is as
+follows.
+
 \emph{Endpoint.}  Put $q=k-1$, so $0\le q<r$.  By \eqref{eq:tm-kernel-sum},
 \begin{equation*}
  \sigma_k(2^r-1)
@@ -3008,6 +3044,52 @@ $\varepsilon_{2^r}=-1$.  If \eqref{eq:tm-run-right} holds at order $k$ and $k+1\
 by \eqref{eq:tm-forward-diff} and \eqref{eq:tm-zero-run},
 $\sigma_{k+1}(2^r)=\sigma_{k+1}(2^r-1)+\sigma_k(2^r)=0-1=-1$.
 \end{proof}
+
+\begin{proof}[Proof of \cref{thm:tm-dyadic-reciprocity}]
+Induct first on the prefix order $k$.  At order zero, $\sigma_0=\varepsilon$, and
+reflecting $d$ in the block $0,\ldots,2^r-1$ complements its first $r$ binary
+digits.  Thus
+$\varepsilon_{2^r-1-d}=(-1)^r\varepsilon_d$, which is
+\eqref{eq:tm-dyadic-reciprocity} for $k=0$.
+
+Now suppose the identity is known at order $k$ and prove it at order $k+1$ by
+induction on $d$.  For $d=0$, equation \eqref{eq:tm-run-left} and
+$\sigma_{k+1}(0)=1$ give exactly the required identity.  For the induction
+step, put
+\[
+ n=2^r-(k+1)-1-(d+1),
+ \qquad s=(-1)^{r-(k+1)}.
+\]
+The same-order induction hypothesis at offset $d$ and the lower-order
+hypothesis at offset $d+1$ have the common reflected index $n+1$ and give
+\[
+ \sigma_{k+1}(n+1)=s\sigma_{k+1}(d),
+ \qquad
+ \sigma_k(n+1)=(-1)^{r-k}\sigma_k(d+1)=-s\sigma_k(d+1).
+\]
+Applying the forward-difference law \eqref{eq:tm-forward-diff} first at $n$
+and then at $d$ therefore yields
+\begin{align*}
+ \sigma_{k+1}(n)
+ &=\sigma_{k+1}(n+1)-\sigma_k(n+1)\\
+ &=s\bigl(\sigma_{k+1}(d)+\sigma_k(d+1)\bigr)
+  =s\sigma_{k+1}(d+1),
+\end{align*}
+which closes both inductions.  Finally, the multiplier $(-1)^{r-k}$ is
+nonzero, so \eqref{eq:tm-dyadic-reciprocity} is equivalent to
+\eqref{eq:tm-dyadic-zero-iff}.
+\end{proof}
+
+\begin{remark}
+At the level of statements, setting $d=0$ in
+\eqref{eq:tm-dyadic-reciprocity} and using
+\lean{iteratedPrefix_at_zero}, namely $\sigma_k(0)=1$, recovers the left
+boundary \eqref{eq:tm-run-left}.  Reciprocity pairs any zeros that occur in
+the pre-run window; it does not claim that window is zero-free.  Nor does it
+imply the terminal zero run \eqref{eq:tm-zero-run} or the separate right
+boundary \eqref{eq:tm-run-right}, both of which were proved independently
+above.
+\end{remark}
 
 \begin{remark}
 The right boundary value is not $+1$.  Every iterated prefix sum, at every order

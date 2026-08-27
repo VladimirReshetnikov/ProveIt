@@ -77,18 +77,6 @@ theorem gaussianPolynomialContraction_negativeLaplaceExpCoeff_odd
       norm_num]
     ring
 
-private lemma sum_range_two_mul_pair
-    {R : Type*} [AddCommMonoid R] (f : ℕ → R) (N : ℕ) :
-    ∑ k ∈ Finset.range (2 * N), f k =
-      ∑ j ∈ Finset.range N, (f (2 * j) + f (2 * j + 1)) := by
-  induction N with
-  | zero => simp
-  | succ N ih =>
-      rw [show 2 * (N + 1) = (2 * N + 1) + 1 by omega,
-        Finset.sum_range_succ, Finset.sum_range_succ,
-        Finset.sum_range_succ, ih]
-      abel
-
 /-- Reciprocal square-root scale on the dyadic Lambert saddle. -/
 noncomputable def dyadicLambertEpsilon (t : ℝ) : ℝ :=
   (Real.sqrt (dyadicLambertPhase t))⁻¹
@@ -127,7 +115,7 @@ theorem gaussianPolynomialContraction_dyadicLambertReferencePolynomial
         (dyadicLambertPhase t)⁻¹ ^ j *
           (fabiusSaddleMassCoefficient j (dyadicLambertPhase t) : ℂ) := by
   unfold dyadicLambertReferencePolynomial fabiusSaddleReferencePolynomial
-  rw [map_sum, sum_range_two_mul_pair]
+  rw [map_sum, sum_range_two_mul]
   apply Finset.sum_congr rfl
   intro j hj
   rw [Polynomial.C_mul', Polynomial.C_mul', map_smul, map_smul,
