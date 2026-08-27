@@ -5,8 +5,10 @@ import FabiusFunction.PaperFabiusAsymptotic
 import FabiusFunction.PaperKFoldThueMorse
 import FabiusFunction.FinitePolynomialFunctional
 import FabiusFunction.FiniteQBinomialCore
+import FabiusFunction.GeometricQBinomialLagrange
 import FabiusFunction.WeightedScaleMultiplicity
 import FabiusFunction.MomentCumulantAlgebra
+import FabiusFunction.ThueMorseBitSupport
 import FabiusFunction.ThueMorseBooleanCube
 import FabiusFunction.ThueMorseValuation
 import FabiusFunction.ThueMorseDigits
