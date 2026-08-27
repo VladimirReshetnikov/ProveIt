@@ -29,6 +29,9 @@ import FabiusFunction.ThueMorseFourierInversion
 import FabiusFunction.ThueMorseParseval
 import FabiusFunction.ThueMorseComplexity
 import FabiusFunction.ThueMorseArithmeticFilter
+import FabiusFunction.ThueMorseHessenberg
+import FabiusFunction.ThueMorsePartition
+import FabiusFunction.ThueMorseIntegerLift
 import FabiusFunction.LacunaryRieszIntegral
 import FabiusFunction.GelfondLogisticBound
 import FabiusFunction.NegativeLaplace

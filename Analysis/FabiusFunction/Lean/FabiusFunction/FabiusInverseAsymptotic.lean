@@ -631,8 +631,8 @@ theorem tendsto_fabiusInv_div_rpow_atTop_at_zero_right
       Tendsto (fun y : ℝ => y ^ α / fabiusInv F hF y)
         (𝓝[>] (0 : ℝ)) (𝓝[>] (0 : ℝ)) :=
     tendsto_nhdsWithin_iff.2 ⟨hzero, hpos⟩
-  simpa only [Pi.inv_apply, inv_div] using
-    hwithin.inv_tendsto_nhdsGT_zero
+  exact hwithin.inv_tendsto_nhdsGT_zero.congr fun y => by
+    simp [Pi.inv_apply, inv_div]
 
 /-- The inverse Fabius function is not `O(y ^ α)` at zero for any positive
 real exponent `α`. -/
