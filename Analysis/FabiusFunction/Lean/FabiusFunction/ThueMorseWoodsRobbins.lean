@@ -1,4 +1,5 @@
 import FabiusFunction.ThueMorseDirichlet
+import FabiusFunction.RealZPowProduct
 
 /-!
 # The Woods–Robbins product
@@ -295,7 +296,7 @@ private theorem wrC_two_mul (N : ℕ) :
       ring_nf
     · rw [if_neg (by omega : ¬ 2 * j = 0), if_neg (by omega)]
       push_cast
-      ring
+      ring_nf
   rw [Finset.sum_congr rfl hterm, Finset.sum_sub_distrib, wrA, wrB]
 
 /-- The limit of the Woods–Robbins log-series is `-(log 2)/2`. -/
@@ -333,26 +334,9 @@ theorem woods_robbins :
     Tendsto (fun N => ∏ n ∈ range N,
       ((2 * (n : ℝ) + 1) / (2 * (n : ℝ) + 2)) ^ (thueMorseSign n))
       atTop (𝓝 (1 / Real.sqrt 2)) := by
-  have hexp : ∀ N, ∏ n ∈ range N,
-      ((2 * (n : ℝ) + 1) / (2 * (n : ℝ) + 2)) ^ (thueMorseSign n) =
-      Real.exp (wrA N) := by
-    intro N
-    rw [wrA, Real.exp_sum]
-    refine Finset.prod_congr rfl fun n _ => ?_
-    have hpos : (0 : ℝ) < (2 * (n : ℝ) + 1) / (2 * (n : ℝ) + 2) := by
-      positivity
-    rw [← Real.rpow_intCast ((2 * (n : ℝ) + 1) / (2 * (n : ℝ) + 2))
-      (thueMorseSign n), Real.rpow_def_of_pos hpos]
-    congr 1
-    ring
-  have hlim := (Real.continuous_exp.tendsto _).comp tendsto_wrA
-  have hval : Real.exp (-Real.log 2 / 2) = 1 / Real.sqrt 2 := by
-    rw [Real.sqrt_eq_rpow, Real.rpow_def_of_pos
-      (by norm_num : (0 : ℝ) < 2), one_div, ← Real.exp_neg]
-    congr 1
-    ring
-  refine Tendsto.congr (fun N => (hexp N).symm) ?_
-  rw [← hval]
-  exact hlim
+  rw [← exp_neg_log_div_two (by norm_num : (0 : ℝ) < 2)]
+  exact tendsto_prod_zpow_of_tendsto_sum (fun N : ℕ => range N)
+    (fun n : ℕ => (2 * (n : ℝ) + 1) / (2 * (n : ℝ) + 2)) thueMorseSign
+    (fun n => by positivity) tendsto_wrA
 
 end Fabius

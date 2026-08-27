@@ -217,21 +217,9 @@ theorem mpLimit_dyadic (a b : ℝ) (ha : 0 < a) (hb : 0 < b) :
 theorem tendsto_masterProduct (a b : ℝ) (ha : 0 < a) (hb : 0 < b) :
     Tendsto (fun N => ∏ n ∈ range N,
       (((n : ℝ) + a) / ((n : ℝ) + b)) ^ (thueMorseSign n)) atTop
-      (𝓝 (Real.exp (mpLimit a b))) := by
-  have hexp : ∀ N, ∏ n ∈ range N,
-      (((n : ℝ) + a) / ((n : ℝ) + b)) ^ (thueMorseSign n) =
-      Real.exp (mpLog a b N) := by
-    intro N
-    rw [mpLog, Real.exp_sum]
-    refine Finset.prod_congr rfl fun n _ => ?_
-    have hpos : (0 : ℝ) < ((n : ℝ) + a) / ((n : ℝ) + b) := by
-      positivity
-    rw [← Real.rpow_intCast (((n : ℝ) + a) / ((n : ℝ) + b))
-      (thueMorseSign n), Real.rpow_def_of_pos hpos]
-    congr 1
-    ring
-  have hlim := (Real.continuous_exp.tendsto _).comp
-    (tendsto_mpLimit a b ha hb)
-  exact Tendsto.congr (fun N => (hexp N).symm) hlim
+      (𝓝 (Real.exp (mpLimit a b))) :=
+  tendsto_prod_zpow_of_tendsto_sum (fun N : ℕ => range N)
+    (fun n : ℕ => ((n : ℝ) + a) / ((n : ℝ) + b)) thueMorseSign
+    (fun n => by positivity) (tendsto_mpLimit a b ha hb)
 
 end Fabius
