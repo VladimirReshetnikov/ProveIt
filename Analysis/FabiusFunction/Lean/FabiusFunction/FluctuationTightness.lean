@@ -53,7 +53,7 @@ theorem measureReal_log_prod_sqrt_ge_le {K : ℝ} (hK : 0 < K) {n : ℕ}
     constructor
     · intro h
       by_contra hc
-      push_neg at hc
+      push Not at hc
       have hsq := pow_lt_pow_left₀ hc (abs_nonneg _) two_ne_zero
       rw [sq_abs] at hsq
       linarith

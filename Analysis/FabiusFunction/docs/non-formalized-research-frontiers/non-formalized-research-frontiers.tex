@@ -6672,7 +6672,7 @@ $2^{-r}$ in the degree.
 
 \begin{proposition}[$q$-Richardson exactness]
 \label{dyadicweb:prop:q-richardson}
-Suppose a model sequence has the form
+Suppose a rational-valued model sequence has the form
 \begin{equation}
  u_p=L+\sum_{r=1}^{n}a_r2^{-rp}.                           \label{dyadicweb:eq:model-errors}
 \end{equation}
@@ -6691,12 +6691,17 @@ The constant contributes $L W_n(1)=L$.  The $r$th error contributes
 \end{proof}
 
 \paragraph{Current formal status.}
-The exact rational-sequence specialization is
-\lean{discreteLimitWeight_qRichardson_exact} in
-\path{FabiusDiscreteLimitToeplitz.lean}.  It uses coefficients indexed by
-$0\le r<n$, with its coefficient $a_r$ multiplying the same mode
-$2^{-(r+1)p}$.  A named scalar-extension form for complex model sequences is
-not asserted by that theorem.
+The module-valued theorem
+\lean{discreteLimitWeight_qRichardson_exact_module} in
+\path{FabiusDiscreteLimitToeplitz.lean} holds for sequences in any additive
+commutative monoid carrying a $\Q$-module structure.  It needs no target
+multiplication, topology, order, or norm: the rational row weights and dyadic
+mode coefficients act only by scalar multiplication.  Its single-mode core is
+\lean{sum_range_discreteLimitWeight_mul_geometricMode_smul_eq_zero}.
+The theorem \lean{discreteLimitWeight_qRichardson_exact} is the $M=\Q$
+specialization displayed above; its zero-based coefficient $a_r$ multiplies
+the mode $2^{-(r+1)p}$.  These theorems transport cancellation at the rational
+dyadic nodes; they do not classify zeros at arbitrary scalar arguments.
 
 No claim is needed that the actual spline error has a finite expansion of the form
 \eqref{dyadicweb:eq:model-errors}.  The proposition explains the algebraic design of the row: it is a

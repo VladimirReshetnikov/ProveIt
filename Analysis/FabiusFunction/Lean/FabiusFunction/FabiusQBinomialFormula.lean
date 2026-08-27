@@ -1202,9 +1202,7 @@ prefix `m / 2`.  The value is independent of the common translation. -/
     qBinomialThueMorseDyadicTranslatedFormula c m 0 =
       if Even m then 0 else (thueMorseSign (m / 2) : ℚ) := by
   rw [← fabiusDyadic_eq_qBinomialThueMorseDyadicTranslatedFormula]
-  apply Rat.cast_injective (α := ℝ)
-  push_cast
-  have hvalue :
+  have hreal :
       (fabiusDyadic 0 m : ℝ) =
         if Even m then 0 else (thueMorseSign (m / 2) : ℝ) := by
     calc
@@ -1216,8 +1214,12 @@ prefix `m / 2`.  The value is independent of the common translation. -/
         extendedFabius_natCast_eq_ite fabius fabius_spec m
       _ = if Even m then 0 else (thueMorseSign (m / 2) : ℝ) := by
         simp [thueMorseSign]
-  rw [hvalue]
-  split_ifs <;> norm_cast
+  apply Rat.cast_injective (α := ℝ)
+  rw [hreal]
+  by_cases hm : Even m
+  · rw [if_pos hm, if_pos hm]
+    norm_num
+  · rw [if_neg hm, if_neg hm, Rat.cast_intCast]
 
 /-- The fully displayed arbitrary-rational-translation identity.  This is the
 Wolfram-language formula with its common inner translation represented by

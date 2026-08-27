@@ -332,7 +332,8 @@ theorem
   · exact le_trans
       (norm_normalizedThueMorseSplineBranch_add_sub_le 0 M z δ hbound)
       (by
-        simpa using
+        simpa only [Finset.range_zero, Finset.sum_empty, Nat.zero_sub,
+          pow_zero, one_mul] using
           sub_nonneg.mpr (Real.one_le_exp (norm_nonneg δ)))
   · exact
       norm_normalizedThueMorseSplineBranch_add_sub_le_half_pow_mul_exp_sub_one
