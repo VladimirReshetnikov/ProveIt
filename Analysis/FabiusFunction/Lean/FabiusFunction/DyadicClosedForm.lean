@@ -12,6 +12,21 @@ This module proves the exact Taylor-block identity behind the executable
 bit recursion.  It combines Thue--Morse cancellation with a polynomial kernel
 refinement law, identifies the inverse-power lookup table, and concludes that
 `fabiusDyadicUnit` agrees with the closed formula `fabiusDyadic` on `[0, 1]`.
+
+Main results:
+
+* `sum_range_two_mul` -- the even/odd block split
+  `∑_{n < 2k} f n = ∑_{j < k} (f (2j) + f (2j+1))` over any additive
+  commutative monoid, the halving step used by every Thue--Morse recursion
+  downstream, together with its `Fin`-indexed face `sum_fin_two_mul`;
+* `sum_range_block_decomposition` -- the general `m`-blocks-of-length-`p`
+  split of `range (m * p)`;
+* `thueMorse_sum_split` and `thueMorseSign_add_pow_two` -- the Thue--Morse
+  cancellation of a complete dyadic block;
+* `dyadicKernel_has_refinement` and `dyadicBlock_eq_taylor_sum` -- the
+  polynomial kernel refinement law and the Taylor-block expansion;
+* `fabiusDyadicUnit_eq_fabiusDyadic` -- the executable bit recursion agrees
+  with the closed formula on `[0, 1]`.
 -/
 
 set_option autoImplicit false
@@ -83,21 +98,37 @@ theorem sum_fin_add {M : Type*} [AddCommMonoid M] (f : ℕ → M) (m n : ℕ) :
     Fin.sum_univ_eq_sum_range (fun i => f (m + i)) n]
   exact Finset.sum_range_add f m n
 
+/-- **Even/odd block split.**  Splitting a dyadic block sum by the lowest
+binary digit: the even and odd halves of `range (2 * k)` are the images of
+`range k` under doubling and doubling-plus-one.  Stated over an arbitrary
+`AddCommMonoid`, because the corpus applies it over `ℚ`, over `ℝ`, over `ℤ`,
+over `ℕ` and over modules.
+
+This is the single halving step behind every Thue--Morse recursion in the
+library, so it lives here, at the root of the import DAG.  It is proved by a
+direct induction rather than as a specialization of
+`sum_range_block_decomposition`, which appears much later in this file. -/
+theorem sum_range_two_mul {M : Type*} [AddCommMonoid M]
+    (k : ℕ) (f : ℕ → M) :
+    ∑ n ∈ Finset.range (2 * k), f n =
+      ∑ j ∈ Finset.range k, (f (2 * j) + f (2 * j + 1)) := by
+  induction k with
+  | zero => simp
+  | succ k ih =>
+      rw [show 2 * (k + 1) = 2 * k + 1 + 1 by omega,
+        Finset.sum_range_succ, Finset.sum_range_succ,
+        Finset.sum_range_succ, ih]
+      abel
+
 /-- Pairs a `Fin (2 * a)` sum into `a` consecutive two-term blocks
 `f (2 j) + f (2 j + 1)`.  This is the index bookkeeping for the halving step
-`thueMorse_sum_two_mul`. -/
+`thueMorse_sum_two_mul`; the `Fin`-indexed face of `sum_range_two_mul`. -/
 theorem sum_fin_two_mul {M : Type*} [AddCommMonoid M] (f : ℕ → M) (a : ℕ) :
     (∑ i : Fin (2 * a), f i.val) =
       ∑ j : Fin a, (f (2 * j.val) + f (2 * j.val + 1)) := by
   rw [Fin.sum_univ_eq_sum_range f (2 * a),
     Fin.sum_univ_eq_sum_range (fun j => f (2 * j) + f (2 * j + 1)) a]
-  induction a with
-  | zero => simp
-  | succ a ih =>
-      rw [Nat.mul_succ, Finset.sum_range_add, ih]
-      rw [Finset.sum_range_succ]
-      simp
-      rw [Finset.sum_range_succ]
+  exact sum_range_two_mul a f
 
 /-- Setting a fresh leading binary bit raises the digit sum by one:
 `binaryWeight (2 ^ b + h) = binaryWeight h + 1` for `h < 2 ^ b`.  The

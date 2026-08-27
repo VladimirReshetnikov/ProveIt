@@ -1,103 +1,46 @@
 # Agents working in `Analysis/FabiusFunction`
 
-Several agents develop this directory concurrently in separate worktrees.
-The user has designated one coordinator for the current campaign.  The
-operational rules below and the live
-[`docs/registry/coordinator.md`](docs/registry/coordinator.md) board are current
-project policy; [`docs/COLLABORATION.md`](docs/COLLABORATION.md) explains the
-reasons and remains open for focused revision.
+This directory is sometimes developed by several agents concurrently.
+Whether multi-agent coordination is in effect is stated by exactly one file:
+[`AGENTS/STATUS.md`](AGENTS/STATUS.md).  While it says
+`state: OFF` — the current state — agents work here one at a time and no
+coordination rule binds anyone.  When the user flips it to `state: ON`, the
+lightweight campaign protocol in
+[`AGENTS/PROTOCOL.md`](AGENTS/PROTOCOL.md) applies:
+claim-free optimistic Lean work, one standing owner per canonical document, a
+lock-file build mutex, a 2-hour integration-latency cap, and live bookkeeping
+on a dedicated orphan board branch — never on `main`.  The protocol carries
+its own overhead assessment and rule-deletion authority so that it cannot
+silently grow back into ceremony.
 
-## Live coordination -- mandatory before writing
+Everything below — the working rules from experience, the documentation
+policy, and the Lean build guidance — is ordinary project policy and remains
+in effect at all times, campaign or not.
 
-At the start of every work session, after every fetch, and before every merge
-or push, read the coordinator board from the fetched `main`, even when your
-worktree is dirty and cannot merge yet:
+The first (2026-08) campaign ran a heavier v1 protocol; its rules and
+rationale survive only in git history — the deleted `docs/COLLABORATION.md`
+and `docs/MULTI_AGENT_COORDINATION_PROPOSAL.md`, and
+`git log -- Analysis/FabiusFunction/docs/registry/`.
 
-```sh
-git fetch origin
-git show origin/main:Analysis/FabiusFunction/docs/registry/coordinator.md
-```
-
-The board contains the pinned integration SHA, hot paths, integration queue,
-build ownership, and branch-specific instructions.  An instruction addressed
-to your exact branch is binding until the board releases it.  A listed or
-unlisted branch may start ordinary feature-branch work without waiting for a
-coordinator reply once it has advertised an exact, nonoverlapping claim in
-`docs/registry/<branch-with-slashes-replaced-by-dashes>.md` as described below.
-This self-service rule never grants a path that the board marks hot, frozen,
-or single-owner.
-
-During the current campaign:
-
-1. **Push feature branches, not `main`.** Only the coordinator advances
-   `origin/main`.  Never force-push.  A rejected fast-forward is a signal to
-   fetch and reread the board, not to retry blindly.
-2. **One branch, one registry file.** Each worker edits only its own registry
-   file.  Only the coordinator edits `docs/registry/coordinator.md`, this live
-   section of `AGENTS.md`, the coordination notice in `README.md`, and the
-   campaign-wide coordination documents.
-3. **Advertise ordinary work before editing it.** A claim names exact paths
-   and expected public declarations or document claims; topic names such as
-   "asymptotics" or "documentation" do not claim a directory.  Commit and push
-   the registry claim first, then inspect the board and every advertised
-   Fabius registry/tip for overlap and plausible duplicate declarations.  If
-   no overlap exists and none of the paths is serialized below, begin work
-   without waiting for coordinator acknowledgement.  If an overlap exists,
-   do not edit the shared path: publish the dependency, pivot, or wait for the
-   coordinator to assign ownership.  Advertise every expansion before editing
-   the added path.
-4. **Preserve before synchronizing.** If your worktree is dirty, do not stash,
-   reset, or merge over it.  Stop expanding the edit, make a clearly labelled
-   checkpoint commit on your feature branch when coherent (or an explicit WIP
-   commit when necessary to preserve it), push that branch, and report the
-   exact SHA and validation state in its registry file.  Workers may then
-   merge fresh `origin/main` into their own clean/checkpointed feature branch.
-   Resolve only conflicts wholly inside the branch's uncontested claim; stop
-   and report a conflict involving another claim, a serialized path, or a
-   generated artifact.  Push preservation checkpoints promptly: the
-   coordinator may prune any worktree that has been inactive for at least
-   seven days, including a dirty worktree.  A pushed branch preserves commits;
-   uncommitted changes in a pruned dirty worktree are not recoverable.
-5. **Lean/Lake tokens are per physical host.** On `codexbox`, no agent starts
-   Lean, Lake, or another cache-mutating compiler job unless the board assigns
-   that host's Lean/Lake token.  The other machine maintains the same
-   one-process rule independently.  The board may also assign one lightweight,
-   sequential TeX/PDF lane on a host; that document lane may coexist with the
-   one assigned Lean/Lake build, but parallel TeX passes and a second Lean/Lake
-   process remain prohibited.  Let an already-running job finish; do not kill
-   another worktree's process.
-6. **Binary PDFs are never conflict-resolved.** Freeze both sources, integrate
-   the TeX semantically under one owner, then rebuild the PDF from that source.
-   Three passes are the ordinary minimum; a board-designated standing document
-   owner may iterate sequentially until references and layout settle.  Never
-   take a PDF wholesale from either side of a conflict.
-7. **Campaign-critical paths remain serialized.** Only an explicit board
-   grant permits edits to `AGENTS.md`, the root `README.md`, campaign-wide
-   coordination files, `docs/registry/coordinator.md`, the root aggregate
-   `Lean/FabiusFunction.lean`, `docs/PAPER_COVERAGE.md`,
-   `docs/AUDIT_FINDINGS.md`, canonical exposition/walkthrough/frontier TeX/PDF
-   artifacts, or any path currently marked hot, frozen, or single-owner.
-   Ordinary self-service claims cover all other nonoverlapping paths.
-
-Status replies use the `SYNC Fabius` template in `docs/COLLABORATION.md`, are
-committed only to the worker's feature branch, and are pushed promptly.  The
-coordinator discovers them from advertised branch tips and updates the board.
+## Working rules from experience (always in effect)
 
 The rules that have actually cost time so far:
 
 1. **Fetch and inspect `origin/main` before you start, and again before editing
    any module you did not create.** Merge it when the worktree is clean.  For a
    dirty shared worktree, freeze every writer and follow the path-overlap and
-   Git-owner protocol in `docs/COLLABORATION.md`; never merge or stash behind
-   another writer's back.  The same refactor has already been performed
+   Git-owner protocol (formerly in `docs/COLLABORATION.md`, now in its git
+   history); never merge or stash behind another writer's back.  The same refactor has already been performed
    independently three times by three branches.
 
 2. **A lemma belongs in the upstream-most module that can state it** — facts
    about `rvachevUp` needing only its definition and `IsFabius` go in
    `Basic.lean`, not `Differential.lean`. But relocating into `Basic.lean`,
    `Arithmetic.lean`, or `Differential.lean` invalidates all 172 modules and
-   is the edit class most likely to collide, so acquire a live path lease as
-   described in `docs/COLLABORATION.md` first.
+   is the edit class most likely to collide, so announce it (on the board
+   during a campaign, to the user otherwise) and batch such moves
+   deliberately; see the placement-cost amendment preserved in the git
+   history of `docs/COLLABORATION.md`.
 
 3. **Say in the commit message what you actually compiled.** Committing
    uncompiled work is fine and often necessary — a full rebuild costs the
@@ -155,7 +98,7 @@ compiled PDF is committed with it.**
    write-up of a theorem, a derivation, a table of coefficients, a numerical
    study, or an expository account of any part of the development belongs in a
    `.tex` file. Markdown remains correct for `README.md`, `AGENTS.md`,
-   `docs/PAPER_COVERAGE.md`, `docs/COLLABORATION.md`, `docs/registry/*.md` and
+   `docs/PAPER_COVERAGE.md`, `AGENTS/*.md` and
    similar repository bookkeeping, which contain no displayed mathematics.
 
 2. **Style.** New documents reuse the preamble of
@@ -214,6 +157,34 @@ compiled PDF is committed with it.**
    plainly. When auditing a draft, inspect the Lean source rather than relying
    on a declaration name, an `.olean` file, a previous agent's report, or a
    paper citation as evidence of formalization.
+
+8. **Merge conflicts in a generated PDF are never resolved.** When both sides
+   of a merge changed a document, merge and settle the `.tex`, then rebuild
+   the `.pdf` from the merged source with the same three-pass procedure;
+   never select either side's binary. This is engineering policy, campaign or
+   not.
+
+9. **Prose is Libertinus, and committed PDFs must prove it.** Every LaTeX
+   document under this directory sets its text in Libertinus. The shared
+   preamble line
+   `\IfFileExists{libertinus.sty}{\usepackage{libertinus}}{\usepackage{lmodern}}`
+   falls back to Latin Modern *silently*, so a successful build proves
+   nothing about fonts — after building, check
+   `pdffonts <doc>.pdf | grep -c Libertinus`; zero means the fallback fired.
+   Build on a machine with the Libertinus (type 1) packages installed. If
+   they are missing, first attempt to install them (MiKTeX:
+   `miktex packages install libertinus libertinus-type1`; TeX Live:
+   `tlmgr install libertinus libertinus-type1`). Only if installation fails
+   may a fallback-font PDF be committed, and that commit must also add or
+   update a `README.md` beside the PDF requesting a rebuild on a machine
+   with Libertinus installed; when a coordination campaign is active, relay
+   the same rebuild request to the agents on other machines through the
+   board. Remove the note when a Libertinus rebuild lands. Math
+   intentionally remains Computer Modern (user decision, 2026-08-26): do not
+   add `libertinust1math` without an explicit new user decision — and should
+   that ever change, it must be loaded *after* `amssymb`/`bm`, because the
+   reverse order corrupts the wide-accent glyph chain (`\widehat`,
+   `\widetilde` render as a stray vertical stroke).
 
 ## Building Lean
 

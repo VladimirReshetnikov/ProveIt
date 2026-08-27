@@ -230,18 +230,6 @@ private lemma integral_add_one_pow_mul_rvachev
     exact (continuous_const.mul (pow_mul_rvachev_continuous F hF j)).intervalIntegrable
       (-1) 1
 
-private lemma sum_range_two_mul {R : Type*} [AddCommMonoid R]
-    (f : ℕ → R) (n : ℕ) :
-    (∑ j ∈ range (2 * n), f j) =
-      ∑ k ∈ range n, (f (2 * k) + f (2 * k + 1)) := by
-  induction n with
-  | zero => simp
-  | succ n ih =>
-      rw [show 2 * (n + 1) = (2 * n + 1) + 1 by omega]
-      simp only [sum_range_succ]
-      rw [ih]
-      abel
-
 private lemma integral_add_one_odd_pow_mul_rvachev
     (F : BoundedFabius) (hF : IsFabius F) (n : ℕ) :
     (∫ x in (-1 : ℝ)..1, (x + 1) ^ (2 * n + 1) * rvachevUp F x) =

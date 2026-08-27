@@ -130,10 +130,7 @@ private lemma analytic_scale_recurrence_one
     have htlow : 1 / 2 ≤ inverseTwoPowReal 1 + z := by
       norm_num [inverseTwoPowReal]
       exact hz.1
-    have hthigh : inverseTwoPowReal 1 + z < 1 := by
-      norm_num [inverseTwoPowReal] at hz ⊢
-      linarith
-    have hhigh := fabius_hasDerivAt_secondHalf F hF htlow hthigh.le
+    have hhigh := fabius_hasDerivAt_reflected_of_half_le F hF htlow
     have hlow := hF.hasDerivAt z hzhalf
     have hsym := hF.symmetry (2 * z)
       ⟨mul_nonneg (by norm_num) hz.1, by linarith [hzhalf.2]⟩

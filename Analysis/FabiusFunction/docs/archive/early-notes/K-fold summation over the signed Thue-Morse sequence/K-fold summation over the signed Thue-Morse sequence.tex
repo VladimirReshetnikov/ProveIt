@@ -1,0 +1,178 @@
+\documentclass[10pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage[version=4]{mhchem}
+\usepackage{stmaryrd}
+
+\begin{document}
+What you plotted are the iterated discrete integrals ("prefix sums") of the sign of the Thue-Morse sequence
+
+$$
+\tau(n)=(-1)^{s_{2}(n)} \quad\left(s_{2}(n)=\text { sum of binary digits }\right) .
+$$
+
+Let $S^{(0)}(n)=\tau(n)$ and for $k \geq 1$
+
+$$
+S^{(k)}(n)=\sum_{j=0}^{n} S^{(k-1)}(j) \quad(n \geq 0)
+$$
+
+(the $k$-fold accumulation). The lists you printed are $S^{(0)}, S^{(1)}, \ldots$.\\
+Below is a clean way to see why these shapes quickly become the Fabius function (after a simple rescaling), and where the runs of zeros come from.
+
+\section*{1) Self-similarity in the data, and the Fabius equation}
+The Thue-Morse signs obey
+
+$$
+\tau(2 n)=\tau(n), \quad \tau(2 n+1)=-\tau(n), \quad \tau(2 n)+\tau(2 n+1)=0 .
+$$
+
+That last identity explains the second row of your output: every odd partial sum is zero.\\
+Define, for each $k$, the normalized, piecewise linear function on $[0,1]$
+
+
+\begin{equation*}
+F_{k}(x):=2^{-\binom{k}{2}} S^{(k)}\left(\left\lfloor 2^{k} x\right\rfloor\right) \text { and join consecutive grid points } x_{j}=j / 2^{k} . \tag{1}
+\end{equation*}
+
+
+A one-line computation using $\Delta S^{(k)}(n)=S^{(k-1)}(n)$ gives the exact discrete functional equation
+
+
+\begin{equation*}
+2^{k}\left(F_{k}\left(x_{j+1}\right)-F_{k}\left(x_{j}\right)\right)=2 F_{k-1}\left(2 x_{j}+\frac{1}{2^{k-1}}\right) . \tag{2}
+\end{equation*}
+
+
+As $k \rightarrow \infty$, the mesh $h=2^{-k} \rightarrow 0$ and the right-hand side becomes\\
+$2 F(2 x)$, where $F$ is the (unique) $C^{\infty}$ function on $[0,1]$ with
+
+
+\begin{equation*}
+F^{\prime}(x)=2 F(2 x), \quad F(0)=0, F(1)=1, \tag{3}
+\end{equation*}
+
+
+i.e. the Fabius function. Equation (2) is therefore a consistent first-order finite-difference scheme for (3). That is the conceptual reason your rescaled curves increasingly look like $F$.
+
+How to rescale. The power $2^{\binom{k}{2}}=2^{k(k-1) / 2}$ you noticed numerically\\
+(e.g. the $2^{15}$ plateau for $k=6$ ) is exactly the factor needed to keep the vertical scale bounded, because formally differentiating (3) repeatedly yields
+
+$$
+F^{(m)}(x)=2^{\binom{m+1}{2}} F\left(2^{m} x\right) .
+$$
+
+So each summation (discrete integration) introduces the reciprocal of that growth, hence the normalization in (1).
+
+\section*{2) Why the runs of zeros? how long? what do they mean?}
+Because $\tau(2 n)+\tau(2 n+1)=0$, we get immediately for the first integral
+
+$$
+S^{(1)}(2 m+1)=0 \quad \text { (zeros at all odd indices). }
+$$
+
+Inductively, using $\Delta S^{(k)}=S^{(k-1)}$, we obtain the following exact statement.\\
+Dyadic zero runs.\\
+For every $k \geq 1$ and every $r \geq k$,
+
+$$
+S^{(k)}\left(2^{r}-k\right)=S^{(k)}\left(2^{r}-k+1\right)=\cdots=S^{(k)}\left(2^{r}-1\right)=0 .
+$$
+
+In words: just before every dyadic endpoint $2^{r}-1$ there are exactly $k$ consecutive zeros in the $k$-fold sum.\\
+Proof sketch: for $k=1$ we have $\sum_{j=0}^{2^{r}-1} \tau(j)=0$ (in any block of length $2^{r}$ there are equally many +1 and -1 ). If $S^{(k-1)}$ vanishes on the last $k-1$ sites of such a block, then $\Delta S^{(k)}=S^{(k-1)}$ shows that $S^{(k)}$ is constant there; since $S^{(k)}\left(2^{r}-1\right)=\sum_{j=0}^{2^{r}-1} S^{(k-1)}(j)=0$, that constant is 0 .\\
+These zero runs are the discrete analogue of the fact that all derivatives of $F$ vanish at 0 ("flatness"): at level $k$, the first $k$ forward differences at dyadic endpoints are zero.
+
+\section*{3) "How close is it to $F$ after $N$ summations?"}
+Let $h=2^{-k}$. On each interval $\left[x_{j}, x_{j+1}\right]$ the slope of $F_{k}$ is the forward difference quotient. Using (2) and a Taylor expansion of $F$ we get the uniform local truncation error
+
+$$
+\left|\frac{F_{k}\left(x_{j+1}\right)-F_{k}\left(x_{j}\right)}{h}-F^{\prime}\left(x_{j}\right)\right| \leq C h, \quad C=\frac{1}{2}\left\|F^{\prime \prime}\right\|_{\infty} \leq 4,
+$$
+
+because $F^{\prime \prime}(x)=8 F(4 x)$ and $0 \leq F \leq 1$ on $[0,1]$.\\
+A standard stability argument for this Volterra-type equation (or just summing the errors) then gives a global uniform error
+
+
+\begin{equation*}
+\left\|F_{k}-F\right\|_{\infty} \leq C^{\prime} 2^{-k} \quad \text { for some absolute } C^{\prime}\left(\text { one can take } C^{\prime} \approx 5\right) . \tag{4}
+\end{equation*}
+
+
+So, after $N$ summations (i.e. $k=N$ ) and the rescaling (1), the polygonal curve differs from $F$ by $O\left(2^{-N}\right)$ uniformly on [ 0,1 ].\\
+Empirically this is what your plots show: the profiles rapidly lock onto the Fabius shape, and the visible differences are grid-scale artifacts.
+
+\section*{4) A compact formula for the $k$-fold sums}
+It is sometimes helpful to write the $k$-fold sum as a convolution with the discrete $B$-spline kernel
+
+
+\begin{equation*}
+B_{k}(n)=\binom{n+k-1}{k-1} \mathbf{1}_{\{n \geq 0\}}, \quad S^{(k)}(n)=\sum_{m=0}^{n} B_{k}(n-m) \tau(m) . \tag{5}
+\end{equation*}
+
+
+The generating function viewpoint is also enlightening:
+
+
+\begin{equation*}
+\sum_{n \geq 0} \tau(n) z^{n}=\prod_{j \geq 0}\left(1-z^{2^{j}}\right), \quad \sum_{n \geq 0} S^{(k)}(n) z^{n}=\frac{1}{(1-z)^{k}} \prod_{j \geq 0}\left(1-z^{2^{j}}\right) . \tag{6}
+\end{equation*}
+
+
+The factor $\prod_{j}\left(1-z^{2^{j}}\right)$ forces the cancellations responsible for the zero runs; the pole $(1-z)^{-k}$ is the $k$-fold integration.
+
+\section*{5) Asymptotics of $F(x)$ as $x \downarrow 0$ and the Lambert $W$ function}
+A sharp small $-x$ estimate drops out of the same discrete picture.\\
+From (5), near the left edge of a dyadic block the dominant contribution to $S^{(k)}$ comes from the leftmost binomial weights. After the rescaling (1), a robust (and provable) proxy is
+
+
+\begin{equation*}
+F(x) \approx \max _{n \geq 1} \frac{\left(2^{n} x\right)^{n}}{n!2^{\binom{n}{2}}}, \quad x \downarrow 0 . \tag{7}
+\end{equation*}
+
+
+Maximizing the logarithm via Stirling $(\log n!=n \log n-n+O(\log n))$ gives
+
+$$
+\Phi(n):=\log \frac{\left(2^{n} x\right)^{n}}{n!2^{\binom{n}{2}}} \approx \frac{\ln 2}{2} n^{2}+n \ln x-n \ln n+n .
+$$
+
+Setting $\Phi^{\prime}(n)=0$ yields
+
+
+\begin{equation*}
+n \ln 2+\ln x=\ln n \quad \Leftrightarrow \quad n 2^{-n}=x . \tag{8}
+\end{equation*}
+
+
+Equation (8) is solved in closed form by the Lambert $W$ function:
+
+
+\begin{equation*}
+n_{*}(x)=-\frac{1}{\ln 2} W_{-1}(-(\ln 2) x), \quad x \downarrow 0, \tag{9}
+\end{equation*}
+
+
+where the -1 branch is the one that grows as $x \rightarrow 0^{+}$. Plugging $n=n_{*}(x)$ back into $\Phi(n)$ gives the principal asymptotics
+
+
+\begin{equation*}
+\log F(x)=-\frac{1}{2 \ln 2} W_{-1}(-(\ln 2) x)^{2}+O\left(\log \left(-W_{-1}(-(\ln 2) x)\right)\right), \quad x \downarrow 0 . \tag{10}
+\end{equation*}
+
+
+Using the standard expansion $W_{-1}(-\varepsilon)=\log \varepsilon-\log |\log \varepsilon|+o(1)$ as $\varepsilon \downarrow 0$, (10) becomes the simpler and widely quoted form
+
+
+\begin{equation*}
+\log F(x)=-\frac{(\log (1 / x))^{2}}{2 \log 2}+O(\log (1 / x) \log \log (1 / x)), \quad x \downarrow 0 . \tag{11}
+\end{equation*}
+
+
+Thus $F(x)$ decays faster than any power of $x$ but slower than $\exp (-c / x)$; more precisely it has the "log-squared" decay characteristic of dyadic self-similarity.
+
+
+\end{document}
