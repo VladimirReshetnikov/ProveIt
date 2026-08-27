@@ -4,6 +4,7 @@ import FabiusFunction.Paper06487
 import FabiusFunction.PaperFabiusAsymptotic
 import FabiusFunction.PaperKFoldThueMorse
 import FabiusFunction.FinitePolynomialFunctional
+import FabiusFunction.FiniteQBinomialCore
 import FabiusFunction.MomentCumulantAlgebra
 import FabiusFunction.ThueMorseBooleanCube
 import FabiusFunction.ThueMorseValuation

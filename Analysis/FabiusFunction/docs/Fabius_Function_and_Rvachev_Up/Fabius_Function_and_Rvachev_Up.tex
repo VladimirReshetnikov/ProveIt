@@ -2493,6 +2493,40 @@ These are \lean{halfQBinomial_theorem},
 \lean{halfQBinomial_symm} in \path{HalfQBinomial.lean}.
 \end{proof}
 
+\begin{remark}[The denominator-free finite $q$-binomial theorem]
+The half-base identity is a specialization of a ring-valued statement that does not
+divide by a $q$-Pochhammer symbol.  For a commutative ring $R$ and $q\in R$, define
+the polynomial Gaussian coefficients recursively by
+\[
+ {n+1\brack k+1}_q={n\brack k+1}_q
+   +q^{n-k}{n\brack k}_q,\qquad
+ {n\brack0}_q={n\brack n}_q=1,\qquad
+ {n\brack k}_q=0\quad(n<k).
+\]
+Then for every $z\in R$,
+\begin{equation}
+ (z;q)_n=\sum_{k=0}^{n}(-1)^kq^{\binom k2}{n\brack k}_qz^k.
+ \label{eq:finite-q-binomial-ring}
+\end{equation}
+The recursive coefficient already makes sense over an arbitrary semiring, while the
+displayed subtraction requires a commutative ring.  No denominator, nonzero assumption,
+or exclusion of $q=0$ and roots of unity occurs.  The recurrence, triangular boundaries,
+and \eqref{eq:finite-q-binomial-ring} are
+\lean{gaussianBinomial_succ_succ},
+\lean{gaussianBinomial_zero_right},
+\lean{gaussianBinomial_eq_zero_of_lt},
+\lean{gaussianBinomial_self}, and
+\lean{finite_qBinomial_theorem} in \path{FiniteQBinomialCore.lean}.
+
+At $q=1/2$, \lean{gaussianBinomial_half_eq_halfQBinomial} identifies this recursive
+coefficient with the established rational quotient, and
+\lean{halfQBinomial_theorem} is now the direct specialization of the ring theorem.
+Thus the finite product algebra is already available at $q=1/4$; what remains in the
+spectral research frontier is the explicit identification with the geometric Lagrange row
+and the analytic acceleration and remainder estimates, not a second finite-product
+induction.
+\end{remark}
+
 The polynomial in \eqref{eq:half-q-binomial-theorem} has the complete rational root locus
 \begin{equation}
  \sum_{k=0}^{n}(-1)^k2^{-\binom k2}\qbinom nk{1/2}z^k=0
@@ -3187,6 +3221,75 @@ specialization is \lean{discreteLimitWeight_qRichardson_exact}.  All are in
 \eqref{eq:discrete-row-sum} is now its specialization at $z=1$.
 \end{proof}
 
+\begin{remark}[Finite moments, Lagrange weights, and local exactness]
+The row calculation is an instance of two reusable algebraic layers.  First, let $I$ be
+finite, let $\varphi:R\to S$ be a homomorphism from a semiring to a commutative semiring,
+let $w_i,x_i\in S$ for $i\in I$, and let $p\in R[X]$ have degree at most $N$.  If
+$p^\varphi$ denotes
+coefficientwise mapping, then the finite weighted functional expands as
+\begin{equation*}
+ \sum_{i\in I} w_i p^\varphi(x_i)
+ =\sum_{d=0}^{N}\varphi([X^d]p)\sum_{i\in I} w_i x_i^d.
+\end{equation*}
+Thus prescribed moments select a prescribed coefficient; repeated nodes and a zero
+surviving moment are allowed, and no field or subtraction is needed.  The same-ring
+coefficient and strict-cancellation forms are
+\lean{sum_weight_mul_eval_eq_coeff_mul_of_moments} and
+\lean{sum_weight_mul_eval_eq_zero_of_degree_lt} in
+\path{FinitePolynomialFunctional.lean}; that module also contains the scalar-extension
+forms used by the later Prouhet arguments.
+
+Second, over a field, distinct nodes $v_i$ have evaluation weights
+$\lambda_i(x)$ given by the Lagrange basis at $x$.  They reproduce every polynomial of
+degree less than the number of nodes, are characterized uniquely by their monomial
+moments, and at the first omitted degree satisfy
+\begin{equation*}
+ \sum_i\lambda_i(x)v_i^{|I|}=x^{|I|}-\prod_i(x-v_i).
+\end{equation*}
+These are respectively \lean{sum_lagrangeEvalWeight_mul_eval},
+\lean{eq_lagrangeEvalWeight_of_moments}, and
+\lean{sum_lagrangeEvalWeight_mul_pow_card}.  On the distinct geometric nodes
+$1,q,\ldots,q^n$ at the target $0$, the moments through degree $n$ are $0^d$;
+in particular degree zero has mass one, while positive degrees vanish.  The declarations
+\lean{sum_geometricLagrangeWeight_mul_pow} and
+\lean{geometricLagrange_richardson_exact_of_eq} in
+\path{GeometricLagrange.lean} include both $n=0$ and an arbitrary block start, including
+start zero.
+
+For the present half-geometric grid, write $\lambda_{n,k}^{(1/2)}$ for the
+evaluation-at-zero weight belonging to the node $2^{-k}$.  The Toeplitz row is exactly the
+same row in reverse order:
+\begin{equation*}
+ \boxed{\omega_{n,j}=\lambda_{n,n-j}^{(1/2)}}\qquad(0\le j\le n).
+\end{equation*}
+Indeed, for every $d\ge0$ its complete reversed moment is
+\begin{equation*}
+ \sum_{k=0}^{n}\omega_{n,n-k}2^{-kd}
+ =2^{-nd}\frac{(2^d/2;1/2)_n}{(1/2;1/2)_n},
+\end{equation*}
+and for $0\le d\le n$ this is $0^d$, with $0^0=1$.  The pointwise bridge and
+these two moment forms are
+\lean{discreteLimitWeight_eq_geometricLagrangeWeight},
+\lean{sum_range_discreteLimitWeight_reverse_mul_half_pow}, and
+\lean{sum_range_discreteLimitWeight_reverse_moment}.  Their finite-sum form is
+\lean{sum_range_discreteLimitWeight_smul_eq_geometricLagrangeWeight}.
+
+Consequently the global model in the proposition can be weakened to one finite block.
+For any $s\in\N$, if only the samples $0\le k\le n$ satisfy
+\begin{equation*}
+ u_{s+k}=L+\sum_{r=1}^{n}2^{-r(s+k)}\mathbin{\cdot}a_r,
+\end{equation*}
+then
+\begin{equation*}
+ \sum_{j=0}^{n}\omega_{n,j}\mathbin{\cdot}u_{s+n-j}=L.
+\end{equation*}
+This is \lean{discreteLimitWeight_qRichardson_exact_module_at_of_eq} in
+\path{FabiusDiscreteLimitToeplitz.lean}.  At $n=0$ its hypothesis is simply $u_s=L$,
+and $s=0$ needs no separate convention.  The grid ratio is $1/2$.  A mode with ratio
+$1/4$ and index $r$ has half-grid degree $2r$, so this row cancels it only when
+$2r\le n$; this is not an $n$-mode theorem on a $1/4$ grid.
+\end{remark}
+
 Applying it with the opposite sign also gives the uniform variation bound
 \begin{equation}
  \sum_{j=0}^{n}|\omega_{n,j}|
@@ -3411,6 +3514,33 @@ In particular the sum does not depend on the translation $X$.
 Expand $(X+Yh)^r$ by the binomial theorem and apply \eqref{eq:tm-polynomial-extract}: the
 coefficient of $h^r$ is $Y^r$.
 \end{proof}
+
+The sharp extractor also has a direct commutative-ring form.  If $R$ is any commutative
+ring and $p\in R[X]$ satisfies $\deg p\le r$, then, with the signs and natural numbers
+mapped into $R$,
+\begin{equation}
+ \sum_{h<2^r}\varepsilon_h p(h)
+ =[X^r]p\;(-1)^r2^{\binom r2}r!.                            \label{eq:tm-polynomial-extract-ring}
+\end{equation}
+This is \lean{thueMorse_polynomial_sum_eq_coeff_ring_of_degree_le}; its strict-degree
+cancellation form is \lean{thueMorse_polynomial_sum_eq_zero_ring_of_degree_lt}, both in
+\path{ThueMorsePrefix.lean}.  The word ``extractor'' here describes the functional
+identity, not division by its sharp factor: in positive characteristic the image of
+$2^{\binom r2}r!$ can vanish, so the displayed equality need not recover $[X^r]p$ from
+the sum.  The degree-valued hypothesis also treats the zero polynomial correctly; at
+$r=0$ the extraction formula includes constant polynomials and the zero polynomial,
+whereas the strict-degree condition admits only the latter.
+
+Likewise the affine sharp identity holds directly in $R$:
+\begin{equation}
+ \sum_{h<2^r}\varepsilon_h(x+yh)^r
+ =(-1)^r y^r2^{\binom r2}r!,                               \label{eq:tm-affine-sharp-ring}
+\end{equation}
+formalized as \lean{thueMorse_affine_power_sum_self_ring}, with the unified range
+$d\le r$ given by \lean{thueMorse_affine_power_sum_of_le_ring}.  For $r>0$ the sharp
+sum vanishes at $y=0$.  At the joint boundary $r=0$, $y=0$, Lean's convention
+$0^0=1$ instead gives the correct one-term value $1$ on both sides; no positive-degree
+reading should be imposed on that case.
 
 The public Boolean-cube theorem uses the genuine degree
 \(\deg p\in\N\cup\{-\infty\}\), rather than the natural degree that assigns the zero
@@ -5024,16 +5154,18 @@ Moments and exact arithmetic &
 \path{NormalizedEvenMoments.lean},
 \path{BernoulliRecurrences.lean}, \path{MomentCumulantAlgebra.lean},
 \path{ExactInversePower.lean}, \path{Parity.lean}, \path{TwoAdic.lean}\\
+Finite polynomial functionals and geometric Lagrange/Richardson exactness &
+\path{FinitePolynomialFunctional.lean}, \path{GeometricLagrange.lean}\\
 Dyadic and \(q\)-binomial formulas &
 \path{DyadicClosedForm.lean}, \path{DyadicAnalytic.lean}, \path{GlobalDyadic.lean},
-\path{DyadicCorrectness.lean}, \path{HalfQBinomial.lean},
+\path{DyadicCorrectness.lean}, \path{FiniteQBinomialCore.lean}, \path{HalfQBinomial.lean},
 \path{FabiusDyadicQBinomialScalar.lean}, \path{FabiusQBinomialFormula.lean},
 \path{FabiusRawQBinomialScalar.lean},
 \path{FabiusBinaryReductionSeries.lean}, \path{FabiusParityPowerSeries.lean},
 \path{FabiusGlobalQBinomialSeries.lean},
 \path{FabiusDiscreteLimitToeplitz.lean},
 \path{FabiusDiscreteLimitIntegration.lean}\\
-Thue--Morse algebra, prefixes, disc series, and Prouhet identities &
+Thue--Morse algebra, prefixes, disc series, and ring-valued Prouhet identities &
 \path{ThueMorsePrefix.lean}, \path{ThueMorseGenerating.lean},
 \path{ThueMorseBlockAlgebra.lean},
 \path{ThueMorseInfiniteProduct.lean}, \path{ThueMorseDiscSeries.lean},
