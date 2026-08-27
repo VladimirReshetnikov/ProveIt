@@ -70,6 +70,7 @@ import FabiusFunction.PeakRayEnvelope
 import FabiusFunction.DoublingTransferAdjoint
 import FabiusFunction.GeometricCesaro
 import FabiusFunction.LogSineMeanZero
+import FabiusFunction.LogTanMeanZero
 import FabiusFunction.ShellLinearity
 import FabiusFunction.BoundaryLayerMax
 import FabiusFunction.VarianceBookkeeping
