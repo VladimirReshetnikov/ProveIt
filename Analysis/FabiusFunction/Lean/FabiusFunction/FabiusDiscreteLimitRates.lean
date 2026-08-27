@@ -35,6 +35,8 @@ translation dependence that disappears in the limit.
   Fabius function.
 * `norm_discreteLimitWeightIn_sum_sub_le` is the reusable quantitative
   Toeplitz-row engine for geometrically decaying errors.
+* `norm_discreteLimitWeightIn_sum_sub_sum_le` compares two such rows directly,
+  without inserting an artificial zero limit or using the mass-one identity.
 * `norm_fabiusDiscreteLimitApproximationComplex_sub_globalFabius_le` gives the
   exact q-Pochhammer-weighted `4 ^ (-n)` error.
 * `norm_fabiusDiscreteLimitApproximationComplex_center_sub_globalFabius_le`
@@ -174,6 +176,65 @@ theorem norm_discreteLimitWeightIn_sum_sub_le
       rw [sum_norm_discreteLimitWeightIn_mul_two_pow K n]
       ring
 
+/-- Two finite Toeplitz rows preserve any pointwise `2 ^ (-p)` comparison,
+with the same exact weighted-variation loss as the one-limit engine.  Unlike
+`norm_discreteLimitWeightIn_sum_sub_le`, this estimate needs no mass-one
+hypothesis: the two rows already have identical coefficients. -/
+theorem norm_discreteLimitWeightIn_sum_sub_sum_le
+    {K : Type*} [RCLike K] {H G : ℕ → K} {C : ℝ}
+    (hHG : ∀ p, 1 ≤ p → ‖H p - G p‖ ≤ C * (1 / 2 : ℝ) ^ p)
+    (n : ℕ) (hn : 1 ≤ n) :
+    ‖(∑ j ∈ Finset.range (n + 1),
+        discreteLimitWeightIn K n j * H (2 * n - j)) -
+      ∑ j ∈ Finset.range (n + 1),
+        discreteLimitWeightIn K n j * G (2 * n - j)‖ ≤
+      (discreteLimitWeightedVariation n : ℝ) * C *
+        (1 / 4 : ℝ) ^ n := by
+  calc
+    ‖(∑ j ∈ Finset.range (n + 1),
+        discreteLimitWeightIn K n j * H (2 * n - j)) -
+      ∑ j ∈ Finset.range (n + 1),
+        discreteLimitWeightIn K n j * G (2 * n - j)‖ ≤
+        ∑ j ∈ Finset.range (n + 1),
+          ‖discreteLimitWeightIn K n j‖ *
+            ‖H (2 * n - j) - G (2 * n - j)‖ := by
+      simpa only [smul_eq_mul] using
+        norm_sum_smul_sub_sum_smul_le
+          (Finset.range (n + 1))
+          (discreteLimitWeightIn K n)
+          (fun j => H (2 * n - j))
+          (fun j => G (2 * n - j))
+    _ ≤ ∑ j ∈ Finset.range (n + 1),
+          ‖discreteLimitWeightIn K n j‖ *
+            (C * (1 / 2 : ℝ) ^ (2 * n - j)) := by
+      apply Finset.sum_le_sum
+      intro j hj
+      exact mul_le_mul_of_nonneg_left
+        (hHG (2 * n - j)
+          (hn.trans (discreteLimit_index_ge hj)))
+        (norm_nonneg (discreteLimitWeightIn K n j))
+    _ = ∑ j ∈ Finset.range (n + 1),
+          ‖discreteLimitWeightIn K n j‖ *
+            (C * ((1 / 4 : ℝ) ^ n * (2 : ℝ) ^ j)) := by
+      apply Finset.sum_congr rfl
+      intro j hj
+      rw [half_pow_two_mul_sub_eq
+        (Nat.le_of_lt_succ (Finset.mem_range.mp hj))]
+    _ = ∑ j ∈ Finset.range (n + 1),
+          (‖discreteLimitWeightIn K n j‖ * (2 : ℝ) ^ j) *
+            (C * (1 / 4 : ℝ) ^ n) := by
+      apply Finset.sum_congr rfl
+      intro j _hj
+      ring
+    _ = (∑ j ∈ Finset.range (n + 1),
+          ‖discreteLimitWeightIn K n j‖ * (2 : ℝ) ^ j) *
+            (C * (1 / 4 : ℝ) ^ n) := by
+      rw [Finset.sum_mul]
+    _ = (discreteLimitWeightedVariation n : ℝ) * C *
+        (1 / 4 : ℝ) ^ n := by
+      rw [sum_norm_discreteLimitWeightIn_mul_two_pow K n]
+      ring
+
 /-! ## Exact and uniform discrete-row rates -/
 
 /-- Exact finite error for the complex discrete q-limit.  The rational factor
@@ -251,79 +312,60 @@ theorem norm_fabiusDiscreteLimitApproximationComplex_sub_le
         (1 / 4 : ℝ) ^ n := by
   rw [fabiusDiscreteLimitApproximationComplex_eq_weighted_shiftSpline,
     fabiusDiscreteLimitApproximationComplex_eq_weighted_shiftSpline]
-  have hrow :
-      (∑ j ∈ Finset.range (n + 1),
-          discreteLimitWeightIn ℂ n j *
-            fabiusComplexShiftSpline (2 * n - j) q₁ x) -
-        ∑ j ∈ Finset.range (n + 1),
-          discreteLimitWeightIn ℂ n j *
-            fabiusComplexShiftSpline (2 * n - j) q₂ x =
-      ∑ j ∈ Finset.range (n + 1),
-        discreteLimitWeightIn ℂ n j *
-          (fabiusComplexShiftSpline (2 * n - j) q₁ x -
-            fabiusComplexShiftSpline (2 * n - j) q₂ x) := by
-    rw [← Finset.sum_sub_distrib]
-    apply Finset.sum_congr rfl
-    intro j _hj
-    ring
-  rw [hrow]
-  have hbound := norm_discreteLimitWeightIn_sum_sub_le
+  refine norm_discreteLimitWeightIn_sum_sub_sum_le
     (K := ℂ)
     (H := fun p =>
-      fabiusComplexShiftSpline p q₁ x - fabiusComplexShiftSpline p q₂ x)
-    (L := 0)
-    (fun p hp => by
-      simp only [sub_zero]
-      have htriangle :
-          ‖fabiusComplexShiftSpline p q₁ x -
-              fabiusComplexShiftSpline p q₂ x‖ ≤
-            ‖fabiusComplexShiftSpline p q₁ x -
-              fabiusComplexShiftSpline p (1 / 2 : ℂ) x‖ +
-            ‖fabiusComplexShiftSpline p q₂ x -
-              fabiusComplexShiftSpline p (1 / 2 : ℂ) x‖ := by
-        calc
-          ‖fabiusComplexShiftSpline p q₁ x -
-              fabiusComplexShiftSpline p q₂ x‖ ≤
-              ‖fabiusComplexShiftSpline p q₁ x -
-                fabiusComplexShiftSpline p (1 / 2 : ℂ) x‖ +
-              ‖fabiusComplexShiftSpline p (1 / 2 : ℂ) x -
-                fabiusComplexShiftSpline p q₂ x‖ := by
-            simpa only [dist_eq_norm] using
-              dist_triangle
-                (fabiusComplexShiftSpline p q₁ x)
-                (fabiusComplexShiftSpline p (1 / 2 : ℂ) x)
-                (fabiusComplexShiftSpline p q₂ x)
-          _ = ‖fabiusComplexShiftSpline p q₁ x -
-                fabiusComplexShiftSpline p (1 / 2 : ℂ) x‖ +
-              ‖fabiusComplexShiftSpline p q₂ x -
-                fabiusComplexShiftSpline p (1 / 2 : ℂ) x‖ := by
-            rw [norm_sub_rev
-              (fabiusComplexShiftSpline p (1 / 2 : ℂ) x)
-              (fabiusComplexShiftSpline p q₂ x)]
-      refine htriangle.trans ?_
-      have h₁ :=
-        norm_fabiusComplexShiftSpline_sub_center_le_half_pow_mul_exp_sub_one_all
-          p q₁ x
-      have h₂ :=
-        norm_fabiusComplexShiftSpline_sub_center_le_half_pow_mul_exp_sub_one_all
-          p q₂ x
-      calc
+      fabiusComplexShiftSpline p q₁ x)
+    (G := fun p =>
+      fabiusComplexShiftSpline p q₂ x) ?_ n hn
+  intro p hp
+  have htriangle :
+      ‖fabiusComplexShiftSpline p q₁ x -
+          fabiusComplexShiftSpline p q₂ x‖ ≤
         ‖fabiusComplexShiftSpline p q₁ x -
-              fabiusComplexShiftSpline p (1 / 2 : ℂ) x‖ +
-            ‖fabiusComplexShiftSpline p q₂ x -
-              fabiusComplexShiftSpline p (1 / 2 : ℂ) x‖ ≤
-          (1 / 2 : ℝ) ^ (p - 1) *
-              (Real.exp ‖q₁ - (1 / 2 : ℂ)‖ - 1) +
-            (1 / 2 : ℝ) ^ (p - 1) *
-              (Real.exp ‖q₂ - (1 / 2 : ℂ)‖ - 1) := add_le_add h₁ h₂
-        _ = 2 * ((Real.exp ‖q₁ - (1 / 2 : ℂ)‖ - 1) +
-              (Real.exp ‖q₂ - (1 / 2 : ℂ)‖ - 1)) *
-            (1 / 2 : ℝ) ^ p := by
-          rw [half_pow_pred_eq_two_mul p hp]
-          ring)
-    n hn
-  rw [sub_zero] at hbound
-  simpa only [mul_assoc, mul_left_comm, mul_comm] using hbound
+          fabiusComplexShiftSpline p (1 / 2 : ℂ) x‖ +
+        ‖fabiusComplexShiftSpline p q₂ x -
+          fabiusComplexShiftSpline p (1 / 2 : ℂ) x‖ := by
+    calc
+      ‖fabiusComplexShiftSpline p q₁ x -
+          fabiusComplexShiftSpline p q₂ x‖ ≤
+          ‖fabiusComplexShiftSpline p q₁ x -
+            fabiusComplexShiftSpline p (1 / 2 : ℂ) x‖ +
+          ‖fabiusComplexShiftSpline p (1 / 2 : ℂ) x -
+            fabiusComplexShiftSpline p q₂ x‖ := by
+        simpa only [dist_eq_norm] using
+          dist_triangle
+            (fabiusComplexShiftSpline p q₁ x)
+            (fabiusComplexShiftSpline p (1 / 2 : ℂ) x)
+            (fabiusComplexShiftSpline p q₂ x)
+      _ = ‖fabiusComplexShiftSpline p q₁ x -
+            fabiusComplexShiftSpline p (1 / 2 : ℂ) x‖ +
+          ‖fabiusComplexShiftSpline p q₂ x -
+            fabiusComplexShiftSpline p (1 / 2 : ℂ) x‖ := by
+        rw [norm_sub_rev
+          (fabiusComplexShiftSpline p (1 / 2 : ℂ) x)
+          (fabiusComplexShiftSpline p q₂ x)]
+  refine htriangle.trans ?_
+  have h₁ :=
+    norm_fabiusComplexShiftSpline_sub_center_le_half_pow_mul_exp_sub_one_all
+      p q₁ x
+  have h₂ :=
+    norm_fabiusComplexShiftSpline_sub_center_le_half_pow_mul_exp_sub_one_all
+      p q₂ x
+  calc
+    ‖fabiusComplexShiftSpline p q₁ x -
+          fabiusComplexShiftSpline p (1 / 2 : ℂ) x‖ +
+        ‖fabiusComplexShiftSpline p q₂ x -
+          fabiusComplexShiftSpline p (1 / 2 : ℂ) x‖ ≤
+      (1 / 2 : ℝ) ^ (p - 1) *
+          (Real.exp ‖q₁ - (1 / 2 : ℂ)‖ - 1) +
+        (1 / 2 : ℝ) ^ (p - 1) *
+          (Real.exp ‖q₂ - (1 / 2 : ℂ)‖ - 1) := add_le_add h₁ h₂
+    _ = 2 * ((Real.exp ‖q₁ - (1 / 2 : ℂ)‖ - 1) +
+          (Real.exp ‖q₂ - (1 / 2 : ℂ)‖ - 1)) *
+        (1 / 2 : ℝ) ^ p := by
+      rw [half_pow_pred_eq_two_mul p hp]
+      ring
 
 /-- Centered specialization of the two-shift theorem.  This is the exact
 quantitative form of finite-row translation independence printed in the

@@ -50,8 +50,9 @@ the zero-multiplicity API below uses positive arguments. -/
 def dyadicZeroMultiplicity (n : ℕ) : ℕ :=
   padicValNat 2 n + 1
 
-/-- Every positive-index dyadic zero has positive multiplicity. -/
-theorem dyadicZeroMultiplicity_pos (n : ℕ) (_hn : 1 ≤ n) :
+/-- The totalized arithmetic multiplicity is positive at every natural input.
+For `n > 0`, this is the positivity of the corresponding dyadic zero order. -/
+theorem dyadicZeroMultiplicity_pos (n : ℕ) :
     1 ≤ dyadicZeroMultiplicity n := by
   simp [dyadicZeroMultiplicity]
 
