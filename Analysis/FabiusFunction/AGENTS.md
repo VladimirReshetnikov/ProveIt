@@ -211,9 +211,15 @@ compiled PDF is committed with it.**
 
 ## Building Lean
 
-Build one module per `lake` invocation, in topological order. `LAKE_JOBS=1` is
-not enough: a single `lake build A B` still starts two `lean` processes, and on
-this 13 GB machine both then die with a misleading
+Build one module per `lake` invocation, in topological order, *in addition to*
+setting `LAKE_JOBS=1 LEAN_NUM_THREADS=0` as the caution at the top of this file
+requires. The two measures are complementary, not alternatives: the environment
+variables bound Lake's fan-out within one invocation, while one target per
+invocation bounds the damage if the environment is not inherited by a child
+process, attributes a failure to a single module rather than to a batch, and
+lets the transient error be retried per module. Passing several targets at once
+(`lake build A B`) has been observed to start one `lean` process per target, and
+on this 13 GB machine both then die with a misleading
 `failed to read file '….olean'`, which is an out-of-memory symptom rather than
 a real error.
 
