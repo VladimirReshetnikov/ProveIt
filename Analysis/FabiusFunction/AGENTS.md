@@ -405,7 +405,7 @@ git sparse-checkout set Analysis/FabiusFunction
 git checkout
 mkdir -p .lake
 cmd //c mklink //J ".lake\\packages" "C:\\ProveIt\\.lake\\packages"
-LAKE_JOBS=1 lake build +FabiusFunction.<Module>
+LAKE_JOBS=1 LEAN_NUM_THREADS=0 lake build +FabiusFunction.<Module>
 ```
 
 The junction is the point: a fresh worktree without it rebuilds Mathlib and is

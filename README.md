@@ -51,9 +51,10 @@ project, `Lean/` and `Coq/` are siblings; `Research/`, `Support/`, and
 | [`lib/`](lib/) | Vendored third-party code only. |
 
 Repository-wide configuration remains at the root. [`ProveIt.lean`](ProveIt.lean)
-is the broad Lean import surface, and [`AGENTS.md`](AGENTS.md) records the
-working agreements for automated contributors — above all the requirement to
-build Lean one module at a time.
+is the broad Lean import surface, and the
+[`Analysis/FabiusFunction` agent guide](Analysis/FabiusFunction/AGENTS.md)
+records the working agreements for that active development — above all the
+requirement to build Lean one module at a time.
 
 ## Highlights
 
@@ -230,7 +231,9 @@ The root workspace is pinned by [`lean-toolchain`](lean-toolchain) and
 
 ```powershell
 lake exe cache get
-lake build
+$env:LAKE_JOBS=1
+$env:LEAN_NUM_THREADS=0
+lake build <one-target>
 ```
 
 The broad build is intentionally expensive, and on a memory-constrained
@@ -240,11 +243,16 @@ invocation, in topological order. Parallel Lean workers exhaust RAM and report
 same module compiles on a serial retry. `lake build -j1` is not a workaround
 (Lake 5.0.0 removed `-j` and rejects `--jobs`), which is why `LAKE_JOBS=1` and
 `LEAN_NUM_THREADS=0` are set in the environment instead, as the caution above
-describes. [`AGENTS.md`](AGENTS.md) has the driver and the retry rule.
+describes. The
+[`Analysis/FabiusFunction` agent guide](Analysis/FabiusFunction/AGENTS.md)
+has the driver and the retry rule.
 
 Focused examples are:
 
 ```powershell
+$env:LAKE_JOBS=1
+$env:LEAN_NUM_THREADS=0
+# Run exactly one target at a time:
 lake build JacobianConjecture
 lake build +PolynomialFormulas
 lake build FabiusFunction
