@@ -1221,6 +1221,43 @@ It is \lean{norm_rvachevFourier_two_pow_mul_cross} in
 \path{SincProductShells.lean}.
 \end{proof}
 
+\begin{theorem}[Total arbitrary-prefix identity and envelope]
+\label{thm:fourier-prefix-bound}
+Write \(\Phi\) for the standalone sinc product in \eqref{eq:sinc-product}.
+For every \(K\in\N\) and \(x\in\R\), clearing the first \(K\) sinc
+denominators gives the total identity
+\begin{equation}
+ (\pi|x|)^K|\Phi(x)|
+ =2^{\binom K2}
+   \left(\prod_{j=0}^{K-1}
+     \left|\sin\!\left(\frac{\pi x}{2^j}\right)\right|\right)
+   \left|\Phi\!\left(\frac{x}{2^K}\right)\right|.       \label{eq:fourier-prefix-cross}
+\end{equation}
+In particular,
+\begin{equation}
+ (\pi|x|)^K|\Phi(x)|\le 2^{\binom K2}.                  \label{eq:fourier-prefix-cross-bound}
+\end{equation}
+Both formulas include \(x=0\) and the empty prefix \(K=0\).  Only after
+dividing do we require \(x\ne0\):
+\begin{equation}
+ |\Phi(x)|\le
+ \frac{2^{\binom K2}}{(\pi|x|)^K}qquad(x\ne0).          \label{eq:fourier-prefix-div-bound}
+\end{equation}
+Thus the usual selected-factor constant is
+\(2^{K(K-1)/2}/\pi^K\), with no unnecessary assumption \(K\ge1\).
+\end{theorem}
+
+\begin{proof}[Formal proof]
+The total identity, its total bound, and the divided corollary are respectively
+\lean{norm_rvachevFourierProduct_prefix_cross},
+\lean{norm_rvachevFourierProduct_prefix_cross_le}, and
+\lean{norm_rvachevFourierProduct_le_prefix_div} in
+\path{SincPrefixBound.lean}.  The proof combines the finite shell
+\lean{rvachevFourierProduct_shell}, the removable real-sinc identity
+\lean{abs_mul_norm_complexSinc_ofReal}, and the global tail bound
+\lean{norm_rvachevFourierProduct_le_one}; no convergence argument is repeated.
+\end{proof}
+
 The mean-value input behind shell estimates is more general than the dyadic case.
 Let \(m_0,m_1,\ldots\) be positive integer frequencies satisfying
 \(2m_j\le m_{j+1}\).  Then, for every \(n\in\N\),
@@ -1343,6 +1380,120 @@ an exponential, and is therefore strictly positive.  The canonical product is
 \lean{rvachevFourier_eq_canonical} in the same facade module, built from
 \lean{rvachevFourierProduct_eq_canonical} in \path{SincCanonicalProduct.lean}.
 \end{proof}
+
+\subsection{Finite weighted scale arithmetic behind the zero orders}
+
+The valuation in \eqref{eq:fourier-zero-order} belongs to a more general
+finite additive calculus; neither primality of the scale base nor an analytic
+infinite product is needed for this layer.  Let \((A,+,0)\) be an additive
+commutative monoid, let \(w:\N\to A\), and define the inclusive weighted
+prefix
+\begin{equation}
+ P_w(n):=\sum_{h=0}^{n}w(h).                              \label{eq:weighted-inclusive-prefix}
+\end{equation}
+It satisfies
+\begin{align}
+ P_w(0)&=w(0),\qquad
+ P_w(n+1)=P_w(n)+w(n+1),                                 \label{eq:weighted-prefix-boundaries}\\
+ P_w(m+n)&=\sum_{h=0}^{m-1}w(h)+P_{w^{\langle m\rangle}}(n),
+ \qquad w^{\langle m\rangle}(h):=w(m+h).                \label{eq:weighted-prefix-split}
+\end{align}
+Empty sums have their usual value.  More generally, if \(S\) is finite,
+\(a:S\to\N\), and \(a(x)<H\) for every \(x\in S\), then
+\begin{equation}
+ \sum_{x\in S}P_w(a(x))
+ =\sum_{h=0}^{H-1}\#\{x\in S:h\le a(x)\}\odot w(h),     \label{eq:weighted-layer-cake}
+\end{equation}
+where \(q\odot y\) means the sum of \(q\) copies of \(y\).  This finite
+layer-cake identity requires no subtraction, order, or multiplication on
+\(A\).
+
+For a natural base \(b\), put
+\begin{equation}
+ \nu_b(n):=\operatorname{padicValNat}(b,n),\qquad
+ W_{b,w}(n):=P_w(\nu_b(n))
+            =\sum_{h=0}^{\nu_b(n)}w(h).                  \label{eq:weighted-scale-multiplicity}
+\end{equation}
+Thus, for \(b>1\), \(n>0\), and \(k\in\N\),
+\begin{align}
+ W_{b,w}(b^kn)
+   &=\sum_{h=0}^{k-1}w(h)+W_{b,w^{\langle k\rangle}}(n), \label{eq:weighted-scale-shift}\\
+ W_{b,w}(bn)
+   &=w(0)+W_{b,w^{\langle1\rangle}}(n).                 \label{eq:weighted-scale-one-shift}
+\end{align}
+For the divisibility form, the optimal algebraic hypothesis is only
+\(b\ne1\).  If \(n>0\) and \(\nu_b(n)<H\), then
+\begin{equation}
+ W_{b,w}(n)=\sum_{\substack{0\le h<H\\b^h\mid n}}w(h).  \label{eq:weighted-scale-divisors-bounded}
+\end{equation}
+Since \(\nu_b(n)<n\), the canonical choice \(H=n\) gives
+\begin{equation}
+ W_{b,w}(n)=\sum_{\substack{0\le h<n\\b^h\mid n}}w(h).  \label{eq:weighted-scale-divisors}
+\end{equation}
+Summing over the positive integers through \(N\) and exchanging the two
+finite sums yields
+\begin{equation}
+ \sum_{m=0}^{N-1}W_{b,w}(m+1)
+ =\sum_{h=0}^{N-1}\bigl(N\mathbin{\mathrm{div}}b^h\bigr)\odot w(h)
+ \qquad(b\ne1),                                         \label{eq:weighted-scale-cumulative}
+\end{equation}
+where \(\mathrm{div}\) denotes natural-number quotient.  For \(b>1\) this
+is the familiar floor \(\lfloor N/b^h\rfloor\).
+
+Pascal weights now give the hockey-stick identities
+\begin{align}
+ P_{h\mapsto\binom{h+r}{r}}(n)&=\binom{n+r+1}{r+1},      \label{eq:weighted-prefix-shifted-pascal}\\
+ P_{h\mapsto\binom hr}(n)&=\binom{n+1}{r+1}.             \label{eq:weighted-prefix-pascal}
+\end{align}
+Consequently, with no restriction on \(b,n,r\),
+\begin{equation}
+ W_{b,h\mapsto\binom hr}(n)
+ =\binom{\nu_b(n)+1}{r+1},                              \label{eq:weighted-scale-pascal}
+\end{equation}
+and, for \(b\ne1\),
+\begin{equation}
+ \sum_{m=0}^{N-1}\binom{\nu_b(m+1)+1}{r+1}
+ =\sum_{h=0}^{N-1}\bigl(N\mathbin{\mathrm{div}}b^h\bigr)\binom hr.
+                                                               \label{eq:weighted-scale-pascal-cumulative}
+\end{equation}
+
+\begin{proof}[Formal proof]
+The definition \eqref{eq:weighted-inclusive-prefix}, its zero and successor
+laws, and its shifted splitting law are
+\lean{inclusivePrefixSum}, \lean{inclusivePrefixSum_zero},
+\lean{inclusivePrefixSum_succ}, and \lean{inclusivePrefixSum_add}.
+The monoid-valued Fubini identity \eqref{eq:weighted-layer-cake} is
+\lean{sum_inclusivePrefixSum_eq_sum_filter_card_nsmul}.
+
+The scale definition \eqref{eq:weighted-scale-multiplicity} is
+\lean{weightedScaleMultiplicity}.  Equations
+\eqref{eq:weighted-scale-shift} and \eqref{eq:weighted-scale-one-shift} are
+\lean{weightedScaleMultiplicity_base_pow_mul} and
+\lean{weightedScaleMultiplicity_base_mul}.  The bounded and canonical
+divisibility sums \eqref{eq:weighted-scale-divisors-bounded} and
+\eqref{eq:weighted-scale-divisors} are
+\lean{weightedScaleMultiplicity_eq_sum_filter_pow_dvd_of_lt} and
+\lean{weightedScaleMultiplicity_eq_sum_filter_pow_dvd}; the cumulative
+identity \eqref{eq:weighted-scale-cumulative} is
+\lean{sum_range_weightedScaleMultiplicity}.
+
+Finally, \eqref{eq:weighted-prefix-shifted-pascal} and
+\eqref{eq:weighted-prefix-pascal} are
+\lean{inclusivePrefixSum_add_choose} and \lean{inclusivePrefixSum_choose}.
+Their valuation specialization and cumulative floor sum are
+\lean{weightedScaleMultiplicity_choose} and
+\lean{sum_range_padicValNat_choose}.  All declarations are in
+\path{WeightedScaleMultiplicity.lean}.
+\end{proof}
+
+Lean totalizes the boundary cases:
+\(\nu_b(0)=\nu_0(n)=\nu_1(n)=0\), and natural division by zero is zero.
+Accordingly, the resulting \(W\)-values at those degenerate inputs are
+algebraic conventions.  More importantly, this subsection proves finite
+arithmetic identities only.  Formula \eqref{eq:weighted-scale-pascal}
+supplies the binomial expression proposed for higher-rank Rvachev products,
+but it does not assert convergence of such a product or identify its analytic
+zero order.  Those analytic bridges remain separate obligations.
 
 On the real axis the origin is the unique global point of unit modulus:
 \begin{equation}
@@ -5135,6 +5286,7 @@ Fourier analysis &
 \path{FourierProduct.lean}, \path{FourierAnalytic.lean},
 \path{OriginalPaperSupplement.lean}, \path{PoissonSummation.lean},
 \path{RenormalizationIdentity.lean}, \path{SincProductShells.lean},
+\path{SincPrefixBound.lean},
 \path{SincCanonicalProduct.lean}, \path{PhiZeroOrder.lean},
 \path{ThueMorseLobeSign.lean}, \path{RvachevProductContinuity.lean},
 \path{PeakRayEnvelope.lean}, \path{GlobalDecayEnvelope.lean},
@@ -5153,6 +5305,7 @@ Moments and exact arithmetic &
 \path{MomentPowerSeries.lean}, \path{UnitLaplaceMomentBounds.lean},
 \path{NormalizedEvenMoments.lean},
 \path{BernoulliRecurrences.lean}, \path{MomentCumulantAlgebra.lean},
+\path{WeightedScaleMultiplicity.lean},
 \path{ExactInversePower.lean}, \path{Parity.lean}, \path{TwoAdic.lean}\\
 Finite polynomial functionals and geometric Lagrange/Richardson exactness &
 \path{FinitePolynomialFunctional.lean}, \path{GeometricLagrange.lean}\\
@@ -5208,6 +5361,9 @@ Article & Lean & Meaning\\
 \(I\) & \lean{fabiusInv fabius fabius_spec} & totalized inverse\\
 \(c_n\) & \lean{moment n} & even moment\\
 \(d_n\) & \lean{halfMoment n} & half moment\\
+\(P_w(n)\) & \lean{inclusivePrefixSum w n} & inclusive weighted prefix\\
+\(W_{b,w}(n)\) & \lean{weightedScaleMultiplicity b w n} & weighted scale multiplicity\\
+\(\nu_b(n)\) & \lean{padicValNat b n} & maximal whole-base power exponent\\
 \(\varepsilon_n\) & \lean{thueMorseSign n} & signed Thue--Morse value\\
 \(\wt(n)\) & \lean{binaryWeight n} & binary digit sum\\
 \bottomrule

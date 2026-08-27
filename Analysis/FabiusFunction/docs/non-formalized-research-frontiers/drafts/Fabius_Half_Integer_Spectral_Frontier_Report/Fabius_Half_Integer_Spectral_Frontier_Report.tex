@@ -489,6 +489,14 @@ arbitrarily large $J$ shows that $a_k$ is a Schwartz sequence, so the series
 and every differentiated series converge absolutely and uniformly.
 \end{proof}
 
+\paragraph{Lean status.}
+The displayed support-interval identity is already formalized as
+\path{Fabius.rvachev_cosine_series} in
+\path{PoissonSummation.lean}.  That theorem supplies the exact odd
+half-integer cosine series.  The all-orders differentiated-series packaging
+and the weighted Prouhet, alias-transform, cyclotomic-trace, and Lambert
+consequences developed below remain separate formalization obligations.
+
 \begin{remark}
 The half-integer sequence is therefore not an auxiliary sampling choice.  It is
 \emph{exactly} the nonconstant Fourier spectrum of the natural two-periodic
@@ -943,6 +951,22 @@ For $0\le j<K$,
  \le\frac{2^j}{\pi|x|}.
 \]
 Multiply these $K$ inequalities and bound every remaining sinc factor by one.
+
+\smallskip\noindent
+This estimate is now machine-checked in the stronger total form
+\[
+ (\pi|x|)^K|\PhiU(x)|
+ =2^{\binom K2}
+  \left(\prod_{j<K}\left|\sin(\pi x/2^j)\right|\right)
+  |\PhiU(x/2^K)|
+ \le 2^{\binom K2},
+\]
+which includes both $x=0$ and $K=0$ before division.  The identity, total
+bound, and divided corollary are
+\path{norm_rvachevFourierProduct_prefix_cross},
+\path{norm_rvachevFourierProduct_prefix_cross_le}, and
+\path{norm_rvachevFourierProduct_le_prefix_div} in
+\path{SincPrefixBound.lean}.
 \end{proof}
 
 \begin{theorem}[Uniform aliasing error]\label{thm:alias-error}
