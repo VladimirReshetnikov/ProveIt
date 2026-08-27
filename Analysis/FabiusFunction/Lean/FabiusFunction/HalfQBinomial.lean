@@ -1,3 +1,4 @@
+import FabiusFunction.FinitePolynomialFunctional
 import FabiusFunction.ThueMorsePrefix
 import Mathlib.Tactic.FieldSimp
 
@@ -997,44 +998,14 @@ theorem halfQBinomial_negativeDyadic_polynomial_sum_eq_coeff
       halfQBinomialDyadicWeight n k * p.eval (negativeDyadicNode k)) =
         p.coeff n *
           ((2 : ℚ) ^ ((n + 1).choose 2) * halfQPochhammer n) := by
-  classical
   have hnat : p.natDegree ≤ n :=
     Polynomial.natDegree_le_of_degree_le hp
-  simp_rw [Polynomial.eval_eq_sum, Polynomial.sum_def, Finset.mul_sum]
-  rw [Finset.sum_comm]
-  have hexpand :
-      (∑ d ∈ p.support, ∑ k ∈ Finset.range (n + 1),
-          halfQBinomialDyadicWeight n k *
-            (p.coeff d * negativeDyadicNode k ^ d)) =
-        ∑ d ∈ p.support, p.coeff d *
-          ∑ k ∈ Finset.range (n + 1),
-            halfQBinomialDyadicWeight n k * negativeDyadicNode k ^ d := by
-    apply Finset.sum_congr rfl
-    intro d _hd
-    rw [Finset.mul_sum]
-    apply Finset.sum_congr rfl
-    intro k _hk
-    ring
-  rw [hexpand]
-  by_cases hn : n ∈ p.support
-  · rw [Finset.sum_eq_single n]
-    · rw [halfQBinomialDyadicWeight_nodes_self]
-    · intro d hd hdn
-      have hdn' : d < n :=
-        lt_of_le_of_ne
-          (Polynomial.le_natDegree_of_mem_supp d hd |>.trans hnat) hdn
-      rw [halfQBinomialDyadicWeight_nodes_zero hdn', mul_zero]
-    · exact fun h => (h hn).elim
-  · have hcoeff : p.coeff n = 0 := by
-      simpa only [Polynomial.mem_support_iff, not_ne_iff] using hn
-    rw [hcoeff, zero_mul]
-    apply Finset.sum_eq_zero
-    intro d hd
-    have hdn : d ≠ n := fun h => hn (h ▸ hd)
-    have hdn' : d < n :=
-      lt_of_le_of_ne
-        (Polynomial.le_natDegree_of_mem_supp d hd |>.trans hnat) hdn
-    rw [halfQBinomialDyadicWeight_nodes_zero hdn', mul_zero]
+  have hselect := sum_weight_mul_eval₂_eq_topCoeff_mul_moment
+    (RingHom.id ℚ) (Finset.range (n + 1))
+    (halfQBinomialDyadicWeight n) negativeDyadicNode
+    p n hnat fun _d hd => halfQBinomialDyadicWeight_nodes_zero hd
+  rw [halfQBinomialDyadicWeight_nodes_self] at hselect
+  simpa only [Polynomial.eval₂_id, RingHom.id_apply] using hselect
 
 /-- Mersenne-product form of the degree-valued Gaussian/Prouhet extractor:
 the top moment is exactly `halfMersenneProduct n`. -/
