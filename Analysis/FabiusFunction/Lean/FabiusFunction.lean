@@ -38,6 +38,7 @@ import FabiusFunction.ThueMorseHessenberg
 import FabiusFunction.ExponentialPartition
 import FabiusFunction.ThueMorsePartition
 import FabiusFunction.ExponentialBell
+import FabiusFunction.EndpointTransferPolynomials
 import FabiusFunction.ThueMorseIntegerLift
 import FabiusFunction.ThueMorseBoundaryFlatness
 import FabiusFunction.ThueMorseDirichlet

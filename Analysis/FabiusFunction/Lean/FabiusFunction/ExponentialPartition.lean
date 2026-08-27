@@ -31,6 +31,8 @@ open Finset
 
 namespace Fabius
 
+/-- Finite multiplicity vectors of positive parts whose weighted sum is
+`n`; these index the unordered partitions used by `partitionExpSum`. -/
 noncomputable def weightedPartitions (n : ℕ) : Finset (ℕ →₀ ℕ) :=
   ((Icc 1 n).finsupp (fun _ => range (n + 1))).filter
     (fun f => ∑ j ∈ Icc 1 n, j * f j = n)
