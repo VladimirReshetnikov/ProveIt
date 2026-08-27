@@ -95,17 +95,18 @@ theorem decayGauge_dyadic_shell_identity
   let n : ℝ := k
   let q : ℝ := n - 1
   let b' : ℝ := a + b
+  have ha : a ≠ 0 := by
+    simpa only [a] using hl2'
   have hL : L = q * a + b' := by
     dsimp [L, q, b', n, a, b]
     rw [hlx]
     ring
-  have hshell := shell_exponent_identity a b' c L q
-    (by simpa only [a] using hl2') hL
+  have hshell := shell_exponent_identity a b' c L q ha hL
   have hcorrection :
       b' ^ 2 / (2 * a) + b' * c / a - b' / 2 - c =
         b ^ 2 / (2 * a) + (1 / 2 + c / a) * b := by
     dsimp [b']
-    field_simp [show a ≠ 0 by simpa only [a] using hl2']
+    field_simp [ha]
     ring
   have hbook :
       -(a / 2) * (n * (n + 1)) - n * (c + b) - b ^ 2 / (2 * a) +
