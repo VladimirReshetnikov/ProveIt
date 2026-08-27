@@ -1,0 +1,2083 @@
+\documentclass[11pt,oneside]{article}
+\usepackage[a4paper,margin=27mm,headheight=15pt]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\IfFileExists{libertinus.sty}{\usepackage{libertinus}}{\usepackage{lmodern}}
+\usepackage{microtype}
+\usepackage{amsmath,amssymb,amsthm,mathtools,mathrsfs}
+\usepackage{bm}
+\usepackage{booktabs,longtable,array,tabularx,multirow}
+\newcolumntype{Y}{>{\raggedright\arraybackslash}X}
+\usepackage{graphicx}
+\usepackage{xcolor}
+\usepackage{enumitem}
+\usepackage{fancyhdr}
+\usepackage{titlesec}
+\usepackage{listings}
+\usepackage{xurl}
+\usepackage{hyperref}
+\usepackage[nameinlink,noabbrev]{cleveref}
+
+\definecolor{linkblue}{RGB}{25,75,135}
+\definecolor{shadegray}{RGB}{246,247,249}
+\definecolor{rulegray}{RGB}{195,201,208}
+\definecolor{newgreen}{RGB}{20,105,66}
+\definecolor{importblue}{RGB}{36,79,128}
+\definecolor{conjectureorange}{RGB}{151,83,15}
+\hypersetup{
+ colorlinks=true,linkcolor=linkblue,citecolor=linkblue,urlcolor=linkblue,
+ pdftitle={Half-Integer Spectral Arithmetic for the Fabius--Rvachev System},
+ pdfsubject={Weighted Prouhet cancellation, dyadic q-binomial aliasing, cyclotomic traces, and a Lambert-W bridge},
+ pdfkeywords={Fabius function,Rvachev up-function,Thue-Morse,q-binomial,sinc product,Lambert W,Prouhet,cyclotomic field,discrete cosine transform}}
+
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small Half-integer spectral arithmetic}
+\fancyhead[R]{\small\nouppercase{\leftmark}}
+\fancyfoot[C]{\thepage}
+\renewcommand{\headrulewidth}{0.4pt}
+\titleformat{\section}{\Large\bfseries}{\thesection}{0.7em}{}
+\titleformat{\subsection}{\large\bfseries}{\thesubsection}{0.7em}{}
+\titleformat{\subsubsection}{\normalsize\bfseries}{\thesubsubsection}{0.7em}{}
+\setcounter{secnumdepth}{3}
+\setcounter{tocdepth}{2}
+\setlist[itemize]{leftmargin=2em,itemsep=0.25em,topsep=0.4em}
+\setlist[enumerate]{leftmargin=2.3em,itemsep=0.25em,topsep=0.4em}
+\setlength{\emergencystretch}{3em}
+
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{conjecture}[theorem]{Conjecture}
+\newtheorem{problem}[theorem]{Problem}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{algorithm}[theorem]{Algorithm}
+\newtheorem{example}[theorem]{Example}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+\newtheorem{warning}[theorem]{Warning}
+
+\newcommand{\R}{\mathbb R}
+\newcommand{\C}{\mathbb C}
+\newcommand{\Q}{\mathbb Q}
+\newcommand{\N}{\mathbb N}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\Up}{\operatorname{up}}
+\newcommand{\sinc}{\operatorname{sinc}}
+\newcommand{\ord}{\operatorname{ord}}
+\newcommand{\Gal}{\operatorname{Gal}}
+\newcommand{\Tr}{\operatorname{Tr}}
+\newcommand{\Norm}{\operatorname{N}}
+\newcommand{\e}{\mathrm e}
+\newcommand{\ii}{\mathrm i}
+\newcommand{\dd}{\,\mathrm d}
+\newcommand{\bigO}{\mathcal O}
+\newcommand{\smallo}{o}
+\newcommand{\eps}{\varepsilon}
+\newcommand{\wt}{s_2}
+\newcommand{\GF}{\mathcal F}
+\newcommand{\PhiU}{\Phi}
+\newcommand{\qbinom}[3]{\genfrac{[}{]}{0pt}{}{#1}{#2}_{#3}}
+\newcommand{\newresult}{\textcolor{newgreen}{\textsc{New result proved here.}}}
+\newcommand{\imported}{\textcolor{importblue}{\textsc{Imported baseline.}}}
+\newcommand{\openstatus}{\textcolor{conjectureorange}{\textsc{Open or conjectural.}}}
+\newenvironment{boxedremark}{\par\smallskip\noindent\begin{center}\begin{minipage}{0.94\textwidth}\hrule\vspace{0.6em}\small}{\vspace{0.6em}\hrule\end{minipage}\end{center}\smallskip}
+\lstdefinestyle{pseudo}{basicstyle=\ttfamily\footnotesize,backgroundcolor=\color{shadegray},frame=single,
+ rulecolor=\color{rulegray},columns=fullflexible,keepspaces=true,showstringspaces=false,breaklines=true,
+ xleftmargin=0.7em,xrightmargin=0.7em,aboveskip=0.8em,belowskip=0.8em}
+
+\title{\bfseries Half-Integer Spectral Arithmetic\\
+for the Fabius--Rvachev System\\[0.35em]
+\large Weighted Prouhet cancellation, dyadic $q$-binomial aliasing,\\
+cyclotomic traces, and a Lambert--$W$ endpoint bridge}
+\author{Frontier research report based on the recursive corpus\\
+\small\path{Analysis/FabiusFunction/docs}\\
+\small Vladimir Reshetnikov's \texttt{ProveIt} repository}
+\date{27 August 2026}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+Let
+\[
+ \PhiU(z):=\widehat{\Up}(z)
+ =\prod_{j=0}^{\infty}\sinc\!\left(\frac z{2^j}\right),
+ \qquad \sinc u:=\frac{\sin(\pi u)}{\pi u},
+\]
+be the Fourier transform of Rvachev's compactly supported up-function, and put
+$a_k=\PhiU(k+\tfrac12)$.  The repository corpus already contains the Fourier
+product, exact dyadic values of the Fabius function, their Gaussian-binomial and
+Thue--Morse formulae, the Lambert--$W$ endpoint asymptotic, the complete real-axis
+Fourier-decay theory assembled from several waves, and a recent spectral account
+of the integer zero divisor.  This report does not relabel those results as new.
+It develops instead the half-integer spectral sequence $(a_k)$, identified in the
+previous spectral audit as a genuine unresolved bridge.
+
+The first main theorem is an infinite, positive-weight Prouhet system of all
+orders.  With $o_k=2k+1$, $\eps_k=(-1)^{s_2(k)}$, and
+$w_k=|a_k|$, one has
+\[
+ \sum_{k\ge0}a_k=\frac12,
+ \qquad
+ \sum_{k\ge0}\eps_k w_k o_k^{2m}=0\quad(m\ge1).
+\]
+Thus the Thue--Morse partition of the odd integers has exactly matching positive
+weighted even moments of every order.  More generally, the same coefficients
+form an exact signed quadrature rule
+$\sum_k\eps_kw_kP(o_k^2)=P(0)/2$ for every polynomial $P$.
+
+The second main theorem is a finite dyadic spectral transform.  If $N=2^n$ and
+$r$ is odd with $1\le r<N$, define
+\[
+ A_{n,r}=\frac1N\left[1-2\sum_{j=1}^{N-1}
+ F\!\left(\frac jN\right)\cos\!\left(\frac{\pi rj}{N}\right)\right].
+\]
+Then the exact alias identity
+\[
+ A_{n,r}=\sum_{q\in\Z}\PhiU\!\left(qN+\frac r2\right)
+\]
+holds, the dyadic samples are recovered by an exact inverse discrete cosine
+transform, and
+\[
+ |A_{n,r}-\PhiU(r/2)|\le
+ \frac{2(1-2^{-n})\zeta(n)}{\pi^n}\,2^{-n(n-1)/2}
+ \qquad(n\ge2).
+\]
+Substitution of the repository's finite $q=1/2$ Gaussian-binomial formula for
+each $F(j/N)$ therefore gives superexponentially convergent, finite
+$q$-binomial--Thue--Morse--cyclotomic approximants to every fixed half-integer
+Fourier amplitude.
+
+The folded coefficients form a Galois orbit in the maximal real
+$2^{n+1}$-st cyclotomic field.  Their orbit polynomial lies in $\Q[X]$; all power
+traces are explicit rational convolutions of dyadic Fabius values with a
+Ramanujan-sum congruence filter.  These rational traces converge to nonlinear
+spectral moments $\sum_k a_k^m$.  An additional exact factorization isolates a
+finite Thue--Morse polynomial value as the sign carrier of every alias class.
+Finally, the all-order Prouhet identities turn the endpoint function into an
+exact ``beyond all algebraic orders'' spectral remainder.  Inserting the
+repo's corrected Lambert--$W$ asymptotic produces a direct, explicit bridge
+between the signed half-integer sinc amplitudes and the lower-Lambert saddle.
+All new claims below are proved for human verification; none is represented as
+already formalized in Lean.  Novelty is asserted only relative to the reviewed
+repository corpus and targeted source searches, not as a universal priority
+claim.
+\end{abstract}
+
+\begin{boxedremark}
+\textbf{Status convention.}
+\imported\ marks a theorem, identity, or notation already present in the
+repository or in a cited source.  \newresult\ marks a statement for which a
+proof is supplied here and which was not found in the audited TeX corpus or in
+targeted searches of the cited literature.  \openstatus\ marks conjectures or
+computational observations.  The distinction is essential because the report
+is designed as a frontier supplement, not a rewrite of the existing corpus.
+\end{boxedremark}
+
+\tableofcontents
+\newpage
+
+\section{Scope, recursive audit, and the non-duplication boundary}\label{sec:scope}
+
+\subsection{What was inspected}
+
+The documentation tree is a stratified research record rather than one article.
+The same-day recursive audit used for this report contains fifty-seven TeX
+artifacts: twenty-five living or imported sources and thirty-two frozen historical
+versions.  The living stratum includes the main Fabius--Rvachev exposition, a
+mathematical glossary, the Lean walkthrough, the non-elementarity study, a
+large consolidated non-formalized frontier volume, a Thue--Morse formula atlas,
+a sequence of Fourier-decay reports and audits, and seven source-paper
+transcriptions.  The historical stratum preserves earlier expositions, q-calculus
+studies, asymptotic investigations, repeated-integration reports, gap registers,
+and superseded formula atlases.  A path ledger is supplied in
+\cref{app:inventory}.
+
+The current canonical descendants were rechecked separately, because the
+frontier directory is intentionally consolidated over time: processed drafts
+may be absorbed into the large canonical volume or removed while their frozen
+archive remains.  Accordingly, the appendix records the audited snapshot; it is
+not a promise that every historical path remains a live branch-head file after
+future repository maintenance.
+
+Mathematical extraction was concentrated on the current descendants and on the
+distinctive claims of each archived line of development.  Byte-identical and
+superseded files were treated as provenance, not as independent evidence of
+multiple results.  The audit was then compared with three frontier reports
+produced from the same corpus on spectral determinants, spline/quadrature
+structure, and arithmetic Fourier rays.  This prevents accidental duplication
+of very recent deductions that are not yet part of the main exposition.
+
+\subsection{Results explicitly treated as baseline}
+
+The following are \emph{not} claimed as discoveries here.
+\begin{enumerate}
+ \item The relations between the bounded Fabius function $F$, its signed global
+ extension $\GF$, and Rvachev's even compactly supported function $\Up$.
+ \item The refinement differential equation, the entire Fourier product, the
+ cosine-product form, and rapid decay of $\PhiU$.
+ \item Exact rationality at dyadic points, the moment recurrences, the
+ highest-bit recursion, and the finite $q=1/2$ Gaussian-binomial--Thue--Morse
+ formula for $\GF(m/2^n)$.
+ \item The integer zero set of $\PhiU$, multiplicity $1+\nu_2(m)$ at a nonzero
+ integer $m$, strict logarithmic concavity between zeros, and the sign law
+ $\operatorname{sgn}\PhiU(x)=(-1)^{s_2(M)}$ on $M<x<M+1$.
+ \item The pointwise, metric, probabilistic, extremal, annular, and transfer-operator
+ Fourier-decay results developed in the successive decay reports.
+ \item The corrected endpoint asymptotic in the lower-Lambert coordinate,
+ including the nonconstant Gamma--zeta periodic fluctuation.
+ \item The spectral determinant model, spectral zeta and heat trace, all-order
+ integer-zero jets, dyadic q-Euler determinants, and symmetric q-deformation
+ developed in the prior spectral frontier report.
+ \item Exact rational-ray decay laws, cyclotomic orbit norms, resultants,
+ Ramanujan traces, and the Mersenne half-base bridge developed in the prior
+ arithmetic-ray report.
+\end{enumerate}
+
+\subsection{The gap selected for this report}
+
+The previous spectral report ends with the focused problem of classifying the
+half-integer amplitudes
+\[
+ \PhiU\!\left(\frac{2k+1}{2}\right),
+\]
+which govern the leading Taylor coefficients at every integer zero.  The main
+repository exposition contains the exact cosine series in which the same
+amplitudes reconstruct $\Up$, while its dyadic arithmetic chapters contain
+finite $q$-binomial formulae for the values being reconstructed.  Yet the
+reviewed corpus does not develop the finite transform between those two arrays,
+does not state the all-order weighted Prouhet identities below, and does not
+connect those cancellations to the corrected Lambert endpoint scale.
+
+This is therefore a natural unfilled intersection of five mature themes already
+present separately in the repository:
+\[
+\begin{aligned}
+ \text{Thue--Morse signs}
+ &\longleftrightarrow \text{half-integer sinc amplitudes}\\
+ &\longleftrightarrow \text{dyadic }q\text{-binomial values}
+ \longleftrightarrow \text{cyclotomic traces}
+ \longleftrightarrow \text{Lambert--}W.
+\end{aligned}
+\]
+
+\subsection{Contribution map}
+
+\cref{tab:contribution-map} summarizes the boundary between imported material,
+new deductions proved here, and conjectural extensions.
+
+{\small
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{0.22\textwidth}>{\raggedright\arraybackslash}p{0.51\textwidth}>{\raggedright\arraybackslash}p{0.18\textwidth}@{}}
+\caption{Boundary between imported material and the new theorem package.}\label{tab:contribution-map}\\
+\toprule
+Result & Content & Status \\
+\midrule
+\endfirsthead
+\multicolumn{3}{c}{\small\itshape Contribution map (continued)}\\[0.3em]
+\toprule
+Result & Content & Status \\
+\midrule
+\endhead
+\midrule
+\multicolumn{3}{r}{\small\itshape Continued on the next page}\\
+\endfoot
+\bottomrule
+\endlastfoot
+Half-integer cosine spectrum & Isolates the sequence $a_k=\PhiU(k+1/2)$ as the nonzero Fourier coefficients of the two-periodic up-function. & \imported\ identity, new organization \\
+Weighted Prouhet theorem & Proves equality of every positive weighted even moment in the Thue--Morse partition of the odd integers. & \newresult \\
+Spectral quadrature & Shows $\sum_k\eps_kw_kP((2k+1)^2)=P(0)/2$ for every polynomial $P$. & \newresult \\
+Dyadic moment filtration & Converts every derivative jet at a reduced dyadic point into a half-integer spectral moment and identifies its exact terminating depth. & \newresult\ formulation \\
+Beyond-all-orders remainder & Rewrites $F(x)$ after subtraction of an arbitrary cosine Taylor polynomial, with all algebraic terms cancelling exactly. & \newresult \\
+Exact dyadic alias transform & Gives a finite DCT of dyadic Fabius values equal to a complete folded half-integer alias class. & \newresult \\
+Certified convergence & Gives a uniform $2^{-n^2/2+\bigO(n)}$ error bound from the folded coefficient to $\PhiU(r/2)$. & \newresult \\
+$q$-binomial spectral approximants & Substitutes the finite Gaussian-binomial formula into the DCT, producing exact cyclotomic approximants. & \newresult \\
+Cyclotomic orbit traces & Constructs rational orbit polynomials and explicit Ramanujan-filtered power traces. & \newresult \\
+Spectral power-sum limits & Shows the rational Galois traces converge to $\sum_k a_k^m$ superexponentially up to a rapidly decreasing tail. & \newresult \\
+Thue--Morse sign carrier & Factors each alias class into a finite root-of-unity Thue--Morse product and an absolutely convergent shifted spectral sum. & \newresult \\
+Lambert bridge & Inserts the corrected lower-Lambert asymptotic into the exact Prouhet remainder. & new consequence of imported asymptotic \\
+Alias-sign positivity & Conjectures positivity of the residual shifted spectral sum, equivalent to an exact Thue--Morse sign law for every folded coefficient. & \openstatus \\
+\end{longtable}
+}
+
+\section{Baseline notation and identities}\label{sec:baseline}
+
+\subsection{The three functions}
+
+Let $F:[0,1]\to[0,1]$ be the bounded Fabius function.  Let
+\begin{equation}\label{eq:global-F}
+ \GF(x):=\sum_{n=0}^{\infty}\eps_n\Up(x-2n-1),
+ \qquad \eps_n:=(-1)^{s_2(n)},
+\end{equation}
+be its signed global extension; the sum is locally finite.  On $[-1,1]$,
+\begin{equation}\label{eq:Up-F-relations}
+ \Up(t)=\GF(t+1)=
+ \begin{cases}
+  F(t+1),&-1\le t\le0,\\
+  F(1-t)=1-F(t),&0\le t\le1.
+ \end{cases}
+\end{equation}
+The function $\Up$ is even, nonnegative, $C^\infty$, supported on $[-1,1]$,
+normalized by $\int_{\R}\Up=1$, and satisfies $\Up(0)=1$.
+Every positive derivative of $\Up$ vanishes at $0$, because on the right of
+zero it is $1-F(t)$ and $F$ is flat at the origin.
+
+The global derivative identities are
+\begin{equation}\label{eq:global-derivatives}
+ \GF^{(m)}(x)=2^{\binom{m+1}{2}}\GF(2^m x),
+ \qquad
+ \Up^{(m)}(t)=2^{\binom{m+1}{2}}\GF\bigl(2^m(t+1)\bigr).
+\end{equation}
+At nonnegative integers,
+\begin{equation}\label{eq:global-integers}
+ \GF(2b)=0,
+ \qquad
+ \GF(2b+1)=\eps_b.
+\end{equation}
+These are repository baseline facts, ultimately descending from Arias de Reyna's
+formulation \cite{ariascompact,ariasarith}.
+
+\subsection{The Fourier product}
+
+We use the Fourier convention
+\[
+ \widehat f(z)=\int_{\R}f(t)\e^{-2\pi\ii tz}\dd t.
+\]
+Put
+\begin{equation}\label{eq:Phi-def}
+ \PhiU(z):=\widehat\Up(z)
+ =\prod_{j=0}^{\infty}\sinc\!\left(\frac z{2^j}\right),
+ \qquad
+ \sinc u=\frac{\sin(\pi u)}{\pi u}.
+\end{equation}
+The product is entire and even.  For every $J\ge1$ and real $x\ne0$,
+selecting the first $J$ factors gives the elementary rapid-decay estimate
+\begin{equation}\label{eq:Phi-power-bound-baseline}
+ |\PhiU(x)|\le
+ \frac{2^{J(J-1)/2}}{\pi^J|x|^J}.
+\end{equation}
+The nonzero real zeros are exactly the integers; at $m\ne0$ the multiplicity is
+$1+\nu_2(|m|)$.  If $M<x<M+1$, then
+\begin{equation}\label{eq:Phi-sign-law}
+ \operatorname{sgn}\PhiU(x)=(-1)^{s_2(M)}.
+\end{equation}
+
+\subsection{The exact dyadic \texorpdfstring{$q$}{q}-binomial formula}
+
+For later substitution, we record the current corpus formula.  With
+$(q;q)_n=\prod_{j=1}^n(1-q^j)$ and the Gaussian binomial coefficient
+$\qbinom{n}{k}{q}$, one has for $m,n\in\N$ and every rational translation $c$
+\begin{equation}\label{eq:baseline-qbinomial}
+\begin{aligned}
+ \GF\!\left(\frac{m}{2^n}\right)
+ ={}&\frac{1}{2^{n^2}(1/2;1/2)_n}
+ \sum_{k=0}^{n}
+ \frac{\qbinom{n}{k}{1/2}}
+      {2^{k(k-1)}(n+k)!}\\
+ &\qquad\times
+ \sum_{s=0}^{m2^k-1}\eps_s
+ \left(s-m2^k+c\right)^{n+k}.
+\end{aligned}
+\end{equation}
+The right side is independent of $c$.  When $0\le m\le2^n$, it equals the
+bounded value $F(m/2^n)$.  This is \imported\ from the main exposition; the
+new use below is to insert it into a cyclotomic discrete cosine transform.
+
+\subsection{The lower-Lambert endpoint theorem}
+
+Write $L=\log2$ and, for sufficiently small $x>0$,
+\begin{equation}\label{eq:lambda-W-def}
+ W=W_{-1}(-Lx),
+ \qquad
+ \lambda(x)=-\frac WL,
+ \qquad
+ r(x)=2^{\lambda(x)}=\frac{\lambda(x)}x.
+\end{equation}
+Let $\Psi$ be the smooth one-periodic correction whose nonzero Fourier
+coefficients are
+\begin{equation}\label{eq:Psi-coeff-baseline}
+ \widehat\Psi(k)=-\frac{\Gamma(-\chi_k)\zeta(1-\chi_k)}L,
+ \qquad
+ \chi_k=\frac{2\pi\ii k}{L}.
+\end{equation}
+Put
+\begin{equation}\label{eq:g-constant}
+ \mathfrak g=\gamma_1+\frac{\gamma^2}{2}-\frac{\pi^2}{12}.
+\end{equation}
+The corrected endpoint theorem in the corpus states
+\begin{equation}\label{eq:Lambert-baseline}
+ F(x)=
+ \frac{\e^{\Psi(-W/L)}}{2^{7/12}\sqrt{\pi x}}
+ \exp\!\left(\frac{\mathfrak g-W-\tfrac12W^2}{L}\right)
+ \left(1+\bigO\!\left(\lambda(x)^{-1}\right)\right).
+\end{equation}
+The periodic factor is nonconstant and cannot be deleted from a sharp
+asymptotic.  We shall not reprove \eqref{eq:Lambert-baseline}; instead we derive
+an exact half-integer spectral identity whose left side is $F(x)$ and then
+insert this imported theorem.
+
+\section{The half-integer spectral sequence}\label{sec:half-spectrum}
+
+\subsection{Definition and first values}
+
+Define
+\begin{equation}\label{eq:a-k-def}
+ a_k:=\PhiU\!\left(k+\frac12\right),
+ \qquad
+ o_k:=2k+1,
+ \qquad
+ w_k:=|a_k|.
+\end{equation}
+The sign law \eqref{eq:Phi-sign-law} gives immediately
+\begin{equation}\label{eq:a-sign}
+ a_k=\eps_k w_k.
+\end{equation}
+The first amplitudes are shown in \cref{tab:first-amplitudes}.  Their rapid
+shrinkage is deceptive: the exact identities below require cancellations over
+all indices, and no finite initial segment has the moment-vanishing property.
+
+\begin{table}[ht]
+\centering\small
+\begin{tabular}{@{}r r r@{}}
+\toprule
+$k$ & $\eps_k$ & $a_k=\PhiU(k+1/2)$ \\
+\midrule
+0 & $+1$ & $\phantom{-}0.553771275888810095344217416345$ \\
+1 & $-1$ & $-0.046202299134306712992574862210$ \\
+2 & $-1$ & $-0.008656867928610010895881610116$ \\
+3 & $+1$ & $\phantom{-}0.001044808241827280615683472766$ \\
+4 & $-1$ & $-0.000356152861629792122112229855$ \\
+5 & $+1$ & $\phantom{-}0.000298368336838126419196617073$ \\
+6 & $+1$ & $\phantom{-}0.000091404980598947955260616141$ \\
+7 & $-1$ & $-0.000006555455730992891195331226$ \\
+\bottomrule
+\end{tabular}
+\caption{Initial half-integer amplitudes.  The signs are the Thue--Morse word.}
+\label{tab:first-amplitudes}
+\end{table}
+
+\subsection{Exact two-periodic cosine expansion}
+
+Let $P$ denote the two-periodization of $\Up$,
+\begin{equation}\label{eq:P-periodization}
+ P(t):=\sum_{\ell\in\Z}\Up(t-2\ell).
+\end{equation}
+Because $\Up$ is supported on $[-1,1]$, $P(t)=\Up(t)$ for $-1\le t\le1$.
+
+\begin{proposition}[Half-integer cosine spectrum]\label{prop:cosine-spectrum}
+The Fourier series of $P$ is absolutely differentiable to every order and is
+\begin{equation}\label{eq:cosine-spectrum}
+ \boxed{
+ P(t)=\frac12+\sum_{k=0}^{\infty}a_k\cos(\pi o_k t).}
+\end{equation}
+In particular, on $[-1,1]$ the series equals $\Up(t)$.
+\end{proposition}
+
+\begin{proof}
+The $m$th complex Fourier coefficient for period two is
+\[
+ c_m=\frac12\int_{-1}^{1}\Up(t)\e^{-\pi\ii mt}\dd t
+ =\frac12\PhiU(m/2).
+\]
+For nonzero even $m$, $m/2$ is a nonzero integer and $c_m=0$.  Also
+$c_0=1/2$.  For $m=\pm(2k+1)$, evenness and reality give
+$c_m=a_k/2$.  Thus complex Fourier inversion reduces to
+\eqref{eq:cosine-spectrum}.  Estimate \eqref{eq:Phi-power-bound-baseline} with
+arbitrarily large $J$ shows that $a_k$ is a Schwartz sequence, so the series
+and every differentiated series converge absolutely and uniformly.
+\end{proof}
+
+\begin{remark}
+The half-integer sequence is therefore not an auxiliary sampling choice.  It is
+\emph{exactly} the nonconstant Fourier spectrum of the natural two-periodic
+extension of $\Up$.  Integer Fourier samples disappear because the entire sinc
+product vanishes there.
+\end{remark}
+
+\section{An all-order weighted Prouhet system}\label{sec:prouhet}
+
+\subsection{Moment cancellation}
+
+The classical Prouhet--Thue--Morse construction balances finitely many
+\emph{unweighted} power sums on a finite dyadic block.  Here the half-integer
+Fourier amplitudes supply positive, rapidly decreasing weights that balance
+\emph{every} even power on the infinite set of odd integers.
+
+\begin{theorem}[Half-integer weighted Prouhet theorem]\label{thm:weighted-prouhet}
+The amplitudes \eqref{eq:a-k-def} satisfy
+\begin{align}
+ \sum_{k=0}^{\infty}a_k&=\frac12,
+ \label{eq:mass-half}\\
+ \sum_{k=0}^{\infty}a_k o_k^{2m}&=0
+ \qquad(m\ge1).
+ \label{eq:all-even-moments-zero}
+\end{align}
+Equivalently, for every $m\ge1$,
+\begin{equation}\label{eq:positive-prouhet}
+ \boxed{
+ \sum_{\substack{k\ge0\\s_2(k)\ \mathrm{even}}}
+ w_k(2k+1)^{2m}
+ =
+ \sum_{\substack{k\ge0\\s_2(k)\ \mathrm{odd}}}
+ w_k(2k+1)^{2m}.}
+\end{equation}
+All displayed series converge absolutely.
+\end{theorem}
+
+\begin{proof}
+Set $t=0$ in \eqref{eq:cosine-spectrum}.  Since $P(0)=\Up(0)=1$,
+\[
+ 1=\frac12+\sum_{k\ge0}a_k,
+\]
+which proves \eqref{eq:mass-half}.  For $m\ge1$, termwise differentiation gives
+\[
+ P^{(2m)}(0)=(-1)^m\pi^{2m}
+ \sum_{k\ge0}a_ko_k^{2m}.
+\]
+Every positive derivative of $P=\Up$ vanishes at zero, hence the left side is
+zero.  This proves \eqref{eq:all-even-moments-zero}.  Absolute convergence
+follows by applying \eqref{eq:Phi-power-bound-baseline} with $J>2m+1$.
+Finally substitute $a_k=\eps_kw_k$ and move the negative-sign terms to the
+opposite side.
+\end{proof}
+
+\begin{corollary}[Exact spectral quadrature at the origin]\label{cor:spectral-quadrature}
+For every polynomial $Q\in\C[X]$,
+\begin{equation}\label{eq:polynomial-quadrature}
+ \boxed{
+ \sum_{k=0}^{\infty}\eps_kw_k\,Q\bigl((2k+1)^2\bigr)
+ =\frac{Q(0)}2.}
+\end{equation}
+Thus the signed positive weights $\eps_kw_k$ evaluate every polynomial in the
+squared odd variable exactly at the off-grid point $0$.
+\end{corollary}
+
+\begin{proof}
+Expand $Q(X)=\sum_{m=0}^d q_mX^m$ and use
+\eqref{eq:mass-half}--\eqref{eq:all-even-moments-zero}.
+\end{proof}
+
+\begin{remark}[Why this is not the ordinary finite Prouhet theorem]
+For a block $0\le k<2^n$, the unweighted Thue--Morse signs annihilate powers
+only below degree $n$.  In \eqref{eq:positive-prouhet}, the support is infinite,
+the nodes are the odd integers, the weights are the absolute half-integer sinc
+amplitudes, and every even degree is annihilated.  The recent Thue--Morse
+transform literature continues to develop finite Prouhet--Tarry--Escott
+families \cite{cloitre2026}; it does not supply the spectral weights appearing
+here.
+\end{remark}
+
+\subsection{A nontrivial signed measure with every positive moment zero}
+
+\begin{corollary}[Spectral moment-null measure]\label{cor:moment-null-measure}
+The finite signed measure
+\begin{equation}\label{eq:nu-measure}
+ \nu:=\frac12\sum_{k=0}^{\infty}a_k
+ \bigl(\delta_{o_k}+\delta_{-o_k}\bigr)
+\end{equation}
+has total mass $1/2$ and satisfies
+\begin{equation}\label{eq:nu-moments}
+ \int_{\R}x^m\dd\nu(x)=0\qquad(m\ge1).
+\end{equation}
+Consequently $\nu-\tfrac12\delta_0$ is a nonzero finite signed measure whose
+moments of every nonnegative integer order vanish.
+\end{corollary}
+
+\begin{proof}
+The total variation and every polynomial moment are finite because $(a_k)$ is
+Schwartz.  Odd moments vanish by symmetry; positive even moments vanish by
+\cref{thm:weighted-prouhet}; and the mass is \eqref{eq:mass-half}.
+\end{proof}
+
+\begin{remark}
+There is no contradiction with uniqueness results for positive moment problems:
+\eqref{eq:nu-measure} is signed and has unbounded support.  It gives a concrete
+moment-null object built from the exact spectrum of a positive compactly
+supported density.
+\end{remark}
+
+\subsection{Certified finite truncations}
+
+The identities are infinite, but the elementary product bound gives explicit
+certificates for truncation experiments.
+
+\begin{proposition}[Prouhet truncation bound]\label{prop:prouhet-tail}
+Let $m\ge0$, $K\ge1$, and $J>2m+1$ be integers.  Put $p=J-2m$.  Then
+\begin{align}
+ \left|\sum_{k=K}^{\infty}a_ko_k^{2m}\right|
+ &\le \frac{2^{J(J+1)/2}}{\pi^J}
+ \sum_{k=K}^{\infty}(2k+1)^{-p}
+ \label{eq:prouhet-tail-raw}\\
+ &\le \frac{2^{J(J+1)/2}}{\pi^J}
+ \left((2K+1)^{-p}
+ +\frac{(2K+1)^{1-p}}{2(p-1)}\right).
+ \label{eq:prouhet-tail-explicit}
+\end{align}
+For $m\ge1$, the same bound is an a posteriori certificate for the residual of
+the first $K$ terms, because the complete sum is zero.
+\end{proposition}
+
+\begin{proof}
+Apply \eqref{eq:Phi-power-bound-baseline} with $x=o_k/2$.  Since
+\[
+ |a_k|\le
+ \frac{2^{J(J-1)/2}}{\pi^J(k+1/2)^J}
+ =\frac{2^{J(J+1)/2}}{\pi^Jo_k^J},
+\]
+multiplication by $o_k^{2m}$ and summation give
+\eqref{eq:prouhet-tail-raw}.  For the second line use the monotonicity of
+$(2x+1)^{-p}$ and the integral estimate
+\[
+ \sum_{k=K}^{\infty}(2k+1)^{-p}
+ \le (2K+1)^{-p}+\int_K^\infty(2x+1)^{-p}\dd x.
+\]
+\end{proof}
+
+\begin{remark}
+The coefficient in \eqref{eq:prouhet-tail-raw} records every factor of two from
+the half-integer substitution $x=o_k/2$.  The sharper alias estimate in
+\cref{sec:alias-error} works directly in the variable $x$ and therefore uses the
+constant $C_K$ of \eqref{eq:selected-factor-bound} without this substitution.
+\end{remark}
+
+\section{Dyadic spectral moment filtration}\label{sec:moment-filtration}
+
+\subsection{Every derivative as a half-integer spectral moment}
+
+For $m\ge0$ define
+\begin{equation}\label{eq:S-m-def}
+ S_m(t):=\sum_{k=0}^{\infty}a_ko_k^m
+ \cos\!\left(\pi o_kt+\frac{m\pi}{2}\right).
+\end{equation}
+
+\begin{theorem}[Spectral derivative identity]\label{thm:spectral-derivative}
+For $-1\le t\le1$ and every $m\ge0$,
+\begin{equation}\label{eq:spectral-derivative}
+ \boxed{
+ S_m(t)=\frac{\Up^{(m)}(t)}{\pi^m}
+ =\frac{2^{\binom{m+1}{2}}}{\pi^m}
+ \GF\bigl(2^m(t+1)\bigr).}
+\end{equation}
+The series is absolutely and uniformly convergent on $[-1,1]$.
+\end{theorem}
+
+\begin{proof}
+Differentiate \eqref{eq:cosine-spectrum} $m$ times.  The derivative of
+$\cos(\pi o_kt)$ is
+$(\pi o_k)^m\cos(\pi o_kt+m\pi/2)$.  The second equality is the imported
+global derivative identity \eqref{eq:global-derivatives}.
+\end{proof}
+
+\subsection{Exact termination at reduced dyadic points}
+
+\begin{theorem}[Dyadic spectral filtration]\label{thm:dyadic-filtration}
+Let $n\ge1$ and let $a$ be odd with $0<a<2^n$.  Put $t=a/2^n$.  Then
+\begin{align}
+ S_m(t)&=0 &&(m>n),
+ \label{eq:filtration-above}\\
+ S_n(t)&=-\eps_{(a-1)/2}
+ \frac{2^{\binom{n+1}{2}}}{\pi^n},
+ \label{eq:filtration-critical}\\
+ S_m(t)&=\frac{2^{\binom{m+1}{2}}}{\pi^m}
+ \GF\!\left(\frac{2^n+a}{2^{n-m}}\right)
+ &&(0\le m<n).
+ \label{eq:filtration-below}
+\end{align}
+Every value in \eqref{eq:filtration-below} is rational up to the displayed
+power of $\pi$, and is given explicitly by \eqref{eq:baseline-qbinomial}.
+In particular, the reduced dyadic depth $n$ is exactly the largest positive
+order for which the spectral moment $S_m(t)$ can be nonzero.
+\end{theorem}
+
+\begin{proof}
+By \cref{thm:spectral-derivative}, the relevant argument of $\GF$ is
+\[
+ 2^m(t+1)=\frac{2^n+a}{2^{n-m}}.
+\]
+If $m>n$, this is an even integer, so \eqref{eq:global-integers} gives zero.
+If $m=n$, the argument is the odd integer $2^n+a=2b+1$, with
+\[
+ b=2^{n-1}+\frac{a-1}{2}.
+\]
+The binary supports of the two summands are disjoint; hence
+$\eps_b=-\eps_{(a-1)/2}$, proving \eqref{eq:filtration-critical}.  The remaining
+case is simply the unreduced dyadic argument displayed in
+\eqref{eq:filtration-below}, to which the global $q$-binomial formula applies.
+The critical value is nonzero, while all larger orders vanish.
+\end{proof}
+
+\begin{corollary}[Spectral detection of the denominator]\label{cor:denominator-detection}
+For an interior reduced dyadic point $t=a/2^n$ with odd $a$,
+\begin{equation}\label{eq:denominator-detection}
+ n=\max\{m\ge1:S_m(t)\ne0\}.
+\end{equation}
+Thus the denominator depth is encoded intrinsically in the half-integer
+Fourier spectrum, without inspecting the binary expansion of $t$.
+\end{corollary}
+
+\begin{remark}
+The underlying finite derivative jet at a dyadic point is baseline material in
+the repository.  The new content is its exact re-expression as a hierarchy of
+weighted half-integer spectral moments and the resulting denominator detector.
+\end{remark}
+
+\section{An exact beyond-all-orders spectral remainder}\label{sec:beyond-all-orders}
+
+\subsection{Cancellation of every cosine Taylor coefficient}
+
+For $M\ge0$ define
+\begin{equation}\label{eq:rho-M}
+ \rho_M(y):=1-\cos y-
+ \sum_{m=1}^{M}(-1)^{m+1}\frac{y^{2m}}{(2m)!},
+\end{equation}
+with the sum empty when $M=0$.
+
+\begin{theorem}[Exact all-order spectral remainder]\label{thm:spectral-remainder}
+For every $x\in[0,1]$ and every integer $M\ge0$,
+\begin{equation}\label{eq:F-basic-spectral}
+ F(x)=\sum_{k=0}^{\infty}a_k
+ \bigl(1-\cos(\pi o_kx)\bigr),
+\end{equation}
+and, more strongly,
+\begin{equation}\label{eq:F-rho-spectral}
+ \boxed{
+ F(x)=\sum_{k=0}^{\infty}\eps_kw_k\,
+ \rho_M(\pi o_kx).}
+\end{equation}
+The series in \eqref{eq:F-rho-spectral} converges absolutely for every fixed
+$M$ and uniformly for $x\in[0,1]$.
+\end{theorem}
+
+\begin{proof}
+For $0\le x\le1$, \eqref{eq:Up-F-relations} gives
+$F(x)=1-\Up(x)$.  Subtract \eqref{eq:cosine-spectrum} from $1$ and use
+$\sum_ka_k=1/2$ to obtain \eqref{eq:F-basic-spectral}.  Subtracting the first
+$M$ nonconstant Taylor terms of $1-\cos y$ changes the right side by
+\[
+ \sum_{m=1}^{M}\frac{(-1)^{m+1}(\pi x)^{2m}}{(2m)!}
+ \sum_{k=0}^{\infty}a_ko_k^{2m},
+\]
+which is zero by \cref{thm:weighted-prouhet}.  Rapid decay of $a_k$ dominates
+the polynomial growth of $\rho_M(\pi o_kx)$ uniformly on $[0,1]$.
+\end{proof}
+
+\begin{remark}[A spectral explanation of flatness]
+For a fixed individual frequency, $1-\cos(\pi o_kx)$ has an ordinary even
+Taylor series at zero.  Formula \eqref{eq:F-rho-spectral} says that after the
+frequencies are summed with their exact Thue--Morse sinc weights, \emph{every}
+algebraic Taylor coefficient disappears.  The endpoint value survives only as
+a collective remainder beyond all finite algebraic orders.  This is stronger
+than checking $F^{(m)}(0)=0$ one derivative at a time: the same exact identity
+holds after subtraction at any prescribed order $M$.
+\end{remark}
+
+\subsection{The direct Lambert--\texorpdfstring{$W$}{W} bridge}
+
+\begin{corollary}[Thue--Morse--sinc--Lambert bridge]\label{cor:Lambert-spectral-bridge}
+Let $M\ge0$ be fixed, $L=\log2$, and
+$W=W_{-1}(-Lx)$.  As $x\downarrow0$,
+\begin{equation}\label{eq:Lambert-spectral-bridge}
+\boxed{
+\begin{aligned}
+ \sum_{k=0}^{\infty}\eps_kw_k\rho_M(\pi o_kx)
+ ={}&\frac{\e^{\Psi(-W/L)}}{2^{7/12}\sqrt{\pi x}}
+ \exp\!\left(\frac{\mathfrak g-W-\tfrac12W^2}{L}\right)\\
+ &\times\left(1+\bigO\!\left(\lambda(x)^{-1}\right)\right).
+\end{aligned}}
+\end{equation}
+The left side is independent of $M$, although its individual summands are not.
+\end{corollary}
+
+\begin{proof}
+The left side equals $F(x)$ exactly by
+\cref{thm:spectral-remainder}.  Apply the imported endpoint theorem
+\eqref{eq:Lambert-baseline}.
+\end{proof}
+
+\begin{remark}[What has and has not been proved]
+Equation \eqref{eq:Lambert-spectral-bridge} is a rigorous bridge, but it does not
+yet identify a sharply localized set of indices $k$ that carries the asymptotic.
+The natural lower-Lambert scale $r(x)=\lambda(x)/x$ strongly suggests such a
+localization problem.  Establishing it requires estimates that preserve the
+massive cancellations in \eqref{eq:F-rho-spectral}; termwise absolute values
+would destroy the phenomenon.  We formulate this as an open problem in
+\cref{sec:open}.
+\end{remark}
+
+\section{The exact dyadic alias transform}\label{sec:dct}
+
+\subsection{Folded coefficients}
+
+Fix $n\ge1$ and put $N=2^n$.  For every integer $r$, define the
+length-$2N$ folded Fourier coefficient
+\begin{equation}\label{eq:A-n-r-def}
+ A_{n,r}:=\frac1N\sum_{j=0}^{2N-1}
+ P\!\left(\frac jN\right)\e^{-\pi\ii rj/N}.
+\end{equation}
+It depends only on $r\bmod 2N$ and is real because $P$ is real and even.  The
+nontrivial coefficients are represented by odd $r$ with $1\le r<N$.
+
+\begin{theorem}[Exact half-integer alias identity]\label{thm:alias-identity}
+For every admissible $n,r$,
+\begin{equation}\label{eq:alias-identity}
+ \boxed{
+ A_{n,r}=\sum_{q\in\Z}\PhiU\!\left(qN+\frac r2\right).}
+\end{equation}
+The series converges absolutely.  Moreover,
+\begin{align}
+ A_{n,r}
+ &=\frac1N\left[1+2\sum_{j=1}^{N-1}
+ \Up\!\left(\frac jN\right)
+ \cos\!\left(\frac{\pi rj}{N}\right)\right]
+ \label{eq:A-Up-DCT}\\
+ &=\frac1N\left[1-2\sum_{j=1}^{N-1}
+ F\!\left(\frac jN\right)
+ \cos\!\left(\frac{\pi rj}{N}\right)\right].
+ \label{eq:A-F-DCT}
+\end{align}
+Thus a finite discrete cosine transform of exact dyadic Fabius values equals a
+complete folded alias class of the infinite sinc product.
+\end{theorem}
+
+\begin{proof}
+Write the complex Fourier expansion of $P$ as
+\[
+ P(t)=\sum_{m\in\Z}c_m\e^{\pi\ii mt},
+ \qquad c_m=\frac12\PhiU(m/2).
+\]
+Substitute it in \eqref{eq:A-n-r-def}.  Absolute convergence permits
+interchange, and the finite character sum is $2N$ when $m\equiv r\pmod{2N}$
+and zero otherwise.  Therefore
+\[
+ A_{n,r}=2\sum_{m\equiv r\ (2N)}c_m
+ =\sum_{q\in\Z}\PhiU\!\left(\frac{r+2Nq}{2}\right),
+\]
+which is \eqref{eq:alias-identity}.  Absolute convergence follows from rapid
+decay.
+
+Pair the terms $j$ and $2N-j$ in \eqref{eq:A-n-r-def}.  The endpoint
+$j=N$ contributes zero because $P(1)=\Up(1)=0$, while $P(0)=1$; this gives
+\eqref{eq:A-Up-DCT}.  On $0\le j\le N$,
+$\Up(j/N)=1-F(j/N)$.  Since $r$ is odd,
+\[
+ \sum_{j=1}^{N-1}\cos(\pi rj/N)=0,
+\]
+which yields \eqref{eq:A-F-DCT}.
+\end{proof}
+
+\subsection{Exact inverse transform}
+
+\begin{theorem}[Dyadic spectral reconstruction]\label{thm:inverse-DCT}
+For every integer $0\le j\le2N-1$,
+\begin{equation}\label{eq:inverse-DCT}
+ \boxed{
+ P\!\left(\frac jN\right)
+ =\frac12+
+ \sum_{\substack{1\le r<N\\r\ \mathrm{odd}}}
+ A_{n,r}\cos\!\left(\frac{\pi rj}{N}\right).}
+\end{equation}
+In particular, all dyadic values of $\Up$ at denominator $N$ are reconstructed
+from the $N/2$ folded half-integer classes.
+\end{theorem}
+
+\begin{proof}
+The normalization in \eqref{eq:A-n-r-def} is twice the standard length-$2N$
+DFT normalization.  Its inverse is therefore
+\[
+ P(j/N)=\frac12\sum_{r=0}^{2N-1}A_{n,r}\e^{\pi\ii rj/N}.
+\]
+For $r=0$, the alias sum contains $\PhiU(0)=1$ and only zero-valued nonzero
+integer samples, so $A_{n,0}=1$.  For nonzero even $r$, every alias argument is
+a nonzero integer and $A_{n,r}=0$.  Finally
+$A_{n,2N-r}=A_{n,r}$.  Pairing the odd frequencies gives
+\eqref{eq:inverse-DCT}.
+\end{proof}
+
+\begin{corollary}[Exact discrete energy identity]\label{cor:discrete-energy}
+One has
+\begin{equation}\label{eq:discrete-energy}
+ \boxed{
+ \sum_{\substack{1\le r<N\\r\ \mathrm{odd}}}A_{n,r}^2
+ =\frac1N\left[1+2\sum_{j=1}^{N-1}
+ \Up\!\left(\frac jN\right)^2\right]-\frac12.}
+\end{equation}
+The right side is rational.
+\end{corollary}
+
+\begin{proof}
+Apply finite Parseval to \eqref{eq:inverse-DCT}.  The constant mode contributes
+$1/4$, and each nonconstant cosine has mean square $1/2$ on the length-$2N$
+grid.  Use $P(0)=1$, $P(1)=0$, and symmetry of the remaining samples.
+\end{proof}
+
+\begin{remark}[Continuous limit]
+As $n\to\infty$, the right side of \eqref{eq:discrete-energy} tends
+\[
+ 2\int_0^1\Up(t)^2\dd t-\frac12
+ =\sum_{k=0}^{\infty}a_k^2,
+\]
+which is also ordinary Fourier Parseval for \eqref{eq:cosine-spectrum}.  The
+finite identity is stronger: before taking a limit it expresses the complete
+Galois-square trace of the folded spectrum using rational dyadic samples.
+\end{remark}
+
+\section{Certified superexponential recovery}\label{sec:alias-error}
+
+\subsection{A uniform product estimate}
+
+\begin{lemma}[Selected-factor bound]\label{lem:selected-factor-bound}
+For every integer $K\ge1$ and real $x\ne0$,
+\begin{equation}\label{eq:selected-factor-bound}
+ |\PhiU(x)|\le C_K|x|^{-K},
+ \qquad
+ C_K:=\frac{2^{K(K-1)/2}}{\pi^K}.
+\end{equation}
+\end{lemma}
+
+\begin{proof}
+For $0\le j<K$,
+\[
+ \left|\sinc(x/2^j)\right|
+ \le\frac{2^j}{\pi|x|}.
+\]
+Multiply these $K$ inequalities and bound every remaining sinc factor by one.
+\end{proof}
+
+\begin{theorem}[Uniform aliasing error]\label{thm:alias-error}
+Let $K>1$ be an integer.  For $N=2^n$ and odd $1\le r<N$,
+\begin{equation}\label{eq:alias-error-general}
+ \boxed{
+ |A_{n,r}-\PhiU(r/2)|
+ \le 2C_KN^{-K}(2^K-1)\zeta(K).}
+\end{equation}
+Choosing $K=n\ge2$ gives the explicit uniform estimate
+\begin{equation}\label{eq:alias-error-n}
+ \boxed{
+ |A_{n,r}-\PhiU(r/2)|
+ \le E_n:=
+ \frac{2(1-2^{-n})\zeta(n)}{\pi^n}
+ 2^{-n(n-1)/2}.}
+\end{equation}
+In particular $E_n=2^{-n^2/2+\bigO(n\log n)}$, uniformly over all odd
+$r<N$.
+\end{theorem}
+
+\begin{proof}
+Remove the $q=0$ term from \eqref{eq:alias-identity}.  For $q\ge1$ and
+$0<r<N$,
+\[
+ |qN\pm r/2|\ge(q-1/2)N.
+\]
+Hence \cref{lem:selected-factor-bound} gives
+\begin{align*}
+ |A_{n,r}-\PhiU(r/2)|
+ &\le 2C_KN^{-K}\sum_{q=1}^{\infty}(q-1/2)^{-K}\\
+ &=2C_KN^{-K}(2^K-1)\zeta(K),
+\end{align*}
+using
+$\sum_{q\ge1}(q-1/2)^{-K}=(2^K-1)\zeta(K)$.
+Substitute $N=2^n$ and $K=n$; collecting powers of two gives
+\eqref{eq:alias-error-n}.
+\end{proof}
+
+\begin{remark}[Why the rate is so fast]
+At level $n$, the unwanted aliases begin a distance comparable with $2^n$
+from the target.  The same sinc product permits an $n$-factor power bound, so
+the alias tail behaves like $(2^n)^{-n}$ multiplied by the factor
+$2^{n(n-1)/2}$ accumulated from dyadic scaling.  The net exponent is
+$-n(n-1)/2$.
+\end{remark}
+
+\subsection{Numerical convergence for the leading amplitude}
+
+The distinguished coefficient $A_{n,1}$ converges to
+\begin{equation}\label{eq:h-value}
+ h:=\PhiU(1/2)
+ =0.553771275888810095344217416344548881284886642554\ldots.
+\end{equation}
+The finite values in \cref{tab:A-convergence} were computed from exact rational
+$F(j/2^n)$ values, with only the final cyclotomic evaluation performed at high
+precision.
+
+\begin{table}[ht]
+\centering\small
+\begin{tabular}{@{}r r r r@{}}
+\toprule
+$n$ & $A_{n,1}$ & actual error & rigorous $E_n$ \\
+\midrule
+2 & 0.5544487530108746285614747 & $6.7748\,10^{-4}$ & $1.2500\,10^{-1}$ \\
+3 & 0.5537613501982070710846451 & $9.9257\,10^{-6}$ & $8.4805\,10^{-3}$ \\
+4 & 0.5537712795003417162450708 & $3.6115\,10^{-9}$ & $3.2552\,10^{-4}$ \\
+5 & 0.5537712758798224271695171 & $8.9877\,10^{-12}$ & $6.4112\,10^{-6}$ \\
+6 & 0.5537712758888101658815125 & $7.0537\,10^{-17}$ & $6.3578\,10^{-8}$ \\
+7 & 0.5537712758888100953109457 & $3.3272\,10^{-20}$ & $3.1590\,10^{-10}$ \\
+8 & 0.5537712758888100953442174 & $5.0949\,10^{-27}$ & $7.8534\,10^{-13}$ \\
+9 & 0.5537712758888100953442174 & $4.8386\,10^{-31}$ & $9.7639\,10^{-16}$ \\
+10& 0.5537712758888100953442174 & $1.3837\,10^{-39}$ & $6.0700\,10^{-19}$ \\
+\bottomrule
+\end{tabular}
+\caption{Superexponential recovery of the first half-integer amplitude.  The
+bound is deliberately elementary and uniform in $r$, so it is not expected to
+track the much smaller observed error closely.}
+\label{tab:A-convergence}
+\end{table}
+
+\section{Finite \texorpdfstring{$q$}{q}-binomial--cyclotomic approximants}\label{sec:q-approximants}
+
+\subsection{Explicit substitution}
+
+The alias transform is finite, while every dyadic value in it has the finite
+Gaussian-binomial form \eqref{eq:baseline-qbinomial}.  Their composition is the
+promised bridge between the two coefficient webs.
+
+\begin{theorem}[$q$-binomial half-integer approximant]\label{thm:q-approximant}
+Let $N=2^n$ and let $r$ be odd with $1\le r<N$.  Then
+\begin{equation}\label{eq:q-approximant}
+\boxed{
+\begin{aligned}
+ A_{n,r}={}&\frac1N-
+ \frac{2}{N\,2^{n^2}(1/2;1/2)_n}
+ \sum_{j=1}^{N-1}\cos\!\left(\frac{\pi rj}{N}\right)\\
+ &\quad\times\sum_{k=0}^{n}
+ \frac{\qbinom{n}{k}{1/2}}
+ {2^{k(k-1)}(n+k)!}
+ \sum_{s=0}^{j2^k-1}\eps_s(s-j2^k)^{n+k}.
+\end{aligned}}
+\end{equation}
+For every fixed odd $r$, the right side converges to $\PhiU(r/2)$ as
+$n\to\infty$ through levels with $r<2^n$, and the error is at most $E_n$.
+\end{theorem}
+
+\begin{proof}
+Insert \eqref{eq:baseline-qbinomial} with $m=j$ and $c=0$ into
+\eqref{eq:A-F-DCT}.  The convergence statement is
+\cref{thm:alias-error}.
+\end{proof}
+
+\begin{remark}[Three structures in one finite expression]
+Formula \eqref{eq:q-approximant} simultaneously contains
+\begin{enumerate}
+ \item Gaussian binomial coefficients at $q=1/2$;
+ \item finite Thue--Morse power sums;
+ \item real $2^{n+1}$-st cyclotomic numbers
+ $\cos(\pi rj/2^n)$.
+\end{enumerate}
+No infinite product or numerical quadrature is needed to construct the
+approximant.  The infinite sinc product enters only as the certified limit.
+\end{remark}
+
+\subsection{A finite algebraic tower}
+
+Let
+\begin{equation}\label{eq:cyclotomic-field}
+ \zeta_{2N}=\e^{\pi\ii/N},
+ \qquad
+ K_n:=\Q(\zeta_{2N}+\zeta_{2N}^{-1}).
+\end{equation}
+Since every $F(j/N)$ is rational,
+\begin{equation}\label{eq:A-in-K}
+ A_{n,r}\in K_n.
+\end{equation}
+The fields form the nested real dyadic cyclotomic tower
+$K_1\subset K_2\subset\cdots$.  The approximants therefore approach the
+transcendence-unknown numbers $\PhiU(r/2)$ through an explicit tower of exact
+algebraic numbers with a superexponential analytic certificate.
+
+\begin{remark}
+The phrase ``transcendence-unknown'' is intentional.  No irrationality or
+transcendence assertion for $h=\PhiU(1/2)$ is proved here or in the reviewed
+corpus.  The algebraic approximants are useful precisely because they separate
+exact finite arithmetic from the unresolved nature of the limiting constants.
+\end{remark}
+
+\section{Cyclotomic orbit polynomials and rational traces}\label{sec:cyclotomic}
+
+\subsection{The Galois orbit}
+
+The real cyclotomic Galois group is
+\begin{equation}\label{eq:G-n}
+ G_n\simeq(\Z/2N\Z)^{\times}/\{\pm1\}.
+\end{equation}
+Its elements may be represented by odd integers $u$ modulo $2N$, with $u$ and
+$-u$ identified.  The representatives $1\le r<N$, $r$ odd, form a complete
+set.
+
+\begin{proposition}[Galois action]\label{prop:Galois-action}
+If $\sigma_u(\zeta_{2N})=\zeta_{2N}^u$, then
+\begin{equation}\label{eq:Galois-action}
+ \sigma_u(A_{n,r})=A_{n,r'},
+\end{equation}
+where $r'$ is the unique odd representative in $[1,N)$ congruent to
+$\pm ur\pmod{2N}$.
+\end{proposition}
+
+\begin{proof}
+Apply $\sigma_u$ to \eqref{eq:A-F-DCT}.  It fixes the rational Fabius values and
+sends
+$\cos(\pi rj/N)$ to $\cos(\pi urj/N)$.  Reduction modulo $2N$ and evenness of
+cosine give the stated representative.
+\end{proof}
+
+\begin{definition}[Orbit polynomial and power traces]\label{def:orbit-poly}
+Define
+\begin{equation}\label{eq:orbit-poly}
+ \mathcal P_n(X):=
+ \prod_{\substack{1\le r<N\\r\ \mathrm{odd}}}(X-A_{n,r})
+\end{equation}
+and, for $m\ge1$,
+\begin{equation}\label{eq:p-m-n}
+ p_m(n):=\sum_{\substack{1\le r<N\\r\ \mathrm{odd}}}A_{n,r}^m.
+\end{equation}
+The polynomial is called an orbit polynomial rather than a minimal polynomial:
+if the stabilizer of $A_{n,1}$ is nontrivial, repeated conjugates may occur.
+\end{definition}
+
+\begin{theorem}[Rational orbit polynomial]\label{thm:rational-orbit-poly}
+For every $n\ge1$,
+\begin{equation}\label{eq:orbit-poly-rational}
+ \mathcal P_n(X)\in\Q[X],
+ \qquad
+ p_m(n)\in\Q\quad(m\ge1).
+\end{equation}
+The coefficients of $\mathcal P_n$ are recovered from the $p_m(n)$ by Newton's
+identities.
+\end{theorem}
+
+\begin{proof}
+The multiset of roots is invariant under the full Galois group by
+\cref{prop:Galois-action}; hence every elementary symmetric function is fixed
+by $G_n$ and lies in $\Q$.  The same argument applies to power sums.  Newton's
+identities are purely rational algebra.
+\end{proof}
+
+\subsection{Ramanujan-filtered trace formula}
+
+Put
+\begin{equation}\label{eq:P-j-sample}
+ P_j:=P(j/N),
+ \qquad 0\le j<2N.
+\end{equation}
+Every $P_j$ is rational, since it is a dyadic value of $\Up$.
+
+\begin{theorem}[Exact rational power traces]\label{thm:Ramanujan-traces}
+For every $m\ge1$,
+\begin{equation}\label{eq:Ramanujan-traces}
+\boxed{
+ p_m(n)=\frac12N^{1-m}
+ \sum_{\substack{0\le j_1,\ldots,j_m<2N\\
+                  N\mid j_1+\cdots+j_m}}
+ (-1)^{(j_1+\cdots+j_m)/N}
+ \prod_{\ell=1}^{m}P_{j_\ell}.}
+\end{equation}
+In particular,
+\begin{equation}\label{eq:universal-trace}
+ \boxed{p_1(n)=\frac12\qquad(n\ge1).}
+\end{equation}
+For $m=2$, \eqref{eq:Ramanujan-traces} reduces to the discrete energy identity
+\eqref{eq:discrete-energy}.
+\end{theorem}
+
+\begin{proof}
+Expand $A_{n,r}^m$ from \eqref{eq:A-n-r-def} and sum over the $N/2$ odd
+representatives.  Since $A_{n,r}=A_{n,2N-r}$, the representative sum is one
+half of the sum over all odd residues modulo $2N$.  Thus
+\begin{align*}
+ p_m(n)
+ &=\frac{1}{2N^m}
+ \sum_{0\le j_1,\ldots,j_m<2N}
+ \left(\prod_{\ell=1}^mP_{j_\ell}\right)
+ c_{2N}(j_1+\cdots+j_m),
+\end{align*}
+where
+\[
+ c_{2N}(S)=\sum_{\substack{r\bmod 2N\\r\ \mathrm{odd}}}
+ \e^{-\pi\ii rS/N}
+\]
+is the Ramanujan sum for the power-of-two modulus $2N$.  Its elementary value is
+\begin{equation}\label{eq:Ramanujan-power-two}
+ c_{2N}(S)=
+ \begin{cases}
+  N(-1)^{S/N},&N\mid S,\\
+  0,&N\nmid S.
+ \end{cases}
+\end{equation}
+Substitution gives \eqref{eq:Ramanujan-traces}.  For $m=1$, the only indices
+with $N\mid j$ are $j=0,N$, so
+$p_1(n)=\tfrac12(P_0-P_N)=1/2$.
+\end{proof}
+
+\begin{remark}[A trace that does not disperse]
+The orbit degree is $N/2\to\infty$, yet the unnormalized first trace remains
+exactly $1/2$.  Most conjugates become tiny; a sparse collection of low-frequency
+conjugates carries the persistent trace.  This is quantified below.
+\end{remark}
+
+\subsection{Orbit polynomials at the first levels}
+
+At $n=1$ there is one coefficient, $A_{1,1}=1/2$, so
+\begin{equation}\label{eq:P1-poly}
+ \mathcal P_1(X)=X-\frac12.
+\end{equation}
+At $n=2$,
+\begin{equation}\label{eq:A2-values}
+ A_{2,1}=\frac14+\frac{31\sqrt2}{144},
+ \qquad
+ A_{2,3}=\frac14-\frac{31\sqrt2}{144},
+\end{equation}
+and
+\begin{equation}\label{eq:P2-poly}
+ \boxed{
+ \mathcal P_2(X)=X^2-\frac12X-\frac{313}{10368}.}
+\end{equation}
+At $n=3$, direct use of \eqref{eq:Ramanujan-traces} and Newton identities gives
+\begin{equation}\label{eq:P3-poly}
+\boxed{
+\begin{aligned}
+ \mathcal P_3(X)={}&X^4-\frac12X^3
+ -\frac{1627}{55296}X^2
+ -\frac{4603}{23887872}X
+ +\frac{32257}{220150628352}.
+\end{aligned}}
+\end{equation}
+The corresponding rational power traces are
+\begin{align}
+ p_1(3)&=\frac12,
+ &p_2(3)&=\frac{8539}{27648},
+ \label{eq:p3-12}\\
+ p_3(3)&=\frac{1351363}{7962624},
+ &p_4(3)&=\frac{5175727235}{55037657088}.
+ \label{eq:p3-34}
+\end{align}
+The four conjugates are approximately
+\begin{equation}\label{eq:n3-conjugates}
+\begin{aligned}
+ &\phantom{-}0.553761350198207071,
+ &&-0.046098883415321902,\\
+ &-0.008349869595552727,
+ &&\phantom{-}0.000687402812667557.
+\end{aligned}
+\end{equation}
+They already resemble the first four half-integer amplitudes, but each includes
+all aliases in its congruence class.
+
+At $n=4$ the eight conjugates are approximately
+\begin{align*}
+ &\phantom{-}0.553771279500341716,
+ &&-0.046202534866953151,\\
+ &-0.008657957107189789,
+ &&\phantom{-}0.001046027211381176,\\
+ &-0.000358624398713618,
+ &&\phantom{-}0.000308087511637062,\\
+ &\phantom{-}0.000103651451631249,
+ &&-0.000009929302134645.
+\end{align*}
+Their sum is exactly $1/2$.
+
+\subsection{Rational traces converging to nonlinear sinc moments}
+
+Define the nonlinear half-integer spectral sums
+\begin{equation}\label{eq:spectral-power-sums}
+ \mathfrak s_m:=\sum_{k=0}^{\infty}a_k^m
+ \qquad(m\ge1).
+\end{equation}
+They converge absolutely.  The case $m=1$ is $\mathfrak s_1=1/2$; for $m=2$,
+\begin{equation}\label{eq:s2-L2}
+ \mathfrak s_2=2\int_0^1\Up(t)^2\dd t-\frac12.
+\end{equation}
+
+\begin{theorem}[Cyclotomic trace limits]\label{thm:trace-limits}
+For every fixed integer $m\ge1$,
+\begin{equation}\label{eq:trace-limit}
+ \boxed{
+ \lim_{n\to\infty}p_m(n)=\mathfrak s_m.}
+\end{equation}
+For $m=1$ the equality is exact at every level.  For fixed $m\ge2$, the error
+splits into
+\begin{equation}\label{eq:trace-error-split}
+ |p_m(n)-\mathfrak s_m|
+ \le \frac{Nm}{2}(1+E_n)^{m-1}E_n
+ +\sum_{k\ge N/2}|a_k|^m,
+\end{equation}
+where both terms decay faster than every exponential in $n$ after applying an
+$n$-factor sinc bound to the tail.
+\end{theorem}
+
+\begin{proof}
+Index the admissible residues by $r=2k+1$, $0\le k<N/2$.  Then
+\cref{thm:alias-error} gives
+$|A_{n,2k+1}-a_k|\le E_n$.  Since $|a_k|\le1$ and $E_n\le1/8$ for $n\ge2$,
+the mean-value inequality for $x\mapsto x^m$ gives
+\[
+ |A_{n,2k+1}^m-a_k^m|
+ \le m(1+E_n)^{m-1}E_n.
+\]
+Summing over $k<N/2$ and adding the omitted tail proves
+\eqref{eq:trace-error-split}.  The first term is superexponential because
+$NE_n=2^{-n^2/2+\bigO(n)}$.  For the tail, use
+\cref{lem:selected-factor-bound} with $K=n$:
+\[
+ |a_k|\le C_n(k+1/2)^{-n}.
+\]
+The resulting integral bound is
+\[
+ \bigO\!\left(C_n^m(N/2)^{1-nm}\right)
+ =2^{-mn^2/2+\bigO(n)},
+\]
+where the implied constant may depend on the fixed exponent $m$.
+\end{proof}
+
+\begin{corollary}[Algebraic approximation to spectral norms]\label{cor:algebraic-spectral-norms}
+Every $\mathfrak s_m$ is a limit of explicitly computable rational numbers
+$p_m(n)$ whose defining algebraic conjugates are given by the finite
+$q$-binomial formula \eqref{eq:q-approximant}.  In particular,
+$2\int_0^1\Up^2-1/2$ admits a superexponentially convergent rational sequence
+coming from cyclotomic Galois square traces.
+\end{corollary}
+
+\subsection{Collapse of the normalized Galois orbit}
+
+Let
+\begin{equation}\label{eq:empirical-measure}
+ \mu_n:=\frac2N
+ \sum_{\substack{1\le r<N\\r\ \mathrm{odd}}}\delta_{A_{n,r}}.
+\end{equation}
+This is a probability measure on $\R$.
+
+\begin{theorem}[Galois-orbit collapse]\label{thm:orbit-collapse}
+The measures $\mu_n$ converge weakly to the point mass $\delta_0$.  More
+quantitatively,
+\begin{equation}\label{eq:orbit-second-moment}
+ \int x^2\dd\mu_n(x)=\frac2N p_2(n)\le\frac3N.
+\end{equation}
+Nevertheless the unnormalized trace remains $p_1(n)=1/2$.
+\end{theorem}
+
+\begin{proof}
+From \eqref{eq:discrete-energy} and $0\le\Up\le1$,
+\[
+ p_2(n)\le\frac1N(1+2(N-1))-\frac12<\frac32.
+\]
+This proves \eqref{eq:orbit-second-moment}.  Chebyshev's inequality shows that
+the proportion of conjugates outside any fixed neighborhood of zero tends to
+zero, hence $\mu_n\Rightarrow\delta_0$.
+\end{proof}
+
+\begin{remark}
+This is an unusual arithmetic picture: the degree of the orbit grows, the
+normalized orbit collapses to zero, but its unnormalized first trace remains
+fixed.  The low-index half-integer amplitudes survive as a vanishing proportion
+of the conjugates and carry the entire trace in the limit.
+\end{remark}
+
+\section{A finite Thue--Morse sign carrier for every alias class}\label{sec:sign-carrier}
+
+\subsection{Exact factorization of a folded class}
+
+Let $N=2^n$, let $r$ be odd with $1\le r<N$, and put
+\begin{equation}\label{eq:a-shift}
+ \alpha:=\frac{r}{2N}\in(0,1/2).
+\end{equation}
+Define the finite prefactor
+\begin{equation}\label{eq:Gamma-n-r}
+ \Gamma_{n,r}:=
+ \frac{\displaystyle\prod_{h=1}^{n}\sin(\pi r/2^h)}
+      {\pi^n2^{n(n+1)/2}}.
+\end{equation}
+
+\begin{theorem}[Alias-class factorization]\label{thm:alias-factorization}
+For every $q\in\Z$,
+\begin{equation}\label{eq:single-alias-factorization}
+ \PhiU\!\left(qN+\frac r2\right)
+ =\Gamma_{n,r}\,
+ \frac{\PhiU(q+\alpha)}{(q+\alpha)^n}.
+\end{equation}
+Consequently
+\begin{equation}\label{eq:A-shifted-sum}
+ \boxed{
+ A_{n,r}=\Gamma_{n,r}
+ \sum_{q\in\Z}\frac{\PhiU(q+\alpha)}{(q+\alpha)^n}.}
+\end{equation}
+The shifted sum converges absolutely.
+\end{theorem}
+
+\begin{proof}
+Split the product \eqref{eq:Phi-def} after the first $n$ factors.  Since
+$qN+r/2=N(q+\alpha)$, the tail is
+\[
+ \prod_{j=n}^{\infty}
+ \sinc\!\left(\frac{qN+r/2}{2^j}\right)
+ =\PhiU(q+\alpha).
+\]
+For $0\le j<n$,
+\[
+ \sin\!\left(\pi\frac{qN+r/2}{2^j}\right)
+ =\sin\!\left(\pi q2^{n-j}+\frac{\pi r}{2^{j+1}}\right)
+ =\sin\!\left(\frac{\pi r}{2^{j+1}}\right),
+\]
+because $q2^{n-j}$ is even.  The denominators of the first $n$ sinc factors
+contribute
+\[
+ \prod_{j=0}^{n-1}\frac{2^j}{\pi N(q+\alpha)}
+ =\frac{1}{\pi^n2^{n(n+1)/2}(q+\alpha)^n}.
+\]
+Multiplication proves \eqref{eq:single-alias-factorization}; summing over $q$
+and using \eqref{eq:alias-identity} gives \eqref{eq:A-shifted-sum}.
+\end{proof}
+
+\subsection{The finite Thue--Morse polynomial}
+
+Let
+\begin{equation}\label{eq:T-n-polynomial}
+ T_n(z):=\prod_{\ell=0}^{n-1}(1-z^{2^\ell})
+ =\sum_{m=0}^{2^n-1}\eps_mz^m.
+\end{equation}
+
+\begin{proposition}[Root-of-unity magnitude and sign]\label{prop:TM-sign-carrier}
+For odd $1\le r<N$,
+\begin{align}
+ \left|T_n\!\left(\e^{2\pi\ii r/N}\right)\right|
+ &=2^n\left|\prod_{h=1}^{n}\sin(\pi r/2^h)\right|,
+ \label{eq:T-root-magnitude}\\
+ \operatorname{sgn}\Gamma_{n,r}
+ &=(-1)^{\sum_{h=1}^{n}\lfloor r/2^h\rfloor}
+ =\eps_{(r-1)/2}.
+ \label{eq:Gamma-sign}
+\end{align}
+Thus the finite prefactor in \eqref{eq:A-shifted-sum} carries exactly the
+Thue--Morse sign attached to the target amplitude $\PhiU(r/2)$.
+\end{proposition}
+
+\begin{proof}
+For the magnitude, use $|1-\e^{2\pi\ii x}|=2|\sin\pi x|$ in each factor of
+\eqref{eq:T-n-polynomial} and reverse the order of scales.  For the sign,
+$\sin(\pi x)$ has sign $(-1)^{\lfloor x\rfloor}$ away from integers.  Since
+$r<N$, all floors beyond $h=n$ vanish, and
+\[
+ \sum_{h=1}^{n}\left\lfloor\frac r{2^h}\right\rfloor
+ =r-s_2(r).
+\]
+Write $r=2c+1$.  Then $s_2(r)=s_2(c)+1$, so
+$r-s_2(r)\equiv s_2(c)\pmod2$.  Hence the sign is $\eps_c$ with
+$c=(r-1)/2$.
+\end{proof}
+
+\begin{remark}
+The earlier arithmetic-ray report uses root-of-unity values of finite
+Thue--Morse polynomials to control products along rational doubling orbits.  The
+mechanism here is different: a finite root-of-unity product is extracted from a
+\emph{Poisson alias class} of the sinc product.  The same automatic sign word
+therefore governs both real-axis intervals and finite dyadic spectral folding.
+\end{remark}
+
+\subsection{A positivity conjecture}
+
+Computations through $n=7$ show
+\begin{equation}\label{eq:observed-A-sign}
+ \operatorname{sgn}A_{n,r}=\eps_{(r-1)/2}
+\end{equation}
+for every admissible $r$.  By \eqref{eq:Gamma-sign}, this is equivalent to
+positivity of the residual shifted sum.
+
+\begin{conjecture}[Shifted spectral positivity]\label{conj:shifted-positivity}
+For every $n\ge1$ and odd $1\le r<2^n$, with
+$\alpha=r/2^{n+1}$,
+\begin{equation}\label{eq:shifted-positivity}
+ \boxed{
+ \sum_{q\in\Z}\frac{\PhiU(q+\alpha)}{(q+\alpha)^n}>0.}
+\end{equation}
+Equivalently, every folded coefficient has the exact Thue--Morse sign
+\eqref{eq:observed-A-sign}.
+
+\smallskip\noindent\openstatus
+\end{conjecture}
+
+\begin{remark}[Why the conjecture is nontrivial]
+The summands in \eqref{eq:shifted-positivity} have mixed signs.  Neither the
+positivity of $\Up$ nor the elementary alias error bound proves the claim,
+because for residues near $N$ the target amplitude can be much smaller than the
+uniform alias bound.  A proof may require a quasi-periodic Green-kernel
+representation or a total-positivity property of the dyadic sample sequence.
+\end{remark}
+
+\section{Certified arithmetic of integer-zero jets}\label{sec:zero-jets}
+
+\subsection{The imported local formula}
+
+Let $m\ne0$ be an integer and write
+\begin{equation}\label{eq:m-v-q}
+ m=2^vq,
+ \qquad q\ \text{odd},
+ \qquad d=v+1.
+\end{equation}
+The spectral determinant report proves the exact leading-jet identity
+\begin{equation}\label{eq:leading-jet-baseline}
+ \PhiU^{(d)}(m)=-\frac{d!}{m^d}\PhiU(q/2).
+\end{equation}
+It also gives every higher coefficient, but the leading term already shows why
+the half-integer amplitudes are arithmetically central: every nonzero integer
+zero reduces to one odd half-integer value.
+
+\subsection{Finite exact approximants with a rigorous error}
+
+\begin{theorem}[$q$-binomial approximation of every leading zero jet]\label{thm:jet-approximant}
+Let $m=2^vq\ne0$ with $q$ odd and $d=v+1$.  Choose $n\ge2$ with
+$2^n>|q|$, and put $r=|q|$.  Define
+\begin{equation}\label{eq:J-m-n}
+ J_{m,n}:=-\frac{d!}{m^d}A_{n,r}.
+\end{equation}
+Then $J_{m,n}$ is an explicitly computable element of the real dyadic
+cyclotomic field $K_n$, given by the finite $q$-binomial expression
+\eqref{eq:q-approximant}, and
+\begin{equation}\label{eq:jet-error}
+ \boxed{
+ |\PhiU^{(d)}(m)-J_{m,n}|
+ \le\frac{d!}{|m|^d}E_n.}
+\end{equation}
+Thus every leading integer-zero jet has a superexponentially convergent sequence
+of exact algebraic approximants.
+\end{theorem}
+
+\begin{proof}
+Evenness gives $\PhiU(q/2)=\PhiU(r/2)$.  Combine the imported identity
+\eqref{eq:leading-jet-baseline} with \cref{thm:alias-error} and multiply the
+error by $d!/|m|^d$.
+\end{proof}
+
+\begin{example}[The zero at $m=12$]\label{ex:jet-12}
+Here $12=2^2\cdot3$, so $d=3$ and
+\[
+ \PhiU^{(3)}(12)=-\frac{6}{12^3}\PhiU(3/2)
+ =\frac{-\PhiU(3/2)}{288}.
+\]
+Using the level-$4$ folded coefficient
+$A_{4,3}=-0.04620253486695315055\ldots$ gives
+\[
+ J_{12,4}=0.000160425468288031773\ldots,
+\]
+while the exact target is
+\[
+ \PhiU^{(3)}(12)=0.000160424649771898309\ldots.
+\]
+The rigorous error follows immediately from \eqref{eq:jet-error}.  Increasing
+$n$ replaces the displayed algebraic number by a much sharper one without
+changing the proof architecture.
+\end{example}
+
+\begin{warning}
+The final decimal in the target value in \cref{ex:jet-12} is included only as a
+numerical orientation.  The certified content is the exact formula and the
+bound \eqref{eq:jet-error}; the report's reproducibility code computes as many
+digits as desired.
+\end{warning}
+
+\section{Computational verification}\label{sec:verification}
+
+\subsection{Independent checks performed}
+
+The numerical work was designed to check identities at several logically
+independent interfaces rather than merely reproduce one formula in two notations.
+The following were evaluated using exact rational arithmetic whenever possible
+and 80--100 decimal digits for the final transcendental operations.
+\begin{enumerate}
+ \item The moment recurrence for $c_k$ and the closed moment--Thue--Morse formula
+ for $F(a/2^n)$, including
+ $F(1/4)=5/72$, $F(1/8)=1/288$,
+ $F(3/8)=73/288$, and
+ $F(5/16)=305857/2073600$.
+ \item Direct sinc-product values of $a_k$ against the cosine reconstruction of
+ $\Up$.
+ \item The weighted moment residuals
+ $\sum_{k<K}a_ko_k^{2m}$ for increasing $K$, together with rapid-decay tail
+ bounds.
+ \item The exact DCT formula \eqref{eq:A-F-DCT} against direct alias summation
+ \eqref{eq:alias-identity}.
+ \item The convergence table \cref{tab:A-convergence} and the rigorous bound
+ \eqref{eq:alias-error-n}.
+ \item The Galois conjugates at levels $n=2,3,4$, their rational power traces,
+ and the orbit polynomials \eqref{eq:P2-poly}--\eqref{eq:P3-poly}.
+ \item The single-alias factorization \eqref{eq:single-alias-factorization} for
+ positive and negative alias indices.
+ \item The observed sign law \eqref{eq:observed-A-sign} for every odd residue at
+ levels $1\le n\le7$.
+ \item The leading zero-jet approximation \eqref{eq:jet-error} for integers of
+ several different dyadic valuations.
+\end{enumerate}
+
+\subsection{Exact arithmetic workflow}
+
+The most stable exact path uses the even moments of $\Up$.  Set $c_0=1$ and
+compute
+\begin{equation}\label{eq:c-recurrence-verification}
+ (2m+1)(2^{2m}-1)c_m
+ =\sum_{j=0}^{m-1}\binom{2m+1}{2j}c_j.
+\end{equation}
+Then the repository's closed formula is
+\begin{equation}\label{eq:closed-dyadic-verification}
+ F\!\left(\frac a{2^n}\right)
+ =\frac{2^{-\binom{n+1}{2}}}{n!}
+ \sum_{h=0}^{a-1}\eps_h
+ \sum_{k=0}^{\lfloor n/2\rfloor}
+ \binom n{2k}(2a-2h-1)^{n-2k}c_k.
+\end{equation}
+Every quantity in \eqref{eq:closed-dyadic-verification} is rational.  It is
+then inserted into \eqref{eq:A-F-DCT}; exact algebraic simplification is needed
+only for the cosine values.
+
+\subsection{A compact reproducibility listing}
+
+\begin{lstlisting}[style=pseudo,language=Python,caption={Core exact computation used for the tables.}]
+from fractions import Fraction
+from math import comb, factorial
+
+
+def tm_sign(k: int) -> int:
+    return -1 if k.bit_count() % 2 else 1
+
+
+def up_even_moments(max_k: int) -> list[Fraction]:
+    c = [Fraction(1)]
+    for m in range(1, max_k + 1):
+        numerator = sum(
+            Fraction(comb(2*m + 1, 2*j)) * c[j]
+            for j in range(m)
+        )
+        denominator = (2*m + 1) * (2**(2*m) - 1)
+        c.append(numerator / denominator)
+    return c
+
+
+def fabius_dyadic(a: int, n: int, c: list[Fraction]) -> Fraction:
+    total = Fraction(0)
+    for h in range(a):
+        inner = sum(
+            Fraction(comb(n, 2*k) * (2*a - 2*h - 1)**(n - 2*k))
+            * c[k]
+            for k in range(n//2 + 1)
+        )
+        total += tm_sign(h) * inner
+    return total / Fraction(2**(n*(n + 1)//2) * factorial(n))
+
+# A_{n,r} = 1/N - (2/N) sum_j F(j/N) cos(pi*r*j/N).
+# Use exact Fraction values for F and a high-precision cyclotomic backend
+# (or symbolic radicals for small n) for the cosine evaluation.
+\end{lstlisting}
+
+\begin{remark}[Reproducibility versus proof]
+The computations are checks, not substitutes for the proofs.  Every central
+identity in the report is established symbolically before numerical evidence is
+invoked.  The code is included to make constants, orbit polynomials, and error
+tables independently reproducible.
+\end{remark}
+
+\section{Lean formalization roadmap}\label{sec:lean}
+
+The new theorem package separates naturally into finite algebra, elementary
+analysis, and imported high-level asymptotics.  A low-risk formalization order is
+as follows.
+
+\subsection{Layer 1: finite Fourier algebra}
+
+Formalize first the length-$2N$ DFT identities on a finite cyclic group:
+\begin{enumerate}
+ \item orthogonality of characters modulo $2N$;
+ \item vanishing of all nonzero even folded modes;
+ \item the inverse cosine transform \eqref{eq:inverse-DCT};
+ \item finite Parseval and \eqref{eq:discrete-energy};
+ \item the power-of-two Ramanujan sum \eqref{eq:Ramanujan-power-two};
+ \item the rational trace formula \eqref{eq:Ramanujan-traces}.
+\end{enumerate}
+This layer uses only finite sums, rational dyadic values already available in
+the project, roots of unity, and elementary complex algebra.
+
+\subsection{Layer 2: Fourier-series extraction}
+
+Use the established rapid decay of $\widehat\Up$ to formalize:
+\begin{enumerate}
+ \item the periodization $P$ and its complex Fourier coefficients;
+ \item the reduction to odd modes and the cosine series
+ \eqref{eq:cosine-spectrum};
+ \item termwise differentiation to every order;
+ \item the weighted Prouhet identities and polynomial quadrature;
+ \item the derivative filtration \eqref{eq:filtration-above}--\eqref{eq:filtration-below};
+ \item the exact spectral remainder \eqref{eq:F-rho-spectral}.
+\end{enumerate}
+The main analytic input is a reusable theorem that a Schwartz coefficient
+sequence permits uniform termwise differentiation of a Fourier series.
+
+\subsection{Layer 3: alias limits and estimates}
+
+Formalize the infinite alias identity by applying the finite character filter to
+an absolutely convergent Fourier series.  Then prove the selected-factor bound
+and sum the shifted zeta tail.  The exact target statements are
+\eqref{eq:alias-identity}, \eqref{eq:alias-error-general}, and
+\eqref{eq:alias-error-n}.  No contour integration is needed.
+
+\subsection{Layer 4: cyclotomic structure}
+
+Two implementation choices are possible.
+\begin{enumerate}
+ \item Work concretely in $\C$ with a primitive root $\zeta_{2N}$ and prove
+ invariance of symmetric polynomials under the explicit automorphisms.
+ \item Work in an abstract cyclotomic extension, use the maximal real subfield
+ only at the interface, and obtain rationality from fixed-field lemmas.
+\end{enumerate}
+The first route is likely shorter for the DCT formula; the second gives cleaner
+Galois traces.  The orbit polynomial should be introduced without asserting it
+is minimal.
+
+\subsection{Layer 5: imported endpoint asymptotics}
+
+Once \eqref{eq:F-rho-spectral} is formalized, the Lambert bridge is a one-line
+rewrite using the project's existing endpoint theorem.  This is much easier than
+formalizing a new saddle analysis.  A later project can address the genuinely
+new localization problem posed in \cref{conj:Lambert-localization}.
+
+\subsection{Indicative theorem interfaces}
+
+\begin{lstlisting}[style=pseudo,caption={Schematic Lean theorem signatures.}]
+-- Half-integer weighted Prouhet cancellation.
+theorem halfIntegerSpectrum_evenMoment_zero (m : Nat) (hm : 0 < m) :
+  HasSum (fun k => phi ((2*k+1 : Real) / 2) * (2*k+1)^(2*m)) 0
+
+-- Exact folded DFT / alias identity.
+theorem dyadicDCT_eq_aliasSum
+    (n r : Nat) (hn : 0 < n) (hr : Odd r) (hrN : r < 2^n) :
+  dyadicDCT n r = tsum (fun q : Int => phi (q * 2^n + r / 2))
+
+-- Uniform certified recovery.
+theorem dyadicDCT_sub_halfInteger_le
+    (n r : Nat) (hn : 2 <= n) (hr : Odd r) (hrN : r < 2^n) :
+  abs (dyadicDCT n r - phi (r / 2)) <= aliasError n
+
+-- Rational Galois power trace.
+theorem foldedPowerTrace_mem_rat
+    (n m : Nat) : IsRat (sumOddResidues n (fun r => (dyadicDCT n r)^m))
+\end{lstlisting}
+
+\section{Further frontier problems}\label{sec:open}
+
+\subsection{Exact signs of the folded coefficients}
+
+\cref{conj:shifted-positivity} is the most immediate problem.  A proof would
+turn the finite dyadic DCT into a second exact occurrence of the Thue--Morse sign
+word, not merely an approximation to it.  Useful routes include:
+\begin{enumerate}
+ \item a quasi-periodic Green-kernel representation of
+ $\sum_q\PhiU(q+\alpha)/(q+\alpha)^n$;
+ \item variation-diminishing or total-positivity properties of dyadic samples of
+ $\Up$;
+ \item a recursion in $n$ for the quotient $A_{n,r}/\Gamma_{n,r}$;
+ \item an integral representation with an explicitly positive kernel.
+\end{enumerate}
+
+\subsection{Minimal polynomials and stabilizers}
+
+\begin{problem}\label{prob:minimal-polynomials}
+Determine when $\mathcal P_n$ is the minimal polynomial of $A_{n,1}$ and when it
+is a proper power.  More generally, classify all coincidences
+$A_{n,r}=A_{n,s}$ and determine the discriminant and local factorization of the
+orbit polynomial.
+\end{problem}
+
+The examples $n=2,3$ are irreducible over $\Q$.  The exact Galois action makes
+this a finite arithmetic problem at each level, but no general primitivity
+criterion is presently known.
+
+\subsection{Arithmetic nature of the limiting amplitudes}
+
+\begin{problem}\label{prob:amplitude-arithmetic}
+Prove irrationality, transcendence, or nontrivial algebraic independence results
+for
+\[
+ \PhiU(1/2),\ \PhiU(3/2),\ \PhiU(5/2),\ldots.
+\]
+The cyclotomic approximants \eqref{eq:q-approximant} come with unusually strong
+error bounds, but their algebraic degrees and heights also grow.  Determine
+whether the approximation quality can beat the relevant Liouville-type height
+thresholds after sharp height estimates are included.
+\end{problem}
+
+\subsection{Spectral moments and nonlinear functionals of \texorpdfstring{$\Up$}{up}}
+
+The trace limits \eqref{eq:trace-limit} define constants
+$\mathfrak s_m=\sum_ka_k^m$.  The cases $m\ge3$ do not have an immediate
+ordinary Parseval interpretation.
+
+\begin{problem}\label{prob:nonlinear-traces}
+Find direct integral, probabilistic, or operator-theoretic representations of
+$\mathfrak s_m$ for $m\ge3$.  Determine whether the rational trace sequences
+$p_m(n)$ satisfy recurrences or congruences inherited from the dyadic sample
+array.
+\end{problem}
+
+\subsection{A genuine transform between the two Gaussian-binomial webs}
+
+Formula \eqref{eq:q-approximant} composes the exact dyadic-value web with a
+cyclotomic DCT.  The spectral determinant report constructs a different family
+of Gaussian-binomial coefficients from finite q-Euler determinants.
+
+\begin{problem}\label{prob:two-q-webs}
+Construct an intrinsic matrix or incidence-algebra transform that takes the
+Gaussian-binomial coefficients governing exact Fabius dyadic values directly
+to the Gaussian-binomial coefficients governing the spectral q-Euler
+determinants.  The DCT developed here supplies an explicit intermediate layer,
+but not yet a closed transform between the two coefficient arrays.
+\end{problem}
+
+\subsection{Lambert spectral localization}
+
+\begin{conjecture}[Lower-Lambert frequency localization]\label{conj:Lambert-localization}
+Let $x\downarrow0$ and put $r(x)=\lambda(x)/x$ as in
+\eqref{eq:lambda-W-def}.  There should exist windows
+$\mathcal W_x$ centered on odd frequencies of order $r(x)$, with relative width
+tending to zero on the logarithmic scale, such that the exact signed sum
+\eqref{eq:F-rho-spectral} is asymptotically unchanged when restricted to
+$\mathcal W_x$, after an appropriate multiscale grouping that preserves
+Thue--Morse cancellation.
+
+\smallskip\noindent\openstatus
+\end{conjecture}
+
+A naive termwise truncation is unlikely to work: the all-order moment identities
+show that cancellations across scales are essential.  A successful formulation
+may require dyadic blocks or a Mellin transform of the signed spectral measure
+\eqref{eq:nu-measure}.
+
+\subsection{A two-variable transform}
+
+The corrected endpoint asymptotic is controlled by poles on the vertical
+lattice $2\pi\ii\Z/\log2$.  The dyadic spectral tower has the same scale lattice,
+and the folded DCT coefficients are finite projections of its half-integer
+spectrum.
+
+\begin{problem}\label{prob:two-variable-transform}
+Construct a meromorphic two-variable transform whose residues simultaneously
+produce
+\begin{enumerate}
+ \item the Gamma--zeta periodic endpoint function $\Psi$;
+ \item the rational cyclotomic traces $p_m(n)$;
+ \item the weighted Prouhet moment annihilation;
+ \item the log-periodic heat trace of the dyadic spectral determinant.
+\end{enumerate}
+Such a transform would unify four presently separate manifestations of dyadic
+self-similarity.
+\end{problem}
+
+\section{Conclusion}\label{sec:conclusion}
+
+The half-integer values of the Rvachev sinc product sit at a previously
+underdeveloped junction of the repository's main themes.  They are at once the
+nonzero Fourier coefficients of the two-periodic up-function, the leading
+constants in every integer-zero jet, and a Thue--Morse-signed sequence.  The
+present report shows that these roles are not merely parallel observations.
+
+Flatness at the center forces the sequence to solve an infinite positive-weight
+Prouhet problem of every order.  Dyadic sampling folds the sequence into exact
+finite discrete cosine transforms whose entries are rational Fabius values.
+The finite $q=1/2$ Gaussian-binomial formula then turns each folded coefficient
+into a completely explicit q-binomial--Thue--Morse--cyclotomic number.  An
+elementary selected-factor estimate unfolds those coefficients with a uniform
+superexponential error.  Galois conjugacy supplies rational orbit polynomials
+and power traces, and those traces converge to nonlinear moments of the original
+half-integer spectrum.  Splitting the first dyadic sinc factors reveals a finite
+root-of-unity Thue--Morse product as the sign carrier of every alias class.
+Finally, the all-order Prouhet cancellation rewrites the Fabius endpoint as an
+exact spectral remainder beyond every algebraic order; the repository's
+corrected Lambert--$W$ theorem then evaluates that same signed remainder
+asymptotically.
+
+The strongest immediate next theorem would be positivity of the residual
+shifted spectral sum \eqref{eq:shifted-positivity}.  Beyond it lie arithmetic
+questions about the cyclotomic tower, transcendence of the limiting amplitudes,
+and a true lower-Lambert localization theorem.  The finite identities and error
+bounds developed here are sufficiently elementary to support a staged Lean
+formalization before those deeper questions are settled.
+
+\appendix
+
+\section{Corpus inventory}\label{app:inventory}
+
+The same-day recursive audit snapshot counted fifty-seven TeX files: twenty-five in the living or imported documentation stratum and thirty-two frozen historical versions.  The current canonical frontier source is maintained by consolidation, so capitalization and the continued presence of processed draft paths can change after the snapshot. The list below records the path
+relative to \path{Analysis/FabiusFunction/docs}. Historical items are grouped by
+the archive directory; filenames follow the base name shown.
+
+\subsection{Living documentation: 25 TeX files}
+
+\begin{longtable}{@{}r p{0.88\textwidth}@{}}
+\toprule
+No. & Relative path \\
+\midrule
+\endfirsthead
+\toprule
+No. & Relative path \\
+\midrule
+\endhead
+1 & \path{FabiusFunction_Mathematical_Glossary/FabiusFunction_Mathematical_Glossary.tex} \\
+2 & \path{Fabius_Function_and_Rvachev_Up/Fabius_Function_and_Rvachev_Up.tex} \\
+3 & \path{Non_Elementarity_of_the_Fabius_Function/Non_Elementarity_of_the_Fabius_Function.tex} \\
+4 & \path{fabius_lean_walkthrough/fabius_lean_walkthrough.tex} \\
+5 & \path{non-formalized-research-frontiers/non-formalized-research-frontiers.tex} \\
+6 & \path{non-formalized-research-frontiers/drafts/Fabius_Thue_Morse_Formula_Atlas/Fabius_Thue_Morse_Formula_Atlas.tex} \\
+7 & \path{non-formalized-research-frontiers/drafts/rvachev_up_fourier_decay/Rvachev_Up_Fourier_Decay-2/Rvachev_Up_Fourier_Decay.tex} \\
+8 & \path{non-formalized-research-frontiers/drafts/rvachev_up_fourier_decay/Rvachev_Up_Fourier_Decay-3/Fourier_decay_of_Rvachev_up.tex} \\
+9 & \path{non-formalized-research-frontiers/drafts/rvachev_up_fourier_decay/Rvachev_Up_Fourier_Decay_Comparative_Audit/Rvachev_Up_Fourier_Decay_Comparative_Audit.tex} \\
+10 & \path{non-formalized-research-frontiers/drafts/rvachev_up_fourier_decay/Rvachev_Up_Fourier_Decay_Gentle_Guide/Rvachev_Up_Fourier_Decay_Gentle_Guide.tex} \\
+11 & \path{non-formalized-research-frontiers/drafts/rvachev_up_fourier_decay/Rvachev_Up_Fourier_Decay_Second_Wave_Audit/Rvachev_Up_Fourier_Decay_Second_Wave_Audit.tex} \\
+12 & \path{non-formalized-research-frontiers/drafts/rvachev_up_fourier_decay/asymptotic-decay-rate-of-an-infinite-product-of-sinc-functions/asymptotic-decay-rate-of-an-infinite-product-of-sinc-functions.tex} \\
+13 & \path{non-formalized-research-frontiers/drafts/rvachev_up_fourier_decay/rvachev_up_fourier_decay-1/rvachev_up_fourier_decay.tex} \\
+14 & \path{non-formalized-research-frontiers/drafts/rvachev_up_fourier_decay/rvachev_up_fourier_decay-4/rvachev_up_fourier_decay.tex} \\
+15 & \path{non-formalized-research-frontiers/drafts/rvachev_up_fourier_decay/rvachev_up_fourier_decay-5/Rvachev_Up_Fourier_Decay_Final.tex} \\
+16 & \path{non-formalized-research-frontiers/drafts/rvachev_up_fourier_decay/rvachev_up_fourier_decay-6/Rvachev_Up_Fourier_Decay_Final_Synthesis.tex} \\
+17 & \path{non-formalized-research-frontiers/drafts/rvachev_up_fourier_decay/rvachev_up_fourier_decay-7/rvachev_up_fourier_decay_final.tex} \\
+18 & \path{non-formalized-research-frontiers/drafts/rvachev_up_fourier_decay/rvachev_up_fourier_decay-8/rvachev_up_fourier_decay_final.tex} \\
+19 & \path{papers/AIF_2017__67_2_637_0/AIF_2017__67_2_637_0.tex} \\
+20 & \path{papers/AIF_2017__67_2_637_0/AIF_2017__67_2_637_0-corrected.tex} \\
+21 & \path{papers/arXiv-1502.06738v2/Lacunary_products.tex} \\
+22 & \path{papers/arXiv-1702.05442v1/09-Function.tex} \\
+23 & \path{papers/arXiv-1702.06487v3/157-Arithmetic-v3.tex} \\
+24 & \path{papers/arXiv-2211.13570v1/document.tex} \\
+25 & \path{papers/ubiq15/ubiq15-corrected.tex} \\
+\bottomrule
+\end{longtable}
+
+\subsection{Frozen archive: 32 TeX files}
+
+\begin{longtable}{@{}r p{0.88\textwidth}@{}}
+\toprule
+No. & Relative path under \path{archive/} \\
+\midrule
+\endfirsthead
+\toprule
+No. & Relative path under \path{archive/} \\
+\midrule
+\endhead
+1 & \path{early-notes/Fabius Asymptotic/Fabius Asymptotic.tex} \\
+2 & \path{early-notes/K-fold summation over the signed Thue-Morse sequence/K-fold summation over the signed Thue-Morse sequence.tex} \\
+3 & \path{standalone-studies/Non_Elementarity_of_the_Fabius_Function/Non_Elementarity_of_the_Fabius_Function.tex} \\
+4 & \path{standalone-studies/Small_Argument_Asymptotics/Small_Argument_Asymptotics.tex} \\
+5 & \path{standalone-studies/fabius-inverse-dyadic-closed-form/fabius-inverse-dyadic-closed-form.tex} \\
+6 & \path{primary-exposition/Fabius_Function_and_Rvachev_Up/Fabius_Function_and_Rvachev_Up.tex} \\
+7 & \path{primary-exposition/Fabius_Function_and_Rvachev_Up-2/Fabius_Function_and_Rvachev_Up.tex} \\
+8 & \path{primary-exposition/Fabius_Function_and_Rvachev_Up-3/Fabius_Function_and_Rvachev_Up.tex} \\
+9 & \path{primary-exposition/Fabius_and_Rvachev_Up-2/Fabius_and_Rvachev_Up.tex} \\
+10 & \path{primary-exposition/Fabius_and_Rvachev_up/Fabius_and_Rvachev_up.tex} \\
+11 & \path{primary-exposition/Fabius_function_and_up_function/Fabius_function_and_up_function.tex} \\
+12 & \path{primary-supplements/Fabius_Function_Missing_Parts/Fabius_Function_Missing_Parts.tex} \\
+13 & \path{primary-supplements/Fabius_Function_Missing_Parts-2/Fabius_Function_Missing_Parts.tex} \\
+14 & \path{q-calculus/Fabius_q_Special_Functions/Fabius_q_Special_Functions.tex} \\
+15 & \path{q-calculus/fabius-q-special-functions/fabius-q-special-functions.tex} \\
+16 & \path{lean-walkthrough/Fabius_Function_Lean_Walkthrough/Fabius_Function_Lean_Walkthrough.tex} \\
+17 & \path{lean-walkthrough/fabius_lean_walkthrough/fabius_lean_walkthrough.tex} \\
+18 & \path{glossary/FabiusFunction_Mathematical_Glossary/FabiusFunction_Mathematical_Glossary.tex} \\
+19 & \path{glossary/FabiusFunction_Mathematical_Glossary-2/FabiusFunction_Mathematical_Glossary.tex} \\
+20 & \path{research-frontiers/Fabius_Dyadic_Asymptotic_Bridge/Fabius_Dyadic_Asymptotic_Bridge.tex} \\
+21 & \path{research-frontiers/Fabius_Dyadic_Formulae_and_Alternative_Representations/Fabius_Dyadic_Formulae_and_Alternative_Representations.tex} \\
+22 & \path{research-frontiers/Fabius_Dyadic_Formulae_to_Asymptotics/Fabius_Dyadic_Formulae_to_Asymptotics.tex} \\
+23 & \path{research-frontiers/Fabius_Dyadic_q_Connections/Fabius_Dyadic_q_Connections.tex} \\
+24 & \path{research-frontiers/Fabius_Thue_Morse_Convergence_Rate/Fabius_Thue_Morse_Convergence_Rate.tex} \\
+25 & \path{research-frontiers/Fabius_Thue_Morse_Convergence_Rates/Fabius_Thue_Morse_Convergence_Rates.tex} \\
+26 & \path{research-frontiers/Primary_Exposition_Gap_Register/Primary_Exposition_Gap_Register.tex} \\
+27 & \path{research-frontiers/Repeated_Integration_and_Rvachev_Up/Repeated_Integration_and_Rvachev_Up.tex} \\
+28 & \path{research-frontiers/Rvachev_Up_from_Repeated_Integration/Rvachev_Up_from_Repeated_Integration.tex} \\
+29 & \path{research-frontiers/non-formalized-research-frontiers/non-formalized-research-frontiers.tex} \\
+30 & \path{research-frontiers/Thue_Morse_Formula_Atlas-1/Thue_Morse_Formula_Atlas.tex} \\
+31 & \path{research-frontiers/Thue_Morse_Formula_Atlas-2/Consolidated_Formula_Atlas_for_the_Thue_Morse_Sequence.tex} \\
+32 & \path{research-frontiers/Thue_Morse_Formula_Atlas-3/Thue_Morse_Formula_Atlas.tex} \\
+\bottomrule
+\end{longtable}
+
+
+
+\section{Selected source map}\label{app:sources}
+
+\begin{thebibliography}{99}
+
+\bibitem{proveit}
+V.~Reshetnikov,
+\emph{ProveIt: Analysis/FabiusFunction},
+Lean~4 development and documentation corpus, living GitHub repository, 2026.
+\url{https://github.com/VladimirReshetnikov/ProveIt/tree/main/Analysis/FabiusFunction}.
+
+\bibitem{masterdoc}
+V.~Reshetnikov,
+\emph{The Fabius Function and Rvachev's Up-Function},
+current main exposition in the \texttt{ProveIt} documentation corpus, 2026.
+\url{https://github.com/VladimirReshetnikov/ProveIt/blob/main/Analysis/FabiusFunction/docs/Fabius_Function_and_Rvachev_Up/Fabius_Function_and_Rvachev_Up.tex}.
+
+\bibitem{frontiervolume}
+V.~Reshetnikov,
+\emph{Non-formalized research frontiers for the Fabius--Rvachev development},
+consolidated manuscript in the \texttt{ProveIt} repository, 2026.
+\url{https://github.com/VladimirReshetnikov/ProveIt/tree/main/Analysis/FabiusFunction/docs/non-formalized-research-frontiers}.
+
+\bibitem{spectralreport}
+\emph{Dyadic Spectral Determinants for the Fabius--Rvachev System},
+frontier report based on the complete recursive \texttt{ProveIt} corpus,
+27 August 2026.
+
+\bibitem{arithmeticrays}
+\emph{Arithmetic Dyadic Rays of the Rvachev Fourier Product},
+frontier report based on the complete recursive \texttt{ProveIt} corpus,
+27 August 2026.
+
+\bibitem{ariascompact}
+J.~Arias de Reyna,
+\emph{An infinitely differentiable function with compact support: Definition and properties},
+arXiv:1702.05442, 2017.
+
+\bibitem{ariasarith}
+J.~Arias de Reyna,
+\emph{Arithmetic of the Fabius function},
+\emph{Integers} \textbf{18} (2018), Paper A51;
+arXiv:1702.06487.
+
+\bibitem{haugland}
+J.~K.~Haugland,
+\emph{Evaluating the Fabius function},
+arXiv:1609.07999, 2016.
+
+\bibitem{alloucheshallit1999}
+J.-P.~Allouche and J.~Shallit,
+\emph{The ubiquitous Prouhet--Thue--Morse sequence},
+in \emph{Sequences and Their Applications}, Springer, 1999, 1--16.
+
+\bibitem{alloucheshallitbook}
+J.-P.~Allouche and J.~Shallit,
+\emph{Automatic Sequences: Theory, Applications, Generalizations},
+Cambridge University Press, 2003.
+
+\bibitem{cloitre2026}
+B.~Cloitre,
+\emph{The Thue--Morse Transform},
+arXiv:2604.06243v2, 2026.
+
+\bibitem{sobolewski2019}
+B.~Sobolewski,
+\emph{Cyclotomic properties of polynomials associated with automatic sequences},
+arXiv:1909.12052, 2019.
+
+\bibitem{aistleitner2017}
+C.~Aistleitner, R.~Hofer, and G.~Larcher,
+\emph{On evil Kronecker sequences and lacunary trigonometric products},
+\emph{Annales de l'Institut Fourier} \textbf{67} (2017), no.~2, 637--687.
+
+\bibitem{toth2022}
+L.~T\'oth,
+\emph{Linear combinations of Dirichlet series associated with the Thue--Morse sequence},
+arXiv:2211.13570, 2022.
+
+\bibitem{corless}
+R.~M.~Corless, G.~H.~Gonnet, D.~E.~G.~Hare, D.~J.~Jeffrey, and D.~E.~Knuth,
+\emph{On the Lambert $W$ function},
+\emph{Advances in Computational Mathematics} \textbf{5} (1996), 329--359.
+
+\bibitem{washington}
+L.~C.~Washington,
+\emph{Introduction to Cyclotomic Fields}, 2nd ed.,
+Graduate Texts in Mathematics 83, Springer, 1997.
+
+\end{thebibliography}
+
+\end{document}
