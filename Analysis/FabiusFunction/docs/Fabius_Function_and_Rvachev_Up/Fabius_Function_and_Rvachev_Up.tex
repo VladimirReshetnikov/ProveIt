@@ -3000,8 +3000,9 @@ limit, the Rvachev bump and hence $F$.
 
 This section develops that construction: the convolution law and its explicit binomial
 kernel, the signed dyadic reflection preceding each terminal zero run, the zero runs
-themselves and their exact boundary values, the two generating-series identities, the
-discrete functional equation satisfied by the normalized grid, and the
+themselves and their exact boundary values, the two generating-series identities, their
+analytic realization and natural-boundary theorem, the discrete functional equation
+satisfied by the normalized grid, and the
 precise sense in which the normalized grid converges.  The convergence statement requires
 one shift of the prefix order and the centered reading of the grid cells; the literal
 normalization does not converge, and that failure is recorded separately in
@@ -3377,6 +3378,76 @@ Note that \eqref{eq:tm-prefix-eq-coeff} must fail at $m=2^{n+1}$, because
 $g_n<2^{n+1}$ makes the right side zero while the left side is $-1$ by
 \eqref{eq:tm-run-right}.  That single index is the exceptional right endpoint of
 \cref{thm:tm-corrected-convergence}.
+
+\subsection{The analytic Thue--Morse series and its natural boundary}
+\label{tm:sub-analytic-series}
+
+The series \(\mathcal K\) in \eqref{eq:tm-series-def} was interpreted there as a formal
+power series.  On the open unit disc the same coefficients define an analytic function,
+and we retain the notation \(\mathcal K\):
+\begin{equation}
+ \mathcal K(z)=\sum_{n=0}^{\infty}\varepsilon_nz^n,
+ \qquad |z|<1.                                                \label{eq:tm-disc-series}
+\end{equation}
+
+\begin{proposition}[Analytic product and Mahler equation]
+\label{thm:tm-disc-series}
+For every \(z\in\C\) with \(|z|<1\), the series \eqref{eq:tm-disc-series} converges and
+\begin{equation}
+ \mathcal K(z)=\prod_{j=0}^{\infty}\bigl(1-z^{2^j}\bigr).     \label{eq:tm-analytic-product}
+\end{equation}
+The function \(\mathcal K\) is holomorphic on \(|z|<1\) and satisfies
+\begin{align}
+ \mathcal K(z)&=(1-z)\mathcal K(z^2),                         \label{eq:tm-mahler}\\
+ \mathcal K(z)&=\left(\prod_{j=0}^{k-1}(1-z^{2^j})\right)
+                 \mathcal K(z^{2^k}) \qquad(k\in\N).        \label{eq:tm-mahler-iterate}
+\end{align}
+On the real radius,
+\begin{equation}
+ |\mathcal K(x)|\le 1-x\qquad(0\le x<1),                    \label{eq:tm-real-bound}
+\end{equation}
+and \(\mathcal K(0)=1\).
+\end{proposition}
+
+\begin{proof}[Formal proof]
+The analytic function is \lean{thueMorseDiscSeries}.  Convergence, the product identity,
+and holomorphy are respectively \lean{summable_thueMorseDiscSeries},
+\lean{thueMorseDiscSeries_eq_tprod}, and
+\lean{thueMorseDiscSeries_differentiableOn}.  Convergence of the product itself is
+\lean{multipliable_one_sub_pow_two_pow_complex} in
+\path{ThueMorseInfiniteProduct.lean}.  Equations \eqref{eq:tm-mahler} and
+\eqref{eq:tm-mahler-iterate} are \lean{thueMorseDiscSeries_mahler} and
+\lean{thueMorseDiscSeries_iterate}; \eqref{eq:tm-real-bound} and the value at zero are
+\lean{thueMorseDiscSeries_real_le} and \lean{thueMorseDiscSeries_zero}.  Except for the
+product-convergence declaration just cited, all these declarations are in
+\path{ThueMorseDiscSeries.lean}.
+\end{proof}
+
+\begin{theorem}[Dyadic radial zeros and the natural boundary]
+\label{thm:natural-boundary}
+If \(k\in\N\) and \(\zeta\in\C\) satisfy \(\zeta^{2^k}=1\), then
+\begin{equation}
+ \lim_{\rho\to1^-}\mathcal K(\rho\zeta)=0.                  \label{eq:tm-radial-zero}
+\end{equation}
+Moreover, for every \(z_0\in\C\) with \(|z_0|=1\) and every \(R>0\), there is no function
+\(g:\C\to\C\) which is holomorphic on \(\{z:|z-z_0|<R\}\) and satisfies
+\begin{equation}
+ g(z)=\mathcal K(z)
+ \quad\text{whenever}\quad |z-z_0|<R\ \text{ and }\ |z|<1. \label{eq:tm-no-continuation}
+\end{equation}
+Thus, in precisely this local-disc sense, every point of the unit circle is singular and
+the unit circle is a natural boundary for \(\mathcal K\).
+\end{theorem}
+
+\begin{proof}[Formal proof]
+The radial limit is \lean{tendsto_thueMorseDiscSeries_radial_zero}.  More generally, if
+\(n\in\N\) is nonzero and \(\zeta^n=1\), then \(|\zeta|=1\); this is
+\lean{norm_eq_one_of_pow_eq_one}.  The exact quantified nonextension statement
+\eqref{eq:tm-no-continuation}, and hence the
+natural-boundary conclusion in the stated local-disc sense, is
+\lean{thueMorse_natural_boundary}.  All three declarations are in
+\path{ThueMorseNaturalBoundary.lean}.
+\end{proof}
 
 \subsection{The functional equation of the normalized prefix grid}
 \label{tm:sub-grid-equation}
@@ -4001,6 +4072,15 @@ These are \lean{fabiusLambertPhase_continuousOn},
 \lean{deriv_fabiusLambertPhase}, and \lean{deriv_fabiusLambertPhase_neg} in
 \path{FabiusLambertSaddle.lean}; the derivative witness is
 \lean{fabiusLambertPhase_hasDerivAt}.
+At the singular endpoint the exact phase and its reciprocal have the limits
+\begin{equation}
+ \lambda(x)\longrightarrow+\infty,
+ \qquad \lambda(x)^{-1}\longrightarrow0
+ \qquad(x\downarrow0).                                    \label{eq:lambert-phase-endpoint-limits}
+\end{equation}
+These are \lean{tendsto_fabiusLambertPhase_nhdsGT_zero_atTop} and
+\lean{tendsto_inv_fabiusLambertPhase_nhdsGT_zero} in
+\path{FabiusLambertRates.lean}.
 
 The corrected main term is
 \begin{equation}
@@ -4610,8 +4690,10 @@ Dyadic and \(q\)-binomial formulas &
 \path{FabiusGlobalQBinomialSeries.lean},
 \path{FabiusDiscreteLimitToeplitz.lean},
 \path{FabiusDiscreteLimitIntegration.lean}\\
-Thue--Morse prefixes &
+Thue--Morse prefixes and disc series &
 \path{ThueMorsePrefix.lean}, \path{ThueMorseGenerating.lean},
+\path{ThueMorseInfiniteProduct.lean}, \path{ThueMorseDiscSeries.lean},
+\path{ThueMorseNaturalBoundary.lean},
 \path{ThueMorseExponential.lean}, \path{ThueMorseApproximation.lean},
 \path{PaperKFoldThueMorse.lean}\\
 Endpoint asymptotics &

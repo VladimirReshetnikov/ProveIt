@@ -1149,7 +1149,7 @@ named classical import.
 
 All four targets above are now formalized, and the campaign went
 substantially further.  The development
-(\nolinkurl{Analysis/FabiusFunction/Lean/FabiusFunction/}, sixty-three
+(\nolinkurl{Analysis/FabiusFunction/Lean/FabiusFunction/}, seventy-one
 sorry-free modules at this writing) now contains, kernel-checked:
 \begin{itemize}
 \item the sharp uniform bound $\|P_n\|_\infty\le(\sqrt3/2)^{n-1}$
@@ -1237,7 +1237,43 @@ $\|\Phi(x)\|/|x-m|^{\,v_2(m)+1}$ converges along the punctured
 neighborhood of $m$ to an explicit strictly positive constant
 (\lean{ZeroOrderTail}, \lean{PhiZeroOrder}) --- the multiplicity
 statement of \texttt{prop:canonical} in quantitative local form, and
-the local half of the valley law.
+the local half of the valley law.  Its two extremes are corollaries:
+$\Phi$ has \emph{simple} zeros at odd integers and zeros of order
+$j+1$ at $2^j$, so the order is unbounded along the dyadic integers
+(\lean{ValleyZeroOrders});
+\item \textbf{the sign of $\Phi$, and it is Thue--Morse}: the split
+product shows $\Phi$ is real on the whole real axis and, off the zero
+lattice, $\Phi(x)=(-1)^{\#\{a\le|x|\}}\|\Phi(x)\|$
+(\lean{PhiRealSign}); the exceptional block depends only on
+$\lfloor\cdot\rfloor$, hence is constant along a lobe, and decomposes
+into the fibers over $1,\dots,m$, giving one sign per lobe with
+$\#\{a\le m\}=\sum_{k\le m}(v_2(k)+1)$ (\lean{LobeSignCount}).
+Legendre's theorem in digit-sum form evaluates that count as
+$2m-w(m)$, so
+\[
+  \Phi(x)=(-1)^{w(m)}\,\|\Phi(x)\|,\qquad x\in(m,m+1),
+\]
+with $w$ the binary digit sum (\lean{ThueMorseLobeSign}) --- the same
+Thue--Morse sign that defines the signed global extension
+$F=\sum(-1)^{w(n)}\,\mathrm{up}(\cdot-2n-1)$ governs the lobe signs of
+its Fourier transform, and it is self-similar under doubling of the
+frequency index (\lean{LobeSignSelfSimilarity});
+\item \textbf{the renormalization identity} $\Phi(z)=\operatorname{sinc}(\pi z)\,\Phi(z/2)$
+and its $n$-fold shell form (\lean{RenormalizationIdentity});
+\item \textbf{the global $\kappa_\infty$ envelope}: there is a
+constant $C$ with $\|\Phi(x)\|\le C\,E_{\kappa_\infty}(x)$ for every
+$x\ge1$ (\lean{GlobalDecayEnvelope}).  The peak-ray gauge identity is
+proved at an \emph{arbitrary} base point --- its $k$-linear terms
+cancel precisely when $\kappa=\kappa_\infty$, so the identity
+characterizes the exponent --- and is combined with the shell bound,
+which already held along every dyadic ray, and a compact-window
+maximum of $\|\Phi\|/E_{\kappa_\infty}$ on $[1,2]$.  With the
+attainment along $2^k\cdot(2/3)$ this pins $\kappa_\infty$ from both
+sides as \emph{the} envelope exponent of the Fourier decay;
+\item the lacunary $L^1$ mean, sharpened from the Gelfond-inherited
+$(\sqrt3/2)^n$ to $\int_0^1\prod_{j<n}|\sin(\pi2^jt)|\,dt\le2^{-n/2}$
+by Cauchy--Schwarz against the exact second moment $2^{-n}$
+(\lean{LacunaryMeanSharp}).
 \end{itemize}
 The sentence above about the exact variance is therefore superseded:
 the Clausen expansion in $L^2$ is formalized, the one-peak profile

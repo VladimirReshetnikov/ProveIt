@@ -8,11 +8,13 @@ import Mathlib.Analysis.Asymptotics.Theta
 
 The exact lower-Lambert saddle phase is asymptotic to the logarithmic
 coordinate.  This module packages that statement as asymptotic equivalence,
-transports it to reciprocal scales, and retains an eventual order
-comparison between the two coordinates.  It also proves that the reciprocal
-base-two and natural-logarithmic coordinates differ only by a nonzero constant.
-Consequently, Big-O and little-o estimates on the reciprocal Lambert scale are
-equivalent to their literal `1 / (-log x)` forms at `x → 0⁺`.
+transports it to reciprocal scales, and retains an eventual order comparison
+between the two coordinates.  On the small-argument side, the exact phase
+tends to infinity as `x → 0⁺`, and hence its reciprocal tends to zero.  The
+module also proves that the reciprocal base-two and natural-logarithmic
+coordinates differ only by a nonzero constant.  Consequently, Big-O and
+little-o estimates on the reciprocal Lambert scale are equivalent to their
+literal `1 / (-log x)` forms at `x → 0⁺`.
 -/
 
 set_option autoImplicit false
@@ -71,6 +73,24 @@ theorem dyadicLambertPhase_inv_isBigO_inv :
     (fun t : ℝ => (dyadicLambertPhase t)⁻¹) =O[atTop]
       (fun t : ℝ => t⁻¹) := by
   exact dyadicLambertPhase_inv_isEquivalent_inv.isBigO
+
+/-- The exact lower-Lambert phase diverges as its positive argument tends to
+zero.  This is the small-argument transport of
+`tendsto_dyadicLambertPhase_atTop`. -/
+theorem tendsto_fabiusLambertPhase_nhdsGT_zero_atTop :
+    Tendsto fabiusLambertPhase (𝓝[>] (0 : ℝ)) atTop := by
+  apply (tendsto_logScale_iff_smallArgument
+    fabiusLambertPhase atTop).mp
+  simpa only [fabiusLogArgument, fabiusLambertPhase_dyadic] using
+    tendsto_dyadicLambertPhase_atTop
+
+/-- The reciprocal exact lower-Lambert phase tends to zero at the positive
+endpoint. -/
+theorem tendsto_inv_fabiusLambertPhase_nhdsGT_zero :
+    Tendsto (fun x : ℝ => (fabiusLambertPhase x)⁻¹)
+      (𝓝[>] (0 : ℝ)) (𝓝 0) :=
+  tendsto_inv_atTop_zero.comp
+    tendsto_fabiusLambertPhase_nhdsGT_zero_atTop
 
 /-- Reciprocal logarithmic coordinate written in the source's `-log x`
 scale, for every real argument. -/

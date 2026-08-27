@@ -205,28 +205,14 @@ theorem norm_rvachevFourierProduct_two_pow_mul (k : ℕ) (y : ℝ) (hy : y ≠ 0
       (∏ j ∈ range k, |Real.sin ((2 : ℝ) ^ (j + 1) * Real.pi * y)|) /
         ((2 : ℝ) ^ (k * (k + 1) / 2) * (Real.pi * |y|) ^ k) *
         ‖rvachevFourierProduct (y : ℂ)‖ := by
-  rw [rvachevFourierProduct_two_pow_mul, norm_mul, norm_prod]
-  congr 1
-  have hfac : ∀ j ∈ range k,
-      ‖complexSinc (Real.pi * ((2 : ℂ) ^ (j + 1) * (y : ℂ)))‖ =
-        |Real.sin ((2 : ℝ) ^ (j + 1) * Real.pi * y)| /
-          ((2 : ℝ) ^ (j + 1) * (Real.pi * |y|)) := by
-    intro j _
-    have hcast : Real.pi * ((2 : ℂ) ^ (j + 1) * (y : ℂ)) =
-        (((2 : ℝ) ^ (j + 1) * Real.pi * y : ℝ) : ℂ) := by
-      push_cast
-      ring
-    have hr : (2 : ℝ) ^ (j + 1) * Real.pi * y ≠ 0 := by
-      have h2 : (0 : ℝ) < 2 ^ (j + 1) := by positivity
-      exact mul_ne_zero (mul_ne_zero (ne_of_gt h2) Real.pi_ne_zero) hy
-    rw [hcast, norm_complexSinc_ofReal _ hr]
-    congr 1
-    rw [abs_mul, abs_mul, abs_of_pos (by positivity : (0:ℝ) < 2 ^ (j + 1)),
-      abs_of_pos Real.pi_pos]
-    ring
-  rw [Finset.prod_congr rfl hfac, Finset.prod_div_distrib,
-    Finset.prod_mul_distrib, Finset.prod_const, Finset.card_range,
-    prod_range_two_pow_succ]
+  have hyabs : 0 < |y| := abs_pos.mpr hy
+  have hden :
+      (2 : ℝ) ^ (k * (k + 1) / 2) * (Real.pi * |y|) ^ k ≠ 0 := by
+    positivity
+  rw [div_mul_eq_mul_div]
+  apply (eq_div_iff hden).2
+  simpa only [mul_comm] using
+    norm_rvachevFourierProduct_two_pow_mul_cross k y
 
 /-- **The shell factorization meets the Gelfond bound.**  Feeding
 `abs_prod_sin_two_pow_le` (from `GelfondLogisticBound.lean`, at `t = 2y`)

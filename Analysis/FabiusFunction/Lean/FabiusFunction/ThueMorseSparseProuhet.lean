@@ -25,6 +25,10 @@ strictly more general than the atlas, whose steps are the powers of two.
   by transporting along the Boolean-cube kernel: the classical Prouhet
   cancellation `∑_{n<2^m} ε(n)(x + nh)^r = 0` for `r < m`, and the sharp
   first moment `(-1)^m m! 2^(m choose 2) h^m`, over any commutative ring.
+* `sum_thueMorseSign_mul_affine_eval_of_degree_lt` — the degree-valued
+  polynomial form of the same block cancellation.  It includes the true
+  boundary case `m = 0`, where the zero polynomial is the unique polynomial
+  of degree below zero.
 * `bitSupport` — the set of one-bit positions of `n`, with its dictionary
   (`mem`, reconstruction `∑ 2^j = n`, cardinality `= binaryWeight n`), and
   the **sparse Prouhet theorems** on the submasks of an arbitrary `n`:
@@ -281,6 +285,27 @@ theorem sum_thueMorseSign_mul_eq_sum_powerset {R : Type*} [CommRing R]
   rw [thueMorseSign, binaryWeight_sum_two_pow (Finset.mem_powerset.mp hT)]
   push_cast
   ring
+
+/-- **Degree-valued Thue--Morse Prouhet cancellation.**  Every polynomial
+of degree below `m` vanishes under the signed affine block functional
+`p ↦ ∑_{n<2^m} ε(n) p(x + nh)`, over any commutative ring.
+
+The `Polynomial.degree` hypothesis is deliberately stronger at the empty
+boundary than the traditional `natDegree < m` statement: for `m = 0` it
+admits exactly the zero polynomial, and the one-term block sum is then zero.
+No separate nonzero-polynomial or positive-block hypothesis is needed. -/
+theorem sum_thueMorseSign_mul_affine_eval_of_degree_lt
+    {R : Type*} [CommRing R] (m : ℕ) (p : R[X])
+    (hdeg : p.degree < (m : WithBot ℕ)) (x h : R) :
+    ∑ n ∈ range (2 ^ m),
+      ((thueMorseSign n : ℤ) : R) * p.eval (x + (n : R) * h) = 0 := by
+  rw [sum_thueMorseSign_mul_eq_sum_powerset m
+    (fun n => p.eval (x + (n : R) * h))]
+  have hgen := sum_powerset_neg_one_pow_eval_of_degree_lt (range m)
+    (fun j => (2 : R) ^ j * h) p (by simpa using hdeg) x
+  rw [← hgen]
+  refine Finset.sum_congr rfl fun T _ => ?_
+  rw [cast_sum_two_pow_mul]
 
 /-- **Prouhet cancellation over any commutative ring.**  For `r < m`,
 `∑_{n<2^m} ε(n) (x + nh)^r = 0`.  The corpus proves this over `ℚ` and
