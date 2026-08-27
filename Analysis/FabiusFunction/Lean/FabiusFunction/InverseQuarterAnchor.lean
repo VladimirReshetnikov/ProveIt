@@ -31,6 +31,10 @@ There is deliberately no assertion here that `fabiusUniformSpline n` has the
 required local polynomial.  That is the remaining analytic/Thue--Morse
 plateau theorem; `IsQuarterLocalPolynomial` is designed to be discharged by
 that theorem once it is available.
+
+The companion module `QuarterCatalanGerm` packages the report's Catalan
+coefficients as the unique zero-constant formal-power-series solution of the
+same quadratic, while deliberately leaving real-series convergence separate.
 -/
 
 set_option autoImplicit false

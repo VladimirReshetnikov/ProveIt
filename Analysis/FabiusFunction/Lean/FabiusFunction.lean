@@ -177,6 +177,7 @@ import FabiusFunction.EffectiveFlatness
 import FabiusFunction.SharpFlatness
 import FabiusFunction.FabiusInverse
 import FabiusFunction.InverseQuarterAnchor
+import FabiusFunction.QuarterCatalanGerm
 import FabiusFunction.GlobalBounds
 import FabiusFunction.BoundedDerivatives
 import FabiusFunction.NowhereAnalytic
