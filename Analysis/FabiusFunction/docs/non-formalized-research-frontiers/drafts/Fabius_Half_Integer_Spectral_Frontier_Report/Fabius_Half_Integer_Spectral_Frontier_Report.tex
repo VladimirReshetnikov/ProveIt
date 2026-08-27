@@ -943,6 +943,22 @@ For $0\le j<K$,
  \le\frac{2^j}{\pi|x|}.
 \]
 Multiply these $K$ inequalities and bound every remaining sinc factor by one.
+
+\smallskip\noindent
+This estimate is now machine-checked in the stronger total form
+\[
+ (\pi|x|)^K|\PhiU(x)|
+ =2^{\binom K2}
+  \left(\prod_{j<K}\left|\sin(\pi x/2^j)\right|\right)
+  |\PhiU(x/2^K)|
+ \le 2^{\binom K2},
+\]
+which includes both $x=0$ and $K=0$ before division.  The identity, total
+bound, and divided corollary are
+\path{norm_rvachevFourierProduct_prefix_cross},
+\path{norm_rvachevFourierProduct_prefix_cross_le}, and
+\path{norm_rvachevFourierProduct_le_prefix_div} in
+\path{SincPrefixBound.lean}.
 \end{proof}
 
 \begin{theorem}[Uniform aliasing error]\label{thm:alias-error}
