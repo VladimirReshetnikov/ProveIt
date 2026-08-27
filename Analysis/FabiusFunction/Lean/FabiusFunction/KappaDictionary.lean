@@ -20,9 +20,8 @@ named exponents are its values at three explicit means:
 | `√2/2` (the `L²`/RMS rate) | `κ₂ = 1 + log₂π = log₂(2π) = 2.6515…` |
 | `√3/2` (the sharp Gelfond rate) | `κ∞ = 2.3590…` |
 
-One formula reproduces all four constants the audits report.
-
-so `κ∞ < κ₂ < κ₀`, with the exact gaps `κ₀ − κ₂ = 1/2`,
+One formula reproduces all four constants reported by the audits, and gives
+`κ∞ < κ₂ < κ₀`, with the exact gaps `κ₀ − κ₂ = 1/2`,
 `κ₀ − κ∞ = log 3/(2 log 2)` and `κ₂ − κ∞ = (log 3 − log 2)/(2 log 2)`.
 A smaller mean means slower decay: the dictionary is *anti*-tone, which
 is why the sharp (largest) mean `√3/2` gives the extremal (smallest)
@@ -109,13 +108,15 @@ theorem kappaOf_sqrt_three :
 
 /-! ## The exact gaps -/
 
-/-- The exact gap between the `L¹`-trivial and RMS exponents is one half. -/
+/-- The trivial-rate exponent exceeds the root-mean-square exponent by
+exactly one half. -/
 theorem kappa_zero_sub_kappa_two :
     kappaOf (1/2) - kappaOf (Real.sqrt 2 / 2) = 1 / 2 := by
   rw [kappaOf_half, kappaOf_sqrt_two]
   ring
 
-/-- The exact gap from the `L¹`-trivial exponent to the sharp Gelfond exponent. -/
+/-- The gap from the trivial-rate exponent to the sharp Gelfond exponent is
+`log 3 / (2 log 2)`. -/
 theorem kappa_zero_sub_kappa_inf :
     kappaOf (1/2) - kappaInf = Real.log 3 / (2 * Real.log 2) := by
   have hl2 := log_two_pos
@@ -125,7 +126,8 @@ theorem kappa_zero_sub_kappa_inf :
   field_simp
   ring
 
-/-- The exact gap from the RMS exponent to the sharp Gelfond exponent. -/
+/-- The gap from the root-mean-square exponent to the sharp Gelfond exponent
+is `(log 3 - log 2) / (2 log 2)`. -/
 theorem kappa_two_sub_kappa_inf :
     kappaOf (Real.sqrt 2 / 2) - kappaInf =
       (Real.log 3 - Real.log 2) / (2 * Real.log 2) := by
@@ -177,7 +179,8 @@ theorem kappaInf_lt_kappa_two :
     linarith
   linarith
 
-/-- The RMS exponent lies strictly below the `L¹`-trivial exponent. -/
+/-- The root-mean-square exponent is strictly smaller than the trivial-rate
+exponent. -/
 theorem kappa_two_lt_kappa_zero :
     kappaOf (Real.sqrt 2 / 2) < kappaOf (1/2) := by
   have h := kappa_zero_sub_kappa_two

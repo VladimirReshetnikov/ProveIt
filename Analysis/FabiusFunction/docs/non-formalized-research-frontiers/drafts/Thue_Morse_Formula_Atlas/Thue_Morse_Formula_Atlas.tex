@@ -2434,9 +2434,13 @@ Finally, \path{ExponentialBell.lean} proves the function equality
    =\lean{Fabius.SaddleExpansion.expCoeff}\ E
 \]
 over the same generality.  Thus the recursive all-orders saddle
-coefficient engine has a finite weighted-partition expansion.  This
-bridge does not introduce a separate complete-Bell-polynomial object or
-by itself prove a general moment--cumulant specialization.
+coefficient engine has a finite weighted-partition expansion.  The later
+module \path{MomentCumulantAlgebra.lean} factorially normalizes that layer
+into the named transforms \lean{Fabius.completeBellPolynomial} and
+\lean{Fabius.momentCumulant}, proves the classical Bell recurrence and
+their normalized inverse laws, and establishes functoriality over
+commutative \(\mathbb Q\)-algebras.  This remains generic formal algebra:
+it supplies no Thue--Morse-specific probabilistic interpretation.
 
 For \(E_j=-a_j/j\), the ruler convolution
 (\cref{thm:ruler-convolution}) says that the sign sequence obeys the same
@@ -6045,7 +6049,7 @@ valuation, carry, and Pascal-row formulas remain genuinely base-two features.
 \subsection{Formalized modules (August 2026)}
 \label{sec:formalized-modules}
 
-The first tranches of the formalization now exist as seventy
+The first tranches of the formalization now exist as seventy-one
 compiled Lean modules in \repo{}, complementing the corpus modules
 (\path{Parity.lean}, \path{TwoAdic.lean}, \path{ThueMorsePrefix.lean},
 \path{ThueMorseGenerating.lean}, \path{ThueMorseExponential.lean},
@@ -6099,6 +6103,7 @@ Module & Contents \\
 \path{ExponentialPartition.lean} & Weighted multiplicity vectors and reciprocal-factorial partition sums over every commutative \(\mathbb Q\)-algebra; the marked-part and normalized successor recurrences; and the quotient-notation bridge for characteristic-zero fields. \\
 \path{ThueMorsePartition.lean} & Ruler-recurrence uniqueness and the partition and explicit Bell-polynomial formulae for \(\eps_n\), obtained by specializing the generic partition engine. \\
 \path{ExponentialBell.lean} & Equality of the finite weighted-partition coefficient function with \path{SaddleExpansion.expCoeff} over every commutative \(\mathbb Q\)-algebra, by recurrence uniqueness. \\
+\path{MomentCumulantAlgebra.lean} & Factorial normalization and denormalization; the complete Bell and inverse moment--cumulant transforms; their classical recurrence, normalized all-index inverse laws, and functoriality over every commutative \(\mathbb Q\)-algebra. \\
 \path{ThueMorseIntegerLift.lean} & The integral algebraic lift constructed in closed Catalan--binomial form; Catalan parity at Mersenne indices; the unconditional parity theorem \(c_n\equiv\tau(n)\), \(\eps_n=(-1)^{c_n}\). \\
 \path{ThueMorseBoundaryFlatness.lean} & The lacunary product \(\mathcal E(t)\) as an infinite product: self-similarity, positivity, monotonicity, the effective upper bound \(\mathcal E(t)\le2^{\binom m2}t^m\) at every level \(m\), and the matching lower bound \(2^{\binom m2}(t/2)^m\mathcal E(\frac12)\le\mathcal E(t)\) under the dyadic matching \(\frac12\le2^mt\le2\). \\
 \path{ThueMorseDirichlet.lean} & The shifted Dirichlet series in the real regime: conditional convergence for every \(\sigma>0\) by Dirichlet's test, and the dyadic parameter equation \(D(\sigma,a)=2^{-\sigma}(D(\sigma,\frac a2)-D(\sigma,\frac{a+1}2))\). \\
