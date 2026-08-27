@@ -1851,6 +1851,35 @@ the corresponding zero has exact order \(b\), by
 \lean{thueMorseCenteredPowerSeries_eq_product} in
 \path{ThueMorseExponential.lean}.
 
+The ordinary derivatives of the finite block polynomial make that exact order
+visible without passing to formal power series.
+
+\begin{proposition}[Block-polynomial derivatives at one]
+\label{prop:thue-block-derivatives}
+For every \(b,r\ge0\),
+\begin{equation}
+ \left.\frac{\dd^r}{\dd z^r}
+   \sum_{h<2^b}\varepsilon_hz^h\right|_{z=1}
+ =r!\sum_{h<2^b}\varepsilon_h\binom hr.                   \label{eq:thue-block-derivative-moment}
+\end{equation}
+Consequently this derivative is zero when \(r<b\), while the first surviving
+derivative is
+\begin{equation}
+ \left.\frac{\dd^b}{\dd z^b}
+   \prod_{j=0}^{b-1}(1-z^{2^j})\right|_{z=1}
+ =(-1)^b b!\,2^{\binom b2}.                               \label{eq:thue-block-derivative-sharp}
+\end{equation}
+\end{proposition}
+
+\begin{proof}[Formal proof]
+The derivative--binomial dictionary is
+\lean{iterate_derivative_thueMorseBlockPolynomial_eval_one}; its strict
+vanishing and first surviving cases are respectively
+\lean{iterate_derivative_thueMorseBlockPolynomial_eval_one_of_lt} and
+\lean{iterate_derivative_thueMorseBlockPolynomial_eval_one_self}, all in
+\path{ThueMorseBlockAlgebra.lean}.
+\end{proof}
+
 \begin{proposition}[The first surviving Thue--Morse moment]
 \label{prop:dy-tm-moment}
 For every \(k\ge0\),
