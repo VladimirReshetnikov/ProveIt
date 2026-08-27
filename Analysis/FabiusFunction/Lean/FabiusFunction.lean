@@ -93,6 +93,8 @@ import FabiusFunction.LogFactorConcavity
 import FabiusFunction.BoundednessSkeleton
 import FabiusFunction.TransferOperatorStep
 import FabiusFunction.LasotaYorkeIteration
+import FabiusFunction.TransferPositivity
+import FabiusFunction.PerronRootExistence
 import FabiusFunction.DiagonalSelection
 import FabiusFunction.MeasureEqualization
 import FabiusFunction.NegativeLaplace
