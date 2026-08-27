@@ -28,6 +28,8 @@ product of `ThueMorseBlockProducts`.
   (`eq:quarter-product`).
 * `tendsto_block_product_half` — the half-shifted block product
   converges to `1/2`.
+* `tendsto_block_product_half_even` — the same, along *every* even block
+  length, not only the dyadic ones.
 -/
 
 set_option autoImplicit false
@@ -145,6 +147,20 @@ theorem tendsto_block_product_half :
     Tendsto (fun m : ℕ => ∏ k ∈ range (2 ^ m),
       ((k : ℝ) + 1 / 2) ^ (thueMorseSign k)) atTop (𝓝 (1 / 2 : ℝ)) := by
   have h := tendsto_block_product_half'
+  rw [mpLimit_quarter,
+    show Real.exp (-Real.log 2) = 1 / 2 by
+      rw [Real.exp_neg, Real.exp_log (by norm_num : (0 : ℝ) < 2)]
+      norm_num] at h
+  exact h
+
+/-- **The half-shifted block product has value `1/2` along every even
+block length**: the numerical evaluation of
+`tendsto_block_product_half_even'`, strictly stronger than
+`tendsto_block_product_half`, of which it is the dyadic subsequence. -/
+theorem tendsto_block_product_half_even :
+    Tendsto (fun M : ℕ => ∏ k ∈ range (2 * M),
+      ((k : ℝ) + 1 / 2) ^ (thueMorseSign k)) atTop (𝓝 (1 / 2 : ℝ)) := by
+  have h := tendsto_block_product_half_even'
   rw [mpLimit_quarter,
     show Real.exp (-Real.log 2) = 1 / 2 by
       rw [Real.exp_neg, Real.exp_log (by norm_num : (0 : ℝ) < 2)]

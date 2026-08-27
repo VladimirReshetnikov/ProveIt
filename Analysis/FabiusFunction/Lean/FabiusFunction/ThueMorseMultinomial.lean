@@ -11,11 +11,28 @@ module proves the atlas's multinomial layer — the last open discrete row
 of its proposal table — by pure valuation arithmetic and the bivariate
 submask enumerator; no polynomial rings appear.
 
+The valuation half of the argument is Legendre's formula run twice and
+subtracted, and nothing in it is special to the prime `2`.  It is
+therefore carried out here for an arbitrary prime `p`, writing `S_p` for
+the base-`p` digit sum, and the Thue--Morse statements are recovered as
+the case `p = 2`, where `S_2 = wt` is the binary weight.
+
+* `digitSum_add_sub_one_mul_padicValNat_factorial` — the **additive
+  Legendre formula in base `p`**: `S_p(n) + (p-1)·v_p(n!) = n`.
+* `sum_digitSum_eq_sub_one_mul_padicValNat_multinomial` — **Legendre's
+  formula for multinomials**: the digit sums of the parts exceed the
+  digit sum of their total by exactly `(p-1)` times the valuation,
+  `∑ S_p(k_i) = (p-1)·v_p(multinomial) + S_p(∑ k_i)`.
+* `prime_not_dvd_multinomial_iff_digitSum` — **Kummer's criterion in base
+  `p`**: `multinomial(n; k_1,…,k_r)` is prime to `p` exactly when the
+  base-`p` digit sums are additive, `∑ S_p(k_i) = S_p(∑ k_i)` — that is,
+  when the parts add without carrying in base `p`.
 * `odd_multinomial_iff_binaryWeight` — **Kummer's criterion for
-  multinomials**: `multinomial(n; k_1,…,k_r)` is odd exactly when the
-  binary weights are additive, `∑ wt(k_i) = wt(∑ k_i)` — that is, when
-  the parts partition the binary digits of `n` without carries.  Stated
-  for an arbitrary finite index set.
+  multinomials**: the case `p = 2`.  A multinomial coefficient
+  `multinomial(n; k_1,…,k_r)` is odd exactly when the binary weights are
+  additive, `∑ wt(k_i) = wt(∑ k_i)` — that is, when the parts partition
+  the binary digits of `n` without carries.  Stated for an arbitrary
+  finite index set.
 * `card_filter_odd_multinomial` — the **multinomial support count**
   `O_r(n) = r^wt(n)`: the odd positions of the `n`-th slice of the
   `r`-nomial Pascal pyramid number exactly `r^wt(n)`.  The induction on
@@ -46,59 +63,139 @@ theorem binaryWeight_eq_zero_iff (n : ℕ) : binaryWeight n = 0 ↔ n = 0 := by
   · rintro rfl
     simp [binaryWeight]
 
+/-! ## Legendre's formula in base `p` -/
+
+/-- **Additive Legendre formula in base `p`.**  The base-`p` digit sum of
+`n` and `(p - 1)` times the `p`-adic valuation of `n!` partition `n`
+exactly: `S_p(n) + (p-1)·v_p(n!) = n`.  This is Mathlib's
+`sub_one_mul_padicValNat_factorial` with the truncated subtraction
+removed; at `p = 2` it is `binaryWeight_add_padicValNat_factorial`. -/
+theorem digitSum_add_sub_one_mul_padicValNat_factorial (p : ℕ)
+    [Fact p.Prime] (n : ℕ) :
+    (Nat.digits p n).sum + (p - 1) * padicValNat p n.factorial = n := by
+  rw [sub_one_mul_padicValNat_factorial (p := p) n]
+  exact Nat.add_sub_cancel' (Nat.digit_sum_le p n)
+
+/-- The `p`-adic valuation of a product of factorials splits over the
+index set. -/
+private theorem padicValNat_prod_factorial_prime {ι : Type*}
+    [DecidableEq ι] (p : ℕ) [Fact p.Prime] (s : Finset ι) (f : ι → ℕ) :
+    padicValNat p (∏ i ∈ s, (f i).factorial) =
+      ∑ i ∈ s, padicValNat p (f i).factorial := by
+  induction s using Finset.induction_on with
+  | empty => simp
+  | insert a s ha ih =>
+      rw [Finset.prod_insert ha, Finset.sum_insert ha,
+        padicValNat.mul (p := p) (Nat.factorial_ne_zero _)
+          (Finset.prod_ne_zero_iff.mpr fun i _ => Nat.factorial_ne_zero _),
+        ih]
+
+/-- The two-adic case of `padicValNat_prod_factorial_prime`. -/
 private theorem padicValNat_prod_factorial {ι : Type*} [DecidableEq ι]
     (s : Finset ι) (f : ι → ℕ) :
     padicValNat 2 (∏ i ∈ s, (f i).factorial) =
       ∑ i ∈ s, padicValNat 2 (f i).factorial := by
   haveI : Fact (Nat.Prime 2) := ⟨Nat.prime_two⟩
-  induction s using Finset.induction_on with
-  | empty => simp
-  | insert a s ha ih =>
-      rw [Finset.prod_insert ha, Finset.sum_insert ha,
-        padicValNat.mul (Nat.factorial_ne_zero _)
-          (Finset.prod_ne_zero_iff.mpr fun i _ => Nat.factorial_ne_zero _),
-        ih]
+  exact padicValNat_prod_factorial_prime 2 s f
+
+/-- Arithmetic shim.  Subtracting two runs of Legendre's formula leaves a
+pure cancellation: from `A' + X = N`, `A + Y = N` and `Y = X + Z` one
+gets `A' = Z + A`, with `X`, `Y`, `Z` opaque products. -/
+private theorem digitSum_cancel_aux {A A' N X Y Z : ℕ}
+    (h₁ : A' + X = N) (h₂ : A + Y = N) (h₃ : Y = X + Z) : A' = Z + A := by
+  omega
+
+/-- Arithmetic shim.  For `q ≠ 0`, an identity `A = q * v + B` turns the
+equality `A = B` into the vanishing of `v`. -/
+private theorem digitSum_eq_iff_aux {q v A B : ℕ} (hq : q ≠ 0)
+    (hid : A = q * v + B) : A = B ↔ v = 0 := by
+  constructor
+  · intro h
+    by_contra hv
+    obtain ⟨w, rfl⟩ : ∃ w, v = w + 1 := ⟨v - 1, by omega⟩
+    rw [Nat.mul_add, Nat.mul_one] at hid
+    omega
+  · rintro rfl
+    simpa using hid
+
+/-- **Legendre's formula for multinomial coefficients, base `p`.**  For a
+prime `p` the base-`p` digit sums of the parts exceed the digit sum of
+their total by exactly `(p - 1)` times the `p`-adic valuation of the
+multinomial coefficient:
+`∑_{i∈s} S_p(f i) = (p-1)·v_p(multinomial s f) + S_p(∑_{i∈s} f i)`. -/
+theorem sum_digitSum_eq_sub_one_mul_padicValNat_multinomial {ι : Type*}
+    [DecidableEq ι] (p : ℕ) [Fact p.Prime] (s : Finset ι) (f : ι → ℕ) :
+    ∑ i ∈ s, (Nat.digits p (f i)).sum =
+      (p - 1) * padicValNat p (Nat.multinomial s f) +
+        (Nat.digits p (∑ i ∈ s, f i)).sum := by
+  have hmultne : Nat.multinomial s f ≠ 0 := (Nat.multinomial_pos s f).ne'
+  have hprodne : (∏ i ∈ s, (f i).factorial) ≠ 0 :=
+    Finset.prod_ne_zero_iff.mpr fun i _ => Nat.factorial_ne_zero _
+  have hspec := Nat.multinomial_spec s f
+  have hνmul : padicValNat p (∏ i ∈ s, (f i).factorial) +
+      padicValNat p (Nat.multinomial s f) =
+      padicValNat p ((∑ i ∈ s, f i).factorial) := by
+    rw [← padicValNat.mul (p := p) hprodne hmultne, hspec]
+  have hprodν := padicValNat_prod_factorial_prime p s f
+  have hsumL : ∑ i ∈ s, (Nat.digits p (f i)).sum +
+      (p - 1) * ∑ i ∈ s, padicValNat p (f i).factorial =
+      ∑ i ∈ s, f i := by
+    rw [Finset.mul_sum, ← Finset.sum_add_distrib]
+    exact Finset.sum_congr rfl fun i _ =>
+      digitSum_add_sub_one_mul_padicValNat_factorial p (f i)
+  have htotL :=
+    digitSum_add_sub_one_mul_padicValNat_factorial p (∑ i ∈ s, f i)
+  have hkey : (p - 1) * padicValNat p ((∑ i ∈ s, f i).factorial) =
+      (p - 1) * ∑ i ∈ s, padicValNat p (f i).factorial +
+        (p - 1) * padicValNat p (Nat.multinomial s f) := by
+    rw [← hνmul, hprodν, Nat.mul_add]
+  exact digitSum_cancel_aux hsumL htotL hkey
+
+/-- **Kummer's criterion for multinomial coefficients, base `p`.**  A
+multinomial coefficient is prime to `p` exactly when the base-`p` digit
+sums of its parts are additive:
+`¬ p ∣ multinomial s f ↔ ∑_{i∈s} S_p(f i) = S_p(∑_{i∈s} f i)` — the parts
+add without carrying in base `p`. -/
+theorem prime_not_dvd_multinomial_iff_digitSum {ι : Type*} [DecidableEq ι]
+    (p : ℕ) [hp : Fact p.Prime] (s : Finset ι) (f : ι → ℕ) :
+    ¬ p ∣ Nat.multinomial s f ↔
+      ∑ i ∈ s, (Nat.digits p (f i)).sum =
+        (Nat.digits p (∑ i ∈ s, f i)).sum := by
+  have hmultne : Nat.multinomial s f ≠ 0 := (Nat.multinomial_pos s f).ne'
+  have hid := sum_digitSum_eq_sub_one_mul_padicValNat_multinomial p s f
+  have hq : p - 1 ≠ 0 := by
+    have := hp.out.two_le
+    omega
+  rw [dvd_iff_padicValNat_ne_zero (p := p) hmultne, not_ne_iff]
+  exact (digitSum_eq_iff_aux hq hid).symm
 
 /-- **Kummer's criterion for multinomial coefficients.**  A multinomial
 coefficient is odd exactly when the binary weights of its parts are
 additive: `Odd (multinomial s f) ↔ ∑_{i∈s} wt(f i) = wt(∑_{i∈s} f i)` —
-the parts partition the binary digits of the sum without carries. -/
+the parts partition the binary digits of the sum without carries.  This
+is `prime_not_dvd_multinomial_iff_digitSum` at `p = 2`. -/
 theorem odd_multinomial_iff_binaryWeight {ι : Type*} [DecidableEq ι]
     (s : Finset ι) (f : ι → ℕ) :
     Odd (Nat.multinomial s f) ↔
       ∑ i ∈ s, binaryWeight (f i) = binaryWeight (∑ i ∈ s, f i) := by
   haveI : Fact (Nat.Prime 2) := ⟨Nat.prime_two⟩
-  have hmultne : Nat.multinomial s f ≠ 0 := (Nat.multinomial_pos s f).ne'
-  have hprodne : (∏ i ∈ s, (f i).factorial) ≠ 0 :=
-    Finset.prod_ne_zero_iff.mpr fun i _ => Nat.factorial_ne_zero _
-  have hspec := Nat.multinomial_spec s f
-  have hνmul : padicValNat 2 (∏ i ∈ s, (f i).factorial) +
-      padicValNat 2 (Nat.multinomial s f) =
-      padicValNat 2 ((∑ i ∈ s, f i).factorial) := by
-    rw [← padicValNat.mul hprodne hmultne, hspec]
-  have hprodν := padicValNat_prod_factorial s f
-  have hsumL : ∑ i ∈ s, binaryWeight (f i) +
-      ∑ i ∈ s, padicValNat 2 (f i).factorial = ∑ i ∈ s, f i := by
-    rw [← Finset.sum_add_distrib]
-    exact Finset.sum_congr rfl fun i _ =>
-      binaryWeight_add_padicValNat_factorial (f i)
-  have htotL := binaryWeight_add_padicValNat_factorial (∑ i ∈ s, f i)
-  have hodd : Odd (Nat.multinomial s f) ↔
-      padicValNat 2 (Nat.multinomial s f) = 0 := by
-    constructor
-    · intro h
-      refine padicValNat.eq_zero_of_not_dvd ?_
-      rw [Nat.odd_iff] at h
-      omega
-    · intro h
-      rw [Nat.odd_iff]
-      by_contra hcon
-      have h2 : 2 ∣ Nat.multinomial s f := by omega
-      have := (padicValNat_dvd_iff_le_of_ne_one (p := 2) (by norm_num)
-        hmultne).mp (by rw [pow_one]; exact h2)
-      omega
-  rw [hodd]
-  omega
+  have hbin : ∀ m : ℕ, binaryWeight m = (Nat.digits 2 m).sum :=
+    fun _ => rfl
+  simp only [hbin]
+  rw [← prime_not_dvd_multinomial_iff_digitSum 2 s f, Nat.odd_iff,
+    Nat.two_dvd_ne_zero]
+
+/-! ## The multinomial support count -/
+
+/-- A point of `Finset.finsuppAntidiag s n` vanishes off `s`: if `a ∉ s`
+then every such `g` has `g a = 0`.  Extracted from the induction step of
+`card_filter_odd_multinomial`, where the fact was derived inline. -/
+private theorem apply_eq_zero_of_mem_finsuppAntidiag {ι : Type*}
+    [DecidableEq ι] {s : Finset ι} {a : ι} (ha : a ∉ s) {n : ℕ}
+    {g : ι →₀ ℕ} (hg : g ∈ Finset.finsuppAntidiag s n) : g a = 0 := by
+  by_contra hne
+  exact ha ((Finset.mem_finsuppAntidiag.mp hg).2
+    (Finsupp.mem_support_iff.mpr hne))
 
 /-- **Multinomial support count**: the odd coefficients in the `n`-th
 slice of the Pascal pyramid on the index set `s` number exactly
@@ -134,10 +231,6 @@ theorem card_filter_odd_multinomial {ι : Type*} [DecidableEq ι]
           obtain ⟨m, hm, g, rfl, hg⟩ :=
             (Finset.mem_finsuppAntidiag_insert ha n).mp hFmem
           have hmsum := Finset.mem_antidiagonal.mp hm
-          have hga : g a = 0 := by
-            have := (Finset.mem_finsuppAntidiag.mp hg).2
-            by_contra hne
-            exact ha (this (Finsupp.mem_support_iff.mpr hne))
           have hFa : (Finsupp.update g a m.1) a = m.1 := by
             simp
           have hFs : ∀ i ∈ s, (Finsupp.update g a m.1) i = g i := by
@@ -162,10 +255,6 @@ theorem card_filter_odd_multinomial {ι : Type*} [DecidableEq ι]
           have hkn : k ≤ n := by
             have := Finset.mem_range.mp hkmem.1
             omega
-          have hga : g a = 0 := by
-            have := (Finset.mem_finsuppAntidiag.mp hg).2
-            by_contra hne
-            exact ha (this (Finsupp.mem_support_iff.mpr hne))
           have hFa : (Finsupp.update g a k) a = k := by
             simp
           have hFs : ∀ i ∈ s, (Finsupp.update g a k) i = g i := by
@@ -195,12 +284,9 @@ theorem card_filter_odd_multinomial {ι : Type*} [DecidableEq ι]
           rw [Finset.card_image_of_injOn, ih]
           intro g₁ h₁ g₂ h₂ h
           have hga : ∀ g ∈ (Finset.finsuppAntidiag s (n - k)).filter
-              (fun g : ι →₀ ℕ => Odd (Nat.multinomial s ⇑g)), g a = 0 := by
-            intro g hgm
-            have := (Finset.mem_finsuppAntidiag.mp
-              (Finset.mem_filter.mp hgm).1).2
-            by_contra hne
-            exact ha (this (Finsupp.mem_support_iff.mpr hne))
+              (fun g : ι →₀ ℕ => Odd (Nat.multinomial s ⇑g)), g a = 0 :=
+            fun g hgm => apply_eq_zero_of_mem_finsuppAntidiag ha
+              (Finset.mem_filter.mp hgm).1
           ext i
           by_cases hia : i = a
           · rw [hia, hga g₁ h₁, hga g₂ h₂]

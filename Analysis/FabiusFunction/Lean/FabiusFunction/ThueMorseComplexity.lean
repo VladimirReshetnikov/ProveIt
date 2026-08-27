@@ -7,18 +7,27 @@ import Mathlib.Data.Set.Card
 # Linear factor complexity of the Thue–Morse word
 
 The number `p(ℓ)` of distinct length-`ℓ` factors of the Thue–Morse word
-satisfies `ℓ + 1 ≤ p(ℓ) < 8ℓ` — the atlas's elementary linear bound.
-This module proves both halves.
+satisfies `ℓ + 1 ≤ p(ℓ) ≤ 6ℓ - 4` — the atlas's elementary linear bound,
+here in a sharpened form.  This module proves both halves.
 
 * `thueMorseWindow` / `thueMorseFactorSet` / `thueMorseComplexity` — the
   window at position `i`, the set of factors of length `ℓ`, and its
   (finite) cardinality.
-* `card_image_thueMorseWindow_le` — **upper bound**: any collection of
-  windows of length `ℓ ≤ 2^k` contains at most `4·2^k` distinct ones,
-  because a window is determined by its offset in an aligned block and
-  the two adjacent block bits (`thueMorseWindow_eq_reconstruct`);
-  with `2^k < 2ℓ` minimal this gives `p(ℓ) < 8ℓ`
-  (`thueMorseComplexity_lt`).
+* `thueMorseWindow_eq_reconstruct` — a window of length `ℓ ≤ 2^k` is
+  determined by its offset `i % 2^k` in the aligned level-`k` block
+  together with the two adjacent block bits, and the *second* block bit
+  is consulted only when `i % 2^k + j ≥ 2^k`.
+* `card_image_thueMorseWindow_le'` — **sharpened upper bound**: an
+  offset with `i % 2^k + ℓ ≤ 2^k` keeps the whole window inside one
+  block, so it needs only one block bit (`2` windows per offset); only
+  the `ℓ - 1` offsets in `[2^k - ℓ + 1, 2^k)` straddle a boundary and
+  need both bits (`4` windows per offset).  Splitting the image
+  accordingly gives at most `2·2^k + 2·(ℓ - 1)` distinct windows, hence
+  `p(ℓ) ≤ 2·2^k + 2·(ℓ - 1)` (`thueMorseComplexity_le'`) and, with
+  `2^k < 2ℓ` minimal, `p(ℓ) ≤ 6ℓ - 4` (`thueMorseComplexity_lt'`).
+* `card_image_thueMorseWindow_le` / `thueMorseComplexity_le` /
+  `thueMorseComplexity_lt` — the earlier, weaker bounds `4·2^k` and
+  `p(ℓ) < 8ℓ`, kept as corollaries.
 * `thueMorseComplexity_lt_succ` — **strict growth**, the Morse–Hedlund
   argument: if some length had no more factors than the previous one,
   every factor would extend uniquely to the right; the finitely many
@@ -79,42 +88,126 @@ theorem thueMorseWindow_eq_reconstruct (k ℓ : ℕ) (hℓ : ℓ ≤ 2 ^ k)
       omega
     rw [hi, thueMorseBit_block_concat k _ _ hlt]
 
+/-- **The sharpened window count**: at most `2·2^k + 2·(ℓ - 1)` distinct
+windows of length `ℓ ≤ 2^k`, over any finite set of starting positions.
+
+The offsets `r = i % 2^k` split in two.  If `r < 2^k - (ℓ - 1)` the whole
+window lies inside the aligned level-`k` block, so it is a function of
+the pair `(r, t(i / 2^k))` alone — at most `2·(2^k - (ℓ - 1))` windows.
+Otherwise `r` is one of the `ℓ - 1` offsets in `[2^k - ℓ + 1, 2^k)` and
+the window is a function of the triple `(r, t(i / 2^k), t(i / 2^k + 1))`
+— at most `4·(ℓ - 1)` windows.  The two counts add to
+`2·2^k + 2·(ℓ - 1)`. -/
+theorem card_image_thueMorseWindow_le' (k ℓ : ℕ) (hℓ : ℓ ≤ 2 ^ k)
+    (s : Finset ℕ) :
+    (s.image (thueMorseWindow ℓ)).card ≤ 2 * 2 ^ k + 2 * (ℓ - 1) := by
+  classical
+  have hpow : 0 < 2 ^ k := Nat.two_pow_pos k
+  rcases Nat.eq_zero_or_pos ℓ with hℓ0 | hℓ0
+  · -- length `0`: the empty window is the only one
+    subst hℓ0
+    refine le_trans (Finset.card_le_one.mpr ?_) ?_
+    · intro a _ b _
+      funext j
+      exact absurd j.isLt (Nat.not_lt_zero _)
+    · omega
+  · obtain ⟨d, rfl⟩ : ∃ d, ℓ = d + 1 := ⟨ℓ - 1, by omega⟩
+    -- windows that stay inside one block: offset plus one block bit
+    set recon₁ : ℕ × ℕ → (Fin (d + 1) → ℕ) := fun p =>
+      fun j : Fin (d + 1) =>
+        (p.2 + thueMorseBit (p.1 + j)) % 2 with hrecon₁
+    -- windows that straddle a boundary: offset plus both block bits
+    set recon₂ : ℕ × ℕ × ℕ → (Fin (d + 1) → ℕ) := fun p =>
+      fun j : Fin (d + 1) =>
+        if p.1 + j < 2 ^ k
+        then (p.2.1 + thueMorseBit (p.1 + j)) % 2
+        else (p.2.2 + thueMorseBit (p.1 + j - 2 ^ k)) % 2 with hrecon₂
+    have hsub : s.image (thueMorseWindow (d + 1)) ⊆
+        ((range (2 ^ k - d)) ×ˢ (range 2)).image recon₁ ∪
+          ((Finset.Ico (2 ^ k - d) (2 ^ k)) ×ˢ (range 2) ×ˢ
+            (range 2)).image recon₂ := by
+      intro w hw
+      obtain ⟨i, _, rfl⟩ := Finset.mem_image.mp hw
+      have hmod : i % 2 ^ k < 2 ^ k := Nat.mod_lt _ hpow
+      have ha : thueMorseBit (i / 2 ^ k) < 2 := by
+        have := thueMorseBit_le_one (i / 2 ^ k)
+        omega
+      have hb : thueMorseBit (i / 2 ^ k + 1) < 2 := by
+        have := thueMorseBit_le_one (i / 2 ^ k + 1)
+        omega
+      by_cases hcase : i % 2 ^ k < 2 ^ k - d
+      · -- the whole window sits inside one level-`k` block
+        refine Finset.mem_union_left _ (Finset.mem_image.mpr
+          ⟨(i % 2 ^ k, thueMorseBit (i / 2 ^ k)), ?_, ?_⟩)
+        · refine Finset.mem_product.mpr ⟨?_, ?_⟩
+          · show i % 2 ^ k ∈ range (2 ^ k - d)
+            exact Finset.mem_range.mpr hcase
+          · show thueMorseBit (i / 2 ^ k) ∈ range 2
+            exact Finset.mem_range.mpr ha
+        · have hval : thueMorseWindow (d + 1) i =
+              fun j : Fin (d + 1) =>
+                (thueMorseBit (i / 2 ^ k) +
+                  thueMorseBit (i % 2 ^ k + j)) % 2 := by
+            funext j
+            have hj : (j : ℕ) < d + 1 := j.isLt
+            have hlt : i % 2 ^ k + (j : ℕ) < 2 ^ k := by omega
+            have hdm := Nat.div_add_mod i (2 ^ k)
+            have hi : i + (j : ℕ) =
+                (i / 2 ^ k) * 2 ^ k + (i % 2 ^ k + (j : ℕ)) := by
+              have h : (i / 2 ^ k) * 2 ^ k = 2 ^ k * (i / 2 ^ k) := by
+                ring
+              omega
+            show thueMorseBit (i + (j : ℕ)) =
+              (thueMorseBit (i / 2 ^ k) +
+                thueMorseBit (i % 2 ^ k + (j : ℕ))) % 2
+            rw [hi, thueMorseBit_block_concat k _ _ hlt]
+          exact hval.symm
+      · -- the window straddles a block boundary
+        refine Finset.mem_union_right _ (Finset.mem_image.mpr
+          ⟨(i % 2 ^ k, thueMorseBit (i / 2 ^ k),
+            thueMorseBit (i / 2 ^ k + 1)), ?_, ?_⟩)
+        · refine Finset.mem_product.mpr ⟨?_, Finset.mem_product.mpr ⟨?_, ?_⟩⟩
+          · show i % 2 ^ k ∈ Finset.Ico (2 ^ k - d) (2 ^ k)
+            exact Finset.mem_Ico.mpr ⟨by omega, hmod⟩
+          · show thueMorseBit (i / 2 ^ k) ∈ range 2
+            exact Finset.mem_range.mpr ha
+          · show thueMorseBit (i / 2 ^ k + 1) ∈ range 2
+            exact Finset.mem_range.mpr hb
+        · exact (thueMorseWindow_eq_reconstruct k (d + 1) hℓ i).symm
+    have hcardA :
+        (((range (2 ^ k - d)) ×ˢ (range 2)).image recon₁).card
+          ≤ (2 ^ k - d) * 2 := by
+      calc (((range (2 ^ k - d)) ×ˢ (range 2)).image recon₁).card
+          ≤ ((range (2 ^ k - d)) ×ˢ (range 2)).card := Finset.card_image_le
+        _ = (2 ^ k - d) * 2 := by
+            rw [Finset.card_product, Finset.card_range, Finset.card_range]
+    have hIco : (Finset.Ico (2 ^ k - d) (2 ^ k)).card = d := by
+      rw [Nat.card_Ico]
+      omega
+    have hcardB :
+        (((Finset.Ico (2 ^ k - d) (2 ^ k)) ×ˢ (range 2) ×ˢ
+          (range 2)).image recon₂).card ≤ 4 * d := by
+      calc (((Finset.Ico (2 ^ k - d) (2 ^ k)) ×ˢ (range 2) ×ˢ
+              (range 2)).image recon₂).card
+          ≤ ((Finset.Ico (2 ^ k - d) (2 ^ k)) ×ˢ (range 2) ×ˢ
+              (range 2)).card := Finset.card_image_le
+        _ = 4 * d := by
+            rw [Finset.card_product, Finset.card_product,
+              Finset.card_range, hIco]
+            ring
+    refine le_trans (Finset.card_le_card hsub)
+      (le_trans (Finset.card_union_le _ _)
+        (le_trans (Nat.add_le_add hcardA hcardB) ?_))
+    omega
+
 /-- **At most `4·2^k` distinct windows** of length `ℓ ≤ 2^k`, over any
-finite set of starting positions. -/
+finite set of starting positions.  A weaker corollary of
+`card_image_thueMorseWindow_le'`, kept for compatibility. -/
 theorem card_image_thueMorseWindow_le (k ℓ : ℕ) (hℓ : ℓ ≤ 2 ^ k)
     (s : Finset ℕ) :
     (s.image (thueMorseWindow ℓ)).card ≤ 4 * 2 ^ k := by
-  classical
-  set recon : ℕ × ℕ × ℕ → (Fin ℓ → ℕ) := fun p => fun j : Fin ℓ =>
-    if p.1 + j < 2 ^ k
-    then (p.2.1 + thueMorseBit (p.1 + j)) % 2
-    else (p.2.2 + thueMorseBit (p.1 + j - 2 ^ k)) % 2 with hrecon
-  have hsub : s.image (thueMorseWindow ℓ) ⊆
-      ((range (2 ^ k)) ×ˢ (range 2) ×ˢ (range 2)).image recon := by
-    intro w hw
-    obtain ⟨i, _, rfl⟩ := Finset.mem_image.mp hw
-    refine Finset.mem_image.mpr
-      ⟨(i % 2 ^ k, thueMorseBit (i / 2 ^ k),
-        thueMorseBit (i / 2 ^ k + 1)), ?_, ?_⟩
-    · refine Finset.mem_product.mpr ⟨?_, Finset.mem_product.mpr ⟨?_, ?_⟩⟩
-      · show i % 2 ^ k ∈ range (2 ^ k)
-        exact Finset.mem_range.mpr (Nat.mod_lt _ (Nat.two_pow_pos k))
-      · show thueMorseBit (i / 2 ^ k) ∈ range 2
-        exact Finset.mem_range.mpr
-          (by have := thueMorseBit_le_one (i / 2 ^ k); omega)
-      · show thueMorseBit (i / 2 ^ k + 1) ∈ range 2
-        exact Finset.mem_range.mpr
-          (by have := thueMorseBit_le_one (i / 2 ^ k + 1); omega)
-    · exact (thueMorseWindow_eq_reconstruct k ℓ hℓ i).symm
-  calc (s.image (thueMorseWindow ℓ)).card
-      ≤ (((range (2 ^ k)) ×ˢ (range 2) ×ˢ (range 2)).image recon).card :=
-        Finset.card_le_card hsub
-    _ ≤ ((range (2 ^ k)) ×ˢ (range 2) ×ˢ (range 2)).card :=
-        Finset.card_image_le
-    _ = 4 * 2 ^ k := by
-        rw [Finset.card_product, Finset.card_product, Finset.card_range,
-          Finset.card_range]
-        ring
+  have h := card_image_thueMorseWindow_le' k ℓ hℓ s
+  omega
 
 /-- Every factor occurs among the first `15·2^k + 1` windows, so the
 factor set is that finite image. -/
@@ -140,34 +233,57 @@ theorem thueMorseFactorSet_finite (ℓ : ℕ) :
   rw [thueMorseFactorSet_eq_image ℓ ℓ (Nat.lt_two_pow_self).le]
   exact Finset.finite_toSet _
 
-/-- Upper bound at every covering level: `p(ℓ) ≤ 4·2^k` for `ℓ ≤ 2^k`. -/
-theorem thueMorseComplexity_le (k ℓ : ℕ) (hℓ : ℓ ≤ 2 ^ k) :
-    thueMorseComplexity ℓ ≤ 4 * 2 ^ k := by
+/-- **Sharpened upper bound at every covering level**:
+`p(ℓ) ≤ 2·2^k + 2·(ℓ - 1)` for `ℓ ≤ 2^k`. -/
+theorem thueMorseComplexity_le' (k ℓ : ℕ) (hℓ : ℓ ≤ 2 ^ k) :
+    thueMorseComplexity ℓ ≤ 2 * 2 ^ k + 2 * (ℓ - 1) := by
   rw [thueMorseComplexity, thueMorseFactorSet_eq_image k ℓ hℓ,
     Set.ncard_coe_finset]
-  exact card_image_thueMorseWindow_le k ℓ hℓ _
+  exact card_image_thueMorseWindow_le' k ℓ hℓ _
 
-/-- **The linear upper bound**: `p(ℓ) < 8ℓ` for `ℓ ≥ 1`. -/
+/-- Upper bound at every covering level: `p(ℓ) ≤ 4·2^k` for `ℓ ≤ 2^k`.
+A weaker corollary of `thueMorseComplexity_le'`. -/
+theorem thueMorseComplexity_le (k ℓ : ℕ) (hℓ : ℓ ≤ 2 ^ k) :
+    thueMorseComplexity ℓ ≤ 4 * 2 ^ k := by
+  have h := thueMorseComplexity_le' k ℓ hℓ
+  omega
+
+/-- The minimal covering level is efficient: `2 ^ ⌈log₂ ℓ⌉ < 2ℓ` for
+`ℓ ≥ 1`. -/
+private theorem two_pow_clog_lt (ℓ : ℕ) (hℓ : 1 ≤ ℓ) :
+    2 ^ Nat.clog 2 ℓ < 2 * ℓ := by
+  rcases Nat.lt_or_ge ℓ 2 with hℓ2 | hℓ2
+  · have hℓ1 : ℓ = 1 := by omega
+    subst hℓ1
+    simp [Nat.clog]
+  · have hk : 0 < Nat.clog 2 ℓ :=
+      Nat.clog_pos (by omega) (by omega : 1 < ℓ)
+    have hmin : 2 ^ (Nat.clog 2 ℓ - 1) < ℓ :=
+      Nat.pow_pred_clog_lt_self (by omega : 1 < 2) (by omega : 1 < ℓ)
+    have hsplit : 2 ^ Nat.clog 2 ℓ = 2 * 2 ^ (Nat.clog 2 ℓ - 1) := by
+      rw [← pow_succ']
+      congr 1
+      omega
+    omega
+
+/-- **The sharpened linear upper bound**: `p(ℓ) ≤ 6ℓ - 4` for `ℓ ≥ 1`.
+
+Take `k = ⌈log₂ ℓ⌉`, so that `ℓ ≤ 2^k ≤ 2ℓ - 1`; then
+`thueMorseComplexity_le'` gives
+`p(ℓ) ≤ 2(2ℓ - 1) + 2(ℓ - 1) = 6ℓ - 4`. -/
+theorem thueMorseComplexity_lt' (ℓ : ℕ) (hℓ : 1 ≤ ℓ) :
+    thueMorseComplexity ℓ ≤ 6 * ℓ - 4 := by
+  have h1 : ℓ ≤ 2 ^ Nat.clog 2 ℓ := Nat.le_pow_clog (by omega) ℓ
+  have h2 : 2 ^ Nat.clog 2 ℓ < 2 * ℓ := two_pow_clog_lt ℓ hℓ
+  have h3 := thueMorseComplexity_le' (Nat.clog 2 ℓ) ℓ h1
+  omega
+
+/-- **The linear upper bound**: `p(ℓ) < 8ℓ` for `ℓ ≥ 1`.
+A weaker corollary of `thueMorseComplexity_lt'`. -/
 theorem thueMorseComplexity_lt (ℓ : ℕ) (hℓ : 1 ≤ ℓ) :
     thueMorseComplexity ℓ < 8 * ℓ := by
-  have h1 : ℓ ≤ 2 ^ Nat.clog 2 ℓ := Nat.le_pow_clog (by omega) ℓ
-  have h2 : 2 ^ Nat.clog 2 ℓ < 2 * ℓ := by
-    rcases Nat.lt_or_ge ℓ 2 with hℓ2 | hℓ2
-    · have hℓ1 : ℓ = 1 := by omega
-      subst hℓ1
-      simp [Nat.clog]
-    · have hk : 0 < Nat.clog 2 ℓ :=
-        Nat.clog_pos (by omega) (by omega : 1 < ℓ)
-      have hmin : 2 ^ (Nat.clog 2 ℓ - 1) < ℓ :=
-        Nat.pow_pred_clog_lt_self (by omega : 1 < 2) (by omega : 1 < ℓ)
-      have hsplit : 2 ^ Nat.clog 2 ℓ = 2 * 2 ^ (Nat.clog 2 ℓ - 1) := by
-        rw [← pow_succ']
-        congr 1
-        omega
-      omega
-  calc thueMorseComplexity ℓ ≤ 4 * 2 ^ Nat.clog 2 ℓ :=
-        thueMorseComplexity_le _ ℓ h1
-    _ < 8 * ℓ := by omega
+  have h := thueMorseComplexity_lt' ℓ hℓ
+  omega
 
 /-! ### Strict growth and the lower bound -/
 

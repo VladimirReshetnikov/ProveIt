@@ -20,6 +20,20 @@ Both follow from the **self-similarity**
 (`lacunaryExpProduct_eq_prod_mul`), positivity, monotonicity, and the
 elementary sandwich `x/2 ≤ 1 - e^(-x) ≤ x` on `[0,1]`
 (`half_le_one_sub_exp_neg`, `one_sub_exp_neg_le`), all reusable.
+
+This module is the common ancestor of the whole lacunary-exponential
+layer (`ThueMorseInfiniteProduct`, `ThueMorseDiscSeries`,
+`ThueMorseMellin`, `ThueMorseEntireContinuation`,
+`ThueMorseGDirichlet`), so it also hosts the small facts that layer
+would otherwise keep re-deriving inline:
+
+* `exp_neg_nat_mul` — `e^(-t)^n = e^(-n·t)` — together with its
+  dyadic specialisation `exp_neg_two_pow_mul`, `e^(-t)^(2^j) =
+  e^(-2^j·t)`, the shape in which the lacunary factors occur;
+* `abs_thueMorseSign_real` — `|ε(n)| = 1` over `ℝ`;
+* `multipliable_one_sub_exp_neg_two_pow` — convergence of the lacunary
+  product itself, the `Multipliable` companion of
+  `summable_log_one_sub_exp`.
 -/
 
 set_option autoImplicit false
@@ -27,6 +41,34 @@ set_option autoImplicit false
 open Finset Real
 
 namespace Fabius
+
+/-- **The exponential power rule** `e^(-t)^n = e^(-n·t)`, the single
+rewrite on which every passage between the power series `∑ ε(n)xⁿ` at
+`x = e^(-t)` and the exponential series `∑ ε(n)e^(-nt)` rests. -/
+theorem exp_neg_nat_mul (t : ℝ) (n : ℕ) :
+    Real.exp (-t) ^ n = Real.exp (-((n : ℝ) * t)) := by
+  rw [← Real.exp_nat_mul]
+  congr 1
+  ring
+
+/-- The dyadic specialisation of `exp_neg_nat_mul`:
+`e^(-t)^(2^j) = e^(-2^j·t)`, with the `2^j` on the right read in `ℝ`
+— the shape of the factors of the lacunary product. -/
+theorem exp_neg_two_pow_mul (t : ℝ) (j : ℕ) :
+    Real.exp (-t) ^ (2 ^ j : ℕ) = Real.exp (-((2 : ℝ) ^ j * t)) := by
+  rw [← Real.exp_nat_mul]
+  congr 1
+  push_cast
+  ring
+
+/-- The Thue–Morse sign has absolute value one over `ℝ`. -/
+theorem abs_thueMorseSign_real (n : ℕ) : |(thueMorseSign n : ℝ)| = 1 := by
+  rw [thueMorseSign]
+  rcases Nat.even_or_odd (binaryWeight n) with h | h
+  · rw [h.neg_one_pow]
+    norm_num
+  · rw [h.neg_one_pow]
+    norm_num
 
 /-- `1 - e^(-x) ≤ x` for `x ≥ 0`. -/
 theorem one_sub_exp_neg_le (x : ℝ) : 1 - Real.exp (-x) ≤ x := by
@@ -72,11 +114,8 @@ theorem summable_exp_neg_two_pow (t : ℝ) (ht : 0 < t) :
     simpa [pow_succ, mul_comm] using h.mul_left (Real.exp (-t))
   refine Summable.of_nonneg_of_le (fun j => (Real.exp_pos _).le)
     (fun j => ?_) hgeom
-  have hexp : Real.exp (-(2 ^ j * t)) = Real.exp (-t) ^ (2 ^ j : ℕ) := by
-    rw [← Real.exp_nat_mul]
-    congr 1
-    push_cast
-    ring
+  have hexp : Real.exp (-(2 ^ j * t)) = Real.exp (-t) ^ (2 ^ j : ℕ) :=
+    (exp_neg_two_pow_mul t j).symm
   rw [hexp]
   exact pow_le_pow_of_le_one hr0 hr1.le
     (by have := Nat.lt_two_pow_self (n := j); omega)
@@ -85,6 +124,17 @@ theorem summable_exp_neg_two_pow (t : ℝ) (ht : 0 < t) :
 theorem summable_log_one_sub_exp (t : ℝ) (ht : 0 < t) :
     Summable (fun j : ℕ => Real.log (1 - Real.exp (-(2 ^ j * t)))) := by
   have h := Real.summable_log_one_add_of_summable
+    (summable_exp_neg_two_pow t ht).neg
+  refine h.congr fun j => ?_
+  rw [← sub_eq_add_neg]
+
+/-- **Convergence of the lacunary product** for `t > 0`: the factors
+are `1 + f j` with `f` summable.  This is the `Multipliable` companion
+of `summable_log_one_sub_exp`, shared by every module that needs the
+partial products `∏_{j<m}(1-e^(-2^j·t))` to converge. -/
+theorem multipliable_one_sub_exp_neg_two_pow (t : ℝ) (ht : 0 < t) :
+    Multipliable (fun j : ℕ => 1 - Real.exp (-(2 ^ j * t))) := by
+  have h := Real.multipliable_one_add_of_summable
     (summable_exp_neg_two_pow t ht).neg
   refine h.congr fun j => ?_
   rw [← sub_eq_add_neg]

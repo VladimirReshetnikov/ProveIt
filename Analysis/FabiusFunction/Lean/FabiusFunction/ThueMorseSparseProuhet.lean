@@ -1,5 +1,7 @@
 import FabiusFunction.ThueMorseBooleanCube
+import Mathlib.Algebra.BigOperators.Group.Finset.Powerset
 import Mathlib.Algebra.Polynomial.Taylor
+import Mathlib.Data.Nat.BitIndices
 
 /-!
 # Sparse Prouhet identities: signed powerset sums annihilate polynomials
@@ -27,10 +29,15 @@ strictly more general than the atlas, whose steps are the powers of two.
   cancellation below `w(n)` and the sharp moment
   `(-1)^{w(n)} w(n)! 2^(β(n)) h^(w(n))`, where `β(n)` is the sum of the
   one-bit positions.
+* `bitSupport_eq_toFinset_bitIndices` — the bridge identifying `bitSupport`
+  with Mathlib's `Nat.bitIndices`; the whole bit dictionary above is a
+  corollary of it, so no bit recursion is redone here.
 
 The induction is the atlas's proof made exact: inserting one index into
 `S` replaces `p` by `p - taylor (w a) p`, whose degree drops; Mathlib's
-`taylor` API supplies the degree bookkeeping.
+`taylor` API supplies the degree bookkeeping, and
+`Finset.sum_powerset_insert` supplies the split of the powerset of
+`insert a S` into the two halves that the induction pairs.
 -/
 
 set_option autoImplicit false
@@ -81,23 +88,7 @@ theorem sum_powerset_neg_one_pow_eval {R : Type*} [CommRing R]
   | insert a S ha ih =>
       intro p hdeg x
       -- Split the powerset by membership of `a` and pair the halves.
-      rw [Finset.powerset_insert, Finset.sum_union
-          (by
-            rw [Finset.disjoint_left]
-            intro T hT hT'
-            rcases Finset.mem_image.mp hT' with ⟨U, hU, rfl⟩
-            exact absurd ((Finset.mem_powerset.mp hT)
-              (Finset.mem_insert_self a U)) ha),
-        Finset.sum_image
-          (by
-            intro T hT U hU hTU
-            have hmT : a ∉ T := fun h =>
-              ha (Finset.mem_powerset.mp hT h)
-            have hmU : a ∉ U := fun h =>
-              ha (Finset.mem_powerset.mp hU h)
-            have := congrArg (Finset.erase · a) hTU
-            simpa [Finset.erase_insert hmT, Finset.erase_insert hmU]
-              using this)]
+      rw [Finset.sum_powerset_insert ha]
       -- The paired sum is the signed sum for `p - taylor (w a) p`.
       have hpair : ∀ T ∈ S.powerset,
           (-1 : R) ^ T.card * p.eval (x + ∑ j ∈ T, w j) +
@@ -147,23 +138,7 @@ theorem sum_powerset_neg_one_pow_pow_card {R : Type*} [CommRing R]
       intro x
       set s := S.card with hs
       -- Pair the two halves of the powerset as in the annihilation proof.
-      rw [Finset.powerset_insert, Finset.sum_union
-          (by
-            rw [Finset.disjoint_left]
-            intro T hT hT'
-            rcases Finset.mem_image.mp hT' with ⟨U, hU, rfl⟩
-            exact absurd ((Finset.mem_powerset.mp hT)
-              (Finset.mem_insert_self a U)) ha),
-        Finset.sum_image
-          (by
-            intro T hT U hU hTU
-            have hmT : a ∉ T := fun h =>
-              ha (Finset.mem_powerset.mp hT h)
-            have hmU : a ∉ U := fun h =>
-              ha (Finset.mem_powerset.mp hU h)
-            have := congrArg (Finset.erase · a) hTU
-            simpa [Finset.erase_insert hmT, Finset.erase_insert hmU]
-              using this)]
+      rw [Finset.sum_powerset_insert ha]
       have hcard : (insert a S).card = s + 1 :=
         Finset.card_insert_of_notMem ha
       -- Each pair contributes the difference `y^(s+1) - (y + c)^(s+1)`.
@@ -305,88 +280,51 @@ theorem sum_thueMorseSign_mul_affine_pow_card {R : Type*} [CommRing R]
 def bitSupport (n : ℕ) : Finset ℕ :=
   (range (n + 1)).filter (fun j => n.testBit j)
 
-/-- Membership in the bit support is exactly the bit test. -/
+/-- Membership in the bit support is exactly the bit test.  The window
+`range (n+1)` is wide enough because a set bit at position `j` forces
+`2^j ≤ n` (Mathlib's `Nat.two_pow_le_of_mem_bitIndices`). -/
 theorem mem_bitSupport {n j : ℕ} :
     j ∈ bitSupport n ↔ n.testBit j = true := by
   rw [bitSupport, Finset.mem_filter, Finset.mem_range]
-  constructor
-  · exact fun h => h.2
-  · intro h
-    refine ⟨?_, h⟩
-    by_contra hj
-    push_neg at hj
-    have hlt : n < 2 ^ j :=
-      lt_of_le_of_lt (by omega : n ≤ j) Nat.lt_two_pow_self
-    rw [Nat.testBit_eq_false_of_lt hlt] at h
-    exact Bool.false_ne_true h
+  refine ⟨fun h => h.2, fun h => ⟨?_, h⟩⟩
+  have h2 : 2 ^ j ≤ n :=
+    Nat.two_pow_le_of_mem_bitIndices (Nat.mem_bitIndices.mpr h)
+  have hj : j < 2 ^ j := Nat.lt_two_pow_self
+  omega
+
+/-- **Bridge to Mathlib.**  The bit support is the finset of Mathlib's
+`Nat.bitIndices`, the sorted list of one-bit positions.  Every entry of
+the bit dictionary below is read off from this identification. -/
+theorem bitSupport_eq_toFinset_bitIndices (n : ℕ) :
+    bitSupport n = n.bitIndices.toFinset := by
+  ext j
+  simp [mem_bitSupport]
+
+/-- Shifting a list of positions up by one shifts the finset it spans. -/
+private theorem toFinset_map_succ (l : List ℕ) :
+    (l.map (· + 1)).toFinset = l.toFinset.image (· + 1) := by
+  ext j
+  simp
 
 /-- The bit support of an even number: shift every position up. -/
 theorem bitSupport_two_mul (k : ℕ) :
     bitSupport (2 * k) = (bitSupport k).image (· + 1) := by
-  ext j
-  rw [mem_bitSupport, Finset.mem_image]
-  constructor
-  · intro h
-    match j with
-    | 0 =>
-        rw [Nat.testBit_zero] at h
-        simp at h
-    | j + 1 =>
-        rw [Nat.testBit_succ, Nat.mul_div_cancel_left k (by omega)] at h
-        exact ⟨j, mem_bitSupport.mpr h, rfl⟩
-  · rintro ⟨i, hi, rfl⟩
-    rw [Nat.testBit_succ, Nat.mul_div_cancel_left k (by omega)]
-    exact mem_bitSupport.mp hi
+  rw [bitSupport_eq_toFinset_bitIndices, bitSupport_eq_toFinset_bitIndices,
+    Nat.bitIndices_two_mul, toFinset_map_succ]
 
 /-- The bit support of an odd number: position zero plus the shifts. -/
 theorem bitSupport_two_mul_add_one (k : ℕ) :
     bitSupport (2 * k + 1) = insert 0 ((bitSupport k).image (· + 1)) := by
-  ext j
-  rw [mem_bitSupport, Finset.mem_insert, Finset.mem_image]
-  constructor
-  · intro h
-    match j with
-    | 0 => exact Or.inl rfl
-    | j + 1 =>
-        rw [Nat.testBit_succ, show (2 * k + 1) / 2 = k by omega] at h
-        exact Or.inr ⟨j, mem_bitSupport.mpr h, rfl⟩
-  · rintro (rfl | ⟨i, hi, rfl⟩)
-    · rw [Nat.testBit_zero]
-      simp
-    · rw [Nat.testBit_succ, show (2 * k + 1) / 2 = k by omega]
-      exact mem_bitSupport.mp hi
+  rw [bitSupport_eq_toFinset_bitIndices, bitSupport_eq_toFinset_bitIndices,
+    Nat.bitIndices_two_mul_add_one, List.toFinset_cons, toFinset_map_succ]
 
 /-- **Reconstruction.**  The one-bit positions reconstruct the number:
 `∑_{j ∈ bitSupport n} 2^j = n`. -/
 theorem sum_two_pow_bitSupport (n : ℕ) :
     ∑ j ∈ bitSupport n, 2 ^ j = n := by
-  induction n using Nat.strong_induction_on with
-  | _ n ih =>
-      rcases Nat.eq_zero_or_pos n with rfl | hpos
-      · simp [bitSupport]
-      rcases Nat.even_or_odd n with ⟨k, hk⟩ | ⟨k, hk⟩ <;> subst hk
-      · rw [show k + k = 2 * k from (two_mul k).symm, bitSupport_two_mul,
-          Finset.sum_image (by intro a _ b _ h; simpa using h)]
-        have hk' := ih k (by omega)
-        calc ∑ i ∈ bitSupport k, 2 ^ (i + 1)
-            = ∑ i ∈ bitSupport k, 2 * 2 ^ i := by
-              refine Finset.sum_congr rfl fun i _ => ?_
-              rw [pow_succ]
-              ring
-          _ = 2 * k := by rw [← Finset.mul_sum, hk']
-      · rw [bitSupport_two_mul_add_one, Finset.sum_insert (by
-          intro h
-          rcases Finset.mem_image.mp h with ⟨i, _, hi⟩
-          omega),
-          Finset.sum_image (by intro a _ b _ h; simpa using h)]
-        have hk' := ih k (by omega)
-        calc 2 ^ 0 + ∑ i ∈ bitSupport k, 2 ^ (i + 1)
-            = 1 + ∑ i ∈ bitSupport k, 2 * 2 ^ i := by
-              rw [pow_zero]
-              refine congrArg (1 + ·) (Finset.sum_congr rfl fun i _ => ?_)
-              rw [pow_succ]
-              ring
-          _ = 2 * k + 1 := by rw [← Finset.mul_sum, hk']; ring
+  rw [bitSupport_eq_toFinset_bitIndices,
+    List.sum_toFinset _ Nat.bitIndices_nodup,
+    Nat.sum_map_two_pow_bitIndices]
 
 /-- The bit support has `binaryWeight n` elements. -/
 theorem card_bitSupport (n : ℕ) :
