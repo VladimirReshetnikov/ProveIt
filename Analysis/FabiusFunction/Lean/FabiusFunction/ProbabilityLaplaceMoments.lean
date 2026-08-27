@@ -649,7 +649,7 @@ theorem normalizedLaplaceMoment_reflection
     Finset.sum_div]
   apply Finset.sum_congr rfl
   intro j _hj
-  simpa only [mul_div_assoc]
+  simp only [mul_div_assoc]
 
 /-- The normalized means under opposite exponential tilts are complementary:
 `R₁(s) + R₁(-s) = 1`. -/

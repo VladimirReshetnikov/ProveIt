@@ -1,6 +1,7 @@
 import FabiusFunction.DyadicClosedForm
 import FabiusFunction.ThueMorseBooleanCube
 import FabiusFunction.ThueMorseGenerating
+import Mathlib.Algebra.Polynomial.BigOperators
 import Mathlib.Algebra.Ring.GeomSum
 import Mathlib.Algebra.Polynomial.Reverse
 import Mathlib.RingTheory.Polynomial.Cyclotomic.Basic
@@ -18,8 +19,12 @@ statement in the formula atlas.  This module proves its basic algebra:
 * `prod_one_sub_two_pow_eq_ladder` — the **multiplicity ladder**
   `∏_{j<m} (1 - z^(2^j)) = (1-z)^m · ∏_{i<m} (1 + z^(2^i))^(m-1-i)`:
   expanding every factor through the telescope makes the zero at `z = 1`
-  of order exactly `m` visible, and re-proves Prouhet's theorem by pure
-  factorization (`one_sub_X_pow_dvd_thueMorseBlockPolynomial`).
+  of order at least `m` visible, and re-proves Prouhet's theorem by pure
+  factorization (`one_sub_X_pow_dvd_thueMorseBlockPolynomial`).  The matching
+  nondivisibility theorem
+  `one_sub_X_pow_succ_not_dvd_thueMorseBlockPolynomial` proves that the order
+  is exactly `m`: after the forced factor is removed, the geometric cofactor
+  has nonzero value `2^(C(m,2))` at `X = 1`.
 * degree data: `natDegree_thueMorseBlockPolynomial` (`= 2^m - 1`),
   `coeff_thueMorseBlockPolynomial_top`, `leadingCoeff_thueMorseBlockPolynomial`
   (`= (-1)^m`), `thueMorseBlockPolynomial_ne_zero`, resting on the sign
@@ -40,7 +45,8 @@ statement in the formula atlas.  This module proves its basic algebra:
   `∑_{n<2^m} ε(n) · C(n,r)` vanish for all `r < m`
   (`sum_thueMorseSign_mul_choose_eq_zero`) and equal `(-1)^m 2^(C(m,2))` at
   `r = m` (`sum_thueMorseSign_mul_choose_self`) — the Prouhet annihilation
-  in the basis where the sharp value needs no factorial.
+  in the basis where the sharp value needs no factorial.  Evaluating iterated
+  derivatives at one recovers the same moments with the expected `r!` factor.
 
 Everything is exact algebra over an arbitrary commutative ring; no analysis
 and no rational denominators appear anywhere.
@@ -303,7 +309,46 @@ theorem sum_thueMorseSign_mul_choose_self_int (m : ℕ) :
       (-1) ^ m * 2 ^ m.choose 2 := by
   simpa using sum_thueMorseSign_mul_choose_self (R := ℤ) m
 
-/-! ### Geometric-sum factorization -/
+/-! ### Derivatives at one -/
+
+/-- Evaluating the `r`-th derivative of the Thue--Morse block polynomial at
+one gives `r!` times its signed binomial moment. -/
+theorem iterate_derivative_thueMorseBlockPolynomial_eval_one
+    (m r : ℕ) :
+    (Polynomial.derivative^[r] (thueMorseBlockPolynomial m)).eval (1 : ℤ) =
+      (r.factorial : ℤ) *
+        ∑ n ∈ range (2 ^ m),
+          thueMorseSign n * (n.choose r : ℤ) := by
+  unfold thueMorseBlockPolynomial
+  rw [Polynomial.iterate_derivative_sum, Polynomial.eval_finsetSum,
+    Finset.mul_sum]
+  refine Finset.sum_congr rfl fun n _ => ?_
+  rw [← Polynomial.C_mul_X_pow_eq_monomial,
+    Polynomial.iterate_derivative_C_mul,
+    Polynomial.iterate_derivative_X_pow_eq_C_mul]
+  simp only [Polynomial.eval_C_mul, Polynomial.eval_X_pow, one_pow, mul_one]
+  rw [Nat.descFactorial_eq_factorial_mul_choose, Nat.cast_mul]
+  ring
+
+/-- Every derivative below the order of the zero at one vanishes. -/
+theorem iterate_derivative_thueMorseBlockPolynomial_eval_one_of_lt
+    (m r : ℕ) (hr : r < m) :
+    (Polynomial.derivative^[r] (thueMorseBlockPolynomial m)).eval (1 : ℤ) =
+      0 := by
+  rw [iterate_derivative_thueMorseBlockPolynomial_eval_one m r,
+    sum_thueMorseSign_mul_choose_eq_zero_int m r hr, mul_zero]
+
+/-- The first nonzero derivative of the Thue--Morse block polynomial at one
+has the sharp Prouhet value. -/
+theorem iterate_derivative_thueMorseBlockPolynomial_eval_one_self
+    (m : ℕ) :
+    (Polynomial.derivative^[m] (thueMorseBlockPolynomial m)).eval (1 : ℤ) =
+      (-1 : ℤ) ^ m * (m.factorial : ℤ) * (2 : ℤ) ^ m.choose 2 := by
+  rw [iterate_derivative_thueMorseBlockPolynomial_eval_one m m,
+    sum_thueMorseSign_mul_choose_self_int m]
+  ring
+
+/-! ### Geometric-sum factorization and exact multiplicity -/
 
 /-- Geometric form of the ladder: over any commutative ring,
 `∏_{j<r} (1 - z^(2^j)) = (1-z)^r · ∏_{j<r} (1 + z + ⋯ + z^(2^j - 1))`.
@@ -329,6 +374,62 @@ theorem thueMorseBlockPolynomial_eq_geom_prod (r : ℕ) :
         ∏ j ∈ range r, ∑ i ∈ range (2 ^ j), (Polynomial.X : Polynomial ℤ) ^ i := by
   rw [thueMorseBlockPolynomial_eq_product]
   exact prod_one_sub_two_pow_eq_geom Polynomial.X r
+
+/-- **The zero at one has exact order `m`.**  The next power
+`(1-X)^(m+1)` does not divide the Thue–Morse block polynomial `P_m`.
+Together with `one_sub_X_pow_dvd_thueMorseBlockPolynomial`, this says that
+the multiplicity is exactly `m`.
+
+The proof exposes the obstruction rather than appealing to an abstract
+multiplicity API.  After cancelling the known factor `(1-X)^m`, an extra
+factor would force the geometric cofactor
+`∏_{j<m} (1 + X + ⋯ + X^(2^j-1))` to vanish at `X=1`; its value there is
+the nonzero product `∏_{j<m} 2^j = 2^(C(m,2))`. -/
+theorem one_sub_X_pow_succ_not_dvd_thueMorseBlockPolynomial (m : ℕ) :
+    ¬ (1 - Polynomial.X : Polynomial ℤ) ^ (m + 1) ∣
+      thueMorseBlockPolynomial m := by
+  intro hdiv
+  rcases hdiv with ⟨q, hq⟩
+  let Q : Polynomial ℤ :=
+    ∏ j ∈ range m,
+      ∑ i ∈ range (2 ^ j), (Polynomial.X : Polynomial ℤ) ^ i
+  have hfactor : thueMorseBlockPolynomial m =
+      (1 - Polynomial.X) ^ m * Q := by
+    dsimp only [Q]
+    exact thueMorseBlockPolynomial_eq_geom_prod m
+  have hbase : (1 - Polynomial.X : Polynomial ℤ) ≠ 0 := by
+    intro hzero
+    have hcoeff := congrArg (fun p : Polynomial ℤ => p.coeff 1) hzero
+    norm_num [Polynomial.coeff_one] at hcoeff
+  have hcancel :
+      (1 - Polynomial.X : Polynomial ℤ) ^ m * Q =
+        (1 - Polynomial.X) ^ m * ((1 - Polynomial.X) * q) := by
+    calc
+      (1 - Polynomial.X : Polynomial ℤ) ^ m * Q =
+          thueMorseBlockPolynomial m := hfactor.symm
+      _ = (1 - Polynomial.X) ^ (m + 1) * q := hq
+      _ = (1 - Polynomial.X) ^ m * ((1 - Polynomial.X) * q) := by
+        rw [pow_succ]
+        ring
+  have hcofactor : Q = (1 - Polynomial.X) * q :=
+    mul_left_cancel₀ (pow_ne_zero m hbase) hcancel
+  have hQeval : Polynomial.eval (1 : ℤ) Q = (2 : ℤ) ^ m.choose 2 := by
+    dsimp only [Q]
+    rw [Polynomial.eval_prod]
+    have hterm : ∀ j ∈ range m,
+        Polynomial.eval (1 : ℤ)
+            (∑ i ∈ range (2 ^ j), (Polynomial.X : Polynomial ℤ) ^ i) =
+          (2 : ℤ) ^ j := by
+      intro j _
+      rw [Polynomial.eval_finsetSum]
+      simp
+    rw [Finset.prod_congr rfl hterm, Finset.prod_pow_eq_pow_sum,
+      Finset.sum_range_id, Nat.choose_two_right]
+  have hQzero : Polynomial.eval (1 : ℤ) Q = 0 := by
+    rw [hcofactor]
+    simp
+  rw [hQeval] at hQzero
+  exact (pow_ne_zero (m.choose 2) (by norm_num : (2 : ℤ) ≠ 0)) hQzero
 
 /-! ### Cyclotomic factorization -/
 
