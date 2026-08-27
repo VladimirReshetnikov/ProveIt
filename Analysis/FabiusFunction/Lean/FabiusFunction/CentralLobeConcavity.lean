@@ -38,14 +38,17 @@ namespace Fabius
 noncomputable def lobeZero (p : ℕ × ℕ) : ℝ :=
   ((2 ^ p.1 * (p.2 + 1) : ℕ) : ℝ)
 
+/-- Every dyadic lattice value `lobeZero p = 2^{p.1}(p.2+1)` is at least `1`. -/
 theorem one_le_lobeZero (p : ℕ × ℕ) : 1 ≤ lobeZero p := by
   rw [lobeZero]
   have h : 0 < 2 ^ p.1 * (p.2 + 1) := by positivity
   exact_mod_cast Nat.succ_le_of_lt h
 
+/-- Every dyadic lattice value is strictly positive. -/
 theorem lobeZero_pos (p : ℕ × ℕ) : 0 < lobeZero p :=
   lt_of_lt_of_le one_pos (one_le_lobeZero p)
 
+/-- The square of every dyadic lattice value is at least `1`. -/
 theorem one_le_sq_lobeZero (p : ℕ × ℕ) : 1 ≤ (lobeZero p) ^ 2 := by
   have h := one_le_lobeZero p
   nlinarith

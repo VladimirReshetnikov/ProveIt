@@ -40,6 +40,7 @@ of the Fourier-decay audit. -/
 noncomputable def decayGauge (κ x : ℝ) : ℝ :=
   Real.exp (-(Real.log x) ^ 2 / (2 * Real.log 2)) * x ^ (-κ)
 
+/-- For every real exponent `κ`, the decay gauge is strictly positive when `x > 0`. -/
 theorem decayGauge_pos (κ : ℝ) {x : ℝ} (hx : 0 < x) : 0 < decayGauge κ x := by
   unfold decayGauge
   positivity

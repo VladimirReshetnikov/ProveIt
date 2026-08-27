@@ -23,37 +23,14 @@ the formal semantics.
 > a Mathlib-importing file holds 1&ndash;1.5&nbsp;GB; a default parallel `lake build`
 > exhausts memory and then fails with *misleading* errors such as
 > `failed to read file '...Basic.olean'`, which are swap-thrash symptoms rather
-> than real failures. `lake build -j1` does **not** help: Lake 5.0.0 removed the
-> `-j` flag, and `--jobs` is rejected too.
->
-> Build **one module per `lake build` invocation, in topological order**, and
-> set both worker limits on every invocation:
->
-> ```powershell
-> $env:LAKE_JOBS = '1'          # bounds the number of lean.exe processes
-> $env:LEAN_NUM_THREADS = '0'   # bounds the threads inside each one
-> ```
->
-> The two variables limit different things, so set both.
-> [`Tools/lean_serial_build.py`](Tools/lean_serial_build.py) does the whole
-> topological walk this way; see [`AGENTS.md`](AGENTS.md) for the retry rule and
-> the Windows traps.
->
-> **Count processes by parent, not machine-wide.** Several agent sessions build
-> here at once, so `Get-Process lean` mixes their workers with yours and makes
-> your own limit look broken. Attribute first:
->
-> ```powershell
-> Get-CimInstance Win32_Process -Filter "Name='lean.exe'" |
->   Select-Object ProcessId, ParentProcessId, CommandLine
-> ```
->
-> Measured 2026-08-27 on this machine: a facade build with a stale dependency
-> chain ran **11** concurrent `lean.exe` with no limits set; the same build
-> under `LAKE_JOBS=1` ran **one** worker of its own (a second `lean.exe` was
-> visible machine-wide, and its parent `lake.exe` belonged to a different
-> session). `LAKE_JOBS=1` is therefore a real limit and not a substitute for
-> one-module-per-invocation &mdash; keep doing both.
+> than real failures. `lake build -j1` does **not** help: Lake 5.0.0 removed
+> the `-j` flag and rejects `--jobs` too, so the limits go in the environment.
+> Build **one module per `lake build` invocation, in topological order**, with
+> `LAKE_JOBS=1` and `LEAN_NUM_THREADS=0` set &mdash; see
+> [the caution in the Lean workspace section](#lean-workspace) for what each
+> variable bounds and the measurements behind them, and
+> [`AGENTS.md`](AGENTS.md) for the driver, the retry rule, and the Windows
+> traps.
 
 ## Repository map
 
@@ -203,12 +180,50 @@ build Lean one module at a time.
 
 ## Lean workspace
 
-> **Build serially.** See [Building: one Lean process at a time](#building-one-lean-process-at-a-time)
-> at the top of this file: one module per `lake build`, in topological order,
-> with `LAKE_JOBS=1` and `LEAN_NUM_THREADS=0` set. Run one build at a time, and
-> after interrupting one check for survivors with
-> `Get-Process lean,lake -ErrorAction SilentlyContinue` before starting the
-> next.
+> [!CAUTION]
+> **Never start Lean or Lake builds in parallel, and never start a second
+> build while one is already running.** Run exactly one `lake build` at a
+> time, with one target. Do not launch background build loops, pass a batch
+> of targets, or use parallel runners such as `xargs -P`.
+>
+> One invocation is not by itself one process: Lake sizes its worker pool to
+> hardware concurrency and starts one `lean.exe` **per core** whenever the
+> target has a stale dependency set. On this machine several agent sessions
+> share 13 GB, so that fan-out starves all of them. Set both limits on every
+> build:
+>
+> ```bash
+> LAKE_JOBS=1 LEAN_NUM_THREADS=0 lake build <one target>
+> ```
+>
+> `LAKE_JOBS` bounds the number of `lean.exe` processes and
+> `LEAN_NUM_THREADS` bounds the threads inside each one; they are
+> independent, so set both. Lake `5.0.0` accepts neither `-j` nor `--jobs`,
+> so these environment variables are the only control. Measured 2026-08-27:
+> a facade build over a stale dependency set spawned **11 concurrent
+> `lean.exe`**, and **exactly one** under `LAKE_JOBS=1`.
+>
+> Starvation does not look like starvation. It surfaces as errors that read
+> like corruption:
+>
+> ```
+> failed to read file '...\Mathlib\...\Basic.olean'
+> libc++abi: terminating due to uncaught exception of type std::bad_alloc
+> ```
+>
+> These are out-of-memory symptoms, **not** broken proofs -- the same module
+> built by itself succeeds. Never "fix" them by editing Lean sources.
+>
+> Before starting, check that nothing else -- including another agent session
+> in a sibling worktree -- is already building; after interrupting a build,
+> check for survivors, because stopping a task does not reliably kill the
+> processes it spawned:
+>
+> ```powershell
+> Get-Process lean,lake -ErrorAction SilentlyContinue
+> ```
+>
+> If a build is running, wait for it rather than racing it.
 
 The root workspace is pinned by [`lean-toolchain`](lean-toolchain) and
 [`lake-manifest.json`](lake-manifest.json):
@@ -220,13 +235,12 @@ lake build
 
 The broad build is intentionally expensive, and on a memory-constrained
 machine it must be **serialized**: build one module per `lake build`
-invocation, in topological order, with `LAKE_JOBS=1` and `LEAN_NUM_THREADS=0`
-set. Parallel Lean workers exhaust RAM and report
+invocation, in topological order. Parallel Lean workers exhaust RAM and report
 `failed to read file '...olean'`, which looks like corruption but is not; the
 same module compiles on a serial retry. `lake build -j1` is not a workaround
-(Lake 5.0.0 removed `-j`, and rejects `--jobs` as well), which is why the
-limits go in the environment. [`AGENTS.md`](AGENTS.md) has the driver and the
-retry rule.
+(Lake 5.0.0 removed `-j` and rejects `--jobs`), which is why `LAKE_JOBS=1` and
+`LEAN_NUM_THREADS=0` are set in the environment instead, as the caution above
+describes. [`AGENTS.md`](AGENTS.md) has the driver and the retry rule.
 
 Focused examples are:
 

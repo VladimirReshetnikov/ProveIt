@@ -32,6 +32,7 @@ namespace Fabius
 
 /-! ## The exceptional block depends only on the floor -/
 
+/-- Equal natural floors `⌊c⌋₊ = ⌊d⌋₊` give equal exceptional blocks. -/
 theorem lobeExceptional_eq_of_floor_eq {c d : ℝ}
     (h : ⌊c⌋₊ = ⌊d⌋₊) : lobeExceptional c = lobeExceptional d := by
   unfold lobeExceptional
@@ -52,6 +53,8 @@ theorem lobeExceptional_abs_eq_of_mem_lobe {m : ℕ} {x : ℝ}
 
 /-! ## The fiber decomposition -/
 
+/-- At an integer threshold `m`, the exceptional block is the union of the fibers
+`lobeFiber k` over `1 ≤ k ≤ m`. -/
 theorem lobeExceptional_eq_biUnion (m : ℕ) :
     lobeExceptional (m:ℝ) = (Finset.Icc 1 m).biUnion lobeFiber := by
   ext p
@@ -73,6 +76,7 @@ theorem lobeExceptional_eq_biUnion (m : ℕ) :
       exact_mod_cast hk.2
     exact this
 
+/-- The lattice fibers over distinct integers in `Finset.Icc 1 m` are disjoint. -/
 theorem pairwiseDisjoint_lobeFiber (m : ℕ) :
     ((Finset.Icc 1 m : Finset ℕ) : Set ℕ).PairwiseDisjoint lobeFiber := by
   intro k _ l _ hkl

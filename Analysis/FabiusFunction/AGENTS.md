@@ -1,27 +1,53 @@
 # Agents working in `Analysis/FabiusFunction`
 
 > [!CAUTION]
-> **Never start Lean or Lake builds in parallel.** Run exactly one
-> `lake build +FabiusFunction.Module` invocation at a time, with one target.
-> Do not launch background build loops, pass a batch of targets, or use
-> parallel runners such as `xargs -P`. A dozen concurrent Lean processes will
-> exhaust memory and often fail with misleading missing-`.olean` errors.
+> **Never start Lean or Lake builds in parallel, and never start a second
+> build while one is already running.** Run exactly one `lake build` at a
+> time, with one target. Do not launch background build loops, pass a batch
+> of targets, or use parallel runners such as `xargs -P`.
 >
 > One invocation is not by itself one process: Lake sizes its worker pool to
 > hardware concurrency and starts one `lean.exe` **per core** whenever the
-> target has a stale dependency set. Set both limits on every build —
+> target has a stale dependency set. On this machine several agent sessions
+> share 13 GB, so that fan-out starves all of them. Set both limits on every
+> build:
 >
 > ```bash
-> LAKE_JOBS=1 LEAN_NUM_THREADS=0 lake build +FabiusFunction.Module
+> LAKE_JOBS=1 LEAN_NUM_THREADS=0 lake build <one target>
 > ```
 >
-> `LAKE_JOBS` bounds the number of `lean.exe` processes, `LEAN_NUM_THREADS`
-> bounds the threads inside each one; they are independent. Lake `5.0.0`
-> accepts neither `-j` nor `--jobs`. Measured 2026-08-27: a facade build ran
-> 11 concurrent `lean.exe` without `LAKE_JOBS`, and exactly one with it.
-> After interrupting a build, check for survivors with
-> `Get-Process lean,lake -ErrorAction SilentlyContinue` before starting the
-> next one.
+> `LAKE_JOBS` bounds the number of `lean.exe` processes and
+> `LEAN_NUM_THREADS` bounds the threads inside each one; they are
+> independent, so set both. Lake `5.0.0` accepts neither `-j` nor `--jobs`,
+> so these environment variables are the only control. Measured 2026-08-27:
+> a facade build over a stale dependency set spawned **11 concurrent
+> `lean.exe`**, and **exactly one** under `LAKE_JOBS=1`.
+>
+> Starvation does not look like starvation. It surfaces as errors that read
+> like corruption:
+>
+> ```
+> failed to read file '...\Mathlib\...\Basic.olean'
+> libc++abi: terminating due to uncaught exception of type std::bad_alloc
+> ```
+>
+> These are out-of-memory symptoms, **not** broken proofs -- the same module
+> built by itself succeeds. Never "fix" them by editing Lean sources.
+>
+> Before starting, check that nothing else -- including another agent session
+> in a sibling worktree -- is already building; after interrupting a build,
+> check for survivors, because stopping a task does not reliably kill the
+> processes it spawned:
+>
+> ```powershell
+> Get-Process lean,lake -ErrorAction SilentlyContinue
+> ```
+>
+> If a build is running, wait for it rather than racing it.
+
+Everything else in this file is ordinary project policy; the rule above is the
+one whose violation has repeatedly destroyed build state, so it comes first.
+See [Building Lean](#building-lean) for the full serialization recipe.
 
 This directory is sometimes developed by several agents concurrently.
 Whether multi-agent coordination is in effect is stated by exactly one file:

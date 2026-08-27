@@ -916,6 +916,18 @@ theorem fabiusDyadic_eq_qBinomialThueMorseDyadicFormula (m n : ℕ) :
     coeff_dyadicNumeratorPrefixSeries_mul_recurrenceSeries]
   field_simp
 
+/-- At numerator one, the arbitrary-dyadic q-binomial formula is exactly the
+inverse-dyadic formula. -/
+theorem qBinomialThueMorseDyadicFormula_one (n : ℕ) :
+    qBinomialThueMorseDyadicFormula 1 n =
+      qBinomialThueMorseFormula n := by
+  calc
+    qBinomialThueMorseDyadicFormula 1 n = fabiusDyadic n 1 :=
+      (fabiusDyadic_eq_qBinomialThueMorseDyadicFormula 1 n).symm
+    _ = fabiusAtInverseTwoPow n := rfl
+    _ = qBinomialThueMorseFormula n :=
+      fabiusAtInverseTwoPow_eq_qBinomialThueMorseFormula n
+
 private theorem weighted_dyadicNumeratorRefinementFactorSeries_eq_zero
     {m n d : ℕ} (hd : d < n) :
     (∑ k ∈ Finset.range (n + 1),

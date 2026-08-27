@@ -25,6 +25,8 @@ def lobeFiber (m : ℕ) : Finset (ℕ × ℕ) :=
   (Finset.range (m + 1) ×ˢ Finset.range (m + 1)).filter
     (fun p => 2 ^ p.1 * (p.2 + 1) = m)
 
+/-- A pair `p` lies in the fiber over `m` exactly when
+`2^{p.1}(p.2+1) = m`. -/
 theorem mem_lobeFiber_iff {m : ℕ} (p : ℕ × ℕ) :
     p ∈ lobeFiber m ↔ 2 ^ p.1 * (p.2 + 1) = m := by
   unfold lobeFiber
@@ -42,6 +44,8 @@ theorem mem_lobeFiber_iff {m : ℕ} (p : ℕ × ℕ) :
       (Nat.le_succ_of_le h1),
       Nat.lt_succ_of_lt (Nat.lt_of_succ_le h2)⟩, h⟩
 
+/-- Equivalently, `p` lies in the fiber over `m` exactly when
+`lobeZero p = m` after coercion to `ℝ`. -/
 theorem mem_lobeFiber_iff_lobeZero {m : ℕ} (p : ℕ × ℕ) :
     p ∈ lobeFiber m ↔ lobeZero p = (m:ℝ) := by
   rw [mem_lobeFiber_iff]
