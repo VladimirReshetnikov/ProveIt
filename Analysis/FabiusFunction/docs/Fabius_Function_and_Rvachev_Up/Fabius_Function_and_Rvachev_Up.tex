@@ -2897,6 +2897,38 @@ The finite $q$-binomial theorem gives the row normalization
 \begin{equation}
  \sum_{j=0}^{n}\omega_{n,j}=1.                            \label{eq:discrete-row-sum}
 \end{equation}
+The same theorem identifies the entire row rather than only its value at one.
+
+\begin{proposition}[Toeplitz row polynomial and rational $q$-Richardson cancellation]
+\label{prop:discrete-row-polynomial}
+For $z\in\Q$, put $W_n(z)=\sum_{j=0}^{n}\omega_{n,j}z^j$.  Then
+\begin{equation}
+ W_n(z)=\frac{(z/2;1/2)_n}{(1/2;1/2)_n}.                 \label{eq:discrete-row-polynomial}
+\end{equation}
+Consequently its rational zeros are exactly
+\begin{equation}
+ W_n(z)=0
+ \quad\Longleftrightarrow\quad
+ z\in\{2,2^2,\ldots,2^n\}.                              \label{eq:discrete-row-roots}
+\end{equation}
+Moreover, if a rational sequence has the finite geometric-error model
+$u_p=L+\sum_{r=1}^{n}a_r2^{-rp}$, then
+\begin{equation}
+ \sum_{j=0}^{n}\omega_{n,j}u_{2n-j}=L.                  \label{eq:discrete-row-richardson}
+\end{equation}
+All three statements include $n=0$: the row polynomial is then $1$, the
+root set is empty, and the error sum is empty.
+\end{proposition}
+
+\begin{proof}[Formal proof]
+The full generating identity and its root classification are
+\lean{sum_range_discreteLimitWeight_mul_pow} and
+\lean{sum_range_discreteLimitWeight_mul_pow_eq_zero_iff}.  The exact rational
+extrapolation is \lean{discreteLimitWeight_qRichardson_exact}; all are in
+\path{FabiusDiscreteLimitToeplitz.lean}.  The former proof of
+\eqref{eq:discrete-row-sum} is now its specialization at $z=1$.
+\end{proof}
+
 Applying it with the opposite sign also gives the uniform variation bound
 \begin{equation}
  \sum_{j=0}^{n}|\omega_{n,j}|
@@ -4576,6 +4608,7 @@ Dyadic and \(q\)-binomial formulas &
 \path{FabiusDyadicQBinomialScalar.lean}, \path{FabiusQBinomialFormula.lean},
 \path{FabiusBinaryReductionSeries.lean}, \path{FabiusParityPowerSeries.lean},
 \path{FabiusGlobalQBinomialSeries.lean},
+\path{FabiusDiscreteLimitToeplitz.lean},
 \path{FabiusDiscreteLimitIntegration.lean}\\
 Thue--Morse prefixes &
 \path{ThueMorsePrefix.lean}, \path{ThueMorseGenerating.lean},

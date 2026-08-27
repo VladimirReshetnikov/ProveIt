@@ -5,9 +5,11 @@ import Mathlib.Topology.MetricSpace.Pseudo.Constructions
 # Toeplitz weights for the Fabius discrete limit
 
 This module packages the finite q-binomial coefficients that arise after
-reindexing the proposed discrete-limit formula.  It proves that every row
-has mass one, gives both an exact formula and a uniform bound for its total
-variation, and supplies a general finite-row Toeplitz convergence theorem.
+reindexing the proposed discrete-limit formula.  It identifies the complete
+row generating polynomial and its dyadic roots, derives exact q-Richardson
+cancellation, proves that every row has mass one, gives both an exact formula
+and a uniform bound for its total variation, and supplies a general finite-row
+Toeplitz convergence theorem.
 
 The range-length convention uses a half-cell correction.  In particular it
 continues to encode the original inclusive upper bound when that bound is
@@ -247,28 +249,156 @@ def discreteLimitWeight (n j : ℕ) : ℚ :=
       (1 / 2 : ℚ) ^ ((j + 1).choose 2) /
     halfQPochhammer n
 
-/-- Every Toeplitz row has mass one.  The proof evaluates
-`halfQBinomial_theorem` at `z = 1 / 2`, where the right-hand side
-is exactly the normalizing factor `halfQPochhammer n`. -/
+/-- The generating polynomial of a Toeplitz row is a normalized finite
+q-Pochhammer product.  Thus the mass, root locus, and Richardson cancellation
+of the row are all specializations of one half-q-binomial identity. -/
+theorem sum_range_discreteLimitWeight_mul_pow (n : ℕ) (z : ℚ) :
+    (∑ j ∈ Finset.range (n + 1), discreteLimitWeight n j * z ^ j) =
+      finiteQPochhammer (z / 2) (1 / 2) n / halfQPochhammer n := by
+  calc
+    (∑ j ∈ Finset.range (n + 1), discreteLimitWeight n j * z ^ j) =
+        (∑ j ∈ Finset.range (n + 1),
+          (-1 : ℚ) ^ j * (1 / 2 : ℚ) ^ j.choose 2 *
+            halfQBinomial n j * (z / 2) ^ j) /
+          halfQPochhammer n := by
+      rw [Finset.sum_div]
+      apply Finset.sum_congr rfl
+      intro j _hj
+      have hzpow :
+          (z / 2 : ℚ) ^ j = (1 / 2 : ℚ) ^ j * z ^ j := by
+        rw [show z / 2 = (1 / 2 : ℚ) * z by ring, mul_pow]
+      rw [discreteLimitWeight, choose_succ_two, pow_add, hzpow]
+      ring
+    _ = finiteQPochhammer (z / 2) (1 / 2) n /
+          halfQPochhammer n := by
+      rw [halfQBinomial_theorem]
+
+/-- Every Toeplitz row has mass one.  This is the value at `z = 1` of
+`sum_range_discreteLimitWeight_mul_pow`. -/
 theorem sum_range_discreteLimitWeight (n : ℕ) :
     (∑ j ∈ Finset.range (n + 1), discreteLimitWeight n j) = 1 := by
-  simp_rw [discreteLimitWeight]
-  rw [← Finset.sum_div]
-  simp_rw [choose_succ_two, pow_add]
-  have h := halfQBinomial_theorem n (1 / 2)
-  rw [show finiteQPochhammer (1 / 2) (1 / 2) n =
-      halfQPochhammer n by rfl] at h
-  have hnum :
+  have h := sum_range_discreteLimitWeight_mul_pow n 1
+  rw [show finiteQPochhammer ((1 : ℚ) / 2) (1 / 2) n =
+      halfQPochhammer n by rfl,
+    div_self (halfQPochhammer_ne_zero n)] at h
+  simpa using h
+
+/-- Among rational arguments, the generating polynomial of the `n`-th
+Toeplitz row vanishes exactly at the dyadic nodes `2, 4, ..., 2 ^ n`.  The
+index `r < n` below records the same root as `2 ^ (r + 1)`. -/
+theorem sum_range_discreteLimitWeight_mul_pow_eq_zero_iff
+    (n : ℕ) (z : ℚ) :
+    (∑ j ∈ Finset.range (n + 1), discreteLimitWeight n j * z ^ j) = 0 ↔
+      ∃ r < n, z = (2 : ℚ) ^ (r + 1) := by
+  rw [sum_range_discreteLimitWeight_mul_pow, div_eq_zero_iff]
+  simp only [halfQPochhammer_ne_zero n, or_false]
+  rw [finiteQPochhammer_half_eq_zero_iff]
+  constructor
+  · rintro ⟨r, hr, hz⟩
+    refine ⟨r, hr, ?_⟩
+    calc
+      z = (z / 2) * 2 := by ring
+      _ = (2 : ℚ) ^ r * 2 := by rw [hz]
+      _ = (2 : ℚ) ^ (r + 1) := by rw [pow_succ]
+  · rintro ⟨r, hr, hz⟩
+    refine ⟨r, hr, ?_⟩
+    calc
+      z / 2 = (2 : ℚ) ^ (r + 1) / 2 := by rw [hz]
+      _ = (2 : ℚ) ^ r := by rw [pow_succ]; ring
+
+/-- Exact q-Richardson cancellation on the dyadic geometric grid.  If the
+error of a rational sequence is a linear combination of the first `n` modes
+`p ↦ 2 ^ (-(r + 1) * p)`, then the `n`-th Toeplitz row applied at the samples
+`2 * n - j` recovers the constant term exactly.  The coefficient `a r`
+corresponds to the mode with ratio `2 ^ (-(r + 1))`. -/
+theorem discreteLimitWeight_qRichardson_exact
+    (n : ℕ) (u : ℕ → ℚ) (L : ℚ) (a : ℕ → ℚ)
+    (hu : ∀ p, u p =
+      L + ∑ r ∈ Finset.range n,
+        a r * (1 / 2 : ℚ) ^ ((r + 1) * p)) :
+    (∑ j ∈ Finset.range (n + 1),
+      discreteLimitWeight n j * u (2 * n - j)) = L := by
+  have hmode (r : ℕ) (hr : r < n) :
       (∑ j ∈ Finset.range (n + 1),
-        (-1 : ℚ) ^ j * halfQBinomial n j *
-          ((1 / 2 : ℚ) ^ j.choose 2 * (1 / 2 : ℚ) ^ j)) =
-        halfQPochhammer n := by
-    rw [← h]
-    apply Finset.sum_congr rfl
-    intro j _hj
-    ring
-  rw [hnum]
-  exact div_self (halfQPochhammer_ne_zero n)
+        discreteLimitWeight n j *
+          (1 / 2 : ℚ) ^ ((r + 1) * (2 * n - j))) = 0 := by
+    have hroot :
+        (∑ j ∈ Finset.range (n + 1),
+          discreteLimitWeight n j * ((2 : ℚ) ^ (r + 1)) ^ j) = 0 :=
+      (sum_range_discreteLimitWeight_mul_pow_eq_zero_iff n
+        ((2 : ℚ) ^ (r + 1))).2 ⟨r, hr, rfl⟩
+    have hsplit (j : ℕ) (hj : j ∈ Finset.range (n + 1)) :
+        (1 / 2 : ℚ) ^ ((r + 1) * (2 * n - j)) =
+          (1 / 2 : ℚ) ^ ((r + 1) * (2 * n)) *
+            ((2 : ℚ) ^ (r + 1)) ^ j := by
+      have hjle : j ≤ n :=
+        Nat.le_of_lt_succ (Finset.mem_range.mp hj)
+      have hsubadd : 2 * n - j + j = 2 * n :=
+        Nat.sub_add_cancel (by omega)
+      have hexponents :
+          (r + 1) * (2 * n - j) + (r + 1) * j =
+            (r + 1) * (2 * n) := by
+        rw [← Nat.mul_add, hsubadd]
+      have hinverse :
+          ((2 : ℚ) ^ (r + 1)) ^ j *
+              (1 / 2 : ℚ) ^ ((r + 1) * j) = 1 := by
+        calc
+          ((2 : ℚ) ^ (r + 1)) ^ j *
+                (1 / 2 : ℚ) ^ ((r + 1) * j) =
+              (2 : ℚ) ^ ((r + 1) * j) *
+                (1 / 2 : ℚ) ^ ((r + 1) * j) := by
+            rw [← pow_mul]
+          _ = ((2 : ℚ) * (1 / 2 : ℚ)) ^ ((r + 1) * j) := by
+            rw [mul_pow]
+          _ = 1 := by norm_num
+      calc
+        (1 / 2 : ℚ) ^ ((r + 1) * (2 * n - j)) =
+            (1 / 2 : ℚ) ^ ((r + 1) * (2 * n - j)) * 1 := by ring
+        _ = (1 / 2 : ℚ) ^ ((r + 1) * (2 * n - j)) *
+              (((2 : ℚ) ^ (r + 1)) ^ j *
+                (1 / 2 : ℚ) ^ ((r + 1) * j)) := by
+            rw [hinverse]
+        _ = ((1 / 2 : ℚ) ^ ((r + 1) * (2 * n - j)) *
+              (1 / 2 : ℚ) ^ ((r + 1) * j)) *
+                ((2 : ℚ) ^ (r + 1)) ^ j := by ring
+        _ = (1 / 2 : ℚ) ^ ((r + 1) * (2 * n)) *
+              ((2 : ℚ) ^ (r + 1)) ^ j := by
+            rw [← pow_add, hexponents]
+    calc
+      (∑ j ∈ Finset.range (n + 1),
+          discreteLimitWeight n j *
+            (1 / 2 : ℚ) ^ ((r + 1) * (2 * n - j))) =
+          (1 / 2 : ℚ) ^ ((r + 1) * (2 * n)) *
+            ∑ j ∈ Finset.range (n + 1),
+              discreteLimitWeight n j * ((2 : ℚ) ^ (r + 1)) ^ j := by
+        rw [Finset.mul_sum]
+        apply Finset.sum_congr rfl
+        intro j hj
+        rw [hsplit j hj]
+        ring
+      _ = 0 := by rw [hroot, mul_zero]
+  have herror :
+      (∑ r ∈ Finset.range n, ∑ j ∈ Finset.range (n + 1),
+        discreteLimitWeight n j *
+          (a r * (1 / 2 : ℚ) ^ ((r + 1) * (2 * n - j)))) = 0 := by
+    apply Finset.sum_eq_zero
+    intro r hr
+    calc
+      (∑ j ∈ Finset.range (n + 1),
+          discreteLimitWeight n j *
+            (a r * (1 / 2 : ℚ) ^ ((r + 1) * (2 * n - j)))) =
+          a r * ∑ j ∈ Finset.range (n + 1),
+            discreteLimitWeight n j *
+              (1 / 2 : ℚ) ^ ((r + 1) * (2 * n - j)) := by
+        rw [Finset.mul_sum]
+        apply Finset.sum_congr rfl
+        intro j _hj
+        ring
+      _ = 0 := by
+        rw [hmode r (Finset.mem_range.mp hr), mul_zero]
+  simp_rw [hu, mul_add, Finset.mul_sum]
+  rw [Finset.sum_add_distrib, ← Finset.sum_mul,
+    sum_range_discreteLimitWeight, one_mul, Finset.sum_comm, herror, add_zero]
 
 private theorem quarter_add_pow_le_halfQPochhammer_succ (n : ℕ) :
     (1 / 4 : ℚ) + (1 / 2 : ℚ) ^ (n + 2) ≤
