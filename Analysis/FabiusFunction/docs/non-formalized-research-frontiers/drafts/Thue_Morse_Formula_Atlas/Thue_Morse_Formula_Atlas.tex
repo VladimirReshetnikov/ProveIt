@@ -4871,6 +4871,19 @@ because \(\eps_{2j}=\eps_j\).  Hence
 Cancel \(B\), obtaining \(A^2=1/2\); positivity gives the stated root.
 \end{proof}
 
+\emph{Formal versions.}  \Cref{thm:Woods-Robbins} is fully formal
+(\lean{Fabius.woods\_robbins}, \path{ThueMorseWoodsRobbins.lean}),
+with the pairing argument carried out rigorously in logarithmic form:
+the three sign-weighted log-series converge by Dirichlet's test (a
+reusable guarded variant handles weights antitone only from \(1\)
+on); the termwise combination \(L_A+L_B=-\log2+L_C\) and the exact
+even-length interleaving \(L_C(2N)=L_B(N)-L_A(N)\) --- the formal
+counterpart of the odd/even split, justified along the doubled
+subsequence rather than by rearrangement --- force
+\(L_A=-\tfrac12\log2\)
+(\lean{Fabius.tendsto\_wrA}), and exponentiation evaluates the
+partial products.  No convergence step is left informal.
+
 A second classical evaluation is
 \begin{equation}
   \boxed{
@@ -4986,7 +4999,7 @@ valuation, carry, and Pascal-row formulas remain genuinely base-two features.
 \subsection{Formalized modules (August 2026)}
 \label{sec:formalized-modules}
 
-The first tranches of the formalization now exist as thirty-nine
+The first tranches of the formalization now exist as forty
 compiled Lean modules in \repo{}, complementing the corpus modules
 (\path{Parity.lean}, \path{TwoAdic.lean}, \path{ThueMorsePrefix.lean},
 \path{ThueMorseGenerating.lean}, \path{ThueMorseExponential.lean},
@@ -5043,6 +5056,7 @@ Module & Contents \\
 \path{ThueMorseLacunaryQuotient.lean} & The dyadic geometric series and its inversion of \(1-z^{2^j}\); the denominator-free bit Mahler equation; the lacunary quotient expansion at every finite level. \\
 \path{ThueMorseInfiniteProduct.lean} & The analytic infinite-product identity \(\sum\eps_n\e^{-nt}=\mathcal E(t)\) for \(t>0\): absolute convergence, multipliability, and identification of the limits along the dyadic scale. \\
 \path{ThueMorseMellin.lean} & The Mellin representation \(\Gamma(\sigma)D(\sigma,a)=\int_0^\infty t^{\sigma-1}\e^{-at}\mathcal E(t)\,\dd t\) for \(\sigma>1\): kernel integrability, absolute interchange, and termwise Gamma evaluation. \\
+\path{ThueMorseWoodsRobbins.lean} & The Woods--Robbins evaluation \(\prod((2n+1)/(2n+2))^{\eps_n}=2^{-1/2}\): Dirichlet-test convergence of the three log-series, the termwise and interleaving identities, and exponentiation. \\
 \bottomrule
 \end{longtable}}
 
