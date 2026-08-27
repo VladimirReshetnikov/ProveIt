@@ -38,15 +38,41 @@ The parity rule needs no exponential generating function and no `sinh`
 product: it is pure dyadic reflection combined with the complement sign
 `ε(2^m-1-n) = (-1)^m ε(n)`.
 
-The final section proves the **complete power-moment composition formula**
-`sum_thueMorseSign_mul_pow_add`: for every `d ≥ 0`,
-`∑_{n<2^m} ε(n)·n^(m+d) = (-1)^m (m+d)! · ∑_q ∏_{j<m} (2^j)^(q_j+1)/(q_j+1)!`,
-summed over compositions `q` of `d`.  The route is the substitution
-`z ↦ exp(t)` in the master product: each factor `1 - e^(2^j t)` is `-t`
-times an explicit entire series (`one_sub_exp_two_pow`), so the product
-acquires the factor `(-t)^m` whose cofactor's coefficients are read off by
-`PowerSeries.coeff_prod`.  This makes every power moment of the Thue–Morse
-signs an explicit finite rational sum.
+The last two sections prove the **complete power-moment composition
+formula** on an arbitrary finite set `S` of bit positions, of which the
+dyadic block is the case `S = range m`.
+
+* `binaryWeight_sum_two_pow_eq_card` and `thueMorseSign_sum_two_pow` — the
+  hypothesis-free weight and sign laws: `wt(∑_{j∈T} 2^j) = |T|` and
+  `ε(∑_{j∈T} 2^j) = (-1)^|T|` for every finite `T`, no block bound needed.
+* `prod_one_sub_pow_powerset'` — the master product for an **arbitrary**
+  exponent function `e : ℕ → ℕ`, over any commutative ring:
+  `∏_{j∈S} (1 - z^(e j)) = ∑_{T⊆S} (-1)^|T|·z^(∑_{j∈T} e j)`.  Expanding
+  the product never inspects `e`; only additivity of exponents is used.
+* `prod_one_sub_pow_powerset` — its two-power case
+  `∏_{j∈S} (1 - z^(2^j)) = ∑_{T⊆S} ε(k_T)·z^(k_T)`, `k_T = ∑_{j∈T} 2^j`.
+* `one_sub_exp_pow` — the factored exponential block for an **arbitrary**
+  natural base: `1 - e^(Nt) = -t·∑_q N^(q+1)/(q+1)! · t^q`.  The exponent
+  enters only through `coeff_exp_pow`, so nothing about `N = 2^j` is used;
+  `one_sub_exp_two_pow` is the corollary.
+* `prod_one_sub_exp_two_pow'` — the substitution `z ↦ e^t` in the master
+  product over an arbitrary support `S`; `prod_one_sub_exp_two_pow` is the
+  corollary at `S = range m`.
+* `coeff_sum_intCast_mul_exp_pow` — the EGF dictionary for an arbitrary
+  finite family of integer weights and natural exponents;
+  `coeff_sum_thueMorseSign_exp_pow` is the corollary on a dyadic block.
+* `sum_powerset_thueMorseSign_mul_pow_add` — the **complete sparse moment
+  composition**: for every `d ≥ 0`, with `s = |S|`,
+  `∑_{T⊆S} ε(k_T)·k_T^(s+d)
+    = (-1)^s (s+d)! ∑_q ∏_{j∈S} (2^j)^(q_j+1)/(q_j+1)!`,
+  summed over finitely supported compositions `q` of `d` on `S`.
+* `sum_thueMorseSign_mul_pow_add` — the block case `S = range m`:
+  `∑_{n<2^m} ε(n)·n^(m+d)
+    = (-1)^m (m+d)! · ∑_q ∏_{j<m} (2^j)^(q_j+1)/(q_j+1)!`, obtained from
+  the sparse form through the Boolean-cube reindexing kernel
+  `sum_powerset_two_pow`.  Together with Prouhet vanishing below `m` this
+  makes every power moment of the Thue–Morse signs an explicit finite
+  rational sum.
 -/
 
 set_option autoImplicit false
@@ -208,6 +234,73 @@ theorem sum_thueMorseSign_mul_midpoint_pow_self (m : ℕ) :
   rw [show (n : ℚ) - (2 : ℚ) ^ m + ((2 : ℚ) ^ m + 1) / 2 =
     (n : ℚ) - ((2 : ℚ) ^ m - 1) / 2 from by ring]
 
+/-! ### Master products on arbitrary two-power supports -/
+
+/-- The binary weight of a sum of distinct two-powers is the number of
+summands — for every finite set of positions, with no block bound. -/
+theorem binaryWeight_sum_two_pow_eq_card (T : Finset ℕ) :
+    binaryWeight (∑ j ∈ T, 2 ^ j) = T.card := by
+  refine binaryWeight_sum_two_pow (m := (∑ j ∈ T, 2 ^ j) + 1) ?_
+  intro j hj
+  rw [Finset.mem_range]
+  have h1 : 2 ^ j ≤ ∑ i ∈ T, 2 ^ i :=
+    Finset.single_le_sum (fun i _ => Nat.zero_le _) hj
+  have h2 : j < 2 ^ j := Nat.lt_two_pow_self
+  omega
+
+/-- The Thue–Morse sign of a sum of distinct two-powers is the parity of
+the number of summands. -/
+theorem thueMorseSign_sum_two_pow (T : Finset ℕ) :
+    thueMorseSign (∑ j ∈ T, 2 ^ j) = (-1 : ℤ) ^ T.card := by
+  rw [thueMorseSign, binaryWeight_sum_two_pow_eq_card]
+
+/-- **Master product for an arbitrary exponent function.**  Over any
+commutative ring `R`, any finite index set `S` and any `e : ℕ → ℕ`,
+`∏_{j∈S} (1 - z^(e j)) = ∑_{T⊆S} (-1)^|T|·z^(∑_{j∈T} e j)`.
+
+Expanding the product never inspects `e`: each factor contributes either
+`1` or `-z^(e j)`, the signs collect into `(-1)^|T|` and the exponents
+add.  The two-power case `e = (2 ^ ·)`, in which the sign becomes a
+Thue–Morse sign, is `prod_one_sub_pow_powerset`. -/
+theorem prod_one_sub_pow_powerset' {R : Type*} [CommRing R]
+    (z : R) (S : Finset ℕ) (e : ℕ → ℕ) :
+    ∏ j ∈ S, (1 - z ^ e j) =
+      ∑ T ∈ S.powerset, (-1 : R) ^ T.card * z ^ (∑ j ∈ T, e j) := by
+  have h := prod_one_add_eq_sum_powerset S (fun j => -(z ^ e j))
+  have hL : ∏ j ∈ S, (1 - z ^ e j) =
+      ∏ j ∈ S, (1 + -(z ^ e j)) := by
+    refine Finset.prod_congr rfl fun j _ => ?_
+    ring
+  rw [hL, h]
+  refine Finset.sum_congr rfl fun T _ => ?_
+  calc ∏ j ∈ T, -(z ^ e j)
+      = ∏ j ∈ T, (-1) * z ^ e j := by
+        refine Finset.prod_congr rfl fun j _ => ?_
+        ring
+    _ = ((-1) ^ T.card : R) * ∏ j ∈ T, z ^ e j := by
+        rw [Finset.prod_mul_distrib, Finset.prod_const]
+    _ = (-1 : R) ^ T.card * z ^ (∑ j ∈ T, e j) := by
+        rw [Finset.prod_pow_eq_pow_sum]
+
+/-- **Master product on an arbitrary support.**  Over any commutative
+ring and any finite set `S` of bit positions,
+`∏_{j∈S} (1 - z^(2^j)) = ∑_{T⊆S} ε(∑_{j∈T} 2^j)·z^(∑_{j∈T} 2^j)`.
+
+This is the exponent function `e = (2 ^ ·)` case of
+`prod_one_sub_pow_powerset'`: the sign `(-1)^|T|` produced there is the
+Thue–Morse sign of the submask `∑_{j∈T} 2^j`, by
+`thueMorseSign_sum_two_pow`. -/
+theorem prod_one_sub_pow_powerset {R : Type*} [CommRing R]
+    (z : R) (S : Finset ℕ) :
+    ∏ j ∈ S, (1 - z ^ 2 ^ j) =
+      ∑ T ∈ S.powerset,
+        ((thueMorseSign (∑ j ∈ T, 2 ^ j) : ℤ) : R) * z ^ (∑ j ∈ T, 2 ^ j) := by
+  refine (prod_one_sub_pow_powerset' z S (fun j => 2 ^ j)).trans ?_
+  refine Finset.sum_congr rfl fun T _ => ?_
+  rw [thueMorseSign_sum_two_pow]
+  push_cast
+  ring
+
 /-! ### The complete power-moment composition formula -/
 
 /-- Uncentered power moments through the translated-sum interface:
@@ -229,12 +322,14 @@ theorem coeff_exp_pow (N q : ℕ) :
     PowerSeries.coeff_exp]
   simp [div_eq_mul_inv]
 
-/-- The factored exponential block: `1 - e^(2^j t)` is `-t` times the entire
-series `∑_q (2^j)^(q+1)/(q+1)! · t^q`. -/
-theorem one_sub_exp_two_pow (j : ℕ) :
-    (1 : PowerSeries ℚ) - PowerSeries.exp ℚ ^ 2 ^ j =
+/-- **The factored exponential block, arbitrary base.**  For every natural
+`N`, `1 - e^(Nt)` is `-t` times the entire series
+`∑_q N^(q+1)/(q+1)! · t^q`.  The exponent enters the proof only through
+`coeff_exp_pow`, which is already general in `N`. -/
+theorem one_sub_exp_pow (N : ℕ) :
+    (1 : PowerSeries ℚ) - PowerSeries.exp ℚ ^ N =
       -(PowerSeries.X * PowerSeries.mk fun q =>
-          ((2 : ℚ) ^ j) ^ (q + 1) / (q + 1).factorial) := by
+          (N : ℚ) ^ (q + 1) / (q + 1).factorial) := by
   ext k
   rcases k with _ | k
   · simp
@@ -244,40 +339,123 @@ theorem one_sub_exp_two_pow (j : ℕ) :
     push_cast
     ring
 
+/-- The factored exponential block: `1 - e^(2^j t)` is `-t` times the entire
+series `∑_q (2^j)^(q+1)/(q+1)! · t^q`.  The case `N = 2^j` of
+`one_sub_exp_pow`. -/
+theorem one_sub_exp_two_pow (j : ℕ) :
+    (1 : PowerSeries ℚ) - PowerSeries.exp ℚ ^ 2 ^ j =
+      -(PowerSeries.X * PowerSeries.mk fun q =>
+          ((2 : ℚ) ^ j) ^ (q + 1) / (q + 1).factorial) := by
+  have hcast : ((2 ^ j : ℕ) : ℚ) = (2 : ℚ) ^ j := by simp
+  rw [one_sub_exp_pow (2 ^ j), hcast]
+
+/-- **Substituting `z ↦ e^t` in the master product, arbitrary support.**
+Over any finite set `S` of bit positions the block product acquires the
+explicit factor `(-t)^|S|`, with cofactor a product of entire series with
+factorial-decaying coefficients. -/
+theorem prod_one_sub_exp_two_pow' (S : Finset ℕ) :
+    ∏ j ∈ S, ((1 : PowerSeries ℚ) - PowerSeries.exp ℚ ^ 2 ^ j) =
+      (-1) ^ S.card * PowerSeries.X ^ S.card *
+        ∏ j ∈ S, PowerSeries.mk fun q =>
+          ((2 : ℚ) ^ j) ^ (q + 1) / (q + 1).factorial := by
+  calc ∏ j ∈ S, ((1 : PowerSeries ℚ) - PowerSeries.exp ℚ ^ 2 ^ j)
+      = ∏ j ∈ S, (-1 * PowerSeries.X * PowerSeries.mk fun q =>
+          ((2 : ℚ) ^ j) ^ (q + 1) / (q + 1).factorial) := by
+        refine Finset.prod_congr rfl fun j _ => ?_
+        rw [one_sub_exp_two_pow]
+        ring
+    _ = (∏ _j ∈ S, (-1 * PowerSeries.X : PowerSeries ℚ)) *
+          ∏ j ∈ S, PowerSeries.mk fun q =>
+            ((2 : ℚ) ^ j) ^ (q + 1) / (q + 1).factorial :=
+        Finset.prod_mul_distrib
+    _ = (-1) ^ S.card * PowerSeries.X ^ S.card *
+          ∏ j ∈ S, PowerSeries.mk fun q =>
+            ((2 : ℚ) ^ j) ^ (q + 1) / (q + 1).factorial := by
+        rw [Finset.prod_const, mul_pow]
+
 /-- Substituting `z ↦ e^t` in the master product: the moment generating
 series acquires the explicit factor `(-t)^m`, with cofactor a product of
-entire series with factorial-decaying coefficients. -/
+entire series with factorial-decaying coefficients.  The case
+`S = range m` of `prod_one_sub_exp_two_pow'`. -/
 theorem prod_one_sub_exp_two_pow (m : ℕ) :
     ∏ j ∈ range m, ((1 : PowerSeries ℚ) - PowerSeries.exp ℚ ^ 2 ^ j) =
       (-1) ^ m * PowerSeries.X ^ m *
         ∏ j ∈ range m, PowerSeries.mk fun q =>
           ((2 : ℚ) ^ j) ^ (q + 1) / (q + 1).factorial := by
-  calc ∏ j ∈ range m, ((1 : PowerSeries ℚ) - PowerSeries.exp ℚ ^ 2 ^ j)
-      = ∏ j ∈ range m, (-1 * PowerSeries.X * PowerSeries.mk fun q =>
-          ((2 : ℚ) ^ j) ^ (q + 1) / (q + 1).factorial) := by
-        refine Finset.prod_congr rfl fun j _ => ?_
-        rw [one_sub_exp_two_pow]
-        ring
-    _ = (∏ _j ∈ range m, (-1 * PowerSeries.X : PowerSeries ℚ)) *
-          ∏ j ∈ range m, PowerSeries.mk fun q =>
-            ((2 : ℚ) ^ j) ^ (q + 1) / (q + 1).factorial :=
-        Finset.prod_mul_distrib
-    _ = (-1) ^ m * PowerSeries.X ^ m *
-          ∏ j ∈ range m, PowerSeries.mk fun q =>
-            ((2 : ℚ) ^ j) ^ (q + 1) / (q + 1).factorial := by
-        rw [Finset.prod_const, Finset.card_range, mul_pow]
+  have h := prod_one_sub_exp_two_pow' (range m)
+  rwa [Finset.card_range] at h
+
+/-- **EGF dictionary, arbitrary family.**  For any finite family of integer
+weights `c` and natural exponents `e`, the `r`-th coefficient of
+`∑_i c_i·e^(e_i t)` is `(∑_i c_i·e_i^r)/r!`. -/
+theorem coeff_sum_intCast_mul_exp_pow {ι : Type*} (s : Finset ι)
+    (c : ι → ℤ) (e : ι → ℕ) (r : ℕ) :
+    PowerSeries.coeff r (∑ i ∈ s,
+        ((c i : ℤ) : PowerSeries ℚ) * PowerSeries.exp ℚ ^ e i) =
+      (∑ i ∈ s, ((c i : ℤ) : ℚ) * ((e i : ℕ) : ℚ) ^ r) / r.factorial := by
+  rw [map_sum, Finset.sum_div]
+  refine Finset.sum_congr rfl fun i _ => ?_
+  rw [← map_intCast (PowerSeries.C (R := ℚ)) (c i),
+    PowerSeries.coeff_C_mul, coeff_exp_pow, mul_div_assoc]
 
 /-- EGF dictionary: the `r`-th coefficient of the signed exponential sum is
-the `r`-th power moment divided by `r!`. -/
+the `r`-th power moment divided by `r!`.  The case `c = ε`, `e = id` of
+`coeff_sum_intCast_mul_exp_pow`. -/
 theorem coeff_sum_thueMorseSign_exp_pow (m r : ℕ) :
     PowerSeries.coeff r (∑ n ∈ range (2 ^ m),
         ((thueMorseSign n : ℤ) : PowerSeries ℚ) * PowerSeries.exp ℚ ^ n) =
       (∑ n ∈ range (2 ^ m), ((thueMorseSign n : ℤ) : ℚ) * (n : ℚ) ^ r) /
-        r.factorial := by
-  rw [map_sum, Finset.sum_div]
-  refine Finset.sum_congr rfl fun n _ => ?_
-  rw [← map_intCast (PowerSeries.C (R := ℚ)) (thueMorseSign n),
-    PowerSeries.coeff_C_mul, coeff_exp_pow, mul_div_assoc]
+        r.factorial :=
+  coeff_sum_intCast_mul_exp_pow (range (2 ^ m)) thueMorseSign (fun n => n) r
+
+/-- **Complete sparse moment composition on an arbitrary support.**  For
+every finite `S` with `s = |S|` and every `d ≥ 0`,
+`∑_{T⊆S} ε(k_T)·k_T^(s+d)
+  = (-1)^s·(s+d)!·∑_q ∏_{j∈S} (2^j)^(q_j+1)/(q_j+1)!`,
+summed over finitely supported compositions `q` of `d` on `S`.  The
+dyadic block `S = range m` and the submask cube `S = J(n)` are special
+cases; `d = 0` gives the sharp sparse moment `(-1)^s·s!·2^(β)` with
+`β = ∑_{j∈S} j`. -/
+theorem sum_powerset_thueMorseSign_mul_pow_add (S : Finset ℕ) (d : ℕ) :
+    ∑ T ∈ S.powerset,
+        ((thueMorseSign (∑ j ∈ T, 2 ^ j) : ℤ) : ℚ) *
+          ((∑ j ∈ T, 2 ^ j : ℕ) : ℚ) ^ (S.card + d) =
+      (-1) ^ S.card * (S.card + d).factorial *
+        ∑ q ∈ Finset.finsuppAntidiag S d,
+          ∏ j ∈ S, ((2 : ℚ) ^ j) ^ (q j + 1) / (q j + 1).factorial := by
+  have hmaster := prod_one_sub_pow_powerset (PowerSeries.exp ℚ) S
+  have h := congrArg (fun φ => PowerSeries.coeff (S.card + d) φ) hmaster
+  -- dictionary on the powerset side
+  have hdict : PowerSeries.coeff (S.card + d)
+      (∑ T ∈ S.powerset,
+        ((thueMorseSign (∑ j ∈ T, 2 ^ j) : ℤ) : PowerSeries ℚ) *
+          PowerSeries.exp ℚ ^ (∑ j ∈ T, 2 ^ j)) =
+      (∑ T ∈ S.powerset, ((thueMorseSign (∑ j ∈ T, 2 ^ j) : ℤ) : ℚ) *
+        ((∑ j ∈ T, 2 ^ j : ℕ) : ℚ) ^ (S.card + d)) /
+        (S.card + d).factorial :=
+    coeff_sum_intCast_mul_exp_pow S.powerset
+      (fun T => thueMorseSign (∑ j ∈ T, 2 ^ j))
+      (fun T => ∑ j ∈ T, 2 ^ j) (S.card + d)
+  rw [hdict] at h
+  -- factored side
+  rw [prod_one_sub_exp_two_pow', mul_assoc] at h
+  have hC : ((-1 : PowerSeries ℚ)) ^ S.card =
+      PowerSeries.C (R := ℚ) ((-1 : ℚ) ^ S.card) := by
+    rw [map_pow, map_neg, map_one]
+  rw [hC, PowerSeries.coeff_C_mul, PowerSeries.coeff_X_pow_mul',
+    if_pos (Nat.le_add_right S.card d), Nat.add_sub_cancel_left,
+    PowerSeries.coeff_prod] at h
+  have hcoeff : ∀ q ∈ Finset.finsuppAntidiag S d,
+      (∏ j ∈ S, PowerSeries.coeff (q j) (PowerSeries.mk fun k =>
+        ((2 : ℚ) ^ j) ^ (k + 1) / (k + 1).factorial)) =
+      ∏ j ∈ S, ((2 : ℚ) ^ j) ^ (q j + 1) / (q j + 1).factorial :=
+    fun q _ => Finset.prod_congr rfl fun j _ => PowerSeries.coeff_mk _ _
+  rw [Finset.sum_congr rfl hcoeff] at h
+  have hfacne : (((S.card + d).factorial : ℚ)) ≠ 0 :=
+    Nat.cast_ne_zero.mpr (Nat.factorial_ne_zero _)
+  rw [eq_div_iff hfacne] at h
+  rw [← h]
+  ring
 
 /-- **Complete power-moment composition formula.**  For every `d ≥ 0`,
 `∑_{n<2^m} ε(n)·n^(m+d)
@@ -285,34 +463,21 @@ theorem coeff_sum_thueMorseSign_exp_pow (m r : ℕ) :
 summed over all finitely supported compositions `q` of `d` on `range m`.
 Together with Prouhet vanishing below `m` this determines every power
 moment of the Thue–Morse signs in closed form; the empty composition at
-`d = 0` recovers the sharp value `(-1)^m · 2^(C(m,2)) · m!`. -/
+`d = 0` recovers the sharp value `(-1)^m · 2^(C(m,2)) · m!`.
+
+This is the case `S = range m` of `sum_powerset_thueMorseSign_mul_pow_add`,
+transported across the Boolean-cube reindexing kernel
+`sum_powerset_two_pow`. -/
 theorem sum_thueMorseSign_mul_pow_add (m d : ℕ) :
     ∑ n ∈ range (2 ^ m), ((thueMorseSign n : ℤ) : ℚ) * (n : ℚ) ^ (m + d) =
       (-1) ^ m * (m + d).factorial *
         ∑ q ∈ Finset.finsuppAntidiag (range m) d,
           ∏ j ∈ range m,
             ((2 : ℚ) ^ j) ^ (q j + 1) / (q j + 1).factorial := by
-  have h := congrArg (fun φ => PowerSeries.coeff (m + d) φ)
-    (prod_one_sub_pow_eq_sum_thueMorseSign (PowerSeries.exp ℚ) m)
-  simp only [coeff_sum_thueMorseSign_exp_pow] at h
-  rw [prod_one_sub_exp_two_pow, mul_assoc] at h
-  have hC : ((-1 : PowerSeries ℚ)) ^ m =
-      PowerSeries.C (R := ℚ) ((-1 : ℚ) ^ m) := by
-    rw [map_pow, map_neg, map_one]
-  rw [hC, PowerSeries.coeff_C_mul, PowerSeries.coeff_X_pow_mul',
-    if_pos (Nat.le_add_right m d), Nat.add_sub_cancel_left,
-    PowerSeries.coeff_prod] at h
-  have hcoeff : ∀ q ∈ Finset.finsuppAntidiag (range m) d,
-      (∏ j ∈ range m, PowerSeries.coeff (q j) (PowerSeries.mk fun k =>
-        ((2 : ℚ) ^ j) ^ (k + 1) / (k + 1).factorial)) =
-      ∏ j ∈ range m,
-        ((2 : ℚ) ^ j) ^ (q j + 1) / (q j + 1).factorial :=
-    fun q _ => Finset.prod_congr rfl fun j _ => PowerSeries.coeff_mk _ _
-  rw [Finset.sum_congr rfl hcoeff] at h
-  have hfac : ((m + d).factorial : ℚ) ≠ 0 :=
-    Nat.cast_ne_zero.mpr (Nat.factorial_ne_zero _)
-  rw [eq_div_iff hfac] at h
+  have h := sum_powerset_thueMorseSign_mul_pow_add (range m) d
+  rw [Finset.card_range] at h
   rw [← h]
-  ring
+  exact (sum_powerset_two_pow m
+    (fun n => ((thueMorseSign n : ℤ) : ℚ) * (n : ℚ) ^ (m + d))).symm
 
 end Fabius

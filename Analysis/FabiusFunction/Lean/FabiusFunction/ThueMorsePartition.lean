@@ -128,6 +128,78 @@ private theorem prod_extend {F : Type*} [Field F] (x : ℕ → F)
     exact hk (hsupp (Finsupp.mem_support_iff.mpr hne))
   simp [this]
 
+/-- Pointwise values of a multiplicity vector with one `j`-part
+removed. -/
+private theorem sub_single_apply (f : ℕ →₀ ℕ) (j k : ℕ) :
+    (f - (Finsupp.single j 1 : ℕ →₀ ℕ)) k =
+      f k - (if j = k then 1 else 0) := by
+  rw [Finsupp.tsub_apply, Finsupp.single_apply]
+
+/-- **Removing a marked part.**  A weighted partition `f` of `n` that
+carries at least one `j`-part, `j ∈ [1, n]`, becomes a weighted
+partition of `n - j` once one such part is deleted: the weight drops by
+`j`, and the support stays inside `[1, n - j]`. -/
+private theorem sub_single_mem {n j : ℕ} {f : ℕ →₀ ℕ}
+    (hj : j ∈ Icc 1 n) (hfj : 1 ≤ f j) (hsupp : f.support ⊆ Icc 1 n)
+    (hweight : ∑ k ∈ Icc 1 n, k * f k = n) :
+    f - (Finsupp.single j 1 : ℕ →₀ ℕ) ∈ weightedPartitions (n - j) := by
+  have happly := sub_single_apply f j
+  obtain ⟨u, hu⟩ : ∃ u, f j = u + 1 := ⟨f j - 1, by omega⟩
+  have hweight' : ∑ k ∈ Icc 1 n,
+      k * (f - (Finsupp.single j 1 : ℕ →₀ ℕ)) k = n - j := by
+    have hsplit := Finset.add_sum_erase (Icc 1 n) (fun k => k * f k) hj
+    have hsplit' := Finset.add_sum_erase (Icc 1 n)
+      (fun k => k * (f - (Finsupp.single j 1 : ℕ →₀ ℕ)) k) hj
+    have heq : ∀ k ∈ (Icc 1 n).erase j,
+        k * (f - (Finsupp.single j 1 : ℕ →₀ ℕ)) k = k * f k := by
+      intro k hk
+      have hkj := (Finset.mem_erase.mp hk).1
+      rw [happly, if_neg (fun h => hkj h.symm), Nat.sub_zero]
+    rw [Finset.sum_congr rfl heq] at hsplit'
+    have hjval : (f - (Finsupp.single j 1 : ℕ →₀ ℕ)) j = u := by
+      rw [happly, if_pos rfl, hu, Nat.add_sub_cancel]
+    rw [hjval] at hsplit'
+    have hlin : j * f j = j * u + j := by rw [hu]; ring
+    rw [hlin] at hsplit
+    omega
+  refine mem_weightedPartitions_of ?_ ?_
+  · intro k hk
+    have hk1 : (f - (Finsupp.single j 1 : ℕ →₀ ℕ)) k ≠ 0 :=
+      Finsupp.mem_support_iff.mp hk
+    have hk2 : f k ≠ 0 := by
+      intro hzero
+      apply hk1
+      rw [happly, hzero, Nat.zero_sub]
+    have hk3 := Finset.mem_Icc.mp (hsupp (Finsupp.mem_support_iff.mpr hk2))
+    have hk4 : k * (f - (Finsupp.single j 1 : ℕ →₀ ℕ)) k ≤ n - j := by
+      rw [← hweight']
+      exact Finset.single_le_sum
+        (f := fun t => t * (f - (Finsupp.single j 1 : ℕ →₀ ℕ)) t)
+        (fun t _ => Nat.zero_le _) (Finset.mem_Icc.mpr hk3)
+    have hk5 : 1 ≤ (f - (Finsupp.single j 1 : ℕ →₀ ℕ)) k := by omega
+    refine Finset.mem_Icc.mpr ⟨hk3.1, ?_⟩
+    nlinarith [hk3.1]
+  · have hext : ∑ k ∈ Icc 1 (n - j),
+        k * (f - (Finsupp.single j 1 : ℕ →₀ ℕ)) k =
+        ∑ k ∈ Icc 1 n, k * (f - (Finsupp.single j 1 : ℕ →₀ ℕ)) k := by
+      refine Finset.sum_subset (Finset.Icc_subset_Icc_right (by omega)) ?_
+      intro k hk hknot
+      have hk' := Finset.mem_Icc.mp hk
+      have hklt : n - j < k := by
+        by_contra hcon
+        exact hknot (Finset.mem_Icc.mpr ⟨hk'.1, by omega⟩)
+      rcases Nat.eq_zero_or_pos
+          ((f - (Finsupp.single j 1 : ℕ →₀ ℕ)) k) with hzk | hzk
+      · rw [hzk, Nat.mul_zero]
+      · exfalso
+        have hk4 : k * (f - (Finsupp.single j 1 : ℕ →₀ ℕ)) k ≤ n - j := by
+          rw [← hweight']
+          exact Finset.single_le_sum
+            (f := fun t => t * (f - (Finsupp.single j 1 : ℕ →₀ ℕ)) t)
+            (fun t _ => Nat.zero_le _) hk
+        nlinarith
+    rw [hext, hweight']
+
 /-- **The exponential-formula recurrence**, fully general: over any
 characteristic-zero field and any coefficient sequence `x`, the
 partition sum obeys `n·P(n) = ∑_{j=1}^n j·xⱼ·P(n-j)`.  (Mark one part:
@@ -173,69 +245,11 @@ theorem partitionExpSum_recurrence {F : Type*} [Field F] [CharZero F]
     (fun (f : ℕ →₀ ℕ) _ => f - (Finsupp.single j 1 : ℕ →₀ ℕ))
     (fun (g : ℕ →₀ ℕ) _ => g + (Finsupp.single j 1 : ℕ →₀ ℕ))
     ?_ ?_ ?_ ?_ ?_
-  · -- forward membership
+  · -- forward membership: delete the marked part
     intro f hf
     obtain ⟨hfmem, hfj⟩ := Finset.mem_filter.mp hf
     obtain ⟨hsupp, -, hweight⟩ := mem_weightedPartitions.mp hfmem
-    have happly : ∀ k : ℕ, (f - (Finsupp.single j 1 : ℕ →₀ ℕ)) k =
-        f k - (if j = k then 1 else 0) := by
-      intro k
-      rw [Finsupp.tsub_apply, Finsupp.single_apply]
-    obtain ⟨u, hu⟩ : ∃ u, f j = u + 1 := ⟨f j - 1, by omega⟩
-    have hweight' : ∑ k ∈ Icc 1 n,
-        k * (f - (Finsupp.single j 1 : ℕ →₀ ℕ)) k = n - j := by
-      have hsplit := Finset.add_sum_erase (Icc 1 n) (fun k => k * f k) hj
-      have hsplit' := Finset.add_sum_erase (Icc 1 n)
-        (fun k => k * (f - (Finsupp.single j 1 : ℕ →₀ ℕ)) k) hj
-      have heq : ∀ k ∈ (Icc 1 n).erase j,
-          k * (f - (Finsupp.single j 1 : ℕ →₀ ℕ)) k = k * f k := by
-        intro k hk
-        have hkj := (Finset.mem_erase.mp hk).1
-        rw [happly, if_neg (fun h => hkj h.symm), Nat.sub_zero]
-      rw [Finset.sum_congr rfl heq] at hsplit'
-      have hjval : (f - (Finsupp.single j 1 : ℕ →₀ ℕ)) j = u := by
-        rw [happly, if_pos rfl, hu, Nat.add_sub_cancel]
-      rw [hjval] at hsplit'
-      have hlin : j * f j = j * u + j := by rw [hu]; ring
-      rw [hlin] at hsplit
-      omega
-    refine mem_weightedPartitions_of ?_ ?_
-    · intro k hk
-      have hk1 : (f - (Finsupp.single j 1 : ℕ →₀ ℕ)) k ≠ 0 :=
-        Finsupp.mem_support_iff.mp hk
-      have hk2 : f k ≠ 0 := by
-        intro hzero
-        apply hk1
-        rw [happly, hzero, Nat.zero_sub]
-      have hk3 := Finset.mem_Icc.mp (hsupp (Finsupp.mem_support_iff.mpr hk2))
-      have hk4 : k * (f - (Finsupp.single j 1 : ℕ →₀ ℕ)) k ≤ n - j := by
-        rw [← hweight']
-        exact Finset.single_le_sum
-          (f := fun t => t * (f - (Finsupp.single j 1 : ℕ →₀ ℕ)) t)
-          (fun t _ => Nat.zero_le _) (Finset.mem_Icc.mpr hk3)
-      have hk5 : 1 ≤ (f - (Finsupp.single j 1 : ℕ →₀ ℕ)) k := by omega
-      refine Finset.mem_Icc.mpr ⟨hk3.1, ?_⟩
-      nlinarith [hk3.1]
-    · have hext : ∑ k ∈ Icc 1 (n - j),
-          k * (f - (Finsupp.single j 1 : ℕ →₀ ℕ)) k =
-          ∑ k ∈ Icc 1 n, k * (f - (Finsupp.single j 1 : ℕ →₀ ℕ)) k := by
-        refine Finset.sum_subset (Finset.Icc_subset_Icc_right (by omega)) ?_
-        intro k hk hknot
-        have hk' := Finset.mem_Icc.mp hk
-        have hklt : n - j < k := by
-          by_contra hcon
-          exact hknot (Finset.mem_Icc.mpr ⟨hk'.1, by omega⟩)
-        rcases Nat.eq_zero_or_pos
-            ((f - (Finsupp.single j 1 : ℕ →₀ ℕ)) k) with hzk | hzk
-        · rw [hzk, Nat.mul_zero]
-        · exfalso
-          have hk4 : k * (f - (Finsupp.single j 1 : ℕ →₀ ℕ)) k ≤ n - j := by
-            rw [← hweight']
-            exact Finset.single_le_sum
-              (f := fun t => t * (f - (Finsupp.single j 1 : ℕ →₀ ℕ)) t)
-              (fun t _ => Nat.zero_le _) hk
-          nlinarith
-      rw [hext, hweight']
+    exact sub_single_mem hj hfj hsupp hweight
   · -- backward membership
     intro g hg
     obtain ⟨hsupp, -, hweight⟩ := mem_weightedPartitions.mp hg
@@ -301,46 +315,11 @@ theorem partitionExpSum_recurrence {F : Type*} [Field F] [CharZero F]
     intro f hf
     obtain ⟨hfmem, hfj⟩ := Finset.mem_filter.mp hf
     obtain ⟨hsupp, -, hweight⟩ := mem_weightedPartitions.mp hfmem
-    have happly : ∀ k : ℕ, (f - (Finsupp.single j 1 : ℕ →₀ ℕ)) k =
-        f k - (if j = k then 1 else 0) := by
-      intro k
-      rw [Finsupp.tsub_apply, Finsupp.single_apply]
+    have happly := sub_single_apply f j
     obtain ⟨u, hu⟩ : ∃ u, f j = u + 1 := ⟨f j - 1, by omega⟩
-    have hweight' : ∑ k ∈ Icc 1 n,
-        k * (f - (Finsupp.single j 1 : ℕ →₀ ℕ)) k = n - j := by
-      have hsplit := Finset.add_sum_erase (Icc 1 n) (fun k => k * f k) hj
-      have hsplit' := Finset.add_sum_erase (Icc 1 n)
-        (fun k => k * (f - (Finsupp.single j 1 : ℕ →₀ ℕ)) k) hj
-      have heq : ∀ k ∈ (Icc 1 n).erase j,
-          k * (f - (Finsupp.single j 1 : ℕ →₀ ℕ)) k = k * f k := by
-        intro k hk
-        have hkj := (Finset.mem_erase.mp hk).1
-        rw [happly, if_neg (fun h => hkj h.symm), Nat.sub_zero]
-      rw [Finset.sum_congr rfl heq] at hsplit'
-      have hjval : (f - (Finsupp.single j 1 : ℕ →₀ ℕ)) j = u := by
-        rw [happly, if_pos rfl, hu, Nat.add_sub_cancel]
-      rw [hjval] at hsplit'
-      have hlin : j * f j = j * u + j := by rw [hu]; ring
-      rw [hlin] at hsplit
-      omega
     have hsupp' : (f - (Finsupp.single j 1 : ℕ →₀ ℕ)).support ⊆
-        Icc 1 (n - j) := by
-      intro k hk
-      have hk1 : (f - (Finsupp.single j 1 : ℕ →₀ ℕ)) k ≠ 0 :=
-        Finsupp.mem_support_iff.mp hk
-      have hk2 : f k ≠ 0 := by
-        intro hzero
-        apply hk1
-        rw [happly, hzero, Nat.zero_sub]
-      have hk3 := Finset.mem_Icc.mp (hsupp (Finsupp.mem_support_iff.mpr hk2))
-      have hk4 : k * (f - (Finsupp.single j 1 : ℕ →₀ ℕ)) k ≤ n - j := by
-        rw [← hweight']
-        exact Finset.single_le_sum
-          (f := fun t => t * (f - (Finsupp.single j 1 : ℕ →₀ ℕ)) t)
-          (fun t _ => Nat.zero_le _) (Finset.mem_Icc.mpr hk3)
-      have hk5 : 1 ≤ (f - (Finsupp.single j 1 : ℕ →₀ ℕ)) k := by omega
-      refine Finset.mem_Icc.mpr ⟨hk3.1, ?_⟩
-      nlinarith [hk3.1]
+        Icc 1 (n - j) :=
+      (mem_weightedPartitions.mp (sub_single_mem hj hfj hsupp hweight)).1
     rw [← prod_extend x (f - (Finsupp.single j 1 : ℕ →₀ ℕ))
       (M := n - j) (M' := n) (by omega) hsupp']
     rw [← Finset.mul_prod_erase (Icc 1 n)

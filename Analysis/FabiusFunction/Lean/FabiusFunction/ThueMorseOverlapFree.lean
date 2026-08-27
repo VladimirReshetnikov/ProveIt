@@ -30,6 +30,14 @@ periods `p = 1, 3` die by Boolean analysis over the window.
   existential forms.
 * `thueMorseSign_overlap_free` — the signed version.
 * `thueMorseBit_cube_free` — no nonempty cube `x·x·x` occurs.
+* `exists_overlap_of_eventually_periodic` — over an **arbitrary** alphabet,
+  an eventual period `p ≥ 1` valid from index `N` on already exhibits an
+  overlap of period `p` starting at `N`.
+* `not_eventually_periodic_of_overlap_free` — hence, over an arbitrary
+  alphabet, every overlap-free sequence fails to be eventually periodic.
+* `thueMorseBit_not_eventually_periodic` — aperiodicity of the zero–one
+  sequence, read off from Thue's theorem.  The signed counterpart is
+  `thueMorseSign_not_eventually_periodic` in `ThueMorseAperiodicity`.
 -/
 
 set_option autoImplicit false
@@ -224,6 +232,54 @@ theorem thueMorseBit_cube_free :
       ∀ j < 2 * p, thueMorseBit (i + j) = thueMorseBit (i + p + j) := by
   rintro ⟨i, p, hp, hcube⟩
   exact thueMorseBit_not_overlap p hp i fun j hj => hcube j (by omega)
+
+/-! ### Overlap-freeness forces aperiodicity, over any alphabet
+
+Overlap-freeness is strictly stronger than non-eventual-periodicity, and
+the implication between them is a pure word-combinatorics fact: it uses no
+property of the alphabet and no property of the sequence beyond the two
+hypotheses.  The index bookkeeping is the whole content.  Suppose `f` has
+the eventual period `p ≥ 1` from the threshold `N` on, i.e.
+`f(n + p) = f(n)` for every `n ≥ N`.  Take the window of length `2p + 1`
+that starts at `N`, namely `f(N), …, f(N + 2p)`.  For each `j ≤ p` the
+index `N + j` is already at or beyond `N`, so the eventual period applies
+to it and gives `f(N + j + p) = f(N + j)`; rewriting `N + j + p` as
+`N + p + j` turns this into exactly the overlap condition
+`f(N + j) = f(N + p + j)` for all `j ≤ p`.  The largest index touched is
+`N + p + p = N + 2p`, so the window really is the factor `x·x·a` with
+`x = f(N) ⋯ f(N + p - 1)` of length `p` and `a = f(N + 2p) = f(N)` the
+repeated first letter. -/
+
+/-- **From an eventual period to an overlap**, over an arbitrary alphabet.
+If `f : ℕ → α` satisfies `f (n + p) = f n` for every `n ≥ N`, with
+`p ≥ 1`, then the window of length `2p + 1` starting at `N` is an overlap
+of period `p`: `f (N + j) = f (N + p + j)` for every `j ≤ p`. -/
+theorem exists_overlap_of_eventually_periodic {α : Type*} (f : ℕ → α)
+    (p N : ℕ) (hp : 0 < p) (hper : ∀ n, N ≤ n → f (n + p) = f n) :
+    ∃ i q, 0 < q ∧ ∀ j ≤ q, f (i + j) = f (i + q + j) := by
+  refine ⟨N, p, hp, fun j _ => ?_⟩
+  have h := hper (N + j) (Nat.le_add_right N j)
+  rw [show N + p + j = N + j + p by ring]
+  exact h.symm
+
+/-- **Overlap-free implies not eventually periodic**, over an arbitrary
+alphabet.  A sequence `f : ℕ → α` admitting no overlap — no period
+`q ≥ 1` persisting for `q + 1` consecutive steps — admits no eventual
+period either.  This is the general form of
+`thueMorseSign_not_eventually_periodic`. -/
+theorem not_eventually_periodic_of_overlap_free {α : Type*} (f : ℕ → α)
+    (hf : ¬ ∃ i q, 0 < q ∧ ∀ j ≤ q, f (i + j) = f (i + q + j)) :
+    ¬ ∃ p N : ℕ, 0 < p ∧ ∀ n, N ≤ n → f (n + p) = f n := by
+  rintro ⟨p, N, hp, hper⟩
+  exact hf (exists_overlap_of_eventually_periodic f p N hp hper)
+
+/-- **Aperiodicity of the zero–one Thue–Morse sequence**, read off from
+Thue's theorem: no positive period is valid from any threshold on. -/
+theorem thueMorseBit_not_eventually_periodic :
+    ¬ ∃ p N : ℕ, 0 < p ∧
+      ∀ n, N ≤ n → thueMorseBit (n + p) = thueMorseBit n :=
+  not_eventually_periodic_of_overlap_free thueMorseBit
+    thueMorseBit_overlap_free
 
 /-! ### The critical exponent is attained, and closure of the factors -/
 

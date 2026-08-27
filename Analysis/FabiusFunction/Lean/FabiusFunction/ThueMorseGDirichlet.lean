@@ -17,8 +17,11 @@ The proof here is Fubini-free and uses no uniform summation-by-parts:
 2. **Dyadic partial sums are finite products.**  Summing `n < 2^m`
    and factoring `e^(-nt)` collapses the signed sum to
    `∏_{j<m}(1 - e^(-2^j t))` — the *finite* lacunary product, which
-   lies in `[0,1]`.  A single dominated-convergence pass (dominator
-   `|a-b|·e^(-min t)`) then evaluates the limit:
+   lies in `[0,1]`.  That collapse is
+   `sum_range_two_pow_thueMorseSign_exp` (`ThueMorseInfiniteProduct`),
+   and its convergence is `multipliable_one_sub_exp_neg_two_pow`
+   (`ThueMorseBoundaryFlatness`).  A single dominated-convergence pass
+   (dominator `|a-b|·e^(-min t)`) then evaluates the limit:
    `L(a,b) = ∫₀^∞ ((e^(-bt) - e^(-at))/t)·𝓔(t) dt`.
 3. **The Γ-factor differentiates to `1` at `0`.**  From
    `Γ(s)⁻¹ = s·Γ(s+1)⁻¹` (an identity of entire functions), the
@@ -41,33 +44,9 @@ open Finset Filter MeasureTheory Set Complex Topology
 
 namespace Fabius
 
-/-- The dyadic partial sums of the signed exponential series are the
-finite lacunary products. -/
-private theorem sum_sign_exp_eq_prod (t : ℝ) (m : ℕ) :
-    ∑ n ∈ range (2 ^ m),
-      (thueMorseSign n : ℝ) * Real.exp (-((n : ℝ) * t)) =
-      ∏ j ∈ range m, (1 - Real.exp (-(2 ^ j * t))) := by
-  have h := prod_one_sub_pow_eq_sum_thueMorseSign (Real.exp (-t)) m
-  calc ∑ n ∈ range (2 ^ m),
-      (thueMorseSign n : ℝ) * Real.exp (-((n : ℝ) * t))
-      = ∑ n ∈ range (2 ^ m),
-          ((thueMorseSign n : ℤ) : ℝ) * Real.exp (-t) ^ n := by
-        refine Finset.sum_congr rfl fun n _ => ?_
-        congr 1
-        rw [← Real.exp_nat_mul]
-        congr 1
-        ring
-    _ = ∏ j ∈ range m, (1 - Real.exp (-t) ^ 2 ^ j) := h.symm
-    _ = ∏ j ∈ range m, (1 - Real.exp (-(2 ^ j * t))) := by
-        refine Finset.prod_congr rfl fun j _ => ?_
-        congr 1
-        rw [← Real.exp_nat_mul]
-        congr 1
-        push_cast
-        ring
-
 /-- **Dyadic partial sums of the master log-series as integrals**:
-termwise Frullani plus the finite product identity. -/
+termwise Frullani plus the finite product identity
+`sum_range_two_pow_thueMorseSign_exp`. -/
 private theorem mpLog_pow_eq_integral (a b : ℝ) (ha : 0 < a)
     (hb : 0 < b) (m : ℕ) :
     mpLog a b (2 ^ m) =
@@ -109,7 +88,7 @@ private theorem mpLog_pow_eq_integral (a b : ℝ) (ha : 0 < a)
         refine Finset.sum_congr rfl fun n _ => ?_
         rw [hsplit n b, hsplit n a]
         ring
-    _ = _ := by rw [sum_sign_exp_eq_prod t m]
+    _ = _ := by rw [sum_range_two_pow_thueMorseSign_exp t m]
 
 /-- **The closed integral form of the master limit**
 (`cor:G-Dirichlet`, integral step):
@@ -176,12 +155,7 @@ theorem mpLimit_eq_integral (a b : ℝ) (ha : 0 < a) (hb : 0 < b) :
   · refine (ae_restrict_iff' measurableSet_Ioi).mpr
       (Filter.Eventually.of_forall fun t ht => ?_)
     have ht0 : (0 : ℝ) < t := ht
-    have hmult : Multipliable
-        (fun j : ℕ => 1 - Real.exp (-(2 ^ j * t))) := by
-      have h := Real.multipliable_one_add_of_summable
-        (summable_exp_neg_two_pow t ht0).neg
-      refine h.congr fun j => ?_
-      rw [← sub_eq_add_neg]
+    have hmult := multipliable_one_sub_exp_neg_two_pow t ht0
     exact (hmult.hasProd.tendsto_prod_nat).const_mul _
 
 /-- The Mellin kernel divided by `t` is integrable on `(0,∞)`:

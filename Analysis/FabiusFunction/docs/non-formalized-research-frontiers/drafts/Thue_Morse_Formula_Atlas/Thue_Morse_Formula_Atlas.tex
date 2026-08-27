@@ -170,9 +170,9 @@ super-polynomial flatness
 \]
 A second consolidation pass merged three parallel sibling atlases into this
 document.  It contributed the weighted digit enumerator
-\(\prod_j(1+uz^{2^j})\) and the subtraction/borrow cocycle; a self-contained
-proof that the unit circle is a natural boundary, with the Hankel-determinant
-rigidity theorem and the sharp irrationality exponent
+\(\prod_j(1+uz^{2^j})\) and the subtraction/borrow cocycle; self-contained
+proofs that the unit circle is a natural boundary and that the Hankel
+determinants never vanish, with the sharp irrationality exponent
 \(\mu(\Theta_b)=2\) of the Thue--Morse--Mahler numbers stated from the
 literature; a Mahler functional equation for the autocorrelation series; a
 chapter on the combinatorics and dynamics of the infinite word (uniform
@@ -454,6 +454,16 @@ Within \(m\) positions, \(2^m-1-n\) is the bitwise complement of \(n\), so
 its weight is \(m-\wt(n)\).  A permutation of positions leaves their sum
 unchanged.
 \end{proof}
+
+\emph{Formal versions.}  The signed reflection
+\eqref{eq:block-reflection} is
+\lean{Fabius.thueMorseSign\_dyadic\_complement}
+(\path{DyadicClosedForm.lean}), proved by induction on \(m\) through
+the two-scale laws rather than through the weight of the complement;
+its only hypothesis is the stated \(n<2^m\).  Only the signed form is
+named in Lean; the bit form is its parity reading, and the
+digit-permutation invariance is the invariance of \(\wt\) under
+permuting positions.
 
 \subsection{Exclusive-or is the natural group law}
 
@@ -899,6 +909,41 @@ multiply to
 \((-1)^{\sum_j\lfloor N/2^j\rfloor}=\eps_N\) by
 \cref{thm:floor-formulas}.
 \end{proof}
+
+\emph{Formal versions.}  The product \eqref{eq:sinc-product} is
+\lean{Fabius.rvachevFourierProduct} (\path{Basic.lean}); the interval
+sign \eqref{eq:sinc-interval-sign} is not yet formal, but the
+quantitative face of the same product is.  \path{SincProductShells.lean}
+proves the exact dyadic shell factorization of its modulus: for real
+\(y\ne0\) and every \(k\ge0\),
+\begin{equation}
+ |\Phi(2^ky)|
+ =\frac{\prod_{j<k}\bigl|\sin(2^{j+1}\pi y)\bigr|}
+        {2^{k(k+1)/2}\,(\pi|y|)^k}\,|\Phi(y)|
+ \label{eq:sinc-shell-factorization}
+\end{equation}
+(\lean{Fabius.norm\_rvachevFourierProduct\_two\_pow\_mul}):
+dilating the argument by \(2^k\) creates exactly the \(k\) sine
+factors of the corresponding dyadic shell.  Bounding the lacunary sine
+numerator by the formal Gelfond bound
+\lean{Fabius.abs\_prod\_sin\_two\_pow\_le} --- the sine-product form
+of \eqref{eq:gelfond-upper}, with the optimal rate \((\sqrt3/2)^k\)
+and the slightly larger constant \(\sqrt{5/3}\) in place of
+\(2/\sqrt3\) --- turns
+\eqref{eq:sinc-shell-factorization} into the decay bound
+\begin{equation}
+ |\Phi(2^ky)|
+ \le\sqrt{\tfrac53}\;
+   \frac{(\sqrt3/2)^k}{2^{k(k+1)/2}\,(\pi|y|)^k}\,|\Phi(y)|
+ \label{eq:sinc-shell-decay}
+\end{equation}
+(\lean{Fabius.norm\_rvachevFourierProduct\_two\_pow\_mul\_le}), valid
+along every dyadic ray at once, with no hypothesis on \(y\) beyond
+\(y\ne0\).  The triangular power \(2^{-k(k+1)/2}\) left standing in
+the denominator is the universal \(\exp(-(\log x)^2/(2\log2))\) factor
+of the Fabius--Rvachev decay theory; the accompanying geometric factor
+is what the companion reports convert into the spectrum of decay
+exponents.
 
 \subsection{The ruler transition}
 
@@ -1986,7 +2031,7 @@ sequence \((a_k)\) is a simple transform of the ruler sequence.
 
 \begin{theorem}[Ruler-convolution recurrence]
 \label{thm:ruler-convolution}
-With \(\eps_0=1\), for every \(n\ge1\),
+With \(\eps_0=1\), for every \(n\ge0\),
 \begin{equation}
   \boxed{
   n\eps_n=-\sum_{k=1}^{n}a_k\eps_{n-k}.}
@@ -2032,7 +2077,9 @@ the surviving binary divisors reassemble the binary expansion of \(n\).
 \emph{Formal versions.}  \path{ThueMorseEulerTransform.lean} proves
 \cref{thm:ruler-convolution} as \lean{Fabius.ruler\_convolution},
 following \cref{rem:ruler-convolution-combinatorial} --- no logarithm,
-derivative, or convergence enters.  The reusable pieces are the prefix
+derivative, or convergence enters, and no side condition on \(n\) is
+imposed: the Lean statement is hypothesis-free, the case \(n=0\) being
+the empty sum.  The reusable pieces are the prefix
 collapse \lean{Fabius.sum\_thueMorseSign\_range}, the residue-class
 collapse \lean{Fabius.sum\_thueMorseSign\_progression}, the
 divisor-sum identification \lean{Fabius.sum\_ite\_two\_pow\_dvd},
@@ -2114,7 +2161,7 @@ No power series, exponentials, or convergence enter the proof.
 
 \subsection{A Hessenberg determinant}
 
-For \(n\ge1\), let
+For \(n\ge0\), let
 \begin{equation}
  H_n=
  \begin{pmatrix}
@@ -2126,10 +2173,11 @@ For \(n\ge1\), let
  \end{pmatrix}.
  \label{eq:Hessenberg-matrix}
 \end{equation}
+For \(n=0\) this is the empty matrix, with \(\det H_0=1\).
 
 \begin{theorem}[Determinant formula]
 \label{thm:Hessenberg-determinant}
-For every \(n\ge1\),
+For every \(n\ge0\),
 \begin{equation}
   \boxed{
   \eps_n=\frac{(-1)^n}{n!}\det H_n.}
@@ -2137,7 +2185,9 @@ For every \(n\ge1\),
 \end{equation}
 In particular,
 \begin{equation}
-  \det H_n=(-1)^n n!\eps_n\in\{n!,-n!\}.
+  \det H_n=(-1)^n n!\eps_n\in\{n!,-n!\},
+  \qquad
+  |\det H_n|=n!.
   \label{eq:Hessenberg-factorial}
 \end{equation}
 \end{theorem}
@@ -2169,13 +2219,31 @@ triangular with diagonal \(1,2,\ldots,n\), so \(\det T_n=n!\)
 (\lean{Fabius.det\_thueMorseTriangular}).  Cramer's rule --- in the
 reusable form \(\operatorname{cramer}_A(A\mathbf{x})=\det
 A\cdot\mathbf{x}\), proved for any commutative ring
-(\lean{Fabius.cramer\_mulVec}) --- evaluates \(n!\,\eps(n)\) as
+(\lean{Matrix.cramer\_mulVec}, \path{ToeplitzHessenberg.lean}) ---
+evaluates \(n!\,\eps(n)\) as
 the determinant of \(T_n\) with its last column replaced by
 \(\mathbf{c}\); one cyclic column rotation (sign
 \((-1)^{n-1}\)) and one column negation turn that matrix into
 \(H_n\).  Hence \(\det H_n=(-1)^nn!\,\eps(n)\) with no minor
-ever expanded, and \(\det H_n=\pm n!\) is
-\lean{Fabius.det\_thueMorseHessenberg\_eq\_or}.
+ever expanded, for every \(n\ge0\); that \(\det H_n=\pm n!\) is
+\lean{Fabius.det\_thueMorseHessenberg\_eq\_or}, and the sharper
+\(|\det H_n|=n!\) is
+\lean{Fabius.natAbs\_det\_thueMorseHessenberg}.
+
+None of this is special to the ruler coefficients.  The argument is
+carried out in \path{ToeplitzHessenberg.lean} for arbitrary band data
+\((d_m)\) and \((a_k)\) over an arbitrary commutative ring: the
+triangular matrix \lean{Fabius.triBand}, of size \(N\) and with
+\(\det=\prod_{i<N}d_i\) (\lean{Fabius.det\_triBand}); the lower
+Toeplitz--Hessenberg matrix \lean{Fabius.hessBand}; and the
+determinant formula
+\(\det=(-1)^{n+1}\bigl(\prod_{i\le n}d_i\bigr)x_n\) for a matrix of
+size \(n+1\), read off from \emph{any} solution \(x\) of the
+convolution system \(T\mathbf{x}=-(a_1,\ldots,a_{n+1})\)
+(\lean{Fabius.det\_hessBand}), together with the scalar form
+\lean{Fabius.det\_hessBand\_of\_recurrence} that the Thue--Morse
+instance consumes.  No invertibility, no positivity, and no
+uniqueness of the solution is assumed anywhere.
 \end{remark}
 
 \subsection{The zero--one series over \texorpdfstring{\(\mathbb F_2\)}{F2}}
@@ -2402,8 +2470,9 @@ The algebraic picture of the previous section is completed by three
 analytic-arithmetic facts: the series \(E\) cannot be continued across any
 boundary point, its Hankel determinants never vanish, and its values at
 algebraic points are transcendental with the smallest possible irrationality
-exponent.  The first fact is proved here in full; the other two are deep
-literature theorems, stated with references and not reproved.
+exponent.  The first two facts are proved here in full --- and both are
+formalized; the Diophantine statements are deep literature theorems,
+stated with references and not reproved.
 
 \subsection{The unit circle is a natural boundary}
 
@@ -2506,7 +2575,7 @@ engineered from the ruler weights precisely so that its determinant would
 telescope, these matrices sample the raw signs and have no visible
 triangular structure.
 
-\begin{theorem}[Allouche--Peyri\`ere--Wen--Wen; literature theorem]
+\begin{theorem}[Allouche--Peyri\`ere--Wen--Wen]
 \label{thm:hankel-nonzero}
 For every \(r\ge1\),
 \begin{equation}
@@ -2515,10 +2584,50 @@ For every \(r\ge1\),
 \end{equation}
 \end{theorem}
 
+\begin{proof}
+We show the exact two-adic valuation
+\(H_r(\eps)=2^{\,r-1}\cdot(\text{odd})\), which is visible in
+\eqref{eq:hankel-first-values} --- for instance
+\(H_{10}=-1536=-2^9\cdot3\).  Interleave the rows and the columns of
+\(H_{2n}\) by parity (the same permutation on both sides, so no sign).
+By \(\eps_{2k}=\eps_k\), \(\eps_{2k+1}=-\eps_k\) the four blocks
+are \(\bigl[\begin{smallmatrix}A&-A\\-A&K\end{smallmatrix}\bigr]\)
+with \(A\) the order-\(n\) Hankel matrix and
+\(K_{ij}=\eps_{i+j+1}\); adding the top block row to the bottom one
+triangularizes, and the Schur block has entries
+\(\eps_{i+j+1}-\eps_{i+j}=2m_{i+j}\), where
+\(m_k=\tau(k)-\tau(k+1)\in\{-1,0,1\}\) is the half-increment.
+Hence
+\[
+  H_{2n}(\eps)=2^n\,H_n(\eps)\,H_n(m),
+  \qquad
+  H_{2n+1}(\eps)=2^n\,H_{n+1}(\eps)\,H_n(m),
+\]
+the odd case by the same elimination against the truncated top block.
+The determinants \(H_n(m)\) are \emph{odd}: modulo two, \(|m|\) is
+the period-doubling sequence \(p\) with \(p(2k)=1\),
+\(p(2k+1)=1+p(k)\), and the two mod-two determinant families ---
+Hankel determinants \(D(n)\) of \(p(k)\) and \(Y(n)\) of
+\(p(\lfloor k/2\rfloor)\) --- close under the same parity
+interleaving:
+\[
+  D(2n)=D(n),\quad D(2n+1)=Y(n),\quad
+  Y(2n)=D(n)Y(n),\quad Y(2n+1)=D(n+1)Y(n),
+\]
+using \(p(k)+p(k+1)=p(\lfloor k/2\rfloor)\) and the vanishing of
+all permutation signs in characteristic two.  Every value is \(1\) by
+strong induction.  Feeding the oddness back into the two
+factorizations gives \(v_2(H_{2n})=n+v_2(H_n)\) and
+\(v_2(H_{2n+1})=n+v_2(H_{n+1})\), whence \(v_2(H_r)=r-1\) exactly
+and \(H_r\ne0\).
+\end{proof}
+
 The original proof runs a closed finite system of determinant recurrences
 \cite{apww1998}; later proofs include Han's Hankel continued-fraction
 calculus \cite{han2014} and a combinatorial argument of Bugeaud and Han
-\cite{bugeaudHan2014}.  The statement is a strong rigidity property: no
+\cite{bugeaudHan2014}.  The two-adic argument above is in the spirit of
+all three, compressed to a pair of block factorizations and one mod-two
+induction.  The statement is a strong rigidity property: no
 finite window of the sequence ever satisfies an accidental low-order linear
 relation of Hankel type.
 
@@ -2530,6 +2639,26 @@ expansion agrees with \(E\) to the maximal possible order.  When
 through order \(z^{2r-1}\) with a nonzero discrepancy coefficient at
 \(z^{2r}\); the whole diagonal Pad\'e table of \(E\) is therefore normal,
 with no degenerate blocks.
+
+\emph{Formal versions.}  \Cref{thm:hankel-nonzero} is fully formal,
+with the proof above.  The mod-two engine is
+\path{PeriodDoublingHankel.lean}: the period-doubling bit and its
+recursions (\lean{Fabius.pdBit}), the four determinant halvings, and
+the strong induction
+\lean{Fabius.pdHankel\_det\_eq\_one} --- every Hankel determinant
+of the period-doubling sequence over \(\mathbb F_2\) equals \(1\).
+The reusable block machinery
+(\lean{Fabius.det\_fromBlocks\_of\_eq\_mul},
+\lean{Fabius.det\_fromBlocks\_symm}, the parity interleavings) is
+proved over an arbitrary commutative ring.  The integer level is
+\path{ThueMorseHankel.lean}: the doubling factorizations
+(\lean{Fabius.hankelSign\_det\_two\_mul},
+\lean{Fabius.hankelSign\_det\_two\_mul\_add\_one}), the mod-two
+transfer (\lean{Fabius.mseqHankel\_det\_odd}), the exact valuation
+\(H_r=2^{r-1}\cdot\mathrm{odd}\)
+(\lean{Fabius.hankelSign\_det\_eq\_two\_pow\_mul\_odd}), and the
+boxed nonvanishing \eqref{eq:hankel-nonzero}
+(\lean{Fabius.thueMorseHankel\_ne\_zero}).
 
 \subsection{Transcendental values and the sharp irrationality exponent}
 \label{sec:mahler-values}
@@ -4087,16 +4216,16 @@ at most one by \cref{cor:interval-discrepancy}.
 \emph{Formal versions.}  \path{ThueMorseRecurrence.lean} proves
 \cref{prop:uniform-recurrence} in a form sharper than stated: the
 recurrence bound is explicit and \emph{linear} --- a factor of length
-\(\ell\le2^k\) occurs in every window of length \(20\cdot2^k\)
+\(\ell\le2^k\) occurs in every window of length \(15\cdot2^k\)
 (\lean{Fabius.thueMorseBit\_uniformly\_recurrent}), so every factor of
-length \(\ell\) recurs with gap at most \(40\ell\).  The route is
+length \(\ell\) recurs with gap at most \(30\ell\).  The route is
 index arithmetic rather than supertiles: the full block-concatenation
 laws \(\wt(q\cdot2^k+r)=\wt(q)+\wt(r)\) and
 \(\tau(q\cdot2^k+r)=\tau(q)\oplus\tau(r)\)
 (\lean{Fabius.binaryWeight\_block\_concat},
 \lean{Fabius.thueMorseBit\_block\_concat}) reduce any window to its
 offset and two block bits, and all four two-letter factors occur in
-every window of seventeen letters
+every window of fourteen letters
 (\lean{Fabius.exists\_thueMorseBit\_pair}).
 
 \subsection{Aperiodicity}
@@ -4207,7 +4336,7 @@ factors of length \(\ell\).
 
 \begin{proposition}[Elementary linear bound]
 \label{prop:complexity-bound}
-For every \(\ell\ge2\),
+For every \(\ell\ge1\),
 \begin{equation}
   \boxed{\ell+1\le p(\ell)<8\ell.}
   \label{eq:complexity-bound}
@@ -4249,7 +4378,12 @@ principle would force two equal windows, and the word would be
 eventually periodic --- contradicting the formal aperiodicity theorem.
 Uniform recurrence (\lean{Fabius.thueMorseFactorSet\_eq\_image})
 makes the factor set a computable finite image.  Both bounds hold in
-exactly the stated form; no literature import is needed.
+at least the stated form: the upper bound
+\lean{Fabius.thueMorseComplexity\_lt} needs only \(\ell\ge1\), which
+is why \cref{prop:complexity-bound} is stated there, while
+\lean{Fabius.le\_thueMorseComplexity} carries no side condition at
+all and holds at \(\ell=0\) too, where \(p(0)=1\).  No literature
+import is needed.
 
 Linear complexity has two immediate consequences.  The topological entropy,
 \(\lim_\ell\ell^{-1}\log p(\ell)\), is zero.  And the word is not
@@ -4851,6 +4985,21 @@ These zeros are the analytic continuation of the finite Prouhet phenomenon:
 negative integer values formally ask for signed polynomial moments, and the
 flat Mellin kernel makes all of them vanish after continuation.
 
+\emph{Formal versions.}  \Cref{cor:Dirichlet-trivial-zeros} is now
+formal (\path{ThueMorseEntireContinuation.lean}):
+\lean{Fabius.dirichletMellinContinuation\_neg\_natCast} gives
+\(D(-r,a)=0\) for every integer \(r\ge0\), with the origin recorded
+separately as
+\lean{Fabius.dirichletMellinContinuation\_zero}; neither statement
+needs any hypothesis on \(a\), since the vanishing is supplied by the
+zero of \(1/\Gamma\) at \(s=-r\).  What makes that argument
+legitimate is the stronger, \emph{un-damped} statement --- and it too
+is formal --- that the Mellin factor alone is entire, with no
+\(\Gamma\)-factor damping it
+(\lean{Fabius.mellin\_mellinKernel\_differentiable}, for \(a>0\)):
+boundary flatness leaves no pole at \(s=-r\) that could cancel that
+zero.
+
 \subsection{The harmonic kernel}
 
 At \(s=1\), the Mellin integral can be moved to the unit interval.
@@ -5088,7 +5237,18 @@ counterpart of the odd/even split, justified along the doubled
 subsequence rather than by rearrangement --- force
 \(L_A=-\tfrac12\log2\)
 (\lean{Fabius.tendsto\_wrA}), and exponentiation evaluates the
-partial products.  No convergence step is left informal.
+partial products.  That final exponentiation is itself a reusable
+module, \path{RealZPowProduct.lean}, in which nothing mentions
+Thue--Morse: a finite product of integer powers of positive reals is
+the exponential of the signed logarithm sum
+(\lean{Fabius.prod\_zpow\_eq\_exp\_sum}), so a convergent logarithm
+sum exponentiates to a convergent product along an arbitrary filter
+(\lean{Fabius.tendsto\_prod\_zpow\_of\_tendsto\_sum}), and the closed
+values come from \lean{Fabius.exp\_neg\_mul\_log} with its two
+specializations \lean{Fabius.exp\_neg\_log\_div\_two}
+(\(\e^{-\frac12\log b}=1/\sqrt b\)) and
+\lean{Fabius.exp\_neg\_three\_halves\_log}.  Every product evaluation
+below reuses it.  No convergence step is left informal.
 
 A second classical evaluation is
 \begin{equation}
@@ -5153,7 +5313,22 @@ convenient fingerprints of the same product theory:
 
 These limits are now \emph{proved}, not merely recorded: over a dyadic
 block the even/odd split collapses the unbounded logarithms into the
-convergent sign-weighted ratio series, giving the exact partial-sum
+convergent sign-weighted ratio series.  That split is isolated as a
+pair of hypothesis-free primitives over an arbitrary additive
+commutative group,
+\[
+ \sum_{k<2N}\eps_k\,g(k)=\sum_{j<N}\eps_j\bigl(g(2j)-g(2j+1)\bigr),
+ \qquad
+ \sum_{k<2N}(-1)^k\eps_k\,g(k)
+   =\sum_{j<N}\eps_j\bigl(g(2j)+g(2j+1)\bigr)
+\]
+(\lean{Fabius.sum\_zsmul\_thueMorseSign\_two\_mul} and
+\lean{Fabius.sum\_zsmul\_alternating\_thueMorseSign\_two\_mul},
+\path{ThueMorseEulerTransform.lean}); the alternating weight is
+exactly the one whose two halves add instead of cancelling, and the
+\(\Z\)-module formulation makes the same two lines serve real
+logarithms, complex values, and formal coefficients alike.  Applied to
+\(g(k)=\log(k+1)\) they give the exact partial-sum
 identity \(\sum_{k<2N}\eps_k\log(k+1)=L_A\)-partial\((N)\)
 (\lean{Fabius.block\_log\_one}), whence
 \eqref{eq:block-product-one} follows from the Woods--Robbins limit
@@ -5256,7 +5431,7 @@ valuation, carry, and Pascal-row formulas remain genuinely base-two features.
 \subsection{Formalized modules (August 2026)}
 \label{sec:formalized-modules}
 
-The first tranches of the formalization now exist as fifty
+The first tranches of the formalization now exist as fifty-two
 compiled Lean modules in \repo{}, complementing the corpus modules
 (\path{Parity.lean}, \path{TwoAdic.lean}, \path{ThueMorsePrefix.lean},
 \path{ThueMorseGenerating.lean}, \path{ThueMorseExponential.lean},
@@ -5291,7 +5466,7 @@ Module & Contents \\
 \path{ThueMorseMixedDifference.lean} & The dyadic mixed-difference operator and the finite-difference factorization for arbitrary functions from an additive monoid into an additive group, with the powerset expansion. \\
 \path{ThueMorseAutocorrelation.lean} & Finite autocorrelation recursion in exact integer form, zero-shift value, closed values at shifts one and two. \\
 \path{ThueMorseOverlapFree.lean} & Thue's overlap-freeness theorem with cube-freeness, the attained critical exponent two, and constructive complement and reversal closure of the factor language. \\
-\path{ThueMorseRecurrence.lean} & Full block-concatenation laws for weight and bit, all two-letter factors in every seventeen-letter window, uniform recurrence with an explicit linear bound. \\
+\path{ThueMorseRecurrence.lean} & Full block-concatenation laws for weight and bit, all two-letter factors in every fourteen-letter window, uniform recurrence with an explicit linear bound. \\
 \path{ThueMorseMahler.lean} & Mahler equation and dyadic dissection for the signed series, cleared zero--one bridge, prefix generating function, finite-level autocorrelation Mahler equation. \\
 \path{ThueMorseBooleanMobius.lean} & Lattice isomorphism of the two-power encoding, submask weight enumerators, reconstruction and inversion-polynomial identities, nested binomial formula, Boolean M\"obius inversion on finsets and on submasks. \\
 \path{ThueMorseMultinomial.lean} & Kummer's criterion for multinomial coefficients, the multinomial support count \(O_r(n)=r^{\wt(n)}\), the signed \(r\)-nomial row formula, the exact \(r\)-nomial logarithm. \\
@@ -5301,7 +5476,8 @@ Module & Contents \\
 \path{ThueMorseParseval.lean} & Character orthonormality on \([0,1]\) and the Parseval mass \(\int_0^1|P_m(\e^{2\pi\ii x})|^2\,\dd x=2^m\). \\
 \path{ThueMorseComplexity.lean} & Factor complexity: the supertile-pair window parametrization, uniform-recurrence finiteness, and the two-sided bound \(\ell+1\le p(\ell)<8\ell\) with the Morse--Hedlund strict-growth argument. \\
 \path{ThueMorseArithmeticFilter.lean} & The root-of-unity filter for arithmetic progressions over any field (division-free form), the boxed rarefied formula, and the even-modulus collapse. \\
-\path{ThueMorseHessenberg.lean} & Cramer's rule for a known solution over any commutative ring, the triangular ruler system with determinant \(n!\), and the Hessenberg formula \(\det H_n=(-1)^nn!\,\eps_n\) via one column rotation. \\
+\path{ToeplitzHessenberg.lean} & Cramer's rule for a known solution over any commutative ring; the triangular and the lower Toeplitz--Hessenberg band matrices of arbitrary band data; the triangular determinant \(\prod_{i<n}d_i\); and the expansion-free Toeplitz--Hessenberg determinant formula, read off from any solution of the convolution system, in matrix and in scalar-recurrence form. \\
+\path{ThueMorseHessenberg.lean} & The ruler convolution as an instance of that band system: the triangular ruler system with determinant \(n!\), the Hessenberg formula \(\det H_n=(-1)^nn!\,\eps_n\) for every \(n\ge0\) by one column rotation, and the sharp absolute value \(|\det H_n|=n!\). \\
 \path{ThueMorsePartition.lean} & Weighted partitions, the marked-part recurrence of \(\exp(\sum x_jz^j)\) over any characteristic-zero field, recurrence uniqueness, and the partition and Bell formulae for \(\eps_n\). \\
 \path{ThueMorseIntegerLift.lean} & The integral algebraic lift constructed in closed Catalan--binomial form; Catalan parity at Mersenne indices; the unconditional parity theorem \(c_n\equiv\tau(n)\), \(\eps_n=(-1)^{c_n}\). \\
 \path{ThueMorseBoundaryFlatness.lean} & The lacunary product \(\mathcal E(t)\) as an infinite product: self-similarity, positivity, monotonicity, and the effective two-sided flatness \(2^{\binom m2}(t/2)^m\mathcal E(\frac12)\le\mathcal E(t)\le2^{\binom m2}t^m\). \\
@@ -5313,6 +5489,7 @@ Module & Contents \\
 \path{ThueMorseLacunaryQuotient.lean} & The dyadic geometric series and its inversion of \(1-z^{2^j}\); the denominator-free bit Mahler equation; the lacunary quotient expansion at every finite level. \\
 \path{ThueMorseInfiniteProduct.lean} & The analytic infinite-product identity \(\sum\eps_n\e^{-nt}=\mathcal E(t)\) for \(t>0\): absolute convergence, multipliability, and identification of the limits along the dyadic scale. \\
 \path{ThueMorseMellin.lean} & The Mellin representation \(\Gamma(\sigma)D(\sigma,a)=\int_0^\infty t^{\sigma-1}\e^{-at}\mathcal E(t)\,\dd t\) for \(\sigma>1\): kernel integrability, absolute interchange, and termwise Gamma evaluation. \\
+\path{RealZPowProduct.lean} & Finite products of integer powers of positive reals through the exponential: the signed-logarithm identity, the limit transfer from logarithm sums to products along an arbitrary filter, and the closed-form value computations; nothing in it mentions Thue--Morse. \\
 \path{ThueMorseWoodsRobbins.lean} & The Woods--Robbins evaluation \(\prod((2n+1)/(2n+2))^{\eps_n}=2^{-1/2}\): Dirichlet-test convergence of the three log-series, the termwise and interleaving identities, and exponentiation. \\
 \path{ThueMorseMasterProduct.lean} & The master product \(G(a,b)\): convergence for all positive parameters, the cocycle identities, the dyadic functional equation, and \(G=\exp L\). \\
 \path{ThueMorseBlockProducts.lean} & The three dyadic block-product limits: the block collapse onto the Woods--Robbins partials, the alternating telescoping, and the identification of the half-shifted block with the master series at \((\frac14,\frac34)\). \\
@@ -5324,6 +5501,8 @@ Module & Contents \\
 \path{ThueMorseNaturalBoundary.lean} & The natural-boundary theorem: radial vanishing at dyadic roots of unity, two-power roots approximating every circle point, and the double identity-theorem argument. \\
 \path{ThueMorseNewman.lean} & Newman's positivity theorem: residue-class sign sums, the modulo-three parity system, the base-four collapse with disjoint boundary corrections, and the strong induction. \\
 \path{ThueMorseGelfond.lean} & Gelfond's sharp uniform bound: the one-variable sum-of-squares inequality \(\varphi^2(t)\varphi(2t)\le3\sqrt3\), the telescoped doubling-orbit product bound, and the exponential-sum form with constant \(2/\sqrt3\). \\
+\path{PeriodDoublingHankel.lean} & The mod-two Hankel engine: reusable block-determinant eliminations, parity interleavings, the period-doubling bit, and the four determinant halvings forcing every \(\mathbb F_2\)-determinant to equal one. \\
+\path{ThueMorseHankel.lean} & The Allouche--Peyri\`ere--Wen--Wen theorem: the doubling factorizations \(H_{2n}=2^nH_nH_n(m)\), \(H_{2n+1}=2^nH_{n+1}H_n(m)\), oddness of the difference determinants, and the exact valuation \(v_2(H_r)=r-1\). \\
 \bottomrule
 \end{longtable}}
 

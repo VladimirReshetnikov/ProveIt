@@ -17,6 +17,14 @@ agrees with `D(σ,a)` on the real ray `σ > 1` by the Mellin
 representation.  This is the atlas's entire continuation of `D(s,a)`,
 realized through Mathlib's Mellin-transform calculus.
 
+Once entirety is available the **dyadic parameter equation** propagates
+off the real ray by the identity theorem: both sides of
+
+`D(s,a) = 2^(-s)·(D(s,a/2) - D(s,(a+1)/2))`
+
+are entire in `s`, and they agree on the ray `(1,∞) ⊆ ℝ ⊆ ℂ`, which
+accumulates at every one of its points.
+
 * `mellinKernel` — the kernel `e^(-at)·E(t)` as a complex-valued map.
 * `mellinKernel_isBigO_exp` / `mellinKernel_isBigO_rpow` — decay at
   infinity and flatness of every order at `0` (from the effective
@@ -32,6 +40,12 @@ realized through Mathlib's Mellin-transform calculus.
   a real integral.
 * `dirichletMellinContinuation_eq` — agreement with `D(σ,a)` for
   `σ > 1`.
+* `dirichletMellinContinuation_dyadic_ofReal` — the dyadic parameter
+  equation on the real ray `σ > 1`, transported from
+  `thueMorseDirichlet_dyadic`.
+* `dirichletMellinContinuation_dyadic` — **the dyadic parameter
+  equation at every `s ∈ ℂ`** (`thm:Dirichlet-dyadic`, complex form),
+  by the identity theorem for entire functions.
 -/
 
 set_option autoImplicit false
@@ -220,5 +234,97 @@ theorem dirichletMellinContinuation_eq (σ a : ℝ) (hσ : 1 < σ)
     Complex.ofReal_ne_zero.mpr hne
   push_cast
   field_simp
+
+/-- The cast bridge for the dyadic factor: for real `σ` the complex power
+`2^(-s)` evaluated at `s = σ` is the real power `2^(-σ)`. -/
+theorem two_cpow_neg_ofReal (σ : ℝ) :
+    (2 : ℂ) ^ (-(σ : ℂ)) = (((2 : ℝ) ^ (-σ) : ℝ) : ℂ) := by
+  rw [Complex.ofReal_cpow (by norm_num : (0 : ℝ) ≤ 2), Complex.ofReal_neg,
+    Complex.ofReal_ofNat]
+
+/-- **The dyadic parameter equation on the real ray**
+(`thm:Dirichlet-dyadic`, Mellin form).  For `σ > 1` and `a > 0`,
+
+`D(σ,a) = 2^(-σ)·(D(σ,a/2) - D(σ,(a+1)/2))`
+
+for the *entire continuation*; this is the real dyadic equation
+`thueMorseDirichlet_dyadic` transported through
+`dirichletMellinContinuation_eq`.  The upgrade to all of `ℂ` is
+`dirichletMellinContinuation_dyadic`. -/
+theorem dirichletMellinContinuation_dyadic_ofReal (σ a : ℝ) (hσ : 1 < σ)
+    (ha : 0 < a) :
+    dirichletMellinContinuation a (σ : ℂ) =
+      (2 : ℂ) ^ (-(σ : ℂ)) *
+        (dirichletMellinContinuation (a / 2) (σ : ℂ) -
+          dirichletMellinContinuation ((a + 1) / 2) (σ : ℂ)) := by
+  have hσ0 : (0 : ℝ) < σ := by linarith
+  have ha2 : (0 : ℝ) < a / 2 := by linarith
+  have ha3 : (0 : ℝ) < (a + 1) / 2 := by linarith
+  rw [dirichletMellinContinuation_eq σ a hσ ha,
+    dirichletMellinContinuation_eq σ (a / 2) hσ ha2,
+    dirichletMellinContinuation_eq σ ((a + 1) / 2) hσ ha3,
+    thueMorseDirichlet_dyadic σ a hσ0 ha, two_cpow_neg_ofReal σ]
+  push_cast
+  ring
+
+/-- **The dyadic parameter equation for the entire continuation**
+(`thm:Dirichlet-dyadic`, complex form): for every `a > 0` and **every**
+`s ∈ ℂ`,
+
+`D(s,a) = 2^(-s)·(D(s,a/2) - D(s,(a+1)/2))`.
+
+Proof by the identity theorem.  Both sides are entire — the left by
+`dirichletMellinContinuation_differentiable` at `a`, the right by the
+same at `a/2` and `(a+1)/2` multiplied by the entire `s ↦ 2^(-s)` — and
+by `dirichletMellinContinuation_dyadic_ofReal` they agree on the real
+ray `(1,∞) ⊆ ℝ ⊆ ℂ`, whose image accumulates at `s = 2`.  Hence they
+agree on the connected space `ℂ`. -/
+theorem dirichletMellinContinuation_dyadic (a : ℝ) (ha : 0 < a) (s : ℂ) :
+    dirichletMellinContinuation a s =
+      (2 : ℂ) ^ (-s) * (dirichletMellinContinuation (a / 2) s -
+        dirichletMellinContinuation ((a + 1) / 2) s) := by
+  have ha2 : (0 : ℝ) < a / 2 := by linarith
+  have ha3 : (0 : ℝ) < (a + 1) / 2 := by linarith
+  have h2ne : (2 : ℂ) ≠ 0 := by norm_num
+  have hpow : Differentiable ℂ (fun z : ℂ => (2 : ℂ) ^ (-z)) :=
+    differentiable_neg.const_cpow (Or.inl h2ne)
+  have hL : Differentiable ℂ (dirichletMellinContinuation a) :=
+    dirichletMellinContinuation_differentiable a ha
+  have hR : Differentiable ℂ (fun z : ℂ => (2 : ℂ) ^ (-z) *
+      (dirichletMellinContinuation (a / 2) z -
+        dirichletMellinContinuation ((a + 1) / 2) z)) :=
+    hpow.fun_mul
+      ((dirichletMellinContinuation_differentiable (a / 2) ha2).fun_sub
+        (dirichletMellinContinuation_differentiable ((a + 1) / 2) ha3))
+  have hLan : AnalyticOnNhd ℂ (dirichletMellinContinuation a) Set.univ :=
+    fun z _ => hL.analyticAt z
+  have hRan : AnalyticOnNhd ℂ (fun z : ℂ => (2 : ℂ) ^ (-z) *
+      (dirichletMellinContinuation (a / 2) z -
+        dirichletMellinContinuation ((a + 1) / 2) z)) Set.univ :=
+    fun z _ => hR.analyticAt z
+  have hfreq : ∃ᶠ z in 𝓝[≠] (2 : ℂ),
+      dirichletMellinContinuation a z =
+        (2 : ℂ) ^ (-z) * (dirichletMellinContinuation (a / 2) z -
+          dirichletMellinContinuation ((a + 1) / 2) z) := by
+    have htend : Tendsto (fun σ : ℝ => (σ : ℂ)) (𝓝[>] (2 : ℝ))
+        (𝓝[≠] (2 : ℂ)) := by
+      rw [tendsto_nhdsWithin_iff]
+      refine ⟨?_, ?_⟩
+      · have hc : Tendsto (fun σ : ℝ => (σ : ℂ)) (𝓝 (2 : ℝ))
+            (𝓝 (2 : ℂ)) :=
+          Complex.continuous_ofReal.tendsto' 2 2 (by norm_num)
+        exact hc.mono_left nhdsWithin_le_nhds
+      · filter_upwards [self_mem_nhdsWithin] with σ hσ
+        have hσ' : (2 : ℝ) < σ := hσ
+        have hne : (σ : ℂ) ≠ (2 : ℂ) := by
+          intro hcon
+          exact hσ'.ne' (by exact_mod_cast hcon)
+        simp only [Set.mem_compl_iff, Set.mem_singleton_iff]
+        exact hne
+    refine htend.frequently (Filter.Eventually.frequently ?_)
+    filter_upwards [self_mem_nhdsWithin] with σ hσ
+    have hσ' : (2 : ℝ) < σ := hσ
+    exact dirichletMellinContinuation_dyadic_ofReal σ a (by linarith) ha
+  exact congrFun (hLan.eq_of_frequently_eq hRan hfreq) s
 
 end Fabius

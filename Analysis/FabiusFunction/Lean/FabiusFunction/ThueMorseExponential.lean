@@ -27,6 +27,19 @@ alternative q-binomial formula for dyadic Fabius values.  The coefficient API
 uses the unified sharp-degree affine formula from `ThueMorsePrefix`, so one
 statement covers every `m ≤ k`; the explicit `k = 0` lemmas retain the
 boundary convention `0^0 = 1`.
+
+The centered family is the `c = 0` member of the translated family.  Three
+bridge lemmas record this once and for all,
+
+* `thueMorseCenteredPowerSum_eq`,
+* `thueMorseCenteredPowerSeries_eq`,
+* `thueMorseShiftedPowerSeries_eq`,
+
+and every centered statement whose translated counterpart is available is
+derived from that counterpart through them.  The translated family is
+therefore developed *before* the centered specializations; the genuinely
+centered-only results (the integer lift, the halving recurrence, and the
+product factorizations) keep their own proofs.
 -/
 
 set_option autoImplicit false
@@ -35,6 +48,8 @@ open scoped BigOperators
 open Finset
 
 namespace Fabius
+
+/-! ## The inner sums, centered and translated -/
 
 /-- The integer-valued centered signed power sum underlying the Wolfram
 Language expression. -/
@@ -62,171 +77,6 @@ theorem thueMorseCenteredPowerSum_eq_intCast (k m : ℕ) :
   push_cast
   norm_num
 
-/-- Range-indexed form, matching the bounds printed by Wolfram Language. -/
-theorem thueMorseCenteredPowerSum_eq_sum_range (k m : ℕ) :
-    thueMorseCenteredPowerSum k m =
-      ∑ r ∈ Finset.range (2 ^ k),
-        (thueMorseSign r : ℚ) *
-          ((r : ℚ) - (2 : ℚ) ^ k) ^ m := by
-  rw [thueMorseCenteredPowerSum,
-    Fin.sum_univ_eq_sum_range
-      (fun r : ℕ =>
-        (thueMorseSign r : ℚ) *
-          ((r : ℚ) - (2 : ℚ) ^ k) ^ m)
-      (2 ^ k)]
-
-/-- At `k = 0`, the inner block consists only of `r = 0`. -/
-@[simp] theorem thueMorseCenteredPowerSum_zero (m : ℕ) :
-    thueMorseCenteredPowerSum 0 m = (-1 : ℚ) ^ m := by
-  simp [thueMorseCenteredPowerSum, thueMorseSign, binaryWeight]
-
-/-- One formula for the centered power sums through the first nonzero degree.
-It is zero below `k` and takes the sharp Prouhet value at `m = k`. -/
-theorem thueMorseCenteredPowerSum_of_le
-    (k m : ℕ) (hm : m ≤ k) :
-    thueMorseCenteredPowerSum k m =
-      if m = k then
-        (-1 : ℚ) ^ k * (2 : ℚ) ^ k.choose 2 * k.factorial
-      else 0 := by
-  rw [thueMorseCenteredPowerSum]
-  simpa only [one_mul, one_pow, mul_one, sub_eq_add_neg, add_comm] using
-    thueMorse_affine_power_sum_of_le k m hm (-(2 : ℚ) ^ k) 1
-
-/-- Prouhet cancellation: a dyadic block of exponent `k` annihilates every
-polynomial of degree strictly below `k`. -/
-theorem thueMorseCenteredPowerSum_eq_zero_of_lt
-    (k m : ℕ) (hm : m < k) :
-    thueMorseCenteredPowerSum k m = 0 := by
-  rw [thueMorseCenteredPowerSum_of_le k m hm.le, if_neg hm.ne]
-
-/-- The first centered power sum beyond the Prouhet zero range.  Centering
-does not change this leading-degree value. -/
-theorem thueMorseCenteredPowerSum_self (k : ℕ) :
-    thueMorseCenteredPowerSum k k =
-      (-1 : ℚ) ^ k * (2 : ℚ) ^ k.choose 2 * k.factorial := by
-  rw [thueMorseCenteredPowerSum_of_le k k le_rfl, if_pos rfl]
-
-/-- The finite exponential generating series before removing its forced
-zero of order `k`. -/
-noncomputable def thueMorseCenteredPowerSeries (k : ℕ) : PowerSeries ℚ :=
-  ∑ r : Fin (2 ^ k), (thueMorseSign r.val : ℚ) •
-    PowerSeries.rescale ((r.val : ℚ) - (2 : ℚ) ^ k)
-      (PowerSeries.exp ℚ)
-
-/-- Coefficients of the finite exponential series recover the centered
-power sums divided by factorials. -/
-@[simp] theorem coeff_thueMorseCenteredPowerSeries (k m : ℕ) :
-    PowerSeries.coeff m (thueMorseCenteredPowerSeries k) =
-      thueMorseCenteredPowerSum k m / m.factorial := by
-  rw [thueMorseCenteredPowerSum]
-  simp only [thueMorseCenteredPowerSeries, map_sum,
-    PowerSeries.coeff_rescale, PowerSeries.coeff_exp, map_smul]
-  rw [Finset.sum_div]
-  apply Finset.sum_congr rfl
-  intro r _hr
-  simp only [smul_eq_mul]
-  norm_num
-  ring
-
-/-- The first nonzero coefficient of the centered exponential series. -/
-@[simp] theorem coeff_self_thueMorseCenteredPowerSeries (k : ℕ) :
-    PowerSeries.coeff k (thueMorseCenteredPowerSeries k) =
-      (-1 : ℚ) ^ k * (2 : ℚ) ^ k.choose 2 := by
-  rw [coeff_thueMorseCenteredPowerSeries,
-    thueMorseCenteredPowerSum_self]
-  have hfactorial : (k.factorial : ℚ) ≠ 0 := by positivity
-  field_simp
-
-/-- Prouhet cancellation is sharp: the centered exponential series has a
-zero of order exactly `k`. -/
-theorem order_thueMorseCenteredPowerSeries (k : ℕ) :
-    (thueMorseCenteredPowerSeries k).order = k := by
-  rw [PowerSeries.order_eq_nat]
-  constructor
-  · rw [coeff_self_thueMorseCenteredPowerSeries]
-    exact mul_ne_zero (pow_ne_zero k (by norm_num))
-      (pow_ne_zero (k.choose 2) (by norm_num))
-  · intro m hm
-    rw [coeff_thueMorseCenteredPowerSeries,
-      thueMorseCenteredPowerSum_eq_zero_of_lt k m hm, zero_div]
-
-/-- The centered exponential series at the empty binary scale. -/
-@[simp] theorem thueMorseCenteredPowerSeries_zero :
-    thueMorseCenteredPowerSeries 0 =
-      PowerSeries.rescale (-1 : ℚ) (PowerSeries.exp ℚ) := by
-  ext m
-  simp [thueMorseCenteredPowerSeries, thueMorseSign, binaryWeight]
-
-private noncomputable abbrev ratExpSeries (a : ℚ) : PowerSeries ℚ :=
-  PowerSeries.rescale a (PowerSeries.exp ℚ)
-
-private theorem centered_exp_first (k : ℕ) (r : Fin (2 ^ k)) :
-    (thueMorseSign r.val : ℚ) •
-        ratExpSeries ((r.val : ℚ) - (2 : ℚ) ^ (k + 1)) =
-      ((thueMorseSign r.val : ℚ) •
-          ratExpSeries ((r.val : ℚ) - (2 : ℚ) ^ k)) *
-        ratExpSeries (-(2 : ℚ) ^ k) := by
-  rw [smul_mul_assoc, PowerSeries.exp_mul_exp_eq_exp_add]
-  congr 2
-  rw [pow_succ]
-  ring
-
-private theorem centered_exp_second (k : ℕ) (r : Fin (2 ^ k)) :
-    (thueMorseSign (2 ^ k + r.val) : ℚ) •
-        ratExpSeries
-          (((2 ^ k + r.val : ℕ) : ℚ) - (2 : ℚ) ^ (k + 1)) =
-      -((thueMorseSign r.val : ℚ) •
-          ratExpSeries ((r.val : ℚ) - (2 : ℚ) ^ k)) := by
-  rw [thueMorseSign_add_pow_two k r.val r.isLt]
-  push_cast
-  rw [neg_smul, pow_succ]
-  congr 2
-  ring_nf
-
-/-- Splitting a dyadic block into its two Thue--Morse halves gives the
-one-step exponential-series recurrence. -/
-theorem thueMorseCenteredPowerSeries_succ (k : ℕ) :
-    thueMorseCenteredPowerSeries (k + 1) =
-      thueMorseCenteredPowerSeries k *
-        (PowerSeries.rescale (-(2 : ℚ) ^ k) (PowerSeries.exp ℚ) - 1) := by
-  rw [thueMorseCenteredPowerSeries,
-    show 2 ^ (k + 1) = 2 ^ k + 2 ^ k by rw [pow_succ]; omega,
-    Fin.sum_univ_add]
-  rw [thueMorseCenteredPowerSeries, Finset.sum_mul]
-  simp only [Fin.val_castAdd, Fin.val_natAdd]
-  simp_rw [centered_exp_first, centered_exp_second]
-  rw [Finset.sum_neg_distrib, ← sub_eq_add_neg]
-  simp_rw [mul_sub, mul_one]
-  rw [← Finset.sum_sub_distrib]
-
-/-- The coefficient series with the forced order-`k` zero removed.  Its
-degree-`n` coefficient is exactly the normalized inner summand used in the
-explicit inverse-power formula. -/
-noncomputable def thueMorseShiftedPowerSeries (k : ℕ) : PowerSeries ℚ :=
-  PowerSeries.mk fun n =>
-    thueMorseCenteredPowerSum k (n + k) / (n + k).factorial
-
-@[simp] theorem coeff_thueMorseShiftedPowerSeries (k n : ℕ) :
-    PowerSeries.coeff n (thueMorseShiftedPowerSeries k) =
-      thueMorseCenteredPowerSum k (n + k) / (n + k).factorial := by
-  simp [thueMorseShiftedPowerSeries]
-
-/-- Multiplying the shifted coefficient series by `X^k` recovers the full
-finite exponential generating series. -/
-theorem X_pow_mul_thueMorseShiftedPowerSeries (k : ℕ) :
-    PowerSeries.X ^ k * thueMorseShiftedPowerSeries k =
-      thueMorseCenteredPowerSeries k := by
-  ext m
-  rw [PowerSeries.coeff_X_pow_mul']
-  by_cases hkm : k ≤ m
-  · rw [if_pos hkm, coeff_thueMorseShiftedPowerSeries,
-      coeff_thueMorseCenteredPowerSeries, Nat.sub_add_cancel hkm]
-  · rw [if_neg hkm, coeff_thueMorseCenteredPowerSeries,
-      thueMorseCenteredPowerSum_eq_zero_of_lt k m (Nat.lt_of_not_ge hkm)]
-    norm_num
-
-/-! ## Rational translations of the centered sums -/
-
 /-- The centered Thue--Morse power sum translated by a rational constant
 `c`.  Taking `c = 1/2` gives the inner sum in the half-shifted Wolfram
 Language formula. -/
@@ -234,6 +84,16 @@ def thueMorseTranslatedPowerSum (c : ℚ) (k m : ℕ) : ℚ :=
   ∑ r : Fin (2 ^ k),
     (thueMorseSign r.val : ℚ) *
       ((r.val : ℚ) - (2 : ℚ) ^ k + c) ^ m
+
+/-- Bridge: the centered sum is the translation by `c = 0`.  The two
+summands differ only by the redundant `+ 0`, so a single `add_zero`
+rewrite identifies them. -/
+theorem thueMorseCenteredPowerSum_eq (k m : ℕ) :
+    thueMorseCenteredPowerSum k m = thueMorseTranslatedPowerSum 0 k m := by
+  rw [thueMorseCenteredPowerSum, thueMorseTranslatedPowerSum]
+  simp only [add_zero]
+
+/-! ## Rational translations of the centered sums -/
 
 /-- Range-indexed form of the translated power sum. -/
 theorem thueMorseTranslatedPowerSum_eq_sum_range
@@ -281,6 +141,60 @@ theorem thueMorseTranslatedPowerSum_self (c : ℚ) (k : ℕ) :
       (-1 : ℚ) ^ k * (2 : ℚ) ^ k.choose 2 * k.factorial := by
   rw [thueMorseTranslatedPowerSum_of_le c k k le_rfl, if_pos rfl]
 
+/-! ## Centered specializations of the translated sums -/
+
+/-- Range-indexed form, matching the bounds printed by Wolfram Language. -/
+theorem thueMorseCenteredPowerSum_eq_sum_range (k m : ℕ) :
+    thueMorseCenteredPowerSum k m =
+      ∑ r ∈ Finset.range (2 ^ k),
+        (thueMorseSign r : ℚ) *
+          ((r : ℚ) - (2 : ℚ) ^ k) ^ m := by
+  rw [thueMorseCenteredPowerSum_eq,
+    thueMorseTranslatedPowerSum_eq_sum_range]
+  simp only [add_zero]
+
+/-- At `k = 0`, the inner block consists only of `r = 0`. -/
+@[simp] theorem thueMorseCenteredPowerSum_zero (m : ℕ) :
+    thueMorseCenteredPowerSum 0 m = (-1 : ℚ) ^ m := by
+  rw [thueMorseCenteredPowerSum_eq, thueMorseTranslatedPowerSum_zero]
+  norm_num
+
+/-- One formula for the centered power sums through the first nonzero degree.
+It is zero below `k` and takes the sharp Prouhet value at `m = k`. -/
+theorem thueMorseCenteredPowerSum_of_le
+    (k m : ℕ) (hm : m ≤ k) :
+    thueMorseCenteredPowerSum k m =
+      if m = k then
+        (-1 : ℚ) ^ k * (2 : ℚ) ^ k.choose 2 * k.factorial
+      else 0 := by
+  rw [thueMorseCenteredPowerSum_eq]
+  exact thueMorseTranslatedPowerSum_of_le 0 k m hm
+
+/-- Prouhet cancellation: a dyadic block of exponent `k` annihilates every
+polynomial of degree strictly below `k`. -/
+theorem thueMorseCenteredPowerSum_eq_zero_of_lt
+    (k m : ℕ) (hm : m < k) :
+    thueMorseCenteredPowerSum k m = 0 := by
+  rw [thueMorseCenteredPowerSum_eq]
+  exact thueMorseTranslatedPowerSum_eq_zero_of_lt 0 k m hm
+
+/-- The first centered power sum beyond the Prouhet zero range.  Centering
+does not change this leading-degree value. -/
+theorem thueMorseCenteredPowerSum_self (k : ℕ) :
+    thueMorseCenteredPowerSum k k =
+      (-1 : ℚ) ^ k * (2 : ℚ) ^ k.choose 2 * k.factorial := by
+  rw [thueMorseCenteredPowerSum_eq]
+  exact thueMorseTranslatedPowerSum_self 0 k
+
+/-! ## The finite exponential generating series -/
+
+/-- The finite exponential generating series before removing its forced
+zero of order `k`. -/
+noncomputable def thueMorseCenteredPowerSeries (k : ℕ) : PowerSeries ℚ :=
+  ∑ r : Fin (2 ^ k), (thueMorseSign r.val : ℚ) •
+    PowerSeries.rescale ((r.val : ℚ) - (2 : ℚ) ^ k)
+      (PowerSeries.exp ℚ)
+
 /-- The full exponential generating series of the translated sums. -/
 noncomputable def thueMorseTranslatedPowerSeries
     (c : ℚ) (k : ℕ) : PowerSeries ℚ :=
@@ -288,6 +202,12 @@ noncomputable def thueMorseTranslatedPowerSeries
     PowerSeries.rescale
       ((r.val : ℚ) - (2 : ℚ) ^ k + c)
       (PowerSeries.exp ℚ)
+
+/-- Bridge: the centered exponential series is the translation by `c = 0`. -/
+theorem thueMorseCenteredPowerSeries_eq (k : ℕ) :
+    thueMorseCenteredPowerSeries k = thueMorseTranslatedPowerSeries 0 k := by
+  rw [thueMorseCenteredPowerSeries, thueMorseTranslatedPowerSeries]
+  simp only [add_zero]
 
 /-- Coefficients of the full translated exponential series. -/
 @[simp] theorem coeff_thueMorseTranslatedPowerSeries
@@ -327,6 +247,39 @@ theorem order_thueMorseTranslatedPowerSeries (c : ℚ) (k : ℕ) :
     rw [coeff_thueMorseTranslatedPowerSeries,
       thueMorseTranslatedPowerSum_eq_zero_of_lt c k m hm, zero_div]
 
+/-- Coefficients of the finite exponential series recover the centered
+power sums divided by factorials. -/
+@[simp] theorem coeff_thueMorseCenteredPowerSeries (k m : ℕ) :
+    PowerSeries.coeff m (thueMorseCenteredPowerSeries k) =
+      thueMorseCenteredPowerSum k m / m.factorial := by
+  rw [thueMorseCenteredPowerSeries_eq,
+    coeff_thueMorseTranslatedPowerSeries,
+    thueMorseCenteredPowerSum_eq]
+
+/-- The first nonzero coefficient of the centered exponential series. -/
+@[simp] theorem coeff_self_thueMorseCenteredPowerSeries (k : ℕ) :
+    PowerSeries.coeff k (thueMorseCenteredPowerSeries k) =
+      (-1 : ℚ) ^ k * (2 : ℚ) ^ k.choose 2 := by
+  rw [thueMorseCenteredPowerSeries_eq]
+  exact coeff_self_thueMorseTranslatedPowerSeries 0 k
+
+/-- Prouhet cancellation is sharp: the centered exponential series has a
+zero of order exactly `k`. -/
+theorem order_thueMorseCenteredPowerSeries (k : ℕ) :
+    (thueMorseCenteredPowerSeries k).order = k := by
+  rw [thueMorseCenteredPowerSeries_eq]
+  exact order_thueMorseTranslatedPowerSeries 0 k
+
+/-- The centered exponential series at the empty binary scale. -/
+@[simp] theorem thueMorseCenteredPowerSeries_zero :
+    thueMorseCenteredPowerSeries 0 =
+      PowerSeries.rescale (-1 : ℚ) (PowerSeries.exp ℚ) := by
+  ext m
+  simp [thueMorseCenteredPowerSeries, thueMorseSign, binaryWeight]
+
+private noncomputable abbrev ratExpSeries (a : ℚ) : PowerSeries ℚ :=
+  PowerSeries.rescale a (PowerSeries.exp ℚ)
+
 private theorem translated_exp_term
     (c : ℚ) (k : ℕ) (r : Fin (2 ^ k)) :
     (thueMorseSign r.val : ℚ) •
@@ -362,6 +315,54 @@ theorem thueMorseTranslatedPowerSeries_eq_exp_mul
   congr 2
   ring
 
+private theorem centered_exp_first (k : ℕ) (r : Fin (2 ^ k)) :
+    (thueMorseSign r.val : ℚ) •
+        ratExpSeries ((r.val : ℚ) - (2 : ℚ) ^ (k + 1)) =
+      ((thueMorseSign r.val : ℚ) •
+          ratExpSeries ((r.val : ℚ) - (2 : ℚ) ^ k)) *
+        ratExpSeries (-(2 : ℚ) ^ k) := by
+  rw [smul_mul_assoc, PowerSeries.exp_mul_exp_eq_exp_add]
+  congr 2
+  rw [pow_succ]
+  ring
+
+private theorem centered_exp_second (k : ℕ) (r : Fin (2 ^ k)) :
+    (thueMorseSign (2 ^ k + r.val) : ℚ) •
+        ratExpSeries
+          (((2 ^ k + r.val : ℕ) : ℚ) - (2 : ℚ) ^ (k + 1)) =
+      -((thueMorseSign r.val : ℚ) •
+          ratExpSeries ((r.val : ℚ) - (2 : ℚ) ^ k)) := by
+  rw [thueMorseSign_add_pow_two k r.val r.isLt]
+  push_cast
+  rw [neg_smul, pow_succ]
+  congr 2
+  ring_nf
+
+/-- Splitting a dyadic block into its two Thue--Morse halves gives the
+one-step exponential-series recurrence. -/
+theorem thueMorseCenteredPowerSeries_succ (k : ℕ) :
+    thueMorseCenteredPowerSeries (k + 1) =
+      thueMorseCenteredPowerSeries k *
+        (PowerSeries.rescale (-(2 : ℚ) ^ k) (PowerSeries.exp ℚ) - 1) := by
+  rw [thueMorseCenteredPowerSeries,
+    show 2 ^ (k + 1) = 2 ^ k + 2 ^ k by rw [pow_succ]; omega,
+    Fin.sum_univ_add]
+  rw [thueMorseCenteredPowerSeries, Finset.sum_mul]
+  simp only [Fin.val_castAdd, Fin.val_natAdd]
+  simp_rw [centered_exp_first, centered_exp_second]
+  rw [Finset.sum_neg_distrib, ← sub_eq_add_neg]
+  simp_rw [mul_sub, mul_one]
+  rw [← Finset.sum_sub_distrib]
+
+/-! ## Removing the forced zero of order `k` -/
+
+/-- The coefficient series with the forced order-`k` zero removed.  Its
+degree-`n` coefficient is exactly the normalized inner summand used in the
+explicit inverse-power formula. -/
+noncomputable def thueMorseShiftedPowerSeries (k : ℕ) : PowerSeries ℚ :=
+  PowerSeries.mk fun n =>
+    thueMorseCenteredPowerSum k (n + k) / (n + k).factorial
+
 /-- The translated coefficient series with the forced order-`k` zero
 removed. -/
 noncomputable def thueMorseTranslatedShiftedPowerSeries
@@ -369,12 +370,26 @@ noncomputable def thueMorseTranslatedShiftedPowerSeries
   PowerSeries.mk fun n =>
     thueMorseTranslatedPowerSum c k (n + k) / (n + k).factorial
 
+@[simp] theorem coeff_thueMorseShiftedPowerSeries (k n : ℕ) :
+    PowerSeries.coeff n (thueMorseShiftedPowerSeries k) =
+      thueMorseCenteredPowerSum k (n + k) / (n + k).factorial := by
+  simp [thueMorseShiftedPowerSeries]
+
 @[simp] theorem coeff_thueMorseTranslatedShiftedPowerSeries
     (c : ℚ) (k n : ℕ) :
     PowerSeries.coeff n (thueMorseTranslatedShiftedPowerSeries c k) =
       thueMorseTranslatedPowerSum c k (n + k) /
         (n + k).factorial := by
   simp [thueMorseTranslatedShiftedPowerSeries]
+
+/-- Bridge: the shifted centered series is the translation by `c = 0`. -/
+theorem thueMorseShiftedPowerSeries_eq (k : ℕ) :
+    thueMorseShiftedPowerSeries k =
+      thueMorseTranslatedShiftedPowerSeries 0 k := by
+  ext n
+  rw [coeff_thueMorseShiftedPowerSeries,
+    coeff_thueMorseTranslatedShiftedPowerSeries,
+    thueMorseCenteredPowerSum_eq]
 
 /-- Multiplying by `X^k` recovers the full translated exponential
 generating series. -/
@@ -394,6 +409,15 @@ theorem X_pow_mul_thueMorseTranslatedShiftedPowerSeries
       thueMorseTranslatedPowerSum_eq_zero_of_lt c k m
         (Nat.lt_of_not_ge hkm)]
     norm_num
+
+/-- Multiplying the shifted coefficient series by `X^k` recovers the full
+finite exponential generating series. -/
+theorem X_pow_mul_thueMorseShiftedPowerSeries (k : ℕ) :
+    PowerSeries.X ^ k * thueMorseShiftedPowerSeries k =
+      thueMorseCenteredPowerSeries k := by
+  rw [thueMorseShiftedPowerSeries_eq,
+    X_pow_mul_thueMorseTranslatedShiftedPowerSeries,
+    thueMorseCenteredPowerSeries_eq]
 
 /-- Removing the vacuous factor `X^0` leaves the same one-term exponential
 series at block exponent zero. -/
@@ -421,6 +445,8 @@ theorem thueMorseTranslatedShiftedPowerSeries_half (k : ℕ) :
       PowerSeries.rescale (1 / 2 : ℚ) (PowerSeries.exp ℚ) *
         thueMorseShiftedPowerSeries k :=
   thueMorseTranslatedShiftedPowerSeries_eq_exp_mul (1 / 2) k
+
+/-! ## Product factorizations -/
 
 /-- Product factorization of the centered Thue--Morse exponential series. -/
 theorem thueMorseCenteredPowerSeries_eq_product (k : ℕ) :

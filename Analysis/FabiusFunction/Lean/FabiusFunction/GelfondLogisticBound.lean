@@ -11,14 +11,35 @@ form more general than the sine products themselves: the bound holds
 along **every** orbit of the logistic map, and the sine products enter
 only because squared sines at doubling angles form such orbits.
 
-* `logistic_prod_le` — along any orbit `u (j+1) = 4·u j·(1 - u j)` in
-  `[0,1]`, the running product satisfies
+* `logistic_nonneg_and_le_one` — the unit interval is **invariant**
+  under `v ↦ 4v(1-v)`; the upper half is `1 - 4v(1-v) = (2v-1)² ≥ 0`.
+* `logistic_orbit_nonneg_and_le_one` — hence an orbit whose *starting
+  point* lies in `[0,1]` stays in `[0,1]` forever.
+* `logistic_prod_le_of_init` — along any orbit
+  `u (j+1) = 4·u j·(1 - u j)` with `0 ≤ u 0 ≤ 1` — a hypothesis on
+  `u 0` **only** — the running product satisfies
   `∏_{j<n} u j ≤ (5/3)·(3/4)ⁿ`.  The proof telescopes the potential
   `V v = 1 + 2v/3` through the exact identity
   `3·V v - 4v·V (4v(1-v)) = (2v+1)(4v-3)²/3 ≥ 0`
   (Document 2's subaction, audited in the comparative audit).
+* `logistic_init_le_one`, `logistic_prod_le_of_nonneg` — for a logistic
+  orbit, `∀ j, 0 ≤ u j` already forces `u 0 ≤ 1`, so the bound holds
+  under nonnegativity alone.
+* `logistic_prod_le` — the original blanket-hypothesis form
+  (`∀ j, 0 ≤ u j` and `∀ j, u j ≤ 1`), now a corollary: both range
+  hypotheses are redundant away from `j = 0`.
+* `logistic_prod_eq_of_init_three_quarters` — the rate `(3/4)ⁿ` is
+  **exact** already at the abstract level: `3/4` is the interior fixed
+  point of the logistic map, and the constant orbit it generates has
+  running product exactly `(3/4)ⁿ`.
 * `prod_sin_sq_two_pow_le` — the **Gelfond bound**
   `∏_{j<n} sin (π 2ʲ t)² ≤ (5/3)·(3/4)ⁿ` for every real `t`.
+* `sin_sq_two_pow_eq_three_quarters`,
+  `prod_sin_sq_two_pow_eq_of_sin_sq_eq` — **sharpness in general
+  position**: *every* `t` seeding the fixed point, i.e. with
+  `sin (π t)² = 3/4`, has all its doubling iterates at `3/4` and hence
+  `∏_{j<n} sin (π 2ʲ t)² = (3/4)ⁿ`.  This covers `t = 1/3`, `t = 2/3`
+  and all their integer translates at once.
 * `prod_sin_sq_two_pow_third` — **sharpness**: at `t = 1/3` every
   factor equals `3/4`, so the product is exactly `(3/4)ⁿ`; the binary
   cycle `1/3 ↔ 2/3` realizes the extremal rate.
@@ -75,21 +96,98 @@ theorem logistic_prod_mul_le (u : ℕ → ℝ) (h0 : ∀ j, 0 ≤ u j)
             exact mul_le_mul_of_nonneg_left ihn h34
         _ = (3 / 4 : ℝ) ^ (n + 1) * (1 + 2 * u 0 / 3) := by ring
 
-/-- **Logistic-orbit product bound**: along any orbit of the full
-logistic map `v ↦ 4v(1-v)` in `[0,1]`,
-`∏_{j<n} u j ≤ (5/3)·(3/4)ⁿ`. -/
-theorem logistic_prod_le (u : ℕ → ℝ) (h0 : ∀ j, 0 ≤ u j) (h1 : ∀ j, u j ≤ 1)
+/-- **Invariance of the unit interval** under the full logistic map:
+if `0 ≤ v ≤ 1` then `0 ≤ 4v(1-v) ≤ 1`.  The upper bound is the exact
+identity `1 - 4v(1-v) = (2v-1)²`. -/
+theorem logistic_nonneg_and_le_one (v : ℝ) (h0 : 0 ≤ v) (h1 : v ≤ 1) :
+    0 ≤ 4 * v * (1 - v) ∧ 4 * v * (1 - v) ≤ 1 := by
+  constructor
+  · nlinarith [mul_nonneg h0 (by linarith : (0:ℝ) ≤ 1 - v)]
+  · nlinarith [sq_nonneg (2 * v - 1)]
+
+/-- A logistic orbit started in `[0,1]` never leaves it: from
+`0 ≤ u 0 ≤ 1` alone, `0 ≤ u j ≤ 1` for **every** `j`. -/
+theorem logistic_orbit_nonneg_and_le_one (u : ℕ → ℝ) (h0 : 0 ≤ u 0)
+    (h1 : u 0 ≤ 1) (hrec : ∀ j, u (j + 1) = 4 * u j * (1 - u j)) :
+    ∀ j, 0 ≤ u j ∧ u j ≤ 1 := by
+  intro j
+  induction j with
+  | zero => exact ⟨h0, h1⟩
+  | succ j ihj =>
+      rw [hrec j]
+      exact logistic_nonneg_and_le_one (u j) ihj.1 ihj.2
+
+/-- **Logistic-orbit product bound, initial-value form**: along any
+orbit of the full logistic map `v ↦ 4v(1-v)` whose *starting point*
+lies in `[0,1]`, `∏_{j<n} u j ≤ (5/3)·(3/4)ⁿ`.
+
+Only `u 0` is constrained: the range hypotheses at `j ≥ 1` are
+supplied by `logistic_orbit_nonneg_and_le_one`, and the constant `5/3`
+comes from `1 + 2·u 0/3 ≤ 5/3`, i.e. from `u 0 ≤ 1` alone. -/
+theorem logistic_prod_le_of_init (u : ℕ → ℝ) (h0 : 0 ≤ u 0) (h1 : u 0 ≤ 1)
     (hrec : ∀ j, u (j + 1) = 4 * u j * (1 - u j)) (n : ℕ) :
     ∏ j ∈ range n, u j ≤ 5 / 3 * (3 / 4 : ℝ) ^ n := by
-  have hprod0 : 0 ≤ ∏ j ∈ range n, u j := Finset.prod_nonneg fun j _ => h0 j
-  have hV : (1:ℝ) ≤ 1 + 2 * u n / 3 := by have := h0 n; linarith
-  have h := logistic_prod_mul_le u h0 hrec n
+  have hnonneg : ∀ j, 0 ≤ u j := fun j =>
+    (logistic_orbit_nonneg_and_le_one u h0 h1 hrec j).1
+  have hprod0 : 0 ≤ ∏ j ∈ range n, u j :=
+    Finset.prod_nonneg fun j _ => hnonneg j
+  have h := logistic_prod_mul_le u hnonneg hrec n
   have hup : (∏ j ∈ range n, u j) ≤
       (∏ j ∈ range n, u j) * (1 + 2 * u n / 3) := by
-    nlinarith
-  have hV0 : 1 + 2 * u 0 / 3 ≤ 5 / 3 := by have := h1 0; linarith
+    nlinarith [mul_nonneg hprod0 (hnonneg n)]
+  have hV0 : 1 + 2 * u 0 / 3 ≤ 5 / 3 := by linarith
   have hpow : (0:ℝ) ≤ (3 / 4 : ℝ) ^ n := by positivity
-  nlinarith
+  have hkey : (3 / 4 : ℝ) ^ n * (1 + 2 * u 0 / 3) ≤
+      (3 / 4 : ℝ) ^ n * (5 / 3) := mul_le_mul_of_nonneg_left hV0 hpow
+  linarith
+
+/-- For a logistic orbit, nonnegativity of the iterates already pins
+the starting point down: `∀ j, 0 ≤ u j` forces `u 0 ≤ 1`, because
+`u 1 = 4·u 0·(1 - u 0)` would otherwise be negative. -/
+theorem logistic_init_le_one (u : ℕ → ℝ) (h0 : ∀ j, 0 ≤ u j)
+    (hrec : ∀ j, u (j + 1) = 4 * u j * (1 - u j)) : u 0 ≤ 1 := by
+  by_contra hcon
+  push_neg at hcon
+  have hstep : 0 ≤ 4 * u 0 * (1 - u 0) := by
+    rw [← hrec 0]
+    exact h0 _
+  nlinarith [sq_nonneg (u 0 - 1)]
+
+/-- **Logistic-orbit product bound, minimal-hypothesis form**: for an
+orbit of `v ↦ 4v(1-v)`, nonnegativity of every iterate is by itself
+enough for `∏_{j<n} u j ≤ (5/3)·(3/4)ⁿ`; no upper bound need be
+assumed anywhere. -/
+theorem logistic_prod_le_of_nonneg (u : ℕ → ℝ) (h0 : ∀ j, 0 ≤ u j)
+    (hrec : ∀ j, u (j + 1) = 4 * u j * (1 - u j)) (n : ℕ) :
+    ∏ j ∈ range n, u j ≤ 5 / 3 * (3 / 4 : ℝ) ^ n :=
+  logistic_prod_le_of_init u (h0 0) (logistic_init_le_one u h0 hrec) hrec n
+
+/-- **Logistic-orbit product bound**: along any orbit of the full
+logistic map `v ↦ 4v(1-v)` in `[0,1]`,
+`∏_{j<n} u j ≤ (5/3)·(3/4)ⁿ`.  Corollary of `logistic_prod_le_of_init`,
+which uses the two range hypotheses only at `j = 0`. -/
+theorem logistic_prod_le (u : ℕ → ℝ) (h0 : ∀ j, 0 ≤ u j) (h1 : ∀ j, u j ≤ 1)
+    (hrec : ∀ j, u (j + 1) = 4 * u j * (1 - u j)) (n : ℕ) :
+    ∏ j ∈ range n, u j ≤ 5 / 3 * (3 / 4 : ℝ) ^ n :=
+  logistic_prod_le_of_init u (h0 0) (h1 0) hrec n
+
+/-- **The rate `(3/4)ⁿ` of `logistic_prod_le_of_init` is exact.**  The
+value `3/4` is the interior fixed point of `v ↦ 4v(1-v)`, so an orbit
+started there is constant and its running product is exactly `(3/4)ⁿ`.
+Consequently no geometric rate smaller than `(3/4)ⁿ` holds along all
+logistic orbits, whatever the constant in front. -/
+theorem logistic_prod_eq_of_init_three_quarters (u : ℕ → ℝ)
+    (h0 : u 0 = 3 / 4) (hrec : ∀ j, u (j + 1) = 4 * u j * (1 - u j))
+    (n : ℕ) : ∏ j ∈ range n, u j = (3 / 4 : ℝ) ^ n := by
+  have hfix : ∀ j, u j = 3 / 4 := by
+    intro j
+    induction j with
+    | zero => exact h0
+    | succ j ihj =>
+        rw [hrec j, ihj]
+        norm_num
+  rw [Finset.prod_congr rfl fun j _ => hfix j, Finset.prod_const,
+    Finset.card_range]
 
 /-- Squared sines at doubling angles form a logistic orbit:
 `sin (2x)² = 4·sin x²·(1 - sin x²)`. -/
@@ -102,7 +200,8 @@ theorem sin_sq_two_mul (x : ℝ) :
 /-- **The Gelfond bound**, squared form: for every real `t`,
 `∏_{j<n} sin (π 2ʲ t)² ≤ (5/3)·(3/4)ⁿ`.  This is the sup-norm rate of
 the dyadic sine product; it forces the extremal power `κ∞` of the
-Fourier-decay spectrum. -/
+Fourier-decay spectrum.  No hypothesis on `t` is needed: the squared
+sine orbit starts in `[0,1]` automatically. -/
 theorem prod_sin_sq_two_pow_le (t : ℝ) (n : ℕ) :
     ∏ j ∈ range n, Real.sin (π * 2 ^ j * t) ^ 2 ≤ 5 / 3 * (3 / 4 : ℝ) ^ n := by
   refine logistic_prod_le (fun j => Real.sin (π * 2 ^ j * t) ^ 2)
@@ -110,21 +209,47 @@ theorem prod_sin_sq_two_pow_le (t : ℝ) (n : ℕ) :
   have harg : π * 2 ^ (j + 1) * t = 2 * (π * 2 ^ j * t) := by ring
   rw [harg, sin_sq_two_mul]
 
+/-- **Sharpness in general position**: if the *initial* squared sine
+already sits at the logistic fixed point, `sin (π t)² = 3/4`, then the
+whole doubling orbit stays there: `sin (π 2ʲ t)² = 3/4` for every `j`.
+The hypothesis holds exactly for `t ∈ ±1/3 + ℤ`, so this covers
+`t = 1/3`, `t = 2/3` and all their integer translates at once. -/
+theorem sin_sq_two_pow_eq_three_quarters {t : ℝ}
+    (ht : Real.sin (π * t) ^ 2 = 3 / 4) (j : ℕ) :
+    Real.sin (π * 2 ^ j * t) ^ 2 = 3 / 4 := by
+  induction j with
+  | zero =>
+      have harg : π * 2 ^ 0 * t = π * t := by ring
+      rw [harg]
+      exact ht
+  | succ j ihj =>
+      have harg : π * 2 ^ (j + 1) * t = 2 * (π * 2 ^ j * t) := by ring
+      rw [harg, sin_sq_two_mul, ihj]
+      norm_num
+
+/-- The extremal orbit is attained on the nose: at every seed with
+`sin (π t)² = 3/4` the dyadic squared-sine product equals `(3/4)ⁿ`,
+so the Gelfond rate cannot be improved. -/
+theorem prod_sin_sq_two_pow_eq_of_sin_sq_eq {t : ℝ}
+    (ht : Real.sin (π * t) ^ 2 = 3 / 4) (n : ℕ) :
+    ∏ j ∈ range n, Real.sin (π * 2 ^ j * t) ^ 2 = (3 / 4 : ℝ) ^ n := by
+  have hfac : ∀ j : ℕ, Real.sin (π * 2 ^ j * t) ^ 2 = 3 / 4 :=
+    fun j => sin_sq_two_pow_eq_three_quarters ht j
+  rw [Finset.prod_congr rfl fun j _ => hfac j, Finset.prod_const,
+    Finset.card_range]
+
+/-- The seed of the extremal two-cycle: `sin (π/3)² = 3/4`. -/
+theorem sin_sq_pi_third : Real.sin (π * (1 / 3 : ℝ)) ^ 2 = 3 / 4 := by
+  have harg : π * (1 / 3 : ℝ) = π / 3 := by ring
+  rw [harg, Real.sin_pi_div_three]
+  rw [div_pow, Real.sq_sqrt (by norm_num : (0:ℝ) ≤ 3)]
+  norm_num
+
 /-- **Sharpness of the Gelfond bound**: every factor of the dyadic sine
 product at `t = 1/3` equals `3/4`. -/
 theorem sin_sq_two_pow_third (j : ℕ) :
-    Real.sin (π * 2 ^ j * (1 / 3 : ℝ)) ^ 2 = 3 / 4 := by
-  induction j with
-  | zero =>
-      have harg : π * 2 ^ 0 * (1 / 3 : ℝ) = π / 3 := by ring
-      rw [harg, Real.sin_pi_div_three]
-      rw [div_pow, Real.sq_sqrt (by norm_num : (0:ℝ) ≤ 3)]
-      norm_num
-  | succ j ihj =>
-      have harg : π * 2 ^ (j + 1) * (1 / 3 : ℝ) =
-          2 * (π * 2 ^ j * (1 / 3 : ℝ)) := by ring
-      rw [harg, sin_sq_two_mul, ihj]
-      norm_num
+    Real.sin (π * 2 ^ j * (1 / 3 : ℝ)) ^ 2 = 3 / 4 :=
+  sin_sq_two_pow_eq_three_quarters sin_sq_pi_third j
 
 /-- At `t = 1/3` the dyadic sine product attains the Gelfond rate
 exactly: `∏_{j<n} sin (π 2ʲ/3)² = (3/4)ⁿ`. -/

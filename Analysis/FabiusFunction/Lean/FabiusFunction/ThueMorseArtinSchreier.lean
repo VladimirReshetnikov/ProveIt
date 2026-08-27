@@ -26,13 +26,22 @@ denominator-free form:
   `τ(2n+1) = 1 + τ(n)`.
 * `thueMorseBitSeries_quadratic` — the **degree-two certificate**
   `(1+z)³Θ² + (1+z)²Θ + z = 0`.
+* `thueMorseBitSeries_add_geometricSeries_quadratic` — the **second root**
+  `Θ + G` of the same quadratic: in characteristic two `(Θ+G)² = Θ² + G²`,
+  and `(1+z)G = 1` collapses the extra terms to `(1+z) + (1+z) = 0`.  This
+  is the Artin–Schreier symmetry `Y ↦ Y + 1` in denominator-cleared form,
+  the substitution `Y = (1+z)Θ` turning `Θ + G` into `(1+z)Θ + 1`.
 * `artinSchreier_one_add_X_mul` — the normalized **Artin–Schreier form**:
   `Y = (1+z)Θ` satisfies `(1+z)(Y² + Y) = z`, the denominator-cleared
   version of `Y² + Y = z/(1+z)`.
+* `artinSchreier_solution_iff` — **the full solution set**: `Θ` and `Θ + G`
+  are the *only* solutions of `(1+z)³Y² + (1+z)²Y + z = 0` in `𝔽₂[[z]]`,
+  because the difference `D` of two solutions satisfies
+  `(1+z)²D((1+z)D + 1) = 0` in the domain `𝔽₂[[z]]`, so either `D = 0` or
+  `(1+z)D = 1`, i.e. `D = G`.
 * `artinSchreier_solution_unique` — **uniqueness**: the bit series is the
-  only zero-constant-term solution of the quadratic, because the
-  difference of two solutions `D` satisfies
-  `(1+z)²D((1+z)D + 1) = 0` in the domain `𝔽₂[[z]]`.
+  only zero-constant-term solution of the quadratic; the second root is
+  excluded because `G` has constant coefficient `1`.
 * `integerLift_parity` / `integerLift_modEq` — the **integer algebraic
   lift**: any integer sequence `c` with `c(0)=0` whose generating series
   satisfies `(1-z)³C² + (1-z)²C = z` reduces mod `2` to the Thue–Morse
@@ -136,6 +145,15 @@ def thueMorseBitSeries : PowerSeries (ZMod 2) :=
     PowerSeries.coeff n thueMorseBitSeries = (thueMorseBit n : ZMod 2) := by
   simp [thueMorseBitSeries]
 
+/-- The bit series has zero constant term, because `τ(0) = 0`. -/
+theorem constantCoeff_thueMorseBitSeries :
+    PowerSeries.constantCoeff thueMorseBitSeries = 0 := by
+  have h : PowerSeries.constantCoeff thueMorseBitSeries =
+      PowerSeries.coeff 0 thueMorseBitSeries := by
+    rw [PowerSeries.coeff_zero_eq_constantCoeff]
+  rw [h, coeff_thueMorseBitSeries]
+  simp [thueMorseBit, binaryWeight]
+
 private theorem two_eq_zero : (2 : PowerSeries (ZMod 2)) = 0 := by
   have hz : (1 + 1 : ZMod 2) = 0 := by decide
   calc (2 : PowerSeries (ZMod 2)) = 1 + 1 := by norm_num
@@ -168,6 +186,10 @@ theorem one_add_X_mul_geometricSeries :
   · rw [map_add, PowerSeries.coeff_succ_X_mul, PowerSeries.coeff_mk,
       PowerSeries.coeff_mk, PowerSeries.coeff_one, if_neg (Nat.succ_ne_zero k)]
     decide
+
+private theorem constantCoeff_geometricSeries :
+    PowerSeries.constantCoeff (PowerSeries.mk fun _ => (1 : ZMod 2)) = 1 := by
+  simp [PowerSeries.constantCoeff_mk]
 
 /-- **Functional equation of the bit series.**  The even/odd split of the
 Thue–Morse bit recursion:
@@ -237,6 +259,28 @@ theorem thueMorseBitSeries_quadratic :
           (PowerSeries.X + PowerSeries.X) := by ring
     _ = 0 := by rw [add_self_eq_zero', add_self_eq_zero', add_zero]
 
+/-- **The second Artin–Schreier root.**  Adding the geometric series
+`G = ∑ z^n` to the bit series produces the other solution of the same
+quadratic: `(1+z)³(Θ+G)² + (1+z)²(Θ+G) + z = 0`.
+
+In characteristic two `(Θ+G)² = Θ² + G²` (the cross term `2ΘG` vanishes),
+and `(1+z)G = 1` turns the two extra contributions into
+`(1+z)((1+z)G)² + (1+z)((1+z)G) = (1+z) + (1+z) = 0`.  Under the
+normalization `Y = (1+z)Θ` of `artinSchreier_one_add_X_mul` this is exactly
+the Artin–Schreier symmetry `Y ↦ Y + 1`. -/
+theorem thueMorseBitSeries_add_geometricSeries_quadratic :
+    (1 + PowerSeries.X) ^ 3 *
+        (thueMorseBitSeries + (PowerSeries.mk fun _ => (1 : ZMod 2))) ^ 2 +
+      (1 + PowerSeries.X) ^ 2 *
+        (thueMorseBitSeries + (PowerSeries.mk fun _ => (1 : ZMod 2))) +
+      PowerSeries.X = 0 := by
+  linear_combination thueMorseBitSeries_quadratic +
+    ((1 + PowerSeries.X) ^ 2 * (PowerSeries.mk fun _ => (1 : ZMod 2)) +
+        2 * (1 + PowerSeries.X)) * one_add_X_mul_geometricSeries +
+    ((1 + PowerSeries.X) ^ 3 * thueMorseBitSeries *
+        (PowerSeries.mk fun _ => (1 : ZMod 2)) +
+      (1 + PowerSeries.X)) * two_eq_zero
+
 /-- **Normalized Artin–Schreier form.**  The substitution `Y = (1+z)Θ`
 satisfies `(1+z)(Y² + Y) = z`, the denominator-cleared version of
 `Y² + Y = z/(1+z)`. -/
@@ -257,7 +301,7 @@ theorem artinSchreier_one_add_X_mul :
           PowerSeries.X := by ring
     _ = PowerSeries.X := by rw [add_self_eq_zero', zero_add]
 
-/-! ### Uniqueness of the Artin–Schreier solution and the integer lift -/
+/-! ### The solution set of the Artin–Schreier quadratic -/
 
 private theorem one_add_X_ne_zero :
     (1 + PowerSeries.X : PowerSeries (ZMod 2)) ≠ 0 := by
@@ -265,38 +309,69 @@ private theorem one_add_X_ne_zero :
   have := congrArg PowerSeries.constantCoeff h
   simp at this
 
+/-- **The complete solution set.**  Over `𝔽₂[[z]]` the Artin–Schreier
+quadratic `(1+z)³Y² + (1+z)²Y + z = 0` has exactly two roots: the
+Thue–Morse bit series `Θ` and its translate `Θ + G` by the geometric
+series `G = ∑ z^n`.
+
+The difference `D = Y - Θ` of two solutions satisfies the factored
+identity `(1+z)²·D·((1+z)·D + 1) = 0`.  Since `𝔽₂[[z]]` is a domain and
+`1 + z ≠ 0`, either `D = 0` — the first root — or `(1+z)·D = 1`, which by
+`one_add_X_mul_geometricSeries` forces `D = G`, the second root.  There is
+no third possibility, and no analytic input is used. -/
+theorem artinSchreier_solution_iff (Y : PowerSeries (ZMod 2)) :
+    (1 + PowerSeries.X) ^ 3 * Y ^ 2 +
+        (1 + PowerSeries.X) ^ 2 * Y + PowerSeries.X = 0 ↔
+      Y = thueMorseBitSeries ∨
+        Y = thueMorseBitSeries + (PowerSeries.mk fun _ => (1 : ZMod 2)) := by
+  haveI : Fact (Nat.Prime 2) := ⟨Nat.prime_two⟩
+  constructor
+  · intro hY
+    have hT := thueMorseBitSeries_quadratic
+    have hsq : Y ^ 2 - thueMorseBitSeries ^ 2 =
+        (Y - thueMorseBitSeries) ^ 2 := by
+      linear_combination (Y * thueMorseBitSeries - thueMorseBitSeries ^ 2) *
+        two_eq_zero
+    have hfac : (1 + PowerSeries.X) ^ 2 * (Y - thueMorseBitSeries) *
+        ((1 + PowerSeries.X) * (Y - thueMorseBitSeries) + 1) = 0 := by
+      linear_combination hY - hT - (1 + PowerSeries.X) ^ 3 * hsq
+    rcases mul_eq_zero.mp hfac with h | h
+    · rcases mul_eq_zero.mp h with h' | h'
+      · exact absurd h' (pow_ne_zero 2 one_add_X_ne_zero)
+      · exact Or.inl (sub_eq_zero.mp h')
+    · -- `(1+z)·D + 1 = 0` is not a contradiction: it says `(1+z)·D = 1`,
+      -- so `D` is the inverse `G` of `1 + z`.
+      refine Or.inr ?_
+      have hone : (1 + PowerSeries.X) * (Y - thueMorseBitSeries) = 1 := by
+        linear_combination h - two_eq_zero
+      linear_combination (PowerSeries.mk fun _ => (1 : ZMod 2)) * hone -
+        (Y - thueMorseBitSeries) * one_add_X_mul_geometricSeries
+  · rintro (rfl | rfl)
+    · exact thueMorseBitSeries_quadratic
+    · exact thueMorseBitSeries_add_geometricSeries_quadratic
+
 /-- **Uniqueness.**  The Thue–Morse bit series is the only power series
 over `𝔽₂` with zero constant term satisfying the Artin–Schreier quadratic
-`(1+z)³Y² + (1+z)²Y + z = 0`. -/
+`(1+z)³Y² + (1+z)²Y + z = 0`.
+
+This is `artinSchreier_solution_iff` with the branch chosen by the constant
+coefficient: the second root `Θ + G` has constant coefficient
+`0 + 1 = 1 ≠ 0`. -/
 theorem artinSchreier_solution_unique (Y : PowerSeries (ZMod 2))
     (h0 : PowerSeries.constantCoeff Y = 0)
     (hY : (1 + PowerSeries.X) ^ 3 * Y ^ 2 +
       (1 + PowerSeries.X) ^ 2 * Y + PowerSeries.X = 0) :
     Y = thueMorseBitSeries := by
-  haveI : Fact (Nat.Prime 2) := ⟨Nat.prime_two⟩
-  have hT := thueMorseBitSeries_quadratic
-  have hsq : Y ^ 2 - thueMorseBitSeries ^ 2 =
-      (Y - thueMorseBitSeries) ^ 2 := by
-    linear_combination (Y * thueMorseBitSeries - thueMorseBitSeries ^ 2) *
-      two_eq_zero
-  have hfac : (1 + PowerSeries.X) ^ 2 * (Y - thueMorseBitSeries) *
-      ((1 + PowerSeries.X) * (Y - thueMorseBitSeries) + 1) = 0 := by
-    linear_combination hY - hT - (1 + PowerSeries.X) ^ 3 * hsq
-  rcases mul_eq_zero.mp hfac with h | h
-  · rcases mul_eq_zero.mp h with h' | h'
-    · exact absurd h' (pow_ne_zero 2 one_add_X_ne_zero)
-    · exact sub_eq_zero.mp h'
+  rcases (artinSchreier_solution_iff Y).mp hY with h | h
+  · exact h
   · exfalso
-    have hc := congrArg PowerSeries.constantCoeff h
-    have hY0 : PowerSeries.constantCoeff thueMorseBitSeries = 0 := by
-      have : PowerSeries.constantCoeff thueMorseBitSeries =
-          PowerSeries.coeff 0 thueMorseBitSeries := by
-        rw [PowerSeries.coeff_zero_eq_constantCoeff]
-      rw [this, coeff_thueMorseBitSeries]
-      simp [thueMorseBit, binaryWeight]
-    simp only [map_add, map_mul, map_one, map_zero,
-      PowerSeries.constantCoeff_X, map_sub, hY0, h0] at hc
-    simp at hc
+    rw [h] at h0
+    have hc : (1 : ZMod 2) = 0 := by
+      simpa only [map_add, constantCoeff_thueMorseBitSeries,
+        constantCoeff_geometricSeries, zero_add] using h0
+    exact absurd hc (by decide)
+
+/-! ### The integer algebraic lift -/
 
 /-- **Parity of the integer algebraic lift.**  Any integer sequence `c`
 with `c(0) = 0` whose generating series satisfies
