@@ -11,8 +11,9 @@ inequality and boundedness of scalar multiplication then bound the resulting
 error by the weighted sum of the pointwise errors.
 
 The weights need not be nonnegative or real: the loss is their total
-variation, expressed by their norms.  The target may be any seminormed space
-over any normed field.
+variation, expressed by their norms.  The target may be any seminormed module
+with a bounded scalar action over a seminormed ring; no field or completeness
+hypothesis is used.
 -/
 
 set_option autoImplicit false
@@ -22,7 +23,8 @@ open scoped BigOperators
 namespace Fabius
 
 variable {ι 𝕜 E : Type*}
-  [NormedField 𝕜] [SeminormedAddCommGroup E] [NormedSpace 𝕜 E]
+  [SeminormedRing 𝕜] [SeminormedAddCommGroup E] [Module 𝕜 E]
+  [IsBoundedSMul 𝕜 E]
 
 /-- Two finite linear combinations with the same coefficients differ by at
 most the sum of the coefficient norms times the pointwise differences.  This
@@ -39,6 +41,26 @@ theorem norm_sum_smul_sub_sum_smul_le
     rw [Finset.sum_sub_distrib]
   rw [hrecenter]
   exact norm_sum_le_of_le s fun i _hi => norm_smul_le (w i) (x i - z i)
+
+/-- Pointwise-majorant form of `norm_sum_smul_sub_sum_smul_le`.  It compares
+two finite linear combinations with the same coefficients and needs neither
+normalization nor a sign condition. -/
+theorem norm_sum_smul_sub_sum_smul_le_of_norm_sub_le
+    (s : Finset ι) (w : ι → 𝕜) (x z : ι → E) (r : ι → ℝ)
+    (hr : ∀ i ∈ s, ‖x i - z i‖ ≤ r i) :
+    ‖(∑ i ∈ s, w i • x i) - ∑ i ∈ s, w i • z i‖ ≤
+      ∑ i ∈ s, ‖w i‖ * r i := by
+  exact (norm_sum_smul_sub_sum_smul_le s w x z).trans
+    (Finset.sum_le_sum fun i hi =>
+      mul_le_mul_of_nonneg_left (hr i hi) (norm_nonneg (w i)))
+
+/-- Metric form of the common-coefficient comparison theorem. -/
+theorem dist_sum_smul_sum_smul_le
+    (s : Finset ι) (w : ι → 𝕜) (x z : ι → E) :
+    dist (∑ i ∈ s, w i • x i) (∑ i ∈ s, w i • z i) ≤
+      ∑ i ∈ s, ‖w i‖ * dist (x i) (z i) := by
+  simpa only [dist_eq_norm] using
+    norm_sum_smul_sub_sum_smul_le s w x z
 
 /-- The error of a finite affine combination is at most the sum of the
 coefficient norms times the corresponding pointwise errors.

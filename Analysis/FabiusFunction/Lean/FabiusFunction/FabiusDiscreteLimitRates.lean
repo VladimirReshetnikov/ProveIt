@@ -197,22 +197,16 @@ theorem norm_discreteLimitWeightIn_sum_sub_sum_le
         discreteLimitWeightIn K n j * G (2 * n - j)‖ ≤
         ∑ j ∈ Finset.range (n + 1),
           ‖discreteLimitWeightIn K n j‖ *
-            ‖H (2 * n - j) - G (2 * n - j)‖ := by
+            (C * (1 / 2 : ℝ) ^ (2 * n - j)) := by
       simpa only [smul_eq_mul] using
-        norm_sum_smul_sub_sum_smul_le
+        norm_sum_smul_sub_sum_smul_le_of_norm_sub_le
           (Finset.range (n + 1))
           (discreteLimitWeightIn K n)
           (fun j => H (2 * n - j))
           (fun j => G (2 * n - j))
-    _ ≤ ∑ j ∈ Finset.range (n + 1),
-          ‖discreteLimitWeightIn K n j‖ *
-            (C * (1 / 2 : ℝ) ^ (2 * n - j)) := by
-      apply Finset.sum_le_sum
-      intro j hj
-      exact mul_le_mul_of_nonneg_left
-        (hHG (2 * n - j)
-          (hn.trans (discreteLimit_index_ge hj)))
-        (norm_nonneg (discreteLimitWeightIn K n j))
+          (fun j => C * (1 / 2 : ℝ) ^ (2 * n - j))
+          (fun j hj => hHG (2 * n - j)
+            (hn.trans (discreteLimit_index_ge hj)))
     _ = ∑ j ∈ Finset.range (n + 1),
           ‖discreteLimitWeightIn K n j‖ *
             (C * ((1 / 4 : ℝ) ^ n * (2 : ℝ) ^ j)) := by
