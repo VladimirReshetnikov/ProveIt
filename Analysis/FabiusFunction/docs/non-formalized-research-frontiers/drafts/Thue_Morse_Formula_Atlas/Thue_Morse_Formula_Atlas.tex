@@ -2436,6 +2436,32 @@ the Riemann sphere, so it cannot have a natural boundary; and \(T\) differs
 from \(-E/2\) by the rational function in \eqref{eq:T-from-E}.
 \end{proof}
 
+\emph{Formal versions.}  The natural-boundary core of
+\Cref{thm:natural-boundary} is fully formal.  The series
+\(F(z)=\sum\eps_nz^n\) is realized as a holomorphic function on the
+open unit disc by locally uniform convergence of its polynomial
+partial sums (\lean{Fabius.thueMorseDiscSeries},
+\lean{Fabius.thueMorseDiscSeries\_differentiableOn},
+\path{ThueMorseDiscSeries.lean}), satisfying the analytic Mahler
+equation \(F(z)=(1-z)F(z^2)\) and its iterate
+\(F(z)=\prod_{j<k}(1-z^{2^j})\,F(z^{2^k})\)
+(\lean{Fabius.thueMorseDiscSeries\_mahler},
+\lean{Fabius.thueMorseDiscSeries\_iterate}), with the real-ray bound
+\(|F(x)|\le1-x\) on \([0,1)\)
+(\lean{Fabius.thueMorseDiscSeries\_real\_le}) --- the first factor
+of the lacunary product already vanishes at the boundary.  The radial
+vanishing at every two-power root of unity is
+\lean{Fabius.tendsto\_thueMorseDiscSeries\_radial\_zero}, and the
+theorem itself is \lean{Fabius.thueMorse\_natural\_boundary}: no
+function holomorphic on any disc centered at a point of the unit
+circle agrees with \(F\) on the overlap with the unit disc --- the
+hypothetical extension vanishes at the dyadic roots accumulating at
+the center, hence identically by the identity theorem, forcing
+\(F\equiv0\) on the disc against \(F(0)=1\).  Only the algebraic
+coda --- that an algebraic function over \(\C(z)\) has finitely many
+singular points, whence the transcendence of \(E\) and \(T\) over
+\(\C(z)\) --- remains informal.
+
 \begin{remark}
 Two softer routes to the same conclusion deserve mention.  The
 P\'olya--Carlson theorem \cite{carlson1921} says that a power series with
@@ -5136,7 +5162,7 @@ valuation, carry, and Pascal-row formulas remain genuinely base-two features.
 \subsection{Formalized modules (August 2026)}
 \label{sec:formalized-modules}
 
-The first tranches of the formalization now exist as forty-six
+The first tranches of the formalization now exist as forty-eight
 compiled Lean modules in \repo{}, complementing the corpus modules
 (\path{Parity.lean}, \path{TwoAdic.lean}, \path{ThueMorsePrefix.lean},
 \path{ThueMorseGenerating.lean}, \path{ThueMorseExponential.lean},
@@ -5200,6 +5226,8 @@ Module & Contents \\
 \path{FrullaniIntegral.lean} & The Frullani integral \(\int_0^\infty(\e^{-pt}-\e^{-qt})t^{-1}\dd t=\log(q/p)\), by differentiation under the integral sign; not in Mathlib. \\
 \path{ThueMorseGDirichlet.lean} & The derivative bridge \(\log G(a,b)=D'(0,b)-D'(0,a)\): the closed integral form of \(\log G\), \((1/\Gamma)'(0)=1\), and the derivative of the entire continuation at zero. \\
 \path{ThueMorseQuarterProduct.lean} & The quarter product \(G(1/4,3/4)=1/2\) from Woods--Robbins by parity splitting, and the value \(1/2\) of the half-shifted block product. \\
+\path{ThueMorseDiscSeries.lean} & The Thue--Morse power series as a holomorphic function on the unit disc: locally uniform convergence, the analytic Mahler equation and its iterate, and the real-ray bound \(|F(x)|\le1-x\). \\
+\path{ThueMorseNaturalBoundary.lean} & The natural-boundary theorem: radial vanishing at dyadic roots of unity, two-power roots approximating every circle point, and the double identity-theorem argument. \\
 \bottomrule
 \end{longtable}}
 
