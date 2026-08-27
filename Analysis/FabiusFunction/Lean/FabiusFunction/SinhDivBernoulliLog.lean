@@ -58,7 +58,10 @@ private theorem weightedBernoulliSum_odd (n : ℕ) :
     ∑ k ∈ range (2 * n + 4), weightedBernoulliTerm (2 * n + 3) k = 0 := by
   let m := 2 * n + 3
   have hhalf : (Polynomial.bernoulli m).eval (1 / 2 : ℚ) = 0 := by
-    simpa [m] using bernoulliPolynomial_odd_eval_half (n + 1)
+    change (Polynomial.bernoulli (2 * n + 3)).eval (1 / 2 : ℚ) = 0
+    have hindex : 2 * n + 3 = 2 * (n + 1) + 1 := by omega
+    rw [hindex]
+    exact bernoulliPolynomial_odd_eval_half (n + 1)
   simp only [Polynomial.bernoulli, Polynomial.eval_finsetSum,
     Polynomial.eval_monomial] at hhalf
   have hscaled := congrArg (fun q : ℚ => (2 : ℚ) ^ m * q) hhalf
@@ -107,6 +110,8 @@ theorem weightedEvenBernoulliChooseSum (n : ℕ) :
   let m := 2 * n + 3
   let f : ℕ → ℚ := weightedBernoulliTerm m
   have hfull : ∑ k ∈ range (2 * (n + 2)), f k = 0 := by
+    have hrange : 2 * (n + 2) = 2 * n + 4 := by omega
+    rw [hrange]
     simpa [m, f] using weightedBernoulliSum_odd n
   have hodd (k : ℕ) (hk : k ∈ range (n + 2)) (hk0 : k ≠ 0) :
       f (2 * k + 1) = 0 := by
@@ -126,7 +131,6 @@ theorem weightedEvenBernoulliChooseSum (n : ℕ) :
           exact (hnot (by simp)).elim
       _ = -(m : ℚ) := by
         simp [f, weightedBernoulliTerm, bernoulli_one, m]
-        push_cast
         ring
   have hsplit := sum_range_two_mul (n + 2) f
   rw [Finset.sum_add_distrib, hoddSum] at hsplit
@@ -148,8 +152,12 @@ theorem weightedEvenBernoulliChooseSum (n : ℕ) :
     have hexp : 2 * (k + 1) = (2 * (k + 1) - 1) + 1 := by omega
     have hpow : (2 : ℚ) ^ (2 * (k + 1)) =
         2 * (2 : ℚ) ^ (2 * (k + 1) - 1) := by
-      rw [hexp, pow_succ]
-      ring
+      calc
+        (2 : ℚ) ^ (2 * (k + 1)) =
+            (2 : ℚ) ^ ((2 * (k + 1) - 1) + 1) :=
+          congrArg (fun e : ℕ => (2 : ℚ) ^ e) hexp
+        _ = (2 : ℚ) ^ (2 * (k + 1) - 1) * 2 := by rw [pow_succ]
+        _ = 2 * (2 : ℚ) ^ (2 * (k + 1) - 1) := by ring
     simp only [f, weightedBernoulliTerm, m]
     rw [hpow]
     ring
@@ -190,6 +198,7 @@ private theorem sinhDiv_bernoulliLogDerivative_sum (n : ℕ) :
     rw [sinhDivCoefficient, bernoulliSinhDivLogCoefficient,
       if_neg hk1, Nat.cast_choose ℚ hle, hsub]
     field_simp [hk1q]
+    push_cast
     ring
   calc
     ∑ k ∈ range (n + 1),
@@ -207,7 +216,8 @@ private theorem sinhDiv_bernoulliLogDerivative_sum (n : ℕ) :
       rw [← Finset.sum_div, weightedEvenBernoulliChooseSum]
     _ = (n + 1 : ℚ) * sinhDivCoefficient (n + 1) := by
       simp only [sinhDivCoefficient]
-      ring
+      rw [show 2 * (n + 1) + 1 = 2 * n + 3 by omega]
+      simp only [div_eq_mul_inv, one_mul]
 
 private theorem massSeries_sinhDiv_mul_derivative_bernoulliLog :
     SaddleExpansion.massSeries sinhDivCoefficient *
@@ -225,11 +235,11 @@ private theorem massSeries_sinhDiv_mul_derivative_bernoulliLog :
     have hkn : k ≤ n := Nat.le_of_lt_succ (mem_range.1 hk)
     have hleft : n + 1 - 1 - k = n - k := by omega
     have hright : n - (n + 1 - 1 - k) + 1 = k + 1 := by omega
+    have hcancel : n - (n - k) = k := by omega
     rw [hright, hleft]
-    push_cast
+    rw [hcancel]
     ring
-  · push_cast
-    ring
+  · ring
 
 /-- The all-order Bernoulli formula for the formal logarithm of
 `sinh(√X)/√X`, including the separately normalized zeroth coefficient. -/

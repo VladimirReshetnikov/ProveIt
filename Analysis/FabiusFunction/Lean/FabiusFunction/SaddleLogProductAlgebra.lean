@@ -40,7 +40,8 @@ packaged coefficient families. -/
 theorem massSeries_coefficientConvolution [Semiring R] (a b : ℕ → R) :
     massSeries (coefficientConvolution a b) = massSeries a * massSeries b := by
   ext n
-  simp [coefficientConvolution, PowerSeries.coeff_mul]
+  simp only [massSeries, PowerSeries.coeff_mk, PowerSeries.coeff_mul]
+  rfl
 
 variable [CommRing R] [Algebra ℚ R]
 

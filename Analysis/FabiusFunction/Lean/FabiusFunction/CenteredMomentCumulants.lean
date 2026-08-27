@@ -155,7 +155,7 @@ theorem evenMomentCumulant_succ_recurrence
     have hq : qleft = qright := by
       dsimp [qleft, qright]
       rw [Nat.cast_choose ℚ hjle, hsub]
-      field_simp <;> ring
+      field_simp
     calc
       ((2 * (n + 1)).factorial : ℚ) •
             ((j + 1 : R) *
@@ -265,7 +265,7 @@ theorem rat_four_pow_sub_one_ne_zero (n : ℕ) (hn : 1 ≤ n) :
 /-- The centered Rvachev coefficient family has unit constant term. -/
 @[simp] theorem centeredRvachevMomentCoefficient_zero :
     centeredRvachevMomentCoefficient 0 = 1 := by
-  simp [centeredRvachevMomentCoefficient, moment]
+  simp [centeredRvachevMomentCoefficient]
 
 /-- The centered Rvachev logarithm has zero constant coefficient. -/
 @[simp] theorem centeredRvachevLogCoefficient_zero :
@@ -290,7 +290,7 @@ packaged by `momentPS`. -/
 @[simp] theorem coeff_momentPS_eq_centeredRvachevMomentCoefficient (n : ℕ) :
     PowerSeries.coeff n momentPS = centeredRvachevMomentCoefficient n := by
   simp [momentPS, centeredRvachevMomentCoefficient,
-    EvenMomentCumulant.evenFactorialNormalize, Algebra.smul_def,
+    EvenMomentCumulant.evenFactorialNormalize,
     div_eq_mul_inv, mul_comm]
 
 /-- `sinhDivCoefficient` is exactly the coefficient family packaged by
@@ -342,6 +342,7 @@ theorem centeredRvachevEvenCumulant_eq_sinhDiv (n : ℕ) (hn : 1 ≤ n) :
       centeredRvachevLogCoefficient n by rfl,
     centeredRvachevLogCoefficient_eq_sinhDiv n hn]
   simp only [Algebra.smul_def]
+  simp
   ring
 
 /-- Exponentiating the centered Rvachev logarithmic coefficients reconstructs
@@ -368,26 +369,26 @@ theorem moment_centeredRvachevEvenCumulant_recurrence
 /-- The first one-scale logarithmic coefficient is `1/6`. -/
 theorem sinhDivLogCoefficient_one : sinhDivLogCoefficient 1 = 1 / 6 := by
   rw [sinhDivLogCoefficient, SaddleExpansion.logCoeff_one]
-  norm_num [sinhDivCoefficient]
+  norm_num [sinhDivCoefficient, Nat.factorial]
 
 /-- The second one-scale logarithmic coefficient is `-1/180`. -/
 theorem sinhDivLogCoefficient_two : sinhDivLogCoefficient 2 = -1 / 180 := by
   rw [sinhDivLogCoefficient, SaddleExpansion.logCoeff_two]
-  norm_num [sinhDivCoefficient]
+  norm_num [sinhDivCoefficient, Nat.factorial]
 
 /-- The variance cumulant of the centered Rvachev law is `1/9`. -/
 theorem centeredRvachevEvenCumulant_one :
     centeredRvachevEvenCumulant 1 = 1 / 9 := by
   rw [centeredRvachevEvenCumulant_eq_sinhDiv 1 (by omega),
     sinhDivLogCoefficient_one]
-  norm_num
+  norm_num [Nat.factorial]
 
 /-- The fourth centered Rvachev cumulant is `-2/225`. -/
 theorem centeredRvachevEvenCumulant_two :
     centeredRvachevEvenCumulant 2 = -2 / 225 := by
   rw [centeredRvachevEvenCumulant_eq_sinhDiv 2 (by omega),
     sinhDivLogCoefficient_two]
-  norm_num
+  norm_num [Nat.factorial]
 
 /-! ## The Bernoulli--Mersenne frontier bridge -/
 
@@ -427,7 +428,7 @@ theorem bernoulliSinhDivLogCoefficient_two :
     bernoulliSinhDivLogCoefficient 2 = -1 / 180 := by
   rw [bernoulliSinhDivLogCoefficient, if_neg (by omega),
     bernoulli_eq_bernoulli'_of_ne_one (by omega), bernoulli'_four]
-  norm_num
+  norm_num [Nat.factorial]
 
 /-- Identifying one positive one-scale logarithmic coefficient with its
 Bernoulli formula identifies the corresponding centered cumulant with the
@@ -442,7 +443,7 @@ theorem centeredRvachevEvenCumulant_eq_bernoulliMersenne_of_sinhDiv
   rw [centeredRvachevEvenCumulant_eq_sinhDiv n hn, hlog,
     bernoulliSinhDivLogCoefficient, bernoulliMersenneEvenCumulant,
     if_neg hn0, if_neg hn0]
-  field_simp [hnne, hpow] <;> ring
+  field_simp [hnne, hpow]
 
 /-- If the centered even cumulants through order `2N` have the
 Bernoulli--Mersenne form, then the centered moments satisfy exactly the
@@ -465,7 +466,7 @@ theorem moment_bernoulliMersenne_recurrence_of_evenCumulants
   have hrne : (r : ℚ) ≠ 0 := by exact_mod_cast hr0
   have hpow := rat_four_pow_sub_one_ne_zero r hrpos
   rw [hcumulant r hr, bernoulliMersenneEvenCumulant, if_neg hr0]
-  field_simp [hrne, hpow] <;> ring
+  field_simp [hrne, hpow]
 
 /-- A finite segment of the one-scale Bernoulli logarithm is sufficient for
 the corresponding finite centered-moment recurrence.  This theorem isolates
