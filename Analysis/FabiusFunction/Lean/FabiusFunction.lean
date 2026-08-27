@@ -75,6 +75,7 @@ import FabiusFunction.SquareLogIntegrable
 import FabiusFunction.MartingaleOrthogonality
 import FabiusFunction.CocycleCovarianceHalving
 import FabiusFunction.DirichletKernelCotangent
+import FabiusFunction.LogSineFourierCoefficient
 import FabiusFunction.ShellLinearity
 import FabiusFunction.BoundaryLayerMax
 import FabiusFunction.VarianceBookkeeping
