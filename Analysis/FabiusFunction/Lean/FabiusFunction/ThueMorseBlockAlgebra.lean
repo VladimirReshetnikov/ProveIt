@@ -40,7 +40,8 @@ statement in the formula atlas.  This module proves its basic algebra:
   `∑_{n<2^m} ε(n) · C(n,r)` vanish for all `r < m`
   (`sum_thueMorseSign_mul_choose_eq_zero`) and equal `(-1)^m 2^(C(m,2))` at
   `r = m` (`sum_thueMorseSign_mul_choose_self`) — the Prouhet annihilation
-  in the basis where the sharp value needs no factorial.
+  in the basis where the sharp value needs no factorial.  Evaluating iterated
+  derivatives at one recovers the same moments with the expected `r!` factor.
 
 Everything is exact algebra over an arbitrary commutative ring; no analysis
 and no rational denominators appear anywhere.
@@ -302,6 +303,45 @@ theorem sum_thueMorseSign_mul_choose_self_int (m : ℕ) :
     ∑ n ∈ range (2 ^ m), thueMorseSign n * (n.choose m : ℤ) =
       (-1) ^ m * 2 ^ m.choose 2 := by
   simpa using sum_thueMorseSign_mul_choose_self (R := ℤ) m
+
+/-! ### Derivatives at one -/
+
+/-- Evaluating the `r`-th derivative of the Thue--Morse block polynomial at
+one gives `r!` times its signed binomial moment. -/
+theorem iterate_derivative_thueMorseBlockPolynomial_eval_one
+    (m r : ℕ) :
+    (Polynomial.derivative^[r] (thueMorseBlockPolynomial m)).eval (1 : ℤ) =
+      (r.factorial : ℤ) *
+        ∑ n ∈ range (2 ^ m),
+          thueMorseSign n * (n.choose r : ℤ) := by
+  unfold thueMorseBlockPolynomial
+  rw [Polynomial.iterate_derivative_sum, Polynomial.eval_finsetSum,
+    Finset.mul_sum]
+  refine Finset.sum_congr rfl fun n _ => ?_
+  rw [← Polynomial.C_mul_X_pow_eq_monomial,
+    Polynomial.iterate_derivative_C_mul,
+    Polynomial.iterate_derivative_X_pow_eq_C_mul]
+  simp only [Polynomial.eval_C_mul, Polynomial.eval_X_pow, one_pow, mul_one]
+  rw [Nat.descFactorial_eq_factorial_mul_choose, Nat.cast_mul]
+  ring
+
+/-- Every derivative below the order of the zero at one vanishes. -/
+theorem iterate_derivative_thueMorseBlockPolynomial_eval_one_of_lt
+    (m r : ℕ) (hr : r < m) :
+    (Polynomial.derivative^[r] (thueMorseBlockPolynomial m)).eval (1 : ℤ) =
+      0 := by
+  rw [iterate_derivative_thueMorseBlockPolynomial_eval_one m r,
+    sum_thueMorseSign_mul_choose_eq_zero_int m r hr, mul_zero]
+
+/-- The first nonzero derivative of the Thue--Morse block polynomial at one
+has the sharp Prouhet value. -/
+theorem iterate_derivative_thueMorseBlockPolynomial_eval_one_self
+    (m : ℕ) :
+    (Polynomial.derivative^[m] (thueMorseBlockPolynomial m)).eval (1 : ℤ) =
+      (-1 : ℤ) ^ m * (m.factorial : ℤ) * (2 : ℤ) ^ m.choose 2 := by
+  rw [iterate_derivative_thueMorseBlockPolynomial_eval_one m m,
+    sum_thueMorseSign_mul_choose_self_int m]
+  ring
 
 /-! ### Geometric-sum factorization -/
 
