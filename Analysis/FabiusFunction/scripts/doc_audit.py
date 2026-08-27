@@ -60,6 +60,32 @@ ATTR_RE = re.compile(r"^@\[")
 SET_OPTION_IN_RE = re.compile(r"^set_option\b.*\bin\s*$")
 
 
+def strip_leading_attributes(code: str) -> str:
+    """Remove one or more leading ``@[...]`` blocks from a code line.
+
+    Lean permits an attribute and its declaration on the same line.  A plain
+    declaration regexp therefore undercounts public APIs unless the attribute
+    prefix is consumed first.  Bracket depth is tracked instead of using a
+    ``[^]]*`` regexp, so nested attribute arguments remain harmless.
+    """
+    code = code.lstrip()
+    while code.startswith("@["):
+        depth = 0
+        end = None
+        for i, char in enumerate(code[1:], start=1):
+            if char == "[":
+                depth += 1
+            elif char == "]":
+                depth -= 1
+                if depth == 0:
+                    end = i + 1
+                    break
+        if end is None:
+            return code
+        code = code[end:].lstrip()
+    return code
+
+
 def strip_comments(lines):
     """Return a parallel list marking which lines are *code*.
 
@@ -152,16 +178,18 @@ def audit_file(path):
 
     public, missing = 0, []
     for i, (code, starts_doc, _starts_mod, _open) in enumerate(marked):
-        if starts_doc:
-            # ``/-- ... -/ theorem foo`` on one line: the declaration is
-            # documented by construction.
-            continue
-        m = DECL_RE.match(code)
+        # Attributes may either occupy preceding lines or prefix the
+        # declaration itself (``@[simp] theorem foo``).
+        m = DECL_RE.match(strip_leading_attributes(code))
         if not m:
             continue
         if "private" in m.group("mods").split():
             continue
         public += 1
+        if starts_doc:
+            # ``/-- ... -/ theorem foo`` on one line is documented by
+            # construction, but still contributes to the public count.
+            continue
         # Walk back over attribute lines, ``set_option ... in`` lines, and
         # blank lines to find the nearest preceding doc comment.
         j = i - 1
