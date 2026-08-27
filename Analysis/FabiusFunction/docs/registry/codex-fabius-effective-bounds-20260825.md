@@ -4750,3 +4750,79 @@ conflicts / dependencies: active finite-CDF and immutable vertical-log units
 next bounded step: commit/push claim, repeat name/path scan, author only the
   claimed module, freeze, and obtain two independent exact-byte reviews
 ```
+
+## Handoff: reflected Fabius derivative on the full right half-line
+
+Source checkpoint `aea7405ad` implements registry claim `72d856dea` exactly
+and was pushed without force.  The two sources are frozen as follows:
+
+- `Differential.lean`: blob
+  `ddaff3dde89694d449679db7916e73165dd23438`, content SHA-256
+  `974F92CD9C49E47A49FCA50C09E2F5E471CCD147A51E82E3D01C084305D29BDD`,
+  14,776 bytes / 334 lines, exact GNU baseline delta `+15/-7`;
+- `DyadicAnalytic.lean`: blob
+  `68fb3e9a714d1829a2005d5b097481108ebd0184`, content SHA-256
+  `79BE0993E1E0CCFC0B7F5CA574E8B472F89906D1A408E1B0DA610138AF07DAEB`,
+  21,172 bytes / 499 lines, exact GNU baseline delta `+1/-4`.
+
+`fabius_hasDerivAt_reflected_of_half_le` now exposes the reflected derivative
+formula on the sharp full ray `t >= 1/2`.  Its proof body is byte-identical to
+the previously compiled `fabius_hasDerivAt_secondHalf` body after renaming the
+lower-bound binder; the old proof never consumed its upper-bound hypothesis.
+At the midpoint the equality branch identifies `rvachevUp F 0` and `F 1`;
+strictly above the midpoint `rvachevUp_of_pos` gives the reflected argument,
+including beyond `1`, where both sides vanish.
+
+The old `fabius_hasDerivAt_secondHalf` header, binder order, formula, and
+declaration-local `unusedVariables` setting are exact.  It is retained as a
+one-line compatibility forward, with prose explaining the retained
+`hthigh`.  The sole private `DyadicAnalytic` consumer now calls the stronger
+theorem and deletes only its redundant three-line proof of an upper bound.
+All imports, attributes, other public headers, and unrelated bodies are exact.
+
+Strict source documentation is 21/21 in `Differential.lean` and remains 4/4
+in `DyadicAnalytic.lean`; the repository audit reports 191 files, 3,679
+public declarations, zero missing comments, zero violating files, and zero
+missing module headers.  The three Differential and fifteen Dyadic private
+declarations remain in place.  Diff-check, declaration/import/header/name,
+collision, placeholder, final-newline, and whitespace scans are green.
+
+The post-source scan of all 120 visible refs finds the new Lean declaration
+only on this feature branch, plus the expected claim/coordinator prose; no
+competing implementation exists.  The author audit and two independent
+hostile exact-byte reviews agree on the endpoint orientation, the strict
+branch for every `t > 1/2`, the tail case, non-circular dependency, wrapper
+elaboration shape, consumer refactor, exact hashes, corrected diff counts,
+and preservation scope.  No Lean/Lake/TeX/PDF command ran, so compiler
+elaboration remains outstanding.
+
+```text
+SYNC Fabius
+branch / worktree / machine: codex/fabius-effective-bounds-20260825 /
+  /home/codex/.codex/worktrees/d6d3/Proofs / codexbox
+fetched main SHA: 51601c0fa6db
+HEAD and dirty paths: aea7405ad; clean before this registry-only handoff;
+  source checkpoint pushed
+writing (exact paths): this branch registry for immutable handoff only;
+  Differential.lean and DyadicAnalytic.lean are frozen at the stated blobs
+expected declarations or document claims: one full-ray derivative theorem,
+  one exact-header compatibility wrapper, one private consumer simplification,
+  strict 21/21 and 4/4 docs; no import/facade/root/script/canonical-doc change
+completed commits: registry claim 72d856dea; source checkpoint aea7405ad;
+  both pushed without force
+validated (exact command, SHA/state, exit code): exact preimage/current hashes;
+  all-120-visible-ref scans; local/staged diff --check; official and strict
+  docs; import/header/name/hygiene audits; author audit; two independent
+  exact-byte hostile source reviews
+not yet validated: no Lean/Lake target or downstream importer was built on
+  this branch; static proof/API review is not compiler evidence
+requested integration or lease: request serialized
+  +FabiusFunction.Differential then +FabiusFunction.DyadicAnalytic; optional
+  smoke +FabiusFunction.GlobalDyadic or +FabiusFunction.AnalyticMoments;
+  coordinator review/selective integration only
+conflicts / dependencies: active inverse-asymptotic files are disjoint;
+  endpoint and VerticalLog/Parity paths/tokens are released; source blobs are
+  immutable pending disposition; only coordinator builds or advances main
+next bounded step: push this handoff, refresh main/board, and select the next
+  disjoint theorem improvement only after validation disposition is clear
+```
