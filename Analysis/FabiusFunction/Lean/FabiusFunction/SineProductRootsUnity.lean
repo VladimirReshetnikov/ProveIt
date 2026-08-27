@@ -88,4 +88,22 @@ theorem prod_two_sin_pi_div_succ (n : ℕ) :
     Complex.norm_natCast, Nat.cast_add, Nat.cast_one] at hnorm
   exact hnorm
 
+/-- The sine product over the `N`-th roots of unity, for any `N ≥ 1`:
+`∏_{r=1}^{N-1} 2 sin (π r/N) = N`. -/
+theorem prod_two_sin_pi_div (N : ℕ) (hN : 0 < N) :
+    ∏ k ∈ range (N - 1), (2 * Real.sin (π * (k + 1) / N)) = (N : ℝ) := by
+  obtain ⟨m, rfl⟩ := Nat.exists_eq_succ_of_ne_zero hN.ne'
+  simpa using prod_two_sin_pi_div_succ m
+
+/-- **The dyadic grid normalization of the Fourier-decay audit**:
+`∏_{r=1}^{2ⁿ-1} 2 sin (π r/2ⁿ) = 2ⁿ`. -/
+theorem prod_two_sin_pi_div_two_pow (n : ℕ) :
+    ∏ k ∈ range (2 ^ n - 1), (2 * Real.sin (π * (k + 1) / (2:ℝ) ^ n)) =
+      (2:ℝ) ^ n := by
+  have h := prod_two_sin_pi_div (2 ^ n) (Nat.two_pow_pos n)
+  have hc : ((2 ^ n : ℕ) : ℝ) = (2:ℝ) ^ n := by
+    rw [Nat.cast_pow, Nat.cast_ofNat]
+  rw [hc] at h
+  exact h
+
 end Fabius
