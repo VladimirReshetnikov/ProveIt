@@ -1149,7 +1149,7 @@ named classical import.
 
 All four targets above are now formalized, and the campaign went
 substantially further.  The development
-(\nolinkurl{Analysis/FabiusFunction/Lean/FabiusFunction/}, fifty-five
+(\nolinkurl{Analysis/FabiusFunction/Lean/FabiusFunction/}, sixty-three
 sorry-free modules at this writing) now contains, kernel-checked:
 \begin{itemize}
 \item the sharp uniform bound $\|P_n\|_\infty\le(\sqrt3/2)^{n-1}$
@@ -1213,7 +1213,31 @@ single uniform quadratic gap
 $\min\bigl((u^2-m^2)/(m^2+1),\,1-v^2/(m+1)^2\bigr)\cdot a^2\le|a^2-y^2|$
 powering both summable derivative majorants, plus the pointwise
 interval glue (\lean{SideLobeConcavity}, \lean{OnePeakPerLobe}) ---
-one peak per lobe, kernel-checked.
+one peak per lobe, kernel-checked; moreover $\Phi$ is continuous on
+the real axis (uniform products on compacts,
+\lean{RvachevProductContinuity}), so each side lobe carries
+\emph{exactly one} maximizer of $|\Phi|$ and the central maximizer is
+exactly the origin;
+\item \textbf{the unconditional fluctuation record}: exact centering
+$\int_0^1\log|P_n|=0$, the $L^1$ scale
+$\int_0^1|\log|P_n||\le(\pi/2)\sqrt n$ by the quadratic
+Cauchy--Schwarz trick (\lean{LogProductMoments}); $\kappa_0=1$
+\emph{in measure} --- for every $\varepsilon>0$,
+$\operatorname{vol}\{t:|\log|P_n||\ge\varepsilon n\}
+\le(\pi^2/4\varepsilon^2)/n\to0$ --- and the uniform-in-$n$
+tightness $\operatorname{vol}\{t:|\log|P_n||\ge K\sqrt n\}
+\le\pi^2/(4K^2)$ at the CLT scale, both by Chebyshev against the
+exact variance (\lean{KappaZeroInMeasure},
+\lean{FluctuationTightness}); and the baseline decay
+$\|\Phi(x)\|\le1/(\pi|x|)$ on the whole real axis
+(\lean{BaselineDecay});
+\item \textbf{the zero order}: the dyadic lattice hits the integer
+$m\ge1$ exactly $v_2(m)+1$ times (\lean{LatticeFiber}), and
+$\|\Phi(x)\|/|x-m|^{\,v_2(m)+1}$ converges along the punctured
+neighborhood of $m$ to an explicit strictly positive constant
+(\lean{ZeroOrderTail}, \lean{PhiZeroOrder}) --- the multiplicity
+statement of \texttt{prop:canonical} in quantitative local form, and
+the local half of the valley law.
 \end{itemize}
 The sentence above about the exact variance is therefore superseded:
 the Clausen expansion in $L^2$ is formalized, the one-peak profile
