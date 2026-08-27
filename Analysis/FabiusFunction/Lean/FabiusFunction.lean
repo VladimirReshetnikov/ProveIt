@@ -116,6 +116,7 @@ import FabiusFunction.ValleyZeroOrders
 import FabiusFunction.ThueMorseLobeSign
 import FabiusFunction.LobeSignSelfSimilarity
 import FabiusFunction.RenormalizationIdentity
+import FabiusFunction.GlobalDecayEnvelope
 import FabiusFunction.BoundednessSkeleton
 import FabiusFunction.TransferOperatorStep
 import FabiusFunction.LasotaYorkeIteration
