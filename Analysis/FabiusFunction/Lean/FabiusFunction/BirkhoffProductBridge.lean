@@ -56,7 +56,6 @@ theorem abs_sin_two_pow_eq (k : ℕ) (t : ℝ) :
   obtain ⟨m, hm⟩ := exists_int_iterate_doublingMap k t
   have harg : π * (2 ^ k * t) = π * (doublingMap^[k] t) + m * π := by
     rw [hm]
-    push_cast
     ring
   rw [harg, Real.sin_add_int_mul_pi, abs_mul]
   have hone : |((-1:ℝ)) ^ m| = 1 := by

@@ -1,6 +1,7 @@
 import FabiusFunction.BaselineDecay
 import FabiusFunction.OnePeakPerLobe
 import Mathlib.Analysis.Normed.Module.MultipliableUniformlyOn
+import Mathlib.Analysis.Real.Pi.Bounds
 
 /-!
 # Continuity of `Φ` and the exact peak count
