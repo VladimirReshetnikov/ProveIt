@@ -17,6 +17,19 @@ the formal semantics.
 **Toolchains:** Lean `4.32.0` · mathlib `v4.32.0` · Rocq `>= 9.2`
 (developed against `9.0.1`) · MathComp boot `2.5.0` · [MIT-0](LICENSE)
 
+> ### Building: one Lean process at a time
+>
+> **Do not start a dozen Lean processes in parallel.** Each `lean.exe` worker on
+> a Mathlib-importing file holds 1&ndash;1.5&nbsp;GB; a default parallel `lake build`
+> exhausts memory and then fails with *misleading* errors such as
+> `failed to read file '...Basic.olean'`, which are swap-thrash symptoms rather
+> than real failures. `lake build -j1` does **not** help &mdash; Lake 5.0.0
+> removed the `-j` flag and the invocation fails with exit code 0 &mdash; and
+> neither does `LAKE_JOBS=1`. Even a single target parallelizes its own stale
+> dependency chain. Build **one module per `lake build` invocation, in
+> topological order**. See [`AGENTS.md`](AGENTS.md) for the driver, the retry
+> rule, and the Windows traps.
+
 ## Repository map
 
 The top-level source directories are mathematical topics. Within each coherent
@@ -36,7 +49,9 @@ project, `Lean/` and `Coq/` are siblings; `Research/`, `Support/`, and
 | [`lib/`](lib/) | Vendored third-party code only. |
 
 Repository-wide configuration remains at the root. [`ProveIt.lean`](ProveIt.lean)
-is the broad Lean import surface.
+is the broad Lean import surface, and [`AGENTS.md`](AGENTS.md) records the
+working agreements for automated contributors — above all the requirement to
+build Lean one module at a time.
 
 ## Highlights
 
@@ -171,7 +186,15 @@ lake exe cache get
 lake build
 ```
 
-The broad build is intentionally expensive. Focused examples are:
+The broad build is intentionally expensive, and on a memory-constrained
+machine it must be **serialized**: build one module per `lake build`
+invocation, in topological order. Parallel Lean workers exhaust RAM and report
+`failed to read file '...olean'`, which looks like corruption but is not; the
+same module compiles on a serial retry. `lake build -j1` is not a workaround
+(Lake 5.0.0 removed `-j` and exits 0 on the unknown flag), and neither is
+`LAKE_JOBS=1`. [`AGENTS.md`](AGENTS.md) has the driver and the retry rule.
+
+Focused examples are:
 
 ```powershell
 lake build JacobianConjecture
