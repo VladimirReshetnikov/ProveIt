@@ -7,6 +7,7 @@ import FabiusFunction.FinitePolynomialFunctional
 import FabiusFunction.FiniteQBinomialCore
 import FabiusFunction.WeightedScaleMultiplicity
 import FabiusFunction.MomentCumulantAlgebra
+import FabiusFunction.PolynomialExpectationCumulant
 import FabiusFunction.ThueMorseBooleanCube
 import FabiusFunction.ThueMorseValuation
 import FabiusFunction.ThueMorseDigits
