@@ -14,8 +14,9 @@ product `rvachevFourierProduct`.  This module transfers its headline results
 to the Fourier transform `rvachevFourier F` of any bounded Fabius solution.
 
 The facade covers the canonical product, dyadic shell factorization, baseline
-and global gauge bounds, the exact extremal peak ray, side- and central-lobe
-maxima, the Thue--Morse lobe sign, and the exact real zero order.
+and global gauge bounds, the strict global peak at zero, the exact extremal
+peak ray, side- and central-lobe maxima, the Thue--Morse lobe sign, and the
+exact real zero order.
 Normalization, evenness, real-axis real-valuedness, and the zero set already
 have direct `rvachevFourier` theorems in `FourierProduct`, so they are not
 duplicated here.
@@ -89,6 +90,22 @@ theorem norm_rvachevFourier_le_one
     ‖rvachevFourier F (x : ℂ)‖ ≤ 1 := by
   simpa only [rvachevFourier_eq_product F hF] using
     norm_rvachevFourierProduct_le_one x
+
+/-- The real-axis Fourier modulus is strictly below one away from the
+origin. -/
+theorem norm_rvachevFourier_lt_one_of_ne_zero
+    (F : BoundedFabius) (hF : IsFabius F) {x : ℝ} (hx : x ≠ 0) :
+    ‖rvachevFourier F (x : ℂ)‖ < 1 := by
+  simpa only [rvachevFourier_eq_product F hF] using
+    norm_rvachevFourierProduct_lt_one_of_ne_zero hx
+
+/-- The Fourier transform has unit norm on the real axis exactly at the
+origin. -/
+theorem norm_rvachevFourier_eq_one_iff
+    (F : BoundedFabius) (hF : IsFabius F) (x : ℝ) :
+    ‖rvachevFourier F (x : ℂ)‖ = 1 ↔ x = 0 := by
+  simpa only [rvachevFourier_eq_product F hF] using
+    norm_rvachevFourierProduct_eq_one_iff x
 
 /-- Baseline inverse-frequency decay of the Fourier transform away from
 zero. -/
