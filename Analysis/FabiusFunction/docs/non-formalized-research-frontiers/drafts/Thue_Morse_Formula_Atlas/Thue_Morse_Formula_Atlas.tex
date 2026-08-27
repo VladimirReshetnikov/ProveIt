@@ -118,8 +118,8 @@
 \large Digital, valuative, Pascal, automatic, finite-difference, spectral, and analytic representations}
 \author{Merged and expanded companion report to the Fabius--Rvachev formal development\\
 \small Vladimir Reshetnikov's \texttt{ProveIt} repository}
-\date{26 August 2026, with the second consolidation pass of the same day\\
-\small source snapshot at commit \nolinkurl{29e5861c6109207739c41754e1e8bcfce32e84f1}}
+\date{Repository snapshot: 27 August 2026\\
+\small source snapshot at commit \nolinkurl{552f76a235e883e5b44212dec5325b0589be1395}}
 
 \begin{document}
 \maketitle
@@ -1040,10 +1040,55 @@ multiply to
 \end{proof}
 
 \emph{Formal versions.}  The product \eqref{eq:sinc-product} is
-\lean{Fabius.rvachevFourierProduct} (\path{Basic.lean}); the interval
-sign \eqref{eq:sinc-interval-sign} is not yet formal, but the
-quantitative face of the same product is.  \path{SincProductShells.lean}
-proves the exact dyadic shell factorization of its modulus: for real
+\lean{Fabius.rvachevFourierProduct} (\path{Basic.lean}).  The interval
+sign \eqref{eq:sinc-interval-sign} is now the exact identity
+\[
+ \Phi(x)=\eps_N\,|\Phi(x)|\qquad(N<x<N+1),
+\]
+proved by
+\lean{Fabius.rvachevFourierProduct\_eq\_thueMorse\_sign\_mul\_norm}
+in \path{ThueMorseLobeSign.lean}.  In particular, positivity of the
+norm off the integer lattice gives the displayed sign and the
+half-integer sample without an extra analytic assumption.
+
+The same sinc product now has a complete formal zero-set statement:
+\[
+ \Phi(z)=0\quad\Longleftrightarrow\quad
+ \exists m\in\Z\setminus\{0\},\ z=m,
+\]
+namely \lean{Fabius.rvachevFourierProduct\_eq\_zero\_iff} in
+\path{FourierProduct.lean}.  Its canonical product is
+\[
+ \Phi(z)=\prod_{r=0}^{\infty}
+ \left(1-\frac{z^2}{(r+1)^2}\right)^{1+\vtwo(r+1)},
+\]
+formalized as
+\lean{Fabius.rvachevFourierProduct\_eq\_canonical} in
+\path{SincCanonicalProduct.lean}.  For each positive integer \(m\),
+the real punctured limit
+\[
+ \frac{|\Phi(x)|}{|x-m|^{1+\vtwo(m)}}\longrightarrow C_m>0
+ \qquad(x\to m,\ x\ne m)
+\]
+is \lean{Fabius.tendsto\_norm\_div\_pow\_zero\_order} in
+\path{PhiZeroOrder.lean}; this is the exact positive-integer real-axis
+zero order, not a broader assertion about complex local multiplicity.
+For every \(m\ge1\), the modulus also has exactly one maximizer in the
+positive side lobe \((m,m+1)\), by
+\lean{Fabius.existsUnique\_isMaxOn\_lobe} in
+\path{RvachevProductContinuity.lean}.
+
+The product-level renormalization is available independently of the
+Fourier-transform wrapper:
+\[
+ \Phi(z)=\sinc(\pi z)\Phi(z/2),\qquad
+ \Phi(z)=\left(\prod_{j<n}\sinc(\pi z/2^j)\right)\Phi(z/2^n).
+\]
+These are \lean{Fabius.rvachevFourierProduct\_scaling} and
+\lean{Fabius.rvachevFourierProduct\_shell} in
+\path{RenormalizationIdentity.lean}.  Beyond these structural
+identities, \path{SincProductShells.lean}
+proves the exact dyadic shell factorization of the modulus: for real
 \(y\ne0\) and every \(k\ge0\),
 \begin{equation}
  |\Phi(2^ky)|
@@ -2011,20 +2056,24 @@ the \(m\)-th iterate of \(z\mapsto z^2\)
 is the geometric series).  The coefficientwise content of
 \cref{thm:infinite-product} has long been formal as the stabilization
 lemma \lean{Fabius.coeff\_finite\_thueMorse\_product}
-(\path{ThueMorseGenerating.lean}), and its \emph{analytic} content is
-now formal on the whole real interval, not merely on the exponential
-ray: for every real \(x\) with \(|x|<1\) the signed series converges
-absolutely (\lean{Fabius.summable\_thueMorseSign\_mul\_pow}), the
-lacunary product converges
-(\lean{Fabius.multipliable\_one\_sub\_pow\_two\_pow}), and
+(\path{ThueMorseGenerating.lean}), and its analytic identity is
+now formal on the whole complex unit disc.  For every \(z\in\C\) with
+\(\lVert z\rVert<1\), the signed series converges absolutely
+(\lean{Fabius.summable\_thueMorseSign\_mul\_pow\_complex}), the
+lacunary product is multipliable
+(\lean{Fabius.multipliable\_one\_sub\_pow\_two\_pow\_complex}), and
 \begin{equation}
- \sum_{n\ge0}\eps_nx^n=\prod_{j\ge0}\bigl(1-x^{2^j}\bigr)
- \qquad(-1<x<1),
+ \sum_{n\ge0}\eps_nz^n=\prod_{j\ge0}\bigl(1-z^{2^j}\bigr)
+ \qquad(\lVert z\rVert<1),
  \label{eq:infinite-product-analytic}
 \end{equation}
-negative \(x\) and \(x=0\) included
-(\lean{Fabius.tsum\_thueMorseSign\_mul\_pow},
-\path{ThueMorseInfiniteProduct.lean}), with the unordered and
+by \lean{Fabius.tsum\_thueMorseSign\_mul\_pow\_complex}
+(\path{ThueMorseInfiniteProduct.lean}).  The real APIs
+\lean{Fabius.summable\_thueMorseSign\_mul\_pow},
+\lean{Fabius.multipliable\_one\_sub\_pow\_two\_pow}, and
+\lean{Fabius.tsum\_thueMorseSign\_mul\_pow} are retained as
+specializations and compatibility forms on \(-1<x<1\), with negative
+\(x\) and \(x=0\) included, together with the unordered and
 partial-product restatements
 \lean{Fabius.hasProd\_one\_sub\_pow\_two\_pow} and
 \lean{Fabius.tendsto\_prod\_one\_sub\_pow\_two\_pow}.  Both sides
@@ -2035,12 +2084,14 @@ uniqueness of limits closes the argument.  The exponential ray
 Dirichlet--Mellin layer consumes, is now the one-line specialization
 \(x=\e^{-t}\)
 (\lean{Fabius.tsum\_thueMorseSign\_exp\_eq\_lacunaryExpProduct}).
-The full complex-disc form of \eqref{eq:infinite-product} is not
-carried in this shape; what the boundary theory actually uses is the
-holomorphic sum \lean{Fabius.thueMorseDiscSeries} with its
-finite-level factorization \(F(z)=P_k(z)F(z^{2^k})\)
-(\lean{Fabius.thueMorseDiscSeries\_iterate},
-\path{ThueMorseDiscSeries.lean}).  The bit Mahler equation
+The holomorphic sum \lean{Fabius.thueMorseDiscSeries} is identified
+with the same complex product by
+\lean{Fabius.thueMorseDiscSeries\_eq\_tprod}; its Mahler equation and
+finite-level factorization \(F(z)=P_k(z)F(z^{2^k})\) are
+\lean{Fabius.thueMorseDiscSeries\_mahler} and
+\lean{Fabius.thueMorseDiscSeries\_iterate}
+(\path{ThueMorseDiscSeries.lean}), the forms used by the boundary
+theory.  The bit Mahler equation
 \eqref{eq:T-Mahler} and the lacunary quotient are now formal in
 \path{ThueMorseLacunaryQuotient.lean}: the quotient
 \(z/(1-z^2)\) is realized as the dyadic geometric series
@@ -5904,7 +5955,7 @@ valuation, carry, and Pascal-row formulas remain genuinely base-two features.
 \subsection{Formalized modules (August 2026)}
 \label{sec:formalized-modules}
 
-The first tranches of the formalization now exist as fifty-seven
+The first tranches of the formalization now exist as sixty-four
 compiled Lean modules in \repo{}, complementing the corpus modules
 (\path{Parity.lean}, \path{TwoAdic.lean}, \path{ThueMorsePrefix.lean},
 \path{ThueMorseGenerating.lean}, \path{ThueMorseExponential.lean},
@@ -5940,7 +5991,7 @@ Module & Contents \\
 \path{ThueMorseLucasSupport.lean} & Binary support of two-power sums, Lucas's submask criterion (bit, \texttt{\&\&\&}, and support forms), odd Pascal positions as the submask cube, signed Pascal-support product, balance on odd positions. \\
 \path{ThueMorseWalsh.lean} & All-ones digit patterns and masked two-power sums, \(\eps\) as a Walsh character, character orthogonality on the block, the one-point Walsh spectrum. \\
 \path{ThueMorseSparseMoments.lean} & The atlas's all-sparse-moments formula on the submask cube (\cref{cor:all-sparse-moments}), as the \(S=J(n)\) instance of the arbitrary-support composition of \path{ThueMorseMoments.lean}. \\
-\path{ThueMorseMixedDifference.lean} & The dyadic mixed-difference operator and the finite-difference factorization for arbitrary functions from an additive monoid into an additive group, with the powerset expansion. \\
+\path{ThueMorseMixedDifference.lean} & The dyadic mixed-difference operator and the finite-difference factorization for arbitrary functions from an additive commutative monoid into an additive commutative group, with the powerset expansion. \\
 \path{ThueMorseAutocorrelation.lean} & Finite autocorrelation recursion in exact integer form along \emph{any even} window, \(R_{2K}(2r)=2R_K(r)\) and \(R_{2K}(2r+1)=-(R_K(r)+R_K(r+1))\), with the dyadic layer \(A_m(k)=R_{2^m}(k)\) as its power-of-two case: zero-shift value, trivial bound, closed values at shifts one and two, and the normalized limits at shifts zero, one and two. \\
 \path{ThueMorseOverlapFree.lean} & Thue's overlap-freeness theorem with cube-freeness, the attained critical exponent two, the alphabet-free implication ``overlap-free \(\Rightarrow\) not eventually periodic'', and constructive complement and reversal closure of the factor language. \\
 \path{ThueMorseRecurrence.lean} & Full block-concatenation laws for weight and bit, all two-letter factors in every fourteen-letter window, uniform recurrence with an explicit linear bound. \\
@@ -5964,7 +6015,7 @@ Module & Contents \\
 \path{ThueMorseIntegerLiftEquation.lean} & The boxed algebraic equation \((1-z)^3C^2+(1-z)^2C=z\) in \(\mathbb Z[[z]]\) for the constructed lift, by identification with the substituted series and cancellation. \\
 \path{ThueMorseIntegerLiftRecurrence.lean} & The linear ODE \((1+3z)(1-z)^2C'=1+3(1-z^2)C\) by differentiation and one linearization certificate, and the three-term recurrence by telescoping its coefficients. \\
 \path{ThueMorseLacunaryQuotient.lean} & The dyadic geometric series and its inversion of \(1-z^{2^j}\); the denominator-free bit Mahler equation; the lacunary quotient expansion at every finite level. \\
-\path{ThueMorseInfiniteProduct.lean} & The analytic infinite-product identity \(\sum\eps_nx^n=\prod_j(1-x^{2^j})\) on the whole real interval \(|x|<1\): absolute convergence, multipliability, and identification of the limits along the dyadic scale; the exponential ray \(\sum\eps_n\e^{-nt}=\mathcal E(t)\), \(t>0\), is now a specialization. \\
+\path{ThueMorseInfiniteProduct.lean} & The analytic infinite-product identity \(\sum\eps_nz^n=\prod_j(1-z^{2^j})\) on the complex unit disc \(\lVert z\rVert<1\), including absolute convergence and multipliability; the real interval \(|x|<1\) and exponential ray \(\sum\eps_n\e^{-nt}=\mathcal E(t)\), \(t>0\), are retained as specializations. \\
 \path{ThueMorseMellin.lean} & The Mellin representation \(\Gamma(\sigma)D(\sigma,a)=\int_0^\infty t^{\sigma-1}\e^{-at}\mathcal E(t)\,\dd t\) for \(\sigma>1\): kernel integrability, absolute interchange, and termwise Gamma evaluation. \\
 \path{RealZPowProduct.lean} & Finite products of integer powers of positive reals through the exponential: the signed-logarithm identity, the limit transfer from logarithm sums to products along an arbitrary filter, and the closed-form value computations; nothing in it mentions Thue--Morse. \\
 \path{ThueMorseWoodsRobbins.lean} & The Woods--Robbins evaluation \(\prod((2n+1)/(2n+2))^{\eps_n}=2^{-1/2}\): Dirichlet-test convergence of the three log-series, the termwise and interleaving identities, and exponentiation. \\
@@ -5974,7 +6025,7 @@ Module & Contents \\
 \path{FrullaniIntegral.lean} & The Frullani integral \(\int_0^\infty(\e^{-pt}-\e^{-qt})t^{-1}\dd t=\log(q/p)\), by differentiation under the integral sign; not in Mathlib. \\
 \path{ThueMorseGDirichlet.lean} & The derivative bridge \(\log G(a,b)=D'(0,b)-D'(0,a)\): the closed integral form of \(\log G\), \((1/\Gamma)'(0)=1\), and the derivative of the entire continuation at zero. \\
 \path{ThueMorseQuarterProduct.lean} & The quarter product \(G(1/4,3/4)=1/2\) from Woods--Robbins by parity splitting, and the value \(1/2\) of the half-shifted block product. \\
-\path{ThueMorseDiscSeries.lean} & The Thue--Morse power series as a holomorphic function on the unit disc: locally uniform convergence, the analytic Mahler equation and its iterate, and the real-ray bound \(|F(x)|\le1-x\). \\
+\path{ThueMorseDiscSeries.lean} & The Thue--Morse power series as a holomorphic function on the unit disc: the complex-disc product wrapper \(F(z)=\prod_{j=0}^{\infty}(1-z^{2^j})\), locally uniform convergence, the analytic Mahler equation and its iterate, and the real-ray bound \(|F(x)|\le1-x\). \\
 \path{ThueMorseNaturalBoundary.lean} & The natural-boundary theorem: radial vanishing at dyadic roots of unity, two-power roots approximating every circle point, and the double identity-theorem argument. \\
 \path{ThueMorseComputability.lean} & Primitive recursiveness: the descent-recursion scheme for course-of-values recursions, the halving identity for the binary weight, and the primitive recursive and computable forms of \(\wt\), \(\tau\), and \(\eps\). \\
 \path{ThueMorseNewman.lean} & Newman's positivity theorem: residue-class sign sums, the modulo-three parity system, the base-four collapse with disjoint boundary corrections, and the strong induction. \\
@@ -5983,6 +6034,13 @@ Module & Contents \\
 \path{ThueMorseHankel.lean} & The Allouche--Peyri\`ere--Wen--Wen theorem: the doubling factorizations \(H_{2n}=2^nH_nH_n(m)\), \(H_{2n+1}=2^nH_{n+1}H_n(m)\), oddness of the difference determinants, and the exact valuation \(v_2(H_r)=r-1\). \\
 \path{LacunaryRieszIntegral.lean} & The exact orthogonality theory of lacunary Riesz products, with no Thue--Morse content: the frequency detector, the master theorem \(\int_0^1\cos(2\pi Kt+\psi)\prod_{j<n}(1+a_j\cos(2\pi m_jt+\varphi_j))\dd t\) under the dissociation hypothesis \(|K|+\sum_{i<j}m_i<m_j\), its super-increasing and Hadamard-gap corollaries, the mean value \(1\), and the exact identity \(\int_0^1\prod_{j<n}\sin^2(\pi m_jt)\dd t=2^{-n}\) with its geometric and dyadic specializations. \\
 \path{GelfondLogisticBound.lean} & The Gelfond rate from the logistic map, again with no Thue--Morse content: invariance of \([0,1]\), the potential telescope giving \(\prod_{j<n}u_j\le\frac53(\frac34)^n\) along any orbit from an initial value in \([0,1]\), exactness of the rate at the fixed point \(3/4\), the squared and unsquared dyadic sine-product bounds, and the \(L^1\) lower bracket for the sine product. \\
+\path{FourierProduct.lean} & The Rvachev sinc product and its identification with the Fourier transform, including the exact complex zero set \(\Phi(z)=0\iff z\in\Z\setminus\{0\}\). \\
+\path{RenormalizationIdentity.lean} & The standalone product identity \(\Phi(z)=\sinc(\pi z)\Phi(z/2)\) and its exact \(n\)-fold shell form. \\
+\path{SincProductShells.lean} & Exact dyadic shell factorization of \(|\Phi|\) and its Gelfond-rate bound along every nonzero real dyadic ray. \\
+\path{SincCanonicalProduct.lean} & The canonical product \(\prod_{m\ge1}(1-z^2/m^2)^{1+\vtwo(m)}\), obtained by regrouping the absolutely convergent double Euler product. \\
+\path{PhiZeroOrder.lean} & The exact positive-integer real-axis zero order \(1+\vtwo(m)\), expressed by a punctured norm quotient converging to a positive constant. \\
+\path{ThueMorseLobeSign.lean} & The lobe identity \(\Phi(x)=\eps_m|\Phi(x)|\) for \(m<x<m+1\), from the closed lattice-point count. \\
+\path{RvachevProductContinuity.lean} & Real-axis continuity of \(\Phi\) and \(|\Phi|\), and existence and uniqueness of the modulus maximum on each positive side lobe \((m,m+1)\), \(m\ge1\). \\
 \bottomrule
 \end{longtable}}
 
@@ -6108,15 +6166,14 @@ Proposed module & Main declarations \\
 \path{ThueMorseSparseProuhet.lean} & Arbitrary Pascal-support products and sparse moments.  \emph{Delivered} (plus \path{ThueMorseSparseMoments.lean}). \\
 \path{ThueMorseFormalSeriesF2.lean} & Artin--Schreier equation and explicit solution.  \emph{Delivered} (\path{ThueMorseArtinSchreier.lean}, with uniqueness and the integer lift). \\
 \path{ThueMorseFourier.lean} & Finite DFT, Walsh transform, product-to-sum identities.  \emph{Delivered} (Walsh, Riesz factorization and mass, sine-product closed form, and Fourier inversion are all formal). \\
-\path{ThueMorseDirichlet.lean} & Boundary flatness, Mellin integral, entire continuation.  \emph{Open.} \\
-\path{ThueMorseRarefied.lean} & Root-of-unity filters, modulo-three closed forms, odd-modulus matrix recursion.  \emph{Delivered} (the complex filter identity itself remains open). \\
+\path{ThueMorseDirichlet.lean} & Boundary flatness, Mellin integral, entire continuation.  \emph{Delivered} (\path{ThueMorseBoundaryFlatness.lean}, \path{ThueMorseDirichlet.lean}, \path{ThueMorseMellin.lean}, \path{ThueMorseEntireContinuation.lean}). \\
+\path{ThueMorseRarefied.lean} & Root-of-unity filters, modulo-three closed forms, odd-modulus matrix recursion.  \emph{Delivered in full} (\path{ThueMorseArithmeticFilter.lean}, \path{ThueMorseRarefied.lean}). \\
 \path{ThueMorseWords.lean} & Uniform recurrence, aperiodicity, and the elementary complexity bounds.  \emph{Delivered} in full (\path{ThueMorseAperiodicity.lean}, \path{ThueMorseOverlapFree.lean}, \path{ThueMorseRecurrence.lean}, \path{ThueMorseComplexity.lean}). \\
 \bottomrule
 \end{tabularx}
 \end{center}
 
-Of the planned layers, only the Dirichlet--Mellin row remains open;
-every other layer has been delivered, in most cases in greater
+Every planned layer has now been delivered, in most cases in greater
 generality than proposed.
 
 \subsection{Proof-dependency graph}
@@ -6464,7 +6521,7 @@ Second-pass additions & Even-modulus collapse of rarefied sums from exact prefix
 V.~Reshetnikov,
 \newblock \emph{ProveIt: Analysis/FabiusFunction},
 \newblock GitHub repository, source snapshot
-\nolinkurl{29e5861c6109207739c41754e1e8bcfce32e84f1}, 2026.
+\nolinkurl{552f76a235e883e5b44212dec5325b0589be1395}, 2026.
 
 \bibitem{prouhet1851}
 E.~Prouhet,
