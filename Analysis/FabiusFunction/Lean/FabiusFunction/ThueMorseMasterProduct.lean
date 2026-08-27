@@ -17,8 +17,8 @@ atlas's dyadic functional equation by even/odd interleaving.
 * `mpLimit_dyadic` — **the dyadic functional equation**
   (`thm:G-functional`, logarithmic form):
   `L(a,b) = L(a/2,b/2) - L((a+1)/2,(b+1)/2)`.
-* `tendsto_masterProduct` — the product converges to
-  `exp (L(a,b))`.
+* `tendsto_masterProduct` / `tendsto_masterProduct_affine` — the normalized
+  product and its common nonzero affine scaling converge to `exp (L(a,b))`.
 -/
 
 set_option autoImplicit false
@@ -224,5 +224,20 @@ theorem tendsto_masterProduct (a b : ℝ) (ha : 0 < a) (hb : 0 < b) :
   tendsto_prod_zpow_of_tendsto_sum (fun N : ℕ => range N)
     (fun n : ℕ => ((n : ℝ) + a) / ((n : ℝ) + b)) thueMorseSign
     (fun n => by positivity) (tendsto_mpLimit a b ha hb)
+
+/-- Common nonzero affine scaling leaves the master product unchanged: for
+`s ≠ 0` and `a,b > 0`, the product with factors
+`(s*n+s*a)/(s*n+s*b)` converges to `exp (L(a,b))`.  The scale may have
+either sign. -/
+theorem tendsto_masterProduct_affine (s a b : ℝ) (hs : s ≠ 0)
+    (ha : 0 < a) (hb : 0 < b) :
+    Tendsto (fun N => ∏ n ∈ range N,
+      ((s * (n : ℝ) + s * a) / (s * (n : ℝ) + s * b)) ^
+        (thueMorseSign n)) atTop
+      (𝓝 (Real.exp (mpLimit a b))) := by
+  refine (tendsto_masterProduct a b ha hb).congr fun N => ?_
+  refine Finset.prod_congr rfl fun n _ => ?_
+  congr 1
+  rw [← mul_add, ← mul_add, mul_div_mul_left _ _ hs]
 
 end Fabius
