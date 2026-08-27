@@ -53,6 +53,7 @@ import FabiusFunction.ThueMorseQuarterProduct
 import FabiusFunction.ThueMorseDiscSeries
 import FabiusFunction.ThueMorseNaturalBoundary
 import FabiusFunction.ThueMorseNewman
+import FabiusFunction.ThueMorseGelfond
 import FabiusFunction.LacunaryRieszIntegral
 import FabiusFunction.GelfondLogisticBound
 import FabiusFunction.GeometricScaleProducts
