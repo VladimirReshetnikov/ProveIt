@@ -2021,8 +2021,8 @@ the binary expansion \lean{Fabius.sum\_ite\_odd\_div\_two\_pow},
 and the fully general reindexing
 \lean{Fabius.sum\_filter\_dvd\_sub\_eq\_sum\_progression}, valid
 for any function into any additive commutative monoid and any modulus.
-The Euler transform \eqref{eq:log-E} itself and the partition formula
-remain analytic and unformalized.
+The Euler transform \eqref{eq:log-E} itself remains analytic; the
+partition formula below is now fully formal.
 
 \subsection{Partition and Bell-polynomial formulae}
 
@@ -2075,6 +2075,24 @@ Although the right sides are rational-looking sums, they always equal
 \(\pm1\).  This integrality collapse is itself encoded by the original
 lacunary product.
 
+\emph{Formal versions.}  \Cref{thm:partition-formula} is
+\lean{Fabius.thueMorse\_partition\_formula} and
+\cref{cor:Bell-coefficient} is \lean{Fabius.thueMorse\_bell\_formula}
+(\path{ThueMorsePartition.lean}), both over \(\mathbb Q\) with the
+weighted partitions realized as the finset
+\lean{Fabius.weightedPartitions} of multiplicity vectors.  The
+formalization replaces the analytic exponentiation argument by finite
+combinatorics: the partition sum obeys the \emph{marked-part
+recurrence} \(nP(n)=\sum_{j\le n}jx_jP(n-j)\) --- proved for an
+arbitrary coefficient sequence into any characteristic-zero field
+(\lean{Fabius.partitionExpSum\_recurrence}) by distributing the
+weight \(n=\sum jm_j\) over the parts and removing the marked part
+--- while the ruler convolution (\cref{thm:ruler-convolution}) says
+the sign sequence obeys the same recurrence at \(x_j=-a_j/j\); the
+division-by-\(n\) uniqueness lemma
+\lean{Fabius.eq\_of\_ruler\_recurrence} then identifies the two.
+No power series, exponentials, or convergence enter the proof.
+
 \subsection{A Hessenberg determinant}
 
 For \(n\ge1\), let
@@ -2120,6 +2138,26 @@ Set \(d_n=(-1)^nn!c_n\).  Then \eqref{eq:Hessenberg-recurrence} reduces to
 with \(c_0=1\).  By uniqueness of the recurrence in
 \cref{thm:ruler-convolution}, \(c_n=\eps_n\).
 \end{proof}
+
+\begin{remark}[An expansion-free proof]
+The formalization
+(\lean{Fabius.det\_thueMorseHessenberg},
+\path{ThueMorseHessenberg.lean}) avoids the Hessenberg expansion
+\eqref{eq:Hessenberg-recurrence} altogether.  Write the ruler
+convolution for \(\eps(1),\ldots,\eps(n)\) as a linear system
+\(T_n\mathbf{x}=\mathbf{c}\) whose matrix \(T_n\) is lower
+triangular with diagonal \(1,2,\ldots,n\), so \(\det T_n=n!\)
+(\lean{Fabius.det\_thueMorseTriangular}).  Cramer's rule --- in the
+reusable form \(\operatorname{cramer}_A(A\mathbf{x})=\det
+A\cdot\mathbf{x}\), proved for any commutative ring
+(\lean{Fabius.cramer\_mulVec}) --- evaluates \(n!\,\eps(n)\) as
+the determinant of \(T_n\) with its last column replaced by
+\(\mathbf{c}\); one cyclic column rotation (sign
+\((-1)^{n-1}\)) and one column negation turn that matrix into
+\(H_n\).  Hence \(\det H_n=(-1)^nn!\,\eps(n)\) with no minor
+ever expanded, and \(\det H_n=\pm n!\) is
+\lean{Fabius.det\_thueMorseHessenberg\_eq\_or}.
+\end{remark}
 
 \subsection{The zero--one series over \texorpdfstring{\(\mathbb F_2\)}{F2}}
 \label{sec:F2-series}
@@ -2268,6 +2306,27 @@ sequence's Artin--Schreier equation.  This suggests a reusable discovery
 method: search for integral algebraic lifts of finite-field automatic series.
 \end{remark}
 
+\begin{remark}[Closed form and a purely arithmetic parity proof]
+\label{rem:integer-lift-closed-form}
+Expanding \eqref{eq:integer-lift-closed} with
+\(u=z/(1-z)\) against the Catalan generating function gives the
+explicit coefficients
+\begin{equation}
+  c_n=\sum_{k=1}^{n}(-1)^{k-1}C_{k-1}\binom nk,
+  \label{eq:integer-lift-closed-coefficients}
+\end{equation}
+where \(C_m\) is the \(m\)-th Catalan number --- manifestly
+integers, with no recursion needed.  This representation yields a
+parity proof that bypasses power series entirely: Catalan numbers are
+odd exactly at the Mersenne indices \(m=2^j-1\) (fold the
+convolution \(C_{m+1}=\sum C_iC_{m-i}\) at its middle and recurse),
+so modulo two the sum \eqref{eq:integer-lift-closed-coefficients}
+retains only \(k=2^j\); by Lucas's theorem
+\(\binom n{2^j}\) is odd exactly when the \(j\)-th bit of \(n\)
+is set; and the bits sum to \(s_2(n)\).  Hence
+\(c_n\equiv s_2(n)\equiv\tau(n)\pmod2\).
+\end{remark}
+
 \emph{Formal versions.}  The uniqueness step is
 \lean{Fabius.artinSchreier\_solution\_unique}
 (\path{ThueMorseArtinSchreier.lean}): the difference of two
@@ -2278,9 +2337,22 @@ is formal in conditional-universal form: \emph{any} integer sequence
 with \(c_0=0\) whose generating series satisfies
 \eqref{eq:integer-lift-algebraic} has Thue--Morse parity
 (\lean{Fabius.integerLift\_parity},
-\lean{Fabius.integerLift\_modEq}).  The construction of the specific
-solution \eqref{eq:integer-lift-recurrence}--\eqref{eq:integer-lift-closed}
-and the equivalence of its three descriptions remain unformalized.
+\lean{Fabius.integerLift\_modEq}).  The sequence itself is now \emph{constructed} in
+\path{ThueMorseIntegerLift.lean} via the closed form
+\eqref{eq:integer-lift-closed-coefficients}
+(\lean{Fabius.integerLift}), and the boxed parity claims are proved
+unconditionally along the route of
+\cref{rem:integer-lift-closed-form}: Catalan parity is
+\lean{Fabius.catalan\_odd\_iff} (via
+\lean{Fabius.catalan\_mod\_two}, reusable facts about
+\(C_m\) independent of this atlas), and
+\(c_n\equiv\tau(n)\pmod2\), \(\eps_n=(-1)^{c_n}\) are
+\lean{Fabius.integerLift\_cast\_zmod},
+\lean{Fabius.integerLift\_emod\_two}, and
+\lean{Fabius.thueMorseSign\_eq\_neg\_one\_pow\_integerLift}.
+The equivalence of the closed form with the recurrence
+\eqref{eq:integer-lift-recurrence} and the algebraic equation
+\eqref{eq:integer-lift-algebraic} remains unformalized.
 
 \section[Natural boundary and Hankel rigidity]{Natural boundary, Hankel determinants, and Diophantine consequences}
 \label{sec:boundary-hankel}
@@ -4162,13 +4234,25 @@ eventually \(0\bmod 2^k\), and for example
 orbit of \(2\) is a fixed cycle and the products in
 \eqref{eq:rarefied-filter} grow geometrically.
 
-\emph{Formal versions.}  The algebraic skeleton of the filter's
-vanishing is
+\emph{Formal versions.}  The identity \eqref{eq:rarefied-filter}
+itself is now formal in \path{ThueMorseArithmeticFilter.lean}, in the
+multiplied form \(q\,A^{(q)}_{m,r}=\sum_{\ell<q}\zeta_q^{-r\ell}
+\prod_{j<m}(1-\zeta_q^{\ell2^j})\)
+(\lean{Fabius.thueMorse\_rarefied\_filter}).  It specializes
+\lean{Fabius.sum\_filter\_modEq\_mul\_natCast}, the filter proved
+for an \emph{arbitrary} field carrying a primitive \(q\)-th root of
+unity and an \emph{arbitrary} coefficient function --- stated without
+division so that no invertibility of \(q\) is assumed; the
+progression indicator arises from the geometric orthogonality
+\lean{Fabius.sum\_pow\_eq\_ite} by exponent reduction and
+primitive-root injectivity.  The even-modulus collapse
+\(A^{(2)}_{m,0}=0\) for \(m\ge2\) is
+\lean{Fabius.sum\_thueMorseSign\_even\_range}.  The algebraic
+skeleton of the filter's vanishing is
 \lean{Fabius.sum\_thueMorseSign\_mul\_pow\_eq\_zero\_of\_pow\_eq\_one}
 (\path{ThueMorseRarefied.lean}): over any commutative ring the signed
 block sum vanishes at any point with \(z^{2^j}=1\) for some \(j<m\).
-The complex filter identity \eqref{eq:rarefied-filter} itself remains
-unformalized; modulo three it is subsumed by the closed vectors.
+Modulo three the filter is subsumed by the closed vectors below.
 
 \subsection{Complete evaluation modulo three}
 
@@ -4806,7 +4890,7 @@ valuation, carry, and Pascal-row formulas remain genuinely base-two features.
 \subsection{Formalized modules (August 2026)}
 \label{sec:formalized-modules}
 
-The first tranches of the formalization now exist as twenty-six
+The first tranches of the formalization now exist as thirty
 compiled Lean modules in \repo{}, complementing the corpus modules
 (\path{Parity.lean}, \path{TwoAdic.lean}, \path{ThueMorsePrefix.lean},
 \path{ThueMorseGenerating.lean}, \path{ThueMorseExponential.lean},
@@ -4850,6 +4934,10 @@ Module & Contents \\
 \path{ThueMorseFourierInversion.lean} & Root-of-unity orthogonality and finite Fourier inversion over any field with a primitive root, specialized to the dyadic DFT over \(\mathbb C\). \\
 \path{ThueMorseParseval.lean} & Character orthonormality on \([0,1]\) and the Parseval mass \(\int_0^1|P_m(\e^{2\pi\ii x})|^2\,\dd x=2^m\). \\
 \path{ThueMorseComplexity.lean} & Factor complexity: the supertile-pair window parametrization, uniform-recurrence finiteness, and the two-sided bound \(\ell+1\le p(\ell)<8\ell\) with the Morse--Hedlund strict-growth argument. \\
+\path{ThueMorseArithmeticFilter.lean} & The root-of-unity filter for arithmetic progressions over any field (division-free form), the boxed rarefied formula, and the even-modulus collapse. \\
+\path{ThueMorseHessenberg.lean} & Cramer's rule for a known solution over any commutative ring, the triangular ruler system with determinant \(n!\), and the Hessenberg formula \(\det H_n=(-1)^nn!\,\eps_n\) via one column rotation. \\
+\path{ThueMorsePartition.lean} & Weighted partitions, the marked-part recurrence of \(\exp(\sum x_jz^j)\) over any characteristic-zero field, recurrence uniqueness, and the partition and Bell formulae for \(\eps_n\). \\
+\path{ThueMorseIntegerLift.lean} & The integral algebraic lift constructed in closed Catalan--binomial form; Catalan parity at Mersenne indices; the unconditional parity theorem \(c_n\equiv\tau(n)\), \(\eps_n=(-1)^{c_n}\). \\
 \bottomrule
 \end{longtable}}
 
