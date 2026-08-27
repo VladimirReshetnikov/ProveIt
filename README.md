@@ -163,6 +163,34 @@ is the broad Lean import surface.
 
 ## Lean workspace
 
+> [!WARNING]
+> **Never run Lean builds in parallel on this machine, and never start a
+> second build while one is already running.**
+>
+> The machine has 13 GB of RAM and each `lean` worker holds 1-1.5 GB, so a
+> parallel build thrashes and dies with errors that look like corruption but
+> are not:
+>
+> ```
+> failed to read file '...\Mathlib\...\Basic.olean'
+> libc++abi: terminating due to uncaught exception of type std::bad_alloc
+> ```
+>
+> These are out-of-memory symptoms, **not** broken proofs -- re-running the
+> same module by itself succeeds. Do not "fix" them by editing Lean sources.
+>
+> Run **one `lake build` invocation at a time, one module per invocation**, in
+> topological order. `LAKE_JOBS=1` is *not* sufficient: Lake 5.0 removed `-j`,
+> and even a single target parallelizes its own stale dependencies. Before
+> starting a build, check that nothing else -- including another agent session
+> working in a sibling worktree -- is already building:
+>
+> ```powershell
+> Get-Process lean -ErrorAction SilentlyContinue
+> ```
+>
+> If a build is running, wait for it to finish rather than racing it.
+
 The root workspace is pinned by [`lean-toolchain`](lean-toolchain) and
 [`lake-manifest.json`](lake-manifest.json):
 
