@@ -88,6 +88,14 @@ are tracked by Git history in the canonical source.
 
 ## Maintenance
 
+> [!WARNING]
+> The PDF rebuilt on 27 August 2026 uses the Latin Modern fallback because
+> this host has TeX Live 2021 while the available package repository is 2026;
+> `tlmgr` therefore refused to install `libertinus` and
+> `libertinus-type1`. Rebuild the PDF on a host with Libertinus installed,
+> verify it with `pdffonts`, and remove this notice when that replacement is
+> committed.
+
 New unformalized mathematical write-ups must be merged into the canonical
 LaTeX volume rather than retained as permanent parallel dossiers. A temporary
 subdirectory may serve as an inbox during concurrent work, but it must be

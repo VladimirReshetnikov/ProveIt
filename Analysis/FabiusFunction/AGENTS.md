@@ -1,46 +1,49 @@
 # Agents working in `Analysis/FabiusFunction`
 
-> [!WARNING]
-> **Never run Lean builds in parallel on this machine, and never start a
-> second build while one is already running.**
+> [!CAUTION]
+> **Never start Lean or Lake builds in parallel, and never start a second
+> build while one is already running.** Run exactly one `lake build` at a
+> time, with one target. Do not launch background build loops, pass a batch
+> of targets, or use parallel runners such as `xargs -P`.
 >
-> The machine has 13 GB of RAM and each `lean` worker holds 1-1.5 GB, so a
-> parallel build thrashes and dies with errors that look like corruption but
-> are not:
+> One invocation is not by itself one process: Lake sizes its worker pool to
+> hardware concurrency and starts one `lean.exe` **per core** whenever the
+> target has a stale dependency set. On this machine several agent sessions
+> share 13 GB, so that fan-out starves all of them. Set both limits on every
+> build:
+>
+> ```bash
+> LAKE_JOBS=1 LEAN_NUM_THREADS=0 lake build <one target>
+> ```
+>
+> `LAKE_JOBS` bounds the number of `lean.exe` processes and
+> `LEAN_NUM_THREADS` bounds the threads inside each one; they are
+> independent, so set both. Lake `5.0.0` accepts neither `-j` nor `--jobs`,
+> so these environment variables are the only control. Measured 2026-08-27:
+> a facade build over a stale dependency set spawned **11 concurrent
+> `lean.exe`**, and **exactly one** under `LAKE_JOBS=1`.
+>
+> Starvation does not look like starvation. It surfaces as errors that read
+> like corruption:
 >
 > ```
 > failed to read file '...\Mathlib\...\Basic.olean'
 > libc++abi: terminating due to uncaught exception of type std::bad_alloc
 > ```
 >
-> These are out-of-memory symptoms, **not** broken proofs -- re-running the
-> same module by itself succeeds. Do not "fix" them by editing Lean sources.
+> These are out-of-memory symptoms, **not** broken proofs -- the same module
+> built by itself succeeds. Never "fix" them by editing Lean sources.
 >
-> Launch every build as
->
-> ```powershell
-> $env:LAKE_JOBS=1; $env:LEAN_NUM_THREADS=0; lake build <one target>
-> ```
->
-> and run **one build at a time**. The two settings limit different things and
-> both are needed: `LAKE_JOBS=1` caps how many `lean` *processes* Lake starts,
-> and `LEAN_NUM_THREADS=0` caps the worker pool *inside* each one. Lake 5.0
-> rejects both `-j` and `--jobs`, so these environment variables are the only
-> control. Measured on this machine: an unqualified
-> `lake build +FabiusFunction` over a stale dependency set spawned **11
-> concurrent `lean` processes**, while the identical build under `LAKE_JOBS=1`
-> ran **exactly one**.
->
-> Prefer one module per invocation (`lake build +Pkg.Module`), and build a
-> facade only once its imports are already built. Before starting, check that
-> nothing else -- including another agent session working in a sibling
-> worktree -- is already building:
+> Before starting, check that nothing else -- including another agent session
+> in a sibling worktree -- is already building; after interrupting a build,
+> check for survivors, because stopping a task does not reliably kill the
+> processes it spawned:
 >
 > ```powershell
-> Get-Process lean -ErrorAction SilentlyContinue
+> Get-Process lean,lake -ErrorAction SilentlyContinue
 > ```
 >
-> If a build is running, wait for it to finish rather than racing it.
+> If a build is running, wait for it rather than racing it.
 
 Everything else in this file is ordinary project policy; the rule above is the
 one whose violation has repeatedly destroyed build state, so it comes first.

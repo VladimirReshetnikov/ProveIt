@@ -14,7 +14,8 @@ quantitatively:
 `|Φ|`**, and the central-lobe peak is exactly `0`.
 
 * `continuous_rvachevFourierProduct_real`, and the norm version.
-* `isMaxOn_eq_of_strictConcaveOn_log` — abstract peak uniqueness.
+* `isMaxOn_eq_of_strictConcaveOn_log_of_pos` — generic positive-log peak uniqueness;
+  `isMaxOn_eq_of_strictConcaveOn_log` is its specialization to `‖Φ‖`.
 * `existsUnique_isMaxOn_lobe` — **exactly one peak per side lobe**.
 * `isMaxOn_central_eq_zero` — the central peak is the origin.
 -/
@@ -27,6 +28,7 @@ namespace Fabius
 
 /-! ## Continuity of the pair factors and of `Φ` -/
 
+/-- Each indexed sine-product correction term is continuous along the real axis. -/
 theorem continuous_sineTerm_real (p : ℕ × ℕ) :
     Continuous (fun x : ℝ => sineTerm ((x : ℂ) / 2 ^ p.1) p.2) := by
   have h : Continuous (fun x : ℝ =>
@@ -84,6 +86,27 @@ theorem continuous_norm_rvachevFourierProduct :
 
 /-! ## Peak uniqueness from strict log-concavity -/
 
+/-- A positive real-valued function has at most one maximizer on any set where its
+logarithm is strictly concave. -/
+theorem isMaxOn_eq_of_strictConcaveOn_log_of_pos
+    {f : ℝ → ℝ} {s : Set ℝ} {c₁ c₂ : ℝ}
+    (h : StrictConcaveOn ℝ s (fun x => Real.log (f x)))
+    (hpos : ∀ x ∈ s, 0 < f x)
+    (h₁ : c₁ ∈ s) (h₂ : c₂ ∈ s)
+    (hmax₁ : IsMaxOn f s c₁) (hmax₂ : IsMaxOn f s c₂) :
+    c₁ = c₂ := by
+  apply h.eq_of_isMaxOn
+  · rw [isMaxOn_iff]
+    intro x hx
+    exact Real.strictMonoOn_log.monotoneOn
+      (hpos x hx) (hpos c₁ h₁) ((isMaxOn_iff.mp hmax₁) x hx)
+  · rw [isMaxOn_iff]
+    intro x hx
+    exact Real.strictMonoOn_log.monotoneOn
+      (hpos x hx) (hpos c₂ h₂) ((isMaxOn_iff.mp hmax₂) x hx)
+  · exact h₁
+  · exact h₂
+
 /-- **Abstract peak uniqueness**: on any set where `log ‖Φ‖` is
 strictly concave and `‖Φ‖` is positive, maximizers of `‖Φ‖` are
 unique. -/
@@ -97,35 +120,8 @@ theorem isMaxOn_eq_of_strictConcaveOn_log {s : Set ℝ} {c₁ c₂ : ℝ}
     (hmax₂ : IsMaxOn (fun x : ℝ => ‖rvachevFourierProduct (x : ℂ)‖)
       s c₂) :
     c₁ = c₂ := by
-  by_contra hne
-  have hv₁ := (isMaxOn_iff.mp hmax₁) c₂ h₂
-  have hv₂ := (isMaxOn_iff.mp hmax₂) c₁ h₁
-  have hMeq : ‖rvachevFourierProduct (c₂ : ℂ)‖ =
-      ‖rvachevFourierProduct (c₁ : ℂ)‖ := le_antisymm hv₁ hv₂
-  have hmid := h.2 h₁ h₂ hne
-    (show (0:ℝ) < 1/2 by norm_num) (show (0:ℝ) < 1/2 by norm_num)
-    (show (1:ℝ)/2 + 1/2 = 1 by norm_num)
-  have hmem := h.1 h₁ h₂ (by norm_num) (by norm_num)
-    (show (1:ℝ)/2 + 1/2 = 1 by norm_num)
-  simp only [smul_eq_mul] at hmid
-  rw [smul_eq_mul, smul_eq_mul] at hmem
-  rw [hMeq] at hmid
-  have hc₁pos := hpos c₁ h₁
-  have hmidpos := hpos _ hmem
-  have hmax_mid := (isMaxOn_iff.mp hmax₁) _ hmem
-  have hlt : Real.log ‖rvachevFourierProduct (c₁ : ℂ)‖ <
-      Real.log ‖rvachevFourierProduct
-        ((1/2 * c₁ + 1/2 * c₂ : ℝ) : ℂ)‖ := by linarith
-  have hval : ‖rvachevFourierProduct (c₁ : ℂ)‖ <
-      ‖rvachevFourierProduct ((1/2 * c₁ + 1/2 * c₂ : ℝ) : ℂ)‖ := by
-    calc ‖rvachevFourierProduct (c₁ : ℂ)‖ =
-        Real.exp (Real.log ‖rvachevFourierProduct (c₁ : ℂ)‖) :=
-          (Real.exp_log hc₁pos).symm
-      _ < Real.exp (Real.log ‖rvachevFourierProduct
-          ((1/2 * c₁ + 1/2 * c₂ : ℝ) : ℂ)‖) :=
-          Real.exp_lt_exp.mpr hlt
-      _ = _ := Real.exp_log hmidpos
-  linarith [hmax_mid, hval]
+  exact isMaxOn_eq_of_strictConcaveOn_log_of_pos
+    h hpos h₁ h₂ hmax₁ hmax₂
 
 /-! ## Exactly one peak per side lobe -/
 

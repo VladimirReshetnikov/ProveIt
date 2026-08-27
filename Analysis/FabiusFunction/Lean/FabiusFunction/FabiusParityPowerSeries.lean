@@ -182,6 +182,14 @@ theorem fabiusParityPowerSummand_one_zero :
   rw [fabiusParityPowerSummand_eq_globalBinaryReductionSummand,
     globalBinaryReductionSummand_one_zero]
 
+/-- At the right endpoint, every positive-scale parity-power summand
+vanishes. -/
+theorem fabiusParityPowerSummand_one_eq_zero_of_one_le
+    (m : ℕ) (hm : 1 ≤ m) :
+    fabiusParityPowerSummand 1 m = 0 := by
+  rw [fabiusParityPowerSummand_eq_globalBinaryReductionSummand,
+    globalBinaryReductionSummand_one_eq_zero_of_one_le m hm]
+
 /-- The corrected parity-power summands are absolutely summable at every real
 input. -/
 theorem summable_norm_fabiusParityPowerSummand_all (x : ℝ) :

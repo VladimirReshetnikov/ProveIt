@@ -1,4 +1,5 @@
 import FabiusFunction.ThueMorseMasterProduct
+import FabiusFunction.ThueMorseWoodsRobbins
 import FabiusFunction.ThueMorseEulerTransform
 import FabiusFunction.RealZPowProduct
 
@@ -31,8 +32,6 @@ of `atTop`.  The three dyadic statements are the subsequences `M = 2^(m-1)`,
 `M = 2^(m-2)`, `M = 2^(m-1)` of these.
 
 * `block_log_shift` — **the shift-general block collapse**.
-* `mpLog_one_half_eq_wrA`, `mpLimit_one_half_one` — the master series at
-  `(1/2, 1)` *is* the Woods–Robbins series, termwise.
 * `block_log_one`, `block_log_half` — its `c = 1` and `c = 1/2` instances.
 * `tendsto_block_product_even` — **the even-block product limit**, for every
   shift `c > 0`.
@@ -85,27 +84,6 @@ theorem block_log_shift (c : ℝ) (hc : 0 < c) (M : ℕ) :
     Real.log_mul h2 hlo.ne', Real.log_mul h2 hhi.ne',
     Real.log_div hlo.ne' hhi.ne']
   ring
-
-/-! ### The master series at `(1/2, 1)` is the Woods–Robbins series -/
-
-/-- The master log-partials at `(1/2, 1)` are the Woods–Robbins partials:
-termwise `log((n+1/2)/(n+1)) = log((2n+1)/(2n+2))`. -/
-theorem mpLog_one_half_eq_wrA (N : ℕ) :
-    mpLog (1 / 2 : ℝ) 1 N = wrA N := by
-  rw [mpLog, wrA]
-  refine Finset.sum_congr rfl fun n _ => ?_
-  have harg : ((n : ℝ) + 1 / 2) / ((n : ℝ) + 1) =
-      (2 * (n : ℝ) + 1) / (2 * (n : ℝ) + 2) := by
-    rw [div_eq_div_iff (by positivity) (by positivity)]
-    ring
-  rw [harg]
-
-/-- Consequently `L(1/2, 1) = -(log 2)/2`, the Woods–Robbins limit. -/
-theorem mpLimit_one_half_one :
-    mpLimit (1 / 2 : ℝ) 1 = -Real.log 2 / 2 :=
-  tendsto_nhds_unique
-    (tendsto_mpLimit (1 / 2 : ℝ) 1 (by norm_num) (by norm_num))
-    (tendsto_wrA.congr fun N => (mpLog_one_half_eq_wrA N).symm)
 
 /-! ### The two shifts used by the atlas -/
 
