@@ -61,6 +61,9 @@ import FabiusFunction.SincMeanBracket
 import FabiusFunction.PeakRayEnvelope
 import FabiusFunction.DoublingTransferAdjoint
 import FabiusFunction.GeometricCesaro
+import FabiusFunction.LogSineMeanZero
+import FabiusFunction.ShellLinearity
+import FabiusFunction.BoundaryLayerMax
 import FabiusFunction.NegativeLaplace
 import FabiusFunction.ProbabilityLaplaceMoments
 import FabiusFunction.UnitLaplaceMomentBounds
