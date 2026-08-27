@@ -85,6 +85,7 @@ import FabiusFunction.CovarianceLadder
 import FabiusFunction.DistanceCounting
 import FabiusFunction.BirkhoffVariance
 import FabiusFunction.BirkhoffProductBridge
+import FabiusFunction.BirkhoffMoments
 import FabiusFunction.ShellLinearity
 import FabiusFunction.BoundaryLayerMax
 import FabiusFunction.VarianceBookkeeping
