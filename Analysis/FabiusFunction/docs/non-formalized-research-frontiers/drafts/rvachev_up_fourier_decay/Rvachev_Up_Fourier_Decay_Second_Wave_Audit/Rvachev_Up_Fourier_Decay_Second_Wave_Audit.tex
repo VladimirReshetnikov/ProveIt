@@ -1149,7 +1149,7 @@ named classical import.
 
 All four targets above are now formalized, and the campaign went
 substantially further.  The development
-(\nolinkurl{Analysis/FabiusFunction/Lean/FabiusFunction/}, forty-seven
+(\nolinkurl{Analysis/FabiusFunction/Lean/FabiusFunction/}, fifty-five
 sorry-free modules at this writing) now contains, kernel-checked:
 \begin{itemize}
 \item the sharp uniform bound $\|P_n\|_\infty\le(\sqrt3/2)^{n-1}$
@@ -1191,14 +1191,38 @@ diagonal selection mechanism (\lean{DiagonalSelection});
 \item existence of the Perron root
 $\varrho_1=\lim_n\|\mathcal L^n\mathbf 1\|_\infty^{1/n}
 \in[1/2,\sqrt2/2]$ by Fekete's lemma
-(\lean{TransferPositivity}, \lean{PerronRootExistence}).
+(\lean{TransferPositivity}, \lean{PerronRootExistence}), and its
+uniqueness as an eigenvalue of positive continuous eigenfunctions by
+the $m/M$-sandwich (\lean{PerronEigenvalueUnique}), together with the
+exact centering $\int_0^1 S_n=0$ and the normalized limit
+$(1/n)\int_0^1 S_n^2\to\pi^2/4$ (\lean{BirkhoffMoments});
+\item \textbf{the one-peak theorem in full} (the drafts'
+\texttt{thm:one-peak}): the log-factorization
+$\log\lVert\Phi(x)\rVert=\sum_{(h,r)}\log\bigl(1-x^2/(2^h(r+1))^2\bigr)$
+at every non-lattice real $x$, with the finitely many negative
+factors absorbed by the $\log|\cdot|$ convention
+(\lean{LobeLogFactorization}); strict concavity of $\log|\Phi|$ on
+the central lobe $(-1,1)$ by twice-termwise differentiation of the
+lattice log-series (\lean{CentralLobeConcavity},
+\lean{CentralLobeOnePeak}); the peak pinned at the origin with
+$\Phi(0)=1$ and $|\Phi(x)|<1$ on $(-1,1)\setminus\{0\}$, by evenness
+and the strict midpoint inequality alone
+(\lean{CentralLobePeakAtZero}); and strict concavity of
+$\log\lVert\Phi\rVert$ on \emph{every} side lobe $\pm(m,m+1)$, via a
+single uniform quadratic gap
+$\min\bigl((u^2-m^2)/(m^2+1),\,1-v^2/(m+1)^2\bigr)\cdot a^2\le|a^2-y^2|$
+powering both summable derivative majorants, plus the pointwise
+interval glue (\lean{SideLobeConcavity}, \lean{OnePeakPerLobe}) ---
+one peak per lobe, kernel-checked.
 \end{itemize}
 The sentence above about the exact variance is therefore superseded:
-the Clausen expansion in $L^2$ is formalized, and of the fluctuation
-program only the limit theorems themselves (the martingale central
-limit theorem and iterated-logarithm law) and the Hoischen
-approximation import remain outside the formalized perimeter, both
-blocked on machinery currently absent from Mathlib.
+the Clausen expansion in $L^2$ is formalized, the one-peak profile
+statement is now a theorem of the development rather than a target,
+and of the fluctuation program only the limit theorems themselves
+(the martingale central limit theorem and iterated-logarithm law),
+the Rue\-lle--Perron--Frobenius eigenfunction \emph{existence}, and
+the Hoischen approximation import remain outside the formalized
+perimeter, all blocked on machinery currently absent from Mathlib.
 
 \section{Verdict}
 \label{sec:verdict}
