@@ -66,6 +66,7 @@ import FabiusFunction.LacunaryRieszIntegral
 import FabiusFunction.GelfondLogisticBound
 import FabiusFunction.GeometricScaleProducts
 import FabiusFunction.SincProductShells
+import FabiusFunction.RvachevFixedMantissaRay
 import FabiusFunction.SharpGelfondBound
 import FabiusFunction.SincProductPeakRay
 import FabiusFunction.DoublingCocycleIdentities
