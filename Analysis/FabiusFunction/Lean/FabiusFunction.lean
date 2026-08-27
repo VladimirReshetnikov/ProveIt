@@ -104,6 +104,7 @@ import FabiusFunction.SideLobeConcavity
 import FabiusFunction.OnePeakPerLobe
 import FabiusFunction.RvachevProductContinuity
 import FabiusFunction.KappaZeroInMeasure
+import FabiusFunction.LogProductMoments
 import FabiusFunction.BoundednessSkeleton
 import FabiusFunction.TransferOperatorStep
 import FabiusFunction.LasotaYorkeIteration
