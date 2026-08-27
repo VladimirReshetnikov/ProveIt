@@ -31,6 +31,7 @@ open Finset
 
 namespace Fabius
 
+/-- The finite multiplicity vectors encoding unordered weighted partitions of `n`. -/
 noncomputable def weightedPartitions (n : ℕ) : Finset (ℕ →₀ ℕ) :=
   ((Icc 1 n).finsupp (fun _ => range (n + 1))).filter
     (fun f => ∑ j ∈ Icc 1 n, j * f j = n)
