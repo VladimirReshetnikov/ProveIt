@@ -101,6 +101,7 @@ import FabiusFunction.CentralLobeOnePeak
 import FabiusFunction.CentralLobePeakAtZero
 import FabiusFunction.LobeLogFactorization
 import FabiusFunction.SideLobeConcavity
+import FabiusFunction.OnePeakPerLobe
 import FabiusFunction.BoundednessSkeleton
 import FabiusFunction.TransferOperatorStep
 import FabiusFunction.LasotaYorkeIteration
