@@ -11,17 +11,18 @@ sequence submultiplicative, so Fekete's lemma applies to `log aₙ` and
 `ρ₁ := lim aₙ^{1/n}`
 
 exists, with the kernel-verified bracket `1/2 ≤ ρ₁ ≤ √2/2` from the
-iterate bracket of `TransferPositivity`.  This is the audits' Perron
-root as a *formal object*: the spectral radius of `𝓛` on `C[0,1]`,
-whose refined value `ρ₁ = 0.66132…` and eigenfunction are the
-remaining RPF program.
+iterate bracket of `TransferPositivity`.  This unique growth-root limit
+is the audits' Perron root as a *formal object*.  Identifying it with the
+spectral radius of `𝓛` on `C[0,1]`, proving an eigenfunction, and obtaining
+the refined value `ρ₁ = 0.66132…` remain parts of the RPF program.
 
 * `transferSup` — `aₙ`.
 * `transferSup_pos`, `transferSup_le`, `transferSup_submul` — the
   bracket and submultiplicativity.
 * `exists_perron_exponent` — Fekete: `log aₙ/n` converges, with
   `−log 2 ≤ L ≤ log (√2/2)`.
-* `exists_perron_root` — `aₙ^{1/n} → ρ ∈ [1/2, √2/2]`.
+* `exists_perron_root`, `existsUnique_perron_root` — the bracketed growth-root
+  limit exists and is unique.
 -/
 
 set_option autoImplicit false
@@ -34,11 +35,13 @@ namespace Fabius
 noncomputable def transferSup (n : ℕ) : ℝ :=
   sSup ((rpfTransfer^[n] (fun _ => 1)) '' Set.Icc 0 1)
 
+/-- The compact continuous image defining `transferSup n` is bounded above. -/
 theorem transferSup_bddAbove (n : ℕ) :
     BddAbove ((rpfTransfer^[n] (fun _ => (1:ℝ))) '' Set.Icc 0 1) :=
   (isCompact_Icc.image_of_continuousOn
     (continuous_iterate_rpfTransfer_one n).continuousOn).bddAbove
 
+/-- The image defining `transferSup n` is nonempty because `[0,1]` is nonempty. -/
 theorem transferSup_image_nonempty (n : ℕ) :
     ((rpfTransfer^[n] (fun _ => (1:ℝ))) '' Set.Icc 0 1).Nonempty :=
   (Set.nonempty_Icc.mpr zero_le_one).image _
@@ -48,6 +51,18 @@ theorem apply_le_transferSup (n : ℕ) {x : ℝ}
     (hx : x ∈ Set.Icc (0:ℝ) 1) :
     (rpfTransfer^[n] (fun _ => 1)) x ≤ transferSup n :=
   le_csSup (transferSup_bddAbove n) (Set.mem_image_of_mem _ hx)
+
+/-- The supremum is attained by the `n`th transfer iterate at some point of `[0,1]`. -/
+theorem exists_apply_eq_transferSup (n : ℕ) :
+    ∃ x ∈ Set.Icc (0 : ℝ) 1,
+      (rpfTransfer^[n] (fun _ => 1)) x = transferSup n := by
+  obtain ⟨x, hx, hmax⟩ := isCompact_Icc.exists_isMaxOn
+    (Set.nonempty_Icc.mpr zero_le_one)
+    (continuous_iterate_rpfTransfer_one n).continuousOn
+  refine ⟨x, hx, le_antisymm (apply_le_transferSup n hx) ?_⟩
+  apply csSup_le (transferSup_image_nonempty n)
+  rintro y ⟨z, hz, rfl⟩
+  exact hmax hz
 
 /-- The lower half of the bracket: `(1/2)ⁿ ≤ aₙ`. -/
 theorem le_transferSup (n : ℕ) : (1 / 2 : ℝ) ^ n ≤ transferSup n :=
@@ -61,6 +76,7 @@ theorem transferSup_le (n : ℕ) :
   rintro y ⟨x, hx, rfl⟩
   exact iterate_rpfTransfer_one_le n x hx
 
+/-- The transfer supremum is strictly positive for every iterate. -/
 theorem transferSup_pos (n : ℕ) : 0 < transferSup n :=
   lt_of_lt_of_le (by positivity) (le_transferSup n)
 
@@ -197,4 +213,14 @@ theorem exists_perron_root :
     rw [Real.rpow_def_of_pos (transferSup_pos n)]
     congr 1
     field_simp
+
+/-- The bracketed Perron growth root is unique. -/
+theorem existsUnique_perron_root :
+    ∃! ρ : ℝ, 1 / 2 ≤ ρ ∧ ρ ≤ Real.sqrt 2 / 2 ∧
+      Tendsto (fun n : ℕ => (transferSup n) ^ ((1 : ℝ) / n))
+        atTop (𝓝 ρ) := by
+  obtain ⟨ρ, hρlow, hρhigh, hρlim⟩ := exists_perron_root
+  refine ⟨ρ, ⟨hρlow, hρhigh, hρlim⟩, ?_⟩
+  intro σ hσ
+  exact tendsto_nhds_unique hσ.2.2 hρlim
 end Fabius
