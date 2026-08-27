@@ -36,7 +36,6 @@ theorem sum_filter_modEq_mul_natCast {F : Type*} [Field F] [DecidableEq F]
     (f : ℕ → F) (N r : ℕ) :
     (q : F) * ∑ n ∈ (range N).filter (fun n => n % q = r % q), f n =
       ∑ ℓ ∈ range q, (ζ⁻¹) ^ (r * ℓ) * ∑ n ∈ range N, f n * ζ ^ (n * ℓ) := by
-  have hζ0 : ζ ≠ 0 := hζ.ne_zero hq
   symm
   have hstep : ∀ ℓ ∈ range q,
       (ζ⁻¹) ^ (r * ℓ) * ∑ n ∈ range N, f n * ζ ^ (n * ℓ) =
@@ -54,29 +53,7 @@ theorem sum_filter_modEq_mul_natCast {F : Type*} [Field F] [DecidableEq F]
       ∑ ℓ ∈ range q, f n * (ζ ^ n * (ζ⁻¹) ^ r) ^ ℓ =
       f n * (if n % q = r % q then (q : F) else 0) := by
     intro n _
-    rw [← Finset.mul_sum]
-    congr 1
-    have hw : (ζ ^ n * (ζ⁻¹) ^ r) ^ q = 1 := by
-      have h1 : ζ ^ (n * q) = 1 := by
-        rw [mul_comm, pow_mul, hζ.pow_eq_one, one_pow]
-      have h2 : (ζ⁻¹) ^ (r * q) = 1 := by
-        rw [mul_comm, pow_mul, inv_pow, hζ.pow_eq_one, inv_one, one_pow]
-      rw [mul_pow, ← pow_mul, ← pow_mul, h1, h2, one_mul]
-    rw [sum_pow_eq_ite _ q hw]
-    have hpowmod : ∀ a : ℕ, ζ ^ a = ζ ^ (a % q) := by
-      intro a
-      conv_lhs => rw [← Nat.div_add_mod a q]
-      rw [pow_add, pow_mul, hζ.pow_eq_one, one_pow, one_mul]
-    have hiff : (ζ ^ n * (ζ⁻¹) ^ r = 1) ↔ (n % q = r % q) := by
-      rw [inv_pow, mul_inv_eq_one₀ (pow_ne_zero r hζ0)]
-      constructor
-      · intro h
-        rw [hpowmod n, hpowmod r] at h
-        exact hζ.pow_inj (Nat.mod_lt _ (Nat.pos_of_ne_zero hq))
-          (Nat.mod_lt _ (Nat.pos_of_ne_zero hq)) h
-      · intro h
-        rw [hpowmod n, hpowmod r, h]
-    simp only [hiff]
+    rw [← Finset.mul_sum, sum_pow_mul_inv_pow_eq_ite hζ hq n r]
   rw [Finset.sum_congr rfl hinner, Finset.sum_filter, Finset.mul_sum]
   refine Finset.sum_congr rfl fun n _ => ?_
   split_ifs <;> ring
