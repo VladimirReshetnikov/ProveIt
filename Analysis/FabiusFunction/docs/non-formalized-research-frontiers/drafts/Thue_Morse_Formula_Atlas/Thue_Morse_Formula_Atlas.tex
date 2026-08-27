@@ -4238,12 +4238,40 @@ in squared form by the Riesz factorization
 
 \subsection{Sine and cosine products as Thue--Morse sums}
 
-A rescaling of \eqref{eq:finite-Fourier-sine} gives exact finite
-product-to-sum identities.
+A product-to-sum recurrence gives the following exact real-variable identity
+in the normalization used by the formal development.
 
-\begin{theorem}[Thue--Morse trigonometric sums]
+\begin{theorem}[Real lacunary sine product]
 \label{thm:trig-product-to-sum}
-For every integer \(m\ge0\) and every complex \(z\),
+For every \(m\in\N\) and \(w\in\R\),
+\begin{equation}
+ \boxed{
+ 2^m\prod_{j=0}^{m}\sin(2^jw)
+ =\sum_{n=0}^{2^m-1}\eps_n
+  \sin\!\left(\frac{m\pi}{2}+(2n+1)w\right).}
+ \label{eq:formal-lacunary-sine-product}
+\end{equation}
+\end{theorem}
+
+\emph{Formal versions.}  The displayed theorem is exactly
+\lean{Fabius.prod\_sin\_two\_pow\_eq\_thueMorse\_sum} in
+\path{LacunaryProductToSum.lean}.  The same module records the two binary
+reflection laws
+\begin{equation}
+ \wt(2^m-1-n)+\wt(n)=m,\qquad
+ \eps_{2^m-1-n}=(-1)^m\eps_n
+ \quad(n<2^m),                                             \label{eq:formal-bit-complement-laws}
+\end{equation}
+as \lean{Fabius.binaryWeight\_compl} and
+\lean{Fabius.thueMorseSign\_compl}, and the quarter-turn identity
+\begin{equation}
+ (-1)^m\cos\!\left(\frac{m\pi}{2}-x\right)
+ =\cos\!\left(\frac{m\pi}{2}+x\right)                    \label{eq:formal-quarter-turn-parity}
+\end{equation}
+for real \(x\), as \lean{Fabius.neg\_one\_pow\_mul\_cos\_sub}.
+
+Putting \(w=z/2^m\) in \eqref{eq:formal-lacunary-sine-product} and reversing
+the finite product gives, for real \(z\),
 \begin{equation}
   \boxed{
   \prod_{r=0}^{m}\sin\frac{z}{2^r}
@@ -4253,7 +4281,7 @@ For every integer \(m\ge0\) and every complex \(z\),
    \right).}
   \label{eq:sine-product-to-sum}
 \end{equation}
-Also
+The finite exponential identity also suggests the companion
 \begin{equation}
   \boxed{
   \cos z\prod_{r=1}^{m}\sin\frac{z}{2^r}
@@ -4263,10 +4291,10 @@ Also
    \right).}
   \label{eq:cosine-product-to-sum}
 \end{equation}
-The product from \(r=1\) to \(0\) is empty when \(m=0\).
-\end{theorem}
+where the product from \(r=1\) to \(0\) is empty when \(m=0\).
+Both formulas extend from real to complex \(z\) by the identity theorem.
 
-\begin{proof}
+\begin{proof}[Proof of the analytic companions]
 Set \(\theta=2z/2^m\) in
 \eqref{eq:finite-Fourier-sine}, multiply by
 \(\ii^m\e^{\ii z/2^m}\), and simplify the phase.  The result is
@@ -4282,8 +4310,14 @@ are identities between entire functions of \(z\), so the identity theorem
 extends them to every complex \(z\).
 \end{proof}
 
-These identities make explicit the Fourier route from finite Thue--Morse
-blocks to the sinc products in the Fabius/Rvachev analysis.
+\emph{Exact status boundary.}  The Lean module proves
+\eqref{eq:formal-lacunary-sine-product} over \(\R\) and the three supporting
+identities named above.  It does \emph{not} contain a declaration for the
+complex analytic continuation of \eqref{eq:sine-product-to-sum}, nor for the
+cosine formula \eqref{eq:cosine-product-to-sum}.  Those adjacent analytic
+statements remain natural-language results in this frontier atlas.  Together
+they make explicit the Fourier route from finite Thue--Morse blocks to the
+sinc products in the Fabius/Rvachev analysis.
 
 \subsection{The exact dyadic discrete Fourier transform}
 
@@ -6191,6 +6225,7 @@ Module & Contents \\
 \path{ThueMorseMultinomial.lean} & Kummer's criterion for multinomial coefficients, the multinomial support count \(O_r(n)=r^{\wt(n)}\), the signed \(r\)-nomial row formula, the exact \(r\)-nomial logarithm. \\
 \path{ThueMorseFourier.lean} & The circle factor \(|1-\e^{\ii\theta}|^2=2-2\cos\theta\) and the finite Riesz product with its nonnegativity. \\
 \path{ThueMorseSineProduct.lean} & The half-angle factorization and the sine-product closed form of the Thue--Morse trigonometric polynomial. \\
+\path{LacunaryProductToSum.lean} & Binary-weight complementation on a dyadic block, the induced global-sign reflection, quarter-turn cosine parity, and the exact real lacunary sine product as a Thue--Morse sum. \\
 \path{ThueMorseFourierInversion.lean} & Root-of-unity orthogonality and finite Fourier inversion over any field with a primitive root, specialized to the dyadic DFT over \(\mathbb C\). \\
 \path{ThueMorseParseval.lean} & Character orthonormality on \([0,1]\) and the Parseval mass \(\int_0^1|P_m(\e^{2\pi\ii x})|^2\,\dd x=2^m\). \\
 \path{ThueMorseComplexity.lean} & Factor complexity: the supertile-pair window parametrization with the boundary-crossing case split, uniform-recurrence finiteness, and the sharpened two-sided bound \(\ell+1\le p(\ell)\le6\ell-4\) --- with \(p(\ell)\le2\cdot2^k+2(\ell-1)\) at every covering level and the older \(4\cdot2^k\), \(p(\ell)<8\ell\) kept as corollaries --- and the Morse--Hedlund strict-growth argument. \\
@@ -6366,7 +6401,7 @@ Proposed module & Main declarations \\
 \path{ThueMorseProuhetMoments.lean} & Difference operators, all moments, centered parity.  \emph{Delivered} (\path{ThueMorseMoments.lean}, \path{ThueMorseMixedDifference.lean}). \\
 \path{ThueMorseSparseProuhet.lean} & Arbitrary Pascal-support products and sparse moments.  \emph{Delivered} (plus \path{ThueMorseSparseMoments.lean}). \\
 \path{ThueMorseFormalSeriesF2.lean} & Artin--Schreier equation and explicit solution.  \emph{Delivered} (\path{ThueMorseArtinSchreier.lean}, with uniqueness and the integer lift). \\
-\path{ThueMorseFourier.lean} & Finite DFT, Walsh transform, product-to-sum identities.  \emph{Delivered} (Walsh, Riesz factorization and mass, sine-product closed form, and Fourier inversion are all formal). \\
+\path{ThueMorseFourier.lean} & Finite DFT, Walsh transform, product-to-sum identities.  \emph{Delivered} across \path{ThueMorseFourier.lean}, \path{ThueMorseSineProduct.lean}, \path{LacunaryProductToSum.lean}, and \path{ThueMorseFourierInversion.lean}: the Walsh and Riesz factorizations, sine-product closed form, real lacunary product-to-sum identity with its complement and phase lemmas, and Fourier inversion are formal.  The complex continuation and cosine companion in \eqref{eq:cosine-product-to-sum} are not delivered declarations. \\
 \path{ThueMorseDirichlet.lean} & Boundary flatness, Mellin integral, entire continuation.  \emph{Delivered} (\path{ThueMorseBoundaryFlatness.lean}, \path{ThueMorseDirichlet.lean}, \path{ThueMorseMellin.lean}, \path{ThueMorseEntireContinuation.lean}). \\
 \path{ThueMorseRarefied.lean} & Root-of-unity filters, modulo-three closed forms, odd-modulus matrix recursion.  \emph{Delivered in full} (\path{ThueMorseArithmeticFilter.lean}, \path{ThueMorseRarefied.lean}). \\
 \path{ThueMorseWords.lean} & Uniform recurrence, aperiodicity, and the elementary complexity bounds.  \emph{Delivered} in full (\path{ThueMorseAperiodicity.lean}, \path{ThueMorseOverlapFree.lean}, \path{ThueMorseRecurrence.lean}, \path{ThueMorseComplexity.lean}). \\

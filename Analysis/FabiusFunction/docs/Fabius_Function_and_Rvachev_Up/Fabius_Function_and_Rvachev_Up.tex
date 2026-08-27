@@ -1188,6 +1188,56 @@ The whole-plane analyticity theorem is
 the same module.
 \end{proof}
 
+\subsection{A finite Thue--Morse product-to-sum bridge}
+
+The finite binary block has a reflection law that matches the parity of a
+quarter-turn phase.  Recall that
+\(\varepsilon_n=(-1)^{\wt(n)}\).
+
+\begin{proposition}[Binary complement and quarter-turn parity]
+\label{prop:binary-complement-quarter-turn}
+For \(m,n\in\N\) with \(n<2^m\),
+\begin{align}
+ \wt(2^m-1-n)+\wt(n)&=m,                                 \label{eq:binary-weight-complement}\\
+ \varepsilon_{2^m-1-n}&=(-1)^m\varepsilon_n.             \label{eq:thue-sign-complement}
+\end{align}
+For every \(m\in\N\) and \(x\in\R\),
+\begin{equation}
+ (-1)^m\cos\!\left(\frac{m\pi}{2}-x\right)
+ =\cos\!\left(\frac{m\pi}{2}+x\right).                 \label{eq:quarter-turn-phase-parity}
+\end{equation}
+\end{proposition}
+
+\begin{proof}[Formal proof]
+The three identities are respectively
+\lean{binaryWeight_compl}, \lean{thueMorseSign_compl}, and
+\lean{neg_one_pow_mul_cos_sub} in \path{LacunaryProductToSum.lean}.
+The first hypothesis makes the natural-number subtractions in
+\eqref{eq:binary-weight-complement}--\eqref{eq:thue-sign-complement}
+ordinary binary complementation rather than truncated subtraction.
+\end{proof}
+
+\begin{theorem}[Lacunary sine product as a Thue--Morse sum]
+\label{thm:lacunary-sine-product-to-sum}
+For every \(m\in\N\) and \(w\in\R\),
+\begin{equation}
+ \boxed{
+ 2^m\prod_{j=0}^{m}\sin(2^jw)
+ =\sum_{n=0}^{2^m-1}\varepsilon_n
+   \sin\!\left(\frac{m\pi}{2}+(2n+1)w\right).}
+                                                               \label{eq:lacunary-sine-product-to-sum}
+\end{equation}
+\end{theorem}
+
+\begin{proof}[Formal proof]
+This is exactly \lean{prod_sin_two_pow_eq_thueMorse_sum} in
+\path{LacunaryProductToSum.lean}.  Its Lean proof uses the two complement
+laws and the phase parity above to fold the negative frequencies from the
+product-to-sum recurrence back onto the positive odd frequencies.  The
+formal statement is over real \(w\); no complex continuation or neighboring
+cosine-product identity is asserted here.
+\end{proof}
+
 \begin{theorem}[Dyadic shell factorization]
 \label{thm:fourier-dyadic-shell}
 For every \(k\in\N\) and \(z\in\C\), dilation by \(2^k\) extracts exactly the first
@@ -5285,6 +5335,7 @@ Probability and finite approximants &
 Fourier analysis &
 \path{FourierProduct.lean}, \path{FourierAnalytic.lean},
 \path{OriginalPaperSupplement.lean}, \path{PoissonSummation.lean},
+\path{LacunaryProductToSum.lean},
 \path{RenormalizationIdentity.lean}, \path{SincProductShells.lean},
 \path{SincPrefixBound.lean},
 \path{SincCanonicalProduct.lean}, \path{PhiZeroOrder.lean},
