@@ -72,6 +72,7 @@ import FabiusFunction.VarianceBookkeeping
 import FabiusFunction.SharpGelfondEquality
 import FabiusFunction.CesaroProfileSkeleton
 import FabiusFunction.LogMeanSkeleton
+import FabiusFunction.SincEulerProduct
 import FabiusFunction.NegativeLaplace
 import FabiusFunction.ProbabilityLaplaceMoments
 import FabiusFunction.UnitLaplaceMomentBounds
