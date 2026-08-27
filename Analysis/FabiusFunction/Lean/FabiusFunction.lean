@@ -113,6 +113,7 @@ import FabiusFunction.PhiZeroOrder
 import FabiusFunction.PhiRealSign
 import FabiusFunction.LobeSignCount
 import FabiusFunction.ValleyZeroOrders
+import FabiusFunction.ThueMorseLobeSign
 import FabiusFunction.BoundednessSkeleton
 import FabiusFunction.TransferOperatorStep
 import FabiusFunction.LasotaYorkeIteration
