@@ -36,6 +36,7 @@ noncomputable def lobeExceptional (c : ℝ) : Finset (ℕ × ℕ) :=
   (Finset.range (⌊c⌋₊ + 1) ×ˢ Finset.range (⌊c⌋₊ + 1)).filter
     (fun p => 2 ^ p.1 * (p.2 + 1) ≤ ⌊c⌋₊)
 
+/-- For `0 ≤ c`, a pair is exceptional exactly when its lattice value is at most `c`. -/
 theorem mem_lobeExceptional_iff {c : ℝ} (hc : 0 ≤ c) (p : ℕ × ℕ) :
     p ∈ lobeExceptional c ↔ lobeZero p ≤ c := by
   unfold lobeExceptional
@@ -59,6 +60,7 @@ theorem mem_lobeExceptional_iff {c : ℝ} (hc : 0 ≤ c) (p : ℕ × ℕ) :
     · exact lt_trans (Nat.lt_of_succ_le (le_trans hb2 hnat))
         (Nat.lt_succ_self _)
 
+/-- For `0 ≤ c`, every pair outside `lobeExceptional c` has lattice value above `c`. -/
 theorem lt_lobeZero_of_not_mem {c : ℝ} (hc : 0 ≤ c) {p : ℕ × ℕ}
     (hp : p ∉ lobeExceptional c) : c < lobeZero p := by
   by_contra h
