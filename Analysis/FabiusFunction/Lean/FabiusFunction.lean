@@ -53,6 +53,7 @@ import FabiusFunction.ThueMorseQuarterProduct
 import FabiusFunction.ThueMorseDiscSeries
 import FabiusFunction.ThueMorseNaturalBoundary
 import FabiusFunction.ThueMorseComputability
+import FabiusFunction.WordComplexity
 import FabiusFunction.ThueMorseNewman
 import FabiusFunction.ThueMorseGelfond
 import FabiusFunction.PeriodDoublingHankel
