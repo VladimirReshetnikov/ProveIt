@@ -35,7 +35,9 @@ import FabiusFunction.ThueMorseArithmeticFilter
 import FabiusFunction.RealZPowProduct
 import FabiusFunction.ToeplitzHessenberg
 import FabiusFunction.ThueMorseHessenberg
+import FabiusFunction.ExponentialPartition
 import FabiusFunction.ThueMorsePartition
+import FabiusFunction.ExponentialBell
 import FabiusFunction.ThueMorseIntegerLift
 import FabiusFunction.ThueMorseBoundaryFlatness
 import FabiusFunction.ThueMorseDirichlet
