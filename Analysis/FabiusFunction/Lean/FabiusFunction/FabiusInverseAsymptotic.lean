@@ -15,7 +15,8 @@ formula to
 
 The reusable theorem `quadratic_asymptotic_inversion` then gives the phase,
 including its affine correction and the full `O(log T / sqrt T)` error.  The
-exact saddle identity
+growth hypothesis after composition with `fabiusInv` comes from the public
+small-argument limit in `FabiusLambertRates`.  The exact saddle identity
 
 `log x = log lam - log 2 * lam`
 
@@ -133,13 +134,6 @@ theorem log_sub_sharpLambertMain_comp_fabiusInv_isBigO_inv_phase
     pow_zero, one_smul, fabiusSaddleLogCoefficient_zero,
     sub_zero, pow_one] using h
 
-private theorem tendsto_fabiusLambertPhase_at_zero_right :
-    Tendsto fabiusLambertPhase (𝓝[>] (0 : ℝ)) atTop := by
-  apply (tendsto_logScale_iff_smallArgument
-    fabiusLambertPhase atTop).mp
-  simpa only [fabiusLogArgument, fabiusLambertPhase_dyadic] using
-    tendsto_dyadicLambertPhase_atTop
-
 private theorem isBounded_range_negativeLaplacePsi :
     Bornology.IsBounded (range negativeLaplacePsi) :=
   negativeLaplacePsi_periodic.isBounded_of_continuous one_ne_zero
@@ -171,7 +165,7 @@ private theorem fabius_inverse_quadratic_input
     fabiusLambertPhase (fabiusInv F hF y)
   have hinv := tendsto_fabiusInv_nhdsGT_zero F hF
   have hlam : Tendsto lam l atTop := by
-    exact tendsto_fabiusLambertPhase_at_zero_right.comp hinv
+    exact tendsto_fabiusLambertPhase_nhdsGT_zero_atTop.comp hinv
   have hbase :
       (fun y : ℝ => Real.log y -
         fabiusSharpLambertMain (fabiusInv F hF y)) =O[l]
@@ -228,7 +222,7 @@ theorem
       (lam := fun y : ℝ => fabiusLambertPhase (fabiusInv F hF y))
       (L := Real.log 2) (B := 1 + Real.log 2 / 2)
       (Real.log_pos (by norm_num : (1 : ℝ) < 2))
-      (tendsto_fabiusLambertPhase_at_zero_right.comp
+      (tendsto_fabiusLambertPhase_nhdsGT_zero_atTop.comp
         (tendsto_fabiusInv_nhdsGT_zero F hF))
       (fabius_inverse_quadratic_input F hF)
 

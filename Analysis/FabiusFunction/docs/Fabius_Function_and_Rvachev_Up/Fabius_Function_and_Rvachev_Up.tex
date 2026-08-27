@@ -3940,6 +3940,15 @@ These are \lean{fabiusLambertPhase_continuousOn},
 \lean{deriv_fabiusLambertPhase}, and \lean{deriv_fabiusLambertPhase_neg} in
 \path{FabiusLambertSaddle.lean}; the derivative witness is
 \lean{fabiusLambertPhase_hasDerivAt}.
+At the singular endpoint the exact phase and its reciprocal have the limits
+\begin{equation}
+ \lambda(x)\longrightarrow+\infty,
+ \qquad \lambda(x)^{-1}\longrightarrow0
+ \qquad(x\downarrow0).                                    \label{eq:lambert-phase-endpoint-limits}
+\end{equation}
+These are \lean{tendsto_fabiusLambertPhase_nhdsGT_zero_atTop} and
+\lean{tendsto_inv_fabiusLambertPhase_nhdsGT_zero} in
+\path{FabiusLambertRates.lean}.
 
 The corrected main term is
 \begin{equation}
