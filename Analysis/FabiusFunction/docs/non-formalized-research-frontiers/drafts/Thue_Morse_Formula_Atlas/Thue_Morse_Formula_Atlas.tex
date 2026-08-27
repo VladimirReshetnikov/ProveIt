@@ -4925,6 +4925,24 @@ convenient fingerprints of the same product theory:
   &=\frac1{2\sqrt2}.
   \label{eq:block-product-alternating}
 \end{align}
+
+These limits are now \emph{proved}, not merely recorded: over a dyadic
+block the even/odd split collapses the unbounded logarithms into the
+convergent sign-weighted ratio series, giving the exact partial-sum
+identity \(\sum_{k<2N}\eps_k\log(k+1)=L_A\)-partial\((N)\)
+(\lean{Fabius.block\_log\_one}), whence
+\eqref{eq:block-product-one} follows from the Woods--Robbins limit
+(\lean{Fabius.tendsto\_block\_product\_one}); the alternating
+version telescopes into two Woods--Robbins partials --- the
+\(\log2\)-contributions vanish by dyadic balance --- giving
+\eqref{eq:block-product-alternating}
+(\lean{Fabius.tendsto\_block\_product\_mixed}); and the
+half-shifted block sum \emph{is} the master series at
+\((\tfrac14,\tfrac34)\), so the limit in
+\eqref{eq:block-product-half} is \(\exp L(\tfrac14,\tfrac34)\)
+(\lean{Fabius.tendsto\_block\_product\_half'},
+\path{ThueMorseBlockProducts.lean}); its numerical value \(1/2\) is
+the quarter product \eqref{eq:quarter-product}, cited above.
 Pairing adjacent factors reduces the first two to
 \(G(1/4,3/4)\) and \(G(1/2,1)\), respectively; the third factors into their
 product.  The evaluations are thus \eqref{eq:quarter-product} and
@@ -5011,7 +5029,7 @@ valuation, carry, and Pascal-row formulas remain genuinely base-two features.
 \subsection{Formalized modules (August 2026)}
 \label{sec:formalized-modules}
 
-The first tranches of the formalization now exist as forty-one
+The first tranches of the formalization now exist as forty-two
 compiled Lean modules in \repo{}, complementing the corpus modules
 (\path{Parity.lean}, \path{TwoAdic.lean}, \path{ThueMorsePrefix.lean},
 \path{ThueMorseGenerating.lean}, \path{ThueMorseExponential.lean},
@@ -5070,6 +5088,7 @@ Module & Contents \\
 \path{ThueMorseMellin.lean} & The Mellin representation \(\Gamma(\sigma)D(\sigma,a)=\int_0^\infty t^{\sigma-1}\e^{-at}\mathcal E(t)\,\dd t\) for \(\sigma>1\): kernel integrability, absolute interchange, and termwise Gamma evaluation. \\
 \path{ThueMorseWoodsRobbins.lean} & The Woods--Robbins evaluation \(\prod((2n+1)/(2n+2))^{\eps_n}=2^{-1/2}\): Dirichlet-test convergence of the three log-series, the termwise and interleaving identities, and exponentiation. \\
 \path{ThueMorseMasterProduct.lean} & The master product \(G(a,b)\): convergence for all positive parameters, the cocycle identities, the dyadic functional equation, and \(G=\exp L\). \\
+\path{ThueMorseBlockProducts.lean} & The three dyadic block-product limits: the block collapse onto the Woods--Robbins partials, the alternating telescoping, and the identification of the half-shifted block with the master series at \((\frac14,\frac34)\). \\
 \bottomrule
 \end{longtable}}
 
