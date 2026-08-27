@@ -35,6 +35,7 @@ import FabiusFunction.ThueMorseIntegerLift
 import FabiusFunction.ThueMorseBoundaryFlatness
 import FabiusFunction.ThueMorseDirichlet
 import FabiusFunction.ThueMorseCatalanSeries
+import FabiusFunction.ThueMorseCatalanConvolution
 import FabiusFunction.LacunaryRieszIntegral
 import FabiusFunction.GelfondLogisticBound
 import FabiusFunction.GeometricScaleProducts
