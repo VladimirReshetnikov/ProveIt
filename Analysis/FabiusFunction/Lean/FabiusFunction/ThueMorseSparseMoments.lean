@@ -13,10 +13,16 @@ block (`S = {0,…,m-1}`) as special cases.
 
 * `binaryWeight_sum_two_pow_eq_card` — the hypothesis-free weight law:
   `wt(∑_{j∈T} 2^j) = |T|` for every finite `T`, no block bound needed.
+* `prod_one_sub_pow_powerset'` — the master product for an **arbitrary**
+  exponent function `e : ℕ → ℕ`, over any commutative ring:
+  `∏_{j∈S} (1 - z^(e j)) = ∑_{T⊆S} (-1)^|T|·z^(∑_{j∈T} e j)`.  Expanding
+  the product never inspects `e`; only additivity of exponents is used.
 * `prod_one_sub_pow_powerset` — the master product on an arbitrary
   support, over any commutative ring:
   `∏_{j∈S} (1 - z^(2^j)) = ∑_{T⊆S} ε(k_T)·z^(k_T)` with
-  `k_T = ∑_{j∈T} 2^j`.
+  `k_T = ∑_{j∈T} 2^j`.  It is the case `e = (2 ^ ·)` of the previous
+  item, where the sign `(-1)^|T|` is exactly the Thue–Morse sign of the
+  submask `k_T`.
 * `sum_powerset_thueMorseSign_mul_pow_add` — the **complete sparse
   moment composition**: for every `d ≥ 0`, with `s = |S|`,
   `∑_{T⊆S} ε(k_T)·k_T^(s+d)
@@ -57,32 +63,52 @@ theorem thueMorseSign_sum_two_pow (T : Finset ℕ) :
     thueMorseSign (∑ j ∈ T, 2 ^ j) = (-1 : ℤ) ^ T.card := by
   rw [thueMorseSign, binaryWeight_sum_two_pow_eq_card]
 
+/-- **Master product for an arbitrary exponent function.**  Over any
+commutative ring `R`, any finite index set `S` and any `e : ℕ → ℕ`,
+`∏_{j∈S} (1 - z^(e j)) = ∑_{T⊆S} (-1)^|T|·z^(∑_{j∈T} e j)`.
+
+Expanding the product never inspects `e`: each factor contributes either
+`1` or `-z^(e j)`, the signs collect into `(-1)^|T|` and the exponents
+add.  The two-power case `e = (2 ^ ·)`, in which the sign becomes a
+Thue–Morse sign, is `prod_one_sub_pow_powerset`. -/
+theorem prod_one_sub_pow_powerset' {R : Type*} [CommRing R]
+    (z : R) (S : Finset ℕ) (e : ℕ → ℕ) :
+    ∏ j ∈ S, (1 - z ^ e j) =
+      ∑ T ∈ S.powerset, (-1 : R) ^ T.card * z ^ (∑ j ∈ T, e j) := by
+  have h := prod_one_add_eq_sum_powerset S (fun j => -(z ^ e j))
+  have hL : ∏ j ∈ S, (1 - z ^ e j) =
+      ∏ j ∈ S, (1 + -(z ^ e j)) := by
+    refine Finset.prod_congr rfl fun j _ => ?_
+    ring
+  rw [hL, h]
+  refine Finset.sum_congr rfl fun T _ => ?_
+  calc ∏ j ∈ T, -(z ^ e j)
+      = ∏ j ∈ T, (-1) * z ^ e j := by
+        refine Finset.prod_congr rfl fun j _ => ?_
+        ring
+    _ = ((-1) ^ T.card : R) * ∏ j ∈ T, z ^ e j := by
+        rw [Finset.prod_mul_distrib, Finset.prod_const]
+    _ = (-1 : R) ^ T.card * z ^ (∑ j ∈ T, e j) := by
+        rw [Finset.prod_pow_eq_pow_sum]
+
 /-- **Master product on an arbitrary support.**  Over any commutative
 ring and any finite set `S` of bit positions,
-`∏_{j∈S} (1 - z^(2^j)) = ∑_{T⊆S} ε(∑_{j∈T} 2^j)·z^(∑_{j∈T} 2^j)`. -/
+`∏_{j∈S} (1 - z^(2^j)) = ∑_{T⊆S} ε(∑_{j∈T} 2^j)·z^(∑_{j∈T} 2^j)`.
+
+This is the exponent function `e = (2 ^ ·)` case of
+`prod_one_sub_pow_powerset'`: the sign `(-1)^|T|` produced there is the
+Thue–Morse sign of the submask `∑_{j∈T} 2^j`, by
+`thueMorseSign_sum_two_pow`. -/
 theorem prod_one_sub_pow_powerset {R : Type*} [CommRing R]
     (z : R) (S : Finset ℕ) :
     ∏ j ∈ S, (1 - z ^ 2 ^ j) =
       ∑ T ∈ S.powerset,
         ((thueMorseSign (∑ j ∈ T, 2 ^ j) : ℤ) : R) * z ^ (∑ j ∈ T, 2 ^ j) := by
-  have h := prod_one_add_eq_sum_powerset S (fun j => -(z ^ 2 ^ j))
-  have hL : ∏ j ∈ S, (1 - z ^ 2 ^ j) =
-      ∏ j ∈ S, (1 + -(z ^ 2 ^ j)) := by
-    refine Finset.prod_congr rfl fun j _ => ?_
-    ring
-  rw [hL, h]
+  refine (prod_one_sub_pow_powerset' z S (fun j => 2 ^ j)).trans ?_
   refine Finset.sum_congr rfl fun T _ => ?_
   rw [thueMorseSign_sum_two_pow]
-  calc ∏ j ∈ T, -(z ^ 2 ^ j)
-      = ∏ j ∈ T, (-1) * z ^ 2 ^ j := by
-        refine Finset.prod_congr rfl fun j _ => ?_
-        ring
-    _ = ((-1) ^ T.card : R) * ∏ j ∈ T, z ^ 2 ^ j := by
-        rw [Finset.prod_mul_distrib, Finset.prod_const]
-    _ = (((-1 : ℤ) ^ T.card : ℤ) : R) * z ^ (∑ j ∈ T, 2 ^ j) := by
-        rw [Finset.prod_pow_eq_pow_sum]
-        push_cast
-        ring
+  push_cast
+  ring
 
 /-! ### The complete sparse moment composition -/
 

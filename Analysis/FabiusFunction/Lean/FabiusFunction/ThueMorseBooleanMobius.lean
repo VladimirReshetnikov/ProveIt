@@ -10,10 +10,20 @@ positions of `n`.  This module proves the atlas's enumerator and Möbius
 layer for that lattice, using the faithful powerset parametrization of
 the odd Pascal positions.
 
+Nothing in the powerset layer depends on the index type being `ℕ`, so the
+three combinatorial engines are proved for `Finset α` over an arbitrary
+index type (and, where the value ring was fixed, over an arbitrary
+commutative ring); the `Finset ℕ` statements the rest of the corpus uses
+are kept verbatim as corollaries.
+
 * `bitSupport_sum_two_pow` — the support of an encoded subset is the
   subset: the encoding `T ↦ ∑_{j∈T} 2^j` is a lattice isomorphism.
 * `sub_sum_two_pow` / `xor_sum_two_pow` — complements in the lattice:
   `n - k` and `n ^^^ k` agree on submasks and are the encoded complement.
+* `sum_powerset_pow_card'` — the **powerset weight enumerator**
+  `∑_{T⊆S} z^|T| = (1+z)^|S|` for a finset of an arbitrary index type
+  over an arbitrary commutative semiring; `sum_powerset_pow_card` is its
+  `Finset ℕ` instance.
 * `sum_oddBinomialIndices_pow_binaryWeight` — the **submask weight
   enumerator** `∑_{k⊑n} z^wt(k) = (1+z)^wt(n)` over any commutative
   semiring, with the bivariate refinement
@@ -22,9 +32,16 @@ the odd Pascal positions.
 * `thueMorseSign_eq_sum_oddBinomialIndices_neg_two_pow` — the
   **reconstruction formula** `ε(n) = ∑_{k⊑n} (-2)^wt(k)`, and the
   inversion-polynomial identity `z^wt(n) = ∑_{k⊑n} (z-1)^wt(k)`.
-* `sum_powerset_mobius` — **Boolean Möbius inversion** on finsets, for
-  any additive commutative group:
-  `∑_{T⊆S} (-1)^(|S∖T|) • (∑_{U⊆T} f U) = f S`.
+* `sum_powerset_neg_one_pow_card'` and
+  `sum_filter_superset_neg_one_pow'` — the alternating powerset sums
+  `∑_{T⊆S} (-1)^|T| = [S = ∅]` and `∑_{U⊆T⊆S} (-1)^(|S∖T|) = [U = S]`
+  for a finset of an arbitrary index type, valued in an arbitrary
+  commutative ring; `sum_filter_superset_neg_one_pow` is the `ℤ`-valued
+  `Finset ℕ` instance of the second.
+* `sum_powerset_mobius'` — **Boolean Möbius inversion** on the finsets
+  of an arbitrary index type, for any additive commutative group:
+  `∑_{T⊆S} (-1)^(|S∖T|) • (∑_{U⊆T} f U) = f S`; `sum_powerset_mobius` is
+  its `Finset ℕ` instance.
 * `submask_mobius_inversion` — the numeric form on submasks: if
   `g(k) = ∑_{j⊑k} f(j)` for every `k ⊑ n`, then
   `f(n) = ∑_{k⊑n} ε(n ^^^ k) • g(k)`: the Möbius function of the
@@ -78,16 +95,24 @@ theorem xor_sum_two_pow {S T : Finset ℕ} (hT : T ⊆ S) :
 
 /-! ### Weight enumerators -/
 
+/-- **Powerset weight enumerator over an arbitrary index type**:
+`∑_{T⊆S} z^|T| = (1+z)^|S|` for `S : Finset α` and `z` in any commutative
+semiring.  No decidability hypothesis is needed, since only
+`Finset.powerset` and cardinality occur in the statement. -/
+theorem sum_powerset_pow_card' {α R : Type*} [CommSemiring R]
+    (S : Finset α) (z : R) :
+    ∑ T ∈ S.powerset, z ^ T.card = (1 + z) ^ S.card := by
+  classical
+  have h := Finset.prod_add (fun _ : α => z) (fun _ : α => (1 : R)) S
+  simp only [Finset.prod_const, one_pow, mul_one] at h
+  rw [add_comm (1 : R) z]
+  exact h.symm
+
 /-- Powerset weight enumerator: `∑_{T⊆S} z^|T| = (1+z)^|S|`. -/
 theorem sum_powerset_pow_card {R : Type*} [CommSemiring R]
     (S : Finset ℕ) (z : R) :
-    ∑ T ∈ S.powerset, z ^ T.card = (1 + z) ^ S.card := by
-  calc ∑ T ∈ S.powerset, z ^ T.card
-      = ∑ T ∈ S.powerset, ∏ _j ∈ T, z :=
-        Finset.sum_congr rfl fun T _ => (Finset.prod_const z).symm
-    _ = ∏ _j ∈ S, (1 + z) :=
-        (prod_one_add_eq_sum_powerset S fun _ => z).symm
-    _ = (1 + z) ^ S.card := Finset.prod_const _
+    ∑ T ∈ S.powerset, z ^ T.card = (1 + z) ^ S.card :=
+  sum_powerset_pow_card' S z
 
 /-- **Submask weight enumerator**: `∑_{k⊑n} z^wt(k) = (1+z)^wt(n)` over
 any commutative semiring. -/
@@ -156,10 +181,24 @@ theorem thueMorseSign_eq_sum_nested_binomial (n : ℕ) :
 
 /-! ### Boolean Möbius inversion -/
 
-/-- Signed sum over the interval `[U, S]` of the Boolean lattice:
+/-- **Alternating powerset sum**, for a finset of an arbitrary index type
+and values in an arbitrary commutative ring:
+`∑_{T⊆S} (-1)^|T| = [S = ∅]`.  This is Mathlib's
+`Finset.sum_powerset_neg_one_pow_card` with the value ring freed
+from `ℤ`; it is the `z = -1` case of `sum_powerset_pow_card'`. -/
+theorem sum_powerset_neg_one_pow_card' {α R : Type*} [DecidableEq α]
+    [CommRing R] (S : Finset α) :
+    ∑ T ∈ S.powerset, (-1 : R) ^ T.card = if S = ∅ then 1 else 0 := by
+  have hz : (1 : R) + (-1) = 0 := by ring
+  rw [sum_powerset_pow_card' S (-1 : R), hz, zero_pow_eq]
+  simp [Finset.card_eq_zero]
+
+/-- Signed sum over the interval `[U, S]` of the Boolean lattice of an
+arbitrary finite set, with values in an arbitrary commutative ring:
 `∑_{U⊆T⊆S} (-1)^(|S∖T|) = [U = S]`. -/
-theorem sum_filter_superset_neg_one_pow (S U : Finset ℕ) (hU : U ⊆ S) :
-    ∑ T ∈ S.powerset.filter (fun T => U ⊆ T), (-1 : ℤ) ^ (S \ T).card =
+theorem sum_filter_superset_neg_one_pow' {α R : Type*} [DecidableEq α]
+    [CommRing R] (S U : Finset α) (hU : U ⊆ S) :
+    ∑ T ∈ S.powerset.filter (fun T => U ⊆ T), (-1 : R) ^ (S \ T).card =
       if U = S then 1 else 0 := by
   have himg : S.powerset.filter (fun T => U ⊆ T) =
       ((S \ U).powerset).image (fun V => U ∪ V) := by
@@ -199,7 +238,7 @@ theorem sum_filter_superset_neg_one_pow (S U : Finset ℕ) (hU : U ⊆ S) :
       · exact h'
   rw [himg, Finset.sum_image hinj]
   have hsd : ∀ V ∈ (S \ U).powerset,
-      (-1 : ℤ) ^ (S \ (U ∪ V)).card =
+      (-1 : R) ^ (S \ (U ∪ V)).card =
         (-1) ^ (S \ U).card * (-1) ^ V.card := by
     intro V hV
     have hV' := Finset.mem_powerset.mp hV
@@ -211,21 +250,21 @@ theorem sum_filter_superset_neg_one_pow (S U : Finset ℕ) (hU : U ⊆ S) :
       rw [Finset.card_sdiff, Finset.inter_eq_left.mpr hV']
     have hle : V.card ≤ (S \ U).card := Finset.card_le_card hV'
     rw [hset, hcard]
-    have hsplit : (-1 : ℤ) ^ (S \ U).card =
+    have hsplit : (-1 : R) ^ (S \ U).card =
         (-1) ^ ((S \ U).card - V.card) * (-1) ^ V.card := by
       rw [← pow_add]
       congr 1
       omega
-    have hsq : ((-1 : ℤ) ^ V.card) * ((-1) ^ V.card) = 1 := by
+    have hsq : ((-1 : R) ^ V.card) * ((-1) ^ V.card) = 1 := by
       rw [← pow_add, Even.neg_one_pow ⟨V.card, rfl⟩]
-    calc (-1 : ℤ) ^ ((S \ U).card - V.card)
+    calc (-1 : R) ^ ((S \ U).card - V.card)
         = (-1) ^ ((S \ U).card - V.card) *
-            (((-1 : ℤ) ^ V.card) * ((-1) ^ V.card)) := by rw [hsq, mul_one]
+            (((-1 : R) ^ V.card) * ((-1) ^ V.card)) := by rw [hsq, mul_one]
       _ = ((-1) ^ ((S \ U).card - V.card) * (-1) ^ V.card) *
             (-1) ^ V.card := by ring
       _ = (-1) ^ (S \ U).card * (-1) ^ V.card := by rw [← hsplit]
   rw [Finset.sum_congr rfl hsd, ← Finset.mul_sum,
-    Finset.sum_powerset_neg_one_pow_card]
+    sum_powerset_neg_one_pow_card']
   have hiff : S \ U = ∅ ↔ U = S := by
     constructor
     · intro h
@@ -238,10 +277,18 @@ theorem sum_filter_superset_neg_one_pow (S U : Finset ℕ) (hU : U ⊆ S) :
       Finset.card_empty, pow_zero]
   · rw [if_neg h, if_neg (fun h' => h (hiff.mp h')), mul_zero]
 
-/-- **Boolean Möbius inversion on finsets.**  For any additive commutative
-group, `∑_{T⊆S} (-1)^(|S∖T|) • (∑_{U⊆T} f U) = f S`. -/
-theorem sum_powerset_mobius {A : Type*} [AddCommGroup A]
-    (S : Finset ℕ) (f : Finset ℕ → A) :
+/-- Signed sum over the interval `[U, S]` of the Boolean lattice:
+`∑_{U⊆T⊆S} (-1)^(|S∖T|) = [U = S]`. -/
+theorem sum_filter_superset_neg_one_pow (S U : Finset ℕ) (hU : U ⊆ S) :
+    ∑ T ∈ S.powerset.filter (fun T => U ⊆ T), (-1 : ℤ) ^ (S \ T).card =
+      if U = S then 1 else 0 :=
+  sum_filter_superset_neg_one_pow' S U hU
+
+/-- **Boolean Möbius inversion on the finsets of an arbitrary index
+type.**  For any additive commutative group,
+`∑_{T⊆S} (-1)^(|S∖T|) • (∑_{U⊆T} f U) = f S`. -/
+theorem sum_powerset_mobius' {α A : Type*} [DecidableEq α]
+    [AddCommGroup A] (S : Finset α) (f : Finset α → A) :
     ∑ T ∈ S.powerset, (-1 : ℤ) ^ (S \ T).card • ∑ U ∈ T.powerset, f U =
       f S := by
   have hexpand : ∀ T ∈ S.powerset,
@@ -267,7 +314,7 @@ theorem sum_powerset_mobius {A : Type*} [AddCommGroup A]
     intro U hU
     have hUS := Finset.mem_powerset.mp hU
     rw [← Finset.sum_filter, ← Finset.sum_smul,
-      sum_filter_superset_neg_one_pow S U hUS]
+      sum_filter_superset_neg_one_pow' (R := ℤ) S U hUS]
   rw [Finset.sum_congr rfl hinner]
   have hcollapse : ∀ U ∈ S.powerset,
       (if U = S then (1 : ℤ) else 0) • f U =
@@ -276,6 +323,14 @@ theorem sum_powerset_mobius {A : Type*} [AddCommGroup A]
     split_ifs <;> simp
   rw [Finset.sum_congr rfl hcollapse, Finset.sum_ite_eq' S.powerset S f,
     if_pos (Finset.mem_powerset.mpr Finset.Subset.rfl)]
+
+/-- **Boolean Möbius inversion on finsets.**  For any additive commutative
+group, `∑_{T⊆S} (-1)^(|S∖T|) • (∑_{U⊆T} f U) = f S`. -/
+theorem sum_powerset_mobius {A : Type*} [AddCommGroup A]
+    (S : Finset ℕ) (f : Finset ℕ → A) :
+    ∑ T ∈ S.powerset, (-1 : ℤ) ^ (S \ T).card • ∑ U ∈ T.powerset, f U =
+      f S :=
+  sum_powerset_mobius' S f
 
 /-- **Submask Möbius inversion.**  If `g(k) = ∑_{j⊑k} f(j)` for every
 submask `k` of `n`, then `f(n) = ∑_{k⊑n} ε(n ^^^ k) • g(k)`: the Möbius

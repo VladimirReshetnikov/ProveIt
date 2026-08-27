@@ -102,6 +102,28 @@ theorem summable_norm_sineTerm_pair (z : ℂ) :
   conv_lhs => rw [div_pow, one_pow]
   field_simp
 
+/-- **The pair-product form**: `Φ(z) = ∏'_{(h,r)} (1 - z²/((r+1)²4ʰ))`
+over all pairs, absolutely convergent — the flattened double Euler
+product, the common source of the canonical product and of the
+zero-set characterization. -/
+theorem rvachevFourierProduct_eq_tprod_pair (z : ℂ) :
+    rvachevFourierProduct z =
+      ∏' p : ℕ × ℕ, (1 + sineTerm (z / 2 ^ p.1) p.2) := by
+  have hFmult : Multipliable fun p : ℕ × ℕ =>
+      1 + sineTerm (z / 2 ^ p.1) p.2 :=
+    multipliable_one_add_of_summable (summable_norm_sineTerm_pair z)
+  have hfib : ∀ h : ℕ, Multipliable fun r =>
+      1 + sineTerm (z / 2 ^ h) r := fun h =>
+    multipliable_sineTerm (z / 2 ^ h)
+  calc rvachevFourierProduct z
+      = ∏' h : ℕ, complexSinc (π * (z / 2 ^ h)) :=
+        rvachevFourierProduct_eq_tprod_scale z
+    _ = ∏' h : ℕ, ∏' r : ℕ, (1 + sineTerm (z / 2 ^ h) r) := by
+        refine tprod_congr fun h => ?_
+        rw [← tprod_one_add_sineTerm (z / 2 ^ h)]
+    _ = ∏' p : ℕ × ℕ, (1 + sineTerm (z / 2 ^ p.1) p.2) :=
+        (hFmult.tprod_prod' hfib).symm
+
 /-- **The canonical product of the Rvachev sinc product** (the audit's
 `prop:canonical`): for every `z : ℂ`,
 `Φ(z) = ∏'_{m} (1 - z²/(m+1)²)^{1 + v₂(m+1)}` — indexing `m ≥ 1` by
@@ -115,8 +137,6 @@ theorem rvachevFourierProduct_eq_canonical (z : ℂ) :
   set F : ℕ × ℕ → ℂ := fun p => 1 + sineTerm (z / 2 ^ p.1) p.2 with hF_def
   have hFmult : Multipliable F :=
     multipliable_one_add_of_summable (summable_norm_sineTerm_pair z)
-  have hfib : ∀ h : ℕ, Multipliable fun r => F (h, r) := fun h =>
-    multipliable_sineTerm (z / 2 ^ h)
   -- the factor depends only on the fiber base
   have hfactor : ∀ (m : ℕ) (j : Fin (padicValNat 2 (m + 1) + 1)),
       F (dyadicFactorEquiv.symm ⟨m, j⟩) =
@@ -152,12 +172,7 @@ theorem rvachevFourierProduct_eq_canonical (z : ℂ) :
     rw [neg_div, hexpand]
     ring
   calc rvachevFourierProduct z
-      = ∏' h : ℕ, complexSinc (π * (z / 2 ^ h)) :=
-        rvachevFourierProduct_eq_tprod_scale z
-    _ = ∏' h : ℕ, ∏' r : ℕ, F (h, r) := by
-        refine tprod_congr fun h => ?_
-        rw [← tprod_one_add_sineTerm (z / 2 ^ h)]
-    _ = ∏' p : ℕ × ℕ, F p := (hFmult.tprod_prod' hfib).symm
+      = ∏' p : ℕ × ℕ, F p := rvachevFourierProduct_eq_tprod_pair z
     _ = ∏' σ : Σ m : ℕ, Fin (padicValNat 2 (m + 1) + 1),
           F (dyadicFactorEquiv.symm σ) :=
         (dyadicFactorEquiv.symm.tprod_eq F).symm

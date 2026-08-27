@@ -2,6 +2,7 @@ import FabiusFunction.ThueMorseEulerTransform
 import FabiusFunction.ThueMorseGenerating
 import FabiusFunction.ThueMorseAutocorrelation
 import Mathlib.RingTheory.PowerSeries.Expand
+import Mathlib.RingTheory.PowerSeries.WellKnown
 
 /-!
 # Mahler equations for the Thue–Morse series
@@ -30,6 +31,12 @@ proves the formal (coefficientwise) layer of the atlas's Mahler section:
   level.  Dividing by `2^(m+1)` and letting `m → ∞` recovers the atlas's
   `2zC(z) = 1 - (1-z)²C(z²)` for the spectral measure's Fourier data.
 
+The substitution bookkeeping — `two_ne_zero'` (the side condition of
+`PowerSeries.expand 2`), `iterate_expand_mul` and
+`iterate_expand_one_sub_X` — is public so that every module iterating
+the same substitution (`ThueMorseLacunaryQuotient`) reuses it instead
+of re-proving it.
+
 Everything is coefficient arithmetic; no convergence enters anywhere.
 -/
 
@@ -39,7 +46,8 @@ open Finset
 
 namespace Fabius
 
-private theorem two_ne_zero' : (2 : ℕ) ≠ 0 := by omega
+/-- The side condition of the Mahler substitution `PowerSeries.expand 2`. -/
+theorem two_ne_zero' : (2 : ℕ) ≠ 0 := by omega
 
 /-- **Mahler equation** for the signed series: `E(z) = (1-z)·E(z²)`. -/
 theorem thueMorseSeries_mahler :
@@ -79,7 +87,7 @@ theorem coe_thueMorseBlockPolynomial_series (m : ℕ) :
     Polynomial.coe_X]
 
 /-- Iterates of the Mahler substitution are multiplicative. -/
-private theorem iterate_expand_mul (m : ℕ) (a b : PowerSeries ℤ) :
+theorem iterate_expand_mul (m : ℕ) (a b : PowerSeries ℤ) :
     (⇑(PowerSeries.expand 2 two_ne_zero' (R := ℤ)))^[m] (a * b) =
       (⇑(PowerSeries.expand 2 two_ne_zero' (R := ℤ)))^[m] a *
         (⇑(PowerSeries.expand 2 two_ne_zero' (R := ℤ)))^[m] b := by
@@ -90,7 +98,7 @@ private theorem iterate_expand_mul (m : ℕ) (a b : PowerSeries ℤ) :
         Function.iterate_succ_apply, map_mul, ih]
 
 /-- The `m`-th Mahler iterate of `1 - z` is `1 - z^(2^m)`. -/
-private theorem iterate_expand_one_sub_X (m : ℕ) :
+theorem iterate_expand_one_sub_X (m : ℕ) :
     (⇑(PowerSeries.expand 2 two_ne_zero' (R := ℤ)))^[m] (1 - PowerSeries.X) =
       1 - PowerSeries.X ^ 2 ^ m := by
   induction m with
@@ -140,18 +148,10 @@ def thueMorseBitZSeries : PowerSeries ℤ :=
 /-- The geometric series is the inverse of `1 - z` over `ℤ`. -/
 theorem one_sub_X_mul_geometricSeriesZ :
     (1 - PowerSeries.X) * (PowerSeries.mk fun _ => (1 : ℤ)) = 1 := by
-  have hexp : (1 - PowerSeries.X) * (PowerSeries.mk fun _ => (1 : ℤ)) =
-      (PowerSeries.mk fun _ => (1 : ℤ)) -
-        PowerSeries.X * PowerSeries.mk fun _ => (1 : ℤ) := by ring
-  rw [hexp]
-  ext n
-  rw [map_sub]
-  rcases n with _ | k
-  · simp
-  · rw [PowerSeries.coeff_succ_X_mul, PowerSeries.coeff_mk,
-      PowerSeries.coeff_mk, PowerSeries.coeff_one,
-      if_neg (Nat.succ_ne_zero k)]
-    ring
+  have h : (PowerSeries.mk fun _ => (1 : ℤ)) * (1 - PowerSeries.X) = 1 :=
+    PowerSeries.mk_one_mul_one_sub_eq_one ℤ
+  rw [mul_comm]
+  exact h
 
 /-- The combination `2T + E` is the geometric series: coefficientwise
 `2τ(n) + ε(n) = 1`. -/
