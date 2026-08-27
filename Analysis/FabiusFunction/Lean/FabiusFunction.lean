@@ -43,6 +43,7 @@ import FabiusFunction.ThueMorseMultinomial
 import FabiusFunction.ThueMorseFourier
 import FabiusFunction.ThueMorseSineProduct
 import FabiusFunction.ThueMorseFourierInversion
+import FabiusFunction.HalfIntegerOddDFT
 import FabiusFunction.ThueMorseParseval
 import FabiusFunction.ThueMorseComplexity
 import FabiusFunction.ThueMorseArithmeticFilter
