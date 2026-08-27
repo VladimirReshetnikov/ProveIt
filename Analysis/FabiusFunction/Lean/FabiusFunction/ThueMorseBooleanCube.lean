@@ -45,7 +45,7 @@ namespace Fabius
 theorem sum_two_pow_lt_two_pow {m : ℕ} {T : Finset ℕ}
     (hT : T ⊆ range m) :
     ∑ j ∈ T, 2 ^ j < 2 ^ m :=
-  Nat.geomSum_lt le_rfl fun j hj => mem_range.mp (hT hj)
+  Nat.geomSum_lt le_rfl fun _ hj => mem_range.mp (hT hj)
 
 /-- The binary weight of a sum of distinct powers of two is the number of
 summands: subsets of bit positions are faithfully encoded. -/

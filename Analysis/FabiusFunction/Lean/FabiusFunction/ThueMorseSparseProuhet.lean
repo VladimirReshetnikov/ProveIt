@@ -190,7 +190,7 @@ theorem sum_powerset_neg_one_pow_pow_card {R : Type*} [CommRing R]
               y ^ k * w a ^ (s + 1 - k) * ((s + 1).choose k : R) := by
         intro y
         rw [add_pow, Finset.sum_range_succ]
-        simp [Nat.sub_self]
+        simp
       rw [Finset.sum_congr rfl fun T _ => by rw [hbinom]]
       -- Pull the negation and the inner sum outside, then swap the sums.
       have hout : ∀ T ∈ S.powerset,
