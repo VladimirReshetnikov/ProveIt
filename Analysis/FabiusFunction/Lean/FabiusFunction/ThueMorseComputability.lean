@@ -123,9 +123,9 @@ theorem primrec_binaryWeight : Primrec binaryWeight := by
   · exact fun n _ => binaryWeight_div_two n
 
 /-- The binary digit sum is primitive recursive in the textbook sense
-`Nat.Primrec`, i.e. it lies in the least class of functions `ℕ → ℕ`
-containing the successor and projections and closed under composition and
-primitive recursion. -/
+`Nat.Primrec`, i.e. it lies in the least class of functions `ℕ → ℕ` that
+contains zero, the successor, and the projections, and is closed under
+composition and primitive recursion. -/
 theorem nat_primrec_binaryWeight : Nat.Primrec binaryWeight :=
   Primrec.nat_iff.mp primrec_binaryWeight
 
@@ -194,6 +194,15 @@ theorem primrec_thueMorseSign : Primrec thueMorseSign :=
   ((Primrec.dom_bool (fun b : Bool => cond b (-1 : ℤ) 1)).comp
     primrec_thueMorseBool).of_eq fun n => (thueMorseSign_eq_cond n).symm
 
+/-- **The prefixes of the Thue–Morse word are uniformly primitive
+recursive**: `n ↦ [t 0, t 1, …, t (n-1)]` is primitive recursive.  This is
+the statement that the infinite word can be *generated*, not merely that
+each of its letters can be decided. -/
+theorem primrec_thueMorsePrefix :
+    Primrec (fun n => (List.range n).map thueMorseBool) :=
+  Primrec.list_map Primrec.list_range
+    (primrec_thueMorseBool.comp Primrec.snd)
+
 /-! ## Computability -/
 
 /-- The binary digit sum is computable. -/
@@ -211,6 +220,11 @@ theorem computable_thueMorseBit : Computable thueMorseBit :=
 /-- **The `{±1}`-valued Thue–Morse sequence is computable.** -/
 theorem computable_thueMorseSign : Computable thueMorseSign :=
   primrec_thueMorseSign.to_comp
+
+/-- **The prefixes of the Thue–Morse word are uniformly computable.** -/
+theorem computable_thueMorsePrefix :
+    Computable (fun n => (List.range n).map thueMorseBool) :=
+  primrec_thueMorsePrefix.to_comp
 
 /-- Membership in the Thue–Morse set `{n | t n = true}` is a primitive
 recursive predicate; unfolding the definition, this is exactly the

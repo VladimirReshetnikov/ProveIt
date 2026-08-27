@@ -16,11 +16,25 @@
 > These are out-of-memory symptoms, **not** broken proofs -- re-running the
 > same module by itself succeeds. Do not "fix" them by editing Lean sources.
 >
-> Run **one `lake build` invocation at a time, one module per invocation**, in
-> topological order. `LAKE_JOBS=1` is *not* sufficient: Lake 5.0 removed `-j`,
-> and even a single target parallelizes its own stale dependencies. Before
-> starting a build, check that nothing else -- including another agent session
-> working in a sibling worktree -- is already building:
+> Launch every build as
+>
+> ```powershell
+> $env:LAKE_JOBS=1; $env:LEAN_NUM_THREADS=0; lake build <one target>
+> ```
+>
+> and run **one build at a time**. The two settings limit different things and
+> both are needed: `LAKE_JOBS=1` caps how many `lean` *processes* Lake starts,
+> and `LEAN_NUM_THREADS=0` caps the worker pool *inside* each one. Lake 5.0
+> rejects both `-j` and `--jobs`, so these environment variables are the only
+> control. Measured on this machine: an unqualified
+> `lake build +FabiusFunction` over a stale dependency set spawned **11
+> concurrent `lean` processes**, while the identical build under `LAKE_JOBS=1`
+> ran **exactly one**.
+>
+> Prefer one module per invocation (`lake build +Pkg.Module`), and build a
+> facade only once its imports are already built. Before starting, check that
+> nothing else -- including another agent session working in a sibling
+> worktree -- is already building:
 >
 > ```powershell
 > Get-Process lean -ErrorAction SilentlyContinue
