@@ -82,6 +82,8 @@ import FabiusFunction.GordinParseval
 import FabiusFunction.ClausenCorollaries
 import FabiusFunction.DoublingMapTransfer
 import FabiusFunction.CovarianceLadder
+import FabiusFunction.DistanceCounting
+import FabiusFunction.BirkhoffVariance
 import FabiusFunction.ShellLinearity
 import FabiusFunction.BoundaryLayerMax
 import FabiusFunction.VarianceBookkeeping
