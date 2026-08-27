@@ -120,6 +120,9 @@ import FabiusFunction.LobeSignSelfSimilarity
 import FabiusFunction.RenormalizationIdentity
 import FabiusFunction.GlobalDecayEnvelope
 import FabiusFunction.LacunaryMeanSharp
+import FabiusFunction.KappaDictionary
+import FabiusFunction.DyadicReflection
+import FabiusFunction.CollatzWielandt
 import FabiusFunction.RvachevFourierDecay
 import FabiusFunction.BoundednessSkeleton
 import FabiusFunction.TransferOperatorStep

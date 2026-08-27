@@ -105,7 +105,7 @@ theorem norm_rvachevFourierProduct_lt_one_of_ne_zero {x : ℝ}
     have hpi_le : π ≤ π * |x| := by
       simpa using mul_le_mul_of_nonneg_left habs Real.pi_pos.le
     have hone : (1 : ℝ) < π * |x| :=
-      (show (1 : ℝ) < π by linarith [Real.pi_gt_three]).trans_le hpi_le
+      (show (1 : ℝ) < π by linarith [Real.two_le_pi]).trans_le hpi_le
     calc
       ‖rvachevFourierProduct (x : ℂ)‖ ≤ 1 / (π * |x|) :=
         norm_rvachevFourierProduct_le_inv hx
