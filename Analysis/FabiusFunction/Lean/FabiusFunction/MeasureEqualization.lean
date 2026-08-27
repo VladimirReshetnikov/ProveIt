@@ -117,4 +117,103 @@ theorem setIntegral_equalizer (μ : Measure ℝ) (x : ℕ → ℝ)
   rw [hval]
   exact Finset.sum_range_sub x j
 
+/-- The equalizer step function is integrable on any restricted
+measure (each cell has finite mass). -/
+theorem integrable_equalizer (μ : Measure ℝ) (x : ℕ → ℝ) (n : ℕ)
+    (hfin : ∀ i, i < n → μ (Set.Ioc (x i) (x (i + 1))) ≠ ⊤)
+    (A : Set ℝ) :
+    Integrable (fun t => ∑ i ∈ Finset.range n,
+      Set.indicator (Set.Ioc (x i) (x (i + 1)))
+        (fun _ => (x (i + 1) - x i) /
+          μ.real (Set.Ioc (x i) (x (i + 1)))) t)
+      (μ.restrict A) := by
+  apply MeasureTheory.integrable_finsetSum
+  intro i hi
+  rw [integrable_indicator_iff measurableSet_Ioc]
+  have hle : (μ.restrict A) (Set.Ioc (x i) (x (i + 1))) ≤
+      μ (Set.Ioc (x i) (x (i + 1))) := Measure.restrict_le_self _
+  exact integrableOn_const
+    (hs := (lt_of_le_of_lt hle (lt_top_iff_ne_top.mpr
+      (hfin i (Finset.mem_range.mp hi)))).ne)
+
+/-- The equalizer step function is nonnegative wherever the nodes are
+monotone. -/
+theorem equalizer_nonneg (μ : Measure ℝ) (x : ℕ → ℝ)
+    (hmono : Monotone x) (n : ℕ) (t : ℝ) :
+    0 ≤ ∑ i ∈ Finset.range n,
+      Set.indicator (Set.Ioc (x i) (x (i + 1)))
+        (fun _ => (x (i + 1) - x i) /
+          μ.real (Set.Ioc (x i) (x (i + 1)))) t := by
+  apply Finset.sum_nonneg
+  intro i _
+  apply Set.indicator_nonneg
+  intro y _
+  apply div_nonneg
+  · exact sub_nonneg.mpr (hmono (Nat.le_succ i))
+  · exact ENNReal.toReal_nonneg
+
+/-- **The partial-cell discrepancy bound**: inside the one partially
+traversed cell, the flattened CDF differs from linear by at most the
+cell length — *"the mesh bounds the possible error in the one
+partially traversed cell"*. -/
+theorem abs_setIntegral_equalizer_sub_le (μ : Measure ℝ) (x : ℕ → ℝ)
+    (hmono : Monotone x) (n : ℕ)
+    (hfin : ∀ i, i < n → μ (Set.Ioc (x i) (x (i + 1))) ≠ ⊤)
+    (hpos : ∀ i, i < n → μ (Set.Ioc (x i) (x (i + 1))) ≠ 0)
+    (j : ℕ) (hj : j + 1 ≤ n) {z : ℝ} (hz1 : x j ≤ z)
+    (hz2 : z ≤ x (j + 1)) :
+    |(∫ t in Set.Ioc (x 0) z,
+      (∑ i ∈ Finset.range n,
+        Set.indicator (Set.Ioc (x i) (x (i + 1)))
+          (fun _ => (x (i + 1) - x i) /
+            μ.real (Set.Ioc (x i) (x (i + 1)))) t) ∂μ) - (z - x 0)| ≤
+      x (j + 1) - x j := by
+  have hlow := setIntegral_equalizer μ x hmono n hfin hpos j
+    (le_trans (Nat.le_succ j) hj)
+  have hhigh := setIntegral_equalizer μ x hmono n hfin hpos (j + 1) hj
+  have hint_top : IntegrableOn (fun t => ∑ i ∈ Finset.range n,
+      Set.indicator (Set.Ioc (x i) (x (i + 1)))
+        (fun _ => (x (i + 1) - x i) /
+          μ.real (Set.Ioc (x i) (x (i + 1)))) t)
+      (Set.Ioc (x 0) (x (j + 1))) μ :=
+    integrable_equalizer μ x n hfin _
+  have hnn : 0 ≤ᵐ[μ.restrict (Set.Ioc (x 0) (x (j + 1)))]
+      (fun t => ∑ i ∈ Finset.range n,
+        Set.indicator (Set.Ioc (x i) (x (i + 1)))
+          (fun _ => (x (i + 1) - x i) /
+            μ.real (Set.Ioc (x i) (x (i + 1)))) t) :=
+    Filter.Eventually.of_forall (equalizer_nonneg μ x hmono n)
+  have hm1 : (∫ t in Set.Ioc (x 0) (x j),
+      (∑ i ∈ Finset.range n,
+        Set.indicator (Set.Ioc (x i) (x (i + 1)))
+          (fun _ => (x (i + 1) - x i) /
+            μ.real (Set.Ioc (x i) (x (i + 1)))) t) ∂μ) ≤
+      ∫ t in Set.Ioc (x 0) z,
+        (∑ i ∈ Finset.range n,
+          Set.indicator (Set.Ioc (x i) (x (i + 1)))
+            (fun _ => (x (i + 1) - x i) /
+              μ.real (Set.Ioc (x i) (x (i + 1)))) t) ∂μ := by
+    apply MeasureTheory.setIntegral_mono_set
+      (hint_top.mono_set (Set.Ioc_subset_Ioc_right hz2)) ?_
+      ((Set.Ioc_subset_Ioc_right hz1).eventuallyLE)
+    exact Filter.Eventually.of_forall (equalizer_nonneg μ x hmono n)
+  have hm2 : (∫ t in Set.Ioc (x 0) z,
+      (∑ i ∈ Finset.range n,
+        Set.indicator (Set.Ioc (x i) (x (i + 1)))
+          (fun _ => (x (i + 1) - x i) /
+            μ.real (Set.Ioc (x i) (x (i + 1)))) t) ∂μ) ≤
+      ∫ t in Set.Ioc (x 0) (x (j + 1)),
+        (∑ i ∈ Finset.range n,
+          Set.indicator (Set.Ioc (x i) (x (i + 1)))
+            (fun _ => (x (i + 1) - x i) /
+              μ.real (Set.Ioc (x i) (x (i + 1)))) t) ∂μ := by
+    apply MeasureTheory.setIntegral_mono_set hint_top hnn
+      ((Set.Ioc_subset_Ioc_right hz2).eventuallyLE)
+  rw [hlow] at hm1
+  rw [hhigh] at hm2
+  rw [abs_le]
+  constructor
+  · linarith
+  · linarith
+
 end Fabius
