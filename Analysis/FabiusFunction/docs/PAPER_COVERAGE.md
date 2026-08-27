@@ -96,7 +96,7 @@ Version 3 is vendored as
 | Definition 12 | `Fabius.dyadicDenominator` |
 | Theorem 13 | `Fabius.theorem_thirteen` and `Fabius.theorem_thirteen_denominator_bound` |
 | Proposition 15 | `Fabius.proposition_fifteen` |
-| Conjecture 16 | `Fabius.conjecture_sixteen` |
+| Conjecture 16 and its following denominator formulas | The conjecture remains recorded as `Fabius.conjecture_sixteen`.  The displayed odd-index denominator formula is the unconditional identity `Fabius.dyadicDenominator_odd_eq_conjecturalH` (valid even at `n = 0` under natural-number subtraction); `Fabius.conjecture_sixteen_denominator_formulas` packages it with the even-index formula that still assumes the conjecture for `n ≥ 1`. |
 | Theorem 17 | `Fabius.theorem_seventeen` |
 | Proposition 18 | `Fabius.proposition_eighteen` |
 | Proposition 19 | `Fabius.proposition_nineteen` |
