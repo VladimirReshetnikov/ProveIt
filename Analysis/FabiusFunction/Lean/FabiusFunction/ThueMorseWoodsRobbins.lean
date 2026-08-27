@@ -201,6 +201,7 @@ private theorem wrC_cauchy : CauchySeq wrC := by
     congr 1
     field_simp
 
+/-- The `limUnder atTop` limit of the Woods–Robbins log partial sums `wrA`. -/
 noncomputable def wrLimitA : ℝ := limUnder atTop wrA
 
 private theorem tendsto_wrA_limit :
@@ -208,6 +209,8 @@ private theorem tendsto_wrA_limit :
   obtain ⟨L, hL⟩ := cauchySeq_tendsto_of_complete wrA_cauchy
   rwa [wrLimitA, hL.limUnder_eq]
 
+/-- The `limUnder atTop` limit of the guarded companion even-ratio log partial
+sums `wrB`. -/
 noncomputable def wrLimitB : ℝ := limUnder atTop wrB
 
 private theorem tendsto_wrB_limit :
@@ -215,6 +218,8 @@ private theorem tendsto_wrB_limit :
   obtain ⟨L, hL⟩ := cauchySeq_tendsto_of_complete wrB_cauchy
   rwa [wrLimitB, hL.limUnder_eq]
 
+/-- The `limUnder atTop` limit of the guarded collapsed-ratio log partial sums
+`wrC`. -/
 noncomputable def wrLimitC : ℝ := limUnder atTop wrC
 
 private theorem tendsto_wrC_limit :
@@ -337,9 +342,11 @@ theorem woods_robbins :
     Tendsto (fun N => ∏ n ∈ range N,
       ((2 * (n : ℝ) + 1) / (2 * (n : ℝ) + 2)) ^ (thueMorseSign n))
       atTop (𝓝 (1 / Real.sqrt 2)) := by
-  rw [← exp_neg_log_div_two (by norm_num : (0 : ℝ) < 2)]
-  exact tendsto_prod_zpow_of_tendsto_sum (fun N : ℕ => range N)
-    (fun n : ℕ => (2 * (n : ℝ) + 1) / (2 * (n : ℝ) + 2)) thueMorseSign
-    (fun n => by positivity) tendsto_wrA
+  have h := tendsto_masterProduct_affine (2 : ℝ) (1 / 2) 1
+    (by norm_num) (by norm_num) (by norm_num)
+  rw [mpLimit_one_half_one,
+    exp_neg_log_div_two (by norm_num : (0 : ℝ) < 2)] at h
+  simpa only [mul_one,
+    show (2 : ℝ) * (1 / 2) = 1 by norm_num] using h
 
 end Fabius

@@ -1,3 +1,4 @@
+import FabiusFunction.FinitePolynomialFunctional
 import FabiusFunction.ThueMorseBooleanCube
 import Mathlib.Algebra.BigOperators.Group.Finset.Powerset
 import Mathlib.Algebra.Polynomial.Taylor
@@ -54,11 +55,10 @@ The induction is the atlas's proof made exact: inserting one index into
 `Finset.sum_powerset_insert` supplies the split of the powerset of
 `insert a S` into the two halves that the induction pairs.
 
-Linearity then upgrades the monomial results to arbitrary polynomials:
-expanding over the finite support kills every term below `|S|`, leaving only
-the coefficient of degree `|S|`.  This support expansion is isolated in a
-private helper, keeping the linear sum interchange separate from the
-coefficient-extraction argument exposed by the public theorem.
+Linearity then upgrades the monomial results to arbitrary polynomials.  The
+generic selected-coefficient principle in `FinitePolynomialFunctional`
+packages the finite sum interchange once: the lower moments vanish and the
+degree-`|S|` moment is the sole survivor.
 
 The dyadic specializations all feed natural-number submasks into an engine
 whose steps are ring elements; the cast bridge and the step-product
@@ -253,24 +253,6 @@ theorem sum_powerset_neg_one_pow_pow_card {R : Type*} [CommRing R]
 
 /-! ## The master coefficient-extraction identity -/
 
-/-- Expanding a polynomial over its finite support commutes with the signed
-powerset functional.  This is the linearity bridge from the monomial
-cancellation and sharp-moment theorems to arbitrary polynomials. -/
-private theorem sum_powerset_neg_one_pow_eval_eq_sum_support
-    {R : Type*} [CommRing R] {ι : Type*}
-    (S : Finset ι) (w : ι → R) (p : R[X]) (x : R) :
-    ∑ T ∈ S.powerset,
-        (-1 : R) ^ T.card * p.eval (x + ∑ j ∈ T, w j) =
-      ∑ d ∈ p.support, p.coeff d *
-        ∑ T ∈ S.powerset,
-          (-1 : R) ^ T.card * (x + ∑ j ∈ T, w j) ^ d := by
-  classical
-  simp_rw [Polynomial.eval_eq_sum, Polynomial.sum_def, Finset.mul_sum]
-  rw [Finset.sum_comm]
-  refine Finset.sum_congr rfl fun d _ => ?_
-  refine Finset.sum_congr rfl fun T _ => ?_
-  ring
-
 /-- **Master arbitrary-step coefficient extraction.**  Let `S` be any
 finite set of steps in a commutative ring.  On polynomials of degree at most
 `|S|`, its signed powerset functional extracts precisely the coefficient of
@@ -292,33 +274,17 @@ theorem sum_powerset_neg_one_pow_eval_eq_coeff_card
       p.coeff S.card *
         ((-1 : R) ^ S.card * (S.card.factorial : R) * ∏ j ∈ S, w j) := by
   classical
-  rw [sum_powerset_neg_one_pow_eval_eq_sum_support]
-  have hzero (d : ℕ) (hd : d < S.card) :
-      ∑ T ∈ S.powerset,
-        (-1 : R) ^ T.card * (x + ∑ j ∈ T, w j) ^ d = 0 := by
-    have h := sum_powerset_neg_one_pow_eval S w
-      (Polynomial.X ^ d)
-      (lt_of_le_of_lt (Polynomial.natDegree_X_pow_le d) hd) x
-    simpa only [Polynomial.eval_pow, Polynomial.eval_X] using h
-  by_cases htop : S.card ∈ p.support
-  · rw [Finset.sum_eq_single S.card]
-    · rw [sum_powerset_neg_one_pow_pow_card]
-    · intro d hd hdne
-      have hdlt : d < S.card :=
-        lt_of_le_of_ne
-          ((Polynomial.le_natDegree_of_mem_supp d hd).trans hdeg) hdne
-      rw [hzero d hdlt, mul_zero]
-    · exact fun h => (h htop).elim
-  · have hcoeff : p.coeff S.card = 0 := by
-      simpa only [Polynomial.mem_support_iff, not_ne_iff] using htop
-    rw [hcoeff, zero_mul]
-    apply Finset.sum_eq_zero
-    intro d hd
-    have hdne : d ≠ S.card := fun h => htop (h ▸ hd)
-    have hdlt : d < S.card :=
-      lt_of_le_of_ne
-        ((Polynomial.le_natDegree_of_mem_supp d hd).trans hdeg) hdne
-    rw [hzero d hdlt, mul_zero]
+  have hselect := sum_weight_mul_eval₂_eq_topCoeff_mul_moment
+    (RingHom.id R) S.powerset
+    (fun T => (-1 : R) ^ T.card)
+    (fun T => x + ∑ j ∈ T, w j)
+    p S.card hdeg fun d hd => by
+      have hzero := sum_powerset_neg_one_pow_eval S w
+        (Polynomial.X ^ d)
+        (lt_of_le_of_lt (Polynomial.natDegree_X_pow_le d) hd) x
+      simpa only [Polynomial.eval_pow, Polynomial.eval_X] using hzero
+  rw [sum_powerset_neg_one_pow_pow_card] at hselect
+  simpa only [Polynomial.eval₂_id, RingHom.id_apply] using hselect
 
 /-! ## Dyadic step bookkeeping -/
 

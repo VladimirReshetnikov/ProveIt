@@ -119,7 +119,7 @@
 \author{Merged and expanded companion report to the Fabius--Rvachev formal development\\
 \small Vladimir Reshetnikov's \texttt{ProveIt} repository}
 \date{Repository snapshot: 27 August 2026\\
-\small source snapshot at commit \nolinkurl{552f76a235e883e5b44212dec5325b0589be1395}}
+\small source snapshot at commit \nolinkurl{540d360b64a461652dbd799da961a0b7cd96a50d}}
 
 \begin{document}
 \maketitle
@@ -1060,9 +1060,17 @@ the real punctured limit
 is \lean{Fabius.tendsto\_norm\_div\_pow\_zero\_order} in
 \path{PhiZeroOrder.lean}; this is the exact positive-integer real-axis
 zero order, not a broader assertion about complex local multiplicity.
-For every \(m\ge1\), the modulus also has exactly one maximizer in the
-positive side lobe \((m,m+1)\), by
-\lean{Fabius.existsUnique\_isMaxOn\_lobe} in
+On the real axis the origin is the unique unit-modulus point:
+\[
+ |\Phi(x)|=1\quad\Longleftrightarrow\quad x=0,
+ \qquad x\ne0\quad\Longrightarrow\quad |\Phi(x)|<1.
+\]
+These are \lean{Fabius.norm\_rvachevFourierProduct\_eq\_one\_iff} and
+\lean{Fabius.norm\_rvachevFourierProduct\_lt\_one\_of\_ne\_zero}.
+For every \(m\ge1\), the modulus also has exactly one maximizer in each
+positive side lobe \((m,m+1)\) and reflected negative side lobe
+\((-(m+1),-m)\), by \lean{Fabius.existsUnique\_isMaxOn\_lobe} and
+\lean{Fabius.existsUnique\_isMaxOn\_neg\_lobe} in
 \path{RvachevProductContinuity.lean}.
 
 The product-level renormalization is available independently of the
@@ -3286,6 +3294,26 @@ itself is formal at the coefficient level: the dictionary
 product is the algebraic master product evaluated at
 \(z=\e^{t}\in\mathbb Q[[t]]\) --- no convergence argument is used
 anywhere.
+
+The normalized translated series itself has the exact finite product
+\begin{equation}
+\begin{aligned}
+ \mathscr S_{c,k}(X)
+  &:=\sum_{n\ge0}
+    \frac{\displaystyle\sum_{r<2^k}\eps_r
+      (r-2^k+c)^{n+k}}{(n+k)!}X^n,\\
+ \mathscr S_{c,k}(X)
+  &=(-1)^k2^{\binom k2}\e^{(c-1)X}
+    \prod_{j<k}\frac{\e^{-2^jX}-1}{-2^jX}
+    \qquad(c\in\Q,\ k\in\N).
+\end{aligned}
+\label{eq:translated-shifted-expm1-product}
+\end{equation}
+This is an identity in \(\mathbb Q[[X]]\), where each displayed quotient
+denotes the removable formal series with constant coefficient one.  It is
+\lean{Fabius.thueMorseTranslatedShiftedPowerSeries\_eq\_expm1\_product};
+the quotient series is \lean{Fabius.rationalExpm1DivSeries}, both in
+\path{ThueMorseExponential.lean}.
 
 \subsection{All power moments: a finite composition formula}
 
@@ -6086,7 +6114,7 @@ Module & Contents \\
 \path{SincCanonicalProduct.lean} & The canonical product \(\prod_{m\ge1}(1-z^2/m^2)^{1+\vtwo(m)}\), obtained by regrouping the absolutely convergent double Euler product. \\
 \path{PhiZeroOrder.lean} & The exact positive-integer real-axis zero order \(1+\vtwo(m)\), expressed by a punctured norm quotient converging to a positive constant. \\
 \path{ThueMorseLobeSign.lean} & The lobe identity \(\Phi(x)=\eps_m|\Phi(x)|\) for \(m<x<m+1\), from the closed lattice-point count. \\
-\path{RvachevProductContinuity.lean} & Real-axis continuity of \(\Phi\) and \(|\Phi|\), the strict global peak at zero, and existence and uniqueness of the modulus maximum on each positive side lobe \((m,m+1)\), \(m\ge1\). \\
+\path{RvachevProductContinuity.lean} & Real-axis continuity of \(\Phi\) and \(|\Phi|\); the origin as the unique unit-modulus point, with strict inequality elsewhere; and existence and uniqueness of the modulus maximum on every positive lobe \((m,m+1)\) and reflected negative lobe \((-(m+1),-m)\), \(m\ge1\). \\
 \path{RvachevFourierDecay.lean} & Public facade transferring the canonical product, total and divided shell formulas, global decay, strict peak, extremal ray, lobe signs and maxima, and zero orders from \(\Phi\) to the actual Rvachev Fourier transform. \\
 \bottomrule
 \end{longtable}}
@@ -6568,7 +6596,7 @@ Second-pass additions & Even-modulus collapse of rarefied sums from exact prefix
 V.~Reshetnikov,
 \newblock \emph{ProveIt: Analysis/FabiusFunction},
 \newblock GitHub repository, source snapshot
-\nolinkurl{552f76a235e883e5b44212dec5325b0589be1395}, 2026.
+\nolinkurl{540d360b64a461652dbd799da961a0b7cd96a50d}, 2026.
 
 \bibitem{prouhet1851}
 E.~Prouhet,

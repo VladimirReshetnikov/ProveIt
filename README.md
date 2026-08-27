@@ -29,8 +29,8 @@ the formal semantics.
 > `LAKE_JOBS=1` and `LEAN_NUM_THREADS=0` set &mdash; see
 > [the caution in the Lean workspace section](#lean-workspace) for what each
 > variable bounds and the measurements behind them, and
-> [`AGENTS.md`](AGENTS.md) for the driver, the retry rule, and the Windows
-> traps.
+> [`Analysis/FabiusFunction/AGENTS.md`](Analysis/FabiusFunction/AGENTS.md)
+> for the driver, the retry rule, and the Windows traps.
 
 ## Repository map
 

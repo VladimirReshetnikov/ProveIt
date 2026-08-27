@@ -1,3 +1,4 @@
+import FabiusFunction.FinitePolynomialFunctional
 import FabiusFunction.ThueMorsePrefix
 import Mathlib.Tactic.FieldSimp
 
@@ -45,10 +46,11 @@ statements of the whole `Fabius*QBinomial*` family.
   notation-faithful Wolfram alias, and the `q = 1/2` case, with
   `halfQPochhammer_pos` and `halfQPochhammer_ne_zero` supplying the
   nonvanishing that every later denominator argument needs.
-* `qBinomial`, `halfQBinomial`, `halfQBinomial_pos`, `halfQBinomial_symm`,
-  `halfQBinomial_succ_succ`, `halfQBinomial_succ_succ'` -- the coefficient,
-  positivity for `k ≤ n`, the reflection `k ↦ n - k`, and both orientations
-  of the q-Pascal recurrence.
+* `qBinomial`, `qBinomial_eq_quotient`, `qBinomial_symm`, `halfQBinomial`,
+  `halfQBinomial_pos`, `halfQBinomial_symm`, `qBinomial_half_eq_zero_iff`,
+  `halfQBinomial_succ_succ`, `halfQBinomial_succ_succ'` -- the generic
+  quotient and reflection, their `q = 1/2` specialization and zero locus,
+  positivity for `k ≤ n`, and both orientations of the q-Pascal recurrence.
 * `halfQBinomial_theorem` -- the q-binomial theorem displayed above.
 * `finiteQPochhammer_eq_zero_iff`,
   `finiteQPochhammer_half_eq_zero_iff`,
@@ -104,6 +106,7 @@ namespace Fabius
 noncomputable def finiteQPochhammer (a q : ℚ) (n : ℕ) : ℚ :=
   ∏ j ∈ Finset.range n, (1 - a * q ^ j)
 
+/-- The empty finite q-Pochhammer product is one. -/
 @[simp] theorem finiteQPochhammer_zero (a q : ℚ) :
     finiteQPochhammer a q 0 = 1 := by
   simp [finiteQPochhammer]
@@ -121,6 +124,7 @@ theorem finiteQPochhammer_succ (a q : ℚ) (n : ℕ) :
 `QPochhammer[a,q,n]`. -/
 noncomputable abbrev qPochhammer := finiteQPochhammer
 
+/-- The empty q-Pochhammer product, in notation-faithful form, is one. -/
 @[simp] theorem qPochhammer_zero (a q : ℚ) : qPochhammer a q 0 = 1 := by
   exact finiteQPochhammer_zero a q
 
@@ -172,10 +176,12 @@ theorem finiteQPochhammer_half_eq_zero_iff (z : ℚ) (n : ℕ) :
 noncomputable def halfQPochhammer (n : ℕ) : ℚ :=
   finiteQPochhammer (1 / 2) (1 / 2) n
 
+/-- The literal q-Pochhammer alias at `a = q = 1/2` is `halfQPochhammer`. -/
 @[simp] theorem qPochhammer_half_eq (n : ℕ) :
     qPochhammer (1 / 2) (1 / 2) n = halfQPochhammer n := by
   rfl
 
+/-- The empty q-Pochhammer product at `q = 1/2` is one. -/
 @[simp] theorem halfQPochhammer_zero : halfQPochhammer 0 = 1 := by
   simp [halfQPochhammer]
 
@@ -214,6 +220,7 @@ theorem halfQPochhammer_ne_zero (n : ℕ) : halfQPochhammer n ≠ 0 :=
 noncomputable def halfMersenneProduct (n : ℕ) : ℚ :=
   ∏ j ∈ Finset.range n, ((2 : ℚ) ^ (j + 1) - 1)
 
+/-- The empty product of Mersenne factors is one. -/
 @[simp] theorem halfMersenneProduct_zero : halfMersenneProduct 0 = 1 := by
   simp [halfMersenneProduct]
 
@@ -336,6 +343,14 @@ theorem qBinomial_eq_zero_of_lt (q : ℚ) {n k : ℕ} (hk : n < k) :
     qBinomial n k q = 0 := by
   simp [qBinomial, Nat.not_le.mpr hk]
 
+/-- In the admissible range, the generic q-binomial is its defining
+q-Pochhammer quotient. -/
+theorem qBinomial_eq_quotient (q : ℚ) {n k : ℕ} (hk : k ≤ n) :
+    qBinomial n k q =
+      qPochhammer q q n /
+        (qPochhammer q q k * qPochhammer q q (n - k)) := by
+  simp [qBinomial, hk]
+
 /-- In the admissible range `k ≤ n` the `if` unfolds and `halfQBinomial n k`
 is the q-Pochhammer quotient
 `(1/2;1/2)_n / ((1/2;1/2)_k (1/2;1/2)_(n-k))`.  The hypothesis `k ≤ n` is
@@ -345,7 +360,8 @@ theorem halfQBinomial_eq_quotient {n k : ℕ} (hk : k ≤ n) :
     halfQBinomial n k =
       halfQPochhammer n /
         (halfQPochhammer k * halfQPochhammer (n - k)) := by
-  simp [halfQBinomial, hk]
+  simpa only [qBinomial_half_eq, qPochhammer_half_eq] using
+    qBinomial_eq_quotient (1 / 2) hk
 
 /-- The coefficient vanishes above the diagonal, `n < k`.  This is what
 kills the extra term when a sum over `range (n + 1)` is compared with a sum
@@ -354,18 +370,22 @@ theorem halfQBinomial_eq_zero_of_lt {n k : ℕ} (hk : n < k) :
     halfQBinomial n k = 0 := by
   simp [halfQBinomial, Nat.not_le.mpr hk]
 
+/-- The lower-edge Gaussian coefficient `halfQBinomial n 0` is one. -/
 @[simp] theorem halfQBinomial_zero_right (n : ℕ) :
     halfQBinomial n 0 = 1 := by
   rw [halfQBinomial_eq_quotient (Nat.zero_le n)]
   simp [halfQPochhammer_ne_zero]
 
+/-- The diagonal Gaussian coefficient `halfQBinomial n n` is one. -/
 @[simp] theorem halfQBinomial_self (n : ℕ) :
     halfQBinomial n n = 1 := by
   rw [halfQBinomial_eq_quotient (le_refl n)]
   simp [halfQPochhammer_ne_zero]
 
+/-- The Gaussian coefficient at the origin is one. -/
 @[simp] theorem halfQBinomial_zero_zero : halfQBinomial 0 0 = 1 := by simp
 
+/-- Every positive-index Gaussian coefficient in row zero vanishes. -/
 @[simp] theorem halfQBinomial_zero_succ (k : ℕ) :
     halfQBinomial 0 (k + 1) = 0 := by
   exact halfQBinomial_eq_zero_of_lt (by omega)
@@ -395,6 +415,13 @@ theorem halfQBinomial_eq_zero_iff {n k : ℕ} :
     exact (halfQBinomial_ne_zero (Nat.le_of_not_gt hnot)) h
   · exact halfQBinomial_eq_zero_of_lt
 
+/-- Literal `q = 1/2` q-binomial coefficients vanish exactly above the
+diagonal. -/
+theorem qBinomial_half_eq_zero_iff {n k : ℕ} :
+    qBinomial n k (1 / 2) = 0 ↔ n < k := by
+  simpa only [qBinomial_half_eq] using
+    (halfQBinomial_eq_zero_iff (n := n) (k := k))
+
 private theorem choose_split (n k : ℕ) (hk : k ≤ n) :
     (n + 1).choose 2 =
       (k + 1).choose 2 + k * (n - k) + (n - k + 1).choose 2 := by
@@ -413,6 +440,14 @@ theorem halfQBinomial_eq_mersenne {n k : ℕ} (hk : k ≤ n) :
   rw [choose_split n k hk, pow_add, pow_add]
   field_simp [halfMersenneProduct_ne_zero]
 
+/-- Reflection `k ↦ n - k` for the generic q-Pochhammer quotient: in the
+admissible range its two denominator factors merely swap. -/
+theorem qBinomial_symm (q : ℚ) {n k : ℕ} (hk : k ≤ n) :
+    qBinomial n (n - k) q = qBinomial n k q := by
+  rw [qBinomial_eq_quotient q (Nat.sub_le n k),
+    qBinomial_eq_quotient q hk, Nat.sub_sub_self hk]
+  ring
+
 /-- Reflection `k ↦ n - k` for `k ≤ n`: the quotient is unchanged because
 its two denominator factors merely swap.  It supplies the reindexing in
 `FabiusDiscreteLimitIntegration.discreteLimit_coefficient_reindex` and turns
@@ -420,10 +455,7 @@ its two denominator factors merely swap.  It supplies the reindexing in
 `halfQBinomial_succ_succ'`. -/
 theorem halfQBinomial_symm {n k : ℕ} (hk : k ≤ n) :
     halfQBinomial n (n - k) = halfQBinomial n k := by
-  rw [halfQBinomial_eq_quotient (Nat.sub_le n k),
-    halfQBinomial_eq_quotient hk]
-  rw [Nat.sub_sub_self hk]
-  ring
+  simpa only [qBinomial_half_eq] using qBinomial_symm (1 / 2) hk
 
 /-- The q-Pascal recurrence, in the orientation suited to the finite
 q-binomial theorem. -/
@@ -966,44 +998,14 @@ theorem halfQBinomial_negativeDyadic_polynomial_sum_eq_coeff
       halfQBinomialDyadicWeight n k * p.eval (negativeDyadicNode k)) =
         p.coeff n *
           ((2 : ℚ) ^ ((n + 1).choose 2) * halfQPochhammer n) := by
-  classical
   have hnat : p.natDegree ≤ n :=
     Polynomial.natDegree_le_of_degree_le hp
-  simp_rw [Polynomial.eval_eq_sum, Polynomial.sum_def, Finset.mul_sum]
-  rw [Finset.sum_comm]
-  have hexpand :
-      (∑ d ∈ p.support, ∑ k ∈ Finset.range (n + 1),
-          halfQBinomialDyadicWeight n k *
-            (p.coeff d * negativeDyadicNode k ^ d)) =
-        ∑ d ∈ p.support, p.coeff d *
-          ∑ k ∈ Finset.range (n + 1),
-            halfQBinomialDyadicWeight n k * negativeDyadicNode k ^ d := by
-    apply Finset.sum_congr rfl
-    intro d _hd
-    rw [Finset.mul_sum]
-    apply Finset.sum_congr rfl
-    intro k _hk
-    ring
-  rw [hexpand]
-  by_cases hn : n ∈ p.support
-  · rw [Finset.sum_eq_single n]
-    · rw [halfQBinomialDyadicWeight_nodes_self]
-    · intro d hd hdn
-      have hdn' : d < n :=
-        lt_of_le_of_ne
-          (Polynomial.le_natDegree_of_mem_supp d hd |>.trans hnat) hdn
-      rw [halfQBinomialDyadicWeight_nodes_zero hdn', mul_zero]
-    · exact fun h => (h hn).elim
-  · have hcoeff : p.coeff n = 0 := by
-      simpa only [Polynomial.mem_support_iff, not_ne_iff] using hn
-    rw [hcoeff, zero_mul]
-    apply Finset.sum_eq_zero
-    intro d hd
-    have hdn : d ≠ n := fun h => hn (h ▸ hd)
-    have hdn' : d < n :=
-      lt_of_le_of_ne
-        (Polynomial.le_natDegree_of_mem_supp d hd |>.trans hnat) hdn
-    rw [halfQBinomialDyadicWeight_nodes_zero hdn', mul_zero]
+  have hselect := sum_weight_mul_eval₂_eq_topCoeff_mul_moment
+    (RingHom.id ℚ) (Finset.range (n + 1))
+    (halfQBinomialDyadicWeight n) negativeDyadicNode
+    p n hnat fun _d hd => halfQBinomialDyadicWeight_nodes_zero hd
+  rw [halfQBinomialDyadicWeight_nodes_self] at hselect
+  simpa only [Polynomial.eval₂_id, RingHom.id_apply] using hselect
 
 /-- Mersenne-product form of the degree-valued Gaussian/Prouhet extractor:
 the top moment is exactly `halfMersenneProduct n`. -/

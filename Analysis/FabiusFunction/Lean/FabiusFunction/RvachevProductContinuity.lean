@@ -12,8 +12,9 @@ the endpoint radius), so `Φ` and `‖Φ‖` are continuous on `ℝ`.  With
 strict log-concavity per lobe this pins the audits' `thm:one-peak`
 quantitatively:
 
-**every side lobe `(m, m+1)`, `m ≥ 1`, contains exactly one peak of
-`|Φ|`**, and the central-lobe peak is exactly `0`.
+**every positive side lobe `(m, m+1)` and reflected negative side lobe
+`(-(m+1), -m)`, `m ≥ 1`, contains exactly one peak of `|Φ|`**, and the
+central-lobe peak is exactly `0`.
 
 * `continuous_rvachevFourierProduct_real`, and the norm version.
 * `norm_rvachevFourierProduct_lt_one_of_ne_zero` and
@@ -21,7 +22,8 @@ quantitatively:
   global point where `‖Φ‖ = 1`; at every nonzero real argument `‖Φ‖ < 1`.
 * `isMaxOn_eq_of_strictConcaveOn_log_of_pos` — generic positive-log peak uniqueness;
   `isMaxOn_eq_of_strictConcaveOn_log` is its specialization to `‖Φ‖`.
-* `existsUnique_isMaxOn_lobe` — **exactly one peak per side lobe**.
+* `existsUnique_isMaxOn_lobe` / `existsUnique_isMaxOn_neg_lobe` —
+  **exactly one peak per positive or reflected negative side lobe**.
 * `isMaxOn_central_eq_zero` — the central peak is the origin.
 -/
 
@@ -230,6 +232,57 @@ theorem existsUnique_isMaxOn_lobe (m : ℕ) (hm : 1 ≤ m) :
     (fun x hx => norm_rvachevFourierProduct_pos_of_ne
       (lobeZero_ne_abs_of_mem_lobe hx))
     hy hc hymax hmax
+
+/-- **Exactly one peak per negative side lobe** (`thm:one-peak`,
+quantitative): for `m ≥ 1`, `|Φ|` has a unique maximizer in
+`(-(m+1), -m)`, obtained by reflecting the positive-lobe maximizer. -/
+theorem existsUnique_isMaxOn_neg_lobe (m : ℕ) (hm : 1 ≤ m) :
+    ∃! c, c ∈ Set.Ioo (-((m : ℝ) + 1)) (-(m : ℝ)) ∧
+      IsMaxOn (fun x : ℝ => ‖rvachevFourierProduct (x : ℂ)‖)
+        (Set.Ioo (-((m : ℝ) + 1)) (-(m : ℝ))) c := by
+  obtain ⟨c, ⟨hc, hmax⟩, huniq⟩ := existsUnique_isMaxOn_lobe m hm
+  have hcneg : -c ∈ Set.Ioo (-((m : ℝ) + 1)) (-(m : ℝ)) := by
+    obtain ⟨hc1, hc2⟩ := hc
+    exact Set.mem_Ioo.mpr ⟨by linarith, by linarith⟩
+  have hmaxneg :
+      IsMaxOn (fun x : ℝ => ‖rvachevFourierProduct (x : ℂ)‖)
+        (Set.Ioo (-((m : ℝ) + 1)) (-(m : ℝ))) (-c) := by
+    rw [isMaxOn_iff]
+    intro x hx
+    have hxpos : -x ∈ Set.Ioo (m : ℝ) ((m : ℝ) + 1) := by
+      obtain ⟨hx1, hx2⟩ := hx
+      exact Set.mem_Ioo.mpr ⟨by linarith, by linarith⟩
+    have hle := (isMaxOn_iff.mp hmax) (-x) hxpos
+    calc
+      ‖rvachevFourierProduct (x : ℂ)‖ =
+          ‖rvachevFourierProduct ((-x : ℝ) : ℂ)‖ :=
+        (norm_rvachevFourierProduct_neg x).symm
+      _ ≤ ‖rvachevFourierProduct (c : ℂ)‖ := hle
+      _ = ‖rvachevFourierProduct ((-c : ℝ) : ℂ)‖ :=
+        (norm_rvachevFourierProduct_neg c).symm
+  refine ⟨-c, ⟨hcneg, hmaxneg⟩, ?_⟩
+  rintro y ⟨hy, hymax⟩
+  have hypos : -y ∈ Set.Ioo (m : ℝ) ((m : ℝ) + 1) := by
+    obtain ⟨hy1, hy2⟩ := hy
+    exact Set.mem_Ioo.mpr ⟨by linarith, by linarith⟩
+  have hymaxpos :
+      IsMaxOn (fun x : ℝ => ‖rvachevFourierProduct (x : ℂ)‖)
+        (Set.Ioo (m : ℝ) ((m : ℝ) + 1)) (-y) := by
+    rw [isMaxOn_iff]
+    intro x hx
+    have hxneg : -x ∈ Set.Ioo (-((m : ℝ) + 1)) (-(m : ℝ)) := by
+      obtain ⟨hx1, hx2⟩ := hx
+      exact Set.mem_Ioo.mpr ⟨by linarith, by linarith⟩
+    have hle := (isMaxOn_iff.mp hymax) (-x) hxneg
+    calc
+      ‖rvachevFourierProduct (x : ℂ)‖ =
+          ‖rvachevFourierProduct ((-x : ℝ) : ℂ)‖ :=
+        (norm_rvachevFourierProduct_neg x).symm
+      _ ≤ ‖rvachevFourierProduct (y : ℂ)‖ := hle
+      _ = ‖rvachevFourierProduct ((-y : ℝ) : ℂ)‖ :=
+        (norm_rvachevFourierProduct_neg y).symm
+  have h := huniq (-y) ⟨hypos, hymaxpos⟩
+  linarith
 
 /-- **The central peak is exactly the origin**: any maximizer of
 `|Φ|` over `(−1,1)` equals `0`. -/
