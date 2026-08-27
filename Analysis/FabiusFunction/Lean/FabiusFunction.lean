@@ -4,6 +4,7 @@ import FabiusFunction.PaperFabiusAsymptotic
 import FabiusFunction.FinitePolynomialFilterExactness
 import FabiusFunction.GeometricLagrangeWeights
 import FabiusFunction.FabiusDiscreteLimitRates
+import FabiusFunction.EndpointTransferPolynomials
 import FabiusFunction.PaperKFoldThueMorse
 import FabiusFunction.ThueMorseBooleanCube
 import FabiusFunction.ThueMorseValuation
