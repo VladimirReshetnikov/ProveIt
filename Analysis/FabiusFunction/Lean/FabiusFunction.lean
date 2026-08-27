@@ -37,6 +37,7 @@ import FabiusFunction.ThueMorseDirichlet
 import FabiusFunction.ThueMorseCatalanSeries
 import FabiusFunction.ThueMorseCatalanConvolution
 import FabiusFunction.ThueMorseIntegerLiftEquation
+import FabiusFunction.ThueMorseIntegerLiftRecurrence
 import FabiusFunction.LacunaryRieszIntegral
 import FabiusFunction.GelfondLogisticBound
 import FabiusFunction.GeometricScaleProducts
