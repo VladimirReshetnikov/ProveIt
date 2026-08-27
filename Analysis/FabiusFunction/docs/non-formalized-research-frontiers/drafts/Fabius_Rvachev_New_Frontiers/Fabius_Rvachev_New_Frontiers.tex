@@ -1,0 +1,1720 @@
+\documentclass[11pt,oneside]{article}
+
+\usepackage[a4paper,margin=27mm,headheight=15pt]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\IfFileExists{libertinus.sty}{\usepackage{libertinus}}{\usepackage{lmodern}}
+\usepackage{microtype}
+\usepackage{amsmath,amssymb,amsthm,mathtools,mathrsfs}
+\usepackage{bm}
+\usepackage{booktabs,longtable,array,tabularx}
+\usepackage{graphicx}
+\usepackage{xcolor}
+\usepackage{enumitem}
+\usepackage{fancyhdr}
+\usepackage{titlesec}
+\usepackage{xurl}
+\usepackage{hyperref}
+\usepackage[nameinlink,noabbrev]{cleveref}
+
+\definecolor{linkblue}{RGB}{25,75,135}
+\definecolor{shadegray}{RGB}{246,247,249}
+\definecolor{rulegray}{RGB}{195,201,208}
+\definecolor{provedgreen}{RGB}{27,111,72}
+\definecolor{cautionorange}{RGB}{155,88,18}
+\hypersetup{
+  colorlinks=true,
+  linkcolor=linkblue,
+  citecolor=linkblue,
+  urlcolor=linkblue,
+  pdftitle={Gamma Duality, Total Positivity, and Lambert-Localized Moments in the Fabius--Rvachev System},
+  pdfsubject={New frontier results for the Fabius function, Rvachev up-function, Thue--Morse sequence, q-binomial coefficients, sinc products, and Lambert W},
+  pdfkeywords={Fabius function, Rvachev up-function, Thue-Morse, q-binomial, multiple zeta value, sinc product, generalized gamma convolution, Lambert W, mod-Gamma convergence}
+}
+
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small New Fabius--Rvachev frontiers}
+\fancyhead[R]{\small\nouppercase{\leftmark}}
+\fancyfoot[C]{\thepage}
+\renewcommand{\headrulewidth}{0.4pt}
+
+\titleformat{\section}{\Large\bfseries}{\thesection}{0.7em}{}
+\titleformat{\subsection}{\large\bfseries}{\thesubsection}{0.7em}{}
+\titleformat{\subsubsection}{\normalsize\bfseries}{\thesubsubsection}{0.7em}{}
+\setcounter{secnumdepth}{3}
+\setcounter{tocdepth}{2}
+\setlist[itemize]{leftmargin=2em,itemsep=0.25em,topsep=0.4em}
+\setlist[enumerate]{leftmargin=2.3em,itemsep=0.25em,topsep=0.4em}
+\setlength{\emergencystretch}{2.5em}
+
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{conjecture}[theorem]{Conjecture}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{algorithm}[theorem]{Algorithm}
+\newtheorem{example}[theorem]{Example}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+\newtheorem{warning}[theorem]{Warning}
+
+\newcommand{\R}{\mathbb R}
+\newcommand{\C}{\mathbb C}
+\newcommand{\Q}{\mathbb Q}
+\newcommand{\N}{\mathbb N}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\Up}{\operatorname{up}}
+\newcommand{\sinc}{\operatorname{sinc}}
+\newcommand{\e}{\mathrm e}
+\newcommand{\ii}{\mathrm i}
+\newcommand{\dd}{\,\mathrm d}
+\newcommand{\Var}{\operatorname{Var}}
+\newcommand{\Cov}{\operatorname{Cov}}
+\newcommand{\E}{\mathbb E}
+\newcommand{\Prob}{\mathbb P}
+\newcommand{\bigO}{\mathcal O}
+\newcommand{\smallo}{o}
+\newcommand{\supp}{\operatorname{supp}}
+\newcommand{\sgn}{\operatorname{sgn}}
+\newcommand{\vtwo}{v_2}
+\newcommand{\Li}{\operatorname{Li}}
+\newcommand{\diag}{\operatorname{diag}}
+\newcommand{\Law}{\operatorname{Law}}
+\newcommand{\Cum}{\operatorname{Cum}}
+\newcommand{\dist}{\mathrel{\stackrel{\mathrm d}=}}
+\newcommand{\qbinom}[3]{\genfrac{[}{]}{0pt}{}{#1}{#2}_{#3}}
+\newcommand{\repo}{\nolinkurl{Analysis/FabiusFunction}}
+\newcommand{\statusproved}{\textcolor{provedgreen}{\textbf{proved here}}}
+\newcommand{\statusfrontier}{\textcolor{cautionorange}{\textbf{frontier proposal}}}
+
+\newenvironment{proofidea}{\par\smallskip\noindent\textit{Proof architecture.}\ }{\hfill$\square$\par\smallskip}
+\newenvironment{boxedremark}{%
+  \par\smallskip\noindent\begin{center}\begin{minipage}{0.94\textwidth}%
+  \color{black}\hrule\vspace{0.6em}\small
+}{%
+  \vspace{0.6em}\hrule\end{minipage}\end{center}\smallskip
+}
+
+\title{\bfseries Gamma Duality, Total Positivity, and\\
+Lambert-Localized Moments in the Fabius--Rvachev System\\[0.45em]
+\large $q$-binomial multiple-zeta expansions, spectral subordinators,\\
+phase-resolved endpoint tilting, and large-order transfer}
+\author{Frontier research report for Vladimir Reshetnikov's \texttt{ProveIt} project}
+\date{Repository snapshot: 27 August 2026\\
+\small commit \nolinkurl{00c2f223339f4a9d3ab306c56d42da9f4d3e0bf1}}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+The Fabius--Rvachev corpus already contains a remarkably complete triangle of
+representations: a dyadic random series, exact $q$-binomial arithmetic, and an
+infinite product of sinc functions whose negative-Laplace endpoint asymptotic
+contains a one-periodic fluctuation and the branch $W_{-1}$ of Lambert's
+function.  This report develops a new layer connecting those three sides.
+All claims marked ``proved here'' are supplied with proofs in the present
+manuscript; they are not claimed to have been formalized in Lean yet.
+
+The first result expands every even moment simultaneously in Gaussian
+$q$-binomial coefficients and symmetrized multiple zeta values.  The Wick-rotated
+sinc determinant is then shown to lie in the type-I Laguerre--P\'olya class.
+Consequently its coefficient sequence is P\'olya-frequency of infinite order,
+and every shifted Jensen polynomial is real-rooted; this gives an infinite
+hierarchy of sharp moment inequalities.  The same determinant proves that the
+Rvachev law is strictly sub-Gaussian with the optimal variance proxy, although
+its real-axis zeros rule out infinite divisibility.
+
+The principal structural theorem identifies the reciprocal Wick-rotated
+product as a Laplace transform.  Every positive power is the transform of an
+explicit generalized gamma convolution with discrete Thorin measure
+$\tau\sum_{m\ge1}(1+v_2(m))\delta_{m^2}$.  Its cumulants are
+$\tau(r-1)!\zeta(2r)/(1-4^{-r})$, it satisfies an exact $q=1/4$ perpetuity, and
+the parity of its cumulative Thorin mass is precisely the Thue--Morse sign of
+the Fourier lobes.  The associated L\'evy heat kernel admits not only the usual
+Mellin expansion with log-periodic oscillation, but an exact Jacobi-theta
+completion whose error begins at
+$-2\sqrt{\pi/x}\exp(-4\pi^2/x)$.
+
+Finally, exponential tilting of the endpoint law leaves the binary coordinates
+independent and turns them into truncated exponentials.  This yields a
+phase-resolved mod-Gamma limit, a central limit theorem with Berry--Esseen error
+$\bigO((\log s)^{-1/2})$, and a rigorous Lambert-$W_{-1}$ localization law.  A
+universal endpoint-transfer theorem then converts the exact negative-Laplace
+expansion into all-orders asymptotics for ordinary moments and centered even
+moments.  In particular it supplies the previously missing bridge from the
+exact $q$-binomial/multiple-zeta coefficients of the sinc determinant to the
+Lambert-$W$ endpoint saddle.
+\end{abstract}
+
+\tableofcontents
+\newpage
+
+\section{Corpus audit, baseline, and novelty discipline}
+
+\subsection{Scope of the audit}
+
+The audited source tree is \repo/\texttt{docs} at the commit printed on the
+title page.  It contains fifty-seven standalone \LaTeX{} manuscripts when
+historical revisions, source transcriptions of reference papers, and the live
+frontier drafts are counted separately.  They fall into five overlapping
+families:
+\begin{enumerate}
+\item the current primary exposition, Lean walkthrough, glossary, and
+      non-elementarity study;
+\item archived primary expositions, missing-parts supplements, and
+      $q$-calculus introductions;
+\item exact-dyadic, Thue--Morse, repeated-integration, inverse-function, and
+      small-argument studies;
+\item the consolidated non-formalized frontier and its sequence of frontier
+      reports;
+\item the multi-wave Fourier-decay campaign and the transcribed reference
+      literature.
+\end{enumerate}
+The revisions were not treated as independent evidence: later corrections
+supersede earlier drafts.  In particular, the current Fourier audit already
+contains the Thue--Morse lobe-sign theorem, exact zero orders, the
+renormalization identity, and the global sharp decay envelope.  Those are
+baseline results here, not rediscoveries.
+
+\subsection{What was already present}
+
+The corpus supplies, among much else, the following ingredients used below:
+\begin{itemize}
+\item the random-series realization of the bounded Fabius distribution and of
+      Rvachev's even density;
+\item the sinc product, its integer zero multiplicities
+      $a_m=1+v_2(m)$, and its dyadic renormalization;
+\item exact moment recurrences, rationality, finite convolution models, and
+      dyadic values expressed through Gaussian binomial coefficients;
+\item spectral-zeta and determinant viewpoints for the Wick-rotated product;
+\item the exact negative-Laplace decomposition
+      \[
+      \log L(s)=-\frac{(\log s)^2}{2\log2}+\frac{\log s}{2}
+        +R(\log_2s)+E(s),
+      \]
+      where $R$ is one-periodic and $E(s)$ is positive and exponentially
+      small;
+\item Lambert-$W_{-1}$ descriptions of the small-argument endpoint saddle;
+\item exact Thue--Morse signs of the Fourier lobes and sharp real-axis decay.
+\end{itemize}
+The goal was therefore not to enlarge the collection by cosmetic reformulation,
+but to find implications which genuinely cross the established boundaries
+between $q$-arithmetic, entire-function theory, probability, and endpoint
+asymptotics.
+
+\subsection{Status ledger}
+
+\begin{longtable}{@{}p{0.07\textwidth}p{0.66\textwidth}p{0.19\textwidth}@{}}
+\toprule
+ID & Result & Status\\
+\midrule
+\endhead
+A & Gaussian $q$-binomial/occupancy expansion of every even moment in
+    symmetrized multiple zeta values, with a partition-lattice reduction to
+    ordinary even zeta values. & \statusproved\\
+B & Type-I Laguerre--P\'olya classification, PF$_\infty$ coefficients,
+    hyperbolic shifted Jensen polynomials, and the resulting ultra-log-concave
+    moment hierarchy. & \statusproved\\
+C & Strict sub-Gaussianity with the exact variance proxy, together with
+    non-infinite-divisibility. & \statusproved\\
+D & Explicit generalized gamma-convolution dual, discrete Thorin measure,
+    cumulant duality, and an exact $q=1/4$ perpetuity. & \statusproved\\
+E & Thue--Morse lobe sign as parity of cumulative Thorin mass. & \statusproved\\
+F & Exact Jacobi-theta completion of the L\'evy heat kernel, including its
+    first exponentially flat correction. & \statusproved\\
+G & Phase-resolved mod-Gamma convergence of the endpoint tilt and a
+    Berry--Esseen central limit theorem. & \statusproved\\
+H & Universal endpoint-transfer expansion, applied to ordinary moments,
+    centered moments, and the large-order $q$/MZV coefficients. & \statusproved\\
+I & Phase-resolved local limit and full Edgeworth expansion under the endpoint
+    tilt. & \statusfrontier\\
+\bottomrule
+\end{longtable}
+
+\begin{boxedremark}
+The word ``new'' in this report means new to the audited corpus after targeted
+searches for the exact structures used below.  It is not a claim of priority
+over every article in the mathematical literature.  The general theories of
+multiple zeta values, P\'olya-frequency sequences, generalized gamma
+convolutions, Mellin harmonic sums, and Lambert $W$ are classical; what is new
+here is their exact synthesis for the Fabius--Rvachev product and the resulting
+cross-representation theorems.
+\end{boxedremark}
+
+\section{Normalization and the master determinant}
+
+\subsection{The random series}
+
+Let $(V_k)_{k\ge1}$ be independent uniform random variables on $[0,1]$, and let
+$U_k=2V_k-1$, uniform on $[-1,1]$.  Define
+\begin{equation}\label{eq:X-Y-def}
+ X=\sum_{k\ge1}2^{-k}V_k,\qquad
+ Y=2X-1=\sum_{k\ge1}2^{-k}U_k.
+\end{equation}
+Then $X\in[0,1]$, $Y\in[-1,1]$, and
+\begin{equation}\label{eq:symmetry}
+ X\dist1-X,\qquad Y\dist-Y.
+\end{equation}
+The distribution function of $X$ is the bounded Fabius function, and the density
+of $Y$ is Rvachev's $\Up$-function.  We write
+\begin{equation}\label{eq:moments-def}
+ m_n=\E X^n,\qquad \mu_{2n}=\E Y^{2n}.
+\end{equation}
+
+\subsection{Fourier and Wick-rotated products}
+
+With $\sinc z=\sin z/z$ and the Fourier convention
+$\Phi(z)=\E\e^{-2\pi\ii zY}$,
+\begin{equation}\label{eq:Phi-products}
+ \Phi(z)=\prod_{j=0}^{\infty}\sinc\!\left(\frac{\pi z}{2^j}\right)
+ =\prod_{m=1}^{\infty}\left(1-\frac{z^2}{m^2}\right)^{a_m},
+ \qquad a_m=1+v_2(m).
+\end{equation}
+The first product gives the exact renormalization
+\begin{equation}\label{eq:Phi-renorm}
+ \Phi(z)=\sinc(\pi z)\Phi(z/2),
+\end{equation}
+whereas the second shows that the zero at a nonzero integer $m$ has order
+$a_m$.
+
+The central entire function of this report is the Wick rotation
+\begin{equation}\label{eq:A-def}
+ \mathcal A(w)=\Phi(\ii\sqrt w)
+ =\prod_{m\ge1}\left(1+\frac{w}{m^2}\right)^{a_m}
+ =\prod_{j\ge0}\prod_{n\ge1}\left(1+\frac{4^{-j}w}{n^2}\right).
+\end{equation}
+It is independent of the branch of $\sqrt w$ because it is entire in $w$.
+Set
+\begin{equation}\label{eq:C-def}
+ \mathcal A(w)=\sum_{r\ge0}C_rw^r.
+\end{equation}
+Since
+\begin{equation}\label{eq:mgf-A}
+ \E\e^{tY}=\mathcal A\!\left(\frac{t^2}{4\pi^2}\right),
+\end{equation}
+we have the exact coefficient--moment correspondence
+\begin{equation}\label{eq:C-moment}
+ C_r=\frac{(2\pi)^{2r}}{(2r)!}\,\mu_{2r}.
+\end{equation}
+
+\subsection{The spectral power sums}
+
+The logarithm of \cref{eq:A-def} is
+\begin{equation}\label{eq:logA-power}
+ \log\mathcal A(w)
+ =\sum_{r\ge1}\frac{(-1)^{r+1}}r p_rw^r,
+ \qquad
+ p_r=\sum_{m\ge1}\frac{a_m}{m^{2r}}
+ =\frac{\zeta(2r)}{1-4^{-r}}.
+\end{equation}
+Consequently
+\begin{equation}\label{eq:C-recurrence}
+ rC_r=\sum_{j=1}^{r}(-1)^{j+1}p_jC_{r-j},\qquad C_0=1.
+\end{equation}
+This Newton recurrence is already enough to prove rationality of all
+$\mu_{2r}$ because every $\zeta(2j)$ is a rational multiple of $\pi^{2j}$.
+The next section gives a different, genuinely $q$-binomial route which keeps
+the dyadic layers visible.
+
+\section{A $q$-binomial and multiple-zeta formula for every even moment}
+
+Throughout this section
+\begin{equation}\label{eq:q-def}
+ q=\frac14.
+\end{equation}
+
+\subsection{Finite depth and one-site occupancy}
+
+For $J\ge1$ truncate the dyadic layers:
+\begin{equation}\label{eq:AJ-def}
+ \mathcal A_J(w)=\prod_{j=0}^{J-1}\prod_{n\ge1}
+ \left(1+\frac{q^jw}{n^2}\right)
+ =\sum_{r\ge0}C_r^{(J)}w^r.
+\end{equation}
+At a fixed spectral site $n$, the finite $q$-binomial theorem gives
+\begin{equation}\label{eq:finite-qbinom}
+ \prod_{j=0}^{J-1}(1+q^jx)
+ =\sum_{r=0}^{J}b_{J,r}x^r,
+ \qquad
+ b_{J,r}=q^{r(r-1)/2}\qbinom{J}{r}{q}.
+\end{equation}
+Thus $r$ records the number of dyadic layers occupying the same integer
+frequency $n$.  In the infinite-depth limit,
+\begin{equation}\label{eq:b-infty}
+ b_r=\lim_{J\to\infty}b_{J,r}
+ =\frac{q^{r(r-1)/2}}{(q;q)_r},
+ \qquad (q;q)_r=\prod_{j=1}^{r}(1-q^j).
+\end{equation}
+For $q=1/4$,
+\begin{equation}\label{eq:b-first}
+ b_1=\frac43,\qquad b_2=\frac{16}{45},\qquad
+ b_3=\frac{64}{2835}.
+\end{equation}
+
+\subsection{Distinct-index zeta sums}
+
+Let $\lambda=(\lambda_1,\dots,\lambda_\ell)$ be a partition of $r$, and let
+$m_j(\lambda)$ denote the multiplicity of the part $j$.  Define the
+symmetrized distinct-index zeta sum
+\begin{equation}\label{eq:Zlambda-def}
+ Z_\lambda=
+ \sum_{\substack{n_1,\dots,n_\ell\ge1\\ n_i\ne n_j\ (i\ne j)}}
+ \frac1{n_1^{2\lambda_1}\cdots n_\ell^{2\lambda_\ell}}.
+\end{equation}
+This notation keeps the assignment of distinct spectral sites to the parts of
+$\lambda$ explicit.
+
+\begin{theorem}[$q$-binomial/MZV moment formula]\label{thm:q-mzv}
+For every $r\ge0$ and $J\ge1$,
+\begin{equation}\label{eq:CJ-partition}
+ \boxed{
+ C_r^{(J)}=
+ \sum_{\lambda\vdash r}
+ \frac{Z_\lambda}{\prod_{j\ge1}m_j(\lambda)!}
+ \prod_{i=1}^{\ell(\lambda)}b_{J,\lambda_i}.}
+\end{equation}
+Passing to infinite depth gives
+\begin{equation}\label{eq:C-partition}
+ \boxed{
+ C_r=
+ \sum_{\lambda\vdash r}
+ \frac{Z_\lambda}{\prod_{j\ge1}m_j(\lambda)!}
+ \prod_{i=1}^{\ell(\lambda)}
+ \frac{q^{\lambda_i(\lambda_i-1)/2}}{(q;q)_{\lambda_i}}.}
+\end{equation}
+Moreover
+\begin{equation}\label{eq:Z-MZV}
+ Z_\lambda=\sum_{\sigma\in S_\ell}
+ \zeta(2\lambda_{\sigma(1)},\dots,2\lambda_{\sigma(\ell)}),
+\end{equation}
+where
+$\zeta(s_1,\dots,s_\ell)=\sum_{n_1>\cdots>n_\ell\ge1}
+ n_1^{-s_1}\cdots n_\ell^{-s_\ell}$.
+\end{theorem}
+
+\begin{proof}
+Apply \cref{eq:finite-qbinom} at each spectral site $n$:
+\[
+ \mathcal A_J(w)=\prod_{n\ge1}
+ \left(\sum_{r=0}^{J}b_{J,r}\frac{w^r}{n^{2r}}\right).
+\]
+A monomial of total degree $r$ is specified by a finite set of distinct sites
+$n_1,\dots,n_\ell$ and positive occupancies
+$\lambda_1+\cdots+\lambda_\ell=r$.  Sorting the occupancies gives a partition
+$\lambda$.  The sum over ordered, pairwise distinct sites is $Z_\lambda$;
+permuting sites carrying equal occupancies does not change the monomial, hence
+the divisor $\prod_jm_j(\lambda)!$.  This proves
+\cref{eq:CJ-partition}.  Since the products converge normally on compact
+subsets and $b_{J,r}\to b_r$, coefficientwise convergence proves
+\cref{eq:C-partition}.
+
+Finally, every pairwise-distinct $\ell$-tuple has a unique strict ordering.
+Summing over the $\ell!$ possible orderings of the labelled coordinates gives
+\cref{eq:Z-MZV}; repeated parts correctly produce repeated MZVs, matching the
+labelled sum in \cref{eq:Zlambda-def}.
+\end{proof}
+
+\subsection{Reduction to ordinary zeta values}
+
+The MZV form is conceptually natural, but in the present fully symmetrized
+combination it collapses to ordinary zeta values by M\"obius inversion on the
+partition lattice.
+
+\begin{theorem}[Partition-lattice reduction]\label{thm:partition-lattice}
+Let $\Pi_\ell$ be the lattice of set partitions of $\{1,\dots,\ell\}$.  Then
+\begin{equation}\label{eq:Z-partition-lattice}
+ \boxed{
+ Z_\lambda=
+ \sum_{\pi\in\Pi_\ell}
+ \left(\prod_{B\in\pi}(-1)^{|B|-1}(|B|-1)!\right)
+ \prod_{B\in\pi}
+ \zeta\!\left(2\sum_{i\in B}\lambda_i\right).}
+\end{equation}
+Consequently \cref{eq:C-partition} is a finite expression involving only
+$q$-Pochhammer factors and ordinary even zeta values.
+\end{theorem}
+
+\begin{proof}
+Start with the unrestricted sum over $(n_1,\dots,n_\ell)$.  Coincidences among
+indices are encoded by set partitions: a block $B$ means that all $n_i$ with
+$i\in B$ coincide.  M\"obius inversion from the full coincidence lattice to
+the discrete partition has M\"obius factor
+$(-1)^{|B|-1}(|B|-1)!$ on each block.  The sum attached to a block is
+$\zeta(2\sum_{i\in B}\lambda_i)$.  Multiplication over blocks yields
+\cref{eq:Z-partition-lattice}.
+\end{proof}
+
+\begin{corollary}[A second rationality proof]\label{cor:q-mzv-rational}
+Every centered even moment $\mu_{2r}$ is rational.  More precisely,
+$C_r/\pi^{2r}\in\Q$, and \cref{eq:C-moment} gives $\mu_{2r}\in\Q$.
+\end{corollary}
+
+\begin{remark}
+The usual Newton recurrence \cref{eq:C-recurrence} forgets where repeated
+spectral integers came from.  Formula \cref{eq:C-partition} retains that
+information: the Gaussian $q$-binomial factor is an occupancy weight across
+dyadic layers, while the MZV records the strict ordering of distinct integer
+frequencies.  This is the precise meeting point of the $q$-binomial and sinc
+representations.
+\end{remark}
+
+\subsection{First examples}
+
+Using either \cref{eq:C-partition} or \cref{eq:C-recurrence},
+\begin{align}
+ C_1&=\frac{2\pi^2}{9},
+ &\mu_2&=\frac19,\label{eq:first-moments-a}\\
+ C_2&=\frac{38\pi^4}{2025},
+ &\mu_4&=\frac{19}{675},\\
+ C_3&=\frac{2332\pi^6}{2679075},
+ &\mu_6&=\frac{583}{59535},\\
+ C_4&=\frac{265618\pi^8}{10247461875},
+ &\mu_8&=\frac{132809}{32531625}.\label{eq:first-moments-b}
+\end{align}
+For example, at degree two the partitions $(2)$ and $(1,1)$ give
+\begin{equation}\label{eq:C2-MZV}
+ C_2=b_2\zeta(4)+b_1^2\zeta(2,2).
+\end{equation}
+The identity $2\zeta(2,2)=\zeta(2)^2-\zeta(4)$ immediately recovers the
+Newton form $(p_1^2-p_2)/2$.
+
+\section{Laguerre--P\'olya structure and an infinite hierarchy of moment inequalities}
+
+\subsection{Classification of the Wick-rotated determinant}
+
+\begin{theorem}[Type-I Laguerre--P\'olya classification]\label{thm:LP}
+The entire function $\mathcal A$ belongs to the type-I Laguerre--P\'olya class.
+It has genus zero, order $1/2$, and only real nonpositive zeros, namely
+$-m^2$ with multiplicity $a_m=1+v_2(m)$.
+\end{theorem}
+
+\begin{proof}
+The spectral sum
+\[
+ \sum_{m\ge1}\frac{a_m}{m^2}=\frac{\zeta(2)}{1-4^{-1}}
+ =\frac{2\pi^2}{9}
+\]
+converges.  Therefore the genus-zero product in \cref{eq:A-def} converges
+normally on compact sets.  Every finite truncation is a polynomial with all
+zeros real and nonpositive; their locally uniform limit is $\mathcal A$, so
+$\mathcal A$ is type-I Laguerre--P\'olya.  The exponent of convergence of the
+zeros is $1/2$, because
+\[
+ \sum_{m\ge1}\frac{a_m}{(m^2)^\rho}
+ =\frac{\zeta(2\rho)}{1-4^{-\rho}}
+\]
+converges exactly for $\rho>1/2$.  The support bound $|Y|\le1$ and
+\cref{eq:mgf-A} show that $\mathcal A(w)$ has growth
+$\exp(\bigO(\sqrt{|w|}))$, completing the order statement.
+\end{proof}
+
+\subsection{P\'olya frequency and Jensen hyperbolicity}
+
+Write
+\begin{equation}\label{eq:gamma-def}
+ \mathcal A(w)=\sum_{r\ge0}\gamma_r\frac{w^r}{r!},
+ \qquad
+ \gamma_r=r!C_r
+ =\frac{r!(2\pi)^{2r}}{(2r)!}\mu_{2r}.
+\end{equation}
+
+\begin{theorem}[PF$_\infty$ and Jensen polynomials]\label{thm:PF-Jensen}
+The ordinary coefficient sequence $(C_r)_{r\ge0}$ is a P\'olya-frequency
+sequence of infinite order.  Equivalently, every finite minor of the Toeplitz
+matrix
+\begin{equation}\label{eq:Toeplitz}
+ T=(C_{j-i})_{i,j\ge0},\qquad C_k=0\quad(k<0),
+\end{equation}
+is nonnegative.
+
+Furthermore, for every $n,d\ge0$, the shifted Jensen polynomial
+\begin{equation}\label{eq:Jensen}
+ J_n^{(d)}(x)=\sum_{j=0}^{d}\binom dj\gamma_{n+j}x^j
+\end{equation}
+has only real nonpositive zeros.
+\end{theorem}
+
+\begin{proof}
+The Aissen--Schoenberg--Whitney characterization says that the generating
+function of a PF$_\infty$ sequence has the form
+\[
+ Cz^me^{\sigma z}\frac{\prod_i(1+\alpha_i z)}
+ {\prod_j(1-\beta_jz)},
+ \qquad \alpha_i,\beta_j,\sigma\ge0,
+ \quad \sum_i\alpha_i+\sum_j\beta_j<\infty.
+\]
+Equation \cref{eq:A-def} is exactly this form with no denominator, no
+exponential factor, and $\alpha_i=1/m^2$ repeated $a_m$ times.  This proves the
+PF$_\infty$ assertion.  Jensen's characterization of the Laguerre--P\'olya
+class, applied to \cref{eq:gamma-def}, gives hyperbolicity of all shifted
+Jensen polynomials.  Their coefficients are positive, so their real zeros
+cannot be positive.
+\end{proof}
+
+\begin{corollary}[Ultra-log-concavity of even moments]\label{cor:moment-turan}
+For every $r\ge1$,
+\begin{equation}\label{eq:gamma-turan}
+ \gamma_r^2\ge\gamma_{r-1}\gamma_{r+1}.
+\end{equation}
+Equivalently,
+\begin{equation}\label{eq:mu-turan}
+ \boxed{
+ \mu_{2r}^2\ge
+ \frac{2r-1}{2r+1}\,\mu_{2r-2}\mu_{2r+2}.}
+\end{equation}
+Hence the sequence
+\begin{equation}\label{eq:ratio-monotone}
+ \frac{2\pi^2}{2r+1}\frac{\mu_{2r+2}}{\mu_{2r}}
+ =\frac{\gamma_{r+1}}{\gamma_r}
+\end{equation}
+is nonincreasing.
+\end{corollary}
+
+\begin{proof}
+The discriminant of
+$J_{r-1}^{(2)}(x)=\gamma_{r-1}+2\gamma_rx+\gamma_{r+1}x^2$
+is nonnegative.  Substituting \cref{eq:gamma-def} and cancelling the common
+powers of $2\pi$ gives \cref{eq:mu-turan}.  The ratio statement is the usual
+consequence of log-concavity.
+\end{proof}
+
+\begin{remark}[Higher inequalities]
+The quadratic inequality is only the first shadow of
+\cref{thm:PF-Jensen}.  Every Toeplitz minor and every discriminant or subdiscriminant
+of every $J_n^{(d)}$ gives a polynomial inequality among exact Fabius moments.
+This hierarchy is algorithmic and strictly stronger than checking Hankel
+positivity, which follows for unrelated reasons from the fact that
+$(\mu_{2r})$ is the moment sequence of $Y^2$.
+\end{remark}
+
+\section{Optimal sub-Gaussian concentration without infinite divisibility}
+
+\begin{theorem}[Strict optimal sub-Gaussianity]\label{thm:subgaussian}
+For every real $t$,
+\begin{equation}\label{eq:subgaussian}
+ \E\e^{tY}\le\exp\!\left(\frac{t^2}{18}\right),
+\end{equation}
+with strict inequality for $t\ne0$.  The variance proxy $1/9$ is optimal.
+Consequently, for $u\ge0$,
+\begin{equation}\label{eq:tails-YX}
+ \Prob(|Y|\ge u)\le2\e^{-9u^2/2},\qquad
+ \Prob\!\left(\left|X-\frac12\right|\ge u\right)
+ \le2\e^{-18u^2}.
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+From \cref{eq:mgf-A,eq:A-def},
+\[
+ \log\E\e^{tY}
+ =\sum_{m\ge1}a_m
+ \log\!\left(1+\frac{t^2}{4\pi^2m^2}\right).
+\]
+The strict inequality $\log(1+x)<x$ for $x>0$ gives, when $t\ne0$,
+\[
+ \log\E\e^{tY}<\frac{t^2}{4\pi^2}
+ \sum_{m\ge1}\frac{a_m}{m^2}
+ =\frac{t^2}{18}.
+\]
+At the origin equality holds.  Since $\Var(Y)=\mu_2=1/9$, no smaller
+quadratic proxy can dominate the moment generating function near zero.
+Chernoff optimization gives the two tail bounds.
+\end{proof}
+
+\begin{theorem}[The Fabius--Rvachev law is not infinitely divisible]
+\label{thm:not-ID}
+Neither $X$ nor $Y$ is infinitely divisible; in particular, neither is
+self-decomposable.
+\end{theorem}
+
+\begin{proof}
+The characteristic function of $Y$ is
+$t\mapsto\Phi(t/(2\pi))$, and \cref{eq:Phi-products} shows that it vanishes at
+$t=2\pi m$ for every nonzero integer $m$.  An infinitely divisible
+characteristic function is the exponential of a L\'evy--Khintchine exponent
+and hence never vanishes.  Translation and nonzero scaling preserve infinite
+divisibility, so the assertion transfers between $X$ and $Y$.
+\end{proof}
+
+\begin{boxedremark}
+There is no contradiction between \cref{thm:subgaussian,thm:not-ID}.  The law
+is as concentrated as its variance permits in the sub-Gaussian sense, but it
+does not sit inside a convolution semigroup.  The next section identifies a
+canonical object on the other side of the sinc determinant which \emph{is}
+infinitely divisible.
+\end{boxedremark}
+
+\section{The generalized gamma-convolution dual}
+
+\subsection{Construction and Thorin measure}
+
+For $\tau>0$, let $G_{j,n}^{(\tau)}$ be independent gamma variables with shape
+$\tau$ and rate $n^2$:
+\begin{equation}\label{eq:gamma-LT}
+ \E\e^{-wG_{j,n}^{(\tau)}}=\left(1+\frac{w}{n^2}\right)^{-\tau}.
+\end{equation}
+
+\begin{theorem}[Spectral gamma dual]\label{thm:gamma-dual}
+The nonnegative random series
+\begin{equation}\label{eq:Vtau-layered}
+ V_\tau=\sum_{j\ge0}\sum_{n\ge1}q^jG_{j,n}^{(\tau)},
+ \qquad q=\frac14,
+\end{equation}
+converges almost surely and in $L^1$, with
+\begin{equation}\label{eq:V-mean}
+ \E V_\tau=\frac{2\tau\pi^2}{9}.
+\end{equation}
+Its Laplace transform is exactly
+\begin{equation}\label{eq:V-LT}
+ \boxed{\E\e^{-wV_\tau}=\mathcal A(w)^{-\tau}},\qquad w\ge0.
+\end{equation}
+Equivalently,
+\begin{equation}\label{eq:V-grouped}
+ V_\tau\dist\sum_{m\ge1}H_m,
+ \qquad
+ H_m\sim\operatorname{Gamma}(\tau a_m,\text{rate }m^2)
+\end{equation}
+with independent summands.  Thus $V_\tau$ is a generalized gamma convolution
+with discrete Thorin measure
+\begin{equation}\label{eq:Thorin}
+ \boxed{U_\tau=\tau\sum_{m\ge1}a_m\,\delta_{m^2}.}
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+The expectation of the nonnegative series is
+\[
+ \tau\sum_{j,n}\frac{q^j}{n^2}
+ =\frac{\tau\zeta(2)}{1-q}=\frac{2\tau\pi^2}{9}<\infty,
+\]
+so the series is finite almost surely and converges in $L^1$.  Independence and
+\cref{eq:gamma-LT} give
+\[
+ \E\e^{-wV_\tau}
+ =\prod_{j,n}\left(1+\frac{q^jw}{n^2}\right)^{-\tau}
+ =\mathcal A(w)^{-\tau}.
+\]
+Regrouping equal rates uses the identity that the sum of independent gamma
+variables with a common rate is gamma with the sum of their shapes.  The
+multiplicity of rate $m^2$ is $a_m$.  Finally, the defining Laplace exponent of
+a generalized gamma convolution is
+$\int\log(1+w/u)\,U(\dd u)$; equation \cref{eq:Thorin} reproduces
+$\tau\log\mathcal A(w)$.
+\end{proof}
+
+\begin{corollary}[Exact cumulants and cumulant duality]\label{cor:V-cumulants}
+For every $r\ge1$,
+\begin{equation}\label{eq:V-cumulants}
+ \boxed{
+ \kappa_r(V_\tau)=\tau(r-1)!\frac{\zeta(2r)}{1-4^{-r}}.}
+\end{equation}
+The even cumulants of $Y$ are obtained from those of $V_1$ by
+\begin{equation}\label{eq:cumulant-duality}
+ \boxed{
+ \kappa_{2r}(Y)=(-1)^{r+1}
+ \frac{(2r)!}{r!(2\pi)^{2r}}\,\kappa_r(V_1).}
+\end{equation}
+\end{corollary}
+
+\begin{proof}
+A gamma variable with shape $a$ and rate $\lambda$ has $r$th cumulant
+$a(r-1)!/\lambda^r$.  Summing \cref{eq:V-grouped} gives
+\cref{eq:V-cumulants}.  Comparing the expansion
+\[
+ \log\E\e^{tY}=\log\mathcal A(t^2/(4\pi^2))
+\]
+with \cref{eq:logA-power} proves \cref{eq:cumulant-duality}.
+\end{proof}
+
+\subsection{An exact $q=1/4$ perpetuity}
+
+Define the one-layer variable
+\begin{equation}\label{eq:Btau}
+ B_\tau=\sum_{n\ge1}G_{0,n}^{(\tau)}.
+\end{equation}
+Euler's product for $\sinh$ gives
+\begin{equation}\label{eq:B-LT}
+ \E\e^{-wB_\tau}
+ =\left(\frac{\pi\sqrt w}{\sinh(\pi\sqrt w)}\right)^\tau.
+\end{equation}
+
+\begin{corollary}[Gamma perpetuity]\label{cor:perpetuity}
+Let $V_\tau'$ be an independent copy of $V_\tau$.  Then
+\begin{equation}\label{eq:perpetuity}
+ \boxed{V_\tau\dist B_\tau+\frac14V_\tau'.}
+\end{equation}
+This equation has a unique law on $[0,\infty)$ with finite first moment.
+\end{corollary}
+
+\begin{proof}
+Split the layer $j=0$ from \cref{eq:Vtau-layered}; after shifting
+$j\mapsto j+1$, the remaining sum is $q$ times an independent copy.  Uniqueness
+follows by iteration in the Wasserstein-$1$ metric, where the map
+$\nu\mapsto\Law(B_\tau+qZ)$ is a contraction with factor $q$.
+\end{proof}
+
+\subsection{Thue--Morse parity as Thorin-mass parity}
+
+Let $s_2(N)$ be the number of $1$'s in the binary expansion of $N$.
+Legendre's identity $v_2(N!)=N-s_2(N)$ gives
+\begin{equation}\label{eq:cumulative-a}
+ \sum_{m\le N}a_m=N+v_2(N!)=2N-s_2(N).
+\end{equation}
+
+\begin{theorem}[Thue--Morse/Thorin parity law]\label{thm:Thorin-parity}
+For every integer $N\ge1$,
+\begin{equation}\label{eq:Thorin-parity}
+ \boxed{
+ (-1)^{U_1([1,N^2])}=(-1)^{s_2(N)}.}
+\end{equation}
+Hence, for every positive noninteger $x$,
+\begin{equation}\label{eq:lobe-Thorin}
+ \boxed{
+ \sgn\Phi(x)=(-1)^{U_1([1,\lfloor x\rfloor^2])}.}
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+By \cref{eq:Thorin}, $U_1([1,N^2])=\sum_{m\le N}a_m$.
+Equation \cref{eq:cumulative-a} has the same parity as $s_2(N)$.  The current
+Fourier sign theorem gives
+$\sgn\Phi(x)=(-1)^{s_2(\lfloor x\rfloor)}$ on each open lobe; substitution
+proves \cref{eq:lobe-Thorin}.
+\end{proof}
+
+\begin{remark}
+The Thue--Morse sign is therefore not merely an external combinatorial label.
+It is the parity of the spectral mass accumulated by the infinitely divisible
+dual before the corresponding squared zero.  This interpretation links the
+real-axis sign changes of a non-infinitely-divisible compactly supported law to
+the Thorin measure of its reciprocal Wick rotation.
+\end{remark}
+
+\subsection{Complete Bernstein and Stieltjes consequences}
+
+Differentiating the logarithm gives
+\begin{equation}\label{eq:Stieltjes-logderivative}
+ \frac{\mathcal A'(w)}{\mathcal A(w)}
+ =\sum_{m\ge1}\frac{a_m}{m^2+w}
+ =\int_{[1,\infty)}\frac{U_1(\dd u)}{u+w}.
+\end{equation}
+Thus $\mathcal A'/\mathcal A$ is a Stieltjes function,
+$\log\mathcal A$ is a complete Bernstein function, and
+$\mathcal A^{-\tau}$ is completely monotone for every $\tau>0$.  Standard
+Stieltjes theory then supplies convergent continued fractions and alternating
+Pad\'e bounds on the positive real axis.  These are certified rational bounds
+for the reciprocal Wick-rotated sinc product, complementary to the product
+truncations used elsewhere in the corpus.
+
+\section{The L\'evy heat kernel and its exact theta completion}
+
+\subsection{L\'evy density and Mellin transform}
+
+The gamma dual has L\'evy--Khintchine representation
+\begin{equation}\label{eq:Levy-Khintchine}
+ -\log\E\e^{-wV_\tau}
+ =\tau\int_0^\infty(1-\e^{-wx})K(x)\frac{\dd x}{x},
+\end{equation}
+where
+\begin{equation}\label{eq:K-def}
+ K(x)=\sum_{m\ge1}a_m\e^{-m^2x}
+ =\sum_{j\ge0}\sum_{n\ge1}\e^{-4^jn^2x}.
+\end{equation}
+Its Mellin transform is
+\begin{equation}\label{eq:K-Mellin}
+ \int_0^\infty K(x)x^{s-1}\dd x
+ =\Gamma(s)\frac{\zeta(2s)}{1-4^{-s}},
+ \qquad \Re s>\frac12.
+\end{equation}
+The poles at
+\begin{equation}\label{eq:omega-k}
+ \omega_k=\frac{\pi\ii k}{\log2},\qquad k\in\Z,
+\end{equation}
+produce a periodic fluctuation in $\log_4(1/x)$.
+
+Put $L_2=\log2$ and
+\begin{equation}\label{eq:CK}
+ C_K=\frac{\gamma}{4L_2}-\frac14-
+ \frac{\log(2\pi)}{2L_2}
+ =-1.36756152041694261136\ldots,
+\end{equation}
+\begin{equation}\label{eq:PK}
+ P_K(u)=\frac1{2L_2}\sum_{k\ne0}
+ \Gamma(\omega_k)\zeta(2\omega_k)\e^{2\pi\ii ku}.
+\end{equation}
+The series is real-valued and absolutely, exponentially convergent.
+Define
+\begin{equation}\label{eq:MK}
+ M_K(x)=\sqrt{\frac\pi x}
+ -\frac{\log(1/x)}{4L_2}+C_K
+ +P_K\!\left(\log_4\frac1x\right).
+\end{equation}
+Mellin residue calculus gives $K(x)=M_K(x)+\bigO_N(x^N)$ for every $N>0$.
+The next theorem identifies the flat remainder exactly.
+
+\subsection{Exact completion}
+
+Let
+\begin{equation}\label{eq:theta-plus}
+ \vartheta_+(t)=\sum_{n\ge1}\e^{-n^2t}.
+\end{equation}
+
+\begin{theorem}[Exact Jacobi-theta completion]\label{thm:theta-completion}
+For every $x>0$,
+\begin{equation}\label{eq:theta-completion}
+ \boxed{
+ K(x)=M_K(x)-2\sqrt{\frac\pi x}
+ \sum_{r=0}^{\infty}2^r
+ \vartheta_+\!\left(\frac{4^{r+1}\pi^2}{x}\right).}
+\end{equation}
+In particular, as $x\downarrow0$,
+\begin{equation}\label{eq:K-flat-leading}
+ \boxed{
+ K(x)-M_K(x)=
+ -2\sqrt{\frac\pi x}\e^{-4\pi^2/x}
+ \left(1+\bigO(\e^{-12\pi^2/x})\right).}
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+From the layered definition,
+\begin{equation}\label{eq:K-difference}
+ K(x)-K(4x)=\vartheta_+(x).
+\end{equation}
+The Jacobi transformation is
+\begin{equation}\label{eq:Jacobi-plus}
+ \vartheta_+(x)=\frac12\sqrt{\frac\pi x}-\frac12
+ +\sqrt{\frac\pi x}\,\vartheta_+\!\left(\frac{\pi^2}{x}\right).
+\end{equation}
+Periodicity of $P_K$ and the elementary terms in \cref{eq:MK} give
+\begin{equation}\label{eq:MK-difference}
+ M_K(x)-M_K(4x)=\frac12\sqrt{\frac\pi x}-\frac12.
+\end{equation}
+Thus $D(x)=K(x)-M_K(x)$ satisfies
+\begin{equation}\label{eq:D-difference}
+ D(x)-D(4x)=\sqrt{\frac\pi x}\,
+ \vartheta_+\!\left(\frac{\pi^2}{x}\right).
+\end{equation}
+Replace $x$ by $x/4$, solve for $D(x)$, and iterate toward zero.  The Mellin
+flatness $D(t)=\bigO_N(t^N)$ makes the terminal term vanish and yields
+\[
+ D(x)=-\sqrt{\frac\pi x}
+ \sum_{r=1}^{\infty}2^r
+ \vartheta_+\!\left(\frac{4^r\pi^2}{x}\right),
+\]
+which is \cref{eq:theta-completion}.  The first term is $(r,n)=(1,1)$.
+The next possible exponent is $16\pi^2/x$, twelve units of $\pi^2/x$ beyond
+the leading $4\pi^2/x$, proving \cref{eq:K-flat-leading}.
+\end{proof}
+
+\begin{remark}[Size of the periodic ripple]
+The first nonzero Fourier coefficient of $P_K$ is
+\[
+ c_1=\frac{\Gamma(\pi\ii/L_2)\zeta(2\pi\ii/L_2)}{2L_2},
+ \qquad |c_1|=0.0011153475185173782067\ldots.
+\]
+Thus the first-harmonic peak-to-center amplitude is
+$2|c_1|=0.0022306950370347564135\ldots$.  The ripple is small but not
+formal noise; it is an exact complex-dimension contribution.
+\end{remark}
+
+\begin{table}[ht]
+\centering
+\caption{The exact flat correction $K(x)-M_K(x)$ and the theta completion.}
+\label{tab:theta-check}
+\begin{tabular}{@{}rcc@{}}
+\toprule
+$x$ & direct difference & theta-series value\\
+\midrule
+$1$ & $-2.5371492292\times10^{-17}$ & $-2.5371492292\times10^{-17}$\\
+$2$ & $-6.7059525212\times10^{-9}$  & $-6.7059525212\times10^{-9}$\\
+$5$ & $-5.9029369697\times10^{-4}$  & $-5.9029369697\times10^{-4}$\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\section{Endpoint tilting: truncated exponentials, mod-Gamma limits, and Lambert $W$}
+
+\subsection{Exact negative-Laplace decomposition}
+
+Let
+\begin{equation}\label{eq:L-g-def}
+ L(s)=\E\e^{-sX},\qquad g(s)=\log L(s),\qquad s>0.
+\end{equation}
+The binary random series gives
+\begin{equation}\label{eq:L-product}
+ L(s)=\prod_{k\ge1}\frac{1-\e^{-s/2^k}}{s/2^k}.
+\end{equation}
+The current exact endpoint theory supplies a real-analytic one-periodic
+function $R$ and an exponentially small positive error $E$ such that
+\begin{equation}\label{eq:g-decomp}
+ \boxed{
+ g(s)=-\frac{(\log s)^2}{2\log2}+\frac{\log s}{2}
+ +R(\log_2s)+E(s),}
+\end{equation}
+with
+\begin{equation}\label{eq:E-bound}
+ 0\le E(s)\le\frac{\e^{-s}}{(1-\e^{-s})^2}.
+\end{equation}
+Termwise differentiation of the defining forward-tail series gives the
+corresponding exponentially small bounds for each fixed derivative of $E$.
+
+\subsection{The tilted binary coordinates}
+
+Define the exponentially tilted probability measure
+\begin{equation}\label{eq:tilt-def}
+ \Prob_s(\dd x)=\frac{\e^{-sx}}{L(s)}\Prob(X\in\dd x).
+\end{equation}
+Let
+\begin{equation}\label{eq:lambda-W}
+ \lambda_k=s2^{-k},\qquad W_{k,s}=\lambda_kV_k.
+\end{equation}
+
+\begin{theorem}[Exact tilted-coordinate law]\label{thm:tilted-coordinates}
+Under $\Prob_s$, the coordinates $V_k$ remain independent.  The variables
+$W_{k,s}$ have densities
+\begin{equation}\label{eq:truncated-exp-density}
+ f_{\lambda_k}(w)=
+ \frac{\e^{-w}}{1-\e^{-\lambda_k}}
+ \bm1_{(0,\lambda_k)}(w),
+\end{equation}
+and
+\begin{equation}\label{eq:sX-sumW}
+ sX=\sum_{k\ge1}W_{k,s}.
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+The Radon--Nikodym factor factorizes:
+\[
+ \e^{-sX}=\prod_{k\ge1}\e^{-\lambda_kV_k}.
+\]
+Normalizing each uniform coordinate gives density
+$\lambda_k\e^{-\lambda_kv}/(1-\e^{-\lambda_k})$ on $0<v<1$.
+The change of variable $w=\lambda_kv$ yields
+\cref{eq:truncated-exp-density}, and summing gives \cref{eq:sX-sumW}.
+\end{proof}
+
+This theorem is the probabilistic mechanism behind the endpoint saddle.  About
+$\log_2s$ coordinates have $\lambda_k\gtrsim1$ and behave almost as independent
+unit exponentials; the remaining coordinates form a uniformly bounded tail.
+
+\subsection{Tilted cumulants and exact phase dependence}
+
+Let
+\begin{equation}\label{eq:K-r-def}
+ K_r(s)=\kappa_r^{(s)}(sX)=(-1)^rs^rg^{(r)}(s),
+\end{equation}
+where the superscript indicates cumulants under $\Prob_s$.  Put
+\begin{equation}\label{eq:alpha-beta}
+ \alpha(s)=K_1(s)=-sg'(s),\qquad
+ \beta(s)=K_2(s)=s^2g''(s).
+\end{equation}
+Writing $\theta=\log_2s$ and differentiating \cref{eq:g-decomp} gives
+\begin{align}
+ \alpha(s)&=\log_2s-\frac12-
+ \frac{R'(\theta)}{\log2}+\bigO(s\e^{-s}),
+ \label{eq:alpha-asymp}\\
+ \beta(s)&=\alpha(s)-\frac1{\log2}
+ +\frac{R''(\theta)}{(\log2)^2}+\bigO(s^2\e^{-s}).
+ \label{eq:beta-asymp}
+\end{align}
+In particular $\beta(s)=\log_2s+\bigO(1)$.  The cumulants obey the exact
+recursion
+\begin{equation}\label{eq:K-recur}
+ K_{r+1}(s)=rK_r(s)-sK_r'(s).
+\end{equation}
+
+\begin{theorem}[Phase-resolved mod-Gamma convergence]\label{thm:mod-gamma}
+Let $s_j\to\infty$ with fractional parts
+$\{\log_2s_j\}\to\theta\in[0,1]$.  For real $t<1$, locally uniformly in $t$,
+\begin{equation}\label{eq:mod-gamma}
+ \boxed{
+ \E_{s_j}\e^{t s_jX}(1-t)^{\log_2s_j}
+ \longrightarrow\Psi_\theta(t),}
+\end{equation}
+where
+\begin{equation}\label{eq:Psi-theta}
+ \boxed{
+ \Psi_\theta(t)=\exp\!\left[
+ -\frac{\log^2(1-t)}{2\log2}+\frac12\log(1-t)
+ +R\!\left(\theta+\log_2(1-t)\right)-R(\theta)
+ \right].}
+\end{equation}
+The convergence also holds in a complex neighborhood of the origin.
+\end{theorem}
+
+\begin{proof}
+The tilted moment generating function is exact:
+\begin{equation}\label{eq:tilted-mgf-ratio}
+ \E_s\e^{tsX}=\frac{L((1-t)s)}{L(s)}.
+\end{equation}
+Insert \cref{eq:g-decomp}.  If $v=\log(1-t)$ and $u=\log s$, the quadratic
+part contributes
+\[
+ -\frac{(u+v)^2-u^2}{2\log2}+\frac v2
+ =-\frac{uv}{\log2}-\frac{v^2}{2\log2}+\frac v2.
+\]
+Multiplication by $(1-t)^{\log_2s}$ cancels the term $-uv/\log2$.  Periodicity
+and the assumed phase convergence give the $R$-difference in
+\cref{eq:Psi-theta}; the two exponentially small errors vanish locally
+uniformly.  The same argument works for complex $t$ near zero using the
+principal logarithm.
+\end{proof}
+
+\begin{corollary}[Phase-resolved cumulants]\label{cor:tilted-cumulants}
+For every fixed $r\ge1$,
+\begin{equation}\label{eq:Kr-asymp}
+ K_r(s)=(r-1)!\log_2s+
+ \eta_r(\{\log_2s\})+\smallo(1),
+\end{equation}
+where $\eta_r$ is an explicit analytic one-periodic function obtained by
+$r$ differentiations of $\log\Psi_\theta(t)$ at $t=0$.
+\end{corollary}
+
+\subsection{Central and local concentration under the tilt}
+
+\begin{theorem}[Tilted central limit theorem with Berry--Esseen rate]
+\label{thm:tilted-CLT}
+As $s\to\infty$,
+\begin{equation}\label{eq:tilted-CLT}
+ \frac{sX-\alpha(s)}{\sqrt{\beta(s)}}
+ \Longrightarrow N(0,1).
+\end{equation}
+Moreover
+\begin{equation}\label{eq:Berry-Esseen}
+ \sup_{x\in\R}
+ \left|\Prob_s\!\left(
+ \frac{sX-\alpha(s)}{\sqrt{\beta(s)}}\le x\right)-\Phi_{\mathrm N}(x)\right|
+ =\bigO\!\left((\log s)^{-1/2}\right),
+\end{equation}
+where $\Phi_{\mathrm N}$ is the standard normal distribution function.
+\end{theorem}
+
+\begin{proof}
+Use the independent triangular array in \cref{thm:tilted-coordinates}.  If
+$\lambda\ge1$, a truncated exponential has every fixed centered absolute
+moment bounded uniformly in $\lambda$.  There are $\log_2s+\bigO(1)$ such
+coordinates.  If $\lambda<1$, the corresponding variable lies in an interval
+of length $\lambda$, and the sum of its third centered absolute moments is
+bounded by a convergent geometric series.  Therefore
+\begin{equation}\label{eq:third-abs-sum}
+ \sum_k\E_s|W_{k,s}-\E_sW_{k,s}|^3=\bigO(\log s).
+\end{equation}
+By \cref{eq:beta-asymp}, the total variance is asymptotic to $\log_2s$.
+The Berry--Esseen inequality gives
+$\bigO(\log s)/(\log s)^{3/2}$, proving \cref{eq:Berry-Esseen}; the CLT follows.
+\end{proof}
+
+\subsection{Lambert-$W_{-1}$ localization}
+
+The typical endpoint location under the tilt is
+\begin{equation}\label{eq:xs}
+ x_s=\E_sX=\frac{\alpha(s)}s.
+\end{equation}
+Set
+\begin{equation}\label{eq:y-def}
+ y=(\log2)sx_s=(\log2)\alpha(s).
+\end{equation}
+
+\begin{theorem}[Phase-corrected Lambert localization]\label{thm:Lambert-localization}
+As $s\to\infty$,
+\begin{equation}\label{eq:y-Lambert-implicit}
+ y\e^{-y}=(\log2)x_s
+ \exp\!\left(\frac{\log2}{2}+R'(\log_2s)+\smallo(1)\right).
+\end{equation}
+Equivalently,
+\begin{equation}\label{eq:y-W}
+ \boxed{
+ y=-W_{-1}\!\left(-(
+ \log2)x_s\exp\!\left(\frac{\log2}{2}+R'(\log_2s)+\smallo(1)\right)
+ \right).}
+\end{equation}
+After suppressing the bounded phase correction, one obtains the useful
+phase-blind equivalent
+\begin{equation}\label{eq:s-W-leading}
+ s\sim
+ -\frac{W_{-1}(-\sqrt2(\log2)x_s)}{(\log2)x_s}.
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+Equation \cref{eq:alpha-asymp} gives
+\[
+ y=\log s-\frac{\log2}{2}-R'(\log_2s)+\smallo(1).
+\]
+Since $x_s=(y/\log2)/s$, elimination of $s$ yields
+\cref{eq:y-Lambert-implicit}.  The relevant solution has $y\to\infty$, so it
+is the $W_{-1}$ branch.  A bounded multiplicative change in the small argument
+of $W_{-1}$ changes its value by $\bigO(1)$; division by
+$y\asymp\log(1/x_s)$ proves the phase-blind equivalent.
+\end{proof}
+
+\begin{remark}
+Lambert $W$ is not merely a formal inversion of the leading endpoint
+asymptotic.  The tilted law concentrates in a Gaussian window of width
+$\sqrt{\beta(s)}/s\asymp\sqrt{\log s}/s$ around $x_s$, and
+\cref{thm:Lambert-localization} identifies that actual probabilistic center.
+\end{remark}
+
+\section{A universal endpoint-transfer theorem}
+
+\subsection{Universal correction polynomials}
+
+For fixed $c>0$ and an integer $N\ge1$, define the one-sided endpoint moment
+\begin{equation}\label{eq:MNc}
+ M_N(c)=\E\left[(1-cX)^N\bm1_{\{X\le1/c\}}\right].
+\end{equation}
+Set $s=cN$ and $Z=sX$ under the tilted law $\Prob_s$.  Then
+\begin{equation}\label{eq:MN-tilt-exact}
+ \frac{M_N(c)}{L(cN)}
+ =\E_{cN}\left[\e^Z\left(1-\frac ZN\right)^N
+ \bm1_{\{Z\le N\}}\right].
+\end{equation}
+Define universal polynomials $P_r$ by the formal identity
+\begin{equation}\label{eq:P-polynomials-def}
+ \e^z(1-zt)^{1/t}
+ =\exp\!\left(-\sum_{j\ge2}\frac{z^jt^{j-1}}j\right)
+ =\sum_{r\ge0}P_r(z)t^r.
+\end{equation}
+The first four are
+\begin{align}
+ P_0(z)&=1,\nonumber\\
+ P_1(z)&=-\frac{z^2}{2},\nonumber\\
+ P_2(z)&=\frac{z^4}{8}-\frac{z^3}{3},\label{eq:P-first}\\
+ P_3(z)&=-\frac{z^6}{48}+\frac{z^5}{6}-\frac{z^4}{4}.\nonumber
+\end{align}
+
+\begin{theorem}[Universal endpoint transfer]\label{thm:endpoint-transfer}
+Fix $c>0$ and an integer $R\ge0$.  As $N\to\infty$,
+\begin{equation}\label{eq:endpoint-transfer}
+ \boxed{
+ \frac{M_N(c)}{L(cN)}=
+ \sum_{r=0}^{R}\frac{\E_{cN}P_r(Z)}{N^r}
+ +\bigO_{R,c}\!\left(
+ \frac{(\log N)^{2R+2}}{N^{R+1}}\right),
+ \qquad Z=cNX.}
+\end{equation}
+Every coefficient is an explicit polynomial in the tilted cumulants
+$K_1(cN),\dots,K_{2r}(cN)$ and hence in the periodic endpoint function $R$ and
+its derivatives.
+\end{theorem}
+
+\begin{proof}
+Equation \cref{eq:MN-tilt-exact} is obtained by multiplying and dividing the
+integrand by $\e^{-cNX}$.  On $0\le Z\le(\log N)^2$, Taylor's theorem applied
+to \cref{eq:P-polynomials-def} gives a remainder bounded by
+\[
+ C_{R,c}N^{-R-1}(1+Z)^{2R+2}.
+\]
+The mod-Gamma estimate, or directly the independent truncated-exponential
+representation, implies
+\begin{equation}\label{eq:tilted-moment-bound}
+ \E_sZ^k=\bigO_k((\log s)^k)
+\end{equation}
+for each fixed $k$.  This gives the displayed remainder on the central region.
+
+For the complement, use Markov's inequality with any fixed $0<t<1$ and
+\cref{eq:tilted-mgf-ratio}.  The mod-Gamma theorem gives
+$\E_s\e^{tZ}=\bigO_t(s^{-\log_2(1-t)})$, only a fixed power of $s$, while
+$\exp(-t(\log N)^2)$ beats every power of $N$.  The tail, including the region
+$Z>N$, is therefore smaller than the asserted error.  Finally, raw moments are
+complete Bell polynomials in cumulants, which proves the last assertion.
+\end{proof}
+
+\subsection{The first two corrections}
+
+Write, at $s=cN$,
+\begin{equation}\label{eq:abcd}
+ a=K_1(s)=\alpha(s),\quad b=K_2(s)=\beta(s),\quad
+ c_3=K_3(s),\quad c_4=K_4(s).
+\end{equation}
+Then
+\begin{align}
+ \E_sZ^2&=a^2+b,\label{eq:raw2}\\
+ \E_sZ^3&=a^3+3ab+c_3,\label{eq:raw3}\\
+ \E_sZ^4&=a^4+6a^2b+3b^2+4ac_3+c_4.\label{eq:raw4}
+\end{align}
+Thus
+\begin{equation}\label{eq:transfer-second}
+ \frac{M_N(c)}{L(cN)}=
+ 1-\frac{\E_sZ^2}{2N}
+ +\frac{\E_sZ^4/8-\E_sZ^3/3}{N^2}
+ +\bigO\!\left(\frac{(\log N)^6}{N^3}\right).
+\end{equation}
+
+\subsection{Ordinary Fabius moments}
+
+By symmetry $X\dist1-X$,
+\begin{equation}\label{eq:mn-M}
+ m_n=\E X^n=\E(1-X)^n=M_n(1).
+\end{equation}
+
+\begin{corollary}[Large ordinary moments]\label{cor:ordinary-moments}
+With all tilted quantities evaluated at $s=n$,
+\begin{equation}\label{eq:mn-second}
+ \boxed{
+ \frac{m_n}{L(n)}=
+ 1-\frac{\alpha(n)^2+\beta(n)}{2n}
+ +\frac{\E_nZ^4/8-\E_nZ^3/3}{n^2}
+ +\bigO\!\left(\frac{(\log n)^6}{n^3}\right).}
+\end{equation}
+In logarithmic form,
+\begin{equation}\label{eq:logmn-first}
+ \log m_n=g(n)-\frac{\alpha(n)^2+\beta(n)}{2n}
+ +\bigO\!\left(\frac{(\log n)^4}{n^2}\right).
+\end{equation}
+If $u=\log n$, $\theta=u/\log2$, and
+\begin{equation}\label{eq:An}
+ A_n=\frac{u}{\log2}-\frac12-\frac{R'(\theta)}{\log2},
+\end{equation}
+then
+\begin{align}
+ \log m_n={}&-\frac{u^2}{2\log2}+\frac u2+R(\theta)\nonumber\\
+ &-\frac1{2n}\left[
+ A_n^2+A_n-\frac1{\log2}+\frac{R''(\theta)}{(\log2)^2}
+ \right]
+ +\bigO\!\left(\frac{u^4}{n^2}\right).
+ \label{eq:logmn-R}
+\end{align}
+\end{corollary}
+
+\subsection{Centered moments and the $q$/MZV coefficient bridge}
+
+Symmetry about $1/2$ gives
+\begin{equation}\label{eq:mu-M}
+ \mu_{2r}=\E(1-2X)^{2r}=2M_{2r}(2).
+\end{equation}
+Here $N=2r$ and the Laplace scale is $s=cN=4r$.
+
+\begin{corollary}[Large centered moments]\label{cor:centered-moments}
+With the tilted quantities evaluated at $s=4r$,
+\begin{align}
+ \frac{\mu_{2r}}{2L(4r)}={}&
+ 1-\frac{\alpha(4r)^2+\beta(4r)}{4r}\nonumber\\
+ &+\frac{\E_{4r}Z^4/8-\E_{4r}Z^3/3}{4r^2}
+ +\bigO\!\left(\frac{(\log r)^6}{r^3}\right).
+ \label{eq:mu-transfer}
+\end{align}
+Consequently the exact coefficient $C_r$ in the $q$-binomial/MZV expansion
+\cref{eq:C-partition} satisfies
+\begin{equation}\label{eq:Cr-asymp}
+ \boxed{\begin{aligned}
+ \log C_r={}&2r\log(2\pi)-\log(2r)!+\log2+g(4r)\\
+ &-\frac{\alpha(4r)^2+\beta(4r)}{4r}
+ +\bigO\!\left(\frac{(\log r)^4}{r^2}\right).
+ \end{aligned}}
+\end{equation}
+Since $R$ has period one,
+$R(\log_2(4r))=R(\log_2r)$: the same binary phase controls both the endpoint
+Laplace law and the large-order $q$/MZV coefficients.
+\end{corollary}
+
+\begin{proof}
+Apply \cref{thm:endpoint-transfer} to \cref{eq:mu-M} and then use
+\cref{eq:C-moment}.  Taking the logarithm changes the second-order remainder
+only by $\bigO((\log r)^4/r^2)$.
+\end{proof}
+
+\begin{boxedremark}
+Equation \cref{eq:Cr-asymp} is the main bridge result.  The left side is an
+exact coefficient assembled from Gaussian $q$-binomials and MZVs.  The right
+side is governed by the endpoint Laplace product, its log-periodic correction,
+and the Lambert-$W_{-1}$ localization of the tilted mass.  Neither side is an
+approximate restatement of the other; the transfer theorem proves why they
+must agree at large order and supplies computable corrections.
+\end{boxedremark}
+
+\subsection{Numerical validation}
+
+The ordinary moments can be generated exactly by
+\begin{equation}\label{eq:mn-recurrence}
+ (2^n-1)m_n=\sum_{k=1}^{n}\binom nk\frac{m_{n-k}}{k+1},
+ \qquad m_0=1.
+\end{equation}
+Table \ref{tab:ordinary-transfer} compares the exact ratio $m_n/L(n)$ with the
+one- and two-correction truncations of \cref{eq:mn-second}.
+
+\begin{table}[ht]
+\centering
+\caption{Endpoint transfer for ordinary moments.}
+\label{tab:ordinary-transfer}
+\begin{tabular}{@{}rccc@{}}
+\toprule
+$n$ & exact ratio & one correction & two corrections\\
+\midrule
+20   & 0.650564349158 & 0.575338248846 & 0.658507245134\\
+50   & 0.740712148665 & 0.698394360314 & 0.745157800500\\
+100  & 0.809797566277 & 0.787758642159 & 0.811530920395\\
+200  & 0.868346118425 & 0.858160052080 & 0.868893882715\\
+500  & 0.924530320090 & 0.921307792046 & 0.924627286470\\
+1000 & 0.952442261825 & 0.951188127893 & 0.952465665513\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+For centered moments the natural comparison is
+$\mu_{2r}/(2L(4r))$.
+
+\begin{table}[ht]
+\centering
+\caption{Endpoint transfer for centered even moments.}
+\label{tab:centered-transfer}
+\begin{tabular}{@{}rccc@{}}
+\toprule
+$r$ & exact ratio & one correction & two corrections\\
+\midrule
+10  & 0.516638138954 & 0.334240960496 & 0.558725000470\\
+20  & 0.623451024335 & 0.521571821828 & 0.641626320479\\
+50  & 0.755044449961 & 0.716320104160 & 0.759255426702\\
+100 & 0.834124742928 & 0.817440783081 & 0.835296570356\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+The second correction is already visibly asymptotic rather than merely
+qualitative.  Its slower start for centered moments is expected: their
+relevant Laplace scale is $4r$, but the polynomial exponent is only $2r$, so
+the first correction carries the larger factor
+$(\alpha(4r)^2+\beta(4r))/(4r)$.
+
+\section{Synthesis: one determinant, two probability laws, three asymptotic regimes}
+
+The results can be summarized by the single determinant
+\begin{equation}\label{eq:synthesis-A}
+ \mathcal A(w)=
+ \underbrace{\Phi(\ii\sqrt w)}_{\text{sinc/zero geometry}}
+ =\underbrace{\E\exp(2\pi\sqrt w\,Y)}_{\text{compact law}}
+ =\underbrace{\bigl(\E\e^{-wV_1}\bigr)^{-1}}_{\text{gamma-convolution dual}}.
+\end{equation}
+Each equality exposes a different rigidity.
+
+\begin{enumerate}
+\item The sinc product gives integer zeros, dyadic multiplicities, and the
+      Thue--Morse sign of real Fourier lobes.
+\item The compact-law MGF gives exact centered moments, optimal sub-Gaussian
+      concentration, and endpoint tilting.
+\item The reciprocal Laplace transform gives a GGC, Thorin measure, complete
+      Bernstein structure, and the L\'evy heat kernel.
+\item Expanding by dyadic layers produces Gaussian $q$-binomial occupancies;
+      expanding by distinct integer sites produces symmetrized MZVs.
+\item Mellin analysis of the spectral heat kernel and of the negative-Laplace
+      product produces log-periodic phases.  Endpoint transfer proves that
+      those phases survive into large moment order.
+\end{enumerate}
+
+This synthesis also clarifies a striking duality.  The compact Fabius--Rvachev
+law is strictly variance-optimal sub-Gaussian but not infinitely divisible.
+The reciprocal Wick rotation is the Laplace transform of an explicitly
+infinitely divisible GGC.  Their cumulants are related by the alternating
+formula \cref{eq:cumulant-duality}; their sign structure is related by Thorin
+mass parity; and their asymptotics are tied by the same dyadic complex
+dimensions.
+
+\section{Next frontier targets}
+
+\subsection{Phase-resolved Edgeworth and local limits}
+
+The proof of \cref{thm:tilted-CLT} contains more information than the stated
+Berry--Esseen bound.  The independent summands have uniformly controlled
+moments, the variance diverges logarithmically, and
+\cref{cor:tilted-cumulants} gives every cumulant with an explicit periodic
+constant term.  This strongly suggests the following sharpened statement.
+
+\begin{conjecture}[Phase-resolved local Edgeworth expansion]
+\label{conj:Edgeworth}
+Along every sequence $\{\log_2s_j\}\to\theta$, the tilted density of
+$(s_jX-\alpha(s_j))/\sqrt{\beta(s_j)}$ admits a full local Edgeworth expansion
+in powers of $(\log s_j)^{-1/2}$, uniformly on windows
+$|x|\le(\log s_j)^{1/6-\varepsilon}$.  Every coefficient is a polynomial in
+$x$ whose constants are analytic one-periodic functions of $\theta$.
+\end{conjecture}
+
+A proof should combine the explicit characteristic function
+$L((1-\ii t/s)s)/L(s)$ with a triangular-array Cram\'er bound.  The compact
+support of each digit and the presence of many near-exponential coordinates
+make the nonlattice estimate plausible, but it should be checked uniformly in
+the binary phase.
+
+\subsection{All-orders moment transfer}
+
+Theorem \ref{thm:endpoint-transfer} is already all-orders in principle.  Two
+concrete tasks remain:
+\begin{enumerate}
+\item generate $P_r$ by Bell polynomials and express
+      $\E_sP_r(Z)$ directly in $R,R',\dots,R^{(2r)}$;
+\item combine the result with Stirling's expansion in \cref{eq:Cr-asymp} to
+      produce a closed transseries for $C_r$, including the periodic phase and
+      exponentially small endpoint terms.
+\end{enumerate}
+This would turn the q/MZV coefficient sequence into a precise asymptotic probe
+of the negative-Laplace periodic function.
+
+\subsection{Inverse recovery of the periodic endpoint function}
+
+Equation \cref{eq:Cr-asymp} can be read in reverse.  Exact rational moments
+produce exact $C_r$; after subtracting the explicit Stirling and quadratic-log
+terms, the residual samples $R(\log_2r)$ with a controlled error.  Since
+$\{\log_2r\}$ is dense modulo one, this suggests a certified reconstruction
+scheme for $R$ from exact arithmetic alone.  The correction terms involving
+$R'$ and $R''$ make the inverse problem nonlinear but also provide derivative
+information.  A practical scheme would alternate Fourier reconstruction of
+$R$ with the transfer correction until the residual falls below the exact
+moment error bound.
+
+\subsection{A $q$-deformed gamma dual}
+
+The corpus defines symmetric $q$-integer deformations of the sinc determinant.
+Whenever the deformed zeros remain positive after Wick rotation, the same
+argument as \cref{thm:gamma-dual} constructs a discrete Thorin measure at the
+squared $q$-integers.  The main questions are:
+\begin{itemize}
+\item whether the deformed determinant remains type-I Laguerre--P\'olya for the
+      full parameter range;
+\item whether its Thorin mass admits a deformed digit-parity interpretation;
+\item how the $q\uparrow1$ and $q\downarrow0$ limits interact with the
+      perpetuity and heat-kernel complex dimensions.
+\end{itemize}
+These questions are exact and experimentally accessible; no conjectural
+analytic continuation is needed to begin.
+
+\section{Lean formalization roadmap}
+
+The new results split naturally into modules with very different library
+requirements.
+
+\begin{boxedremark}
+\textbf{Post-snapshot algebraic progress.}
+The later modules \texttt{ExponentialPartition.lean},
+\texttt{ExponentialBell.lean}, and \texttt{MomentCumulantAlgebra.lean}
+now formalize, over every commutative
+\(\mathbb Q\)-algebra, the universal weighted-partition formula for an
+exponential coefficient and identify it with the recursive
+\texttt{SaddleExpansion.expCoeff} engine, then factorially normalize it
+into named complete-Bell and inverse moment--cumulant transforms with the
+classical Bell recurrence and normalized inverse laws.  This supplies reusable
+algebra for the Bell-polynomial sentence in
+\cref{thm:endpoint-transfer} and for the coefficient stage of the
+proposed \texttt{MomentTransfer.lean}.  It does not establish the
+tilted-cumulant formulas, their probabilistic interpretation, the
+Taylor and tail estimates, or the hierarchy-specific endpoint identities.
+Consequently none of the status labels in this report
+changes.
+\end{boxedremark}
+
+\subsection{Low-risk algebraic modules}
+
+\begin{enumerate}
+\item \texttt{QBinomialMZVMoments.lean}: prove the finite-depth occupancy
+      expansion over finite spectral cutoffs, then pass first in the spectral
+      cutoff and then in depth.  The partition-lattice identity can be stated
+      initially as a finite inclusion--exclusion theorem, avoiding a general
+      MZV library.
+\item \texttt{SpectralGammaCumulants.lean}: formalize the algebraic identities
+      for Laplace exponents and cumulants before constructing the countable
+      probability space.  The equality
+      $\kappa_r=\tau(r-1)!\zeta(2r)/(1-4^{-r})$ is mostly existing Dirichlet
+      series infrastructure.
+\item \texttt{ThorinParity.lean}: combine the already formalized lobe-sign
+      theorem with Legendre's digit-sum formula and a finite cumulative mass
+      definition.  This should be short.
+\end{enumerate}
+
+\subsection{Analytic modules}
+
+\begin{enumerate}
+\item \texttt{GammaConvolutionDual.lean}: construct partial sums of independent
+      gamma variables, prove $L^1$ convergence from the expectation sum, and
+      identify the Laplace transform by dominated convergence.
+\item \texttt{LevyHeatThetaCompletion.lean}: establish
+      $K(x)-K(4x)=\vartheta_+(x)$, import or prove the Jacobi theta transform,
+      and telescope the flat correction.  The exact identity
+      \cref{eq:theta-completion} is more formalization-friendly than a contour
+      shift because all sums are positive or exponentially dominated.
+\item \texttt{EndpointTilt.lean}: prove coordinate factorization under the
+      tilted finite product, pass to the infinite law, and derive the cumulant
+      recursion.
+\item \texttt{MomentTransfer.lean}: define $P_r$ through formal power series,
+      prove a finite-order Taylor bound on a logarithmic window, and control the
+      complement with the exact Laplace ratio.
+\end{enumerate}
+
+\subsection{Library-heavy modules}
+
+The Laguerre--P\'olya and PF$_\infty$ statements may require new general
+infrastructure.  A pragmatic first formal target is finite truncation:
+\begin{itemize}
+\item prove real nonpositive roots of each finite polynomial;
+\item prove total positivity of its coefficient Toeplitz matrix by repeated
+      convolution with $(1,\alpha)$;
+\item derive every fixed finite minor inequality for the limit by coefficient
+      convergence.
+\end{itemize}
+This avoids formalizing the full Aissen--Schoenberg--Whitney theorem while
+still obtaining any requested moment inequality.
+
+\appendix
+
+\section{Exact coefficients and normalized Tur\'an ratios}
+
+For reference, the first five nontrivial centered moments are
+\begin{equation}\label{eq:moment-table-display}
+\begin{array}{c|c}
+ r&\mu_{2r}\\
+\hline
+1&1/9\\
+2&19/675\\
+3&583/59535\\
+4&132809/32531625\\
+5&46840699/24405225075
+\end{array}
+\end{equation}
+The normalized Tur\'an ratio
+\begin{equation}\label{eq:Turan-ratio}
+ T_r=\frac{2r+1}{2r-1}
+ \frac{\mu_{2r}^2}{\mu_{2r-2}\mu_{2r+2}}
+ =\frac{\gamma_r^2}{\gamma_{r-1}\gamma_{r+1}}
+\end{equation}
+is at least one.  Its first values are
+\begin{equation}\label{eq:Turan-values}
+ T_1=\frac{25}{19}=1.315789\ldots,
+ \qquad
+ T_2=\frac{17689}{14575}=1.21365\ldots,
+ \qquad
+ T_3=1.16829\ldots.
+\end{equation}
+The approach toward one is consistent with the large-order endpoint
+asymptotic: the Jensen coefficients become asymptotically close to a geometric
+sequence on the scale of one index, while retaining strict log-concavity.
+
+\section{Proof-dependency map}
+
+\begin{longtable}{@{}p{0.22\textwidth}p{0.70\textwidth}@{}}
+\toprule
+Result & Minimal dependencies\\
+\midrule
+\endhead
+$q$/MZV formula & finite $q$-binomial theorem; normal convergence; set-partition
+M\"obius inversion\\
+Laguerre--P\'olya & canonical product convergence; finite real-rooted
+truncations\\
+PF$_\infty$ & Aissen--Schoenberg--Whitney characterization\\
+Jensen hierarchy & Jensen characterization of the Laguerre--P\'olya class\\
+Sub-Gaussianity & $\log(1+x)<x$; exact spectral sum $p_1=2\pi^2/9$\\
+Gamma dual & gamma Laplace transform; Tonelli; regrouping equal rates\\
+Thorin parity & $\sum_{m\le N}(1+v_2(m))=2N-s_2(N)$; existing lobe sign\\
+Theta completion & dyadic heat equation; Jacobi theta transform; telescoping\\
+Mod-Gamma limit & exact negative-Laplace decomposition; periodicity of $R$\\
+Berry--Esseen & tilted independent digits; third-moment bound; variance asymptotic\\
+Moment transfer & exponential tilt; universal Taylor polynomials; tilted moment
+and tail bounds\\
+\bottomrule
+\end{longtable}
+
+\section{Corpus map used in the audit}
+
+The audit followed the repository's revision structure rather than reading the
+directory as a flat bag of papers.  The decisive source groups were:
+\begin{description}[style=nextline,leftmargin=2.2em,labelindent=0pt]
+\item[Current expository core.]
+\texttt{Fabius\_Function\_and\_Rvachev\_Up}, the current Lean walkthrough,
+the mathematical glossary, and the non-elementarity article.
+
+\item[Archived foundational studies.]
+The earlier primary expositions, both missing-parts supplements, the two
+$q$-special-function expositions, the small-argument and inverse-function
+studies, and the early notes on Fabius asymptotics and iterated Thue--Morse
+summation.
+
+\item[Exact arithmetic and convergence studies.]
+The dyadic formula/alternative-representation papers, the two
+dyadic-to-asymptotic bridges, the Thue--Morse formula atlases, both
+Thue--Morse convergence-rate reports, and both repeated-integration reports.
+
+\item[Live frontier synthesis.]
+The consolidated \texttt{non-formalized-research-frontiers} manuscript, the two
+Fabius--Rvachev frontier reports, and the spectral-determinant/$q$-deformation
+results bundle.
+
+\item[Fourier-decay campaign.]
+The original sinc-decay question, all numbered response waves, the final
+syntheses, gentle guide, comparative audit, and second-wave audit.  The latest
+second-wave audit was treated as authoritative where older agents disagreed.
+
+\item[Reference transcriptions.]
+The corrected and source \LaTeX{} transcriptions under \texttt{docs/papers},
+including the work on the Fabius function, arithmetic properties, and lacunary
+products.  They were used for historical and literature context, not as a
+substitute for checking the repository's current normalization.
+\end{description}
+
+\section{Bibliographic notes}
+
+\begin{thebibliography}{99}
+
+\bibitem{ASW1952}
+M.~Aissen, I.~J.~Schoenberg, and A.~Whitney,
+\emph{On the generating functions of totally positive sequences. I},
+Journal d'Analyse Math\'ematique \textbf{2} (1952), 93--103.
+
+\bibitem{AndrewsAskeyRoy}
+G.~E.~Andrews, R.~Askey, and R.~Roy,
+\emph{Special Functions}, Cambridge University Press, 1999.
+
+\bibitem{Bondesson}
+L.~Bondesson,
+\emph{Generalized Gamma Convolutions and Related Classes of Distributions and
+Densities}, Lecture Notes in Statistics 76, Springer, 1992.
+
+\bibitem{Corless}
+R.~M.~Corless, G.~H.~Gonnet, D.~E.~G.~Hare, D.~J.~Jeffrey, and D.~E.~Knuth,
+\emph{On the Lambert W function}, Advances in Computational Mathematics
+\textbf{5} (1996), 329--359.
+
+\bibitem{FlajoletMellin}
+P.~Flajolet, X.~Gourdon, and P.~Dumas,
+\emph{Mellin transforms and asymptotics: harmonic sums},
+Theoretical Computer Science \textbf{144} (1995), 3--58.
+
+\bibitem{GasperRahman}
+G.~Gasper and M.~Rahman,
+\emph{Basic Hypergeometric Series}, second edition, Cambridge University Press,
+2004.
+
+\bibitem{Hoffman}
+M.~E.~Hoffman,
+\emph{Multiple harmonic series}, Pacific Journal of Mathematics
+\textbf{152} (1992), 275--290.
+
+\bibitem{Petrov}
+V.~V.~Petrov,
+\emph{Limit Theorems of Probability Theory}, Oxford University Press, 1995.
+
+\bibitem{Sato}
+K.-I.~Sato,
+\emph{L\'evy Processes and Infinitely Divisible Distributions},
+Cambridge University Press, 1999.
+
+\bibitem{Schilling}
+R.~L.~Schilling, R.~Song, and Z.~Vondra\v{c}ek,
+\emph{Bernstein Functions: Theory and Applications}, second edition,
+de Gruyter, 2012.
+
+\bibitem{ProveItPrimary}
+V.~Reshetnikov,
+\emph{The Fabius Function and Rvachev's Up-Function: Exact Arithmetic,
+Probability, Fourier Analysis, and Corrected Sharp Asymptotics},
+\texttt{ProveIt}, \nolinkurl{Analysis/FabiusFunction/docs/}, current snapshot.
+
+\bibitem{ProveItFrontier}
+V.~Reshetnikov,
+\emph{Non-Formalized Research Frontiers for the Fabius Function},
+\texttt{ProveIt}, \nolinkurl{Analysis/FabiusFunction/docs/non-formalized-research-frontiers/},
+current snapshot.
+
+\end{thebibliography}
+
+\end{document}

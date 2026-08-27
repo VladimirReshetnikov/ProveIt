@@ -26,13 +26,15 @@ are entire in `s`, and they agree on the ray `(1,∞) ⊆ ℝ ⊆ ℂ`, which
 accumulates at every one of its points.
 
 * `mellinKernel` — the kernel `e^(-at)·E(t)` as a complex-valued map.
-* `mellinKernel_isBigO_exp` / `mellinKernel_isBigO_rpow` — decay at
-  infinity and flatness of every order at `0` (from the effective
-  bound `E(t) ≤ 2^(m(m-1)/2)·t^m`).
+* `mellinKernel_isBigO_exp` — the exponential comparison at infinity.
+* `mellinKernel_isBigO_rpow_all` — flatness of every order at `0`, for every
+  real damping parameter `a` (from the effective bound
+  `E(t) ≤ 2^(m(m-1)/2)·t^m`); `mellinKernel_isBigO_rpow` is the original
+  positive-`a` compatibility form.
 * `mellin_mellinKernel_differentiable` — the *undamped* Mellin
   transform is already entire; this is what flatness buys.
-* `dirichletMellinContinuation` — the continuation itself, as a named
-  function.
+* `dirichletMellinContinuation`, `dirichletMellinContinuation_apply` — the
+  continuation itself and its defining evaluation formula.
 * `dirichletMellinContinuation_differentiable` — **entirety**.
 * `dirichletMellinContinuation_neg_natCast` / `_zero` — the identity
   `D(-r,a) = 0` for every `r ≥ 0`.  As Lean statements these are
@@ -81,22 +83,29 @@ theorem mellinKernel_isBigO_exp (a : ℝ) :
     show -a * t = -(a * t) by ring]
   nlinarith [Real.exp_pos (-(a * t))]
 
-/-- Flatness of every order at `0`: the kernel is `O(t^(-b))` as
-`t → 0⁺` for every `b`. -/
-theorem mellinKernel_isBigO_rpow (a b : ℝ) (ha : 0 < a) :
+/-- Flatness of every order at `0`, for every fixed real damping parameter
+`a`: the kernel is `O(t^(-b))` as `t → 0⁺` for every `b`. -/
+theorem mellinKernel_isBigO_rpow_all (a b : ℝ) :
     (mellinKernel a) =O[𝓝[>] (0 : ℝ)] fun t => t ^ (-b) := by
   obtain ⟨m, hm⟩ : ∃ m : ℕ, -b ≤ (m : ℝ) := exists_nat_ge (-b)
   rw [Asymptotics.isBigO_iff]
-  refine ⟨2 ^ (m * (m - 1) / 2), ?_⟩
+  refine ⟨Real.exp |a| * (2 : ℝ) ^ (m * (m - 1) / 2), ?_⟩
   filter_upwards [Ioo_mem_nhdsGT (zero_lt_one : (0 : ℝ) < 1)] with t ht
   obtain ⟨ht0, ht1⟩ := ht
   have hE0 : 0 < lacunaryExpProduct t := lacunaryExpProduct_pos t ht0
   have hEflat : lacunaryExpProduct t ≤
       2 ^ (m * (m - 1) / 2) * t ^ m := lacunaryExpProduct_le t ht0 m
-  have hexp1 : Real.exp (-(a * t)) ≤ 1 := by
-    rw [Real.exp_le_one_iff]
-    nlinarith
-  have hexp0 : (0 : ℝ) < Real.exp (-(a * t)) := Real.exp_pos _
+  have ht_abs : |t| ≤ 1 := by
+    rw [abs_of_pos ht0]
+    exact ht1.le
+  have hat : -(a * t) ≤ |a| := by
+    calc
+      -(a * t) ≤ |a * t| := neg_le_abs _
+      _ = |a| * |t| := abs_mul a t
+      _ ≤ |a| * 1 := mul_le_mul_of_nonneg_left ht_abs (abs_nonneg a)
+      _ = |a| := mul_one _
+  have hexp_le : Real.exp (-(a * t)) ≤ Real.exp |a| :=
+    Real.exp_le_exp.mpr hat
   rw [mellinKernel, Complex.norm_real, Real.norm_eq_abs, Real.norm_eq_abs,
     abs_of_pos (by positivity),
     abs_of_pos (Real.rpow_pos_of_pos ht0 _)]
@@ -104,13 +113,27 @@ theorem mellinKernel_isBigO_rpow (a b : ℝ) (ha : 0 < a) :
     rw [← Real.rpow_natCast t m]
     exact Real.rpow_le_rpow_of_exponent_ge ht0 ht1.le hm
   have hmid : Real.exp (-(a * t)) * lacunaryExpProduct t ≤
-      2 ^ (m * (m - 1) / 2) * t ^ m := by
-    nlinarith
-  have hlast : (2 : ℝ) ^ (m * (m - 1) / 2) * t ^ m ≤
-      2 ^ (m * (m - 1) / 2) * t ^ (-b) := by
-    have hc : (0 : ℝ) < 2 ^ (m * (m - 1) / 2) := by positivity
-    nlinarith
-  linarith
+      (Real.exp |a| * (2 : ℝ) ^ (m * (m - 1) / 2)) * t ^ m := by
+    calc
+      Real.exp (-(a * t)) * lacunaryExpProduct t ≤
+          Real.exp |a| * lacunaryExpProduct t :=
+        mul_le_mul_of_nonneg_right hexp_le hE0.le
+      _ ≤ Real.exp |a| *
+          ((2 : ℝ) ^ (m * (m - 1) / 2) * t ^ m) :=
+        mul_le_mul_of_nonneg_left hEflat (Real.exp_pos _).le
+      _ = (Real.exp |a| * (2 : ℝ) ^ (m * (m - 1) / 2)) * t ^ m := by
+        ring
+  have hlast : (Real.exp |a| * (2 : ℝ) ^ (m * (m - 1) / 2)) * t ^ m ≤
+      (Real.exp |a| * (2 : ℝ) ^ (m * (m - 1) / 2)) * t ^ (-b) :=
+    mul_le_mul_of_nonneg_left hpow (by positivity)
+  exact hmid.trans hlast
+
+set_option linter.unusedVariables false in
+/-- Positive-damping compatibility form of `mellinKernel_isBigO_rpow_all`;
+the hypothesis `ha` is retained for API compatibility. -/
+theorem mellinKernel_isBigO_rpow (a b : ℝ) (ha : 0 < a) :
+    (mellinKernel a) =O[𝓝[>] (0 : ℝ)] fun t => t ^ (-b) := by
+  exact mellinKernel_isBigO_rpow_all a b
 
 /-- The kernel is locally integrable on `(0,∞)`: the product of a
 continuous factor and a monotone factor. -/
@@ -151,7 +174,7 @@ theorem mellin_mellinKernel_differentiable (a : ℝ) (ha : 0 < a) :
     Differentiable ℂ (mellin (mellinKernel a)) := fun s =>
   mellin_differentiableAt_of_isBigO_rpow_exp ha
     (mellinKernel_locallyIntegrable a) (mellinKernel_isBigO_exp a)
-    (mellinKernel_isBigO_rpow a (s.re - 1) ha)
+    (mellinKernel_isBigO_rpow_all a (s.re - 1))
     (by linarith [sub_lt_self s.re one_pos] : s.re - 1 < s.re)
 
 /-- The entire continuation of the shifted Dirichlet series,
@@ -159,6 +182,8 @@ theorem mellin_mellinKernel_differentiable (a : ℝ) (ha : 0 < a) :
 noncomputable def dirichletMellinContinuation (a : ℝ) : ℂ → ℂ :=
   fun s => (Complex.Gamma s)⁻¹ * mellin (mellinKernel a) s
 
+/-- Evaluation of the continuation as the reciprocal Gamma factor times the
+Mellin transform of the kernel. -/
 theorem dirichletMellinContinuation_apply (a : ℝ) (s : ℂ) :
     dirichletMellinContinuation a s =
       (Complex.Gamma s)⁻¹ * mellin (mellinKernel a) s :=

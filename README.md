@@ -17,48 +17,20 @@ the formal semantics.
 **Toolchains:** Lean `4.32.0` · mathlib `v4.32.0` · Rocq `>= 9.2`
 (developed against `9.0.1`) · MathComp boot `2.5.0` · [MIT-0](LICENSE)
 
-> ### ⚠ Build Lean serially — never a dozen Lean processes at once
+> ### Building: one Lean process at a time
 >
-> Lake's default worker pool is sized to hardware concurrency: it starts one
-> `lean.exe` **per core** whenever a target has a stale dependency set. Each
-> worker on a Mathlib-importing file holds 1&ndash;1.5&nbsp;GB, so on a small
-> machine — or on the development laptop, where several agent sessions share
-> 13&nbsp;GB — the pool exhausts memory and then reports
-> `failed to read ... .olean`, which *looks* like corruption but is a
-> swap-thrash symptom: the same module compiles on a serial retry.
->
-> Bound the number of **processes** on every build:
->
-> ```powershell
-> $env:LAKE_JOBS = '1'          # at most one lean.exe process
-> lake build <one target>
-> ```
->
-> Lake `5.0.0` accepts neither `-j` nor `--jobs` (`lake help build` lists no
-> such flag), so the environment variable is the only control. Measured
-> 2026-08-27: a facade build with stale dependencies spawned 11 concurrent
-> `lean.exe`, and exactly one under `LAKE_JOBS=1`.
->
-> **Do not set `LEAN_NUM_THREADS=0`.** It does not mean "auto" — it serializes
-> elaboration *inside* the one process, and it is not what limits memory.
-> Measured the same day, under the same competing load:
-> `FabiusFunction.AlgebraicBranch` took **~35 minutes** with
-> `LEAN_NUM_THREADS=0`, against **~60 seconds** without it; three further
-> modules built in 172 s, 214 s and 145 s with the variable unset. If a single
-> process is itself too large, set a small *positive* value (2–4), never `0`.
->
-> For a large stale set, also prefer **one module per `lake build` invocation,
-> in topological order**. That is belt-and-braces rather than redundant: it
-> bounds the damage if the environment is not inherited, it attributes a
-> failure to a single module instead of to a batch, and it lets the transient
-> olean error be retried per module.
-> [`Tools/lean_serial_build.py`](Tools/lean_serial_build.py) is the driver;
+> **Do not start a dozen Lean processes in parallel.** Each `lean.exe` worker on
+> a Mathlib-importing file holds 1&ndash;1.5&nbsp;GB; a default parallel `lake build`
+> exhausts memory and then fails with *misleading* errors such as
+> `failed to read file '...Basic.olean'`, which are swap-thrash symptoms rather
+> than real failures. `lake build -j1` does **not** help: Lake 5.0.0 removed
+> the `-j` flag and rejects `--jobs` too, so the limits go in the environment.
+> Build **one module per `lake build` invocation, in topological order**, with
+> `LAKE_JOBS=1` and `LEAN_NUM_THREADS=0` set &mdash; see
+> [the caution in the Lean workspace section](#lean-workspace) for what each
+> variable bounds and the measurements behind them, and
 > [`Analysis/FabiusFunction/AGENTS.md`](Analysis/FabiusFunction/AGENTS.md)
-> has the retry rule, the PID-lock requirement and the Windows traps.
->
-> Run **one build at a time**, and after interrupting one check for survivors
-> with `Get-Process lean,lake -ErrorAction SilentlyContinue` before starting
-> the next.
+> for the driver, the retry rule, and the Windows traps.
 
 ## Repository map
 
@@ -79,10 +51,10 @@ project, `Lean/` and `Coq/` are siblings; `Research/`, `Support/`, and
 | [`lib/`](lib/) | Vendored third-party code only. |
 
 Repository-wide configuration remains at the root. [`ProveIt.lean`](ProveIt.lean)
-is the broad Lean import surface.
-[`Analysis/FabiusFunction/AGENTS.md`](Analysis/FabiusFunction/AGENTS.md)
-records the working agreements for automated contributors — above all the
-requirement to build Lean serially.
+is the broad Lean import surface, and the
+[`Analysis/FabiusFunction` agent guide](Analysis/FabiusFunction/AGENTS.md)
+records the working agreements for that active development — above all the
+requirement to build Lean one module at a time.
 
 ## Highlights
 
@@ -209,23 +181,78 @@ requirement to build Lean serially.
 
 ## Lean workspace
 
+> [!CAUTION]
+> **Never start Lean or Lake builds in parallel, and never start a second
+> build while one is already running.** Run exactly one `lake build` at a
+> time, with one target. Do not launch background build loops, pass a batch
+> of targets, or use parallel runners such as `xargs -P`.
+>
+> One invocation is not by itself one process: Lake sizes its worker pool to
+> hardware concurrency and starts one `lean.exe` **per core** whenever the
+> target has a stale dependency set. On this machine several agent sessions
+> share 13 GB, so that fan-out starves all of them. Set both limits on every
+> build:
+>
+> ```bash
+> LAKE_JOBS=1 LEAN_NUM_THREADS=0 lake build <one target>
+> ```
+>
+> `LAKE_JOBS` bounds the number of `lean.exe` processes and
+> `LEAN_NUM_THREADS` bounds the threads inside each one; they are
+> independent, so set both. Lake `5.0.0` accepts neither `-j` nor `--jobs`,
+> so these environment variables are the only control. Measured 2026-08-27:
+> a facade build over a stale dependency set spawned **11 concurrent
+> `lean.exe`**, and **exactly one** under `LAKE_JOBS=1`.
+>
+> Starvation does not look like starvation. It surfaces as errors that read
+> like corruption:
+>
+> ```
+> failed to read file '...\Mathlib\...\Basic.olean'
+> libc++abi: terminating due to uncaught exception of type std::bad_alloc
+> ```
+>
+> These are out-of-memory symptoms, **not** broken proofs -- the same module
+> built by itself succeeds. Never "fix" them by editing Lean sources.
+>
+> Before starting, check that nothing else -- including another agent session
+> in a sibling worktree -- is already building; after interrupting a build,
+> check for survivors, because stopping a task does not reliably kill the
+> processes it spawned:
+>
+> ```powershell
+> Get-Process lean,lake -ErrorAction SilentlyContinue
+> ```
+>
+> If a build is running, wait for it rather than racing it.
+
 The root workspace is pinned by [`lean-toolchain`](lean-toolchain) and
 [`lake-manifest.json`](lake-manifest.json):
 
 ```powershell
 lake exe cache get
-lake build
+$env:LAKE_JOBS=1
+$env:LEAN_NUM_THREADS=0
+lake build +FabiusFunction.Basic
 ```
 
 The broad build is intentionally expensive, and on a memory-constrained
-machine it must be **serialized** — set `LAKE_JOBS=1` as in the warning at the
-top of this file (and leave `LEAN_NUM_THREADS` alone), then for a large stale
-set build one module per invocation in topological order with
-[`Tools/lean_serial_build.py`](Tools/lean_serial_build.py).
+machine it must be **serialized**: build one module per `lake build`
+invocation, in topological order. Parallel Lean workers exhaust RAM and report
+`failed to read file '...olean'`, which looks like corruption but is not; the
+same module compiles on a serial retry. `lake build -j1` is not a workaround
+(Lake 5.0.0 removed `-j` and rejects `--jobs`), which is why `LAKE_JOBS=1` and
+`LEAN_NUM_THREADS=0` are set in the environment instead, as the caution above
+describes. The
+[`Analysis/FabiusFunction` agent guide](Analysis/FabiusFunction/AGENTS.md)
+has the driver and the retry rule.
 
 Focused examples are:
 
 ```powershell
+$env:LAKE_JOBS=1
+$env:LEAN_NUM_THREADS=0
+# Run exactly one target at a time:
 lake build JacobianConjecture
 lake build +PolynomialFormulas
 lake build FabiusFunction
@@ -234,16 +261,19 @@ lake build +ShefferStroke.Sheffer
 lake build +FirstOrder.Fol
 lake build +ClosureAxiomatization.Forward
 lake build +NoFiniteModel
-lake build +PAListCoding +PAListCoding.Audit
+lake build +PAListCoding
+lake build +PAListCoding.Audit
 lake build +PAFiniteBasisReduction
-lake build +PAUndecidable +PAUndecidable.Audit
+lake build +PAUndecidable
+lake build +PAUndecidable.Audit
 lake build +PowerTowers.Core
 lake build +SquaredSquare
 lake build +CombinatoryLogic
 lake build +BusyBeaver.BB2
 lake build +BusyBeaver.BB3
 lake build +BusyBeaver.Mathlib
-lake build +TuringDegrees +TuringDegrees.Audit
+lake build +TuringDegrees
+lake build +TuringDegrees.Audit
 ```
 
 These projects also have project-local Lake files for focused builds:

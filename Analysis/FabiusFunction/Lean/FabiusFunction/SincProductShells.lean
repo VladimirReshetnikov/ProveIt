@@ -19,7 +19,9 @@ over the triangular power `2^(k(k+1)/2)` — the source of the universal
   — the refinement law `Φ(2z) = sinc(2πz)·Φ(z)` and its `k`-fold
   iterate, for the standalone infinite product (no Fabius-function
   hypotheses).
-* `norm_complexSinc_ofReal` — on the real axis,
+* `abs_mul_norm_complexSinc_ofReal` — the total real-axis identity
+  `|r| · ‖sinc r‖ = |sin r|`, including `r = 0`.
+* `norm_complexSinc_ofReal` — away from zero, the divided form
   `‖sinc r‖ = |sin r| / |r|`.
 * `prod_range_pow_succ` — the triangular exponent in **any**
   commutative monoid: `∏_{j<k} a^(j+1) = a^(k(k+1)/2)`.  Nothing about
@@ -27,8 +29,10 @@ over the triangular power `2^(k(k+1)/2)` — the source of the universal
 * `prod_range_two_pow_succ` — the triangular power
   `∏_{j<k} 2^(j+1) = 2^(k(k+1)/2)`, the base-`2` real case of
   `prod_range_pow_succ`.
-* `norm_rvachevFourierProduct_two_pow_mul` — the **shell
-  factorization** of the modulus:
+* `norm_rvachevFourierProduct_two_pow_mul_cross` — the total,
+  cross-multiplied shell factorization, valid for every real `y`.
+* `norm_rvachevFourierProduct_two_pow_mul` — the divided **shell
+  factorization** of the modulus for `y ≠ 0`:
   `‖Φ(2ᵏ·y)‖ = (∏_{j<k} |sin (2^(j+1) π y)|) /
      (2^(k(k+1)/2) (π|y|)ᵏ) · ‖Φ(y)‖` for real `y ≠ 0`.
 * `norm_rvachevFourierProduct_two_pow_mul_le` — the **decay bound**
@@ -95,6 +99,17 @@ theorem norm_complexSinc_ofReal (r : ℝ) (hr : r ≠ 0) :
     norm_div, Complex.norm_real, Complex.norm_real, Real.norm_eq_abs,
     Real.norm_eq_abs]
 
+/-- **Total real-axis sinc identity**: multiplying the sinc modulus by
+`|r|` removes the removable singularity, so
+`|r| · ‖complexSinc r‖ = |sin r|` for every real `r`, including `r = 0`. -/
+theorem abs_mul_norm_complexSinc_ofReal (r : ℝ) :
+    |r| * ‖complexSinc (r : ℂ)‖ = |Real.sin r| := by
+  by_cases hr : r = 0
+  · subst r
+    simp [complexSinc]
+  · rw [norm_complexSinc_ofReal r hr]
+    field_simp [abs_ne_zero.mpr hr]
+
 /-- **Triangular exponent of a geometric prefix**, in an arbitrary
 commutative monoid: `∏_{j<k} a^(j+1) = a^(k(k+1)/2)`.
 
@@ -120,6 +135,64 @@ theorem prod_range_two_pow_succ (k : ℕ) :
     ∏ j ∈ range k, (2 : ℝ) ^ (j + 1) = 2 ^ (k * (k + 1) / 2) :=
   prod_range_pow_succ (2 : ℝ) k
 
+/-- **Total cross-multiplied dyadic shell factorization**: for every real
+`y`, including `y = 0`,
+
+`2^(k(k+1)/2) · (π|y|)^k · ‖Φ(2^k y)‖
+  = (∏_{j<k} |sin (2^(j+1) π y)|) · ‖Φ(y)‖`.
+
+The cross-multiplied form also includes `k = 0` without a side condition;
+both sides then reduce to `‖Φ(y)‖`. -/
+theorem norm_rvachevFourierProduct_two_pow_mul_cross (k : ℕ) (y : ℝ) :
+    ((2 : ℝ) ^ (k * (k + 1) / 2) * (Real.pi * |y|) ^ k) *
+        ‖rvachevFourierProduct ((2 : ℂ) ^ k * (y : ℂ))‖ =
+      (∏ j ∈ range k,
+        |Real.sin ((2 : ℝ) ^ (j + 1) * Real.pi * y)|) *
+        ‖rvachevFourierProduct (y : ℂ)‖ := by
+  have hfac : ∀ j ∈ range k,
+      ((2 : ℝ) ^ (j + 1) * (Real.pi * |y|)) *
+          ‖complexSinc (Real.pi * ((2 : ℂ) ^ (j + 1) * (y : ℂ)))‖ =
+        |Real.sin ((2 : ℝ) ^ (j + 1) * Real.pi * y)| := by
+    intro j _
+    have hcast : Real.pi * ((2 : ℂ) ^ (j + 1) * (y : ℂ)) =
+        (((2 : ℝ) ^ (j + 1) * Real.pi * y : ℝ) : ℂ) := by
+      push_cast
+      ring
+    have habs : |(2 : ℝ) ^ (j + 1) * Real.pi * y| =
+        (2 : ℝ) ^ (j + 1) * (Real.pi * |y|) := by
+      rw [abs_mul, abs_mul,
+        abs_of_pos (by positivity : (0 : ℝ) < 2 ^ (j + 1)),
+        abs_of_pos Real.pi_pos]
+      ring
+    rw [hcast, ← habs]
+    exact abs_mul_norm_complexSinc_ofReal _
+  have hden :
+      (∏ j ∈ range k,
+        (2 : ℝ) ^ (j + 1) * (Real.pi * |y|)) =
+        (2 : ℝ) ^ (k * (k + 1) / 2) * (Real.pi * |y|) ^ k := by
+    rw [Finset.prod_mul_distrib, Finset.prod_const, Finset.card_range,
+      prod_range_two_pow_succ]
+  have hshell :
+      ((2 : ℝ) ^ (k * (k + 1) / 2) * (Real.pi * |y|) ^ k) *
+          (∏ j ∈ range k,
+            ‖complexSinc (Real.pi * ((2 : ℂ) ^ (j + 1) * (y : ℂ)))‖) =
+        ∏ j ∈ range k,
+          |Real.sin ((2 : ℝ) ^ (j + 1) * Real.pi * y)| := by
+    rw [← hden, ← Finset.prod_mul_distrib]
+    exact Finset.prod_congr rfl hfac
+  calc
+    ((2 : ℝ) ^ (k * (k + 1) / 2) * (Real.pi * |y|) ^ k) *
+        ‖rvachevFourierProduct ((2 : ℂ) ^ k * (y : ℂ))‖ =
+      (((2 : ℝ) ^ (k * (k + 1) / 2) * (Real.pi * |y|) ^ k) *
+        (∏ j ∈ range k,
+          ‖complexSinc (Real.pi * ((2 : ℂ) ^ (j + 1) * (y : ℂ)))‖)) *
+        ‖rvachevFourierProduct (y : ℂ)‖ := by
+          rw [rvachevFourierProduct_two_pow_mul, norm_mul, norm_prod]
+          ring
+    _ = (∏ j ∈ range k,
+          |Real.sin ((2 : ℝ) ^ (j + 1) * Real.pi * y)|) *
+        ‖rvachevFourierProduct (y : ℂ)‖ := by rw [hshell]
+
 /-- **Shell factorization of the modulus** (the exact dyadic
 factorization of the decay audit): for real `y ≠ 0`,
 `‖Φ(2ᵏ·y)‖ = (∏_{j<k} |sin(2^(j+1)·π·y)|) / (2^(k(k+1)/2)·(π·|y|)ᵏ)
@@ -132,28 +205,14 @@ theorem norm_rvachevFourierProduct_two_pow_mul (k : ℕ) (y : ℝ) (hy : y ≠ 0
       (∏ j ∈ range k, |Real.sin ((2 : ℝ) ^ (j + 1) * Real.pi * y)|) /
         ((2 : ℝ) ^ (k * (k + 1) / 2) * (Real.pi * |y|) ^ k) *
         ‖rvachevFourierProduct (y : ℂ)‖ := by
-  rw [rvachevFourierProduct_two_pow_mul, norm_mul, norm_prod]
-  congr 1
-  have hfac : ∀ j ∈ range k,
-      ‖complexSinc (Real.pi * ((2 : ℂ) ^ (j + 1) * (y : ℂ)))‖ =
-        |Real.sin ((2 : ℝ) ^ (j + 1) * Real.pi * y)| /
-          ((2 : ℝ) ^ (j + 1) * (Real.pi * |y|)) := by
-    intro j _
-    have hcast : Real.pi * ((2 : ℂ) ^ (j + 1) * (y : ℂ)) =
-        (((2 : ℝ) ^ (j + 1) * Real.pi * y : ℝ) : ℂ) := by
-      push_cast
-      ring
-    have hr : (2 : ℝ) ^ (j + 1) * Real.pi * y ≠ 0 := by
-      have h2 : (0 : ℝ) < 2 ^ (j + 1) := by positivity
-      exact mul_ne_zero (mul_ne_zero (ne_of_gt h2) Real.pi_ne_zero) hy
-    rw [hcast, norm_complexSinc_ofReal _ hr]
-    congr 1
-    rw [abs_mul, abs_mul, abs_of_pos (by positivity : (0:ℝ) < 2 ^ (j + 1)),
-      abs_of_pos Real.pi_pos]
-    ring
-  rw [Finset.prod_congr rfl hfac, Finset.prod_div_distrib,
-    Finset.prod_mul_distrib, Finset.prod_const, Finset.card_range,
-    prod_range_two_pow_succ]
+  have hyabs : 0 < |y| := abs_pos.mpr hy
+  have hden :
+      (2 : ℝ) ^ (k * (k + 1) / 2) * (Real.pi * |y|) ^ k ≠ 0 := by
+    positivity
+  rw [div_mul_eq_mul_div]
+  apply (eq_div_iff hden).2
+  simpa only [mul_comm] using
+    norm_rvachevFourierProduct_two_pow_mul_cross k y
 
 /-- **The shell factorization meets the Gelfond bound.**  Feeding
 `abs_prod_sin_two_pow_le` (from `GelfondLogisticBound.lean`, at `t = 2y`)

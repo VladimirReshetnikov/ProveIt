@@ -10,11 +10,13 @@ Fabius asymptotic is the lower-Lambert solution `lambda` of
 
 This module packages that phase together with the positive Laplace radius
 `r = 2 ^ lambda`.  In particular, the defining equation becomes the exact
-saddle-coordinate identity `r * x = lambda`.  The natural argument domain is
-mapped strictly antitonically and continuously onto `(1 / log 2, ∞)`, and
-the inverse-function derivative is strictly negative there.  These identities
-are useful for the quantitative Bromwich argument without committing to an
-implicitly defined exact saddle point.
+saddle-coordinate identity `r * x = lambda`.  On the full lower-branch domain
+`(0, exp (-1) / log 2]`, the phase is strictly decreasing onto
+`[1 / log 2, ∞)` and attains its lower bound exactly at the branch endpoint;
+the saddle and radius identities include that endpoint.  On the open interior
+the phase is continuous and has strictly negative inverse-function derivative.
+These identities are useful for the quantitative Bromwich argument without
+committing to an implicitly defined exact saddle point.
 -/
 
 set_option autoImplicit false
@@ -31,6 +33,20 @@ noncomputable def fabiusLambertPhase (x : ℝ) : ℝ :=
 noncomputable def fabiusLambertRadius (x : ℝ) : ℝ :=
   (2 : ℝ) ^ fabiusLambertPhase x
 
+private lemma log_two_mul_le_exp_neg_one_of_mem_Ioc {x : ℝ}
+    (hx : x ∈ Ioc (0 : ℝ) (Real.exp (-1) / Real.log 2)) :
+    Real.log 2 * x ≤ Real.exp (-1) := by
+  have hL : 0 < Real.log 2 := Real.log_pos (by norm_num)
+  have h := (le_div_iff₀ hL).1 hx.2
+  simpa only [mul_comm] using h
+
+private lemma neg_log_two_mul_mem_lowerLambertDomain_Ico {x : ℝ}
+    (hx : x ∈ Ioc (0 : ℝ) (Real.exp (-1) / Real.log 2)) :
+    -(Real.log 2 * x) ∈ Ico (-Real.exp (-1)) 0 := by
+  have hL : 0 < Real.log 2 := Real.log_pos (by norm_num)
+  have hsmall := log_two_mul_le_exp_neg_one_of_mem_Ioc hx
+  exact ⟨by linarith, by nlinarith [mul_pos hL hx.1]⟩
+
 private lemma neg_log_two_mul_mem_lowerLambertDomain {x : ℝ}
     (hx : x ∈ Ioo (0 : ℝ) (Real.exp (-1) / Real.log 2)) :
     -(Real.log 2 * x) ∈ Ioo (-Real.exp (-1)) 0 := by
@@ -44,6 +60,48 @@ private lemma neg_log_two_mul_mem_lowerLambertDomain {x : ℝ}
 theorem fabiusLambertRadius_pos (x : ℝ) :
     0 < fabiusLambertRadius x := by
   exact Real.rpow_pos_of_pos (by norm_num) _
+
+/-- On the endpoint-inclusive lower-branch domain, the phase lies at or above
+the turning value `1 / log 2`. -/
+theorem fabiusLambertPhase_ge_inv_log_two {x : ℝ}
+    (hx : x ∈ Ioc (0 : ℝ) (Real.exp (-1) / Real.log 2)) :
+    (Real.log 2)⁻¹ ≤ fabiusLambertPhase x := by
+  simpa only [fabiusLambertPhase, one_div] using
+    one_div_log_two_le_paperLambertN hx.1
+      (log_two_mul_le_exp_neg_one_of_mem_Ioc hx)
+
+/-- The lower-Lambert phase reaches its turning value exactly at the branch
+endpoint `exp (-1) / log 2`. -/
+theorem fabiusLambertPhase_eq_inv_log_two_iff {x : ℝ}
+    (hx : x ∈ Ioc (0 : ℝ) (Real.exp (-1) / Real.log 2)) :
+    fabiusLambertPhase x = (Real.log 2)⁻¹ ↔
+      x = Real.exp (-1) / Real.log 2 := by
+  have hL : 0 < Real.log 2 := Real.log_pos (by norm_num)
+  calc
+    fabiusLambertPhase x = (Real.log 2)⁻¹ ↔
+        paperLambertN x = 1 / Real.log 2 := by
+          simp only [fabiusLambertPhase, one_div]
+    _ ↔ Real.log 2 * x = Real.exp (-1) :=
+      paperLambertN_eq_one_div_log_two_iff hx.1
+        (log_two_mul_le_exp_neg_one_of_mem_Ioc hx)
+    _ ↔ x = Real.exp (-1) / Real.log 2 := by
+      constructor
+      · intro h
+        apply (eq_div_iff hL.ne').2
+        simpa only [mul_comm] using h
+      · intro h
+        have hxmul := (eq_div_iff hL.ne').1 h
+        simpa only [mul_comm] using hxmul
+
+/-- At the lower-Lambert branch endpoint, the phase is exactly the turning
+value `1 / log 2`. -/
+@[simp] theorem fabiusLambertPhase_branchPoint :
+    fabiusLambertPhase (Real.exp (-1) / Real.log 2) =
+      (Real.log 2)⁻¹ := by
+  have hx : Real.exp (-1) / Real.log 2 ∈
+      Ioc (0 : ℝ) (Real.exp (-1) / Real.log 2) :=
+    ⟨div_pos (Real.exp_pos _) (Real.log_pos (by norm_num)), le_rfl⟩
+  exact (fabiusLambertPhase_eq_inv_log_two_iff hx).2 rfl
 
 /-- On the natural lower-branch domain, the phase lies strictly above the
 turning value `1 / log 2`. -/
@@ -59,12 +117,29 @@ theorem fabiusLambertPhase_gt_inv_log_two {x : ℝ}
     (div_lt_div_iff_of_pos_right hL).2 (by linarith)
   simpa only [one_div] using hdiv
 
+/-- On the full lower-branch domain, the phase lies at or beyond the turning
+value `1 / log 2`. -/
+theorem one_div_log_two_le_fabiusLambertPhase {x : ℝ} (hx : 0 < x)
+    (hsmall : Real.log 2 * x ≤ Real.exp (-1)) :
+    1 / Real.log 2 ≤ fabiusLambertPhase x := by
+  simpa only [fabiusLambertPhase] using
+    one_div_log_two_le_paperLambertN hx hsmall
+
 /-- Positivity of the lower-Lambert phase on its natural argument domain. -/
 theorem fabiusLambertPhase_pos_of_mem {x : ℝ}
     (hx : x ∈ Ioo (0 : ℝ) (Real.exp (-1) / Real.log 2)) :
     0 < fabiusLambertPhase x :=
   (inv_pos.mpr (Real.log_pos (by norm_num))).trans
     (fabiusLambertPhase_gt_inv_log_two hx)
+
+/-- Positivity of the lower-Lambert phase on the full lower-branch domain,
+including the finite branch point. -/
+theorem fabiusLambertPhase_pos_of_le {x : ℝ} (hx : 0 < x)
+    (hsmall : Real.log 2 * x ≤ Real.exp (-1)) :
+    0 < fabiusLambertPhase x := by
+  have hL : 0 < Real.log 2 := Real.log_pos (by norm_num)
+  exact lt_of_lt_of_le (one_div_pos.mpr hL)
+    (one_div_log_two_le_fabiusLambertPhase hx hsmall)
 
 /-- The derivative denominator `1 - log 2 * lambda` is strictly negative on
 the lower branch, equivalently `lambda` lies beyond the turning point. -/
@@ -76,43 +151,53 @@ theorem one_sub_log_two_mul_fabiusLambertPhase_neg {x : ℝ}
   rw [mul_inv_cancel₀ hL.ne'] at h
   linarith
 
+/-- The lower-Lambert phase is strictly decreasing on its full
+endpoint-inclusive positive argument domain. -/
+theorem fabiusLambertPhase_strictAntiOn_Ioc :
+    StrictAntiOn fabiusLambertPhase
+      (Ioc (0 : ℝ) (Real.exp (-1) / Real.log 2)) := by
+  intro x hx y hy hxy
+  have hL : 0 < Real.log 2 := Real.log_pos (by norm_num)
+  have harg : -(Real.log 2 * y) < -(Real.log 2 * x) :=
+    neg_lt_neg (mul_lt_mul_of_pos_left hxy hL)
+  have hW := lowerLambertW_strictAntiOn_Ico
+    (neg_log_two_mul_mem_lowerLambertDomain_Ico hy)
+    (neg_log_two_mul_mem_lowerLambertDomain_Ico hx) harg
+  unfold fabiusLambertPhase paperLambertN
+  exact (div_lt_div_iff_of_pos_right hL).2 (neg_lt_neg hW)
+
 /-- The lower-Lambert phase is strictly decreasing on its exact positive
 argument domain. -/
 theorem fabiusLambertPhase_strictAntiOn :
     StrictAntiOn fabiusLambertPhase
       (Ioo (0 : ℝ) (Real.exp (-1) / Real.log 2)) := by
-  intro x hx y hy hxy
-  have hL : 0 < Real.log 2 := Real.log_pos (by norm_num)
-  have harg : -(Real.log 2 * y) < -(Real.log 2 * x) :=
-    neg_lt_neg (mul_lt_mul_of_pos_left hxy hL)
-  have hW := lowerLambertW_strictAntiOn
-    (neg_log_two_mul_mem_lowerLambertDomain hy)
-    (neg_log_two_mul_mem_lowerLambertDomain hx) harg
-  unfold fabiusLambertPhase paperLambertN
-  exact (div_lt_div_iff_of_pos_right hL).2 (neg_lt_neg hW)
+  exact fabiusLambertPhase_strictAntiOn_Ioc.mono fun _ hx ↦
+    ⟨hx.1, hx.2.le⟩
 
-/-- Exact range of the lower-Lambert phase on its natural argument domain. -/
-theorem fabiusLambertPhase_image :
+/-- Exact range of the lower-Lambert phase on its full endpoint-inclusive
+positive argument domain. -/
+theorem fabiusLambertPhase_image_Ioc :
     fabiusLambertPhase ''
-        Ioo (0 : ℝ) (Real.exp (-1) / Real.log 2) =
-      Ioi (Real.log 2)⁻¹ := by
+        Ioc (0 : ℝ) (Real.exp (-1) / Real.log 2) =
+      Ici (Real.log 2)⁻¹ := by
   have hL : 0 < Real.log 2 := Real.log_pos (by norm_num)
   apply Subset.antisymm
   · rintro _ ⟨x, hx, rfl⟩
-    exact fabiusLambertPhase_gt_inv_log_two hx
+    exact fabiusLambertPhase_ge_inv_log_two hx
   · intro y hy
-    have hmul : 1 < Real.log 2 * y := by
-      have h := mul_lt_mul_of_pos_left hy hL
-      simpa only [mul_inv_cancel₀ hL.ne'] using h
-    have hw : -(Real.log 2 * y) ∈ Iio (-1) := by
-      exact neg_lt_neg hmul
-    rw [← lowerLambertW_image] at hw
+    have hmul : 1 ≤ Real.log 2 * y := by
+      calc
+        1 = Real.log 2 * (Real.log 2)⁻¹ := (mul_inv_cancel₀ hL.ne').symm
+        _ ≤ Real.log 2 * y :=
+          mul_le_mul_of_nonneg_left hy hL.le
+    have hw : -(Real.log 2 * y) ∈ Iic (-1) := neg_le_neg hmul
+    rw [← lowerLambertW_image_Ico] at hw
     obtain ⟨z, hz, hzy⟩ := hw
     let x : ℝ := -z / Real.log 2
-    have hx : x ∈ Ioo (0 : ℝ) (Real.exp (-1) / Real.log 2) := by
+    have hx : x ∈ Ioc (0 : ℝ) (Real.exp (-1) / Real.log 2) := by
       constructor
       · exact div_pos (neg_pos.mpr hz.2) hL
-      · exact (div_lt_div_iff_of_pos_right hL).2 (by linarith [hz.1])
+      · exact (div_le_div_iff_of_pos_right hL).2 (by linarith [hz.1])
     refine ⟨x, hx, ?_⟩
     have harg : -(Real.log 2 * x) = z := by
       dsimp [x]
@@ -120,6 +205,26 @@ theorem fabiusLambertPhase_image :
     unfold fabiusLambertPhase paperLambertN
     rw [harg, hzy]
     field_simp [hL.ne']
+
+/-- Exact range of the lower-Lambert phase on its natural argument domain. -/
+theorem fabiusLambertPhase_image :
+    fabiusLambertPhase ''
+        Ioo (0 : ℝ) (Real.exp (-1) / Real.log 2) =
+      Ioi (Real.log 2)⁻¹ := by
+  apply Subset.antisymm
+  · rintro _ ⟨x, hx, rfl⟩
+    exact fabiusLambertPhase_gt_inv_log_two hx
+  · intro y hy
+    have hyclosed : y ∈ Ici (Real.log 2)⁻¹ :=
+      Set.mem_Ici.mpr (Set.mem_Ioi.mp hy).le
+    rw [← fabiusLambertPhase_image_Ioc] at hyclosed
+    obtain ⟨x, hx, hxy⟩ := hyclosed
+    have hne : x ≠ Real.exp (-1) / Real.log 2 := by
+      intro hxe
+      have : (Real.log 2)⁻¹ = y := by
+        simpa only [hxe, fabiusLambertPhase_branchPoint] using hxy
+      exact (ne_of_lt hy) this
+    exact ⟨x, ⟨hx.1, lt_of_le_of_ne hx.2 hne⟩, hxy⟩
 
 /-- The lower-Lambert phase is continuous at every point of its natural
 argument domain. -/
@@ -212,23 +317,37 @@ theorem deriv_fabiusLambertPhase_neg {x : ℝ}
     (mul_neg_of_pos_of_neg hx.1
       (one_sub_log_two_mul_fabiusLambertPhase_neg hx))
 
-/-- Quotient form of the lower-Lambert saddle equation. -/
-theorem fabiusLambertPhase_div_radius {x : ℝ} (hx : 0 < x)
-    (hsmall : Real.log 2 * x < Real.exp (-1)) :
+/-- Endpoint-inclusive quotient form of the lower-Lambert saddle equation. -/
+theorem fabiusLambertPhase_div_radius_of_le {x : ℝ} (hx : 0 < x)
+    (hsmall : Real.log 2 * x ≤ Real.exp (-1)) :
     fabiusLambertPhase x / fabiusLambertRadius x = x := by
   rw [fabiusLambertPhase, fabiusLambertRadius]
-  have h := paperLambertN_eq9 hx hsmall
+  have h := paperLambertN_eq9_of_le hx hsmall
   rw [Real.rpow_neg (by norm_num : (0 : ℝ) ≤ 2)] at h
   simpa [fabiusLambertPhase, div_eq_mul_inv] using h
 
-/-- Exact saddle-coordinate identity `r * x = lambda`. -/
-theorem fabiusLambertRadius_mul_argument {x : ℝ} (hx : 0 < x)
+/-- Quotient form of the lower-Lambert saddle equation on the smooth
+interior. -/
+theorem fabiusLambertPhase_div_radius {x : ℝ} (hx : 0 < x)
     (hsmall : Real.log 2 * x < Real.exp (-1)) :
+    fabiusLambertPhase x / fabiusLambertRadius x = x :=
+  fabiusLambertPhase_div_radius_of_le hx hsmall.le
+
+/-- Endpoint-inclusive saddle-coordinate identity `r * x = lambda`. -/
+theorem fabiusLambertRadius_mul_argument_of_le {x : ℝ} (hx : 0 < x)
+    (hsmall : Real.log 2 * x ≤ Real.exp (-1)) :
     fabiusLambertRadius x * x = fabiusLambertPhase x := by
   have hr := fabiusLambertRadius_pos x
-  have h := fabiusLambertPhase_div_radius hx hsmall
+  have h := fabiusLambertPhase_div_radius_of_le hx hsmall
   field_simp [hr.ne'] at h
   linarith
+
+/-- Exact saddle-coordinate identity `r * x = lambda` on the smooth
+interior. -/
+theorem fabiusLambertRadius_mul_argument {x : ℝ} (hx : 0 < x)
+    (hsmall : Real.log 2 * x < Real.exp (-1)) :
+    fabiusLambertRadius x * x = fabiusLambertPhase x :=
+  fabiusLambertRadius_mul_argument_of_le hx hsmall.le
 
 /-- The logarithm of the Laplace radius is `log 2` times its phase. -/
 theorem log_fabiusLambertRadius (x : ℝ) :

@@ -1,34 +1,53 @@
 # Agents working in `Analysis/FabiusFunction`
 
 > [!CAUTION]
-> **Never start Lean or Lake builds in parallel.** Run exactly one
-> `lake build +FabiusFunction.Module` invocation at a time, with one target.
-> Do not launch background build loops, pass a batch of targets, or use
-> parallel runners such as `xargs -P`. A dozen concurrent Lean processes will
-> exhaust memory and often fail with misleading missing-`.olean` errors.
+> **Never start Lean or Lake builds in parallel, and never start a second
+> build while one is already running.** Run exactly one `lake build` at a
+> time, with one target. Do not launch background build loops, pass a batch
+> of targets, or use parallel runners such as `xargs -P`.
 >
 > One invocation is not by itself one process: Lake sizes its worker pool to
 > hardware concurrency and starts one `lean.exe` **per core** whenever the
-> target has a stale dependency set. Bound the processes —
+> target has a stale dependency set. On this machine several agent sessions
+> share 13 GB, so that fan-out starves all of them. Set both limits on every
+> build:
 >
 > ```bash
-> LAKE_JOBS=1 lake build +FabiusFunction.Module
+> LAKE_JOBS=1 LEAN_NUM_THREADS=0 lake build +FabiusFunction.Basic
 > ```
 >
-> `LAKE_JOBS` bounds the number of `lean.exe` processes, which is what exhausts
-> RAM. Lake `5.0.0` accepts neither `-j` nor `--jobs`. Measured 2026-08-27: a
-> facade build ran 11 concurrent `lean.exe` without `LAKE_JOBS`, and exactly
-> one with it.
+> `LAKE_JOBS` bounds the number of `lean.exe` processes and
+> `LEAN_NUM_THREADS` bounds the threads inside each one; they are
+> independent, so set both. Lake `5.0.0` accepts neither `-j` nor `--jobs`,
+> so these environment variables are the only control. Measured 2026-08-27:
+> a facade build over a stale dependency set spawned **11 concurrent
+> `lean.exe`**, and **exactly one** under `LAKE_JOBS=1`.
 >
-> **Do not also set `LEAN_NUM_THREADS=0`.** That bounds the threads *inside* a
-> process, which is not the resource under pressure, and `0` does not mean
-> "auto": it serializes elaboration. Measured the same day under the same
-> competing load, `+FabiusFunction.AlgebraicBranch` took **~35 minutes** with
-> `LEAN_NUM_THREADS=0` and **~60 seconds** without it. If one process is itself
-> too large, use a small positive value, never `0`.
-> After interrupting a build, check for survivors with
-> `Get-Process lean,lake -ErrorAction SilentlyContinue` before starting the
-> next one.
+> Starvation does not look like starvation. It surfaces as errors that read
+> like corruption:
+>
+> ```
+> failed to read file '...\Mathlib\...\Basic.olean'
+> libc++abi: terminating due to uncaught exception of type std::bad_alloc
+> ```
+>
+> These are out-of-memory symptoms, **not** broken proofs -- the same module
+> built by itself succeeds. Never "fix" them by editing Lean sources.
+>
+> Before starting, check that nothing else -- including another agent session
+> in a sibling worktree -- is already building; after interrupting a build,
+> check for survivors, because stopping a task does not reliably kill the
+> processes it spawned:
+>
+> ```powershell
+> Get-Process lean,lake -ErrorAction SilentlyContinue
+> ```
+>
+> If a build is running, wait for it rather than racing it.
+
+Everything else in this file is ordinary project policy; the rule above is the
+one whose violation has repeatedly destroyed build state, so it comes first.
+See [Building Lean](#building-lean) for the full serialization recipe.
 
 This directory is sometimes developed by several agents concurrently.
 Whether multi-agent coordination is in effect is stated by exactly one file:
@@ -218,15 +237,9 @@ compiled PDF is committed with it.**
 
 ## Building Lean
 
-Build one module per `lake` invocation, in topological order, *in addition to*
-setting `LAKE_JOBS=1` as the caution at the top of this file requires. The two
-measures are complementary, not alternatives: the environment variable bounds
-Lake's fan-out within one invocation, while one target per
-invocation bounds the damage if the environment is not inherited by a child
-process, attributes a failure to a single module rather than to a batch, and
-lets the transient error be retried per module. Passing several targets at once
-(`lake build A B`) has been observed to start one `lean` process per target, and
-on this 13 GB machine both then die with a misleading
+Build one module per `lake` invocation, in topological order. `LAKE_JOBS=1` is
+not enough: a single `lake build A B` still starts two `lean` processes, and on
+this 13 GB machine both then die with a misleading
 `failed to read file '….olean'`, which is an out-of-memory symptom rather than
 a real error.
 
@@ -392,7 +405,7 @@ git sparse-checkout set Analysis/FabiusFunction
 git checkout
 mkdir -p .lake
 cmd //c mklink //J ".lake\\packages" "C:\\ProveIt\\.lake\\packages"
-LAKE_JOBS=1 lake build +FabiusFunction.<Module>
+LAKE_JOBS=1 LEAN_NUM_THREADS=0 lake build +FabiusFunction.Basic
 ```
 
 The junction is the point: a fresh worktree without it rebuilds Mathlib and is

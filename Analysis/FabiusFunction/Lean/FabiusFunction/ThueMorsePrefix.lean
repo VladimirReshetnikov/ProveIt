@@ -1,4 +1,5 @@
 import FabiusFunction.DyadicClosedForm
+import FabiusFunction.FinitePolynomialFunctional
 import Mathlib.Data.Nat.Choose.Sum
 import Mathlib.Data.Real.Basic
 import Mathlib.RingTheory.Polynomial.Pochhammer
@@ -56,6 +57,10 @@ to evaluate centered and translated exponential generating series.
 * `thueMorsePowerSumRing_succ`, `thueMorsePowerSumRing_eq_zero_of_lt`,
   `thueMorsePowerSumRing_self` -- the half-block recurrence, Prouhet
   cancellation and the sharp boundary value over `R`.
+* `thueMorse_polynomial_sum_eq_coeff_ring_of_degree_le`,
+  `thueMorse_polynomial_sum_eq_zero_ring_of_degree_lt` -- the degree-valued
+  coefficient extractor and strict cancellation theorem, including the zero
+  polynomial at the boundary `r = 0`.
 * `thueMorse_polynomial_sum_eq_coeff_ring`,
   `thueMorse_polynomial_sum_eq_zero_ring`,
   `thueMorse_affine_power_sum_eq_zero_ring`,
@@ -356,47 +361,55 @@ theorem thueMorsePowerSumRing_self (r : ℕ) :
   push_cast
   rfl
 
-/-- On polynomials of degree at most `r`, summation against a dyadic
-Thue--Morse block extracts the degree-`r` coefficient, up to the explicit
-Prouhet factor.  The coefficients may lie in any commutative ring. -/
+/-- **Degree-valued polynomial Prouhet extractor.**  On polynomials of degree
+at most `r`, summation against a dyadic Thue--Morse block extracts the
+degree-`r` coefficient, up to the explicit Prouhet factor.  The coefficients
+may lie in any commutative ring.
+
+The hypothesis uses `Polynomial.degree`, so it includes the zero polynomial
+uniformly and gives the correct total statement at `r = 0`. -/
+theorem thueMorse_polynomial_sum_eq_coeff_ring_of_degree_le
+    (r : ℕ) (p : Polynomial R) (hp : p.degree ≤ (r : WithBot ℕ)) :
+    (∑ h : Fin (2 ^ r),
+        (thueMorseSign h.val : R) * p.eval (h.val : R)) =
+      p.coeff r *
+        ((-1 : R) ^ r * (2 : R) ^ r.choose 2 * r.factorial) := by
+  refine sum_weight_mul_eval_eq_coeff_mul_of_moments
+    (Finset.univ : Finset (Fin (2 ^ r)))
+    (fun h => (thueMorseSign h.val : R))
+    (fun h => (h.val : R))
+    r
+    ((-1 : R) ^ r * (2 : R) ^ r.choose 2 * r.factorial)
+    ?_ ?_ p hp
+  · intro d hd
+    change thueMorsePowerSumRing R r d = 0
+    exact thueMorsePowerSumRing_eq_zero_of_lt (R := R) r d hd
+  · change thueMorsePowerSumRing R r r =
+      (-1 : R) ^ r * (2 : R) ^ r.choose 2 * r.factorial
+    exact thueMorsePowerSumRing_self (R := R) r
+
+/-- Compatibility form of the polynomial Prouhet extractor using
+`Polynomial.natDegree`.  The degree-valued theorem above is stronger exactly
+at the zero-polynomial boundary. -/
 theorem thueMorse_polynomial_sum_eq_coeff_ring (r : ℕ) (p : Polynomial R)
     (hp : p.natDegree ≤ r) :
     (∑ h : Fin (2 ^ r),
         (thueMorseSign h.val : R) * p.eval (h.val : R)) =
       p.coeff r *
         ((-1 : R) ^ r * (2 : R) ^ r.choose 2 * r.factorial) := by
-  simp_rw [Polynomial.eval_eq_sum, Polynomial.sum_def, Finset.mul_sum]
-  rw [Finset.sum_comm]
-  have hexpand :
-      (∑ d ∈ p.support, ∑ h : Fin (2 ^ r),
-          (thueMorseSign h.val : R) *
-            (p.coeff d * (h.val : R) ^ d)) =
-        ∑ d ∈ p.support, p.coeff d * thueMorsePowerSumRing R r d := by
-    apply Finset.sum_congr rfl
-    intro d hd
-    rw [thueMorsePowerSumRing, Finset.mul_sum]
-    apply Finset.sum_congr rfl
-    intro h hh
-    ring
-  rw [hexpand]
-  classical
-  by_cases hr : r ∈ p.support
-  · rw [Finset.sum_eq_single r]
-    · rw [thueMorsePowerSumRing_self]
-    · intro d hd hdr
-      have hdr' : d < r :=
-        lt_of_le_of_ne (Polynomial.le_natDegree_of_mem_supp d hd |>.trans hp) hdr
-      rw [thueMorsePowerSumRing_eq_zero_of_lt r d hdr', mul_zero]
-    · exact fun h => (h hr).elim
-  · have hcoeff : p.coeff r = 0 := by
-      simpa only [Polynomial.mem_support_iff, not_ne_iff] using hr
-    rw [hcoeff, zero_mul]
-    apply Finset.sum_eq_zero
-    intro d hd
-    have hdr : d ≠ r := fun h => hr (h ▸ hd)
-    have hdr' : d < r :=
-      lt_of_le_of_ne (Polynomial.le_natDegree_of_mem_supp d hd |>.trans hp) hdr
-    rw [thueMorsePowerSumRing_eq_zero_of_lt r d hdr', mul_zero]
+  exact thueMorse_polynomial_sum_eq_coeff_ring_of_degree_le
+    (R := R) r p (Polynomial.degree_le_of_natDegree_le hp)
+
+/-- **Degree-valued polynomial Prouhet cancellation.**  A dyadic
+Thue--Morse block annihilates every polynomial of degree strictly below its
+block exponent.  At `r = 0`, the degree condition admits exactly the zero
+polynomial, so no exceptional case is needed. -/
+theorem thueMorse_polynomial_sum_eq_zero_ring_of_degree_lt
+    (r : ℕ) (p : Polynomial R) (hp : p.degree < (r : WithBot ℕ)) :
+    (∑ h : Fin (2 ^ r),
+      (thueMorseSign h.val : R) * p.eval (h.val : R)) = 0 := by
+  rw [thueMorse_polynomial_sum_eq_coeff_ring_of_degree_le r p hp.le,
+    Polynomial.coeff_eq_zero_of_degree_lt hp, zero_mul]
 
 /-- Thue--Morse signs annihilate every polynomial of degree below the dyadic
 block exponent, over an arbitrary commutative ring. -/

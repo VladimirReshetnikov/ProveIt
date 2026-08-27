@@ -1,0 +1,1650 @@
+\documentclass[11pt]{article}
+
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{libertinus}
+\usepackage[letterpaper,margin=1in,headheight=15pt]{geometry}
+\usepackage{microtype}
+\usepackage{amsmath,amssymb,amsthm,mathtools,bm,mathrsfs}
+\usepackage{booktabs,longtable,tabularx,array,multirow}
+\usepackage{enumitem}
+\usepackage{xcolor}
+\usepackage{graphicx}
+\usepackage{fancyhdr}
+\usepackage{titlesec}
+\usepackage{csquotes}
+\usepackage{xurl}
+\usepackage{hyperref}
+\usepackage[nameinlink,noabbrev]{cleveref}
+\usepackage{listings}
+\usepackage{etoolbox}
+
+\definecolor{linkblue}{RGB}{22,72,118}
+\definecolor{darkgreen}{RGB}{25,95,60}
+\definecolor{darkred}{RGB}{135,35,35}
+\definecolor{shade}{RGB}{247,248,250}
+\hypersetup{
+  colorlinks=true,
+  linkcolor=linkblue,
+  citecolor=darkgreen,
+  urlcolor=linkblue,
+  pdftitle={Logarithmic q-Richardson Acceleration and Lambert Phase Locking in Fabius-Rvachev Analysis},
+  pdfauthor={OpenAI research synthesis},
+  pdfsubject={New frontier results for Fabius, Rvachev up, Thue-Morse, q-binomial coefficients, sinc products, and Lambert W}
+}
+
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small Logarithmic $q$-Richardson and Lambert phase locking}
+\fancyhead[R]{\small Frontier report}
+\fancyfoot[C]{\thepage}
+
+\titleformat{\section}{\Large\bfseries}{\thesection}{0.75em}{}
+\titleformat{\subsection}{\large\bfseries}{\thesubsection}{0.65em}{}
+\titleformat{\subsubsection}{\normalsize\bfseries}{\thesubsubsection}{0.55em}{}
+
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{conjecture}[theorem]{Conjecture}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{algorithm}[theorem]{Algorithm}
+\newtheorem{remark}[theorem]{Remark}
+\theoremstyle{remark}
+\newtheorem{observation}[theorem]{Observation}
+
+\newcommand{\sinc}{\operatorname{sinc}}
+\newcommand{\Up}{\operatorname{up}}
+\newcommand{\sgn}{\operatorname{sgn}}
+\newcommand{\Li}{\operatorname{Li}}
+\newcommand{\dd}{\,\mathrm{d}}
+\newcommand{\e}{\mathrm{e}}
+\newcommand{\ii}{\mathrm{i}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\abs}[1]{\left\lvert #1\right\rvert}
+\newcommand{\norm}[1]{\left\lVert #1\right\rVert}
+\newcommand{\floor}[1]{\left\lfloor #1\right\rfloor}
+\newcommand{\ceil}[1]{\left\lceil #1\right\rceil}
+\newcommand{\brak}[2]{\genfrac{[}{]}{0pt}{}{#1}{#2}}
+\newcommand{\poch}[2]{(#1;#2)}
+\newcommand{\qbinom}[3]{\genfrac{[}{]}{0pt}{}{#1}{#2}_{#3}}
+\newcommand{\lambert}{W_{-1}}
+\newcommand{\repo}{\textsc{ProveIt}}
+\newcommand{\statusproved}{\textcolor{darkgreen}{\textbf{proved here}}}
+\newcommand{\statusconditional}{\textcolor{linkblue}{\textbf{proved conditionally on the repository's all-orders expansion}}}
+\newcommand{\statusopen}{\textcolor{darkred}{\textbf{open}}}
+
+\setlist[itemize]{leftmargin=1.5em,itemsep=0.25em,topsep=0.35em}
+\setlist[enumerate]{leftmargin=1.7em,itemsep=0.25em,topsep=0.35em}
+\setlength{\parindent}{1.2em}
+\setlength{\parskip}{0.2em}
+\setcounter{tocdepth}{2}
+\allowdisplaybreaks
+
+\begin{document}
+\hypersetup{pageanchor=false}
+\pagenumbering{gobble}
+
+\begin{titlepage}
+\centering
+\vspace*{1.1cm}
+{\Huge\bfseries Logarithmic $q$-Richardson Acceleration\\[0.25em]
+and Lambert Phase Locking\\[0.4em]
+in Fabius--Rvachev Analysis\par}
+\vspace{0.8cm}
+{\Large Repository-wide audit, exact sinc-tail extrapolation,\\
+Bell-polynomial error calculus, and extraction of the periodic endpoint factor\par}
+\vspace{1.2cm}
+{\large OpenAI research synthesis\par}
+\vspace{0.35cm}
+{\large 27 August 2026\par}
+\vfill
+\begin{minipage}{0.88\textwidth}
+\small
+\textbf{Research status.} The sinc-product results in Parts~I--III are proved from first principles in this report. The Lambert-lattice extrapolation theorem is an algebraic consequence of the all-orders lower-Lambert expansion developed in the repository; its use is therefore explicitly conditional on that expansion with the stated uniformity. The numerical tables were independently recomputed at 100-digit precision. ``New'' means absent as an exact result from the audited repository snapshot; no claim of worldwide priority is made.
+\end{minipage}
+\vfill
+\end{titlepage}
+\clearpage
+\hypersetup{pageanchor=true}
+\pagenumbering{roman}
+
+\begin{abstract}
+The Fabius function, Rvachev's compactly supported $C^\infty$ up-function, the signed Thue--Morse sequence, and dyadic $q$-calculus form a tightly connected system. The existing \repo{} corpus already contains extensive exact dyadic arithmetic, Gaussian-binomial interpolation, moment and cumulant formulas involving Bernoulli and Bell polynomials, Fourier products, Lambert-$W$ endpoint asymptotics with a nonconstant periodic factor, and several forms of Richardson extrapolation. After a repository-wide audit of the living documents, frozen historical versions, research drafts, and bundled source papers, this report develops two extrapolation mechanisms that are not stated there.
+
+First, for the generalized lacunary sinc product
+\[
+P_b(t)=\prod_{k\ge 1}\sinc(t/b^k),\qquad b>1,
+\]
+we obtain an exact Bernoulli--zeta expansion of the omitted logarithmic tail. Applying Lagrange interpolation to the logarithms of the truncations at the geometric nodes $q^j$, $q=b^{-2}$, gives a multiplicative Richardson transform with closed Gaussian-$q$-binomial weights. Its full error series is exact, has a fixed sign $(-1)^r$ at level $r$, yields consecutive certified upper and lower bounds, and admits an explicit nonasymptotic remainder estimate. The $\ell^1$ norm of the weights is exactly $(-q;q)_r/(q;q)_r$, hence remains bounded as the order tends to infinity; in the dyadic case it stays below $1.970$. The method therefore combines high order with unusually mild conditioning. Bell polynomials convert the logarithmic error into relative-error and derivative formulas, while a finite Thue--Morse exponential-sum identity transfers the accelerated product to purely finite signed digital sums.
+
+Second, the exact inverse coordinate
+\[
+\lambda(x)=-\frac{1}{\log 2}W_{-1}(-x\log 2),\qquad x=\lambda 2^{-\lambda},
+\]
+is used to build phase-locked nodes $x_j=(\lambda+j)2^{-(\lambda+j)}$. Periodic coefficient functions are identical at all these nodes. Ordinary Lagrange extrapolation in $h_j=(\lambda+j)^{-1}$ then cancels the first $r$ inverse-$\lambda$ corrections and extracts the periodic endpoint term $\Psi(\lambda)$ directly from values of $F$. The exact weights, all transformed moments, and their complete-homogeneous/Bell-polynomial representation are derived. Bernoulli polynomials describe the arithmetic-node power sums needed in conditioning and preconditioning. Together these results provide a new bridge between $q$-binomial interpolation, sinc products, Thue--Morse blocks, Lambert-$W$ phase geometry, Bernoulli coefficients, Bell-polynomial reconstruction, and Richardson extrapolation.
+\end{abstract}
+
+\tableofcontents
+\clearpage
+\pagenumbering{arabic}
+
+\section{Scope, corpus audit, and nonduplication boundary}
+
+\subsection{The audited corpus}
+
+The target tree contains living expositions, a deliberately quarantined frontier volume, active drafts, frozen historical versions, and source-paper transcriptions. The audit used the current tree and the archive ledger as of 27 August 2026. Counting each distinct \texttt{.tex} path, the inventory contains 57 sources: 25 in the living tree and 32 frozen historical sources. The living set consists of four top-level expositions, the canonical frontier volume, one Thue--Morse atlas, twelve Fourier-decay dossiers, and seven source-paper transcriptions.
+
+\begin{table}[htbp]
+\centering
+\caption{Repository-wide source inventory used for the overlap audit.}
+\label{tab:inventory}
+\begin{tabularx}{\textwidth}{@{}l r X@{}}
+\toprule
+Family & TeX files & Principal content relevant to this report \\
+\midrule
+Living primary expositions & 4 & Fabius/up synthesis, glossary, non-elementarity, Lean walkthrough \\
+Canonical frontier volume & 1 & Dyadic web, repeated integration, endpoint asymptotics, Thue--Morse convergence, saddle analysis \\
+Living formula atlas & 1 & Thue--Morse identities, Prouhet cancellation, rarefaction, Mahler structure, Bell/Bernoulli formulas \\
+Living Fourier-decay dossiers & 12 & Infinite sinc products, zeros, dyadic renormalization, envelopes, Lambert-$W$ scales, competing asymptotic formulations \\
+Bundled source-paper TeX & 7 & Lacunary products, up-function background, arithmetic of $F$, approximation literature \\
+Frozen archive & 32 & Earlier notes, parallel expositions, q-calculus articles, supplements, formula atlases, topic dossiers \\
+\midrule
+Total & 57 & Every path is listed in Appendix~\ref{app:inventory}. \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+The archive matters for originality. Several ideas no longer visible in the living primary paper survive in an older parallel draft or a superseded dossier. In particular, the audit treated the following as prior art rather than rediscoveries:
+\begin{itemize}
+\item Gaussian-$q$-binomial coefficient extraction at geometric nodes;
+\item exact dyadic Richardson transforms for sequences modeled by powers of $2^{-p}$;
+\item Bernoulli-number cumulants and Bell-polynomial moment reconstruction;
+\item Prouhet cancellation for signed Thue--Morse blocks;
+\item fixed-numerator Lambert phase locking along dyadic endpoint rays;
+\item the periodic factor in the corrected small-argument asymptotic;
+\item exact finite Thue--Morse products and Bromwich/coefficient representations;
+\item global Fourier-decay envelopes and the zero geometry of the up transform.
+\end{itemize}
+
+\subsection{What is new relative to the repository}
+
+The exact constructions below were not found in any audited source:
+\begin{enumerate}
+\item Richardson extrapolation of the \emph{logarithm} of truncated lacunary sinc products, followed by exponentiation to a multiplicative approximation;
+\item the exact Gaussian-$q$-binomial formula for those log-extrapolation weights together with the full transformed Bernoulli--zeta tail;
+\item the sign theorem and resulting alternating certified brackets for the infinite product;
+\item the exact bounded condition number $(-q;q)_r/(q;q)_r$ of the level-$r$ log transform;
+\item the Bell-polynomial relative-error and derivative hierarchy of the accelerated product;
+\item transfer of this accelerated approximation to finite signed Thue--Morse exponential sums;
+\item Lambert phase-locked Richardson nodes $x_j=(\lambda+j)2^{-(\lambda+j)}$ designed specifically to extract the periodic endpoint term $\Psi$;
+\item exact transformed inverse-power moments on that lattice, including their complete-homogeneous and Bell-polynomial form.
+\end{enumerate}
+
+A targeted literature search located general Richardson-extrapolation theory and the standard ingredients separately, but no exact counterpart of the combined sinc-tail construction. The responsible statement is therefore ``new relative to the audited repository and apparently not standard,'' not a claim of global priority.
+
+\subsection{Proof-status convention}
+
+Every substantial assertion is tagged implicitly by its placement:
+\begin{itemize}
+\item Results in Sections~\ref{sec:tail}--\ref{sec:thue-morse-transfer} are \statusproved.
+\item The phase-locked Lambert transform in Section~\ref{sec:lambert} is \statusconditional:
+the interpolation algebra is proved here, while the all-orders endpoint input is inherited
+from the formally verified endpoint theory.
+\item Items in Section~\ref{sec:open} are explicitly conjectural or open.
+\end{itemize}
+Here ``proved'' means proved in this mathematical report, not necessarily formalized in
+Lean.  In particular, the endpoint input is represented by
+\texttt{fabiusSaddleLogCoefficient},
+\path{log_fabius_sub_sharpLambertMain_hasAsymptoticExpansion}, and
+\path{log_fabius_sub_sharpLambertExpansion_isBigO} in the Lean development,
+whereas the sinc-tail and phase-extraction transforms remain formalization obligations.
+
+\section{Notation and structural background}
+\label{sec:notation}
+
+\subsection{Sinc products and the Rvachev transform}
+
+We use the entire normalized sinc function
+\[
+\sinc z=\begin{cases}\sin z/z,&z\ne0,\\1,&z=0.\end{cases}
+\]
+For $b>1$, define
+\begin{equation}
+P_b(t)=\prod_{k=1}^{\infty}\sinc\!\left(\frac{t}{b^k}\right),
+\qquad
+P_{b,N}(t)=\prod_{k=1}^{N}\sinc\!\left(\frac{t}{b^k}\right).
+\label{eq:Pb-def}
+\end{equation}
+The dyadic case is $P=P_2$. In a common Fourier normalization for Rvachev's up-function,
+\begin{equation}
+\widehat{\Up}(\xi)=\prod_{h=0}^{\infty}\sinc\!\left(\frac{\pi\xi}{2^h}\right)
+=\sinc(\pi\xi)P_2(\pi\xi).
+\label{eq:up-factor}
+\end{equation}
+Thus every result for $P_2$ immediately applies to the nontrivial tail of $\widehat{\Up}$.
+
+Set
+\begin{equation}
+q=b^{-2}\in(0,1),\qquad z_N=q^{N+1},\qquad
+\rho_N=\frac{|t|}{b^{N+1}}=|t|z_N^{1/2}.
+\label{eq:q-z-rho}
+\end{equation}
+The local analysis below requires $\rho_N<\pi$, exactly the condition that every omitted sinc factor lies before its first nonzero zero.
+
+\subsection{\texorpdfstring{$q$}{q}-notation}
+
+For $r\in\N$,
+\[
+(a;q)_r=\prod_{k=0}^{r-1}(1-aq^k),\qquad
+(q;q)_r=\prod_{k=1}^{r}(1-q^k),
+\]
+and
+\[
+\qbinom{r}{j}{q}=\frac{(q;q)_r}{(q;q)_j(q;q)_{r-j}}
+\quad(0\le j\le r).
+\]
+We will repeatedly use the finite $q$-binomial theorem
+\begin{equation}
+\prod_{k=0}^{r-1}(1+zq^k)
+=\sum_{j=0}^{r}q^{\binom{j}{2}}\qbinom{r}{j}{q} z^j.
+\label{eq:q-binomial}
+\end{equation}
+
+\subsection{Bernoulli and Bell polynomials}
+
+The Bernoulli polynomials are defined by
+\begin{equation}
+\frac{te^{xt}}{e^t-1}=\sum_{n=0}^{\infty}B_n(x)\frac{t^n}{n!},
+\qquad B_n=B_n(0).
+\label{eq:bernoulli-gen}
+\end{equation}
+The complete exponential Bell polynomials $\mathcal B_n$ satisfy
+\begin{equation}
+\exp\!\left(\sum_{m\ge1}x_m\frac{u^m}{m!}\right)
+=\sum_{n\ge0}\mathcal B_n(x_1,\ldots,x_n)\frac{u^n}{n!}.
+\label{eq:bell-gen}
+\end{equation}
+They are the natural conversion device from logarithmic/cumulant data to multiplicative/moment data.
+
+\subsection{The lower-Lambert coordinate}
+
+Let $L=\log 2$. For sufficiently small $x>0$, set
+\begin{equation}
+\lambda(x)=-\frac{1}{L}W_{-1}(-Lx).
+\label{eq:lambda-def}
+\end{equation}
+Then
+\begin{equation}
+x=\lambda 2^{-\lambda},\qquad \lambda>\frac1L.
+\label{eq:lambda-inverse}
+\end{equation}
+The lower branch is essential: on $\lambda>1/L$, the map $\lambda\mapsto\lambda2^{-\lambda}$ is strictly decreasing and hence invertible.
+
+\part{Exact logarithmic tails and multiplicative \texorpdfstring{$q$}{q}-Richardson acceleration}
+
+\section{The exact Bernoulli--zeta tail of a lacunary sinc product}
+\label{sec:tail}
+
+\subsection{The logarithmic sinc series}
+
+\begin{lemma}[Bernoulli--zeta expansion]
+\label{lem:logsinc}
+For $|u|<\pi$,
+\begin{equation}
+\log\frac{\sin u}{u}
+=-\sum_{m=1}^{\infty}\gamma_m u^{2m},
+\qquad
+\gamma_m=\frac{\zeta(2m)}{m\pi^{2m}}
+=\frac{2^{2m-1}|B_{2m}|}{m(2m)!}.
+\label{eq:logsinc}
+\end{equation}
+Every $\gamma_m$ is strictly positive.
+\end{lemma}
+
+\begin{proof}
+Euler's product
+\(
+\sin u/u=\prod_{n\ge1}(1-u^2/(\pi^2n^2))
+\)
+is locally uniformly convergent for $|u|<\pi$. Expanding $\log(1-v)=-\sum_{m\ge1}v^m/m$ and interchanging the absolutely convergent sums gives
+\[
+\log\frac{\sin u}{u}
+=-\sum_{m\ge1}\frac{u^{2m}}{m\pi^{2m}}
+\sum_{n\ge1}n^{-2m}.
+\]
+The Bernoulli form follows from Euler's evaluation of $\zeta(2m)$.
+\end{proof}
+
+The first coefficients are
+\begin{equation}
+\log\sinc u=-\frac{u^2}{6}-\frac{u^4}{180}
+-\frac{u^6}{2835}-\frac{u^8}{37800}-\cdots.
+\label{eq:logsinc-first}
+\end{equation}
+
+\subsection{Exact omitted-tail formula}
+
+\begin{theorem}[Exact logarithmic tail]
+\label{thm:exact-tail}
+Let $b>1$, $N\ge0$, and $t\in\R$ satisfy $\rho_N<\pi$. If $P_{b,N}(t)\ne0$, then $P_b(t)$ and $P_{b,N}(t)$ have the same sign and
+\begin{equation}
+\log|P_{b,N}(t)|-\log|P_b(t)|
+=\sum_{m=1}^{\infty}d_m(t)z_N^m,
+\label{eq:tail-z}
+\end{equation}
+where
+\begin{equation}
+d_m(t)=\frac{\gamma_m t^{2m}}{1-q^m}
+=\frac{\zeta(2m)t^{2m}}{m\pi^{2m}(1-q^m)}.
+\label{eq:dm}
+\end{equation}
+Equivalently,
+\begin{equation}
+\log|P_{b,N}(t)|-\log|P_b(t)|
+=\sum_{m=1}^{\infty}
+\frac{\zeta(2m)}{m\pi^{2m}(1-q^m)}\rho_N^{2m}.
+\label{eq:tail-rho}
+\end{equation}
+The series is absolutely convergent and strictly positive for $t\ne0$.
+\end{theorem}
+
+\begin{proof}
+For $k\ge N+1$ we have $|t|/b^k\le\rho_N<\pi$, so every omitted sinc factor is positive.
+Moreover, the logarithms of the omitted factors are absolutely summable by
+\cref{lem:logsinc}; their product therefore converges to a strictly positive, nonzero
+limit.  Hence truncation and limit have the same sign.  Applying the same expansion and
+using absolute convergence,
+\begin{align*}
+\log|P_b(t)|-\log|P_{b,N}(t)|
+&=\sum_{k=N+1}^{\infty}\log\sinc(t/b^k)\\
+&=-\sum_{m=1}^{\infty}\gamma_m t^{2m}
+\sum_{k=N+1}^{\infty}b^{-2mk}\\
+&=-\sum_{m=1}^{\infty}\gamma_m t^{2m}
+\frac{q^{m(N+1)}}{1-q^m}.
+\end{align*}
+Negating yields the result.
+\end{proof}
+
+\begin{corollary}[Analytic Bernoulli correction]
+\label{cor:analytic-correction}
+For $M\ge0$, define
+\begin{equation}
+C_{b,N}^{[M]}(t)=P_{b,N}(t)
+\exp\!\left(-\sum_{m=1}^{M}d_m(t)z_N^m\right).
+\label{eq:analytic-corrected}
+\end{equation}
+Then $C_{b,N}^{[M]}(t)$ has the same sign as $P_b(t)$ and
+\begin{equation}
+\log\frac{|C_{b,N}^{[M]}(t)|}{|P_b(t)|}
+=\sum_{m=M+1}^{\infty}d_m(t)z_N^m>0
+\quad(t\ne0).
+\label{eq:analytic-correction-error}
+\end{equation}
+Thus $|C_{b,N}^{[M]}(t)|$ is a rigorous upper bound for $|P_b(t)|$.
+\end{corollary}
+
+This correction is explicit but uses $\zeta(2m)$ or Bernoulli numbers. The next construction achieves cancellation from product values alone.
+
+\section{Geometric Lagrange weights and their \texorpdfstring{$q$}{q}-binomial form}
+\label{sec:qweights}
+
+\subsection{Interpolation at \texorpdfstring{$1,q,\ldots,q^r$}{1, q, ..., q-to-the-r}}
+
+For an integer $r\ge0$, let $\lambda_{r,j}(q)$ be the Lagrange basis weight for evaluation at $0$ using nodes $q^0,\ldots,q^r$:
+\begin{equation}
+\lambda_{r,j}(q)=\prod_{\substack{0\le k\le r\\k\ne j}}
+\frac{-q^k}{q^j-q^k}.
+\label{eq:lambda-def-q}
+\end{equation}
+
+\begin{theorem}[Gaussian-$q$-binomial weights]
+\label{thm:qweights}
+For $0\le j\le r$,
+\begin{equation}
+\boxed{
+\lambda_{r,j}(q)
+=\frac{(-1)^{r-j}q^{\binom{r-j+1}{2}}}
+{(q;q)_j(q;q)_{r-j}}
+=\frac{(-1)^{r-j}q^{\binom{r-j+1}{2}}}{(q;q)_r}
+\qbinom{r}{j}{q}.}
+\label{eq:qweights}
+\end{equation}
+Their power moments are
+\begin{equation}
+S_{r,m}(q):=\sum_{j=0}^{r}\lambda_{r,j}(q)q^{jm}
+=\frac{q^{rm}(q^{1-m};q)_r}{(q;q)_r}.
+\label{eq:qmoment-full}
+\end{equation}
+Consequently,
+\begin{equation}
+S_{r,0}=1,
+\qquad S_{r,m}=0\quad(1\le m\le r),
+\label{eq:qmoment-cancel}
+\end{equation}
+and, for $m\ge r+1$,
+\begin{equation}
+S_{r,m}(q)
+=(-1)^r q^{r(r+1)/2}
+\frac{(q^{m-r};q)_r}{(q;q)_r}.
+\label{eq:qmoment-positive}
+\end{equation}
+In particular, every nonzero residual moment has sign $(-1)^r$.
+\end{theorem}
+
+\begin{proof}
+Splitting the product in \cref{eq:lambda-def-q} into $k<j$ and $k>j$ gives \cref{eq:qweights}. For the moments, substitute the Gaussian-binomial form and change variables $k=r-j$. The finite $q$-binomial theorem \cref{eq:q-binomial}, with a suitable monomial factor extracted, gives \cref{eq:qmoment-full}. The zeros for $1\le m\le r$ arise because $(q^{1-m};q)_r$ contains the factor $1-q^0$. For $m\ge r+1$, reverse the negative powers in the product to obtain \cref{eq:qmoment-positive}.
+\end{proof}
+
+\subsection{An exact condition number}
+
+The alternating weights might appear dangerous, but their total variation is exceptionally well behaved.
+
+\begin{theorem}[Bounded $\ell^1$ norm]
+\label{thm:qcondition}
+The absolute weight sum is
+\begin{equation}
+\kappa_r(q):=\sum_{j=0}^{r}|\lambda_{r,j}(q)|
+=\frac{(-q;q)_r}{(q;q)_r}
+=\prod_{k=1}^{r}\frac{1+q^k}{1-q^k}.
+\label{eq:qcondition}
+\end{equation}
+Hence
+\begin{equation}
+\kappa_r(q)\nearrow \kappa_\infty(q)
+:=\frac{(-q;q)_\infty}{(q;q)_\infty}<\infty.
+\label{eq:qcondition-limit}
+\end{equation}
+For $q=1/4$,
+\begin{equation}
+\kappa_\infty(1/4)=1.9692603536682694319\ldots.
+\label{eq:qcondition-dyadic}
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+Set $k=r-j$ in the absolute-value sum and use \cref{eq:qweights}:
+\[
+\kappa_r(q)=\frac1{(q;q)_r}
+\sum_{k=0}^{r}q^{k(k+1)/2}\qbinom{r}{k}{q}.
+\]
+\Cref{eq:q-binomial} with $z=q$ identifies the numerator as
+$\prod_{i=0}^{r-1}(1+q^{i+1})=(-q;q)_r$. The infinite product converges because $\sum q^k<\infty$.
+\end{proof}
+
+\begin{remark}
+This boundedness is not generic for high-order polynomial extrapolation. It is a special consequence of the geometric nodes and is one reason to extrapolate the logarithms: the inputs are of comparable scale, while the transformation itself has uniformly bounded absolute sensitivity.
+\end{remark}
+
+\section{Multiplicative \texorpdfstring{$q$}{q}-Richardson extrapolation}
+\label{sec:qrichardson}
+
+\subsection{Definition and exact transformed error}
+
+Assume $\rho_N<\pi$ and $P_{b,N}(t)\ne0$. Define
+\begin{equation}
+\widehat P_{b;N,r}(t)
+=\sgn(P_{b,N}(t))
+\exp\!\left(\sum_{j=0}^{r}\lambda_{r,j}(q)
+\log|P_{b,N+j}(t)|\right).
+\label{eq:Phat}
+\end{equation}
+Equivalently,
+\begin{equation}
+|\widehat P_{b;N,r}(t)|
+=\prod_{j=0}^{r}|P_{b,N+j}(t)|^{\lambda_{r,j}(q)}.
+\label{eq:Phat-product}
+\end{equation}
+Negative exponents are harmless because the relevant truncations are nonzero.
+
+\begin{theorem}[Exact multiplicative extrapolation error]
+\label{thm:exact-rich-error}
+Under the preceding hypotheses,
+\begin{align}
+E_{b;N,r}(t)
+&:=\log\frac{|\widehat P_{b;N,r}(t)|}{|P_b(t)|}
+\label{eq:E-def}\\
+&=\sum_{m=r+1}^{\infty}d_m(t)z_N^mS_{r,m}(q)
+\label{eq:E-series}\\
+&=\frac{(-1)^rq^{r(r+1)/2}}{(q;q)_r}
+\sum_{m=r+1}^{\infty}
+\frac{\zeta(2m)}{m\pi^{2m}}
+\frac{(q^{m-r};q)_r}{1-q^m}\rho_N^{2m}.
+\label{eq:E-explicit}
+\end{align}
+The series is absolutely convergent. If $t\ne0$, then
+\begin{equation}
+\sgn E_{b;N,r}(t)=(-1)^r.
+\label{eq:E-sign}
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+Apply \cref{thm:exact-tail} to each truncation $N+j$:
+\[
+\log|P_{b,N+j}|=\log|P_b|+
+\sum_{m\ge1}d_m z_N^m q^{jm}.
+\]
+The constant term survives because $S_{r,0}=1$, while the first $r$ powers vanish by \cref{eq:qmoment-cancel}. This proves \cref{eq:E-series}. \Cref{eq:E-explicit} follows from \cref{eq:qmoment-positive}. Every factor in its sum is positive, proving the sign statement.
+\end{proof}
+
+\subsection{Certified alternating brackets}
+
+\begin{corollary}[Rigorous upper and lower bounds]
+\label{cor:brackets}
+For $t\ne0$ under the hypotheses of \cref{thm:exact-rich-error},
+\begin{equation}
+|\widehat P_{b;N,2s+1}(t)|<|P_b(t)|<
+|\widehat P_{b;N,2s}(t)|
+\qquad(s\ge0).
+\label{eq:bracket}
+\end{equation}
+Thus any two consecutive extrapolation levels give a certified enclosure of the infinite product. In particular,
+\begin{equation}
+\left|\log\frac{|\widehat P_{b;N,r}(t)|}{|P_b(t)|}\right|
+\le
+\left|\log\frac{|\widehat P_{b;N,r}(t)|}
+{|\widehat P_{b;N,r+1}(t)|}\right|
+\label{eq:aposteriori-log}
+\end{equation}
+whenever the two levels lie on opposite sides as in \cref{eq:bracket}.
+\end{corollary}
+
+The bracket is stronger than a mere asymptotic claim: it follows from the exact sign of every term in the transformed tail.
+
+\subsection{Leading term and explicit remainder bound}
+
+\begin{corollary}[Sharp leading error]
+\label{cor:leading-error}
+As $\rho_N\to0$ with $r$ fixed,
+\begin{equation}
+E_{b;N,r}(t)
+=C_r(q)\rho_N^{2r+2}+O(\rho_N^{2r+4}),
+\label{eq:leading-error}
+\end{equation}
+where
+\begin{equation}
+C_r(q)=(-1)^r q^{r(r+1)/2}
+\frac{\zeta(2r+2)}{(r+1)\pi^{2r+2}(1-q^{r+1})}.
+\label{eq:Cr}
+\end{equation}
+For the dyadic case $q=1/4$,
+\begin{equation}
+C_0=\frac29,\qquad
+C_1=-\frac1{675},\qquad
+C_2=\frac1{178605},\qquad
+C_3=-\frac1{154224000}.
+\label{eq:Cr-dyadic}
+\end{equation}
+\end{corollary}
+
+\begin{theorem}[Nonasymptotic error bound]
+\label{thm:error-bound}
+Let $a=(\rho_N/\pi)^2<1$. Then
+\begin{equation}
+|E_{b;N,r}(t)|
+\le
+\frac{q^{r(r+1)/2}\zeta(2)}
+{(q;q)_r(1-q)(r+1)}
+\frac{a^{r+1}}{1-a}.
+\label{eq:error-bound}
+\end{equation}
+Consequently, for every fixed admissible pair $(t,N)$,
+\begin{equation}
+\widehat P_{b;N,r}(t)\longrightarrow P_b(t)
+\qquad(r\to\infty)
+\label{eq:r-convergence}
+\end{equation}
+with a supergeometric factor $q^{r(r+1)/2}$.
+\end{theorem}
+
+\begin{proof}
+For $m\ge r+1$, \cref{eq:qmoment-positive} gives
+\[
+|S_{r,m}(q)|\le\frac{q^{r(r+1)/2}}{(q;q)_r}.
+\]
+Also $\zeta(2m)\le\zeta(2)$, $m^{-1}\le(r+1)^{-1}$, and $(1-q^m)^{-1}\le(1-q)^{-1}$. Sum the resulting geometric series in $a$. Since $(q;q)_r$ tends to the positive limit $(q;q)_\infty$, the right-hand side tends to zero faster than $q^{r^2/2}$ times an exponential factor.
+\end{proof}
+
+\subsection{Richardson table and multiplicative recurrence}
+
+The transform can be evaluated without forming the closed weights.
+
+\begin{algorithm}[Logarithmic $q$-Richardson table]
+\label{alg:rich-table}
+Set
+\[
+R_{N,0}(t)=\log|P_{b,N}(t)|.
+\]
+For $s\ge1$, recursively define
+\begin{equation}
+R_{N,s}(t)=
+\frac{R_{N+1,s-1}(t)-q^sR_{N,s-1}(t)}{1-q^s}.
+\label{eq:rich-recursion}
+\end{equation}
+Then
+\begin{equation}
+R_{N,r}(t)=\sum_{j=0}^{r}\lambda_{r,j}(q)
+\log|P_{b,N+j}(t)|,
+\qquad
+\widehat P_{b;N,r}=\sgn(P_{b,N})e^{R_{N,r}}.
+\label{eq:rich-table-result}
+\end{equation}
+\end{algorithm}
+
+In multiplicative form,
+\begin{equation}
+|\widehat P_{b;N,s}|
+=\left(
+\frac{|\widehat P_{b;N+1,s-1}|}
+{|\widehat P_{b;N,s-1}|^{q^s}}
+\right)^{1/(1-q^s)}.
+\label{eq:multiplicative-recursion}
+\end{equation}
+The logarithmic implementation is preferable because it avoids underflow in the rapidly decaying Fourier regime.
+
+\subsection{Explicit dyadic levels}
+
+For $b=2$, $q=1/4$. The first transforms are
+\begin{align}
+|\widehat P_{N,1}|
+&=|P_N|^{-1/3}|P_{N+1}|^{4/3},
+\label{eq:r1-dyadic}\\
+|\widehat P_{N,2}|
+&=|P_N|^{1/45}|P_{N+1}|^{-4/9}|P_{N+2}|^{64/45},
+\label{eq:r2-dyadic}\\
+|\widehat P_{N,3}|
+&=|P_N|^{-1/2835}|P_{N+1}|^{4/135}
+|P_{N+2}|^{-64/135}|P_{N+3}|^{4096/2835}.
+\label{eq:r3-dyadic}
+\end{align}
+The log errors begin respectively at orders $\rho_N^4$, $\rho_N^6$, and $\rho_N^8$.
+
+\subsection{Hybrid Bernoulli--Richardson correction}
+
+The exact tail coefficients and the data-driven transform can be combined.
+
+\begin{corollary}[Hybrid correction]
+\label{cor:hybrid}
+For $s\ge0$, define
+\begin{equation}
+\widehat P_{b;N,r}^{[s]}(t)
+=\widehat P_{b;N,r}(t)
+\exp\!\left(-\sum_{m=r+1}^{r+s}
+ d_m(t)z_N^mS_{r,m}(q)\right).
+\label{eq:hybrid}
+\end{equation}
+Then
+\begin{equation}
+\log\frac{|\widehat P_{b;N,r}^{[s]}(t)|}{|P_b(t)|}
+=\sum_{m=r+s+1}^{\infty}d_m(t)z_N^mS_{r,m}(q),
+\label{eq:hybrid-error}
+\end{equation}
+which still has sign $(-1)^r$. Thus the hybrid retains certified bracketing while moving the first nonzero term from degree $r+1$ to degree $r+s+1$.
+\end{corollary}
+
+This is the most direct point at which Bernoulli numbers and Gaussian $q$-binomial weights cooperate in one exact numerical scheme.
+
+\section{Bell-polynomial error calculus and derivatives}
+\label{sec:bell}
+
+\subsection{From logarithmic error to relative error}
+
+Write
+\begin{equation}
+e_m^{(r)}(t)=d_m(t)S_{r,m}(q),
+\qquad e_m^{(r)}=0\quad(1\le m\le r).
+\label{eq:em}
+\end{equation}
+Then \cref{eq:E-series} is $E=\sum_{m\ge1}e_m^{(r)}z_N^m$. Exponentiation and \cref{eq:bell-gen} give an exact convergent expansion.
+
+\begin{theorem}[Bell-polynomial relative-error expansion]
+\label{thm:bell-relative}
+Under the hypotheses of \cref{thm:exact-rich-error},
+\begin{equation}
+\frac{|\widehat P_{b;N,r}(t)|}{|P_b(t)|}
+=1+\sum_{n=r+1}^{\infty}
+\frac{1}{n!}
+\mathcal B_n\!\left(1!e_1^{(r)},2!e_2^{(r)},\ldots,n!e_n^{(r)}\right)z_N^n.
+\label{eq:bell-relative}
+\end{equation}
+In particular, because $e_1^{(r)}=\cdots=e_r^{(r)}=0$, the first relative-error coefficient equals the first logarithmic-error coefficient:
+\begin{equation}
+\frac{|\widehat P_{b;N,r}|}{|P_b|}-1
+=e_{r+1}^{(r)}z_N^{r+1}+O(z_N^{r+2}).
+\label{eq:first-relative}
+\end{equation}
+\end{theorem}
+
+The next coefficients exhibit the familiar cumulant-to-moment pattern. For example,
+\begin{align*}
+[z_N^{r+2}]\left(e^E-1\right)&=e_{r+2}^{(r)}
+&& (r\ge1),\\
+[z_N^{2r+2}]\left(e^E-1\right)&=e_{2r+2}^{(r)}+\frac12(e_{r+1}^{(r)})^2.
+\end{align*}
+
+\subsection{Logarithmic derivatives}
+
+On an interval avoiding zeros, differentiation of \cref{eq:tail-z} is legitimate termwise. Let
+\[
+D^\ell=\frac{\dd^\ell}{\dd t^\ell},\qquad
+(2m)_{\ell}=2m(2m-1)\cdots(2m-\ell+1).
+\]
+
+\begin{theorem}[Derivative acceleration]
+\label{thm:derivative-accel}
+For every fixed $\ell\ge0$ and admissible $t$ away from zeros,
+\begin{equation}
+D^\ell\!\left(
+\sum_{j=0}^{r}\lambda_{r,j}\log|P_{b,N+j}(t)|
+-\log|P_b(t)|\right)
+=
+\sum_{m\ge\max(r+1,\lceil\ell/2\rceil)}
+\frac{\gamma_m(2m)_\ell t^{2m-\ell}}
+{1-q^m}z_N^mS_{r,m}(q).
+\label{eq:derivative-error}
+\end{equation}
+Thus the same $q$-Richardson table simultaneously cancels the first $r$ geometric tail powers in every logarithmic derivative.
+\end{theorem}
+
+For reconstructing derivatives of the product itself, set $L(t)=\log|P_b(t)|$. Fa\`a di Bruno's formula becomes
+\begin{equation}
+\frac{P_b^{(n)}(t)}{P_b(t)}
+=\mathcal B_n\bigl(L'(t),L''(t),\ldots,L^{(n)}(t)\bigr)
+\label{eq:bell-log-derivatives}
+\end{equation}
+where the sign of $P_b$ is locally constant. Combining \cref{eq:derivative-error,eq:bell-log-derivatives} gives an accelerated hierarchy for all derivatives of the Fourier transform away from its zeros.
+
+\subsection{Application to interzero extrema}
+
+Between consecutive zeros of $\widehat{\Up}$, an extremum of its modulus satisfies
+\begin{equation}
+\frac{\dd}{\dd\xi}\log|\widehat{\Up}(\xi)|=0.
+\label{eq:peak-equation}
+\end{equation}
+\Cref{eq:up-factor} separates the first sinc factor from $P_2(\pi\xi)$. Theorem~\ref{thm:derivative-accel} gives a certified high-order approximation to the tail contribution in \cref{eq:peak-equation}. This suggests a numerically stable alternative to multiplying many tiny sinc factors and then differentiating the product.
+
+\section{Transfer to finite signed Thue--Morse sums}
+\label{sec:thue-morse-transfer}
+
+Let
+\begin{equation}
+\varepsilon_n=(-1)^{s_2(n)},
+\label{eq:epsilon}
+\end{equation}
+where $s_2(n)$ is the binary digit sum. The standard finite product identity
+\begin{equation}
+\sum_{n=0}^{2^N-1}\varepsilon_n z^n
+=\prod_{j=0}^{N-1}(1-z^{2^j})
+\label{eq:TM-poly}
+\end{equation}
+becomes a precise sinc identity after a phase-scaled substitution.
+
+\begin{proposition}[Finite Thue--Morse representation of $P_N$]
+\label{prop:TM-PN}
+Define
+\begin{equation}
+T_N(t)=\sum_{n=0}^{2^N-1}\varepsilon_n
+\exp\!\left(-\frac{\ii tn}{2^{N-1}}\right).
+\label{eq:TN}
+\end{equation}
+Then
+\begin{equation}
+T_N(t)=\ii^N2^{-N(N-1)/2}
+\e^{-\ii t(1-2^{-N})}t^N P_N(t),
+\label{eq:TN-PN}
+\end{equation}
+with the identity at $t=0$ understood by continuity. Hence, for $t\ne0$,
+\begin{equation}
+P_N(t)=2^{N(N-1)/2}\ii^{-N}
+\e^{\ii t(1-2^{-N})}t^{-N}T_N(t).
+\label{eq:PN-TN}
+\end{equation}
+\end{proposition}
+
+\begin{proof}
+Insert $z=e^{-\ii t/2^{N-1}}$ in \cref{eq:TM-poly}. Reindex the factors to obtain
+\[
+T_N(t)=\prod_{k=0}^{N-1}(1-e^{-\ii t/2^k}).
+\]
+Using
+\[
+1-e^{-\ii a}=2\ii e^{-\ii a/2}\sin(a/2),
+\]
+sum the phases.  Finally, factor
+\[
+\prod_{j=1}^{N}\sin(t/2^j)
+=t^N2^{-N(N+1)/2}P_N(t),
+\]
+which gives the result.
+\end{proof}
+
+\begin{corollary}[Accelerated infinite product from finite digital sums]
+\label{cor:TM-accelerated}
+For $t\ne0$ and admissible $N$,
+\begin{equation}
+|\widehat P_{N,r}(t)|
+=\prod_{j=0}^{r}
+\left(
+2^{(N+j)(N+j-1)/2}|t|^{-(N+j)}|T_{N+j}(t)|
+\right)^{\lambda_{r,j}(1/4)}.
+\label{eq:TM-accelerated}
+\end{equation}
+The exact error, bracketing, and bounds of \cref{thm:exact-rich-error,cor:brackets,thm:error-bound} therefore become statements purely about a finite collection of signed Thue--Morse exponential sums.
+\end{corollary}
+
+This transfer is conceptually useful even when direct product evaluation is faster. It makes the approximation a finite digital identity and exposes a new route for symbolic or formal treatment through the already developed Thue--Morse polynomial machinery.
+
+\section{Numerical verification and observed orders}
+\label{sec:numerics}
+
+All values in this section were recomputed with 100 decimal digits. The reference value used 300 sinc factors; at the displayed precision its omitted tail is negligible relative to every table entry. We report absolute logarithmic error
+\[
+\varepsilon_{N,r}(t)=
+\left|\log|\widehat P_{N,r}(t)|-\log|P(t)|\right|,
+\]
+where $r=0$ denotes the raw truncation $P_N$.
+
+\begin{table}[htbp]
+\centering
+\caption{Dyadic product at $t=3$: absolute logarithmic errors.}
+\label{tab:numeric-t3}
+\begin{tabular}{@{}r r r r r@{}}
+\toprule
+$N$ & raw $r=0$ & $r=1$ & $r=2$ & $r=3$ \\
+\midrule
+2 & $3.1368194\,10^{-2}$ & $2.9611726\,10^{-5}$ & $1.5785787\,10^{-8}$ & $2.5743474\,10^{-12}$ \\
+3 & $7.8198398\,10^{-3}$ & $1.8359337\,10^{-6}$ & $2.4411880\,10^{-10}$ & $9.9424663\,10^{-15}$ \\
+4 & $1.9535830\,10^{-3}$ & $1.1451700\,10^{-7}$ & $3.8045692\,10^{-12}$ & $3.8728157\,10^{-17}$ \\
+5 & $4.8830986\,10^{-4}$ & $7.1537455\,10^{-9}$ & $5.9408270\,10^{-14}$ & $1.5117515\,10^{-19}$ \\
+6 & $1.2207210\,10^{-4}$ & $4.4705340\,10^{-10}$ & $9.2810541\,10^{-16}$ & $5.9042379\,10^{-22}$ \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+The successive-$N$ error ratios approach
+\[
+4^{-1},\quad4^{-2},\quad4^{-3},\quad4^{-4}
+\]
+for levels $r=0,1,2,3$, exactly as \cref{eq:leading-error} predicts. The signs also alternate: raw and level two are upper approximations in modulus; levels one and three are lower approximations.
+
+\begin{table}[htbp]
+\centering
+\caption{Errors for two additional arguments, illustrating that the order is independent of $t$ inside the convergence disk.}
+\label{tab:numeric-other}
+\begin{tabular}{@{}c r r r r r@{}}
+\toprule
+$t$ & $N$ & raw $r=0$ & $r=1$ & $r=2$ & $r=3$ \\
+\midrule
+1 & 4 & $2.1701954\,10^{-4}$ & $1.4129551\,10^{-9}$ & $5.2149215\,10^{-15}$ & $5.8978483\,10^{-21}$ \\
+1 & 6 & $1.3563390\,10^{-5}$ & $5.5189741\,10^{-12}$ & $1.2730608\,10^{-18}$ & $8.9985206\,10^{-26}$ \\
+5 & 4 & $5.4288846\,10^{-3}$ & $8.8466438\,10^{-7}$ & $8.1669316\,10^{-11}$ & $2.3096377\,10^{-15}$ \\
+5 & 6 & $3.3909800\,10^{-4}$ & $3.4497407\,10^{-9}$ & $1.9894410\,10^{-14}$ & $3.5155982\,10^{-20}$ \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+For $t=3$ the product itself is
+\begin{equation}
+P(3)=0.585719176535068482912529262451\ldots.
+\label{eq:P3}
+\end{equation}
+Even at $N=2$, the third transformed level improves the raw log error by approximately ten decimal orders while using only truncations through $N+3=5$.
+
+\part{Lambert phase-locked extraction of the endpoint oscillation}
+
+\section{The all-orders endpoint template}
+\label{sec:lambert-template}
+
+The repository's corrected endpoint analysis has the structural form
+\begin{equation}
+\log F(x)=\mathcal W_{\mathrm{MSE}}(x)+\Psi(\lambda(x))
++\sum_{m=1}^{M}\frac{A_m(\lambda(x))}{\lambda(x)^m}
++O\!\left(\lambda(x)^{-M-1}\right),
+\label{eq:endpoint-template}
+\end{equation}
+where $\Psi$ and the coefficient functions $A_m$ are $1$-periodic. The nonoscillatory main saddle exponent may be written in the normalization used in the repository as
+\begin{equation}
+\mathcal W_{\mathrm{MSE}}(x)
+=-\frac{L}{2}\lambda^2+
+\left(1+\frac L2\right)\lambda
+-\frac12\log\lambda+C_F,
+\qquad L=\log2,
+\label{eq:Wmse}
+\end{equation}
+with the convention-dependent constant $C_F$. The critical fact for the present construction is not the explicit constant but the periodicity of every $A_m$ in the same phase variable.
+
+Define the reduced endpoint observable
+\begin{equation}
+Y(x)=\log F(x)-\mathcal W_{\mathrm{MSE}}(x).
+\label{eq:Y}
+\end{equation}
+Then \cref{eq:endpoint-template} becomes
+\begin{equation}
+Y(x)=\Psi(\lambda)+\sum_{m\ge1}A_m(\lambda)\lambda^{-m}
+\label{eq:Y-expansion}
+\end{equation}
+in the asymptotic sense.
+
+\section{Phase-locked Lambert nodes}
+\label{sec:lambert}
+
+\subsection{Exact phase locking}
+
+Fix $\lambda>1/L$ and define
+\begin{equation}
+\lambda_j=\lambda+j,
+\qquad
+x_j=x_j(\lambda)=(\lambda+j)2^{-(\lambda+j)},
+\qquad j=0,1,\ldots.
+\label{eq:phase-nodes}
+\end{equation}
+
+\begin{lemma}[Exact Lambert inversion on the lattice]
+\label{lem:phase-lock}
+For every $j\ge0$,
+\begin{equation}
+\lambda(x_j)=\lambda+j.
+\label{eq:phase-inverse}
+\end{equation}
+Consequently, for every $1$-periodic function $G$,
+\begin{equation}
+G(\lambda(x_j))=G(\lambda).
+\label{eq:periodic-lock}
+\end{equation}
+\end{lemma}
+
+\begin{proof}
+\Cref{eq:lambda-inverse} gives the inverse relation exactly on the decreasing branch. Periodicity gives the second assertion.
+\end{proof}
+
+Thus the nodes are not merely close in phase; they have exactly identical phase. Their physical spacing is nongeometric:
+\begin{equation}
+\frac{x_{j+1}}{x_j}
+=\frac{\lambda+j+1}{2(\lambda+j)},
+\qquad
+\log_2\frac{x_j}{x_0}
+=\log_2\frac{\lambda+j}{\lambda}-j.
+\label{eq:x-spacing}
+\end{equation}
+This slight deviation from a dyadic ray is precisely what preserves the Lambert phase.
+
+\subsection{Lagrange weights in reciprocal scale}
+
+Set
+\begin{equation}
+h_j=\frac1{\lambda+j}.
+\label{eq:h-nodes}
+\end{equation}
+We interpolate $Y(x_j)$ as a formal/asymptotic power series in $h_j$ and evaluate at $h=0$.
+
+\begin{theorem}[Phase-locked Richardson weights]
+\label{thm:lambert-weights}
+The Lagrange weights for evaluation at $h=0$ from $h_0,\ldots,h_r$ are
+\begin{equation}
+\boxed{
+\omega_{r,j}(\lambda)
+=\prod_{\substack{0\le k\le r\\k\ne j}}
+\frac{-h_k}{h_j-h_k}
+=\frac{(-1)^{r-j}}{r!}\binom{r}{j}(\lambda+j)^r.}
+\label{eq:omega}
+\end{equation}
+They satisfy
+\begin{equation}
+\sum_{j=0}^{r}\omega_{r,j}=1,
+\qquad
+\sum_{j=0}^{r}\omega_{r,j}(\lambda+j)^{-m}=0
+\quad(1\le m\le r).
+\label{eq:omega-cancel}
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+Since
+\[
+h_j-h_k=\frac{k-j}{(\lambda+j)(\lambda+k)},
+\]
+each factor in the Lagrange product equals $(\lambda+j)/(j-k)$. Therefore
+\[
+\omega_{r,j}=\frac{(\lambda+j)^r}
+{\prod_{k\ne j}(j-k)}
+=\frac{(-1)^{r-j}}{j!(r-j)!}(\lambda+j)^r.
+\]
+The moment identities follow either from polynomial interpolation or from the fact that an $r$th finite difference annihilates every polynomial of degree below $r$.
+\end{proof}
+
+The first three levels are
+\begin{align}
+(\omega_{1,0},\omega_{1,1})
+&=(-\lambda,\lambda+1),
+\label{eq:omega1}\\
+(\omega_{2,0},\omega_{2,1},\omega_{2,2})
+&=\left(\frac{\lambda^2}{2},-(\lambda+1)^2,
+\frac{(\lambda+2)^2}{2}\right),
+\label{eq:omega2}\\
+(\omega_{3,0},\omega_{3,1},\omega_{3,2},\omega_{3,3})
+&=\left(-\frac{\lambda^3}{6},\frac{(\lambda+1)^3}{2},
+-\frac{(\lambda+2)^3}{2},\frac{(\lambda+3)^3}{6}\right).
+\label{eq:omega3}
+\end{align}
+
+\subsection{All residual moments}
+
+Let $h_n(a_0,\ldots,a_r)$ denote the complete homogeneous symmetric polynomial, characterized by
+\begin{equation}
+\prod_{j=0}^{r}(1-a_jz)^{-1}
+=\sum_{n=0}^{\infty}h_n(a_0,\ldots,a_r)z^n.
+\label{eq:complete-homogeneous}
+\end{equation}
+
+\begin{theorem}[Exact inverse-power moments]
+\label{thm:lambert-moments}
+For $s\ge1$,
+\begin{equation}
+\sum_{j=0}^{r}\omega_{r,j}(\lambda+j)^{-(r+s)}
+=\frac{(-1)^r}{(\lambda)_{r+1}}
+ h_{s-1}\!\left(\frac1\lambda,\frac1{\lambda+1},\ldots,
+\frac1{\lambda+r}\right),
+\label{eq:lambert-moments}
+\end{equation}
+where $(\lambda)_{r+1}=\lambda(\lambda+1)\cdots(\lambda+r)$ is the rising factorial. In particular,
+\begin{equation}
+\sum_{j=0}^{r}\omega_{r,j}(\lambda+j)^{-(r+1)}
+=\frac{(-1)^r}{(\lambda)_{r+1}}.
+\label{eq:lambert-leading-moment}
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+Substituting \cref{eq:omega} reduces the left-hand side to
+\[
+\frac1{r!}\sum_{j=0}^{r}(-1)^{r-j}\binom{r}{j}(\lambda+j)^{-s}.
+\]
+For $s=1$, partial fractions of $1/(\lambda)_{r+1}$ give \cref{eq:lambert-leading-moment}. Repeated differentiation with respect to $\lambda$, or multiplication of the generating function of reciprocal powers, yields \cref{eq:lambert-moments}. Equivalently, compare coefficients in
+\[
+\frac{1}{(\lambda-z)_{r+1}}
+=\frac{1}{(\lambda)_{r+1}}
+\prod_{j=0}^{r}\left(1-\frac{z}{\lambda+j}\right)^{-1}.
+\]
+\end{proof}
+
+Define generalized harmonic sums
+\begin{equation}
+H_k^{(r)}(\lambda)=\sum_{j=0}^{r}(\lambda+j)^{-k}.
+\label{eq:Hrk}
+\end{equation}
+Then the complete homogeneous polynomial in \cref{eq:lambert-moments} has the Bell representation
+\begin{equation}
+h_n\!\left(\frac1\lambda,\ldots,\frac1{\lambda+r}\right)
+=\frac1{n!}\mathcal B_n\!\left(
+0!H_1^{(r)},1!H_2^{(r)},\ldots,(n-1)!H_n^{(r)}
+\right).
+\label{eq:h-Bell}
+\end{equation}
+This is the second exact Bell-polynomial bridge in the report: the first exponentiated a log error; the second resolves all residual moments of the Lambert extrapolator.
+
+\subsection{Extraction of the periodic endpoint factor}
+
+Define
+\begin{equation}
+\widehat\Psi_r(\lambda)
+=\sum_{j=0}^{r}\omega_{r,j}(\lambda)Y(x_j(\lambda)).
+\label{eq:Psi-hat}
+\end{equation}
+
+\begin{theorem}[Phase-locked extraction of $\Psi$]
+\label{thm:Psi-extraction}
+Assume the all-orders expansion \cref{eq:endpoint-template} holds uniformly along a fixed compact phase set. Then, as $\lambda\to\infty$ with its fractional part fixed,
+\begin{align}
+\widehat\Psi_r(\lambda)-\Psi(\lambda)
+&\sim \frac{(-1)^r}{(\lambda)_{r+1}}
+\sum_{s=0}^{\infty}A_{r+1+s}(\lambda)
+ h_s\!\left(\frac1\lambda,\ldots,\frac1{\lambda+r}\right)
+\label{eq:Psi-full-error}\\
+&=\frac{(-1)^rA_{r+1}(\lambda)}{(\lambda)_{r+1}}
++O(\lambda^{-r-2}).
+\label{eq:Psi-leading-error}
+\end{align}
+In particular, the first $r$ inverse-$\lambda$ corrections are cancelled exactly.
+\end{theorem}
+
+\begin{proof}
+At the phase-locked nodes, periodicity gives
+\[
+Y(x_j)=\Psi(\lambda)+\sum_{m\ge1}A_m(\lambda)(\lambda+j)^{-m}.
+\]
+The constant survives because the weights sum to one. Terms $1\le m\le r$ vanish by \cref{eq:omega-cancel}. Write $m=r+1+s$ and apply \cref{thm:lambert-moments}. A small uniformity point is essential: the absolute weight sum is $O_r(\lambda^r)$. To obtain the expansion through residual index $s=S$, apply the input all-orders theorem through order $2r+S+1$. Its transformed remainder is then $O_r(\lambda^{-r-S-2})$, while the finitely many undisplayed transformed coefficients start at the same order. This proves the displayed Poincar\'e expansion despite the growing weights.
+\end{proof}
+
+Exponentiating produces a multiplicative estimator of the periodic amplitude:
+\begin{equation}
+\widehat{\mathcal A}_r(\lambda)
+=\exp(\widehat\Psi_r(\lambda))
+=\prod_{j=0}^{r}
+\left(\frac{F(x_j)}{\exp(\mathcal W_{\mathrm{MSE}}(x_j))}
+\right)^{\omega_{r,j}(\lambda)}.
+\label{eq:Ahat}
+\end{equation}
+Its relative-error coefficients are again complete Bell polynomials applied to the logarithmic coefficients in \cref{eq:Psi-full-error}.
+
+\subsection{Coefficient extraction beyond \texorpdfstring{$\Psi$}{Psi}}
+
+The same nodes can estimate $A_1,A_2,\ldots$ by differentiating the interpolating polynomial at $h=0$. If $\ell_j(h)$ is the Lagrange basis for $h_j$, then
+\begin{equation}
+\widehat A_s^{(r)}(\lambda)
+=\frac1{s!}\sum_{j=0}^{r}\ell_j^{(s)}(0)Y(x_j),
+\qquad 0\le s\le r,
+\label{eq:As-extractor}
+\end{equation}
+with $\widehat A_0^{(r)}=\widehat\Psi_r$. For $s=1$,
+\begin{equation}
+\ell_j'(0)
+=-\omega_{r,j}\sum_{\substack{0\le k\le r\\k\ne j}}(\lambda+k).
+\label{eq:first-derivative-weight}
+\end{equation}
+Higher derivative weights are elementary symmetric polynomials in the numbers $-(\lambda+k)$ and can be generated by Bell polynomials. Thus a single phase-locked sample block can recover a triangular set of periodic coefficient functions.
+
+\section{Bernoulli-polynomial geometry and conditioning of the Lambert lattice}
+\label{sec:lambert-conditioning}
+
+Unlike the geometric $q$-weights, the phase-locked weights grow polynomially in $\lambda$:
+\begin{equation}
+\kappa_r^{\mathrm L}(\lambda)
+:=\sum_{j=0}^{r}|\omega_{r,j}(\lambda)|
+=\frac1{r!}\sum_{j=0}^{r}\binom{r}{j}(\lambda+j)^r.
+\label{eq:lambert-condition}
+\end{equation}
+Equivalently, if $J\sim\mathrm{Binomial}(r,1/2)$,
+\begin{equation}
+\kappa_r^{\mathrm L}(\lambda)
+=\frac{2^r}{r!}\mathbb E(\lambda+J)^r
+\sim_{\lambda\to\infty,\,r\,\mathrm{fixed}}\frac{2^r}{r!}\lambda^r.
+\label{eq:lambert-condition-asymp}
+\end{equation}
+Thus high precision is essential. This is not a defect of the derivation: extrapolating from $h_j\asymp1/\lambda$ to the remote point $h=0$ is intrinsically ill-conditioned.
+
+The binomial moments can be expanded through Stirling numbers:
+\begin{equation}
+\sum_{j=0}^{r}\binom{r}{j}j^k
+=\sum_{\ell=0}^{k}
+\left\{\begin{matrix}k\\\ell\end{matrix}\right\}
+r^{\underline{\ell}}\,2^{r-\ell}.
+\label{eq:binomial-moments}
+\end{equation}
+Here $r^{\underline{\ell}}=r(r-1)\cdots(r-\ell+1)$ is a falling factorial. For unweighted arithmetic-node diagnostics, Bernoulli polynomials give the exact power sums
+\begin{equation}
+\sum_{j=0}^{r}(\lambda+j)^p
+=\frac{B_{p+1}(\lambda+r+1)-B_{p+1}(\lambda)}{p+1}.
+\label{eq:bernoulli-power-sum}
+\end{equation}
+\Cref{eq:bernoulli-power-sum} is useful for scaling, centering, and constructing orthogonalized polynomial bases on the Lambert node block. It also makes explicit why Bernoulli polynomials are the natural arithmetic-lattice companion to the Bernoulli numbers already present in the sinc-tail coefficients.
+
+\subsection{A stable evaluation strategy}
+
+For practical extraction of $\Psi$:
+\begin{enumerate}
+\item compute $\lambda$ and $x_j$ at precision exceeding the target by roughly
+$\log_{10}\kappa_r^{\mathrm L}(\lambda)$ guard digits;
+\item evaluate $Y(x_j)$ with the same phase convention and main term;
+\item use barycentric interpolation in $h_j$ rather than explicitly summing large alternating monomials;
+\item repeat at successive $\lambda$ with the same fractional part and verify the predicted $\lambda^{-(r+1)}$ decay;
+\item compare $r$ and $r+1$ transforms as an a posteriori diagnostic, while remembering that no sign bracket is presently available because the signs of $A_m(\lambda)$ are not known globally.
+\end{enumerate}
+
+\part{Unified interpretation, formalization path, and research program}
+
+\section{Two extrapolation geometries}
+\label{sec:dual-geometries}
+
+The two constructions are instances of one principle: choose a coordinate in which the defect has a power expansion, then interpolate to the zero-defect point.
+
+\begin{table}[htbp]
+\centering
+\caption{Comparison of the two extrapolation geometries.}
+\label{tab:geometries}
+\begin{tabularx}{\textwidth}{@{}l X X@{}}
+\toprule
+Feature & Sinc-tail transform & Lambert endpoint transform \\
+\midrule
+Defect coordinate & $z_N=q^{N+1}$ & $h=1/\lambda$ \\
+Node family & $z_Nq^j$ & $(\lambda+j)^{-1}$ \\
+Invariant structure & lacunary tail coefficients & periodic phase coefficients \\
+Interpolation algebra & Gaussian $q$-binomial & ordinary binomial/finite difference \\
+Leading cancellation & powers $z,\ldots,z^r$ & powers $h,\ldots,h^r$ \\
+Coefficient source & Bernoulli numbers / $\zeta(2m)$ & periodic saddle jets $A_m$ \\
+Reconstruction & exponential Bell polynomials & complete homogeneous and Bell polynomials \\
+Conditioning & uniformly bounded in $r$ & grows like $2^r\lambda^r/r!$ \\
+Certification & exact alternating brackets & asymptotic order, no global sign yet \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+The sinc scheme is unusually favorable because the geometric-node Lagrange weights have bounded total variation. The Lambert scheme pays for exact phase locking with growing weights, but it solves a different problem: extracting a nonconstant periodic amplitude that ordinary dyadic extrapolation would mix across phases.
+
+\section{Consequences for Fabius and Rvachev computations}
+\label{sec:consequences}
+
+\subsection{Certified Fourier evaluation}
+
+Using \cref{eq:up-factor}, compute the first factor exactly and bracket $P_2(\pi\xi)$ by consecutive transformed levels. This produces a certified enclosure for $|\widehat\Up(\xi)|$ away from zeros. Because the work is done in logarithms, the method remains usable deep in the log-normal decay regime where direct products underflow.
+
+\subsection{Peak localization and envelope testing}
+
+Use the derivative transform in \cref{eq:derivative-error} inside \cref{eq:peak-equation}. The resulting roots can test fine envelope conjectures without contaminating the comparison by truncation error. In particular, a claimed subleading Fourier envelope should be compared against a product value whose numerical error is below the proposed correction term; the bracket theorem makes that requirement checkable.
+
+\subsection{Independent extraction of the endpoint oscillation}
+
+The phase-locked transform \cref{eq:Psi-hat} gives a second way to recover $\Psi$: not from its Fourier/Gamma--zeta representation, but from $F$ itself. Agreement between the two routes would be a stringent validation of constants, branches, and phase conventions in the endpoint asymptotic.
+
+\subsection{A bridge from exact dyadic values to asymptotics}
+
+The repository already relates exact dyadic values to a phase-locked Lambert coordinate on fixed-numerator rays. The new construction suggests a complementary experiment:
+\begin{enumerate}
+\item use exact or high-precision values of $F$ at nearby phase-locked non-dyadic nodes $x_j$;
+\item extract $\Psi$ and several $A_m$;
+\item compare them with the periodic coefficient functions inferred from exact dyadic sequences whose phases become dense;
+\item use the discrepancy to isolate the dyadic-arithmetic contribution from the universal saddle contribution.
+\end{enumerate}
+This does not by itself prove the exact-to-asymptotic bridge, but it supplies a sharply conditioned diagnostic coordinate for that problem.
+
+\subsection{Base-\texorpdfstring{$b$}{b} generalized up-functions}
+
+Theorems~\ref{thm:exact-tail}--\ref{thm:error-bound} hold for every real $b>1$. If a compactly supported refinement function has Fourier transform
+\(
+\prod_{k\ge1}\sinc(t/b^k)
+\)
+or a finite product times this tail, the same acceleration and bracketing apply with $q=b^{-2}$. This broadens the method beyond the dyadic Rvachev function and may be useful for nonbinary infinite convolutions.
+
+\section{Lean formalization blueprint}
+\label{sec:lean}
+
+The sinc-side results are well suited to formalization because their analytic and algebraic components separate cleanly.
+
+\subsection{Suggested definitions}
+
+\begin{enumerate}
+\item \texttt{lacunarySincProd b N t}: finite product over $k=1,\ldots,N$.
+\item \texttt{lacunarySincProdInf b t}: infinite product, with convergence proved from $\sum t^2b^{-2k}$.
+\item \texttt{qRichardsonWeight q r j}: the closed form \cref{eq:qweights}.
+\item \texttt{qRichardsonLog q r f N}: weighted sum of $f(N+j)$.
+\item \texttt{lambertPhaseNode lambda j}: $(\lambda+j)2^{-(\lambda+j)}$.
+\item \texttt{lambertRichardsonWeight lambda r j}: \cref{eq:omega}.
+\end{enumerate}
+
+\subsection{Algebraic theorem chain}
+
+The lowest-risk formalization order is:
+\begin{enumerate}
+\item prove the product form of $\lambda_{r,j}$ and its Gaussian-binomial simplification;
+\item prove the moment identity \cref{eq:qmoment-full} from the finite $q$-binomial theorem;
+\item prove the absolute weight sum \cref{eq:qcondition};
+\item prove the Lambert weight formula and cancellation moments;
+\item prove the reciprocal moment identity \cref{eq:lambert-moments} by rational-function coefficients;
+\item identify the complete-homogeneous coefficients with the already
+      formalized complete-Bell power-sum specialization.
+\end{enumerate}
+These steps require no delicate asymptotics.
+
+\paragraph{Post-snapshot algebraic progress.}
+The later module \texttt{GeometricLagrange.lean} now formalizes Lagrange
+evaluation weights for arbitrary distinct nodes, polynomial and module-valued
+exactness, the first omitted monomial moment, and geometric-node
+specializations.  At the dyadic ratio \(q=1/2\), the later
+\texttt{FabiusDiscreteLimitToeplitz.lean} identifies the closed
+\(q\)-binomial row with those Lagrange weights and proves its all-degree
+reverse moments and exact total variation.  These results do not yet supply
+the arbitrary-ratio formulas used above---in particular the \(q=1/4\)
+residual moments and condition number.  Independently,
+\texttt{ExponentialPartition.lean} and
+\texttt{ExponentialBell.lean} identify the universal weighted-partition
+formula for an exponential coefficient with
+\texttt{SaddleExpansion.expCoeff} over every commutative
+\(\mathbb Q\)-algebra.  The later \texttt{MomentCumulantAlgebra.lean}
+factorially normalizes the same engine into named complete-Bell and inverse
+moment--cumulant transforms, with the classical Bell recurrence and
+normalized inverse laws.  In particular, the coefficient mechanism behind
+\eqref{eq:h-Bell} can reuse these bridges with
+\(E_k=k^{-1}\sum_i a_i^k\) for \(k\ge1\).  The displayed
+complete-homogeneous specialization, the Richardson error formulas, and every
+analytic estimate in this report remain distinct formalization obligations.
+
+\subsection{Analytic theorem chain}
+
+The analytic side can then proceed as follows:
+\begin{enumerate}
+\item establish the log-sinc power series on $(-\pi,\pi)$;
+\item justify the double-series interchange for the omitted tail;
+\item derive the exact transformed error by finite linearity;
+\item prove positivity of every factor in \cref{eq:E-explicit};
+\item deduce bracketing and the explicit majorant;
+\item add termwise differentiation on compact zero-free intervals.
+\end{enumerate}
+
+The endpoint input is already formalized with its exact phase and every finite remainder:
+the periodic coefficient functions are
+\texttt{fabiusSaddleLogCoefficient}, and the expansion is proved in
+\path{FabiusFullAsymptoticExpansion.lean}.  What remains in the frontier namespace is the
+phase-locked extraction transform itself and the verification that its weighted use of
+those uniform remainders has precisely the strength asserted in
+\cref{thm:Psi-extraction}.  The arbitrary-node interpolation foundation is already
+available in \path{GeometricLagrange.lean}; the closed reciprocal-grid weights and their
+all-residual moments are the next algebraic obligations.
+
+\section{Open problems and next frontier steps}
+\label{sec:open}
+
+\subsection{Optimal order under finite precision}
+
+For exact input logs, \cref{eq:error-bound} improves supergeometrically with $r$, while \cref{eq:qcondition} remains bounded. In floating-point arithmetic, however, the truncations $P_{N+j}$ are themselves computed recursively and share correlated rounding errors. A sharp forward-error theorem should combine:
+\[
+\text{analytic error }\asymp q^{r(r+1)/2}a^{r+1}
+\quad\text{with}\quad
+\text{roundoff }\lesssim\kappa_r(q)u.
+\]
+Because $\kappa_r(q)$ converges, the optimal $r$ may be much larger than in ordinary Richardson extrapolation.
+
+\subsection{Monotonicity within each bracket parity}
+
+The sign theorem places every even level above the limit in modulus and every odd level
+below it, but it does not order two levels of the same parity.  In fact, such an ordering is
+false over the full parameter range $b>1$.  To see this directly, take
+\[
+ q=\frac45,\qquad b=q^{-1/2}=\frac{\sqrt5}{2},\qquad N=0,
+ \qquad \rho_0=\pi\sqrt{\frac{99}{100}},
+ \qquad t=b\rho_0=\pi\sqrt{\frac{99}{80}}.
+\]
+This is admissible because $\rho_0<\pi$, and $P_{b,0}=1$ is the nonzero empty product.
+Substitution in the absolutely convergent series \eqref{eq:E-explicit}, with
+$a=(\rho_0/\pi)^2=99/100$, gives
+\[
+\begin{array}{c|rrrr}
+r&0&1&2&3\\ \hline
+E_{b;0,r}(t)
+& 13.5220607386&-12.9320597704&16.5469385988&-14.7912158217.
+\end{array}
+\]
+Thus $E_{b;0,2}>E_{b;0,0}>0$ and
+$E_{b;0,3}<E_{b;0,1}<0$: both proposed same-parity monotonicities fail.
+These numbers are reproducible by summing the terms through $m=5000$ in
+\eqref{eq:E-explicit}.  The same majorization used in \cref{thm:error-bound} bounds the
+discarded tail, for each $0\le r\le3$, by
+\[
+ \frac{q^{r(r+1)/2}\zeta(2)}
+ {(q;q)_r(1-q)(5001)}\frac{a^{5001}}{1-a}<2\times10^{-22}.
+\]
+
+The correctly parameterized open question is therefore: for which pairs
+$(q,a)\in(0,1)^2$, and for which levels $s$, do
+\[
+ E_{2s}(q,a)>E_{2s+2}(q,a)>0,
+ \qquad
+ E_{2s+1}(q,a)<E_{2s+3}(q,a)<0,
+\]
+where $E_r(q,a)$ denotes the right-hand side of \eqref{eq:E-explicit} after replacing
+$(\rho_N/\pi)^2$ by $a$?  No nonempty parameter regime for these additional inequalities
+is asserted here.  Whenever they do hold, consecutive same-parity levels sharpen the
+certified brackets of \cref{cor:brackets}.
+
+\subsection{Global continuation across zeros}
+
+The logarithmic construction is naturally local to a zero-free component. A global formulation could factor all explicitly known zeros from the truncations and extrapolate the analytic nonvanishing remainder. Such a theorem would give uniform certified evaluation across large frequency intervals, including neighborhoods of high-multiplicity dyadic zeros.
+
+\subsection{Direct formulas for the phase coefficients}
+
+The transformed moments \cref{eq:lambert-moments} show exactly how $A_{r+1},A_{r+2},\ldots$ enter the extraction error. This invites an inverse problem: compute $\widehat\Psi_r$ and $\widehat A_s^{(r)}$ at many phases, then identify their Fourier coefficients in terms of the Gamma--zeta data already present in the endpoint theory.
+
+\subsection{A sign theory for Lambert corrections}
+
+A sign pattern for $A_m(\lambda)$ would turn the phase-locked transform into a certified bracket analogous to \cref{cor:brackets}. Even a sign theorem for $A_1$ or $A_2$ on a substantial phase interval would be useful.
+
+\subsection{Thue--Morse arithmetic of transformed products}
+
+For $q=1/4$, every exponent in \cref{eq:r1-dyadic,eq:r2-dyadic,eq:r3-dyadic} is rational. Raising to a common denominator converts the approximant to a rational monomial identity in finite Thue--Morse sums. It is natural to ask whether the numerators and denominators exhibit systematic $2$-adic cancellation analogous to the exact dyadic arithmetic of $F$.
+
+\section{Conclusion}
+
+The repository already contains the ingredients of a remarkable analytic-combinatorial machine: Thue--Morse cancellation, Gaussian interpolation, exact dyadic arithmetic, infinite sinc products, Bernoulli cumulants, Bell reconstruction, and Lambert-$W$ endpoint geometry. The new results here arise by changing \emph{what} is extrapolated and \emph{where} the nodes are placed.
+
+For the Fourier product, extrapolating logarithms exposes an exact positive power series in the geometric tail coordinate. Gaussian-$q$-binomial weights annihilate its first powers, and the remaining $q$-moments all have one sign. This yields high-order multiplicative approximants, exact alternating brackets, explicit bounds, bounded conditioning, Bell-polynomial relative errors, derivative acceleration, and a finite Thue--Morse realization.
+
+For the endpoint asymptotic, moving by integer steps in the exact lower-Lambert coordinate freezes every periodic coefficient. Lagrange interpolation in reciprocal $\lambda$ then isolates the periodic factor and its correction hierarchy. The residual moments are not opaque: they are complete homogeneous symmetric polynomials, hence Bell polynomials in generalized harmonic sums, while Bernoulli polynomials govern the arithmetic-node geometry.
+
+The two mechanisms are complementary. One is globally algebraic in the truncation index and exceptionally stable; the other is phase-sensitive and designed to separate a periodic asymptotic invariant. Both are sufficiently explicit to support immediate symbolic checking, high-precision computation, and a staged Lean formalization.
+
+\appendix
+
+\section{Original audited TeX inventory}
+\label{app:inventory}
+
+This appendix records the 57 distinct \texttt{.tex} paths included in the original
+repository-wide overlap audit.  It is provenance for that audit, not a current corpus
+index: subsequent frontier reports increased the present tree to 67 TeX sources.
+Historical files are frozen versions and were treated as prior art even when their content
+has since been consolidated elsewhere.
+
+\subsection{Living top-level and canonical sources (6)}
+\begin{enumerate}
+\item \path{docs/FabiusFunction_Mathematical_Glossary/FabiusFunction_Mathematical_Glossary.tex}
+\item \path{docs/Fabius_Function_and_Rvachev_Up/Fabius_Function_and_Rvachev_Up.tex}
+\item \path{docs/Non_Elementarity_of_the_Fabius_Function/Non_Elementarity_of_the_Fabius_Function.tex}
+\item \path{docs/fabius_lean_walkthrough/fabius_lean_walkthrough.tex}
+\item \path{docs/non-formalized-research-frontiers/non-formalized-research-frontiers.tex}
+\item \path{docs/non-formalized-research-frontiers/drafts/Thue_Morse_Formula_Atlas/Thue_Morse_Formula_Atlas.tex}
+\end{enumerate}
+
+\subsection{Living Rvachev Fourier-decay drafts (12)}
+\begin{enumerate}[resume]
+\item \path{docs/non-formalized-research-frontiers/drafts/rvachev_up_fourier_decay/Rvachev_Up_Fourier_Decay-2/Rvachev_Up_Fourier_Decay.tex}
+\item \path{docs/non-formalized-research-frontiers/drafts/rvachev_up_fourier_decay/Rvachev_Up_Fourier_Decay-3/Fourier_decay_of_Rvachev_up.tex}
+\item \path{docs/non-formalized-research-frontiers/drafts/rvachev_up_fourier_decay/Rvachev_Up_Fourier_Decay_Comparative_Audit/Rvachev_Up_Fourier_Decay_Comparative_Audit.tex}
+\item \path{docs/non-formalized-research-frontiers/drafts/rvachev_up_fourier_decay/Rvachev_Up_Fourier_Decay_Gentle_Guide/Rvachev_Up_Fourier_Decay_Gentle_Guide.tex}
+\item \path{docs/non-formalized-research-frontiers/drafts/rvachev_up_fourier_decay/Rvachev_Up_Fourier_Decay_Second_Wave_Audit/Rvachev_Up_Fourier_Decay_Second_Wave_Audit.tex}
+\item \path{docs/non-formalized-research-frontiers/drafts/rvachev_up_fourier_decay/asymptotic-decay-rate-of-an-infinite-product-of-sinc-functions/asymptotic-decay-rate-of-an-infinite-product-of-sinc-functions.tex}
+\item \path{docs/non-formalized-research-frontiers/drafts/rvachev_up_fourier_decay/rvachev_up_fourier_decay-1/rvachev_up_fourier_decay.tex}
+\item \path{docs/non-formalized-research-frontiers/drafts/rvachev_up_fourier_decay/rvachev_up_fourier_decay-4/rvachev_up_fourier_decay.tex}
+\item \path{docs/non-formalized-research-frontiers/drafts/rvachev_up_fourier_decay/rvachev_up_fourier_decay-5/rvachev_up_fourier_decay.tex}
+\item \path{docs/non-formalized-research-frontiers/drafts/rvachev_up_fourier_decay/rvachev_up_fourier_decay-6/rvachev_up_fourier_decay.tex}
+\item \path{docs/non-formalized-research-frontiers/drafts/rvachev_up_fourier_decay/rvachev_up_fourier_decay-7/rvachev_up_fourier_decay.tex}
+\item \path{docs/non-formalized-research-frontiers/drafts/rvachev_up_fourier_decay/rvachev_up_fourier_decay-8/rvachev_up_fourier_decay.tex}
+\end{enumerate}
+
+\subsection{Bundled source-paper TeX (7)}
+\begin{enumerate}[resume]
+\item \path{docs/papers/AIF_2017__67_2_637_0/AIF_2017__67_2_637_0-corrected.tex}
+\item \path{docs/papers/AIF_2017__67_2_637_0/AIF_2017__67_2_637_0.tex}
+\item \path{docs/papers/arXiv-1502.06738v2/Lacunary_products.tex}
+\item \path{docs/papers/arXiv-1702.05442v1/09-Function.tex}
+\item \path{docs/papers/arXiv-1702.06487v3/157-Arithmetic-v3.tex}
+\item \path{docs/papers/arXiv-2211.13570v1/document.tex}
+\item \path{docs/papers/ubiq15/ubiq15-corrected.tex}
+\end{enumerate}
+
+\subsection{Frozen archive: early notes and standalone studies (5)}
+\begin{enumerate}[resume]
+\item \path{docs/archive/early-notes/Fabius Asymptotic/Fabius Asymptotic.tex}
+\item \path{docs/archive/early-notes/K-fold summation over the signed Thue-Morse sequence/K-fold summation over the signed Thue-Morse sequence.tex}
+\item \path{docs/archive/standalone-studies/Non_Elementarity_of_the_Fabius_Function/Non_Elementarity_of_the_Fabius_Function.tex}
+\item \path{docs/archive/standalone-studies/Small_Argument_Asymptotics/Small_Argument_Asymptotics.tex}
+\item \path{docs/archive/standalone-studies/fabius-inverse-dyadic-closed-form/fabius-inverse-dyadic-closed-form.tex}
+\end{enumerate}
+
+\subsection{Frozen archive: primary expositions and supplements (8)}
+\begin{enumerate}[resume]
+\item \path{docs/archive/primary-exposition/Fabius_Function_and_Rvachev_Up/Fabius_Function_and_Rvachev_Up.tex}
+\item \path{docs/archive/primary-exposition/Fabius_Function_and_Rvachev_Up-2/Fabius_Function_and_Rvachev_Up.tex}
+\item \path{docs/archive/primary-exposition/Fabius_Function_and_Rvachev_Up-3/Fabius_Function_and_Rvachev_Up.tex}
+\item \path{docs/archive/primary-exposition/Fabius_and_Rvachev_Up-2/Fabius_and_Rvachev_Up.tex}
+\item \path{docs/archive/primary-exposition/Fabius_and_Rvachev_up/Fabius_and_Rvachev_up.tex}
+\item \path{docs/archive/primary-exposition/Fabius_function_and_up_function/Fabius_function_and_up_function.tex}
+\item \path{docs/archive/primary-supplements/Fabius_Function_Missing_Parts/Fabius_Function_Missing_Parts.tex}
+\item \path{docs/archive/primary-supplements/Fabius_Function_Missing_Parts-2/Fabius_Function_Missing_Parts.tex}
+\end{enumerate}
+
+\subsection{Frozen archive: q-calculus, walkthrough, and glossary (6)}
+\begin{enumerate}[resume]
+\item \path{docs/archive/q-calculus/Fabius_q_Special_Functions/Fabius_q_Special_Functions.tex}
+\item \path{docs/archive/q-calculus/fabius-q-special-functions/fabius-q-special-functions.tex}
+\item \path{docs/archive/lean-walkthrough/Fabius_Function_Lean_Walkthrough/Fabius_Function_Lean_Walkthrough.tex}
+\item \path{docs/archive/lean-walkthrough/fabius_lean_walkthrough/fabius_lean_walkthrough.tex}
+\item \path{docs/archive/glossary/FabiusFunction_Mathematical_Glossary/FabiusFunction_Mathematical_Glossary.tex}
+\item \path{docs/archive/glossary/FabiusFunction_Mathematical_Glossary-2/FabiusFunction_Mathematical_Glossary.tex}
+\end{enumerate}
+
+\subsection{Frozen archive: research frontiers (13)}
+\begin{enumerate}[resume]
+\item \path{docs/archive/research-frontiers/Fabius_Dyadic_Asymptotic_Bridge/Fabius_Dyadic_Asymptotic_Bridge.tex}
+\item \path{docs/archive/research-frontiers/Fabius_Dyadic_Formulae_and_Alternative_Representations/Fabius_Dyadic_Formulae_and_Alternative_Representations.tex}
+\item \path{docs/archive/research-frontiers/Fabius_Dyadic_Formulae_to_Asymptotics/Fabius_Dyadic_Formulae_to_Asymptotics.tex}
+\item \path{docs/archive/research-frontiers/Fabius_Dyadic_q_Connections/Fabius_Dyadic_q_Connections.tex}
+\item \path{docs/archive/research-frontiers/Fabius_Thue_Morse_Convergence_Rate/Fabius_Thue_Morse_Convergence_Rate.tex}
+\item \path{docs/archive/research-frontiers/Fabius_Thue_Morse_Convergence_Rates/Fabius_Thue_Morse_Convergence_Rates.tex}
+\item \path{docs/archive/research-frontiers/Primary_Exposition_Gap_Register/Primary_Exposition_Gap_Register.tex}
+\item \path{docs/archive/research-frontiers/Repeated_Integration_and_Rvachev_Up/Repeated_Integration_and_Rvachev_Up.tex}
+\item \path{docs/archive/research-frontiers/Rvachev_Up_from_Repeated_Integration/Rvachev_Up_from_Repeated_Integration.tex}
+\item \path{docs/archive/research-frontiers/non-formalized-research-frontiers/non-formalized-research-frontiers.tex}
+\item \path{docs/archive/research-frontiers/Thue_Morse_Formula_Atlas-1/Thue_Morse_Formula_Atlas.tex}
+\item \path{docs/archive/research-frontiers/Thue_Morse_Formula_Atlas-2/Consolidated_Formula_Atlas_for_the_Thue_Morse_Sequence.tex}
+\item \path{docs/archive/research-frontiers/Thue_Morse_Formula_Atlas-3/Thue_Morse_Formula_Atlas.tex}
+\end{enumerate}
+
+\section{Additional algebraic details}
+\label{app:details}
+
+\subsection{Derivation of the \texorpdfstring{$q$}{q}-moment formula}
+
+Starting from \cref{eq:qweights},
+\begin{align*}
+S_{r,m}(q)
+&=\frac{1}{(q;q)_r}
+\sum_{j=0}^{r}(-1)^{r-j}
+q^{\binom{r-j+1}{2}}\qbinom{r}{j}{q} q^{jm}\\
+&=\frac{q^{rm}}{(q;q)_r}
+\sum_{k=0}^{r}(-1)^k q^{\binom{k+1}{2}-km}\qbinom{r}{k}{q}\\
+&=\frac{q^{rm}}{(q;q)_r}
+\sum_{k=0}^{r}q^{\binom{k}{2}}\qbinom{r}{k}{q}
+(-q^{1-m})^k\\
+&=\frac{q^{rm}(q^{1-m};q)_r}{(q;q)_r}.
+\end{align*}
+For $m\ge r+1$,
+\begin{align*}
+(q^{1-m};q)_r
+&=\prod_{k=0}^{r-1}(1-q^{1-m+k})\\
+&=(-1)^r q^{\sum_{k=0}^{r-1}(1-m+k)}
+\prod_{k=0}^{r-1}(1-q^{m-1-k})\\
+&=(-1)^r q^{r(1-m)+r(r-1)/2}(q^{m-r};q)_r.
+\end{align*}
+Multiplication by $q^{rm}$ gives the exponent $r(r+1)/2$ in \cref{eq:qmoment-positive}.
+
+\subsection{Why all transformed sinc-tail terms have one sign}
+
+The sign theorem is not a generic property of Richardson extrapolation. It relies on two positivity facts:
+\begin{enumerate}
+\item the log-sinc tail coefficients $d_m(t)$ are positive because $\zeta(2m)>0$;
+\item after cancellation, every geometric moment is
+\[
+S_{r,m}(q)=(-1)^r\times
+\frac{q^{r(r+1)/2}(q^{m-r};q)_r}{(q;q)_r},
+\]
+whose remaining factors are positive for $m\ge r+1$.
+\end{enumerate}
+Their product therefore has the same sign for every residual degree. This is the mechanism behind the certified brackets.
+
+\subsection{Bell form of complete homogeneous functions}
+
+Taking logarithms of \cref{eq:complete-homogeneous},
+\[
+\log\prod_{j=0}^{r}(1-a_jz)^{-1}
+=\sum_{k=1}^{\infty}\frac{z^k}{k}\sum_{j=0}^{r}a_j^k.
+\]
+Comparing this with \cref{eq:bell-gen} gives
+\[
+h_n(a_0,\ldots,a_r)
+=\frac1{n!}\mathcal B_n\left(
+0!p_1,1!p_2,\ldots,(n-1)!p_n\right),
+\]
+where $p_k=\sum_j a_j^k$. Substituting $a_j=(\lambda+j)^{-1}$ proves \cref{eq:h-Bell}.
+
+\section{Reproducibility notes}
+\label{app:repro}
+
+The numerical checks used arbitrary-precision arithmetic with the following direct definitions:
+\begin{align*}
+P_N(t)&=\prod_{k=1}^{N}\frac{\sin(t/2^k)}{t/2^k},\\
+P(t)&\approx\prod_{k=1}^{300}\frac{\sin(t/2^k)}{t/2^k},\\
+\log|\widehat P_{N,r}(t)|
+&=\sum_{j=0}^{r}\lambda_{r,j}(1/4)\log|P_{N+j}(t)|.
+\end{align*}
+At 100-digit working precision, the 300-factor reference tail is far below the displayed errors. Symbolic checks verified the moment identities through $r=8$ and multiple values of $m$ before the general proofs were written.
+
+\begin{thebibliography}{99}
+
+\bibitem{ProveItPrimary}
+V. Reshetnikov,
+\emph{The Fabius Function and Rvachev's Up-Function},
+living primary exposition in the \repo{} repository,
+\texttt{Analysis/FabiusFunction/docs/Fabius\_Function\_and\_Rvachev\_Up/} (accessed 27 August 2026).
+
+\bibitem{ProveItFrontier}
+V. Reshetnikov,
+\emph{Non-formalized Fabius Research Frontiers},
+canonical quarantined frontier volume in the \repo{} repository
+(accessed 27 August 2026).
+
+\bibitem{ProveItAtlas}
+V. Reshetnikov,
+\emph{Thue--Morse Formula Atlas},
+living draft in the \repo{} repository
+(accessed 27 August 2026).
+
+\bibitem{ProveItDecay}
+V. Reshetnikov et al.,
+\emph{Rvachev Up Fourier Decay} dossier series,
+twelve living TeX reports in the \repo{} repository
+(accessed 27 August 2026).
+
+\bibitem{Arias1982}
+J. Arias de Reyna,
+\emph{An infinitely differentiable function with compact support: definition and properties},
+Rev. Real Acad. Cienc. Exactas F\'is. Nat. Madrid \textbf{76} (1982), 21--38;
+arXiv:1702.05442.
+
+\bibitem{Arias2018}
+J. Arias de Reyna,
+\emph{Arithmetic of the Fabius function},
+Integers \textbf{18} (2018), Article A51;
+arXiv:1702.06487.
+
+\bibitem{Corless1996}
+R. M. Corless, G. H. Gonnet, D. E. G. Hare, D. J. Jeffrey, and D. E. Knuth,
+\emph{On the Lambert $W$ function},
+Advances in Computational Mathematics \textbf{5} (1996), 329--359.
+
+\bibitem{Sidi1988}
+A. Sidi,
+\emph{Generalizations of Richardson extrapolation with applications to numerical integration},
+1988, doi:10.1007/978-3-0348-6398-8\_22.
+
+\bibitem{Comtet1974}
+L. Comtet,
+\emph{Advanced Combinatorics},
+D. Reidel, Dordrecht, 1974.
+
+\bibitem{AlloucheShallit2003}
+J.-P. Allouche and J. Shallit,
+\emph{Automatic Sequences: Theory, Applications, Generalizations},
+Cambridge University Press, 2003.
+
+\bibitem{AlloucheLacunary}
+J.-P. Allouche, M. Mend\`es France, and J. Peyri\`ere,
+works on lacunary trigonometric products and the Thue--Morse sequence;
+source TeX included in the repository as \texttt{Lacunary\_products.tex}.
+
+\end{thebibliography}
+
+\end{document}

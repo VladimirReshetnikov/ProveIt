@@ -160,7 +160,7 @@ the starting point down: `∀ j, 0 ≤ u j` forces `u 0 ≤ 1`, because
 theorem logistic_init_le_one (u : ℕ → ℝ) (h0 : ∀ j, 0 ≤ u j)
     (hrec : ∀ j, u (j + 1) = 4 * u j * (1 - u j)) : u 0 ≤ 1 := by
   by_contra hcon
-  push_neg at hcon
+  push Not at hcon
   have hstep : 0 ≤ 4 * u 0 * (1 - u 0) := by
     rw [← hrec 0]
     exact h0 _

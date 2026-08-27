@@ -6606,6 +6606,18 @@ which gives \eqref{dyadicweb:eq:Wn-product} after division by $(1/2;1/2)_n$.  Th
 $1,2^r,-1,-2$ follow from the product and from the alternating signs of the coefficients.
 \end{proof}
 
+\paragraph{Current formal status.}
+For rational $z$, the full identity \eqref{dyadicweb:eq:Wn-product} is
+\lean{sum_range_discreteLimitWeight_mul_pow}, and the exact dyadic root locus
+\eqref{dyadicweb:eq:Wn-roots} is
+\lean{sum_range_discreteLimitWeight_mul_pow_eq_zero_iff}.  The mass and
+unweighted variation evaluations are respectively
+\lean{sum_range_discreteLimitWeight} and
+\lean{sum_abs_discreteLimitWeight}, all in
+\path{FabiusDiscreteLimitToeplitz.lean}.  The weighted variation at $-2$,
+the logarithmic-derivative moment formulas below, and the limiting filter are
+not claimed as named Lean counterparts here.
+
 Logarithmic differentiation at $z=1$ records the row's first signed moment:
 \begin{equation}
 \sum_{j=0}^{n}j\omega_{n,j}=W_n'(1)
@@ -6660,7 +6672,7 @@ $2^{-r}$ in the degree.
 
 \begin{proposition}[$q$-Richardson exactness]
 \label{dyadicweb:prop:q-richardson}
-Suppose a model sequence has the form
+Suppose a rational-valued model sequence has the form
 \begin{equation}
  u_p=L+\sum_{r=1}^{n}a_r2^{-rp}.                           \label{dyadicweb:eq:model-errors}
 \end{equation}
@@ -6677,6 +6689,19 @@ The constant contributes $L W_n(1)=L$.  The $r$th error contributes
  =a_r2^{-2nr}W_n(2^r)=0.
 \]
 \end{proof}
+
+\paragraph{Current formal status.}
+The module-valued theorem
+\lean{discreteLimitWeight_qRichardson_exact_module} in
+\path{FabiusDiscreteLimitToeplitz.lean} holds for sequences in any additive
+commutative monoid carrying a $\Q$-module structure.  It needs no target
+multiplication, topology, order, or norm: the rational row weights and dyadic
+mode coefficients act only by scalar multiplication.  Its single-mode core is
+\lean{sum_range_discreteLimitWeight_mul_geometricMode_smul_eq_zero}.
+The theorem \lean{discreteLimitWeight_qRichardson_exact} is the $M=\Q$
+specialization displayed above; its zero-based coefficient $a_r$ multiplies
+the mode $2^{-(r+1)p}$.  These theorems transport cancellation at the rational
+dyadic nodes; they do not classify zeros at arbitrary scalar arguments.
 
 No claim is needed that the actual spline error has a finite expansion of the form
 \eqref{dyadicweb:eq:model-errors}.  The proposition explains the algebraic design of the row: it is a
@@ -13776,22 +13801,6 @@ interpretations are not:
 \begin{obligation}
 Choose a finite-support or locally finite convolution model, prove the counting bijection,
 and connect it to the existing \texttt{iteratedPrefixKernel}.
-\end{obligation}
-
-\section{Block-polynomial derivatives at one}
-
-The finite factorization and its power-sum consequences are formal.  The literal derivative
-version removed from the article was:
-\begin{candidate}
-For \(m,r\in\N\) with \(m<r\), the \(m\)-th derivative of
-\(\prod_{j<r}(1-z^{2^j})\) vanishes at \(z=1\), while its \(r\)-th derivative there is
-\[
- (-1)^r r!\,2^{\binom r2}.
-\]
-\end{candidate}
-\begin{obligation}
-Formalize polynomial iterated derivatives at \(z=1\) and identify them with the proved
-coefficient or power-sum formula.
 \end{obligation}
 
 \section{An actual infinite formal product}

@@ -1,3 +1,4 @@
+import FabiusFunction.FinitePolynomialFunctional
 import FabiusFunction.ThueMorseBooleanCube
 import Mathlib.Algebra.BigOperators.Group.Finset.Powerset
 import Mathlib.Algebra.Polynomial.Taylor
@@ -16,19 +17,34 @@ strictly more general than the atlas, whose steps are the powers of two.
 
 * `sum_powerset_neg_one_pow_eval` — **general Prouhet annihilation**: the
   signed powerset sum of `p.eval` vanishes when `p.natDegree < S.card`.
+* `sum_powerset_neg_one_pow_eval_of_degree_lt` — the degree-valued form of
+  the same theorem, including the zero polynomial when `S` is empty.
 * `sum_powerset_neg_one_pow_pow_card` — **general sharp moment**: at degree
   exactly `S.card`, the sum is `(-1)^{|S|} |S|! ∏_{j ∈ S} w j`.
+* `sum_powerset_neg_one_pow_eval_eq_coeff_card` — **master coefficient
+  extraction**: on every polynomial of degree at most `|S|`, the same
+  functional is the top coefficient times the sharp moment.  Thus the
+  cancellation and first surviving moment are the two faces of one formula.
 * `sum_thueMorseSign_mul_affine_pow_eq_zero` and
   `sum_thueMorseSign_mul_affine_pow_card` — the Thue--Morse case, obtained
   by transporting along the Boolean-cube kernel: the classical Prouhet
   cancellation `∑_{n<2^m} ε(n)(x + nh)^r = 0` for `r < m`, and the sharp
   first moment `(-1)^m m! 2^(m choose 2) h^m`, over any commutative ring.
+* `sum_thueMorseSign_mul_affine_eval_eq_coeff_card` — the dyadic polynomial
+  extractor: for degree at most `m`, the whole signed block sum is the
+  degree-`m` coefficient times that sharp factor.
+* `sum_thueMorseSign_mul_affine_eval_of_degree_lt` — the degree-valued
+  polynomial form of the same block cancellation.  It includes the true
+  boundary case `m = 0`, where the zero polynomial is the unique polynomial
+  of degree below zero.
 * `bitSupport` — the set of one-bit positions of `n`, with its dictionary
   (`mem`, reconstruction `∑ 2^j = n`, cardinality `= binaryWeight n`), and
   the **sparse Prouhet theorems** on the submasks of an arbitrary `n`:
   cancellation below `w(n)` and the sharp moment
   `(-1)^{w(n)} w(n)! 2^(β(n)) h^(w(n))`, where `β(n)` is the sum of the
   one-bit positions.
+* `sum_submask_neg_one_pow_eval_of_degree_lt` — the degree-valued sparse
+  cancellation, whose boundary case at `n = 0` includes the zero polynomial.
 * `bitSupport_eq_toFinset_bitIndices` — the bridge identifying `bitSupport`
   with Mathlib's `Nat.bitIndices`; the whole bit dictionary above is a
   corollary of it, so no bit recursion is redone here.
@@ -38,6 +54,11 @@ The induction is the atlas's proof made exact: inserting one index into
 `taylor` API supplies the degree bookkeeping, and
 `Finset.sum_powerset_insert` supplies the split of the powerset of
 `insert a S` into the two halves that the induction pairs.
+
+Linearity then upgrades the monomial results to arbitrary polynomials.  The
+generic selected-coefficient principle in `FinitePolynomialFunctional`
+packages the finite sum interchange once: the lower moments vanish and the
+degree-`|S|` moment is the sole survivor.
 
 The dyadic specializations all feed natural-number submasks into an engine
 whose steps are ring elements; the cast bridge and the step-product
@@ -125,6 +146,23 @@ theorem sum_powerset_neg_one_pow_eval {R : Type*} [CommRing R]
           omega
         exact ih _ hdrop x
 
+/-- **Degree-valued general Prouhet annihilation.**  This is the natural
+`Polynomial.degree` form of `sum_powerset_neg_one_pow_eval`.  Unlike its
+`natDegree` formulation, it records that the zero polynomial has degree
+`⊥`, so it also covers the zero polynomial on the empty index set.  The
+ambient index type needs no decidable-equality instance in the public API. -/
+theorem sum_powerset_neg_one_pow_eval_of_degree_lt
+    {R : Type*} [CommRing R] {ι : Type*}
+    (S : Finset ι) (w : ι → R) (p : R[X])
+    (hdeg : p.degree < (S.card : WithBot ℕ)) (x : R) :
+    ∑ T ∈ S.powerset, (-1 : R) ^ T.card * p.eval (x + ∑ j ∈ T, w j) =
+      0 := by
+  classical
+  by_cases hp : p = 0
+  · simp [hp]
+  · exact sum_powerset_neg_one_pow_eval S w p
+      ((Polynomial.natDegree_lt_iff_degree_lt hp).2 hdeg) x
+
 /-! ## The general sharp moment -/
 
 /-- **General sharp moment.**  At degree exactly `|S|`, the signed
@@ -169,7 +207,7 @@ theorem sum_powerset_neg_one_pow_pow_card {R : Type*} [CommRing R]
               y ^ k * w a ^ (s + 1 - k) * ((s + 1).choose k : R) := by
         intro y
         rw [add_pow, Finset.sum_range_succ]
-        simp [Nat.sub_self]
+        simp
       rw [Finset.sum_congr rfl fun T _ => by rw [hbinom]]
       -- Pull the negation and the inner sum outside, then swap the sums.
       have hout : ∀ T ∈ S.powerset,
@@ -213,6 +251,41 @@ theorem sum_powerset_neg_one_pow_pow_card {R : Type*} [CommRing R]
       push_cast
       ring
 
+/-! ## The master coefficient-extraction identity -/
+
+/-- **Master arbitrary-step coefficient extraction.**  Let `S` be any
+finite set of steps in a commutative ring.  On polynomials of degree at most
+`|S|`, its signed powerset functional extracts precisely the coefficient of
+degree `|S|`:
+
+`∑_{T ⊆ S} (-1)^{|T|} p(x + ∑_{j ∈ T} w j)`
+`  = p.coeff |S| · ((-1)^{|S|} |S|! ∏_{j ∈ S} w j)`.
+
+No nonzeroness hypotheses on the ring or the steps are needed.  In
+particular the statement includes the zero polynomial and the empty set of
+steps; the lower-degree cancellation and the sharp monomial moment are its
+two extremal special cases. -/
+theorem sum_powerset_neg_one_pow_eval_eq_coeff_card
+    {R : Type*} [CommRing R] {ι : Type*}
+    (S : Finset ι) (w : ι → R) (p : R[X])
+    (hdeg : p.natDegree ≤ S.card) (x : R) :
+    ∑ T ∈ S.powerset,
+        (-1 : R) ^ T.card * p.eval (x + ∑ j ∈ T, w j) =
+      p.coeff S.card *
+        ((-1 : R) ^ S.card * (S.card.factorial : R) * ∏ j ∈ S, w j) := by
+  classical
+  have hselect := sum_weight_mul_eval₂_eq_topCoeff_mul_moment
+    (RingHom.id R) S.powerset
+    (fun T => (-1 : R) ^ T.card)
+    (fun T => x + ∑ j ∈ T, w j)
+    p S.card hdeg fun d hd => by
+      have hzero := sum_powerset_neg_one_pow_eval S w
+        (Polynomial.X ^ d)
+        (lt_of_le_of_lt (Polynomial.natDegree_X_pow_le d) hd) x
+      simpa only [Polynomial.eval_pow, Polynomial.eval_X] using hzero
+  rw [sum_powerset_neg_one_pow_pow_card] at hselect
+  simpa only [Polynomial.eval₂_id, RingHom.id_apply] using hselect
+
 /-! ## Dyadic step bookkeeping -/
 
 /-- The cast of a submask value times a step is the ring-valued sum of the
@@ -226,7 +299,9 @@ private theorem cast_sum_two_pow_mul {R : Type*} [CommRing R]
 /-- **Cast bridge for signed powerset sums.**  Rewrites a signed powerset
 sum indexed by natural submasks into the ring-valued step form that
 `sum_powerset_neg_one_pow_eval` and `sum_powerset_neg_one_pow_pow_card`
-produce.  Used at both the `range m` and the `bitSupport n` scale sets. -/
+produce.  This power-valued packaging is used by the sharp sparse-submask
+specialization; polynomial-valued bridges use `cast_sum_two_pow_mul`
+directly. -/
 private theorem sum_powerset_pow_cast_bridge {R : Type*} [CommRing R]
     (S : Finset ℕ) (x h : R) (k : ℕ) :
     ∑ T ∈ S.powerset,
@@ -261,21 +336,81 @@ theorem sum_thueMorseSign_mul_eq_sum_powerset {R : Type*} [CommRing R]
   push_cast
   ring
 
+/-- **Dyadic polynomial coefficient extraction.**  For every polynomial of
+degree at most `m`, the affine Thue--Morse block functional extracts its
+degree-`m` coefficient:
+
+`∑_{n<2^m} ε(n) p(x + nh)`
+`  = p.coeff m · ((-1)^m m! 2^(m choose 2) h^m)`.
+
+This is the dyadic specialization of
+`sum_powerset_neg_one_pow_eval_eq_coeff_card`; it is strictly more general
+than the unshifted, unit-step coefficient formula and is the public bridge
+from the arbitrary-step engine to the traditional Prouhet block. -/
+theorem sum_thueMorseSign_mul_affine_eval_eq_coeff_card
+    {R : Type*} [CommRing R] (m : ℕ) (p : R[X])
+    (hdeg : p.natDegree ≤ m) (x h : R) :
+    ∑ n ∈ range (2 ^ m),
+        ((thueMorseSign n : ℤ) : R) * p.eval (x + (n : R) * h) =
+      p.coeff m *
+        ((-1 : R) ^ m * (m.factorial : R) * 2 ^ m.choose 2 * h ^ m) := by
+  rw [sum_thueMorseSign_mul_eq_sum_powerset m
+    (fun n => p.eval (x + (n : R) * h))]
+  have hgen := sum_powerset_neg_one_pow_eval_eq_coeff_card (range m)
+    (fun j => (2 : R) ^ j * h) p (by simpa using hdeg) x
+  rw [Finset.card_range] at hgen
+  calc
+    ∑ T ∈ (range m).powerset,
+        (-1 : R) ^ T.card *
+          p.eval (x + ((∑ j ∈ T, 2 ^ j : ℕ) : R) * h) =
+        ∑ T ∈ (range m).powerset,
+          (-1 : R) ^ T.card *
+            p.eval (x + ∑ j ∈ T, (2 : R) ^ j * h) := by
+      refine Finset.sum_congr rfl fun T _ => ?_
+      rw [cast_sum_two_pow_mul]
+    _ = p.coeff m *
+        ((-1 : R) ^ m * (m.factorial : R) *
+          ∏ j ∈ range m, ((2 : R) ^ j * h)) := hgen
+    _ = p.coeff m *
+        ((-1 : R) ^ m * (m.factorial : R) * 2 ^ m.choose 2 * h ^ m) := by
+      rw [prod_two_pow_mul, Finset.card_range, Finset.sum_range_id,
+        Nat.choose_two_right]
+      ring
+
+/-- **Degree-valued Thue--Morse Prouhet cancellation.**  Every polynomial
+of degree below `m` vanishes under the signed affine block functional
+`p ↦ ∑_{n<2^m} ε(n) p(x + nh)`, over any commutative ring.
+
+The `Polynomial.degree` hypothesis is deliberately more inclusive at the
+empty boundary than the traditional `natDegree < m` statement: for `m = 0`
+it admits exactly the zero polynomial, and the one-term block sum is then zero.
+No separate nonzero-polynomial or positive-block hypothesis is needed. -/
+theorem sum_thueMorseSign_mul_affine_eval_of_degree_lt
+    {R : Type*} [CommRing R] (m : ℕ) (p : R[X])
+    (hdeg : p.degree < (m : WithBot ℕ)) (x h : R) :
+    ∑ n ∈ range (2 ^ m),
+      ((thueMorseSign n : ℤ) : R) * p.eval (x + (n : R) * h) = 0 := by
+  classical
+  by_cases hp : p = 0
+  · simp [hp]
+  · have hnat : p.natDegree < m :=
+      (Polynomial.natDegree_lt_iff_degree_lt hp).2 hdeg
+    rw [sum_thueMorseSign_mul_affine_eval_eq_coeff_card m p hnat.le x h,
+      Polynomial.coeff_eq_zero_of_natDegree_lt hnat, zero_mul]
+
 /-- **Prouhet cancellation over any commutative ring.**  For `r < m`,
 `∑_{n<2^m} ε(n) (x + nh)^r = 0`.  The corpus proves this over `ℚ` and
-`ℝ`; the powerset engine proves it uniformly. -/
+`ℝ`; this is the monomial corollary of the degree-valued polynomial
+cancellation above. -/
 theorem sum_thueMorseSign_mul_affine_pow_eq_zero {R : Type*} [CommRing R]
     (m r : ℕ) (hr : r < m) (x h : R) :
     ∑ n ∈ range (2 ^ m),
       ((thueMorseSign n : ℤ) : R) * (x + (n : R) * h) ^ r = 0 := by
-  rw [sum_thueMorseSign_mul_eq_sum_powerset m
-    (fun n => (x + (n : R) * h) ^ r)]
-  have hgen := sum_powerset_neg_one_pow_eval (range m)
-    (fun j => (2 : R) ^ j * h) (Polynomial.X ^ r)
-    (lt_of_le_of_lt (natDegree_X_pow_le r) (by simpa using hr)) x
-  rw [← hgen]
-  refine Finset.sum_congr rfl fun T hT => ?_
-  rw [eval_pow, eval_X, cast_sum_two_pow_mul]
+  have hdegree : (Polynomial.X ^ r : R[X]).degree < (m : WithBot ℕ) :=
+    (Polynomial.degree_X_pow_le r).trans_lt (WithBot.coe_lt_coe.mpr hr)
+  simpa only [Polynomial.eval_pow, Polynomial.eval_X] using
+    sum_thueMorseSign_mul_affine_eval_of_degree_lt
+      m (Polynomial.X ^ r : R[X]) hdegree x h
 
 /-- **Sharp Prouhet moment over any commutative ring.**  At `r = m` the
 cancellation breaks with the exact value
@@ -285,18 +420,10 @@ theorem sum_thueMorseSign_mul_affine_pow_card {R : Type*} [CommRing R]
     ∑ n ∈ range (2 ^ m),
       ((thueMorseSign n : ℤ) : R) * (x + (n : R) * h) ^ m =
       (-1 : R) ^ m * (m.factorial : R) * 2 ^ m.choose 2 * h ^ m := by
-  rw [sum_thueMorseSign_mul_eq_sum_powerset m
-    (fun n => (x + (n : R) * h) ^ m)]
-  have hgen := sum_powerset_neg_one_pow_pow_card (range m)
-    (fun j => (2 : R) ^ j * h) x
-  rw [Finset.card_range] at hgen
-  rw [sum_powerset_pow_cast_bridge (range m) x h m, hgen]
-  have hprod : ∏ j ∈ range m, ((2 : R) ^ j * h) =
-      2 ^ m.choose 2 * h ^ m := by
-    rw [prod_two_pow_mul, Finset.card_range, Finset.sum_range_id,
-      Nat.choose_two_right]
-  rw [hprod]
-  ring
+  simpa only [Polynomial.eval_pow, Polynomial.eval_X,
+    Polynomial.coeff_X_pow_self, one_mul] using
+    sum_thueMorseSign_mul_affine_eval_eq_coeff_card
+      m (Polynomial.X ^ m : R[X]) (Polynomial.natDegree_X_pow_le m) x h
 
 /-! ## Bit supports and sparse Prouhet identities -/
 
@@ -374,6 +501,23 @@ theorem sum_submask_neg_one_pow_eval {R : Type*} [CommRing R]
   rw [← hgen]
   refine Finset.sum_congr rfl fun T hT => ?_
   rw [cast_sum_two_pow_mul]
+
+/-- **Degree-valued sparse Prouhet cancellation.**  The submask sum
+annihilates every polynomial whose `Polynomial.degree` is below the number of
+set bits of `n`.  Using `degree` rather than `natDegree` includes the genuine
+boundary case `n = 0`, where the zero polynomial is the only polynomial of
+degree below `binaryWeight 0 = 0`. -/
+theorem sum_submask_neg_one_pow_eval_of_degree_lt
+    {R : Type*} [CommRing R] (n : ℕ) (p : R[X])
+    (hdeg : p.degree < (binaryWeight n : WithBot ℕ)) (x h : R) :
+    ∑ T ∈ (bitSupport n).powerset,
+      (-1 : R) ^ T.card * p.eval (x + ((∑ j ∈ T, 2 ^ j : ℕ) : R) * h) =
+      0 := by
+  classical
+  by_cases hp : p = 0
+  · simp [hp]
+  · exact sum_submask_neg_one_pow_eval n p
+      ((Polynomial.natDegree_lt_iff_degree_lt hp).2 hdeg) x h
 
 /-- **Sharp sparse moment.**  At degree exactly `binaryWeight n`, the
 submask sum evaluates to

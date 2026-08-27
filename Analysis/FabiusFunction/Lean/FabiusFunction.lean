@@ -1,7 +1,15 @@
+import FabiusFunction.GeometricLagrange
+import FabiusFunction.LagrangeResidualMoments
 import FabiusFunction.Paper05442
 import FabiusFunction.Paper06487
 import FabiusFunction.PaperFabiusAsymptotic
 import FabiusFunction.PaperKFoldThueMorse
+import FabiusFunction.FinitePolynomialFunctional
+import FabiusFunction.CompleteHomogeneous
+import FabiusFunction.FiniteQBinomialCore
+import FabiusFunction.WeightedScaleMultiplicity
+import FabiusFunction.MomentCumulantAlgebra
+import FabiusFunction.PolynomialExpectationCumulant
 import FabiusFunction.ThueMorseBooleanCube
 import FabiusFunction.ThueMorseValuation
 import FabiusFunction.ThueMorseDigits
@@ -26,13 +34,17 @@ import FabiusFunction.ThueMorseMultinomial
 import FabiusFunction.ThueMorseFourier
 import FabiusFunction.ThueMorseSineProduct
 import FabiusFunction.ThueMorseFourierInversion
+import FabiusFunction.SummableCyclicAlias
 import FabiusFunction.ThueMorseParseval
 import FabiusFunction.ThueMorseComplexity
 import FabiusFunction.ThueMorseArithmeticFilter
 import FabiusFunction.RealZPowProduct
 import FabiusFunction.ToeplitzHessenberg
 import FabiusFunction.ThueMorseHessenberg
+import FabiusFunction.ExponentialPartition
 import FabiusFunction.ThueMorsePartition
+import FabiusFunction.ExponentialBell
+import FabiusFunction.EndpointTransferPolynomials
 import FabiusFunction.ThueMorseIntegerLift
 import FabiusFunction.ThueMorseBoundaryFlatness
 import FabiusFunction.ThueMorseDirichlet
@@ -52,6 +64,8 @@ import FabiusFunction.ThueMorseGDirichlet
 import FabiusFunction.ThueMorseQuarterProduct
 import FabiusFunction.ThueMorseDiscSeries
 import FabiusFunction.ThueMorseNaturalBoundary
+import FabiusFunction.ThueMorseComputability
+import FabiusFunction.WordComplexity
 import FabiusFunction.ThueMorseNewman
 import FabiusFunction.ThueMorseGelfond
 import FabiusFunction.PeriodDoublingHankel
@@ -116,6 +130,14 @@ import FabiusFunction.ValleyZeroOrders
 import FabiusFunction.ThueMorseLobeSign
 import FabiusFunction.LobeSignSelfSimilarity
 import FabiusFunction.RenormalizationIdentity
+import FabiusFunction.SincPrefixBound
+import FabiusFunction.GlobalDecayEnvelope
+import FabiusFunction.LacunaryMeanSharp
+import FabiusFunction.KappaDictionary
+import FabiusFunction.DyadicReflection
+import FabiusFunction.CollatzWielandt
+import FabiusFunction.LacunaryProductToSum
+import FabiusFunction.RvachevFourierDecay
 import FabiusFunction.BoundednessSkeleton
 import FabiusFunction.TransferOperatorStep
 import FabiusFunction.LasotaYorkeIteration
@@ -173,6 +195,10 @@ product, its Gamma--zeta periodic correction, and the unconditional corrected
 sharp small-argument asymptotic.  Its probability interface also exposes
 measure-generic midpoint log-convexity and positive-shift factorial bounds for
 unit-interval Laplace moments, with bounded-Fabius specializations.
+Its foundational algebra includes finite weighted-moment coefficient
+extraction across arbitrary semiring homomorphisms and field-generic Lagrange
+evaluation on geometric grids, culminating in module-valued Richardson
+exactness at an arbitrary starting index.
 It also exposes the exact Fourier--Legendre expansion of Rvachev's up
 function, with absolute uniform convergence on `[-1,1]`, and its translated
 monomial representation of the signed global Fabius function on `[0,2]`.

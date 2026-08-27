@@ -226,7 +226,7 @@ theorem sum_pow_binaryWeight_mul_pow_binaryWeight_land {R : Type*}
     ← Finset.prod_mul_distrib]
   refine Finset.prod_congr rfl fun j _ => ?_
   rw [Nat.testBit_land]
-  cases hb : n.testBit j <;> cases hc : a.testBit j <;> simp [hb, hc]
+  cases n.testBit j <;> cases a.testBit j <;> simp
 
 /-! ### Orthogonality and the one-point spectrum -/
 

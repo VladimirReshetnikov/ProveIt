@@ -119,8 +119,8 @@
 \large Exact arithmetic, probability, Fourier analysis, and corrected sharp asymptotics}
 \author{Human-readable synthesis of the formal development\\
 \small Vladimir Reshetnikov's \texttt{ProveIt} repository}
-\date{Repository snapshot: 26 August 2026\\
-\small commit \nolinkurl{948bf3f377472c068f9539e0569d383ddc35f617}}
+\date{Repository snapshot: 27 August 2026\\
+\small commit \nolinkurl{24da985eba70e46d862acdaddd476793a428213e}}
 
 \begin{document}
 \maketitle
@@ -1170,6 +1170,16 @@ The finite-product refinement and its infinite limit are
 \lean{rvachevFourier_eq_finite_product} and
 \lean{rvachevFourier_eq_product} in \path{FourierProduct.lean}.
 The refinement equation is \lean{rvachevFourier_scaling} in the same module.
+Writing \(\Phi\) for the first product in \eqref{eq:sinc-product}, the
+standalone one-step and \(n\)-fold
+renormalizations
+\[
+ \Phi(z)=\sinc(\pi z)\Phi(z/2),\qquad
+ \Phi(z)=\left(\prod_{j<n}\sinc(\pi z/2^j)\right)\Phi(z/2^n)
+\]
+are \lean{rvachevFourierProduct_scaling} and
+\lean{rvachevFourierProduct_shell} in
+\path{RenormalizationIdentity.lean}.
 The whole-plane analyticity theorem is
 \lean{rvachevFourier_analyticOnNhd} in
 \path{FourierAnalytic.lean}.  The weighted cosine product is
@@ -1177,6 +1187,203 @@ The whole-plane analyticity theorem is
 \path{OriginalPaperSupplement.lean}; its finite telescoping identity is proved internally in
 the same module.
 \end{proof}
+
+\subsection{A finite Thue--Morse product-to-sum bridge}
+
+The finite binary block has a reflection law that matches the parity of a
+quarter-turn phase.  Recall that
+\(\varepsilon_n=(-1)^{\wt(n)}\).
+
+\begin{proposition}[Binary complement and quarter-turn parity]
+\label{prop:binary-complement-quarter-turn}
+For \(m,n\in\N\) with \(n<2^m\),
+\begin{align}
+ \wt(2^m-1-n)+\wt(n)&=m,                                 \label{eq:binary-weight-complement}\\
+ \varepsilon_{2^m-1-n}&=(-1)^m\varepsilon_n.             \label{eq:thue-sign-complement}
+\end{align}
+For every \(m\in\N\) and \(x\in\R\),
+\begin{equation}
+ (-1)^m\cos\!\left(\frac{m\pi}{2}-x\right)
+ =\cos\!\left(\frac{m\pi}{2}+x\right).                 \label{eq:quarter-turn-phase-parity}
+\end{equation}
+\end{proposition}
+
+\begin{proof}[Formal proof]
+The three identities are respectively
+\lean{binaryWeight_compl}, \lean{thueMorseSign_compl}, and
+\lean{neg_one_pow_mul_cos_sub} in \path{LacunaryProductToSum.lean}.
+The first hypothesis makes the natural-number subtractions in
+\eqref{eq:binary-weight-complement}--\eqref{eq:thue-sign-complement}
+ordinary binary complementation rather than truncated subtraction.
+\end{proof}
+
+\begin{theorem}[Lacunary sine product as a Thue--Morse sum]
+\label{thm:lacunary-sine-product-to-sum}
+For every \(m\in\N\) and \(w\in\R\),
+\begin{equation}
+ \boxed{
+ 2^m\prod_{j=0}^{m}\sin(2^jw)
+ =\sum_{n=0}^{2^m-1}\varepsilon_n
+   \sin\!\left(\frac{m\pi}{2}+(2n+1)w\right).}
+                                                               \label{eq:lacunary-sine-product-to-sum}
+\end{equation}
+\end{theorem}
+
+\begin{proof}[Formal proof]
+This is exactly \lean{prod_sin_two_pow_eq_thueMorse_sum} in
+\path{LacunaryProductToSum.lean}.  Its Lean proof uses the two complement
+laws and the phase parity above to fold the negative frequencies from the
+product-to-sum recurrence back onto the positive odd frequencies.  The
+formal statement is over real \(w\); no complex continuation or neighboring
+cosine-product identity is asserted here.
+\end{proof}
+
+\begin{theorem}[Dyadic shell factorization]
+\label{thm:fourier-dyadic-shell}
+For every \(k\in\N\) and \(z\in\C\), dilation by \(2^k\) extracts exactly the first
+\(k\) factors of the sinc product:
+\begin{equation}
+ \widehat{\Up}(2^kz)
+ =\left(\prod_{j=0}^{k-1}\sinc\!\left(\pi 2^{j+1}z\right)\right)
+   \widehat{\Up}(z).                                      \label{eq:fourier-dyadic-shell}
+\end{equation}
+\end{theorem}
+
+\begin{proof}[Formal proof]
+This is \lean{rvachevFourier_two_pow_mul} in
+\path{RvachevFourierDecay.lean}.  Its standalone-product form is
+\lean{rvachevFourierProduct_two_pow_mul} in \path{SincProductShells.lean}.
+On the real axis the removable singularity can be cleared without excluding the zero ray:
+for every \(k\in\N\) and \(y\in\R\),
+\begin{equation}
+ \begin{split}
+ &2^{k(k+1)/2}(\pi|y|)^k
+   \left|\widehat{\Up}(2^ky)\right|\\
+ &\qquad={}
+ \left(\prod_{j=0}^{k-1}\left|\sin(2^{j+1}\pi y)\right|\right)
+   \left|\widehat{\Up}(y)\right|.
+ \end{split}                                               \label{eq:fourier-dyadic-shell-cross}
+\end{equation}
+This total form includes \(y=0\), and at \(k=0\) both sides are the same Fourier modulus.
+It is \lean{norm_rvachevFourier_two_pow_mul_cross} in
+\path{RvachevFourierDecay.lean}; its product-level source is
+\lean{norm_rvachevFourierProduct_two_pow_mul_cross} in
+\path{SincProductShells.lean}.
+\end{proof}
+
+\begin{theorem}[Total arbitrary-prefix identity and envelope]
+\label{thm:fourier-prefix-bound}
+Write \(\Phi\) for the standalone sinc product in \eqref{eq:sinc-product}.
+For every \(K\in\N\) and \(x\in\R\), clearing the first \(K\) sinc
+denominators gives the total identity
+\begin{equation}
+ (\pi|x|)^K|\Phi(x)|
+ =2^{\binom K2}
+   \left(\prod_{j=0}^{K-1}
+     \left|\sin\!\left(\frac{\pi x}{2^j}\right)\right|\right)
+   \left|\Phi\!\left(\frac{x}{2^K}\right)\right|.       \label{eq:fourier-prefix-cross}
+\end{equation}
+In particular,
+\begin{equation}
+ (\pi|x|)^K|\Phi(x)|\le 2^{\binom K2}.                  \label{eq:fourier-prefix-cross-bound}
+\end{equation}
+Both formulas include \(x=0\) and the empty prefix \(K=0\).  Only after
+dividing do we require \(x\ne0\):
+\begin{equation}
+ |\Phi(x)|\le
+ \frac{2^{\binom K2}}{(\pi|x|)^K}\qquad(x\ne0).       \label{eq:fourier-prefix-div-bound}
+\end{equation}
+Thus the usual selected-factor constant is
+\(2^{K(K-1)/2}/\pi^K\), with no unnecessary assumption \(K\ge1\).
+\end{theorem}
+
+\begin{proof}[Formal proof]
+The total identity, its total bound, and the divided corollary are respectively
+\lean{norm_rvachevFourierProduct_prefix_cross},
+\lean{norm_rvachevFourierProduct_prefix_cross_le}, and
+\lean{norm_rvachevFourierProduct_le_prefix_div} in
+\path{SincPrefixBound.lean}.  The proof combines the finite shell
+\lean{rvachevFourierProduct_shell}, the removable real-sinc identity
+\lean{abs_mul_norm_complexSinc_ofReal}, and the global tail bound
+\lean{norm_rvachevFourierProduct_le_one}; no convergence argument is repeated.
+\end{proof}
+
+The mean-value input behind shell estimates is more general than the dyadic case.
+Let \(m_0,m_1,\ldots\) be positive integer frequencies satisfying
+\(2m_j\le m_{j+1}\).  Then, for every \(n\in\N\),
+\begin{align}
+ \int_0^1\prod_{j=0}^{n-1}\sin^2(\pi m_jt)\,\dd t
+   &=\left(\frac12\right)^n,                              \label{eq:lacunary-square-mean}\\
+ \int_0^1\prod_{j=0}^{n-1}|\sin(\pi m_jt)|\,\dd t
+   &\le\left(\frac{\sqrt2}{2}\right)^n.                  \label{eq:lacunary-abs-mean}
+\end{align}
+The exact square mean is \lean{integral_prod_sin_sq} in
+\path{LacunaryRieszIntegral.lean}.  Applying Cauchy--Schwarz to it gives
+\lean{integral_prod_abs_sin_le_sqrt_two} in
+\path{LacunaryMeanSharp.lean}.  The geometric-base and dyadic specializations are
+\lean{integral_prod_abs_sin_pow_le_sqrt_two} and
+\lean{integral_prod_abs_sin_two_pow_le_sqrt_two}.
+
+The logarithm of the normalized dyadic sine shell has an exact square mean as well.  For
+every \(n\in\N\), including the empty product \(n=0\),
+\begin{equation}
+ \int_0^1
+ \log^2\!\left|\prod_{j=0}^{n-1}2\sin(\pi2^jt)\right|\dd t
+ =\frac{\pi^2}{4}n-\frac{\pi^2}{3}\left(1-2^{-n}\right).
+                                                               \label{eq:dyadic-log-sine-variance}
+\end{equation}
+The product statement is \lean{integral_sq_log_prod_two_sin_all} in
+\path{BirkhoffProductBridge.lean}.  Its doubling-cocycle form is
+\lean{integral_sq_birkhoff_sum_all} in \path{BirkhoffVariance.lean}, and the finite
+covariance summation is \lean{variance_closed_form_all} in
+\path{VarianceBookkeeping.lean}.  The all-index declarations make the zero-length
+boundary an identity rather than a side condition.
+
+For a quantitative global form, set
+\begin{equation}
+ \kappa_\infty=\frac32+\frac{\log(\pi/\sqrt3)}{\log2},
+ \qquad
+ E_\kappa(x)=\exp\!\left(-\frac{(\log x)^2}{2\log2}\right)x^{-\kappa}
+ \quad(x>0).                                               \label{eq:fourier-decay-gauge}
+\end{equation}
+There is a constant \(C>0\) such that the single two-sided estimate
+\begin{equation}
+ |\widehat{\Up}(x)|\le C E_{\kappa_\infty}(|x|)
+ \qquad(|x|\ge1)                                          \label{eq:fourier-two-sided-envelope}
+\end{equation}
+holds on both real tails.  This is
+\lean{norm_rvachevFourier_le_decayGauge_abs} in
+\path{RvachevFourierDecay.lean}.  On the distinguished dyadic ray the same gauge occurs
+in an exact identity:
+\begin{equation}
+ |\widehat{\Up}(2^k\,2/3)|
+ =\frac{|\widehat{\Up}(2/3)|}{E_{\kappa_\infty}(2/3)}
+   E_{\kappa_\infty}(2^k\,2/3),                           \label{eq:fourier-peak-ray-envelope}
+\end{equation}
+namely \lean{norm_rvachevFourier_peak_ray_envelope} in the same module.
+
+The exponent \(\kappa_\infty\) is sharp within this family of gauges.  Write \(\Phi\) for
+the standalone sinc product, which equals \(\widehat{\Up}\) by
+\lean{rvachevFourier_eq_product}.  For every \(\kappa>\kappa_\infty\),
+\begin{equation}
+ \frac{|\Phi(2^k\,2/3)|}{E_\kappa(2^k\,2/3)}
+ \longrightarrow+\infty
+ \qquad(k\longrightarrow\infty).                            \label{eq:fourier-kappa-sharp}
+\end{equation}
+More explicitly, for every real \(C\) there is a \(k\in\N\) such that
+\(x_k=2^k\,2/3\ge1\) and
+\begin{equation}
+ C E_\kappa(x_k)<|\Phi(x_k)|.                               \label{eq:fourier-kappa-obstruction}
+\end{equation}
+Consequently no \(C>0\) satisfies
+\[
+ |\Phi(x)|\le C E_\kappa(x)\qquad\text{for every real }x\ge1.
+\]
+The limit, explicit peak-ray obstruction, and positive-ray nonexistence theorem are
+\lean{norm_rvachevFourierProduct_peak_ray_ratio_tendsto_atTop},
+\lean{exists_peak_ray_norm_gt_mul_decayGauge}, and
+\lean{not_exists_norm_rvachevFourierProduct_le_decayGauge_of_kappaInf_lt} in
+\path{GlobalDecayEnvelope.lean}.
 
 The transform also has the exact conjugation, parity, and real-axis identities
 \begin{equation}
@@ -1188,12 +1395,187 @@ These are \lean{rvachevFourier_conj} in \path{FourierAnalytic.lean} and
 \lean{rvachevFourier_neg}, \lean{rvachevFourier_ofReal_im_eq_zero} in
 \path{FourierProduct.lean}.
 
-A consequence needed for Poisson summation is the formally proved integer-zero statement
+\begin{theorem}[Exact Fourier zero set and positive-integer zero orders]
+\label{thm:fourier-zeros}
+The complex zeros of the Fourier transform are precisely the nonzero integers:
 \begin{equation}
- \widehat{\Up}(m)=0\qquad(m\in\Z\setminus\{0\}).           \label{eq:fourier-integer-zeros}
+ \widehat{\Up}(z)=0
+ \quad\Longleftrightarrow\quad
+ \exists\,m\in\Z\setminus\{0\}\text{ such that }z=m,
+ \qquad z\in\C.                                           \label{eq:fourier-integer-zeros}
 \end{equation}
-This is exactly \lean{rvachevFourier_int_eq_zero}.  No converse or zero-multiplicity
-classification is asserted here.
+At every positive integer \(m\), its real-axis zero order is exactly
+\(\vtwo(m)+1\), in the following quantitative sense: there is a constant
+\(C_m>0\) such that
+\begin{equation}
+ \lim_{\substack{x\to m\\x\ne m}}
+ \frac{\left|\widehat{\Up}(x)\right|}
+      {|x-m|^{\vtwo(m)+1}}
+ =C_m.                                                     \label{eq:fourier-zero-order}
+\end{equation}
+The corresponding canonical product records all of these orders at once:
+\begin{equation}
+ \widehat{\Up}(z)=\prod_{r=0}^{\infty}
+ \left(1-\frac{z^2}{(r+1)^2}\right)^{1+\vtwo(r+1)}.       \label{eq:fourier-canonical-product}
+\end{equation}
+\end{theorem}
+
+\begin{proof}[Formal proof]
+The complete complex zero-set equivalence is
+\lean{rvachevFourier_eq_zero_iff} in \path{FourierProduct.lean}.
+The positive-integer limit is
+\lean{tendsto_norm_rvachevFourier_div_pow_zero_order} in
+\path{RvachevFourierDecay.lean}; its limiting constant is exhibited there as
+an exponential, and is therefore strictly positive.  The canonical product is
+\lean{rvachevFourier_eq_canonical} in the same facade module, built from
+\lean{rvachevFourierProduct_eq_canonical} in \path{SincCanonicalProduct.lean}.
+\end{proof}
+
+\subsection{Finite weighted scale arithmetic behind the zero orders}
+
+The valuation in \eqref{eq:fourier-zero-order} belongs to a more general
+finite additive calculus; neither primality of the scale base nor an analytic
+infinite product is needed for this layer.  Let \((A,+,0)\) be an additive
+commutative monoid, let \(w:\N\to A\), and define the inclusive weighted
+prefix
+\begin{equation}
+ P_w(n):=\sum_{h=0}^{n}w(h).                              \label{eq:weighted-inclusive-prefix}
+\end{equation}
+It satisfies
+\begin{align}
+ P_w(0)&=w(0),\qquad
+ P_w(n+1)=P_w(n)+w(n+1),                                 \label{eq:weighted-prefix-boundaries}\\
+ P_w(m+n)&=\sum_{h=0}^{m-1}w(h)+P_{w^{\langle m\rangle}}(n),
+ \qquad w^{\langle m\rangle}(h):=w(m+h).                \label{eq:weighted-prefix-split}
+\end{align}
+Empty sums have their usual value.  More generally, if \(S\) is finite,
+\(a:S\to\N\), and \(a(x)<H\) for every \(x\in S\), then
+\begin{equation}
+ \sum_{x\in S}P_w(a(x))
+ =\sum_{h=0}^{H-1}\#\{x\in S:h\le a(x)\}\odot w(h),     \label{eq:weighted-layer-cake}
+\end{equation}
+where \(q\odot y\) means the sum of \(q\) copies of \(y\).  This finite
+layer-cake identity requires no subtraction, order, or multiplication on
+\(A\).
+
+For a natural base \(b\), put
+\begin{equation}
+ \nu_b(n):=\operatorname{padicValNat}(b,n),\qquad
+ W_{b,w}(n):=P_w(\nu_b(n))
+            =\sum_{h=0}^{\nu_b(n)}w(h).                  \label{eq:weighted-scale-multiplicity}
+\end{equation}
+Thus, for \(b>1\), \(n>0\), and \(k\in\N\),
+\begin{align}
+ W_{b,w}(b^kn)
+   &=\sum_{h=0}^{k-1}w(h)+W_{b,w^{\langle k\rangle}}(n), \label{eq:weighted-scale-shift}\\
+ W_{b,w}(bn)
+   &=w(0)+W_{b,w^{\langle1\rangle}}(n).                 \label{eq:weighted-scale-one-shift}
+\end{align}
+For the divisibility form, the optimal algebraic hypothesis is only
+\(b\ne1\).  If \(n>0\) and \(\nu_b(n)<H\), then
+\begin{equation}
+ W_{b,w}(n)=\sum_{\substack{0\le h<H\\b^h\mid n}}w(h).  \label{eq:weighted-scale-divisors-bounded}
+\end{equation}
+Since \(\nu_b(n)<n\), the canonical choice \(H=n\) gives
+\begin{equation}
+ W_{b,w}(n)=\sum_{\substack{0\le h<n\\b^h\mid n}}w(h).  \label{eq:weighted-scale-divisors}
+\end{equation}
+Summing over the positive integers through \(N\) and exchanging the two
+finite sums yields
+\begin{equation}
+ \sum_{m=0}^{N-1}W_{b,w}(m+1)
+ =\sum_{h=0}^{N-1}\bigl(N\mathbin{\mathrm{div}}b^h\bigr)\odot w(h)
+ \qquad(b\ne1),                                         \label{eq:weighted-scale-cumulative}
+\end{equation}
+where \(\mathrm{div}\) denotes natural-number quotient.  For \(b>1\) this
+is the familiar floor \(\lfloor N/b^h\rfloor\).
+
+Pascal weights now give the hockey-stick identities
+\begin{align}
+ P_{h\mapsto\binom{h+r}{r}}(n)&=\binom{n+r+1}{r+1},      \label{eq:weighted-prefix-shifted-pascal}\\
+ P_{h\mapsto\binom hr}(n)&=\binom{n+1}{r+1}.             \label{eq:weighted-prefix-pascal}
+\end{align}
+Consequently, with no restriction on \(b,n,r\),
+\begin{equation}
+ W_{b,h\mapsto\binom hr}(n)
+ =\binom{\nu_b(n)+1}{r+1},                              \label{eq:weighted-scale-pascal}
+\end{equation}
+and, for \(b\ne1\),
+\begin{equation}
+ \sum_{m=0}^{N-1}\binom{\nu_b(m+1)+1}{r+1}
+ =\sum_{h=0}^{N-1}\bigl(N\mathbin{\mathrm{div}}b^h\bigr)\binom hr.
+                                                               \label{eq:weighted-scale-pascal-cumulative}
+\end{equation}
+
+\begin{proof}[Formal proof]
+The definition \eqref{eq:weighted-inclusive-prefix}, its zero and successor
+laws, and its shifted splitting law are
+\lean{inclusivePrefixSum}, \lean{inclusivePrefixSum_zero},
+\lean{inclusivePrefixSum_succ}, and \lean{inclusivePrefixSum_add}.
+The monoid-valued Fubini identity \eqref{eq:weighted-layer-cake} is
+\lean{sum_inclusivePrefixSum_eq_sum_filter_card_nsmul}.
+
+The scale definition \eqref{eq:weighted-scale-multiplicity} is
+\lean{weightedScaleMultiplicity}.  Equations
+\eqref{eq:weighted-scale-shift} and \eqref{eq:weighted-scale-one-shift} are
+\lean{weightedScaleMultiplicity_base_pow_mul} and
+\lean{weightedScaleMultiplicity_base_mul}.  The bounded and canonical
+divisibility sums \eqref{eq:weighted-scale-divisors-bounded} and
+\eqref{eq:weighted-scale-divisors} are
+\lean{weightedScaleMultiplicity_eq_sum_filter_pow_dvd_of_lt} and
+\lean{weightedScaleMultiplicity_eq_sum_filter_pow_dvd}; the cumulative
+identity \eqref{eq:weighted-scale-cumulative} is
+\lean{sum_range_weightedScaleMultiplicity}.
+
+Finally, \eqref{eq:weighted-prefix-shifted-pascal} and
+\eqref{eq:weighted-prefix-pascal} are
+\lean{inclusivePrefixSum_add_choose} and \lean{inclusivePrefixSum_choose}.
+Their valuation specialization and cumulative floor sum are
+\lean{weightedScaleMultiplicity_choose} and
+\lean{sum_range_padicValNat_choose}.  All declarations are in
+\path{WeightedScaleMultiplicity.lean}.
+\end{proof}
+
+Lean totalizes the boundary cases:
+\(\nu_b(0)=\nu_0(n)=\nu_1(n)=0\), and natural division by zero is zero.
+Accordingly, the resulting \(W\)-values at those degenerate inputs are
+algebraic conventions.  More importantly, this subsection proves finite
+arithmetic identities only.  Formula \eqref{eq:weighted-scale-pascal}
+supplies the binomial expression proposed for higher-rank Rvachev products,
+but it does not assert convergence of such a product or identify its analytic
+zero order.  Those analytic bridges remain separate obligations.
+
+On the real axis the origin is the unique global point of unit modulus:
+\begin{equation}
+ |\widehat{\Up}(x)|=1\quad\Longleftrightarrow\quad x=0,
+ \qquad x\ne0\quad\Longrightarrow\quad |\widehat{\Up}(x)|<1.
+                                                               \label{eq:fourier-global-peak}
+\end{equation}
+These are \lean{norm_rvachevFourier_eq_one_iff} and
+\lean{norm_rvachevFourier_lt_one_of_ne_zero}.  On each positive real lobe
+the sign and peak are also exact.  If \(m\in\N\) and \(m<x<m+1\), then
+\begin{equation}
+ \widehat{\Up}(x)=\varepsilon_m|\widehat{\Up}(x)|,        \label{eq:fourier-lobe-sign}
+\end{equation}
+by \lean{rvachevFourier_eq_thueMorse_sign_mul_norm}.  If moreover \(m\ge1\),
+there is exactly one point of \((m,m+1)\) maximizing the modulus over that
+open lobe and exactly one point of the reflected lobe \((-(m+1),-m)\)
+maximizing it there.  These are
+\lean{existsUnique_isMaxOn_rvachevFourier_lobe} and
+\lean{existsUnique_isMaxOn_rvachevFourier_neg_lobe}.  All five facade
+declarations are in \path{RvachevFourierDecay.lean}.
+
+Globally, the origin is the unique real frequency of unit modulus:
+\begin{equation}
+ \left|\widehat{\Up}(x)\right|\le1,
+ \qquad
+ \left|\widehat{\Up}(x)\right|=1\quad\Longleftrightarrow\quad x=0.
+                                                               \label{eq:fourier-strict-global-peak}
+\end{equation}
+Equivalently, the first inequality is strict whenever \(x\ne0\).  These statements are
+\lean{norm_rvachevFourier_le_one},
+\lean{norm_rvachevFourier_lt_one_of_ne_zero}, and
+\lean{norm_rvachevFourier_eq_one_iff} in \path{RvachevFourierDecay.lean}.
 
 \subsection{Rapid decay and inversion}
 
@@ -1543,6 +1925,93 @@ reindexing is \lean{evenMersenneProduct_eq_prod_Ico}, and positivity is
 proved natural normalization, not a claim that the displayed denominator is already
 reduced.
 
+\subsection{Universal Bell and cumulant transforms}
+\label{sec:moment-cumulant-algebra}
+
+The algebra converting moments to cumulants is independent of the particular Fabius
+law.  Let \(R\) be any commutative \(\Q\)-algebra and let \(a:\N\to R\).  Write
+\begin{equation}
+ (\mathcal Na)_n=\frac{a_n}{n!},
+ \qquad
+ (\mathcal Da)_n=n!a_n.                                  \label{eq:factorial-normalization}
+\end{equation}
+These changes of coefficient convention are mutually inverse.  For cumulants
+\(\kappa:\N\to R\) and moments \(\mu:\N\to R\), define the complete Bell and
+moment--cumulant transforms by the formal identities
+\begin{align}
+ \mathcal B(\kappa)_n
+   &=n![X^n]\exp\!\left(\sum_{j\ge1}\kappa_j\frac{X^j}{j!}\right),
+                                                               \label{eq:complete-bell-transform}\\
+ \mathcal K(\mu)_n
+   &=n![X^n]\log\!\left(1+\sum_{j\ge1}\mu_j\frac{X^j}{j!}\right).
+                                                               \label{eq:moment-cumulant-transform}
+\end{align}
+Here the exponential and logarithm are formal power series implemented by finite
+coefficient recurrences; no topology or field structure on \(R\) is being assumed.
+
+\begin{proposition}[Bell recurrence and exact inversion]
+\label{thm:moment-cumulant-algebra}
+For every \(n\in\N\),
+\begin{align}
+ \mathcal B(\kappa)_0&=1,
+ &\mathcal K(\mu)_0&=0,                                  \label{eq:bell-cumulant-zero}\\
+ \mathcal B(\kappa)_{n+1}
+   &=\sum_{j=0}^{n}\binom nj\kappa_{j+1}
+       \mathcal B(\kappa)_{n-j}.                         \label{eq:complete-bell-recurrence}
+\end{align}
+At every index, including zero, the two composites are exactly
+\begin{align}
+ \mathcal B(\mathcal K(\mu))_n
+   &=\begin{cases}1,&n=0,\\ \mu_n,&n>0,\end{cases}
+ &
+ \mathcal K(\mathcal B(\kappa))_n
+   &=\begin{cases}0,&n=0,\\ \kappa_n,&n>0.\end{cases}    \label{eq:bell-cumulant-inverses}
+\end{align}
+Consequently the transforms are inverse as functions when \(\mu_0=1\) and
+\(\kappa_0=0\), respectively.  More precisely, if \(f:R\to S\) is a morphism of
+commutative \(\Q\)-algebras, then
+\begin{align}
+ f\!\left(\mathcal B_R(\kappa)_n\right)
+   &=\mathcal B_S(f\circ\kappa)_n,
+ &
+ f\!\left(\mathcal K_R(\mu)_n\right)
+   &=\mathcal K_S(f\circ\mu)_n.                           \label{eq:bell-cumulant-naturality}
+\end{align}
+
+More generally, if \(E\) and \(A\) are ordinary coefficient sequences for the formal
+exponent and mass series, then the coefficient-convention bridge is
+\begin{equation}
+ \mathcal B(\mathcal D E)=\mathcal D(\lean{expCoeff}(E)),
+ \qquad
+ \mathcal K(\mathcal D A)=\mathcal D(\lean{logCoeff}(A)). \label{eq:bell-ordinary-bridge}
+\end{equation}
+Thus the same theorem applies without modification to polynomial rings, function rings,
+and scalar extensions, not only to real- or rational-valued moment sequences.
+\end{proposition}
+
+\begin{proof}[Formal proof]
+The operations \(\mathcal N,\mathcal D,\mathcal B,\mathcal K\) are respectively
+\lean{factorialNormalize}, \lean{factorialDenormalize},
+\lean{completeBellPolynomial}, and \lean{momentCumulant}.  The two identities following
+\eqref{eq:factorial-normalization} are
+\lean{factorialNormalize_factorialDenormalize} and
+\lean{factorialDenormalize_factorialNormalize}.  The zero values and
+\eqref{eq:complete-bell-recurrence} are \lean{completeBellPolynomial_zero},
+\lean{momentCumulant_zero}, and \lean{completeBellPolynomial_succ}.
+
+Equation \eqref{eq:bell-cumulant-inverses} is
+\lean{completeBellPolynomial_momentCumulant} together with
+\lean{momentCumulant_completeBellPolynomial}; its normalized function-level forms are
+\lean{completeBellPolynomial_momentCumulant_of_zero_eq_one} and
+\lean{momentCumulant_completeBellPolynomial_of_zero_eq_zero}.  The bridge
+\eqref{eq:bell-ordinary-bridge} is
+\lean{completeBellPolynomial_factorialDenormalize} and
+\lean{momentCumulant_factorialDenormalize}.  Finally, functoriality is
+\eqref{eq:bell-cumulant-naturality}, formalized by
+\lean{map_completeBellPolynomial} and \lean{map_momentCumulant}.  All declarations are in
+\path{MomentCumulantAlgebra.lean} and assume only a commutative \(\Q\)-algebra.
+\end{proof}
+
 \subsection{The probability--Laplace bridge}
 \label{sec:probability-laplace-bridge}
 
@@ -1851,6 +2320,47 @@ the corresponding zero has exact order \(b\), by
 \lean{thueMorseCenteredPowerSeries_eq_product} in
 \path{ThueMorseExponential.lean}.
 
+Writing \(P_b(z)\) for either side of \eqref{eq:thue-block-product}, its zero at \(z=1\)
+has exact multiplicity \(b\) over \(\Z[z]\):
+\begin{equation}
+ (1-z)^b\mid P_b(z),
+ \qquad
+ (1-z)^{b+1}\nmid P_b(z).                                  \label{eq:thue-block-multiplicity}
+\end{equation}
+The divisibility and matching nondivisibility statements are respectively
+\lean{one_sub_X_pow_dvd_thueMorseBlockPolynomial} and
+\lean{one_sub_X_pow_succ_not_dvd_thueMorseBlockPolynomial} in
+\path{ThueMorseBlockAlgebra.lean}.
+
+The ordinary derivatives of the finite block polynomial make that exact order
+visible without passing to formal power series.
+
+\begin{proposition}[Block-polynomial derivatives at one]
+\label{prop:thue-block-derivatives}
+For every \(b,r\ge0\),
+\begin{equation}
+ \left.\frac{\dd^r}{\dd z^r}
+   \sum_{h<2^b}\varepsilon_hz^h\right|_{z=1}
+ =r!\sum_{h<2^b}\varepsilon_h\binom hr.                   \label{eq:thue-block-derivative-moment}
+\end{equation}
+Consequently this derivative is zero when \(r<b\), while the first surviving
+derivative is
+\begin{equation}
+ \left.\frac{\dd^b}{\dd z^b}
+   \prod_{j=0}^{b-1}(1-z^{2^j})\right|_{z=1}
+ =(-1)^b b!\,2^{\binom b2}.                               \label{eq:thue-block-derivative-sharp}
+\end{equation}
+\end{proposition}
+
+\begin{proof}[Formal proof]
+The derivative--binomial dictionary is
+\lean{iterate_derivative_thueMorseBlockPolynomial_eval_one}; its strict
+vanishing and first surviving cases are respectively
+\lean{iterate_derivative_thueMorseBlockPolynomial_eval_one_of_lt} and
+\lean{iterate_derivative_thueMorseBlockPolynomial_eval_one_self}, all in
+\path{ThueMorseBlockAlgebra.lean}.
+\end{proof}
+
 \begin{proposition}[The first surviving Thue--Morse moment]
 \label{prop:dy-tm-moment}
 For every \(k\ge0\),
@@ -1879,6 +2389,38 @@ For every \(k\ge0\) and \(Q\in\Q\),
 
 \begin{proof}[Formal proof]
 Apply \lean{thueMorse_affine_power_sum_self} with \(X=Q\) and \(Y=1\).
+\end{proof}
+
+\begin{proposition}[Centered reflection and the characteristic-two boundary]
+\label{prop:thue-morse-centered-reflection}
+Let \(R\) be a commutative ring, let \(c\in R\) satisfy
+\(c+c=2^m-1\), and put
+\begin{equation}
+ S_{m,r}(c)=\sum_{n=0}^{2^m-1}\varepsilon_n(n-c)^r\in R.
+                                                                    \label{eq:thue-centered-moment}
+\end{equation}
+Then
+\begin{equation}
+ S_{m,r}(c)=(-1)^{m+r}S_{m,r}(c).                         \label{eq:thue-centered-reflect}
+\end{equation}
+Consequently, if \(m+r\) is odd, then \(2S_{m,r}(c)=0\).  This is the
+characteristic-free conclusion: in a ring with \(2\)-torsion one cannot in general cancel
+the factor \(2\).  Over \(\Q\), taking \(c=(2^m-1)/2\) gives the familiar parity rule
+\begin{equation}
+ \sum_{n=0}^{2^m-1}\varepsilon_n
+   \left(n-\frac{2^m-1}{2}\right)^r=0
+ \qquad(m+r\ \text{odd}).                                \label{eq:thue-midpoint-parity}
+\end{equation}
+\end{proposition}
+
+\begin{proof}[Formal proof]
+The fixed-point identity is
+\lean{sum_thueMorseSign_mul_centered_pow_reflect}, and its universal
+\(2\)-torsion consequence is
+\lean{two_mul_sum_thueMorseSign_mul_centered_pow_eq_zero}.  The rational
+specialization, including the legitimate cancellation of \(2\ne0\), is
+\lean{sum_thueMorseSign_mul_midpoint_pow_eq_zero}.  All three declarations are in
+\path{ThueMorseMoments.lean}.
 \end{proof}
 
 The centered specialization \(Q=-2^k\) is therefore
@@ -2152,6 +2694,83 @@ These are \lean{halfQBinomial_theorem},
 \lean{halfQBinomial_symm} in \path{HalfQBinomial.lean}.
 \end{proof}
 
+\begin{remark}[The denominator-free finite $q$-binomial theorem]
+The half-base identity is a specialization of a ring-valued statement that does not
+divide by a $q$-Pochhammer symbol.  For a commutative ring $R$ and $q\in R$, define
+the polynomial Gaussian coefficients recursively by
+\[
+ {n+1\brack k+1}_q={n\brack k+1}_q
+   +q^{n-k}{n\brack k}_q,\qquad
+ {n\brack0}_q={n\brack n}_q=1,\qquad
+ {n\brack k}_q=0\quad(n<k).
+\]
+Then for every $z\in R$,
+\begin{equation}
+ (z;q)_n=\sum_{k=0}^{n}(-1)^kq^{\binom k2}{n\brack k}_qz^k.
+ \label{eq:finite-q-binomial-ring}
+\end{equation}
+The recursive coefficient already makes sense over an arbitrary semiring, while the
+displayed subtraction requires a commutative ring.  No denominator, nonzero assumption,
+or exclusion of $q=0$ and roots of unity occurs.  The recurrence, triangular boundaries,
+and \eqref{eq:finite-q-binomial-ring} are
+\lean{gaussianBinomial_succ_succ},
+\lean{gaussianBinomial_zero_right},
+\lean{gaussianBinomial_eq_zero_of_lt},
+\lean{gaussianBinomial_self}, and
+\lean{finite_qBinomial_theorem} in \path{FiniteQBinomialCore.lean}.
+
+At $q=1/2$, \lean{gaussianBinomial_half_eq_halfQBinomial} identifies this recursive
+coefficient with the established rational quotient, and
+\lean{halfQBinomial_theorem} is now the direct specialization of the ring theorem.
+Thus the finite product algebra is already available at $q=1/4$; what remains in the
+spectral research frontier is the explicit identification with the geometric Lagrange row
+and the analytic acceleration and remainder estimates, not a second finite-product
+induction.
+\end{remark}
+
+The polynomial in \eqref{eq:half-q-binomial-theorem} has the complete rational root locus
+\begin{equation}
+ \sum_{k=0}^{n}(-1)^k2^{-\binom k2}\qbinom nk{1/2}z^k=0
+ \quad\Longleftrightarrow\quad
+ \exists\,j<n\text{ such that }z=2^j,
+ \qquad z\in\Q.                                             \label{eq:half-q-root-locus}
+\end{equation}
+This is \lean{qBinomial_half_sum_eq_zero_iff}.  The same statement is stable under scalar
+extension at embedded rational arguments.  Let \(K\) be a field with a
+\(\Q\)-algebra structure, and write \(\iota:\Q\to K\) for its canonical map.  Then, for
+every \(z\in\Q\),
+\begin{equation}
+ \sum_{k=0}^{n}
+ \iota\!\left((-1)^k2^{-\binom k2}\qbinom nk{1/2}\right)(\iota z)^k=0
+ \quad\Longleftrightarrow\quad
+ \exists\,j<n\text{ such that }\iota z=2^j\text{ in }K.     \label{eq:half-q-scalar-root-locus}
+\end{equation}
+This is \lean{qBinomial_half_sum_algebraMap_eq_zero_iff} in
+\path{HalfQBinomial.lean}.  The scalar statement classifies the embedded rational
+arguments \(\iota z\); it does not assert a root classification for arbitrary elements of
+\(K\).
+
+The same Gaussian coefficients form a geometric Prouhet functional.  Set
+\[
+ w_{n,k}=(-1)^k(1/2)^{\binom k2}\qbinom nk{1/2},
+ \qquad \xi_k=-2^k.
+\]
+For every rational polynomial \(p\) with \(\deg p\le n\),
+\begin{equation}
+ \sum_{k=0}^{n}w_{n,k}p(\xi_k)
+ =[X^n]p\;2^{\binom{n+1}{2}}(1/2;1/2)_n
+ =[X^n]p\;\mathfrak m_n.                              \label{eq:half-q-gaussian-prouhet}
+\end{equation}
+Thus the functional annihilates every polynomial of degree below \(n\).
+At \(n=0\), the degree-valued extractor covers all constant polynomials;
+the strict-degree cancellation statement admits exactly the zero polynomial.
+The two forms of \eqref{eq:half-q-gaussian-prouhet} are
+\lean{halfQBinomial_negativeDyadic_polynomial_sum_eq_coeff} and
+\lean{halfQBinomial_negativeDyadic_polynomial_sum_eq_mersenne}; strict-degree
+cancellation is
+\lean{halfQBinomial_negativeDyadic_polynomial_sum_eq_zero_of_degree_lt}, all in
+\path{HalfQBinomial.lean}.
+
 The inner cancellation in the dyadic formula is the exact Thue--Morse block identity
 \begin{equation}
  \sum_{r=0}^{2^k-1}(-1)^{\wt(r)}z^r
@@ -2211,7 +2830,8 @@ value \(F(m/2^n)\).
 \end{theorem}
 
 \begin{proof}[Formal proof]
-The numerator is proved to be a constant polynomial in the translation by
+The complete normalized finite expression is packaged as a polynomial in the translation
+and proved equal to the constant centered formula by
 \lean{qBinomialThueMorseDyadicTranslatedFormulaPolynomial_eq_const}.
 Its identification with the signed dyadic value over \(\C\) is
 \lean{globalFabius_dyadic_eq_qBinomialThueMorseDyadic_translated_sum_complex};
@@ -2229,8 +2849,12 @@ then the two translated rational formulas agree even when their common translati
 \(Q_1,Q_2\in\Q\) differ.  This is
 \lean{qBinomialThueMorseDyadicTranslatedFormula_eq_of_rat_eq}; the one-step refinement
 \((m,n)\mapsto(2m,n+1)\) is
-\lean{qBinomialThueMorseDyadicTranslatedFormula_refine}.  Thus translation invariance and
-representation invariance are both theorem-level properties of the finite formula.
+\lean{qBinomialThueMorseDyadicTranslatedFormula_refine}.  Over every field over \(\Q\),
+both conclusions persist even when the scalar translations and the dyadic presentations
+are changed simultaneously; these stronger wrappers are
+\lean{qBinomialThueMorseDyadicTranslatedFormulaIn_eq_of_rat_eq} and
+\lean{qBinomialThueMorseDyadicTranslatedFormulaIn_refine} in
+\path{FabiusDyadicQBinomialScalar.lean}.
 
 Binary complementation gives the raw inverse-dyadic form
 \begin{equation}
@@ -2242,10 +2866,22 @@ Binary complementation gives the raw inverse-dyadic form
  \sum_{r=0}^{2^k-1}(-1)^{\wt(r)}(r+Q)^{n+k}.}               \label{eq:qbinomial-raw}
 \end{equation}
 Its translated numerator is constant by
-\lean{qBinomialThueMorseRawTranslatedNumeratorPolynomial_eq_const}, and the value identity is
-\lean{fabiusAtInverseTwoPow_cast_eq_qBinomialThueMorse_rawTranslated_sum} in
-\path{FabiusRawQBinomialScalar.lean}.  Generic-\(q\) interpolation formulas, barycentric
-identities, numerical cancellation studies, and complexity comparisons are maintained in the
+\lean{qBinomialThueMorseRawTranslatedNumeratorPolynomial_eq_const}.  The
+algebraic statement is in fact valid over every field \(K\) equipped with an
+\(\mathbb Q\)-algebra structure and every scalar translation \(Q\in K\): the
+fully expanded right-hand side equals the canonical inverse-dyadic rational
+value after its scalar embedding by
+\lean{fabiusAtInverseTwoPow_cast_eq_qBinomialThueMorse_rawTranslated_sum}.
+Translation independence and the intermediate value identification are
+\lean{qBinomialThueMorseRawTranslatedFormulaIn_eq_centered} and
+\lean{qBinomialThueMorseRawTranslatedFormulaIn_eq_fabiusAtInverseTwoPow}.
+For every scalar type \(K\) carrying Mathlib's \texttt{RCLike} structure, the
+corresponding theorem for an arbitrary bounded Fabius solution is
+\lean{fabiusFunction_inverse_two_pow_eq_qBinomialThueMorseRawTranslatedFormulaIn}.
+All five declarations are in \path{FabiusRawQBinomialScalar.lean}; the final
+one uses the \texttt{RCLike} hypothesis only to embed the real Fabius value.
+Variable-base \(q\)-interpolation formulas, barycentric identities, numerical
+cancellation studies, and complexity comparisons are maintained in the
 consolidated research-frontier volume rather than used as theorems here.
 
 \section{The global binary-reduction telescope}
@@ -2520,6 +3156,18 @@ For fixed $Q\in\C$ and every $x\ge0$,
 with the left side embedded in $\C$.  The series converges absolutely.
 \end{theorem}
 
+The displayed floor presentation is stated on the nonnegative half-line.  The literal Lean
+summand has a stronger all-real scope: for every \(x\in\R\), its series is absolutely
+summable and sums to the signed global extension, while for \(x\le0\) every term and the
+target vanish.  These are
+\lean{summable_norm_qBinomialFabiusGlobalSummand_all},
+\lean{hasSum_qBinomialFabiusGlobalSummand_all},
+\lean{extendedFabius_eq_tsum_qBinomialFabiusGlobalSummand_all},
+\lean{globalFabius_eq_tsum_qBinomialFabiusGlobalSummand_all}, and
+\lean{qBinomialFabiusGlobalSummand_eq_zero_of_nonpos} in
+\path{FabiusGlobalQBinomialSeries.lean}.  The older nonnegative signatures are retained as
+compatibility wrappers.
+
 This is not a new infinite basic-hypergeometric identity.  The outer sum is the analytic
 binary telescope, while at each scale a finite $q$-binomial identity presents the same
 Taylor polynomial.  Expanding one summand makes the architecture explicit:
@@ -2731,6 +3379,118 @@ The finite $q$-binomial theorem gives the row normalization
 \begin{equation}
  \sum_{j=0}^{n}\omega_{n,j}=1.                            \label{eq:discrete-row-sum}
 \end{equation}
+The same theorem identifies the entire row rather than only its value at one.
+
+\begin{proposition}[Toeplitz row polynomial and module-valued $q$-Richardson cancellation]
+\label{prop:discrete-row-polynomial}
+For $z\in\Q$, put $W_n(z)=\sum_{j=0}^{n}\omega_{n,j}z^j$.  Then
+\begin{equation}
+ W_n(z)=\frac{(z/2;1/2)_n}{(1/2;1/2)_n}.                 \label{eq:discrete-row-polynomial}
+\end{equation}
+Consequently its rational zeros are exactly
+\begin{equation}
+ W_n(z)=0
+ \quad\Longleftrightarrow\quad
+ z\in\{2,2^2,\ldots,2^n\}.                              \label{eq:discrete-row-roots}
+\end{equation}
+Moreover, let $M$ be any additive commutative monoid carrying a $\Q$-module
+structure.  If an $M$-valued sequence has the finite geometric-error model
+$u_p=L+\sum_{r=1}^{n}2^{-rp}\mathbin{\cdot}a_r$, where
+$\cdot$ denotes scalar multiplication, then
+\begin{equation}
+ \sum_{j=0}^{n}\omega_{n,j}\mathbin{\cdot}u_{2n-j}=L.
+                                                               \label{eq:discrete-row-richardson}
+\end{equation}
+Thus the cancellation needs no multiplication, topology, order, or norm on
+the target.  Taking $M=\Q$ recovers the rational formula
+$u_p=L+\sum_{r=1}^{n}a_r2^{-rp}$.  This module-valued extension concerns
+cancellation only; the root classification above remains a statement for
+rational $z$.  All statements include $n=0$: the row polynomial is then $1$,
+the root set is empty, and the error sum is empty.
+\end{proposition}
+
+\begin{proof}[Formal proof]
+The full generating identity and its root classification are
+\lean{sum_range_discreteLimitWeight_mul_pow} and
+\lean{sum_range_discreteLimitWeight_mul_pow_eq_zero_iff}.  The reusable
+single-mode identity is
+\lean{sum_range_discreteLimitWeight_mul_geometricMode_smul_eq_zero},
+and the module-valued cancellation theorem is
+\lean{discreteLimitWeight_qRichardson_exact_module}; its $M=\Q$
+specialization is \lean{discreteLimitWeight_qRichardson_exact}.  All are in
+\path{FabiusDiscreteLimitToeplitz.lean}.  The former proof of
+\eqref{eq:discrete-row-sum} is now its specialization at $z=1$.
+\end{proof}
+
+\begin{remark}[Finite moments, Lagrange weights, and local exactness]
+The row calculation is an instance of two reusable algebraic layers.  First, let $I$ be
+finite, let $\varphi:R\to S$ be a homomorphism from a semiring to a commutative semiring,
+let $w_i,x_i\in S$ for $i\in I$, and let $p\in R[X]$ have degree at most $N$.  If
+$p^\varphi$ denotes
+coefficientwise mapping, then the finite weighted functional expands as
+\begin{equation*}
+ \sum_{i\in I} w_i p^\varphi(x_i)
+ =\sum_{d=0}^{N}\varphi([X^d]p)\sum_{i\in I} w_i x_i^d.
+\end{equation*}
+Thus prescribed moments select a prescribed coefficient; repeated nodes and a zero
+surviving moment are allowed, and no field or subtraction is needed.  The same-ring
+coefficient and strict-cancellation forms are
+\lean{sum_weight_mul_eval_eq_coeff_mul_of_moments} and
+\lean{sum_weight_mul_eval_eq_zero_of_degree_lt} in
+\path{FinitePolynomialFunctional.lean}; that module also contains the scalar-extension
+forms used by the later Prouhet arguments.
+
+Second, over a field, distinct nodes $v_i$ have evaluation weights
+$\lambda_i(x)$ given by the Lagrange basis at $x$.  They reproduce every polynomial of
+degree less than the number of nodes, are characterized uniquely by their monomial
+moments, and at the first omitted degree satisfy
+\begin{equation*}
+ \sum_i\lambda_i(x)v_i^{|I|}=x^{|I|}-\prod_i(x-v_i).
+\end{equation*}
+These are respectively \lean{sum_lagrangeEvalWeight_mul_eval},
+\lean{eq_lagrangeEvalWeight_of_moments}, and
+\lean{sum_lagrangeEvalWeight_mul_pow_card}.  On the distinct geometric nodes
+$1,q,\ldots,q^n$ at the target $0$, the moments through degree $n$ are $0^d$;
+in particular degree zero has mass one, while positive degrees vanish.  The declarations
+\lean{sum_geometricLagrangeWeight_mul_pow} and
+\lean{geometricLagrange_richardson_exact_of_eq} in
+\path{GeometricLagrange.lean} include both $n=0$ and an arbitrary block start, including
+start zero.
+
+For the present half-geometric grid, write $\lambda_{n,k}^{(1/2)}$ for the
+evaluation-at-zero weight belonging to the node $2^{-k}$.  The Toeplitz row is exactly the
+same row in reverse order:
+\begin{equation*}
+ \boxed{\omega_{n,j}=\lambda_{n,n-j}^{(1/2)}}\qquad(0\le j\le n).
+\end{equation*}
+Indeed, for every $d\ge0$ its complete reversed moment is
+\begin{equation*}
+ \sum_{k=0}^{n}\omega_{n,n-k}2^{-kd}
+ =2^{-nd}\frac{(2^d/2;1/2)_n}{(1/2;1/2)_n},
+\end{equation*}
+and for $0\le d\le n$ this is $0^d$, with $0^0=1$.  The pointwise bridge and
+these two moment forms are
+\lean{discreteLimitWeight_eq_geometricLagrangeWeight},
+\lean{sum_range_discreteLimitWeight_reverse_mul_half_pow}, and
+\lean{sum_range_discreteLimitWeight_reverse_moment}.  Their finite-sum form is
+\lean{sum_range_discreteLimitWeight_smul_eq_geometricLagrangeWeight}.
+
+Consequently the global model in the proposition can be weakened to one finite block.
+For any $s\in\N$, if only the samples $0\le k\le n$ satisfy
+\begin{equation*}
+ u_{s+k}=L+\sum_{r=1}^{n}2^{-r(s+k)}\mathbin{\cdot}a_r,
+\end{equation*}
+then
+\begin{equation*}
+ \sum_{j=0}^{n}\omega_{n,j}\mathbin{\cdot}u_{s+n-j}=L.
+\end{equation*}
+This is \lean{discreteLimitWeight_qRichardson_exact_module_at_of_eq} in
+\path{FabiusDiscreteLimitToeplitz.lean}.  At $n=0$ its hypothesis is simply $u_s=L$,
+and $s=0$ needs no separate convention.  The grid ratio is $1/2$.  A mode with ratio
+$1/4$ and index $r$ has half-grid degree $2r$, so this row cancels it only when
+$2r\le n$; this is not an $n$-mode theorem on a $1/4$ grid.
+\end{remark}
+
 Applying it with the opposite sign also gives the uniform variation bound
 \begin{equation}
  \sum_{j=0}^{n}|\omega_{n,j}|
@@ -2802,8 +3562,9 @@ limit, the Rvachev bump and hence $F$.
 
 This section develops that construction: the convolution law and its explicit binomial
 kernel, the signed dyadic reflection preceding each terminal zero run, the zero runs
-themselves and their exact boundary values, the two generating-series identities, the
-discrete functional equation satisfied by the normalized grid, and the
+themselves and their exact boundary values, the two generating-series identities, their
+analytic realization and natural-boundary theorem, the discrete functional equation
+satisfied by the normalized grid, and the
 precise sense in which the normalized grid converges.  The convergence statement requires
 one shift of the prefix order and the centered reading of the grid cells; the literal
 normalization does not converge, and that failure is recorded separately in
@@ -2954,6 +3715,54 @@ In particular the sum does not depend on the translation $X$.
 Expand $(X+Yh)^r$ by the binomial theorem and apply \eqref{eq:tm-polynomial-extract}: the
 coefficient of $h^r$ is $Y^r$.
 \end{proof}
+
+The sharp extractor also has a direct commutative-ring form.  If $R$ is any commutative
+ring and $p\in R[X]$ satisfies $\deg p\le r$, then, with the signs and natural numbers
+mapped into $R$,
+\begin{equation}
+ \sum_{h<2^r}\varepsilon_h p(h)
+ =[X^r]p\;(-1)^r2^{\binom r2}r!.                            \label{eq:tm-polynomial-extract-ring}
+\end{equation}
+This is \lean{thueMorse_polynomial_sum_eq_coeff_ring_of_degree_le}; its strict-degree
+cancellation form is \lean{thueMorse_polynomial_sum_eq_zero_ring_of_degree_lt}, both in
+\path{ThueMorsePrefix.lean}.  The word ``extractor'' here describes the functional
+identity, not division by its sharp factor: in positive characteristic the image of
+$2^{\binom r2}r!$ can vanish, so the displayed equality need not recover $[X^r]p$ from
+the sum.  The degree-valued hypothesis also treats the zero polynomial correctly; at
+$r=0$ the extraction formula includes constant polynomials and the zero polynomial,
+whereas the strict-degree condition admits only the latter.
+
+Likewise the affine sharp identity holds directly in $R$:
+\begin{equation}
+ \sum_{h<2^r}\varepsilon_h(x+yh)^r
+ =(-1)^r y^r2^{\binom r2}r!,                               \label{eq:tm-affine-sharp-ring}
+\end{equation}
+formalized as \lean{thueMorse_affine_power_sum_self_ring}, with the unified range
+$d\le r$ given by \lean{thueMorse_affine_power_sum_of_le_ring}.  For $r>0$ the sharp
+sum vanishes at $y=0$.  At the joint boundary $r=0$, $y=0$, Lean's convention
+$0^0=1$ instead gives the correct one-term value $1$ on both sides; no positive-degree
+reading should be imposed on that case.
+
+The public Boolean-cube theorem uses the genuine degree
+\(\deg p\in\N\cup\{-\infty\}\), rather than the natural degree that assigns the zero
+polynomial degree zero.  Over any commutative ring, for a finite set \(S\), weights
+\(w_j\), and a polynomial satisfying \(\deg p<|S|\), it states
+\begin{equation}
+ \sum_{T\subseteq S}(-1)^{|T|}
+ p\!\left(x+\sum_{j\in T}w_j\right)=0.                    \label{eq:tm-powerset-degree-cancel}
+\end{equation}
+This is \lean{sum_powerset_neg_one_pow_eval_of_degree_lt} in
+\path{ThueMorseSparseProuhet.lean}.  The degree convention matters at the boundary
+\(S=\varnothing\): the hypothesis then forces \(p=0\), so the theorem correctly includes
+the empty-support case instead of declaring it vacuous.  With \(S\) the bit support of
+\(n\) and \(w_j=2^jh\), the corresponding sparse submask parametrization is
+\begin{equation}
+ \sum_{T\subseteq\operatorname{bits}(n)}(-1)^{|T|}
+ p\!\left(x+h\sum_{j\in T}2^j\right)=0
+ \quad\text{when }\deg p<\wt(n),                           \label{eq:tm-submask-degree-cancel}
+\end{equation}
+formalized as \lean{sum_submask_neg_one_pow_eval_of_degree_lt}.  It is valid also at
+\(n=0\), where again the only polynomial satisfying the strict degree bound is zero.
 
 At the level of the centered formal exponential series, the corresponding zero has exact
 order \(r\); this is \lean{order_thueMorseCenteredPowerSeries}.  For the binomial kernel
@@ -3179,6 +3988,76 @@ Note that \eqref{eq:tm-prefix-eq-coeff} must fail at $m=2^{n+1}$, because
 $g_n<2^{n+1}$ makes the right side zero while the left side is $-1$ by
 \eqref{eq:tm-run-right}.  That single index is the exceptional right endpoint of
 \cref{thm:tm-corrected-convergence}.
+
+\subsection{The analytic Thue--Morse series and its natural boundary}
+\label{tm:sub-analytic-series}
+
+The series \(\mathcal K\) in \eqref{eq:tm-series-def} was interpreted there as a formal
+power series.  On the open unit disc the same coefficients define an analytic function,
+and we retain the notation \(\mathcal K\):
+\begin{equation}
+ \mathcal K(z)=\sum_{n=0}^{\infty}\varepsilon_nz^n,
+ \qquad |z|<1.                                                \label{eq:tm-disc-series}
+\end{equation}
+
+\begin{proposition}[Analytic product and Mahler equation]
+\label{thm:tm-disc-series}
+For every \(z\in\C\) with \(|z|<1\), the series \eqref{eq:tm-disc-series} converges and
+\begin{equation}
+ \mathcal K(z)=\prod_{j=0}^{\infty}\bigl(1-z^{2^j}\bigr).     \label{eq:tm-analytic-product}
+\end{equation}
+The function \(\mathcal K\) is holomorphic on \(|z|<1\) and satisfies
+\begin{align}
+ \mathcal K(z)&=(1-z)\mathcal K(z^2),                         \label{eq:tm-mahler}\\
+ \mathcal K(z)&=\left(\prod_{j=0}^{k-1}(1-z^{2^j})\right)
+                 \mathcal K(z^{2^k}) \qquad(k\in\N).        \label{eq:tm-mahler-iterate}
+\end{align}
+On the real radius,
+\begin{equation}
+ |\mathcal K(x)|\le 1-x\qquad(0\le x<1),                    \label{eq:tm-real-bound}
+\end{equation}
+and \(\mathcal K(0)=1\).
+\end{proposition}
+
+\begin{proof}[Formal proof]
+The analytic function is \lean{thueMorseDiscSeries}.  Convergence, the product identity,
+and holomorphy are respectively \lean{summable_thueMorseDiscSeries},
+\lean{thueMorseDiscSeries_eq_tprod}, and
+\lean{thueMorseDiscSeries_differentiableOn}.  Convergence of the product itself is
+\lean{multipliable_one_sub_pow_two_pow_complex} in
+\path{ThueMorseInfiniteProduct.lean}.  Equations \eqref{eq:tm-mahler} and
+\eqref{eq:tm-mahler-iterate} are \lean{thueMorseDiscSeries_mahler} and
+\lean{thueMorseDiscSeries_iterate}; \eqref{eq:tm-real-bound} and the value at zero are
+\lean{thueMorseDiscSeries_real_le} and \lean{thueMorseDiscSeries_zero}.  Except for the
+product-convergence declaration just cited, all these declarations are in
+\path{ThueMorseDiscSeries.lean}.
+\end{proof}
+
+\begin{theorem}[Dyadic radial zeros and the natural boundary]
+\label{thm:natural-boundary}
+If \(k\in\N\) and \(\zeta\in\C\) satisfy \(\zeta^{2^k}=1\), then
+\begin{equation}
+ \lim_{\rho\to1^-}\mathcal K(\rho\zeta)=0.                  \label{eq:tm-radial-zero}
+\end{equation}
+Moreover, for every \(z_0\in\C\) with \(|z_0|=1\) and every \(R>0\), there is no function
+\(g:\C\to\C\) which is holomorphic on \(\{z:|z-z_0|<R\}\) and satisfies
+\begin{equation}
+ g(z)=\mathcal K(z)
+ \quad\text{whenever}\quad |z-z_0|<R\ \text{ and }\ |z|<1. \label{eq:tm-no-continuation}
+\end{equation}
+Thus, in precisely this local-disc sense, every point of the unit circle is singular and
+the unit circle is a natural boundary for \(\mathcal K\).
+\end{theorem}
+
+\begin{proof}[Formal proof]
+The radial limit is \lean{tendsto_thueMorseDiscSeries_radial_zero}.  More generally, if
+\(n\in\N\) is nonzero and \(\zeta^n=1\), then \(|\zeta|=1\); this is
+\lean{norm_eq_one_of_pow_eq_one}.  The exact quantified nonextension statement
+\eqref{eq:tm-no-continuation}, and hence the
+natural-boundary conclusion in the stated local-disc sense, is
+\lean{thueMorse_natural_boundary}.  All three declarations are in
+\path{ThueMorseNaturalBoundary.lean}.
+\end{proof}
 
 \subsection{The functional equation of the normalized prefix grid}
 \label{tm:sub-grid-equation}
@@ -3770,7 +4649,11 @@ not an optimality claim.  Its proof uses the pointwise bounds
 \subsection{The lower-Lambert saddle and exact reduction}
 \label{sec:sharp-asymptotic}
 
-For \(x>0\) with \(Lx<\e^{-1}\), let
+On the endpoint-inclusive lower-branch domain
+\begin{equation}
+ \mathcal D_L=\left(0,\frac{\e^{-1}}L\right],                \label{eq:lambert-phase-domain}
+\end{equation}
+let
 \begin{equation}
  W=W_{-1}(-Lx),                                             \label{eq:W-def}
 \end{equation}
@@ -3779,21 +4662,58 @@ and define
  \lambda=\lambda(x)=-\frac{W}{L},
  \qquad r=r(x)=2^\lambda.                                  \label{eq:lambda-def}
 \end{equation}
-The phase and radius are \lean{fabiusLambertPhase} and
-\lean{fabiusLambertRadius}.  Their exact identities are
+The global Lean definitions are \lean{fabiusLambertPhase} and
+\lean{fabiusLambertRadius}; here we use them on \(\mathcal D_L\).  For every
+\(x\in\mathcal D_L\), their exact identities are
 \begin{equation}
  \lambda2^{-\lambda}=x,\qquad
  \frac{\lambda}{r}=x,\qquad
  rx=\lambda,\qquad
  \log r=L\lambda.                                          \label{eq:lambda-equation}
 \end{equation}
-They are proved by
-\lean{fabiusLambertPhase_div_radius},
-\lean{fabiusLambertRadius_mul_argument}, and
-\lean{log_fabiusLambertRadius} in \path{FabiusLambertSaddle.lean}.
+The endpoint-inclusive quotient and product identities are
+\lean{fabiusLambertPhase_div_radius_of_le} and
+\lean{fabiusLambertRadius_mul_argument_of_le}; the first equality in
+\eqref{eq:lambda-equation} is the quotient identity rewritten using \(r=2^\lambda\).
+The logarithmic identity in fact holds for every real \(x\), not only on
+\(\mathcal D_L\); this is \lean{log_fabiusLambertRadius}.  The corresponding
+strict-interior wrappers are \lean{fabiusLambertPhase_div_radius} and
+\lean{fabiusLambertRadius_mul_argument}.  All five declarations are in
+\path{FabiusLambertSaddle.lean}.
 
-On the exact domain \(0<x<\e^{-1}/L\), the phase \(\lambda(x)\) is continuous and
-strictly decreasing, with image \((1/L,\infty)\), and
+On the same closed-upper domain, the phase has the sharp lower bound and endpoint
+characterization
+\begin{equation}
+ \lambda(x)\ge\frac1L,
+ \qquad
+ \lambda(x)=\frac1L
+ \quad\Longleftrightarrow\quad
+ x=\frac{\e^{-1}}L.                                        \label{eq:lambert-phase-closed-bound}
+\end{equation}
+In particular,
+\begin{equation}
+ \lambda\!\left(\frac{\e^{-1}}L\right)=\frac1L.             \label{eq:lambert-phase-branch-point}
+\end{equation}
+Moreover, \(\lambda\) is strictly decreasing on \(\mathcal D_L\), and its exact image is
+\begin{equation}
+ \lambda(\mathcal D_L)=\left[\frac1L,\infty\right).         \label{eq:lambert-phase-closed-image}
+\end{equation}
+The bound, equality characterization, endpoint value, strict antitonicity, and image are
+respectively \lean{fabiusLambertPhase_ge_inv_log_two},
+\lean{fabiusLambertPhase_eq_inv_log_two_iff},
+\lean{fabiusLambertPhase_branchPoint},
+\lean{fabiusLambertPhase_strictAntiOn_Ioc}, and
+\lean{fabiusLambertPhase_image_Ioc} in \path{FabiusLambertSaddle.lean}.
+
+Equivalently, under the hypotheses \(x>0\) and \(Lx\le\e^{-1}\), the same
+lower bound and the strict positivity \(0<\lambda(x)\) are
+\lean{one_div_log_two_le_fabiusLambertPhase} and
+\lean{fabiusLambertPhase_pos_of_le}.  Thus the algebraic saddle identities
+extend to the finite branch point even though the smooth formulas below do not.
+
+The smooth API is deliberately restricted to the open interior
+\(0<x<\e^{-1}/L\).  There \(\lambda\) is continuous and strictly decreasing, its image is
+\((1/L,\infty)\), and it is differentiable with
 \begin{equation}
  \lambda'(x)=
  \frac{\lambda(x)}{x\bigl(1-L\lambda(x)\bigr)}<0.            \label{eq:lambert-phase-derivative}
@@ -3802,7 +4722,17 @@ These are \lean{fabiusLambertPhase_continuousOn},
 \lean{fabiusLambertPhase_strictAntiOn}, \lean{fabiusLambertPhase_image},
 \lean{deriv_fabiusLambertPhase}, and \lean{deriv_fabiusLambertPhase_neg} in
 \path{FabiusLambertSaddle.lean}; the derivative witness is
-\lean{fabiusLambertPhase_hasDerivAt}.
+\lean{fabiusLambertPhase_hasDerivAt}, and pointwise continuity is
+\lean{fabiusLambertPhase_continuousAt}.
+At the small-argument endpoint \(x=0\), the exact phase and its reciprocal have the limits
+\begin{equation}
+ \lambda(x)\longrightarrow+\infty,
+ \qquad \lambda(x)^{-1}\longrightarrow0
+ \qquad(x\downarrow0).                                    \label{eq:lambert-phase-endpoint-limits}
+\end{equation}
+These are \lean{tendsto_fabiusLambertPhase_nhdsGT_zero_atTop} and
+\lean{tendsto_inv_fabiusLambertPhase_nhdsGT_zero} in
+\path{FabiusLambertRates.lean}.
 
 The corrected main term is
 \begin{equation}
@@ -3812,7 +4742,14 @@ The corrected main term is
  -\frac12\log\lambda(x)+C_F+\Psi(\lambda(x)).
                                                                \label{eq:sharp-main-lambda}
 \end{equation}
-This is definition \lean{fabiusSharpLambertMain}.  If
+This is definition \lean{fabiusSharpLambertMain}.  The exact saddle action
+itself is endpoint-inclusive: whenever \(x>0\) and \(Lx\le\e^{-1}\),
+\begin{equation}
+ r(x)x+\Lambda(r(x))-\frac12\log\bigl(2\pi\lambda(x)\bigr)
+ =\mathcal M(x)+E(r(x)).                                  \label{eq:lambert-saddle-action}
+\end{equation}
+This is \lean{fabiusLambertSaddleAction_eq_of_le} in
+\path{FabiusSharpLambertMain.lean}.  If
 \(\mathcal R(x)\) denotes the normalized saddle ratio
 \lean{fabiusSaddleRatio} at \(r(x)\) and \(\lambda(x)\), then Lean proves the exact
 error separation
@@ -3823,6 +4760,17 @@ error separation
 The declaration is
 \lean{log_fabius_sub_sharpLambertMain_eq_log_ratio_add_tail} in
 \path{FabiusSharpExactReduction.lean}.
+
+The forward product tail in this separation is negligible at every algebraic order of the
+exact phase.  Along \(x=2^{-t}\), for each \(N\in\N\),
+\begin{equation}
+ E\!\left(r(2^{-t})\right)
+ =o\!\left(\lambda(2^{-t})^{-N}\right)
+ \qquad(t\to+\infty).                                     \label{eq:lambert-tail-all-power-little-o}
+\end{equation}
+This is \lean{negativeLaplaceTailError_dyadicLambert_isLittleO_inv_pow} in
+\path{FabiusSharpLambertTransfer.lean}.  At \(N=0\) it says directly that the tail tends
+to zero; larger \(N\) show that it contributes to none of the inverse-phase coefficients.
 
 The analytic input to that reduction is an exact Bromwich formula.  For every \(r>0\)
 and \(x\in\R\), as an identity in \(\C\),
@@ -4322,8 +5270,9 @@ That rule explains several choices made above:
       weak-convergence API, not an unformalized continuous box-convolution density.
 \item Step cells use the formal half-endpoint indicator, including its point value at a
       shared boundary.
-\item The Fourier chapter states integer zeros but neither a complete zero classification nor
-      multiplicities.
+\item The Fourier chapter states the exact complex zero classification and canonical product,
+      and the exact positive-integer zero order in its proved real punctured-limit form; it
+      does not promote that real limit to an unstated complex local-multiplicity theorem.
 \item Flatness uses natural powers, and the analytic-locus claims use precisely the domains
       proved in \path{NowhereAnalytic.lean}.
 \item The \(q\)-calculus is restricted to the half-base identities actually present in Lean.
@@ -4385,7 +5334,15 @@ Probability and finite approximants &
 \path{FabiusUniformSpline.lean}, \path{FabiusComputability.lean}\\
 Fourier analysis &
 \path{FourierProduct.lean}, \path{FourierAnalytic.lean},
-\path{OriginalPaperSupplement.lean}, \path{PoissonSummation.lean}\\
+\path{OriginalPaperSupplement.lean}, \path{PoissonSummation.lean},
+\path{LacunaryProductToSum.lean},
+\path{RenormalizationIdentity.lean}, \path{SincProductShells.lean},
+\path{SincPrefixBound.lean},
+\path{SincCanonicalProduct.lean}, \path{PhiZeroOrder.lean},
+\path{ThueMorseLobeSign.lean}, \path{RvachevProductContinuity.lean},
+\path{PeakRayEnvelope.lean}, \path{GlobalDecayEnvelope.lean},
+\path{RvachevFourierDecay.lean}, \path{VarianceBookkeeping.lean},
+\path{BirkhoffVariance.lean}, \path{BirkhoffProductBridge.lean}\\
 Global derivatives and flatness &
 \path{GlobalExtension.lean}, \path{GlobalBounds.lean},
 \path{BoundedDerivatives.lean}, \path{EffectiveFlatness.lean},
@@ -4398,28 +5355,38 @@ Moments and exact arithmetic &
 \path{Arithmetic.lean}, \path{AnalyticMoments.lean},
 \path{MomentPowerSeries.lean}, \path{UnitLaplaceMomentBounds.lean},
 \path{NormalizedEvenMoments.lean},
-\path{BernoulliRecurrences.lean},
+\path{BernoulliRecurrences.lean}, \path{MomentCumulantAlgebra.lean},
+\path{WeightedScaleMultiplicity.lean},
 \path{ExactInversePower.lean}, \path{Parity.lean}, \path{TwoAdic.lean}\\
+Finite polynomial functionals and geometric Lagrange/Richardson exactness &
+\path{FinitePolynomialFunctional.lean}, \path{GeometricLagrange.lean}\\
 Dyadic and \(q\)-binomial formulas &
 \path{DyadicClosedForm.lean}, \path{DyadicAnalytic.lean}, \path{GlobalDyadic.lean},
-\path{DyadicCorrectness.lean}, \path{HalfQBinomial.lean},
+\path{DyadicCorrectness.lean}, \path{FiniteQBinomialCore.lean}, \path{HalfQBinomial.lean},
 \path{FabiusDyadicQBinomialScalar.lean}, \path{FabiusQBinomialFormula.lean},
+\path{FabiusRawQBinomialScalar.lean},
 \path{FabiusBinaryReductionSeries.lean}, \path{FabiusParityPowerSeries.lean},
 \path{FabiusGlobalQBinomialSeries.lean},
+\path{FabiusDiscreteLimitToeplitz.lean},
 \path{FabiusDiscreteLimitIntegration.lean}\\
-Thue--Morse prefixes &
+Thue--Morse algebra, prefixes, disc series, and ring-valued Prouhet identities &
 \path{ThueMorsePrefix.lean}, \path{ThueMorseGenerating.lean},
+\path{ThueMorseBlockAlgebra.lean},
+\path{ThueMorseInfiniteProduct.lean}, \path{ThueMorseDiscSeries.lean},
+\path{ThueMorseNaturalBoundary.lean},
 \path{ThueMorseExponential.lean}, \path{ThueMorseApproximation.lean},
-\path{PaperKFoldThueMorse.lean}\\
+\path{ThueMorseSparseProuhet.lean}, \path{PaperKFoldThueMorse.lean}\\
 Endpoint asymptotics &
 \path{NegativeLaplace.lean}, \path{NegativeLaplaceVertical.lean},
 \path{PeriodicCorrection.lean}, \path{PeriodicFourier.lean},
 \path{MellinBose.lean}, \path{MellinFinitePart.lean},
 \path{BoseFinitePartIntegral.lean},
 \path{LowerLambertW.lean}, \path{FabiusLambertPhase.lean},
-\path{FabiusLambertSaddle.lean}, \path{FabiusWikipediaMain.lean},
+\path{FabiusLambertSaddle.lean}, \path{FabiusSharpLambertMain.lean},
+\path{FabiusWikipediaMain.lean},
 \path{FabiusDecayComparison.lean},
 \path{FabiusSharpAsymptotic.lean}, \path{FabiusFullAsymptoticExpansion.lean},
+\path{FabiusSharpLambertTransfer.lean},
 \path{LaplaceMomentBounds.lean}, \path{FabiusDyadicSharpCumulant.lean},
 \path{SaddleLogExpansionAlgebra.lean}, \path{SaddleLogExpansionPowerSeries.lean},
 \path{FabiusSecondSaddleCorrection.lean},
@@ -4445,6 +5412,9 @@ Article & Lean & Meaning\\
 \(I\) & \lean{fabiusInv fabius fabius_spec} & totalized inverse\\
 \(c_n\) & \lean{moment n} & even moment\\
 \(d_n\) & \lean{halfMoment n} & half moment\\
+\(P_w(n)\) & \lean{inclusivePrefixSum w n} & inclusive weighted prefix\\
+\(W_{b,w}(n)\) & \lean{weightedScaleMultiplicity b w n} & weighted scale multiplicity\\
+\(\nu_b(n)\) & \lean{padicValNat b n} & maximal whole-base power exponent\\
 \(\varepsilon_n\) & \lean{thueMorseSign n} & signed Thue--Morse value\\
 \(\wt(n)\) & \lean{binaryWeight n} & binary digit sum\\
 \bottomrule
@@ -4587,8 +5557,8 @@ V.~Reshetnikov,
 V.~Reshetnikov,
 \newblock \emph{ProveIt: Analysis/FabiusFunction},
 \newblock Lean~4 formal development, source snapshot
-\texttt{948bf3f377472c068f9539e0569d383ddc35f617}, consulted 26 August 2026.
-\newblock \url{https://github.com/VladimirReshetnikov/ProveIt/tree/948bf3f377472c068f9539e0569d383ddc35f617/Analysis/FabiusFunction}.
+\texttt{24da985eba70e46d862acdaddd476793a428213e}, consulted 27 August 2026.
+\newblock \url{https://github.com/VladimirReshetnikov/ProveIt/tree/24da985eba70e46d862acdaddd476793a428213e/Analysis/FabiusFunction}.
 
 \end{thebibliography}
 

@@ -118,8 +118,8 @@
 \large Digital, valuative, Pascal, automatic, finite-difference, spectral, and analytic representations}
 \author{Merged and expanded companion report to the Fabius--Rvachev formal development\\
 \small Vladimir Reshetnikov's \texttt{ProveIt} repository}
-\date{26 August 2026, with the second consolidation pass of the same day\\
-\small source snapshot at commit \nolinkurl{29e5861c6109207739c41754e1e8bcfce32e84f1}}
+\date{Repository snapshot: 27 August 2026\\
+\small source snapshot at commit \nolinkurl{24da985eba70e46d862acdaddd476793a428213e}}
 
 \begin{document}
 \maketitle
@@ -281,30 +281,17 @@ abstract and in the concordance of \cref{app:draft-concordance}.
 
 \begin{boxedremark}
 \textbf{Proof-status convention.}
-The repository already contains formal developments of the binary recurrence,
-finite generating product, Prouhet cancellations, iterated prefixes, and the
-binomial--logarithm evaluator.  The paper proofs below make many additional
-results natural Lean targets, but do not assert that those declarations already
-exist.  A dependency-aware formalization map is given in
-\cref{sec:formalization}.
+The repository contains a substantial formal development of this atlas, but a paper proof
+is not by itself evidence of formalization.  Statements proved in Lean carry their exact
+declaration names in the text, typeset as \lean{Fabius.thueMorseSign}; statements without
+such a citation must not be inferred to have a formal counterpart.
 
-Since 26 August 2026 the formalization of this atlas is underway in the
-same repository: nineteen new compiled Lean modules now cover the
-Boolean-cube master identities, the valuation and digit chapters, the
-enumerators, block-polynomial algebra with reciprocity and the cyclotomic
-table, the complete power, binomial, centered, and sparse moment
-composition formulas, the general finite-difference engine, the sparse
-Prouhet identities, Lucas's submask criterion and the Walsh spectrum, the
-\(\Ftwo\) Artin--Schreier layer with uniqueness and the integer-lift
-parity, the Euler transform of the ruler function with the prefix and
-discrepancy theory, rarefaction for every odd modulus, the finite
-autocorrelation and Mahler equations, and the words layer ---
-aperiodicity, Thue's overlap-freeness, and uniform recurrence with a
-linear bound.  Statements proved in Lean carry their declaration names in
-the text, typeset as \lean{Fabius.thueMorseSign}; see
-\cref{sec:formalized-modules} for the module map.  Many are proved in
-Lean in \emph{more} generality than stated here, and the text records
-the stronger forms.
+The current inventory in \cref{sec:formalized-modules} consists of seventy-two compiled
+Lean modules.  It covers the finite algebraic, automata, moment, Fourier, rarefaction,
+Dirichlet--Mellin, word-combinatorial, and Fabius--Rvachev bridges recorded there, often in
+greater generality than the displayed prose.  The dependency-aware map in
+\cref{sec:formalization} distinguishes this delivered inventory from the historical module
+proposal retained for comparison.
 \end{boxedremark}
 
 \subsection{A compact formula index}
@@ -562,6 +549,135 @@ tau := x & 1
 epsilon := 1 - 2*tau
 \end{lstlisting}
 \end{algorithm}
+
+\subsection{The sequence is primitive recursive}
+\label{sec:primitive-recursive}
+
+The automaton above bounds the \emph{memory} needed to generate the
+sequence.  The following statement bounds the \emph{recursion} needed to
+define it, and it is what licenses the fixed, computable step count of
+Algorithm~\ref{alg:xor-fold}.
+
+\begin{theorem}[Primitive recursiveness]
+\label{thm:primitive-recursive}
+The binary weight \(\wt\), the zero--one sequence \(\tau\), and the
+signed sequence \(\eps\) are primitive recursive functions.
+Consequently all three are computable, and the evil and odious sets are
+decidable.
+\end{theorem}
+
+This is not quite the content of \eqref{eq:tau-recursion}.  That
+recurrence computes \(\tau(n)\) from \(\tau(\lfloor n/2\rfloor)\),
+whereas the official definition of a primitive recursive function permits
+a recursive call only at the immediate predecessor \(n-1\).  A recursion
+that descends by halving is a \emph{course-of-values} recursion, and the
+device that reduces it to the official scheme is to carry the entire
+history along.  We isolate that device once, in the generality every
+base-\(b\) digit recursion needs.
+
+\begin{lemma}[Recursion along a primitive recursive descent]
+\label{lem:descent-recursion}
+Let \(d\) be primitive recursive with \(d(n)<n\) for every
+\(n\ge1\), let \(g\) be primitive recursive, and let \(z\) be a
+constant.  Then the unique function \(f\) satisfying
+\begin{equation}
+  f(0)=z,
+  \qquad
+  f(n)=g\bigl(n,f(d(n))\bigr)\quad(n\ge1)
+  \label{eq:descent-recursion}
+\end{equation}
+is primitive recursive.  No hypothesis is imposed on \(d(0)\).
+\end{lemma}
+
+\begin{proof}
+Let \(F(n)\) code the list \(\langle f(0),\ldots,f(n-1)\rangle\) of
+all values below \(n\), and let \(\lambda(L,i)\) be the primitive
+recursive lookup that returns the \(i\)-th entry of the list coded by
+\(L\) when \(i\) is in range, and reports failure otherwise.  Then
+\(F\) obeys an \emph{ordinary} primitive recursion,
+\[
+  F(0)=\langle\;\rangle,
+  \qquad
+  F(n+1)=F(n)\frown
+  \begin{cases}
+    g\bigl(n,\lambda(F(n),d(n))\bigr)
+      &\text{if that lookup succeeds},\\
+    z&\text{otherwise.}
+  \end{cases}
+\]
+For \(n\ge1\) the entry demanded carries index \(d(n)<n\) and is
+therefore already present in the length-\(n\) list \(F(n)\), so the
+appended value is \(g(n,f(d(n)))=f(n)\); at \(n=0\) the list is empty,
+every lookup fails, and the appended value is \(z=f(0)\).  Note that the
+fallback must guard the \emph{whole} step expression rather than the
+lookup alone --- defaulting only the lookup would append \(g(0,z)\)
+instead of \(z\) --- and that this is exactly what frees the statement
+from any assumption on \(d(0)\).  Hence \(F\) is primitive recursive,
+and so is \(f(n)=\lambda(F(n+1),n)\).
+\end{proof}
+
+\begin{proof}[Proof of \Cref{thm:primitive-recursive}]
+Deleting the last binary digit of \(n\) deletes exactly that digit from
+the digit sum, so
+\begin{equation}
+  \wt(n)=\wt\bigl(\lfloor n/2\rfloor\bigr)+(n\bmod2),
+  \label{eq:weight-halving}
+\end{equation}
+an identity that holds at \(n=0\) as well, both sides being zero.  This
+is \eqref{eq:descent-recursion} with \(d(n)=\lfloor n/2\rfloor\),
+which is primitive recursive and satisfies \(d(n)<n\) for \(n\ge1\);
+with \(z=0\); and with \(g(n,s)=s+(n\bmod2)\), primitive recursive
+because addition and remainder are.  Lemma~\ref{lem:descent-recursion} then
+makes \(\wt\) primitive recursive, whence \(\tau=\wt\bmod2\) is
+primitive recursive by composition, and so is \(\eps=1-2\tau\) by
+\eqref{eq:normalizations}.  Primitive recursive functions are total and
+computable, and a set whose characteristic function is primitive recursive
+is decidable.
+\end{proof}
+
+\begin{remark}
+Identity \eqref{eq:weight-halving} is the unsigned form of
+\eqref{eq:tau-recursion}: reducing it modulo two gives
+\(\tau(n)=\tau(\lfloor n/2\rfloor)\xor(n\bmod2)\), which is the two
+clauses \(\tau(2n)=\tau(n)\) and \(\tau(2n+1)=1-\tau(n)\) written as
+one.  The bounded expression
+\(\wt(n)=\sum_{i<n}\bigl(\lfloor n/2^i\rfloor\bmod2\bigr)\) yields a
+second, recursion-free proof, because bounded sums of primitive recursive
+functions are primitive recursive; the descent formulation is preferred
+here because it is the one that survives the passage to base \(q\) in
+\Cref{sec:base-q}.
+\end{remark}
+
+\emph{Formal versions.}  \Cref{thm:primitive-recursive} and
+Lemma~\ref{lem:descent-recursion} are fully formal
+(\path{ThueMorseComputability.lean}).  The descent scheme is
+\lean{Fabius.primrec\_of\_descent}, stated for an arbitrary primitive
+recursive \(d\) with \(d(n)<n\) and an arbitrary \texttt{Primcodable}
+codomain --- more general than the halving case needed here, which is
+recorded separately as \lean{Fabius.primrec\_of\_halving}.  The halving
+identity \eqref{eq:weight-halving} is
+\lean{Fabius.binaryWeight\_div\_two}, and the three
+primitive-recursiveness statements are
+\lean{Fabius.primrec\_binaryWeight},
+\lean{Fabius.primrec\_thueMorseBit}, and
+\lean{Fabius.primrec\_thueMorseSign};
+\lean{Fabius.nat\_primrec\_binaryWeight} and
+\lean{Fabius.nat\_primrec\_thueMorseBit} record the same facts in the
+textbook form \texttt{Nat.Primrec} for functions
+\(\mathbb N\to\mathbb N\).  The computability corollaries are
+\lean{Fabius.computable\_thueMorseBit} and
+\lean{Fabius.computable\_thueMorseSign}, and decidability of the odious
+set is \lean{Fabius.primrecPred\_thueMorseBool}.  The signed sequence
+needs no integer arithmetic at all: every function out of \texttt{Bool}
+is primitive recursive, so \(\eps\) is the Boolean word followed by
+\(b\mapsto\pm1\).  The Boolean word itself
+(\lean{Fabius.thueMorseBool}) carries the automaticity clauses
+\lean{Fabius.thueMorseBool\_two\_mul} and
+\lean{Fabius.thueMorseBool\_two\_mul\_add\_one}.  Finally
+\lean{Fabius.primrec\_thueMorsePrefix} states that
+\(n\mapsto\tau(0)\tau(1)\cdots\tau(n-1)\) is primitive recursive:
+the infinite word can be \emph{generated}, not merely decided one letter
+at a time.
 
 \subsection{Exact weight distribution in a dyadic block}
 \label{sec:weight-distribution}
@@ -911,10 +1027,63 @@ multiply to
 \end{proof}
 
 \emph{Formal versions.}  The product \eqref{eq:sinc-product} is
-\lean{Fabius.rvachevFourierProduct} (\path{Basic.lean}); the interval
-sign \eqref{eq:sinc-interval-sign} is not yet formal, but the
-quantitative face of the same product is.  \path{SincProductShells.lean}
-proves the exact dyadic shell factorization of its modulus: for real
+\lean{Fabius.rvachevFourierProduct} (\path{Basic.lean}).  The interval
+sign \eqref{eq:sinc-interval-sign} is now the exact identity
+\[
+ \Phi(x)=\eps_N\,|\Phi(x)|\qquad(N<x<N+1),
+\]
+proved by
+\lean{Fabius.rvachevFourierProduct\_eq\_thueMorse\_sign\_mul\_norm}
+in \path{ThueMorseLobeSign.lean}.  In particular, positivity of the
+norm off the integer lattice gives the displayed sign and the
+half-integer sample without an extra analytic assumption.
+
+The same sinc product now has a complete formal zero-set statement:
+\[
+ \Phi(z)=0\quad\Longleftrightarrow\quad
+ \exists m\in\Z\setminus\{0\},\ z=m,
+\]
+namely \lean{Fabius.rvachevFourierProduct\_eq\_zero\_iff} in
+\path{FourierProduct.lean}.  Its canonical product is
+\[
+ \Phi(z)=\prod_{r=0}^{\infty}
+ \left(1-\frac{z^2}{(r+1)^2}\right)^{1+\vtwo(r+1)},
+\]
+formalized as
+\lean{Fabius.rvachevFourierProduct\_eq\_canonical} in
+\path{SincCanonicalProduct.lean}.  For each positive integer \(m\),
+the real punctured limit
+\[
+ \frac{|\Phi(x)|}{|x-m|^{1+\vtwo(m)}}\longrightarrow C_m>0
+ \qquad(x\to m,\ x\ne m)
+\]
+is \lean{Fabius.tendsto\_norm\_div\_pow\_zero\_order} in
+\path{PhiZeroOrder.lean}; this is the exact positive-integer real-axis
+zero order, not a broader assertion about complex local multiplicity.
+On the real axis the origin is the unique unit-modulus point:
+\[
+ |\Phi(x)|=1\quad\Longleftrightarrow\quad x=0,
+ \qquad x\ne0\quad\Longrightarrow\quad |\Phi(x)|<1.
+\]
+These are \lean{Fabius.norm\_rvachevFourierProduct\_eq\_one\_iff} and
+\lean{Fabius.norm\_rvachevFourierProduct\_lt\_one\_of\_ne\_zero}.
+For every \(m\ge1\), the modulus also has exactly one maximizer in each
+positive side lobe \((m,m+1)\) and reflected negative side lobe
+\((-(m+1),-m)\), by \lean{Fabius.existsUnique\_isMaxOn\_lobe} and
+\lean{Fabius.existsUnique\_isMaxOn\_neg\_lobe} in
+\path{RvachevProductContinuity.lean}.
+
+The product-level renormalization is available independently of the
+Fourier-transform wrapper:
+\[
+ \Phi(z)=\sinc(\pi z)\Phi(z/2),\qquad
+ \Phi(z)=\left(\prod_{j<n}\sinc(\pi z/2^j)\right)\Phi(z/2^n).
+\]
+These are \lean{Fabius.rvachevFourierProduct\_scaling} and
+\lean{Fabius.rvachevFourierProduct\_shell} in
+\path{RenormalizationIdentity.lean}.  Beyond these structural
+identities, \path{SincProductShells.lean}
+proves the exact dyadic shell factorization of the modulus: for real
 \(y\ne0\) and every \(k\ge0\),
 \begin{equation}
  |\Phi(2^ky)|
@@ -924,7 +1093,19 @@ proves the exact dyadic shell factorization of its modulus: for real
 \end{equation}
 (\lean{Fabius.norm\_rvachevFourierProduct\_two\_pow\_mul}):
 dilating the argument by \(2^k\) creates exactly the \(k\) sine
-factors of the corresponding dyadic shell.  Bounding the lacunary sine
+factors of the corresponding dyadic shell.  Clearing the removable denominator gives the
+stronger total form
+\begin{equation}
+ 2^{k(k+1)/2}(\pi|y|)^k|\Phi(2^ky)|
+ =\left(\prod_{j<k}|\sin(2^{j+1}\pi y)|\right)|\Phi(y)|,
+ \label{eq:sinc-shell-factorization-cross}
+\end{equation}
+valid for every real \(y\), including \(y=0\), and also for the empty shell \(k=0\).  This
+is \lean{Fabius.norm\_rvachevFourierProduct\_two\_pow\_mul\_cross}; its only
+zero-sensitive input is the total identity
+\lean{Fabius.abs\_mul\_norm\_complexSinc\_ofReal}.
+
+Bounding the lacunary sine
 numerator by the formal Gelfond bound
 \lean{Fabius.abs\_prod\_sin\_two\_pow\_le}
 (\path{GelfondLogisticBound.lean}) --- the sine-product form
@@ -945,6 +1126,33 @@ the denominator is the universal \(\exp(-(\log x)^2/(2\log2))\) factor
 of the Fabius--Rvachev decay theory; the accompanying geometric factor
 is what the companion reports convert into the spectrum of decay
 exponents.
+
+The facade \path{RvachevFourierDecay.lean} identifies this standalone product with the
+actual Fourier transform of every bounded Fabius solution by
+\lean{Fabius.rvachevFourier\_eq\_rvachevFourierProduct}.  In particular,
+\eqref{eq:sinc-shell-factorization-cross} transfers verbatim as
+\lean{Fabius.norm\_rvachevFourier\_two\_pow\_mul\_cross}.  The same facade records the
+strict global peak
+\begin{equation}
+ |\Phi(x)|=1\quad\Longleftrightarrow\quad x=0,
+ \label{eq:sinc-global-strict-peak}
+\end{equation}
+with strict inequality away from zero, as
+\lean{Fabius.norm\_rvachevFourier\_eq\_one\_iff} and
+\lean{Fabius.norm\_rvachevFourier\_lt\_one\_of\_ne\_zero} for the actual transform.
+
+There is also an exact \(L^2\) identity for the logarithm of the normalized dyadic shell.
+For every \(n\ge0\), including the empty product,
+\begin{equation}
+ \int_0^1\log^2\!\left|\prod_{j<n}2\sin(\pi2^jt)\right|\dd t
+ =\frac{\pi^2}{4}n-\frac{\pi^2}{3}(1-2^{-n}).
+ \label{eq:sinc-log-variance}
+\end{equation}
+The product form is \lean{Fabius.integral\_sq\_log\_prod\_two\_sin\_all} in
+\path{BirkhoffProductBridge.lean}; the doubling-cocycle identity and its finite covariance
+bookkeeping are \lean{Fabius.integral\_sq\_birkhoff\_sum\_all} and
+\lean{Fabius.variance\_closed\_form\_all} in \path{BirkhoffVariance.lean} and
+\path{VarianceBookkeeping.lean}.
 
 The sine-product bound is in turn a corollary of a statement in which
 no trigonometry appears at all.  Along \emph{any} orbit of the full
@@ -1882,20 +2090,24 @@ the \(m\)-th iterate of \(z\mapsto z^2\)
 is the geometric series).  The coefficientwise content of
 \cref{thm:infinite-product} has long been formal as the stabilization
 lemma \lean{Fabius.coeff\_finite\_thueMorse\_product}
-(\path{ThueMorseGenerating.lean}), and its \emph{analytic} content is
-now formal on the whole real interval, not merely on the exponential
-ray: for every real \(x\) with \(|x|<1\) the signed series converges
-absolutely (\lean{Fabius.summable\_thueMorseSign\_mul\_pow}), the
-lacunary product converges
-(\lean{Fabius.multipliable\_one\_sub\_pow\_two\_pow}), and
+(\path{ThueMorseGenerating.lean}), and its analytic identity is
+now formal on the whole complex unit disc.  For every \(z\in\C\) with
+\(\lVert z\rVert<1\), the signed series converges absolutely
+(\lean{Fabius.summable\_thueMorseSign\_mul\_pow\_complex}), the
+lacunary product is multipliable
+(\lean{Fabius.multipliable\_one\_sub\_pow\_two\_pow\_complex}), and
 \begin{equation}
- \sum_{n\ge0}\eps_nx^n=\prod_{j\ge0}\bigl(1-x^{2^j}\bigr)
- \qquad(-1<x<1),
+ \sum_{n\ge0}\eps_nz^n=\prod_{j\ge0}\bigl(1-z^{2^j}\bigr)
+ \qquad(\lVert z\rVert<1),
  \label{eq:infinite-product-analytic}
 \end{equation}
-negative \(x\) and \(x=0\) included
-(\lean{Fabius.tsum\_thueMorseSign\_mul\_pow},
-\path{ThueMorseInfiniteProduct.lean}), with the unordered and
+by \lean{Fabius.tsum\_thueMorseSign\_mul\_pow\_complex}
+(\path{ThueMorseInfiniteProduct.lean}).  The real APIs
+\lean{Fabius.summable\_thueMorseSign\_mul\_pow},
+\lean{Fabius.multipliable\_one\_sub\_pow\_two\_pow}, and
+\lean{Fabius.tsum\_thueMorseSign\_mul\_pow} are retained as
+specializations and compatibility forms on \(-1<x<1\), with negative
+\(x\) and \(x=0\) included, together with the unordered and
 partial-product restatements
 \lean{Fabius.hasProd\_one\_sub\_pow\_two\_pow} and
 \lean{Fabius.tendsto\_prod\_one\_sub\_pow\_two\_pow}.  Both sides
@@ -1906,12 +2118,14 @@ uniqueness of limits closes the argument.  The exponential ray
 Dirichlet--Mellin layer consumes, is now the one-line specialization
 \(x=\e^{-t}\)
 (\lean{Fabius.tsum\_thueMorseSign\_exp\_eq\_lacunaryExpProduct}).
-The full complex-disc form of \eqref{eq:infinite-product} is not
-carried in this shape; what the boundary theory actually uses is the
-holomorphic sum \lean{Fabius.thueMorseDiscSeries} with its
-finite-level factorization \(F(z)=P_k(z)F(z^{2^k})\)
-(\lean{Fabius.thueMorseDiscSeries\_iterate},
-\path{ThueMorseDiscSeries.lean}).  The bit Mahler equation
+The holomorphic sum \lean{Fabius.thueMorseDiscSeries} is identified
+with the same complex product by
+\lean{Fabius.thueMorseDiscSeries\_eq\_tprod}; its Mahler equation and
+finite-level factorization \(F(z)=P_k(z)F(z^{2^k})\) are
+\lean{Fabius.thueMorseDiscSeries\_mahler} and
+\lean{Fabius.thueMorseDiscSeries\_iterate}
+(\path{ThueMorseDiscSeries.lean}), the forms used by the boundary
+theory.  The bit Mahler equation
 \eqref{eq:T-Mahler} and the lacunary quotient are now formal in
 \path{ThueMorseLacunaryQuotient.lean}: the quotient
 \(z/(1-z^2)\) is realized as the dyadic geometric series
@@ -2195,21 +2409,44 @@ lacunary product.
 
 \emph{Formal versions.}  \Cref{thm:partition-formula} is
 \lean{Fabius.thueMorse\_partition\_formula} and
-\cref{cor:Bell-coefficient} is \lean{Fabius.thueMorse\_bell\_formula}
-(\path{ThueMorsePartition.lean}), both over \(\mathbb Q\) with the
-weighted partitions realized as the finset
-\lean{Fabius.weightedPartitions} of multiplicity vectors.  The
-formalization replaces the analytic exponentiation argument by finite
-combinatorics: the partition sum obeys the \emph{marked-part
-recurrence} \(nP(n)=\sum_{j\le n}jx_jP(n-j)\) --- proved for an
-arbitrary coefficient sequence into any characteristic-zero field
-(\lean{Fabius.partitionExpSum\_recurrence}) by distributing the
-weight \(n=\sum jm_j\) over the parts and removing the marked part
---- while the ruler convolution (\cref{thm:ruler-convolution}) says
-the sign sequence obeys the same recurrence at \(x_j=-a_j/j\); the
-division-by-\(n\) uniqueness lemma
+\cref{cor:Bell-coefficient} is \lean{Fabius.thueMorse\_bell\_formula};
+their \texttt{\_field} companions hold over every characteristic-zero
+field.  These Thue--Morse specializations remain in
+\path{ThueMorsePartition.lean}.
+
+The reusable finite combinatorics has been extracted to
+\path{ExponentialPartition.lean}.  For a coefficient sequence
+\(E\colon\mathbb N\to R\) in any commutative \(\mathbb Q\)-algebra,
+\lean{Fabius.partitionExpSum} uses rational reciprocal factorials acting
+by scalars and satisfies both the marked-part recurrence
+\[
+ nP_E(n)=\sum_{j=1}^{n}jE_jP_E(n-j)
+\]
+(\lean{Fabius.partitionExpSum\_recurrence}) and its normalized successor
+form (\lean{Fabius.partitionExpSum\_succ}).  No cancellation in \(R\) is
+used, so rings with zero divisors are allowed.
+\lean{Fabius.partitionExpSum\_eq\_sum\_div} recovers the familiar
+quotient notation over characteristic-zero fields.
+
+Finally, \path{ExponentialBell.lean} proves the function equality
+\[
+ \lean{Fabius.partitionExpSum}\ E
+   =\lean{Fabius.SaddleExpansion.expCoeff}\ E
+\]
+over the same generality.  Thus the recursive all-orders saddle
+coefficient engine has a finite weighted-partition expansion.  The later
+module \path{MomentCumulantAlgebra.lean} factorially normalizes that layer
+into the named transforms \lean{Fabius.completeBellPolynomial} and
+\lean{Fabius.momentCumulant}, proves the classical Bell recurrence and
+their normalized inverse laws, and establishes functoriality over
+commutative \(\mathbb Q\)-algebras.  This remains generic formal algebra:
+it supplies no Thue--Morse-specific probabilistic interpretation.
+
+For \(E_j=-a_j/j\), the ruler convolution
+(\cref{thm:ruler-convolution}) says that the sign sequence obeys the same
+recurrence; the division-by-\(n\) uniqueness lemma
 \lean{Fabius.eq\_of\_ruler\_recurrence} then identifies the two.
-No power series, exponentials, or convergence enter the proof.
+No power series, exponentials, or convergence enter this specialization.
 
 \subsection{A Hessenberg determinant}
 
@@ -2925,7 +3162,7 @@ polynomial \(p\in R[y]\) with \(\deg p<|S|\),
    \,p\Bigl(x+\sum_{j\in T}w_j\Bigr)=0,
   \label{eq:arbitrary-weight-cancel}
 \end{equation}
-and at the first surviving degree,
+and at the first potentially surviving degree,
 \begin{equation}
   \boxed{
   \sum_{T\subseteq S}(-1)^{|T|}
@@ -2935,9 +3172,19 @@ and at the first surviving degree,
 \end{equation}
 \end{theorem}
 
+The word ``potentially'' is essential over a general commutative ring.
+Equation~\eqref{eq:arbitrary-weight-sharp} is an unconditional identity, but
+its displayed factor can vanish: a step may be zero or a zero divisor, and
+the image of \(|S|!\) may vanish in positive characteristic.  Thus the
+formula identifies the exact top moment without asserting that the
+cancellation order is always exactly \(|S|\).  For the classical unit-step
+dyadic weights \(w_j=2^j\) over \(\mathbb Z\), all of these factors are
+nonzero.
+
 \begin{proof}
 For \eqref{eq:arbitrary-weight-cancel}, induct on \(S\).  If
-\(S=\varnothing\) there is nothing of degree below zero.  For
+\(S=\varnothing\), the strict degree condition forces \(p=0\), because the zero polynomial
+has degree \(-\infty\); the sole powerset summand is therefore zero.  For
 \(S\cup\{a\}\) with \(a\notin S\), split the subsets by membership
 of \(a\) and pair \(T\) with \(T\cup\{a\}\):
 \[
@@ -2965,16 +3212,22 @@ induction hypothesis.  Since \(\binom{s+1}{s}=s+1\), the total is
 \end{proof}
 
 \emph{Formal versions.}
-\lean{Fabius.sum\_powerset\_neg\_one\_pow\_eval} and
+The degree-valued cancellation, including the zero polynomial on the empty support, is
+\lean{Fabius.sum\_powerset\_neg\_one\_pow\_eval\_of\_degree\_lt}; its legacy
+natural-degree companion is \lean{Fabius.sum\_powerset\_neg\_one\_pow\_eval}.  The sharp
+moment is
 \lean{Fabius.sum\_powerset\_neg\_one\_pow\_pow\_card}, in
 \path{ThueMorseSparseProuhet.lean}; the degree drop is
-Mathlib's \lean{Polynomial.taylor} bookkeeping.  Specializing
-\(w_j=2^jh\) over \(S=\{0,\dots,m-1\}\) and transporting along the
-Boolean-cube kernel yields the Thue--Morse forms over any commutative
-ring: \lean{Fabius.sum\_thueMorseSign\_mul\_affine\_pow\_eq\_zero} and
-\lean{Fabius.sum\_thueMorseSign\_mul\_affine\_pow\_card}, the latter
-with the familiar constant
-\(\prod_{j<m}2^jh=2^{\binom m2}h^m\).
+Mathlib's \lean{Polynomial.taylor} bookkeeping.  The reusable passage from
+lower monomial moments to polynomial extraction is isolated in
+\path{FinitePolynomialFunctional.lean}: in particular
+\lean{Fabius.sum\_weight\_mul\_eval\_eq\_coeff\_mul\_of\_moments}
+and
+\lean{Fabius.sum\_weight\_mul\_eval\_eq\_zero\_of\_degree\_lt}
+are its same-ring extraction and cancellation interfaces.  The module also
+supplies scalar-extension forms; none assumes distinct nodes or a nonzero
+top moment.  The direct dyadic block wrappers obtained by specializing
+\(w_j=2^jh\) are recorded next.
 
 \subsection{Prouhet cancellation and the first surviving moment}
 
@@ -3001,6 +3254,54 @@ Every \(m\)-fold finite difference annihilates a polynomial of degree below
 \(m!c\), so \eqref{eq:unit-cube-cubature} gives the sharp value.
 \end{proof}
 
+\begin{theorem}[Commutative-ring dyadic block extraction]
+\label{thm:prouhet-block-extraction}
+Let \(R\) be a commutative ring, let \(p\in R[y]\) have degree at most
+\(m\), and let \(x,h\in R\).  With the integer signs mapped canonically
+into \(R\), the whole affine block is the degree-\(m\) coefficient
+functional
+\begin{equation}
+ \boxed{
+ \sum_{n=0}^{2^m-1}\eps_n\,p(x+nh)
+ =[y^m]p\;
+   \bigl((-1)^m(m!\cdot1_R)2^{\binom m2}h^m\bigr).}
+ \label{eq:prouhet-block-extraction}
+\end{equation}
+Consequently, with the degree of the zero polynomial understood as
+\(-\infty\),
+\begin{equation}
+ \deg p<m
+ \quad\Longrightarrow\quad
+ \sum_{n=0}^{2^m-1}\eps_n\,p(x+nh)=0.
+ \label{eq:prouhet-block-cancellation}
+\end{equation}
+Both statements include \(m=0\): the extraction formula is evaluation of a
+constant polynomial, while the strict-degree hypothesis then admits only the
+zero polynomial.
+\end{theorem}
+
+\begin{proof}
+Expand \(p\) in monomials and interchange the two finite sums.  The moments
+below \(m\) vanish by \eqref{eq:arbitrary-weight-cancel}, and
+\eqref{eq:arbitrary-weight-sharp} gives the degree-\(m\) moment for the steps
+\(2^jh\).  Thus only \([y^m]p\) remains.  The cancellation statement is the
+same calculation with that coefficient equal to zero.
+\end{proof}
+
+\emph{Formal versions.}  The extraction identity
+\eqref{eq:prouhet-block-extraction} is
+\lean{Fabius.sum\_thueMorseSign\_mul\_affine\_eval\_eq\_coeff\_card};
+the degree-valued cancellation
+\eqref{eq:prouhet-block-cancellation} is
+\lean{Fabius.sum\_thueMorseSign\_mul\_affine\_eval\_of\_degree\_lt}.
+Their monomial corollaries are
+\lean{Fabius.sum\_thueMorseSign\_mul\_affine\_pow\_eq\_zero} and
+\lean{Fabius.sum\_thueMorseSign\_mul\_affine\_pow\_card}, all in
+\path{ThueMorseSparseProuhet.lean}.  These are exact identities over every
+commutative ring.  In positive characteristic the scalar
+\((m!\cdot1_R)2^{\binom m2}h^m\) may be zero, so the formal theorem deliberately
+does not claim that a nonzero top coefficient produces a nonzero block sum.
+
 For \(h=1\), let
 \begin{equation}
   A_m=\{0\le n<2^m:\tau(n)=0\},
@@ -3014,8 +3315,9 @@ Then
   \qquad 0\le r<m,
   \label{eq:prouhet-partition}
 \end{equation}
-which is Prouhet's classical equal-sums-of-like-powers construction.  At
-\(r=m\), the difference is nonzero, so the cancellation order is exact.
+which is Prouhet's classical equal-sums-of-like-powers construction.  Over
+\(\mathbb Z\), at \(r=m\) the difference is nonzero, so the cancellation
+order of this classical unit-step partition is exact.
 
 \begin{remark}[The Prouhet--Tarry--Escott problem]
 \label{rem:pte}
@@ -3074,6 +3376,26 @@ itself is formal at the coefficient level: the dictionary
 product is the algebraic master product evaluated at
 \(z=\e^{t}\in\mathbb Q[[t]]\) --- no convergence argument is used
 anywhere.
+
+The normalized translated series itself has the exact finite product
+\begin{equation}
+\begin{aligned}
+ \mathscr S_{c,k}(X)
+  &:=\sum_{n\ge0}
+    \frac{\displaystyle\sum_{r<2^k}\eps_r
+      (r-2^k+c)^{n+k}}{(n+k)!}X^n,\\
+ \mathscr S_{c,k}(X)
+  &=(-1)^k2^{\binom k2}\e^{(c-1)X}
+    \prod_{j<k}\frac{\e^{-2^jX}-1}{-2^jX}
+    \qquad(c\in\Q,\ k\in\N).
+\end{aligned}
+\label{eq:translated-shifted-expm1-product}
+\end{equation}
+This is an identity in \(\mathbb Q[[X]]\), where each displayed quotient
+denotes the removable formal series with constant coefficient one.  It is
+\lean{Fabius.thueMorseTranslatedShiftedPowerSeries\_eq\_expm1\_product};
+the quotient series is \lean{Fabius.rationalExpm1DivSeries}, both in
+\path{ThueMorseExponential.lean}.
 
 \subsection{All power moments: a finite composition formula}
 
@@ -3427,7 +3749,7 @@ Set \(z=1\) in \eqref{eq:signed-Pascal-support}.  There are
 
 \begin{theorem}[Sparse Prouhet theorem]
 \label{thm:sparse-Prouhet}
-Let \(n>0\), \(s=\wt(n)\).  For every polynomial \(p\) of degree below
+Let \(n\ge0\), \(s=\wt(n)\).  For every polynomial \(p\) of degree below
 \(s\),
 \begin{equation}
   \boxed{
@@ -3451,6 +3773,9 @@ Every factor in \eqref{eq:signed-Pascal-support} has a simple zero at
 \]
 The derivative/falling-factorial proof of \cref{thm:prouhet} applies with the
 sum restricted to submasks.
+When \(n=0\), one has \(s=0\): the cancellation hypothesis forces \(p=0\), while the sharp
+moment reads \(0^0=1\) on the left and \(1\) on the right under the usual polynomial
+convention.
 \end{proof}
 
 \emph{Formal versions.}  In \path{ThueMorseSparseProuhet.lean} the
@@ -3459,7 +3784,8 @@ submasks of \(n\) are parametrized by the subsets of the bit support
 \lean{Fabius.mem\_bitSupport},
 \lean{Fabius.sum\_two\_pow\_bitSupport},
 \lean{Fabius.card\_bitSupport}); the sparse cancellation and the sharp
-moment are \lean{Fabius.sum\_submask\_neg\_one\_pow\_eval} and
+moment are respectively the all-index degree-valued theorem
+\lean{Fabius.sum\_submask\_neg\_one\_pow\_eval\_of\_degree\_lt} and
 \lean{Fabius.sum\_submask\_neg\_one\_pow\_pow}, both instances of the
 arbitrary-weight engine of \cref{thm:arbitrary-weights} with
 \(w_j=2^jh\) running over \(J(n)\), over any commutative ring.
@@ -3469,7 +3795,11 @@ The generating identity \eqref{eq:signed-Pascal-support} itself is now
 powerset of the bit support --- faithfully, by
 \lean{Fabius.sum\_two\_pow\_injOn\_powerset}; through Lucas's
 criterion this index set is exactly \lean{Fabius.oddBinomialIndices},
-and the balance \cref{cor:Pascal-support-balance} is
+and the literal odd-Pascal-index forms of the two displayed identities are
+\lean{Fabius.sum\_oddBinomialIndices\_thueMorseSign\_mul\_affine\_eval\_of\_degree\_lt}
+and
+\lean{Fabius.sum\_oddBinomialIndices\_thueMorseSign\_mul\_affine\_pow\_binaryWeight}.
+The balance \cref{cor:Pascal-support-balance} is
 \lean{Fabius.sum\_thueMorseSign\_oddBinomialIndices}.
 
 \begin{corollary}[Sparse operator identity]
@@ -3797,6 +4127,43 @@ behind \eqref{eq:finite-prefix-polynomial} is the geometric ladder
 \lean{Fabius.thueMorseBlockPolynomial\_eq\_geom\_prod}
 (\path{ThueMorseBlockAlgebra.lean}), over any commutative ring.
 
+\begin{corollary}[Signed reversal before the terminal run]
+\label{cor:iterated-prefix-reverse-window}
+If \(0\le k\le r\) and \(k+d<2^r\), then the admissible coefficient
+window before the final \(k\) zeros is reciprocal up to the parity sign
+\((-1)^{r-k}\):
+\begin{equation}
+ \boxed{
+ S_{2^r-k-1-d}^{(k)}=(-1)^{r-k}S_d^{(k)}.}
+ \label{eq:iterated-prefix-reverse-window}
+\end{equation}
+In particular, reversal preserves its zero locus exactly:
+\begin{equation}
+ S_{2^r-k-1-d}^{(k)}=0
+ \quad\Longleftrightarrow\quad
+ S_d^{(k)}=0.
+ \label{eq:iterated-prefix-reverse-window-zero-iff}
+\end{equation}
+The case \(k=0\) is the usual dyadic complement law for the signs, and
+\(d=0\) recovers the value immediately preceding the terminal run.
+\end{corollary}
+
+\begin{proof}
+Compare opposite coefficients in the reciprocal form of
+\eqref{eq:finite-prefix-polynomial}.  The only multiplier is
+\((-1)^{r-k}\), which is a unit in \(\mathbb Z\); hence multiplication by
+it preserves and reflects vanishing.
+\end{proof}
+
+\emph{Formal versions.}  The signed identity
+\eqref{eq:iterated-prefix-reverse-window} is
+\lean{Fabius.iteratedPrefix\_dyadic\_reverse\_window}, and its exact
+zero-locus consequence
+\eqref{eq:iterated-prefix-reverse-window-zero-iff} is
+\lean{Fabius.iteratedPrefix\_dyadic\_reverse\_window\_eq\_zero\_iff}
+in the corpus module \path{ThueMorsePrefix.lean}.  Both statements retain
+the boundary cases \(k=0\) and \(d=0\).
+
 \subsection{Why this is the discrete spine of the Fabius theory}
 
 The chain connecting Thue--Morse signs to the Fabius and Rvachev functions is
@@ -3871,12 +4238,40 @@ in squared form by the Riesz factorization
 
 \subsection{Sine and cosine products as Thue--Morse sums}
 
-A rescaling of \eqref{eq:finite-Fourier-sine} gives exact finite
-product-to-sum identities.
+A product-to-sum recurrence gives the following exact real-variable identity
+in the normalization used by the formal development.
 
-\begin{theorem}[Thue--Morse trigonometric sums]
+\begin{theorem}[Real lacunary sine product]
 \label{thm:trig-product-to-sum}
-For every integer \(m\ge0\) and every complex \(z\),
+For every \(m\in\N\) and \(w\in\R\),
+\begin{equation}
+ \boxed{
+ 2^m\prod_{j=0}^{m}\sin(2^jw)
+ =\sum_{n=0}^{2^m-1}\eps_n
+  \sin\!\left(\frac{m\pi}{2}+(2n+1)w\right).}
+ \label{eq:formal-lacunary-sine-product}
+\end{equation}
+\end{theorem}
+
+\emph{Formal versions.}  The displayed theorem is exactly
+\lean{Fabius.prod\_sin\_two\_pow\_eq\_thueMorse\_sum} in
+\path{LacunaryProductToSum.lean}.  The same module records the two binary
+reflection laws
+\begin{equation}
+ \wt(2^m-1-n)+\wt(n)=m,\qquad
+ \eps_{2^m-1-n}=(-1)^m\eps_n
+ \quad(n<2^m),                                             \label{eq:formal-bit-complement-laws}
+\end{equation}
+as \lean{Fabius.binaryWeight\_compl} and
+\lean{Fabius.thueMorseSign\_compl}, and the quarter-turn identity
+\begin{equation}
+ (-1)^m\cos\!\left(\frac{m\pi}{2}-x\right)
+ =\cos\!\left(\frac{m\pi}{2}+x\right)                    \label{eq:formal-quarter-turn-parity}
+\end{equation}
+for real \(x\), as \lean{Fabius.neg\_one\_pow\_mul\_cos\_sub}.
+
+Putting \(w=z/2^m\) in \eqref{eq:formal-lacunary-sine-product} and reversing
+the finite product gives, for real \(z\),
 \begin{equation}
   \boxed{
   \prod_{r=0}^{m}\sin\frac{z}{2^r}
@@ -3886,7 +4281,7 @@ For every integer \(m\ge0\) and every complex \(z\),
    \right).}
   \label{eq:sine-product-to-sum}
 \end{equation}
-Also
+The finite exponential identity also suggests the companion
 \begin{equation}
   \boxed{
   \cos z\prod_{r=1}^{m}\sin\frac{z}{2^r}
@@ -3896,10 +4291,10 @@ Also
    \right).}
   \label{eq:cosine-product-to-sum}
 \end{equation}
-The product from \(r=1\) to \(0\) is empty when \(m=0\).
-\end{theorem}
+where the product from \(r=1\) to \(0\) is empty when \(m=0\).
+Both formulas extend from real to complex \(z\) by the identity theorem.
 
-\begin{proof}
+\begin{proof}[Proof of the analytic companions]
 Set \(\theta=2z/2^m\) in
 \eqref{eq:finite-Fourier-sine}, multiply by
 \(\ii^m\e^{\ii z/2^m}\), and simplify the phase.  The result is
@@ -3915,8 +4310,14 @@ are identities between entire functions of \(z\), so the identity theorem
 extends them to every complex \(z\).
 \end{proof}
 
-These identities make explicit the Fourier route from finite Thue--Morse
-blocks to the sinc products in the Fabius/Rvachev analysis.
+\emph{Exact status boundary.}  The Lean module proves
+\eqref{eq:formal-lacunary-sine-product} over \(\R\) and the three supporting
+identities named above.  It does \emph{not} contain a declaration for the
+complex analytic continuation of \eqref{eq:sine-product-to-sum}, nor for the
+cosine formula \eqref{eq:cosine-product-to-sum}.  Those adjacent analytic
+statements remain natural-language results in this frontier atlas.  Together
+they make explicit the Fourier route from finite Thue--Morse blocks to the
+sinc products in the Fabius/Rvachev analysis.
 
 \subsection{The exact dyadic discrete Fourier transform}
 
@@ -4760,7 +5161,10 @@ of unity: the one-step halving recursion
 (\lean{Fabius.rarefiedSum\_three\_succ}; the hypothesis \(r<3\) is
 necessary, as the recursion is false for out-of-range residues) is
 iterated over paired levels by pure integer induction, so the filter
-argument above is subsumed rather than formalized.  Newman positivity at
+argument is unnecessary for this particular modulo-three proof.  The general
+root-of-unity filter itself is nevertheless formalized, in its division-free field form, by
+\lean{Fabius.thueMorse\_rarefied\_filter} in
+\path{ThueMorseArithmeticFilter.lean}.  Newman positivity at
 dyadic endpoints is \lean{Fabius.rarefiedSum\_three\_zero\_pos}, the
 full-block balance is
 \lean{Fabius.sum\_thueMorseSign\_range\_two\_pow}, and the even-modulus
@@ -5775,13 +6179,17 @@ valuation, carry, and Pascal-row formulas remain genuinely base-two features.
 \subsection{Formalized modules (August 2026)}
 \label{sec:formalized-modules}
 
-The first tranches of the formalization now exist as fifty-six
+The first tranches of the formalization now exist as seventy-two
 compiled Lean modules in \repo{}, complementing the corpus modules
 (\path{Parity.lean}, \path{TwoAdic.lean}, \path{ThueMorsePrefix.lean},
 \path{ThueMorseGenerating.lean}, \path{ThueMorseExponential.lean},
 \path{ThueMorseBinomialLog.lean}) that already covered the recursion,
 XOR, reflection, Lucas/Glaisher, binomial--logarithm, modulo-three
-formula, generating products, Prouhet moments, and prefix theory:
+formula, generating products, Prouhet moments, and prefix theory.  The
+count is exactly the number of rows of the table below, one row per
+module; the proposal table of \Cref{sec:formalization-order} re-lists
+some of these same modules under the boundaries that were originally
+proposed for them, and is a roadmap rather than a second inventory:
 
 {\small
 \begin{longtable}{@{}>{\raggedright\arraybackslash}p{0.34\textwidth}>{\raggedright\arraybackslash}p{0.58\textwidth}@{}}
@@ -5797,7 +6205,8 @@ Module & Contents \\
 \path{ThueMorseValuation.lean} & Successor law, weight subadditivity, ruler product, Catalan valuation, additive Kummer, borrow cocycle. \\
 \path{ThueMorseDigits.lean} & Additive Legendre, floor sums, floor-parity formula, `testBit` bridge, digit product. \\
 \path{ThueMorseEnumerators.lean} & Weight distribution, evil/odious enumerations and composition laws, XOR autocorrelation, signed Hamming spheres. \\
-\path{ThueMorseSparseProuhet.lean} & Arbitrary-weight Prouhet annihilation and sharp moment (\cref{thm:arbitrary-weights}), Thue--Morse specializations, bit supports, sparse submask identities. \\
+\path{FinitePolynomialFunctional.lean} & Moment expansion for finite weighted polynomial evaluations, selected-, top-, and constant-coefficient extraction, scalar-extension forms, degree-valued strict cancellation, and same-ring conveniences over commutative semirings; repeated nodes and a zero surviving moment are allowed. \\
+\path{ThueMorseSparseProuhet.lean} & Arbitrary-weight Prouhet annihilation and exact top-moment formula (\cref{thm:arbitrary-weights}), degree-valued wrappers covering the zero polynomial on empty supports, the direct affine block extraction and cancellation API (\cref{thm:prouhet-block-extraction}), bit supports, and all-index sparse submask identities. \\
 \path{ThueMorseRarefied.lean} & Modulo-three rarefaction recursion and closed vectors, Newman positivity at dyadic endpoints, block balance, even-modulus collapse. \\
 \path{ThueMorseAperiodicity.lean} & Block-flip identities, promotion of an eventual period to a global one, and non-eventual-periodicity --- the last now deduced from overlap-freeness rather than from the reflection argument. \\
 \path{ThueMorseBlockAlgebra.lean} & Telescope and multiplicity ladder, degree and leading data of \(P_m\), reciprocity (\texttt{reverse} and evaluation forms), cyclotomic multiplicity table, binomial-basis vanishing and sharp moment over any commutative ring. \\
@@ -5807,7 +6216,7 @@ Module & Contents \\
 \path{ThueMorseLucasSupport.lean} & Binary support of two-power sums, Lucas's submask criterion (bit, \texttt{\&\&\&}, and support forms), odd Pascal positions as the submask cube, signed Pascal-support product, balance on odd positions. \\
 \path{ThueMorseWalsh.lean} & All-ones digit patterns and masked two-power sums, \(\eps\) as a Walsh character, character orthogonality on the block, the one-point Walsh spectrum. \\
 \path{ThueMorseSparseMoments.lean} & The atlas's all-sparse-moments formula on the submask cube (\cref{cor:all-sparse-moments}), as the \(S=J(n)\) instance of the arbitrary-support composition of \path{ThueMorseMoments.lean}. \\
-\path{ThueMorseMixedDifference.lean} & The dyadic mixed-difference operator and the finite-difference factorization for arbitrary functions from an additive monoid into an additive group, with the powerset expansion. \\
+\path{ThueMorseMixedDifference.lean} & The dyadic mixed-difference operator and the finite-difference factorization for arbitrary functions from an additive commutative monoid into an additive commutative group, with the powerset expansion. \\
 \path{ThueMorseAutocorrelation.lean} & Finite autocorrelation recursion in exact integer form along \emph{any even} window, \(R_{2K}(2r)=2R_K(r)\) and \(R_{2K}(2r+1)=-(R_K(r)+R_K(r+1))\), with the dyadic layer \(A_m(k)=R_{2^m}(k)\) as its power-of-two case: zero-shift value, trivial bound, closed values at shifts one and two, and the normalized limits at shifts zero, one and two. \\
 \path{ThueMorseOverlapFree.lean} & Thue's overlap-freeness theorem with cube-freeness, the attained critical exponent two, the alphabet-free implication ``overlap-free \(\Rightarrow\) not eventually periodic'', and constructive complement and reversal closure of the factor language. \\
 \path{ThueMorseRecurrence.lean} & Full block-concatenation laws for weight and bit, all two-letter factors in every fourteen-letter window, uniform recurrence with an explicit linear bound. \\
@@ -5816,13 +6225,17 @@ Module & Contents \\
 \path{ThueMorseMultinomial.lean} & Kummer's criterion for multinomial coefficients, the multinomial support count \(O_r(n)=r^{\wt(n)}\), the signed \(r\)-nomial row formula, the exact \(r\)-nomial logarithm. \\
 \path{ThueMorseFourier.lean} & The circle factor \(|1-\e^{\ii\theta}|^2=2-2\cos\theta\) and the finite Riesz product with its nonnegativity. \\
 \path{ThueMorseSineProduct.lean} & The half-angle factorization and the sine-product closed form of the Thue--Morse trigonometric polynomial. \\
+\path{LacunaryProductToSum.lean} & Binary-weight complementation on a dyadic block, the induced global-sign reflection, quarter-turn cosine parity, and the exact real lacunary sine product as a Thue--Morse sum. \\
 \path{ThueMorseFourierInversion.lean} & Root-of-unity orthogonality and finite Fourier inversion over any field with a primitive root, specialized to the dyadic DFT over \(\mathbb C\). \\
 \path{ThueMorseParseval.lean} & Character orthonormality on \([0,1]\) and the Parseval mass \(\int_0^1|P_m(\e^{2\pi\ii x})|^2\,\dd x=2^m\). \\
 \path{ThueMorseComplexity.lean} & Factor complexity: the supertile-pair window parametrization with the boundary-crossing case split, uniform-recurrence finiteness, and the sharpened two-sided bound \(\ell+1\le p(\ell)\le6\ell-4\) --- with \(p(\ell)\le2\cdot2^k+2(\ell-1)\) at every covering level and the older \(4\cdot2^k\), \(p(\ell)<8\ell\) kept as corollaries --- and the Morse--Hedlund strict-growth argument. \\
 \path{ThueMorseArithmeticFilter.lean} & The root-of-unity filter for arithmetic progressions over any field (division-free form), the boxed rarefied formula, and the even-modulus collapse. \\
 \path{ToeplitzHessenberg.lean} & Cramer's rule for a known solution over any commutative ring; the triangular and the lower Toeplitz--Hessenberg band matrices of arbitrary band data; the triangular determinant \(\prod_{i<n}d_i\); and the expansion-free Toeplitz--Hessenberg determinant formula, read off from any solution of the convolution system, in matrix and in scalar-recurrence form. \\
 \path{ThueMorseHessenberg.lean} & The ruler convolution as an instance of that band system: the triangular ruler system with determinant \(n!\), the Hessenberg formula \(\det H_n=(-1)^nn!\,\eps_n\) for every \(n\ge0\) by one column rotation, and the sharp absolute value \(|\det H_n|=n!\). \\
-\path{ThueMorsePartition.lean} & Weighted partitions, the marked-part recurrence of \(\exp(\sum x_jz^j)\) over any characteristic-zero field, recurrence uniqueness, and the partition and Bell formulae for \(\eps_n\). \\
+\path{ExponentialPartition.lean} & Weighted multiplicity vectors and reciprocal-factorial partition sums over every commutative \(\mathbb Q\)-algebra; the marked-part and normalized successor recurrences; and the quotient-notation bridge for characteristic-zero fields. \\
+\path{ThueMorsePartition.lean} & Ruler-recurrence uniqueness and the partition and explicit Bell-polynomial formulae for \(\eps_n\), obtained by specializing the generic partition engine. \\
+\path{ExponentialBell.lean} & Equality of the finite weighted-partition coefficient function with \path{SaddleExpansion.expCoeff} over every commutative \(\mathbb Q\)-algebra, by recurrence uniqueness. \\
+\path{MomentCumulantAlgebra.lean} & Factorial normalization and denormalization; the complete Bell and inverse moment--cumulant transforms; their classical recurrence, normalized all-index inverse laws, and functoriality over every commutative \(\mathbb Q\)-algebra. \\
 \path{ThueMorseIntegerLift.lean} & The integral algebraic lift constructed in closed Catalan--binomial form; Catalan parity at Mersenne indices; the unconditional parity theorem \(c_n\equiv\tau(n)\), \(\eps_n=(-1)^{c_n}\). \\
 \path{ThueMorseBoundaryFlatness.lean} & The lacunary product \(\mathcal E(t)\) as an infinite product: self-similarity, positivity, monotonicity, the effective upper bound \(\mathcal E(t)\le2^{\binom m2}t^m\) at every level \(m\), and the matching lower bound \(2^{\binom m2}(t/2)^m\mathcal E(\frac12)\le\mathcal E(t)\) under the dyadic matching \(\frac12\le2^mt\le2\). \\
 \path{ThueMorseDirichlet.lean} & The shifted Dirichlet series in the real regime: conditional convergence for every \(\sigma>0\) by Dirichlet's test, and the dyadic parameter equation \(D(\sigma,a)=2^{-\sigma}(D(\sigma,\frac a2)-D(\sigma,\frac{a+1}2))\). \\
@@ -5831,7 +6244,7 @@ Module & Contents \\
 \path{ThueMorseIntegerLiftEquation.lean} & The boxed algebraic equation \((1-z)^3C^2+(1-z)^2C=z\) in \(\mathbb Z[[z]]\) for the constructed lift, by identification with the substituted series and cancellation. \\
 \path{ThueMorseIntegerLiftRecurrence.lean} & The linear ODE \((1+3z)(1-z)^2C'=1+3(1-z^2)C\) by differentiation and one linearization certificate, and the three-term recurrence by telescoping its coefficients. \\
 \path{ThueMorseLacunaryQuotient.lean} & The dyadic geometric series and its inversion of \(1-z^{2^j}\); the denominator-free bit Mahler equation; the lacunary quotient expansion at every finite level. \\
-\path{ThueMorseInfiniteProduct.lean} & The analytic infinite-product identity \(\sum\eps_nx^n=\prod_j(1-x^{2^j})\) on the whole real interval \(|x|<1\): absolute convergence, multipliability, and identification of the limits along the dyadic scale; the exponential ray \(\sum\eps_n\e^{-nt}=\mathcal E(t)\), \(t>0\), is now a specialization. \\
+\path{ThueMorseInfiniteProduct.lean} & The analytic infinite-product identity \(\sum\eps_nz^n=\prod_j(1-z^{2^j})\) on the complex unit disc \(\lVert z\rVert<1\), including absolute convergence and multipliability; the real interval \(|x|<1\) and exponential ray \(\sum\eps_n\e^{-nt}=\mathcal E(t)\), \(t>0\), are retained as specializations. \\
 \path{ThueMorseMellin.lean} & The Mellin representation \(\Gamma(\sigma)D(\sigma,a)=\int_0^\infty t^{\sigma-1}\e^{-at}\mathcal E(t)\,\dd t\) for \(\sigma>1\): kernel integrability, absolute interchange, and termwise Gamma evaluation. \\
 \path{RealZPowProduct.lean} & Finite products of integer powers of positive reals through the exponential: the signed-logarithm identity, the limit transfer from logarithm sums to products along an arbitrary filter, and the closed-form value computations; nothing in it mentions Thue--Morse. \\
 \path{ThueMorseWoodsRobbins.lean} & The Woods--Robbins evaluation \(\prod((2n+1)/(2n+2))^{\eps_n}=2^{-1/2}\): Dirichlet-test convergence of the three log-series, the termwise and interleaving identities, and exponentiation. \\
@@ -5841,14 +6254,26 @@ Module & Contents \\
 \path{FrullaniIntegral.lean} & The Frullani integral \(\int_0^\infty(\e^{-pt}-\e^{-qt})t^{-1}\dd t=\log(q/p)\), by differentiation under the integral sign; not in Mathlib. \\
 \path{ThueMorseGDirichlet.lean} & The derivative bridge \(\log G(a,b)=D'(0,b)-D'(0,a)\): the closed integral form of \(\log G\), \((1/\Gamma)'(0)=1\), and the derivative of the entire continuation at zero. \\
 \path{ThueMorseQuarterProduct.lean} & The quarter product \(G(1/4,3/4)=1/2\) from Woods--Robbins by parity splitting, and the value \(1/2\) of the half-shifted block product. \\
-\path{ThueMorseDiscSeries.lean} & The Thue--Morse power series as a holomorphic function on the unit disc: locally uniform convergence, the analytic Mahler equation and its iterate, and the real-ray bound \(|F(x)|\le1-x\). \\
+\path{ThueMorseDiscSeries.lean} & The Thue--Morse power series as a holomorphic function on the unit disc: the complex-disc product wrapper \(F(z)=\prod_{j=0}^{\infty}(1-z^{2^j})\), locally uniform convergence, the analytic Mahler equation and its iterate, and the real-ray bound \(|F(x)|\le1-x\). \\
 \path{ThueMorseNaturalBoundary.lean} & The natural-boundary theorem: radial vanishing at dyadic roots of unity, two-power roots approximating every circle point, and the double identity-theorem argument. \\
+\path{ThueMorseComputability.lean} & Primitive recursiveness: the descent-recursion scheme for course-of-values recursions, the halving identity for the binary weight, and the primitive recursive and computable forms of \(\wt\), \(\tau\), and \(\eps\). \\
 \path{ThueMorseNewman.lean} & Newman's positivity theorem: residue-class sign sums, the modulo-three parity system, the base-four collapse with disjoint boundary corrections, and the strong induction. \\
 \path{ThueMorseGelfond.lean} & Gelfond's sharp uniform bound: the one-variable sum-of-squares inequality \(\varphi^2(t)\varphi(2t)\le3\sqrt3\), the telescoped doubling-orbit product bound, and the exponential-sum form with constant \(2/\sqrt3\). \\
 \path{PeriodDoublingHankel.lean} & The mod-two Hankel engine: reusable block-determinant eliminations, parity interleavings, the period-doubling bit, and the four determinant halvings forcing every \(\mathbb F_2\)-determinant to equal one. \\
 \path{ThueMorseHankel.lean} & The Allouche--Peyri\`ere--Wen--Wen theorem: the doubling factorizations \(H_{2n}=2^nH_nH_n(m)\), \(H_{2n+1}=2^nH_{n+1}H_n(m)\), oddness of the difference determinants, and the exact valuation \(v_2(H_r)=r-1\). \\
 \path{LacunaryRieszIntegral.lean} & The exact orthogonality theory of lacunary Riesz products, with no Thue--Morse content: the frequency detector, the master theorem \(\int_0^1\cos(2\pi Kt+\psi)\prod_{j<n}(1+a_j\cos(2\pi m_jt+\varphi_j))\dd t\) under the dissociation hypothesis \(|K|+\sum_{i<j}m_i<m_j\), its super-increasing and Hadamard-gap corollaries, the mean value \(1\), and the exact identity \(\int_0^1\prod_{j<n}\sin^2(\pi m_jt)\dd t=2^{-n}\) with its geometric and dyadic specializations. \\
 \path{GelfondLogisticBound.lean} & The Gelfond rate from the logistic map, again with no Thue--Morse content: invariance of \([0,1]\), the potential telescope giving \(\prod_{j<n}u_j\le\frac53(\frac34)^n\) along any orbit from an initial value in \([0,1]\), exactness of the rate at the fixed point \(3/4\), the squared and unsquared dyadic sine-product bounds, and the \(L^1\) lower bracket for the sine product. \\
+\path{VarianceBookkeeping.lean} & Closed evaluation of the stationary covariance sum, including the zero-length variance identity. \\
+\path{BirkhoffVariance.lean} & Exact pair correlations for the logarithmic doubling cocycle and its all-index Birkhoff square mean. \\
+\path{BirkhoffProductBridge.lean} & The almost-everywhere bridge from the cocycle to the normalized dyadic sine product and the all-index logarithmic product variance \eqref{eq:sinc-log-variance}. \\
+\path{FourierProduct.lean} & The Rvachev sinc product and its identification with the Fourier transform, including the exact complex zero set \(\Phi(z)=0\iff z\in\Z\setminus\{0\}\). \\
+\path{RenormalizationIdentity.lean} & The standalone product identity \(\Phi(z)=\sinc(\pi z)\Phi(z/2)\) and its exact \(n\)-fold shell form. \\
+\path{SincProductShells.lean} & Exact dyadic shell factorization of \(|\Phi|\), its total cross-multiplied form at every real seed (including zero and the empty shell), and its Gelfond-rate bound along every nonzero real dyadic ray. \\
+\path{SincCanonicalProduct.lean} & The canonical product \(\prod_{m\ge1}(1-z^2/m^2)^{1+\vtwo(m)}\), obtained by regrouping the absolutely convergent double Euler product. \\
+\path{PhiZeroOrder.lean} & The exact positive-integer real-axis zero order \(1+\vtwo(m)\), expressed by a punctured norm quotient converging to a positive constant. \\
+\path{ThueMorseLobeSign.lean} & The lobe identity \(\Phi(x)=\eps_m|\Phi(x)|\) for \(m<x<m+1\), from the closed lattice-point count. \\
+\path{RvachevProductContinuity.lean} & Real-axis continuity of \(\Phi\) and \(|\Phi|\); the origin as the unique unit-modulus point, with strict inequality elsewhere; and existence and uniqueness of the modulus maximum on every positive lobe \((m,m+1)\) and reflected negative lobe \((-(m+1),-m)\), \(m\ge1\). \\
+\path{RvachevFourierDecay.lean} & Public facade transferring the canonical product, total and divided shell formulas, global decay, strict peak, extremal ray, lobe signs and maxima, and zero orders from \(\Phi\) to the actual Rvachev Fourier transform. \\
 \bottomrule
 \end{longtable}}
 
@@ -5884,6 +6309,7 @@ Pascal-row interpretation & Glaisher count or modulo-three residue & Uses the od
 Higher-dimensional Pascal & Multinomial count \eqref{eq:multinomial-support} & Works with any number of variables. \\
 Formal power series & Finite/infinite products & Coefficients, Mahler equations, and zeros become immediate. \\
 Nonlocal coefficient formulas & Euler/Bell/determinant forms & Eliminate explicit digit notation and expose ruler convolutions. \\
+Finite polynomial row & Moment-functional extraction & Separates polynomial coefficients from row moments, supports scalar extension, and does not require distinct nodes or a nonzero surviving moment. \\
 Polynomial cancellation & Mixed finite differences & Proves all Prouhet moments in one operator identity. \\
 Arbitrary Pascal row & Sparse signed product \eqref{eq:signed-Pascal-support} & Restricts finite differences to the odd row support. \\
 Finite harmonic analysis & Walsh character & The entire block is one pure frequency. \\
@@ -5927,6 +6353,7 @@ for m from 0 to M:
 \end{lstlisting}
 
 \subsection{A dependency-aware formalization order}
+\label{sec:formalization-order}
 
 A conservative Lean implementation should formalize the finite algebraic
 spine before introducing analysis.
@@ -5942,10 +6369,12 @@ spine before introducing analysis.
 \item \textbf{Polynomial layer.}  Define \(P_m\), prove the finite product,
       reciprocity, cyclotomic multiplicities, and signed Pascal-support
       products over a suitable coefficient ring.
-\item \textbf{Difference and moment layer.}  Derive mixed finite differences,
-      Prouhet cancellation, sharp moments, composition formulas, and sparse
-      moments.  Most statements can be done over \(\Q\) before any topology is
-      imported.
+\item \textbf{Difference and moment layer.}  First isolate finite weighted
+      polynomial functionals and their coefficient-extraction rules over
+      commutative semirings.  Then derive the ring-valued mixed differences,
+      Prouhet cancellation, exact top moments, composition formulas, and sparse
+      moments.  No topology or characteristic-zero hypothesis belongs in this
+      algebraic layer unless a surviving scalar is explicitly cancelled.
 \item \textbf{Formal-series layer.}  Add the Mahler equations, Euler transform,
       ruler convolution, Bell/determinant forms, and the Artin--Schreier
       equation over \(\Ftwo[[z]]\).
@@ -5954,7 +6383,10 @@ spine before introducing analysis.
       products.
 \end{enumerate}
 
-Possible module boundaries are
+Possible module boundaries are listed below.  Entries marked
+\emph{Delivered} name modules that already appear in the inventory of
+\Cref{sec:formalized-modules}; they are repeated here to record which
+proposed boundary each one realizes, and are not additional modules.
 \begin{center}
 \small
 \begin{tabularx}{0.94\textwidth}{@{}>{\raggedright\arraybackslash}p{0.42\textwidth}>{\raggedright\arraybackslash}X@{}}
@@ -5969,16 +6401,15 @@ Proposed module & Main declarations \\
 \path{ThueMorseProuhetMoments.lean} & Difference operators, all moments, centered parity.  \emph{Delivered} (\path{ThueMorseMoments.lean}, \path{ThueMorseMixedDifference.lean}). \\
 \path{ThueMorseSparseProuhet.lean} & Arbitrary Pascal-support products and sparse moments.  \emph{Delivered} (plus \path{ThueMorseSparseMoments.lean}). \\
 \path{ThueMorseFormalSeriesF2.lean} & Artin--Schreier equation and explicit solution.  \emph{Delivered} (\path{ThueMorseArtinSchreier.lean}, with uniqueness and the integer lift). \\
-\path{ThueMorseFourier.lean} & Finite DFT, Walsh transform, product-to-sum identities.  \emph{Delivered} (Walsh, Riesz factorization and mass, sine-product closed form, and Fourier inversion are all formal). \\
-\path{ThueMorseDirichlet.lean} & Boundary flatness, Mellin integral, entire continuation.  \emph{Open.} \\
-\path{ThueMorseRarefied.lean} & Root-of-unity filters, modulo-three closed forms, odd-modulus matrix recursion.  \emph{Delivered} (the complex filter identity itself remains open). \\
+\path{ThueMorseFourier.lean} & Finite DFT, Walsh transform, product-to-sum identities.  \emph{Delivered} across \path{ThueMorseFourier.lean}, \path{ThueMorseSineProduct.lean}, \path{LacunaryProductToSum.lean}, and \path{ThueMorseFourierInversion.lean}: the Walsh and Riesz factorizations, sine-product closed form, real lacunary product-to-sum identity with its complement and phase lemmas, and Fourier inversion are formal.  The complex continuation and cosine companion in \eqref{eq:cosine-product-to-sum} are not delivered declarations. \\
+\path{ThueMorseDirichlet.lean} & Boundary flatness, Mellin integral, entire continuation.  \emph{Delivered} (\path{ThueMorseBoundaryFlatness.lean}, \path{ThueMorseDirichlet.lean}, \path{ThueMorseMellin.lean}, \path{ThueMorseEntireContinuation.lean}). \\
+\path{ThueMorseRarefied.lean} & Root-of-unity filters, modulo-three closed forms, odd-modulus matrix recursion.  \emph{Delivered in full} (\path{ThueMorseArithmeticFilter.lean}, \path{ThueMorseRarefied.lean}). \\
 \path{ThueMorseWords.lean} & Uniform recurrence, aperiodicity, and the elementary complexity bounds.  \emph{Delivered} in full (\path{ThueMorseAperiodicity.lean}, \path{ThueMorseOverlapFree.lean}, \path{ThueMorseRecurrence.lean}, \path{ThueMorseComplexity.lean}). \\
 \bottomrule
 \end{tabularx}
 \end{center}
 
-Of the planned layers, only the Dirichlet--Mellin row remains open;
-every other layer has been delivered, in most cases in greater
+Every planned layer has now been delivered, in most cases in greater
 generality than proposed.
 
 \subsection{Proof-dependency graph}
@@ -6326,7 +6757,7 @@ Second-pass additions & Even-modulus collapse of rarefied sums from exact prefix
 V.~Reshetnikov,
 \newblock \emph{ProveIt: Analysis/FabiusFunction},
 \newblock GitHub repository, source snapshot
-\nolinkurl{29e5861c6109207739c41754e1e8bcfce32e84f1}, 2026.
+\nolinkurl{24da985eba70e46d862acdaddd476793a428213e}, 2026.
 
 \bibitem{prouhet1851}
 E.~Prouhet,

@@ -1,11 +1,50 @@
 # Fabius function
 
 > [!CAUTION]
-> **Never start Lean or Lake builds in parallel.** Run exactly one
-> `lake build +FabiusFunction.Module` invocation at a time, with one target.
-> Do not launch background build loops, pass a batch of targets, or use
-> parallel runners such as `xargs -P`. A dozen concurrent Lean processes will
-> exhaust memory and often fail with misleading missing-`.olean` errors.
+> **Never start Lean or Lake builds in parallel, and never start a second
+> build while one is already running.** Run exactly one
+> `lake build +FabiusFunction.Module` at a time, with one target. Do not
+> launch background build loops, pass a batch of targets, or use parallel
+> runners such as `xargs -P`.
+>
+> One invocation is not by itself one process: Lake sizes its worker pool to
+> hardware concurrency and starts one `lean.exe` **per core** whenever the
+> target has a stale dependency set. On this machine several agent sessions
+> share 13 GB, so that fan-out starves all of them. Set both limits on every
+> build:
+>
+> ```bash
+> LAKE_JOBS=1 LEAN_NUM_THREADS=0 lake build <one target>
+> ```
+>
+> `LAKE_JOBS` bounds the number of `lean.exe` processes and
+> `LEAN_NUM_THREADS` bounds the threads inside each one; they are
+> independent, so set both. Lake `5.0.0` accepts neither `-j` nor `--jobs`,
+> so these environment variables are the only control. Measured 2026-08-27:
+> a facade build over a stale dependency set spawned **11 concurrent
+> `lean.exe`**, and **exactly one** under `LAKE_JOBS=1`.
+>
+> Starvation does not look like starvation. It surfaces as errors that read
+> like corruption:
+>
+> ```
+> failed to read file '...\Mathlib\...\Basic.olean'
+> libc++abi: terminating due to uncaught exception of type std::bad_alloc
+> ```
+>
+> These are out-of-memory symptoms, **not** broken proofs -- the same module
+> built by itself succeeds. Never "fix" them by editing Lean sources.
+>
+> Before starting, check that nothing else -- including another agent session
+> in a sibling worktree -- is already building; after interrupting a build,
+> check for survivors, because stopping a task does not reliably kill the
+> processes it spawned:
+>
+> ```powershell
+> Get-Process lean,lake -ErrorAction SilentlyContinue
+> ```
+>
+> If a build is running, wait for it rather than racing it.
 
 > **Multi-agent coordination: OFF.**  A single switch file,
 > [`AGENTS/STATUS.md`](AGENTS/STATUS.md), states
@@ -127,7 +166,7 @@ complex exponential generating function are also represented explicitly.
 From the repository root, the complete public surface is checked with
 
 ```sh
-lake build +FabiusFunction
+LAKE_JOBS=1 LEAN_NUM_THREADS=0 lake build +FabiusFunction
 ```
 
 Use `import FabiusFunction` when downstream code needs the entire development.
@@ -140,6 +179,10 @@ points:
 | Existence, uniqueness, and the canonical functions | `FabiusFunction.PaperStatements` | `existsUnique_fabius`, `fabius`, `fabius_spec`, `globalFabius` |
 | Original compact-support characterization and bounded/original bridge | `FabiusFunction.OriginalUniqueness` | `IsOriginalFabius`, `IsOriginalFabius.mk_of_derivative_law`, `IsFabius.isOriginalFabius_rvachevUp`, `rvachevUp_eq_iff_eqOn_Iic_one`, `isFabius_iff_isOriginalFabius_rvachevUp_and_rightTail`, `isOriginalFabius_iff_existsUnique_isFabius` |
 | Product-probability and CDF representations | `FabiusFunction.ProbabilityRepresentation` | `weightedSumCDF_eq_fabiusReal`, `fabiusReal_eq_weightedSum_probability`, `rvachevUp_eq_weightedSumCDF`, `rvachevUp_eq_weightedSum_probability_global` |
+| Weighted-partition exponential coefficients over commutative `ℚ`-algebras | `FabiusFunction.ExponentialPartition`, `FabiusFunction.ExponentialBell` | `partitionExpSum_recurrence`, `partitionExpSum_succ`, `partitionExpSum_eq_sum_div`, `partitionExpSum_eq_expCoeff` |
+| Complete Bell and moment--cumulant transforms over commutative `ℚ`-algebras | `FabiusFunction.MomentCumulantAlgebra` | `factorialNormalize`, `completeBellPolynomial`, `momentCumulant`, `completeBellPolynomial_succ`, `completeBellPolynomial_momentCumulant`, `momentCumulant_completeBellPolynomial` |
+| Finite polynomial expectations from raw moments and formal cumulants | `FabiusFunction.PolynomialExpectationCumulant` | `integral_eval₂_eq_sum_moment`, `integral_eval₂_eq_sum_completeBell_momentCumulant_with_mass_correction`, `integral_eval₂_eq_sum_completeBell_momentCumulant_of_moment_zero_eq_one`, `integral_eval₂_eq_sum_completeBell_momentCumulant` |
+| Universal endpoint-transfer polynomials and their formal exponential series | `FabiusFunction.EndpointTransferPolynomials` | `endpointTransferPolynomial_succ`, `endpointTransferPolynomial_eq_partitionExpSum`, `endpointTransferSeries_eq_exp_subst`, `aeval_endpointTransferPolynomial`, `map_endpointTransferSeries` |
 | Generic unit-interval Laplace-moment bounds | `FabiusFunction.UnitLaplaceMomentBounds` | `unitLaplaceMoment_midpoint_sq_le_all`, `unitLaplaceMoment_le_of_tilt_sub`, `pow_mul_exp_neg_le_factorial`, `fabiusLaplaceMoment_midpoint_sq_le_all`, `fabiusLaplaceMoment_le_of_tilt_sub` |
 | Exact dyadic computation and analytic correctness | `FabiusFunction.DyadicAnalytic`, `FabiusFunction.GlobalDyadic` | `fabiusDyadicValue`, `evalFabiusDyadic`, `fabiusDyadicUnit_cast`, `extendedFabiusDyadicValue_cast` |
 | First and second published papers | `FabiusFunction.Paper05442`, `FabiusFunction.Paper06487` | the theorem maps in the module docstrings and [`docs/PAPER_COVERAGE.md`](docs/PAPER_COVERAGE.md) |

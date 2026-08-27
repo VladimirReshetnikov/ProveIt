@@ -15,6 +15,8 @@ The final section converts the parity result into the dyadic valuation of the
 Fabius value at `2⁻ⁿ`, the valuation component of Theorem 21.  Parameter-free
 forms isolate the exceptional zeroth half moment, and Legendre's formula at
 `p = 2` removes the remaining factorial valuation in favor of binary weight.
+Reducedness then turns the negative rational valuation into the exact
+two-adic valuation of the inverse-dyadic value's denominator.
 Kummer's theorem identifies the binary-weight loss under arbitrary addition
 with the two-adic valuation of one binomial coefficient.  This gives a
 carry-twisted multiplication law for the Thue--Morse sign and, on the diagonal,
@@ -521,6 +523,27 @@ theorem fabiusAtInverseTwoPow_padicVal_two (n : ℕ) (hn : 1 ≤ n) :
     padicValRat.mul hfactorialNe hpowNe, padicValRat.pow,
     hvalTwo, hhalfMomentVal]
   ring
+
+/-- The exact two-adic valuation of the reduced denominator of the
+inverse-dyadic Fabius value. -/
+theorem fabiusAtInverseTwoPow_den_padicVal_two (n : ℕ) (hn : 1 ≤ n) :
+    padicValNat 2 (fabiusAtInverseTwoPow n).den =
+      n.choose 2 + 1 + padicValNat 2 n.factorial := by
+  have hval := fabiusAtInverseTwoPow_padicVal_two n hn
+  rw [padicValRat.of_nat] at hval
+  have hnumNot : ¬ 2 ∣ (fabiusAtInverseTwoPow n).num.natAbs := by
+    intro hnumDvd
+    have hcop : Nat.Coprime 2 (fabiusAtInverseTwoPow n).den :=
+      (fabiusAtInverseTwoPow n).reduced.of_dvd_left hnumDvd
+    have hdenNot : ¬ 2 ∣ (fabiusAtInverseTwoPow n).den :=
+      Nat.prime_two.coprime_iff_not_dvd.mp hcop
+    rw [padicValRat_def,
+      padicValNat.eq_zero_of_not_dvd hdenNot] at hval
+    omega
+  rw [padicValRat_def] at hval
+  unfold padicValInt at hval
+  rw [padicValNat.eq_zero_of_not_dvd hnumNot] at hval
+  omega
 
 /-- Closed binary-weight form of the valuation at `2⁻ⁿ`, with the factorial
 valuation eliminated by Legendre's formula. -/

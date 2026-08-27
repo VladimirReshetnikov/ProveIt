@@ -450,9 +450,26 @@ theorem rvachev_one_sub_dyadic_eq_reordered_sum
 
 /-! ## Consequences stated after Conjecture 16 -/
 
-/-- The two displayed formulas following Conjecture 16.  They are stated in
-`ℚ` because `H_n` is defined rationally; Conjecture 16 additionally says it is
-an odd natural number. -/
+/-- The odd-index denominator formula following Conjecture 16 is an
+unconditional identity in the definitions of `conjecturalH`, `conjecturalK`,
+and `normalizedDyadicDenominator`.  With natural-number subtraction it also
+holds at `n = 0`. -/
+theorem dyadicDenominator_odd_eq_conjecturalH (n : ℕ) :
+    (dyadicDenominator (2 * n - 1) : ℚ) =
+      (2 : ℚ) ^ (1 + (2 * n - 1).choose 2) *
+        (2 * n - 1).factorial * conjecturalH n := by
+  unfold conjecturalH conjecturalK normalizedDyadicDenominator
+  have hpow : (2 : ℚ) ^ (2 * n - 1).choose 2 ≠ 0 := by positivity
+  have hfac : (((2 * n - 1).factorial : ℕ) : ℚ) ≠ 0 := by positivity
+  field_simp [hpow, hfac]
+  rw [pow_add]
+  norm_num
+  ring
+
+/-- The two displayed formulas following Conjecture 16.  The odd-index
+formula is the unconditional identity `dyadicDenominator_odd_eq_conjecturalH`;
+only the even-index formula uses the conjecture.  Both are stated in `ℚ`,
+where `conjecturalH` is defined. -/
 theorem conjecture_sixteen_denominator_formulas
     (hconj : conjecture_sixteen) (n : ℕ) (hn : 1 ≤ n) :
     (dyadicDenominator (2 * n - 1) : ℚ) =
@@ -461,19 +478,8 @@ theorem conjecture_sixteen_denominator_formulas
     (dyadicDenominator (2 * n) : ℚ) =
         (2 : ℚ) ^ (1 + (2 * n).choose 2) *
           (2 * n + 1).factorial * conjecturalH (n + 1) := by
-  have hoddFormula (m : ℕ) (hm : 1 ≤ m) :
-      (dyadicDenominator (2 * m - 1) : ℚ) =
-        (2 : ℚ) ^ (1 + (2 * m - 1).choose 2) *
-          (2 * m - 1).factorial * conjecturalH m := by
-    unfold conjecturalH conjecturalK normalizedDyadicDenominator
-    have hpow : (2 : ℚ) ^ (2 * m - 1).choose 2 ≠ 0 := by positivity
-    have hfac : (((2 * m - 1).factorial : ℕ) : ℚ) ≠ 0 := by positivity
-    field_simp [hpow, hfac]
-    rw [pow_add]
-    norm_num
-    ring
   constructor
-  · exact hoddFormula n hn
+  · exact dyadicDenominator_odd_eq_conjecturalH n
   · have ha := hconj.1 (n := n) hn
     unfold normalizedDyadicDenominator at ha
     have hpowEven : (2 : ℚ) ^ (2 * n).choose 2 ≠ 0 := by positivity

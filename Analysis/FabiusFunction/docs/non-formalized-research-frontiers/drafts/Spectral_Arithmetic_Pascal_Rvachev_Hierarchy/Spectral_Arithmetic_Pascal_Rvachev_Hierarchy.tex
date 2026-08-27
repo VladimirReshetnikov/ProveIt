@@ -1,0 +1,2364 @@
+\documentclass[11pt,a4paper]{article}
+
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{libertinus}
+\usepackage[final]{microtype}
+\usepackage[a4paper,margin=27mm,headheight=22pt]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools,mathrsfs}
+\usepackage{bm}
+\usepackage{booktabs,longtable,tabularx,array,multirow}
+\usepackage{enumitem}
+\usepackage{xcolor}
+\usepackage{graphicx}
+\usepackage{fancyhdr}
+\usepackage{titlesec}
+\usepackage[most]{tcolorbox}
+\usepackage{listings}
+\usepackage{xurl}
+\usepackage{hyperref}
+\usepackage[capitalise,nameinlink,noabbrev]{cleveref}
+\usepackage{needspace}
+
+\definecolor{ink}{HTML}{17212B}
+\definecolor{navy}{HTML}{173B57}
+\definecolor{teal}{HTML}{167D83}
+\definecolor{gold}{HTML}{B27B19}
+\definecolor{softblue}{HTML}{EDF4F8}
+\definecolor{softteal}{HTML}{ECF7F6}
+\definecolor{softgold}{HTML}{FBF5E8}
+\definecolor{softred}{HTML}{FAEEEE}
+\definecolor{rulegray}{HTML}{D6DEE3}
+\definecolor{codegray}{HTML}{F4F6F7}
+
+\hypersetup{
+  colorlinks=true,
+  linkcolor=navy,
+  citecolor=teal,
+  urlcolor=teal,
+  pdftitle={Spectral Arithmetic and the Pascal--Rvachev Hierarchy},
+  pdfauthor={Research synthesis prepared for Vladimir Reshetnikov},
+  pdfsubject={Fabius function, Rvachev up-function, Thue--Morse sequence, q-binomial coefficients, sinc products, and Lambert W},
+  pdfkeywords={Fabius function, Rvachev function, Thue-Morse, q-binomial, sinc product, Lambert W, spectral zeta, automatic sequence}
+}
+\urlstyle{same}
+
+\setlength{\parindent}{1.25em}
+\setlength{\parskip}{0.18em}
+\setlist{itemsep=0.25em,topsep=0.4em,leftmargin=1.7em}
+\setcounter{tocdepth}{2}
+\setcounter{secnumdepth}{3}
+\allowdisplaybreaks[2]
+
+\titleformat{\section}{\Large\bfseries\color{navy}}{\thesection}{0.75em}{}
+\titleformat{\subsection}{\large\bfseries\color{teal}}{\thesubsection}{0.65em}{}
+\titleformat{\subsubsection}{\normalsize\bfseries\color{ink}}{\thesubsubsection}{0.55em}{}
+\titlespacing*{\section}{0pt}{2.4ex plus .5ex minus .2ex}{1.1ex}
+\titlespacing*{\subsection}{0pt}{1.8ex plus .4ex minus .2ex}{0.7ex}
+
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small\color{navy}Pascal--Rvachev hierarchy}
+\fancyhead[R]{\small\color{teal}\nouppercase{\leftmark}}
+\fancyfoot[C]{\small\thepage}
+\renewcommand{\headrulewidth}{0.35pt}
+\renewcommand{\headrule}{\hbox to\headwidth{\color{rulegray}\leaders\hrule height \headrulewidth\hfill}}
+
+\newtheoremstyle{frontier}
+  {0.8em}{0.8em}{\itshape}{} {\bfseries\color{navy}}{.}{0.55em}{}
+\theoremstyle{frontier}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{conjecture}[theorem]{Conjecture}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{remark}[theorem]{Remark}
+\newtheorem{example}[theorem]{Example}
+
+\crefname{theorem}{theorem}{theorems}
+\crefname{proposition}{proposition}{propositions}
+\crefname{lemma}{lemma}{lemmas}
+\crefname{corollary}{corollary}{corollaries}
+\crefname{conjecture}{conjecture}{conjectures}
+\crefname{definition}{definition}{definitions}
+\crefname{remark}{remark}{remarks}
+\crefname{example}{example}{examples}
+
+\newtcolorbox{statusbox}[1][]{
+  enhanced,breakable,colback=softblue,colframe=navy,
+  boxrule=0.6pt,arc=2pt,left=7pt,right=7pt,top=6pt,bottom=6pt,
+  title={#1},fonttitle=\bfseries
+}
+\newtcolorbox{resultbox}[1][]{
+  enhanced,breakable,colback=softteal,colframe=teal,
+  boxrule=0.6pt,arc=2pt,left=7pt,right=7pt,top=6pt,bottom=6pt,
+  title={#1},fonttitle=\bfseries
+}
+\newtcolorbox{cautionbox}[1][]{
+  enhanced,breakable,colback=softgold,colframe=gold,
+  boxrule=0.6pt,arc=2pt,left=7pt,right=7pt,top=6pt,bottom=6pt,
+  title={#1},fonttitle=\bfseries
+}
+\newtcolorbox{frontierproblem}[1][]{
+  enhanced,breakable,colback=softred,colframe=red!65!black,
+  boxrule=0.6pt,arc=2pt,left=7pt,right=7pt,top=6pt,bottom=6pt,
+  title={#1},fonttitle=\bfseries
+}
+
+\lstdefinestyle{frontiercode}{
+  language=Python,
+  basicstyle=\ttfamily\footnotesize,
+  backgroundcolor=\color{codegray},
+  frame=single,
+  rulecolor=\color{rulegray},
+  breaklines=true,
+  columns=fullflexible,
+  showstringspaces=false,
+  keywordstyle=\color{navy}\bfseries,
+  commentstyle=\color{teal},
+  stringstyle=\color{gold!80!black},
+  xleftmargin=0.6em,xrightmargin=0.6em,
+  aboveskip=0.8em,belowskip=0.8em
+}
+
+\newcommand{\sinc}{\operatorname{sinc}}
+\newcommand{\sgn}{\operatorname{sgn}}
+\newcommand{\supp}{\operatorname{supp}}
+\newcommand{\Var}{\operatorname{Var}}
+\newcommand{\E}{\mathbb E}
+\newcommand{\Pp}{\mathbb P}
+\newcommand{\N}{\mathbb N}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\R}{\mathbb R}
+\newcommand{\C}{\mathbb C}
+\newcommand{\eps}{\varepsilon}
+\newcommand{\nuu}{\nu_2}
+\newcommand{\wt}{\widehat}
+\newcommand{\qbinom}[2]{\genfrac{[}{]}{0pt}{}{#1}{#2}_{q}}
+\newcommand{\dd}{\,\mathrm d}
+\newcommand{\Li}{\operatorname{Li}}
+\newcommand{\Res}{\operatorname*{Res}}
+\newcommand{\floor}[1]{\left\lfloor #1\right\rfloor}
+\newcommand{\ceil}[1]{\left\lceil #1\right\rceil}
+\newcommand{\bits}{s_2}
+\newcommand{\bigO}{\mathrm O}
+\newcommand{\smallo}{\mathrm o}
+\newcommand{\PhiR}{\Phi_r}
+\newcommand{\Nr}{\mathcal N_r}
+\newcommand{\Zr}{\mathcal Z_r}
+\newcommand{\Ar}{\mathcal A_r}
+
+\begin{document}
+\hypersetup{pageanchor=false}
+
+\begin{titlepage}
+\centering
+\vspace*{1.4cm}
+{\color{navy}\rule{0.82\textwidth}{1.2pt}}\\[1.0cm]
+{\Huge\bfseries\color{navy} Spectral Arithmetic and the\\[0.18em] Pascal--Rvachev Hierarchy\par}
+\vspace{0.7cm}
+{\Large\color{teal}Frontier deductions linking the Fabius function, the Thue--Morse sequence,\newline
+Gaussian $q$-binomials, infinite sinc products, and Lambert $W$\par}
+\vspace{1.0cm}
+{\color{navy}\rule{0.82\textwidth}{0.6pt}}\\[1.3cm]
+
+\begin{minipage}{0.84\textwidth}
+\large
+This report develops an integer-indexed family of compactly supported smooth probability densities whose Fourier transforms are Pascal-weighted dyadic sinc products.  The classical Rvachev up-function is the first member.  The hierarchy exposes exact zero multiplicities, digital zero-counting laws, automatic sign sequences, Prouhet cancellations, $q$-enumerators, rational cumulants, a quantitative Gaussian rank limit, sharp logarithmic Fourier decay, and a Mellin--Lambert endpoint theory controlled by one dyadic lattice of complex poles.
+\end{minipage}
+
+\vfill
+{\large Research synthesis prepared for Vladimir Reshetnikov\par}
+\vspace{0.25cm}
+{\large 27 August 2026\par}
+\vspace{0.8cm}
+{\small Based on a review of every \texttt{*.tex} document under\par
+\url{https://github.com/VladimirReshetnikov/ProveIt/tree/main/Analysis/FabiusFunction/docs}\par}
+\end{titlepage}
+\hypersetup{pageanchor=true}
+\pagenumbering{roman}
+
+\begin{abstract}
+The existing Fabius-function corpus gives a remarkably broad account of the Rvachev up-function, exact dyadic values, $q$-binomial formulae, signed Thue--Morse summation, endpoint asymptotics, and the pointwise and metric decay of the Fourier product \cite{aistleitner-hofer-larcher}
+\[
+  \Phi_1(z)=\prod_{h\ge 0}\sinc\!\left(\frac{z}{2^h}\right),
+  \qquad \sinc z=\frac{\sin(\pi z)}{\pi z}.
+\]
+The present report begins at a boundary not developed in that corpus: the arithmetic of the entire zero divisor and its interaction with repeated dyadic summation.  For the classical product, the cumulative multiplicity of positive zeros up to $N$ is exactly $2N-s_2(N)$; hence the Thue--Morse sign is the parity of a spectral counting function.  This observation extends to a new Pascal--Rvachev hierarchy
+\[
+  \Phi_r(z)=\prod_{h\ge0}\sinc\!\left(\frac z{2^h}\right)^{\binom h{r-1}},
+  \qquad r\ge1.
+\]
+Each member is the Fourier transform of a $C_c^\infty$ probability density on $[-1,1]$ and satisfies the refinement ladder $\Phi_r(2z)=\Phi_r(z)\Phi_{r-1}(z)$, with $\Phi_0(z)=\sinc(2z)$.  Its zero at an integer $n\ne0$ has multiplicity $\binom{\nu_2(n)+1}{r}$, and the corresponding zero-divisor Dirichlet series is
+\[
+  \mathcal Z_r(s)=\zeta(s)\frac{2^{-(r-1)s}}{(1-2^{-s})^r}.
+\]
+The cumulative count is the exact digital quantity $2N-S_r(N)$, where
+\[
+ S_r(N)=\sum_{j\ge0}b_j(N)\sum_{k=0}^{r-1}\binom{j+1}{k}.
+\]
+Modulo two, the inner weight reduces to $\binom j{r-1}$.  Consequently, the signs between consecutive integer zeros form a $2$-automatic generalized Thue--Morse sequence with an explicit Mahler equation and exact Prouhet cancellation order.
+
+The same hierarchy has cumulants
+\[
+ \kappa_{2k}(X_r)=\frac{B_{2k}}{2k}\frac{2^{2k}}{(2^{2k}-1)^r},
+ \qquad \Var(X_r)=3^{-(r+1)}.
+\]
+After variance normalization it converges to the standard Gaussian, with an exponential Berry--Esseen bound.  Its Fourier envelope obeys the sharp law
+\[
+ \limsup_{|x|\to\infty}\frac{\log|\Phi_r(x)|}{(\log|x|)^{r+1}}
+ =-\frac{1}{(r+1)!(\log2)^r}.
+\]
+Finally, the left-endpoint Laplace exponent admits a Mellin representation whose poles are exactly the same dyadic lattice that appears in $\mathcal Z_r$.  The pole at zero supplies a degree-$(r+1)$ logarithmic polynomial, the nonzero lattice poles supply degree-$(r-1)$ periodic polynomials, and the leading saddle is solved by the lower branch $W_{-1}$ of Lambert's function.  Complete proofs are given for the exact algebraic, digital, probabilistic, Fourier, and Mellin statements.  The final endpoint transseries beyond leading Tauberian order is isolated as a conjectural program rather than asserted.
+\end{abstract}
+
+\begin{statusbox}[Frontier and proof status]
+\textbf{Known inputs.}  The classical up-function sinc product, its probability interpretation, its canonical integer zero set with multiplicities $1+\nu_2(n)$, its Thue--Morse sign law, and its rank-one endpoint/Fourier asymptotics are treated in the surveyed corpus and literature.
+
+\textbf{Proved in this report.}  The cumulative spectral counting identities; the Pascal--Rvachev hierarchy; its refinement, support, zero divisor, zeta function, exact digital count, automatic signs, Prouhet partitions, $q$-scale identities, cumulants, Gaussian rank limit, sharp Fourier envelope, and Mellin residue expansion.
+
+\textbf{External theorem used.}  The leading small-ball statement invokes the classical exponential Tauberian theorem of de Bruijn.  All hypotheses needed here are displayed explicitly.
+
+\textbf{Not yet formalized.}  None of the new statements is claimed to have a Lean counterpart.  A proposed formalization order appears in \cref{sec:lean}.
+
+\textbf{Novelty qualification.}  ``New'' means not found in the complete repository corpus or in targeted exact-phrase and formula searches carried out for this report.  Infinite sums of independent uniform variables are a known general class.  No claim of universal bibliographic priority is made for every specialization below.
+\end{statusbox}
+
+\clearpage
+\tableofcontents
+\clearpage
+\pagenumbering{arabic}
+
+\section{Scope, corpus boundary, and normalization}\label{sec:scope}
+
+\subsection{What was reviewed}
+
+The source base is larger than a single exposition \cite{repo-docs}.  The living tree contains the primary article on the Fabius and Rvachev functions, a mathematical glossary, a Lean walkthrough, a non-elementarity paper, a consolidated non-formalized frontier volume, a large Thue--Morse formula atlas, twelve successive Fourier-decay dossiers and audits, and six embedded literature folders containing seven LaTeX sources.  The archive adds first versions, parallel drafts, supplements, $q$-calculus articles, repeated-integration studies, dyadic-asymptotic bridges, and earlier Thue--Morse atlases.  \Cref{app:corpus} gives a grouped inventory.
+
+The review was used in three ways.  First, it fixed normalization: several superficially different formulae in the drafts differ only by a Fourier convention, a translation, or a factor of two.  Second, it set a novelty boundary: the extensive rank-one Fourier analysis and the full Fabius endpoint machinery were treated as prior input, not rediscovered.  Third, archived documents were used as a negative control.  A proposed result was not counted as new merely because it had disappeared from the living exposition.
+
+The repository itself imposes a useful epistemic distinction.  Formalization-backed claims belong in the primary exposition; non-formalized mathematics is quarantined in the frontier volume until an exact Lean theorem can be identified.  This report follows that convention.  A conventional paper proof is called a proof, but it is never described as formalized.
+
+\subsection{Fourier and probabilistic conventions}
+
+Throughout,
+\[
+  \sinc z:=\begin{cases}
+  \dfrac{\sin(\pi z)}{\pi z},&z\ne0,\\[0.4em]
+  1,&z=0,
+  \end{cases}
+  \qquad
+  \widehat f(\xi):=\int_{\R}f(x)e^{-2\pi i x\xi}\,\dd x.
+\]
+Thus the Fourier transform of the uniform probability density on $[-a/2,a/2]$ is $\sinc(a\xi)$.  The $2$-adic valuation of a positive integer is $\nu_2(n)$, and
+\[
+  n=\sum_{j\ge0}b_j(n)2^j,
+  \qquad b_j(n)\in\{0,1\},
+  \qquad s_2(n):=\sum_{j\ge0}b_j(n).
+\]
+We use the generalized polynomial binomial coefficient $\binom yk=y(y-1)\cdots(y-k+1)/k!$, and set ordinary binomial coefficients to zero outside their natural range.
+
+The classical Rvachev Fourier product is
+\begin{equation}\label{eq:phi1}
+  \Phi_1(z):=\prod_{h=0}^{\infty}\sinc\!\left(\frac z{2^h}\right).
+\end{equation}
+It is the characteristic function, in the above Fourier convention, of
+\begin{equation}\label{eq:X1}
+  X_1=\sum_{h=0}^{\infty}U_h,
+  \qquad U_h\sim\operatorname{Unif}\!\left[-2^{-h-1},2^{-h-1}\right]
+\end{equation}
+with independent summands.  Its density is the normalized Rvachev up-function, supported on $[-1,1]$.  On the left half of that support, the standard Fabius function is
+\begin{equation}\label{eq:fabius-shift}
+  F(x)=f_1(x-1),\qquad 0\le x\le1.
+\end{equation}
+
+\subsection{The established rank-one architecture}
+
+The surveyed sources \cite{repo-primary,repo-frontiers,arias1982,arias2018} already establish, discuss, or audit all of the following rank-one facts:
+\begin{enumerate}[label=(\alph*)]
+\item the probability and infinite-convolution realization of \eqref{eq:phi1};
+\item the two-scale identities for the up-function and the Fabius function;
+\item exact dyadic values involving $q$-Pochhammer symbols and Gaussian $q$-binomial coefficients at $q=1/2$;
+\item moment formulae and arithmetic denominator questions;
+\item the canonical product
+\[
+  \Phi_1(z)=\prod_{n=1}^{\infty}\left(1-\frac{z^2}{n^2}\right)^{1+\nu_2(n)};
+\]
+\item the sign law $\sgn\Phi_1(x)=(-1)^{s_2(N)}$ for $N<x<N+1$;
+\item pointwise, metric, mean, extremal, annular, and near-zero analyses of the Fourier decay;
+\item the lower-Lambert endpoint coordinate and the small periodic correction in logarithmic scale;
+\item the digital, Mahler, Prouhet, rarefaction, and arithmetic-subsequence theory of the classical Thue--Morse sequence \cite{allouche-shallit-1999,automatic-sequences,toth2022}.
+\end{enumerate}
+
+The new work below does not compete with those results.  It asks what becomes visible when the zero divisor itself is counted, and then promotes the dyadic product to an entire Pascal-weighted ladder.  That change of viewpoint creates simultaneous extensions in spectral arithmetic, automatic sequences, probability, Fourier analysis, and endpoint asymptotics.
+
+\section{The classical product as a spectral Thue--Morse object}\label{sec:classical-spectral}
+
+\subsection{Cumulative multiplicity and parity}
+
+For a positive integer $n$, the zero multiplicity of \eqref{eq:phi1} is
+\[
+  \mu_1(n)=1+\nu_2(n).
+\]
+Define the cumulative positive-zero multiplicity
+\[
+  \mathcal N_1(N):=\sum_{n=1}^{N}\mu_1(n).
+\]
+
+\begin{theorem}[Exact classical zero count]\label{thm:classical-count}
+For every integer $N\ge0$,
+\begin{equation}\label{eq:classical-count}
+  \mathcal N_1(N)=2N-s_2(N).
+\end{equation}
+Consequently,
+\begin{equation}\label{eq:spectral-thue-morse}
+  (-1)^{\mathcal N_1(N)}=(-1)^{s_2(N)}.
+\end{equation}
+Thus the Thue--Morse sign between $N$ and $N+1$ is exactly the parity of the number of positive zeros counted with multiplicity up to $N$.
+\end{theorem}
+
+\begin{proof}
+Every factor indexed by $h$ contributes a simple zero at each positive multiple of $2^h$.  Hence
+\[
+ \mathcal N_1(N)=\sum_{h\ge0}\floor{\frac N{2^h}}
+ =N+\sum_{h\ge1}\floor{\frac N{2^h}}.
+\]
+Legendre's digit formula gives $\sum_{h\ge1}\floor{N/2^h}=N-s_2(N)$, proving \eqref{eq:classical-count}.  Since $2N$ is even, \eqref{eq:spectral-thue-morse} follows.  Finally, $\Phi_1(0)>0$, and crossing the zero at $n$ changes the sign exactly when $\mu_1(n)$ is odd.  Therefore the sign on $(N,N+1)$ is $(-1)^{\mathcal N_1(N)}$.
+\end{proof}
+
+\begin{remark}
+The familiar sign law is therefore not merely an incidental binary identity.  It is a mod-$2$ shadow of an exact Weyl-type counting formula whose discrepancy from the linear main term is the binary digit sum.
+\end{remark}
+
+\subsection{Finite products and a two-scale sign correction}
+
+Let
+\[
+  \Phi_{1,M}(z):=\prod_{h=0}^{M-1}\sinc\!\left(\frac z{2^h}\right),
+  \qquad M\ge0.
+\]
+At $n\ge1$ its zero multiplicity is
+\[
+  \mu_{1,M}(n)=\min\{M,1+\nu_2(n)\}.
+\]
+
+\begin{proposition}[Finite-scale count]\label{prop:finite-classical}
+Put $Q=\floor{N/2^M}$.  Then
+\begin{align}
+ \mathcal N_{1,M}(N)
+ &:=\sum_{n=1}^{N}\mu_{1,M}(n)
+   =\sum_{h=0}^{M-1}\floor{\frac N{2^h}}\label{eq:finite-count-floor}\\
+ &=2N-s_2(N)-2Q+s_2(Q).\label{eq:finite-count-digital}
+\end{align}
+In particular,
+\begin{equation}\label{eq:finite-sign}
+  (-1)^{\mathcal N_{1,M}(N)}
+  =(-1)^{s_2(N)}(-1)^{s_2(Q)}.
+\end{equation}
+\end{proposition}
+
+\begin{proof}
+The first equality counts the zeros supplied by each of the first $M$ factors.  The omitted tail is
+\[
+ \sum_{h\ge M}\floor{\frac N{2^h}}
+ =\sum_{k\ge0}\floor{\frac Q{2^k}}
+ =2Q-s_2(Q)
+\]
+by \cref{thm:classical-count}.  Subtracting it from $2N-s_2(N)$ proves the result.
+\end{proof}
+
+The factor $(-1)^{s_2(Q)}$ in \eqref{eq:finite-sign} is a coarse-scale correction: a truncation remembers both the Thue--Morse parity at $N$ and the parity of the block index at scale $2^M$.
+
+\subsection{A zero-divisor Dirichlet series}
+
+The canonical product suggests treating the zero multiplicities as an arithmetic function.
+
+\begin{definition}
+For $\Re s>1$, define the zero-divisor Dirichlet series
+\[
+  \mathcal Z_1(s):=\sum_{n\ge1}\frac{1+\nu_2(n)}{n^s},
+  \qquad
+  \mathcal Z_{1,M}(s):=\sum_{n\ge1}\frac{\mu_{1,M}(n)}{n^s}.
+\]
+The word ``spectral'' below refers to the zero divisor of an entire Fourier transform, not to the spectrum of a specified operator.
+\end{definition}
+
+\begin{theorem}[Classical zero-divisor zeta function]\label{thm:zeta1}
+For $\Re s>1$,
+\begin{equation}\label{eq:zeta1}
+  \mathcal Z_1(s)=\frac{\zeta(s)}{1-2^{-s}},
+  \qquad
+  \mathcal Z_{1,M}(s)=\zeta(s)\frac{1-2^{-Ms}}{1-2^{-s}}.
+\end{equation}
+Both identities extend meromorphically to $\C$.  The infinite series has a simple pole at $s=1$ with residue $2$, and simple poles at
+\begin{equation}\label{eq:dyadic-lattice}
+  s_k:=\frac{2\pi i k}{\log2},\qquad k\in\Z.
+\end{equation}
+At $s=s_k$ its residue is $\zeta(s_k)/\log2$.
+\end{theorem}
+
+\begin{proof}
+Write $1+\nu_2(n)=\sum_{h\ge0}\mathbf 1_{2^h\mid n}$.  Absolute convergence permits interchange:
+\[
+ \mathcal Z_1(s)=\sum_{h\ge0}\sum_{m\ge1}(2^hm)^{-s}
+ =\zeta(s)\sum_{h\ge0}2^{-hs}
+ =\frac{\zeta(s)}{1-2^{-s}}.
+\]
+Truncating the geometric sum gives the second formula.  The pole statements follow from the meromorphic continuation of $\zeta$ and from
+$1-2^{-s}=(s-s_k)\log2+\bigO((s-s_k)^2)$ near $s_k$.  On the imaginary axis $\zeta$ has no zeros: this follows from the functional equation and the classical zero-free line $\Re s=1$.  Thus the displayed poles are genuine.
+\end{proof}
+
+\begin{resultbox}[First new bridge]
+The same dyadic denominator $1-2^{-s}$ has now appeared in three guises: repeated divisibility by $2$, the zero divisor of the sinc product, and the $q$-integer $[M]_{2^{-s}}=(1-2^{-Ms})/(1-2^{-s})$.  The next sections show that replacing the geometric weight $1$ by Pascal weights $\binom h{r-1}$ raises that denominator to the $r$th power and simultaneously raises the Fourier and endpoint logarithmic orders.
+\end{resultbox}
+
+\section{The Pascal--Rvachev hierarchy}\label{sec:hierarchy}
+
+\subsection{Definition and convergence}
+
+The exponent $1$ in the classical product is the first column of Pascal's triangle.  Replacing it by successive columns gives the central construction of this report.
+
+\begin{definition}[Pascal--Rvachev products]\label{def:pascal-rvachev}
+Set
+\begin{equation}\label{eq:phi0}
+  \Phi_0(z):=\sinc(2z).
+\end{equation}
+For every integer $r\ge1$, define
+\begin{equation}\label{eq:phir}
+  a_{r,h}:=\binom h{r-1},
+  \qquad
+  \Phi_r(z):=\prod_{h=0}^{\infty}
+  \sinc\!\left(\frac z{2^h}\right)^{a_{r,h}}.
+\end{equation}
+The convention $\binom hk=0$ for $h<k$ makes the product start effectively at $h=r-1$.
+\end{definition}
+
+\begin{theorem}[Entire product and random-series model]\label{thm:random-series}
+For each $r\ge1$, the product \eqref{eq:phir} converges locally uniformly on $\C$ and defines an even entire function with $\Phi_r(0)=1$.  Let
+\begin{equation}\label{eq:Xr}
+  X_r:=\sum_{h=0}^{\infty}\sum_{\ell=1}^{a_{r,h}}U_{h,\ell},
+  \qquad
+  U_{h,\ell}\sim\operatorname{Unif}
+  \!\left[-2^{-h-1},2^{-h-1}\right]
+\end{equation}
+with all summands independent.  Then the series converges absolutely almost surely and
+\begin{equation}\label{eq:char-Xr}
+  \E e^{-2\pi i zX_r}=\Phi_r(z).
+\end{equation}
+The law of $X_r$ has a bounded density $f_r$, and
+\begin{equation}\label{eq:support}
+  \supp f_r=[-1,1].
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+For $z$ in a fixed compact set and $h$ sufficiently large,
+\[
+ \log\sinc(z/2^h)=\bigO_K(4^{-h}).
+\]
+Since $a_{r,h}=\bigO_r(h^{r-1})$, the series
+$\sum_h a_{r,h}\log\sinc(z/2^h)$ converges normally away from the finitely many zeros of the initial factors; equivalently, the associated Weierstrass product converges locally uniformly.  Evenness and normalization are immediate.
+
+For the random series, the total sum of the absolute bounds is deterministic:
+\begin{align}
+ \sum_{h\ge0}a_{r,h}2^{-h-1}
+ &=\frac12\sum_{h\ge0}\binom h{r-1}2^{-h}\notag\\
+ &=\frac12\frac{2^{-(r-1)}}{(1-1/2)^r}=1.\label{eq:support-sum}
+\end{align}
+Thus \eqref{eq:Xr} converges absolutely and takes values in $[-1,1]$.  Multiplication of the characteristic functions gives \eqref{eq:char-Xr}.  At least one summand is uniformly distributed on a nondegenerate interval, so convolution with the law of the remaining series produces a bounded density.  The support of a convolution of interval-supported nondegenerate measures is the Minkowski sum of the supports.  Equality in \eqref{eq:support-sum} therefore gives the full interval $[-1,1]$.
+\end{proof}
+
+\begin{remark}
+General infinite sums of independent uniform variables occur elsewhere in probability and in the theory of limit laws for $q$-hook formulae \cite{jessen-wintner,billey-swanson}.  The distinctive feature here is the Pascal multiplicity $\binom h{r-1}$, which forces all of the exact arithmetic and refinement identities below.
+\end{remark}
+
+\subsection{The refinement ladder}
+
+\begin{theorem}[Fourier refinement ladder]\label{thm:refinement}
+For every $r\ge1$,
+\begin{equation}\label{eq:refinement-fourier}
+  \Phi_r(2z)=\Phi_r(z)\Phi_{r-1}(z).
+\end{equation}
+Equivalently, if $X_{r-1}'$ is an independent copy of $X_{r-1}$ independent of $X_r$, then
+\begin{equation}\label{eq:refinement-prob}
+  2X_r\ \stackrel{d}{=}\ X_r+X_{r-1}'.
+\end{equation}
+For the densities,
+\begin{equation}\label{eq:refinement-density}
+  f_r(x)=2(f_r*f_{r-1})(2x),
+  \qquad
+  f_0(x)=\frac12\mathbf 1_{[-1,1]}(x).
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+Shift the index in \eqref{eq:phir}.  For $r\ge2$ the initial exponent $a_{r,0}$ vanishes, and Pascal's identity gives
+\begin{align*}
+ \Phi_r(2z)
+ &=\prod_{h\ge0}\sinc\!\left(\frac z{2^h}\right)^{\binom{h+1}{r-1}}\\
+ &=\prod_{h\ge0}\sinc\!\left(\frac z{2^h}\right)^{\binom h{r-1}+\binom h{r-2}}
+ =\Phi_r(z)\Phi_{r-1}(z).
+\end{align*}
+For $r=1$, the factor removed by the shift is $\sinc(2z)=\Phi_0(z)$, so the same formula holds.  Fourier uniqueness proves \eqref{eq:refinement-prob}.  The density of $2X_r$ is $x\mapsto \frac12 f_r(x/2)$, whereas the right side of \eqref{eq:refinement-prob} has density $f_r*f_{r-1}$.  Replacing $x$ by $2x$ yields \eqref{eq:refinement-density}.
+\end{proof}
+
+\begin{corollary}[A moment ladder]\label{cor:moment-ladder}
+Let $m_{r,n}:=\E[X_r^n]$.  Odd moments vanish.  For $n\ge1$,
+\begin{equation}\label{eq:moment-ladder}
+ (2^{2n}-1)m_{r,2n}
+ =m_{r-1,2n}
+ +\sum_{j=1}^{n-1}\binom{2n}{2j}m_{r,2j}m_{r-1,2n-2j},
+\end{equation}
+with $m_{0,2n}=1/(2n+1)$.  In particular, every moment of every $X_r$ is rational.
+\end{corollary}
+
+\begin{proof}
+Raise \eqref{eq:refinement-prob} to the $2n$th power and take expectations.  Symmetry removes odd terms.  The term with $j=n$ is $m_{r,2n}$ and is moved to the left.  The base law $X_0\sim\operatorname{Unif}[-1,1]$ has the stated moments.
+\end{proof}
+
+\subsection{The shifted endpoint variables}
+
+For endpoint analysis it is useful to translate the support to $[0,2]$:
+\begin{equation}\label{eq:Dr}
+  D_r:=X_r+1.
+\end{equation}
+Writing $U_{h,\ell}=2^{-h}(V_{h,\ell}-1/2)$ with $V_{h,\ell}\sim\operatorname{Unif}[0,1]$ and using $\sum_h a_{r,h}2^{-h}=2$, we obtain the positive random series
+\begin{equation}\label{eq:Dr-series}
+  D_r=\sum_{h\ge0}\sum_{\ell=1}^{a_{r,h}}2^{-h}V_{h,\ell}.
+\end{equation}
+The refinement law becomes
+\begin{equation}\label{eq:Dr-refine}
+  2D_r\ \stackrel d=\ D_r+D_{r-1}'.
+\end{equation}
+This is the endpoint counterpart of the Fourier ladder and will drive the Mellin and Lambert analysis in \cref{sec:endpoint}.
+
+\section{Zero divisors, digital counts, and generalized Thue--Morse signs}\label{sec:digital}
+
+\subsection{Integer zero multiplicities}
+
+\begin{theorem}[Pascal zero multiplicity]\label{thm:zero-multiplicity}
+Let $r\ge1$ and $n\in\Z\setminus\{0\}$.  The multiplicity of the zero of $\Phi_r$ at $n$ is
+\begin{equation}\label{eq:mu-r}
+  \mu_r(n)=\sum_{h=0}^{\nu_2(|n|)}\binom h{r-1}
+  =\binom{\nu_2(|n|)+1}{r}.
+\end{equation}
+Consequently,
+\begin{equation}\label{eq:canonical-r}
+  \Phi_r(z)=\prod_{n=1}^{\infty}
+  \left(1-\frac{z^2}{n^2}\right)^{\mu_r(n)}.
+\end{equation}
+The product converges normally on compact sets.
+\end{theorem}
+
+\begin{proof}
+The factor at scale $h$ vanishes at $n$ precisely when $2^h\mid n$, and then contributes multiplicity $\binom h{r-1}$.  Summing over $0\le h\le\nu_2(n)$ and applying the hockey-stick identity gives \eqref{eq:mu-r}.  Expanding each sinc by Euler's product and collecting equal zeros yields \eqref{eq:canonical-r}.  Normal convergence follows from
+$\sum_n\mu_r(n)n^{-2}<\infty$, a consequence of \cref{thm:zeta-r} below.
+\end{proof}
+
+\paragraph{Formalization boundary.}
+The finite arithmetic equality in \eqref{eq:mu-r} is now machine-checked:
+\path{weightedScaleMultiplicity_choose} in
+\path{WeightedScaleMultiplicity.lean}, specialized to base $2$ and Lean's
+Pascal index $r-1$, proves
+$\sum_{h=0}^{\nu_2(n)}\binom h{r-1}=\binom{\nu_2(n)+1}r$.
+It does \emph{not} by itself prove that this number is the analytic zero
+order of $\Phi_r$, nor does it establish \eqref{eq:canonical-r} or normal
+convergence.  Those assertions remain in the analytic frontier.
+
+Thus $\Phi_r$ has a zero at $n$ exactly when $2^{r-1}\mid n$.  Higher rank does not spread the zeros; it thins their locations while increasing their multiplicities according to the $r$th binomial coefficient in $\nu_2(n)+1$.
+
+\subsection{Finite scale and a Pascal tail formula}
+
+Define
+\begin{equation}\label{eq:finite-phir}
+  \Phi_{r,M}(z):=\prod_{h=0}^{M-1}
+  \sinc\!\left(\frac z{2^h}\right)^{\binom h{r-1}}.
+\end{equation}
+Its zero multiplicity is
+\begin{equation}\label{eq:finite-mu-r}
+  \mu_{r,M}(n)=\binom{\min\{M,\nu_2(n)+1\}}{r}.
+\end{equation}
+Let
+\[
+ \mathcal N_{r,M}(N):=\sum_{n=1}^{N}\mu_{r,M}(n),
+ \qquad
+ \mathcal N_r(N):=\sum_{n=1}^{N}\mu_r(n).
+\]
+
+\begin{proposition}[Exact finite-scale tail]\label{prop:finite-tail-r}
+For $Q=\floor{N/2^M}$,
+\begin{equation}\label{eq:finite-tail-r}
+ \mathcal N_{r,M}(N)
+ =\mathcal N_r(N)-\sum_{a=0}^{r-1}\binom Ma\mathcal N_{r-a}(Q).
+\end{equation}
+For $r=1$ this reduces to \eqref{eq:finite-count-digital}.
+\end{proposition}
+
+\begin{proof}
+The omitted tail is
+\begin{align*}
+ \mathcal N_r(N)-\mathcal N_{r,M}(N)
+ &=\sum_{k\ge0}\binom{M+k}{r-1}\floor{\frac Q{2^k}}\\
+ &=\sum_{a=0}^{r-1}\binom Ma
+   \sum_{k\ge0}\binom{k}{r-1-a}\floor{\frac Q{2^k}},
+\end{align*}
+where the second line is Vandermonde's identity.  The inner sum is $\mathcal N_{r-a}(Q)$ by direct zero counting.
+\end{proof}
+
+\subsection{The zero-divisor zeta hierarchy}
+
+\begin{theorem}[Zero-divisor zeta functions]\label{thm:zeta-r}
+For $\Re s>1$ and $r\ge1$,
+\begin{equation}\label{eq:zeta-r}
+  \mathcal Z_r(s):=\sum_{n\ge1}\frac{\mu_r(n)}{n^s}
+  =\zeta(s)\frac{2^{-(r-1)s}}{(1-2^{-s})^r}.
+\end{equation}
+For the finite product,
+\begin{equation}\label{eq:zeta-rM}
+  \mathcal Z_{r,M}(s)
+  =\zeta(s)\sum_{h=0}^{M-1}\binom h{r-1}2^{-hs}.
+\end{equation}
+The meromorphic continuation of $\mathcal Z_r$ has:
+\begin{enumerate}[label=(\roman*)]
+\item a simple pole at $s=1$ with residue $2$, independent of $r$;
+\item a pole of exact order $r$ at every $s_k=2\pi ik/\log2$;
+\item leading Laurent coefficient
+\begin{equation}\label{eq:laurent-zeta-r}
+  \mathcal Z_r(s)=
+  \frac{\zeta(s_k)}{(\log2)^r(s-s_k)^r}
+  +\bigO\!\left((s-s_k)^{1-r}\right)
+\end{equation}
+near $s_k$.
+\end{enumerate}
+\end{theorem}
+
+\begin{proof}
+From \eqref{eq:mu-r}, or directly by counting scale contributions,
+\begin{align*}
+ \mathcal Z_r(s)
+ &=\sum_{h\ge0}\binom h{r-1}\sum_{m\ge1}(2^hm)^{-s}\\
+ &=\zeta(s)\sum_{h\ge0}\binom h{r-1}(2^{-s})^h
+ =\zeta(s)\frac{2^{-(r-1)s}}{(1-2^{-s})^r}.
+\end{align*}
+The finite identity follows by stopping at $h=M-1$.  At $s=1$ the non-zeta factor equals
+$2^{-(r-1)}/(1-1/2)^r=2$, so the residue is $2$.  Near $s_k$, the numerator $2^{-(r-1)s_k}=1$ and
+$1-2^{-s}=(s-s_k)\log2+\bigO((s-s_k)^2)$.  As in \cref{thm:zeta1}, $\zeta(s_k)\ne0$, proving exact order and \eqref{eq:laurent-zeta-r}.
+\end{proof}
+
+The factor
+\begin{equation}\label{eq:scale-zeta}
+  \mathcal A_r(s):=\frac{2^{-(r-1)s}}{(1-2^{-s})^r}
+\end{equation}
+will reappear, unchanged, in the endpoint Mellin transform.  It is the scale zeta function of the hierarchy; multiplication by $\zeta(s)$ converts scale multiplicity into integer-zero multiplicity.
+
+\begin{corollary}[Rank resolvent]\label{cor:rank-resolvent}
+For $|u2^{-s}|<|1-2^{-s}|$,
+\begin{equation}\label{eq:rank-resolvent}
+ \sum_{r\ge1}\mathcal Z_r(s)u^{r-1}
+ =\frac{\zeta(s)}{1-(1+u)2^{-s}}.
+\end{equation}
+At each fixed integer $n\ge1$,
+\begin{equation}\label{eq:mu-rank-gen}
+ \sum_{r\ge1}\mu_r(n)u^{r-1}
+ =\frac{(1+u)^{\nu_2(n)+1}-1}{u}.
+\end{equation}
+\end{corollary}
+
+\begin{proof}
+Sum the geometric series in $r$ using \eqref{eq:zeta-r}.  The second identity is the binomial theorem applied to \eqref{eq:mu-r}.
+\end{proof}
+
+\subsection{An exact digital zero-counting law}
+
+The following finite combinatorial identity is the key.
+
+\begin{lemma}[Pascal tail identity]\label{lem:pascal-tail}
+For integers $r\ge1$ and $j\ge0$, put
+\begin{equation}\label{eq:Qr}
+  Q_r(j):=\sum_{k=0}^{r-1}\binom{j+1}{k}.
+\end{equation}
+Then
+\begin{equation}\label{eq:pascal-tail}
+ \sum_{h=0}^{j}\binom h{r-1}2^{j-h}=2^{j+1}-Q_r(j).
+\end{equation}
+Equivalently,
+\[
+ 2^j\sum_{h=j+1}^{\infty}\binom h{r-1}2^{-h}=Q_r(j).
+\]
+\end{lemma}
+
+\begin{proof}
+The right side of \eqref{eq:pascal-tail} counts the subsets of a $(j+1)$-element set having cardinality at least $r$.  Classify such a subset by its $r$th smallest element $h$.  Choose the $r-1$ smaller elements in $\binom h{r-1}$ ways and choose an arbitrary subset of the $j-h$ larger elements in $2^{j-h}$ ways.  Summing over $h$ gives the left side.
+\end{proof}
+
+\begin{theorem}[Exact digital spectral count]\label{thm:digital-count}
+For every $r\ge1$ and $N\ge0$,
+\begin{equation}\label{eq:Nr-floor}
+  \mathcal N_r(N)=\sum_{h\ge0}\binom h{r-1}\floor{\frac N{2^h}},
+\end{equation}
+while the binary expansion $N=\sum_jb_j(N)2^j$ gives
+\begin{equation}\label{eq:Nr-digital}
+  \boxed{\ \mathcal N_r(N)=2N-S_r(N)\ },
+  \qquad
+  S_r(N):=\sum_{j\ge0}b_j(N)Q_r(j).
+\end{equation}
+For $r=1$, $Q_1(j)=1$ and $S_1(N)=s_2(N)$.
+\end{theorem}
+
+\begin{proof}
+Equation \eqref{eq:Nr-floor} counts the zeros supplied by each scale.  Expanding each floor in binary,
+\begin{align*}
+ \mathcal N_r(N)
+ &=\sum_{h\ge0}\binom h{r-1}\sum_{j\ge h}b_j(N)2^{j-h}\\
+ &=\sum_{j\ge0}b_j(N)
+   \sum_{h=0}^{j}\binom h{r-1}2^{j-h}.
+\end{align*}
+Apply \cref{lem:pascal-tail}.  The contribution of $2^{j+1}$ is $2N$, and the remaining term is $S_r(N)$.
+\end{proof}
+
+The floor-sum half \eqref{eq:Nr-floor} is now formally covered by
+\path{sum_range_padicValNat_choose} in
+\path{WeightedScaleMultiplicity.lean}; its finite sum over $h<N$ equals the
+displayed infinite sum because all later natural quotients vanish.  The
+binary digit formula \eqref{eq:Nr-digital}, the sharp discrepancy statements,
+and their parity consequences are not consequences of that generic layer-cake
+theorem and remain to be formalized.
+
+\begin{corollary}[Sharp discrepancy range]\label{cor:discrepancy-range}
+For $0\le N<2^m$,
+\begin{equation}\label{eq:discrepancy-bound}
+ 0\le 2N-\mathcal N_r(N)
+ \le \sum_{\ell=1}^{r}\binom{m+1}{\ell}-1.
+\end{equation}
+The upper bound is attained at $N=2^m-1$.  In particular, for fixed $r$,
+\[
+  \mathcal N_r(N)=2N+\bigO_r((\log N)^r),
+\]
+and the exponent $r$ in the error term is optimal.
+\end{corollary}
+
+\begin{proof}
+All weights $Q_r(j)$ are nonnegative, so among $m$-bit integers $S_r(N)$ is maximized when every bit is $1$.  The hockey-stick identity gives
+\begin{align*}
+ \sum_{j=0}^{m-1}Q_r(j)
+ &=\sum_{k=0}^{r-1}\sum_{j=0}^{m-1}\binom{j+1}{k}
+ =\sum_{\ell=1}^{r}\binom{m+1}{\ell}-1.
+\end{align*}
+Its leading term is $m^r/r!$.
+\end{proof}
+
+\subsection{Pascal parity and automatic sign sequences}
+
+The apparently complicated weight $Q_r(j)$ has a simple parity.
+
+\begin{lemma}[Parity collapse]\label{lem:parity-collapse}
+For all $r\ge1$ and $j\ge0$,
+\begin{equation}\label{eq:parity-collapse}
+  Q_r(j)\equiv\binom j{r-1}\pmod2.
+\end{equation}
+\end{lemma}
+
+\begin{proof}
+The exact alternating partial-sum identity
+\[
+ \sum_{k=0}^{r-1}(-1)^{r-1-k}\binom{j+1}{k}=\binom j{r-1}
+\]
+reduces modulo $2$ to \eqref{eq:parity-collapse}.
+\end{proof}
+
+\begin{definition}[Spectral sign sequence]\label{def:eps-r}
+Define
+\begin{equation}\label{eq:eps-r}
+ \varepsilon_r(N):=(-1)^{\mathcal N_r(N)}
+ =(-1)^{S_r(N)}
+ =(-1)^{\sum_{j\ge0}b_j(N)\binom j{r-1}}.
+\end{equation}
+\end{definition}
+
+\begin{theorem}[Generalized Thue--Morse sign law]\label{thm:sign-law-r}
+For $N<x<N+1$,
+\begin{equation}\label{eq:sign-law-r}
+  \sgn\Phi_r(x)=\varepsilon_r(N).
+\end{equation}
+Let
+\begin{equation}\label{eq:Pr-dr}
+ m_r:=\ceil{\log_2r},\qquad
+ P_r:=2^{m_r},\qquad
+ d_r:=2^{m_r-s_2(r-1)}.
+\end{equation}
+Then the digit-position weights
+\begin{equation}\label{eq:sigma-rj}
+ \sigma_{r,j}:=(-1)^{\binom j{r-1}}
+\end{equation}
+are periodic in $j$ with period $P_r$, and exactly $d_r$ positions in one period have value $-1$.  Consequently, $\varepsilon_r$ is $2$-automatic and strongly $2^{P_r}$-multiplicative.
+\end{theorem}
+
+\begin{proof}
+The sign formula follows as in \cref{thm:classical-count}: start positive at zero and count integer zeros with multiplicity.  By \cref{lem:parity-collapse},
+$\varepsilon_r(N)=\prod_{j:b_j(N)=1}\sigma_{r,j}$.
+
+Since $r-1<P_r$, Lucas's theorem shows that the parity of $\binom j{r-1}$ depends only on the lowest $m_r$ binary digits of $j$.  Hence $P_r$ is a period.  Lucas's theorem also says that $\binom j{r-1}$ is odd precisely when every $1$-bit of $r-1$ is also a $1$-bit of $j$.  Among the $P_r=2^{m_r}$ residue classes, the remaining $m_r-s_2(r-1)$ bits are free, giving $d_r$ negative weights.
+
+A finite automaton need only remember the current digit position modulo $P_r$ and the accumulated sign, proving $2$-automaticity.  Grouping binary digits into blocks of length $P_r$ shows strong $2^{P_r}$-multiplicativity.
+\end{proof}
+
+\begin{corollary}[Mahler equation]\label{cor:mahler-r}
+For $|z|<1$, let
+\begin{equation}\label{eq:Gr}
+ G_r(z):=\sum_{N\ge0}\varepsilon_r(N)z^N,
+ \qquad
+ A_r(z):=\prod_{j=0}^{P_r-1}(1+\sigma_{r,j}z^{2^j}).
+\end{equation}
+Then
+\begin{equation}\label{eq:Gr-product}
+ G_r(z)=\prod_{j\ge0}(1+\sigma_{r,j}z^{2^j})
+\end{equation}
+and
+\begin{equation}\label{eq:mahler-r}
+  G_r(z)=A_r(z)G_r\!\left(z^{2^{P_r}}\right).
+\end{equation}
+\end{corollary}
+
+\begin{proof}
+Expanding the product in \eqref{eq:Gr-product} selects a binary digit set, and the coefficient is exactly the product of the corresponding $\sigma_{r,j}$.  Split the product into the first $P_r$ positions and the periodic tail.
+\end{proof}
+
+\begin{corollary}[Powers of two]\label{cor:power-two-rank}
+If $r=2^m$, then
+\begin{equation}\label{eq:power-two-position}
+ \binom j{r-1}\equiv1\pmod2
+ \quad\Longleftrightarrow\quad
+ j\equiv-1\pmod{2^m}.
+\end{equation}
+Hence $\varepsilon_{2^m}(N)$ is the parity of the binary digits of $N$ in positions congruent to $2^m-1$ modulo $2^m$.
+\end{corollary}
+
+\begin{proof}
+The binary expansion of $r-1=2^m-1$ consists of $m$ ones.  Lucas's criterion therefore requires all lowest $m$ bits of $j$ to be one.
+\end{proof}
+
+\begin{table}[ht]
+\centering
+\caption{The first spectral sign masks.  A minus sign means that a $1$-bit in that position flips $\varepsilon_r$.}
+\label{tab:sign-masks}
+\begin{tabular}{@{}rrrrl@{}}
+\toprule
+$r$ & $P_r$ & $d_r$ & $\Var(X_r)$ & $(\sigma_{r,0},\ldots,\sigma_{r,P_r-1})$\\
+\midrule
+1 & 1 & 1 & $1/9$     & $-$\\
+2 & 2 & 1 & $1/27$    & $+-$\\
+3 & 4 & 2 & $1/81$    & $++--$\\
+4 & 4 & 1 & $1/243$   & $+++- $\\
+5 & 8 & 4 & $1/729$   & $++++----$\\
+6 & 8 & 2 & $1/2187$  & $+++++-+-$\\
+7 & 8 & 2 & $1/6561$  & $++++++--$\\
+8 & 8 & 1 & $1/19683$ & $+++++++- $\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsection{Spectral Prouhet partitions}
+
+The classical Thue--Morse signs produce Prouhet partitions \cite{allouche-shallit-1999,automatic-sequences}.  The spectral signs do the same, with an order dictated by the number $d_r$ of negative positions in a period.
+
+\begin{theorem}[Exact Prouhet cancellation order]\label{thm:prouhet-r}
+Let $r\ge1$ and $B\ge1$.  Put $L=2^{P_rB}$.  Then
+\begin{equation}\label{eq:prouhet-vanish}
+ \sum_{N=0}^{L-1}\varepsilon_r(N)N^q=0,
+ \qquad 0\le q<Bd_r,
+\end{equation}
+and the sum is nonzero for $q=Bd_r$.  Thus the two sets
+\[
+ \{0\le N<L:\varepsilon_r(N)=1\},
+ \qquad
+ \{0\le N<L:\varepsilon_r(N)=-1\}
+\]
+have equal sums of like powers through the exact degree $Bd_r-1$.
+\end{theorem}
+
+\begin{proof}
+The finite generating polynomial factors as
+\begin{align}
+ T_{r,B}(z)
+ &:=\sum_{N=0}^{L-1}\varepsilon_r(N)z^N
+ =\prod_{j=0}^{P_rB-1}(1+\sigma_{r,j}z^{2^j})\notag\\
+ &=\prod_{b=0}^{B-1}A_r\!\left(z^{2^{P_rb}}\right).\label{eq:finite-prouhet-product}
+\end{align}
+In each period exactly $d_r$ factors have the form $1-z^{2^j}$ and vanish simply at $z=1$; the remaining factors tend to $2$.  Hence $T_{r,B}$ has a zero of exact order $Bd_r$ at $1$.  Its $q$th derivative at $1$ is the signed sum of falling factorials $N(N-1)\cdots(N-q+1)$.  Vanishing for all $q<Bd_r$ is therefore equivalent, by triangular change of basis, to \eqref{eq:prouhet-vanish} for ordinary powers.  Exact order gives nonvanishing at $q=Bd_r$.
+\end{proof}
+
+\begin{example}
+For $r=1$, $P_1=d_1=1$ and \cref{thm:prouhet-r} is the classical length-$2^B$ Prouhet--Thue--Morse cancellation through degree $B-1$.  For $r=3$, $P_3=4$ and $d_3=2$: on the interval $0\le N<16^B$, the spectral signs cancel powers through degree $2B-1$.
+\end{example}
+
+\subsection{Statistics of the spectral discrepancy}
+
+The exact discrepancy $S_r(N)=2N-\mathcal N_r(N)$ is a polynomially weighted digit sum.  It therefore has its own central limit theorem.
+
+\begin{theorem}[Digital central limit theorem]\label{thm:digital-clt}
+Let $U_m$ be uniform on $\{0,1,\ldots,2^m-1\}$.  Then
+\begin{align}
+ M_{r,m}:=\E S_r(U_m)
+ &=\frac12\left(\sum_{\ell=1}^{r}\binom{m+1}{\ell}-1\right),\label{eq:digital-mean}\\
+ V_{r,m}:=\Var(S_r(U_m))
+ &=\frac14\sum_{j=0}^{m-1}Q_r(j)^2.\label{eq:digital-var}
+\end{align}
+For fixed $r$,
+\begin{equation}\label{eq:digital-asymptotics}
+ M_{r,m}\sim\frac{m^r}{2r!},
+ \qquad
+ V_{r,m}\sim
+ \frac{m^{2r-1}}{4(2r-1)((r-1)!)^2}.
+\end{equation}
+Moreover,
+\begin{equation}\label{eq:digital-clt}
+ \frac{S_r(U_m)-M_{r,m}}{\sqrt{V_{r,m}}}
+ \ \Longrightarrow\ \mathcal N(0,1),
+\end{equation}
+with Kolmogorov error $\bigO_r(m^{-1/2})$.
+\end{theorem}
+
+\begin{proof}
+The bits of $U_m$ are independent Bernoulli variables $B_j$ of parameter $1/2$, and
+$S_r(U_m)=\sum_{j<m}Q_r(j)B_j$.  The mean and variance follow immediately; the closed mean formula was computed in \cref{cor:discrepancy-range}.  Since
+$Q_r(j)\sim j^{r-1}/(r-1)!$, integral comparison gives \eqref{eq:digital-asymptotics}.
+
+The largest centered summand divided by the standard deviation is $\bigO(m^{-1/2})$, so Lindeberg's condition holds.  The Berry--Esseen theorem \cite{feller} gives the stated error because
+\[
+ \frac{\sum_{j<m}Q_r(j)^3}{\left(\sum_{j<m}Q_r(j)^2\right)^{3/2}}
+ =\bigO_r(m^{-1/2}).
+\]
+\end{proof}
+
+\begin{resultbox}[Spectral arithmetic summary]
+The integer zero divisor now carries three nested layers of binary information:
+\begin{enumerate}[label=\arabic*.]
+\item the full multiplicity $\binom{\nu_2(n)+1}{r}$;
+\item the exact cumulative discrepancy $S_r(N)$, a polynomially weighted digit sum;
+\item the mod-$2$ sign mask $\binom j{r-1}\bmod2$, a periodic row of Pascal's triangle generating an automatic sequence and exact Prouhet partitions.
+\end{enumerate}
+For $r=1$ these collapse respectively to $1+\nu_2(n)$, $s_2(N)$, and the ordinary Thue--Morse sign.
+\end{resultbox}
+
+\section{\texorpdfstring{$q$}{q}-scale calculus: Pascal maxima versus Gaussian sums}\label{sec:qcalculus}
+
+The repository's dyadic-value formulae use Gaussian $q$-binomial coefficients because distinct scale selections are weighted by the \emph{sum} of their indices.  The Pascal--Rvachev hierarchy introduces a companion statistic: the \emph{maximum} selected scale.  This section makes that distinction exact.
+
+\subsection{The finite Pascal kernel}
+
+For $M\ge0$, $r\ge1$, and an indeterminate $q$, define
+\begin{equation}\label{eq:pascal-q-kernel}
+  P_{r,M}(q):=\sum_{h=0}^{M-1}\binom h{r-1}q^h.
+\end{equation}
+
+\begin{proposition}[Three forms of the finite kernel]\label{prop:finite-q-kernel}
+One has
+\begin{align}
+ P_{r,M}(q)
+ &= [u^{r-1}]\frac{1-(q(1+u))^M}{1-q(1+u)},\label{eq:q-coeff-form}\\
+ &=\frac{q^{r-1}}{(r-1)!}
+   \left(\frac{\dd}{\dd q}\right)^{r-1}
+   \frac{1-q^M}{1-q},\label{eq:q-derivative-form}\\
+ &=\sum_{0\le h_1<\cdots<h_r<M}q^{h_r}.\label{eq:q-max-form}
+\end{align}
+For $|q|<1$,
+\begin{equation}\label{eq:infinite-q-kernel}
+  P_r(q):=\sum_{h\ge0}\binom h{r-1}q^h
+  =\frac{q^{r-1}}{(1-q)^r}.
+\end{equation}
+\end{proposition}
+
+\begin{proof}
+Expand
+$\sum_{h=0}^{M-1}q^h(1+u)^h$ and extract $u^{r-1}$ to obtain \eqref{eq:q-coeff-form}.  Differentiating the finite geometric series gives \eqref{eq:q-derivative-form}.  For \eqref{eq:q-max-form}, fix the maximum $h_r=h$ and choose the remaining $r-1$ indices below it in $\binom h{r-1}$ ways.  Letting $M\to\infty$ in the coefficient form gives \eqref{eq:infinite-q-kernel}.
+\end{proof}
+
+With $q=2^{-s}$, \eqref{eq:zeta-rM} becomes simply
+\begin{equation}\label{eq:zeta-q-kernel}
+  \mathcal Z_{r,M}(s)=\zeta(s)P_{r,M}(2^{-s}),
+  \qquad
+  \mathcal Z_r(s)=\zeta(s)P_r(2^{-s}).
+\end{equation}
+The rank-one finite kernel is the $q$-integer $P_{1,M}(q)=[M]_q$.
+
+\subsection{The Gaussian companion}
+
+The finite $q$-binomial theorem gives
+\begin{equation}\label{eq:q-binomial-theorem}
+ \prod_{h=0}^{M-1}(1+u q^h)
+ =\sum_{r=0}^{M}q^{\binom r2}\qbinom{M}{r} u^r,
+\end{equation}
+where
+\[
+ \qbinom{M}{r}
+ =\frac{(1-q^M)(1-q^{M-1})\cdots(1-q^{M-r+1})}
+ {(1-q)(1-q^2)\cdots(1-q^r)}.
+\]
+Equating coefficients gives
+\begin{equation}\label{eq:q-sum-stat}
+ \sum_{0\le h_1<\cdots<h_r<M}q^{h_1+\cdots+h_r}
+ =q^{\binom r2}\qbinom{M}{r}.
+\end{equation}
+Compare \eqref{eq:q-max-form} and \eqref{eq:q-sum-stat}:
+\begin{center}
+\begin{tabular}{@{}lll@{}}
+\toprule
+selection statistic & enumerator & role in the Fabius--Rvachev theory\\
+\midrule
+$h_1+\cdots+h_r$ & $q^{\binom r2}\qbinom{M}{r}$ & Gaussian $q$-binomial dyadic formulae\\
+$\max(h_1,\ldots,h_r)$ & $P_{r,M}(q)$ & Pascal scale multiplicity and zero zeta\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\begin{resultbox}[A max/sum bridge]
+The ordinary Pascal coefficient $\binom h{r-1}$ and the Gaussian coefficient $\qbinom{M}{r}$ are not rival appearances of ``binomial coefficients.''  They enumerate the same increasing scale tuples with two different statistics.  The Pascal--Rvachev hierarchy weights a tuple only by its terminal scale; the classical Gaussian identity weights it by the sum of all selected scales.  This provides a concrete route for transferring coefficient-extraction techniques from the dyadic Fabius formulae to the new hierarchy.
+\end{resultbox}
+
+\subsection{Local logarithms and the same \texorpdfstring{$q$}{q}-kernel}
+
+Euler's product for the sine gives, for $|z|<2^{r-1}$,
+\begin{equation}\label{eq:log-phir}
+ \log\Phi_r(z)
+ =-\sum_{k=1}^{\infty}\frac{\zeta(2k)}{k}
+   \frac{2^{-2k(r-1)}}{(1-2^{-2k})^r}z^{2k}
+ =-\sum_{k=1}^{\infty}\frac{\zeta(2k)}{k}
+   \frac{2^{2k}}{(2^{2k}-1)^r}z^{2k}.
+\end{equation}
+Thus the same infinite Pascal kernel $P_r(q)=q^{r-1}(1-q)^{-r}$ controls both the integer-zero Dirichlet series at $q=2^{-s}$ and the Taylor logarithm at $q=2^{-2k}$.
+
+\section{Cumulants, concentration, and a Gaussian rank limit}\label{sec:gaussian}
+
+\subsection{Exact cumulants}
+
+Let $B_{2k}$ denote the Bernoulli numbers with $B_2=1/6$ and $B_4=-1/30$.
+
+\begin{theorem}[Cumulant formula]\label{thm:cumulants}
+All odd cumulants of $X_r$ vanish, and for $k\ge1$,
+\begin{equation}\label{eq:cumulant-r}
+ \boxed{\ 
+ \kappa_{2k}(X_r)
+ =\frac{B_{2k}}{2k}
+  \frac{2^{-2k(r-1)}}{(1-2^{-2k})^r}
+ =\frac{B_{2k}}{2k}\frac{2^{2k}}{(2^{2k}-1)^r}
+ \ }.
+\end{equation}
+In particular,
+\begin{equation}\label{eq:first-cumulants}
+ \Var(X_r)=\frac1{3^{r+1}},
+ \qquad
+ \kappa_4(X_r)=-\frac2{15^{r+1}},
+ \qquad
+ \kappa_6(X_r)=\frac{16}{63^{r+1}}.
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+A centered uniform variable of width $a$ has even cumulants
+$B_{2k}a^{2k}/(2k)$.  Cumulants add under independent summation, so \eqref{eq:Xr} gives
+\[
+ \kappa_{2k}(X_r)
+ =\frac{B_{2k}}{2k}
+  \sum_{h\ge0}\binom h{r-1}2^{-2kh}.
+\]
+Apply \eqref{eq:infinite-q-kernel} with $q=2^{-2k}$ and simplify.  The displayed special cases follow directly.
+\end{proof}
+
+\begin{corollary}[Rational moments and exact standardized cumulants]\label{cor:standard-cumulants}
+Let
+\begin{equation}\label{eq:Yr}
+  Y_r:=3^{(r+1)/2}X_r,
+\end{equation}
+so that $\Var(Y_r)=1$.  For $k\ge2$,
+\begin{equation}\label{eq:standard-cumulants}
+ \kappa_{2k}(Y_r)
+ =\frac{B_{2k}}{2k}\,2^{2k}3^k
+  \left(\frac{3^k}{2^{2k}-1}\right)^r.
+\end{equation}
+Since $3^k<2^{2k}-1$ for $k\ge2$, every standardized cumulant of order greater than two tends exponentially to zero.
+\end{corollary}
+
+\subsection{A quantitative central limit theorem in the rank}
+
+Although every unscaled density has the same compact support $[-1,1]$, its variance shrinks by a factor $1/3$ at each rank.  After the natural dilation, the shapes become Gaussian.
+
+\begin{theorem}[Gaussian rank limit]\label{thm:gaussian-limit}
+As $r\to\infty$,
+\begin{equation}\label{eq:gaussian-limit}
+  Y_r=3^{(r+1)/2}X_r\ \Longrightarrow\ Z,
+  \qquad Z\sim\mathcal N(0,1).
+\end{equation}
+Equivalently, for every fixed $z\in\R$,
+\begin{equation}\label{eq:gaussian-fourier-limit}
+  \Phi_r\!\left(3^{(r+1)/2}z\right)
+  \longrightarrow e^{-2\pi^2z^2}.
+\end{equation}
+More quantitatively, there is an absolute Berry--Esseen constant $C_{\mathrm{BE}}$ such that
+\begin{equation}\label{eq:berry-esseen-r}
+ \sup_x\left|\Pp(Y_r\le x)-\Pp(Z\le x)\right|
+ \le C_{\mathrm{BE}}\frac{3^{3/2}}4
+ \left(\frac{3^{3/2}}7\right)^r.
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+Regard the independent summands in \eqref{eq:Xr}, after division by
+$\sigma_r=3^{-(r+1)/2}$, as a triangular array.  The largest absolute normalized summand is
+\[
+ \frac{2^{-r}}{\sigma_r}
+ =\sqrt3\left(\frac{\sqrt3}{2}\right)^r\longrightarrow0,
+\]
+while the total variance is one.  Lindeberg's condition follows, proving \eqref{eq:gaussian-limit}; \eqref{eq:gaussian-fourier-limit} is the characteristic-function form.
+
+For a centered uniform variable of width $a$, $\E|U|^3=a^3/32$.  Therefore the sum of third absolute moments before normalization is
+\begin{align*}
+ \sum_{h\ge0}\binom h{r-1}\frac{2^{-3h}}{32}
+ &=\frac1{32}\frac{2^{-3(r-1)}}{(1-2^{-3})^r}
+ =\frac1{4\,7^r}.
+\end{align*}
+Dividing by $\sigma_r^3=3^{-3(r+1)/2}$ and applying Berry--Esseen yields \eqref{eq:berry-esseen-r}.  Infinite sums follow by truncation, since the omitted variances and third moments tend to zero.
+\end{proof}
+
+\begin{remark}
+The exponential ratio $3^{3/2}/7\approx0.7423$ is not merely qualitative.  It shows that the central profile stabilizes rapidly in rank even though the endpoint and zero-divisor structures become algebraically more complicated.
+\end{remark}
+
+\subsection{Two complementary asymptotic regimes}
+
+The rank limit and the fixed-rank frequency limit describe different geometries:
+\begin{enumerate}[label=(\alph*)]
+\item For $r\to\infty$ at central scale $|x|\asymp3^{-(r+1)/2}$, the density is asymptotically Gaussian after dilation.
+\item For fixed $r$ and $|\xi|\to\infty$, the Fourier transform has a logarithmic stretched-exponential envelope of order $r+1$, proved next.
+\item Near the support endpoint, fixed-rank small deviations are governed by the same order $r+1$, but with a periodic polynomial correction and a Lambert-$W$ saddle.
+\end{enumerate}
+The hierarchy therefore separates central Gaussian universality from dyadic endpoint arithmetic.
+
+\section{Sharp Fourier decay for every rank}\label{sec:fourier}
+
+\subsection{A global upper envelope}
+
+\begin{lemma}[Binomial summation identity]\label{lem:binomial-distance}
+For integers $H\ge0$ and $r\ge1$,
+\begin{equation}\label{eq:binomial-distance}
+ \sum_{h=0}^{H}\binom h{r-1}(H-h)=\binom{H+1}{r+1}.
+\end{equation}
+\end{lemma}
+
+\begin{proof}
+Both sides count pairs $(S,t)$ where $S$ is an $r$-element subset of
+$\{0,1,\ldots,H\}$ and $t$ is an integer strictly larger than the largest element of $S$.  Alternatively, it follows by two applications of the hockey-stick identity.
+\end{proof}
+
+\begin{theorem}[Global logarithmic decay]\label{thm:global-fourier-decay}
+For fixed $r\ge1$ and $|x|\ge2$,
+\begin{equation}\label{eq:global-fourier-decay}
+ \log|\Phi_r(x)|
+ \le -\frac{(\log|x|)^{r+1}}
+ {(r+1)!(\log2)^r}
+ +\bigO_r((\log|x|)^r).
+\end{equation}
+Equivalently, for some constants $C_r,c_r>0$,
+\begin{equation}\label{eq:global-fourier-exp}
+ |\Phi_r(x)|
+ \le C_r\exp\!\left(
+ -\frac{(\log|x|)^{r+1}}
+ {(r+1)!(\log2)^r}
+ +c_r(\log|x|)^r\right).
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+Let $H=\floor{\log_2|x|}$.  For $0\le h\le H$,
+$|x|/2^h\ge1$ and
+\[
+ \left|\sinc\!\left(\frac x{2^h}\right)\right|
+ \le\frac{2^h}{\pi|x|}.
+\]
+Taking logarithms and retaining only these factors gives
+\begin{align*}
+ \log|\Phi_r(x)|
+ &\le -\sum_{h=0}^{H}\binom h{r-1}
+   \bigl(\log|x|-h\log2+\log\pi\bigr)\\
+ &=-\log2\binom{H+1}{r+1}+\bigO_r(H^r),
+\end{align*}
+where \cref{lem:binomial-distance} absorbs the leading distance from $h$ to $H$, and the difference between $\log|x|$ and $H\log2$ contributes only $\bigO_r(H^r)$.  Since $H=(\log|x|)/(\log2)+\bigO(1)$, the result follows.
+\end{proof}
+
+\subsection{A sharp dyadic ray}
+
+A global upper bound is useful only if its leading constant is attainable away from the zeros.  The rational ray $2/3$ supplies exactly constant sine amplitudes under doubling.
+
+\begin{theorem}[Sharp ray and exact limsup]\label{thm:sharp-ray}
+Let
+\begin{equation}\label{eq:sharp-ray}
+  x_m:=\frac23\,2^m.
+\end{equation}
+Then, as $m\to\infty$,
+\begin{equation}\label{eq:sharp-ray-two-term}
+ \log|\Phi_r(x_m)|
+ =-\log2\binom{m+1}{r+1}
+ +\log\!\left(\frac{3\sqrt3}{4\pi}\right)
+  \binom{m+1}{r}
+ +\bigO_r(m^{r-1}).
+\end{equation}
+In particular,
+\begin{equation}\label{eq:sharp-ray-leading}
+ \log|\Phi_r(x_m)|
+ =-\frac{\log2}{(r+1)!}m^{r+1}+\bigO_r(m^r),
+\end{equation}
+and
+\begin{equation}\label{eq:fourier-limsup}
+ \boxed{\ 
+ \limsup_{|x|\to\infty}
+ \frac{\log|\Phi_r(x)|}{(\log|x|)^{r+1}}
+ =-\frac1{(r+1)!(\log2)^r}
+ \ }.
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+For $0\le h\le m$, powers of two modulo $3$ alternate between $1$ and $2$, so
+\[
+ \left|\sin\!\left(\pi\frac{x_m}{2^h}\right)\right|
+ =\frac{\sqrt3}{2}.
+\]
+Consequently,
+\[
+ \log\left|\sinc\!\left(\frac{x_m}{2^h}\right)\right|
+ =-(m-h)\log2+\log\!\left(\frac{3\sqrt3}{4\pi}\right).
+\]
+Summing with weights $\binom h{r-1}$ and using
+\[
+ \sum_{h=0}^{m}\binom h{r-1}=\binom{m+1}{r},
+ \qquad
+ \sum_{h=0}^{m}\binom h{r-1}(m-h)=\binom{m+1}{r+1}
+\]
+gives the first two terms.  For $h=m+j$, $j\ge1$, the argument is $\frac23 2^{-j}$ and
+$\log\sinc y=\bigO(y^2)$.  Hence the tail is
+\[
+ \bigO_r\!\left(\sum_{j\ge1}(m+j)^{r-1}4^{-j}\right)
+ =\bigO_r(m^{r-1}).
+\]
+This proves \eqref{eq:sharp-ray-two-term}.  Combine the resulting lower sequence for the limsup with the global upper bound in \cref{thm:global-fourier-decay}.
+\end{proof}
+
+\begin{corollary}[Smooth compact densities]\label{cor:smooth-density}
+For every $r\ge1$, the density $f_r$ belongs to $C_c^\infty(\R)$.
+\end{corollary}
+
+\begin{proof}
+Equation \eqref{eq:global-fourier-decay} implies $|x|^A\Phi_r(x)\to0$ for every $A>0$.  Hence $(2\pi i\xi)^k\Phi_r(\xi)$ is integrable for every $k$, and Fourier inversion permits differentiation of all orders.  Compact support was proved in \cref{thm:random-series}.
+\end{proof}
+
+\begin{remark}
+The leading logarithmic order rises from $2$ for the classical up-function to $r+1$ at rank $r$.  Nevertheless, along the sharp ray the decay is slower than $e^{-|x|^\alpha}$ for every $\alpha>0$.  Thus every member is superalgebraically smooth but retains the characteristic lacunary-product gap between polynomial and stretched-exponential Fourier decay.
+\end{remark}
+
+\section{Endpoint Laplace asymptotics and Lambert \texorpdfstring{$W$}{W}}\label{sec:endpoint}
+
+\subsection{Laplace products and a discrete-antiderivative ladder}
+
+Let
+\begin{equation}\label{eq:Lr-Psir}
+  L_r(t):=\E e^{-tD_r},
+  \qquad
+  \Psi_r(t):=-\log L_r(t),
+  \qquad t>0.
+\end{equation}
+The positive random-series representation \eqref{eq:Dr-series} gives
+\begin{equation}\label{eq:Lr-product}
+ L_r(t)=\prod_{h=0}^{\infty}
+ \left(\frac{1-e^{-t2^{-h}}}{t2^{-h}}\right)^{\binom h{r-1}}.
+\end{equation}
+For $D_0\sim\operatorname{Unif}[0,2]$,
+\begin{equation}\label{eq:L0}
+  L_0(t)=\frac{1-e^{-2t}}{2t}.
+\end{equation}
+
+\begin{theorem}[Laplace refinement]\label{thm:laplace-refinement}
+For every $r\ge1$,
+\begin{equation}\label{eq:L-refinement}
+  L_r(2t)=L_r(t)L_{r-1}(t),
+  \qquad
+  \Psi_r(2t)=\Psi_r(t)+\Psi_{r-1}(t).
+\end{equation}
+If
+\begin{equation}\label{eq:psi-r}
+  \psi_r(y):=\Psi_r(2^y),
+\end{equation}
+then
+\begin{equation}\label{eq:discrete-antiderivative}
+  \psi_r(y+1)-\psi_r(y)=\psi_{r-1}(y),
+\end{equation}
+with
+\begin{equation}\label{eq:psi0}
+  \psi_0(y)=(y+1)\log2-\log(1-e^{-2^{y+1}}).
+\end{equation}
+The polynomial sequence
+\begin{equation}\label{eq:Pr-polynomial}
+  \mathscr P_r(y):=\log2\binom{y+1}{r+1}
+\end{equation}
+satisfies the same ladder
+$\mathscr P_r(y+1)-\mathscr P_r(y)=\mathscr P_{r-1}(y)$ for the polynomial part of \eqref{eq:psi0}.
+\end{theorem}
+
+\begin{proof}
+Equation \eqref{eq:L-refinement} is the Laplace-transform form of
+$2D_r\stackrel d=D_r+D_{r-1}'$, or follows directly from \eqref{eq:Lr-product} and Pascal's identity.  The remaining statements are substitutions, together with
+$\binom{y+2}{r+1}-\binom{y+1}{r+1}=\binom{y+1}{r}$.
+\end{proof}
+
+The base residual
+\[
+  -\log(1-e^{-2^{y+1}})
+\]
+decays doubly exponentially as $y\to+\infty$.  Repeated discrete antiderivation therefore turns the rank-one periodic constant into a periodic polynomial of degree $r-1$.  The Mellin harmonic-sum analysis \cite{flajolet-mellin} below gives an explicit Fourier series for those periodic coefficients and links them to the zero-divisor zeta function.
+
+\subsection{The common scale zeta factor}
+
+Define
+\begin{equation}\label{eq:rho}
+  \rho(u):=\log\frac{u}{1-e^{-u}},\qquad u>0.
+\end{equation}
+Then
+\begin{equation}\label{eq:Psi-harmonic-sum}
+  \Psi_r(t)=\sum_{h\ge0}\binom h{r-1}\rho(t2^{-h}).
+\end{equation}
+
+\begin{lemma}[Mellin transform of the uniform Laplace kernel]\label{lem:mellin-rho}
+For $-1<\Re s<0$,
+\begin{equation}\label{eq:mellin-rho}
+ \int_0^{\infty}\rho(u)u^{s-1}\,\dd u
+ =\Gamma(s)\zeta(s+1).
+\end{equation}
+\end{lemma}
+
+\begin{proof}
+At zero, $\rho(u)=u/2+\bigO(u^2)$; at infinity, $\rho(u)=\log u+\bigO(e^{-u})$, so the displayed strip is the fundamental strip.  Since
+\[
+ \rho'(u)=\frac1u-\frac1{e^u-1},
+\]
+integration by parts and the standard analytically continued Bose--Einstein Mellin integral give
+\[
+ \int_0^\infty\rho(u)u^{s-1}\,\dd u
+ =-\frac1s\int_0^\infty
+ \left(\frac1u-\frac1{e^u-1}\right)u^s\,\dd u
+ =\frac{\Gamma(s+1)}s\zeta(s+1),
+\]
+which is \eqref{eq:mellin-rho}.
+\end{proof}
+
+\begin{theorem}[Mellin bridge]\label{thm:mellin-bridge}
+For $0<c<1$,
+\begin{equation}\label{eq:mellin-bridge}
+ \boxed{\ 
+ \Psi_r(t)=\frac1{2\pi i}
+ \int_{c-i\infty}^{c+i\infty}
+ \Gamma(-z)\zeta(1-z)\,
+ \mathcal A_r(z)\,t^z\,\dd z
+ \ },
+\end{equation}
+where the scale zeta factor is the same function as in \eqref{eq:scale-zeta}:
+\begin{equation}\label{eq:scale-zeta-repeat}
+  \mathcal A_r(z)=\frac{2^{-(r-1)z}}{(1-2^{-z})^r}.
+\end{equation}
+Thus
+\begin{equation}\label{eq:two-zeta-uses}
+ \mathcal Z_r(z)=\zeta(z)\mathcal A_r(z),
+ \qquad
+ \mathcal M_{\mathrm{endpoint},r}(z)
+ =\Gamma(-z)\zeta(1-z)\mathcal A_r(z).
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+Mellin inversion in \cref{lem:mellin-rho}, followed by $z=-s$, gives
+\[
+ \rho(u)=\frac1{2\pi i}\int_{c-i\infty}^{c+i\infty}
+ \Gamma(-z)\zeta(1-z)u^z\,\dd z.
+\]
+Insert this in \eqref{eq:Psi-harmonic-sum}.  Since $c>0$,
+\[
+ \sum_{h\ge0}\binom h{r-1}2^{-hz}
+ =\frac{2^{-(r-1)z}}{(1-2^{-z})^r}.
+\]
+Absolute convergence on the initial line justifies interchange.  This proves \eqref{eq:mellin-bridge}; \eqref{eq:two-zeta-uses} compares with \cref{thm:zeta-r}.
+\end{proof}
+
+\begin{resultbox}[Exact spectral--endpoint bridge]
+The arithmetic zero divisor and the left-endpoint Laplace exponent differ only in the universal analytic multiplier attached to the same scale zeta function:
+\[
+ \zeta(z)\quad\longleftrightarrow\quad\Gamma(-z)\zeta(1-z).
+\]
+The dyadic pole lattice is therefore not an analogy imported after the fact.  It is literally common to the two transforms.
+\end{resultbox}
+
+\subsection{Residues and periodic logarithmic polynomials}
+
+Let
+\begin{equation}\label{eq:omega-zk}
+  \omega:=\frac{2\pi}{\log2},
+  \qquad z_k:=ik\omega,\quad k\in\Z.
+\end{equation}
+These are exactly the zeros of $1-2^{-z}$.
+
+\begin{theorem}[Complete logarithmic residue expansion]\label{thm:residue-expansion}
+For every $A>0$, as $t\to\infty$,
+\begin{equation}\label{eq:residue-sum}
+ \Psi_r(t)=\sum_{k\in\Z}
+ \Res_{z=z_k}\left[
+ \Gamma(-z)\zeta(1-z)\mathcal A_r(z)t^z
+ \right]+\bigO_{r,A}(t^{-A}).
+\end{equation}
+The residue series converges absolutely after collecting coefficients of powers of $\log t$.  Equivalently, with $L=\log t$ and $u=\log_2t$, there exist real constants $c_{r,j}$ and real-analytic $1$-periodic zero-mean functions $p_{r,j}$ such that
+\begin{align}
+ \Psi_r(t)
+ &=\frac{L^{r+1}}{(r+1)!(\log2)^r}
+ +\frac{1-\frac12r(r-1)}{(r+1)!(\log2)^{r-1}}L^r\notag\\
+ &\quad+\sum_{j=0}^{r-1}
+ \bigl(c_{r,j}+p_{r,j}(u)\bigr)L^j
+ +\bigO_{r,A}(t^{-A}).\label{eq:Psi-periodic-polynomial}
+\end{align}
+The highest periodic coefficient has the explicit Fourier series
+\begin{equation}\label{eq:top-periodic-coefficient}
+ p_{r,r-1}(u)=
+ \frac1{(r-1)!(\log2)^r}
+ \sum_{k\ne0}
+ \Gamma(-ik\omega)\zeta(1-ik\omega)e^{2\pi iku}.
+\end{equation}
+In particular, the leading periodic coefficient at every rank is a universal lift of the rank-one oscillation:
+\begin{equation}\label{eq:universal-periodic-lift}
+  p_{r,r-1}(u)=
+  \frac{p_{1,0}(u)}{(r-1)!(\log2)^{r-1}}.
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+Shift the contour in \eqref{eq:mellin-bridge} from $\Re z=c$ to $\Re z=-A$.  The poles crossed are precisely $z_k$, all on the imaginary axis.  At $z=0$, the factors $\Gamma(-z)$ and $\zeta(1-z)$ each have a simple pole, while $\mathcal A_r$ has a pole of order $r$; hence the total order is $r+2$ and its residue is a polynomial of degree $r+1$ in $L$.  At $z_k\ne0$, the gamma and zeta factors are regular and $\mathcal A_r$ has exact order $r$, so each residue is $e^{2\pi iku}$ times a polynomial of degree $r-1$ in $L$.
+
+Stirling's formula gives exponential decay
+$|\Gamma(-ik\omega)|=\exp(-\pi|k|\omega/2)$ up to a polynomial factor.  Standard bounds for $\zeta$ on vertical lines then give absolute convergence of every coefficient Fourier series and justify the contour shift.  The integral on $\Re z=-A$ is $\bigO_{r,A}(t^{-A})$.
+
+Near zero,
+\[
+ \Gamma(-z)\zeta(1-z)=\frac1{z^2}+\bigO(1)
+\]
+(the coefficient of $z^{-1}$ cancels), while
+\[
+ \mathcal A_r(z)=\frac1{(\log2)^rz^r}
+ \left(1+\left(1-\frac r2\right)z\log2+\bigO_r(z^2)\right).
+\]
+Taking the residue after multiplying by $e^{zL}$ yields the first two coefficients in \eqref{eq:Psi-periodic-polynomial}.
+
+At $z=z_k\ne0$,
+\[
+ \mathcal A_r(z)=\frac1{(\log2)^r(z-z_k)^r}
+ +\bigO((z-z_k)^{1-r}),
+\]
+because $2^{-(r-1)z_k}=1$.  The coefficient of $L^{r-1}$ in the residue is therefore exactly \eqref{eq:top-periodic-coefficient}.  The case $r=1$ gives \eqref{eq:universal-periodic-lift}.
+\end{proof}
+
+\begin{remark}[Why the oscillation is tiny]
+The first harmonic contains the factor
+$\Gamma(-i\omega)$, whose magnitude is on the scale
+$\exp(-\pi^2/\log2)$.  This is roughly $6\times10^{-7}$ before the remaining algebraic factors.  The very small periodic correction seen in rank-one endpoint computations is therefore forced by the distance between consecutive dyadic complex dimensions.
+\end{remark}
+
+\begin{corollary}[Rank-one specialization]\label{cor:rank-one-Psi}
+For $r=1$,
+\begin{equation}\label{eq:rank-one-Psi}
+ \Psi_1(t)=\frac{(\log t)^2}{2\log2}
+ +\frac12\log t+c_{1,0}+p_{1,0}(\log_2t)
+ +\bigO_A(t^{-A}).
+\end{equation}
+For general $r$, the pole at zero raises the polynomial degree to $r+1$, while the nonzero lattice poles raise the periodic degree only to $r-1$.
+\end{corollary}
+
+\subsection{Small deviations}
+
+Let
+\begin{equation}\label{eq:Hr}
+  H_r(x):=\Pp(D_r\le x),\qquad 0\le x\le2.
+\end{equation}
+
+\begin{theorem}[Leading endpoint small-ball law]\label{thm:small-ball}
+For every fixed $r\ge1$,
+\begin{equation}\label{eq:small-ball}
+ \boxed{\ 
+ -\log H_r(x)
+ \sim\frac{(\log(1/x))^{r+1}}
+ {(r+1)!(\log2)^r}
+ \ },\qquad x\downarrow0.
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+By \cref{thm:residue-expansion},
+\[
+ \Psi_r(t)\sim C_r(\log t)^{r+1},
+ \qquad
+ C_r=\frac1{(r+1)!(\log2)^r}.
+\]
+This is a slowly varying Laplace exponent of logarithmic power greater than one.  De Bruijn's exponential Tauberian theorem for nonnegative random variables \cite{debruijn1959} then gives
+$-\log H_r(x)\sim C_r(\log(1/x))^{r+1}$.
+\end{proof}
+
+\begin{remark}
+The elementary Chernoff inequality already shows why the constant is unchanged: at the optimizing scale, $tx$ is of order $(\log t)^r$, one logarithmic degree below $\Psi_r(t)$.  The Tauberian theorem supplies the matching reverse inequality.
+\end{remark}
+
+\subsection{Recovery of the Fabius endpoint}
+
+Let $g_1$ be the density of $D_1$, so $g_1(x)=f_1(x-1)$.  On $[0,1]$, $g_1$ is the standard Fabius function $F$.  Since $D_0$ is uniform on $[0,2]$, the density form of \eqref{eq:Dr-refine} gives, for $0\le x\le1$,
+\[
+ g_1(x)=2(g_1*g_0)(2x)=\int_0^{2x}g_1(u)\,\dd u=H_1(2x).
+\]
+Therefore
+\begin{equation}\label{eq:H1-F}
+  H_1(x)=F(x/2),\qquad 0\le x\le2.
+\end{equation}
+The rank-one case of \cref{thm:small-ball} is exactly the leading Fabius small-argument law, with the harmless factor $2$ affecting only lower logarithmic orders.
+
+\subsection{The lower-Lambert saddle in every rank}
+
+Differentiating the leading term of \eqref{eq:Psi-periodic-polynomial} gives the model saddle equation
+\begin{equation}\label{eq:model-saddle}
+  xt\sim\frac{(\log t)^r}{r!(\log2)^r}.
+\end{equation}
+
+\begin{proposition}[Canonical Lambert coordinate]\label{prop:Lambert-coordinate}
+For sufficiently small $x>0$, define
+\begin{equation}\label{eq:Lambda-r}
+ \boxed{\ 
+ \Lambda_r(x):=-rW_{-1}\!\left(
+ -\frac{(r!)^{1/r}\log2}{r}\,x^{1/r}
+ \right)
+ \ }.
+\end{equation}
+Then $\Lambda_r(x)>0$ is the large solution of
+\begin{equation}\label{eq:Lambda-equation}
+  xe^{\Lambda_r(x)}
+  =\frac{\Lambda_r(x)^r}{r!(\log2)^r}.
+\end{equation}
+Moreover,
+\begin{equation}\label{eq:Lambda-expansion}
+ \Lambda_r(x)=\log\frac1x+r\log\log\frac1x
+ -\log\!\bigl(r!(\log2)^r\bigr)+\smallo(1).
+\end{equation}
+\end{proposition}
+
+\begin{proof}
+Taking the $r$th root of \eqref{eq:Lambda-equation} and rearranging gives
+\[
+ \left(-\frac{\Lambda}{r}\right)e^{-\Lambda/r}
+ =-\frac{(r!)^{1/r}\log2}{r}x^{1/r}.
+\]
+The solution tending to $+\infty$ uses the lower real branch $W_{-1}$.  The standard expansion of $W_{-1}$ at zero \cite{corless-lambert,dlmf-lambert} gives \eqref{eq:Lambda-expansion}.
+\end{proof}
+
+At this model saddle, the leading Legendre expression is
+\begin{equation}\label{eq:model-rate}
+ \mathscr I_r^{(0)}(x)
+ :=\frac{\Lambda_r(x)^{r+1}}{(r+1)!(\log2)^r}
+ -\frac{\Lambda_r(x)^r}{r!(\log2)^r}.
+\end{equation}
+Its first term gives \cref{thm:small-ball}; the second term is the universal $-tx$ correction.  To continue beyond this level one must solve the saddle equation with the degree-$r$ polynomial term and the degree-$(r-1)$ periodic polynomial in \eqref{eq:Psi-periodic-polynomial}.
+
+\begin{conjecture}[Full Pascal--Lambert endpoint expansion]\label{conj:full-endpoint}
+For each $r\ge2$, the exact small-ball rate $-\log H_r(x)$ admits an all-orders asymptotic expansion in descending powers of $\Lambda_r(x)$ whose coefficients are real-analytic $1$-periodic functions of the saddle phase
+\[
+  \frac{\log t_*(x)}{\log2}\pmod1,
+\]
+where $t_*(x)$ is the exact positive saddle for $\Psi_r(t)-tx$.  The highest periodic coefficient is determined by \eqref{eq:top-periodic-coefficient}; lower coefficients are obtained recursively by saddle inversion.  The rank-one construction developed in the existing corpus is the base case.
+\end{conjecture}
+
+\begin{cautionbox}[What is and is not claimed]
+The Mellin expansion \eqref{eq:Psi-periodic-polynomial}, the leading Tauberian law \eqref{eq:small-ball}, and the Lambert coordinate \eqref{eq:Lambda-r} are proved.  A complete density or distribution transseries after nonlinear saddle inversion is not asserted for $r\ge2$.  That is the principal analytic frontier opened by the hierarchy.
+\end{cautionbox}
+
+
+\section{A unified dictionary and further exact consequences}\label{sec:synthesis}
+
+The preceding sections were developed from several viewpoints, but they are not merely parallel analogies.  This section records exact identities that pass directly between rank, zeros, cumulants, and endpoints.
+
+\subsection{A master rank germ}
+
+The complete refinement ladder can be compressed into one two-variable analytic germ.
+
+\begin{theorem}[Master rank germ]\label{thm:master-rank-germ}
+For $|z|<1$ and $|1+u|<4$, define
+\begin{equation}\label{eq:master-rank-germ}
+ \mathfrak P(u,z):=
+ \exp\!\left(
+   \sum_{h\ge0}(1+u)^h
+   \log\sinc\!\left(\frac z{2^h}\right)
+ \right),
+\end{equation}
+where the logarithm is the analytic branch vanishing at $z=0$.  Then
+\begin{equation}\label{eq:master-nonlinear-refinement}
+ \boxed{\quad
+ \mathfrak P(u,2z)=\sinc(2z)\,\mathfrak P(u,z)^{1+u}.
+ \quad}
+\end{equation}
+For $|u|<3$,
+\begin{equation}\label{eq:master-rank-coefficients}
+ \log\mathfrak P(u,z)
+ =\sum_{r\ge1}u^{r-1}\log\Phi_r(z).
+\end{equation}
+Thus the coefficient of $u^{r-1}$ in the logarithm of a single nonlinear two-scale germ is exactly the rank-$r$ Pascal--Rvachev product.
+\end{theorem}
+
+\begin{proof}
+The series in \eqref{eq:master-rank-germ} converges normally because
+$\log\sinc(z/2^h)=\bigO_z(4^{-h})$.  Shifting the scale index gives
+\begin{align*}
+ \log\mathfrak P(u,2z)
+ &=\log\sinc(2z)
+ +(1+u)\sum_{h\ge0}(1+u)^h
+   \log\sinc\!\left(\frac z{2^h}\right),
+\end{align*}
+which is \eqref{eq:master-nonlinear-refinement}.  Finally,
+\[
+ (1+u)^h=\sum_{r\ge1}\binom h{r-1}u^{r-1}
+\]
+with only finitely many nonzero terms for each $h$.  Normal convergence permits coefficient extraction and yields \eqref{eq:master-rank-coefficients}.
+\end{proof}
+
+\begin{remark}
+At $u=0$, \eqref{eq:master-nonlinear-refinement} is the classical identity
+$\Phi_1(2z)=\sinc(2z)\Phi_1(z)$.  Differentiating with respect to $u$ at zero successively recovers the logarithmic refinement laws for all higher ranks.  The singular boundary $u=3$ reflects the variance denominator $3^r$ and is the first rank-plane obstruction visible in the local Taylor expansion.
+\end{remark}
+
+\subsection{A bivariate polynomial for all finite zero counts}
+
+\begin{proposition}[Rank-generating spectral count]\label{prop:rank-count-polynomial}
+For an integer $N\ge0$, the finite polynomial
+\begin{equation}\label{eq:rank-count-poly-def}
+ \mathscr R_N(u):=\sum_{r\ge1}\mathcal N_r(N)u^{r-1}
+\end{equation}
+has the two exact forms
+\begin{align}
+ \mathscr R_N(u)
+ &=\sum_{n=1}^{N}
+   \frac{(1+u)^{\nu_2(n)+1}-1}{u},\label{eq:rank-count-valuations}\\
+ &=\frac{2N-\displaystyle\sum_{j\ge0}b_j(N)(1+u)^{j+1}}
+ {1-u}.\label{eq:rank-count-digits}
+\end{align}
+All apparent singularities are removable.  Formula \eqref{eq:rank-count-valuations} records the valuations of every integer up to $N$, while \eqref{eq:rank-count-digits} reconstructs the same polynomial from the binary digits of $N$ alone.
+\end{proposition}
+
+\begin{proof}
+Sum \eqref{eq:mu-rank-gen} over $n\le N$ to obtain
+\eqref{eq:rank-count-valuations}.  On the other hand,
+\begin{align*}
+ \sum_{r\ge1}Q_r(j)u^{r-1}
+ &=\sum_{k=0}^{j+1}\binom{j+1}{k}
+   \sum_{r\ge k+1}u^{r-1}
+ =\frac{(1+u)^{j+1}}{1-u}
+\end{align*}
+for $|u|<1$.  Summing \eqref{eq:Nr-digital} in $r$ gives
+\eqref{eq:rank-count-digits}; both sides are polynomials after cancellation, so the identity holds algebraically.  At $u=1$, the numerator vanishes because
+$\sum_jb_j(N)2^{j+1}=2N$.
+\end{proof}
+
+\subsection{A zero-divisor trace formula for cumulants}
+
+\begin{theorem}[Spectral zeta--cumulant identity]\label{thm:zeta-cumulant}
+For $|z|<2^{r-1}$,
+\begin{equation}\label{eq:logphi-spectral-zeta}
+ \boxed{\quad
+ \log\Phi_r(z)=-\sum_{k\ge1}\frac{\mathcal Z_r(2k)}{k}z^{2k}.
+ \quad}
+\end{equation}
+Consequently, for every $k\ge1$,
+\begin{align}
+ \kappa_{2k}(X_r)
+ &=\frac{B_{2k}}{2k\,\zeta(2k)}\,\mathcal Z_r(2k)\label{eq:kappa-zeta-Bernoulli}\\
+ &=(-1)^{k+1}\frac{2(2k-1)!}{(2\pi)^{2k}}
+   \,\mathcal Z_r(2k).\label{eq:kappa-zeta-trace}
+\end{align}
+Thus every even cumulant is an explicit positive-even-value trace of the entire zero divisor.
+\end{theorem}
+
+\begin{proof}
+Take the logarithm of the canonical product \eqref{eq:canonical-r} and expand
+$\log(1-w)=-\sum_{k\ge1}w^k/k$.  The nearest nonzero zero has modulus $2^{r-1}$, giving \eqref{eq:logphi-spectral-zeta}.  Comparing \eqref{eq:zeta-r} with \eqref{eq:cumulant-r} proves \eqref{eq:kappa-zeta-Bernoulli}.  Euler's evaluation
+\[
+ \zeta(2k)=(-1)^{k+1}
+ \frac{B_{2k}(2\pi)^{2k}}{2(2k)!}
+\]
+then gives \eqref{eq:kappa-zeta-trace}.
+\end{proof}
+
+\begin{corollary}[Rank resolvent for cumulants]\label{cor:cumulant-rank-resolvent}
+For $|u|<2^{2k}-1$,
+\begin{equation}\label{eq:cumulant-rank-resolvent}
+ \sum_{r\ge1}\kappa_{2k}(X_r)u^{r-1}
+ =\frac{B_{2k}}{2k}\,
+  \frac{2^{2k}}{2^{2k}-1-u}.
+\end{equation}
+The nearest rank-plane pole occurs at $u=3$ when $k=1$, explaining why variance controls the analytic radius of the master germ.
+\end{corollary}
+
+\subsection{The common Fourier--endpoint constant}
+
+Put
+\begin{equation}\label{eq:Cr-common}
+ C_r:=\frac1{(r+1)!(\log2)^r}.
+\end{equation}
+Combining \cref{thm:sharp-ray,thm:small-ball} yields the exact duality
+\begin{equation}\label{eq:fourier-endpoint-duality}
+ \limsup_{|\xi|\to\infty}
+ \frac{\log|\Phi_r(\xi)|}{(\log|\xi|)^{r+1}}
+ =-C_r,
+ \qquad
+ \lim_{x\downarrow0}
+ \frac{-\log H_r(x)}{(\log(1/x))^{r+1}}
+ =C_r.
+\end{equation}
+The equality of constants is not a generic uncertainty-principle statement.  Both sides arise from the same Pascal scale sum and ultimately from the order-$r$ pole of $\mathcal A_r$ at zero.  Frequency growth counts the number of active coarse sinc factors; endpoint decay counts the cost of forcing the same dyadic uniform summands simultaneously toward zero.
+
+\subsection{Result map}
+
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{0.22\textwidth}>{\raggedright\arraybackslash}p{0.37\textwidth}>{\raggedright\arraybackslash}p{0.31\textwidth}@{}}
+\caption{New deductions and their principal mathematical bridges.}\label{tab:result-map}\\
+\toprule
+Object & Exact result proved here & Bridge opened\\
+\midrule
+\endfirsthead
+\toprule
+Object & Exact result proved here & Bridge opened\\
+\midrule
+\endhead
+Classical zero count
+& $\mathcal N_1(N)=2N-s_2(N)$
+& Thue--Morse parity becomes spectral counting parity.\\
+
+Pascal--Rvachev product
+& $\Phi_r(z)=\prod_h\sinc(z/2^h)^{\binom h{r-1}}$
+& A rank ladder extending the up-function without changing support.\\
+
+Refinement
+& $\Phi_r(2z)=\Phi_r(z)\Phi_{r-1}(z)$
+& Pascal's identity becomes convolution and moment recurrences.\\
+
+Integer zero divisor
+& $\mu_r(n)=\binom{\nu_2(n)+1}{r}$
+& Valuations, entire products, and rank-generating polynomials.\\
+
+Zero zeta
+& $\mathcal Z_r(s)=\zeta(s)2^{-(r-1)s}(1-2^{-s})^{-r}$
+& A dyadic complex-pole lattice of order $r$.\\
+
+Digital discrepancy
+& $\mathcal N_r(N)=2N-\sum_jb_j(N)Q_r(j)$
+& Exact $\bigO((\log N)^r)$ Weyl discrepancy and a digital CLT.\\
+
+Spectral signs
+& $\varepsilon_r(N)=(-1)^{\sum_jb_j(N)\binom j{r-1}}$
+& Automatic sequences, Mahler equations, and Pascal parity.\\
+
+Prouhet partitions
+& Exact cancellation degree $Bd_r-1$ on $0\le N<2^{P_rB}$
+& A family whose efficiency is governed by $s_2(r-1)$.\\
+
+$q$-scale calculus
+& $P_{r,M}(q)=\sum_{h<M}\binom h{r-1}q^h$
+& Max-weighted scale tuples complement Gaussian sum-weighted tuples.\\
+
+Cumulants
+& $\kappa_{2k}=\dfrac{B_{2k}}{2k\zeta(2k)}\mathcal Z_r(2k)$
+& A trace formula from the zero divisor to probability.\\
+
+Rank asymptotics
+& $3^{(r+1)/2}X_r\Rightarrow\mathcal N(0,1)$ exponentially fast
+& Compactly supported smooth laws approach a Gaussian centrally.\\
+
+Fourier envelope
+& Sharp coefficient $-C_r$ at logarithmic order $r+1$
+& Pascal multiplicity raises the classical quadratic log law.\\
+
+Endpoint Laplace exponent
+& A degree-$(r+1)$ polynomial plus periodic degree-$(r-1)$ terms
+& The same scale zeta controls endpoint complex dimensions.\\
+
+Lambert coordinate
+& $\Lambda_r=-rW_{-1}(-c_rx^{1/r})$
+& Canonical inversion of the higher-rank endpoint saddle.\\
+\bottomrule
+\end{longtable}
+
+\begin{resultbox}[Central synthesis]
+One meromorphic scale factor,
+\[
+ \mathcal A_r(s)=\frac{2^{-(r-1)s}}{(1-2^{-s})^r},
+\]
+organizes the hierarchy.  At positive even integers it gives cumulants and the local Fourier logarithm; after multiplication by $\zeta(s)$ it gives the entire zero divisor; at its imaginary pole lattice it gives logarithmically periodic endpoint terms; and its order at zero fixes the common Fourier/endpoint exponent $r+1$.  The generalized Thue--Morse signs are the mod-$2$ boundary trace of the same divisor.
+\end{resultbox}
+
+\section{Frontier program}\label{sec:frontier-program}
+
+The hierarchy turns several isolated questions in the existing rank-one corpus into systematic programs.  The following problems are ordered roughly from the most immediately approachable to the most analytically demanding.
+
+\subsection{Exact higher-rank endpoint transseries}
+
+\begin{frontierproblem}[Problem A: nonlinear inversion of the residue expansion]
+Prove or disprove \cref{conj:full-endpoint}.  A complete solution requires:
+\begin{enumerate}[label=(\roman*)]
+\item expansion of the exact saddle $t_*(x)$ in powers of $\Lambda_r(x)$;
+\item propagation of the periodic polynomials $p_{r,j}$ through that inversion;
+\item control of the saddle prefactor for the distribution and, separately, for the density;
+\item an error estimate uniform in the dyadic phase.
+\end{enumerate}
+The Mellin coefficients are explicit and exponentially convergent, so the obstruction is no longer coefficient discovery but rigorous nonlinear asymptotic inversion.
+\end{frontierproblem}
+
+\subsection{Dyadic values and higher-rank \texorpdfstring{$q$}{q}-arithmetic}
+
+For $r=1$, exact dyadic Fabius values are governed by Gaussian $q$-binomial coefficients and $q$-Pochhammer products.  The refinement law
+$f_r(x)=2(f_r*f_{r-1})(2x)$ suggests a triangular exact evaluation scheme at dyadic points, but convolution couples ranks.
+
+\begin{frontierproblem}[Problem B: a Pascal/Gaussian dyadic formula]
+Find a closed form for $f_r(m/2^n)$ or $H_r(m/2^n)$ that displays simultaneously:
+\begin{enumerate}[label=(\roman*)]
+\item the max-enumerator $P_{r,M}(q)$ from \cref{sec:qcalculus};
+\item Gaussian $q$-binomial coefficients arising from sums of selected scales;
+\item the rank refinement $r\mapsto r-1$.
+\end{enumerate}
+A likely algebraic object is a two-statistic enumerator of increasing scale tuples by both their sum and their maximum.  Its specializations recover the two $q$-structures already isolated in \eqref{eq:q-max-form} and \eqref{eq:q-sum-stat}.
+\end{frontierproblem}
+
+\subsection{Arithmetic of moments and denominators}
+
+The moment ladder proves rationality but not optimal denominator bounds.  The cumulant trace formula expresses moments through Bell polynomials in
+$\mathcal Z_r(2),\mathcal Z_r(4),\ldots$; each is a rational multiple of a power of $\pi$, and the powers cancel exactly in cumulants.
+
+\begin{frontierproblem}[Problem C: denominator geometry]
+Determine the exact prime valuations of the reduced denominators of
+$m_{r,2n}$.  Natural targets are:
+\begin{enumerate}[label=(\roman*)]
+\item a von Staudt--Clausen-type description for cumulant denominators;
+\item a rank-recursive denominator bound from \eqref{eq:moment-ladder};
+\item eventual behavior in $r$ for fixed $n$;
+\item an integrality normalization extending the known rank-one dyadic arithmetic.
+\end{enumerate}
+\end{frontierproblem}
+
+\subsection{Automatic signs, rarefaction, and spectral measures}
+
+The sequence $\varepsilon_r$ is strongly $2^{P_r}$-multiplicative.  Its one-period mask is explicit, so the standard matrix-product machinery for automatic sequences is available.
+
+\begin{frontierproblem}[Problem D: harmonic analysis of the spectral signs]
+For each rank, determine:
+\begin{enumerate}[label=(\roman*)]
+\item the exact rarefied sums $\sum_{n<N,\ n\equiv a\pmod m}\varepsilon_r(n)$;
+\item the maximal Lyapunov exponents of the associated matrix cocycles;
+\item the diffraction or spectral measure and its pure-point/singular-continuous decomposition;
+\item the natural boundary behavior of $G_r(z)$ on $|z|=1$.
+\end{enumerate}
+The dependence of the mask density $d_r/P_r=2^{-s_2(r-1)}$ on the binary weight of the rank predicts sharp arithmetic phase changes as $r$ varies.
+\end{frontierproblem}
+
+\subsection{Smoothed zero counts and complex dimensions}
+
+The exact unsmoothed count has only a polylogarithmic discrepancy, whereas the Dirichlet series has an order-$r$ imaginary pole lattice.  A Perron or Mellin inversion with smoothing should turn those poles into explicit periodic polynomials in $\log_2x$.
+
+\begin{frontierproblem}[Problem E: a fractal explicit formula]
+For a smooth compactly supported test function $w$, obtain an explicit formula for
+\[
+ \sum_{n\ge1}\mu_r(n)w(n/x)
+\]
+whose secondary terms are indexed by $s_k=2\pi ik/\log2$.  Quantify how the order-$r$ poles produce degree-$(r-1)$ logarithmic amplitudes, and compare the coefficient functions directly with those in the endpoint expansion \eqref{eq:Psi-periodic-polynomial}.
+\end{frontierproblem}
+
+\subsection{Local Gaussian limits and moderate deviations in rank}
+
+The Berry--Esseen estimate controls distribution functions, not densities or derivatives.  Since every $f_r$ is smooth and the normalized support grows like $3^{r/2}$, stronger central asymptotics should hold.
+
+\begin{frontierproblem}[Problem F: a rank Edgeworth theory]
+Prove a local limit theorem, with derivatives, for
+\[
+ 3^{-(r+1)/2}f_r\!\left(3^{-(r+1)/2}x\right),
+\]
+and derive an Edgeworth expansion from \eqref{eq:standard-cumulants}.  Determine the largest moderate-deviation window in which the Gaussian approximation remains uniform before the dyadic endpoint geometry becomes visible.
+\end{frontierproblem}
+
+\subsection{Beyond the binary Pascal ladder}
+
+The finite weighted arithmetic already works over every natural base, even a
+composite one: \path{WeightedScaleMultiplicity.lean} proves the scale-shift,
+divisibility-filter, layer-count, and Pascal floor identities without a
+primality hypothesis.  What remains speculative is the \emph{analytic}
+base-$b$ hierarchy---its entire products, zero divisors, Fourier asymptotics,
+and endpoint theory.  Replacing integral rank by a fractional exponent would
+additionally require a branch-consistent entire-product theory.
+
+\section{Lean formalization roadmap}\label{sec:lean}
+
+The new results have very different formalization costs.  A useful strategy is to separate finite arithmetic from analytic limits instead of beginning with the infinite product.
+
+\subsection{Tier I: finite combinatorics and digital arithmetic}
+
+This tier is the fastest route to certified novelty and needs little measure theory.
+
+\begin{enumerate}[label=\textbf{I.\arabic*}]
+\item \textbf{Completed generically.}  The definition
+\[
+ \texttt{weightedScaleMultiplicity b w n}
+\]
+works in every additive commutative monoid and specializes at
+$b=2$, $w(h)=\binom h{r-1}$ to the proposed Pascal multiplicity, with a
+documented totalized convention at zero.
+\item \textbf{Completed generically.}  The hockey-stick identity behind
+\eqref{eq:mu-r} is \path{weightedScaleMultiplicity_choose}; the scale-count
+identity \eqref{eq:Nr-floor} is \path{sum_range_padicValNat_choose}.
+\item Formalize \cref{lem:pascal-tail} as a finite subset count; this avoids delicate algebraic normalization.
+\item Derive \eqref{eq:Nr-digital}, the discrepancy extremum, and optimal order.
+\item Prove parity collapse using the alternating partial-binomial identity or Lucas's theorem already available in Mathlib.
+\item Implement the periodic mask, count its negative entries, and certify the finite Prouhet factorization \eqref{eq:finite-prouhet-product}.
+\end{enumerate}
+
+Candidate theorem names include
+\begin{center}
+\begin{minipage}{0.88\textwidth}
+\small
+\path{weightedScaleMultiplicity_choose}\\
+\path{sum_range_padicValNat_choose}\\
+\path{pascalZeroMult_eq_choose}\\
+\path{zeroCount_eq_twoMul_sub_digitWeight}\\
+\path{digitWeight_modTwo}\\
+\path{spectralSign_powerSum_eq_zero}
+\end{minipage}
+\end{center}
+
+\subsection{Tier II: finite products, moments, and rationality}
+
+Define $\Phi_{r,M}$ as a finite product and model the finite random sum by a product probability space.  Then formalize:
+\begin{enumerate}[label=\textbf{II.\arabic*}]
+\item the finite refinement identity;
+\item the exact finite zero multiplicity and tail formula;
+\item the finite moment recurrence;
+\item convergence of every fixed moment as $M\to\infty$;
+\item rationality of the limiting moments by the closed recurrence.
+\end{enumerate}
+This tier can establish much of the algebra without invoking complex entire functions.
+
+\subsection{Tier III: probability and Fourier limits}
+
+The random-series construction is likely easier to formalize before the infinite entire product.  Since the deterministic sum of absolute radii is $1$, almost-sure convergence is immediate from comparison rather than a probabilistic convergence theorem.  The milestones are:
+\begin{enumerate}[label=\textbf{III.\arabic*}]
+\item existence of $X_r$ as an $L^1$ and almost-sure limit;
+\item support in $[-1,1]$ and characteristic-function convergence;
+\item the distributional refinement law;
+\item variance and cumulants, initially through moments if a cumulant library is unavailable;
+\item the Fourier upper bound and the explicit sharp ray;
+\item $C_c^\infty$ regularity by Fourier inversion.
+\end{enumerate}
+
+\subsection{Tier IV: complex analysis and Tauberian theory}
+
+The canonical product, meromorphic continuation, Mellin contour shift, and de Bruijn theorem are the expensive layer.  They should be modularized as reusable infrastructure:
+\begin{enumerate}[label=\textbf{IV.\arabic*}]
+\item an Euler-product theorem for paired zeros with summable multiplicities;
+\item a library lemma for binomially weighted geometric Dirichlet series;
+\item Mellin inversion for $\rho(u)=\log(u/(1-e^{-u}))$;
+\item residue extraction for an infinite vertical lattice with exponentially decaying coefficients;
+\item an exponential Tauberian theorem specialized to logarithmic powers.
+\end{enumerate}
+The endpoint transseries should not be formalized before its paper proof is complete.  By contrast, Tiers I and II are self-contained and already expose the main Thue--Morse and $q$-arithmetic novelty.
+
+\begin{statusbox}[Recommended first formalization target]
+The weighted-scale and Pascal floor foundations are complete.  The best next
+finite target is therefore the still-open digital part of
+\cref{thm:digital-count}, together with
+\cref{lem:pascal-tail,lem:parity-collapse,thm:prouhet-r}.  It has no analytic
+dependencies and would certify the generalized Thue--Morse sign layer.  The
+probability hierarchy can then be developed with the generic arithmetic API
+already fixed.
+\end{statusbox}
+
+\section{Conclusion}\label{sec:conclusion}
+
+The original rank-one sinc product contains more arithmetic than its pointwise sign pattern suggests.  Counting its zeros with multiplicity gives the exact formula $2N-s_2(N)$, so the Thue--Morse sequence is the parity boundary of a spectral counting law.  Promoting the constant scale multiplicity to the Pascal column $\binom h{r-1}$ reveals that this is the first case of a coherent hierarchy rather than an isolated coincidence.
+
+The hierarchy is unusually rigid.  Its support remains $[-1,1]$ at every rank; its refinement is exactly Pascal's identity; its zero multiplicities are binomial polynomials in $\nu_2$; its zero zeta function is elementary; its finite counts are digital; its signs are automatic; its blocks solve exact Prouhet problems; its moments are rational; and its normalized central laws become Gaussian.  In the two most delicate asymptotic regimes, the same coefficient
+$C_r=((r+1)!(\log2)^r)^{-1}$ governs sharp Fourier decay and endpoint small deviations.
+
+The most consequential structural result is the common scale zeta factor.  It converts a scale enumeration into the entire zero divisor, the local Fourier logarithm, all even cumulants, and the endpoint Mellin transform.  Its real pole at zero determines the main logarithmic degree; its imaginary dyadic lattice determines periodic corrections; and the resulting endpoint saddle is inverted by $W_{-1}$.  This places the Thue--Morse, $q$-binomial, sinc-product, and Lambert-$W$ phenomena within one exact analytic mechanism.
+
+The principal unresolved frontier is now sharply delimited: carry the explicit Mellin residue polynomial through nonlinear saddle inversion to obtain a complete higher-rank endpoint transseries, and connect its coefficients to exact dyadic $q$-formulae.  The generic weighted-scale and Pascal floor foundations are formalized; the finite digital/sign layer and the analytic endpoint program remain, with the latter supplying a longer-term test bed for new formal Mellin and Tauberian infrastructure.
+
+
+\appendix
+
+\section{Reproducibility checks}\label{app:checks}
+
+The following independent script checks the finite identities over substantial ranges, verifies the exact sign masks and Prouhet orders, compares both forms of the rank-generating count polynomial at rational points, and numerically checks refinement, the spectral zeta--cumulant trace formula, and the Lambert saddle equation.  It was run with Python~3 and \texttt{mpmath}; the output was
+\begin{center}
+\texttt{All exact and numerical frontier checks passed.}
+\end{center}
+These checks are not substitutes for proofs, but they are effective protection against index shifts, normalization errors, and branch mistakes.
+
+\begin{lstlisting}[style=frontiercode,caption={Exact and high-precision verification script.},label={lst:verification}]
+from fractions import Fraction
+from math import comb, factorial
+import mpmath as mp
+
+mp.mp.dps = 60
+
+
+def C(n: int, k: int) -> int:
+    return comb(n, k) if 0 <= k <= n else 0
+
+
+def v2(n: int) -> int:
+    assert n > 0
+    e = 0
+    while n % 2 == 0:
+        n //= 2
+        e += 1
+    return e
+
+
+def bit_sum(n: int) -> int:
+    return n.bit_count()
+
+
+def Q(r: int, j: int) -> int:
+    return sum(C(j + 1, k) for k in range(r))
+
+
+def mu(r: int, n: int) -> int:
+    return C(v2(n) + 1, r)
+
+
+def zero_count_direct(r: int, N: int) -> int:
+    return sum(mu(r, n) for n in range(1, N + 1))
+
+
+def zero_count_floor(r: int, N: int) -> int:
+    total = 0
+    h = 0
+    while (N >> h) > 0:
+        total += C(h, r - 1) * (N >> h)
+        h += 1
+    return total
+
+
+def zero_count_digital(r: int, N: int) -> int:
+    discrepancy = sum(
+        ((N >> j) & 1) * Q(r, j) for j in range(max(1, N.bit_length()))
+    )
+    return 2 * N - discrepancy
+
+
+def zero_count_finite(r: int, M: int, N: int) -> int:
+    return sum(C(h, r - 1) * (N >> h) for h in range(M))
+
+
+def epsilon(r: int, N: int) -> int:
+    exponent = sum(
+        ((N >> j) & 1) * C(j, r - 1)
+        for j in range(max(1, N.bit_length()))
+    )
+    return -1 if exponent % 2 else 1
+
+
+# Exact zero counts, digital formula, and finite Pascal tail.
+for r in range(1, 10):
+    for N in range(1000):
+        a = zero_count_direct(r, N)
+        assert a == zero_count_floor(r, N) == zero_count_digital(r, N)
+        for M in range(0, 9):
+            q = N >> M
+            tail = sum(C(M, a0) * zero_count_direct(r - a0, q)
+                       for a0 in range(r))
+            assert zero_count_finite(r, M, N) == a - tail
+
+# Parity masks and their exact Lucas counts.
+for r in range(1, 33):
+    m = (r - 1).bit_length()
+    period = 1 << m
+    mask = [(-1 if C(j, r - 1) % 2 else 1) for j in range(period)]
+    assert sum(x == -1 for x in mask) == 1 << (m - bit_sum(r - 1))
+    for N in range(2000):
+        assert epsilon(r, N) == (-1 if zero_count_direct(r, N) % 2 else 1)
+
+# Exact Prouhet cancellation and first nonzero moment.
+for r in range(1, 9):
+    m = (r - 1).bit_length()
+    period = 1 << m
+    d = 1 << (m - bit_sum(r - 1))
+    L = 1 << period
+    for q in range(d):
+        assert sum(epsilon(r, n) * n**q for n in range(L)) == 0
+    assert sum(epsilon(r, n) * n**d for n in range(L)) != 0
+
+# The rank-generating count polynomial, tested at rational points.
+for N in range(1, 300):
+    for u in (Fraction(-1, 3), Fraction(1, 5), Fraction(2, 3)):
+        lhs = sum(Fraction(zero_count_direct(r, N)) * u**(r - 1)
+                  for r in range(1, N.bit_length() + 2))
+        digit_poly = sum(((N >> j) & 1) * (1 + u)**(j + 1)
+                         for j in range(N.bit_length()))
+        rhs = (2 * N - digit_poly) / (1 - u)
+        assert lhs == rhs
+
+
+def sinc(x):
+    return mp.mpf(1) if x == 0 else mp.sin(mp.pi * x) / (mp.pi * x)
+
+
+def phi(r: int, z, H: int = 120):
+    if r == 0:
+        return sinc(2 * z)
+    ans = mp.mpf(1)
+    for h in range(H):
+        a = C(h, r - 1)
+        if a:
+            ans *= sinc(z / 2**h) ** a
+    return ans
+
+# Numerical refinement and the spectral-zeta/cumulant trace formula.
+for r in range(1, 7):
+    for z in (mp.mpf('0.137'), mp.mpf('0.371')):
+        assert mp.almosteq(phi(r, 2*z), phi(r, z) * phi(r - 1, z),
+                           rel_eps=mp.mpf('1e-45'), abs_eps=mp.mpf('1e-45'))
+    for k in range(1, 7):
+        A = mp.power(2, -2*k*(r - 1)) / mp.power(1 - mp.power(2, -2*k), r)
+        Z = mp.zeta(2*k) * A
+        kappa = mp.bernoulli(2*k) * A / (2*k)
+        trace = ((-1)**(k + 1) * 2 * factorial(2*k - 1)
+                 * Z / mp.power(2*mp.pi, 2*k))
+        assert mp.almosteq(kappa, trace, rel_eps=mp.mpf('1e-50'))
+
+# Lambert coordinate solves the model saddle equation.
+for r in range(1, 7):
+    x = mp.mpf('1e-20')
+    arg = -(mp.power(factorial(r), mp.mpf(1)/r) * mp.log(2) / r) \
+          * mp.power(x, mp.mpf(1)/r)
+    lam = -r * mp.lambertw(arg, -1)
+    lhs = x * mp.e**lam
+    rhs = lam**r / (factorial(r) * mp.log(2)**r)
+    assert mp.almosteq(lhs, rhs, rel_eps=mp.mpf('1e-50'))
+
+print('All exact and numerical frontier checks passed.')
+\end{lstlisting}
+
+\section{Complete LaTeX corpus inventory}\label{app:corpus}
+
+The review covered the 57 LaTeX sources visible under
+\path{Analysis/FabiusFunction/docs} on 27 August 2026.  The living tree and embedded-paper folders were read as current sources.  The archive was also read because its policy is to retain first-introduced historical versions while pruning redundant duplicates; archived claims therefore matter when testing whether a proposed deduction is genuinely absent from the repository.  Paths below are repository-relative.
+
+\begingroup
+\scriptsize
+\setlength{\tabcolsep}{4pt}
+\renewcommand{\arraystretch}{1.12}
+\begin{longtable}{@{}r >{\raggedright\arraybackslash}p{0.15\textwidth} >{\raggedright\arraybackslash}p{0.73\textwidth}@{}}
+\caption{All reviewed \texttt{*.tex} sources.}\label{tab:corpus-inventory}\\
+\toprule
+No. & group & repository-relative path\\
+\midrule
+\endfirsthead
+\multicolumn{3}{c}{\tablename\ \thetable\ --- continued}\\
+\toprule
+No. & group & repository-relative path\\
+\midrule
+\endhead
+\midrule
+\multicolumn{3}{r}{continued on next page}\\
+\endfoot
+\bottomrule
+\endlastfoot
+1 & live core & \path{Analysis/FabiusFunction/docs/FabiusFunction_Mathematical_Glossary/FabiusFunction_Mathematical_Glossary.tex} \\
+2 & live core & \path{Analysis/FabiusFunction/docs/Fabius_Function_and_Rvachev_Up/Fabius_Function_and_Rvachev_Up.tex} \\
+3 & live core & \path{Analysis/FabiusFunction/docs/Non_Elementarity_of_the_Fabius_Function/Non_Elementarity_of_the_Fabius_Function.tex} \\
+4 & live core & \path{Analysis/FabiusFunction/docs/fabius_lean_walkthrough/fabius_lean_walkthrough.tex} \\
+5 & live core & \path{Analysis/FabiusFunction/docs/non-formalized-research-frontiers/non-formalized-research-frontiers.tex} \\
+6 & live draft & \path{Analysis/FabiusFunction/docs/non-formalized-research-frontiers/drafts/Thue_Morse_Formula_Atlas/Thue_Morse_Formula_Atlas.tex} \\
+7 & live Fourier & \path{Analysis/FabiusFunction/docs/non-formalized-research-frontiers/drafts/rvachev_up_fourier_decay/Rvachev_Up_Fourier_Decay-2/Rvachev_Up_Fourier_Decay-2.tex} \\
+8 & live Fourier & \path{Analysis/FabiusFunction/docs/non-formalized-research-frontiers/drafts/rvachev_up_fourier_decay/Rvachev_Up_Fourier_Decay-3/Rvachev_Up_Fourier_Decay-3.tex} \\
+9 & live Fourier & \path{Analysis/FabiusFunction/docs/non-formalized-research-frontiers/drafts/rvachev_up_fourier_decay/Rvachev_Up_Fourier_Decay_Comparative_Audit/Rvachev_Up_Fourier_Decay_Comparative_Audit.tex} \\
+10 & live Fourier & \path{Analysis/FabiusFunction/docs/non-formalized-research-frontiers/drafts/rvachev_up_fourier_decay/Rvachev_Up_Fourier_Decay_Gentle_Guide/Rvachev_Up_Fourier_Decay_Gentle_Guide.tex} \\
+11 & live Fourier & \path{Analysis/FabiusFunction/docs/non-formalized-research-frontiers/drafts/rvachev_up_fourier_decay/Rvachev_Up_Fourier_Decay_Second_Wave_Audit/Rvachev_Up_Fourier_Decay_Second_Wave_Audit.tex} \\
+12 & live Fourier & \path{Analysis/FabiusFunction/docs/non-formalized-research-frontiers/drafts/rvachev_up_fourier_decay/asymptotic-decay-rate-of-an-infinite-product-of-sinc-functions/asymptotic-decay-rate-of-an-infinite-product-of-sinc-functions.tex} \\
+13 & live Fourier & \path{Analysis/FabiusFunction/docs/non-formalized-research-frontiers/drafts/rvachev_up_fourier_decay/rvachev_up_fourier_decay-1/rvachev_up_fourier_decay-1.tex} \\
+14 & live Fourier & \path{Analysis/FabiusFunction/docs/non-formalized-research-frontiers/drafts/rvachev_up_fourier_decay/rvachev_up_fourier_decay-4/rvachev_up_fourier_decay-4.tex} \\
+15 & live Fourier & \path{Analysis/FabiusFunction/docs/non-formalized-research-frontiers/drafts/rvachev_up_fourier_decay/rvachev_up_fourier_decay-5/rvachev_up_fourier_decay-5.tex} \\
+16 & live Fourier & \path{Analysis/FabiusFunction/docs/non-formalized-research-frontiers/drafts/rvachev_up_fourier_decay/rvachev_up_fourier_decay-6/rvachev_up_fourier_decay-6.tex} \\
+17 & live Fourier & \path{Analysis/FabiusFunction/docs/non-formalized-research-frontiers/drafts/rvachev_up_fourier_decay/rvachev_up_fourier_decay-7/rvachev_up_fourier_decay-7.tex} \\
+18 & live Fourier & \path{Analysis/FabiusFunction/docs/non-formalized-research-frontiers/drafts/rvachev_up_fourier_decay/rvachev_up_fourier_decay-8/rvachev_up_fourier_decay-8.tex} \\
+19 & embedded paper & \path{Analysis/FabiusFunction/docs/papers/AIF_2017__67_2_637_0/AIF_2017__67_2_637_0-corrected.tex} \\
+20 & embedded paper & \path{Analysis/FabiusFunction/docs/papers/AIF_2017__67_2_637_0/AIF_2017__67_2_637_0.tex} \\
+21 & embedded paper & \path{Analysis/FabiusFunction/docs/papers/arXiv-1502.06738v2/Lacunary_products.tex} \\
+22 & embedded paper & \path{Analysis/FabiusFunction/docs/papers/arXiv-1702.05442v1/09-Function.tex} \\
+23 & embedded paper & \path{Analysis/FabiusFunction/docs/papers/arXiv-1702.06487v3/157-Arithmetic-v3.tex} \\
+24 & embedded paper & \path{Analysis/FabiusFunction/docs/papers/arXiv-2211.13570v1/document.tex} \\
+25 & embedded paper & \path{Analysis/FabiusFunction/docs/papers/ubiq15/ubiq15-corrected.tex} \\
+26 & early notes & \path{Analysis/FabiusFunction/docs/archive/early-notes/Fabius Asymptotic/Fabius Asymptotic.tex} \\
+27 & early notes & \path{Analysis/FabiusFunction/docs/archive/early-notes/K-fold summation over the signed Thue-Morse sequence/K-fold summation over the signed Thue-Morse sequence.tex} \\
+28 & standalone & \path{Analysis/FabiusFunction/docs/archive/standalone-studies/Non_Elementarity_of_the_Fabius_Function/Non_Elementarity_of_the_Fabius_Function.tex} \\
+29 & standalone & \path{Analysis/FabiusFunction/docs/archive/standalone-studies/Small_Argument_Asymptotics/Small_Argument_Asymptotics.tex} \\
+30 & standalone & \path{Analysis/FabiusFunction/docs/archive/standalone-studies/fabius-inverse-dyadic-closed-form/fabius-inverse-dyadic-closed-form.tex} \\
+31 & primary history & \path{Analysis/FabiusFunction/docs/archive/primary-exposition/Fabius_Function_and_Rvachev_Up/Fabius_Function_and_Rvachev_Up.tex} \\
+32 & primary history & \path{Analysis/FabiusFunction/docs/archive/primary-exposition/Fabius_Function_and_Rvachev_Up-2/Fabius_Function_and_Rvachev_Up.tex} \\
+33 & primary history & \path{Analysis/FabiusFunction/docs/archive/primary-exposition/Fabius_Function_and_Rvachev_Up-3/Fabius_Function_and_Rvachev_Up.tex} \\
+34 & primary history & \path{Analysis/FabiusFunction/docs/archive/primary-exposition/Fabius_and_Rvachev_Up-2/Fabius_and_Rvachev_Up.tex} \\
+35 & primary history & \path{Analysis/FabiusFunction/docs/archive/primary-exposition/Fabius_and_Rvachev_up/Fabius_and_Rvachev_up.tex} \\
+36 & primary history & \path{Analysis/FabiusFunction/docs/archive/primary-exposition/Fabius_function_and_up_function/Fabius_function_and_up_function.tex} \\
+37 & supplement & \path{Analysis/FabiusFunction/docs/archive/primary-supplements/Fabius_Function_Missing_Parts/Fabius_Function_Missing_Parts.tex} \\
+38 & supplement & \path{Analysis/FabiusFunction/docs/archive/primary-supplements/Fabius_Function_Missing_Parts-2/Fabius_Function_Missing_Parts.tex} \\
+39 & $q$-calculus & \path{Analysis/FabiusFunction/docs/archive/q-calculus/Fabius_q_Special_Functions/Fabius_q_Special_Functions.tex} \\
+40 & $q$-calculus & \path{Analysis/FabiusFunction/docs/archive/q-calculus/fabius-q-special-functions/fabius-q-special-functions.tex} \\
+41 & Lean history & \path{Analysis/FabiusFunction/docs/archive/lean/Fabius_Function_Lean_Walkthrough/Fabius_Function_Lean_Walkthrough.tex} \\
+42 & Lean history & \path{Analysis/FabiusFunction/docs/archive/lean/fabius_lean_walkthrough/fabius_lean_walkthrough.tex} \\
+43 & glossary history & \path{Analysis/FabiusFunction/docs/archive/glossary/FabiusFunction_Mathematical_Glossary/FabiusFunction_Mathematical_Glossary.tex} \\
+44 & glossary history & \path{Analysis/FabiusFunction/docs/archive/glossary/FabiusFunction_Mathematical_Glossary-2/FabiusFunction_Mathematical_Glossary.tex} \\
+45 & frontier history & \path{Analysis/FabiusFunction/docs/archive/research-frontiers/Fabius_Dyadic_Asymptotic_Bridge/Fabius_Dyadic_Asymptotic_Bridge.tex} \\
+46 & frontier history & \path{Analysis/FabiusFunction/docs/archive/research-frontiers/Fabius_Dyadic_Formulae_and_Alternative_Representations/Fabius_Dyadic_Formulae_and_Alternative_Representations.tex} \\
+47 & frontier history & \path{Analysis/FabiusFunction/docs/archive/research-frontiers/Fabius_Dyadic_Formulae_to_Asymptotics/Fabius_Dyadic_Formulae_to_Asymptotics.tex} \\
+48 & frontier history & \path{Analysis/FabiusFunction/docs/archive/research-frontiers/Fabius_Dyadic_q_Connections/Fabius_Dyadic_q_Connections.tex} \\
+49 & frontier history & \path{Analysis/FabiusFunction/docs/archive/research-frontiers/Fabius_Thue_Morse_Convergence_Rate/Fabius_Thue_Morse_Convergence_Rate.tex} \\
+50 & frontier history & \path{Analysis/FabiusFunction/docs/archive/research-frontiers/Fabius_Thue_Morse_Convergence_Rates/Fabius_Thue_Morse_Convergence_Rates.tex} \\
+51 & frontier history & \path{Analysis/FabiusFunction/docs/archive/research-frontiers/Primary_Exposition_Gap_Register/Primary_Exposition_Gap_Register.tex} \\
+52 & frontier history & \path{Analysis/FabiusFunction/docs/archive/research-frontiers/Repeated_Integration_and_Rvachev_Up/Repeated_Integration_and_Rvachev_Up.tex} \\
+53 & frontier history & \path{Analysis/FabiusFunction/docs/archive/research-frontiers/Rvachev_Up_from_Repeated_Integration/Rvachev_Up_from_Repeated_Integration.tex} \\
+54 & frontier history & \path{Analysis/FabiusFunction/docs/archive/research-frontiers/non-formalized-research-frontiers/non-formalized-research-frontiers.tex} \\
+55 & frontier history & \path{Analysis/FabiusFunction/docs/archive/research-frontiers/Thue_Morse_Formula_Atlas-1/Thue_Morse_Formula_Atlas.tex} \\
+56 & frontier history & \path{Analysis/FabiusFunction/docs/archive/research-frontiers/Thue_Morse_Formula_Atlas-2/Consolidated_Formula_Atlas_for_the_Thue_Morse_Sequence.tex} \\
+57 & frontier history & \path{Analysis/FabiusFunction/docs/archive/research-frontiers/Thue_Morse_Formula_Atlas-3/Thue_Morse_Formula_Atlas.tex} \\
+\end{longtable}
+\endgroup
+
+\section{Notation crosswalk}\label{app:notation}
+
+\begin{center}
+\begin{tabularx}{\textwidth}{@{}lX@{}}
+\toprule
+symbol & meaning\\
+\midrule
+$\sinc z$ & $\sin(\pi z)/(\pi z)$, normalized to equal $1$ at zero\\
+$\Phi_r$ & rank-$r$ Pascal--Rvachev Fourier product\\
+$X_r$ & centered random series with characteristic function $\Phi_r$\\
+$f_r$ & density of $X_r$, supported on $[-1,1]$\\
+$D_r=X_r+1$ & shifted nonnegative series, supported on $[0,2]$\\
+$H_r$ & distribution function $\Pp(D_r\le x)$\\
+$\mu_r(n)$ & integer-zero multiplicity $\binom{\nu_2(n)+1}{r}$\\
+$\mathcal N_r(N)$ & cumulative positive-zero multiplicity through $N$\\
+$Q_r(j)$ & Pascal tail weight $\sum_{k<r}\binom{j+1}{k}$\\
+$S_r(N)$ & digital discrepancy $\sum_jb_j(N)Q_r(j)$\\
+$\varepsilon_r(N)$ & sign of $\Phi_r$ on $(N,N+1)$\\
+$P_r$ & a digit-position period $2^{\lceil\log_2r\rceil}$\\
+$d_r$ & number of negative sign-mask entries in one period\\
+$\mathcal Z_r$ & zero-divisor Dirichlet series\\
+$\mathcal A_r$ & common scale zeta factor\\
+$L_r,\Psi_r$ & endpoint Laplace transform and negative logarithm\\
+$\Lambda_r$ & lower-Lambert model saddle coordinate\\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+\begin{thebibliography}{99}
+
+\bibitem{repo-docs}
+V. Reshetnikov,
+\emph{ProveIt: Analysis/FabiusFunction/docs}, GitHub repository,
+\url{https://github.com/VladimirReshetnikov/ProveIt/tree/main/Analysis/FabiusFunction/docs},
+accessed 27 August 2026.
+
+\bibitem{repo-primary}
+V. Reshetnikov,
+\emph{Fabius Function and Rvachev Up}, living primary exposition in the ProveIt repository,
+\url{https://github.com/VladimirReshetnikov/ProveIt/blob/main/Analysis/FabiusFunction/docs/Fabius_Function_and_Rvachev_Up/Fabius_Function_and_Rvachev_Up.tex},
+accessed 27 August 2026.
+
+\bibitem{repo-frontiers}
+V. Reshetnikov,
+\emph{Non-formalized Research Frontiers}, living frontier synthesis in the ProveIt repository,
+\url{https://github.com/VladimirReshetnikov/ProveIt/blob/main/Analysis/FabiusFunction/docs/non-formalized-research-frontiers/non-formalized-research-frontiers.tex},
+accessed 27 August 2026.
+
+\bibitem{fabius1966}
+J. Fabius,
+A probabilistic example of a nowhere analytic $C^\infty$-function,
+\emph{Zeitschrift f\"ur Wahrscheinlichkeitstheorie und Verwandte Gebiete}
+\textbf{5} (1966), 173--174.
+
+\bibitem{jessen-wintner}
+B. Jessen and A. Wintner,
+Distribution functions and the Riemann zeta function,
+\emph{Transactions of the American Mathematical Society}
+\textbf{38} (1935), no.~1, 48--88.
+
+\bibitem{arias1982}
+J. Arias de Reyna,
+An infinitely differentiable function with compact support: definition and properties,
+\emph{Revista de la Real Academia de Ciencias Exactas, F\'isicas y Naturales de Madrid}
+\textbf{76} (1982), 21--38;
+reissued as \url{https://arxiv.org/abs/1702.05442}.
+
+\bibitem{arias2018}
+J. Arias de Reyna,
+Arithmetic of the Fabius function,
+\emph{INTEGERS} \textbf{18} (2018), Paper A51;
+\url{https://arxiv.org/abs/1702.06487}.
+
+\bibitem{aistleitner-hofer-larcher}
+C. Aistleitner, R. Hofer, and G. Larcher,
+On evil Kronecker sequences and lacunary trigonometric products,
+\emph{Annales de l'Institut Fourier} \textbf{67} (2017), no.~2, 637--687,
+\url{https://doi.org/10.5802/aif.3094}.
+
+\bibitem{allouche-shallit-1999}
+J.-P. Allouche and J. Shallit,
+The ubiquitous Prouhet--Thue--Morse sequence,
+in C. Ding, T. Helleseth, and H. Niederreiter (eds.),
+\emph{Sequences and Their Applications}, Springer, London, 1999, pp.~1--16.
+
+\bibitem{automatic-sequences}
+J.-P. Allouche and J. Shallit,
+\emph{Automatic Sequences: Theory, Applications, Generalizations},
+Cambridge University Press, Cambridge, 2003.
+
+\bibitem{toth2022}
+L. T\'oth,
+Linear combinations of Dirichlet series associated with the Thue--Morse sequence,
+\url{https://arxiv.org/abs/2211.13570}, 2022.
+
+\bibitem{billey-swanson}
+S. C. Billey and J. P. Swanson,
+The metric space of limit laws for $q$-hook formulas,
+\url{https://arxiv.org/abs/2010.12701}, 2020.
+
+\bibitem{flajolet-mellin}
+P. Flajolet, X. Gourdon, and P. Dumas,
+Mellin transforms and asymptotics: harmonic sums,
+\emph{Theoretical Computer Science} \textbf{144} (1995), 3--58,
+\url{https://doi.org/10.1016/0304-3975(95)00002-E}.
+
+\bibitem{debruijn1959}
+N. G. de Bruijn,
+Pairs of slowly oscillating functions occurring in asymptotic problems concerning the Laplace transform,
+\emph{Nieuw Archief voor Wiskunde} (3) \textbf{7} (1959), 20--26.
+
+\bibitem{corless-lambert}
+R. M. Corless, G. H. Gonnet, D. E. G. Hare, D. J. Jeffrey, and D. E. Knuth,
+On the Lambert $W$ function,
+\emph{Advances in Computational Mathematics} \textbf{5} (1996), 329--359,
+\url{https://doi.org/10.1007/BF02124750}.
+
+\bibitem{dlmf-lambert}
+NIST Digital Library of Mathematical Functions,
+\S4.13, Lambert $W$-function,
+\url{https://dlmf.nist.gov/4.13}, accessed 27 August 2026.
+
+\bibitem{feller}
+W. Feller,
+\emph{An Introduction to Probability Theory and Its Applications}, Vol.~II, 3rd ed.,
+Wiley, New York, 1971, \S XVI.5.
+
+\end{thebibliography}
+
+\end{document}
