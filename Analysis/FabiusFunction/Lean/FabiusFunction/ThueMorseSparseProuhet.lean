@@ -16,6 +16,8 @@ strictly more general than the atlas, whose steps are the powers of two.
 
 * `sum_powerset_neg_one_pow_eval` — **general Prouhet annihilation**: the
   signed powerset sum of `p.eval` vanishes when `p.natDegree < S.card`.
+* `sum_powerset_neg_one_pow_eval_of_degree_lt` — the degree-valued form of
+  the same theorem, including the zero polynomial when `S` is empty.
 * `sum_powerset_neg_one_pow_pow_card` — **general sharp moment**: at degree
   exactly `S.card`, the sum is `(-1)^{|S|} |S|! ∏_{j ∈ S} w j`.
 * `sum_thueMorseSign_mul_affine_pow_eq_zero` and
@@ -29,6 +31,8 @@ strictly more general than the atlas, whose steps are the powers of two.
   cancellation below `w(n)` and the sharp moment
   `(-1)^{w(n)} w(n)! 2^(β(n)) h^(w(n))`, where `β(n)` is the sum of the
   one-bit positions.
+* `sum_submask_neg_one_pow_eval_of_degree_lt` — the degree-valued sparse
+  cancellation, whose boundary case at `n = 0` includes the zero polynomial.
 * `bitSupport_eq_toFinset_bitIndices` — the bridge identifying `bitSupport`
   with Mathlib's `Nat.bitIndices`; the whole bit dictionary above is a
   corollary of it, so no bit recursion is redone here.
@@ -124,6 +128,23 @@ theorem sum_powerset_neg_one_pow_eval {R : Type*} [CommRing R]
           rw [Finset.card_insert_of_notMem ha] at hdeg
           omega
         exact ih _ hdrop x
+
+/-- **Degree-valued general Prouhet annihilation.**  This is the natural
+`Polynomial.degree` form of `sum_powerset_neg_one_pow_eval`.  Unlike its
+`natDegree` formulation, it records that the zero polynomial has degree
+`⊥`, so it also covers the zero polynomial on the empty index set.  The
+ambient index type needs no decidable-equality instance in the public API. -/
+theorem sum_powerset_neg_one_pow_eval_of_degree_lt
+    {R : Type*} [CommRing R] {ι : Type*}
+    (S : Finset ι) (w : ι → R) (p : R[X])
+    (hdeg : p.degree < (S.card : WithBot ℕ)) (x : R) :
+    ∑ T ∈ S.powerset, (-1 : R) ^ T.card * p.eval (x + ∑ j ∈ T, w j) =
+      0 := by
+  classical
+  by_cases hp : p = 0
+  · simp [hp]
+  · exact sum_powerset_neg_one_pow_eval S w p
+      ((Polynomial.natDegree_lt_iff_degree_lt hp).2 hdeg) x
 
 /-! ## The general sharp moment -/
 
@@ -374,6 +395,23 @@ theorem sum_submask_neg_one_pow_eval {R : Type*} [CommRing R]
   rw [← hgen]
   refine Finset.sum_congr rfl fun T hT => ?_
   rw [cast_sum_two_pow_mul]
+
+/-- **Degree-valued sparse Prouhet cancellation.**  The submask sum
+annihilates every polynomial whose `Polynomial.degree` is below the number of
+set bits of `n`.  Using `degree` rather than `natDegree` includes the genuine
+boundary case `n = 0`, where the zero polynomial is the only polynomial of
+degree below `binaryWeight 0 = 0`. -/
+theorem sum_submask_neg_one_pow_eval_of_degree_lt
+    {R : Type*} [CommRing R] (n : ℕ) (p : R[X])
+    (hdeg : p.degree < (binaryWeight n : WithBot ℕ)) (x h : R) :
+    ∑ T ∈ (bitSupport n).powerset,
+      (-1 : R) ^ T.card * p.eval (x + ((∑ j ∈ T, 2 ^ j : ℕ) : R) * h) =
+      0 := by
+  classical
+  by_cases hp : p = 0
+  · simp [hp]
+  · exact sum_submask_neg_one_pow_eval n p
+      ((Polynomial.natDegree_lt_iff_degree_lt hp).2 hdeg) x h
 
 /-- **Sharp sparse moment.**  At degree exactly `binaryWeight n`, the
 submask sum evaluates to
