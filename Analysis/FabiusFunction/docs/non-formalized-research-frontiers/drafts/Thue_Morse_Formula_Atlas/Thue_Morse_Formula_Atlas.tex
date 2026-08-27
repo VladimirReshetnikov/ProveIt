@@ -4859,6 +4859,66 @@ parts.  Its derivative is
 Rearrange.
 \end{proof}
 
+\begin{remark}[A Fubini-free proof of the bridge]
+\label{rem:G-Dirichlet-route}
+The sketch above can be completed without any uniform
+summation-by-parts estimate; the following route is the one the
+formalization takes.  First, each term of the master log-series is a
+Frullani integral,
+\[
+  \eps_n\log\frac{n+a}{n+b}
+  =\eps_n\int_0^\infty
+   \frac{\e^{-(n+b)t}-\e^{-(n+a)t}}{t}\,\dd t ,
+\]
+and summing over \(n<2^m\) factors the signed exponentials into the
+\emph{finite} lacunary product:
+\[
+  \sum_{n<2^m}\eps_n\log\frac{n+a}{n+b}
+  =\int_0^\infty\frac{\e^{-bt}-\e^{-at}}{t}
+    \prod_{j<m}\bigl(1-\e^{-2^jt}\bigr)\,\dd t .
+\]
+The partial products lie in \([0,1]\), so dominated convergence ---
+with the integrable dominator \(|a-b|\,\e^{-\min(a,b)\,t}\), a
+consequence of \(1-\e^{-x}\le x\) --- passes to the limit along the
+dyadic subsequence, along which the conditionally convergent series
+already converges:
+\begin{equation}
+  \log G(a,b)
+  =\int_0^\infty\frac{\e^{-bt}-\e^{-at}}{t}\,
+   E(\e^{-t})\,\dd t .
+  \label{eq:G-integral}
+\end{equation}
+Second, the factorization \(\Gamma(s)^{-1}=s\,\Gamma(s+1)^{-1}\)
+--- an identity of entire functions, valid at the poles as well ---
+gives \((1/\Gamma)'(0)=1\) and \(\Gamma(0)^{-1}=0\), so by the
+product rule the entire continuation
+\(s\mapsto\Gamma(s)^{-1}\int_0^\infty
+t^{s-1}\e^{-at}E(\e^{-t})\,\dd t\) of \(D(s,a)\) constructed
+above has derivative at \(s=0\) equal to the Mellin value
+\(\int_0^\infty t^{-1}\e^{-at}E(\e^{-t})\,\dd t\) ---
+convergent, since boundary flatness gives \(E(\e^{-t})\le t\).
+Subtracting the two parameters recovers \eqref{eq:G-integral}.
+\end{remark}
+
+\emph{Formal versions.}  \Cref{cor:G-Dirichlet} is fully formal
+along the route of \Cref{rem:G-Dirichlet-route}
+(\path{ThueMorseGDirichlet.lean}).  The Frullani integral
+\(\int_0^\infty(\e^{-pt}-\e^{-qt})t^{-1}\dd t=\log(q/p)\) is
+proved from scratch by differentiation under the integral sign --- the
+\(1/t\) cancels exactly against the derivative of the exponential ---
+followed by the fundamental theorem of calculus in the parameter
+(\lean{Fabius.frullani\_exp}, \path{FrullaniIntegral.lean}; the
+lemma is not in Mathlib).  The closed integral form
+\eqref{eq:G-integral} is \lean{Fabius.mpLimit\_eq\_integral}; the
+factorization of \(1/\Gamma\) and its derivative at zero are
+\lean{Fabius.Gamma\_inv\_eq\_self\_mul} and
+\lean{Fabius.hasDerivAt\_Gamma\_inv\_zero}; the derivative of the
+entire continuation at zero is
+\lean{Fabius.hasDerivAt\_dirichletMellinContinuation\_zero}; and
+the boxed bridge \eqref{eq:G-Dirichlet} is
+\lean{Fabius.mpLimit\_eq\_deriv\_sub}, with \(D(\cdot,c)\)
+realized by its entire continuation.
+
 \subsection{The Woods--Robbins product}
 
 \begin{theorem}[Woods--Robbins]
@@ -4917,9 +4977,40 @@ A second classical evaluation is
   \left(\frac{4n+1}{4n+3}\right)^{\eps_n}=\frac12.}
   \label{eq:quarter-product}
 \end{equation}
-It is the specialization \(G(1/4,3/4)\) and follows from the broader
+It is the specialization \(G(1/4,3/4)\); it appears in the broader
 Thue--Morse gamma-product calculus of Allouche, Riasat, and Shallit
-\cite{alloucheRiasatShallit2019}.
+\cite{alloucheRiasatShallit2019}, but it also follows from the
+Woods--Robbins evaluation alone, by one more parity split.
+
+\begin{proof}[Proof of \eqref{eq:quarter-product}]
+In the notation of \eqref{eq:A-B-products}, split the product \(A\)
+by the parity of the index.  Using \(\eps_{2j}=\eps_j\) and
+\(\eps_{2j+1}=-\eps_j\),
+\[
+  A=\prod_{j\ge0}\left(\frac{4j+1}{4j+2}\right)^{\eps_j}
+    \prod_{j\ge0}\left(\frac{4j+3}{4j+4}\right)^{-\eps_j}
+   =\prod_{j\ge0}\left(\frac{4j+1}{4j+3}\right)^{\eps_j}
+    \prod_{j\ge0}\left(\frac{4j+4}{4j+2}\right)^{\eps_j},
+\]
+the second step regrouping the four linear factors.  Since
+\((4j+4)/(4j+2)=(2j+2)/(2j+1)\), the last product is \(A^{-1}\),
+so the quarter product equals \(A^2=1/2\) by
+\Cref{thm:Woods-Robbins}: \emph{the quarter product is the square of
+the Woods--Robbins product}.  As with all such rearrangements, the
+manipulation is an exact identity at the level of even-length partial
+sums of the logarithmic series, and passes to the limit because both
+series converge.
+\end{proof}
+
+\emph{Formal versions.}  The evaluation \eqref{eq:quarter-product}
+is fully formal, with the proof above
+(\path{ThueMorseQuarterProduct.lean}): the parity split is the exact
+partial-sum identity ``an even-length Woods--Robbins partial sum
+equals the quarter-ratio partial sum minus the Woods--Robbins partial
+sum'' (\lean{Fabius.wrA\_two\_mul}), whence
+\(L(1/4,3/4)=-\log2\) (\lean{Fabius.mpLimit\_quarter}) and the
+product converges to \(1/2\)
+(\lean{Fabius.quarter\_product'}).
 
 \subsection{Three dyadic block-product limits}
 
@@ -4956,7 +5047,9 @@ half-shifted block sum \emph{is} the master series at
 \eqref{eq:block-product-half} is \(\exp L(\tfrac14,\tfrac34)\)
 (\lean{Fabius.tendsto\_block\_product\_half'},
 \path{ThueMorseBlockProducts.lean}); its numerical value \(1/2\) is
-the quarter product \eqref{eq:quarter-product}, cited above.
+the quarter product \eqref{eq:quarter-product}, proved above, and the
+evaluated limit is formal as well
+(\lean{Fabius.tendsto\_block\_product\_half}).
 Pairing adjacent factors reduces the first two to
 \(G(1/4,3/4)\) and \(G(1/2,1)\), respectively; the third factors into their
 product.  The evaluations are thus \eqref{eq:quarter-product} and
@@ -5043,7 +5136,7 @@ valuation, carry, and Pascal-row formulas remain genuinely base-two features.
 \subsection{Formalized modules (August 2026)}
 \label{sec:formalized-modules}
 
-The first tranches of the formalization now exist as forty-three
+The first tranches of the formalization now exist as forty-six
 compiled Lean modules in \repo{}, complementing the corpus modules
 (\path{Parity.lean}, \path{TwoAdic.lean}, \path{ThueMorsePrefix.lean},
 \path{ThueMorseGenerating.lean}, \path{ThueMorseExponential.lean},
@@ -5104,6 +5197,9 @@ Module & Contents \\
 \path{ThueMorseMasterProduct.lean} & The master product \(G(a,b)\): convergence for all positive parameters, the cocycle identities, the dyadic functional equation, and \(G=\exp L\). \\
 \path{ThueMorseBlockProducts.lean} & The three dyadic block-product limits: the block collapse onto the Woods--Robbins partials, the alternating telescoping, and the identification of the half-shifted block with the master series at \((\frac14,\frac34)\). \\
 \path{ThueMorseEntireContinuation.lean} & The entire continuation: flatness of every order at zero, exponential decay, local integrability, entirety of \(\Gamma^{-1}\cdot\)Mellin, and agreement with \(D(\sigma,a)\) on \(\sigma>1\). \\
+\path{FrullaniIntegral.lean} & The Frullani integral \(\int_0^\infty(\e^{-pt}-\e^{-qt})t^{-1}\dd t=\log(q/p)\), by differentiation under the integral sign; not in Mathlib. \\
+\path{ThueMorseGDirichlet.lean} & The derivative bridge \(\log G(a,b)=D'(0,b)-D'(0,a)\): the closed integral form of \(\log G\), \((1/\Gamma)'(0)=1\), and the derivative of the entire continuation at zero. \\
+\path{ThueMorseQuarterProduct.lean} & The quarter product \(G(1/4,3/4)=1/2\) from Woods--Robbins by parity splitting, and the value \(1/2\) of the half-shifted block product. \\
 \bottomrule
 \end{longtable}}
 
