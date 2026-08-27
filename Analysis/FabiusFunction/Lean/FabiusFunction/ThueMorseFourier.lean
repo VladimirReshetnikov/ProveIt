@@ -17,8 +17,9 @@ with its exact algebraic part:
 * `prod_two_sub_two_cos_nonneg` — the density is nonnegative.
 
 The evaluation at `x = -2πk/2^m` specializes to the dyadic discrete
-Fourier transform; its closed sine form and the integral normalization
-`∫ρ_m = 1` remain open.
+Fourier transform. Its closed sine form is proved downstream in
+`ThueMorseSineProduct.lean`; the integral normalization `∫ρ_m = 1`
+remains open here.
 -/
 
 set_option autoImplicit false
