@@ -1,0 +1,1842 @@
+\documentclass[11pt,oneside]{article}
+\usepackage[a4paper,margin=27mm,headheight=15pt]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\IfFileExists{libertinus.sty}{\usepackage{libertinus}}{\usepackage{lmodern}}
+\usepackage{microtype}
+\usepackage{amsmath,amssymb,amsthm,mathtools,mathrsfs,bm}
+\usepackage{booktabs,longtable,array,tabularx}
+\usepackage{xcolor}
+\usepackage{enumitem}
+\usepackage{fancyhdr}
+\usepackage{titlesec}
+\usepackage{listings}
+\usepackage{xurl}
+\usepackage{hyperref}
+\usepackage[nameinlink,noabbrev]{cleveref}
+
+\definecolor{linkblue}{RGB}{25,75,135}
+\definecolor{shadegray}{RGB}{246,247,249}
+\definecolor{rulegray}{RGB}{195,201,208}
+\hypersetup{
+  colorlinks=true,
+  linkcolor=linkblue,
+  citecolor=linkblue,
+  urlcolor=linkblue,
+  pdftitle={The exact Fourier-decay theory of Rvachev's up-function},
+  pdfsubject={Rigorous reconciliation of four proposed solutions, the lacunary-product literature, and the Cesaro normalization problem},
+  pdfkeywords={Rvachev up-function, Fabius function, Fourier transform, sinc product, transfer operator, Thue-Morse, Cesaro mean, law of the iterated logarithm, Lambert W}
+}
+
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small Rvachev up-function}
+\fancyhead[R]{\small Final Fourier-decay synthesis}
+\fancyfoot[C]{\thepage}
+\renewcommand{\headrulewidth}{0.4pt}
+\titleformat{\section}{\Large\bfseries}{\thesection}{0.7em}{}
+\titleformat{\subsection}{\large\bfseries}{\thesubsection}{0.7em}{}
+\titleformat{\subsubsection}{\normalsize\bfseries}{\thesubsubsection}{0.7em}{}
+\setcounter{secnumdepth}{3}
+\setcounter{tocdepth}{2}
+\setlist[itemize]{leftmargin=2em,itemsep=0.25em,topsep=0.4em}
+\setlist[enumerate]{leftmargin=2.3em,itemsep=0.25em,topsep=0.4em}
+\setlength{\emergencystretch}{3em}
+\allowdisplaybreaks
+
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{conjecture}[theorem]{Conjecture}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{construction}[theorem]{Construction}
+\newtheorem{example}[theorem]{Example}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+\newtheorem{warning}[theorem]{Warning}
+\newtheorem{auditfinding}[theorem]{Audit finding}
+\crefname{auditfinding}{audit finding}{audit findings}
+\Crefname{auditfinding}{Audit finding}{Audit findings}
+
+\newcommand{\R}{\mathbb R}
+\newcommand{\C}{\mathbb C}
+\newcommand{\N}{\mathbb N}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\e}{\mathrm e}
+\newcommand{\ii}{\mathrm i}
+\newcommand{\dd}{\,\mathrm d}
+\newcommand{\Up}{\operatorname{up}}
+\newcommand{\sinc}{\operatorname{sinc}}
+\newcommand{\bigO}{\mathcal O}
+\newcommand{\smallo}{o}
+\newcommand{\supp}{\operatorname{supp}}
+\newcommand{\sgn}{\operatorname{sgn}}
+\newcommand{\Var}{\operatorname{Var}}
+\newcommand{\E}{\mathbb E}
+\newcommand{\Prob}{\mathbb P}
+\newcommand{\Lip}{\operatorname{Lip}}
+\newcommand{\vtwo}{\nu_2}
+\newcommand{\Lop}{\mathcal L}
+\newcommand{\T}{T}
+\newcommand{\Wlam}{W_0}
+\newcommand{\abs}[1]{\left|#1\right|}
+\newcommand{\norm}[1]{\left\lVert#1\right\rVert}
+\newcommand{\set}[1]{\left\{#1\right\}}
+\newcommand{\floor}[1]{\left\lfloor#1\right\rfloor}
+\newcommand{\ceil}[1]{\left\lceil#1\right\rceil}
+
+\newenvironment{boxedremark}{%
+  \par\smallskip\noindent\begin{center}\begin{minipage}{0.94\textwidth}%
+  \color{black}\hrule\vspace{0.6em}\small
+}{%
+  \vspace{0.6em}\hrule\end{minipage}\end{center}\smallskip
+}
+
+\lstdefinestyle{code}{
+  basicstyle=\ttfamily\footnotesize,
+  backgroundcolor=\color{shadegray},
+  frame=single,
+  rulecolor=\color{rulegray},
+  columns=fullflexible,
+  keepspaces=true,
+  showstringspaces=false,
+  breaklines=true,
+  xleftmargin=0.7em,
+  xrightmargin=0.7em,
+  aboveskip=0.8em,
+  belowskip=0.8em
+}
+
+\title{\bfseries The Exact Fourier-Decay Theory of Rvachev's Up-Function\\[0.35em]
+\large Reconciliation of four proposed solutions, correction of the lacunary-product LIL,\\
+and a complete resolution of the Ces\`aro normalization problem}
+\author{Final synthesis for Vladimir Reshetnikov's \texttt{ProveIt} project}
+\date{26 August 2026}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+Let
+\[
+ \Phi(x)=\widehat{\Up}(x)
+ =\prod_{n=0}^{\infty}\sinc\!\left(\frac{\pi x}{2^n}\right),
+ \qquad \sinc u=\frac{\sin u}{u},
+\]
+be the Fourier transform of Rvachev's compactly supported up-function, with
+Fourier convention \(\widehat h(\xi)=\int_{\R}h(t)\e^{-2\pi\ii t\xi}\dd t\).
+The product is rapidly decreasing but has zeros at every nonzero integer and
+contains a lacunary dynamical factor.  Consequently there is no single
+pointwise ``decay exponent'': typical values, arithmetic means, quadratic
+means, fixed-ray extremals, dyadic-annulus maxima, and two-adically exceptional
+lobes have genuinely different lower-order behavior.
+
+This article audits the four wave--1 analyses, the paper of
+Aistleitner--Hofer--Larcher, and the wave--2 comparative report, and then closes
+the remaining logical gap.  The exact dyadic factorization reduces the problem
+to
+\(P_n(z)=\prod_{j=0}^{n-1}|\sin(\pi2^jz)|\).  Its arithmetic mean is governed by
+the Perron root
+\(\rho=0.661322602060565\ldots\) (numerical; rigorously
+\(0.66130<\rho<0.66135\)) of an explicit transfer operator.  Thus the natural
+arithmetic gauge is
+\[
+ g_1(x)=\exp\!\left(-\frac{(\log x)^2}{2\log2}\right)x^{-\kappa_1},
+ \qquad
+ \kappa_1=\frac12+\log_2\frac{\pi}{\rho}
+ =2.748070014871334\ldots .
+\]
+After multiplication by
+\(A_1=0.09126612413159\ldots\), this gauge answers the bounded form of the
+original question and gives limit one along dyadic endpoints.  At unrestricted
+times its means approach a nonconstant continuous mantissa profile generated by
+a singular transfer-operator eigenmeasure.  This proves impossibility for every
+gauge whose shell distortion relative to \(g_1\) is bounded, or whose shell
+shape stabilizes; it includes all Hardy-field gauges of the correct scale.
+
+The principal new theorem is that this obstruction is not an unrestricted
+nonexistence theorem.  By equalizing the mass on successively finer dyadic
+partitions inside each shell, respecting the one-sided derivative constraint
+imposed by monotonicity, and then applying the Hoischen--Carleman theorem on
+simultaneous entire approximation of a function and its derivative, we
+construct a positive real-analytic, eventually strictly decreasing gauge
+\(g\) for which
+\[
+ \lim_{t\to\infty}\frac1{t-t_0}\int_{t_0}^t\frac{|\Phi(x)|}{g(x)}\dd x=1
+\]
+for every fixed \(t_0\).  It can be chosen with
+\(\log g(x)=-(\log x)^2/(2\log2)-\kappa_1\log x+o(\log x)\).
+Any such exact gauge must, however, develop unbounded and increasingly fine
+within-shell distortion; no simple stabilized formula can do the job.
+
+We also give the complete exponent spectrum
+\(\kappa_0=3.15149612947\ldots\) (typical),
+\(\kappa_1=2.74807001487\ldots\) (arithmetic),
+\(\kappa_2=\log_2(2\pi)=2.65149612947\ldots\) (RMS), and
+\(\kappa_\infty=2.35901487911\ldots\) (uniform coarse envelope), prove the
+sharp Lambert-\(W\) asymptotic for the largest peak in a dyadic annulus, and
+rederive the central limit theorem and law of the iterated logarithm.  The exact
+variance is \(\pi^2/4\), not \(\pi^2/2\); hence the published LIL constant in
+the cited lacunary-product paper is too large by \(\sqrt2\).
+\end{abstract}
+
+\begin{boxedremark}
+\textbf{Final answer in one paragraph.}
+There is no universal pointwise equivalent for \(|\Phi(x)|\).  The simple
+analytic gauge \(A_1g_1\) gives the correct arithmetic scale, satisfies the
+two-sided bounded requirement, and has a nonconstant dyadic-mantissa Ces\`aro
+profile.  Every bounded-distortion, stabilizing, or Hardy-field modification of
+that gauge fails to make the unrestricted Ces\`aro limit equal to one.  However,
+the literal existence question has an affirmative answer: an adaptive
+non-elementary positive analytic decreasing gauge can be constructed so that
+the unrestricted Ces\`aro limit is exactly one.  Its increasingly fine shell
+microstructure is not optional; it is precisely what escapes the singular
+measure obstruction.
+\end{boxedremark}
+
+\tableofcontents
+\newpage
+
+\section{Problem, conventions, and the hierarchy of answers}
+\label{sec:introduction}
+
+The original question asks for a real-valued gauge \(g\), eventually analytic,
+positive, and monotone decreasing, such that either
+\begin{equation}
+ \frac1{t-t_0}\int_{t_0}^t\frac{|\Phi(x)|}{g(x)}\dd x\longrightarrow1
+ \qquad(t\to\infty),
+ \label{eq:Q2}
+\end{equation}
+or at least
+\begin{equation}
+ 0<A<\frac1{t-t_0}\int_{t_0}^t\frac{|\Phi(x)|}{g(x)}\dd x<B<\infty
+ \qquad(t\ge t_1).
+ \label{eq:Q3}
+\end{equation}
+The phrase ``decay rate'' is ambiguous before one specifies what is being
+averaged.  Four elementary facts already force this distinction.
+
+\begin{enumerate}
+\item \(\Phi(m)=0\) for every nonzero integer \(m\), with nonuniform
+multiplicity.  Therefore no positive pointwise equivalent can hold on the full
+real axis.
+\item On a fixed dyadic ray \(x=2^ky\), the remaining oscillation is a Birkhoff
+sum for the doubling map.  Typical rays fluctuate on a Gaussian and
+iterated-logarithm scale.
+\item The arithmetic and quadratic shell normalizations are governed by
+different transfer-operator eigenvalues.
+\item The largest peak in \([2^k,2^{k+1}]\) is a boundary-layer optimization:
+it begins near the zero at \(2^k\), then shadows the maximizing orbit
+\(1/3\leftrightarrow2/3\).  This produces a Lambert-\(W\) correction absent
+from fixed-ray asymptotics.
+\end{enumerate}
+
+Write throughout
+\begin{equation}
+ \lambda=\log2,
+ \qquad
+ E(x)=\exp\!\left(-\frac{(\log x)^2}{2\lambda}\right).
+ \label{eq:lambda-E}
+\end{equation}
+The following table gives the correct power correction attached to the common
+log-normal factor \(E(x)\).  The precise meaning of each row is developed below.
+
+\begin{center}
+\begin{tabularx}{0.96\textwidth}{@{}>{\raggedright\arraybackslash}Xll@{}}
+\toprule
+notion of normalized amplitude & product scale & power exponent \(\kappa\)\\
+\midrule
+Lebesgue-typical dyadic ray / geometric mean
+ & \(\Lambda_0=\tfrac12\)
+ & \(\kappa_0=\tfrac32+\log_2\pi=3.151496129472319\ldots\)\\[0.25em]
+arithmetic normalization
+ & \(\Lambda_1=\rho\)
+ & \(\kappa_1=\tfrac12+\log_2(\pi/\rho)=2.748070014871334\ldots\)\\[0.25em]
+root-mean-square normalization
+ & \(\Lambda_2=2^{-1/2}\)
+ & \(\kappa_2=\log_2(2\pi)=2.651496129472318\ldots\)\\[0.25em]
+uniform coarse envelope
+ & \(\Lambda_\infty=\sqrt3/2\)
+ & \(\kappa_\infty=\tfrac32+\log_2(\pi/\sqrt3)=2.359014879111741\ldots\)\\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+The ordering
+\[
+ \kappa_\infty<\kappa_2<\kappa_1<\kappa_0
+\]
+is the usual ordering of extremal, quadratic, arithmetic, and geometric
+behavior.  It is not a disagreement among valid calculations; it is a spectrum
+of answers to inequivalent questions.
+
+\section{Exact dyadic factorization and zero geometry}
+\label{sec:factorization}
+
+\subsection{The shell identity}
+
+For \(x>0\), write uniquely
+\[
+ x=2^ky,
+ \qquad k\in\Z,\quad 1\le y<2,
+ \qquad z=y-1\in[0,1).
+\]
+Define
+\begin{equation}
+ P_n(z)=\prod_{j=0}^{n-1}\abs{\sin(\pi2^jz)},
+ \qquad
+ H(y)=\prod_{m=1}^{\infty}\abs{\sinc\!\left(\frac{\pi y}{2^m}\right)}.
+ \label{eq:P-H}
+\end{equation}
+The product \(H\) is continuous on \([1,2]\), positive on \([1,2)\), and
+vanishes at \(2\).
+
+\begin{proposition}[exact dyadic-shell factorization]
+\label{prop:factorization}
+For every integer \(k\ge0\), \(1\le y\le2\), and \(n=k+1\),
+\begin{equation}
+ \boxed{
+ |\Phi(2^ky)|
+ =2^{-k(k+1)/2}(\pi y)^{-n}H(y)P_n(y-1).}
+ \label{eq:factorization}
+\end{equation}
+\end{proposition}
+
+\begin{proof}
+Separate the factors with indices \(0\le m\le k\) from the tail.  In the
+finite part put \(j=k-m\).  Since \(2^j\) is an integer,
+\[
+ \abs{\sin(\pi2^jy)}=\abs{\sin(\pi2^j(y-1))}.
+\]
+The finite denominators contribute
+\[
+ \prod_{j=0}^k \pi2^jy=(\pi y)^{k+1}2^{k(k+1)/2},
+\]
+and the remaining factors are exactly \(H(y)\).  Multiplication gives
+\eqref{eq:factorization}.
+\end{proof}
+
+The universal quadratic term is already visible in
+\(2^{-k(k+1)/2}\).  Everything delicate is contained in \(P_n\), together
+with the competition between its orbit and the factor \(y^{-n}\).
+
+\subsection{Canonical product, multiplicities, and one peak per lobe}
+
+The Euler product for \(\sinc\) can be regrouped without convergence
+ambiguity because the resulting genus-zero product is absolutely convergent.
+
+\begin{proposition}[canonical zero product]
+\label{prop:canonical}
+For every \(z\in\C\),
+\begin{equation}
+ \Phi(z)=\prod_{m=1}^{\infty}
+ \left(1-\frac{z^2}{m^2}\right)^{1+\vtwo(m)}.
+ \label{eq:canonical}
+\end{equation}
+Thus the zeros at \(\pm m\) have multiplicity \(1+\vtwo(m)\).
+\end{proposition}
+
+\begin{proof}
+Expand each factor as
+\[
+ \sinc\!\left(\frac{\pi z}{2^h}\right)
+ =\prod_{r=1}^{\infty}\left(1-\frac{z^2}{r^2 4^h}\right).
+\]
+A positive integer \(m\) is representable as \(r2^h\) exactly for
+\(0\le h\le\vtwo(m)\), giving the stated multiplicity.  Finally,
+\(\sum_m(1+\vtwo(m))/m^2<\infty\), so the regrouping is legitimate.
+\end{proof}
+
+\begin{theorem}[strict log-concavity between consecutive zeros]
+\label{thm:one-peak}
+For every integer \(m\ge1\), \(|\Phi|\) has exactly one critical point in
+\((m,m+1)\); it is the unique maximum of that lobe.
+\end{theorem}
+
+\begin{proof}
+Away from the zeros, termwise differentiation in \eqref{eq:canonical} gives
+\begin{equation}
+ \frac{\dd^2}{\dd x^2}\log|\Phi(x)|
+ =-2\sum_{r=1}^{\infty}(1+\vtwo(r))
+ \frac{r^2+x^2}{(r^2-x^2)^2}<0.
+ \label{eq:strict-log-concavity}
+\end{equation}
+Hence the logarithmic derivative is strictly decreasing on every interzero
+interval.  It tends to \(+\infty\) at the left endpoint and \(-\infty\) at
+the right endpoint, so it has one and only one zero.
+\end{proof}
+
+This theorem is useful both conceptually and computationally: the lobe maxima
+can be located by one-dimensional root finding, and exceptional multiplicities
+can be analyzed locally.
+
+\section{Transfer operator and the arithmetic eigenvalue}
+\label{sec:transfer}
+
+\subsection{The doubling map and its weighted Perron operator}
+
+Let
+\[
+ \T z=2z\pmod1,
+ \qquad w(z)=|\sin\pi z|.
+\]
+Then \(P_n(z)=\prod_{j=0}^{n-1}w(\T^jz)\).  For \(q>0\), define
+\begin{equation}
+ (\Lop_qh)(x)=\frac12\left[
+  \sin^q\!\left(\frac{\pi x}{2}\right)h\!\left(\frac x2\right)
+ +\cos^q\!\left(\frac{\pi x}{2}\right)h\!\left(\frac{x+1}{2}\right)
+ \right].
+ \label{eq:Lq}
+\end{equation}
+A change of variables on the two inverse branches gives
+\begin{equation}
+ \int_0^1 h(z)P_n(z)^q\dd z
+ =\int_0^1\Lop_q^n h(x)\dd x.
+ \label{eq:transfer-identity}
+\end{equation}
+We write \(\Lop=\Lop_1\).
+
+\begin{theorem}[Ruelle--Perron--Frobenius package for \(q=1\)]
+\label{thm:RPF}
+On the Banach space of Lipschitz functions on \([0,1]\), the operator
+\(\Lop\) has a simple positive leading eigenvalue \(\rho\), a strictly
+positive Lipschitz eigenfunction \(h\), and a positive eigenprobability
+\(\nu\), normalized by \(\nu(h)=1\), such that
+\begin{equation}
+ \rho^{-n}\Lop^n\varphi
+ \longrightarrow h\,\nu(\varphi)
+ \quad\text{uniformly on }[0,1]
+ \label{eq:RPF-limit}
+\end{equation}
+for every Lipschitz \(\varphi\).  Moreover
+\begin{equation}
+ \rho=0.661322602060565\ldots\quad\text{numerically},
+ \qquad 0.66130<\rho<0.66135\quad\text{rigorously}.
+ \label{eq:rho}
+\end{equation}
+\end{theorem}
+
+\begin{proof}[Proof architecture]
+The elementary Lasota--Yorke estimate has the form
+\[
+ \Lip(\Lop\varphi)
+ \le \frac{\sqrt2}{4}\Lip(\varphi)+C\norm{\varphi}_\infty,
+\]
+while \(\norm{\Lop\varphi}_\infty\le2^{-1/2}\norm{\varphi}_\infty\).
+Thus the essential spectral radius on the Lipschitz space is at most
+\(\sqrt2/4\).  The exact second moment \(\int_0^1P_n^2=2^{-n}\), together with the
+Gelfond estimate proved in \cref{sec:extremal}, gives
+\[
+ \int_0^1P_n\,\dd z
+ \ge \frac{\int_0^1P_n^2\,\dd z}{\lVert P_n\rVert_\infty}
+ \ge \sqrt{\frac35}\left(\frac1{\sqrt3}\right)^n.
+\]
+Hence \(\rho\ge1/\sqrt3>\sqrt2/4\), so the leading spectrum is isolated.
+Positivity, topological exactness of the doubling map, and the fact that the
+weights vanish only at branch endpoints give irreducibility and simplicity.
+This yields \eqref{eq:RPF-limit} by the standard positive
+quasi-compact-operator argument.  The rigorous enclosure in
+\eqref{eq:rho} is the one proved in the lacunary-product paper by iterating
+concave upper and lower ratios; the longer decimal is a stable numerical
+collocation value.
+\end{proof}
+
+For later use set
+\begin{equation}
+ H_0=\int_0^1h(x)\dd x.
+ \label{eq:H0}
+\end{equation}
+Combining \eqref{eq:transfer-identity} and \eqref{eq:RPF-limit} gives
+\begin{equation}
+ \rho^{-n}\int_0^1\varphi(z)P_n(z)\dd z
+ \longrightarrow H_0\nu(\varphi)
+ \label{eq:weighted-P-limit}
+\end{equation}
+for continuous \(\varphi\); the extension from Lipschitz to continuous
+functions follows by uniform approximation.
+
+\subsection{The scale dictionary}
+
+Suppose a product norm grows like \(\Lambda^n\).  The power correction needed
+to cancel it in the exact shell factorization is
+\begin{equation}
+ \boxed{
+ \kappa(\Lambda)=
+ \frac{\log\pi+\lambda/2-\log\Lambda}{\lambda}.}
+ \label{eq:kappa-dictionary}
+\end{equation}
+Indeed, for
+\[
+ g_\kappa(x)=E(x)x^{-\kappa},
+\]
+a direct calculation from \eqref{eq:factorization} gives
+\begin{equation}
+ \frac{|\Phi(2^k(1+z))|}{g_\kappa(2^k(1+z))}
+ =\Lambda^{-n}W_\Lambda(z)P_n(z),
+ \qquad n=k+1,
+ \label{eq:normalized-shell-general}
+\end{equation}
+where
+\begin{equation}
+ W_\Lambda(z)=\frac{\Lambda}{\pi}H(1+z)(1+z)^{\kappa-1}
+ \exp\!\left(\frac{\log^2(1+z)}{2\lambda}\right).
+ \label{eq:Wlambda}
+\end{equation}
+This identity, not a heuristic averaging argument, is the common source of all
+four exponents.
+
+For the arithmetic problem, put
+\begin{equation}
+ \kappa_1=\kappa(\rho)
+ =\frac12+\log_2\frac\pi\rho,
+ \qquad
+ g_1(x)=E(x)x^{-\kappa_1},
+ \label{eq:g1}
+\end{equation}
+and abbreviate
+\begin{equation}
+ W(z)=W_\rho(z)
+ =\frac\rho\pi H(1+z)(1+z)^{\kappa_1-1}
+ \exp\!\left(\frac{\log^2(1+z)}{2\lambda}\right).
+ \label{eq:W}
+\end{equation}
+Then
+\begin{equation}
+ \boxed{
+ \frac{|\Phi(2^k(1+z))|}{g_1(2^k(1+z))}
+ =\rho^{-n}W(z)P_n(z).}
+ \label{eq:normalized-shell}
+\end{equation}
+
+\section{The natural arithmetic gauge and its singular phase profile}
+\label{sec:natural-gauge}
+
+\subsection{The shell constant and limiting measure}
+
+Define the finite measures
+\begin{equation}
+ \alpha_k(\dd z)
+ =\rho^{-(k+1)}W(z)P_{k+1}(z)\dd z,
+ \qquad 0\le z\le1.
+ \label{eq:alpha-k}
+\end{equation}
+By \eqref{eq:weighted-P-limit},
+\begin{equation}
+ \alpha_k\Longrightarrow\alpha,
+ \qquad
+ \alpha(\dd z)=H_0W(z)\nu(\dd z).
+ \label{eq:alpha-limit}
+\end{equation}
+Set
+\begin{equation}
+ A_1=\alpha([0,1])=H_0\nu(W)
+ =0.09126612413159\ldots\quad\text{(numerical)},
+ \label{eq:A1}
+\end{equation}
+and normalize
+\begin{equation}
+ \mu(\dd z)=\frac{W(z)\nu(\dd z)}{\nu(W)},
+ \qquad
+ F(z)=\mu([0,z]).
+ \label{eq:mu-F}
+\end{equation}
+
+The following regularity fact is crucial.
+
+\begin{theorem}[the arithmetic eigenmeasure is continuous, singular, and full support]
+\label{thm:nu-singular}
+The eigenmeasure \(\nu\), and hence \(\mu\), has no atoms, is singular with
+respect to Lebesgue measure, and gives positive mass to every nonempty open
+subinterval of \((0,1)\).
+\end{theorem}
+
+\begin{proof}
+For an atom at \(z\), the dual eigenrelation gives
+\begin{equation}
+ \rho\nu\{z\}=\frac12\sin(\pi z)\nu\{\T z\}.
+ \label{eq:atom-relation}
+\end{equation}
+By \cref{prop:gelfond} below,
+\(\rho\ge1/\sqrt3>1/2\).  Iterating
+\eqref{eq:atom-relation} therefore yields
+\[
+ \nu\{z\}\le(2\rho)^{-n}\longrightarrow0,
+\]
+so \(\nu\) is atomless.
+
+Suppose an absolutely continuous eigencomponent exists, with density
+\(r\in L^1\), \(r\ge0\).  A change of variables in the dual relation gives
+\begin{equation}
+ \sin(\pi z)r(\T z)=\rho r(z),
+ \qquad
+ r(\T^nz)=\frac{\rho^n}{P_n(z)}r(z).
+ \label{eq:density-eigen}
+\end{equation}
+Birkhoff's theorem and
+\(\int_0^1\log|\sin\pi z|\dd z=-\log2\) imply
+\[
+ P_n(z)=\exp[-n(\log2+o(1))]
+\]
+for almost every \(z\).  On the set \(\{r>0\}\), the right side of
+\eqref{eq:density-eigen} therefore grows as
+\(\exp[n(\log(2\rho)+o(1))]\).  On the other hand, for every
+\(0<\varepsilon<\log(2\rho)\), Markov's inequality and invariance of
+Lebesgue measure give
+\[
+ \sum_{n\ge1}\operatorname{Leb}\{z:r(\T^nz)>\e^{\varepsilon n}\}
+ =\sum_{n\ge1}\operatorname{Leb}\{r>\e^{\varepsilon n}\}<\infty.
+\]
+Borel--Cantelli contradicts the preceding exponential lower growth.  The
+dual operator sends absolutely continuous measures to absolutely continuous
+measures and singular measures to singular measures, so uniqueness of the
+Lebesgue decomposition shows that the absolutely continuous part of \(\nu\)
+is zero.
+
+Finally, every nonempty open interval contains a dyadic cylinder on which some
+iterate of \(\T\) maps onto \((0,1)\), with positive product weight away from
+finitely many endpoints.  Applying the dual eigenrelation and using
+atomlessness shows that its \(\nu\)-mass is positive.  Since \(W>0\) on
+\([0,1)\), the same is true for \(\mu\).
+\end{proof}
+
+\subsection{Exact dyadic-mantissa Ces\`aro profile}
+
+Let
+\begin{equation}
+ g_{\mathrm{nat}}(x)=A_1g_1(x).
+ \label{eq:gnat}
+\end{equation}
+The natural gauge is positive and real-analytic on \((0,\infty)\), and is
+strictly decreasing for all sufficiently large \(x\).
+
+\begin{theorem}[natural-gauge profile]
+\label{thm:profile}
+Fix \(t_0>0\).  For every \(1\le y\le2\),
+\begin{equation}
+ \lim_{k\to\infty}
+ \frac1{2^ky-t_0}\int_{t_0}^{2^ky}
+ \frac{|\Phi(x)|}{g_{\mathrm{nat}}(x)}\dd x
+ =\mathscr P(y),
+ \label{eq:profile-limit}
+\end{equation}
+where
+\begin{equation}
+ \boxed{
+ \mathscr P(y)=\frac{1+F(y-1)}{y}.}
+ \label{eq:profile}
+\end{equation}
+The convergence is uniform in \(y\in[1,2]\).  The function \(\mathscr P\)
+is continuous, satisfies \(\mathscr P(1)=\mathscr P(2)=1\), and is not
+identically one.
+\end{theorem}
+
+\begin{proof}
+By \eqref{eq:normalized-shell}, for \(0\le z\le1\),
+\begin{align}
+ \int_{2^k}^{2^k(1+z)}\frac{|\Phi(x)|}{A_1g_1(x)}\dd x
+ &=2^k\frac{\alpha_k([0,z])}{A_1}.
+ \label{eq:partial-shell}
+\end{align}
+Weak convergence to the atomless measure \(\alpha\) implies uniform
+convergence of the corresponding distribution functions, hence
+\[
+ \frac{\alpha_k([0,z])}{A_1}\longrightarrow F(z)
+\]
+uniformly.  A full shell contributes \(2^k(1+o(1))\).  Summing all preceding
+shells and using the geometric weights gives
+\[
+ \int_{t_0}^{2^k(1+z)}\frac{|\Phi|}{A_1g_1}
+ =2^k\bigl(1+F(z)+o(1)\bigr),
+\]
+uniformly in \(z\).  Division by \(2^k(1+z)-t_0\) proves
+\eqref{eq:profile}.  If \(\mathscr P\equiv1\), then
+\(F(z)=z\), contradicting singularity of \(\mu\).
+\end{proof}
+
+\begin{corollary}[answer to the bounded question]
+\label{cor:Q3}
+The gauge \(g_{\mathrm{nat}}\) satisfies \eqref{eq:Q3}.  It also satisfies
+\eqref{eq:Q2} along the dyadic sequence \(t=2^k\), but not for unrestricted
+\(t\).
+\end{corollary}
+
+\begin{proof}
+The continuous function \(\mathscr P\) has a positive minimum and finite
+maximum on \([1,2]\), and the convergence in \cref{thm:profile} is uniform.
+At \(y=1\) the limit is one.  Nonconstancy gives failure at some other
+mantissa.
+\end{proof}
+
+A crude theorem-level bound follows without numerics: since \(0\le F\le1\),
+\(1/2\le\mathscr P(y)\le2\).  Thus, after enlarging \(t_0\), one may for
+example take \(A=1/3\), \(B=3\) in \eqref{eq:Q3}.
+
+\subsection{Eventual behavior of the derivatives}
+
+For the regularity requested in the original question, the natural gauge has
+a useful fixed-order property.
+
+\begin{proposition}[fixed-order alternating derivatives]
+\label{prop:derivatives}
+For every fixed integer \(m\ge0\),
+\begin{equation}
+ g_1^{(m)}(x)=x^{-m}g_1(x)Q_m(\log x),
+ \label{eq:derivative-polynomial}
+\end{equation}
+where \(Q_m\) is a degree-\(m\) polynomial with leading term
+\((-1)^m\lambda^{-m}X^m\).  Consequently
+\((-1)^mg_1^{(m)}(x)>0\) for all sufficiently large \(x\), and each fixed
+derivative is eventually monotone.
+\end{proposition}
+
+\begin{proof}
+Apply \(\dd/\dd x=x^{-1}\dd/\dd(\log x)\) inductively to
+\(g_1(x)=\exp[-L^2/(2\lambda)-\kappa_1L]\), \(L=\log x\).  The leading
+term is multiplied at each step by \(-L/\lambda\).  Monotonicity of the
+\(m\)-th derivative follows from the eventual sign of the \((m+1)\)-st.
+\end{proof}
+
+The threshold depends on \(m\); this is not a claim of complete monotonicity
+on one common half-line.
+
+\section{What the singular profile does and does not forbid}
+\label{sec:obstructions}
+
+The wave--2 audit correctly identified a strong obstruction, but stated its
+scope too broadly.  We first formulate the exact obstruction, strengthen it,
+and then explain why it still leaves room for the adaptive construction in
+\cref{sec:adaptive}.
+
+\subsection{Linearity forced by an unrestricted Ces\`aro limit}
+
+\begin{lemma}[shell linearity]
+\label{lem:shell-linearity}
+If a positive gauge \(g\) satisfies \eqref{eq:Q2}, then for every
+\(z\in[0,1]\), uniformly in \(z\),
+\begin{equation}
+ 2^{-k}\int_{2^k}^{2^k(1+z)}\frac{|\Phi(x)|}{g(x)}\dd x
+ \longrightarrow z.
+ \label{eq:shell-linearity}
+\end{equation}
+In particular, the normalized measures of \(|\Phi|/g\) inside every dyadic
+shell converge weakly to Lebesgue measure on \([0,1]\).
+\end{lemma}
+
+\begin{proof}
+Apply \eqref{eq:Q2} at \(2^k\) and at \(2^k(1+z)\), subtract the two
+asymptotics, and divide by \(2^k\).  Uniformity follows from monotonicity of
+the partial integrals together with convergence on a fine fixed mesh.
+\end{proof}
+
+\subsection{Stabilizing and bounded-distortion gauges}
+
+\begin{theorem}[stabilizing-shape obstruction]
+\label{thm:stabilizing-obstruction}
+Suppose there exist constants \(c_k>0\) and a continuous function
+\(u:[0,1]\to(0,\infty)\) such that
+\begin{equation}
+ \frac{g(2^k(1+z))}{c_kg_1(2^k(1+z))}\longrightarrow u(z)
+ \quad\text{uniformly in }z.
+ \label{eq:stabilizing}
+\end{equation}
+Then \(g\) cannot satisfy \eqref{eq:Q2}.
+\end{theorem}
+
+\begin{proof}
+Up to a scalar normalization, the shell measure for \(|\Phi|/g\) is
+\[
+ u(z)^{-1}\alpha_k(\dd z)(1+o(1)).
+\]
+Every weak limit is therefore proportional to
+\(u^{-1}\alpha\), which is singular.  This contradicts the Lebesgue limit
+forced by \cref{lem:shell-linearity}.
+\end{proof}
+
+The next statement removes the existence of any limiting shape.
+
+\begin{theorem}[bounded-distortion obstruction]
+\label{thm:bounded-distortion}
+Suppose there are constants \(0<m<M<\infty\) and numbers \(c_k>0\) such
+that, for all sufficiently large \(k\) and all \(z\in[0,1]\),
+\begin{equation}
+ m\le
+ \frac{g(2^k(1+z))}{c_kg_1(2^k(1+z))}
+ \le M.
+ \label{eq:bounded-distortion}
+\end{equation}
+Then \(g\) cannot satisfy \eqref{eq:Q2}.
+\end{theorem}
+
+\begin{proof}
+After cancelling the irrelevant scalar \(c_k\), write the normalized shell
+measure as
+\[
+ \eta_k(\dd z)=\frac{q_k(z)\alpha_k(\dd z)}{\int q_k\dd\alpha_k},
+ \qquad M^{-1}\le q_k\le m^{-1}.
+\]
+Thus \(\eta_k\le C\alpha_k\) in the sense that
+\(\int\varphi\dd\eta_k\le C\int\varphi\dd\alpha_k\) for every
+continuous \(\varphi\ge0\), with \(C\) independent of \(k\).  Any weak
+limit \(\eta\) is therefore dominated by \(C\alpha\), hence singular.
+Again this contradicts \cref{lem:shell-linearity}.
+\end{proof}
+
+\begin{corollary}[necessary shell microstructure]
+\label{cor:necessary-microstructure}
+Every gauge satisfying the unrestricted limit \eqref{eq:Q2} must have
+unbounded shell distortion relative to \(g_1\), even after multiplication by
+an arbitrary scalar \(c_k\) on each shell.
+\end{corollary}
+
+\subsection{Hardy fields and the overreach about ``elementary'' functions}
+
+If \(g/g_1\) belongs to a Hardy field, put
+\(h=\log(g/g_1)\).  Then \(xh'(x)\) has a limit in
+\([ -\infty,+\infty]\).  A finite limit \(\gamma\) gives
+\[
+ h(2^k(1+z))-h(2^k)\longrightarrow\gamma\log(1+z)
+\]
+uniformly, so \cref{thm:stabilizing-obstruction} applies.  Infinite limits
+force shell mass to concentrate at one endpoint, contradicting
+\eqref{eq:shell-linearity}.  Hence no Hardy-field gauge of the correct rough
+scale can solve \eqref{eq:Q2}.
+
+It does \emph{not} follow that every elementary closed-form expression is
+covered.  Trigonometric composition already leaves the Hardy-field world.
+For example, for \(2c\varepsilon<1/\lambda\),
+\begin{equation}
+ g_{\varepsilon,c}(x)
+ =g_1(x)\exp\!\bigl(\varepsilon\sin(c(\log x)^2)\bigr)
+ \label{eq:oscillatory-elementary}
+\end{equation}
+is elementary, positive, analytic, and eventually decreasing, but its shell
+shape does not stabilize.  It still fails \eqref{eq:Q2}, now by
+\cref{thm:bounded-distortion}, because its distortion is uniformly bounded.
+Thus the correct conclusion is:
+
+\begin{boxedremark}
+Hardy-field, stabilizing, and bounded-distortion gauges are impossible.  A
+blanket statement about all elementary formulas is not justified.  The exact
+gauge constructed below escapes by developing unbounded, finer-and-finer shell
+structure.
+\end{boxedremark}
+
+\section{An analytic decreasing gauge with the exact unrestricted Ces\`aro limit}
+\label{sec:adaptive}
+
+This section resolves the literal existence question left open by all supplied
+materials.  The proof has two stages.  First we construct a smooth decreasing
+gauge by shellwise mass equalization.  Then we approximate its logarithm and
+first derivative by an entire function with an arbitrarily small variable
+error.
+
+\subsection{A shellwise equalization lemma}
+
+Recall the measures \(\alpha_k\) from \eqref{eq:alpha-k}.  They converge to
+the continuous, full-support finite measure \(\alpha\).
+
+\begin{lemma}[smooth equalizers with a one-sided logarithmic slope]
+\label{lem:equalizers}
+There exist positive functions \(q_k\in C^\infty([0,1])\) such that:
+\begin{enumerate}
+\item \(q_k\equiv1\) in neighborhoods of \(0\) and \(1\);
+\item with \(b_k=(k+\kappa_1+1)/4\),
+\begin{equation}
+ (\log q_k)'(z)\ge-b_k\qquad(0\le z\le1);
+ \label{eq:q-slope}
+\end{equation}
+\item
+\begin{equation}
+ \sup_{0\le z\le1}
+ \abs{\int_0^zq_k(u)\alpha_k(\dd u)-z}
+ \longrightarrow0;
+ \label{eq:q-equalize}
+\end{equation}
+\item the construction can be arranged so that
+\begin{equation}
+ \sup_{z\in[0,1]}|\log q_k(z)|=o(k).
+ \label{eq:q-sublinear}
+\end{equation}
+\end{enumerate}
+\end{lemma}
+
+\begin{proof}
+Fix a partition depth \(r\), write \(\delta=2^{-r}\), and let
+\(I_{r,j}=[j\delta,(j+1)\delta]\), \(0\le j<2^r\).  Since \(\alpha\) has
+full support,
+\(\alpha(I_{r,j})>0\) for every \(j\).  For fixed \(r\), weak convergence
+and atomlessness give
+\[
+ \alpha_k(I_{r,j})\longrightarrow\alpha(I_{r,j})>0
+\]
+uniformly over the finite collection of cells.  Define the step equalizer
+\begin{equation}
+ q_{k,r}^{\mathrm{step}}(z)
+ =\frac{\delta}{\alpha_k(I_{r,j})}
+ \quad(z\in I_{r,j}^{\circ}).
+ \label{eq:step-equalizer}
+\end{equation}
+It gives exactly mass \(\delta\) to each cell.  Therefore its cumulative
+function differs from \(z\) by at most \(\delta\).
+
+For fixed \(r\), all the finitely many values in
+\eqref{eq:step-equalizer}, and their reciprocals, remain bounded as
+\(k\to\infty\).  Replace the jumps by flat \(C^\infty\) bridges in small
+neighborhoods of the dyadic boundaries, interpolate in the logarithmic
+variable, and set the function equal to one near the two endpoints.  Upward
+bridges have no constraint.  A downward bridge with logarithmic drop \(D\)
+can be spread over width slightly larger than \(D/b_k\), ensuring
+\eqref{eq:q-slope}.  Since \(b_k\to\infty\), all bridge widths tend to zero
+for fixed \(r\).  The measures \(\alpha_k\) converge to an atomless measure,
+so the total \(\alpha_k\)-mass of these finitely many shrinking neighborhoods
+tends to zero.  The smoothing therefore changes the cumulative integrals by
+\(o(1)\), uniformly in the upper endpoint.
+
+Now choose a diagonal sequence.  For each \(r\), take \(K_r\ge r\) so large that
+all preceding estimates hold with error at most \(1/r\), the bridges are
+disjoint, and the bounded logarithmic size \(C_r\) of the smoothed equalizer
+satisfies \(C_r/K_r\le1/r\).  For
+\(K_r\le k<K_{r+1}\), use depth \(r\).  Then \(r\to\infty\), so
+\(\delta+1/r\to0\), proving \eqref{eq:q-equalize}; the last choice of
+\(K_r\) proves \eqref{eq:q-sublinear}.
+\end{proof}
+
+The use of dyadic partition boundaries is especially natural here: for
+\(r\le k\), every interior partition boundary is a zero of \(P_{k+1}\).
+The proof above only needs atomless weak convergence, but these exact zeros make
+the smoothing perturbation even smaller.
+
+\subsection{A smooth decreasing exact gauge}
+
+\begin{theorem}[smooth exact Ces\`aro gauge]
+\label{thm:smooth-exact}
+There exists a positive \(C^\infty\) function \(g_0\), strictly decreasing on
+some half-line, such that for every fixed \(t_0\),
+\begin{equation}
+ \frac1{t-t_0}\int_{t_0}^t\frac{|\Phi(x)|}{g_0(x)}\dd x
+ \longrightarrow1.
+ \label{eq:smooth-exact-limit}
+\end{equation}
+It can be chosen with
+\begin{equation}
+ \log g_0(x)
+ =-\frac{(\log x)^2}{2\lambda}-\kappa_1\log x+o(\log x).
+ \label{eq:smooth-rough-scale}
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+On the shell \(x=2^k(1+z)\), define
+\begin{equation}
+ g_0(x)=\frac{g_1(x)}{q_k(z)}.
+ \label{eq:g0-shell}
+\end{equation}
+Because \(q_k\equiv1\) near both shell endpoints, these definitions join with
+all derivatives at powers of two; after defining the function arbitrarily on
+an initial compact interval, \(g_0\) is globally smooth on a half-line.
+
+Let \(L=k\lambda+\log(1+z)\).  Differentiating \(g_1\) with respect to
+\(z\) gives
+\begin{equation}
+ \frac{\dd}{\dd z}\log g_1(2^k(1+z))
+ =-\frac{k+\kappa_1+\log_2(1+z)}{1+z}.
+ \label{eq:g1-z-derivative}
+\end{equation}
+For \(0\le z\le1\), the right side is at most
+\(-(k+\kappa_1+1)/2=-2b_k\).  Hence \eqref{eq:q-slope} implies
+\[
+ \frac{\dd}{\dd z}\log g_0
+ =\frac{\dd}{\dd z}\log g_1-(\log q_k)'
+ \le -b_k<0
+\]
+for all sufficiently large \(k\); thus \(g_0\) is strictly decreasing.
+
+By \eqref{eq:normalized-shell} and \eqref{eq:g0-shell},
+\[
+ \frac{|\Phi(2^k(1+z))|}{g_0(2^k(1+z))}\dd z
+ =q_k(z)\alpha_k(\dd z).
+\]
+Consequently \eqref{eq:q-equalize} gives, uniformly in \(z\),
+\begin{equation}
+ \int_{2^k}^{2^k(1+z)}\frac{|\Phi(x)|}{g_0(x)}\dd x
+ =2^k(z+o(1)).
+ \label{eq:equalized-partial-shell}
+\end{equation}
+In particular a full shell contributes \(2^k(1+o(1))\).  Summing the full
+shells before the terminal one and using the geometric Toeplitz argument yields
+\[
+ \int_{t_0}^{t}\frac{|\Phi(x)|}{g_0(x)}\dd x=t+o(t),
+\]
+which is \eqref{eq:smooth-exact-limit}.  Finally,
+\eqref{eq:q-sublinear} and \(k\asymp\log x\) give
+\eqref{eq:smooth-rough-scale}.
+\end{proof}
+
+\subsection{Entire approximation preserving monotonicity}
+
+We use the following classical approximation theorem of Hoischen, in the
+modern form proved by Gauthier and Kienzle.
+
+\begin{theorem}[Hoischen--Carleman approximation]
+\label{thm:Hoischen}
+Let \(F\in C^1(\R)\) and let \(\varepsilon:\R\to(0,\infty)\) be continuous.
+There is an entire function \(G\), real-valued on \(\R\), such that
+\begin{equation}
+ |G(x)-F(x)|<\varepsilon(x),
+ \qquad
+ |G'(x)-F'(x)|<\varepsilon(x)
+ \quad(x\in\R).
+ \label{eq:Hoischen}
+\end{equation}
+\end{theorem}
+
+\begin{theorem}[analytic exact Ces\`aro gauge]
+\label{thm:analytic-exact}
+There exists a zero-free entire function \(g(z)=\exp G(z)\), positive and
+strictly decreasing on a real half-line, such that its restriction to that
+half-line satisfies \eqref{eq:Q2}.  Moreover it may be chosen so that
+\begin{equation}
+ \log g(x)
+ =-\frac{(\log x)^2}{2\log2}-\kappa_1\log x+o(\log x).
+ \label{eq:analytic-rough-scale}
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+Extend \(F=\log g_0\) from \cref{thm:smooth-exact} to a \(C^1\) function on
+all of \(\R\).  On a sufficiently large half-line, \(F'(x)<0\).  Choose a
+positive continuous error function with
+\[
+ \varepsilon(x)\longrightarrow0,
+ \qquad
+ \varepsilon(x)<-\tfrac12F'(x)
+\]
+on that half-line.  Apply \cref{thm:Hoischen}.  Then
+\(G'(x)<F'(x)/2<0\), so \(g(x)=\e^{G(x)}\) is positive and strictly
+decreasing.  Also
+\[
+ \e^{-\varepsilon(x)}
+ \le\frac{g(x)}{g_0(x)}\le\e^{\varepsilon(x)}.
+\]
+Since \(\varepsilon(x)\to0\), splitting the Ces\`aro integral at a fixed
+large point and squeezing the tail shows that replacing \(g_0\) by \(g\)
+does not change the limit in \eqref{eq:smooth-exact-limit}.  The logarithmic
+asymptotic follows from \eqref{eq:smooth-rough-scale} and
+\(|G-F|=o(1)\).
+\end{proof}
+
+\begin{remark}[constructive status]
+The shell equalizers are constructive once a numerical approximation to the
+finite measures \(\alpha_k\) is available.  The final entire approximation is
+an existence theorem rather than a compact elementary formula.  This is not a
+cosmetic defect: \cref{cor:necessary-microstructure} proves that every exact
+gauge must acquire unbounded shell distortion.  The simple natural formula
+cannot be repaired by a bounded periodic or slowly varying factor.
+\end{remark}
+
+\section{A natural exact repair: logarithmic averaging}
+\label{sec:logmean}
+
+The additive Ces\`aro mean gives the terminal dyadic shell a fixed positive
+fraction of the total interval.  A logarithmic mean gives that shell weight
+\(O(1/\log t)\), eliminating the phase profile.
+
+\begin{theorem}[unrestricted logarithmic mean]
+\label{thm:logmean}
+Let
+\begin{equation}
+ A_1^{\log}
+ =\frac{H_0}{\lambda}\nu\!\left(\frac{W}{1+\cdot}\right)
+ =0.09386063575679\ldots\quad\text{(numerical)}.
+ \label{eq:Alog}
+\end{equation}
+Then for every fixed \(t_0>0\),
+\begin{equation}
+ \boxed{
+ \frac1{\log(t/t_0)}\int_{t_0}^t
+ \frac{|\Phi(x)|}{A_1^{\log}g_1(x)}\frac{\dd x}{x}
+ \longrightarrow1.}
+ \label{eq:logmean}
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+The unnormalized mass of the \(k\)-th full logarithmic shell is
+\[
+ \beta_k
+ =\int_{2^k}^{2^{k+1}}\frac{|\Phi(x)|}{g_1(x)}\frac{\dd x}{x}
+ =\rho^{-(k+1)}\int_0^1\frac{W(z)}{1+z}P_{k+1}(z)\dd z.
+\]
+By \eqref{eq:weighted-P-limit},
+\(\beta_k\to\beta_\infty=H_0\nu(W/(1+\cdot))\), and the sequence is
+bounded.  Up to \(t\in[2^K,2^{K+1})\), the numerator is the sum of
+\(K+O(1)\) full shell masses plus a bounded terminal partial mass, while
+\(\log(t/t_0)=K\lambda+O(1)\).  Ces\`aro convergence of \((\beta_k)\) gives
+\eqref{eq:logmean} with \(A_1^{\log}=\beta_\infty/\lambda\).
+\end{proof}
+
+Thus the natural arithmetic formula has two exact interpretations: ordinary
+Ces\`aro convergence at dyadic endpoints, and unrestricted convergence for the
+multiplicatively invariant logarithmic mean.
+
+\section{Typical rays, RMS scale, and the corrected fluctuation law}
+\label{sec:typical}
+
+\subsection{The centered lacunary sum}
+
+Put
+\begin{equation}
+ \psi(z)=\log|2\sin\pi z|,
+ \qquad
+ S_n(z)=\sum_{j=0}^{n-1}\psi(\T^jz).
+ \label{eq:psi-S}
+\end{equation}
+Since \(\int_0^1\psi=0\), the Birkhoff sum is centered.  From
+\(P_n=2^{-n}\e^{S_n}\) and \eqref{eq:factorization} one obtains, for fixed
+\(1<y<2\),
+\begin{equation}
+ \log|\Phi(2^ky)|
+ =-\frac{\log^2(2^ky)}{2\lambda}
+  -\kappa_0\log(2^ky)
+  +S_{k+1}(y-1)+\Psi(y),
+ \label{eq:ray-exact}
+\end{equation}
+where \(\Psi\) is bounded on compact subintervals of \((1,2)\) and
+\begin{equation}
+ \kappa_0=\frac32+\log_2\pi.
+ \label{eq:kappa0}
+\end{equation}
+Birkhoff's theorem immediately gives the typical-ray asymptotic.
+
+\begin{theorem}[typical dyadic ray]
+\label{thm:typical-ray}
+For Lebesgue-almost every \(y\in(1,2)\),
+\begin{equation}
+ \log|\Phi(2^ky)|
+ =-\frac{\log^2(2^ky)}{2\log2}
+  -\kappa_0\log(2^ky)+o(k).
+ \label{eq:typical-ray}
+\end{equation}
+\end{theorem}
+
+The normalized remainder does not converge.  Its exact variance and LIL can be
+computed without importing a delicate lacunary-series theorem.
+
+\subsection{Exact covariance and variance}
+
+In \(L^2(0,1)\),
+\begin{equation}
+ \psi(z)=-\sum_{m=1}^{\infty}\frac{\cos(2\pi mz)}{m}.
+ \label{eq:psi-fourier}
+\end{equation}
+Orthogonality gives, for \(r\ge0\),
+\begin{equation}
+ \int_0^1\psi(z)\psi(2^rz)\dd z
+ =\frac{\pi^2}{12\,2^r}.
+ \label{eq:covariance}
+\end{equation}
+Therefore
+\begin{equation}
+ \boxed{
+ \int_0^1S_n(z)^2\dd z
+ =\frac{\pi^2}{4}n-\frac{\pi^2}{3}(1-2^{-n}).}
+ \label{eq:exact-variance}
+\end{equation}
+In particular the asymptotic variance per dyadic step is \(\pi^2/4\).
+
+\subsection{Martingale decomposition and LIL}
+
+Let \(P\) be the ordinary Perron operator of the doubling map,
+\[
+ (P\varphi)(x)=\tfrac12\bigl(\varphi(x/2)+\varphi((x+1)/2)\bigr),
+\]
+and define
+\begin{equation}
+ d=2\psi-\psi\circ\T=\log|\tan\pi z|.
+ \label{eq:d-martingale}
+\end{equation}
+The Fourier series shows \(Pd=0\), while
+\begin{equation}
+ \int_0^1d(z)^2\dd z=\frac{\pi^2}{4}.
+ \label{eq:d-variance}
+\end{equation}
+Moreover the exact telescoping identity is
+\begin{equation}
+ S_n=\sum_{j=0}^{n-1}d\circ\T^j-\psi+\psi\circ\T^n.
+ \label{eq:martingale-decomp}
+\end{equation}
+The first term is a reverse martingale sum.  The logarithmic singularities of
+\(\psi\) have exponential tails, so the two coboundary terms are negligible on
+the LIL scale by Borel--Cantelli.
+
+\begin{theorem}[CLT and corrected LIL]
+\label{thm:CLT-LIL}
+For Lebesgue-almost every \(z\),
+\begin{align}
+ \frac{S_n}{\sqrt n}&\ \xrightarrow{\ \mathrm d\ }\
+ N\!\left(0,\frac{\pi^2}{4}\right),
+ \label{eq:CLT}\\
+ \limsup_{n\to\infty}\frac{S_n(z)}{\sqrt{2n\log\log n}}
+ &=\frac\pi2,
+ \qquad
+ \liminf_{n\to\infty}\frac{S_n(z)}{\sqrt{2n\log\log n}}
+ =-\frac\pi2.
+ \label{eq:LIL-standard}
+\end{align}
+Equivalently, with denominator \(\sqrt{n\log\log n}\), the limsup constant is
+\(\pi/\sqrt2\).
+\end{theorem}
+
+\begin{proof}
+Apply the martingale central limit theorem and the martingale LIL to
+\(\sum d\circ\T^j\), using \eqref{eq:d-variance}, then use
+\eqref{eq:martingale-decomp}.  The tail estimate
+\(\operatorname{Leb}\{|\psi|>u\}=O(\e^{-u})\) makes the coboundary terms
+\(o(\sqrt{n\log\log n})\) almost surely.
+\end{proof}
+
+Combining \eqref{eq:ray-exact} and \eqref{eq:LIL-standard} yields the physical
+frequency form.
+
+\begin{corollary}[physical-ray LIL]
+\label{cor:physical-LIL}
+For almost every \(y\in(1,2)\),
+\begin{equation}
+ \limsup_{k\to\infty}
+ \frac{\log|\Phi(2^ky)|+\frac{\log^2(2^ky)}{2\lambda}
+       +\kappa_0\log(2^ky)}
+ {\sqrt{\log(2^ky)\,\log\log\log(2^ky)}}
+ =\frac{\pi}{\sqrt{2\lambda}},
+ \label{eq:physical-LIL}
+\end{equation}
+with the negative of this constant as the liminf.
+\end{corollary}
+
+\subsection{The \texorpdfstring{\(\sqrt2\)}{sqrt(2)} error in the published lacunary-product constant}
+
+The supplied Aistleitner--Hofer--Larcher source computes its variance by
+summing Fourier-coefficient products but omits the factor \(1/2\) in
+\(\int_0^1\cos^2(2\pi jx)\dd x=1/2\).  It consequently prints
+\(\sigma^2=\pi^2/2\) instead of \(\pi^2/4\).  The exact finite-\(n\) formula
+\eqref{eq:exact-variance} and the martingale identity independently force the
+smaller value.
+
+\begin{auditfinding}[normalization of the correction]
+\label{finding:LIL-correction}
+The correct constants are:
+\begin{itemize}
+\item \(\pi/2\) with denominator \(\sqrt{2n\log\log n}\);
+\item \(\pi/\sqrt2\) with denominator \(\sqrt{n\log\log n}\);
+\item \(\pi/\sqrt{2\log2}\) in the physical-frequency normalization
+\eqref{eq:physical-LIL}.
+\end{itemize}
+Each is smaller by \(\sqrt2\) than the corresponding printed constant in the
+cited paper and in the wave--1 document that copied it.
+\end{auditfinding}
+
+\subsection{The exact RMS exponent}
+
+For \(q=2\),
+\begin{equation}
+ \int_0^1P_n(z)^2\dd z=2^{-n}.
+ \label{eq:Pn-L2}
+\end{equation}
+One proof is the identity \(\Lop_2\mathbf1=\tfrac12\mathbf1\); another is
+Fourier orthogonality.  Thus \(\rho_2=1/2\),
+\(\Lambda_2=\rho_2^{1/2}=1/\sqrt2\), and the scale dictionary gives
+\begin{equation}
+ \kappa_2=\kappa(1/\sqrt2)=\log_2(2\pi).
+ \label{eq:kappa2}
+\end{equation}
+This identifies the exponent in the deleted early conjecture: it is the
+root-mean-square exponent, not the typical, arithmetic, or extremal exponent.
+
+\section{The sharp extremal product and the coarse uniform envelope}
+\label{sec:extremal}
+
+Let \(u_j=\sin^2(\pi2^jz)\), so
+\(u_{j+1}=4u_j(1-u_j)\).  The following elementary subaction gives the exact
+Gelfond exponent.
+
+\begin{proposition}[sharp Gelfond bound]
+\label{prop:gelfond}
+For every \(n\ge1\) and \(z\in\R\),
+\begin{equation}
+ P_n(z)\le\sqrt{\frac53}\left(\frac{\sqrt3}{2}\right)^n.
+ \label{eq:gelfond}
+\end{equation}
+The exponential rate \(\sqrt3/2\) is sharp and is attained at
+\(z=1/3,2/3\).
+\end{proposition}
+
+\begin{proof}
+Set \(V(u)=1+2u/3\).  Direct expansion gives
+\begin{equation}
+ 3V(u)-4uV(4u(1-u))
+ =\frac{(2u+1)(4u-3)^2}{3}\ge0.
+ \label{eq:subaction-identity}
+\end{equation}
+Hence
+\(u_jV(u_{j+1})\le(3/4)V(u_j)\).  Multiplication yields
+\[
+ P_n(z)^2V(u_n)\le(3/4)^nV(u_0)
+ \le(3/4)^n\frac53,
+\]
+which is \eqref{eq:gelfond}.  At \(z=1/3\) or \(2/3\), every
+\(u_j=3/4\), so \(P_n=(\sqrt3/2)^n\).
+\end{proof}
+
+The scale dictionary now gives
+\begin{equation}
+ \kappa_\infty
+ =\kappa(\sqrt3/2)
+ =\frac32+\log_2\frac\pi{\sqrt3}.
+ \label{eq:kappainfty}
+\end{equation}
+
+\begin{theorem}[coarse global envelope]
+\label{thm:coarse-envelope}
+There is a constant \(C\) such that, for all sufficiently large \(x\),
+\begin{equation}
+ |\Phi(x)|\le C E(x)x^{-\kappa_\infty}.
+ \label{eq:coarse-envelope}
+\end{equation}
+The power exponent is sharp: on the ray \(x=2^k(4/3)\), the ratio of the two
+sides stays between positive constants.
+\end{theorem}
+
+\begin{proof}
+Insert \eqref{eq:gelfond} into
+\eqref{eq:normalized-shell-general} with
+\(\Lambda=\sqrt3/2\).  Sharpness follows from the period-two orbit
+\(z=1/3\) and positivity of the bounded mantissa factor at \(y=4/3\).
+\end{proof}
+
+Consequently
+\begin{equation}
+ \limsup_{x\to\infty}\frac{\log|\Phi(x)|}{(\log x)^2}
+ =-\frac1{2\log2},
+ \qquad
+ \liminf_{x\to\infty}\frac{\log|\Phi(x)|}{(\log x)^2}=-\infty,
+ \label{eq:universal-lims}
+\end{equation}
+where the second statement follows from the integer zeros.
+
+\section{Largest peak in a dyadic annulus: the Lambert-\texorpdfstring{\(W\)}{W} law}
+\label{sec:annular}
+
+The coarse envelope does not yet determine
+\[
+ M_k=\max_{2^k\le x\le2^{k+1}}|\Phi(x)|.
+\]
+A fixed maximizing ray such as \(y=4/3\) pays the linear denominator penalty
+\((4/3)^{-(k+1)}\).  The true annular maximizer moves toward \(y=1\), paying
+only a sublinear boundary-layer loss while spending a slowly increasing number
+of doublings reaching the maximizing cycle.
+
+Put
+\begin{equation}
+ \beta=\log\frac{\sqrt3}{2},
+ \qquad
+ c=\frac{\lambda}{\pi}\sqrt{\frac32}
+ =0.270222319733365\ldots .
+ \label{eq:beta-c}
+\end{equation}
+From \eqref{eq:factorization}, with \(n=k+1\),
+\begin{equation}
+ M_k=2^{-k(k+1)/2}\pi^{-n}A_n,
+ \quad
+ A_n=\sup_{0\le\theta\le1}
+ H(1+\theta)(1+\theta)^{-n}P_n(\theta).
+ \label{eq:M-A}
+\end{equation}
+
+\subsection{Boundary-layer reduction}
+
+Write a small \(\theta\) as
+\[
+ \theta=2^{-r}s,
+ \qquad s\in[1/4,1/2].
+\]
+The first \(r\) factors obey, uniformly in \(s\),
+\begin{equation}
+ \sum_{j=0}^{r-1}\log|\sin(\pi2^j\theta)|
+ =-\frac\lambda2r^2+r\left(\log(\pi s)-\frac\lambda2\right)+O(1).
+ \label{eq:small-block}
+\end{equation}
+The remaining orbit can be chosen to shadow the maximizing period-two cycle.
+The exact Gelfond upper bound and a rational-preimage lower construction give
+\begin{equation}
+ \log P_{n-r}(s)=(n-r)\beta+O((\log\log n)^2)
+ \label{eq:tail-max}
+\end{equation}
+for the optimization, uniformly at the required scale.  The loss comes from a
+preimage depth \(O(\log\log n)\).
+
+After removing \(n\beta\), the finite-dimensional objective is
+\begin{equation}
+ \mathcal F_n(r,s)
+ =-\frac\lambda2r^2
+ +r\left(\log(\pi s)-\frac\lambda2-\beta\right)
+ -n\log(1+s2^{-r}).
+ \label{eq:F-objective}
+\end{equation}
+
+\subsection{Exact Lambert optimization}
+
+Set
+\begin{equation}
+ C_0=\log\pi-\frac\lambda2-\beta
+ =\log\!\left(\pi\sqrt{\frac23}\right),
+ \qquad A=C_0+\log s,
+ \qquad z=\lambda r-A.
+ \label{eq:C0-z}
+\end{equation}
+Replacing \(-n\log(1+s2^{-r})\) by \(-ns2^{-r}\) changes the maximum by
+\(o(1)\).  A direct calculation gives
+\begin{equation}
+ \mathcal F_n(r,s)
+ =-\frac{z^2}{2\lambda}-n\e^{-C_0}\e^{-z}
+ +\frac{A^2}{2\lambda}+o(1).
+ \label{eq:F-z}
+\end{equation}
+As \(s\) ranges through an interval of multiplicative width two, \(A\) ranges
+through an interval of length \(\lambda\); successive integer values of \(r\)
+therefore tile the real \(z\)-axis.  The bounded \(A^2\)-term is harmless.
+The remaining continuous maximum satisfies
+\[
+ z\e^z=\lambda n\e^{-C_0}=cn,
+\]
+so \(z=\Wlam(cn)\), the principal Lambert function.
+
+\begin{theorem}[sharp dyadic-annulus maximum]
+\label{thm:annular-max}
+Let \(w_k=\Wlam(c(k+1))\).  Then
+\begin{equation}
+ \boxed{
+ \begin{aligned}
+ \log M_k={}&-\frac\lambda2k(k+1)-(k+1)\log\pi+(k+1)\beta\\
+ &-\frac{w_k^2+2w_k}{2\lambda}
+ +O((\log\log k)^2).
+ \end{aligned}}
+ \label{eq:annular-main}
+\end{equation}
+Equivalently,
+\begin{align}
+ \log M_k={}&-\frac\lambda2k^2
+ +(\beta-\log\pi-\lambda/2)k
+ -\frac{(\log k)^2}{2\lambda}
+ +\frac{\log k\log\log k}{\lambda}
+ \notag\\
+ &-\frac{1+\log c}{\lambda}\log k
+ +O((\log\log k)^2).
+ \label{eq:annular-expanded}
+\end{align}
+A near-maximizer has
+\begin{equation}
+ \frac{x}{2^k}=1+\Theta\!\left(\frac{\Wlam(c(k+1))}{k+1}\right),
+ \qquad
+ r=\frac{\Wlam(c(k+1))}{\lambda}+O(1).
+ \label{eq:annular-location}
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+Equations \eqref{eq:small-block}--\eqref{eq:F-objective}, together with the
+sharp tail upper bound and the dense-preimage lower construction, reduce
+\(\log A_n-n\beta\) to \(\sup\mathcal F_n\) with error
+\(O((\log\log n)^2)\).  The tiling argument in
+\eqref{eq:C0-z}--\eqref{eq:F-z} gives
+\[
+ \sup\mathcal F_n
+ =-\frac{\Wlam(cn)^2+2\Wlam(cn)}{2\lambda}+O(1).
+\]
+Insert this into \eqref{eq:M-A}.  Expanding
+\(\Wlam(cn)=\log n-\log\log n+\log c+
+O(\log\log n/\log n)\) gives \eqref{eq:annular-expanded}.  The critical
+point equation also gives
+\(n\theta=\Wlam(cn)/\lambda\), proving
+\eqref{eq:annular-location}.
+\end{proof}
+
+The extra \(- (\log k)^2/(2\lambda)\) term is a second log-normal suppression
+in \(\log\log x\).  It cannot be replaced by a fixed power of \(\log x\).
+
+\section{Two-adic exceptional valleys and lobe maxima}
+\label{sec:two-adic}
+
+Let \(E_m\) denote the unique maximum of \(|\Phi|\) on \([m,m+1]\).  Large
+powers of two create exceptionally deep valleys because many sinc factors
+vanish at the left endpoint.
+
+\begin{theorem}[peaks immediately after \(m2^k\)]
+\label{thm:two-adic-peaks}
+Fix an odd positive integer \(m\), and write the unique maximizer in
+\((m2^k,m2^k+1)\) as \(m2^k+t_k\).  Then
+\begin{equation}
+ (k+1)(1-t_k)\longrightarrow1,
+ \label{eq:peak-location}
+\end{equation}
+and
+\begin{equation}
+ \boxed{
+ E_{m2^k}\sim
+ \frac{H(1)|H(m)|}{\e(k+1)}(m2^k)^{-(k+1)}.}
+ \label{eq:two-adic-peak}
+\end{equation}
+In particular,
+\begin{equation}
+ E_{2^k}\sim\frac{H(1)^2}{\e(k+1)}2^{-k(k+1)},
+ \qquad H(1)=0.553771275888810\ldots .
+ \label{eq:power-two-peak}
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+Uniformly for \(t\in[0,1]\), the factors that vanish at \(m2^k\) can be
+separated to give
+\begin{equation}
+ |\Phi(m2^k+t)|
+ =(m2^k)^{-(k+1)}|H(m)|\,t^{k+1}\Phi(t)(1+o(1)).
+ \label{eq:near-two-adic-factor}
+\end{equation}
+As \(t\uparrow1\),
+\(\Phi(t)=H(1)(1-t)(1+o(1))\).  Thus the remaining maximization is the
+standard boundary problem
+\(t^p(1-t)\), \(p=k+1\), whose maximizer satisfies
+\(p(1-t)\to1\) and whose maximum is asymptotic to \(1/(\e p)\).
+Strict uniqueness follows from \cref{thm:one-peak}.
+\end{proof}
+
+Comparing \eqref{eq:power-two-peak} with \eqref{eq:annular-main} gives
+\[
+ \log\frac{E_{2^k}}{M_k}=-\frac\lambda2k^2+O(k),
+\]
+so the first lobe after a power of two is vastly smaller than the largest lobe
+in the same dyadic annulus.
+
+\section{Numerical adjudication and reproducibility}
+\label{sec:numerics}
+
+All theorem-level conclusions above are independent of the decimal values in
+this section.  The numerics are useful for checking normalizations and for
+correcting two coarse values in the comparative audit.
+
+\subsection{Spectral and shell constants}
+
+Chebyshev--Lobatto collocation of \(\Lop\), with barycentric evaluation at the
+two inverse branches, is stable from 32 to 80 nodes and gives
+\begin{align}
+ \rho&=0.661322602060565\ldots,\notag\\
+ \kappa_1&=2.748070014871334\ldots,\notag\\
+ A_1&=0.09126612413159\ldots,\notag\\
+ A_1^{\log}&=0.09386063575679\ldots .
+ \label{eq:numeric-constants}
+\end{align}
+An independent direct quadrature on all \(2^{18}\) dyadic cells, using
+16-point Gauss--Legendre quadrature in each cell, gives
+\[
+ A_1^{(18)}=0.09126612413156757,
+ \qquad
+ (A_1^{\log})^{(18)}=0.09386063575678312.
+\]
+
+\subsection{Corrected profile range}
+
+The comparative audit reported a range \([0.9249,1.1133]\), explicitly on a
+mantissa grid of spacing \(0.025\).  That grid misses the true narrow
+excursions.  The same \(n=18\) cell quadrature, with within-cell root refinement
+for \(\mathscr P_n'\), gives
+\begin{center}
+\begin{tabular}{@{}lll@{}}
+\toprule
+quantity & value & location\\
+\midrule
+finite-level minimum
+ & \(0.9162685832208\)
+ & \(y\approx1.142840221249\)\\
+finite-level maximum
+ & \(1.1181397445438\)
+ & \(y\approx1.428632869969\)\\
+\bottomrule
+\end{tabular}
+\end{center}
+At level \(n=19\), the dyadic-cell boundary values are already
+\(0.9162686675\) and \(1.1181395810\), supporting convergence to nearby
+limits.  These are high-resolution numerical estimates, not certified exact
+constants for the limiting singular profile.
+
+\subsection{Minimal reproducibility pseudocode}
+
+\begin{lstlisting}[style=code,caption={Direct dyadic-cell quadrature for the natural profile}]
+rho = 0.661322602060565
+lam = log(2)
+kappa = 0.5 + log(pi/rho)/lam
+n = 18
+N = 2**n
+
+for each dyadic cell I_j = [j/N,(j+1)/N]:
+    use 16-point Gauss-Legendre nodes z in I_j
+    logP = sum_{ell=0}^{n-1} log(abs(sin(pi * frac(2**ell*z))))
+    logH = sum_{m=1}^{55} log(sin(pi*(1+z)/2**m)/(pi*(1+z)/2**m))
+    logW = log(rho/pi) + logH + (kappa-1)*log(1+z)
+           + log(1+z)**2/(2*lam)
+    density = exp(-n*log(rho) + logW + logP)
+    cell_mass[j] = Gauss_integral(density, I_j)
+
+A1 = sum(cell_mass)
+F_at_boundaries = cumulative_sum(cell_mass/A1)
+profile = (1 + F_at_boundaries)/(1 + arange(N+1)/N)
+\end{lstlisting}
+
+The exact variance \eqref{eq:exact-variance} supplies an especially strong
+independent check: at \(n=1000\) it gives
+\(2464.1112321386\ldots\), asymptotically half the value implied by the
+erroneous \(\pi^2/2\) variance.
+
+\section{Document-by-document adjudication}
+\label{sec:audit}
+
+\begin{longtable}{@{}p{0.17\textwidth}p{0.36\textwidth}p{0.39\textwidth}@{}}
+\toprule
+source & strongest correct contribution & correction or limitation\\
+\midrule
+\endfirsthead
+\toprule
+source & strongest correct contribution & correction or limitation\\
+\midrule
+\endhead
+Wave--1 document 1
+ & Exact dyadic factorization; typical-ray exponent; covariance, variance
+ \(\pi^2/4\), and the correct LIL normalization; coarse extremal analysis.
+ & Does not solve the arithmetic Ces\`aro problem.  Its annular expansion is
+ correct only to a coarser remainder than document 2.\\[0.5em]
+Wave--1 document 2
+ & Sharp Gelfond subaction; unique lobe peak; full Lambert-\(W\) annular
+ asymptotic; two-adic peak theorem.
+ & Deliberately follows the pointwise/extremal track and does not determine the
+ arithmetic transfer eigenvalue or the original Ces\`aro gauge.\\[0.5em]
+Wave--1 document 3
+ & Broad synthesis; correct separation of typical, arithmetic, RMS, and
+ extremal exponents; construction of the natural analytic gauge satisfying
+ the bounded requirement.
+ & Inherits the published Aistleitner--Hofer--Larcher LIL constant, which is too
+ large by \(\sqrt2\).  Its discussion of failure of the all-time limit applies
+ to the natural gauge, not to all possible analytic gauges.\\[0.5em]
+Wave--1 document 4
+ & Most systematic transfer-operator and \(L^q\) treatment; correct
+ arithmetic exponent, RMS identity, singular-profile mechanism, and bounded
+ answer.
+ & The spectral-gap package is imported rather than fully proved; fluctuation
+ theory and the sharp Lambert correction are not developed.  Conditional
+ intermediate-rate heuristics should not be read as established theorems.\\[0.5em]
+Aistleitner--Hofer--Larcher
+ & Identifies the Fouvry--Mauduit arithmetic constant and proves the rigorous
+ enclosure \(0.66130<\rho<0.66135\); supplies deep lacunary-product estimates.
+ & Its variance computation omits the Parseval factor \(1/2\), printing
+ \(\pi^2/2\) instead of \(\pi^2/4\); affected LIL constants must be divided by
+ \(\sqrt2\).\\[0.5em]
+Wave--2 comparative audit
+ & Correctly reconciles the exponent spectrum, proves singularity of the
+ arithmetic eigenmeasure, identifies the natural phase profile, and introduces
+ the exact logarithmic-mean repair.
+ & The reported profile range is a coarse-grid range.  The implication
+ ``Hardy-field, hence every elementary formula'' is too broad.  Most
+ importantly, ``unattainable in principle'' is false without a bounded- or
+ stabilizing-distortion hypothesis: \cref{thm:analytic-exact} gives an
+ unrestricted analytic exact gauge.\\
+\bottomrule
+\end{longtable}
+
+\section{Final theorem and practical interpretation}
+\label{sec:final}
+
+The results can be compressed into one theorem that answers every interpretation
+appearing in the supplied materials.
+
+\begin{theorem}[complete Fourier-decay resolution]
+\label{thm:complete}
+Let
+\(\Phi(x)=\prod_{n\ge0}\sinc(\pi x/2^n)\).  Then:
+\begin{enumerate}
+\item There is no positive global pointwise asymptotic equivalent.  The
+universal log-square limsup is \(-1/(2\log2)\), while integer zeros force
+liminf \(-\infty\).
+\item For almost every dyadic mantissa, the power correction is
+\(\kappa_0=3/2+\log_2\pi\), with CLT variance \(\pi^2/4\) and physical LIL
+constant \(\pi/\sqrt{2\log2}\).
+\item The natural arithmetic gauge is
+\(g_{\mathrm{nat}}=A_1E(x)x^{-\kappa_1}\), with
+\(\kappa_1=1/2+\log_2(\pi/\rho)\).  It satisfies the bounded condition
+\eqref{eq:Q3}; its unrestricted limit points form the range of
+\(\mathscr P(y)=(1+F(y-1))/y\), and it gives limit one at dyadic endpoints.
+\item No gauge with bounded shell distortion relative to \(g_1\), no
+stabilizing-shell gauge, and no Hardy-field gauge of the correct scale can
+satisfy the exact unrestricted limit \eqref{eq:Q2}.
+\item Nevertheless, there exists a positive real-analytic, eventually strictly
+decreasing gauge satisfying \eqref{eq:Q2}.  It can have the same rough
+log-normal--power scale as \(g_1\), but must develop unbounded fine shell
+microstructure.
+\item The natural gauge also gives an exact unrestricted logarithmic mean after
+multiplication by \(A_1^{\log}\).
+\item The RMS power is \(\kappa_2=\log_2(2\pi)\); the coarse uniform power is
+\(\kappa_\infty=3/2+\log_2(\pi/\sqrt3)\).
+\item The largest dyadic-annulus peak obeys the Lambert-\(W\) formula
+\eqref{eq:annular-main}; lobe peaks after \(m2^k\) obey
+\eqref{eq:two-adic-peak}.
+\end{enumerate}
+\end{theorem}
+
+For applications, the choice of answer is therefore straightforward.
+
+\begin{itemize}
+\item Use \(A_1g_1\) for a simple analytic arithmetic envelope, two-sided
+Ces\`aro control, or dyadic-endpoint normalization.
+\item Use \(A_1^{\log}g_1\) when multiplicative/logarithmic averaging is
+natural and an unrestricted exact limit is desired.
+\item Use the adaptive analytic gauge of \cref{thm:analytic-exact} only when the
+literal additive Ces\`aro limit is essential; it is necessarily noncanonical.
+\item Use \(\kappa_0\), \(\kappa_2\), or \(\kappa_\infty\) only for the
+specific typical, RMS, or extremal notion they encode.
+\item Use the Lambert formula, not a fixed logarithmic power, for the largest
+peak in a dyadic annulus.
+\end{itemize}
+
+\begin{boxedremark}
+The phrase ``how fast does the Fourier transform decay?'' has one universal
+first answer and several incompatible second answers.  Universally, the
+quadratic logarithmic coefficient is \(-1/(2\log2)\).  Beyond that order, the
+correct exponent and correction depend on whether one asks for typical values,
+means, RMS size, a coarse envelope, an annular maximum, or a specified
+exceptional lobe.  The original additive Ces\`aro existence question is yes,
+but only through a deliberately adaptive analytic gauge; the simple canonical
+gauge has a singular nonconstant phase profile instead.
+\end{boxedremark}
+
+\appendix
+
+\section{Details behind the exponent spectrum}
+\label{app:spectrum}
+
+For \(q>0\), let \(\rho_q\) be the leading eigenvalue of \(\Lop_q\) and set
+\begin{equation}
+ \Lambda_q=\rho_q^{1/q},
+ \qquad
+ \kappa_q=\frac{\log\pi+\lambda/2-\log\Lambda_q}{\lambda}.
+ \label{eq:q-spectrum}
+\end{equation}
+Then the \(q\)-th moment of the normalized shell ratio
+\(|\Phi|/(E x^{-\kappa_q})\) has a finite nonzero limit under the corresponding
+RPF hypotheses.  At the endpoints:
+\begin{itemize}
+\item \(q\downarrow0\):
+\(\log\Lambda_0=\int_0^1\log|\sin\pi z|\dd z=-\log2\), giving
+\(\kappa_0\).
+\item \(q=1\): \(\Lambda_1=\rho\), giving \(\kappa_1\).
+\item \(q=2\): \(\rho_2=1/2\), hence \(\Lambda_2=1/\sqrt2\), giving
+\(\kappa_2\).
+\item \(q\to\infty\): \(\Lambda_\infty=\sqrt3/2\), giving
+\(\kappa_\infty\).
+\end{itemize}
+The map \(q\mapsto\log\rho_q\) is convex by H\"older's inequality, which
+organizes the monotone interpolation between these distinguished values.
+
+\section{Why the adaptive construction does not contradict singularity}
+\label{app:no-contradiction}
+
+For the natural gauge, the normalized shell measures converge to the singular
+measure \(\mu\).  A bounded multiplier cannot change the measure class, which
+is exactly \cref{thm:bounded-distortion}.  The equalizers
+\(q_k\) in \cref{lem:equalizers} do something qualitatively different.  At
+partition depth \(r\), they assign reciprocal mass
+\[
+ q_{k,r}|_{I_{r,j}}\approx\frac{2^{-r}}{\alpha_k(I_{r,j})}.
+\]
+As \(r\to\infty\), singularity forces these reciprocals to have unbounded
+relative variation.  The depth grows only after \(k\) is large enough that the
+required downward logarithmic bridges fit inside the cells while respecting
+monotonicity of \(g_1/q_k\).  Thus the construction converges weakly to
+Lebesgue at every fixed resolution, but has no bounded limiting density with
+respect to \(\mu\).  That is precisely the escape route left open by the
+singular-profile theorem.
+
+\section{Source map and bibliographic notes}
+\label{app:sources}
+
+The repository paths below are included so that every audited claim can be
+traced to its source.  The present article does not assume the correctness of
+those drafts; the proofs above adjudicate their overlapping statements.
+
+\begin{thebibliography}{99}
+
+\bibitem{AHL}
+C.~Aistleitner, R.~Hofer, and G.~Larcher,
+\newblock On evil Kronecker sequences and lacunary trigonometric products,
+\newblock \emph{Annales de l'Institut Fourier} \textbf{67} (2017), no.~2,
+637--687,
+\newblock DOI: \href{https://doi.org/10.5802/aif.3094}{10.5802/aif.3094};
+preprint arXiv:1502.06738.
+
+\bibitem{FouvryMauduit}
+E.~Fouvry and C.~Mauduit,
+\newblock Sommes des chiffres et nombres presque premiers,
+\newblock \emph{Mathematische Annalen} \textbf{305} (1996), 571--599.
+
+\bibitem{GauthierKienzle}
+P.~M. Gauthier and J.~Kienzle,
+\newblock Approximation of a function and its derivatives by entire functions,
+\newblock \emph{Canadian Mathematical Bulletin} \textbf{59} (2016), 87--94,
+\newblock DOI: \href{https://doi.org/10.4153/CMB-2015-060-5}{10.4153/CMB-2015-060-5}.
+
+\bibitem{Hoischen}
+L.~Hoischen,
+\newblock Approximation und Interpolation durch ganze Funktionen,
+\newblock \emph{Journal of Approximation Theory} \textbf{15} (1975), 116--123.
+
+\bibitem{WikipediaFabius}
+Wikipedia contributors,
+\newblock Fabius function,
+\newblock \url{https://en.wikipedia.org/wiki/Fabius_function}, accessed
+26 August 2026.
+
+\bibitem{OriginalQuestion}
+V.~Reshetnikov,
+\newblock Asymptotic decay rate of an infinite product of sinc functions,
+\newblock repository transcription of Mathematics Stack Exchange question
+2745497,
+\newblock \url{https://github.com/VladimirReshetnikov/ProveIt/blob/main/Analysis/FabiusFunction/docs/non-formalized-research-frontiers/drafts/rvachev_up_fourier_decay/asymptotic-decay-rate-of-an-infinite-product-of-sinc-functions/asymptotic-decay-rate-of-an-infinite-product-of-sinc-functions.tex}.
+
+\bibitem{Wave1Doc1}
+\newblock Wave--1 document 1,
+\newblock \emph{Decay of the Fourier Transform of Rvachev's Up-Function},
+\newblock \url{https://github.com/VladimirReshetnikov/ProveIt/blob/main/Analysis/FabiusFunction/docs/non-formalized-research-frontiers/drafts/rvachev_up_fourier_decay/rvachev_up_fourier_decay-1/rvachev_up_fourier_decay.tex}.
+
+\bibitem{Wave1Doc2}
+\newblock Wave--1 document 2,
+\newblock \emph{Sharp Real-Axis Decay of the Fourier Transform of Rvachev's Up-Function},
+\newblock \url{https://github.com/VladimirReshetnikov/ProveIt/blob/main/Analysis/FabiusFunction/docs/non-formalized-research-frontiers/drafts/rvachev_up_fourier_decay/Rvachev_Up_Fourier_Decay-2/Rvachev_Up_Fourier_Decay.tex}.
+
+\bibitem{Wave1Doc3}
+\newblock Wave--1 document 3,
+\newblock \emph{Sharp Decay Laws for the Fourier Transform of Rvachev's Up-Function},
+\newblock \url{https://github.com/VladimirReshetnikov/ProveIt/blob/main/Analysis/FabiusFunction/docs/non-formalized-research-frontiers/drafts/rvachev_up_fourier_decay/Rvachev_Up_Fourier_Decay-3/Fourier_decay_of_Rvachev_up.tex}.
+
+\bibitem{Wave1Doc4}
+\newblock Wave--1 document 4,
+\newblock \emph{Decay of the Fourier Transform of Rvachev's Up-Function},
+\newblock \url{https://github.com/VladimirReshetnikov/ProveIt/blob/main/Analysis/FabiusFunction/docs/non-formalized-research-frontiers/drafts/rvachev_up_fourier_decay/rvachev_up_fourier_decay-4/rvachev_up_fourier_decay.tex}.
+
+\bibitem{ComparativeAudit}
+\newblock Wave--2 comparative report,
+\newblock \emph{The Decay Envelope of the Rvachev Sinc Product: A Comparative Audit},
+\newblock \url{https://github.com/VladimirReshetnikov/ProveIt/blob/main/Analysis/FabiusFunction/docs/non-formalized-research-frontiers/drafts/rvachev_up_fourier_decay/Rvachev_Up_Fourier_Decay_Comparative_Audit/Rvachev_Up_Fourier_Decay_Comparative_Audit.tex}.
+
+\bibitem{RepositoryAHL}
+\newblock Repository copy of the Aistleitner--Hofer--Larcher source,
+\newblock \url{https://github.com/VladimirReshetnikov/ProveIt/blob/main/Analysis/FabiusFunction/docs/papers/arXiv-1502.06738v2/Lacunary_products.tex}.
+
+\end{thebibliography}
+
+\end{document}
