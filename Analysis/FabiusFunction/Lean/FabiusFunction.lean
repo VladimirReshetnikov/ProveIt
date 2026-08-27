@@ -1,3 +1,4 @@
+import FabiusFunction.GeometricLagrange
 import FabiusFunction.Paper05442
 import FabiusFunction.Paper06487
 import FabiusFunction.PaperFabiusAsymptotic
@@ -122,6 +123,9 @@ import FabiusFunction.LobeSignSelfSimilarity
 import FabiusFunction.RenormalizationIdentity
 import FabiusFunction.GlobalDecayEnvelope
 import FabiusFunction.LacunaryMeanSharp
+import FabiusFunction.KappaDictionary
+import FabiusFunction.DyadicReflection
+import FabiusFunction.CollatzWielandt
 import FabiusFunction.RvachevFourierDecay
 import FabiusFunction.BoundednessSkeleton
 import FabiusFunction.TransferOperatorStep
@@ -180,6 +184,10 @@ product, its Gamma--zeta periodic correction, and the unconditional corrected
 sharp small-argument asymptotic.  Its probability interface also exposes
 measure-generic midpoint log-convexity and positive-shift factorial bounds for
 unit-interval Laplace moments, with bounded-Fabius specializations.
+Its foundational algebra includes finite weighted-moment coefficient
+extraction across arbitrary semiring homomorphisms and field-generic Lagrange
+evaluation on geometric grids, culminating in module-valued Richardson
+exactness at an arbitrary starting index.
 It also exposes the exact Fourier--Legendre expansion of Rvachev's up
 function, with absolute uniform convergence on `[-1,1]`, and its translated
 monomial representation of the signed global Fabius function on `[0,2]`.

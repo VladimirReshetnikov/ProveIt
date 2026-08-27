@@ -18,6 +18,10 @@ commutative semiring `S`, and write
 * `sum_weight_mul_eval₂_eq_coeff_mul_moment` says that, when every moment
   through a degree bound vanishes except the one in degree `r`, `L` selects
   exactly the coefficient of degree `r` times that surviving moment.
+* `sum_weight_mul_eval₂_eq_map_coeff_mul_of_moments` is the degree-valued
+  top-coefficient form with a supplied exact top moment.
+* `sum_weight_mul_eval_eq_zero_of_degree_lt` is its same-ring strict-degree
+  annihilation corollary.
 
 The nodes may repeat, the surviving moment may itself be zero, and no field
 or subtraction is needed.  The endpoint `r = N` is the algebra behind
@@ -118,5 +122,132 @@ theorem sum_weight_mul_eval₂_eq_constantCoeff
     ∑ i ∈ s, weight i * p.eval₂ φ (node i) = φ (p.coeff 0) := by
   rw [sum_weight_mul_eval₂_eq_constantCoeff_mul_sum φ s weight node p N hdeg
     hvanish, hmass, mul_one]
+
+/-! ## Degree-valued top-moment API -/
+
+/-- **Finite moment extraction after scalar extension.**  Let the polynomial
+coefficients lie in a semiring `R`, while the weights and nodes lie in a
+commutative semiring `S`.  If the lower moments vanish and the moment in
+degree `n` is `c`, evaluation through any ring homomorphism from `R` to `S`
+extracts the image of the coefficient in degree `n` times `c`.
+
+Unlike the range-sum engine above, this public form uses `Polynomial.degree`.
+It therefore expresses the zero-polynomial boundary correctly even when
+`n = 0`; mapping is allowed to lower the degree and need not be injective. -/
+theorem sum_weight_mul_eval₂_eq_map_coeff_mul_of_moments
+    {R S ι : Type*} [Semiring R] [CommSemiring S]
+    (φ : R →+* S) (s : Finset ι) (weight node : ι → S)
+    (n : ℕ) (c : S)
+    (hlower : ∀ d < n, ∑ i ∈ s, weight i * node i ^ d = 0)
+    (htop : (∑ i ∈ s, weight i * node i ^ n) = c)
+    (p : Polynomial R) (hp : p.degree ≤ (n : WithBot ℕ)) :
+    (∑ i ∈ s, weight i * p.eval₂ φ (node i)) =
+      φ (p.coeff n) * c := by
+  rw [sum_weight_mul_eval₂_eq_topCoeff_mul_moment φ s weight node p n
+      (Polynomial.natDegree_le_of_degree_le hp) hlower,
+    htop]
+
+/-- Normalization-free degree-valued form of top-coefficient extraction.
+The top moment remains in its defining finite-sum form. -/
+theorem sum_weight_mul_eval₂_eq_map_coeff_mul_top_moment
+    {R S ι : Type*} [Semiring R] [CommSemiring S]
+    (φ : R →+* S) (s : Finset ι) (weight node : ι → S)
+    (n : ℕ)
+    (hlower : ∀ d < n, ∑ i ∈ s, weight i * node i ^ d = 0)
+    (p : Polynomial R) (hp : p.degree ≤ (n : WithBot ℕ)) :
+    (∑ i ∈ s, weight i * p.eval₂ φ (node i)) =
+      φ (p.coeff n) * ∑ i ∈ s, weight i * node i ^ n := by
+  exact sum_weight_mul_eval₂_eq_map_coeff_mul_of_moments
+    φ s weight node n (∑ i ∈ s, weight i * node i ^ n)
+      hlower rfl p hp
+
+/-- **Strict-degree cancellation after scalar extension.**  A weighted node
+family whose moments below `n` vanish annihilates the image of every
+polynomial of degree strictly below `n`. -/
+theorem sum_weight_mul_eval₂_eq_zero_of_degree_lt
+    {R S ι : Type*} [Semiring R] [CommSemiring S]
+    (φ : R →+* S) (s : Finset ι) (weight node : ι → S)
+    (n : ℕ)
+    (hlower : ∀ d < n, ∑ i ∈ s, weight i * node i ^ d = 0)
+    (p : Polynomial R) (hp : p.degree < (n : WithBot ℕ)) :
+    (∑ i ∈ s, weight i * p.eval₂ φ (node i)) = 0 := by
+  rw [sum_weight_mul_eval₂_eq_map_coeff_mul_top_moment
+      φ s weight node n hlower p hp.le,
+    Polynomial.coeff_eq_zero_of_degree_lt hp, map_zero, zero_mul]
+
+/-- **Mapped top-coefficient congruence.**  Two degree-bounded polynomials
+have equal weighted evaluation sums whenever the coefficient homomorphism
+identifies their coefficients of degree `n`. -/
+theorem sum_weight_mul_eval₂_congr_of_map_coeff_eq
+    {R S ι : Type*} [Semiring R] [CommSemiring S]
+    (φ : R →+* S) (s : Finset ι) (weight node : ι → S)
+    (n : ℕ)
+    (hlower : ∀ d < n, ∑ i ∈ s, weight i * node i ^ d = 0)
+    (p q : Polynomial R)
+    (hp : p.degree ≤ (n : WithBot ℕ))
+    (hq : q.degree ≤ (n : WithBot ℕ))
+    (hcoeff : φ (p.coeff n) = φ (q.coeff n)) :
+    (∑ i ∈ s, weight i * p.eval₂ φ (node i)) =
+      ∑ i ∈ s, weight i * q.eval₂ φ (node i) := by
+  rw [sum_weight_mul_eval₂_eq_map_coeff_mul_top_moment
+      φ s weight node n hlower p hp,
+    sum_weight_mul_eval₂_eq_map_coeff_mul_top_moment
+      φ s weight node n hlower q hq,
+    hcoeff]
+
+/-! ### Same-ring conveniences -/
+
+/-- Same-ring finite moment extraction with a supplied exact top moment. -/
+theorem sum_weight_mul_eval_eq_coeff_mul_of_moments
+    {R ι : Type*} [CommSemiring R]
+    (s : Finset ι) (weight node : ι → R) (n : ℕ) (c : R)
+    (hlower : ∀ d < n, ∑ i ∈ s, weight i * node i ^ d = 0)
+    (htop : (∑ i ∈ s, weight i * node i ^ n) = c)
+    (p : Polynomial R) (hp : p.degree ≤ (n : WithBot ℕ)) :
+    (∑ i ∈ s, weight i * p.eval (node i)) = p.coeff n * c := by
+  simpa only [Polynomial.eval₂_id, RingHom.id_apply] using
+    (sum_weight_mul_eval₂_eq_map_coeff_mul_of_moments
+      (RingHom.id R) s weight node n c hlower htop p hp)
+
+/-- Same-ring, normalization-free top-coefficient extraction. -/
+theorem sum_weight_mul_eval_eq_coeff_mul_top_moment
+    {R ι : Type*} [CommSemiring R]
+    (s : Finset ι) (weight node : ι → R) (n : ℕ)
+    (hlower : ∀ d < n, ∑ i ∈ s, weight i * node i ^ d = 0)
+    (p : Polynomial R) (hp : p.degree ≤ (n : WithBot ℕ)) :
+    (∑ i ∈ s, weight i * p.eval (node i)) =
+      p.coeff n * ∑ i ∈ s, weight i * node i ^ n := by
+  exact sum_weight_mul_eval_eq_coeff_mul_of_moments
+    s weight node n (∑ i ∈ s, weight i * node i ^ n)
+      hlower rfl p hp
+
+/-- Same-ring strict-degree finite moment cancellation. -/
+theorem sum_weight_mul_eval_eq_zero_of_degree_lt
+    {R ι : Type*} [CommSemiring R]
+    (s : Finset ι) (weight node : ι → R) (n : ℕ)
+    (hlower : ∀ d < n, ∑ i ∈ s, weight i * node i ^ d = 0)
+    (p : Polynomial R) (hp : p.degree < (n : WithBot ℕ)) :
+    (∑ i ∈ s, weight i * p.eval (node i)) = 0 := by
+  rw [sum_weight_mul_eval_eq_coeff_mul_top_moment
+      s weight node n hlower p hp.le,
+    Polynomial.coeff_eq_zero_of_degree_lt hp, zero_mul]
+
+/-- Same-ring congruence for degree-bounded polynomials having the same top
+coefficient. -/
+theorem sum_weight_mul_eval_congr_of_coeff_eq
+    {R ι : Type*} [CommSemiring R]
+    (s : Finset ι) (weight node : ι → R) (n : ℕ)
+    (hlower : ∀ d < n, ∑ i ∈ s, weight i * node i ^ d = 0)
+    (p q : Polynomial R)
+    (hp : p.degree ≤ (n : WithBot ℕ))
+    (hq : q.degree ≤ (n : WithBot ℕ))
+    (hcoeff : p.coeff n = q.coeff n) :
+    (∑ i ∈ s, weight i * p.eval (node i)) =
+      ∑ i ∈ s, weight i * q.eval (node i) := by
+  rw [sum_weight_mul_eval_eq_coeff_mul_top_moment
+      s weight node n hlower p hp,
+    sum_weight_mul_eval_eq_coeff_mul_top_moment
+      s weight node n hlower q hq,
+    hcoeff]
 
 end Fabius
