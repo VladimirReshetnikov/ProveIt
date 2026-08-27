@@ -230,7 +230,7 @@ theorem catalanSeriesDelta_conv (m : ℕ) :
         have h1 := Finset.mem_filter.mp hst
         have h2 := Finset.mem_product.mp h1.1
         have h3 := Finset.mem_Icc.mp h2.1
-        refine Prod.ext ?_ ?_ <;> (dsimp only; omega)
+        refine Prod.ext ?_ ?_ <;> (dsimp only; try omega)
       · intro us hus
         have h1 := Finset.mem_sigma.mp hus
         have h2 := Finset.mem_Icc.mp h1.1
