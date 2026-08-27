@@ -8,6 +8,7 @@ import FabiusFunction.GeometricLagrangeQBinomial
 import FabiusFunction.FabiusDiscreteLimitRates
 import FabiusFunction.EndpointTransferPolynomials
 import FabiusFunction.PerturbedLowerLambert
+import FabiusFunction.LambertPhaseLockedRichardson
 import FabiusFunction.PaperKFoldThueMorse
 import FabiusFunction.FinitePolynomialFunctional
 import FabiusFunction.MomentCumulantAlgebra
