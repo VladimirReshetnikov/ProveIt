@@ -53,6 +53,7 @@ import FabiusFunction.ThueMorseQuarterProduct
 import FabiusFunction.ThueMorseDiscSeries
 import FabiusFunction.ThueMorseNaturalBoundary
 import FabiusFunction.ThueMorseNewman
+import FabiusFunction.ThueMorseGelfond
 import FabiusFunction.LacunaryRieszIntegral
 import FabiusFunction.GelfondLogisticBound
 import FabiusFunction.GeometricScaleProducts
@@ -73,6 +74,12 @@ import FabiusFunction.VarianceBookkeeping
 import FabiusFunction.SharpGelfondEquality
 import FabiusFunction.CesaroProfileSkeleton
 import FabiusFunction.LogMeanSkeleton
+import FabiusFunction.SincEulerProduct
+import FabiusFunction.SincCanonicalProduct
+import FabiusFunction.RMSTransferEigenfunctions
+import FabiusFunction.LogFactorConcavity
+import FabiusFunction.BoundednessSkeleton
+import FabiusFunction.TransferOperatorStep
 import FabiusFunction.NegativeLaplace
 import FabiusFunction.ProbabilityLaplaceMoments
 import FabiusFunction.UnitLaplaceMomentBounds

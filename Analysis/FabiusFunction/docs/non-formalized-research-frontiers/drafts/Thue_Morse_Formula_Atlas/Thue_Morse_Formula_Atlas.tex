@@ -4405,8 +4405,8 @@ The rarefied sums are finitely many samples of the trigonometric polynomial
   \label{eq:gelfond-lower}
 \end{equation}
 since the factors have modulus \(|1-\omega|=|1-\omega^2|=\sqrt3\) in every
-position.  Gelfond's theorem \cite{gelfond1968} shows this is sharp up to a
-bounded factor:
+position.  Gelfond's theorem \cite{gelfond1968} --- proved below --- shows this
+is sharp up to a bounded factor:
 \begin{equation}
   \boxed{
   \sup_{x\in\R}|p_m(x)|
@@ -4414,6 +4414,52 @@ bounded factor:
   =\frac2{\sqrt3}\,\bigl(2^m\bigr)^{\log_43}.}
   \label{eq:gelfond-upper}
 \end{equation}
+
+\begin{proof}[Proof of \eqref{eq:gelfond-upper}]
+The whole bound reduces to a single one-variable inequality.  Write
+\(\varphi(t)=2|\sin t|\), so that
+\(|p_m(x)|=\prod_{j<m}\varphi(2^j\pi x)\).  For every real \(t\),
+\begin{equation}
+  \varphi(t)^2\,\varphi(2t)\le3\sqrt3,
+  \label{eq:gelfond-key}
+\end{equation}
+because after squaring and substituting \(u=\sin^2t\) (so that
+\(\sin^22t=4u(1-u)\)) the claim reads \(256\,u^3(1-u)\le27\), and
+\[
+  27-256u^3+256u^4=(4u-3)^2\bigl((4u+1)^2+2\bigr)\ge0,
+\]
+with equality exactly at \(u=\tfrac34\) --- the doubling-fixed
+Gelfond angle \(t=\pi/3\), where \(\varphi=\sqrt3\).  Multiplying
+\eqref{eq:gelfond-key} along the doubling orbit,
+\(\prod_{j<m-1}\varphi_j^2\varphi_{j+1}\le(3\sqrt3)^{m-1}\) with
+\(\varphi_j:=\varphi(2^jt)\); the regrouping
+\[
+  \Bigl(\prod_{j<m}\varphi_j\Bigr)^{3}
+  =\varphi_0\,\varphi_{m-1}^2
+   \prod_{j<m-1}\bigl(\varphi_j^2\varphi_{j+1}\bigr)
+\]
+and the crude boundary bounds \(\varphi_0\le2\),
+\(\varphi_{m-1}^2\le4\) then give
+\((\prod_{j<m}\varphi_j)^3\le8\cdot3^{3(m-1)/2}
+=\bigl(\tfrac2{\sqrt3}3^{m/2}\bigr)^3\).  Taking cube roots yields
+\eqref{eq:gelfond-upper}; the constant is Gelfond's, and by
+\eqref{eq:gelfond-lower} it cannot be lowered below \(1\).
+\end{proof}
+
+\emph{Formal versions.}  The bound \eqref{eq:gelfond-upper} is fully
+formal, with the proof above (\path{ThueMorseGelfond.lean}): the key
+inequality \eqref{eq:gelfond-key} is
+\lean{Fabius.two\_abs\_sin\_sq\_mul\_le}, proved by exactly the
+sum-of-squares certificate displayed; the telescoped product bound
+\(\prod_{j<m}2|\sin(2^j\theta)|\le2(\sqrt3)^{m-1}\) is
+\lean{Fabius.gelfond\_prod\_le}; and the exponential-sum form
+\(\bigl|\sum_{n<2^m}\eps_n\e^{\ii nx}\bigr|
+\le2(\sqrt3)^{m-1}=\tfrac2{\sqrt3}3^{m/2}\), uniform in the real
+frequency \(x\) (the normalization of the frequency is immaterial to
+a uniform bound), is \lean{Fabius.gelfond\_uniform\_bound}, riding
+the corpus sine-product identity
+\lean{Fabius.sum\_thueMorseSign\_exp\_eq\_sin\_prod}.
+
 Decomposing an arbitrary range \([0,N)\) into at most one dyadic block per
 binary digit of \(N\) and applying \eqref{eq:gelfond-upper} blockwise gives
 \begin{equation}
@@ -4983,9 +5029,10 @@ followed by the fundamental theorem of calculus in the parameter
 (\lean{Fabius.frullani\_exp}, \path{FrullaniIntegral.lean}; the
 lemma is not in Mathlib).  The closed integral form
 \eqref{eq:G-integral} is \lean{Fabius.mpLimit\_eq\_integral}; the
-factorization of \(1/\Gamma\) and its derivative at zero are
-\lean{Fabius.Gamma\_inv\_eq\_self\_mul} and
-\lean{Fabius.hasDerivAt\_Gamma\_inv\_zero}; the derivative of the
+derivative \((1/\Gamma)'(0)=1\) is
+\lean{Fabius.hasDerivAt\_Gamma\_inv\_zero}, riding Mathlib's
+entire-function factorization
+\(\Gamma(s)^{-1}=s\,\Gamma(s+1)^{-1}\); the derivative of the
 entire continuation at zero is
 \lean{Fabius.hasDerivAt\_dirichletMellinContinuation\_zero}; and
 the boxed bridge \eqref{eq:G-Dirichlet} is
@@ -5209,7 +5256,7 @@ valuation, carry, and Pascal-row formulas remain genuinely base-two features.
 \subsection{Formalized modules (August 2026)}
 \label{sec:formalized-modules}
 
-The first tranches of the formalization now exist as forty-nine
+The first tranches of the formalization now exist as fifty
 compiled Lean modules in \repo{}, complementing the corpus modules
 (\path{Parity.lean}, \path{TwoAdic.lean}, \path{ThueMorsePrefix.lean},
 \path{ThueMorseGenerating.lean}, \path{ThueMorseExponential.lean},
@@ -5276,6 +5323,7 @@ Module & Contents \\
 \path{ThueMorseDiscSeries.lean} & The Thue--Morse power series as a holomorphic function on the unit disc: locally uniform convergence, the analytic Mahler equation and its iterate, and the real-ray bound \(|F(x)|\le1-x\). \\
 \path{ThueMorseNaturalBoundary.lean} & The natural-boundary theorem: radial vanishing at dyadic roots of unity, two-power roots approximating every circle point, and the double identity-theorem argument. \\
 \path{ThueMorseNewman.lean} & Newman's positivity theorem: residue-class sign sums, the modulo-three parity system, the base-four collapse with disjoint boundary corrections, and the strong induction. \\
+\path{ThueMorseGelfond.lean} & Gelfond's sharp uniform bound: the one-variable sum-of-squares inequality \(\varphi^2(t)\varphi(2t)\le3\sqrt3\), the telescoped doubling-orbit product bound, and the exponential-sum form with constant \(2/\sqrt3\). \\
 \bottomrule
 \end{longtable}}
 
