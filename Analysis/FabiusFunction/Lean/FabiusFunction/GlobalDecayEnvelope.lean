@@ -26,14 +26,13 @@ Consequently no constant can give a global `E_κ` envelope when
 `κ > κ∞`; an explicit point of the form `2ᵏ·(2/3) ≥ 1`
 violates any proposed bound.
 
-The upper bound has three ingredients: the gauge identity of the peak ray holds at *every*
-base point (`gauge_ratio_identity` — the `y = 2/3` specialisation was
-`peak_ray_gauge_identity`), the shell bound
+The upper bound has three ingredients: `PeakRayEnvelope`'s universal
+`decayGauge_dyadic_shell_identity` supplies the shell-to-gauge algebra
+(with `gauge_ratio_identity` as its Fourier specialization), the shell bound
 `norm_rvachevFourierProduct_two_pow_mul_le` already holds along every
 dyadic ray, and the ratio `‖Φ‖/E_{κ∞}` is continuous hence bounded on
 the compact mantissa window `[1,2]`.
 
-* `gauge_ratio_identity` — the gauge ratio at an arbitrary base point.
 * `decayGauge_div_decayGauge` — comparison of two gauges at a positive point.
 * `continuousOn_decayGauge` — continuity of the gauge.
 * `exists_bound_on_mantissa_window` — the compact-window constant.
@@ -55,7 +54,7 @@ open Finset Real Filter Topology
 
 namespace Fabius
 
-/-! ## The gauge ratio at an arbitrary base point -/
+/-! ## Comparison of gauge exponents -/
 
 /-- At a positive point the quotient of two decay gauges is just the
 corresponding power correction:
@@ -68,61 +67,6 @@ theorem decayGauge_div_decayGauge (κ₁ κ₂ : ℝ) {x : ℝ} (hx : 0 < x) :
   unfold decayGauge
   rw [mul_div_mul_left _ _ (Real.exp_ne_zero _), ← Real.rpow_sub hx]
   congr 1
-  ring
-
-/-- **The gauge identity, at every base point**: the extremal shell
-rate is exactly the `E_{κ∞}` ratio between `y` and `2ᵏy`, for every
-`y > 0`.  (At `y = 2/3` this is `peak_ray_gauge_identity`; the general
-statement is no harder, since `log y` simply stays an atom.) -/
-theorem gauge_ratio_identity (k : ℕ) {y : ℝ} (hy : 0 < y) :
-    (Real.sqrt 3 / 2) ^ k /
-        ((2:ℝ) ^ (k * (k + 1) / 2) * (π * y) ^ k) *
-      decayGauge kappaInf y =
-    decayGauge kappaInf ((2:ℝ) ^ k * y) := by
-  have hl2 : (0:ℝ) < Real.log 2 := Real.log_pos (by norm_num)
-  have hl2' : Real.log 2 ≠ 0 := ne_of_gt hl2
-  have hxk : (0:ℝ) < (2:ℝ) ^ k * y := by positivity
-  have hlx : Real.log ((2:ℝ) ^ k * y) =
-      k * Real.log 2 + Real.log y := by
-    rw [Real.log_mul (by positivity) (ne_of_gt hy), Real.log_pow]
-  have hT : ((k * (k + 1) / 2 : ℕ) : ℝ) = (k : ℝ) * ((k : ℝ) + 1) / 2 := by
-    have h2 : (k * (k + 1) / 2 : ℕ) * 2 = k * (k + 1) :=
-      Nat.div_mul_cancel (Nat.even_mul_succ_self k).two_dvd
-    have h3 := congrArg (fun m : ℕ => (m : ℝ)) h2
-    push_cast at h3
-    linarith
-  have hls : Real.log (Real.sqrt 3 / 2) = Real.log 3 / 2 - Real.log 2 := by
-    rw [Real.log_div (by positivity) (by norm_num),
-      Real.log_sqrt (by norm_num : (0:ℝ) ≤ 3)]
-  have hlc : Real.log (π * y) = Real.log π + Real.log y :=
-    Real.log_mul Real.pi_ne_zero (ne_of_gt hy)
-  have hlps : Real.log (π / Real.sqrt 3) =
-      Real.log π - Real.log 3 / 2 := by
-    rw [Real.log_div Real.pi_ne_zero (by positivity),
-      Real.log_sqrt (by norm_num : (0:ℝ) ≤ 3)]
-  unfold decayGauge kappaInf
-  rw [Real.rpow_def_of_pos hy, Real.rpow_def_of_pos hxk]
-  have e1 : (Real.sqrt 3 / 2) ^ k =
-      Real.exp ((k : ℝ) * Real.log (Real.sqrt 3 / 2)) := by
-    rw [Real.exp_nat_mul, Real.exp_log (by positivity)]
-  have e2 : (2:ℝ) ^ (k * (k + 1) / 2) =
-      Real.exp (((k * (k + 1) / 2 : ℕ) : ℝ) * Real.log 2) := by
-    rw [Real.exp_nat_mul, Real.exp_log (by norm_num : (0:ℝ) < 2)]
-  have e3 : (π * y) ^ k = Real.exp ((k : ℝ) * Real.log (π * y)) := by
-    rw [Real.exp_nat_mul, Real.exp_log (by positivity)]
-  rw [e1, e2, e3]
-  have hcomb : ∀ A B C D E : ℝ,
-      Real.exp A / (Real.exp B * Real.exp C) *
-          (Real.exp D * Real.exp E) =
-        Real.exp (A - B - C + D + E) := by
-    intro A B C D E
-    rw [← Real.exp_add B C, ← Real.exp_add D E, div_mul_eq_mul_div,
-      ← Real.exp_add, ← Real.exp_sub]
-    congr 1
-    ring
-  rw [hcomb, ← Real.exp_add, Real.exp_eq_exp]
-  rw [hlx, hT, hls, hlc, hlps]
-  field_simp
   ring
 
 /-! ## Continuity of the gauge -/
@@ -371,6 +315,13 @@ theorem norm_rvachevFourierProduct_peak_ray_ratio_tendsto_atTop
     push_cast
     ring
   symm
+  change
+    ‖rvachevFourierProduct
+        ((((2 : ℝ) ^ k * (2 / 3 : ℝ) : ℝ) : ℂ))‖ /
+      decayGauge κ ((2 : ℝ) ^ k * (2 / 3 : ℝ)) =
+        (‖rvachevFourierProduct (((2 / 3 : ℝ) : ℂ))‖ /
+            decayGauge kappaInf (2 / 3 : ℝ)) *
+          ((2 : ℝ) ^ k * (2 / 3 : ℝ)) ^ (κ - kappaInf)
   rw [hcast, norm_rvachevFourierProduct_peak_ray_envelope,
     mul_div_assoc, decayGauge_div_decayGauge _ _ hxk]
 
