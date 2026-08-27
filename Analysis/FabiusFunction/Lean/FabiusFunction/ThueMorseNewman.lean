@@ -174,7 +174,7 @@ theorem newman_positivity : ∀ N : ℕ, 1 ≤ N →
         norm_num [thueMorseResidueSum, Finset.sum_range_succ,
           he0, he1, he2, he3]
     · -- inductive step in base four
-      push_neg at h4
+      push Not at h4
       have hM1 : 1 ≤ N / 4 := by omega
       have hMN : N / 4 < N := by omega
       have hIH := ih (N / 4) hMN hM1

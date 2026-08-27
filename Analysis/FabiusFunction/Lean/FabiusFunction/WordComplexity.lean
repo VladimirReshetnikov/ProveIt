@@ -48,6 +48,8 @@ variable {α : Type*}
 /-- The length-`ℓ` window of the word `f` at position `i`. -/
 def wordWindow (f : ℕ → α) (ℓ i : ℕ) : Fin ℓ → α := fun j => f (i + j)
 
+/-- Evaluating a word window at an offset reads the original word at the
+starting position plus that offset. -/
 @[simp] theorem wordWindow_apply (f : ℕ → α) (ℓ i : ℕ) (j : Fin ℓ) :
     wordWindow f ℓ i j = f (i + j) := rfl
 
@@ -55,6 +57,7 @@ def wordWindow (f : ℕ → α) (ℓ i : ℕ) : Fin ℓ → α := fun j => f (i 
 def wordFactors (f : ℕ → α) (ℓ : ℕ) : Set (Fin ℓ → α) :=
   Set.range (wordWindow f ℓ)
 
+/-- Every window of a word is a factor of that word. -/
 theorem wordWindow_mem_wordFactors (f : ℕ → α) (ℓ i : ℕ) :
     wordWindow f ℓ i ∈ wordFactors f ℓ := ⟨i, rfl⟩
 

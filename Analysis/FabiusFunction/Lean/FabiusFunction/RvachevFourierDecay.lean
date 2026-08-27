@@ -14,9 +14,10 @@ product `rvachevFourierProduct`.  This module transfers its headline results
 to the Fourier transform `rvachevFourier F` of any bounded Fabius solution.
 
 The facade covers the canonical product, dyadic shell factorization, baseline
-and global gauge bounds, the strict global peak at zero, the exact extremal
-peak ray, side- and central-lobe maxima, the Thue--Morse lobe sign, and the
-exact real zero order.
+decay, positive-ray and two-sided global gauge bounds, the strict global peak
+at zero, the exact extremal peak ray, positive and reflected negative side-lobe
+maxima, the central-lobe maximum, the Thue--Morse lobe sign, and the exact real
+zero order.
 Normalization, evenness, real-axis real-valuedness, and the zero set already
 have direct `rvachevFourier` theorems in `FourierProduct`, so they are not
 duplicated here.
@@ -137,6 +138,16 @@ theorem norm_rvachevFourier_le_decayGauge
   simpa only [rvachevFourier_eq_product F hF] using
     norm_rvachevFourierProduct_le_decayGauge
 
+/-- Two-sided global `kappaInf`-gauge envelope for the actual Fourier
+transform: one positive constant controls both real-frequency tails in the
+form `‖rvachevFourier F x‖ ≤ C · E_{kappaInf}(|x|)` whenever `1 ≤ |x|`. -/
+theorem norm_rvachevFourier_le_decayGauge_abs
+    (F : BoundedFabius) (hF : IsFabius F) :
+    ∃ C : ℝ, 0 < C ∧ ∀ x : ℝ, 1 ≤ |x| →
+      ‖rvachevFourier F (x : ℂ)‖ ≤ C * decayGauge kappaInf |x| := by
+  simpa only [rvachevFourier_eq_product F hF] using
+    norm_rvachevFourierProduct_le_decayGauge_abs
+
 /-! ## Exact extremal peak ray -/
 
 /-- Exact shell formula on the extremal dyadic ray through `2/3`. -/
@@ -173,6 +184,17 @@ theorem existsUnique_isMaxOn_rvachevFourier_lobe
         (Set.Ioo (m : ℝ) ((m : ℝ) + 1)) c := by
   simpa only [rvachevFourier_eq_product F hF] using
     existsUnique_isMaxOn_lobe m hm
+
+/-- Every reflected negative side lobe `(-(m+1),-m)`, with `m ≥ 1`, has a
+unique maximizer of the Fourier modulus. -/
+theorem existsUnique_isMaxOn_rvachevFourier_neg_lobe
+    (F : BoundedFabius) (hF : IsFabius F)
+    (m : ℕ) (hm : 1 ≤ m) :
+    ∃! c, c ∈ Set.Ioo (-((m : ℝ) + 1)) (-(m : ℝ)) ∧
+      IsMaxOn (fun x : ℝ => ‖rvachevFourier F (x : ℂ)‖)
+        (Set.Ioo (-((m : ℝ) + 1)) (-(m : ℝ))) c := by
+  simpa only [rvachevFourier_eq_product F hF] using
+    existsUnique_isMaxOn_neg_lobe m hm
 
 /-- The Fourier modulus attains a central-lobe maximum at the origin. -/
 theorem isMaxOn_norm_rvachevFourier

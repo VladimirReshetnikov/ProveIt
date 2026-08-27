@@ -10,7 +10,9 @@ translation invariance says that polynomial is constant, so evaluation works
 uniformly over `ℝ`, `ℂ`, and other characteristic-zero scalar fields.
 The constant-polynomial identity is exposed at every coefficient, retaining
 the exact arbitrary-dyadic normalization in degree zero and the cancellation
-of every positive translation coefficient.
+of every positive translation coefficient.  Scalar evaluation also inherits
+the rational formula's representation invariance: the translation and the
+chosen numerator/denominator presentation may be changed simultaneously.
 -/
 
 set_option autoImplicit false
@@ -162,6 +164,31 @@ theorem qBinomialThueMorseDyadicTranslatedFormulaIn_independent
       qBinomialThueMorseDyadicTranslatedFormulaIn q₂ m n := by
   rw [qBinomialThueMorseDyadicTranslatedFormulaIn_eq_centered,
     qBinomialThueMorseDyadicTranslatedFormulaIn_eq_centered]
+
+/-- Scalar translated formulas agree whenever their natural numerator and
+denominator-exponent pairs represent the same rational number.  The two
+scalar translations may differ as well. -/
+theorem qBinomialThueMorseDyadicTranslatedFormulaIn_eq_of_rat_eq
+    {K : Type*} [Field K] [Algebra ℚ K]
+    (q₁ q₂ : K) (n₁ n₂ m₁ m₂ : ℕ)
+    (h : (m₁ : ℚ) / (2 : ℚ) ^ n₁ =
+      (m₂ : ℚ) / (2 : ℚ) ^ n₂) :
+    qBinomialThueMorseDyadicTranslatedFormulaIn q₁ m₁ n₁ =
+      qBinomialThueMorseDyadicTranslatedFormulaIn q₂ m₂ n₂ := by
+  rw [qBinomialThueMorseDyadicTranslatedFormulaIn_eq_centered,
+    qBinomialThueMorseDyadicTranslatedFormulaIn_eq_centered,
+    qBinomialThueMorseDyadicFormula_eq_of_rat_eq n₁ n₂ m₁ m₂ h]
+
+/-- One binary refinement of the represented dyadic leaves the scalar
+translated formula unchanged, even when its translation is changed. -/
+theorem qBinomialThueMorseDyadicTranslatedFormulaIn_refine
+    {K : Type*} [Field K] [Algebra ℚ K]
+    (q₁ q₂ : K) (m n : ℕ) :
+    qBinomialThueMorseDyadicTranslatedFormulaIn q₁ (2 * m) (n + 1) =
+      qBinomialThueMorseDyadicTranslatedFormulaIn q₂ m n := by
+  rw [qBinomialThueMorseDyadicTranslatedFormulaIn_eq_centered,
+    qBinomialThueMorseDyadicTranslatedFormulaIn_eq_centered,
+    qBinomialThueMorseDyadicFormula_refine]
 
 /-- Rational casts agree with the original rational formula. -/
 theorem qBinomialThueMorseDyadicTranslatedFormulaIn_ratCast
