@@ -31,6 +31,13 @@ balance corollary.
 * `oddBinomialIndices_eq_image_powerset` — the odd positions of row `n`
   are exactly the `2^wt(n)` submasks, parametrized by the powerset of the
   bit support.
+* `sum_oddBinomialIndices_thueMorseSign_mul_affine_eval_of_degree_lt` —
+  **actual-index sparse Prouhet cancellation**: the signed affine evaluation
+  of every polynomial of degree below `wt(n)` vanishes on the odd positions
+  of row `n`, including the zero-polynomial boundary at `n = 0`.
+* `sum_oddBinomialIndices_thueMorseSign_mul_affine_pow_binaryWeight` — the
+  corresponding **sharp first moment**, expressed on the actual Pascal-row
+  indices rather than on subsets of the bit support.
 * `prod_one_sub_pow_bitSupport` — the **signed Pascal-support product**
   over any commutative ring:
   `∏_{j∈J(n)} (1 - z^(2^j)) = ∑_{k ⊑ n} ε(k)·z^k`, with the submasks
@@ -307,6 +314,71 @@ theorem sum_two_pow_injOn_powerset (n : ℕ) :
     ∀ T ∈ (bitSupport n).powerset, ∀ S ∈ (bitSupport n).powerset,
       ∑ j ∈ T, 2 ^ j = ∑ j ∈ S, 2 ^ j → T = S :=
   fun _ _ _ _ h => sum_two_pow_injective h
+
+/-! ### Sparse Prouhet identities on the actual Pascal-row indices -/
+
+/-- Reindexing kernel for the actual-index sparse Prouhet formulas.  The odd
+positions of row `n` are the encoded subsets of `bitSupport n`, and the
+Thue--Morse sign of an encoded subset is `(-1)` to its cardinality. -/
+private theorem sum_oddBinomialIndices_thueMorseSign_mul_eq_sum_powerset
+    {R : Type*} [CommRing R] (n : ℕ) (g : ℕ → R) :
+    ∑ k ∈ oddBinomialIndices n, ((thueMorseSign k : ℤ) : R) * g k =
+      ∑ T ∈ (bitSupport n).powerset,
+        (-1 : R) ^ T.card * g (∑ j ∈ T, 2 ^ j) := by
+  rw [oddBinomialIndices_eq_image_powerset,
+    Finset.sum_image (sum_two_pow_injOn_powerset n)]
+  refine Finset.sum_congr rfl fun T _ => ?_
+  rw [thueMorseSign_sum_two_pow]
+  push_cast
+
+/-- **Actual-index sparse Prouhet cancellation.**  Let `k` run over the
+indices for which `C(n,k)` is odd, equivalently over the natural-number
+submasks of `n`.  Then the Thue--Morse signed affine evaluation of every
+polynomial of degree below `binaryWeight n` vanishes:
+`∑_{C(n,k) odd} ε(k) p(x + kh) = 0`.
+
+Using `Polynomial.degree` makes the statement exact also at `n = 0`: the
+zero polynomial has degree `⊥ < 0`, while no nonzero polynomial satisfies
+the hypothesis. -/
+theorem sum_oddBinomialIndices_thueMorseSign_mul_affine_eval_of_degree_lt
+    {R : Type*} [CommRing R] (n : ℕ) (p : R[X])
+    (hdeg : p.degree < (binaryWeight n : WithBot ℕ)) (x h : R) :
+    ∑ k ∈ oddBinomialIndices n,
+      ((thueMorseSign k : ℤ) : R) * p.eval (x + (k : R) * h) = 0 := by
+  calc
+    ∑ k ∈ oddBinomialIndices n,
+        ((thueMorseSign k : ℤ) : R) * p.eval (x + (k : R) * h) =
+        ∑ T ∈ (bitSupport n).powerset,
+          (-1 : R) ^ T.card *
+            p.eval (x + ((∑ j ∈ T, 2 ^ j : ℕ) : R) * h) :=
+      sum_oddBinomialIndices_thueMorseSign_mul_eq_sum_powerset n
+        (fun k => p.eval (x + (k : R) * h))
+    _ = 0 := sum_submask_neg_one_pow_eval_of_degree_lt n p hdeg x h
+
+/-- **Sharp actual-index sparse moment.**  At the first degree not covered
+by sparse Prouhet cancellation, the odd positions of row `n` satisfy
+`∑ ε(k)(x+kh)^wt(n) = (-1)^wt(n) wt(n)! 2^β h^wt(n)`, where
+`β = ∑_{j ∈ bitSupport n} j`.  This includes row zero: both sides are one. -/
+theorem sum_oddBinomialIndices_thueMorseSign_mul_affine_pow_binaryWeight
+    {R : Type*} [CommRing R] (n : ℕ) (x h : R) :
+    ∑ k ∈ oddBinomialIndices n,
+      ((thueMorseSign k : ℤ) : R) *
+        (x + (k : R) * h) ^ binaryWeight n =
+      (-1 : R) ^ binaryWeight n * ((binaryWeight n).factorial : R) *
+        2 ^ (∑ j ∈ bitSupport n, j) * h ^ binaryWeight n := by
+  calc
+    ∑ k ∈ oddBinomialIndices n,
+        ((thueMorseSign k : ℤ) : R) *
+          (x + (k : R) * h) ^ binaryWeight n =
+        ∑ T ∈ (bitSupport n).powerset,
+          (-1 : R) ^ T.card *
+            (x + ((∑ j ∈ T, 2 ^ j : ℕ) : R) * h) ^ binaryWeight n :=
+      sum_oddBinomialIndices_thueMorseSign_mul_eq_sum_powerset n
+        (fun k => (x + (k : R) * h) ^ binaryWeight n)
+    _ = (-1 : R) ^ binaryWeight n *
+          ((binaryWeight n).factorial : R) *
+          2 ^ (∑ j ∈ bitSupport n, j) * h ^ binaryWeight n :=
+      sum_submask_neg_one_pow_pow n x h
 
 /-! ### The signed Pascal-support product and balance -/
 
