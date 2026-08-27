@@ -7,6 +7,7 @@ import FabiusFunction.FinitePolynomialFilterExactness
 import FabiusFunction.GeometricLagrangeWeights
 import FabiusFunction.FabiusDiscreteLimitRates
 import FabiusFunction.EndpointTransferPolynomials
+import FabiusFunction.PerturbedLowerLambert
 import FabiusFunction.PaperKFoldThueMorse
 import FabiusFunction.FinitePolynomialFunctional
 import FabiusFunction.ThueMorseBooleanCube
