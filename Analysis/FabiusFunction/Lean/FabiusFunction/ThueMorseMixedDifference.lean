@@ -139,7 +139,7 @@ theorem dyadicMixedDifference_succ {M A : Type*} [AddCommMonoid M]
       dyadicMixedDifference h m f x -
         dyadicMixedDifference h m f (x + 2 ^ m • h) := by
   unfold dyadicMixedDifference
-  rw [Finset.range_succ, mixedDifference_insert (hi := by simp)]
+  rw [Finset.range_add_one, mixedDifference_insert (hi := by simp)]
   simp only [vadd_eq_add]
   rw [add_comm (2 ^ m • h) x]
 
