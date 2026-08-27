@@ -48,8 +48,9 @@ statement in the formula atlas.  This module proves its basic algebra:
   in the basis where the sharp value needs no factorial.  Evaluating iterated
   derivatives at one recovers the same moments with the expected `r!` factor.
 
-Everything is exact algebra over an arbitrary commutative ring; no analysis
-and no rational denominators appear anywhere.
+The universal identities are exact algebra over arbitrary commutative rings;
+the exact-multiplicity and cyclotomic statements are over `ℤ`.  No analysis or
+rational denominators appear anywhere.
 -/
 
 set_option autoImplicit false
@@ -398,9 +399,9 @@ theorem one_sub_X_pow_succ_not_dvd_thueMorseBlockPolynomial (m : ℕ) :
     dsimp only [Q]
     exact thueMorseBlockPolynomial_eq_geom_prod m
   have hbase : (1 - Polynomial.X : Polynomial ℤ) ≠ 0 := by
-    intro hzero
-    have hcoeff := congrArg (fun p : Polynomial ℤ => p.coeff 1) hzero
-    norm_num [Polynomial.coeff_one] at hcoeff
+    apply sub_ne_zero.mpr
+    simpa only [map_one] using
+      (Polynomial.X_ne_C (R := ℤ) (1 : ℤ)).symm
   have hcancel :
       (1 - Polynomial.X : Polynomial ℤ) ^ m * Q =
         (1 - Polynomial.X) ^ m * ((1 - Polynomial.X) * q) := by

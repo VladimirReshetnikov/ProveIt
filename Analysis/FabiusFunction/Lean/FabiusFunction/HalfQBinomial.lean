@@ -672,7 +672,7 @@ theorem qBinomial_half_sum_algebraMap_eq_zero_iff
     exact ⟨j, hj, by simp only [map_pow, map_ofNat]⟩
   · rintro ⟨j, hj, hz⟩
     refine ⟨j, hj, (algebraMap ℚ K).injective ?_⟩
-    simpa only [map_pow, map_ofNat] using hz
+    simpa only [map_pow, map_ofNat, map_zero, zero_add] using hz
 
 /-! ## Dyadic-node specializations -/
 
