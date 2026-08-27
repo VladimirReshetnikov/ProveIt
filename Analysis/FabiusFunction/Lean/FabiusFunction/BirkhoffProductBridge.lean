@@ -16,10 +16,15 @@ Rvachev Fourier transform:
 
 * `exists_int_iterate_doublingMap` — `Tᵏt = 2ᵏt − m`, `m ∈ ℤ`.
 * `abs_sin_two_pow_eq` — `|sin (π 2ᵏ t)| = |sin (π Tᵏ t)|`.
+* `log_abs_prod_two_sin_global` — the absolute-value logarithmic bridge at
+  every real seed off the finite zero set, with no fundamental-domain
+  hypothesis.
 * `log_abs_prod_two_sin` — the pointwise bridge.
 * `ae_iterate_sin_ne_zero` — the zero set is null.
 * `integral_sq_log_prod_two_sin` — **the variance of the actual
   product**.
+* `integral_sq_log_prod_two_sin_all` — the same exact variance for every
+  natural product length, including the empty product.
 -/
 
 set_option autoImplicit false
@@ -67,6 +72,28 @@ theorem iterate_doublingMap_mem {t : ℝ} (ht : t ∈ Set.Ico (0:ℝ) 1)
     rw [Function.iterate_succ_apply']
     exact ⟨doublingMap_nonneg _, doublingMap_lt_one _⟩
 
+/-- Global absolute-value form of the product/Birkhoff bridge.  It holds at
+every real seed off the finite zero set: reducing `2ᵏt` modulo integers
+changes the sine only by a sign, which disappears inside the absolute value.
+-/
+theorem log_abs_prod_two_sin_global (n : ℕ) {t : ℝ}
+    (hne : ∀ k, k < n → Real.sin (π * (doublingMap^[k] t)) ≠ 0) :
+    Real.log |∏ k ∈ Finset.range n,
+      (2 * Real.sin (π * (2 ^ k * t)))| =
+      ∑ k ∈ Finset.range n,
+        Real.log |2 * Real.sin (π * (doublingMap^[k] t))| := by
+  rw [Finset.abs_prod]
+  have hprod : ∏ k ∈ Finset.range n,
+      |2 * Real.sin (π * (2 ^ k * t))| =
+      ∏ k ∈ Finset.range n,
+        |2 * Real.sin (π * (doublingMap^[k] t))| :=
+    Finset.prod_congr rfl (fun k _ => by
+      rw [abs_mul, abs_mul, abs_sin_two_pow_eq k t])
+  rw [hprod]
+  exact Real.log_prod (fun k hk => by
+    rw [abs_ne_zero]
+    exact mul_ne_zero (by norm_num) (hne k (Finset.mem_range.mp hk)))
+
 /-- **The pointwise bridge**: off the zero set,
 `log |∏_{k<n} 2 sin (π 2ᵏ t)| = ∑_{k<n} ψ(Tᵏ t)`. -/
 theorem log_abs_prod_two_sin (n : ℕ) {t : ℝ}
@@ -85,17 +112,9 @@ theorem log_abs_prod_two_sin (n : ℕ) {t : ℝ}
         positivity
       · nlinarith [Real.pi_pos, hmem.2]
     exact lt_of_le_of_ne h0 (Ne.symm (hne k hk))
-  rw [Finset.abs_prod]
-  have hprod : ∏ k ∈ Finset.range n, |2 * Real.sin (π * (2 ^ k * t))| =
-      ∏ k ∈ Finset.range n,
-        (2 * Real.sin (π * (doublingMap^[k] t))) :=
-    Finset.prod_congr rfl (fun k hk => by
-      have hkn := Finset.mem_range.mp hk
-      rw [abs_mul, abs_sin_two_pow_eq k t,
-        show |(2:ℝ)| = 2 by norm_num, abs_of_pos (hpos k hkn)])
-  rw [hprod]
-  exact Real.log_prod (fun k hk =>
-    (mul_pos two_pos (hpos k (Finset.mem_range.mp hk))).ne')
+  rw [log_abs_prod_two_sin_global n hne]
+  exact Finset.sum_congr rfl (fun k hk => by
+    rw [abs_of_pos (mul_pos two_pos (hpos k (Finset.mem_range.mp hk)))])
 
 /-- The set where some factor vanishes is null. -/
 theorem ae_iterate_sin_ne_zero (n : ℕ) :
@@ -155,5 +174,16 @@ theorem integral_sq_log_prod_two_sin (n : ℕ) (hn : 1 ≤ n) :
     rw [log_abs_prod_two_sin n ht hne]
   rw [hcongr]
   exact integral_sq_birkhoff_sum n hn
+
+/-- Exact log-product variance for every natural product length.  For
+`n = 0` the normalized product is the empty product `1`, so its logarithmic
+square and the closed form both vanish. -/
+theorem integral_sq_log_prod_two_sin_all (n : ℕ) :
+    ∫ t in (0:ℝ)..1, Real.log |∏ k ∈ Finset.range n,
+      (2 * Real.sin (π * (2 ^ k * t)))| ^ 2 =
+      π ^ 2 / 4 * n - π ^ 2 / 3 * (1 - (1 / 2) ^ n) := by
+  cases n with
+  | zero => norm_num
+  | succ n => exact integral_sq_log_prod_two_sin (n + 1) (by omega)
 
 end Fabius
