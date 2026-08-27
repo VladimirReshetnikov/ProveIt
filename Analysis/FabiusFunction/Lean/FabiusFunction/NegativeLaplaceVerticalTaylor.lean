@@ -88,6 +88,7 @@ noncomputable def normalizedNegativeLaplaceVerticalMoment
   negativeLaplaceVerticalMoment F k r θ /
     negativeLaplaceVerticalMoment F 0 r θ
 
+/-- The zeroth raw tilted moment is the vertical generating-function curve. -/
 @[simp] lemma negativeLaplaceVerticalMoment_zero
     (F : BoundedFabius) (r θ : ℝ) :
     negativeLaplaceVerticalMoment F 0 r θ =
@@ -167,6 +168,8 @@ lemma normalizedNegativeLaplaceVerticalMoment_hasDerivAt
   field_simp [hne]
   ring
 
+/-- At `θ = 0`, the `k`th raw vertical moment is the real Laplace moment,
+embedded in `ℂ`. -/
 @[simp] theorem negativeLaplaceVerticalMoment_at_zero
     (F : BoundedFabius) (hF : IsFabius F) (k : ℕ) (r : ℝ) :
     negativeLaplaceVerticalMoment F k r 0 =
@@ -205,6 +208,8 @@ lemma normalizedNegativeLaplaceVerticalMoment_hasDerivAt
       rw [ProbabilityRepresentation.unitLaplaceMoment_weightedSumDistribution_eq_fabiusLaplaceMoment
         F hF k r]
 
+/-- At `θ = 0`, the normalized vertical moment is the corresponding real
+normalized Laplace moment, embedded in `ℂ`. -/
 @[simp] theorem normalizedNegativeLaplaceVerticalMoment_at_zero
     (F : BoundedFabius) (hF : IsFabius F) (k : ℕ) (r : ℝ) :
     normalizedNegativeLaplaceVerticalMoment F k r 0 =
@@ -246,6 +251,8 @@ noncomputable def negativeLaplaceVerticalCumulantFourth
       normalizedNegativeLaplaceVerticalMoment F 2 r θ -
     6 * normalizedNegativeLaplaceVerticalMoment F 1 r θ ^ 4
 
+/-- At the real point, the first vertical cumulant is
+`-negativeLaplaceLogFirst F r`. -/
 @[simp] lemma negativeLaplaceVerticalCumulantFirst_at_zero
     (F : BoundedFabius) (hF : IsFabius F) (r : ℝ) :
     negativeLaplaceVerticalCumulantFirst F r 0 =
@@ -255,6 +262,8 @@ noncomputable def negativeLaplaceVerticalCumulantFourth
   push_cast
   ring
 
+/-- At the real point, the second vertical cumulant is
+`negativeLaplaceLogSecond F r`. -/
 @[simp] lemma negativeLaplaceVerticalCumulantSecond_at_zero
     (F : BoundedFabius) (hF : IsFabius F) (r : ℝ) :
     negativeLaplaceVerticalCumulantSecond F r 0 =
@@ -265,6 +274,8 @@ noncomputable def negativeLaplaceVerticalCumulantFourth
   push_cast
   ring
 
+/-- At the real point, the third vertical cumulant is
+`-negativeLaplaceLogThird F r`. -/
 @[simp] lemma negativeLaplaceVerticalCumulantThird_at_zero
     (F : BoundedFabius) (hF : IsFabius F) (r : ℝ) :
     negativeLaplaceVerticalCumulantThird F r 0 =
@@ -276,6 +287,8 @@ noncomputable def negativeLaplaceVerticalCumulantFourth
   push_cast
   ring
 
+/-- At the real point, the fourth vertical cumulant is
+`negativeLaplaceLogFourth F r`. -/
 @[simp] lemma negativeLaplaceVerticalCumulantFourth_at_zero
     (F : BoundedFabius) (hF : IsFabius F) (r : ℝ) :
     negativeLaplaceVerticalCumulantFourth F r 0 =
@@ -394,6 +407,8 @@ noncomputable def negativeLaplaceVerticalLogFourth
   ((-((r : ℂ) * Complex.I)) ^ 4) •
     negativeLaplaceVerticalCumulantFourth F r
 
+/-- Evaluating the first vertical-log derivative multiplies the first
+cumulant by `-i r`. -/
 @[simp] lemma negativeLaplaceVerticalLogFirst_apply
     (F : BoundedFabius) (r θ : ℝ) :
     negativeLaplaceVerticalLogFirst F r θ =
@@ -401,6 +416,8 @@ noncomputable def negativeLaplaceVerticalLogFourth
         negativeLaplaceVerticalCumulantFirst F r θ := by
   simp [negativeLaplaceVerticalLogFirst, smul_eq_mul]
 
+/-- Evaluating the second vertical-log derivative multiplies the second
+cumulant by `(-i r)^2`. -/
 @[simp] lemma negativeLaplaceVerticalLogSecond_apply
     (F : BoundedFabius) (r θ : ℝ) :
     negativeLaplaceVerticalLogSecond F r θ =
@@ -408,6 +425,8 @@ noncomputable def negativeLaplaceVerticalLogFourth
         negativeLaplaceVerticalCumulantSecond F r θ := by
   simp [negativeLaplaceVerticalLogSecond, smul_eq_mul]
 
+/-- Evaluating the third vertical-log derivative multiplies the third
+cumulant by `(-i r)^3`. -/
 @[simp] lemma negativeLaplaceVerticalLogThird_apply
     (F : BoundedFabius) (r θ : ℝ) :
     negativeLaplaceVerticalLogThird F r θ =
@@ -415,6 +434,8 @@ noncomputable def negativeLaplaceVerticalLogFourth
         negativeLaplaceVerticalCumulantThird F r θ := by
   simp [negativeLaplaceVerticalLogThird, smul_eq_mul]
 
+/-- Evaluating the fourth vertical-log derivative multiplies the fourth
+cumulant by `(-i r)^4`. -/
 @[simp] lemma negativeLaplaceVerticalLogFourth_apply
     (F : BoundedFabius) (r θ : ℝ) :
     negativeLaplaceVerticalLogFourth F r θ =
@@ -422,6 +443,8 @@ noncomputable def negativeLaplaceVerticalLogFourth
         negativeLaplaceVerticalCumulantFourth F r θ := by
   simp [negativeLaplaceVerticalLogFourth, smul_eq_mul]
 
+/-- At `θ = 0`, the first vertical derivative is
+`i r * negativeLaplaceLogFirst F r`. -/
 @[simp] theorem negativeLaplaceVerticalLogFirst_at_zero
     (F : BoundedFabius) (hF : IsFabius F) (r : ℝ) :
     negativeLaplaceVerticalLogFirst F r 0 =
@@ -431,6 +454,8 @@ noncomputable def negativeLaplaceVerticalLogFourth
   push_cast
   ring
 
+/-- At `θ = 0`, the second vertical derivative is
+`-r^2 * negativeLaplaceLogSecond F r`. -/
 @[simp] theorem negativeLaplaceVerticalLogSecond_at_zero
     (F : BoundedFabius) (hF : IsFabius F) (r : ℝ) :
     negativeLaplaceVerticalLogSecond F r 0 =
@@ -442,6 +467,8 @@ noncomputable def negativeLaplaceVerticalLogFourth
   rw [Complex.I_sq]
   ring
 
+/-- At `θ = 0`, the third vertical derivative is
+`-i r^3 * negativeLaplaceLogThird F r`. -/
 @[simp] theorem negativeLaplaceVerticalLogThird_at_zero
     (F : BoundedFabius) (hF : IsFabius F) (r : ℝ) :
     negativeLaplaceVerticalLogThird F r 0 =
@@ -453,6 +480,8 @@ noncomputable def negativeLaplaceVerticalLogFourth
   rw [show Complex.I ^ 3 = -Complex.I by norm_num]
   ring
 
+/-- At `θ = 0`, the fourth vertical derivative is
+`r^4 * negativeLaplaceLogFourth F r`. -/
 @[simp] theorem negativeLaplaceVerticalLogFourth_at_zero
     (F : BoundedFabius) (hF : IsFabius F) (r : ℝ) :
     negativeLaplaceVerticalLogFourth F r 0 =
@@ -603,6 +632,8 @@ theorem contDiff_four_negativeLaplaceVerticalLog
   rw [show (4 : WithTop ℕ∞) = 3 + 1 by norm_num, contDiff_succ_iff_deriv]
   exact ⟨hdiff0, by simp, by simpa [hderiv0] using hcont1⟩
 
+/-- For `r > 0`, the first iterated derivative of the vertical logarithm is
+`negativeLaplaceVerticalLogFirst`. -/
 @[simp] theorem iteratedDeriv_negativeLaplaceVerticalLog_one
     (F : BoundedFabius) (hF : IsFabius F) {r : ℝ} (hr : 0 < r) (θ : ℝ) :
     iteratedDeriv 1 (negativeLaplaceVerticalLog F r) θ =
@@ -610,6 +641,8 @@ theorem contDiff_four_negativeLaplaceVerticalLog
   rw [iteratedDeriv_one]
   exact (negativeLaplaceVerticalLog_hasDerivAt_cumulant F hF hr θ).deriv
 
+/-- For `r > 0`, the second iterated derivative of the vertical logarithm is
+`negativeLaplaceVerticalLogSecond`. -/
 @[simp] theorem iteratedDeriv_negativeLaplaceVerticalLog_two
     (F : BoundedFabius) (hF : IsFabius F) {r : ℝ} (hr : 0 < r) (θ : ℝ) :
     iteratedDeriv 2 (negativeLaplaceVerticalLog F r) θ =
@@ -622,6 +655,8 @@ theorem contDiff_four_negativeLaplaceVerticalLog
   rw [heq]
   exact (negativeLaplaceVerticalLogFirst_hasDerivAt F hF hr θ).deriv
 
+/-- For `r > 0`, the third iterated derivative of the vertical logarithm is
+`negativeLaplaceVerticalLogThird`. -/
 @[simp] theorem iteratedDeriv_negativeLaplaceVerticalLog_three
     (F : BoundedFabius) (hF : IsFabius F) {r : ℝ} (hr : 0 < r) (θ : ℝ) :
     iteratedDeriv 3 (negativeLaplaceVerticalLog F r) θ =
@@ -634,6 +669,8 @@ theorem contDiff_four_negativeLaplaceVerticalLog
   rw [heq]
   exact (negativeLaplaceVerticalLogSecond_hasDerivAt F hF hr θ).deriv
 
+/-- For `r > 0`, the fourth iterated derivative of the vertical logarithm is
+`negativeLaplaceVerticalLogFourth`. -/
 @[simp] theorem iteratedDeriv_negativeLaplaceVerticalLog_four
     (F : BoundedFabius) (hF : IsFabius F) {r : ℝ} (hr : 0 < r) (θ : ℝ) :
     iteratedDeriv 4 (negativeLaplaceVerticalLog F r) θ =
