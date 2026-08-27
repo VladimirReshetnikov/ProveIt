@@ -7,8 +7,11 @@ Thue's theorem: the Thue–Morse sequence contains no *overlap* — no factor
 of the form `x·x·a` with `a` the first letter of `x`.  Equivalently, no
 period `p ≥ 1` persists for `p + 1` consecutive steps:
 there are no `i` and `p ≥ 1` with `t(i+j) = t(i+p+j)` for all `j ≤ p`.
-Consequently the critical exponent of Thue–Morse is exactly `2`: squares
-occur (`t(1)=t(2)`), but no fractional power beyond them.
+In the standard terminology this says that the critical exponent of
+Thue–Morse is exactly `2`: squares occur (`t(1)=t(2)`), but no fractional
+power beyond them.  That reading is informal here — no exponent is
+defined anywhere in this corpus; the Lean content is overlap-freeness
+together with the dyadic squares exhibited at the end of the module.
 
 The proof is the classical two-scale descent, organized around two facts:
 
@@ -31,8 +34,9 @@ periods `p = 1, 3` die by Boolean analysis over the window.
 * `thueMorseSign_overlap_free` — the signed version.
 * `thueMorseBit_cube_free` — no nonempty cube `x·x·x` occurs.
 * `exists_overlap_of_eventually_periodic` — over an **arbitrary** alphabet,
-  an eventual period `p ≥ 1` valid from index `N` on already exhibits an
-  overlap of period `p` starting at `N`.
+  an eventual period `p ≥ 1` valid from index `N` on already forces an
+  overlap; the conclusion is the bare existential, and the witness the
+  proof supplies is `i = N`, `q = p`.
 * `not_eventually_periodic_of_overlap_free` — hence, over an arbitrary
   alphabet, every overlap-free sequence fails to be eventually periodic.
 * `thueMorseBit_not_eventually_periodic` — aperiodicity of the zero–one
@@ -252,8 +256,11 @@ repeated first letter. -/
 
 /-- **From an eventual period to an overlap**, over an arbitrary alphabet.
 If `f : ℕ → α` satisfies `f (n + p) = f n` for every `n ≥ N`, with
-`p ≥ 1`, then the window of length `2p + 1` starting at `N` is an overlap
-of period `p`: `f (N + j) = f (N + p + j)` for every `j ≤ p`. -/
+`p ≥ 1`, then `f` has an overlap: some `i` and some `q ≥ 1` with
+`f (i + j) = f (i + q + j)` for every `j ≤ q`.  That existential form is
+what `not_eventually_periodic_of_overlap_free` consumes; the witness the
+proof supplies is `i = N`, `q = p`, so the overlap produced is in fact
+the window of length `2p + 1` starting at `N`. -/
 theorem exists_overlap_of_eventually_periodic {α : Type*} (f : ℕ → α)
     (p N : ℕ) (hp : 0 < p) (hper : ∀ n, N ≤ n → f (n + p) = f n) :
     ∃ i q, 0 < q ∧ ∀ j ≤ q, f (i + j) = f (i + q + j) := by
@@ -294,8 +301,9 @@ private theorem thueMorseBit_add_pow_two (m n : ℕ) (hn : n < 2 ^ m) :
 
 /-- **Squares of every dyadic length occur**: the block starting at `2^m`
 repeats immediately, `t(2^m + j) = t(2^m + 2^m + j)` for all `j < 2^m`.
-Together with overlap-freeness this shows the critical exponent of
-Thue–Morse is exactly `2`, attained. -/
+Together with overlap-freeness this is the content of the informal
+statement that the critical exponent of Thue–Morse is exactly `2` and is
+attained; the exponent itself is not defined in Lean here. -/
 theorem thueMorseBit_square_two_pow (m j : ℕ) (hj : j < 2 ^ m) :
     thueMorseBit (2 ^ m + j) = thueMorseBit (2 ^ m + 2 ^ m + j) := by
   rw [thueMorseBit_add_pow_two m j hj,

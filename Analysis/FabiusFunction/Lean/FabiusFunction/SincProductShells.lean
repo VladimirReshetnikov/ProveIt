@@ -21,8 +21,12 @@ over the triangular power `2^(k(k+1)/2)` — the source of the universal
   hypotheses).
 * `norm_complexSinc_ofReal` — on the real axis,
   `‖sinc r‖ = |sin r| / |r|`.
+* `prod_range_pow_succ` — the triangular exponent in **any**
+  commutative monoid: `∏_{j<k} a^(j+1) = a^(k(k+1)/2)`.  Nothing about
+  the base is used; the exponent bookkeeping is Gauss' formula in `ℕ`.
 * `prod_range_two_pow_succ` — the triangular power
-  `∏_{j<k} 2^(j+1) = 2^(k(k+1)/2)`.
+  `∏_{j<k} 2^(j+1) = 2^(k(k+1)/2)`, the base-`2` real case of
+  `prod_range_pow_succ`.
 * `norm_rvachevFourierProduct_two_pow_mul` — the **shell
   factorization** of the modulus:
   `‖Φ(2ᵏ·y)‖ = (∏_{j<k} |sin (2^(j+1) π y)|) /
@@ -33,11 +37,14 @@ over the triangular power `2^(k(k+1)/2)` — the source of the universal
 * `shell_exponent_identity` — the exponent bookkeeping that converts
   per-shell rates into powers of the frequency: if `L = k·a + b` then
   `-(a/2)k(k+1) - (k+1)(c+b)
-     = -L²/(2a) - (1/2 + c/a)·L + Φ_c(b)`
+     = -L²/(2a) - (1/2 + c/a)·L + M_c(b)`
   with the bounded mantissa term
-  `Φ_c(b) = b²/(2a) + bc/a - b/2 - c`.  This is the identity through
-  which every per-level mean `e^{-c}` of the audit becomes the power
-  `x^{-(1/2 + c/a)}` of its decay law.
+  `M_c(b) = b²/(2a) + bc/a - b/2 - c` (the audit drafts write this
+  term `Φ_c(b)`; it is renamed here so that `Φ` keeps its meaning of
+  the sinc product throughout this file, and neither name occurs in
+  the Lean statement, which writes the term out).  This is the
+  identity through which every per-level mean `e^{-c}` of the audit
+  becomes the power `x^{-(1/2 + c/a)}` of its decay law.
 -/
 
 set_option autoImplicit false
@@ -88,10 +95,16 @@ theorem norm_complexSinc_ofReal (r : ℝ) (hr : r ≠ 0) :
     norm_div, Complex.norm_real, Complex.norm_real, Real.norm_eq_abs,
     Real.norm_eq_abs]
 
-/-- The triangular power of the dyadic shell denominators:
-`∏_{j<k} 2^(j+1) = 2^(k(k+1)/2)`. -/
-theorem prod_range_two_pow_succ (k : ℕ) :
-    ∏ j ∈ range k, (2 : ℝ) ^ (j + 1) = 2 ^ (k * (k + 1) / 2) := by
+/-- **Triangular exponent of a geometric prefix**, in an arbitrary
+commutative monoid: `∏_{j<k} a^(j+1) = a^(k(k+1)/2)`.
+
+Nothing about the base is used — the whole content is the exponent
+identity `∑_{j<k} (j+1) = k(k+1)/2`, which is Gauss' formula in `ℕ`;
+the division there is `ℕ`-division, but it is exact because `k(k+1)` is
+even.  `prod_range_two_pow_succ` is the base-`2`, real-valued case, and
+the one used by the dyadic shell factorization below. -/
+theorem prod_range_pow_succ {M : Type*} [CommMonoid M] (a : M) (k : ℕ) :
+    ∏ j ∈ range k, a ^ (j + 1) = a ^ (k * (k + 1) / 2) := by
   rw [Finset.prod_pow_eq_pow_sum]
   congr 1
   have h := Finset.sum_range_succ' (fun i : ℕ => i) k
@@ -99,6 +112,13 @@ theorem prod_range_two_pow_succ (k : ℕ) :
   calc ∑ j ∈ range k, (j + 1) = ∑ i ∈ range (k + 1), i := h.symm
     _ = (k + 1) * k / 2 := by rw [Finset.sum_range_id]; simp
     _ = k * (k + 1) / 2 := by rw [Nat.mul_comm]
+
+/-- The triangular power of the dyadic shell denominators:
+`∏_{j<k} 2^(j+1) = 2^(k(k+1)/2)`.  The base-`2`, real-valued case of
+`prod_range_pow_succ`. -/
+theorem prod_range_two_pow_succ (k : ℕ) :
+    ∏ j ∈ range k, (2 : ℝ) ^ (j + 1) = 2 ^ (k * (k + 1) / 2) :=
+  prod_range_pow_succ (2 : ℝ) k
 
 /-- **Shell factorization of the modulus** (the exact dyadic
 factorization of the decay audit): for real `y ≠ 0`,
@@ -136,9 +156,9 @@ theorem norm_rvachevFourierProduct_two_pow_mul (k : ℕ) (y : ℝ) (hy : y ≠ 0
     prod_range_two_pow_succ]
 
 /-- **The shell factorization meets the Gelfond bound.**  Feeding
-`GelfondLogisticBound.abs_prod_sin_two_pow_le` (at `t = 2y`) into the exact
-shell factorization turns the lacunary sine numerator into a geometric rate,
-and leaves the universal triangular denominator standing:
+`abs_prod_sin_two_pow_le` (from `GelfondLogisticBound.lean`, at `t = 2y`)
+into the exact shell factorization turns the lacunary sine numerator into a
+geometric rate, and leaves the universal triangular denominator standing:
 
 `‖Φ(2ᵏ·y)‖ ≤ √(5/3)·(√3/2)ᵏ / (2^(k(k+1)/2)·(π|y|)ᵏ) · ‖Φ(y)‖`.
 

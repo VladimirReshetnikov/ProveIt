@@ -18,8 +18,9 @@ taken is arbitrary.
 * `prod_zpow_eq_exp_sum` — `∏ i ∈ s, f i ^ e i = exp (∑ i ∈ s, e i · log (f i))`.
 * `tendsto_prod_zpow_of_tendsto_sum` — the limit transfer: a limit of signed
   logarithm sums exponentiates to a limit of the products.
-* `exp_neg_mul_log`, `exp_neg_log_div_two` — the two value computations that
-  turn such a limit into a closed form.
+* `exp_neg_mul_log` and its two specializations `exp_neg_log_div_two`,
+  `exp_neg_three_halves_log` — the value computations that turn such a limit
+  into a closed form.
 -/
 
 set_option autoImplicit false
@@ -40,7 +41,9 @@ theorem prod_zpow_eq_exp_sum {ι : Type*} (s : Finset ι) (f : ι → ℝ) (e : 
   ring
 
 /-- **Limit transfer.**  If the signed logarithm sums converge, so do the
-products, to the exponential of the limit. -/
+products, to the exponential of the limit.  Positivity is asked of every
+index for convenience; only `0 < f i` for the indices actually summed —
+those in `s m` — is used. -/
 theorem tendsto_prod_zpow_of_tendsto_sum {ι α : Type*} {l : Filter α}
     (s : α → Finset ι) (f : ι → ℝ) (e : ι → ℤ) (hf : ∀ i, 0 < f i) {L : ℝ}
     (h : Tendsto (fun m => ∑ i ∈ s m, (e i : ℝ) * Real.log (f i)) l (𝓝 L)) :

@@ -3,11 +3,12 @@ import FabiusFunction.ThueMorseEulerTransform
 import FabiusFunction.RealZPowProduct
 
 /-!
-# Block-product limits along every even block length
+# Block-product limits beyond the dyadic ladder
 
 The atlas's three "fingerprint" limits of dyadic block products, with the
-`2^m` scaffolding removed: each of them is a *subsequence* of a limit taken
-along every even block length, and the log-collapse behind them holds for an
+`2^m` scaffolding removed: the first two are *subsequences* of a limit taken
+along every even block length, the alternating one of a limit taken along
+every multiple of four, and the log-collapse behind them holds for an
 arbitrary positive shift.
 
 *The dyadic sign split* (`sum_thueMorseSign_mul_two_mul` and its alternating
@@ -35,11 +36,14 @@ of `atTop`.  The three dyadic statements are the subsequences `M = 2^(m-1)`,
 * `block_log_one`, `block_log_half` — its `c = 1` and `c = 1/2` instances.
 * `tendsto_block_product_even` — **the even-block product limit**, for every
   shift `c > 0`.
-* `tendsto_block_product_one_even`, `tendsto_block_product_half_even'`,
-  `tendsto_block_product_mixed_four` — the three evaluated even-block limits.
+* `tendsto_block_product_one_even` (value `1/√2`) and
+  `tendsto_block_product_half_even'` (value `exp L(1/4,3/4)`, evaluated to
+  `1/2` in `ThueMorseQuarterProduct`) — the two even-block limits;
+  `tendsto_block_product_mixed_four` (value `1/(2√2)`) — the alternating
+  limit, along every multiple of four.
 * `block_log_one` / `tendsto_block_product_one` — `eq:block-product-one`.
 * `block_log_mixed` / `tendsto_block_product_mixed` —
-  `eq:block-product-mixed`.
+  `eq:block-product-alternating`.
 * `block_log_half` / `tendsto_block_product_half'` — `eq:block-product-half`.
 -/
 
@@ -49,12 +53,12 @@ open Finset Filter Topology
 
 namespace Fabius
 
-/-- Every dyadic ladder `m ↦ 2^(m-c)` exhausts `ℕ`. -/
-private theorem tendsto_two_pow_sub (c : ℕ) :
-    Tendsto (fun m : ℕ => 2 ^ (m - c)) atTop atTop := by
+/-- Every dyadic ladder `m ↦ 2^(m-d)` tends to infinity. -/
+private theorem tendsto_two_pow_sub (d : ℕ) :
+    Tendsto (fun m : ℕ => 2 ^ (m - d)) atTop atTop := by
   have h2 : Tendsto (fun k : ℕ => 2 ^ k) atTop atTop :=
     tendsto_atTop_mono (fun k => (Nat.lt_two_pow_self (n := k)).le) tendsto_id
-  exact h2.comp (tendsto_sub_atTop_nat c)
+  exact h2.comp (tendsto_sub_atTop_nat d)
 
 /-! ### The shift-general block collapse -/
 
@@ -105,8 +109,9 @@ theorem mpLimit_one_half_one :
 
 /-! ### The two shifts used by the atlas -/
 
-/-- Over a dyadic block, the signed logarithm sum collapses to the
-Woods–Robbins partial sum.  The `c = 1` instance of `block_log_shift`. -/
+/-- Over a block of *any* even length, the signed logarithm sum collapses
+to the Woods–Robbins partial sum.  The `c = 1` instance of
+`block_log_shift`. -/
 theorem block_log_one (M : ℕ) :
     ∑ k ∈ range (2 * M), (thueMorseSign k : ℝ) *
         Real.log ((k : ℝ) + 1) =
@@ -115,9 +120,9 @@ theorem block_log_one (M : ℕ) :
     show ((1 : ℝ) + 1) / 2 = 1 by norm_num]
   exact mpLog_one_half_eq_wrA M
 
-/-- Over a dyadic block, the half-shifted signed logarithm sum is
-exactly the master log-series at `(1/4, 3/4)`.  The `c = 1/2` instance of
-`block_log_shift`. -/
+/-- Over a block of *any* even length, the half-shifted signed logarithm
+sum is exactly the master log-partial at `(1/4, 3/4)`.  The `c = 1/2`
+instance of `block_log_shift`. -/
 theorem block_log_half (M : ℕ) :
     ∑ k ∈ range (2 * M), (thueMorseSign k : ℝ) *
         Real.log ((k : ℝ) + 1 / 2) =
@@ -130,9 +135,11 @@ theorem block_log_half (M : ℕ) :
 
 /-- **The even-block product limit.**  For every shift `c > 0`,
 `∏_{k<2M}(k+c)^(ε(k)) → exp L(c/2,(c+1)/2)` along all of `atTop` — no
-dyadic subsequence is needed.  This is strictly stronger than each of
-`tendsto_block_product_one`, `tendsto_block_product_half'` and (through
-`tendsto_block_product_one_even`) their dyadic companions. -/
+dyadic subsequence is needed.  It is more general in the shift than
+`tendsto_block_product_one_even` and `tendsto_block_product_half_even'`,
+and hence than their dyadic companions `tendsto_block_product_one` and
+`tendsto_block_product_half'`; the closed values `1/√2` and `1/2`
+additionally consume `mpLimit_one_half_one` and `mpLimit_quarter`. -/
 theorem tendsto_block_product_even (c : ℝ) (hc : 0 < c) :
     Tendsto (fun M : ℕ => ∏ k ∈ range (2 * M),
       ((k : ℝ) + c) ^ (thueMorseSign k)) atTop
@@ -176,8 +183,8 @@ theorem tendsto_block_product_one :
 
 /-! ### The alternating (mixed) block -/
 
-/-- Over a doubly dyadic block, the alternating signed logarithm sum
-telescopes into two Woods–Robbins partial sums. -/
+/-- Over a block whose length is a multiple of four, the alternating
+signed logarithm sum telescopes into two Woods–Robbins partial sums. -/
 theorem block_log_mixed (M : ℕ) :
     ∑ k ∈ range (2 * (2 * M)),
         (((-1 : ℤ) ^ k * thueMorseSign k : ℤ) : ℝ) *
@@ -249,7 +256,7 @@ theorem tendsto_block_product_mixed_four :
   exact (block_log_mixed_four M).symm
 
 /-- `∏_{k<2^m} (k+1)^((-1)^k·ε(k)) → 1/(2√2)`
-(`eq:block-product-mixed`): the subsequence `M = 2^(m-2)` of
+(`eq:block-product-alternating`): the subsequence `M = 2^(m-2)` of
 `tendsto_block_product_mixed_four`. -/
 theorem tendsto_block_product_mixed :
     Tendsto (fun m : ℕ => ∏ k ∈ range (2 ^ m),

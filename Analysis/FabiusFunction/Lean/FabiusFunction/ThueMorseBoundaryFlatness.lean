@@ -18,8 +18,9 @@ version of the boxed logarithmic asymptotic: for every level `m`,
 Both follow from the **self-similarity**
 `𝓔(t) = (∏_{j<m}(1-e^(-2^j t)))·𝓔(2^m·t)`
 (`lacunaryExpProduct_eq_prod_mul`), positivity, monotonicity, and the
-elementary sandwich `x/2 ≤ 1 - e^(-x) ≤ x` on `[0,1]`
-(`half_le_one_sub_exp_neg`, `one_sub_exp_neg_le`), all reusable.
+elementary sandwich `x/2 ≤ 1 - e^(-x) ≤ x` — whose upper half holds
+for every real `x` (`one_sub_exp_neg_le`) and whose lower half is the
+one that needs `[0,1]` (`half_le_one_sub_exp_neg`) — all reusable.
 
 This module is the common ancestor of the whole lacunary-exponential
 layer (`ThueMorseInfiniteProduct`, `ThueMorseDiscSeries`,
@@ -33,7 +34,9 @@ would otherwise keep re-deriving inline:
 * `abs_thueMorseSign_real` — `|ε(n)| = 1` over `ℝ`;
 * `multipliable_one_sub_exp_neg_two_pow` — convergence of the lacunary
   product itself, the `Multipliable` companion of
-  `summable_log_one_sub_exp`.
+  `summable_log_one_sub_exp`, used by `ThueMorseGDirichlet`
+  (`ThueMorseInfiniteProduct` runs on the general `|x| < 1` form
+  `multipliable_one_sub_pow_two_pow` instead).
 -/
 
 set_option autoImplicit false
@@ -70,7 +73,7 @@ theorem abs_thueMorseSign_real (n : ℕ) : |(thueMorseSign n : ℝ)| = 1 := by
   · rw [h.neg_one_pow]
     norm_num
 
-/-- `1 - e^(-x) ≤ x` for `x ≥ 0`. -/
+/-- `1 - e^(-x) ≤ x` for **every** real `x`, from `e^(-x) ≥ 1 - x`. -/
 theorem one_sub_exp_neg_le (x : ℝ) : 1 - Real.exp (-x) ≤ x := by
   have h := Real.add_one_le_exp (-x)
   linarith
@@ -130,8 +133,11 @@ theorem summable_log_one_sub_exp (t : ℝ) (ht : 0 < t) :
 
 /-- **Convergence of the lacunary product** for `t > 0`: the factors
 are `1 + f j` with `f` summable.  This is the `Multipliable` companion
-of `summable_log_one_sub_exp`, shared by every module that needs the
-partial products `∏_{j<m}(1-e^(-2^j·t))` to converge. -/
+of `summable_log_one_sub_exp`; its one consumer is
+`ThueMorseGDirichlet`, where it makes the partial products
+`∏_{j<m}(1-e^(-2^j·t))` converge inside the dominated-convergence pass.
+(`ThueMorseInfiniteProduct` works instead with the general `|x| < 1`
+version, `multipliable_one_sub_pow_two_pow`.) -/
 theorem multipliable_one_sub_exp_neg_two_pow (t : ℝ) (ht : 0 < t) :
     Multipliable (fun j : ℕ => 1 - Real.exp (-(2 ^ j * t))) := by
   have h := Real.multipliable_one_add_of_summable

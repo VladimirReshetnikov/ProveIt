@@ -38,18 +38,6 @@ noncomputable def integerLiftSeries : PowerSeries ℤ :=
 noncomputable def catalanSubstSeries : PowerSeries ℤ :=
   PowerSeries.mk fun n => if n = 0 then 0 else catalanSeriesDelta (n - 1)
 
-/-- The sequence-level bridge in all degrees. -/
-private theorem coeff_delta_all (n : ℕ) :
-    integerLift n - 2 * integerLift (n - 1) + integerLift (n - 2) =
-      if n = 0 then 0 else catalanSeriesDelta (n - 1) := by
-  rcases Nat.lt_or_ge n 2 with hn | hn
-  · interval_cases n
-    · simp
-    · rw [if_neg (by omega)]
-      simp [integerLift_one, catalanSeriesDelta_zero]
-  · rw [if_neg (by omega)]
-    exact integerLift_delta_bridge n hn
-
 /-- `(1-X)²·C = A`. -/
 theorem catalanSubstSeries_eq :
     (1 - X : PowerSeries ℤ) ^ 2 * integerLiftSeries = catalanSubstSeries := by
@@ -91,7 +79,7 @@ theorem catalanSubstSeries_eq :
       rw [show (0 : ℕ) - 1 = 0 from rfl, integerLift_zero]
     · rfl
   rw [hXC, hX2C, hguard, hXguard, integerLiftSeries, PowerSeries.coeff_mk]
-  exact coeff_delta_all n
+  exact integerLift_delta_bridge_all n
 
 /-- The quadratic identity `A² + (1-X)·A = X·(1-X)`, coefficientwise
 from the convolution identity of the substituted Catalan series. -/

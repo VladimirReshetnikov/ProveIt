@@ -205,8 +205,10 @@ private theorem integrableOn_kernel_div (a : ℝ) (ha : 0 < a) :
       _ = Real.exp (-(a * t)) := mul_one _
 
 /-- The Mellin transform of the kernel at `s = 0` is the real
-integral `∫₀^∞ e^(-at)·𝓔(t)/t dt` — convergent, because boundary
-flatness absorbs the `1/t`. -/
+integral `∫₀^∞ e^(-at)·𝓔(t)/t dt`.  Like `mellin_mellinKernel_ofReal`,
+of which it is the `σ = 0` case, this is a cast identity only and holds
+for every real `a`; that the integral genuinely converges for `a > 0` —
+boundary flatness absorbing the `1/t` — is `integrableOn_kernel_div`. -/
 private theorem mellin_mellinKernel_zero (a : ℝ) :
     mellin (mellinKernel a) 0 =
       ((∫ t in Ioi (0 : ℝ),

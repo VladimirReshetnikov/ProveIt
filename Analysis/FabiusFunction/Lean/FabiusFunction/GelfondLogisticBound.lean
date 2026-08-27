@@ -8,8 +8,10 @@ the constant behind the extremal exponent `κ∞` of the Fourier-decay
 audit — is governed by a single algebraic inequality for the full
 logistic map `v ↦ 4v(1-v)`.  This file formalizes that mechanism in a
 form more general than the sine products themselves: the bound holds
-along **every** orbit of the logistic map, and the sine products enter
-only because squared sines at doubling angles form such orbits.
+along **every** orbit of the logistic map that starts in `[0,1]`
+(equivalently, by `logistic_init_le_one`, along every orbit that stays
+nonnegative), and the sine products enter only because squared sines
+at doubling angles form such orbits.
 
 * `logistic_nonneg_and_le_one` — the unit interval is **invariant**
   under `v ↦ 4v(1-v)`; the upper half is `1 - 4v(1-v) = (2v-1)² ≥ 0`.
@@ -20,7 +22,9 @@ only because squared sines at doubling angles form such orbits.
   `u 0` **only** — the running product satisfies
   `∏_{j<n} u j ≤ (5/3)·(3/4)ⁿ`.  The proof telescopes the potential
   `V v = 1 + 2v/3` through the exact identity
-  `3·V v - 4v·V (4v(1-v)) = (2v+1)(4v-3)²/3 ≥ 0`
+  `3·V v - 4v·V (4v(1-v)) = (2v+1)(4v-3)²/3`, which holds for every
+  real `v`; its right-hand side is `≥ 0` because the orbit keeps
+  `2v + 1 > 0`
   (Document 2's subaction, audited in the comparative audit).
 * `logistic_init_le_one`, `logistic_prod_le_of_nonneg` — for a logistic
   orbit, `∀ j, 0 ≤ u j` already forces `u 0 ≤ 1`, so the bound holds
@@ -32,8 +36,13 @@ only because squared sines at doubling angles form such orbits.
   **exact** already at the abstract level: `3/4` is the interior fixed
   point of the logistic map, and the constant orbit it generates has
   running product exactly `(3/4)ⁿ`.
+* `prod_sin_sq_two_pow_mul_le` — the **potential-carrying** form of
+  the Gelfond bound, i.e. what the telescope literally proves:
+  `(∏_{j<n} sin (π 2ʲ t)²)·(1 + 2 sin (π 2ⁿ t)²/3)
+     ≤ (3/4)ⁿ·(1 + 2 sin (π t)²/3)` for every real `t`.
 * `prod_sin_sq_two_pow_le` — the **Gelfond bound**
-  `∏_{j<n} sin (π 2ʲ t)² ≤ (5/3)·(3/4)ⁿ` for every real `t`.
+  `∏_{j<n} sin (π 2ʲ t)² ≤ (5/3)·(3/4)ⁿ` for every real `t`; the
+  calibrated consequence of the previous item.
 * `sin_sq_two_pow_eq_three_quarters`,
   `prod_sin_sq_two_pow_eq_of_sin_sq_eq` — **sharpness in general
   position**: *every* `t` seeding the fixed point, i.e. with
@@ -43,6 +52,9 @@ only because squared sines at doubling angles form such orbits.
 * `prod_sin_sq_two_pow_third` — **sharpness**: at `t = 1/3` every
   factor equals `3/4`, so the product is exactly `(3/4)ⁿ`; the binary
   cycle `1/3 ↔ 2/3` realizes the extremal rate.
+* `prod_abs_sq` — the elementary bridge
+  `(∏ i ∈ s, |f i|)² = ∏ i ∈ s, (f i)²` used to pass between the
+  squared and the modulus forms of the bound.
 * `abs_prod_sin_two_pow_le` — the unsquared form
   `∏_{j<n} |sin (π 2ʲ t)| ≤ √(5/3)·(√3/2)ⁿ`.
 * `le_mul_integral_prod_abs_sin_two_pow` — combining the Gelfond bound
@@ -60,9 +72,10 @@ open Finset intervalIntegral Real
 
 namespace Fabius
 
-/-- The subaction step: for `v ∈ [0,1]`,
+/-- The subaction step: for `v ≥ 0`,
 `4v·(1 + 2·(4v(1-v))/3) ≤ 3·(1 + 2v/3)`, by the exact identity
-`3·V v - 4v·V (4v(1-v)) = (2v+1)(4v-3)²/3`. -/
+`3·V v - 4v·V (4v(1-v)) = (2v+1)(4v-3)²/3`, whose right-hand side is
+nonnegative because `2v + 1 > 0`.  No upper bound on `v` is used. -/
 theorem logistic_subaction_step (v : ℝ) (h0 : 0 ≤ v) :
     4 * v * (1 + 2 * (4 * v * (1 - v)) / 3) ≤ 3 * (1 + 2 * v / 3) := by
   nlinarith [mul_nonneg (by linarith : (0:ℝ) ≤ 2 * v + 1) (sq_nonneg (4 * v - 3)),
@@ -153,10 +166,13 @@ theorem logistic_init_le_one (u : ℕ → ℝ) (h0 : ∀ j, 0 ≤ u j)
     exact h0 _
   nlinarith [sq_nonneg (u 0 - 1)]
 
-/-- **Logistic-orbit product bound, minimal-hypothesis form**: for an
-orbit of `v ↦ 4v(1-v)`, nonnegativity of every iterate is by itself
-enough for `∏_{j<n} u j ≤ (5/3)·(3/4)ⁿ`; no upper bound need be
-assumed anywhere. -/
+/-- **Logistic-orbit product bound, nonnegativity form**: for an orbit
+of `v ↦ 4v(1-v)`, nonnegativity of every iterate is by itself enough
+for `∏_{j<n} u j ≤ (5/3)·(3/4)ⁿ`; no upper bound need be assumed
+anywhere.  Along an orbit this hypothesis is *equivalent* to the
+`0 ≤ u 0 ≤ 1` of `logistic_prod_le_of_init`, by `logistic_init_le_one`
+in one direction and `logistic_orbit_nonneg_and_le_one` in the
+other. -/
 theorem logistic_prod_le_of_nonneg (u : ℕ → ℝ) (h0 : ∀ j, 0 ≤ u j)
     (hrec : ∀ j, u (j + 1) = 4 * u j * (1 - u j)) (n : ℕ) :
     ∏ j ∈ range n, u j ≤ 5 / 3 * (3 / 4 : ℝ) ^ n :=
@@ -197,11 +213,43 @@ theorem sin_sq_two_mul (x : ℝ) :
   have h := Real.sin_sq_add_cos_sq x
   nlinarith [h]
 
+/-- **The Gelfond bound with its telescoping factor retained.**  What
+the logistic telescope literally proves at `u j = sin (π 2ʲ t)²` — the
+potential `V v = 1 + 2v/3` evaluated at both ends of the orbit — is
+
+`(∏_{j<n} sin (π 2ʲ t)²)·(1 + 2 sin (π 2ⁿ t)²/3)
+   ≤ (3/4)ⁿ·(1 + 2 sin (π t)²/3)`,
+
+valid for every real `t`.  Discarding the left factor (which is `≥ 1`)
+and bounding the right one by `5/3` gives `prod_sin_sq_two_pow_le`;
+keeping both is strictly stronger — it is sharper by the factor
+`(1 + 2 sin (π 2ⁿ t)²/3)` at the far end and by
+`(1 + 2 sin (π t)²/3)/(5/3)` at the seed, and both gains are genuine
+unless the orbit sits at the fixed point. -/
+theorem prod_sin_sq_two_pow_mul_le (t : ℝ) (n : ℕ) :
+    (∏ j ∈ range n, Real.sin (π * 2 ^ j * t) ^ 2) *
+        (1 + 2 * Real.sin (π * 2 ^ n * t) ^ 2 / 3) ≤
+      (3 / 4 : ℝ) ^ n * (1 + 2 * Real.sin (π * t) ^ 2 / 3) := by
+  have hrec : ∀ j : ℕ, Real.sin (π * 2 ^ (j + 1) * t) ^ 2 =
+      4 * Real.sin (π * 2 ^ j * t) ^ 2 *
+        (1 - Real.sin (π * 2 ^ j * t) ^ 2) := by
+    intro j
+    have harg : π * 2 ^ (j + 1) * t = 2 * (π * 2 ^ j * t) := by ring
+    rw [harg, sin_sq_two_mul]
+  have h := logistic_prod_mul_le (fun j => Real.sin (π * 2 ^ j * t) ^ 2)
+    (fun j => sq_nonneg _) hrec n
+  have hzero : Real.sin (π * 2 ^ (0 : ℕ) * t) ^ 2 =
+      Real.sin (π * t) ^ 2 := by
+    norm_num
+  simpa only [hzero] using h
+
 /-- **The Gelfond bound**, squared form: for every real `t`,
 `∏_{j<n} sin (π 2ʲ t)² ≤ (5/3)·(3/4)ⁿ`.  This is the sup-norm rate of
 the dyadic sine product; it forces the extremal power `κ∞` of the
 Fourier-decay spectrum.  No hypothesis on `t` is needed: the squared
-sine orbit starts in `[0,1]` automatically. -/
+sine orbit starts in `[0,1]` automatically.  The stronger,
+potential-carrying statement that the telescope actually delivers is
+`prod_sin_sq_two_pow_mul_le`. -/
 theorem prod_sin_sq_two_pow_le (t : ℝ) (n : ℕ) :
     ∏ j ∈ range n, Real.sin (π * 2 ^ j * t) ^ 2 ≤ 5 / 3 * (3 / 4 : ℝ) ^ n := by
   refine logistic_prod_le (fun j => Real.sin (π * 2 ^ j * t) ^ 2)
@@ -258,6 +306,15 @@ theorem prod_sin_sq_two_pow_third (n : ℕ) :
   rw [Finset.prod_congr rfl fun j _ => sin_sq_two_pow_third j,
     Finset.prod_const, Finset.card_range]
 
+/-- Squaring commutes with a finite product of absolute values:
+`(∏ i ∈ s, |f i|)² = ∏ i ∈ s, (f i)²`.  Elementary, but it is the
+bridge used twice below to move between the squared Gelfond bound and
+its modulus form. -/
+theorem prod_abs_sq {ι : Type*} (s : Finset ι) (f : ι → ℝ) :
+    (∏ i ∈ s, |f i|) ^ 2 = ∏ i ∈ s, f i ^ 2 := by
+  rw [← Finset.prod_pow]
+  exact Finset.prod_congr rfl fun i _ => sq_abs _
+
 /-- The Gelfond bound, unsquared form:
 `∏_{j<n} |sin (π 2ʲ t)| ≤ √(5/3)·(√3/2)ⁿ`. -/
 theorem abs_prod_sin_two_pow_le (t : ℝ) (n : ℕ) :
@@ -266,8 +323,8 @@ theorem abs_prod_sin_two_pow_le (t : ℝ) (n : ℕ) :
   set A : ℝ := ∏ j ∈ range n, |Real.sin (π * 2 ^ j * t)| with hA
   have hA0 : 0 ≤ A := Finset.prod_nonneg fun j _ => abs_nonneg _
   have hAsq : A ^ 2 = ∏ j ∈ range n, Real.sin (π * 2 ^ j * t) ^ 2 := by
-    rw [hA, ← Finset.prod_pow]
-    exact Finset.prod_congr rfl fun j _ => sq_abs _
+    rw [hA]
+    exact prod_abs_sq (range n) fun j => Real.sin (π * 2 ^ j * t)
   set B : ℝ := Real.sqrt (5 / 3) * (Real.sqrt 3 / 2) ^ n with hB
   have hB0 : 0 ≤ B := by positivity
   have hBsq : B ^ 2 = 5 / 3 * (3 / 4 : ℝ) ^ n := by
@@ -312,9 +369,8 @@ theorem le_mul_integral_prod_abs_sin_two_pow (n : ℕ) :
     have hQle : ∏ j ∈ range n, |Real.sin (π * 2 ^ j * t)| ≤ B :=
       abs_prod_sin_two_pow_le t n
     have hsq : ∏ j ∈ range n, Real.sin (π * 2 ^ j * t) ^ 2 =
-        (∏ j ∈ range n, |Real.sin (π * 2 ^ j * t)|) ^ 2 := by
-      rw [← Finset.prod_pow]
-      exact Finset.prod_congr rfl fun j _ => (sq_abs _).symm
+        (∏ j ∈ range n, |Real.sin (π * 2 ^ j * t)|) ^ 2 :=
+      (prod_abs_sq (range n) fun j => Real.sin (π * 2 ^ j * t)).symm
     rw [hsq, sq]
     exact mul_le_mul_of_nonneg_right hQle hQ0
   have hgcont : Continuous fun t : ℝ =>
