@@ -1,4 +1,5 @@
 import FabiusFunction.GeometricLagrange
+import FabiusFunction.LagrangeResidualMoments
 import FabiusFunction.Paper05442
 import FabiusFunction.Paper06487
 import FabiusFunction.PaperFabiusAsymptotic
@@ -12,6 +13,8 @@ import FabiusFunction.PerturbedLowerLambert
 import FabiusFunction.LambertPhaseLockedRichardson
 import FabiusFunction.PaperKFoldThueMorse
 import FabiusFunction.FinitePolynomialFunctional
+import FabiusFunction.CompleteHomogeneous
+import FabiusFunction.FiniteQBinomialCore
 import FabiusFunction.WeightedScaleMultiplicity
 import FabiusFunction.MomentCumulantAlgebra
 import FabiusFunction.SaddleLogProductAlgebra
@@ -53,6 +56,7 @@ import FabiusFunction.ThueMorseHessenberg
 import FabiusFunction.ExponentialPartition
 import FabiusFunction.ThueMorsePartition
 import FabiusFunction.ExponentialBell
+import FabiusFunction.EndpointTransferPolynomials
 import FabiusFunction.ThueMorseIntegerLift
 import FabiusFunction.ThueMorseBoundaryFlatness
 import FabiusFunction.ThueMorseDirichlet

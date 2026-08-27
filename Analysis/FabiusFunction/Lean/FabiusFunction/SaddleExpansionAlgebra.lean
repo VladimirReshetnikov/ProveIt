@@ -23,8 +23,9 @@ The core interface has three layers: `exponentSeries` packages the exponent,
 packages those coefficients as a power series.  The congruence lemmas record
 that the coefficient of order `n` sees only `E j` for `1 ≤ j ≤ n`, so changing
 the unused constant coefficient does not change the generated family.
-The algebraic transport API covers rational-algebra maps, rescaling, addition
-through Cauchy convolution, evaluation, and parity.  For asymptotic expansions,
+The algebraic transport API covers rational-algebra maps at both coefficient
+and series level, rescaling, addition through Cauchy convolution, evaluation,
+and parity.  For asymptotic expansions,
 the module supplies coefficientwise algebra, eventual-equality and pullback
 transports, and functoriality through continuous linear maps and equivalences.
 
@@ -273,6 +274,17 @@ theorem map_expCoeff {S : Type*} [CommRing S] [Algebra ℚ S]
           simp only [map_mul]
           rw [ih (n - j) (by omega)]
           norm_num
+
+/-- Formation of the complete exponential series commutes with morphisms of
+commutative rational algebras. -/
+theorem map_expSeries {S : Type*} [CommRing S] [Algebra ℚ S]
+    (f : R →ₐ[ℚ] S) (E : ℕ → R) :
+    PowerSeries.map f.toRingHom (expSeries E) =
+      expSeries (fun n => f (E n)) := by
+  ext n
+  rw [PowerSeries.coeff_map, coeff_expSeries, coeff_expSeries]
+  change f (expCoeff E n) = expCoeff (fun j => f (E j)) n
+  exact map_expCoeff f E n
 
 /-- Rescaling the formal parameter by `c` multiplies the coefficient of
 order `n` by `c^n`. -/
