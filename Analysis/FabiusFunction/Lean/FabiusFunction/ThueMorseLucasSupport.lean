@@ -341,7 +341,7 @@ Using `Polynomial.degree` makes the statement exact also at `n = 0`: the
 zero polynomial has degree `⊥ < 0`, while no nonzero polynomial satisfies
 the hypothesis. -/
 theorem sum_oddBinomialIndices_thueMorseSign_mul_affine_eval_of_degree_lt
-    {R : Type*} [CommRing R] (n : ℕ) (p : R[X])
+    {R : Type*} [CommRing R] (n : ℕ) (p : Polynomial R)
     (hdeg : p.degree < (binaryWeight n : WithBot ℕ)) (x h : R) :
     ∑ k ∈ oddBinomialIndices n,
       ((thueMorseSign k : ℤ) : R) * p.eval (x + (k : R) * h) = 0 := by
