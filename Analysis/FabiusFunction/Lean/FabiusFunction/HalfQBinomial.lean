@@ -919,7 +919,7 @@ dyadic nodes extracts the coefficient of degree `n`, multiplied by the exact
 top q-Pochhammer moment.  The `Polynomial.degree` hypothesis includes the
 zero polynomial uniformly, even when `n = 0`. -/
 theorem halfQBinomial_negativeDyadic_polynomial_sum_eq_coeff
-    (n : ℕ) (p : ℚ[X]) (hp : p.degree ≤ (n : WithBot ℕ)) :
+    (n : ℕ) (p : Polynomial ℚ) (hp : p.degree ≤ (n : WithBot ℕ)) :
     (∑ k ∈ Finset.range (n + 1),
       halfQBinomialDyadicWeight n k * p.eval (negativeDyadicNode k)) =
         p.coeff n *
@@ -966,7 +966,7 @@ theorem halfQBinomial_negativeDyadic_polynomial_sum_eq_coeff
 /-- Mersenne-product form of the degree-valued Gaussian/Prouhet extractor:
 the top moment is exactly `halfMersenneProduct n`. -/
 theorem halfQBinomial_negativeDyadic_polynomial_sum_eq_mersenne
-    (n : ℕ) (p : ℚ[X]) (hp : p.degree ≤ (n : WithBot ℕ)) :
+    (n : ℕ) (p : Polynomial ℚ) (hp : p.degree ≤ (n : WithBot ℕ)) :
     (∑ k ∈ Finset.range (n + 1),
       halfQBinomialDyadicWeight n k * p.eval (negativeDyadicNode k)) =
         p.coeff n * halfMersenneProduct n := by
@@ -980,7 +980,7 @@ functional on the negative dyadic nodes.  At the boundary `n = 0`, the
 degree hypothesis admits exactly the zero polynomial, so that case is part
 of the same statement. -/
 theorem halfQBinomial_negativeDyadic_polynomial_sum_eq_zero_of_degree_lt
-    (n : ℕ) (p : ℚ[X]) (hp : p.degree < (n : WithBot ℕ)) :
+    (n : ℕ) (p : Polynomial ℚ) (hp : p.degree < (n : WithBot ℕ)) :
     (∑ k ∈ Finset.range (n + 1),
       halfQBinomialDyadicWeight n k * p.eval (negativeDyadicNode k)) = 0 := by
   rw [halfQBinomial_negativeDyadic_polynomial_sum_eq_coeff n p hp.le,

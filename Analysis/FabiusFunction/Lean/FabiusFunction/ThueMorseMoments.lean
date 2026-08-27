@@ -403,7 +403,6 @@ theorem one_sub_exp_pow (N : ℕ) :
   · rw [map_sub, map_neg, PowerSeries.coeff_succ_X_mul, PowerSeries.coeff_mk,
       coeff_exp_pow, PowerSeries.coeff_one]
     rw [if_neg (Nat.succ_ne_zero k)]
-    push_cast
     ring
 
 /-- The factored exponential block: `1 - e^(2^j t)` is `-t` times the entire

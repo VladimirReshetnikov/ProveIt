@@ -290,9 +290,9 @@ theorem sum_thueMorseSign_mul_eq_sum_powerset {R : Type*} [CommRing R]
 of degree below `m` vanishes under the signed affine block functional
 `p ↦ ∑_{n<2^m} ε(n) p(x + nh)`, over any commutative ring.
 
-The `Polynomial.degree` hypothesis is deliberately stronger at the empty
-boundary than the traditional `natDegree < m` statement: for `m = 0` it
-admits exactly the zero polynomial, and the one-term block sum is then zero.
+The `Polynomial.degree` hypothesis is deliberately more inclusive at the
+empty boundary than the traditional `natDegree < m` statement: for `m = 0`
+it admits exactly the zero polynomial, and the one-term block sum is then zero.
 No separate nonzero-polynomial or positive-block hypothesis is needed. -/
 theorem sum_thueMorseSign_mul_affine_eval_of_degree_lt
     {R : Type*} [CommRing R] (m : ℕ) (p : R[X])
