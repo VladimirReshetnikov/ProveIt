@@ -15,6 +15,8 @@ mapped strictly antitonically and continuously onto `(1 / log 2, ∞)`, and
 the inverse-function derivative is strictly negative there.  These identities
 are useful for the quantitative Bromwich argument without committing to an
 implicitly defined exact saddle point.
+
+The algebraic saddle identities below also hold at the finite branch point.
 -/
 
 set_option autoImplicit false
@@ -59,12 +61,29 @@ theorem fabiusLambertPhase_gt_inv_log_two {x : ℝ}
     (div_lt_div_iff_of_pos_right hL).2 (by linarith)
   simpa only [one_div] using hdiv
 
+/-- On the full lower-branch domain, the phase lies at or beyond the turning
+value `1 / log 2`. -/
+theorem one_div_log_two_le_fabiusLambertPhase {x : ℝ} (hx : 0 < x)
+    (hsmall : Real.log 2 * x ≤ Real.exp (-1)) :
+    1 / Real.log 2 ≤ fabiusLambertPhase x := by
+  simpa only [fabiusLambertPhase] using
+    one_div_log_two_le_paperLambertN hx hsmall
+
 /-- Positivity of the lower-Lambert phase on its natural argument domain. -/
 theorem fabiusLambertPhase_pos_of_mem {x : ℝ}
     (hx : x ∈ Ioo (0 : ℝ) (Real.exp (-1) / Real.log 2)) :
     0 < fabiusLambertPhase x :=
   (inv_pos.mpr (Real.log_pos (by norm_num))).trans
     (fabiusLambertPhase_gt_inv_log_two hx)
+
+/-- Positivity of the lower-Lambert phase on the full lower-branch domain,
+including the finite branch point. -/
+theorem fabiusLambertPhase_pos_of_le {x : ℝ} (hx : 0 < x)
+    (hsmall : Real.log 2 * x ≤ Real.exp (-1)) :
+    0 < fabiusLambertPhase x := by
+  have hL : 0 < Real.log 2 := Real.log_pos (by norm_num)
+  exact lt_of_lt_of_le (one_div_pos.mpr hL)
+    (one_div_log_two_le_fabiusLambertPhase hx hsmall)
 
 /-- The derivative denominator `1 - log 2 * lambda` is strictly negative on
 the lower branch, equivalently `lambda` lies beyond the turning point. -/
@@ -212,23 +231,35 @@ theorem deriv_fabiusLambertPhase_neg {x : ℝ}
     (mul_neg_of_pos_of_neg hx.1
       (one_sub_log_two_mul_fabiusLambertPhase_neg hx))
 
+/-- Endpoint-inclusive quotient form of the lower-Lambert saddle equation. -/
+theorem fabiusLambertPhase_div_radius_of_le {x : ℝ} (hx : 0 < x)
+    (hsmall : Real.log 2 * x ≤ Real.exp (-1)) :
+    fabiusLambertPhase x / fabiusLambertRadius x = x := by
+  rw [fabiusLambertPhase, fabiusLambertRadius]
+  have h := paperLambertN_eq9_of_le hx hsmall
+  rw [Real.rpow_neg (by norm_num : (0 : ℝ) ≤ 2)] at h
+  simpa [fabiusLambertPhase, div_eq_mul_inv] using h
+
 /-- Quotient form of the lower-Lambert saddle equation. -/
 theorem fabiusLambertPhase_div_radius {x : ℝ} (hx : 0 < x)
     (hsmall : Real.log 2 * x < Real.exp (-1)) :
     fabiusLambertPhase x / fabiusLambertRadius x = x := by
-  rw [fabiusLambertPhase, fabiusLambertRadius]
-  have h := paperLambertN_eq9 hx hsmall
-  rw [Real.rpow_neg (by norm_num : (0 : ℝ) ≤ 2)] at h
-  simpa [fabiusLambertPhase, div_eq_mul_inv] using h
+  exact fabiusLambertPhase_div_radius_of_le hx hsmall.le
+
+/-- Endpoint-inclusive exact saddle-coordinate identity `r * x = lambda`. -/
+theorem fabiusLambertRadius_mul_argument_of_le {x : ℝ} (hx : 0 < x)
+    (hsmall : Real.log 2 * x ≤ Real.exp (-1)) :
+    fabiusLambertRadius x * x = fabiusLambertPhase x := by
+  have hr := fabiusLambertRadius_pos x
+  have h := fabiusLambertPhase_div_radius_of_le hx hsmall
+  field_simp [hr.ne'] at h
+  linarith
 
 /-- Exact saddle-coordinate identity `r * x = lambda`. -/
 theorem fabiusLambertRadius_mul_argument {x : ℝ} (hx : 0 < x)
     (hsmall : Real.log 2 * x < Real.exp (-1)) :
     fabiusLambertRadius x * x = fabiusLambertPhase x := by
-  have hr := fabiusLambertRadius_pos x
-  have h := fabiusLambertPhase_div_radius hx hsmall
-  field_simp [hr.ne'] at h
-  linarith
+  exact fabiusLambertRadius_mul_argument_of_le hx hsmall.le
 
 /-- The logarithm of the Laplace radius is `log 2` times its phase. -/
 theorem log_fabiusLambertRadius (x : ℝ) :
