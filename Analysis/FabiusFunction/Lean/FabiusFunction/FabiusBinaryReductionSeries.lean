@@ -48,6 +48,14 @@ noncomputable section
 def binaryPrefix (x : ℝ) (m : ℕ) : ℕ :=
   ⌊(2 : ℝ) ^ m * x⌋₊
 
+/-- At the right endpoint, the binary prefix at scale `m` is exactly `2 ^ m`. -/
+@[simp] theorem binaryPrefix_one (m : ℕ) :
+    binaryPrefix 1 m = 2 ^ m := by
+  rw [binaryPrefix, mul_one]
+  have hpowcast : (2 : ℝ) ^ m = ((2 ^ m : ℕ) : ℝ) := by
+    norm_cast
+  rw [hpowcast, Nat.floor_natCast]
+
 /-- The tail left after truncating the binary expansion after `m` places. -/
 def binaryTail (x : ℝ) (m : ℕ) : ℝ :=
   x - (binaryPrefix x m : ℝ) / (2 : ℝ) ^ m
@@ -187,6 +195,16 @@ theorem globalBinaryReductionCoefficient_eq_zero_of_mod_two_eq_zero
     globalBinaryReductionCoefficient x m = 0 := by
   rw [globalBinaryReductionCoefficient_eq_neg_mod_two, hbit]
   norm_num
+
+/-- At the right endpoint, every positive-scale binary-reduction coefficient
+vanishes. -/
+theorem globalBinaryReductionCoefficient_one_eq_zero_of_one_le
+    (m : ℕ) (hm : 1 ≤ m) :
+    globalBinaryReductionCoefficient 1 m = 0 := by
+  apply globalBinaryReductionCoefficient_eq_zero_of_mod_two_eq_zero
+  rw [binaryPrefix_one]
+  exact Nat.mod_eq_zero_of_dvd
+    (dvd_pow_self (2 : ℕ) (by omega))
 
 /-- An odd exposed binary digit leaves the sign of the previous prefix.  This
 is the all-scale version of the coefficient branch used in the telescope. -/
@@ -975,6 +993,14 @@ theorem globalBinaryReductionSummand_one_zero :
   norm_num [globalBinaryReductionSummand, globalBinaryReductionCoefficient,
     binaryPrefix, binaryPreviousPrefix, binaryTail, fabiusReductionSum,
     binaryWeight, halfMoment]
+
+/-- At the right endpoint, every positive-scale binary-reduction summand
+vanishes. -/
+theorem globalBinaryReductionSummand_one_eq_zero_of_one_le
+    (m : ℕ) (hm : 1 ≤ m) :
+    globalBinaryReductionSummand 1 m = 0 := by
+  rw [globalBinaryReductionSummand,
+    globalBinaryReductionCoefficient_one_eq_zero_of_one_le m hm, zero_mul]
 
 set_option linter.unusedVariables false in
 /-- The original `m = 1,2,...` series is valid on `0 ≤ x < 1`.  The now
