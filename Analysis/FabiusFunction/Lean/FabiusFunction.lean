@@ -53,6 +53,7 @@ import FabiusFunction.ThueMorseQuarterProduct
 import FabiusFunction.ThueMorseDiscSeries
 import FabiusFunction.ThueMorseNaturalBoundary
 import FabiusFunction.ThueMorseComputability
+import FabiusFunction.WordComplexity
 import FabiusFunction.ThueMorseNewman
 import FabiusFunction.ThueMorseGelfond
 import FabiusFunction.PeriodDoublingHankel
@@ -119,6 +120,7 @@ import FabiusFunction.LobeSignSelfSimilarity
 import FabiusFunction.RenormalizationIdentity
 import FabiusFunction.GlobalDecayEnvelope
 import FabiusFunction.LacunaryMeanSharp
+import FabiusFunction.RvachevFourierDecay
 import FabiusFunction.BoundednessSkeleton
 import FabiusFunction.TransferOperatorStep
 import FabiusFunction.LasotaYorkeIteration

@@ -93,6 +93,8 @@ theorem gauge_ratio_identity (k : ℕ) {y : ℝ} (hy : 0 < y) :
 
 /-! ## Continuity of the gauge -/
 
+/-- For every exponent `κ`, the decay gauge `E_κ` is continuous on the
+positive half-line. -/
 theorem continuousOn_decayGauge (κ : ℝ) :
     ContinuousOn (decayGauge κ) (Set.Ioi 0) := by
   intro x hx

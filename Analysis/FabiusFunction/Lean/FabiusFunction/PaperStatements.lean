@@ -650,6 +650,25 @@ theorem proposition_fifteen (n : ℕ) :
     have hone : 1 ≤ 2 ^ n - 1 := by omega
     simp [oddDyadicNumerators, hone]
 
+/-- The common denominator has at least the two-adic valuation of the
+inverse-dyadic Fabius value's reduced denominator. -/
+theorem dyadicDenominator_padicVal_two_lower_bound
+    (n : ℕ) (hn : 1 ≤ n) :
+    n.choose 2 + 1 + padicValNat 2 n.factorial ≤
+      padicValNat 2 (dyadicDenominator n) := by
+  have hdenDvd :
+      (fabiusAtInverseTwoPow n).den ∣ dyadicDenominator n := by
+    rw [fabiusAtInverseTwoPow_eq_halfMoment]
+    exact proposition_fifteen n
+  have hDne : dyadicDenominator n ≠ 0 := by
+    unfold dyadicDenominator
+    rw [Finset.lcm_ne_zero_iff]
+    simp
+  rw [← fabiusAtInverseTwoPow_den_padicVal_two n hn]
+  exact (padicValNat_dvd_iff_le (p := 2) hDne).mp
+    ((pow_padicValNat_dvd
+      (p := 2) (n := (fabiusAtInverseTwoPow n).den)).trans hdenDvd)
+
 /--
 Conjecture 16.  Natural divisibility is expressed through an explicit natural
 quotient, rather than `∣` in `ℚ` (where divisibility would be trivial).

@@ -95,13 +95,13 @@ Version 3 is vendored as
 | Proposition 10 | `Fabius.proposition_ten` |
 | Definition 12 | `Fabius.dyadicDenominator` |
 | Theorem 13 | `Fabius.theorem_thirteen` and `Fabius.theorem_thirteen_denominator_bound` |
-| Proposition 15 | `Fabius.proposition_fifteen` |
+| Proposition 15 and the resulting least-common-denominator valuation bound (using Theorem 21) | `Fabius.proposition_fifteen` and `Fabius.dyadicDenominator_padicVal_two_lower_bound` |
 | Conjecture 16 and its following denominator formulas | The conjecture remains recorded as `Fabius.conjecture_sixteen`.  The displayed odd-index denominator formula is the unconditional identity `Fabius.dyadicDenominator_odd_eq_conjecturalH` (valid even at `n = 0` under natural-number subtraction); `Fabius.conjecture_sixteen_denominator_formulas` packages it with the even-index formula that still assumes the conjecture for `n ≥ 1`. |
 | Theorem 17 | `Fabius.theorem_seventeen` |
 | Proposition 18 | `Fabius.proposition_eighteen` |
 | Proposition 19 | `Fabius.proposition_nineteen` |
 | Theorem 20 | `Fabius.theorem_twenty` |
-| Theorem 21 | `Fabius.theorem_twenty_one` |
+| Theorem 21 and its reduced-denominator form | `Fabius.theorem_twenty_one` and `Fabius.fabiusAtInverseTwoPow_den_padicVal_two` |
 | Proposition 22 | `Fabius.proposition_twenty_two_initial`, `Fabius.proposition_twenty_two` |
 
 `FabiusFunction.Paper06487Supplement` additionally exposes the non-environment
