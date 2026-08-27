@@ -16,6 +16,7 @@ import FabiusFunction.WeightedScaleMultiplicity
 import FabiusFunction.MomentCumulantAlgebra
 import FabiusFunction.SaddleLogProductAlgebra
 import FabiusFunction.CenteredMomentCumulants
+import FabiusFunction.SinhDivBernoulliLog
 import FabiusFunction.ThueMorseBooleanCube
 import FabiusFunction.ThueMorseValuation
 import FabiusFunction.DyadicZeroMultiplicity

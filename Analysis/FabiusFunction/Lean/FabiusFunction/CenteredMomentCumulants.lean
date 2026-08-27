@@ -32,6 +32,10 @@ analytic or probabilistic shortcut: the remaining all-order obligation is
 
 at positive indices.  The first two coefficients are proved unconditionally,
 fixing the normalization and signs independently of that frontier identity.
+The companion module `SinhDivBernoulliLog` proves this all-order obligation
+coefficientwise from Bernoulli-polynomial reflection; it imports the present
+module so that the generic and application-specific algebra here remains a
+clean dependency foundation.
 -/
 
 set_option autoImplicit false
