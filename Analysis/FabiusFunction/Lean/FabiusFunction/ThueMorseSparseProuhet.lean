@@ -302,7 +302,7 @@ theorem sum_thueMorseSign_mul_affine_eval_of_degree_lt
   rw [sum_thueMorseSign_mul_eq_sum_powerset m
     (fun n => p.eval (x + (n : R) * h))]
   have hgen := sum_powerset_neg_one_pow_eval_of_degree_lt (range m)
-    (fun j => (2 : R) ^ j * h) p (by simpa) x
+    (fun j => (2 : R) ^ j * h) p (by simpa using hdeg) x
   rw [← hgen]
   refine Finset.sum_congr rfl fun T _ => ?_
   rw [cast_sum_two_pow_mul]
