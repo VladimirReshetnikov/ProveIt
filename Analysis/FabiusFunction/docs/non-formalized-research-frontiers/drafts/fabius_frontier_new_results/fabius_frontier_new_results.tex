@@ -1286,9 +1286,33 @@ The lowest-risk formalization order is:
 \item prove the absolute weight sum \cref{eq:qcondition};
 \item prove the Lambert weight formula and cancellation moments;
 \item prove the reciprocal moment identity \cref{eq:lambert-moments} by rational-function coefficients;
-\item formalize the Bell-polynomial conversions as finite coefficient identities.
+\item identify the complete-homogeneous coefficients with the already
+      formalized complete-Bell power-sum specialization.
 \end{enumerate}
 These steps require no delicate asymptotics.
+
+\paragraph{Post-snapshot algebraic progress.}
+The later module \texttt{GeometricLagrange.lean} now formalizes Lagrange
+evaluation weights for arbitrary distinct nodes, polynomial and module-valued
+exactness, the first omitted monomial moment, and geometric-node
+specializations.  At the dyadic ratio \(q=1/2\), the later
+\texttt{FabiusDiscreteLimitToeplitz.lean} identifies the closed
+\(q\)-binomial row with those Lagrange weights and proves its all-degree
+reverse moments and exact total variation.  These results do not yet supply
+the arbitrary-ratio formulas used above---in particular the \(q=1/4\)
+residual moments and condition number.  Independently,
+\texttt{ExponentialPartition.lean} and
+\texttt{ExponentialBell.lean} identify the universal weighted-partition
+formula for an exponential coefficient with
+\texttt{SaddleExpansion.expCoeff} over every commutative
+\(\mathbb Q\)-algebra.  The later \texttt{MomentCumulantAlgebra.lean}
+factorially normalizes the same engine into named complete-Bell and inverse
+moment--cumulant transforms, with the classical Bell recurrence and
+normalized inverse laws.  In particular, the coefficient mechanism behind
+\eqref{eq:h-Bell} can reuse these bridges with
+\(E_k=k^{-1}\sum_i a_i^k\) for \(k\ge1\).  The displayed
+complete-homogeneous specialization, the Richardson error formulas, and every
+analytic estimate in this report remain distinct formalization obligations.
 
 \subsection{Analytic theorem chain}
 
