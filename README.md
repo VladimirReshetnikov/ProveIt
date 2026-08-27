@@ -163,6 +163,31 @@ is the broad Lean import surface.
 
 ## Lean workspace
 
+> ### ⚠ Build Lean serially — never a dozen Lean processes at once
+>
+> Lake's default is one `lean.exe` **per core**, which exhausts memory on a
+> small machine (and on the development laptop, where several agent sessions
+> share 13 GB, it starves all of them and produces spurious
+> `failed to read ... .olean` errors that look like corruption). Set both
+> limits on every build:
+>
+> ```powershell
+> $env:LAKE_JOBS = '1'          # at most one lean.exe process
+> $env:LEAN_NUM_THREADS = '0'   # no worker pool inside that process
+> lake build <one target>
+> ```
+>
+> `LAKE_JOBS` bounds Lake's process fan-out and `LEAN_NUM_THREADS` bounds the
+> threads inside each process; they are independent, so set both. Lake `5.0.0`
+> accepts neither `-j` nor `--jobs`, so the environment variable is the only
+> control. Measured 2026-08-27: a facade build with stale dependencies spawned
+> 11 concurrent `lean.exe` processes, and exactly one under `LAKE_JOBS=1`.
+>
+> Run **one build at a time**, prefer a single module per invocation, and after
+> interrupting a build check for survivors with
+> `Get-Process lean,lake -ErrorAction SilentlyContinue` before starting the
+> next one.
+
 The root workspace is pinned by [`lean-toolchain`](lean-toolchain) and
 [`lake-manifest.json`](lake-manifest.json):
 
