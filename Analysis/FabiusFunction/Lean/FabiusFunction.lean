@@ -70,6 +70,11 @@ import FabiusFunction.PeakRayEnvelope
 import FabiusFunction.DoublingTransferAdjoint
 import FabiusFunction.GeometricCesaro
 import FabiusFunction.LogSineMeanZero
+import FabiusFunction.LogTanMeanZero
+import FabiusFunction.SquareLogIntegrable
+import FabiusFunction.MartingaleOrthogonality
+import FabiusFunction.CocycleCovarianceHalving
+import FabiusFunction.DirichletKernelCotangent
 import FabiusFunction.ShellLinearity
 import FabiusFunction.BoundaryLayerMax
 import FabiusFunction.VarianceBookkeeping
@@ -82,6 +87,8 @@ import FabiusFunction.RMSTransferEigenfunctions
 import FabiusFunction.LogFactorConcavity
 import FabiusFunction.BoundednessSkeleton
 import FabiusFunction.TransferOperatorStep
+import FabiusFunction.LasotaYorkeIteration
+import FabiusFunction.DiagonalSelection
 import FabiusFunction.NegativeLaplace
 import FabiusFunction.ProbabilityLaplaceMoments
 import FabiusFunction.UnitLaplaceMomentBounds
