@@ -371,6 +371,13 @@ theorem norm_rvachevFourierProduct_peak_ray_ratio_tendsto_atTop
     push_cast
     ring
   symm
+  change
+    ‖rvachevFourierProduct
+        ((((2 : ℝ) ^ k * (2 / 3 : ℝ) : ℝ) : ℂ))‖ /
+      decayGauge κ ((2 : ℝ) ^ k * (2 / 3 : ℝ)) =
+        (‖rvachevFourierProduct (((2 / 3 : ℝ) : ℂ))‖ /
+            decayGauge kappaInf (2 / 3 : ℝ)) *
+          ((2 : ℝ) ^ k * (2 / 3 : ℝ)) ^ (κ - kappaInf)
   rw [hcast, norm_rvachevFourierProduct_peak_ray_envelope,
     mul_div_assoc, decayGauge_div_decayGauge _ _ hxk]
 
