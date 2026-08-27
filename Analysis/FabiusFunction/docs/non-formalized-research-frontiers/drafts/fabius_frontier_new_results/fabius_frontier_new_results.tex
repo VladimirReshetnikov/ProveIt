@@ -1278,6 +1278,23 @@ The lowest-risk formalization order is:
 \end{enumerate}
 These steps require no delicate asymptotics.
 
+\paragraph{Post-snapshot algebraic progress.}
+The later module \texttt{GeometricLagrange.lean} now formalizes Lagrange
+evaluation weights for arbitrary distinct nodes, polynomial and module-valued
+exactness, the first omitted monomial moment, and geometric-node
+specializations.  It does not yet give the closed Gaussian--\(q\)-binomial
+weights, all higher residual moments, or the exact \(\ell^1\) condition number
+used above.  Independently, \texttt{ExponentialPartition.lean} and
+\texttt{ExponentialBell.lean} identify the universal weighted-partition
+formula for an exponential coefficient with
+\texttt{SaddleExpansion.expCoeff} over every commutative
+\(\mathbb Q\)-algebra.  In particular, the coefficient mechanism behind
+\eqref{eq:h-Bell} can reuse that bridge with
+\(E_k=k^{-1}\sum_i a_i^k\) for \(k\ge1\).  The displayed
+complete-homogeneous/Bell
+specialization, the Richardson error formulas, and every analytic estimate in
+this report remain distinct formalization obligations.
+
 \subsection{Analytic theorem chain}
 
 The analytic side can then proceed as follows:

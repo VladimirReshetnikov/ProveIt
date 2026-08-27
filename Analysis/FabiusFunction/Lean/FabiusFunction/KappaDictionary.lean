@@ -49,6 +49,7 @@ exponent `κ(Λ) = 1/2 + log(π/Λ)/log 2`. -/
 noncomputable def kappaOf (Λ : ℝ) : ℝ :=
   1 / 2 + Real.log (π / Λ) / Real.log 2
 
+/-- The natural logarithm of two is positive. -/
 theorem log_two_pos : (0:ℝ) < Real.log 2 := Real.log_pos (by norm_num)
 
 /-- Expanded form of the dictionary at a positive mean. -/
@@ -108,11 +109,13 @@ theorem kappaOf_sqrt_three :
 
 /-! ## The exact gaps -/
 
+/-- The exact gap between the `L¹`-trivial and RMS exponents is one half. -/
 theorem kappa_zero_sub_kappa_two :
     kappaOf (1/2) - kappaOf (Real.sqrt 2 / 2) = 1 / 2 := by
   rw [kappaOf_half, kappaOf_sqrt_two]
   ring
 
+/-- The exact gap from the `L¹`-trivial exponent to the sharp Gelfond exponent. -/
 theorem kappa_zero_sub_kappa_inf :
     kappaOf (1/2) - kappaInf = Real.log 3 / (2 * Real.log 2) := by
   have hl2 := log_two_pos
@@ -122,6 +125,7 @@ theorem kappa_zero_sub_kappa_inf :
   field_simp
   ring
 
+/-- The exact gap from the RMS exponent to the sharp Gelfond exponent. -/
 theorem kappa_two_sub_kappa_inf :
     kappaOf (Real.sqrt 2 / 2) - kappaInf =
       (Real.log 3 - Real.log 2) / (2 * Real.log 2) := by
@@ -173,6 +177,7 @@ theorem kappaInf_lt_kappa_two :
     linarith
   linarith
 
+/-- The RMS exponent lies strictly below the `L¹`-trivial exponent. -/
 theorem kappa_two_lt_kappa_zero :
     kappaOf (Real.sqrt 2 / 2) < kappaOf (1/2) := by
   have h := kappa_zero_sub_kappa_two
