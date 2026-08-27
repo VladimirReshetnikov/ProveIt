@@ -26,9 +26,12 @@ closed integer form, plus the reflection principle behind the third.
   `(-1)^(m+r)` and reflects the translation about the block.
 * `sum_thueMorseSign_mul_midpoint_pow_eq_zero` — the **parity selection
   rule**: centered at the block midpoint `c_m = (2^m - 1)/2`, the signed
-  power sum of exponent `r` vanishes whenever `m + r` is odd — a
-  cancellation invisible in the uncentered Prouhet statement, valid also
-  for arbitrarily large `r`.
+  power sum of exponent `r` vanishes whenever `m + r` is odd.  Below the
+  first surviving degree the centered sums already vanish for every `r`,
+  of either parity (`thueMorseTranslatedPowerSum_eq_zero_of_lt`); the
+  content of the rule is the range `r > m`, where it is a cancellation
+  invisible in the uncentered Prouhet statement, valid for arbitrarily
+  large `r`.
 * `sum_thueMorseSign_mul_midpoint_pow_self` — at `r = m` the centered
   moment equals `(-1)^m · 2^(C(m,2)) · m!`, exactly the uncentered sharp
   value: translation to the midpoint costs nothing at the first surviving
@@ -183,9 +186,10 @@ theorem sum_thueMorseSign_mul_add_pow_reflect {R : Type*} [CommRing R]
 
 /-- **Midpoint parity selection rule.**  Centered at `c_m = (2^m - 1)/2`,
 the signed power sums vanish whenever `m + r` is odd:
-`∑_{n<2^m} ε(n)·(n - c_m)^r = 0`.  For `r < m` this refines Prouhet
-cancellation to the complementary parity class; for `r > m` it is a new
-cancellation with no uncentered analogue. -/
+`∑_{n<2^m} ε(n)·(n - c_m)^r = 0`.  For `r < m` the centered sum vanishes
+already by Prouhet cancellation, of either parity, so the hypothesis buys
+nothing there (and at `r = m` it cannot hold); the content of the rule is
+the range `r > m`, a cancellation with no uncentered analogue. -/
 theorem sum_thueMorseSign_mul_midpoint_pow_eq_zero (m r : ℕ)
     (h : Odd (m + r)) :
     ∑ n ∈ range (2 ^ m),
@@ -255,7 +259,8 @@ theorem thueMorseSign_sum_two_pow (T : Finset ℕ) :
   rw [thueMorseSign, binaryWeight_sum_two_pow_eq_card]
 
 /-- **Master product for an arbitrary exponent function.**  Over any
-commutative ring `R`, any finite index set `S` and any `e : ℕ → ℕ`,
+commutative ring `R`, any finite set of indices `S : Finset ℕ` and any
+exponent function `e : ℕ → ℕ`,
 `∏_{j∈S} (1 - z^(e j)) = ∑_{T⊆S} (-1)^|T|·z^(∑_{j∈T} e j)`.
 
 Expanding the product never inspects `e`: each factor contributes either

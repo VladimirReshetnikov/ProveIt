@@ -410,7 +410,18 @@ theorem addChoose_padicValNat_two (a b : ℕ) :
     (sub_one_mul_padicValNat_choose_eq_sub_sum_digits'
       (p := 2) (n := b) (k := a))
 
-private lemma binaryWeight_add_addChoose_padicValNat_two (a b : ℕ) :
+/-- **Additive form of Kummer's theorem at two.**  The binary weight lost
+in an addition is exactly the two-adic valuation of the binomial
+coefficient that counts its carries:
+`w(a + b) + ν₂((a+b).choose a) = w(a) + w(b)`.
+
+This is the truncation-free companion of `addChoose_padicValNat_two`:
+stated as an equation between natural numbers with no subtraction, so that
+every rearrangement -- in particular the subadditivity
+`w(a + b) ≤ w(a) + w(b)` -- is available to `omega`.  Proved from Legendre's
+formula applied to the three factorials of
+`(a+b).choose a * a! * b! = (a+b)!`. -/
+theorem binaryWeight_add_addChoose_padicValNat_two (a b : ℕ) :
     binaryWeight (a + b) +
         padicValNat 2 (Nat.choose (a + b) a) =
       binaryWeight a + binaryWeight b := by

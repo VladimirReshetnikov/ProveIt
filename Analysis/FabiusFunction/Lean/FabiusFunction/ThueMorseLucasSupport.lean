@@ -1,5 +1,6 @@
 import FabiusFunction.Parity
 import FabiusFunction.ThueMorseBooleanCube
+import FabiusFunction.ThueMorseMoments
 import FabiusFunction.ThueMorseSparseProuhet
 
 /-!
@@ -16,6 +17,12 @@ balance corollary.
   `(∑_{j∈T} 2^j).testBit i = decide (i ∈ T)`: sums of distinct 2-powers
   have exactly the prescribed binary support.  (No bound on `T` is
   needed.)
+* `bitSupport_sum_two_pow` / `sum_two_pow_injective` — the encoding
+  `T ↦ ∑_{j∈T} 2^j` returns its own bit support and is globally
+  injective.  Both moved here from `ThueMorseBooleanMobius`, a
+  descendant of this module, which still sees them through its import.
+* `bitSupport_eq_empty_iff` — the bit support is empty exactly at
+  `n = 0`.
 * `odd_choose_iff_testBit` / `odd_choose_iff_land` /
   `odd_choose_iff_bitSupport_subset` — **Lucas's criterion**: `C(n,k)` is
   odd iff every set bit of `k` is a set bit of `n`, iff `k &&& n = k`,
@@ -27,11 +34,15 @@ balance corollary.
 * `prod_one_sub_pow_bitSupport` — the **signed Pascal-support product**
   over any commutative ring:
   `∏_{j∈J(n)} (1 - z^(2^j)) = ∑_{k ⊑ n} ε(k)·z^k`, with the submasks
-  enumerated by the powerset.
-* `sum_thueMorseSign_oddBinomialIndices` — **balance on odd Pascal
-  positions**: for `n > 0`, `∑_{C(n,k) odd} ε(k) = 0`; exactly half of
-  the odd positions in every nonzero Pascal row are evil and half are
-  odious.
+  enumerated by the powerset.  It is the `S = J(n)` instance of
+  `prod_one_sub_pow_powerset` (`ThueMorseMoments`).
+* `sum_thueMorseSign_oddBinomialIndices_eq_ite` — **balance on odd
+  Pascal positions**, hypothesis-free closed form:
+  `∑_{C(n,k) odd} ε(k) = [n = 0]`.  For `n > 0` exactly half of the
+  `2^wt(n)` odd positions of the Pascal row are evil and half are
+  odious; row `0` contributes its single evil index `k = 0`.
+* `sum_thueMorseSign_oddBinomialIndices` — the `n > 0` corollary
+  `∑_{C(n,k) odd} ε(k) = 0`, kept verbatim.
 -/
 
 set_option autoImplicit false
@@ -115,6 +126,35 @@ theorem testBit_sum_two_pow (T : Finset ℕ) (i : ℕ) :
         rwa [← this]
       · intro hiT
         exact ⟨i + 1, ⟨by omega, hiT⟩, by omega⟩
+
+/-- The binary support of an encoded subset is the subset itself. -/
+theorem bitSupport_sum_two_pow (T : Finset ℕ) :
+    bitSupport (∑ j ∈ T, 2 ^ j) = T := by
+  ext j
+  rw [mem_bitSupport, testBit_sum_two_pow]
+  simp
+
+/-- The two-power encoding of finite bit sets is globally injective. -/
+theorem sum_two_pow_injective :
+    Function.Injective (fun T : Finset ℕ => ∑ j ∈ T, 2 ^ j) := by
+  intro T S h
+  ext j
+  have := congrArg (fun x => x.testBit j) h
+  simpa [testBit_sum_two_pow, decide_eq_decide] using this
+
+/-- The bit support is empty exactly at `n = 0`: the encoding of the
+empty set is `0`, and `0` has no set bits. -/
+theorem bitSupport_eq_empty_iff (n : ℕ) :
+    bitSupport n = ∅ ↔ n = 0 := by
+  constructor
+  · intro h
+    have hs := sum_two_pow_bitSupport n
+    rw [h, Finset.sum_empty] at hs
+    omega
+  · rintro rfl
+    refine Finset.eq_empty_of_forall_notMem fun j hj => ?_
+    rw [mem_bitSupport, Nat.zero_testBit] at hj
+    exact Bool.noConfusion hj
 
 /-! ### Lucas's criterion -/
 
@@ -260,70 +300,60 @@ theorem oddBinomialIndices_eq_image_powerset (n : ℕ) :
         _ = n := sum_two_pow_bitSupport n
     exact ⟨by omega, hodd⟩
 
-/-- The submask encoding is injective on subsets of the bit support. -/
+/-- The submask encoding is injective on subsets of the bit support: the
+restriction of `sum_two_pow_injective` in the shape `Finset.sum_image`
+consumes. -/
 theorem sum_two_pow_injOn_powerset (n : ℕ) :
     ∀ T ∈ (bitSupport n).powerset, ∀ S ∈ (bitSupport n).powerset,
-      ∑ j ∈ T, 2 ^ j = ∑ j ∈ S, 2 ^ j → T = S := by
-  intro T _ S _ h
-  ext j
-  have := congrArg (fun x => x.testBit j) h
-  simp only [testBit_sum_two_pow, decide_eq_decide] at this
-  exact this
+      ∑ j ∈ T, 2 ^ j = ∑ j ∈ S, 2 ^ j → T = S :=
+  fun _ _ _ _ h => sum_two_pow_injective h
 
 /-! ### The signed Pascal-support product and balance -/
 
 /-- **Signed Pascal-support product** over any commutative ring:
 `∏_{j∈J(n)} (1 - z^(2^j)) = ∑_{T⊆J(n)} ε(∑_{j∈T} 2^j)·z^(∑_{j∈T} 2^j)`,
-the submasks of `n` carrying their Thue–Morse signs. -/
+the submasks of `n` carrying their Thue–Morse signs.
+
+Nothing here is special to the bit support: this is the `S = J(n)`
+instance of the master product `prod_one_sub_pow_powerset`
+(`ThueMorseMoments`), which expands `∏_{j∈S} (1 - z^(2^j))` over an
+arbitrary finite set `S` of bit positions. -/
 theorem prod_one_sub_pow_bitSupport {R : Type*} [CommRing R]
     (z : R) (n : ℕ) :
     ∏ j ∈ bitSupport n, (1 - z ^ 2 ^ j) =
       ∑ T ∈ (bitSupport n).powerset,
-        ((thueMorseSign (∑ j ∈ T, 2 ^ j) : ℤ) : R) * z ^ (∑ j ∈ T, 2 ^ j) := by
-  have h := prod_one_add_eq_sum_powerset (bitSupport n)
-    (fun j => -(z ^ 2 ^ j))
-  have hL : ∏ j ∈ bitSupport n, (1 - z ^ 2 ^ j) =
-      ∏ j ∈ bitSupport n, (1 + -(z ^ 2 ^ j)) := by
-    refine Finset.prod_congr rfl fun j _ => ?_
-    ring
-  rw [hL, h]
-  refine Finset.sum_congr rfl fun T hT => ?_
-  have hTsub : T ⊆ range (n + 1) :=
-    (Finset.mem_powerset.mp hT).trans (Finset.filter_subset _ _)
-  have hsign : thueMorseSign (∑ j ∈ T, 2 ^ j) = (-1 : ℤ) ^ T.card := by
-    rw [thueMorseSign, binaryWeight_sum_two_pow hTsub]
-  rw [hsign]
-  calc ∏ j ∈ T, -(z ^ 2 ^ j)
-      = ∏ j ∈ T, (-1) * z ^ 2 ^ j := by
-        refine Finset.prod_congr rfl fun j _ => ?_
-        ring
-    _ = ((-1) ^ T.card : R) * ∏ j ∈ T, z ^ 2 ^ j := by
-        rw [Finset.prod_mul_distrib, Finset.prod_const]
-    _ = (((-1 : ℤ) ^ T.card : ℤ) : R) * z ^ (∑ j ∈ T, 2 ^ j) := by
-        rw [Finset.prod_pow_eq_pow_sum]
-        push_cast
-        ring
+        ((thueMorseSign (∑ j ∈ T, 2 ^ j) : ℤ) : R) * z ^ (∑ j ∈ T, 2 ^ j) :=
+  prod_one_sub_pow_powerset z (bitSupport n)
+
+/-- **Balance on odd Pascal positions, closed form.**  For every `n`,
+`∑_{C(n,k) odd} ε(k) = [n = 0]`: the Thue–Morse signs cancel over the odd
+entries of the `n`-th Pascal row unless the row is `n = 0`, whose single
+odd entry `k = 0` is evil.  No positivity hypothesis is needed — the
+alternating powerset sum `Finset.sum_powerset_neg_one_pow_card` already
+carries the `n = 0` value, and `bitSupport_eq_empty_iff` transports its
+`[J(n) = ∅]` into `[n = 0]`. -/
+theorem sum_thueMorseSign_oddBinomialIndices_eq_ite (n : ℕ) :
+    ∑ k ∈ oddBinomialIndices n, thueMorseSign k = if n = 0 then 1 else 0 := by
+  have hsign : ∀ T ∈ (bitSupport n).powerset,
+      thueMorseSign (∑ j ∈ T, 2 ^ j) = (-1 : ℤ) ^ T.card :=
+    fun T _ => thueMorseSign_sum_two_pow T
+  rw [oddBinomialIndices_eq_image_powerset,
+    Finset.sum_image (sum_two_pow_injOn_powerset n),
+    Finset.sum_congr rfl hsign, Finset.sum_powerset_neg_one_pow_card]
+  by_cases hn : n = 0
+  · rw [if_pos hn, if_pos ((bitSupport_eq_empty_iff n).mpr hn)]
+  · have hne : bitSupport n ≠ ∅ :=
+      fun h => hn ((bitSupport_eq_empty_iff n).mp h)
+    rw [if_neg hn, if_neg hne]
 
 /-- **Balance on odd Pascal positions.**  For every `n > 0`, the
 Thue–Morse signs cancel over the odd entries of the `n`-th Pascal row:
 `∑_{C(n,k) odd} ε(k) = 0`.  Exactly half of the `2^wt(n)` odd positions
-are evil and half are odious. -/
+are evil and half are odious.  The nonzero row of
+`sum_thueMorseSign_oddBinomialIndices_eq_ite`. -/
 theorem sum_thueMorseSign_oddBinomialIndices (n : ℕ) (hn : 0 < n) :
     ∑ k ∈ oddBinomialIndices n, thueMorseSign k = 0 := by
-  rw [oddBinomialIndices_eq_image_powerset,
-    Finset.sum_image (sum_two_pow_injOn_powerset n)]
-  have hsign : ∀ T ∈ (bitSupport n).powerset,
-      thueMorseSign (∑ j ∈ T, 2 ^ j) = (-1 : ℤ) ^ T.card := by
-    intro T hT
-    have hTsub : T ⊆ range (n + 1) :=
-      (Finset.mem_powerset.mp hT).trans (Finset.filter_subset _ _)
-    rw [thueMorseSign, binaryWeight_sum_two_pow hTsub]
-  rw [Finset.sum_congr rfl hsign, Finset.sum_powerset_neg_one_pow_card]
-  have hne : bitSupport n ≠ ∅ := by
-    intro hempty
-    have := sum_two_pow_bitSupport n
-    rw [hempty, Finset.sum_empty] at this
-    omega
-  rw [if_neg hne]
+  have hn0 : ¬ n = 0 := by omega
+  rw [sum_thueMorseSign_oddBinomialIndices_eq_ite, if_neg hn0]
 
 end Fabius

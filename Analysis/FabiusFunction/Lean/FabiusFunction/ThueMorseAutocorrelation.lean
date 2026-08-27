@@ -132,8 +132,10 @@ private theorem abs_thueMorseSign_eq_one (n : ℕ) :
   rw [thueMorseSign, abs_pow, abs_neg, abs_one, one_pow]
 
 /-- The trivial bound `|R_N(k)| ≤ N`: the window sum has `N` terms and
-each of them is a sign.  This is the elementary input behind every
-normalized estimate below. -/
+each of them is a sign.  Its one use below is the dyadic specialization
+`abs_thueMorseAutocorrelation_le`, which places every normalized
+autocorrelation in `[-1, 1]`; the three limits do not go through it, they
+come from the exact closed forms. -/
 theorem abs_thueMorseWindowAutocorrelation_le (N k : ℕ) :
     |thueMorseWindowAutocorrelation N k| ≤ (N : ℤ) := by
   have hterm : ∀ n ∈ range N,

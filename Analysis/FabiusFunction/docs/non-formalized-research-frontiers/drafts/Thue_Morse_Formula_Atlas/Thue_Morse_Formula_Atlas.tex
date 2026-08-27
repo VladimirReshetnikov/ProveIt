@@ -359,7 +359,7 @@ Rarefaction mod 3 & \(\bigl(A^{(3)}_{2u,r}\bigr)_r=3^{u-1}(2,-1,-1)\). \\
 Gelfond exponent & \(3^{m/2}\le\sup_x|P_m(\e^{2\pi\ii x})|\le\tfrac2{\sqrt3}3^{m/2}\). \\
 Newman positivity & \(\sum_{n<X,\,3\mid n}\eps_n>0\) for all \(X\ge1\). \\
 Critical exponent & Overlap-free; squares occur, exponent exactly \(2\). \\
-Factor complexity & \(\ell+1\le p(\ell)<8\ell\). \\
+Factor complexity & \(\ell+1\le p(\ell)\le6\ell-4\) for \(\ell\ge1\). \\
 Dirichlet--Mellin & \(D(s,a)=\Gamma(s)^{-1}\int_0^\infty t^{s-1}\e^{-at}E(\e^{-t})\dd t\).  \emph{Delivered}: boundary flatness, convergence, the dyadic equation, the analytic infinite product, the Mellin representation, and the entire continuation (\path{ThueMorseBoundaryFlatness.lean}, \path{ThueMorseDirichlet.lean}, \path{ThueMorseInfiniteProduct.lean}, \path{ThueMorseMellin.lean}, \path{ThueMorseEntireContinuation.lean}). \\
 \bottomrule
 \end{longtable}
@@ -1051,7 +1051,8 @@ proves the exact dyadic shell factorization of its modulus: for real
 dilating the argument by \(2^k\) creates exactly the \(k\) sine
 factors of the corresponding dyadic shell.  Bounding the lacunary sine
 numerator by the formal Gelfond bound
-\lean{Fabius.abs\_prod\_sin\_two\_pow\_le} --- the sine-product form
+\lean{Fabius.abs\_prod\_sin\_two\_pow\_le}
+(\path{GelfondLogisticBound.lean}) --- the sine-product form
 of \eqref{eq:gelfond-upper}, with the optimal rate \((\sqrt3/2)^k\)
 and the slightly larger constant \(\sqrt{5/3}\) in place of
 \(2/\sqrt3\) --- turns
@@ -1069,6 +1070,35 @@ the denominator is the universal \(\exp(-(\log x)^2/(2\log2))\) factor
 of the Fabius--Rvachev decay theory; the accompanying geometric factor
 is what the companion reports convert into the spectrum of decay
 exponents.
+
+The sine-product bound is in turn a corollary of a statement in which
+no trigonometry appears at all.  Along \emph{any} orbit of the full
+logistic map \(v\mapsto4v(1-v)\) whose \emph{starting point} lies in
+\([0,1]\) --- a hypothesis on \(u_0\) only, the range at every later
+index being supplied by invariance of \([0,1]\) --- the running
+product satisfies
+\begin{equation}
+ \prod_{j<n}u_j\le\tfrac53\left(\tfrac34\right)^{n}
+ \label{eq:logistic-product-bound}
+\end{equation}
+(\lean{Fabius.logistic\_prod\_le\_of\_init},
+\path{GelfondLogisticBound.lean}), by telescoping the potential
+\(V(v)=1+2v/3\) through the exact inequality
+\(3V(v)-4vV\bigl(4v(1-v)\bigr)=(2v+1)(4v-3)^2/3\ge0\); the constant
+\(5/3\) is the bound \(V(u_0)\le V(1)=5/3\), so it too comes from
+\(u_0\le1\) alone.  Squared sines at doubling angles form such an
+orbit (\lean{Fabius.sin\_sq\_two\_mul}), which is the only input the
+Gelfond bound needs.  The geometric rate in
+\eqref{eq:logistic-product-bound} is exact already at this abstract
+level: \(3/4\) is the interior fixed point of the map, and the
+constant orbit it generates has running product exactly \((3/4)^n\)
+(\lean{Fabius.logistic\_prod\_eq\_of\_init\_three\_quarters}), so no
+smaller geometric rate can hold along all orbits whatever the constant
+in front.  On the trigonometric side the same fixed point is attained
+by every seed with \(\sin^2(\pi t)=3/4\)
+(\lean{Fabius.prod\_sin\_sq\_two\_pow\_eq\_of\_sin\_sq\_eq}), the
+Gelfond angle \(t=1/3\) among them
+(\lean{Fabius.prod\_sin\_sq\_two\_pow\_third}).
 
 \subsection{The ruler transition}
 
@@ -1978,13 +2008,35 @@ is the geometric series).  The coefficientwise content of
 \cref{thm:infinite-product} has long been formal as the stabilization
 lemma \lean{Fabius.coeff\_finite\_thueMorse\_product}
 (\path{ThueMorseGenerating.lean}), and its \emph{analytic} content is
-now formal as well: for every \(t>0\) the series
-\(\sum\eps_n\e^{-nt}\) converges absolutely and equals the
-convergent infinite product \(\mathcal E(t)\)
-(\lean{Fabius.tsum\_thueMorseSign\_exp\_eq\_lacunaryExpProduct},
-\path{ThueMorseInfiniteProduct.lean}) --- both sides restrict at scale
-\(2^m\) to the finite identity, and uniqueness of limits closes the
-argument.  The bit Mahler equation
+now formal on the whole real interval, not merely on the exponential
+ray: for every real \(x\) with \(|x|<1\) the signed series converges
+absolutely (\lean{Fabius.summable\_thueMorseSign\_mul\_pow}), the
+lacunary product converges
+(\lean{Fabius.multipliable\_one\_sub\_pow\_two\_pow}), and
+\begin{equation}
+ \sum_{n\ge0}\eps_nx^n=\prod_{j\ge0}\bigl(1-x^{2^j}\bigr)
+ \qquad(-1<x<1),
+ \label{eq:infinite-product-analytic}
+\end{equation}
+negative \(x\) and \(x=0\) included
+(\lean{Fabius.tsum\_thueMorseSign\_mul\_pow},
+\path{ThueMorseInfiniteProduct.lean}), with the unordered and
+partial-product restatements
+\lean{Fabius.hasProd\_one\_sub\_pow\_two\_pow} and
+\lean{Fabius.tendsto\_prod\_one\_sub\_pow\_two\_pow}.  Both sides
+restrict at scale \(2^m\) to the finite identity
+\eqref{eq:finite-product} --- valid over any commutative ring --- and
+uniqueness of limits closes the argument.  The exponential ray
+\(\sum\eps_n\e^{-nt}=\mathcal E(t)\) for \(t>0\), which the
+Dirichlet--Mellin layer consumes, is now the one-line specialization
+\(x=\e^{-t}\)
+(\lean{Fabius.tsum\_thueMorseSign\_exp\_eq\_lacunaryExpProduct}).
+The full complex-disc form of \eqref{eq:infinite-product} is not
+carried in this shape; what the boundary theory actually uses is the
+holomorphic sum \lean{Fabius.thueMorseDiscSeries} with its
+finite-level factorization \(F(z)=P_k(z)F(z^{2^k})\)
+(\lean{Fabius.thueMorseDiscSeries\_iterate},
+\path{ThueMorseDiscSeries.lean}).  The bit Mahler equation
 \eqref{eq:T-Mahler} and the lacunary quotient are now formal in
 \path{ThueMorseLacunaryQuotient.lean}: the quotient
 \(z/(1-z^2)\) is realized as the dyadic geometric series
@@ -2461,6 +2513,26 @@ partial sums \(S_J=\sum_{j<J}a^{2^j}\) satisfy
 Artin--Schreier equation up to the single tail term, and no \(z\)-adic
 limit is needed for any identity in this subsection.
 
+The quadratic's \emph{entire} solution set is now formal as well, and
+it is a two-element set: in \(\Ftwo[[z]]\),
+\begin{equation}
+ (1+z)^3Y^2+(1+z)^2Y+z=0
+ \iff
+ Y=\Theta\ \text{ or }\ Y=\Theta+G
+ \label{eq:Artin-Schreier-solution-set}
+\end{equation}
+(\lean{Fabius.artinSchreier\_solution\_iff}), with no hypothesis on
+\(Y\) whatever --- in particular none on its constant term.  The
+difference \(D=Y-\Theta\) of two solutions satisfies the factored
+identity \((1+z)^2D\bigl((1+z)D+1\bigr)=0\); since \(\Ftwo[[z]]\) is a
+domain and \(1+z\ne0\), either \(D=0\) or \((1+z)D=1\), and the second
+alternative is not a contradiction but the second root: it says
+\(D=G\), because \((1+z)G=1\).  The Artin--Schreier symmetry
+\(Y\mapsto Y+1\) of \eqref{eq:Y-Artin-Schreier} is exactly the
+translation \(\Theta\mapsto\Theta+G\) after the substitution
+\(Y=(1+z)\Theta\), and \(\Theta+G\) is verified to be a root
+independently (\lean{Fabius.thueMorseBitSeries\_add\_geometricSeries\_quadratic}).
+
 \subsection{An integral algebraic lift}
 \label{sec:integer-lift}
 
@@ -2541,10 +2613,14 @@ is set; and the bits sum to \(s_2(n)\).  Hence
 
 \emph{Formal versions.}  The uniqueness step is
 \lean{Fabius.artinSchreier\_solution\_unique}
-(\path{ThueMorseArtinSchreier.lean}): the difference of two
-zero-constant solutions factors as \((1+z)^2D\bigl((1+z)D+1\bigr)=0\)
-in the integral domain \(\Ftwo[[z]]\), and the second factor has
-constant term one.  The parity statement \eqref{eq:integer-lift-parity}
+(\path{ThueMorseArtinSchreier.lean}), and it is now a one-line
+consequence of the complete solution set
+\eqref{eq:Artin-Schreier-solution-set}: the quadratic has exactly the
+two roots \(\Theta\) and \(\Theta+G\), and of these only \(\Theta\)
+has constant term zero, because \(G\) has constant term one.  The
+statement itself is unchanged --- a zero-constant-term solution of the
+quadratic equals \(\Theta\) --- only its proof now factors through the
+stronger classification.  The parity statement \eqref{eq:integer-lift-parity}
 is formal in conditional-universal form: \emph{any} integer sequence
 with \(c_0=0\) whose generating series satisfies
 \eqref{eq:integer-lift-algebraic} has Thue--Morse parity
@@ -3177,12 +3253,19 @@ with the compositions realized as finitely supported functions
 (\texttt{Finset.finsuppAntidiag}).  Factoring
 \((2^j)^{q_j+1}=2^j\cdot2^{jq_j}\) across the product recovers the boxed
 constant \(2^{\binom m2}\) of \eqref{eq:moment-composition}, and
-\(p_j=q_j+1\) gives \eqref{eq:moment-positive-compositions}.  The formal
-proof substitutes \(z=\e^{t}\) into the algebraic master product ---
-each factor becomes \(-t\) times an explicit entire series
-(\lean{Fabius.one\_sub\_exp\_two\_pow},
-\lean{Fabius.prod\_one\_sub\_exp\_two\_pow}) --- and extracts the
-\(t^{m+d}\) coefficient through \texttt{PowerSeries.coeff\_prod}.
+\(p_j=q_j+1\) gives \eqref{eq:moment-positive-compositions}.  The
+substitution \(z=\e^{t}\) is performed once and for all on an
+\emph{arbitrary} support of bit positions --- each factor becomes
+\(-t\) times an explicit entire series
+(\lean{Fabius.one\_sub\_exp\_pow}, specialized in
+\lean{Fabius.one\_sub\_exp\_two\_pow}, and collected in
+\lean{Fabius.prod\_one\_sub\_exp\_two\_pow'}) --- and the
+\(t^{|S|+d}\) coefficient is extracted through
+\texttt{PowerSeries.coeff\_prod} inside
+\lean{Fabius.sum\_powerset\_thueMorseSign\_mul\_pow\_add}.  The block
+statement is then its case \(S=\{0,\dots,m-1\}\), transported across
+the Boolean-cube reindexing kernel
+\lean{Fabius.sum\_powerset\_two\_pow}.
 
 \subsection{Bell-polynomial compression and cumulants}
 
@@ -3560,15 +3643,20 @@ Substitute \(z=\e^t\) in \eqref{eq:signed-Pascal-support}, factor
 
 \emph{Formal versions.}  \path{ThueMorseSparseMoments.lean} proves
 \cref{cor:all-sparse-moments} as
-\lean{Fabius.sum\_submask\_thueMorseSign\_mul\_pow\_add}, the
-special case \(S=J(n)\) of a statement on an \emph{arbitrary} finite
-set \(S\) of bit positions
+\lean{Fabius.sum\_submask\_thueMorseSign\_mul\_pow\_add}, and that is
+now all it contains: the corollary is the special case \(S=J(n)\) of
+a statement on an \emph{arbitrary} finite set \(S\) of bit positions
 (\lean{Fabius.sum\_powerset\_thueMorseSign\_mul\_pow\_add}), which
 also subsumes the dyadic block \(S=\{0,\dots,m-1\}\) of
-\cref{thm:moment-composition}.  The supporting master product on an
-arbitrary support is \lean{Fabius.prod\_one\_sub\_pow\_powerset},
-over any commutative ring, resting on the hypothesis-free weight law
-\lean{Fabius.binaryWeight\_sum\_two\_pow\_eq\_card}.
+\cref{thm:moment-composition}.  That arbitrary-support statement and
+its inputs live one level down, in \path{ThueMorseMoments.lean} ---
+an ancestor module cannot import a descendant, and
+\cref{thm:moment-composition} is itself derived from it: the master
+product on an arbitrary support is
+\lean{Fabius.prod\_one\_sub\_pow\_powerset}, over any commutative
+ring, resting on the hypothesis-free weight law
+\lean{Fabius.binaryWeight\_sum\_two\_pow\_eq\_card} and its sign
+companion \lean{Fabius.thueMorseSign\_sum\_two\_pow}.
 
 \begin{example}
 For \(n=13=(1101)_2\),
@@ -3675,12 +3763,17 @@ formulas \eqref{eq:ones-prefix-cases} as
 \lean{Fabius.sum\_thueMorseBit\_range\_two\_mul\_add\_one}, and
 the bridge \(2A(N)+S(N)=N\) as
 \lean{Fabius.two\_mul\_sum\_thueMorseBit\_add\_sum\_thueMorseSign}.
-The discrepancy statements of \cref{cor:interval-discrepancy} are
-\lean{Fabius.abs\_sum\_thueMorseSign\_range\_le\_one}
-(\(|S(N)|\le1\)), \lean{Fabius.sum\_thueMorseSign\_Ico},
-\lean{Fabius.abs\_sum\_thueMorseSign\_Ico\_le\_two}, and, for the
-bits in doubled integer form,
-\lean{Fabius.abs\_two\_mul\_sum\_thueMorseBit\_Ico\_sub\_le\_two}.
+The three displayed statements of \cref{cor:interval-discrepancy} are
+\lean{Fabius.sum\_thueMorseSign\_Ico} for \eqref{eq:interval-exact},
+\lean{Fabius.abs\_sum\_thueMorseSign\_Ico\_le\_two} for
+\eqref{eq:interval-signed-bound} --- both resting on the prefix bound
+\(|S(N)|\le1\)
+(\lean{Fabius.abs\_sum\_thueMorseSign\_range\_le\_one}) --- and, for
+the bits in doubled integer form,
+\lean{Fabius.abs\_two\_mul\_sum\_thueMorseBit\_Ico\_sub\_le\_two} for
+\eqref{eq:interval-bit-bound}.  All four are inequalities or exact
+identities; the attainment of the two constants, checked in the proof
+above at \(a=5\), \(b=7\), is \emph{not} formalized.
 
 \begin{corollary}[Aligned and partial dyadic blocks]
 \label{cor:dyadic-block-prefix}
@@ -4137,6 +4230,52 @@ rescaling the variable, with nonnegativity
 conjugate integrates over a period to \(2^m\), by the character
 orthonormality \lean{Fabius.integral\_exp\_two\_pi\_int}.
 
+A second, entirely independent route to \eqref{eq:Riesz-mass} --- and
+to every Fourier coefficient of a lacunary Riesz product below its
+spectral floor --- is formal in \path{LacunaryRieszIntegral.lean},
+where nothing mentions Thue--Morse.  For integer frequencies
+\(m_0,m_1,\dots\), arbitrary real amplitudes \(a_j\) and phases
+\(\varphi_j\), and an integer probe frequency \(K\),
+\begin{equation}
+ \int_0^1\cos(2\pi Kt+\psi)
+   \prod_{j<n}\bigl(1+a_j\cos(2\pi m_jt+\varphi_j)\bigr)\dd t
+ =\begin{cases}\cos\psi,&K=0,\\0,&K\ne0,\end{cases}
+ \label{eq:riesz-orthogonality}
+\end{equation}
+under the hypothesis --- exactly the one the peeling induction
+consumes --- that
+\begin{equation}
+ |K|+\sum_{i<j}m_i<m_j\qquad\text{for every }j
+ \label{eq:riesz-dissociation}
+\end{equation}
+(\lean{Fabius.integral\_cos\_mul\_rieszProduct\_of\_sum\_lt}), so that
+no signed combination \(\sum_j\eta_jm_j\) with \(\eta_j\in\{-1,0,1\}\)
+can reach \(-K\).  Two corollaries carry the classical shapes: the
+\(K\)-free hypothesis \(m_0+\sum_{i<j}m_i\le m_j\) with \(|K|<m_0\)
+(\lean{Fabius.integral\_cos\_mul\_rieszProduct\_of\_add\_sum\_le}),
+and the Hadamard gap \(2m_j\le m_{j+1}\) with \(|K|<m_0\)
+(\lean{Fabius.integral\_cos\_mul\_rieszProduct}, obtained from the
+previous one through
+\lean{Fabius.add\_sum\_le\_of\_two\_mul\_le}).  At \(K=0\) no headroom
+below the floor is needed, and plain super-increasingness
+\(\sum_{i<j}m_i<m_j\) already gives the mean value \(1\)
+(\lean{Fabius.integral\_rieszProduct\_of\_superIncreasing}; the
+Hadamard-gap restatement, which still assumes \(2m_j\le m_{j+1}\) and
+\(m_0>0\), is \lean{Fabius.integral\_rieszProduct}).  Consequently
+\eqref{eq:Riesz-mass} is the instance \(m_j=2^j\), \(a_j=-1\),
+\(\varphi_j=0\).  The companion
+exact identity
+\(\int_0^1\prod_{j<n}\sin^2(\pi m_jt)\dd t=2^{-n}\)
+(\lean{Fabius.integral\_prod\_sin\_sq\_of\_superIncreasing}, with the
+geometric and dyadic specializations
+\lean{Fabius.integral\_prod\_sin\_sq\_pow} and
+\lean{Fabius.integral\_prod\_sin\_sq\_two\_pow}) is what the
+Fourier-decay audit of the Rvachev up-function uses.  The offset
+\(m_0\) in the super-increasing hypothesis cannot be dropped when
+\(K\ne0\) --- the frequencies \(3,4,8,16,\dots\) with \(K=1\)
+resonate through \(m_1-m_0=1\) --- but that counterexample is recorded
+in prose in the module header, not formalized.
+
 The finite measures converge weakly to the Thue--Morse spectral measure.  The
 formal notation
 \begin{equation}
@@ -4186,8 +4325,37 @@ shift values \(3A_m(1)=-2^m-2(-1)^m\) and
 \(3A_{m+1}(2)=-2^{m+1}-4(-1)^m\)
 (\lean{Fabius.three\_mul\_thueMorseAutocorrelation\_one},
 \lean{Fabius.three\_mul\_thueMorseAutocorrelation\_two}) --- the
-exact finite forms of \(\eta(1)=\eta(2)=-\tfrac13\).  The existence
-of the limit and its spectral consequences remain analytic frontiers.
+exact finite forms of \(\eta(1)=\eta(2)=-\tfrac13\).
+
+The dyadic scaffolding of that recursion is removable.  Nothing in the
+two-scale split uses that the window is a power of two, only that it is
+\emph{even}, so the module proves the recursion first for the window
+sums \(R_N(k)=\sum_{n<N}\eps_n\eps_{n+k}\)
+(\lean{Fabius.thueMorseWindowAutocorrelation}) in the form
+\begin{equation}
+ R_{2K}(2r)=2R_K(r),
+ \qquad
+ R_{2K}(2r+1)=-\bigl(R_K(r)+R_K(r+1)\bigr)
+ \label{eq:window-autocorrelation}
+\end{equation}
+(\lean{Fabius.thueMorseWindowAutocorrelation\_two\_mul\_even},
+\lean{Fabius.thueMorseWindowAutocorrelation\_two\_mul\_odd}), with
+\(R_N(0)=N\)
+(\lean{Fabius.thueMorseWindowAutocorrelation\_zero\_shift}) and the
+trivial bound \(|R_N(k)|\le N\)
+(\lean{Fabius.abs\_thueMorseWindowAutocorrelation\_le}); the dyadic
+layer above is the case \(N=2^m\), read off through the definitional
+identity \lean{Fabius.thueMorseAutocorrelation\_eq\_window}, and its
+bound \(|A_m(k)|\le2^m\)
+(\lean{Fabius.abs\_thueMorseAutocorrelation\_le}) puts every
+normalized value in \([-1,1]\).  The normalized limits at the three
+shifts with closed forms are formal as well ---
+\(\eta_m(0)\to1\), \(\eta_m(1)\to-\tfrac13\), \(\eta_m(2)\to-\tfrac13\)
+(\lean{Fabius.tendsto\_thueMorseAutocorrelation\_zero\_shift},
+\lean{Fabius.tendsto\_thueMorseAutocorrelation\_one},
+\lean{Fabius.tendsto\_thueMorseAutocorrelation\_two}) --- but the
+existence of the limit at a \emph{general} shift \(k\), and its
+spectral consequences, remain analytic frontiers.
 
 \begin{theorem}[Limiting autocorrelation]
 \label{thm:limiting-autocorrelation}
@@ -4377,13 +4545,33 @@ The right side changes sign between consecutive \(m\), while the left side
 is constant --- a contradiction.
 \end{proof}
 
-\emph{Formal versions.}  \path{ThueMorseAperiodicity.lean} follows this
-argument verbatim: \lean{Fabius.thueMorseSign\_two\_pow} and the
-block-flip \lean{Fabius.thueMorseSign\_two\_pow\_add} transport an
-eventual period back to a global one
-(\lean{Fabius.thueMorseSign\_period\_of\_eventually}), and
-\lean{Fabius.thueMorseSign\_not\_eventually\_periodic} plays the
-reflection at two consecutive block levels exactly as above.
+\emph{Formal versions.}  \Cref{prop:aperiodicity} is
+\lean{Fabius.thueMorseSign\_not\_eventually\_periodic}
+(\path{ThueMorseAperiodicity.lean}), but the formal proof no longer
+runs the reflection argument above: aperiodicity is now a
+\emph{corollary of Thue's theorem} (\cref{thm:overlap-free}), through
+a purely word-combinatorial implication that holds over an arbitrary
+alphabet and knows nothing about \(\eps\).  If \(f:\N\to A\) is a
+sequence over any set \(A\) and
+satisfies \(f(n+p)=f(n)\) for all \(n\ge N\) with \(p\ge1\), then the
+window of length \(2p+1\) starting at \(N\) is already an overlap of
+period \(p\) --- every index \(N+j\) with \(j\le p\) lies past the
+threshold, so \(f(N+j)=f(N+p+j)\)
+(\lean{Fabius.exists\_overlap\_of\_eventually\_periodic}); hence an
+overlap-free sequence over any alphabet admits no eventual period
+(\lean{Fabius.not\_eventually\_periodic\_of\_overlap\_free},
+\path{ThueMorseOverlapFree.lean}).  \Cref{prop:aperiodicity} is that
+implication instantiated at \lean{Fabius.thueMorseSign} and fed with
+\lean{Fabius.thueMorseSign\_overlap\_free}; the zero--one counterpart
+\lean{Fabius.thueMorseBit\_not\_eventually\_periodic} is the same
+instantiation at \lean{Fabius.thueMorseBit}.  The dyadic block-flip
+identities on which the earlier self-contained proof ran are retained
+in \path{ThueMorseAperiodicity.lean} for their own sake ---
+\lean{Fabius.thueMorseSign\_two\_pow}, the block flip
+\lean{Fabius.thueMorseSign\_two\_pow\_add}, and the promotion of an
+eventual period to a global one
+(\lean{Fabius.thueMorseSign\_period\_of\_eventually}) --- but they are
+no longer on the path to the theorem.
 
 \subsection{Overlap-freeness and the critical exponent}
 
@@ -4431,7 +4619,14 @@ window (the seed fact is \(\tau(2k)\ne\tau(2k+1)\),
 die by a Boolean analysis of the window.  Cube-freeness is
 \lean{Fabius.thueMorseBit\_cube\_free}, and the dyadic squares showing
 that the exponent \(2\) is attained are
-\lean{Fabius.thueMorseBit\_square\_two\_pow}.
+\lean{Fabius.thueMorseBit\_square\_two\_pow}.  The module also isolates
+the step by which this theorem now \emph{implies}
+\cref{prop:aperiodicity}: over an arbitrary alphabet an eventual
+period \(p\ge1\) from a threshold \(N\) on already exhibits an overlap
+of period \(p\) at \(N\)
+(\lean{Fabius.exists\_overlap\_of\_eventually\_periodic}), so no
+overlap-free sequence over any alphabet is eventually periodic
+(\lean{Fabius.not\_eventually\_periodic\_of\_overlap\_free}).
 
 \subsection{Complement and reversal closure}
 
@@ -4480,17 +4675,75 @@ Morse--Hedlund theorem \cite{morseHedlund1938}: an infinite word with
 \(\ell\).
 \end{proof}
 
-\paragraph{Formal versions.}  \Cref{prop:complexity-bound} is fully
-formal in \path{ThueMorseComplexity.lean}.  The complexity is
+The counting in that proof is wasteful: a window needs the second
+supertile only if it actually crosses the boundary between the two,
+and few offsets do.  Bookkeeping the two cases separately sharpens the
+constant.
+
+\begin{proposition}[Sharpened linear bound]
+\label{prop:complexity-sharp}
+For all \(k,\ell\) with \(\ell\le2^k\),
+\begin{equation}
+  p(\ell)\le2\cdot2^k+2(\ell-1),
+  \label{eq:complexity-level}
+\end{equation}
+and consequently, for every \(\ell\ge1\),
+\begin{equation}
+  \boxed{p(\ell)\le6\ell-4.}
+  \label{eq:complexity-sharp}
+\end{equation}
+\end{proposition}
+
+\begin{proof}
+Fix \(k\) with \(\ell\le2^k\) and classify a starting position \(i\)
+by its offset \(r=i\bmod2^k\) in the aligned level-\(k\) block.  If
+\(r<2^k-(\ell-1)\) then \(r+j<2^k\) for every \(j<\ell\), so the whole
+window lies inside that one block and is a function of the pair
+\(\bigl(r,\tau(\lfloor i/2^k\rfloor)\bigr)\): at most
+\(2\bigl(2^k-(\ell-1)\bigr)\) windows arise this way.  Otherwise \(r\)
+is one of the \(\ell-1\) offsets in \([2^k-\ell+1,2^k)\), the window
+straddles the boundary, and it is a function of the triple
+\(\bigl(r,\tau(\lfloor i/2^k\rfloor),\tau(\lfloor
+i/2^k\rfloor+1)\bigr)\): at most \(4(\ell-1)\) windows.  The two counts
+add to \(2\cdot2^k+2(\ell-1)\), which is \eqref{eq:complexity-level}.
+Taking \(k=\lceil\log_2\ell\rceil\), so that \(\ell\le2^k\le2\ell-1\),
+turns it into \(p(\ell)\le2(2\ell-1)+2(\ell-1)=6\ell-4\).
+\end{proof}
+
+For \(\ell\ge1\) the bound \eqref{eq:complexity-sharp} implies
+\eqref{eq:complexity-bound}, and \eqref{eq:complexity-bound} is
+retained only because it is the form the rest of the atlas quotes.
+Neither is the exact value: the exact piecewise-linear formula for
+\(p(\ell)\) is a separate literature result, recalled but not
+reproved below.
+
+\paragraph{Formal versions.}  \Cref{prop:complexity-bound} and
+\cref{prop:complexity-sharp} are both fully formal in
+\path{ThueMorseComplexity.lean}, the sharp one being the primitive and
+the elementary one now its corollary.  The complexity is
 \lean{Fabius.thueMorseComplexity}, the cardinality of the set of
-length-\(\ell\) windows.  The upper bound is
-\lean{Fabius.thueMorseComplexity\_lt}: a window of length
+length-\(\ell\) windows.  A window of length
 \(\ell\le2^k\) is reconstructed from its offset in the aligned
 level-\(k\) block and the two adjacent block bits
-(\lean{Fabius.thueMorseWindow\_eq\_reconstruct}), so \emph{any}
-collection of windows contains at most \(4\cdot2^k\) distinct ones
-(\lean{Fabius.card\_image\_thueMorseWindow\_le}); taking \(k\)
-minimal gives \(p(\ell)<8\ell\).  The lower bound
+(\lean{Fabius.thueMorseWindow\_eq\_reconstruct}), a statement that
+also records \emph{where} the second bit is consulted --- only for the
+indices \(j\) with \(i\bmod2^k+j\ge2^k\) --- which is what makes the
+case split of \cref{prop:complexity-sharp} available.  Splitting the
+image accordingly, \emph{any} collection of windows contains at most
+\(2\cdot2^k+2(\ell-1)\) distinct ones
+(\lean{Fabius.card\_image\_thueMorseWindow\_le'}), whence
+\eqref{eq:complexity-level}
+(\lean{Fabius.thueMorseComplexity\_le'}) and, at
+\(k=\lceil\log_2\ell\rceil\), the boxed \eqref{eq:complexity-sharp}
+(\lean{Fabius.thueMorseComplexity\_le\_six\_mul\_sub\_four}).  The
+earlier chain survives with its signatures unchanged, each entry now a
+one-line consequence of its sharpened version: at most \(4\cdot2^k\)
+windows
+(\lean{Fabius.card\_image\_thueMorseWindow\_le}),
+\(p(\ell)\le4\cdot2^k\)
+(\lean{Fabius.thueMorseComplexity\_le}), and \(p(\ell)<8\ell\)
+(\lean{Fabius.thueMorseComplexity\_lt}), so nothing that quoted
+\eqref{eq:complexity-bound} needs revisiting.  The lower bound
 \lean{Fabius.le\_thueMorseComplexity} is the Morse--Hedlund argument
 proved from scratch: complexity is monotone
 (\lean{Fabius.thueMorseComplexity\_mono}), and it grows
@@ -4502,13 +4755,18 @@ finitely many windows would evolve deterministically, the pigeonhole
 principle would force two equal windows, and the word would be
 eventually periodic --- contradicting the formal aperiodicity theorem.
 Uniform recurrence (\lean{Fabius.thueMorseFactorSet\_eq\_image})
-makes the factor set a computable finite image.  Both bounds hold in
-at least the stated form: the upper bound
-\lean{Fabius.thueMorseComplexity\_lt} needs only \(\ell\ge1\), which
-is why \cref{prop:complexity-bound} is stated there, while
+makes the factor set a computable finite image.  Every bound holds in
+at least the stated form: the upper bounds
+\lean{Fabius.thueMorseComplexity\_le\_six\_mul\_sub\_four} and
+\lean{Fabius.thueMorseComplexity\_lt} need only \(\ell\ge1\), which
+is why the boxed lines \eqref{eq:complexity-bound} and
+\eqref{eq:complexity-sharp} carry that hypothesis, while
 \lean{Fabius.le\_thueMorseComplexity} carries no side condition at
-all and holds at \(\ell=0\) too, where \(p(0)=1\).  No literature
-import is needed.
+all and holds at \(\ell=0\) too, where \(p(0)=1\)
+(\lean{Fabius.thueMorseComplexity\_zero}); the level form
+\lean{Fabius.thueMorseComplexity\_le'} needs only \(\ell\le2^k\).  No
+literature import is needed --- and none of these statements asserts
+anything about the exact value of \(p(\ell)\).
 
 Linear complexity has two immediate consequences.  The topological entropy,
 \(\lim_\ell\ell^{-1}\log p(\ell)\), is zero.  And the word is not
@@ -4996,11 +5254,13 @@ sign prefix sums are bounded by one ---
 \lean{Fabius.thueMorseDirichlet} is their limit
 (\lean{Fabius.tendsto\_thueMorseDirichlet}); this is
 \cref{prop:Dirichlet-convergence} along the real axis.  The dyadic
-equation below is
-\lean{Fabius.thueMorseDirichlet\_dyadic}, proved by interleaving the
+equation below is \lean{Fabius.thueMorseDirichlet\_dyadic} on that
+same real ray --- for every real \(\sigma>0\) and \(a>0\) --- proved
+by interleaving the
 even-length partial sums through \(\eps(2n)=\eps(n)\),
 \(\eps(2n{+}1)=-\eps(n)\) and passing to limits along the doubled
-subsequence.  The Mellin representation itself is now formal in the
+subsequence; the complex form is recorded after
+\cref{thm:Dirichlet-dyadic} below.  The Mellin representation itself is now formal in the
 absolutely convergent real regime
 (\lean{Fabius.thueMorseDirichlet\_mellin},
 \path{ThueMorseMellin.lean}): for \(\sigma>1\) and \(a>0\),
@@ -5056,6 +5316,37 @@ Use \(\eps_{2n}=\eps_n\) and \(\eps_{2n+1}=-\eps_n\):
  \right).
 \end{align*}
 \end{proof}
+
+\emph{Formal versions.}  \Cref{thm:Dirichlet-dyadic} is now formal at
+\emph{every} complex \(s\), not only along the real ray.  The carrier
+is the entire continuation of \cref{thm:Mellin-integral}, formalized
+as \lean{Fabius.dirichletMellinContinuation}: for every \(a>0\) and
+every \(s\in\C\),
+\begin{equation}
+ \widetilde D(s,a)=2^{-s}\left(
+   \widetilde D\!\left(s,\frac a2\right)
+   -\widetilde D\!\left(s,\frac{a+1}{2}\right)\right)
+ \label{eq:Dirichlet-dyadic-entire}
+\end{equation}
+(\lean{Fabius.dirichletMellinContinuation\_dyadic},
+\path{ThueMorseEntireContinuation.lean}), where \(\widetilde D\)
+denotes that continuation.  The proof is the identity theorem, and it
+is the reason the entirety layer was built: both sides of
+\eqref{eq:Dirichlet-dyadic-entire} are entire --- the left by
+\lean{Fabius.dirichletMellinContinuation\_differentiable} at \(a\),
+the right by the same at \(a/2\) and \((a{+}1)/2\) multiplied by the
+entire \(s\mapsto2^{-s}\) --- and they agree on the ray
+\((1,\infty)\subseteq\R\subseteq\C\)
+(\lean{Fabius.dirichletMellinContinuation\_dyadic\_ofReal}, itself
+\lean{Fabius.thueMorseDirichlet\_dyadic} transported through
+\lean{Fabius.dirichletMellinContinuation\_eq}); that ray accumulates
+at \(s=2\), and \(\C\) is connected.  Note what is and is not
+delivered: \eqref{eq:Dirichlet-dyadic-entire} is unconditional in
+\(s\), while its identification with \eqref{eq:Dirichlet-dyadic} ---
+that is, \(\widetilde D=D\) --- is formal only where
+\lean{Fabius.dirichletMellinContinuation\_eq} applies, namely on the
+real ray \(\sigma>1\); off that ray the identification still rests on
+the informal half of \cref{prop:Dirichlet-convergence}.
 
 \subsection{Mellin representation and entire continuation}
 
@@ -5475,6 +5766,59 @@ Pairing adjacent factors reduces the first two to
 product.  The evaluations are thus \eqref{eq:quarter-product} and
 \eqref{eq:Woods-Robbins}.
 
+\emph{The dyadic scaffolding is removable, and the shift is free.}
+Nothing in the argument uses that the block length is a power of two,
+and nothing uses that the shift is \(1\) or \(1/2\).  For every real
+\(c>0\) and every \(M\),
+\begin{equation}
+ \sum_{k<2M}\eps_k\log(k+c)
+ =\sum_{j<M}\eps_j\log\frac{j+\frac c2}{j+\frac{c+1}2},
+ \label{eq:block-log-shift}
+\end{equation}
+the order-\(M\) partial sum of \(L\bigl(\tfrac c2,\tfrac{c+1}2\bigr)\)
+(\lean{Fabius.block\_log\_shift}): the pairing \(2j\mapsto2j+1\) uses
+only \(2j+c=2\bigl(j+\tfrac c2\bigr)\) and
+\(2j+1+c=2\bigl(j+\tfrac{c+1}2\bigr)\), so the two \(\log2\) terms
+cancel inside each pair and every unbounded term disappears at once.
+Exponentiating through \path{RealZPowProduct.lean} turns this into
+\begin{equation}
+ \lim_{M\to\infty}\prod_{k=0}^{2M-1}(k+c)^{\eps_k}
+ =\exp L\!\left(\frac c2,\frac{c+1}2\right)
+ \qquad(c>0),
+ \label{eq:block-product-even}
+\end{equation}
+a limit along \emph{every} even block length, with no dyadic
+subsequence
+(\lean{Fabius.tendsto\_block\_product\_even}).  The three fingerprints
+above are subsequences of \eqref{eq:block-product-even} and of its
+alternating companion: \eqref{eq:block-product-one} and
+\eqref{eq:block-product-half} are the cases \(c=1\) and \(c=1/2\) at
+\(M=2^{m-1}\) (\lean{Fabius.tendsto\_block\_product\_one\_even},
+\lean{Fabius.tendsto\_block\_product\_half\_even'}, and the evaluated
+\lean{Fabius.tendsto\_block\_product\_half\_even}), while
+\eqref{eq:block-product-alternating} is the case \(M=2^{m-2}\) of the
+mixed product along every multiple of four
+(\lean{Fabius.block\_log\_mixed\_four},
+\lean{Fabius.tendsto\_block\_product\_mixed\_four}).  The three
+original statements survive verbatim, each a three-line subsequence
+corollary of its general form.
+
+At \(c=1\) the general collapse \eqref{eq:block-log-shift} lands on
+\(\bigl(\tfrac12,1\bigr)\), and there the master series is
+\emph{termwise} the Woods--Robbins series, since
+\(\log\frac{n+1/2}{n+1}=\log\frac{2n+1}{2n+2}\)
+(\lean{Fabius.mpLog\_one\_half\_eq\_wrA}).  Hence
+\begin{equation}
+ L\!\left(\tfrac12,1\right)=-\tfrac12\log2,
+ \label{eq:master-at-half-one}
+\end{equation}
+that is, \(G(1/2,1)=1/\sqrt2\)
+(\lean{Fabius.mpLimit\_one\_half\_one}): \cref{thm:Woods-Robbins}
+\emph{is} the master log-series at \(\bigl(\tfrac12,1\bigr)\), not
+merely a relative of it.  Together with \(L(1/4,3/4)=-\log2\)
+(\lean{Fabius.mpLimit\_quarter}) this evaluates
+\eqref{eq:block-product-even} at both shifts the atlas uses.
+
 \section[Base-\texorpdfstring{\(q\)}{q} generalization]{Base-\texorpdfstring{\(q\)}{q} digit characters and generalized Prouhet identities}
 \label{sec:base-q}
 
@@ -5556,7 +5900,7 @@ valuation, carry, and Pascal-row formulas remain genuinely base-two features.
 \subsection{Formalized modules (August 2026)}
 \label{sec:formalized-modules}
 
-The first tranches of the formalization now exist as fifty-three
+The first tranches of the formalization now exist as fifty-seven
 compiled Lean modules in \repo{}, complementing the corpus modules
 (\path{Parity.lean}, \path{TwoAdic.lean}, \path{ThueMorsePrefix.lean},
 \path{ThueMorseGenerating.lean}, \path{ThueMorseExponential.lean},
@@ -5580,17 +5924,17 @@ Module & Contents \\
 \path{ThueMorseEnumerators.lean} & Weight distribution, evil/odious enumerations and composition laws, XOR autocorrelation, signed Hamming spheres. \\
 \path{ThueMorseSparseProuhet.lean} & Arbitrary-weight Prouhet annihilation and sharp moment (\cref{thm:arbitrary-weights}), Thue--Morse specializations, bit supports, sparse submask identities. \\
 \path{ThueMorseRarefied.lean} & Modulo-three rarefaction recursion and closed vectors, Newman positivity at dyadic endpoints, block balance, even-modulus collapse. \\
-\path{ThueMorseAperiodicity.lean} & Block-flip identities and non-eventual-periodicity. \\
+\path{ThueMorseAperiodicity.lean} & Block-flip identities, promotion of an eventual period to a global one, and non-eventual-periodicity --- the last now deduced from overlap-freeness rather than from the reflection argument. \\
 \path{ThueMorseBlockAlgebra.lean} & Telescope and multiplicity ladder, degree and leading data of \(P_m\), reciprocity (\texttt{reverse} and evaluation forms), cyclotomic multiplicity table, binomial-basis vanishing and sharp moment over any commutative ring. \\
-\path{ThueMorseMoments.lean} & Hockey-stick column sum, complete binomial moment composition (\cref{cor:binomial-moment-composition}), reflection functional equation, midpoint parity selection rule, sharp centered moment, complete power-moment composition formula. \\
-\path{ThueMorseArtinSchreier.lean} & Characteristic-two power-series Frobenius, the \(\Ftwo\) bit series with its functional equation, Artin--Schreier quadratic and normalized forms, finite Artin--Schreier telescope. \\
+\path{ThueMorseMoments.lean} & Hockey-stick column sum, complete binomial moment composition (\cref{cor:binomial-moment-composition}), reflection functional equation, midpoint parity selection rule, sharp centered moment; hypothesis-free weight and sign laws, the master products on arbitrary supports (including the arbitrary-exponent form), the exponential substitution, the complete sparse moment composition on an arbitrary support, and the complete power-moment composition formula as its dyadic-block case. \\
+\path{ThueMorseArtinSchreier.lean} & Characteristic-two power-series Frobenius, the \(\Ftwo\) bit series with its functional equation, Artin--Schreier quadratic and normalized forms, the complete two-element solution set \(\{\Theta,\Theta+G\}\) with zero-constant-term uniqueness as its corollary, finite Artin--Schreier telescope. \\
 \path{ThueMorseEulerTransform.lean} & Prefix collapse and ones-count formulas, general residue-class reindexing, ruler-convolution recurrence by finite combinatorics, interval discrepancy bounds. \\
 \path{ThueMorseLucasSupport.lean} & Binary support of two-power sums, Lucas's submask criterion (bit, \texttt{\&\&\&}, and support forms), odd Pascal positions as the submask cube, signed Pascal-support product, balance on odd positions. \\
 \path{ThueMorseWalsh.lean} & All-ones digit patterns and masked two-power sums, \(\eps\) as a Walsh character, character orthogonality on the block, the one-point Walsh spectrum. \\
-\path{ThueMorseSparseMoments.lean} & Hypothesis-free weight and sign laws, master product on arbitrary supports, complete sparse moment composition subsuming the block and submask cases. \\
+\path{ThueMorseSparseMoments.lean} & The atlas's all-sparse-moments formula on the submask cube (\cref{cor:all-sparse-moments}), as the \(S=J(n)\) instance of the arbitrary-support composition of \path{ThueMorseMoments.lean}. \\
 \path{ThueMorseMixedDifference.lean} & The dyadic mixed-difference operator and the finite-difference factorization for arbitrary functions from an additive monoid into an additive group, with the powerset expansion. \\
-\path{ThueMorseAutocorrelation.lean} & Finite autocorrelation recursion in exact integer form, zero-shift value, closed values at shifts one and two. \\
-\path{ThueMorseOverlapFree.lean} & Thue's overlap-freeness theorem with cube-freeness, the attained critical exponent two, and constructive complement and reversal closure of the factor language. \\
+\path{ThueMorseAutocorrelation.lean} & Finite autocorrelation recursion in exact integer form along \emph{any even} window, \(R_{2K}(2r)=2R_K(r)\) and \(R_{2K}(2r+1)=-(R_K(r)+R_K(r+1))\), with the dyadic layer \(A_m(k)=R_{2^m}(k)\) as its power-of-two case: zero-shift value, trivial bound, closed values at shifts one and two, and the normalized limits at shifts zero, one and two. \\
+\path{ThueMorseOverlapFree.lean} & Thue's overlap-freeness theorem with cube-freeness, the attained critical exponent two, the alphabet-free implication ``overlap-free \(\Rightarrow\) not eventually periodic'', and constructive complement and reversal closure of the factor language. \\
 \path{ThueMorseRecurrence.lean} & Full block-concatenation laws for weight and bit, all two-letter factors in every fourteen-letter window, uniform recurrence with an explicit linear bound. \\
 \path{ThueMorseMahler.lean} & Mahler equation and dyadic dissection for the signed series, cleared zero--one bridge, prefix generating function, finite-level autocorrelation Mahler equation. \\
 \path{ThueMorseBooleanMobius.lean} & Lattice isomorphism of the two-power encoding, submask weight enumerators, reconstruction and inversion-polynomial identities, nested binomial formula, Boolean M\"obius inversion on finsets and on submasks. \\
@@ -5599,26 +5943,26 @@ Module & Contents \\
 \path{ThueMorseSineProduct.lean} & The half-angle factorization and the sine-product closed form of the Thue--Morse trigonometric polynomial. \\
 \path{ThueMorseFourierInversion.lean} & Root-of-unity orthogonality and finite Fourier inversion over any field with a primitive root, specialized to the dyadic DFT over \(\mathbb C\). \\
 \path{ThueMorseParseval.lean} & Character orthonormality on \([0,1]\) and the Parseval mass \(\int_0^1|P_m(\e^{2\pi\ii x})|^2\,\dd x=2^m\). \\
-\path{ThueMorseComplexity.lean} & Factor complexity: the supertile-pair window parametrization, uniform-recurrence finiteness, and the two-sided bound \(\ell+1\le p(\ell)<8\ell\) with the Morse--Hedlund strict-growth argument. \\
+\path{ThueMorseComplexity.lean} & Factor complexity: the supertile-pair window parametrization with the boundary-crossing case split, uniform-recurrence finiteness, and the sharpened two-sided bound \(\ell+1\le p(\ell)\le6\ell-4\) --- with \(p(\ell)\le2\cdot2^k+2(\ell-1)\) at every covering level and the older \(4\cdot2^k\), \(p(\ell)<8\ell\) kept as corollaries --- and the Morse--Hedlund strict-growth argument. \\
 \path{ThueMorseArithmeticFilter.lean} & The root-of-unity filter for arithmetic progressions over any field (division-free form), the boxed rarefied formula, and the even-modulus collapse. \\
 \path{ToeplitzHessenberg.lean} & Cramer's rule for a known solution over any commutative ring; the triangular and the lower Toeplitz--Hessenberg band matrices of arbitrary band data; the triangular determinant \(\prod_{i<n}d_i\); and the expansion-free Toeplitz--Hessenberg determinant formula, read off from any solution of the convolution system, in matrix and in scalar-recurrence form. \\
 \path{ThueMorseHessenberg.lean} & The ruler convolution as an instance of that band system: the triangular ruler system with determinant \(n!\), the Hessenberg formula \(\det H_n=(-1)^nn!\,\eps_n\) for every \(n\ge0\) by one column rotation, and the sharp absolute value \(|\det H_n|=n!\). \\
 \path{ThueMorsePartition.lean} & Weighted partitions, the marked-part recurrence of \(\exp(\sum x_jz^j)\) over any characteristic-zero field, recurrence uniqueness, and the partition and Bell formulae for \(\eps_n\). \\
 \path{ThueMorseIntegerLift.lean} & The integral algebraic lift constructed in closed Catalan--binomial form; Catalan parity at Mersenne indices; the unconditional parity theorem \(c_n\equiv\tau(n)\), \(\eps_n=(-1)^{c_n}\). \\
-\path{ThueMorseBoundaryFlatness.lean} & The lacunary product \(\mathcal E(t)\) as an infinite product: self-similarity, positivity, monotonicity, and the effective two-sided flatness \(2^{\binom m2}(t/2)^m\mathcal E(\frac12)\le\mathcal E(t)\le2^{\binom m2}t^m\). \\
+\path{ThueMorseBoundaryFlatness.lean} & The lacunary product \(\mathcal E(t)\) as an infinite product: self-similarity, positivity, monotonicity, the effective upper bound \(\mathcal E(t)\le2^{\binom m2}t^m\) at every level \(m\), and the matching lower bound \(2^{\binom m2}(t/2)^m\mathcal E(\frac12)\le\mathcal E(t)\) under the dyadic matching \(\frac12\le2^mt\le2\). \\
 \path{ThueMorseDirichlet.lean} & The shifted Dirichlet series in the real regime: conditional convergence for every \(\sigma>0\) by Dirichlet's test, and the dyadic parameter equation \(D(\sigma,a)=2^{-\sigma}(D(\sigma,\frac a2)-D(\sigma,\frac{a+1}2))\). \\
 \path{ThueMorseCatalanSeries.lean} & The diagonal Vandermonde identity \(\sum_iC(i,p)C(M{-}i,q)=C(M{+}1,p{+}q{+}1)\) and the second-difference bridge from the lift to the substituted Catalan series. \\
 \path{ThueMorseCatalanConvolution.lean} & The interior Catalan convolution and the quadratic identity \(\sum_{p+q=m}h_ph_q=h_m-h_{m+1}-[m{=}0]\) of the substituted series. \\
 \path{ThueMorseIntegerLiftEquation.lean} & The boxed algebraic equation \((1-z)^3C^2+(1-z)^2C=z\) in \(\mathbb Z[[z]]\) for the constructed lift, by identification with the substituted series and cancellation. \\
 \path{ThueMorseIntegerLiftRecurrence.lean} & The linear ODE \((1+3z)(1-z)^2C'=1+3(1-z^2)C\) by differentiation and one linearization certificate, and the three-term recurrence by telescoping its coefficients. \\
 \path{ThueMorseLacunaryQuotient.lean} & The dyadic geometric series and its inversion of \(1-z^{2^j}\); the denominator-free bit Mahler equation; the lacunary quotient expansion at every finite level. \\
-\path{ThueMorseInfiniteProduct.lean} & The analytic infinite-product identity \(\sum\eps_n\e^{-nt}=\mathcal E(t)\) for \(t>0\): absolute convergence, multipliability, and identification of the limits along the dyadic scale. \\
+\path{ThueMorseInfiniteProduct.lean} & The analytic infinite-product identity \(\sum\eps_nx^n=\prod_j(1-x^{2^j})\) on the whole real interval \(|x|<1\): absolute convergence, multipliability, and identification of the limits along the dyadic scale; the exponential ray \(\sum\eps_n\e^{-nt}=\mathcal E(t)\), \(t>0\), is now a specialization. \\
 \path{ThueMorseMellin.lean} & The Mellin representation \(\Gamma(\sigma)D(\sigma,a)=\int_0^\infty t^{\sigma-1}\e^{-at}\mathcal E(t)\,\dd t\) for \(\sigma>1\): kernel integrability, absolute interchange, and termwise Gamma evaluation. \\
 \path{RealZPowProduct.lean} & Finite products of integer powers of positive reals through the exponential: the signed-logarithm identity, the limit transfer from logarithm sums to products along an arbitrary filter, and the closed-form value computations; nothing in it mentions Thue--Morse. \\
 \path{ThueMorseWoodsRobbins.lean} & The Woods--Robbins evaluation \(\prod((2n+1)/(2n+2))^{\eps_n}=2^{-1/2}\): Dirichlet-test convergence of the three log-series, the termwise and interleaving identities, and exponentiation. \\
 \path{ThueMorseMasterProduct.lean} & The master product \(G(a,b)\): convergence for all positive parameters, the cocycle identities, the dyadic functional equation, and \(G=\exp L\). \\
-\path{ThueMorseBlockProducts.lean} & The three dyadic block-product limits: the block collapse onto the Woods--Robbins partials, the alternating telescoping, and the identification of the half-shifted block with the master series at \((\frac14,\frac34)\). \\
-\path{ThueMorseEntireContinuation.lean} & The entire continuation: flatness of every order at zero, exponential decay, local integrability, entirety of \(\Gamma^{-1}\cdot\)Mellin, and agreement with \(D(\sigma,a)\) on \(\sigma>1\). \\
+\path{ThueMorseBlockProducts.lean} & Block-product limits along \emph{every even} block length and for an arbitrary positive shift \(c\): the shift-general log collapse onto the master partials at \((\frac c2,\frac{c+1}2)\), the identification of Woods--Robbins as the master series at \((\frac12,1)\), the alternating telescoping along every multiple of four, and the three dyadic limits as subsequence corollaries. \\
+\path{ThueMorseEntireContinuation.lean} & The entire continuation: flatness of every order at zero, exponential decay, local integrability, entirety of \(\Gamma^{-1}\cdot\)Mellin, the trivial zeros at the nonpositive integers, agreement with \(D(\sigma,a)\) on \(\sigma>1\), and the dyadic parameter equation at \emph{every} complex \(s\) by the identity theorem. \\
 \path{FrullaniIntegral.lean} & The Frullani integral \(\int_0^\infty(\e^{-pt}-\e^{-qt})t^{-1}\dd t=\log(q/p)\), by differentiation under the integral sign; not in Mathlib. \\
 \path{ThueMorseGDirichlet.lean} & The derivative bridge \(\log G(a,b)=D'(0,b)-D'(0,a)\): the closed integral form of \(\log G\), \((1/\Gamma)'(0)=1\), and the derivative of the entire continuation at zero. \\
 \path{ThueMorseQuarterProduct.lean} & The quarter product \(G(1/4,3/4)=1/2\) from Woods--Robbins by parity splitting, and the value \(1/2\) of the half-shifted block product. \\
@@ -5629,6 +5973,8 @@ Module & Contents \\
 \path{ThueMorseGelfond.lean} & Gelfond's sharp uniform bound: the one-variable sum-of-squares inequality \(\varphi^2(t)\varphi(2t)\le3\sqrt3\), the telescoped doubling-orbit product bound, and the exponential-sum form with constant \(2/\sqrt3\). \\
 \path{PeriodDoublingHankel.lean} & The mod-two Hankel engine: reusable block-determinant eliminations, parity interleavings, the period-doubling bit, and the four determinant halvings forcing every \(\mathbb F_2\)-determinant to equal one. \\
 \path{ThueMorseHankel.lean} & The Allouche--Peyri\`ere--Wen--Wen theorem: the doubling factorizations \(H_{2n}=2^nH_nH_n(m)\), \(H_{2n+1}=2^nH_{n+1}H_n(m)\), oddness of the difference determinants, and the exact valuation \(v_2(H_r)=r-1\). \\
+\path{LacunaryRieszIntegral.lean} & The exact orthogonality theory of lacunary Riesz products, with no Thue--Morse content: the frequency detector, the master theorem \(\int_0^1\cos(2\pi Kt+\psi)\prod_{j<n}(1+a_j\cos(2\pi m_jt+\varphi_j))\dd t\) under the dissociation hypothesis \(|K|+\sum_{i<j}m_i<m_j\), its super-increasing and Hadamard-gap corollaries, the mean value \(1\), and the exact identity \(\int_0^1\prod_{j<n}\sin^2(\pi m_jt)\dd t=2^{-n}\) with its geometric and dyadic specializations. \\
+\path{GelfondLogisticBound.lean} & The Gelfond rate from the logistic map, again with no Thue--Morse content: invariance of \([0,1]\), the potential telescope giving \(\prod_{j<n}u_j\le\frac53(\frac34)^n\) along any orbit from an initial value in \([0,1]\), exactness of the rate at the fixed point \(3/4\), the squared and unsquared dyadic sine-product bounds, and the \(L^1\) lower bracket for the sine product. \\
 \bottomrule
 \end{longtable}}
 

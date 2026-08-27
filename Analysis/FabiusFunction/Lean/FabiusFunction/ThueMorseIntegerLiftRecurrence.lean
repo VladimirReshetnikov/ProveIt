@@ -15,10 +15,17 @@ equation `(1+3z)(1-z)²·C' = 1 + 3(1-z²)·C`.  Extracting coefficients
 yields a four-term relation, which telescopes into the atlas's
 three-term recurrence by induction.
 
+Both coefficient identities are stated in their sharp range `1 ≤ n`.
+At `n = 1` the truncated arguments `n - 1` and `n - 2` collapse to `0`
+and `c(0) = 0`, so the four-term relation reads `2c(2) + c(1) = 3c(1)`
+and the recurrence reads `c(1) = 1`; both are true.  At `n = 0` they
+genuinely fail — the residues are `+1` and `-1` — so `1 ≤ n` is the
+exact hypothesis, not merely a convenient one.
+
 * `integerLiftSeries_ode` — the linear ODE.
-* `integerLift_four_term` — its coefficient form.
+* `integerLift_four_term` — its coefficient form, for `1 ≤ n`.
 * `integerLift_recurrence` — **the recurrence**
-  (`eq:integer-lift-recurrence`).
+  (`eq:integer-lift-recurrence`), for `1 ≤ n`.
 -/
 
 set_option autoImplicit false
@@ -27,6 +34,7 @@ open Finset PowerSeries
 
 namespace Fabius
 
+/-- The derivative of the linear factor `1 - X` in `ℤ⟦X⟧`. -/
 private theorem derivative_one_sub_X :
     d⁄dX ℤ (1 - X : PowerSeries ℤ) = -1 := by
   rw [map_sub, derivative_X, Derivation.map_one_eq_zero]
@@ -55,12 +63,29 @@ theorem integerLiftSeries_ode :
       (4 * (1 - X) ^ 2 * (d⁄dX ℤ integerLiftSeries) -
         6 * (1 - X) * integerLiftSeries - 1) * hE
 
-/-- The coefficient form: a four-term relation for `n ≥ 2`. -/
-theorem integerLift_four_term (n : ℕ) (hn : 2 ≤ n) :
+/-- `c(2) = 1`. -/
+private theorem integerLift_two : integerLift 2 = 1 := by
+  rw [integerLift, show Icc 1 2 = {1, 2} from rfl]
+  rw [Finset.sum_insert (by norm_num), Finset.sum_singleton]
+  norm_num [catalan_one]
+
+/-- The coefficient form: a four-term relation for `n ≥ 1`.
+
+The bound is sharp.  For `n ≥ 2` the identity is read off the ODE
+coefficientwise.  At `n = 1` the shifted series `X²·C'` and `X²·C`
+have vanishing `z¹`-coefficient, and so do the stated right-hand
+sides `c(0)·((1:ℤ)-1)` and `c(0)`, so the relation degenerates to
+`2c(2) + c(1) = 3c(1)`, which holds.  At `n = 0` it fails with
+residue `1`. -/
+theorem integerLift_four_term (n : ℕ) (hn : 1 ≤ n) :
     ((n : ℤ) + 1) * integerLift (n + 1) + (n : ℤ) * integerLift n -
       5 * ((n : ℤ) - 1) * integerLift (n - 1) +
       3 * ((n : ℤ) - 2) * integerLift (n - 2) =
     3 * integerLift n - 3 * integerLift (n - 2) := by
+  obtain h1 | htwo : n = 1 ∨ 2 ≤ n := by omega
+  · -- `n = 1`: both truncated arguments collapse to `0`
+    subst h1
+    norm_num [integerLift_two, integerLift_one]
   have hODE := integerLiftSeries_ode
   -- rewrite both sides in constant-times-shift normal form
   have hL : (1 + 3 * X) * (1 - X : PowerSeries ℤ) ^ 2 *
@@ -105,7 +130,7 @@ theorem integerLift_four_term (n : ℕ) (hn : 2 ≤ n) :
   have hX2D : (PowerSeries.coeff n)
       (X ^ 2 * (d⁄dX ℤ integerLiftSeries)) =
       integerLift (n - 1) * ((n : ℤ) - 1) := by
-    rw [PowerSeries.coeff_X_pow_mul', if_pos hn, hD]
+    rw [PowerSeries.coeff_X_pow_mul', if_pos htwo, hD]
     rw [show n - 2 + 1 = n - 1 by omega]
     push_cast [Nat.cast_sub (by omega : 1 ≤ n), Nat.cast_sub
       (by omega : 2 ≤ n)]
@@ -121,7 +146,7 @@ theorem integerLift_four_term (n : ℕ) (hn : 2 ≤ n) :
     · rfl
   have hX2C : (PowerSeries.coeff n) (X ^ 2 * integerLiftSeries) =
       integerLift (n - 2) := by
-    rw [PowerSeries.coeff_X_pow_mul', if_pos hn, integerLiftSeries,
+    rw [PowerSeries.coeff_X_pow_mul', if_pos htwo, integerLiftSeries,
       PowerSeries.coeff_mk]
   have hone : (PowerSeries.coeff n) (1 : PowerSeries ℤ) = 0 := by
     rw [PowerSeries.coeff_one, if_neg (by omega)]
@@ -139,31 +164,26 @@ theorem integerLift_four_term (n : ℕ) (hn : 2 ≤ n) :
     try push_cast at hcoeff ⊢
     linarith [hcoeff]
 
-/-- `c(2) = 1`. -/
-private theorem integerLift_two : integerLift 2 = 1 := by
-  rw [integerLift, show Icc 1 2 = {1, 2} from rfl]
-  rw [Finset.sum_insert (by norm_num), Finset.sum_singleton]
-  norm_num [catalan_one]
-
 /-- **The three-term recurrence** (`eq:integer-lift-recurrence`):
-`n·c(n) = (5-2n)·c(n-1) + 3·(n-1)·c(n-2) + 1` for `n ≥ 2`. -/
-theorem integerLift_recurrence (n : ℕ) (hn : 2 ≤ n) :
+`n·c(n) = (5-2n)·c(n-1) + 3·(n-1)·c(n-2) + 1` for `n ≥ 1`.
+
+The bound is sharp: at `n = 1` both truncated arguments are `0` and
+the statement reads `c(1) = 3·c(0) + 0 + 1`, i.e. `1 = 1`; at `n = 0`
+it fails with residue `-1`. -/
+theorem integerLift_recurrence (n : ℕ) (hn : 1 ≤ n) :
     (n : ℤ) * integerLift n =
       (5 - 2 * (n : ℤ)) * integerLift (n - 1) +
         3 * ((n : ℤ) - 1) * integerLift (n - 2) + 1 := by
   induction n with
   | zero => omega
   | succ n ih =>
-      rcases Nat.lt_or_ge n 2 with hn2 | hn2
-      · -- base case `n + 1 = 2`
-        have h2 : n = 1 := by omega
-        subst h2
-        rw [integerLift_two, show (2 : ℕ) - 1 = 1 from rfl,
-          show (2 : ℕ) - 2 = 0 from rfl, integerLift_one, integerLift_zero]
-        norm_num
+      obtain h0 | hn1 : n = 0 ∨ 1 ≤ n := by omega
+      · -- base case `n + 1 = 1`
+        subst h0
+        norm_num [integerLift_one]
       · -- inductive step through the four-term relation
-        have hR3 := ih hn2
-        have hR4 := integerLift_four_term n hn2
+        have hR3 := ih hn1
+        have hR4 := integerLift_four_term n hn1
         have harg1 : n + 1 - 1 = n := by omega
         have harg2 : n + 1 - 2 = n - 1 := by omega
         rw [harg1, harg2]

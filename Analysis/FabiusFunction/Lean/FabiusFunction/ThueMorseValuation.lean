@@ -99,44 +99,15 @@ theorem binaryWeight_succ_le (n : ℕ) :
   omega
 
 /-- **Subadditivity of the binary weight.**  Digitwise, an addition can
-only merge ones through carries, never create them. -/
+only merge ones through carries, never create them.  Quantitatively, the
+deficit is the carry count `ν₂((a+b).choose a)` of
+`binaryWeight_add_addChoose_padicValNat_two`, so subadditivity is just that
+equation with the nonnegative carry term dropped. -/
 theorem binaryWeight_add_le (a : ℕ) :
     ∀ b : ℕ, binaryWeight (a + b) ≤ binaryWeight a + binaryWeight b := by
-  induction a using Nat.strong_induction_on with
-  | _ a ih =>
-      intro b
-      rcases Nat.eq_zero_or_pos a with rfl | hapos
-      · simp
-      rcases Nat.even_or_odd a with ⟨a', ha⟩ | ⟨a', ha⟩ <;>
-        rcases Nat.even_or_odd b with ⟨b', hb⟩ | ⟨b', hb⟩ <;>
-          subst ha hb
-      · -- even + even
-        rw [show a' + a' = 2 * a' from (two_mul a').symm,
-          show b' + b' = 2 * b' from (two_mul b').symm,
-          show 2 * a' + 2 * b' = 2 * (a' + b') by ring,
-          binaryWeight_two_mul, binaryWeight_two_mul, binaryWeight_two_mul]
-        exact ih a' (by omega) b'
-      · -- even + odd
-        rw [show a' + a' = 2 * a' from (two_mul a').symm,
-          show 2 * a' + (2 * b' + 1) = 2 * (a' + b') + 1 by ring,
-          binaryWeight_two_mul, binaryWeight_two_mul_add_one,
-          binaryWeight_two_mul_add_one]
-        have := ih a' (by omega) b'
-        omega
-      · -- odd + even
-        rw [show 2 * a' + 1 + (b' + b') = 2 * (a' + b') + 1 by ring,
-          show b' + b' = 2 * b' from (two_mul b').symm,
-          binaryWeight_two_mul_add_one, binaryWeight_two_mul_add_one,
-          binaryWeight_two_mul]
-        have := ih a' (by omega) b'
-        omega
-      · -- odd + odd: a carry occurs, and the successor law absorbs it.
-        rw [show 2 * a' + 1 + (2 * b' + 1) = 2 * (a' + b' + 1) by ring,
-          binaryWeight_two_mul, binaryWeight_two_mul_add_one,
-          binaryWeight_two_mul_add_one]
-        have h1 := binaryWeight_succ_le (a' + b')
-        have h2 := ih a' (by omega) b'
-        omega
+  intro b
+  have h := binaryWeight_add_addChoose_padicValNat_two a b
+  omega
 
 /-- Adjacent Thue--Morse signs read the ruler sequence: the product of the
 signs at `n` and `n + 1` is `(-1) ^ (ν₂(n + 1) + 1)`. -/
@@ -199,13 +170,13 @@ theorem thueMorseSign_succ_eq_neg_catalan (n : ℕ) :
 
 /-- Additive form of Kummer's theorem at two: the valuation of the binomial
 coefficient balances the binary-weight books of an addition.  This is the
-truncation-free companion of `addChoose_padicValNat_two`. -/
+truncation-free companion of `addChoose_padicValNat_two`, and the name under
+which the rest of this file and its successors use
+`binaryWeight_add_addChoose_padicValNat_two` of `FabiusFunction.TwoAdic`. -/
 theorem binaryWeight_add_addChoose_padicValNat (a b : ℕ) :
     binaryWeight (a + b) + padicValNat 2 ((a + b).choose a) =
-      binaryWeight a + binaryWeight b := by
-  have htrunc := addChoose_padicValNat_two a b
-  have hle := binaryWeight_add_le a b
-  omega
+      binaryWeight a + binaryWeight b :=
+  binaryWeight_add_addChoose_padicValNat_two a b
 
 /-- **Borrow form of Kummer's theorem.**  For `b ≤ a`, the two-adic
 valuation of `a.choose b` counts the borrows of the subtraction `a - b`,

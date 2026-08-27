@@ -29,19 +29,10 @@ namespace Fabius
 
 /-! ## Weight versus size -/
 
-/-- The binary weight of `n` is at most `n`. -/
+/-- The binary weight of `n` is at most `n`.  Unfolding `binaryWeight`, this
+is Mathlib's `Nat.digit_sum_le` at base two. -/
 theorem binaryWeight_le_self (n : ℕ) : binaryWeight n ≤ n := by
-  induction n using Nat.strong_induction_on with
-  | _ n ih =>
-      rcases Nat.eq_zero_or_pos n with rfl | hpos
-      · simp [binaryWeight]
-      rcases Nat.even_or_odd n with ⟨k, hk⟩ | ⟨k, hk⟩ <;> subst hk
-      · rw [show k + k = 2 * k from (two_mul k).symm, binaryWeight_two_mul]
-        have := ih k (by omega)
-        omega
-      · rw [binaryWeight_two_mul_add_one]
-        have := ih k (by omega)
-        omega
+  simpa [binaryWeight] using Nat.digit_sum_le 2 n
 
 /-- **Additive Legendre formula.**  The binary weight and the two-adic
 valuation of the factorial partition `n` exactly. -/

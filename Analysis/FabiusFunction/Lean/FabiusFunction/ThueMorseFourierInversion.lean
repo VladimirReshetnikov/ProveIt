@@ -11,17 +11,29 @@ generality (any field, any primitive root of unity, any function) and
 specializes it to the Thue–Morse signs over `ℂ`.
 
 * `sum_pow_eq_ite` — root-of-unity orthogonality: for `z^N = 1`,
-  `∑_{k<N} z^k` is `N` at `z = 1` and `0` otherwise.
+  `∑_{k<N} z^k` is `N` at `z = 1` and `0` otherwise.  Stated over any
+  commutative domain: the telescoped identity `(∑ z^k)·(z-1) = z^N - 1`
+  needs no division.
 * `sum_pow_mul_inv_pow_eq_ite` — **character orthogonality**
   `∑_{ℓ<q} (ζ^a·ζ^(-b))^ℓ = q·[a ≡ b (mod q)]`, the single fact behind
   both the inversion formula and the root-of-unity filter.
-* `dft_inversion` — **finite Fourier inversion** over any field: with
-  `ζ` a primitive `N`-th root of unity,
-  `∑_{k<N} (∑_{n'<N} f(n')·ζ^(k·n'))·(ζ⁻¹)^(k·n) = N·f(n)` for `n < N`.
+* `dft_inversion_mod` — **finite Fourier inversion with no side
+  condition** on the index: with `ζ` a primitive `N`-th root of unity,
+  `∑_{k<N} (∑_{n'<N} f(n')·ζ^(k·n'))·(ζ⁻¹)^(k·n) = N·f(n % N)` for every
+  `n : ℕ`.  The inverse transform is `N`-periodic in `n`, so the block
+  restriction `n < N` is only a normalization of the index.
+* `dft_inversion` — the same statement on the block `n < N`, where the
+  residue `n % N` is `n`.
+* `sum_thueMorseSign_pow_mul` — the **twisted block transform as a finite
+  product**: over any commutative ring,
+  `∑_{n<2^m} ε(n)·z^(n·ℓ) = ∏_{j<m} (1 - z^(ℓ·2^j))`.
 * `thueMorse_dft_inversion` — the atlas's root-of-unity formula for the
   individual sign: over `ℂ` with `ζ = e^(2πi/2^m)`,
   `∑_{k<2^m} ε̂(k)·ζ^(k·n) = 2^m·ε(n)`, where
   `ε̂(k) = ∑_{n'} ε(n')·ζ^(-k·n')` is the dyadic DFT.
+* `thueMorse_dft_inversion_prod` — the same formula with the transform
+  written in closed product form,
+  `∑_{k<2^m} (∏_{j<m}(1 - ζ^(k·2^j)))·(ζ⁻¹)^(k·n) = 2^m·ε(n)`.
 -/
 
 set_option autoImplicit false
@@ -31,14 +43,25 @@ open Finset
 namespace Fabius
 
 /-- **Root-of-unity orthogonality**: if `z^N = 1` then `∑_{k<N} z^k` is
-`N` for `z = 1` and `0` otherwise. -/
-theorem sum_pow_eq_ite {F : Type*} [Field F] [DecidableEq F] (z : F) (N : ℕ)
-    (hz : z ^ N = 1) :
-    ∑ k ∈ range N, z ^ k = if z = 1 then (N : F) else 0 := by
+`N` for `z = 1` and `0` otherwise.
+
+A commutative domain suffices — no field structure is used.  Away from
+`z = 1` the telescoped identity `(∑_{k<N} z^k)·(z - 1) = z^N - 1 = 0`
+exhibits the sum as a zero divisor against the nonzero element `z - 1`,
+which already forces it to vanish; the division `(z^N - 1)/(z - 1)` of
+the field proof is never needed. -/
+theorem sum_pow_eq_ite {R : Type*} [CommRing R] [IsDomain R] [DecidableEq R]
+    (z : R) (N : ℕ) (hz : z ^ N = 1) :
+    ∑ k ∈ range N, z ^ k = if z = 1 then (N : R) else 0 := by
   by_cases h1 : z = 1
   · subst h1
     simp
-  · rw [if_neg h1, geom_sum_eq h1, hz, sub_self, zero_div]
+  · rw [if_neg h1]
+    have h0 : (∑ k ∈ range N, z ^ k) * (z - 1) = 0 := by
+      rw [geom_sum_mul, hz, sub_self]
+    rcases mul_eq_zero.mp h0 with h | h
+    · exact h
+    · exact absurd (sub_eq_zero.mp h) h1
 
 /-- **Character orthogonality over a full period**, in the shape both finite
 transforms of the atlas need: for a primitive `q`-th root of unity `ζ` in any
@@ -72,15 +95,19 @@ theorem sum_pow_mul_inv_pow_eq_ite {F : Type*} [Field F] [DecidableEq F]
       rw [hpowmod a, hpowmod b, h]
   simp only [hiff]
 
-/-- **Finite Fourier inversion** over an arbitrary field: for a primitive
-`N`-th root of unity `ζ` and any `f`, the inverse transform of the
-transform returns `N·f(n)` on the block. -/
-theorem dft_inversion {F : Type*} [Field F] [DecidableEq F] {ζ : F} {N : ℕ}
-    (hζ : IsPrimitiveRoot ζ N) (hN : N ≠ 0)
-    (f : ℕ → F) (n : ℕ) (hn : n < N) :
+/-- **Finite Fourier inversion, with no restriction on the index.**  For a
+primitive `N`-th root of unity `ζ` and any `f`, the inverse transform of
+the transform returns `N·f(n % N)`.
+
+The inverse transform depends on `n` only through `ζ^n`, hence only
+through `n % N`; the value it recovers is therefore the coefficient at
+the residue of `n`.  On the block `n < N` this is `f n` — see
+`dft_inversion`. -/
+theorem dft_inversion_mod {F : Type*} [Field F] [DecidableEq F] {ζ : F}
+    {N : ℕ} (hζ : IsPrimitiveRoot ζ N) (hN : N ≠ 0) (f : ℕ → F) (n : ℕ) :
     ∑ k ∈ range N,
         (∑ n' ∈ range N, f n' * ζ ^ (k * n')) * (ζ⁻¹) ^ (k * n) =
-      (N : F) * f n := by
+      (N : F) * f (n % N) := by
   -- push the outer factor inside and swap the sums
   have hexpand : ∀ k ∈ range N,
       (∑ n' ∈ range N, f n' * ζ ^ (k * n')) * (ζ⁻¹) ^ (k * n) =
@@ -91,22 +118,53 @@ theorem dft_inversion {F : Type*} [Field F] [DecidableEq F] {ζ : F} {N : ℕ}
     rw [mul_pow, mul_comm k n', pow_mul, mul_comm k n, pow_mul]
     ring
   rw [Finset.sum_congr rfl hexpand, Finset.sum_comm]
+  -- the inner geometric sum detects the residue class of `n`
   have hinner : ∀ n' ∈ range N,
       ∑ k ∈ range N, f n' * (ζ ^ n' * (ζ⁻¹) ^ n) ^ k =
-      f n' * (if n' = n then (N : F) else 0) := by
+      f n' * (if n' = n % N then (N : F) else 0) := by
     intro n' hn'
     rw [← Finset.mul_sum, sum_pow_mul_inv_pow_eq_ite hζ hN n' n]
     congr 1
-    rw [Nat.mod_eq_of_lt (Finset.mem_range.mp hn'), Nat.mod_eq_of_lt hn]
+    rw [Nat.mod_eq_of_lt (Finset.mem_range.mp hn')]
   rw [Finset.sum_congr rfl hinner]
   have hcollapse : ∀ n' ∈ range N,
-      f n' * (if n' = n then (N : F) else 0) =
-      (if n' = n then (N : F) * f n' else 0) := by
+      f n' * (if n' = n % N then (N : F) else 0) =
+      (if n' = n % N then (N : F) * f n' else 0) := by
     intro n' _
     split_ifs <;> ring
   rw [Finset.sum_congr rfl hcollapse,
-    Finset.sum_ite_eq' (range N) n (fun n' => (N : F) * f n'),
-    if_pos (Finset.mem_range.mpr hn)]
+    Finset.sum_ite_eq' (range N) (n % N) (fun n' => (N : F) * f n'),
+    if_pos (Finset.mem_range.mpr (Nat.mod_lt n (Nat.pos_of_ne_zero hN)))]
+
+/-- **Finite Fourier inversion** over an arbitrary field: for a primitive
+`N`-th root of unity `ζ` and any `f`, the inverse transform of the
+transform returns `N·f(n)` on the block. -/
+theorem dft_inversion {F : Type*} [Field F] [DecidableEq F] {ζ : F} {N : ℕ}
+    (hζ : IsPrimitiveRoot ζ N) (hN : N ≠ 0)
+    (f : ℕ → F) (n : ℕ) (hn : n < N) :
+    ∑ k ∈ range N,
+        (∑ n' ∈ range N, f n' * ζ ^ (k * n')) * (ζ⁻¹) ^ (k * n) =
+      (N : F) * f n := by
+  rw [dft_inversion_mod hζ hN f n, Nat.mod_eq_of_lt hn]
+
+/-- **The twisted Thue–Morse block transform is a finite product.**  Over
+any commutative ring, for every step `ℓ`,
+`∑_{n<2^m} ε(n)·z^(n·ℓ) = ∏_{j<m} (1 - z^(ℓ·2^j))`.
+
+This is the master product `prod_one_sub_pow_eq_sum_thueMorseSign`
+evaluated at `z^ℓ`, with the exponents flattened; it is the shape in
+which every character sum of the atlas meets the block polynomial. -/
+theorem sum_thueMorseSign_pow_mul {R : Type*} [CommRing R] (z : R)
+    (m ℓ : ℕ) :
+    ∑ n ∈ range (2 ^ m), ((thueMorseSign n : ℤ) : R) * z ^ (n * ℓ) =
+      ∏ j ∈ range m, (1 - z ^ (ℓ * 2 ^ j)) := by
+  calc ∑ n ∈ range (2 ^ m), ((thueMorseSign n : ℤ) : R) * z ^ (n * ℓ)
+      = ∑ n ∈ range (2 ^ m), ((thueMorseSign n : ℤ) : R) * (z ^ ℓ) ^ n :=
+        Finset.sum_congr rfl fun n _ => by rw [← pow_mul, mul_comm ℓ n]
+    _ = ∏ j ∈ range m, (1 - (z ^ ℓ) ^ (2 ^ j)) :=
+        (prod_one_sub_pow_eq_sum_thueMorseSign (z ^ ℓ) m).symm
+    _ = ∏ j ∈ range m, (1 - z ^ (ℓ * 2 ^ j)) :=
+        Finset.prod_congr rfl fun j _ => by rw [← pow_mul]
 
 /-- **The atlas's root-of-unity formula for the individual sign**: over
 `ℂ` with `ζ = e^(2πi/2^m)`, the inverse transform of the dyadic DFT
@@ -125,5 +183,28 @@ theorem thueMorse_dft_inversion (m n : ℕ) (hn : n < 2 ^ m) :
     ring
   exact dft_inversion hprim (Nat.two_pow_pos m).ne'
     (fun n' => ((thueMorseSign n' : ℤ) : ℂ)) n hn
+
+/-- **The root-of-unity formula in closed product form.**  Substituting
+`sum_thueMorseSign_pow_mul` for the dyadic DFT turns
+`thueMorse_dft_inversion` into a statement with no inner sum:
+`∑_{k<2^m} (∏_{j<m} (1 - ζ^(k·2^j)))·(ζ⁻¹)^(k·n) = 2^m·ε(n)` for
+`ζ = e^(2πi/2^m)` and `n < 2^m`. -/
+theorem thueMorse_dft_inversion_prod (m n : ℕ) (hn : n < 2 ^ m) :
+    ∑ k ∈ range (2 ^ m),
+        (∏ j ∈ range m, (1 - Complex.exp
+            (2 * Real.pi * Complex.I / (2 ^ m)) ^ (k * 2 ^ j))) *
+          ((Complex.exp (2 * Real.pi * Complex.I / (2 ^ m)))⁻¹) ^ (k * n) =
+      ((2 ^ m : ℕ) : ℂ) * ((thueMorseSign n : ℤ) : ℂ) := by
+  have hprod : ∀ k : ℕ,
+      ∏ j ∈ range m, (1 - Complex.exp
+          (2 * Real.pi * Complex.I / (2 ^ m)) ^ (k * 2 ^ j)) =
+        ∑ n' ∈ range (2 ^ m), ((thueMorseSign n' : ℤ) : ℂ) *
+          Complex.exp (2 * Real.pi * Complex.I / (2 ^ m)) ^ (k * n') := by
+    intro k
+    rw [← sum_thueMorseSign_pow_mul
+      (Complex.exp (2 * Real.pi * Complex.I / (2 ^ m))) m k]
+    exact Finset.sum_congr rfl fun n' _ => by rw [mul_comm k n']
+  rw [← thueMorse_dft_inversion m n hn]
+  exact Finset.sum_congr rfl fun k _ => by rw [hprod k]
 
 end Fabius

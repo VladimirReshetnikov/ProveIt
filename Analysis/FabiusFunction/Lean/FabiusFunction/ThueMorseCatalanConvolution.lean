@@ -79,6 +79,30 @@ private theorem delta_ext (M p : ℕ) (hp : 1 ≤ p) (hpM : p ≤ M) :
   push_cast
   ring
 
+/-- **Peeling the `t = 1` term off `h(m)`.**  The defining sum of
+`h(m)` opens with `(-1)^1·Cat(1)·C(m-1,0) = -1`, so for `1 ≤ m` its
+tail from `t = 2` on is `h(m) + 1`.  Every boundary peel in the
+convolution proof below is an instance of this one identity, at `m`
+or at `m + 1`. -/
+private theorem catalanSeriesDelta_peel_one (m : ℕ) (hm : 1 ≤ m) :
+    ∑ t ∈ Icc 2 m, (-1) ^ t * (catalan t : ℤ) *
+        (((m - 1).choose (t - 1) : ℕ) : ℤ) =
+      catalanSeriesDelta m + 1 := by
+  rw [catalanSeriesDelta, if_neg (by omega)]
+  have h1mem : (1 : ℕ) ∈ Icc 1 m := Finset.mem_Icc.mpr (by omega)
+  have herase1 : (Icc 1 m).erase 1 = Icc 2 m := by
+    ext x
+    simp only [Finset.mem_erase, Finset.mem_Icc]
+    omega
+  rw [← Finset.add_sum_erase _
+    (fun t => (-1) ^ t * (catalan t : ℤ) * ((m - 1).choose (t - 1) : ℤ))
+    h1mem, herase1]
+  have hone : (-1 : ℤ) ^ 1 * (catalan 1 : ℤ) *
+      ((m - 1).choose (1 - 1) : ℤ) = -1 := by
+    norm_num [catalan_one]
+  rw [hone]
+  ring
+
 private theorem vandermonde_collapse (m s t : ℕ) (hs : 1 ≤ s)
     (ht : 1 ≤ t) :
     ∑ p ∈ Icc 1 (m - 1),
@@ -277,64 +301,37 @@ theorem catalanSeriesDelta_conv (m : ℕ) :
   have hS2 : ∑ u ∈ Icc 2 m, (-1) ^ u *
       (((m - 1).choose (u - 1) : ℕ) : ℤ) * (catalan u : ℤ) =
       catalanSeriesDelta m + 1 := by
-    rw [catalanSeriesDelta, if_neg (by omega)]
-    have h1mem : (1 : ℕ) ∈ Icc 1 m := Finset.mem_Icc.mpr (by omega)
-    have herase : (Icc 1 m).erase 1 = Icc 2 m := by
-      ext x
-      simp only [Finset.mem_erase, Finset.mem_Icc]
-      omega
-    rw [← Finset.add_sum_erase _
-      (fun t => (-1) ^ t * (catalan t : ℤ) * ((m - 1).choose (t - 1) : ℤ))
-      h1mem, herase]
-    have hone : (-1 : ℤ) ^ 1 * (catalan 1 : ℤ) *
-        ((m - 1).choose (1 - 1) : ℤ) = -1 := by
-      norm_num [catalan_one]
-    rw [hone]
-    have hcong : ∀ u ∈ Icc 2 m,
-        (-1 : ℤ) ^ u * (catalan u : ℤ) * ((m - 1).choose (u - 1) : ℤ) =
-        (-1) ^ u * (((m - 1).choose (u - 1) : ℕ) : ℤ) * (catalan u : ℤ) := by
-      intro u _
-      ring
-    rw [Finset.sum_congr rfl hcong]
+    rw [← catalanSeriesDelta_peel_one m (by omega)]
+    refine Finset.sum_congr rfl fun u _ => ?_
     ring
   have hS1 : ∑ u ∈ Icc 2 m, (-1) ^ u *
       (((m - 1).choose (u - 1) : ℕ) : ℤ) * (catalan (u + 1) : ℤ) =
       catalanSeriesDelta m - catalanSeriesDelta (m + 1) + 2 := by
-    -- expand `h(m+1)`, peel `t = 1`, split by Pascal, and reassemble
-    have hsucc : catalanSeriesDelta (m + 1) =
-        ∑ t ∈ Icc 1 (m + 1), (-1) ^ t * (catalan t : ℤ) *
-          ((m.choose (t - 1) : ℕ) : ℤ) := by
-      rw [catalanSeriesDelta, if_neg (by omega)]
-      rfl
-    have h1mem : (1 : ℕ) ∈ Icc 1 (m + 1) := Finset.mem_Icc.mpr (by omega)
-    have herase : (Icc 1 (m + 1)).erase 1 = Icc 2 (m + 1) := by
-      ext x
-      simp only [Finset.mem_erase, Finset.mem_Icc]
-      omega
+    -- peel `h(m+1)` at `t = 1`, split by Pascal, and reassemble
     have hsplit : catalanSeriesDelta (m + 1) =
         -1 + ∑ t ∈ Icc 2 (m + 1), (-1) ^ t * (catalan t : ℤ) *
           ((((m - 1).choose (t - 1) : ℕ) : ℤ) +
             (((m - 1).choose (t - 2) : ℕ) : ℤ)) := by
-      rw [hsucc, ← Finset.add_sum_erase _
-        (fun t => (-1) ^ t * (catalan t : ℤ) * ((m.choose (t - 1) : ℕ) : ℤ))
-        h1mem, herase]
-      have hone : (-1 : ℤ) ^ 1 * (catalan 1 : ℤ) *
-          ((m.choose (1 - 1) : ℕ) : ℤ) = -1 := by
-        norm_num [catalan_one]
-      rw [hone]
-      congr 1
-      refine Finset.sum_congr rfl fun t ht => ?_
-      have ht2 := Finset.mem_Icc.mp ht
-      have hPascal : m.choose (t - 1) =
-          (m - 1).choose (t - 1) + (m - 1).choose (t - 2) := by
-        have := Nat.choose_succ_succ (m - 1) (t - 2)
-        simp only [Nat.succ_eq_add_one] at this
-        rw [show m - 1 + 1 = m by omega,
-          show t - 2 + 1 = t - 1 by omega] at this
-        omega
-      rw [hPascal]
-      push_cast
-      ring
+      have hpeel := catalanSeriesDelta_peel_one (m + 1) (by omega)
+      rw [show m + 1 - 1 = m by omega] at hpeel
+      have hcongr : ∑ t ∈ Icc 2 (m + 1), (-1) ^ t * (catalan t : ℤ) *
+          ((m.choose (t - 1) : ℕ) : ℤ) =
+          ∑ t ∈ Icc 2 (m + 1), (-1) ^ t * (catalan t : ℤ) *
+            ((((m - 1).choose (t - 1) : ℕ) : ℤ) +
+              (((m - 1).choose (t - 2) : ℕ) : ℤ)) := by
+        refine Finset.sum_congr rfl fun t ht => ?_
+        have ht2 := Finset.mem_Icc.mp ht
+        have hPascal : m.choose (t - 1) =
+            (m - 1).choose (t - 1) + (m - 1).choose (t - 2) := by
+          have hpas : m.choose (t - 1) =
+              (m - 1).choose (t - 1 - 1) + (m - 1).choose (t - 1) :=
+            Nat.choose_eq_choose_pred_add (by omega) (by omega)
+          rw [show t - 1 - 1 = t - 2 by omega] at hpas
+          omega
+        rw [hPascal]
+        push_cast
+        ring
+      linarith [hpeel, hcongr]
     -- first Pascal half: `h(m)` with its top extension
     have hhalf1 : ∑ t ∈ Icc 2 (m + 1), (-1) ^ t * (catalan t : ℤ) *
         (((m - 1).choose (t - 1) : ℕ) : ℤ) =
@@ -355,20 +352,7 @@ theorem catalanSeriesDelta_conv (m : ℕ) :
         push_cast
         ring
       rw [htop]
-      rw [catalanSeriesDelta, if_neg (by omega)]
-      have h1mem : (1 : ℕ) ∈ Icc 1 m := Finset.mem_Icc.mpr (by omega)
-      have herase1 : (Icc 1 m).erase 1 = Icc 2 m := by
-        ext x
-        simp only [Finset.mem_erase, Finset.mem_Icc]
-        omega
-      rw [← Finset.add_sum_erase _
-        (fun t => (-1) ^ t * (catalan t : ℤ) * ((m - 1).choose (t - 1) : ℤ))
-        h1mem, herase1]
-      have hone : (-1 : ℤ) ^ 1 * (catalan 1 : ℤ) *
-          ((m - 1).choose (1 - 1) : ℤ) = -1 := by
-        norm_num [catalan_one]
-      rw [hone]
-      ring
+      exact catalanSeriesDelta_peel_one m (by omega)
     -- second Pascal half: peel `t = 2` and shift into `S1`
     have hhalf2 : ∑ t ∈ Icc 2 (m + 1), (-1) ^ t * (catalan t : ℤ) *
         (((m - 1).choose (t - 2) : ℕ) : ℤ) =

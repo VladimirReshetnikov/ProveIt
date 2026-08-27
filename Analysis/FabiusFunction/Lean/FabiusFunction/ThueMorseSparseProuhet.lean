@@ -38,6 +38,11 @@ The induction is the atlas's proof made exact: inserting one index into
 `taylor` API supplies the degree bookkeeping, and
 `Finset.sum_powerset_insert` supplies the split of the powerset of
 `insert a S` into the two halves that the induction pairs.
+
+The dyadic specializations all feed natural-number submasks into an engine
+whose steps are ring elements; the cast bridge and the step-product
+evaluation that this needs are isolated once, in the private section
+`Dyadic step bookkeeping`, instead of being repeated at each call site.
 -/
 
 set_option autoImplicit false
@@ -208,6 +213,37 @@ theorem sum_powerset_neg_one_pow_pow_card {R : Type*} [CommRing R]
       push_cast
       ring
 
+/-! ## Dyadic step bookkeeping -/
+
+/-- The cast of a submask value times a step is the ring-valued sum of the
+dyadic steps it selects: `(∑_{j∈T} 2^j : ℕ) · h = ∑_{j∈T} 2^j·h`. -/
+private theorem cast_sum_two_pow_mul {R : Type*} [CommRing R]
+    (T : Finset ℕ) (h : R) :
+    ((∑ j ∈ T, 2 ^ j : ℕ) : R) * h = ∑ j ∈ T, (2 : R) ^ j * h := by
+  push_cast
+  rw [Finset.sum_mul]
+
+/-- **Cast bridge for signed powerset sums.**  Rewrites a signed powerset
+sum indexed by natural submasks into the ring-valued step form that
+`sum_powerset_neg_one_pow_eval` and `sum_powerset_neg_one_pow_pow_card`
+produce.  Used at both the `range m` and the `bitSupport n` scale sets. -/
+private theorem sum_powerset_pow_cast_bridge {R : Type*} [CommRing R]
+    (S : Finset ℕ) (x h : R) (k : ℕ) :
+    ∑ T ∈ S.powerset,
+        (-1 : R) ^ T.card * (x + ((∑ j ∈ T, 2 ^ j : ℕ) : R) * h) ^ k =
+      ∑ T ∈ S.powerset,
+        (-1 : R) ^ T.card * (x + ∑ j ∈ T, (2 : R) ^ j * h) ^ k := by
+  refine Finset.sum_congr rfl fun T _ => ?_
+  rw [cast_sum_two_pow_mul]
+
+/-- The product of the dyadic steps over a set of scales:
+`∏_{j∈S} 2^j·h = 2^(∑_{j∈S} j) · h^{|S|}`.  The sharp moments differ only
+in how they then evaluate the exponent `∑_{j∈S} j` and the cardinality. -/
+private theorem prod_two_pow_mul {R : Type*} [CommRing R] (S : Finset ℕ)
+    (h : R) :
+    ∏ j ∈ S, ((2 : R) ^ j * h) = 2 ^ (∑ j ∈ S, j) * h ^ S.card := by
+  rw [Finset.prod_mul_distrib, Finset.prod_const, Finset.prod_pow_eq_pow_sum]
+
 /-! ## Thue--Morse specializations -/
 
 /-- **Transport.**  A signed Thue--Morse block sum is a signed powerset
@@ -239,9 +275,7 @@ theorem sum_thueMorseSign_mul_affine_pow_eq_zero {R : Type*} [CommRing R]
     (lt_of_le_of_lt (natDegree_X_pow_le r) (by simpa using hr)) x
   rw [← hgen]
   refine Finset.sum_congr rfl fun T hT => ?_
-  rw [eval_pow, eval_X]
-  push_cast
-  rw [Finset.sum_mul]
+  rw [eval_pow, eval_X, cast_sum_two_pow_mul]
 
 /-- **Sharp Prouhet moment over any commutative ring.**  At `r = m` the
 cancellation breaks with the exact value
@@ -256,19 +290,10 @@ theorem sum_thueMorseSign_mul_affine_pow_card {R : Type*} [CommRing R]
   have hgen := sum_powerset_neg_one_pow_pow_card (range m)
     (fun j => (2 : R) ^ j * h) x
   rw [Finset.card_range] at hgen
-  have hbridge :
-      ∑ T ∈ (range m).powerset,
-        (-1 : R) ^ T.card * (x + ((∑ j ∈ T, 2 ^ j : ℕ) : R) * h) ^ m =
-      ∑ T ∈ (range m).powerset,
-        (-1 : R) ^ T.card * (x + ∑ j ∈ T, (2 : R) ^ j * h) ^ m := by
-    refine Finset.sum_congr rfl fun T hT => ?_
-    push_cast
-    rw [Finset.sum_mul]
-  rw [hbridge, hgen]
+  rw [sum_powerset_pow_cast_bridge (range m) x h m, hgen]
   have hprod : ∏ j ∈ range m, ((2 : R) ^ j * h) =
       2 ^ m.choose 2 * h ^ m := by
-    rw [Finset.prod_mul_distrib, Finset.prod_const, Finset.card_range,
-      Finset.prod_pow_eq_pow_sum, Finset.sum_range_id,
+    rw [prod_two_pow_mul, Finset.card_range, Finset.sum_range_id,
       Nat.choose_two_right]
   rw [hprod]
   ring
@@ -348,8 +373,7 @@ theorem sum_submask_neg_one_pow_eval {R : Type*} [CommRing R]
     (fun j => (2 : R) ^ j * h) p (by rwa [card_bitSupport]) x
   rw [← hgen]
   refine Finset.sum_congr rfl fun T hT => ?_
-  push_cast
-  rw [Finset.sum_mul]
+  rw [cast_sum_two_pow_mul]
 
 /-- **Sharp sparse moment.**  At degree exactly `binaryWeight n`, the
 submask sum evaluates to
@@ -365,21 +389,11 @@ theorem sum_submask_neg_one_pow_pow {R : Type*} [CommRing R]
   have hgen := sum_powerset_neg_one_pow_pow_card (bitSupport n)
     (fun j => (2 : R) ^ j * h) x
   rw [card_bitSupport] at hgen
-  have hbridge :
-      ∑ T ∈ (bitSupport n).powerset,
-        (-1 : R) ^ T.card *
-          (x + ((∑ j ∈ T, 2 ^ j : ℕ) : R) * h) ^ binaryWeight n =
-      ∑ T ∈ (bitSupport n).powerset,
-        (-1 : R) ^ T.card *
-          (x + ∑ j ∈ T, (2 : R) ^ j * h) ^ binaryWeight n := by
-    refine Finset.sum_congr rfl fun T hT => ?_
-    push_cast
-    rw [Finset.sum_mul]
-  rw [hbridge, hgen]
+  rw [sum_powerset_pow_cast_bridge (bitSupport n) x h (binaryWeight n),
+    hgen]
   have hprod : ∏ j ∈ bitSupport n, ((2 : R) ^ j * h) =
       2 ^ (∑ j ∈ bitSupport n, j) * h ^ binaryWeight n := by
-    rw [Finset.prod_mul_distrib, Finset.prod_const, card_bitSupport,
-      Finset.prod_pow_eq_pow_sum]
+    rw [prod_two_pow_mul, card_bitSupport]
   rw [hprod]
   ring
 

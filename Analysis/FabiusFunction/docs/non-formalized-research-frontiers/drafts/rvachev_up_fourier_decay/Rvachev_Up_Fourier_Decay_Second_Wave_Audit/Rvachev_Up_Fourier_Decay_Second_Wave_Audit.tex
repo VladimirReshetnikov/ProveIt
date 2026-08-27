@@ -1145,6 +1145,109 @@ requires the Clausen expansion in $L^2$ and remains the hard
 fluctuation target; the adaptive gauge's Hoischen step would enter as a
 named classical import.
 
+\subsection*{Postscript: ledger update (late August 2026 campaign)}
+
+All four targets above are now formalized, and the campaign went
+substantially further.  The development
+(\nolinkurl{Analysis/FabiusFunction/Lean/FabiusFunction/}, sixty-three
+sorry-free modules at this writing) now contains, kernel-checked:
+\begin{itemize}
+\item the sharp uniform bound $\|P_n\|_\infty\le(\sqrt3/2)^{n-1}$
+with its full equality locus
+(\lean{SharpGelfondBound}, \lean{SharpGelfondEquality});
+\item the exact peak ray in product and $\kappa_\infty$-envelope form
+(\lean{SincProductPeakRay}, \lean{PeakRayEnvelope});
+\item the martingale identity $\mathcal Pd=0$ and the halving
+$\mathcal P\psi=\psi/2$ (\lean{DoublingCocycleIdentities}), the full
+Lasota--Yorke pair of the transfer operator with constants
+$(\alpha,\beta,C)=(\sqrt2/4,\sqrt2/2,\pi/2)$
+(\lean{TransferOperatorStep}) and its abstract Doeblin--Fortet
+iteration and invariant ball (\lean{LasotaYorkeIteration});
+\item \textbf{both Clausen values}:
+$\int_0^1\log^2(2\sin\pi t)\,dt=\pi^2/12$ and
+$\sigma^2=\int_0^1\log^2|\tan\pi t|\,dt=\pi^2/4$, obtained through the
+Dirichlet-kernel cotangent pairing
+(\lean{DirichletKernelCotangent}), the improper-integration-by-parts
+evaluation of the log-sine Fourier coefficients $-1/(2m)$
+(\lean{LogSineFourierCoefficient}), and interval Parseval with Basel
+(\lean{CocycleParseval}, \lean{LogCosineFourier},
+\lean{GordinParseval});
+\item the complete covariance ladder $c_r=(\pi^2/12)\,2^{-r}$ for
+\emph{every} lag over the genuine mod-one doubling map
+(\lean{DoublingMapTransfer}, \lean{CovarianceLadder}), and the
+martingale orthogonality of $d$ (\lean{MartingaleOrthogonality});
+\item \textbf{the exact variance theorem itself}, stated on the
+normalized dyadic sine product:
+\[
+  \int_0^1\log^2\Bigl|\prod_{k<n}2\sin(\pi 2^kt)\Bigr|\,dt
+  =\frac{\pi^2}4\,n-\frac{\pi^2}3\bigl(1-2^{-n}\bigr)
+\]
+(\lean{DistanceCounting}, \lean{BirkhoffVariance},
+\lean{BirkhoffProductBridge}) --- the finite-$n$ content of the
+fluctuation theorem, fully numeric;
+\item the flattening lemma's finite level (exact node equalization
+and the partial-cell mesh bound, \lean{MeasureEqualization}) and its
+diagonal selection mechanism (\lean{DiagonalSelection});
+\item existence of the Perron root
+$\varrho_1=\lim_n\|\mathcal L^n\mathbf 1\|_\infty^{1/n}
+\in[1/2,\sqrt2/2]$ by Fekete's lemma
+(\lean{TransferPositivity}, \lean{PerronRootExistence}), and its
+uniqueness as an eigenvalue of positive continuous eigenfunctions by
+the $m/M$-sandwich (\lean{PerronEigenvalueUnique}), together with the
+exact centering $\int_0^1 S_n=0$ and the normalized limit
+$(1/n)\int_0^1 S_n^2\to\pi^2/4$ (\lean{BirkhoffMoments});
+\item \textbf{the one-peak theorem in full} (the drafts'
+\texttt{thm:one-peak}): the log-factorization
+$\log\lVert\Phi(x)\rVert=\sum_{(h,r)}\log\bigl(1-x^2/(2^h(r+1))^2\bigr)$
+at every non-lattice real $x$, with the finitely many negative
+factors absorbed by the $\log|\cdot|$ convention
+(\lean{LobeLogFactorization}); strict concavity of $\log|\Phi|$ on
+the central lobe $(-1,1)$ by twice-termwise differentiation of the
+lattice log-series (\lean{CentralLobeConcavity},
+\lean{CentralLobeOnePeak}); the peak pinned at the origin with
+$\Phi(0)=1$ and $|\Phi(x)|<1$ on $(-1,1)\setminus\{0\}$, by evenness
+and the strict midpoint inequality alone
+(\lean{CentralLobePeakAtZero}); and strict concavity of
+$\log\lVert\Phi\rVert$ on \emph{every} side lobe $\pm(m,m+1)$, via a
+single uniform quadratic gap
+$\min\bigl((u^2-m^2)/(m^2+1),\,1-v^2/(m+1)^2\bigr)\cdot a^2\le|a^2-y^2|$
+powering both summable derivative majorants, plus the pointwise
+interval glue (\lean{SideLobeConcavity}, \lean{OnePeakPerLobe}) ---
+one peak per lobe, kernel-checked; moreover $\Phi$ is continuous on
+the real axis (uniform products on compacts,
+\lean{RvachevProductContinuity}), so each side lobe carries
+\emph{exactly one} maximizer of $|\Phi|$ and the central maximizer is
+exactly the origin;
+\item \textbf{the unconditional fluctuation record}: exact centering
+$\int_0^1\log|P_n|=0$, the $L^1$ scale
+$\int_0^1|\log|P_n||\le(\pi/2)\sqrt n$ by the quadratic
+Cauchy--Schwarz trick (\lean{LogProductMoments}); $\kappa_0=1$
+\emph{in measure} --- for every $\varepsilon>0$,
+$\operatorname{vol}\{t:|\log|P_n||\ge\varepsilon n\}
+\le(\pi^2/4\varepsilon^2)/n\to0$ --- and the uniform-in-$n$
+tightness $\operatorname{vol}\{t:|\log|P_n||\ge K\sqrt n\}
+\le\pi^2/(4K^2)$ at the CLT scale, both by Chebyshev against the
+exact variance (\lean{KappaZeroInMeasure},
+\lean{FluctuationTightness}); and the baseline decay
+$\|\Phi(x)\|\le1/(\pi|x|)$ on the whole real axis
+(\lean{BaselineDecay});
+\item \textbf{the zero order}: the dyadic lattice hits the integer
+$m\ge1$ exactly $v_2(m)+1$ times (\lean{LatticeFiber}), and
+$\|\Phi(x)\|/|x-m|^{\,v_2(m)+1}$ converges along the punctured
+neighborhood of $m$ to an explicit strictly positive constant
+(\lean{ZeroOrderTail}, \lean{PhiZeroOrder}) --- the multiplicity
+statement of \texttt{prop:canonical} in quantitative local form, and
+the local half of the valley law.
+\end{itemize}
+The sentence above about the exact variance is therefore superseded:
+the Clausen expansion in $L^2$ is formalized, the one-peak profile
+statement is now a theorem of the development rather than a target,
+and of the fluctuation program only the limit theorems themselves
+(the martingale central limit theorem and iterated-logarithm law),
+the Rue\-lle--Perron--Frobenius eigenfunction \emph{existence}, and
+the Hoischen approximation import remain outside the formalized
+perimeter, all blocked on machinery currently absent from Mathlib.
+
 \section{Verdict}
 \label{sec:verdict}
 

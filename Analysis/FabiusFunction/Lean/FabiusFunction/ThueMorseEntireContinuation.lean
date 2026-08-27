@@ -34,8 +34,16 @@ accumulates at every one of its points.
 * `dirichletMellinContinuation` — the continuation itself, as a named
   function.
 * `dirichletMellinContinuation_differentiable` — **entirety**.
-* `dirichletMellinContinuation_neg_natCast` / `_zero` — **the trivial
-  zeros** `D(-r,a) = 0` for every `r ≥ 0` (`cor:Dirichlet-trivial-zeros`).
+* `dirichletMellinContinuation_neg_natCast` / `_zero` — the identity
+  `D(-r,a) = 0` for every `r ≥ 0`.  As Lean statements these are
+  formal: they follow from Mathlib's conventions `Γ(-r) = 0` and
+  `0⁻¹ = 0` alone and would hold with any function whatsoever in place
+  of the Mellin factor, pole or no pole.
+* `tendsto_dirichletMellinContinuation_neg_natCast` — **the trivial
+  zeros** with their content (`cor:Dirichlet-trivial-zeros`): for
+  `a > 0` the continuation *tends to* `0` at `-r`.  That is the
+  statement which fails when the Mellin factor has a pole there, and
+  it goes through entirety, hence through boundary flatness.
 * `mellin_mellinKernel_ofReal` — the Mellin value at a real exponent as
   a real integral.
 * `dirichletMellinContinuation_eq` — agreement with `D(σ,a)` for
@@ -58,7 +66,9 @@ namespace Fabius
 noncomputable def mellinKernel (a : ℝ) : ℝ → ℂ :=
   fun t => ((Real.exp (-(a * t)) * lacunaryExpProduct t : ℝ) : ℂ)
 
-/-- Exponential decay of the kernel at infinity. -/
+/-- The kernel is dominated by `e^(-a·t)` at infinity: `0 < E ≤ 1`
+gives `|e^(-at)·E(t)| ≤ e^(-at)` outright.  No sign condition on `a`
+is needed for the bound; it is *decay* only when `a > 0`. -/
 theorem mellinKernel_isBigO_exp (a : ℝ) :
     (mellinKernel a) =O[atTop] fun t => Real.exp (-a * t) := by
   rw [Asymptotics.isBigO_iff]
@@ -162,29 +172,65 @@ theorem dirichletMellinContinuation_differentiable (a : ℝ) (ha : 0 < a) :
   (Complex.differentiable_one_div_Gamma s).mul
     (mellin_mellinKernel_differentiable a ha s)
 
-/-- **Zeros at the nonpositive integers** (`cor:Dirichlet-trivial-zeros`):
-the entire continuation vanishes at `s = 0, -1, -2, …`.
+/-- **The value at a nonpositive integer is `0`**: `Γ(-r)⁻¹·M(-r) = 0`
+for every `r : ℕ` and every real `a`.
 
-The mathematical content is that the Mellin factor has *no pole* at `-r`, so
-nothing cancels the zero of `1/Γ` there; that is
+*What this identity does and does not carry.*  As a Lean statement it is
+purely formal.  The proof is `Γ(-r) = 0` (Mathlib's convention at the
+poles of `Γ`), `0⁻¹ = 0` and `0·z = 0`; nothing about the kernel, about
+flatness or about `a` enters — which is why no `0 < a` is assumed, and
+why the very same proof would discharge the very same statement with
+*any* function in place of `mellin (mellinKernel a)`, including one with
+a genuine pole at `-r`.
+
+The mathematical assertion `cor:Dirichlet-trivial-zeros` is that the
+*entire* function `D(·,a)` vanishes at `-r`, and that does need the
+Mellin factor to be regular there:
 `mellin_mellinKernel_differentiable`, i.e. the super-polynomial boundary
-flatness of `E`.  No positivity of `a` is needed for the identity itself. -/
+flatness of `E`.  So cite this lemma jointly with
+`mellin_mellinKernel_differentiable` (or
+`dirichletMellinContinuation_differentiable`), or use the self-contained
+`tendsto_dirichletMellinContinuation_neg_natCast` below. -/
 @[simp] theorem dirichletMellinContinuation_neg_natCast (a : ℝ) (r : ℕ) :
     dirichletMellinContinuation a (-(r : ℂ)) = 0 := by
   rw [dirichletMellinContinuation, Complex.Gamma_neg_nat_eq_zero, inv_zero,
     zero_mul]
 
 /-- The value at the origin: `D(0,a) = 0`, the `r = 0` case of
-`dirichletMellinContinuation_neg_natCast`.  (Its *derivative* at `0` is the
+`dirichletMellinContinuation_neg_natCast` — formal in exactly the same
+way, so read the caveat recorded there.  (Its *derivative* at `0` is the
 Mellin value `M(0)`; see `ThueMorseGDirichlet`.) -/
 @[simp] theorem dirichletMellinContinuation_zero (a : ℝ) :
     dirichletMellinContinuation a 0 = 0 := by
   simpa using dirichletMellinContinuation_neg_natCast a 0
 
+/-- **The trivial zeros, in the form that carries the content**
+(`cor:Dirichlet-trivial-zeros`).  For `a > 0` the entire continuation
+does not merely *evaluate* to `0` at `s = -r` by convention: it *tends
+to* `0` there, along the punctured neighbourhood of `-r`.
+
+Unlike `dirichletMellinContinuation_neg_natCast`, this statement is
+false for a function with a genuine pole at `-r`, and its proof really
+does use regularity of the Mellin factor: it runs through
+`dirichletMellinContinuation_differentiable`, hence through
+`mellin_mellinKernel_differentiable`, hence through the
+super-polynomial boundary flatness of `E`. -/
+theorem tendsto_dirichletMellinContinuation_neg_natCast (a : ℝ)
+    (ha : 0 < a) (r : ℕ) :
+    Tendsto (dirichletMellinContinuation a) (𝓝[≠] (-(r : ℂ))) (𝓝 0) := by
+  have hc : ContinuousAt (dirichletMellinContinuation a) (-(r : ℂ)) :=
+    (dirichletMellinContinuation_differentiable a ha _).continuousAt
+  rw [← dirichletMellinContinuation_neg_natCast a r]
+  exact hc.tendsto.mono_left nhdsWithin_le_nhds
+
 /-- The Mellin transform of the kernel at a **real** exponent is the
-corresponding real integral.  Stated for every real `σ`, not just the range of
-absolute convergence: flatness makes the integrand real-integrable throughout,
-and the two callers use `σ > 1` and `σ = 0` respectively. -/
+corresponding real integral.  This is a pure cast identity
+(`integral_ofReal`), hence unconditional in `a` and `σ`: it holds
+verbatim outside the range of convergence too, both sides then being
+Bochner's junk value `0`.  Integrability is a separate matter, supplied
+by the callers, which use `σ > 1, a > 0`
+(`dirichletMellinContinuation_eq`) and `σ = 0, a > 0`
+(`integrableOn_kernel_div` in `ThueMorseGDirichlet`). -/
 theorem mellin_mellinKernel_ofReal (a σ : ℝ) :
     mellin (mellinKernel a) (σ : ℂ) =
       (((∫ t in Ioi (0 : ℝ),

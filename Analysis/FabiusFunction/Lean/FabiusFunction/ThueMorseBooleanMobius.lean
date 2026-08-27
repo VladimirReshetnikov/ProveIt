@@ -16,8 +16,12 @@ index type (and, where the value ring was fixed, over an arbitrary
 commutative ring); the `Finset ℕ` statements the rest of the corpus uses
 are kept verbatim as corollaries.
 
-* `bitSupport_sum_two_pow` — the support of an encoded subset is the
-  subset: the encoding `T ↦ ∑_{j∈T} 2^j` is a lattice isomorphism.
+The two facts that make the encoding `T ↦ ∑_{j∈T} 2^j` a lattice
+isomorphism — `bitSupport_sum_two_pow` and `sum_two_pow_injective` —
+now live in `ThueMorseLucasSupport`, beside the bit law
+`testBit_sum_two_pow` that proves both; this file imports them and
+uses them under the same names.
+
 * `sub_sum_two_pow` / `xor_sum_two_pow` — complements in the lattice:
   `n - k` and `n ^^^ k` agree on submasks and are the encoded complement.
 * `sum_powerset_pow_card'` — the **powerset weight enumerator**
@@ -55,21 +59,6 @@ open Finset
 namespace Fabius
 
 /-! ### The encoding is a lattice isomorphism -/
-
-/-- The binary support of an encoded subset is the subset itself. -/
-theorem bitSupport_sum_two_pow (T : Finset ℕ) :
-    bitSupport (∑ j ∈ T, 2 ^ j) = T := by
-  ext j
-  rw [mem_bitSupport, testBit_sum_two_pow]
-  simp
-
-/-- The two-power encoding of finite bit sets is globally injective. -/
-theorem sum_two_pow_injective :
-    Function.Injective (fun T : Finset ℕ => ∑ j ∈ T, 2 ^ j) := by
-  intro T S h
-  ext j
-  have := congrArg (fun x => x.testBit j) h
-  simpa [testBit_sum_two_pow, decide_eq_decide] using this
 
 /-- Subtraction of an encoded subset from the encoded full support is the
 encoded complement. -/

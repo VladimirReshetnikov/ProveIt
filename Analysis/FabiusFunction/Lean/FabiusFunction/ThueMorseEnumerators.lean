@@ -35,19 +35,6 @@ namespace Fabius
 
 /-! ## The weight enumerator of a dyadic block -/
 
-/-- Splitting a dyadic block sum by the lowest binary digit.  The even and
-odd halves of `range (2 * k)` are the images of `range k` under doubling
-and doubling-plus-one.  A thin specialization of
-`sum_range_block_decomposition` in the shape the recursions below use. -/
-theorem sum_range_two_mul {M : Type*} [AddCommMonoid M]
-    (k : ℕ) (f : ℕ → M) :
-    ∑ n ∈ range (2 * k), f n =
-      ∑ j ∈ range k, (f (2 * j) + f (2 * j + 1)) := by
-  rw [mul_comm, sum_range_block_decomposition f k 2]
-  refine Finset.sum_congr rfl fun j _ => ?_
-  rw [Finset.sum_range_succ, Finset.sum_range_one, Nat.add_zero,
-    Nat.mul_comm j 2]
-
 /-- **Weight distribution.**  A dyadic block of level `m` contains exactly
 `m.choose r` integers of binary weight `r`.  Extracted from the general
 weight enumerator `sum_pow_binaryWeight_eq_one_add_pow` by comparing

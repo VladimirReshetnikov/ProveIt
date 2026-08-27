@@ -48,15 +48,23 @@ denominator-free form:
   bits, `c(n) ≡ τ(n) (mod 2)` — reduction modulo two turns the equation
   into the Artin–Schreier quadratic, and uniqueness identifies the
   solution.
-* `sum_pow_two_pow_sq_add` — the finite **Artin–Schreier telescope** in any
-  commutative ring of characteristic two:
-  `S_J² + S_J = a^(2^J) + a` for `S_J = ∑_{j<J} a^(2^j)`.  This is the
-  algebraic content of the explicit solution `Y = ∑_j (z/(1+z))^(2^j)`:
-  the partial sums solve the equation up to the tail term `a^(2^J)`, and no
-  `z`-adic limit is needed to verify it.
+* `sum_pow_expChar_telescope` — the finite **Artin–Schreier telescope**
+  in any commutative ring of exponential characteristic `p`:
+  `S_J^p - S_J = a^(p^J) - a` for `S_J = ∑_{j<J} a^(p^j)`.  The proof is
+  Frobenius additivity (`sum_pow_char`) followed by a telescoping sum; the
+  degenerate value `p = 1`, i.e. characteristic zero, is allowed and gives
+  `0 = 0`.
+* `sum_pow_char_telescope` — the same identity for a prime `p` with
+  `CharP R p`, and `sum_pow_two_pow_sq_add` — its characteristic-two case
+  `S_J² + S_J = a^(2^J) + a`, written with `+` because `x - y = x + y`
+  there.  This is the algebraic content of the explicit solution
+  `Y = ∑_j (z/(1+z))^(2^j)`: the partial sums solve `Y^p - Y = a` up to the
+  tail term `a^(p^J)`, and no `z`-adic limit is needed to verify it.
 
-Everything is exact coefficient algebra; the only characteristic-two inputs
-are `x + x = 0` and, over `𝔽₂`, the idempotence `x² = x`.
+Everything is exact coefficient algebra: the characteristic-two inputs are
+`x + x = 0`, Frobenius additivity, and, over `𝔽₂`, the idempotence
+`x² = x`.  The closing telescope uses Frobenius alone, so it is stated in
+any exponential characteristic.
 -/
 
 set_option autoImplicit false
@@ -309,16 +317,24 @@ private theorem one_add_X_ne_zero :
   have := congrArg PowerSeries.constantCoeff h
   simp at this
 
-/-- **The complete solution set.**  Over `𝔽₂[[z]]` the Artin–Schreier
-quadratic `(1+z)³Y² + (1+z)²Y + z = 0` has exactly two roots: the
-Thue–Morse bit series `Θ` and its translate `Θ + G` by the geometric
-series `G = ∑ z^n`.
+/-- **The complete solution set.**  A power series `Y` over `𝔽₂` solves
+the Artin–Schreier quadratic `(1+z)³Y² + (1+z)²Y + z = 0` **if and only
+if** it is the Thue–Morse bit series `Θ` or its translate `Θ + G` by the
+geometric series `G = ∑ z^n`.
 
-The difference `D = Y - Θ` of two solutions satisfies the factored
-identity `(1+z)²·D·((1+z)·D + 1) = 0`.  Since `𝔽₂[[z]]` is a domain and
-`1 + z ≠ 0`, either `D = 0` — the first root — or `(1+z)·D = 1`, which by
-`one_add_X_mul_geometricSeries` forces `D = G`, the second root.  There is
-no third possibility, and no analytic input is used. -/
+Backward direction: both series are roots, by
+`thueMorseBitSeries_quadratic` and
+`thueMorseBitSeries_add_geometricSeries_quadratic`.
+
+Forward direction: the difference `D = Y - Θ` between a solution `Y` and
+the root `Θ` satisfies the factored identity
+`(1+z)²·D·((1+z)·D + 1) = 0`.  Since `𝔽₂[[z]]` is a domain and
+`(1+z)² ≠ 0`, either `D = 0` — the first root — or `(1+z)·D = 1`, which
+by `one_add_X_mul_geometricSeries` forces `D = G`, the second root.  There
+is no third possibility, and no analytic input is used.  The two roots are
+distinct — `Θ` has constant coefficient `0` and `Θ + G` has constant
+coefficient `1` — so the solution set has exactly two elements; that is
+what `artinSchreier_solution_unique` exploits. -/
 theorem artinSchreier_solution_iff (Y : PowerSeries (ZMod 2)) :
     (1 + PowerSeries.X) ^ 3 * Y ^ 2 +
         (1 + PowerSeries.X) ^ 2 * Y + PowerSeries.X = 0 ↔
@@ -421,23 +437,53 @@ theorem integerLift_modEq (c : ℕ → ℤ) (h0 : c 0 = 0)
 
 /-! ### The finite Artin–Schreier telescope -/
 
-/-- **Artin–Schreier telescope.**  In any commutative ring of
-characteristic two, the partial sums `S_J = ∑_{j<J} a^(2^j)` satisfy
-`S_J² + S_J = a^(2^J) + a`: each partial sum solves the Artin–Schreier
-equation `Y² + Y = a` up to the single tail term `a^(2^J)`.  This is the
-finite content of the explicit solution `Y = ∑_j a^(2^j)`. -/
+/-- **Artin–Schreier telescope, general exponential characteristic.**  In
+any commutative ring of exponential characteristic `p`, the partial sums
+`S_J = ∑_{j<J} a^(p^j)` satisfy `S_J^p - S_J = a^(p^J) - a`: each partial
+sum solves the Artin–Schreier equation `Y^p - Y = a` up to the single tail
+term `a^(p^J)`.  This is the finite content of the explicit solution
+`Y = ∑_j a^(p^j)`, and no completion or limit is needed to verify it.
+
+The proof is Frobenius additivity — `sum_pow_char`, which holds for any
+`ExpChar R p`, prime `p` or the degenerate `p = 1` — followed by the
+telescoping sum of `(a^(p^j))^p = a^(p^(j+1))`. -/
+theorem sum_pow_expChar_telescope {R : Type*} [CommRing R] (p : ℕ)
+    [ExpChar R p] (a : R) (J : ℕ) :
+    (∑ j ∈ range J, a ^ p ^ j) ^ p - ∑ j ∈ range J, a ^ p ^ j =
+      a ^ p ^ J - a := by
+  rw [sum_pow_char p]
+  have hstep : ∀ j ∈ range J, (a ^ p ^ j) ^ p = a ^ p ^ (j + 1) := by
+    intro j _
+    rw [← pow_mul, ← pow_succ]
+  rw [Finset.sum_congr rfl hstep, ← Finset.sum_sub_distrib,
+    Finset.sum_range_sub (fun j => a ^ p ^ j) J, pow_zero, pow_one]
+
+/-- **Artin–Schreier telescope in prime characteristic.**  The `CharP`
+form of `sum_pow_expChar_telescope`: in a commutative ring of prime
+characteristic `p`, the partial sums `S_J = ∑_{j<J} a^(p^j)` satisfy
+`S_J^p - S_J = a^(p^J) - a`. -/
+theorem sum_pow_char_telescope {R : Type*} [CommRing R] (p : ℕ)
+    [Fact p.Prime] [CharP R p] (a : R) (J : ℕ) :
+    (∑ j ∈ range J, a ^ p ^ j) ^ p - ∑ j ∈ range J, a ^ p ^ j =
+      a ^ p ^ J - a := by
+  haveI : ExpChar R p := .prime Fact.out
+  exact sum_pow_expChar_telescope p a J
+
+/-- **Artin–Schreier telescope in characteristic two.**  In any
+commutative ring of characteristic two, the partial sums
+`S_J = ∑_{j<J} a^(2^j)` satisfy `S_J² + S_J = a^(2^J) + a`: each partial
+sum solves the Artin–Schreier equation `Y² + Y = a` up to the single tail
+term `a^(2^J)`.  This is the finite content of the explicit solution
+`Y = ∑_j a^(2^j)`.
+
+It is the `p = 2` case of `sum_pow_expChar_telescope`, with the two
+differences turned into sums by `CharTwo.sub_eq_add`. -/
 theorem sum_pow_two_pow_sq_add {R : Type*} [CommRing R] [CharP R 2]
     (a : R) (J : ℕ) :
     (∑ j ∈ range J, a ^ 2 ^ j) ^ 2 + ∑ j ∈ range J, a ^ 2 ^ j =
       a ^ 2 ^ J + a := by
   haveI : ExpChar R 2 := .prime Nat.prime_two
-  rw [sum_pow_char 2]
-  have hstep : ∀ j ∈ range J, (a ^ 2 ^ j) ^ 2 = a ^ 2 ^ (j + 1) := by
-    intro j _
-    rw [← pow_mul, ← pow_succ]
-  rw [Finset.sum_congr rfl hstep,
-    ← CharTwo.sub_eq_add (∑ j ∈ range J, a ^ 2 ^ (j + 1)),
-    ← Finset.sum_sub_distrib, Finset.sum_range_sub (fun j => a ^ 2 ^ j) J,
-    pow_zero, pow_one, CharTwo.sub_eq_add]
+  have h := sum_pow_expChar_telescope 2 a J
+  rwa [CharTwo.sub_eq_add, CharTwo.sub_eq_add] at h
 
 end Fabius

@@ -33,6 +33,28 @@ chain of independently reusable lemmas:
 The proof explains *why* the weighted convolution always collapses to
 `±n`: each 2-power `2^j` contributes `-ε(n)·2^j` precisely when the `j`-th
 binary digit of `n` is `1`.
+
+Two further groups of results live here, on the same finite combinatorics,
+and are consumed by other modules:
+
+* *The dyadic sign split* — `sum_zsmul_thueMorseSign_two_mul` and its
+  alternating companion `sum_zsmul_alternating_thueMorseSign_two_mul`, over
+  an arbitrary additive commutative group, with the ring forms
+  `sum_thueMorseSign_mul_two_mul` and
+  `sum_alternating_thueMorseSign_mul_two_mul`: over a block of even length a
+  sign-weighted sum collapses to a sign-weighted sum of consecutive
+  *differences* — respectively *sums*, for the alternating sign `(-1)^k·ε(k)`,
+  whose two halves add instead of cancelling.  This is what the block
+  products of `ThueMorseBlockProducts` run on.
+* *Prefix bit counts and interval discrepancy* —
+  `abs_sum_thueMorseSign_range_le_one`,
+  `abs_sum_thueMorseSign_Ico_le_two`,
+  `abs_two_mul_sum_thueMorseBit_Ico_sub_le_two`, the aligned-block sums
+  `sum_thueMorseSign_block_prefix`, `sum_thueMorseSign_aligned_block`, and
+  the prefix identities they rest on: every signed prefix sum is `0` or
+  `±1`, hence every interval signed sum is at most `2` in absolute value,
+  and the ones-count of any interval deviates from half its length by at
+  most one.
 -/
 
 set_option autoImplicit false
