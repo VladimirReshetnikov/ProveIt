@@ -48,6 +48,8 @@ theorem lobeZero_le_or_add_one_le (m : ℕ) (p : ℕ × ℕ) :
     simp only [lobeZero]
     exact_mod_cast h
 
+/-- If `m < u < v < m+1`, both relative gap terms are positive, so
+`0 < lobeGap m u v`. -/
 theorem lobeGap_pos {m : ℕ} {u v : ℝ} (hu : (m:ℝ) < u) (huv : u < v)
     (hv : v < (m:ℝ) + 1) : 0 < lobeGap m u v := by
   have hm0 : (0:ℝ) ≤ (m:ℝ) := Nat.cast_nonneg m
