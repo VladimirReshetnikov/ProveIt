@@ -40,6 +40,7 @@ import FabiusFunction.ThueMorseIntegerLiftEquation
 import FabiusFunction.ThueMorseIntegerLiftRecurrence
 import FabiusFunction.ThueMorseLacunaryQuotient
 import FabiusFunction.ThueMorseInfiniteProduct
+import FabiusFunction.ThueMorseMellin
 import FabiusFunction.LacunaryRieszIntegral
 import FabiusFunction.GelfondLogisticBound
 import FabiusFunction.GeometricScaleProducts
