@@ -60,6 +60,7 @@ import FabiusFunction.SineProductRootsUnity
 import FabiusFunction.SincMeanBracket
 import FabiusFunction.PeakRayEnvelope
 import FabiusFunction.DoublingTransferAdjoint
+import FabiusFunction.GeometricCesaro
 import FabiusFunction.NegativeLaplace
 import FabiusFunction.ProbabilityLaplaceMoments
 import FabiusFunction.UnitLaplaceMomentBounds
