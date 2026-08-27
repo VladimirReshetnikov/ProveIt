@@ -1,9 +1,11 @@
 import FabiusFunction.Paper05442
 import FabiusFunction.Paper06487
 import FabiusFunction.PaperFabiusAsymptotic
+import FabiusFunction.FabiusDiscreteLimitRates
 import FabiusFunction.PaperKFoldThueMorse
 import FabiusFunction.ThueMorseBooleanCube
 import FabiusFunction.ThueMorseValuation
+import FabiusFunction.DyadicZeroMultiplicity
 import FabiusFunction.ThueMorseDigits
 import FabiusFunction.ThueMorseEnumerators
 import FabiusFunction.ThueMorseRarefied
