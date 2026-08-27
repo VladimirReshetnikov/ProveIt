@@ -1,4 +1,4 @@
-import Mathlib.Algebra.Polynomial.Eval.Degree
+import FabiusFunction.FinitePolynomialFunctional
 
 /-!
 # Finite moment functionals on polynomials
@@ -12,10 +12,12 @@ coefficient times the top moment.
 
 The results hold over an arbitrary commutative semiring.  A scalar-extension
 layer allows the polynomial coefficients to lie in a different semiring and
-evaluates them through an arbitrary ring homomorphism.  All degree hypotheses
-use `Polynomial.degree`, rather than `natDegree`, so the zero polynomial is
-handled correctly even at `n = 0`.  Empty index sets and subsingleton semirings
-require no separate cases.
+evaluates them through an arbitrary ring homomorphism.  The underlying
+selected-coefficient principle lives in `FinitePolynomialFunctional`; this
+module supplies its degree-valued top-coefficient, annihilation, and
+congruence interfaces.  Thus the zero polynomial is handled correctly even at
+`n = 0`, while the algebra itself has only one proof source.  Empty index sets
+and subsingleton semirings require no separate cases.
 
 ## Main results
 
@@ -53,38 +55,11 @@ theorem sum_weight_mul_eval_eq_coeff_mul_of_moments
     (htop : (∑ i ∈ s, weight i * node i ^ n) = c)
     (p : Polynomial R) (hp : p.degree ≤ (n : WithBot ℕ)) :
     (∑ i ∈ s, weight i * p.eval (node i)) = p.coeff n * c := by
-  classical
-  have hnat : p.natDegree ≤ n :=
-    Polynomial.natDegree_le_of_degree_le hp
-  simp_rw [Polynomial.eval_eq_sum, Polynomial.sum_def, Finset.mul_sum]
-  rw [Finset.sum_comm]
-  have hfactor (d : ℕ) :
-      (∑ i ∈ s, weight i * (p.coeff d * node i ^ d)) =
-        p.coeff d * ∑ i ∈ s, weight i * node i ^ d := by
-    rw [Finset.mul_sum]
-    apply Finset.sum_congr rfl
-    intro i _hi
-    ac_rfl
-  simp_rw [hfactor]
-  by_cases hn : n ∈ p.support
-  · rw [Finset.sum_eq_single n]
-    · rw [htop]
-    · intro d hd hdn
-      have hdn' : d < n :=
-        lt_of_le_of_ne
-          (Polynomial.le_natDegree_of_mem_supp d hd |>.trans hnat) hdn
-      rw [hlower d hdn', mul_zero]
-    · exact fun h => (h hn).elim
-  · have hcoeff : p.coeff n = 0 := by
-      simpa only [Polynomial.mem_support_iff, not_ne_iff] using hn
-    rw [hcoeff, zero_mul]
-    apply Finset.sum_eq_zero
-    intro d hd
-    have hdn : d ≠ n := fun h => hn (h ▸ hd)
-    have hdn' : d < n :=
-      lt_of_le_of_ne
-        (Polynomial.le_natDegree_of_mem_supp d hd |>.trans hnat) hdn
-    rw [hlower d hdn', mul_zero]
+  have h := sum_weight_mul_eval₂_eq_topCoeff_mul_moment
+    (RingHom.id R) s weight node p n
+      (Polynomial.natDegree_le_of_degree_le hp) hlower
+  rw [htop] at h
+  simpa only [Polynomial.eval₂_id, RingHom.id_apply] using h
 
 /-- **Finite moment extraction after scalar extension.**  Let the polynomial
 coefficients lie in a semiring `R`, while the weights and nodes lie in a
@@ -100,11 +75,9 @@ theorem sum_weight_mul_eval₂_eq_map_coeff_mul_of_moments
     (htop : (∑ i ∈ s, weight i * node i ^ n) = c)
     (p : Polynomial R) (hp : p.degree ≤ (n : WithBot ℕ)) :
     (∑ i ∈ s, weight i * p.eval₂ f (node i)) = f (p.coeff n) * c := by
-  have hdegree : (p.map f).degree ≤ (n : WithBot ℕ) :=
-    Polynomial.degree_map_le.trans hp
-  simpa only [Polynomial.eval_map, Polynomial.coeff_map] using
-    (sum_weight_mul_eval_eq_coeff_mul_of_moments
-      s weight node n c hlower htop (p.map f) hdegree)
+  have h := sum_weight_mul_eval₂_eq_topCoeff_mul_moment
+    f s weight node p n (Polynomial.natDegree_le_of_degree_le hp) hlower
+  rwa [htop] at h
 
 /-- Normalization-free scalar-extension form of finite moment coefficient
 extraction.  The top moment remains in its defining finite-sum form. -/
@@ -115,9 +88,8 @@ theorem sum_weight_mul_eval₂_eq_map_coeff_mul_top_moment
     (p : Polynomial R) (hp : p.degree ≤ (n : WithBot ℕ)) :
     (∑ i ∈ s, weight i * p.eval₂ f (node i)) =
       f (p.coeff n) * ∑ i ∈ s, weight i * node i ^ n := by
-  exact sum_weight_mul_eval₂_eq_map_coeff_mul_of_moments
-    f s weight node n (∑ i ∈ s, weight i * node i ^ n)
-      hlower rfl p hp
+  exact sum_weight_mul_eval₂_eq_topCoeff_mul_moment
+    f s weight node p n (Polynomial.natDegree_le_of_degree_le hp) hlower
 
 /-- **Strict-degree cancellation after scalar extension.**  The weighted node
 family annihilates the image of every polynomial of degree strictly below
@@ -161,9 +133,10 @@ theorem sum_weight_mul_eval_eq_coeff_mul_top_moment
     (p : Polynomial R) (hp : p.degree ≤ (n : WithBot ℕ)) :
     (∑ i ∈ s, weight i * p.eval (node i)) =
       p.coeff n * ∑ i ∈ s, weight i * node i ^ n := by
-  exact sum_weight_mul_eval_eq_coeff_mul_of_moments
-    s weight node n (∑ i ∈ s, weight i * node i ^ n)
-      hlower rfl p hp
+  have h := sum_weight_mul_eval₂_eq_topCoeff_mul_moment
+    (RingHom.id R) s weight node p n
+      (Polynomial.natDegree_le_of_degree_le hp) hlower
+  simpa only [Polynomial.eval₂_id, RingHom.id_apply] using h
 
 /-- **Strict-degree finite moment cancellation.**  A weighted node family
 whose moments below `n` vanish annihilates every polynomial of degree strictly
