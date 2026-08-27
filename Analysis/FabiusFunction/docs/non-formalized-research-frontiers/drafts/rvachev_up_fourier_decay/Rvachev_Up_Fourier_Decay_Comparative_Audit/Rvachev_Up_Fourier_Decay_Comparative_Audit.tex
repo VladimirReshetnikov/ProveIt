@@ -1982,6 +1982,19 @@ its neighbors carry the small-argument $-\log^2$ layer.
 \begin{enumerate}
 \item The exact factorization \eqref{eq:factorization} and the
 $\kappa$-algebra: finite manipulation of already-formalized objects.
+\textbf{Done}, in more generality: \lean{GeometricScaleProducts} proves
+the renormalization law for geometric-scale infinite products
+$\prod_n g(z/c^n)$ over any field into any commutative topological
+monoid (\lean{tprod\_geom\_scale}, \lean{tprod\_geom\_scale\_pow},
+induction-free), together with the monoid-valued tail-multipliability
+direction missing from Mathlib
+(\lean{Multipliable.of\_nat\_add}); \lean{SincProductShells}
+specializes to the standalone sinc product
+(\lean{rvachevFourierProduct\_two\_pow\_mul}), proves the modulus shell
+factorization with the triangular power
+(\lean{norm\_rvachevFourierProduct\_two\_pow\_mul},
+\lean{prod\_range\_two\_pow\_succ}), and formalizes the
+$\kappa$-algebra as \lean{shell\_exponent\_identity}.
 \item $I_2(n)=2^{-n}$: finite Parseval over the Thue--Morse block,
 adjacent to \lean{ThueMorseBlockAlgebra}.
 \textbf{Done}, in more generality than stated here: the module
