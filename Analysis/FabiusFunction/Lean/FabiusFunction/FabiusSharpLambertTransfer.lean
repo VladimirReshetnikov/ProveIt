@@ -23,12 +23,12 @@ open Filter Asymptotics
 
 namespace Fabius
 
-/-- Along `x = 2 ^ (-t)`, the forward product tail is smaller than every
+/-- Along `x = 2 ^ (-t)`, the forward product tail is little-o of every
 inverse power of the exact lower-Lambert phase. -/
-theorem negativeLaplaceTailError_dyadicLambert_isBigO_inv_pow
+theorem negativeLaplaceTailError_dyadicLambert_isLittleO_inv_pow
     (N : ℕ) :
     (fun t : ℝ => negativeLaplaceTailError
-      (fabiusLambertRadius ((2 : ℝ) ^ (-t)))) =O[atTop]
+      (fabiusLambertRadius ((2 : ℝ) ^ (-t)))) =o[atTop]
         (fun t : ℝ =>
           (fabiusLambertPhase ((2 : ℝ) ^ (-t)))⁻¹ ^ N) := by
   let b : ℝ → ℝ := fun t => fabiusLambertPhase ((2 : ℝ) ^ (-t))
@@ -71,10 +71,20 @@ theorem negativeLaplaceTailError_dyadicLambert_isBigO_inv_pow
     simpa only [Function.comp_def, neg_one_mul] using
       (isLittleO_exp_neg_mul_rpow_atTop one_pos
         (-(N : ℝ))).comp_tendsto hbtop
-  apply (htail.trans hexp.isBigO).congr'
+  apply (htail.trans_isLittleO hexp).congr'
   · exact Filter.EventuallyEq.rfl
   · filter_upwards [hbtop.eventually_gt_atTop 0] with t _hbt
     rw [Real.rpow_neg_eq_inv_rpow, Real.rpow_natCast]
+
+/-- Big-O compatibility form of
+`negativeLaplaceTailError_dyadicLambert_isLittleO_inv_pow`. -/
+theorem negativeLaplaceTailError_dyadicLambert_isBigO_inv_pow
+    (N : ℕ) :
+    (fun t : ℝ => negativeLaplaceTailError
+      (fabiusLambertRadius ((2 : ℝ) ^ (-t)))) =O[atTop]
+        (fun t : ℝ =>
+          (fabiusLambertPhase ((2 : ℝ) ^ (-t)))⁻¹ ^ N) :=
+  (negativeLaplaceTailError_dyadicLambert_isLittleO_inv_pow N).isBigO
 
 /-- Along the lower-Lambert logarithmic coordinate, the forward product tail
 is `O(1 / lambda)`. -/

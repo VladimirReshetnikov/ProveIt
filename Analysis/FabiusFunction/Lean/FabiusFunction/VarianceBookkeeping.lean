@@ -19,6 +19,8 @@ displayed in the audit's variance theorem:
 * `variance_closed_form` — plugging in the covariance values:
   `n·(π²/12) + 2·∑_{r=1}^{n-1} (n-r)·(π²/12)·(1/2)ʳ
      = (π²/4)·n - (π²/3)·(1 - (1/2)ⁿ)`.
+* `variance_closed_form_all` — the same identity at every natural index,
+  including the empty `n = 0` boundary.
 
 Once the `L²` theory supplies `c_r = (π²/12)·2⁻ʳ` and the
 stationarity decomposition, this closed form is the audit's
@@ -87,5 +89,17 @@ theorem variance_closed_form (n : ℕ) (hn : 1 ≤ n) :
     exact Finset.sum_congr rfl fun r _ => by ring
   rw [hfac, sum_Ico_sub_mul_half_pow n hn]
   ring
+
+/-- Total all-index form of the exact variance bookkeeping identity.  At
+`n = 0` both the diagonal term and the covariance sum are empty, and the
+closed form vanishes as well. -/
+theorem variance_closed_form_all (n : ℕ) :
+    (n : ℝ) * (π ^ 2 / 12) +
+      2 * ∑ r ∈ Finset.Ico 1 n,
+        ((n : ℝ) - r) * (π ^ 2 / 12 * (1 / 2) ^ r) =
+      π ^ 2 / 4 * n - π ^ 2 / 3 * (1 - (1 / 2) ^ n) := by
+  cases n with
+  | zero => norm_num
+  | succ n => exact variance_closed_form (n + 1) (by omega)
 
 end Fabius
