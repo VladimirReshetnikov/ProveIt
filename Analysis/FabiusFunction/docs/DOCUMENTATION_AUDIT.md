@@ -100,8 +100,9 @@ according to the then-current checker.
 That apparent zero exposed a checker defect: declarations written as
 `@[simp] theorem foo` on one line were not counted at all.  After teaching the
 auditor to remove balanced leading attribute blocks, and after the corpus grew
-to 311 modules, the 2026-08-27 baseline is 4,803 public declarations with 105
-missing comments in 40 files.  The old parser saw only 4,606 declarations and
+to 311 modules, the corrected 2026-08-27 inventory initially contained 4,803
+public declarations with 105 missing comments in 40 files.  The old parser saw
+only 4,606 declarations and
 36 gaps on those same bytes; the correction therefore recovered 197 attributed
 declarations, including 69 undocumented ones.  Run the script for the live
 numbers rather than copying these historical values.
