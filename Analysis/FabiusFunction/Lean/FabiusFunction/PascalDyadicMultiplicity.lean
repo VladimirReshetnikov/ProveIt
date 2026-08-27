@@ -1,4 +1,5 @@
 import FabiusFunction.DyadicZeroMultiplicity
+import FabiusFunction.WeightedScaleMultiplicity
 import Mathlib.Data.Nat.Choose.Sum
 import Mathlib.Data.Nat.Choose.Vandermonde
 
@@ -28,6 +29,8 @@ The main results are:
 * `pascalDyadicMultiplicity_succ_two_mul`, Pascal's rule under one dyadic
   dilation;
 * `pascalDyadicMultiplicity_two_pow_mul`, its all-scales Vandermonde form;
+* `pascalDyadicMultiplicity_succ_eq_weightedScaleMultiplicity`, the bridge to
+  the base-generic layer-cake calculus;
 * `pascalDyadicMultiplicity_succ_eq_sum_scaleWeights`, the hockey-stick
   interpretation as a sum over active dyadic scales;
 * `finitePascalDyadicPrefixMultiplicity_succ_eq_scaleCount`, the exact
@@ -176,6 +179,18 @@ theorem sum_range_choose_fixed (m r : ℕ) :
       rw [sum_range_succ, ih, Nat.choose_succ_succ']
       exact Nat.add_comm _ _
 
+/-- The positive rank-`r+1` dyadic multiplicity is exactly the Pascal-weight
+specialization of the base-generic scale-multiplicity calculus.
+
+This bridge lets cumulative dyadic counts reuse the finite layer-cake theorem
+from `WeightedScaleMultiplicity`, rather than repeating its Fubini argument. -/
+theorem pascalDyadicMultiplicity_succ_eq_weightedScaleMultiplicity
+    (r n : ℕ) (hn : 1 ≤ n) :
+    pascalDyadicMultiplicity (r + 1) n =
+      weightedScaleMultiplicity 2 (fun h ↦ h.choose r) n := by
+  rw [pascalDyadicMultiplicity_of_pos (r + 1) n hn,
+    weightedScaleMultiplicity_choose, dyadicZeroMultiplicity]
+
 /-- The rank-`r+1` multiplicity is the sum of the Pascal scale weights
 `choose h r` over exactly the active dyadic scales.  This is the finite
 hockey-stick identity behind the report's zero-multiplicity formula. -/
@@ -183,8 +198,8 @@ theorem pascalDyadicMultiplicity_succ_eq_sum_scaleWeights
     (r n : ℕ) (hn : 1 ≤ n) :
     pascalDyadicMultiplicity (r + 1) n =
       ∑ h ∈ range (dyadicZeroMultiplicity n), h.choose r := by
-  rw [pascalDyadicMultiplicity_of_pos (r + 1) n hn,
-    sum_range_choose_fixed]
+  rw [pascalDyadicMultiplicity_succ_eq_weightedScaleMultiplicity r n hn,
+    weightedScaleMultiplicity, inclusivePrefixSum, dyadicZeroMultiplicity]
 
 /-! ## Finite-scale truncation -/
 
@@ -437,11 +452,19 @@ theorem pascalDyadicPrefixMultiplicity_succ_eq_scaleCount (N r : ℕ) :
       ∑ h ∈ range N, h.choose r * (N / 2 ^ h) := by
   calc
     pascalDyadicPrefixMultiplicity (r + 1) N =
-        finitePascalDyadicPrefixMultiplicity (r + 1) N N :=
-      (finitePascalDyadicPrefixMultiplicity_eq_full_of_le
-        (r + 1) N N le_rfl).symm
-    _ = ∑ h ∈ range N, h.choose r * (N / 2 ^ h) :=
-      finitePascalDyadicPrefixMultiplicity_succ_eq_scaleCount N N r
+        ∑ k ∈ range N,
+          weightedScaleMultiplicity 2 (fun h ↦ h.choose r) (k + 1) := by
+      rw [pascalDyadicPrefixMultiplicity]
+      apply Finset.sum_congr rfl
+      intro k hk
+      exact pascalDyadicMultiplicity_succ_eq_weightedScaleMultiplicity
+        r (k + 1) (by omega)
+    _ = ∑ h ∈ range N, (N / 2 ^ h) • h.choose r :=
+      sum_range_weightedScaleMultiplicity 2 N (fun h ↦ h.choose r) (by omega)
+    _ = ∑ h ∈ range N, h.choose r * (N / 2 ^ h) := by
+      apply Finset.sum_congr rfl
+      intro h _hh
+      simp only [Nat.nsmul_eq_mul, Nat.mul_comm]
 
 /-- The exact scale-count formula specialized to a dyadic endpoint, before
 discarding the identically zero scales above `M`. -/
