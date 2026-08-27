@@ -4,6 +4,7 @@ import FabiusFunction.Paper06487
 import FabiusFunction.PaperFabiusAsymptotic
 import FabiusFunction.PaperKFoldThueMorse
 import FabiusFunction.FinitePolynomialFunctional
+import FabiusFunction.MomentCumulantAlgebra
 import FabiusFunction.ThueMorseBooleanCube
 import FabiusFunction.ThueMorseValuation
 import FabiusFunction.ThueMorseDigits
@@ -34,7 +35,9 @@ import FabiusFunction.ThueMorseArithmeticFilter
 import FabiusFunction.RealZPowProduct
 import FabiusFunction.ToeplitzHessenberg
 import FabiusFunction.ThueMorseHessenberg
+import FabiusFunction.ExponentialPartition
 import FabiusFunction.ThueMorsePartition
+import FabiusFunction.ExponentialBell
 import FabiusFunction.ThueMorseIntegerLift
 import FabiusFunction.ThueMorseBoundaryFlatness
 import FabiusFunction.ThueMorseDirichlet
@@ -122,6 +125,9 @@ import FabiusFunction.LobeSignSelfSimilarity
 import FabiusFunction.RenormalizationIdentity
 import FabiusFunction.GlobalDecayEnvelope
 import FabiusFunction.LacunaryMeanSharp
+import FabiusFunction.KappaDictionary
+import FabiusFunction.DyadicReflection
+import FabiusFunction.CollatzWielandt
 import FabiusFunction.RvachevFourierDecay
 import FabiusFunction.BoundednessSkeleton
 import FabiusFunction.TransferOperatorStep
