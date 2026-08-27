@@ -80,6 +80,48 @@ theorem integral_cos_two_succ_mul_pi_mul (m : ℕ) :
         ring
     _ = 0 := h
 
+/-- The Dirichlet kernel is continuous. -/
+theorem continuous_dirichlet_kernel (n : ℕ) :
+    Continuous fun t : ℝ => (1 + Real.cos (2 * (n + 1) * (π * t)) +
+      2 * ∑ k ∈ Finset.range n, Real.cos (2 * (k + 1) * (π * t))) := by
+  have hC : Continuous fun t : ℝ => Real.cos (2 * (n + 1) * (π * t)) := by
+    fun_prop
+  have hS : Continuous fun t : ℝ =>
+      ∑ k ∈ Finset.range n, Real.cos (2 * (k + 1) * (π * t)) := by
+    apply continuous_finsetSum
+    intro k _
+    fun_prop
+  exact (continuous_const.add hC).add (hS.const_mul 2)
+
+/-- The Dirichlet kernel has unit mean:
+`∫₀¹ (1 + cos (2(n+1)πt) + 2 ∑ cos (2(k+1)πt)) dt = 1`. -/
+theorem integral_dirichlet_kernel_eq_one (n : ℕ) :
+    ∫ t in (0:ℝ)..1, (1 + Real.cos (2 * (n + 1) * (π * t)) +
+      2 * ∑ k ∈ Finset.range n, Real.cos (2 * (k + 1) * (π * t))) = 1 := by
+  have hC : Continuous fun t : ℝ => Real.cos (2 * (n + 1) * (π * t)) := by
+    fun_prop
+  have hS : Continuous fun t : ℝ =>
+      ∑ k ∈ Finset.range n, Real.cos (2 * (k + 1) * (π * t)) := by
+    apply continuous_finsetSum
+    intro k _
+    fun_prop
+  rw [intervalIntegral.integral_add
+      (intervalIntegrable_const.add (hC.intervalIntegrable 0 1))
+      ((hS.const_mul 2).intervalIntegrable 0 1),
+    intervalIntegral.integral_add intervalIntegrable_const
+      (hC.intervalIntegrable 0 1),
+    intervalIntegral.integral_const_mul]
+  have hsum_swap : ∫ x in (0:ℝ)..1,
+      ∑ k ∈ Finset.range n, Real.cos (2 * (k + 1) * (π * x)) =
+      ∑ k ∈ Finset.range n,
+        ∫ x in (0:ℝ)..1, Real.cos (2 * (k + 1) * (π * x)) :=
+    intervalIntegral.integral_finsetSum (fun k _ =>
+      ((by fun_prop : Continuous fun t : ℝ =>
+        Real.cos (2 * (k + 1) * (π * t))).intervalIntegrable 0 1))
+  rw [hsum_swap, integral_cos_two_succ_mul_pi_mul n,
+    Finset.sum_eq_zero fun k _ => integral_cos_two_succ_mul_pi_mul k]
+  simp
+
 /-- **The cotangent pairing**:
 `∫₀¹ sin (2(n+1)·πt)·cot (πt) dt = 1` — the Dirichlet kernel reduces
 the pairing to its constant term; every cosine detector vanishes.  This
@@ -106,29 +148,6 @@ theorem integral_sin_two_pi_succ_mul_cot (n : ℕ) :
         · nlinarith [Real.pi_pos, hmem.1, lt_of_le_of_ne hmem.2 ht1]
       exact ne_of_gt h
     exact sin_two_succ_mul_mul_cot hs n
-  have hC : Continuous fun t : ℝ => Real.cos (2 * (n + 1) * (π * t)) := by
-    fun_prop
-  have hS : Continuous fun t : ℝ =>
-      ∑ k ∈ Finset.range n, Real.cos (2 * (k + 1) * (π * t)) := by
-    apply continuous_finsetSum
-    intro k _
-    fun_prop
-  rw [hcongr,
-    intervalIntegral.integral_add
-      (intervalIntegrable_const.add (hC.intervalIntegrable 0 1))
-      ((hS.const_mul 2).intervalIntegrable 0 1),
-    intervalIntegral.integral_add intervalIntegrable_const
-      (hC.intervalIntegrable 0 1),
-    intervalIntegral.integral_const_mul]
-  have hsum_swap : ∫ x in (0:ℝ)..1,
-      ∑ k ∈ Finset.range n, Real.cos (2 * (k + 1) * (π * x)) =
-      ∑ k ∈ Finset.range n,
-        ∫ x in (0:ℝ)..1, Real.cos (2 * (k + 1) * (π * x)) :=
-    intervalIntegral.integral_finsetSum (fun k _ =>
-      ((by fun_prop : Continuous fun t : ℝ =>
-        Real.cos (2 * (k + 1) * (π * t))).intervalIntegrable 0 1))
-  rw [hsum_swap, integral_cos_two_succ_mul_pi_mul n,
-    Finset.sum_eq_zero fun k _ => integral_cos_two_succ_mul_pi_mul k]
-  simp
+  rw [hcongr, integral_dirichlet_kernel_eq_one n]
 
 end Fabius
