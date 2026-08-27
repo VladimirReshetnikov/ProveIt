@@ -7,8 +7,8 @@ Every factor of the Thue–Morse word recurs in every window of bounded
 length.  This module proves the atlas's uniform-recurrence proposition in
 a form sharper than the text: the recurrence bound is explicit and
 **linear** — a factor of length `ℓ ≤ 2^k` occurs in every window of
-length `20·2^k`, so every factor of length `ℓ` recurs with gap at most
-`40ℓ`.
+length `15·2^k`, so every factor of length `ℓ` recurs with gap at most
+`30ℓ`.
 
 The route is index arithmetic, not substitution machinery:
 
@@ -20,7 +20,7 @@ The route is index arithmetic, not substitution machinery:
 * `exists_thueMorseBit_eq` — among any three consecutive letters both
   values occur (no triples).
 * `exists_thueMorseBit_pair` — **all four two-letter factors occur in
-  every window of 17 letters**: pairs `(a, 1-a)` sit on even boundaries
+  every window of 14 letters**: pairs `(a, 1-a)` sit on even boundaries
   above a prescribed letter, and pairs `(a, a)` sit on odd boundaries
   above the pair `(1-a, a)`.
 * `thueMorseBit_uniformly_recurrent` — the recurrence theorem: matching
@@ -93,9 +93,13 @@ theorem exists_thueMorseBit_pair_ne (a start : ℕ) (ha : a ≤ 1) :
     exact hbit
   · rw [thueMorseBit_two_mul_add_one, hbit]
 
-/-- **All four two-letter factors occur in every window of 17 letters.** -/
+/-- **All four two-letter factors occur in every window of 14 letters.**
+The constant is what the two-case argument actually delivers: the
+unequal pair costs `6`, the equal pair doubles a window of `6` around an
+odd boundary and costs `13`.  (The true optimum is `8`; reaching it
+needs a different, case-heavy argument.) -/
 theorem exists_thueMorseBit_pair (a b start : ℕ) (ha : a ≤ 1) (hb : b ≤ 1) :
-    ∃ q, start ≤ q ∧ q + 1 ≤ start + 16 ∧
+    ∃ q, start ≤ q ∧ q + 1 ≤ start + 13 ∧
       thueMorseBit q = a ∧ thueMorseBit (q + 1) = b := by
   rcases eq_or_ne b (1 - a) with hba | hba
   · obtain ⟨q, h1, h2, h3, h4⟩ := exists_thueMorseBit_pair_ne a start ha
@@ -115,11 +119,11 @@ theorem exists_thueMorseBit_pair (a b start : ℕ) (ha : a ≤ 1) (hb : b ≤ 1)
 
 /-- **Uniform recurrence, explicit and linear.**  A factor of length
 `ℓ ≤ 2^k` starting anywhere occurs inside every window of length
-`20·2^k`: it suffices to find, inside the window, an aligned block pair
+`15·2^k`: it suffices to find, inside the window, an aligned block pair
 carrying the same two block bits, and to reuse the same offset.  In
-particular every factor of length `ℓ` recurs with gap at most `40·ℓ`. -/
+particular every factor of length `ℓ` recurs with gap at most `30·ℓ`. -/
 theorem thueMorseBit_uniformly_recurrent (k ℓ i₀ start : ℕ) (hk : ℓ ≤ 2 ^ k) :
-    ∃ i, start ≤ i ∧ i + ℓ ≤ start + 20 * 2 ^ k ∧
+    ∃ i, start ≤ i ∧ i + ℓ ≤ start + 15 * 2 ^ k ∧
       ∀ j < ℓ, thueMorseBit (i + j) = thueMorseBit (i₀ + j) := by
   have hpow : 0 < 2 ^ k := Nat.two_pow_pos k
   obtain ⟨q, hq1, hq2, hqa, hqb⟩ :=
@@ -133,12 +137,12 @@ theorem thueMorseBit_uniformly_recurrent (k ℓ i₀ start : ℕ) (hk : ℓ ≤ 
   -- product bookkeeping for omega
   have hmul1 : 2 ^ k * (start / 2 ^ k + 1) ≤ 2 ^ k * q :=
     Nat.mul_le_mul_left _ (by omega)
-  have hmul2 : 2 ^ k * q ≤ 2 ^ k * (start / 2 ^ k + 16) :=
+  have hmul2 : 2 ^ k * q ≤ 2 ^ k * (start / 2 ^ k + 13) :=
     Nat.mul_le_mul_left _ (by omega)
   have hexp1 : 2 ^ k * (start / 2 ^ k + 1) =
       2 ^ k * (start / 2 ^ k) + 2 ^ k := by ring
-  have hexp2 : 2 ^ k * (start / 2 ^ k + 16) =
-      2 ^ k * (start / 2 ^ k) + 16 * 2 ^ k := by ring
+  have hexp2 : 2 ^ k * (start / 2 ^ k + 13) =
+      2 ^ k * (start / 2 ^ k) + 13 * 2 ^ k := by ring
   refine ⟨2 ^ k * q + i₀ % 2 ^ k, by omega, by omega, ?_⟩
   intro j hj
   have hsplitq : (q + 1) * 2 ^ k = q * 2 ^ k + 2 ^ k := by ring

@@ -116,16 +116,11 @@ theorem card_image_thueMorseWindow_le (k ℓ : ℕ) (hℓ : ℓ ≤ 2 ^ k)
           Finset.card_range]
         ring
 
-private theorem ncard_coe_finset {α : Type*} (s : Finset α) :
-    (↑s : Set α).ncard = s.card := by
-  rw [Set.ncard_eq_toFinset_card _ (Finset.finite_toSet s)]
-  simp
-
-/-- Every factor occurs among the first `20·2^k + 1` windows, so the
+/-- Every factor occurs among the first `15·2^k + 1` windows, so the
 factor set is that finite image. -/
 theorem thueMorseFactorSet_eq_image (k ℓ : ℕ) (hℓ : ℓ ≤ 2 ^ k) :
     thueMorseFactorSet ℓ =
-      ↑((range (20 * 2 ^ k + 1)).image (thueMorseWindow ℓ)) := by
+      ↑((range (15 * 2 ^ k + 1)).image (thueMorseWindow ℓ)) := by
   ext w
   constructor
   · rintro ⟨i, rfl⟩
@@ -149,7 +144,7 @@ theorem thueMorseFactorSet_finite (ℓ : ℕ) :
 theorem thueMorseComplexity_le (k ℓ : ℕ) (hℓ : ℓ ≤ 2 ^ k) :
     thueMorseComplexity ℓ ≤ 4 * 2 ^ k := by
   rw [thueMorseComplexity, thueMorseFactorSet_eq_image k ℓ hℓ,
-    ncard_coe_finset]
+    Set.ncard_coe_finset]
   exact card_image_thueMorseWindow_le k ℓ hℓ _
 
 /-- **The linear upper bound**: `p(ℓ) < 8ℓ` for `ℓ ≥ 1`. -/

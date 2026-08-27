@@ -21,7 +21,15 @@ realized through Mathlib's Mellin-transform calculus.
 * `mellinKernel_isBigO_exp` / `mellinKernel_isBigO_rpow` — decay at
   infinity and flatness of every order at `0` (from the effective
   bound `E(t) ≤ 2^(m(m-1)/2)·t^m`).
+* `mellin_mellinKernel_differentiable` — the *undamped* Mellin
+  transform is already entire; this is what flatness buys.
+* `dirichletMellinContinuation` — the continuation itself, as a named
+  function.
 * `dirichletMellinContinuation_differentiable` — **entirety**.
+* `dirichletMellinContinuation_neg_natCast` / `_zero` — **the trivial
+  zeros** `D(-r,a) = 0` for every `r ≥ 0` (`cor:Dirichlet-trivial-zeros`).
+* `mellin_mellinKernel_ofReal` — the Mellin value at a real exponent as
+  a real integral.
 * `dirichletMellinContinuation_eq` — agreement with `D(σ,a)` for
   `σ > 1`.
 -/
@@ -111,45 +119,86 @@ theorem mellinKernel_locallyIntegrable (a : ℝ) :
       h1.continuousOn_mul hcont isCompact_Icc
     exact h2.ofReal
 
+/-- **The Mellin transform of the kernel is itself entire.**  This is the real
+content of the boundary-flatness estimate: `E` vanishes at `0` faster than every
+power, so the Mellin integral `M(s) = ∫₀^∞ t^(s-1)e^(-at)E(t) dt` has no
+singularity anywhere, undamped by any `Γ`-factor. -/
+theorem mellin_mellinKernel_differentiable (a : ℝ) (ha : 0 < a) :
+    Differentiable ℂ (mellin (mellinKernel a)) := fun s =>
+  mellin_differentiableAt_of_isBigO_rpow_exp ha
+    (mellinKernel_locallyIntegrable a) (mellinKernel_isBigO_exp a)
+    (mellinKernel_isBigO_rpow a (s.re - 1) ha)
+    (by linarith [sub_lt_self s.re one_pos] : s.re - 1 < s.re)
+
+/-- The entire continuation of the shifted Dirichlet series,
+`D(s,a) = Γ(s)⁻¹·∫₀^∞ t^(s-1)·e^(-at)·E(t) dt`. -/
+noncomputable def dirichletMellinContinuation (a : ℝ) : ℂ → ℂ :=
+  fun s => (Complex.Gamma s)⁻¹ * mellin (mellinKernel a) s
+
+theorem dirichletMellinContinuation_apply (a : ℝ) (s : ℂ) :
+    dirichletMellinContinuation a s =
+      (Complex.Gamma s)⁻¹ * mellin (mellinKernel a) s :=
+  rfl
+
 /-- **Entirety of the Mellin continuation**: the function
 `s ↦ Γ(s)⁻¹·∫₀^∞ t^(s-1)·e^(-at)·E(t) dt` is differentiable on all
 of `ℂ`. -/
 theorem dirichletMellinContinuation_differentiable (a : ℝ) (ha : 0 < a) :
-    Differentiable ℂ (fun s : ℂ =>
-      (Complex.Gamma s)⁻¹ * mellin (mellinKernel a) s) := by
-  intro s
-  refine DifferentiableAt.mul ?_ ?_
-  · exact Complex.differentiable_one_div_Gamma s
-  · exact mellin_differentiableAt_of_isBigO_rpow_exp ha
-      (mellinKernel_locallyIntegrable a) (mellinKernel_isBigO_exp a)
-      (mellinKernel_isBigO_rpow a (s.re - 1) ha)
-      (by linarith [sub_lt_self s.re one_pos] : s.re - 1 < s.re)
+    Differentiable ℂ (dirichletMellinContinuation a) := fun s =>
+  (Complex.differentiable_one_div_Gamma s).mul
+    (mellin_mellinKernel_differentiable a ha s)
+
+/-- **Zeros at the nonpositive integers** (`cor:Dirichlet-trivial-zeros`):
+the entire continuation vanishes at `s = 0, -1, -2, …`.
+
+The mathematical content is that the Mellin factor has *no pole* at `-r`, so
+nothing cancels the zero of `1/Γ` there; that is
+`mellin_mellinKernel_differentiable`, i.e. the super-polynomial boundary
+flatness of `E`.  No positivity of `a` is needed for the identity itself. -/
+@[simp] theorem dirichletMellinContinuation_neg_natCast (a : ℝ) (r : ℕ) :
+    dirichletMellinContinuation a (-(r : ℂ)) = 0 := by
+  rw [dirichletMellinContinuation, Complex.Gamma_neg_nat_eq_zero, inv_zero,
+    zero_mul]
+
+/-- The value at the origin: `D(0,a) = 0`, the `r = 0` case of
+`dirichletMellinContinuation_neg_natCast`.  (Its *derivative* at `0` is the
+Mellin value `M(0)`; see `ThueMorseGDirichlet`.) -/
+@[simp] theorem dirichletMellinContinuation_zero (a : ℝ) :
+    dirichletMellinContinuation a 0 = 0 := by
+  simpa using dirichletMellinContinuation_neg_natCast a 0
+
+/-- The Mellin transform of the kernel at a **real** exponent is the
+corresponding real integral.  Stated for every real `σ`, not just the range of
+absolute convergence: flatness makes the integrand real-integrable throughout,
+and the two callers use `σ > 1` and `σ = 0` respectively. -/
+theorem mellin_mellinKernel_ofReal (a σ : ℝ) :
+    mellin (mellinKernel a) (σ : ℂ) =
+      (((∫ t in Ioi (0 : ℝ),
+        t ^ (σ - 1) *
+          (Real.exp (-(a * t)) * lacunaryExpProduct t) : ℝ)) : ℂ) := by
+  rw [mellin]
+  have hcongr : ∀ t ∈ Ioi (0 : ℝ),
+      ((t : ℂ)) ^ ((σ : ℂ) - 1) • mellinKernel a t =
+      (((t ^ (σ - 1) *
+        (Real.exp (-(a * t)) * lacunaryExpProduct t) : ℝ)) : ℂ) := by
+    intro t ht
+    have ht0 : (0 : ℝ) < t := ht
+    rw [mellinKernel, smul_eq_mul, Complex.ofReal_mul,
+      show ((σ : ℂ) - 1) = ((σ - 1 : ℝ) : ℂ) by push_cast; ring,
+      ← Complex.ofReal_cpow ht0.le]
+    push_cast
+    ring
+  rw [setIntegral_congr_fun measurableSet_Ioi hcongr]
+  exact integral_ofReal
 
 /-- **Agreement on the real ray**: for `σ > 1` and `a > 0` the entire
 continuation equals `D(σ,a)`. -/
 theorem dirichletMellinContinuation_eq (σ a : ℝ) (hσ : 1 < σ)
     (ha : 0 < a) :
-    (Complex.Gamma (σ : ℂ))⁻¹ * mellin (mellinKernel a) (σ : ℂ) =
+    dirichletMellinContinuation a (σ : ℂ) =
       ((thueMorseDirichlet σ a : ℝ) : ℂ) := by
   have hσ0 : (0 : ℝ) < σ := by linarith
-  have hmell : mellin (mellinKernel a) (σ : ℂ) =
-      (((∫ t in Ioi (0 : ℝ),
-        t ^ (σ - 1) * (Real.exp (-(a * t)) * lacunaryExpProduct t) : ℝ)) : ℂ) := by
-    rw [mellin]
-    have hcongr : ∀ t ∈ Ioi (0 : ℝ),
-        ((t : ℂ)) ^ ((σ : ℂ) - 1) • mellinKernel a t =
-        (((t ^ (σ - 1) *
-          (Real.exp (-(a * t)) * lacunaryExpProduct t) : ℝ)) : ℂ) := by
-      intro t ht
-      have ht0 : (0 : ℝ) < t := ht
-      rw [mellinKernel, smul_eq_mul, Complex.ofReal_mul,
-        show ((σ : ℂ) - 1) = ((σ - 1 : ℝ) : ℂ) by push_cast; ring,
-        ← Complex.ofReal_cpow ht0.le]
-      push_cast
-      ring
-    rw [setIntegral_congr_fun measurableSet_Ioi hcongr]
-    exact integral_ofReal
-  rw [hmell]
+  rw [dirichletMellinContinuation, mellin_mellinKernel_ofReal]
   have hint : (∫ t in Ioi (0 : ℝ),
       t ^ (σ - 1) * (Real.exp (-(a * t)) * lacunaryExpProduct t)) =
       Real.Gamma σ * thueMorseDirichlet σ a := by

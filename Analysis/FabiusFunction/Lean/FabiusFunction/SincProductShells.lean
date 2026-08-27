@@ -1,5 +1,6 @@
 import FabiusFunction.GeometricScaleProducts
 import FabiusFunction.FourierProduct
+import FabiusFunction.GelfondLogisticBound
 
 /-!
 # Dyadic shell factorization of the Rvachev sinc product
@@ -26,6 +27,9 @@ over the triangular power `2^(k(k+1)/2)` — the source of the universal
   factorization** of the modulus:
   `‖Φ(2ᵏ·y)‖ = (∏_{j<k} |sin (2^(j+1) π y)|) /
      (2^(k(k+1)/2) (π|y|)ᵏ) · ‖Φ(y)‖` for real `y ≠ 0`.
+* `norm_rvachevFourierProduct_two_pow_mul_le` — the **decay bound**
+  obtained by feeding the Gelfond bound into that factorization:
+  `‖Φ(2ᵏ·y)‖ ≤ √(5/3)·(√3/2)ᵏ / (2^(k(k+1)/2)·(π|y|)ᵏ)·‖Φ(y)‖`.
 * `shell_exponent_identity` — the exponent bookkeeping that converts
   per-shell rates into powers of the frequency: if `L = k·a + b` then
   `-(a/2)k(k+1) - (k+1)(c+b)
@@ -130,6 +134,36 @@ theorem norm_rvachevFourierProduct_two_pow_mul (k : ℕ) (y : ℝ) (hy : y ≠ 0
   rw [Finset.prod_congr rfl hfac, Finset.prod_div_distrib,
     Finset.prod_mul_distrib, Finset.prod_const, Finset.card_range,
     prod_range_two_pow_succ]
+
+/-- **The shell factorization meets the Gelfond bound.**  Feeding
+`GelfondLogisticBound.abs_prod_sin_two_pow_le` (at `t = 2y`) into the exact
+shell factorization turns the lacunary sine numerator into a geometric rate,
+and leaves the universal triangular denominator standing:
+
+`‖Φ(2ᵏ·y)‖ ≤ √(5/3)·(√3/2)ᵏ / (2^(k(k+1)/2)·(π|y|)ᵏ) · ‖Φ(y)‖`.
+
+The two factors are the two halves of the decay law: `2^(-k(k+1)/2)` is the
+universal `exp(-(log x)²/(2 log 2))`, and `(√3/2)ᵏ/(π|y|)ᵏ` is the polynomial
+correction whose exponent the shell-exponent identity converts into a power of
+the frequency.  This bound holds along every dyadic ray at once — no hypothesis
+on `y` beyond `y ≠ 0`. -/
+theorem norm_rvachevFourierProduct_two_pow_mul_le (k : ℕ) (y : ℝ) (hy : y ≠ 0) :
+    ‖rvachevFourierProduct ((2 : ℂ) ^ k * (y : ℂ))‖ ≤
+      Real.sqrt (5 / 3) * (Real.sqrt 3 / 2) ^ k /
+          ((2 : ℝ) ^ (k * (k + 1) / 2) * (Real.pi * |y|) ^ k) *
+        ‖rvachevFourierProduct (y : ℂ)‖ := by
+  have hy' : (0 : ℝ) < |y| := abs_pos.mpr hy
+  have hden : (0 : ℝ) < (2 : ℝ) ^ (k * (k + 1) / 2) * (Real.pi * |y|) ^ k := by
+    have hpi : (0 : ℝ) < Real.pi := Real.pi_pos
+    positivity
+  have hnum : (∏ j ∈ range k, |Real.sin ((2 : ℝ) ^ (j + 1) * Real.pi * y)|) ≤
+      Real.sqrt (5 / 3) * (Real.sqrt 3 / 2) ^ k := by
+    refine le_trans (le_of_eq ?_) (abs_prod_sin_two_pow_le (2 * y) k)
+    refine Finset.prod_congr rfl fun j _ => ?_
+    rw [show (2 : ℝ) ^ (j + 1) * Real.pi * y = Real.pi * 2 ^ j * (2 * y) from by
+      ring]
+  rw [norm_rvachevFourierProduct_two_pow_mul k y hy]
+  gcongr
 
 /-- **Exponent bookkeeping for dyadic shells** (the `κ`-algebra of the
 decay audit): if `L = k·a + b` — think of `L = log x`, `a = log 2`,
