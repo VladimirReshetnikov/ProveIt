@@ -237,33 +237,19 @@ private theorem mellin_mellinKernel_zero (a : ℝ) :
     mellin (mellinKernel a) 0 =
       ((∫ t in Ioi (0 : ℝ),
         Real.exp (-(a * t)) * lacunaryExpProduct t / t : ℝ) : ℂ) := by
-  rw [mellin]
-  have hcongr : ∀ t ∈ Ioi (0 : ℝ),
-      (t : ℂ) ^ ((0 : ℂ) - 1) • mellinKernel a t =
-      ((Real.exp (-(a * t)) * lacunaryExpProduct t / t : ℝ) : ℂ) := by
-    intro t ht
-    have ht0 : (0 : ℝ) < t := ht
-    rw [mellinKernel, smul_eq_mul,
-      show ((0 : ℂ) - 1) = ((-1 : ℝ) : ℂ) by push_cast; ring,
-      ← Complex.ofReal_cpow ht0.le, Real.rpow_neg_one]
-    push_cast
-    ring
-  rw [setIntegral_congr_fun measurableSet_Ioi hcongr]
-  exact integral_ofReal
+  have h := mellin_mellinKernel_ofReal a 0
+  rw [Complex.ofReal_zero] at h
+  rw [h]
+  congr 1
+  refine setIntegral_congr_fun measurableSet_Ioi fun t ht => ?_
+  have ht0 : (0 : ℝ) < t := ht
+  rw [show (0 : ℝ) - 1 = -1 by ring, Real.rpow_neg_one]
+  ring
 
-/-- The reciprocal Gamma function factors as
-`Γ(s)⁻¹ = s·Γ(s+1)⁻¹` — an identity of entire functions, valid at
-the poles too because Mathlib sets `Γ = 0` there. -/
-theorem Gamma_inv_eq_self_mul (s : ℂ) :
-    (Complex.Gamma s)⁻¹ = s * (Complex.Gamma (s + 1))⁻¹ := by
-  by_cases hs : s = 0
-  · simp [hs, Complex.Gamma_zero]
-  · rw [Complex.Gamma_add_one s hs, mul_inv_rev,
-      mul_comm ((Complex.Gamma s)⁻¹) s⁻¹, ← mul_assoc,
-      mul_inv_cancel₀ hs, one_mul]
-
-/-- **`(1/Γ)'(0) = 1`**: from `Γ(s)⁻¹ = s·Γ(s+1)⁻¹` and the product
-rule, since `Γ(1) = 1`. -/
+/-- **`(1/Γ)'(0) = 1`**: from `Γ(s)⁻¹ = s·Γ(s+1)⁻¹`
+(`Complex.one_div_Gamma_eq_self_mul_one_div_Gamma_add_one`, an identity
+of entire functions valid at the poles too) and the product rule,
+since `Γ(1) = 1`. -/
 theorem hasDerivAt_Gamma_inv_zero :
     HasDerivAt (fun s : ℂ => (Complex.Gamma s)⁻¹) 1 0 := by
   have hg : Differentiable ℂ
@@ -273,25 +259,23 @@ theorem hasDerivAt_Gamma_inv_zero :
   have hd := (hasDerivAt_id (0 : ℂ)).mul (hg 0).hasDerivAt
   have heq : (fun s : ℂ => (Complex.Gamma s)⁻¹) =
       fun s : ℂ => s * (Complex.Gamma (s + 1))⁻¹ :=
-    funext Gamma_inv_eq_self_mul
+    funext Complex.one_div_Gamma_eq_self_mul_one_div_Gamma_add_one
   rw [heq]
   simpa [Pi.mul_def, Complex.Gamma_one] using hd
 
 /-- **The derivative of the entire continuation at `s = 0`** is the
 Mellin value `M(0)`: in `d/ds [Γ(s)⁻¹·M(s)]` the product rule leaves
-`(1/Γ)'(0)·M(0) = M(0)`, since `Γ(0)⁻¹ = 0`. -/
+`(1/Γ)'(0)·M(0) = M(0)`, since `Γ(0)⁻¹ = 0`.  (The *value* at `0` is
+`0`; see `dirichletMellinContinuation_zero`.) -/
 theorem hasDerivAt_dirichletMellinContinuation_zero (a : ℝ)
     (ha : 0 < a) :
-    HasDerivAt (fun s : ℂ =>
-        (Complex.Gamma s)⁻¹ * mellin (mellinKernel a) s)
+    HasDerivAt (dirichletMellinContinuation a)
       (mellin (mellinKernel a) 0) 0 := by
-  have hM : DifferentiableAt ℂ (mellin (mellinKernel a)) 0 :=
-    mellin_differentiableAt_of_isBigO_rpow_exp ha
-      (mellinKernel_locallyIntegrable a) (mellinKernel_isBigO_exp a)
-      (mellinKernel_isBigO_rpow a ((0 : ℂ).re - 1) ha)
-      (by simp only [Complex.zero_re]; norm_num :
-        (0 : ℂ).re - 1 < (0 : ℂ).re)
-  have hd := hasDerivAt_Gamma_inv_zero.mul hM.hasDerivAt
+  show HasDerivAt
+    (fun s : ℂ => (Complex.Gamma s)⁻¹ * mellin (mellinKernel a) s)
+    (mellin (mellinKernel a) 0) 0
+  have hd := hasDerivAt_Gamma_inv_zero.mul
+    (mellin_mellinKernel_differentiable a ha 0).hasDerivAt
   simpa [Pi.mul_def, Complex.Gamma_zero] using hd
 
 /-- **The derivative bridge** (`cor:G-Dirichlet`):
@@ -299,10 +283,8 @@ theorem hasDerivAt_dirichletMellinContinuation_zero (a : ℝ)
 entire continuation `s ↦ Γ(s)⁻¹·∫₀^∞ t^(s-1)e^(-ct)𝓔(t) dt`. -/
 theorem mpLimit_eq_deriv_sub (a b : ℝ) (ha : 0 < a) (hb : 0 < b) :
     ((mpLimit a b : ℝ) : ℂ) =
-      deriv (fun s : ℂ =>
-        (Complex.Gamma s)⁻¹ * mellin (mellinKernel b) s) 0 -
-      deriv (fun s : ℂ =>
-        (Complex.Gamma s)⁻¹ * mellin (mellinKernel a) s) 0 := by
+      deriv (dirichletMellinContinuation b) 0 -
+        deriv (dirichletMellinContinuation a) 0 := by
   rw [(hasDerivAt_dirichletMellinContinuation_zero b hb).deriv,
     (hasDerivAt_dirichletMellinContinuation_zero a ha).deriv,
     mellin_mellinKernel_zero b, mellin_mellinKernel_zero a,
