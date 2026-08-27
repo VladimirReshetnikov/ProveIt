@@ -135,11 +135,15 @@ theorem quarter_product' :
     Tendsto (fun N => ∏ n ∈ range N,
       ((4 * (n : ℝ) + 1) / (4 * (n : ℝ) + 3)) ^ (thueMorseSign n))
       atTop (𝓝 (1 / 2 : ℝ)) := by
-  refine Tendsto.congr
-    (fun N => Finset.prod_congr rfl fun n _ => ?_) quarter_product
-  congr 1
-  rw [div_eq_div_iff (by positivity) (by positivity)]
-  ring
+  have h := tendsto_masterProduct_affine (4 : ℝ) (1 / 4) (3 / 4)
+    (by norm_num) (by norm_num) (by norm_num)
+  rw [mpLimit_quarter,
+    show Real.exp (-Real.log 2) = 1 / 2 by
+      rw [Real.exp_neg, Real.exp_log (by norm_num : (0 : ℝ) < 2)]
+      norm_num] at h
+  simpa only [
+    show (4 : ℝ) * (1 / 4) = 1 by norm_num,
+    show (4 : ℝ) * (3 / 4) = 3 by norm_num] using h
 
 /-- **The half-shifted dyadic block product has value `1/2`**: the
 numerical evaluation of `tendsto_block_product_half'`. -/

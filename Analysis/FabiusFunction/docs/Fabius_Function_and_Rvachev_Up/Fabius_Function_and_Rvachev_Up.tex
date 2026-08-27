@@ -120,7 +120,7 @@
 \author{Human-readable synthesis of the formal development\\
 \small Vladimir Reshetnikov's \texttt{ProveIt} repository}
 \date{Repository snapshot: 27 August 2026\\
-\small commit \nolinkurl{552f76a235e883e5b44212dec5325b0589be1395}}
+\small commit \nolinkurl{ecb7ab1878d81e2b286dcd7d51d65a39ae09c21c}}
 
 \begin{document}
 \maketitle
@@ -1344,15 +1344,25 @@ an exponential, and is therefore strictly positive.  The canonical product is
 \lean{rvachevFourierProduct_eq_canonical} in \path{SincCanonicalProduct.lean}.
 \end{proof}
 
-On each positive real lobe the sign and peak are also exact.  If \(m\in\N\) and
-\(m<x<m+1\), then
+On the real axis the origin is the unique global point of unit modulus:
+\begin{equation}
+ |\widehat{\Up}(x)|=1\quad\Longleftrightarrow\quad x=0,
+ \qquad x\ne0\quad\Longrightarrow\quad |\widehat{\Up}(x)|<1.
+                                                               \label{eq:fourier-global-peak}
+\end{equation}
+These are \lean{norm_rvachevFourier_eq_one_iff} and
+\lean{norm_rvachevFourier_lt_one_of_ne_zero}.  On each positive real lobe
+the sign and peak are also exact.  If \(m\in\N\) and \(m<x<m+1\), then
 \begin{equation}
  \widehat{\Up}(x)=\varepsilon_m|\widehat{\Up}(x)|,        \label{eq:fourier-lobe-sign}
 \end{equation}
 by \lean{rvachevFourier_eq_thueMorse_sign_mul_norm}.  If moreover \(m\ge1\),
-there is exactly one point of \((m,m+1)\) maximizing the modulus over that open lobe, by
-\lean{existsUnique_isMaxOn_rvachevFourier_lobe}.  Both facade declarations are in
-\path{RvachevFourierDecay.lean}.
+there is exactly one point of \((m,m+1)\) maximizing the modulus over that
+open lobe and exactly one point of the reflected lobe \((-(m+1),-m)\)
+maximizing it there.  These are
+\lean{existsUnique_isMaxOn_rvachevFourier_lobe} and
+\lean{existsUnique_isMaxOn_rvachevFourier_neg_lobe}.  All five facade
+declarations are in \path{RvachevFourierDecay.lean}.
 
 Globally, the origin is the unique real frequency of unit modulus:
 \begin{equation}
@@ -2534,10 +2544,22 @@ Binary complementation gives the raw inverse-dyadic form
  \sum_{r=0}^{2^k-1}(-1)^{\wt(r)}(r+Q)^{n+k}.}               \label{eq:qbinomial-raw}
 \end{equation}
 Its translated numerator is constant by
-\lean{qBinomialThueMorseRawTranslatedNumeratorPolynomial_eq_const}, and the value identity is
-\lean{fabiusAtInverseTwoPow_cast_eq_qBinomialThueMorse_rawTranslated_sum} in
-\path{FabiusRawQBinomialScalar.lean}.  Generic-\(q\) interpolation formulas, barycentric
-identities, numerical cancellation studies, and complexity comparisons are maintained in the
+\lean{qBinomialThueMorseRawTranslatedNumeratorPolynomial_eq_const}.  The
+algebraic statement is in fact valid over every field \(K\) equipped with an
+\(\mathbb Q\)-algebra structure and every scalar translation \(Q\in K\): the
+fully expanded right-hand side equals the canonical inverse-dyadic rational
+value after its scalar embedding by
+\lean{fabiusAtInverseTwoPow_cast_eq_qBinomialThueMorse_rawTranslated_sum}.
+Translation independence and the intermediate value identification are
+\lean{qBinomialThueMorseRawTranslatedFormulaIn_eq_centered} and
+\lean{qBinomialThueMorseRawTranslatedFormulaIn_eq_fabiusAtInverseTwoPow}.
+For every scalar type \(K\) carrying Mathlib's \texttt{RCLike} structure, the
+corresponding theorem for an arbitrary bounded Fabius solution is
+\lean{fabiusFunction_inverse_two_pow_eq_qBinomialThueMorseRawTranslatedFormulaIn}.
+All five declarations are in \path{FabiusRawQBinomialScalar.lean}; the final
+one uses the \texttt{RCLike} hypothesis only to embed the real Fabius value.
+Variable-base \(q\)-interpolation formulas, barycentric identities, numerical
+cancellation studies, and complexity comparisons are maintained in the
 consolidated research-frontier volume rather than used as theorems here.
 
 \section{The global binary-reduction telescope}
@@ -4265,6 +4287,12 @@ respectively \lean{fabiusLambertPhase_ge_inv_log_two},
 \lean{fabiusLambertPhase_strictAntiOn_Ioc}, and
 \lean{fabiusLambertPhase_image_Ioc} in \path{FabiusLambertSaddle.lean}.
 
+Equivalently, under the hypotheses \(x>0\) and \(Lx\le\e^{-1}\), the same
+lower bound and the strict positivity \(0<\lambda(x)\) are
+\lean{one_div_log_two_le_fabiusLambertPhase} and
+\lean{fabiusLambertPhase_pos_of_le}.  Thus the algebraic saddle identities
+extend to the finite branch point even though the smooth formulas below do not.
+
 The smooth API is deliberately restricted to the open interior
 \(0<x<\e^{-1}/L\).  There \(\lambda\) is continuous and strictly decreasing, its image is
 \((1/L,\infty)\), and it is differentiable with
@@ -4296,7 +4324,14 @@ The corrected main term is
  -\frac12\log\lambda(x)+C_F+\Psi(\lambda(x)).
                                                                \label{eq:sharp-main-lambda}
 \end{equation}
-This is definition \lean{fabiusSharpLambertMain}.  If
+This is definition \lean{fabiusSharpLambertMain}.  The exact saddle action
+itself is endpoint-inclusive: whenever \(x>0\) and \(Lx\le\e^{-1}\),
+\begin{equation}
+ r(x)x+\Lambda(r(x))-\frac12\log\bigl(2\pi\lambda(x)\bigr)
+ =\mathcal M(x)+E(r(x)).                                  \label{eq:lambert-saddle-action}
+\end{equation}
+This is \lean{fabiusLambertSaddleAction_eq_of_le} in
+\path{FabiusSharpLambertMain.lean}.  If
 \(\mathcal R(x)\) denotes the normalized saddle ratio
 \lean{fabiusSaddleRatio} at \(r(x)\) and \(\lambda(x)\), then Lean proves the exact
 error separation
@@ -4906,6 +4941,7 @@ Dyadic and \(q\)-binomial formulas &
 \path{DyadicClosedForm.lean}, \path{DyadicAnalytic.lean}, \path{GlobalDyadic.lean},
 \path{DyadicCorrectness.lean}, \path{HalfQBinomial.lean},
 \path{FabiusDyadicQBinomialScalar.lean}, \path{FabiusQBinomialFormula.lean},
+\path{FabiusRawQBinomialScalar.lean},
 \path{FabiusBinaryReductionSeries.lean}, \path{FabiusParityPowerSeries.lean},
 \path{FabiusGlobalQBinomialSeries.lean},
 \path{FabiusDiscreteLimitToeplitz.lean},
@@ -4923,7 +4959,8 @@ Endpoint asymptotics &
 \path{MellinBose.lean}, \path{MellinFinitePart.lean},
 \path{BoseFinitePartIntegral.lean},
 \path{LowerLambertW.lean}, \path{FabiusLambertPhase.lean},
-\path{FabiusLambertSaddle.lean}, \path{FabiusWikipediaMain.lean},
+\path{FabiusLambertSaddle.lean}, \path{FabiusSharpLambertMain.lean},
+\path{FabiusWikipediaMain.lean},
 \path{FabiusDecayComparison.lean},
 \path{FabiusSharpAsymptotic.lean}, \path{FabiusFullAsymptoticExpansion.lean},
 \path{FabiusSharpLambertTransfer.lean},
@@ -5094,8 +5131,8 @@ V.~Reshetnikov,
 V.~Reshetnikov,
 \newblock \emph{ProveIt: Analysis/FabiusFunction},
 \newblock Lean~4 formal development, source snapshot
-\texttt{552f76a235e883e5b44212dec5325b0589be1395}, consulted 27 August 2026.
-\newblock \url{https://github.com/VladimirReshetnikov/ProveIt/tree/552f76a235e883e5b44212dec5325b0589be1395/Analysis/FabiusFunction}.
+\texttt{ecb7ab1878d81e2b286dcd7d51d65a39ae09c21c}, consulted 27 August 2026.
+\newblock \url{https://github.com/VladimirReshetnikov/ProveIt/tree/ecb7ab1878d81e2b286dcd7d51d65a39ae09c21c/Analysis/FabiusFunction}.
 
 \end{thebibliography}
 
