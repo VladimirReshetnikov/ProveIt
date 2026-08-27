@@ -1,0 +1,1438 @@
+\documentclass[11pt]{article}
+
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage{microtype}
+\usepackage[a4paper,margin=28mm,headheight=14pt]{geometry}
+\usepackage{amsmath,amssymb,mathtools,amsthm}
+\usepackage{bm}
+\usepackage{booktabs,longtable,tabularx,array}
+\usepackage{enumitem}
+\usepackage{xcolor}
+\usepackage{fancyhdr}
+\usepackage{hyperref}
+\usepackage[nameinlink,noabbrev]{cleveref}
+
+\hypersetup{
+  colorlinks=true,
+  linkcolor=blue!45!black,
+  citecolor=green!35!black,
+  urlcolor=blue!55!black,
+  pdftitle={q-Binomial Richardson Acceleration of Geometric Sinc Products},
+  pdfauthor={Frontier research report for the ProveIt Fabius Function project}
+}
+\urlstyle{tt}
+\setlength{\emergencystretch}{3em}
+
+\pagestyle{fancy}
+\fancyhf{}
+\lhead{Geometric sinc products and Rvachev splines}
+\rhead{Frontier report}
+\cfoot{\thepage}
+
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{conjecture}[theorem]{Conjecture}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{example}[theorem]{Example}
+\newtheorem{algorithm}[theorem]{Algorithm}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+
+\newcommand{\sinc}{\operatorname{sinc}}
+\newcommand{\up}{\operatorname{up}}
+\newcommand{\e}{\mathrm{e}}
+\newcommand{\ii}{\mathrm{i}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\D}{\mathrm{D}}
+\newcommand{\norm}[1]{\left\lVert #1\right\rVert}
+\newcommand{\abs}[1]{\left\lvert #1\right\rvert}
+\newcommand{\qbinom}[2]{\genfrac{[}{]}{0pt}{}{#1}{#2}_{q}}
+\newcommand{\repo}{\textsc{ProveIt}}
+\DeclareMathOperator{\supp}{supp}
+\DeclareMathOperator{\sgn}{sgn}
+
+\title{\bfseries q-Binomial Richardson Acceleration of Geometric Sinc Products\\[2mm]
+\large Bernoulli--Bell tail expansions, moment-matched Rvachev splines,\\
+and interior inverse-Fabius asymptotics}
+\author{Frontier research report for the \repo{} Fabius Function project}
+\date{27 August 2026}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+The Fourier transform of Rvachev's compactly supported up-function is the geometric
+sinc product
+\[
+   P(\xi)=\prod_{\nu\geq 1}\sinc(\xi/2^\nu).
+\]
+The repository corpus develops its large-frequency decay, its connection with the
+Fabius function and the signed Thue--Morse sequence, dyadic exact values,
+small-argument and inverse asymptotics, and several Richardson-type limits.
+This report studies a different asymptotic variable: the truncation level in the
+finite product
+\(P_n(\xi)=\prod_{\nu=1}^n\sinc(\xi/2^\nu)\).
+
+For a general geometric base \(b>1\), with \(q=b^{-2}\), we prove an exact analytic
+factorization
+\[
+ \frac{P_{b,n}(\xi)}{P_b(\xi)}
+ =\exp\!\left(\sum_{k\geq1}c_k(b)\,\xi^{2k}q^{kn}\right)
+ =\sum_{r\geq0}\alpha_r(b)\,\xi^{2r}q^{rn}.
+\]
+The cumulants \(c_k(b)\) are explicit Bernoulli-number combinations and the
+coefficients \(\alpha_r(b)\) are complete Bell polynomials. Lagrange evaluation
+at the geometric nodes \(1,q,\ldots,q^m\) then gives a universal extrapolant
+\[
+ \mathcal R_{m,n}P_b=\sum_{j=0}^m w_j^{(m)}P_{b,n+j},
+ \qquad
+ w_j^{(m)}=\frac{(-1)^{m-j}q^{(m-j)(m-j+1)/2}}
+ {(q;q)_j(q;q)_{m-j}}.
+\]
+Its complete error series has the closed q-binomial form
+\[
+ \frac{\mathcal R_{m,n}P_b}{P_b}-1
+ =(-1)^m q^{\binom{m+1}{2}}
+ \sum_{r\geq m+1}\qbinom{r-1}{m}\alpha_r(b)\xi^{2r}q^{rn}.
+\]
+Consequences include an exact sign law, non-asymptotic divided-difference bounds,
+a rigorous a posteriori error certificate, and a uniformly bounded stability
+constant \(\prod_{r=1}^m(1+q^r)/(1-q^r)\). For \(q=1/4\) this constant stays
+below \(1.970\), even as the order tends to infinity.
+
+After inverse Fourier transformation, the same filter combines consecutive finite
+box splines. It matches the first \(2m\) moments of the limiting up-density
+\emph{exactly at every truncation level}, and converges in every \(C^s\)-norm at
+rate \(q^{(m+1)n}\). The first error profile is an explicit even derivative of
+the up-function. Translating to the Fabius function gives the same accelerated
+approximation, while inversion on compact interior intervals yields an explicit
+first correction for the inverse Fabius function. These statements are proved
+here and checked symbolically and numerically by the accompanying Python program.
+They are described as \emph{repository-new}: the claim is that they do not occur
+in the audited \texttt{*.tex} corpus under the stated repository path, not that a
+priority search over the entire literature has been completed.
+\end{abstract}
+
+\medskip
+\noindent\textbf{Status of results.}
+Every result labelled theorem, proposition, lemma, or corollary below has a proof
+in this report. The numerical tables are reproducible from
+\path{verify_frontier_results.py}. No claim in this report has yet been
+formalized in Lean.
+
+\tableofcontents
+
+\section{Audit scope and the non-duplication boundary}
+
+\subsection{How the corpus was used}
+
+The source audit covered every LaTeX family in the repository documentation tree
+\cite{repo}, including the current expository volumes, the formalization walkthrough, the
+non-elementarity article, the mathematical glossary, the consolidated frontier
+volume, the Thue--Morse formula atlas, all waves of the Fourier-decay discussion,
+the paper-source subdirectories, and the historical archive. The archive index
+was used to track renamed and byte-identical historical variants, so that an old
+statement was not mistaken for a new one merely because it appeared under a
+superseded filename. A source map is given in \cref{app:corpus}.
+
+The audit revealed four especially important boundaries.
+
+\begin{enumerate}[label=\textbf{B\arabic*.},leftmargin=12mm]
+\item The main exposition and its supplements already contain the normalized
+infinite sinc product, the box-convolution construction of \(\up\), its relation
+to the Fabius function, dyadic identities, q-Pochhammer and q-binomial formulae,
+and the signed Thue--Morse derivative comb.
+
+\item The asymptotic documents already contain a corrected Lambert--\(W\)
+endpoint scale, a periodic dyadic phase, and all-order small-argument expansions
+for the Fabius function and its inverse. Those results concern
+\(x\downarrow0\), not finite-product truncation \(n\to\infty\).
+
+\item The Fourier-decay waves study \(\abs{P(\xi)}\) as
+\(\abs{\xi}\to\infty\), including dyadic oscillation and exceptional
+frequencies. They do not develop the exact analytic expansion of
+\(P_{b,n}/P_b\) in the small geometric variable \(q^n\), nor the extrapolation
+filter derived below.
+
+\item The frontier volume already has q-Richardson ideas for discrete Fabius
+spline rows and degree-dependent approximants. We therefore do not present a
+generic Richardson recipe as new. The new object here is the \emph{Fourier-tail
+truncation sequence} \(P_{b,n}\), for which the error coefficients, all q-moments,
+stability constant, moment matching, and inverse-function consequence can all be
+written exactly.
+\end{enumerate}
+
+The external search performed for this report also found general literature on
+Richardson extrapolation and on powers of sinc expressed through Bell
+polynomials, but no source matching the combined construction in
+\cref{sec:tail,sec:filter,sec:physical}. This is supporting evidence only, not an
+exhaustive priority claim.
+
+\subsection{What is new in this report}
+
+The principal contributions are the following.
+
+\begin{enumerate}[label=\textbf{N\arabic*.},leftmargin=12mm]
+\item A one-variable analytic tail function \(\Phi_b\) whose Taylor cumulants
+are rational Bernoulli combinations and whose Taylor coefficients are complete
+Bell polynomials.
+
+\item A q-Lagrange operator
+\(W_m(T_q)=\prod_{r=1}^m(T_q-q^r)/(1-q^r)\) that annihilates the first \(m\)
+truncation modes exactly.
+
+\item An all-order q-binomial error identity, not merely a leading-order
+Richardson estimate.
+
+\item A closed stability constant with a finite infinite-order limit, and a
+successive-level error certificate requiring no knowledge of the infinite
+product.
+
+\item Exact matching of the first \(2m\) moments of the limiting Rvachev density
+by a signed combination of finite box splines, for every \(n\).
+
+\item A \(C^\infty\) superconvergence theorem with an explicit first derivative
+profile, followed by an interior inverse-Fabius perturbation formula.
+
+\item A kernel-independent extension showing that the same q-filter accelerates
+any geometric product whose elementary factor has an even logarithmic Taylor
+series.
+\end{enumerate}
+
+\section{Geometric sinc products and finite Rvachev splines}
+\label{sec:setup}
+
+Fix \(b>1\) and set
+\[
+ q=b^{-2}\in(0,1),\qquad \sinc z=\begin{cases}\sin z/z,&z\ne0,\\1,&z=0.\end{cases}
+\]
+Define
+\begin{equation}
+ P_b(\xi)=\prod_{\nu=1}^{\infty}\sinc(\xi/b^\nu),
+ \qquad
+ P_{b,n}(\xi)=\prod_{\nu=1}^{n}\sinc(\xi/b^\nu).
+ \label{eq:products}
+\end{equation}
+The convergence is locally uniform in \(\C\), since
+\(1-\sinc(\xi/b^\nu)=O(b^{-2\nu})\) on compact sets.
+
+Let
+\begin{equation}
+ h_{b,\nu}(x)=\frac{b^\nu}{2}\,\mathbf 1_{[-b^{-\nu},b^{-\nu}]}(x),
+ \qquad
+ u_{b,n}=h_{b,1}*\cdots*h_{b,n}.
+ \label{eq:boxes}
+\end{equation}
+With the Fourier convention
+\[
+ \widehat f(\xi)=\int_{\R}f(x)\e^{-\ii\xi x}\,dx,
+ \qquad
+ f(x)=\frac1{2\pi}\int_{\R}\widehat f(\xi)\e^{\ii\xi x}\,d\xi,
+\]
+we have \(\widehat h_{b,\nu}(\xi)=\sinc(\xi/b^\nu)\), hence
+\begin{equation}
+ \widehat{u_{b,n}}=P_{b,n}.
+ \label{eq:finiteFT}
+\end{equation}
+The infinite convolution \(u_b=*_{\nu\geq1}h_{b,\nu}\) is a probability density
+supported on \([-1/(b-1),1/(b-1)]\), and \(\widehat u_b=P_b\). The product
+decays faster than every power, so \(u_b\in C_c^\infty(\R)\). At \(b=2\),
+\(u_2\) is the normalized Rvachev up-function.
+
+\subsection{The finite Thue--Morse derivative comb}
+
+The bridge to the signed Thue--Morse sequence is already part of the repository
+background, but the exact normalization is useful for what follows. Write
+\(t_k=(-1)^{s_2(k)}\), where \(s_2(k)\) is the binary digit sum.
+
+\begin{proposition}[distributional Thue--Morse comb]
+For \(n\geq1\),
+\begin{equation}
+ \D^n u_{2,n}
+ =2^{n(n-1)/2}\sum_{k=0}^{2^n-1}t_k\,
+ \delta_{-1+(2k+1)2^{-n}}.
+ \label{eq:TMcomb}
+\end{equation}
+\end{proposition}
+
+\begin{proof}
+For \(a>0\),
+\[
+ \D\left(\frac1{2a}\mathbf1_{[-a,a]}\right)
+ =\frac1{2a}(\delta_{-a}-\delta_a).
+\]
+Differentiate every factor in \eqref{eq:boxes}. Choosing the right endpoint in
+the \(j\)-th factor contributes one minus sign. If the choices are encoded by
+the binary digits of \(k\), the coefficient is \((-1)^{s_2(k)}\), while the
+location is
+\[
+ -\sum_{j=1}^n2^{-j}+2\sum_{j=1}^n\varepsilon_j2^{-j}
+ =-1+2^{-n}+(2^{1-n})k.
+\]
+Finally \(\prod_{j=1}^n(2\cdot2^{-j})^{-1}=2^{n(n-1)/2}\).
+\end{proof}
+
+Thus every finite product in \eqref{eq:products} is simultaneously a Fourier
+approximation and an integrated Thue--Morse object. The acceleration below acts
+on both descriptions at once.
+
+\section{The exact Bernoulli--Bell tail expansion}
+\label{sec:tail}
+
+\subsection{A universal tail function}
+
+The key observation is that the two variables \(n\) and \(\xi\) enter the omitted
+tail only through \(q^n\xi^2\).
+
+\begin{definition}
+For \(z\) near zero, define
+\begin{equation}
+ \Phi_b(z)=\prod_{\ell=1}^{\infty}
+ \frac1{\sinc(b^{-\ell}\sqrt z)}.
+ \label{eq:PhiDef}
+\end{equation}
+The expression is independent of the sign of \(\sqrt z\), and hence defines an
+ordinary analytic function of \(z\).
+\end{definition}
+
+\begin{theorem}[exact tail factorization]
+\label{thm:tailfactor}
+The function \(\Phi_b\) is analytic in \(\abs z<\pi^2b^2\), meromorphic in
+\(\C\), and has its nearest singularity to the origin at \(z=\pi^2b^2\). For
+every \(n\geq0\),
+\begin{equation}
+ P_{b,n}(\xi)=P_b(\xi)\Phi_b(q^n\xi^2).
+ \label{eq:exacttail}
+\end{equation}
+The identity is entire in \(\xi\); at common zeros it is interpreted by analytic
+continuation. Moreover,
+\begin{equation}
+ \Phi_b(z)=\frac{\Phi_b(qz)}{\sinc(b^{-1}\sqrt z)}.
+ \label{eq:PhiFunctional}
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+Cancel the first \(n\) factors in \(P_b/P_{b,n}\) and write \(\nu=n+\ell\):
+\[
+ \frac{P_{b,n}(\xi)}{P_b(\xi)}
+ =\prod_{\ell=1}^{\infty}
+ \frac1{\sinc(\xi/b^{n+\ell})}
+ =\Phi_b(q^n\xi^2).
+\]
+The zeros of \(\sinc(b^{-\ell}\sqrt z)\) occur at
+\(z=\pi^2k^2b^{2\ell}\), \(k\in\mathbb Z\setminus\{0\}\). The nearest is
+\(\pi^2b^2\). Splitting off the \(\ell=1\) factor and reindexing proves
+\eqref{eq:PhiFunctional}.
+\end{proof}
+
+\subsection{Bernoulli cumulants}
+
+The classical expansion
+\begin{equation}
+ \log\sinc w=-\sum_{k=1}^{\infty}
+ \frac{\zeta(2k)}{k\pi^{2k}}w^{2k},\qquad \abs w<\pi,
+ \label{eq:logsinc}
+\end{equation}
+turns the geometric tail into an explicitly summable cumulant series.
+
+\begin{theorem}[Bernoulli cumulants]
+\label{thm:cumulants}
+For \(\abs z<\pi^2b^2\),
+\begin{equation}
+ \Phi_b(z)=\exp\!\left(\sum_{k=1}^{\infty}c_k(b)z^k\right),
+ \label{eq:PhiCumulant}
+\end{equation}
+where
+\begin{align}
+ c_k(b)
+ &=\frac{\zeta(2k)}{k\pi^{2k}(b^{2k}-1)}
+ \label{eq:ckzeta}\\
+ &=\frac{(-1)^{k+1}2^{2k-1}B_{2k}}
+ {k(2k)!(b^{2k}-1)}.
+ \label{eq:ckBernoulli}
+\end{align}
+In particular \(c_k(b)>0\) for every \(k\geq1\).
+\end{theorem}
+
+\begin{proof}
+Insert \eqref{eq:logsinc} into \eqref{eq:PhiDef}, interchange absolutely
+convergent sums, and use
+\[
+ \sum_{\ell=1}^{\infty}b^{-2k\ell}=\frac1{b^{2k}-1}.
+\]
+The Bernoulli form follows from Euler's formula for \(\zeta(2k)\). Positivity is
+clear from \eqref{eq:ckzeta}.
+\end{proof}
+
+Combining \cref{thm:tailfactor,thm:cumulants} gives the exact truncation expansion
+\begin{equation}
+ \frac{P_{b,n}(\xi)}{P_b(\xi)}
+ =\exp\!\left(\sum_{k\geq1}c_k(b)\xi^{2k}q^{kn}\right).
+ \label{eq:tailn}
+\end{equation}
+This is an equality, not a merely formal asymptotic series, whenever
+\(\abs\xi<\pi b^{n+1}\).
+
+\subsection{Bell coefficients and their recurrence}
+
+Write
+\begin{equation}
+ \Phi_b(z)=\sum_{r=0}^{\infty}\alpha_r(b)z^r,
+ \qquad \alpha_0(b)=1.
+ \label{eq:alphadef}
+\end{equation}
+
+\begin{proposition}[complete Bell-polynomial formula]
+\label{prop:Bell}
+Let \(Y_r\) denote the complete exponential Bell polynomial. Then
+\begin{equation}
+ \alpha_r(b)=\frac1{r!}
+ Y_r\bigl(1!c_1(b),2!c_2(b),\ldots,r!c_r(b)\bigr),
+ \label{eq:Bellalpha}
+\end{equation}
+and equivalently
+\begin{equation}
+ r\alpha_r(b)=\sum_{k=1}^r k c_k(b)\alpha_{r-k}(b).
+ \label{eq:alpharec}
+\end{equation}
+Every \(\alpha_r(b)\) is strictly positive.
+\end{proposition}
+
+\begin{proof}
+Equation \eqref{eq:Bellalpha} is the defining exponential generating identity for
+complete Bell polynomials. Differentiating \eqref{eq:PhiCumulant} and comparing
+coefficients gives \eqref{eq:alpharec}. Positivity follows inductively from
+\(c_k(b)>0\).
+\end{proof}
+
+For the Rvachev base \(b=2\), the first cumulants are
+\begin{align*}
+ c_1&=\frac1{18},&c_2&=\frac1{2700},&c_3&=\frac1{178605},\\
+ c_4&=\frac1{9639000},&c_5&=\frac1{478533825},&
+ c_6&=\frac{691}{15688261338750}.
+\end{align*}
+The corresponding Bell coefficients are
+\begin{align}
+ \alpha_0&=1,&
+ \alpha_1&=\frac1{18},&
+ \alpha_2&=\frac{31}{16200},\\
+ \alpha_3&=\frac{2347}{42865200},&
+ \alpha_4&=\frac{1904369}{1311675120000},&
+ \alpha_5&=\frac{3309760579}{88561680752160000}.
+ \label{eq:alphaB2}
+\end{align}
+The exact rationals are useful because no numerical fitting is needed at any
+order.
+
+\section{q-Lagrange Richardson extrapolation}
+\label{sec:filter}
+
+\subsection{The filter polynomial}
+
+Let \(T_q\) be the dilation operator \((T_qf)(z)=f(qz)\). Define
+\begin{equation}
+ W_m(t)=\prod_{r=1}^m\frac{t-q^r}{1-q^r},
+ \qquad W_0(t)=1.
+ \label{eq:Wm}
+\end{equation}
+Thus \(W_m(1)=1\) and \(W_m(q^r)=0\) for \(1\leq r\leq m\).
+Expanding \(W_m(t)=\sum_{j=0}^m w_j^{(m)}t^j\) gives the following exact
+weights.
+
+\begin{theorem}[geometric Lagrange weights]
+\label{thm:weights}
+For \(0\leq j\leq m\),
+\begin{equation}
+ w_j^{(m)}
+ =\prod_{\substack{0\leq\ell\leq m\\\ell\ne j}}
+ \frac{-q^\ell}{q^j-q^\ell}
+ =\frac{(-1)^{m-j}q^{(m-j)(m-j+1)/2}}
+ {(q;q)_j(q;q)_{m-j}},
+ \label{eq:weights}
+\end{equation}
+where \((q;q)_r=\prod_{s=1}^r(1-q^s)\). These are precisely the Lagrange
+weights that recover the value at zero from data at \(1,q,\ldots,q^m\).
+\end{theorem}
+
+\begin{proof}
+The first expression is the Lagrange cardinal basis evaluated at zero. Separating
+factors with \(\ell<j\) and \(\ell>j\), then collecting powers of \(q\), gives the
+second expression. Alternatively, the q-binomial theorem expands
+\eqref{eq:Wm} directly.
+\end{proof}
+
+\begin{definition}[accelerated finite product]
+For \(m,n\geq0\), define
+\begin{equation}
+ \mathcal R_{m,n}P_b(\xi)
+ =\sum_{j=0}^m w_j^{(m)}P_{b,n+j}(\xi).
+ \label{eq:Rdef}
+\end{equation}
+\end{definition}
+
+With \(z=q^n\xi^2\), the tail factorization gives the compact operator identity
+\begin{equation}
+ \frac{\mathcal R_{m,n}P_b(\xi)}{P_b(\xi)}
+ =\bigl(W_m(T_q)\Phi_b\bigr)(z).
+ \label{eq:operatoridentity}
+\end{equation}
+The right side is well defined as an analytic continuation even at common zeros.
+
+\subsection{A Romberg-style triangular algorithm}
+
+The factorization of \(W_m\) gives a recursion that avoids an explicit weighted
+sum.
+
+\begin{algorithm}[q-Richardson table]
+\label{alg:table}
+Start with \(A_{0,n}=P_{b,n}(\xi)\). For \(m\geq1\), form
+\begin{equation}
+ A_{m,n}=\frac{A_{m-1,n+1}-q^mA_{m-1,n}}{1-q^m}.
+ \label{eq:table}
+\end{equation}
+Then \(A_{m,n}=\mathcal R_{m,n}P_b(\xi)\).
+\end{algorithm}
+
+\begin{proof}
+The polynomial recursion
+\[
+ W_m(t)=\frac{t-q^m}{1-q^m}W_{m-1}(t)
+\]
+becomes \eqref{eq:table} after applying it to the shift \(n\mapsto n+1\).
+\end{proof}
+
+For \(b=2\), \(q=1/4\), the first filters are
+\begin{align}
+ \mathcal R_{1,n}P&=\frac{4P_{n+1}-P_n}{3},
+ \label{eq:m1}\\
+ \mathcal R_{2,n}P&=\frac{P_n-20P_{n+1}+64P_{n+2}}{45},
+ \label{eq:m2}\\
+ \mathcal R_{3,n}P&=\frac{-P_n+84P_{n+1}-1344P_{n+2}+4096P_{n+3}}{2835}.
+ \label{eq:m3}
+\end{align}
+The coefficients are exact rationals; the included program generates arbitrary
+orders.
+
+\subsection{The exact q-moment identity}
+
+\begin{lemma}[all geometric moments]
+\label{lem:qmoments}
+For every integer \(r\geq0\), let
+\(M_r^{(m)}=\sum_{j=0}^m w_j^{(m)}q^{jr}\). Then
+\begin{equation}
+ M_r^{(m)}=W_m(q^r).
+ \label{eq:MrW}
+\end{equation}
+Consequently,
+\begin{equation}
+ M_0^{(m)}=1,
+ \qquad M_r^{(m)}=0\quad(1\leq r\leq m),
+ \label{eq:cancelmom}
+\end{equation}
+and for \(r\geq m+1\),
+\begin{align}
+ M_r^{(m)}
+ &=q^{mr}\frac{(q^{1-r};q)_m}{(q;q)_m}
+ \label{eq:Mrpoch}\\
+ &=(-1)^m q^{\binom{m+1}{2}}\qbinom{r-1}{m}.
+ \label{eq:Mrqbinom}
+\end{align}
+\end{lemma}
+
+\begin{proof}
+Equation \eqref{eq:MrW} follows from the coefficient definition of \(W_m\).
+The roots give \eqref{eq:cancelmom}. For \(r>m\), evaluate the product in
+\eqref{eq:Wm}:
+\[
+ W_m(q^r)=\prod_{\ell=1}^m\frac{q^r-q^\ell}{1-q^\ell}
+ =(-1)^m q^{\binom{m+1}{2}}
+ \prod_{\ell=1}^m\frac{1-q^{r-\ell}}{1-q^\ell},
+\]
+which is \eqref{eq:Mrqbinom}; \eqref{eq:Mrpoch} is the equivalent
+q-Pochhammer form.
+\end{proof}
+
+\subsection{The complete error series}
+
+\begin{theorem}[exact q-binomial error]
+\label{thm:exacterror}
+Let \(z=q^n\xi^2\), and suppose \(\abs z<\pi^2b^2\). Then
+\begin{equation}
+ \frac{\mathcal R_{m,n}P_b(\xi)}{P_b(\xi)}-1
+ =(-1)^m q^{\binom{m+1}{2}}
+ \sum_{r=m+1}^{\infty}
+ \qbinom{r-1}{m}\alpha_r(b)z^r.
+ \label{eq:exacterror}
+\end{equation}
+At a common zero of \(P_b\) and all the finite products, the multiplied identity
+remains valid and both sides vanish. In particular,
+\begin{equation}
+ \frac{\mathcal R_{m,n}P_b}{P_b}-1
+ \sim (-1)^m q^{\binom{m+1}{2}}
+ \alpha_{m+1}(b)\xi^{2m+2}q^{(m+1)n}.
+ \label{eq:leadingerror}
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+Insert \(\Phi_b(z)=\sum_{r\geq0}\alpha_rz^r\) into
+\eqref{eq:operatoridentity}. The coefficient of \(z^r\) is
+\(\alpha_rW_m(q^r)\). Apply \cref{lem:qmoments}.
+\end{proof}
+
+This identity is substantially stronger than the statement that Richardson
+extrapolation raises the order. Every residual mode and its exact q-binomial
+multiplier are known.
+
+\subsection{Divided differences and non-asymptotic sign bounds}
+
+Let \(x_j=q^jz\). The quantity
+\(\sum_jw_j^{(m)}\Phi_b(x_j)\) is the value at zero of the degree-\(m\)
+Lagrange interpolant through the nodes \(x_0,\ldots,x_m\). The standard
+interpolation remainder therefore yields a second exact form.
+
+\begin{theorem}[divided-difference form]
+\label{thm:divdiff}
+For \(0\leq z<\pi^2b^2\),
+\begin{equation}
+ \bigl(W_m(T_q)\Phi_b\bigr)(z)-1
+ =(-1)^m q^{\binom{m+1}{2}}z^{m+1}
+ \Phi_b[0,q^mz,q^{m-1}z,\ldots,z],
+ \label{eq:divdiff}
+\end{equation}
+where the bracket denotes a divided difference. Since \(\Phi_b\) is absolutely
+monotone on this interval,
+\begin{align}
+ q^{\binom{m+1}{2}}\alpha_{m+1}(b)z^{m+1}
+ &\leq
+ \abs{\bigl(W_m(T_q)\Phi_b\bigr)(z)-1}
+ \label{eq:lowerbound}\\
+ &\leq
+ \frac{q^{\binom{m+1}{2}}z^{m+1}}{(m+1)!}
+ \Phi_b^{(m+1)}(z).
+ \label{eq:upperbound}
+\end{align}
+The sign is exactly \((-1)^m\).
+\end{theorem}
+
+\begin{proof}
+The Lagrange remainder at zero is
+\[
+ p_m(0)-\Phi_b(0)=(-1)^m\left(\prod_{j=0}^mx_j\right)
+ \Phi_b[0,x_0,\ldots,x_m],
+\]
+and \(\prod_jx_j=q^{\binom{m+1}{2}}z^{m+1}\). Because every Taylor
+coefficient \(\alpha_r\) is positive, all derivatives of \(\Phi_b\) are positive
+and increasing on the stated interval. The Hermite--Genocchi formula bounds the
+divided difference between
+\(\Phi_b^{(m+1)}(0)/(m+1)!=\alpha_{m+1}\) and
+\(\Phi_b^{(m+1)}(z)/(m+1)!\).
+\end{proof}
+
+\begin{corollary}[relative bracketing]
+\label{cor:bracket}
+For real \(\xi\) with \(\abs\xi<\pi b^{n+1}\) and \(P_b(\xi)\ne0\),
+\begin{equation}
+ \sgn\!\left(\frac{\mathcal R_{m,n}P_b(\xi)}{P_b(\xi)}-1\right)=(-1)^m.
+ \label{eq:signlaw}
+\end{equation}
+Thus even and odd extrapolation orders bracket the exact product in relative
+terms. If \(P_b(\xi)>0\), the bracketing is also an ordinary numerical ordering.
+\end{corollary}
+
+\subsection{Uniform stability of arbitrarily high order}
+
+Richardson formulae are often numerically unattractive because their coefficient
+norms grow rapidly. The geometric nodes here behave unusually well.
+
+\begin{theorem}[exact Lebesgue constant]
+\label{thm:stability}
+The amplification factor of the filter is
+\begin{equation}
+ \Lambda_m(q)=\sum_{j=0}^m\abs{w_j^{(m)}}
+ =\prod_{r=1}^m\frac{1+q^r}{1-q^r}
+ =\frac{(-q;q)_m}{(q;q)_m}.
+ \label{eq:Lebesgue}
+\end{equation}
+For fixed \(q\in(0,1)\),
+\begin{equation}
+ \Lambda_\infty(q)=\prod_{r=1}^{\infty}\frac{1+q^r}{1-q^r}<\infty.
+ \label{eq:LebesgueInf}
+\end{equation}
+For \(q=1/4\),
+\begin{equation}
+ \Lambda_\infty(1/4)
+ =1.969260353668269431947193696967\ldots.
+ \label{eq:LambdaQuarter}
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+The signs in \eqref{eq:weights} alternate, so
+\[
+ \sum_j\abs{w_j^{(m)}}=(-1)^mW_m(-1)
+ =\prod_{r=1}^m\frac{1+q^r}{1-q^r}.
+\]
+The logarithm of the infinite product is
+\(\sum_r[\log(1+q^r)-\log(1-q^r)]=O(\sum_rq^r)\), hence it converges.
+\end{proof}
+
+Consequently, absolute input errors bounded by \(\varepsilon\) produce an output
+error no larger than \(\Lambda_\infty(q)\varepsilon\), uniformly in the
+extrapolation order. This is a decisive difference from equally spaced
+high-order extrapolation.
+
+\subsection{A rigorous a posteriori certificate}
+
+The positive-coefficient error series also compares consecutive truncation
+levels.
+
+\begin{theorem}[successive-level certificate]
+\label{thm:certificate}
+Fix \(m\) and a real \(\xi\). Assume
+\(\abs\xi<\pi b^{n+1}\) and \(P_b(\xi)\ne0\). Let
+\(R_n=\mathcal R_{m,n}P_b(\xi)\). Then
+\begin{equation}
+ \abs{R_{n+1}-R_n}
+ \leq \abs{R_n-P_b(\xi)}
+ \leq \frac{\abs{R_{n+1}-R_n}}{1-q^{m+1}}.
+ \label{eq:certificate}
+\end{equation}
+Furthermore,
+\begin{equation}
+ P_b(\xi)-R_n
+ \sim \frac{R_{n+1}-R_n}{1-q^{m+1}}.
+ \label{eq:asympest}
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+By \eqref{eq:exacterror}, the relative error is \((-1)^mA_n\), where
+\[
+ A_n=q^{\binom{m+1}{2}}
+ \sum_{r\geq m+1}\qbinom{r-1}{m}\alpha_r\xi^{2r}q^{rn}>0.
+\]
+Every term is multiplied by \(q^r\) when \(n\) increases by one. Hence
+\(0<A_{n+1}\leq q^{m+1}A_n\). Therefore
+\[
+ (1-q^{m+1})A_n\leq A_n-A_{n+1}\leq A_n.
+\]
+Multiplying by \(\abs{P_b(\xi)}\) proves \eqref{eq:certificate}. The leading
+term has ratio \(q^{m+1}\), which proves \eqref{eq:asympest}.
+\end{proof}
+
+This certificate is practical: it estimates the unknown infinite product from
+two consecutive accelerated values and uses only the known number
+\(1-q^{m+1}\).
+
+\section{Physical-space consequences for Rvachev splines}
+\label{sec:physical}
+
+Define the signed extrapolated spline
+\begin{equation}
+ U_{b;m,n}(x)=\sum_{j=0}^m w_j^{(m)}u_{b,n+j}(x).
+ \label{eq:Udef}
+\end{equation}
+It has total mass one and support in \([-1/(b-1),1/(b-1)]\). It need not be
+nonnegative, but
+\begin{equation}
+ \norm{U_{b;m,n}}_{L^1}\leq\Lambda_m(q)<\Lambda_\infty(q).
+ \label{eq:L1stable}
+\end{equation}
+Its Fourier transform is \(\mathcal R_{m,n}P_b\).
+
+\subsection{All-order inverse-differential expansion}
+
+\begin{theorem}[all-order spline expansion]
+\label{thm:CinftyExpansion}
+For every pair of nonnegative integers \(N,s\),
+\begin{equation}
+ u_{b,n}
+ =\sum_{r=0}^{N}(-1)^r\alpha_r(b)q^{rn}u_b^{(2r)}
+ +O_{C^s}\!\left(q^{(N+1)n}\right)
+ \qquad(n\to\infty).
+ \label{eq:physicalExpansion}
+\end{equation}
+Equivalently, as an all-order asymptotic operator identity,
+\begin{equation}
+ u_{b,n}\sim
+ \exp\!\left(\sum_{k\geq1}(-1)^kc_k(b)q^{kn}\D^{2k}\right)u_b.
+ \label{eq:operatorPhysical}
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+Fourier transformation turns \((-1)^r\D^{2r}u_b\) into
+\(\xi^{2r}P_b(\xi)\), so the displayed finite sum is exactly the first
+\(N+1\) terms of \eqref{eq:tailn}.
+
+For completeness, split the inverse Fourier integral at \(\abs\xi=b^n\). On the
+low-frequency region, \(z=q^n\xi^2\leq1\), and analyticity of \(\Phi_b\) gives a
+uniform Taylor remainder bounded by
+\(Cq^{(N+1)n}\abs\xi^{2N+2}\abs{P_b(\xi)}\). This remains integrable after
+multiplication by \(\abs\xi^s\), because \(P_b\) is rapidly decreasing.
+
+On \(\abs\xi\geq b^n\), the first \(n\) factors satisfy
+\[
+ \abs{P_{b,n+j}(\xi)}\leq
+ b^{n(n+1)/2}\abs\xi^{-n},\qquad j\geq0,
+\]
+while the remaining factors have modulus at most one. The corresponding weighted
+Fourier tail is \(O(b^{-n^2/2+O(n)})\), hence smaller than every fixed geometric
+rate. The same bound applies to \(P_b\). Fourier inversion proves the assertion
+in \(C^s\).
+\end{proof}
+
+\subsection{Superconvergence of the extrapolated spline}
+
+\begin{theorem}[q-binomial \(C^\infty\) expansion]
+\label{thm:Uexpansion}
+For fixed \(m,s\) and every \(N\geq m+1\),
+\begin{align}
+ U_{b;m,n}-u_b
+ &=q^{\binom{m+1}{2}}
+ \sum_{r=m+1}^{N}(-1)^{m+r}
+ \qbinom{r-1}{m}\alpha_r(b)q^{rn}u_b^{(2r)}
+ \notag\\
+ &\quad+O_{C^s}\!\left(q^{(N+1)n}\right).
+ \label{eq:Uallorder}
+\end{align}
+In particular,
+\begin{equation}
+ \norm{U_{b;m,n}-u_b}_{C^s}
+ \leq C_{b,m,s}q^{(m+1)n},
+ \label{eq:Csuper}
+\end{equation}
+and the normalized error has the explicit limit
+\begin{equation}
+ q^{-(m+1)n}\bigl(U_{b;m,n}-u_b\bigr)
+ \longrightarrow
+ -q^{\binom{m+1}{2}}\alpha_{m+1}(b)u_b^{(2m+2)}
+ \quad\text{in }C^s(\R).
+ \label{eq:errorprofile}
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+Apply inverse Fourier transformation to \eqref{eq:exacterror}, using
+\(\mathcal F^{-1}[\xi^{2r}P_b]=(-1)^ru_b^{(2r)}\). The remainder estimate is
+the same low/high-frequency argument as in \cref{thm:CinftyExpansion}. At
+\(r=m+1\), the sign is \((-1)^{m+m+1}=-1\), which gives
+\eqref{eq:errorprofile}.
+\end{proof}
+
+For \(b=2\), each additional extrapolation level changes the basic convergence
+factor from \(4^{-n}\) to \(4^{-(m+1)n}\), while the filter norm remains below
+\(1.970\).
+
+\subsection{Exact moment matching}
+
+The cancellation is stronger than fast convergence: a finite set of moments is
+already exact.
+
+\begin{theorem}[exact moment matching]
+\label{thm:moments}
+For every \(m,n\geq0\) and every integer \(0\leq\ell\leq2m\),
+\begin{equation}
+ \int_{\R}x^\ell U_{b;m,n}(x)\,dx
+ =\int_{\R}x^\ell u_b(x)\,dx.
+ \label{eq:momentmatch}
+\end{equation}
+All odd moments vanish by symmetry. The first missed even moment is known
+exactly:
+\begin{equation}
+ \int_{\R}x^{2m+2}\bigl(U_{b;m,n}(x)-u_b(x)\bigr)\,dx
+ =-(2m+2)!\,q^{\binom{m+1}{2}}
+ \alpha_{m+1}(b)q^{(m+1)n}.
+ \label{eq:firstmomenterror}
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+By \eqref{eq:exacterror},
+\(\widehat U_{b;m,n}-\widehat u_b\) has a zero of order at least \(2m+2\) at
+\(\xi=0\). Since
+\[
+ \widehat f^{(\ell)}(0)=(-\ii)^\ell\int x^\ell f(x)\,dx,
+\]
+all moments through degree \(2m+1\) agree. Symmetry handles every odd degree.
+The coefficient of \(\xi^{2m+2}\) in the Fourier error is
+\((-1)^mq^{\binom{m+1}{2}}\alpha_{m+1}q^{(m+1)n}\). Converting the derivative
+at zero back to the \((2m+2)\)-nd moment contributes \((-1)^{m+1}\), leaving the
+negative sign in \eqref{eq:firstmomenterror}.
+\end{proof}
+
+\begin{remark}[quadrature interpretation]
+For any polynomial \(p\) of degree at most \(2m\),
+\[
+ \int p(x)U_{b;m,n}(x)\,dx=\int p(x)u_b(x)\,dx.
+\]
+Thus \(U_{b;m,n}\) is a signed, compactly supported, uniformly stable density
+surrogate with exact polynomial expectations through degree \(2m\).
+\end{remark}
+
+\section{Fabius and inverse-Fabius consequences}
+\label{sec:fabius}
+
+Under the normalization used throughout the repository, the Fabius function on
+\([0,1]\) is the left half of the translated up-function:
+\begin{equation}
+ F(x)=u_2(x-1),\qquad 0\leq x\leq1.
+ \label{eq:Fshift}
+\end{equation}
+Define the accelerated finite-spline approximation
+\begin{equation}
+ F_{m,n}(x)=U_{2;m,n}(x-1),\qquad q=\frac14.
+ \label{eq:Fapprox}
+\end{equation}
+
+\begin{corollary}[accelerated Fabius approximation]
+\label{cor:Fconv}
+For every \(m,s\geq0\),
+\begin{equation}
+ \norm{F_{m,n}-F}_{C^s([0,1])}
+ =O\!\left(4^{-(m+1)n}\right),
+ \label{eq:Fconv}
+\end{equation}
+and
+\begin{equation}
+ 4^{(m+1)n}(F_{m,n}-F)
+ \longrightarrow
+ -4^{-\binom{m+1}{2}}\alpha_{m+1}(2)F^{(2m+2)}
+ \quad\text{in }C^s([0,1]).
+ \label{eq:Fprofile}
+\end{equation}
+\end{corollary}
+
+The global statement is possible because all derivatives of the compactly
+supported up-function vanish at the endpoints. Inversion is more delicate:
+\(F'(x)\) tends to zero at the ends, and this is precisely where the repository's
+Lambert--\(W\) asymptotics become relevant.
+
+\begin{theorem}[interior inverse-Fabius superconvergence]
+\label{thm:inverse}
+Let \(K=[a,b]\Subset(0,1)\), and put \(J=F(K)\). Let \(G=F^{-1}\) on \(J\).
+For sufficiently large \(n\), the restriction of \(F_{m,n}\) to a neighborhood
+of \(K\) is strictly increasing and has an inverse branch \(G_{m,n}\) on \(J\).
+Then
+\begin{equation}
+ \norm{G_{m,n}-G}_{C^s(J)}
+ =O\!\left(4^{-(m+1)n}\right)
+ \label{eq:Gconv}
+\end{equation}
+for every fixed \(s\), and uniformly for \(y\in J\),
+\begin{equation}
+ 4^{(m+1)n}\bigl(G_{m,n}(y)-G(y)\bigr)
+ \longrightarrow
+ 4^{-\binom{m+1}{2}}\alpha_{m+1}(2)
+ \frac{F^{(2m+2)}(G(y))}{F'(G(y))}.
+ \label{eq:Gprofile}
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+On a slightly larger compact interval \(K'\Subset(0,1)\), continuity and strict
+monotonicity give \(F'\geq c>0\). The \(C^1\) convergence in
+\cref{cor:Fconv} implies \(F_{m,n}'\geq c/2\) for large \(n\), so the inverse
+branch exists. Standard differentiation of inverse functions gives
+\eqref{eq:Gconv}.
+
+For the leading term, write \(F_{m,n}=F+\varepsilon_n\), set \(x=G(y)\), and
+solve
+\[
+ 0=F(x+\delta_n)-F(x)+\varepsilon_n(x+\delta_n)
+ =F'(x)\delta_n+\varepsilon_n(x)+o(4^{-(m+1)n}).
+\]
+Equation \eqref{eq:Fprofile} gives
+\(\varepsilon_n(x)\sim
+ -4^{-\binom{m+1}{2}}\alpha_{m+1}4^{-(m+1)n}F^{(2m+2)}(x)\),
+which proves \eqref{eq:Gprofile}.
+\end{proof}
+
+\subsection{Relation to \texorpdfstring{Lambert--\(W\)}{Lambert-W} endpoint asymptotics}
+
+The inverse theorem is intentionally restricted to compact interior intervals.
+Near \(y=0\), the factor \(1/F'(G(y))\) becomes large and fixed-order inversion
+is no longer uniform. The repository's endpoint theory expresses the dominant
+scale of \(G(y)\) using a Lambert--\(W\) variable together with a periodic dyadic
+phase. The two results therefore occupy complementary limits:
+\[
+ \begin{array}{c|c|c}
+ \text{regime}&\text{small parameter}&\text{governing mechanism}\\ \hline
+ y\downarrow0 & 1/\log(1/y) & \text{Lambert--}W\text{ and dyadic phase}\\
+ n\to\infty,\ y\in J\Subset(0,1)&4^{-n}&\text{Bernoulli--Bell tail and q-filter}.
+ \end{array}
+\]
+A genuinely new two-parameter problem is to choose \(n=n(y)\) so that
+\eqref{eq:Gprofile} remains uniform while \(y\downarrow0\). The exact factor
+\(F^{(2m+2)}(G(y))/F'(G(y))\), combined with the repository's all-order endpoint
+expansion, reduces that problem to a concrete matching calculation rather than a
+vague stability question; see \cref{sec:open}.
+
+\section{Numerical verification}
+\label{sec:numerics}
+
+All computations in this section used 90-decimal-digit arithmetic. The infinite
+product was continued until a geometric bound for the omitted logarithmic tail
+fell below \(10^{-70}\). The explicit weighted formula and the triangular table
+\eqref{eq:table} were evaluated independently and agreed to the working
+precision. Symbolic checks verified \eqref{eq:Mrqbinom} for a range of orders as
+an identity in the symbol \(q\).
+
+\subsection{Absolute errors}
+
+For \(b=2\), the reference values are
+\begin{align*}
+ P(1)&=0.9456037838988178752649922474364995\ldots,\\
+ P(3)&=0.5857191765350684829125292624510928\ldots,\\
+ P(10)&=-0.03192757801277845828274435480432725\ldots.
+\end{align*}
+
+\begin{table}[ht]
+\centering
+\caption{Absolute errors at \(\xi=1\).}
+\label{tab:error1}
+\begin{tabular}{ccccc}
+\toprule
+\(n\)&\(m=0\)&\(m=1\)&\(m=2\)&\(m=3\)\\
+\midrule
+3 & \(8.2128\!\times10^{-4}\) & \(1.1050\!\times10^{-7}\) & \(3.0877\!\times10^{-12}\) & \(1.9989\!\times10^{-17}\)\\
+4 & \(2.0524\!\times10^{-4}\) & \(6.9036\!\times10^{-9}\) & \(4.8225\!\times10^{-14}\) & \(7.8050\!\times10^{-20}\)\\
+5 & \(5.1304\!\times10^{-5}\) & \(4.3143\!\times10^{-10}\) & \(7.5345\!\times10^{-16}\) & \(3.0485\!\times10^{-22}\)\\
+6 & \(1.2826\!\times10^{-5}\) & \(2.6964\!\times10^{-11}\) & \(1.1772\!\times10^{-17}\) & \(1.1908\!\times10^{-24}\)\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{table}[ht]
+\centering
+\caption{Absolute errors at \(\xi=3\).}
+\label{tab:error3}
+\begin{tabular}{ccccc}
+\toprule
+\(n\)&\(m=0\)&\(m=1\)&\(m=2\)&\(m=3\)\\
+\midrule
+3 & \(4.5982\!\times10^{-3}\) & \(5.5691\!\times10^{-6}\) & \(1.4003\!\times10^{-9}\) & \(8.1582\!\times10^{-14}\)\\
+4 & \(1.1454\!\times10^{-3}\) & \(3.4676\!\times10^{-7}\) & \(2.1800\!\times10^{-11}\) & \(3.1753\!\times10^{-16}\)\\
+5 & \(2.8608\!\times10^{-4}\) & \(2.1652\!\times10^{-8}\) & \(3.4031\!\times10^{-13}\) & \(1.2392\!\times10^{-18}\)\\
+6 & \(7.1504\!\times10^{-5}\) & \(1.3529\!\times10^{-9}\) & \(5.3162\!\times10^{-15}\) & \(4.8397\!\times10^{-21}\)\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{table}[ht]
+\centering
+\caption{Absolute errors at \(\xi=10\), beyond the first sign change of the
+infinite product but still inside the tail disk for the displayed \(n\).}
+\label{tab:error10}
+\begin{tabular}{ccccc}
+\toprule
+\(n\)&\(m=0\)&\(m=1\)&\(m=2\)&\(m=3\)\\
+\midrule
+3 & \(2.9276\!\times10^{-3}\) & \(3.9468\!\times10^{-5}\) & \(1.1012\!\times10^{-7}\) & \(7.1217\!\times10^{-11}\)\\
+4 & \(7.0230\!\times10^{-4}\) & \(2.3635\!\times10^{-6}\) & \(1.6504\!\times10^{-9}\) & \(2.6705\!\times10^{-13}\)\\
+5 & \(1.7380\!\times10^{-4}\) & \(1.4617\!\times10^{-7}\) & \(2.5525\!\times10^{-11}\) & \(1.0327\!\times10^{-15}\)\\
+6 & \(4.3341\!\times10^{-5}\) & \(9.1120\!\times10^{-9}\) & \(3.9782\!\times10^{-13}\) & \(4.0240\!\times10^{-18}\)\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+The observed reduction on increasing \(n\) is approximately
+\(4^{-(m+1)}\), exactly as predicted.
+
+\subsection{Leading constants}
+
+At \(\xi=3\), divide the signed error by \(q^{(m+1)n}\). The predicted limits
+from \eqref{eq:leadingerror} are
+\begin{center}
+\begin{tabular}{ccc}
+\toprule
+\(m\)&predicted limit&computed at \(n=11\)\\
+\midrule
+0 & \(0.29285958826753424146\) & \(0.29285960991271731281\)\\
+1 & \(-0.022696618090733903713\) & \(-0.022696619832602340475\)\\
+2 & \(0.000365296265765254499\) & \(0.000365296293045216575\)\\
+3 & \(-1.36214818263598388\times10^{-6}\) & \(-1.36214828256045162\times10^{-6}\)\\
+\bottomrule
+\end{tabular}
+\end{center}
+The alternating signs and limiting constants are resolved without fitting any
+free parameter.
+
+\subsection{A posteriori estimates}
+
+For example, at \(\xi=3,n=4,m=3\), the true absolute error is
+\(3.17531383672\times10^{-16}\). The computable difference between successive
+accelerated values is \(3.16292144780\times10^{-16}\), and
+\cref{thm:certificate} gives the upper bound
+\(3.17532506132\times10^{-16}\). The certificate therefore encloses the true
+error in an interval of relative width about \(4\times10^{-6}\), using no
+reference value of \(P(3)\).
+
+\section{A universal geometric-product theorem}
+\label{sec:universal}
+
+The q-filter is not tied to the sine function. Its universality clarifies which
+parts of the construction are special to Rvachev's function.
+
+\begin{theorem}[universal analytic-factor acceleration]
+\label{thm:universal}
+Let \(\varphi\) be an even analytic function near zero with \(\varphi(0)=1\),
+nonzero in a neighborhood of zero, and
+\begin{equation}
+ \log\varphi(w)=-\sum_{k=1}^{\infty}a_kw^{2k}.
+ \label{eq:generalphi}
+\end{equation}
+For \(b>1\), define
+\[
+ Q_b(\xi)=\prod_{\nu\geq1}\varphi(\xi/b^\nu),
+ \qquad Q_{b,n}(\xi)=\prod_{\nu=1}^n\varphi(\xi/b^\nu).
+\]
+Then locally at \(q^n\xi^2=0\),
+\begin{equation}
+ \frac{Q_{b,n}(\xi)}{Q_b(\xi)}
+ =\exp\!\left(\sum_{k\geq1}
+ \frac{a_k}{b^{2k}-1}\xi^{2k}q^{kn}\right).
+ \label{eq:universalTail}
+\end{equation}
+Let its Taylor coefficients in \(z=q^n\xi^2\) be \(\beta_r\). The same weights
+\eqref{eq:weights} satisfy
+\begin{equation}
+ \frac{\sum_{j=0}^mw_j^{(m)}Q_{b,n+j}(\xi)}{Q_b(\xi)}-1
+ =(-1)^mq^{\binom{m+1}{2}}
+ \sum_{r\geq m+1}\qbinom{r-1}{m}\beta_r z^r.
+ \label{eq:universalError}
+\end{equation}
+If all \(a_k\geq0\), then all \(\beta_r\geq0\), and the sign law, divided-
+difference bounds, and a posteriori certificate remain valid.
+\end{theorem}
+
+\begin{proof}
+The proof of \cref{thm:cumulants} uses only the geometric sum
+\(\sum_{\ell\geq1}b^{-2k\ell}=1/(b^{2k}-1)\). The q-filter calculation then
+uses only the Taylor expansion and \cref{lem:qmoments}.
+\end{proof}
+
+Thus the sinc-specific information is concentrated in the Bernoulli values of
+\(a_k=\zeta(2k)/(k\pi^{2k})\). The q-binomial extrapolation, its stability, and
+its exact mode cancellation belong to the geometry of the scales rather than to
+the elementary factor.
+
+\section{Lean formalization roadmap}
+\label{sec:lean}
+
+The analytic proof naturally separates into formalization-sized modules.
+
+\begin{enumerate}[label=\arabic*.,leftmargin=9mm]
+\item \textbf{Finite q-algebra.} Define \((q;q)_n\), Gaussian binomial
+coefficients, \(W_m\), and the weights. Prove \(W_m(q^r)=0\) for
+\(1\leq r\leq m\) and \eqref{eq:Mrqbinom}. This part is purely algebraic.
+
+\item \textbf{Formal power series.} Work first in a characteristic-zero
+commutative ring. From \(\Phi=\exp(\sum c_kz^k)\), derive the Bell recurrence
+\eqref{eq:alpharec}; then prove the coefficientwise filtered identity
+\eqref{eq:exacterror}. This avoids analytic convergence in the first pass.
+
+\item \textbf{Analytic sinc logarithm.} Establish \eqref{eq:logsinc} in a disk,
+sum the geometric scales, and identify the analytic power series with the actual
+product. Existing repository lemmas about the sinc product should reduce the
+amount of new infrastructure.
+
+\item \textbf{Interpolation and positivity.} Formalize the Lagrange weights,
+the divided-difference remainder, and absolute monotonicity of a power series with
+nonnegative coefficients. The sign theorem can also be proved directly from the
+positive coefficient series if divided differences are inconvenient.
+
+\item \textbf{Fourier/measure layer.} Define the uniform box measures and their
+finite convolutions. Moment matching follows from derivatives of the
+characteristic function at zero and may be formalized before the full
+\(C^\infty\) theorem.
+
+\item \textbf{Asymptotic layer.} Prove low-frequency Taylor bounds and the
+high-frequency superexponential estimate. This is the technically heaviest step,
+but it is independent of q-binomial algebra.
+
+\item \textbf{Inverse-function layer.} Apply a quantitative inverse function
+theorem on compact intervals where \(F'\) has a positive lower bound, then derive
+\eqref{eq:Gprofile} from the first-order perturbation identity.
+\end{enumerate}
+
+The accompanying Python file supplies exact test vectors for the algebraic
+modules and high-precision regression tests for the analytic statements.
+
+\section{Further frontier problems}
+\label{sec:open}
+
+\subsection{A matched Lambert--Richardson endpoint theory}
+
+Let \(G=F^{-1}\) and let \(G_{m,n}\) be the accelerated inverse branch. Determine
+the largest endpoint region \(0<y\leq y_n\) on which
+\[
+ G_{m,n}(y)-G(y)
+ \sim 4^{-\binom{m+1}{2}}\alpha_{m+1}(2)4^{-(m+1)n}
+ \frac{F^{(2m+2)}(G(y))}{F'(G(y))}
+\]
+remains uniform. Substitution of the repository's Lambert--\(W\) expansion for
+\(G(y)\) should identify a sharp transition curve \(y_n\), together with a
+dyadically periodic modulation. This would connect two asymptotic theories that
+are presently separate.
+
+\subsection{Optimal order in finite precision}
+
+Although \(\Lambda_m(1/4)<1.970\), the finite products themselves may suffer
+relative loss near zeros. A complete finite-precision theory should choose
+\(m\) and \(n\) adaptively from: (i) the certificate \eqref{eq:certificate};
+(ii) the distance to the shared zero set; and (iii) the working precision.
+Because the filter norm is uniformly bounded, one expects the optimal order to be
+governed mainly by product evaluation rather than extrapolation instability.
+
+\subsection{Positivity restoration}
+
+The signed density \(U_{b;m,n}\) has exact low moments but need not be positive.
+Is there a nonlinear, positivity-preserving correction that retains
+\(q^{(m+1)n}\) convergence and the moment constraints? One possibility is a
+small entropy projection onto the convex set of nonnegative densities with the
+same moments. The exact first missed moment \eqref{eq:firstmomenterror} provides
+a natural scale for such a correction.
+
+\subsection{Dyadic rational evaluation from accelerated splines}
+
+At a dyadic point, each finite spline \(u_{2,n+j}\) is exactly computable from
+integrated Thue--Morse data and q-binomial formulae already present in the
+repository. Substituting those values into \eqref{eq:Rdef} should yield explicit
+rational or q-rational approximants to \(F(x)\) with a certified
+\(4^{-(m+1)n}\) remainder. This would produce a new bridge between exact dyadic
+arithmetic and the analytic sinc tail.
+
+\subsection{Complex domains and pole-aware extrapolation}
+
+The nearest tail pole at \(z=\pi^2b^2\) controls the Taylor expansion. For
+complex \(\xi\), one can conformally map the slit \(z\)-plane before applying a
+geometric interpolation filter. A pole-aware variant may retain exact q-mode
+cancellation while extending useful acceleration beyond the first omitted sinc
+zero.
+
+\subsection{Other refinable and compactly supported functions}
+
+Apply \cref{thm:universal} to elementary factors arising from compactly
+supported refinable distributions, Bernoulli convolutions, or symmetric
+B-splines. The main classification question is: which elementary factors have
+nonnegative logarithmic cumulants, and therefore inherit the exact sign law and
+successive-level certificate?
+
+\section{Conclusion}
+
+The truncation of the Rvachev sinc product carries more structure than a generic
+convergent product. Its omitted tail is an analytic function of the single
+geometric variable \(z=4^{-n}\xi^2\). Bernoulli numbers describe the logarithm
+of that function, Bell polynomials describe the function itself, and Lagrange
+interpolation on the nodes \(1,q,\ldots,q^m\) produces a q-binomial Richardson
+filter with a complete, sign-definite error series.
+
+The most notable consequences are exact rather than heuristic: the q-moments of
+the weights are known in closed form; the filter norm stays bounded at arbitrarily
+high order; consecutive accelerated levels certify the error; and the associated
+signed box splines match the first \(2m\) moments of the limiting up-density for
+every \(n\). Fourier inversion converts the same algebra into
+\(C^\infty\)-superconvergence with an explicit derivative profile. Translation
+and local inversion then give a new interior approximation theory for the Fabius
+function and its inverse, complementary to the repository's Lambert--\(W\)
+endpoint asymptotics.
+
+These results create concrete next steps: a Lean formalization beginning with the
+finite q-algebra, a dyadic exact-evaluation implementation, and a matched
+two-parameter theory linking truncation acceleration to the periodic Lambert
+phase near the endpoint.
+
+\appendix
+
+\section{Exact coefficients and filters at \texorpdfstring{\(b=2\)}{b=2}}
+\label{app:coeff}
+
+The next two Bell coefficients, useful for regression tests, are
+\begin{align*}
+ \alpha_6&=\frac{1884491755011469}
+ {1980124051433319792000000},\\
+ \alpha_7&=\frac{151616054172597829}
+ {6278781742186853835936000000}.
+\end{align*}
+
+The order-four filter is
+\begin{align*}
+ \mathcal R_{4,n}P
+ &=\frac1{722925}P_n-\frac4{8505}P_{n+1}
+ +\frac{64}{2025}P_{n+2}\\
+ &\qquad-\frac{4096}{8505}P_{n+3}
+ +\frac{1048576}{722925}P_{n+4}.
+\end{align*}
+The order-five weights are
+\[
+ \left(
+ -\frac1{739552275},\frac4{2168775},-\frac{64}{127575},
+ \frac{4096}{127575},-\frac{1048576}{2168775},
+ \frac{1073741824}{739552275}
+ \right).
+\]
+Despite the large integer numerators, the sum of absolute values is below
+\(1.968\) at order five.
+
+\section{Corpus audit map}
+\label{app:corpus}
+
+This appendix records the source families used to establish the non-duplication
+boundary. Historical variants were read for content rather than treated as
+independent discoveries.
+
+\begingroup
+\small
+\raggedright
+\subsection*{Current top-level expositions}
+\begin{itemize}[leftmargin=8mm]
+\item \path{Fabius_Function_and_Rvachev_Up/Fabius_Function_and_Rvachev_Up.tex}
+\item \path{FabiusFunction_Mathematical_Glossary/FabiusFunction_Mathematical_Glossary.tex}
+\item \path{Non_Elementarity_of_the_Fabius_Function/Non_Elementarity_of_the_Fabius_Function.tex}
+\item \path{fabius_lean_walkthrough/fabius_lean_walkthrough.tex}
+\item \path{non-formalized-research-frontiers/non-formalized-research-frontiers.tex}
+\end{itemize}
+
+\subsection*{Current frontier drafts}
+\begin{itemize}[leftmargin=8mm]
+\item \path{drafts/Thue_Morse_Formula_Atlas/Thue_Morse_Formula_Atlas.tex}
+\item LaTeX source in \path{Rvachev_Up_Fourier_Decay-2}
+\item LaTeX source in \path{Rvachev_Up_Fourier_Decay-3}
+\item LaTeX source in \path{Rvachev_Up_Fourier_Decay_Comparative_Audit}
+\item LaTeX source in \path{Rvachev_Up_Fourier_Decay_Gentle_Guide}
+\item LaTeX source in \path{Rvachev_Up_Fourier_Decay_Second_Wave_Audit}
+\item LaTeX source in \path{asymptotic-decay-rate-of-an-infinite-product-of-sinc-functions}
+\item LaTeX source in \path{rvachev_up_fourier_decay-1}
+\item LaTeX sources in \path{rvachev_up_fourier_decay-4} through
+\path{rvachev_up_fourier_decay-8}
+\end{itemize}
+
+\subsection*{Paper-source directories}
+\begin{itemize}[leftmargin=8mm]
+\item \path{AIF_2017__67_2_637_0.tex} and its corrected source
+\item \path{Lacunary_products.tex} (arXiv:1502.06738v2)
+\item \path{09-Function.tex} (arXiv:1702.05442v1)
+\item \path{157-Arithmetic-v3.tex} (arXiv:1702.06487v3)
+\item \path{document.tex} (arXiv:2211.13570v1)
+\item \path{ubiq15-corrected.tex}
+\end{itemize}
+
+\subsection*{Historical archive families}
+\begin{itemize}[leftmargin=8mm]
+\item \texttt{Fabius Asymptotic.tex}
+\item \texttt{K-fold summation over signed Thue-Morse.tex}
+\item \path{Non_Elementarity_of_the_Fabius_Function.tex}
+\item \path{Small_Argument_Asymptotics.tex}
+\item \path{fabius-inverse-dyadic-closed-form.tex}
+\item Historical primary exposition variants under
+\path{Fabius_Function_and_Rvachev_Up}, \path{Fabius_and_Rvachev_Up-2},
+\path{Fabius_and_Rvachev_up}, and \path{Fabius_function_and_up_function}
+\item \path{Fabius_Function_Missing_Parts} variants
+\item \path{Fabius_q_Special_Functions} and \path{fabius-q-special-functions}
+\item \path{Fabius_Function_Lean_Walkthrough} and
+\path{fabius_lean_walkthrough} variants
+\item \path{FabiusFunction_Mathematical_Glossary} variants
+\item \path{Fabius_Dyadic_Asymptotic_Bridge}
+\item \path{Fabius_Dyadic_Formulae_and_Alternative_Representations}
+\item \path{Fabius_Dyadic_Formulae_to_Asymptotics}
+\item \path{Fabius_Dyadic_q_Connections}
+\item \path{Fabius_Thue_Morse_Convergence_Rate}
+\item \path{Fabius_Thue_Morse_Convergence_Rates}
+\item \path{Primary_Exposition_Gap_Register}
+\item \path{Repeated_Integration_and_Rvachev_Up}
+\item \path{Rvachev_Up_from_Repeated_Integration}
+\item Earlier consolidated \path{non-formalized-research-frontiers} source
+\item \path{Thue_Morse_Formula_Atlas-1}, \path{Thue_Morse_Formula_Atlas-2}, and
+\path{Thue_Morse_Formula_Atlas-3}
+\end{itemize}
+\endgroup
+
+The current consolidated frontier source explicitly records the absorption of
+several former notebooks and their checksums. That provenance was used when
+checking whether a proposed statement was genuinely absent or merely moved.
+
+\section{Reproducibility notes}
+\label{app:repro}
+
+The archive accompanying this report contains:
+\begin{itemize}[leftmargin=8mm]
+\item \path{q_richardson_sinc_frontier.tex} --- the present source;
+\item \path{q_richardson_sinc_frontier.pdf} --- the rendered report;
+\item \path{verify_frontier_results.py} --- exact symbolic and high-precision
+numerical checks;
+\item \path{numerical_results.txt} and \path{numerical_results.csv} ---
+machine-readable output;
+\item \path{README.txt} --- compilation and reproduction commands.
+\end{itemize}
+
+The script checks the q-moment identity symbolically for several arbitrary
+orders, generates the exact Bernoulli and Bell coefficients, verifies agreement
+between the explicit and triangular filters, reproduces
+\cref{tab:error1,tab:error3,tab:error10}, checks the leading constants, and
+asserts the two-sided certificate \eqref{eq:certificate} at representative
+points.
+
+\begin{thebibliography}{99}
+
+\bibitem{repo}
+V. Reshetnikov,
+\emph{ProveIt: Analysis/FabiusFunction documentation and Lean development},
+GitHub repository,
+\url{https://github.com/VladimirReshetnikov/ProveIt/tree/main/Analysis/FabiusFunction}.
+
+\bibitem{Fabius1966}
+J. Fabius,
+\emph{A probabilistic example of a nowhere analytic \(C^\infty\)-function},
+Z. Wahrscheinlichkeitstheorie verw. Gebiete 5 (1966), 173--174.
+
+\bibitem{Arias1982}
+J. Arias de Reyna,
+\emph{An infinitely differentiable function with compact support: Definition
+and properties},
+Rev. Real Acad. Cienc. Exact. Fis. Natur. Madrid 76 (1982), 21--38;
+English source at arXiv:1702.05442.
+
+\bibitem{AriasArithmetic}
+J. Arias de Reyna,
+\emph{Arithmetic of the Fabius function},
+arXiv:1702.06487 (2017).
+
+\bibitem{Aistleitner}
+C. Aistleitner, R. Hofer, and G. Larcher,
+\emph{On parametric Thue--Morse sequences and lacunary trigonometric products},
+arXiv:1502.06738; Ann. Inst. Fourier 67 (2017), 637--687.
+
+\bibitem{Toth}
+L. Toth,
+\emph{Linear combinations of Dirichlet series associated with the Thue--Morse
+sequence},
+Integers 22 (2022), Article 98; arXiv:2211.13570.
+
+\bibitem{Sidi}
+A. Sidi,
+\emph{Practical Extrapolation Methods: Theory and Applications},
+Cambridge University Press, 2003.
+
+\bibitem{Comtet}
+L. Comtet,
+\emph{Advanced Combinatorics: The Art of Finite and Infinite Expansions},
+D. Reidel, 1974.
+
+\bibitem{GasperRahman}
+G. Gasper and M. Rahman,
+\emph{Basic Hypergeometric Series}, 2nd ed.,
+Cambridge University Press, 2004.
+
+\end{thebibliography}
+
+\end{document}

@@ -166,7 +166,7 @@ complex exponential generating function are also represented explicitly.
 From the repository root, the complete public surface is checked with
 
 ```sh
-lake build +FabiusFunction
+LAKE_JOBS=1 LEAN_NUM_THREADS=0 lake build +FabiusFunction
 ```
 
 Use `import FabiusFunction` when downstream code needs the entire development.
@@ -181,6 +181,8 @@ points:
 | Product-probability and CDF representations | `FabiusFunction.ProbabilityRepresentation` | `weightedSumCDF_eq_fabiusReal`, `fabiusReal_eq_weightedSum_probability`, `rvachevUp_eq_weightedSumCDF`, `rvachevUp_eq_weightedSum_probability_global` |
 | Weighted-partition exponential coefficients over commutative `ℚ`-algebras | `FabiusFunction.ExponentialPartition`, `FabiusFunction.ExponentialBell` | `partitionExpSum_recurrence`, `partitionExpSum_succ`, `partitionExpSum_eq_sum_div`, `partitionExpSum_eq_expCoeff` |
 | Complete Bell and moment--cumulant transforms over commutative `ℚ`-algebras | `FabiusFunction.MomentCumulantAlgebra` | `factorialNormalize`, `completeBellPolynomial`, `momentCumulant`, `completeBellPolynomial_succ`, `completeBellPolynomial_momentCumulant`, `momentCumulant_completeBellPolynomial` |
+| Finite polynomial expectations from raw moments and formal cumulants | `FabiusFunction.PolynomialExpectationCumulant` | `integral_eval₂_eq_sum_moment`, `integral_eval₂_eq_sum_completeBell_momentCumulant_with_mass_correction`, `integral_eval₂_eq_sum_completeBell_momentCumulant_of_moment_zero_eq_one`, `integral_eval₂_eq_sum_completeBell_momentCumulant` |
+| Universal endpoint-transfer polynomials and their formal exponential series | `FabiusFunction.EndpointTransferPolynomials` | `endpointTransferPolynomial_succ`, `endpointTransferPolynomial_eq_partitionExpSum`, `endpointTransferSeries_eq_exp_subst`, `aeval_endpointTransferPolynomial`, `map_endpointTransferSeries` |
 | Generic unit-interval Laplace-moment bounds | `FabiusFunction.UnitLaplaceMomentBounds` | `unitLaplaceMoment_midpoint_sq_le_all`, `unitLaplaceMoment_le_of_tilt_sub`, `pow_mul_exp_neg_le_factorial`, `fabiusLaplaceMoment_midpoint_sq_le_all`, `fabiusLaplaceMoment_le_of_tilt_sub` |
 | Exact dyadic computation and analytic correctness | `FabiusFunction.DyadicAnalytic`, `FabiusFunction.GlobalDyadic` | `fabiusDyadicValue`, `evalFabiusDyadic`, `fabiusDyadicUnit_cast`, `extendedFabiusDyadicValue_cast` |
 | First and second published papers | `FabiusFunction.Paper05442`, `FabiusFunction.Paper06487` | the theorem maps in the module docstrings and [`docs/PAPER_COVERAGE.md`](docs/PAPER_COVERAGE.md) |
