@@ -2956,7 +2956,7 @@ The finite $q$-binomial theorem gives the row normalization
 \end{equation}
 The same theorem identifies the entire row rather than only its value at one.
 
-\begin{proposition}[Toeplitz row polynomial and rational $q$-Richardson cancellation]
+\begin{proposition}[Toeplitz row polynomial and module-valued $q$-Richardson cancellation]
 \label{prop:discrete-row-polynomial}
 For $z\in\Q$, put $W_n(z)=\sum_{j=0}^{n}\omega_{n,j}z^j$.  Then
 \begin{equation}
@@ -2968,20 +2968,31 @@ Consequently its rational zeros are exactly
  \quad\Longleftrightarrow\quad
  z\in\{2,2^2,\ldots,2^n\}.                              \label{eq:discrete-row-roots}
 \end{equation}
-Moreover, if a rational sequence has the finite geometric-error model
-$u_p=L+\sum_{r=1}^{n}a_r2^{-rp}$, then
+Moreover, let $M$ be any additive commutative monoid carrying a $\Q$-module
+structure.  If an $M$-valued sequence has the finite geometric-error model
+$u_p=L+\sum_{r=1}^{n}2^{-rp}\mathbin{\cdot}a_r$, where
+$\cdot$ denotes scalar multiplication, then
 \begin{equation}
- \sum_{j=0}^{n}\omega_{n,j}u_{2n-j}=L.                  \label{eq:discrete-row-richardson}
+ \sum_{j=0}^{n}\omega_{n,j}\mathbin{\cdot}u_{2n-j}=L.
+                                                               \label{eq:discrete-row-richardson}
 \end{equation}
-All three statements include $n=0$: the row polynomial is then $1$, the
-root set is empty, and the error sum is empty.
+Thus the cancellation needs no multiplication, topology, order, or norm on
+the target.  Taking $M=\Q$ recovers the rational formula
+$u_p=L+\sum_{r=1}^{n}a_r2^{-rp}$.  This module-valued extension concerns
+cancellation only; the root classification above remains a statement for
+rational $z$.  All statements include $n=0$: the row polynomial is then $1$,
+the root set is empty, and the error sum is empty.
 \end{proposition}
 
 \begin{proof}[Formal proof]
 The full generating identity and its root classification are
 \lean{sum_range_discreteLimitWeight_mul_pow} and
-\lean{sum_range_discreteLimitWeight_mul_pow_eq_zero_iff}.  The exact rational
-extrapolation is \lean{discreteLimitWeight_qRichardson_exact}; all are in
+\lean{sum_range_discreteLimitWeight_mul_pow_eq_zero_iff}.  The reusable
+single-mode identity is
+\lean{sum_range_discreteLimitWeight_mul_geometricMode_smul_eq_zero},
+and the module-valued cancellation theorem is
+\lean{discreteLimitWeight_qRichardson_exact_module}; its $M=\Q$
+specialization is \lean{discreteLimitWeight_qRichardson_exact}.  All are in
 \path{FabiusDiscreteLimitToeplitz.lean}.  The former proof of
 \eqref{eq:discrete-row-sum} is now its specialization at $z=1$.
 \end{proof}

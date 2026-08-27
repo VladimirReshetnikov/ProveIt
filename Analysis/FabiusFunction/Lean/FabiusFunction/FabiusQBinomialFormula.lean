@@ -1203,7 +1203,6 @@ prefix `m / 2`.  The value is independent of the common translation. -/
       if Even m then 0 else (thueMorseSign (m / 2) : ℚ) := by
   rw [← fabiusDyadic_eq_qBinomialThueMorseDyadicTranslatedFormula]
   apply Rat.cast_injective (α := ℝ)
-  push_cast
   have hvalue :
       (fabiusDyadic 0 m : ℝ) =
         if Even m then 0 else (thueMorseSign (m / 2) : ℝ) := by
