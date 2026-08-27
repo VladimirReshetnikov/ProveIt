@@ -96,6 +96,7 @@ import FabiusFunction.SincEulerProduct
 import FabiusFunction.SincCanonicalProduct
 import FabiusFunction.RMSTransferEigenfunctions
 import FabiusFunction.LogFactorConcavity
+import FabiusFunction.CentralLobeConcavity
 import FabiusFunction.BoundednessSkeleton
 import FabiusFunction.TransferOperatorStep
 import FabiusFunction.LasotaYorkeIteration
