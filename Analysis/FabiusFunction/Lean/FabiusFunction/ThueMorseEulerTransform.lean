@@ -62,6 +62,53 @@ theorem sum_thueMorseSign_range (N : ℕ) :
       sum_thueMorseSign_range_two_mul M, zero_add,
       show (2 * M + 1) / 2 = M by omega, thueMorseSign_two_mul]
 
+/-! ### The dyadic sign split -/
+
+/-- **The dyadic sign split.**  Over a block of even length, a sign-weighted
+sum collapses to a sign-weighted sum of consecutive *differences*: the sign at
+`2j` is `ε(j)` and the sign at `2j+1` is `-ε(j)`.  Stated with `zsmul` over an
+arbitrary additive commutative group, so that it applies verbatim to real
+logarithms, to complex values and to formal coefficients alike. -/
+theorem sum_zsmul_thueMorseSign_two_mul {M : Type*} [AddCommGroup M]
+    (N : ℕ) (g : ℕ → M) :
+    ∑ k ∈ range (2 * N), thueMorseSign k • g k =
+      ∑ j ∈ range N, thueMorseSign j • (g (2 * j) - g (2 * j + 1)) := by
+  rw [sum_range_two_mul N fun k => thueMorseSign k • g k]
+  refine Finset.sum_congr rfl fun j _ => ?_
+  simp only [thueMorseSign_two_mul, thueMorseSign_two_mul_add_one, neg_smul,
+    smul_add, smul_neg, sub_eq_add_neg]
+
+/-- The dyadic sign split for the *alternating* sign `(-1)^k·ε(k)`, whose two
+halves agree instead of cancelling: the block sum collapses to a sign-weighted
+sum of consecutive *sums*. -/
+theorem sum_zsmul_alternating_thueMorseSign_two_mul {M : Type*} [AddCommGroup M]
+    (N : ℕ) (g : ℕ → M) :
+    ∑ k ∈ range (2 * N), ((-1 : ℤ) ^ k * thueMorseSign k) • g k =
+      ∑ j ∈ range N, thueMorseSign j • (g (2 * j) + g (2 * j + 1)) := by
+  rw [sum_range_two_mul N fun k => ((-1 : ℤ) ^ k * thueMorseSign k) • g k]
+  refine Finset.sum_congr rfl fun j _ => ?_
+  have he : ((-1 : ℤ) ^ (2 * j)) = 1 := by
+    rw [pow_mul]; norm_num
+  have ho : ((-1 : ℤ) ^ (2 * j + 1)) = -1 := by
+    rw [pow_succ, pow_mul]; norm_num
+  rw [he, ho, thueMorseSign_two_mul, thueMorseSign_two_mul_add_one]
+  simp only [one_mul, neg_mul_neg, smul_add]
+
+/-- The dyadic sign split in a ring, in the multiplicative shape the analytic
+callers use. -/
+theorem sum_thueMorseSign_mul_two_mul {R : Type*} [Ring R] (N : ℕ) (g : ℕ → R) :
+    ∑ k ∈ range (2 * N), (thueMorseSign k : R) * g k =
+      ∑ j ∈ range N, (thueMorseSign j : R) * (g (2 * j) - g (2 * j + 1)) := by
+  simpa only [zsmul_eq_mul] using sum_zsmul_thueMorseSign_two_mul N g
+
+/-- The alternating dyadic sign split in a ring. -/
+theorem sum_alternating_thueMorseSign_mul_two_mul {R : Type*} [Ring R]
+    (N : ℕ) (g : ℕ → R) :
+    ∑ k ∈ range (2 * N), (((-1 : ℤ) ^ k * thueMorseSign k : ℤ) : R) * g k =
+      ∑ j ∈ range N, (thueMorseSign j : R) * (g (2 * j) + g (2 * j + 1)) := by
+  simpa only [zsmul_eq_mul] using
+    sum_zsmul_alternating_thueMorseSign_two_mul N g
+
 /-! ### General reindexing of divisibility-filtered sums -/
 
 /-- **Residue-class reindexing.**  For any function into any additive
