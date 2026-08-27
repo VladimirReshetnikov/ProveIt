@@ -144,12 +144,17 @@ $\varrho_1=0.661322602060565\ldots$ is the Perron root of an explicit
 transfer operator, satisfies the two-sided bounded form of the question and
 attains the Ces\`aro limit $1$ along $t=2^k$; but we prove that no gauge
 whose within-shell shape stabilizes---in particular no Hardy-field
-(``elementary'') gauge---can attain the limit along all $t$: the limit
-points trace a nonconstant dyadic-mantissa profile (computed here to span
-$[0.9249,1.1133]$), and constancy of the profile would force the
+gauge---can attain the limit along all $t$: the limit
+points trace a nonconstant dyadic-mantissa profile (grid-resolved here to
+$[0.9249,1.1133]$; finer quadrature at $y=8/7$ and $10/7$ finds narrow
+excursions reaching $\approx[0.9163,1.1181]$---see the second-wave
+postscript), and constancy of the profile would force the
 transfer-operator eigenmeasure to be absolutely continuous, contradicting
 its singularity, which we prove from the elementary bound
-$\varrho_1\ge3^{-1/2}>\tfrac12$.  We add one repair, with proof: with the
+$\varrho_1\ge3^{-1/2}>\tfrac12$.  The second-wave documents later proved
+that a deliberately \emph{shell-adaptive} analytic decreasing gauge does
+attain the unrestricted limit, so the impossibility is a class
+restriction, not an absolute one (\cref{sec:second-wave}).  We add one repair, with proof: with the
 same gauge, the \emph{logarithmic} mean
 $\frac{1}{\log(t/t_0)}\int_{t_0}^t\frac{|f(x)|}{g(x)}\frac{\dd x}{x}$
 converges for all $t\to\infty$, so the multiplicative form of the question
@@ -443,7 +448,9 @@ With $g=A_1g_1$ as in \eqref{eq:gauge}:
 \item \textbf{\eqref{eq:Q3} holds.}  The Ces\`aro ratio is eventually
 confined to a compact subinterval of $(0,\infty)$; its set of limit points
 is exactly the range of the continuous dyadic-mantissa profile
-$\mathscr P$ of item (iii), numerically $[0.9249\ldots,1.1133\ldots]$.
+$\mathscr P$ of item (iii), numerically containing
+$[0.91627,1.11814]$ (the step-$0.025$ grid of \cref{fig:profile}
+resolves only $[0.9249,1.1133]$; see \cref{sec:second-wave}).
 The gauge is real-analytic and positive on $(0,\infty)$, eventually
 strictly decreasing, and each fixed derivative order is eventually
 monotone with alternating sign, meeting every regularity requested in the
@@ -466,13 +473,20 @@ The limit distribution $\mathscr F$ is the (normalized, $W$-weighted)
 eigenmeasure of $\Lop_1$; it is continuous and \emph{singular}, so
 $\mathscr F(z)\ne z$ and $\mathscr P\not\equiv1$.  Consequently no gauge
 whose within-shell shape stabilizes---in particular no Hardy-field
-(``elementary'') gauge, with or without a continuous log-periodic
-modulation---can satisfy \eqref{eq:Q2}.  Measured profile:
-minimum $0.9249$ near $y=1.15$, maximum $1.1132$ near $y=1.43$
-(\cref{fig:profile}).
+gauge, with or without a continuous log-periodic
+modulation---can satisfy \eqref{eq:Q2}; the second wave strengthened
+this to all bounded-distortion gauges, and conversely constructed a
+shell-adaptive analytic gauge that does attain \eqref{eq:Q2}
+(\cref{sec:second-wave}).  Measured profile:
+grid minimum $0.9249$ near $y=1.15$, maximum $1.1132$ near $y=1.43$
+(\cref{fig:profile}); narrow excursions near $y=8/7$ and $10/7$ reach
+$0.91627$ and $1.11814$.
 \item \textbf{Repair (new here): the multiplicative form of \eqref{eq:Q2}
 is solvable exactly} (\cref{thm:logmean}).  With the same $g_1$ and the
-constant $A_1^{\log}=0.0938610\ldots$,
+constant $A_1^{\log}=0.0938606357568\ldots$ (corrected here; the value
+$0.0938610$ printed in the first edition of this audit was a
+finite-shell running mean, wrong in its seventh figure ---
+\cref{sec:second-wave}),
 \[
  \lim_{t\to\infty}\frac{1}{\log(t/t_0)}
  \int_{t_0}^{t}\frac{|f(x)|}{A_1^{\log}g_1(x)}\,\frac{\dd x}{x}=1
@@ -755,9 +769,12 @@ elementary means alone.
 $A_1\,x^{-2.7480700149}\exp\bigl(-(\log x)^2/(2\log2)\bigr)$ with
 $A_1=0.0912661$; taking $g$ equal to it answers the bounded question
 \eqref{eq:Q3} and the dyadic and logarithmic forms of \eqref{eq:Q2},
-while the unrestricted \eqref{eq:Q2} is unattainable in principle: the
-last dyadic block never forgets the singular way in which the mass of
-$|f|$ is distributed inside a block.  The asker's guess
+while the unrestricted \eqref{eq:Q2} is unattainable for every gauge
+whose within-shell shape stabilizes or stays within bounded distortion
+of $g$: the last dyadic block never forgets the singular way in which
+the mass of $|f|$ is distributed inside a block.  (A deliberately
+shell-adaptive analytic gauge escapes this, as the second wave later
+proved: \cref{sec:second-wave}.)  The asker's guess
 $\exp(-\log^2x)$ had the right shape; the true quadratic coefficient is
 $1/(2\log2)=0.7213$, and the missing structure is the power
 $x^{-\kappa_1}$ whose exponent is fixed by a transfer-operator
@@ -1836,8 +1853,12 @@ transfer-operator limit & 1 & 0.971581 & 1.086317 & 1.099910\\
 The dyadic column locks to $1$; the non-dyadic columns converge to the
 predicted profile values (agreement $2\cdot10^{-5}$ to $6\cdot10^{-5}$ at
 $n=13$).  The full profile (\cref{fig:profile}) has range
-$[0.9249,1.1133]$ on a step-$0.025$ grid.  This is the numerical content
-of ``\eqref{eq:Q3} yes, \eqref{eq:Q2} no''.
+$[0.9249,1.1133]$ on a step-$0.025$ grid; exact-point quadrature at
+$y=8/7$ and $10/7$ (located by the second wave, confirmed in the
+second-wave audit) reaches $0.91627$ and $1.11814$, so the grid
+under-resolves the singular profile's narrow excursions.  This is the
+numerical content of ``\eqref{eq:Q3} yes, stabilized \eqref{eq:Q2}
+no''.
 
 \subsection{The logarithmic mean}
 \label{ssec:logmean}
@@ -1855,7 +1876,10 @@ $n=13$ & 0.093861 & 0.093287 & 0.094781 & 0.095032\\
 \bottomrule
 \end{tabular}
 \end{center}
-All columns approach the common constant $A_1^{\log}=0.0938610$, at the
+All columns approach the common constant
+$A_1^{\log}=0.09386064$ (the first edition printed the running mean
+$0.0938610$, whose $\bigO(1/K)$ transient had not died out;
+corrected --- \cref{sec:second-wave}), at the
 expected $\bigO(1/\log t)$ rate; the dyadic column is already exact
 because complete shells contribute equally.  This substantiates
 \cref{thm:audit-answer}(iv).
@@ -2037,7 +2061,10 @@ solved, constructively: $g=A_1g_1$ of \eqref{eq:gauge}.  The exact-limit
 form \eqref{eq:Q2} is unattainable for any gauge in the natural
 (shell-shape-stabilizing, in particular Hardy-field) class; it becomes
 attainable along dyadic times, or exactly and for all times under the
-logarithmic mean.  This composite answer --- not any single formula ---
+logarithmic mean --- and, as the second wave later proved, exactly and
+for all times under the ordinary mean too, by a necessarily
+shell-adaptive analytic gauge outside the natural class
+(\cref{sec:second-wave}).  This composite answer --- not any single formula ---
 is the correct resolution of \cite{mse-decay}; within it, the 2018
 answer of Negometyanov (a truncated $q$-Pochhammer representation,
 useful for bounded-range evaluation) contains no asymptotic law, as the
@@ -2081,6 +2108,59 @@ accessible companion (\nolinkurl{Rvachev_Up_Fourier_Decay_Gentle_Guide/})
 should survive absorption as the entry point for readers.
 \end{enumerate}
 
+\section{Postscript: the second wave (27 August 2026)}
+\label{sec:second-wave}
+
+After this audit was written, four further documents
+(\nolinkurl{rvachev_up_fourier_decay-5} through \nolinkurl{-8}), each
+composed with access to it, arrived and were audited separately in
+\nolinkurl{../Rvachev_Up_Fourier_Decay_Second_Wave_Audit/}.  Their net
+effect on this document is recorded here; the in-text corrections above
+are marked with references to this section.
+
+\begin{enumerate}
+\item \textbf{The unrestricted \eqref{eq:Q2} is attainable.}  Documents
+7 and 8 prove, by two independent constructions (dyadic mass
+equalization on slowly refining partitions, riding the within-shell
+baseline slope $-(k+\kappa_1+1)/2$; then Hoischen--Carleman entire
+approximation of the gauge, or of its reciprocal, together with its
+derivative), that a positive, real-analytic, strictly decreasing gauge
+attains \eqref{eq:Q2} for all $t$, with
+$\log g=-\log^2x/(2\log2)-\kappa_1\log x+o(\log x)$.  Document 7 also
+strengthens \cref{thm:impossible} from stabilizing shapes to all
+bounded-distortion gauges.  \Cref{thm:impossible} itself stands; this
+audit's summary slogan ``unattainable in principle'' did not, and has
+been corrected in place.  Any exact gauge necessarily develops
+unbounded, ever finer within-shell structure; no stabilized formula
+works.
+\item \textbf{Profile range.}  The step-$0.025$ grid underlying
+\cref{fig:profile} misses narrow excursions of the singular-continuous
+profile near $y=8/7$ and $y=10/7$; exact-point quadrature reaches
+$\mathscr P\approx0.91627$ and $1.11814$ (values confirmed
+independently at levels $17$--$19$ in the second-wave audit, which also
+reproduces Document 6's level-18 table to $4\cdot10^{-10}$ and Document
+7's level-19 extremes to all printed digits).  The figure's curve is
+unchanged --- it is correct for its grid --- but its range is a lower
+bound, not the span.
+\item \textbf{Constants.}  Forty-digit collocation gives
+$\varrho_1=0.66132260206056561507\ldots$,
+$A_1=0.09126612413158821229\ldots$,
+$A_1^{\log}=0.09386063575678126354\ldots$ (this audit's first edition
+printed $A_1^{\log}=0.0938610$, a finite-shell running mean wrong in
+the seventh figure --- corrected above), and the resolved
+$\kappa_1=2.74807001487133267\ldots$ (the widely copied sixteen-digit
+print $2.748070014871334$ inherits the fifteen-digit truncation of
+$\varrho_1$; this audit's constants table had bracketed the
+uncertainty correctly, its abstract had not).  New exact-ray constant:
+$|f(2^n\cdot\tfrac23)|=C_*E_{\kappa_\infty}(2^n\cdot\tfrac23)$ for all
+$n\ge0$ with $C_*=0.13912977473482934529\ldots$ (Document 6; verified
+to $38$ digits).
+\item \textbf{Fluctuation theory.}  Document 6's one-line Gordin
+decomposition ($\mathcal P\psi=\psi/2$, $d=2\psi-\psi\circ T
+=\log|\tan\pi t|$, $\int d^2=\pi^2/4$ exactly) gives the shortest
+self-contained proof of \cref{thm:variance,thm:lil-correct}; the
+second wave unanimously confirms \cref{find:ahl}.
+\end{enumerate}
 \appendix
 
 \section{Constants}
@@ -2093,16 +2173,20 @@ symbol & value & provenance \\
 \midrule
 $1/(2\log2)$ & $0.72134752\ldots$ & universal quadratic coefficient\\
 $\kappa_0$ & $3.151496129472319$ & $\tfrac32+\log_2\pi$ (exact form)\\
-$\kappa_1$ & $2.748070014871334(4)$ & $\tfrac12+\log_2(\pi/\varrho_1)$\\
+$\kappa_1$ & $2.74807001487133267$ & $\tfrac12+\log_2(\pi/\varrho_1)$;
+resolved in the second wave\\
 $\kappa_2$ & $2.651496129472318$ & $\log_2(2\pi)$ (exact form)\\
 $\kappa_\infty$ & $2.359014879111741$ & $\tfrac32+\log_2(\pi/\sqrt3)$ (exact form)\\
-$\varrho_1$ & $0.661322602060565(2)$ & collocation; certified in
-$(0.66126807,0.66134891)$\\
+$\varrho_1$ & $0.66132260206056561507$ & collocation (second-wave
+precision); certified in $(0.66126807,0.66134891)$\\
 $\varrho_2$ & $1/2$ & exact\\
 $\varrho_3$ & $0.394896632370234$ & collocation\\
 $\varrho_4$ & $0.320194101601104$ & collocation\\
-$A_1$ & $0.0912661241$ & shell-mean limit (direct = spectral)\\
-$A_1^{\log}$ & $0.0938610$ & logarithmic-shell limit\\
+$A_1$ & $0.091266124131588212$ & shell-mean limit (direct = spectral)\\
+$A_1^{\log}$ & $0.093860635756781264$ & logarithmic-shell limit
+(corrects the first edition's $0.0938610$)\\
+$C_*$ & $0.139129774734829345$ & exact peak-ray constant
+$|f(2^n\cdot\tfrac23)|/E_{\kappa_\infty}$, second wave\\
 $A_2$ & $0.103008918$ & RMS shell constant, $A_2^2=0.0106108372$\\
 $\lambda_2(\Lop_2)$ & $-1/4$ (exact, double) & \cref{prop:L2-spectrum};
 rest of spectrum $<3\cdot10^{-4}$\\
@@ -2115,7 +2199,8 @@ $A_1^{\mathrm{peak}}$ & $0.175569$ & $\Theta_{\mathrm{peak}}A_1$
 $\int_\R f^2$ & $0.808873535967972$ & two independent computations,
 \cref{prop:energy}\\
 $L^2$ profile range & $[0.894,1.192]$ & step-$0.025$ grid, $n=13$\\
-profile range & $[0.9249,1.1133]$ & step-$0.025$ grid, $n=13$\\
+profile range & $\supseteq[0.91627,1.11814]$ & narrow features at
+$y=8/7,10/7$ (second wave); $0.025$ grid sees $[0.9249,1.1133]$\\
 $H(1)$ & $0.55377127588881009534$ & 30-digit product\\
 $|H(3)|$ & $0.0462022991$ & direct product\\
 $\sigma^2$ (per step) & $\pi^2/4=2.4674011$ & proved
