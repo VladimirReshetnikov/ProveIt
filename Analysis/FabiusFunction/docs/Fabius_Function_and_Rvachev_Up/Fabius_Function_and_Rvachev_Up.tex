@@ -120,7 +120,7 @@
 \author{Human-readable synthesis of the formal development\\
 \small Vladimir Reshetnikov's \texttt{ProveIt} repository}
 \date{Repository snapshot: 27 August 2026\\
-\small commit \nolinkurl{24da985eba70e46d862acdaddd476793a428213e}}
+\small commit \nolinkurl{252d22694ac58a7ed54854cbec38960166257889}}
 
 \begin{document}
 \maketitle
@@ -1217,6 +1217,30 @@ The first hypothesis makes the natural-number subtractions in
 ordinary binary complementation rather than truncated subtraction.
 \end{proof}
 
+\begin{theorem}[Affine Thue--Morse sine polynomial]
+\label{thm:thue-morse-affine-sine}
+For every \(m\in\N\) and \(x,\phi\in\R\),
+\begin{equation}
+ \boxed{
+ \sum_{n=0}^{2^m-1}\varepsilon_n\sin(\phi+nx)
+ =
+ 2^m\left(\prod_{j=0}^{m-1}\sin\frac{2^jx}{2}\right)
+ \sin\!\left(
+   \phi+\frac{(2^m-1)x}{2}-\frac{m\pi}{2}
+ \right).}
+ \label{eq:thue-morse-affine-sine}
+\end{equation}
+The product is empty when \(m=0\).
+\end{theorem}
+
+\begin{proof}[Formal proof]
+This is exactly \lean{sum_thueMorseSign_mul_sin_affine} in
+\path{ThueMorseSineProduct.lean}.  Its proof rotates the complex
+Thue--Morse exponential product through the arbitrary phase \(\phi\),
+rewrites \((-2\ii)^m\) as a positive magnitude and a quarter-turn phase,
+and takes imaginary parts.
+\end{proof}
+
 \begin{theorem}[Lacunary sine product as a Thue--Morse sum]
 \label{thm:lacunary-sine-product-to-sum}
 For every \(m\in\N\) and \(w\in\R\),
@@ -1231,11 +1255,14 @@ For every \(m\in\N\) and \(w\in\R\),
 
 \begin{proof}[Formal proof]
 This is exactly \lean{prod_sin_two_pow_eq_thueMorse_sum} in
-\path{LacunaryProductToSum.lean}.  Its Lean proof uses the two complement
-laws and the phase parity above to fold the negative frequencies from the
-product-to-sum recurrence back onto the positive odd frequencies.  The
-formal statement is over real \(w\); no complex continuation or neighboring
-cosine-product identity is asserted here.
+\path{LacunaryProductToSum.lean}.  It is the specialization of
+\eqref{eq:thue-morse-affine-sine} at
+\[
+ x=2w,\qquad \phi=\frac{m\pi}{2}+w.
+\]
+The final sine becomes \(\sin(2^mw)\), which appends the last factor to
+the product over \(j<m\).  The formal statement is over real \(w\); no
+complex continuation or neighboring cosine-product identity is asserted.
 \end{proof}
 
 \begin{theorem}[Dyadic shell factorization]
@@ -1612,6 +1639,80 @@ and in particular
 \end{equation}
 These are \lean{rvachev_partition_one_over_nat} and
 \lean{rvachev_partition_unity} in \path{PoissonSummation.lean}.
+
+\subsection{Banach-free cyclic aliasing}
+\label{sec:summable-cyclic-alias}
+
+\begin{theorem}[Finite-range twists and cyclic aliasing]
+\label{thm:summable-cyclic-alias}
+The convergence mechanism behind a root-of-unity filter does not require a
+norm.  Let \(R\) be any scalar type, let \(B\) be any index type, let \(I\)
+be finite, and let \(E\) be a complete uniform additive commutative group
+with a distributive \(R\)-action such that multiplication by each fixed
+scalar is continuous.  If \(a:B\to E\) is summable, \(\ell:B\to I\), and
+\(c:I\to R\), then
+\begin{equation}
+ b\longmapsto c(\ell(b))\,a(b)
+ \quad\text{is summable}.                                \label{eq:finite-range-scalar-twist}
+\end{equation}
+Thus a scalar multiplier taking only finitely many values preserves
+unconditional summability.
+
+Separately, let \(E\) be a complete Hausdorff uniform additive commutative
+group, write \(\bar n\) for the class of \(n\in\Z\) in
+\(\operatorname{ZMod}(q)\), and define
+\begin{equation}
+ \mathcal R_r(a):=
+ \sum_{\substack{n\in\Z\\\bar n=r}}a(n).                \label{eq:int-residue-tsum}
+\end{equation}
+For every \(q\in\N\), including Lean's convention
+\(\operatorname{ZMod}(0)=\Z\), the family
+\(r\mapsto\mathcal R_r(a)\) has sum \(\sum_{n\in\Z}a(n)\).
+In particular, for \(q>0\),
+\begin{equation}
+ \sum_{r\in\Z/q\Z}\mathcal R_r(a)=\sum_{n\in\Z}a(n).
+                                                               \label{eq:sum-int-residue-tsum}
+\end{equation}
+
+Suppose in addition that \(E\) is a complex module and multiplication by each
+fixed complex scalar is continuous.  Let \(\chi_q\) be the standard additive
+character of \(\Z/q\Z\).  For \(q>0\), put
+\begin{equation}
+ \mathcal A_k(a):=
+ \sum_{n\in\Z}\chi_q(-\bar n k)\,a(n).                  \label{eq:int-fourier-tsum}
+\end{equation}
+Every twisted series in \eqref{eq:int-fourier-tsum} is summable.  With the
+unnormalized discrete Fourier transform
+\[
+ (\mathcal D_qf)(k):=
+ \sum_{r\in\Z/q\Z}\chi_q(-rk)f(r),
+\]
+one has the exact forward and inverse identities
+\begin{align}
+ \mathcal D_q\bigl(\mathcal R_\bullet(a)\bigr)(k)
+   &=\mathcal A_k(a),                                    \label{eq:dft-int-residue-tsum}\\
+ \mathcal R_r(a)
+   &=\frac1q\sum_{k\in\Z/q\Z}
+       \chi_q(kr)\,\mathcal A_k(a).                      \label{eq:int-residue-dft-average}
+\end{align}
+\end{theorem}
+
+\begin{proof}[Formal proof]
+The finite-range convergence principle \eqref{eq:finite-range-scalar-twist}
+is \lean{summable_finite_range_smul}.  The two sums are
+\lean{intResidueTsum} and \lean{intFourierTsum}; character twisting is
+\lean{intFourierSummand_summable}.  The fiberwise summation statement and
+its finite-modulus consequence are \lean{hasSum_intResidueTsum} and
+\lean{sum_intResidueTsum}.  The forward transform and normalized inverse
+are \lean{dft_intResidueTsum} and
+\lean{intResidueTsum_eq_dft_average}.  All eight declarations are in
+\path{SummableCyclicAlias.lean}.
+
+The proof partitions the bilateral family into its residue fibers, observes
+that each cyclic character is constant on a fiber, and applies the finite
+DFT and its inverse.  Summability of \(a\) is the only convergence
+hypothesis; norm-summability is not assumed.
+\end{proof}
 
 \subsection{Moment expansion of the Fourier transform}
 
@@ -2699,6 +2800,10 @@ The half-base identity is a specialization of a ring-valued statement that does 
 divide by a $q$-Pochhammer symbol.  For a commutative ring $R$ and $q\in R$, define
 the polynomial Gaussian coefficients recursively by
 \[
+ (z;q)_0=1,\qquad (z;q)_{n+1}=(z;q)_n(1-zq^n),
+\]
+and
+\[
  {n+1\brack k+1}_q={n\brack k+1}_q
    +q^{n-k}{n\brack k}_q,\qquad
  {n\brack0}_q={n\brack n}_q=1,\qquad
@@ -2712,15 +2817,22 @@ Then for every $z\in R$,
 The recursive coefficient already makes sense over an arbitrary semiring, while the
 displayed subtraction requires a commutative ring.  No denominator, nonzero assumption,
 or exclusion of $q=0$ and roots of unity occurs.  The recurrence, triangular boundaries,
-and \eqref{eq:finite-q-binomial-ring} are
+and \eqref{eq:finite-q-binomial-ring} are the definition
+\lean{finiteQPochhammerIn}, its boundary and recurrence
+\lean{finiteQPochhammerIn_zero} and \lean{finiteQPochhammerIn_succ}, the
+coefficient definition \lean{gaussianBinomial}, and the theorems
+\lean{gaussianBinomial_zero_zero},
+\lean{gaussianBinomial_zero_succ},
 \lean{gaussianBinomial_succ_succ},
 \lean{gaussianBinomial_zero_right},
 \lean{gaussianBinomial_eq_zero_of_lt},
 \lean{gaussianBinomial_self}, and
 \lean{finite_qBinomial_theorem} in \path{FiniteQBinomialCore.lean}.
 
-At $q=1/2$, \lean{gaussianBinomial_half_eq_halfQBinomial} identifies this recursive
-coefficient with the established rational quotient, and
+Over the rationals, \lean{finiteQPochhammerIn_rat_eq} identifies the generic product
+with the established finite \(q\)-Pochhammer notation.  At $q=1/2$,
+\lean{gaussianBinomial_half_eq_halfQBinomial} identifies the recursive coefficient
+with the established rational quotient, and
 \lean{halfQBinomial_theorem} is now the direct specialization of the ring theorem.
 Thus the finite product algebra is already available at $q=1/4$; what remains in the
 spectral research frontier is the explicit identification with the geometric Lagrange row
@@ -5335,7 +5447,8 @@ Probability and finite approximants &
 Fourier analysis &
 \path{FourierProduct.lean}, \path{FourierAnalytic.lean},
 \path{OriginalPaperSupplement.lean}, \path{PoissonSummation.lean},
-\path{LacunaryProductToSum.lean},
+\path{SummableCyclicAlias.lean}, \path{ThueMorseFourier.lean},
+\path{ThueMorseSineProduct.lean}, \path{LacunaryProductToSum.lean},
 \path{RenormalizationIdentity.lean}, \path{SincProductShells.lean},
 \path{SincPrefixBound.lean},
 \path{SincCanonicalProduct.lean}, \path{PhiZeroOrder.lean},
@@ -5557,8 +5670,8 @@ V.~Reshetnikov,
 V.~Reshetnikov,
 \newblock \emph{ProveIt: Analysis/FabiusFunction},
 \newblock Lean~4 formal development, source snapshot
-\texttt{24da985eba70e46d862acdaddd476793a428213e}, consulted 27 August 2026.
-\newblock \url{https://github.com/VladimirReshetnikov/ProveIt/tree/24da985eba70e46d862acdaddd476793a428213e/Analysis/FabiusFunction}.
+\texttt{252d22694ac58a7ed54854cbec38960166257889}, consulted 27 August 2026.
+\newblock \url{https://github.com/VladimirReshetnikov/ProveIt/tree/252d22694ac58a7ed54854cbec38960166257889/Analysis/FabiusFunction}.
 
 \end{thebibliography}
 
