@@ -47,8 +47,9 @@ It is a lexical scan, not Lean elaboration.  It tracks nested `/- -/` blocks,
 `/-- -/` doc comments, `/-! -/` module comments, string literals and `--` line
 comments, so a declaration keyword appearing inside a comment or a string is
 never counted.  It accepts an attribute line (`@[simp]`, a multi-line
-`@[...]`), a `set_option ... in` line, or blank lines between a doc comment
-and the declaration it documents, and it accepts the one-line
+`@[...]`), an attribute on the same line as its declaration
+(`@[simp] theorem foo`), a `set_option ... in` line, or blank lines between a
+doc comment and the declaration it documents.  It also accepts the one-line
 `/-- ... -/ theorem foo` form.
 
 It does not see declarations produced by macros.  A `to_additive`-generated
@@ -92,23 +93,25 @@ statement anywhere in the file of what it was for.
 ### Doc comments
 
 The backlog began at 862 undocumented public declarations, 31% of the corpus.
-Two documentation waves and a pass over the two root modules brought it to 176,
-or 6.2%.  Run the script for current numbers.
+Two documentation waves and a pass over the two root modules first brought it
+to 176, or 6.2%, and the original 191-module corpus was subsequently cleared
+according to the then-current checker.
 
-What remains is not a random tail.  Of the 176, about 124 sit in the nine
-modules the asymptotic-expansion branch was reading and building against while
-this work ran -- `PeriodicRegularity`, `PeriodicSmooth`,
-`FabiusSaddleExpansionCoefficients`, `SaddleExpansionAlgebra`,
-`GaussianPolynomialContraction`, `FabiusSaddleCoefficientRecurrence`,
-`FabiusSaddleTail` and neighbours -- which were deliberately left alone rather
-than edited underneath another agent.  They are the obvious next batch for
-whoever holds them.
+That apparent zero exposed a checker defect: declarations written as
+`@[simp] theorem foo` on one line were not counted at all.  After teaching the
+auditor to remove balanced leading attribute blocks, and after the corpus grew
+to 311 modules, the 2026-08-27 baseline is 4,803 public declarations with 105
+missing comments in 40 files.  The old parser saw only 4,606 declarations and
+36 gaps on those same bytes; the correction therefore recovered 197 attributed
+declarations, including 69 undocumented ones.  Run the script for the live
+numbers rather than copying these historical values.
 
-The backlog was always concentrated in the technical interior of the asymptotic
-development rather than in the paper-facing API.  That is the right place for it
-to be concentrated, but it is also where a reader needs help most, since those
-modules are long chains of intermediate estimates whose purpose is invisible
-locally.
+The remaining backlog is now split between recently added research-frontier
+modules and same-line attributed bridges that the old scan concealed.  Its
+largest concentrations are the vertical Taylor API, the half-q-binomial
+algebra, early step approximants, and period-doubling Hankel identities.  These
+are precisely the technical interfaces where a reader most needs the formula,
+hypotheses, and normalization convention stated locally.
 
 ### What the review pass caught
 
