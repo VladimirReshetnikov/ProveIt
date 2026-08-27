@@ -186,8 +186,10 @@ theorem fabiusLambertPhase_image_Ioc :
     exact fabiusLambertPhase_ge_inv_log_two hx
   · intro y hy
     have hmul : 1 ≤ Real.log 2 * y := by
-      have h := mul_le_mul_of_nonneg_left hy hL.le
-      simpa only [mul_inv_cancel₀ hL.ne'] using h
+      calc
+        1 = Real.log 2 * (Real.log 2)⁻¹ := (mul_inv_cancel₀ hL.ne').symm
+        _ ≤ Real.log 2 * y :=
+          mul_le_mul_of_nonneg_left hy hL.le
     have hw : -(Real.log 2 * y) ∈ Iic (-1) := neg_le_neg hmul
     rw [← lowerLambertW_image_Ico] at hw
     obtain ⟨z, hz, hzy⟩ := hw
@@ -213,10 +215,8 @@ theorem fabiusLambertPhase_image :
   · rintro _ ⟨x, hx, rfl⟩
     exact fabiusLambertPhase_gt_inv_log_two hx
   · intro y hy
-    change (Real.log 2)⁻¹ < y at hy
-    have hyclosed : y ∈ Ici (Real.log 2)⁻¹ := by
-      change (Real.log 2)⁻¹ ≤ y
-      exact hy.le
+    have hyclosed : y ∈ Ici (Real.log 2)⁻¹ :=
+      Set.mem_Ici.mpr (Set.mem_Ioi.mp hy).le
     rw [← fabiusLambertPhase_image_Ioc] at hyclosed
     obtain ⟨x, hx, hxy⟩ := hyclosed
     have hne : x ≠ Real.exp (-1) / Real.log 2 := by

@@ -20,6 +20,7 @@ literal `1 / (-log x)` forms at `x → 0⁺`.
 set_option autoImplicit false
 
 open Filter Asymptotics Set
+open scoped Topology
 
 namespace Fabius
 

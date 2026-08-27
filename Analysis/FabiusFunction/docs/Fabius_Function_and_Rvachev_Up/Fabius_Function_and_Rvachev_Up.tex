@@ -1203,6 +1203,22 @@ For every \(k\in\N\) and \(z\in\C\), dilation by \(2^k\) extracts exactly the fi
 This is \lean{rvachevFourier_two_pow_mul} in
 \path{RvachevFourierDecay.lean}.  Its standalone-product form is
 \lean{rvachevFourierProduct_two_pow_mul} in \path{SincProductShells.lean}.
+On the real axis the removable singularity can be cleared without excluding the zero ray:
+for every \(k\in\N\) and \(y\in\R\),
+\begin{equation}
+ \begin{split}
+ &2^{k(k+1)/2}(\pi|y|)^k
+   \left|\widehat{\Up}(2^ky)\right|\\
+ &\qquad={}
+ \left(\prod_{j=0}^{k-1}\left|\sin(2^{j+1}\pi y)\right|\right)
+   \left|\widehat{\Up}(y)\right|.
+ \end{split}                                               \label{eq:fourier-dyadic-shell-cross}
+\end{equation}
+This total form includes \(y=0\), and at \(k=0\) both sides are the same Fourier modulus.
+It is \lean{norm_rvachevFourier_two_pow_mul_cross} in
+\path{RvachevFourierDecay.lean}; its product-level source is
+\lean{norm_rvachevFourierProduct_two_pow_mul_cross} in
+\path{SincProductShells.lean}.
 \end{proof}
 
 The mean-value input behind shell estimates is more general than the dyadic case.
@@ -1220,6 +1236,21 @@ The exact square mean is \lean{integral_prod_sin_sq} in
 \path{LacunaryMeanSharp.lean}.  The geometric-base and dyadic specializations are
 \lean{integral_prod_abs_sin_pow_le_sqrt_two} and
 \lean{integral_prod_abs_sin_two_pow_le_sqrt_two}.
+
+The logarithm of the normalized dyadic sine shell has an exact square mean as well.  For
+every \(n\in\N\), including the empty product \(n=0\),
+\begin{equation}
+ \int_0^1
+ \log^2\!\left|\prod_{j=0}^{n-1}2\sin(\pi2^jt)\right|\dd t
+ =\frac{\pi^2}{4}n-\frac{\pi^2}{3}\left(1-2^{-n}\right).
+                                                               \label{eq:dyadic-log-sine-variance}
+\end{equation}
+The product statement is \lean{integral_sq_log_prod_two_sin_all} in
+\path{BirkhoffProductBridge.lean}.  Its doubling-cocycle form is
+\lean{integral_sq_birkhoff_sum_all} in \path{BirkhoffVariance.lean}, and the finite
+covariance summation is \lean{variance_closed_form_all} in
+\path{VarianceBookkeeping.lean}.  The all-index declarations make the zero-length
+boundary an identity rather than a side condition.
 
 For a quantitative global form, set
 \begin{equation}
@@ -1322,6 +1353,18 @@ by \lean{rvachevFourier_eq_thueMorse_sign_mul_norm}.  If moreover \(m\ge1\),
 there is exactly one point of \((m,m+1)\) maximizing the modulus over that open lobe, by
 \lean{existsUnique_isMaxOn_rvachevFourier_lobe}.  Both facade declarations are in
 \path{RvachevFourierDecay.lean}.
+
+Globally, the origin is the unique real frequency of unit modulus:
+\begin{equation}
+ \left|\widehat{\Up}(x)\right|\le1,
+ \qquad
+ \left|\widehat{\Up}(x)\right|=1\quad\Longleftrightarrow\quad x=0.
+                                                               \label{eq:fourier-strict-global-peak}
+\end{equation}
+Equivalently, the first inequality is strict whenever \(x\ne0\).  These statements are
+\lean{norm_rvachevFourier_le_one},
+\lean{norm_rvachevFourier_lt_one_of_ne_zero}, and
+\lean{norm_rvachevFourier_eq_one_iff} in \path{RvachevFourierDecay.lean}.
 
 \subsection{Rapid decay and inversion}
 
@@ -2375,6 +2418,27 @@ This is \lean{qBinomial_half_sum_algebraMap_eq_zero_iff} in
 arguments \(\iota z\); it does not assert a root classification for arbitrary elements of
 \(K\).
 
+The same Gaussian coefficients form a geometric Prouhet functional.  Set
+\[
+ w_{n,k}=(-1)^k(1/2)^{\binom k2}\qbinom nk{1/2},
+ \qquad \xi_k=-2^k.
+\]
+For every rational polynomial \(p\) with \(\deg p\le n\),
+\begin{equation}
+ \sum_{k=0}^{n}w_{n,k}p(\xi_k)
+ =[X^n]p\;2^{\binom{n+1}{2}}(1/2;1/2)_n
+ =[X^n]p\;\mathfrak m_n.                              \label{eq:half-q-gaussian-prouhet}
+\end{equation}
+Thus the functional annihilates every polynomial of degree below \(n\).
+At \(n=0\), the degree-valued extractor covers all constant polynomials;
+the strict-degree cancellation statement admits exactly the zero polynomial.
+The two forms of \eqref{eq:half-q-gaussian-prouhet} are
+\lean{halfQBinomial_negativeDyadic_polynomial_sum_eq_coeff} and
+\lean{halfQBinomial_negativeDyadic_polynomial_sum_eq_mersenne}; strict-degree
+cancellation is
+\lean{halfQBinomial_negativeDyadic_polynomial_sum_eq_zero_of_degree_lt}, all in
+\path{HalfQBinomial.lean}.
+
 The inner cancellation in the dyadic formula is the exact Thue--Morse block identity
 \begin{equation}
  \sum_{r=0}^{2^k-1}(-1)^{\wt(r)}z^r
@@ -2434,7 +2498,8 @@ value \(F(m/2^n)\).
 \end{theorem}
 
 \begin{proof}[Formal proof]
-The numerator is proved to be a constant polynomial in the translation by
+The complete normalized finite expression is packaged as a polynomial in the translation
+and proved equal to the constant centered formula by
 \lean{qBinomialThueMorseDyadicTranslatedFormulaPolynomial_eq_const}.
 Its identification with the signed dyadic value over \(\C\) is
 \lean{globalFabius_dyadic_eq_qBinomialThueMorseDyadic_translated_sum_complex};
@@ -2452,8 +2517,12 @@ then the two translated rational formulas agree even when their common translati
 \(Q_1,Q_2\in\Q\) differ.  This is
 \lean{qBinomialThueMorseDyadicTranslatedFormula_eq_of_rat_eq}; the one-step refinement
 \((m,n)\mapsto(2m,n+1)\) is
-\lean{qBinomialThueMorseDyadicTranslatedFormula_refine}.  Thus translation invariance and
-representation invariance are both theorem-level properties of the finite formula.
+\lean{qBinomialThueMorseDyadicTranslatedFormula_refine}.  Over every field over \(\Q\),
+both conclusions persist even when the scalar translations and the dyadic presentations
+are changed simultaneously; these stronger wrappers are
+\lean{qBinomialThueMorseDyadicTranslatedFormulaIn_eq_of_rat_eq} and
+\lean{qBinomialThueMorseDyadicTranslatedFormulaIn_refine} in
+\path{FabiusDyadicQBinomialScalar.lean}.
 
 Binary complementation gives the raw inverse-dyadic form
 \begin{equation}
@@ -2742,6 +2811,18 @@ For fixed $Q\in\C$ and every $x\ge0$,
 \end{equation}
 with the left side embedded in $\C$.  The series converges absolutely.
 \end{theorem}
+
+The displayed floor presentation is stated on the nonnegative half-line.  The literal Lean
+summand has a stronger all-real scope: for every \(x\in\R\), its series is absolutely
+summable and sums to the signed global extension, while for \(x\le0\) every term and the
+target vanish.  These are
+\lean{summable_norm_qBinomialFabiusGlobalSummand_all},
+\lean{hasSum_qBinomialFabiusGlobalSummand_all},
+\lean{extendedFabius_eq_tsum_qBinomialFabiusGlobalSummand_all},
+\lean{globalFabius_eq_tsum_qBinomialFabiusGlobalSummand_all}, and
+\lean{qBinomialFabiusGlobalSummand_eq_zero_of_nonpos} in
+\path{FabiusGlobalQBinomialSeries.lean}.  The older nonnegative signatures are retained as
+compatibility wrappers.
 
 This is not a new infinite basic-hypergeometric identity.  The outer sum is the analytic
 binary telescope, while at each scale a finite $q$-binomial identity presents the same
@@ -3221,6 +3302,27 @@ In particular the sum does not depend on the translation $X$.
 Expand $(X+Yh)^r$ by the binomial theorem and apply \eqref{eq:tm-polynomial-extract}: the
 coefficient of $h^r$ is $Y^r$.
 \end{proof}
+
+The public Boolean-cube theorem uses the genuine degree
+\(\deg p\in\N\cup\{-\infty\}\), rather than the natural degree that assigns the zero
+polynomial degree zero.  Over any commutative ring, for a finite set \(S\), weights
+\(w_j\), and a polynomial satisfying \(\deg p<|S|\), it states
+\begin{equation}
+ \sum_{T\subseteq S}(-1)^{|T|}
+ p\!\left(x+\sum_{j\in T}w_j\right)=0.                    \label{eq:tm-powerset-degree-cancel}
+\end{equation}
+This is \lean{sum_powerset_neg_one_pow_eval_of_degree_lt} in
+\path{ThueMorseSparseProuhet.lean}.  The degree convention matters at the boundary
+\(S=\varnothing\): the hypothesis then forces \(p=0\), so the theorem correctly includes
+the empty-support case instead of declaring it vacuous.  With \(S\) the bit support of
+\(n\) and \(w_j=2^jh\), the corresponding sparse submask parametrization is
+\begin{equation}
+ \sum_{T\subseteq\operatorname{bits}(n)}(-1)^{|T|}
+ p\!\left(x+h\sum_{j\in T}2^j\right)=0
+ \quad\text{when }\deg p<\wt(n),                           \label{eq:tm-submask-degree-cancel}
+\end{equation}
+formalized as \lean{sum_submask_neg_one_pow_eval_of_degree_lt}.  It is valid also at
+\(n=0\), where again the only polynomial satisfying the strict degree bound is zero.
 
 At the level of the centered formal exponential series, the corresponding zero has exact
 order \(r\); this is \lean{order_thueMorseCenteredPowerSeries}.  For the binomial kernel
@@ -4206,6 +4308,17 @@ The declaration is
 \lean{log_fabius_sub_sharpLambertMain_eq_log_ratio_add_tail} in
 \path{FabiusSharpExactReduction.lean}.
 
+The forward product tail in this separation is negligible at every algebraic order of the
+exact phase.  Along \(x=2^{-t}\), for each \(N\in\N\),
+\begin{equation}
+ E\!\left(r(2^{-t})\right)
+ =o\!\left(\lambda(2^{-t})^{-N}\right)
+ \qquad(t\to+\infty).                                     \label{eq:lambert-tail-all-power-little-o}
+\end{equation}
+This is \lean{negativeLaplaceTailError_dyadicLambert_isLittleO_inv_pow} in
+\path{FabiusSharpLambertTransfer.lean}.  At \(N=0\) it says directly that the tail tends
+to zero; larger \(N\) show that it contributes to none of the inverse-phase coefficients.
+
 The analytic input to that reduction is an exact Bromwich formula.  For every \(r>0\)
 and \(x\in\R\), as an identity in \(\C\),
 \begin{equation}
@@ -4773,7 +4886,8 @@ Fourier analysis &
 \path{SincCanonicalProduct.lean}, \path{PhiZeroOrder.lean},
 \path{ThueMorseLobeSign.lean}, \path{RvachevProductContinuity.lean},
 \path{PeakRayEnvelope.lean}, \path{GlobalDecayEnvelope.lean},
-\path{RvachevFourierDecay.lean}\\
+\path{RvachevFourierDecay.lean}, \path{VarianceBookkeeping.lean},
+\path{BirkhoffVariance.lean}, \path{BirkhoffProductBridge.lean}\\
 Global derivatives and flatness &
 \path{GlobalExtension.lean}, \path{GlobalBounds.lean},
 \path{BoundedDerivatives.lean}, \path{EffectiveFlatness.lean},
@@ -4796,13 +4910,13 @@ Dyadic and \(q\)-binomial formulas &
 \path{FabiusGlobalQBinomialSeries.lean},
 \path{FabiusDiscreteLimitToeplitz.lean},
 \path{FabiusDiscreteLimitIntegration.lean}\\
-Thue--Morse algebra, prefixes, and disc series &
+Thue--Morse algebra, prefixes, disc series, and Prouhet identities &
 \path{ThueMorsePrefix.lean}, \path{ThueMorseGenerating.lean},
 \path{ThueMorseBlockAlgebra.lean},
 \path{ThueMorseInfiniteProduct.lean}, \path{ThueMorseDiscSeries.lean},
 \path{ThueMorseNaturalBoundary.lean},
 \path{ThueMorseExponential.lean}, \path{ThueMorseApproximation.lean},
-\path{PaperKFoldThueMorse.lean}\\
+\path{ThueMorseSparseProuhet.lean}, \path{PaperKFoldThueMorse.lean}\\
 Endpoint asymptotics &
 \path{NegativeLaplace.lean}, \path{NegativeLaplaceVertical.lean},
 \path{PeriodicCorrection.lean}, \path{PeriodicFourier.lean},
@@ -4812,6 +4926,7 @@ Endpoint asymptotics &
 \path{FabiusLambertSaddle.lean}, \path{FabiusWikipediaMain.lean},
 \path{FabiusDecayComparison.lean},
 \path{FabiusSharpAsymptotic.lean}, \path{FabiusFullAsymptoticExpansion.lean},
+\path{FabiusSharpLambertTransfer.lean},
 \path{LaplaceMomentBounds.lean}, \path{FabiusDyadicSharpCumulant.lean},
 \path{SaddleLogExpansionAlgebra.lean}, \path{SaddleLogExpansionPowerSeries.lean},
 \path{FabiusSecondSaddleCorrection.lean},

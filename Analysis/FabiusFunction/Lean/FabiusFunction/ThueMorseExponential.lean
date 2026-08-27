@@ -591,7 +591,7 @@ theorem thueMorseTranslatedShiftedPowerSeries_eq_expm1_product
     _ = _ := by
       rw [PowerSeries.exp_mul_exp_eq_exp_add]
       congr 2
-      ring
+      ring_nf
 
 /-- Iterating `A(2X) = ((exp X - 1) / X) A(X)` along the negative dyadic
 orbit absorbs the finite product occurring above. -/
