@@ -79,6 +79,7 @@ import FabiusFunction.SincCanonicalProduct
 import FabiusFunction.RMSTransferEigenfunctions
 import FabiusFunction.LogFactorConcavity
 import FabiusFunction.BoundednessSkeleton
+import FabiusFunction.TransferOperatorStep
 import FabiusFunction.NegativeLaplace
 import FabiusFunction.ProbabilityLaplaceMoments
 import FabiusFunction.UnitLaplaceMomentBounds
