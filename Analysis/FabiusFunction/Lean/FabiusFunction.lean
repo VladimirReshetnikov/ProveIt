@@ -1,6 +1,7 @@
 import FabiusFunction.Paper05442
 import FabiusFunction.Paper06487
 import FabiusFunction.PaperFabiusAsymptotic
+import FabiusFunction.FinitePolynomialFilterExactness
 import FabiusFunction.FabiusDiscreteLimitRates
 import FabiusFunction.PaperKFoldThueMorse
 import FabiusFunction.ThueMorseBooleanCube

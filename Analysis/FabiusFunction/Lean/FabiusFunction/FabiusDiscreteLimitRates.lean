@@ -56,7 +56,7 @@ noncomputable section
 private theorem half_pow_pred_eq_two_mul (p : ℕ) (hp : 1 ≤ p) :
     (1 / 2 : ℝ) ^ (p - 1) = 2 * (1 / 2 : ℝ) ^ p := by
   rw [pow_sub₀ _ (by norm_num) hp]
-  norm_num
+  norm_num <;> ring
 
 private theorem half_pow_two_mul_sub_eq
     {n j : ℕ} (hj : j ≤ n) :
@@ -323,7 +323,7 @@ theorem norm_fabiusDiscreteLimitApproximationComplex_sub_le
           ring)
     n hn
   rw [sub_zero] at hbound
-  convert hbound using 1 <;> ring
+  simpa only [mul_assoc, mul_left_comm, mul_comm] using hbound
 
 /-- Centered specialization of the two-shift theorem.  This is the exact
 quantitative form of finite-row translation independence printed in the
