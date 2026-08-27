@@ -9,16 +9,23 @@
 >
 > One invocation is not by itself one process: Lake sizes its worker pool to
 > hardware concurrency and starts one `lean.exe` **per core** whenever the
-> target has a stale dependency set. Set both limits on every build —
+> target has a stale dependency set. Bound the processes —
 >
 > ```bash
-> LAKE_JOBS=1 LEAN_NUM_THREADS=0 lake build +FabiusFunction.Module
+> LAKE_JOBS=1 lake build +FabiusFunction.Module
 > ```
 >
-> `LAKE_JOBS` bounds the number of `lean.exe` processes, `LEAN_NUM_THREADS`
-> bounds the threads inside each one; they are independent. Lake `5.0.0`
-> accepts neither `-j` nor `--jobs`. Measured 2026-08-27: a facade build ran
-> 11 concurrent `lean.exe` without `LAKE_JOBS`, and exactly one with it.
+> `LAKE_JOBS` bounds the number of `lean.exe` processes, which is what exhausts
+> RAM. Lake `5.0.0` accepts neither `-j` nor `--jobs`. Measured 2026-08-27: a
+> facade build ran 11 concurrent `lean.exe` without `LAKE_JOBS`, and exactly
+> one with it.
+>
+> **Do not also set `LEAN_NUM_THREADS=0`.** That bounds the threads *inside* a
+> process, which is not the resource under pressure, and `0` does not mean
+> "auto": it serializes elaboration. Measured the same day under the same
+> competing load, `+FabiusFunction.AlgebraicBranch` took **~35 minutes** with
+> `LEAN_NUM_THREADS=0` and **~60 seconds** without it. If one process is itself
+> too large, use a small positive value, never `0`.
 > After interrupting a build, check for survivors with
 > `Get-Process lean,lake -ErrorAction SilentlyContinue` before starting the
 > next one.
@@ -212,9 +219,9 @@ compiled PDF is committed with it.**
 ## Building Lean
 
 Build one module per `lake` invocation, in topological order, *in addition to*
-setting `LAKE_JOBS=1 LEAN_NUM_THREADS=0` as the caution at the top of this file
-requires. The two measures are complementary, not alternatives: the environment
-variables bound Lake's fan-out within one invocation, while one target per
+setting `LAKE_JOBS=1` as the caution at the top of this file requires. The two
+measures are complementary, not alternatives: the environment variable bounds
+Lake's fan-out within one invocation, while one target per
 invocation bounds the damage if the environment is not inherited by a child
 process, attributes a failure to a single module rather than to a batch, and
 lets the transient error be retried per module. Passing several targets at once

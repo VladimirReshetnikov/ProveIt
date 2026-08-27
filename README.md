@@ -27,20 +27,25 @@ the formal semantics.
 > `failed to read ... .olean`, which *looks* like corruption but is a
 > swap-thrash symptom: the same module compiles on a serial retry.
 >
-> Set both limits on every build:
+> Bound the number of **processes** on every build:
 >
 > ```powershell
 > $env:LAKE_JOBS = '1'          # at most one lean.exe process
-> $env:LEAN_NUM_THREADS = '0'   # no worker pool inside that process
 > lake build <one target>
 > ```
 >
-> `LAKE_JOBS` bounds Lake's process fan-out, `LEAN_NUM_THREADS` bounds the
-> threads inside each process; they are independent, so set both. Lake `5.0.0`
-> accepts neither `-j` nor `--jobs` (`lake help build` lists no such flag), so
-> the environment variables are the only control. Measured 2026-08-27: a facade
-> build with stale dependencies spawned 11 concurrent `lean.exe`, and exactly
-> one under `LAKE_JOBS=1`.
+> Lake `5.0.0` accepts neither `-j` nor `--jobs` (`lake help build` lists no
+> such flag), so the environment variable is the only control. Measured
+> 2026-08-27: a facade build with stale dependencies spawned 11 concurrent
+> `lean.exe`, and exactly one under `LAKE_JOBS=1`.
+>
+> **Do not set `LEAN_NUM_THREADS=0`.** It does not mean "auto" — it serializes
+> elaboration *inside* the one process, and it is not what limits memory.
+> Measured the same day, under the same competing load:
+> `FabiusFunction.AlgebraicBranch` took **~35 minutes** with
+> `LEAN_NUM_THREADS=0`, against **~60 seconds** without it; three further
+> modules built in 172 s, 214 s and 145 s with the variable unset. If a single
+> process is itself too large, set a small *positive* value (2–4), never `0`.
 >
 > For a large stale set, also prefer **one module per `lake build` invocation,
 > in topological order**. That is belt-and-braces rather than redundant: it
@@ -213,9 +218,9 @@ lake build
 ```
 
 The broad build is intentionally expensive, and on a memory-constrained
-machine it must be **serialized** — set `LAKE_JOBS` and `LEAN_NUM_THREADS` as
-in the warning at the top of this file, and for a large stale set build one
-module per invocation in topological order with
+machine it must be **serialized** — set `LAKE_JOBS=1` as in the warning at the
+top of this file (and leave `LEAN_NUM_THREADS` alone), then for a large stale
+set build one module per invocation in topological order with
 [`Tools/lean_serial_build.py`](Tools/lean_serial_build.py).
 
 Focused examples are:
