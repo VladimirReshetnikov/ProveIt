@@ -1807,7 +1807,14 @@ the \(m\)-th iterate of \(z\mapsto z^2\)
 is the geometric series).  The coefficientwise content of
 \cref{thm:infinite-product} has long been formal as the stabilization
 lemma \lean{Fabius.coeff\_finite\_thueMorse\_product}
-(\path{ThueMorseGenerating.lean}).  The bit Mahler equation
+(\path{ThueMorseGenerating.lean}), and its \emph{analytic} content is
+now formal as well: for every \(t>0\) the series
+\(\sum\eps_n\e^{-nt}\) converges absolutely and equals the
+convergent infinite product \(\mathcal E(t)\)
+(\lean{Fabius.tsum\_thueMorseSign\_exp\_eq\_lacunaryExpProduct},
+\path{ThueMorseInfiniteProduct.lean}) --- both sides restrict at scale
+\(2^m\) to the finite identity, and uniqueness of limits closes the
+argument.  The bit Mahler equation
 \eqref{eq:T-Mahler} and the lacunary quotient are now formal in
 \path{ThueMorseLacunaryQuotient.lean}: the quotient
 \(z/(1-z^2)\) is realized as the dyadic geometric series
@@ -4967,7 +4974,7 @@ valuation, carry, and Pascal-row formulas remain genuinely base-two features.
 \subsection{Formalized modules (August 2026)}
 \label{sec:formalized-modules}
 
-The first tranches of the formalization now exist as thirty-seven
+The first tranches of the formalization now exist as thirty-eight
 compiled Lean modules in \repo{}, complementing the corpus modules
 (\path{Parity.lean}, \path{TwoAdic.lean}, \path{ThueMorsePrefix.lean},
 \path{ThueMorseGenerating.lean}, \path{ThueMorseExponential.lean},
@@ -5022,6 +5029,7 @@ Module & Contents \\
 \path{ThueMorseIntegerLiftEquation.lean} & The boxed algebraic equation \((1-z)^3C^2+(1-z)^2C=z\) in \(\mathbb Z[[z]]\) for the constructed lift, by identification with the substituted series and cancellation. \\
 \path{ThueMorseIntegerLiftRecurrence.lean} & The linear ODE \((1+3z)(1-z)^2C'=1+3(1-z^2)C\) by differentiation and one linearization certificate, and the three-term recurrence by telescoping its coefficients. \\
 \path{ThueMorseLacunaryQuotient.lean} & The dyadic geometric series and its inversion of \(1-z^{2^j}\); the denominator-free bit Mahler equation; the lacunary quotient expansion at every finite level. \\
+\path{ThueMorseInfiniteProduct.lean} & The analytic infinite-product identity \(\sum\eps_n\e^{-nt}=\mathcal E(t)\) for \(t>0\): absolute convergence, multipliability, and identification of the limits along the dyadic scale. \\
 \bottomrule
 \end{longtable}}
 
