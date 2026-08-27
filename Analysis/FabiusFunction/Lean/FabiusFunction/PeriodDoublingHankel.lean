@@ -717,7 +717,7 @@ theorem pdHankel_det_two_mul_add_one (n : ℕ) :
         ((finSumFinEquiv (Sum.inr i) : Fin (n + 1)) : ℕ) = n := by
       intro i
       have h0 : (i : ℕ) = 0 := by omega
-      simp [h0]
+      simp
     have hsub : (of fun i k : Fin (n + 1) =>
         if (k : ℕ) < n then
           (if (i : ℕ) < n then pdBit (((i : ℕ) + k) / 2)
