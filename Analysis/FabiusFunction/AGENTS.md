@@ -1,5 +1,12 @@
 # Agents working in `Analysis/FabiusFunction`
 
+> [!CAUTION]
+> **Never start Lean or Lake builds in parallel.** Run exactly one
+> `lake build +FabiusFunction.Module` invocation at a time, with one target.
+> Do not launch background build loops, pass a batch of targets, or use
+> parallel runners such as `xargs -P`. A dozen concurrent Lean processes will
+> exhaust memory and often fail with misleading missing-`.olean` errors.
+
 This directory is sometimes developed by several agents concurrently.
 Whether multi-agent coordination is in effect is stated by exactly one file:
 [`AGENTS/STATUS.md`](AGENTS/STATUS.md).  While it says
