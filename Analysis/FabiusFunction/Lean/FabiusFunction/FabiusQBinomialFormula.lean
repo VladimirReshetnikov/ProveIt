@@ -1162,24 +1162,18 @@ prefix `m / 2`.  The value is independent of the common translation. -/
     qBinomialThueMorseDyadicTranslatedFormula c m 0 =
       if Even m then 0 else (thueMorseSign (m / 2) : ℚ) := by
   rw [← fabiusDyadic_eq_qBinomialThueMorseDyadicTranslatedFormula]
-  have hreal :
-      (fabiusDyadic 0 m : ℝ) =
-        if Even m then 0 else (thueMorseSign (m / 2) : ℝ) := by
-    calc
-      (fabiusDyadic 0 m : ℝ) =
-          extendedFabius fabius ((m : ℝ) / (2 : ℝ) ^ 0) :=
-        fabiusDyadic_cast_extended_nat fabius fabius_spec 0 m
-      _ = extendedFabius fabius (m : ℝ) := by norm_num
-      _ = if Even m then 0 else (-1 : ℝ) ^ binaryWeight (m / 2) :=
-        extendedFabius_natCast_eq_ite fabius fabius_spec m
-      _ = if Even m then 0 else (thueMorseSign (m / 2) : ℝ) := by
-        simp [thueMorseSign]
   apply Rat.cast_injective (α := ℝ)
-  rw [hreal]
-  by_cases hm : Even m
-  · rw [if_pos hm, if_pos hm]
-    norm_num
-  · rw [if_neg hm, if_neg hm, Rat.cast_intCast]
+  calc
+    (fabiusDyadic 0 m : ℝ) =
+        extendedFabius fabius ((m : ℝ) / (2 : ℝ) ^ 0) :=
+      fabiusDyadic_cast_extended_nat fabius fabius_spec 0 m
+    _ = extendedFabius fabius (m : ℝ) := by norm_num
+    _ = if Even m then 0 else (-1 : ℝ) ^ binaryWeight (m / 2) :=
+      extendedFabius_natCast_eq_ite fabius fabius_spec m
+    _ = if Even m then 0 else (thueMorseSign (m / 2) : ℝ) := by
+      simp [thueMorseSign]
+    _ = ((if Even m then 0 else (thueMorseSign (m / 2) : ℚ) : ℚ) : ℝ) := by
+      by_cases hm : Even m <;> simp [hm]
 
 /-- The fully displayed arbitrary-rational-translation identity.  This is the
 Wolfram-language formula with its common inner translation represented by
