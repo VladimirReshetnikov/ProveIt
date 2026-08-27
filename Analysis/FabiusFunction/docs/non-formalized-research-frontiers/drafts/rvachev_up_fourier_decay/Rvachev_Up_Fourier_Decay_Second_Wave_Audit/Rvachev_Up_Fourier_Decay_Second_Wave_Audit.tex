@@ -1145,6 +1145,61 @@ requires the Clausen expansion in $L^2$ and remains the hard
 fluctuation target; the adaptive gauge's Hoischen step would enter as a
 named classical import.
 
+\subsection*{Postscript: ledger update (late August 2026 campaign)}
+
+All four targets above are now formalized, and the campaign went
+substantially further.  The development
+(\nolinkurl{Analysis/FabiusFunction/Lean/FabiusFunction/}, forty-seven
+sorry-free modules at this writing) now contains, kernel-checked:
+\begin{itemize}
+\item the sharp uniform bound $\|P_n\|_\infty\le(\sqrt3/2)^{n-1}$
+with its full equality locus
+(\lean{SharpGelfondBound}, \lean{SharpGelfondEquality});
+\item the exact peak ray in product and $\kappa_\infty$-envelope form
+(\lean{SincProductPeakRay}, \lean{PeakRayEnvelope});
+\item the martingale identity $\mathcal Pd=0$ and the halving
+$\mathcal P\psi=\psi/2$ (\lean{DoublingCocycleIdentities}), the full
+Lasota--Yorke pair of the transfer operator with constants
+$(\alpha,\beta,C)=(\sqrt2/4,\sqrt2/2,\pi/2)$
+(\lean{TransferOperatorStep}) and its abstract Doeblin--Fortet
+iteration and invariant ball (\lean{LasotaYorkeIteration});
+\item \textbf{both Clausen values}:
+$\int_0^1\log^2(2\sin\pi t)\,dt=\pi^2/12$ and
+$\sigma^2=\int_0^1\log^2|\tan\pi t|\,dt=\pi^2/4$, obtained through the
+Dirichlet-kernel cotangent pairing
+(\lean{DirichletKernelCotangent}), the improper-integration-by-parts
+evaluation of the log-sine Fourier coefficients $-1/(2m)$
+(\lean{LogSineFourierCoefficient}), and interval Parseval with Basel
+(\lean{CocycleParseval}, \lean{LogCosineFourier},
+\lean{GordinParseval});
+\item the complete covariance ladder $c_r=(\pi^2/12)\,2^{-r}$ for
+\emph{every} lag over the genuine mod-one doubling map
+(\lean{DoublingMapTransfer}, \lean{CovarianceLadder}), and the
+martingale orthogonality of $d$ (\lean{MartingaleOrthogonality});
+\item \textbf{the exact variance theorem itself}, stated on the
+normalized dyadic sine product:
+\[
+  \int_0^1\log^2\Bigl|\prod_{k<n}2\sin(\pi 2^kt)\Bigr|\,dt
+  =\frac{\pi^2}4\,n-\frac{\pi^2}3\bigl(1-2^{-n}\bigr)
+\]
+(\lean{DistanceCounting}, \lean{BirkhoffVariance},
+\lean{BirkhoffProductBridge}) --- the finite-$n$ content of the
+fluctuation theorem, fully numeric;
+\item the flattening lemma's finite level (exact node equalization
+and the partial-cell mesh bound, \lean{MeasureEqualization}) and its
+diagonal selection mechanism (\lean{DiagonalSelection});
+\item existence of the Perron root
+$\varrho_1=\lim_n\|\mathcal L^n\mathbf 1\|_\infty^{1/n}
+\in[1/2,\sqrt2/2]$ by Fekete's lemma
+(\lean{TransferPositivity}, \lean{PerronRootExistence}).
+\end{itemize}
+The sentence above about the exact variance is therefore superseded:
+the Clausen expansion in $L^2$ is formalized, and of the fluctuation
+program only the limit theorems themselves (the martingale central
+limit theorem and iterated-logarithm law) and the Hoischen
+approximation import remain outside the formalized perimeter, both
+blocked on machinery currently absent from Mathlib.
+
 \section{Verdict}
 \label{sec:verdict}
 
