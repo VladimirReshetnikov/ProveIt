@@ -52,6 +52,9 @@ import FabiusFunction.LacunaryRieszIntegral
 import FabiusFunction.GelfondLogisticBound
 import FabiusFunction.GeometricScaleProducts
 import FabiusFunction.SincProductShells
+import FabiusFunction.SharpGelfondBound
+import FabiusFunction.SincProductPeakRay
+import FabiusFunction.DoublingCocycleIdentities
 import FabiusFunction.NegativeLaplace
 import FabiusFunction.ProbabilityLaplaceMoments
 import FabiusFunction.UnitLaplaceMomentBounds
