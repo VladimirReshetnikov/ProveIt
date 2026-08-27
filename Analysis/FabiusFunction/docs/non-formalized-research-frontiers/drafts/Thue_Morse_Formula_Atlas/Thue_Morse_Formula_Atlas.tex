@@ -360,7 +360,7 @@ Gelfond exponent & \(3^{m/2}\le\sup_x|P_m(\e^{2\pi\ii x})|\le\tfrac2{\sqrt3}3^{m
 Newman positivity & \(\sum_{n<X,\,3\mid n}\eps_n>0\) for all \(X\ge1\). \\
 Critical exponent & Overlap-free; squares occur, exponent exactly \(2\). \\
 Factor complexity & \(\ell+1\le p(\ell)<8\ell\). \\
-Dirichlet--Mellin & \(D(s,a)=\Gamma(s)^{-1}\int_0^\infty t^{s-1}\e^{-at}E(\e^{-t})\dd t\).  \emph{Delivered} in the real regime: boundary flatness, convergence, the dyadic equation, the analytic infinite product, and the Mellin representation itself (\path{ThueMorseBoundaryFlatness.lean}, \path{ThueMorseDirichlet.lean}, \path{ThueMorseInfiniteProduct.lean}, \path{ThueMorseMellin.lean}); the complex-holomorphic continuation remains open. \\
+Dirichlet--Mellin & \(D(s,a)=\Gamma(s)^{-1}\int_0^\infty t^{s-1}\e^{-at}E(\e^{-t})\dd t\).  \emph{Delivered}: boundary flatness, convergence, the dyadic equation, the analytic infinite product, the Mellin representation, and the entire continuation (\path{ThueMorseBoundaryFlatness.lean}, \path{ThueMorseDirichlet.lean}, \path{ThueMorseInfiniteProduct.lean}, \path{ThueMorseMellin.lean}, \path{ThueMorseEntireContinuation.lean}). \\
 \bottomrule
 \end{longtable}
 \renewcommand{\arraystretch}{1}
@@ -4633,9 +4633,23 @@ integral are interchanged by absolute convergence (the norm integrals
 are exactly the Gamma values, summable as a shifted \(p\)-series),
 and each term is a Gamma integral.  For \(\sigma>1\) the
 conditionally defined \(D\) is identified with the absolute sum
-(\lean{Fabius.thueMorseDirichlet\_eq\_tsum}).  The
-complex-holomorphic statement and the entire continuation remain
-open.
+(\lean{Fabius.thueMorseDirichlet\_eq\_tsum}).  The entire
+continuation itself is now formal
+(\path{ThueMorseEntireContinuation.lean}): the function
+\(s\mapsto\Gamma(s)^{-1}\int_0^\infty
+t^{s-1}\e^{-at}\mathcal E(t)\,\dd t\) is differentiable on all of
+\(\mathbb C\)
+(\lean{Fabius.dirichletMellinContinuation\_differentiable}) --- the
+effective flatness bound supplies an \(O(t^{-b})\) estimate at zero
+for \emph{every} \(b\)
+(\lean{Fabius.mellinKernel\_isBigO\_rpow}), precisely realizing the
+maxim that boundary flatness removes every Mellin singularity, while
+\(1/\Gamma\) is entire --- and it agrees with \(D(\sigma,a)\) on
+the ray \(\sigma>1\)
+(\lean{Fabius.dirichletMellinContinuation\_eq}).  Only the
+locally-uniform holomorphy of the conditionally convergent series in
+the strip \(0<\Re s\le1\) (superseded by the continuation) remains
+informal.
 
 Splitting even and odd indices gives an exact parameter equation.
 
@@ -5029,7 +5043,7 @@ valuation, carry, and Pascal-row formulas remain genuinely base-two features.
 \subsection{Formalized modules (August 2026)}
 \label{sec:formalized-modules}
 
-The first tranches of the formalization now exist as forty-two
+The first tranches of the formalization now exist as forty-three
 compiled Lean modules in \repo{}, complementing the corpus modules
 (\path{Parity.lean}, \path{TwoAdic.lean}, \path{ThueMorsePrefix.lean},
 \path{ThueMorseGenerating.lean}, \path{ThueMorseExponential.lean},
@@ -5089,6 +5103,7 @@ Module & Contents \\
 \path{ThueMorseWoodsRobbins.lean} & The Woods--Robbins evaluation \(\prod((2n+1)/(2n+2))^{\eps_n}=2^{-1/2}\): Dirichlet-test convergence of the three log-series, the termwise and interleaving identities, and exponentiation. \\
 \path{ThueMorseMasterProduct.lean} & The master product \(G(a,b)\): convergence for all positive parameters, the cocycle identities, the dyadic functional equation, and \(G=\exp L\). \\
 \path{ThueMorseBlockProducts.lean} & The three dyadic block-product limits: the block collapse onto the Woods--Robbins partials, the alternating telescoping, and the identification of the half-shifted block with the master series at \((\frac14,\frac34)\). \\
+\path{ThueMorseEntireContinuation.lean} & The entire continuation: flatness of every order at zero, exponential decay, local integrability, entirety of \(\Gamma^{-1}\cdot\)Mellin, and agreement with \(D(\sigma,a)\) on \(\sigma>1\). \\
 \bottomrule
 \end{longtable}}
 
