@@ -54,6 +54,8 @@ import FabiusFunction.ThueMorseDiscSeries
 import FabiusFunction.ThueMorseNaturalBoundary
 import FabiusFunction.ThueMorseNewman
 import FabiusFunction.ThueMorseGelfond
+import FabiusFunction.PeriodDoublingHankel
+import FabiusFunction.ThueMorseHankel
 import FabiusFunction.LacunaryRieszIntegral
 import FabiusFunction.GelfondLogisticBound
 import FabiusFunction.GeometricScaleProducts
