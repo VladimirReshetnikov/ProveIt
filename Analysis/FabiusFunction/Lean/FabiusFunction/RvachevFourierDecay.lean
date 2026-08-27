@@ -15,8 +15,8 @@ to the Fourier transform `rvachevFourier F` of any bounded Fabius solution.
 
 The facade covers the canonical product, dyadic shell factorization, baseline
 and global gauge bounds, the strict global peak at zero, the exact extremal
-peak ray, side- and central-lobe maxima, the Thue--Morse lobe sign, and the
-exact real zero order.
+peak ray, positive and reflected negative side-lobe maxima, the central-lobe
+maximum, the Thue--Morse lobe sign, and the exact real zero order.
 Normalization, evenness, real-axis real-valuedness, and the zero set already
 have direct `rvachevFourier` theorems in `FourierProduct`, so they are not
 duplicated here.
@@ -173,6 +173,17 @@ theorem existsUnique_isMaxOn_rvachevFourier_lobe
         (Set.Ioo (m : ℝ) ((m : ℝ) + 1)) c := by
   simpa only [rvachevFourier_eq_product F hF] using
     existsUnique_isMaxOn_lobe m hm
+
+/-- Every reflected negative side lobe `(-(m+1),-m)`, with `m ≥ 1`, has a
+unique maximizer of the Fourier modulus. -/
+theorem existsUnique_isMaxOn_rvachevFourier_neg_lobe
+    (F : BoundedFabius) (hF : IsFabius F)
+    (m : ℕ) (hm : 1 ≤ m) :
+    ∃! c, c ∈ Set.Ioo (-((m : ℝ) + 1)) (-(m : ℝ)) ∧
+      IsMaxOn (fun x : ℝ => ‖rvachevFourier F (x : ℂ)‖)
+        (Set.Ioo (-((m : ℝ) + 1)) (-(m : ℝ))) c := by
+  simpa only [rvachevFourier_eq_product F hF] using
+    existsUnique_isMaxOn_neg_lobe m hm
 
 /-- The Fourier modulus attains a central-lobe maximum at the origin. -/
 theorem isMaxOn_norm_rvachevFourier
