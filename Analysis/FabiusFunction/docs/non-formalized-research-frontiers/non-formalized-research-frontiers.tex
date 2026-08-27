@@ -13723,46 +13723,6 @@ combine them into a theorem saying that neither correction alone gives the corre
 coefficient-and-coordinate interpretation.
 \end{obligation}
 
-\section{Public packaging of convergent series}
-
-\subsection{The binary-series right endpoint}
-
-Let \(c_m(x)\) and \(B_m(x)\) denote the coefficient and summand of the global binary
-reduction series.
-\begin{candidate}
-At \(x=1\), \(B_0(1)=1\), while for every \(m\ge1\),
-\[
- c_m(1)=0,\qquad B_m(1)=0.
-\]
-Thus the binary-reduction series at the right endpoint is supported only at scale zero.
-\end{candidate}
-\begin{obligation}
-Expose the positive-scale endpoint vanishing as public theorems.  Prove the corresponding
-binary-prefix identity, use
-\lean{globalBinaryReductionCoefficient_eq_zero_of_mod_two_eq_zero}, and unfold the summand.
-The existing theorem \lean{globalBinaryReductionSummand_one_zero} states only the scale-zero
-case.
-\end{obligation}
-
-\subsection{Absolute convergence of the parity-power presentation}
-
-Let \(\Lambda_m(x)\) be the corrected parity-power summand, which is proved pointwise equal
-to the corresponding global binary-reduction summand.
-\begin{candidate}
-For every \(x\ge0\),
-\[
- \sum_{m=0}^{\infty}|\Lambda_m(x)|<\infty.
-\]
-Consequently the corrected parity-power expansion converges absolutely to \(\mathcal F(x)\).
-\end{candidate}
-\begin{obligation}
-Expose the norm-summability corollary by rewriting termwise with
-\lean{fabiusParityPowerSummand_eq_globalBinaryReductionSummand} and applying
-\lean{summable_norm_globalBinaryReductionSummand}.  The currently public \texttt{HasSum} and
-\texttt{tsum} theorems do not themselves state absolute convergence of the parity-power
-presentation.
-\end{obligation}
-
 \section{Already-preserved audit dispositions}
 
 Two removed primary claims need no duplicate candidate here.  Outcome-wise absolute
@@ -13923,13 +13883,6 @@ Corrected prefix order and centered sampling &
 \lean{correctedPrefixCoefficient_eq_stepApproximant}, and
 \lean{correctedPrefixGridSample_eq_stepApproximant} in
 \path{ThueMorseApproximation.lean}\\
-Binary-series endpoint inputs &
-\lean{globalBinaryReductionCoefficient_eq_zero_of_mod_two_eq_zero} and
-\lean{globalBinaryReductionSummand_one_zero} in \path{FabiusBinaryReductionSeries.lean}\\
-Parity-power term identity and neighboring norm summability &
-\lean{fabiusParityPowerSummand_eq_globalBinaryReductionSummand} and
-\lean{summable_norm_globalBinaryReductionSummand} in
-\path{FabiusParityPowerSeries.lean} and \path{FabiusBinaryReductionSeries.lean}\\
 \bottomrule
 \end{tabularx}
 \endgroup
