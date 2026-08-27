@@ -125,6 +125,7 @@ import FabiusFunction.LacunaryMeanSharp
 import FabiusFunction.KappaDictionary
 import FabiusFunction.DyadicReflection
 import FabiusFunction.CollatzWielandt
+import FabiusFunction.LacunaryProductToSum
 import FabiusFunction.RvachevFourierDecay
 import FabiusFunction.BoundednessSkeleton
 import FabiusFunction.TransferOperatorStep
