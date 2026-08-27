@@ -6606,6 +6606,18 @@ which gives \eqref{dyadicweb:eq:Wn-product} after division by $(1/2;1/2)_n$.  Th
 $1,2^r,-1,-2$ follow from the product and from the alternating signs of the coefficients.
 \end{proof}
 
+\paragraph{Current formal status.}
+For rational $z$, the full identity \eqref{dyadicweb:eq:Wn-product} is
+\lean{sum_range_discreteLimitWeight_mul_pow}, and the exact dyadic root locus
+\eqref{dyadicweb:eq:Wn-roots} is
+\lean{sum_range_discreteLimitWeight_mul_pow_eq_zero_iff}.  The mass and
+unweighted variation evaluations are respectively
+\lean{sum_range_discreteLimitWeight} and
+\lean{sum_abs_discreteLimitWeight}, all in
+\path{FabiusDiscreteLimitToeplitz.lean}.  The weighted variation at $-2$,
+the logarithmic-derivative moment formulas below, and the limiting filter are
+not claimed as named Lean counterparts here.
+
 Logarithmic differentiation at $z=1$ records the row's first signed moment:
 \begin{equation}
 \sum_{j=0}^{n}j\omega_{n,j}=W_n'(1)
@@ -6677,6 +6689,14 @@ The constant contributes $L W_n(1)=L$.  The $r$th error contributes
  =a_r2^{-2nr}W_n(2^r)=0.
 \]
 \end{proof}
+
+\paragraph{Current formal status.}
+The exact rational-sequence specialization is
+\lean{discreteLimitWeight_qRichardson_exact} in
+\path{FabiusDiscreteLimitToeplitz.lean}.  It uses coefficients indexed by
+$0\le r<n$, with its coefficient $a_r$ multiplying the same mode
+$2^{-(r+1)p}$.  A named scalar-extension form for complex model sequences is
+not asserted by that theorem.
 
 No claim is needed that the actual spline error has a finite expansion of the form
 \eqref{dyadicweb:eq:model-errors}.  The proposition explains the algebraic design of the row: it is a

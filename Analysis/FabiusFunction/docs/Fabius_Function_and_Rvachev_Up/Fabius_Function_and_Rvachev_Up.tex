@@ -1244,6 +1244,29 @@ in an exact identity:
 \end{equation}
 namely \lean{norm_rvachevFourier_peak_ray_envelope} in the same module.
 
+The exponent \(\kappa_\infty\) is sharp within this family of gauges.  Write \(\Phi\) for
+the standalone sinc product, which equals \(\widehat{\Up}\) by
+\lean{rvachevFourier_eq_product}.  For every \(\kappa>\kappa_\infty\),
+\begin{equation}
+ \frac{|\Phi(2^k\,2/3)|}{E_\kappa(2^k\,2/3)}
+ \longrightarrow+\infty
+ \qquad(k\longrightarrow\infty).                            \label{eq:fourier-kappa-sharp}
+\end{equation}
+More explicitly, for every real \(C\) there is a \(k\in\N\) such that
+\(x_k=2^k\,2/3\ge1\) and
+\begin{equation}
+ C E_\kappa(x_k)<|\Phi(x_k)|.                               \label{eq:fourier-kappa-obstruction}
+\end{equation}
+Consequently no \(C>0\) satisfies
+\[
+ |\Phi(x)|\le C E_\kappa(x)\qquad\text{for every real }x\ge1.
+\]
+The limit, explicit peak-ray obstruction, and positive-ray nonexistence theorem are
+\lean{norm_rvachevFourierProduct_peak_ray_ratio_tendsto_atTop},
+\lean{exists_peak_ray_norm_gt_mul_decayGauge}, and
+\lean{not_exists_norm_rvachevFourierProduct_le_decayGauge_of_kappaInf_lt} in
+\path{GlobalDecayEnvelope.lean}.
+
 The transform also has the exact conjugation, parity, and real-axis identities
 \begin{equation}
  \overline{\widehat{\Up}(z)}=\widehat{\Up}(-\overline z),
@@ -1966,6 +1989,18 @@ the corresponding zero has exact order \(b\), by
 \lean{thueMorseCenteredPowerSeries_eq_product} in
 \path{ThueMorseExponential.lean}.
 
+Writing \(P_b(z)\) for either side of \eqref{eq:thue-block-product}, its zero at \(z=1\)
+has exact multiplicity \(b\) over \(\Z[z]\):
+\begin{equation}
+ (1-z)^b\mid P_b(z),
+ \qquad
+ (1-z)^{b+1}\nmid P_b(z).                                  \label{eq:thue-block-multiplicity}
+\end{equation}
+The divisibility and matching nondivisibility statements are respectively
+\lean{one_sub_X_pow_dvd_thueMorseBlockPolynomial} and
+\lean{one_sub_X_pow_succ_not_dvd_thueMorseBlockPolynomial} in
+\path{ThueMorseBlockAlgebra.lean}.
+
 The ordinary derivatives of the finite block polynomial make that exact order
 visible without passing to formal power series.
 
@@ -2327,6 +2362,28 @@ These are \lean{halfQBinomial_theorem},
 \lean{halfQBinomial_eq_mersenne}, and
 \lean{halfQBinomial_symm} in \path{HalfQBinomial.lean}.
 \end{proof}
+
+The polynomial in \eqref{eq:half-q-binomial-theorem} has the complete rational root locus
+\begin{equation}
+ \sum_{k=0}^{n}(-1)^k2^{-\binom k2}\qbinom nk{1/2}z^k=0
+ \quad\Longleftrightarrow\quad
+ \exists\,j<n\text{ such that }z=2^j,
+ \qquad z\in\Q.                                             \label{eq:half-q-root-locus}
+\end{equation}
+This is \lean{qBinomial_half_sum_eq_zero_iff}.  The same statement is stable under scalar
+extension at embedded rational arguments.  Let \(K\) be a field with a
+\(\Q\)-algebra structure, and write \(\iota:\Q\to K\) for its canonical map.  Then, for
+every \(z\in\Q\),
+\begin{equation}
+ \sum_{k=0}^{n}
+ \iota\!\left((-1)^k2^{-\binom k2}\qbinom nk{1/2}\right)(\iota z)^k=0
+ \quad\Longleftrightarrow\quad
+ \exists\,j<n\text{ such that }\iota z=2^j\text{ in }K.     \label{eq:half-q-scalar-root-locus}
+\end{equation}
+This is \lean{qBinomial_half_sum_algebraMap_eq_zero_iff} in
+\path{HalfQBinomial.lean}.  The scalar statement classifies the embedded rational
+arguments \(\iota z\); it does not assert a root classification for arbitrary elements of
+\(K\).
 
 The inner cancellation in the dyadic formula is the exact Thue--Morse block identity
 \begin{equation}
@@ -2919,6 +2976,38 @@ The finite $q$-binomial theorem gives the row normalization
 \begin{equation}
  \sum_{j=0}^{n}\omega_{n,j}=1.                            \label{eq:discrete-row-sum}
 \end{equation}
+The same theorem identifies the entire row rather than only its value at one.
+
+\begin{proposition}[Toeplitz row polynomial and rational $q$-Richardson cancellation]
+\label{prop:discrete-row-polynomial}
+For $z\in\Q$, put $W_n(z)=\sum_{j=0}^{n}\omega_{n,j}z^j$.  Then
+\begin{equation}
+ W_n(z)=\frac{(z/2;1/2)_n}{(1/2;1/2)_n}.                 \label{eq:discrete-row-polynomial}
+\end{equation}
+Consequently its rational zeros are exactly
+\begin{equation}
+ W_n(z)=0
+ \quad\Longleftrightarrow\quad
+ z\in\{2,2^2,\ldots,2^n\}.                              \label{eq:discrete-row-roots}
+\end{equation}
+Moreover, if a rational sequence has the finite geometric-error model
+$u_p=L+\sum_{r=1}^{n}a_r2^{-rp}$, then
+\begin{equation}
+ \sum_{j=0}^{n}\omega_{n,j}u_{2n-j}=L.                  \label{eq:discrete-row-richardson}
+\end{equation}
+All three statements include $n=0$: the row polynomial is then $1$, the
+root set is empty, and the error sum is empty.
+\end{proposition}
+
+\begin{proof}[Formal proof]
+The full generating identity and its root classification are
+\lean{sum_range_discreteLimitWeight_mul_pow} and
+\lean{sum_range_discreteLimitWeight_mul_pow_eq_zero_iff}.  The exact rational
+extrapolation is \lean{discreteLimitWeight_qRichardson_exact}; all are in
+\path{FabiusDiscreteLimitToeplitz.lean}.  The former proof of
+\eqref{eq:discrete-row-sum} is now its specialization at $z=1$.
+\end{proof}
+
 Applying it with the opposite sign also gives the uniform variation bound
 \begin{equation}
  \sum_{j=0}^{n}|\omega_{n,j}|
@@ -2990,8 +3079,9 @@ limit, the Rvachev bump and hence $F$.
 
 This section develops that construction: the convolution law and its explicit binomial
 kernel, the signed dyadic reflection preceding each terminal zero run, the zero runs
-themselves and their exact boundary values, the two generating-series identities, the
-discrete functional equation satisfied by the normalized grid, and the
+themselves and their exact boundary values, the two generating-series identities, their
+analytic realization and natural-boundary theorem, the discrete functional equation
+satisfied by the normalized grid, and the
 precise sense in which the normalized grid converges.  The convergence statement requires
 one shift of the prefix order and the centered reading of the grid cells; the literal
 normalization does not converge, and that failure is recorded separately in
@@ -3367,6 +3457,76 @@ Note that \eqref{eq:tm-prefix-eq-coeff} must fail at $m=2^{n+1}$, because
 $g_n<2^{n+1}$ makes the right side zero while the left side is $-1$ by
 \eqref{eq:tm-run-right}.  That single index is the exceptional right endpoint of
 \cref{thm:tm-corrected-convergence}.
+
+\subsection{The analytic Thue--Morse series and its natural boundary}
+\label{tm:sub-analytic-series}
+
+The series \(\mathcal K\) in \eqref{eq:tm-series-def} was interpreted there as a formal
+power series.  On the open unit disc the same coefficients define an analytic function,
+and we retain the notation \(\mathcal K\):
+\begin{equation}
+ \mathcal K(z)=\sum_{n=0}^{\infty}\varepsilon_nz^n,
+ \qquad |z|<1.                                                \label{eq:tm-disc-series}
+\end{equation}
+
+\begin{proposition}[Analytic product and Mahler equation]
+\label{thm:tm-disc-series}
+For every \(z\in\C\) with \(|z|<1\), the series \eqref{eq:tm-disc-series} converges and
+\begin{equation}
+ \mathcal K(z)=\prod_{j=0}^{\infty}\bigl(1-z^{2^j}\bigr).     \label{eq:tm-analytic-product}
+\end{equation}
+The function \(\mathcal K\) is holomorphic on \(|z|<1\) and satisfies
+\begin{align}
+ \mathcal K(z)&=(1-z)\mathcal K(z^2),                         \label{eq:tm-mahler}\\
+ \mathcal K(z)&=\left(\prod_{j=0}^{k-1}(1-z^{2^j})\right)
+                 \mathcal K(z^{2^k}) \qquad(k\in\N).        \label{eq:tm-mahler-iterate}
+\end{align}
+On the real radius,
+\begin{equation}
+ |\mathcal K(x)|\le 1-x\qquad(0\le x<1),                    \label{eq:tm-real-bound}
+\end{equation}
+and \(\mathcal K(0)=1\).
+\end{proposition}
+
+\begin{proof}[Formal proof]
+The analytic function is \lean{thueMorseDiscSeries}.  Convergence, the product identity,
+and holomorphy are respectively \lean{summable_thueMorseDiscSeries},
+\lean{thueMorseDiscSeries_eq_tprod}, and
+\lean{thueMorseDiscSeries_differentiableOn}.  Convergence of the product itself is
+\lean{multipliable_one_sub_pow_two_pow_complex} in
+\path{ThueMorseInfiniteProduct.lean}.  Equations \eqref{eq:tm-mahler} and
+\eqref{eq:tm-mahler-iterate} are \lean{thueMorseDiscSeries_mahler} and
+\lean{thueMorseDiscSeries_iterate}; \eqref{eq:tm-real-bound} and the value at zero are
+\lean{thueMorseDiscSeries_real_le} and \lean{thueMorseDiscSeries_zero}.  Except for the
+product-convergence declaration just cited, all these declarations are in
+\path{ThueMorseDiscSeries.lean}.
+\end{proof}
+
+\begin{theorem}[Dyadic radial zeros and the natural boundary]
+\label{thm:natural-boundary}
+If \(k\in\N\) and \(\zeta\in\C\) satisfy \(\zeta^{2^k}=1\), then
+\begin{equation}
+ \lim_{\rho\to1^-}\mathcal K(\rho\zeta)=0.                  \label{eq:tm-radial-zero}
+\end{equation}
+Moreover, for every \(z_0\in\C\) with \(|z_0|=1\) and every \(R>0\), there is no function
+\(g:\C\to\C\) which is holomorphic on \(\{z:|z-z_0|<R\}\) and satisfies
+\begin{equation}
+ g(z)=\mathcal K(z)
+ \quad\text{whenever}\quad |z-z_0|<R\ \text{ and }\ |z|<1. \label{eq:tm-no-continuation}
+\end{equation}
+Thus, in precisely this local-disc sense, every point of the unit circle is singular and
+the unit circle is a natural boundary for \(\mathcal K\).
+\end{theorem}
+
+\begin{proof}[Formal proof]
+The radial limit is \lean{tendsto_thueMorseDiscSeries_radial_zero}.  More generally, if
+\(n\in\N\) is nonzero and \(\zeta^n=1\), then \(|\zeta|=1\); this is
+\lean{norm_eq_one_of_pow_eq_one}.  The exact quantified nonextension statement
+\eqref{eq:tm-no-continuation}, and hence the
+natural-boundary conclusion in the stated local-disc sense, is
+\lean{thueMorse_natural_boundary}.  All three declarations are in
+\path{ThueMorseNaturalBoundary.lean}.
+\end{proof}
 
 \subsection{The functional equation of the normalized prefix grid}
 \label{tm:sub-grid-equation}
@@ -3958,7 +4118,11 @@ not an optimality claim.  Its proof uses the pointwise bounds
 \subsection{The lower-Lambert saddle and exact reduction}
 \label{sec:sharp-asymptotic}
 
-For \(x>0\) with \(Lx<\e^{-1}\), let
+On the endpoint-inclusive lower-branch domain
+\begin{equation}
+ \mathcal D_L=\left(0,\frac{\e^{-1}}L\right],                \label{eq:lambert-phase-domain}
+\end{equation}
+let
 \begin{equation}
  W=W_{-1}(-Lx),                                             \label{eq:W-def}
 \end{equation}
@@ -3967,36 +4131,58 @@ and define
  \lambda=\lambda(x)=-\frac{W}{L},
  \qquad r=r(x)=2^\lambda.                                  \label{eq:lambda-def}
 \end{equation}
-The phase and radius are \lean{fabiusLambertPhase} and
-\lean{fabiusLambertRadius}.  Their exact identities are
+The global Lean definitions are \lean{fabiusLambertPhase} and
+\lean{fabiusLambertRadius}; here we use them on \(\mathcal D_L\).  For every
+\(x\in\mathcal D_L\), their exact identities are
 \begin{equation}
  \lambda2^{-\lambda}=x,\qquad
  \frac{\lambda}{r}=x,\qquad
  rx=\lambda,\qquad
  \log r=L\lambda.                                          \label{eq:lambda-equation}
 \end{equation}
-They are proved by
-\lean{fabiusLambertPhase_div_radius},
-\lean{fabiusLambertRadius_mul_argument}, and
-\lean{log_fabiusLambertRadius} in \path{FabiusLambertSaddle.lean}.
+The endpoint-inclusive quotient and product identities are
+\lean{fabiusLambertPhase_div_radius_of_le} and
+\lean{fabiusLambertRadius_mul_argument_of_le}; the first equality in
+\eqref{eq:lambda-equation} is the quotient identity rewritten using \(r=2^\lambda\).
+The logarithmic identity in fact holds for every real \(x\), not only on
+\(\mathcal D_L\); this is \lean{log_fabiusLambertRadius}.  The corresponding
+strict-interior wrappers are \lean{fabiusLambertPhase_div_radius} and
+\lean{fabiusLambertRadius_mul_argument}.  All five declarations are in
+\path{FabiusLambertSaddle.lean}.
 
-The totalized phase and radius also make sense at the finite lower-Lambert
-branch point.  The phase bound, quotient identity, and product identity all
-extend there: if \(x>0\) and \(Lx\le\e^{-1}\), then
+On the same closed-upper domain, the phase has the sharp lower bound and endpoint
+characterization
 \begin{equation}
- \frac1L\le\lambda(x),\qquad 0<\lambda(x),\qquad
- \frac{\lambda(x)}{r(x)}=x,\qquad r(x)x=\lambda(x).
-                                                               \label{eq:lambda-endpoint}
+ \lambda(x)\ge\frac1L,
+ \qquad
+ \lambda(x)=\frac1L
+ \quad\Longleftrightarrow\quad
+ x=\frac{\e^{-1}}L.                                        \label{eq:lambert-phase-closed-bound}
 \end{equation}
-These are \lean{one_div_log_two_le_fabiusLambertPhase},
-\lean{fabiusLambertPhase_pos_of_le},
-\lean{fabiusLambertPhase_div_radius_of_le}, and
-\lean{fabiusLambertRadius_mul_argument_of_le} in
-\path{FabiusLambertSaddle.lean}.  The continuity, strict-monotonicity, image,
-and derivative assertions below retain their open domain.
+In particular,
+\begin{equation}
+ \lambda\!\left(\frac{\e^{-1}}L\right)=\frac1L.             \label{eq:lambert-phase-branch-point}
+\end{equation}
+Moreover, \(\lambda\) is strictly decreasing on \(\mathcal D_L\), and its exact image is
+\begin{equation}
+ \lambda(\mathcal D_L)=\left[\frac1L,\infty\right).         \label{eq:lambert-phase-closed-image}
+\end{equation}
+The bound, equality characterization, endpoint value, strict antitonicity, and image are
+respectively \lean{fabiusLambertPhase_ge_inv_log_two},
+\lean{fabiusLambertPhase_eq_inv_log_two_iff},
+\lean{fabiusLambertPhase_branchPoint},
+\lean{fabiusLambertPhase_strictAntiOn_Ioc}, and
+\lean{fabiusLambertPhase_image_Ioc} in \path{FabiusLambertSaddle.lean}.
 
-On the exact domain \(0<x<\e^{-1}/L\), the phase \(\lambda(x)\) is continuous and
-strictly decreasing, with image \((1/L,\infty)\), and
+Equivalently, under the hypotheses \(x>0\) and \(Lx\le\e^{-1}\), the same
+lower bound and the strict positivity \(0<\lambda(x)\) are
+\lean{one_div_log_two_le_fabiusLambertPhase} and
+\lean{fabiusLambertPhase_pos_of_le}.  Thus the algebraic saddle identities
+extend to the finite branch point even though the smooth formulas below do not.
+
+The smooth API is deliberately restricted to the open interior
+\(0<x<\e^{-1}/L\).  There \(\lambda\) is continuous and strictly decreasing, its image is
+\((1/L,\infty)\), and it is differentiable with
 \begin{equation}
  \lambda'(x)=
  \frac{\lambda(x)}{x\bigl(1-L\lambda(x)\bigr)}<0.            \label{eq:lambert-phase-derivative}
@@ -4005,7 +4191,17 @@ These are \lean{fabiusLambertPhase_continuousOn},
 \lean{fabiusLambertPhase_strictAntiOn}, \lean{fabiusLambertPhase_image},
 \lean{deriv_fabiusLambertPhase}, and \lean{deriv_fabiusLambertPhase_neg} in
 \path{FabiusLambertSaddle.lean}; the derivative witness is
-\lean{fabiusLambertPhase_hasDerivAt}.
+\lean{fabiusLambertPhase_hasDerivAt}, and pointwise continuity is
+\lean{fabiusLambertPhase_continuousAt}.
+At the small-argument endpoint \(x=0\), the exact phase and its reciprocal have the limits
+\begin{equation}
+ \lambda(x)\longrightarrow+\infty,
+ \qquad \lambda(x)^{-1}\longrightarrow0
+ \qquad(x\downarrow0).                                    \label{eq:lambert-phase-endpoint-limits}
+\end{equation}
+These are \lean{tendsto_fabiusLambertPhase_nhdsGT_zero_atTop} and
+\lean{tendsto_inv_fabiusLambertPhase_nhdsGT_zero} in
+\path{FabiusLambertRates.lean}.
 
 The corrected main term is
 \begin{equation}
@@ -4600,6 +4796,7 @@ Fourier analysis &
 \path{RenormalizationIdentity.lean}, \path{SincProductShells.lean},
 \path{SincCanonicalProduct.lean}, \path{PhiZeroOrder.lean},
 \path{ThueMorseLobeSign.lean}, \path{RvachevProductContinuity.lean},
+\path{PeakRayEnvelope.lean}, \path{GlobalDecayEnvelope.lean},
 \path{RvachevFourierDecay.lean}\\
 Global derivatives and flatness &
 \path{GlobalExtension.lean}, \path{GlobalBounds.lean},
@@ -4622,9 +4819,13 @@ Dyadic and \(q\)-binomial formulas &
 \path{FabiusRawQBinomialScalar.lean},
 \path{FabiusBinaryReductionSeries.lean}, \path{FabiusParityPowerSeries.lean},
 \path{FabiusGlobalQBinomialSeries.lean},
+\path{FabiusDiscreteLimitToeplitz.lean},
 \path{FabiusDiscreteLimitIntegration.lean}\\
-Thue--Morse prefixes &
+Thue--Morse algebra, prefixes, and disc series &
 \path{ThueMorsePrefix.lean}, \path{ThueMorseGenerating.lean},
+\path{ThueMorseBlockAlgebra.lean},
+\path{ThueMorseInfiniteProduct.lean}, \path{ThueMorseDiscSeries.lean},
+\path{ThueMorseNaturalBoundary.lean},
 \path{ThueMorseExponential.lean}, \path{ThueMorseApproximation.lean},
 \path{PaperKFoldThueMorse.lean}\\
 Endpoint asymptotics &

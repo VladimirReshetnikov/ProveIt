@@ -22,9 +22,11 @@ The payload is the finite q-binomial theorem at `q = 1/2`,
 
 proved from the q-Pascal recurrence, together with its values at the dyadic
 nodes `z = 2^m`.  More generally, its complete rational root locus is
-`z = 2^j` for `j < n`.  At a dyadic node below degree, the corresponding
-factor `1 - 2^m (1/2)^m` vanishes; for `n ≤ m` the product is an exact signed
-quotient of Mersenne products.  At `z = 2^n` this specializes to
+`z = 2^j` for `j < n`; scalar extension preserves this classification at
+the embedded rational points of every field over `ℚ`.  At a dyadic node below
+degree, the corresponding factor `1 - 2^m (1/2)^m` vanishes; for `n ≤ m`
+the product is an exact signed quotient of Mersenne products.  At `z = 2^n`
+this specializes to
 `(-1)^n 2^(C(n+1,2)) (1/2;1/2)_n`.  The vanishing and endpoint evaluations are the
 interpolation data that `FabiusFunction.FabiusQBinomialFormula` feeds to its
 Lagrange argument at the nodes `-(2^k)`, and the theorem itself is what
@@ -50,6 +52,9 @@ statements of the whole `Fabius*QBinomial*` family.
   `halfQBinomial_sum_eq_zero_iff`, and
   `qBinomial_half_sum_eq_zero_iff` -- the general product-zero criterion and
   the complete rational root locus `2^j` for `j < n` at `q = 1/2`.
+* `qBinomial_half_sum_algebraMap_eq_zero_iff` -- the same root locus after
+  embedding the rational argument and coefficients in an arbitrary field
+  over `ℚ`.
 * `halfQBinomial_two_pow_sum_eq_qPochhammer` -- the all-index dyadic-node
   specialization, with an exact piecewise Mersenne-product form and the
   existing zero/endpoint interpolation boundaries.
@@ -70,9 +75,10 @@ Caveat: `qBinomial n k q` is the q-Pochhammer quotient, not the polynomial
 Gaussian binomial.  The two agree whenever the denominator is nonzero, which
 holds at `q = 1/2`, the only specialization used here, but fails at a root of
 unity.  Natural subtraction is truncated, so the quotient lemmas carry
-`k ≤ n` hypotheses, and `C(k,2)` above is Lean's `k.choose 2`.  The root-locus
-theorems classify rational arguments; they do not package complex roots or
-root multiplicities.
+`k ≤ n` hypotheses, and `C(k,2)` above is Lean's `k.choose 2`.  The base
+root-locus theorems classify rational arguments, while the scalar-extension
+form classifies their images in fields over `ℚ`; these results do not yet
+classify arbitrary scalar arguments or package root multiplicities.
 -/
 
 set_option autoImplicit false
@@ -649,6 +655,42 @@ theorem qBinomial_half_sum_eq_zero_iff (n : ℕ) (z : ℚ) :
       ∃ j < n, z = (2 : ℚ) ^ j := by
   simpa only [qBinomial_half_eq] using
     halfQBinomial_sum_eq_zero_iff n z
+
+/-- Scalar extension of the complete rational root locus.  In every field
+over `ℚ`, the half-q-binomial sum evaluated at the image of a rational `z`
+vanishes exactly when that image is one of the dyadic points `2^j`, `j < n`.
+Injectivity of the algebra map shows that scalar extension neither creates
+nor loses any rational root. -/
+theorem qBinomial_half_sum_algebraMap_eq_zero_iff
+    {K : Type*} [Field K] [Algebra ℚ K] (n : ℕ) (z : ℚ) :
+    (∑ k ∈ Finset.range (n + 1),
+      algebraMap ℚ K
+          ((-1 : ℚ) ^ k * (1 / 2 : ℚ) ^ (k.choose 2) *
+            qBinomial n k (1 / 2)) *
+        (algebraMap ℚ K z) ^ k) = 0 ↔
+      ∃ j < n, algebraMap ℚ K z = (2 : K) ^ j := by
+  have hsum :
+      (∑ k ∈ Finset.range (n + 1),
+        algebraMap ℚ K
+            ((-1 : ℚ) ^ k * (1 / 2 : ℚ) ^ (k.choose 2) *
+              qBinomial n k (1 / 2)) *
+          (algebraMap ℚ K z) ^ k) =
+        algebraMap ℚ K
+          (∑ k ∈ Finset.range (n + 1),
+            (-1 : ℚ) ^ k * (1 / 2 : ℚ) ^ (k.choose 2) *
+              qBinomial n k (1 / 2) * z ^ k) := by
+    rw [map_sum]
+    apply Finset.sum_congr rfl
+    intro k _hk
+    simp only [map_mul, map_pow]
+  rw [hsum, map_eq_zero_iff _ (algebraMap ℚ K).injective,
+    qBinomial_half_sum_eq_zero_iff]
+  constructor
+  · rintro ⟨j, hj, rfl⟩
+    exact ⟨j, hj, by simp only [map_pow, map_ofNat]⟩
+  · rintro ⟨j, hj, hz⟩
+    refine ⟨j, hj, (algebraMap ℚ K).injective ?_⟩
+    simpa only [map_pow, map_ofNat, map_zero, zero_add] using hz
 
 /-! ## Dyadic-node specializations -/
 
