@@ -233,7 +233,7 @@ The root workspace is pinned by [`lean-toolchain`](lean-toolchain) and
 lake exe cache get
 $env:LAKE_JOBS=1
 $env:LEAN_NUM_THREADS=0
-lake build <one-target>
+lake build +FabiusFunction.Basic
 ```
 
 The broad build is intentionally expensive, and on a memory-constrained
@@ -261,16 +261,19 @@ lake build +ShefferStroke.Sheffer
 lake build +FirstOrder.Fol
 lake build +ClosureAxiomatization.Forward
 lake build +NoFiniteModel
-lake build +PAListCoding +PAListCoding.Audit
+lake build +PAListCoding
+lake build +PAListCoding.Audit
 lake build +PAFiniteBasisReduction
-lake build +PAUndecidable +PAUndecidable.Audit
+lake build +PAUndecidable
+lake build +PAUndecidable.Audit
 lake build +PowerTowers.Core
 lake build +SquaredSquare
 lake build +CombinatoryLogic
 lake build +BusyBeaver.BB2
 lake build +BusyBeaver.BB3
 lake build +BusyBeaver.Mathlib
-lake build +TuringDegrees +TuringDegrees.Audit
+lake build +TuringDegrees
+lake build +TuringDegrees.Audit
 ```
 
 These projects also have project-local Lake files for focused builds:
