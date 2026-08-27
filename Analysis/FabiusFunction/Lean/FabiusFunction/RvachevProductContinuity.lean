@@ -1,3 +1,4 @@
+import FabiusFunction.BaselineDecay
 import FabiusFunction.OnePeakPerLobe
 import Mathlib.Analysis.Normed.Module.MultipliableUniformlyOn
 
@@ -14,6 +15,9 @@ quantitatively:
 `|Φ|`**, and the central-lobe peak is exactly `0`.
 
 * `continuous_rvachevFourierProduct_real`, and the norm version.
+* `norm_rvachevFourierProduct_lt_one_of_ne_zero` and
+  `norm_rvachevFourierProduct_eq_one_iff` — the origin is the unique
+  global point where `‖Φ‖ = 1`; at every nonzero real argument `‖Φ‖ < 1`.
 * `isMaxOn_eq_of_strictConcaveOn_log_of_pos` — generic positive-log peak uniqueness;
   `isMaxOn_eq_of_strictConcaveOn_log` is its specialization to `‖Φ‖`.
 * `existsUnique_isMaxOn_lobe` — **exactly one peak per side lobe**.
@@ -83,6 +87,40 @@ theorem continuous_rvachevFourierProduct_real :
 theorem continuous_norm_rvachevFourierProduct :
     Continuous (fun x : ℝ => ‖rvachevFourierProduct (x : ℂ)‖) :=
   continuous_norm.comp continuous_rvachevFourierProduct_real
+
+/-! ## The unique global peak -/
+
+/-- **Global strict peak at the origin**: for every nonzero real `x`,
+`‖Φ(x)‖ < 1`.  Inside the central lobe this is strict concavity;
+outside it follows from the baseline bound `‖Φ(x)‖ ≤ 1 / (π|x|)`. -/
+theorem norm_rvachevFourierProduct_lt_one_of_ne_zero {x : ℝ}
+    (hx : x ≠ 0) :
+    ‖rvachevFourierProduct (x : ℂ)‖ < 1 := by
+  by_cases hcentral : |x| < 1
+  · exact norm_rvachevFourierProduct_lt_one
+      (Set.mem_Ioo.mpr (abs_lt.mp hcentral)) hx
+  · have habs : 1 ≤ |x| := le_of_not_gt hcentral
+    have hden : 0 < π * |x| :=
+      mul_pos Real.pi_pos (abs_pos.mpr hx)
+    have hpi_le : π ≤ π * |x| := by
+      simpa using mul_le_mul_of_nonneg_left habs Real.pi_pos.le
+    have hone : (1 : ℝ) < π * |x| :=
+      (show (1 : ℝ) < π by linarith [Real.pi_gt_three]).trans_le hpi_le
+    calc
+      ‖rvachevFourierProduct (x : ℂ)‖ ≤ 1 / (π * |x|) :=
+        norm_rvachevFourierProduct_le_inv hx
+      _ < 1 := (div_lt_one hden).mpr hone
+
+/-- The Rvachev Fourier product has unit norm on the real axis exactly
+at the origin: `‖Φ(x)‖ = 1 ↔ x = 0`. -/
+theorem norm_rvachevFourierProduct_eq_one_iff (x : ℝ) :
+    ‖rvachevFourierProduct (x : ℂ)‖ = 1 ↔ x = 0 := by
+  constructor
+  · intro h
+    by_contra hx
+    exact (ne_of_lt (norm_rvachevFourierProduct_lt_one_of_ne_zero hx)) h
+  · rintro rfl
+    simp
 
 /-! ## Peak uniqueness from strict log-concavity -/
 

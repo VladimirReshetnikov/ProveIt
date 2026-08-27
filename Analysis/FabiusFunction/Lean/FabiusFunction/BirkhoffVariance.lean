@@ -24,6 +24,8 @@ finite-`n` variance behind `σ = π/2` and the corrected LIL constant
   `∫ (ψ∘Tʲ)(ψ∘Tʲ⁺ʳ) = c_r`.
 * `integral_cocycle_pair_dist` — both orders via `Nat.dist`.
 * `integral_sq_birkhoff_sum` — **the exact variance**.
+* `integral_sq_birkhoff_sum_all` — its total form, including the empty
+  Birkhoff sum at `n = 0`.
 -/
 
 set_option autoImplicit false
@@ -193,5 +195,16 @@ theorem integral_sq_birkhoff_sum (n : ℕ) (hn : 1 ≤ n) :
     norm_num
   rw [h0]
   exact variance_closed_form n hn
+
+/-- The exact Birkhoff variance for every natural length.  The formerly
+excluded case `n = 0` is the empty sum, whose integral and closed form are
+both exactly zero. -/
+theorem integral_sq_birkhoff_sum_all (n : ℕ) :
+    ∫ t in (0:ℝ)..1, (∑ k ∈ Finset.range n,
+      Real.log (2 * Real.sin (π * (doublingMap^[k] t)))) ^ 2 =
+      π ^ 2 / 4 * n - π ^ 2 / 3 * (1 - (1 / 2) ^ n) := by
+  cases n with
+  | zero => norm_num
+  | succ n => exact integral_sq_birkhoff_sum (n + 1) (by omega)
 
 end Fabius

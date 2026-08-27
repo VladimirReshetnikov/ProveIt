@@ -15,6 +15,8 @@ theorem (and, eventually, Mahler-method arguments) rest:
 
 * `thueMorseDiscSeries` — the sum of the series.
 * `summable_thueMorseDiscSeries` — absolute convergence on the disc.
+* `thueMorseDiscSeries_eq_tprod` — the lacunary infinite-product
+  representation `F(z) = ∏'_j (1-z^(2^j))` throughout the disc.
 * `thueMorseDiscSeries_differentiableOn` — **holomorphy** on the disc,
   by locally uniform convergence of the polynomial partial sums.
 * `thueMorseDiscSeries_mahler` — the Mahler functional equation
@@ -26,9 +28,9 @@ theorem (and, eventually, Mahler-method arguments) rest:
   vanishes at the boundary.
 * `thueMorseDiscSeries_zero` — `F(0) = 1`.
 
-The real-sign lemma `abs_thueMorseSign_real` used by
-`norm_thueMorseSign_complex` now lives in `ThueMorseBoundaryFlatness`,
-the common ancestor of the lacunary-exponential modules that share it.
+The shared norm lemma `norm_thueMorseSign_complex` now lives upstream
+in `ThueMorseInfiniteProduct`; its real-sign input
+`abs_thueMorseSign_real` lives in `ThueMorseBoundaryFlatness`.
 -/
 
 set_option autoImplicit false
@@ -41,22 +43,17 @@ namespace Fabius
 noncomputable def thueMorseDiscSeries (z : ℂ) : ℂ :=
   ∑' n : ℕ, (thueMorseSign n : ℂ) * z ^ n
 
-/-- The Thue–Morse sign has norm one over `ℂ`. -/
-theorem norm_thueMorseSign_complex (n : ℕ) :
-    ‖(thueMorseSign n : ℂ)‖ = 1 := by
-  rw [show ((thueMorseSign n : ℂ)) = (((thueMorseSign n : ℝ) : ℂ)) by
-      push_cast; ring,
-    Complex.norm_real, Real.norm_eq_abs, abs_thueMorseSign_real]
-
 /-- Absolute convergence of the Thue–Morse series on the open disc. -/
 theorem summable_thueMorseDiscSeries {z : ℂ} (hz : ‖z‖ < 1) :
     Summable (fun n : ℕ => (thueMorseSign n : ℂ) * z ^ n) := by
-  refine Summable.of_norm ?_
-  have hgeom : Summable (fun n : ℕ => ‖z‖ ^ n) :=
-    summable_geometric_of_lt_one (norm_nonneg z) hz
-  refine Summable.of_nonneg_of_le (fun n => norm_nonneg _)
-    (fun n => ?_) hgeom
-  rw [norm_mul, norm_pow, norm_thueMorseSign_complex, one_mul]
+  exact summable_thueMorseSign_mul_pow_complex hz
+
+/-- **Lacunary infinite-product representation on the unit disc**:
+for `‖z‖ < 1`, `F(z) = ∏'_{j≥0} (1-z^(2^j))`. -/
+theorem thueMorseDiscSeries_eq_tprod {z : ℂ} (hz : ‖z‖ < 1) :
+    thueMorseDiscSeries z = ∏' j : ℕ, (1 - z ^ (2 ^ j)) := by
+  simpa [thueMorseDiscSeries] using
+    (tsum_thueMorseSign_mul_pow_complex hz)
 
 /-- **Holomorphy of the Thue–Morse series** on the open unit disc:
 the polynomial partial sums converge locally uniformly. -/
