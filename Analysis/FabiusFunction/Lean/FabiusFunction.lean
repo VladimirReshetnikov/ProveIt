@@ -77,6 +77,8 @@ import FabiusFunction.CocycleCovarianceHalving
 import FabiusFunction.DirichletKernelCotangent
 import FabiusFunction.LogSineFourierCoefficient
 import FabiusFunction.CocycleParseval
+import FabiusFunction.LogCosineFourier
+import FabiusFunction.GordinParseval
 import FabiusFunction.ShellLinearity
 import FabiusFunction.BoundaryLayerMax
 import FabiusFunction.VarianceBookkeeping
