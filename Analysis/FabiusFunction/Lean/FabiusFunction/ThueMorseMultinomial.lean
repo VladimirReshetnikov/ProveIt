@@ -39,9 +39,12 @@ the case `p = 2`, where `S_2 = wt` is the binary weight.
   the index set splits off one part; the surviving inner sum is the
   bivariate submask enumerator at `(1, r)`.
 * `sum_neg_one_pow_multinomial` — the **signed `r`-nomial row formula**:
-  `∑_{k_1+⋯+k_r=n} (-1)^multinomial = #rows - 2·r^wt(n)`.
+  `∑_{k_1+⋯+k_r=n} (-1)^multinomial = #slice - 2·r^wt(n)`, where `#slice`
+  is the number of positions in the `n`-th slice, i.e. of weak
+  compositions of `n` into `r` parts.
 * `thueMorseSign_eq_neg_one_pow_log_card` — the **exact `r`-nomial
-  logarithm**: `ε(n) = (-1)^(log_r O_r(n))`, the logarithm exact.
+  logarithm**: `ε(n) = (-1)^(log_r O_r(n))` for every base `r ≥ 2`, the
+  logarithm exact.
 -/
 
 set_option autoImplicit false
@@ -89,14 +92,6 @@ private theorem padicValNat_prod_factorial_prime {ι : Type*}
         padicValNat.mul (p := p) (Nat.factorial_ne_zero _)
           (Finset.prod_ne_zero_iff.mpr fun i _ => Nat.factorial_ne_zero _),
         ih]
-
-/-- The two-adic case of `padicValNat_prod_factorial_prime`. -/
-private theorem padicValNat_prod_factorial {ι : Type*} [DecidableEq ι]
-    (s : Finset ι) (f : ι → ℕ) :
-    padicValNat 2 (∏ i ∈ s, (f i).factorial) =
-      ∑ i ∈ s, padicValNat 2 (f i).factorial := by
-  haveI : Fact (Nat.Prime 2) := ⟨Nat.prime_two⟩
-  exact padicValNat_prod_factorial_prime 2 s f
 
 /-- Arithmetic shim.  Subtracting two runs of Legendre's formula leaves a
 pure cancellation: from `A' + X = N`, `A + Y = N` and `Y = X + Z` one

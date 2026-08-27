@@ -31,8 +31,8 @@ character sum, on top of a small reusable bit toolkit.
   masked character sum**, with no hypothesis on `a`:
   `∑_{n<2^m} y^wt(n)·z^wt(a &&& n) = ∏_{j<m} (1 + y·(bit_j(a) ? z : 1))`.
 * `sum_neg_one_pow_binaryWeight_land` — **character orthogonality** on
-  the dyadic block: `∑_{n<2^m} (-1)^wt(a &&& n)` is `2^m` for `a = 0`
-  and `0` otherwise.  This is the case `y = 1`, `z = -1`.
+  the dyadic block: for `a < 2^m`, `∑_{n<2^m} (-1)^wt(a &&& n)` is `2^m`
+  for `a = 0` and `0` otherwise.  This is the case `y = 1`, `z = -1`.
 * `sum_thueMorseSign_mul_walsh` — the **one-point Walsh spectrum**:
   `∑_{n<2^m} ε(n)·(-1)^wt(a &&& n)` is `2^m` for `a = 2^m - 1` and `0`
   for every other `a < 2^m`.  This is the case `y = z = -1`.

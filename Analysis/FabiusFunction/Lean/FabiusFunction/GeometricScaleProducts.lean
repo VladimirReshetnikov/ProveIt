@@ -14,10 +14,17 @@ is specific to sinc, to base `2`, or even to `ℂ`; this file proves it
 for an arbitrary function `g` from a field into a commutative
 topological monoid.
 
-* `Multipliable.of_nat_add` — in a commutative topological monoid, a
-  sequence whose `k`-tail is multipliable is itself multipliable (the
-  missing monoid-valued direction of `multipliable_nat_add_iff`, which
-  Mathlib states only for groups).
+* `Multipliable.of_nat_add` — a local name for Mathlib's
+  `Multipliable.comp_nat_add`: in a commutative topological monoid, a
+  sequence whose `k`-tail is multipliable is itself multipliable.  (No
+  inverses are needed, so this direction does not require the
+  `IsTopologicalGroup` hypothesis of `multipliable_nat_add_iff`.)  The
+  name is kept because the call sites below use it.
+* `geom_scale_arg` — the scale identity `cᵏ·z / c^(n+k) = z / cⁿ`.
+* `geom_scale_tail` — its packaged sequence form: the `k`-tail of the
+  dilated scale sequence *is* the undilated one, as functions.  This is
+  the single identity shared by the two multipliability/telescoping
+  arguments below.
 * `multipliable_geom_scale_pow` — multipliability of the scale sequence
   transports to every rescaled argument `cᵏ·z`.
 * `tprod_geom_scale` — the **renormalization law**
@@ -40,12 +47,17 @@ variable {M : Type*} [CommMonoid M] [TopologicalSpace M] [ContinuousMul M]
 variable {α : Type*} [Field α]
 
 /-- In a commutative topological monoid, a sequence whose `k`-tail is
-multipliable is itself multipliable.  (For groups this is one direction
-of `multipliable_nat_add_iff`; no inverses are needed for this
-direction.) -/
+multipliable is itself multipliable.
+
+This is exactly Mathlib's `Multipliable.comp_nat_add`
+(`Mathlib/Topology/Algebra/InfiniteSum/NatInt.lean`), reproved here in
+one line only to keep the local name that the call sites below use.
+For groups it is one direction of `multipliable_nat_add_iff`; no
+inverses are needed for this direction, which is why it lives in the
+monoid section upstream. -/
 theorem Multipliable.of_nat_add {f : ℕ → M} {k : ℕ}
     (h : Multipliable fun n => f (n + k)) : Multipliable f :=
-  h.hasProd.prod_range_mul.multipliable
+  _root_.Multipliable.comp_nat_add h
 
 /-- The scale argument identity: dividing `cᵏ·z` by `c^(n+k)` lands on
 the undilated scale `z / cⁿ`. -/
@@ -54,6 +66,17 @@ theorem geom_scale_arg (c z : α) (hc : c ≠ 0) (k n : ℕ) :
   rw [pow_add]
   field_simp
 
+/-- **The `k`-tail of a geometric-scale sequence is that sequence
+itself**: shifting the index by `k` cancels the dilation of the
+argument by `cᵏ`, as an equality of functions `ℕ → β`.  This packages
+`geom_scale_arg` in the exact form consumed by
+`multipliable_geom_scale_pow` and `tprod_geom_scale_pow`, which
+previously carried two verbatim copies of it. -/
+theorem geom_scale_tail {β : Type*} (g : α → β) (c z : α) (hc : c ≠ 0)
+    (k : ℕ) :
+    (fun n : ℕ => g (c ^ k * z / c ^ (n + k))) = fun n : ℕ => g (z / c ^ n) :=
+  funext fun n => by rw [geom_scale_arg c z hc]
+
 /-- Multipliability of a geometric-scale product transports to every
 rescaled argument `cᵏ·z`: the rescaled sequence is the original one
 preceded by `k` new factors. -/
@@ -61,9 +84,7 @@ theorem multipliable_geom_scale_pow (g : α → M) {c z : α} (hc : c ≠ 0)
     (h : Multipliable fun n : ℕ => g (z / c ^ n)) (k : ℕ) :
     Multipliable fun n : ℕ => g (c ^ k * z / c ^ n) := by
   refine Multipliable.of_nat_add (k := k) ?_
-  have harg : (fun n : ℕ => g (c ^ k * z / c ^ (n + k))) =
-      fun n : ℕ => g (z / c ^ n) :=
-    funext fun n => by rw [geom_scale_arg c z hc]
+  have harg := geom_scale_tail g c z hc k
   exact harg ▸ h
 
 variable [T2Space M]
@@ -92,9 +113,7 @@ theorem tprod_geom_scale_pow (g : α → M) {c z : α} (hc : c ≠ 0)
     (h : Multipliable fun n : ℕ => g (z / c ^ n)) (k : ℕ) :
     ∏' n : ℕ, g (c ^ k * z / c ^ n) =
       (∏ j ∈ range k, g (c ^ (j + 1) * z)) * ∏' n : ℕ, g (z / c ^ n) := by
-  have htail : (fun n : ℕ => g (c ^ k * z / c ^ (n + k))) =
-      fun n : ℕ => g (z / c ^ n) :=
-    funext fun n => by rw [geom_scale_arg c z hc]
+  have htail := geom_scale_tail g c z hc k
   have hpeel := Multipliable.prod_mul_tprod_nat_mul'
     (f := fun n : ℕ => g (c ^ k * z / c ^ n)) (k := k) (htail ▸ h)
   have hprefix : ∀ i ∈ range k, g (c ^ k * z / c ^ i) = g (c ^ (k - i) * z) := by

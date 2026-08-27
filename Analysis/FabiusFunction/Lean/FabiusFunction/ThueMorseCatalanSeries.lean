@@ -11,12 +11,21 @@ identity.
 
 * `sum_range_choose_mul_choose` — reusable **diagonal Vandermonde**
   (parallel summation): `∑_{i≤M} C(i,p)·C(M-i,q) = C(M+1, p+q+1)`.
+* `sum_antidiagonal_choose_mul_choose` — the same identity in the
+  `Finset.antidiagonal` shape Mathlib's Vandermonde lemmas use.
+* `choose_second_difference` — Pascal's rule three times over:
+  `C(n,k) - 2·C(n-1,k) + C(n-2,k) = C(n-2,k-2)` for `2 ≤ n`, `2 ≤ k`.
 * `catalanSeriesDelta` — the coefficient sequence `h(m)` of the
   substituted alternating Catalan series `G(z/(1-z))`, with
   `h(0) = 1`.
-* `integerLift_delta_bridge` — the bridge
-  `c(n) - 2c(n-1) + c(n-2) = h(n-1)`: the coefficients of
-  `(1-z)²C(z)` are the shifted `h`-values.
+* `integerLift_delta_bridge_all` — the bridge in **every** degree,
+  `c(n) - 2c(n-1) + c(n-2) = h(n-1)` guarded at `n = 0`.  The guard
+  is genuinely needed there and nowhere else: with `ℕ`-truncated
+  subtraction the left side at `n = 0` is `0 - 2·0 + 0 = 0`, while
+  `h(0 - 1) = h(0) = 1`.
+* `integerLift_delta_bridge_of_one_le` — the unguarded bridge
+  `c(n) - 2c(n-1) + c(n-2) = h(n-1)` for every `n ≥ 1`.
+* `integerLift_delta_bridge` — its original `n ≥ 2` form.
 -/
 
 set_option autoImplicit false
@@ -78,6 +87,42 @@ theorem sum_range_choose_mul_choose (q M p : ℕ) :
             omega
           rw [hP]
 
+/-- **Diagonal Vandermonde, antidiagonal form**: the same identity as
+`sum_range_choose_mul_choose`, written over `Finset.antidiagonal M`,
+which is the shape Mathlib states Vandermonde's identity in
+(`Nat.add_choose_eq`).  Mathlib has no diagonal (parallel-summation)
+Vandermonde of its own; this is the only generalisation available
+cheaply. -/
+theorem sum_antidiagonal_choose_mul_choose (q M p : ℕ) :
+    ∑ ij ∈ Finset.antidiagonal M, (ij.1.choose p) * (ij.2.choose q) =
+      (M + 1).choose (p + q + 1) := by
+  rw [Finset.Nat.sum_antidiagonal_eq_sum_range_succ_mk]
+  exact sum_range_choose_mul_choose q M p
+
+/-- **Second difference of a binomial column**: three applications of
+Pascal's rule (`Nat.choose_eq_choose_pred_add`) collapse the second
+difference in the *top* index to one doubly shifted binomial,
+`C(n,k) - 2·C(n-1,k) + C(n-2,k) = C(n-2,k-2)` for `2 ≤ n`, `2 ≤ k`.
+Stated over `ℤ`, where the subtractions are honest. -/
+theorem choose_second_difference (n k : ℕ) (hn : 2 ≤ n) (hk : 2 ≤ k) :
+    (n.choose k : ℤ) - 2 * ((n - 1).choose k : ℤ) +
+        ((n - 2).choose k : ℤ) =
+      ((n - 2).choose (k - 2) : ℤ) := by
+  have e1 : n - 1 - 1 = n - 2 := by omega
+  have e2 : k - 1 - 1 = k - 2 := by omega
+  have hp1 : n.choose k = (n - 1).choose (k - 1) + (n - 1).choose k :=
+    Nat.choose_eq_choose_pred_add (by omega) (by omega)
+  have hp2 : (n - 1).choose k =
+      (n - 1 - 1).choose (k - 1) + (n - 1 - 1).choose k :=
+    Nat.choose_eq_choose_pred_add (by omega) (by omega)
+  have hp3 : (n - 1).choose (k - 1) =
+      (n - 1 - 1).choose (k - 1 - 1) + (n - 1 - 1).choose (k - 1) :=
+    Nat.choose_eq_choose_pred_add (by omega) (by omega)
+  rw [e1] at hp2
+  rw [e1, e2] at hp3
+  push_cast [hp1, hp2, hp3]
+  ring
+
 /-- The coefficient sequence `h(m)` of the substituted alternating
 Catalan generating function `G(z/(1-z))`, `G(u) = ∑ (-1)^k·Cat(k)·u^k`:
 `h(0) = 1` and `h(m) = ∑_{t=1}^m (-1)^t·Cat(t)·C(m-1, t-1)`. -/
@@ -90,12 +135,22 @@ def catalanSeriesDelta (m : ℕ) : ℤ :=
 theorem catalanSeriesDelta_one : catalanSeriesDelta 1 = -1 := by
   simp [catalanSeriesDelta]
 
-/-- **The second-difference bridge**: the coefficients of `(1-z)²C(z)`
-are the shifted substituted-Catalan values,
-`c(n) - 2c(n-1) + c(n-2) = h(n-1)` for `n ≥ 2`. -/
-theorem integerLift_delta_bridge (n : ℕ) (hn : 2 ≤ n) :
+/-- **The second-difference bridge, in all degrees**: the coefficients
+of `(1-z)²C(z)` are the shifted substituted-Catalan values,
+`c(n) - 2c(n-1) + c(n-2) = h(n-1)` — with the single exception of
+`n = 0`, where `ℕ`-truncated subtraction makes the left side
+`0 - 2·c(0) + c(0) = 0` while `h(0 - 1) = h(0) = 1`.  Hence the
+`n = 0` guard, and no hypothesis. -/
+theorem integerLift_delta_bridge_all (n : ℕ) :
     integerLift n - 2 * integerLift (n - 1) + integerLift (n - 2) =
-      catalanSeriesDelta (n - 1) := by
+      if n = 0 then 0 else catalanSeriesDelta (n - 1) := by
+  rcases Nat.lt_or_ge n 2 with hn | hn
+  · -- the two small degrees, straight from the definitions
+    interval_cases n
+    · simp
+    · rw [if_neg (by omega)]
+      simp [integerLift_one, catalanSeriesDelta_zero]
+  rw [if_neg (by omega)]
   -- extend all three sums to the common index range `Icc 1 n`
   have hext : ∀ r : ℕ, r ≤ n →
       integerLift r = ∑ k ∈ Icc 1 n,
@@ -140,31 +195,7 @@ theorem integerLift_delta_bridge (n : ℕ) (hn : 2 ≤ n) :
         Nat.cast_one, one_mul]
       ring
     · rw [if_neg hk1]
-      have hk2 : 2 ≤ k := by omega
-      have hp1 : n.choose k = (n - 1).choose (k - 1) + (n - 1).choose k := by
-        have := Nat.choose_succ_succ (n - 1) (k - 1)
-        simp only [Nat.succ_eq_add_one] at this
-        rw [show n - 1 + 1 = n by omega, show k - 1 + 1 = k by omega] at this
-        omega
-      have hp2 : (n - 1).choose k =
-          (n - 2).choose (k - 1) + (n - 2).choose k := by
-        have := Nat.choose_succ_succ (n - 2) (k - 1)
-        simp only [Nat.succ_eq_add_one] at this
-        rw [show n - 2 + 1 = n - 1 by omega,
-          show k - 1 + 1 = k by omega] at this
-        omega
-      have hp3 : (n - 1).choose (k - 1) =
-          (n - 2).choose (k - 2) + (n - 2).choose (k - 1) := by
-        have := Nat.choose_succ_succ (n - 2) (k - 2)
-        simp only [Nat.succ_eq_add_one] at this
-        rw [show n - 2 + 1 = n - 1 by omega,
-          show k - 2 + 1 = k - 1 by omega] at this
-        omega
-      have hnat : (n.choose k : ℤ) - 2 * (((n - 1).choose k : ℕ) : ℤ) +
-          (((n - 2).choose k : ℕ) : ℤ) =
-          (((n - 2).choose (k - 2) : ℕ) : ℤ) := by
-        push_cast [hp1, hp2, hp3]
-        ring
+      have hnat := choose_second_difference n k (by omega) (by omega)
       calc (-1) ^ (k - 1) * (catalan (k - 1) : ℤ) * (n.choose k : ℤ) -
             2 * ((-1) ^ (k - 1) * (catalan (k - 1) : ℤ) *
               (((n - 1).choose k : ℕ) : ℤ)) +
@@ -212,5 +243,23 @@ theorem integerLift_delta_bridge (n : ℕ) (hn : 2 ≤ n) :
   · intro k hk
     have := Finset.mem_Icc.mp hk
     rw [show n - 1 - 1 = n - 2 by omega, show k - 1 - 1 = k - 2 by omega]
+
+/-- **The second-difference bridge for every positive degree**:
+`c(n) - 2c(n-1) + c(n-2) = h(n-1)` for all `n ≥ 1`.  Only `n = 0` has
+to be excluded; see `integerLift_delta_bridge_all`. -/
+theorem integerLift_delta_bridge_of_one_le (n : ℕ) (hn : 1 ≤ n) :
+    integerLift n - 2 * integerLift (n - 1) + integerLift (n - 2) =
+      catalanSeriesDelta (n - 1) := by
+  have h := integerLift_delta_bridge_all n
+  rw [if_neg (show ¬ n = 0 by omega)] at h
+  exact h
+
+/-- **The second-difference bridge**: the coefficients of `(1-z)²C(z)`
+are the shifted substituted-Catalan values,
+`c(n) - 2c(n-1) + c(n-2) = h(n-1)` for `n ≥ 2`. -/
+theorem integerLift_delta_bridge (n : ℕ) (hn : 2 ≤ n) :
+    integerLift n - 2 * integerLift (n - 1) + integerLift (n - 2) =
+      catalanSeriesDelta (n - 1) :=
+  integerLift_delta_bridge_of_one_le n (by omega)
 
 end Fabius

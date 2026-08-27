@@ -41,37 +41,11 @@ namespace Fabius
 /-! ## The digit dictionary -/
 
 /-- A sum of distinct powers of two with exponents below `m` stays below
-`2 ^ m`. -/
+`2 ^ m`.  Mathlib's `Nat.geomSum_lt` in the shape this module uses. -/
 theorem sum_two_pow_lt_two_pow {m : ℕ} {T : Finset ℕ}
     (hT : T ⊆ range m) :
-    ∑ j ∈ T, 2 ^ j < 2 ^ m := by
-  induction m generalizing T with
-  | zero =>
-      have : T = ∅ := subset_empty.mp (by simpa using hT)
-      simp [this]
-  | succ m ih =>
-      by_cases hm : m ∈ T
-      · have hsub : T.erase m ⊆ range m := by
-          intro j hj
-          have hj' := hT (mem_of_mem_erase hj)
-          have hne := ne_of_mem_erase hj
-          simp only [mem_range] at hj' ⊢
-          omega
-        have hrec := ih hsub
-        have hsplit : ∑ j ∈ T, 2 ^ j = 2 ^ m + ∑ j ∈ T.erase m, 2 ^ j := by
-          rw [← Finset.add_sum_erase _ _ hm]
-        rw [hsplit, pow_succ]
-        omega
-      · have hsub : T ⊆ range m := by
-          intro j hj
-          have hj' := hT hj
-          simp only [mem_range] at hj' ⊢
-          rcases Nat.lt_succ_iff_lt_or_eq.mp hj' with h | rfl
-          · exact h
-          · exact absurd hj hm
-        have := ih hsub
-        rw [pow_succ]
-        omega
+    ∑ j ∈ T, 2 ^ j < 2 ^ m :=
+  Nat.geomSum_lt le_rfl fun j hj => mem_range.mp (hT hj)
 
 /-- The binary weight of a sum of distinct powers of two is the number of
 summands: subsets of bit positions are faithfully encoded. -/
@@ -153,24 +127,12 @@ theorem sum_powerset_two_pow {M : Type*} [AddCommMonoid M]
 
 /-- **Sparse master product.**  Over any commutative semiring, expanding
 `∏_{j ∈ S} (1 + x j)` enumerates the subsets of `S`.  This is
-`Finset.prod_add` in the normalization used by the atlas. -/
+`Finset.prod_one_add` in the normalization used by the atlas: the argument
+`x` is explicit here, because every call site supplies it. -/
 theorem prod_one_add_eq_sum_powerset {R : Type*} [CommSemiring R]
     (S : Finset ℕ) (x : ℕ → R) :
-    ∏ j ∈ S, (1 + x j) = ∑ T ∈ S.powerset, ∏ j ∈ T, x j := by
-  have h := Finset.prod_add (fun _ : ℕ => (1 : R)) x S
-  simp only [Finset.prod_const_one, one_mul] at h
-  rw [h]
-  refine Finset.sum_nbij' (fun T => S \ T) (fun T => S \ T) ?_ ?_ ?_ ?_ ?_
-  · intro T hT
-    exact Finset.mem_powerset.mpr (Finset.sdiff_subset)
-  · intro T hT
-    exact Finset.mem_powerset.mpr (Finset.sdiff_subset)
-  · intro T hT
-    exact Finset.sdiff_sdiff_eq_self (Finset.mem_powerset.mp hT)
-  · intro T hT
-    exact Finset.sdiff_sdiff_eq_self (Finset.mem_powerset.mp hT)
-  · intro T hT
-    rfl
+    ∏ j ∈ S, (1 + x j) = ∑ T ∈ S.powerset, ∏ j ∈ T, x j :=
+  Finset.prod_one_add (f := x) S
 
 /-- **Two-parameter master identity.**  Over any commutative semiring,
 `∏_{j<m} (1 + u·z^{2^j}) = ∑_{n<2^m} u^{w(n)} z^n`: the weighted

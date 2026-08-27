@@ -97,6 +97,8 @@ theorem mpLog_cauchy (a b : ℝ) (ha : 0 < a) (hb : 0 < b) :
 /-- The limit `L(a,b)` of the master log-series. -/
 noncomputable def mpLimit (a b : ℝ) : ℝ := limUnder atTop (mpLog a b)
 
+/-- **Convergence of the master log-series**: for `a, b > 0` the partial
+sums `mpLog a b` converge to `L(a,b)`. -/
 theorem tendsto_mpLimit (a b : ℝ) (ha : 0 < a) (hb : 0 < b) :
     Tendsto (mpLog a b) atTop (𝓝 (mpLimit a b)) := by
   obtain ⟨L, hL⟩ := cauchySeq_tendsto_of_complete (mpLog_cauchy a b ha hb)

@@ -7,8 +7,10 @@ import Mathlib.Data.Set.Card
 # Linear factor complexity of the Thue–Morse word
 
 The number `p(ℓ)` of distinct length-`ℓ` factors of the Thue–Morse word
-satisfies `ℓ + 1 ≤ p(ℓ) ≤ 6ℓ - 4` — the atlas's elementary linear bound,
-here in a sharpened form.  This module proves both halves.
+satisfies `ℓ + 1 ≤ p(ℓ)` for every `ℓ`, and `p(ℓ) ≤ 6ℓ - 4` once
+`ℓ ≥ 1` — the atlas's elementary linear bound, here in a sharpened form.
+The side condition is not cosmetic: `p(0) = 1`, whereas `6·0 - 4` is `0`
+in truncated `ℕ` subtraction.  This module proves both halves.
 
 * `thueMorseWindow` / `thueMorseFactorSet` / `thueMorseComplexity` — the
   window at position `i`, the set of factors of length `ℓ`, and its
@@ -24,10 +26,11 @@ here in a sharpened form.  This module proves both halves.
   need both bits (`4` windows per offset).  Splitting the image
   accordingly gives at most `2·2^k + 2·(ℓ - 1)` distinct windows, hence
   `p(ℓ) ≤ 2·2^k + 2·(ℓ - 1)` (`thueMorseComplexity_le'`) and, with
-  `2^k < 2ℓ` minimal, `p(ℓ) ≤ 6ℓ - 4` (`thueMorseComplexity_lt'`).
+  `2^k < 2ℓ` minimal, `p(ℓ) ≤ 6ℓ - 4` for `ℓ ≥ 1`
+  (`thueMorseComplexity_le_six_mul_sub_four`).
 * `card_image_thueMorseWindow_le` / `thueMorseComplexity_le` /
   `thueMorseComplexity_lt` — the earlier, weaker bounds `4·2^k` and
-  `p(ℓ) < 8ℓ`, kept as corollaries.
+  `p(ℓ) < 8ℓ` (the latter again only for `ℓ ≥ 1`), kept as corollaries.
 * `thueMorseComplexity_lt_succ` — **strict growth**, the Morse–Hedlund
   argument: if some length had no more factors than the previous one,
   every factor would extend uniquely to the right; the finitely many
@@ -270,8 +273,9 @@ private theorem two_pow_clog_lt (ℓ : ℕ) (hℓ : 1 ≤ ℓ) :
 
 Take `k = ⌈log₂ ℓ⌉`, so that `ℓ ≤ 2^k ≤ 2ℓ - 1`; then
 `thueMorseComplexity_le'` gives
-`p(ℓ) ≤ 2(2ℓ - 1) + 2(ℓ - 1) = 6ℓ - 4`. -/
-theorem thueMorseComplexity_lt' (ℓ : ℕ) (hℓ : 1 ≤ ℓ) :
+`p(ℓ) ≤ 2(2ℓ - 1) + 2(ℓ - 1) = 6ℓ - 4`.  The conclusion is non-strict —
+the strict bound `p(ℓ) < 8ℓ` is `thueMorseComplexity_lt`. -/
+theorem thueMorseComplexity_le_six_mul_sub_four (ℓ : ℕ) (hℓ : 1 ≤ ℓ) :
     thueMorseComplexity ℓ ≤ 6 * ℓ - 4 := by
   have h1 : ℓ ≤ 2 ^ Nat.clog 2 ℓ := Nat.le_pow_clog (by omega) ℓ
   have h2 : 2 ^ Nat.clog 2 ℓ < 2 * ℓ := two_pow_clog_lt ℓ hℓ
@@ -279,10 +283,10 @@ theorem thueMorseComplexity_lt' (ℓ : ℕ) (hℓ : 1 ≤ ℓ) :
   omega
 
 /-- **The linear upper bound**: `p(ℓ) < 8ℓ` for `ℓ ≥ 1`.
-A weaker corollary of `thueMorseComplexity_lt'`. -/
+A weaker corollary of `thueMorseComplexity_le_six_mul_sub_four`. -/
 theorem thueMorseComplexity_lt (ℓ : ℕ) (hℓ : 1 ≤ ℓ) :
     thueMorseComplexity ℓ < 8 * ℓ := by
-  have h := thueMorseComplexity_lt' ℓ hℓ
+  have h := thueMorseComplexity_le_six_mul_sub_four ℓ hℓ
   omega
 
 /-! ### Strict growth and the lower bound -/

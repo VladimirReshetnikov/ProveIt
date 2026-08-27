@@ -17,12 +17,16 @@ that module already provides.
   the atlas's Hessenberg matrix `H_n`, as instances of `triBand` / `hessBand`.
 * `thueMorseSign_ruler_recurrence` — the ruler convolution in the scalar form
   the general formula consumes.
+* `thueMorseTriangular_mulVec` — the same recurrence in system form: the
+  ruler convolution as the linear system
+  `T_n·(ε(1),…,ε(n)) = (-a_1,…,-a_n)`.
 * `det_thueMorseTriangular` — `det T_n = n!`.
 * `det_thueMorseHessenberg` — **the determinant formula**
   `det H_n = (-1)^n·n!·ε(n)` (`eq:Hessenberg-factorial`), valid for all `n`
   including `n = 0`; hence `det H_n = ±n!`
-  (`det_thueMorseHessenberg_eq_or`) and, sharper,
-  `|det H_n| = n!` (`natAbs_det_thueMorseHessenberg`).
+  (`det_thueMorseHessenberg_eq_or`), and the same fact in `ℕ`-valued form
+  `|det H_n| = n!` (`natAbs_det_thueMorseHessenberg`).  Both of the latter
+  drop the sign, so both are weaker than the determinant formula itself.
 -/
 
 set_option autoImplicit false
@@ -78,8 +82,9 @@ theorem det_thueMorseTriangular (n : ℕ) :
 
 `(m+1)·ε(m+1) + ∑_{j<m} a_(m-j)·ε(j+1) = -a_(m+1)`.
 
-This is `ruler_convolution` at `m + 1`, with the divisor sum re-indexed by
-reflection so that the last term is split off. -/
+This is `ruler_convolution` at `m + 1`, with the convolution sum over
+`1 ≤ k ≤ m + 1` re-indexed by reflection so that the last term is split
+off. -/
 theorem thueMorseSign_ruler_recurrence (m : ℕ) :
     rulerDiag m * thueMorseSign (m + 1) +
         ∑ j ∈ range m, rulerCoeff (m - j) * thueMorseSign (j + 1) =
@@ -109,6 +114,26 @@ theorem thueMorseSign_ruler_recurrence (m : ℕ) :
   push_cast at hruler
   linarith [hruler]
 
+/-- **The ruler convolution in system form**: `T_n` applied to the sign
+vector `(ε(1), …, ε(n))` returns `(-a_1, …, -a_n)`.  This is the matrix
+reading of `thueMorseSign_ruler_recurrence`, row by row; the determinant
+formula below consumes the scalar form directly, so nothing depends on
+this statement. -/
+theorem thueMorseTriangular_mulVec (n : ℕ) :
+    (thueMorseTriangular n).mulVec
+        (fun j : Fin n => thueMorseSign ((j : ℕ) + 1)) =
+      fun m : Fin n => -rulerCoeff ((m : ℕ) + 1) := by
+  funext m
+  have h : (thueMorseTriangular n).mulVec
+      (fun j : Fin n => thueMorseSign ((j : ℕ) + 1)) m =
+      rulerDiag (m : ℕ) * thueMorseSign ((m : ℕ) + 1) +
+        ∑ j ∈ range (m : ℕ),
+          rulerCoeff ((m : ℕ) - j) * thueMorseSign (j + 1) :=
+    triBand_mulVec_apply n rulerDiag rulerCoeff
+      (fun j => thueMorseSign (j + 1)) m
+  rw [h]
+  exact thueMorseSign_ruler_recurrence (m : ℕ)
+
 /-- **The Hessenberg determinant formula** (`eq:Hessenberg-factorial`):
 `det H_n = (-1)^n·n!·ε(n)`, for every `n ≥ 0`. -/
 theorem det_thueMorseHessenberg (n : ℕ) :
@@ -136,8 +161,11 @@ theorem det_thueMorseHessenberg_eq_or (n : ℕ) :
   · exact Or.inl (by rw [key, hp.neg_one_pow, one_mul])
   · exact Or.inr (by rw [key, hp.neg_one_pow]; ring)
 
-/-- Sharper than the two-case statement: the Hessenberg determinant has
-absolute value exactly `n!`. -/
+/-- The two-case statement in `ℕ`-valued form: the Hessenberg determinant
+has absolute value exactly `n!`.  Through `Int.natAbs_eq_iff` this is
+equivalent to `det_thueMorseHessenberg_eq_or`, not a strengthening of it;
+both forget the sign that `det_thueMorseHessenberg` pins down.  It is
+recorded for consumers that work with `Int.natAbs`. -/
 theorem natAbs_det_thueMorseHessenberg (n : ℕ) :
     (thueMorseHessenberg n).det.natAbs = n.factorial := by
   rcases det_thueMorseHessenberg_eq_or n with h | h <;> rw [h] <;> simp

@@ -42,7 +42,7 @@ namespace Fabius
 Woods–Robbins partial sum is the quarter-ratio partial sum minus the
 Woods–Robbins partial sum, by `ε(2j) = ε(j)`, `ε(2j+1) = -ε(j)` and
 a regrouping of the four linear factors. -/
-private theorem wrA_two_mul (N : ℕ) :
+theorem wrA_two_mul (N : ℕ) :
     wrA (2 * N) = mpLog (1 / 4 : ℝ) (3 / 4) N - wrA N := by
   rw [wrA, sum_range_two_mul, mpLog, wrA, ← Finset.sum_sub_distrib]
   refine Finset.sum_congr rfl fun j _ => ?_
@@ -156,7 +156,8 @@ theorem tendsto_block_product_half :
 /-- **The half-shifted block product has value `1/2` along every even
 block length**: the numerical evaluation of
 `tendsto_block_product_half_even'`, strictly stronger than
-`tendsto_block_product_half`, of which it is the dyadic subsequence. -/
+`tendsto_block_product_half`, which is its dyadic subsequence
+`M = 2^(m-1)`. -/
 theorem tendsto_block_product_half_even :
     Tendsto (fun M : ℕ => ∏ k ∈ range (2 * M),
       ((k : ℝ) + 1 / 2) ^ (thueMorseSign k)) atTop (𝓝 (1 / 2 : ℝ)) := by

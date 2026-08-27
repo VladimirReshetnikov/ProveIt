@@ -42,23 +42,17 @@ def rarefiedSum (q r m : ℕ) : ℤ :=
   ∑ n ∈ range (2 ^ m), if n % q = r then thueMorseSign n else 0
 
 /-- Doubling is invertible modulo an odd modulus:
-`2j ≡ 2a (mod q) ↔ j ≡ a (mod q)` for odd `q`. -/
+`2j ≡ 2a (mod q) ↔ j ≡ a (mod q)` for odd `q`.  Cancelling the factor two
+is Mathlib's `Nat.ModEq.cancel_left_of_coprime`, available because an odd
+modulus is coprime to two. -/
 theorem two_mul_mod_iff (q : ℕ) (hq : q % 2 = 1) (j a : ℕ) :
     (2 * j) % q = (2 * a) % q ↔ j % q = a % q := by
-  have hkey : ∀ x : ℕ, ((q + 1) / 2 * (2 * x)) % q = x % q := by
-    intro x
-    have hexp : (q + 1) / 2 * (2 * x) = x + x * q := by
-      have h2 : (q + 1) / 2 * 2 = q + 1 := by omega
-      calc (q + 1) / 2 * (2 * x) = ((q + 1) / 2 * 2) * x := by ring
-        _ = (q + 1) * x := by rw [h2]
-        _ = x + x * q := by ring
-    rw [hexp, Nat.add_mul_mod_self_right]
+  have hgcd : Nat.gcd q 2 = 1 := by
+    rw [Nat.gcd_comm, Nat.gcd_rec, hq, Nat.gcd_one_left]
   constructor
   · intro h
-    have h3 : ((q + 1) / 2 * (2 * j)) % q = ((q + 1) / 2 * (2 * a)) % q :=
-      Nat.ModEq.mul_left ((q + 1) / 2) h
-    rw [hkey j, hkey a] at h3
-    exact h3
+    have h' : 2 * j ≡ 2 * a [MOD q] := h
+    exact Nat.ModEq.cancel_left_of_coprime hgcd h'
   · intro h
     exact Nat.ModEq.mul_left 2 h
 

@@ -142,8 +142,10 @@ theorem abs_exp_neg_lt_one {t : ℝ} (ht : 0 < t) :
 This is the finite identity `prod_one_sub_pow_eq_sum_thueMorseSign` at
 `x = e^(-t)`, both sides transported by `exp_neg_nat_mul` and
 `exp_neg_two_pow_mul`.  No convergence hypothesis is needed, so it also
-serves the dominated-convergence arguments downstream, where the
-partial products are exactly the objects trapped in `[0,1]`. -/
+serves the dominated-convergence arguments downstream.  Those run on
+`t > 0`, and there — as for any `t ≥ 0`, but *not* for `t < 0`, where
+every factor `1 - e^(-2^j·t)` is negative — the partial products are
+exactly the objects trapped in `[0,1]`. -/
 theorem sum_range_two_pow_thueMorseSign_exp (t : ℝ) (m : ℕ) :
     ∑ n ∈ range (2 ^ m),
         (thueMorseSign n : ℝ) * Real.exp (-((n : ℝ) * t)) =
