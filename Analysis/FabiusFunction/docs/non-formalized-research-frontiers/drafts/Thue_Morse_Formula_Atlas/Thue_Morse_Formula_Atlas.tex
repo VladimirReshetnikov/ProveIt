@@ -170,9 +170,9 @@ super-polynomial flatness
 \]
 A second consolidation pass merged three parallel sibling atlases into this
 document.  It contributed the weighted digit enumerator
-\(\prod_j(1+uz^{2^j})\) and the subtraction/borrow cocycle; a self-contained
-proof that the unit circle is a natural boundary, with the Hankel-determinant
-rigidity theorem and the sharp irrationality exponent
+\(\prod_j(1+uz^{2^j})\) and the subtraction/borrow cocycle; self-contained
+proofs that the unit circle is a natural boundary and that the Hankel
+determinants never vanish, with the sharp irrationality exponent
 \(\mu(\Theta_b)=2\) of the Thue--Morse--Mahler numbers stated from the
 literature; a Mahler functional equation for the autocorrelation series; a
 chapter on the combinatorics and dynamics of the infinite word (uniform
@@ -2402,8 +2402,9 @@ The algebraic picture of the previous section is completed by three
 analytic-arithmetic facts: the series \(E\) cannot be continued across any
 boundary point, its Hankel determinants never vanish, and its values at
 algebraic points are transcendental with the smallest possible irrationality
-exponent.  The first fact is proved here in full; the other two are deep
-literature theorems, stated with references and not reproved.
+exponent.  The first two facts are proved here in full --- and both are
+formalized; the Diophantine statements are deep literature theorems,
+stated with references and not reproved.
 
 \subsection{The unit circle is a natural boundary}
 
@@ -2506,7 +2507,7 @@ engineered from the ruler weights precisely so that its determinant would
 telescope, these matrices sample the raw signs and have no visible
 triangular structure.
 
-\begin{theorem}[Allouche--Peyri\`ere--Wen--Wen; literature theorem]
+\begin{theorem}[Allouche--Peyri\`ere--Wen--Wen]
 \label{thm:hankel-nonzero}
 For every \(r\ge1\),
 \begin{equation}
@@ -2515,10 +2516,50 @@ For every \(r\ge1\),
 \end{equation}
 \end{theorem}
 
+\begin{proof}
+We show the exact two-adic valuation
+\(H_r(\eps)=2^{\,r-1}\cdot(\text{odd})\), which is visible in
+\eqref{eq:hankel-first-values} --- for instance
+\(H_{10}=-1536=-2^9\cdot3\).  Interleave the rows and the columns of
+\(H_{2n}\) by parity (the same permutation on both sides, so no sign).
+By \(\eps_{2k}=\eps_k\), \(\eps_{2k+1}=-\eps_k\) the four blocks
+are \(\bigl[\begin{smallmatrix}A&-A\\-A&K\end{smallmatrix}\bigr]\)
+with \(A\) the order-\(n\) Hankel matrix and
+\(K_{ij}=\eps_{i+j+1}\); adding the top block row to the bottom one
+triangularizes, and the Schur block has entries
+\(\eps_{i+j+1}-\eps_{i+j}=2m_{i+j}\), where
+\(m_k=\tau(k)-\tau(k+1)\in\{-1,0,1\}\) is the half-increment.
+Hence
+\[
+  H_{2n}(\eps)=2^n\,H_n(\eps)\,H_n(m),
+  \qquad
+  H_{2n+1}(\eps)=2^n\,H_{n+1}(\eps)\,H_n(m),
+\]
+the odd case by the same elimination against the truncated top block.
+The determinants \(H_n(m)\) are \emph{odd}: modulo two, \(|m|\) is
+the period-doubling sequence \(p\) with \(p(2k)=1\),
+\(p(2k+1)=1+p(k)\), and the two mod-two determinant families ---
+Hankel determinants \(D(n)\) of \(p(k)\) and \(Y(n)\) of
+\(p(\lfloor k/2\rfloor)\) --- close under the same parity
+interleaving:
+\[
+  D(2n)=D(n),\quad D(2n+1)=Y(n),\quad
+  Y(2n)=D(n)Y(n),\quad Y(2n+1)=D(n+1)Y(n),
+\]
+using \(p(k)+p(k+1)=p(\lfloor k/2\rfloor)\) and the vanishing of
+all permutation signs in characteristic two.  Every value is \(1\) by
+strong induction.  Feeding the oddness back into the two
+factorizations gives \(v_2(H_{2n})=n+v_2(H_n)\) and
+\(v_2(H_{2n+1})=n+v_2(H_{n+1})\), whence \(v_2(H_r)=r-1\) exactly
+and \(H_r\ne0\).
+\end{proof}
+
 The original proof runs a closed finite system of determinant recurrences
 \cite{apww1998}; later proofs include Han's Hankel continued-fraction
 calculus \cite{han2014} and a combinatorial argument of Bugeaud and Han
-\cite{bugeaudHan2014}.  The statement is a strong rigidity property: no
+\cite{bugeaudHan2014}.  The two-adic argument above is in the spirit of
+all three, compressed to a pair of block factorizations and one mod-two
+induction.  The statement is a strong rigidity property: no
 finite window of the sequence ever satisfies an accidental low-order linear
 relation of Hankel type.
 
@@ -2530,6 +2571,26 @@ expansion agrees with \(E\) to the maximal possible order.  When
 through order \(z^{2r-1}\) with a nonzero discrepancy coefficient at
 \(z^{2r}\); the whole diagonal Pad\'e table of \(E\) is therefore normal,
 with no degenerate blocks.
+
+\emph{Formal versions.}  \Cref{thm:hankel-nonzero} is fully formal,
+with the proof above.  The mod-two engine is
+\path{PeriodDoublingHankel.lean}: the period-doubling bit and its
+recursions (\lean{Fabius.pdBit}), the four determinant halvings, and
+the strong induction
+\lean{Fabius.pdHankel\_det\_eq\_one} --- every Hankel determinant
+of the period-doubling sequence over \(\mathbb F_2\) equals \(1\).
+The reusable block machinery
+(\lean{Fabius.det\_fromBlocks\_of\_eq\_mul},
+\lean{Fabius.det\_fromBlocks\_symm}, the parity interleavings) is
+proved over an arbitrary commutative ring.  The integer level is
+\path{ThueMorseHankel.lean}: the doubling factorizations
+(\lean{Fabius.hankelSign\_det\_two\_mul},
+\lean{Fabius.hankelSign\_det\_two\_mul\_add\_one}), the mod-two
+transfer (\lean{Fabius.mseqHankel\_det\_odd}), the exact valuation
+\(H_r=2^{r-1}\cdot\mathrm{odd}\)
+(\lean{Fabius.hankelSign\_det\_eq\_two\_pow\_mul\_odd}), and the
+boxed nonvanishing \eqref{eq:hankel-nonzero}
+(\lean{Fabius.thueMorseHankel\_ne\_zero}).
 
 \subsection{Transcendental values and the sharp irrationality exponent}
 \label{sec:mahler-values}
@@ -5256,7 +5317,7 @@ valuation, carry, and Pascal-row formulas remain genuinely base-two features.
 \subsection{Formalized modules (August 2026)}
 \label{sec:formalized-modules}
 
-The first tranches of the formalization now exist as fifty
+The first tranches of the formalization now exist as fifty-two
 compiled Lean modules in \repo{}, complementing the corpus modules
 (\path{Parity.lean}, \path{TwoAdic.lean}, \path{ThueMorsePrefix.lean},
 \path{ThueMorseGenerating.lean}, \path{ThueMorseExponential.lean},
@@ -5324,6 +5385,8 @@ Module & Contents \\
 \path{ThueMorseNaturalBoundary.lean} & The natural-boundary theorem: radial vanishing at dyadic roots of unity, two-power roots approximating every circle point, and the double identity-theorem argument. \\
 \path{ThueMorseNewman.lean} & Newman's positivity theorem: residue-class sign sums, the modulo-three parity system, the base-four collapse with disjoint boundary corrections, and the strong induction. \\
 \path{ThueMorseGelfond.lean} & Gelfond's sharp uniform bound: the one-variable sum-of-squares inequality \(\varphi^2(t)\varphi(2t)\le3\sqrt3\), the telescoped doubling-orbit product bound, and the exponential-sum form with constant \(2/\sqrt3\). \\
+\path{PeriodDoublingHankel.lean} & The mod-two Hankel engine: reusable block-determinant eliminations, parity interleavings, the period-doubling bit, and the four determinant halvings forcing every \(\mathbb F_2\)-determinant to equal one. \\
+\path{ThueMorseHankel.lean} & The Allouche--Peyri\`ere--Wen--Wen theorem: the doubling factorizations \(H_{2n}=2^nH_nH_n(m)\), \(H_{2n+1}=2^nH_{n+1}H_n(m)\), oddness of the difference determinants, and the exact valuation \(v_2(H_r)=r-1\). \\
 \bottomrule
 \end{longtable}}
 
