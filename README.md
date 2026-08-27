@@ -17,6 +17,19 @@ the formal semantics.
 **Toolchains:** Lean `4.32.0` · mathlib `v4.32.0` · Rocq `>= 9.2`
 (developed against `9.0.1`) · MathComp boot `2.5.0` · [MIT-0](LICENSE)
 
+> ### Building: one Lean process at a time
+>
+> **Do not start a dozen Lean processes in parallel.** Each `lean.exe` worker on
+> a Mathlib-importing file holds 1&ndash;1.5&nbsp;GB; a default parallel `lake build`
+> exhausts memory and then fails with *misleading* errors such as
+> `failed to read file '...Basic.olean'`, which are swap-thrash symptoms rather
+> than real failures. `lake build -j1` does **not** help &mdash; Lake 5.0.0
+> removed the `-j` flag and the invocation fails with exit code 0 &mdash; and
+> neither does `LAKE_JOBS=1`. Even a single target parallelizes its own stale
+> dependency chain. Build **one module per `lake build` invocation, in
+> topological order**. See [`AGENTS.md`](AGENTS.md) for the driver, the retry
+> rule, and the Windows traps.
+
 ## Repository map
 
 The top-level source directories are mathematical topics. Within each coherent
@@ -36,7 +49,9 @@ project, `Lean/` and `Coq/` are siblings; `Research/`, `Support/`, and
 | [`lib/`](lib/) | Vendored third-party code only. |
 
 Repository-wide configuration remains at the root. [`ProveIt.lean`](ProveIt.lean)
-is the broad Lean import surface.
+is the broad Lean import surface, and [`AGENTS.md`](AGENTS.md) records the
+working agreements for automated contributors — above all the requirement to
+build Lean one module at a time.
 
 ## Highlights
 
@@ -163,6 +178,31 @@ is the broad Lean import surface.
 
 ## Lean workspace
 
+> ### ⚠ Build Lean serially — never a dozen Lean processes at once
+>
+> Lake's default is one `lean.exe` **per core**, which exhausts memory on a
+> small machine (and on the development laptop, where several agent sessions
+> share 13 GB, it starves all of them and produces spurious
+> `failed to read ... .olean` errors that look like corruption). Set both
+> limits on every build:
+>
+> ```powershell
+> $env:LAKE_JOBS = '1'          # at most one lean.exe process
+> $env:LEAN_NUM_THREADS = '0'   # no worker pool inside that process
+> lake build <one target>
+> ```
+>
+> `LAKE_JOBS` bounds Lake's process fan-out and `LEAN_NUM_THREADS` bounds the
+> threads inside each process; they are independent, so set both. Lake `5.0.0`
+> accepts neither `-j` nor `--jobs`, so the environment variable is the only
+> control. Measured 2026-08-27: a facade build with stale dependencies spawned
+> 11 concurrent `lean.exe` processes, and exactly one under `LAKE_JOBS=1`.
+>
+> Run **one build at a time**, prefer a single module per invocation, and after
+> interrupting a build check for survivors with
+> `Get-Process lean,lake -ErrorAction SilentlyContinue` before starting the
+> next one.
+
 The root workspace is pinned by [`lean-toolchain`](lean-toolchain) and
 [`lake-manifest.json`](lake-manifest.json):
 
@@ -171,7 +211,15 @@ lake exe cache get
 lake build
 ```
 
-The broad build is intentionally expensive. Focused examples are:
+The broad build is intentionally expensive, and on a memory-constrained
+machine it must be **serialized**: build one module per `lake build`
+invocation, in topological order. Parallel Lean workers exhaust RAM and report
+`failed to read file '...olean'`, which looks like corruption but is not; the
+same module compiles on a serial retry. `lake build -j1` is not a workaround
+(Lake 5.0.0 removed `-j` and exits 0 on the unknown flag), and neither is
+`LAKE_JOBS=1`. [`AGENTS.md`](AGENTS.md) has the driver and the retry rule.
+
+Focused examples are:
 
 ```powershell
 lake build JacobianConjecture
