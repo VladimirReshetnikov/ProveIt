@@ -109,10 +109,10 @@ numbers rather than copying these historical values.
 
 The remaining backlog is now split between recently added research-frontier
 modules and same-line attributed bridges that the old scan concealed.  Its
-largest concentrations are the vertical Taylor API, the half-q-binomial
-algebra, early step approximants, and period-doubling Hankel identities.  These
-are precisely the technical interfaces where a reader most needs the formula,
-hypotheses, and normalization convention stated locally.
+largest concentrations are the half-q-binomial algebra, early step
+approximants, and period-doubling Hankel identities.  These are precisely the
+technical interfaces where a reader most needs the formula, hypotheses, and
+normalization convention stated locally.
 
 ### What the review pass caught
 
