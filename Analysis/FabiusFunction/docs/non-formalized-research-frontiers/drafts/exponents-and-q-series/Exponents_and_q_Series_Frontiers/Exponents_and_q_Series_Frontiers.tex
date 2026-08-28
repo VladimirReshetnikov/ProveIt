@@ -170,10 +170,12 @@ positive-definite Pascal quotients, automatic lobe signs, and Gaussian boundary 
 This volume preserves the absorbed theorem and proof bodies, with labels, citation keys,
 and asset paths mechanically prefixed per part.  Part~IV is an editorial merge of the two ninth-wave same-topic drafts
 (shared core stated once, unique layers kept, constants cross-checked);
-Part~VI likewise merges the two independent reconstructions of Rvachev's Chapter~3
-(thirteenth and fourteenth waves): the shared translation and $h_a$ core are stated once,
-and the fourteenth-wave fractal-string, parameter-limit, general-base Laplace, and
-$\operatorname{Fup}$-ladder layers are folded in as new sections.
+Part~VI likewise merges the three independent reconstructions of Rvachev's Chapter~3
+(thirteenth, fourteenth, and fifteenth waves): the shared translation and $h_a$ core are
+stated once, and the distinctive layers of the later twins --- fractal strings,
+parameter limits, general-base Laplace theory, the two $\operatorname{Fup}$
+hierarchies, derivative equimeasurability, and the edge pantograph --- are folded in
+as new sections.
 The verification packages of all merged drafts are preserved verbatim under \path{assets/}.  Later edits add status-only Lean
 crosswalk annotations; the historical source hashes below are unchanged.
 The absorbed drafts are deleted from the working tree; git history is the archive.
@@ -186,6 +188,7 @@ The absorbed drafts are deleted from the working tree; git history is the archiv
 \item \path{fabius_finite_products_frontier/finite_sinc_frontier.tex} \\ {\footnotesize SHA-256 \path{e7d436a8a236e6c04f5b7a56dd846ea42aada67c12b0e2ff4dc03f45d3b31e48}} (tenth wave; Part~V)
 \item \path{atomic_sinc_splines_report_package/atomic_sinc_splines_report.tex} \\ {\footnotesize SHA-256 \path{1c65e30feb6589de33512ce659b87261f240c538813c454efc7d5eef4be54f6f}} (thirteenth wave; Part~VI --- translation and frontier expansion of Rvachev's Chapter~3)
 \item \path{Atomic_Functions_Beyond_Dyadic_Report/Atomic_Functions_Beyond_Dyadic.tex} \\ {\footnotesize SHA-256 \path{021d14ffcac62fa18a9a11ba48dce4bb1c58f8da9ffa6b7c1f47f659f112c8b6}} (fourteenth wave; merged editorially into Part~VI --- second independent reconstruction of the same chapter, contributing the fractal-string/tube-formula, degree-law, parameter-limit, general-base Gamma--zeta Laplace, and $\operatorname{Fup}$-ladder layers)
+\item \path{Rvachev_Atomic_Functions_Report/Atomic_Functions_Rvachev_Report.tex} \\ {\footnotesize SHA-256 \path{6a7f769197b695ce6f73510ecbead96997e75ae3856e5372e93950169b96a662}} (fifteenth wave; merged editorially into Part~VI --- third independent reconstruction of the same chapter, contributing the signed gap leading coefficients, derivative equimeasurability with the full $L^p$ ladder, the classical $\operatorname{Fup}_n$ hierarchy with its triangular reconstruction mask and Gaussian regime, and the edge pantograph equations)
 \end{itemize}
 \clearpage
 \part{Exponent-Sequence and Newton-Basis Frontiers for the Fabius--Rvachev System}
@@ -8349,6 +8352,11 @@ V. Reshetnikov et al.,
 % (fractal strings/tube formula, degree law, parameter limits, general-base
 % Gamma-zeta Laplace decomposition, Fup ladder) appear as dedicated sections,
 % and its shared translation/h_a core is deduplicated against this part.
+% Also merged with Rvachev_Atomic_Functions_Report/ (fifteenth wave), a third
+% independent reconstruction; its new layers (signed gap leading coefficients,
+% derivative equimeasurability + all-p norms, the classical Fup_n hierarchy
+% with triangular reconstruction and CLT, edge pantograph equations) likewise
+% appear as dedicated material, with the shared core deduplicated.
 
 \begin{abstract}
 The attached Russian chapter develops \emph{atomic functions}: compactly supported
@@ -8383,17 +8391,25 @@ computes Fourier inversions without Monte Carlo sampling, and reproduces all
 figures and tables in the package.  Claims not yet formalized in Lean are kept
 outside the repository's trusted theorem boundary and are labeled accordingly.
 
-This part also absorbs a second, independent reconstruction of the same chapter
-(fourteenth wave).  Its distinctive layers are folded in below: the complete
-fractal-string geometry of the exceptional set for $a>2$ (geometric zeta
-function, lattice of complex dimensions, an exact tube formula with nonconstant
-logarithmic oscillation, and Minkowski non-measurability); the local polynomial
-degree as a geometric random variable, with an exponential scaling limit as
-$a\downarrow2$; quantitative Gaussian ($a\downarrow1$) and uniform
-($a\to\infty$) parameter limits; an exact arbitrary-base negative-Laplace
-decomposition whose one-periodic correction has Gamma--zeta Fourier modes
+This part also absorbs two further independent reconstructions of the same
+chapter (fourteenth and fifteenth waves).  Their distinctive layers are folded
+in below.  From the fourteenth wave: the complete fractal-string geometry of
+the exceptional set for $a>2$ (geometric zeta function, lattice of complex
+dimensions, an exact tube formula with nonconstant logarithmic oscillation, and
+Minkowski non-measurability); the local polynomial degree as a geometric random
+variable, with an exponential scaling limit as $a\downarrow2$; quantitative
+Gaussian ($a\downarrow1$) and uniform ($a\to\infty$) parameter limits; an
+exact arbitrary-base negative-Laplace decomposition whose one-periodic
+correction has Gamma--zeta Fourier modes
 $-\Gamma(-\chi_k)\zeta(1-\chi_k)/\log a$; and a canonical $\Fup$ ladder
-extending the source's surviving $\Fup_1$ construction.
+extending the source's surviving $\Fup_1$ construction.  From the fifteenth
+wave: signed closed forms for the leading coefficient on every polynomial gap;
+a derivative equimeasurability theorem giving the complete value distribution
+and all $L^p$ norms of every derivative for $a>2$; the classical
+$\Fup_n$ hierarchy with an exact triangular dyadic averaging reconstruction of
+$\Up$ and a quantitative central-limit regime; and the edge pantograph
+equations that make the Lambert-$W$ structure of the endpoint visible already
+at the level of the differential--functional equation.
 \end{abstract}
 
 \begin{scopebox}
@@ -8419,14 +8435,17 @@ PDF image resolves a formula, it is preferred.  Otherwise the reconstruction is
 checked against adjacent identities, normalization, and the source's own proof.
 No text is silently completed beyond the surviving endpoint of Section 5.
 
-The fourteenth-wave package reconstructed the same OCR and page images
-independently and reached the same readings on every equation both editions
-transcribe, including the two damaged ranges (3.54)--(3.58) and
-(3.73)--(3.75), for which both editions record the invariant content (finite
+The fourteenth- and fifteenth-wave packages reconstructed the same OCR and
+page images independently and reached the same readings on every equation the
+editions transcribe in common, including the damaged ranges (3.51)--(3.58) and
+(3.73)--(3.75), for which all editions record the invariant content (finite
 moment reduction at cylinder endpoints; the bit-recursive evaluator with
 remainder at most $\Up(-1+2^{-N})$) rather than a fabricated literal
-transcription.  Its OCR-reconstruction ledger is preserved in
-\path{assets/Atomic_Functions_Beyond_Dyadic_Report/}.
+transcription.  The fifteenth wave additionally repairs the endpoint indexing
+of (3.51)--(3.58) into an explicit binary-encoded form.  The two packages'
+OCR-reconstruction ledgers are preserved in
+\path{assets/Atomic_Functions_Beyond_Dyadic_Report/} and
+\path{assets/Rvachev_Atomic_Functions_Report/}.
 \end{scopebox}
 
 
@@ -8525,6 +8544,24 @@ decomposition of \cref{p6:thm:general-periodic}, whose one-periodic term is real
 analytic with Fourier modes $-\Gamma(-\chi_k)\zeta(1-\chi_k)/\log a$,
 $\chi_k=2\pi\ii k/\log a$.  \conjflag\ The density-level all-orders saddle
 expansion in the lower-Lambert coordinate remains a research target.
+
+\item \newflag\ (Fifteenth wave.)  For $a>2$ the derivative formula is a
+complete distributional identity: every $h_a^{(n)}$ is equimeasurable with an
+amplified, fairly signed copy of $h_a$ living on a fraction $(2/a)^n$ of the
+support, giving all $L^p$ norms at once,
+$\|h_a^{(n)}\|_p=\tfrac{a^{n(n+3)/2}}{2^n}(2/a)^{n/p}\|h_a\|_p$, and the
+polynomial on a depth-$r$ gap has signed leading coefficient
+$(-1)^{N_+(\omega)}a^{(r+1)(r+2)/2}/(2^{r+1}r!)$.
+
+\item \newflag\ (Fifteenth wave.)  The source's $\Fup_1$ identity begins the
+classical hierarchy $\widehat{\Fup_n}(t/2\pi)=\sinc(t2^{-n-1})^{\,n}\,
+\widehat\Up\bigl(t2^{-n}/2\pi\bigr)$: $\Up$ is reconstructed from $\Fup_n$ by
+an exact triangular mask of $n(n+1)/2$ dyadic averaging steps, every cumulant
+of $\Fup_n$ is closed, and the standardized hierarchy is asymptotically
+Gaussian with Berry--Esseen rate $O(n^{-1/2})$ and all standardized cumulants
+$O(n^{1-m})$.  The edge pantograph equation
+$F_a'(x)=\tfrac{a^2}{2(a-1)}F_a(ax)$ generalizes the Fabius relation
+$F'=2F(2\,\cdot)$ to every base.
 \end{enumerate}
 
 \section{Corpus audit, normalization, and editorial method}
@@ -9176,9 +9213,112 @@ translates of $G_n$; in the limit, the translate locations distribute as the
 centered dyadic Bernoulli sum, whose law is uniform on $[-1/2,1/2]$, and the
 first-step convolution identity for $\Up$ is recovered.  The $\Fup$
 construction is thus a finite Rademacher factorization of the uniform smoothing
-mask.  The general multiplicity-vector hierarchy remains a research direction
-(\cref{p6:sec:future-directions}); the ladder above is its first rung, with
-every rung explicit.
+mask.
+
+\subsection{The classical \texorpdfstring{$\Fup_n$}{Fup-n} hierarchy and its Gaussian regime}
+
+A second canonical continuation (fifteenth wave) is the historically standard
+hierarchy, which piles the redistributed multiplicity onto a single scale
+instead of sliding one factor.  In the source's angular variable, define
+\begin{equation}\label{p6:eq:Fupn-def}
+ \widehat{\Fup_n}(t/2\pi)
+ =\sinc\bigl(t2^{-n-1}\bigr)^{\,n}\,
+  \widehat\Up\bigl(t2^{-n}/2\pi\bigr),
+ \qquad \Fup_0=\Up,
+\end{equation}
+which reduces to \eqref{p6:eq:Fup1} at $n=1$.  Probabilistically, $\Fup_n$ is
+the density of
+\begin{equation}\label{p6:eq:Zn-def}
+ Z_n=2^{-n}X_2+2^{-n-1}\sum_{r=1}^{n}U_r,
+\end{equation}
+with $X_2$ the binary random series and $U_r$ independent uniforms on
+$[-1,1]$, so
+\begin{equation}\label{p6:eq:Fupn-support}
+ \supp\Fup_n=
+ \Bigl[-\frac{n+2}{2^{\,n+1}},\ \frac{n+2}{2^{\,n+1}}\Bigr].
+\end{equation}
+
+\begin{theorem}[Triangular reconstruction at every level]
+\label{p6:thm:fupn-reconstruction}
+For every $n\ge0$,
+\begin{equation}\label{p6:eq:fupn-fourier-reconstruction}
+ \widehat\Up(t/2\pi)
+ =\widehat{\Fup_n}(t/2\pi)
+ \prod_{r=2}^{n+1}\cos\bigl(t2^{-r}\bigr)^{\,r-1}.
+\end{equation}
+Equivalently, with $N_n=n(n+1)/2$, the function $\Up$ is the average of the
+$2^{N_n}$ translates of $\Fup_n$ by the signed sums
+$\sum_{r=2}^{n+1}\sum_{s=1}^{r-1}\varepsilon_{r,s}2^{-r}$,
+$\varepsilon_{r,s}\in\{\pm1\}$.  Letting $n\to\infty$ recovers the infinite
+cosine-multiplicity factorization
+\begin{equation}\label{p6:eq:cosine-multiplicity}
+ \widehat\Up(t/2\pi)=\prod_{r=2}^{\infty}\cos\bigl(t2^{-r}\bigr)^{\,r-1}.
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+By \eqref{p6:eq:Fupn-def},
+$\widehat\Up/\widehat{\Fup_n}
+=\prod_{j=1}^{n}\sinc(t2^{-j})/\sinc(t2^{-n-1})$ at matched arguments.
+Iterating the halving identity
+$\sinc(t2^{-j})=\bigl[\prod_{r=j+1}^{n+1}\cos(t2^{-r})\bigr]
+\sinc(t2^{-n-1})$ and counting the pairs $j<r$ gives each cosine the
+multiplicity $r-1$, which proves
+\eqref{p6:eq:fupn-fourier-reconstruction}; expanding every cosine as a
+two-point averaging multiplier gives the translate form.  The infinite product
+\eqref{p6:eq:cosine-multiplicity} follows because
+$\widehat{\Fup_n}(t/2\pi)\to1$ locally uniformly.
+\end{proof}
+
+\begin{theorem}[Exact cumulants and central-limit regime]
+\label{p6:thm:fupn-clt}
+All odd cumulants of $Z_n$ vanish, and for $m\ge1$,
+\begin{equation}\label{p6:eq:Zn-cumulants}
+ \kappa_{2m}(Z_n)
+ =2^{-2mn}\,\frac{2^{2m-1}B_{2m}}{m}
+ \left(\frac1{2^{2m}-1}+\frac{n}{2^{2m}}\right),
+ \qquad
+ \sigma_n^2:=\kappa_2(Z_n)=4^{-n}\,\frac{3n+4}{36}.
+\end{equation}
+As $n\to\infty$, the standardized variable $W_n=Z_n/\sigma_n$ satisfies
+$W_n\Rightarrow N(0,1)$ with Kolmogorov distance $O(n^{-1/2})$, and
+$\kappa_{2m}(W_n)=O(n^{1-m})$ for every $m\ge2$; the first non-Gaussian
+correction is of order $1/n$ and is determined by $B_4=-\tfrac1{30}$.
+\end{theorem}
+
+\begin{proof}
+Cumulants add along \eqref{p6:eq:Zn-def}:
+$\kappa_{2m}(Z_n)=2^{-2mn}\kappa_{2m}(X_2)+n\,2^{-2m(n+1)}\kappa_{2m}(U)$,
+and inserting $\kappa_{2m}(U)=2^{2m-1}B_{2m}/m$ and the $a=2$ case of
+\eqref{p6:eq:kappa} gives \eqref{p6:eq:Zn-cumulants}; $m=1$ gives
+$\sigma_n^2$.  After multiplication by $2^{n+1}$, $Z_n$ is a sum of $n$
+independent uniforms plus the bounded perturbation $2X_2$, so the classical
+central limit theorem and the Berry--Esseen bound apply; dividing
+\eqref{p6:eq:Zn-cumulants} by $\sigma_n^{2m}\asymp n^m2^{-2mn}$ gives
+$\kappa_{2m}(W_n)=O(n^{1-m})$.
+\end{proof}
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.9\textwidth]{assets/Rvachev_Atomic_Functions_Report/fup_clt.png}
+\caption{Standardized $\Fup_n$ densities for $n=1,4,16,64$ against the
+standard Gaussian.  The exact fourth standardized cumulants are approximately
+$-0.456$, $-0.214$, $-0.0682$, $-0.0183$ (\cref{p6:thm:fupn-clt}).}
+\label{p6:fig:fup-clt}
+\end{figure}
+
+\begin{novelbox}
+The two continuations of the source's $\Fup_1$ complement each other.  The
+ladder $G_n$ of \cref{p6:prop:fup-ladder} keeps the support radius essentially
+fixed and converges to the rescaled atom $2\Up(2\,\cdot)$; the classical
+hierarchy $\Fup_n$ shrinks geometrically and, after standardization, converges
+to the Gaussian.  Both arise from redistributing cosine factors of the same
+binary sinc product, and both admit exact finite reconstructions of $\Up$: a
+$2^n$-translate average for the ladder, a $2^{n(n+1)/2}$-translate triangular
+mask for the hierarchy.  The general multiplicity-vector program of
+\cref{p6:sec:future-directions} now possesses two explicit one-parameter
+solution families.
+\end{novelbox}
 
 \section{Repository crosswalk: \texorpdfstring{$F$}{F}, \texorpdfstring{$\Up$}{up}, and the geometric-\texorpdfstring{$q$}{q} law}
 
@@ -9556,6 +9696,68 @@ in the finite-product asymptotics; and it provides a sharply normalized growth
 condition for future uniqueness theorems at general $a$.
 \end{novelbox}
 
+\subsection{Equimeasurability and the full \texorpdfstring{$L^p$}{Lp} ladder}
+
+For $a>2$ the separation of the $2^n$ summand supports upgrades the norm
+identities to a complete distributional statement (fifteenth wave).  Write
+$C_{a,n}=a^{n(n+3)/2}/2^n$ for the prefactor of
+\eqref{p6:eq:ha-derivative-hierarchy}.
+
+\begin{theorem}[Derivative equimeasurability]\label{p6:thm:equimeasurability}
+Let $a>2$, $n\ge1$, and let $\Phi:\R\to\R$ be Borel measurable, whenever the
+integrals exist.  Then
+\begin{align}
+ \frac1{2b_a}\int_{-b_a}^{b_a}\Phi\bigl(h_a^{(n)}(x)\bigr)\dd x
+ &=\Bigl[1-\bigl(\tfrac2a\bigr)^{n}\Bigr]\,\Phi(0)
+ \notag\\
+ &\quad+\tfrac12\bigl(\tfrac2a\bigr)^{n}\,
+  \frac1{2b_a}\int_{-b_a}^{b_a}
+   \bigl[\Phi\bigl(C_{a,n}h_a(t)\bigr)
+   +\Phi\bigl(-C_{a,n}h_a(t)\bigr)\bigr]\dd t.
+ \label{p6:eq:equimeasurability}
+\end{align}
+In particular, for every $1\le p<\infty$,
+\begin{equation}\label{p6:eq:Lp-ladder}
+ \boxed{\ \|h_a^{(n)}\|_p
+ =C_{a,n}\Bigl(\frac2a\Bigr)^{n/p}\|h_a\|_p,\ }
+\end{equation}
+interpolating the exact $L^1$ and $L^\infty$ identities of
+\cref{p6:thm:exact-derivative-norm}, and the set $\{h_a^{(n)}\ne0\}$ has
+relative measure exactly $(2/a)^n$ in the support.
+\end{theorem}
+
+\begin{proof}
+Each of the $2^n$ summands of \eqref{p6:eq:ha-derivative-hierarchy} is supported
+on its own cylinder interval $I_{\boldsymbol\varepsilon}$ of length
+$2b_aa^{-n}$; the cylinders are pairwise disjoint, and off their union the
+derivative vanishes, which accounts for the atom at $0$ with weight
+$1-(2/a)^n$.  On one cylinder the substitution
+$t=a^nx+s_a(\boldsymbol\varepsilon)$ maps onto $(-b_a,b_a)$ with
+$\dd x=a^{-n}\dd t$ and turns the summand into
+$w(\boldsymbol\varepsilon)C_{a,n}h_a(t)$; exactly half of the $2^n$ weights
+$w(\boldsymbol\varepsilon)$ are $+1$ and half are $-1$.  Summing the cylinders
+gives \eqref{p6:eq:equimeasurability}, and $\Phi(u)=|u|^p$ gives
+\eqref{p6:eq:Lp-ladder}.
+\end{proof}
+
+\begin{corollary}[Exact derivative-value law]\label{p6:cor:derivative-mixture}
+If $Y$ is uniform on $(-b_a,b_a)$, then
+\[
+ h_a^{(n)}(Y)\ \overset d=\
+ \begin{cases}
+  0 & \text{with probability }1-(2/a)^n,\\
+  \pm\,C_{a,n}\,h_a(Y') & \text{each with probability }\tfrac12(2/a)^n,
+ \end{cases}
+\]
+where $Y'$ is again uniform on $(-b_a,b_a)$ and the fair sign is independent
+of $Y'$.  Thus every derivative is an amplified, fairly signed, sparsely
+supported copy of $h_a$ itself.
+\end{corollary}
+
+At $a=2$ the cylinders tile the support up to a null set, so the same change
+of variables gives the all-$p$ identity
+$\|\Up^{(n)}\|_p=2^{n(n+1)/2}\|\Up\|_p$, with no atom at zero.
+
 \section{The fractal spline atlas for \texorpdfstring{$a>2$}{a greater than 2}}\label{p6:sec:symbolic-localization}
 
 \subsection{The exceptional self-similar set}
@@ -9680,6 +9882,31 @@ This removes the possibility of an exceptional algebraic cancellation: every
 word of length $r$ carries a genuinely degree-$r$ piece, with a leading
 derivative whose magnitude is the global $r$th-derivative norm.
 
+\begin{corollary}[Signed leading coefficient]\label{p6:cor:signed-leading}
+Let $|\omega|=r$ and let $N_+(\omega)$ be the number of $+$ symbols in
+$\omega$.  On $G_\omega$ the polynomial piece of $h_a$ has leading coefficient
+\begin{equation}\label{p6:eq:signed-leading}
+ L_\omega=(-1)^{N_+(\omega)}\,
+ \frac{a^{(r+1)(r+2)/2}}{2^{\,r+1}\,r!}.
+\end{equation}
+\end{corollary}
+
+\begin{proof}
+The magnitude is \eqref{p6:eq:gap-leading-derivative} divided by $r!$, since
+$a^{r(r+3)/2+1}=a^{(r+1)(r+2)/2}$.  For the sign, follow the one-branch
+induction in the proof of \cref{p6:prop:polynomial-gap}: on the image
+$T_+(G)$ of a gap $G$ only the branch $-h_a(ax-1)$ of
+\eqref{p6:eq:ha-diffeq} survives after differentiation, reversing the sign of
+the leading derivative, while on $T_-(G)$ the surviving branch $+h_a(ax+1)$
+preserves it.  Starting from the positive plateau value $a/2$ on
+$G_\varnothing$, each $+$ letter contributes one sign reversal (fifteenth
+wave).
+\end{proof}
+
+The first magnitudes at $a=3$ are $\tfrac32$, $\tfrac{27}4$,
+$\tfrac{3^6}{16}$, and $\tfrac{3^{10}}{96}$; the fifteenth-wave package
+verifies these by polynomial fits on all gaps through generation three.
+
 \subsection{Derivative localization on \texorpdfstring{$K_a$}{K-a}}
 
 For $x\in K_a$, the separated expansion
@@ -9781,6 +10008,32 @@ along infinitely many $n$.
 The source states this dichotomy in a longer signed-radix calculation.  The
 one-branch formula reduces it to the elementary observation that every
 non-eventually-constant binary word contains infinitely many changes.
+
+\begin{remark}[Endpoint jet reduction and the exact engine]
+\label{p6:rem:jet-reduction}
+At a generation-$n$ cylinder endpoint $x$ the digit sequence is eventually
+constant, and the shifted point $\mathcal T_a^{\ell}x$ is again a cylinder
+endpoint, of generation $n-\ell$.  \Cref{p6:thm:symbolic-localization} then reads
+as an exact jet reduction: for $0\le\ell<n$,
+\begin{equation}\label{p6:eq:jet-reduction}
+ h_a^{(\ell)}(x)
+ =\pm\,\frac{a^{\ell(\ell+3)/2}}{2^{\ell}}\,
+ h_a\bigl(\mathcal T_a^{\ell}x\bigr),
+\end{equation}
+with the sign $(-1)^{\ell}\prod_{r\le\ell}\varepsilon_r$ from the digits
+consumed.  The fifteenth-wave package writes \eqref{p6:eq:jet-reduction} in a
+fully binary-indexed form with the Thue--Morse sign spelled out, repairing the
+damaged source indices (3.51)--(3.58), and combines it with the Taylor
+remainder into an explicit chain
+\begin{gather*}
+ \text{Bernoulli numbers}\to\text{cumulants}\to\text{moments}\\
+ \to\text{endpoint values}\to\text{endpoint jets}
+ \to\text{every gap polynomial},
+\end{gather*}
+an exact symbolic engine for $h_a$ over $\Q(a)$ at any algebraic base.  With
+\cref{p6:cor:signed-leading} certifying the top coefficient independently, the
+engine is self-checking.
+\end{remark}
 
 \begin{figure}[H]
 \centering
@@ -10563,6 +10816,38 @@ The lower branch is required because $u\to+\infty$ as $y\downarrow0$; see~\cite{
 For $a=2$, this is exactly the coordinate used in the repository's inverse and
 small-argument expansions.
 
+\subsection{The edge pantograph equation}
+
+The same structure is visible without any transform (fifteenth wave).  Let
+$g_a(u)=h_a(-b_a+u)$ for $0\le u\le2b_a$.  For $0\le u\le2/a$ the branch
+$h_a(a(-b_a+u)-1)$ of \eqref{p6:eq:ha-diffeq} lies outside the support, while
+$a(-b_a+u)+1=-b_a+au$, so the edge profile solves the pantograph equation
+\begin{equation}\label{p6:eq:edge-pantograph}
+ g_a'(u)=\frac{a^2}{2}\,g_a(au),
+ \qquad 0\le u\le\frac2a,
+\end{equation}
+and iterating along the flat edge gives the exact identity
+\begin{equation}\label{p6:eq:edge-iterated}
+ g_a^{(n)}(u)=\frac{a^{n(n+3)/2}}{2^n}\,g_a\bigl(a^nu\bigr),
+ \qquad 0\le u\le2a^{-n},
+\end{equation}
+the endpoint case of the one-branch localization
+\eqref{p6:eq:symbolic-localization}.  Normalizing by
+$F_a(x)=\tfrac2a\,h_a(-b_a+b_ax)$ produces a generalized Fabius profile with
+$F_2=F$ on $[0,1]$ and
+\begin{equation}\label{p6:eq:Fa-pantograph}
+ F_a'(x)=\frac{a^2}{2(a-1)}\,F_a(ax),
+ \qquad 0\le x\le\frac{2(a-1)}{a},
+\end{equation}
+with $h_a$ extended by zero beyond its support; for $a\ge\tfrac32$ this range
+contains $[0,1/a]$, on which the recursion is closed in the unit
+normalization, and at $a=2$ it specializes to the repository identity
+$F'(x)=2F(2x)$.
+Pantograph equations of this type sit alongside de Rham's functional
+equations~\cite{p6:derham}, and \eqref{p6:eq:edge-iterated} already forces the
+quadratic-in-depth exponents whose inversion is Lambert-$W$; the following
+subsections make that heuristic exact at the transform level.
+
 \subsection{The exact periodic decomposition in every base}
 
 The heuristics above are now made exact (fourteenth wave).  For $u>0$, put
@@ -10885,10 +11170,37 @@ approach $1-\e^{-x}$ (\cref{p6:fig:tube-oscillation,p6:fig:degree-limit};
 \item \textbf{Bell moments.}  For $a=2.6$, a fixed-seed simulation of
 $250{,}000$ random sums confirms the exact Bell moments
 \eqref{p6:eq:moment-recurrence} through order ten at the expected Monte Carlo
-accuracy (\texttt{data/moment\_validation\_a\_2\_6.csv}).  This is the only
-Monte Carlo item in either package; every identity it touches is also verified
-exactly.
+accuracy (\texttt{data/moment\_validation\_a\_2\_6.csv}).
 \end{itemize}
+
+\subsection{Fifteenth-wave verification package}
+
+The third package is preserved under
+\path{assets/Rvachev_Atomic_Functions_Report/}.  Its deterministic script
+\texttt{numerical\_experiments.py} verifies the layers merged from the
+fifteenth wave by iterating the exact fixed-point operator
+$T_af(x)=\tfrac a2\int_{ax-1}^{ax+1}f$ on a support grid.
+\begin{itemize}
+\item \textbf{Fixed-point anatomy of $h_3$.}  Mass one to
+$2.3\times10^{-16}$, reflection symmetry to $1.4\times10^{-13}$, and the
+exact plateau $h_3=\tfrac32$ on $[-\tfrac16,\tfrac16]$
+(\texttt{ha\_a3\_diagnostics.csv}).
+\item \textbf{Signed leading coefficients.}  Polynomial fits on every gap
+through generation three recover \eqref{p6:eq:signed-leading}, including the
+magnitudes $\tfrac32$, $\tfrac{27}4$, $\tfrac{3^6}{16}$, $\tfrac{3^{10}}{96}$
+(\texttt{polynomial\_gap\_fit\_a3.csv}, \texttt{gap\_length\_check\_a3.csv}).
+\item \textbf{Degree law.}  A $400{,}000$-point uniform sample at $a=3$
+(\texttt{local\_degree\_monte\_carlo.txt}) gives empirical mean $2.003075$
+and variance $6.02305$ against the exact values $2$ and $6$ of
+\cref{p6:thm:degree-law}.
+\item \textbf{$\Fup_n$ Gaussian regime.}  Samples drawn directly from
+\eqref{p6:eq:Zn-def} match the exact standardized cumulants of
+\cref{p6:thm:fupn-clt} (\texttt{fup\_clt\_cumulants.csv};
+\cref{p6:fig:fup-clt}).
+\end{itemize}
+The degree-law samples here and the Bell-moment samples above are the only
+Monte Carlo items in the three packages; every identity they touch is also
+verified exactly.
 
 \section{Conjectures and future research directions}\label{p6:sec:future-directions}
 
@@ -10937,8 +11249,13 @@ derivative amplitudes of \cref{p6:prop:polynomial-gap}.
 For every $1<a\le2$, the density $h_a$ is nonanalytic at every point of the
 open interior of its support.  The case $a=2$ is the source theorem.  For
 $1<a<2$ the two refinement branches overlap, so the gap-degree and one-branch
-localization arguments disappear; a proof may require a transfer-operator or
-quasi-analyticity criterion adapted to the dilation equation.
+localization arguments disappear.  Global nonanalyticity on the full support
+is easy: the Fourier transform decays only quadratic-logarithmically, which no
+function analytic on a neighborhood of its compact support can match.  The
+open problem is pointwise: a proof may require a localized Paley--Wiener
+criterion stable under the overlap refinement operator, or a transfer-operator
+argument, and the cases of Pisot, Salem, algebraic non-Pisot, and
+transcendental $a$ may need different orbit estimates (fifteenth wave).
 \end{conjecture}
 
 \begin{conjecture}[Arithmetic of algebraic breakpoints]
@@ -10960,6 +11277,30 @@ obstruction to a simple relation would clarify how the geometry of $K_a$ and
 the endpoint probability of $X_a$ decouple.
 \end{conjecture}
 
+\begin{conjecture}[Uniform all-orders Edgeworth expansion for $\Fup_n$]
+The standardized density of $\Fup_n$ admits, uniformly on $\R$, an Edgeworth
+expansion to arbitrary order, with coefficients that are explicit polynomials
+in Bernoulli numbers and Hermite polynomials generated by the exact cumulants
+\eqref{p6:eq:Zn-cumulants}, and a remainder one order smaller than the last
+retained term.  Compact support, a standardization-uniform Cram\'er condition,
+and control of the scaled $X_2$ remainder are the expected ingredients
+(fifteenth wave).  This discrete-index expansion is the companion of the
+continuous-parameter Edgeworth program for $a\downarrow1$ in
+\cref{p6:sec:parameter-limits}.
+\end{conjecture}
+
+\begin{conjecture}[Graph-directed atomic splines]
+For an $m$-branch first-order atomic equation whose affine images satisfy the
+open-set condition, the nonanalyticity set is the graph-directed attractor of
+the branch system, the complementary components carry polynomials of exact
+finite degree, and the dimension of the nonanalyticity set is the zero of the
+associated pressure determinant.  The two-branch theory of
+\cref{p6:sec:symbolic-localization,p6:sec:fractal-string} is the simplest
+case; unequal contraction ratios and matrix-valued masks should produce
+graph-directed smooth fractal splines with the same four-layer structure
+(gap atlas, degree law, fractal string, tube formula).
+\end{conjecture}
+
 \subsection{Promising proof programs}
 
 \subsubsection{Symbolic dynamics and quantitative Taylor growth}
@@ -10969,6 +11310,15 @@ The next problem is quantitative: determine the limsup and liminf of
 $\log|h_a^{(n)}(x)|/n^2$ from recurrence statistics of the digit shift, and
 classify points whose derivatives exhibit prescribed subleading growth.  This
 links multifractal symbolic dynamics to Denjoy--Carleman-type local regularity.
+The fifteenth wave sharpens the target: the Taylor-growth exponent
+\[
+ \tau(x)=\limsup_{n\to\infty}
+ \frac{\log\bigl(|h_a^{(n)}(x)|/n!\bigr)}{n^2}
+\]
+should have level sets whose dimensions are given by a pressure function for
+the two-shift coding of $K_a$ --- the one-branch formula expresses the active
+term as a cocycle over the full shift, so a subadditive thermodynamic
+formalism with bounded distortion is the natural machine.
 
 \subsubsection{Strang--Fix necessity and multi-generator extensions}
 The rational-power theorem supplies a sharp sufficient arithmetic condition.
@@ -11036,6 +11386,12 @@ uniform limit is an explicit coupling; and the exact periodic decomposition
 independent of any Mellin theory.  Only the Gamma--zeta mode formula requires
 the strip-extended kernel transform already listed as an obligation in
 Part~I.
+\item Likewise the fifteenth-wave layers: the signed leading coefficient is
+the same one-branch induction that gives the degree; equimeasurability is a
+change of variables over disjoint cylinders; the $\Fup_n$ cumulants are
+finite cumulant additivity; and the triangular reconstruction is an iterated
+halving identity.  Only the Berry--Esseen constant in the $\Fup_n$ central
+limit imports nonelementary input.
 \item Keep the endpoint saddle, overlapping-regime strict log-concavity, and
 critical double-scaling claims in the frontier volume until their exact
 hypotheses and remainders are checked.
@@ -11100,9 +11456,14 @@ endpoint evaluation & \Cref{p6:thm:gap-decomposition,p6:prop:polynomial-gap,p6:t
 
 The fourteenth-wave package reconstructed the same equation ranges
 independently under the labels (S3.1)--(S3.100) and reached identical
-readings; its OCR-reconstruction ledger (recurring glyph confusions and the
-two damaged ranges) is preserved verbatim in
-\path{assets/Atomic_Functions_Beyond_Dyadic_Report/Atomic_Functions_Beyond_Dyadic.tex}.
+readings, as did the fifteenth-wave package with its own repairs ledger and
+crosswalk table (which additionally records the chapter-number typo
+``(8.85)'' for (3.85) and rebuilds the damaged endpoint indexing of
+(3.51)--(3.58) in binary-encoded form).  Both ledgers are preserved verbatim
+in
+\path{assets/Atomic_Functions_Beyond_Dyadic_Report/Atomic_Functions_Beyond_Dyadic.tex}
+and
+\path{assets/Rvachev_Atomic_Functions_Report/Atomic_Functions_Rvachev_Report.tex}.
 
 \section{Reproducibility and package contents}
 
@@ -11139,6 +11500,18 @@ and \texttt{SHA256SUMS}.  From that directory,
 python experiments.py --output .
 \end{lstlisting}
 regenerates every figure and table deterministically.
+
+The fifteenth-wave archive
+(\path{assets/Rvachev_Atomic_Functions_Report/}) contains the merged report
+source \texttt{Atomic\_Functions\_Rvachev\_Report.tex}, the deterministic
+script \texttt{numerical\_experiments.py} (Python 3.10+, NumPy, SciPy,
+Matplotlib), the three figures, six CSV/TXT diagnostic tables,
+\texttt{README.md}, \texttt{requirements.txt}, and \texttt{SHA256SUMS.txt};
+running
+\begin{lstlisting}[style=repoPython]
+python numerical_experiments.py
+\end{lstlisting}
+regenerates all of them.
 
 \begin{thebibliography}{99}
 
@@ -11242,6 +11615,12 @@ Springer Monographs in Mathematics, Springer, 2013.
 P. Flajolet, X. Gourdon, and P. Dumas,
 ``Mellin transforms and asymptotics: Harmonic sums,''
 \emph{Theoretical Computer Science} 144 (1995), 3--58.
+
+\bibitem{p6:derham}
+G. de Rham,
+``Sur quelques courbes d\'efinies par des \'equations fonctionnelles,''
+\emph{Rendiconti del Seminario Matematico dell'Universit\`a e del Politecnico
+di Torino} 16 (1956--1957), 101--113.
 
 \end{thebibliography}
 
