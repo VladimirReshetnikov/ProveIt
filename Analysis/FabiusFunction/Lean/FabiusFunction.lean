@@ -113,6 +113,7 @@ import FabiusFunction.MomentHankelValues
 import FabiusFunction.OrthogonalPolynomialConstruction
 import FabiusFunction.OrthogonalPolynomialValues
 import FabiusFunction.OrthogonalPolynomialParity
+import FabiusFunction.OrthogonalPolynomialRecurrence
 import FabiusFunction.CompositeMeshExactness
 import FabiusFunction.CauchySurvival
 import FabiusFunction.CauchyHigherPowers

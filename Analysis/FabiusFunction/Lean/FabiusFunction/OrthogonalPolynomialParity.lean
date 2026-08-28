@@ -144,7 +144,8 @@ theorem integral_upOrthoPolynomial_mul_pow_eq_zero_of_odd
       ∂(rvachevMeasure F) =
       -∫ x, (upOrthoPolynomial F n).eval x * x ^ j
       ∂(rvachevMeasure F) := by
-    rw [← hneg, ← MeasureTheory.integral_neg]
+    conv_lhs => rw [← hneg]
+    rw [← MeasureTheory.integral_neg]
     exact integral_congr_ae
       (Filter.Eventually.of_forall fun x => hpt x)
   linarith [hI]
@@ -168,7 +169,8 @@ theorem integral_mul_sq_upOrthoPolynomial_eq_zero (F : BoundedFabius)
       ∂(rvachevMeasure F) =
       -∫ x, x * (upOrthoPolynomial F n).eval x ^ 2
       ∂(rvachevMeasure F) := by
-    rw [← hneg, ← MeasureTheory.integral_neg]
+    conv_lhs => rw [← hneg]
+    rw [← MeasureTheory.integral_neg]
     exact integral_congr_ae
       (Filter.Eventually.of_forall fun x => hpt x)
   linarith [hI]
