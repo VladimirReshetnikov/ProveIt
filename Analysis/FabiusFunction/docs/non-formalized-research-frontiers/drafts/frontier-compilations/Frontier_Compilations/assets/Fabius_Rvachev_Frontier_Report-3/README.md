@@ -1,11 +1,15 @@
 # Zero-Divisor-Preserving q-Richardson Extrapolation
 
-This archive accompanies the report
+This archived companion bundle preserves the reproducible computations and
+source data that accompanied the report
 
 > **Zero-Divisor-Preserving q-Richardson Extrapolation for the Fabius–Rvachev Sinc Product**
 
 prepared from a recursive audit of the LaTeX documentation under
 `Analysis/FabiusFunction/docs` in Vladimir Reshetnikov's `ProveIt` repository.
+The formerly standalone manuscript now appears in the consolidated frontier
+volume: its source is `../../Frontier_Compilations.tex`, and its rendered PDF
+is `../../Frontier_Compilations.pdf`.
 
 ## Audited snapshot
 
@@ -41,10 +45,10 @@ The report develops two theorem packages that were not found in the audited corp
 Novelty is claimed relative to the pinned repository corpus and the targeted literature
 search recorded in the report, not as an unconditional worldwide priority claim.
 
-## Archive contents
+## Archived companion contents
 
-- `fabius_frontier_report.tex` — complete report source.
-- `fabius_frontier_report.pdf` — rendered report.
+- `../../Frontier_Compilations.tex` — source of the consolidated volume containing this report.
+- `../../Frontier_Compilations.pdf` — rendered consolidated volume.
 - `corpus_manifest.txt` — exact recursive path inventory.
 - `corpus_manifest_table.tex` — breakable LaTeX form of the inventory.
 - `code/frontier_experiments.py` — fully commented high-precision experiment suite.
@@ -74,19 +78,24 @@ The script has no network dependency. It regenerates `data/`, `figures/`, and
 q-Lagrange identities, exact coefficient series, and direct sinc products. With the
 versions used to prepare the archive, a complete run takes only a few seconds.
 
-## Rebuild the PDF
+## Rebuild the consolidated PDF
 
-A reasonably complete TeX Live installation is sufficient. From the archive root:
+A reasonably complete TeX Live installation is sufficient. From this archived
+companion directory, run exactly three serial `pdflatex` passes:
 
 ```bash
-latexmk -pdf -interaction=nonstopmode -halt-on-error fabius_frontier_report.tex
+cd ../..
+pdflatex -interaction=nonstopmode -halt-on-error Frontier_Compilations.tex
+pdflatex -interaction=nonstopmode -halt-on-error Frontier_Compilations.tex
+pdflatex -interaction=nonstopmode -halt-on-error Frontier_Compilations.tex
 ```
 
-The document uses Libertinus when available and falls back to Latin Modern.
+These commands rebuild `../../Frontier_Compilations.pdf`. The document uses
+Libertinus when available and falls back to Latin Modern.
 
 ## Verification notes
 
 The packaged numerical outputs were regenerated from a clean temporary directory and
-compared byte-for-byte with the included CSV and PNG files. The final PDF was rendered
-page by page at 180 dpi and visually inspected for clipping, overlap, broken glyphs, and
-unreadable equations.
+compared byte-for-byte with the included CSV and PNG files. Before consolidation, the
+standalone PDF was rendered page by page at 180 dpi and visually inspected for clipping,
+overlap, broken glyphs, and unreadable equations.

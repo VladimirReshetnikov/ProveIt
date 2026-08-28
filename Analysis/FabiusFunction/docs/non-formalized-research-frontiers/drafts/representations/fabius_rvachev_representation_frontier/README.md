@@ -10,7 +10,7 @@ prepared on 27 August 2026 from a recursive audit of the LaTeX document corpus u
 ## Package contents
 
 - `fabius_rvachev_representation_frontier_report.tex` -- complete LaTeX source.
-- `fabius_rvachev_representation_frontier_report.pdf` -- compiled 34-page report.
+- `fabius_rvachev_representation_frontier_report.pdf` -- compiled A4 report.
 - `numerical_experiments.py` -- fully commented, deterministic numerical checks.
 - `figures/gamma_factorization_convergence.png` -- dyadic-gamma factorization check.
 - `figures/jensen_mean_comparison.png` -- exact versus numerical Jensen circular mean.
@@ -89,11 +89,15 @@ See `figures/numerical_results.txt` for all recorded values and truncation diagn
 
 ## Compiling the report
 
-A standard TeX Live installation with `latexmk` and the packages named in the preamble is sufficient. From the package root:
+A standard TeX Live installation with the Libertinus Type 1 fonts and the
+packages named in the preamble is sufficient. From the package root, run
+exactly three serial passes:
 
 ```bash
-latexmk -pdf -interaction=nonstopmode -halt-on-error \
-  fabius_rvachev_representation_frontier_report.tex
+pdflatex -interaction=nonstopmode -halt-on-error fabius_rvachev_representation_frontier_report.tex
+pdflatex -interaction=nonstopmode -halt-on-error fabius_rvachev_representation_frontier_report.tex
+pdflatex -interaction=nonstopmode -halt-on-error fabius_rvachev_representation_frontier_report.tex
+pdffonts fabius_rvachev_representation_frontier_report.pdf | grep Libertinus
 ```
 
 The figure paths are relative, so compilation should be run from the package root or with an equivalent TeX input path.
@@ -102,10 +106,10 @@ The figure paths are relative, so compilation should be run from the package roo
 
 The supplied PDF was compiled with `pdflatex`/`latexmk`, inspected structurally, and rendered page-by-page at 180 dpi. The final build has:
 
-- 34 US-letter pages;
-- embedded fonts;
+- 32 A4 pages;
+- embedded and subset fonts, including Libertinus prose fonts;
 - 79 outline entries;
 - no unresolved cross-references;
-- no overfull boxes;
+- two overfull display boxes (maximum 20.843 pt), neither visibly clipped;
 - no PDF-bookmark math warnings;
 - no visually observed clipping, overlap, broken glyphs, or missing figures.

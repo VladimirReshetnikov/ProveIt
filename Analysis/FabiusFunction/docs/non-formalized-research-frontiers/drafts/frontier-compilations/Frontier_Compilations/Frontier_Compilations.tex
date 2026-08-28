@@ -3,7 +3,7 @@
 \usepackage[a4paper,margin=27mm,headheight=14pt]{geometry}
 \usepackage[T1]{fontenc}
 \usepackage[utf8]{inputenc}
-\usepackage{lmodern}
+\IfFileExists{libertinus.sty}{\usepackage{libertinus}}{\usepackage{lmodern}}
 \usepackage{microtype}
 \usepackage{amsmath,amssymb,amsthm,mathtools,bm}
 \allowdisplaybreaks
@@ -12,6 +12,8 @@
 \usepackage{xcolor}
 \usepackage{hyperref}
 \usepackage[nameinlink,capitalise,noabbrev]{cleveref}
+\crefname{conjecture}{conjecture}{conjectures}
+\Crefname{conjecture}{Conjecture}{Conjectures}
 \usepackage{tikz}
 \usepackage{pgfplots}
 \pgfplotsset{compat=1.18}
@@ -3683,7 +3685,6 @@ V.~Reshetnikov,
 \crefname{proposition}{proposition}{propositions}
 \crefname{lemma}{lemma}{lemmas}
 \crefname{corollary}{corollary}{corollaries}
-\crefname{conjecture}{conjecture}{conjectures}
 \crefname{problem}{problem}{problems}
 \crefname{definition}{definition}{definitions}
 \crefname{algorithm}{algorithm}{algorithms}
@@ -11414,7 +11415,7 @@ x=\lambda 2^{-\lambda},\qquad \lambda>\frac1L.
 \end{equation}
 The lower branch is essential: on $\lambda>1/L$, the map $\lambda\mapsto\lambda2^{-\lambda}$ is strictly decreasing and hence invertible.
 
-\part{Exact logarithmic tails and multiplicative \texorpdfstring{$q$}{q}-Richardson acceleration}
+\section{Exact logarithmic tails and multiplicative \texorpdfstring{$q$}{q}-Richardson acceleration}
 
 \section{The exact Bernoulli--zeta tail of a lacunary sinc product}
 \label{p8:sec:tail}
@@ -12024,7 +12025,7 @@ P(3)=0.585719176535068482912529262451\ldots.
 \end{equation}
 Even at $N=2$, the third transformed level improves the raw log error by approximately ten decimal orders while using only truncations through $N+3=5$.
 
-\part{Lambert phase-locked extraction of the endpoint oscillation}
+\section{Lambert phase-locked extraction of the endpoint oscillation}
 
 \section{The all-orders endpoint template}
 \label{p8:sec:lambert-template}
@@ -12324,7 +12325,7 @@ $\log_{10}\kappa_r^{\mathrm L}(\lambda)$ guard digits;
 \item compare $r$ and $r+1$ transforms as an a posteriori diagnostic, while remembering that no sign bracket is presently available because the signs of $A_m(\lambda)$ are not known globally.
 \end{enumerate}
 
-\part{Unified interpretation, formalization path, and research program}
+\section{Unified interpretation, formalization path, and research program}
 
 \section{Two extrapolation geometries}
 \label{p8:sec:dual-geometries}
