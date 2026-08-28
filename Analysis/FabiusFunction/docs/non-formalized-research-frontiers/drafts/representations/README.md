@@ -24,10 +24,18 @@ unit-interval law with the affine image of the up measure.
 `CauchyTransform.lean` defines the report-sign Cauchy--Stieltjes transforms and
 proves their measure forms, the up-density form, holomorphy off the named interval cuts,
 first-derivative kernel formulas, and the affine bridge
-`S(z) = 2 R(2z - 1)`.  `AffineDifferenceOrbit.lean` formalizes the reusable
-conditional all-order passage.  The logarithmic fixed point, the one-step
-resolvent DDE, and hence its measure-specific Thue--Morse orbit and kernel
-identity remain open.)
+`S(z) = 2 R(2z - 1)`.  `CauchyCDF.lean` proves atom-exact compact-support
+integration by parts for arbitrary finite measures with almost-everywhere
+interval support, its probability-CDF normalization, and
+`S(z) = (z - 1)⁻¹ - ∫₀¹ F(t) (z - t)⁻² dt` off `[0,1]`.
+`CauchyRenormalization.lean` proves that both dyadic branches preserve the
+up-transform slit domain, establishes
+`R'(z) = 2 (R(2z + 1) - R(2z - 1))` there, and instantiates the reusable
+`AffineDifferenceOrbit.lean` engine to obtain the exact all-order finite
+Thue--Morse derivative orbit.  The logarithmic fixed point, the separate
+higher-Cauchy-kernel integral identity, a named Stieltjes-transform DDE,
+boundary/Plemelj formulas, moment/Laurent expansions, generalized order, and
+Jacobi/Padé theory remain open.)
 
 The mathematical bodies of the member drafts were preserved (labels,
 citation keys, and asset paths were mechanically prefixed per part),

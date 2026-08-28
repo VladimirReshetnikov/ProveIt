@@ -234,6 +234,8 @@ import FabiusFunction.PerronRootEnclosure
 import FabiusFunction.MeasureRefinement
 import FabiusFunction.RandomSeriesLaw
 import FabiusFunction.CauchyTransform
+import FabiusFunction.CauchyCDF
+import FabiusFunction.CauchyRenormalization
 import FabiusFunction.UniformSplineWeakConvergence
 import FabiusFunction.DyadicSpecializations
 

@@ -514,6 +514,28 @@ Expanding \(\mu_{\mathrm{up}}=\rho(x)\,\dd x\) recovers the corresponding densit
 The total Lean definition follows the Bochner-integral convention at points where the
 kernel is not integrable; the analytic Cauchy-transform interpretation is asserted only
 off the cut.
+
+The companion \path{CauchyCDF.lean} proves the atom-exact compact-support formula
+
+\[
+ \int\frac{\dd\mu(x)}{z-x}
+ =\mu(\R)\frac1{z-b}
+  -\int_a^b\frac{\mu((-\infty,t])}{(z-t)^2}\,\dd t .
+\]
+
+Its generic declaration
+\path{integral_inv_sub_eq_mass_smul_sub_intervalIntegral_measureReal_Iic}
+assumes only a finite measure, \(a\leq b\), almost-everywhere support on
+\([a,b]\), and \(z\) outside the complexified interval.  The declaration
+\path{integral_inv_sub_eq_sub_intervalIntegral_cdf} gives the probability
+normalization, and
+\path{fabiusStieltjesTransform_eq_inv_sub_one_sub_intervalIntegral_fabiusReal}
+specializes it on \path{fabiusStieltjesDomain} to
+\[
+ S(z)=\frac1{z-1}-\int_0^1\frac{F(t)}{(z-t)^2}\,\dd t .
+\]
+Closed lower rays retain atoms exactly.  These declarations do not supply the
+higher resolvent-power, logarithmic, inverse-quantile, or boundary formulas below.
 \end{remark}
 
 The transform \(R\) is odd because \(\rho\) is even.  It is an anti-Herglotz function:
@@ -726,11 +748,28 @@ Thus the conditional passage from \eqref{p1:eq:R-dde} to
 \path{iteratedDeriv_rvachevUp_eq_thueMorse_sum} applies the same engine to the
 already formalized differential equation for \(\rho\), globally on the real line.  The
 transform definition, density formula, natural-domain holomorphy, first Cauchy-kernel
-derivative, and affine identity \(S(z)=2R(2z-1)\) are now formalized in
-\path{CauchyTransform.lean}.  That module does not prove
-\eqref{p1:eq:R-log-fixed} or \eqref{p1:eq:R-dde}; the application of the generic orbit
-theorem to the complex resolvent \(R\), and the kernel identity
-\eqref{p1:eq:R-kernel-tree}, remain formalization obligations.
+derivative, and affine identity \(S(z)=2R(2z-1)\) are formalized in
+\path{CauchyTransform.lean}.
+
+The five public theorems in \path{CauchyRenormalization.lean} now close the
+one-step and derivative-orbit obligations.  The declarations
+\path{mapsTo_rvachevCauchyDomain_two_mul_add_one} and
+\path{mapsTo_rvachevCauchyDomain_two_mul_sub_one} prove that both dyadic
+branches preserve the slit domain.  For every bounded Fabius solution and
+every \(z\in\C\setminus[-1,1]\),
+\path{hasDerivAt_rvachevCauchyTransform_affineDifference} and
+\path{deriv_rvachevCauchyTransform} prove \eqref{p1:eq:R-dde} directly, without
+using the logarithmic fixed point.  Finally,
+\path{iteratedDeriv_rvachevCauchyTransform_eq_thueMorse_sum} instantiates the
+generic open-domain engine and proves exactly the derivative formula
+\eqref{p1:eq:R-derivative-tree} for every \(n\in\N\).  The affine bridge makes
+the corresponding unit-interval Stieltjes derivative relation an immediate
+mathematical consequence, but no named Stieltjes-DDE declaration is exported.
+
+The logarithmic identity \eqref{p1:eq:R-log-fixed} and the separate conversion
+of the all-order derivative orbit into the higher-kernel integral identity
+\eqref{p1:eq:R-kernel-tree} remain formalization obligations, as do the
+boundary/Plemelj, Laurent/moment, generalized-order, and Jacobi--Pad\'e layers.
 \end{proof}
 
 Taking boundary imaginary parts in \eqref{p1:eq:R-derivative-tree} recovers the familiar
@@ -1520,10 +1559,12 @@ A Lean development can be staged as follows:
 \item postpone the Denisov--Rakhmanov limit, which depends on substantial external
       orthogonal-polynomial theory.
 \end{enumerate}
-Item 1 is delivered by \path{CauchyTransform.lean}.  Items 2--3 remain open.  The generic
-conditional engine and finite affine-cube induction in item 4 are delivered by
-\path{AffineDifferenceOrbit.lean}, but cannot be instantiated for \(R\) until item 3 is
-available.
+Item 1 is delivered by \path{CauchyTransform.lean}.  Item 2 remains open.
+\path{CauchyRenormalization.lean} delivers item 3 directly from the differential
+refinement equation and compact support, without depending on item 2, and instantiates
+the generic engine from \path{AffineDifferenceOrbit.lean} to deliver the derivative
+formula in item 4.  The higher-kernel integral conversion stated in
+\eqref{p1:eq:R-kernel-tree}, as well as items 5--7, remains open.
 \end{problem}
 
 \section{Promising research program}

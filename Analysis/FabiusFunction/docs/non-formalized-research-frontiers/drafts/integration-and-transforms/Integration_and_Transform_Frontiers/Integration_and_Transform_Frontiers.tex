@@ -412,9 +412,59 @@ formulas \eqref{p5:eq:S-def}, \eqref{p5:eq:Cauchy-up},
 and \eqref{p8:eq:Cauchy-def}, but not every alternate
 quantile or inverse-integral presentation attached to those labels.
 
-No logarithmic potential or fixed point, moment or Laplace/Fourier expansion,
-integration-by-parts representation through \(F\), boundary/Plemelj theorem, resolvent
-DDE, higher derivative orbit, generalized complex order, or Jacobi fraction is claimed.
+\path{CauchyCDF.lean} adds three atom-exact integration-by-parts declarations.
+For a finite measure, \(a\leq b\), almost-everywhere support on \([a,b]\), and
+\(z\) outside the complexified interval,
+\path{Fabius.integral_inv_sub_eq_mass_smul_sub_intervalIntegral_measureReal_Iic}
+proves
+\[
+ \int\frac{\dd\mu(x)}{z-x}
+ =\mu(\R)\frac1{z-b}
+  -\int_a^b\frac{\mu((-\infty,t])}{(z-t)^2}\,\dd t .
+\]
+The closed lower ray retains atoms.  The probability normalization
+\path{Fabius.integral_inv_sub_eq_sub_intervalIntegral_cdf} exposes
+Mathlib's CDF, and
+\path{Fabius.fabiusStieltjesTransform_eq_inv_sub_one_sub_intervalIntegral_fabiusReal}
+gives, for every bounded Fabius solution and
+\(z\in\mathtt{fabiusStieltjesDomain}\),
+\[
+ S_{\rm unit}(z)=\frac1{z-1}
+  -\int_0^1\frac{F(t)}{(z-t)^2}\,\dd t .
+\]
+Thus the Fabius-CDF formulas \eqref{p4:eq:resolvent-F-2} and
+\eqref{p10:eq:resolvent-F-2} are discharged exactly.  Their survival
+companions and the full higher-power families are not exported by this module.
+
+\path{CauchyRenormalization.lean} adds five public theorems.  The declarations
+\path{Fabius.mapsTo_rvachevCauchyDomain_two_mul_add_one} and
+\path{Fabius.mapsTo_rvachevCauchyDomain_two_mul_sub_one} prove that both
+dyadic branches preserve the slit domain.  For every bounded Fabius solution
+and every \(z\in\mathtt{rvachevCauchyDomain}\),
+\path{Fabius.hasDerivAt_rvachevCauchyTransform_affineDifference} and
+\path{Fabius.deriv_rvachevCauchyTransform} prove
+\[
+ R_{\rm up}'(z)
+ =2\bigl(R_{\rm up}(2z+1)-R_{\rm up}(2z-1)\bigr).
+\]
+This exactly discharges \eqref{p6:eq:Cauchy-functional},
+\eqref{p8:eq:Cauchy-functional}, and the ordinary first-order equation
+\eqref{p10:eq:Cauchy-diffeq-new}.  For every \(n\in\N\),
+\path{Fabius.iteratedDeriv_rvachevCauchyTransform_eq_thueMorse_sum} proves
+\[
+ R_{\rm up}^{(n)}(z)
+ =2^{\binom{n+1}{2}}\!
+  \sum_{j=0}^{2^n-1}\varepsilon_j
+   R_{\rm up}\!\left(2^nz+2^n-1-2j\right).
+\]
+The affine bridge makes a unit-interval Stieltjes derivative equation an
+unexported consequence; no named Stieltjes-DDE declaration is claimed.
+
+No logarithmic potential or fixed point, moment/Laurent or Laplace/Fourier
+expansion, survival-CDF or higher-resolvent-power wrapper, conversion of the
+all-order orbit into a higher-Cauchy-kernel integral identity,
+boundary/Plemelj theorem, generalized complex order, or Jacobi/Pad\'e result
+is claimed.
 This status box supersedes only contrary historical formalization wording in the absorbed
 snapshots; their provenance hashes remain unchanged.
 \end{statusbox}
@@ -15507,9 +15557,14 @@ Complex continuation can remain outside the initial formalization.
 \end{obligation}
 
 \begin{obligation}[Transform layer]
-Build the Cauchy transform off a compact interval, justify differentiation and
-integration by parts, and formalize \eqref{p8:eq:Cauchy-functional}.  The proof
-uses only the already established up refinement equation and compact support.
+The compact-interval transforms, their first derivatives, the atom-exact
+Fabius-CDF integration-by-parts formula at squared-kernel order, and
+\eqref{p8:eq:Cauchy-functional} are delivered by
+\path{CauchyTransform.lean}, \path{CauchyCDF.lean}, and
+\path{CauchyRenormalization.lean}.  The remaining transform-layer obligations
+include the logarithmic fixed point, survival and higher resolvent-power
+wrappers, the separate higher-kernel integral identity, boundary/Plemelj
+theory, and the moment/Laurent and generalized-order layers.
 \end{obligation}
 
 \begin{obligation}[Orthogonal-polynomial layer]

@@ -4,7 +4,7 @@ Antiderivatives, integral calculus, transform dualities, and fractional
 calculus of the Fabius–Rvachev system, consolidated (2026-08-28) into
 the single volume
 [`Integration_and_Transform_Frontiers/`](Integration_and_Transform_Frontiers/)
-(335 pp, eleven parts):
+(336 pp, eleven parts):
 
 - **Part I** — *Antiderivatives of Monomially Weighted Fabius-Type
   Functions* (formerly `Fabius_Antiderivatives_Report/`);
@@ -42,9 +42,19 @@ form, holomorphy off the named interval cuts, first-derivative kernel formulas,
 and the affine bridge.  In Lean's totalized Bochner-integral convention the
 bridge holds for every complex argument; in its classical analytic
 interpretation it reads `S(z) = 2 R(2z - 1)` off `[0,1]`, equivalently in the
-reverse direction off `[-1,1]`.  This does not yet include logarithmic fixed
-points, integration by parts through the CDF, boundary/Plemelj theory, the
-resolvent DDE and its all-order orbit, generalized complex order, or the
-Jacobi-fraction layer.
+reverse direction off `[-1,1]`.  `CauchyCDF.lean` adds atom-exact
+integration by parts for a finite measure almost everywhere supported on an
+ordered compact interval and a spectral parameter off its complexification,
+its probability-CDF normalization, and the exact Fabius formula
+`S(z) = (z - 1)⁻¹ - ∫₀¹ F(t) (z - t)⁻² dt` on the unit-interval
+slit domain.  `CauchyRenormalization.lean` proves invariance of the up-law
+slit domain under both dyadic branches, the exact equation
+`R'(z) = 2 (R(2z + 1) - R(2z - 1))`, and its all-order finite Thue--Morse
+derivative orbit for every natural order.  The affine bridge makes a
+unit-interval Stieltjes DDE an unexported consequence; no named wrapper is
+claimed.  Logarithmic fixed points, survival and higher resolvent-power
+wrappers, the separate higher-kernel integral identity, moment/Laurent and
+Laplace/Fourier expansions, boundary/Plemelj theory, generalized complex
+order, and Jacobi/Padé theory remain open.
 
 See [`../MANIFEST.md`](../MANIFEST.md) for titles and the previous paths.
