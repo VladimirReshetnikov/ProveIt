@@ -1,4 +1,4 @@
-import FabiusFunction.DyadicClosedForm
+import FabiusFunction.ThueMorseSineProduct
 import Mathlib.Analysis.SpecialFunctions.Trigonometric.Basic
 import Mathlib.Algebra.BigOperators.Intervals
 
@@ -14,21 +14,25 @@ the object whose sup-norm the Gelfond bound *estimates* — is on the
 nose a Thue–Morse-weighted trigonometric polynomial supported on the
 odd frequencies below `2^{m+1}`.
 
-Two ingredients, each of independent interest:
+The product identity is a direct specialization of the affine sine-product
+formula `sum_thueMorseSign_mul_sin_affine`: set `x = 2w` and
+`φ = mπ/2 + w`, then separate the final factor with `prod_range_succ`.
+This factorization proof exposes the complex-product mechanism instead of
+repeating it as a real induction.
+
+The following two ingredients remain useful independent symmetries:
 
 * **the complement law** `w(2ᵐ−1−n) + w(n) = m` for `n < 2ᵐ`
   (`binaryWeight_compl`): complementing the `m` bits of `n` complements
-  its digit sum.  Hence `ε_{2ᵐ−1−n} = (−1)ᵐ εₙ`, so reflecting the
+  its digit sum. Hence `ε_{2ᵐ−1−n} = (−1)ᵐ εₙ`, so reflecting the
   index of a Thue–Morse sum costs only a global sign;
 * **the phase parity** `(−1)ᵐ cos(mπ/2 − x) = cos(mπ/2 + x)`
   (`neg_one_pow_mul_cos_sub`): at a quarter-turn phase, reversing `x`
   costs exactly the same sign.
 
-The two signs cancel, which is what lets the negative frequencies
-produced by the product-to-sum step fold back onto the positive ones.
-
 * `binaryWeight_compl`, `thueMorseSign_compl` — the complement law.
 * `neg_one_pow_mul_cos_sub` — the phase parity.
+* `sum_thueMorseSign_mul_sin_affine` — the upstream affine factorization.
 * `prod_sin_two_pow_eq_thueMorse_sum` — **the identity**.
 -/
 
@@ -134,134 +138,56 @@ theorem prod_sin_two_pow_eq_thueMorse_sum (m : ℕ) (w : ℝ) :
       ∑ n ∈ Finset.range (2 ^ m),
         (thueMorseSign n : ℝ) *
           Real.sin ((m : ℝ) * π / 2 + (2 * n + 1) * w) := by
-  induction m with
-  | zero => simp [thueMorseSign, binaryWeight]
-  | succ m ih =>
-      have h2 : 2 ^ (m + 1) = 2 ^ m + 2 ^ m := by ring
-      -- the new factor, via product-to-sum
-      have hps : ∀ A : ℝ, 2 * (Real.sin A * Real.sin ((2:ℝ) ^ (m+1) * w)) =
-          Real.cos (A - 2 ^ (m+1) * w) - Real.cos (A + 2 ^ (m+1) * w) := by
-        intro A
-        rw [Real.cos_sub, Real.cos_add]
-        ring
-      -- the shifted half of the target sum
-      have hshift : ∀ n : ℕ, n < 2 ^ m →
-          ((thueMorseSign (2 ^ m + n) : ℝ)) *
-            Real.sin (((m + 1 : ℕ) : ℝ) * π / 2 +
-              (2 * ((2 ^ m + n : ℕ) : ℝ) + 1) * w) =
-          -((thueMorseSign n : ℝ) *
-            Real.cos ((m : ℝ) * π / 2 + (2 * n + 1) * w +
-              2 ^ (m+1) * w)) := by
-        intro n hnlt
-        have hsign : thueMorseSign (2 ^ m + n) = -thueMorseSign n := by
-          simp only [thueMorseSign,
-            binaryWeight_add_pow_two m n hnlt, pow_succ]
-          ring
-        have hphase : ((m + 1 : ℕ) : ℝ) * π / 2 +
-            (2 * ((2 ^ m + n : ℕ) : ℝ) + 1) * w =
-            ((m : ℝ) * π / 2 + (2 * n + 1) * w + 2 ^ (m+1) * w) + π / 2 := by
-          push_cast
-          ring
-        rw [hsign, hphase, Real.sin_add_pi_div_two]
-        push_cast
-        ring
-      -- the reflected half: negative frequencies fold back
-      have hrefl : ∑ n ∈ Finset.range (2 ^ m),
+  have hsum :
+      (∑ n ∈ Finset.range (2 ^ m),
+        (thueMorseSign n : ℝ) *
+          Real.sin ((m : ℝ) * π / 2 + (2 * n + 1) * w)) =
+        ∑ n ∈ Finset.range (2 ^ m),
           (thueMorseSign n : ℝ) *
-            Real.cos ((m : ℝ) * π / 2 + (2 * n + 1) * w -
-              2 ^ (m+1) * w) =
-          ∑ n ∈ Finset.range (2 ^ m),
-            (thueMorseSign n : ℝ) *
-              Real.cos ((m : ℝ) * π / 2 + (2 * n + 1) * w) := by
-        rw [← Finset.sum_range_reflect]
-        refine Finset.sum_congr rfl (fun n hn => ?_)
-        have hnlt : n < 2 ^ m := Finset.mem_range.mp hn
-        have hidx : 2 ^ m - 1 - n < 2 ^ m := by
-          have : 0 < 2 ^ m := Nat.two_pow_pos m
-          omega
-        have hcast : ((2 ^ m - 1 - n : ℕ) : ℝ) =
-            (2 : ℝ) ^ m - 1 - (n : ℝ) := by
-          have h1 : (1 : ℕ) ≤ 2 ^ m := Nat.one_le_two_pow
-          push_cast [Nat.cast_sub (by omega : n ≤ 2 ^ m - 1),
-            Nat.cast_sub h1]
-          ring
-        rw [thueMorseSign_compl hnlt]
-        have harg : (m : ℝ) * π / 2 +
-            (2 * ((2 ^ m - 1 - n : ℕ) : ℝ) + 1) * w -
-              2 ^ (m+1) * w =
-            (m : ℝ) * π / 2 - (2 * (n : ℝ) + 1) * w := by
-          rw [hcast, pow_succ]
-          ring
-        rw [harg]
-        push_cast
-        rw [← neg_one_pow_mul_cos_sub m ((2 * (n : ℝ) + 1) * w)]
-        ring
-      -- assemble
-      rw [Finset.prod_range_succ, h2, Finset.sum_range_add]
-      have hstep : (2 : ℝ) ^ (m + 1) *
-          ((∏ j ∈ Finset.range (m + 1), Real.sin (2 ^ j * w)) *
-            Real.sin (2 ^ (m + 1) * w)) =
-          ∑ n ∈ Finset.range (2 ^ m), (thueMorseSign n : ℝ) *
-            (Real.cos ((m : ℝ) * π / 2 + (2 * n + 1) * w -
-                2 ^ (m+1) * w) -
-              Real.cos ((m : ℝ) * π / 2 + (2 * n + 1) * w +
-                2 ^ (m+1) * w)) := by
-        have hexp : (2 : ℝ) ^ (m + 1) *
-            ((∏ j ∈ Finset.range (m + 1), Real.sin (2 ^ j * w)) *
-              Real.sin (2 ^ (m + 1) * w)) =
-            ((2 : ℝ) ^ m *
-              ∏ j ∈ Finset.range (m + 1), Real.sin (2 ^ j * w)) *
-              (2 * Real.sin (2 ^ (m + 1) * w)) := by
-          rw [pow_succ]
-          ring
-        rw [hexp, ih, Finset.sum_mul]
-        refine Finset.sum_congr rfl (fun n _ => ?_)
-        have := hps ((m : ℝ) * π / 2 + (2 * n + 1) * w)
-        calc (thueMorseSign n : ℝ) *
-            Real.sin ((m : ℝ) * π / 2 + (2 * n + 1) * w) *
-              (2 * Real.sin (2 ^ (m + 1) * w))
-            = (thueMorseSign n : ℝ) *
-              (2 * (Real.sin ((m : ℝ) * π / 2 + (2 * n + 1) * w) *
-                Real.sin (2 ^ (m + 1) * w))) := by ring
-          _ = _ := by rw [this]
-      rw [hstep]
-      have hdist : (∑ n ∈ Finset.range (2 ^ m), (thueMorseSign n : ℝ) *
-            (Real.cos ((m : ℝ) * π / 2 + (2 * n + 1) * w -
-                2 ^ (m+1) * w) -
-              Real.cos ((m : ℝ) * π / 2 + (2 * n + 1) * w +
-                2 ^ (m+1) * w))) =
-          (∑ n ∈ Finset.range (2 ^ m), (thueMorseSign n : ℝ) *
-            Real.cos ((m : ℝ) * π / 2 + (2 * n + 1) * w -
-              2 ^ (m+1) * w)) -
-          (∑ n ∈ Finset.range (2 ^ m), (thueMorseSign n : ℝ) *
-            Real.cos ((m : ℝ) * π / 2 + (2 * n + 1) * w +
-              2 ^ (m+1) * w)) := by
-        rw [← Finset.sum_sub_distrib]
-        exact Finset.sum_congr rfl (fun n _ => by ring)
-      rw [hdist]
-      have hfirst : ∑ n ∈ Finset.range (2 ^ m),
-          (thueMorseSign n : ℝ) *
-            Real.sin (((m + 1 : ℕ) : ℝ) * π / 2 + (2 * (n:ℝ) + 1) * w) =
-          ∑ n ∈ Finset.range (2 ^ m), (thueMorseSign n : ℝ) *
-            Real.cos ((m : ℝ) * π / 2 + (2 * n + 1) * w) := by
-        refine Finset.sum_congr rfl (fun n _ => ?_)
-        have harg : ((m + 1 : ℕ) : ℝ) * π / 2 + (2 * (n:ℝ) + 1) * w =
-            ((m : ℝ) * π / 2 + (2 * n + 1) * w) + π / 2 := by
-          push_cast
-          ring
-        rw [harg, Real.sin_add_pi_div_two]
-      have hsecond : ∑ n ∈ Finset.range (2 ^ m),
-          (thueMorseSign ((2:ℕ) ^ m + n) : ℝ) *
-            Real.sin (((m + 1 : ℕ) : ℝ) * π / 2 +
-              (2 * (((2:ℕ) ^ m + n : ℕ) : ℝ) + 1) * w) =
-          -∑ n ∈ Finset.range (2 ^ m), (thueMorseSign n : ℝ) *
-            Real.cos ((m : ℝ) * π / 2 + (2 * n + 1) * w +
-              2 ^ (m+1) * w) := by
-        rw [← Finset.sum_neg_distrib]
-        exact Finset.sum_congr rfl
-          (fun n hn => hshift n (Finset.mem_range.mp hn))
-      push_cast at hfirst hsecond ⊢
-      rw [hfirst, hsecond, hrefl]
+            Real.sin (((m : ℝ) * π / 2 + w) + (n : ℝ) * (2 * w)) := by
+    apply Finset.sum_congr rfl
+    intro n _
+    congr 1
+    ring_nf
+  have hproduct :
+      (∏ j ∈ Finset.range m, Real.sin (2 ^ j * (2 * w) / 2)) =
+        ∏ j ∈ Finset.range m, Real.sin (2 ^ j * w) := by
+    apply Finset.prod_congr rfl
+    intro j _
+    congr 1
+    ring
+  have hphase :
+      ((m : ℝ) * π / 2 + w) +
+          ((2 ^ m - 1 : ℕ) : ℝ) * (2 * w) / 2 -
+          (m : ℝ) * π / 2 =
+        (2 : ℝ) ^ m * w := by
+    have hone : (1 : ℕ) ≤ 2 ^ m := Nat.one_le_two_pow
+    push_cast [Nat.cast_sub hone]
+    ring
+  have haffine :=
+    sum_thueMorseSign_mul_sin_affine
+      (2 * w) ((m : ℝ) * π / 2 + w) m
+  calc
+    (2 : ℝ) ^ m *
+        ∏ j ∈ Finset.range (m + 1), Real.sin (2 ^ j * w) =
+      (2 : ℝ) ^ m *
+        (∏ j ∈ Finset.range m, Real.sin (2 ^ j * w)) *
+          Real.sin ((2 : ℝ) ^ m * w) := by
+      rw [Finset.prod_range_succ]
       ring
+    _ = (2 : ℝ) ^ m *
+        (∏ j ∈ Finset.range m, Real.sin (2 ^ j * (2 * w) / 2)) *
+          Real.sin
+            (((m : ℝ) * π / 2 + w) +
+              ((2 ^ m - 1 : ℕ) : ℝ) * (2 * w) / 2 -
+              (m : ℝ) * π / 2) := by
+      rw [hproduct, hphase]
+    _ = ∑ n ∈ Finset.range (2 ^ m),
+        (thueMorseSign n : ℝ) *
+          Real.sin (((m : ℝ) * π / 2 + w) + (n : ℝ) * (2 * w)) :=
+      haffine.symm
+    _ = ∑ n ∈ Finset.range (2 ^ m),
+        (thueMorseSign n : ℝ) *
+          Real.sin ((m : ℝ) * π / 2 + (2 * n + 1) * w) := hsum.symm
 
 end Fabius

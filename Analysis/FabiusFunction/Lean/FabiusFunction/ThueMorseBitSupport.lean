@@ -196,6 +196,24 @@ theorem bitSupport_subset_range_iff_lt_two_pow (n m : ℕ) :
       Nat.pow_le_pow_right (by omega) hmj
     omega
 
+/-- Setting a fresh leading binary bit raises the digit sum by one:
+`binaryWeight (2 ^ b + h) = binaryWeight h + 1` whenever `h < 2 ^ b`.
+
+The support-level reason is that the new bit `b` lies outside the support of
+`h`, so the support of the sum is obtained by adjoining one fresh position. -/
+theorem binaryWeight_add_pow_two (b h : ℕ) (hh : h < 2 ^ b) :
+    binaryWeight (2 ^ b + h) = binaryWeight h + 1 := by
+  have hsupp : bitSupport h ⊆ range b :=
+    (bitSupport_subset_range_iff_lt_two_pow h b).2 hh
+  have hbnot : b ∉ bitSupport h := by
+    intro hb
+    exact (Nat.lt_irrefl b) (mem_range.mp (hsupp hb))
+  have hsum :
+      2 ^ b + h = ∑ j ∈ insert b (bitSupport h), 2 ^ j := by
+    rw [sum_insert hbnot, sum_two_pow_bitSupport]
+  rw [hsum, binaryWeight_sum_two_pow_eq_card,
+    card_insert_of_notMem hbnot, card_bitSupport]
+
 /-- The Boolean cube of subsets of `range m` is canonically equivalent to
 the dyadic block `Fin (2 ^ m)`.  The forward map sums distinct two-powers;
 the inverse map takes bit support. -/

@@ -33,6 +33,10 @@ degree or positive starting-index assumption is used, so `n = 0` and
   an arbitrary evaluation point.
 * `eq_lagrangeEvalWeight_of_moments` characterizes the Lagrange weights as
   the unique finite row on the prescribed node set with those moments.
+* `sum_lagrangeEvalWeight_mul_eval_eq_eval_modByMonic` identifies every
+  polynomial functional with the remainder modulo the nodal polynomial.
+* `sum_lagrangeEvalWeight_mul_eval_eq_sub_nodal_mul_divByMonic` factors every
+  polynomial interpolation residual through the nodal polynomial.
 * `sum_lagrangeEvalWeight_mul_pow_card` gives the exact first omitted moment.
 * `sum_geometricLagrangeWeight_mul_pow` gives all geometric moments through
   degree `n`, including the `0 ^ 0` boundary.
@@ -102,27 +106,14 @@ theorem eq_lagrangeEvalWeight_of_moments
     weight i = lagrangeEvalWeight s v x i := by
   classical
   let p := Lagrange.basis s v i
-  have hcard : 0 < s.card := Finset.card_pos.mpr ⟨i, hi⟩
-  have hpred : s.card - 1 + 1 = s.card := by omega
-  have hdegree_eq : p.natDegree = s.card - 1 := by
-    simpa only [p] using Lagrange.natDegree_basis hvs hi
-  have hdegree : p.natDegree ≤ s.card - 1 := hdegree_eq.le
-  have hdegree' : p.natDegree < s.card := by omega
-  have hexpand := sum_weight_mul_eval₂_eq_sum_coeff_mul_moment
-    (RingHom.id F) s weight v p (s.card - 1) hdegree
-  rw [hpred] at hexpand
+  have hdegree : p.degree < (s.card : WithBot ℕ) := by
+    dsimp only [p]
+    rw [Lagrange.degree_basis hvs hi]
+    exact_mod_cast Nat.pred_lt (Finset.card_ne_zero_of_mem hi)
   have hfunctional :
       (∑ j ∈ s, weight j * p.eval (v j)) = p.eval x := by
-    calc
-      (∑ j ∈ s, weight j * p.eval (v j)) =
-          ∑ d ∈ Finset.range s.card,
-            p.coeff d * ∑ j ∈ s, weight j * v j ^ d := by
-        simpa only [Polynomial.eval₂_id, RingHom.id_apply] using hexpand
-      _ = ∑ d ∈ Finset.range s.card, p.coeff d * x ^ d := by
-        apply Finset.sum_congr rfl
-        intro d hd
-        rw [hmoment d (Finset.mem_range.mp hd)]
-      _ = p.eval x := (Polynomial.eval_eq_sum_range' hdegree' x).symm
+    exact sum_weight_mul_eval_eq_eval_of_moments
+      s weight v x s.card hmoment p hdegree
   calc
     weight i = ∑ j ∈ s, weight j * p.eval (v j) := by
       symm
@@ -152,6 +143,104 @@ theorem sum_lagrangeEvalWeight_mul_pow
   simpa only [Polynomial.eval_pow, Polynomial.eval_X] using
     sum_lagrangeEvalWeight_mul_eval s v x hvs
       (Polynomial.X ^ d : F[X]) hdegree
+
+/-- **Unrestricted Lagrange remainder formula.**  The weighted nodal values
+of every polynomial equal the value at `x` of its remainder modulo the nodal
+polynomial.  Unlike polynomial exactness, this identity has no degree bound.
+
+The empty node family is included: its nodal polynomial is one, so both the
+weighted sum and the remainder vanish. -/
+theorem sum_lagrangeEvalWeight_mul_eval_eq_eval_modByMonic
+    {F : Type*} [Field F] {ι : Type*}
+    (s : Finset ι) (v : ι → F) (x : F)
+    (hvs : Set.InjOn v s) (p : F[X]) :
+    (∑ i ∈ s, lagrangeEvalWeight s v x i * p.eval (v i)) =
+      (p %ₘ Lagrange.nodal s v).eval x := by
+  classical
+  let r := p %ₘ Lagrange.nodal s v
+  have hdegree : r.degree <
+        (s.card : WithBot ℕ) := by
+    simpa only [r, Lagrange.degree_nodal] using
+      Polynomial.degree_modByMonic_lt p
+        (Lagrange.nodal_monic (s := s) (v := v))
+  calc
+    (∑ i ∈ s, lagrangeEvalWeight s v x i * p.eval (v i)) =
+        ∑ i ∈ s, lagrangeEvalWeight s v x i *
+          r.eval (v i) := by
+      apply Finset.sum_congr rfl
+      intro i hi
+      dsimp only [r]
+      rw [Polynomial.modByMonic_eq_sub_mul_div, Polynomial.eval_sub,
+        Polynomial.eval_mul, Lagrange.eval_nodal_at_node hi, zero_mul,
+        sub_zero]
+    _ = r.eval x :=
+      sum_lagrangeEvalWeight_mul_eval s v x hvs r hdegree
+
+/-- **Unrestricted Lagrange residual factorization.**  The error in
+reproducing an arbitrary polynomial is the nodal product times its quotient
+in Euclidean division by the nodal polynomial.
+
+This is the representation-free algebraic core behind all higher Richardson
+moments.  It is valid at every target, including a target equal to a node,
+and for the empty node family. -/
+theorem sum_lagrangeEvalWeight_mul_eval_eq_sub_nodal_mul_divByMonic
+    {F : Type*} [Field F] {ι : Type*}
+    (s : Finset ι) (v : ι → F) (x : F)
+    (hvs : Set.InjOn v s) (p : F[X]) :
+    (∑ i ∈ s, lagrangeEvalWeight s v x i * p.eval (v i)) =
+      p.eval x - (∏ i ∈ s, (x - v i)) *
+        ((p /ₘ Lagrange.nodal s v).eval x) := by
+  rw [sum_lagrangeEvalWeight_mul_eval_eq_eval_modByMonic s v x hvs p,
+    Polynomial.modByMonic_eq_sub_mul_div, Polynomial.eval_sub,
+    Polynomial.eval_mul, Lagrange.eval_nodal]
+
+/-- Scalar-extension form of the unrestricted remainder formula.  The input
+polynomial may have coefficients in any semiring `R`; a ring homomorphism
+`φ : R →+* F` transports it to the field containing the nodes. -/
+theorem sum_lagrangeEvalWeight_mul_eval₂_eq_eval_modByMonic
+    {R F : Type*} [Semiring R] [Field F] {ι : Type*}
+    (φ : R →+* F) (s : Finset ι) (v : ι → F) (x : F)
+    (hvs : Set.InjOn v s) (p : R[X]) :
+    (∑ i ∈ s, lagrangeEvalWeight s v x i * p.eval₂ φ (v i)) =
+      (p.map φ %ₘ Lagrange.nodal s v).eval x := by
+  simpa only [Polynomial.eval_map] using
+    sum_lagrangeEvalWeight_mul_eval_eq_eval_modByMonic
+      s v x hvs (p.map φ)
+
+/-- Scalar-extension form of the unrestricted residual factorization. -/
+theorem sum_lagrangeEvalWeight_mul_eval₂_eq_sub_nodal_mul_divByMonic
+    {R F : Type*} [Semiring R] [Field F] {ι : Type*}
+    (φ : R →+* F) (s : Finset ι) (v : ι → F) (x : F)
+    (hvs : Set.InjOn v s) (p : R[X]) :
+    (∑ i ∈ s, lagrangeEvalWeight s v x i * p.eval₂ φ (v i)) =
+      p.eval₂ φ x - (∏ i ∈ s, (x - v i)) *
+        ((p.map φ /ₘ Lagrange.nodal s v).eval x) := by
+  simpa only [Polynomial.eval_map] using
+    sum_lagrangeEvalWeight_mul_eval_eq_sub_nodal_mul_divByMonic
+      s v x hvs (p.map φ)
+
+/-- Monomial form of the unrestricted remainder formula. -/
+theorem sum_lagrangeEvalWeight_mul_pow_eq_eval_modByMonic
+    {F : Type*} [Field F] {ι : Type*}
+    (s : Finset ι) (v : ι → F) (x : F)
+    (hvs : Set.InjOn v s) (d : ℕ) :
+    (∑ i ∈ s, lagrangeEvalWeight s v x i * v i ^ d) =
+      ((Polynomial.X ^ d %ₘ Lagrange.nodal s v).eval x) := by
+  simpa only [Polynomial.eval_pow, Polynomial.eval_X] using
+    sum_lagrangeEvalWeight_mul_eval_eq_eval_modByMonic s v x hvs
+      (Polynomial.X ^ d : F[X])
+
+/-- Monomial form of the unrestricted residual factorization. -/
+theorem sum_lagrangeEvalWeight_mul_pow_eq_sub_nodal_mul_divByMonic
+    {F : Type*} [Field F] {ι : Type*}
+    (s : Finset ι) (v : ι → F) (x : F)
+    (hvs : Set.InjOn v s) (d : ℕ) :
+    (∑ i ∈ s, lagrangeEvalWeight s v x i * v i ^ d) =
+      x ^ d - (∏ i ∈ s, (x - v i)) *
+        ((Polynomial.X ^ d /ₘ Lagrange.nodal s v).eval x) := by
+  simpa only [Polynomial.eval_pow, Polynomial.eval_X] using
+    sum_lagrangeEvalWeight_mul_eval_eq_sub_nodal_mul_divByMonic
+      s v x hvs (Polynomial.X ^ d : F[X])
 
 /-- Exact first-omitted-degree identity for finite Lagrange evaluation.  At
 degree `s.card`, the interpolated monomial differs from `x ^ s.card` by the

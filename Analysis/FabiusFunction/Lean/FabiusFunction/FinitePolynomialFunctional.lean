@@ -15,6 +15,9 @@ commutative semiring `S`, and write
 
 * `sum_weight_mul_eval₂_eq_sum_coeff_mul_moment` expands `L(p)` as the sum
   of the mapped coefficients of `p` times the corresponding node moments.
+* `sum_weight_mul_eval₂_eq_eval₂_of_moments` says that matching the first
+  `n` moments with evaluation at `x` reproduces every polynomial of degree
+  strictly below `n`.
 * `sum_weight_mul_eval₂_eq_coeff_mul_moment` says that, when every moment
   through a degree bound vanishes except the one in degree `r`, `L` selects
   exactly the coefficient of degree `r` times that surviving moment.
@@ -55,6 +58,42 @@ theorem sum_weight_mul_eval₂_eq_sum_coeff_mul_moment
   refine Finset.sum_congr rfl fun d _hd => ?_
   refine Finset.sum_congr rfl fun i _hi => ?_
   ac_rfl
+
+/-- **Finite polynomial reproduction from moments.**  Suppose a finite
+weighted node family has the same monomial moments below `n` as evaluation
+at `x`.  It then reproduces every polynomial of degree strictly below `n`,
+after scalar extension along an arbitrary ring homomorphism.
+
+The nodes may repeat, and no field, subtraction, or nonzeroness hypothesis is
+needed.  The degree-valued statement handles `n = 0` uniformly: its only
+admissible polynomial is zero. -/
+theorem sum_weight_mul_eval₂_eq_eval₂_of_moments
+    {R S ι : Type*} [Semiring R] [CommSemiring S]
+    (φ : R →+* S) (s : Finset ι) (weight node : ι → S) (x : S)
+    (n : ℕ)
+    (hmoment : ∀ d < n,
+      ∑ i ∈ s, weight i * node i ^ d = x ^ d)
+    (p : Polynomial R) (hp : p.degree < (n : WithBot ℕ)) :
+    ∑ i ∈ s, weight i * p.eval₂ φ (node i) = p.eval₂ φ x := by
+  by_cases hp0 : p = 0
+  · simp [hp0]
+  have hnat : p.natDegree < n :=
+    (Polynomial.natDegree_lt_iff_degree_lt hp0).2 hp
+  calc
+    (∑ i ∈ s, weight i * p.eval₂ φ (node i)) =
+        ∑ d ∈ range (p.natDegree + 1),
+          φ (p.coeff d) * ∑ i ∈ s, weight i * node i ^ d :=
+      sum_weight_mul_eval₂_eq_sum_coeff_mul_moment
+        φ s weight node p p.natDegree le_rfl
+    _ = ∑ d ∈ range (p.natDegree + 1),
+        φ (p.coeff d) * x ^ d := by
+      apply Finset.sum_congr rfl
+      intro d hd
+      rw [hmoment d
+        ((Nat.lt_succ_iff.mp (Finset.mem_range.mp hd)).trans_lt hnat)]
+    _ = p.eval₂ φ x :=
+      (Polynomial.eval₂_eq_sum_range' φ
+        (Nat.lt_succ_self p.natDegree) x).symm
 
 /-- **Selected-coefficient principle.**  Suppose all weighted node moments
 through degree `N` vanish except possibly the moment in degree `r`.  On every
@@ -196,6 +235,19 @@ theorem sum_weight_mul_eval₂_congr_of_map_coeff_eq
     hcoeff]
 
 /-! ### Same-ring conveniences -/
+
+/-- Same-ring form of finite polynomial reproduction from matching monomial
+moments. -/
+theorem sum_weight_mul_eval_eq_eval_of_moments
+    {R ι : Type*} [CommSemiring R]
+    (s : Finset ι) (weight node : ι → R) (x : R) (n : ℕ)
+    (hmoment : ∀ d < n,
+      ∑ i ∈ s, weight i * node i ^ d = x ^ d)
+    (p : Polynomial R) (hp : p.degree < (n : WithBot ℕ)) :
+    ∑ i ∈ s, weight i * p.eval (node i) = p.eval x := by
+  simpa only [Polynomial.eval₂_id, RingHom.id_apply] using
+    sum_weight_mul_eval₂_eq_eval₂_of_moments
+      (RingHom.id R) s weight node x n hmoment p hp
 
 /-- Same-ring finite moment extraction with a supplied exact top moment. -/
 theorem sum_weight_mul_eval_eq_coeff_mul_of_moments

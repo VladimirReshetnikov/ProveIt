@@ -1,13 +1,16 @@
 import FabiusFunction.GeometricLagrange
+import FabiusFunction.LagrangeResidualMoments
 import FabiusFunction.Paper05442
 import FabiusFunction.Paper06487
 import FabiusFunction.PaperFabiusAsymptotic
 import FabiusFunction.PaperKFoldThueMorse
 import FabiusFunction.FinitePolynomialFunctional
+import FabiusFunction.CompleteHomogeneous
 import FabiusFunction.FiniteQBinomialCore
 import FabiusFunction.GeometricQBinomialLagrange
 import FabiusFunction.WeightedScaleMultiplicity
 import FabiusFunction.MomentCumulantAlgebra
+import FabiusFunction.PolynomialExpectationCumulant
 import FabiusFunction.ThueMorseBitSupport
 import FabiusFunction.ThueMorseBooleanCube
 import FabiusFunction.ThueMorseValuation
@@ -33,6 +36,7 @@ import FabiusFunction.ThueMorseMultinomial
 import FabiusFunction.ThueMorseFourier
 import FabiusFunction.ThueMorseSineProduct
 import FabiusFunction.ThueMorseFourierInversion
+import FabiusFunction.SummableCyclicAlias
 import FabiusFunction.ThueMorseParseval
 import FabiusFunction.ThueMorseComplexity
 import FabiusFunction.ThueMorseArithmeticFilter
