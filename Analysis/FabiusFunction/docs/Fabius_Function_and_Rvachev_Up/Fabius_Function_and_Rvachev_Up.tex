@@ -92,6 +92,8 @@
 \newcommand{\repo}{\nolinkurl{Analysis/FabiusFunction}}
 \newcommand{\lean}[1]{%
   \ifmmode\text{\nolinkurl{#1}}\else\nolinkurl{#1}\fi}
+\newcommand{\leanevaltwo}[1]{%
+  \nolinkurl{integral_eval}\texttt{\textsubscript{2}}\nolinkurl{#1}}
 
 \newenvironment{proofidea}{\par\smallskip\noindent\textit{Proof architecture.}\ }{\hfill$\square$\par\smallskip}
 \newenvironment{boxedremark}{%
@@ -120,7 +122,7 @@
 \author{Human-readable synthesis of the formal development\\
 \small Vladimir Reshetnikov's \texttt{ProveIt} repository}
 \date{Repository snapshot: 27 August 2026\\
-\small commit \nolinkurl{24da985eba70e46d862acdaddd476793a428213e}}
+\small commit \nolinkurl{158dd2e12d7412142d79a53d91d8fcbdfdfb5d97}}
 
 \begin{document}
 \maketitle
@@ -1217,6 +1219,30 @@ The first hypothesis makes the natural-number subtractions in
 ordinary binary complementation rather than truncated subtraction.
 \end{proof}
 
+\begin{theorem}[Affine Thue--Morse sine polynomial]
+\label{thm:thue-morse-affine-sine}
+For every \(m\in\N\) and \(x,\phi\in\R\),
+\begin{equation}
+ \boxed{
+ \sum_{n=0}^{2^m-1}\varepsilon_n\sin(\phi+nx)
+ =
+ 2^m\left(\prod_{j=0}^{m-1}\sin\frac{2^jx}{2}\right)
+ \sin\!\left(
+   \phi+\frac{(2^m-1)x}{2}-\frac{m\pi}{2}
+ \right).}
+ \label{eq:thue-morse-affine-sine}
+\end{equation}
+The product is empty when \(m=0\).
+\end{theorem}
+
+\begin{proof}[Formal proof]
+This is exactly \lean{sum_thueMorseSign_mul_sin_affine} in
+\path{ThueMorseSineProduct.lean}.  Its proof rotates the complex
+Thue--Morse exponential product through the arbitrary phase \(\phi\),
+rewrites \((-2\ii)^m\) as a positive magnitude and a quarter-turn phase,
+and takes imaginary parts.
+\end{proof}
+
 \begin{theorem}[Lacunary sine product as a Thue--Morse sum]
 \label{thm:lacunary-sine-product-to-sum}
 For every \(m\in\N\) and \(w\in\R\),
@@ -1231,11 +1257,14 @@ For every \(m\in\N\) and \(w\in\R\),
 
 \begin{proof}[Formal proof]
 This is exactly \lean{prod_sin_two_pow_eq_thueMorse_sum} in
-\path{LacunaryProductToSum.lean}.  Its Lean proof uses the two complement
-laws and the phase parity above to fold the negative frequencies from the
-product-to-sum recurrence back onto the positive odd frequencies.  The
-formal statement is over real \(w\); no complex continuation or neighboring
-cosine-product identity is asserted here.
+\path{LacunaryProductToSum.lean}.  It is the specialization of
+\eqref{eq:thue-morse-affine-sine} at
+\[
+ x=2w,\qquad \phi=\frac{m\pi}{2}+w.
+\]
+The final sine becomes \(\sin(2^mw)\), which appends the last factor to
+the product over \(j<m\).  The formal statement is over real \(w\); no
+complex continuation or neighboring cosine-product identity is asserted.
 \end{proof}
 
 \begin{theorem}[Dyadic shell factorization]
@@ -1612,6 +1641,80 @@ and in particular
 \end{equation}
 These are \lean{rvachev_partition_one_over_nat} and
 \lean{rvachev_partition_unity} in \path{PoissonSummation.lean}.
+
+\subsection{Banach-free cyclic aliasing}
+\label{sec:summable-cyclic-alias}
+
+\begin{theorem}[Finite-range twists and cyclic aliasing]
+\label{thm:summable-cyclic-alias}
+The convergence mechanism behind a root-of-unity filter does not require a
+norm.  Let \(R\) be any scalar type, let \(B\) be any index type, let \(I\)
+be finite, and let \(E\) be a complete uniform additive commutative group
+with a distributive \(R\)-action such that multiplication by each fixed
+scalar is continuous.  If \(a:B\to E\) is summable, \(\ell:B\to I\), and
+\(c:I\to R\), then
+\begin{equation}
+ b\longmapsto c(\ell(b))\,a(b)
+ \quad\text{is summable}.                                \label{eq:finite-range-scalar-twist}
+\end{equation}
+Thus a scalar multiplier taking only finitely many values preserves
+unconditional summability.
+
+Separately, let \(E\) be a complete Hausdorff uniform additive commutative
+group, write \(\bar n\) for the class of \(n\in\Z\) in
+\(\operatorname{ZMod}(q)\), and define
+\begin{equation}
+ \mathcal R_r(a):=
+ \sum_{\substack{n\in\Z\\\bar n=r}}a(n).                \label{eq:int-residue-tsum}
+\end{equation}
+For every \(q\in\N\), including Lean's convention
+\(\operatorname{ZMod}(0)=\Z\), the family
+\(r\mapsto\mathcal R_r(a)\) has sum \(\sum_{n\in\Z}a(n)\).
+In particular, for \(q>0\),
+\begin{equation}
+ \sum_{r\in\Z/q\Z}\mathcal R_r(a)=\sum_{n\in\Z}a(n).
+                                                               \label{eq:sum-int-residue-tsum}
+\end{equation}
+
+Suppose in addition that \(E\) is a complex module and multiplication by each
+fixed complex scalar is continuous.  Let \(\chi_q\) be the standard additive
+character of \(\Z/q\Z\).  For \(q>0\), put
+\begin{equation}
+ \mathcal A_k(a):=
+ \sum_{n\in\Z}\chi_q(-\bar n k)\,a(n).                  \label{eq:int-fourier-tsum}
+\end{equation}
+Every twisted series in \eqref{eq:int-fourier-tsum} is summable.  With the
+unnormalized discrete Fourier transform
+\[
+ (\mathcal D_qf)(k):=
+ \sum_{r\in\Z/q\Z}\chi_q(-rk)f(r),
+\]
+one has the exact forward and inverse identities
+\begin{align}
+ \mathcal D_q\bigl(\mathcal R_\bullet(a)\bigr)(k)
+   &=\mathcal A_k(a),                                    \label{eq:dft-int-residue-tsum}\\
+ \mathcal R_r(a)
+   &=\frac1q\sum_{k\in\Z/q\Z}
+       \chi_q(kr)\,\mathcal A_k(a).                      \label{eq:int-residue-dft-average}
+\end{align}
+\end{theorem}
+
+\begin{proof}[Formal proof]
+The finite-range convergence principle \eqref{eq:finite-range-scalar-twist}
+is \lean{summable_finite_range_smul}.  The two sums are
+\lean{intResidueTsum} and \lean{intFourierTsum}; character twisting is
+\lean{intFourierSummand_summable}.  The fiberwise summation statement and
+its finite-modulus consequence are \lean{hasSum_intResidueTsum} and
+\lean{sum_intResidueTsum}.  The forward transform and normalized inverse
+are \lean{dft_intResidueTsum} and
+\lean{intResidueTsum_eq_dft_average}.  All eight declarations are in
+\path{SummableCyclicAlias.lean}.
+
+The proof partitions the bilateral family into its residue fibers, observes
+that each cyclic character is constant on a fiber, and applies the finite
+DFT and its inverse.  Summability of \(a\) is the only convergence
+hypothesis; norm-summability is not assumed.
+\end{proof}
 
 \subsection{Moment expansion of the Fourier transform}
 
@@ -2010,6 +2113,54 @@ Equation \eqref{eq:bell-cumulant-inverses} is
 \eqref{eq:bell-cumulant-naturality}, formalized by
 \lean{map_completeBellPolynomial} and \lean{map_momentCumulant}.  All declarations are in
 \path{MomentCumulantAlgebra.lean} and assume only a commutative \(\Q\)-algebra.
+\end{proof}
+
+\begin{proposition}[Finite polynomial integrals from moments and formal cumulants]
+\label{thm:polynomial-expectation-cumulant}
+Let \(\Omega\) be a measurable space, let \(\mu\) be any measure on it, let
+\(S\) be a semiring with a semiring homomorphism \(\varphi:S\to\R\), and let
+\(Z:\Omega\to\R\).  For \(p\in S[X]\), write
+\[
+ p_n=[X^n]p,\qquad
+ p_\varphi(x)=\sum_{n\in\operatorname{supp}(p)}\varphi(p_n)x^n,
+ \qquad
+ m_n=\operatorname{moment}_\mu(Z;n).
+\]
+Here \(\operatorname{moment}_\mu\) uses Mathlib's totalized Bochner-integral
+convention; whenever \(Z^n\) is integrable it is the ordinary integral
+\(\int_\Omega Z(\omega)^n\,\dd\mu(\omega)\).
+Assume only that \(Z^n\) is integrable for
+\(n\in\operatorname{supp}(p)\), and put
+\(\kappa=\mathcal K(m)\).  Then
+\begin{align}
+ \int_\Omega p_\varphi(Z(\omega))\,\dd\mu(\omega)
+   &=\sum_{n\in\operatorname{supp}(p)}\varphi(p_n)m_n,
+                                                               \label{eq:polynomial-integral-moments}\\
+   &=\sum_{n\in\operatorname{supp}(p)}
+       \varphi(p_n)\mathcal B(\kappa)_n
+       +\varphi(p_0)(m_0-1).                                \label{eq:polynomial-integral-cumulants}
+\end{align}
+If \(m_0=1\), the correction in
+\eqref{eq:polynomial-integral-cumulants} vanishes.  This holds
+automatically when \(\mu\) is a probability measure.
+\end{proposition}
+
+\begin{proof}[Formal proof]
+All four public identifiers share the prefix
+\texttt{integral\_eval}\textsubscript{2}\texttt{\_eq\_sum\_}.
+In the order of the two displayed equations, the \(m_0=1\) corollary,
+and the probability-measure corollary, their suffixes are
+\begin{enumerate}[label=(\roman*),leftmargin=2.8em,itemsep=0pt,topsep=2pt]
+ \item \path{moment};
+ \item \path{completeBell_momentCumulant_with_mass_correction};
+ \item \path{completeBell_momentCumulant_of_moment_zero_eq_one};
+ \item \path{completeBell_momentCumulant}.
+\end{enumerate}
+They are declared in \path{PolynomialExpectationCumulant.lean}.
+They require neither boundedness nor independence, and no integrability
+assumptions for powers outside the finite support of \(p\).
+They formalize the finite moment-to-Bell rewrite used by endpoint transfer,
+not the analytic transfer expansion or its remainder estimates.
 \end{proof}
 
 \subsection{The probability--Laplace bridge}
@@ -2699,6 +2850,10 @@ The half-base identity is a specialization of a ring-valued statement that does 
 divide by a $q$-Pochhammer symbol.  For a commutative ring $R$ and $q\in R$, define
 the polynomial Gaussian coefficients recursively by
 \[
+ (z;q)_0=1,\qquad (z;q)_{n+1}=(z;q)_n(1-zq^n),
+\]
+and
+\[
  {n+1\brack k+1}_q={n\brack k+1}_q
    +q^{n-k}{n\brack k}_q,\qquad
  {n\brack0}_q={n\brack n}_q=1,\qquad
@@ -2712,7 +2867,12 @@ Then for every $z\in R$,
 The recursive coefficient already makes sense over an arbitrary semiring, while the
 displayed subtraction requires a commutative ring.  No denominator, nonzero assumption,
 or exclusion of $q=0$ and roots of unity occurs.  The recurrence, triangular boundaries,
-and \eqref{eq:finite-q-binomial-ring} are
+and \eqref{eq:finite-q-binomial-ring} are the definition
+\lean{finiteQPochhammerIn}, its boundary and recurrence
+\lean{finiteQPochhammerIn_zero} and \lean{finiteQPochhammerIn_succ}, the
+coefficient definition \lean{gaussianBinomial}, and the theorems
+\lean{gaussianBinomial_zero_zero},
+\lean{gaussianBinomial_zero_succ},
 \lean{gaussianBinomial_succ_succ},
 \lean{gaussianBinomial_zero_right},
 \lean{gaussianBinomial_eq_zero_of_lt},
@@ -2730,8 +2890,10 @@ They are \lean{finiteQPochhammerIn_succ_shift} and
 \path{FiniteQBinomialCore.lean}; both hold over every commutative ring, including all
 boundary cases.
 
-At $q=1/2$, \lean{gaussianBinomial_half_eq_halfQBinomial} identifies this recursive
-coefficient with the established rational quotient, and
+Over the rationals, \lean{finiteQPochhammerIn_rat_eq} identifies the generic product
+with the established finite \(q\)-Pochhammer notation.  At $q=1/2$,
+\lean{gaussianBinomial_half_eq_halfQBinomial} identifies the recursive coefficient
+with the established rational quotient, and
 \lean{halfQBinomial_theorem} is now the direct specialization of the ring theorem.
 \end{remark}
 
@@ -3529,6 +3691,29 @@ in particular degree zero has mass one, while positive degrees vanish.  The decl
 \lean{geometricLagrange_richardson_exact_of_eq} in
 \path{GeometricLagrange.lean} include both $n=0$ and an arbitrary block start, including
 start zero.
+
+The first omitted degree is only the first member of an exact all-order
+family.  Let \(h_r(x,(v_i)_{i\in I})\) be the complete homogeneous symmetric
+polynomial of degree \(r\) in the target \(x\) and the node family.  Then
+\begin{equation}
+ \sum_i\lambda_i(x)v_i^{|I|+r}
+ =x^{|I|+r}-\prod_i(x-v_i)\,
+   h_r(x,(v_i)_{i\in I})\qquad(r\ge0).                    \label{eq:lagrange-all-residual-moments}
+\end{equation}
+More generally, the same formula holds over any commutative ring for
+arbitrary weights and possibly repeated nodes whenever the moments below
+\(|I|\) reproduce evaluation at \(x\).  No division or distinctness is used
+in this representation-independent form.  The universal symmetric-polynomial
+evaluation and its adjoining-variable recurrence are
+\lean{completeHomogeneousEval_eq_eval_hsymm} and
+\lean{completeHomogeneousEval_option_succ}; the quotient evaluation is
+\lean{eval_completeHomogeneousQuotient} in
+\path{CompleteHomogeneous.lean}.  The generic residual theorem
+\lean{sum_weight_mul_pow_card_add} and its distinct-node Lagrange
+specialization \lean{sum_lagrangeEvalWeight_mul_pow_card_add} are in
+\path{LagrangeResidualMoments.lean}.  Thus
+\eqref{eq:lagrange-all-residual-moments} extends the preceding first-error
+formula rather than replacing its low-degree exactness foundation.
 
 For the present half-geometric grid, write $\lambda_{n,k}^{(1/2)}$ for the
 evaluation-at-zero weight belonging to the node $2^{-k}$.  The Toeplitz row is exactly the
@@ -5198,6 +5383,69 @@ These are \lean{expCoeff_logCoeff_eq_ite} and
 \path{SaddleLogExpansionAlgebra.lean} and
 \path{SaddleLogExpansionPowerSeries.lean}.
 
+\subsection{Universal finite endpoint-transfer algebra}
+\label{sec:endpoint-transfer-polynomials}
+
+The formal coefficient stage of endpoint transfer is independent of every
+probability and asymptotic estimate.  To distinguish the universal endpoint
+polynomials from the periodic correction \(P\), write
+\(P_r^{\mathrm{end}}(X)=\lean{endpointTransferPolynomial}(r)\).  In
+\(\Q[X]\), define
+\begin{equation}
+ e_0(X)=0,\qquad e_{n+1}(X)=-\frac{X^{n+2}}{n+2},\qquad
+ P_r^{\mathrm{end}}(X)=\operatorname{ExpCoeff}(e)_r.        \label{eq:endpoint-transfer-coefficients}
+\end{equation}
+Then the recursive, formal-series, and unordered-partition descriptions agree:
+\begin{align}
+ P_{n+1}^{\mathrm{end}}(X)
+   &=-\frac1{n+1}\sum_{j=0}^{n}\frac{j+1}{j+2}
+       X^{j+2}P_{n-j}^{\mathrm{end}}(X),                    \label{eq:endpoint-transfer-recurrence}\\
+ \sum_{r\ge0}P_r^{\mathrm{end}}(X)t^r
+   &=\exp\!\left(\sum_{r\ge0}e_r(X)t^r\right)
+    =\exp\!\left(-\sum_{j\ge2}\frac{X^jt^{j-1}}j\right), \label{eq:endpoint-transfer-formal-series}\\
+ P_r^{\mathrm{end}}(X)
+   &=\sum_{f\in\mathcal P_r}\prod_{j=1}^{r}
+       \frac{e_j(X)^{f(j)}}{f(j)!},                        \notag\\
+ \mathcal P_r
+   &=\left\{f:\N\to\N\;\middle|\;
+       \substack{\supp(f)\subseteq\{1,\ldots,r\},\\
+                 \sum_{j=1}^{r}j f(j)=r}\right\}.         \label{eq:endpoint-transfer-partitions}
+\end{align}
+The first coefficients are
+\begin{equation}
+ P_0^{\mathrm{end}}=1,\qquad P_1^{\mathrm{end}}=-\frac{X^2}{2},\qquad
+ P_2^{\mathrm{end}}=\frac{X^4}{8}-\frac{X^3}{3},\qquad
+ P_3^{\mathrm{end}}=-\frac{X^6}{48}+\frac{X^5}{6}-\frac{X^4}{4}. \label{eq:endpoint-transfer-first-four}
+\end{equation}
+Because \(\Q[X]\) is the free rational algebra on one generator, evaluating
+\(X\) at any element \(z\) of a commutative \(\Q\)-algebra commutes both with
+each \(P_r^{\mathrm{end}}\) and with the complete formal power series.
+
+\begin{proof}[Formal proof]
+The definitions are \lean{endpointTransferExponentCoefficient},
+\lean{endpointTransferPolynomial}, and \lean{endpointTransferSeries} in
+\path{EndpointTransferPolynomials.lean}.  Equations
+\eqref{eq:endpoint-transfer-recurrence}--\eqref{eq:endpoint-transfer-partitions}
+are respectively \lean{endpointTransferPolynomial_succ},
+\lean{endpointTransferSeries_eq_exp_subst}, and
+\lean{endpointTransferPolynomial_eq_partitionExpSum}.  The finite partition
+engine and its equality with the recursive exponential coefficients are
+\lean{weightedPartitions}, \lean{partitionExpSum}, and
+\lean{partitionExpSum_eq_expCoeff} in \path{ExponentialPartition.lean} and
+\path{ExponentialBell.lean}.  Evaluation and series naturality are
+\lean{aeval_endpointTransferPolynomial} and
+\lean{map_endpointTransferSeries}; the four identities in
+\eqref{eq:endpoint-transfer-first-four} are
+\lean{endpointTransferPolynomial_zero},
+\lean{endpointTransferPolynomial_one},
+\lean{endpointTransferPolynomial_two}, and
+\lean{endpointTransferPolynomial_three}.
+
+All statements in this subsection are finite or formal.  They do not identify
+the series analytically with \(\exp(X)(1-Xt)^{1/t}\), construct a tilted law,
+or prove a Taylor-window, tail, or endpoint-remainder estimate.
+\end{proof}
+
 \subsection{Recursive elementary re-expansion of the phase}
 \label{sec:elementary-asymptotic}
 
@@ -5457,7 +5705,8 @@ Probability and finite approximants &
 Fourier analysis &
 \path{FourierProduct.lean}, \path{FourierAnalytic.lean},
 \path{OriginalPaperSupplement.lean}, \path{PoissonSummation.lean},
-\path{LacunaryProductToSum.lean},
+\path{SummableCyclicAlias.lean}, \path{ThueMorseFourier.lean},
+\path{ThueMorseSineProduct.lean}, \path{LacunaryProductToSum.lean},
 \path{RenormalizationIdentity.lean}, \path{SincProductShells.lean},
 \path{SincPrefixBound.lean},
 \path{SincCanonicalProduct.lean}, \path{PhiZeroOrder.lean},
@@ -5478,10 +5727,16 @@ Moments and exact arithmetic &
 \path{MomentPowerSeries.lean}, \path{UnitLaplaceMomentBounds.lean},
 \path{NormalizedEvenMoments.lean},
 \path{BernoulliRecurrences.lean}, \path{MomentCumulantAlgebra.lean},
+\path{PolynomialExpectationCumulant.lean},
 \path{WeightedScaleMultiplicity.lean},
 \path{ExactInversePower.lean}, \path{Parity.lean}, \path{TwoAdic.lean}\\
+Universal exponential, Bell, and endpoint-transfer algebra &
+\path{SaddleExpansionAlgebra.lean}, \path{ExponentialPartition.lean},
+\path{ExponentialBell.lean},
+\path{EndpointTransferPolynomials.lean}\\
 Finite polynomial functionals and geometric Lagrange/Richardson exactness &
-\path{FinitePolynomialFunctional.lean}, \path{GeometricLagrange.lean},
+\path{FinitePolynomialFunctional.lean}, \path{CompleteHomogeneous.lean},
+\path{GeometricLagrange.lean}, \path{LagrangeResidualMoments.lean},
 \path{GeometricQBinomialLagrange.lean}\\
 Dyadic and \(q\)-binomial formulas &
 \path{DyadicClosedForm.lean}, \path{DyadicAnalytic.lean}, \path{GlobalDyadic.lean},
@@ -5681,8 +5936,8 @@ V.~Reshetnikov,
 V.~Reshetnikov,
 \newblock \emph{ProveIt: Analysis/FabiusFunction},
 \newblock Lean~4 formal development, source snapshot
-\texttt{24da985eba70e46d862acdaddd476793a428213e}, consulted 27 August 2026.
-\newblock \url{https://github.com/VladimirReshetnikov/ProveIt/tree/24da985eba70e46d862acdaddd476793a428213e/Analysis/FabiusFunction}.
+\texttt{158dd2e12d7412142d79a53d91d8fcbdfdfb5d97}, consulted 27 August 2026.
+\newblock \url{https://github.com/VladimirReshetnikov/ProveIt/tree/158dd2e12d7412142d79a53d91d8fcbdfdfb5d97/Analysis/FabiusFunction}.
 
 \end{thebibliography}
 

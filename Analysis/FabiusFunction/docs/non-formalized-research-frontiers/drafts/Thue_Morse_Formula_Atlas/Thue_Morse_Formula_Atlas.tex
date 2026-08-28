@@ -119,7 +119,7 @@
 \author{Merged and expanded companion report to the Fabius--Rvachev formal development\\
 \small Vladimir Reshetnikov's \texttt{ProveIt} repository}
 \date{Repository snapshot: 27 August 2026\\
-\small source snapshot at commit \nolinkurl{24da985eba70e46d862acdaddd476793a428213e}}
+\small source snapshot at commit \nolinkurl{158dd2e12d7412142d79a53d91d8fcbdfdfb5d97}}
 
 \begin{document}
 \maketitle
@@ -286,7 +286,7 @@ is not by itself evidence of formalization.  Statements proved in Lean carry the
 declaration names in the text, typeset as \lean{Fabius.thueMorseSign}; statements without
 such a citation must not be inferred to have a formal counterpart.
 
-The current inventory in \cref{sec:formalized-modules} consists of seventy-four compiled
+The current inventory in \cref{sec:formalized-modules} consists of seventy-nine compiled
 Lean modules.  It covers the finite algebraic, automata, moment, Fourier, rarefaction,
 Dirichlet--Mellin, word-combinatorial, and Fabius--Rvachev bridges recorded there, often in
 greater generality than the displayed prose.  The dependency-aware map in
@@ -2444,8 +2444,13 @@ module \path{MomentCumulantAlgebra.lean} factorially normalizes that layer
 into the named transforms \lean{Fabius.completeBellPolynomial} and
 \lean{Fabius.momentCumulant}, proves the classical Bell recurrence and
 their normalized inverse laws, and establishes functoriality over
-commutative \(\mathbb Q\)-algebras.  This remains generic formal algebra:
-it supplies no Thue--Morse-specific probabilistic interpretation.
+commutative \(\mathbb Q\)-algebras.  The downstream module
+\path{PolynomialExpectationCumulant.lean} applies these transforms to the
+integral of an arbitrary finite polynomial, first as a raw-moment sum and
+then as a complete-Bell sum with the exact zeroth-mass correction; its
+normalized and probability-measure forms are corollaries.  This is a generic
+finite polynomial interface, not a Thue--Morse-specific law or an infinite
+analytic expansion.
 
 For \(E_j=-a_j/j\), the ruler convolution
 (\cref{thm:ruler-convolution}) says that the sign sequence obeys the same
@@ -4245,10 +4250,34 @@ in squared form by the Riesz factorization
 \(|1-\e^{\ii\theta}|^2=2-2\cos\theta\)
 (\lean{Fabius.normSq\_one\_sub\_exp}).
 
+\begin{theorem}[Affine real sine form]
+\label{thm:affine-real-sine-form}
+For every \(m\in\N\) and \(x,\phi\in\R\),
+\begin{equation}
+ \boxed{
+ \sum_{n=0}^{2^m-1}\eps_n\sin(\phi+nx)
+ =
+ 2^m\left(\prod_{j=0}^{m-1}\sin\frac{2^jx}{2}\right)
+ \sin\!\left(
+   \phi+\frac{(2^m-1)x}{2}-\frac{m\pi}{2}
+ \right).}
+ \label{eq:affine-real-sine-form}
+\end{equation}
+The product is empty at \(m=0\).
+\end{theorem}
+
+\emph{Formal version.}
+Equation \eqref{eq:affine-real-sine-form} is exactly
+\lean{Fabius.sum\_thueMorseSign\_mul\_sin\_affine} in
+\path{ThueMorseSineProduct.lean}.  It follows from the complex
+sine-product form by an arbitrary phase rotation and extraction of
+imaginary parts.
+
 \subsection{Sine and cosine products as Thue--Morse sums}
 
-A product-to-sum recurrence gives the following exact real-variable identity
-in the normalization used by the formal development.
+The affine identity specializes to the following exact real lacunary product:
+take \(x=2w\) and \(\phi=m\pi/2+w\), then append the resulting
+\(\sin(2^mw)\) to the product over \(j<m\).
 
 \begin{theorem}[Real lacunary sine product]
 \label{thm:trig-product-to-sum}
@@ -4264,7 +4293,8 @@ For every \(m\in\N\) and \(w\in\R\),
 
 \emph{Formal versions.}  The displayed theorem is exactly
 \lean{Fabius.prod\_sin\_two\_pow\_eq\_thueMorse\_sum} in
-\path{LacunaryProductToSum.lean}.  The same module records the two binary
+\path{LacunaryProductToSum.lean}; its formal proof is precisely the
+specialization above.  The same module records the two binary
 reflection laws
 \begin{equation}
  \wt(2^m-1-n)+\wt(n)=m,\qquad
@@ -4319,14 +4349,16 @@ are identities between entire functions of \(z\), so the identity theorem
 extends them to every complex \(z\).
 \end{proof}
 
-\emph{Exact status boundary.}  The Lean module proves
-\eqref{eq:formal-lacunary-sine-product} over \(\R\) and the three supporting
-identities named above.  It does \emph{not} contain a declaration for the
-complex analytic continuation of \eqref{eq:sine-product-to-sum}, nor for the
-cosine formula \eqref{eq:cosine-product-to-sum}.  Those adjacent analytic
-statements remain natural-language results in this frontier atlas.  Together
-they make explicit the Fourier route from finite Thue--Morse blocks to the
-sinc products in the Fabius/Rvachev analysis.
+\emph{Exact status boundary.}  Lean proves both
+\eqref{eq:affine-real-sine-form} and
+\eqref{eq:formal-lacunary-sine-product} over \(\R\), together with the three
+supporting complement and phase identities named above.  It does \emph{not}
+contain a declaration for the complex analytic continuation of
+\eqref{eq:sine-product-to-sum}, nor for the cosine formula
+\eqref{eq:cosine-product-to-sum}.  Those adjacent analytic statements remain
+natural-language results in this frontier atlas.  Together they make explicit
+the Fourier route from finite Thue--Morse blocks to the sinc products in the
+Fabius/Rvachev analysis.
 
 \subsection{The exact dyadic discrete Fourier transform}
 
@@ -6188,7 +6220,7 @@ valuation, carry, and Pascal-row formulas remain genuinely base-two features.
 \subsection{Formalized modules (August 2026)}
 \label{sec:formalized-modules}
 
-The first tranches of the formalization now exist as seventy-four
+The first tranches of the formalization now exist as seventy-nine
 compiled Lean modules in \repo{}, complementing the corpus modules
 (\path{Parity.lean}, \path{TwoAdic.lean}, \path{ThueMorsePrefix.lean},
 \path{ThueMorseGenerating.lean}, \path{ThueMorseExponential.lean},
@@ -6216,6 +6248,9 @@ Module & Contents \\
 \path{ThueMorseDigits.lean} & Additive Legendre, floor sums, floor-parity formula, `testBit` bridge, digit product. \\
 \path{ThueMorseEnumerators.lean} & Weight distribution, evil/odious enumerations and composition laws, XOR autocorrelation, signed Hamming spheres. \\
 \path{FinitePolynomialFunctional.lean} & Moment expansion for finite weighted polynomial evaluations, selected-, top-, and constant-coefficient extraction, scalar-extension forms, degree-valued strict cancellation, and same-ring conveniences over commutative semirings; repeated nodes and a zero surviving moment are allowed. \\
+\path{CompleteHomogeneous.lean} & Evaluated complete homogeneous symmetric polynomials over arbitrary commutative semirings: explicit multiset and universal-symmetric-polynomial forms, adjoining-variable and map/reindex laws, and the univariate complete-homogeneous quotient; only the linear-factor identity requires subtraction. \\
+\path{LagrangeResidualMoments.lean} & The all-order residual-moment formula for any finite weighted row exact below the node count, over an arbitrary commutative ring with repeated nodes allowed; distinct field-valued nodes enter only in the Lagrange-weight specialization. \\
+\path{FiniteQBinomialCore.lean} & Denominator-free Gaussian coefficients by \(q\)-Pascal recursion over arbitrary semirings, finite \(q\)-Pochhammer products over commutative rings, all triangular boundary cases, and the finite \(q\)-binomial theorem at every base, including zero and roots of unity. \\
 \path{ThueMorseSparseProuhet.lean} & Arbitrary-weight Prouhet annihilation and exact top-moment formula (\cref{thm:arbitrary-weights}), degree-valued wrappers covering the zero polynomial on empty supports, the direct affine block extraction and cancellation API (\cref{thm:prouhet-block-extraction}), and all-index sparse submask identities. \\
 \path{ThueMorseRarefied.lean} & Modulo-three rarefaction recursion and closed vectors, Newman positivity at dyadic endpoints, block balance, even-modulus collapse. \\
 \path{ThueMorseAperiodicity.lean} & Block-flip identities, promotion of an eventual period to a global one, and non-eventual-periodicity --- the last now deduced from overlap-freeness rather than from the reflection argument. \\
@@ -6234,9 +6269,10 @@ Module & Contents \\
 \path{ThueMorseBooleanMobius.lean} & Submask complement laws, submask weight enumerators, reconstruction and inversion-polynomial identities, nested binomial formula, Boolean M\"obius inversion on finsets and on submasks. \\
 \path{ThueMorseMultinomial.lean} & Kummer's criterion for multinomial coefficients, the multinomial support count \(O_r(n)=r^{\wt(n)}\), the signed \(r\)-nomial row formula, the exact \(r\)-nomial logarithm. \\
 \path{ThueMorseFourier.lean} & The circle factor \(|1-\e^{\ii\theta}|^2=2-2\cos\theta\) and the finite Riesz product with its nonnegativity. \\
-\path{ThueMorseSineProduct.lean} & The half-angle factorization and the sine-product closed form of the Thue--Morse trigonometric polynomial. \\
+\path{ThueMorseSineProduct.lean} & The half-angle factorization, the complex sine-product closed form of the Thue--Morse trigonometric polynomial, and its arbitrary-phase affine real sine form. \\
 \path{LacunaryProductToSum.lean} & Binary-weight complementation on a dyadic block, the induced global-sign reflection, quarter-turn cosine parity, and the exact real lacunary sine product as a Thue--Morse sum. \\
 \path{ThueMorseFourierInversion.lean} & Root-of-unity orthogonality and finite Fourier inversion over any field with a primitive root, specialized to the dyadic DFT over \(\mathbb C\). \\
+\path{SummableCyclicAlias.lean} & Finite-range scalar twists of summable families in complete uniform additive groups, and bilateral integer residue sums with forward and inverse \(\operatorname{ZMod}\) Fourier transforms in complete Hausdorff uniform complex modules; no norm or absolute-convergence hypothesis is imposed. \\
 \path{ThueMorseParseval.lean} & Character orthonormality on \([0,1]\) and the Parseval mass \(\int_0^1|P_m(\e^{2\pi\ii x})|^2\,\dd x=2^m\). \\
 \path{ThueMorseComplexity.lean} & Factor complexity: the supertile-pair window parametrization with the boundary-crossing case split, uniform-recurrence finiteness, and the sharpened two-sided bound \(\ell+1\le p(\ell)\le6\ell-4\) --- with \(p(\ell)\le2\cdot2^k+2(\ell-1)\) at every covering level and the older \(4\cdot2^k\), \(p(\ell)<8\ell\) kept as corollaries --- and the Morse--Hedlund strict-growth argument. \\
 \path{ThueMorseArithmeticFilter.lean} & The root-of-unity filter for arithmetic progressions over any field (division-free form), the boxed rarefied formula, and the even-modulus collapse. \\
@@ -6246,6 +6282,7 @@ Module & Contents \\
 \path{ThueMorsePartition.lean} & Ruler-recurrence uniqueness and the partition and explicit Bell-polynomial formulae for \(\eps_n\), obtained by specializing the generic partition engine. \\
 \path{ExponentialBell.lean} & Equality of the finite weighted-partition coefficient function with \path{SaddleExpansion.expCoeff} over every commutative \(\mathbb Q\)-algebra, by recurrence uniqueness. \\
 \path{MomentCumulantAlgebra.lean} & Factorial normalization and denormalization; the complete Bell and inverse moment--cumulant transforms; their classical recurrence, normalized all-index inverse laws, and functoriality over every commutative \(\mathbb Q\)-algebra. \\
+\path{PolynomialExpectationCumulant.lean} & Finite polynomial integrals from support-local raw moments, their complete-Bell/formal-cumulant rewrite with the exact zeroth-mass correction for arbitrary measures, and the normalized and probability-measure specializations. \\
 \path{ThueMorseIntegerLift.lean} & The integral algebraic lift constructed in closed Catalan--binomial form; Catalan parity at Mersenne indices; the unconditional parity theorem \(c_n\equiv\tau(n)\), \(\eps_n=(-1)^{c_n}\). \\
 \path{ThueMorseBoundaryFlatness.lean} & The lacunary product \(\mathcal E(t)\) as an infinite product: self-similarity, positivity, monotonicity, the effective upper bound \(\mathcal E(t)\le2^{\binom m2}t^m\) at every level \(m\), and the matching lower bound \(2^{\binom m2}(t/2)^m\mathcal E(\frac12)\le\mathcal E(t)\) under the dyadic matching \(\frac12\le2^mt\le2\). \\
 \path{ThueMorseDirichlet.lean} & The shifted Dirichlet series in the real regime: conditional convergence for every \(\sigma>0\) by Dirichlet's test, and the dyadic parameter equation \(D(\sigma,a)=2^{-\sigma}(D(\sigma,\frac a2)-D(\sigma,\frac{a+1}2))\). \\
@@ -6411,7 +6448,7 @@ Proposed module & Main declarations \\
 \path{ThueMorseProuhetMoments.lean} & Difference operators, all moments, centered parity.  \emph{Delivered} (\path{ThueMorseMoments.lean}, \path{ThueMorseMixedDifference.lean}). \\
 \path{ThueMorseSparseProuhet.lean} & Arbitrary Pascal-support products and sparse moments.  \emph{Delivered} (plus \path{ThueMorseSparseMoments.lean}). \\
 \path{ThueMorseFormalSeriesF2.lean} & Artin--Schreier equation and explicit solution.  \emph{Delivered} (\path{ThueMorseArtinSchreier.lean}, with uniqueness and the integer lift). \\
-\path{ThueMorseFourier.lean} & Finite DFT, Walsh transform, product-to-sum identities.  \emph{Delivered} across \path{ThueMorseFourier.lean}, \path{ThueMorseSineProduct.lean}, \path{LacunaryProductToSum.lean}, and \path{ThueMorseFourierInversion.lean}: the Walsh and Riesz factorizations, sine-product closed form, real lacunary product-to-sum identity with its complement and phase lemmas, and Fourier inversion are formal.  The complex continuation and cosine companion in \eqref{eq:cosine-product-to-sum} are not delivered declarations. \\
+\path{ThueMorseFourier.lean} & Finite DFT, Walsh transform, product-to-sum identities.  \emph{Delivered} across \path{ThueMorseFourier.lean}, \path{ThueMorseSineProduct.lean}, \path{LacunaryProductToSum.lean}, and \path{ThueMorseFourierInversion.lean}: the Walsh and Riesz factorizations, complex sine-product and arbitrary-phase affine real forms, the real lacunary product-to-sum identity with its complement and phase lemmas, and Fourier inversion are formal.  The complex continuation and cosine companion in \eqref{eq:cosine-product-to-sum} are not delivered declarations. \\
 \path{ThueMorseDirichlet.lean} & Boundary flatness, Mellin integral, entire continuation.  \emph{Delivered} (\path{ThueMorseBoundaryFlatness.lean}, \path{ThueMorseDirichlet.lean}, \path{ThueMorseMellin.lean}, \path{ThueMorseEntireContinuation.lean}). \\
 \path{ThueMorseRarefied.lean} & Root-of-unity filters, modulo-three closed forms, odd-modulus matrix recursion.  \emph{Delivered in full} (\path{ThueMorseArithmeticFilter.lean}, \path{ThueMorseRarefied.lean}). \\
 \path{ThueMorseWords.lean} & Uniform recurrence, aperiodicity, and the elementary complexity bounds.  \emph{Delivered} in full (\path{ThueMorseAperiodicity.lean}, \path{ThueMorseOverlapFree.lean}, \path{ThueMorseRecurrence.lean}, \path{ThueMorseComplexity.lean}). \\
@@ -6767,7 +6804,7 @@ Second-pass additions & Even-modulus collapse of rarefied sums from exact prefix
 V.~Reshetnikov,
 \newblock \emph{ProveIt: Analysis/FabiusFunction},
 \newblock GitHub repository, source snapshot
-\nolinkurl{24da985eba70e46d862acdaddd476793a428213e}, 2026.
+\nolinkurl{158dd2e12d7412142d79a53d91d8fcbdfdfb5d97}, 2026.
 
 \bibitem{prouhet1851}
 E.~Prouhet,
