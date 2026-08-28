@@ -48,8 +48,12 @@ theorem integral_inv_sub_uniform_half {c : ℝ} (hc : 2⁻¹ < c) :
       simpa using (hasDerivAt_id u).const_sub c
     have h3 : HasDerivAt (fun v => Real.log (c - v))
         ((-1) / (c - u)) u := h2.log hpos.ne'
-    have h4 := h3.neg
-    simpa [neg_div] using h4
+    have h4 : HasDerivAt (fun v => -Real.log (c - v))
+        (-((-1) / (c - u))) u := h3.neg
+    have h5 : -((-1 : ℝ) / (c - u)) = (c - u)⁻¹ := by
+      rw [neg_div, neg_neg, one_div]
+    rw [h5] at h4
+    exact h4
   have hint : IntervalIntegrable (fun u => (c - u)⁻¹) volume
       (-(2⁻¹ : ℝ)) (2⁻¹ : ℝ) := by
     refine ContinuousOn.intervalIntegrable fun u hu => ?_
@@ -98,9 +102,7 @@ theorem integral_inv_sub_eq_integral_log (F : BoundedFabius)
     _ = ∫ x, ∫ u, (z - (x + u))⁻¹
           ∂(volume.restrict (Icc (-(2⁻¹ : ℝ)) 2⁻¹))
           ∂((rvachevMeasure F).map (2⁻¹ * ·)) :=
-        MeasureTheory.integral_conv
-          (μ := (rvachevMeasure F).map (2⁻¹ * ·))
-          (ν := volume.restrict (Icc (-(2⁻¹ : ℝ)) 2⁻¹)) hint
+        by exact MeasureTheory.integral_conv hint
     _ = ∫ x, Real.log ((z - x + 2⁻¹) / (z - x - 2⁻¹))
           ∂((rvachevMeasure F).map (2⁻¹ * ·)) := by
         refine integral_congr_ae ?_
