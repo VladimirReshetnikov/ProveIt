@@ -89,15 +89,24 @@ are tracked by Git history in the canonical source.
 ## Draft layout
 
 The draft inboxes under [`drafts/`](drafts/) are grouped thematically
-(2026-08-28): `rvachev_up_fourier_decay/` (the Fourier-decay corpus,
-unchanged), `thue-morse/`, `exponents-and-q-series/`,
-`spectra-and-arithmetic/`, `integration-and-transforms/`,
-`inverse-and-sampling/`, and `frontier-compilations/`. Each group carries
-a `README.md` stating its purpose and members, and
-[`drafts/MANIFEST.md`](drafts/MANIFEST.md) is the global inventory: every
-document with its title and its pre-reorganization path. Path strings
-*inside* the documents predate the grouping and are resolved through that
-manifest; the reorganization changed no `.tex` content and rebuilt no PDF.
+(2026-08-28): `rvachev_up_fourier_decay/` (the Fourier-decay corpus),
+`thue-morse/`, `exponents-and-q-series/`, `spectra-and-arithmetic/`,
+`integration-and-transforms/`, `inverse-and-sampling/`,
+`representations/`, and `frontier-compilations/`, with new archives
+arriving through `drafts/incoming/` (see its README for the protocol).
+Later the same day every group except the Fourier-decay corpus was
+**consolidated into a single volume** — one merged document per group,
+absorbing the member drafts verbatim with per-part label prefixes and a
+provenance section carrying each member's SHA-256; the absorbed
+directories were deleted (git history is the archive). The Fourier-decay
+corpus deliberately stays as separate documents: its structure is audit
+evidence (see its README). Each group carries a `README.md` stating its
+purpose and contents, and [`drafts/MANIFEST.md`](drafts/MANIFEST.md) is
+the global inventory: every volume with its title and the previous paths
+of what it absorbed. Path strings *inside* the documents predate the
+grouping and are resolved through that manifest; neither the
+reorganization nor the consolidation changed any member's mathematical
+content.
 
 ## Maintenance
 

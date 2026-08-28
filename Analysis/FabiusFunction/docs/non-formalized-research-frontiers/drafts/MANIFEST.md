@@ -23,7 +23,10 @@ so no PDF was rebuilt for it.
 The Fourier-decay corpus: eight independently written source documents on
 the decay envelope of `Û = ∏ sinc(2πξ/2^k)`, two audits, and a
 popularization. Kept in its historical directory (heavily
-cross-referenced internally; unchanged by the reorganization).
+cross-referenced internally; unchanged by the reorganization), and
+**deliberately excluded from the 2026-08-28 consolidations**: the
+separate-documents structure is audit evidence — the audits compare the
+sources *as* independent documents (see the group README).
 
 | Directory | Document |
 | --- | --- |
@@ -44,8 +47,7 @@ cross-referenced internally; unchanged by the reorganization).
 
 | Directory | Document | Previous path |
 | --- | --- | --- |
-| `Thue_Morse_Formula_Atlas/` | *A Unified Formula Atlas for the Thue–Morse Sequence* | `drafts/Thue_Morse_Formula_Atlas/` |
-| `Fabius_Rvachev_Thue_Morse_Frontier_Results/` | *A Finite-Block Calculus for the Fabius–Rvachev–Thue–Morse System* (block bridges, zeta–Lambert tail calculus, q-Richardson; heavily Lean-crosswalked) | `drafts/Fabius_Rvachev_Thue_Morse_Frontier_Results/` |
+| `Thue_Morse_Atlas_and_Frontiers/` | *The Thue–Morse Sequence: Formula Atlas and Fabius–Rvachev Frontier Results* (125 pp) — consolidation (2026-08-28) of the former `Thue_Morse_Formula_Atlas/` (*A Unified Formula Atlas for the Thue–Morse Sequence*) and `Fabius_Rvachev_Thue_Morse_Frontier_Results/` (*A Finite-Block Calculus for the Fabius–Rvachev–Thue–Morse System*, heavily Lean-crosswalked); assets under `assets/`, provenance with SHA-256 in the document | absorbed drafts deleted; git history is the archive |
 
 ## exponents-and-q-series — `exponents-and-q-series/`
 
@@ -77,9 +79,7 @@ Series and orthogonal-expansion representations of the up-function.
 
 | Directory | Document | Previous path |
 | --- | --- | --- |
-| `Fabius_Rvachev_Representation_Frontiers/` | *Fabius–Rvachev Representation Frontiers* (Jacobi coefficients, exact even moments, resolvent and logarithmic-derivative identities) | `drafts/incoming/…zip` (unpacked 2026-08-28) |
-| `Fabius_Rvachev_Multiresolution_Report/` | *Dyadic Multiresolution and Product–Series Representations in the Fabius–Rvachev System* (rational mass arrays, Haar–Schauder expansions, Walsh–Thue–Morse products, beta-mixture limits, Bell–Bernoulli scale energies, inverse-quantile duality) | `drafts/incoming/…zip` (unpacked 2026-08-28) |
-| `fabius_rvachev_representation_frontier/` | *Representation Atlas and New Analytic Bridges for the Fabius Function, Rvachev's Up-Function, and Their Fourier Images* | `drafts/incoming/…zip` (unpacked 2026-08-28) |
+| `Representation_Frontiers/` | *Representation Frontiers for the Fabius–Rvachev System* (108 pp) — consolidation (2026-08-28) of the former `Fabius_Rvachev_Representation_Frontiers/` (*Fabius–Rvachev Representation Frontiers*: Jacobi coefficients, exact even moments, resolvent and logarithmic-derivative identities), `fabius_rvachev_representation_frontier/` (*Representation Atlas and New Analytic Bridges*), and `Fabius_Rvachev_Multiresolution_Report/` (*Dyadic Multiresolution and Product–Series Representations*); assets under `assets/`, provenance with SHA-256 in the document | absorbed drafts deleted (all three unpacked from `drafts/incoming/…zip` on 2026-08-28); git history is the archive |
 
 ## frontier-compilations — `frontier-compilations/`
 
