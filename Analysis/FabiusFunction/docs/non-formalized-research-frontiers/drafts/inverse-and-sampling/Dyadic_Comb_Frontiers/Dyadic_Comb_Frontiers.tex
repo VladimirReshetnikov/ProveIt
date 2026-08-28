@@ -1449,12 +1449,21 @@ Carrying this out with exact arithmetic gives the first four values:
 \end{equation}
 Numerically $0.548311\ldots$, $0.553187\ldots$, $0.553707\ldots$,
 $0.553764\ldots$, converging to $\Phi(1/2)=0.553771\ldots$ as
-\eqref{eq:D-first-harmonic} predicts.  The values $D(2)$ and $D(4)$
-were derived in one absorbed source and re-derived here; $D(6)$ and
-$D(8)$ were computed for this consolidation by an independent
-implementation of \eqref{eq:D-rational} (bit-recursion evaluator
-\eqref{eq:bit-recursion}, exact \texttt{Fraction} arithmetic) that
-first reproduced all eight first-defect values of
+\eqref{eq:D-first-harmonic} predicts.  The same route through levels
+$9$ and $11$ gives two further exact values,
+\begin{equation}
+ D(10)=\frac{2045676559\,\pi^{10}}{345944065438125},
+ \qquad
+ D(12)=\frac{1158575464019117\,\pi^{12}}{1933714893977851359375},
+ \label{eq:D-values-higher}
+\end{equation}
+numerically $0.5537704925659628\ldots$ and
+$0.5537711889156489\ldots$.  The values $D(2)$ and $D(4)$
+were derived in one absorbed source and re-derived here; $D(6)$
+through $D(12)$ were computed for this consolidation by an
+independent implementation of \eqref{eq:D-rational} (bit-recursion
+evaluator \eqref{eq:bit-recursion}, exact \texttt{Fraction}
+arithmetic) that first reproduced all eight first-defect values of
 \cref{tab:first-defects} and the complete exactness matrix through
 level $8$, and each closed form was checked against a direct
 high-precision evaluation of the series to $15$ digits.
@@ -1517,8 +1526,9 @@ Verified exactly for $m\le8$.
 \label{conj:positivity}
 $D(2r)>0$ for every $r\ge1$; equivalently, by
 \eqref{eq:D-rational}, the odd-level defects satisfy
-$\sgn\defect_{m,m}=(-1)^{(m+1)/2}$.  Verified for $r\le4$ by the
-exact values \eqref{eq:D-values}.  The summands alternate in sign by
+$\sgn\defect_{m,m}=(-1)^{(m+1)/2}$.  Verified for $r\le6$ by the
+exact values \eqref{eq:D-values} and
+\eqref{eq:D-values-higher}.  The summands alternate in sign by
 \eqref{eq:half-sign}, so this is not termwise trivial; the first
 harmonic dominates for large $r$ by \eqref{eq:D-first-harmonic}, and
 the open content is a uniform estimate at small $r$.
