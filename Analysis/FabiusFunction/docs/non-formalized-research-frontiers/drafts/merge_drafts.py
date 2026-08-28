@@ -6,11 +6,13 @@ with config {"group_dir": ..., "members": [[dir, main.tex], ...],
 "out_name": ..., "title": ...}.  The output volume has one \part per
 member, in config order, plus a generated title page, table of
 contents, and a provenance section with each member's SHA-256.  The
-first member's preamble is the base and is kept verbatim.
+first member's preamble is the base.  Its font setup is normalized to the
+repository-wide Libertinus-prose/Computer-Modern-math policy.
 
 Per member:
   - split preamble / body at \begin{document} ... \end{document};
-  - strip \maketitle, \tableofcontents, titling commands from the body;
+  - strip \maketitle, \tableofcontents, titling commands, and member-local
+    page-number resets from the body;
   - prefix every label/ref/cite key with p<i>: to avoid collisions;
   - relocate \includegraphics/\input/\lstinputlisting/\verbatiminput
     paths into assets/<member>/, honoring the member's \graphicspath,
@@ -30,7 +32,7 @@ This tool performed the 2026-08-28 one-volume-per-group consolidation
 recorded in MANIFEST.md; rerun it if a group ever needs re-merging with
 a newly arrived member.  Verify a rebuilt volume with three pdflatex
 passes: 0 multiply-defined labels, 0 undefined references, no missing
-files, and embedded fonts matching the base member's.
+files, and embedded Libertinus prose fonts.
 """
 import re, os, io, sys, hashlib, shutil
 
@@ -203,10 +205,18 @@ def strip_titling(body):
     body = re.sub(r'\\maketitle', '', body)
     body = re.sub(r'\\tableofcontents', '', body)
     body = re.sub(r'\\begin\{titlepage\}.*?\\end\{titlepage\}', '', body, flags=re.S)
+    # A member may switch from roman front matter back to arabic page one.
+    # In a collected volume those commands duplicate page anchors and make
+    # the printed pagination jump backwards, so the wrapper owns pagination.
+    body = re.sub(r'\\pagenumbering\{[^{}]+\}', '', body)
+    body = re.sub(r'\\setcounter\{page\}\{[^{}]+\}', '', body)
     return body
 
 def extract_title(pre):
-    m = re.search(r'pdftitle=\{?([^,}\n]+)', pre)
+    # A PDF title commonly contains commas.  Stopping at the first comma made
+    # wrapper titles such as "Gamma Duality, Total Positivity, ..." collapse
+    # to their first phrase.
+    m = re.search(r'pdftitle\s*=\s*\{((?:[^{}]|\{[^{}]*\})*)\}', pre)
     if m:
         return m.group(1).strip()
     m = re.search(r'\\title\{(.+?)\}\s*$', pre, re.S | re.M)
@@ -215,6 +225,35 @@ def extract_title(pre):
         t = re.sub(r'\\(bfseries|color\{\w+\}|textbf)\s*', '', t)
         return re.sub(r'[{}]', '', t).strip()[:120]
     return None
+
+FONT_PACKAGES = {
+    'lmodern', 'libertinus', 'libertine', 'libertinust1math',
+    'newtxtext', 'newtxmath', 'newtx', 'newpxtext', 'newpxmath',
+    'mathpazo', 'times', 'txfonts', 'pxfonts', 'kpfonts', 'fourier',
+    'fontspec',
+}
+
+def normalize_base_fonts(preamble):
+    """Use Libertinus prose and leave the existing Computer Modern math."""
+    def keep_nonfont_packages(m):
+        opts = m.group(1) or ''
+        names = [name.strip() for name in m.group(2).split(',')]
+        kept = [name for name in names if name not in FONT_PACKAGES]
+        if not kept:
+            return ''
+        return '\\usepackage%s{%s}' % (opts, ','.join(kept))
+    preamble = PKG_PAT.sub(keep_nonfont_packages, preamble)
+    font_line = ('\\IfFileExists{libertinus.sty}'
+                 '{\\usepackage{libertinus}}{\\usepackage{lmodern}}')
+    anchor = re.search(
+        r'^\s*\\usepackage(?:\[[^\]]*\])?\{(?:inputenc|fontenc)\}\s*$',
+        preamble, re.M)
+    if anchor:
+        return preamble[:anchor.end()] + '\n' + font_line + preamble[anchor.end():]
+    dc = re.search(r'^\\documentclass[^\n]*$', preamble, re.M)
+    if not dc:
+        raise RuntimeError('base preamble has no documentclass')
+    return preamble[:dc.end()] + '\n' + font_line + preamble[dc.end():]
 
 def consolidate(group_dir, members, out_name, title, out_subdir=None):
     out_dir = os.path.join(group_dir, out_subdir or out_name)
@@ -320,6 +359,18 @@ def consolidate(group_dir, members, out_name, title, out_subdir=None):
                         continue
                     if k in reexecutable:
                         extra.append(txt)  # re-executes, reconfiguring
+                    elif k in env_kinds:
+                        # A same-kind conflict can still change meaning: one
+                        # report may caption `problem` as "Open problem" and
+                        # another as "Problem".  Preserve the later member by
+                        # giving its environment a part-local name.
+                        newname = '%sPart%s' % (
+                            n, 'ivxlc'[i % 5] * (1 + i // 5))
+                        env_renames[n] = newname
+                        txt2 = txt.replace('{%s}' % n, '{%s}' % newname, 1)
+                        all_setup[(k, newname)] = re.sub(r'\s+', '', txt2)
+                        env_names.add(newname)
+                        extra.append(txt2)
                     continue  # non-reexecutable duplicates: keep first
                 if k in env_kinds and (n in env_names or n in all_macros):
                     # name taken by another kind (or by a macro): rename
@@ -357,7 +408,10 @@ def consolidate(group_dir, members, out_name, title, out_subdir=None):
                               '\\\\end{' + new + '}', body)
             if extra:
                 parts.append('%% extra macros for part %d\n' % i + '\n'.join(extra) + '\n')
-        parts.append('\\part{%s}\n%% Absorbed from %s/%s\n' % (
+        parts.append('\\clearpage\n\\part{%s}\n'
+                     '\\setcounter{section}{0}\n'
+                     '\\renewcommand{\\thesection}{\\arabic{section}}\n'
+                     '%% Absorbed from %s/%s\n' % (
             provenance[-1][3].replace('&', '\\&'), mdir, mtex))
         parts.append(body)
         # move assets
@@ -375,7 +429,23 @@ def consolidate(group_dir, members, out_name, title, out_subdir=None):
                 os.makedirs(d, exist_ok=True)
                 src = os.path.join(root, fn)
                 dst = os.path.join(d, fn)
-                if fn.lower().endswith('.tex'):
+                if fn in ('SHA256SUMS', 'SHA256SUMS.txt'):
+                    # The member source and companion PDF are absorbed by the
+                    # volume and deliberately not copied into assets.  Their
+                    # checksum entries must disappear with them.
+                    companion_pdf = os.path.splitext(mtex)[0] + '.pdf'
+                    lines = io.open(src, encoding='utf-8').read().splitlines()
+                    kept = []
+                    for line in lines:
+                        fields = line.split(None, 1)
+                        target = fields[1].lstrip('*') if len(fields) == 2 else ''
+                        target = target.removeprefix('./')
+                        if '/' not in target and target in (mtex, companion_pdf):
+                            continue
+                        kept.append(line)
+                    io.open(dst, 'w', encoding='utf-8', newline='\n').write(
+                        '\n'.join(kept) + ('\n' if kept else ''))
+                elif fn.lower().endswith('.tex'):
                     frag = io.open(src, encoding='utf-8').read()
                     frag = prefix_labels(frag, pfx)
                     frag = asset_paths(frag, mdir)
@@ -392,13 +462,19 @@ def consolidate(group_dir, members, out_name, title, out_subdir=None):
               '\\begin{itemize}\n' + prov_lines + '\n\\end{itemize}\n\\clearpage\n')
     newtitle = ('\\title{\\bfseries %s}\n\\author{}\n'
                 '\\date{Consolidated 28 August 2026}\n' % title)
+    base_pre = normalize_base_fonts(base_pre)
     # members may want xcolor's named palettes while the base loads
     # xcolor optionless; passing the options up front is harmless
     base_pre = re.sub(r'(\\documentclass[^\n]*\n)',
                       '\\g<1>\\\\PassOptionsToPackage'
-                      '{dvipsnames,svgnames}{xcolor}\n',
+                      '{dvipsnames,svgnames}{xcolor}\n'
+                      '\\PassOptionsToPackage{hypertexnames=false}{hyperref}\n',
                       base_pre, count=1)
-    out = (base_pre + '\n'.join(extra_pkgs) + '\n' + newtitle + '\\begin{document}\n\\maketitle\n\\tableofcontents\n\\clearpage\n'
+    metadata = ('\\hypersetup{pdftitle={%s},pdfauthor={},'
+                'pdfsubject={Consolidated Fabius--Rvachev research frontiers}}\n'
+                % title)
+    out = (base_pre + '\n'.join(extra_pkgs) + '\n' + newtitle + metadata
+           + '\\begin{document}\n\\maketitle\n\\tableofcontents\n\\clearpage\n'
            + banner + '\n'.join(parts) + '\n\\end{document}\n')
     io.open(os.path.join(out_dir, out_name + '.tex'), 'w', encoding='utf-8', newline='\n').write(out)
     print('wrote', os.path.join(out_dir, out_name + '.tex'))

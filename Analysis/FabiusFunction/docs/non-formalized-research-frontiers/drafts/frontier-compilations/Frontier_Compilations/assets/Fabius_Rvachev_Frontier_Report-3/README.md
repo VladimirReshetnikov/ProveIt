@@ -6,6 +6,9 @@ This archive accompanies the report
 
 prepared from a recursive audit of the LaTeX documentation under
 `Analysis/FabiusFunction/docs` in Vladimir Reshetnikov's `ProveIt` repository.
+The report is now displayed as Part III of
+[`../../Frontier_Compilations.tex`](../../Frontier_Compilations.tex); this
+directory retains only its supporting assets.
 
 ## Audited snapshot
 
@@ -41,10 +44,8 @@ The report develops two theorem packages that were not found in the audited corp
 Novelty is claimed relative to the pinned repository corpus and the targeted literature
 search recorded in the report, not as an unconditional worldwide priority claim.
 
-## Archive contents
+## Supporting-asset contents
 
-- `fabius_frontier_report.tex` — complete report source.
-- `fabius_frontier_report.pdf` — rendered report.
 - `corpus_manifest.txt` — exact recursive path inventory.
 - `corpus_manifest_table.tex` — breakable LaTeX form of the inventory.
 - `code/frontier_experiments.py` — fully commented high-precision experiment suite.
@@ -52,7 +53,7 @@ search recorded in the report, not as an unconditional worldwide priority claim.
 - `figures/*.png` — all generated figures used in the report.
 - `experiment_summary.txt` — compact run summary.
 - `requirements.txt` — Python dependencies.
-- `SHA256SUMS` — checksums for the packaged files.
+- `SHA256SUMS` — checksums for the retained supporting files.
 
 ## Reproduce the numerical experiments
 
@@ -74,19 +75,25 @@ The script has no network dependency. It regenerates `data/`, `figures/`, and
 q-Lagrange identities, exact coefficient series, and direct sinc products. With the
 versions used to prepare the archive, a complete run takes only a few seconds.
 
-## Rebuild the PDF
+## Rebuild the consolidated PDF
 
-A reasonably complete TeX Live installation is sufficient. From the archive root:
+A reasonably complete TeX Live installation is sufficient. From this asset directory,
+move to the consolidated-volume directory and run the repository-required three passes:
 
 ```bash
-latexmk -pdf -interaction=nonstopmode -halt-on-error fabius_frontier_report.tex
+cd ../..
+pdflatex -interaction=nonstopmode -halt-on-error Frontier_Compilations.tex
+pdflatex -interaction=nonstopmode -halt-on-error Frontier_Compilations.tex
+pdflatex -interaction=nonstopmode -halt-on-error Frontier_Compilations.tex
+rm -f *.aux *.log *.out *.toc
 ```
 
-The document uses Libertinus when available and falls back to Latin Modern.
+The canonical output is
+[`../../Frontier_Compilations.pdf`](../../Frontier_Compilations.pdf).
 
 ## Verification notes
 
 The packaged numerical outputs were regenerated from a clean temporary directory and
-compared byte-for-byte with the included CSV and PNG files. The final PDF was rendered
-page by page at 180 dpi and visually inspected for clipping, overlap, broken glyphs, and
-unreadable equations.
+compared byte-for-byte with the included CSV and PNG files. Before consolidation, the
+standalone PDF was rendered page by page at 180 dpi and visually inspected for clipping,
+overlap, broken glyphs, and unreadable equations.
