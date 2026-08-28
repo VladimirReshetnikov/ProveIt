@@ -9065,15 +9065,22 @@ the probabilistic splitting twice over --- in measure form
 splitting of the random series itself (\path{RandomSeriesLaw.lean}).  Every stage of the
 chain is formal.
 
-\begin{obligation}[Canonical normalization theorem]
+\begin{obligation}[Canonical normalization theorem --- discharged]
 The repository uses several Fourier-transform conventions across historical manuscripts.
 A promoted theorem should package the convention explicitly and derive all rescalings between
 $F$, $\Up$, $Q_\infty$, and the characteristic function of $Y_\infty$.  Doing so would prevent
 sign and $2\pi$ factors from leaking into later shell or saddle arguments.
 \end{obligation}
 
-This obligation stands, but part of the required chain is already formal and fixes the
-convention unambiguously: \leanPartx{Fabius.rvachevFourier} is
+This obligation is now discharged: \leanPartx{Fabius.normalization\_dictionary} in
+\path{NormalizationDictionary.lean} is the promoted package.  Its four conjuncts fix the
+convention \(\widehat{\Up}(z)=\int_\R\Up(t)\e^{-2\pi\ii tz}\dd t\) and derive every rescaling
+simultaneously: the function-level fold \(\Up=F(1-|\cdot|)\) (also promoted separately as
+\leanPartx{Fabius.rvachevUp\_eq\_fabiusReal\_one\_sub\_abs}), the product identity
+\(\widehat{\Up}=Q_\infty\) on all of \(\C\), the centered characteristic function
+\(\mathbb{E}[e^{itY_\infty}]=\widehat{\Up}(t/(2\pi))\), and the uncentered
+\(\mathbb{E}[e^{itX_\infty}]=e^{it/2}\,\widehat{\Up}(t/(4\pi))\).  The individual legs that fix the
+convention remain available: \leanPartx{Fabius.rvachevFourier} is
 $\int_\R\Up(t)\e^{-2\pi\ii tz}\dd t$,
 \leanPartx{Fabius.rvachevFourier_eq_product} converts it into $Q_\infty$, and
 \leanPartx{Fabius.complexGeneratingFunction_eq_fourier_analytic} together with
@@ -9087,9 +9094,9 @@ characteristic-function leg is now formal as well:
 Mathlib's characteristic-function convention and \leanPartx{Fabius.rvachevFourier}, with
 the \(F\leftrightarrow\Up\) passage carried at measure level by
 \leanPartx{Fabius.rvachevMeasure\_eq\_map\_weightedSum} and its CDF identity
-\leanPartx{Fabius.rvachevMeasure\_Iic}.  What the obligation still asks for is only the
-packaging: the rescalings exist as separate named theorems and should be bundled into a
-single named normalization theorem rather than reconstructed at each use.
+\leanPartx{Fabius.rvachevMeasure\_Iic}.  The packaging the obligation asked for is exactly the four
+conjuncts of \leanPartx{Fabius.normalization\_dictionary}: later shell or saddle arguments
+can cite the dictionary instead of reassembling sign and \(2\pi\) conventions at each use.
 
 \begin{obligation}[Reusable geometric-tail API]
 The identity ``tail equals a scaled copy of the whole object'' occurs simultaneously for

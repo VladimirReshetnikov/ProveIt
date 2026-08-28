@@ -8,7 +8,7 @@ theorem* obligation: the repository's historical manuscripts use
 several Fourier conventions, and a single promoted theorem should fix
 the convention and derive every rescaling between the bounded Fabius
 function `F`, Rvachev's up-function, the dyadic sinc product `Q_∞`,
-and the characteristic function of the random series `Y_∞`, so that
+and the characteristic function of the random dyadic series, so that
 sign and `2π` factors never have to be reconstructed at a use site.
 
 This module is that theorem.  The convention is Mathlib-facing:
@@ -21,9 +21,11 @@ exponent transform, and `charFun` is Mathlib's characteristic function
 2. `Û(z) = Q_∞(z)` — the transform is the dyadic sinc product,
    for every complex `z`;
 3. `charFun μ_up t = Û(t/(2π))` — Mathlib's characteristic function
-   of the up-measure is the transform at the rescaled frequency;
-4. `E[e^{itY_∞}] = e^{it/2}·Û(t/(4π))` — the random series adds the
-   midpoint phase and halves the frequency again.
+   of the up-measure (the law of the centered series) is the
+   transform at the rescaled frequency;
+4. `E[e^{itX_∞}] = e^{it/2}·Û(t/(4π))` — the uncentered random series
+   `X_∞ = ∑ U_k 2^{-k}` adds the midpoint phase and halves the
+   frequency again.
 
 Each entry exists as a named theorem
 (`rvachevUp_eq_weightedSumCDF` + `weightedSumCDF_eq_fabiusReal`,
@@ -54,7 +56,7 @@ all four rescalings between the bounded function, the up-function, the
 dyadic sinc product, and the two characteristic functions hold
 simultaneously — `up = F(1-|·|)`, `Û = Q_∞`,
 `charFun μ_up = Û(·/(2π))`, and
-`E[e^{itY_∞}] = e^{it/2}·Û(t/(4π))`. -/
+`E[e^{itX_∞}] = e^{it/2}·Û(t/(4π))`. -/
 theorem normalization_dictionary (F : BoundedFabius) (hF : IsFabius F) :
     (∀ x : ℝ, rvachevUp F x = fabiusReal F (1 - |x|)) ∧
       (∀ z : ℂ, rvachevFourier F z = rvachevFourierProduct z) ∧
