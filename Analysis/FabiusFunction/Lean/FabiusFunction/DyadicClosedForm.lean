@@ -1,5 +1,6 @@
 import FabiusFunction.DyadicCorrectness
 import FabiusFunction.MomentPowerSeries
+import FabiusFunction.ThueMorseBitSupport
 import Mathlib.Data.Nat.Bitwise
 import Mathlib.Data.Nat.Choose.Sum
 import Mathlib.Algebra.Polynomial.Taylor
@@ -129,25 +130,6 @@ theorem sum_fin_two_mul {M : Type*} [AddCommMonoid M] (f : ℕ → M) (a : ℕ) 
   rw [Fin.sum_univ_eq_sum_range f (2 * a),
     Fin.sum_univ_eq_sum_range (fun j => f (2 * j) + f (2 * j + 1)) a]
   exact sum_range_two_mul a f
-
-/-- Setting a fresh leading binary bit raises the digit sum by one:
-`binaryWeight (2 ^ b + h) = binaryWeight h + 1` for `h < 2 ^ b`.  The
-hypothesis is essential -- it is what makes the new bit disjoint from the
-digits of `h`.  This is the arithmetic behind `thueMorseSign_add_pow_two`. -/
-theorem binaryWeight_add_pow_two (b h : ℕ) (hh : h < 2 ^ b) :
-    binaryWeight (2 ^ b + h) = binaryWeight h + 1 := by
-  have hlen : (Nat.digits 2 h).length ≤ b :=
-    (Nat.digits_length_le_iff Nat.one_lt_two h).2 hh
-  have hdigits :=
-    Nat.digits_append_zeroes_append_digits (b := 2)
-      (k := b - (Nat.digits 2 h).length) (m := 1) (n := h)
-      Nat.one_lt_two (by decide)
-  rw [Nat.add_sub_of_le hlen] at hdigits
-  have hone : Nat.digits 2 1 = [1] := by norm_num [Nat.digits_of_lt]
-  simp only [hone, mul_one] at hdigits
-  rw [add_comm] at hdigits
-  rw [binaryWeight, binaryWeight, ← hdigits]
-  simp
 
 /-- Appending a zero binary digit leaves the digit sum unchanged. -/
 @[simp] theorem binaryWeight_two_mul (h : ℕ) :

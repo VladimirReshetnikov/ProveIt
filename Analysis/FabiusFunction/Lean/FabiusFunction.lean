@@ -1,10 +1,17 @@
 import FabiusFunction.GeometricLagrange
+import FabiusFunction.LagrangeResidualMoments
 import FabiusFunction.Paper05442
 import FabiusFunction.Paper06487
 import FabiusFunction.PaperFabiusAsymptotic
 import FabiusFunction.PaperKFoldThueMorse
 import FabiusFunction.FinitePolynomialFunctional
+import FabiusFunction.CompleteHomogeneous
+import FabiusFunction.FiniteQBinomialCore
+import FabiusFunction.GeometricQBinomialLagrange
+import FabiusFunction.WeightedScaleMultiplicity
 import FabiusFunction.MomentCumulantAlgebra
+import FabiusFunction.PolynomialExpectationCumulant
+import FabiusFunction.ThueMorseBitSupport
 import FabiusFunction.ThueMorseBooleanCube
 import FabiusFunction.ThueMorseValuation
 import FabiusFunction.ThueMorseDigits
@@ -29,6 +36,7 @@ import FabiusFunction.ThueMorseMultinomial
 import FabiusFunction.ThueMorseFourier
 import FabiusFunction.ThueMorseSineProduct
 import FabiusFunction.ThueMorseFourierInversion
+import FabiusFunction.SummableCyclicAlias
 import FabiusFunction.ThueMorseParseval
 import FabiusFunction.ThueMorseComplexity
 import FabiusFunction.ThueMorseArithmeticFilter
@@ -38,6 +46,7 @@ import FabiusFunction.ThueMorseHessenberg
 import FabiusFunction.ExponentialPartition
 import FabiusFunction.ThueMorsePartition
 import FabiusFunction.ExponentialBell
+import FabiusFunction.EndpointTransferPolynomials
 import FabiusFunction.ThueMorseIntegerLift
 import FabiusFunction.ThueMorseBoundaryFlatness
 import FabiusFunction.ThueMorseDirichlet
@@ -123,6 +132,8 @@ import FabiusFunction.ValleyZeroOrders
 import FabiusFunction.ThueMorseLobeSign
 import FabiusFunction.LobeSignSelfSimilarity
 import FabiusFunction.RenormalizationIdentity
+import FabiusFunction.IntegerZeroLocalFactorization
+import FabiusFunction.SincPrefixBound
 import FabiusFunction.GlobalDecayEnvelope
 import FabiusFunction.LacunaryMeanSharp
 import FabiusFunction.KappaDictionary

@@ -1,4 +1,4 @@
-import FabiusFunction.DyadicClosedForm
+import FabiusFunction.ThueMorseBitSupport
 
 /-!
 # The Boolean cube structure of dyadic blocks
@@ -27,9 +27,9 @@ full generality.
   set of bit positions, the algebraic engine behind the sparse Prouhet
   identities of the atlas.
 
-The proofs are by induction on the block level, splitting the powerset of
-`range (m+1)` by membership of the top bit; no analysis, no `testBit`, and
-no divisibility argument is needed anywhere.
+The binary dictionary and reindexing kernel come from the canonical
+`Finset.equivBitIndices` foundation in `ThueMorseBitSupport`; the product
+identities here are then direct finite algebraic expansions.
 -/
 
 set_option autoImplicit false
@@ -37,91 +37,6 @@ set_option autoImplicit false
 open Finset
 
 namespace Fabius
-
-/-! ## The digit dictionary -/
-
-/-- A sum of distinct powers of two with exponents below `m` stays below
-`2 ^ m`.  Mathlib's `Nat.geomSum_lt` in the shape this module uses. -/
-theorem sum_two_pow_lt_two_pow {m : ℕ} {T : Finset ℕ}
-    (hT : T ⊆ range m) :
-    ∑ j ∈ T, 2 ^ j < 2 ^ m :=
-  Nat.geomSum_lt le_rfl fun _ hj => mem_range.mp (hT hj)
-
-/-- The binary weight of a sum of distinct powers of two is the number of
-summands: subsets of bit positions are faithfully encoded. -/
-theorem binaryWeight_sum_two_pow {m : ℕ} {T : Finset ℕ}
-    (hT : T ⊆ range m) :
-    binaryWeight (∑ j ∈ T, 2 ^ j) = T.card := by
-  induction m generalizing T with
-  | zero =>
-      have : T = ∅ := subset_empty.mp (by simpa using hT)
-      simp [this, binaryWeight]
-  | succ m ih =>
-      by_cases hm : m ∈ T
-      · have hsub : T.erase m ⊆ range m := by
-          intro j hj
-          have hj' := hT (mem_of_mem_erase hj)
-          have hne := ne_of_mem_erase hj
-          simp only [mem_range] at hj' ⊢
-          omega
-        have hlt := sum_two_pow_lt_two_pow hsub
-        have hsplit : ∑ j ∈ T, 2 ^ j =
-            2 ^ m + ∑ j ∈ T.erase m, 2 ^ j := by
-          rw [← Finset.add_sum_erase _ _ hm]
-        rw [hsplit, binaryWeight_add_pow_two m _ hlt, ih hsub,
-          ← Finset.card_erase_add_one hm]
-      · have hsub : T ⊆ range m := by
-          intro j hj
-          have hj' := hT hj
-          simp only [mem_range] at hj' ⊢
-          rcases Nat.lt_succ_iff_lt_or_eq.mp hj' with h | rfl
-          · exact h
-          · exact absurd hj hm
-        exact ih hsub
-
-/-! ## The reindexing kernel -/
-
-/-- **Reindexing kernel.**  Summing a function over the subsets of
-`range m`, each encoded as a sum of powers of two, is the same as summing
-it over the dyadic block `range (2^m)`.  This is the Boolean-cube structure
-of the block, stated so that every generating identity of the atlas can be
-transported across it. -/
-theorem sum_powerset_two_pow {M : Type*} [AddCommMonoid M]
-    (m : ℕ) (f : ℕ → M) :
-    ∑ T ∈ (range m).powerset, f (∑ j ∈ T, 2 ^ j) =
-      ∑ n ∈ range (2 ^ m), f n := by
-  induction m generalizing f with
-  | zero => simp
-  | succ m ih =>
-      -- Split the powerset by membership of the top bit `m`.
-      rw [Finset.range_add_one, Finset.powerset_insert, Finset.sum_union, ]
-      · -- Split the block into its lower and upper halves.
-        have hblock : ∑ n ∈ range (2 ^ (m + 1)), f n =
-            ∑ n ∈ range (2 ^ m), f n +
-              ∑ n ∈ range (2 ^ m), f (2 ^ m + n) := by
-          rw [pow_succ, mul_comm, two_mul, Finset.sum_range_add]
-        rw [hblock, ← ih f, ← ih (fun n => f (2 ^ m + n))]
-        congr 1
-        -- Upper half: subsets containing `m` are `insert m T`.
-        rw [Finset.sum_image]
-        · refine Finset.sum_congr rfl fun T hT => ?_
-          have hm : m ∉ T := fun h =>
-            absurd (Finset.mem_powerset.mp hT h) (by simp)
-          rw [Finset.sum_insert hm]
-        · intro T hT U hU hTU
-          have hmT : m ∉ T := fun h =>
-            absurd (Finset.mem_powerset.mp hT h) (by simp)
-          have hmU : m ∉ U := fun h =>
-            absurd (Finset.mem_powerset.mp hU h) (by simp)
-          have := congrArg (Finset.erase · m) hTU
-          simpa [Finset.erase_insert hmT, Finset.erase_insert hmU] using this
-      · -- The two families of subsets are disjoint.
-        rw [Finset.disjoint_left]
-        intro T hT hT'
-        have hmT : m ∉ T := fun h =>
-          absurd (Finset.mem_powerset.mp hT h) (by simp)
-        rcases Finset.mem_image.mp hT' with ⟨U, hU, rfl⟩
-        exact hmT (Finset.mem_insert_self m U)
 
 /-! ## The master product identity -/
 
