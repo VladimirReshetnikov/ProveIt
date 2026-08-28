@@ -29,6 +29,7 @@ import FabiusFunction.BellPolynomialInversion
 import FabiusFunction.AppellSequence
 import FabiusFunction.MomentCumulantAlgebra
 import FabiusFunction.ReciprocalExponentialGenerating
+import FabiusFunction.ImplicitPowerSeries
 import FabiusFunction.QuadraticCompositionalInverse
 import FabiusFunction.PolynomialExpectationCumulant
 import FabiusFunction.ThueMorseBitSupport

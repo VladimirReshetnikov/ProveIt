@@ -180,7 +180,7 @@ and the umbrella import is \nolinkurl{FabiusFunction.lean}.  The Lake package de
 
 The normal build command from the project root is:
 \begin{lstlisting}[style=pseudo]
-LAKE_JOBS=1 LEAN_NUM_THREADS=0 lake build +FabiusFunction
+LAKE_JOBS=1 lake build +FabiusFunction
 \end{lstlisting}
 The source claims in this walkthrough are pinned to commit
 \nolinkurl{eaea1b9afe2b7ff0b7dd880bd1710e303dec6d80}.  Before reproducing a
@@ -188,7 +188,7 @@ declaration or module count, check the checkout with \texttt{git rev-parse
 HEAD}; a moving \texttt{main} branch is not a reproducible specification.
 After dependencies have been installed, a focused edit loop can build one
 module at a time with a Lake target such as
-\texttt{LAKE\_JOBS=1 LEAN\_NUM\_THREADS=0 lake build
+\texttt{LAKE\_JOBS=1 lake build
 +FabiusFunction.DyadicAnalytic}.  The root-module build
 remains the release check.
 
@@ -856,6 +856,26 @@ at both ends, by
 \nolinkurl{tendsto_deriv_fabiusInv_atTop_at_zero_right} and
 \nolinkurl{tendsto_deriv_fabiusInv_atTop_at_one_left}.  These are one-sided
 limits through \((0,1)\), not derivative values at the clamping points.
+
+\subsection{Generic formal implicit roots versus inverse-Fabius germs}
+\nolinkurl{ImplicitPowerSeries.lean} isolates a purely formal root engine.
+\nolinkurl{FormalImplicitRoot.existsUnique_isRoot_sub_mem} lifts a simple
+approximate root modulo an adic ideal in a complete commutative ring without a
+monicity assumption.  Its
+power-series specialization
+\nolinkurl{PowerSeries.Implicit.existsUnique_zeroConstant_root} says that a
+polynomial over \(R[[X]]\) with vanishing parameter-constant
+constant coefficient and unit parameter-constant linear coefficient has a
+unique zero-constant formal root.  The chosen root and its uniqueness
+interface are \nolinkurl{PowerSeries.Implicit.root},
+\nolinkurl{PowerSeries.Implicit.constantCoeff_root},
+\nolinkurl{PowerSeries.Implicit.eval_root}, and
+\nolinkurl{PowerSeries.Implicit.eq_root}.
+
+These declarations are formal algebra only.  They neither define the inverse
+frontier's \(\mathcal A_r\) or \(Q_{x_0}\), nor prove convergence or analyticity
+of the resulting series, identification with a local inverse, entry into a
+finite-prefix plateau, a nonzero flat defect, or any Fabius quantile formula.
 
 \subsection{Exact analytic loci and non-elementarity}
 The smooth function is analytic precisely off its closed transition interval:
@@ -3124,6 +3144,7 @@ Module & Role in the development \\
 \nolinkurl{SharpFlatness.lean} & Factorial-strengthened endpoint power bounds for \(F\) and \(\Up\). \\
 \nolinkurl{NowhereAnalytic.lean} & Exact real-analytic loci: off the closed transition supports and nowhere on them. \\
 \nolinkurl{FabiusInverse.lean} & Totalized inverse, order isomorphism on the unit interval, exact positive reciprocal derivative, exact global smoothness locus (continuity everywhere, but differentiability and every positive finite or \(C^\infty\) order exactly off the clamping endpoints), reciprocal-cubic second derivative, midpoint jet and interior curvature loci, strict closed-half curvature, and endpoint quotient/derivative blow-up. \\
+\nolinkurl{ImplicitPowerSeries.lean} & Nonmonic complete-adic lifting and residue-class uniqueness, with arbitrary-base and zero-constant formal implicit-root specializations over power-series rings; it does not construct or analytically realize a Fabius inverse germ. \\
 \nolinkurl{InverseBranch.lean} & Analytic inverse theorem, analytic-density preservation for continuous right-inverse branches, and the complement-interior analyticity condition and conditional Lambert-branch criterion for \nolinkurl{IsElementaryOrInverse}. \\
 \nolinkurl{AlgebraicBranch.lean} & Algebraic-function branch interface used in non-elementarity arguments. \\
 \nolinkurl{ElementaryFunction.lean} & Formal expression language and semantics for elementary real functions. \\
@@ -3359,6 +3380,9 @@ post-snapshot discussion above, were checked at checkpoint
 \nolinkurl{1e761ed77583e9870ceeaeb2c74ac824094f0f3f}, all on 27 August 2026.
 The subsequent five geometric and Lambert rows reflect source checkpoint
 \nolinkurl{c45276994d9411a45bef409ad6bc481771613113}, also on 27 August 2026.
+The \nolinkurl{ImplicitPowerSeries.lean} row and the generic formal-root
+discussion are a post-snapshot foundation checked at source checkpoint
+\nolinkurl{cd9086a80cbecefecb9bc1e00378d151061595e0} on 28 August 2026.
 The title-page pin and reproduction count continue to describe the older
 audited snapshot.
 \end{remark}
@@ -3614,11 +3638,11 @@ environment.
 \subsection{Build and inspect trust}
 The release-level library check is
 \begin{lstlisting}[style=pseudo,language={}]
-LAKE_JOBS=1 LEAN_NUM_THREADS=0 lake build +FabiusFunction
+LAKE_JOBS=1 lake build +FabiusFunction
 \end{lstlisting}
 The repository policy requires one prefixed module target per Lake invocation,
-with \texttt{LAKE\_JOBS=1} and \texttt{LEAN\_NUM\_THREADS=0}, including during
-debugging.  It also requires a source audit for declarations that bypass
+with \texttt{LAKE\_JOBS=1}, including during debugging, and forbids setting
+\texttt{LEAN\_NUM\_THREADS=0}.  It also requires a source audit for declarations that bypass
 ordinary proof checking:
 \begin{lstlisting}[style=pseudo,language={}]
 rg -n '\b(sorry|admit)\b' \
