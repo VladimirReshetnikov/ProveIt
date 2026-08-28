@@ -241,8 +241,8 @@ theorem mgf_uniform_half (t : ℝ) (ht : t ≠ 0) :
   rw [MeasureTheory.integral_Icc_eq_integral_Ioc,
     ← intervalIntegral.integral_of_le
       (by norm_num : -(2⁻¹ : ℝ) ≤ 2⁻¹),
-    intervalIntegral.integral_comp_mul_left ht, integral_exp,
-    smul_eq_mul, Real.sinh_eq]
+    intervalIntegral.integral_comp_mul_left (f := Real.exp) ht,
+    integral_exp, smul_eq_mul, Real.sinh_eq]
   have h1 : t * 2⁻¹ = t / 2 := by ring
   have h2 : t * -2⁻¹ = -(t / 2) := by ring
   rw [h1, h2]
