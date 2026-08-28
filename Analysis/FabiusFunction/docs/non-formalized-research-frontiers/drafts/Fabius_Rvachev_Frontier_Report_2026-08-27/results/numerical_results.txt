@@ -1,0 +1,97 @@
+FABIUS--RVACHEV FRONTIER EXPERIMENTS
+============================================
+
+mpmath decimal digits: 70
+Fourier half-integer modes: 420
+sinc-product factors per coefficient: 240
+
+1. Exact midpoint/endpoint transmutation residuals
+   identity: F(1/2+h) = 1/2 + 2h - F(h)
+   h=    0.05  residual=-4.0386727e-20
+   h=     0.1  residual=-2.3050364e-20
+   h=     0.2  residual=-5.9466757e-21
+   h=     0.3  residual=5.9466757e-21
+   h=    0.45  residual=4.0386727e-20
+
+2. Inverse midpoint flat defect
+   E(delta)=F^{-1}(1/2+delta)-1/2-delta/2
+   comparison: E(delta) ~ F(delta/2)/2
+   delta=   0.25  E=0.00186946480001  F(delta/2)/2=0.00173611111111  ratio=1.0768117248
+   delta=    0.2  E=0.000558337327435  F(delta/2)/2=0.000541717809778  ratio=1.03067928977
+   delta=   0.15  E=0.000106205195288  F(delta/2)/2=0.000105314288462  ratio=1.00845950573
+   delta=    0.1  E=8.10084684889e-6  F(delta/2)/2=8.09206623963e-6  ratio=1.00108508865
+   delta=  0.075  E=1.09685028275e-6  F(delta/2)/2=1.09661923462e-6  ratio=1.0002106913
+   delta=   0.05  E=5.11439387869e-8  F(delta/2)/2=5.1143111061e-8  ratio=1.00001618451
+
+3. Exact dyadic endpoint values V_n=F(2^{-n})
+   n= 0  V_n=1/1  decimal=1.0000000000000000e+00
+   n= 1  V_n=1/2  decimal=5.0000000000000000e-01
+   n= 2  V_n=5/72  decimal=6.9444444444444448e-02
+   n= 3  V_n=1/288  decimal=3.4722222222222220e-03
+   n= 4  V_n=143/2073600  decimal=6.8962191358024690e-05
+   n= 5  V_n=19/33177600  decimal=5.7267554012345678e-07
+   n= 6  V_n=1153/561842749440  decimal=2.0521756330382803e-09
+   n= 7  V_n=583/179789679820800  decimal=3.2426777809554355e-12
+   n= 8  V_n=1616353/704200217922109440000  decimal=2.2953031806343213e-15
+   n= 9  V_n=132809/180275255788060016640000  decimal=7.3670121514699966e-19
+   n=10  V_n=134926369/1246394851358539387238350848000  decimal=1.0825331062057391e-22
+   n=11  V_n=46840699/6381541638955721662660356341760000  decimal=7.3400287344462166e-27
+   n=12  V_n=67545496213157/292214732887898713986916575925267070976000000  decimal=2.3115020774489570e-31
+
+4. Bernoulli cumulants of the up distribution
+   kappa_2 = 1/9
+   kappa_4 = -2/225
+   kappa_6 = 16/3969
+   kappa_8 = -16/3825
+   kappa_10 = 256/33759
+
+5. Inverse-moment Appell polynomials A_n(x;Q)
+   A_0(x;Q) = 1
+   A_1(x;Q) = x
+   A_2(x;Q) = (-Q + 9*x**2)/9
+   A_3(x;Q) = x*(-Q + 3*x**2)/3
+   A_4(x;Q) = (31*Q**2 - 450*Q*x**2 + 675*x**4)/675
+   A_5(x;Q) = x*(31*Q**2 - 150*Q*x**2 + 135*x**4)/135
+   A_6(x;Q) = (-2347*Q**3 + 41013*Q**2*x**2 - 99225*Q*x**4 + 59535*x**6)/59535
+   A_7(x;Q) = x*(-2347*Q**3 + 13671*Q**2*x**2 - 19845*Q*x**4 + 8505*x**6)/8505
+   A_8(x;Q) = (1904369*Q**4 - 35909100*Q**3*x**2 + 104583150*Q**2*x**4 - 101209500*Q*x**6 + 32531625*x**8)/32531625
+
+6. Exact q-binomial scale closures (q=1/4)
+   degree n= 0, closure order N= 1: PASS
+   degree n= 1, closure order N= 1: PASS
+   degree n= 2, closure order N= 2: PASS
+   degree n= 3, closure order N= 2: PASS
+   degree n= 4, closure order N= 3: PASS
+   degree n= 5, closure order N= 3: PASS
+   degree n= 6, closure order N= 4: PASS
+   degree n= 7, closure order N= 4: PASS
+   degree n= 8, closure order N= 5: PASS
+   degree n= 9, closure order N= 5: PASS
+   degree n=10, closure order N= 6: PASS
+   degree n=11, closure order N= 6: PASS
+   degree n=12, closure order N= 7: PASS
+
+7. Cardinal reproduction maximum residuals
+   max over x in {-0.83,-0.41,0.07,0.37,0.79}
+   r= 0, n= 0: 7.2445433e-71
+   r= 1, n= 0: 1.8111358e-71
+   r= 1, n= 1: 4.5129144e-20
+   r= 2, n= 0: 4.5278395e-71
+   r= 2, n= 1: 1.4105268e-19
+   r= 2, n= 2: 2.3522333e-19
+   r= 3, n= 0: 2.7167037e-71
+   r= 3, n= 1: 1.111188e-19
+   r= 3, n= 2: 1.5678399e-19
+   r= 3, n= 3: 4.7133249e-18
+   r= 4, n= 0: 3.6222716e-71
+   r= 4, n= 1: 3.3299634e-19
+   r= 4, n= 2: 1.2482665e-19
+   r= 4, n= 3: 5.6693842e-17
+   r= 4, n= 4: 4.2375488e-17
+   r= 5, n= 0: 1.8111358e-71
+   r= 5, n= 1: 4.2337763e-19
+   r= 5, n= 2: 8.7905926e-19
+   r= 5, n= 3: 2.8884489e-16
+   r= 5, n= 4: 1.1970996e-15
+   r= 5, n= 5: 5.2204215e-14
+

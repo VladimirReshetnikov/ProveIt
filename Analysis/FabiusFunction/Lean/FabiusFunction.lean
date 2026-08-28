@@ -1,13 +1,15 @@
+import FabiusFunction.CompleteHomogeneous
+import FabiusFunction.FiniteQBinomialCore
+import FabiusFunction.GeometricCompleteHomogeneous
 import FabiusFunction.GeometricLagrange
 import FabiusFunction.LagrangeResidualMoments
+import FabiusFunction.GeometricResidualMoments
+import FabiusFunction.GeometricQBinomialLagrange
 import FabiusFunction.Paper05442
 import FabiusFunction.Paper06487
 import FabiusFunction.PaperFabiusAsymptotic
 import FabiusFunction.PaperKFoldThueMorse
 import FabiusFunction.FinitePolynomialFunctional
-import FabiusFunction.CompleteHomogeneous
-import FabiusFunction.FiniteQBinomialCore
-import FabiusFunction.GeometricQBinomialLagrange
 import FabiusFunction.WeightedScaleMultiplicity
 import FabiusFunction.MomentCumulantAlgebra
 import FabiusFunction.PolynomialExpectationCumulant
@@ -132,6 +134,7 @@ import FabiusFunction.ValleyZeroOrders
 import FabiusFunction.ThueMorseLobeSign
 import FabiusFunction.LobeSignSelfSimilarity
 import FabiusFunction.RenormalizationIdentity
+import FabiusFunction.IntegerZeroLocalFactorization
 import FabiusFunction.SincPrefixBound
 import FabiusFunction.GlobalDecayEnvelope
 import FabiusFunction.LacunaryMeanSharp
@@ -139,6 +142,8 @@ import FabiusFunction.KappaDictionary
 import FabiusFunction.DyadicReflection
 import FabiusFunction.CollatzWielandt
 import FabiusFunction.LacunaryProductToSum
+import FabiusFunction.LogSeriesMultiplicative
+import FabiusFunction.BaseLayerRegrouping
 import FabiusFunction.RvachevFourierDecay
 import FabiusFunction.BoundednessSkeleton
 import FabiusFunction.TransferOperatorStep
