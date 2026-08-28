@@ -53,9 +53,7 @@ sources *as* independent documents (see the group README).
 
 | Directory | Document | Previous path |
 | --- | --- | --- |
-| `Exponents_and_q_Series_Frontiers/` | *Exponent-Sequence and q-Series Frontiers* — consolidation (2026-08-28) of the former `Fabius_Newton_Rvachev_Frontier_Report/` (*Exponent-Sequence and Newton-Basis Frontiers*, Lean-crosswalked) and `fabius_frontier_results/` (*q-Binomial Richardson Acceleration of Geometric Sinc Products*); their assets live under `assets/`, provenance with SHA-256 in the document | absorbed drafts deleted; git history is the archive |
-
-| `finite_sinc_products_report/` | *Finite dyadic sinc products and piecewise-polynomial approximants to Rvachev’s up-function* | `drafts/incoming/finite_sinc_products_report_bundle.zip` (unpacked 2026-08-28, seventh wave) |
+| `Exponents_and_q_Series_Frontiers/` | *Exponent-Sequence and q-Series Frontiers* (80 pp, 3 parts) — consolidation (2026-08-28) of the former `Fabius_Newton_Rvachev_Frontier_Report/` (*Exponent-Sequence and Newton-Basis Frontiers*, Lean-crosswalked) and `fabius_frontier_results/` (*q-Binomial Richardson Acceleration of Geometric Sinc Products*), joined the same day by the eighth-wave `finite_sinc_products_report/` (*Finite Dyadic Sinc Products and Piecewise-Polynomial Approximants to Rvachev's Up-Function*, from `drafts/incoming/finite_sinc_products_report_bundle.zip`) as Part III: exact truncated-power prefix formula with Thue–Morse jumps, sharp derivative plateaux, exact error law 2^(C(r+3,2)−1)/(9·4ⁿ), exact Kolmogorov 1/(9·4ⁿ), Bell–Bernoulli all-orders expansion, q=1/4 Richardson weights, uniform scale mixture X = R·U, positive Gauss/Radau/Lobatto tail quadrature with exact constants (incl. the previously open variance-matched positive 16⁻ⁿ scheme); the fold also repaired the volume's part-boundary section numbering; assets under `assets/`, provenance with SHA-256 in the document | absorbed drafts deleted; git history is the archive |
 
 ## spectra-and-arithmetic — `spectra-and-arithmetic/`
 

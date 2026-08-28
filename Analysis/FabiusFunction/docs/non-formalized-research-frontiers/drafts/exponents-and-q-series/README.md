@@ -27,9 +27,26 @@ shifts, negative-branch and hierarchy formulas, and inverse/quantile versions
 remain research frontiers. These API claims were checked at source checkpoint
 `22f801337`.
 
-Member: `Exponents_and_q_Series_Frontiers` — the 2026-08-28 consolidation
-of the two former drafts (Newton-basis frontiers; q-binomial Richardson),
-with their supporting files under `assets/` and provenance recorded in the
-document itself.
+Member: `Exponents_and_q_Series_Frontiers` (80 pp, three parts) — the
+2026-08-28 consolidation of the two former drafts (Part I:
+Newton-basis frontiers; Part II: q-binomial Richardson), joined the
+same day by the eighth-wave report as **Part III** — *Finite Dyadic
+Sinc Products and Piecewise-Polynomial Approximants to Rvachev's
+Up-Function* (formerly `finite_sinc_products_report/`): the exact
+truncated-power formula for the prefix densities `p_n` with signed
+Thue–Morse top-derivative jumps on a uniform dyadic knot grid, sharp
+derivative plateaux, the exact error law
+`||p_n^(r) − up^(r)||_∞ = 2^(C(r+3,2)−1)/(9·4^n)` with exact
+Kolmogorov distance `1/(9·4^n)`, the Bell–Bernoulli all-orders
+expansion, stable `q = 1/4` Richardson weights in closed q-binomial
+form (extending Part II), a uniform scale-mixture representation
+`X = R·U` of the up law, and a positive Gauss/Radau/Lobatto tail
+quadrature hierarchy with exact constants — including the
+variance-matched positive `16^{-n}` scheme that the frontier corpus
+had proposed without construction, and a sixth-order exact-support
+Radau rule.  The fold also repaired the volume's part-boundary
+section numbering (Part II had rendered with `\appendix` letters
+G–N).  Supporting files under `assets/`, provenance with SHA-256 in
+the document itself.
 
 See [`../MANIFEST.md`](../MANIFEST.md) for titles and the previous paths.
