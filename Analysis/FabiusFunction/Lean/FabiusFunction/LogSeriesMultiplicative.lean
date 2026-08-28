@@ -47,13 +47,15 @@ families. -/
 noncomputable def logOf (C : PowerSeries R) : PowerSeries R :=
   logSeries (fun n => PowerSeries.coeff n C)
 
-/-- `massSeries` is a left inverse of taking coefficients. -/
 omit [Algebra ℚ R] in
+/-- Reconstructing a power series with `massSeries` from its coefficient
+function returns the original series. -/
 @[simp] theorem massSeries_coeff (C : PowerSeries R) :
     massSeries (fun n => PowerSeries.coeff n C) = C := by
   ext n
   rw [coeff_massSeries]
 
+/-- The formal logarithm has zero constant coefficient. -/
 @[simp] theorem constantCoeff_logOf (C : PowerSeries R) :
     PowerSeries.constantCoeff (logOf C) = 0 := by
   rw [logOf, constantCoeff_logSeries]
