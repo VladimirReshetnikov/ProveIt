@@ -2879,16 +2879,89 @@ coefficient definition \lean{gaussianBinomial}, and the theorems
 \lean{gaussianBinomial_self}, and
 \lean{finite_qBinomial_theorem} in \path{FiniteQBinomialCore.lean}.
 
+Two denominator-free product identities make this recursion especially useful downstream:
+for $k\le n$,
+\begin{align}
+ (a;q)_{n+1}&=(1-a)(aq;q)_n,                              \label{eq:qpochhammer-shift}\\
+ (q;q)_k{n\brack k}_q&=(q^{n-k+1};q)_k.                 \label{eq:qfactorial-gaussian}
+\end{align}
+They are \lean{finiteQPochhammerIn_succ_shift} and
+\lean{finiteQPochhammerIn_self_mul_gaussianBinomial}, respectively, again in
+\path{FiniteQBinomialCore.lean}; both hold over every commutative ring, including all
+boundary cases.
+
 Over the rationals, \lean{finiteQPochhammerIn_rat_eq} identifies the generic product
 with the established finite \(q\)-Pochhammer notation.  At $q=1/2$,
 \lean{gaussianBinomial_half_eq_halfQBinomial} identifies the recursive coefficient
 with the established rational quotient, and
 \lean{halfQBinomial_theorem} is now the direct specialization of the ring theorem.
-Thus the finite product algebra is already available at $q=1/4$; what remains in the
-spectral research frontier is the explicit identification with the geometric Lagrange row
-and the analytic acceleration and remainder estimates, not a second finite-product
-induction.
 \end{remark}
+
+\begin{theorem}[Reversed Gaussian row, Lagrange weights, and all residual moments]
+\label{thm:geometric-q-binomial-lagrange}
+Let $R$ be a commutative ring and $q\in R$.  The zero-extended numerator row is
+\begin{equation}
+ N_{n,k}(q)=
+ \begin{cases}
+ (-1)^{n-k}q^{\binom{n-k+1}{2}}{n\brack n-k}_q,&k\le n,\\
+ 0,&n<k.
+ \end{cases}                                              \label{eq:geometric-q-numerator}
+\end{equation}
+The reversed Gaussian index $n-k$ is part of the formula.  For every $z\in R$,
+\begin{equation}
+ \sum_{k=0}^{n}N_{n,k}(q)z^k
+ =\prod_{j=0}^{n-1}(z-q^{j+1}),                           \label{eq:reversed-q-binomial}
+\end{equation}
+and, for every $0\le d\le n$,
+\begin{equation}
+ \sum_{k=0}^{n}N_{n,k}(q)(q^k)^d=(q;q)_n0^d.             \label{eq:geometric-q-numerator-moments}
+\end{equation}
+
+Now let $R$ be a field and suppose that the nodes $1,q,\ldots,q^n$ are distinct.
+If $\lambda_{n,k}^{(q)}$ is the evaluation-at-zero Lagrange weight belonging to $q^k$,
+then $(q;q)_n\ne0$ and, for $k\le n$,
+\begin{equation}
+ \lambda_{n,k}^{(q)}=\frac{N_{n,k}(q)}{(q;q)_n},
+ \qquad
+ (q;q)_n\lambda_{n,k}^{(q)}=N_{n,k}(q).                  \label{eq:geometric-lagrange-gaussian}
+\end{equation}
+Finally every positive residual moment has the single closed form
+\begin{equation}
+ \sum_{k=0}^{n}\lambda_{n,k}^{(q)}(q^k)^d
+ =(-1)^nq^{n(n+1)/2}{d-1\brack n}_q,
+ \qquad d>0.                                             \label{eq:geometric-lagrange-residual}
+\end{equation}
+All statements include $n=0$.  The field-level formulas impose only distinctness of the
+displayed finite node set; they do not add a redundant global ban on $q=0$ or on roots of
+unity.
+\end{theorem}
+
+\begin{proof}[Formal proof]
+The numerator and its two branches are
+\lean{geometricQBinomialWeightNumerator},
+\lean{geometricQBinomialWeightNumerator_eq_of_le}, and
+\lean{geometricQBinomialWeightNumerator_eq_zero_of_lt}.
+Equations \eqref{eq:reversed-q-binomial} and
+\eqref{eq:geometric-q-numerator-moments} are
+\lean{reversed_finite_qBinomial_theorem} and
+\lean{sum_geometricQBinomialWeightNumerator_mul_pow}.  Node distinctness gives the
+nonvanishing denominator by \lean{finiteQPochhammerIn_self_ne_zero_of_injOn}; the quotient
+and cleared-denominator identities in \eqref{eq:geometric-lagrange-gaussian} are
+\lean{geometricLagrangeWeight_eq_gaussianBinomial_div} and
+\lean{finiteQPochhammerIn_mul_geometricLagrangeWeight_eq}.  The complete positive-degree
+formula \eqref{eq:geometric-lagrange-residual} is
+\lean{sum_geometricLagrangeWeight_mul_pow_eq_gaussianBinomial}.  These declarations are
+all in \path{GeometricQBinomialLagrange.lean}, except for the two product identities cited
+above from \path{FiniteQBinomialCore.lean}.
+\end{proof}
+
+Here $q$ is the Gaussian base and the ratio of the geometric nodes; it is unrelated to the
+additive translation $Q$ in the translated Fabius formulas below.  Because
+Theorem~\ref{thm:geometric-q-binomial-lagrange} is base-generic, the explicit
+Gaussian--Lagrange identification and its residual moments are no longer research-frontier
+obligations at Gaussian base $q=1/4$.  The analytic quarter-base prefix or spectral-tail
+expansion, its remainder estimates, and the resulting acceleration and convergence claims
+remain in the research-frontier volume.
 
 The polynomial in \eqref{eq:half-q-binomial-theorem} has the complete rational root locus
 \begin{equation}
@@ -3656,9 +3729,23 @@ Indeed, for every $d\ge0$ its complete reversed moment is
 and for $0\le d\le n$ this is $0^d$, with $0^0=1$.  The pointwise bridge and
 these two moment forms are
 \lean{discreteLimitWeight_eq_geometricLagrangeWeight},
+\lean{geometricLagrangeWeight_half_eq_discreteLimitWeight},
 \lean{sum_range_discreteLimitWeight_reverse_mul_half_pow}, and
 \lean{sum_range_discreteLimitWeight_reverse_moment}.  Their finite-sum form is
 \lean{sum_range_discreteLimitWeight_smul_eq_geometricLagrangeWeight}.
+
+For every $d>0$, the same reversed row has the sharper residual form
+\begin{equation}
+ \sum_{k=0}^{n}\omega_{n,n-k}\bigl((1/2)^k\bigr)^d
+ =(-1)^n(1/2)^{n(n+1)/2}{d-1\brack n}_{1/2}.             \label{eq:toeplitz-complete-residual}
+\end{equation}
+This is
+\lean{sum_range_discreteLimitWeight_reverse_moment_eq_halfQBinomial} in
+\path{FabiusDiscreteLimitToeplitz.lean}.  Thus one Gaussian coefficient records every
+positive residual degree: its above-diagonal boundary gives the cancelled range, while
+its diagonal boundary gives the first surviving moment.  The corresponding boundary
+declarations are \lean{gaussianBinomial_eq_zero_of_lt} and
+\lean{gaussianBinomial_self} in \path{FiniteQBinomialCore.lean}.
 
 Consequently the global model in the proposition can be weakened to one finite block.
 For any $s\in\N$, if only the samples $0\le k\le n$ satisfy
@@ -3927,6 +4014,41 @@ $d\le r$ given by \lean{thueMorse_affine_power_sum_of_le_ring}.  For $r>0$ the s
 sum vanishes at $y=0$.  At the joint boundary $r=0$, $y=0$, Lean's convention
 $0^0=1$ instead gives the correct one-term value $1$ on both sides; no positive-degree
 reading should be imposed on that case.
+
+The binary-support parametrization used next has a canonical global foundation.  Write
+\(\operatorname{bits}(n)=\operatorname{bitSupport}(n)\) and
+\(E(T)=\sum_{j\in T}2^j\) for a finite set \(T\subseteq\N\).  This support is exactly
+Mathlib's finite set of binary indices, and
+\begin{equation}
+ j\in\operatorname{bits}(n)\Longleftrightarrow
+ n.\operatorname{testBit}(j)=\mathrm{true},
+ \qquad E(\operatorname{bits}(n))=n,
+ \qquad \operatorname{bits}(E(T))=T.                     \label{eq:tm-bit-support-dictionary}
+\end{equation}
+Consequently
+\begin{equation}
+ \wt(E(T))=|T|,
+ \qquad \varepsilon_{E(T)}=(-1)^{|T|}.                   \label{eq:tm-bit-support-weight-sign}
+\end{equation}
+The exact declarations are \lean{bitSupport_eq_toFinset_bitIndices},
+\lean{mem_bitSupport}, \lean{sum_two_pow_bitSupport},
+\lean{bitSupport_sum_two_pow}, \lean{binaryWeight_sum_two_pow_eq_card}, and
+\lean{thueMorseSign_sum_two_pow} in \path{ThueMorseBitSupport.lean}.
+
+Restricting the same inverse pair gives the canonical equivalence
+\begin{equation*}
+ \{T:T\subseteq\{j\in\N:j<m\}\}\ \simeq\ \{h\in\N:h<2^m\},
+ \qquad T\longmapsto E(T),
+\end{equation*}
+and hence, for every function into an additive commutative monoid,
+\begin{equation}
+ \sum_{T\subseteq\{j\in\N:j<m\}} f(E(T))
+ =\sum_{h=0}^{2^m-1}f(h).                                \label{eq:tm-powerset-dyadic-reindex}
+\end{equation}
+These are \lean{powersetRangeEquivFin} and \lean{sum_powerset_two_pow}; the exact image
+statement is \lean{image_sum_two_pow_powerset_range}.  The singleton boundary at $m=0$
+is included explicitly by \lean{powersetRangeEquivFin_zero_apply}, all in
+\path{ThueMorseBitSupport.lean}.
 
 The public Boolean-cube theorem uses the genuine degree
 \(\deg p\in\N\cup\{-\infty\}\), rather than the natural degree that assigns the zero
@@ -5614,7 +5736,8 @@ Universal exponential, Bell, and endpoint-transfer algebra &
 \path{EndpointTransferPolynomials.lean}\\
 Finite polynomial functionals and geometric Lagrange/Richardson exactness &
 \path{FinitePolynomialFunctional.lean}, \path{CompleteHomogeneous.lean},
-\path{GeometricLagrange.lean}, \path{LagrangeResidualMoments.lean}\\
+\path{GeometricLagrange.lean}, \path{LagrangeResidualMoments.lean},
+\path{GeometricQBinomialLagrange.lean}\\
 Dyadic and \(q\)-binomial formulas &
 \path{DyadicClosedForm.lean}, \path{DyadicAnalytic.lean}, \path{GlobalDyadic.lean},
 \path{DyadicCorrectness.lean}, \path{FiniteQBinomialCore.lean}, \path{HalfQBinomial.lean},
@@ -5625,7 +5748,8 @@ Dyadic and \(q\)-binomial formulas &
 \path{FabiusDiscreteLimitToeplitz.lean},
 \path{FabiusDiscreteLimitIntegration.lean}\\
 Thue--Morse algebra, prefixes, disc series, and ring-valued Prouhet identities &
-\path{ThueMorsePrefix.lean}, \path{ThueMorseGenerating.lean},
+\path{ThueMorseBitSupport.lean}, \path{ThueMorsePrefix.lean},
+\path{ThueMorseGenerating.lean},
 \path{ThueMorseBlockAlgebra.lean},
 \path{ThueMorseInfiniteProduct.lean}, \path{ThueMorseDiscSeries.lean},
 \path{ThueMorseNaturalBoundary.lean},

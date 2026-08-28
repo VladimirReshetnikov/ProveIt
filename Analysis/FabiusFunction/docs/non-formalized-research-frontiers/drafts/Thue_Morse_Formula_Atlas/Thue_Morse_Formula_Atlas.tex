@@ -286,7 +286,7 @@ is not by itself evidence of formalization.  Statements proved in Lean carry the
 declaration names in the text, typeset as \lean{Fabius.thueMorseSign}; statements without
 such a citation must not be inferred to have a formal counterpart.
 
-The current inventory in \cref{sec:formalized-modules} consists of seventy-eight compiled
+The current inventory in \cref{sec:formalized-modules} consists of seventy-nine compiled
 Lean modules.  It covers the finite algebraic, automata, moment, Fourier, rarefaction,
 Dirichlet--Mellin, word-combinatorial, and Fabius--Rvachev bridges recorded there, often in
 greater generality than the displayed prose.  The dependency-aware map in
@@ -1496,10 +1496,12 @@ set in \(n\)), \lean{Fabius.odd\_choose\_iff\_land}
 (\(k\mathbin{\&}n=k\)), and
 \lean{Fabius.odd\_choose\_iff\_bitSupport\_subset}, by strong
 induction through the parity recursions of Pascal rows rather than
-through \(\Ftwo[z]\).  The supporting fact that a sum of distinct
-two-powers has exactly the prescribed binary support is
+through \(\Ftwo[z]\).  The supporting bit dictionary is centralized in
+\path{ThueMorseBitSupport.lean}: a sum of distinct two-powers has exactly
+the prescribed binary support by
 \lean{Fabius.testBit\_sum\_two\_pow}, stated for an arbitrary finite
-set of bit positions.  The Glaisher--Fine count \eqref{eq:glaisher-count}
+set of bit positions, together with the two inverse reconstruction laws.
+The Glaisher--Fine count \eqref{eq:glaisher-count}
 has long been formal as \lean{Fabius.card\_oddBinomialIndices}
 (\path{Parity.lean}); the odd row positions are identified with the
 submask cube by
@@ -1808,10 +1810,12 @@ commutative group (\lean{Fabius.sum\_powerset\_mobius}, with the
 interval sum \lean{Fabius.sum\_filter\_superset\_neg\_one\_pow}),
 and numerically on submasks with the M\"obius function
 \(\eps_{n\xor k}\)
-(\lean{Fabius.submask\_mobius\_inversion}); the underlying lattice
-isomorphism is \lean{Fabius.bitSupport\_sum\_two\_pow} with the
-complement laws \lean{Fabius.sub\_sum\_two\_pow} and
-\lean{Fabius.xor\_sum\_two\_pow}.  The matrix statement
+(\lean{Fabius.submask\_mobius\_inversion}).  The canonical two-power
+encoding and its inverse \lean{Fabius.bitSupport\_sum\_two\_pow} live in
+\path{ThueMorseBitSupport.lean}; the submask complement laws
+\lean{Fabius.sub\_sum\_two\_pow} and
+\lean{Fabius.xor\_sum\_two\_pow} remain in
+\path{ThueMorseBooleanMobius.lean}.  The matrix statement
 \eqref{eq:pascal-parity-inverse} is the poset form read row by row.
 
 Let
@@ -1951,12 +1955,13 @@ specialization \(u=-1\) of a two-parameter identity
  \qquad(\lean{Fabius.prod\_one\_add\_mul\_pow}),
 \]
 valid in any commutative semiring with no convergence hypothesis.  Its
-engine is a reindexing kernel identifying the dyadic block with the
-powerset of \(\{0,\dots,m-1\}\)
-(\lean{Fabius.sum\_powerset\_two\_pow}) together with the digit
-dictionary \lean{Fabius.binaryWeight\_sum\_two\_pow},
-\lean{Fabius.sum\_two\_pow\_lt\_two\_pow}: exactly the Boolean-cube
-structure this section exploits informally.
+reindexing and digit engine is centralized in
+\path{ThueMorseBitSupport.lean}: the bounded Boolean-cube equivalence
+\lean{Fabius.powersetRangeEquivFin}, its sum form
+\lean{Fabius.sum\_powerset\_two\_pow}, and the dictionary
+\lean{Fabius.binaryWeight\_sum\_two\_pow},
+\lean{Fabius.sum\_two\_pow\_lt\_two\_pow}.  These are exactly the
+Boolean-cube structures used by the master product.
 
 \subsection{Reciprocity and cyclotomic multiplicities}
 
@@ -3467,7 +3472,8 @@ substitution \(z=\e^{t}\) is performed once and for all on an
 \lean{Fabius.sum\_powerset\_thueMorseSign\_mul\_pow\_add}.  The block
 statement is then its case \(S=\{0,\dots,m-1\}\), transported across
 the Boolean-cube reindexing kernel
-\lean{Fabius.sum\_powerset\_two\_pow}.
+\lean{Fabius.sum\_powerset\_two\_pow} from
+\path{ThueMorseBitSupport.lean}.
 
 \subsection{Bell-polynomial compression and cumulants}
 
@@ -3783,13 +3789,16 @@ moment reads \(0^0=1\) on the left and \(1\) on the right under the usual polyno
 convention.
 \end{proof}
 
-\emph{Formal versions.}  In \path{ThueMorseSparseProuhet.lean} the
-submasks of \(n\) are parametrized by the subsets of the bit support
-\lean{Fabius.bitSupport} (with dictionary
+\emph{Formal versions.}  The canonical bit support
+\lean{Fabius.bitSupport} and its dictionary
 \lean{Fabius.mem\_bitSupport},
 \lean{Fabius.sum\_two\_pow\_bitSupport},
-\lean{Fabius.card\_bitSupport}); the sparse cancellation and the sharp
-moment are respectively the all-index degree-valued theorem
+\lean{Fabius.card\_bitSupport} are in
+\path{ThueMorseBitSupport.lean}; its global
+\lean{Fabius.sum\_two\_pow\_injective} makes the powerset
+parametrization faithful.  In \path{ThueMorseSparseProuhet.lean}, the
+sparse cancellation and the sharp moment are respectively the
+all-index degree-valued theorem
 \lean{Fabius.sum\_submask\_neg\_one\_pow\_eval\_of\_degree\_lt} and
 \lean{Fabius.sum\_submask\_neg\_one\_pow\_pow}, both instances of the
 arbitrary-weight engine of \cref{thm:arbitrary-weights} with
@@ -3797,8 +3806,7 @@ arbitrary-weight engine of \cref{thm:arbitrary-weights} with
 The generating identity \eqref{eq:signed-Pascal-support} itself is now
 \lean{Fabius.prod\_one\_sub\_pow\_bitSupport}
 (\path{ThueMorseLucasSupport.lean}), the submasks running over the
-powerset of the bit support --- faithfully, by
-\lean{Fabius.sum\_two\_pow\_injOn\_powerset}; through Lucas's
+powerset of the bit support; through Lucas's
 criterion this index set is exactly \lean{Fabius.oddBinomialIndices},
 and the literal odd-Pascal-index forms of the two displayed identities are
 \lean{Fabius.sum\_oddBinomialIndices\_thueMorseSign\_mul\_affine\_eval\_of\_degree\_lt}
@@ -3858,13 +3866,14 @@ now all it contains: the corollary is the special case \(S=J(n)\) of
 a statement on an \emph{arbitrary} finite set \(S\) of bit positions
 (\lean{Fabius.sum\_powerset\_thueMorseSign\_mul\_pow\_add}), which
 also subsumes the dyadic block \(S=\{0,\dots,m-1\}\) of
-\cref{thm:moment-composition}.  That arbitrary-support statement and
-its inputs live one level down, in \path{ThueMorseMoments.lean} ---
-an ancestor module cannot import a descendant, and
-\cref{thm:moment-composition} is itself derived from it: the master
-product on an arbitrary support is
+\cref{thm:moment-composition}.  The arbitrary-support moment statement and
+the master product live one level
+down, in \path{ThueMorseMoments.lean} --- an ancestor module cannot import a
+descendant, and \cref{thm:moment-composition} is itself derived from them.
+The master product on an arbitrary support is
 \lean{Fabius.prod\_one\_sub\_pow\_powerset}, over any commutative
-ring, resting on the hypothesis-free weight law
+ring.  Its hypothesis-free weight and sign inputs are centralized in
+\path{ThueMorseBitSupport.lean} as
 \lean{Fabius.binaryWeight\_sum\_two\_pow\_eq\_card} and its sign
 companion \lean{Fabius.thueMorseSign\_sum\_two\_pow}.
 
@@ -6211,7 +6220,7 @@ valuation, carry, and Pascal-row formulas remain genuinely base-two features.
 \subsection{Formalized modules (August 2026)}
 \label{sec:formalized-modules}
 
-The first tranches of the formalization now exist as seventy-eight
+The first tranches of the formalization now exist as seventy-nine
 compiled Lean modules in \repo{}, complementing the corpus modules
 (\path{Parity.lean}, \path{TwoAdic.lean}, \path{ThueMorsePrefix.lean},
 \path{ThueMorseGenerating.lean}, \path{ThueMorseExponential.lean},
@@ -6233,7 +6242,8 @@ Module & Contents \\
 Module & Contents \\
 \midrule
 \endhead
-\path{ThueMorseBooleanCube.lean} & Powerset reindexing kernel, digit dictionary, two-parameter master product over any commutative semiring, signed product over any commutative ring, weight enumerator. \\
+\path{ThueMorseBitSupport.lean} & Canonical binary support and two-power equivalence, both reconstruction directions, test-bit and empty/zero laws, shifts, weight and sign laws, support bounds, the bounded Boolean-cube equivalence including level zero, image equality, and powerset-sum reindexing. \\
+\path{ThueMorseBooleanCube.lean} & Two-parameter master product over any commutative semiring, signed product over any commutative ring, and weight enumerator, using the centralized bit-support reindexing API. \\
 \path{ThueMorseValuation.lean} & Successor law, weight subadditivity, ruler product, Catalan valuation, additive Kummer, borrow cocycle. \\
 \path{ThueMorseDigits.lean} & Additive Legendre, floor sums, floor-parity formula, `testBit` bridge, digit product. \\
 \path{ThueMorseEnumerators.lean} & Weight distribution, evil/odious enumerations and composition laws, XOR autocorrelation, signed Hamming spheres. \\
@@ -6241,14 +6251,14 @@ Module & Contents \\
 \path{CompleteHomogeneous.lean} & Evaluated complete homogeneous symmetric polynomials over arbitrary commutative semirings: explicit multiset and universal-symmetric-polynomial forms, adjoining-variable and map/reindex laws, and the univariate complete-homogeneous quotient; only the linear-factor identity requires subtraction. \\
 \path{LagrangeResidualMoments.lean} & The all-order residual-moment formula for any finite weighted row exact below the node count, over an arbitrary commutative ring with repeated nodes allowed; distinct field-valued nodes enter only in the Lagrange-weight specialization. \\
 \path{FiniteQBinomialCore.lean} & Denominator-free Gaussian coefficients by \(q\)-Pascal recursion over arbitrary semirings, finite \(q\)-Pochhammer products over commutative rings, all triangular boundary cases, and the finite \(q\)-binomial theorem at every base, including zero and roots of unity. \\
-\path{ThueMorseSparseProuhet.lean} & Arbitrary-weight Prouhet annihilation and exact top-moment formula (\cref{thm:arbitrary-weights}), degree-valued wrappers covering the zero polynomial on empty supports, the direct affine block extraction and cancellation API (\cref{thm:prouhet-block-extraction}), bit supports, and all-index sparse submask identities. \\
+\path{ThueMorseSparseProuhet.lean} & Arbitrary-weight Prouhet annihilation and exact top-moment formula (\cref{thm:arbitrary-weights}), degree-valued wrappers covering the zero polynomial on empty supports, the direct affine block extraction and cancellation API (\cref{thm:prouhet-block-extraction}), and all-index sparse submask identities. \\
 \path{ThueMorseRarefied.lean} & Modulo-three rarefaction recursion and closed vectors, Newman positivity at dyadic endpoints, block balance, even-modulus collapse. \\
 \path{ThueMorseAperiodicity.lean} & Block-flip identities, promotion of an eventual period to a global one, and non-eventual-periodicity --- the last now deduced from overlap-freeness rather than from the reflection argument. \\
 \path{ThueMorseBlockAlgebra.lean} & Telescope and multiplicity ladder, degree and leading data of \(P_m\), reciprocity (\texttt{reverse} and evaluation forms), cyclotomic multiplicity table, binomial-basis vanishing and sharp moment over any commutative ring. \\
-\path{ThueMorseMoments.lean} & Hockey-stick column sum, complete binomial moment composition (\cref{cor:binomial-moment-composition}), reflection functional equation, midpoint parity selection rule, sharp centered moment; hypothesis-free weight and sign laws, the master products on arbitrary supports (including the arbitrary-exponent form), the exponential substitution, the complete sparse moment composition on an arbitrary support, and the complete power-moment composition formula as its dyadic-block case. \\
+\path{ThueMorseMoments.lean} & Hockey-stick column sum, complete binomial moment composition (\cref{cor:binomial-moment-composition}), reflection functional equation, midpoint parity selection rule, sharp centered moment; the master products on arbitrary supports (including the arbitrary-exponent form), the exponential substitution, the complete sparse moment composition on an arbitrary support, and the complete power-moment composition formula as its dyadic-block case. \\
 \path{ThueMorseArtinSchreier.lean} & Characteristic-two power-series Frobenius, the \(\Ftwo\) bit series with its functional equation, Artin--Schreier quadratic and normalized forms, the complete two-element solution set \(\{\Theta,\Theta+G\}\) with zero-constant-term uniqueness as its corollary, finite Artin--Schreier telescope. \\
 \path{ThueMorseEulerTransform.lean} & Prefix collapse and ones-count formulas, general residue-class reindexing, ruler-convolution recurrence by finite combinatorics, interval discrepancy bounds. \\
-\path{ThueMorseLucasSupport.lean} & Binary support of two-power sums, Lucas's submask criterion (bit, \texttt{\&\&\&}, and support forms), odd Pascal positions as the submask cube, signed Pascal-support product, balance on odd positions. \\
+\path{ThueMorseLucasSupport.lean} & Lucas's submask criterion (bit, \texttt{\&\&\&}, and support forms), odd Pascal positions as the submask cube, signed Pascal-support product, balance on odd positions. \\
 \path{ThueMorseWalsh.lean} & All-ones digit patterns and masked two-power sums, \(\eps\) as a Walsh character, character orthogonality on the block, the one-point Walsh spectrum. \\
 \path{ThueMorseSparseMoments.lean} & The atlas's all-sparse-moments formula on the submask cube (\cref{cor:all-sparse-moments}), as the \(S=J(n)\) instance of the arbitrary-support composition of \path{ThueMorseMoments.lean}. \\
 \path{ThueMorseMixedDifference.lean} & The dyadic mixed-difference operator and the finite-difference factorization for arbitrary functions from an additive commutative monoid into an additive commutative group, with the powerset expansion. \\
@@ -6256,7 +6266,7 @@ Module & Contents \\
 \path{ThueMorseOverlapFree.lean} & Thue's overlap-freeness theorem with cube-freeness, the attained critical exponent two, the alphabet-free implication ``overlap-free \(\Rightarrow\) not eventually periodic'', and constructive complement and reversal closure of the factor language. \\
 \path{ThueMorseRecurrence.lean} & Full block-concatenation laws for weight and bit, all two-letter factors in every fourteen-letter window, uniform recurrence with an explicit linear bound. \\
 \path{ThueMorseMahler.lean} & Mahler equation and dyadic dissection for the signed series, cleared zero--one bridge, prefix generating function, finite-level autocorrelation Mahler equation. \\
-\path{ThueMorseBooleanMobius.lean} & Lattice isomorphism of the two-power encoding, submask weight enumerators, reconstruction and inversion-polynomial identities, nested binomial formula, Boolean M\"obius inversion on finsets and on submasks. \\
+\path{ThueMorseBooleanMobius.lean} & Submask complement laws, submask weight enumerators, reconstruction and inversion-polynomial identities, nested binomial formula, Boolean M\"obius inversion on finsets and on submasks. \\
 \path{ThueMorseMultinomial.lean} & Kummer's criterion for multinomial coefficients, the multinomial support count \(O_r(n)=r^{\wt(n)}\), the signed \(r\)-nomial row formula, the exact \(r\)-nomial logarithm. \\
 \path{ThueMorseFourier.lean} & The circle factor \(|1-\e^{\ii\theta}|^2=2-2\cos\theta\) and the finite Riesz product with its nonnegativity. \\
 \path{ThueMorseSineProduct.lean} & The half-angle factorization, the complex sine-product closed form of the Thue--Morse trigonometric polynomial, and its arbitrary-phase affine real sine form. \\
