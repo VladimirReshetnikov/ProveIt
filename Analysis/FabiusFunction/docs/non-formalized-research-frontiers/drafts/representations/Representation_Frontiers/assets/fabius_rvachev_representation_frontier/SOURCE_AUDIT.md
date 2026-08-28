@@ -80,6 +80,26 @@ The report proves local uniform convergence away from the negative integers, the
 
 the canonical product for `1/Gamma_dy`, a power series, dyadic digamma/resolvent identities, Malmsten and heat-trace integrals, and a geometric-q extension.
 
+**Later formalization status.** The classification “proved here” records the
+historical audited-corpus novelty result and is not changed by subsequent Lean
+work.  At formal source checkpoint
+`71ab6f6728fceb753c88d8b0573077a59acf2682`, the entire reciprocal product
+`G_q(z) = product_n Gamma(1 + q^n z)^(-1)` is formal for every complex `q`
+with `‖q‖ < 1`, including `q=0`, together with local product convergence,
+Mahler and zero-orbit laws, reflection, the dyadic Rvachev bridge, the exact
+negative-integer zero set, and dyadic zero/pole orders.  The implementation is
+split across `ScaledInfiniteProducts.lean`,
+`GeometricReciprocalGamma.lean`, and `DyadicGammaOrder.lean`.
+
+Mathlib totalizes Gamma poles to the point value zero, so the formal Gamma-side
+object is the pointwise inverse of the entire reciprocal product and its poles
+are encoded by negative meromorphic order.  No theorem identifies it with the
+raw Gamma tprod away from the poles.  The raw product, arithmetic canonical
+regrouping, log/power series, digamma/resolvent, Malmsten and heat-trace
+integrals, Gamma-form Fourier integrals, non-D-finiteness, general-base pole
+orders, and the reciprocal-Gamma derivative coefficient needed by the
+Thue--Morse tower remain outside the formal tranche.
+
 ### 5.2 Gaussian variance-mixture bridge
 
 The report explicitly identifies the existing dyadic logistic series with a Gaussian whose random variance is the existing arithmetic Thorin/gamma-convolution variable. It derives the full `tau` convolution semigroup, normal-mixture density, cumulants, explicit symmetric Levy density, self-decomposability, complete monotonicity in the squared coordinate, and dimension-free radial positive definiteness.

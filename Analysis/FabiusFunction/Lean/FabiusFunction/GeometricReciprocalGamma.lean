@@ -19,9 +19,10 @@ the standalone Rvachev Fourier product already used throughout the project.
 
 The Gamma-side object is defined as the pointwise inverse of the entire
 reciprocal product.  This is deliberate: Mathlib assigns the value `0` to
-`Complex.Gamma` at its poles, and also has `0⁻¹ = 0`.  Thus a meromorphic
-representatives chosen in this file have value zero at their poles; the poles
-themselves are recorded by negative `meromorphicOrderAt`, not by point values.
+`Complex.Gamma` at its poles, and also has `0⁻¹ = 0`.  Thus the totalized
+Gamma-side representatives chosen in this file have value zero at their poles;
+meromorphic functions need not in general have any prescribed point value
+there.  The poles are recorded by negative `meromorphicOrderAt`.
 -/
 
 set_option autoImplicit false

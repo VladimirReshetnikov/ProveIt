@@ -85,6 +85,7 @@
 \newcommand{\statusknown}{\textsf{K}}
 \newcommand{\statusderived}{\textsf{D}}
 \newcommand{\statusnew}{\textsf{N}}
+\newcommand{\leanPartx}{\path}
 
 \lstset{
   basicstyle=\ttfamily\small,
@@ -391,6 +392,15 @@ Euler's reflection identity gives
 \end{equation}
 This is the natural entry point for the Barnes and multiple-gamma compressions studied in
 current repository drafts.
+
+\emph{Formal version and boundary.}  At formal source checkpoint
+\path{71ab6f6728fceb753c88d8b0573077a59acf2682},
+\leanPartx{Fabius.shiftedReciprocalGamma_mul_neg} proves the total pointwise reciprocal
+reflection formula and \leanPartx{Fabius.dyadicReciprocalGamma_mul_neg} multiplies it over
+the dyadic scales to give \eqref{p1:eq:gamma-product}; the exact Gamma-denominator form is
+\leanPartx{Fabius.rvachevFourierProduct_eq_one_div_dyadicGamma_mul}.  These declarations live
+in \path{GeometricReciprocalGamma.lean}.  They do not formalize the Barnes or multiple-gamma
+compressions mentioned in the following sentence.
 
 \paragraph{Spectral-zeta exponential (\statusknown).}
 For \(|z|<1\),
@@ -1777,6 +1787,16 @@ Fourier formulae for $F$ are completed by an odd-harmonic sine series, while $Q$
 new nonlinear Fourier transform and sine-series representation in terms of oscillatory
 integrals of $F$.
 
+The formal source checkpoint
+\path{71ab6f6728fceb753c88d8b0573077a59acf2682} now covers the entire reciprocal product,
+its Mahler equation and zero orbit, the reflected sinc product and dyadic Rvachev bridge, and
+the exact dyadic zero and meromorphic pole orders.  It does not cover the raw product of
+Gamma factors away from its poles, the arithmetic canonical regrouping, logarithmic or
+digamma expansions, Malmsten or heat-trace integrals, the displayed Fourier integrals,
+non-D-finiteness, the reciprocal-Gamma derivative coefficient used by the separate
+Thue--Morse tower, or the general integer-base collision order; those portions remain
+frontier claims despite occurring in the same theorem package below.
+
 A fully commented Python program independently checks the principal identities, produces
 four figures, and records truncation diagnostics.  ``Proved here'' means proved in this
 report and not found by targeted collision searches in the audited repository; it is not a
@@ -2440,6 +2460,29 @@ pole precisely when $n/2^h$ is a positive integer, namely for $0\le h\le\vtwo(n)
 number is $1+\vtwo(n)$.
 \end{proof}
 
+\emph{Formal reciprocal version.}  In \path{GeometricReciprocalGamma.lean}, define
+\(
+G_{\mathrm{dy}}(z)=\text{\texttt{Fabius.dyadicReciprocalGamma}}(z)
+=\prod_{h\ge0}\Gamma(1+2^{-h}z)^{-1}
+\)
+and define the Gamma-side representative
+\(\text{\texttt{Fabius.dyadicGamma}}=G_{\mathrm{dy}}^{-1}\).
+The reciprocal product is entire and normalized by
+\leanPartx{Fabius.dyadicReciprocalGamma_differentiable} and
+\leanPartx{Fabius.dyadicReciprocalGamma_zero}.  Its Gamma-side inverse is meromorphic by
+\leanPartx{Fabius.dyadicGamma_meromorphic}, and the Mahler equation is the specialization of
+\leanPartx{Fabius.geometricGamma_mahler} at \(q=1/2\).  In
+\path{DyadicGammaOrder.lean},
+\leanPartx{Fabius.dyadicReciprocalGamma_eq_zero_iff} gives exactly the negative-integer zero
+set; \leanPartx{Fabius.analyticOrderAt_dyadicReciprocalGamma_neg_nat} gives zero order
+\(1+\vtwo(n)\), and \leanPartx{Fabius.meromorphicOrderAt_dyadicGamma_neg_nat} records the
+corresponding pole as meromorphic order \(-(1+\vtwo(n))\).  Mathlib assigns
+\leanPartx{Complex.Gamma} value zero at a classical pole and also totalizes \(0^{-1}=0\), so
+the pole is encoded by this negative local order rather than an infinite point value.
+Neither module proves that the raw product in \eqref{p2:eq:GammaDy-def} converges locally
+uniformly off its poles or equals this meromorphic inverse there; that representation remains
+frontier material.
+
 \subsection{Reflection factorization of the Rvachev transform}
 
 \begin{theorem}[Dyadic gamma factorization \New]
@@ -2454,7 +2497,8 @@ zeros of $\Phi$ with their arithmetic multiplicities.
 \end{theorem}
 
 \begin{proof}
-Euler's reflection formula in the shifted form
+Euler's reflection formula in the shifted form, understood meromorphically and with the
+removable value supplied at \(w=0\),
 \begin{equation}
  \Gamma(1+w)\Gamma(1-w)=\frac{\pi w}{\sin(\pi w)}
  =\frac{1}{\sinc(\pi w)}                                  \label{p2:eq:gamma-reflection}
@@ -2467,6 +2511,21 @@ gives
 Multiplication over $h\ge0$ yields the sinc product \eqref{p2:eq:Phi-sinc}.  Normal convergence
 away from the poles and removable continuation at the integers complete the proof.
 \end{proof}
+
+\emph{Formal version.}  The pointwise total identity actually used by Lean is
+\[
+ \Gamma(1+w)^{-1}\Gamma(1-w)^{-1}=\sinc(\pi w),
+\]
+namely \leanPartx{Fabius.shiftedReciprocalGamma_mul_neg}; unlike the middle quotient in
+\eqref{p2:eq:gamma-reflection}, it includes \(w=0\) without a removable-value convention.
+The entire dyadic identities \eqref{p2:eq:Phi-GammaDy} and
+\eqref{p2:eq:Phi-Gdy} have formal analogues after replacing the raw
+\(\Gamma_{\mathrm{dy}},G_{\mathrm{dy}}\) pair by Lean's totalized
+\(\text{\texttt{Fabius.dyadicGamma}},
+\text{\texttt{Fabius.dyadicReciprocalGamma}}\) pair.  Those analogues are respectively
+\leanPartx{Fabius.rvachevFourierProduct_eq_one_div_dyadicGamma_mul} and
+\leanPartx{Fabius.dyadicReciprocalGamma_mul_neg}; neither theorem identifies the raw
+Gamma product with the totalized inverse away from its poles.
 
 \begin{corollary}[Gamma integral representations of $\Up$ and $F$ \New]
 For real $x$,
@@ -2485,6 +2544,10 @@ Both integrals are absolutely convergent after the usual removable interpretatio
 $\xi=0$.
 \end{corollary}
 
+\emph{Frontier boundary.}  The reciprocal-Gamma factorization does not by itself provide an
+exact public Lean declaration for either integral above.  Their convergence and their
+Gamma-form integrands therefore remain unformalized.
+
 \subsection{Canonical reciprocal product and power series}
 
 Let $G_{\mathrm{dy}}(z)=1/\GammaDy(z)$.  Euler's canonical product for $1/\Gamma$ and
@@ -2502,6 +2565,10 @@ Consequently
  \Phi(z)=G_{\mathrm{dy}}(z)G_{\mathrm{dy}}(-z),          \label{p2:eq:Phi-Gdy}
 \end{equation}
 which splits the even zero divisor into a negative-integer factor and its reflection.
+Equation \eqref{p2:eq:Phi-Gdy} has the formal analogue
+\leanPartx{Fabius.dyadicReciprocalGamma_mul_neg} after replacing raw
+\(G_{\mathrm{dy}}\) by \texttt{Fabius.dyadicReciprocalGamma}; the arithmetic
+Weierstrass regrouping \eqref{p2:eq:Gdy-canonical} is not formalized.
 For $|z|<1$,
 \begin{equation}
  \boxed{\quad
@@ -2513,6 +2580,10 @@ For $|z|<1$,
 The even part of \eqref{p2:eq:logGammaDy-series} is exactly
 $-\tfrac12\log\Phi(z)$, while the odd part is new information lost in the even Fourier
 product.
+
+\emph{Frontier boundary.}  No public declaration at checkpoint
+\path{71ab6f6728fceb753c88d8b0573077a59acf2682} proves
+\eqref{p2:eq:Gdy-canonical} or \eqref{p2:eq:logGammaDy-series}.
 
 \subsection{Dyadic digamma and Stieltjes resolvent}
 
@@ -2535,6 +2606,10 @@ and the Fourier logarithmic derivative becomes
 Thus the arithmetic Stieltjes resolvent is the odd part of a dyadic digamma function.
 Differentiating repeatedly produces polygamma representations for every logarithmic jet of
 $\Phi$.
+
+\emph{Frontier boundary.}  The dyadic digamma, resolvent, and polygamma identities in this
+subsection are not consequences exposed by the reciprocal-product API and remain
+unformalized.
 
 \subsection{Malmsten and heat-trace integrals}
 
@@ -2563,6 +2638,9 @@ A second integral makes the integer spectrum explicit.  From
 \end{equation}
 This identity is a direct analytic bridge between the gamma factor, Lambert series, and the
 zero-divisor heat trace.
+
+\emph{Frontier boundary.}  The Malmsten integral, dyadic exponential series, and heat-trace
+integral in this subsection have no exact public Lean counterparts.
 
 \subsection{Geometric-\texorpdfstring{$q$}{q} extension}
 
@@ -2597,6 +2675,21 @@ $\GammaGeom$ is not the classical Jackson $q$-gamma function.  It is a geometric
 product of ordinary gamma functions.  Its denominators $1-q^m$ nevertheless align exactly
 with the $q$-series denominators already pervasive in the Fabius--Rvachev theory.
 \end{remark}
+
+\emph{Formal reciprocal version and boundary.}  The formal theorem is stronger in its base
+hypothesis and narrower in analytic content: for every \(q\in\C\) with
+\(\lVert q\rVert<1\), including \(q=0\),
+\leanPartx{Fabius.geometricReciprocalGamma_differentiable} proves that
+\(G_q(z)=\prod_h\Gamma(1+q^hz)^{-1}\) is entire,
+\leanPartx{Fabius.geometricReciprocalGamma_mahler} gives its reciprocal Mahler equation,
+\leanPartx{Fabius.geometricReciprocalGamma_eq_zero_iff} gives the exact affine zero orbit,
+\leanPartx{Fabius.geometricGamma_meromorphic} and
+\leanPartx{Fabius.geometricGamma_mahler} give the meromorphic inverse and Gamma-side Mahler
+equation, and \leanPartx{Fabius.geometricReciprocalGamma_mul_neg} gives the corresponding
+entire reciprocal analogue of \eqref{p2:eq:q-gamma-reflection}.  The raw Gamma product in
+\eqref{p2:eq:q-geometric-gamma}, the logarithmic series \eqref{p2:eq:q-gamma-series}, and the
+general integer-base pole-order formula are not formalized.  Only the dyadic order has an
+exact counterpart in \path{DyadicGammaOrder.lean}.
 
 \section{Gaussian variance mixtures and the logistic dual}
 \label{p2:sec:gaussian-mixture}
@@ -2672,6 +2765,10 @@ $\Acal(t^2/(4\pi^2))=M_Y(t)$, the reciprocal hyperbolic-sine product
 function of the repository's logistic series \eqref{p2:eq:logistic-Z}; uniqueness of
 characteristic functions proves \eqref{p2:eq:logistic-mixture-law}.
 \end{proof}
+
+\emph{Formalization status.}  The reciprocal-Gamma/Rvachev factor used in the last rewrite is
+formal, but the Gaussian variance-mixture theorem and its Gamma-form characteristic function
+do not have exact public Lean counterparts at the audited checkpoint.
 
 \begin{resultbox}
 The bridge is not a restatement of generalized gamma convolution or of the logistic series.
@@ -2938,6 +3035,10 @@ Non-D-finiteness is much weaker than differential transcendence.  The latter is 
 as a conjecture in \cref{p2:sec:conjectures}.
 \end{remark}
 
+\emph{Formalization status.}  Exact dyadic zero and pole orders are now available in
+\path{DyadicGammaOrder.lean}, but the repository still has no D-finite/P-recursive analytic
+ODE framework proving this proposition.  It therefore remains a frontier result.
+
 \section{Fourier representations of the bounded Fabius function}
 \label{p2:sec:F-Fourier}
 
@@ -3040,6 +3141,11 @@ The new factorization makes the preceding formulae explicitly gamma-theoretic:
 \end{align}
 Thus ordinary gamma functions, assembled on a dyadic scale, provide direct integral and
 Fourier images for the Fabius CDF.
+
+\emph{Frontier boundary.}  Although the common reciprocal-Gamma factor in these displays is
+formal, no public declaration states either Gamma-version Fourier formula above.  They remain
+frontier claims together with the integral representations in
+\eqref{p2:eq:up-GammaDy-integral}--\eqref{p2:eq:F-GammaDy-integral}.
 
 \section{Quantile and inverse-Fabius transform representations}
 \label{p2:sec:inverse-fourier}
@@ -3225,6 +3331,15 @@ $F,Q$ & periodic lower-Lambert endpoint expansions & endpoint & \RepoShort \\
 \end{longtable}
 \endgroup
 
+The tags in this table record the audited-corpus novelty boundary, not Lean status.  At
+formal checkpoint \path{71ab6f6728fceb753c88d8b0573077a59acf2682}, the reflected
+reciprocal-Gamma row for \(\Phi\), the entire reciprocal product, its Mahler and zero-orbit
+laws, and the exact dyadic zero/pole orders are formal.  The raw meromorphic Gamma product in
+\eqref{p2:eq:GammaDy-def}, the arithmetic canonical row
+\eqref{p2:eq:Gdy-canonical}, and the heat-trace row remain frontier material, as do the
+Gamma-form probability and Fourier consequences unless named separately in the primary
+coverage map.
+
 \section{Numerical experiments and reproducibility}
 \label{p2:sec:numerics}
 
@@ -3240,6 +3355,9 @@ Three complex test points were evaluated with sixty product layers.  The absolut
 $3.6\times10^{-15}$; the Mahler functional equation \eqref{p2:eq:GammaDy-Mahler} was verified at
 comparable accuracy.  The finite-layer identity is exact mathematically, so the plateau in
 \cref{p2:fig:gamma-check} is floating-point accumulation rather than truncation error.
+The reciprocal identity and the totalized Gamma-denominator form are now proved independently
+in \path{GeometricReciprocalGamma.lean}; this figure remains a reproducibility check, not the
+formal justification.
 
 \begin{figure}[H]
 \centering
@@ -3394,9 +3512,13 @@ the next unused spectral atom.
 
 The shortest Lean route to the new results is modular.
 \begin{enumerate}[leftmargin=2.3em]
-\item Define $\GammaDy$ as a normally convergent product of meromorphic gamma factors and
-      prove \eqref{p2:eq:GammaDy-Mahler} and \eqref{p2:eq:Phi-GammaDy} by the existing infinite
-      product API.
+\item \emph{Reciprocal tranche delivered.}  \path{ScaledInfiniteProducts.lean},
+      \path{GeometricReciprocalGamma.lean}, and \path{DyadicGammaOrder.lean} construct the
+      entire reciprocal product, prove its generic Mahler/zero/reflection laws, identify its
+      dyadic reflection with \(\Phi\), and give exact dyadic zero and pole orders.  Still open
+      here is the distinct raw-product claim: construct
+      \(\prod_h\Gamma(1+2^{-h}z)\) locally uniformly away from its poles and identify it there
+      with the formal meromorphic inverse.
 \item Reuse the formal zero-multiplicity theorem to prove non-D-finiteness in a small
       analytic-ODE module.
 \item Build $Z_\tau$ by conditioning a standard Gaussian on the already developed
@@ -3427,11 +3549,14 @@ theory accessible without reconstructing the gamma series term by term.
 
 \subsection{Base-\texorpdfstring{$b$}{b} and geometric-\texorpdfstring{$q$}{q} families}
 
-The geometric gamma factorization \eqref{p2:eq:q-gamma-reflection} should be developed in
-parallel with the repository's base-generic Gaussian-binomial interpolation.  For integer
-$b$, the collision multiplicity of gamma poles is a whole-base valuation; for nonintegral
-$q^{-1}$, the pole orbits are typically noncoincident.  Comparing these regimes may separate
-which phenomena are genuinely dyadic from those caused only by geometric scaling.
+The entire reciprocal form of the geometric factorization
+\eqref{p2:eq:q-gamma-reflection} is delivered for every complex \(q\) with
+\(\lVert q\rVert<1\), in parallel with the repository's base-generic Gaussian-binomial
+interpolation.  The remaining comparison concerns raw Gamma products and exact analytic
+collision orders: for integer \(b\), the claimed order is a whole-base valuation, whereas for
+nonintegral \(q^{-1}\) the pole orbits are typically noncoincident.  Only the dyadic order is
+currently formal.  Comparing the remaining regimes may separate which phenomena are
+genuinely dyadic from those caused only by geometric scaling.
 
 \subsection{Inverse spectral analysis}
 
@@ -3468,6 +3593,13 @@ observable.  Unbounded multiplicities settle non-holonomicity in one stroke.  Fi
 bounded CDF and its inverse acquire transform formulae that are global, explicit, and
 compatible with the existing endpoint theory.  Each bridge supplies both a theorem and a
 research program, with a comparatively short path to formal verification.
+
+The reciprocal-product core of the first bridge is now formal at checkpoint
+\path{71ab6f6728fceb753c88d8b0573077a59acf2682}: it includes generic complex contractions,
+Mahler and zero-orbit laws, reflection, the dyadic Rvachev identity, and exact dyadic
+zero/pole orders.  The raw Gamma-product realization and the canonical, logarithmic,
+digamma, integral, heat-trace, D-finite, derivative-tower, and general-base extensions retain
+their frontier status.
 
 \appendix
 
@@ -3532,10 +3664,14 @@ The reproducibility assets retained for this part live under
 \label{p2:app:one-line}
 
 For convenient reuse, here are the central bridges in compressed form:
-{\small
+{\footnotesize
 \begin{align*}
- \Gamma(1+w)\Gamma(1-w)&=1/\sinc(\pi w)
- &&\Longrightarrow\quad \Phi(z)=1/[\GammaDy(z)\GammaDy(-z)],\\
+ \Gamma(1+w)^{-1}\Gamma(1-w)^{-1}&=\sinc(\pi w)
+ &&\Longrightarrow\quad
+ \begin{aligned}
+  \Phi(z)&=G_{\mathrm{dy}}(z)G_{\mathrm{dy}}(-z)\\
+          &=1/[\GammaDy(z)\GammaDy(-z)],
+ \end{aligned}\\
  \E\e^{-wV_\tau}&=\Acal(w)^{-\tau},\quad
  \E(\e^{\ii t\sqrt{2T}N}\mid T)=\e^{-t^2T}
  &&\Longrightarrow\quad Z_1\distPartx\sqrt{2T_1}N,\\

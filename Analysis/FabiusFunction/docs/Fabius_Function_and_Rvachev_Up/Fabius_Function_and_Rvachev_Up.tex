@@ -122,8 +122,7 @@
 \author{Human-readable synthesis of the formal development\\
 \small Vladimir Reshetnikov's \texttt{ProveIt} repository}
 \date{Integrated repository snapshot: 28 August 2026\\
-\small mainline checkpoint \nolinkurl{ff66f0ed5}; foundational addendum
-\nolinkurl{216724856}}
+\small source checkpoint \nolinkurl{71ab6f672}}
 
 \begin{document}
 \maketitle
@@ -1943,6 +1942,143 @@ The positive-integer limit is
 an exponential, and is therefore strictly positive.  The canonical product is
 \lean{rvachevFourier_eq_canonical} in the same facade module, built from
 \lean{rvachevFourierProduct_eq_canonical} in \path{SincCanonicalProduct.lean}.
+\end{proof}
+
+\subsection{Geometric reciprocal-Gamma products}
+\label{sec:geometric-reciprocal-gamma}
+
+The Gamma factorization is most naturally formalized from the entire reciprocal
+factor
+\begin{equation}
+ R(z):=\frac1{\Gamma(1+z)}
+\end{equation}
+
+\begin{theorem}[Geometric reciprocal-Gamma products and the dyadic factor]
+For a complex contraction \(q\) satisfying \(\lVert q\rVert<1\), define the
+locally uniformly convergent product
+\begin{equation}
+ G_q(z):=\prod_{n=0}^{\infty}R(q^nz)
+ =\prod_{n=0}^{\infty}\frac1{\Gamma(1+q^nz)}.             \label{eq:geometric-reciprocal-gamma}
+\end{equation}
+The hypothesis includes \(q=0\); no positivity or reality assumption is made.
+The reciprocal factor and the geometric product satisfy
+\begin{align}
+ R(z)R(-z)&=\sinc(\pi z),                                  \label{eq:reciprocal-gamma-reflection}\\
+ G_q(0)&=1,\qquad
+ G_q(z)=R(z)G_q(qz),                                      \label{eq:geometric-reciprocal-gamma-mahler}\\
+ G_q(z)=0&\quad\Longleftrightarrow\quad
+ \exists\,n,m\in\N:\ 1+q^nz=-m.                          \label{eq:geometric-reciprocal-gamma-zeros}
+\end{align}
+In particular there are no hidden zeros in the infinite product.  Define the
+Gamma-side total meromorphic representative and the matching sinc product by
+\begin{equation}
+ \Gamma_{\langle q\rangle}(z):=G_q(z)^{-1},\qquad
+ \Phi_q(z):=\prod_{n=0}^{\infty}\sinc(\pi q^nz).
+\end{equation}
+Then
+\begin{align}
+ \Gamma_{\langle q\rangle}(z)
+   &=\Gamma(1+z)\Gamma_{\langle q\rangle}(qz),             \label{eq:geometric-gamma-mahler}\\
+ G_q(z)G_q(-z)&=\Phi_q(z).                                \label{eq:geometric-gamma-reflection}
+\end{align}
+
+At \(q=1/2\), write \(G_{\rm dy}=G_{1/2}\) and
+\(\Gamma_{\rm dy}=G_{\rm dy}^{-1}\).  The geometric sinc product is exactly the
+standalone Rvachev product, so for every \(z\in\C\)
+\begin{equation}
+ \Phi(z)=G_{\rm dy}(z)G_{\rm dy}(-z)
+ =\frac1{\Gamma_{\rm dy}(z)\Gamma_{\rm dy}(-z)}.          \label{eq:dyadic-reciprocal-gamma-bridge}
+\end{equation}
+Moreover \(G_{\rm dy}\) vanishes precisely at the negative integers.  For every
+\(n\ge1\),
+\begin{align}
+ \operatorname{ord}_{z=-n}G_{\rm dy}(z)&=1+\vtwo(n),       \label{eq:dyadic-reciprocal-gamma-order}\\
+ \operatorname{mord}_{z=-n}\Gamma_{\rm dy}(z)&=-(1+\vtwo(n)).
+                                                                  \label{eq:dyadic-gamma-pole-order}
+\end{align}
+Thus the positive pole order of \(\Gamma_{\rm dy}\) is \(1+\vtwo(n)\);
+Mathlib records it as the displayed negative meromorphic order.
+\end{theorem}
+
+\begin{proof}[Formal proof and exact API]
+At formal source checkpoint
+\path{71ab6f6728fceb753c88d8b0573077a59acf2682}, the reusable convergence
+engine is \path{ScaledInfiniteProducts.lean}.  Its ten public declarations are
+\lean{summable_norm_scaled_sub_one},
+\lean{hasProdUniformlyOn_scaled},
+\lean{multipliableUniformlyOn_scaled},
+\lean{hasProdLocallyUniformly_scaled},
+\lean{multipliableLocallyUniformly_scaled},
+\lean{continuous_tprod_scaled},
+\lean{differentiable_tprod_scaled},
+\lean{differentiable_tprod_scaled_of_eq_one},
+\lean{tprod_scaled_ne_zero}, and
+\lean{tprod_scaled_eq_zero_iff}.  The pointwise summability theorem assumes a
+normed scalar field, a normed space, a normed-ring target, summability of
+\(n\mapsto\lVert a_n\rVert\), and \(f(z)-1=O(z)\) at zero.  The uniform
+statements take values in a complete
+commutative normed ring with a normed unit and assume continuity of \(f\); the
+locally uniform statements additionally assume a locally compact domain.  The
+holomorphic statements take values in a complete commutative normed ring with a
+normed complex-algebra structure and assume complex differentiability, with
+\lean{differentiable_tprod_scaled_of_eq_one} replacing the explicit big-\(O\)
+hypothesis by \(f(0)=1\).  The no-hidden-zero statements use a complete
+commutative normed ring with a normed unit and a multiplicative norm, but need
+neither continuity of \(f\) nor local compactness of the domain.
+
+The specialization is \path{GeometricReciprocalGamma.lean}.  Its twenty-five
+public declarations are
+\lean{shiftedReciprocalGamma},
+\lean{shiftedReciprocalGamma_zero},
+\lean{shiftedReciprocalGamma_differentiable},
+\lean{shiftedReciprocalGamma_sub_one_isBigO},
+\lean{shiftedReciprocalGamma_eq_zero_iff},
+\lean{shiftedReciprocalGamma_mul_neg},
+\lean{summable_norm_qpow},
+\lean{geometricReciprocalGamma},
+\lean{geometricReciprocalGammaFactors_multipliable},
+\lean{geometricReciprocalGamma_differentiable},
+\lean{geometricReciprocalGamma_zero},
+\lean{geometricReciprocalGamma_mahler},
+\lean{geometricReciprocalGamma_eq_zero_iff},
+\lean{geometricGamma},
+\lean{geometricGamma_meromorphic},
+\lean{geometricGamma_mahler},
+\lean{geometricSincProduct},
+\lean{geometricReciprocalGamma_mul_neg},
+\lean{dyadicReciprocalGamma},
+\lean{dyadicGamma},
+\lean{dyadicReciprocalGamma_differentiable},
+\lean{dyadicReciprocalGamma_zero},
+\lean{geometricSincProduct_inv_two},
+\lean{dyadicReciprocalGamma_mul_neg}, and
+\lean{rvachevFourierProduct_eq_one_div_dyadicGamma_mul}.
+Here \(q\in\C\) and \(\lVert q\rVert<1\) are the exact hypotheses on every
+generic convergence, holomorphy, Mahler, zero-orbit, meromorphy, and reflection
+statement; normalization at zero itself needs no contraction hypothesis.
+
+Finally, \path{DyadicGammaOrder.lean} exposes eight public declarations:
+\lean{dyadicReciprocalGamma_eq_zero_iff},
+\lean{dyadicReciprocalGamma_int_ne_zero_of_nonneg},
+\lean{dyadicReciprocalGamma_nat_ne_zero},
+\lean{dyadicGamma_meromorphic},
+\lean{analyticOrderAt_dyadicReciprocalGamma_int_of_neg},
+\lean{analyticOrderAt_dyadicReciprocalGamma_neg_nat},
+\lean{meromorphicOrderAt_dyadicGamma_int_of_neg}, and
+\lean{meromorphicOrderAt_dyadicGamma_neg_nat}.  The integer forms assume a
+strictly negative integer center; the natural-number wrappers assume \(n\ne0\).
+
+There is an important representation boundary.  Mathlib assigns
+\lean{Complex.Gamma} the value zero at a classical Gamma pole, and its inverse
+also has the totalized value zero there.  Accordingly
+\lean{geometricGamma} and \lean{dyadicGamma} are defined as pointwise inverses
+of the entire reciprocal products, and a pole is carried by negative
+\lean{meromorphicOrderAt}, not by an infinite point value.  The declarations
+above do not identify these functions with the raw products
+\(\prod_n\Gamma(1+q^nz)\) away from their poles, and they assert no arithmetic
+Weierstrass regrouping, logarithmic or digamma series, Malmsten or heat-trace
+integral, D-finiteness result, reciprocal-Gamma derivative coefficient for the
+Thue--Morse tower, or general integer-base collision order.
 \end{proof}
 
 The exponent in the canonical product has a finite, base-generic double-counting
@@ -7095,6 +7231,15 @@ That rule explains several choices made above:
       proved local theory: every nonzero signed integer has an exact complex analytic order,
       all lower complex derivatives vanish, and the first surviving derivative is evaluated
       explicitly in \Cref{sec:fourier-integer-zero-jets}.
+\item Summable-scale infinite products are formal under the exact norm-summability,
+      continuity, local-compactness, completeness, and big-\(O\) hypotheses stated in
+      \Cref{sec:geometric-reciprocal-gamma}.  For complex \(q\) with
+      \(\lVert q\rVert<1\), this gives the entire reciprocal-Gamma product, its zero orbit,
+      Mahler and reflection equations, and the dyadic zero and meromorphic pole orders.
+      The Gamma-side functions are totalized pointwise inverses: raw products of Gamma
+      factors away from their poles, arithmetic canonical regroupings, logarithmic,
+      digamma, Malmsten, heat-trace, integral, D-finite, reciprocal-Gamma derivative-tower,
+      and general-base order statements are not claimed.
 \item Flatness uses natural powers, and the analytic-locus claims use precisely the domains
       proved in \path{NowhereAnalytic.lean}.
 \item The \(q\)-calculus distinguishes the half-base Fabius identities from the
@@ -7212,6 +7357,9 @@ Fourier analysis &
 \path{PeakRayEnvelope.lean}, \path{GlobalDecayEnvelope.lean},
 \path{RvachevFourierDecay.lean}, \path{VarianceBookkeeping.lean},
 \path{BirkhoffVariance.lean}, \path{BirkhoffProductBridge.lean}\\
+Summable-scale products and geometric reciprocal-Gamma factorization &
+\path{ScaledInfiniteProducts.lean}, \path{GeometricReciprocalGamma.lean},
+\path{DyadicGammaOrder.lean}\\
 Local all-order jet calculus &
 \path{LeadingJet.lean}\\
 Normalized integer- and positive-real-order Volterra calculus, affine covariance,
@@ -7310,6 +7458,9 @@ Article & Lean & Meaning\\
 \(\mathcal F\) & \lean{extendedFabius}\hspace{0.35em}\lean{fabius} & signed global extension\\
 \(S_w\) & \lean{ProbabilityRepresentation.weightedUniformSeries}\hspace{0.35em}\lean{w} & weighted coordinate series\\
 \(\mu_w\) & \lean{ProbabilityRepresentation.weightedUniformDistribution}\hspace{0.35em}\lean{w} & its pushforward law\\
+\(G_q\) & \lean{geometricReciprocalGamma}\hspace{0.35em}\lean{q} & entire reciprocal-Gamma product for \(\lVert q\rVert<1\)\\
+\(\Gamma_{\langle q\rangle}\) & \lean{geometricGamma}\hspace{0.35em}\lean{q} & totalized meromorphic inverse of \(G_q\)\\
+\(G_{\rm dy},\Gamma_{\rm dy}\) & \lean{dyadicReciprocalGamma}\hspace{0.35em}\lean{dyadicGamma} & dyadic reciprocal product and totalized meromorphic inverse\\
 \(V_af\) & \lean{volterraPrimitive}\hspace{0.35em}\lean{a}\hspace{0.35em}\lean{f} & first oriented primitive at base \(a\)\\
 \(L_a^nf\) & \lean{iteratedPrimitive}\hspace{0.35em}\lean{n}\hspace{0.35em}\lean{a}\hspace{0.35em}\lean{f} & literal \(n\)-fold primitive\\
 \(J_a^nf\) & \lean{normalizedVolterra}\hspace{0.35em}\lean{n}\hspace{0.35em}\lean{a}\hspace{0.35em}\lean{f} & normalized Cauchy-kernel primitive\\
@@ -7463,13 +7614,8 @@ V.~Reshetnikov,
 V.~Reshetnikov,
 \newblock \emph{ProveIt: Analysis/FabiusFunction},
 \newblock Lean~4 formal development, integrated source snapshot
-\texttt{ff66f0ed55591b23af74c34d3f1aaa0e1ed99e56}, consulted 28 August 2026.
-\newblock \url{https://github.com/VladimirReshetnikov/ProveIt/tree/ff66f0ed55591b23af74c34d3f1aaa0e1ed99e56/Analysis/FabiusFunction}.
-\newblock The inverse-pair integral theorem, finite formal-series filter, geometric
-Gaussian residual filter, and strengthened denominator-free finite \(q\)-binomial
-declarations were checked at commit
-\texttt{21672485601447ed2da543191f6d477c2a47f2b7}, on the same date.
-\newblock \url{https://github.com/VladimirReshetnikov/ProveIt/tree/21672485601447ed2da543191f6d477c2a47f2b7/Analysis/FabiusFunction}.
+\texttt{71ab6f6728fceb753c88d8b0573077a59acf2682}, consulted 28 August 2026.
+\newblock \url{https://github.com/VladimirReshetnikov/ProveIt/tree/71ab6f6728fceb753c88d8b0573077a59acf2682/Analysis/FabiusFunction}.
 
 \end{thebibliography}
 
