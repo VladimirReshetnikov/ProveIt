@@ -162,8 +162,8 @@ theorem rvachevFourierProduct_int_eventuallyEq_sub_pow_mul_cofactor
   have hcenter : (m : ℂ) + (z - (m : ℂ)) = z := by ring
   simpa only [Function.comp_apply, hcenter] using hz
 
-/-- The local cofactor is analytic at every point away from its sole
-totalized denominator singularity `w = -m`.  No parity or nonzero hypothesis
+/-- The local cofactor is analytic away from the totalized denominator point
+`w = -m`.  No parity or nonzero hypothesis
 on the integer parameter is needed. -/
 theorem integerZeroLocalCofactor_analyticAt_of_add_ne
     (m : ℤ) {w₀ : ℂ} (hden0 : (m : ℂ) + w₀ ≠ 0) :

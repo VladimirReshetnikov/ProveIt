@@ -742,19 +742,27 @@ germ at zero by
 \path{Fabius.rvachevFourierProduct_int_add_eventuallyEq_pow_mul_cofactor}.
 The resulting cofactor is analytic and nonzero at the origin; Lean proves
 its exact value, the exact analytic order \(1+\nu_2(|m|)\), every lower
-derivative vanishing, and
+derivative vanishing, and, with \(U_m\) denoting that cofactor and
+\(a=1+\nu_2(|m|)\), every higher derivative in the division-free form
+\[
+ \Phi^{(a+\ell)}(m)=\binom{a+\ell}{a}a!\,U_m^{(\ell)}(0).
+\]
+This is
+\path{Fabius.iteratedDeriv_rvachevFourierProduct_int_add_order}.  Its
+\(\ell=0\) specialization is
 \[
  \Phi^{(a)}(m)=-\frac{a!}{m^a}\Phi(q/2)
 \]
 through the declarations in \path{IntegerZeroAnalyticOrder.lean}.  The
 field-generic extraction of this leading derivative is in
-\path{LeadingJet.lean}.  Thus
+\path{LeadingJet.lean}; that module now proves the vector-valued all-index and
+all-order germ formulas over every nontrivially normed field.  Thus
 \cref{eq:local-factor,eq:Cm,eq:first-derivative-zero} and the
-\(\ell=0\) case of \cref{eq:all-jets} are formalized.  The explicitly
-normalized function \(R_m\), the coefficient formula
-\cref{eq:all-jets} for \(\ell>0\), the next-jet formula, dyadic-ray
-recursion, and the packaged leading-sign corollary do not yet have matching
-named Lean declarations.
+cofactor-derivative version of \cref{eq:all-jets} at every \(\ell\) are
+formalized.  The explicitly normalized function \(R_m\), the literal
+coefficient-extraction packaging in \cref{eq:all-jets}, the explicit
+next-jet simplification, dyadic-ray recursion, and the packaged leading-sign
+corollary do not yet have matching named Lean declarations.
 \end{statusbox}
 
 \subsection{The next coefficient and dyadic-ray recursion}
@@ -1486,15 +1494,18 @@ The most accessible statements are:
 \end{enumerate}
 These require no infinite-dimensional analysis.
 
-\subsection{Layer 2: locally finite zero factorization (delivered through the leading jet)}
+\subsection{Layer 2: locally finite zero factorization and cofactor jets}
 
 This layer is now delivered.  The formal proof first establishes the total
 shifted-sinc law, then the global denominator-cleared factorization at
 \(2^kq\), and finally the canonical signed-integer form.  A local analytic
 unit gives the exact complex order and the first nonzero derivative.  The
-remaining local-jet work is the normalized all-orders coefficient API:
-package \(R_m\), its logarithmic derivatives, and
-\cref{eq:all-jets} for every positive \(\ell\).
+same formal layer now computes every derivative of order \(d_m+r\) from the
+\(r\)-th derivative of the analytic cofactor \(U_m\).  The remaining
+local-jet work is the separately normalized coefficient API: package \(R_m\),
+identify it explicitly with \(U_m/U_m(0)\), and formalize its logarithmic and
+Bell-polynomial derivatives and the literal coefficient-extraction notation
+in \cref{eq:all-jets}.
 
 \subsection{Layer 3: infinite products and traces}
 
@@ -1554,8 +1565,10 @@ The infinite sinc product of Rvachev's up-function admits a spectral organizatio
 The same operator admits two complementary $q$-constructions.  The determinant $\Ecal(u;Q)=\det(I-uQ^D)$ is a dyadic tower of $q$-Pochhammer symbols with exact finite Gaussian-binomial coefficients and explicit Mellin asymptotics.  Replacing each spectral integer by its symmetric $q$-integer produces $\Phi_Q$, an order-zero entire function with the same multiplicity and Thue--Morse sign word, an exact $q$-renormalization equation, and a locally uniform limit to the Rvachev Fourier transform.  Formula \cref{eq:PhiQ-tower} is the central new bridge: it connects $q$-Pochhammer symbols directly to the zero divisor of an infinite sinc product, while \cref{eq:PhiQ-scale} shows that the connection is dictated by self-similarity rather than by a formal change of notation.
 
 The resulting program is concrete.  Its finite arithmetic core, total local
-integer-zero factorization, exact complex order, and leading jet are now
-machine checked.  The higher normalized jets remain frontier work; the
+integer-zero factorization, exact complex order, lower vanishings, and every
+higher jet expressed through derivatives of the analytic cofactor are now
+machine checked.  The separately normalized \(R_m\) coefficient, logarithmic,
+and Bell-polynomial packages remain frontier work; the
 Mellin theory supplies exact human-readable asymptotics, and its unresolved
 comparison with the exact dyadic-value $q$-calculus offers a sharply defined
 next frontier.
