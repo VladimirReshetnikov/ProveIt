@@ -118,6 +118,7 @@ import FabiusFunction.OrthogonalPolynomialParity
 import FabiusFunction.OrthogonalPolynomialRecurrence
 import FabiusFunction.CompositeMeshExactness
 import FabiusFunction.CombFirstDefect
+import FabiusFunction.CombDefectSeries
 import FabiusFunction.CauchySurvival
 import FabiusFunction.CauchyHigherPowers
 import FabiusFunction.MonomialCombFourier
