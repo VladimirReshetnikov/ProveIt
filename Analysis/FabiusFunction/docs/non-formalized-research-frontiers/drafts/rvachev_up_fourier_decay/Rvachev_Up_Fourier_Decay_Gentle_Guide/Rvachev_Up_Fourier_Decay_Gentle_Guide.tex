@@ -110,13 +110,16 @@ $g$ such that the running average of $|f|/g$ tends to $1$): take
  g(x)=0.09127\cdot x^{-2.7481}
  \exp\!\left(-\frac{(\ln x)^2}{2\ln 2}\right).
 \]
-Then the running average of $|f|/g$ stays between $0.92$ and $1.12$
+Then the running average of $|f|/g$ stays between $0.91$ and $1.12$
 forever (so the ``bounded'' version of the question is solved), and it
-converges to exactly $1$ if you stop the average at powers of two, or
-if you average ``per octave'' ($\frac1{\ln t}\int^t\frac{|f|}{g}
-\frac{\dd x}{x}$).  But for arbitrary stopping points the limit
-provably does \emph{not} exist---for this $g$ or for any other
-formula-like $g$.  The average forever oscillates between about
+converges to exactly $1$ if you stop the average at powers of two.
+Averaging ``per octave'' ($\frac1{\ln t}\int^t\frac{|f|}{g}
+\frac{\dd x}{x}$) also produces an honest limit for all $t$ --- with
+the slightly different constant $0.09386$ in place of $0.09127$, the
+per-octave average tends to exactly $1$.  But for arbitrary stopping
+points the plain running average
+provably does \emph{not} converge---for this $g$ or for any other
+formula-like $g$.  It forever oscillates between about
 $0.92$ and $1.11$ depending on where between two powers of two you
 stop.  That obstruction is a real feature of the function, not a
 failure of cleverness.
@@ -433,8 +436,10 @@ And then:
 
 \begin{itemize}
 \item \textbf{The bounded version of the question is fully solved.}
-The running average of $|f|/g$ stays between $0.92$ and $1.12$ for all
-large $t$.  (The question offered this as an acceptable fallback ---
+The running average of $|f|/g$ stays between $0.91$ and $1.12$ for all
+large $t$ (the periodic profile ranges over $[0.9249,1.1132]$, with
+narrow excursions to $0.91627$ and $1.11814$ near $y=8/7$ and $10/7$).
+(The question offered this as an acceptable fallback ---
 condition (3) in the original post.)
 \item \textbf{The limit ($\ast$) holds along $t=1,2,4,8,\dots$}: if
 you always stop the average at a power of two, it converges to
@@ -484,7 +489,9 @@ Average multiplicatively instead --- give every octave equal weight:
  \qquad\text{for \emph{all} } t\to\infty,
 \]
 because now the final partial octave carries weight
-$\sim1/\ln t\to0$.  With the constant absorbed into $g$, the exact
+$\sim1/\ln t\to0$.  With the constant absorbed into $g$ --- the
+per-octave normalization carries its own constant,
+$0.0938606\ldots$ in place of $0.0912661\ldots$ --- the exact
 analogue of ($\ast$) holds with no restriction on $t$.  In one
 sentence: \emph{the question as posed has answer ``no, but'': no for
 the literal limit with any gauge of the natural, shape-stabilizing

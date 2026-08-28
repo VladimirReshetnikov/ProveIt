@@ -616,7 +616,10 @@ $\Phi(z)=\bigl(\prod_{j<m}\sinc(\pi z/2^j)\bigr)\exp\bigl(-\sum_{r\ge1}
 with the quotient cleared and the finite prefix explicit.  The engine is one application of
 the Euler log transform to the pair family $(z/2^h)^2/(n+1)^2$ over $\N\times\N$; its power
 sums are evaluated for \emph{every} complex $z$, with no smallness hypothesis
-(\lean{Fabius.sinc\_pair\_powerSum}).  Maximality of the disk is not formalized.
+(\lean{Fabius.sinc\_pair\_powerSum}).  Composed with the integral-to-product identity, the
+same series is the Fourier transform itself:
+$\widehat{\Up}(z)=\exp\bigl(-\sum_{r\ge1}\zeta(2r)4^rz^{2r}/(r(4^r-1))\bigr)$ on $|z|<1$
+(\lean{Fabius.rvachevFourier\_eq\_cexp}).  Maximality of the disk is not formalized.
 
 The first terms are
 \begin{equation}
