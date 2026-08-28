@@ -244,6 +244,7 @@ import FabiusFunction.BernsteinPositivity
 import FabiusFunction.PerronRootEnclosure
 import FabiusFunction.MeasureRefinement
 import FabiusFunction.RandomSeriesLaw
+import FabiusFunction.UniformSplineWeakConvergence
 
 /-!
 # Fabius function
@@ -369,4 +370,11 @@ calculus for the folded derivative `F' = 2·up(2·-1)`, which exhibits
 equation becomes the equality-in-law splitting `X ≗ (U + X')/2` of the
 random series, and the characteristic function of `X` takes the closed form
 `E[e^{itX}] = e^{it/2}·Û(t/(4π))` in the Rvachev Fourier transform.
+The finite spline laws — the laws of the first `p` weighted uniform
+coordinates, translated by the midpoint correction `2^{-p-1}` and with
+CDFs the midpoint-corrected finite CDFs — converge weakly to the
+random-series law, by Lévy's continuity theorem with the pointwise
+characteristic-function convergence supplied by dominated convergence;
+the companion quantitative statement is the all-real uniform CDF bound
+`|C_p - F| ≤ 2^{-p}` of the computability module.
 -/
