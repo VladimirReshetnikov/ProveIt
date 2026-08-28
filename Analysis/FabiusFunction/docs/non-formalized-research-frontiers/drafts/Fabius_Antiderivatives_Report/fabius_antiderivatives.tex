@@ -1,21 +1,27 @@
-\documentclass[11pt]{article}
+\documentclass[11pt,oneside]{article}
 
+\usepackage[a4paper,margin=27mm,headheight=15pt]{geometry}
 \usepackage[T1]{fontenc}
-\usepackage{amsmath,amssymb,amsthm}
-\usepackage{newpxtext,newpxmath}
-\usepackage{mathtools,bm}
-\usepackage[margin=1in,headheight=14pt]{geometry}
+\usepackage[utf8]{inputenc}
+\IfFileExists{libertinus.sty}{\usepackage{libertinus}}{\usepackage{lmodern}}
 \usepackage{microtype}
+\usepackage{amsmath,amssymb,amsthm,mathtools,mathrsfs}
+\usepackage{bm}
 \usepackage{booktabs,longtable,tabularx,array}
+\usepackage{graphicx}
 \usepackage{enumitem}
 \usepackage{xcolor}
 \usepackage{fancyhdr}
-\usepackage{hyperref}
-\usepackage[nameinlink,capitalize,noabbrev]{cleveref}
+\usepackage{titlesec}
 \usepackage[most]{tcolorbox}
 \usepackage{listings}
-\usepackage{url}
+\usepackage{xurl}
+\usepackage{hyperref}
+\usepackage[nameinlink,noabbrev]{cleveref}
 
+\definecolor{linkblue}{RGB}{25,75,135}
+\definecolor{shadegray}{RGB}{246,247,249}
+\definecolor{rulegray}{RGB}{195,201,208}
 \definecolor{deepblue}{RGB}{31,67,112}
 \definecolor{deepgreen}{RGB}{32,104,80}
 \definecolor{warmgray}{RGB}{90,84,76}
@@ -26,23 +32,30 @@
 
 \hypersetup{
   colorlinks=true,
-  linkcolor=deepblue,
-  citecolor=deepgreen,
-  urlcolor=deepblue,
+  linkcolor=linkblue,
+  citecolor=linkblue,
+  urlcolor=linkblue,
   pdftitle={Antiderivatives of Monomially Weighted Fabius-Type Functions},
-  pdfauthor={OpenAI, research report prepared for Vladimir Reshetnikov}
+  pdfsubject={Volterra ladders, weighted primitives, and research frontiers},
+  pdfkeywords={Fabius function, Rvachev up-function, Volterra operator, antiderivative},
+  pdfauthor={Research report prepared for Vladimir Reshetnikov}
 }
 
 \pagestyle{fancy}
 \fancyhf{}
 \fancyhead[L]{\small Antiderivatives of Fabius-Type Functions}
-\fancyhead[R]{\small \thepage}
+\fancyhead[R]{\small\nouppercase{\leftmark}}
+\fancyfoot[C]{\thepage}
 \renewcommand{\headrulewidth}{0.4pt}
 
-\setlist[itemize]{leftmargin=1.6em,itemsep=0.25em,topsep=0.4em}
-\setlist[enumerate]{leftmargin=1.8em,itemsep=0.3em,topsep=0.4em}
-\setlength{\parindent}{1.1em}
-\setlength{\parskip}{0.15em}
+\titleformat{\section}{\Large\bfseries}{\thesection}{0.7em}{}
+\titleformat{\subsection}{\large\bfseries}{\thesubsection}{0.7em}{}
+\titleformat{\subsubsection}{\normalsize\bfseries}{\thesubsubsection}{0.7em}{}
+\setcounter{secnumdepth}{3}
+\setcounter{tocdepth}{2}
+\setlist[itemize]{leftmargin=2em,itemsep=0.25em,topsep=0.4em}
+\setlist[enumerate]{leftmargin=2.3em,itemsep=0.25em,topsep=0.4em}
+\setlength{\emergencystretch}{2em}
 \allowdisplaybreaks
 
 \newtheorem{theorem}{Theorem}[section]
@@ -52,9 +65,11 @@
 \newtheorem{conjecture}[theorem]{Conjecture}
 \theoremstyle{definition}
 \newtheorem{definition}[theorem]{Definition}
+\newtheorem{algorithm}[theorem]{Algorithm}
 \newtheorem{example}[theorem]{Example}
 \theoremstyle{remark}
 \newtheorem{remark}[theorem]{Remark}
+\newtheorem{warning}[theorem]{Warning}
 
 \newtcolorbox{resultbox}[1][]{
   enhanced,breakable,colback=paleblue,colframe=deepblue,
@@ -145,7 +160,14 @@ Combining the inverse endpoint equivalent already developed in the repository
 with regular-variation arguments yields new asymptotics for weighted inverse
 primitives and for large quantile moments.  The final sections separate proved
 statements from conjectural saddle refinements, record reproducible numerical
-checks, and propose Lean formalization and arithmetic directions.
+checks, and propose further formalization and arithmetic directions.  The
+integer core is now machine checked in Lean: this comprises the normalized
+Volterra operator, its identification with literal repeated integration, the
+finite polynomial and natural-monomial commutators, the global signed Fabius
+ladder, and the bounded formulas on the full range \(x\leq1\).  The infinite
+complex-power series, Mellin consequences, fractional orders, global exterior
+pieces, Rvachev folds, and inverse-function formulas remain research-frontier
+material.
 \end{abstract}
 
 \tableofcontents
@@ -175,26 +197,89 @@ work therefore used two passes:
       repeated-integration, Newton/Richardson, moment, asymptotic, and
       non-elementarity source families.
 \end{enumerate}
-The corpus already contains the basic functional equations, exact dyadic
-values, moment recurrences, the sinc product, all-orders endpoint asymptotics,
-repeated-averaging limits, and extensive inverse-function work.  It does
-\emph{not} develop the normalized antiderivative ladder of this report, the
-finite monomial formula, the arbitrary-complex-power Newton--Volterra series,
-or the inverse-primitive reductions below.  Literal searches for
+At the audited snapshot, the corpus already contained the basic functional
+equations, exact dyadic values, moment recurrences, the sinc product,
+all-orders endpoint asymptotics, repeated-averaging limits, and extensive
+inverse-function work.  It did \emph{not} yet develop the normalized
+antiderivative ladder of this report, the finite monomial formula, the
+arbitrary-complex-power Newton--Volterra series, or the inverse-primitive
+reductions below.  Literal searches for
 ``antiderivative'' and ``indefinite integral'' returned no such treatment in
 the live primary or consolidated frontier source.  This establishes novelty
 \emph{relative to the audited repository}; it is not a claim that no equivalent
 identity has ever appeared elsewhere.  In particular, the base functional
 integral identity \(\int_0^xF(t)\dd t=F(x/2)\) is an immediate classical
-consequence of the defining equation.
+consequence of the defining equation.  The subsequent Lean implementation
+described below changes the current formalization status, not this historical
+snapshot audit.
 
 \begin{statusbox}[Status convention used in this report]
 Every item labeled theorem, proposition, lemma, or corollary is supplied with
-a mathematical proof here.  ``Repository input'' means that an already
-established result is imported from the audited corpus.  ``Conjecture'' means
-that the statement is supported by the preceding analysis but is not proved.
-None of the new theorems in this report has yet been translated into Lean.
+a mathematical proof here, but that label alone does not assert a Lean proof.
+``Repository input'' means that an already established result is imported from
+the audited corpus.  ``Conjecture'' means that the statement is supported by
+the preceding analysis but is not proved.  Only the declarations in the
+crosswalk below are claimed to be machine checked by the present status
+update; all other new claims in this report remain non-formalized.
 \end{statusbox}
+
+\subsection{Lean formalization update}
+The reusable foundation is formalized in
+\path{FabiusFunction.NormalizedVolterra}.  Its definition
+\path{normalizedVolterra} takes values in an arbitrary real normed vector
+space and uses oriented interval integrals.  For continuous Banach-valued
+inputs,
+\path{iteratedPrimitive_eq_normalizedVolterra} identifies its Cauchy
+kernel with literal repeated application of the first primitive.  Thus the
+formal result is not confined to the scalar Fabius case or to ordered
+endpoints.
+
+\begin{longtable}{@{}p{0.34\textwidth}p{0.60\textwidth}@{}}
+\toprule
+Mathematical content & Exact Lean declaration and module\\
+\midrule
+\endfirsthead
+\toprule
+Mathematical content & Exact Lean declaration and module\\
+\midrule
+\endhead
+Normalized kernel and literal-iteration bridge&
+\path{normalizedVolterra}, \path{iteratedPrimitive}, and
+\path{iteratedPrimitive_eq_normalizedVolterra} in
+\path{FabiusFunction.NormalizedVolterra}.\\[1mm]
+Kernel raising and arbitrary finite polynomial weights&
+\path{normalizedVolterra_kernel_pow},
+\path{normalizedVolterra_polynomial}, and
+\path{normalizedVolterra_monomial} in
+\path{FabiusFunction.NormalizedVolterra}.\\[1mm]
+Signed Fabius primitive ladder, all orders and all real endpoints&
+\path{normalizedVolterra_extendedFabius} in
+\path{FabiusFunction.FabiusAntiderivatives}.\\[1mm]
+Bounded Fabius primitive ladder on the proved initial half-line \(x\leq1\)&
+\path{normalizedVolterra_fabiusReal_of_le_one} in
+\path{FabiusFunction.FabiusAntiderivatives}.\\[1mm]
+Finite natural-monomial Fabius formulas&
+\path{normalizedVolterra_pow_mul_extendedFabius} and
+\path{normalizedVolterra_pow_mul_fabiusReal_of_le_one} in
+\path{FabiusFunction.FabiusAntiderivatives}.\\
+\bottomrule
+\end{longtable}
+
+The generic polynomial theorem permits every order \(n\in\N_0\), every real
+base point and endpoint, every interval-integrable input with values in an
+arbitrary real normed vector space, and an arbitrary real polynomial.  Its
+coefficients are Hasse
+derivatives and rising factorials, so the order-zero identity and all endpoint
+degeneracies require no side conditions.  The Fabius specializations likewise
+include order zero.  For the bounded function the proved dyadic formula holds
+on \(( -\infty,1]\), not merely on \([0,1]\).
+
+No claim of this update extends to the infinite complex-power
+Newton--Volterra series or its normal convergence, the Mellin/Newton and
+negative-power consequences, Riemann--Liouville fractional order, the
+\(x>1\) branches of the bounded global piecewise formula, folded Rvachev
+primitives or their Fourier renormalization, or any inverse-Fabius primitive
+or inverse asymptotic.  Those remain explicit formalization frontiers.
 
 \subsection{What ``closed form'' means here}
 The repository proves strong non-elementarity statements for \(F\), \(\Up\),
@@ -265,27 +350,34 @@ At imaginary arguments, the centered transform
 \cite{AriasCompact,Rvachev1990,ProveItPrimary}.
 
 \subsection{Normalized integer and fractional primitives}
-For an integer \(n\geq1\), define the normalized Volterra primitive
+For an integer \(n\geq1\), a real base point \(a\), and an oriented endpoint
+\(x\), define the normalized Volterra primitive
 \begin{equation}
- (\Jn_nf)(x)=\frac1{(n-1)!}\int_0^x(x-t)^{n-1}f(t)\dd t.         \label{eq:J-def}
+ (\Jn_{n,a}f)(x)=\frac1{(n-1)!}\int_a^x(x-t)^{n-1}f(t)\dd t,
+ \qquad \Jn_{0,a}f=f.                                         \label{eq:J-def}
 \end{equation}
-It is the unique solution of \(D^nu=f\) whose derivatives of orders
-\(0,\dots,n-1\) vanish at zero.  Every other \(n\)-fold antiderivative differs
-from it by a polynomial of degree at most \(n-1\).
+The zero-based notation is \(\Jn_n=\Jn_{n,0}\).  For positive \(n\), it is
+the unique solution of \(D^n u=f\) whose derivatives of orders
+\(0,\dots,n-1\) vanish at \(a\).  Every other \(n\)-fold antiderivative differs
+from it by a polynomial of degree at most \(n-1\).  For continuous
+Banach-valued inputs, the formal theorem
+\path{iteratedPrimitive_eq_normalizedVolterra} proves that
+\eqref{eq:J-def} is exactly literal repeated integration.
 
 For \(\Rea\nu>0\), the Riemann--Liouville version is
 \begin{equation}
  (\RL^\nu f)(x)=\frac1{\Gamma(\nu)}
  \int_0^x(x-t)^{\nu-1}f(t)\dd t.                               \label{eq:RL-def}
 \end{equation}
-The notation \(\Jn_n=\RL^n\) will be used when the order is integral.
+The notation \(\Jn_n=\RL^n\) will be used when the order is positive and
+integral.
 For a complex exponent \(\alpha\) and positive \(x\), we take
 \(x^\alpha=\exp(\alpha\log x)\) with the real logarithm.
 
 \section{The dyadic antiderivative ladder}
 
 \begin{theorem}[Exact normalized primitive ladder]\label{thm:ladder}
-For every integer \(n\geq1\) and every \(0\leq x\leq1\),
+For every \(n\in\N_0\) and every real \(x\leq1\),
 \begin{equation}
  \boxed{\quad
  (\Jn_nF)(x)=2^{\binom n2}F\!\left(\frac{x}{2^n}\right).
@@ -293,37 +385,39 @@ For every integer \(n\geq1\) and every \(0\leq x\leq1\),
 \end{equation}
 For the signed global extension, the same formula holds for every real \(x\):
 \begin{equation}
- D^{-n}_{0}\Fs(x)=2^{\binom n2}\Fs\!\left(\frac{x}{2^n}\right),              \label{eq:signed-primitive}
+ (\Jn_n\Fs)(x)=2^{\binom n2}\Fs\!\left(\frac{x}{2^n}\right).              \label{eq:signed-primitive}
 \end{equation}
-where \(D^{-n}_{0}\) denotes the antiderivative with zero \((n-1)\)-jet at
-zero.
+The order-zero cases use the identity convention in \eqref{eq:J-def}.
 \end{theorem}
 
 \begin{proof}
-Set \(H_n(x)=2^{\binom n2}F(x/2^n)\).  Since
-\(0\leq x/2^n\leq1/2\), \eqref{eq:F-left-diff} gives
+The case \(n=0\) is immediate.  For the signed extension set
+\(H_n(x)=2^{\binom n2}\Fs(x/2^n)\).  The global dilation equation gives
 \[
  H_n'(x)
- =2^{\binom n2-n}F'(x/2^n)
- =2^{\binom n2-n+1}F(x/2^{n-1})
+ =2^{\binom n2-n}\Fs'(x/2^n)
+ =2^{\binom n2-n+1}\Fs(x/2^{n-1})
  =H_{n-1}(x).
 \]
-Iterating yields \(H_n^{(n)}=F\).  Infinite flatness of \(F\) at zero makes
-the first \(n\) initial data vanish, so uniqueness of the Volterra primitive
-proves \eqref{eq:J-ladder}.  The identical calculation with
-\(\Fs'(x)=2\Fs(2x)\) has no range restriction and proves
-\eqref{eq:signed-primitive}.
+Iterating yields \(H_n^{(n)}=\Fs\).  Every derivative of \(H_n\) below order
+\(n\) is a constant multiple of a scaled value of \(\Fs\), hence vanishes at
+zero because \(\Fs(0)=0\).  Uniqueness with its zero initial jet proves
+\eqref{eq:signed-primitive}.  If \(x\leq1\), the oriented interval between
+zero and \(x\) lies in \(( -\infty,1]\), where \(F=\Fs\); moreover
+\(x/2^n\leq1\).  Replacing \(\Fs\) by \(F\) on both sides therefore proves
+\eqref{eq:J-ladder} on the stated full range.
 \end{proof}
 
 \begin{remark}
-The range restriction in \eqref{eq:J-ladder} is essential for the bounded
-function: it is \(\Fs\), not the bounded CDF, that obeys the clean dilation
-equation on all of \(\R\).  The global bounded formula will instead be
-piecewise polynomial in \cref{thm:global-integer}.
+The range restriction \(x\leq1\) in \eqref{eq:J-ladder} is the full interval
+on which the bounded function is obtained directly from the signed extension.
+It is \(\Fs\), not the bounded CDF, that obeys the clean dilation equation on
+all of \(\R\).  The proposed global bounded completion is instead piecewise
+polynomial; see \cref{thm:global-integer} and its frontier-status note.
 \end{remark}
 
 \begin{corollary}[Moment interpretation of the ladder]\label{cor:J-moment}
-For \(x\geq0\),
+For \(n\geq1\) and \(x\geq0\),
 \begin{equation}
  (\Jn_nF)(x)=\frac1{n!}\E (x-X)_+^n.                            \label{eq:J-stoploss}
 \end{equation}
@@ -345,17 +439,60 @@ Write \(F(t)=\E\1_{\{X\leq t\}}\), apply Tonelli's theorem, and integrate
 \subsection{A general commutator identity}
 The key algebraic mechanism does not depend on the Fabius function.
 
+\begin{theorem}[Formalized polynomial Volterra commutator]
+\label{thm:polynomial-commutator}
+Let \(E\) be a real normed vector space, let \(a,x\in\R\), let
+\(f:\R\to E\) be interval integrable between \(a\) and \(x\), and let
+\(P\in\R[X]\).  For every \(n\in\N_0\),
+\begin{equation}
+ \boxed{\quad
+ \Jn_{n,a}[P(t)f(t)](x)
+ =\sum_{r=0}^{\deg_{\!N}P}(-1)^r\rise nr P^{[r]}(x)
+   \Jn_{n+r,a}f(x).
+ \quad}                                                       \label{eq:polynomial-commutator}
+\end{equation}
+Here \(P^{[r]}\) is the \(r\)-th Hasse derivative,
+\(\deg_{\!N}\) is the natural degree, and \(\rise nr\) is the rising
+factorial, with \(\rise 00=1\) and \(\rise 0r=0\) for \(r>0\).
+Consequently \eqref{eq:polynomial-commutator} includes the order-zero
+identity without a separate exception.
+\end{theorem}
+
+\begin{proof}
+Taylor's finite polynomial identity about the upper endpoint is
+\[
+ P(t)=\sum_{r=0}^{\deg_{\!N}P}P^{[r]}(x)(t-x)^r
+     =\sum_{r=0}^{\deg_{\!N}P}(-1)^rP^{[r]}(x)(x-t)^r.
+\]
+Linearity reduces the claim to the kernel-raising identity
+\[
+ \Jn_{n,a}[(x-t)^rf(t)](x)=\rise nr\,\Jn_{n+r,a}f(x).
+\]
+For positive \(n\), this follows by combining the powers of \(x-t\) and the
+factorial identity \((n-1)!\rise nr=(n+r-1)!\).  For \(n=0\), evaluation at
+\(t=x\) agrees with the stated zero rising-factorial convention.  This proves
+all orders at once.
+\end{proof}
+
+This theorem is exactly
+\path{normalizedVolterra_polynomial}; its monomial specialization is
+\path{normalizedVolterra_monomial}, both in
+\path{FabiusFunction.NormalizedVolterra}.  Taking \(P(t)=t^p\) gives
+\(P^{[r]}(x)=\binom prx^{p-r}\), so for \(n\geq1\) it is equivalent to the
+finite part of the next theorem.
+
 \begin{theorem}[Newton--Volterra commutator]\label{thm:commutator}
-Let \(n\geq1\), \(x>0\), and suppose the displayed integrals converge.  Then
-for every complex \(\alpha\),
+Let \(n\geq1\), let \(x>0\), and suppose the displayed integrals converge.
+Then for every complex \(\alpha\),
 \begin{equation}
  \Jn_n[t^\alpha f(t)](x)
  =\sum_{r=0}^{\infty}(-1)^r\binom{n+r-1}{r}\fall{\alpha}{r}
  x^{\alpha-r}(\Jn_{n+r}f)(x),                                 \label{eq:general-commutator}
 \end{equation}
-whenever termwise integration is justified.  If \(\alpha=p\in\N_0\), the
-series terminates at \(r=p\) and is an algebraic identity for every locally
-integrable \(f\):
+whenever termwise integration is justified.  Independently of this
+positivity condition, if \(\alpha=p\in\N_0\), the series terminates at
+\(r=p\) and is an algebraic identity for every locally integrable \(f\) and
+every real oriented endpoint \(x\):
 \begin{equation}
  \boxed{\quad
  \Jn_n[t^pf(t)](x)
@@ -381,7 +518,18 @@ For \(p\in\N_0\), the binomial expansion is finite, so no convergence
 argument is needed.
 \end{proof}
 
-The first two operator recurrences encoded in \eqref{eq:finite-commutator} are
+\begin{statusbox}[Formalization boundary for the commutator]
+The finite polynomial identity \eqref{eq:polynomial-commutator}, including its
+natural-monomial specialization \eqref{eq:finite-commutator}, is formalized in
+the greater normed-space-valued, arbitrary-base, all-order generality stated
+above.
+The infinite expansion \eqref{eq:general-commutator} for nonintegral or complex
+\(\alpha\), including the justification of termwise integration, is not yet
+formalized.
+\end{statusbox}
+
+For \(p\geq1\), the first two operator recurrences encoded in
+\eqref{eq:finite-commutator} are
 \begin{align}
  \Jn_n[t f(t)]&=x\Jn_nf-n\Jn_{n+1}f,                            \label{eq:xf-rec}\\
  \Jn_n[t^pf(t)]&=x\Jn_n[t^{p-1}f(t)]-n\Jn_{n+1}[t^{p-1}f(t)].   \label{eq:triangular-rec}
@@ -412,6 +560,17 @@ For \(\alpha=p\in\N_0\), this terminates and becomes
  F\!\left(\frac{x}{2^{n+r}}\right).
  \end{aligned}}                                                \label{eq:finite-p-n}
 \end{equation}
+The natural-power specialization has the stronger all-order form: for every
+\(n,p\in\N_0\) and every real \(x\leq1\),
+\begin{equation}
+ \boxed{\quad
+ \Jn_n[t^pF(t)](x)
+ =\sum_{r=0}^{p}(-1)^r\binom pr\rise nr x^{p-r}
+ 2^{\binom{n+r}{2}}F\!\left(\frac{x}{2^{n+r}}\right).
+ \quad}                                                       \label{eq:finite-p-n-all-order}
+\end{equation}
+For positive \(n\), this is \eqref{eq:finite-p-n}; the rising-factorial form
+also handles \(n=0\) without an exceptional sum.
 \end{theorem}
 
 \begin{proof}
@@ -443,10 +602,27 @@ shows that it is entire in \(\alpha\).  The series and integral agree first in
 a half-plane where the ordinary binomial argument is immediate and then
 everywhere by the identity theorem; equivalently, one may use dominated
 convergence directly with \eqref{eq:term-bound}.
+
+For natural \(p\), apply the finite monomial commutator
+\eqref{eq:polynomial-commutator} and then the bounded ladder
+\eqref{eq:J-ladder}.  This argument has no convergence step and remains valid
+for every oriented endpoint \(x\leq1\) and for order zero, proving
+\eqref{eq:finite-p-n-all-order}.
 \end{proof}
 
+\begin{statusbox}[Formalization boundary for the Fabius formula]
+The finite identities \eqref{eq:finite-p-n} and
+\eqref{eq:finite-p-n-all-order} are formalized as
+\path{normalizedVolterra_pow_mul_fabiusReal_of_le_one}; the signed global
+version is \path{normalizedVolterra_pow_mul_extendedFabius}, both in
+\path{FabiusFunction.FabiusAntiderivatives}.  The arbitrary-complex-power
+series \eqref{eq:master-alpha-n}, its entirety assertion, and its normal
+convergence are still non-formalized.
+\end{statusbox}
+
 \begin{resultbox}[Main closed form for the ordinary antiderivative]
-For \(0\leq x\leq1\) and \(p\in\N_0\), the normalized ordinary primitive is
+For every real \(x\leq1\) and \(p\in\N_0\), the normalized ordinary primitive
+is
 \begin{equation}
  \int_0^x t^pF(t)\dd t
  =\sum_{r=0}^{p}(-1)^r\frac{p!}{(p-r)!}
@@ -456,8 +632,8 @@ For \(0\leq x\leq1\) and \(p\in\N_0\), the normalized ordinary primitive is
 Thus only \(p+1\) dyadically contracted Fabius evaluations are required.
 \end{resultbox}
 
-A useful one-step recurrence follows by integrating by parts once and changing
-variables:
+A useful one-step recurrence for \(p\geq1\) and \(x\leq1\) follows by
+integrating by parts once and changing variables:
 \begin{equation}
  A_p(x):=\int_0^xt^pF(t)\dd t
  =x^pF(x/2)-p\,2^pA_{p-1}(x/2),\qquad A_0(x)=F(x/2).             \label{eq:A-rec}
@@ -539,6 +715,15 @@ answer.  Define
  H_{n,p}(x)=\frac1{(n-1)!}\int_0^x(x-t)^{n-1}t^pF(t)\dd t,       \label{eq:Hnp-def}
 \end{equation}
 with the usual oriented integral when \(x<0\).
+
+\begin{warningbox}[Formalization frontier]
+The finite dyadic branch for every \(x\leq1\), including the zero branch on
+the negative half-line, follows from the formalized theorem
+\path{normalizedVolterra_pow_mul_fabiusReal_of_le_one}.  The exterior
+moment-polynomial branch for \(x>1\), the resulting all-real piecewise
+assembly, and the matching-jet assertion at \(x=1\) have not yet been
+formalized.  Thus \cref{thm:global-integer} remains in this frontier report.
+\end{warningbox}
 
 \begin{theorem}[Global piecewise formula]\label{thm:global-integer}
 For \(n\geq1\) and \(p\in\N_0\),
@@ -1577,12 +1762,16 @@ must still be controlled.
 \subsection{Holonomicity, arithmetic, and formalization problems}
 The following directions appear especially promising.
 \begin{enumerate}
-\item \textbf{Lean formalization.}  Formalize \cref{thm:ladder} first, then the
-finite commutator \eqref{eq:finite-commutator}, the global formula
-\eqref{eq:global-Hnp}, and the inverse identity \eqref{eq:inverse-first}.
-These need only finite sums, elementary Volterra calculus, and results already
-present in the repository.  The normal-convergence proof of
-\eqref{eq:master-alpha-n} is a natural second wave.
+\item \textbf{Lean formalization.}  The reusable first wave is complete:
+\path{FabiusFunction.NormalizedVolterra} supplies the Banach-valued operator,
+the literal-iteration bridge, and the finite polynomial/monomial commutators;
+\path{FabiusFunction.FabiusAntiderivatives} supplies the signed and bounded
+integer ladders and their natural-monomial consequences.  The next finite
+targets are the exterior \(x>1\) branch and matching jets in
+\eqref{eq:global-Hnp}, followed independently by the inverse identity
+\eqref{eq:inverse-first}.  The normal-convergence proof of
+\eqref{eq:master-alpha-n}, its Mellin consequences, and fractional order form
+a separate analytic wave.
 
 \item \textbf{Dyadic arithmetic.}  Substitute the repository's exact
 \(q\)-binomial evaluator into \eqref{eq:finite-p-n}.  Determine sharp
@@ -1630,46 +1819,55 @@ and periodic structure into a new probabilistic observable:
 
 \begin{longtable}{@{}p{0.28\textwidth}p{0.66\textwidth}@{}}
 \toprule
-Object & Exact formula or leading result\\
+Object & Exact formula, leading result, and current Lean status\\
 \midrule
 \endfirsthead
 \toprule
-Object & Exact formula or leading result\\
+Object & Exact formula, leading result, and current Lean status\\
 \midrule
 \endhead
-\(n\)-fold primitive of \(F\) on \([0,1]\)&
-\(\Jn_nF(x)=2^{\binom n2}F(x/2^n)\).\\[1mm]
+Generic polynomial weight&
+Finite Hasse-derivative formula \eqref{eq:polynomial-commutator}; Lean
+formalized for normed-space-valued inputs, arbitrary base and endpoint, and
+every \(n\in\N_0\).\\[1mm]
+\(n\)-fold primitive of \(F\) for \(x\leq1\)&
+\(\Jn_nF(x)=2^{\binom n2}F(x/2^n)\), Lean formalized for every
+\(n\in\N_0\).  The signed analogue is formalized for every real \(x\).\\[1mm]
 Natural monomial weight&
-Finite sum \eqref{eq:finite-p-n}; global completion \eqref{eq:global-Hnp}.\\[1mm]
+Finite sum \eqref{eq:finite-p-n-all-order} is Lean formalized for
+\(x\leq1\); the \(x>1\) global completion in \eqref{eq:global-Hnp} remains a
+frontier.\\[1mm]
 Complex monomial weight&
 Absolutely convergent Newton--Volterra series \eqref{eq:master-alpha-n}, entire
-in \(\alpha\).\\[1mm]
+in \(\alpha\); not yet Lean formalized.\\[1mm]
 Complete endpoint&
 \(\int_0^1x^\alpha F(x)\dd x=(1-M(\alpha+1))/(\alpha+1)\) and
-Newton series \eqref{eq:moment-newton}.\\[1mm]
+Newton series \eqref{eq:moment-newton}; Mellin/Newton frontier.\\[1mm]
 Negative integer weight&
 Positive dyadic series \eqref{eq:negative-series}; logarithmic constant
-\eqref{eq:log-constant-d}--\eqref{eq:log-constant-c}.\\[1mm]
+\eqref{eq:log-constant-d}--\eqref{eq:log-constant-c}; frontier.\\[1mm]
 Reflection/complement&
 \(F(1-x)=1-F(x)\), and
 \(\Jn_n[x^p(1-F)]=p!x^{p+n}/(p+n)!-H_{n,p}\).\\[1mm]
 Rvachev up-function&
 Complete four-branch formula \eqref{eq:up-global}; exterior branches are
-moment polynomials.\\[1mm]
+moment polynomials; folded-primitive frontier.\\[1mm]
 Higher derivatives&
 Thue--Morse sums \eqref{eq:up-derivative} and
 \eqref{eq:F-derivative-up}; single dilation for \(\Fs\).\\[1mm]
 Fractional order&
 Probability formula \eqref{eq:fractional-stoploss} and commutator
-\eqref{eq:fractional-alpha}.\\[1mm]
+\eqref{eq:fractional-alpha}; frontier.\\[1mm]
 Inverse first primitive&
 \(\int_0^yQ(u)\dd u=yQ(y)-F(Q(y)/2)\), as in
-\eqref{eq:inverse-first}.\\[1mm]
+\eqref{eq:inverse-first}; frontier.\\[1mm]
 Inverse arbitrary order&
-\(\RL^\nu Q(y)=\Gamma(\nu+1)^{-1}\int_0^{Q(y)}(y-F(t))^\nu\dd t\).\\[1mm]
+\(\RL^\nu Q(y)=\Gamma(\nu+1)^{-1}\int_0^{Q(y)}(y-F(t))^\nu\dd t\);
+frontier.\\[1mm]
 Inverse endpoint asymptotic&
 Weighted Karamata law \eqref{eq:Q-weighted-Karamata}, logarithmic boundary
-\eqref{eq:Q-log-explicit}, and large moment correction \eqref{eq:qp-asympt}.\\
+\eqref{eq:Q-log-explicit}, and large moment correction \eqref{eq:qp-asympt};
+frontier.\\
 \bottomrule
 \end{longtable}
 
@@ -1729,7 +1927,11 @@ inverse material treats regularity, dyadic inversion, non-elementarity, and
 endpoint asymptotics, but not \eqref{eq:inverse-first},
 \eqref{eq:inverse-fractional}, or weighted quantile integrals.  The Newton draft
 treats exponent sequences, sinc products, Prouhet cancellation, and
-q-Richardson reconstruction, not \eqref{eq:moment-newton}.
+q-Richardson reconstruction, not \eqref{eq:moment-newton}.  These are
+snapshot-relative source-document comparisons.  The later Lean modules listed
+in the status crosswalk now formalize the integer Volterra core, while the
+complex, fractional, Mellin, folded, inverse, and exterior-piecewise claims
+remain outside that formalized core.
 
 \section{Exact initial values and sample antiderivatives}
 
@@ -1753,7 +1955,7 @@ The first centered moments are
  c_4&=\frac{132809}{32531625}.
 \end{align*}
 
-For \(0\leq x\leq1\), the first ordinary primitives are
+For every real \(x\leq1\), the first ordinary primitives are
 \begin{align}
  \int_0^xF(t)\dd t
  &=F(x/2),                                                     \label{eq:sample-p0}\\

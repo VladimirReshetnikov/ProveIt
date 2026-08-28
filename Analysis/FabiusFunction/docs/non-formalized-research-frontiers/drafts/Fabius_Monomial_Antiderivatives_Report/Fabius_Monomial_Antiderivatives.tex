@@ -1,5 +1,5 @@
 \documentclass[11pt,oneside]{article}
-\usepackage[a4paper,margin=26mm,headheight=15pt]{geometry}
+\usepackage[a4paper,margin=27mm,headheight=15pt]{geometry}
 \usepackage[T1]{fontenc}
 \usepackage[utf8]{inputenc}
 \IfFileExists{libertinus.sty}{\usepackage{libertinus}}{\usepackage{lmodern}}
@@ -24,7 +24,7 @@
   colorlinks=true,
   pdfauthor={OpenAI, prepared for Vladimir Reshetnikov},
   linkcolor=linkblue,
-  citecolor=deepgreen,
+  citecolor=linkblue,
   urlcolor=linkblue,
   pdftitle={Fabius Monomial Antiderivatives and Inverse-Quantile Integrals},
   pdfsubject={Exact primitive ladders, complex-exponent series, Rvachev transforms, and inverse Fabius integrals},
@@ -142,7 +142,7 @@ The central observation is the exact zero-based primitive ladder
 \[
  A_n(x)=2^{\binom n2}F(x/2^n),\qquad A_n'=A_{n-1},\qquad A_0=F,
 \]
-valid for $0\le x\le1$.  It immediately gives, for every $p\in\N_0$,
+valid for $x\le1$.  It immediately gives, for every $p\in\N_0$,
 \[
  \int x^pF(x)\dd x=
  \sum_{k=0}^{p}(-1)^k\frac{p!}{(p-k)!}
@@ -173,6 +173,34 @@ Exact rational checks and independent quasi-Monte Carlo experiments accompany
 the proofs.  Several conjectural extensions and a concrete Lean formalization
 roadmap conclude the report.
 \end{abstract}
+
+\begin{boxedremark}
+\textbf{Current Lean formalization status.}
+The complete natural-order core is now machine-checked, and in greater
+generality than it is first presented in this report.  The module
+\decl{FabiusFunction.NormalizedVolterra} treats arbitrary real
+normed-space-valued inputs, arbitrary base points, oriented endpoints, and
+order zero.  For continuous Banach-valued inputs,
+\decl{iteratedPrimitive_eq_normalizedVolterra} identifies literal iteration
+with the Cauchy kernel; without a completeness assumption,
+\decl{normalizedVolterra_polynomial} and
+\decl{normalizedVolterra_monomial} prove the finite polynomial and
+natural-monomial commutators.  The
+module \decl{FabiusFunction.FabiusAntiderivatives} proves the signed global
+ladder and monomial formula in
+\decl{normalizedVolterra_extendedFabius} and
+\decl{normalizedVolterra_pow_mul_extendedFabius}.  Its bounded counterparts
+\decl{normalizedVolterra_fabiusReal_of_le_one} and
+\decl{normalizedVolterra_pow_mul_fabiusReal_of_le_one} hold on the proved
+initial half-line $x\le1$, not merely on $[0,1]$.
+
+No Lean formalization is claimed here for the complex-power series or its
+convergence and remainder estimates, the logarithmic and Mellin consequences,
+fractional primitive order, the Rvachev piecewise or fractional primitives,
+the inverse-function formulas and asymptotics, or the bounded function's
+piecewise continuation for $x>1$.  Those portions remain research frontiers;
+the analytic arguments and numerical checks below do not change that status.
+\end{boxedremark}
 
 \tableofcontents
 \newpage
@@ -221,16 +249,39 @@ Thue--Morse realization.
 \toprule
 Topic & Result & Status \\
 \midrule
-Primitive ladder & $n$-fold zero-based primitive $2^{\binom n2}F(x/2^n)$ and its Volterra-kernel form. & Proved here \\
-Polynomial weights & Finite closed form for $\int x^pF(x)\dd x$ and for arbitrary polynomial weights. & Proved here \\
-Complex powers & Absolutely convergent exact series for every $\alpha\in\C$, with an exact remainder and compact-uniform convergence. & Proved here \\
-Mellin calculus & Entire Mellin transform, complete monotonicity on the real axis, dyadic interpolation, and logarithmic derivatives. & Proved here \\
-Arithmetic bridge & Complete moments as finite combinations of inverse-dyadic values, hence direct inputs for Bernoulli, Thue--Morse, and $q$-binomial formulae. & Proved here \\
-Rvachev transforms & Piecewise antiderivatives, global normalized primitives, and fractional absolute moments. & Proved here \\
-Inverse Fabius & Exact weighted reduction to $\int F^{\beta+1}$, critical logarithmic formula, convergence threshold, and order-statistic interpretation. & Proved here \\
-Nonlinear remainder & Explicit finite Thue--Morse spline formula for $\int F^r$, $r\in\N$. & Proved here \\
-Endpoint inverse & Weighted inverse-primitive equivalents, including the critical $\beta=-1$ law. & Proved from corpus asymptotic \\
-Fractional primitive index & A continuous-index $q$-Volterra semigroup interpolating the integer ladder. & Conjectural program \\
+Primitive ladder &
+$n$-fold zero-based primitive $2^{\binom n2}F(x/2^n)$ on $x\le1$, its
+signed global form, and its Volterra kernel. &
+Lean-formalized, more generally \\
+Polynomial weights &
+Finite natural-monomial and arbitrary real-polynomial Volterra commutators. &
+Lean-formalized, more generally \\
+Complex powers &
+Absolutely convergent exact series for every $\alpha\in\C$, with an exact
+remainder and compact-uniform convergence. & Frontier; not formalized \\
+Mellin calculus &
+Entire Mellin transform, complete monotonicity on the real axis, dyadic
+interpolation, and logarithmic derivatives. & Frontier; not formalized \\
+Arithmetic bridge &
+Complete moments as finite combinations of inverse-dyadic values, hence direct
+inputs for Bernoulli, Thue--Morse, and $q$-binomial formulae. &
+Frontier here; arithmetic inputs formalized \\
+Rvachev transforms &
+Piecewise antiderivatives, global normalized primitives, and fractional
+absolute moments. & Frontier; not formalized \\
+Inverse Fabius &
+Exact weighted reduction to $\int F^{\beta+1}$, critical logarithmic formula,
+convergence threshold, and order-statistic interpretation. &
+Frontier; not formalized \\
+Nonlinear remainder &
+Explicit finite Thue--Morse spline formula for $\int F^r$, $r\in\N$. &
+Frontier; not formalized \\
+Endpoint inverse &
+Weighted inverse-primitive equivalents, including the critical $\beta=-1$
+law. & Frontier; informal consequence \\
+Fractional primitive index &
+A continuous-index $q$-Volterra semigroup interpolating the integer ladder. &
+Frontier; conjectural \\
 \bottomrule
 \end{tabularx}
 \caption{Main contributions and status.}
@@ -325,7 +376,7 @@ For $n\in\N_0$ define
 
 \begin{theorem}[Primitive ladder]
 \label{thm:primitive-ladder}
-For $0\le x\le1$ and every $n\ge1$,
+For $x\le1$ and every $n\ge1$,
 \begin{equation}
  A_n'(x)=A_{n-1}(x),\qquad A_n(0)=0.                       \label{eq:ladder-derivative}
 \end{equation}
@@ -340,15 +391,22 @@ $x\in\R$.
 \end{theorem}
 
 \begin{proof}
-For $n\ge1$, $0\le x/2^n\le1/2$, so \eqref{eq:F-basic} gives
+On $(-\infty,0)$ all the bounded candidates vanish identically, and flatness
+at zero supplies the same derivative identity there; the oriented Volterra
+integral also vanishes because $F$ vanishes on $(-\infty,0]$.  For
+$0\le x\le1$ and $n\ge1$, one has $0\le x/2^n\le1/2$, so
+\eqref{eq:F-basic} gives
 \[
  A_n'(x)=2^{\binom n2-n}F'(x/2^n)
  =2^{\binom n2-n+1}F(x/2^{n-1})
  =2^{\binom{n-1}{2}}F(x/2^{n-1})=A_{n-1}(x).
 \]
 All $A_n(0)$ vanish.  Iterating the fundamental theorem of calculus gives the
-Volterra kernel.  For $\mathcal F$, equation \eqref{eq:global-diffeq} has no
-domain restriction, so the calculation is global.
+Volterra kernel, with the negative-endpoint case interpreted as an oriented
+integral.  For $\mathcal F$, equation \eqref{eq:global-diffeq} has no domain
+restriction, so the calculation is global.  Equivalently, the bounded result
+on all of $(-\infty,1]$ follows from the global one and
+$F=\mathcal F$ on that full initial half-line.
 \end{proof}
 
 \begin{remark}[Why the triangular exponent is inevitable]
@@ -390,7 +448,7 @@ term vanishes because $A_k(0)=0$.
 \subsection{The monomial formula}
 \begin{theorem}[Polynomial-weight antiderivative]
 \label{thm:monomial}
-For every $p\in\N_0$ and $0\le x\le1$,
+For every $p\in\N_0$ and $x\le1$,
 \begin{equation}
  \boxed{
  \int x^pF(x)\dd x=
@@ -402,9 +460,11 @@ $x\in\R$.
 \end{theorem}
 
 \begin{proof}
-Apply \cref{thm:finite-weighted} with $g(t)=t^p$ and $N=p+1$.  Since
-$g^{(p+1)}=0$, the remainder vanishes.  Adding an arbitrary constant converts
-the zero-based primitive to an indefinite antiderivative.
+For $0\le x\le1$, apply \cref{thm:finite-weighted} with $g(t)=t^p$ and
+$N=p+1$.  Since $g^{(p+1)}=0$, the remainder vanishes.  If $x\le0$, the
+oriented integral and every displayed scale term vanish because all their
+Fabius arguments are nonpositive.  Adding an arbitrary constant converts the
+zero-based primitive to an indefinite antiderivative.
 \end{proof}
 
 The first cases are
@@ -424,7 +484,7 @@ the former contribution from the preceding scale.
 
 \begin{corollary}[Arbitrary polynomial weight]
 \label{cor:polynomial}
-For a polynomial $P$ of degree $m$,
+For a polynomial $P$ of degree $m$ and $x\le1$,
 \begin{equation}
  \boxed{
  \int P(x)F(x)\dd x=
@@ -434,7 +494,8 @@ For a polynomial $P$ of degree $m$,
 \end{corollary}
 
 \subsection{Continuation outside the unit interval}
-Formula \eqref{eq:monomial-closed} is a bounded-$F$ identity on $[0,1]$.
+Formula \eqref{eq:monomial-closed} is a bounded-$F$ identity on
+$(-\infty,1]$.
 For $x>1$, define the normalized primitive
 \begin{equation}
  I_p(x)=\int_0^xt^pF(t)\dd t.                              \label{eq:Ip-def-int}
@@ -446,6 +507,16 @@ Then
 while $I_p(x)=0$ for $x\le0$.  Confusing this piecewise continuation with the
 global signed-extension formula is a normalization error: $F$ is constant for
 $x\ge1$, whereas $\mathcal F$ continues in alternating compact blocks.
+
+\begin{warning}[Formalization boundary beyond the natural finite core]
+The Lean theorems cover the bounded formulas through $x\le1$ and the signed
+formulas globally.  The elementary bounded continuation
+\eqref{eq:Ip-outside} for $x>1$ has not been packaged as a theorem in this
+antiderivative layer.  Nor have the later complex-power convergence theorem,
+Mellin continuation, fractional-index constructions, Rvachev primitive
+formulas, or inverse-function reductions been formalized.  They remain
+frontier mathematics even where this report gives an analytic proof.
+\end{warning}
 
 \subsection{Complete moments and exact arithmetic}
 Putting $x=1$ in \eqref{eq:monomial-closed} gives a finite inverse-dyadic
@@ -1396,8 +1467,9 @@ identity on arbitrary functions.
 The following projects are concrete and separable.
 
 \begin{enumerate}
-\item \textbf{Lean formalization.}  Prove \cref{thm:primitive-ladder} first;
-then derive the finite polynomial identity by induction.  The complex series
+\item \textbf{Lean continuation.}  The natural-order primitive ladder and the
+finite polynomial/monomial commutators are complete, including their stronger
+Banach-valued Volterra forms.  The next boundary is the complex series, which
 requires an effective flatness lemma, a falling-factorial derivative library,
 and a uniform remainder theorem.
 \item \textbf{Certified fractional evaluation.}  Combine the exact rational recurrence \eqref{eq:V-recurrence} with an
@@ -1422,56 +1494,87 @@ continuation.
 formal $2$-adic lower bounds and Mersenne factors in the current Lean corpus.
 \end{enumerate}
 
-\section{Formalization roadmap}
+\section{Lean crosswalk and remaining formalization frontier}
 \label{sec:lean-roadmap}
 
-A minimal dependency graph is as follows.
+The following are the exact current module and declaration names.  The first
+module is independent of the Fabius function: it proves a reusable
+natural-order Volterra calculus for arbitrary real normed-space-valued inputs;
+the iteration/kernel bridge assumes completeness.  This is strictly stronger
+than proving the report's scalar identities one at a time.
 
 \begingroup
 \footnotesize
-\begin{longtable}{@{}>{\raggedright\arraybackslash}p{0.32\textwidth}>{\raggedright\arraybackslash}p{0.39\textwidth}>{\raggedright\arraybackslash}p{0.22\textwidth}@{}}
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{0.24\textwidth}>{\raggedright\arraybackslash}p{0.32\textwidth}>{\raggedright\arraybackslash}p{0.37\textwidth}@{}}
 \toprule
-Declaration & Mathematical content & Main dependencies \\
+Module & Declaration & Machine-checked content \\
 \midrule
 \endfirsthead
 \toprule
-Declaration & Mathematical content & Main dependencies \\
+Module & Declaration & Machine-checked content \\
 \midrule
 \endhead
-\decl{fabius.iteratedIntegral} &
-$\Vol^nF=2^{\binom n2}S^nF$ on $[0,1]$. &
-Fabius differential equation; FTC \\
-\decl{fabius.integral_pow_mul} &
-Finite formula \eqref{eq:monomial-closed}. &
-Primitive ladder; repeated integration by parts \\
-\decl{fabius.integral_poly_mul} &
-Polynomial functional \eqref{eq:polynomial-closed}. &
-Linearity; monomial theorem \\
-\decl{fabius.complexPower_series} &
-Series \eqref{eq:complex-series}. &
-Effective flatness; Pochhammer bounds \\
-\decl{fabius.mellin_entire} &
-Entire Mellin transform and series. &
-Complex-power theorem; holomorphic domination \\
-\decl{up.integral_pow_mul} &
-Piecewise formula \eqref{eq:Hp-piecewise}. &
-Reflection; moment identities \\
-\decl{invFabius.integral} &
-Formula \eqref{eq:inverse-unweighted}. &
-Inverse differentiability; primitive $F(x/2)$ \\
-\decl{invFabius.weightedIntegral} &
-Reduction \eqref{eq:inverse-weighted}. &
-Change of variables; power chain rule \\
-\decl{invFabius.endpointIntegral} &
-Equivalents \eqref{eq:Kbeta-leading}, \eqref{eq:Kminus1-leading}. &
-Sharp inverse asymptotic; tail Laplace lemma \\
+\decl{FabiusFunction.NormalizedVolterra} &
+\decl{volterraPrimitive}, \decl{iteratedPrimitive},
+\decl{normalizedVolterra} &
+Literal iteration and normalized Cauchy kernels at arbitrary base points and
+oriented endpoints, including order zero. \\
+\decl{FabiusFunction.NormalizedVolterra} &
+\decl{iteratedPrimitive_add},
+\decl{iteratedPrimitive_succ_hasStrictDerivAt},
+\decl{iteratedPrimitive_eq_normalizedVolterra} &
+Semigroup law, strict FTC ladder, and equality of literal iteration with the
+kernel formula for continuous inputs. \\
+\decl{FabiusFunction.NormalizedVolterra} &
+\decl{normalizedVolterra_kernel_pow} &
+All-order kernel raising with the exact rising-factorial coefficient. \\
+\decl{FabiusFunction.NormalizedVolterra} &
+\decl{normalizedVolterra_polynomial} &
+Finite Hasse-derivative commutator for every real polynomial and every
+interval-integrable normed-space-valued input. \\
+\decl{FabiusFunction.NormalizedVolterra} &
+\decl{normalizedVolterra_monomial} &
+Natural-monomial specialization, with every natural Volterra order and all
+base/endpoint cases included. \\
+\decl{FabiusFunction.GlobalExtension} &
+\decl{fabiusReal_eq_extendedFabius_of_le_one} &
+Equality of the bounded function and signed extension throughout
+$(-\infty,1]$. \\
+\decl{FabiusFunction.FabiusAntiderivatives} &
+\decl{normalizedVolterra_extendedFabius} &
+Complete signed primitive ladder for every natural order and every real
+endpoint. \\
+\decl{FabiusFunction.FabiusAntiderivatives} &
+\decl{normalizedVolterra_fabiusReal_of_le_one} &
+Complete bounded primitive ladder on the proved initial half-line $x\le1$. \\
+\decl{FabiusFunction.FabiusAntiderivatives} &
+\decl{normalizedVolterra_pow_mul_extendedFabius} &
+Finite natural-monomial formula for the signed extension, globally and at
+every natural Volterra order. \\
+\decl{FabiusFunction.FabiusAntiderivatives} &
+\decl{normalizedVolterra_pow_mul_fabiusReal_of_le_one} &
+Finite natural-monomial formula for the bounded function when $x\le1$. \\
 \bottomrule
 \end{longtable}
 \endgroup
 
-The names are proposed Lean-style placeholders only.  An implementation should
-select repository-consistent declarations after checking the existing
-namespace; no claim is made here that any listed declaration already exists.
+Thus the former placeholder declarations for the integer ladder and finite
+polynomial weights are retired.  The remaining obligations are genuinely
+analytic or nonlinear:
+\begin{itemize}
+\item the complex-power series \eqref{eq:complex-series}, including absolute
+and compact-local uniform convergence and a formal remainder bound;
+\item logarithmic weights and the entire Mellin theory derived from that
+series;
+\item fractional Volterra order and any semigroup interpolating the natural
+orders;
+\item the piecewise and fractional Rvachev formulas, including their Fourier
+sinc-product interpretations;
+\item every inverse-Fabius primitive, nonlinear-power reduction, Thue--Morse
+limit, and endpoint asymptotic in this report; and
+\item a named global piecewise primitive theorem for the bounded function to
+the right of $1$ (distinct from the already formalized signed global ladder).
+\end{itemize}
 
 \section{Conclusion}
 \label{sec:conclusion}

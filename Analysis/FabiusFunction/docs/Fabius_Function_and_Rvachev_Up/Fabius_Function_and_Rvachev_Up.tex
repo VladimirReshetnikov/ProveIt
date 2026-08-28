@@ -122,7 +122,8 @@
 \author{Human-readable synthesis of the formal development\\
 \small Vladimir Reshetnikov's \texttt{ProveIt} repository}
 \date{Repository snapshot: 27 August 2026\\
-\small commit \nolinkurl{7b05fce557a326c435f9521ee1a55039429ef116}}
+\small base commit \nolinkurl{7b05fce557a326c435f9521ee1a55039429ef116};
+Volterra addendum \nolinkurl{3da579387}}
 
 \begin{document}
 \maketitle
@@ -1910,6 +1911,183 @@ The exact bound, attainment, and supremum statements are
 \lean{iteratedDeriv_fabiusReal_inv_two_pow_all}, and
 \lean{isGreatest_abs_iteratedDeriv_fabiusReal_all} in
 \path{BoundedDerivatives.lean}.
+
+\subsection{Normalized Volterra calculus and exact primitive ladders}
+\label{sec:normalized-volterra}
+
+The repeated-integration identities admit a foundation that is independent of the Fabius
+function.  Let \(E\) be a real normed vector space, let \(a,x\in\R\), and let
+\(f:\R\to E\).  Define the normalized Volterra operators by
+\begin{align}
+ \mathsf J_{0,a}f(x)&:=f(x),\label{eq:volterra-zero}\\
+ \mathsf J_{n+1,a}f(x)&:=
+   \int_a^x\frac{(x-t)^n}{n!}\,f(t)\dd t.\label{eq:volterra-kernel}
+\end{align}
+The integral is the oriented interval integral, so no relation between \(a\) and \(x\) is
+imposed.  These are \lean{normalizedVolterra_zero} and
+\lean{normalizedVolterra_succ}, built from the definition
+\lean{normalizedVolterra} in \path{NormalizedVolterra.lean}.
+
+There is also a literal operator-theoretic construction.  Put
+\[
+ (\mathsf V_a f)(x):=\int_a^x f(t)\dd t,
+ \qquad \mathsf V_a^{[n]}f:=\underbrace{\mathsf V_a\circ\cdots\circ
+ \mathsf V_a}_{n\ \mathrm{times}}f,
+ \qquad \mathsf V_a^{[0]}f=f.
+\]
+The Lean definitions are \lean{volterraPrimitive} and \lean{iteratedPrimitive}.
+Literal iteration makes the additive semigroup law transparent:
+\begin{equation}
+ \mathsf V_a^{[m+n]}f
+ =\mathsf V_a^{[m]}\bigl(\mathsf V_a^{[n]}f\bigr).
+ \label{eq:volterra-semigroup}
+\end{equation}
+This is \lean{iteratedPrimitive_add}, without a continuity hypothesis.  If \(E\) is complete
+and \(f\) is continuous, every rung is continuous and the strict fundamental theorem of
+calculus gives
+\begin{equation}
+ \mathsf V_a^{[n+1]}f
+ \text{ has strict derivative }
+ \mathsf V_a^{[n]}f(x)\text{ at }x.                       \label{eq:volterra-strict-ftc}
+\end{equation}
+Consequently
+\begin{equation}
+ \bigl(\mathsf V_a^{[k+m]}f\bigr)^{(k)}
+ =\mathsf V_a^{[m]}f,
+ \qquad
+ \mathsf V_a^{[n]}f=\mathsf J_{n,a}f.                    \label{eq:volterra-iterate-kernel}
+\end{equation}
+The exact declarations are \lean{continuous_iteratedPrimitive},
+\lean{iteratedPrimitive_succ_hasStrictDerivAt},
+\lean{iteratedDeriv_iteratedPrimitive_add},
+\lean{contDiff_iteratedPrimitive}, and
+\lean{iteratedPrimitive_eq_normalizedVolterra}.  Thus the direct Cauchy kernel carries the
+literal semigroup and strict-FTC interpretation, while its definition remains usable under
+the weaker interval-integrability assumptions needed below.
+The transported kernel-level statements are
+\lean{normalizedVolterra_succ_hasStrictDerivAt},
+\lean{iteratedDeriv_normalizedVolterra_add},
+\lean{contDiff_normalizedVolterra}, and
+\lean{normalizedVolterra_add}: for continuous inputs, the canonical kernels themselves are
+\(C^n\), lose one Volterra order under differentiation, and compose by addition of
+their orders.
+
+\begin{theorem}[Taylor--Volterra reconstruction]
+\label{thm:taylor-volterra-reconstruction}
+If \(E\) is complete and \(g:\R\to E\) is \(C^{n+1}\), then for arbitrary
+\(a,x\in\R\),
+\begin{equation}
+ \mathsf J_{n+1,a}\bigl(g^{(n+1)}\bigr)(x)
+ =g(x)-\sum_{k=0}^{n}\frac{(x-a)^k}{k!}\,g^{(k)}(a).
+ \label{eq:taylor-volterra-reconstruction}
+\end{equation}
+In particular, if \(g^{(k)}(a)=0\) for \(0\le k\le n\), then
+\(\mathsf J_{n+1,a}(g^{(n+1)})(x)=g(x)\).
+\end{theorem}
+
+\begin{proof}[Formal proof]
+Equation \eqref{eq:taylor-volterra-reconstruction} is the oriented integral-remainder
+theorem in the normalization \eqref{eq:volterra-kernel}; Lean records it as
+\lean{normalizedVolterra_succ_iteratedDeriv_eq_sub_taylor}.  Vanishing of the finite jet
+annihilates the Taylor polynomial termwise, giving
+\lean{normalizedVolterra_succ_iteratedDeriv_eq_of_zero_jet}.  Both declarations are in
+\path{NormalizedVolterra.lean}.  Applied to the literal iterate
+\(g=\mathsf V_a^{[n+1]}f\), derivative cancellation supplies the top derivative \(f\),
+while every lower derivative is still a positive-order primitive and therefore vanishes at
+\(a\).  This gives the conceptual proof of
+\eqref{eq:volterra-iterate-kernel}.
+\end{proof}
+
+The same normalization exposes a finite polynomial commutator.  Write
+\[
+ n^{\overline r}:=n(n+1)\cdots(n+r-1),\qquad n^{\overline0}:=1,
+\]
+let \(d=\operatorname{natdeg}P\), and let \(D_H^{[r]}P\) denote the \(r\)-th Hasse
+derivative of \(P\in\R[X]\).
+For every \(f\), the algebraic kernel-raising identity is
+\begin{equation}
+ \mathsf J_{n,a}\bigl((x-\,\cdot\,)^r f\bigr)(x)
+ =n^{\overline r}\mathsf J_{n+r,a}f(x).                 \label{eq:volterra-kernel-raising}
+\end{equation}
+If \(f\) is interval integrable between \(a\) and \(x\), then
+\begin{align}
+ \mathsf J_{n,a}(P f)(x)
+ &=\sum_{r=0}^{d}(-1)^r n^{\overline r}
+      \bigl(D_H^{[r]}P\bigr)(x)\,\mathsf J_{n+r,a}f(x),  \label{eq:volterra-polynomial}\\
+ \mathsf J_{n,a}\bigl(t^p f(t)\bigr)(x)
+ &=\sum_{r=0}^{p}(-1)^r\binom pr n^{\overline r}x^{p-r}
+      \mathsf J_{n+r,a}f(x).                             \label{eq:volterra-monomial}
+\end{align}
+All three identities include \(n=0\), both endpoint orders, and \(a=x\); the monomial
+identity also includes \(p=0\).
+At order zero the convention
+\(0^{\overline0}=1\), \(0^{\overline r}=0\) for \(r>0\), makes the formulas literal rather
+than exceptional.  They are \lean{normalizedVolterra_kernel_pow},
+\lean{normalizedVolterra_polynomial}, and \lean{normalizedVolterra_monomial} in
+\path{NormalizedVolterra.lean}.  The proof is finite and triangular: expand
+\(P(t)\) at the upper endpoint \(x\) in the Hasse basis
+\((t-x)^r=(-1)^r(x-t)^r\), pass the finite sum through the integral, and absorb each kernel
+power using \eqref{eq:volterra-kernel-raising}.  No differentiability of \(f\) is used.
+
+For the signed Fabius extension, Taylor--Volterra reconstruction turns the global dilation
+law into a complete primitive ladder.
+\begin{theorem}[Exact Fabius primitive ladders]
+\label{thm:fabius-volterra-ladders}
+For every \(n\in\N\) and \(x\in\R\),
+\begin{equation}
+ \mathsf J_{n,0}\mathcal F(x)
+ =2^{\binom n2}\mathcal F\!\left(\frac{x}{2^n}\right).   \label{eq:extended-fabius-volterra}
+\end{equation}
+For the bounded Fabius function, the corresponding identity holds on the full half-line on
+which it agrees with the signed extension:
+\begin{equation}
+ \mathsf J_{n,0}F(x)
+ =2^{\binom n2}F\!\left(\frac{x}{2^n}\right)
+ \qquad(x\le1).                                          \label{eq:bounded-fabius-volterra}
+\end{equation}
+Moreover, for every \(p\in\N\),
+\begin{align}
+ \mathsf J_{n,0}\bigl(t^p\mathcal F(t)\bigr)(x)
+ &=\sum_{r=0}^{p}(-1)^r\binom pr n^{\overline r}x^{p-r}
+   2^{\binom{n+r}{2}}
+   \mathcal F\!\left(\frac{x}{2^{n+r}}\right),          \label{eq:extended-fabius-monomial-volterra}\\
+ \mathsf J_{n,0}\bigl(t^pF(t)\bigr)(x)
+ &=\sum_{r=0}^{p}(-1)^r\binom pr n^{\overline r}x^{p-r}
+   2^{\binom{n+r}{2}}
+   F\!\left(\frac{x}{2^{n+r}}\right)
+   \qquad(x\le1).                                       \label{eq:bounded-fabius-monomial-volterra}
+\end{align}
+The signed formulas are global in \(x\); all four formulas include order \(n=0\), and
+both weighted formulas include \(p=0\).
+\end{theorem}
+
+\begin{proof}[Formal proof]
+For fixed \(n\), set
+\(G_n(x)=2^{\binom n2}\mathcal F(x/2^n)\).  The global derivative chain
+\eqref{eq:global-derivatives} gives \(G_n^{(n)}=\mathcal F\), and every lower derivative of
+\(G_n\) vanishes at zero because \(\mathcal F(0)=0\).  The zero-jet case of
+\Cref{thm:taylor-volterra-reconstruction} proves
+\eqref{eq:extended-fabius-volterra}.  Agreement of \(F\) and \(\mathcal F\) throughout
+\((-\infty,1]\) gives \eqref{eq:bounded-fabius-volterra}; the oriented segment between \(0\)
+and any \(x\le1\) stays in that half-line.  Finally
+\eqref{eq:volterra-monomial} gives the two finite weighted formulas term by term.
+
+The exact Lean declarations are \lean{normalizedVolterra_extendedFabius},
+\lean{normalizedVolterra_fabiusReal_of_le_one},
+\lean{normalizedVolterra_pow_mul_extendedFabius}, and
+\lean{normalizedVolterra_pow_mul_fabiusReal_of_le_one} in
+\path{FabiusAntiderivatives.lean}.  The half-line agreement used in the bounded statement is
+\lean{fabiusReal_eq_extendedFabius_of_le_one} in \path{GlobalExtension.lean}.
+\end{proof}
+
+\begin{boxedremark}
+The proved scope here is natural-order Volterra integration and finite real-polynomial
+weights.  No result above claims complex-power weights, normal convergence or Mellin
+continuation in a weight exponent, fractional-order Volterra operators, a piecewise global
+closed form for the bounded function beyond \(x\le1\), primitives of the folded function
+\(\Up\), or primitives of the inverse Fabius function.  Those distinct extensions remain in
+the research-frontier documents until exact Lean counterparts are available.
+\end{boxedremark}
 
 \subsection{Dyadic derivative cells and exact value distributions}
 \label{sec:rvachev-derivative-distribution}
@@ -5924,9 +6102,11 @@ into the theorem-backed narrative here.  The remaining research material is pres
 \path{Analysis/FabiusFunction/docs/non-formalized-research-frontiers/}.
 \end{quote}
 
-In particular, the inverse/saddle, repeated-integration, small-argument, generic
-\(q\)-calculus, and other deferred claims remain available there with an explicit warning
-that they are not part of the formal corpus.
+In particular, the inverse/saddle, complex-power and fractional-order
+repeated-integration, small-argument, generic \(q\)-calculus, and other deferred claims
+remain available there with an explicit warning that they are not part of the formal
+corpus.  Natural-order Volterra integration and finite polynomial weights are instead
+formalized in \Cref{sec:normalized-volterra}.
 
 \section{Conclusion}
 \label{sec:conclusion}
@@ -5936,8 +6116,9 @@ The bounded \(F\) supplies the probability and arithmetic viewpoints; the compac
 supported \(\Up\) supplies refinement, Fourier, spline, and Legendre viewpoints; and the
 signed \(\mathcal F\) supplies the global dilation and binary-translation formulas.  Exact
 bridges connect them to finite atomic laws, weak convergence, centered splines, moments,
-reciprocal-power values, dyadic algorithms, half-base \(q\)-binomial identities, prefix
-sums, endpoint Laplace analysis, and computable approximation.
+reciprocal-power values, normalized Volterra primitives and polynomial weights, dyadic
+algorithms, half-base \(q\)-binomial identities, prefix sums, endpoint Laplace analysis,
+and computable approximation.
 
 The most important methodological conclusion is equally concrete: the primary document is
 now a map of proved mathematics.  Research claims can move back from the frontier only after
@@ -5989,6 +6170,8 @@ Global derivatives, value distributions, and flatness &
 \path{BoundedDerivatives.lean}, \path{RvachevDerivativeDistribution.lean},
 \path{EffectiveFlatness.lean}, \path{SharpFlatness.lean},
 \path{FabiusFlatness.lean}\\
+Normalized Volterra calculus and exact Fabius primitives &
+\path{NormalizedVolterra.lean}, \path{FabiusAntiderivatives.lean}\\
 Analyticity, inverse, elementary obstruction &
 \path{NowhereAnalytic.lean}, \path{FabiusInverse.lean},
 \path{ElementaryFunction.lean}, \path{NotElementary.lean},
@@ -6209,6 +6392,8 @@ V.~Reshetnikov,
 \newblock Lean~4 formal development, source snapshot
 \texttt{7b05fce557a326c435f9521ee1a55039429ef116}, consulted 27 August 2026.
 \newblock \url{https://github.com/VladimirReshetnikov/ProveIt/tree/7b05fce557a326c435f9521ee1a55039429ef116/Analysis/FabiusFunction}.
+\newblock The normalized Volterra and Fabius-antiderivative addendum was
+checked at commit \texttt{3da579387} on the same date.
 
 \end{thebibliography}
 
