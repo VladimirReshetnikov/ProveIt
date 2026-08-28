@@ -240,8 +240,8 @@ theorem isProbabilityMeasure_weightedUniformDistribution
   Measure.isProbabilityMeasure_map
     (measurable_weightedUniformSeries hw).aemeasurable
 
-/-- The head coordinate and the weighted series formed from the shifted
-weights and tail coordinates have the product of their marginal laws. -/
+/-- The head coordinate and the weighted series formed from any independently chosen
+tail-weight sequence have the product of their marginal laws. -/
 theorem uniformProduct_map_head_tailWeightedUniformSeries
     {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E] [CompleteSpace E]
     [MeasurableSpace E] [BorelSpace E]
