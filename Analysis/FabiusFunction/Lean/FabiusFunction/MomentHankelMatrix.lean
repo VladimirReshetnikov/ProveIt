@@ -29,7 +29,8 @@ first coefficients are the obligation's remaining stages.
 
 set_option autoImplicit false
 
-open MeasureTheory Set
+open MeasureTheory Set Matrix
+open scoped ENNReal
 
 namespace Fabius
 
@@ -63,7 +64,7 @@ noncomputable def momentHankel (F : BoundedFabius) (n : ℕ) :
 `cᵀ H c = ∫ (∑ c_i t^i)² dμ_up`. -/
 theorem dotProduct_momentHankel_mulVec (F : BoundedFabius)
     (hF : IsFabius F) {n : ℕ} (c : Fin n → ℝ) :
-    c ⬝ᵥ (momentHankel F n) *ᵥ c =
+    c ⬝ᵥ ((momentHankel F n) *ᵥ c) =
       ∫ t, (∑ i, c i * t ^ (i : ℕ)) ^ 2 ∂(rvachevMeasure F) := by
   have hexp : ∀ t : ℝ, (∑ i, c i * t ^ (i : ℕ)) ^ 2 =
       ∑ i, ∑ j, c i * c j * t ^ ((i : ℕ) + (j : ℕ)) := by
@@ -80,10 +81,10 @@ theorem dotProduct_momentHankel_mulVec (F : BoundedFabius)
   have hRHS : ∫ t, (∑ i, c i * t ^ (i : ℕ)) ^ 2 ∂(rvachevMeasure F) =
       ∑ i, ∑ j, c i * c j * upMoment F ((i : ℕ) + j) := by
     simp_rw [hexp]
-    rw [integral_finset_sum _ fun i _ =>
-      integrable_finset_sum _ fun j _ => hint i j]
+    rw [integral_finsetSum _ fun i _ =>
+      integrable_finsetSum _ fun j _ => hint i j]
     refine Finset.sum_congr rfl fun i _ => ?_
-    rw [integral_finset_sum _ fun j _ => hint i j]
+    rw [integral_finsetSum _ fun j _ => hint i j]
     refine Finset.sum_congr rfl fun j _ => ?_
     rw [MeasureTheory.integral_const_mul]
     rfl
@@ -140,8 +141,8 @@ theorem momentHankel_posDef (F : BoundedFabius) (hF : IsFabius F)
             rw [pow_add]
             ring
       rw [hexp]
-      exact integrable_finset_sum _ fun i _ =>
-        integrable_finset_sum _ fun j _ =>
+      exact integrable_finsetSum _ fun i _ =>
+        integrable_finsetSum _ fun j _ =>
           (integrable_pow_rvachevMeasure F hF _).const_mul _
     rw [integral_pos_iff_support_of_nonneg_ae hnonneg hint]
     set p : Polynomial ℝ :=
