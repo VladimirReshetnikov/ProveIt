@@ -1,5 +1,5 @@
 import FabiusFunction.FabiusLambertSaddle
-import FabiusFunction.GeometricLagrangeWeights
+import FabiusFunction.GeometricLagrange
 import FabiusFunction.LagrangeResidualMoments
 
 /-!
@@ -20,12 +20,10 @@ on the reciprocal nodes
 
 The interpolation layer is deliberately field-generic.  The canonical
 weights are Mathlib Lagrange-basis evaluations at zero.  Their total mass,
-inverse-power cancellation, and every residual moment follow from the shared
-Lagrange exactness and complete-homogeneous APIs.  Exact phase locking plus
-mass one also shows that the resulting row preserves every one-periodic
-endpoint factor.  Only the closed factorial/binomial formula needs the natural
-nonvanishing condition on the shifted denominators.  No asymptotic expansion,
-uniformity assertion, or remainder estimate is made here.
+inverse-power cancellation, and first omitted moment follow from the shared
+Lagrange exactness API.  Only the closed factorial/binomial formula needs the
+natural nonvanishing condition on the shifted denominators.  No asymptotic
+expansion, uniformity assertion, or remainder estimate is made here.
 -/
 
 set_option autoImplicit false
@@ -105,8 +103,8 @@ private lemma one_lt_log_two_mul_phaseLockedParameter
   have hbase := mul_lt_mul_of_pos_left hlambda hL
   have hshift : Real.log 2 * lambda ≤
       Real.log 2 * (lambda + (j : ℝ)) := by
-    gcongr
-    positivity
+    apply mul_le_mul_of_nonneg_left _ hL.le
+    exact le_add_of_nonneg_right (Nat.cast_nonneg j)
   calc
     1 = Real.log 2 * (Real.log 2)⁻¹ := (mul_inv_cancel₀ hL.ne').symm
     _ < Real.log 2 * lambda := hbase
@@ -149,7 +147,7 @@ theorem Periodic.comp_fabiusLambertPhase_phaseLockedNode
       (fabiusLambertPhase (lambertPhaseLockedNode lambda j))) =
       fun _ : ℕ ↦ G lambda := by
   funext j
-  exact hG.apply_fabiusLambertPhase_phaseLockedNode hlambda j
+  exact Periodic.apply_fabiusLambertPhase_phaseLockedNode hG hlambda j
 
 /-! ## Reciprocal Lagrange nodes -/
 
@@ -165,18 +163,25 @@ noncomputable def shiftedReciprocalLagrangeWeight
   lagrangeEvalWeight (Finset.range (r + 1))
     (shiftedReciprocalNode lambda) 0 j
 
-/-- Shifted reciprocal nodes are pairwise distinct over every
+/-- Shifted reciprocal nodes are globally injective over every
 characteristic-zero field.  This does not require the shifts to be nonzero:
 inversion itself is injective in a field, including at zero. -/
+theorem shiftedReciprocalNode_injective
+    {K : Type*} [Field K] [CharZero K] (lambda : K) :
+    Function.Injective (shiftedReciprocalNode lambda) := by
+  intro i j hij
+  have hshift : lambda + (i : K) = lambda + (j : K) :=
+    inv_injective hij
+  have hcast : (i : K) = (j : K) := add_left_cancel hshift
+  exact Nat.cast_injective hcast
+
+/-- Finite-range form of global shifted-reciprocal injectivity. -/
 theorem shiftedReciprocalNode_injOn
     {K : Type*} [Field K] [CharZero K] (lambda : K) (r : ℕ) :
     Set.InjOn (shiftedReciprocalNode lambda)
       (Finset.range (r + 1)) := by
   intro i _hi j _hj hij
-  have hshift : lambda + (i : K) = lambda + (j : K) :=
-    inv_injective hij
-  have hcast : (i : K) = (j : K) := add_left_cancel hshift
-  exact Nat.cast_injective hcast
+  exact shiftedReciprocalNode_injective lambda hij
 
 private lemma prod_natCast_sub_erase
     {K : Type*} [Field K] [CharZero K]
@@ -208,8 +213,8 @@ private lemma prod_natCast_sub_erase
             (((j - 1 - k + 1 : ℕ) : K)) := by
         apply Finset.prod_congr rfl
         intro k hk
-        have hkj : k ≤ j := (Finset.mem_range.mp hk).le
-        rw [← Nat.cast_sub hkj]
+        have hkj : k < j := Finset.mem_range.mp hk
+        rw [← Nat.cast_sub hkj.le]
         congr 1
         omega
       _ = ∏ k ∈ Finset.range j, (((k + 1 : ℕ) : K)) :=
@@ -267,7 +272,8 @@ private lemma reciprocalLagrangeFactor
     have hcast : (j : K) = (k : K) := sub_eq_zero.mp hzero
     exact hkj (Nat.cast_injective hcast).symm
   unfold shiftedReciprocalNode
-  field_simp [hlambdaJ, hlambdaK, hinvDiff, hjk] <;> ring
+  field_simp [hlambdaJ, hlambdaK, hinvDiff, hjk]
+  all_goals ring
 
 /-- Factorial closed form of the reciprocal-node Lagrange weight.  The
 assumption says precisely that all shifts represented in the interpolation
@@ -287,13 +293,12 @@ theorem shiftedReciprocalLagrangeWeight_eq_factorial
     lagrangeEvalWeight_eq_product]
   simp only [zero_sub]
   calc
-    (∏ k ∈ (Finset.range (r + 1)).erase j,
-        (-shiftedReciprocalNode lambda k) /
-          (shiftedReciprocalNode lambda j -
-            shiftedReciprocalNode lambda k)) =
+    _ =
         ∏ k ∈ (Finset.range (r + 1)).erase j,
           (lambda + (j : K)) / ((j : K) - (k : K)) := by
-      apply Finset.prod_congr rfl
+      apply Finset.prod_congr
+      · ext k
+        simp
       intro k hk
       have hkmem : k ∈ Finset.range (r + 1) :=
         Finset.mem_of_mem_erase hk
@@ -311,8 +316,11 @@ theorem shiftedReciprocalLagrangeWeight_eq_factorial
       rw [Finset.prod_const, hcard]
     _ = (-1 : K) ^ (r - j) * (lambda + (j : K)) ^ r /
         ((j.factorial : K) * ((r - j).factorial : K)) := by
-      simp only [div_eq_mul_inv, mul_inv_rev, inv_pow, inv_neg,
-        inv_one]
+      have hsign : ((-1 : K) ^ (r - j))⁻¹ =
+          (-1 : K) ^ (r - j) := by
+        rw [← inv_pow, inv_neg_one]
+      simp only [div_eq_mul_inv, mul_inv_rev]
+      rw [hsign]
       ring
 
 /-- Binomial closed form of the reciprocal-node Lagrange weight:
@@ -343,7 +351,8 @@ theorem shiftedReciprocalLagrangeWeight_eq_choose
   have hratio :
       (r.choose j : K) / (r.factorial : K) =
         1 / ((j.factorial : K) * ((r - j).factorial : K)) := by
-    field_simp [hjfac, hdfac, hrfac] <;>
+    field_simp [hjfac, hdfac, hrfac]
+    all_goals
       simpa [mul_assoc, mul_comm, mul_left_comm] using hfactorial
   calc
     (-1 : K) ^ (r - j) * (lambda + (j : K)) ^ r /
@@ -433,16 +442,84 @@ theorem sum_shiftedReciprocalLagrangeWeight_mul_invPow_eq_zero
   simpa only [shiftedReciprocalNode, zero_pow hmpos.ne'] using
     sum_shiftedReciprocalLagrangeWeight_mul_pow lambda r m hm
 
-/-- **Every reciprocal-node residual moment.**  After the `r` cancelled
-positive moments, the moment of order `r + 1 + t` is the signed reciprocal
-nodal product times the complete homogeneous function of degree `t` in the
-reciprocal nodes.  The statement is total: it remains valid when a shift is
-zero because inversion in a field is total.
+/-- **All higher reciprocal-grid moments.**  The moment at residual offset
+`n` is the signed reciprocal nodal product times the complete homogeneous
+polynomial of degree `n` in the reciprocal nodes.
 
-At `t = 0` this is the first omitted moment.  Replacing `t` by `s - 1`
-recovers the usual report notation
+This is a direct specialization of the universal all-order Lagrange residual
+identity.  It remains valid when a shift is zero because inversion in a field
+is total; no positivity or denominator hypothesis is needed. -/
+theorem
+    sum_shiftedReciprocalLagrangeWeight_mul_invPow_card_add
+    {K : Type*} [Field K] [CharZero K]
+    (lambda : K) (r n : ℕ) :
+    (∑ j ∈ Finset.range (r + 1),
+      shiftedReciprocalLagrangeWeight lambda r j *
+        (lambda + (j : K))⁻¹ ^ (r + 1 + n)) =
+      (-1 : K) ^ r *
+        (∏ j ∈ Finset.range (r + 1),
+          (lambda + (j : K))⁻¹) *
+        completeHomogeneousEvalOn
+          (Finset.range (r + 1))
+          (fun j ↦ (lambda + (j : K))⁻¹) n := by
+  have h := sum_lagrangeEvalWeight_mul_pow_card_add
+    (Finset.range (r + 1)) (shiftedReciprocalNode lambda) 0
+    (shiftedReciprocalNode_injOn lambda r) n
+  change
+    (∑ j ∈ Finset.range (r + 1),
+      shiftedReciprocalLagrangeWeight lambda r j *
+        shiftedReciprocalNode lambda j ^ (r + 1 + n)) =
+      (-1 : K) ^ r *
+        (∏ j ∈ Finset.range (r + 1),
+          shiftedReciprocalNode lambda j) *
+        completeHomogeneousEvalOn
+          (Finset.range (r + 1)) (shiftedReciprocalNode lambda) n
+  calc
+    (∑ j ∈ Finset.range (r + 1),
+        shiftedReciprocalLagrangeWeight lambda r j *
+          shiftedReciprocalNode lambda j ^ (r + 1 + n)) =
+        0 ^ (r + 1 + n) -
+          (∏ j ∈ Finset.range (r + 1),
+            (0 - shiftedReciprocalNode lambda j)) *
+          completeHomogeneousEvalOn
+            (Finset.range (r + 1))
+            (shiftedReciprocalNode lambda) n := by
+      simpa only [Finset.card_range, shiftedReciprocalLagrangeWeight,
+        completeHomogeneousEvalAt_zero] using h
+    _ = (-1 : K) ^ r *
+          (∏ j ∈ Finset.range (r + 1),
+            shiftedReciprocalNode lambda j) *
+          completeHomogeneousEvalOn
+            (Finset.range (r + 1))
+            (shiftedReciprocalNode lambda) n := by
+      simp only [zero_pow (by omega : r + 1 + n ≠ 0), zero_sub]
+      rw [Finset.prod_neg, Finset.card_range, pow_succ]
+      ring
 
-`(-1)^r / (lambda)_(r+1) * h_(s-1)(1/lambda, ..., 1/(lambda+r))`. -/
+/-- Report-shaped form of the all-order reciprocal-grid identity.  For
+`s ≥ 1`, the moment of degree `r + s` is the reciprocal rising-factorial
+prefactor times the complete homogeneous polynomial `h_(s-1)`. -/
+theorem
+    sum_shiftedReciprocalLagrangeWeight_mul_invPow_eq_completeHomogeneous
+    {K : Type*} [Field K] [CharZero K]
+    (lambda : K) (r s : ℕ) (hs : 1 ≤ s) :
+    (∑ j ∈ Finset.range (r + 1),
+      shiftedReciprocalLagrangeWeight lambda r j *
+        (lambda + (j : K))⁻¹ ^ (r + s)) =
+      (-1 : K) ^ r /
+          (∏ j ∈ Finset.range (r + 1), (lambda + (j : K))) *
+        completeHomogeneousEvalOn
+          (Finset.range (r + 1))
+          (fun j ↦ (lambda + (j : K))⁻¹) (s - 1) := by
+  simpa only [show r + 1 + (s - 1) = r + s by omega,
+    Finset.prod_inv_distrib, div_eq_mul_inv] using
+      sum_shiftedReciprocalLagrangeWeight_mul_invPow_card_add
+        lambda r (s - 1)
+
+/-- Compatibility form of the all-order reciprocal-grid identity used in the
+frontier report.  After the `r` cancelled positive moments, residual offset
+`t` is the signed reciprocal nodal product times the complete homogeneous
+polynomial of degree `t`. -/
 theorem sum_shiftedReciprocalLagrangeWeight_residual
     {K : Type*} [Field K] [CharZero K] (lambda : K) (r t : ℕ) :
     (∑ j ∈ Finset.range (r + 1),
@@ -452,15 +529,8 @@ theorem sum_shiftedReciprocalLagrangeWeight_residual
         (∏ j ∈ Finset.range (r + 1), lambda + (j : K))⁻¹ *
           completeHomogeneousEvalOn (Finset.range (r + 1))
             (shiftedReciprocalNode lambda) t := by
-  have h := sum_lagrangeEvalWeight_mul_pow_card_add_zero
-    (Finset.range (r + 1)) (shiftedReciprocalNode lambda)
-    (shiftedReciprocalNode_injOn lambda r) (by simp) t
-  simp only [Finset.card_range, shiftedReciprocalLagrangeWeight,
-    shiftedReciprocalNode] at h
-  rw [h, Finset.prod_neg, Finset.card_range,
-    Finset.prod_inv_distrib]
-  simp only [pow_succ, shiftedReciprocalNode]
-  ring
+  simpa only [shiftedReciprocalNode, Finset.prod_inv_distrib] using
+    (sum_shiftedReciprocalLagrangeWeight_mul_invPow_card_add lambda r t)
 
 /-- The first inverse-power moment beyond the cancelled range is the signed
 reciprocal nodal product.  This identity is valid even if one shift is zero,
@@ -471,9 +541,12 @@ theorem sum_shiftedReciprocalLagrangeWeight_firstOmitted
       shiftedReciprocalLagrangeWeight lambda r j *
         (lambda + (j : K))⁻¹ ^ (r + 1)) =
       (-1 : K) ^ r *
-        (∏ j ∈ Finset.range (r + 1), lambda + (j : K))⁻¹ := by
-  simpa using
-    (sum_shiftedReciprocalLagrangeWeight_residual lambda r 0)
+        (∏ j ∈ Finset.range (r + 1), (lambda + (j : K)))⁻¹ := by
+  simpa only [Nat.add_zero, completeHomogeneousEvalOn,
+    completeHomogeneousEval_zero, mul_one,
+    Finset.prod_inv_distrib] using
+      sum_shiftedReciprocalLagrangeWeight_mul_invPow_card_add
+        lambda r 0
 
 end
 

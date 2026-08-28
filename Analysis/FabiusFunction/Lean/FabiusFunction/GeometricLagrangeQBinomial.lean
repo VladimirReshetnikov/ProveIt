@@ -1,4 +1,3 @@
-import FabiusFunction.FiniteQBinomialCore
 import FabiusFunction.GeometricLagrangeWeights
 import FabiusFunction.HalfQBinomial
 import Mathlib.Algebra.BigOperators.Intervals
@@ -49,27 +48,34 @@ section FieldPochhammer
 
 variable {K : Type*} [Field K]
 
-/-- Compatibility wrapper for the field-valued finite product
-`(q;q)_n = product_{r=1}^n (1-q^r)`.
+/-- The field-valued finite product `(q;q)_n = product_{r=1}^n (1-q^r)`.
 
-This is the self-parameter specialization `finiteQPochhammerIn q q n` of the
-commutative-ring core.  Unlike the rational `qPochhammer` from
-`HalfQBinomial`, it is available over an arbitrary field. -/
+Unlike the rational `qPochhammer` from `HalfQBinomial`, this definition is
+available over an arbitrary field. -/
 noncomputable def geometricQPochhammer (q : K) (n : ℕ) : K :=
-  finiteQPochhammerIn q q n
+  ∏ r ∈ Finset.range n, (1 - q ^ (r + 1))
+
+/-- The geometric q-Pochhammer product is the self-parameter specialization
+of the denominator-free finite q-Pochhammer construction. -/
+@[simp] theorem geometricQPochhammer_eq_finiteQPochhammerIn
+    (q : K) (n : ℕ) :
+    geometricQPochhammer q n = finiteQPochhammerIn q q n := by
+  unfold geometricQPochhammer finiteQPochhammerIn
+  apply Finset.prod_congr rfl
+  intro r _hr
+  rw [pow_succ]
+  ring
 
 /-- The empty geometric q-Pochhammer product is one. -/
 @[simp] theorem geometricQPochhammer_zero (q : K) :
     geometricQPochhammer q 0 = 1 := by
-  simpa only [geometricQPochhammer] using
-    (finiteQPochhammerIn_zero q q)
+  simp [geometricQPochhammer]
 
 /-- Peeling the last factor from `(q;q)_(n+1)`. -/
 theorem geometricQPochhammer_succ (q : K) (n : ℕ) :
     geometricQPochhammer q (n + 1) =
       geometricQPochhammer q n * (1 - q ^ (n + 1)) := by
-  rw [geometricQPochhammer, finiteQPochhammerIn_succ, pow_succ]
-  ring
+  simp [geometricQPochhammer, Finset.prod_range_succ]
 
 /-- The finite product `(q;q)_n` is nonzero exactly when none of
 `q, q^2, ..., q^n` is one.  This is the precise finite non-root-of-unity
@@ -77,24 +83,13 @@ condition needed for Gaussian-quotient cancellation. -/
 theorem geometricQPochhammer_ne_zero_iff (q : K) (n : ℕ) :
     geometricQPochhammer q n ≠ 0 ↔
       ∀ r < n, q ^ (r + 1) ≠ 1 := by
-  rw [geometricQPochhammer, finiteQPochhammerIn]
+  unfold geometricQPochhammer
   rw [Finset.prod_ne_zero_iff]
   constructor
   · intro h r hr hpow
-    apply h r (Finset.mem_range.mpr hr)
-    apply sub_eq_zero.mpr
-    calc
-      1 = q ^ (r + 1) := hpow.symm
-      _ = q ^ r * q := pow_succ q r
-      _ = q * q ^ r := by ring
+    exact h r (Finset.mem_range.mpr hr) (sub_eq_zero.mpr hpow.symm)
   · intro h r hr
-    apply sub_ne_zero.mpr
-    intro hfactor
-    apply h r (Finset.mem_range.mp hr)
-    calc
-      q ^ (r + 1) = q ^ r * q := pow_succ q r
-      _ = q * q ^ r := by ring
-      _ = 1 := hfactor.symm
+    exact sub_ne_zero.mpr (h r (Finset.mem_range.mp hr)).symm
 
 /-- A nonzero base with `(q;q)_p != 0` has distinct powers
 `1, q, ..., q^p`.  Thus the finite Pochhammer denominator is not merely an
@@ -152,7 +147,7 @@ private theorem lower_geometric_lagrange_factor
       mul_div_mul_left (-1) (q ^ (b - a) - 1) ha0
     _ = 1 / (1 - q ^ (b - a)) := by
       rw [show q ^ (b - a) - 1 = -(1 - q ^ (b - a)) by ring]
-      simp
+      rw [div_neg, neg_div, neg_neg]
 
 private theorem upper_geometric_lagrange_factor
     (q : K) (hq : q ≠ 0) {a b : ℕ} (hab : a < b) :
@@ -188,7 +183,7 @@ private theorem prod_range_geometric_lagrange_factor
       rw [Finset.prod_inv_distrib]
     _ = (geometricQPochhammer q k)⁻¹ := by
       congr 1
-      rw [geometricQPochhammer, finiteQPochhammerIn]
+      unfold geometricQPochhammer
       calc
         (∏ l ∈ Finset.range k, (1 - q ^ (k - l))) =
             ∏ l ∈ Finset.range k,
@@ -200,11 +195,6 @@ private theorem prod_range_geometric_lagrange_factor
                 rw [hexponent]
         _ = ∏ l ∈ Finset.range k, (1 - q ^ (l + 1)) :=
           Finset.prod_range_reflect (fun l ↦ 1 - q ^ (l + 1)) k
-        _ = ∏ l ∈ Finset.range k, (1 - q * q ^ l) := by
-          apply Finset.prod_congr rfl
-          intro l _hl
-          rw [pow_succ]
-          ring
 
 private theorem prod_Ico_geometric_lagrange_factor
     (q : K) (hq : q ≠ 0) (p k : ℕ) (hk : k ≤ p) :
@@ -236,13 +226,8 @@ private theorem prod_Ico_geometric_lagrange_factor
       rw [Finset.prod_div_distrib]
     _ = ((-1 : K) ^ (p - k) * q ^ (p - k + 1).choose 2) /
         geometricQPochhammer q (p - k) := by
-      rw [prod_neg_geometric_powers, geometricQPochhammer,
-        finiteQPochhammerIn]
-      congr 1
-      apply Finset.prod_congr rfl
-      intro r _hr
-      rw [pow_succ]
-      ring
+      rw [prod_neg_geometric_powers]
+      rfl
 
 /-- Explicit q-Pochhammer formula for the Lagrange weight on
 `1, q, ..., q^p`:
@@ -280,25 +265,6 @@ theorem geometricLagrangeWeight_eq_geometricQPochhammer
   simp only [div_eq_mul_inv, mul_inv]
   ring
 
-/-- Coefficient extraction for the geometric-weight generating polynomial:
-its coefficient of `X^j` is exactly the `j`-th Lagrange weight. -/
-@[simp] theorem geometricLagrangeWeightPolynomial_coeff
-    (q : K) (p : ℕ) (j : Fin (p + 1)) :
-    (geometricLagrangeWeightPolynomial q p).coeff (j : ℕ) =
-      geometricLagrangeWeight q p (j : ℕ) := by
-  classical
-  unfold geometricLagrangeWeightPolynomial
-  rw [Polynomial.finsetSum_coeff]
-  simp only [Polynomial.coeff_C_mul_X_pow]
-  rw [Finset.sum_eq_single j]
-  · simp
-  · intro i _hi hij
-    have hval : (j : ℕ) ≠ (i : ℕ) := by
-      intro h
-      exact hij (Fin.ext h.symm)
-    simp [hval]
-  · simp
-
 /-- Field-generic coefficient formula for the forward Richardson polynomial.
 The distinct-node hypothesis is exactly what identifies its coefficients
 with the Lagrange weights. -/
@@ -324,8 +290,8 @@ section RationalGaussian
 repository's Wolfram-notation-compatible `qPochhammer q q n`. -/
 theorem geometricQPochhammer_rat_eq_qPochhammer (q : ℚ) (n : ℕ) :
     geometricQPochhammer q n = qPochhammer q q n := by
-  simpa only [geometricQPochhammer] using
-    (finiteQPochhammerIn_rat_eq q q n)
+  simp only [geometricQPochhammer_eq_finiteQPochhammerIn,
+    finiteQPochhammerIn_rat_eq]
 
 /-- Exact finite non-root-of-unity criterion for the rational denominator
 `(q;q)_n`. -/

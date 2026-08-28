@@ -127,12 +127,15 @@ priority search over the entire literature has been completed.
 Every result labelled theorem, proposition, lemma, or corollary below has a proof
 in this report. The numerical tables are reproducible from
 \path{verify_frontier_results.py}.  The denominator-free finite
-\(q\)-binomial theorem is formalized in \path{FiniteQBinomialCore.lean}, while
-\path{GeometricLagrange.lean} proves mass one, cancellation of the first
-geometric modes, the first surviving moment, and module-valued Richardson
-exactness.  The report-specific all-residual Gaussian \(q\)-formula and the
-analytic sinc-product acceleration, error bounds, spline
-limits, and inverse-function consequences remain unformalized.
+\(q\)-binomial theorem is formalized in \path{FiniteQBinomialCore.lean}.
+The modules \path{GeometricQBinomialLagrange.lean},
+\path{GeometricLagrangeQBinomial.lean}, and
+\path{GeometricLagrangeQMoments.lean} now prove the finite rational
+\(0<q<1\) weight formulas, all residual moments and their sign, and the exact
+finite \(\ell^1\) norm, including dedicated \(q=1/4\) corollaries.  The
+analytic sinc-product acceleration, transformed-error series, remainder and
+bracketing bounds, spline limits, infinite condition-number limit, and
+inverse-function consequences remain unformalized.
 
 \tableofcontents
 
@@ -1163,9 +1166,12 @@ the elementary factor.
 The analytic proof naturally separates into formalization-sized modules.
 
 \begin{enumerate}[label=\arabic*.,leftmargin=9mm]
-\item \textbf{Finite q-algebra.} Define \((q;q)_n\), Gaussian binomial
-coefficients, \(W_m\), and the weights. Prove \(W_m(q^r)=0\) for
-\(1\leq r\leq m\) and \eqref{eq:Mrqbinom}. This part is purely algebraic.
+\item \textbf{Finite q-algebra (formalized).}  The denominator-free product,
+Gaussian coefficients, \(W_m\), the weights, all residual moments, their
+sign, and the finite exact norm are proved in
+\path{FiniteQBinomialCore.lean},
+\path{GeometricQBinomialLagrange.lean}, and the report-facing rational
+geometric modules cited above.
 
 \item \textbf{Formal power series.} Work first in a characteristic-zero
 commutative ring. From \(\Phi=\exp(\sum c_kz^k)\), derive the Bell recurrence
@@ -1177,10 +1183,11 @@ sum the geometric scales, and identify the analytic power series with the actual
 product. Existing repository lemmas about the sinc product should reduce the
 amount of new infrastructure.
 
-\item \textbf{Interpolation and positivity.} Formalize the Lagrange weights,
-the divided-difference remainder, and absolute monotonicity of a power series with
-nonnegative coefficients. The sign theorem can also be proved directly from the
-positive coefficient series if divided differences are inconvenient.
+\item \textbf{Interpolation and positivity (partially formalized).}  The
+finite Lagrange weights and exact residual sign are proved.  The
+divided-difference representation of the analytic transformed error and the
+absolute-monotonicity argument for its full positive coefficient series remain
+frontier work.
 
 \item \textbf{Fourier/measure layer.} Define the uniform box measures and their
 finite convolutions. Moment matching follows from derivatives of the

@@ -1,5 +1,6 @@
 import FabiusFunction.GeometricLagrange
 import FabiusFunction.GeometricRichardson
+import FabiusFunction.LagrangeResidualMoments
 
 /-!
 # Product formulas and Richardson polynomials for geometric Lagrange weights
@@ -13,7 +14,8 @@ field-generic moment identities, the first interpolation defect, and
 module-valued Richardson exactness.  This module adds only the complementary
 structure needed by the frontier reports:
 
-* literal product formulas for the general and geometric weights;
+* a literal product formula for the geometric weights, using the upstream
+  arbitrary-node formula;
 * the polynomial whose coefficients are the geometric weights;
 * its exact identification with `forwardGeometricRichardsonPolynomial`;
 * the first uncancelled moment in the report's triangular-exponent form; and
@@ -35,20 +37,6 @@ open Finset Polynomial
 
 noncomputable section
 
-/-! ## Product formulas -/
-
-/-- Literal product form of the canonical Lagrange evaluation weight. -/
-theorem lagrangeEvalWeight_eq_product
-    {K ι : Type*} [Field K]
-    (s : Finset ι) (v : ι → K) (x : K) (i : ι) :
-    lagrangeEvalWeight s v x i =
-      ∏ j ∈ s.erase i, (x - v j) / (v i - v j) := by
-  classical
-  rw [lagrangeEvalWeight, Lagrange.basis, Polynomial.eval_prod]
-  apply Finset.prod_congr rfl
-  intro j _hj
-  simp [Lagrange.basisDivisor, div_eq_mul_inv, mul_comm]
-
 /-- Literal product form of the geometric evaluation-at-zero weight on
 `1, q, ..., q^n`.  No distinct-node hypothesis is needed for the identity
 because Mathlib's Lagrange basis is total. -/
@@ -60,6 +48,11 @@ theorem geometricLagrangeWeight_eq_product
   rw [geometricLagrangeWeight,
     lagrangeEvalWeight_eq_product]
   simp only [zero_sub]
+  apply Finset.prod_congr
+  · ext j
+    simp
+  · intro j _hj
+    rfl
 
 /-! ## The coefficient polynomial -/
 
@@ -71,19 +64,44 @@ noncomputable def geometricLagrangeWeightPolynomial
     Polynomial.C (geometricLagrangeWeight q n (k : ℕ)) *
       Polynomial.X ^ (k : ℕ)
 
+/-- Coefficient extraction for the geometric-weight polynomial: its
+coefficient of `X^j` is exactly the `j`th Lagrange weight. -/
+@[simp] theorem geometricLagrangeWeightPolynomial_coeff
+    {K : Type*} [Field K] (q : K) (n : ℕ) (j : Fin (n + 1)) :
+    (geometricLagrangeWeightPolynomial q n).coeff (j : ℕ) =
+      geometricLagrangeWeight q n (j : ℕ) := by
+  classical
+  unfold geometricLagrangeWeightPolynomial
+  rw [Polynomial.finsetSum_coeff]
+  simp only [Polynomial.coeff_C_mul_X_pow]
+  rw [Finset.sum_eq_single j]
+  · simp
+  · intro i _hi hij
+    have hval : (j : ℕ) ≠ (i : ℕ) := by
+      intro h
+      exact hij (Fin.ext h.symm)
+    simp [hval]
+  · simp
+
 /-- Evaluation of the weight polynomial is its finite coefficient sum. -/
 @[simp] theorem geometricLagrangeWeightPolynomial_eval
     {K : Type*} [Field K] (q x : K) (n : ℕ) :
     (geometricLagrangeWeightPolynomial q n).eval x =
       ∑ k : Fin (n + 1),
         geometricLagrangeWeight q n (k : ℕ) * x ^ (k : ℕ) := by
-  simp [geometricLagrangeWeightPolynomial]
+  unfold geometricLagrangeWeightPolynomial
+  rw [Polynomial.eval_finsetSum]
+  apply Finset.sum_congr rfl
+  intro k _hk
+  simp only [Polynomial.eval_mul, Polynomial.eval_C,
+    Polynomial.eval_pow, Polynomial.eval_X]
 
 /-- The weight polynomial has degree strictly below its `n + 1` coefficient
 slots, independently of whether the geometric nodes are distinct. -/
 theorem geometricLagrangeWeightPolynomial_degree_lt
     {K : Type*} [Field K] (q : K) (n : ℕ) :
-    (geometricLagrangeWeightPolynomial q n).degree < n + 1 := by
+    (geometricLagrangeWeightPolynomial q n).degree <
+      ((n + 1 : ℕ) : WithBot ℕ) := by
   exact Polynomial.degree_sum_fin_lt
     (fun k : Fin (n + 1) ↦ geometricLagrangeWeight q n (k : ℕ))
 
@@ -95,10 +113,19 @@ theorem geometricLagrangeWeightPolynomial_eval_pow
     (hd : d ≤ n) :
     (geometricLagrangeWeightPolynomial q n).eval (q ^ d) =
       (0 : K) ^ d := by
-  rw [geometricLagrangeWeightPolynomial_eval,
-    Fin.sum_univ_eq_sum_range]
-  simpa [pow_mul, Nat.mul_comm] using
-    sum_geometricLagrangeWeight_mul_pow q n d hnodes hd
+  rw [geometricLagrangeWeightPolynomial_eval]
+  calc
+    (∑ k : Fin (n + 1),
+        geometricLagrangeWeight q n (k : ℕ) *
+          (q ^ d) ^ (k : ℕ)) =
+        ∑ k ∈ Finset.range (n + 1),
+          geometricLagrangeWeight q n k * (q ^ d) ^ k :=
+      Fin.sum_univ_eq_sum_range
+        (fun k : ℕ ↦ geometricLagrangeWeight q n k * (q ^ d) ^ k)
+        (n + 1)
+    _ = (0 : K) ^ d := by
+      simpa only [← pow_mul, Nat.mul_comm] using
+        sum_geometricLagrangeWeight_mul_pow q n d hnodes hd
 
 /-! ## Identification with the Richardson filter -/
 
@@ -148,14 +175,14 @@ theorem geometricLagrangeWeightPolynomial_eq_forwardGeometricRichardsonPolynomia
       normalizedGeometricRootPolynomial_natDegree q⁻¹
         (inv_ne_zero hq) n hden
   have hforwardDegree :
-      (forwardGeometricRichardsonPolynomial q n).degree < n + 1 := by
-    rw [Polynomial.degree_eq_natDegree hforwardNe, hforwardNatDegree,
-      Nat.cast_withBot, WithBot.coe_lt_coe]
-    exact Nat.lt_succ_self n
+      (forwardGeometricRichardsonPolynomial q n).degree <
+        ((n + 1 : ℕ) : WithBot ℕ) := by
+    rw [Polynomial.degree_eq_natDegree hforwardNe, hforwardNatDegree]
+    exact WithBot.coe_lt_coe.2 (Nat.lt_succ_self n)
   refine Polynomial.eq_of_degrees_lt_of_eval_index_eq
     (Finset.range (n + 1)) hnodes
-    (geometricLagrangeWeightPolynomial_degree_lt q n)
-    hforwardDegree ?_
+    (by simpa using geometricLagrangeWeightPolynomial_degree_lt q n)
+    (by simpa using hforwardDegree) ?_
   intro d hd
   have hdn : d ≤ n := Nat.le_of_lt_succ (Finset.mem_range.mp hd)
   rw [geometricLagrangeWeightPolynomial_eval_pow q n d hnodes hdn]
@@ -168,6 +195,48 @@ theorem geometricLagrangeWeightPolynomial_eq_forwardGeometricRichardsonPolynomia
       (forwardGeometricRichardsonPolynomial_eval_pow_eq_zero
         q hq hrn).symm
 
+/-- **All higher moments of a geometric Lagrange row.**  At residual offset
+`r`, the moment is the first signed triangular factor times the complete
+homogeneous polynomial of degree `r` in the geometric nodes.
+
+The statement is field-generic and assumes only that the finite node family
+is injective.  No ordering, positivity, or non-root-of-unity condition beyond
+that exact interpolation hypothesis is used. -/
+theorem sum_geometricLagrangeWeight_mul_pow_card_add
+    {K : Type*} [Field K] (q : K) (n r : ℕ)
+    (hnodes : Set.InjOn (fun k : ℕ ↦ q ^ k)
+      (Finset.range (n + 1))) :
+    (∑ k ∈ Finset.range (n + 1),
+      geometricLagrangeWeight q n k * q ^ ((n + 1 + r) * k)) =
+      (-1 : K) ^ n * q ^ (n + 1).choose 2 *
+        completeHomogeneousEvalOn
+          (Finset.range (n + 1)) (fun k : ℕ ↦ q ^ k) r := by
+  have h := sum_lagrangeEvalWeight_mul_pow_card_add
+    (Finset.range (n + 1)) (fun k : ℕ ↦ q ^ k) 0 hnodes r
+  calc
+    (∑ k ∈ Finset.range (n + 1),
+        geometricLagrangeWeight q n k * q ^ ((n + 1 + r) * k)) =
+        ∑ k ∈ Finset.range (n + 1),
+          geometricLagrangeWeight q n k * (q ^ k) ^ (n + 1 + r) := by
+      apply Finset.sum_congr rfl
+      intro k _hk
+      rw [← pow_mul, Nat.mul_comm]
+    _ = 0 ^ (n + 1 + r) -
+        (∏ k ∈ Finset.range (n + 1), (0 - q ^ k)) *
+          completeHomogeneousEvalOn
+            (Finset.range (n + 1)) (fun k : ℕ ↦ q ^ k) r := by
+      simpa only [Finset.card_range, geometricLagrangeWeight,
+        completeHomogeneousEvalAt_zero] using h
+    _ = (-1 : K) ^ n * q ^ (n + 1).choose 2 *
+        completeHomogeneousEvalOn
+          (Finset.range (n + 1)) (fun k : ℕ ↦ q ^ k) r := by
+      rw [zero_pow (by omega : n + 1 + r ≠ 0)]
+      simp only [zero_sub]
+      rw [Finset.prod_neg, Finset.card_range,
+        Finset.prod_pow_eq_pow_sum, Finset.sum_range_id,
+        Nat.choose_two_right]
+      simp [pow_succ, Nat.mul_comm]
+
 /-- First moment beyond the cancelled range, in the exact signed triangular
 form used by the frontier report. -/
 theorem sum_geometricLagrangeWeight_firstUncancelled
@@ -177,8 +246,9 @@ theorem sum_geometricLagrangeWeight_firstUncancelled
     (∑ k ∈ Finset.range (n + 1),
       geometricLagrangeWeight q n k * q ^ ((n + 1) * k)) =
       (-1 : K) ^ n * q ^ (n + 1).choose 2 := by
-  simpa [pow_mul, Nat.choose_two_right, Nat.mul_comm] using
-    sum_geometricLagrangeWeight_mul_pow_succ q n hnodes
+  simpa only [Nat.add_zero, completeHomogeneousEvalOn,
+    completeHomogeneousEval_zero, mul_one] using
+      sum_geometricLagrangeWeight_mul_pow_card_add q n 0 hnodes
 
 /-! ## The quarter-base specialization -/
 

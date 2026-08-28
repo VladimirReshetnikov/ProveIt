@@ -23,11 +23,13 @@ formula conventionally written
 
 `q^(p m) (q^(1-m); q)_p / (q; q)_p`.
 
-The all-index q-Pochhammer formula evaluates the coefficient polynomial from
-`GeometricLagrangeWeights` and clears its common signed geometric product.
-For positive indices, the canonical denominator-free theorem from
-`GeometricQBinomialLagrange` gives the Gaussian coefficient directly; the
-q-factorial identity then recovers the equivalent positive-index form
+The proof does not duplicate interpolation or develop a second Gaussian
+polynomial.  It evaluates the coefficient polynomial already supplied by
+`GeometricLagrangeWeights`, identifies it with the normalized forward
+Richardson polynomial, and clears the common signed geometric product from
+its numerator and denominator.  The positive-index form is routed through
+the generic denominator-free Gaussian moment theorem from
+`GeometricQBinomialLagrange`:
 
 `S_(p,m)(q) = (-1)^p q^choose(p+1,2)
   (q^(m-p); q)_p / (q; q)_p`
@@ -38,13 +40,14 @@ at one fixed Richardson level.  It deliberately makes no comparison between
 two levels of the same parity: the corrected frontier report gives explicit
 admissible counterexamples to such monotonicity.
 
-The second half specializes the ring-generic finite q-binomial theorem to
-the repository's quotient-defined rational coefficient for every
-`0 < q < 1`, extending the existing `q = 1/2` specialization in
-`HalfQBinomial`.  It is then used to compute the exact total variation
+The second half computes the exact total variation directly from the same
+forward Richardson polynomial:
 
 `sum_j |lambda_(p,j)(q)| = (-q; q)_p / (q; q)_p
   = product_(r=1)^p (1+q^r)/(1-q^r)`.
+
+The denominator-free finite q-binomial theorem remains centralized in
+`FiniteQBinomialCore`; no second q-Pascal induction is developed here.
 
 All results here are finite algebraic identities.  There are no analytic
 convergence, sinc-tail, bracketing, or asymptotic claims.
@@ -73,13 +76,23 @@ theorem geometricLagrangeQMoment_eq_weightPolynomial_eval
     geometricLagrangeQMoment q p m =
       (geometricLagrangeWeightPolynomial q p).eval (q ^ m) := by
   rw [geometricLagrangeQMoment,
-    geometricLagrangeWeightPolynomial_eval,
-    Fin.sum_univ_eq_sum_range]
-  apply Finset.sum_congr rfl
-  intro j _hj
-  rw [pow_mul, pow_mul, Nat.mul_comm]
+    geometricLagrangeWeightPolynomial_eval]
+  calc
+    (∑ j ∈ Finset.range (p + 1),
+        geometricLagrangeWeight q p j * (q ^ j) ^ m) =
+        ∑ j ∈ Finset.range (p + 1),
+          geometricLagrangeWeight q p j * (q ^ m) ^ j := by
+      apply Finset.sum_congr rfl
+      intro j _hj
+      rw [← pow_mul, ← pow_mul, Nat.mul_comm]
+    _ = ∑ k : Fin (p + 1),
+        geometricLagrangeWeight q p (k : ℕ) *
+          (q ^ m) ^ (k : ℕ) :=
+      (Fin.sum_univ_eq_sum_range
+        (fun j : ℕ ↦ geometricLagrangeWeight q p j * (q ^ m) ^ j)
+        (p + 1)).symm
 
-/-- Under the exact finite noncollision hypotheses, every geometric moment
+/-- Under sufficient finite noncollision hypotheses, every geometric moment
 is an evaluation of the normalized forward Richardson polynomial. -/
 theorem geometricLagrangeQMoment_eq_forwardRichardson_eval
     (q : ℚ) (hq : q ≠ 0) (p m : ℕ)
@@ -120,11 +133,11 @@ theorem geometricRootPolynomial_inv_eval_pow_mul_signedPowers
       have hpowNe (n : ℕ) : q ^ n ≠ 0 := pow_ne_zero n hq
       simp only [inv_pow, pow_succ]
       field_simp [hpowNe]
-      <;> ring
+      all_goals ring
     _ = q ^ (p * m) * qPochhammer (q / q ^ m) q p := by
       rw [Finset.prod_mul_distrib]
       simp only [Finset.prod_const, Finset.card_range]
-      rw [pow_mul, Nat.mul_comm m p]
+      rw [← pow_mul, Nat.mul_comm m p]
       rfl
 
 /-- Closed triangular-power version of
@@ -145,9 +158,10 @@ theorem geometricRootPolynomial_inv_eval_one_mul_triangular
         ((-1 : ℚ) ^ p * q ^ (p + 1).choose 2) =
       qPochhammer q q p := by
   rw [← prod_neg_geometric_powers q p,
-    geometricRootPolynomial_inv_eval_one_mul_signedPowers q hq p]
-  rw [← geometricQPochhammer_rat_eq_qPochhammer]
-  rfl
+    geometricRootPolynomial_inv_eval_one_mul_signedPowers q hq p,
+    geometricRootPolynomial_eval_one]
+  simpa only [geometricQPochhammer] using
+    geometricQPochhammer_rat_eq_qPochhammer q p
 
 /-! ## All rational power moments -/
 
@@ -155,9 +169,10 @@ theorem geometricRootPolynomial_inv_eval_one_mul_triangular
 
 `S_(p,m)(q) = q^(p*m) (q/q^m;q)_p / (q;q)_p`.
 
-The hypotheses say exactly that `q` is nonzero and the finite Gaussian
-denominator does not vanish.  Equivalently, the nodes `1,q,...,q^p` are
-distinct and the quotient presentation is legitimate. -/
+The hypotheses ensure that `q` and the finite Gaussian denominator are
+nonzero.  In particular, the nodes `1,q,...,q^p` are distinct and the
+quotient presentation is legitimate; no converse boundary-case
+characterization is claimed. -/
 theorem geometricLagrangeQMoment_eq_qPochhammer
     (q : ℚ) (hq : q ≠ 0) (p m : ℕ)
     (hPochhammer : qPochhammer q q p ≠ 0) :
@@ -194,7 +209,8 @@ theorem geometricLagrangeQMoment_zero
       (Finset.range (p + 1)) :=
     pow_injOn_range_of_geometricQPochhammer_ne_zero
       q hq p hPochhammer'
-  exact sum_geometricLagrangeWeight q p hnodes
+  simpa [geometricLagrangeQMoment] using
+    sum_geometricLagrangeWeight q p hnodes
 
 /-- Every positive moment through degree `p` is cancelled exactly. -/
 theorem geometricLagrangeQMoment_eq_zero
@@ -208,11 +224,8 @@ theorem geometricLagrangeQMoment_eq_zero
       (Finset.range (p + 1)) :=
     pow_injOn_range_of_geometricQPochhammer_ne_zero
       q hq p hPochhammer'
-  rw [geometricLagrangeQMoment,
-    sum_geometricLagrangeWeight_mul_pow_eq_gaussianBinomial
-      q p m hnodes hmpos,
-    gaussianBinomial_eq_zero_of_lt q (by omega : m - 1 < p)]
-  ring
+  exact sum_geometricLagrangeWeight_mul_pow_eq_zero
+    q p m hnodes hmpos hmp
 
 /-- Above the cancelled range, the raw inverse-base numerator reverses to
 the positive-index q-Pochhammer product `(q^(m-p);q)_p`. -/
@@ -274,27 +287,30 @@ theorem geometricLagrangeQMoment_eq_residual_qPochhammer
       (Finset.range (p + 1)) :=
     pow_injOn_range_of_geometricQPochhammer_ne_zero
       q hq p hPochhammer'
-  have hfactorial :
+  have hmoment :=
+    sum_geometricLagrangeWeight_mul_pow_eq_gaussianBinomial
+      q p m hnodes (by omega : 0 < m)
+  have hgauss :
       qPochhammer q q p * gaussianBinomial q (m - 1) p =
         qPochhammer (q ^ (m - p)) q p := by
     simpa only [finiteQPochhammerIn_rat_eq,
       show m - 1 - p + 1 = m - p by omega] using
       (finiteQPochhammerIn_self_mul_gaussianBinomial
         q (n := m - 1) (k := p) (by omega : p ≤ m - 1))
-  have hgaussian :
-      gaussianBinomial q (m - 1) p =
-        qPochhammer (q ^ (m - p)) q p / qPochhammer q q p := by
-    apply (eq_div_iff hPochhammer).2
-    rw [← hfactorial]
-    ring
-  have htriangular :
-      p * (p + 1) / 2 = (p + 1).choose 2 := by
-    simp [Nat.choose_two_right, Nat.mul_comm]
-  rw [geometricLagrangeQMoment,
-    sum_geometricLagrangeWeight_mul_pow_eq_gaussianBinomial
-      q p m hnodes (by omega),
-    htriangular, hgaussian]
-  ring
+  have htri : p * (p + 1) / 2 = (p + 1).choose 2 := by
+    rw [Nat.choose_two_right, Nat.add_sub_cancel, Nat.mul_comm]
+  calc
+    geometricLagrangeQMoment q p m =
+        (-1 : ℚ) ^ p * q ^ (p * (p + 1) / 2) *
+          gaussianBinomial q (m - 1) p := by
+      simpa only [geometricLagrangeQMoment] using hmoment
+    _ = ((-1 : ℚ) ^ p * q ^ (p + 1).choose 2) *
+          qPochhammer (q ^ (m - p)) q p /
+            qPochhammer q q p := by
+      rw [htri]
+      apply (eq_div_iff hPochhammer).2
+      rw [← hgauss]
+      ring
 
 /-- Splitting a self q-Pochhammer product after its first `a` factors:
 
@@ -353,12 +369,11 @@ theorem qBinomial_pos_of_pos_of_lt_one
       (qPochhammer_self_pos_of_pos_of_lt_one q hqpos hqone k)
       (qPochhammer_self_pos_of_pos_of_lt_one q hqpos hqone (n - k)))
 
-/-- On `0 < q < 1`, the repository's quotient-defined rational
-`qBinomial` agrees with the denominator-free Gaussian coefficient from the
-finite q-binomial core.
+/-- On `0 < q < 1`, the quotient-defined rational `qBinomial` agrees with
+the denominator-free Gaussian coefficient from the finite q-binomial core.
 
-The proof is the denominator-free q-factorial identity followed by one
-legitimate cancellation.  In particular, it does not replay q-Pascal. -/
+The proof uses the denominator-free q-factorial identity and one legitimate
+cancellation; it does not replay q-Pascal. -/
 theorem gaussianBinomial_eq_qBinomial_of_pos_of_lt_one
     (q : ℚ) (hqpos : 0 < q) (hqone : q < 1) (n k : ℕ) :
     gaussianBinomial q n k = qBinomial n k q := by
@@ -418,50 +433,43 @@ theorem qPochhammer_tail_div_self_eq_qBinomial
     (qPochhammer_self_pos_of_pos_of_lt_one q hqpos hqone a).ne'
   have hp : qPochhammer q q p ≠ 0 :=
     (qPochhammer_self_pos_of_pos_of_lt_one q hqpos hqone p).ne'
-  field_simp [ha, hp] <;> ring
+  field_simp [ha, hp]
 
 /-- Report-facing Gaussian form of every residual power moment.  For
 `0 < q < 1` and `p < m`,
 
 `S_(p,m)(q) = (-1)^p q^choose(p+1,2) [m-1 choose p]_q`.
 
-This is a direct rational specialization of the canonical denominator-free
-Gaussian/Lagrange residual theorem. -/
+The proof is the positive-index residual q-Pochhammer formula followed by
+`qPochhammer_tail_div_self_eq_qBinomial`; it does not invoke a second
+interpolation argument. -/
 theorem geometricLagrangeQMoment_eq_residual_qBinomial
     (q : ℚ) (hqpos : 0 < q) (hqone : q < 1)
     (p m : ℕ) (hpm : p < m) :
     geometricLagrangeQMoment q p m =
       (-1 : ℚ) ^ p * q ^ (p + 1).choose 2 *
         qBinomial (m - 1) p q := by
-  have hPochhammer : geometricQPochhammer q p ≠ 0 := by
-    rw [geometricQPochhammer_rat_eq_qPochhammer]
-    exact (qPochhammer_self_pos_of_pos_of_lt_one
-      q hqpos hqone p).ne'
-  have hnodes : Set.InjOn (fun j : ℕ ↦ q ^ j)
-      (Finset.range (p + 1)) :=
-    pow_injOn_range_of_geometricQPochhammer_ne_zero
-      q hqpos.ne' p hPochhammer
-  have htriangular :
-      p * (p + 1) / 2 = (p + 1).choose 2 := by
-    simp [Nat.choose_two_right, Nat.mul_comm]
-  rw [geometricLagrangeQMoment,
-    sum_geometricLagrangeWeight_mul_pow_eq_gaussianBinomial
-      q p m hnodes (by omega),
-    htriangular,
-    gaussianBinomial_eq_qBinomial_of_pos_of_lt_one
-      q hqpos hqone (m - 1) p]
+  rw [geometricLagrangeQMoment_eq_residual_qPochhammer
+    q hqpos.ne' p m
+      (qPochhammer_self_pos_of_pos_of_lt_one q hqpos hqone p).ne' hpm,
+    mul_div_assoc]
+  have hstart : m - p = (m - p - 1) + 1 := by omega
+  have htop : m - p - 1 + p = m - 1 := by omega
+  rw [hstart,
+    qPochhammer_tail_div_self_eq_qBinomial
+      q hqpos hqone (m - p - 1) p,
+    htop]
 
 /-- The first uncancelled geometric moment is the signed triangular power
-`(-1)^p q^choose(p+1,2)`. -/
+`(-1)^p q^choose(p+1,2)`.  Only finite-node injectivity is needed. -/
 theorem geometricLagrangeQMoment_firstUncancelled
-    (q : ℚ) (hqpos : 0 < q) (hqone : q < 1) (p : ℕ) :
+    (q : ℚ) (p : ℕ)
+    (hnodes : Set.InjOn (fun j : ℕ ↦ q ^ j)
+      (Finset.range (p + 1))) :
     geometricLagrangeQMoment q p (p + 1) =
       (-1 : ℚ) ^ p * q ^ (p + 1).choose 2 := by
-  rw [geometricLagrangeQMoment_eq_residual_qBinomial
-    q hqpos hqone p (p + 1) (Nat.lt_succ_self p)]
-  rw [show p + 1 - 1 = p by omega,
-    qBinomial_eq_quotient q (le_refl p)]
-  simp [(qPochhammer_self_pos_of_pos_of_lt_one q hqpos hqone p).ne']
+  simpa only [geometricLagrangeQMoment, ← pow_mul, Nat.mul_comm] using
+    sum_geometricLagrangeWeight_firstUncancelled q p hnodes
 
 /-- Exact adjusted-sign identity for residual moments at `0 < q < 1`.
 Multiplication by `(-1)^p` produces a strictly positive quotient.
@@ -524,8 +532,8 @@ theorem qBinomial_succ_succ_of_pos_of_lt_one'
       q hqpos hqone] using
     (gaussianBinomial_succ_succ q n k)
 
-/-- The complementary q-Pascal recurrence for the repository's
-quotient-defined Gaussian coefficient.  It is the symmetric reflection of
+/-- The complementary q-Pascal recurrence for the quotient-defined Gaussian
+coefficient.  It is the symmetric reflection of
 `qBinomial_succ_succ_of_pos_of_lt_one'`. -/
 theorem qBinomial_succ_succ_of_pos_of_lt_one
     (q : ℚ) (hqpos : 0 < q) (hqone : q < 1) (n k : ℕ) :
@@ -611,6 +619,37 @@ theorem sum_qBinomial_triangular_succ_eq_neg_qPochhammer
 
 /-! ## Exact total variation -/
 
+private theorem
+    geometricRootPolynomial_inv_eval_neg_one_mul_triangular
+    (q : ℚ) (hq : q ≠ 0) (p : ℕ) :
+    (geometricRootPolynomial q⁻¹ p).eval (-1) *
+        q ^ (p + 1).choose 2 =
+      qPochhammer (-q) q p := by
+  rw [geometricRootPolynomial_eval]
+  unfold qPochhammer finiteQPochhammer
+  have hpow :
+      q ^ (p + 1).choose 2 =
+        ∏ r ∈ Finset.range p, q ^ (r + 1) := by
+    rw [Finset.prod_pow_eq_pow_sum]
+    congr 1
+    symm
+    calc
+      (∑ r ∈ Finset.range p, (r + 1)) =
+          (∑ r ∈ Finset.range p, r) + p := by
+        simp [Finset.sum_add_distrib]
+      _ = p.choose 2 + p := by
+        rw [Finset.sum_range_id, Nat.choose_two_right]
+      _ = (p + 1).choose 2 := by
+        rw [show p + 1 = p.succ by omega,
+          show 2 = 1 + 1 by omega, Nat.choose_succ_succ]
+        simp [Nat.choose_one_right, add_comm]
+  rw [hpow, ← Finset.prod_mul_distrib]
+  apply Finset.prod_congr rfl
+  intro r _hr
+  simp only [inv_pow, pow_succ]
+  field_simp [pow_ne_zero _ hq]
+  all_goals ring
+
 /-- Absolute value of one geometric weight in Gaussian form. -/
 theorem abs_geometricLagrangeWeight_eq_qBinomial
     (q : ℚ) (hqpos : 0 < q) (hqone : q < 1)
@@ -626,8 +665,35 @@ theorem abs_geometricLagrangeWeight_eq_qBinomial
     abs_of_pos (qBinomial_pos_of_pos_of_lt_one q hqpos hqone hk)]
   ring
 
-/-- Complement-index form of the absolute weight, prepared for the finite
-q-binomial theorem. -/
+/-- The sign of the `k`th geometric Lagrange weight is exactly
+`(-1)^(p-k)` in the conditioning range `0 < q < 1`. -/
+theorem abs_geometricLagrangeWeight_eq_sign_mul
+    (q : ℚ) (hqpos : 0 < q) (hqone : q < 1)
+    (p k : ℕ) (hk : k ≤ p) :
+    |geometricLagrangeWeight q p k| =
+      (-1 : ℚ) ^ (p - k) * geometricLagrangeWeight q p k := by
+  have hPochhammer :=
+    (qPochhammer_self_pos_of_pos_of_lt_one q hqpos hqone p).ne'
+  have hsign :
+      (-1 : ℚ) ^ (p - k) * (-1 : ℚ) ^ (p - k) = 1 := by
+    rw [← mul_pow]
+    norm_num
+  rw [abs_geometricLagrangeWeight_eq_qBinomial q hqpos hqone p k hk,
+    geometricLagrangeWeight_eq_qBinomial
+      q hqpos.ne' p k hk hPochhammer]
+  calc
+    q ^ (p - k + 1).choose 2 / qPochhammer q q p *
+        qBinomial p k q =
+        1 * (q ^ (p - k + 1).choose 2 /
+          qPochhammer q q p * qBinomial p k q) := by rw [one_mul]
+    _ = ((-1 : ℚ) ^ (p - k) * (-1 : ℚ) ^ (p - k)) *
+        (q ^ (p - k + 1).choose 2 /
+          qPochhammer q q p * qBinomial p k q) := by rw [hsign]
+    _ = (-1 : ℚ) ^ (p - k) *
+        (((-1 : ℚ) ^ (p - k) * q ^ (p - k + 1).choose 2) /
+          qPochhammer q q p * qBinomial p k q) := by ring
+
+/-- Complement-index form of the absolute weight. -/
 theorem abs_geometricLagrangeWeight_complement_eq_qBinomial
     (q : ℚ) (hqpos : 0 < q) (hqone : q < 1)
     (p k : ℕ) (hk : k ≤ p) :
@@ -648,34 +714,96 @@ theorem sum_abs_geometricLagrangeWeight_eq_qPochhammer_ratio
     (∑ j ∈ Finset.range (p + 1),
       |geometricLagrangeWeight q p j|) =
       qPochhammer (-q) q p / qPochhammer q q p := by
+  have hPochhammer : qPochhammer q q p ≠ 0 :=
+    (qPochhammer_self_pos_of_pos_of_lt_one q hqpos hqone p).ne'
+  have hPochhammer' : geometricQPochhammer q p ≠ 0 := by
+    rwa [geometricQPochhammer_rat_eq_qPochhammer]
+  have hnodes : Set.InjOn (fun j : ℕ ↦ q ^ j)
+      (Finset.range (p + 1)) :=
+    pow_injOn_range_of_geometricQPochhammer_ne_zero
+      q hqpos.ne' p hPochhammer'
+  have hden : (geometricRootPolynomial q⁻¹ p).eval 1 ≠ 0 :=
+    geometricRootPolynomial_inv_eval_one_ne_zero_of_nodes_injective
+      q hqpos.ne' p hnodes
+  have hsignSq : (-1 : ℚ) ^ p * (-1 : ℚ) ^ p = 1 := by
+    rw [← mul_pow]
+    norm_num
+  have hsubSign (k : ℕ) (hk : k ≤ p) :
+      (-1 : ℚ) ^ (p - k) = (-1 : ℚ) ^ p * (-1 : ℚ) ^ k := by
+    have hkSq : (-1 : ℚ) ^ k * (-1 : ℚ) ^ k = 1 := by
+      rw [← mul_pow]
+      norm_num
+    calc
+      (-1 : ℚ) ^ (p - k) =
+          (-1 : ℚ) ^ (p - k) * 1 := by rw [mul_one]
+      _ = (-1 : ℚ) ^ (p - k) *
+          ((-1 : ℚ) ^ k * (-1 : ℚ) ^ k) := by rw [hkSq]
+      _ = ((-1 : ℚ) ^ (p - k) * (-1 : ℚ) ^ k) *
+          (-1 : ℚ) ^ k := by ring
+      _ = (-1 : ℚ) ^ p * (-1 : ℚ) ^ k := by
+        rw [← pow_add, Nat.sub_add_cancel hk]
   calc
     (∑ j ∈ Finset.range (p + 1),
         |geometricLagrangeWeight q p j|) =
-        ∑ k ∈ Finset.range (p + 1),
-          |geometricLagrangeWeight q p (p - k)| := by
-      rw [← Finset.sum_range_reflect
-        (fun j ↦ |geometricLagrangeWeight q p j|) (p + 1)]
+        ∑ j ∈ Finset.range (p + 1),
+          (-1 : ℚ) ^ (p - j) * geometricLagrangeWeight q p j := by
       apply Finset.sum_congr rfl
-      intro k _hk
-      rw [show p + 1 - 1 - k = p - k by omega]
-    _ = ∑ k ∈ Finset.range (p + 1),
-          (q ^ (k + 1).choose 2 / qPochhammer q q p *
-            qBinomial p k q) := by
-      apply Finset.sum_congr rfl
-      intro k hk
-      exact abs_geometricLagrangeWeight_complement_eq_qBinomial
-        q hqpos hqone p k (Nat.le_of_lt_succ (Finset.mem_range.mp hk))
-    _ = (1 / qPochhammer q q p) *
-          ∑ k ∈ Finset.range (p + 1),
-            (q ^ (k + 1).choose 2 * qBinomial p k q) := by
+      intro j hj
+      exact abs_geometricLagrangeWeight_eq_sign_mul
+        q hqpos hqone p j
+          (Nat.le_of_lt_succ (Finset.mem_range.mp hj))
+    _ = (-1 : ℚ) ^ p *
+        ∑ j ∈ Finset.range (p + 1),
+          geometricLagrangeWeight q p j * (-1 : ℚ) ^ j := by
       rw [Finset.mul_sum]
       apply Finset.sum_congr rfl
-      intro k _hk
+      intro j hj
+      rw [hsubSign j
+        (Nat.le_of_lt_succ (Finset.mem_range.mp hj))]
       ring
+    _ = (-1 : ℚ) ^ p *
+        (geometricLagrangeWeightPolynomial q p).eval (-1) := by
+      rw [geometricLagrangeWeightPolynomial_eval]
+      congr 1
+      exact (Fin.sum_univ_eq_sum_range
+        (fun j : ℕ ↦ geometricLagrangeWeight q p j * (-1 : ℚ) ^ j)
+        (p + 1)).symm
+    _ = (-1 : ℚ) ^ p *
+        (forwardGeometricRichardsonPolynomial q p).eval (-1) := by
+      rw [geometricLagrangeWeightPolynomial_eq_forwardGeometricRichardsonPolynomial
+        q hqpos.ne' p hnodes]
     _ = qPochhammer (-q) q p / qPochhammer q q p := by
-      rw [sum_qBinomial_triangular_succ_eq_neg_qPochhammer
-        q hqpos hqone p]
-      ring
+      rw [forwardGeometricRichardsonPolynomial_eval]
+      apply (eq_div_iff hPochhammer).2
+      calc
+        (-1 : ℚ) ^ p *
+            ((geometricRootPolynomial q⁻¹ p).eval (-1) /
+              (geometricRootPolynomial q⁻¹ p).eval 1) *
+              qPochhammer q q p =
+            (-1 : ℚ) ^ p *
+              ((geometricRootPolynomial q⁻¹ p).eval (-1) /
+                (geometricRootPolynomial q⁻¹ p).eval 1) *
+              ((geometricRootPolynomial q⁻¹ p).eval 1 *
+                ((-1 : ℚ) ^ p * q ^ (p + 1).choose 2)) := by
+          rw [geometricRootPolynomial_inv_eval_one_mul_triangular
+            q hqpos.ne' p]
+        _ = ((-1 : ℚ) ^ p * (-1 : ℚ) ^ p) *
+              ((geometricRootPolynomial q⁻¹ p).eval (-1) *
+                q ^ (p + 1).choose 2) := by
+          rw [div_eq_mul_inv]
+          calc
+            _ = (((-1 : ℚ) ^ p * (-1 : ℚ) ^ p) *
+                  ((geometricRootPolynomial q⁻¹ p).eval (-1) *
+                    q ^ (p + 1).choose 2)) *
+                ((geometricRootPolynomial q⁻¹ p).eval 1 *
+                  ((geometricRootPolynomial q⁻¹ p).eval 1)⁻¹) := by
+              ring
+            _ = _ := by rw [mul_inv_cancel₀ hden, mul_one]
+        _ = (geometricRootPolynomial q⁻¹ p).eval (-1) *
+              q ^ (p + 1).choose 2 := by rw [hsignSq, one_mul]
+        _ = qPochhammer (-q) q p :=
+          geometricRootPolynomial_inv_eval_neg_one_mul_triangular
+            q hqpos.ne' p
 
 /-- Product form of the exact condition number. -/
 theorem neg_qPochhammer_div_self_eq_prod
@@ -751,7 +879,7 @@ theorem quarterGeometricLagrangeQMoment_firstUncancelled (p : ℕ) :
     geometricLagrangeQMoment (1 / 4 : ℚ) p (p + 1) =
       (-1 : ℚ) ^ p * (1 / 4 : ℚ) ^ (p + 1).choose 2 := by
   exact geometricLagrangeQMoment_firstUncancelled
-    (1 / 4 : ℚ) (by norm_num) (by norm_num) p
+    (1 / 4 : ℚ) p (quarter_pow_injOn p)
 
 /-- Exact `l1` norm of the dyadic geometric weights. -/
 theorem sum_abs_quarterGeometricLagrangeWeight_eq_qPochhammer_ratio

@@ -168,7 +168,7 @@ Bell-polynomial zero jets, and positive Richardson filters\par}
 \begin{minipage}{0.90\textwidth}
 \small
 \textbf{Research status.}
-The self-sampling theorem, its alias expansion, the exact first-defect formula, the Bernoulli convolution identity, the phase-superconvergence classification for all sufficiently fine levels, the positive coset/Richardson construction, the inverse-moment Rvachev--Appell calculus, and the finite $q$-binomial corollaries are proved in this report.  The first failure of real-rootedness for the new Appell family is certified by an exact Sturm count and is explicitly marked computer-assisted.  All proposed endpoint, denominator, and higher-defect statements are labeled as conjectures or research problems.  ``New'' always means new relative to the audited repository snapshot; no claim of worldwide priority is made.
+The self-sampling theorem, its alias expansion, the exact first-defect formula, the Bernoulli convolution identity, the phase-superconvergence classification for all sufficiently fine levels, the positive coset/Richardson construction, the inverse-moment Rvachev--Appell calculus, and the finite $q$-binomial corollaries are proved in this report.  The first failure of real-rootedness for the new Appell family is certified by an exact Sturm count and is explicitly marked computer-assisted.  All proposed endpoint, denominator, and higher-defect statements are labeled as conjectures or research problems.  ``New'' always means new relative to the audited repository snapshot; no claim of worldwide priority is made.  Since that snapshot, the sinc-product foundation used here---the total integer-center factorization, exact complex zero order, all lower vanishings, and the exact leading derivative---has been machine checked in Lean.  The report-specific self-sampling, alias, Bernoulli-convolution, and superconvergence theorems remain human proofs unless an exact declaration is cited below.
 \end{minipage}
 \vfill
 \end{titlepage}
@@ -303,6 +303,17 @@ The product is entire.  If $m\in\Z\setminus\{0\}$, then
  \label{eq:integer-multiplicity}
 \end{equation}
 Indeed, the factors indexed by $0\le j\le\nu_2(m)$ vanish simply and all later factors are nonzero.
+
+This foundation is now formal rather than merely inherited from the human
+corpus.  The standalone product is entire by
+\path{Fabius.rvachevFourierProduct_differentiable}; for every nonzero
+integer \(m\), Lean proves
+\[
+ \operatorname{ord}_{\xi=m}\Phi=1+\nu_2(|m|)
+\]
+as \path{Fabius.analyticOrderAt_rvachevFourierProduct_int}, together with
+all lower derivative vanishings and the exact nonzero leading derivative
+in \path{IntegerZeroAnalyticOrder.lean}.
 
 The standard Fabius distribution function $F:[0,1]\to[0,1]$ is related to $u$ by
 \begin{equation}
@@ -599,6 +610,22 @@ is odd.  The remaining tail is
 \]
 This proves \eqref{eq:local-factorization}; taking the analytic logarithm after removing $C_mw^d$ gives \eqref{eq:local-Bell-form}.
 \end{proof}
+
+\begin{statusbox}[Lean status of the local factorization]
+Equation \eqref{eq:local-factorization} is now formal in a stronger total,
+denominator-cleared form valid for every complex \(w\), including the
+removable points.  The all-nonzero-integer statement is
+\path{Fabius.rvachevFourierProduct_int_add_factorization}; its divided
+germ form is
+\path{Fabius.rvachevFourierProduct_int_add_eventuallyEq_pow_mul_cofactor}.
+The cofactor is analytic and nonzero, so Lean proves the exact order, every
+lower-jet vanishing, and the leading identity
+\eqref{eq:first-zero-jet}.  The generic leading-jet engine is
+\path{LeadingJet.lean}.  The logarithmic coefficients
+\eqref{eq:gamma1}--\eqref{eq:gamma-general} and the Bell-polynomial formula
+\eqref{eq:Bell-zero-jets} for \(s>0\) remain human-readable frontier
+results, not named Lean theorems.
+\end{statusbox}
 
 The first logarithmic coefficient is especially simple:
 \begin{equation}
@@ -1705,6 +1732,10 @@ The core analytic theorem requires reusable infrastructure:
 \item the derivative-transform identity for $x^ru(x)$;
 \item termwise differentiation of the master alias series.
 \end{enumerate}
+Items II.1 and II.2 are now delivered by \path{FourierProduct.lean},
+\path{IntegerZeroLocalFactorization.lean}, and
+\path{IntegerZeroAnalyticOrder.lean}.  Items II.3--II.5 remain the analytic
+bridge needed for the report-specific self-sampling theorem.
 The target statements are
 \begin{center}
 \begin{minipage}{0.86\textwidth}\small\ttfamily
@@ -1726,6 +1757,9 @@ Once the analytic layer is in place, formalize:
 \item the elementary lower bound $\Phi(1/2)>4/9$;
 \item the trigonometric factor bounds and exact phase classification.
 \end{enumerate}
+Items III.1 and III.2 are now delivered, and the signed-value identity
+underlying III.3 is already in \path{ThueMorseLobeSign.lean}.  Items
+III.4--III.6 remain open as formalization tasks.
 The Bernoulli convolution may be postponed if periodic distributions are expensive; the sine/cosine series already suffices for superconvergence.
 
 \subsection{Tier IV: probability transport and positive filters}
@@ -1740,16 +1774,19 @@ The final tier is largely algebraic once self-sampling is proved:
 \item base-$b$ and tensor-product generalizations.
 \end{enumerate}
 
-\begin{statusbox}[Recommended first formalization target]
-The best compact target is the chain
+\begin{statusbox}[Current compact formalization target]
+The integer-zero foundation is now delivered.  The next compact chain is
 \[
- \texttt{integer zero order}
- \Longrightarrow
- \texttt{self-sampling monomials}
- \Longrightarrow
+ \begin{gathered}
+ \texttt{shifted Poisson and derivative transform}\\
+ \Downarrow\\
+ \texttt{self-sampling monomials}\\
+ \Downarrow\\
  \texttt{phase superconvergence}.
+ \end{gathered}
 \]
-It gives a new theorem with a short conceptual proof and reuses Fourier infrastructure already central to the formal development.  The inverse-moment Appell recurrence can be formalized independently in parallel.
+The exact complex order and leading alias derivative may now be reused
+directly rather than reproved inside the quadrature development.
 \end{statusbox}
 
 \section{Conclusion}
