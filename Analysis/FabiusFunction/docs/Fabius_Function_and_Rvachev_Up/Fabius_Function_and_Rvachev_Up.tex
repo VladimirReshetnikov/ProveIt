@@ -123,7 +123,7 @@
 \small Vladimir Reshetnikov's \texttt{ProveIt} repository}
 \date{Integrated repository snapshot: 28 August 2026\\
 \small mainline checkpoint \nolinkurl{68a0daecb}; Volterra addendum
-\nolinkurl{e109088ed}}
+\nolinkurl{e109088ed}; foundational addendum \nolinkurl{216724856}}
 
 \begin{document}
 \maketitle
@@ -153,7 +153,10 @@ formal sinc and cosine products, Fourier inversion and Poisson summation, exact 
 recurrences, and the Fourier--Legendre expansion.  The arithmetic part gives reciprocal-power
 values, Thue--Morse formulas for arbitrary dyadic arguments, executable binary reduction,
 two-adic information, exact half-base values, and denominator-free arbitrary-base
-$q$-binomial and geometric-interpolation identities present in Lean.
+$q$-binomial and geometric-interpolation identities present in Lean.  A compact-rectangle
+inverse-pair theorem integrates arbitrary absolutely-continuous outer functions without a
+clock-measurability hypothesis, while finite formal-series filters package arbitrary-node
+moment exactness and the complete denominator-free Gaussian residual on geometric nodes.
 
 Repeated integration is developed once, before its Fabius specialization, as an oriented
 normalized Volterra calculus whose algebra takes values in an arbitrary real normed space.
@@ -1091,8 +1094,9 @@ The measure identity and Banach-valued integral identity are respectively
 above, they are exactly the four public declarations of that module.  The clamped
 definition of \(I\) is global, but both
 displayed transport identities deliberately use uniform measure restricted to
-\([0,1]\).  They do not by themselves prove the frontier report's two-function
-integration-by-parts identity, complex Mellin continuation, or fractional-power
+\([0,1]\).  They do not by themselves prove the two-function integration identity; the
+separate absolutely-continuous theorem below supplies that full-interval result.  The
+transport declarations assert neither complex Mellin continuation nor fractional-power
 substitutions.
 
 A separate subgraph-Fubini argument does provide the exact first-order weighted
@@ -1126,8 +1130,66 @@ engine is \lean{integral_smul_setIntegral_subgraph} in
 \lean{intervalIntegral_fabiusInv_eq_intervalIntegral_rvachevUp} and
 \lean{intervalIntegral_fabiusInv_eq_one_half} identify the inverse area with the
 unit-interval \(\Up\) area and with \(1/2\), respectively.
-These declarations do not assert the frontier reports' arbitrary-absolutely-continuous,
-variable-upper-endpoint, higher-order, fractional, or complex-Mellin extensions.
+
+The inverse-order relation also supports a genuinely two-function
+absolutely-continuous calculus.  Here the important reusable point is that
+measurability of the clocks is a conclusion of the order structure on the
+rectangle, not an extra hypothesis.
+
+\begin{theorem}[Absolutely-continuous calculus for an inverse pair]
+\label{thm:ac-inverse-pair}
+Let \(a\le b\) and \(c\le d\).  Suppose \(C,Q:\R\to\R\) map
+\([a,b]\) into \([c,d]\) and \([c,d]\) into \([a,b]\), respectively, and
+\begin{equation}
+ C(x)<u\quad\Longleftrightarrow\quad x<Q(u)
+ \qquad(x\in[a,b],\ u\in[c,d]).                            \label{eq:ac-inverse-order}
+\end{equation}
+If \(A,B:\R\to\R\), with \(A\) absolutely continuous on \([a,b]\) and
+\(B\) absolutely continuous on \([c,d]\), then
+\begin{equation}
+ \int_a^b A'(x)B(C(x))\dd x
+ +\int_c^d A(Q(u))B'(u)\dd u
+ =A(b)B(d)-A(a)B(c).                                      \label{eq:ac-inverse-pair}
+\end{equation}
+No measurability, continuity, or differentiability assumption is imposed on
+\(C\) or \(Q\).  The strict-order equivalence forces both restrictions to be
+monotone; canonical clamped extensions are then measurable.  Values of the
+two clocks outside their displayed compact intervals play no role.  Equality
+of either endpoint pair is allowed.  The stated orientation is essential:
+reversed endpoints require swapping the corresponding interval and its order
+data first.
+\end{theorem}
+
+This is
+\lean{intervalIntegral_deriv_mul_comp_add_comp_mul_deriv_of_lt_iff_lt} in
+\path{InversePairIntegral.lean}.  Its proof combines
+\lean{intervalIntegral_smul_intervalIntegral_of_lt_iff_lt} with the
+fundamental theorem for absolutely-continuous functions; no derivative or
+Jacobian formula for the clocks enters.
+
+\begin{corollary}[Fabius inverse-pair calculus and area sum]
+\label{cor:fabius-ac-inverse-pair}
+For real functions \(A,B:\R\to\R\) that are absolutely continuous on
+\([0,1]\),
+\begin{equation}
+ \int_0^1 A'(x)B(F(x))\dd x
+ +\int_0^1 A(I(u))B'(u)\dd u
+ =A(1)B(1)-A(0)B(0).                                      \label{eq:fabius-ac-inverse-pair}
+\end{equation}
+In particular, taking both outer functions to be the identity gives the
+inverse-graph area identity
+\begin{equation}
+ \int_0^1F(x)\dd x+\int_0^1I(u)\dd u=1.                   \label{eq:fabius-inverse-area-sum}
+\end{equation}
+\end{corollary}
+
+The two displayed statements are exactly
+\lean{intervalIntegral_deriv_mul_fabiusReal_add_fabiusInv_mul_deriv} and
+\lean{intervalIntegral_fabiusReal_add_fabiusInv_eq_one} in
+\path{InversePairIntegral.lean}.  They are full-interval first-order
+identities.  Variable-upper-endpoint, higher-order, improper-integral,
+fractional-power, and complex-Mellin extensions remain outside these
+declarations.
 
 \subsection{The normalized geometric family}
 
@@ -3832,6 +3894,26 @@ and
  {n\brack0}_q={n\brack n}_q=1,\qquad
  {n\brack k}_q=0\quad(n<k).
 \]
+The recursive triangle is already defined over every semiring and is
+functorial: for semirings \(R,S\) and every homomorphism \(\varphi:R\to S\),
+\begin{equation}
+ \varphi\!\left({n\brack k}_q\right)={n\brack k}_{\varphi(q)}.
+                                                               \label{eq:q-gaussian-map}
+\end{equation}
+Over a commutative semiring it also satisfies, for all natural \(n,k\), the
+second Pascal orientation
+\begin{equation}
+ {n+1\brack k+1}_q
+ =q^{k+1}{n\brack k+1}_q+{n\brack k}_q,                    \label{eq:q-pascal-alt}
+\end{equation}
+and, whenever \(k\le n\), the reflection law
+\begin{equation}
+ {n\brack n-k}_q={n\brack k}_q.                            \label{eq:q-gaussian-symmetry}
+\end{equation}
+None of these structural laws uses division or cancellation; the zero extension above
+the diagonal is what makes \eqref{eq:q-pascal-alt} valid without an index
+side condition.
+
 Then for every $z\in R$,
 \begin{equation}
  (z;q)_n=\sum_{k=0}^{n}(-1)^kq^{\binom k2}{n\brack k}_qz^k.
@@ -3851,17 +3933,28 @@ coefficient definition \lean{gaussianBinomial}, and the theorems
 \lean{gaussianBinomial_eq_zero_of_lt},
 \lean{gaussianBinomial_self}, and
 \lean{finite_qBinomial_theorem} in \path{FiniteQBinomialCore.lean}.
+The functoriality, alternate Pascal, and symmetry statements
+\eqref{eq:q-gaussian-map}--\eqref{eq:q-gaussian-symmetry} are
+\lean{map_gaussianBinomial},
+\lean{gaussianBinomial_succ_succ_alt}, and
+\lean{gaussianBinomial_symm}, respectively, in the same module.
 
-Two denominator-free product identities make this recursion especially useful downstream:
-for $k\le n$,
+Four denominator-free product identities make this recursion especially useful downstream.
+For natural \(m,n\), and for \(k\le n\),
 \begin{align}
  (a;q)_{n+1}&=(1-a)(aq;q)_n,                              \label{eq:qpochhammer-shift}\\
- (q;q)_k{n\brack k}_q&=(q^{n-k+1};q)_k.                 \label{eq:qfactorial-gaussian}
+ (a;q)_{m+n}&=(a;q)_m(aq^m;q)_n,                         \label{eq:qpochhammer-concat}\\
+ (q;q)_k{n\brack k}_q&=(q^{n-k+1};q)_k,                 \label{eq:qfactorial-gaussian}\\
+ (q;q)_n&=(q;q)_k(q;q)_{n-k}{n\brack k}_q.              \label{eq:qfactorial-full}
 \end{align}
-They are \lean{finiteQPochhammerIn_succ_shift} and
-\lean{finiteQPochhammerIn_self_mul_gaussianBinomial}, respectively, again in
-\path{FiniteQBinomialCore.lean}; both hold over every commutative ring, including all
-boundary cases.
+They are \lean{finiteQPochhammerIn_succ_shift},
+\lean{finiteQPochhammerIn_add},
+\lean{finiteQPochhammerIn_self_mul_gaussianBinomial}, and
+\lean{finiteQPochhammerIn_self_eq_mul_mul_gaussianBinomial}, respectively, again in
+\path{FiniteQBinomialCore.lean}.  All four hold over every commutative ring,
+including empty products, zero divisors, positive characteristic, \(q=0\), and
+roots of unity.  The final identity is the full denominator-free replacement
+for the usual quotient definition of a Gaussian coefficient.
 
 Over the rationals, \lean{finiteQPochhammerIn_rat_eq} identifies the generic product
 with the established finite \(q\)-Pochhammer notation.  At $q=1/2$,
@@ -3876,11 +3969,15 @@ Let $R$ be a commutative ring and $q\in R$.  The zero-extended numerator row is
 \begin{equation}
  N_{n,k}(q)=
  \begin{cases}
- (-1)^{n-k}q^{\binom{n-k+1}{2}}{n\brack n-k}_q,&k\le n,\\
+ (-1)^{n-k}q^{\binom{n-k+1}{2}}{n\brack k}_q,&k\le n,\\
  0,&n<k.
  \end{cases}                                              \label{eq:geometric-q-numerator}
 \end{equation}
-The reversed Gaussian index $n-k$ is part of the formula.  For every $z\in R$,
+The Lean definition is initially written with the reversed index \(n-k\),
+but the division-free symmetry \eqref{eq:q-gaussian-symmetry} proves the
+forward form displayed here.  In fact the zero-extended identity remains
+valid for every pair \(n,k\) when natural subtraction is read with Lean's
+truncation convention.  For every $z\in R$,
 \begin{equation}
  \sum_{k=0}^{n}N_{n,k}(q)z^k
  =\prod_{j=0}^{n-1}(z-q^{j+1}),                           \label{eq:reversed-q-binomial}
@@ -3914,6 +4011,9 @@ The numerator and its two branches are
 \lean{geometricQBinomialWeightNumerator},
 \lean{geometricQBinomialWeightNumerator_eq_of_le}, and
 \lean{geometricQBinomialWeightNumerator_eq_zero_of_lt}.
+Its forward-index forms on the natural range and globally are
+\lean{geometricQBinomialWeightNumerator_eq_forward_of_le} and
+\lean{geometricQBinomialWeightNumerator_eq_forward}.
 Equations \eqref{eq:reversed-q-binomial} and
 \eqref{eq:geometric-q-numerator-moments} are
 \lean{reversed_finite_qBinomial_theorem} and
@@ -3924,8 +4024,8 @@ and cleared-denominator identities in \eqref{eq:geometric-lagrange-gaussian} are
 \lean{finiteQPochhammerIn_mul_geometricLagrangeWeight_eq}.  The complete positive-degree
 formula \eqref{eq:geometric-lagrange-residual} is
 \lean{sum_geometricLagrangeWeight_mul_pow_eq_gaussianBinomial}.  These declarations are
-all in \path{GeometricQBinomialLagrange.lean}, except for the two product identities cited
-above from \path{FiniteQBinomialCore.lean}.
+all in \path{GeometricQBinomialLagrange.lean}; the finite-product identities in the
+preceding remark are in \path{FiniteQBinomialCore.lean}.
 \end{proof}
 
 Here $q$ is the Gaussian base and the ratio of the geometric nodes; it is unrelated to the
@@ -4774,6 +4874,86 @@ weight and cleared-denominator formulas remain in
 \path{GeometricQBinomialLagrange.lean}; its positive-moment theorem is now a
 thin corollary of this denominator-free engine.
 \end{proof}
+
+The same moment calculation acts diagonally on every formal power series, not
+only on a polynomial of bounded degree.  This produces a reusable operator in
+which low-degree cancellation and every surviving geometric residual are
+visible coefficient by coefficient.
+
+\begin{proposition}[Finite formal-series filters and the Gaussian residual]
+\label{prop:finite-power-series-filter}
+Let \(R\) be a commutative semiring, let \(\iota\) be an arbitrary index type,
+let \(S\subseteq\iota\) be finite, and choose nodes \(x_i\in R\), weights
+\(w_i\in R\), and a formal power series \(f\in R[[X]]\).  Repeated nodes are
+allowed.  Define
+\begin{equation}
+ \mathcal T_{S,x,w}f(X)=\sum_{i\in S}w_i f(x_iX).           \label{eq:finite-series-filter}
+\end{equation}
+Then, for every \(m\in\N\),
+\begin{equation}
+ [X^m]\mathcal T_{S,x,w}f
+ =\left(\sum_{i\in S}w_ix_i^m\right)[X^m]f.               \label{eq:finite-series-filter-coeff}
+\end{equation}
+The operator commutes with a further rescaling of \(X\), and with every
+commutative-semiring homomorphism when the nodes, weights, and coefficients
+are transported together.
+
+More generally, suppose a target \(t\in R\) and an order \(p\in\N\) satisfy
+\begin{equation}
+ \sum_{i\in S}w_ix_i^d=t^d\qquad(0\le d\le p).            \label{eq:finite-series-filter-exact}
+\end{equation}
+Degree zero in this hypothesis gives \(\sum_iw_i=1\).  Hence the filter
+preserves the constant coefficient, and for every \(m\le p\),
+\begin{equation}
+ [X^m]\mathcal T_{S,x,w}f=t^m[X^m]f.                      \label{eq:finite-series-filter-low}
+\end{equation}
+At \(t=0\), this preserves degree zero and cancels every degree
+\(1\le m\le p\), including the boundary case \(p=0\) without pretending that
+\(0^0\) vanishes.
+
+Now let \(R\) be a commutative ring, take the nodes
+\(1,q,\ldots,q^p\), and assume the exactness condition
+\eqref{eq:geometric-exact-row-hypothesis}.  For
+\begin{equation*}
+ \mathcal G_{q,p,w}f(X)=\sum_{j=0}^{p}w_jf(q^jX),
+\end{equation*}
+all coefficients, including the mass-one boundary, are
+\begin{equation}
+ [X^m]\mathcal G_{q,p,w}f=
+ \begin{cases}
+  [X^0]f,&m=0,\\[2pt]
+  (-1)^p q^{\binom{p+1}{2}}{m-1\brack p}_q[X^m]f,&m>0.
+ \end{cases}                                               \label{eq:geometric-series-filter-residual}
+\end{equation}
+Thus the above-diagonal zero of the recursive Gaussian coefficient gives all
+cancelled degrees, and the same formula gives every later residual.  No
+division, convergence, distinctness, nonzeroness, or field structure is used.
+Over a field, distinctness of the geometric nodes makes the Lagrange row a
+canonical specialization of the same identity.
+\end{proposition}
+
+The generic operator and its diagonal action are
+\lean{finitePowerSeriesFilter} and
+\lean{coeff_finitePowerSeriesFilter} in
+\path{FinitePowerSeriesFilter.lean}.  Its rescaling and scalar-transport laws
+are \lean{finitePowerSeriesFilter_rescale} and
+\lean{map_finitePowerSeriesFilter}; exactness, mass one, constant preservation,
+and low-degree cancellation are
+\lean{sum_weight_eq_one_of_finite_exact},
+\lean{constantCoeff_finitePowerSeriesFilter_of_exact},
+\lean{coeff_finitePowerSeriesFilter_of_exact_of_le}, and
+\lean{coeff_finitePowerSeriesFilter_eq_zero_of_pos_of_le}.
+The geometric operator is \lean{geometricSeriesFilter}; its positive-degree
+coefficient theorem and the all-index identity
+\eqref{eq:geometric-series-filter-residual} are
+\lean{coeff_geometricSeriesFilter_of_exact} and
+\lean{geometricSeriesFilter_eq_residual_mk} in
+\path{GeometricPowerSeriesFilter.lean}.  The distinct-node Lagrange
+specializations are
+\lean{coeff_geometricLagrangeSeriesFilter_of_pos} and
+\lean{geometricLagrangeSeriesFilter_eq_residual_mk}.  Every series in this
+paragraph is formal: none of these declarations asserts analytic convergence,
+evaluation at a nonzero argument, or an infinite acceleration formula.
 
 For the present half-geometric grid, write $\lambda_{n,k}^{(1/2)}$ for the
 evaluation-at-zero weight belonging to the node $2^{-k}$.  The Toeplitz row is exactly the
@@ -6759,9 +6939,13 @@ That rule explains several choices made above:
       Banach-valued substitution with Lean's totalized Bochner integral.  A separate
       weighted-subgraph development proves Banach-valued survival layer cake and the
       full-interval Fabius inverse identity for an explicit interval-integrable primitive
-      or a pointwise-\(C^1\) primitive.  It does not package the frontier reports'
-      arbitrary-absolutely-continuous incomplete integration-by-parts, fractional, or
-      complex-Mellin identities.
+      or a pointwise-\(C^1\) primitive.  Finally,
+      \path{InversePairIntegral.lean} proves the two-function identity for arbitrary
+      absolutely-continuous outer functions on an ordered compact rectangle, derives
+      monotonicity on that rectangle and measurable canonical clamped extensions from the
+      strict inverse-order relation, and supplies both the Fabius wrapper and its area sum.
+      These declarations do not package variable-upper-endpoint, higher-order,
+      improper-integral, fractional, or complex-Mellin identities.
 \item Step cells use the formal half-endpoint indicator, including its point value at a
       shared boundary.
 \item The Fourier chapter distinguishes the real punctured-limit statement from the stronger
@@ -6772,17 +6956,20 @@ That rule explains several choices made above:
       proved in \path{NowhereAnalytic.lean}.
 \item The \(q\)-calculus distinguishes the half-base Fabius identities from the
       base-generic finite Gaussian/Richardson algebra: recursive Gaussian coefficients,
-      principal specializations, denominator-free geometric residual moments, closed
-      finite-node weights, and the proved quarter-base specialization are formal.
-      Analytic generic-\(q\) transforms, convergence, and quarter-sinc acceleration remain
-      outside the formal corpus.
+      functoriality, both Pascal orientations, reflection symmetry, product
+      concatenation, the full denominator-free factorial identity, principal
+      specializations, denominator-free geometric residual moments, forward closed
+      finite-node numerators, and the proved quarter-base specialization are formal.
+      Generic finite formal-series filters act diagonally coefficientwise, and exact
+      geometric rows have the all-degree Gaussian residual multiplier.  These are purely
+      formal-series statements: analytic generic-\(q\) transforms, series evaluation,
+      convergence, and quarter-sinc acceleration remain outside the formal corpus.
 \item Integer-order Volterra integration is formal at arbitrary base point and endpoint in
       a real Banach space, including strict FTC, order composition, polynomial weights,
       Taylor reconstruction, and the exact Fabius ladder.  Separately, the weighted
       inverse-layer-cake API permits real or complex scalar weights and a Banach-valued
       kernel on the full unit interval.  Fractional Riemann--Liouville orders, partial or
-      higher inverse primitives, arbitrary-absolutely-continuous packaging, and complex
-      Mellin continuation
+      higher inverse primitives, improper-integral limits, and complex Mellin continuation
       remain outside these results.
 \item Endpoint asymptotics retain exact phases and the proved remainder scopes; numerical
       fits and unproved coefficient formulas are absent.
@@ -6795,13 +6982,15 @@ into the theorem-backed narrative here.  The remaining research material is pres
 \path{Analysis/FabiusFunction/docs/non-formalized-research-frontiers/}.
 \end{quote}
 
-In particular, inverse-function repeated integration and saddle expansions, complex-power
-and fractional-order integration, small-argument analysis, analytic generic-\(q\) transforms,
-convergence claims, and other deferred results remain available there with an explicit warning
-that they are not part of the formal corpus.  Natural-order Volterra integration and finite
-polynomial weights are formalized in \Cref{sec:normalized-volterra}, while the finite
-base-generic Gaussian/Richardson algebra is formalized in
-\Cref{prop:geometric-principal-residuals}.
+In particular, inverse-function repeated integration and saddle expansions, improper
+inverse integrals, complex-power and fractional-order integration, small-argument analysis,
+analytic generic-\(q\) transforms, convergence claims, and other deferred results remain
+available there with an explicit warning that they are not part of the formal corpus.
+Natural-order Volterra integration and finite
+polynomial weights are formalized in \Cref{sec:normalized-volterra}; the compact-rectangle
+absolutely-continuous inverse calculus is \Cref{thm:ac-inverse-pair}; and the finite
+base-generic Gaussian/Richardson algebra and its formal-series filter are formalized in
+\Cref{prop:geometric-principal-residuals,prop:finite-power-series-filter}.
 
 \section{Conclusion}
 \label{sec:conclusion}
@@ -6813,10 +7002,11 @@ signed \(\mathcal F\) supplies the global dilation and binary-translation formul
 bridges connect them to finite atomic laws, weak convergence, centered splines, moments,
 generic weighted distributions, geometrically weighted uniform laws, exact quantile
 transport, Banach-valued survival layer cake, weighted inverse layer cake,
-reciprocal-power values, dyadic algorithms, half-base \(q\)-binomial identities, prefix
-sums, denominator-free arbitrary-base geometric interpolation, normalized integer-order
-Volterra primitives and polynomial weights, endpoint Laplace analysis, and computable
-approximation.
+arbitrary absolutely-continuous inverse-pair calculus, reciprocal-power values, dyadic
+algorithms, half-base \(q\)-binomial identities, prefix sums, denominator-free
+arbitrary-base geometric interpolation, finite formal-series filters and their Gaussian
+residuals, normalized integer-order Volterra primitives and polynomial weights, endpoint
+Laplace analysis, and computable approximation.
 
 The most important methodological conclusion is equally concrete: the primary document is
 now a map of proved mathematics.  Research claims can move back from the frontier only after
@@ -6847,6 +7037,7 @@ Probability, weighted-law naturality, quantile transport, layer cake, and finite
 \path{GeometricUniformLaw.lean}, \path{ProbabilityRepresentation.lean},
 \path{QuantileTransport.lean}, \path{SubgraphFubini.lean},
 \path{SurvivalLayerCake.lean}, \path{InverseLayerCake.lean},
+\path{InversePairIntegral.lean},
 \path{EarlyApproximants.lean},
 \path{EarlyMeasureBridge.lean}, \path{WeakConvergence.lean},
 \path{ProbabilityLaplaceMoments.lean}, \path{LaplaceMoments.lean},
@@ -6894,8 +7085,9 @@ Universal exponential, Bell, and endpoint-transfer algebra &
 \path{LogSeriesMultiplicative.lean}\\
 Finite base-layer arithmetic &
 \path{BaseLayerRegrouping.lean}\\
-Finite polynomial functionals and geometric Lagrange/Richardson exactness &
+Finite polynomial and formal-series filters, and geometric Lagrange/Richardson exactness &
 \path{FinitePolynomialFunctional.lean}, \path{CompleteHomogeneous.lean},
+\path{FinitePowerSeriesFilter.lean}, \path{GeometricPowerSeriesFilter.lean},
 \path{GeometricLagrange.lean}, \path{LagrangeResidualMoments.lean},
 \path{GeometricCompleteHomogeneous.lean},
 \path{GeometricResidualMoments.lean},
@@ -7117,6 +7309,11 @@ V.~Reshetnikov,
 \Cref{sec:normalized-volterra} were checked on the side branch at commit
 \texttt{e109088ed17186e7fcff8043cb3c1d9b5a131b8e}, on the same date.
 \newblock \url{https://github.com/VladimirReshetnikov/ProveIt/tree/e109088ed17186e7fcff8043cb3c1d9b5a131b8e/Analysis/FabiusFunction}.
+\newblock The inverse-pair integral theorem, finite formal-series filter, geometric
+Gaussian residual filter, and strengthened denominator-free finite (q)-binomial
+declarations were checked at commit
+\texttt{21672485601447ed2da543191f6d477c2a47f2b7}, on the same date.
+\newblock \url{https://github.com/VladimirReshetnikov/ProveIt/tree/21672485601447ed2da543191f6d477c2a47f2b7/Analysis/FabiusFunction}.
 
 \end{thebibliography}
 

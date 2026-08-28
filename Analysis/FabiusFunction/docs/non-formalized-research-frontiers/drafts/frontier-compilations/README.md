@@ -1,7 +1,7 @@
 # Frontier compilations
 
 The broad multi-topic "collected new results" report series,
-consolidated (2026-08-28) into the 261-page single volume
+consolidated (2026-08-28) into the 262-page single volume
 [`Frontier_Compilations/`](Frontier_Compilations/): ten absorbed reports,
 displayed as ten outer parts.
 

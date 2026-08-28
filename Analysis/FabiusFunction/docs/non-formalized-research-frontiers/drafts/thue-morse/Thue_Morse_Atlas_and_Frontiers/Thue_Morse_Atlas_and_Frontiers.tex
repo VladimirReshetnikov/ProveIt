@@ -307,7 +307,7 @@ is not by itself evidence of formalization.  Statements proved in Lean carry the
 declaration names in the text, typeset as \lean{Fabius.thueMorseSign}; statements without
 such a citation must not be inferred to have a formal counterpart.
 
-The current inventory in \cref{p1:sec:formalized-modules} consists of eighty-six compiled
+The current inventory in \cref{p1:sec:formalized-modules} consists of eighty-nine compiled
 Lean modules.  It covers the finite algebraic, automata, moment, Fourier, rarefaction,
 Dirichlet--Mellin, word-combinatorial, and Fabius--Rvachev bridges recorded there, often in
 greater generality than the displayed prose.  The dependency-aware map in
@@ -6278,7 +6278,7 @@ valuation, carry, and Pascal-row formulas remain genuinely base-two features.
 \subsection{Formalized modules (August 2026)}
 \label{p1:sec:formalized-modules}
 
-The first tranches of the formalization now exist as eighty-six
+The first tranches of the formalization now exist as eighty-nine
 compiled Lean modules in \repo{}, complementing the corpus modules
 (\path{Parity.lean}, \path{TwoAdic.lean}, \path{ThueMorsePrefix.lean},
 \path{ThueMorseGenerating.lean}, \path{ThueMorseExponential.lean},
@@ -6306,13 +6306,16 @@ Module & Contents \\
 \path{ThueMorseDigits.lean} & Additive Legendre, floor sums, floor-parity formula, `testBit` bridge, digit product. \\
 \path{ThueMorseEnumerators.lean} & Weight distribution, evil/odious enumerations and composition laws, XOR autocorrelation, signed Hamming spheres. \\
 \path{FinitePolynomialFunctional.lean} & Moment expansion for finite weighted polynomial evaluations, selected-, top-, and constant-coefficient extraction, scalar-extension forms, degree-valued strict cancellation, and same-ring conveniences over commutative semirings; repeated nodes and a zero surviving moment are allowed. \\
+\path{FinitePowerSeriesFilter.lean} & The universal finite rescaling filter on formal power series over arbitrary commutative semirings: diagonal coefficient action by the finite node moments, constant-term preservation from mass one or exactness, and compatibility with further rescaling and coefficient maps.  This is coefficientwise algebra only; it makes no analytic evaluation or convergence claim. \\
 \path{CompleteHomogeneous.lean} & Evaluated complete homogeneous symmetric polynomials over arbitrary commutative semirings: explicit multiset and universal-symmetric-polynomial forms, adjoining-variable and map/reindex laws, and the univariate complete-homogeneous quotient; only the linear-factor identity requires subtraction. \\
 \path{LagrangeResidualMoments.lean} & The all-order residual-moment formula for any finite weighted row exact below the node count, over an arbitrary commutative ring with repeated nodes allowed; distinct field-valued nodes enter only in the Lagrange-weight specialization. \\
 \path{BaseLayerRegrouping.lean} & Finite base-\(b\) layer reindexing and regrouping over arbitrary commutative monoids, with additive companions; the truncated divisor count and its evaluation as \(1+\nu_b(m)\) under explicit layer-range coverage.  No infinite-product or convergence assertion is made. \\
 \path{GeometricCompleteHomogeneous.lean} & The denominator-free principal specialization \(h_n(1,q,\ldots,q^r)={n+r\brack r}_q\) over arbitrary commutative semirings, including arbitrary common scale and the range-indexed form. \\
 \path{GeometricResidualMoments.lean} & Every positive moment of an arbitrary exact geometric row over any commutative ring, with repeated nodes and arbitrary scales allowed; geometric Lagrange rows, common dilations, and shifted blocks follow over fields under finite-node injectivity. \\
+\path{GeometricPowerSeriesFilter.lean} & Formal-series filtering at the nodes \(1,q,\ldots,q^p\): coefficient cancellation through the exactness order, the Gaussian multiplier in every positive degree, an all-index residual-series identity with the mass-one degree-zero boundary, and the geometric Lagrange specialization.  Analytic substitution, convergence, and remainder bounds are not asserted. \\
 \path{LogSeriesMultiplicative.lean} & The recurrence-defined formal power-series logarithm over arbitrary commutative \(\mathbb Q\)-algebras: coefficient reconstruction, zero constant term, differential-equation characterization and uniqueness, binary product rule, unit law, and finite-product additivity; no analytic-logarithm or infinite-product claim. \\
-\path{FiniteQBinomialCore.lean} & Denominator-free Gaussian coefficients by \(q\)-Pascal recursion over arbitrary semirings, finite \(q\)-Pochhammer products over commutative rings, all triangular boundary cases, and the finite \(q\)-binomial theorem at every base, including zero and roots of unity. \\
+\path{FiniteQBinomialCore.lean} & Denominator-free Gaussian coefficients by both \(q\)-Pascal recurrences, functoriality under semiring maps, and reflection symmetry over commutative semirings; finite \(q\)-Pochhammer shift/concatenation laws, the full product--Gaussian factorial identities, and the finite \(q\)-binomial theorem over commutative rings, including zero and roots of unity. \\
+\path{GeometricQBinomialLagrange.lean} & The reversed finite \(q\)-binomial product for geometric Lagrange numerators, their global forward-index Gaussian form via division-free symmetry and zero extension, normalized weights under the intrinsic node-injectivity hypothesis, and every positive residual moment. \\
 \path{ThueMorseSparseProuhet.lean} & Arbitrary-weight Prouhet annihilation and exact top-moment formula (\cref{p1:thm:arbitrary-weights}), degree-valued wrappers covering the zero polynomial on empty supports, the direct affine block extraction and cancellation API (\cref{p1:thm:prouhet-block-extraction}), and all-index sparse submask identities. \\
 \path{ThueMorseRarefied.lean} & Modulo-three rarefaction recursion and closed vectors, Newman positivity at dyadic endpoints, block balance, even-modulus collapse. \\
 \path{ThueMorseAperiodicity.lean} & Block-flip identities, promotion of an eventual period to a global one, and non-eventual-periodicity --- the last now deduced from overlap-freeness rather than from the reflection argument. \\
@@ -6419,7 +6422,7 @@ Ordinary addition & Carry cocycle \eqref{p1:eq:carry-sign} & Isolates the exact 
 Number-theoretic disguise & Central binomial valuation \eqref{p1:eq:central-thue-morse} & One classical integer stores the full binary weight. \\
 Pascal-row interpretation & Glaisher count or modulo-three residue & Uses the odd support of one row; the residue form avoids logarithms. \\
 Higher-dimensional Pascal & Multinomial count \eqref{p1:eq:multinomial-support} & Works with any number of variables. \\
-Formal power series & Finite/infinite products & Coefficients, Mahler equations, and zeros become immediate. \\
+Formal power series & Finite/infinite products and coefficient-diagonal filters & Coefficients, Mahler equations, and exact finite filtering become algebraic; analytic evaluation and convergence remain separate obligations. \\
 Nonlocal coefficient formulas & Euler/Bell/determinant forms & Eliminate explicit digit notation and expose ruler convolutions. \\
 Finite polynomial row & Moment-functional extraction & Separates polynomial coefficients from row moments, supports scalar extension, and does not require distinct nodes or a nonzero surviving moment. \\
 Polynomial cancellation & Mixed finite differences & Proves all Prouhet moments in one operator identity. \\
@@ -8026,9 +8029,23 @@ and Gaussian-binomial expression --- is formalized in the companion module descr
 The compiled module \path{GeometricQBinomialLagrange.lean} packages this
 finite algebra at arbitrary ratio.  Its
 \texttt{geometricQBinomialWeightNumerator} is zero for \(j>p\), and for
-\(j\le p\) is literally
+\(j\le p\) is definitionally given in the reversed form
 \( (-1)^{p-j}q^{\binom{p-j+1}{2}}
 \texttt{gaussianBinomial}\ q\ p\ (p-j)\).
+The division-free symmetry theorem
+\texttt{gaussianBinomial\_symm} in \path{FiniteQBinomialCore.lean} and
+zero extension above the diagonal now give the all-index forward formula
+\[
+ \texttt{geometricQBinomialWeightNumerator}\ q\ p\ j
+ =(-1)^{p-j}q^{\binom{p-j+1}{2}}
+   \texttt{gaussianBinomial}\ q\ p\ j
+\]
+as \texttt{geometricQBinomialWeightNumerator\_eq\_forward}; thus the
+displayed coefficient \(\qbinom{p}{j}{q}\) in \eqref{p2:eq:weights} is now
+the literal proved forward-index form.  The same core also proves
+\texttt{map\_gaussianBinomial}, both \(q\)-Pascal recurrences, the
+\(q\)-Pochhammer concatenation laws, the full denominator-free
+product--Gaussian factorial identity, and the finite \(q\)-binomial theorem.
 The theorem \texttt{reversed\_finite\_qBinomial\_theorem} proves the
 denominator-free polynomial identity with product
 \(\prod_{k<p}(z-q^{k+1})\).  Under injectivity of \(k\mapsto q^k\) on
@@ -8044,13 +8061,27 @@ gives every positive moment:
  \qquad(d>0).
 \]
 This discharges the algebraic weight and residual-moment obligations,
-including \(q=1/4\) whenever the nodes are injective.  The reverse index
-\((p-j)\) is the literal formal statement; the displayed
-\(\qbinom{p}{j}{q}\) in \eqref{p2:eq:weights} does not assert an unrecorded
-generic Gaussian symmetry theorem.  At \(q=1/2\), the existing
+including \(q=1/4\) whenever the nodes are injective.  At \(q=1/2\), the existing
 \texttt{discreteLimitWeight\_eq\_geometricLagrangeWeight} is the half-base
-Toeplitz specialization.  The analytic remainder and convergence claims in
-\cref{p2:thm:qRichardson} remain frontier.
+Toeplitz specialization.
+
+The coefficientwise action of the filter has also been factored at its
+natural level.  Over any commutative semiring,
+\path{FinitePowerSeriesFilter.lean} proves
+\[
+ [X^m]\sum_{j\in S}w_j f(a_jX)
+ =\left(\sum_{j\in S}w_ja_j^m\right)[X^m]f,
+\]
+together with constant-term, exactness, rescaling, and coefficient-map laws.
+\path{GeometricPowerSeriesFilter.lean} specializes this to \(a_j=q^j\):
+\texttt{geometricLagrangeSeriesFilter\_eq\_residual\_mk} packages degree
+zero and every positive Gaussian residual multiplier in one formal-series
+identity, while \texttt{map\_geometricSeriesFilter} transports the entire
+identity along a commutative-semiring homomorphism.  These are identities in
+\texttt{PowerSeries}; they do not identify formal substitution with analytic
+evaluation, prove convergence of the functions \(Q_m\), or supply a uniform
+weighted remainder.  Consequently the analytic convergence and remainder
+claims in \cref{p2:thm:qRichardson} remain frontier.
 
 \begin{theorem}[$q$-binomial spectral Richardson extrapolation]
 \label{p2:thm:qRichardson}
@@ -8820,13 +8851,21 @@ reindexing lemma the row asks for is exactly what was proved:
 \leanPartx{Fabius.tprod_geom_scale_pow} is stated for an arbitrary function into a commutative
 topological monoid.  Of the $q$-Richardson row, the interpolation characterization
 \eqref{p2:eq:weights-Lagrange} and the moment identities
-\eqref{p2:eq:moment-cancel}--\eqref{p2:eq:first-uncancelled} are done over an arbitrary field and
-arbitrary ratio; only the Gaussian-binomial normalization \eqref{p2:eq:weights} remains.  The
-remaining rows --- the Euler--zeta logarithm, the certified zeta remainder, the random-tail
-law, the weak expansion, the Lambert depth law, and the levels $r\ge1$ of the gamma tower ---
-have no formal counterpart at present, and the Euler--zeta logarithm is, as stated below,
-still the pivot: it is what the remainder bound, the corrected approximants, the cumulant
-formula and the base-$b$ theorem all reduce to.
+\eqref{p2:eq:moment-cancel}--\eqref{p2:eq:first-uncancelled}, the forward
+Gaussian-binomial normalization \eqref{p2:eq:weights}, and the complete
+coefficientwise action on formal power series are now delivered at arbitrary
+ratio.  The last item is the generic diagonal-filter API of
+\path{FinitePowerSeriesFilter.lean} and its geometric residual specialization
+\path{GeometricPowerSeriesFilter.lean}; it does not evaluate a formal series as
+an analytic function.  The Euler--zeta logarithm and certified zeta remainder
+have likewise since been delivered in \path{SincZetaSeries.lean} and
+\path{SincZetaRemainder.lean}, and the random-tail law exists in measure form in
+\path{MeasureRefinement.lean}.  What remains includes the analytic
+Richardson evaluation, weighted uniform remainder and convergence theorem,
+the random-variable weak expansion, the Lambert depth law, and the levels
+$r\ge1$ of the gamma tower.  In particular, neither the formal filter identity
+nor its Gaussian coefficient multipliers imply the analytic bounds or
+brackets stated later in this part.
 
 \begingroup
 \small
@@ -8869,9 +8908,12 @@ nonnegativity, and the exact prefix--corrections--tail split. \\
 $q$-Richardson weights
 \eqref{p2:eq:weights}--\eqref{p2:eq:first-uncancelled} & finite Lagrange interpolation,
 $q$-Pochhammer algebra & \emph{Delivered} in
-\path{GeometricQBinomialLagrange.lean}: zero-extended numerator, reversed
-denominator-free polynomial, normalized weight under node injectivity, and every positive
-residual moment; \(q=1/2\) is linked to the Toeplitz row. \\
+\path{GeometricQBinomialLagrange.lean}: zero-extended numerator in both
+forward and reversed Gaussian forms, the reversed denominator-free polynomial,
+normalized weight under node injectivity, and every positive residual moment.
+\path{GeometricPowerSeriesFilter.lean} further packages the entire
+coefficientwise filter; analytic evaluation and its remainder are not part of
+this row.  The case \(q=1/2\) is linked to the Toeplitz row. \\
 Random-tail law
 \eqref{p2:eq:random-tail} & independent random variables, almost-sure summation, equality in law &
 \emph{Delivered} in measure form in \path{MeasureRefinement.lean}, by exactly the
