@@ -149,4 +149,90 @@ theorem fractionalVolterra_rpow_mul_rvachevUp
             ∂weightedSumDistribution :=
         integral_const_mul _ _
 
+/-- **The reflected scaling identity**: for `0 < x`, `0 ≤ c ≤ x`,
+`∫_c^x (x-t)^{α-1} t^p dt = x^{p+α}·B_{1-c/x}(α, p+1)` — the `t ↦ x-t`
+reflection of the scaling identity, with the beta parameters
+swapped. -/
+theorem integral_rpow_mul_rpow_eq_incompleteBeta_reflected
+    {x c α p : ℝ} (hx : 0 < x) (hc0 : 0 ≤ c) (hcx : c ≤ x) :
+    ∫ t in c..x, (x - t) ^ (α - 1) * t ^ p =
+      x ^ (p + α) * incompleteBeta (1 - c / x) α (p + 1) := by
+  have hrefl : ∫ t in c..x, (x - t) ^ (α - 1) * t ^ p =
+      ∫ s in (0 : ℝ)..(x - c), (x - s) ^ p * s ^ (α - 1) := by
+    have hcomp := intervalIntegral.integral_comp_sub_left
+      (f := fun s => (x - s) ^ p * s ^ (α - 1)) (a := c) (b := x) x
+    rw [sub_self] at hcomp
+    rw [← hcomp]
+    refine intervalIntegral.integral_congr fun t _ => ?_
+    rw [show x - (x - t) = t from by ring]
+    ring
+  rw [hrefl]
+  have h := integral_rpow_mul_rpow_eq_incompleteBeta
+    (x := x) (c := x - c) (α := p + 1) (p := α - 1) hx
+    (by linarith) (by linarith)
+  rw [show p + 1 - 1 = p from by ring] at h
+  rw [h, show α - 1 + (p + 1) = p + α from by ring,
+    show α - 1 + 1 = α from by ring,
+    show (x - c) / x = 1 - c / x from by
+      rw [sub_div, div_self hx.ne']]
+
+/-- The weighted-sum law's lower CDF is the Fabius function. -/
+theorem weightedSumDistribution_real_Iic_eq_fabiusReal
+    (F : BoundedFabius) (hF : IsFabius F) (t : ℝ) :
+    weightedSumDistribution.real (Iic t) = fabiusReal F t := by
+  have h1 : weightedSumCDF t = weightedSumDistribution.real (Iic t) := by
+    rw [weightedSumCDF, ProbabilityTheory.cdf_eq_real]
+  rw [← h1, weightedSumCDF_eq_fabiusReal F hF t]
+
+/-- **The incomplete-beta master formula** (CDF display, positive real
+parameters): for `α > 0`, `p ≥ 0`, and `0 < x ≤ 1`,
+`I₀₊^α [t^p·F(t)](x) = x^{p+α}/Γ(α) · E[B_{1-min(X/x,1)}(α, p+1)]`.
+Samples at or above `x` contribute `B_0 = 0`, so the clamp implements
+the indicator `1_{X<x}` of the report's display. -/
+theorem fractionalVolterra_rpow_mul_fabiusReal
+    (F : BoundedFabius) (hF : IsFabius F) {α p x : ℝ}
+    (hα : 0 < α) (hp : 0 ≤ p) (hx : 0 < x) (hx1 : x ≤ 1) :
+    fractionalVolterra α 0 (fun t => t ^ p * fabiusReal F t) x =
+      x ^ (p + α) / Real.Gamma α *
+        ∫ z, incompleteBeta (1 - min (z / x) 1) α (p + 1)
+          ∂weightedSumDistribution := by
+  calc fractionalVolterra α 0 (fun t => t ^ p * fabiusReal F t) x
+      = ∫ t in (0 : ℝ)..x, weightedSumDistribution.real (Iic t) •
+          ((x - t) ^ (α - 1) / Real.Gamma α * t ^ p) := by
+        rw [fractionalVolterra]
+        refine intervalIntegral.integral_congr fun t _ => ?_
+        simp only [smul_eq_mul]
+        rw [weightedSumDistribution_real_Iic_eq_fabiusReal F hF t]
+        ring
+    _ = ∫ z, (∫ t in min (max z 0) x..x,
+          (x - t) ^ (α - 1) / Real.Gamma α * t ^ p)
+          ∂weightedSumDistribution :=
+        intervalIntegral_cdf_smul_eq_integral_clamp
+          weightedSumDistribution hx.le _
+          (intervalIntegrable_rpow_kernel hα hp hx.le)
+    _ = ∫ z, x ^ (p + α) / Real.Gamma α *
+          incompleteBeta (1 - min (z / x) 1) α (p + 1)
+          ∂weightedSumDistribution := by
+        refine integral_congr_ae
+          (ae_weightedSumDistribution_mem_Icc.mono fun z hz => ?_)
+        rw [max_eq_left hz.1]
+        have hc0 : (0 : ℝ) ≤ min z x := le_min hz.1 hx.le
+        have hcx : min z x ≤ x := min_le_right z x
+        have hker : ∀ t : ℝ,
+            (x - t) ^ (α - 1) / Real.Gamma α * t ^ p =
+            (Real.Gamma α)⁻¹ * ((x - t) ^ (α - 1) * t ^ p) := by
+          intro t
+          ring
+        simp_rw [hker]
+        rw [intervalIntegral.integral_const_mul,
+          integral_rpow_mul_rpow_eq_incompleteBeta_reflected hx hc0 hcx]
+        have hmin : min z x / x = min (z / x) 1 := by
+          rw [← min_div_div_right hx.le, div_self hx.ne']
+        rw [hmin]
+        ring
+    _ = x ^ (p + α) / Real.Gamma α *
+          ∫ z, incompleteBeta (1 - min (z / x) 1) α (p + 1)
+            ∂weightedSumDistribution :=
+        integral_const_mul _ _
+
 end Fabius
