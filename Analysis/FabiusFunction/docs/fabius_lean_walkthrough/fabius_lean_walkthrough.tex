@@ -180,7 +180,7 @@ and the umbrella import is \nolinkurl{FabiusFunction.lean}.  The Lake package de
 
 The normal build command from the project root is:
 \begin{lstlisting}[style=pseudo]
-LAKE_JOBS=1 LEAN_NUM_THREADS=0 lake build +FabiusFunction
+LAKE_JOBS=1 lake build +FabiusFunction
 \end{lstlisting}
 The source claims in this walkthrough are pinned to commit
 \nolinkurl{eaea1b9afe2b7ff0b7dd880bd1710e303dec6d80}.  Before reproducing a
@@ -188,7 +188,7 @@ declaration or module count, check the checkout with \texttt{git rev-parse
 HEAD}; a moving \texttt{main} branch is not a reproducible specification.
 After dependencies have been installed, a focused edit loop can build one
 module at a time with a Lake target such as
-\texttt{LAKE\_JOBS=1 LEAN\_NUM\_THREADS=0 lake build
+\texttt{LAKE\_JOBS=1 lake build
 +FabiusFunction.DyadicAnalytic}.  The root-module build
 remains the release check.
 
@@ -857,6 +857,26 @@ at both ends, by
 \nolinkurl{tendsto_deriv_fabiusInv_atTop_at_one_left}.  These are one-sided
 limits through \((0,1)\), not derivative values at the clamping points.
 
+\subsection{Generic formal implicit roots versus inverse-Fabius germs}
+\nolinkurl{ImplicitPowerSeries.lean} isolates a purely formal root engine.
+\nolinkurl{FormalImplicitRoot.existsUnique_isRoot_sub_mem} lifts a simple
+approximate root modulo an adic ideal in a complete commutative ring without a
+monicity assumption.  Its
+power-series specialization
+\nolinkurl{PowerSeries.Implicit.existsUnique_zeroConstant_root} says that a
+polynomial over \(R[[X]]\) with vanishing parameter-constant
+constant coefficient and unit parameter-constant linear coefficient has a
+unique zero-constant formal root.  The chosen root and its uniqueness
+interface are \nolinkurl{PowerSeries.Implicit.root},
+\nolinkurl{PowerSeries.Implicit.constantCoeff_root},
+\nolinkurl{PowerSeries.Implicit.eval_root}, and
+\nolinkurl{PowerSeries.Implicit.eq_root}.
+
+These declarations are formal algebra only.  They neither define the inverse
+frontier's \(\mathcal A_r\) or \(Q_{x_0}\), nor prove convergence or analyticity
+of the resulting series, identification with a local inverse, entry into a
+finite-prefix plateau, a nonzero flat defect, or any Fabius quantile formula.
+
 \subsection{Exact analytic loci and non-elementarity}
 The smooth function is analytic precisely off its closed transition interval:
 \[
@@ -1316,6 +1336,80 @@ approximants.
 
 The self-similarity of \(X\) is the probabilistic counterpart of the fixed-point integral equation.  It supplies a second route to the same canonical bounded function once uniqueness of the \nolinkurl{IsFabius} specification is available.
 
+\subsection{The reusable geometric CDF and density layer}
+The post-snapshot modules \nolinkurl{ContinuousCDF.lean},
+\nolinkurl{GeometricUniformLaw.lean}, and
+\nolinkurl{GeometricUniformCDF.lean} separate the measure-theoretic argument
+from its dyadic specialization.  The generic layer proves three facts for real
+probability laws.  A law with null singletons has a continuous CDF; invariance
+under \(y\mapsto a-y\) gives
+\[
+  H(a-x)=1-H(x);
+\]
+and an everywhere pointwise derivative \(H'(x)=h(x)\) identifies the law
+exactly as Lebesgue measure with density \(\operatorname{ofReal}\circ h\).
+The last theorem assumes neither continuity of \(h\), null singletons, nor
+prior absolute continuity.  Monotonicity of a CDF supplies the derivative's
+nonnegativity and local integrability inside the proof.  The declarations are
+\nolinkurl{continuous_cdf_of_nullSingleton},
+\nolinkurl{cdf_reflection_sub}, and
+\nolinkurl{measure_eq_withDensity_of_cdf_hasDerivAt}.
+
+For the geometric weights \(w_n(q)=(1-q)q^n\), write \(\mu_q\) for the law,
+\(F_q\) for \nolinkurl{geometricUniformCDF q}, and, when \(0<q<1\), set
+\[
+  f_q(x)=
+  \frac{F_q(x/q)-F_q((x-(1-q))/q)}{1-q}.
+\]
+The Lean definition \nolinkurl{geometricUniformDensity q} is total in (q),
+but only (0<q<1) gives this classical density interpretation: at (q=0)
+field division is totalized, while for (q<0) the affine event inequality is
+reversed.
+The definition of \(F_q\), together with its monotonicity, range bounds, and
+measurability, is total in real \(q\).  If \(\lvert q\rvert<1\), then \(F_q\)
+is continuous and
+\[
+  F_q(1-x)=1-F_q(x),\qquad F_q(1/2)=1/2.
+\]
+For \(0\le q<1\), it is exactly zero on \(x\le0\) and exactly one on
+\(1\le x\).  Strict positivity of \(q\) is essential for solving the affine
+event inequality in the conditioning step.  Under \(0<q<1\), Lean proves on
+all of \(\R\)
+\begin{align}
+ F_q(x)
+ &=\int_0^1 F_q\!\left(\frac{x-(1-q)u}{q}\right)\dd u,\label{eq:walk-q-cdf-conditioning}\\
+ &=\frac{q}{1-q}
+   \int_{(x-(1-q))/q}^{x/q}F_q(t)\dd t,\label{eq:walk-q-cdf-interval}\\
+ F_q'(x)&=f_q(x).\label{eq:walk-q-cdf-density}
+\end{align}
+The final identity is pointwise \nolinkurl{HasDerivAt}, not merely an
+almost-everywhere derivative statement.  Consequently
+\[
+ \mu_q=\operatorname{Leb}\mathbin{\mathrm{withDensity}}
+       (\operatorname{ofReal}\circ f_q).
+\]
+Both \(F_q\) and \(f_q\) are \(C^\infty\), proved by bootstrapping the affine
+derivative formula rather than by Fourier inversion.  The density is
+continuous, nonnegative, and symmetric about \(1/2\); it vanishes for
+\(x\le0\) and \(1\le x\).  Its ordinary support is contained in \((0,1)\),
+its topological support is contained in \([0,1]\), and it has compact support.
+These are containment theorems for the density itself, not an assertion here
+that its nonzero set has closure exactly \([0,1]\).
+
+At \(q=1/2\), \nolinkurl{ProbabilityRepresentation.lean} supplies the exact
+all-real bridges
+\[
+ \operatorname{weightedSumCDF}=F_{1/2},\qquad
+ F_{1/2}(x)=F(x),\qquad
+ f_{1/2}(x)=2\Up(2x-1).
+\]
+Accordingly the dyadic smoothing, interval-integral, continuity, exterior-value,
+and reflection proofs now route through the reusable half-base API.  The new
+modules do not yet provide a separately named centered random variable or
+general-\(q\) centered density, characteristic-function product, moment or
+cumulant theory, log-concavity and shape transition, or uniqueness of the
+affine measure fixed point.
+
 \subsection{Finite convolution measures}
 A formal convolution proof must verify that every measure involved is finite, usually a probability measure.  The source defines the elementary measures, proves their support and total mass, and then uses induction to show the convolution remains a probability measure.  Associativity is applied only after the necessary sigma-finiteness or finiteness instances are in scope.
 
@@ -1358,7 +1452,9 @@ identity is stated directly as
          =\Prob[X\leq1-|x|].
 \]
 These are CDF and event-probability theorems; the module does not package a
-separate centered random variable or density theorem.
+separate centered random variable.  Its half-base bridges do now identify the
+explicit density from \nolinkurl{GeometricUniformCDF.lean} with
+\(2\Up(2x-1)\) on all of \(\R\), as recorded above.
 
 This gives an independent conceptual construction of the same object as the Banach fixed point.  In the formal dependency graph it is normally developed after the canonical function is available, because identification is easier than rebuilding the entire \nolinkurl{IsFabius} interface from measure convergence.  Mathematically, however, it explains why the function is a distribution function.
 
@@ -2984,7 +3080,10 @@ Inverse-power table \(F(2^{-n})\) & \nolinkurl{fabiusInversePowTwoTable}, \nolin
 Total dyadic evaluator & \nolinkurl{fabiusDyadicValue} & \nolinkurl{Arithmetic.lean}; analytic correctness wrapper in \nolinkurl{PaperStatements.lean} \\
 Dyadic common denominator \(D_n\) & \nolinkurl{dyadicDenominator} & \nolinkurl{Arithmetic.lean} and \nolinkurl{DenominatorBound.lean} \\
 Reshetnikov quantity \(R_n\) & \nolinkurl{reshetnikov} & \nolinkurl{Arithmetic.lean} and \nolinkurl{PaperStatements.lean} \\
-Weighted-sum CDF & \nolinkurl{weightedSumCDF} & \nolinkurl{ProbabilityRepresentation.lean} \\
+Generic continuous-CDF and density extraction & \nolinkurl{continuous_cdf_of_nullSingleton}, \nolinkurl{cdf_reflection_sub}, \nolinkurl{measure_eq_withDensity_of_cdf_hasDerivAt} & \nolinkurl{ContinuousCDF.lean} \\
+Geometric uniform law \(\mu_q\) & \nolinkurl{geometricUniformDistribution}, \nolinkurl{geometricUniformDistribution_selfSimilar}, \nolinkurl{geometricUniformDistribution_support_eq_Icc} & \nolinkurl{GeometricUniformLaw.lean} \\
+Geometric CDF \(F_q\) and density \(f_q\) & \nolinkurl{geometricUniformCDF}, \nolinkurl{geometricUniformDensity}, \nolinkurl{geometricUniformCDF_hasDerivAt}, \nolinkurl{geometricUniformDistribution_eq_withDensity}, \nolinkurl{contDiff_geometricUniformCDF}, \nolinkurl{contDiff_geometricUniformDensity} & \nolinkurl{GeometricUniformCDF.lean} \\
+Weighted-sum CDF and half-base bridges & \nolinkurl{weightedSumCDF}, \nolinkurl{weightedSumCDF_eq_geometricUniformCDF_one_half}, \nolinkurl{geometricUniformCDF_one_half_eq_fabiusReal}, \nolinkurl{geometricUniformDensity_one_half_eq_rvachevUp} & \nolinkurl{ProbabilityRepresentation.lean} \\
 Forward curvature profile & \nolinkurl{deriv_deriv_fabiusReal}, \nolinkurl{deriv_deriv_fabiusReal_eq_zero_iff} & \nolinkurl{Convexity.lean} \\
 Totalized inverse \(F^{-1}\) & \nolinkurl{fabiusInv}, \nolinkurl{fabiusOrderIso}, \nolinkurl{fabiusInv_differentiableAt_iff}, \nolinkurl{fabiusInv_contDiffAt_infty_iff} & \nolinkurl{FabiusInverse.lean} \\
 Inverse curvature & \nolinkurl{deriv_deriv_fabiusInv}, \nolinkurl{deriv_deriv_fabiusInv_half}, \nolinkurl{deriv_deriv_fabiusInv_eq_zero_iff}, \nolinkurl{strictConcaveOn_fabiusInv_firstHalf}, \nolinkurl{strictConvexOn_fabiusInv_secondHalf} & \nolinkurl{FabiusInverse.lean} \\
@@ -3045,6 +3144,7 @@ Module & Role in the development \\
 \nolinkurl{SharpFlatness.lean} & Factorial-strengthened endpoint power bounds for \(F\) and \(\Up\). \\
 \nolinkurl{NowhereAnalytic.lean} & Exact real-analytic loci: off the closed transition supports and nowhere on them. \\
 \nolinkurl{FabiusInverse.lean} & Totalized inverse, order isomorphism on the unit interval, exact positive reciprocal derivative, exact global smoothness locus (continuity everywhere, but differentiability and every positive finite or \(C^\infty\) order exactly off the clamping endpoints), reciprocal-cubic second derivative, midpoint jet and interior curvature loci, strict closed-half curvature, and endpoint quotient/derivative blow-up. \\
+\nolinkurl{ImplicitPowerSeries.lean} & Nonmonic complete-adic lifting and residue-class uniqueness, with arbitrary-base and zero-constant formal implicit-root specializations over power-series rings; it does not construct or analytically realize a Fabius inverse germ. \\
 \nolinkurl{InverseBranch.lean} & Analytic inverse theorem, analytic-density preservation for continuous right-inverse branches, and the complement-interior analyticity condition and conditional Lambert-branch criterion for \nolinkurl{IsElementaryOrInverse}. \\
 \nolinkurl{AlgebraicBranch.lean} & Algebraic-function branch interface used in non-elementarity arguments. \\
 \nolinkurl{ElementaryFunction.lean} & Formal expression language and semantics for elementary real functions. \\
@@ -3085,7 +3185,13 @@ Module & Role in the development \\
 \nolinkurl{FourierAnalytic.lean} & Entire Fourier transform of \(\Up\), Fourier inversion consequences, and its imaginary-axis relation to the half-moment generating function. \\
 \nolinkurl{OriginalCharacterization.lean} & Rvachev's original compact-support predicate, derived scale positivity, the forced scale and normalization, and the general fold from bounded Fabius solutions. \\
 \nolinkurl{OriginalUniqueness.lean} & Fourier-refinement uniqueness, the exact kernel of the fold, and the equivalences with fixed candidates or unique bounded Fabius witnesses. \\
-\nolinkurl{ProbabilityRepresentation.lean} & Product measure on \([0,1]^{\N}\), weighted coordinate sum, self-similarity, and exact CDF/\(\Up\) identifications. \\
+\nolinkurl{WeightedUniformSeries.lean} & Absolutely summable uniform-coordinate series, their canonical pushforward laws, pointwise and law-level head--tail splitting, reflection, and carried-interval results. \\
+\nolinkurl{WeightedUniformDistribution.lean} & Compatibility and naturality API for weighted laws, including scalar transport, affine recursion, sharp absolute continuity from any nonzero real coefficient, and null singletons. \\
+\nolinkurl{WeightedUniformSupport.lean} & Support equal to the continuous series range, exact signed-real min/max support intervals, and nonnegative unit-mass specializations. \\
+\nolinkurl{ContinuousCDF.lean} & Generic continuity of atomless probability CDFs, reflection symmetry from measure invariance, and the theorem identifying any everywhere pointwise CDF derivative as the exact Lebesgue density without prior regularity or absolute continuity assumptions. \\
+\nolinkurl{GeometricUniformLaw.lean} & Named weights \((1-q)q^n\), their series and probability law, affine self-similarity, reflection, absolute continuity, null singletons, and exact range/support statements. \\
+\nolinkurl{GeometricUniformCDF.lean} & The named \(F_q\) and explicit \(f_q\), conditioning and interval-integral equations, pointwise derivative and exact \nolinkurl{withDensity} law, continuity, reflection, exterior zeros, ordinary/topological support containments, compact support, and \(C^\infty\) regularity under their exact parameter hypotheses. \\
+\nolinkurl{ProbabilityRepresentation.lean} & Product measure on \([0,1]^{\N}\), weighted coordinate sum, self-similarity, and exact CDF/\(\Up\) identifications.  Its dyadic CDF smoothing, continuity, exterior-value, and reflection proofs are half-base specializations of \nolinkurl{GeometricUniformCDF.lean}; it also identifies \(F_{1/2}\) with every bounded Fabius function and \(f_{1/2}(x)\) with \(2\Up(2x-1)\). \\
 \nolinkurl{WeakConvergence.lean} & Characteristic-function convergence, Lévy continuity, bounded-continuous test convergence, positivity on every open set meeting \((-1,1)\), and exact limiting-measure support \([-1,1]\). \\
 \nolinkurl{StepMeasureBridge.lean} & Relates discrete/step approximants to their associated finite measures. \\
 \nolinkurl{EarlyMeasureBridge.lean} & Foundational bridge between early convolution approximants and measure formulations. \\
@@ -3274,6 +3380,9 @@ post-snapshot discussion above, were checked at checkpoint
 \nolinkurl{1e761ed77583e9870ceeaeb2c74ac824094f0f3f}, all on 27 August 2026.
 The subsequent five geometric and Lambert rows reflect source checkpoint
 \nolinkurl{c45276994d9411a45bef409ad6bc481771613113}, also on 27 August 2026.
+The \nolinkurl{ImplicitPowerSeries.lean} row and the generic formal-root
+discussion are a post-snapshot foundation checked at source checkpoint
+\nolinkurl{cd9086a80cbecefecb9bc1e00378d151061595e0} on 28 August 2026.
 The title-page pin and reproduction count continue to describe the older
 audited snapshot.
 \end{remark}
@@ -3529,11 +3638,11 @@ environment.
 \subsection{Build and inspect trust}
 The release-level library check is
 \begin{lstlisting}[style=pseudo,language={}]
-LAKE_JOBS=1 LEAN_NUM_THREADS=0 lake build +FabiusFunction
+LAKE_JOBS=1 lake build +FabiusFunction
 \end{lstlisting}
 The repository policy requires one prefixed module target per Lake invocation,
-with \texttt{LAKE\_JOBS=1} and \texttt{LEAN\_NUM\_THREADS=0}, including during
-debugging.  It also requires a source audit for declarations that bypass
+with \texttt{LAKE\_JOBS=1}, including during debugging, and forbids setting
+\texttt{LEAN\_NUM\_THREADS=0}.  It also requires a source audit for declarations that bypass
 ordinary proof checking:
 \begin{lstlisting}[style=pseudo,language={}]
 rg -n '\b(sorry|admit)\b' \

@@ -121,7 +121,8 @@
 \large Six thematic syntheses awaiting Lean verification}
 \author{Research quarantine for the \texttt{ProveIt} Fabius development\\
 \small Eleven source notebooks in six syntheses plus a post-audit gap register}
-\date{Base research snapshot: 25 August 2026; formal-status audit updated 28 August 2026}
+\date{Base research snapshot: 25 August 2026; formal-status audit updated 28 August 2026\\
+\small current compiler-validated checkpoint \nolinkurl{e6f535e5d}}
 
 \begin{document}
 % Compatibility macros used by the consolidated source notebooks.  They are
@@ -236,9 +237,14 @@ geometric-\(q\) weights, series, probability law, recurrence, and reflection.  E
 norm-summable real weighted law with a nonzero coefficient is absolutely continuous with
 respect to Lebesgue measure and has null singletons.  For every \(|q|<1\) the geometric law
 has those properties and support equal to its exact series range, and for \(0\le q<1\) that
-support is \([0,1]\).  A named general-\(q\) CDF and explicit density, their CDF/density
-identities, transforms, moments/cumulants, smoothness, and fixed-point uniqueness remain in
-the frontier.
+support is \([0,1]\).  The formal API now also names its CDF, proves CDF continuity and
+reflection for \(|q|<1\), the exterior tails for \(0\le q<1\), and, for \(0<q<1\), the
+conditioning identities, an explicit compactly supported Radon--Nikodym density, and
+real-space \(C^\infty\) regularity.  Its CDF and density have exact half-base bridges to the
+bounded Fabius function and the affine Rvachev bump.  The negative- and zero-parameter
+density interpretation, the general-\(q\) Fourier route, and the further centered, shape,
+moment, transform, derivative-hierarchy, endpoint-flatness, and fixed-point layers remain in
+the frontier on the precise boundary recorded below.
 
 Closely overlapping presentations have been merged rather than concatenated.  Each topic
 uses the strongest or most complete source as its backbone, imports independent proofs,
@@ -349,6 +355,24 @@ Named geometric uniform law &
 \nolinkurl{geometricUniformDistribution_support_eq_Icc},
 \nolinkurl{weightedSumDistribution_support_eq_Icc} &
 \nolinkurl{GeometricUniformLaw.lean}, \nolinkurl{ProbabilityRepresentation.lean} \\
+Generic continuous-CDF bridge &
+\nolinkurl{continuous_cdf_of_nullSingleton},
+\nolinkurl{cdf_reflection_sub},
+\nolinkurl{measure_eq_withDensity_of_cdf_hasDerivAt} &
+\nolinkurl{ContinuousCDF.lean} \\
+Geometric uniform CDF and density &
+\nolinkurl{geometricUniformCDF},
+\nolinkurl{geometricUniformDensity},
+\nolinkurl{geometricUniformCDF_eq_intervalIntegral},
+\nolinkurl{geometricUniformDistribution_eq_withDensity},
+\nolinkurl{contDiff_geometricUniformCDF},
+\nolinkurl{contDiff_geometricUniformDensity} &
+\nolinkurl{GeometricUniformCDF.lean} \\
+Half-base CDF and density bridges &
+\nolinkurl{weightedSumCDF_eq_geometricUniformCDF_one_half},
+\nolinkurl{geometricUniformCDF_one_half_eq_fabiusReal},
+\nolinkurl{geometricUniformDensity_one_half_eq_rvachevUp} &
+\nolinkurl{ProbabilityRepresentation.lean} \\
 Weighted survival, lower-CDF, fractional, and inverse layer cake &
 \nolinkurl{integral_smul_setIntegral_subgraph},
 \nolinkurl{integral_smul_setIntegral_supergraph},
@@ -396,6 +420,17 @@ Unconditionally summable analytic-series filters &
 \nolinkurl{geometricAnalyticSeriesFilter_eq_constant_add_gaussian_tsum},
 \nolinkurl{geometricLagrangeAnalyticSeriesFilter_shifted} &
 \nolinkurl{AnalyticSeriesFilter.lean} \\
+Formal implicit roots and nonmonic Hensel lifting &
+\nolinkurl{FormalImplicitRoot.exists_isRoot_sub_mem},
+\nolinkurl{FormalImplicitRoot.eq_of_isRoot_of_sub_mem},
+\nolinkurl{FormalImplicitRoot.existsUnique_isRoot_sub_mem},
+\nolinkurl{PowerSeries.Implicit.existsUnique_isRoot_constantCoeff},
+\nolinkurl{PowerSeries.Implicit.existsUnique_zeroConstant_root},
+\nolinkurl{PowerSeries.Implicit.root},
+\nolinkurl{PowerSeries.Implicit.constantCoeff_root},
+\nolinkurl{PowerSeries.Implicit.eval_root},
+\nolinkurl{PowerSeries.Implicit.eq_root} &
+\nolinkurl{ImplicitPowerSeries.lean} \\
 Totalized inverse & \nolinkurl{fabiusInv}, \nolinkurl{deriv_deriv_fabiusInv_eq_zero_iff}, \nolinkurl{tendsto_deriv_fabiusInv_atTop_at_zero_right}, \nolinkurl{fabiusInv_differentiableAt_iff}, \nolinkurl{fabiusInv_contDiffAt_infty_iff}, \nolinkurl{fabiusInv_analyticAt_iff} & \nolinkurl{FabiusInverse.lean}, \nolinkurl{InverseNotElementary.lean} \\
 Lower-Lambert coordinate & \nolinkurl{fabiusLambertPhase} & \nolinkurl{FabiusLambertSaddle.lean} \\
 All-orders saddle expansion & saddle mass/log coefficient declarations & \nolinkurl{FabiusFullAsymptoticExpansion.lean} and related modules \\
@@ -412,9 +447,14 @@ claim marked derived, numerical, conjectural, or open remain in this frontier un
 Lean declaration is audited.  The named weights \((1-q)q^n\), their law, measure recurrence,
 reflection, support equal to the series range for \(|q|<1\), and exact support \([0,1]\) for
 \(0\le q<1\), together with absolute continuity and null singletons throughout \(|q|<1\),
-are now exact formal inputs.  A named \(q\)-CDF and explicit density, their \(q\)-specific
-equations, transforms, moments/cumulants, smoothness, and uniqueness of a measure fixed point
-are not.
+are now exact formal inputs.  So are the named CDF, its continuity and reflection for
+\(|q|<1\), its tails for \(0\le q<1\), and, for \(0<q<1\), its refinement integrals,
+explicit compactly supported density, measure-level Radon--Nikodym identity, and real-space
+\(C^\infty\) regularity.  What remains here is the density interpretation at \(q=0\) and at
+negative \(q\), the general-\(q\) characteristic-function product, rapid decay and Fourier
+inversion route, named centered packaging, a closed higher-derivative hierarchy and endpoint
+flatness wrappers, shape theorems, transforms, moments/cumulants, and uniqueness of the
+affine measure fixed point.
 \end{boxedremark}
 
 
@@ -468,10 +508,11 @@ generalizations, and formulas that still lack exact declarations.  Its presence 
 notebook should be attributed to the formal library merely because a related definition or
 weaker theorem exists.  The primary exposition contains the audited, declaration-backed
 subset.  Among the obligations retained here are generic moment-matrix consequences,
-arbitrary-family Toeplitz wording, generic Gaussian coefficient bounds, and the named
-general-\(q\) CDF, explicit density, CDF/density equations, transform, moment/cumulant,
-smoothness, and uniqueness layers beyond the formalized geometric-\(q\) measure recurrence,
-absolute continuity, null-singleton, and exact-support results.  The inverse
+arbitrary-family Toeplitz wording, generic Gaussian coefficient bounds, and the geometric-
+\(q\) Fourier, centered-family, higher-derivative, endpoint-flatness, shape,
+transform, moment/cumulant, and fixed-point-uniqueness layers beyond the formalized CDF and
+positive-ratio smooth-density API.  The explicit density's interpretation at zero and
+negative parameters is also not supplied by that API.  The inverse
 endpoint and Fabius-specific coefficient obligations are tracked in \cref{part:inverse}.
 \end{boxedremark}
 
@@ -542,7 +583,9 @@ a longer proof-oriented or frontier discussion here: principally
 \path{GeometricPowerSeriesFilter.lean}, together with
 \path{AnalyticSeriesFilter.lean}, \path{ThueMorseComplexProductBridge.lean},
 \path{CauchyTransform.lean}, \path{CauchyCDF.lean}, and
-\path{CauchyRenormalization.lean}.\\
+\path{CauchyRenormalization.lean}, together with
+\path{ContinuousCDF.lean}, \path{GeometricUniformCDF.lean}, and
+\path{ImplicitPowerSeries.lean}.\\
 \textbf{Missing engine} & A generic theorem family that the main article deliberately leaves in
 the module guide: path sums, Toeplitz rows, formal coefficient recurrences, finite
 remainders, and Gaussian polynomial estimates.\\
@@ -1125,10 +1168,115 @@ identify the dyadic series and law with this specialization, while
 \lean{ProbabilityRepresentation.weightedSumDistribution_support_eq_Icc} records the exact
 support of the dyadic law.
 
-Absolute continuity, null singletons, and the exact range and support identities are now
-formal.  A named general-\(q\) CDF and explicit density, their \(q\)-specific equations,
-transforms, moments and cumulants, smoothness, and uniqueness of the affine measure fixed
-point remain outside the formal boundary for the general geometric family.
+At compiler-validated checkpoint \texttt{e6f535e5d}, two further modules promote the
+real-space CDF and positive-ratio density layer.  Write
+\begin{equation}
+ F_q(x)=\operatorname{cdf}(\mu_q)(x),
+ \qquad
+ f_q(x)=\frac{F_q(x/q)-F_q((x-(1-q))/q)}{1-q}.
+ \label{integration:eq:geometric-cdf-density}
+\end{equation}
+The definitions are total for real \(q\).  The CDF is monotone, measurable, nonnegative, and
+at most one for every parameter.  When \(|q|<1\), it is continuous and satisfies
+\begin{equation}
+ F_q(1-x)=1-F_q(x),
+ \qquad F_q(1/2)=1/2.                                      \label{integration:eq:geometric-cdf-reflection}
+\end{equation}
+For \(0\le q<1\), including \(q=0\), it has the exact tails
+\begin{equation}
+ F_q(x)=0\quad(x\le0),
+ \qquad F_q(x)=1\quad(x\ge1).                              \label{integration:eq:geometric-cdf-tails}
+\end{equation}
+For \(0<q<1\), the conditioning and ordinary interval-integral identities are
+\begin{align}
+ F_q(x)&=\int_0^1F_q\!\left(\frac{x-(1-q)u}{q}\right)\dd u,
+                                                                  \label{integration:eq:geometric-cdf-conditioning}\\
+ &=\frac{q}{1-q}\int_{(x-(1-q))/q}^{x/q}F_q(t)\dd t.             \label{integration:eq:geometric-cdf-ordinary-integral}
+\end{align}
+On the same strict range, \(F_q'(x)=f_q(x)\) at every real point.  The density is continuous,
+nonnegative and symmetric about \(1/2\), vanishes on both exterior half-lines, has ordinary
+support contained in \((0,1)\), topological support contained in \([0,1]\), and compact
+support.  The exact measure identity and smoothness conclusions are
+\begin{equation}
+ \mu_q=(\operatorname{Leb}:\operatorname{Measure}(\R))
+   \mathbin{\mathrm{withDensity}}
+   \bigl(x\mapsto\operatorname{ofReal}(f_q(x))\bigr),
+ \qquad F_q,f_q\in C^\infty(\R).                            \label{integration:eq:geometric-density-with-density}
+\end{equation}
+The proof of \(C^\infty\) bootstraps the real-space affine derivative refinement; it does not
+formalize the report's Fourier-product argument.
+
+\paragraph{Exact CDF/density API crosswalk.}
+The generic module \path{ContinuousCDF.lean} exports
+\lean{continuous_cdf_of_nullSingleton},
+\lean{cdf_reflection_sub}, and
+\lean{measure_eq_withDensity_of_cdf_hasDerivAt}.  The first converts null singletons into
+CDF continuity, the second converts affine reflection invariance into CDF reflection, and the
+third identifies an everywhere pointwise CDF derivative with the measure's Lebesgue density.
+
+All of the following names lie in \path{GeometricUniformCDF.lean} and the namespace
+\path{Fabius.ProbabilityRepresentation}.  The total definition and universal CDF surface are
+\lean{geometricUniformCDF},
+\lean{monotone_geometricUniformCDF},
+\lean{geometricUniformCDF_nonneg},
+\lean{geometricUniformCDF_le_one}, and
+\lean{measurable_geometricUniformCDF}.  The \(|q|<1\) continuity, reflection, and midpoint
+statements are
+\lean{continuous_geometricUniformCDF},
+\lean{geometricUniformCDF_reflection}, and
+\lean{geometricUniformCDF_one_half}.  The \(0\le q<1\) tails are
+\lean{geometricUniformCDF_zero_of_nonpos} and
+\lean{geometricUniformCDF_one_of_one_le}.
+
+For \(0<q<1\), the refinement, density, and derivative declarations are
+\lean{geometricUniformCDF_eq_integral},
+\lean{geometricUniformCDF_eq_intervalIntegral},
+\lean{geometricUniformDensity},
+\lean{geometricUniformCDF_hasDerivAt},
+\lean{deriv_geometricUniformCDF},
+\lean{continuous_geometricUniformDensity}, and
+\lean{geometricUniformDensity_nonneg}.  Exterior vanishing and support are
+\lean{geometricUniformDensity_zero_of_nonpos},
+\lean{geometricUniformDensity_zero_of_one_le},
+\lean{support_geometricUniformDensity_subset_Ioo},
+\lean{support_geometricUniformDensity_subset_Icc},
+\lean{tsupport_geometricUniformDensity_subset_Icc}, and
+\lean{geometricUniformDensity_hasCompactSupport}.  Finally,
+\lean{geometricUniformDensity_reflection},
+\lean{geometricUniformDistribution_eq_withDensity},
+\lean{contDiff_geometricUniformCDF}, and
+\lean{contDiff_geometricUniformDensity} give density symmetry, the Radon--Nikodym
+identification, and smoothness of every finite order.
+
+The half-base crosswalk in \path{ProbabilityRepresentation.lean} is exact at every real
+argument:
+\lean{weightedSumCDF_eq_geometricUniformCDF_one_half} identifies the two CDF definitions,
+\lean{geometricUniformCDF_one_half_eq_fabiusReal} identifies that CDF with every bounded
+Fabius representative, and
+\lean{geometricUniformDensity_one_half_eq_rvachevUp} proves
+\begin{equation}
+ f_{1/2}(x)=2\Up(2x-1).                                    \label{integration:eq:geometric-density-half-bridge}
+\end{equation}
+
+\begin{boxedremark}
+\textbf{Remaining geometric-\(q\) frontier.}
+The promotion is deliberately not read past its hypotheses.  The law \(\mu_q\) is absolutely
+continuous for every \(|q|<1\), but the selected total function \(f_q\) is proved to be its
+Radon--Nikodym density only when \(0<q<1\); its density interpretation at \(q=0\) and at
+negative \(q\) remains open in this interface.  The following report layers also remain in
+the research quarantine:
+\begin{itemize}
+\item the general-\(q\) characteristic-function product, quantitative rapid decay, and the
+      Fourier-inversion construction of smooth densities;
+\item separately named centered variables and densities and their affine transport package;
+\item a closed all-order derivative-refinement hierarchy and explicit endpoint-flatness
+      wrappers, beyond the formal existence of all finite derivatives;
+\item log-concavity, strictness, central plateaux and other parameter-dependent shape claims;
+\item transform formulas, Bernoulli cumulants, Bell moments, and related asymptotic or
+      Gaussian-limit statements; and
+\item uniqueness of the affine measure fixed point.
+\end{itemize}
+\end{boxedremark}
 
 \begin{proposition}[The smoothing equation for the CDF]
 \label{integration:prop:CDF-smoothing-detailed}
@@ -1380,7 +1528,7 @@ higher or fractional inverse primitives, or complex Mellin continuation.
 
 \begin{remark}[Formalized positive-real fractional Volterra boundary]
 \label{integration:rem:fractional-volterra-boundary}
-At compiled full-facade checkpoint \texttt{22f801337}, the definition
+At compiled full-facade checkpoint \texttt{e6f535e5d}, the definition
 \lean{fractionalVolterra} in \path{FractionalVolterra.lean} is a total
 Gamma-normalized oriented interval integral for a real order, arbitrary real base and
 endpoint, and an input valued in any real normed space.  The unconditional declarations
@@ -2857,6 +3005,17 @@ mass, continuity and measurability, affine splitting, reflection, absolute conti
 singletons, and support equal to the series range for \(|q|<1\), with exact support \([0,1]\)
 for \(0\le q<1\);
 \cref{integration:sec:weighted-naturality}.\\
+\path{ContinuousCDF.lean} &
+The three reusable real-CDF bridges: continuity from null singletons, CDF reflection from
+affine reflection invariance, and identification of an everywhere pointwise CDF derivative
+as a Lebesgue Radon--Nikodym density;
+\cref{integration:sec:weighted-naturality}.\\
+\path{GeometricUniformCDF.lean} &
+The named geometric CDF and density API: continuity and reflection for \(|q|<1\), tails for
+\(0\le q<1\), and, for \(0<q<1\), conditioning and interval-integral refinement,
+everywhere differentiation, nonnegativity, symmetry, compact support, the exact
+\texttt{withDensity} identity, and real-space \(C^\infty\) regularity;
+\cref{integration:sec:weighted-naturality}.\\
 \path{SubgraphFubini.lean} &
 \lean{integral_smul_setIntegral_subgraph} and
 \lean{integral_smul_setIntegral_supergraph}, the real- or complex-weighted Banach-valued
@@ -2951,6 +3110,15 @@ tails \lean{geometricAnalyticSeriesFilter_eq_constant_add_gaussian_tsum},
 unconditional and explicit; no conditional/boundary convergence, radius or uniform
 convergence, error/norm or asymptotic estimate, positivity, or Fabius-specific acceleration
 claim is made.\\
+\path{ImplicitPowerSeries.lean} &
+One distinguished root definition and eight nonmonic formal implicit-root theorems.  The
+three \path{FormalImplicitRoot} results give existence, uniqueness, and unique existence in
+a complete adic commutative ring from an approximate root and a derivative unit modulo the
+ideal (standalone uniqueness uses the stated Jacobson-radical bound).  The six
+\path{PowerSeries.Implicit} declarations give arbitrary-base and zero-constant lifting, the
+distinguished root, its constant coefficient and evaluation equation, and uniqueness over
+an arbitrary commutative coefficient ring.  No concrete inverse-Fabius germ, analytic
+convergence, plateau localization, flat-remainder, or quantile theorem is asserted.\\
 \path{ThueMorseComplexProductBridge.lean} &
 Total complex finite Thue--Morse sinc and negative-Laplace block identities at every level,
 including the removable origin, their quotient forms away from zero, origin simplification
@@ -3022,9 +3190,13 @@ nonnegative specializations.\\
 Named geometric-\(q\) law & Not recorded in the pinned companion snapshot &
 Exact weights, summability and mass, series and probability law, affine self-similarity,
 reflection, absolute continuity, null singletons, and support equal to the series range for
-\(|q|<1\), exact support \([0,1]\) for \(0\le q<1\), and both half-base bridges; a named
-general-\(q\) CDF and explicit density, their equations, transforms, moments/cumulants,
-smoothness, and fixed-point uniqueness remain outside the formal boundary.\\
+\(|q|<1\), exact support \([0,1]\) for \(0\le q<1\), a named CDF continuous and symmetric
+for \(|q|<1\), its exact nonnegative-range tails, and, for \(0<q<1\), refinement integrals,
+an explicit compactly supported Radon--Nikodym density, and real-space \(C^\infty\)
+regularity.  Series, law, CDF, and density half-base bridges are formal.  The zero/negative
+parameter density interpretation, general-\(q\) Fourier route, centered package, closed
+higher-derivative and endpoint-flatness wrappers, shape, transforms, moments/cumulants, and
+fixed-point uniqueness remain outside the formal boundary.\\
 Probability--Laplace bridge & Absent & Generic Banach-valued partial and full survival layer
 cake, inverse layer cake and exact inverse area, identification of raw, endpoint, and tilted
 moments, complete monotonicity, and half-moment interpretation.\\

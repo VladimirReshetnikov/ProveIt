@@ -13,8 +13,10 @@
 \usepackage{titlesec}
 \usepackage{listings}
 \usepackage{xurl}
-\usepackage{hyperref}
+\usepackage[hypertexnames=false]{hyperref}
 \usepackage[nameinlink,noabbrev]{cleveref}
+\crefname{problem}{problem}{problems}
+\Crefname{problem}{Problem}{Problems}
 
 \definecolor{linkblue}{RGB}{25,75,135}
 \definecolor{shadegray}{RGB}{246,247,249}
@@ -22,11 +24,11 @@
 \definecolor{deepgreen}{RGB}{30,105,75}
 \hypersetup{
   colorlinks=true,
-  pdfauthor={OpenAI, prepared for Vladimir Reshetnikov},
+  pdfauthor={},
   linkcolor=linkblue,
   citecolor=deepgreen,
   urlcolor=linkblue,
-  pdftitle={Inverse Frontiers for the Fabius--Rvachev System},
+  pdftitle={Inverse and Sampling Frontiers for the Fabius--Rvachev System},
   pdfsubject={Exact inverse-dyadic algebraic germs, Catalan--Gaussian-binomial acceleration, and periodic Lambert--Bell quantile asymptotics},
   pdfkeywords={Fabius function, inverse Fabius function, Rvachev up-function, Thue-Morse, q-binomial, sinc product, Lambert W, Bell polynomial, Bernoulli number, Richardson extrapolation}
 }
@@ -140,8 +142,10 @@ and periodic Lambert--Bell quantile asymptotics}
 \tableofcontents
 \clearpage
 \section*{Provenance}
-This volume consolidates the following drafts verbatim (labels, citation keys, and
-asset paths mechanically prefixed per part; no mathematical content altered).
+This volume mechanically consolidates the following drafts (labels, citation
+keys, and asset paths prefixed per part).  Their snapshot mathematics is
+preserved except for passages explicitly labelled as post-snapshot
+formalization status, whose source checkpoints are recorded in place.
 The absorbed drafts are deleted from the working tree; git history is the archive.
 \begin{itemize}
 \item \path{Fabius_Inverse_Frontier_Report_Source_and_PDF/Fabius_Inverse_Frontier_Report.tex} \\ {\footnotesize SHA-256 \path{9fb792d8e77e52472f90c1e4309c2344626d85f8da35fb3f7bca4ec28c90da79}}
@@ -1632,10 +1636,18 @@ spline pieces.
 \end{obligation}
 
 \begin{obligation}[Algebraic inverse germ]
-Instantiate a formal implicit-function theorem over $\Q[[Q]]$ for
-$\mathcal A_r(z,Q)$ with invertible linear coefficient $F'(x_r)$.  Prove separately that
-the formal series is represented by the analytic local inverse and enters the plateau interval
-for all large $n$.
+\emph{Post-snapshot status, checked at source checkpoint
+\path{cd9086a80cbecefecb9bc1e00378d151061595e0}.}
+The reusable formal root engine is now supplied by
+\path{ImplicitPowerSeries.lean}.  In particular,
+\nolinkurl{PowerSeries.Implicit.existsUnique_zeroConstant_root} applies to a
+polynomial over $\Q[[Q]]$ once its parameter-constant
+constant coefficient is zero and its parameter-constant linear coefficient is
+a unit.  What remains is to define the concrete polynomial
+$\mathcal A_r(z,Q)$ in Lean, verify those hypotheses, and instantiate the
+generic theorem.  Separately still open are the analytic realization of that
+formal root, its identification with the local inverse, entry into the plateau
+interval for all large $n$, and the displayed quantile formula.
 \end{obligation}
 
 \begin{remark}[Formalized geometric Lagrange core]
@@ -2511,6 +2523,18 @@ $x_0+S_{x_0}$.  Since $\InvF'(y_0)>0$, the analytic inverse-function theorem wou
 analytic at $x_0$, contradicting the nowhere-analyticity theorem.  Therefore $R_{x_0}$ is nonzero in
 every neighborhood.
 \end{proof}
+
+\begin{resultbox}[Post-snapshot formalization boundary]
+At source checkpoint
+\path{cd9086a80cbecefecb9bc1e00378d151061595e0},
+\path{ImplicitPowerSeries.lean} proves only the generic unique formal-root
+statement.  It does not define $Q_{x_0}$, construct $S_{x_0}$, prove analytic
+convergence, identify the series with the Taylor germ of $F^{-1}$, establish
+the plateau/flat decomposition \eqref{p2:eq:G-shadow}, or prove any
+inverse-derivative or quantile consequence.  Thus
+\cref{p2:thm:algebraic-inverse-germ} remains unformalized in its full analytic
+conclusion.
+\end{resultbox}
 
 \begin{resultbox}[The paradox in its sharpest form]
 At a dyadic output $y_0=F(a/2^N)$, the inverse Fabius function has a Taylor series with a positive
@@ -3937,7 +3961,7 @@ The proofs are well suited to staged formalization.
 Proposed module & Principal declarations \\
 \midrule
 \texttt{DyadicInverseGerm.lean}
-& Define the finite dyadic jet polynomial; prove flat remainder; connect formal reversion to inverse derivatives. \\
+& Post-snapshot status at checkpoint \texttt{cd9086a80}: define the finite dyadic jet polynomial; instantiate the delivered generic formal-root engine; prove the flat remainder; connect the chosen formal root to inverse derivatives. \\
 \texttt{InverseBellLagrange.lean}
 & Lagrange--B\"urmann coefficient formula, partial-Bell recurrence, rationality, and the Catalan quarter-point theorem. \\
 \texttt{RvachevAppell.lean}

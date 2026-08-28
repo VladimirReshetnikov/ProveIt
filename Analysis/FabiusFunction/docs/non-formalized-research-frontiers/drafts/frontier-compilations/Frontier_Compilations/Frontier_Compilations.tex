@@ -14601,16 +14601,19 @@ block.  Finally, we give a phase-preserving Lagrange/Richardson filter for asymp
 remainders whose coefficients are periodic in a lower-Lambert phase, together with a
 Fourier phase-averaging filter and exact Lambert-$W$ node construction.
 
-A post-snapshot Lean audit now supplies the generic continuous-linear naturality,
-conditional operator/scalar affine-recursion, and real absolute-continuity engines for
-arbitrary norm-summable weighted uniform series.  Every such real law with a nonzero
-coefficient is absolutely continuous with respect to Lebesgue measure and has null
-singletons.  The audit also defines this report's geometric-\(q\) weights, series, and law and
-proves their measure-level self-similarity, reflection, absolute continuity, null singletons,
-and support equal to the series range for \(|q|<1\), with exact support \([0,1]\) for
-\(0\le q<1\).  It does not define a named general-\(q\) CDF or explicit density, nor prove
-their CDF or density identities, transforms, moments or cumulants, smoothness, or fixed-point
-uniqueness.
+A post-snapshot Lean audit, checked at compiled source checkpoint
+\path{e6f535e5d}, now supplies the generic continuous-linear naturality,
+conditional operator/scalar affine-recursion, real absolute-continuity, and exact-support
+engines for arbitrary norm-summable weighted uniform series.  It also defines this report's
+geometric-\(q\) weights, series, law, CDF, and explicit positive-ratio density.  For
+\(|q|<1\), the real CDF is continuous, obeys reflection, and takes value \(1/2\) at the
+midpoint.  For \(0\le q<1\), its exterior tails are exactly zero and one; for \(0<q<1\),
+the two conditioning integrals, pointwise derivative formula, Radon--Nikodym density,
+density reflection and compact support, and \(C^\infty\) regularity of both CDF and density
+are formal.  At \(q=1/2\), exact all-real declarations identify the CDF with the bounded
+Fabius function and the density with the affine Rvachev up-function.  The report's Fourier
+products and inversion proof, moments and transforms, higher-derivative and endpoint-flatness
+wrappers, shape theory, and fixed-point uniqueness remain outside that promotion.
 
 The word \emph{new} is used only in a corpus-relative sense: these statements were not found
 in the 57 TeX sources inspected in the specified repository snapshot.  No claim of global
@@ -14629,7 +14632,8 @@ listed in \texttt{corpus\_inventory.txt}, including frozen versions, the living 
 the Thue--Morse atlas, all included paper sources, and the twelve Fourier-decay drafts and
 audits.
 
-Since that pinned snapshot, \path{WeightedUniformSeries.lean},
+Since that pinned snapshot, and as checked at compiled source checkpoint
+\path{e6f535e5d}, \path{WeightedUniformSeries.lean},
 \path{WeightedUniformDistribution.lean}, and \path{WeightedUniformSupport.lean} have
 formalized the reusable product space, absolutely summable Banach-valued uniform-coordinate
 series, and their pushforward laws, including the eleven-declaration generic naturality and
@@ -14648,10 +14652,20 @@ $q=1/2$,
 \path{ProbabilityRepresentation.lean} identifies both the random series and its law with
 the classical dyadic construction and proves its exact support is $[0,1]$.
 
-This promotion does not define a named general-$q$ CDF or select an explicit
-Radon--Nikodym density, nor does it prove the $q$-specific CDF or density identities,
-characteristic-function product, moments, cumulants, smoothness, or uniqueness of the affine
-fixed point.  Those report claims remain frontier mathematics.
+The later modules \path{ContinuousCDF.lean} and
+\path{GeometricUniformCDF.lean} now define the named real CDF and explicit density and
+formalize the precise parameter ranges stated in the abstract: continuity, reflection, and
+the midpoint value for \(|q|<1\); exterior CDF values for \(0\le q<1\); and, for
+\(0<q<1\), conditioning in subtype and ordinary interval-integral form, an everywhere
+pointwise derivative, the resulting Radon--Nikodym identity, density symmetry and compact
+support, and \(C^\infty\) regularity.  \path{ProbabilityRepresentation.lean} supplies the
+all-real \(q=1/2\) Fabius-CDF and Rvachev-density bridges.
+
+The definition of \path{geometricUniformDensity} is total, but no density formula or
+Radon--Nikodym interpretation is claimed here for \(q\le0\).  Also still frontier are the
+characteristic-function products, rapid-decay bound and Fourier inversion route, a closed
+higher-derivative refinement and endpoint-flatness wrapper, the shape transition, moments
+and transforms, and uniqueness of the affine fixed point.
 \end{boxedremark}
 
 
@@ -14793,9 +14807,16 @@ series range for every $|q|<1$.  Likewise
 $X_q\overset d=1-X_q$.  The measure is absolutely continuous by
 \path{geometricUniformDistribution_absolutelyContinuous}, and
 \path{geometricUniformDistribution_nullSingletonClass} packages its null singletons, both
-for every \(|q|<1\) without a positivity hypothesis.  The displayed CDF symmetry has not
-been separately packaged from these measure-level inputs, and the density symmetry still
-requires choosing and analyzing an explicit density.
+for every \(|q|<1\) without a positivity hypothesis.  The generic theorem
+\path{cdf_reflection_sub} and its specialization
+\path{geometricUniformCDF_reflection} now package the displayed CDF symmetry on all of
+\(\R\), and \path{geometricUniformCDF_one_half} gives the midpoint value, again for
+every \(|q|<1\).  On \(0\le q<1\),
+\path{geometricUniformCDF_zero_of_nonpos} and
+\path{geometricUniformCDF_one_of_one_le} give the exact exterior values.  For \(0<q<1\),
+\path{geometricUniformDensity_reflection} packages the displayed density symmetry for the
+explicit density \path{geometricUniformDensity}; its Radon--Nikodym interpretation and
+regularity are recorded in the crosswalk below.
 
 \paragraph{Exact public API crosswalk.}
 All names in this paragraph lie in the namespace
@@ -14889,6 +14910,51 @@ The twenty-three declarations in the named specialization are
 series- and law-level bridges at \(q=1/2\), while
 \path{weightedSumDistribution_support_eq_Icc} is the exact dyadic support corollary.
 
+The three generic real-CDF declarations in \path{ContinuousCDF.lean} are
+\path{continuous_cdf_of_nullSingleton},
+\path{cdf_reflection_sub}, and
+\path{measure_eq_withDensity_of_cdf_hasDerivAt}.  The last identifies a probability
+measure with Lebesgue measure having density \(\operatorname{ofReal}\circ f\) from an
+everywhere pointwise CDF derivative; it assumes neither prior absolute continuity nor
+continuity of \(f\).
+
+The twenty-seven declarations in \path{GeometricUniformCDF.lean} are
+\path{geometricUniformCDF},
+\path{monotone_geometricUniformCDF},
+\path{geometricUniformCDF_nonneg},
+\path{geometricUniformCDF_le_one},
+\path{measurable_geometricUniformCDF},
+\path{continuous_geometricUniformCDF},
+\path{geometricUniformCDF_reflection},
+\path{geometricUniformCDF_one_half},
+\path{geometricUniformCDF_zero_of_nonpos},
+\path{geometricUniformCDF_one_of_one_le},
+\path{geometricUniformCDF_eq_integral},
+\path{geometricUniformCDF_eq_intervalIntegral},
+\path{geometricUniformDensity},
+\path{geometricUniformCDF_hasDerivAt},
+\path{deriv_geometricUniformCDF},
+\path{continuous_geometricUniformDensity},
+\path{geometricUniformDensity_nonneg},
+\path{geometricUniformDensity_zero_of_nonpos},
+\path{geometricUniformDensity_zero_of_one_le},
+\path{support_geometricUniformDensity_subset_Ioo},
+\path{support_geometricUniformDensity_subset_Icc},
+\path{tsupport_geometricUniformDensity_subset_Icc},
+\path{geometricUniformDensity_hasCompactSupport},
+\path{geometricUniformDensity_reflection},
+\path{geometricUniformDistribution_eq_withDensity},
+\path{contDiff_geometricUniformCDF}, and
+\path{contDiff_geometricUniformDensity}.
+The CDF definition and its monotonicity, range bounds, and measurability are total in real
+\(q\).  Continuity, reflection, and midpoint use \(|q|<1\); the two CDF tails use
+\(0\le q<1\); every declaration from conditioning through the classical density,
+support, and smoothness layer uses \(0<q<1\).  In
+\path{ProbabilityRepresentation.lean}, the additional exact all-real bridges are
+\path{weightedSumCDF_eq_geometricUniformCDF_one_half},
+\path{geometricUniformCDF_one_half_eq_fabiusReal}, and
+\path{geometricUniformDensity_one_half_eq_rvachevUp}.
+
 \subsection{Recovery of the classical functions}
 
 At $q=1/2$,
@@ -14909,6 +14975,17 @@ which is Rvachev's normalized up-function.  The affine relation between densitie
  f_q(x)=2u_q(2x-1).                         \label{p10:eq:affine-density}
 \end{equation}
 Thus the free parameter deforms the Fabius CDF and the Rvachev bump simultaneously.
+
+\paragraph{Current formalization boundary.}
+For every bounded Fabius function \(F\) satisfying its specification,
+\path{geometricUniformCDF_one_half_eq_fabiusReal} proves
+\(F_{1/2}(x)=F(x)\) for all real \(x\), and
+\path{geometricUniformDensity_one_half_eq_rvachevUp} proves
+\(f_{1/2}(x)=2\Up(2x-1)\) for all real \(x\).  The separately named bridge
+\path{weightedSumCDF_eq_geometricUniformCDF_one_half} identifies the dyadic random-series
+CDF with this half-base member.  There is not yet a separately named centered law or
+general-\(q\) centered density \(u_q\), so the affine identities
+\eqref{p10:eq:affine-density} remain paper-level outside their exact half-base consequence.
 
 \subsection{Distributional refinement}
 
@@ -14945,9 +15022,20 @@ $v=(x-cu)/q$ yields \eqref{p10:eq:cdf-refinement-b}, and differentiation gives
 \paragraph{Current formalization boundary.}
 The measure identity \eqref{p10:eq:distributional-refinement} is formalized exactly as
 \path{geometricUniformDistribution_selfSimilar}; its proof uses the public joint head--tail
-law \path{uniformProduct_map_head_tail_geometricUniformSeries}.  The two CDF integrals and
-the density identity in this proposition have not yet been promoted, and the formal
-self-similarity theorem does not assert uniqueness of the affine measure fixed point.
+law \path{uniformProduct_map_head_tail_geometricUniformSeries}.  For \(0<q<1\), the two
+displayed CDF identities are formalized exactly as
+\path{geometricUniformCDF_eq_integral} and
+\path{geometricUniformCDF_eq_intervalIntegral}.  The explicit formula in
+\eqref{p10:eq:density-refinement} is the definition \path{geometricUniformDensity}, and
+\path{geometricUniformCDF_hasDerivAt} proves pointwise on all of \(\R\) that it is the
+derivative of the CDF.  Finally,
+\path{geometricUniformDistribution_eq_withDensity} identifies the law exactly as Lebesgue
+measure with this nonnegative Radon--Nikodym density.  The exterior-value convention used
+in the proposition is formalized for \(0\le q<1\) by
+\path{geometricUniformCDF_zero_of_nonpos} and
+\path{geometricUniformCDF_one_of_one_le}.  None of these declarations asserts uniqueness
+of the affine measure fixed point, and the classical density interpretation has not been
+extended to the totalized \(q\le0\) formula.
 
 For $q=1/2$ and $0\le x\le1/2$, the second term in
 \eqref{p10:eq:density-refinement} vanishes, so
@@ -14967,6 +15055,15 @@ For every integer $r\ge1$,
 \end{equation}
 In particular, every derivative vanishes at both endpoints of the support.
 \end{corollary}
+
+\paragraph{Current formalization boundary.}
+The first derivative identity is formal through
+\path{geometricUniformCDF_hasDerivAt}, and
+\path{contDiff_geometricUniformDensity} supplies derivatives of every finite order.
+There is not yet a declaration giving the closed \(r\)-th refinement
+\eqref{p10:eq:derivative-refinement}, nor report-facing wrappers asserting endpoint
+flatness for every derivative.  Those two statements therefore remain frontier even though
+the underlying \(C^\infty\) and compact-support inputs are formal.
 
 \section{Infinite sinc products and smooth compact support}
 \label{p10:sec:fourier}
@@ -15010,6 +15107,18 @@ Given $r\ge0$, choose $N>r+1$.  Then $t^r\phi_q(t)\in L^1(\R)$, so Fourier inver
 continuous $r$th derivative.  Since $r$ is arbitrary, the density is $C^\infty$.  Compact
 support was already established from the random series.
 \end{proof}
+
+\paragraph{Current formalization boundary.}
+For \(0<q<1\), the final regularity conclusion for the \(X_q\)-density has crossed the
+formalization frontier independently of this Fourier proof:
+\path{geometricUniformDistribution_eq_withDensity} gives the explicit density,
+\path{geometricUniformDensity_hasCompactSupport} gives compact support, and
+\path{contDiff_geometricUniformCDF} and
+\path{contDiff_geometricUniformDensity} give \(C^\infty\) regularity.  The centered law and
+density are not separately named, and the product formulas
+\eqref{p10:eq:phi-z}--\eqref{p10:eq:phi-y}, the rapid bound
+\eqref{p10:eq:rapid-bound}, and the absolutely convergent Fourier-inversion formulas for
+higher derivatives have not been formalized.
 
 \begin{remark}[Relation to the existing Fourier-decay campaign]
 Bound \eqref{p10:eq:rapid-bound} is intentionally elementary.  Optimizing $N$ as a function of
@@ -16196,23 +16305,28 @@ The following order minimizes dependence on asymptotic machinery.
 \item Name \(X_q\) and its law, then specialize the generic probability, exact-support,
       reflection, continuous-linear naturality, and scalar affine-recursion theorems.
 \item Use the exact topological support \([0,1]\), absolute continuity, and null singletons to
-      derive the \(q\)-specific CDF integral equation and the explicit density refinement.
+      define the real CDF, derive its conditioning equations and explicit density refinement,
+      and bootstrap compactly supported \(C^\infty\) regularity.
+\item Prove uniqueness of the affine measure fixed point in an appropriate probability class.
 \item Derive characteristic-function products from finite products plus dominated convergence.
 \end{enumerate}
 
-Since the pinned snapshot, items 1 and 2 have been formalized, in stronger pointwise form,
-by \path{WeightedUniformSeries.lean}, \path{WeightedUniformDistribution.lean},
-\path{WeightedUniformSupport.lean}, and \path{GeometricUniformLaw.lean}; this includes the
-law-reflection, independent-copy affine-refinement, absolute-continuity, null-singleton, and
-exact-support assertions.  The named CDF, its integral equation, an explicit density and its
-refinement equation, and fixed-point uniqueness in item 3 remain open, as does the
-characteristic-function program in item 4.
+At compiled source checkpoint \path{e6f535e5d}, items 1--3 have been formalized, in
+stronger pointwise form where applicable, by \path{WeightedUniformSeries.lean},
+\path{WeightedUniformDistribution.lean}, \path{WeightedUniformSupport.lean},
+\path{GeometricUniformLaw.lean}, \path{ContinuousCDF.lean}, and
+\path{GeometricUniformCDF.lean}.  This includes law reflection, independent-copy affine
+refinement, absolute continuity, null singletons, exact support, the named CDF and both
+conditioning integrals, its explicit Radon--Nikodym density, compact support, and
+\(C^\infty\) regularity.  Fixed-point uniqueness in item 4 and the
+characteristic-function program in item 5 remain open.
 
 \subsection{Analysis layer}
 
 \begin{enumerate}
-\item Formalize the fixed-$N$ Fourier bound \eqref{p10:eq:rapid-bound} and deduce smoothness by a
-      reusable Fourier inversion theorem.
+\item Formalize the fixed-$N$ Fourier bound \eqref{p10:eq:rapid-bound} and the absolutely
+      convergent higher-derivative Fourier-inversion formulas.  Smoothness itself is already
+      formal through the affine derivative bootstrap.
 \item Prove log-concavity first for finite convolutions and then under the density limit.
 \item Formalize the plateau interval by the extended-CDF refinement equation.
 \item Separate strict unimodality from the stronger strict-log-concavity conjecture.
