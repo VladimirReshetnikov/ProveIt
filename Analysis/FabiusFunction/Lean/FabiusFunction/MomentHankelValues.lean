@@ -24,6 +24,7 @@ Jacobi ratios become explicit rationals.
 set_option autoImplicit false
 
 open MeasureTheory Set
+open scoped ENNReal NNReal
 
 namespace Fabius
 
@@ -80,22 +81,16 @@ theorem upMoment_one (F : BoundedFabius) (hF : IsFabius F) :
 theorem hankelDet_one (F : BoundedFabius) (hF : IsFabius F) :
     hankelDet F 1 = 1 := by
   rw [hankelDet, Matrix.det_fin_one]
-  show upMoment F ((0 : ℕ) + 0) = 1
-  rw [Nat.add_zero]
+  show upMoment F 0 = 1
   exact upMoment_zero F hF
 
 /-- `h_2 = moment 1 = 1/9`: the first nontrivial Hankel determinant. -/
 theorem hankelDet_two (F : BoundedFabius) (hF : IsFabius F) :
     hankelDet F 2 = 1 / 9 := by
   rw [hankelDet, Matrix.det_fin_two]
-  show upMoment F ((0 : ℕ) + 0) * upMoment F ((1 : ℕ) + 1) -
-    upMoment F ((0 : ℕ) + 1) * upMoment F ((1 : ℕ) + 0) = 1 / 9
-  have h00 : ((0 : ℕ) + 0) = 0 := rfl
-  have h11 : ((1 : ℕ) + 1) = 2 := rfl
-  have h01 : ((0 : ℕ) + 1) = 1 := rfl
-  have h10 : ((1 : ℕ) + 0) = 1 := rfl
-  rw [h00, h11, h01, h10, upMoment_zero F hF, upMoment_two F hF,
-    upMoment_one F hF]
+  show upMoment F 0 * upMoment F 2 -
+    upMoment F 1 * upMoment F 1 = 1 / 9
+  rw [upMoment_zero F hF, upMoment_two F hF, upMoment_one F hF]
   ring
 
 /-- The first Jacobi ratio: `a_0 = h_1/h_0 = 1`. -/
