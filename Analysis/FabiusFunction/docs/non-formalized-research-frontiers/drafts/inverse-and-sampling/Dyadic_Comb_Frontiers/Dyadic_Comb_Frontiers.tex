@@ -1594,6 +1594,25 @@ $P$ with $\deg P\le m$,
 \end{equation}
 \end{theorem}
 
+\emph{Formal crosswalk.}  The monomial core of this theorem is kernel-verified: for
+every real shift $\theta$ and every $p\le m$,
+\nolinkurl{Fabius.tsum_shifted_monomial_eq_integral_real} in
+\nolinkurl{MonomialCombExactness.lean} proves
+$\sum_{k\in\Z}(\theta+k)^{p}\,\Up\bigl(2^{-m}(\theta+k)\bigr)=\int_\R x^{p}\,\Up(2^{-m}x)\dd x$
+(the display above is this identity multiplied by $h^{p+1}$ and substituted, and
+extends to polynomials by linearity).  The proof is the aliasing argument of this
+section made formal: \nolinkurl{MonomialCombFourier.lean} packages $x^{p}\Up(2^{-m}x)$ as a
+Schwartz map with $(-2\pi\ii)^{p}\widehat{f_p}=(\widehat{f_0})^{(p)}$,
+\nolinkurl{MonomialCombDerivatives.lean} evaluates $(\widehat{f_0})^{(p)}$ through the entire
+transform via the real--complex derivative bridge, \nolinkurl{MonomialCombAlias.lean} kills
+every nonzero alias by the integer-zero order theorem ($\ord_{2^{m}\ell}\Phi=v_2(2^{m}\ell)+1>m$),
+and Poisson summation for Schwartz maps collapses the comb to the zero-frequency
+integral.  The odd centered moments (\cref{cor:up-exact-specials}) vanish at every real
+scale with no level restriction by evenness alone
+(\nolinkurl{Fabius.tsum_odd_pow_mul_rvachevUp} in \nolinkurl{DyadicCombTrapezoid.lean}), and the
+trapezoidal $p=0$ exactness holds on every uniform grid
+(\nolinkurl{Fabius.fabius_trapezoid_exact}).
+
 \begin{proof}
 By \eqref{eq:Phi-zero-order},
 $\ord_{\xi=M\ell}\Phi=m+\vtwo(\ell)+1\ge m+1$ for $\ell\ne0$, so every
