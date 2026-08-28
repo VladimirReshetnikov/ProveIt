@@ -457,7 +457,8 @@ Status & Meaning in this companion\\
 a longer proof-oriented or frontier discussion here: principally
 \path{ElementaryFunction.lean}, \path{NotElementary.lean},
 \path{InverseNotElementary.lean}, \path{ProbabilityLaplaceMoments.lean}, and
-\path{FractionalVolterra.lean}.\\
+\path{FractionalVolterra.lean}, together with
+\path{FractionalVolterraSemigroup.lean}.\\
 \textbf{Missing engine} & A generic theorem family that the main article deliberately leaves in
 the module guide: path sums, Toeplitz rows, formal coefficient recurrences, finite
 remainders, and Gaussian polynomial estimates.\\
@@ -1188,7 +1189,10 @@ In the classical regime \(0<\alpha\) and \(a\le x\), a continuous input has an
 interval-integrable fractional kernel by
 \lean{intervalIntegrable_fractionalVolterra_kernel}, and
 \lean{fractionalVolterra_add_input} gives additivity for two such continuous inputs.
-For \(0<\alpha\), \(0<\beta\), and \(s<x\),
+For \(0<\alpha\), \(0<\beta\), and \(s\le x\),
+\lean{intervalIntegrable_fractionalVolterra_betaKernel} in
+\path{FractionalVolterraSemigroup.lean} proves interval integrability of the raw shifted
+beta kernel, including at a coincident endpoint.  When \(s<x\),
 \lean{intervalIntegral_fractionalVolterra_betaKernel} proves
 \begin{equation}
  \int_s^x(x-u)^{\alpha-1}(u-s)^{\beta-1}\dd u
@@ -1196,10 +1200,25 @@ For \(0<\alpha\), \(0<\beta\), and \(s<x\),
    \frac{\Gamma(\alpha)\Gamma(\beta)}{\Gamma(\alpha+\beta)}.
  \label{integration:eq:fractional-volterra-beta-kernel}
 \end{equation}
-No order-zero operator law, reversed-endpoint fractional interpretation, fractional-order
-semigroup, general power/constant evaluation, Caputo or other fractional
-derivative, complex-order theorem, or Fabius-, Rvachev-, or inverse-function specialization
-is included in this module.
+and \lean{intervalIntegral_fractionalVolterra_normalizedBetaKernel} proves
+\begin{equation}
+ \int_s^x
+ \frac{(x-u)^{\alpha-1}}{\Gamma(\alpha)}
+ \frac{(u-s)^{\beta-1}}{\Gamma(\beta)}\dd u
+ =\frac{(x-s)^{\alpha+\beta-1}}{\Gamma(\alpha+\beta)}.
+ \label{integration:eq:fractional-volterra-normalized-beta-kernel}
+\end{equation}
+If the target is complete, \(a\le x\), and \(f\) is continuous on \([a,x]\), then
+\lean{fractionalVolterra_add} gives
+\begin{equation}
+ I_{a+}^{\alpha+\beta}f(x)
+ =I_{a+}^{\alpha}\!\left[u\mapsto I_{a+}^{\beta}f(u)\right](x).
+ \label{integration:eq:fractional-volterra-semigroup}
+\end{equation}
+No order-zero operator law, reversed-endpoint fractional interpretation, semigroup theorem
+for merely interval-integrable inputs or noncomplete targets, separately packaged general
+power/constant evaluation, Caputo or other fractional derivative, complex-order theorem,
+or Fabius-, Rvachev-, or inverse-function specialization is included in these modules.
 \end{remark}
 
 \subsection{Raw, endpoint, and tilted Laplace moments}
@@ -2540,13 +2559,16 @@ identities; \cref{integration:thm:survival-layer-cake}.\\
 Generic inverse-clock and Fabius explicit-primitive/pointwise-\(C^1\) layer cake, the full
 weighted inverse-area identity, equality with the $\Up$ area, and the inverse mean \(1/2\);
 \cref{integration:sec:survival-fubini}.\\
-\path{FractionalVolterra.lean} &
+\path{FractionalVolterra.lean}, \path{FractionalVolterraSemigroup.lean} &
 The total real-order Gamma-normalized operator, its unconditional endpoint/locality/scalar,
 order-one, and positive-natural-order rules, and its positive-order ordered-endpoint
-continuous-kernel integrability and input additivity; the strict-interval positive-real
-shifted beta-kernel value; no order semigroup, power/constant specialization,
-fractional derivative, complex order, order-zero law,
-reversed-endpoint fractional interpretation, or hierarchy-specific specialization;
+continuous-kernel integrability and input additivity; raw shifted-beta-kernel integrability
+for positive orders and non-strict endpoint order; the raw and normalized values under a
+strict endpoint inequality; and additive composition of positive orders for continuous
+Banach-valued inputs on ordered compact intervals.  No corresponding semigroup for merely
+interval-integrable inputs or noncomplete targets, separately packaged power/constant
+specialization, fractional derivative, complex order, order-zero law, reversed-endpoint
+fractional interpretation, or hierarchy-specific specialization;
 \cref{integration:rem:fractional-volterra-boundary}.\\
 \path{ProbabilityLaplaceMoments.lean} &
 Almost-sure support, restriction to $[0,1]$, survival function, the partial/full Rvachev
