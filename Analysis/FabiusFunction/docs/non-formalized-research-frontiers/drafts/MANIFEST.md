@@ -51,17 +51,13 @@ cross-referenced internally; unchanged by the reorganization).
 
 | Directory | Document | Previous path |
 | --- | --- | --- |
-| `Fabius_Newton_Rvachev_Frontier_Report/` | *Exponent-Sequence and Newton-Basis Frontiers* (convolution monoid, Gaussian-q rows; Lean-crosswalked) | `drafts/Fabius_Newton_Rvachev_Frontier_Report/` |
-| `fabius_frontier_results/` | *q-Binomial Richardson Acceleration of Geometric Sinc Products* | `drafts/fabius_frontier_results/` |
+| `Exponents_and_q_Series_Frontiers/` | *Exponent-Sequence and q-Series Frontiers* — consolidation (2026-08-28) of the former `Fabius_Newton_Rvachev_Frontier_Report/` (*Exponent-Sequence and Newton-Basis Frontiers*, Lean-crosswalked) and `fabius_frontier_results/` (*q-Binomial Richardson Acceleration of Geometric Sinc Products*); their assets live under `assets/`, provenance with SHA-256 in the document | absorbed drafts deleted; git history is the archive |
 
 ## spectra-and-arithmetic — `spectra-and-arithmetic/`
 
 | Directory | Document | Previous path |
 | --- | --- | --- |
-| `Fabius_Half_Integer_Spectral_Frontier_Report/` | *Half-Integer Spectral Arithmetic* | `drafts/Fabius_Half_Integer_Spectral_Frontier_Report/` |
-| `Fabius_Arithmetic_Rays_Frontier_Report/` | *Arithmetic Dyadic Rays of the Rvachev Fourier Product* | `drafts/Fabius_Arithmetic_Rays_Frontier_Report/` |
-| `Spectral_Arithmetic_Pascal_Rvachev_Hierarchy/` | *Spectral Arithmetic and the Pascal–Rvachev Hierarchy* | `drafts/Spectral_Arithmetic_Pascal_Rvachev_Hierarchy/` |
-| `Fabius_Derivative_Norm_Spectrum_bundle/` | *Derivative Norm Spectra and Dual Moment Geometries of the Fabius–Rvachev System* | `drafts/Fabius_Derivative_Norm_Spectrum_bundle/` |
+| `Spectra_and_Arithmetic_Frontiers/` | *Spectral Arithmetic Frontiers of the Fabius–Rvachev System* — consolidation (2026-08-28) of the former `Fabius_Half_Integer_Spectral_Frontier_Report/` (*Half-Integer Spectral Arithmetic*), `Fabius_Arithmetic_Rays_Frontier_Report/` (*Arithmetic Dyadic Rays*), `Spectral_Arithmetic_Pascal_Rvachev_Hierarchy/` (*Spectral Arithmetic and the Pascal–Rvachev Hierarchy*), and `Fabius_Derivative_Norm_Spectrum_bundle/` (*Derivative Norm Spectra and Dual Moment Geometries*); assets under `assets/`, provenance with SHA-256 in the document | absorbed drafts deleted; git history is the archive |
 
 ## integration-and-transforms — `integration-and-transforms/`
 
@@ -83,9 +79,7 @@ cross-referenced internally; unchanged by the reorganization).
 
 | Directory | Document | Previous path |
 | --- | --- | --- |
-| `Fabius_Inverse_Frontier_Report_Source_and_PDF/` | *Inverse Frontiers for the Fabius–Rvachev System* | `drafts/Fabius_Inverse_Frontier_Report_Source_and_PDF/` |
-| `fabius_frontier_dyadic_inverse_barnes_report/` | *Dyadic Inverse Germs and Barnes–Rvachev Deconvolution* | `drafts/fabius_frontier_dyadic_inverse_barnes_report/` |
-| `Fabius_Dyadic_Self_Sampling_Frontier_Package/` | *Dyadic Self-Sampling, Alias Superconvergence, and Rvachev–Appell Deconvolution* | `drafts/Fabius_Dyadic_Self_Sampling_Frontier_Package/` |
+| `Inverse_and_Sampling_Frontiers/` | *Inverse and Sampling Frontiers for the Fabius–Rvachev System* — consolidation (2026-08-28) of the former `Fabius_Inverse_Frontier_Report_Source_and_PDF/` (*Inverse Frontiers*), `fabius_frontier_dyadic_inverse_barnes_report/` (*Dyadic Inverse Germs and Barnes–Rvachev Deconvolution*), and `Fabius_Dyadic_Self_Sampling_Frontier_Package/` (*Dyadic Self-Sampling, Alias Superconvergence, and Rvachev–Appell Deconvolution*); their assets live under `assets/`, provenance with SHA-256 in the document | absorbed drafts deleted; git history is the archive |
 
 ## representations — `representations/`
 
@@ -94,6 +88,7 @@ Series and orthogonal-expansion representations of the up-function.
 | Directory | Document | Previous path |
 | --- | --- | --- |
 | `Fabius_Rvachev_Representation_Frontiers/` | *Fabius–Rvachev Representation Frontiers* (Jacobi coefficients, exact even moments, resolvent and logarithmic-derivative identities) | `drafts/incoming/…zip` (unpacked 2026-08-28) |
+| `Fabius_Rvachev_Multiresolution_Report/` | *Dyadic Multiresolution and Product–Series Representations in the Fabius–Rvachev System* (rational mass arrays, Haar–Schauder expansions, Walsh–Thue–Morse products, beta-mixture limits, Bell–Bernoulli scale energies, inverse-quantile duality) | `drafts/incoming/…zip` (unpacked 2026-08-28) |
 
 ## frontier-compilations — `frontier-compilations/`
 

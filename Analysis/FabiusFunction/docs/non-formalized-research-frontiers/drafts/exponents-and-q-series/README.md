@@ -8,7 +8,9 @@ finite geometric-Lagrange/q-binomial kernel used by both is formalized at
 arbitrary ratio (see the status boxes and crosswalk paragraphs inside the
 documents).
 
-Members: `Fabius_Newton_Rvachev_Frontier_Report`,
-`fabius_frontier_results`.
+Member: `Exponents_and_q_Series_Frontiers` — the 2026-08-28 consolidation
+of the two former drafts (Newton-basis frontiers; q-binomial Richardson),
+with their supporting files under `assets/` and provenance recorded in the
+document itself.
 
 See [`../MANIFEST.md`](../MANIFEST.md) for titles and the previous paths.
