@@ -115,7 +115,6 @@ theorem binomialConv_succ (a b : ℕ → R) (n : ℕ) :
     have hi' : i ≤ n := Nat.lt_succ_iff.mp (Finset.mem_range.mp hi)
     simp only [shift_apply]
     rw [show n + 1 - i = n - i + 1 by omega]
-  · rfl
 
 /-- Shifting a convolution differentiates its two factors, in the formal
 exponential-generating-function sense. -/
@@ -130,7 +129,7 @@ theorem binomialConv_assoc (a b c : ℕ → R) :
     binomialConv (binomialConv a b) c = binomialConv a (binomialConv b c) := by
   funext n
   induction n generalizing a b c with
-  | zero => simp [binomialConv]
+  | zero => simp [binomialConv, mul_assoc]
   | succ n ih =>
     calc
       binomialConv (binomialConv a b) c (n + 1)
@@ -246,31 +245,31 @@ theorem shift_complete (κ : ℕ → R) :
   exact complete_succ κ n
 
 /-- The exponential addition law for complete Bell families:
-`complete (κ + λ) = complete κ ⋆ complete λ`. -/
-theorem complete_add (κ λ : ℕ → R) :
-    complete (κ + λ) = binomialConv (complete κ) (complete λ) := by
+`complete (κ + μ) = complete κ ⋆ complete μ`. -/
+theorem complete_add (κ μ : ℕ → R) :
+    complete (κ + μ) = binomialConv (complete κ) (complete μ) := by
   symm
-  refine eq_complete_of_recurrence (κ + λ) _ ?_ ?_
+  refine eq_complete_of_recurrence (κ + μ) _ ?_ ?_
   · simp [binomialConv]
   · intro n
     rw [binomialConv_succ, shift_complete, shift_complete]
     calc
-      binomialConv (complete κ) (binomialConv (complete λ) (shift λ)) n +
-          binomialConv (binomialConv (complete κ) (shift κ)) (complete λ) n
-        = binomialConv (binomialConv (complete κ) (complete λ)) (shift λ) n +
-            binomialConv (binomialConv (complete κ) (complete λ)) (shift κ) n := by
+      binomialConv (complete κ) (binomialConv (complete μ) (shift μ)) n +
+          binomialConv (binomialConv (complete κ) (shift κ)) (complete μ) n
+        = binomialConv (binomialConv (complete κ) (complete μ)) (shift μ) n +
+            binomialConv (binomialConv (complete κ) (complete μ)) (shift κ) n := by
               rw [← binomialConv_assoc,
-                binomialConv_assoc (complete κ) (shift κ) (complete λ),
-                binomialConv_comm (shift κ) (complete λ), ← binomialConv_assoc]
-      _ = binomialConv (binomialConv (complete κ) (complete λ))
-          (shift κ + shift λ) n := by
+                binomialConv_assoc (complete κ) (shift κ) (complete μ),
+                binomialConv_comm (shift κ) (complete μ), ← binomialConv_assoc]
+      _ = binomialConv (binomialConv (complete κ) (complete μ))
+          (shift κ + shift μ) n := by
             rw [congrFun (binomialConv_add_right
-              (binomialConv (complete κ) (complete λ)) (shift κ) (shift λ)) n,
+              (binomialConv (complete κ) (complete μ)) (shift κ) (shift μ)) n,
               Pi.add_apply]
             ac_rfl
-      _ = binomialConv (binomialConv (complete κ) (complete λ))
-          (shift (κ + λ)) n := by
-            have hs : shift (κ + λ) = shift κ + shift λ := by rfl
+      _ = binomialConv (binomialConv (complete κ) (complete μ))
+          (shift (κ + μ)) n := by
+            have hs : shift (κ + μ) = shift κ + shift μ := by rfl
             rw [hs]
 
 /-- The first complete Bell polynomial is `κ₁`. -/
@@ -280,13 +279,13 @@ theorem complete_one (κ : ℕ → R) : complete κ 1 = κ 1 := by
 
 /-- The second complete Bell polynomial is `κ₁² + κ₂`. -/
 theorem complete_two (κ : ℕ → R) : complete κ 2 = κ 1 ^ 2 + κ 2 := by
-  norm_num [complete]
+  norm_num [complete, Finset.sum_range_succ]
   ring
 
 /-- The third complete Bell polynomial is `κ₁³ + 3κ₁κ₂ + κ₃`. -/
 theorem complete_three (κ : ℕ → R) :
     complete κ 3 = κ 1 ^ 3 + 3 * κ 1 * κ 2 + κ 3 := by
-  norm_num [complete]
+  norm_num [complete, Finset.sum_range_succ]
   ring
 
 end CommSemiring
@@ -327,6 +326,7 @@ private theorem binomialConv_shift_eq_tail_add (m κ : ℕ → R) (n : ℕ) :
   rw [binomialConv_eq_sum_range, Finset.sum_range_succ']
   congr 1
   · refine Finset.sum_congr rfl fun j hj => ?_
+    have hj' : j < n := Finset.mem_range.mp hj
     simp only [shift_apply]
     rw [show n - (j + 1) + 1 = n - j by omega]
   · simp [shift]
@@ -396,7 +396,7 @@ theorem cumulant_two (m : ℕ → R) : cumulant m 2 = m 2 - m 1 ^ 2 := by
 /-- The third cumulant is `m₃ - 3m₁m₂ + 2m₁³`. -/
 theorem cumulant_three (m : ℕ → R) :
     cumulant m 3 = m 3 - 3 * m 1 * m 2 + 2 * m 1 ^ 3 := by
-  norm_num [cumulant]
+  norm_num [cumulant, Finset.sum_range_succ]
   ring
 
 end CommRing
