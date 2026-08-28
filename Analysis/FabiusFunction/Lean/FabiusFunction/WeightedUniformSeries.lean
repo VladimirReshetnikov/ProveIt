@@ -565,6 +565,31 @@ theorem weightedUniformSeries_mem_Icc
   ⟨weightedUniformSeries_nonneg hwnonneg ω,
     weightedUniformSeries_le_tsum hw hwnonneg ω⟩
 
+/-- The law of a nonnegative real weighted series is almost surely carried by
+its natural interval from zero to the total weight. -/
+theorem ae_weightedUniformDistribution_mem_Icc
+    {w : ℕ → ℝ} (hw : Summable fun n => ‖w n‖)
+    (hwnonneg : ∀ n, 0 ≤ w n) :
+    ∀ᵐ x ∂weightedUniformDistribution w,
+      x ∈ Icc 0 (∑' n : ℕ, w n) := by
+  unfold weightedUniformDistribution
+  apply (ae_map_iff (measurable_weightedUniformSeries hw).aemeasurable
+    (show MeasurableSet {x : ℝ | x ∈ Icc 0 (∑' n : ℕ, w n)} by
+      exact measurableSet_Icc)).2
+  filter_upwards with ω
+  exact weightedUniformSeries_mem_Icc hw hwnonneg ω
+
+/-- Restricting a nonnegative real weighted-series law to its natural support
+interval leaves the law unchanged. -/
+theorem weightedUniformDistribution_restrict_Icc
+    {w : ℕ → ℝ} (hw : Summable fun n => ‖w n‖)
+    (hwnonneg : ∀ n, 0 ≤ w n) :
+    (weightedUniformDistribution w).restrict
+        (Icc 0 (∑' n : ℕ, w n)) =
+      weightedUniformDistribution w :=
+  Measure.restrict_eq_self_of_ae_mem
+    (ae_weightedUniformDistribution_mem_Icc hw hwnonneg)
+
 /-- The law of a nonnegative real weighted series is carried by its natural
 pointwise interval from zero to the total weight. -/
 theorem weightedUniformDistribution_Icc

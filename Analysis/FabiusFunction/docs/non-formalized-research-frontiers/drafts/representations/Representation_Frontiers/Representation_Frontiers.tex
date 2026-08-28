@@ -6,7 +6,7 @@
 \usepackage[utf8]{inputenc}
 \IfFileExists{libertinus.sty}{\usepackage{libertinus}}{\usepackage{lmodern}}
 \usepackage{microtype}
-\usepackage[a4paper,margin=27mm,headheight=14pt]{geometry}
+\usepackage[a4paper,margin=27mm,headheight=15pt]{geometry}
 \usepackage{amsmath,amssymb,amsthm,mathtools,bm}
 \usepackage{booktabs,longtable,array,multirow}
 \usepackage{graphicx}
@@ -19,18 +19,21 @@
 \usepackage{url}
 
 \hypersetup{
+  hypertexnames=false,
   colorlinks=true,
   linkcolor=blue!55!black,
   citecolor=green!35!black,
   urlcolor=blue!60!black,
   pdftitle={Representation Frontiers for the Fabius--Rvachev System},
-  pdfauthor={}
+  pdfsubject={A consolidated atlas of analytic, transform, and multiresolution representations},
+  pdfkeywords={Fabius function, Rvachev up-function, resolvents, Fourier transforms, multiresolution},
+  pdfauthor={Research report prepared for Vladimir Reshetnikov}
 }
 
 \pagestyle{fancy}
 \fancyhf{}
-\fancyhead[L]{Fabius--Rvachev representation frontiers}
-\fancyhead[R]{\thepage}
+\fancyhead[L]{\small Fabius--Rvachev Representation Frontiers}
+\fancyhead[R]{\small \thepage}
 \renewcommand{\headrulewidth}{0.3pt}
 
 \allowdisplaybreaks[3]
@@ -91,13 +94,6 @@
   showstringspaces=false
 }
 
-\title{\textbf{Resolvent, Continued-Fraction, and Transform Representations\\
-       of the Fabius--Rvachev System}\\[5pt]
-       \large An audited representation atlas with new frontier results}
-\author{Prepared for Vladimir Reshetnikov\\
-        OpenAI GPT-5.6 Pro}
-\date{27 August 2026}
-
 \usepackage{tabularx}
 \usepackage{float}
 \usepackage[nameinlink,capitalise]{cleveref}
@@ -107,23 +103,25 @@
 \usepackage{fancyvrb}
 \usepackage{xurl}
 \title{\bfseries Representation Frontiers for the Fabius--Rvachev System}
-\author{}
+\author{Research report prepared for Vladimir Reshetnikov}
 \date{Consolidated 28 August 2026}
 \begin{document}
 \maketitle
 \tableofcontents
 \clearpage
 \section*{Provenance}
-This volume consolidates the following drafts verbatim (labels, citation keys, and
-asset paths mechanically prefixed per part; no mathematical content altered).
-The absorbed drafts are deleted from the working tree; git history is the archive.
+This volume preserves the mathematical bodies of the following drafts (labels, citation
+keys, and asset paths mechanically prefixed per part; top-level counters, reproduction
+paths, and raster figure selection adapted to the consolidated layout).  No mathematical
+content is altered.  The absorbed drafts are deleted from the working tree; git history is
+the archive.
 \begin{itemize}
 \item \path{Fabius_Rvachev_Representation_Frontiers/rvachev_fabius_representation_frontiers.tex} \\ {\footnotesize SHA-256 \path{8fdba498ec33cde2db9e7dc82c0c928946f632beb8a0ffd216afe310eaea0ea2}}
 \item \path{fabius_rvachev_representation_frontier/fabius_rvachev_representation_frontier_report.tex} \\ {\footnotesize SHA-256 \path{dfae837099df1578665a7bb4dabd9417cd160a2165987785062097e5046177ec}}
 \item \path{Fabius_Rvachev_Multiresolution_Report/fabius_rvachev_multiresolution_report.tex} \\ {\footnotesize SHA-256 \path{54b4817fae50e2594a42d6f5ee06152b2c3c17a1e653157baf6ddd15002333ac}}
 \end{itemize}
 \clearpage
-\part{Resolvent}
+\part{Resolvent, Continued-Fraction, and Transform Representations of the Fabius--Rvachev System}
 % Absorbed from Fabius_Rvachev_Representation_Frontiers/rvachev_fabius_representation_frontiers.tex
 
 
@@ -1175,7 +1173,7 @@ floating-point artifact.
 
 \begin{figure}[htbp]
 \centering
-\includegraphics[width=0.78\textwidth]{assets/Fabius_Rvachev_Representation_Frontiers/jacobi_coefficients.pdf}
+\includegraphics[width=0.78\textwidth]{assets/Fabius_Rvachev_Representation_Frontiers/figures/jacobi_coefficients.png}
 \caption{Exact Jacobi coefficients converted to decimals.  The dashed line is the proved
 limit \(1/4\).}
 \label{p1:fig:beta}
@@ -1183,7 +1181,7 @@ limit \(1/4\).}
 
 \begin{figure}[htbp]
 \centering
-\includegraphics[width=0.78\textwidth]{assets/Fabius_Rvachev_Representation_Frontiers/jacobi_scaled_deficit.pdf}
+\includegraphics[width=0.78\textwidth]{assets/Fabius_Rvachev_Representation_Frontiers/figures/jacobi_scaled_deficit.png}
 \caption{The diagnostic quantity
 \(n^2(1/4-\beta_n)/(\log n)^2\).  The range \(n\le40\) is evidence, not an asymptotic
 proof.}
@@ -1525,9 +1523,10 @@ analysis and formalization.
 
 \section{Reproducibility instructions}\label{p1:app:repro}
 
-From the directory containing this report, run
+From the directory containing this consolidated report, run
 \begin{lstlisting}[language=bash]
-python3 rvachev_frontier_experiments.py --order 40 --digits 45
+python3 assets/Fabius_Rvachev_Representation_Frontiers/rvachev_frontier_experiments.py \
+  --order 40 --digits 45 --output-dir representation-frontiers-output
 \end{lstlisting}
 This regenerates:
 \begin{itemize}
@@ -1670,6 +1669,9 @@ W. Van Assche,
   xrightmargin=0.5em
 }
 
+\clearpage
+\setcounter{section}{0}
+\renewcommand{\thesection}{\arabic{section}}
 \part{Representation Atlas and New Analytic Bridges for the Fabius and Rvachev Functions}
 % Absorbed from fabius_rvachev_representation_frontier/fabius_rvachev_representation_frontier_report.tex
 
@@ -2935,6 +2937,7 @@ cosine series \eqref{p2:eq:up-half-cosine} gives a second representation.
 
 \begin{theorem}[Odd-harmonic Fabius series \New]
 For $0\le x\le1$,
+{\small
 \begin{align}
  F'(x)
  &=1-2\sum_{k\ge0}\Phi\left(k+\frac12\right)
@@ -2945,6 +2948,7 @@ For $0\le x\le1$,
  \sin\bigl(2\pi(2k+1)x\bigr).
  \quad}                                                  \label{p2:eq:F-sine-series}
 \end{align}
+}
 Both series converge absolutely and uniformly together with every differentiated series
 allowed by the displayed factors.
 \end{theorem}
@@ -3246,13 +3250,13 @@ sample points.}
 
 \subsection{Reproduction command}
 
-From the extracted package directory, run
+From the directory containing this consolidated report, run
 \begin{lstlisting}[style=pythonstyle]
-python numerical_experiments.py
+python3 assets/fabius_rvachev_representation_frontier/numerical_experiments.py
 \end{lstlisting}
-The script creates no hidden cache and writes all outputs beneath \texttt{figures/}.  The
-source comments explain the product truncations, gamma-tail correction, and quadrature
-splitting at integer zeros.
+The script creates no hidden cache and writes all outputs beneath
+\path{assets/fabius_rvachev_representation_frontier/figures/}.  The source comments explain
+the product truncations, gamma-tail correction, and quadrature splitting at integer zeros.
 
 \section{Conjectures and testable frontier statements}
 \label{p2:sec:conjectures}
@@ -3451,10 +3455,9 @@ independent sources.
 \section{Numerical package contents}
 \label{p2:app:package}
 
-The ZIP archive accompanying this report contains:
+The reproducibility assets retained for this part live under
+\path{assets/fabius_rvachev_representation_frontier/}:
 \begin{itemize}[leftmargin=2em]
-\item \texttt{fabius\_rvachev\_representation\_frontier\_report.tex};
-\item the compiled PDF with the same basename;
 \item \texttt{numerical\_experiments.py}, with detailed comments and deterministic seed;
 \item \texttt{figures/numerical\_results.txt};
 \item the four PNG figures embedded in the report;
@@ -3466,6 +3469,7 @@ The ZIP archive accompanying this report contains:
 \label{p2:app:one-line}
 
 For convenient reuse, here are the central bridges in compressed form:
+{\small
 \begin{align*}
  \Gamma(1+w)\Gamma(1-w)&=1/\sinc(\pi w)
  &&\Longrightarrow\quad \Phi(z)=1/[\GammaDy(z)\GammaDy(-z)],\\
@@ -3483,6 +3487,7 @@ For convenient reuse, here are the central bridges in compressed form:
  \widehat Q(\eta)=\frac{\int_0^1\e^{-2\pi\ii\eta F(x)}\dd x-
  \e^{-2\pi\ii\eta}}{2\pi\ii\eta}.
 \end{align*}
+}
 
 \begin{thebibliography}{99}
 
@@ -3621,6 +3626,9 @@ V.~Reshetnikov,
 \newcommand{\osc}{\operatorname{osc}}
 \newcommand{\Ai}{\operatorname{Ai}}
 
+\clearpage
+\setcounter{section}{0}
+\renewcommand{\thesection}{\arabic{section}}
 \part{Dyadic Multiresolution and Product-Series Representations in the Fabius--Rvachev System}
 % Absorbed from Fabius_Rvachev_Multiresolution_Report/fabius_rvachev_multiresolution_report.tex
 
@@ -4144,8 +4152,11 @@ These are the probabilities that $X$ lies in the dyadic cells.
 
 \begin{theorem}[Projective rational mass array]
 \label{p3:thm:projective-masses}
-For every $N\ge0$ the vector
-$\Delta_N=(\Delta_{N,0},\ldots,\Delta_{N,n_N-1})$ has the following properties:
+For every $N\ge0$, put
+\[
+\Delta_N=(\Delta_{N,0},\ldots,\Delta_{N,n_N-1}).
+\]
+This vector has the following properties:
 \begin{align}
  \Delta_{N,k}&\in\Q_{>0},\label{p3:eq:mass-rational}\\
  \sum_{k=0}^{n_N-1}\Delta_{N,k}&=1,\label{p3:eq:mass-sum}\\
@@ -6029,7 +6040,7 @@ slower factor near two per level.
 
 \begin{figure}[htbp]
 \centering
-\includegraphics[width=0.84\textwidth]{assets/Fabius_Rvachev_Multiresolution_Report/multiresolution_convergence.pdf}
+\includegraphics[width=0.84\textwidth]{assets/Fabius_Rvachev_Multiresolution_Report/multiresolution_convergence.png}
 \caption{Convergence of the fixed-cell, midpoint-atomic, beta-mixture, and
 Walsh--Hadamard transform representations at four sample frequencies.}
 \label{p3:fig:transform-convergence}
@@ -6066,7 +6077,7 @@ quickly becomes much more accurate than the displayed leading convergence.
 
 \begin{figure}[htbp]
 \centering
-\includegraphics[width=0.84\textwidth]{assets/Fabius_Rvachev_Multiresolution_Report/haar_energy_asymptotics.pdf}
+\includegraphics[width=0.84\textwidth]{assets/Fabius_Rvachev_Multiresolution_Report/haar_energy_asymptotics.png}
 \caption{The scaled exact Haar energy, its three-term continuum expansion, and
 the limiting derivative norm.}
 \label{p3:fig:haar-energy}

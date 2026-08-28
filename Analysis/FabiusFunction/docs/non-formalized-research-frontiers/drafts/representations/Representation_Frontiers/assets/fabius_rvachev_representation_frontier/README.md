@@ -1,21 +1,17 @@
-# Fabius--Rvachev Representation Frontier Package
+# Assets for Part II of Representation Frontiers
 
-> **Archived companion bundle.** The former standalone manuscript is now
-> consolidated in `../../Representation_Frontiers.tex`, with the rendered
-> report at `../../Representation_Frontiers.pdf`. This directory retains its
-> supporting computations, audit, and figures.
-
-This package accompanied the report
+These files support Part II of the consolidated volume
+[`../../Representation_Frontiers.tex`](../../Representation_Frontiers.tex):
 
 **Representation Atlas and New Analytic Bridges for the Fabius Function, Rvachev's Up-Function, and Their Fourier Images**
 
-prepared on 27 August 2026 from a recursive audit of the LaTeX document corpus under
-`Analysis/FabiusFunction/docs` in Vladimir Reshetnikov's `ProveIt` repository.
+The former standalone TeX/PDF pair was absorbed into the volume and is
+available through git history. The underlying report was prepared on 27 August
+2026 from a recursive audit of the LaTeX corpus under
+`Analysis/FabiusFunction/docs`.
 
 ## Package contents
 
-- `../../Representation_Frontiers.tex` -- current consolidated LaTeX source.
-- `../../Representation_Frontiers.pdf` -- current rendered consolidated report.
 - `numerical_experiments.py` -- fully commented, deterministic numerical checks.
 - `figures/gamma_factorization_convergence.png` -- dyadic-gamma factorization check.
 - `figures/jensen_mean_comparison.png` -- exact versus numerical Jensen circular mean.
@@ -69,7 +65,7 @@ Requirements:
 - SciPy
 - Matplotlib
 
-From the package root, run:
+From this asset directory, run:
 
 ```bash
 python numerical_experiments.py
@@ -94,30 +90,21 @@ See `figures/numerical_results.txt` for all recorded values and truncation diagn
 
 ## Compiling the report
 
-A standard TeX Live installation with the Libertinus Type 1 fonts and the
-packages named in the preamble is sufficient. From this archived companion
-directory, run exactly three serial passes:
+A standard TeX Live installation with the packages named in the consolidated
+preamble is sufficient. From this asset directory, build the canonical source
+with exactly three passes:
 
 ```bash
-(cd ../.. && pdflatex -interaction=nonstopmode -halt-on-error Representation_Frontiers.tex)
-(cd ../.. && pdflatex -interaction=nonstopmode -halt-on-error Representation_Frontiers.tex)
-(cd ../.. && pdflatex -interaction=nonstopmode -halt-on-error Representation_Frontiers.tex)
-pdffonts ../../Representation_Frontiers.pdf | grep Libertinus
+cd ../..
+pdflatex -interaction=nonstopmode -halt-on-error Representation_Frontiers.tex
+pdflatex -interaction=nonstopmode -halt-on-error Representation_Frontiers.tex
+pdflatex -interaction=nonstopmode -halt-on-error Representation_Frontiers.tex
 ```
 
-These commands update `../../Representation_Frontiers.pdf`; its asset paths
-are already rooted at the consolidated source directory.
+The consolidated source contains the exact relocated figure paths.
 
-## Quality checks performed
+## Validation boundary
 
-Before consolidation, the standalone PDF was compiled with
-`pdflatex`/`latexmk`, inspected structurally, and rendered page-by-page at
-180 dpi. That build had:
-
-- 32 A4 pages;
-- embedded and subset fonts, including Libertinus prose fonts;
-- 79 outline entries;
-- no unresolved cross-references;
-- two overfull display boxes (maximum 20.843 pt), neither visibly clipped;
-- no PDF-bookmark math warnings;
-- no visually observed clipping, overlap, broken glyphs, or missing figures.
+The original standalone build record remains available in git history. Current
+font, reference, page-count, and rendering checks apply to the consolidated PDF
+beside `Representation_Frontiers.tex`, not to a deleted standalone PDF.

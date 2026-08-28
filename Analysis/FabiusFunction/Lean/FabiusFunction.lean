@@ -36,6 +36,7 @@ import FabiusFunction.ReciprocalExponentialGenerating
 import FabiusFunction.QuadraticCompositionalInverse
 import FabiusFunction.PolynomialExpectationCumulant
 import FabiusFunction.ThueMorseBitSupport
+import FabiusFunction.AffineDifferenceOrbit
 import FabiusFunction.ThueMorseBooleanCube
 import FabiusFunction.ThueMorseValuation
 import FabiusFunction.DyadicZeroMultiplicity
@@ -184,6 +185,8 @@ import FabiusFunction.PerronEigenvalueUnique
 import FabiusFunction.DiagonalSelection
 import FabiusFunction.MeasureEqualization
 import FabiusFunction.NegativeLaplace
+import FabiusFunction.SubgraphFubini
+import FabiusFunction.SurvivalLayerCake
 import FabiusFunction.ProbabilityLaplaceMoments
 import FabiusFunction.UnitLaplaceMomentBounds
 import FabiusFunction.PeriodicCorrection
@@ -205,6 +208,7 @@ import FabiusFunction.SharpFlatness
 import FabiusFunction.FabiusInverse
 import FabiusFunction.MidpointEndpointTransfer
 import FabiusFunction.InverseMidpointDefect
+import FabiusFunction.InverseLayerCake
 import FabiusFunction.QuantileTransport
 import FabiusFunction.InverseQuarterAnchor
 import FabiusFunction.QuarterCatalanGerm

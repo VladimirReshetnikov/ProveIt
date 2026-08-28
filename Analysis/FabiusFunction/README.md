@@ -10,17 +10,18 @@
 > One invocation is not by itself one process: Lake sizes its worker pool to
 > hardware concurrency and starts one `lean.exe` **per core** whenever the
 > target has a stale dependency set. On this machine several agent sessions
-> share 13 GB, so that fan-out starves all of them. Set both limits on every
-> build:
+> share 13 GB, so that fan-out starves all of them. Bound Lake's worker pool
+> on every build:
 >
 > ```bash
-> LAKE_JOBS=1 LEAN_NUM_THREADS=0 lake build <one target>
+> LAKE_JOBS=1 lake build <one target>
 > ```
 >
-> `LAKE_JOBS` bounds the number of `lean.exe` processes and
-> `LEAN_NUM_THREADS` bounds the threads inside each one; they are
-> independent, so set both. Lake `5.0.0` accepts neither `-j` nor `--jobs`,
-> so these environment variables are the only control. Measured 2026-08-27:
+> `LAKE_JOBS` bounds the number of `lean.exe` processes.  Do not set
+> `LEAN_NUM_THREADS=0`: it serializes elaboration inside the single worker
+> and was measured to make focused builds about thirty times slower. Lake
+> `5.0.0` accepts neither `-j` nor `--jobs`, so the environment variable is
+> the process-control mechanism. Measured 2026-08-27:
 > a facade build over a stale dependency set spawned **11 concurrent
 > `lean.exe`**, and **exactly one** under `LAKE_JOBS=1`.
 >
@@ -167,7 +168,7 @@ complex exponential generating function are also represented explicitly.
 From the repository root, the complete public surface is checked with
 
 ```sh
-LAKE_JOBS=1 LEAN_NUM_THREADS=1 lake build +FabiusFunction
+LAKE_JOBS=1 lake build +FabiusFunction
 ```
 
 Use `import FabiusFunction` when downstream code needs the entire development.
@@ -180,9 +181,10 @@ points:
 | Sharp bounded derivatives and the exact zero-interleaved Thue--Morse pattern on every matched dyadic grid | `FabiusFunction.BoundedDerivatives` | `iteratedDeriv_fabiusReal_of_lt_one`, `iteratedDeriv_fabiusReal_dyadicGrid_eq_ite`, `iteratedDeriv_fabiusReal_dyadicGrid_eq_zero_iff`, `abs_iteratedDeriv_fabiusReal_dyadicGrid_of_odd`, `abs_iteratedDeriv_fabiusReal_le`, `isGreatest_abs_iteratedDeriv_fabiusReal` |
 | Existence, uniqueness, and the canonical functions | `FabiusFunction.PaperStatements` | `existsUnique_fabius`, `fabius`, `fabius_spec`, `globalFabius` |
 | Original compact-support characterization and bounded/original bridge | `FabiusFunction.OriginalUniqueness` | `IsOriginalFabius`, `IsOriginalFabius.mk_of_derivative_law`, `IsFabius.isOriginalFabius_rvachevUp`, `rvachevUp_eq_iff_eqOn_Iic_one`, `isFabius_iff_isOriginalFabius_rvachevUp_and_rightTail`, `isOriginalFabius_iff_existsUnique_isFabius` |
-| Generic normalized Volterra calculus over real normed spaces (Banach only for the FTC/Taylor layer) | `FabiusFunction.NormalizedVolterra` | `volterraPrimitive`, `iteratedPrimitive`, `normalizedVolterra`, `iteratedPrimitive_add`, `iteratedPrimitive_succ_hasStrictDerivAt`, `iteratedPrimitive_eq_normalizedVolterra`, `normalizedVolterra_succ_hasStrictDerivAt`, `iteratedDeriv_normalizedVolterra_add`, `contDiff_normalizedVolterra`, `normalizedVolterra_add`, `normalizedVolterra_succ_iteratedDeriv_eq_sub_taylor`, `intervalIntegrable_normalizedVolterraKernel_add`, `normalizedVolterra_succ_polynomial_of_taylor_support_kernel_intervalIntegrable`, `normalizedVolterra_succ_polynomial_of_kernel_intervalIntegrable`, `normalizedVolterra_polynomial`, `normalizedVolterra_monomial` |
+| Generic affine-difference iterates and derivative orbits | `FabiusFunction.AffineDifferenceOrbit` | `affineDifference_iterate_apply`, `iteratedDeriv_eq_affineDifference_iterate_on`, `affineDifference_iterate_two_one_apply`; the module assumes a one-step derivative identity and does not construct the up-law Cauchy transform or prove its resolvent equation |
+| Generic normalized Volterra calculus over real normed spaces (Banach only for the FTC/Taylor layer) | `FabiusFunction.NormalizedVolterra` | `volterraPrimitive`, `iteratedPrimitive`, `normalizedVolterra`, `normalizedVolterra_affine`, `normalizedVolterra_comp_affine`, `normalizedVolterra_basepoint_shift`, `normalizedVolterra_succ_eq_taylor_of_eq_zero`, `iteratedPrimitive_add`, `iteratedPrimitive_succ_hasStrictDerivAt`, `iteratedPrimitive_eq_normalizedVolterra`, `normalizedVolterra_succ_hasStrictDerivAt`, `iteratedDeriv_normalizedVolterra_add`, `contDiff_normalizedVolterra`, `normalizedVolterra_add`, `normalizedVolterra_succ_iteratedDeriv_eq_sub_taylor`, `intervalIntegrable_normalizedVolterraKernel_add`, `normalizedVolterra_succ_polynomial_of_taylor_support_kernel_intervalIntegrable`, `normalizedVolterra_succ_polynomial_of_kernel_intervalIntegrable`, `normalizedVolterra_polynomial`, `normalizedVolterra_monomial` |
 | Exact signed-global and bounded Fabius primitive ladders with finite polynomial weights | `FabiusFunction.FabiusAntiderivatives` | `normalizedVolterra_extendedFabius`, `normalizedVolterra_fabiusReal_of_le_one`, `normalizedVolterra_polynomial_mul_extendedFabius`, `normalizedVolterra_pow_mul_extendedFabius`, `normalizedVolterra_polynomial_mul_fabiusReal_of_le_one`, `normalizedVolterra_pow_mul_fabiusReal_of_le_one`, `integral_cube_mul_fabiusReal_eq`; signed formulas are global, while bounded formulas assume `x ≤ 1` |
-| Absolutely summable uniform-coordinate series and their canonical pushforward laws | `FabiusFunction.WeightedUniformSeries` | `weightedUniformSeries`, `weightedUniformSeries_smul_weights`, `weightedUniformSeries_split`, `weightedUniformDistribution`, `isProbabilityMeasure_weightedUniformDistribution`, `weightedUniformDistribution_split`, `weightedUniformDistribution_reflection`, `weightedUniformDistribution_Icc` |
+| Absolutely summable uniform-coordinate series and their canonical pushforward laws | `FabiusFunction.WeightedUniformSeries` | `weightedUniformSeries`, `weightedUniformSeries_smul_weights`, `weightedUniformSeries_split`, `weightedUniformDistribution`, `isProbabilityMeasure_weightedUniformDistribution`, `weightedUniformDistribution_split`, `weightedUniformDistribution_reflection`, `ae_weightedUniformDistribution_mem_Icc`, `weightedUniformDistribution_restrict_Icc`, `weightedUniformDistribution_Icc` |
 | Compatibility names and scalar/unit-mass refinements for weighted laws | `FabiusFunction.WeightedUniformDistribution` | `uniformProduct_map_head_tail_function`, `weightedUniformDistribution_isProbabilityMeasure`, `weightedUniformDistribution_smul_weights`, `uniformProduct_map_head_tail_weightedUniformSeries`, `weightedUniformDistribution_unitInterval`, `weightedUniformDistribution_compl_unitInterval` |
 | Geometrically weighted uniform laws | `FabiusFunction.GeometricUniformLaw` | `geometricUniformWeight`, `hasSum_geometricUniformWeight`, `geometricUniformSeries`, `geometricUniformSeries_split`, `geometricUniformDistribution_selfSimilar`, `geometricUniformDistribution_reflection`, `geometricUniformDistribution_Icc` |
 | Product-probability and CDF representations | `FabiusFunction.ProbabilityRepresentation` | `weightedCoordinateSum_eq_weightedUniformSeries`, `weightedCoordinateSum_eq_geometricUniformSeries_one_half`, `weightedSumDistribution_eq_geometricUniformDistribution_one_half`, `weightedSumCDF_eq_fabiusReal`, `fabiusReal_eq_weightedSum_probability`, `rvachevUp_eq_weightedSumCDF`, `rvachevUp_eq_weightedSum_probability_global` |
@@ -191,6 +193,8 @@ points:
 | Exact midpoint--endpoint value and first-jet transfer, complete higher midpoint jet, centered integral, and weighted primitive kernels | `FabiusFunction.MidpointEndpointTransfer` | `fabiusReal_midpoint_add_eq`, `fabiusReal_midpoint_sub_eq`, `deriv_fabiusReal_midpoint_add_eq`, `deriv_fabiusReal_midpoint_sub_eq`, `iteratedDeriv_fabiusReal_half_eq_zero_of_two_le`, `intervalIntegral_fabiusReal_centered`, `intervalIntegral_mul_fabiusReal_midpoint_add_defect_eq_neg`, `intervalIntegral_mul_fabiusReal_midpoint_sub_defect_eq`, `intervalIntegral_fabiusReal_midpoint_add_defect_eq_neg`, `intervalIntegral_repeatedPrimitiveKernel_fabiusReal_midpoint_add_defect_eq_neg` |
 | Exact inverse-midpoint offset and defect fixed points, endpoint normalizations, positive-cell enclosures, and global oddness | `FabiusFunction.InverseMidpointDefect` | `fabiusInvMidpointOffset`, `fabiusInvMidpointDefect`, `fabiusInvMidpointOffset_zero`, `fabiusInvMidpointDefect_zero`, `fabiusInvMidpointOffset_half`, `fabiusInvMidpointDefect_half`, `fabiusInvMidpointOffset_mem_Icc`, `fabiusInvMidpointOffset_equation`, `fabiusInvMidpointOffset_fixedPoint`, `fabiusInvMidpointDefect_eq_half_fabiusReal`, `fabiusInvMidpointDefect_fixedPoint`, `fabiusInvMidpointDefect_mem_Icc`, `fabiusInvMidpointOffset_neg`, `fabiusInvMidpointDefect_neg` |
 | Exact finite-spline cell around `1/4`, with two-sided reflection, curvature, and conditional inverse identities | `FabiusFunction.QuarterSplineLocalPolynomial`, `FabiusFunction.QuarterSplineTwoSided` | `reportFiniteFabiusApproximant_quarter_twoSided`, `reportFiniteFabiusApproximant_quarter_reflection`, `reportFiniteFabiusApproximant_quarter_centralSecondDifference`, `strictMonoOn_reportFiniteFabiusApproximant_quarter_twoSided`, `reportFiniteFabiusApproximant_quarterPrefix_value`, `reportFiniteFabiusApproximant_quarterPrefix_quantile` |
+| Weighted subgraph Fubini, generic survival layer cake, and exact Rvachev stopped primitives | `FabiusFunction.SubgraphFubini`, `FabiusFunction.SurvivalLayerCake`, `FabiusFunction.ProbabilityLaplaceMoments` | `integral_smul_setIntegral_subgraph`, `intervalIntegral_survival_smul_eq_integral_clamp`, `intervalIntegral_survival_smul_eq_integral_min_of_ae_mem_Icc`, `intervalIntegral_survival_smul_eq_integral_of_ae_mem_Icc`, `intervalIntegral_rvachevUp_smul_eq_integral_min`, `intervalIntegral_rvachevUp_smul_eq_integral` |
+| Generic inverse-clock and exact Fabius weighted layer-cake identities | `FabiusFunction.InverseLayerCake` | `intervalIntegral_smul_intervalIntegral_of_lt_iff_lt`, `intervalIntegral_smul_comp_of_lt_iff_lt`, `intervalIntegral_smul_intervalIntegral_fabiusInv`, `intervalIntegral_smul_comp_fabiusInv`, `intervalIntegral_mul_fabiusInv_eq`, `intervalIntegral_fabiusInv_eq_intervalIntegral_rvachevUp`, `intervalIntegral_fabiusInv_eq_one_half` |
 | Weighted-partition exponential coefficients over commutative `ℚ`-algebras | `FabiusFunction.ExponentialPartition`, `FabiusFunction.ExponentialBell` | `partitionExpSum_recurrence`, `partitionExpSum_succ`, `partitionExpSum_eq_sum_div`, `partitionExpSum_eq_expCoeff` |
 | Complete Bell and moment--cumulant transforms over commutative `ℚ`-algebras | `FabiusFunction.MomentCumulantAlgebra` | `factorialNormalize`, `completeBellPolynomial`, `momentCumulant`, `completeBellPolynomial_succ`, `completeBellPolynomial_momentCumulant`, `momentCumulant_completeBellPolynomial` |
 | Full-order centered Rvachev moment, logarithmic-coefficient, and cumulant parity, with positive even-order Bernoulli--Mersenne cumulants | `FabiusFunction.CenteredMomentParity`, `FabiusFunction.SinhDivBernoulliLog` | `centeredRvachevFullMoment_even`, `centeredRvachevFullMoment_odd`, `centeredRvachevFullLogCoefficient_even`, `centeredRvachevFullLogCoefficient_odd`, `centeredRvachevFullCumulant_even`, `centeredRvachevFullCumulant_odd`, `centeredRvachevEvenCumulant_eq_bernoulliMersenne` |
@@ -832,7 +836,7 @@ compiled PDF is committed alongside its source.
   heuristics, partial formalizations, refutations, and the precise outstanding
   Lean obligations rather than presenting them as established results.
 - **Treat drafts as a temporary inbox.** Content under
-  `docs/Fabius_Function_and_Rvachev_Up/drafts/` is reviewed claim-by-claim.
+  `docs/non-formalized-research-frontiers/drafts/incoming/` is reviewed claim-by-claim.
   Lean-backed material is integrated organically into the primary exposition
   without duplication; everything else is relocated to the research-frontier
   tree with its provenance. Once a draft is fully dispositioned, it is removed,

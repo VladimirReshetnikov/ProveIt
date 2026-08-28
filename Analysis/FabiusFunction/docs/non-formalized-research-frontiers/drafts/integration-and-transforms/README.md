@@ -4,7 +4,7 @@ Antiderivatives, integral calculus, transform dualities, and fractional
 calculus of the Fabius–Rvachev system, consolidated (2026-08-28) into
 the single volume
 [`Integration_and_Transform_Frontiers/`](Integration_and_Transform_Frontiers/)
-(316 pp, eleven parts):
+(329 pp, eleven parts):
 
 - **Part I** — *Antiderivatives of Monomially Weighted Fabius-Type
   Functions* (formerly `Fabius_Antiderivatives_Report/`);

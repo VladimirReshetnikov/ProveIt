@@ -1,11 +1,12 @@
 # Antiderivatives of Monomially Weighted Fabius-Type Functions
 
-> **Archived companion bundle.** The former standalone manuscript is now
-> consolidated in `../../Integration_and_Transform_Frontiers.tex`, with the
-> rendered report at `../../Integration_and_Transform_Frontiers.pdf`. This
-> directory retains its supporting computations and validation records.
+> **Consolidation note.** The standalone report source and PDF were absorbed
+> into Part I of the
+> [consolidated volume](../../Integration_and_Transform_Frontiers.tex). This
+> directory now contains only supporting assets; Git history preserves the
+> former standalone files.
 
-This package accompanied the research report prepared on 27 August 2026.
+This package accompanies the research report prepared on 27 August 2026.
 The source audit is tied to ProveIt commit
 `32d6d36c51d803289e6d6a0dc0c37753766eba47` and is documented in Sections 1
 and Appendix A of the report. The report now also carries a later
@@ -14,8 +15,8 @@ not alter the snapshot-relative novelty audit.
 
 ## Package contents
 
-- `../../Integration_and_Transform_Frontiers.pdf` — current consolidated report.
-- `../../Integration_and_Transform_Frontiers.tex` — current consolidated source.
+- `../../Integration_and_Transform_Frontiers.tex` — canonical consolidated source.
+- `../../Integration_and_Transform_Frontiers.pdf` — rendered consolidated volume.
 - `numerical_experiments.py` — commented exact and high-precision checks.
 - `verification_output.txt` — deterministic output from the default run.
 - `fractional_power_checks.csv` — machine-readable comparison table.
@@ -27,10 +28,25 @@ not alter the snapshot-relative novelty audit.
 
 The machine-checked integer core consists of the normalized Volterra operator,
 its equality with literal repeated integration for continuous Banach-valued
-inputs, the arbitrary finite polynomial and natural-monomial commutators, the
-signed Fabius primitive ladder at every real endpoint, and the bounded Fabius
-ladder and finite natural-monomial formulas on the full range `x ≤ 1`. These
-results include order zero and oriented endpoints.
+inputs, affine covariance, local basepoint and zero-tail Taylor-jet identities,
+the arbitrary finite polynomial and natural-monomial commutators, the signed
+Fabius primitive ladder at every real endpoint, and the bounded Fabius ladder
+and finite natural-monomial formulas on the full range `x ≤ 1`.
+The four affine/basepoint declarations below were focused-build verified at
+compiled checkpoint `e109088ed`.
+
+The generic affine and basepoint declarations have the following exact scope.
+The forward form `normalizedVolterra_affine` is valid for an arbitrary real
+normed target and every real scale `c`, including `c = 0` and negative `c`;
+`normalizedVolterra_comp_affine` is the inverse form and assumes `c ≠ 0`.
+`normalizedVolterra_basepoint_shift` assumes only interval integrability on
+the two local pieces from `a` to `b` and from `b` to `x`, requires no ordering
+of those endpoints, and includes `n = 0`.
+`normalizedVolterra_succ_eq_taylor_of_eq_zero` retains only integrability from
+`a` to `b` and is the positive-order result when the input vanishes on
+`uIoo b x`; it requires no endpoint order or endpoint values. These general
+operator identities do not themselves provide explicit Fabius/up coefficients
+or assemble a piecewise formula.
 
 The report also develops an absolutely and locally uniformly convergent
 Newton–Volterra series for arbitrary complex powers, negative-power and
@@ -50,6 +66,10 @@ supplies a Lean counterpart.
 - `FabiusFunction.NormalizedVolterra`
   - `normalizedVolterra`
   - `iteratedPrimitive_eq_normalizedVolterra`
+  - `normalizedVolterra_affine`
+  - `normalizedVolterra_comp_affine`
+  - `normalizedVolterra_basepoint_shift`
+  - `normalizedVolterra_succ_eq_taylor_of_eq_zero`
   - `normalizedVolterra_kernel_pow`
   - `normalizedVolterra_polynomial`
   - `normalizedVolterra_monomial`
@@ -65,16 +85,12 @@ A TeX Live installation with `pdflatex` and the packages imported by the
 source is sufficient.  Build three times so references, the table of contents,
 and page numbers all settle, then remove the sidecars:
 
-From this archived companion directory, compile the consolidated source three
-times in its own directory:
-
 ```bash
 (cd ../.. && pdflatex -interaction=nonstopmode -halt-on-error Integration_and_Transform_Frontiers.tex)
 (cd ../.. && pdflatex -interaction=nonstopmode -halt-on-error Integration_and_Transform_Frontiers.tex)
 (cd ../.. && pdflatex -interaction=nonstopmode -halt-on-error Integration_and_Transform_Frontiers.tex)
+(cd ../.. && rm -f *.aux *.log *.out *.toc)
 ```
-
-These commands update `../../Integration_and_Transform_Frontiers.pdf`.
 
 ## Reproduce the numerical checks
 
