@@ -1,4 +1,5 @@
 import FabiusFunction.GeometricLagrangeQBinomial
+import FabiusFunction.GeometricQBinomialLagrange
 import Mathlib.Algebra.BigOperators.Intervals
 
 /-!
@@ -26,7 +27,9 @@ The proof does not duplicate interpolation or develop a second Gaussian
 polynomial.  It evaluates the coefficient polynomial already supplied by
 `GeometricLagrangeWeights`, identifies it with the normalized forward
 Richardson polynomial, and clears the common signed geometric product from
-its numerator and denominator.  This also yields the positive-index form
+its numerator and denominator.  The positive-index form is routed through
+the generic denominator-free Gaussian moment theorem from
+`GeometricQBinomialLagrange`:
 
 `S_(p,m)(q) = (-1)^p q^choose(p+1,2)
   (q^(m-p); q)_p / (q; q)_p`
@@ -278,23 +281,36 @@ theorem geometricLagrangeQMoment_eq_residual_qPochhammer
     geometricLagrangeQMoment q p m =
       ((-1 : ℚ) ^ p * q ^ (p + 1).choose 2) *
         qPochhammer (q ^ (m - p)) q p / qPochhammer q q p := by
-  rw [geometricLagrangeQMoment_eq_forwardRichardson_eval
-    q hq p m hPochhammer,
-    forwardGeometricRichardsonPolynomial_eval,
-    geometricRootPolynomial_inv_eval_pow_eq_qPochhammer_of_le
-      q hq p m hpm.le]
   have hPochhammer' : geometricQPochhammer q p ≠ 0 := by
     rwa [geometricQPochhammer_rat_eq_qPochhammer]
   have hnodes : Set.InjOn (fun j : ℕ ↦ q ^ j)
       (Finset.range (p + 1)) :=
     pow_injOn_range_of_geometricQPochhammer_ne_zero
       q hq p hPochhammer'
-  have hden : (geometricRootPolynomial q⁻¹ p).eval 1 ≠ 0 :=
-    geometricRootPolynomial_inv_eval_one_ne_zero_of_nodes_injective
-      q hq p hnodes
-  apply (div_eq_div_iff hden hPochhammer).2
-  rw [← geometricRootPolynomial_inv_eval_one_mul_triangular q hq p]
-  ring
+  have hmoment :=
+    sum_geometricLagrangeWeight_mul_pow_eq_gaussianBinomial
+      q p m hnodes (by omega : 0 < m)
+  have hgauss :
+      qPochhammer q q p * gaussianBinomial q (m - 1) p =
+        qPochhammer (q ^ (m - p)) q p := by
+    simpa only [finiteQPochhammerIn_rat_eq,
+      show m - 1 - p + 1 = m - p by omega] using
+      (finiteQPochhammerIn_self_mul_gaussianBinomial
+        q (n := m - 1) (k := p) (by omega : p ≤ m - 1))
+  have htri : p * (p + 1) / 2 = (p + 1).choose 2 := by
+    rw [Nat.choose_two_right, Nat.add_sub_cancel, Nat.mul_comm]
+  calc
+    geometricLagrangeQMoment q p m =
+        (-1 : ℚ) ^ p * q ^ (p * (p + 1) / 2) *
+          gaussianBinomial q (m - 1) p := by
+      simpa only [geometricLagrangeQMoment] using hmoment
+    _ = ((-1 : ℚ) ^ p * q ^ (p + 1).choose 2) *
+          qPochhammer (q ^ (m - p)) q p /
+            qPochhammer q q p := by
+      rw [htri]
+      apply (eq_div_iff hPochhammer).2
+      rw [← hgauss]
+      ring
 
 /-- Splitting a self q-Pochhammer product after its first `a` factors:
 
