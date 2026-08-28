@@ -58,22 +58,36 @@
 \setlength{\emergencystretch}{2em}
 \allowdisplaybreaks
 
+% ed.: alias counters so cleveref prints each environment's own name
+% (with plain shared counters every \cref rendered as "theorem").
+\usepackage{aliascnt}
+\newcommand{\newsharedtheorem}[2]{%
+  \newaliascnt{#1}{theorem}%
+  \newtheorem{#1}[#1]{#2}%
+  \aliascntresetthe{#1}%
+}
 \newtheorem{theorem}{Theorem}[section]
+\crefname{obligation}{formalization obligation}{formalization obligations}
+\Crefname{obligation}{Formalization obligation}{Formalization obligations}
+\crefname{conjecture}{conjecture}{conjectures}
+\Crefname{conjecture}{Conjecture}{Conjectures}
+\crefname{warning}{warning}{warnings}
+\Crefname{warning}{Warning}{Warnings}
 \newcommand{\integrationreportreset}{%
   \clearpage
   \setcounter{section}{0}%
   \renewcommand{\thesection}{\arabic{section}}}
-\newtheorem{proposition}[theorem]{Proposition}
-\newtheorem{lemma}[theorem]{Lemma}
-\newtheorem{corollary}[theorem]{Corollary}
-\newtheorem{conjecture}[theorem]{Conjecture}
+\newsharedtheorem{proposition}{Proposition}
+\newsharedtheorem{lemma}{Lemma}
+\newsharedtheorem{corollary}{Corollary}
+\newsharedtheorem{conjecture}{Conjecture}
 \theoremstyle{definition}
-\newtheorem{definition}[theorem]{Definition}
-\newtheorem{algorithm}[theorem]{Algorithm}
-\newtheorem{example}[theorem]{Example}
+\newsharedtheorem{definition}{Definition}
+\newsharedtheorem{algorithm}{Algorithm}
+\newsharedtheorem{example}{Example}
 \theoremstyle{remark}
-\newtheorem{remark}[theorem]{Remark}
-\newtheorem{warning}[theorem]{Warning}
+\newsharedtheorem{remark}{Remark}
+\newsharedtheorem{warning}{Warning}
 
 \newtcolorbox{resultbox}[1][]{
   enhanced,breakable,colback=paleblue,colframe=deepblue,
@@ -2697,8 +2711,8 @@ L.~Comtet,
 \newcommand{\corpusresult}{\textbf{Imported from the repository corpus.}}
 \newcommand{\conjectural}{\textbf{Conjectural.}}
 \definecolor{deepgreen}{RGB}{30,105,75}
-\newtheorem{identity}[theorem]{Identity}
-\newtheorem{obligation}[theorem]{Formalization obligation}
+\newsharedtheorem{identity}{Identity}
+\newsharedtheorem{obligation}{Formalization obligation}
 \newenvironment{boxedremark}{%
   \par\smallskip\noindent\begin{center}\begin{minipage}{0.94\textwidth}%
   \color{black}\hrule\vspace{0.6em}\small
@@ -4491,7 +4505,7 @@ V.~Reshetnikov,
 \newcommand{\repoPartl}{\textsc{ProveIt}}
 \definecolor{deepgreen}{RGB}{24,102,72}
 \definecolor{deepred}{RGB}{145,44,44}
-\newtheorem{problem}[theorem]{Open problem}
+\newsharedtheorem{problem}{Open problem}
 \lstdefinestyle{python}{
   language=Python,
   basicstyle=\ttfamily\small,
@@ -20638,7 +20652,7 @@ Communications in Partial Differential Equations \textbf{32} (2007), 1245--1260.
 \newcommand{\LapF}{\mathcal L_F}
 \newcommand{\Kord}{\mathcal K}
 \newcommand{\Sord}{\mathcal S}
-\newtheorem{conditionaltheorem}[theorem]{Conditional theorem}
+\newsharedtheorem{conditionaltheorem}{Conditional theorem}
 \crefalias{conditionaltheorem}{theorem}
 \crefname{conditionaltheorem}{conditional theorem}{conditional theorems}
 \Crefname{conditionaltheorem}{Conditional theorem}{Conditional theorems}

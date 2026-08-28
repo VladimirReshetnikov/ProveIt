@@ -43,16 +43,24 @@
 \setlength{\emergencystretch}{2em}
 \captionsetup{font=small,labelfont=bf}
 
+% ed.: alias counters so cleveref prints each environment's own name
+% (with plain shared counters every \cref rendered as "theorem").
+\usepackage{aliascnt}
+\newcommand{\newsharedtheorem}[2]{%
+  \newaliascnt{#1}{theorem}%
+  \newtheorem{#1}[#1]{#2}%
+  \aliascntresetthe{#1}%
+}
 \newtheorem{theorem}{Theorem}[section]
-\newtheorem{proposition}[theorem]{Proposition}
-\newtheorem{lemma}[theorem]{Lemma}
-\newtheorem{corollary}[theorem]{Corollary}
+\newsharedtheorem{proposition}{Proposition}
+\newsharedtheorem{lemma}{Lemma}
+\newsharedtheorem{corollary}{Corollary}
 \theoremstyle{definition}
-\newtheorem{definition}[theorem]{Definition}
-\newtheorem{conjecture}[theorem]{Conjecture}
-\newtheorem{problem}[theorem]{Problem}
+\newsharedtheorem{definition}{Definition}
+\newsharedtheorem{conjecture}{Conjecture}
+\newsharedtheorem{problem}{Problem}
 \theoremstyle{remark}
-\newtheorem{remark}[theorem]{Remark}
+\newsharedtheorem{remark}{Remark}
 
 \newcommand{\R}{\mathbb R}
 \newcommand{\C}{\mathbb C}
@@ -98,6 +106,10 @@
 \usepackage{tabularx}
 \usepackage{float}
 \usepackage[nameinlink,capitalise]{cleveref}
+\crefname{conjecture}{conjecture}{conjectures}
+\Crefname{conjecture}{Conjecture}{Conjectures}
+\crefname{warning}{warning}{warnings}
+\Crefname{warning}{Warning}{Warnings}
 \usepackage{subcaption}
 \usepackage{mathrsfs}
 \usepackage[most]{tcolorbox}
@@ -1828,8 +1840,8 @@ W. Van Assche,
 \definecolor{deepred}{RGB}{145,40,40}
 \definecolor{shade}{RGB}{246,248,250}
 \definecolor{rulegray}{RGB}{190,198,205}
-\newtheorem{example}[theorem]{Example}
-\newtheorem{warning}[theorem]{Warning}
+\newsharedtheorem{example}{Example}
+\newsharedtheorem{warning}{Warning}
 \newenvironment{resultbox}{%
   \par\medskip\noindent\begin{center}\begin{minipage}{0.94\textwidth}%
   \color{black}\hrule\vspace{0.65em}\small
@@ -3971,8 +3983,8 @@ V.~Reshetnikov,
 \definecolor{shadegray}{RGB}{246,247,249}
 \definecolor{rulegray}{RGB}{192,199,207}
 \definecolor{deepviolet}{RGB}{87,55,132}
-\newtheorem{openproblem}[theorem]{Open problem}
-\newtheorem{algorithm}[theorem]{Algorithm}
+\newsharedtheorem{openproblem}{Open problem}
+\newsharedtheorem{algorithm}{Algorithm}
 \newtcolorbox{resultboxPartl}[1][]{
   enhanced,breakable,colback=blue!2,colframe=MidnightBlue!72!black,
   boxrule=0.65pt,arc=1.2mm,left=2mm,right=2mm,top=1.2mm,bottom=1.2mm,
@@ -8741,7 +8753,7 @@ E. C. Titchmarsh,
 \definecolor{shadegray}{RGB}{246,247,249}
 \definecolor{rulegray}{RGB}{192,199,207}
 \definecolor{deepviolet}{RGB}{87,55,132}
-\newtheorem{identity}[theorem]{Identity}
+\newsharedtheorem{identity}{Identity}
 \newtcolorbox{resultboxPartiv}[1][]{
   enhanced,breakable,colback=blue!2,colframe=MidnightBlue!72!black,
   boxrule=0.65pt,arc=1.2mm,left=2mm,right=2mm,top=1.2mm,bottom=1.2mm,

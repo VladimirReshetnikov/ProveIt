@@ -14,6 +14,8 @@
 \usepackage[nameinlink,capitalise,noabbrev]{cleveref}
 \crefname{conjecture}{conjecture}{conjectures}
 \Crefname{conjecture}{Conjecture}{Conjectures}
+\crefname{warning}{warning}{warnings}
+\Crefname{warning}{Warning}{Warnings}
 \usepackage{tikz}
 \usepackage{pgfplots}
 \pgfplotsset{compat=1.18}
@@ -71,21 +73,31 @@
   \part{#1}}
 \makeatother
 
+% ed.: alias counters so cleveref prints each environment's own name
+% (with plain shared counters every \cref rendered as "theorem").
+\usepackage{aliascnt}
+\newcommand{\newsharedtheorem}[2]{%
+  \newaliascnt{#1}{theorem}%
+  \newtheorem{#1}[#1]{#2}%
+  \aliascntresetthe{#1}%
+}
 \newtheorem{theorem}{Theorem}[section]
-\newtheorem{proposition}[theorem]{Proposition}
-\newtheorem{lemma}[theorem]{Lemma}
-\newtheorem{corollary}[theorem]{Corollary}
-\newtheorem{claim}[theorem]{Claim}
+\newsharedtheorem{proposition}{Proposition}
+\newsharedtheorem{lemma}{Lemma}
+\newsharedtheorem{corollary}{Corollary}
+\newsharedtheorem{claim}{Claim}
 \theoremstyle{definition}
-\newtheorem{definition}[theorem]{Definition}
-\newtheorem{algorithm}[theorem]{Algorithm}
-\newtheorem{example}[theorem]{Example}
+\newsharedtheorem{definition}{Definition}
+\newsharedtheorem{algorithm}{Algorithm}
+\newsharedtheorem{example}{Example}
 \theoremstyle{remark}
-\newtheorem{remark}[theorem]{Remark}
-\newtheorem{warning}[theorem]{Warning}
-\newtheorem{status}[theorem]{Status note}
+\newsharedtheorem{remark}{Remark}
+\newsharedtheorem{warning}{Warning}
+\newsharedtheorem{status}{Status note}
 \crefname{conjecture}{conjecture}{conjectures}
 \Crefname{conjecture}{Conjecture}{Conjectures}
+\crefname{warning}{warning}{warnings}
+\Crefname{warning}{Warning}{Warnings}
 
 \DeclareMathOperator{\supp}{supp}
 \DeclareMathOperator{\Var}{Var}
@@ -2349,12 +2361,12 @@ G.~Gasper and M.~Rahman,
 \definecolor{shadegray}{RGB}{246,247,249}
 \definecolor{rulegray}{RGB}{195,201,208}
 \definecolor{deepgray}{RGB}{70,75,82}
-\newtheorem{conjecture}[theorem]{Conjecture}
+\newsharedtheorem{conjecture}{Conjecture}
 % Some member reports use the neutral heading ``Problem'', while others mark
 % the same environment explicitly as ``Open problem''.  Keep one counter and
 % vary only its stored heading at report boundaries.
 \newcommand{\frontierproblemname}{Open problem}
-\newtheorem{problem}[theorem]{\frontierproblemname}
+\newsharedtheorem{problem}{\frontierproblemname}
 \newenvironment{proofidea}
   {\par\smallskip\noindent\textit{Proof architecture.}\ }
   {\hfill$\square$\par\smallskip}
@@ -9658,7 +9670,7 @@ V. Reshetnikov,
 \definecolor{DeepRed}{HTML}{8A2D2D}
 \definecolor{SoftGray}{HTML}{F4F5F7}
 \definecolor{LinkBlue}{HTML}{145DA0}
-\newtheorem{checkitem}[theorem]{Computational check}
+\newsharedtheorem{checkitem}{Computational check}
 \newcolumntype{P}[1]{>{\raggedright\arraybackslash}p{#1}}
 \newenvironment{statusboxPartxx}[1]{%
   \par\medskip\noindent\begin{minipage}{\textwidth}%
@@ -11329,7 +11341,7 @@ Cambridge University Press, 2003.
 \definecolor{darkgreen}{RGB}{25,95,60}
 \definecolor{darkred}{RGB}{135,35,35}
 \definecolor{shade}{RGB}{247,248,250}
-\newtheorem{observation}[theorem]{Observation}
+\newsharedtheorem{observation}{Observation}
 
 \frontierreportpart{Logarithmic q-Richardson Acceleration and Lambert Phase
 Locking in Fabius--Rvachev Analysis}
