@@ -1,5 +1,5 @@
 import FabiusFunction.FiniteQBinomialCore
-import FabiusFunction.GeometricLagrange
+import FabiusFunction.GeometricResidualMoments
 import Mathlib.Algebra.BigOperators.Field
 
 /-!
@@ -373,84 +373,6 @@ theorem finiteQPochhammerIn_mul_geometricLagrangeWeight_eq
   rw [hquot]
   exact mul_div_cancel₀ _ hden
 
-private theorem geometric_nodal_product_eq_gaussianBinomial
-    {R : Type*} [CommRing R] (q : R) (n d : ℕ) (hd : 0 < d) :
-    (∏ j ∈ Finset.range n, (q ^ d - q ^ (j + 1))) =
-      finiteQPochhammerIn q q n *
-        ((-1 : R) ^ n * q ^ (n * (n + 1) / 2) *
-          gaussianBinomial q (d - 1) n) := by
-  by_cases hnd : n ≤ d - 1
-  · have hsum :
-        (∑ j ∈ Finset.range n, (j + 1)) = n * (n + 1) / 2 := by
-      calc
-        (∑ j ∈ Finset.range n, (j + 1)) =
-            ∑ j ∈ Finset.range (n + 1), j := by
-          simpa using
-            (Finset.sum_range_succ' (fun j : ℕ => j) n).symm
-        _ = (n + 1) * n / 2 := by
-          rw [Finset.sum_range_id]
-          simp
-        _ = n * (n + 1) / 2 := by rw [Nat.mul_comm]
-    have hfactor :
-        (∏ j ∈ Finset.range n, (q ^ d - q ^ (j + 1))) =
-          (-1 : R) ^ n * q ^ (n * (n + 1) / 2) *
-            (∏ j ∈ Finset.range n, (1 - q ^ (d - (j + 1)))) := by
-      calc
-        (∏ j ∈ Finset.range n, (q ^ d - q ^ (j + 1))) =
-            ∏ j ∈ Finset.range n,
-              ((-1 : R) * q ^ (j + 1) *
-                (1 - q ^ (d - (j + 1)))) := by
-          apply Finset.prod_congr rfl
-          intro j hj
-          have hjd : j + 1 ≤ d := by
-            have hjn : j < n := Finset.mem_range.mp hj
-            omega
-          have hpow : q ^ (j + 1) * q ^ (d - (j + 1)) = q ^ d := by
-            rw [← pow_add, Nat.add_sub_of_le hjd]
-          rw [← hpow]
-          ring
-        _ = (-1 : R) ^ n * q ^ (n * (n + 1) / 2) *
-            (∏ j ∈ Finset.range n, (1 - q ^ (d - (j + 1)))) := by
-          rw [Finset.prod_mul_distrib, Finset.prod_mul_distrib,
-            Finset.prod_const, Finset.card_range,
-            Finset.prod_pow_eq_pow_sum]
-          simp only [hsum]
-    have hreverse :
-        (∏ j ∈ Finset.range n, (1 - q ^ (d - (j + 1)))) =
-          finiteQPochhammerIn (q ^ (d - n)) q n := by
-      rw [finiteQPochhammerIn]
-      calc
-        (∏ j ∈ Finset.range n, (1 - q ^ (d - (j + 1)))) =
-            ∏ j ∈ Finset.range n,
-              (1 - q ^ (d - (n - 1 - j + 1))) :=
-          (Finset.prod_range_reflect
-            (fun j => 1 - q ^ (d - (j + 1))) n).symm
-        _ = ∏ j ∈ Finset.range n, (1 - q ^ (d - n + j)) := by
-          apply Finset.prod_congr rfl
-          intro j hj
-          congr 2
-          have hjn : j < n := Finset.mem_range.mp hj
-          omega
-        _ = ∏ j ∈ Finset.range n, (1 - q ^ (d - n) * q ^ j) := by
-          apply Finset.prod_congr rfl
-          intro j _hj
-          rw [pow_add]
-    have hlast := finiteQPochhammerIn_self_mul_gaussianBinomial
-      q (n := d - 1) (k := n) hnd
-    have hlast' :
-        finiteQPochhammerIn q q n * gaussianBinomial q (d - 1) n =
-          finiteQPochhammerIn (q ^ (d - n)) q n := by
-      simpa only [show d - 1 - n + 1 = d - n by omega] using hlast
-    rw [hfactor, hreverse, ← hlast']
-    ring
-  · have hlt : d - 1 < n := Nat.lt_of_not_ge hnd
-    have hzero :
-        (∏ j ∈ Finset.range n, (q ^ d - q ^ (j + 1))) = 0 := by
-      refine Finset.prod_eq_zero (Finset.mem_range.mpr hlt) ?_
-      rw [Nat.sub_add_cancel (Nat.one_le_iff_ne_zero.mpr hd.ne'), sub_self]
-    rw [hzero, gaussianBinomial_eq_zero_of_lt q hlt]
-    ring
-
 /-- **Complete residual moments of the geometric Richardson row.**  For
 every positive degree, including degrees above the cancellation range, the
 moment is one Gaussian coefficient.  At `d <= n` this specializes to zero;
@@ -467,42 +389,7 @@ theorem sum_geometricLagrangeWeight_mul_pow_eq_gaussianBinomial
       geometricLagrangeWeight q n k * (q ^ k) ^ d) =
       (-1 : F) ^ n * q ^ (n * (n + 1) / 2) *
         gaussianBinomial q (d - 1) n := by
-  have hden := finiteQPochhammerIn_self_ne_zero_of_injOn q n hnode
-  calc
-    (∑ k ∈ Finset.range (n + 1),
-        geometricLagrangeWeight q n k * (q ^ k) ^ d) =
-        ∑ k ∈ Finset.range (n + 1),
-          (geometricQBinomialWeightNumerator q n k /
-            finiteQPochhammerIn q q n) * (q ^ k) ^ d := by
-      apply Finset.sum_congr rfl
-      intro k hk
-      rw [geometricLagrangeWeight_eq_gaussianBinomial_div q n k hnode
-        (Nat.lt_succ_iff.mp (Finset.mem_range.mp hk))]
-    _ = (∑ k ∈ Finset.range (n + 1),
-          geometricQBinomialWeightNumerator q n k * (q ^ k) ^ d) /
-            finiteQPochhammerIn q q n := by
-      simp only [div_mul_eq_mul_div]
-      rw [Finset.sum_div]
-    _ = (∏ j ∈ Finset.range n, (q ^ d - q ^ (j + 1))) /
-          finiteQPochhammerIn q q n := by
-      congr 1
-      calc
-        (∑ k ∈ Finset.range (n + 1),
-            geometricQBinomialWeightNumerator q n k * (q ^ k) ^ d) =
-            ∑ k ∈ Finset.range (n + 1),
-              geometricQBinomialWeightNumerator q n k * (q ^ d) ^ k := by
-          apply Finset.sum_congr rfl
-          intro k _hk
-          rw [← pow_mul, ← pow_mul, Nat.mul_comm]
-        _ = ∏ j ∈ Finset.range n, (q ^ d - q ^ (j + 1)) :=
-          reversed_finite_qBinomial_theorem q (q ^ d) n
-    _ = (finiteQPochhammerIn q q n *
-          ((-1 : F) ^ n * q ^ (n * (n + 1) / 2) *
-            gaussianBinomial q (d - 1) n)) /
-          finiteQPochhammerIn q q n := by
-      rw [geometric_nodal_product_eq_gaussianBinomial q n d hd]
-    _ = (-1 : F) ^ n * q ^ (n * (n + 1) / 2) *
-          gaussianBinomial q (d - 1) n :=
-      mul_div_cancel_left₀ _ hden
+  simpa [Nat.choose_two_right, Nat.mul_comm] using
+    sum_geometricLagrangeWeight_mul_pow_of_pos q n d hnode hd
 
 end Fabius

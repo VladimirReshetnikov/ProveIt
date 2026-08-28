@@ -21,7 +21,9 @@ the natural quotient in all higher Lagrange and Richardson residual moments.
 * `completeHomogeneousEval_eq_sum_sym` is the explicit multiset formula.
 * `completeHomogeneousEval_eq_eval_hsymm` identifies Mathlib's universal
   symmetric polynomial with this evaluation API.
+* `completeHomogeneousEval_smul` records homogeneity under a common scale.
 * `completeHomogeneousEval_option_succ` adjoins one distinguished variable.
+* `completeHomogeneousEval_option_zero` removes an adjoined zero variable.
 * `completeHomogeneousQuotient` packages `h_n(X, a_1, ..., a_d)` as a
   univariate polynomial.
 * `eval_completeHomogeneousQuotient` evaluates that polynomial as the
@@ -122,6 +124,32 @@ theorem map_completeHomogeneousEval
   classical
   simp [completeHomogeneousEval, map_sum, ← Multiset.prod_hom']
 
+/-- Scaling every variable by `c` scales the degree-`n` complete homogeneous
+evaluation by `c ^ n`.
+
+This is valid over every commutative semiring; no cancellation or
+nonzeroness assumption on `c` is needed. -/
+theorem completeHomogeneousEval_smul
+    {R ι : Type*} [CommSemiring R] [Fintype ι]
+    (c : R) (a : ι → R) (n : ℕ) :
+    completeHomogeneousEval (fun i ↦ c * a i) n =
+      c ^ n * completeHomogeneousEval a n := by
+  classical
+  unfold completeHomogeneousEval
+  rw [Finset.mul_sum]
+  apply Finset.sum_congr rfl
+  intro m _hm
+  have hp (s : Multiset ι) :
+      (s.map (fun i ↦ c * a i)).prod =
+        c ^ s.card * (s.map a).prod := by
+    induction s using Multiset.induction_on with
+    | empty => simp
+    | @cons i s ih =>
+        simp only [Multiset.map_cons, Multiset.prod_cons,
+          Multiset.card_cons, ih, pow_succ]
+        ac_rfl
+  simpa only [m.2] using hp m.1
+
 private theorem sum_sym_option_succ
     {R ι : Type*} [CommSemiring R] [Fintype ι]
     [DecidableEq ι] [DecidableEq (Option ι)]
@@ -164,6 +192,51 @@ theorem completeHomogeneousEval_option_succ
   letI : DecidableEq (Option ι) := Classical.decEq (Option ι)
   simpa only [completeHomogeneousEval] using sum_sym_option_succ a n
 
+/-- Adjoining a zero variable does not change a complete homogeneous
+evaluation. -/
+@[simp]
+theorem completeHomogeneousEval_option_zero
+    {R ι : Type*} [CommSemiring R] [Fintype ι]
+    (a : ι → R) (n : ℕ) :
+    completeHomogeneousEval (Option.elim' 0 a) n =
+      completeHomogeneousEval a n := by
+  cases n with
+  | zero => simp
+  | succ n =>
+      simpa [Function.comp_def] using
+        completeHomogeneousEval_option_succ
+          (Option.elim' (0 : R) a) n
+
+/-- Splitting the first variable from a nonempty `Fin` family gives the
+head--tail recurrence for complete homogeneous evaluations. -/
+theorem completeHomogeneousEval_fin_succ
+    {R : Type*} [CommSemiring R] {r : ℕ}
+    (a : Fin (r + 1) → R) (n : ℕ) :
+    completeHomogeneousEval a (n + 1) =
+      a 0 * completeHomogeneousEval a n +
+        completeHomogeneousEval (fun j : Fin r ↦ a j.succ) (n + 1) := by
+  let b : Option (Fin r) → R :=
+    Option.elim' (a 0) (fun j ↦ a j.succ)
+  have hba : b ∘ finSuccEquiv r = a := by
+    funext i
+    refine Fin.cases ?_ (fun j ↦ ?_) i
+    · simp [b]
+    · simp [b]
+  have hreindex (d : ℕ) :
+      completeHomogeneousEval a d = completeHomogeneousEval b d := by
+    rw [← hba]
+    exact completeHomogeneousEval_comp_equiv (finSuccEquiv r) b d
+  calc
+    completeHomogeneousEval a (n + 1) =
+        completeHomogeneousEval b (n + 1) := hreindex (n + 1)
+    _ = b none * completeHomogeneousEval b n +
+        completeHomogeneousEval (b ∘ some) (n + 1) :=
+      completeHomogeneousEval_option_succ b n
+    _ = a 0 * completeHomogeneousEval a n +
+        completeHomogeneousEval (fun j : Fin r ↦ a j.succ) (n + 1) := by
+      rw [hreindex n]
+      rfl
+
 /-- Complete homogeneous evaluation on a `Finset`, with the variables
 indexed by its subtype. -/
 def completeHomogeneousEvalOn
@@ -171,12 +244,44 @@ def completeHomogeneousEvalOn
     (s : Finset ι) (a : ι → R) (n : ℕ) : R :=
   completeHomogeneousEval (fun i : s ↦ a i) n
 
+/-- Evaluation on the natural-number range `0, ..., n - 1` is the same as
+evaluation on the canonically equivalent type `Fin n`. -/
+theorem completeHomogeneousEvalOn_range
+    {R : Type*} [CommSemiring R]
+    (a : ℕ → R) (n d : ℕ) :
+    completeHomogeneousEvalOn (Finset.range n) a d =
+      completeHomogeneousEval (fun i : Fin n ↦ a i) d := by
+  let e : (Finset.range n : Finset ℕ) ≃ Fin n :=
+    { toFun := fun i ↦ ⟨i.1, Finset.mem_range.mp i.2⟩
+      invFun := fun i ↦ ⟨i.1, Finset.mem_range.mpr i.2⟩
+      left_inv := by intro i; rfl
+      right_inv := by intro i; rfl }
+  change completeHomogeneousEval (fun i : Finset.range n ↦ a i) d =
+    completeHomogeneousEval (fun i : Fin n ↦ a i) d
+  have hfun : (fun i : Finset.range n ↦ a i) =
+      (fun i : Fin n ↦ a i) ∘ e := by
+    rfl
+  rw [hfun]
+  exact completeHomogeneousEval_comp_equiv e (fun i : Fin n ↦ a i) d
+
 /-- Complete homogeneous evaluation in one distinguished target variable
 together with the variables indexed by `s`. -/
 def completeHomogeneousEvalAt
     {R ι : Type*} [CommSemiring R]
     (s : Finset ι) (a : ι → R) (x : R) (n : ℕ) : R :=
   completeHomogeneousEval (Option.elim' x (fun i : s ↦ a i)) n
+
+/-- At target zero, the distinguished variable drops out of the complete
+homogeneous evaluation. -/
+@[simp]
+theorem completeHomogeneousEvalAt_zero
+    {R ι : Type*} [CommSemiring R]
+    (s : Finset ι) (a : ι → R) (n : ℕ) :
+    completeHomogeneousEvalAt s a 0 n =
+      completeHomogeneousEvalOn s a n := by
+  simpa only [completeHomogeneousEvalAt, completeHomogeneousEvalOn] using
+    completeHomogeneousEval_option_zero (R := R)
+      (fun i : s ↦ a i) n
 
 private theorem completeHomogeneousEvalOn_insert_eq_option
     {R ι : Type*} [CommSemiring R] [DecidableEq ι]
@@ -243,19 +348,6 @@ theorem completeHomogeneousEvalAt_succ
     x * completeHomogeneousEval b n +
       completeHomogeneousEval (fun i : s ↦ a i) (n + 1)
   rw [completeHomogeneousEval_option_succ, hbnone, hbsome]
-
-/-- Adjoining a zero variable does not change a complete homogeneous
-evaluation.  This includes degree zero, where both sides are one. -/
-@[simp] theorem completeHomogeneousEvalAt_zero
-    {R ι : Type*} [CommSemiring R]
-    (s : Finset ι) (a : ι → R) (n : ℕ) :
-    completeHomogeneousEvalAt s a 0 n =
-      completeHomogeneousEvalOn s a n := by
-  cases n with
-  | zero =>
-      simp [completeHomogeneousEvalAt, completeHomogeneousEvalOn]
-  | succ n =>
-      simpa using completeHomogeneousEvalAt_succ s a 0 n
 
 /-- The univariate polynomial `h_n(X, a_1, ..., a_d)`, characterized by
 

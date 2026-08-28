@@ -122,7 +122,7 @@
 \author{Human-readable synthesis of the formal development\\
 \small Vladimir Reshetnikov's \texttt{ProveIt} repository}
 \date{Repository snapshot: 27 August 2026\\
-\small commit \nolinkurl{158dd2e12d7412142d79a53d91d8fcbdfdfb5d97}}
+\small commit \nolinkurl{7b05fce557a326c435f9521ee1a55039429ef116}}
 
 \begin{document}
 \maketitle
@@ -1424,7 +1424,7 @@ These are \lean{rvachevFourier_conj} in \path{FourierAnalytic.lean} and
 \lean{rvachevFourier_neg}, \lean{rvachevFourier_ofReal_im_eq_zero} in
 \path{FourierProduct.lean}.
 
-\begin{theorem}[Exact Fourier zero set and positive-integer zero orders]
+\begin{theorem}[Exact Fourier zero set, positive-real zero-order limits, and canonical product]
 \label{thm:fourier-zeros}
 The complex zeros of the Fourier transform are precisely the nonzero integers:
 \begin{equation}
@@ -1459,6 +1459,145 @@ an exponential, and is therefore strictly positive.  The canonical product is
 \lean{rvachevFourier_eq_canonical} in the same facade module, built from
 \lean{rvachevFourierProduct_eq_canonical} in \path{SincCanonicalProduct.lean}.
 \end{proof}
+
+\subsection{Total local factorization and exact complex zero jets}
+\label{sec:fourier-integer-zero-jets}
+
+The complex sinc identities needed at an integer center are most useful after
+their removable denominators have been cleared.  With the convention
+\(\sinc z=\sin z/z\), continuously extended at zero, one has for every
+\(z\in\C\), every \(n\in\N\), and every \(a\in\C\setminus\{0\}\),
+\begin{align}
+ z\sinc(\pi z)
+   &=\frac{\sin(\pi z)}{\pi},                                      \label{eq:sinc-total-clear}\\
+ (n+z)\sinc\!\bigl(\pi(n+z)\bigr)
+   &=(-1)^n z\sinc(\pi z),                                        \label{eq:sinc-total-shift}\\
+ (an+z)\sinc\!\left(\frac{\pi(an+z)}a\right)
+   &=(-1)^n z\sinc\!\left(\frac{\pi z}a\right).                 \label{eq:sinc-total-scaled-shift}
+\end{align}
+Unlike identities obtained by dividing through by \(z\) or \(n+z\), these
+equalities retain the points where either factor vanishes.  They are respectively
+\lean{mul_complexSinc_pi}, \lean{mul_complexSinc_pi_add_nat}, and
+\lean{mul_complexSinc_pi_div_add_nat} in
+\path{IntegerZeroLocalFactorization.lean}; the last theorem allows an arbitrary
+nonzero \emph{complex} scale, with no order or reality hypothesis.
+
+Here is the reusable differential principle that will read off the leading
+coefficient.  Over any nontrivially normed field, if \(U\) is \(C^n\) at zero,
+then
+\begin{equation}
+ \left.\frac{\dd^n}{\dd z^n}\bigl(z^nU(z)\bigr)\right|_{z=0}
+   =n!\,U(0).                                                       \label{eq:factored-leading-jet}
+\end{equation}
+This is \lean{iteratedDeriv_pow_mul_zero} in \path{LeadingJet.lean}.  More
+generally, the same conclusion holds for a function \(f\) whenever
+\(f(z)=z^nU(z)\) merely throughout a neighborhood of zero; this germ form is
+\lean{iteratedDeriv_eq_factorial_mul_of_eventuallyEq_pow_mul}.  Thus no global
+factorization, analyticity, or separately supplied regularity of \(f\) is
+needed.
+
+We now apply the total sinc identities to the standalone product
+\(\Phi=\lean{rvachevFourierProduct}\).  Put
+\begin{equation}
+ P_d(w):=\prod_{h=0}^{d-1}
+   \sinc\!\left(\frac{\pi w}{2^h}\right),
+ \qquad P_0(w)=1.                                                  \label{eq:integer-zero-sinc-prefix}
+\end{equation}
+For arbitrary \(k,q\in\N\) and \(w\in\C\), the global, denominator-cleared
+factorization at the center \(2^kq\) is
+\begin{equation}
+ (2^kq+w)^{k+1}\Phi(2^kq+w)
+ =(-1)^q w^{k+1}P_{k+1}(w)
+   \Phi\!\left(\frac q2+\frac{w}{2^{k+1}}\right).                  \label{eq:dyadic-center-total-factorization}
+\end{equation}
+This is
+\lean{rvachevFourierProduct_two_pow_mul_add_factorization} in
+\path{IntegerZeroLocalFactorization.lean}.  It includes even \(q\), when the
+tail can retain further zero multiplicity, and also the degenerate center
+\(q=0\).  If \(q\) is odd, its sign is exactly \(-1\); the corresponding
+specialization is
+\lean{rvachevFourierProduct_two_pow_mul_odd_add_factorization}.
+
+For a positive integer \(m\), let
+\(d=\vtwo(m)+1\) and let \(q=m/2^{\vtwo(m)}\) be its canonical odd part.  Then
+\begin{equation}
+ (m+w)^d\Phi(m+w)
+ =-w^dP_d(w)\Phi\!\left(\frac q2+\frac{w}{2^d}\right),             \label{eq:natural-center-total-factorization}
+\end{equation}
+which is \lean{rvachevFourierProduct_nat_add_factorization}.  The fully signed
+form is just as clean.  For \(m\in\Z\setminus\{0\}\), set
+\begin{equation}
+ d_m:=\vtwo(|m|)+1,\qquad
+ q_m:=\frac{|m|}{2^{\vtwo(|m|)}},\qquad
+ \sigma_m:=\sgn(m).
+\end{equation}
+Then \(q_m\) is odd and, for every complex \(w\),
+\begin{equation}
+ (m+w)^{d_m}\Phi(m+w)
+ =-w^{d_m}P_{d_m}(w)
+   \Phi\!\left(\frac{q_m}{2}+\sigma_m\frac{w}{2^{d_m}}\right).     \label{eq:integer-center-total-factorization}
+\end{equation}
+This is \lean{rvachevFourierProduct_int_add_factorization}; the sign of the
+integer center occurs only in the tail coordinate.  Equations
+\eqref{eq:dyadic-center-total-factorization}--\eqref{eq:integer-center-total-factorization}
+are polynomially cleared identities on all of \(\C\), not punctured-neighborhood
+statements.
+
+The remaining analytic argument can therefore be packaged into a single local
+unit.  The product \(\Phi\) is entire by
+\lean{rvachevFourierProduct_differentiable}, and, for every odd natural \(q\),
+\begin{equation}
+ \Phi(q/2)\ne0,                                                    \label{eq:odd-half-integer-nonzero}
+\end{equation}
+by \lean{rvachevFourierProduct_nat_div_two_ne_zero_of_odd}.  Define the total
+cofactor
+\begin{equation}
+ U_m(w):=
+ -\frac{P_{d_m}(w)
+   \Phi\!\left(q_m/2+\sigma_m w/2^{d_m}\right)}{(m+w)^{d_m}}.      \label{eq:integer-zero-local-cofactor}
+\end{equation}
+The Lean definition \lean{integerZeroLocalCofactor} is total for every integer
+\(m\).  For \(m\ne0\) and \(m+w\ne0\),
+\begin{equation}
+ \Phi(m+w)=w^{d_m}U_m(w),                                         \label{eq:integer-zero-local-factorization}
+\end{equation}
+by \lean{rvachevFourierProduct_int_add_eq_pow_mul_cofactor}; the same equality
+holds as a germ at \(w=0\) by
+\lean{rvachevFourierProduct_int_add_eventuallyEq_pow_mul_cofactor}.
+Moreover \(U_m\) is analytic at zero, and its exact central value is
+\begin{equation}
+ U_m(0)=-\frac{\Phi(q_m/2)}{m^{d_m}}\ne0.                          \label{eq:integer-zero-unit-value}
+\end{equation}
+These three facts are \lean{integerZeroLocalCofactor_analyticAt},
+\lean{integerZeroLocalCofactor_zero}, and
+\lean{integerZeroLocalCofactor_zero_ne}, respectively.  More precisely, the
+middle theorem is the all-integer totalized identity
+\[
+ U_m(0)=
+ -\frac{\Phi\!\left(\operatorname{divMaxPow}(|m|,2)/2\right)}
+ {m^{\operatorname{padicValNat}(2,|m|)+1}};
+\]
+for \(m\ne0\) it reduces to \eqref{eq:integer-zero-unit-value}, and the last
+theorem makes it an analytic unit.
+
+Combining the germ factorization, the nonzero unit, and
+\eqref{eq:factored-leading-jet} gives the exact complex multiplicity and its
+entire leading jet:
+\begin{align}
+ \operatorname{ord}_{z=m}\Phi(z)&=d_m,                             \label{eq:integer-zero-complex-order}\\
+ \Phi^{(j)}(m)&=0 &&(0\le j<d_m),                                  \label{eq:integer-zero-lower-jets}\\
+ \Phi^{(d_m)}(m)
+   &=-\frac{d_m!\,\Phi(q_m/2)}{m^{d_m}}\ne0.                       \label{eq:integer-zero-leading-jet}
+\end{align}
+The order statement is
+\lean{analyticOrderAt_rvachevFourierProduct_int}; the lower derivatives are
+\lean{iteratedDeriv_rvachevFourierProduct_int_eq_zero_of_lt}; the displayed
+leading coefficient is \lean{iteratedDeriv_rvachevFourierProduct_int}; and its
+nonvanishing is also exported directly as
+\lean{iteratedDeriv_rvachevFourierProduct_int_ne_zero}, all in
+\path{IntegerZeroAnalyticOrder.lean}.  This strengthens the real
+positive-integer limit in \Cref{thm:fourier-zeros}: it is a signed-integer,
+complex-local theorem with the first surviving derivative evaluated exactly.
 
 \subsection{Finite weighted scale arithmetic behind the zero orders}
 
@@ -5648,9 +5787,10 @@ That rule explains several choices made above:
       weak-convergence API, not an unformalized continuous box-convolution density.
 \item Step cells use the formal half-endpoint indicator, including its point value at a
       shared boundary.
-\item The Fourier chapter states the exact complex zero classification and canonical product,
-      and the exact positive-integer zero order in its proved real punctured-limit form; it
-      does not promote that real limit to an unstated complex local-multiplicity theorem.
+\item The Fourier chapter distinguishes the real punctured-limit statement from the stronger
+      proved local theory: every nonzero signed integer has an exact complex analytic order,
+      all lower complex derivatives vanish, and the first surviving derivative is evaluated
+      explicitly in \Cref{sec:fourier-integer-zero-jets}.
 \item Flatness uses natural powers, and the analytic-locus claims use precisely the domains
       proved in \path{NowhereAnalytic.lean}.
 \item The \(q\)-calculus distinguishes the half-base Fabius identities from
@@ -5721,10 +5861,13 @@ Fourier analysis &
 \path{RenormalizationIdentity.lean}, \path{SincProductShells.lean},
 \path{SincPrefixBound.lean},
 \path{SincCanonicalProduct.lean}, \path{PhiZeroOrder.lean},
+\path{IntegerZeroLocalFactorization.lean}, \path{IntegerZeroAnalyticOrder.lean},
 \path{ThueMorseLobeSign.lean}, \path{RvachevProductContinuity.lean},
 \path{PeakRayEnvelope.lean}, \path{GlobalDecayEnvelope.lean},
 \path{RvachevFourierDecay.lean}, \path{VarianceBookkeeping.lean},
 \path{BirkhoffVariance.lean}, \path{BirkhoffProductBridge.lean}\\
+Local leading-jet calculus &
+\path{LeadingJet.lean}\\
 Global derivatives and flatness &
 \path{GlobalExtension.lean}, \path{GlobalBounds.lean},
 \path{BoundedDerivatives.lean}, \path{EffectiveFlatness.lean},
@@ -5952,8 +6095,8 @@ V.~Reshetnikov,
 V.~Reshetnikov,
 \newblock \emph{ProveIt: Analysis/FabiusFunction},
 \newblock Lean~4 formal development, source snapshot
-\texttt{158dd2e12d7412142d79a53d91d8fcbdfdfb5d97}, consulted 27 August 2026.
-\newblock \url{https://github.com/VladimirReshetnikov/ProveIt/tree/158dd2e12d7412142d79a53d91d8fcbdfdfb5d97/Analysis/FabiusFunction}.
+\texttt{7b05fce557a326c435f9521ee1a55039429ef116}, consulted 27 August 2026.
+\newblock \url{https://github.com/VladimirReshetnikov/ProveIt/tree/7b05fce557a326c435f9521ee1a55039429ef116/Analysis/FabiusFunction}.
 
 \end{thebibliography}
 
