@@ -198,6 +198,20 @@ lemma weightedSumDistribution_compl_Icc :
     weightedUniformDistribution_compl_Icc summable_norm_dyadicWeight
       dyadicWeight_nonneg
 
+/-- The weighted-sum law is almost surely carried by the unit interval. -/
+lemma ae_weightedSumDistribution_mem_Icc :
+    ∀ᵐ x ∂weightedSumDistribution, x ∈ Icc (0 : ℝ) 1 := by
+  change Icc (0 : ℝ) 1 ∈ ae weightedSumDistribution
+  rw [mem_ae_iff]
+  exact weightedSumDistribution_compl_Icc
+
+/-- Restricting the weighted-sum law to the unit interval leaves it
+unchanged. -/
+lemma weightedSumDistribution_restrict_Icc :
+    weightedSumDistribution.restrict (Icc (0 : ℝ) 1) =
+      weightedSumDistribution :=
+  Measure.restrict_eq_self_of_ae_mem ae_weightedSumDistribution_mem_Icc
+
 /-- The pair (first coordinate, series of the remaining coordinates) has
 law `volume` times `weightedSumDistribution`: the head is uniform on
 `[0,1]` and independent of the tail series. -/

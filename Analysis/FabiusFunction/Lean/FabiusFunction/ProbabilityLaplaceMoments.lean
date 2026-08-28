@@ -347,23 +347,6 @@ theorem unitEndpointMoment_zero_of_ae_mem_Icc
 
 namespace ProbabilityRepresentation
 
-/-- The weighted-sum law is almost surely supported on the unit interval. -/
-lemma ae_weightedSumDistribution_mem_Icc :
-    ∀ᵐ x ∂weightedSumDistribution, x ∈ Icc (0 : ℝ) 1 := by
-  rw [weightedSumDistribution_eq_geometricUniformDistribution_one_half]
-  unfold geometricUniformDistribution
-  have hq : |(1 / 2 : ℝ)| < 1 := by norm_num
-  simpa only [(hasSum_geometricUniformWeight hq).tsum_eq] using
-    (ae_weightedUniformDistribution_mem_Icc
-      (summable_norm_geometricUniformWeight hq)
-      (geometricUniformWeight_nonneg (by norm_num) (by norm_num)))
-
-/-- Restricting the weighted-sum law to its unit-interval support changes no mass. -/
-lemma weightedSumDistribution_restrict_Icc :
-    weightedSumDistribution.restrict (Icc (0 : ℝ) 1) =
-      weightedSumDistribution :=
-  Measure.restrict_eq_self_of_ae_mem ae_weightedSumDistribution_mem_Icc
-
 /-- The survival function of the weighted-sum law is Rvachev's bump on the
 whole nonnegative ray, including beyond the compact support. -/
 lemma weightedSumDistribution_real_Ioi_eq_rvachevUp_of_nonneg

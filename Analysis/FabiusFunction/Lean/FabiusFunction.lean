@@ -173,6 +173,7 @@ import FabiusFunction.MeasureEqualization
 import FabiusFunction.NegativeLaplace
 import FabiusFunction.SubgraphFubini
 import FabiusFunction.SurvivalLayerCake
+import FabiusFunction.CDFLayerCake
 import FabiusFunction.ProbabilityLaplaceMoments
 import FabiusFunction.UnitLaplaceMomentBounds
 import FabiusFunction.PeriodicCorrection
@@ -198,6 +199,8 @@ import FabiusFunction.GlobalBounds
 import FabiusFunction.NormalizedVolterra
 import FabiusFunction.FractionalVolterra
 import FabiusFunction.FractionalVolterraSemigroup
+import FabiusFunction.FractionalCDFLayerCake
+import FabiusFunction.FabiusFractionalIntegral
 import FabiusFunction.FabiusAntiderivatives
 import FabiusFunction.RvachevDerivativeDistribution
 import FabiusFunction.BoundedDerivatives
