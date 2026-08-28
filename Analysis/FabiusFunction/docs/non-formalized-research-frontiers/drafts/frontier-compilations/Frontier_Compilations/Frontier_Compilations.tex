@@ -160,12 +160,12 @@
 \tableofcontents
 \clearpage
 \section*{Provenance}
-This volume consolidates ten source reports.  The mathematical bodies of source reports
-1--9 are preserved modulo removal of their standalone document, title-page, and table-of-contents
-wrappers and mechanical prefixing of labels, citation keys, macro names, and asset paths.
-Source report 10 receives the same mechanical treatment and, additionally, post-snapshot
-Lean-status updates documenting the exact-support, absolute-continuity, and null-singleton
-results proved after its pinned audit.
+This volume consolidates ten source reports.  Their theorem and proof bodies are preserved
+modulo removal of standalone document, title-page, and table-of-contents wrappers and
+mechanical prefixing of labels, citation keys, macro names, and asset paths.  Later edits add
+status-only Lean crosswalk annotations throughout, including exact-support,
+absolute-continuity, null-singleton, analytic-series-filter, and fractional-Volterra results
+proved after the reports' pinned audits.
 The hashes below identify the unmodified source files at their former paths.  The absorbed
 standalone drafts are deleted from the working tree; git history is the archive.
 \begin{itemize}
@@ -274,7 +274,7 @@ Those two sentences are the main launch point of this report.  The first becomes
 
 \subsection{Status discipline}
 
-\statusbox{\textbf{Mathematical status.}  Every displayed frontier theorem below is accompanied by a proof or by an explicit reduction to standard Gaussian/Lobatto quadrature facts.  The low-order constants were independently checked by exact rational arithmetic or high-precision evaluation.  The results are presented as new relative to the audited \texttt{ProveIt} corpus.  A broad literature search did not locate these Fabius-specific formulas, but this report does not assert an exhaustive priority claim.  Only the finite algebraic bridge explicitly cross-referenced to matching declarations in \path{GeometricQBinomialLagrange.lean} is labelled Lean-formalized; the report's analytic theorem families remain frontier.}
+\statusbox{\textbf{Mathematical status.}  Every displayed frontier theorem below is accompanied by a proof or by an explicit reduction to standard Gaussian/Lobatto quadrature facts.  The low-order constants were independently checked by exact rational arithmetic or high-precision evaluation.  The results are presented as new relative to the audited \texttt{ProveIt} corpus.  A broad literature search did not locate these Fabius-specific formulas, but this report does not assert an exhaustive priority claim.  The finite algebraic bridge cross-referenced to \path{GeometricQBinomialLagrange.lean} is Lean-formalized, and \path{AnalyticSeriesFilter.lean} now proves the abstract exact Gaussian tail under unconditional summability, with no unweighted convergence condition at a zero-weight node.  It does not cover conditionally-only boundary series, signs, bounds, uniform convergence, or the report's sinc-product instantiation.  Separately, \path{FractionalVolterraCalculus.lean} proves positive affine covariance on ordered real intervals for arbitrary real order, and Gamma-normalized order raising for real $\alpha>0$ from a continuous Banach-valued primitive with an interval-integrable right derivative; for $\alpha\le0$, affine covariance is an identity for the totalized Lean interval-integral definition, and a classical Riemann--Liouville or integrability interpretation is asserted only for positive order.  \path{FabiusFractionalVolterra.lean} specializes it to the signed extension for $x\ge0$, bounded Fabius for $0\le x\le1$, and the $\Up$ bridge from $-1$ for $x\ge-1$.  These series and fractional APIs were checked at source checkpoint \path{22f801337}.  Complex, weighted-monomial, iterated, negative-branch, hierarchy, and inverse/quantile fractional formulas, and the report-specific analytic theorem families, remain frontier.}
 
 \subsection{Executive list of new results}
 
@@ -1494,11 +1494,17 @@ homomorphisms.  Its specialization \path{GeometricPowerSeriesFilter.lean}
 packages the mass-one degree-zero boundary and every positive Gaussian
 residual multiplier; in particular
 \nolinkurl{geometricLagrangeSeriesFilter_eq_residual_mk} is an all-index
-identity of formal power series.  These declarations do not interpret a
-formal series by analytic evaluation, prove convergence of the spline
-sequence, or control a weighted remainder.  Consequently
-\cref{p1:thm:q-richardson}, including its analytic expansion and convergence
-rate, remains frontier.
+identity of formal power series.  The separate module
+\path{AnalyticSeriesFilter.lean} now proves the direct series-evaluation
+identity under Mathlib's unconditional \path{Summable} hypothesis: arbitrary
+finite filters act diagonally and split into exact heads and tails, and the
+geometric-Lagrange specialization has the full Gaussian tail, including shifted
+scales.  Summability is required only at nonzero-weight samples; a zero-weight
+node is automatic.  This does not cover conditionally-only boundary summation,
+identify the abstract coefficients with the spline or sinc-product sequence,
+or prove signs, bounds, asymptotics, or uniform convergence.  Consequently the
+concrete expansion and convergence rate in \cref{p1:thm:q-richardson} remain
+frontier.
 
 \subsection{Accelerated combinations}
 
@@ -1872,11 +1878,15 @@ These cases can be formalized before a fully general quadrature library is compl
       forward Gaussian weight formula and all positive residual moments, and
       \path{GeometricPowerSeriesFilter.lean} for their complete coefficientwise
       action on a formal series.
-\item Combine the two finite expansions to prove \cref{p1:thm:q-richardson}.
+\item Use \path{AnalyticSeriesFilter.lean} for the exact abstract
+      unconditionally summable Gaussian tail, then identify its coefficients
+      with the reciprocal-sinc expansion and prove the controlled uniform
+      remainder in \cref{p1:thm:q-richardson}.
 \end{enumerate}
-The finite algebraic and formal-series steps are now available at arbitrary
-ratio under node injectivity, including \(q=1/4\); the remaining step is the
-analytic interpretation and combination with controlled remainders.  Its
+The finite algebraic, formal-series, and abstract unconditionally summable
+steps are now available at arbitrary ratio under node injectivity, including
+\(q=1/4\); the remaining steps are the reciprocal-sinc coefficient bridge and
+combination with controlled uniform remainders.  Its
 \(q=1/2\) specialization is the existing half-base Toeplitz bridge.
 
 \section{Open problems and next frontier}
@@ -4078,11 +4088,15 @@ global forward numerator and every positive residual moment.
 \path{FinitePowerSeriesFilter.lean} then proves the diagonal action of an
 arbitrary finite rescaling filter, and
 \path{GeometricPowerSeriesFilter.lean} packages the geometric Lagrange row
-as an all-index formal-series residual identity.  This delivered layer is
-coefficientwise.  It does not evaluate the formal input on \(D_N\), establish
-the holomorphic logarithms below, or prove convergence, remainders, signs, or
-brackets for the analytic transforms in this part; those assertions retain
-their frontier status unless an explicit analytic declaration is cited.
+as an all-index formal-series residual identity.  The further module
+\path{AnalyticSeriesFilter.lean} gives an exact evaluated-series residual under
+unconditional summability of the contributing samples; zero-weight nodes impose
+no convergence condition on their unweighted samples.  This abstract theorem
+does not cover a conditionally convergent boundary series, identify its input
+with the product or holomorphic logarithm on \(D_N\), or prove the signs, bounds,
+brackets, asymptotics, or uniform convergence in this part.  Those concrete
+assertions retain their frontier status unless an explicit analytic declaration
+is cited.
 
 Away from zeros, the existing multiplicative transform can be written schematically as
 \[
@@ -12536,8 +12550,8 @@ reversed form remains available for the product proof.  At \(q=1/2\),
 the half-base Toeplitz row and retains its all-degree reverse moments and
 exact total variation.  The later rational geometric-moment layer also proves
 the finite condition-number identity \cref{p8:eq:qcondition}; its infinite limit
-and decimal evaluation, together with all analytic error, remainder, and
-convergence claims, remain frontier.
+and decimal evaluation, together with the concrete sinc-product error,
+quantitative remainder, and uniform convergence claims, remain frontier.
 
 The operator-level coefficient algebra is now reusable as well.
 \path{FinitePowerSeriesFilter.lean} defines
@@ -12548,11 +12562,15 @@ coefficient-map laws.  \path{GeometricPowerSeriesFilter.lean} specializes
 to \(a_j=q^j\), proves cancellation through the exactness order, and gives
 the Gaussian residual multiplier in every positive degree.  Its
 \path{geometricLagrangeSeriesFilter_eq_residual_mk} records the degree-zero
-mass boundary and all positive degrees in one formal-series identity.  This
-is strictly a \texttt{PowerSeries} statement: analytic evaluation of the
-filtered series, convergence of product truncations, transformed remainders,
-signs, and brackets do not follow from it and remain governed by the analytic
-frontier stated below.
+mass boundary and all positive degrees in one formal-series identity.
+\path{AnalyticSeriesFilter.lean} now supplies the direct evaluated-series
+counterpart: under unconditional summability, the filter has an exact head/tail
+split and its geometric-Lagrange form has the complete shifted Gaussian tail.
+Only nonzero-weight samples require unweighted summability, so zero weights are
+handled sharply.  This still excludes conditionally-only boundary series and
+does not connect the abstract coefficients to the sinc product; convergence of
+product truncations, signs, bounds, brackets, asymptotics, and uniform remainder
+control remain governed by the analytic frontier stated below.
 
 At post-snapshot checkpoint
 \nolinkurl{1e761ed77583e9870ceeaeb2c74ac824094f0f3f}, the algebraic route to the

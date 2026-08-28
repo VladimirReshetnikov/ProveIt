@@ -3,7 +3,7 @@
 The Thue-Morse side of the corpus, consolidated (2026-08-28) into the
 single volume [`Thue_Morse_Atlas_and_Frontiers.tex`](Thue_Morse_Atlas_and_Frontiers/Thue_Morse_Atlas_and_Frontiers.tex)
 ([PDF](Thue_Morse_Atlas_and_Frontiers/Thue_Morse_Atlas_and_Frontiers.pdf),
-126 pp):
+127 pp):
 
 - **Part I** — *A Unified Formula Atlas for the Thue–Morse Sequence*
   (formerly `Thue_Morse_Formula_Atlas/`);
