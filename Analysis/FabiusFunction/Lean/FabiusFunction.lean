@@ -129,6 +129,8 @@ import FabiusFunction.KappaDictionary
 import FabiusFunction.DyadicReflection
 import FabiusFunction.CollatzWielandt
 import FabiusFunction.LacunaryProductToSum
+import FabiusFunction.LogSeriesMultiplicative
+import FabiusFunction.BaseLayerRegrouping
 import FabiusFunction.RvachevFourierDecay
 import FabiusFunction.BoundednessSkeleton
 import FabiusFunction.TransferOperatorStep
