@@ -5,10 +5,12 @@ import Mathlib.Data.Nat.Factorization.Basic
 # Exact local factorization at the integer zeros of the sinc product
 
 The order of an integer zero of Rvachev's Fourier product is visible before
-any limiting argument: peel precisely the sinc factors which vanish there
-and clear their denominators.  If the center is `2^k q`, the first `k+1`
+any limiting argument: peel a finite block of vanishing sinc factors and
+clear their denominators.  If the center is `2^k q`, the first `k+1`
 factors turn into shifted sinc factors in the local coordinate `w`, while
-the untouched tail is evaluated at `q/2 + w/2^(k+1)`.
+the untouched tail is evaluated at `q/2 + w/2^(k+1)`.  These are precisely
+all vanishing factors when `q` is odd; the more general identity also allows
+an even `q`, in which case the tail retains the remaining multiplicity.
 
 The main identity is global in the complex variable `w`, including the
 apparently singular values `w = 0` and `w = -2^k q`.  This total form is the
