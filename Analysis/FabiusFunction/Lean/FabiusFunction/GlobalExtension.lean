@@ -154,6 +154,16 @@ theorem extendedFabius_eq_fabiusReal (F : BoundedFabius) (hF : IsFabius F)
     rw [rvachevUp, if_pos harg, hF.zero_of_nonpos _ hinside]
     simp
 
+/-- The bounded function and the signed extension agree on `(-∞, 1]`: both
+vanish on `(-∞, 0]` and they agree on the unit interval. -/
+theorem fabiusReal_eq_extendedFabius_of_le_one (F : BoundedFabius)
+    (hF : IsFabius F) {y : ℝ} (hy : y ≤ 1) :
+    fabiusReal F y = extendedFabius F y := by
+  by_cases hy0 : y ≤ 0
+  · rw [extendedFabius_eq_zero_of_nonpos F hF hy0, hF.zero_of_nonpos y hy0]
+  · exact (extendedFabius_eq_fabiusReal F hF
+      ⟨le_of_lt (lt_of_not_ge hy0), hy⟩).symm
+
 /-- The signed extension vanishes at the origin. -/
 @[simp] theorem extendedFabius_zero (F : BoundedFabius) (hF : IsFabius F) :
     extendedFabius F 0 = 0 :=
