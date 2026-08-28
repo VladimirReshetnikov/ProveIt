@@ -53,12 +53,8 @@ theorem weightedUniformDistribution_smul_weights
     [CompleteSpace E] [MeasurableSpace E] [BorelSpace E]
     (a : ℝ) {w : ℕ → E} (hw : Summable fun n => ‖w n‖) :
     weightedUniformDistribution (fun n => a • w n) =
-      (weightedUniformDistribution w).map (fun x => a • x) := by
-  rw [weightedUniformDistribution, weightedUniformDistribution,
-    Measure.map_map (by fun_prop) (measurable_weightedUniformSeries hw)]
-  apply Measure.map_congr
-  filter_upwards with ω
-  exact weightedUniformSeries_smul_weights a w ω
+      (weightedUniformDistribution w).map (fun x => a • x) :=
+  (weightedUniformDistribution_smul a hw).symm
 
 private theorem summable_norm_weight_tail
     {E : Type*} [NormedAddCommGroup E]
