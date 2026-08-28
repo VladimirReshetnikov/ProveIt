@@ -450,8 +450,16 @@ gives, for every bounded Fabius solution and
   -\int_0^1\frac{F(t)}{(z-t)^2}\,\dd t .
 \]
 Thus the Fabius-CDF formulas \eqref{p4:eq:resolvent-F-2} and
-\eqref{p10:eq:resolvent-F-2} are discharged exactly.  Their survival
-companions and the full higher-power families are not exported by this module.
+\eqref{p10:eq:resolvent-F-2} are discharged exactly.  The survival companions are now
+exported by \path{CauchySurvival.lean}: \path{Fabius.integral\_inv\_sub\_eq\_mass\_smul\_add\_intervalIntegral\_measureReal\_Ioi}
+is the general survival integration by parts
+\(\int(z-x)^{-1}\dd\mu=\mu(\R)(z-a)^{-1}+\int_a^b\mu((t,\infty))(z-t)^{-2}\dd t\) for any
+finite measure almost surely supported on \([a,b]\), and
+\path{Fabius.fabiusStieltjesTransform\_eq\_inv\_add\_intervalIntegral\_rvachevUp} is the
+Fabius instance \(S_{\rm unit}(z)=z^{-1}+\int_0^1\Up(t)(z-t)^{-2}\dd t\) --- the transform
+through the up-density itself, with the closed kernel primitive
+\path{Fabius.intervalIntegral\_inv\_sub\_sq} shared by both.  The full higher-power
+families remain unexported.
 
 \path{CauchyRenormalization.lean} adds five public theorems.  The declarations
 \path{Fabius.mapsTo_rvachevCauchyDomain_two_mul_add_one} and
