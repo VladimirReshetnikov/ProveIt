@@ -1,12 +1,16 @@
 # Fabius–Rvachev Representation Frontiers
 
-This package accompanies the 30-page report
-`rvachev_fabius_representation_frontiers.pdf`.
+> **Archived companion bundle.** The former standalone manuscript is now
+> consolidated in `../../Representation_Frontiers.tex`, with the rendered
+> report at `../../Representation_Frontiers.pdf`. This directory retains its
+> supporting computations, data, and figures.
+
+This package accompanied the former 30-page standalone report.
 
 ## Contents
 
-- `rvachev_fabius_representation_frontiers.tex` — complete LaTeX source.
-- `rvachev_fabius_representation_frontiers.pdf` — compiled report.
+- `../../Representation_Frontiers.tex` — current consolidated LaTeX source.
+- `../../Representation_Frontiers.pdf` — current rendered consolidated report.
 - `rvachev_frontier_experiments.py` — commented, reproducible exact/numerical experiments.
 - `generated_tables.tex` — exact moment and Jacobi-coefficient tables included by the report.
 - `corpus_inventory.tex` — audited repository-source ledger included by the report.
@@ -50,14 +54,16 @@ The script writes its output to the current working directory. To preserve the p
 ## Compiling the report
 
 A reasonably complete TeX Live installation with the Libertinus Type 1 fonts is
-required for the committed artifact. From the package root, run exactly three
-serial passes:
+required for the committed artifact. From this archived companion directory,
+run exactly three serial passes:
 
 ```bash
-pdflatex -interaction=nonstopmode -halt-on-error rvachev_fabius_representation_frontiers.tex
-pdflatex -interaction=nonstopmode -halt-on-error rvachev_fabius_representation_frontiers.tex
-pdflatex -interaction=nonstopmode -halt-on-error rvachev_fabius_representation_frontiers.tex
-pdffonts rvachev_fabius_representation_frontiers.pdf | grep Libertinus
+(cd ../.. && pdflatex -interaction=nonstopmode -halt-on-error Representation_Frontiers.tex)
+(cd ../.. && pdflatex -interaction=nonstopmode -halt-on-error Representation_Frontiers.tex)
+(cd ../.. && pdflatex -interaction=nonstopmode -halt-on-error Representation_Frontiers.tex)
+pdffonts ../../Representation_Frontiers.pdf | grep Libertinus
 ```
 
-Root-level PDF figure copies keep the LaTeX source directly compilable; PDF and PNG figure copies are also organized in `figures/`.
+These commands update `../../Representation_Frontiers.pdf`. The retained
+root-level and `figures/` copies preserve the former package's numerical
+artifacts and provenance.

@@ -14,4 +14,16 @@ audit's "Formalization targets, ordered by feasibility" subsection; as of
 2026-08-28 items 1-4 and 6 are done (item 4 via the kernel-checked
 Bernstein-certificate enclosure of rho_1).
 
+**Deliberately not consolidated.** Unlike every other group (each merged
+into a single volume on 2026-08-28), this corpus is kept as separate
+documents on purpose: its structure is *audit evidence*. The eight
+source documents were written independently on the same question, and
+the two audits compare them **as** independent documents — their
+agreements and contradictions, which document proves what, and which
+claims survived scrutiny. Merging them into one volume would erase
+exactly the independence the audits certify, and the audits' internal
+references name the documents by their directory names. New readers
+should start with the two audits and the Gentle Guide, not with the
+source documents.
+
 See [`../MANIFEST.md`](../MANIFEST.md) for the full member table.
