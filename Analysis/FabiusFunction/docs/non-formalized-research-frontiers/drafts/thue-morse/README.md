@@ -3,7 +3,7 @@
 The Thue-Morse side of the corpus, consolidated (2026-08-28) into the
 single volume [`Thue_Morse_Atlas_and_Frontiers.tex`](Thue_Morse_Atlas_and_Frontiers/Thue_Morse_Atlas_and_Frontiers.tex)
 ([PDF](Thue_Morse_Atlas_and_Frontiers/Thue_Morse_Atlas_and_Frontiers.pdf),
-126 pp):
+127 pp):
 
 - **Part I** — *A Unified Formula Atlas for the Thue–Morse Sequence*
   (formerly `Thue_Morse_Formula_Atlas/`);
@@ -13,10 +13,15 @@ single volume [`Thue_Morse_Atlas_and_Frontiers.tex`](Thue_Morse_Atlas_and_Fronti
   `Fabius_Rvachev_Thue_Morse_Frontier_Results/`, its figures and
   reproducibility bundle under `assets/`).
 
-Both parts carry extensive inline Lean crosswalks; the finite-block
-calculus is, as of 2026-08-28, formalized end to end in its
-analytic-logarithm, remainder, and measure-refinement layers (see its
-*Formal version* paragraphs).
+Both parts carry extensive inline Lean crosswalks. As of 2026-08-28,
+`ThueMorseComplexProductBridge.lean` supplies the finite-product core in total
+complex form at every level: the sinc and negative-Laplace block equalities
+include the removable origin, with quotient normalizations away from zero and
+simp laws for the normalized origin values, together with the exact finite
+Fourier--Laplace rotation between the two prefixes. The analytic-logarithm,
+certified-remainder, and measure-refinement results named in the volume also
+have formal counterparts; the remaining roadmap obligations stay explicitly
+labeled.
 
 The member drafts were absorbed content-preservingly (labels, citation
 keys, and asset paths mechanically prefixed per part; wrapper metadata

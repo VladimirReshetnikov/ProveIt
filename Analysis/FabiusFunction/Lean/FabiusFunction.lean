@@ -44,6 +44,7 @@ import FabiusFunction.ThueMorseArtinSchreier
 import FabiusFunction.ThueMorseEulerTransform
 import FabiusFunction.ThueMorseLucasSupport
 import FabiusFunction.ThueMorseWalsh
+import FabiusFunction.ThueMorseComplexProductBridge
 import FabiusFunction.ThueMorseSparseMoments
 import FabiusFunction.ThueMorseMixedDifference
 import FabiusFunction.ThueMorseAutocorrelation
