@@ -50,10 +50,11 @@ open Finset
 /-- The denominator-free numerator of the evaluation-at-zero Lagrange
 weight belonging to `q ^ k` among the nodes `1, q, ..., q ^ n`.
 
-The reversed Gaussian index is intentional: this orientation follows
-directly from q-Pascal and needs no separate symmetry theorem.  The row is
-zero-extended above its natural range, avoiding any artifact from truncated
-subtraction when `n < k`. -/
+The definition retains the reversed Gaussian index because that orientation
+follows directly from q-Pascal.  The division-free Gaussian symmetry theorem
+gives a forward-index form on the natural row range, and zero extension makes
+`geometricQBinomialWeightNumerator_eq_forward` valid at every index.  Thus no
+artifact from truncated subtraction remains when `n < k`. -/
 def geometricQBinomialWeightNumerator
     {R : Type*} [CommRing R] (q : R) (n k : ℕ) : R :=
   if k ≤ n then
@@ -69,6 +70,37 @@ theorem geometricQBinomialWeightNumerator_eq_of_le
       (-1 : R) ^ (n - k) * q ^ ((n - k + 1).choose 2) *
         gaussianBinomial q n (n - k) := by
   simp [geometricQBinomialWeightNumerator, hk]
+
+/-- Standard forward-index form of the geometric Lagrange numerator.  It is
+division-free and remains valid at zero, roots of unity, in positive
+characteristic, and with zero divisors. -/
+theorem geometricQBinomialWeightNumerator_eq_forward_of_le
+    {R : Type*} [CommRing R] (q : R) {n k : ℕ} (hk : k ≤ n) :
+    geometricQBinomialWeightNumerator q n k =
+      (-1 : R) ^ (n - k) * q ^ ((n - k + 1).choose 2) *
+        gaussianBinomial q n k := by
+  rw [geometricQBinomialWeightNumerator_eq_of_le q hk,
+    gaussianBinomial_symm q hk]
+
+/-- **Global forward-index form of the geometric Lagrange numerator.**
+Because both the numerator row and the Gaussian row vanish above the
+diagonal, the standard closed form holds for all `n` and `k`, without an
+admissibility hypothesis:
+
+`w_(n,k) = (-1)^(n-k) q^((n-k+1 choose 2)) [n choose k]_q`.
+
+The formula is division-free and remains valid at zero, roots of unity, in
+positive characteristic, and with zero divisors. -/
+theorem geometricQBinomialWeightNumerator_eq_forward
+    {R : Type*} [CommRing R] (q : R) (n k : ℕ) :
+    geometricQBinomialWeightNumerator q n k =
+      (-1 : R) ^ (n - k) * q ^ ((n - k + 1).choose 2) *
+        gaussianBinomial q n k := by
+  by_cases hk : k ≤ n
+  · exact geometricQBinomialWeightNumerator_eq_forward_of_le q hk
+  · have hnk : n < k := Nat.lt_of_not_ge hk
+    simp only [geometricQBinomialWeightNumerator, if_neg hk,
+      gaussianBinomial_eq_zero_of_lt q hnk, mul_zero]
 
 /-- Above its natural row range, the numerator vanishes. -/
 @[simp] theorem geometricQBinomialWeightNumerator_eq_zero_of_lt
