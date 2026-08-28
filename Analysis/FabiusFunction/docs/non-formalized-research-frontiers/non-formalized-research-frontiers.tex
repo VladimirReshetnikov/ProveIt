@@ -230,6 +230,11 @@ conjectural extensions, and explanations built on top of the current Lean librar
 organized into six thematic syntheses followed by a post-audit gap register.  They remain
 quarantined so that no unformalized claim can be mistaken for part of the verified primary
 exposition or lost while awaiting a machine-checked proof.
+The post-consolidation audit also records the newly formalized generic naturality and
+conditional affine-recursion API for weighted uniform series and the named
+geometric-\(q\) weights, series, probability law, recurrence, reflection, and carried-set
+results.  Equality of topological support, atomlessness, CDF/density identities, transforms,
+moments/cumulants, and fixed-point uniqueness remain in the frontier.
 
 Closely overlapping presentations have been merged rather than concatenated.  Each topic
 uses the strongest or most complete source as its backbone, imports independent proofs,
@@ -306,6 +311,17 @@ Signed global extension & \nolinkurl{extendedFabius} & \nolinkurl{GlobalExtensio
 Exact dyadic evaluator & \nolinkurl{fabiusDyadicValue} & \nolinkurl{Arithmetic.lean}, \nolinkurl{PaperStatements.lean} \\
 Binary and q-binomial series & \nolinkurl{fabiusReductionSum} and global q-series declarations & \nolinkurl{TaylorReduction.lean}, \nolinkurl{FabiusGlobalQBinomialSeries.lean} \\
 Thue--Morse grid samples & \nolinkurl{correctedPrefixGridSample} & \nolinkurl{ThueMorseApproximation.lean} \\
+Generic weighted uniform series and laws &
+\nolinkurl{uniformProduct_map_of_ae_head_tail_recursion},
+\nolinkurl{weightedUniformSeries_map},
+\nolinkurl{weightedUniformDistribution_split_of_shift_eq_map} &
+\nolinkurl{WeightedUniformSeries.lean}, \nolinkurl{WeightedUniformDistribution.lean},
+\nolinkurl{ProbabilityRepresentation.lean} \\
+Named geometric uniform law &
+\nolinkurl{geometricUniformWeight},
+\nolinkurl{geometricUniformDistribution_selfSimilar},
+\nolinkurl{weightedSumDistribution_eq_geometricUniformDistribution_one_half} &
+\nolinkurl{GeometricUniformLaw.lean}, \nolinkurl{ProbabilityRepresentation.lean} \\
 Totalized inverse & \nolinkurl{fabiusInv}, \nolinkurl{deriv_deriv_fabiusInv_eq_zero_iff}, \nolinkurl{tendsto_deriv_fabiusInv_atTop_at_zero_right}, \nolinkurl{fabiusInv_differentiableAt_iff}, \nolinkurl{fabiusInv_contDiffAt_infty_iff}, \nolinkurl{fabiusInv_analyticAt_iff} & \nolinkurl{FabiusInverse.lean}, \nolinkurl{InverseNotElementary.lean} \\
 Lower-Lambert coordinate & \nolinkurl{fabiusLambertPhase} & \nolinkurl{FabiusLambertSaddle.lean} \\
 All-orders saddle expansion & saddle mass/log coefficient declarations & \nolinkurl{FabiusFullAsymptoticExpansion.lean} and related modules \\
@@ -319,7 +335,10 @@ in the corresponding part is formalized.  In particular, the sharp quantitative
 Thue--Morse rates, repeated-integration norm identities, inverse endpoint asymptotic,
 general ordered-composition coefficient formulas, Fourier-amplitude estimates, and any
 claim marked derived, numerical, conjectural, or open remain in this frontier until an exact
-Lean declaration is audited.
+Lean declaration is audited.  The named weights \((1-q)q^n\), their law, measure recurrence,
+reflection, and carried-\([0,1]\) statements are now exact formal inputs.  Equality of
+topological support with \([0,1]\), atomlessness, \(q\)-specific CDF or density equations,
+transforms, moments/cumulants, and uniqueness of a measure fixed point are not.
 \end{boxedremark}
 
 
@@ -346,7 +365,10 @@ hypotheses.  The analytic-locus chapter then develops the generic elementary-fun
 obstruction and applies it to the forward Fabius family and its total inverse.  The
 probability chapters supply the measure-theoretic bridges between the product law, its
 survival function, tilted Laplace moments, finite atomic laws, and half-weighted step
-approximants.  Two reusable discrete engines follow: weighted path sums for triangular
+approximants, together with the post-snapshot continuous-linear naturality and conditional
+operator/scalar affine-recursion API for arbitrary weighted uniform laws and its named
+geometric-\(q\) specialization.  Two reusable
+discrete engines follow: weighted path sums for triangular
 recurrences and a finite-row Toeplitz convergence theorem.  Finally, the part exposes the
 generic machinery used by the all-orders saddle proof: parameter-dependent Poincar\'e
 expansions, recursive exponential and logarithmic coefficients, exact finite polynomial
@@ -370,7 +392,9 @@ generalizations, and formulas that still lack exact declarations.  Its presence 
 notebook should be attributed to the formal library merely because a related definition or
 weaker theorem exists.  The primary exposition contains the audited, declaration-backed
 subset.  Among the obligations retained here are generic moment-matrix consequences,
-arbitrary-family Toeplitz wording, and generic Gaussian coefficient bounds.  The inverse
+arbitrary-family Toeplitz wording, generic Gaussian coefficient bounds, and the topological
+support, atomlessness, CDF/density, transform, moment/cumulant, and uniqueness layers beyond
+the formalized named geometric-\(q\) measure recurrence.  The inverse
 endpoint and Fabius-specific coefficient obligations are tracked in \cref{part:inverse}.
 \end{boxedremark}
 
@@ -838,6 +862,133 @@ Pushing \eqref{integration:eq:X-head-tail-split} through this joint law gives th
        \circ\left[(u,x)\mapsto\frac{u+x}{2}\right]^{-1}.
  \label{integration:eq:law-self-similarity}
 \end{equation}
+
+\subsubsection{Post-snapshot generic naturality and affine recursion}
+\label{integration:sec:weighted-naturality}
+
+The formal mechanism is now independent of the dyadic weights.  For weights \(w:\N\to E\)
+write
+\[
+ S_w(\omega)=\sum_{n\ge0}\omega_nw_n,
+ \qquad
+ \mu_w=(S_w)_*\mathbf P,
+ \qquad
+ w_n^+=w_{n+1}.
+\]
+First, let \(G,H\) be arbitrary measurable spaces, let \(g:\Omega\to G\) be measurable,
+and let \(\Phi:[0,1]\times G\to H\) be measurable.  An almost-everywhere recursion
+\[
+ f(\omega)=\Phi\bigl(\omega_0,g(T\omega)\bigr)
+ \quad\text{for \(\mathbf P\)-almost every \(\omega\)}
+\]
+implies
+\begin{equation}
+ f_*\mathbf P
+ =\Phi_*\bigl(\operatorname{Unif}[0,1]\otimes g_*\mathbf P\bigr).
+ \label{integration:eq:generic-ae-recursion}
+\end{equation}
+No separate measurability hypothesis on \(f\) is required; a pointwise recursion is an
+immediate specialization.
+
+Now let \(E\) be a real Banach space, let \(F\) be a real normed space, let
+\(L:E\to F\) be continuous linear, and suppose \(\sum_n\lVert w_n\rVert<\infty\).
+The target \(F\) need not be complete.  Then
+\begin{equation}
+ L(S_w(\omega))=S_{Lw}(\omega),\qquad L_*\mu_w=\mu_{Lw},
+ \label{integration:eq:weighted-naturality}
+\end{equation}
+where the law identity uses the Borel measurable structures on \(E\) and \(F\).
+For every real scalar \(c\), the stronger pointwise identity
+\(S_{cw}=cS_w\) holds without completeness or summability.  Its law-level version retains
+source completeness, Borel structure, and norm summability because the underlying
+\(\operatorname{Measure.map}\) definition is totalized.
+
+If \(A:E\to E\) is continuous linear and \(w_{n+1}=A(w_n)\), then
+\begin{align}
+ A_*\mu_w&=\mu_{w^+},\\
+ S_w(\omega)&=\omega_0w_0+A(S_w(T\omega)),\\
+ \mu_w&=\bigl((u,z)\mapsto u w_0+A z\bigr)_*
+   \bigl(\operatorname{Unif}[0,1]\otimes\mu_w\bigr).
+ \label{integration:eq:weighted-operator-recursion}
+\end{align}
+The scalar case \(A=c\,\mathrm{id}\) requires no sign or contraction condition on \(c\)
+beyond the explicit norm-summability hypothesis on the displayed weights.
+
+The eleven public declarations in this tranche are
+\lean{ProbabilityRepresentation.uniformProduct_map_of_ae_head_tail_recursion},
+\lean{ProbabilityRepresentation.uniformProduct_map_of_head_tail_recursion},
+\lean{ProbabilityRepresentation.weightedUniformSeries_map},
+\lean{ProbabilityRepresentation.weightedUniformSeries_smul},
+\lean{ProbabilityRepresentation.weightedUniformDistribution_map},
+\lean{ProbabilityRepresentation.weightedUniformDistribution_smul},
+\lean{ProbabilityRepresentation.weightedUniformDistribution_map_eq_shift},
+\lean{ProbabilityRepresentation.weightedUniformSeries_split_of_shift_eq_map},
+\lean{ProbabilityRepresentation.weightedUniformDistribution_split_of_shift_eq_map},
+\lean{ProbabilityRepresentation.weightedUniformSeries_geometric_split}, and
+\lean{ProbabilityRepresentation.weightedUniformDistribution_geometric_split} in
+\path{WeightedUniformSeries.lean}.  The separate dyadic bridge
+\lean{ProbabilityRepresentation.weightedSumDistribution_eq_weightedUniformDistribution}
+in \path{ProbabilityRepresentation.lean} identifies the law \(\mu\) above with
+\(\mu_w\) at \(w_n=1/2/2^n\).
+
+The two generic declarations containing the word \emph{geometric} are conditional
+scalar-shift theorems.  The compatibility surface additionally exports
+\lean{ProbabilityRepresentation.weightedUniformSeries_smul_weights},
+\lean{ProbabilityRepresentation.uniformProduct_map_head_tail_function},
+\lean{ProbabilityRepresentation.weightedUniformDistribution_isProbabilityMeasure},
+\lean{ProbabilityRepresentation.weightedUniformDistribution_smul_weights},
+\lean{ProbabilityRepresentation.uniformProduct_map_head_tail_weightedUniformSeries},
+\lean{ProbabilityRepresentation.weightedUniformDistribution_unitInterval}, and
+\lean{ProbabilityRepresentation.weightedUniformDistribution_compl_unitInterval} through
+\path{WeightedUniformSeries.lean} and \path{WeightedUniformDistribution.lean}.  The
+law-level scalar wrapper is oriented as \(\mu_{cw}=(x\mapsto cx)_*\mu_w\).
+
+There is now also a named specialization.  For
+\[
+ w_n(q)=(1-q)q^n,\qquad S_q=S_{w(q)},\qquad \mu_q=\mu_{w(q)},
+\]
+the zero and successor coefficients are exact for every real \(q\).  Under \(|q|<1\),
+the weights are norm-summable with sum one, \(S_q\) is continuous and measurable, and
+\(\mu_q\) is a probability measure satisfying
+\[
+ S_q(\omega)=(1-q)\omega_0+qS_q(T\omega),\qquad
+ \mu_q=\bigl((u,z)\mapsto(1-q)u+qz\bigr)_*
+   \bigl(\operatorname{Unif}[0,1]\otimes\mu_q\bigr),
+\]
+together with pointwise and law-level reflection.  Under \(0\le q<1\), the weights are
+nonnegative, the series lies in \([0,1]\), and the law gives mass one to that interval and
+zero to its complement.
+
+The nineteen declarations are
+\lean{ProbabilityRepresentation.geometricUniformWeight},
+\lean{ProbabilityRepresentation.geometricUniformWeight_zero},
+\lean{ProbabilityRepresentation.geometricUniformWeight_succ},
+\lean{ProbabilityRepresentation.hasSum_geometricUniformWeight},
+\lean{ProbabilityRepresentation.summable_norm_geometricUniformWeight},
+\lean{ProbabilityRepresentation.geometricUniformWeight_nonneg},
+\lean{ProbabilityRepresentation.geometricUniformSeries},
+\lean{ProbabilityRepresentation.continuous_geometricUniformSeries},
+\lean{ProbabilityRepresentation.measurable_geometricUniformSeries},
+\lean{ProbabilityRepresentation.geometricUniformSeries_split},
+\lean{ProbabilityRepresentation.geometricUniformSeries_reflect},
+\lean{ProbabilityRepresentation.geometricUniformSeries_mem_Icc},
+\lean{ProbabilityRepresentation.geometricUniformDistribution},
+\lean{ProbabilityRepresentation.geometricUniformDistribution_isProbabilityMeasure},
+\lean{ProbabilityRepresentation.uniformProduct_map_head_tail_geometricUniformSeries},
+\lean{ProbabilityRepresentation.geometricUniformDistribution_selfSimilar},
+\lean{ProbabilityRepresentation.geometricUniformDistribution_reflection},
+\lean{ProbabilityRepresentation.geometricUniformDistribution_Icc}, and
+\lean{ProbabilityRepresentation.geometricUniformDistribution_compl_Icc} in
+\path{GeometricUniformLaw.lean}.  At \(q=1/2\),
+\lean{ProbabilityRepresentation.weightedCoordinateSum_eq_geometricUniformSeries_one_half}
+and
+\lean{ProbabilityRepresentation.weightedSumDistribution_eq_geometricUniformDistribution_one_half}
+identify the dyadic series and law with this specialization.
+
+These are carried-set and fixed-point identities, not equality of topological support or
+uniqueness.  Atomlessness, \(q\)-specific CDF and density identities, transforms, moments
+and cumulants, and uniqueness of the affine measure fixed point remain outside the formal
+boundary.
 
 \begin{proposition}[The smoothing equation for the CDF]
 \label{integration:prop:CDF-smoothing-detailed}
@@ -2287,9 +2438,23 @@ on a set with nonempty interior; \cref{integration:sec:not-elementary}.\\
 Exact analytic locus of the total inverse and exclusion from both the elementary class and
 the class enlarged by admissible inverse branches; \cref{integration:sec:not-elementary}.\\
 \path{ProbabilityRepresentation.lean} &
-The product sample space, uniformly convergent coordinate sum, pushforward law, head--tail
-split, coordinate reflection, and identification of the CDF with $F$;
+The product sample space, uniformly convergent coordinate sum, pushforward law, the exact
+dyadic-to-generic bridge
+\lean{ProbabilityRepresentation.weightedSumDistribution_eq_weightedUniformDistribution},
+the two half-base geometric bridges, head--tail split, coordinate reflection, and
+identification of the CDF with $F$;
 \cref{integration:sec:product-law}.\\
+\path{WeightedUniformSeries.lean} &
+The eleven-declaration generic tranche: almost-everywhere and pointwise head--tail map
+recursion, continuous-linear and scalar naturality, shifted-law transport, and
+operator/scalar affine recursions; \cref{integration:sec:weighted-naturality}.\\
+\path{WeightedUniformDistribution.lean} &
+The compatibility head--tail, probability, scalar-law, and unit-interval surface;
+\cref{integration:sec:weighted-naturality}.\\
+\path{GeometricUniformLaw.lean} &
+The nineteen-declaration named geometric weight, series, and law API: summability and mass,
+continuity and measurability, affine splitting, reflection, and carried-\([0,1]\) results;
+\cref{integration:sec:weighted-naturality}.\\
 \path{ProbabilityLaplaceMoments.lean} &
 Almost-sure support, restriction to $[0,1]$, survival function, the compact-support Fubini
 identity, raw and endpoint moment identifications, zero-tilt normalization, and positivity;
@@ -2363,6 +2528,15 @@ $\Up$, the signed extension, or the total inverse, including the enlarged admiss
 inverse-branch class.\\
 Product probability law & Headline proof only & Uniform convergence and measurability,
 head--tail pushforward identity, coordinate reflection, and global support bookkeeping.\\
+Generic weighted-law naturality & Not recorded in the pinned companion snapshot &
+Almost-everywhere and pointwise head--tail recursion, continuous-linear and scalar
+naturality, shifted-law transport, conditional operator/scalar affine fixed-point laws, and
+the seven-name compatibility surface.\\
+Named geometric-\(q\) law & Not recorded in the pinned companion snapshot &
+Exact weights, summability and mass, series and probability law, affine self-similarity,
+reflection, carried-\([0,1]\) laws, and both half-base bridges; equality of topological
+support, atomlessness, CDF/density identities, transforms, moments/cumulants, and
+fixed-point uniqueness remain outside the formal boundary.\\
 Probability--Laplace bridge & Absent & Survival-function Fubini identity, identification of
 raw, endpoint, and tilted moments, complete monotonicity, and half-moment interpretation.\\
 Atomic-to-step bridge & Compressed & Half-endpoint null-set conversion, exact cell overlap,

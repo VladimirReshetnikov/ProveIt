@@ -154,6 +154,13 @@ block.  Finally, we give a phase-preserving Lagrange/Richardson filter for asymp
 remainders whose coefficients are periodic in a lower-Lambert phase, together with a
 Fourier phase-averaging filter and exact Lambert-$W$ node construction.
 
+A post-snapshot Lean audit now supplies the generic continuous-linear naturality and
+conditional operator/scalar affine-recursion engine for arbitrary norm-summable weighted
+uniform series.  It also defines this report's geometric-\(q\) weights, series, and law and
+proves their measure-level self-similarity, reflection, and carried-unit-interval results.
+It does not prove equality of topological support, atomlessness, CDF or density identities,
+transforms, moments or cumulants, or fixed-point uniqueness.
+
 The word \emph{new} is used only in a corpus-relative sense: these statements were not found
 in the 57 TeX sources inspected in the specified repository snapshot.  No claim of global
 priority is made.  Proven statements are separated sharply from conjectural transseries,
@@ -174,8 +181,9 @@ audits.
 Since that pinned snapshot, \path{WeightedUniformSeries.lean} and
 \path{WeightedUniformDistribution.lean} have formalized the reusable product space,
 absolutely summable Banach-valued uniform-coordinate series, and their pushforward laws,
-including arbitrary-weight affine head--tail decomposition, scalar naturality, reflection,
-and interval concentration.  The specialization \path{GeometricUniformLaw.lean} defines
+including the eleven-declaration generic naturality and operator-affine recursion tranche,
+the compatibility API, reflection, and interval concentration.  The specialization
+\path{GeometricUniformLaw.lean} defines
 $w_j(q)=(1-q)q^j$ and $X_q$ for every real $q$, proves absolute convergence and total mass
 one for $|q|<1$, and establishes the independent-copy affine refinement and law reflection.
 For $0\le q<1$ it proves concentration on $[0,1]$, including $q=0$; at $q=1/2$,
@@ -184,7 +192,8 @@ the classical dyadic construction.
 
 This promotion does not prove that the topological support is exactly $[0,1]$, nor does it
 define or analyze the general-$q$ CDF, density, characteristic-function product, moments,
-cumulants, or smoothness.  Those report claims remain frontier mathematics.
+cumulants, smoothness, or uniqueness of the affine fixed point.  Those report claims remain
+frontier mathematics.
 \end{boxedremark}
 
 \tableofcontents
@@ -322,6 +331,63 @@ open.  Likewise \path{geometricUniformDistribution_reflection} proves
 $X_q\overset d=1-X_q$, but the displayed CDF and density symmetries still require the
 separate no-atoms and density layers.
 
+\paragraph{Exact public API crosswalk.}
+All names in this paragraph lie in the namespace
+\path{Fabius.ProbabilityRepresentation}.  The generic almost-everywhere recursion assumes
+measurability of the tail statistic and combining map but not of the recursively described
+function; its pointwise wrapper is separate.  Continuous-linear naturality requires
+completeness only in the source, pointwise scalar naturality needs neither completeness nor
+summability, and law-level identities retain the Borel and norm-summability hypotheses.
+The eleven generic declarations are
+\path{uniformProduct_map_of_ae_head_tail_recursion},
+\path{uniformProduct_map_of_head_tail_recursion},
+\path{weightedUniformSeries_map},
+\path{weightedUniformSeries_smul},
+\path{weightedUniformDistribution_map},
+\path{weightedUniformDistribution_smul},
+\path{weightedUniformDistribution_map_eq_shift},
+\path{weightedUniformSeries_split_of_shift_eq_map},
+\path{weightedUniformDistribution_split_of_shift_eq_map},
+\path{weightedUniformSeries_geometric_split}, and
+\path{weightedUniformDistribution_geometric_split}.
+The dyadic-to-generic law bridge is
+\path{weightedSumDistribution_eq_weightedUniformDistribution}.
+
+The compatibility surface consists of
+\path{weightedUniformSeries_smul_weights},
+\path{uniformProduct_map_head_tail_function},
+\path{weightedUniformDistribution_isProbabilityMeasure},
+\path{weightedUniformDistribution_smul_weights},
+\path{uniformProduct_map_head_tail_weightedUniformSeries},
+\path{weightedUniformDistribution_unitInterval}, and
+\path{weightedUniformDistribution_compl_unitInterval}.  In particular,
+\path{weightedUniformDistribution_smul_weights} is oriented as
+\(\mu_{cw}=(x\mapsto cx)_*\mu_w\).
+
+The nineteen declarations in the named specialization are
+\path{geometricUniformWeight},
+\path{geometricUniformWeight_zero},
+\path{geometricUniformWeight_succ},
+\path{hasSum_geometricUniformWeight},
+\path{summable_norm_geometricUniformWeight},
+\path{geometricUniformWeight_nonneg},
+\path{geometricUniformSeries},
+\path{continuous_geometricUniformSeries},
+\path{measurable_geometricUniformSeries},
+\path{geometricUniformSeries_split},
+\path{geometricUniformSeries_reflect},
+\path{geometricUniformSeries_mem_Icc},
+\path{geometricUniformDistribution},
+\path{geometricUniformDistribution_isProbabilityMeasure},
+\path{uniformProduct_map_head_tail_geometricUniformSeries},
+\path{geometricUniformDistribution_selfSimilar},
+\path{geometricUniformDistribution_reflection},
+\path{geometricUniformDistribution_Icc}, and
+\path{geometricUniformDistribution_compl_Icc}.  Finally,
+\path{weightedCoordinateSum_eq_geometricUniformSeries_one_half} and
+\path{weightedSumDistribution_eq_geometricUniformDistribution_one_half} are the exact
+series- and law-level bridges at \(q=1/2\).
+
 \subsection{Recovery of the classical functions}
 
 At $q=1/2$,
@@ -379,7 +445,8 @@ $v=(x-cu)/q$ yields \eqref{eq:cdf-refinement-b}, and differentiation gives
 The measure identity \eqref{eq:distributional-refinement} is formalized exactly as
 \path{geometricUniformDistribution_selfSimilar}; its proof uses the public joint head--tail
 law \path{uniformProduct_map_head_tail_geometricUniformSeries}.  The two CDF integrals and
-the density identity in this proposition have not yet been promoted.
+the density identity in this proposition have not yet been promoted, and the formal
+self-similarity theorem does not assert uniqueness of the affine measure fixed point.
 
 For $q=1/2$ and $0\le x\le1/2$, the second term in
 \eqref{eq:density-refinement} vanishes, so
@@ -1623,8 +1690,11 @@ The following order minimizes dependence on asymptotic machinery.
 \begin{enumerate}
 \item Define the geometric coefficient sequence $w_j(q)= (1-q)q^j$ and prove summability,
       nonnegativity, and total mass one.
-\item Construct $X_q$ as an almost-surely convergent random series of independent uniforms.
-\item Prove support, symmetry, the distributional refinement, and the CDF integral equation.
+\item Name \(X_q\) and its law, then specialize the generic probability, carried-interval,
+      reflection, continuous-linear naturality, and scalar affine-recursion theorems.
+\item Prove equality of the topological support with \([0,1]\), then derive the
+      \(q\)-specific CDF integral equation, atomlessness or absolute continuity as needed,
+      and the density refinement.
 \item Derive characteristic-function products from finite products plus dominated convergence.
 \end{enumerate}
 
@@ -1632,7 +1702,8 @@ Since the pinned snapshot, items 1 and 2 have been formalized, in stronger point
 by \path{WeightedUniformSeries.lean}, \path{WeightedUniformDistribution.lean}, and
 \path{GeometricUniformLaw.lean}.  The law-reflection and independent-copy affine-refinement
 parts of item 3 are also formalized.  Exact topological support and the CDF integral equation
-in item 3 remain open, as does the characteristic-function program in item 4.
+in item 3 remain open, as do atomlessness, the density consequences, fixed-point uniqueness,
+and the characteristic-function program in item 4.
 
 \subsection{Analysis layer}
 
