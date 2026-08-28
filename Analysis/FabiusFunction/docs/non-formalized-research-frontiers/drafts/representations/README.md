@@ -102,4 +102,23 @@ V — *Dyadic Multiresolution and Sampling Frontiers* (formerly
 content-preserving merge as the first volume; absorbed member
 directories deleted, provenance with SHA-256 in the volume.
 
+The two fourth-wave polynomial-representation drafts (2026-08-28) were
+merged the same day into the volume
+[`Up_Polynomial_Synthesis/`](Up_Polynomial_Synthesis/) (*Exact
+Polynomial Synthesis from Rvachev Up-Atoms*, 19 pp): the common-scale
+dictionary construction (formerly
+`Rvachev_Up_Polynomial_Representation_Package/`, *Exact Polynomial
+Synthesis by Finite Rvachev Up-Function Dictionaries*) and the
+antiderivative-train window construction (formerly
+`rvachev_up_polynomial_representation/`, *Exact Polynomial Windows from
+Finite Sums of Shifted and Scaled Rvachev up Functions*).  Unlike the
+mechanical merges above, this is an editorial consolidation: shared
+foundations stated once, the two constructions compared, the minimal
+atom count sharpened to `N_d <= d+2`, and the canonical defect
+identified with the shifted-quadrature first failure of the
+`Dyadic_Comb_Frontiers` volume (exact special values via the spectral
+Dirichlet values `D(2r)`).  Absorbed directories deleted; provenance
+with SHA-256 in the volume's Appendix B and
+`assets/SHA256SUMS-absorbed.txt`.
+
 See [`../MANIFEST.md`](../MANIFEST.md) for titles and provenance.
