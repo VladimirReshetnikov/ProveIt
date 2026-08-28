@@ -283,13 +283,16 @@ Results explicitly labeled \statusproved{} are proved in this manuscript.  Resul
 \statusderived{} use a theorem already developed in the audited frontier corpus (most often
 the sharp Pascal-hierarchy Fourier or endpoint asymptotic) and then add a new deduction.
 Items labeled \statusopen{} are conjectures or proposed programs.  At the pinned snapshot,
-none of the new results was represented as already formalized in Lean.  There is one explicit
-post-snapshot exception: source checkpoint
+none of the new results was represented as already formalized in Lean.  Two finite algebraic
+layers are explicit post-snapshot exceptions.  Source checkpoint
 \path{1e761ed77583e9870ceeaeb2c74ac824094f0f3f} formalizes the
 denominator-free principal specialization and complete positive-degree geometric-moment
-identities used in \cref{lem:q-weights}.  It does not formalize this report's exponent-sequence
-classification, transformed analytic series, sign-certified remainder, tomography, or
-asymptotic applications.
+identities used in \cref{lem:q-weights}; checkpoint
+\path{c45276994d9411a45bef409ad6bc481771613113} adds the finite rational
+geometric-Lagrange kernel---closed weights, all residual moments and their sign, and the exact
+finite \(\ell^1\) norm, including \(q=1/4\).  These declarations do not formalize this
+report's exponent-sequence classification, transformed infinite series, analytic Richardson
+remainder, tomography, infinite condition-number limit, or asymptotic applications.
 \end{statusbox}
 
 \section{The exponent-sequence convolution monoid}
@@ -2014,9 +2017,10 @@ A dependency-aware order is as follows.
       periodic parity words.
 \item Prove the finite sign-product factorization \eqref{eq:T-a-L}, its exact order at one,
       and the first surviving moment \eqref{eq:first-surviving}.
-\item Reuse the compiled geometric Lagrange weights, Gaussian-binomial closed form,
-      principal specialization, and exact survivor; then formalize the still-open
-      sign-certified Richardson remainder.
+\item The geometric Lagrange weights, Gaussian-binomial closed form, exact
+      principal specialization, survivor moments, finite residual sign, and exact finite
+      norm are now formalized; transferring this finite kernel to the report's analytic
+      Richardson remainder remains open.
 \end{enumerate}
 
 These statements require only finite sums, polynomials, valuations, and existing
@@ -2248,6 +2252,14 @@ E2 & Polynomial/log-periodic pole hierarchy & proved structurally & Mellin resid
 E3 & All-orders generalized inverse transseries & conjectural & uniform higher-pole saddle analysis needed\\
 \bottomrule
 \end{longtable}
+
+\paragraph{Lean crosswalk for B3--B4.}
+The finite weight, all-moment, residual-sign, and finite-norm identities in
+B3--B4 are formalized in \path{GeometricQBinomialLagrange.lean},
+\path{GeometricLagrangeQBinomial.lean}, and
+\path{GeometricLagrangeQMoments.lean}.  The tomography interpretation,
+one-sided analytic remainder, and infinite condition-number limit remain
+results of this report rather than claims about the current Lean corpus.
 
 \section{Reproducibility manifest}
 \label{app:manifest}

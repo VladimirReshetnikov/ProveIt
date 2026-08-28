@@ -401,15 +401,18 @@ nearest zeros at $\pm\pi b^{N+1}$, so the natural tail disk is
  D_N=\{t\in\C:|t|<\pi b^{N+1}\}.
  \label{eq:DN}
 \end{equation}
-The complete and partial relative tails are
+Define the complete and partial relative tails directly by their products:
 \begin{equation}
- T_N(t)=\frac{P_b(t)}{P_{b,N}(t)}
+ T_N(t)=\prod_{k=N+1}^{\infty}\sinc\!\left(\frac{t}{b^k}\right)
        =P_b\!\left(\frac{t}{b^N}\right),
  \qquad
- T_{N,j}(t)=\frac{P_{b,N+j}(t)}{P_{b,N}(t)},\quad j\ge0,
+ T_{N,j}(t)=\prod_{k=N+1}^{N+j}\sinc\!\left(\frac{t}{b^k}\right),\quad j\ge0,
  \label{eq:tails}
 \end{equation}
-with $T_{N,0}=1$.
+with the empty product $T_{N,0}=1$.  These total functions satisfy
+$P_b=P_{b,N}T_N$ and $P_{b,N+j}=P_{b,N}T_{N,j}$ everywhere.  Only where
+$P_{b,N}(t)\ne0$ do we also write them as the quotients
+$T_N=P_b/P_{b,N}$ and $T_{N,j}=P_{b,N+j}/P_{b,N}$.
 
 \begin{lemma}[Zero-free tail disk]\label{lem:zero-free-tail}
 Every $T_{N,j}$, including $T_N$, is holomorphic and zero-free on $D_N$.  It therefore has a
@@ -662,9 +665,12 @@ identity, and logarithmic differentiation gives \eqref{eq:jet-log-derivatives}.
 \begin{corollary}[Cauchy-certified higher coefficients]\label{cor:cauchy-jets}
 Choose $\delta>0$ so that the closed disk $|t-t_0|\le\delta$ lies in $D_N$.  Every Taylor
 coefficient of the zero-normalized quotient is bounded explicitly by applying Cauchy's
-estimate to $\exp(E_{N,r})-1$ and \cref{prop:disk-bound} on that disk.  In particular, the
-entire local jet converges uniformly as either $N\to\infty$ at fixed $r$ or $r\to\infty$ at
-fixed interior scale.
+estimate to $\exp(E_{N,r})-1$ and \cref{prop:disk-bound} on that disk.  More precisely,
+$\exp(E_{N,r})\to1$ locally uniformly either as $N\to\infty$ with $r$ fixed, on each fixed
+compact set, or as $r\to\infty$ with $N$ fixed, on each compact subset of $D_N$.
+Consequently, for every fixed derivative order $k\ge0$, Cauchy's integral formula gives
+local uniform convergence of the $k$th derivatives to the $k$th derivative of $1$ (that is,
+to $1$ for $k=0$ and to $0$ for $k\ge1$).  No uniformity in the derivative order is claimed.
 \end{corollary}
 
 \subsection{Bernoulli and Bell transfer at zeros}
@@ -947,18 +953,20 @@ Let
 \begin{equation}
  \Phi_N(x)=\prod_{h=0}^{N}\sinc(\pi x/2^h),
  \qquad
- \mathcal T_N(x)=\frac{\Phi(x)}{\Phi_N(x)}
+ \mathcal T_N(x)=\prod_{h=N+1}^{\infty}\sinc(\pi x/2^h)
  =\Phi\!\left(\frac{x}{2^{N+1}}\right).
  \label{eq:Phi-prefix-tail}
 \end{equation}
-The tail is zero-free and positive on $|x|<2^{N+1}$.  Define the factorized transforms
+Thus $\Phi=\Phi_N\mathcal T_N$ everywhere, and
+$\mathcal T_N=\Phi/\Phi_N$ only where $\Phi_N\ne0$.  The tail is zero-free and positive on
+$|x|<2^{N+1}$.  Define the factorized transforms
 $\widehat\Phi_{N,r}$ exactly as in \cref{def:factorized}, using relative partial tails and
 the weights at $q=1/4$.
 
 \subsection{Two monotone zero-preserving chains}
 
 \begin{theorem}[Dyadic nested brackets]\label{thm:dyadic-chains}
-For every $N\ge0$ and every real $|x|<2^{N+1}$,
+For every $N\ge0$ and every real $0<|x|<2^{N+1}$,
 \begin{equation}
  \widehat{\mathcal T}_{N,1}(x)
  <\widehat{\mathcal T}_{N,3}(x)<\cdots
@@ -968,16 +976,25 @@ For every $N\ge0$ and every real $|x|<2^{N+1}$,
  <\widehat{\mathcal T}_{N,0}(x),
  \label{eq:tail-chains}
 \end{equation}
-with the evident finite interpretation.  Multiplication by $|\Phi_N(x)|$ gives the same
-nested inequalities for absolute values of the full products.  Every transform has exactly
-the same integer zeros and multiplicities as $\Phi$ inside the interval.
+with the evident finite interpretation.  On the whole interval $|x|<2^{N+1}$, including
+$x=0$ and the prefix zeros, multiplication by $|\Phi_N(x)|$ gives the corresponding weak
+chain for the absolute values of the full products.  Every displayed comparison in that
+full-product chain is strict exactly when $x\notin\Z$; when $x\in\Z$, all its terms are equal
+(to $1$ at $x=0$, and to $0$ otherwise).  Every transform has exactly the same integer zeros
+and multiplicities as $\Phi$ inside the interval.
 \end{theorem}
 
 \begin{proof}
 The exact error is $(-1)^rM_r(1/4,a)$ with
-$a=(x/2^{N+1})^2$.  Opposite parities lie on opposite sides of one.  Since
+$a=(x/2^{N+1})^2$.  For $0<|x|<2^{N+1}$ one has $0<a<1$, so opposite parities lie on
+opposite sides of one.  Since
 $(1/4)^{r+1}(1+1/4)<1$ for every $r$, \cref{thm:nesting-classification} makes each parity
-monotone.  Zero preservation follows from \cref{thm:zero-preserving}.
+monotone, proving the strict tail chain.  At $x=0$, every exact and extrapolated tail equals
+$1$.  The prefix $\Phi_N$ is nonzero exactly at the nonintegers and at zero: each of its
+zeros is a nonzero integer, while its $h=0$ factor vanishes at every nonzero integer.
+Multiplication by $|\Phi_N|$ therefore preserves every strict comparison precisely at
+noninteger $x$ and turns the whole chain into equality at nonzero integers.  Zero
+preservation and its multiplicity statement follow from \cref{thm:zero-preserving}.
 \end{proof}
 
 \begin{corollary}[Certified derivatives at all included integer zeros]\label{cor:integer-jets}

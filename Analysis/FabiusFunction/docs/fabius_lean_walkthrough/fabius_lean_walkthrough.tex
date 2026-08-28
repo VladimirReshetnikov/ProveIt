@@ -3083,6 +3083,11 @@ Module & Role in the development \\
 \nolinkurl{GeometricCompleteHomogeneous.lean} & Denominator-free principal specialization \(h_n(1,q,\ldots,q^p)=\qbinom{n+p}{p}{q}\), its arbitrary common-scale form over every commutative semiring, and the range-indexed bridge used by interpolation rows. \\
 \nolinkurl{LagrangeResidualMoments.lean} & Every higher residual moment of a polynomially exact finite row, with a representation-independent commutative-ring theorem and the distinct-node Lagrange specialization. \\
 \nolinkurl{GeometricResidualMoments.lean} & Every positive residual moment on \(c,cq,\ldots,cq^p\) over a commutative ring, assuming exactness directly on those scaled nodes, together with distinct-node Lagrange, arbitrary-dilation, and shifted-block field corollaries. \\
+\nolinkurl{GeometricRichardson.lean} & Generic geometric root polynomials and normalized forward Richardson polynomials, including their evaluation and coefficient interfaces. \\
+\nolinkurl{GeometricLagrangeWeights.lean} & Identification of the geometric Lagrange row with the Richardson coefficient polynomial and its complete-homogeneous all-order moments. \\
+\nolinkurl{GeometricLagrangeQBinomial.lean} & Field-valued q-Pochhammer weight formulas and report-facing rational q-binomial and quarter-base coefficient formulas. \\
+\nolinkurl{GeometricLagrangeQMoments.lean} & Closed forms for every rational geometric moment under nonzero-base and nonvanishing finite-denominator hypotheses, with exact residual sign and finite total variation for \(0<q<1\) and dedicated quarter-base corollaries. \\
+\nolinkurl{LambertPhaseLockedRichardson.lean} & Exact lower-Lambert phase locking, reciprocal-grid Lagrange weights, cancellation, and every complete-homogeneous residual moment. \\
 \addlinespace[0.45em]
 \multicolumn{2}{l}{\textbf{Central integral and all-order machinery}}\\[0.25em]
 \nolinkurl{FabiusSaddleReduction.lean} & Algebraic reduction of the inversion integral to a normalized central weight. \\
@@ -3155,14 +3160,8 @@ Module & Role in the development \\
 \begin{remark}
 Some helper files are intentionally absent from this table, and a few families may acquire additional leaves as the repository evolves.  The umbrella module and the actual import graph remain the definitive inventory.  Duplicate-looking module names usually mark distinct proof stages---for example, raw algebra versus scalar specialization, or a central estimate versus its all-order strengthening.
 
-The nine rows headed by \nolinkurl{ExponentialPartition.lean},
-\nolinkurl{ExponentialBell.lean}, \nolinkurl{MomentCumulantAlgebra.lean},
-\nolinkurl{EndpointTransferPolynomials.lean}, and
-\nolinkurl{PolynomialExpectationCumulant.lean}, followed by
-\nolinkurl{CompleteHomogeneous.lean} and
-\nolinkurl{LagrangeResidualMoments.lean}, and finally
-\nolinkurl{GeometricCompleteHomogeneous.lean} and
-\nolinkurl{GeometricResidualMoments.lean}, are a post-snapshot addendum.
+The fourteen rows from \nolinkurl{ExponentialPartition.lean} through
+\nolinkurl{LambertPhaseLockedRichardson.lean} are a post-snapshot addendum.
 The first two were checked at code checkpoint
 \nolinkurl{e119db9032ab2641955d47e1da1338a8386aac4d}; the third reflects
 mainline checkpoint \nolinkurl{3989cd9d3}; the endpoint-transfer polynomials
@@ -3176,6 +3175,8 @@ rows reflect checkpoints
 specialization rows, including the sixteen exact declarations named in the
 post-snapshot discussion above, were checked at checkpoint
 \nolinkurl{1e761ed77583e9870ceeaeb2c74ac824094f0f3f}, all on 27 August 2026.
+The subsequent five geometric and Lambert rows reflect source checkpoint
+\nolinkurl{c45276994d9411a45bef409ad6bc481771613113}, also on 27 August 2026.
 The title-page pin and reproduction count continue to describe the older
 audited snapshot.
 \end{remark}
