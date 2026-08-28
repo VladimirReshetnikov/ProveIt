@@ -20,6 +20,7 @@
 \graphicspath{
   {assets/inverse_fabius_all_orders_package/results/}
   {assets/inverse_fabius_asymptotics_report/}
+  {assets/inverse_fabius_asymptotics_package/figures/}
 }
 
 \definecolor{linkblue}{RGB}{25,75,135}
@@ -202,9 +203,22 @@ whose $2$-adically weighted Bose tail has Mahler equation, Dirichlet
 series $\zeta(s+1)/(1-2^{-s})$, and a Mellin bridge showing that the
 periodic phase and the exponentially small dyadic sectors are the two
 faces of one kernel --- the concrete seed of an exponentially
-improved inverse theory.  Provenance of the absorbed sources, with
-SHA-256 hashes and the cross-validation record, is in
-\cref{sec:provenance-inv}.
+improved inverse theory.
+
+Finally, a Wright-omega \emph{resummation} of the carrier absorbs the
+entire nonperiodic quadratic--linear--constant--logarithmic phase:
+with $w$ defined through
+$\omega\bigl(4(T+\Csharp+L\beta^{2}/2)+\log 2L\bigr)$, the expansion
+$G/G_W\sim1+\sum g_m(w+\beta)w^{-m}$ has \emph{bounded periodic
+coefficients with no logarithms at any order}, a clean
+$w^{-N-1}$ remainder, the strikingly simple low orders
+$g_1=-\Psi$ and $h_2=\tfrac5{24}+\cdots$, a convergent bare-skeleton
+reversion (inversion is not the source of divergence), a conditional
+Gevrey-one transfer theorem, and third-order accuracy
+$1.1\times10^{-9}$ at $n=160$ on the exact dyadic quantiles ---
+$43$ times better than the third $\rho$-order.  Provenance of the
+absorbed sources, with SHA-256 hashes and the cross-validation
+record, is in \cref{sec:provenance-inv}.
 \end{abstract}
 
 \clearpage
@@ -214,18 +228,22 @@ SHA-256 hashes and the cross-validation record, is in
 \section*{Provenance and merge conventions}
 \addcontentsline{toc}{section}{Provenance and merge conventions}
 
-This volume is an editorial consolidation (28 August 2026) of two
-drafts of the fourth and fifth waves that attack the same problem and
-overlap heavily: both prove the closed Lagrange--B\"urmann coefficient
-formula, the universal highest logarithm, the explicit third
-correction, and the all-orders elasticity recurrence.  Each shared
-theorem is stated once; where the sources' formulas could be compared
-they were verified to agree exactly (notably the third correction
-$d_3$, derived independently in different groupings, and the
-elasticity recurrence); and each source's unique material --- the
-structure laws, Fourier algebra, tomography, and derivative hierarchy
-of one, the saddle partition engine and the $2$-adic completion of
-the other --- keeps its own chapter.
+This volume is an editorial consolidation (28 August 2026) of three
+drafts of the fourth, fifth, and sixth waves that attack the same
+problem and overlap heavily: the first two both prove the closed
+Lagrange--B\"urmann coefficient formula, the universal highest
+logarithm, the explicit third correction, and the all-orders
+elasticity recurrence, and the third re-derives the same diagonal
+calculus in a resummed normalization.  Each shared theorem is stated
+once; where the sources' formulas could be compared they were
+verified to agree exactly (notably the third correction $d_3$,
+derived independently in different groupings; the elasticity
+recurrence; and the carrier-invariant highest-derivative constants);
+and each source's unique material --- the structure laws, Fourier
+algebra, tomography, and derivative hierarchy of one; the saddle
+partition engine and $2$-adic completion of another; the
+Wright-omega log-free carrier of the third --- keeps its own
+chapter.
 \Cref{sec:provenance-inv} records the sources with SHA-256 hashes and
 the deduplication detail; supporting files are under
 \nolinkurl{assets/}.
@@ -902,6 +920,302 @@ followed by the complete-Bell exponential formula for
 $G=\e^{f}$.
 \end{proof}
 
+
+\section{A log-free resummation: the Wright-omega carrier}
+\label{sec:wcarrier}
+
+Every coefficient of the $\rho$-scale expansion carries polynomials in
+$\ell=\log\rho$.  Those logarithms are artifacts, not intrinsic
+features: they enter because completing the square leaves
+$\tfrac12\log\lambda$ (and the constants) outside the carrier.  The
+third absorbed source resums them completely.
+
+\subsection{The carrier}
+
+Let $\omega$ denote the Wright omega function,
+$\omega(s)+\log\omega(s)=s$ on the real line
+(equivalently $\omega(s)=\LambertW_0(\e^{s})$), and set
+\begin{equation}
+ \mathsf H:=T+\Csharp+\frac{L\beta^{2}}2,
+ \qquad
+ w:=\sqrt{\frac{\omega\bigl(4\mathsf H+\log(2L)\bigr)}{2L}},
+ \qquad
+ \vartheta:=w+\beta.
+ \label{eq:w-def}
+\end{equation}
+
+\begin{proposition}[Carrier equation]
+\label{prop:carrier-equation}
+$w$ is the unique positive solution of
+\begin{equation}
+ T=\frac L2w^{2}-\frac{L\beta^{2}}2+\frac12\log w-\Csharp,
+ \label{eq:w-carrier}
+\end{equation}
+i.e.\ $w^{2}=\LambertW_0(2L\,\e^{4\mathsf H})/(2L)$ --- the omega form
+being the numerically stable one, since it never forms the
+astronomically large argument.  (Newton iteration on
+$\Omega+\log\Omega=S$ from the seed $\Omega_0=S-\log S+(\log S)/S$
+converges immediately for large $S$.)
+\end{proposition}
+
+\begin{proof}
+Multiply \eqref{eq:w-carrier} by $4$ and substitute
+$\Omega=2Lw^{2}$: the equation becomes
+$\Omega+\log\Omega=4\mathsf H+\log(2L)$; strict monotonicity gives
+uniqueness.  Note $\LambertW_0$ solves the \emph{positive}
+quadratic-logarithmic equation in $T$, while $\LambertW_{-1}$
+parametrizes the exact map $x\mapsto\lambda$ --- no contradiction.
+\end{proof}
+
+\begin{definition}[W-resummed carrier]
+$G_W(y):=\vartheta\,\e^{-L\vartheta}
+=(w+\beta)\,2^{-(w+\beta)}$.
+\end{definition}
+
+Writing the exact phase as $\lambda=\vartheta+D$ with $z=1/w$ and
+negating the forward expansion against \eqref{eq:w-carrier} leaves the
+residual
+\begin{equation}
+ 0=\frac Lz D+\mathcal R_W(z,D),
+ \qquad
+ \mathcal R_W(z,u)=
+ \frac L2u^{2}+\frac12\log(1+\beta z+zu)
+ -\Psi(\vartheta+u)
+ -\sum_{j\ge1}\frac{A_j(\vartheta+u)\,z^{j}}{(1+\beta z+zu)^{j}}:
+ \label{eq:RW}
+\end{equation}
+\emph{every constant and every logarithm has disappeared}.  The
+entire diagonal calculus of \cref{sec:diagonal} applies verbatim to
+$\Phi_W=-\mathcal R_W/L$, and the ratio identity becomes
+$G/G_W=\bigl(1+\tfrac{zD}{1+\beta z}\bigr)\e^{-LD}$.
+
+\begin{theorem}[Log-free all-orders expansion, with an extra order]
+\label{thm:W-all-orders}
+With $d_m,h_m,g_m$ the diagonal coefficients of
+\eqref{eq:RW} (via \cref{thm:diagonal} and its composition form),
+each is a \emph{bounded} smooth one-periodic differential polynomial
+in $\Psi,A_1,\dots,A_{m-1}$ --- after inserting the closed forward
+formulas, a polynomial over $\Q(L^{-1})$ in
+$\Psi,\Psi',\dots,\Psi^{(2m-2)}$ evaluated at $\vartheta$, with no
+occurrence of $\log w$ --- and, uniformly in the phase,
+\begin{equation}
+ \boxed{\;
+ G(y)=G_W(y)\Bigl(1+\sum_{m=1}^{N}\frac{g_m(\vartheta)}{w^{m}}
+ +\bigO_N\bigl(w^{-N-1}\bigr)\Bigr).
+ \;}
+ \label{eq:W-expansion}
+\end{equation}
+Knowledge of the forward phase through $A_{N-1}$ thus determines the
+inverse through order $N$ with a \emph{clean} $w^{-N-1}$ remainder
+(no logarithmic grading), one power better than the forward input ---
+the steep-phase Newton gain of
+\cref{app:proof-details} with no $(1+\ell)$ factors left to track.
+\end{theorem}
+
+\subsection{First coefficients and the universal $5/24$}
+
+With $P_r=\Psi^{(r)}(\vartheta)$ (and $P=P_0$), the diagonal
+extraction gives
+\begin{equation}
+ d_1=\frac PL,
+ \qquad
+ d_2=\frac{A_1-\beta/2}{L}+\frac{PP_1}{L^{2}},
+ \qquad
+ d_3=\frac{A_2-\beta A_1+\beta^{2}/4}{L}
+ +\frac{A_1P_1+A_1'P-\tfrac12(P^{2}+P+\beta P_1)}{L^{2}}
+ +\frac{P(PP_2+2P_1^{2})}{2L^{3}},
+ \label{eq:W-d123}
+\end{equation}
+matching the $\rho$-scale recursion
+$d_2=(\Psi'd_1+A_1-\beta/2)/L$ specialized to the new
+$d_1$ --- the two carriers share one recursion, they differ only in
+what the carrier absorbs.  The logarithmic coefficients are
+$h_1=-P$,
+$h_3=\beta A_1-A_2-\tfrac{\beta^{2}}4
++\bigl[-A_1P_1+A_1-A_1'P
++\tfrac12(P^{2}-2\beta P+P+\beta P_1-\beta)\bigr]/L
++P(-PP_2-2P_1^{2}+2P_1)/(2L^{2})$, and, after substituting the
+explicit $A_1$, every $L^{-1}$ constant in $h_2$ cancels:
+\begin{equation}
+ \boxed{\;
+ h_2=\frac5{24}
+ +\frac{P(1-P_1)}{L}
+ +\frac{P_2+P_1^{2}}{2L^{2}},
+ \qquad
+ g_1=-P,
+ \qquad
+ g_2=h_2+\frac{P^{2}}2,
+ \;}
+ \label{eq:524}
+\end{equation}
+with $g_3=h_3+h_1h_2+h_1^{3}/6$.  The constant $5/24$ is a robust
+invariant of the carrier normalization.  Suppressing all periodic
+data while keeping the nonoscillatory parts
+$A_1^{(0)}=\tfrac1{24}+\tfrac1{2L}$,
+$A_2^{(0)}=\tfrac1{4L^{2}}$,
+$A_3^{(0)}=-\tfrac7{2880}-\tfrac1{24L}-\tfrac1{4L^{2}}+\tfrac1{6L^{3}}$
+gives the regression targets
+\begin{equation}
+ h_1^{(0)}=0,\quad
+ h_2^{(0)}=\frac5{24},\quad
+ h_3^{(0)}=-\frac{L+4}{24L},\quad
+ h_4^{(0)}=\frac{37L^{2}+120L+1080}{2880L^{2}},\quad
+ g_4^{(0)}=\frac{199L^{2}+240L+2160}{5760L^{2}}.
+ \label{eq:zero-periodic}
+\end{equation}
+
+The highest-derivative law is \emph{carrier-invariant}: the W-scale
+coefficients obey exactly
+\eqref{eq:inverse-topjet} at $\vartheta$ (the unique source is still
+$A_{m-1}$, whose top jet is normalization-independent), so the
+linearized oscillation amplitude law
+\begin{equation}
+ \operatorname{amp}(g_m)\approx
+ 2\abs{\Psihat(1)}\,
+ \frac{(2\pi^{2}/L^{2})^{m-1}}{(m-1)!}
+ \label{eq:amplitude-law}
+\end{equation}
+holds in both normalizations, one inverse order behind the forward
+amplitude law.
+
+\subsection{The inversion is not the source of divergence}
+
+\begin{theorem}[Convergent bare skeleton]
+\label{thm:bare-skeleton}
+Set $\Psi\equiv0$, $A_j\equiv0$ in \eqref{eq:RW}.  The bare reversion
+$D_{\mathrm{bare}}(z)$ of
+$0=\tfrac LzD+\tfrac L2D^{2}
++\tfrac12\log(1+\beta z+zD)$ is a \emph{convergent} analytic germ at
+$z=0$,
+\begin{equation}
+ D_{\mathrm{bare}}(z)
+ =-\frac{\beta}{2L}z^{2}
+ +\frac{\beta^{2}}{4L}z^{3}
+ +\Bigl(-\frac{\beta^{3}}{6L}+\frac{\beta}{4L^{2}}\Bigr)z^{4}
+ +\bigO(z^{5}).
+ \label{eq:bare-series}
+\end{equation}
+Hence any divergence of the complete inverse series enters through
+the large-order saddle data $A_j$ and the differentiated Fourier
+modes --- not through formal inversion of the
+quadratic--logarithmic carrier.
+\end{theorem}
+
+\begin{proof}
+The equation forces $D=z^{2}V$; dividing by $z$,
+$0=LV+\tfrac L2z^{3}V^{2}
++\tfrac1{2z}\log(1+\beta z+z^{3}V)$, whose logarithmic quotient is
+analytic at $z=0$ with unique root $V(0)=-\beta/(2L)$ and
+$V$-derivative $L\ne0$; the analytic implicit function theorem gives
+the germ, and coefficient comparison the series.
+\end{proof}
+
+\begin{theorem}[Conditional Gevrey-one transfer]
+\label{thm:gevrey-transfer}
+If the $A_j$ extend to a strip $\abs{\Im u}<\sigma$ with
+$\norm{A_j}_\sigma\le CK^{j}j!$, then on every smaller strip the
+W-scale $d_m,h_m,g_m$ satisfy
+$\norm\cdot_{\sigma'}\le C'(K')^{m}m!$: W-resummed inversion does not
+worsen Gevrey order.  (Cauchy estimates control phase derivatives;
+the diagonal formula is a finite sum of total weight $m$; and
+$\sum_jj!\,(m-j)!\le C_0\,m!$ closes the majorant induction.)
+\end{theorem}
+
+\subsection{Derivatives, numerics, and the pre-asymptotic hierarchy}
+
+Differentiating \eqref{eq:w-carrier} gives
+$\dd T/\dd w=Lw+(2w)^{-1}$, so with
+$\mathcal H_W(w)=\sum_mh_m(w+\beta)w^{-m}$,
+\begin{equation}
+ \frac{yG'(y)}{G(y)}
+ =\frac{L-(w+\beta)^{-1}-\mathcal H_W'(w)}{Lw+(2w)^{-1}}
+ =\frac1w+\frac{\Psi'(\vartheta)-1}{Lw^{2}}
+ +\frac{\beta+h_1-h_2'-\tfrac12}{Lw^{3}}
+ +\bigO(w^{-4}),
+ \label{eq:W-elasticity}
+\end{equation}
+and repeated $y\,\dd/\dd y$ derivatives are powers of the single
+operator $-\bigl(Lw+(2w)^{-1}\bigr)^{-1}\dd/\dd w$ --- no second
+inversion, consistent with \cref{sec:derivatives}.
+
+On the exact dyadic quantiles the improvement over the
+$\rho$-carrier is dramatic --- the bare W-carrier already beats the
+$\rho$-scale's two-correction approximant at small $n$:
+
+\begin{center}
+\small
+\begin{tabular}{@{}rrrrrr@{}}
+\toprule
+$n$ & $w$ & carrier only & order 1 & order 2 & order 3 \\
+\midrule
+5   & 6.066   & $-4.79\times10^{-3}$ & $-4.79\times10^{-3}$ & $8.58\times10^{-4}$ & $-4.13\times10^{-4}$ \\
+10  & 11.845  & $-1.35\times10^{-3}$ & $-1.35\times10^{-3}$ & $1.36\times10^{-4}$ & $-3.32\times10^{-5}$ \\
+20  & 22.680  & $-3.84\times10^{-4}$ & $-3.84\times10^{-4}$ & $2.11\times10^{-5}$ & $-2.95\times10^{-6}$ \\
+40  & 43.566  & $-1.07\times10^{-4}$ & $-1.07\times10^{-4}$ & $3.16\times10^{-6}$ & $-2.30\times10^{-7}$ \\
+80  & 84.491  & $-2.87\times10^{-5}$ & $-2.87\times10^{-5}$ & $4.50\times10^{-7}$ & $-1.66\times10^{-8}$ \\
+160 & 165.444 & $-7.55\times10^{-6}$ & $-7.55\times10^{-6}$ & $6.11\times10^{-8}$ & $-1.14\times10^{-9}$ \\
+\bottomrule
+\end{tabular}
+\captionof{table}{Relative errors of the W-resummed approximants
+$G_W\exp(\sum_{j\le r}h_j/w^{j})$ at $y_n=F(2^{-n})$.  Compare
+\cref{tab:dyadic-errors}: order for order the W-scale wins throughout
+(at $n=160$, third order $-1.14\times10^{-9}$ versus
+$4.92\times10^{-8}$; second order $6.1\times10^{-8}$ versus
+$-3.6\times10^{-6}$), and the \emph{bare} carrier alone outperforms
+the $\rho$-scale's full $h_2$-approximant through
+$n\approx40$ ($-1.07\times10^{-4}$ versus $-1.43\times10^{-4}$ at
+$n=40$; the comparison reverses beyond $n\approx80$ as the
+$\rho$-corrections catch up) by absorbing the logarithmic drift.}
+\label{tab:W-errors}
+\end{center}
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.78\textwidth]{carrier_comparison.pdf}\\[0.3em]
+\includegraphics[width=0.78\textwidth]{scaled_residuals.pdf}
+\caption{Top: absolute relative errors of the $\rho$- and W-carrier
+approximants on the exact dyadic quantiles.  Bottom: scaled residuals
+after the second and third W-corrections, consistent with the
+predicted next powers $w^{-3}$, $w^{-4}$.}
+\label{fig:W-figures}
+\end{figure}
+
+\begin{remark}[Pre-asymptotic hierarchy]
+Since $\norm{\Psi}_\infty\approx2.13\times10^{-6}$ while
+$h_2^{(0)}=5/24$, the nominally first correction $h_1/w=-\Psi/w$ is
+numerically \emph{invisible} against $h_2/w^{2}$ until
+$w\gtrsim(5/24)/\norm{\Psi}_\infty\approx10^{5}$, i.e.\
+$T\sim3\times10^{9}$.  Practical approximations must therefore
+include $h_2$ whenever they include $h_1$
+(cf.\ the table's near-identical first two columns).  This does not
+violate asymptotic ordering; one coefficient simply happens to be
+extraordinarily small --- the same smallness that makes the phase
+oscillation resolvable only at high precision.
+\end{remark}
+
+\begin{remark}[Two beyond-all-orders scales, sharpened]
+The W-normalization cleanly separates the two sectors of
+\cref{conj:transseries}: a doubly exponential dyadic tail
+$\bigO(w^{-1}\e^{-2^{\vartheta}})$ (a forward perturbation of size
+$\e^{-2^{\lambda}}$, divided by the steep phase derivative $Lw$) and
+the saddle-resurgent scale.  For the latter, optimizing the
+amplitude law \eqref{eq:amplitude-law} against the Fourier decay
+$\abs{\Psihat(k)}\asymp\e^{-\pi^{2}\abs k/L}$ places the dominant
+mode of $g_m$ near $k_*\sim2(m-1)L/\pi^{2}$ and gives the linearized
+growth $m!\,(8/\pi^{2})^{m}$ up to algebraic factors --- optimal
+truncation near $m\simeq\pi^{2}w/8$ with remainder scale
+$\exp(-\pi^{2}w/8)$, enormously larger than the dyadic sector.  This
+sharpens \cref{conj:gevrey} to the limsup form
+$\limsup_m(\norm{g_m}/m!)^{1/m}=8/\pi^{2}$ (after removing finitely
+many low orders and in a suitable norm) and
+\cref{conj:optimal-truncation} to Borel one-summability on the
+positive $w$-ray with nearest singularities at modulus
+$\pi^{2}/8$ (\cref{conj:transseries}); locating the exact branch
+point of the bare skeleton \eqref{eq:bare-series} --- an explicit
+elimination problem --- would separate the geometric carrier growth
+from the factorial saddle growth rigorously.
+\end{remark}
+
 \section{The forward saddle engine: constrained partition sums}
 \label{sec:saddle}
 
@@ -1012,6 +1326,26 @@ of \eqref{eq:Cn-partition} grows like an integer-partition function
 --- subexponentially --- rather than like all set partitions, which
 removes the practical bottleneck to generating $A_3,A_4,\dots$ in
 compact Fourier-differential form.
+
+For implementers, the corpus also supplies a second, fully unrolled
+closed route to the same $A_j$ (recorded in the third absorbed
+source from the archived small-argument study): with the signed
+Stirling coefficients $\prod_{r=1}^{n}(z-r)=\sum_mc(n,m)z^{m}$ and
+harmonic numbers $\Hnum_n$, the bounded saddle jets are
+\begin{equation}
+ q_n(u)=(-1)^{n}n!\Bigl(\frac{\Hnum_n}{L}-\frac12\Bigr)
+ +\sum_{m=0}^{n}c(n,m)\,\frac{\Psi^{(m+1)}(u)}{L^{m+1}},
+ \label{eq:qn-jets}
+\end{equation}
+the normalized mass coefficients $a_j$ are finite sums over
+compositions of $2j$ and subsets weighted by double factorials
+$(2j+2\abs S-1)!!$, and
+$A_j=\sum_{r\le j}\frac{(-1)^{r-1}}r
+\sum_{\mathcal C(j,r)}a_{s_1}\cdots a_{s_r}$ --- an explicit finite
+differential polynomial in $\Psi',\dots,\Psi^{(2j)}$ whose top jet
+reproduces \eqref{eq:A1-and-topjet}.  The partition engine
+\eqref{eq:Cn-partition} and this composition route validate each
+other symbolically.
 
 \section{The exact \texorpdfstring{$2$}{2}-adic completion of the
 Laplace exponent}
@@ -1211,6 +1545,15 @@ $3.8\times10^{-55}$ at $t=1.5$; the small-$t$ expansion
 $0.02\le t\le0.2$; and the Dirichlet identity
 \eqref{eq:mellin} to the expected algebraic truncation tail with
 $5\times10^{4}$ unaccelerated terms.
+
+\emph{Wright-omega layer.}  The third source's suite independently
+reconstructs the W-scale $d_m,h_m,g_m$ symbolically from the residual
+equation (SymPy; the identities of
+\cref{sec:wcarrier} including the $5/24$ cancellation and the
+zero-periodic values \eqref{eq:zero-periodic}), verifies the carrier
+equation and Newton evaluation of $\omega$, and generates the
+carrier-comparison tables of \cref{tab:W-errors} on the same exact
+dyadic quantiles at $100$ digits with nine Fourier modes.
 
 \emph{Exact dyadic quantiles.}  With $a_0=1$ and
 $a_n=(2^{n}-1)^{-1}\sum_{k<n}a_k/(n-k+1)!$, the repository's exact
@@ -1498,21 +1841,42 @@ map, ultraflat jets; Stirling--Bell ordinary-derivative route;
 strip-inheritance/transseries/resurgent-arithmetic conjectures;
 formalization obligations; $K$/$B$/Dirichlet verification and the
 $\Psi$ and tail-convergence figures. \\
+\addlinespace
+\emph{Complete Small-Argument Asymptotics of the Inverse Fabius
+Function} --- Wright-omega carrier (sixth wave;
+\nolinkurl{inverse_fabius_asymptotics_package}; SHA in
+\nolinkurl{assets/SHA256SUMS-absorbed.txt})
+& The log-free resummation of \cref{sec:wcarrier}: carrier equation
+and stable $\omega$ evaluation; bounded-periodic no-log coefficient
+theorem with the clean $w^{-N-1}$ remainder; $g_1=-\Psi$, the
+universal $5/24$ in $h_2$, and the zero-periodic regression values
+through $g_4^{(0)}$; carrier-invariant highest-derivative law and
+amplitude law; convergent bare-skeleton theorem; conditional
+Gevrey-one transfer; W-scale elasticity; the sharpened
+two-sector beyond-all-orders picture and the limsup-$8/\pi^{2}$ and
+Borel-summability refinements; carrier-comparison experiments and
+figures; the imported closed forward-coefficient route
+($q_n$ jets, composition/subset mass coefficients). \\
 \bottomrule
 \end{tabular}
 \end{center}
 
 \emph{What was deduplicated}: the imported forward/inverse corpus
 inputs; the two-scale setup; the fixed-point reduction; the closed
-$d_n$ formula (proved in both, one statement here); the universal
-top-log (two proofs, both retained in
+$d_n$ formula (proved in the first two sources and re-derived by the
+third in its own normalization --- one statement here, applied to
+both residuals); the universal top-log (two proofs, both retained in
 \cref{thm:top-log}); the third correction (independently derived,
 verified algebraically identical --- the merge's cross-validation);
-the Bell conversion; the elasticity recurrence (identical in both);
-and the audit/status scaffolding.  Nothing mathematical was
-discarded; where the sources' groupings differ, the compacter form
-is displayed and the other recorded in the adjacent remark.  Exact
-SHA-256 hashes are in \nolinkurl{assets/SHA256SUMS-absorbed.txt}.
+the Bell conversion; the elasticity recurrence (identical in the
+first two sources, and structurally re-verified by the third:
+its W-scale $d_2$ is the shared recursion specialized to the new
+carrier, and its highest-derivative constants coincide with
+\eqref{eq:inverse-topjet}, confirming carrier invariance); and the
+audit/status scaffolding.  Nothing mathematical was discarded; where
+the sources' groupings differ, the compacter form is displayed and
+the other recorded in the adjacent remark.  Exact SHA-256 hashes are
+in \nolinkurl{assets/SHA256SUMS-absorbed.txt}.
 
 \begin{thebibliography}{99}
 

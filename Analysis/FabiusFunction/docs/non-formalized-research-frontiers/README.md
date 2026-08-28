@@ -95,18 +95,28 @@ The draft inboxes under [`drafts/`](drafts/) are grouped thematically
 `representations/`, and `frontier-compilations/`, with new archives
 arriving through `drafts/incoming/` (see its README for the protocol).
 Later the same day every group except the Fourier-decay corpus was
-**consolidated into a single volume** — one merged document per group,
-absorbing the member drafts verbatim with per-part label prefixes and a
-provenance section carrying each member's SHA-256; the absorbed
-directories were deleted (git history is the archive). The Fourier-decay
-corpus deliberately stays as separate documents: its structure is audit
-evidence (see its README). Each group carries a `README.md` stating its
-purpose and contents, and [`drafts/MANIFEST.md`](drafts/MANIFEST.md) is
-the global inventory: every volume with its title and the previous paths
-of what it absorbed. Path strings *inside* the documents predate the
-grouping and are resolved through that manifest; neither the
-reorganization nor the consolidation changed any member's mathematical
-content.
+**consolidated into volumes**, in two styles: the original members were
+merged mechanically — one document per group, absorbing the member
+drafts verbatim with per-part label prefixes (the later second-wave
+integral-transforms arrival was folded into that volume the same way,
+as Part XII) — while the closely overlapping arrivals of waves two
+through six were merged **editorially** into additional volumes
+(`inverse-and-sampling/Dyadic_Comb_Frontiers/` and
+`Inverse_Endpoint_All_Orders/`,
+`representations/Up_Polynomial_Synthesis/`): shared theorems stated
+once with the best proof, unified notation, cross-source constants
+verified, all source-specific material retained.  Every volume carries
+a provenance section with each absorbed member's SHA-256; the absorbed
+directories were deleted (git history is the archive). The
+Fourier-decay corpus deliberately stays as separate documents: its
+structure is audit evidence (see its README). Each group carries a
+`README.md` stating its purpose and contents, and
+[`drafts/MANIFEST.md`](drafts/MANIFEST.md) is the global inventory:
+every volume with its title and the previous paths of what it
+absorbed. Path strings *inside* the documents predate the grouping and
+are resolved through that manifest; the mechanical steps changed no
+member's mathematical content, and the editorial merges record their
+deduplication decisions in their provenance appendices.
 
 ## Maintenance
 

@@ -4,7 +4,7 @@ Antiderivatives, integral calculus, transform dualities, and fractional
 calculus of the Fabius–Rvachev system, consolidated (2026-08-28) into
 the single volume
 [`Integration_and_Transform_Frontiers/`](Integration_and_Transform_Frontiers/)
-(338 pp, eleven parts):
+(362 pp, twelve parts):
 
 - **Part I** — *Antiderivatives of Monomially Weighted Fabius-Type
   Functions* (formerly `Fabius_Antiderivatives_Report/`);
@@ -28,7 +28,14 @@ the single volume
 - **Part X** — *Integral, Transform, and Fractional-Order Frontiers*
   (formerly `Fabius_Fractional_Integral_Transform_Frontiers/`);
 - **Part XI** — *Fabius Fractional Transform Frontiers*
-  (formerly `fabius_fractional_transform_frontiers_bundle/`).
+  (formerly `fabius_fractional_transform_frontiers_bundle/`);
+- **Part XII** — *Integral and Transform Calculus for the
+  Fabius–Rvachev–Quantile System* (the second-wave arrival of
+  2026-08-28, formerly `Fabius_Integral_Transforms_Report/` — an
+  independent report sharing its directory name with Part IV's
+  2026-08-27 source; folded in 2026-08-28 by the same mechanical
+  per-part step, support files under
+  `assets/Fabius_Integral_Transforms_Report_second_wave/`).
 
 The member drafts were absorbed verbatim (labels, citation keys, and
 asset paths mechanically prefixed per part; no mathematical content
