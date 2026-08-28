@@ -1460,6 +1460,51 @@ an exponential, and is therefore strictly positive.  The canonical product is
 \lean{rvachevFourierProduct_eq_canonical} in \path{SincCanonicalProduct.lean}.
 \end{proof}
 
+The exponent in the canonical product has a finite, base-generic double-counting
+origin that is useful independently of sinc products.  For \(b,N,J\in\N\), put
+\[
+ c_J(b,m):=\#\{j\in\{0,\ldots,J\}:b^j\mid m\}.
+\]
+If \(q>0\), multiplication by \(q\) identifies the positive multiples of \(q\)
+not exceeding \(N\) with \(1,\ldots,\lfloor N/q\rfloor\).  Consequently, for
+every function \(f\) into a commutative monoid,
+\begin{align}
+ \prod_{1\le n\le\lfloor N/q\rfloor}f(qn)
+   &=\prod_{\substack{1\le m\le N\\q\mid m}}f(m),
+                                                               \label{eq:base-layer-reindexing}\\
+ \prod_{j=0}^{J}\prod_{1\le n\le\lfloor N/b^j\rfloor}f(b^jn)
+   &=\prod_{m=1}^{N}f(m)^{c_J(b,m)}\qquad(b>0).             \label{eq:base-layer-regrouping}
+\end{align}
+For \(b>1\) and \(m\ne0\), if the displayed layer range reaches the
+multiplicity, that is, if
+\(\operatorname{multiplicity}(b,m)\le J\), then
+\begin{equation}
+ c_J(b,m)=\operatorname{multiplicity}(b,m)+1.               \label{eq:base-layer-count}
+\end{equation}
+Thus, under the explicit hypothesis
+\(\operatorname{multiplicity}(b,m)\le J\) for every \(1\le m\le N\),
+\begin{equation}
+ \prod_{j=0}^{J}\prod_{1\le n\le\lfloor N/b^j\rfloor}f(b^jn)
+ =\prod_{m=1}^{N}f(m)^{\operatorname{multiplicity}(b,m)+1}. \label{eq:base-layer-multiplicity}
+\end{equation}
+The same three identities hold in every additive commutative monoid, with
+products and powers replaced by sums and natural scalar multiples.  In Lean,
+the underlying finite-set equality is \lean{filter_dvd_eq_image};
+\eqref{eq:base-layer-reindexing} and its additive companion are
+\lean{prod_multiples_eq_prod_filter} and
+\lean{sum_multiples_eq_sum_filter};
+\eqref{eq:base-layer-regrouping} and its companion are
+\lean{prod_layers_eq_prod_pow_card} and
+\lean{sum_layers_eq_sum_nsmul_card}; and
+\eqref{eq:base-layer-count}--\eqref{eq:base-layer-multiplicity} and the final
+additive companion are \lean{card_filter_pow_dvd},
+\lean{prod_layers_eq_prod_pow_multiplicity}, and
+\lean{sum_layers_eq_sum_nsmul_multiplicity}, all in
+\path{BaseLayerRegrouping.lean}.  These are finite algebraic identities.  In
+particular they assert no infinite-product convergence, and the sufficient
+layer-coverage condition must be supplied explicitly rather than inferred by
+the API from a bound such as \(N<b^{J+1}\).
+
 \subsection{Total local factorization and exact complex zero jets}
 \label{sec:fourier-integer-zero-jets}
 
@@ -3854,6 +3899,73 @@ specialization \lean{sum_lagrangeEvalWeight_mul_pow_card_add} are in
 \eqref{eq:lagrange-all-residual-moments} extends the preceding first-error
 formula rather than replacing its low-degree exactness foundation.
 
+On a geometric alphabet this universal residual has a denominator-free closed
+form.  Over every commutative semiring, for arbitrary \(c,q\) and \(n,r\in\N\),
+\begin{equation}
+ h_n(c,cq,\ldots,cq^r)=c^n{n+r\brack r}_q.                \label{eq:geometric-complete-homogeneous}
+\end{equation}
+In particular \(h_n(1,q,\ldots,q^r)={n+r\brack r}_q\).  These are
+\lean{completeHomogeneousEval_scaled_geometric} and
+\lean{completeHomogeneousEval_geometric}; the equivalent evaluation indexed
+by \(\{0,\ldots,p\}\) is
+\lean{completeHomogeneousEvalOn_range_pow_eq_gaussianBinomial}, all in
+\path{GeometricCompleteHomogeneous.lean}.  There is no quotient and no
+distinctness, nonzeroness, ordering, topology, or characteristic hypothesis;
+in particular \(q=0\), roots of unity, zero divisors, and the zero semiring are
+included.
+
+The resulting moment theorem is stronger than the distinct-node Lagrange
+specialization.  Let \(R\) be any commutative ring, let \(w_0,\ldots,w_p\in R\),
+and suppose exactness is given directly on the scaled geometric nodes:
+\begin{equation}
+ \sum_{k=0}^{p}w_k(cq^k)^d=0^d\qquad(0\le d\le p).         \label{eq:scaled-geometric-row-exactness}
+\end{equation}
+Here the degree-zero equation is the normalization \(\sum_kw_k=1\), with
+Lean's convention \(0^0=1\).  Then every positive moment, cancelled or
+surviving, is
+\begin{equation}
+ \boxed{\quad
+ \sum_{k=0}^{p}w_k(cq^k)^m
+ =c^m(-1)^pq^{\binom{p+1}{2}}{m-1\brack p}_q,
+ \qquad m>0.\quad}                                        \label{eq:scaled-geometric-all-moments}
+\end{equation}
+At \(m=p+1+r\), the same identity reads
+\begin{equation}
+ \sum_{k=0}^{p}w_k(cq^k)^{p+1+r}
+ =c^{p+1+r}(-1)^pq^{\binom{p+1}{2}}{p+r\brack p}_q.       \label{eq:scaled-geometric-offset-moment}
+\end{equation}
+No node distinctness or division is used, repeated nodes are allowed, and the
+scale \(c\) may be zero or a zero divisor because exactness is assumed after
+scaling.  The unscaled offset and all-positive-degree forms are
+\lean{sum_weight_mul_geometric_pow_succ_add} and
+\lean{sum_weight_mul_geometric_pow_of_pos};
+\eqref{eq:scaled-geometric-offset-moment} and
+\eqref{eq:scaled-geometric-all-moments} are
+\lean{sum_weight_mul_scaled_geometric_pow_succ_add} and
+\lean{sum_weight_mul_scaled_geometric_pow_of_pos}, respectively, in
+\path{GeometricResidualMoments.lean}.
+
+Over a field, assume only that \(k\mapsto q^k\) is injective on
+\(\{0,\ldots,p\}\), and let \(\lambda_{p,k}^{(q)}\) be the corresponding
+evaluation-at-zero Lagrange row.  The offset and positive-degree unscaled
+forms are \lean{sum_geometricLagrangeWeight_mul_pow_succ_add} and
+\lean{sum_geometricLagrangeWeight_mul_pow_of_pos}.  An arbitrary common
+dilation satisfies
+\begin{equation}
+ \sum_{k=0}^{p}\lambda_{p,k}^{(q)}(cq^k)^m
+ =c^m(-1)^pq^{\binom{p+1}{2}}{m-1\brack p}_q,             \label{eq:geometric-lagrange-scaled-moment}
+\end{equation}
+by \lean{sum_geometricLagrangeWeight_mul_scaled_geometric_pow_of_pos}; and,
+for every block start \(s\in\N\),
+\begin{equation}
+ \sum_{k=0}^{p}\lambda_{p,k}^{(q)}(q^{s+k})^m
+ =(-1)^pq^{sm+\binom{p+1}{2}}{m-1\brack p}_q,             \label{eq:geometric-lagrange-shifted-moment}
+\end{equation}
+by \lean{sum_geometricLagrangeWeight_mul_shifted_pow_of_pos}.  Both statements
+hold for every \(m>0\), include \(p=0\) and \(s=0\), and impose no condition on
+the dilation beyond the stated finite-node injectivity for the original
+geometric row.
+
 For the present half-geometric grid, write $\lambda_{n,k}^{(1/2)}$ for the
 evaluation-at-zero weight belonging to the node $2^{-k}$.  The Toeplitz row is exactly the
 same row in reverse order:
@@ -5522,6 +5634,48 @@ These are \lean{expCoeff_logCoeff_eq_ite} and
 \path{SaddleLogExpansionAlgebra.lean} and
 \path{SaddleLogExpansionPowerSeries.lean}.
 
+The recurrence-defined logarithm is also multiplicative at the level of
+formal power series.  Let \(R\) be a commutative \(\Q\)-algebra and define
+\[
+ \mathfrak L(C):=\lean{SaddleExpansion.logOf}(C),
+ \qquad C\in R[[X]],
+\]
+by applying \lean{logSeries} to the coefficient family of \(C\).  Rebuilding
+a series from that family gives \(C\) itself by
+\lean{SaddleExpansion.massSeries_coeff}; this reconstruction lemma needs only
+that \(R\) be a commutative ring.  For every \(C\), even before a unit-constant
+hypothesis is imposed,
+\begin{equation}
+ [X^0]\mathfrak L(C)=0,                                    \label{eq:formal-log-zero-constant}
+\end{equation}
+which is \lean{SaddleExpansion.constantCoeff_logOf}.  If
+\([X^0]C=1\), then
+\begin{equation}
+ C\,\mathfrak L(C)'=C',                                   \label{eq:formal-log-differential-equation}
+\end{equation}
+by \lean{SaddleExpansion.mul_derivative_logOf}; conversely,
+\lean{SaddleExpansion.logOf_eq_of} says that
+\eqref{eq:formal-log-zero-constant} and
+\eqref{eq:formal-log-differential-equation} characterize \(\mathfrak L(C)\)
+uniquely.
+
+It follows that unit-constant series satisfy
+\begin{equation}
+ \mathfrak L(AB)=\mathfrak L(A)+\mathfrak L(B),
+ \qquad \mathfrak L(1)=0,                                 \label{eq:formal-log-multiplicative}
+\end{equation}
+and, for every finite set \(S\) and family with \([X^0]F_i=1\),
+\begin{equation}
+ \mathfrak L\!\left(\prod_{i\in S}F_i\right)
+ =\sum_{i\in S}\mathfrak L(F_i).                         \label{eq:formal-log-finite-product}
+\end{equation}
+These are \lean{SaddleExpansion.logOf_mul},
+\lean{SaddleExpansion.logOf_one}, and
+\lean{SaddleExpansion.logOf_prod} in
+\path{LogSeriesMultiplicative.lean}.  They are identities in \(R[[X]]\): no
+convergence, analytic logarithm, branch choice, or passage to an infinite
+product is asserted.
+
 \subsection{Universal finite endpoint-transfer algebra}
 \label{sec:endpoint-transfer-polynomials}
 
@@ -5876,10 +6030,15 @@ Moments and exact arithmetic &
 Universal exponential, Bell, and endpoint-transfer algebra &
 \path{SaddleExpansionAlgebra.lean}, \path{ExponentialPartition.lean},
 \path{ExponentialBell.lean},
-\path{EndpointTransferPolynomials.lean}\\
+\path{EndpointTransferPolynomials.lean},
+\path{LogSeriesMultiplicative.lean}\\
+Finite base-layer arithmetic &
+\path{BaseLayerRegrouping.lean}\\
 Finite polynomial functionals and geometric Lagrange/Richardson exactness &
 \path{FinitePolynomialFunctional.lean}, \path{CompleteHomogeneous.lean},
 \path{GeometricLagrange.lean}, \path{LagrangeResidualMoments.lean},
+\path{GeometricCompleteHomogeneous.lean},
+\path{GeometricResidualMoments.lean},
 \path{GeometricQBinomialLagrange.lean}\\
 Dyadic and \(q\)-binomial formulas &
 \path{DyadicClosedForm.lean}, \path{DyadicAnalytic.lean}, \path{GlobalDyadic.lean},
