@@ -27,7 +27,7 @@ shifts, negative-branch and hierarchy formulas, and inverse/quantile versions
 remain research frontiers. These API claims were checked at source checkpoint
 `22f801337`.
 
-Member: `Exponents_and_q_Series_Frontiers` (168 pp, six parts) — the
+Member: `Exponents_and_q_Series_Frontiers` (173 pp, six parts) — the
 2026-08-28 consolidation of the two former drafts (Part I:
 Newton-basis frontiers; Part II: q-binomial Richardson), joined the
 same day by the eighth-wave report as **Part III** — *Finite Dyadic
@@ -119,25 +119,26 @@ the Lambert normalization `c_a = √a·log a/2`), the divisor-polynomial
 form of `log M_a`, the canonical Fup ladder `G_n → 2·up(2x)`, and
 three new register entries (overlap-regime nowhere analyticity,
 algebraic-breakpoint arithmetic, a bridge between the two periodic
-profiles).  The eighth-wave fold also repaired the volume's
-part-boundary section numbering (Part II had rendered with
-`\appendix` letters G–N).  Supporting files under `assets/`,
-provenance with SHA-256 in the document itself.
+profiles).  The fifteenth wave brought a third reconstruction of the
+same chapter — *Atomic Functions, Rvachev's up-Function, and Smooth
+Cantor Splines* (formerly `Rvachev_Atomic_Functions_Report/`) — which
+was likewise **merged editorially into Part VI** (2026-08-28),
+contributing the signed leading coefficient
+`L_ω = (−1)^{N₊(ω)} a^{(r+1)(r+2)/2}/(2^{r+1} r!)` on every gap, the
+derivative equimeasurability theorem with the full `L^p` ladder
+`‖h_a^{(n)}‖_p = (a^{n(n+3)/2}/2^n)(2/a)^{n/p} ‖h_a‖_p` and the exact
+derivative-value mixture law, the endpoint jet-reduction form of the
+one-branch formula (the exact
+Bernoulli→cumulants→moments→jets→gap-polynomials engine), the
+classical `Fup_n` hierarchy with its exact triangular reconstruction
+of `up` by `n(n+1)/2` dyadic averaging steps, closed cumulants
+(`σ_n² = 4^{−n}(3n+4)/36`), and quantitative central-limit regime
+(Berry–Esseen `O(n^{−1/2})`), the edge pantograph equations
+generalizing `F′ = 2F(2·)` to every base, and further register
+entries (`Fup_n` Edgeworth, graph-directed atomic splines,
+pressure-function Taylor multifractal).  The eighth-wave fold also
+repaired the volume's part-boundary section numbering (Part II had
+rendered with `\appendix` letters G–N).  Supporting files under
+`assets/`, provenance with SHA-256 in the document itself.
 
 See [`../MANIFEST.md`](../MANIFEST.md) for titles and the previous paths.
-
-A fourteenth-wave arrival, `Atomic_Functions_Beyond_Dyadic_Report/` (*Atomic Functions
-Beyond the Critical Dyadic Case*), joins the group as a separate member: an English
-reconstruction and expansion of Rvachev atomic-function material on the geometric
-family h_a beyond the binary point — same subject as the volume's Part VI, written
-independently — with gap-hierarchy/fractal-string geometry, Gaussian cumulant limits,
-periodic correction bases, and reproducible experiments. It stays separate until
-deliberately merged into the volume.
-
-A fifteenth-wave arrival, `Rvachev_Atomic_Functions_Report/` (*Atomic Functions,
-Rvachev's up-Function, and Smooth Cantor Splines*), joins the group as another
-separate member: an independent English reconstruction and expansion of the same
-Russian atomic-function source as the fourteenth wave — generalized h_a parameters,
-smooth Cantor-spline structure with gap diagnostics at a = 3, local degree
-distributions, and fup central-limit cumulants. It stays separate until deliberately
-merged into the volume.
