@@ -24,6 +24,7 @@ Poisson summation into the exactness statement.
 set_option autoImplicit false
 
 open MeasureTheory Real Complex
+open scoped ContDiff FourierTransform SchwartzMap
 
 namespace Fabius
 
