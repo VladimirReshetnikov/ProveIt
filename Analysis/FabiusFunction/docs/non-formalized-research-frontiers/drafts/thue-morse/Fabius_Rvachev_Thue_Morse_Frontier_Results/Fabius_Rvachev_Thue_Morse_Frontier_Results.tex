@@ -82,6 +82,8 @@
 \newcommand{\qbinom}[3]{\genfrac{[}{]}{0pt}{}{#1}{#2}_{#3}}
 \newcommand{\fall}[2]{#1^{\underline{#2}}}
 \newcommand{\repo}{\nolinkurl{Analysis/FabiusFunction}}
+\newcommand{\lean}[1]{%
+  \ifmmode\text{\texttt{\detokenize{#1}}}\else\nolinkurl{#1}\fi}
 \newcommand{\newresult}{\textbf{Result derived in this report.}}
 \newcommand{\corpusresult}{\textbf{Established in the inspected corpus.}}
 \newcommand{\checked}{\textbf{Numerically cross-checked.}}
@@ -155,6 +157,21 @@ The report uses three levels.  Statements explicitly attributed to the repositor
 literature are background.  Statements labeled ``Result derived in this report'' are supplied
 with proofs.  Numerical experiments are validation, not substitutes for proof.  Several final
 research directions are labeled as conjectures or formalization obligations.
+
+\smallskip
+\textbf{Formalization crosswalk.}
+``Result derived in this report'' is a statement about the inspected \emph{prose} corpus and
+says nothing about the Lean library.  In fact several of the results below already have formal
+counterparts in \nolinkurl{Analysis/FabiusFunction/Lean/FabiusFunction/}, in some cases proved
+there in greater generality than they are stated here.  Wherever this is so, a paragraph
+headed \emph{Formal version} follows the statement and gives the exact declaration names,
+typeset as \lean{Fabius.thueMorseSign}, together with the module they live in; where the Lean
+statement is weaker (real argument only, or the identity before a normalization) or stronger
+(arbitrary ring, arbitrary base, arbitrary interpolation ratio) than the statement here, the
+paragraph says which.  Absence of such a paragraph means only that no formal counterpart was
+located, and must not be read as a claim that none exists.  A paper proof is in any case not
+evidence of formalization, and a citation to a more general Lean theorem is not a claim that
+the exact statement printed here has been formalized.
 \end{boxedremark}
 
 \tableofcontents
@@ -265,6 +282,13 @@ where $s_2(n)$ is the binary digit sum.  The product identity is the finite form
 Thue--Morse generating-product law.  Its zero of order $m$ at $z=1$ is exactly the Prouhet
 cancellation of moments of degrees below $m$.
 
+\emph{Formal version.}  The product identity in \eqref{eq:Pm} is
+\lean{Fabius.prod_one_sub_pow_eq_sum_thueMorseSign} (\path{ThueMorseBooleanCube.lean}),
+which is more general than the form used here: it is stated for $z$ in an arbitrary
+commutative ring, not for complex $z$, and is proved once by a Boolean-cube expansion.  Every
+substitution made below --- $z=\e^{\ii t/2^{m-1}}$ in \cref{thm:finite-sinc},
+$z=\e^{-s/2^m}$ in \cref{thm:finite-Laplace} --- is an instance of that single statement.
+
 \subsection{Fourier and Laplace products}
 
 Use $\sinc z=\sin z/z$ with $\sinc0=1$, and define
@@ -297,6 +321,20 @@ The bounded Fabius distribution is related by
 \end{equation}
 These conventions agree with the repository's primary exposition
 \cite{proveit-primary,arias1982}.
+
+\emph{Formal versions, and the convention check.}  Both normalizations used above are the ones
+carried by the Lean library, which matters because the corpus contains more than one Fourier
+convention and a crosswalk across a mismatch would be worthless.  The Lean transform
+\lean{Fabius.rvachevFourier} is defined as $\int_\R\Up(t)\e^{-2\pi\ii tz}\dd t$ --- the
+convention of \eqref{eq:upFourier} --- and
+\lean{Fabius.rvachevFourier_eq_product} (\path{FourierProduct.lean}) proves it equal to
+\lean{Fabius.rvachevFourierProduct}, namely $\prod_{n\ge0}\sinc(\pi z/2^n)$.  That is
+\eqref{eq:upFourier} verbatim.  Likewise $G$ in \eqref{eq:Gdef} is the Lean object
+\lean{Fabius.complexGeneratingFunction}: that the entire half-moment generating function
+evaluated at $-s$ equals the dyadic product $\prod_{k\ge1}(1-\e^{-s/2^k})/(s/2^k)$ of
+\eqref{eq:Gdef}, with the same removable value at each vanishing factor, is
+\lean{Fabius.complexGeneratingFunction_neg_eq_tprod}
+(\path{NegativeLaplaceVertical.lean}), for every $s\in\C$.
 
 \subsection{The lower-Lambert phase}
 
@@ -366,6 +404,19 @@ and the sinc factors are $\sinc(t/2),\ldots,\sinc(t/2^m)$.  This gives
 \eqref{eq:finite-sinc}; the sum form follows from \eqref{eq:Pm}.
 \end{proof}
 
+\emph{Formal version.}  The unnormalized half of \eqref{eq:finite-sinc} is
+\lean{Fabius.sum_thueMorseSign_exp_eq_sin_prod} (\path{ThueMorseSineProduct.lean}), which
+states, for real $x$ and every $m$,
+\[
+ \sum_{n<2^m}\eps_n\e^{\ii nx}
+ =(-2\ii)^m\e^{\ii(2^m-1)x/2}\prod_{j<m}\sin\!\left(\frac{2^jx}{2}\right),
+\]
+the half-angle factorization $1-\e^{\ii v}=-2\ii\,\e^{\ii v/2}\sin(v/2)$ being isolated as
+\lean{Fabius.one_sub_exp_mul_I}.  Setting $x=t/2^{m-1}$ and extracting the linear factor from
+each $\sin(t/2^k)$ turns it into \eqref{eq:finite-sinc}.  The Lean statement is therefore this
+theorem before the $\sinc$ normalization, and only for real $t$; the removable value at $t=0$
+and the extension to complex $t$ are not part of it.
+
 \begin{remark}[Prouhet cancellation becomes the normalization]
 The factor $t^{-m}$ in \eqref{eq:normalized-TM-Fourier} is harmless precisely because
 $P_m$ has a zero of order $m$ at $1$.  Thus the same cancellation that annihilates the first
@@ -403,6 +454,16 @@ The denominator in $G_m(-s)$ is
 which proves the identity.
 \end{proof}
 
+\emph{Formal version.}  The block identity underlying \eqref{eq:finite-Laplace} is
+\lean{Fabius.sum_range_two_pow_thueMorseSign_exp} (\path{ThueMorseInfiniteProduct.lean}):
+\[
+ \sum_{n<2^m}\eps_n\e^{-nt}=\prod_{j<m}\left(1-\e^{-2^jt}\right)
+\]
+for every real $t$ and every $m$, with no convergence hypothesis.  At $t=s/2^m$ this is the
+content of \eqref{eq:finite-Laplace} \emph{before} division by
+$\prod_{k\le m}(s/2^k)$: the normalizing factor $2^{m(m+1)/2}s^{-m}$, the removable
+singularity at $s=0$, and the passage to complex $s$ are not part of the Lean statement.
+
 \begin{boxedremark}
 \textbf{The exact finite-block principle.}
 The oscillatory sample $z=\e^{\ii t/2^{m-1}}$ converts $P_m$ into the truncated Fourier
@@ -429,6 +490,23 @@ After removing the first $m$ factors, replace $k$ by $m+\ell$ in the remaining i
 product.  The residual factors are exactly those of the original product evaluated at the
 scaled argument.
 \end{proof}
+
+\emph{Formal versions.}  Both halves are formalized, and the first is formalized in a form
+strictly more general than the one stated here.  The reindexing itself is
+\lean{Fabius.tprod_geom_scale_pow} (\path{GeometricScaleProducts.lean}): for an arbitrary
+function $g$ from a field into a commutative topological monoid, an arbitrary nonzero scale
+$c$, and every $k$,
+\[
+ \prod_{n\ge0}g\!\left(\frac{c^kz}{c^n}\right)
+ =\left(\prod_{j<k}g\!\left(c^{j+1}z\right)\right)\prod_{n\ge0}g\!\left(\frac{z}{c^n}\right),
+\]
+the only hypothesis being multipliability of the undilated family; nothing about $\sinc$,
+about base two, or even about $\C$ enters, and $g=\sinc$, $c=2$, $z=t/2^{m+1}$, $k=m$ gives
+\eqref{eq:Q-tail-self}.  The instance stated directly for the transform is
+\lean{Fabius.rvachevFourier_eq_finite_product} (\path{FourierProduct.lean}), in the
+$\e^{-2\pi\ii x\xi}$ convention of \eqref{eq:upFourier}.  The Laplace half
+\eqref{eq:G-tail-self} is \lean{Fabius.complexGeneratingFunction_neg_finite_refinement}
+(\path{NegativeLaplaceVertical.lean}), an exact identity for every $m$ and every $s\in\C$.
 
 \begin{corollary}[Exact finite Thue--Morse factorization of the full products]
 \label{cor:full-TM-factor}
@@ -474,6 +552,20 @@ For $|z|<\pi$, expand $\log(1-w)=-\sum_{r\ge1}w^r/r$.  Absolute local uniform
 convergence permits interchanging the sums, and the inner sum over $n$ is $\zeta(2r)$.
 \end{proof}
 
+\emph{Formal versions.}  The branch-free content of \eqref{eq:logsinc} is formalized in
+\path{SincZetaSeries.lean} as the exponential identity
+\lean{Fabius.complexSinc\_pi\_mul\_eq\_cexp}: for complex $x$ with $|x|<1$,
+$\sinc(\pi x)=\exp\bigl(-\sum_{r\ge1}\zeta(2r)x^{2r}/r\bigr)$, the values $\zeta(2r)$ carried
+as the elementary series \lean{Fabius.evenZeta} (\path{EvenZetaSeries.lean}); the $|z|<\pi$
+normalization printed above is \lean{Fabius.complexSinc\_eq\_cexp}.  For real $0<|x|<1$ the
+boxed logarithmic form itself is \lean{Fabius.log\_sin\_div\_pi\_mul}, the branch being the
+real logarithm --- exactly the branch vanishing at $0$.  The interchange of sums is performed
+once, in greater generality than this lemma needs (an arbitrary absolutely summable family
+with every norm below $1$, over an arbitrary index type), by the Euler log transform
+\lean{Fabius.hasSum\_powerSum\_log\_one\_sub} of \path{EulerLogTransform.lean}; the closed
+evaluations $\zeta(2)=\pi^2/6$ and $\zeta(4)=\pi^4/90$ and the general Bernoulli form are
+\path{EvenZetaValues.lean}.
+
 \subsection{All orders, exact radius, explicit remainder}
 
 \begin{theorem}[All-orders sinc-tail expansion]
@@ -513,6 +605,21 @@ By \cref{prop:tail-self}, the quotient is $Q_\infty(t/2^m)$.  Apply
 The closest zero of $Q_\infty(w)$ to $w=0$ is $w=\pm2\pi$, arising from the factor
 $\sinc(w/2)$.  Scaling by $w=t/2^m$ proves maximality.
 \end{proof}
+
+\emph{Formal versions.}  The theorem is formalized in \path{SincZetaDyadic.lean}, in the
+normalization $\Phi(z)=Q_\infty(2\pi z)$ and in exponential form.  At $m=0$,
+\lean{Fabius.rvachevFourierProduct\_eq\_cexp} proves
+$\Phi(z)=\exp\bigl(-\sum_{r\ge1}\zeta(2r)4^rz^{2r}/(r(4^r-1))\bigr)$ on $|z|<1$; for general
+$m$, \lean{Fabius.rvachevFourierProduct\_eq\_prefix\_mul\_cexp} is the exact factorization
+$\Phi(z)=\bigl(\prod_{j<m}\sinc(\pi z/2^j)\bigr)\exp\bigl(-\sum_{r\ge1}
+\zeta(2r)4^r(z/2^m)^{2r}/(r(4^r-1))\bigr)$ on $|z|<2^m$ --- identity \eqref{eq:Q-all-orders}
+with the quotient cleared and the finite prefix explicit.  The engine is one application of
+the Euler log transform to the pair family $(z/2^h)^2/(n+1)^2$ over $\N\times\N$; its power
+sums are evaluated for \emph{every} complex $z$, with no smallness hypothesis
+(\lean{Fabius.sinc\_pair\_powerSum}).  Composed with the integral-to-product identity, the
+same series is the Fourier transform itself:
+$\widehat{\Up}(z)=\exp\bigl(-\sum_{r\ge1}\zeta(2r)4^rz^{2r}/(r(4^r-1))\bigr)$ on $|z|<1$
+(\lean{Fabius.rvachevFourier\_eq\_cexp}).  Maximality of the disk is not formalized.
 
 The first terms are
 \begin{equation}
@@ -555,6 +662,16 @@ Use $\zeta(2r)\le\zeta(2)$, $4^r/(4^r-1)\le4/3$, and
 $1/r\le1/(N+1)$ for $r\ge N+1$, then sum the geometric series.
 \end{proof}
 
+\emph{Formal versions.}  \path{SincZetaRemainder.lean} packages the coefficient as
+\lean{Fabius.sincZetaCoeff} and proves \eqref{eq:Q-remainder-bound} verbatim as
+\lean{Fabius.norm\_sincZeta\_tail\_le}, with $x_m(t)=\|w\|$ for $w=z/2^m$, alongside the
+term-by-term nonnegativity for real arguments (\lean{Fabius.sincZeta\_tail\_nonneg}) and the
+three-factor coefficient estimate of this proof
+(\lean{Fabius.sincZetaCoeff\_le}, resting on the antitonicity
+\lean{Fabius.evenZeta\_anti} of the even zeta values).  The constant is carried symbolically
+as $\tfrac43\zeta(2)$; the numerical value $2\pi^2/9$ follows from
+\lean{Fabius.evenZeta\_one} (\path{EvenZetaValues.lean}).
+
 \subsection{Arbitrary-order finite Thue--Morse approximants}
 
 \begin{definition}[Zeta-corrected block approximant]
@@ -588,6 +705,16 @@ $Q_\infty/Q_m^{[N]}$ is $\exp(-R_{N,m})$.  The bound
 \eqref{eq:Q-remainder-bound}, uniformly on $K$, is $\bigO_K(4^{-(N+1)m})$; exponentiation
 preserves that order.
 \end{proof}
+
+\emph{Formal versions.}  The quantitative content is
+\lean{Fabius.rvachevFourierProduct\_eq\_prefix\_mul\_correction\_mul\_tail}
+(\path{SincZetaRemainder.lean}): on $|z|<2^m$, exactly
+$\Phi(z)=\bigl(\prod_{j<m}\sinc(\pi z/2^j)\bigr)\cdot
+\exp\bigl(-\sum_{r=1}^{N}c_r(z/2^m)^{2r}\bigr)\cdot\exp\bigl(-R_{N}(z/2^m)\bigr)$, the finite
+prefix being the length-$2^m$ Thue--Morse block of \cref{cor:full-TM-factor}, the middle
+factor the $N$ zeta corrections of \eqref{eq:Qcorrected}, and the tail exponent bounded by
+\lean{Fabius.norm\_sincZeta\_tail\_le}.  The $\bigO_K$ formulation printed here is a direct
+reading of that bound and is not separately formalized.
 
 \begin{corollary}[Fourier approximation to the up-function]
 \label{cor:up-Fourier-block}
@@ -623,6 +750,14 @@ The kernel $q^r/(1-q^r)$ is the elementary Lambert-series kernel.  Expanding it 
 $\sum_{\ell\ge1}q^{r\ell}$ reconstructs the omitted factors.  This is a direct analytic
 connection between the sinc product and $q$-series: the base is $q=1/4$ because the logarithm
 is even and the geometric frequency scale is $1/2$.
+
+The kernel itself is now formal, in a generality independent of the sinc product: for complex
+$|w|<1$ and $|c|<1$, \lean{Fabius.tsum\_log\_one\_sub\_geom} (\path{EulerLogTransform.lean})
+proves $\sum_{k\ge0}\log(1-wc^k)=-\sum_{r\ge1}w^r/(r(1-c^r))$, and
+\lean{Fabius.tprod\_one\_sub\_geom\_eq\_cexp} is the exponential $q$-Pochhammer form
+$(w;c)_\infty=\exp\bigl(-\sum_{r\ge1}w^r/(r(1-c^r))\bigr)$, with real counterparts
+(\lean{Fabius.tsum\_log\_one\_sub\_geom\_real},
+\lean{Fabius.tprod\_one\_sub\_geom\_eq\_rexp}).
 
 \begin{theorem}[General geometric base]
 \label{thm:base-b}
@@ -675,6 +810,17 @@ For every $v$,
 Multiply with $v=s/2^k$.  The linear exponents sum to $-s/2$ in the infinite product and to
 $-s(1-2^{-m})/2$ in the finite product.
 \end{proof}
+
+\emph{Formal version.}  The infinite case \eqref{eq:GQ} is formalized, as the composite of
+three named theorems.  \lean{Fabius.complexGeneratingFunction_neg_eq_tprod}
+(\path{NegativeLaplaceVertical.lean}) identifies $G(-s)$ with the entire half-moment
+generating function, as recorded after \eqref{eq:Gdef};
+\lean{Fabius.complexGeneratingFunction_eq_fourier_analytic} (\path{FourierAnalytic.lean})
+states that generating function to be $\e^{z/2}\widehat\Up(\ii z/(4\pi))$ for every
+$z\in\C$; and \lean{Fabius.rvachevFourier_eq_product} (\path{FourierProduct.lean}) replaces
+$\widehat\Up$ by its sinc product.  Since $\widehat\Up(\ii z/(4\pi))=Q_\infty(\ii z/2)$ in the
+normalization \eqref{eq:upFourier}, and $Q_\infty$ is even, the composite at $z=-s$ is exactly
+\eqref{eq:GQ}.  The finite form \eqref{eq:GmQm} has no separate Lean statement.
 
 Define the centered products
 \begin{equation}
@@ -855,6 +1001,22 @@ $\prod_{\ell=0}^{p}(r-q^\ell)$; evaluation at $0$ gives
 $(-1)^{p+1}q^{p(p+1)/2}$ for $f-P$, hence \eqref{eq:first-uncancelled} for $P-f$.
 \end{proof}
 
+\emph{Formal versions.}  The interpolation characterization and all three moment identities
+are formalized in \path{GeometricLagrange.lean}, over an arbitrary field and for an arbitrary
+ratio $q$ --- not merely at $q=1/4$.  The Lean weight
+\lean{Fabius.geometricLagrangeWeight} is \emph{defined} as the evaluation-at-zero Lagrange
+weight for the nodes $1,q,\ldots,q^n$, that is, by \eqref{eq:weights-Lagrange}; the
+distinctness of the nodes is not built into the definition but carried as an explicit
+injectivity hypothesis on $j\mapsto q^j$.  With that hypothesis,
+\lean{Fabius.sum_geometricLagrangeWeight} is the normalization $\sum_jw_{p,j}=1$,
+\lean{Fabius.sum_geometricLagrangeWeight_mul_pow_eq_zero} is the vanishing
+$\sum_jw_{p,j}q^{jn}=0$ for $1\le n\le p$ --- together \eqref{eq:moment-cancel} --- and
+\lean{Fabius.sum_geometricLagrangeWeight_mul_pow_succ} is
+\eqref{eq:first-uncancelled}, with the product form of the same defect recorded separately as
+\lean{Fabius.sum_geometricLagrangeWeight_mul_pow_succ_product}.  The closed form
+\eqref{eq:weights} itself --- the passage from the Lagrange quotient to the $q$-Pochhammer
+and Gaussian-binomial expression --- is formalized in the companion module described next.
+
 \paragraph{Formal crosswalk.}
 The compiled module \path{GeometricQBinomialLagrange.lean} packages this
 finite algebra at arbitrary ratio.  Its
@@ -1002,6 +1164,26 @@ Split the infinite sum after $m$ and reindex:
 The reindexed series is independent of $Y_m$ and has the law of $Y_\infty$.  Convolution of
 the corresponding densities gives \eqref{eq:density-deconv}.
 \end{proof}
+
+\emph{Formal versions.}  The measure form of \eqref{eq:density-deconv} is formalized in
+\path{MeasureRefinement.lean}: with $\mu_{\Up}$ the Borel probability measure with density
+$\Up$ (\lean{Fabius.rvachevMeasure}), the one-step refinement equation
+$\mu_{\Up}=\mathrm{Unif}[-\tfrac12,\tfrac12]\ast\bigl(\mu_{\Up}\circ(\cdot/2)^{-1}\bigr)$ is
+\lean{Fabius.rvachevMeasure\_refinement}, and the $m$-fold form matching the split in this
+proof --- the first $m$ uniform digits convolved with a $2^{-m}$-scale copy of the whole ---
+is \lean{Fabius.rvachevMeasure\_eq\_prefix\_conv}, with the digit-prefix law
+\lean{Fabius.uniformDigitPrefix} defined by the digit recursion and its characteristic
+function evaluated as the finite sinc product
+(\lean{Fabius.charFun\_uniformDigitPrefix}); the uniform-digit integral itself is the
+reusable \lean{Fabius.charFun\_volume\_restrict\_Icc}.  The proof runs by exactly the
+characteristic-function route anticipated in the promotion table below.  On the
+random-variable side, the representation itself is formalized independently in
+\path{ProbabilityRepresentation.lean}: the product probability space of uniform digits,
+the random series $Y_\infty$, and the identifications
+$F(x)=\Prob[Y\le x]$ and $\Up(x)=\Prob[Y\le1-|x|]$ (Arias de Reyna's Theorem~3).  What
+remains unformalized of \eqref{eq:random-tail} is only its equality-in-law splitting as a
+statement about those random variables; its analytic content is the measure identity
+above.
 
 \subsection{Cumulants are the same zeta--Lambert coefficients}
 
@@ -1267,6 +1449,25 @@ It also supplies the Mellin representation
 where the extraordinary flatness of $\mathcal E$ at zero makes the continuation entire
 \cite{proveit-atlas,toth2022}.
 
+\emph{Formal versions of the input.}  All three Atlas inputs used in this section are
+formalized, in \path{ThueMorseEntireContinuation.lean}.  The Mellin representation
+\eqref{eq:D-Mellin} is not a theorem there but the \emph{definition} of the continuation:
+\lean{Fabius.dirichletMellinContinuation} is $s\mapsto\Gamma(s)^{-1}\!\int_0^\infty
+t^{s-1}\e^{-at}\mathcal E(t)\dd t$, with $\mathcal E$ the lacunary product
+\lean{Fabius.lacunaryExpProduct} and the kernel $\e^{-at}\mathcal E(t)$ the object
+\lean{Fabius.mellinKernel}.  Entirety is
+\lean{Fabius.dirichletMellinContinuation_differentiable}, resting on
+\lean{Fabius.mellin_mellinKernel_differentiable}, which is where the boundary flatness of
+$\mathcal E$ is actually spent.  The dyadic equation \eqref{eq:D-dyadic} is
+\lean{Fabius.dirichletMellinContinuation_dyadic}, proved for every $a>0$ and \emph{every}
+$s\in\C$ by analytic continuation from the ray $\sigma>1$, so it is available at the
+nonpositive integers where this section differentiates it.  The trivial zeros
+\eqref{eq:Dzeros} are \lean{Fabius.dirichletMellinContinuation_neg_natCast}; as that
+declaration's own documentation stresses, in isolation it is only the formal statement
+$\Gamma(-r)^{-1}=0$, and the mathematical assertion --- that the \emph{entire} function
+vanishes at $-r$ --- is carried jointly with the differentiability of the Mellin factor, so
+the two should be cited as a pair.
+
 \subsection{The derivative tower}
 
 \begin{definition}[Thue--Morse gamma tower]
@@ -1355,6 +1556,21 @@ then
 Thus the known product is the ratio law at the base of an infinite dyadic differential
 tower.
 \end{corollary}
+
+\emph{Formal version.}  The $r=0$ layer of the tower is formalized.  The hypothesis of this
+corollary --- the derivative bridge $\log G_{\rm WR}(a,b)=\partial_s\widetilde D(0,b)
+-\partial_s\widetilde D(0,a)$ --- is \lean{Fabius.mpLimit_eq_deriv_sub}
+(\path{ThueMorseGDirichlet.lean}), for all $a,b>0$, with $\log G_{\rm WR}(a,b)$ realized as
+\lean{Fabius.mpLimit}, the limit of the convergent series
+$\sum_n\eps_n\log\bigl((n+a)/(n+b)\bigr)$, and $\widetilde D$ realized by the entire Mellin
+continuation cited above.  Its analytic ingredient is
+\lean{Fabius.hasDerivAt_dirichletMellinContinuation_zero}, itself resting on
+$(1/\Gamma)'(0)=1$ (\lean{Fabius.hasDerivAt_Gamma_inv_zero}).  Since
+$\Gamma_0^{\rm TM}=\exp\bigl(\partial_s\widetilde D(0,\cdot)\bigr)$ by
+\eqref{eq:gammaTM}, \eqref{eq:WR-gamma} is that theorem exponentiated.  The layers $r\ge1$ of
+\cref{thm:gamma-tower} are not formalized: the missing ingredient is the derivative of the
+continuation at $s=-r$, which needs the simple-zero coefficient of $1/\Gamma$ at each
+nonpositive integer rather than at the origin alone.
 
 \begin{remark}[Why ``Barnes-type'']
 The hierarchy is not asserted to be a classical Barnes multiple-gamma family.  The name refers
@@ -1557,12 +1773,23 @@ certified high-precision algorithm with transparent complexity.
 
 \subsection{Formalization leverage}
 
-The main new identities have unusually short dependency chains.  The finite geometric
-Lagrange/\(q\)-binomial bridge, including all positive residual moments, is now compiled in
-\path{GeometricQBinomialLagrange.lean}.  Tail self-similarity is reindexing, and the weak
-expansion is Taylor's theorem plus independence and symmetry.  The analytic logarithm,
-explicit zeta remainder, weighted Richardson remainder, and convergence claims still require
-the surrounding analysis layer.  These are the remaining formalization targets.
+The main new identities have unusually short dependency chains.  The finite bridges are
+finite-product algebra.  Tail self-similarity is reindexing.  The weak expansion is Taylor's
+theorem plus independence and symmetry.  The $q$-Richardson weights are finite Lagrange
+interpolation.  Only the analytic logarithm and explicit zeta remainder require a substantial
+complex-analysis layer.  This makes the package a plausible next formalization target --- and
+in large part it is not a target at all but already done: as the \emph{Formal version}
+paragraphs throughout \cref{sec:objects,sec:bridges,sec:zeta-tail,sec:richardson,sec:gamma-tower}
+record, the block identity, both finite bridges in their unnormalized form, both halves of
+tail self-similarity, the Fourier--Laplace rotation, the Lagrange characterization of the
+$q$-Richardson weights with all three of its moment identities together with their closed
+$q$-binomial form (compiled in \path{GeometricQBinomialLagrange.lean}), the $r=0$ layer
+of the gamma tower, and now the entire zeta--Lambert tail calculus --- the Euler--zeta
+logarithm, the all-orders expansion, the certified remainder, and the exact
+prefix--corrections--tail split (\path{EulerLogTransform.lean}, \path{SincZetaSeries.lean},
+\path{SincZetaDyadic.lean}, \path{SincZetaRemainder.lean}) --- already have Lean
+counterparts, several of them more general than the statements printed here.  The weighted
+Richardson remainder and the probabilistic layer are the remaining formalization targets.
 
 \section{Lean formalization roadmap}
 \label{sec:formalization}
@@ -1571,6 +1798,30 @@ The finite-block calculus has been deliberately organized so that the algebraic 
 formalized before the analytic refinements.  The following dependency table separates the
 short, high-confidence lemmas from the portions that require additions to the surrounding
 analysis library.
+
+Five of its rows have since been overtaken by the library --- two of them completely --- and
+are retained because the table is also a dependency map.  The finite Thue--Morse product
+\eqref{eq:Pm} is
+\lean{Fabius.prod_one_sub_pow_eq_sum_thueMorseSign}, proved over an arbitrary commutative
+ring, not by the coefficient induction suggested below.  The finite sinc bridge
+\eqref{eq:finite-sinc} and the finite Laplace bridge \eqref{eq:finite-Laplace} exist as
+\lean{Fabius.sum_thueMorseSign_exp_eq_sin_prod} and
+\lean{Fabius.sum_range_two_pow_thueMorseSign_exp}, in each case for real argument and in the
+form preceding the $\sinc$, respectively $2^{m(m+1)/2}s^{-m}$, normalization; what those rows
+still describe accurately is the remaining work, namely the removable value at the origin and
+the extension to complex argument.  Exact tail self-similarity
+\eqref{eq:Q-tail-self}--\eqref{eq:G-tail-self} is fully discharged, and the reusable
+reindexing lemma the row asks for is exactly what was proved:
+\lean{Fabius.tprod_geom_scale_pow} is stated for an arbitrary function into a commutative
+topological monoid.  Of the $q$-Richardson row, the interpolation characterization
+\eqref{eq:weights-Lagrange} and the moment identities
+\eqref{eq:moment-cancel}--\eqref{eq:first-uncancelled} are done over an arbitrary field and
+arbitrary ratio; only the Gaussian-binomial normalization \eqref{eq:weights} remains.  The
+remaining rows --- the Euler--zeta logarithm, the certified zeta remainder, the random-tail
+law, the weak expansion, the Lambert depth law, and the levels $r\ge1$ of the gamma tower ---
+have no formal counterpart at present, and the Euler--zeta logarithm is, as stated below,
+still the pivot: it is what the remainder bound, the corrected approximants, the cumulant
+formula and the base-$b$ theorem all reduce to.
 
 \begingroup
 \small
@@ -1602,13 +1853,14 @@ Exact tail self-similarity
 indices & Establish a reusable infinite-product reindexing lemma.  Existing repository
 convergence results should discharge the side conditions. \\
 Euler--zeta logarithm
-\eqref{eq:logsinc} & local analytic logarithm, Euler's sine product, normal convergence & This is
-the main library-level analytic obligation.  One may alternatively prove the power series by
-differentiating the cotangent expansion and fixing the constant at zero. \\
+\eqref{eq:logsinc} & local analytic logarithm, Euler's sine product, normal convergence &
+\emph{Delivered} in \path{SincZetaSeries.lean} (exponential and real-logarithm forms), on
+the general Euler log transform of \path{EulerLogTransform.lean}; the all-orders identity
+\eqref{eq:Q-all-orders} is \path{SincZetaDyadic.lean}. \\
 Certified zeta remainder
-\eqref{eq:Q-remainder-bound} & positivity, monotonicity of $\zeta(2r)$, geometric series & Once
-\eqref{eq:Q-all-orders} exists, the bound is elementary and avoids delicate asymptotic
-machinery. \\
+\eqref{eq:Q-remainder-bound} & positivity, monotonicity of $\zeta(2r)$, geometric series &
+\emph{Delivered} in \path{SincZetaRemainder.lean}: the verbatim bound, real-argument
+nonnegativity, and the exact prefix--corrections--tail split. \\
 $q$-Richardson weights
 \eqref{eq:weights}--\eqref{eq:first-uncancelled} & finite Lagrange interpolation,
 $q$-Pochhammer algebra & \emph{Delivered} in
@@ -1617,8 +1869,9 @@ denominator-free polynomial, normalized weight under node injectivity, and every
 residual moment; \(q=1/2\) is linked to the Toeplitz row. \\
 Random-tail law
 \eqref{eq:random-tail} & independent random variables, almost-sure summation, equality in law &
-Split and reindex the convergent random series.  A characteristic-function proof may be
-shorter if the current probability library lacks convenient random-series infrastructure. \\
+\emph{Delivered} in measure form in \path{MeasureRefinement.lean}, by exactly the
+characteristic-function route this row predicted: the refinement equation and its
+$m$-fold iterate, via \lean{charFun\_conv} and the formal Fourier product. \\
 Weak expansion
 \eqref{eq:weak-expansion} & Taylor theorem with remainder, expectation inequalities, symmetry &
 Condition on the finite sum; use bounded support to make the remainder estimate immediate. \\
@@ -1647,7 +1900,11 @@ A practical promotion sequence is therefore
 \]
 The first four stages already yield exact identities and acceleration mechanisms.  The final
 stage adds the sharp radius and explicit zeta remainder.  This ordering minimizes the amount
-of new complex analysis that must be trusted at any one time.
+of new complex analysis that must be trusted at any one time.  Every stage of the boxed
+chain now has a formal counterpart (see the \emph{Formal version} paragraphs above): the
+finite bridges, tail reindexing, $q$-interpolation, and analytic logarithms directly, and
+the probabilistic splitting in measure form (\path{MeasureRefinement.lean}); of the
+splitting, only the random-variable representation itself is unformalized.
 
 \begin{obligation}[Canonical normalization theorem]
 The repository uses several Fourier-transform conventions across historical manuscripts.
@@ -1656,12 +1913,42 @@ $F$, $\Up$, $Q_\infty$, and the characteristic function of $Y_\infty$.  Doing so
 sign and $2\pi$ factors from leaking into later shell or saddle arguments.
 \end{obligation}
 
+This obligation stands, but part of the required chain is already formal and fixes the
+convention unambiguously: \lean{Fabius.rvachevFourier} is
+$\int_\R\Up(t)\e^{-2\pi\ii tz}\dd t$,
+\lean{Fabius.rvachevFourier_eq_product} converts it into $Q_\infty$, and
+\lean{Fabius.complexGeneratingFunction_eq_fourier_analytic} together with
+\lean{Fabius.complexGeneratingFunction_neg_eq_tprod} carries the rotation to $G$.  What the
+obligation still asks for is the remaining leg --- the $F\leftrightarrow\Up$ rescaling
+\eqref{eq:Fup} and the characteristic function of $Y_\infty$ --- packaged with the others as a
+single named normalization theorem rather than reconstructed at each use.
+
 \begin{obligation}[Reusable geometric-tail API]
 The identity ``tail equals a scaled copy of the whole object'' occurs simultaneously for
 products, convolutions, random series, and cumulant generating functions.  A small abstract
 library for geometrically self-similar tails would make the dyadic case a specialization
 rather than four separate proofs.
 \end{obligation}
+
+The product quarter of this obligation is discharged.  \path{GeometricScaleProducts.lean}
+is exactly the abstract library asked for on the product side:
+\lean{Fabius.tprod_geom_scale} and \lean{Fabius.tprod_geom_scale_pow} are proved for an
+arbitrary function from a field into a commutative topological monoid and an arbitrary scale,
+with the dyadic sinc shells obtained as specializations, exactly as the obligation proposes.
+The logarithmic face of the same abstraction is now \path{EulerLogTransform.lean}: the
+transform $\sum_i\log(1-a_i)=-\sum_{r\ge1}\bigl(\sum_ia_i^r\bigr)/r$ for an arbitrary
+absolutely summable family with every norm below one, over an arbitrary index type, with the
+geometric family --- the self-similar tail par excellence --- as its first instance.
+(The negative-Laplace tail \eqref{eq:G-tail-self} is formal too, but as an independent
+induction on the functional equation rather than as an instance of that API --- which is
+itself a small illustration of the duplication the obligation is about.)  The convolution
+instance \eqref{eq:density-deconv} is now formal as well, in measure form
+(\path{MeasureRefinement.lean}, see the \emph{Formal version} paragraph in
+\cref{sec:probability}), and the random-variable representation underlying
+\eqref{eq:random-tail} is \path{ProbabilityRepresentation.lean}.  The obligation is
+retained because the equality-in-law splitting of the random series and the
+cumulant-generating instance \eqref{eq:cumulant-operator} have no
+formal counterpart, and because nothing yet expresses the four as instances of one statement.
 
 \section{Frontier conjectures and next deductions}
 \label{sec:frontiers}
