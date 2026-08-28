@@ -14756,11 +14756,22 @@ Lean proves coefficient stabilization of the finite products
 Construct \(\prod_{j\ge0}(1-z^{2^j})\) as a formal infinite product and prove that it equals
 the Thue--Morse power series.
 \end{candidate}
-\begin{obligation}
+\begin{obligation}[Discharged]
 Select an appropriate formal-power-series topology or summability API, define the product,
 and prove equality with the coefficient-stabilized series.  Until then, the notation is
 only shorthand for finite stabilization.
 \end{obligation}
+The product is now genuine, in \path{ThueMorseFormalProduct.lean}.  The chosen API is
+Mathlib's coefficientwise topology on \(\Z[[X]]\)
+(\lean{PowerSeries.WithPiTopology}), in which convergence is exactly coefficient
+stabilization.  \lean{hasProd\_one\_sub\_X\_two\_pow} proves that the partial products
+over \emph{arbitrary} finite sets of factors converge to the Thue--Morse series,
+\lean{multipliable\_one\_sub\_X\_two\_pow} packages multipliability, and
+\lean{tprod\_one\_sub\_X\_two\_pow} is the display:
+\(\prod'_{j\ge0}(1-X^{2^j})\) \emph{equals} the Thue--Morse series as a \lean{tprod}.
+The engine \lean{coeff\_prod\_one\_sub\_X\_pow} is proved over an arbitrary commutative
+ring and arbitrary exponent families: a finite product of factors \(1-X^{m_j}\) with all
+exponents above \(d\) is indistinguishable from \(1\) in every coefficient up to \(d\).
 
 \section{Formal-background crosswalk}
 

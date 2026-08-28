@@ -251,6 +251,7 @@ import FabiusFunction.UniformSplineWeakConvergence
 import FabiusFunction.DyadicSpecializations
 import FabiusFunction.EvaluatorPopcount
 import FabiusFunction.PrefixKernelCounting
+import FabiusFunction.ThueMorseFormalProduct
 
 /-!
 # Fabius function
