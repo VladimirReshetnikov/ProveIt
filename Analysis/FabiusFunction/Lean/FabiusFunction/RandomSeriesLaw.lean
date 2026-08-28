@@ -13,11 +13,11 @@ the Fabius function; `MeasureRefinement` works with the density measure
 functions.  This module supplies the missing bridge: **`μ_up` is the
 pushforward of the law of `X` under the affine map `x ↦ 2x - 1`**.
 
-The proof is the fundamental theorem of calculus in disguise.  The
-folded global derivative `F'(x) = 2·up(2x-1)` says exactly that
-`y ↦ F((y+1)/2)` is an antiderivative of `up`, so both measures give
-the interval `(-∞, y]` the mass `F((y+1)/2)`, and finite measures
-agreeing on all such intervals are equal.
+The proof is the fundamental theorem of calculus in disguise.  The upstream
+antiderivative theorem obtained from the folded global derivative
+`F'(x) = 2·up(2x-1)` says that `y ↦ F((y+1)/2)` has derivative `up`, so both
+measures give the interval `(-∞, y]` the mass `F((y+1)/2)`, and finite
+measures agreeing on all such intervals are equal.
 
 With the bridge in hand, the refinement equation transfers to the
 random series itself, producing its **equality-in-law splitting**
@@ -25,8 +25,6 @@ random series itself, producing its **equality-in-law splitting**
 in measure form, with the uniform digit made explicit — and the closed
 form of the characteristic function of `X`.
 
-* `hasDerivAt_fabiusReal_half_shift` — `y ↦ F((y+1)/2)` has derivative
-  `up y` everywhere.
 * `setIntegral_rvachevUp_Iic` / `rvachevMeasure_Iic` — the CDF of the
   up-measure is `F((y+1)/2)`.
 * `weightedSumDistribution_Iic` — the CDF of the random series in
@@ -50,23 +48,6 @@ namespace Fabius
 open ProbabilityRepresentation
 
 /-! ## The antiderivative of the up-function -/
-
-/-- **`y ↦ F((y+1)/2)` is a global antiderivative of the up-function.**
-This is the folded derivative identity `F'(x) = 2·up(2x-1)` of
-`fabius_hasDerivAt` composed with the affine substitution: the factor
-`2` is eaten by the inner derivative `1/2`, and the argument
-`2·((y+1)/2) - 1` collapses to `y`. -/
-theorem hasDerivAt_fabiusReal_half_shift (F : BoundedFabius)
-    (hF : IsFabius F) (y : ℝ) :
-    HasDerivAt (fun z : ℝ => fabiusReal F ((z + 1) / 2)) (rvachevUp F y) y := by
-  have hinner : HasDerivAt (fun z : ℝ => (z + 1) / 2) (2⁻¹) y := by
-    simpa using ((hasDerivAt_id y).add_const (1 : ℝ)).div_const 2
-  have h := (fabius_hasDerivAt F hF ((y + 1) / 2)).comp y hinner
-  have harg : 2 * ((y + 1) / 2) - 1 = y := by ring
-  rw [harg] at h
-  have hval : 2 * rvachevUp F y * 2⁻¹ = rvachevUp F y := by ring
-  rw [hval] at h
-  exact h
 
 /-- **The left tail integral of the up-function** is the Fabius function
 at the rescaled argument: `∫_{-∞}^y up = F((y+1)/2)`.  Below the

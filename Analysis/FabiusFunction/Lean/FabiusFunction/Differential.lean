@@ -126,6 +126,23 @@ theorem fabius_hasDerivAt (F : BoundedFabius) (hF : IsFabius F) (x : ℝ) :
     rw [rvachevUp_eq_zero_of_le_neg_one F hF (by linarith), mul_zero]
     exact fabius_hasDerivAt_of_neg F hF hx
 
+/-- **`y ↦ F((y+1)/2)` is a global antiderivative of the up-function.**
+This is the folded derivative identity `F'(x) = 2·up(2x-1)` of
+`fabius_hasDerivAt` composed with the affine substitution: the factor
+`2` is eaten by the inner derivative `1/2`, and the argument
+`2·((y+1)/2) - 1` collapses to `y`. -/
+theorem hasDerivAt_fabiusReal_half_shift (F : BoundedFabius)
+    (hF : IsFabius F) (y : ℝ) :
+    HasDerivAt (fun z : ℝ => fabiusReal F ((z + 1) / 2)) (rvachevUp F y) y := by
+  have hinner : HasDerivAt (fun z : ℝ => (z + 1) / 2) (2⁻¹) y := by
+    simpa using ((hasDerivAt_id y).add_const (1 : ℝ)).div_const 2
+  have h := (fabius_hasDerivAt F hF ((y + 1) / 2)).comp y hinner
+  have harg : 2 * ((y + 1) / 2) - 1 = y := by ring
+  rw [harg] at h
+  have hval : 2 * rvachevUp F y * 2⁻¹ = rvachevUp F y := by ring
+  rw [hval] at h
+  exact h
+
 /-- On the whole closed left tail `(-∞, 0]`, including the gluing point, the
 bounded Fabius function has derivative zero. -/
 theorem fabius_hasDerivAt_of_nonpos (F : BoundedFabius) (hF : IsFabius F)

@@ -6,6 +6,7 @@ import FabiusFunction.LagrangeResidualMoments
 import FabiusFunction.GeometricResidualMoments
 import FabiusFunction.FinitePowerSeriesFilter
 import FabiusFunction.GeometricPowerSeriesFilter
+import FabiusFunction.AnalyticSeriesFilter
 import FabiusFunction.GeometricQBinomialLagrange
 import FabiusFunction.GeometricRichardson
 import FabiusFunction.GeometricLagrangeWeights
@@ -203,7 +204,9 @@ import FabiusFunction.QuantileTransport
 import FabiusFunction.GlobalBounds
 import FabiusFunction.NormalizedVolterra
 import FabiusFunction.FractionalVolterra
+import FabiusFunction.FractionalVolterraCalculus
 import FabiusFunction.FractionalVolterraSemigroup
+import FabiusFunction.FabiusFractionalVolterra
 import FabiusFunction.FabiusAntiderivatives
 import FabiusFunction.RvachevDerivativeDistribution
 import FabiusFunction.BoundedDerivatives
