@@ -1462,6 +1462,51 @@ an exponential, and is therefore strictly positive.  The canonical product is
 \lean{rvachevFourierProduct_eq_canonical} in \path{SincCanonicalProduct.lean}.
 \end{proof}
 
+The exponent in the canonical product has a finite, base-generic double-counting
+origin that is useful independently of sinc products.  For \(b,N,J\in\N\), put
+\[
+ c_J(b,m):=\#\{j\in\{0,\ldots,J\}:b^j\mid m\}.
+\]
+If \(q>0\), multiplication by \(q\) identifies the positive multiples of \(q\)
+not exceeding \(N\) with \(1,\ldots,\lfloor N/q\rfloor\).  Consequently, for
+every function \(f\) into a commutative monoid,
+\begin{align}
+ \prod_{1\le n\le\lfloor N/q\rfloor}f(qn)
+   &=\prod_{\substack{1\le m\le N\\q\mid m}}f(m),
+                                                               \label{eq:base-layer-reindexing}\\
+ \prod_{j=0}^{J}\prod_{1\le n\le\lfloor N/b^j\rfloor}f(b^jn)
+   &=\prod_{m=1}^{N}f(m)^{c_J(b,m)}\qquad(b>0).             \label{eq:base-layer-regrouping}
+\end{align}
+For \(b>1\) and \(m\ne0\), if the displayed layer range reaches the
+multiplicity, that is, if
+\(\operatorname{multiplicity}(b,m)\le J\), then
+\begin{equation}
+ c_J(b,m)=\operatorname{multiplicity}(b,m)+1.               \label{eq:base-layer-count}
+\end{equation}
+Thus, under the explicit hypothesis
+\(\operatorname{multiplicity}(b,m)\le J\) for every \(1\le m\le N\),
+\begin{equation}
+ \prod_{j=0}^{J}\prod_{1\le n\le\lfloor N/b^j\rfloor}f(b^jn)
+ =\prod_{m=1}^{N}f(m)^{\operatorname{multiplicity}(b,m)+1}. \label{eq:base-layer-multiplicity}
+\end{equation}
+The same three identities hold in every additive commutative monoid, with
+products and powers replaced by sums and natural scalar multiples.  In Lean,
+the underlying finite-set equality is \lean{filter_dvd_eq_image};
+\eqref{eq:base-layer-reindexing} and its additive companion are
+\lean{prod_multiples_eq_prod_filter} and
+\lean{sum_multiples_eq_sum_filter};
+\eqref{eq:base-layer-regrouping} and its companion are
+\lean{prod_layers_eq_prod_pow_card} and
+\lean{sum_layers_eq_sum_nsmul_card}; and
+\eqref{eq:base-layer-count}--\eqref{eq:base-layer-multiplicity} and the final
+additive companion are \lean{card_filter_pow_dvd},
+\lean{prod_layers_eq_prod_pow_multiplicity}, and
+\lean{sum_layers_eq_sum_nsmul_multiplicity}, all in
+\path{BaseLayerRegrouping.lean}.  These are finite algebraic identities.  In
+particular they assert no infinite-product convergence, and the sufficient
+layer-coverage condition must be supplied explicitly rather than inferred by
+the API from a bound such as \(N<b^{J+1}\).
+
 \subsection{Total local factorization and exact complex zero jets}
 \label{sec:fourier-integer-zero-jets}
 
@@ -5737,6 +5782,48 @@ These are \lean{expCoeff_logCoeff_eq_ite} and
 \path{SaddleLogExpansionAlgebra.lean} and
 \path{SaddleLogExpansionPowerSeries.lean}.
 
+The recurrence-defined logarithm is also multiplicative at the level of
+formal power series.  Let \(R\) be a commutative \(\Q\)-algebra and define
+\[
+ \mathfrak L(C):=\lean{SaddleExpansion.logOf}(C),
+ \qquad C\in R[[X]],
+\]
+by applying \lean{logSeries} to the coefficient family of \(C\).  Rebuilding
+a series from that family gives \(C\) itself by
+\lean{SaddleExpansion.massSeries_coeff}; this reconstruction lemma needs only
+that \(R\) be a commutative ring.  For every \(C\), even before a unit-constant
+hypothesis is imposed,
+\begin{equation}
+ [X^0]\mathfrak L(C)=0,                                    \label{eq:formal-log-zero-constant}
+\end{equation}
+which is \lean{SaddleExpansion.constantCoeff_logOf}.  If
+\([X^0]C=1\), then
+\begin{equation}
+ C\,\mathfrak L(C)'=C',                                   \label{eq:formal-log-differential-equation}
+\end{equation}
+by \lean{SaddleExpansion.mul_derivative_logOf}; conversely,
+\lean{SaddleExpansion.logOf_eq_of} says that
+\eqref{eq:formal-log-zero-constant} and
+\eqref{eq:formal-log-differential-equation} characterize \(\mathfrak L(C)\)
+uniquely.
+
+It follows that unit-constant series satisfy
+\begin{equation}
+ \mathfrak L(AB)=\mathfrak L(A)+\mathfrak L(B),
+ \qquad \mathfrak L(1)=0,                                 \label{eq:formal-log-multiplicative}
+\end{equation}
+and, for every finite set \(S\) and family with \([X^0]F_i=1\),
+\begin{equation}
+ \mathfrak L\!\left(\prod_{i\in S}F_i\right)
+ =\sum_{i\in S}\mathfrak L(F_i).                         \label{eq:formal-log-finite-product}
+\end{equation}
+These are \lean{SaddleExpansion.logOf_mul},
+\lean{SaddleExpansion.logOf_one}, and
+\lean{SaddleExpansion.logOf_prod} in
+\path{LogSeriesMultiplicative.lean}.  They are identities in \(R[[X]]\): no
+convergence, analytic logarithm, branch choice, or passage to an infinite
+product is asserted.
+
 \subsection{Universal finite endpoint-transfer algebra}
 \label{sec:endpoint-transfer-polynomials}
 
@@ -6099,11 +6186,15 @@ Moments and exact arithmetic &
 Universal exponential, Bell, and endpoint-transfer algebra &
 \path{SaddleExpansionAlgebra.lean}, \path{ExponentialPartition.lean},
 \path{ExponentialBell.lean},
-\path{EndpointTransferPolynomials.lean}\\
+\path{EndpointTransferPolynomials.lean},
+\path{LogSeriesMultiplicative.lean}\\
+Finite base-layer arithmetic &
+\path{BaseLayerRegrouping.lean}\\
 Finite polynomial functionals and geometric Lagrange/Richardson exactness &
 \path{FinitePolynomialFunctional.lean}, \path{CompleteHomogeneous.lean},
-\path{GeometricCompleteHomogeneous.lean}, \path{GeometricLagrange.lean},
-\path{LagrangeResidualMoments.lean}, \path{GeometricResidualMoments.lean},
+\path{GeometricLagrange.lean}, \path{LagrangeResidualMoments.lean},
+\path{GeometricCompleteHomogeneous.lean},
+\path{GeometricResidualMoments.lean},
 \path{GeometricQBinomialLagrange.lean}, \path{GeometricRichardson.lean},
 \path{GeometricLagrangeWeights.lean},
 \path{GeometricLagrangeQBinomial.lean},
