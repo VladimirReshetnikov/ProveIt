@@ -86,12 +86,27 @@ recorded checksums identify the intended absorbed snapshots subject to the
 verification qualification above; subsequent synthesis and status corrections
 are tracked by Git history in the canonical source.
 
+## Draft layout
+
+The draft inboxes under [`drafts/`](drafts/) are grouped thematically
+(2026-08-28): `rvachev_up_fourier_decay/` (the Fourier-decay corpus,
+unchanged), `thue-morse/`, `exponents-and-q-series/`,
+`spectra-and-arithmetic/`, `integration-and-transforms/`,
+`inverse-and-sampling/`, and `frontier-compilations/`. Each group carries
+a `README.md` stating its purpose and members, and
+[`drafts/MANIFEST.md`](drafts/MANIFEST.md) is the global inventory: every
+document with its title and its pre-reorganization path. Path strings
+*inside* the documents predate the grouping and are resolved through that
+manifest; the reorganization changed no `.tex` content and rebuilt no PDF.
+
 ## Maintenance
 
 New unformalized mathematical write-ups must be merged into the canonical
 LaTeX volume rather than retained as permanent parallel dossiers. A temporary
-subdirectory may serve as an inbox during concurrent work, but it must be
-audited, absorbed, and removed promptly.
+subdirectory may serve as an inbox during concurrent work (placed in the
+matching thematic group above, and added to `drafts/MANIFEST.md`), but it
+must be audited, absorbed, and removed promptly — updating the manifest and
+group README on removal.
 
 Build the canonical document with exactly three `pdflatex` passes, inspect the
 rendered PDF, and commit the PDF with its source. A coordinator may authorize a
