@@ -106,6 +106,7 @@ import FabiusFunction.GeometricConvolutionTails
 import FabiusFunction.SmoothingOperatorInversion
 import FabiusFunction.AlgebraicInverseGerm
 import FabiusFunction.GeometricCgfTails
+import FabiusFunction.GeometricTailDictionary
 import FabiusFunction.DyadicCombTrapezoid
 import FabiusFunction.IncompleteBetaMaster
 import FabiusFunction.MomentHankelMatrix
