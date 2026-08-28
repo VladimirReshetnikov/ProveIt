@@ -176,6 +176,7 @@ import FabiusFunction.EffectiveFlatness
 import FabiusFunction.SharpFlatness
 import FabiusFunction.FabiusInverse
 import FabiusFunction.GlobalBounds
+import FabiusFunction.RvachevDerivativeDistribution
 import FabiusFunction.BoundedDerivatives
 import FabiusFunction.NowhereAnalytic
 import FabiusFunction.AlgebraicBranch
@@ -231,6 +232,13 @@ inverse is continuous and monotone on all of `ℝ` once totalized by the
 endpoint values, and the flatness bounds transport through it into lower
 bounds `y ≤ 2^C(n+1,2) · F⁻¹(y)^n`: the inverse is steeper than every root at
 the origin, with `F⁻¹(y)/y → ∞` as `y → 0⁺`.
+
+The derivative-distribution layer resolves the exact dyadic cell structure
+behind those sharp bounds.  It gives every signed cell profile and midpoint,
+the all-order Thue--Morse finite-mixture law for Banach-valued continuous
+tests, and equality of the Borel pushforwards of the normalized absolute
+derivative and `up` on `[-1,1]`.  All nonnegative real absolute moments follow
+with the exact scale `2^(p * C(n+1,2))`, including order and moment zero.
 
 The small-argument asymptotic layer is completed by closed forms for the
 objects that previously existed only as recursions.  The differential
