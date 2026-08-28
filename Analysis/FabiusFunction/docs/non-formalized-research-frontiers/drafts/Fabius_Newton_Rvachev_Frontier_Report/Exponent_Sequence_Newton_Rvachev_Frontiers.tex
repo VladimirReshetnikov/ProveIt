@@ -282,8 +282,14 @@ it is not an assertion of exhaustive worldwide priority.
 Results explicitly labeled \statusproved{} are proved in this manuscript.  Results labeled
 \statusderived{} use a theorem already developed in the audited frontier corpus (most often
 the sharp Pascal-hierarchy Fourier or endpoint asymptotic) and then add a new deduction.
-Items labeled \statusopen{} are conjectures or proposed programs.  None of the new results is
-represented as already formalized in Lean.
+Items labeled \statusopen{} are conjectures or proposed programs.  At the pinned snapshot,
+none of the new results was represented as already formalized in Lean.  There is one explicit
+post-snapshot exception: source checkpoint
+\path{1e761ed77583e9870ceeaeb2c74ac824094f0f3f} formalizes the
+denominator-free principal specialization and complete positive-degree geometric-moment
+identities used in \cref{lem:q-weights}.  It does not formalize this report's exponent-sequence
+classification, transformed analytic series, sign-certified remainder, tomography, or
+asymptotic applications.
 \end{statusbox}
 
 \section{The exponent-sequence convolution monoid}
@@ -761,6 +767,58 @@ $H_n(1,q,\ldots,q^r)=\qbinom{n+r}{r}{q}$ yields
 \eqref{eq:q-survivor}; see, for example, the standard finite $q$-binomial calculus in
 \cite{andrews1976}.
 \end{proof}
+
+\paragraph{Post-snapshot Lean crosswalk.}
+The source-level individual quotient is the already compiled theorem
+\path{geometricLagrangeWeight_eq_gaussianBinomial_div} in
+\path{GeometricQBinomialLagrange.lean}; it assumes a field and injectivity of
+\(j\mapsto q^j\) on \(\{0,\ldots,r\}\), and deliberately uses the numerator
+\path{gaussianBinomial q r (r - j)}.  The symmetric-index notation in
+\eqref{eq:q-weights} is the equivalent paper convention, not a newly added
+generic symmetry theorem.  The later source checkpoint
+\path{1e761ed77583e9870ceeaeb2c74ac824094f0f3f} adds
+\path{completeHomogeneousEval_geometric}, which proves
+\[
+ H_n(1,q,\ldots,q^r)=\qbinom{n+r}{r}{q}
+\]
+over every commutative semiring, without division, distinctness, nonzeroness, or
+an exclusion of roots of unity.  More literally, its right-hand side is the
+recursive term \path{gaussianBinomial q (n + r) r}, which agrees with the
+displayed quotient in the present field setting.  Over a commutative ring,
+\path{sum_weight_mul_geometric_pow_of_pos} proves more generally that any row
+\(a_0,\ldots,a_r\) with
+\[
+ \sum_{j=0}^{r}a_j(q^j)^d=0^d\qquad(0\le d\le r)
+\]
+satisfies
+\[
+ \sum_{j=0}^{r}a_j(q^j)^h
+ =(-1)^r q^{\binom{r+1}{2}}\qbinom{h-1}{r}{q}
+ \qquad(h>0).
+\]
+The Lagrange specialization is
+\path{sum_geometricLagrangeWeight_mul_pow_of_pos}; it gives both
+\eqref{eq:q-annihilation} and \eqref{eq:q-survivor}, with mass one at degree
+zero supplied separately.
+
+The scaled exact-row theorem is genuinely stronger than merely factoring a
+unit from the nodes.  If exactness is assumed directly on
+\(c,cq,\ldots,cq^r\), then for \(s\ge0\)
+\[
+ \sum_{j=0}^{r}a_j(cq^j)^{r+1+s}
+ =c^{r+1+s}(-1)^r q^{\binom{r+1}{2}}
+   \qbinom{r+s}{r}{q};
+\]
+this is \path{sum_weight_mul_scaled_geometric_pow_succ_add}, valid even when
+\(c\) is zero or a zero divisor.  For the field-valued Lagrange row and the
+shifted nodes \(q^{m+j}\),
+\path{sum_geometricLagrangeWeight_mul_shifted_pow_of_pos} gives, for every
+\(h>0\),
+\[
+ \sum_{j=0}^{r}w_{r,j}(q)(q^{m+j})^h
+ =(-1)^r q^{mh+\binom{r+1}{2}}\qbinom{h-1}{r}{q}.
+\]
+None of these finite theorems supplies the analytic remainder or its sign.
 
 \subsection{Exact transformed series and sign certification}
 
@@ -1956,7 +2014,8 @@ A dependency-aware order is as follows.
       periodic parity words.
 \item Prove the finite sign-product factorization \eqref{eq:T-a-L}, its exact order at one,
       and the first surviving moment \eqref{eq:first-surviving}.
-\item Add the geometric Lagrange weights, Gaussian-binomial closed form, exact survivor, and
+\item Reuse the compiled geometric Lagrange weights, Gaussian-binomial closed form,
+      principal specialization, and exact survivor; then formalize the still-open
       sign-certified Richardson remainder.
 \end{enumerate}
 

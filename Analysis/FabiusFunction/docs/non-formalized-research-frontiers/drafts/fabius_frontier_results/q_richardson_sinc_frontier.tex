@@ -2,7 +2,7 @@
 
 \usepackage[T1]{fontenc}
 \usepackage[utf8]{inputenc}
-\usepackage{lmodern}
+\IfFileExists{libertinus.sty}{\usepackage{libertinus}}{\usepackage{lmodern}}
 \usepackage{microtype}
 \usepackage[a4paper,margin=28mm,headheight=14pt]{geometry}
 \usepackage{amsmath,amssymb,mathtools,amsthm}
@@ -130,9 +130,21 @@ in this report. The numerical tables are reproducible from
 \(q\)-binomial theorem is formalized in \path{FiniteQBinomialCore.lean}, while
 \path{GeometricLagrange.lean} proves mass one, cancellation of the first
 geometric modes, the first surviving moment, and module-valued Richardson
-exactness.  The report-specific all-residual Gaussian \(q\)-formula and the
-analytic sinc-product acceleration, error bounds, spline
-limits, and inverse-function consequences remain unformalized.
+exactness.  The already compiled \path{GeometricQBinomialLagrange.lean}
+identifies the individual weights with their Gaussian-binomial quotients under
+injectivity of the finite geometric node set.  At post-snapshot source
+checkpoint \path{1e761ed77583e9870ceeaeb2c74ac824094f0f3f},
+\path{GeometricCompleteHomogeneous.lean} and
+\path{GeometricResidualMoments.lean} additionally formalize the
+denominator-free principal specialization and the complete positive-degree
+Gaussian \(q\)-moment formula, including common scales and shifted blocks.
+Thus the denominator-free Gaussian identity \eqref{eq:Mrqbinom} and its
+mass/cancellation consequences in \cref{lem:qmoments} now have exact Lean
+counterparts.  This does not claim a new theorem whose statement is literally
+the quotient presentation \eqref{eq:Mrpoch} or the auxiliary polynomial
+identity \eqref{eq:MrW}.  The analytic sinc-product acceleration, error series
+and bounds, positivity and stability, spline limits, and inverse-function
+consequences remain unformalized.
 
 \tableofcontents
 
@@ -476,6 +488,30 @@ second expression. Alternatively, the q-binomial theorem expands
 \eqref{eq:Wm} directly.
 \end{proof}
 
+\paragraph{Lean boundary for the individual weights.}
+The source-level closed quotient predates the new all-residual tranche.  Over a field, under
+\(
+ \operatorname{InjOn}(j\mapsto q^j,\{0,\ldots,m\}),
+\)
+the declaration
+\begin{center}
+\path{geometricLagrangeWeight_eq_gaussianBinomial_div}
+\end{center}
+in \path{GeometricQBinomialLagrange.lean} gives the numerator with the deliberate
+reverse index \path{gaussianBinomial q m (m - j)}.  The displayed symmetric-
+index notation in \eqref{eq:weights} is the equivalent paper convention, not a
+claim that this checkpoint added a generic Gaussian-symmetry theorem.
+\begin{samepage}
+The same module also contains the following cleared-denominator identity:
+\begin{center}
+\path{finiteQPochhammerIn_mul_geometricLagrangeWeight_eq}.
+\end{center}
+\end{samepage}
+In the present
+real range \(0<q<1\), the required finite-node injectivity is automatic.  These
+pointwise weight results should not be attributed to the later
+principal-specialization module.
+
 \begin{definition}[accelerated finite product]
 For \(m,n\geq0\), define
 \begin{equation}
@@ -566,6 +602,58 @@ The roots give \eqref{eq:cancelmom}. For \(r>m\), evaluate the product in
 which is \eqref{eq:Mrqbinom}; \eqref{eq:Mrpoch} is the equivalent
 q-Pochhammer form.
 \end{proof}
+
+\paragraph{Post-snapshot Lean status of the moment formula.}
+The principal specialization
+\[
+ h_s(1,q,\ldots,q^m)=\qbinom{s+m}{m}
+\]
+is \path{completeHomogeneousEval_geometric}; it holds over every commutative
+semiring, with no division or restriction on \(q\).  Its Lean right-hand side
+is the recursive term \path{gaussianBinomial q (s + m) m}; in the present
+real range this is the quotient denoted by \(\qbinom{s+m}{m}\).  More
+generally, over a commutative ring,
+\path{sum_weight_mul_geometric_pow_of_pos} proves that any row
+\(a_0,\ldots,a_m\) satisfying
+\[
+ \sum_{j=0}^{m}a_j(q^j)^d=0^d\qquad(0\le d\le m)
+\]
+has, for every \(r>0\),
+\[
+ \sum_{j=0}^{m}a_j(q^j)^r
+ =(-1)^m q^{\binom{m+1}{2}}\qbinom{r-1}{m}.
+\]
+Here and in the two formulas below, the literal Lean coefficient is the
+recursive \path{gaussianBinomial}; the quotient notation is valid in this
+report's real range \(0<q<1\).
+The above-diagonal vanishing of the recursive Gaussian coefficient includes
+all cancellations in \eqref{eq:cancelmom}; degree zero remains the separate
+mass-one theorem.  For the Lagrange row, finite-node injectivity supplies the
+low moments and \path{sum_geometricLagrangeWeight_mul_pow_of_pos} is exactly
+the displayed formula.
+
+The same checkpoint also records the scale rather than cancelling it.  If a
+row is exact directly on \(c,cq,\ldots,cq^m\), meaning
+\[
+ \sum_{j=0}^{m}a_j(cq^j)^d=0^d\qquad(0\le d\le m),
+\]
+then \path{sum_weight_mul_scaled_geometric_pow_succ_add} gives, for \(s\ge0\),
+\[
+ \sum_{j=0}^{m}a_j(cq^j)^{m+1+s}
+ =c^{m+1+s}(-1)^m q^{\binom{m+1}{2}}\qbinom{m+s}{m}.
+\]
+This hypothesis is imposed after scaling and remains meaningful when \(c\) is
+zero or a zero divisor.  In the field-valued shifted block used here,
+\path{sum_geometricLagrangeWeight_mul_shifted_pow_of_pos} specializes it to
+\[
+ \sum_{j=0}^{m}w_j^{(m)}(q^{n+j})^r
+ =(-1)^m q^{nr+\binom{m+1}{2}}\qbinom{r-1}{m}
+ \qquad(r>0).
+\]
+These are finite algebraic statements only; they do not establish the power-
+series interchange or any analytic conclusion below.  All declarations in
+this paragraph were checked at source checkpoint
+\path{1e761ed77583e9870ceeaeb2c74ac824094f0f3f}.
 
 \subsection{The complete error series}
 
@@ -1163,9 +1251,14 @@ the elementary factor.
 The analytic proof naturally separates into formalization-sized modules.
 
 \begin{enumerate}[label=\arabic*.,leftmargin=9mm]
-\item \textbf{Finite q-algebra.} Define \((q;q)_n\), Gaussian binomial
-coefficients, \(W_m\), and the weights. Prove \(W_m(q^r)=0\) for
-\(1\leq r\leq m\) and \eqref{eq:Mrqbinom}. This part is purely algebraic.
+\item \textbf{Finite q-algebra (formalized).}  The finite \(q\)-Pochhammer
+and Gaussian-binomial core is in \path{FiniteQBinomialCore.lean}; the closed
+weights are in \path{GeometricQBinomialLagrange.lean}; and the principal
+specialization, all positive moments, scaled exact-row formula, and shifted
+Lagrange specialization are in \path{GeometricCompleteHomogeneous.lean} and
+\path{GeometricResidualMoments.lean}.  In particular the cancellations
+\(1\leq r\leq m\) and \eqref{eq:Mrqbinom} are available at source checkpoint
+\path{1e761ed77583e9870ceeaeb2c74ac824094f0f3f}.
 
 \item \textbf{Formal power series.} Work first in a characteristic-zero
 commutative ring. From \(\Phi=\exp(\sum c_kz^k)\), derive the Bell recurrence
@@ -1177,9 +1270,10 @@ sum the geometric scales, and identify the analytic power series with the actual
 product. Existing repository lemmas about the sinc product should reduce the
 amount of new infrastructure.
 
-\item \textbf{Interpolation and positivity.} Formalize the Lagrange weights,
-the divided-difference remainder, and absolute monotonicity of a power series with
-nonnegative coefficients. The sign theorem can also be proved directly from the
+\item \textbf{Interpolation and positivity.} Reuse the compiled Lagrange
+weights and finite moment identities; formalize the divided-difference remainder
+and absolute monotonicity of a power series with nonnegative coefficients. The
+sign theorem can also be proved directly from the
 positive coefficient series if divided differences are inconvenient.
 
 \item \textbf{Fourier/measure layer.} Define the uniform box measures and their
@@ -1278,8 +1372,9 @@ and local inversion then give a new interior approximation theory for the Fabius
 function and its inverse, complementary to the repository's Lambert--\(W\)
 endpoint asymptotics.
 
-These results create concrete next steps: a Lean formalization beginning with the
-finite q-algebra, a dyadic exact-evaluation implementation, and a matched
+These results create concrete next steps: continue the Lean formalization from
+the compiled finite \(q\)-algebra into the formal-series and analytic error
+layers, build a dyadic exact-evaluation implementation, and develop a matched
 two-parameter theory linking truncation acceleration to the periodic Lambert
 phase near the endpoint.
 

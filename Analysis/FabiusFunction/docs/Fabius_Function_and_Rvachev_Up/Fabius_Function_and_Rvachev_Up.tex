@@ -122,7 +122,7 @@
 \author{Human-readable synthesis of the formal development\\
 \small Vladimir Reshetnikov's \texttt{ProveIt} repository}
 \date{Repository snapshot: 27 August 2026\\
-\small commit \nolinkurl{158dd2e12d7412142d79a53d91d8fcbdfdfb5d97}}
+\small commit \nolinkurl{1e761ed77583e9870ceeaeb2c74ac824094f0f3f}}
 
 \begin{document}
 \maketitle
@@ -143,14 +143,15 @@ finite models and quantitative approximation results.  The analytic part develop
 formal sinc and cosine products, Fourier inversion and Poisson summation, exact moment
 recurrences, and the Fourier--Legendre expansion.  The arithmetic part gives reciprocal-power
 values, Thue--Morse formulas for arbitrary dyadic arguments, executable binary reduction,
-two-adic information, and the exact half-base $q$-binomial identities present in Lean.
+two-adic information, exact half-base values, and denominator-free arbitrary-base
+$q$-binomial and geometric-interpolation identities present in Lean.
 
 The endpoint chapters report only the negative-Laplace decompositions, periodic correction,
 lower-Lambert formulas, saddle estimates, and correction terms that have named proved
-counterparts in the formal source.  Plausible extensions, numerical observations, generic
-$q$-analogues, and other arguments not yet represented by an exact Lean theorem are kept in
-the companion volume under \path{docs/non-formalized-research-frontiers/}, not in this
-primary exposition.
+counterparts in the formal source.  Plausible extensions, numerical observations,
+unformalized analytic $q$-analogues, and other arguments not yet represented by an exact
+Lean theorem are kept in the companion volume under
+\path{docs/non-formalized-research-frontiers/}, not in this primary exposition.
 \end{abstract}
 
 \tableofcontents
@@ -3715,6 +3716,85 @@ specialization \lean{sum_lagrangeEvalWeight_mul_pow_card_add} are in
 \eqref{eq:lagrange-all-residual-moments} extends the preceding first-error
 formula rather than replacing its low-degree exactness foundation.
 
+\begin{proposition}[Principal specialization and denominator-free geometric residuals]
+\label{prop:geometric-principal-residuals}
+Let $R$ first be a commutative semiring.  For arbitrary $c,q\in R$ and
+$p,r\in\N$, complete homogeneous evaluation on a geometric alphabet is
+\begin{align}
+ h_r(1,q,\ldots,q^p)&={p+r\brack p}_q,                    \label{eq:complete-homogeneous-geometric}\\
+ h_r(c,cq,\ldots,cq^p)&=c^r{p+r\brack p}_q.              \label{eq:complete-homogeneous-scaled-geometric}
+\end{align}
+These identities are recursive and denominator-free: they remain valid at
+$q=0$, at roots of unity, in positive characteristic, and in the zero
+semiring.
+
+Now let $R$ be a commutative ring and let $w_0,\ldots,w_p\in R$.  If
+\begin{equation}
+ \sum_{k=0}^{p}w_k(q^k)^d=0^d\qquad(0\le d\le p),        \label{eq:geometric-exact-row-hypothesis}
+\end{equation}
+then every positive moment is
+\begin{equation}
+ \sum_{k=0}^{p}w_k(q^k)^m
+ =(-1)^p q^{\binom{p+1}{2}}{m-1\brack p}_q,
+ \qquad m>0.                                             \label{eq:geometric-exact-row-all-moments}
+\end{equation}
+There is a strictly more general scaled-node form.  If exactness is assumed
+directly on the displayed nodes,
+\begin{equation}
+ \sum_{k=0}^{p}w_k(cq^k)^d=0^d\qquad(0\le d\le p),       \label{eq:scaled-geometric-exact-row-hypothesis}
+\end{equation}
+then
+\begin{equation}
+ \sum_{k=0}^{p}w_k(cq^k)^m
+ =c^m(-1)^p q^{\binom{p+1}{2}}{m-1\brack p}_q,
+ \qquad m>0.                                             \label{eq:scaled-geometric-exact-row-all-moments}
+\end{equation}
+No nonzeroness or unit hypothesis is imposed on $c$; this direct scaled
+hypothesis is therefore meaningful even for zero divisors.
+
+Over a field, distinctness of $1,q,\ldots,q^p$ supplies
+\eqref{eq:geometric-exact-row-hypothesis} for the Lagrange weights
+$\lambda_{p,k}^{(q)}$.  Consequently, for every block start $s\in\N$,
+\begin{equation}
+ \sum_{k=0}^{p}\lambda_{p,k}^{(q)}(q^{s+k})^m
+ =(-1)^p q^{sm+\binom{p+1}{2}}{m-1\brack p}_q,
+ \qquad m>0.                                             \label{eq:shifted-geometric-lagrange-all-moments}
+\end{equation}
+\end{proposition}
+
+\begin{proof}[Formal proof]
+The semiring-level infrastructure is
+\lean{completeHomogeneousEval_smul},
+\lean{completeHomogeneousEval_option_zero},
+\lean{completeHomogeneousEval_fin_succ},
+\lean{completeHomogeneousEvalOn_range}, and
+\lean{completeHomogeneousEvalAt_zero} in
+\path{CompleteHomogeneous.lean}.  Splitting off the leading variable $1$
+and scaling the remaining alphabet by $q$ turns the head--tail recurrence
+into q-Pascal's recurrence.  This proves
+\lean{completeHomogeneousEval_geometric}; its common-scale and range-indexed
+forms are \lean{completeHomogeneousEval_scaled_geometric} and
+\lean{completeHomogeneousEvalOn_range_pow_eq_gaussianBinomial}, all in
+\path{GeometricCompleteHomogeneous.lean}.
+
+The offset-degree engines for $m=p+1+r$ are
+\lean{sum_weight_mul_geometric_pow_succ_add} and
+\lean{sum_weight_mul_scaled_geometric_pow_succ_add}.  Above-diagonal
+vanishing of the recursive Gaussian coefficient folds the cancelled degrees
+and every higher residual into
+\lean{sum_weight_mul_geometric_pow_of_pos} and
+\lean{sum_weight_mul_scaled_geometric_pow_of_pos}.  Their field-valued
+Lagrange specializations are
+\lean{sum_geometricLagrangeWeight_mul_pow_succ_add},
+\lean{sum_geometricLagrangeWeight_mul_pow_of_pos},
+\lean{sum_geometricLagrangeWeight_mul_scaled_geometric_pow_of_pos}, and
+\lean{sum_geometricLagrangeWeight_mul_shifted_pow_of_pos} in
+\path{GeometricResidualMoments.lean}.  The pre-existing pointwise closed
+weight and cleared-denominator formulas remain in
+\path{GeometricQBinomialLagrange.lean}; its positive-moment theorem is now a
+thin corollary of this denominator-free engine.
+\end{proof}
+
 For the present half-geometric grid, write $\lambda_{n,k}^{(1/2)}$ for the
 evaluation-at-zero weight belonging to the node $2^{-k}$.  The Toeplitz row is exactly the
 same row in reverse order:
@@ -5645,7 +5725,10 @@ That rule explains several choices made above:
       does not promote that real limit to an unstated complex local-multiplicity theorem.
 \item Flatness uses natural powers, and the analytic-locus claims use precisely the domains
       proved in \path{NowhereAnalytic.lean}.
-\item The \(q\)-calculus is restricted to the half-base identities actually present in Lean.
+\item Arbitrary-base finite \(q\)-algebra is stated only through the proved recursive
+      Gaussian coefficients, principal specializations, geometric residual moments, and
+      closed finite-node weights.  Analytic generic-\(q\) transforms and convergence claims
+      remain in the frontier documents.
 \item Endpoint asymptotics retain exact phases and the proved remainder scopes; numerical
       fits and unproved coefficient formulas are absent.
 \end{itemize}
@@ -5657,9 +5740,9 @@ into the theorem-backed narrative here.  The remaining research material is pres
 \path{Analysis/FabiusFunction/docs/non-formalized-research-frontiers/}.
 \end{quote}
 
-In particular, the inverse/saddle, repeated-integration, small-argument, generic
-\(q\)-calculus, and other deferred claims remain available there with an explicit warning
-that they are not part of the formal corpus.
+In particular, the inverse/saddle, repeated-integration, small-argument, analytic
+generic-\(q\) transform and convergence claims, and other deferred results remain
+available there with an explicit warning that they are not part of the formal corpus.
 
 \section{Conclusion}
 \label{sec:conclusion}
@@ -5670,7 +5753,8 @@ supported \(\Up\) supplies refinement, Fourier, spline, and Legendre viewpoints;
 signed \(\mathcal F\) supplies the global dilation and binary-translation formulas.  Exact
 bridges connect them to finite atomic laws, weak convergence, centered splines, moments,
 reciprocal-power values, dyadic algorithms, half-base \(q\)-binomial identities, prefix
-sums, endpoint Laplace analysis, and computable approximation.
+sums, denominator-free arbitrary-base geometric interpolation, endpoint Laplace analysis,
+and computable approximation.
 
 The most important methodological conclusion is equally concrete: the primary document is
 now a map of proved mathematics.  Research claims can move back from the frontier only after
@@ -5736,7 +5820,8 @@ Universal exponential, Bell, and endpoint-transfer algebra &
 \path{EndpointTransferPolynomials.lean}\\
 Finite polynomial functionals and geometric Lagrange/Richardson exactness &
 \path{FinitePolynomialFunctional.lean}, \path{CompleteHomogeneous.lean},
-\path{GeometricLagrange.lean}, \path{LagrangeResidualMoments.lean},
+\path{GeometricCompleteHomogeneous.lean}, \path{GeometricLagrange.lean},
+\path{LagrangeResidualMoments.lean}, \path{GeometricResidualMoments.lean},
 \path{GeometricQBinomialLagrange.lean}\\
 Dyadic and \(q\)-binomial formulas &
 \path{DyadicClosedForm.lean}, \path{DyadicAnalytic.lean}, \path{GlobalDyadic.lean},
@@ -5936,8 +6021,8 @@ V.~Reshetnikov,
 V.~Reshetnikov,
 \newblock \emph{ProveIt: Analysis/FabiusFunction},
 \newblock Lean~4 formal development, source snapshot
-\texttt{158dd2e12d7412142d79a53d91d8fcbdfdfb5d97}, consulted 27 August 2026.
-\newblock \url{https://github.com/VladimirReshetnikov/ProveIt/tree/158dd2e12d7412142d79a53d91d8fcbdfdfb5d97/Analysis/FabiusFunction}.
+\texttt{1e761ed77583e9870ceeaeb2c74ac824094f0f3f}, consulted 27 August 2026.
+\newblock \url{https://github.com/VladimirReshetnikov/ProveIt/tree/1e761ed77583e9870ceeaeb2c74ac824094f0f3f/Analysis/FabiusFunction}.
 
 \end{thebibliography}
 

@@ -1291,21 +1291,21 @@ generically; the remaining order is:
 These steps require no delicate asymptotics.
 
 \paragraph{Post-snapshot algebraic progress.}
-The later module \texttt{GeometricLagrange.lean} now formalizes Lagrange
+The later module \path{GeometricLagrange.lean} now formalizes Lagrange
 evaluation weights for arbitrary distinct nodes, polynomial and module-valued
 exactness, the first omitted monomial moment, and geometric-node
 specializations.  The compiled bridge
-\texttt{GeometricQBinomialLagrange.lean} now supplies the arbitrary-ratio
-algebra needed here.  Its \texttt{geometricQBinomialWeightNumerator} is
+\path{GeometricQBinomialLagrange.lean} now supplies the arbitrary-ratio
+algebra needed here.  Its \path{geometricQBinomialWeightNumerator} is
 zero for \(j>r\), and for \(j\le r\) is literally
 \( (-1)^{r-j}q^{\binom{r-j+1}{2}}
 \texttt{gaussianBinomial}\ q\ r\ (r-j)\).  The theorem
-\texttt{reversed\_finite\_qBinomial\_theorem} identifies the corresponding
+\path{reversed_finite_qBinomial_theorem} identifies the corresponding
 sum with \(\prod_{k<r}(z-q^{k+1})\) without division.  Under
-\texttt{Set.InjOn} of \(k\mapsto q^k\) on \(\{0,\ldots,r\}\),
-\texttt{geometricLagrangeWeight\_eq\_gaussianBinomial\_div} normalizes this
+\path{Set.InjOn} of \(k\mapsto q^k\) on \(\{0,\ldots,r\}\),
+\path{geometricLagrangeWeight_eq_gaussianBinomial_div} normalizes this
 numerator by \((q;q)_r\), while
-\texttt{sum\_geometricLagrangeWeight\_mul\_pow\_eq\_gaussianBinomial} gives,
+\path{sum_geometricLagrangeWeight_mul_pow_eq_gaussianBinomial} gives,
 for every \(m>0\),
 \[
  \sum_{j=0}^{r}\lambda_{r,j}(q)(q^j)^m
@@ -1321,7 +1321,54 @@ symmetry theorem.  At \(q=1/2\),
 the half-base Toeplitz row and retains its all-degree reverse moments and
 exact total variation.  The generic condition-number identity
 \cref{eq:qcondition} and all analytic error, remainder, and convergence
-claims remain frontier.  Independently,
+claims remain frontier.
+
+At post-snapshot checkpoint
+\nolinkurl{1e761ed77583e9870ceeaeb2c74ac824094f0f3f}, the algebraic route to the
+same residual formula was strengthened and factored through complete
+homogeneous polynomials.  The five reusable declarations added to
+\path{CompleteHomogeneous.lean} are
+\nolinkurl{completeHomogeneousEval_smul},
+\nolinkurl{completeHomogeneousEval_option_zero},
+\nolinkurl{completeHomogeneousEval_fin_succ},
+\nolinkurl{completeHomogeneousEvalOn_range}, and
+\nolinkurl{completeHomogeneousEvalAt_zero}.  Over every commutative semiring,
+\path{GeometricCompleteHomogeneous.lean} proves
+\[
+ h_n(1,q,\ldots,q^r)=\qbinom{n+r}{r}{q},
+ \qquad
+ h_n(c,cq,\ldots,cq^r)=c^n\qbinom{n+r}{r}{q}
+\]
+as \nolinkurl{completeHomogeneousEval_geometric} and
+\nolinkurl{completeHomogeneousEval_scaled_geometric}; the range-indexed form
+is
+\nolinkurl{completeHomogeneousEvalOn_range_pow_eq_gaussianBinomial}.
+
+Over every commutative ring, the hypotheses of
+\nolinkurl{sum_weight_mul_scaled_geometric_pow_succ_add} and
+\nolinkurl{sum_weight_mul_scaled_geometric_pow_of_pos} impose exactness
+directly on the displayed nodes \(c q^j\), not first on \(q^j\).  Thus zero
+and zero-divisor scales require no cancellation.  Their unscaled companions
+are \nolinkurl{sum_weight_mul_geometric_pow_succ_add} and
+\nolinkurl{sum_weight_mul_geometric_pow_of_pos}.  The field-valued
+distinct-node consequences are
+\nolinkurl{sum_geometricLagrangeWeight_mul_pow_succ_add},
+\nolinkurl{sum_geometricLagrangeWeight_mul_pow_of_pos},
+\nolinkurl{sum_geometricLagrangeWeight_mul_scaled_geometric_pow_of_pos}, and
+\nolinkurl{sum_geometricLagrangeWeight_mul_shifted_pow_of_pos}.  In particular,
+the generic scaled positive moment is exactly
+\[
+ \sum_{j=0}^{r}w_j(cq^j)^m
+ =c^m(-1)^r q^{\binom{r+1}{2}}
+   \texttt{gaussianBinomial}\ q\ (m-1)\ r
+ \qquad(m>0),
+\]
+provided the same row reproduces evaluation at zero through degree \(r\) on
+those scaled nodes.  These sixteen declarations use no division at the
+commutative-semiring or commutative-ring layers; finite-node injectivity enters
+only in the Lagrange field corollaries.
+
+Independently,
 \texttt{ExponentialPartition.lean} and
 \texttt{ExponentialBell.lean} identify the universal weighted-partition
 formula for an exponential coefficient with
@@ -1331,9 +1378,12 @@ factorially normalizes the same engine into named complete-Bell and inverse
 moment--cumulant transforms, with the classical Bell recurrence and
 normalized inverse laws.  In particular, the coefficient mechanism behind
 \eqref{eq:h-Bell} can reuse these bridges with
-\(E_k=k^{-1}\sum_i a_i^k\) for \(k\ge1\).  The displayed
-complete-homogeneous specialization, the Richardson error formulas, and every
-analytic estimate in this report remain distinct formalization obligations.
+\(E_k=k^{-1}\sum_i a_i^k\) for \(k\ge1\).  The geometric principal
+specialization and all finite geometric residual moments are therefore no
+longer formalization obligations.  The Bell identity \eqref{eq:h-Bell} for the
+reciprocal Lambert nodes, the transformed sinc-tail identities, the
+Richardson remainder and sign estimates, and every analytic convergence claim
+in this report remain distinct frontier obligations.
 
 \subsection{Analytic theorem chain}
 
@@ -1354,10 +1404,12 @@ the periodic coefficient functions are
 phase-locked extraction transform itself and the verification that its weighted use of
 those uniform remainders has precisely the strength asserted in
 \cref{thm:Psi-extraction}.  The arbitrary-node interpolation foundation and
-the closed reciprocal-grid weights with all positive residual moments are
-already available in \path{GeometricLagrange.lean} and
-\path{GeometricQBinomialLagrange.lean}; combining them with the phase-locked
-uniform remainders remains analytic frontier work.
+its all-order residual representation are already available in
+\path{CompleteHomogeneous.lean} and
+\path{LagrangeResidualMoments.lean}.  The closed reciprocal Lambert-grid
+specialization in \cref{thm:lambert-moments}, unlike the geometric
+\(q^j\)-grid specialization, remains to be formalized together with its
+phase-locked use of the uniform remainders.
 
 \section{Open problems and next frontier steps}
 \label{sec:open}

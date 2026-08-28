@@ -17,14 +17,21 @@ The script requires Python 3, mpmath, and SymPy. It uses no network access.
 
 Compile the report
 ------------------
-latexmk -pdf q_richardson_sinc_frontier.tex
+pdflatex -interaction=nonstopmode -halt-on-error q_richardson_sinc_frontier.tex
+pdflatex -interaction=nonstopmode -halt-on-error q_richardson_sinc_frontier.tex
+pdflatex -interaction=nonstopmode -halt-on-error q_richardson_sinc_frontier.tex
 
 The report was compiled with pdfLaTeX. It uses standard TeX Live packages and
-Latin Modern fonts.
+Libertinus when available, with Latin Modern as its explicit fallback.
 
 Scope and status
 ----------------
 The report's theorems are proved in the LaTeX source and numerically checked by
-the script. They have not yet been formalized in Lean. "Repository-new" means
-absent from the audited *.tex corpus under the stated ProveIt repository path;
-it is not an unconditional claim of priority over all external literature.
+the script. The denominator-free finite q-binomial, geometric Lagrange-weight,
+principal-specialization, and all-positive-moment algebra is now formalized in
+Lean, with the post-snapshot boundary recorded at source checkpoint
+1e761ed77583e9870ceeaeb2c74ac824094f0f3f. The analytic sinc-product error,
+positivity, stability, spline, and inverse-function consequences remain
+research frontiers. "Repository-new" means absent from the audited *.tex corpus
+under the stated ProveIt repository path; it is not an unconditional claim of
+priority over all external literature.
