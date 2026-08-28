@@ -197,6 +197,7 @@ import FabiusFunction.QuantileTransport
 import FabiusFunction.GlobalBounds
 import FabiusFunction.NormalizedVolterra
 import FabiusFunction.FractionalVolterra
+import FabiusFunction.FractionalVolterraSemigroup
 import FabiusFunction.FabiusAntiderivatives
 import FabiusFunction.RvachevDerivativeDistribution
 import FabiusFunction.BoundedDerivatives
