@@ -32,7 +32,7 @@ and three on global polynomial interpolation
 sources largely re-derived one another's core results, this volume is a
 true merge (unified notation, one statement per shared theorem with the
 best proof, all source-specific material retained) rather than a
-part-per-source concatenation.  A seventh and an eighth source were absorbed 2026-08-28 as the
+part-per-source concatenation.  A seventh, an eighth, and a ninth source were absorbed 2026-08-28 as the
 Bernoulli-periodization section of Part I — the tenth-wave
 `Fabius_Euler_Maclaurin_Report_Package/` (*Euler–Maclaurin and
 Exhaustion Quadratures for Fabius and Rvachev Moments*): shifted
@@ -58,7 +58,18 @@ sign these are the polynomial volume's defect values ℰ₂ₘ₋₁(0)),
 the one-correction half-interval Rvachev rule with its
 termination/one-mode exhaustion dichotomy and exact two-level
 recovery, the supergeometric odd-base bound, and the q=1/4
-Gaussian-binomial filter form.  Provenance with SHA-256 hashes and the
+Gaussian-binomial filter form; and the twelfth-wave Bernoulli–Ruffa
+phase–resolution calculus, whose multiple-angle domination lemma
+|Φ(qℓ/2)| ≤ |Φ(q/2)|/ℓ settles the twisted-positivity question
+and BOTH phase-classification conjectures (the parity-forced phases
+are the only superconvergent shifts, at every level and every odd
+part), and which adds finite phase cubature (Simpson/Boole/Gauss in
+the phase variable — exact moment certificates with no Bernoulli
+correction), the phase–resolution separation principle,
+Thue–Morse–Bernoulli digital phase filters with exact top-mode
+constants and root-of-unity/digit-mask generalizations, coherent
+radix exhaustion along tag orbits, anisotropic tensor shells, and a
+proved all-orders complex-power expansion.  Provenance with SHA-256 hashes and the
 deduplication record are Appendix E of the volume; every source's
 supporting files live under its `assets/`.  The absorbed draft
 directories are deleted; git history is the archive.
