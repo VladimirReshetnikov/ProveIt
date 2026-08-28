@@ -73,7 +73,9 @@ theorem seriesDerivOp_eq_sum_range {q : R[X]} {N : ℕ} (hN : q.natDegree < N)
       ∑ m ∈ Finset.range N,
         (PowerSeries.coeff m φ * a ^ m) • derivative^[m] q := by
   simp only [seriesDerivOp]
-  refine Finset.sum_subset (Finset.range_subset.mpr hN) fun m _ hm => ?_
+  refine Finset.sum_subset
+    (Finset.range_subset.mpr fun x hx => Finset.mem_range.mpr (by omega))
+    fun m _ hm => ?_
   have hdeg : q.natDegree < m := by
     by_contra h
     exact hm (Finset.mem_range.mpr (by omega))
@@ -123,9 +125,9 @@ theorem seriesDerivOp_mul (φ ψ : PowerSeries R) (a : R) (q : R[X]) :
     intro p _ hpB
     have hge : q.natDegree + 1 ≤ p.1 + p.2 := by
       by_contra hlt
-      push_neg at hlt
       exact hpB (Finset.mem_biUnion.mpr
-        ⟨p.1 + p.2, Finset.mem_range.mpr hlt, Finset.mem_antidiagonal.mpr rfl⟩)
+        ⟨p.1 + p.2, Finset.mem_range.mpr (by omega),
+          Finset.mem_antidiagonal.mpr rfl⟩)
     rw [Polynomial.iterate_derivative_eq_zero (by omega), smul_zero]
   have hpush : ∀ m : ℕ,
       (PowerSeries.coeff m φ * a ^ m) • derivative^[m] (seriesDerivOp ψ a q) =
@@ -161,8 +163,7 @@ theorem seriesDerivOp_mul (φ ψ : PowerSeries R) (a : R) (q : R[X]) :
     _ = ∑ m ∈ Finset.range (q.natDegree + 1),
           ∑ k ∈ Finset.range (q.natDegree + 1),
           ((PowerSeries.coeff m φ * PowerSeries.coeff k ψ) * a ^ (m + k)) •
-            derivative^[m + k] q := by
-        rw [Finset.sum_product']
+            derivative^[m + k] q := Finset.sum_product ..
     _ = seriesDerivOp φ a (seriesDerivOp ψ a q) := by
         rw [seriesDerivOp_eq_sum_range
           (lt_of_le_of_lt (natDegree_seriesDerivOp_le ψ a q)
