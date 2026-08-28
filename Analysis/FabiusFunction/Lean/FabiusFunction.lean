@@ -130,6 +130,7 @@ import FabiusFunction.ValleyZeroOrders
 import FabiusFunction.ThueMorseLobeSign
 import FabiusFunction.LobeSignSelfSimilarity
 import FabiusFunction.RenormalizationIdentity
+import FabiusFunction.IntegerZeroLocalFactorization
 import FabiusFunction.SincPrefixBound
 import FabiusFunction.GlobalDecayEnvelope
 import FabiusFunction.LacunaryMeanSharp
