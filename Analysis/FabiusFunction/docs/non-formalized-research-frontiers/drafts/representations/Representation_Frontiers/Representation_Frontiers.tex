@@ -507,6 +507,25 @@ For \(z\in\C\setminus[-1,1]\), define
 \end{equation}
 \end{definition}
 
+\begin{remark}[Formal Cauchy--Stieltjes core]
+\path{CauchyTransform.lean} defines the report-oriented transform as
+\path{rvachevCauchyTransform}; Mathlib's \path{resolventTransform} uses
+\((x-z)^{-1}\), so the formal definition is its negative.  The declarations
+\path{rvachevCauchyTransform_apply} and
+\path{rvachevCauchyTransform_eq_integral_rvachevUp} give respectively the
+measure and density forms of \eqref{p1:eq:R-def}, while
+\path{analyticOn_rvachevCauchyTransform} and
+\path{hasDerivAt_rvachevCauchyTransform} prove holomorphy off the complexified
+support interval and the measure-form first derivative
+\[
+ R'(z)=-\int (z-x)^{-2}\,\dd\mu_{\mathrm{up}}(x).
+\]
+Expanding \(\mu_{\mathrm{up}}=\rho(x)\,\dd x\) recovers the corresponding density formula.
+The total Lean definition follows the Bochner-integral convention at points where the
+kernel is not integrable; the analytic Cauchy-transform interpretation is asserted only
+off the cut.
+\end{remark}
+
 The transform \(R\) is odd because \(\rho\) is even.  It is an anti-Herglotz function:
 when \(\operatorname{Im}z>0\),
 \begin{equation}
@@ -716,10 +735,12 @@ Thus the conditional passage from \eqref{p1:eq:R-dde} to
 \eqref{p1:eq:R-derivative-tree} is formalized in greater generality.  On the density side,
 \path{iteratedDeriv_rvachevUp_eq_thueMorse_sum} applies the same engine to the
 already formalized differential equation for \(\rho\), globally on the real line.  The
-module does not define the Cauchy--Stieltjes transform of the up measure or prove
-\eqref{p1:eq:R-dde}; the measure-specific resolvent equation, its application to the
-complex resolvent \(R\), and the kernel identity \eqref{p1:eq:R-kernel-tree} remain
-formalization obligations.
+transform definition, density formula, natural-domain holomorphy, first Cauchy-kernel
+derivative, and affine identity \(S(z)=2R(2z-1)\) are now formalized in
+\path{CauchyTransform.lean}.  That module does not prove
+\eqref{p1:eq:R-log-fixed} or \eqref{p1:eq:R-dde}; the application of the generic orbit
+theorem to the complex resolvent \(R\), and the kernel identity
+\eqref{p1:eq:R-kernel-tree}, remain formalization obligations.
 \end{proof}
 
 Taking boundary imaginary parts in \eqref{p1:eq:R-derivative-tree} recovers the familiar
@@ -1497,7 +1518,8 @@ the two affine branches \(z\mapsto2z\pm1\) may provide the correct operator calc
 \begin{problem}[Formal verification roadmap]
 A Lean development can be staged as follows:
 \begin{enumerate}
-\item define the Cauchy transform of the canonical up probability measure;
+\item define the Cauchy transform of the canonical up probability measure and prove its
+      density form, natural-domain holomorphy, first derivative, and affine bridge;
 \item prove the logarithmic fixed-point identity first on \((1,\infty)\);
 \item differentiate under the integral and formalize \eqref{p1:eq:R-dde};
 \item apply the generic open-domain theorem in \path{AffineDifferenceOrbit.lean} to
@@ -1508,9 +1530,10 @@ A Lean development can be staged as follows:
 \item postpone the Denisov--Rakhmanov limit, which depends on substantial external
       orthogonal-polynomial theory.
 \end{enumerate}
-The finite affine-cube induction in item 4 is delivered.  Items 1--3, and hence the
-measure-specific resolvent DDE and its instantiation in the displayed formulas above,
-remain open.
+Item 1 is delivered by \path{CauchyTransform.lean}.  Items 2--3 remain open.  The generic
+conditional engine and finite affine-cube induction in item 4 are delivered by
+\path{AffineDifferenceOrbit.lean}, but cannot be instantiated for \(R\) until item 3 is
+available.
 \end{problem}
 
 \section{Promising research program}

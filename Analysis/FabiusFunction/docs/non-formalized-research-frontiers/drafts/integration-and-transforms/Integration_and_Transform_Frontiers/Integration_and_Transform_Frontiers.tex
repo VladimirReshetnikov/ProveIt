@@ -253,6 +253,45 @@ does not discharge the report-local fractional identities named below.  This sta
 supersedes only contrary historical formalization wording in the absorbed snapshots; the
 provenance hashes above remain unchanged.
 \end{statusbox}
+\begin{statusbox}[Current Lean status of the ordinary Cauchy--Stieltjes core]
+For a bounded Fabius solution \(F\), the later module
+\path{CauchyTransform.lean} defines the report-sign transforms
+\path{Fabius.rvachevCauchyTransform} and
+\path{Fabius.fabiusStieltjesTransform}.  In this status box write
+\(R_{\rm up}(z):=\mathtt{rvachevCauchyTransform}\,F\,z\) and
+\(S_{\rm unit}(z):=\mathtt{fabiusStieltjesTransform}\,z\), independently of the
+part-local notation below.  The declarations
+\path{Fabius.rvachevCauchyTransform_apply} and
+\path{Fabius.fabiusStieltjesTransform_apply} identify them with the measure integrals of
+\((z-x)^{-1}\), and
+\path{Fabius.rvachevCauchyTransform_eq_integral_rvachevUp} gives the up-density form.
+The declarations \path{Fabius.analyticOn_rvachevCauchyTransform} and
+\path{Fabius.analyticOn_fabiusStieltjesTransform} prove holomorphy on the complements of
+the named complexified intervals \([-1,1]\) and \([0,1]\), while
+\path{Fabius.hasDerivAt_rvachevCauchyTransform} and
+\path{Fabius.hasDerivAt_fabiusStieltjesTransform} identify the first derivatives with
+the negatives of the integrals of the squared Cauchy kernels.  Finally,
+\path{Fabius.fabiusStieltjesTransform_eq_two_mul_rvachevCauchyTransform} and
+\path{Fabius.rvachevCauchyTransform_eq_inv_two_mul_fabiusStieltjesTransform} prove
+\[
+ S_{\rm unit}(z)=2R_{\rm up}(2z-1),\qquad
+ R_{\rm up}(w)=\frac12S_{\rm unit}\!\left(\frac{w+1}{2}\right).
+\]
+The equalities are total in Lean's Bochner-integral convention.  Their classical analytic
+interpretation uses \(z\notin[0,1]\) in the first formula and
+\(w\notin[-1,1]\) in the second.
+This discharges the ordinary compact-support measure-transform content of the later
+formulas \eqref{p5:eq:S-def}, \eqref{p5:eq:Cauchy-up},
+\eqref{p6:eq:Cauchy-def}, \eqref{p7:eq:Stieltjes-up},
+and \eqref{p8:eq:Cauchy-def}, but not every alternate
+quantile or inverse-integral presentation attached to those labels.
+
+No logarithmic potential or fixed point, moment or Laplace/Fourier expansion,
+integration-by-parts representation through \(F\), boundary/Plemelj theorem, resolvent
+DDE, higher derivative orbit, generalized complex order, or Jacobi fraction is claimed.
+This status box supersedes only contrary historical formalization wording in the absorbed
+snapshots; their provenance hashes remain unchanged.
+\end{statusbox}
 \clearpage
 \integrationreportreset
 \part{Antiderivatives of Monomially Weighted Fabius-Type Functions}
