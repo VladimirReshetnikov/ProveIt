@@ -1,4 +1,5 @@
 import FabiusFunction.CauchyCDF
+import FabiusFunction.LaplaceTransform
 
 /-!
 # Survival companions of the Cauchy--Stieltjes integration by parts
@@ -45,9 +46,11 @@ theorem intervalIntegral_inv_sub_sq {a b : ℝ} (hab : a ≤ b) {z : ℂ}
     have hbase : HasDerivAt (fun s : ℝ => z - (s : ℂ)) (-1) t := by
       simpa using (Complex.ofRealCLM.hasDerivAt (x := t)).const_sub z
     have hinv := hbase.inv (hne t ht)
-    convert hinv using 1
-    rw [inv_pow]
-    simp
+    have hval : - (-1 : ℂ) / (z - (t : ℝ)) ^ 2 =
+        (z - ((t : ℝ) : ℂ))⁻¹ ^ 2 := by
+      rw [neg_neg, one_div, inv_pow]
+    rw [← hval]
+    exact hinv
   have hint : IntervalIntegrable
       (fun t : ℝ => (z - (t : ℂ))⁻¹ ^ 2) volume a b := by
     apply ContinuousOn.intervalIntegrable
@@ -77,8 +80,9 @@ theorem integral_inv_sub_eq_mass_smul_add_intervalIntegral_measureReal_Ioi
   have hk_int : IntervalIntegrable
       (fun t : ℝ => (z - (t : ℂ))⁻¹ ^ 2) volume a b :=
     hkcont.intervalIntegrable
-  have hIoi_anti : Antitone (fun t : ℝ => μ.real (Ioi t)) :=
-    fun s t hst => measureReal_mono (Ioi_subset_Ioi hst)
+  have hIoi_anti : Antitone (fun t : ℝ => μ.real (Ioi t)) := by
+    intro s t hst
+    exact measureReal_mono (Ioi_subset_Ioi hst)
   have hIoi_int : IntervalIntegrable
       (fun t : ℝ => μ.real (Ioi t) • ((z - (t : ℂ))⁻¹ ^ 2))
       volume a b :=
@@ -147,6 +151,6 @@ theorem fabiusStieltjesTransform_eq_inv_add_intervalIntegral_rvachevUp
     intervalIntegral_inv_sub_sq (by norm_num : (0 : ℝ) ≤ 1) hz']
   have hz0 : z - ((0 : ℝ) : ℂ) = z := by norm_num
   rw [hz0]
-  ring
+  abel
 
 end Fabius
