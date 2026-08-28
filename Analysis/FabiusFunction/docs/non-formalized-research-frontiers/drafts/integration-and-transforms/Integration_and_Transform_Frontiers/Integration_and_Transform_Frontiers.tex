@@ -480,7 +480,18 @@ give the CDF and survival integration by parts at resolvent power $p$,
 \(\int(z-x)^{-p}\dd\mu=\mu(\R)(z-b)^{-p}-p\int_a^b\mu((-\infty,t])(z-t)^{-(p+1)}\dd t\)
 and its lower-endpoint survival companion, with the closed primitive
 \path{Fabius.intervalIntegral\_pow\_inv\_sub}; the first power recovers the formulas
-above.
+above.  The \emph{moment/Laurent layer} is now delivered on the symmetric side by
+\path{StieltjesMomentLaurent.lean}: for every real \(|z|>1\) and every \(N\),
+\(\int(z-x)^{-1}\dd\mu_{\Up}=\sum_{k<N}m_k\,z^{-(k+1)}+z^{-N}\int x^N(z-x)^{-1}\dd\mu_{\Up}\)
+with the \emph{exact} remainder (\nolinkurl{Fabius.integral\_inv\_sub\_eq\_sum\_upMoment\_add}),
+the geometric tail bound \((|z|-1)^{-1}|z|^{-N}\)
+(\nolinkurl{Fabius.abs\_integral\_inv\_sub\_sub\_sum\_le}), and the convergent series
+\(\int(z-x)^{-1}\dd\mu_{\Up}=\sum_{k\ge0}m_k\,z^{-(k+1)}\) in \path{tsum}/\path{HasSum} form
+(\nolinkurl{Fabius.integral\_inv\_sub\_eq\_tsum\_upMoment}, \nolinkurl{Fabius.hasSum\_upMoment\_laurent});
+the moments \(m_k=\)~\nolinkurl{Fabius.upMoment} are the Hankel data of the orthogonal-polynomial
+layer, so the same numbers drive the determinant polynomials, the three-term recurrence,
+and the asymptotic expansion of the transform.  The complex-\(z\) form and the
+generalized-order layer remain open.
 
 \path{CauchyRenormalization.lean} adds five public theorems.  The declarations
 \path{Fabius.mapsTo_rvachevCauchyDomain_two_mul_add_one} and
