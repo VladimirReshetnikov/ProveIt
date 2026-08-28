@@ -37,4 +37,10 @@ deduplication record are Appendix E of the volume; every source's
 supporting files live under its `assets/`.  The absorbed draft
 directories are deleted; git history is the archive.
 
+## Unmerged members
+
+- `inverse_fabius_all_orders_package/` — *Closed All-Orders Endpoint
+  Asymptotics for the Inverse Fabius Function* (fourth wave, unpacked
+  2026-08-28; not yet folded into `Inverse_and_Sampling_Frontiers/`).
+
 See [`../MANIFEST.md`](../MANIFEST.md) for titles and previous paths.
