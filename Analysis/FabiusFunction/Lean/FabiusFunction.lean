@@ -111,6 +111,7 @@ import FabiusFunction.DyadicCombTrapezoid
 import FabiusFunction.IncompleteBetaMaster
 import FabiusFunction.MomentHankelMatrix
 import FabiusFunction.MomentHankelValues
+import FabiusFunction.StieltjesMomentLaurent
 import FabiusFunction.OrthogonalPolynomialConstruction
 import FabiusFunction.OrthogonalPolynomialValues
 import FabiusFunction.OrthogonalPolynomialParity
