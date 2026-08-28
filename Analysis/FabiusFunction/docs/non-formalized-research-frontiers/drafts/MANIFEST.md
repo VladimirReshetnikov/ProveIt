@@ -44,8 +44,7 @@ cross-referenced internally; unchanged by the reorganization).
 
 | Directory | Document | Previous path |
 | --- | --- | --- |
-| `Thue_Morse_Formula_Atlas/` | *A Unified Formula Atlas for the Thue–Morse Sequence* | `drafts/Thue_Morse_Formula_Atlas/` |
-| `Fabius_Rvachev_Thue_Morse_Frontier_Results/` | *A Finite-Block Calculus for the Fabius–Rvachev–Thue–Morse System* (block bridges, zeta–Lambert tail calculus, q-Richardson; heavily Lean-crosswalked) | `drafts/Fabius_Rvachev_Thue_Morse_Frontier_Results/` |
+| `Thue_Morse_Atlas_and_Frontiers/` | *The Thue–Morse Sequence: Formula Atlas and Fabius–Rvachev Frontier Results* (125 pp) — consolidation (2026-08-28) of the former `Thue_Morse_Formula_Atlas/` (*A Unified Formula Atlas for the Thue–Morse Sequence*) and `Fabius_Rvachev_Thue_Morse_Frontier_Results/` (*A Finite-Block Calculus for the Fabius–Rvachev–Thue–Morse System*, heavily Lean-crosswalked); assets under `assets/`, provenance with SHA-256 in the document | absorbed drafts deleted; git history is the archive |
 
 ## exponents-and-q-series — `exponents-and-q-series/`
 
