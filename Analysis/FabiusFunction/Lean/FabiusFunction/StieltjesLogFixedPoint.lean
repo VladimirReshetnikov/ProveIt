@@ -91,13 +91,13 @@ theorem integral_inv_sub_eq_integral_log (F : BoundedFabius)
     rw [rvachevMeasure_refinement F hF]
     exact MeasureTheory.Measure.conv_comm _ _
   have hint : Integrable (fun x => (z - x)⁻¹)
-      (((rvachevMeasure F).map (2⁻¹ * ·)) ∗
-        (volume.restrict (Icc (-(2⁻¹ : ℝ)) 2⁻¹))) := by
+      ((((rvachevMeasure F).map (2⁻¹ * ·)) ∗
+        (volume.restrict (Icc (-(2⁻¹ : ℝ)) 2⁻¹)) : Measure ℝ)) := by
     rw [← href]
     exact integrable_inv_sub_rvachevMeasure F hF habs
   calc ∫ x, (z - x)⁻¹ ∂(rvachevMeasure F)
-      = ∫ x, (z - x)⁻¹ ∂(((rvachevMeasure F).map (2⁻¹ * ·)) ∗
-          (volume.restrict (Icc (-(2⁻¹ : ℝ)) 2⁻¹))) := by
+      = ∫ x, (z - x)⁻¹ ∂((((rvachevMeasure F).map (2⁻¹ * ·)) ∗
+          (volume.restrict (Icc (-(2⁻¹ : ℝ)) 2⁻¹)) : Measure ℝ)) := by
         rw [← href]
     _ = ∫ x, ∫ u, (z - (x + u))⁻¹
           ∂(volume.restrict (Icc (-(2⁻¹ : ℝ)) 2⁻¹))
