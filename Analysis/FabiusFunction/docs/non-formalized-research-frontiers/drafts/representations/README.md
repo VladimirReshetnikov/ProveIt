@@ -2,7 +2,8 @@
 
 Series and orthogonal-expansion representations of the up-function,
 consolidated (2026-08-28) into the single volume
-[`Representation_Frontiers/`](Representation_Frontiers/) (110 pp):
+[`Representation_Frontiers/`](Representation_Frontiers/) (295 pp,
+eight parts):
 
 - **Part I** — *Resolvent, Continued-Fraction, and Transform
   Representations of the Fabius–Rvachev System* (Jacobi coefficients,
@@ -16,7 +17,20 @@ consolidated (2026-08-28) into the single volume
   Representations* (rational mass arrays, Haar–Schauder expansions,
   Walsh–Thue–Morse products, beta-mixture limits, Bell–Bernoulli scale
   energies, inverse-quantile duality; formerly
-  `Fabius_Rvachev_Multiresolution_Report/`).
+  `Fabius_Rvachev_Multiresolution_Report/`);
+- **Part IV** — *Integral, Series, Product, and Operator
+  Representations* (Fredholm, exterior-power, total-positivity,
+  heat-kernel, and Mellin–Barnes bridges; formerly
+  `fabius_rvachev_report_package/`);
+- **Part V** — *Polyphase, Operator, and Jump-Measure Representations*
+  (formerly `Fabius_Rvachev_Polyphase_Representation_Report/`);
+- **Part VI** — *Sampling, Padé, Mellin, Resolvent, and
+  Product–Integral Representations* (formerly
+  `Fabius_Rvachev_Thue_Morse_Representation_Frontiers/`);
+- **Part VII** — *Unit-Circle, Bessel, and Spectral–Monodromy
+  Representations* (formerly `rvachev_fabius_representations_2026/`);
+- **Part VIII** — *Dyadic Multiresolution and Sampling Frontiers*
+  (formerly `Fabius_Rvachev_Multiresolution_Representations/`).
 
 (The random-variable representation is formalized in
 `ProbabilityRepresentation.lean`, and `RandomSeriesLaw.lean` identifies the
@@ -85,22 +99,20 @@ history is the archive. Reproducibility files remain under the volume's
 `assets/` directory, with each former package's README updated for its
 new location.
 
-The five second-wave reports that arrived 2026-08-28 were
-consolidated the same day into the companion volume
-[`Representation_Second_Wave/`](Representation_Second_Wave/)
-(183 pp, five parts): I — *Integral, Series, Product, and Operator
-Representations* (formerly `fabius_rvachev_report_package/`);
-II — *Polyphase, Operator, and Jump-Measure Representations*
-(formerly `Fabius_Rvachev_Polyphase_Representation_Report/`);
-III — *Sampling, Padé, Mellin, Resolvent, and Product–Integral
-Representations* (formerly
-`Fabius_Rvachev_Thue_Morse_Representation_Frontiers/`);
-IV — *Unit-Circle, Bessel, and Spectral–Monodromy Representations*
-(formerly `rvachev_fabius_representations_2026/`);
-V — *Dyadic Multiresolution and Sampling Frontiers* (formerly
-`Fabius_Rvachev_Multiresolution_Representations/`).  Same mechanical
-content-preserving merge as the first volume; absorbed member
-directories deleted, provenance with SHA-256 in the volume.
+Parts IV–VIII arrived 2026-08-28 as the five second-wave reports,
+were first consolidated into an interim companion volume
+(`Representation_Second_Wave/`, 183 pp), and were folded into the
+main volume as Parts IV–VIII the same day.  The fold repaired a
+rendering defect of the interim volume (its parts after the first
+were numbered with `\appendix` letters running across part
+boundaries, so sections collided as E–T/A–C/D–…; per-part arabic
+numbering is now restored), restored the members' full part titles
+(the interim volume had abbreviated three of them to one word), and
+deduplicated colliding macro definitions between the waves; every
+editorial intervention is marked `% ed.:` in the source.  Same
+content-preserving discipline as the per-part merges; absorbed
+member directories and the interim volume deleted, provenance with
+SHA-256 for all eight sources in the volume's front matter.
 
 The two fourth-wave polynomial-representation drafts (2026-08-28) were
 merged the same day into the volume
