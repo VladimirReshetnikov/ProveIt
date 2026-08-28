@@ -1,5 +1,5 @@
 import FabiusFunction.Existence
-import FabiusFunction.GeometricUniformLaw
+import FabiusFunction.GeometricUniformCDF
 import Mathlib.Probability.CDF
 
 /-!
@@ -259,6 +259,14 @@ lemma weightedSumDistribution_reflection :
 noncomputable def weightedSumCDF (x : ℝ) : ℝ :=
   ProbabilityTheory.cdf weightedSumDistribution x
 
+/-- The classical dyadic CDF is exactly the half-base member of the
+geometric-uniform CDF family. -/
+theorem weightedSumCDF_eq_geometricUniformCDF_one_half :
+    weightedSumCDF = geometricUniformCDF (1 / 2) := by
+  funext x
+  rw [weightedSumCDF, geometricUniformCDF,
+    weightedSumDistribution_eq_geometricUniformDistribution_one_half]
+
 /-- The CDF as an explicit real-valued probability on the sample space:
 `weightedSumCDF x = P[X ≤ x]`.  This is the bridge between Mathlib's
 `cdf` API and the event `{ω | weightedCoordinateSum ω ≤ x}` appearing in
@@ -284,176 +292,73 @@ lemma weightedSumCDF_le_one (x : ℝ) : weightedSumCDF x ≤ 1 :=
   ProbabilityTheory.cdf_le_one weightedSumDistribution x
 
 /-- Conditioning on the first uniform coordinate gives the smoothing equation
-`H(y) = ∫₀¹ H(2y-u) du` for the CDF `H` of the random series. -/
+`H(y) = ∫₀¹ H(2y-u) du` for the CDF `H` of the random series.  This is the
+half-base specialization of `geometricUniformCDF_eq_integral`. -/
 lemma weightedSumCDF_eq_integral (y : ℝ) :
     weightedSumCDF y =
       ∫ u : Set.Icc (0 : ℝ) 1, weightedSumCDF (2 * y - (u : ℝ)) := by
-  let A : Set (Set.Icc (0 : ℝ) 1 × ℝ) :=
-    {p | ((p.1 : ℝ) + p.2) / 2 ≤ y}
-  have hA : MeasurableSet A := by
-    apply measurableSet_le
-    · fun_prop
-    · fun_prop
-  have hcombine : Measurable
-      (fun p : Set.Icc (0 : ℝ) 1 × ℝ => ((p.1 : ℝ) + p.2) / 2) := by
-    fun_prop
-  rw [weightedSumCDF, ProbabilityTheory.cdf_eq_real,
-    weightedSumDistribution_selfSimilar,
-    map_measureReal_apply hcombine measurableSet_Iic]
-  change ((volume : Measure (Set.Icc (0 : ℝ) 1)).prod weightedSumDistribution).real A = _
+  rw [weightedSumCDF_eq_geometricUniformCDF_one_half]
+  have h := geometricUniformCDF_eq_integral
+    (q := (1 / 2 : ℝ)) (by norm_num) (by norm_num) y
   calc
-    ((volume : Measure (Set.Icc (0 : ℝ) 1)).prod weightedSumDistribution).real A =
-        ∫ p, A.indicator (fun _ => (1 : ℝ)) p
-          ∂((volume : Measure (Set.Icc (0 : ℝ) 1)).prod weightedSumDistribution) := by
-      symm
-      exact integral_indicator_one hA
+    geometricUniformCDF (1 / 2) y =
+        ∫ u : Set.Icc (0 : ℝ) 1,
+          geometricUniformCDF (1 / 2)
+            ((y - (1 - (1 / 2 : ℝ)) * (u : ℝ)) / (1 / 2 : ℝ)) := h
     _ = ∫ u : Set.Icc (0 : ℝ) 1,
-        ∫ v : ℝ, A.indicator (fun _ => (1 : ℝ)) (u, v) ∂weightedSumDistribution := by
-      apply integral_prod
-      exact (integrable_const (1 : ℝ)).indicator hA
-    _ = ∫ u : Set.Icc (0 : ℝ) 1, weightedSumCDF (2 * y - (u : ℝ)) := by
+        geometricUniformCDF (1 / 2) (2 * y - (u : ℝ)) := by
       apply integral_congr_ae
       filter_upwards with u
-      let Au : Set ℝ := {v | (((u : ℝ) + v) / 2 : ℝ) ≤ y}
-      have hAu : MeasurableSet Au := by
-        apply measurableSet_le <;> fun_prop
-      calc
-        (∫ v : ℝ, A.indicator (fun _ => (1 : ℝ)) (u, v)
-            ∂weightedSumDistribution) =
-            ∫ v : ℝ, Au.indicator (fun _ => (1 : ℝ)) v
-              ∂weightedSumDistribution := by
-          apply integral_congr_ae
-          filter_upwards with v
-          rfl
-        _ = weightedSumDistribution.real Au := integral_indicator_one hAu
-        _ = weightedSumCDF (2 * y - (u : ℝ)) := by
-          rw [weightedSumCDF, ProbabilityTheory.cdf_eq_real]
-          congr 2
-          ext v
-          simp only [Au, mem_setOf_eq, mem_Iic]
-          constructor <;> intro hv <;> linarith
+      congr 1
+      ring
 
 /-- The same smoothing equation written as an ordinary interval integral. -/
 lemma weightedSumCDF_eq_intervalIntegral (y : ℝ) :
     weightedSumCDF y =
       ∫ t in (2 * y - 1)..(2 * y), weightedSumCDF t := by
-  rw [weightedSumCDF_eq_integral]
-  calc
-    (∫ u : Set.Icc (0 : ℝ) 1, weightedSumCDF (2 * y - (u : ℝ))) =
-        ∫ u in Set.Icc (0 : ℝ) 1, weightedSumCDF (2 * y - u) := by
-      simpa using (integral_subtype (G := ℝ) measurableSet_Icc
-        (fun u : ℝ => weightedSumCDF (2 * y - u)))
-    _ = ∫ u in (0 : ℝ)..1, weightedSumCDF (2 * y - u) := by
-      rw [integral_Icc_eq_integral_Ioc, intervalIntegral.integral_of_le (by norm_num)]
-    _ = ∫ t in (2 * y - 1)..(2 * y - 0), weightedSumCDF t :=
-      intervalIntegral.integral_comp_sub_left weightedSumCDF (2 * y)
-    _ = ∫ t in (2 * y - 1)..(2 * y), weightedSumCDF t := by ring_nf
+  rw [weightedSumCDF_eq_geometricUniformCDF_one_half]
+  have h := geometricUniformCDF_eq_intervalIntegral
+    (q := (1 / 2 : ℝ)) (by norm_num) (by norm_num) y
+  norm_num at h
+  convert h using 1
+  all_goals ring_nf
 
-/-- The CDF is continuous on all of `ℝ`.  Using
-`weightedSumCDF_eq_intervalIntegral` it is rewritten as a difference of
-two primitives of itself, and interval primitives are continuous.
-`weightedSumDistribution_singleton` deduces from this that the law has
-no atoms. -/
+/-- The CDF is continuous on all of `ℝ`, as the half-base specialization
+of the continuous atomless geometric-uniform CDF family. -/
 lemma continuous_weightedSumCDF : Continuous weightedSumCDF := by
-  have hint : ∀ a b : ℝ, IntervalIntegrable weightedSumCDF volume a b :=
-    fun _ _ => (ProbabilityTheory.monotone_cdf weightedSumDistribution).intervalIntegrable
-  have hp : Continuous (fun z : ℝ => ∫ t in (0 : ℝ)..z, weightedSumCDF t) :=
-    intervalIntegral.continuous_primitive hint 0
-  have hrepr : weightedSumCDF = fun y : ℝ =>
-      (∫ t in (0 : ℝ)..(2 * y), weightedSumCDF t) -
-        ∫ t in (0 : ℝ)..(2 * y - 1), weightedSumCDF t := by
-    funext y
-    rw [weightedSumCDF_eq_intervalIntegral]
-    exact (intervalIntegral.integral_interval_sub_left (hint 0 (2 * y))
-      (hint 0 (2 * y - 1))).symm
-  rw [hrepr]
-  exact (hp.comp (by fun_prop)).sub (hp.comp (by fun_prop))
+  rw [weightedSumCDF_eq_geometricUniformCDF_one_half]
+  exact continuous_geometricUniformCDF (by norm_num)
 
-/-- For arguments `x ≤ 0` the CDF vanishes: the event `X ≤ x` forces
-`X = 0`, which forces the first coordinate to be `0`, a null event. -/
+/-- For arguments `x ≤ 0` the CDF vanishes.  This is inherited from the
+support and atomlessness of the half-base geometric-uniform law. -/
 lemma weightedSumCDF_zero_of_nonpos {x : ℝ} (hx : x ≤ 0) :
     weightedSumCDF x = 0 := by
-  rw [weightedSumCDF_eq_measureReal]
-  have hsubset : {ω : SampleSpace | weightedCoordinateSum ω ≤ x} ⊆
-      {ω : SampleSpace | weightedCoordinateSum ω = 0} := by
-    intro ω hω
-    exact le_antisymm (hω.trans hx) (weightedCoordinateSum_nonneg ω)
-  have hzero : uniformProduct {ω : SampleSpace | weightedCoordinateSum ω = 0} = 0 := by
-    have hcoord : {ω : SampleSpace | weightedCoordinateSum ω = 0} ⊆
-        {ω : SampleSpace | ω 0 = 0} := by
-      intro ω hω
-      change weightedCoordinateSum ω = 0 at hω
-      by_contra hn
-      change ω 0 ≠ 0 at hn
-      have hne : (ω 0 : ℝ) ≠ 0 := fun h => hn (Subtype.ext h)
-      have hpos : 0 < (ω 0 : ℝ) := lt_of_le_of_ne (ω 0).property.1 (Ne.symm hne)
-      have hle : (ω 0 : ℝ) / 2 ≤ weightedCoordinateSum ω := by
-        rw [weightedCoordinateSum_split]
-        have htail := weightedCoordinateSum_nonneg (tail ω)
-        linarith
-      linarith
-    apply measure_mono_null hcoord
-    calc
-      uniformProduct {ω : SampleSpace | ω 0 = 0} =
-          (uniformProduct.map fun ω => ω 0) {(0 : Set.Icc (0 : ℝ) 1)} := by
-        rw [Measure.map_apply (μ := uniformProduct) (measurable_pi_apply 0)
-          (measurableSet_singleton (0 : Set.Icc (0 : ℝ) 1))]
-        rfl
-      _ = (volume : Measure (Set.Icc (0 : ℝ) 1)) {0} := by
-        rw [coordinate_has_uniform_law]
-      _ = 0 := measure_singleton _
-  apply measureReal_mono_null hsubset
-  rw [measureReal_def, hzero]
-  simp
+  rw [weightedSumCDF_eq_geometricUniformCDF_one_half]
+  exact geometricUniformCDF_zero_of_nonpos (by norm_num) (by norm_num) hx
 
 /-- For arguments `1 ≤ x` the CDF equals `1`, since `X ≤ 1` holds
 pointwise on the sample space. -/
 lemma weightedSumCDF_one_of_one_le {x : ℝ} (hx : 1 ≤ x) :
     weightedSumCDF x = 1 := by
-  rw [weightedSumCDF_eq_measureReal]
-  have hall : {ω : SampleSpace | weightedCoordinateSum ω ≤ x} = Set.univ := by
-    ext ω
-    simp only [mem_setOf_eq, mem_univ, iff_true]
-    exact (weightedCoordinateSum_le_one ω).trans hx
-  rw [hall, probReal_univ]
+  rw [weightedSumCDF_eq_geometricUniformCDF_one_half]
+  exact geometricUniformCDF_one_of_one_le (by norm_num) (by norm_num) hx
 
 /-- The law of the random series has no atoms: every singleton is null.
-This follows from continuity of the CDF, and supplies the
-`NullSingletonClass` instance used by `weightedSumCDF_symmetry`. -/
+This is the half-base specialization of the generic geometric-uniform
+null-singleton theorem. -/
 lemma weightedSumDistribution_singleton (x : ℝ) :
     weightedSumDistribution {x} = 0 := by
-  rw [← ProbabilityTheory.measure_cdf weightedSumDistribution,
-    StieltjesFunction.measure_singleton]
-  have hleft : Function.leftLim weightedSumCDF x = weightedSumCDF x :=
-    continuous_weightedSumCDF.continuousAt.continuousWithinAt.leftLim_eq
-  change ENNReal.ofReal (weightedSumCDF x - Function.leftLim weightedSumCDF x) = 0
-  rw [hleft, sub_self, ENNReal.ofReal_zero]
+  rw [weightedSumDistribution_eq_geometricUniformDistribution_one_half]
+  letI : NullSingletonClass
+      (geometricUniformDistribution (1 / 2)) :=
+    geometricUniformDistribution_nullSingletonClass (by norm_num)
+  exact measure_singleton x
 
 /-- The law of the random series is symmetric about `1/2`. -/
 lemma weightedSumCDF_symmetry (x : ℝ) :
     weightedSumCDF (1 - x) = 1 - weightedSumCDF x := by
-  letI : NullSingletonClass weightedSumDistribution :=
-    ⟨weightedSumDistribution_singleton⟩
-  calc
-    weightedSumCDF (1 - x) = weightedSumDistribution.real (Iic (1 - x)) := by
-      rw [weightedSumCDF, ProbabilityTheory.cdf_eq_real]
-    _ = (weightedSumDistribution.map (fun z : ℝ => 1 - z)).real (Iic (1 - x)) := by
-      rw [weightedSumDistribution_reflection]
-    _ = weightedSumDistribution.real ((fun z : ℝ => 1 - z) ⁻¹' Iic (1 - x)) := by
-      rw [map_measureReal_apply (by fun_prop) measurableSet_Iic]
-    _ = weightedSumDistribution.real (Ici x) := by
-      have hset : ((fun z : ℝ => 1 - z) ⁻¹' Iic (1 - x)) = Ici x := by
-        ext z
-        change (1 - z ≤ 1 - x) ↔ x ≤ z
-        constructor <;> intro hz <;> linarith
-      rw [hset]
-    _ = weightedSumDistribution.real (Iio x)ᶜ := by rw [compl_Iio]
-    _ = 1 - weightedSumDistribution.real (Iio x) :=
-      probReal_compl_eq_one_sub measurableSet_Iio
-    _ = 1 - weightedSumDistribution.real (Iic x) := by
-      rw [measureReal_congr Iio_ae_eq_Iic]
-    _ = 1 - weightedSumCDF x := by
-      rw [weightedSumCDF, ProbabilityTheory.cdf_eq_real]
+  rw [weightedSumCDF_eq_geometricUniformCDF_one_half]
+  exact geometricUniformCDF_reflection (by norm_num) x
 
 /-- Symmetry fixes the value of the CDF at the midpoint. -/
 @[simp] lemma weightedSumCDF_one_half : weightedSumCDF (1 / 2) = 1 / 2 := by
@@ -585,6 +490,28 @@ theorem weightedSumCDF_eq_fabiusReal
   have hF_eq := Existence.isFabius_eq F Existence.boundedCandidate hF
     Existence.boundedCandidate_isFabius
   rw [hF_eq]
+
+/-- The half-base geometric-uniform CDF is the bounded Fabius function,
+globally on the real line. -/
+theorem geometricUniformCDF_one_half_eq_fabiusReal
+    (F : BoundedFabius) (hF : IsFabius F) (x : ℝ) :
+    geometricUniformCDF (1 / 2) x = fabiusReal F x := by
+  rw [← congrFun weightedSumCDF_eq_geometricUniformCDF_one_half x]
+  exact weightedSumCDF_eq_fabiusReal F hF x
+
+/-- At `q = 1 / 2`, the geometric-uniform density is the affine copy of
+Rvachev's `up` density dictated by `F'(x) = 2 up(2x-1)`. -/
+theorem geometricUniformDensity_one_half_eq_rvachevUp
+    (F : BoundedFabius) (hF : IsFabius F) (x : ℝ) :
+    geometricUniformDensity (1 / 2) x =
+      2 * rvachevUp F (2 * x - 1) := by
+  have hq := geometricUniformCDF_hasDerivAt
+    (q := (1 / 2 : ℝ)) (by norm_num) (by norm_num) x
+  have heq : geometricUniformCDF (1 / 2) = fabiusReal F := by
+    funext y
+    exact geometricUniformCDF_one_half_eq_fabiusReal F hF y
+  rw [heq] at hq
+  exact hq.unique (fabius_hasDerivAt F hF x)
 
 /-- The Rvachev bump is the random-series CDF evaluated at its distance from
 the boundary of the support.  Unlike the paper's left-half formulation below,
