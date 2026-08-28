@@ -136,4 +136,82 @@ theorem integral_hankelOrthoValue_mul_pow (F : BoundedFabius)
         ring
     _ = 0 := det_momentBordered_eq_zero F n hj
 
+section PolynomialForm
+
+/-- The `n`-th orthogonal polynomial `h_n·P_n` as a `Polynomial ℝ`:
+the cofactor expansion of the bordered determinant along its monomial
+row. -/
+noncomputable def hankelOrthoPolynomial (F : BoundedFabius) (n : ℕ) :
+    Polynomial ℝ :=
+  ∑ j : Fin (n + 1),
+    Polynomial.C ((-1 : ℝ) ^ ((Fin.last n : ℕ) + (j : ℕ)) *
+      ((momentBordered F n 0).submatrix (Fin.last n).succAbove
+        j.succAbove).det) * Polynomial.X ^ (j : ℕ)
+
+/-- The polynomial evaluates to the bordered determinant. -/
+theorem hankelOrthoPolynomial_eval (F : BoundedFabius) (n : ℕ)
+    (x : ℝ) :
+    (hankelOrthoPolynomial F n).eval x = hankelOrthoValue F n x := by
+  rw [hankelOrthoPolynomial, hankelOrthoValue,
+    Matrix.det_succ_row _ (Fin.last n)]
+  rw [Polynomial.eval_finsetSum]
+  refine Finset.sum_congr rfl fun j _ => ?_
+  have hlastrow : borderedHankel F n x (Fin.last n) j = x ^ (j : ℕ) := by
+    show (if (Fin.last n : ℕ) < n then upMoment F _ else x ^ (j : ℕ)) =
+      x ^ (j : ℕ)
+    rw [if_neg (by simp [Fin.val_last])]
+  rw [hlastrow, ← submatrix_borderedHankel_eq F n x 0 j]
+  simp only [Polynomial.eval_mul, Polynomial.eval_C,
+    Polynomial.eval_pow, Polynomial.eval_X]
+  ring
+
+/-- Coefficient extraction: the `j₀`-th coefficient is the signed
+minor. -/
+theorem hankelOrthoPolynomial_coeff (F : BoundedFabius) (n : ℕ)
+    (j₀ : Fin (n + 1)) :
+    (hankelOrthoPolynomial F n).coeff (j₀ : ℕ) =
+      (-1 : ℝ) ^ ((Fin.last n : ℕ) + (j₀ : ℕ)) *
+        ((momentBordered F n 0).submatrix (Fin.last n).succAbove
+          j₀.succAbove).det := by
+  rw [hankelOrthoPolynomial, Polynomial.finsetSum_coeff]
+  have hterm : ∀ j : Fin (n + 1),
+      (Polynomial.C ((-1 : ℝ) ^ ((Fin.last n : ℕ) + (j : ℕ)) *
+        ((momentBordered F n 0).submatrix (Fin.last n).succAbove
+          j.succAbove).det) * Polynomial.X ^ (j : ℕ)).coeff (j₀ : ℕ) =
+      if j₀ = j then
+        (-1 : ℝ) ^ ((Fin.last n : ℕ) + (j : ℕ)) *
+          ((momentBordered F n 0).submatrix (Fin.last n).succAbove
+            j.succAbove).det
+      else 0 := by
+    intro j
+    rw [Polynomial.coeff_C_mul, Polynomial.coeff_X_pow]
+    by_cases h : j₀ = j
+    · subst h
+      simp
+    · rw [if_neg (fun hval => h (Fin.val_injective hval)),
+        mul_zero, if_neg h]
+  simp_rw [hterm]
+  rw [Finset.sum_ite_eq Finset.univ j₀ _, if_pos (Finset.mem_univ _)]
+
+/-- The last minor is the plain Hankel block, so the top coefficient
+is the Hankel determinant `h_n`. -/
+theorem hankelOrthoPolynomial_coeff_top (F : BoundedFabius) (n : ℕ) :
+    (hankelOrthoPolynomial F n).coeff n = hankelDet F n := by
+  have h := hankelOrthoPolynomial_coeff F n (Fin.last n)
+  rw [Fin.val_last] at h
+  have hsub : (momentBordered F n 0).submatrix (Fin.last n).succAbove
+      (Fin.last n).succAbove = momentHankel F n := by
+    ext i' col'
+    simp only [Matrix.submatrix_apply, Fin.succAbove_last]
+    show (if ((Fin.castSucc i' : Fin (n + 1)) : ℕ) < n then
+      upMoment F (((Fin.castSucc i' : Fin (n + 1)) : ℕ) +
+        ((Fin.castSucc col' : Fin (n + 1)) : ℕ))
+      else upMoment F (((Fin.castSucc col' : Fin (n + 1)) : ℕ) + 0)) =
+      upMoment F ((i' : ℕ) + (col' : ℕ))
+    rw [if_pos (by simpa using i'.isLt)]
+  rw [h, hsub, Even.neg_one_pow ⟨n, rfl⟩, one_mul]
+  rfl
+
+end PolynomialForm
+
 end Fabius
