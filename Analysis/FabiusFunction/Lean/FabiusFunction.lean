@@ -102,6 +102,7 @@ import FabiusFunction.ThueMorseHankel
 import FabiusFunction.LacunaryRieszIntegral
 import FabiusFunction.GelfondLogisticBound
 import FabiusFunction.GeometricScaleProducts
+import FabiusFunction.GeometricConvolutionTails
 import FabiusFunction.SincProductShells
 import FabiusFunction.SharpGelfondBound
 import FabiusFunction.SincProductPeakRay
