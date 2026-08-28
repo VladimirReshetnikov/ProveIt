@@ -230,6 +230,7 @@ import FabiusFunction.BernsteinPositivity
 import FabiusFunction.PerronRootEnclosure
 import FabiusFunction.MeasureRefinement
 import FabiusFunction.RandomSeriesLaw
+import FabiusFunction.CauchyTransform
 import FabiusFunction.UniformSplineWeakConvergence
 import FabiusFunction.DyadicSpecializations
 

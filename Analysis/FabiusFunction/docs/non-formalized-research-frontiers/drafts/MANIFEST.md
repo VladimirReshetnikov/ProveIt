@@ -79,7 +79,7 @@ Series and orthogonal-expansion representations of the up-function.
 
 | Directory | Document | Previous path |
 | --- | --- | --- |
-| `Representation_Frontiers/` | *Representation Frontiers for the Fabius–Rvachev System* (107 pp) — consolidation (2026-08-28) of the former `Fabius_Rvachev_Representation_Frontiers/` (*Fabius–Rvachev Representation Frontiers*: Jacobi coefficients, exact even moments, resolvent and logarithmic-derivative identities), `fabius_rvachev_representation_frontier/` (*Representation Atlas and New Analytic Bridges*), and `Fabius_Rvachev_Multiresolution_Report/` (*Dyadic Multiresolution and Product–Series Representations*); assets under `assets/`, provenance with SHA-256 in the document | absorbed drafts deleted (all three unpacked from `drafts/incoming/…zip` on 2026-08-28); git history is the archive |
+| `Representation_Frontiers/` | *Representation Frontiers for the Fabius–Rvachev System* (108 pp) — consolidation (2026-08-28) of the former `Fabius_Rvachev_Representation_Frontiers/` (*Fabius–Rvachev Representation Frontiers*: Jacobi coefficients, exact even moments, resolvent and logarithmic-derivative identities), `fabius_rvachev_representation_frontier/` (*Representation Atlas and New Analytic Bridges*), and `Fabius_Rvachev_Multiresolution_Report/` (*Dyadic Multiresolution and Product–Series Representations*); assets under `assets/`, provenance with SHA-256 in the document | absorbed drafts deleted (all three unpacked from `drafts/incoming/…zip` on 2026-08-28); git history is the archive |
 
 ## frontier-compilations — `frontier-compilations/`
 
