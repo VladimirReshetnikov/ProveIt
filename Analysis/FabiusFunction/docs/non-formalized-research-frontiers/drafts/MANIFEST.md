@@ -57,10 +57,7 @@ cross-referenced internally; unchanged by the reorganization).
 
 | Directory | Document | Previous path |
 | --- | --- | --- |
-| `Fabius_Half_Integer_Spectral_Frontier_Report/` | *Half-Integer Spectral Arithmetic* | `drafts/Fabius_Half_Integer_Spectral_Frontier_Report/` |
-| `Fabius_Arithmetic_Rays_Frontier_Report/` | *Arithmetic Dyadic Rays of the Rvachev Fourier Product* | `drafts/Fabius_Arithmetic_Rays_Frontier_Report/` |
-| `Spectral_Arithmetic_Pascal_Rvachev_Hierarchy/` | *Spectral Arithmetic and the Pascal–Rvachev Hierarchy* | `drafts/Spectral_Arithmetic_Pascal_Rvachev_Hierarchy/` |
-| `Fabius_Derivative_Norm_Spectrum_bundle/` | *Derivative Norm Spectra and Dual Moment Geometries of the Fabius–Rvachev System* | `drafts/Fabius_Derivative_Norm_Spectrum_bundle/` |
+| `Spectra_and_Arithmetic_Frontiers/` | *Spectral Arithmetic Frontiers of the Fabius–Rvachev System* — consolidation (2026-08-28) of the former `Fabius_Half_Integer_Spectral_Frontier_Report/` (*Half-Integer Spectral Arithmetic*), `Fabius_Arithmetic_Rays_Frontier_Report/` (*Arithmetic Dyadic Rays*), `Spectral_Arithmetic_Pascal_Rvachev_Hierarchy/` (*Spectral Arithmetic and the Pascal–Rvachev Hierarchy*), and `Fabius_Derivative_Norm_Spectrum_bundle/` (*Derivative Norm Spectra and Dual Moment Geometries*); assets under `assets/`, provenance with SHA-256 in the document | absorbed drafts deleted; git history is the archive |
 
 ## integration-and-transforms — `integration-and-transforms/`
 
