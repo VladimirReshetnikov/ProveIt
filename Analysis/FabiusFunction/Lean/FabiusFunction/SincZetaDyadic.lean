@@ -255,4 +255,20 @@ theorem rvachevFourierProduct_eq_prefix_mul_cexp {m : ℕ} {z : ℂ}
   exact Finset.prod_range_reflect
     (fun j => complexSinc (π * (z / 2 ^ j))) m
 
+/-- **The Fourier transform of the up-function in closed exponential
+form**: for a Fabius function and `‖z‖ < 1`,
+
+`Û(z) = exp (-∑_{r ≥ 1} ζ(2r)·4ʳ·z^{2r}/(r (4ʳ - 1)))`
+
+— the Fourier transform of an honest compactly supported `C^∞` density
+written as a single explicit elementary series, by composing the
+integral-to-product identity with the master Euler–zeta form. -/
+theorem rvachevFourier_eq_cexp (F : BoundedFabius) (hF : IsFabius F)
+    {z : ℂ} (hz : ‖z‖ < 1) :
+    rvachevFourier F z =
+      Complex.exp (-∑' r : ℕ,
+        (evenZeta (r + 1) : ℂ) * z ^ (2 * (r + 1)) * 4 ^ (r + 1) /
+          (((r : ℂ) + 1) * (((4 : ℂ) ^ (r + 1)) - 1))) := by
+  rw [rvachevFourier_eq_product F hF z, rvachevFourierProduct_eq_cexp hz]
+
 end Fabius

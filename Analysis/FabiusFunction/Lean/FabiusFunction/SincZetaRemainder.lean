@@ -47,7 +47,8 @@ noncomputable def sincZetaCoeff (r : ℕ) : ℝ :=
 
 /-- `4^(r+1) - 1` is strictly positive in `ℝ`. -/
 theorem four_pow_succ_sub_one_pos (r : ℕ) : (0 : ℝ) < 4 ^ (r + 1) - 1 := by
-  have h := one_lt_pow₀ (show (1:ℝ) < 4 by norm_num) r.succ_ne_zero
+  have h : (1 : ℝ) < 4 ^ (r + 1) :=
+    one_lt_pow₀ (show (1:ℝ) < 4 by norm_num) r.succ_ne_zero
   linarith
 
 /-- Every all-orders coefficient is strictly positive. -/
@@ -71,7 +72,7 @@ theorem sincZetaCoeff_le (r : ℕ) :
       _ ≤ 4 ^ (r + 1) := pow_le_pow_right₀ (by norm_num) (by omega)
   have hr : (0:ℝ) < (r : ℝ) + 1 := by positivity
   have hp : (0:ℝ) < (4:ℝ) ^ (r + 1) := by positivity
-  rw [sincZetaCoeff, div_le_div_iff (by positivity) hr]
+  rw [sincZetaCoeff, div_le_div_iff₀ (by positivity) hr]
   have hA : evenZeta (r + 1) * 4 ^ (r + 1) * ((r : ℝ) + 1) ≤
       evenZeta 1 * 4 ^ (r + 1) * ((r : ℝ) + 1) :=
     mul_le_mul_of_nonneg_right (mul_le_mul_of_nonneg_right hz hp.le) hr.le
@@ -170,11 +171,8 @@ theorem norm_sincZeta_tail_le {w : ℂ} (hw : ‖w‖ < 1) (N : ℕ) :
         (‖w‖ ^ 2) ^ r :=
     (summable_geometric_of_lt_one (by positivity) hw2).mul_left _
   refine (Summable.tsum_le_tsum hterm hsum hgeo).trans (le_of_eq ?_)
-  rw [tsum_mul_left, tsum_geometric_of_lt_one (by positivity) hw2]
-  have hne1 : ((N : ℝ) + 1) ≠ 0 := by positivity
-  have hne2 : (1 - ‖w‖ ^ 2) ≠ 0 := ne_of_gt (by linarith)
-  field_simp
-  ring
+  rw [tsum_mul_left, tsum_geometric_of_lt_one (by positivity) hw2,
+    div_mul_eq_mul_div, ← div_eq_mul_inv, div_div]
 
 /-- For real `w`, every tail term is nonnegative, hence so is the tail
 (the drafts' `R_{N,m}(t) ≥ 0` for real `t`). -/
