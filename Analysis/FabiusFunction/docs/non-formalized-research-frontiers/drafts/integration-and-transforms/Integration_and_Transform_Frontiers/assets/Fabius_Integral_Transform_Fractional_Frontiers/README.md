@@ -65,7 +65,7 @@ simulation is used.
 
 ## Rebuild the PDF
 
-A TeX Live installation containing `latexmk`, `libertinus`, `amsmath`,
+A TeX Live installation containing `pdflatex`, `libertinus`, `amsmath`,
 `mathtools`, `booktabs`, `tabularx`, `hyperref`, and `cleveref` is sufficient.
 Run from this directory:
 
