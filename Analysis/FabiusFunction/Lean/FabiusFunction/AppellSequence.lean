@@ -229,7 +229,7 @@ theorem derivative_poly (b : ℕ → R) (n : ℕ) :
   · have h1 : j + 1 ≤ n + 1 := by omega
     have hs : n + 1 - (j + 1) = n - j := by omega
     have hnat : (n + 1) * n.choose j = (n + 1).choose (j + 1) * (j + 1) :=
-      Nat.succ_mul_choose_eq n j
+      Nat.add_one_mul_choose_eq n j
     have hcast : ((n : R) + 1) * (n.choose j : R)
         = ((n + 1).choose (j + 1) : R) * ((j : R) + 1) := by
       have hR : (((n + 1) * n.choose j : ℕ) : R)

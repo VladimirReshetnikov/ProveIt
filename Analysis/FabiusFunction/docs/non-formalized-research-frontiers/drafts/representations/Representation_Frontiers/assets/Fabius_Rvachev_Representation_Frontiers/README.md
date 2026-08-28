@@ -1,19 +1,20 @@
-# Fabius–Rvachev Representation Frontiers
+# Assets for Part I of Representation Frontiers
 
-This package accompanies the 30-page report
-`rvachev_fabius_representation_frontiers.pdf`.
+These files support Part I, *Resolvent, Continued-Fraction, and Transform
+Representations of the Fabius–Rvachev System*, in the consolidated volume
+[`../../Representation_Frontiers.tex`](../../Representation_Frontiers.tex).
+The former standalone TeX/PDF pair was absorbed into that volume and is
+available through git history.
 
 ## Contents
 
-- `rvachev_fabius_representation_frontiers.tex` — complete LaTeX source.
-- `rvachev_fabius_representation_frontiers.pdf` — compiled report.
 - `rvachev_frontier_experiments.py` — commented, reproducible exact/numerical experiments.
 - `generated_tables.tex` — exact moment and Jacobi-coefficient tables included by the report.
 - `corpus_inventory.tex` — audited repository-source ledger included by the report.
 - `data/up_even_moments.csv` — exact even moments through order 40.
 - `data/up_jacobi_coefficients.csv` — exact Jacobi coefficients through order 40.
 - `data/numerical_checks.txt` — high-precision checks of the resolvent and logarithmic-derivative identities.
-- `figures/` — PDF and PNG versions of both numerical figures.
+- `figures/` — PDF and PNG versions of both numerical figures; the consolidated volume embeds the PNG copies to avoid Type-3 fonts from the generated PDFs.
 - `SHA256SUMS` — checksums for the package files.
 
 ## Principal new results developed in the report
@@ -39,21 +40,25 @@ Requirements:
 - `mpmath`;
 - `matplotlib`.
 
-Run from the package root:
+Run from this asset directory, writing into a scratch subdirectory so the
+curated package layout remains untouched:
 
 ```bash
-python3 rvachev_frontier_experiments.py --order 40 --digits 45
+python3 rvachev_frontier_experiments.py --order 40 --digits 45 \
+  --output-dir reproduced
 ```
 
-The script writes its output to the current working directory. To preserve the packaged directory layout, either run it in a scratch copy or move the regenerated CSV/text files into `data/` and the figures into `figures/`.
+Compare the regenerated CSV/text files with `data/`, the generated TeX table
+with `generated_tables.tex`, and the regenerated figures with `figures/`.
 
 ## Compiling the report
 
-A reasonably complete TeX Live installation is sufficient. From the package root:
+A reasonably complete TeX Live installation is sufficient. From this asset
+directory, build the consolidated source with exactly three passes:
 
 ```bash
-latexmk -pdf -interaction=nonstopmode -halt-on-error \
-  rvachev_fabius_representation_frontiers.tex
+cd ../..
+pdflatex -interaction=nonstopmode -halt-on-error Representation_Frontiers.tex
+pdflatex -interaction=nonstopmode -halt-on-error Representation_Frontiers.tex
+pdflatex -interaction=nonstopmode -halt-on-error Representation_Frontiers.tex
 ```
-
-Root-level PDF figure copies keep the LaTeX source directly compilable; PDF and PNG figure copies are also organized in `figures/`.

@@ -8,6 +8,9 @@ Obstructions: New deductions around the Fabius function, its inverse,
 Rvachev's up-function, Thue--Morse cancellation, Lambert-W asymptotics,
 and q-scale algebra.
 
+The report is now displayed as Part IV of ../../Frontier_Compilations.tex;
+this directory retains only its supporting assets.
+
 Repository scope
 ----------------
 The report audits the recursive LaTeX corpus under
@@ -24,10 +27,8 @@ Novelty convention
 of global historical priority.  Established repository results are separated
 from corpus-relative deductions and from conjectural/open directions.
 
-Archive contents
-----------------
-  fabius_frontier_report.tex          Complete LaTeX source.
-  fabius_frontier_report.pdf          Compiled, visually inspected 26-page PDF.
+Supporting-asset contents
+-------------------------
   frontier_experiments.py             Fully commented symbolic/numerical code.
   corpus_manifest.txt                 Recursive 57-source audit ledger.
   results/numerical_results.txt       Human-readable verification ledger.
@@ -35,7 +36,7 @@ Archive contents
   results/reproduction_errors.csv     Cardinal-reproduction residuals.
   figures/*.pdf, figures/*.png        Vector and raster report figures.
   requirements.txt                    Python dependencies.
-  SHA256SUMS.txt                      Checksums for all payload files.
+  SHA256SUMS.txt                      Checksums for retained supporting files.
 
 Reproduce the numerical work
 ----------------------------
@@ -49,13 +50,18 @@ The default run uses 70 decimal digits, 420 half-integer Fourier modes, and
 240 sinc-product factors per Fourier coefficient.  These parameters are
 centralized in the Settings dataclass near the top of the script.
 
-Build the report
-----------------
-A recent TeX Live installation with latexmk is recommended:
+Build the consolidated report
+-----------------------------
+From this asset directory, move to the consolidated-volume directory and run
+the repository-required three passes:
 
-  latexmk -pdf -interaction=nonstopmode -halt-on-error fabius_frontier_report.tex
+  cd ../..
+  pdflatex -interaction=nonstopmode -halt-on-error Frontier_Compilations.tex
+  pdflatex -interaction=nonstopmode -halt-on-error Frontier_Compilations.tex
+  pdflatex -interaction=nonstopmode -halt-on-error Frontier_Compilations.tex
+  rm -f *.aux *.log *.out *.toc
 
-The source uses Libertinus when available and falls back to Latin Modern.
+The canonical source/PDF pair is ../../Frontier_Compilations.{tex,pdf}.
 
 Main proved deductions
 ----------------------
@@ -70,7 +76,7 @@ Main proved deductions
 
 Verification status
 -------------------
-The LaTeX source compiles without unresolved references or citations.  The PDF
-was rendered page by page at 200 dpi and inspected for clipping, overlap,
-broken glyphs, and figure placement.  The included Python script was rerun in
-this environment before packaging.
+Before consolidation, the standalone source compiled without unresolved
+references or citations, and its PDF was rendered page by page at 200 dpi and
+inspected for clipping, overlap, broken glyphs, and figure placement.  The
+included Python script was rerun in that environment before packaging.

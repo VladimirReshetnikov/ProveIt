@@ -1,10 +1,15 @@
 Inverse Frontiers for the Fabius--Rvachev System
 =================================================
 
+This archived companion directory preserves the figures, data, and
+reproducibility scripts from the former standalone report.  The report itself
+is now incorporated into the consolidated source and PDF two levels above
+this directory.
+
 Contents
 --------
-- Fabius_Inverse_Frontier_Report.tex : complete LaTeX source
-- Fabius_Inverse_Frontier_Report.pdf : compiled 29-page report
+- ../../Inverse_and_Sampling_Frontiers.tex : consolidated LaTeX source
+- ../../Inverse_and_Sampling_Frontiers.pdf : consolidated rendered report
 - figures/                           : the three figures included by the source
 - data/                              : numerical tables, constants, and exact symbolic-check log
 - generate_data.py                   : regenerates the numerical tables and figures
@@ -14,9 +19,10 @@ Compile
 -------
 Run from this directory:
 
-    pdflatex -interaction=nonstopmode -halt-on-error Fabius_Inverse_Frontier_Report.tex
-    pdflatex -interaction=nonstopmode -halt-on-error Fabius_Inverse_Frontier_Report.tex
-    pdflatex -interaction=nonstopmode -halt-on-error Fabius_Inverse_Frontier_Report.tex
+    cd ../..
+    pdflatex -interaction=nonstopmode -halt-on-error Inverse_and_Sampling_Frontiers.tex
+    pdflatex -interaction=nonstopmode -halt-on-error Inverse_and_Sampling_Frontiers.tex
+    pdflatex -interaction=nonstopmode -halt-on-error Inverse_and_Sampling_Frontiers.tex
 
 The PDF uses only standard TeX Live packages and the bundled figures.
 The Python scripts are not needed to compile the report.  To rerun them, install

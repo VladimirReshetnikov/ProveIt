@@ -1,7 +1,9 @@
 # Confluent Digital Extrapolation and Lambert-Phase Tomography
 
-This bundle contains the LaTeX source, compiled PDF, reproducible numerical experiments,
-and generated data for a frontier report on the Fabius--Rvachev--Thue--Morse system.
+This supporting-asset bundle contains the reproducible numerical experiments and generated
+data for a frontier report on the Fabius--Rvachev--Thue--Morse system. The report is now
+displayed as Part VI of
+[`../../Frontier_Compilations.tex`](../../Frontier_Compilations.tex).
 
 ## Corpus boundary
 
@@ -47,8 +49,6 @@ stated separately as conjectures or research programs.
 
 ## Files
 
-- `fabius_frontier_report.tex` -- complete LaTeX manuscript.
-- `fabius_frontier_report.pdf` -- compiled 24-page report.
 - `numerical_experiments.py` -- extensively commented exact and high-precision checks.
 - `corpus_manifest.txt` -- complete 78-path audit boundary.
 - `experiment_results.txt` -- compact human-readable verification summary.
@@ -59,7 +59,7 @@ stated separately as conjectures or research programs.
 - `gamma_zeta_coefficients.csv`, `gamma_zeta_decay.png` -- endpoint Fourier coefficient decay.
 - `tomography_errors.csv`, `tomography_errors.png` -- controlled radial--angular experiment.
 - `requirements.txt` -- Python dependencies.
-- `SHA256SUMS` -- checksums for the packaged files.
+- `SHA256SUMS` -- checksums for the retained supporting files.
 
 ## Reproduction
 
@@ -70,15 +70,21 @@ python -m pip install -r requirements.txt
 python numerical_experiments.py --output-dir . --precision 90
 ```
 
-Compile the paper with a reasonably complete TeX Live installation:
+Rebuild the consolidated paper from this asset directory with the
+repository-required three passes:
 
 ```bash
-latexmk -pdf -interaction=nonstopmode -halt-on-error fabius_frontier_report.tex
+cd ../..
+pdflatex -interaction=nonstopmode -halt-on-error Frontier_Compilations.tex
+pdflatex -interaction=nonstopmode -halt-on-error Frontier_Compilations.tex
+pdflatex -interaction=nonstopmode -halt-on-error Frontier_Compilations.tex
+rm -f *.aux *.log *.out *.toc
 ```
 
-The build used Python 3.13.5, mpmath 1.3.0, NumPy 2.3.5, Matplotlib 3.10.8,
-latexmk 4.86, and pdfTeX 1.40.26. The manuscript uses the Libertinus Type 1 package when
-available and falls back to Latin Modern.
+The canonical output is
+[`../../Frontier_Compilations.pdf`](../../Frontier_Compilations.pdf). The original
+standalone build used Python 3.13.5, mpmath 1.3.0, NumPy 2.3.5, Matplotlib 3.10.8,
+latexmk 4.86, and pdfTeX 1.40.26.
 
 ## Numerical-status note
 

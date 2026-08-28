@@ -20,15 +20,19 @@ without ordering the endpoints.  The main results are:
 * a literal-iteration model with an additive order semigroup and strict FTC;
 * equality of literal iteration and the Cauchy kernel for continuous inputs;
 * canonical-kernel smoothness, derivative cancellation, and order composition;
-* scalar linearity and finite-sum compatibility;
+* scalar linearity, finite-sum compatibility, and exact affine covariance;
+* arbitrary base-point shifts as a local Volterra tail plus a finite Taylor
+  jet, with a polynomial-tail corollary when the local input vanishes;
 * exact raising of the kernel order after multiplication by a power of
   `x - t`;
 * reconstruction from a vanishing initial Taylor jet;
-* a finite polynomial commutator, from which all monomial-weight formulas
-  follow.
+* a finite polynomial commutator under exact Taylor-support kernel
+  integrability, with a convenient base-kernel corollary;
+* all monomial-weight formulas as direct specializations.
 
-The codomain is an arbitrary real Banach space.  Nothing in this module is
-specific to the Fabius function.
+The kernel algebra works in an arbitrary real normed space; completeness is
+assumed only for the FTC, Taylor-reconstruction, and literal-iteration bridge.
+Nothing in this module is specific to the Fabius function.
 -/
 
 open scoped BigOperators ContDiff Interval Polynomial
@@ -257,6 +261,60 @@ theorem normalizedVolterra_smul
       simp only [smul_smul]
       rw [mul_comm]
 
+/-- Normalized Volterra operators are covariant under affine changes of
+variables.  This division-free form is valid for every real scale `c`,
+including negative scales (by orientation of the interval integral) and
+even `c = 0`. -/
+theorem normalizedVolterra_affine
+    {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    (n : ℕ) (a x c d : ℝ) (f : ℝ → E) :
+    normalizedVolterra n (c * a + d) f (c * x + d) =
+      c ^ n • normalizedVolterra n a (fun t => f (c * t + d)) x := by
+  cases n with
+  | zero => simp
+  | succ n =>
+      rw [normalizedVolterra_succ, normalizedVolterra_succ,
+        ← intervalIntegral.smul_integral_comp_mul_add
+          (fun u => (((c * x + d) - u) ^ n / n.factorial) • f u) c d]
+      calc
+        c • ∫ t in a..x,
+              (((c * x + d) - (c * t + d)) ^ n / n.factorial) •
+                f (c * t + d) =
+            c • ∫ t in a..x,
+              c ^ n • (((x - t) ^ n / n.factorial) • f (c * t + d)) := by
+          congr 1
+          apply intervalIntegral.integral_congr
+          intro t ht
+          change
+            (((c * x + d) - (c * t + d)) ^ n / n.factorial) •
+                f (c * t + d) =
+              c ^ n • (((x - t) ^ n / n.factorial) • f (c * t + d))
+          rw [smul_smul]
+          congr 1
+          rw [show c * x + d - (c * t + d) = c * (x - t) by ring,
+            mul_pow]
+          ring
+        _ = c • (c ^ n •
+              ∫ t in a..x, ((x - t) ^ n / n.factorial) •
+                f (c * t + d)) := by
+          rw [intervalIntegral.integral_smul]
+        _ = c ^ (n + 1) •
+              ∫ t in a..x, ((x - t) ^ n / n.factorial) •
+                f (c * t + d) := by
+          rw [smul_smul]
+          congr 1
+          rw [pow_succ]
+          ring
+
+/-- Inverse-smul form of affine covariance for a nonzero scale. -/
+theorem normalizedVolterra_comp_affine
+    {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    (n : ℕ) (a x c d : ℝ) (f : ℝ → E) (hc : c ≠ 0) :
+    normalizedVolterra n a (fun t => f (c * t + d)) x =
+      (c ^ n)⁻¹ • normalizedVolterra n (c * a + d) f (c * x + d) := by
+  rw [normalizedVolterra_affine n a x c d f]
+  simp [smul_smul, hc]
+
 /-- A finite sum may be passed through a normalized Volterra operator when
 the summands are interval integrable. -/
 theorem normalizedVolterra_finsetSum
@@ -286,6 +344,135 @@ theorem normalizedVolterra_finsetSum
           intervalIntegral.integral_finsetSum hkernel
         _ = ∑ i ∈ s, normalizedVolterra (n + 1) a (f i) x := by
           rfl
+
+/-- Changing the base point of a normalized Volterra operator leaves a local
+Volterra tail and a finite Taylor jet determined at the new base point.
+
+The two interval-integrability hypotheses are local to the two pieces of the
+oriented interval.  No ordering of `a`, `b`, and `x` is required.  At order
+zero the sum is empty and both Volterra terms reduce to `f x`. -/
+theorem normalizedVolterra_basepoint_shift
+    {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    (n : ℕ) (a b x : ℝ) (f : ℝ → E)
+    (hab : IntervalIntegrable f volume a b)
+    (hbx : IntervalIntegrable f volume b x) :
+    normalizedVolterra n a f x =
+      normalizedVolterra n b f x +
+        ∑ k ∈ range n,
+          (((k.factorial : ℝ)⁻¹ * (x - b) ^ k) •
+            normalizedVolterra (n - k) a f b) := by
+  cases n with
+  | zero => simp
+  | succ n =>
+      let q : ℕ → ℝ → E := fun k t =>
+        ((((k.factorial : ℝ)⁻¹ * (x - b) ^ k) *
+            ((b - t) ^ (n - k) / (n - k).factorial)) • f t)
+      have hexpand (t : ℝ) :
+          ((x - t) ^ n / n.factorial) • f t =
+            ∑ k ∈ range (n + 1), q k t := by
+        rw [← Finset.sum_smul]
+        congr 1
+        rw [show x - t = (x - b) + (b - t) by ring, add_pow,
+          Finset.sum_div]
+        apply Finset.sum_congr rfl
+        intro k hk
+        have hk' : k ≤ n := Nat.le_of_lt_succ (Finset.mem_range.mp hk)
+        have hfac :
+            (n.choose k : ℝ) * (k.factorial : ℝ) *
+                ((n - k).factorial : ℝ) = (n.factorial : ℝ) := by
+          exact_mod_cast Nat.choose_mul_factorial_mul_factorial hk'
+        field_simp
+        rw [← hfac]
+        ring
+      have hq : ∀ k ∈ range (n + 1),
+          IntervalIntegrable (q k) volume a b := by
+        intro k hk
+        exact hab.continuousOn_smul (by
+          fun_prop)
+      have hleft :
+          (∫ t in a..b, ((x - t) ^ n / n.factorial) • f t) =
+            ∑ k ∈ range (n + 1),
+              (((k.factorial : ℝ)⁻¹ * (x - b) ^ k) •
+                normalizedVolterra (n + 1 - k) a f b) := by
+        calc
+          (∫ t in a..b, ((x - t) ^ n / n.factorial) • f t) =
+              ∫ t in a..b, ∑ k ∈ range (n + 1), q k t := by
+                apply intervalIntegral.integral_congr
+                intro t ht
+                exact hexpand t
+          _ = ∑ k ∈ range (n + 1), ∫ t in a..b, q k t :=
+            intervalIntegral.integral_finsetSum hq
+          _ = ∑ k ∈ range (n + 1),
+                (((k.factorial : ℝ)⁻¹ * (x - b) ^ k) •
+                  normalizedVolterra (n + 1 - k) a f b) := by
+            apply Finset.sum_congr rfl
+            intro k hk
+            have hk' : k ≤ n :=
+              Nat.le_of_lt_succ (Finset.mem_range.mp hk)
+            have horder : n + 1 - k = n - k + 1 := by omega
+            rw [horder, normalizedVolterra_succ,
+              ← intervalIntegral.integral_smul]
+            apply intervalIntegral.integral_congr
+            intro t ht
+            dsimp only [q]
+            rw [smul_smul]
+      have habKernel :
+          IntervalIntegrable
+            (fun t => ((x - t) ^ n / n.factorial) • f t) volume a b :=
+        hab.continuousOn_smul (by fun_prop)
+      have hbxKernel :
+          IntervalIntegrable
+            (fun t => ((x - t) ^ n / n.factorial) • f t) volume b x :=
+        hbx.continuousOn_smul (by fun_prop)
+      rw [normalizedVolterra_succ, normalizedVolterra_succ]
+      calc
+        (∫ t in a..x, ((x - t) ^ n / n.factorial) • f t) =
+            (∫ t in a..b, ((x - t) ^ n / n.factorial) • f t) +
+              ∫ t in b..x, ((x - t) ^ n / n.factorial) • f t :=
+          (intervalIntegral.integral_add_adjacent_intervals
+            habKernel hbxKernel).symm
+        _ = (∫ t in b..x, ((x - t) ^ n / n.factorial) • f t) +
+              ∫ t in a..b, ((x - t) ^ n / n.factorial) • f t := by
+          rw [add_comm]
+        _ = (∫ t in b..x, ((x - t) ^ n / n.factorial) • f t) +
+              ∑ k ∈ range (n + 1),
+                (((k.factorial : ℝ)⁻¹ * (x - b) ^ k) •
+                  normalizedVolterra (n + 1 - k) a f b) := by
+          rw [hleft]
+
+/-- If the input vanishes on the open interval between a new base point and
+the endpoint, every positive-order normalized Volterra value is exactly the
+finite Taylor jet inherited from the old base point.
+
+Using `uIoo b x` deliberately imposes no condition at either endpoint; point
+values do not affect a positive-order interval integral.  In particular the
+hypothesis is vacuous when `b = x`. -/
+theorem normalizedVolterra_succ_eq_taylor_of_eq_zero
+    {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    (n : ℕ) (a b x : ℝ) (f : ℝ → E)
+    (hab : IntervalIntegrable f volume a b)
+    (hzero : Set.EqOn f 0 (uIoo b x)) :
+    normalizedVolterra (n + 1) a f x =
+      ∑ k ∈ range (n + 1),
+        (((k.factorial : ℝ)⁻¹ * (x - b) ^ k) •
+          normalizedVolterra (n + 1 - k) a f b) := by
+  have hbx : IntervalIntegrable f volume b x := by
+    have hz : IntervalIntegrable (fun _ : ℝ => (0 : E)) volume b x :=
+      continuous_const.intervalIntegrable _ _
+    exact hz.congr_uIoo fun t ht => (hzero ht).symm
+  have htail : normalizedVolterra (n + 1) b f x = 0 := by
+    rw [normalizedVolterra_succ]
+    calc
+      (∫ t in b..x, ((x - t) ^ n / n.factorial) • f t) =
+          ∫ _t in b..x, (0 : E) := by
+        apply intervalIntegral.integral_congr_uIoo
+        intro t ht
+        change ((x - t) ^ n / n.factorial) • f t = 0
+        rw [hzero ht]
+        simp
+      _ = 0 := by simp
+  simpa only [htail, zero_add] using
+    normalizedVolterra_basepoint_shift (n + 1) a b x f hab hbx
 
 /-- Multiplying the input by the `r`th power of the Volterra kernel raises
 the order by `r`, with the exact rising-factorial coefficient. -/
@@ -326,6 +513,183 @@ theorem normalizedVolterra_kernel_pow
         Nat.add_left_comm] using
         normalizedVolterra_succ_kernel_pow n r a x f
 
+/-- Integrability of a normalized Volterra kernel propagates to every higher
+kernel order.  This purely analytic fact is valid for an arbitrary measure on
+the real line. -/
+theorem intervalIntegrable_normalizedVolterraKernel_add
+    {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {μ : Measure ℝ} (n r : ℕ) (a x : ℝ) (f : ℝ → E)
+    (hf : IntervalIntegrable
+      (fun t => ((x - t) ^ n / (n.factorial : ℝ)) • f t) μ a x) :
+    IntervalIntegrable
+      (fun t => ((x - t) ^ (n + r) / ((n + r).factorial : ℝ)) • f t)
+        μ a x := by
+  have hscaled := hf.continuousOn_smul
+    (show ContinuousOn
+        (fun t : ℝ =>
+          (n.factorial : ℝ) / ((n + r).factorial : ℝ) * (x - t) ^ r)
+        (uIcc a x) by fun_prop)
+  apply hscaled.congr
+  intro t _
+  change
+    ((n.factorial : ℝ) / ((n + r).factorial : ℝ) * (x - t) ^ r) •
+        (((x - t) ^ n / (n.factorial : ℝ)) • f t) =
+      ((x - t) ^ (n + r) / ((n + r).factorial : ℝ)) • f t
+  rw [smul_smul]
+  congr 1
+  have hn : (n.factorial : ℝ) ≠ 0 := by positivity
+  have hnr : ((n + r).factorial : ℝ) ≠ 0 := by positivity
+  rw [pow_add]
+  field_simp [hn, hnr]
+
+private theorem polynomial_eval_eq_sum_hasse
+    (P : ℝ[X]) (x t : ℝ) :
+    P.eval t =
+      ∑ r ∈ range (P.natDegree + 1),
+        (P.hasseDeriv r).eval x * (t - x) ^ r := by
+  calc
+    P.eval t = (P.taylor x).eval (t - x) :=
+      (P.taylor_eval_sub x t).symm
+    _ = ∑ r ∈ range ((P.taylor x).natDegree + 1),
+          (P.taylor x).coeff r * (t - x) ^ r :=
+      Polynomial.eval_eq_sum_range (t - x)
+    _ = ∑ r ∈ range (P.natDegree + 1),
+          (P.hasseDeriv r).eval x * (t - x) ^ r := by
+      simp only [Polynomial.natDegree_taylor, Polynomial.taylor_coeff]
+
+private theorem normalizedVolterraKernel_mul_sub_pow
+    (n r : ℕ) (x t : ℝ) :
+    ((x - t) ^ n / (n.factorial : ℝ)) * (t - x) ^ r =
+      ((-1 : ℝ) ^ r * ((n + 1).ascFactorial r : ℝ)) *
+        ((x - t) ^ (n + r) / ((n + r).factorial : ℝ)) := by
+  have hfactorial :
+      (n.factorial : ℝ) * ((n + 1).ascFactorial r : ℝ) =
+        ((n + r).factorial : ℝ) := by
+    exact_mod_cast Nat.factorial_mul_ascFactorial n r
+  have hn : (n.factorial : ℝ) ≠ 0 := by positivity
+  have hnr : ((n + r).factorial : ℝ) ≠ 0 := by positivity
+  rw [show t - x = -(x - t) by ring, neg_pow, pow_add]
+  calc
+    ((x - t) ^ n / (n.factorial : ℝ)) *
+        ((-1 : ℝ) ^ r * (x - t) ^ r) =
+      ((-1 : ℝ) ^ r * (x - t) ^ n * (x - t) ^ r) /
+        (n.factorial : ℝ) := by ring
+    _ = ((-1 : ℝ) ^ r * ((n + 1).ascFactorial r : ℝ) *
+          ((x - t) ^ n * (x - t) ^ r)) /
+          ((n + r).factorial : ℝ) := by
+      apply (div_eq_div_iff hn hnr).2
+      rw [← hfactorial]
+      ring
+    _ = ((-1 : ℝ) ^ r * ((n + 1).ascFactorial r : ℝ)) *
+        (((x - t) ^ n * (x - t) ^ r) /
+          ((n + r).factorial : ℝ)) := by ring
+
+private theorem normalizedVolterraKernel_mul_polynomial_eq_sum
+    (P : ℝ[X]) (n : ℕ) (x t : ℝ) :
+    (x - t) ^ n / (n.factorial : ℝ) * P.eval t =
+      ∑ r ∈ range (P.natDegree + 1),
+        ((-1 : ℝ) ^ r * ((n + 1).ascFactorial r : ℝ) *
+            (P.hasseDeriv r).eval x) *
+          ((x - t) ^ (n + r) / ((n + r).factorial : ℝ)) := by
+  rw [polynomial_eval_eq_sum_hasse P x t, Finset.mul_sum]
+  apply Finset.sum_congr rfl
+  intro r _
+  calc
+    (x - t) ^ n / (n.factorial : ℝ) *
+        ((P.hasseDeriv r).eval x * (t - x) ^ r) =
+      (P.hasseDeriv r).eval x *
+        ((x - t) ^ n / (n.factorial : ℝ) * (t - x) ^ r) := by ring
+    _ = (P.hasseDeriv r).eval x *
+        (((-1 : ℝ) ^ r * ((n + 1).ascFactorial r : ℝ)) *
+          ((x - t) ^ (n + r) / ((n + r).factorial : ℝ))) := by
+      rw [normalizedVolterraKernel_mul_sub_pow]
+    _ = ((-1 : ℝ) ^ r * ((n + 1).ascFactorial r : ℝ) *
+          (P.hasseDeriv r).eval x) *
+        ((x - t) ^ (n + r) / ((n + r).factorial : ℝ)) := by ring
+
+/-- The positive-order polynomial commutator under its exact natural
+integrability hypothesis: only the higher kernels indexed by the Taylor
+support of `P` at `x` must be interval integrable.  In particular, zero
+Taylor coefficients impose no spurious assumptions. -/
+theorem normalizedVolterra_succ_polynomial_of_taylor_support_kernel_intervalIntegrable
+    {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    (n : ℕ) (a x : ℝ) (P : ℝ[X]) (f : ℝ → E)
+    (hkernel : ∀ r ∈ (P.taylor x).support,
+      IntervalIntegrable
+        (fun t =>
+          ((x - t) ^ (n + r) / ((n + r).factorial : ℝ)) • f t)
+        volume a x) :
+    normalizedVolterra (n + 1) a (fun t => P.eval t • f t) x =
+      ∑ r ∈ range (P.natDegree + 1),
+        (((-1 : ℝ) ^ r * ((n + 1).ascFactorial r : ℝ) *
+            (P.hasseDeriv r).eval x) •
+          normalizedVolterra (n + r + 1) a f x) := by
+  rw [normalizedVolterra_succ]
+  let c : ℕ → ℝ := fun r =>
+    (-1 : ℝ) ^ r * ((n + 1).ascFactorial r : ℝ) *
+      (P.hasseDeriv r).eval x
+  let kernel : ℕ → ℝ → ℝ := fun m t =>
+    (x - t) ^ m / (m.factorial : ℝ)
+  have htermIntegrable (r : ℕ) (_hr : r ∈ range (P.natDegree + 1)) :
+      IntervalIntegrable
+        (fun t => c r • (kernel (n + r) t • f t)) volume a x := by
+    by_cases hrs : r ∈ (P.taylor x).support
+    · exact (hkernel r hrs).continuousOn_smul continuousOn_const
+    · have hz : (P.hasseDeriv r).eval x = 0 := by
+        have hz' := Polynomial.notMem_support_iff.mp hrs
+        simpa only [Polynomial.taylor_coeff] using hz'
+      have hzero :
+          (fun t => c r • (kernel (n + r) t • f t)) = (0 : ℝ → E) := by
+        funext t
+        simp [c, hz]
+      rw [hzero]
+      exact IntervalIntegrable.zero
+  calc
+    (∫ t in a..x, kernel n t • (P.eval t • f t)) =
+        ∫ t in a..x,
+          ∑ r ∈ range (P.natDegree + 1),
+            c r • (kernel (n + r) t • f t) := by
+      apply intervalIntegral.integral_congr
+      intro t _
+      simp_rw [smul_smul]
+      change (kernel n t * P.eval t) • f t =
+        ∑ r ∈ range (P.natDegree + 1),
+          (c r * kernel (n + r) t) • f t
+      rw [normalizedVolterraKernel_mul_polynomial_eq_sum P n x t,
+        Finset.sum_smul]
+    _ = ∑ r ∈ range (P.natDegree + 1),
+          ∫ t in a..x, c r • (kernel (n + r) t • f t) := by
+      exact intervalIntegral.integral_finsetSum htermIntegrable
+    _ = ∑ r ∈ range (P.natDegree + 1),
+          c r • ∫ t in a..x, kernel (n + r) t • f t := by
+      apply Finset.sum_congr rfl
+      intro r _
+      rw [intervalIntegral.integral_smul]
+    _ = ∑ r ∈ range (P.natDegree + 1),
+          (((-1 : ℝ) ^ r * ((n + 1).ascFactorial r : ℝ) *
+              (P.hasseDeriv r).eval x) •
+            normalizedVolterra (n + r + 1) a f x) := by
+      rfl
+
+/-- The positive-order polynomial commutator under a base-kernel
+integrability hypothesis, which is weaker than interval integrability of the
+base integrand.  It is enough that the order-`n + 1` Volterra kernel itself be
+interval integrable. -/
+theorem normalizedVolterra_succ_polynomial_of_kernel_intervalIntegrable
+    {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    (n : ℕ) (a x : ℝ) (P : ℝ[X]) (f : ℝ → E)
+    (hf : IntervalIntegrable
+      (fun t => ((x - t) ^ n / (n.factorial : ℝ)) • f t) volume a x) :
+    normalizedVolterra (n + 1) a (fun t => P.eval t • f t) x =
+      ∑ r ∈ range (P.natDegree + 1),
+        (((-1 : ℝ) ^ r * ((n + 1).ascFactorial r : ℝ) *
+            (P.hasseDeriv r).eval x) •
+          normalizedVolterra (n + r + 1) a f x) := by
+  apply
+    normalizedVolterra_succ_polynomial_of_taylor_support_kernel_intervalIntegrable
+  intro r _
+  exact intervalIntegrable_normalizedVolterraKernel_add n r a x f hf
+
 /-- Multiplication by a polynomial becomes a finite triangular combination
 of higher Volterra orders.  The coefficients are the Hasse derivatives of
 the polynomial at the upper endpoint.
@@ -341,59 +705,8 @@ theorem normalizedVolterra_succ_polynomial
         (((-1 : ℝ) ^ r * ((n + 1).ascFactorial r : ℝ) *
             (P.hasseDeriv r).eval x) •
           normalizedVolterra (n + r + 1) a f x) := by
-  let c : ℕ → ℝ := fun r =>
-    (-1 : ℝ) ^ r * (P.hasseDeriv r).eval x
-  let g : ℕ → ℝ → E := fun r t =>
-    (c r * (x - t) ^ r) • f t
-  have hexpand : Set.EqOn (fun t => P.eval t • f t)
-      (fun t => ∑ r ∈ range (P.natDegree + 1), g r t) (uIcc a x) := by
-    intro t ht
-    change P.eval t • f t = ∑ r ∈ range (P.natDegree + 1), g r t
-    rw [← P.taylor_eval_sub x t, Polynomial.eval_eq_sum_range]
-    simp only [Polynomial.natDegree_taylor, Polynomial.taylor_coeff,
-      Finset.sum_smul]
-    apply Finset.sum_congr rfl
-    intro r hr
-    dsimp only [g, c]
-    congr 1
-    rw [show t - x = -(x - t) by ring, neg_pow]
-    ring
-  have hg : ∀ r ∈ range (P.natDegree + 1),
-      IntervalIntegrable (g r) volume a x := by
-    intro r hr
-    exact hf.continuousOn_smul (by fun_prop)
-  calc
-    normalizedVolterra (n + 1) a (fun t => P.eval t • f t) x =
-        normalizedVolterra (n + 1) a
-          (fun t => ∑ r ∈ range (P.natDegree + 1), g r t) x :=
-      normalizedVolterra_congr (n + 1) a x hexpand
-    _ = ∑ r ∈ range (P.natDegree + 1),
-          normalizedVolterra (n + 1) a (g r) x :=
-      normalizedVolterra_finsetSum (n + 1) a x
-        (range (P.natDegree + 1)) g hg
-    _ = ∑ r ∈ range (P.natDegree + 1),
-        (((-1 : ℝ) ^ r * ((n + 1).ascFactorial r : ℝ) *
-            (P.hasseDeriv r).eval x) •
-          normalizedVolterra (n + r + 1) a f x) := by
-      apply Finset.sum_congr rfl
-      intro r hr
-      calc
-        normalizedVolterra (n + 1) a (g r) x =
-            c r • normalizedVolterra (n + 1) a
-              (fun t => (x - t) ^ r • f t) x := by
-          rw [← normalizedVolterra_smul]
-          apply normalizedVolterra_congr
-          intro t ht
-          simp only [g, smul_smul]
-        _ = c r • (((n + 1).ascFactorial r : ℝ) •
-              normalizedVolterra (n + r + 1) a f x) := by
-          rw [normalizedVolterra_succ_kernel_pow]
-        _ = (((-1 : ℝ) ^ r * ((n + 1).ascFactorial r : ℝ) *
-              (P.hasseDeriv r).eval x) •
-            normalizedVolterra (n + r + 1) a f x) := by
-          simp only [c, smul_smul]
-          congr 1
-          ring
+  apply normalizedVolterra_succ_polynomial_of_kernel_intervalIntegrable
+  exact hf.continuousOn_smul (by fun_prop)
 
 /-- All-order polynomial commutator.  At order zero, the rising factorial
 annihilates every positive shift, so this also records the identity operator

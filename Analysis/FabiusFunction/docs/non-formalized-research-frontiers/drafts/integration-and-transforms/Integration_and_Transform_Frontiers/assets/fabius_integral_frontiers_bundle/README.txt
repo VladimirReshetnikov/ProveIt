@@ -1,14 +1,20 @@
 Integral and Transform Frontiers for the Fabius–Rvachev System
 ================================================================
 
+CONSOLIDATION NOTE
+------------------
+The standalone report source and PDF were absorbed into Part VI of
+../../Integration_and_Transform_Frontiers.tex. This directory now contains
+only supporting assets; git history preserves the former standalone files.
+
 CONTENTS
 --------
 
-fabius_integral_frontiers.tex
-    Complete 27-page LaTeX source of the research report.
+../../Integration_and_Transform_Frontiers.tex
+    Canonical consolidated source.
 
-fabius_integral_frontiers.pdf
-    Compiled A4 PDF.
+../../Integration_and_Transform_Frontiers.pdf
+    Rendered consolidated volume.
 
 numerical_experiments.py
     Fully commented, deterministic numerical checks and figure generation.
@@ -42,13 +48,16 @@ RECOMPILING THE REPORT
 ----------------------
 
 A TeX distribution containing pdfLaTeX and the standard packages named in the
-preamble is required. From this directory, run twice:
+preamble is required. From this directory, run exactly three passes, then
+remove the sidecar files:
 
-    pdflatex -interaction=nonstopmode -halt-on-error fabius_integral_frontiers.tex
-    pdflatex -interaction=nonstopmode -halt-on-error fabius_integral_frontiers.tex
+    (cd ../.. && pdflatex -interaction=nonstopmode -halt-on-error Integration_and_Transform_Frontiers.tex)
+    (cd ../.. && pdflatex -interaction=nonstopmode -halt-on-error Integration_and_Transform_Frontiers.tex)
+    (cd ../.. && pdflatex -interaction=nonstopmode -halt-on-error Integration_and_Transform_Frontiers.tex)
+    (cd ../.. && rm -f *.aux *.log *.out *.toc)
 
-The supplied PDF was built with pdfTeX 1.40.26. The final build has 27 pages,
-resolved cross-references, and no reported LaTeX warnings or overfull boxes.
+The former standalone PDF was built with pdfTeX 1.40.26 and had 29 pages.
+The canonical output is now the consolidated PDF named above.
 
 SCOPE AND PROOF STATUS
 ----------------------
@@ -64,3 +73,16 @@ Statements labeled theorem, proposition, or corollary are supplied with proofs
 in the report. Statements labeled conjecture or research direction are not
 claimed as proved. Numerical experiments are corroborative checks rather than
 substitutes for proofs.
+
+CURRENT LEAN STATUS
+-------------------
+
+The reusable normalized Volterra layer was focused-build verified at compiled
+checkpoint e109088ed. Its affine covariance is division-free for every real
+scale, while the inverse form assumes a nonzero scale. Its basepoint formula
+works without endpoint ordering and includes order zero; the positive-order
+zero-tail theorem needs no endpoint-value hypothesis. Separately, the signed
+global and bounded x <= 1 natural-monomial Fabius coefficients are formalized
+by normalizedVolterra_pow_mul_extendedFabius and
+normalizedVolterra_pow_mul_fabiusReal_of_le_one. The report's 1-F, shifted-up,
+and exterior piecewise coefficient specializations remain paper-level results.

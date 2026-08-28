@@ -1,9 +1,9 @@
 \documentclass[11pt]{article}
 
-\usepackage[a4paper,margin=27mm,headheight=14pt]{geometry}
+\usepackage[a4paper,margin=27mm,headheight=22pt]{geometry}
 \usepackage[T1]{fontenc}
 \usepackage[utf8]{inputenc}
-\usepackage{lmodern}
+\IfFileExists{libertinus.sty}{\usepackage{libertinus}}{\usepackage{lmodern}}
 \usepackage{microtype}
 \usepackage{amsmath,amssymb,amsthm,mathtools,bm}
 \allowdisplaybreaks
@@ -12,6 +12,8 @@
 \usepackage{xcolor}
 \usepackage{hyperref}
 \usepackage[nameinlink,capitalise,noabbrev]{cleveref}
+\crefname{conjecture}{conjecture}{conjectures}
+\Crefname{conjecture}{Conjecture}{Conjectures}
 \usepackage{tikz}
 \usepackage{pgfplots}
 \pgfplotsset{compat=1.18}
@@ -30,10 +32,11 @@
 \definecolor{codegray}{RGB}{246,246,246}
 
 \hypersetup{
-  pdftitle={Tail Quadrature, Exact Dyadic Error Laws, and q-Binomial Acceleration for the Fabius--Rvachev System},
+  hypertexnames=false,
+  pdftitle={Collected Frontier Reports for the Fabius--Rvachev System},
   pdfauthor={OpenAI, based on the ProveIt corpus by Vladimir Reshetnikov},
-  pdfsubject={New frontier results on the Fabius function, Rvachev up-function, Thue--Morse splines, quadrature, q-binomial acceleration, and infinite sinc products},
-  pdfkeywords={Fabius function, Rvachev up-function, Thue-Morse, Gaussian quadrature, Gauss-Lobatto quadrature, q-binomial, sinc product, Peano kernel},
+  pdfsubject={Ten collected research-frontier reports on the Fabius function and Rvachev up-function},
+  pdfkeywords={Fabius function, Rvachev up-function, Thue-Morse, sinc products, q-Richardson extrapolation, spectral determinants, endpoint asymptotics},
   colorlinks=true,
   linkcolor=frontierblue,
   citecolor=frontiergreen,
@@ -42,14 +45,25 @@
 
 \pagestyle{fancy}
 \fancyhf{}
-\fancyhead[L]{Fabius--Rvachev frontier report}
-\fancyhead[R]{\thepage}
+\fancyhead[L]{\small Fabius--Rvachev frontier compilations}
+\fancyhead[R]{\small \thepage}
 \renewcommand{\headrulewidth}{0.3pt}
 
 \numberwithin{equation}{section}
 \setcounter{tocdepth}{2}
 \setcounter{secnumdepth}{3}
 \setlist{itemsep=2pt,topsep=5pt}
+\setlength{\emergencystretch}{2em}
+
+% Each absorbed report was a standalone article and therefore entered its
+% appendices by changing \thesection globally.  Restore article-style section
+% numbering at every outer report boundary; internal \part divisions remain
+% untouched and retain their intended place in the collected hierarchy.
+\newcommand{\frontierreportpart}[1]{%
+  \clearpage
+  \setcounter{section}{0}%
+  \renewcommand{\thesection}{\arabic{section}}%
+  \part{#1}}
 
 \newtheorem{theorem}{Theorem}[section]
 \newtheorem{proposition}[theorem]{Proposition}
@@ -64,6 +78,8 @@
 \newtheorem{remark}[theorem]{Remark}
 \newtheorem{warning}[theorem]{Warning}
 \newtheorem{status}[theorem]{Status note}
+\crefname{conjecture}{conjecture}{conjectures}
+\Crefname{conjecture}{Conjecture}{Conjectures}
 
 \DeclareMathOperator{\supp}{supp}
 \DeclareMathOperator{\Var}{Var}
@@ -160,7 +176,8 @@ The absorbed drafts are deleted from the working tree; git history is the archiv
 \item \path{beyond_dyadic_fabius_web_report/fabius_frontier_report.tex} \\ {\footnotesize SHA-256 \path{9cba234d935b3a48db7203cc64c5df2db73fcdc9b97b3b55b2b923ec86b0ee40}}
 \end{itemize}
 \clearpage
-\part{Tail Quadrature}
+\frontierreportpart{Tail Quadrature, Exact Dyadic Error Laws, and q-Binomial
+Acceleration for the Fabius--Rvachev System}
 % Absorbed from Fabius_Rvachev_Frontier_Report/Fabius_Rvachev_Frontier_Report.tex
 
 
@@ -1426,13 +1443,13 @@ Set \(r=s-1\) and \(k=j\).  The compiled module
 outside \(k\le r\) and, inside that range, is exactly
 \( (-1)^{r-k}q^{\binom{r-k+1}{2}}
 \texttt{gaussianBinomial}\ q\ r\ (r-k)\).
-Its \texttt{reversed\_finite\_qBinomial\_theorem} proves the
+Its \nolinkurl{reversed_finite_qBinomial_theorem} proves the
 denominator-free identity with product
 \(\prod_{h<r}(z-q^{h+1})\).  If \(k\mapsto q^k\) is injective on
 \(\{0,\ldots,r\}\),
-\texttt{geometricLagrangeWeight\_eq\_gaussianBinomial\_div} identifies
+\nolinkurl{geometricLagrangeWeight_eq_gaussianBinomial_div} identifies
 the normalized numerator with the Lagrange weight, and
-\texttt{sum\_geometricLagrangeWeight\_mul\_pow\_eq\_gaussianBinomial}
+\nolinkurl{sum_geometricLagrangeWeight_mul_pow_eq_gaussianBinomial}
 proves for every \(d>0\)
 \[
  \sum_{k=0}^{r}\lambda_{s,k}(q)(q^k)^d
@@ -2286,7 +2303,11 @@ G.~Gasper and M.~Rahman,
 \definecolor{rulegray}{RGB}{195,201,208}
 \definecolor{deepgray}{RGB}{70,75,82}
 \newtheorem{conjecture}[theorem]{Conjecture}
-\newtheorem{problem}[theorem]{Open problem}
+% Some member reports use the neutral heading ``Problem'', while others mark
+% the same environment explicitly as ``Open problem''.  Keep one counter and
+% vary only its stored heading at report boundaries.
+\newcommand{\frontierproblemname}{Open problem}
+\newtheorem{problem}[theorem]{\frontierproblemname}
 \newenvironment{proofidea}
   {\par\smallskip\noindent\textit{Proof architecture.}\ }
   {\hfill$\square$\par\smallskip}
@@ -2297,7 +2318,7 @@ G.~Gasper and M.~Rahman,
   \vspace{0.65em}\hrule\end{minipage}\end{center}\medskip
 }
 
-\part{Arithmetic Spectra of the Rvachev Sinc Product}
+\frontierreportpart{Arithmetic Spectra of the Rvachev Sinc Product}
 % Absorbed from Fabius_Rvachev_Frontier_Report-2/Fabius_Rvachev_Frontier_Report.tex
 
 
@@ -3683,7 +3704,6 @@ V.~Reshetnikov,
 \crefname{proposition}{proposition}{propositions}
 \crefname{lemma}{lemma}{lemmas}
 \crefname{corollary}{corollary}{corollaries}
-\crefname{conjecture}{conjecture}{conjectures}
 \crefname{problem}{problem}{problems}
 \crefname{definition}{definition}{definitions}
 \crefname{algorithm}{algorithm}{algorithms}
@@ -3725,16 +3745,13 @@ V.~Reshetnikov,
   aboveskip=0.8em,belowskip=0.8em
 }
 
-\part{Zero-Divisor-Preserving q-Richardson Extrapolation for the Fabius--Rvachev Sinc Product}
+\renewcommand{\frontierproblemname}{Problem}
+\frontierreportpart{Zero-Divisor-Preserving q-Richardson Extrapolation for the
+Fabius--Rvachev Sinc Product}
 % Absorbed from Fabius_Rvachev_Frontier_Report-3/fabius_frontier_report.tex
 
 
-\hypersetup{pageanchor=false}
-
-
-
-\hypersetup{pageanchor=true}
-\pagenumbering{roman}
+% Standalone front-matter page resets are suppressed in the collected volume.
 
 \begin{abstract}
 Let
@@ -3812,7 +3829,6 @@ a Lean counterpart at the snapshot commit.
 \clearpage
 
 \clearpage
-\pagenumbering{arabic}
 
 \section{Corpus boundary, audit method, and collision control}\label{p3:sec:audit}
 
@@ -5066,7 +5082,8 @@ D. Reidel, 1974.
   belowskip=0.5em
 }
 
-\part{Midpoint Transmutation}
+\frontierreportpart{Midpoint Transmutation, Dyadic Cardinal Reproduction, and
+Holonomic Obstructions}
 % Absorbed from Fabius_Rvachev_Frontier_Report_2026-08-27/fabius_frontier_report.tex
 
 
@@ -5576,7 +5593,7 @@ In \eqref{p4:eq:sinc-product}, the factor indexed by $n$ vanishes at an integer 
 
 \begin{figure}[H]
 \centering
-\includegraphics[width=0.92\textwidth]{assets/Fabius_Rvachev_Frontier_Report_2026-08-27/figures/zero_multiplicity_ladder.pdf}
+\includegraphics[width=0.92\textwidth]{assets/Fabius_Rvachev_Frontier_Report_2026-08-27/figures/zero_multiplicity_ladder.png}
 \caption{The exact multiplicities $1+\nu_2(m)$ for $1\le m\le64$.  The unbounded spikes at powers of two later obstruct D-finiteness of the entire Fourier transform.}
 \label{p4:fig:zero-multiplicity}
 \end{figure}
@@ -6039,7 +6056,7 @@ $0.05$  & $5.11439387869\times10^{-8}$ & $5.11431110610\times10^{-8}$ & $1.00001
 
 \begin{figure}[H]
 \centering
-\includegraphics[width=0.92\textwidth]{assets/Fabius_Rvachev_Frontier_Report_2026-08-27/figures/inverse_midpoint_defect.pdf}
+\includegraphics[width=0.92\textwidth]{assets/Fabius_Rvachev_Frontier_Report_2026-08-27/figures/inverse_midpoint_defect.png}
 \caption{The exact inverse midpoint defect $E(\delta)$ and the leading endpoint proxy $F(\delta/2)/2$.  Their relative separation rapidly becomes invisible on the logarithmic vertical scale, in agreement with \cref{p4:prop:inverse-proxy}.}
 \label{p4:fig:inverse-defect}
 \end{figure}
@@ -6342,7 +6359,8 @@ C. R. Acad. Sci. Paris \textbf{33} (1851), 225.
 \definecolor{provedgreen}{RGB}{27,111,72}
 \definecolor{cautionorange}{RGB}{155,88,18}
 
-\part{Gamma Duality}
+\frontierreportpart{Gamma Duality, Total Positivity, and Lambert-Localized
+Moments in the Fabius--Rvachev System}
 % Absorbed from Fabius_Rvachev_New_Frontiers/Fabius_Rvachev_New_Frontiers.tex
 
 
@@ -8047,7 +8065,9 @@ current snapshot.
   aboveskip=0.8em,belowskip=0.8em
 }
 
-\part{Confluent Digital Extrapolation and Lambert-Phase Tomography in the Fabius--Rvachev System}
+\renewcommand{\frontierproblemname}{Open problem}
+\frontierreportpart{Confluent Digital Extrapolation and Lambert-Phase Tomography
+in the Fabius--Rvachev System}
 % Absorbed from fabius_frontier_report_bundle/fabius_frontier_report.tex
 
 
@@ -9569,14 +9589,12 @@ V. Reshetnikov,
   \par\vspace{5pt}\color{DeepGreen}\hrule
   \end{minipage}\par\medskip}
 
-\part{Dyadic Spectral Determinants for the Fabius--Rvachev System}
+\renewcommand{\frontierproblemname}{Problem}
+\frontierreportpart{Dyadic Spectral Determinants for the Fabius--Rvachev System}
 % Absorbed from fabius_frontier_results_bundle/fabius_frontier_results.tex
 
 
-\pagenumbering{gobble}
-
-
-\pagenumbering{roman}
+% Standalone front-matter page resets are suppressed in the collected volume.
 
 \begin{abstract}
 Let
@@ -9615,7 +9633,6 @@ and locally uniform convergence $\Phi_Q\to\Phi$ as $Q\uparrow1$.  This supplies 
 
 
 \clearpage
-\pagenumbering{arabic}
 
 \section{Scope, corpus audit, and novelty protocol}
 
@@ -11230,17 +11247,13 @@ Cambridge University Press, 2003.
 \definecolor{shade}{RGB}{247,248,250}
 \newtheorem{observation}[theorem]{Observation}
 
-\part{Logarithmic q-Richardson Acceleration and Lambert Phase Locking in Fabius-Rvachev Analysis}
+\frontierreportpart{Logarithmic q-Richardson Acceleration and Lambert Phase
+Locking in Fabius--Rvachev Analysis}
 % Absorbed from fabius_frontier_new_results/fabius_frontier_new_results.tex
 
 
-\hypersetup{pageanchor=false}
-\pagenumbering{gobble}
-
-
+% Standalone front-matter page resets are suppressed in the collected volume.
 \clearpage
-\hypersetup{pageanchor=true}
-\pagenumbering{roman}
 
 \begin{abstract}
 The Fabius function, Rvachev's compactly supported $C^\infty$ up-function, the signed Thue--Morse sequence, and dyadic $q$-calculus form a tightly connected system. The existing \repoPartll{} corpus already contains extensive exact dyadic arithmetic, Gaussian-binomial interpolation, moment and cumulant formulas involving Bernoulli and Bell polynomials, Fourier products, Lambert-$W$ endpoint asymptotics with a nonconstant periodic factor, and several forms of Richardson extrapolation. After a repository-wide audit of the living documents, frozen historical versions, research drafts, and bundled source papers, this report develops two extrapolation mechanisms that are not stated there.
@@ -11260,7 +11273,6 @@ is used to build phase-locked nodes $x_j=(\lambda+j)2^{-(\lambda+j)}$. Periodic 
 
 
 \clearpage
-\pagenumbering{arabic}
 
 \section{Scope, corpus audit, and nonduplication boundary}
 
@@ -11414,7 +11426,7 @@ x=\lambda 2^{-\lambda},\qquad \lambda>\frac1L.
 \end{equation}
 The lower branch is essential: on $\lambda>1/L$, the map $\lambda\mapsto\lambda2^{-\lambda}$ is strictly decreasing and hence invertible.
 
-\part{Exact logarithmic tails and multiplicative \texorpdfstring{$q$}{q}-Richardson acceleration}
+\section{Exact logarithmic tails and multiplicative \texorpdfstring{$q$}{q}-Richardson acceleration}
 
 \section{The exact Bernoulli--zeta tail of a lacunary sinc product}
 \label{p8:sec:tail}
@@ -12024,7 +12036,7 @@ P(3)=0.585719176535068482912529262451\ldots.
 \end{equation}
 Even at $N=2$, the third transformed level improves the raw log error by approximately ten decimal orders while using only truncations through $N+3=5$.
 
-\part{Lambert phase-locked extraction of the endpoint oscillation}
+\section{Lambert phase-locked extraction of the endpoint oscillation}
 
 \section{The all-orders endpoint template}
 \label{p8:sec:lambert-template}
@@ -12324,7 +12336,7 @@ $\log_{10}\kappa_r^{\mathrm L}(\lambda)$ guard digits;
 \item compare $r$ and $r+1$ transforms as an a posteriori diagnostic, while remembering that no sign bracket is presently available because the signs of $A_m(\lambda)$ are not known globally.
 \end{enumerate}
 
-\part{Unified interpretation, formalization path, and research program}
+\section{Unified interpretation, formalization path, and research program}
 
 \section{Two extrapolation geometries}
 \label{p8:sec:dual-geometries}
@@ -12881,7 +12893,8 @@ source TeX included in the repository as \texttt{Lacunary\_products.tex}.
 \newcommand{\statusN}{\textsf{[N]}}
 \newcommand{\statusC}{\textsf{[C]}}
 
-\part{Binary Spectral-Endpoint Bridges for the Fabius and Rvachev Functions}
+\frontierreportpart{Binary Spectral-Endpoint Bridges for the Fabius and Rvachev
+Functions}
 % Absorbed from fabius_frontier_spectral_endpoint_report_bundle/fabius_frontier_spectral_endpoint_report.tex
 
 
@@ -13987,7 +14000,10 @@ $|Y|\le1$ and $|\Phi_m(z)|\le1$.
 
 \begin{example}[Numerical acceleration]
 At $z=10$ and $m=6$, the exact tail is
-$\Phi(10/64)=0.94753140589767634644\ldots$.  The errors after retaining $M$ moment
+\[
+\Phi(10/64)=0.94753140589767634644\ldots.
+\]
+The errors after retaining $M$ moment
 corrections, together with the rigorous bound \eqref{p9:eq:TM-error}, are
 \begin{center}
 \begin{tabular}{@{}rrr@{}}
@@ -14187,16 +14203,16 @@ the denominator geometry is again governed by a base-$1/4$ $q$-Pochhammer symbol
 
 \paragraph{Post-snapshot Lean status.}
 The universal algebraic shape of \eqref{p9:eq:partition-moments} is now
-formalized in \texttt{ExponentialPartition.lean}: with
+formalized in \path{ExponentialPartition.lean}: with
 \[
  E_r=\frac{2^{2r-1}B_{2r}}{r(4^r-1)(2r)!},
 \]
-\texttt{partitionExpSum\_eq\_sum\_div} identifies
+\nolinkurl{partitionExpSum_eq_sum_div} identifies
 \(\texttt{partitionExpSum}\ E\ N\) with the displayed partition sum
 before multiplication by \((2N)!\).
-\texttt{ExponentialBell.lean} further identifies that coefficient
-function with \texttt{SaddleExpansion.expCoeff}.
-\texttt{MomentCumulantAlgebra.lean} supplies the corresponding generic
+\path{ExponentialBell.lean} further identifies that coefficient
+function with \nolinkurl{SaddleExpansion.expCoeff}.
+\path{MomentCumulantAlgebra.lean} supplies the corresponding generic
 complete-Bell and inverse moment--cumulant transforms, their recurrence,
 and normalized inverse laws.  These are universal coefficient identities
 only: the displayed cumulant formula, its identification with \(c_N\),
@@ -14430,7 +14446,7 @@ Advances in Computational Mathematics \textbf{5} (1996), 329--359.
   belowskip=0.8em
 }
 
-\part{Beyond the Dyadic Fabius Web}
+\frontierreportpart{Beyond the Dyadic Fabius Web}
 % Absorbed from beyond_dyadic_fabius_web_report/fabius_frontier_report.tex
 
 
@@ -15188,7 +15204,7 @@ whose largest interval is shorter than the sum of the others.
 
 \begin{figure}[ht]
 \centering
-\includegraphics[width=0.92\textwidth]{assets/beyond_dyadic_fabius_web_report/q_family_densities.pdf}
+\includegraphics[width=0.92\textwidth]{assets/beyond_dyadic_fabius_web_report/q_family_densities.png}
 \caption{Deterministic fixed-point approximations of $f_q$.  The exact plateau for $q=0.30$
 ends at $x=q$ and $x=1-q$.  At $q=1/2$ the plateau collapses to a point; for larger $q$ the
 law becomes sharply concentrated and strictly unimodal.}
@@ -15290,7 +15306,7 @@ line.
 
 \begin{figure}[ht]
 \centering
-\includegraphics[width=0.86\textwidth]{assets/beyond_dyadic_fabius_web_report/standardized_cumulants.pdf}
+\includegraphics[width=0.86\textwidth]{assets/beyond_dyadic_fabius_web_report/standardized_cumulants.png}
 \caption{The exact standardized cumulants $\gamma_4(q)$ and $\gamma_6(q)$.  Their decay to
 zero quantifies the Gaussian degeneration as $q\uparrow1$.}
 \label{p10:fig:cumulants}
@@ -15450,7 +15466,7 @@ but it is rigorous for every $q$ and directly links the inverse Fabius scale to 
 
 \begin{figure}[ht]
 \centering
-\includegraphics[width=0.88\textwidth]{assets/beyond_dyadic_fabius_web_report/endpoint_bound_residuals.pdf}
+\includegraphics[width=0.88\textwidth]{assets/beyond_dyadic_fabius_web_report/endpoint_bound_residuals.png}
 \caption{For $q=1/2$, the rigorous upper and lower logarithmic bounds after subtracting the
 two universal terms and dividing by $L$.  Bounded residuals are exactly what
 \Cref{p10:thm:endpoint} predicts.}
@@ -15779,7 +15795,7 @@ same as the repository's existing geometric-grid filter.
 
 \begin{figure}[ht]
 \centering
-\includegraphics[width=0.88\textwidth]{assets/beyond_dyadic_fabius_web_report/phase_aware_extrapolation.pdf}
+\includegraphics[width=0.88\textwidth]{assets/beyond_dyadic_fabius_web_report/phase_aware_extrapolation.png}
 \caption{A synthetic periodic-phase model used only to verify
 \Cref{p10:thm:phase-lagrange}.  The raw error has slope approximately $-1$; a degree-three
 phase-preserving filter has observed slope approximately $-3.82$, approaching the predicted

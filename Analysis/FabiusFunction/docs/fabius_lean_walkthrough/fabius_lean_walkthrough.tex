@@ -121,7 +121,7 @@
 \small Human-readable guide to Vladimir Reshetnikov's \texttt{ProveIt} repository}
 \date{Repository source snapshot: 25 August 2026\\
 \small base commit \nolinkurl{eaea1b9afe2b7ff0b7dd880bd1710e303dec6d80};
-Volterra addendum \nolinkurl{3da579387}}
+Volterra addenda \nolinkurl{3da579387}, \nolinkurl{e109088ed}}
 
 \begin{document}
 \maketitle
@@ -141,7 +141,7 @@ A mathematically oriented reader should begin with Sections~\ref{ch:objects}, \r
 The repository is active source code, and module boundaries can evolve.  Names and dependencies described here refer to commit \nolinkurl{eaea1b9afe2b7ff0b7dd880bd1710e303dec6d80} on the \texttt{codex/fabius-both-papers} branch, inspected on 25 August 2026.  The walkthrough quotes identifiers and very short fragments where useful, but it paraphrases proof bodies rather than reproducing them.  The exact Lean source remains the authoritative statement of hypotheses, namespaces, coercions, and imported lemmas.  Claims described as questions, conjectures, conditional results, audits, or counterexamples are not silently promoted here to proved positive theorems.
 The only exceptions are passages explicitly labelled as post-snapshot and the
 corresponding rows in Appendix~\ref{app:modules}; their individual source
-checkpoints are recorded with that addendum.
+checkpoints are recorded with each addendum.
 
 Mathematically, two functions must be kept distinct throughout:
 \begin{itemize}
@@ -2613,10 +2613,12 @@ Read:
   \item \nolinkurl{FabiusAntiderivatives.lean}.
 \end{enumerate}
 The first module is the reusable layer: arbitrary base points and oriented
-endpoints, real normed-space-valued kernels and algebra, the direct normalized
-kernel, and---for continuous Banach-valued inputs---literal iteration with its
-semigroup and strict FTC, Taylor reconstruction, and finite Hasse-polynomial
-commutators.  The final module specializes that calculus only
+endpoints, real normed-space-valued kernels and algebra, exact affine covariance
+for every real scale, arbitrary base-point shifts, and the zero-local-tail Taylor
+jet.  For continuous Banach-valued inputs it additionally identifies literal
+iteration with the direct kernel and supplies the semigroup's strict FTC,
+derivative cancellation, smoothness, and Taylor reconstruction.  The final
+module specializes that calculus only
 after the generic work is complete, obtaining the signed-global Fabius ladder,
 the bounded ladder on \(x\le1\), and finite monomial weights.
 
@@ -2912,7 +2914,7 @@ Abstract bounded Fabius specification & \nolinkurl{IsFabius} & \nolinkurl{Basic.
 Canonical bounded function \(F\) & \nolinkurl{fabius}, \nolinkurl{fabius_spec} & chosen in \nolinkurl{PaperStatements.lean}; existence and uniqueness proved in \nolinkurl{Existence.lean} \\
 Rvachev up-function \(\Up\) & \nolinkurl{rvachevUp} & \nolinkurl{Basic.lean}; analytic properties in \nolinkurl{Differential.lean} and later shape modules \\
 Signed global extension \(\widetilde F\) & \nolinkurl{extendedFabius} & defined in \nolinkurl{Basic.lean}; cell and smoothness theory in \nolinkurl{GlobalExtension.lean} \\
-Normalized Volterra operator \(\mathsf J_{n,a}\) & \nolinkurl{normalizedVolterra}, \nolinkurl{iteratedPrimitive} & direct kernel and literal iterator in \nolinkurl{NormalizedVolterra.lean} \\
+Normalized Volterra operator \(\mathsf J_{n,a}\) & \nolinkurl{normalizedVolterra}, \nolinkurl{iteratedPrimitive}, \nolinkurl{normalizedVolterra_affine}, \nolinkurl{normalizedVolterra_comp_affine}, \nolinkurl{normalizedVolterra_basepoint_shift}, \nolinkurl{normalizedVolterra_succ_eq_taylor_of_eq_zero} & direct kernel, literal iterator, affine transport, and base-point Taylor jets in \nolinkurl{NormalizedVolterra.lean} \\
 Exact Fabius primitive ladders & \nolinkurl{normalizedVolterra_extendedFabius}, \nolinkurl{normalizedVolterra_fabiusReal_of_le_one} & \nolinkurl{FabiusAntiderivatives.lean} \\
 Exact even moment \(c_n\) & \nolinkurl{moment}, \nolinkurl{momentIntegral} & \nolinkurl{Arithmetic.lean}, \nolinkurl{Basic.lean}, and \nolinkurl{AnalyticMoments.lean} \\
 Normalized half moment \(d_n\) & \nolinkurl{halfMoment}, \nolinkurl{halfMomentIntegral} & \nolinkurl{Arithmetic.lean}, \nolinkurl{Basic.lean}, and \nolinkurl{AnalyticMoments.lean} \\
@@ -2963,7 +2965,7 @@ Module & Role in the development \\
 \nolinkurl{Existence.lean} & Banach fixed-point construction of \nolinkurl{Existence.boundedCandidate}, calculus bootstrap, unique existence, and generic equality of all \nolinkurl{IsFabius} candidates.  The canonical choice itself is made in \nolinkurl{PaperStatements.lean}. \\
 \nolinkurl{ScaleTranslation.lean} & Reusable chain-rule formulas for affine rescaling and translation of Fabius and up-functions. \\
 \nolinkurl{GlobalExtension.lean} & Local finiteness, smoothness, unit-interval agreement, and translation laws of the signed global extension. \\
-\nolinkurl{NormalizedVolterra.lean} & Base-point and endpoint-order independent repeated integration over arbitrary real Banach targets: direct normalized kernels, literal iterator semigroup and strict FTC, continuous equivalence, Taylor reconstruction, and finite Hasse-polynomial and monomial commutators. \\
+\nolinkurl{NormalizedVolterra.lean} & Base-point and endpoint-order independent repeated integration.  Over arbitrary real normed targets it provides direct normalized kernels, division-free affine covariance for every scale (and an inverse form at nonzero scale), arbitrary base-point shifts into a local tail plus finite jet, the zero-local-tail specialization, and finite Hasse-polynomial and monomial commutators.  Completeness is confined to the continuous literal-iterator/strict-FTC bridge, derivative cancellation and smoothness, and Taylor reconstruction. \\
 \nolinkurl{GlobalDyadic.lean} & Exact dyadic identities for the signed extension with unrestricted and nonreduced representatives. \\
 \addlinespace[0.45em]
 \multicolumn{2}{l}{\textbf{Global shape, inversion, and computability}}\\[0.25em]
@@ -3182,8 +3184,13 @@ Some helper files are intentionally absent from this table, and a few families m
 
 The two Volterra rows headed by \nolinkurl{NormalizedVolterra.lean} and
 \nolinkurl{FabiusAntiderivatives.lean}, together with the corresponding
-reading path and focused-import example, form a post-snapshot addendum checked
-at code checkpoint \nolinkurl{3da579387}.
+reading path and focused-import example, originated in a post-snapshot addendum
+checked at code checkpoint \nolinkurl{3da579387}.  The four current declarations
+\nolinkurl{normalizedVolterra_affine},
+\nolinkurl{normalizedVolterra_comp_affine},
+\nolinkurl{normalizedVolterra_basepoint_shift}, and
+\nolinkurl{normalizedVolterra_succ_eq_taylor_of_eq_zero} are later
+post-snapshot additions checked at code checkpoint \nolinkurl{e109088ed}.
 The fourteen rows from \nolinkurl{ExponentialPartition.lean} through
 \nolinkurl{LambertPhaseLockedRichardson.lean} are a post-snapshot addendum.
 The first two of those fourteen were checked at code checkpoint
@@ -3346,6 +3353,10 @@ open Fabius
 #check iteratedPrimitive_add
 #check iteratedPrimitive_succ_hasStrictDerivAt
 #check iteratedPrimitive_eq_normalizedVolterra
+#check normalizedVolterra_affine
+#check normalizedVolterra_comp_affine
+#check normalizedVolterra_basepoint_shift
+#check normalizedVolterra_succ_eq_taylor_of_eq_zero
 #check normalizedVolterra_succ_hasStrictDerivAt
 #check iteratedDeriv_normalizedVolterra_add
 #check contDiff_normalizedVolterra
@@ -3355,8 +3366,14 @@ open Fabius
 #check normalizedVolterra_monomial
 \end{lstlisting}
 This focused import is independent of the Fabius specification.  Its operators
-have arbitrary base points and oriented endpoints.  Its kernel algebra works
-in a real normed space; only the FTC/Taylor layer needs completeness.
+have arbitrary base points and oriented endpoints.  The division-free affine
+law has no integrability hypothesis and includes negative and zero scales; its
+inverse form asks only that the scale be nonzero.  The base-point shift assumes
+interval integrability on its two oriented pieces, while the positive-order
+zero-tail form asks for integrability only up to the new base point and vanishing
+on the open interval beyond it.  All four work in a real normed space.  Only the
+continuous literal-iterator/strict-FTC bridge, derivative cancellation and
+smoothness, and Taylor reconstruction need completeness.
 Specialize only when the Fabius dilation
 law is actually needed:
 \begin{lstlisting}[style=pseudo]
@@ -3372,7 +3389,11 @@ variable (F : BoundedFabius) (hF : IsFabius F)
 #check normalizedVolterra_pow_mul_fabiusReal_of_le_one F hF
 \end{lstlisting}
 The signed-extension theorems have unrestricted real endpoints; the bounded
-theorems use the exact hypothesis \(x\le1\).
+theorems use the exact hypothesis \(x\le1\).  The generic affine and base-point
+API does not yet give named Fabius-specific declarations for the \(\Up\) ladder
+based at \(-1\), the reflected \(1-F\) ladder, arbitrary affine copies of \(F\),
+or the full piecewise polynomial tail beyond the support of \(\Up\); those remain
+separate frontier targets rather than additional \texttt{\#check} entries here.
 
 \newpage
 \subsection{Find source-facing arithmetic theorems}

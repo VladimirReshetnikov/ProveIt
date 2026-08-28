@@ -1,5 +1,6 @@
 import FabiusFunction.NegativeLaplaceDerivatives
 import FabiusFunction.ProbabilityRepresentation
+import FabiusFunction.SurvivalLayerCake
 import Mathlib.Data.Nat.Choose.Sum
 
 /-!
@@ -68,92 +69,49 @@ theorem integral_Icc_eq_left_add_intervalIntegral_deriv_mul_survival
     (hderiv : ∀ x ∈ Icc a b, HasDerivAt g (g' x) x) :
     (∫ x in Icc a b, g x ∂μ) =
       g a + ∫ t in a..b, g' t * μ.real (Ioi t) := by
-  let ν : Measure ℝ := volume.restrict (Icc a b)
-  let A : Set (ℝ × ℝ) := {z | z.1 < z.2}
-  let H : ℝ × ℝ → ℝ := fun z => A.indicator (fun z => g' z.1) z
-  have hA : MeasurableSet A := by
-    dsimp [A]
-    exact measurableSet_lt measurable_fst measurable_snd
-  have hg'ν : Integrable g' ν := by
-    dsimp [ν]
-    exact hg'.integrableOn_Icc
-  have hH : Integrable H (ν.prod μ) := by
-    have hbase : Integrable (fun z : ℝ × ℝ => g' z.1 * (1 : ℝ))
-        (ν.prod μ) :=
-      hg'ν.mul_prod (integrable_const (1 : ℝ))
-    have hi := hbase.indicator hA
-    simpa only [H, one_mul, mul_one] using hi
   have hrestrict : μ.restrict (Icc a b) = μ :=
     Measure.restrict_eq_self_of_ae_mem hμ
   have hgμ : Integrable g μ := by
     rw [← hrestrict]
     exact hg.integrableOn_Icc
-  have hinner_t (x : ℝ) (hx : x ∈ Icc a b) :
-      (∫ t : ℝ, H (t, x) ∂ν) = g x - g a := by
-    have hind : (fun t : ℝ => H (t, x)) = (Iio x).indicator g' := by
-      funext t
-      simp only [H, A, Set.indicator, mem_setOf_eq, mem_Iio]
-    rw [hind, integral_indicator measurableSet_Iio]
-    change (∫ t : ℝ, g' t ∂(ν.restrict (Iio x))) = _
-    rw [show ν.restrict (Iio x) = volume.restrict (Ico a x) by
-      dsimp [ν]
-      rw [Measure.restrict_restrict measurableSet_Iio]
-      congr 1
-      ext t
-      simp only [mem_inter_iff, mem_Iio, mem_Icc, mem_Ico]
-      constructor <;> intro ht
-      · exact ⟨ht.2.1, ht.1⟩
-      · exact ⟨ht.2, ht.1, (ht.2.trans_le hx.2).le⟩]
-    rw [integral_Ico_eq_integral_Ioc,
-      ← intervalIntegral.integral_of_le hx.1]
+  have hg'int : IntervalIntegrable g' volume a b :=
+    hg'.intervalIntegrable_of_Icc hab
+  have hsurvival :=
+    intervalIntegral_survival_smul_eq_integral_of_ae_mem_Icc
+      μ hab hμ g' hg'int
+  have hprimitive :
+      ∀ᵐ x ∂μ, (∫ t in a..x, g' t) = g x - g a := by
+    filter_upwards [hμ] with x hx
     apply intervalIntegral.integral_eq_sub_of_hasDerivAt
     · intro t ht
-      apply hderiv t
       rw [uIcc_of_le hx.1] at ht
-      exact ⟨ht.1, ht.2.trans hx.2⟩
+      exact hderiv t ⟨ht.1, ht.2.trans hx.2⟩
     · exact
         (hg'.mono (Icc_subset_Icc_right hx.2)).intervalIntegrable_of_Icc hx.1
-  have hinner_x (t : ℝ) :
-      (∫ x : ℝ, H (t, x) ∂μ) = g' t * μ.real (Ioi t) := by
-    have hind : (fun x : ℝ => H (t, x)) =
-        (Ioi t).indicator (fun _ => g' t) := by
-      funext x
-      simp only [H, A, Set.indicator, mem_setOf_eq, mem_Ioi]
-    rw [hind, integral_indicator_const (g' t) measurableSet_Ioi]
-    simp only [smul_eq_mul]
-    ring
-  have horder_x :
-      (∫ x : ℝ, ∫ t : ℝ, H (t, x) ∂ν ∂μ) =
+  have hstopped :
+      (∫ x : ℝ, (∫ t in a..x, g' t) ∂μ) =
         (∫ x : ℝ, g x ∂μ) - g a := by
     calc
-      (∫ x : ℝ, ∫ t : ℝ, H (t, x) ∂ν ∂μ) =
-          ∫ x : ℝ, (g x - g a) ∂μ := by
-            apply integral_congr_ae
-            filter_upwards [hμ] with x hx
-            exact hinner_t x hx
+      (∫ x : ℝ, (∫ t in a..x, g' t) ∂μ) =
+          ∫ x : ℝ, (g x - g a) ∂μ := integral_congr_ae hprimitive
       _ = (∫ x : ℝ, g x ∂μ) - g a := by
         rw [integral_sub hgμ (integrable_const _), integral_const,
           probReal_univ, one_smul]
-  have horder_t :
-      (∫ t : ℝ, ∫ x : ℝ, H (t, x) ∂μ ∂ν) =
-        ∫ t in a..b, g' t * μ.real (Ioi t) := by
+  have hsurvival' :
+      (∫ t in a..b, g' t * μ.real (Ioi t)) =
+        ∫ x : ℝ, (∫ t in a..x, g' t) ∂μ := by
     calc
-      (∫ t : ℝ, ∫ x : ℝ, H (t, x) ∂μ ∂ν) =
-          ∫ t in Icc a b, g' t * μ.real (Ioi t) := by
-            apply integral_congr_ae
-            filter_upwards [ae_restrict_mem measurableSet_Icc] with t _ht
-            exact hinner_x t
-      _ = ∫ t in a..b, g' t * μ.real (Ioi t) := by
-        rw [intervalIntegral.integral_of_le hab,
-          integral_Icc_eq_integral_Ioc]
-  have hswap :
-      (∫ x : ℝ, ∫ t : ℝ, H (t, x) ∂ν ∂μ) =
-        ∫ t : ℝ, ∫ x : ℝ, H (t, x) ∂μ ∂ν := by
-    exact (integral_prod_symm H hH).symm.trans (integral_prod H hH)
-  rw [horder_x, horder_t] at hswap
+      (∫ t in a..b, g' t * μ.real (Ioi t)) =
+          ∫ t in a..b, μ.real (Ioi t) • g' t := by
+        apply intervalIntegral.integral_congr
+        intro t _ht
+        simp only [smul_eq_mul]
+        ring
+      _ = ∫ x : ℝ, (∫ t in a..x, g' t) ∂μ := hsurvival
   rw [show (∫ x in Icc a b, g x ∂μ) = ∫ x : ℝ, g x ∂μ by
     rw [hrestrict]]
-  linarith
+  rw [hsurvival', hstopped]
+  ring
 
 /-- Unit-interval form of
 `integral_Icc_eq_left_add_intervalIntegral_deriv_mul_survival`. -/
@@ -392,12 +350,13 @@ namespace ProbabilityRepresentation
 /-- The weighted-sum law is almost surely supported on the unit interval. -/
 lemma ae_weightedSumDistribution_mem_Icc :
     ∀ᵐ x ∂weightedSumDistribution, x ∈ Icc (0 : ℝ) 1 := by
-  unfold weightedSumDistribution
-  apply (ae_map_iff measurable_weightedCoordinateSum.aemeasurable
-    (show MeasurableSet {x : ℝ | x ∈ Icc (0 : ℝ) 1} by
-      exact measurableSet_Icc)).2
-  filter_upwards with ω
-  exact ⟨weightedCoordinateSum_nonneg ω, weightedCoordinateSum_le_one ω⟩
+  rw [weightedSumDistribution_eq_geometricUniformDistribution_one_half]
+  unfold geometricUniformDistribution
+  have hq : |(1 / 2 : ℝ)| < 1 := by norm_num
+  simpa only [(hasSum_geometricUniformWeight hq).tsum_eq] using
+    (ae_weightedUniformDistribution_mem_Icc
+      (summable_norm_geometricUniformWeight hq)
+      (geometricUniformWeight_nonneg (by norm_num) (by norm_num)))
 
 /-- Restricting the weighted-sum law to its unit-interval support changes no mass. -/
 lemma weightedSumDistribution_restrict_Icc :
@@ -428,6 +387,65 @@ lemma weightedSumDistribution_real_Ioi_eq_rvachevUp
     (ht : t ∈ Icc (0 : ℝ) 1) :
     weightedSumDistribution.real (Ioi t) = rvachevUp F t :=
   weightedSumDistribution_real_Ioi_eq_rvachevUp_of_nonneg F hF ht.1
+
+/-- **Partial Rvachev survival layer cake.**  For `c ∈ [0,1]` and every
+Banach-valued interval-integrable kernel `k`,
+
+`∫₀ᶜ rvachevUp(t) • k(t) dt
+  = E[∫₀^{min(X,c)} k(t) dt]`,
+
+where `X` has the weighted-sum distribution.  The kernel need not be
+nonnegative. -/
+theorem intervalIntegral_rvachevUp_smul_eq_integral_min
+    {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E] [CompleteSpace E]
+    (F : BoundedFabius) (hF : IsFabius F)
+    {c : ℝ} (hc : c ∈ Icc (0 : ℝ) 1)
+    (k : ℝ → E) (hk : IntervalIntegrable k volume 0 c) :
+    (∫ t in (0 : ℝ)..c, rvachevUp F t • k t) =
+      ∫ z : ℝ, (∫ t in (0 : ℝ)..min z c, k t)
+        ∂weightedSumDistribution := by
+  calc
+    (∫ t in (0 : ℝ)..c, rvachevUp F t • k t) =
+        ∫ t in (0 : ℝ)..c,
+          weightedSumDistribution.real (Ioi t) • k t := by
+      apply intervalIntegral.integral_congr
+      intro t ht
+      rw [uIcc_of_le hc.1] at ht
+      exact congrArg (fun a : ℝ => a • k t)
+        (weightedSumDistribution_real_Ioi_eq_rvachevUp F hF
+          ⟨ht.1, ht.2.trans hc.2⟩).symm
+    _ = ∫ z : ℝ, (∫ t in (0 : ℝ)..min z c, k t)
+          ∂weightedSumDistribution :=
+      intervalIntegral_survival_smul_eq_integral_min_of_ae_mem_Icc
+        weightedSumDistribution hc ae_weightedSumDistribution_mem_Icc k hk
+
+/-- **Full Rvachev survival layer cake.**  Every Banach-valued
+interval-integrable kernel `k` satisfies
+
+`∫₀¹ rvachevUp(t) • k(t) dt = E[∫₀ˣ k(t) dt]`
+
+for the weighted-sum random variable `X`.  Taking `E = ℂ` gives the complex
+kernel identity used by transform arguments. -/
+theorem intervalIntegral_rvachevUp_smul_eq_integral
+    {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E] [CompleteSpace E]
+    (F : BoundedFabius) (hF : IsFabius F)
+    (k : ℝ → E) (hk : IntervalIntegrable k volume 0 1) :
+    (∫ t in (0 : ℝ)..1, rvachevUp F t • k t) =
+      ∫ z : ℝ, (∫ t in (0 : ℝ)..z, k t) ∂weightedSumDistribution := by
+  calc
+    (∫ t in (0 : ℝ)..1, rvachevUp F t • k t) =
+        ∫ t in (0 : ℝ)..1,
+          weightedSumDistribution.real (Ioi t) • k t := by
+      apply intervalIntegral.integral_congr
+      intro t ht
+      rw [uIcc_of_le (by norm_num : (0 : ℝ) ≤ 1)] at ht
+      exact congrArg (fun a : ℝ => a • k t)
+        (weightedSumDistribution_real_Ioi_eq_rvachevUp F hF ht).symm
+    _ = ∫ z : ℝ, (∫ t in (0 : ℝ)..z, k t)
+          ∂weightedSumDistribution :=
+      intervalIntegral_survival_smul_eq_integral_of_ae_mem_Icc
+        weightedSumDistribution (by norm_num)
+          ae_weightedSumDistribution_mem_Icc k hk
 
 /-- Integration against the weighted-sum law in terms of the survival
 function `rvachevUp`.  This is the compact-support expectation identity
