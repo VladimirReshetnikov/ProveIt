@@ -347,6 +347,15 @@ Weighted survival, lower-CDF, fractional, and inverse layer cake &
 \nolinkurl{CDFLayerCake.lean}, \nolinkurl{FractionalCDFLayerCake.lean},
 \nolinkurl{FabiusFractionalIntegral.lean},
 \nolinkurl{InverseLayerCake.lean}, \nolinkurl{ProbabilityLaplaceMoments.lean} \\
+Fractional affine/order-raising calculus and Fabius--Rvachev shifts &
+\nolinkurl{fractionalVolterra_affine},
+\nolinkurl{fractionalVolterra_comp_affine},
+\nolinkurl{fractionalVolterra_add_one_deriv},
+\nolinkurl{fractionalVolterra_add_one_extendedFabius_of_nonneg},
+\nolinkurl{fractionalVolterra_add_one_fabiusReal},
+\nolinkurl{fractionalVolterra_add_one_rvachevUp} &
+\nolinkurl{FractionalVolterraCalculus.lean},
+\nolinkurl{FabiusFractionalVolterra.lean} \\
 Absolutely-continuous inverse-pair calculus &
 \nolinkurl{intervalIntegral_deriv_mul_comp_add_comp_mul_deriv_of_lt_iff_lt},
 \nolinkurl{intervalIntegral_deriv_mul_fabiusReal_add_fabiusInv_mul_deriv},
@@ -364,6 +373,14 @@ Finite-node and geometric formal-series filters &
 \nolinkurl{geometricLagrangeSeriesFilter_eq_residual_mk} &
 \nolinkurl{FinitePowerSeriesFilter.lean},
 \nolinkurl{GeometricPowerSeriesFilter.lean} \\
+Unconditionally summable analytic-series filters &
+\nolinkurl{finiteAnalyticSeriesFilter},
+\nolinkurl{geometricAnalyticSeriesFilter},
+\nolinkurl{finiteAnalyticSeriesFilter_eq_tsum},
+\nolinkurl{finiteAnalyticSeriesFilter_eq_head_add_tail_of_exact},
+\nolinkurl{geometricAnalyticSeriesFilter_eq_constant_add_gaussian_tsum},
+\nolinkurl{geometricLagrangeAnalyticSeriesFilter_shifted} &
+\nolinkurl{AnalyticSeriesFilter.lean} \\
 Totalized inverse & \nolinkurl{fabiusInv}, \nolinkurl{deriv_deriv_fabiusInv_eq_zero_iff}, \nolinkurl{tendsto_deriv_fabiusInv_atTop_at_zero_right}, \nolinkurl{fabiusInv_differentiableAt_iff}, \nolinkurl{fabiusInv_contDiffAt_infty_iff}, \nolinkurl{fabiusInv_analyticAt_iff} & \nolinkurl{FabiusInverse.lean}, \nolinkurl{InverseNotElementary.lean} \\
 Lower-Lambert coordinate & \nolinkurl{fabiusLambertPhase} & \nolinkurl{FabiusLambertSaddle.lean} \\
 All-orders saddle expansion & saddle mass/log coefficient declarations & \nolinkurl{FabiusFullAsymptoticExpansion.lean} and related modules \\
@@ -503,10 +520,12 @@ a longer proof-oriented or frontier discussion here: principally
 \path{ElementaryFunction.lean}, \path{NotElementary.lean},
 \path{InverseNotElementary.lean}, \path{ProbabilityLaplaceMoments.lean}, and
 \path{FractionalVolterra.lean}, together with
-\path{FractionalVolterraSemigroup.lean}, \path{CDFLayerCake.lean},
+\path{FractionalVolterraSemigroup.lean}, \path{FractionalVolterraCalculus.lean},
+\path{FabiusFractionalVolterra.lean}, \path{CDFLayerCake.lean},
 \path{FractionalCDFLayerCake.lean}, \path{FabiusFractionalIntegral.lean},
 \path{InversePairIntegral.lean}, \path{FinitePowerSeriesFilter.lean}, and
-\path{GeometricPowerSeriesFilter.lean}.\\
+\path{GeometricPowerSeriesFilter.lean}, together with
+\path{AnalyticSeriesFilter.lean}.\\
 \textbf{Missing engine} & A generic theorem family that the main article deliberately leaves in
 the module guide: path sums, Toeplitz rows, formal coefficient recurrences, finite
 remainders, and Gaussian polynomial estimates.\\
@@ -1404,10 +1423,47 @@ The constant specialization includes \(a=x\):
 \end{equation}
 The exact declarations are \lean{fractionalVolterra_normalized_rpow_smul},
 \lean{fractionalVolterra_rpow_smul}, and \lean{fractionalVolterra_const}.
-No order-zero operator law, reversed-endpoint fractional interpretation, semigroup theorem
+The companion \path{FractionalVolterraCalculus.lean} proves increasing-affine covariance
+for arbitrary real order, \(0<c\), and \(a\le x\), without regularity, integrability, or
+completeness:
+\begin{equation}
+ I_{(ca+d)+}^{\alpha}f(cx+d)
+ =c^\alpha I_{a+}^{\alpha}[t\mapsto f(ct+d)](x).
+ \label{integration:eq:fractional-volterra-affine}
+\end{equation}
+Its inverse-smul form is \lean{fractionalVolterra_comp_affine}.  For a Banach-valued
+continuous \(g\) with right-sided interior derivative \(g'\), assuming \(g'\) is
+interval-integrable, \lean{fractionalVolterra_add_one_deriv} gives
+\begin{equation}
+ I_{a+}^{\alpha+1}g'(x)
+ =I_{a+}^{\alpha}g(x)
+  -\frac{(x-a)^\alpha}{\Gamma(\alpha+1)}g(a)
+ \qquad(\alpha>0,\ a\le x),
+ \label{integration:eq:fractional-volterra-add-one-deriv}
+\end{equation}
+including \(a=x\); \lean{fractionalVolterra_add_one_deriv_of_eq_zero} removes the
+boundary term when \(g(a)=0\).  The three declarations in
+\path{FabiusFractionalVolterra.lean} then prove
+\begin{align}
+ I_{0+}^{\alpha+1}\mathcal F(x)
+ &=2^\alpha I_{0+}^{\alpha}\mathcal F(x/2), &&\alpha>0,\ x\ge0,
+ \label{integration:eq:fractional-shift-global-Fabius}\\
+ I_{0+}^{\alpha+1}F(x)
+ &=2^\alpha I_{0+}^{\alpha}F(x/2), &&\alpha>0,\ 0\le x\le1,
+ \label{integration:eq:fractional-shift-bounded-Fabius}\\
+ I_{-1+}^{\alpha+1}\Up(x)
+ &=2^\alpha I_{0+}^{\alpha}F((x+1)/2), &&\alpha>0,\ x\ge-1.
+ \label{integration:eq:fractional-shift-Up}
+\end{align}
+They are \lean{fractionalVolterra_add_one_extendedFabius_of_nonneg},
+\lean{fractionalVolterra_add_one_fabiusReal}, and
+\lean{fractionalVolterra_add_one_rvachevUp}.  No order-zero operator law,
+reversed-endpoint fractional interpretation or covariance, nonpositive-scale covariance,
+semigroup theorem
 for merely interval-integrable inputs or noncomplete targets, Caputo or other fractional
-derivative, complex-order theorem, hierarchy-specific semigroup, or Rvachev- or
-inverse-function fractional specialization is included.  The positive-real Fabius-CDF
+derivative, complex-order theorem, hierarchy-specific semigroup, iterated fractional shift,
+shifted dyadic-lattice or endpoint-\(\Up\) wrapper, or inverse-function fractional
+specialization is included.  The positive-real Fabius-CDF
 specialization is recorded separately in
 \cref{integration:thm:fractional-cdf-layer-cake}.
 \end{remark}
@@ -2788,6 +2844,14 @@ Gamma-quotient values.  No corresponding semigroup for merely interval-integrabl
 or noncomplete targets, fractional derivative, complex order, order-zero law,
 reversed-endpoint fractional interpretation, or hierarchy-specific semigroup;
 \cref{integration:rem:fractional-volterra-boundary}.\\
+\path{FractionalVolterraCalculus.lean}, \path{FabiusFractionalVolterra.lean} &
+Increasing-affine covariance for arbitrary real order, positive scale, and ordered endpoints;
+positive-order Banach-valued integration by parts across an ordinary derivative with its exact
+left-boundary term; and the three positive-real single-step order shifts for the signed and
+bounded Fabius functions and \(\Up\).  These modules export four and three theorems,
+respectively, but no nonpositive-scale/reversed covariance, fractional derivative or Caputo
+operator, complex-order continuation, iterated/lattice or endpoint-\(\Up\) wrapper, or inverse
+specialization; \cref{integration:rem:fractional-volterra-boundary}.\\
 \path{ProbabilityLaplaceMoments.lean} &
 The survival function, partial/full Rvachev survival layer cake, differentiable
 compact-support Fubini identity, raw and endpoint moment identifications, zero-tilt
@@ -2814,6 +2878,19 @@ rescaling and coefficient-ring naturality, exactness through the prescribed orde
 denominator-free Gaussian residual multiplier for geometric filters, including the
 distinct-node Lagrange specialization.  These are formal power-series identities only and
 assert no analytic convergence, norm bound, or remainder estimate.\\
+\path{AnalyticSeriesFilter.lean} &
+The definitions \lean{finiteAnalyticSeriesFilter} and
+\lean{geometricAnalyticSeriesFilter}; diagonal summability and evaluation
+\lean{summable_finiteAnalyticSeriesFilter_diagonal} and
+\lean{finiteAnalyticSeriesFilter_eq_tsum}; the exact head/tail decompositions
+\lean{finiteAnalyticSeriesFilter_eq_head_add_tail_of_exact} and
+\lean{finiteAnalyticSeriesFilter_eq_constant_add_tail_of_exact_zero}; and the exact Gaussian
+tails \lean{geometricAnalyticSeriesFilter_eq_constant_add_gaussian_tsum},
+\lean{geometricLagrangeAnalyticSeriesFilter_eq_constant_add_gaussian_tsum}, and
+\lean{geometricLagrangeAnalyticSeriesFilter_shifted}.  Every sampled-series assumption is
+unconditional and explicit; no conditional/boundary convergence, radius or uniform
+convergence, error/norm or asymptotic estimate, positivity, or Fabius-specific acceleration
+claim is made.\\
 \path{SaddleExpansionAlgebra.lean} &
 \lean{expCoeff}, its differential equation, uniqueness, naturality, rescaling, addition,
 parity, and \lean{HasAsymptoticExpansion}; \cref{integration:sec:poincare-api,integration:sec:exp-coeff}.\\
