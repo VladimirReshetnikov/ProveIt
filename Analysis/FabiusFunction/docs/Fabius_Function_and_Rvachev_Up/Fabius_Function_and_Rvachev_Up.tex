@@ -133,8 +133,9 @@ development in the \texttt{ProveIt} repository.  It keeps three related function
 the bounded distribution function $F$, Rvachev's even compactly supported bump $\Up$, and
 the signed global extension $\mathcal F$.  Their construction and uniqueness, differential
 and refinement laws, strict shape properties, optimal Lipschitz constants, derivative
-bounds, effective flatness, and precisely formalized analytic and non-elementarity results
-are presented together with direct pointers to their Lean proofs.
+bounds, exact dyadic-cell derivative value distributions, effective flatness, and precisely
+formalized analytic and non-elementarity results are presented together with direct pointers
+to their Lean proofs.
 
 The probabilistic part identifies $F$ and $\Up$ with exact probability expressions for an
 infinite weighted sum of independent uniform coordinates.  Finite atomic convolution laws,
@@ -238,12 +239,12 @@ three finite approximations: atomic convolution measures, half-weighted step fun
 centered uniform splines.
 
 The Fourier and global-extension chapters collect the proved product, inversion, Poisson,
-derivative, bound, and flatness APIs.  They lead to the exact analytic locus of \(F\), the
-proved nonanalyticity regions for \(\Up\) and \(\mathcal F\), the totalized inverse on
-\([0,1]\), and the formal non-elementarity results.  The moment and arithmetic chapters then
-derive the rational recurrences, reciprocal-power identities, path and composition formulas,
-parity and two-adic statements, exact dyadic evaluation, binary reduction, and the specialized
-half-base \(q\)-binomial formulas.
+derivative, exact dyadic-cell distribution, bound, and flatness APIs.  They lead to the exact
+analytic locus of \(F\), the proved nonanalyticity regions for \(\Up\) and \(\mathcal F\),
+the totalized inverse on \([0,1]\), and the formal non-elementarity results.  The moment and
+arithmetic chapters then derive the rational recurrences, reciprocal-power identities, path
+and composition formulas, parity and two-adic statements, exact dyadic evaluation, binary
+reduction, and the specialized half-base \(q\)-binomial formulas.
 
 The later analytic chapters summarize the formal endpoint machinery: the exact
 negative-Laplace product and logarithmic decomposition, the periodic Fourier correction,
@@ -1770,6 +1771,132 @@ The exact bound, attainment, and supremum statements are
 \lean{iteratedDeriv_fabiusReal_inv_two_pow_all}, and
 \lean{isGreatest_abs_iteratedDeriv_fabiusReal_all} in
 \path{BoundedDerivatives.lean}.
+
+\subsection{Dyadic derivative cells and exact value distributions}
+\label{sec:rvachev-derivative-distribution}
+
+Write
+\[
+ T_n:=\binom{n+1}{2},
+ \qquad
+ \varepsilon_k:=(-1)^{\wt(k)}.
+\]
+For \(n,k\in\N\), the formal cell coordinate is the total function
+\begin{equation}
+ c_{n,k}(y):=-1+\frac{2k+1+y}{2^n}.                       \label{eq:rvachev-derivative-cell}
+\end{equation}
+Its geometric use is \(0\le k<2^n\) and \(-1\le y\le1\).  In that range it maps
+\([-1,1]\) into \([-1,1]\), and
+\begin{equation}
+ c_{n,0}(-1)=-1,\qquad
+ c_{n,k}(1)=c_{n,k+1}(-1),\qquad
+ c_{n,2^n}(-1)=1.                                        \label{eq:rvachev-cell-endpoints}
+\end{equation}
+Thus the images are exactly the \(2^n\) adjacent closed cells from \(-1\) to \(1\).
+
+\begin{theorem}[Exact cellwise derivative tiling]
+\label{thm:rvachev-derivative-cell}
+For every \(n\in\N\), \(0\le k<2^n\), and \(-1\le y\le1\),
+\begin{align}
+ \Up^{(n)}\!\left(c_{n,k}(y)\right)
+ &=2^{T_n}\varepsilon_k\Up(y),                            \label{eq:rvachev-cell-signed}\\
+ \left|\Up^{(n)}\!\left(c_{n,k}(y)\right)\right|
+ &=2^{T_n}\Up(y).                                         \label{eq:rvachev-cell-absolute}
+\end{align}
+In particular, the midpoint of the \(k\)-th cell has the exact signed value
+\begin{equation}
+ \Up^{(n)}\!\left(-1+\frac{2k+1}{2^n}\right)
+ =2^{T_n}\varepsilon_k.                                   \label{eq:rvachev-cell-midpoint}
+\end{equation}
+All three formulas include \(n=0\), and the cell identities include both endpoints.
+\end{theorem}
+
+\begin{proof}[Formal proof]
+The coordinate \eqref{eq:rvachev-derivative-cell} is
+\lean{rvachevDerivativeCell}.  Its affine form, adjacent-endpoint identity, two outer
+endpoint identities, and closed-interval range theorem are
+\lean{rvachevDerivativeCell_eq_div_add},
+\lean{rvachevDerivativeCell_one_eq_succ_neg_one},
+\lean{rvachevDerivativeCell_zero_neg_one},
+\lean{rvachevDerivativeCell_two_pow_neg_one}, and
+\lean{rvachevDerivativeCell_mem_Icc}.  Equations
+\eqref{eq:rvachev-cell-signed}--\eqref{eq:rvachev-cell-midpoint} are respectively
+\lean{iteratedDeriv_rvachev_cell},
+\lean{abs_iteratedDeriv_rvachev_cell}, and
+\lean{iteratedDeriv_rvachev_cell_zero}, all in
+\path{RvachevDerivativeDistribution.lean}.
+\end{proof}
+
+\begin{theorem}[Continuous-test derivative distributions]
+\label{thm:rvachev-derivative-continuous-tests}
+Let \(E\) be a real Banach space and let \(H:\R\to E\) be continuous.  For every
+\(n\in\N\), the Bochner interval integrals satisfy
+\begin{align}
+ \int_{-1}^{1}H\!\left(\Up^{(n)}(x)\right)\dd x
+ &=
+ 2^{-n}\sum_{k=0}^{2^n-1}
+ \int_{-1}^{1}H\!\left(2^{T_n}\varepsilon_k\Up(y)\right)\dd y,
+                                                               \label{eq:rvachev-signed-mixture}\\
+ \int_{-1}^{1}H\!\left(\left|\Up^{(n)}(x)\right|\right)\dd x
+ &=
+ \int_{-1}^{1}H\!\left(2^{T_n}\Up(y)\right)\dd y,
+                                                               \label{eq:rvachev-absolute-test}\\
+ \int_{-1}^{1}H\!\left(2^{-T_n}\left|\Up^{(n)}(x)\right|\right)\dd x
+ &=
+ \int_{-1}^{1}H\!\left(\Up(y)\right)\dd y.                    \label{eq:rvachev-normalized-test}
+\end{align}
+The signed formula is the exact \(2^n\)-term Thue--Morse mixture and includes order zero.
+
+Let \(\lambda_{[-1,1]}\) denote Lebesgue measure restricted to the closed interval
+\([-1,1]\), and let \(f_{\#}\mu\) denote the pushforward of \(\mu\) by \(f\).
+The normalized absolute identity is also proved as the exact equality of Borel measures
+\begin{equation}
+ \left(x\longmapsto
+ 2^{-T_n}\left|\Up^{(n)}(x)\right|\right)_{\#}\lambda_{[-1,1]}
+ =
+ \Up_{\#}\lambda_{[-1,1]}.                                \label{eq:rvachev-absolute-pushforward}
+\end{equation}
+\end{theorem}
+
+\begin{proof}[Formal proof]
+Equations \eqref{eq:rvachev-signed-mixture}--\eqref{eq:rvachev-normalized-test}
+are \lean{intervalIntegral_comp_iteratedDeriv_rvachev},
+\lean{intervalIntegral_comp_abs_iteratedDeriv_rvachev}, and
+\lean{intervalIntegral_comp_normalized_abs_iteratedDeriv_rvachev}.
+The pushforward equality \eqref{eq:rvachev-absolute-pushforward} is
+\lean{map_normalized_abs_iteratedDeriv_rvachev_restrict_Icc}.  These declarations are in
+\path{RvachevDerivativeDistribution.lean}.
+\end{proof}
+
+\begin{corollary}[All nonnegative real absolute moments]
+\label{cor:rvachev-derivative-rpow-moments}
+For every \(n\in\N\) and every real \(p\ge0\),
+\begin{equation}
+ \int_{-1}^{1}\left|\Up^{(n)}(x)\right|^p\dd x
+ =
+ \left(2^{T_n}\right)^p
+ \int_{-1}^{1}\Up(y)^p\dd y.                              \label{eq:rvachev-rpow-moments}
+\end{equation}
+Here the powers are Lean's real-power operation.  Thus \(p=0\) is included, with the
+convention \(0^0=1\).
+\end{corollary}
+
+\begin{proof}[Formal proof]
+This is \lean{intervalIntegral_abs_iteratedDeriv_rvachev_rpow} in
+\path{RvachevDerivativeDistribution.lean}; its hypothesis is exactly \(0\le p\).
+\end{proof}
+
+\begin{boxedremark}
+\textbf{Exact current boundary.}
+The signed API above is the finite continuous-test-function mixture
+\eqref{eq:rvachev-signed-mixture}; a separately packaged Borel pushforward law simplified
+to an independent Rademacher sign is not yet formalized.  Nor does the current module state
+the \lean{eLpNorm} or general rearrangement-invariant norm ladder, the exact inverse-Fabius
+level sets, the beta-transform identities, or the later spectral layers.  Those claims
+remain in the research-frontier report.  Equation
+\eqref{eq:rvachev-absolute-pushforward} is the formal measure-theoretic base from which such
+absolute-value corollaries can subsequently be proved.
+\end{boxedremark}
 
 \subsection{Effective flatness}
 
@@ -5714,10 +5841,11 @@ Fourier analysis &
 \path{PeakRayEnvelope.lean}, \path{GlobalDecayEnvelope.lean},
 \path{RvachevFourierDecay.lean}, \path{VarianceBookkeeping.lean},
 \path{BirkhoffVariance.lean}, \path{BirkhoffProductBridge.lean}\\
-Global derivatives and flatness &
+Global derivatives, value distributions, and flatness &
 \path{GlobalExtension.lean}, \path{GlobalBounds.lean},
-\path{BoundedDerivatives.lean}, \path{EffectiveFlatness.lean},
-\path{SharpFlatness.lean}, \path{FabiusFlatness.lean}\\
+\path{BoundedDerivatives.lean}, \path{RvachevDerivativeDistribution.lean},
+\path{EffectiveFlatness.lean}, \path{SharpFlatness.lean},
+\path{FabiusFlatness.lean}\\
 Analyticity, inverse, elementary obstruction &
 \path{NowhereAnalytic.lean}, \path{FabiusInverse.lean},
 \path{ElementaryFunction.lean}, \path{NotElementary.lean},
