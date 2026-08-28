@@ -6250,12 +6250,18 @@ beta-weighted formulas, Bernoulli-polynomial integrals, order-statistic represen
 Cauchy transforms, and Gini/autocorrelation integrals expressed through the infinite
 sinc product.  Numerical experiments are supplied in a reproducible Python script.
 
-A post-snapshot Lean audit now provides the generic continuous-linear naturality and
-conditional operator/scalar affine-recursion substrate for weighted uniform laws, together
-with the named geometric weights \((1-q)q^n\), their probability law, self-similarity,
-reflection, carried-unit-interval results, and the half-base bridges.  This does not
-formalize the report's variable-upper-endpoint or improper-singular inverse-pair
-extensions, fractional-power, complex-Mellin, density, transform, moment, or fixed-point
+A post-snapshot Lean audit, checked at compiled source checkpoint
+\texttt{e6f535e5d}, now provides the generic continuous-linear naturality and conditional
+operator/scalar affine-recursion substrate for weighted uniform laws, together with the
+named geometric weights \((1-q)q^n\), their probability law, self-similarity, reflection,
+absolute continuity, null singletons, exact support, and half-base bridges.  The new real-CDF
+layer also proves continuity, reflection, and the midpoint value for \(|q|<1\), exact CDF
+tails for \(0\le q<1\), and, for \(0<q<1\), both conditioning integrals, an explicit
+Radon--Nikodym density with compact support, and \(C^\infty\) regularity.  At \(q=1/2\),
+the CDF and density are identified on all of \(\R\) with the bounded Fabius function and
+the affine Rvachev up-function.  This does not formalize the report's
+variable-upper-endpoint or improper-singular inverse-pair extensions, fractional-power,
+complex-Mellin, Fourier-product, moment, shape, higher-derivative-wrapper, or fixed-point
 uniqueness consequences.  A still later module, \path{InversePairIntegral.lean}, does
 formalize the complete proper-compact absolutely-continuous inverse-pair identity.
 
@@ -6298,9 +6304,10 @@ language for all integrals.\\
 Generic weighted-uniform laws and support-free quantile transport & The formal source now
 contains arbitrary Banach-valued distribution splitting and reflection, exact interval
 mass for nonnegative real weights, continuous-linear and scalar naturality, conditional
-operator/scalar affine recursions, the named geometric-uniform probability law and its
-carried-\([0,1]\) specialization, a support-free atom-compatible quantile pushforward, its
-compact specialization, and the clamped Fabius inverse theorem.\\
+operator/scalar affine recursions, the named geometric-uniform probability law with exact
+support and null singletons, its continuous CDF and explicit smooth compactly supported
+density in the positive-ratio range, a support-free atom-compatible quantile pushforward,
+its compact specialization, and the clamped Fabius inverse theorem.\\
 Exact dyadic values, rational moment recurrences, Bernoulli and \(q\)-binomial structure &
 Inputs to the new Mellin/Newton continuation; these arithmetic results are not reproved
 in full.\\
@@ -6428,7 +6435,11 @@ The self-decomposition
 holds with \(U\sim\mathrm{Unif}[0,1]\) independent of a copy \(Y'\) of \(Y\).
 It will generate both the positive- and negative-moment recurrences.
 
-\begin{statusbox}[Formal arbitrary-weight law underlying the dyadic split]
+\begin{statusbox}[Formal arbitrary-weight law and geometric CDF underlying the dyadic split]
+The post-snapshot API recorded in this box was checked and frozen at compiled full-facade
+checkpoint \texttt{e6f535e5d}; the report's original novelty snapshot remains the one stated
+in its provenance metadata.
+
 The current Lean source proves the distributional mechanism before specializing the
 weights.  For every norm-summable sequence in a real Banach space with its Borel
 structure, the weighted uniform-coordinate pushforward is a probability law, splits as
@@ -6506,9 +6517,11 @@ The law-level scalar compatibility identity is oriented as
 For every real \(q\), the named weights are \(w_n(q)=(1-q)q^n\), with exact zero and
 successor formulas.  Under \(|q|<1\) they are norm-summable with total mass one; their
 series is continuous and measurable, and the probability law satisfies the exact
-head--tail product identity, affine self-similarity, and reflection.  Under
-\(0\le q<1\), the weights are nonnegative, the series lies in \([0,1]\), and the law gives
-mass one to that interval and zero to its complement.  The nineteen declarations are
+head--tail product identity, affine self-similarity, reflection, absolute continuity, null
+singletons, and equality of topological support with the exact series range.  Under
+\(0\le q<1\), the weights are nonnegative, the series lies in \([0,1]\), the law gives
+mass one to that interval and zero to its complement, and its topological support is
+exactly \([0,1]\).  The twenty-three declarations in \path{GeometricUniformLaw.lean} are
 \nolinkurl{Fabius.ProbabilityRepresentation.geometricUniformWeight},
 \nolinkurl{Fabius.ProbabilityRepresentation.geometricUniformWeight_zero},
 \nolinkurl{Fabius.ProbabilityRepresentation.geometricUniformWeight_succ},
@@ -6523,19 +6536,80 @@ mass one to that interval and zero to its complement.  The nineteen declarations
 \nolinkurl{Fabius.ProbabilityRepresentation.geometricUniformSeries_mem_Icc},
 \nolinkurl{Fabius.ProbabilityRepresentation.geometricUniformDistribution},
 \nolinkurl{Fabius.ProbabilityRepresentation.geometricUniformDistribution_isProbabilityMeasure},
+\nolinkurl{Fabius.ProbabilityRepresentation.geometricUniformDistribution_absolutelyContinuous},
+\nolinkurl{Fabius.ProbabilityRepresentation.geometricUniformDistribution_nullSingletonClass},
 \nolinkurl{Fabius.ProbabilityRepresentation.uniformProduct_map_head_tail_geometricUniformSeries},
 \nolinkurl{Fabius.ProbabilityRepresentation.geometricUniformDistribution_selfSimilar},
 \nolinkurl{Fabius.ProbabilityRepresentation.geometricUniformDistribution_reflection},
-\nolinkurl{Fabius.ProbabilityRepresentation.geometricUniformDistribution_Icc}, and
-\nolinkurl{Fabius.ProbabilityRepresentation.geometricUniformDistribution_compl_Icc}.
-The exact half-base bridges are
+\nolinkurl{Fabius.ProbabilityRepresentation.geometricUniformDistribution_Icc},
+\nolinkurl{Fabius.ProbabilityRepresentation.geometricUniformDistribution_compl_Icc},
+\nolinkurl{Fabius.ProbabilityRepresentation.geometricUniformDistribution_support_eq_range},
+and
+\nolinkurl{Fabius.ProbabilityRepresentation.geometricUniformDistribution_support_eq_Icc}.
+The exact half-base series and law bridges are
 \nolinkurl{Fabius.ProbabilityRepresentation.weightedCoordinateSum_eq_geometricUniformSeries_one_half}
 and
 \nolinkurl{Fabius.ProbabilityRepresentation.weightedSumDistribution_eq_geometricUniformDistribution_one_half}.
 
-Still outside the formal layer are equality of topological support with \([0,1]\),
-atomlessness, the \(q\)-specific CDF and density identities, characteristic-function
-products, moments and cumulants, and uniqueness of the affine measure fixed point.
+The three generic declarations in \path{ContinuousCDF.lean} are
+\nolinkurl{Fabius.continuous_cdf_of_nullSingleton},
+\nolinkurl{Fabius.cdf_reflection_sub}, and
+\nolinkurl{Fabius.measure_eq_withDensity_of_cdf_hasDerivAt}.  They turn null singletons into
+CDF continuity, turn affine reflection of a real probability law into its all-real CDF
+reflection, and identify a law with Lebesgue measure having density
+\(\operatorname{ofReal}\circ f\) from an everywhere pointwise CDF derivative.  The last
+result assumes neither prior absolute continuity nor continuity of \(f\).
+
+The twenty-seven declarations in \path{GeometricUniformCDF.lean} are
+\nolinkurl{Fabius.ProbabilityRepresentation.geometricUniformCDF},
+\nolinkurl{Fabius.ProbabilityRepresentation.monotone_geometricUniformCDF},
+\nolinkurl{Fabius.ProbabilityRepresentation.geometricUniformCDF_nonneg},
+\nolinkurl{Fabius.ProbabilityRepresentation.geometricUniformCDF_le_one},
+\nolinkurl{Fabius.ProbabilityRepresentation.measurable_geometricUniformCDF},
+\nolinkurl{Fabius.ProbabilityRepresentation.continuous_geometricUniformCDF},
+\nolinkurl{Fabius.ProbabilityRepresentation.geometricUniformCDF_reflection},
+\nolinkurl{Fabius.ProbabilityRepresentation.geometricUniformCDF_one_half},
+\nolinkurl{Fabius.ProbabilityRepresentation.geometricUniformCDF_zero_of_nonpos},
+\nolinkurl{Fabius.ProbabilityRepresentation.geometricUniformCDF_one_of_one_le},
+\nolinkurl{Fabius.ProbabilityRepresentation.geometricUniformCDF_eq_integral},
+\nolinkurl{Fabius.ProbabilityRepresentation.geometricUniformCDF_eq_intervalIntegral},
+\nolinkurl{Fabius.ProbabilityRepresentation.geometricUniformDensity},
+\nolinkurl{Fabius.ProbabilityRepresentation.geometricUniformCDF_hasDerivAt},
+\nolinkurl{Fabius.ProbabilityRepresentation.deriv_geometricUniformCDF},
+\nolinkurl{Fabius.ProbabilityRepresentation.continuous_geometricUniformDensity},
+\nolinkurl{Fabius.ProbabilityRepresentation.geometricUniformDensity_nonneg},
+\nolinkurl{Fabius.ProbabilityRepresentation.geometricUniformDensity_zero_of_nonpos},
+\nolinkurl{Fabius.ProbabilityRepresentation.geometricUniformDensity_zero_of_one_le},
+\nolinkurl{Fabius.ProbabilityRepresentation.support_geometricUniformDensity_subset_Ioo},
+\nolinkurl{Fabius.ProbabilityRepresentation.support_geometricUniformDensity_subset_Icc},
+\nolinkurl{Fabius.ProbabilityRepresentation.tsupport_geometricUniformDensity_subset_Icc},
+\nolinkurl{Fabius.ProbabilityRepresentation.geometricUniformDensity_hasCompactSupport},
+\nolinkurl{Fabius.ProbabilityRepresentation.geometricUniformDensity_reflection},
+\nolinkurl{Fabius.ProbabilityRepresentation.geometricUniformDistribution_eq_withDensity},
+\nolinkurl{Fabius.ProbabilityRepresentation.contDiff_geometricUniformCDF}, and
+\nolinkurl{Fabius.ProbabilityRepresentation.contDiff_geometricUniformDensity}.
+The CDF definition and its monotonicity, bounds, and measurability are total in real \(q\).
+Continuity, reflection, and the midpoint identity hold for \(|q|<1\); its exterior values
+are formal for \(0\le q<1\).  Under \(0<q<1\), the two conditioning identities hold on
+all of \(\R\), the explicit formula is an everywhere pointwise derivative and the exact
+Radon--Nikodym density, and the density is nonnegative, symmetric, compactly supported,
+and \(C^\infty\).  The ordinary support theorem is containment in \((0,1)\) and the
+topological-support theorem is containment in \([0,1]\); these should not be confused with
+the law's exact-support theorem above.
+
+Finally, \path{ProbabilityRepresentation.lean} gives the all-real half-base bridges
+\nolinkurl{Fabius.ProbabilityRepresentation.weightedSumCDF_eq_geometricUniformCDF_one_half},
+\nolinkurl{Fabius.ProbabilityRepresentation.geometricUniformCDF_one_half_eq_fabiusReal},
+and
+\nolinkurl{Fabius.ProbabilityRepresentation.geometricUniformDensity_one_half_eq_rvachevUp}.
+Thus the dyadic CDF and density identities used at the start of this report are now formal.
+
+The definition \nolinkurl{Fabius.ProbabilityRepresentation.geometricUniformDensity} is
+totalized, but its classical density and Radon--Nikodym interpretation are not formal here for
+\(q\le0\).  Still outside the formal layer are the characteristic-function product and
+rapid-decay/Fourier-inversion route, closed higher-derivative refinements and endpoint-flatness
+wrappers, shape results, moments and transforms, and uniqueness of the affine measure fixed
+point.
 \end{statusbox}
 
 \subsection{Moment-generating and Fourier products}
