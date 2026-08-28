@@ -13887,7 +13887,7 @@ formula at \(p=1\) and \(x=1\) gives \(S_2(1)=1\), whereas the proposed integral
 \(1/2\).  The public Lean recurrence concerns the centered finite CDF, not this all-real raw
 spline.
 \end{warning}
-\begin{obligation}
+\begin{obligation}[Discharged]
 Expose a public all-real theorem for the positive-part formula with its exact normalization,
 domain, and pointwise-finiteness interpretation.  If a raw-spline smoothing law is desired,
 first formulate the correct identity and domain rather than reusing the refuted display
@@ -13897,6 +13897,20 @@ above.  The public declarations
 fixed-range positive-spline lemmas and a bridge valid only on \([0,1]\) do not state these
 global claims.
 \end{obligation}
+The all-real theorem is now public in \path{FabiusUniformSpline.lean}:
+\lean{fabiusUniformSpline_eq_tsum_positivePart} states, for \(p\ge1\) and every real \(x\),
+\[
+ S_p(x)=\bigl(2^{\binom p2}\,p!\bigr)^{-1}
+ \sum_{r\ge0}(-1)^{\wt(r)}\left(2^px-\tfrac12-r\right)_+^{p},
+\]
+with \(\sum_{r\ge0}\) read as a \lean{tsum} and the positive part as
+\(\max(\,\cdot\,,0)^p\); the pointwise-finiteness interpretation is its companion
+\lean{positivePart_summand_support_finite}, which exhibits the summand's support inside
+\(\{r<\lceil 2^px\rceil\}\).  The proof needs no fixed-range detour: left of the support both
+sides vanish, and for \(x\ge0\) the positive parts cut the \lean{tsum} down to exactly the
+definitional prefix of the centered spline, the reversed power contributing the sign
+\((-1)^p\) absorbed by the normalizing constant.  No raw-spline smoothing law is asserted,
+in accordance with the warning above.
 
 \subsection{What ``a factor of two'' is intended to compare}
 
