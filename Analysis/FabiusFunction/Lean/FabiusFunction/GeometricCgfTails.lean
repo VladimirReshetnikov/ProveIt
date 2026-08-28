@@ -247,7 +247,6 @@ theorem mgf_uniform_half (t : ℝ) (ht : t ≠ 0) :
   have h2 : t * -2⁻¹ = -(t / 2) := by ring
   rw [h1, h2]
   field_simp
-  ring
 
 /-- The digit prefix's moment generating function in closed form: the
 finite hyperbolic-sinc product
