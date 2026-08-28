@@ -102,8 +102,11 @@ theorem integral_inv_sub_eq_mass_smul_add_intervalIntegral_measureReal_Ioi
         μ.real (Ioi t) • ((z - (t : ℂ))⁻¹ ^ 2) := by
     funext t
     rw [hsplit t, sub_smul]
-  rw [hIic_eq, intervalIntegral.integral_sub
-    (hk_int.smul (μ.real univ)) hIoi_int,
+  have hconst_int : IntervalIntegrable
+      (fun t : ℝ => μ.real univ • ((z - (t : ℂ))⁻¹ ^ 2))
+      volume a b :=
+    hk_int.smul (μ.real univ)
+  rw [hIic_eq, intervalIntegral.integral_sub hconst_int hIoi_int,
     intervalIntegral.integral_smul,
     intervalIntegral_inv_sub_sq hab hz]
   module
