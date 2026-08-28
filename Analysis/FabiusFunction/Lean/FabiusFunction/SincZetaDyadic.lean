@@ -211,7 +211,8 @@ theorem rvachevFourierProduct_eq_cexp {z : ℂ} (hz : ‖z‖ < 1) :
       norm_div_two_pow_lt_one (lt_of_lt_of_le hz (one_le_pow₀ (by norm_num)))
     exact sinc_family_norm_lt_one hzp p.2
   rw [rvachevFourierProduct_eq_tprod_pair,
-    tprod_congr fun p : ℕ × ℕ => one_add_sineTerm_eq (z / 2 ^ p.1) p.2,
+    tprod_congr fun p : ℕ × ℕ =>
+      one_add_sineTerm_eq_one_sub_sq_div (z / 2 ^ p.1) p.2,
     tprod_one_sub_eq_cexp_powerSum hlt (sinc_pair_norm_summable z)]
   congr 2
   refine tsum_congr fun r => ?_

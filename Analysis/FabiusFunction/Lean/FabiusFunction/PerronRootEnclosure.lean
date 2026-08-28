@@ -100,7 +100,9 @@ noncomputable def perronNumerB (t : ℝ) : ℝ :=
 theorem perronCert_low :
     ∀ t ∈ Set.Icc (0:ℝ) 1, 0 ≤ 10 ^ 8 * perronNumerA t - 132253596 * perronNumerB t := by
   intro t ht
-  refine nonneg_on_Icc_of_pieces _ 32 (by norm_num) ?_ ht
+  refine nonneg_on_Icc_of_pieces
+    (fun u : ℝ => 10 ^ 8 * perronNumerA u - 132253596 * perronNumerB u)
+    32 (by norm_num) ?_ (t := t) ht
   intro i hi s hs
   obtain ⟨hs0, hs1⟩ := hs
   have h1s : (0:ℝ) ≤ 1 - s := by linarith
@@ -529,7 +531,9 @@ theorem perronCert_low :
 theorem perronCert_high :
     ∀ t ∈ Set.Icc (0:ℝ) 1, 0 ≤ 132269842 * perronNumerB t - 10 ^ 8 * perronNumerA t := by
   intro t ht
-  refine nonneg_on_Icc_of_pieces _ 32 (by norm_num) ?_ ht
+  refine nonneg_on_Icc_of_pieces
+    (fun u : ℝ => 132269842 * perronNumerB u - 10 ^ 8 * perronNumerA u)
+    32 (by norm_num) ?_ (t := t) ht
   intro i hi s hs
   obtain ⟨hs0, hs1⟩ := hs
   have h1s : (0:ℝ) ≤ 1 - s := by linarith
