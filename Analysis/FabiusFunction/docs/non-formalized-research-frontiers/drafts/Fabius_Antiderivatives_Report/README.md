@@ -25,8 +25,8 @@ powers, negative-power and Mellin/Newton identities, complete piecewise
 formulas for Rvachev's up-function, formulas for reflected/complementary
 Fabius transforms, exact higher derivatives, Riemann–Liouville orders, and
 first- and higher-order primitives of the inverse Fabius function.  It also
-derives conditional inverse-primitive and order-statistic asymptotics from the
-repository's inverse endpoint equivalent, and clearly labels conjectural
+derives inverse-primitive and order-statistic asymptotics from the repository's
+now-formalized inverse endpoint equivalent, and clearly labels conjectural
 refinements.
 
 ## Rebuild the PDF
