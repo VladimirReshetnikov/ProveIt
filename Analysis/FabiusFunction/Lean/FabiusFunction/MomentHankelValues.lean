@@ -41,7 +41,7 @@ theorem upMoment_eq_integral_mul (F : BoundedFabius) (hF : IsFabius F)
   refine integral_congr_ae (Filter.Eventually.of_forall fun x => ?_)
   dsimp only
   rw [NNReal.smul_def, Real.coe_toNNReal _ (rvachevUp_nonneg F x),
-    mul_comm]
+    smul_eq_mul, mul_comm]
 
 /-- The even measure moments are the corpus's exact rationals. -/
 theorem upMoment_even (F : BoundedFabius) (hF : IsFabius F) (n : ℕ) :
