@@ -1,5 +1,6 @@
 import FabiusFunction.MonomialCombFourier
 import FabiusFunction.FourierAnalytic
+import FabiusFunction.NegativeLaplaceVerticalAllOrderBound
 
 /-!
 # Derivatives of the scaled Rvachev Fourier transform
@@ -8,14 +9,15 @@ Stage two of the shifted dyadic exactness theorem: the derivative
 side of `fourier_monomialRvachevSchwartz` is evaluated through the
 analytic transform.
 
-* `iteratedDeriv_comp_ofReal` — **the real–complex derivative
-  bridge**: real iterated derivatives of the restriction of an entire
-  function are the restrictions of its complex iterated derivatives.
 * `fourier_coe_scaledRvachevSchwartz` — the function-level transform
-  of the scaled sample function, `𝓕(up(u·)) = u⁻¹·Û(·/u)`.
-* `iteratedDeriv_fourier_scaledRvachevSchwartz` — its derivatives:
+  of the scaled sample function, `𝓕(up(u·)) = u⁻¹·Û(·/u)`;
+* `contDiff_rvachevFourier_ofReal` — the real-axis restriction of
+  the entire transform is smooth;
+* `iteratedDeriv_fourier_scaledRvachevSchwartz` — the derivatives:
   `(𝓕(up(u·)))⁽ᵖ⁾(w) = u⁻¹·u⁻ᵖ·Û⁽ᵖ⁾(w/u)`, with `Û⁽ᵖ⁾` the complex
-  iterated derivative of the entire transform.
+  iterated derivative of the entire transform, transported to the
+  real axis by the corpus's real–complex derivative bridge
+  (`iteratedDeriv_comp_ofReal_eq_of_differentiableOn`).
 
 Stage three specializes `w` to nonzero integers at `u = 2^{-m}`,
 where `Û⁽ᵖ⁾(2^m ℓ) = 0` for `p ≤ m` by the integer-zero order
@@ -29,26 +31,6 @@ open MeasureTheory Real Complex
 open scoped ContDiff FourierTransform SchwartzMap
 
 namespace Fabius
-
-/-- **The real–complex iterated-derivative bridge**: for an entire
-function, the real iterated derivatives of its restriction to `ℝ` are
-the restrictions of its complex iterated derivatives. -/
-theorem iteratedDeriv_comp_ofReal {G : ℂ → ℂ}
-    (hG : Differentiable ℂ G) (n : ℕ) (t : ℝ) :
-    iteratedDeriv n (fun y : ℝ => G (y : ℂ)) t =
-      iteratedDeriv n G (t : ℂ) := by
-  induction n generalizing t with
-  | zero => simp
-  | succ n ih =>
-      have hGn : Differentiable ℂ (iteratedDeriv n G) :=
-        (hG.contDiff (n := (⊤ : ℕ∞))).differentiable_iteratedDeriv
-          (by exact_mod_cast lt_top_iff_ne_top.mpr (by simp))
-      rw [iteratedDeriv_succ, iteratedDeriv_succ]
-      have hfun : iteratedDeriv n (fun y : ℝ => G (y : ℂ)) =
-          fun y : ℝ => iteratedDeriv n G (y : ℂ) :=
-        funext fun y => ih y
-      rw [hfun]
-      exact ((hGn ((t : ℝ) : ℂ)).hasDerivAt.comp_ofReal).deriv
 
 /-- The function-level Fourier transform of the scaled sample
 function: `𝓕(up(u·)) = u⁻¹·Û(·/u)`. -/
@@ -79,21 +61,33 @@ theorem iteratedDeriv_fourier_scaledRvachevSchwartz
   rw [fourier_coe_scaledRvachevSchwartz F hF hu]
   have hshape : (fun w : ℝ =>
       (u⁻¹ : ℝ) • rvachevFourier F (((w / u : ℝ) : ℂ))) =
-      fun w : ℝ => (u⁻¹ : ℝ) •
-        (fun t : ℝ => rvachevFourier F (t : ℂ)) (u⁻¹ • w) := by
+      (u⁻¹ : ℝ) • (fun w : ℝ =>
+        (fun t : ℝ => rvachevFourier F (t : ℂ)) (u⁻¹ * w)) := by
     funext v
-    simp only [smul_eq_mul]
+    simp only [Pi.smul_apply]
+    show (u⁻¹ : ℝ) • rvachevFourier F (((v / u : ℝ) : ℂ)) =
+      (u⁻¹ : ℝ) • rvachevFourier F (((u⁻¹ * v : ℝ) : ℂ))
     rw [inv_mul_eq_div]
   rw [hshape]
-  rw [iteratedDeriv_const_smul
+  have hcd : ContDiffAt ℝ (p : ℕ∞) (fun w : ℝ =>
+      (fun t : ℝ => rvachevFourier F (t : ℂ)) (u⁻¹ * w)) w :=
     (((contDiff_rvachevFourier_ofReal F hF (n := (p : ℕ∞))).comp
-      (contDiff_const.smul contDiff_id)).contDiffAt) (u⁻¹ : ℝ)]
+      (contDiff_const.smul contDiff_id)).contDiffAt)
+  rw [iteratedDeriv_const_smul hcd (u⁻¹ : ℝ)]
+  simp only [Pi.smul_apply]
   congr 1
-  rw [iteratedDeriv_comp_const_smul
-    (contDiff_rvachevFourier_ofReal F hF (n := (p : ℕ∞))) (u⁻¹ : ℝ)]
-  simp only [smul_eq_mul]
-  rw [iteratedDeriv_comp_ofReal
-    (rvachevFourier_differentiable_analytic F hF) p (u⁻¹ * w),
-    inv_mul_eq_div]
+  have hg : ContDiff ℝ (p : ℕ∞)
+      (fun t : ℝ => rvachevFourier F (t : ℂ)) :=
+    contDiff_rvachevFourier_ofReal F hF
+  rw [iteratedDeriv_comp_const_smul hg (u⁻¹ : ℝ)]
+  show (u⁻¹ : ℝ) ^ p • iteratedDeriv p
+      (fun t : ℝ => rvachevFourier F (t : ℂ)) (u⁻¹ * w) =
+    (u⁻¹ : ℝ) ^ p •
+      iteratedDeriv p (rvachevFourier F) (((w / u : ℝ) : ℂ))
+  congr 1
+  rw [iteratedDeriv_comp_ofReal_eq_of_differentiableOn
+    (rvachevFourier F) isOpen_univ
+    (rvachevFourier_differentiable_analytic F hF).differentiableOn
+    p (u⁻¹ * w) (Set.mem_univ _), inv_mul_eq_div]
 
 end Fabius
