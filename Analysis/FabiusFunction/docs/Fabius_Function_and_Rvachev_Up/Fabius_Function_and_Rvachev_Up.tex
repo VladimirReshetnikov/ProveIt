@@ -122,7 +122,7 @@
 \author{Human-readable synthesis of the formal development\\
 \small Vladimir Reshetnikov's \texttt{ProveIt} repository}
 \date{Integrated repository snapshot: 28 August 2026\\
-\small mainline checkpoint \nolinkurl{a7899c03f}; fractional-Volterra semigroup addendum
+\small mainline checkpoint \nolinkurl{58acd7002}; fractional-Volterra semigroup addendum
 \nolinkurl{18e2bdcf1}}
 
 \begin{document}
@@ -143,10 +143,13 @@ infinite weighted sum of independent uniform coordinates.  Finite atomic convolu
 weak convergence, half-weighted step approximants, and centered uniform splines give proved
 finite models and quantitative approximation results.  At the reusable level, arbitrary
 absolutely summable vector weights now have probability, head--tail, reflection,
-continuous-linear naturality, and operator-affine recursion laws, while nonnegative real
-weights have exact carried-interval laws.  A named geometric-uniform specialization supplies
-the weights \((1-q)q^n\), their series and law, affine self-similarity and reflection, and
-the carried unit interval; a support-free quantile
+continuous-linear naturality, operator-affine recursion, and exact support-as-range laws,
+while every nontrivial absolutely summable real-weight law is absolutely continuous with
+respect to Lebesgue measure and has null singletons, and arbitrary signed real weights have
+exact min/max interval ranges and topological supports.  A named geometric-uniform
+specialization supplies the weights \((1-q)q^n\), their series and law, affine self-similarity
+and reflection, absolute continuity and null singletons for \(|q|<1\), support equal to the
+series range for \(|q|<1\), and exact unit-interval support for \(0\le q<1\); a support-free quantile
 theorem transports uniform measure through
 the clamped Fabius inverse and gives Banach-valued quantile substitution.  The analytic part develops the
 formal sinc and cosine products, Fourier inversion and Poisson summation, exact moment
@@ -867,6 +870,8 @@ generic weighted-uniform law for \(w_n=1/2/2^n=2^{-n-1}\).  The additional bridg
 and
 \lean{ProbabilityRepresentation.weightedSumDistribution_eq_geometricUniformDistribution_one_half}
 identify the dyadic series and law with the named geometric specialization at \(q=1/2\).
+Its exact topological support is recorded by
+\lean{ProbabilityRepresentation.weightedSumDistribution_support_eq_Icc}.
 \end{proof}
 
 \subsection{Generic weighted laws and support-free quantile transport}
@@ -908,12 +913,28 @@ Under full summability, with \(W=\sum_n w_n\) and
  (x\mapsto W-x)_*\mu_w&=\mu_w.                              \label{eq:weighted-law-reflection}
 \end{align}
 Thus every absolutely summable vector-weight law is centrally symmetric about \(W/2\).
-If \(E=\R\) and every \(w_n\ge0\), then
+If \(E=\R\) and at least one coefficient \(w_n\) is nonzero, then \(\mu_w\) is absolutely
+continuous with respect to Lebesgue measure and every singleton is \(\mu_w\)-null.  No sign
+condition is imposed on the weights, and the nonzero coefficient may occur at an arbitrary
+index rather than at the head.
+More generally, its topological support is the exact range of the continuous series map:
 \begin{equation}
+ \supp(\mu_w)=S_w(\Omega).                                   \label{eq:weighted-law-support-range}
+\end{equation}
+If \(E=\R\), with no sign restriction, put
+\[
+ L_w=\sum_n\min\{w_n,0\},\qquad U_w=\sum_n\max\{w_n,0\}.
+\]
+Then cancellation and sign changes create no gaps:
+\begin{equation}
+ S_w(\Omega)=\supp(\mu_w)=[L_w,U_w].                         \label{eq:weighted-law-signed-support}
+\end{equation}
+If every \(w_n\ge0\), this becomes the full interval \([0,W]\), including the degenerate
+case \(W=0\).  Consequently
+\begin{equation}
+ S_w(\Omega)=\supp(\mu_w)=[0,W],\qquad
  \mu_w([0,W])=1,\qquad \mu_w\bigl(\R\setminus[0,W]\bigr)=0.  \label{eq:weighted-law-support}
 \end{equation}
-This is a carried-set statement; it does not assert that the topological support equals
-the whole interval.
 \end{theorem}
 
 Equation \eqref{eq:generic-head-tail-map} is
@@ -935,6 +956,25 @@ mass statements in \eqref{eq:weighted-law-support} are
 \lean{ProbabilityRepresentation.weightedUniformDistribution_compl_Icc}.
 Together these declarations give the probability, splitting, reflection, and carried-set
 layer of \path{WeightedUniformSeries.lean}.
+
+The exact-support upgrade is isolated in \path{WeightedUniformSupport.lean}.  Its ten
+public declarations are
+\lean{ProbabilityRepresentation.isOpenPosMeasure_infinitePi},
+\lean{ProbabilityRepresentation.uniformProduct_isOpenPosMeasure},
+\lean{ProbabilityRepresentation.support_map_eq_closure_range_of_continuous},
+\lean{ProbabilityRepresentation.weightedUniformSeries_constCoordinates},
+\lean{ProbabilityRepresentation.weightedUniformDistribution_support_eq_range},
+\lean{ProbabilityRepresentation.range_weightedUniformSeries_eq_Icc_min_max},
+\lean{ProbabilityRepresentation.weightedUniformDistribution_support_eq_Icc_min_max},
+\lean{ProbabilityRepresentation.range_weightedUniformSeries_eq_Icc},
+\lean{ProbabilityRepresentation.weightedUniformDistribution_support_eq_Icc}, and
+\lean{ProbabilityRepresentation.weightedUniformDistribution_support_eq_unitInterval}.
+The first three establish open positivity for arbitrary products and identify the support of
+a continuous pushforward with the closure of its range.  Compactness of the coordinate cube
+then removes the closure in \eqref{eq:weighted-law-support-range}.  In the real case,
+coordinates selecting each negative or positive coefficient attain the two endpoints, and
+connectedness fills the interval in \eqref{eq:weighted-law-signed-support}; constant
+coordinate paths give the especially transparent nonnegative specialization.
 
 The same module proves a more structural layer before any choice of geometric weights.
 
@@ -1026,8 +1066,21 @@ The refactored weighted-law surface also exposes seven compatibility declaration
 \path{WeightedUniformDistribution.lean}.  The two scalar compatibility identities use the
 same totalized pointwise equality as \eqref{eq:weighted-series-smul}; at law level the
 compatibility theorem is oriented as
-\(\mu_{cw}=(x\mapsto cx)_*\mu_w\).  The unit-interval declarations are carried-set
-statements, not support equalities.
+\(\mu_{cw}=(x\mapsto cx)_*\mu_w\).  Those two unit-interval compatibility declarations are
+carried-set statements; the separate exact support equalities are supplied by
+\path{WeightedUniformSupport.lean}.
+
+The same compatibility module contains a four-declaration real absolute-continuity tranche.
+For an arbitrary s-finite measure \(\nu\) on \(\R\) and \(a\ne0\),
+\lean{ProbabilityRepresentation.uniformScaledAdd_absolutelyContinuous} proves that the image
+of \(\lambda_{[0,1]}\otimes\nu\) under \((u,x)\mapsto ua+x\) is absolutely continuous with
+respect to Lebesgue measure.  The weighted head-coordinate workhorse is
+\lean{ProbabilityRepresentation.weightedUniformDistribution_absolutelyContinuous_of_head_ne_zero}.
+The sharp theorem
+\lean{ProbabilityRepresentation.weightedUniformDistribution_absolutelyContinuous} assumes
+only norm summability and \(\exists n,\ w_n\ne0\), and
+\lean{ProbabilityRepresentation.weightedUniformDistribution_nullSingletonClass} packages
+the resulting zero mass of every singleton as Mathlib's \texttt{NullSingletonClass}.
 
 The same measure language gives a clean inverse-CDF theorem without differentiating an
 inverse.
@@ -1158,13 +1211,17 @@ Equivalently, \(X_q\overset d=(1-q)U_0+qX_q'\), where \(X_q'\) is an independent
 The head coordinate and the shifted full series have product law.  Coordinate reflection
 gives \(X_q(R\omega)=1-X_q(\omega)\) and
 \(\mu_q\mathbin{\mathrm{map}}(x\mapsto1-x)=\mu_q\), where
-\((R\omega)_n=1-\omega_n\).  When \(0\le q<1\), every weight is nonnegative,
-\(X_q(\omega)\in[0,1]\), \(\mu_q([0,1])=1\), and
-\(\mu_q(\R\setminus[0,1])=0\); the endpoint \(q=0\) is included.  At \(q=1/2\), both
+\((R\omega)_n=1-\omega_n\).  For every \(|q|<1\), the law \(\mu_q\) is absolutely continuous
+with respect to Lebesgue measure and has null singletons; no positivity hypothesis on \(q\)
+is needed.  For every \(|q|<1\), the topological support of \(\mu_q\)
+is exactly the range \(X_q(\Omega)\).  When \(0\le q<1\), every weight is nonnegative,
+\(X_q(\omega)\in[0,1]\), \(\mu_q([0,1])=1\),
+\(\mu_q(\R\setminus[0,1])=0\), and \(\supp(\mu_q)=[0,1]\); the endpoint \(q=0\) is
+included.  At \(q=1/2\), both
 \(X_q\) and \(\mu_q\) are exactly the dyadic random series and law above.
 
 \begin{proof}[Formal proof]
-The nineteen public declarations in \path{GeometricUniformLaw.lean} are
+The twenty-three public declarations in \path{GeometricUniformLaw.lean} are
 \lean{ProbabilityRepresentation.geometricUniformWeight},
 \lean{ProbabilityRepresentation.geometricUniformWeight_zero},
 \lean{ProbabilityRepresentation.geometricUniformWeight_succ},
@@ -1179,21 +1236,27 @@ The nineteen public declarations in \path{GeometricUniformLaw.lean} are
 \lean{ProbabilityRepresentation.geometricUniformSeries_mem_Icc},
 \lean{ProbabilityRepresentation.geometricUniformDistribution},
 \lean{ProbabilityRepresentation.geometricUniformDistribution_isProbabilityMeasure},
+\lean{ProbabilityRepresentation.geometricUniformDistribution_absolutelyContinuous},
+\lean{ProbabilityRepresentation.geometricUniformDistribution_nullSingletonClass},
 \lean{ProbabilityRepresentation.uniformProduct_map_head_tail_geometricUniformSeries},
 \lean{ProbabilityRepresentation.geometricUniformDistribution_selfSimilar},
 \lean{ProbabilityRepresentation.geometricUniformDistribution_reflection},
-\lean{ProbabilityRepresentation.geometricUniformDistribution_Icc}, and
-\lean{ProbabilityRepresentation.geometricUniformDistribution_compl_Icc}.
+\lean{ProbabilityRepresentation.geometricUniformDistribution_Icc},
+\lean{ProbabilityRepresentation.geometricUniformDistribution_compl_Icc},
+\lean{ProbabilityRepresentation.geometricUniformDistribution_support_eq_range}, and
+\lean{ProbabilityRepresentation.geometricUniformDistribution_support_eq_Icc}.
 Exact half-base recovery is
 \lean{weightedCoordinateSum_eq_geometricUniformSeries_one_half} and
 \lean{weightedSumDistribution_eq_geometricUniformDistribution_one_half} in
-\path{ProbabilityRepresentation.lean}.
+\path{ProbabilityRepresentation.lean}; the exact dyadic support corollary there is
+\lean{weightedSumDistribution_support_eq_Icc}.
 \end{proof}
 
-These declarations prove concentration on \([0,1]\), not yet that the topological support is
-exactly that interval.  They also make no claim here about atomlessness, the general-\(q\)
-CDF or density identities, Fourier products, moments, cumulants, smoothness, or uniqueness
-of the affine measure fixed point.
+These declarations prove absolute continuity, null singletons, and exact support-as-range for
+\(|q|<1\), together with exact unit-interval support for \(0\le q<1\).  They do not define a
+named general-\(q\) CDF or select an explicit Radon--Nikodym density, and make no claim here
+about \(q\)-specific CDF or density identities, Fourier products, moments, cumulants,
+smoothness, or uniqueness of the affine measure fixed point.
 
 \subsection{Finite atomic laws and weak convergence}
 
@@ -6818,16 +6881,20 @@ That rule explains several choices made above:
       weak-convergence API, not an unformalized continuous box-convolution density.
 \item Arbitrary norm-summable vector weights have formal probability, head--tail,
       reflection, continuous-linear naturality, and operator-affine recursion laws;
-      nonnegative real weights additionally have exact carried-interval laws.  The
+      their laws have topological support exactly the series range, and arbitrary signed real
+      weights have exact min/max interval ranges and supports.  A nontrivial norm-summable
+      real-weight law is absolutely continuous with respect to Lebesgue measure and has null
+      singletons.  The
       pushforward-law definition itself is total even without measurability; its
       probability and map identities state the summability, completeness, and Borel
       hypotheses explicitly.  Scalar pointwise naturality alone needs neither summability
       nor completeness.  The generic affine recurrence is conditional on a displayed
       shift relation.  Separately, \path{GeometricUniformLaw.lean} defines the named weights
       \((1-q)q^n\), their series and probability law, and proves self-similarity, reflection,
-      and carried-\([0,1]\) results under the exact \(|q|<1\) or \(0\le q<1\) hypotheses.
-      It does not prove equality of topological support, atomlessness, a \(q\)-CDF or density
-      equation, transform or moment formulas, or fixed-point uniqueness.
+      absolute continuity, null singletons, and support equal to the series range under
+      \(|q|<1\), with exact support \([0,1]\) under \(0\le q<1\).  It does not define a named
+      \(q\)-CDF or an explicit density, nor prove the corresponding CDF or density equations,
+      transform or moment formulas, smoothness, or fixed-point uniqueness.
 \item Quantile transport is formal at the measure level first for arbitrary real
       probability laws, with no support or range restriction and an almost-everywhere
       sublevel characterization; a compact pointwise specialization feeds the clamped
@@ -6927,9 +6994,11 @@ Definitions, existence, uniqueness &
 Shape and regularity &
 \path{Differential.lean}, \path{Monotonicity.lean}, \path{Convexity.lean},
 \path{Regularity.lean}\\
-Probability, weighted-law naturality, quantile transport, layer cake, and finite approximants &
+Probability, weighted-law naturality, absolute continuity, exact support and affine recursion,
+quantile transport, layer cake, and finite approximants &
 \path{WeightedUniformSeries.lean}, \path{WeightedUniformDistribution.lean},
-\path{GeometricUniformLaw.lean}, \path{ProbabilityRepresentation.lean},
+\path{WeightedUniformSupport.lean}, \path{GeometricUniformLaw.lean},
+\path{ProbabilityRepresentation.lean},
 \path{QuantileTransport.lean}, \path{SubgraphFubini.lean},
 \path{SurvivalLayerCake.lean}, \path{InverseLayerCake.lean},
 \path{EarlyApproximants.lean},
@@ -7200,8 +7269,8 @@ V.~Reshetnikov,
 V.~Reshetnikov,
 \newblock \emph{ProveIt: Analysis/FabiusFunction},
 \newblock Lean~4 formal development, integrated source snapshot
-\texttt{a7899c03f5c56feae1154f08afbbd814f644053a}, consulted 28 August 2026.
-\newblock \url{https://github.com/VladimirReshetnikov/ProveIt/tree/a7899c03f5c56feae1154f08afbbd814f644053a/Analysis/FabiusFunction}.
+\texttt{58acd700220370b72a0804d4fe4c7f1d4624dbb2}, consulted 28 August 2026.
+\newblock \url{https://github.com/VladimirReshetnikov/ProveIt/tree/58acd700220370b72a0804d4fe4c7f1d4624dbb2/Analysis/FabiusFunction}.
 \newblock The positive-real fractional-Volterra semigroup declarations identified in
 \Cref{thm:fractional-volterra-foundation} were checked on the side branch at commit
 \texttt{18e2bdcf16a2ee69d816cc3cc60ffbe199226d0b}, on the same date.

@@ -1,7 +1,7 @@
 # Frontier compilations
 
 The broad multi-topic "collected new results" report series,
-consolidated (2026-08-28) into the 261-page single volume
+consolidated (2026-08-28) into the 262-page single volume
 [`Frontier_Compilations/`](Frontier_Compilations/): ten absorbed reports,
 displayed as ten outer parts.
 
@@ -36,10 +36,13 @@ displayed as ten outer parts.
 - **Report X / displayed Part X** — *Beyond the Dyadic Fabius Web*
   (formerly `beyond_dyadic_fabius_web_report/`).
 
-The member drafts were absorbed content-preservingly (labels, citation keys,
-and asset paths mechanically prefixed per report; wrapper counters, theorem
-captions, and raster figure selection normalized for the consolidated layout)
-and their directories deleted.  Provenance with SHA-256 hashes is recorded in
-the volume itself, and git history is the archive.
+The mathematical bodies of reports I--IX were preserved modulo their
+standalone wrappers and the mechanical prefixing of labels, citation keys,
+macro names, and asset paths; wrapper counters, theorem captions, and raster
+figure selection were normalized for the consolidated layout. Report X
+received the same treatment plus post-snapshot Lean-status updates recording
+exact-support, absolute-continuity, and null-singleton results. The former
+report directories were deleted. Provenance with SHA-256 hashes is recorded
+in the volume itself, and git history is the archive.
 
 See [`../MANIFEST.md`](../MANIFEST.md) for titles and the previous paths.
