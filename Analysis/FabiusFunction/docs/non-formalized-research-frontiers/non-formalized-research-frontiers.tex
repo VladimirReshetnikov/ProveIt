@@ -456,7 +456,8 @@ Status & Meaning in this companion\\
 \textbf{Expanded formal input} & A current Lean module whose exact declarations are inputs to
 a longer proof-oriented or frontier discussion here: principally
 \path{ElementaryFunction.lean}, \path{NotElementary.lean},
-\path{InverseNotElementary.lean}, and \path{ProbabilityLaplaceMoments.lean}.\\
+\path{InverseNotElementary.lean}, \path{ProbabilityLaplaceMoments.lean}, and
+\path{FractionalVolterra.lean}.\\
 \textbf{Missing engine} & A generic theorem family that the main article deliberately leaves in
 the module guide: path sums, Toeplitz rows, formal coefficient recurrences, finite
 remainders, and Gaussian polynomial estimates.\\
@@ -1171,6 +1172,34 @@ The real weighted-area specialization is
 unit-interval $\Up$ area and with \(1/2\).  These are full-interval theorems.  They do not
 package an arbitrary absolutely continuous primitive, a variable-upper-endpoint area
 identity, higher or fractional inverse primitives, or complex Mellin continuation.
+\end{remark}
+
+\begin{remark}[Formalized positive-real fractional Volterra boundary]
+\label{integration:rem:fractional-volterra-boundary}
+The definition \lean{fractionalVolterra} in \path{FractionalVolterra.lean} is a total
+Gamma-normalized oriented interval integral for a real order, arbitrary real base and
+endpoint, and an input valued in any real normed space.  The unconditional declarations
+\lean{fractionalVolterra_self}, \lean{fractionalVolterra_congr},
+\lean{fractionalVolterra_smul}, \lean{fractionalVolterra_one}, and
+\lean{fractionalVolterra_nat_succ} give the base-point value, locality on the closed
+unoriented endpoint interval, real-scalar compatibility, the ordinary order-one primitive,
+and exact agreement with \lean{normalizedVolterra} at every positive natural order.
+In the classical regime \(0<\alpha\) and \(a\le x\), a continuous input has an
+interval-integrable fractional kernel by
+\lean{intervalIntegrable_fractionalVolterra_kernel}, and
+\lean{fractionalVolterra_add_input} gives additivity for two such continuous inputs.
+For \(0<\alpha\), \(0<\beta\), and \(s<x\),
+\lean{intervalIntegral_fractionalVolterra_betaKernel} proves
+\begin{equation}
+ \int_s^x(x-u)^{\alpha-1}(u-s)^{\beta-1}\dd u
+ =(x-s)^{\alpha+\beta-1}
+   \frac{\Gamma(\alpha)\Gamma(\beta)}{\Gamma(\alpha+\beta)}.
+ \label{integration:eq:fractional-volterra-beta-kernel}
+\end{equation}
+No order-zero operator law, reversed-endpoint fractional interpretation, fractional-order
+semigroup, general power/constant evaluation, Caputo or other fractional
+derivative, complex-order theorem, or Fabius-, Rvachev-, or inverse-function specialization
+is included in this module.
 \end{remark}
 
 \subsection{Raw, endpoint, and tilted Laplace moments}
@@ -2511,6 +2540,14 @@ identities; \cref{integration:thm:survival-layer-cake}.\\
 Generic inverse-clock and Fabius explicit-primitive/pointwise-\(C^1\) layer cake, the full
 weighted inverse-area identity, equality with the $\Up$ area, and the inverse mean \(1/2\);
 \cref{integration:sec:survival-fubini}.\\
+\path{FractionalVolterra.lean} &
+The total real-order Gamma-normalized operator, its unconditional endpoint/locality/scalar,
+order-one, and positive-natural-order rules, and its positive-order ordered-endpoint
+continuous-kernel integrability and input additivity; the strict-interval positive-real
+shifted beta-kernel value; no order semigroup, power/constant specialization,
+fractional derivative, complex order, order-zero law,
+reversed-endpoint fractional interpretation, or hierarchy-specific specialization;
+\cref{integration:rem:fractional-volterra-boundary}.\\
 \path{ProbabilityLaplaceMoments.lean} &
 Almost-sure support, restriction to $[0,1]$, survival function, the partial/full Rvachev
 survival layer cake, the differentiable compact-support Fubini identity, raw and endpoint
@@ -13850,7 +13887,7 @@ formula at \(p=1\) and \(x=1\) gives \(S_2(1)=1\), whereas the proposed integral
 \(1/2\).  The public Lean recurrence concerns the centered finite CDF, not this all-real raw
 spline.
 \end{warning}
-\begin{obligation}
+\begin{obligation}[Discharged]
 Expose a public all-real theorem for the positive-part formula with its exact normalization,
 domain, and pointwise-finiteness interpretation.  If a raw-spline smoothing law is desired,
 first formulate the correct identity and domain rather than reusing the refuted display
@@ -13860,6 +13897,20 @@ above.  The public declarations
 fixed-range positive-spline lemmas and a bridge valid only on \([0,1]\) do not state these
 global claims.
 \end{obligation}
+The all-real theorem is now public in \path{FabiusUniformSpline.lean}:
+\lean{fabiusUniformSpline_eq_tsum_positivePart} states, for \(p\ge1\) and every real \(x\),
+\[
+ S_p(x)=\bigl(2^{\binom p2}\,p!\bigr)^{-1}
+ \sum_{r\ge0}(-1)^{\wt(r)}\left(2^px-\tfrac12-r\right)_+^{p},
+\]
+with \(\sum_{r\ge0}\) read as a \lean{tsum} and the positive part as
+\(\max(\,\cdot\,,0)^p\); the pointwise-finiteness interpretation is its companion
+\lean{positivePart_summand_support_finite}, which exhibits the summand's support inside
+\(\{r<\lceil 2^px\rceil\}\).  The proof needs no fixed-range detour: left of the support both
+sides vanish, and for \(x\ge0\) the positive parts cut the \lean{tsum} down to exactly the
+definitional prefix of the centered spline, the reversed power contributing the sign
+\((-1)^p\) absorbed by the normalizing constant.  No raw-spline smoothing law is asserted,
+in accordance with the warning above.
 
 \subsection{What ``a factor of two'' is intended to compare}
 
@@ -13889,7 +13940,7 @@ bounds, not the actual pointwise errors, and makes no optimality claim.
 The centered-spline error estimate and pointwise CDF convergence are public Lean results.
 The removed prose also compared the uniform estimate with weak convergence for the same
 finite laws:
-\begin{candidate}
+\begin{candidate}[Discharged]
 For \(p\ge1\), let \(\mu_p\) be the law of the finite weighted uniform-coordinate sum,
 translated to the right by \(2^{-p-1}\), and let \(\mu\) be the
 weighted-infinite-sum law.  Their CDFs are respectively \(C_p\) and \(F\), and
@@ -13900,7 +13951,20 @@ On \([0,1]\), the identification \(C_p=S_p\) recovers the centered-spline estima
 Consequently \(\mu_p\) converges weakly to \(\mu\), with the displayed uniform-CDF rate
 providing quantitative information beyond the resulting unquantified convergence statement.
 \end{candidate}
-\begin{obligation}
+Every part of this candidate is now public Lean.  The translated finite law is
+\lean{uniformCenteredPartialLaw} in \path{UniformSplineWeakConvergence.lean}, a probability
+measure by instance, with CDF identified as the midpoint-corrected finite CDF by
+\lean{cdf_uniformCenteredPartialLaw}; the displayed all-real bound is
+\lean{abs_uniformCenteredPartialCDF_sub_fabiusReal_le} in \path{FabiusComputability.lean};
+and the weak convergence \(\mu_p\to\mu\) in the probability-measure topology is
+\lean{uniformCenteredPartialLaw_tendsto}, proved by L\'evy's continuity theorem from the
+pointwise characteristic-function convergence
+\lean{tendsto_charFun_uniformCenteredPartialLaw}, itself a dominated-convergence consequence
+of the pointwise partial-sum convergence \lean{tendsto_uniformPartialSum}.  As instructed
+below, the proof does not route through \lean{finiteConvolutionProbability_tendsto}; the
+phrase \emph{strictly stronger} is rendered as the neutral comparison above, so no
+nonconverse is required.
+\begin{obligation}[Discharged]
 Bundle the translated finite laws and the limiting law as probability measures; identify
 their CDFs; combine the existing interval estimate with support facts to obtain the displayed
 all-real bound; and prove that the bound implies convergence in the probability-measure weak

@@ -113,8 +113,8 @@
 This volume preserves the mathematical bodies of the following drafts (labels, citation
 keys, and asset paths mechanically prefixed per part; top-level counters, reproduction
 paths, and raster figure selection adapted to the consolidated layout).  No mathematical
-content is altered.  The absorbed drafts are deleted from the working tree; git history is
-the archive.
+absorbed mathematical content is altered; later formalization notes are explicitly marked.
+The absorbed drafts are deleted from the working tree; git history is the archive.
 \begin{itemize}
 \item \path{Fabius_Rvachev_Representation_Frontiers/rvachev_fabius_representation_frontiers.tex} \\ {\footnotesize SHA-256 \path{8fdba498ec33cde2db9e7dc82c0c928946f632beb8a0ffd216afe310eaea0ea2}}
 \item \path{fabius_rvachev_representation_frontier/fabius_rvachev_representation_frontier_report.tex} \\ {\footnotesize SHA-256 \path{dfae837099df1578665a7bb4dabd9417cd160a2165987785062097e5046177ec}}
@@ -652,6 +652,64 @@ subtraction in \eqref{p1:eq:R-dde}.  This proves \eqref{p1:eq:R-derivative-tree}
 \[
  R^{(n)}(z)=(-1)^n n!\int_{-1}^{1}\frac{\rho(x)}{(z-x)^{n+1}}\,\dd x.
 \]
+\end{proof}
+
+\begin{proposition}[Generic affine-difference orbit; formalized]
+\label{p1:prop:affine-difference-formal}
+Over a commutative ring, let
+\[
+ (\Delta_{b,c}f)(z)=f(bz+c)-f(bz-c),\qquad
+ \xi_{n,T}(z)=b^nz+c\sum_{k=0}^{n-1}b^k-2c\sum_{k\in T}b^k .
+\]
+For every function with values in an additive commutative group,
+\begin{equation}
+ (\Delta_{b,c}^{\,n}f)(z)
+ =\sum_{T\subseteq\{0,\ldots,n-1\}}(-1)^{|T|}f\bigl(\xi_{n,T}(z)\bigr).
+ \label{p1:eq:affine-cube-formal}
+\end{equation}
+Moreover, suppose the ring is a nontrivially normed field, let \(S\) be open and invariant
+under \(z\mapsto bz\pm c\), and let \(f\) take values in a normed vector space.  If
+\(f'(z)=a\,\Delta_{b,c}f(z)\) for \(z\in S\), then no separate smoothness assumption is
+needed: for every \(n\geq0\) and \(z\in S\),
+\begin{equation}
+ f^{(n)}(z)=a^n b^{\binom n2}\,(\Delta_{b,c}^{\,n}f)(z).
+ \label{p1:eq:affine-derivative-formal}
+\end{equation}
+Constant scalar multiplication commutes with every iterate.  Taking \(S\) to be the
+whole field gives the global form, while \(b=2,c=1\) gives
+\begin{equation}
+ (\Delta_{2,1}^{\,n}f)(z)
+ =\sum_{j=0}^{2^n-1}\eps_j f\bigl(2^nz+2^n-1-2j\bigr).
+ \label{p1:eq:affine-dyadic-formal}
+\end{equation}
+\end{proposition}
+
+\begin{proof}[Lean proof and boundary]
+The following declarations in \path{AffineDifferenceOrbit.lean} prove the statements above:
+\begin{center}
+\small
+\begin{tabular}{l}
+\texttt{affineDifference\_iterate\_const\_smul}\\
+\texttt{affineDifference\_iterate\_apply}\\
+\texttt{iteratedDeriv\_eq\_affineDifference\_iterate\_on}\\
+\texttt{iteratedDeriv\_eq\_affineDifference\_iterate}\\
+\texttt{affineDifference\_iterate\_two\_one\_apply}.
+\end{tabular}
+\end{center}
+The first formula is a
+Boolean-cube induction.  The second differentiates that finite operator orbit on the
+invariant open set; its one-step derivative hypothesis bootstraps all regularity needed.
+The last formula reindexes subsets by binary support, so its signs are precisely the
+Thue--Morse signs.
+
+Thus the conditional passage from \eqref{p1:eq:R-dde} to
+\eqref{p1:eq:R-derivative-tree} is formalized in greater generality.  On the density side,
+\path{iteratedDeriv_rvachevUp_eq_thueMorse_sum} applies the same engine to the
+already formalized differential equation for \(\rho\), globally on the real line.  The
+module does not define the Cauchy--Stieltjes transform of the up measure or prove
+\eqref{p1:eq:R-dde}; the measure-specific resolvent equation, its application to the
+complex resolvent \(R\), and the kernel identity \eqref{p1:eq:R-kernel-tree} remain
+formalization obligations.
 \end{proof}
 
 Taking boundary imaginary parts in \eqref{p1:eq:R-derivative-tree} recovers the familiar
@@ -1432,12 +1490,17 @@ A Lean development can be staged as follows:
 \item define the Cauchy transform of the canonical up probability measure;
 \item prove the logarithmic fixed-point identity first on \((1,\infty)\);
 \item differentiate under the integral and formalize \eqref{p1:eq:R-dde};
-\item prove the Thue--Morse derivative tree by induction on binary children;
+\item apply the generic open-domain theorem in \path{AffineDifferenceOrbit.lean} to
+      obtain the Thue--Morse derivative tree once the preceding resolvent equation is
+      available;
 \item define rational moments and the monic Stieltjes procedure;
 \item construct finite Jacobi convergents and prove the Gaussian error identity;
 \item postpone the Denisov--Rakhmanov limit, which depends on substantial external
       orthogonal-polynomial theory.
 \end{enumerate}
+The finite affine-cube induction in item 4 is delivered.  Items 1--3, and hence the
+measure-specific resolvent DDE and its instantiation in the displayed formulas above,
+remain open.
 \end{problem}
 
 \section{Promising research program}

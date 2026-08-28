@@ -198,6 +198,7 @@ import FabiusFunction.InversePairIntegral
 import FabiusFunction.QuantileTransport
 import FabiusFunction.GlobalBounds
 import FabiusFunction.NormalizedVolterra
+import FabiusFunction.FractionalVolterra
 import FabiusFunction.FabiusAntiderivatives
 import FabiusFunction.RvachevDerivativeDistribution
 import FabiusFunction.BoundedDerivatives
@@ -223,6 +224,8 @@ import FabiusFunction.SincZetaRemainder
 import FabiusFunction.BernsteinPositivity
 import FabiusFunction.PerronRootEnclosure
 import FabiusFunction.MeasureRefinement
+import FabiusFunction.RandomSeriesLaw
+import FabiusFunction.UniformSplineWeakConvergence
 
 /-!
 # Fabius function
@@ -343,4 +346,24 @@ audits' optimized cubic test function through the Collatz–Wielandt bracket
 with the two positivity checks discharged by 32-piece subdivided Bernstein
 certificates — integer coefficients verified by `ring` normalization, no
 Sturm sequences — on a general piecewise-positivity engine for `[0,1]`.
+
+The probabilistic layer is closed at the level of measures.  The up-measure
+`μ_up = up·Leb` satisfies the refinement equation
+`μ_up = Uniform[-½,½] ∗ (μ_up ∘ (·/2)⁻¹)` and its iterate, the
+measure-level random-tail law, proved by characteristic functions from the
+dyadic renormalization of the Fourier product.  The bridge to the random
+series `X = ∑ U_k 2^{-k-1}` of the product-probability representation is the
+affine identity `μ_up = law(X) ∘ (2·-1)⁻¹` — the fundamental theorem of
+calculus for the folded derivative `F' = 2·up(2·-1)`, which exhibits
+`y ↦ F((y+1)/2)` as the CDF of `μ_up`.  Through the bridge the refinement
+equation becomes the equality-in-law splitting `X ≗ (U + X')/2` of the
+random series, and the characteristic function of `X` takes the closed form
+`E[e^{itX}] = e^{it/2}·Û(t/(4π))` in the Rvachev Fourier transform.
+The finite spline laws — the laws of the first `p` weighted uniform
+coordinates, translated by the midpoint correction `2^{-p-1}` and with
+CDFs the midpoint-corrected finite CDFs — converge weakly to the
+random-series law, by Lévy's continuity theorem with the pointwise
+characteristic-function convergence supplied by dominated convergence;
+the companion quantitative statement is the all-real uniform CDF bound
+`|C_p - F| ≤ 2^{-p}` of the computability module.
 -/
