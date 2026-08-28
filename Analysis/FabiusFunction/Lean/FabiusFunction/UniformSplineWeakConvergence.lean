@@ -120,7 +120,7 @@ uniform coordinates, translated right by the midpoint correction
 noncomputable def uniformCenteredPartialLaw (p : ℕ) : Measure ℝ :=
   (uniformPartialDistribution p).map (· + 1 / 2 ^ (p + 1))
 
-/-- Each translated finite uniform-spline law is a probability measure. -/
+/-- Each translated finite uniform-coordinate law is a probability measure. -/
 instance (p : ℕ) : IsProbabilityMeasure (uniformCenteredPartialLaw p) :=
   Measure.isProbabilityMeasure_map (measurable_id.add_const _).aemeasurable
 
