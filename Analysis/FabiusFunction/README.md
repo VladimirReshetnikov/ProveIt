@@ -10,17 +10,18 @@
 > One invocation is not by itself one process: Lake sizes its worker pool to
 > hardware concurrency and starts one `lean.exe` **per core** whenever the
 > target has a stale dependency set. On this machine several agent sessions
-> share 13 GB, so that fan-out starves all of them. Set both limits on every
-> build:
+> share 13 GB, so that fan-out starves all of them. Bound Lake's worker pool
+> on every build:
 >
 > ```bash
-> LAKE_JOBS=1 LEAN_NUM_THREADS=0 lake build <one target>
+> LAKE_JOBS=1 lake build <one target>
 > ```
 >
-> `LAKE_JOBS` bounds the number of `lean.exe` processes and
-> `LEAN_NUM_THREADS` bounds the threads inside each one; they are
-> independent, so set both. Lake `5.0.0` accepts neither `-j` nor `--jobs`,
-> so these environment variables are the only control. Measured 2026-08-27:
+> `LAKE_JOBS` bounds the number of `lean.exe` processes.  Do not set
+> `LEAN_NUM_THREADS=0`: it serializes elaboration inside the single worker
+> and was measured to make focused builds about thirty times slower. Lake
+> `5.0.0` accepts neither `-j` nor `--jobs`, so the environment variable is
+> the process-control mechanism. Measured 2026-08-27:
 > a facade build over a stale dependency set spawned **11 concurrent
 > `lean.exe`**, and **exactly one** under `LAKE_JOBS=1`.
 >
@@ -167,7 +168,7 @@ complex exponential generating function are also represented explicitly.
 From the repository root, the complete public surface is checked with
 
 ```sh
-LAKE_JOBS=1 LEAN_NUM_THREADS=0 lake build +FabiusFunction
+LAKE_JOBS=1 lake build +FabiusFunction
 ```
 
 Use `import FabiusFunction` when downstream code needs the entire development.
@@ -179,6 +180,7 @@ points:
 | Definitions, the bounded characterization, and folded `up` | `FabiusFunction.Basic`, `FabiusFunction.Differential` | `BoundedFabius`, `IsFabius`, `rvachevUp`, `rvachevUp_even`, `rvachevUp_eq_zero_of_not_mem_Ioo`, `support_rvachev_subset_Ioo`, `rvachev_hasDerivAt` |
 | Existence, uniqueness, and the canonical functions | `FabiusFunction.PaperStatements` | `existsUnique_fabius`, `fabius`, `fabius_spec`, `globalFabius` |
 | Original compact-support characterization and bounded/original bridge | `FabiusFunction.OriginalUniqueness` | `IsOriginalFabius`, `IsOriginalFabius.mk_of_derivative_law`, `IsFabius.isOriginalFabius_rvachevUp`, `rvachevUp_eq_iff_eqOn_Iic_one`, `isFabius_iff_isOriginalFabius_rvachevUp_and_rightTail`, `isOriginalFabius_iff_existsUnique_isFabius` |
+| Generic affine-difference iterates and derivative orbits | `FabiusFunction.AffineDifferenceOrbit` | `affineDifference_iterate_apply`, `iteratedDeriv_eq_affineDifference_iterate_on`, `affineDifference_iterate_two_one_apply`; the module assumes a one-step derivative identity and does not construct the up-law Cauchy transform or prove its resolvent equation |
 | Generic normalized Volterra calculus over real normed spaces (Banach only for the FTC/Taylor layer) | `FabiusFunction.NormalizedVolterra` | `volterraPrimitive`, `iteratedPrimitive`, `normalizedVolterra`, `normalizedVolterra_affine`, `normalizedVolterra_comp_affine`, `normalizedVolterra_basepoint_shift`, `normalizedVolterra_succ_eq_taylor_of_eq_zero`, `iteratedPrimitive_add`, `iteratedPrimitive_succ_hasStrictDerivAt`, `iteratedPrimitive_eq_normalizedVolterra`, `normalizedVolterra_succ_hasStrictDerivAt`, `iteratedDeriv_normalizedVolterra_add`, `contDiff_normalizedVolterra`, `normalizedVolterra_add`, `normalizedVolterra_succ_iteratedDeriv_eq_sub_taylor`, `intervalIntegrable_normalizedVolterraKernel_add`, `normalizedVolterra_succ_polynomial_of_taylor_support_kernel_intervalIntegrable`, `normalizedVolterra_succ_polynomial_of_kernel_intervalIntegrable`, `normalizedVolterra_polynomial`, `normalizedVolterra_monomial` |
 | Exact signed-global and bounded Fabius primitive ladders with finite polynomial weights | `FabiusFunction.FabiusAntiderivatives` | `normalizedVolterra_extendedFabius`, `normalizedVolterra_fabiusReal_of_le_one`, `normalizedVolterra_polynomial_mul_extendedFabius`, `normalizedVolterra_pow_mul_extendedFabius`, `normalizedVolterra_polynomial_mul_fabiusReal_of_le_one`, `normalizedVolterra_pow_mul_fabiusReal_of_le_one`, `integral_cube_mul_fabiusReal_eq`; signed formulas are global, while bounded formulas assume `x ≤ 1` |
 | Absolutely summable uniform-coordinate series and their canonical pushforward laws | `FabiusFunction.WeightedUniformSeries` | `weightedUniformSeries`, `weightedUniformSeries_smul_weights`, `weightedUniformSeries_split`, `weightedUniformDistribution`, `isProbabilityMeasure_weightedUniformDistribution`, `weightedUniformDistribution_split`, `weightedUniformDistribution_reflection`, `ae_weightedUniformDistribution_mem_Icc`, `weightedUniformDistribution_restrict_Icc`, `weightedUniformDistribution_Icc` |
