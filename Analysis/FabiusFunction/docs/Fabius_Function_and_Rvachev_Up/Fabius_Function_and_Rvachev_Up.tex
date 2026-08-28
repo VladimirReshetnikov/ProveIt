@@ -92,6 +92,8 @@
 \newcommand{\repo}{\nolinkurl{Analysis/FabiusFunction}}
 \newcommand{\lean}[1]{%
   \ifmmode\text{\nolinkurl{#1}}\else\nolinkurl{#1}\fi}
+\newcommand{\leanevaltwo}[1]{%
+  \nolinkurl{integral_eval}\texttt{\textsubscript{2}}\nolinkurl{#1}}
 
 \newenvironment{proofidea}{\par\smallskip\noindent\textit{Proof architecture.}\ }{\hfill$\square$\par\smallskip}
 \newenvironment{boxedremark}{%
@@ -2113,7 +2115,7 @@ Equation \eqref{eq:bell-cumulant-inverses} is
 \path{MomentCumulantAlgebra.lean} and assume only a commutative \(\Q\)-algebra.
 \end{proof}
 
-\begin{proposition}[Finite polynomial expectations from moments and formal cumulants]
+\begin{proposition}[Finite polynomial integrals from moments and formal cumulants]
 \label{thm:polynomial-expectation-cumulant}
 Let \(\Omega\) be a measurable space, let \(\mu\) be any measure on it, let
 \(S\) be a semiring with a semiring homomorphism \(\varphi:S\to\R\), and let
@@ -2157,6 +2159,8 @@ and the probability-measure corollary, their suffixes are
 They are declared in \path{PolynomialExpectationCumulant.lean}.
 They require neither boundedness nor independence, and no integrability
 assumptions for powers outside the finite support of \(p\).
+They formalize the finite moment-to-Bell rewrite used by endpoint transfer,
+not the analytic transfer expansion or its remainder estimates.
 \end{proof}
 
 \subsection{The probability--Laplace bridge}
@@ -3614,6 +3618,29 @@ in particular degree zero has mass one, while positive degrees vanish.  The decl
 \lean{geometricLagrange_richardson_exact_of_eq} in
 \path{GeometricLagrange.lean} include both $n=0$ and an arbitrary block start, including
 start zero.
+
+The first omitted degree is only the first member of an exact all-order
+family.  Let \(h_r(x,(v_i)_{i\in I})\) be the complete homogeneous symmetric
+polynomial of degree \(r\) in the target \(x\) and the node family.  Then
+\begin{equation}
+ \sum_i\lambda_i(x)v_i^{|I|+r}
+ =x^{|I|+r}-\prod_i(x-v_i)\,
+   h_r(x,(v_i)_{i\in I})\qquad(r\ge0).                    \label{eq:lagrange-all-residual-moments}
+\end{equation}
+More generally, the same formula holds over any commutative ring for
+arbitrary weights and possibly repeated nodes whenever the moments below
+\(|I|\) reproduce evaluation at \(x\).  No division or distinctness is used
+in this representation-independent form.  The universal symmetric-polynomial
+evaluation and its adjoining-variable recurrence are
+\lean{completeHomogeneousEval_eq_eval_hsymm} and
+\lean{completeHomogeneousEval_option_succ}; the quotient evaluation is
+\lean{eval_completeHomogeneousQuotient} in
+\path{CompleteHomogeneous.lean}.  The generic residual theorem
+\lean{sum_weight_mul_pow_card_add} and its distinct-node Lagrange
+specialization \lean{sum_lagrangeEvalWeight_mul_pow_card_add} are in
+\path{LagrangeResidualMoments.lean}.  Thus
+\eqref{eq:lagrange-all-residual-moments} extends the preceding first-error
+formula rather than replacing its low-degree exactness foundation.
 
 For the present half-geometric grid, write $\lambda_{n,k}^{(1/2)}$ for the
 evaluation-at-zero weight belonging to the node $2^{-k}$.  The Toeplitz row is exactly the
@@ -5234,6 +5261,69 @@ These are \lean{expCoeff_logCoeff_eq_ite} and
 \path{SaddleLogExpansionAlgebra.lean} and
 \path{SaddleLogExpansionPowerSeries.lean}.
 
+\subsection{Universal finite endpoint-transfer algebra}
+\label{sec:endpoint-transfer-polynomials}
+
+The formal coefficient stage of endpoint transfer is independent of every
+probability and asymptotic estimate.  To distinguish the universal endpoint
+polynomials from the periodic correction \(P\), write
+\(P_r^{\mathrm{end}}(X)=\lean{endpointTransferPolynomial}(r)\).  In
+\(\Q[X]\), define
+\begin{equation}
+ e_0(X)=0,\qquad e_{n+1}(X)=-\frac{X^{n+2}}{n+2},\qquad
+ P_r^{\mathrm{end}}(X)=\operatorname{ExpCoeff}(e)_r.        \label{eq:endpoint-transfer-coefficients}
+\end{equation}
+Then the recursive, formal-series, and unordered-partition descriptions agree:
+\begin{align}
+ P_{n+1}^{\mathrm{end}}(X)
+   &=-\frac1{n+1}\sum_{j=0}^{n}\frac{j+1}{j+2}
+       X^{j+2}P_{n-j}^{\mathrm{end}}(X),                    \label{eq:endpoint-transfer-recurrence}\\
+ \sum_{r\ge0}P_r^{\mathrm{end}}(X)t^r
+   &=\exp\!\left(\sum_{r\ge0}e_r(X)t^r\right)
+    =\exp\!\left(-\sum_{j\ge2}\frac{X^jt^{j-1}}j\right), \label{eq:endpoint-transfer-formal-series}\\
+ P_r^{\mathrm{end}}(X)
+   &=\sum_{f\in\mathcal P_r}\prod_{j=1}^{r}
+       \frac{e_j(X)^{f(j)}}{f(j)!},                        \notag\\
+ \mathcal P_r
+   &=\left\{f:\N\to\N\;\middle|\;
+       \substack{\supp(f)\subseteq\{1,\ldots,r\},\\
+                 \sum_{j=1}^{r}j f(j)=r}\right\}.         \label{eq:endpoint-transfer-partitions}
+\end{align}
+The first coefficients are
+\begin{equation}
+ P_0^{\mathrm{end}}=1,\qquad P_1^{\mathrm{end}}=-\frac{X^2}{2},\qquad
+ P_2^{\mathrm{end}}=\frac{X^4}{8}-\frac{X^3}{3},\qquad
+ P_3^{\mathrm{end}}=-\frac{X^6}{48}+\frac{X^5}{6}-\frac{X^4}{4}. \label{eq:endpoint-transfer-first-four}
+\end{equation}
+Because \(\Q[X]\) is the free rational algebra on one generator, evaluating
+\(X\) at any element \(z\) of a commutative \(\Q\)-algebra commutes both with
+each \(P_r^{\mathrm{end}}\) and with the complete formal power series.
+
+\begin{proof}[Formal proof]
+The definitions are \lean{endpointTransferExponentCoefficient},
+\lean{endpointTransferPolynomial}, and \lean{endpointTransferSeries} in
+\path{EndpointTransferPolynomials.lean}.  Equations
+\eqref{eq:endpoint-transfer-recurrence}--\eqref{eq:endpoint-transfer-partitions}
+are respectively \lean{endpointTransferPolynomial_succ},
+\lean{endpointTransferSeries_eq_exp_subst}, and
+\lean{endpointTransferPolynomial_eq_partitionExpSum}.  The finite partition
+engine and its equality with the recursive exponential coefficients are
+\lean{weightedPartitions}, \lean{partitionExpSum}, and
+\lean{partitionExpSum_eq_expCoeff} in \path{ExponentialPartition.lean} and
+\path{ExponentialBell.lean}.  Evaluation and series naturality are
+\lean{aeval_endpointTransferPolynomial} and
+\lean{map_endpointTransferSeries}; the four identities in
+\eqref{eq:endpoint-transfer-first-four} are
+\lean{endpointTransferPolynomial_zero},
+\lean{endpointTransferPolynomial_one},
+\lean{endpointTransferPolynomial_two}, and
+\lean{endpointTransferPolynomial_three}.
+
+All statements in this subsection are finite or formal.  They do not identify
+the series analytically with \(\exp(X)(1-Xt)^{1/t}\), construct a tilted law,
+or prove a Taylor-window, tail, or endpoint-remainder estimate.
+\end{proof}
+
 \subsection{Recursive elementary re-expansion of the phase}
 \label{sec:elementary-asymptotic}
 
@@ -5518,8 +5608,13 @@ Moments and exact arithmetic &
 \path{PolynomialExpectationCumulant.lean},
 \path{WeightedScaleMultiplicity.lean},
 \path{ExactInversePower.lean}, \path{Parity.lean}, \path{TwoAdic.lean}\\
+Universal exponential, Bell, and endpoint-transfer algebra &
+\path{SaddleExpansionAlgebra.lean}, \path{ExponentialPartition.lean},
+\path{ExponentialBell.lean},
+\path{EndpointTransferPolynomials.lean}\\
 Finite polynomial functionals and geometric Lagrange/Richardson exactness &
-\path{FinitePolynomialFunctional.lean}, \path{GeometricLagrange.lean}\\
+\path{FinitePolynomialFunctional.lean}, \path{CompleteHomogeneous.lean},
+\path{GeometricLagrange.lean}, \path{LagrangeResidualMoments.lean}\\
 Dyadic and \(q\)-binomial formulas &
 \path{DyadicClosedForm.lean}, \path{DyadicAnalytic.lean}, \path{GlobalDyadic.lean},
 \path{DyadicCorrectness.lean}, \path{FiniteQBinomialCore.lean}, \path{HalfQBinomial.lean},

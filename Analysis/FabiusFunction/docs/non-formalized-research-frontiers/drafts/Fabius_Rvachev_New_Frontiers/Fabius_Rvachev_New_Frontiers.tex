@@ -34,7 +34,7 @@
 
 \pagestyle{fancy}
 \fancyhf{}
-\fancyhead[L]{\small New Fabius--Rvachev frontiers}
+\fancyhead[L]{\small Fabius--Rvachev frontiers}
 \fancyhead[R]{\small\nouppercase{\leftmark}}
 \fancyfoot[C]{\thepage}
 \renewcommand{\headrulewidth}{0.4pt}
@@ -1105,8 +1105,11 @@ bounded by a convergent geometric series.  Therefore
  \sum_k\E_s|W_{k,s}-\E_sW_{k,s}|^3=\bigO(\log s).
 \end{equation}
 By \cref{eq:beta-asymp}, the total variance is asymptotic to $\log_2s$.
-The Berry--Esseen inequality gives
-$\bigO(\log s)/(\log s)^{3/2}$, proving \cref{eq:Berry-Esseen}; the CLT follows.
+The Berry--Esseen ratio is therefore
+\[
+ \frac{\bigO(\log s)}{(\log s)^{3/2}},
+\]
+which proves \cref{eq:Berry-Esseen}; the CLT follows.
 \end{proof}
 
 \subsection{Lambert-$W_{-1}$ localization}
@@ -1458,10 +1461,14 @@ the binary phase.
 
 \subsection{All-orders moment transfer}
 
-Theorem \ref{thm:endpoint-transfer} is already all-orders in principle.  Two
-concrete tasks remain:
+The finite algebraic coefficient stage of Theorem \ref{thm:endpoint-transfer}
+is now formalized: the universal polynomials \(P_r\) have recursive,
+formal-series, weighted-partition, and scalar-evaluation descriptions, and a
+support-local polynomial integral is a finite complete-Bell transform of its
+formal moment cumulants.  Two analytic tasks remain:
 \begin{enumerate}
-\item generate $P_r$ by Bell polynomials and express
+\item instantiate the finite integral identity for the actual tilted law,
+      identify its moments and cumulants, and express
       $\E_sP_r(Z)$ directly in $R,R',\dots,R^{(2r)}$;
 \item combine the result with Stirling's expansion in \cref{eq:Cr-asymp} to
       produce a closed transseries for $C_r$, including the periodic phase and
@@ -1505,21 +1512,31 @@ requirements.
 
 \begin{boxedremark}
 \textbf{Post-snapshot algebraic progress.}
-The later modules \texttt{ExponentialPartition.lean},
-\texttt{ExponentialBell.lean}, and \texttt{MomentCumulantAlgebra.lean}
-now formalize, over every commutative
-\(\mathbb Q\)-algebra, the universal weighted-partition formula for an
-exponential coefficient and identify it with the recursive
-\texttt{SaddleExpansion.expCoeff} engine, then factorially normalize it
+The later modules \path{ExponentialPartition.lean},
+\path{ExponentialBell.lean}, \path{MomentCumulantAlgebra.lean},
+\path{EndpointTransferPolynomials.lean}, and
+\path{PolynomialExpectationCumulant.lean} now formalize the finite algebraic
+core.  The first four work over every commutative \(\mathbb Q\)-algebra: they
+give the universal weighted-partition formula for an exponential coefficient
+and identify it with the recursive
+\path{SaddleExpansion.expCoeff} engine, then factorially normalize it
 into named complete-Bell and inverse moment--cumulant transforms with the
-classical Bell recurrence and normalized inverse laws.  This supplies reusable
-algebra for the Bell-polynomial sentence in
-\cref{thm:endpoint-transfer} and for the coefficient stage of the
-proposed \texttt{MomentTransfer.lean}.  It does not establish the
-tilted-cumulant formulas, their probabilistic interpretation, the
-Taylor and tail estimates, or the hierarchy-specific endpoint identities.
-Consequently none of the status labels in this report
-changes.
+classical Bell recurrence and normalized inverse laws.  The endpoint module
+defines the exact \(P_r\), proves their recurrence, formal exponential identity,
+weighted-partition formula, first four values, and naturality under evaluation.
+The polynomial-integral module allows any coefficient semiring equipped with
+a ring homomorphism to \(\mathbb R\); it rewrites any support-integrable finite
+polynomial integral as raw moments and then as a complete-Bell transform, with
+the exact zeroth-moment correction and a probability specialization.  These additions are
+present at integration checkpoint
+\texttt{6e9148873264978eef43181d6bd214c36cdc405a}.
+
+This discharges the recursive and finite Bell-algebra stages of
+\cref{thm:endpoint-transfer}.  It does not prove the analytic identity with
+\(\e^z(1-zt)^{1/t}\), construct or identify the tilted law, establish the
+Taylor window or moment-growth estimate, control the complementary tail, or
+deduce the endpoint remainder in \eqref{eq:endpoint-transfer}.  The status of
+the full analytic theorem therefore remains unchanged.
 \end{boxedremark}
 
 \subsection{Low-risk algebraic modules}
@@ -1554,8 +1571,9 @@ changes.
 \item \texttt{EndpointTilt.lean}: prove coordinate factorization under the
       tilted finite product, pass to the infinite law, and derive the cumulant
       recursion.
-\item \texttt{MomentTransfer.lean}: define $P_r$ through formal power series,
-      prove a finite-order Taylor bound on a logarithmic window, and control the
+\item \texttt{MomentTransfer.lean}: import the formalized \(P_r\), instantiate
+      the finite expectation--cumulant identity for the tilted law, prove a
+      finite-order Taylor bound on a logarithmic window, and control the
       complement with the exact Laplace ratio.
 \end{enumerate}
 
