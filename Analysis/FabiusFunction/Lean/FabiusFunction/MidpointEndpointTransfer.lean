@@ -1,6 +1,6 @@
 import FabiusFunction.BoundedDerivatives
 import FabiusFunction.Monotonicity
-import Mathlib.Analysis.Calculus.Deriv.MeanValue
+import Mathlib.Analysis.Calculus.MeanValue
 
 /-!
 # Exact transfer between the endpoint and the midpoint
@@ -22,8 +22,9 @@ formula shows that every midpoint jet of order at least two vanishes.  No
 analytic continuation or Taylor expansion is used.
 
 The pointwise transmutation also settles the draft's central integral
-consequences.  Every midpoint-centered interval has average `1 / 2`, even for
-an arbitrary real oriented radius.  More generally, an arbitrary weight
+consequences.  For every real oriented radius, the midpoint-centered
+oriented integral equals that radius; hence every nondegenerate ordinary
+centered interval has average `1 / 2`.  More generally, an arbitrary weight
 transports the right and left midpoint defects to the signed endpoint germ;
 the Cauchy kernels for all anchored repeated primitives follow at once.
 -/
@@ -67,7 +68,10 @@ theorem fabiusReal_midpoint_add_eq
         (t := 1 / 2 + t) (by linarith : 1 / 2 ≤ 1 / 2 + t)
       have hcomp := hhigh.comp t
         ((hasDerivAt_id t).const_add (1 / 2 : ℝ))
-      convert hcomp using 1 <;> ring
+      have harg :
+          (2 : ℝ) - 2 * (1 / 2 + t) = 1 - 2 * t := by
+        ring
+      simpa only [Function.comp_apply, mul_one, harg] using hcomp
     have hlow := hF.hasDerivAt t htclosed
     have hsum : HasDerivAt lhs
         (2 * fabiusReal F (1 - 2 * t) + 2 * fabiusReal F (2 * t)) t := by
@@ -183,15 +187,15 @@ theorem iteratedDeriv_fabiusReal_half_eq_zero_of_two_le
 
 /-! ## Integral and repeated-primitive transfer -/
 
-/-- **Exact mass of every midpoint-centered interval.**  For every real
-oriented radius `a`, the interval centered at `1 / 2` has Fabius average
-exactly `1 / 2`:
+/-- **Exact oriented integral of every midpoint-centered interval.**  For
+every real oriented radius `a`,
 
 `∫ x in 1 / 2 - a..1 / 2 + a, F(x) = a`.
 
+Thus an ordinary symmetric interval of positive radius has average `1 / 2`.
 The theorem is stronger than the nonnegative half-cell form: global
-reflection symmetry and oriented interval integration make it valid for all
-real `a`. -/
+reflection symmetry and oriented interval integration make the displayed
+identity valid for all real `a`. -/
 theorem intervalIntegral_fabiusReal_centered
     (F : BoundedFabius) (hF : IsFabius F) (a : ℝ) :
     (∫ x in (1 / 2 : ℝ) - a..(1 / 2 : ℝ) + a, fabiusReal F x) = a := by

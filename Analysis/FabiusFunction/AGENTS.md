@@ -9,19 +9,25 @@
 > One invocation is not by itself one process: Lake sizes its worker pool to
 > hardware concurrency and starts one `lean.exe` **per core** whenever the
 > target has a stale dependency set. On this machine several agent sessions
-> share 13 GB, so that fan-out starves all of them. Set both limits on every
-> build:
+> share 13 GB, so that fan-out starves all of them. Bound the processes on
+> every build:
 >
 > ```bash
-> LAKE_JOBS=1 LEAN_NUM_THREADS=0 lake build +FabiusFunction.Basic
+> LAKE_JOBS=1 lake build +FabiusFunction.Basic
 > ```
 >
-> `LAKE_JOBS` bounds the number of `lean.exe` processes and
-> `LEAN_NUM_THREADS` bounds the threads inside each one; they are
-> independent, so set both. Lake `5.0.0` accepts neither `-j` nor `--jobs`,
-> so these environment variables are the only control. Measured 2026-08-27:
-> a facade build over a stale dependency set spawned **11 concurrent
-> `lean.exe`**, and **exactly one** under `LAKE_JOBS=1`.
+> `LAKE_JOBS` bounds the number of `lean.exe` processes, which is what
+> exhausts RAM. Lake `5.0.0` accepts neither `-j` nor `--jobs`, so the
+> environment variable is the only control. Measured 2026-08-27: a facade
+> build over a stale dependency set spawned **11 concurrent `lean.exe`**,
+> and **exactly one** under `LAKE_JOBS=1`.
+>
+> **Do not also set `LEAN_NUM_THREADS=0`.** That bounds the threads *inside*
+> a process, which is not the resource under pressure, and `0` does not mean
+> "auto": it serializes elaboration. Measured the same day under the same
+> competing load, `+FabiusFunction.AlgebraicBranch` took **~35 minutes** with
+> `LEAN_NUM_THREADS=0` and **~60 seconds** without it. If one process is
+> itself too large, use a small positive value, never `0`.
 >
 > Starvation does not look like starvation. It surfaces as errors that read
 > like corruption:
@@ -405,7 +411,7 @@ git sparse-checkout set Analysis/FabiusFunction
 git checkout
 mkdir -p .lake
 cmd //c mklink //J ".lake\\packages" "C:\\ProveIt\\.lake\\packages"
-LAKE_JOBS=1 LEAN_NUM_THREADS=0 lake build +FabiusFunction.Basic
+LAKE_JOBS=1 lake build +FabiusFunction.Basic
 ```
 
 The junction is the point: a fresh worktree without it rebuilds Mathlib and is
