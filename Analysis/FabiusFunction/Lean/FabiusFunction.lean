@@ -242,6 +242,7 @@ import FabiusFunction.CauchyCDF
 import FabiusFunction.CauchyRenormalization
 import FabiusFunction.UniformSplineWeakConvergence
 import FabiusFunction.DyadicSpecializations
+import FabiusFunction.EvaluatorPopcount
 
 /-!
 # Fabius function

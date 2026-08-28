@@ -14358,16 +14358,30 @@ interval form \lean{intervalIntegral_sq_mul_rvachev_eq_one_ninth} (the display's
 Termination is formalized, but the removed prose did not distinguish the following two
 possible complexity claims.  For \(e,a\in\N\) with \(0<a<2^e\), let \(D(e,a)\) be the
 number of recursive calls that enter the evaluator's interior branch.
-\begin{candidate}
+\begin{candidate}[Discharged]
 The exact-count candidate is \(D(e,a)=\wt(a)\).
 \end{candidate}
-\begin{candidate}
+\begin{candidate}[Discharged]
 The weaker upper-bound candidate is \(D(e,a)\le\wt(a)\).
 \end{candidate}
-\begin{obligation}
+\begin{obligation}[Discharged]
 Define \(D\) in Lean, settle which statement matches the executable recursion, and prove
 the resulting relation to binary weight, including endpoint and saturation branches.
 \end{obligation}
+Both candidates are settled in \path{EvaluatorPopcount.lean}.  The count is
+\lean{dyadicInteriorCalls}, defined by literally the branch structure of
+\lean{fabiusDyadicUnitAux} (the same guards and the same leading-bit-stripping recursion
+argument, so each interior entry is counted once).  The verdict: \emph{the exact count
+matches the executable recursion} — \lean{dyadicInteriorCalls_eq_binaryWeight} proves
+\(D(e,a)=\wt(a)\) for every \(a<2^e\), the endpoint \(a=0\) included, since each interior
+step strips exactly the leading binary digit
+(\lean{binaryWeight_add_pow_two}).  On the saturation branch \(2^e\le a\) the evaluator
+answers without recursing, \(D(e,a)=0\)
+(\lean{dyadicInteriorCalls_of_saturated}), and only there does the exact statement degrade
+to the inequality; the weaker candidate is the unconditional corollary
+\lean{dyadicInteriorCalls_le_binaryWeight}.  The all-ones worst case
+\(D(e,2^e-1)=e\) is \lean{dyadicInteriorCalls_two_pow_sub_one}, via
+\lean{binaryWeight_two_pow_sub_one}.
 
 \subsection{Independent analytic derivations}
 
