@@ -187,7 +187,7 @@ theorem momentHankel_posDef (F : BoundedFabius) (hF : IsFabius F)
     rw [measure_diff_null (rvachevMeasure_finite_eq_zero F
       (Polynomial.finite_setOf_isRoot hpne))]
     rw [rvachevMeasure_Ioo_eq_one F hF]
-    exact ENNReal.zero_lt_one
+    exact zero_lt_one
 
 /-- The Hankel determinants `h_n`. -/
 noncomputable def hankelDet (F : BoundedFabius) (n : ℕ) : ℝ :=
