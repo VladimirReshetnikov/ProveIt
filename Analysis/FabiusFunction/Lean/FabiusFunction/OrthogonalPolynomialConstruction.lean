@@ -209,6 +209,7 @@ theorem hankelOrthoPolynomial_coeff_top (F : BoundedFabius) (n : ℕ) :
       else upMoment F (((Fin.castSucc col' : Fin (n + 1)) : ℕ) + 0)) =
       upMoment F ((i' : ℕ) + (col' : ℕ))
     rw [if_pos (by simpa using i'.isLt)]
+    simp
   rw [h, hsub, Even.neg_one_pow ⟨n, rfl⟩, one_mul]
   rfl
 
