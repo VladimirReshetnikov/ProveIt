@@ -15810,8 +15810,17 @@ polynomials themselves are now constructed:
 Hankel determinant (\nolinkurl{Fabius.hankelOrthoValue}) and proves the orthogonality
 relations $\int P_n(x)\,x^{j}\dd\mu_{\Up}=0$ for $j<n$
 (\nolinkurl{Fabius.integral\_hankelOrthoValue\_mul\_pow}) by the classical duplicated-row
-argument, formalized through the last-row cofactor expansion.  The finite
-J-fraction convergents and the deeper certificates remain open.
+argument, formalized through the last-row cofactor expansion.  The same module now
+packages the construction as a genuine element of $\R[x]$:
+\nolinkurl{Fabius.hankelOrthoPolynomial} is the cofactor expansion as a \path{Polynomial},
+its evaluation recovers the bordered determinant
+(\nolinkurl{Fabius.hankelOrthoPolynomial\_eval}), its coefficients are the signed last-row
+minors (\nolinkurl{Fabius.hankelOrthoPolynomial\_coeff}), and its top coefficient is the
+Hankel determinant itself, $[x^n]\,(h_nP_n)=h_n$
+(\nolinkurl{Fabius.hankelOrthoPolynomial\_coeff\_top}: deleting the monomial row and the
+last column leaves exactly the plain Hankel block, with sign $(-1)^{n+n}=1$) --- so with
+positivity the polynomial is genuinely of degree $n$ and monic after division by $h_n$.
+The finite J-fraction convergents and the deeper certificates remain open.
 
 % --------------------------------------------------------------------------
 \section{Conclusion}
