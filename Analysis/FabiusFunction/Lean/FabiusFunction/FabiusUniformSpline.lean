@@ -1388,6 +1388,97 @@ theorem abs_fabiusUniformSpline_le_one
     rw [hone, abs_of_nonneg (sub_nonneg.mpr hz.2)]
     linarith [hz.1]
 
+/-! ## The global positive-part formula -/
+
+/-- **Pointwise finiteness of the positive-part summand family**: for
+every real `x` only finitely many `r` contribute to the positive-part
+sum, because the positive part vanishes as soon as `r` reaches
+`2^p·x - 1/2`.  This is the register's "pointwise finite"
+interpretation of the sum `∑_{r ≥ 0}`. -/
+theorem positivePart_summand_support_finite (p : ℕ) (hp : 0 < p) (x : ℝ) :
+    (Function.support fun r : ℕ =>
+      (thueMorseSign r : ℝ) *
+        max ((2 : ℝ) ^ p * x - 1 / 2 - (r : ℝ)) 0 ^ p).Finite := by
+  apply Set.Finite.subset (Set.finite_Iio ⌈(2 : ℝ) ^ p * x⌉₊)
+  intro r hr
+  rw [Function.mem_support] at hr
+  have hmax : max ((2 : ℝ) ^ p * x - 1 / 2 - (r : ℝ)) 0 ≠ 0 := by
+    intro h0
+    rw [h0, zero_pow hp.ne', mul_zero] at hr
+    exact hr rfl
+  have hpos : 0 < (2 : ℝ) ^ p * x - 1 / 2 - (r : ℝ) := by
+    rcases le_or_gt ((2 : ℝ) ^ p * x - 1 / 2 - (r : ℝ)) 0 with h | h
+    · exact absurd (max_eq_right h) hmax
+    · exact h
+  have hlt : (r : ℝ) < (2 : ℝ) ^ p * x := by linarith
+  exact Set.mem_Iio.mpr (Nat.lt_ceil.mpr hlt)
+
+/-- **The global positive-part formula for the centered spline** (the
+gap register's candidate, exposed publicly on all of `ℝ`): for `p ≥ 1`,
+
+`S_p(x) = (2^{p(p-1)/2}·p!)⁻¹ · ∑'_{r} (-1)^{wt(r)}·((2^p·x - 1/2 - r)_+)^p.`
+
+The `∑_{r ≥ 0}` of the display is read as a `tsum`, which is pointwise
+a finite sum by `positivePart_summand_support_finite`.  Left of the
+support both sides vanish; on `x ≥ 0` the positive parts cut the sum
+down to exactly the definitional prefix of the centered spline, and the
+sign `(-1)^p` of the reversed power is absorbed by the normalizing
+constant. -/
+theorem fabiusUniformSpline_eq_tsum_positivePart
+    (p : ℕ) (hp : 0 < p) (x : ℝ) :
+    fabiusUniformSpline p x =
+      ((2 : ℝ) ^ p.choose 2 * (p.factorial : ℝ))⁻¹ *
+        ∑' r : ℕ, (thueMorseSign r : ℝ) *
+          max ((2 : ℝ) ^ p * x - 1 / 2 - (r : ℝ)) 0 ^ p := by
+  rcases lt_or_ge x 0 with hx | hx
+  · rw [fabiusUniformSpline_eq_zero_of_neg p hx]
+    have hzero : ∀ r : ℕ, (thueMorseSign r : ℝ) *
+        max ((2 : ℝ) ^ p * x - 1 / 2 - (r : ℝ)) 0 ^ p = 0 := by
+      intro r
+      have hneg : (2 : ℝ) ^ p * x - 1 / 2 - (r : ℝ) ≤ 0 := by
+        have hx2 : (2 : ℝ) ^ p * x ≤ 0 :=
+          mul_nonpos_of_nonneg_of_nonpos (by positivity) hx.le
+        have hr : (0 : ℝ) ≤ (r : ℝ) := Nat.cast_nonneg r
+        linarith
+      rw [max_eq_right hneg, zero_pow hp.ne', mul_zero]
+    rw [tsum_congr hzero, tsum_zero, mul_zero]
+  · set y : ℝ := (2 : ℝ) ^ p * x - 1 / 2 with hy
+    have hvanish : ∀ r ∉ Finset.range (fabiusDiscreteLimitRangeLength x p),
+        (thueMorseSign r : ℝ) * max (y - (r : ℝ)) 0 ^ p = 0 := by
+      intro r hr
+      have hry : y < (r : ℝ) := lt_of_not_ge fun h =>
+        hr ((mem_range_fabiusDiscreteLimitRangeLength_iff p r hx).mpr h)
+      rw [max_eq_right (sub_nonpos.mpr hry.le), zero_pow hp.ne', mul_zero]
+    have hsum : (∑' r : ℕ, (thueMorseSign r : ℝ) *
+        max (y - (r : ℝ)) 0 ^ p) =
+        ∑ r ∈ Finset.range (fabiusDiscreteLimitRangeLength x p),
+          (thueMorseSign r : ℝ) * (y - (r : ℝ)) ^ p := by
+      rw [tsum_eq_sum hvanish]
+      exact Finset.sum_congr rfl fun r hr => by
+        rw [max_eq_left (sub_nonneg.mpr
+          ((mem_range_fabiusDiscreteLimitRangeLength_iff p r hx).mp hr))]
+    rw [hsum, fabiusUniformSpline]
+    have harg : ∀ r : ℕ,
+        (r : ℝ) - (2 : ℝ) ^ p * x + 1 / 2 = (r : ℝ) - y := by
+      intro r
+      rw [hy]
+      ring
+    simp_rw [harg]
+    have hflip : ∀ r : ℕ,
+        (y - (r : ℝ)) ^ p = (-1 : ℝ) ^ p * ((r : ℝ) - y) ^ p := by
+      intro r
+      rw [show y - (r : ℝ) = -((r : ℝ) - y) by ring, neg_pow]
+    simp_rw [hflip]
+    have hpull : (∑ r ∈ Finset.range (fabiusDiscreteLimitRangeLength x p),
+        (thueMorseSign r : ℝ) * ((-1 : ℝ) ^ p * ((r : ℝ) - y) ^ p)) =
+        (-1 : ℝ) ^ p *
+          ∑ r ∈ Finset.range (fabiusDiscreteLimitRangeLength x p),
+            (thueMorseSign r : ℝ) * ((r : ℝ) - y) ^ p := by
+      rw [Finset.mul_sum]
+      exact Finset.sum_congr rfl fun r _ => by ring
+    rw [hpull]
+    ring
+
 end
 
 end Fabius
