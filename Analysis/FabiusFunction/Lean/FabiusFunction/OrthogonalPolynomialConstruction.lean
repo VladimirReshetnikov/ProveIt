@@ -552,12 +552,13 @@ theorem eq_upOrthoPolynomial_of_monic_of_orthogonal
     intro m hm
     rw [hd, Polynomial.coeff_sub]
     rcases eq_or_lt_of_le hm with hEq | hlt
-    · have h1 : q.coeff m = 1 := by
+    · rw [← hEq]
+      have h1 : q.coeff n = 1 := by
         have h := hmon.coeff_natDegree
-        rwa [hdeg, hEq] at h
-      have h2 : (upOrthoPolynomial F n).coeff m = 1 := by
+        rwa [hdeg] at h
+      have h2 : (upOrthoPolynomial F n).coeff n = 1 := by
         have h := (upOrthoPolynomial_monic F hF n).coeff_natDegree
-        rwa [natDegree_upOrthoPolynomial F hF n, hEq] at h
+        rwa [natDegree_upOrthoPolynomial F hF n] at h
       rw [h1, h2, sub_self]
     · have h1 : q.coeff m = 0 := by
         refine Polynomial.coeff_eq_zero_of_natDegree_lt ?_
