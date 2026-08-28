@@ -65,6 +65,7 @@ variable {R : Type*} [CommRing R]
 def signedCatalanSeries (c : R) : PowerSeries R :=
   PowerSeries.mk fun m => (-c) ^ m * (catalan m : R)
 
+/-- The `n`-th coefficient of the signed Catalan generating series. -/
 @[simp]
 theorem coeff_signedCatalanSeries (c : R) (n : ℕ) :
     coeff n (signedCatalanSeries c) = (-c) ^ n * (catalan n : R) := by
@@ -116,10 +117,13 @@ theorem signedCatalanSeries_functionalEquation (c : R) :
 term whose `(m+1)`-st coefficient is `(-c)^m · C_m`. -/
 noncomputable def inverse (c : R) : PowerSeries R := X * signedCatalanSeries c
 
+/-- The reverted quadratic has vanishing constant coefficient. -/
 @[simp]
 theorem constantCoeff_inverse (c : R) : constantCoeff (inverse c) = 0 := by
   simp [inverse]
 
+/-- The positive-degree coefficients of the reverted quadratic are the signed,
+geometrically scaled Catalan numbers. -/
 @[simp]
 theorem coeff_succ_inverse (c : R) (m : ℕ) :
     coeff (m + 1) (inverse c) = (-c) ^ m * (catalan m : R) := by

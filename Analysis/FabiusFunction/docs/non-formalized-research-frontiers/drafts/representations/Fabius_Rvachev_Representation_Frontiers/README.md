@@ -49,11 +49,15 @@ The script writes its output to the current working directory. To preserve the p
 
 ## Compiling the report
 
-A reasonably complete TeX Live installation is sufficient. From the package root:
+A reasonably complete TeX Live installation with the Libertinus Type 1 fonts is
+required for the committed artifact. From the package root, run exactly three
+serial passes:
 
 ```bash
-latexmk -pdf -interaction=nonstopmode -halt-on-error \
-  rvachev_fabius_representation_frontiers.tex
+pdflatex -interaction=nonstopmode -halt-on-error rvachev_fabius_representation_frontiers.tex
+pdflatex -interaction=nonstopmode -halt-on-error rvachev_fabius_representation_frontiers.tex
+pdflatex -interaction=nonstopmode -halt-on-error rvachev_fabius_representation_frontiers.tex
+pdffonts rvachev_fabius_representation_frontiers.pdf | grep Libertinus
 ```
 
 Root-level PDF figure copies keep the LaTeX source directly compilable; PDF and PNG figure copies are also organized in `figures/`.
