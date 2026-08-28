@@ -1,16 +1,14 @@
 # Zero-Divisor-Preserving q-Richardson Extrapolation
 
-This retained companion directory preserves the reproducible computations and source data
-that accompanied source report III of the consolidated volume
+This archive accompanies the report
 
 > **Zero-Divisor-Preserving q-Richardson Extrapolation for the Fabius–Rvachev Sinc Product**
 
 prepared from a recursive audit of the LaTeX documentation under
 `Analysis/FabiusFunction/docs` in Vladimir Reshetnikov's `ProveIt` repository.
-The formerly standalone manuscript now appears in the consolidated frontier volume: its
-source is `../../Frontier_Compilations.tex`, and its rendered PDF is
-`../../Frontier_Compilations.pdf`. Those volume files are referenced rather than duplicated
-here. Paths below are relative to this companion directory unless stated otherwise.
+The report is now displayed as Part III of
+[`../../Frontier_Compilations.tex`](../../Frontier_Compilations.tex); this
+directory retains only its supporting assets.
 
 ## Audited snapshot
 
@@ -46,10 +44,8 @@ The report develops two theorem packages that were not found in the audited corp
 Novelty is claimed relative to the pinned repository corpus and the targeted literature
 search recorded in the report, not as an unconditional worldwide priority claim.
 
-## Retained companion contents
+## Supporting-asset contents
 
-- `../../Frontier_Compilations.tex` — source of the consolidated volume containing this report.
-- `../../Frontier_Compilations.pdf` — rendered consolidated volume.
 - `corpus_manifest.txt` — exact recursive path inventory.
 - `corpus_manifest_table.tex` — breakable LaTeX form of the inventory.
 - `code/frontier_experiments.py` — fully commented high-precision experiment suite.
@@ -57,11 +53,11 @@ search recorded in the report, not as an unconditional worldwide priority claim.
 - `figures/*.png` — all generated figures used in the report.
 - `experiment_summary.txt` — compact run summary.
 - `requirements.txt` — Python dependencies.
-- `SHA256SUMS` — checksums for the retained files.
+- `SHA256SUMS` — checksums for the retained supporting files.
 
 ## Reproduce the numerical experiments
 
-Python 3.10 or newer is recommended. From this asset directory:
+Python 3.10 or newer is recommended. From the archive root:
 
 ```bash
 python -m venv .venv
@@ -77,27 +73,27 @@ python code/frontier_experiments.py --output-dir .
 The script has no network dependency. It regenerates `data/`, `figures/`, and
 `experiment_summary.txt`. It performs internal consistency checks between the closed
 q-Lagrange identities, exact coefficient series, and direct sinc products. With the
-versions used to prepare the original package, a complete run takes only a few seconds.
+versions used to prepare the archive, a complete run takes only a few seconds.
 
 ## Rebuild the consolidated PDF
 
-A reasonably complete TeX Live installation is sufficient. From this companion directory,
-run exactly three serial `pdflatex` passes:
+A reasonably complete TeX Live installation is sufficient. From this asset directory,
+move to the consolidated-volume directory and run the repository-required three passes:
 
 ```bash
 cd ../..
 pdflatex -interaction=nonstopmode -halt-on-error Frontier_Compilations.tex
 pdflatex -interaction=nonstopmode -halt-on-error Frontier_Compilations.tex
 pdflatex -interaction=nonstopmode -halt-on-error Frontier_Compilations.tex
+rm -f *.aux *.log *.out *.toc
 ```
 
-These commands rebuild `../../Frontier_Compilations.pdf`. The document uses
-Libertinus when available and falls back to Latin Modern.
+The canonical output is
+[`../../Frontier_Compilations.pdf`](../../Frontier_Compilations.pdf).
 
 ## Verification notes
 
-The retained numerical outputs were regenerated from a clean temporary directory and
-compared byte-for-byte with the included CSV and PNG files when the standalone package was
-prepared. Before consolidation, its PDF was rendered page by page at 180 dpi and visually
-inspected for clipping, overlap, broken glyphs, and unreadable equations. The consolidated
-PDF is built and inspected at the volume level.
+The packaged numerical outputs were regenerated from a clean temporary directory and
+compared byte-for-byte with the included CSV and PNG files. Before consolidation, the
+standalone PDF was rendered page by page at 180 dpi and visually inspected for clipping,
+overlap, broken glyphs, and unreadable equations.

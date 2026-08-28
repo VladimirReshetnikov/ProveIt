@@ -45,8 +45,7 @@ theorem charFun_volume_restrict_Icc {c : ℝ} (hc : 0 ≤ c) (t : ℝ) :
     charFun (volume.restrict (Icc (-c) c)) t =
       2 * (c : ℂ) * complexSinc ((c * t : ℝ) : ℂ) := by
   rcases eq_or_lt_of_le hc with rfl | hcpos
-  · simp [Set.Icc_self, Measure.restrict_singleton, Real.volume_singleton,
-      charFun_apply]
+  · simp [Set.Icc_self, Measure.restrict_singleton, charFun_apply]
   have hle : -c ≤ c := by linarith
   rw [charFun_apply_real, integral_Icc_eq_integral_Ioc,
     ← intervalIntegral.integral_of_le hle]
@@ -64,8 +63,7 @@ theorem charFun_volume_restrict_Icc {c : ℝ} (hc : 0 ≤ c) (t : ℝ) :
     have hcongr : Set.EqOn (fun x : ℝ => cexp ((t : ℂ) * x * I))
         (fun x : ℝ => cexp (((t : ℂ) * I) * x)) (Set.uIcc (-c) c) := by
       intro x _
-      congr 1
-      ring
+      ring_nf
     rw [intervalIntegral.integral_congr hcongr, integral_exp_mul_complex hIt]
     have hct : ((c * t : ℝ) : ℂ) ≠ 0 :=
       ofReal_ne_zero.mpr (mul_ne_zero hcpos.ne' ht)

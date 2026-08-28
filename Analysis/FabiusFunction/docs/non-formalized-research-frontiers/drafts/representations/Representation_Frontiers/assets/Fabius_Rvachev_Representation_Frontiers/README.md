@@ -1,23 +1,20 @@
-# Fabius–Rvachev Representation Frontiers
+# Assets for Part I of Representation Frontiers
 
-> **Archived companion bundle.** The former standalone manuscript is now
-> consolidated in `../../Representation_Frontiers.tex`, with the rendered
-> report at `../../Representation_Frontiers.pdf`. This directory retains its
-> supporting computations, data, and figures.
-
-This package accompanied the former 30-page standalone report.
+These files support Part I, *Resolvent, Continued-Fraction, and Transform
+Representations of the Fabius–Rvachev System*, in the consolidated volume
+[`../../Representation_Frontiers.tex`](../../Representation_Frontiers.tex).
+The former standalone TeX/PDF pair was absorbed into that volume and is
+available through git history.
 
 ## Contents
 
-- `../../Representation_Frontiers.tex` — current consolidated LaTeX source.
-- `../../Representation_Frontiers.pdf` — current rendered consolidated report.
 - `rvachev_frontier_experiments.py` — commented, reproducible exact/numerical experiments.
 - `generated_tables.tex` — exact moment and Jacobi-coefficient tables included by the report.
 - `corpus_inventory.tex` — audited repository-source ledger included by the report.
 - `data/up_even_moments.csv` — exact even moments through order 40.
 - `data/up_jacobi_coefficients.csv` — exact Jacobi coefficients through order 40.
 - `data/numerical_checks.txt` — high-precision checks of the resolvent and logarithmic-derivative identities.
-- `figures/` — PDF and PNG versions of both numerical figures.
+- `figures/` — PDF and PNG versions of both numerical figures; the consolidated volume embeds the PNG copies to avoid Type-3 fonts from the generated PDFs.
 - `SHA256SUMS` — checksums for the package files.
 
 ## Principal new results developed in the report
@@ -43,27 +40,25 @@ Requirements:
 - `mpmath`;
 - `matplotlib`.
 
-Run from the package root:
+Run from this asset directory, writing into a scratch subdirectory so the
+curated package layout remains untouched:
 
 ```bash
-python3 rvachev_frontier_experiments.py --order 40 --digits 45
+python3 rvachev_frontier_experiments.py --order 40 --digits 45 \
+  --output-dir reproduced
 ```
 
-The script writes its output to the current working directory. To preserve the packaged directory layout, either run it in a scratch copy or move the regenerated CSV/text files into `data/` and the figures into `figures/`.
+Compare the regenerated CSV/text files with `data/`, the generated TeX table
+with `generated_tables.tex`, and the regenerated figures with `figures/`.
 
 ## Compiling the report
 
-A reasonably complete TeX Live installation with the Libertinus Type 1 fonts is
-required for the committed artifact. From this archived companion directory,
-run exactly three serial passes:
+A reasonably complete TeX Live installation is sufficient. From this asset
+directory, build the consolidated source with exactly three passes:
 
 ```bash
-(cd ../.. && pdflatex -interaction=nonstopmode -halt-on-error Representation_Frontiers.tex)
-(cd ../.. && pdflatex -interaction=nonstopmode -halt-on-error Representation_Frontiers.tex)
-(cd ../.. && pdflatex -interaction=nonstopmode -halt-on-error Representation_Frontiers.tex)
-pdffonts ../../Representation_Frontiers.pdf | grep Libertinus
+cd ../..
+pdflatex -interaction=nonstopmode -halt-on-error Representation_Frontiers.tex
+pdflatex -interaction=nonstopmode -halt-on-error Representation_Frontiers.tex
+pdflatex -interaction=nonstopmode -halt-on-error Representation_Frontiers.tex
 ```
-
-These commands update `../../Representation_Frontiers.pdf`. The retained
-root-level and `figures/` copies preserve the former package's numerical
-artifacts and provenance.

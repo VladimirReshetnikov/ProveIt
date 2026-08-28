@@ -1,21 +1,15 @@
 BEYOND THE DYADIC FABIUS WEB
 ============================
 
-Current consolidation status
-----------------------------
-This retained companion directory preserves the auxiliary files for source
-report X (rendered Part X) of the consolidated Frontier_Compilations volume.
-The former standalone manuscript now appears in
-../../Frontier_Compilations.tex and its rendered PDF in
-../../Frontier_Compilations.pdf.  Those volume files are referenced rather
-than duplicated here.  Other paths below are relative to this companion
-directory unless stated otherwise.
-
 This package accompanies the research report:
 
   Beyond the Dyadic Fabius Web:
   A geometric q-Fabius--Rvachev family, endpoint laws, zero arithmetic,
   Bernoulli--Bell polynomial calculus, and phase-aware extrapolation
+
+The report is now displayed as Part X (absorbed report X) of
+../../Frontier_Compilations.tex; this directory retains only its supporting
+assets.
 
 Repository corpus
 -----------------
@@ -31,20 +25,22 @@ not found in the inspected repository snapshot.  No claim of global
 mathematical priority is made.  Proved statements, conjectures, and open
 problems are labeled separately.
 
-Retained companion contents
----------------------------
-  ../../Frontier_Compilations.tex    Consolidated volume source
-  ../../Frontier_Compilations.pdf    Rendered consolidated volume
+Supporting-asset contents
+-------------------------
   numerical_experiments.py          Deterministic, commented experiments
   q_family_densities.pdf            Generated figure
+  q_family_densities.png            Rasterized figure used by the consolidated PDF
   standardized_cumulants.pdf        Generated figure
+  standardized_cumulants.png        Rasterized figure used by the consolidated PDF
   endpoint_bound_residuals.pdf      Generated figure
+  endpoint_bound_residuals.png      Rasterized figure used by the consolidated PDF
   phase_aware_extrapolation.pdf     Generated figure
+  phase_aware_extrapolation.png     Rasterized figure used by the consolidated PDF
   numerical_summary.csv             Machine-readable diagnostics
   experiment_output.txt             Human-readable diagnostics
   corpus_inventory.txt              Complete 57-file TeX corpus ledger
   requirements.txt                  Python dependencies
-  SHA256SUMS.txt                     Checksums for retained files
+  SHA256SUMS.txt                     Checksums for retained supporting files
 
 Reproducing the numerical outputs
 ---------------------------------
@@ -60,22 +56,20 @@ verifies reciprocal-integer Fourier-zero multiplicities.
 
 Compiling the consolidated report
 ---------------------------------
-A recent TeX Live installation is sufficient.  From this retained companion
-directory, run exactly three serial pdflatex passes:
+From this asset directory, move to the consolidated-volume directory and run
+the repository-required three passes:
 
   cd ../..
   pdflatex -interaction=nonstopmode -halt-on-error Frontier_Compilations.tex
   pdflatex -interaction=nonstopmode -halt-on-error Frontier_Compilations.tex
   pdflatex -interaction=nonstopmode -halt-on-error Frontier_Compilations.tex
+  rm -f *.aux *.log *.out *.toc
 
-These commands rebuild ../../Frontier_Compilations.pdf.  The source uses
-Libertinus when available and falls back to Latin Modern.  The archived figure
-PDFs remain beside the numerical script that regenerates them.
+The canonical source/PDF pair is ../../Frontier_Compilations.{tex,pdf}.
 
 Quality-control record
 ----------------------
-The deleted standalone PDF had 31 pages (the original package guide
-incorrectly stated 30).  It was compiled with pdfTeX, checked for
-unresolved references, opened with PyMuPDF, and rendered page-by-page at 180
-dpi; all pages were visually reviewed for clipping, overlap, and broken glyphs.
-The consolidated PDF is built and inspected at the volume level.
+Before consolidation, the standalone PDF was compiled with pdfTeX/latexmk,
+checked for unresolved references, opened with PyMuPDF, and rendered
+page-by-page at 180 dpi. All 31 pages were visually reviewed; no clipping,
+overlap, or broken glyph was found.

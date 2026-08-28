@@ -1,21 +1,15 @@
 FABIUS--RVACHEV FRONTIER REPORT
 ===============================
 
-Current consolidation status
-----------------------------
-This retained companion directory preserves the auxiliary files for source
-report IV of the consolidated Frontier_Compilations volume.  The former
-standalone manuscript now appears in ../../Frontier_Compilations.tex and its
-rendered PDF in ../../Frontier_Compilations.pdf.  Those volume files are
-referenced rather than duplicated here.  Other paths below are relative to
-this companion directory unless stated otherwise.
-
 Title
 -----
 Midpoint Transmutation, Dyadic Cardinal Reproduction, and Holonomic
 Obstructions: New deductions around the Fabius function, its inverse,
 Rvachev's up-function, Thue--Morse cancellation, Lambert-W asymptotics,
 and q-scale algebra.
+
+The report is now displayed as Part IV of ../../Frontier_Compilations.tex;
+this directory retains only its supporting assets.
 
 Repository scope
 ----------------
@@ -33,10 +27,8 @@ Novelty convention
 of global historical priority.  Established repository results are separated
 from corpus-relative deductions and from conjectural/open directions.
 
-Retained companion contents
----------------------------
-  ../../Frontier_Compilations.tex      Consolidated volume source.
-  ../../Frontier_Compilations.pdf      Rendered consolidated volume.
+Supporting-asset contents
+-------------------------
   frontier_experiments.py             Fully commented symbolic/numerical code.
   corpus_manifest.txt                 Recursive 57-source audit ledger.
   results/numerical_results.txt       Human-readable verification ledger.
@@ -44,7 +36,7 @@ Retained companion contents
   results/reproduction_errors.csv     Cardinal-reproduction residuals.
   figures/*.pdf, figures/*.png        Vector and raster report figures.
   requirements.txt                    Python dependencies.
-  SHA256SUMS.txt                      Checksums for retained payload files.
+  SHA256SUMS.txt                      Checksums for retained supporting files.
 
 Reproduce the numerical work
 ----------------------------
@@ -60,16 +52,16 @@ centralized in the Settings dataclass near the top of the script.
 
 Build the consolidated report
 -----------------------------
-A recent TeX Live installation is sufficient.  From this retained companion
-directory, run exactly three serial pdflatex passes:
+From this asset directory, move to the consolidated-volume directory and run
+the repository-required three passes:
 
   cd ../..
   pdflatex -interaction=nonstopmode -halt-on-error Frontier_Compilations.tex
   pdflatex -interaction=nonstopmode -halt-on-error Frontier_Compilations.tex
   pdflatex -interaction=nonstopmode -halt-on-error Frontier_Compilations.tex
+  rm -f *.aux *.log *.out *.toc
 
-These commands rebuild ../../Frontier_Compilations.pdf.  The source uses
-Libertinus when available and falls back to Latin Modern.
+The canonical source/PDF pair is ../../Frontier_Compilations.{tex,pdf}.
 
 Main proved deductions
 ----------------------
@@ -84,8 +76,7 @@ Main proved deductions
 
 Verification status
 -------------------
-The standalone source compiled without unresolved references or citations when
-the original package was prepared, and its 26-page PDF was inspected page by
-page at 200 dpi for clipping, overlap, broken glyphs, and figure placement.  The
-included Python script was rerun in that environment.  The consolidated PDF is
-built and inspected at the volume level.
+Before consolidation, the standalone source compiled without unresolved
+references or citations, and its PDF was rendered page by page at 200 dpi and
+inspected for clipping, overlap, broken glyphs, and figure placement.  The
+included Python script was rerun in that environment before packaging.
