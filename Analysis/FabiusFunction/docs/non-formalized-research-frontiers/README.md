@@ -119,7 +119,14 @@ consolidation itself settled six previously open items (the spectral
 positivity D(2r) > 0, the twisted positivity at every odd scale with
 its Thue–Morse sign law, both phase-classification conjectures, the
 alternating Bernoulli-moment sign law, and the odd half of the sharp
-threshold).  Several volumes' part-boundary section numbering and
+threshold).  The fourteenth wave — a second independent
+reconstruction of Rvachev's atomic-functions chapter — was merged
+editorially into that volume's Part VI, adding the fractal-string/
+tube-formula geometry, the local-degree law with its critical
+exponential limit, quantitative Gaussian and uniform parameter
+limits, the exact general-base Gamma–zeta Laplace decomposition
+(settling the transform-level half of the periodic-Lambert
+conjecture), and the canonical Fup ladder.  Several volumes' part-boundary section numbering and
 page-counter handling were repaired along the way (edits are marked
 `% ed.:` in the sources).  Every volume carries
 a provenance section with each absorbed member's SHA-256; the absorbed
