@@ -114,6 +114,7 @@ import FabiusFunction.MonomialCombFourier
 import FabiusFunction.MonomialCombDerivatives
 import FabiusFunction.MonomialCombAlias
 import FabiusFunction.MonomialCombExactness
+import FabiusFunction.PolynomialCombExactness
 import FabiusFunction.SincProductShells
 import FabiusFunction.SharpGelfondBound
 import FabiusFunction.SincProductPeakRay
