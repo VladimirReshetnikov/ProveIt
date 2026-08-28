@@ -333,7 +333,7 @@ def run_exact_filter_experiments(output_dir: Path) -> list[ExactFilterRecord]:
 
     csv_path = output_dir / "filter_conditioning.csv"
     with csv_path.open("w", newline="", encoding="utf-8") as stream:
-        writer = csv.writer(stream)
+        writer = csv.writer(stream, lineterminator="\n")
         writer.writerow(
             [
                 "order",
@@ -405,7 +405,9 @@ def run_lambert_conditioning_experiment(output_dir: Path) -> list[dict[str, str]
             assert abs(mp.fsum(weights[s] * q ** (s * r) for s in range(order + 1))) < mp.mpf("1e-60")
 
     with (output_dir / "lambert_conditioning.csv").open("w", newline="", encoding="utf-8") as stream:
-        writer = csv.DictWriter(stream, fieldnames=list(rows[0].keys()))
+        writer = csv.DictWriter(
+            stream, fieldnames=list(rows[0].keys()), lineterminator="\n"
+        )
         writer.writeheader()
         writer.writerows(rows)
 
@@ -442,7 +444,9 @@ def run_gamma_zeta_experiment(output_dir: Path, max_k: int = 40) -> list[dict[st
         )
 
     with (output_dir / "gamma_zeta_coefficients.csv").open("w", newline="", encoding="utf-8") as stream:
-        writer = csv.DictWriter(stream, fieldnames=list(rows[0].keys()))
+        writer = csv.DictWriter(
+            stream, fieldnames=list(rows[0].keys()), lineterminator="\n"
+        )
         writer.writeheader()
         writer.writerows(rows)
 
@@ -527,7 +531,9 @@ def run_tomography_experiment(output_dir: Path) -> list[dict[str, str]]:
         )
 
     with (output_dir / "tomography_errors.csv").open("w", newline="", encoding="utf-8") as stream:
-        writer = csv.DictWriter(stream, fieldnames=list(rows[0].keys()))
+        writer = csv.DictWriter(
+            stream, fieldnames=list(rows[0].keys()), lineterminator="\n"
+        )
         writer.writeheader()
         writer.writerows(rows)
 
