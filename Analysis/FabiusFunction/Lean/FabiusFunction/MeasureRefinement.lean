@@ -45,13 +45,18 @@ theorem charFun_volume_restrict_Icc {c : ℝ} (hc : 0 ≤ c) (t : ℝ) :
     charFun (volume.restrict (Icc (-c) c)) t =
       2 * (c : ℂ) * complexSinc ((c * t : ℝ) : ℂ) := by
   rcases eq_or_lt_of_le hc with rfl | hcpos
-  · simp [charFun_apply_real, Icc_self, Measure.restrict_singleton, complexSinc]
+  · simp [Set.Icc_self, Measure.restrict_singleton, Real.volume_singleton,
+      charFun_apply]
   have hle : -c ≤ c := by linarith
   rw [charFun_apply_real, integral_Icc_eq_integral_Ioc,
     ← intervalIntegral.integral_of_le hle]
   rcases eq_or_ne t 0 with rfl | ht
-  · rw [complexSinc, if_pos (by push_cast; ring)]
-    simp [Complex.real_smul]
+  · have h0 : ∀ x : ℝ, cexp (((0 : ℝ) : ℂ) * x * I) = 1 := by
+      intro x
+      norm_num
+    rw [intervalIntegral.integral_congr fun x _ => h0 x,
+      intervalIntegral.integral_const, complexSinc,
+      if_pos (by push_cast; ring), Complex.real_smul]
     push_cast
     ring
   · have hIt : ((t : ℂ) * I) ≠ 0 :=
@@ -105,7 +110,7 @@ theorem isProbabilityMeasure_uniformDigitPrefix (m : ℕ) :
       rw [uniformDigitPrefix]
       haveI := ih
       haveI : IsProbabilityMeasure ((uniformDigitPrefix m).map (2⁻¹ * ·)) :=
-        isProbabilityMeasure_map (measurable_const_mul _).aemeasurable
+        Measure.isProbabilityMeasure_map (measurable_const_mul _).aemeasurable
       haveI := isProbability_uniform_half
       infer_instance
 
@@ -151,7 +156,7 @@ theorem rvachevMeasure_refinement (F : BoundedFabius) (hF : IsFabius F) :
     rvachevMeasure_isProbability F hF
   haveI := isProbability_uniform_half
   haveI : IsProbabilityMeasure ((rvachevMeasure F).map (2⁻¹ * ·)) :=
-    isProbabilityMeasure_map (measurable_const_mul _).aemeasurable
+    Measure.isProbabilityMeasure_map (measurable_const_mul _).aemeasurable
   refine Measure.ext_of_charFun (funext fun t => ?_)
   rw [charFun_conv, charFun_map_mul,
     charFun_volume_restrict_Icc (by norm_num) t,
@@ -163,13 +168,13 @@ theorem rvachevMeasure_refinement (F : BoundedFabius) (hF : IsFabius F) :
     ring
   have harg : ((t : ℝ) : ℂ) / (2 * Real.pi) =
       2 * (((((2⁻¹ * t : ℝ)) : ℂ)) / (2 * Real.pi)) := by
-    rw [hzdef, mul_comm (2 : ℂ) _, div_mul_cancel₀ _ (two_ne_zero (α := ℂ))]
+    rw [hzdef]
+    ring
   rw [harg, rvachevFourierProduct_two_mul]
   have hsinc : (Real.pi : ℂ) * (2 * (((((2⁻¹ * t : ℝ)) : ℂ)) / (2 * Real.pi))) =
       ((2⁻¹ * t : ℝ) : ℂ) := by
     have hπ : (Real.pi : ℂ) ≠ 0 := ofReal_ne_zero.mpr Real.pi_ne_zero
     field_simp
-    ring
   rw [hsinc]
   have hcoef : (2 : ℂ) * ((2⁻¹ : ℝ) : ℂ) = 1 := by
     push_cast
@@ -189,7 +194,7 @@ theorem rvachevMeasure_eq_prefix_conv (F : BoundedFabius) (hF : IsFabius F)
   haveI := isProbabilityMeasure_uniformDigitPrefix m
   haveI : IsProbabilityMeasure
       ((rvachevMeasure F).map ((((2 : ℝ) ^ m)⁻¹) * ·)) :=
-    isProbabilityMeasure_map (measurable_const_mul _).aemeasurable
+    Measure.isProbabilityMeasure_map (measurable_const_mul _).aemeasurable
   refine Measure.ext_of_charFun (funext fun t => ?_)
   rw [charFun_conv, charFun_map_mul, charFun_uniformDigitPrefix,
     rvachevMeasure_charFun_pos F hF, rvachevMeasure_charFun_pos F hF,
@@ -201,7 +206,9 @@ theorem rvachevMeasure_eq_prefix_conv (F : BoundedFabius) (hF : IsFabius F)
     ring
   have harg : ((t : ℝ) : ℂ) / (2 * Real.pi) =
       (2 : ℂ) ^ m * (((((((2 : ℝ) ^ m)⁻¹ * t : ℝ)) : ℂ)) / (2 * Real.pi)) := by
-    rw [hzdef, mul_comm ((2 : ℂ) ^ m) _, div_mul_cancel₀ _ h2m]
+    rw [hzdef]
+    exact ((div_mul_cancel₀ (((t : ℝ) : ℂ) / (2 * Real.pi)) h2m).symm.trans
+      (mul_comm _ _))
   rw [harg, rvachevFourierProduct_two_pow_mul]
   congr 1
   have hpt : ∀ j ∈ Finset.range m,
@@ -217,7 +224,7 @@ theorem rvachevMeasure_eq_prefix_conv (F : BoundedFabius) (hF : IsFabius F)
         (((t : ℂ) / (2 * Real.pi)) / 2 ^ m) =
         ((t : ℂ) / (2 * Real.pi)) / 2 ^ (m - 1 - j) := by
       rw [← mul_div_assoc,
-        div_eq_div_iff h2m (pow_ne_zero _ (two_ne_zero (α := ℂ))),
+        div_eq_div_iff h2m (pow_ne_zero _ (by norm_num : (2:ℂ) ≠ 0)),
         mul_comm ((2 : ℂ) ^ (j + 1)) _, mul_assoc, ← pow_add, he]
     rw [hzdef, harg2]
     congr 1

@@ -68,6 +68,7 @@ theorem evenZeta_eq_bernoulli {k : ℕ} (hk : k ≠ 0) :
     evenZeta k = (-1 : ℝ) ^ (k + 1) * (2 : ℝ) ^ (2 * k - 1) * π ^ (2 * k) *
       bernoulli (2 * k) / (2 * k)! := by
   have h0 : (fun n : ℕ => 1 / (n : ℝ) ^ (2 * k)) 0 = 0 := by
+    show (1 : ℝ) / ((0 : ℕ) : ℝ) ^ (2 * k) = 0
     rw [Nat.cast_zero, zero_pow (by omega : 2 * k ≠ 0), div_zero]
   have h := hasSum_shift h0 (hasSum_zeta_nat hk)
   have hfun : (fun n : ℕ => 1 / ((n : ℝ) + 1) ^ (2 * k)) =
