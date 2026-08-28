@@ -105,7 +105,8 @@ containing the Lambert `W` function.
 The development contains executable exact arithmetic.  The evaluator and its
 analytic correctness at every dyadic, the canonical function's existence and
 uniqueness, the moment and denominator arithmetic, the global differential
-identities, Taylor reduction, the Fourier and entire-series identities,
+identities, normalized Volterra calculus and exact primitive ladders, Taylor
+reduction, the Fourier and entire-series identities,
 probability and weak-convergence constructions, polynomial step
 approximants, Poisson summation, and every theorem, lemma, corollary, and
 prose proposition in both papers are checked without `sorry`.  The asymptotic
@@ -178,6 +179,8 @@ points:
 | Definitions, the bounded characterization, and folded `up` | `FabiusFunction.Basic`, `FabiusFunction.Differential` | `BoundedFabius`, `IsFabius`, `rvachevUp`, `rvachevUp_even`, `rvachevUp_eq_zero_of_not_mem_Ioo`, `support_rvachev_subset_Ioo`, `rvachev_hasDerivAt` |
 | Existence, uniqueness, and the canonical functions | `FabiusFunction.PaperStatements` | `existsUnique_fabius`, `fabius`, `fabius_spec`, `globalFabius` |
 | Original compact-support characterization and bounded/original bridge | `FabiusFunction.OriginalUniqueness` | `IsOriginalFabius`, `IsOriginalFabius.mk_of_derivative_law`, `IsFabius.isOriginalFabius_rvachevUp`, `rvachevUp_eq_iff_eqOn_Iic_one`, `isFabius_iff_isOriginalFabius_rvachevUp_and_rightTail`, `isOriginalFabius_iff_existsUnique_isFabius` |
+| Generic normalized Volterra calculus over real normed spaces (Banach only for the FTC/Taylor layer) | `FabiusFunction.NormalizedVolterra` | `volterraPrimitive`, `iteratedPrimitive`, `normalizedVolterra`, `iteratedPrimitive_add`, `iteratedPrimitive_succ_hasStrictDerivAt`, `iteratedPrimitive_eq_normalizedVolterra`, `normalizedVolterra_succ_hasStrictDerivAt`, `iteratedDeriv_normalizedVolterra_add`, `contDiff_normalizedVolterra`, `normalizedVolterra_add`, `normalizedVolterra_succ_iteratedDeriv_eq_sub_taylor`, `normalizedVolterra_polynomial`, `normalizedVolterra_monomial` |
+| Exact signed-global and bounded Fabius primitive ladders, including finite monomial weights | `FabiusFunction.FabiusAntiderivatives` | `normalizedVolterra_extendedFabius`, `normalizedVolterra_fabiusReal_of_le_one`, `normalizedVolterra_pow_mul_extendedFabius`, `normalizedVolterra_pow_mul_fabiusReal_of_le_one` |
 | Absolutely summable uniform-coordinate series in complete real normed spaces | `FabiusFunction.WeightedUniformSeries` | `weightedUniformSeries`, `summable_weightedUniformSeries_terms`, `continuous_weightedUniformSeries`, `weightedUniformSeries_split`, `weightedUniformSeries_reflect`, `norm_weightedUniformSeries_le`, `weightedUniformSeries_mem_unitInterval` |
 | Product-probability and CDF representations | `FabiusFunction.ProbabilityRepresentation` | `weightedCoordinateSum_eq_weightedUniformSeries`, `weightedSumCDF_eq_fabiusReal`, `fabiusReal_eq_weightedSum_probability`, `rvachevUp_eq_weightedSumCDF`, `rvachevUp_eq_weightedSum_probability_global` |
 | Weighted-partition exponential coefficients over commutative `ℚ`-algebras | `FabiusFunction.ExponentialPartition`, `FabiusFunction.ExponentialBell` | `partitionExpSum_recurrence`, `partitionExpSum_succ`, `partitionExpSum_eq_sum_div`, `partitionExpSum_eq_expCoeff` |

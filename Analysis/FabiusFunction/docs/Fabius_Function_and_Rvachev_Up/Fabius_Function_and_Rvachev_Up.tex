@@ -2335,9 +2335,13 @@ The four displayed statements are exactly
 \path{FabiusAntiderivatives.lean}.  Their proof architecture is deliberately triangular:
 the global dilation equation identifies the \(n\)-th derivative of the scaled candidate;
 its initial Taylor jet vanishes; \eqref{eq:J-taylor-remainder} reconstructs the candidate;
-and \eqref{eq:J-monomial} supplies every natural polynomial weight.  Fractional Volterra
-orders, complex powers, and the inverse-function/quantile identities in the research report
-remain separate analytic frontiers; they are not consequences asserted by this theorem.
+and \eqref{eq:J-monomial} supplies every natural polynomial weight.  The bounded formulas
+use \lean{fabiusReal_eq_extendedFabius_of_le_one}: the oriented segment from \(0\) to any
+\(x\le1\) remains inside the half-line on which the two functions agree.  Fractional Volterra
+orders, complex powers, normal or Mellin continuation in a weight exponent, a bounded
+piecewise continuation for \(x>1\), folded-\(\Up\) primitives, and inverse-function
+repeated-primitive identities remain separate analytic frontiers; they are not consequences
+asserted by this theorem.
 
 \subsection{Dyadic derivative cells and exact value distributions}
 \label{sec:rvachev-derivative-distribution}
@@ -6503,9 +6507,13 @@ into the theorem-backed narrative here.  The remaining research material is pres
 \path{Analysis/FabiusFunction/docs/non-formalized-research-frontiers/}.
 \end{quote}
 
-In particular, the fractional and inverse-function repeated-integration, small-argument,
-analytic generic-\(q\) transform and convergence claims, and other deferred results remain available there with
-an explicit warning that they are not part of the formal corpus.
+In particular, inverse-function repeated integration and saddle expansions, complex-power
+and fractional-order integration, small-argument analysis, analytic generic-\(q\) transforms,
+convergence claims, and other deferred results remain available there with an explicit warning
+that they are not part of the formal corpus.  Natural-order Volterra integration and finite
+polynomial weights are formalized in \Cref{sec:normalized-volterra}, while the finite
+base-generic Gaussian/Richardson algebra is formalized in
+\Cref{prop:geometric-principal-residuals}.
 
 \section{Conclusion}
 \label{sec:conclusion}
@@ -6518,7 +6526,8 @@ bridges connect them to finite atomic laws, weak convergence, centered splines, 
 generic weighted distributions, exact quantile transport, reciprocal-power values, dyadic
 algorithms, half-base \(q\)-binomial identities, prefix
 sums, denominator-free arbitrary-base geometric interpolation, normalized integer-order
-Volterra primitives, endpoint Laplace analysis, and computable approximation.
+Volterra primitives and polynomial weights, endpoint Laplace analysis, and computable
+approximation.
 
 The most important methodological conclusion is equally concrete: the primary document is
 now a map of proved mathematics.  Research claims can move back from the frontier only after
