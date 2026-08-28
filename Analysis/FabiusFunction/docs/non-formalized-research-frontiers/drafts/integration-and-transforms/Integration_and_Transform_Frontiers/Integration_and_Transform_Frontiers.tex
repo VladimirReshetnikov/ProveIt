@@ -36,14 +36,14 @@
   citecolor=linkblue,
   urlcolor=linkblue,
   pdftitle={Integration and Transform Frontiers for the Fabius--Rvachev System},
-  pdfsubject={Consolidated integration, transform, and fractional-calculus frontiers},
-  pdfkeywords={Fabius function, Rvachev up-function, Volterra operator, antiderivative},
+  pdfsubject={Consolidated integration, transform, inverse, and fractional-calculus frontiers},
+  pdfkeywords={Fabius function, Rvachev up-function, Volterra operator, antiderivative, inverse, transforms, fractional calculus},
   pdfauthor={Research report prepared for Vladimir Reshetnikov}
 }
 
 \pagestyle{fancy}
 \fancyhf{}
-\fancyhead[L]{\small Antiderivatives of Fabius-Type Functions}
+\fancyhead[L]{\small Integration and Transform Frontiers}
 \fancyhead[R]{\small\nouppercase{\leftmark}}
 \fancyfoot[C]{\thepage}
 \renewcommand{\headrulewidth}{0.4pt}
@@ -59,6 +59,10 @@
 \allowdisplaybreaks
 
 \newtheorem{theorem}{Theorem}[section]
+\newcommand{\integrationreportreset}{%
+  \clearpage
+  \setcounter{section}{0}%
+  \renewcommand{\thesection}{\arabic{section}}}
 \newtheorem{proposition}[theorem]{Proposition}
 \newtheorem{lemma}[theorem]{Lemma}
 \newtheorem{corollary}[theorem]{Corollary}
@@ -150,7 +154,37 @@ The absorbed drafts are deleted from the working tree; git history is the archiv
 \item \path{Fabius_Fractional_Integral_Transform_Frontiers/fabius_fractional_integral_transform_frontiers.tex} \\ {\footnotesize SHA-256 \path{6a7efa41ab6574ce314512abddf6b79b367fc367792b7ebcc7054daba5ceb509}}
 \item \path{fabius_fractional_transform_frontiers_bundle/fabius_fractional_transform_frontiers.tex} \\ {\footnotesize SHA-256 \path{816637825d0d1cb88160611cebdd4172291adee0c4f5760d762c73eb954ea77c}}
 \end{itemize}
+
+\begin{statusbox}[Current Lean status of the layer-cake core]
+The part-local status paragraphs and roadmaps below record the repository snapshots audited
+by the eleven absorbed reports.  A later formalization now supplies their common
+measure-theoretic first-order engine.  The theorem
+\path{Fabius.integral_smul_setIntegral_subgraph} in
+\path{SubgraphFubini.lean} is a real- or complex-scalar, Banach-valued weighted Fubini
+identity for measurable subgraphs over arbitrary s-finite measures.
+\path{SurvivalLayerCake.lean} specializes it to finite measures, first without a support
+hypothesis by clamping the stopping point and then, for measures carried by a compact
+interval, in partial and full stopped-primitive forms.  The exact Rvachev specializations
+\path{Fabius.ProbabilityRepresentation.intervalIntegral_rvachevUp_smul_eq_integral_min}
+and
+\path{Fabius.ProbabilityRepresentation.intervalIntegral_rvachevUp_smul_eq_integral}
+are in \path{ProbabilityLaplaceMoments.lean}.
+
+For inverse clocks, \path{InverseLayerCake.lean} proves the generic and Fabius-specific
+weighted identities both with an explicit interval-integrable primitive kernel and, under
+pointwise \(C^1\) hypotheses, with a primitive composed with the inverse.  It also exports
+\path{Fabius.intervalIntegral_mul_fabiusInv_eq}, the full weighted inverse-area identity,
+and the endpoint area theorems
+\path{Fabius.intervalIntegral_fabiusInv_eq_intervalIntegral_rvachevUp} and
+\path{Fabius.intervalIntegral_fabiusInv_eq_one_half}.
+This update does \emph{not} claim the absorbed reports' arbitrary-absolutely-continuous
+formulations, incomplete identities at a variable upper endpoint, higher inverse
+primitives, fractional Riemann--Liouville or Caputo formulas, or complex Mellin
+continuations.  Those distinctions supersede only contrary historical status wording;
+the provenance hashes above remain hashes of the unmodified absorbed sources.
+\end{statusbox}
 \clearpage
+\integrationreportreset
 \part{Antiderivatives of Monomially Weighted Fabius-Type Functions}
 % Absorbed from Fabius_Antiderivatives_Report/fabius_antiderivatives.tex
 
@@ -202,8 +236,10 @@ Volterra operator, its identification with literal repeated integration, the
 finite polynomial and natural-monomial commutators, the global signed Fabius
 ladder, and the bounded formulas on the full range \(x\leq1\).  The infinite
 complex-power series, Mellin consequences, fractional orders, global exterior
-pieces, Rvachev folds, and inverse-function formulas remain research-frontier
-material.
+pieces, Rvachev folds, and the partial, higher-order, or fractional
+inverse-function formulas remain research-frontier material.  The separate
+full-interval weighted inverse layer-cake identity is covered by the current
+consolidated status note.
 \end{abstract}
 
 
@@ -345,8 +381,11 @@ No claim of this update extends to the infinite complex-power
 Newton--Volterra series or its normal convergence, the Mellin/Newton and
 negative-power consequences, Riemann--Liouville fractional order, the
 \(x>1\) branches of the bounded global piecewise formula, folded Rvachev
-primitives or their Fourier renormalization, or any inverse-Fabius primitive
-or inverse asymptotic.  Those remain explicit formalization frontiers.
+primitives or their Fourier renormalization, or the partial, higher-order, and
+fractional inverse-Fabius primitives or inverse asymptotics developed below.
+The separate full-interval weighted inverse layer-cake theorem recorded in the
+consolidated status box has since crossed the frontier; the stronger claims just
+listed have not.
 
 \subsection{What ``closed form'' means here}
 The repository proves strong non-elementarity statements for \(F\), \(\Up\),
@@ -2286,6 +2325,7 @@ L.~Comtet,
   belowskip=0.8em
 }
 
+\integrationreportreset
 \part{Fabius Monomial Antiderivatives and Inverse-Quantile Integrals}
 % Absorbed from Fabius_Monomial_Antiderivatives_Report/Fabius_Monomial_Antiderivatives.tex
 
@@ -2376,7 +2416,8 @@ checkpoint \texttt{e109088ed}.
 No Lean formalization is claimed here for the complex-power series or its
 convergence and remainder estimates, the logarithmic and Mellin consequences,
 fractional primitive order, the Rvachev piecewise or fractional primitives,
-the inverse-function formulas and asymptotics, or the bounded function's
+the local, higher-order, or fractional inverse-function formulas and
+asymptotics, or the bounded function's
 piecewise continuation for $x>1$.  Those portions remain research frontiers;
 the analytic arguments and numerical checks below do not change that status.
 \end{boxedremark}
@@ -2695,7 +2736,8 @@ antiderivative layer.  Generic affine transport, basepoint shifts, and
 open-interval zero-tail Taylor jets are formalized, but they do not supply its
 explicit Fabius coefficients or its piecewise assembly.  Nor have the later complex-power convergence theorem,
 Mellin continuation, fractional-index constructions, Rvachev primitive
-formulas, or inverse-function reductions been formalized.  They remain
+formulas, or the local, higher-order, and fractional inverse-function reductions
+been formalized.  They remain
 frontier mathematics even where this report gives an analytic proof.
 \end{warning}
 
@@ -4014,6 +4056,7 @@ V.~Reshetnikov,
   stringstyle=\color{deepred}
 }
 
+\integrationreportreset
 \part[Dyadic primitive ladders and Mellin--Newton antiderivatives]
 {Dyadic Primitive Ladders and Mellin--Newton Antiderivatives for the Fabius--Rvachev System}
 % Absorbed from fabius_monomial_antiderivatives_report-2/Dyadic_Primitive_Ladders_Fabius_Rvachev.tex
@@ -5864,6 +5907,7 @@ source snapshot \texttt{a2541a7ee373c0e297de04424f8921ce881e62b7}, consulted 27 
 \newcommand{\RePart}{\operatorname{Re}}
 \newcommand{\ImPart}{\operatorname{Im}}
 
+\integrationreportreset
 \part{Integral Calculus and Transform Dualities for the Fabius--Rvachev System}
 % Absorbed from Fabius_Integral_Transforms_Report/Fabius_Integral_Transforms_Report.tex
 
@@ -5981,8 +6025,9 @@ The integer Volterra results do \emph{not} by themselves formalize inverse-pair
 substitutions, noninteger or complex powers, fractional Riemann--Liouville operators,
 negative-moment continuation, order statistics, or transform identities.  Support-free
 measure-level quantile transport, together with its compact specialization, is now formal
-separately, as recorded below; the report's stronger incomplete inverse-pair formulas remain
-research-frontier mathematics.
+separately, as recorded below.  The full-interval explicit-primitive and pointwise-\(C^1\)
+inverse layer-cake forms have also since been formalized; the report's stronger incomplete,
+arbitrary-absolutely-continuous inverse-pair formulas remain research-frontier mathematics.
 \end{statusbox}
 
 \begin{resultbox}[Results not found in the audited corpus]
@@ -6261,9 +6306,15 @@ The exact declarations are
 \nolinkurl{Fabius.map_inverseCDF_volume_restrict_Icc},
 \nolinkurl{Fabius.map_fabiusInv_restrict_Icc_eq_weightedSumDistribution}, and
 \nolinkurl{Fabius.integral_comp_fabiusInv_restrict_Icc_eq_weightedSumDistribution}
-in \texttt{QuantileTransport.lean}.  The two-function identity below is still a
-frontier claim: it contains incomplete integration-by-parts information not implied by
-the pushforward equality alone.
+in \texttt{QuantileTransport.lean}.  Those pushforward results alone do not prove the
+two-function identity below.  Separately,
+\nolinkurl{Fabius.intervalIntegral_smul_intervalIntegral_fabiusInv} and
+\nolinkurl{Fabius.intervalIntegral_smul_comp_fabiusInv} in
+\texttt{InverseLayerCake.lean} now prove its full-unit-interval layer-cake core for an
+explicit interval-integrable primitive and for a pointwise-\(C^1\) primitive,
+respectively.  The theorem below as stated remains a frontier claim because it also
+asserts an incomplete formula at every \(z\), arbitrary absolute continuity, and
+improper-endpoint extensions not packaged by those declarations.
 \end{statusbox}
 
 \begin{theorem}[two-function inverse-pair identity]\label{p4:thm:AB}
@@ -7653,8 +7704,9 @@ coefficients is a natural extension.
 
 The most accessible Lean targets are:
 \begin{enumerate}
-\item extend the formal support-free quantile pushforward to the two-function identity
-      \cref{p4:thm:AB};
+\item package the remaining incomplete, arbitrary-absolutely-continuous form of
+      \cref{p4:thm:AB}, building on the now-formal full-interval explicit-primitive and
+      pointwise-\(C^1\) layer-cake identities;
 \item the power identity \cref{p4:eq:power-complete} and its polynomial corollaries;
 \item the positive and negative moment recurrences;
 \item positivity, monotonicity, and convergence of \(C_r\);
@@ -7728,7 +7780,9 @@ normalization.
 
 The next decisive steps are to determine whether the phase profile is exactly constant,
 to connect its Fourier modes with the spectral corrections already present in endpoint
-asymptotics, and to formalize the inverse-pair, fractional-order, and moment recurrences.
+asymptotics, and to formalize the remaining incomplete arbitrary-absolutely-continuous
+inverse-pair scope,
+fractional orders, and moment recurrences.
 The reusable integer-order Volterra layer and its exact Fabius specialization are already
 formal; these remaining directions are sufficiently concrete to support both
 high-precision experiments and Lean proofs.
@@ -7865,6 +7919,7 @@ Cambridge University Press, 2009.
 \definecolor{softblue}{RGB}{235,242,249}
 \definecolor{darkgreen}{RGB}{20,95,65}
 
+\integrationreportreset
 \part{Integral and Transform Frontiers for the Fabius and Rvachev Functions}
 % Absorbed from Fabius_Integral_and_Transform_Frontiers/fabius_integrals_and_transforms_frontier_report.tex
 
@@ -9389,6 +9444,7 @@ chapters on Bernoulli numbers, Bell polynomials, orthogonal polynomials, and asy
 \newcommand{\normPartvv}[1]{\lVert#1\rVert}
 \newcommand{\set}[1]{\left\{#1\right\}}
 
+\integrationreportreset
 \part{Integral and Transform Frontiers for the Fabius--Rvachev System}
 % Absorbed from fabius_integral_frontiers_bundle/fabius_integral_frontiers.tex
 
@@ -10030,6 +10086,11 @@ For every integrable weight \(w\), Fubini gives
  \int_0^1w(y)I(y)\dd y
  =\int_0^1\left(\int_{F(x)}^1w(y)\dd y\right)\dd x.        \label{p6:eq:weighted-area-inverse}
 \end{equation}
+This identity is formalized exactly for every interval-integrable real weight as
+\path{Fabius.intervalIntegral_mul_fabiusInv_eq} in
+\path{InverseLayerCake.lean}.  The theorem is a full-\([0,1]\) identity; it does not
+package the variable-upper-endpoint, repeated, or fractional inverse primitives elsewhere
+in this volume.
 With \(w(y)=y^n\),
 \begin{equation}
  \int_0^1y^nI(y)\dd y
@@ -11099,8 +11160,8 @@ NIST Digital Library of Mathematical Functions,
 \definecolor{codegray}{RGB}{245,245,245}
 \newcommand{\PV}{\operatorname{PV}}
 
-\part{Integral Transforms and Fractional Calculus for the Fabius and Rvachev Functions
-\large Exact antiderivative hierarchie}
+\integrationreportreset
+\part{Integral Transforms and Fractional Calculus for the Fabius and Rvachev Functions}
 % Absorbed from Fabius_Rvachev_Integral_Frontiers/Fabius_Rvachev_Integral_Transforms_and_Fractional_Calculus.tex
 
 
@@ -13421,6 +13482,7 @@ V. Reshetnikov et al.,
   belowskip=0.8em
 }
 
+\integrationreportreset
 \part{Integral, Transform, and Fractional-Calculus Frontiers for the Fabius--Rvachev System}
 % Absorbed from Fabius_Integral_Transform_Fractional_Frontiers/Fabius_Integral_Transform_Fractional_Frontiers.tex
 
@@ -13718,6 +13780,21 @@ Both identities remain valid for complex-valued kernels whenever the displayed
 integrals are absolutely convergent.  \statusprovedPartll
 \end{theorem}
 
+\begin{statusbox}[Exact Lean crosswalk]
+The partial and full identities are machine checked, in the stronger form of an
+interval-integrable kernel with values in an arbitrary real Banach space, as
+\path{Fabius.ProbabilityRepresentation.intervalIntegral_rvachevUp_smul_eq_integral_min}
+and
+\path{Fabius.ProbabilityRepresentation.intervalIntegral_rvachevUp_smul_eq_integral}
+in \path{ProbabilityLaplaceMoments.lean}.  Taking the Banach space to be \(\C\)
+gives the complex-kernel case.  Their reusable finite-measure versions, including a
+support-free clamped theorem, are
+\path{Fabius.intervalIntegral_survival_smul_eq_integral_clamp},
+\path{Fabius.intervalIntegral_survival_smul_eq_integral_min_of_ae_mem_Icc}, and
+\path{Fabius.intervalIntegral_survival_smul_eq_integral_of_ae_mem_Icc} in
+\path{SurvivalLayerCake.lean}.
+\end{statusbox}
+
 \begin{proof}
 By \eqref{p8:eq:up-survival},
 \(\Up(t)=\E\mathbf1_{\{t<X\}}\).  Tonelli--Fubini gives
@@ -13963,6 +14040,15 @@ For \(0\le u\le1\),
 In particular, \(\int_0^1\QF(u)\dd u=1/2\).  \statusprovedPartll
 \end{theorem}
 
+The terminal \(u=1\) conclusion is exactly
+\path{Fabius.intervalIntegral_fabiusInv_eq_one_half}; the companion theorem
+\path{Fabius.intervalIntegral_fabiusInv_eq_intervalIntegral_rvachevUp} identifies the same
+inverse area with the unit-interval area under \(\Up\) and follows the full weighted
+identity \path{Fabius.intervalIntegral_mul_fabiusInv_eq}.  The one-half theorem is proved
+directly from inverse reflection.
+The variable-\(u\) identity \eqref{p8:eq:inverse-area} itself is not packaged by that
+full-interval declaration and remains outside the present exact Lean crosswalk.
+
 \begin{proof}
 The rectangle \([0,\QF(u)]\times[0,u]\) is partitioned, up to the graph, into
 the area below \(F\) and the area to the left of \(\QF\).  Equivalently,
@@ -13983,6 +14069,17 @@ Let \(\phi\in L^1(0,1)\), and let \(\Psi\) be absolutely continuous with
 \end{equation}
 \statusprovedPartll
 \end{theorem}
+
+\begin{statusbox}[Exact Lean scope of the inverse layer cake]
+The formula is machine checked in two exact forms in \path{InverseLayerCake.lean}.
+\path{Fabius.intervalIntegral_smul_intervalIntegral_fabiusInv} takes an
+interval-integrable Banach-valued kernel and writes \(\Psi\) explicitly as its primitive;
+\path{Fabius.intervalIntegral_smul_comp_fabiusInv} gives the displayed composition when
+\(\Psi(0)=0\), its derivative is continuous on \([0,1]\), and the derivative identity
+holds pointwise there.  Both allow real or complex scalar weights.  There is no public
+wrapper here for an arbitrary absolutely continuous \(\Psi\), so the theorem's full
+absolute-continuity wording is not claimed as formalized.
+\end{statusbox}
 
 \begin{proof}
 Write
@@ -15002,11 +15099,13 @@ inverse Fabius expansion.
 
 \subsection{Fractional formalization roadmap}
 
-\begin{obligation}[Kernel layer]
-Formalize Tonelli identities for survival functions and quantiles, including
-\cref{p8:thm:survival-kernel,p8:thm:inverse-layercake}.  These are measure-theoretic
-but structurally short.
-\end{obligation}
+\begin{statusbox}[Kernel layer]
+The survival-kernel obligation in \cref{p8:thm:survival-kernel} is discharged, including
+its partial form and Banach-valued kernels.  The inverse obligation in
+\cref{p8:thm:inverse-layercake} is discharged for an explicit interval-integrable
+primitive and for the pointwise-\(C^1\) composition form.  Packaging the report's
+arbitrary-absolutely-continuous formulation remains an open formalization step.
+\end{statusbox}
 
 \begin{obligation}[Special-function layer]
 Introduce incomplete beta integrals and prove
@@ -15313,6 +15412,7 @@ L.~de Haan and A.~Ferreira,
   belowskip=0.8em
 }
 
+\integrationreportreset
 \part{Fractional Integral Calculus and Complex-Order Transform Hierarchies for the Fabius--Rvachev System}
 % Absorbed from Fabius_Rvachev_Fractional_Integral_Report/fabius_fractional_integrals_report.tex
 
@@ -17320,7 +17420,8 @@ the infinite sinc product,
 \newcommand{\MPartiii}{\mathfrak M}
 \newcommand{\LiPartiii}{\operatorname{Li}}
 
-\part{Integral}
+\integrationreportreset
+\part{Integral, Transform, and Fractional-Order Frontiers for the Fabius--Rvachev System}
 % Absorbed from Fabius_Fractional_Integral_Transform_Frontiers/fabius_fractional_integral_transform_frontiers.tex
 
 
@@ -19497,7 +19598,9 @@ coefficients is a natural extension.
 
 The most accessible Lean targets are:
 \begin{enumerate}
-\item the measure-theoretic quantile transport and \cref{p10:thm:AB};
+\item package the remaining incomplete, arbitrary-absolutely-continuous scope of
+      \cref{p10:thm:AB}; measure-level quantile transport and the full-interval
+      explicit-primitive and pointwise-\(C^1\) layer-cake core are already formal;
 \item the power identity \cref{p10:eq:power-complete} and its polynomial corollaries;
 \item the positive and negative moment recurrences;
 \item positivity, monotonicity, and convergence of \(C_r\);
@@ -19610,7 +19713,8 @@ the dyadic smoothing law, with exponentially fast normalization.
 
 The next decisive steps are to determine whether the phase profile is exactly constant,
 to connect its Fourier modes with the spectral corrections already present in endpoint
-asymptotics, and to formalize the inverse-pair and moment recurrences.  These directions
+asymptotics, and to formalize the remaining incomplete arbitrary-absolutely-continuous
+inverse-pair scope and the moment recurrences.  These directions
 are sufficiently concrete to support both high-precision experiments and Lean proofs.
 
 \appendix
@@ -19828,7 +19932,8 @@ Communications in Partial Differential Equations \textbf{32} (2007), 1245--1260.
   belowskip=0.8em
 }
 
-\part{Fractional Quantile Transmutation}
+\integrationreportreset
+\part{Fractional Quantile Transmutation, Complex-Order Resolvents, and Nonlocal Rvachev Calculus}
 % Absorbed from fabius_fractional_transform_frontiers_bundle/fabius_fractional_transform_frontiers.tex
 
 
@@ -21384,7 +21489,7 @@ the Fourier-energy check uses the sinc product independently.
 
 \begin{figure}[htbp]
 \centering
-\includegraphics[width=0.88\textwidth]{assets/fabius_fractional_transform_frontiers_bundle/figure_quantile_fractional.pdf}
+\includegraphics[width=0.88\textwidth]{assets/fabius_fractional_transform_frontiers_bundle/figure_quantile_fractional.png}
 \caption{The inverse Fabius function together with its half-order
 Riemann--Liouville integral and half-order Caputo derivative.  The Caputo
 operator amplifies endpoint structure, whereas the fractional integral
@@ -21394,7 +21499,7 @@ smooths it.}
 
 \begin{figure}[htbp]
 \centering
-\includegraphics[width=0.88\textwidth]{assets/fabius_fractional_transform_frontiers_bundle/figure_stieltjes_convergence.pdf}
+\includegraphics[width=0.88\textwidth]{assets/fabius_fractional_transform_frontiers_bundle/figure_stieltjes_convergence.png}
 \caption{Convergence of the exact-moment expansion
 \eqref{p11:eq:Stieltjes-moment-series} at two real/complex parameter pairs.}
 \label{p11:fig:stieltjes-convergence}
@@ -21402,7 +21507,7 @@ smooths it.}
 
 \begin{figure}[htbp]
 \centering
-\includegraphics[width=0.88\textwidth]{assets/fabius_fractional_transform_frontiers_bundle/figure_difference_hierarchy.pdf}
+\includegraphics[width=0.88\textwidth]{assets/fabius_fractional_transform_frontiers_bundle/figure_difference_hierarchy.png}
 \caption{Several real-order slices of the entire difference hierarchy.  The
 order $-1$ slice is the difference density, order $0$ is its tail, and
 positive orders are fractional positive-part integrals.}
@@ -21411,7 +21516,7 @@ positive orders are fractional positive-part integrals.}
 
 \begin{figure}[htbp]
 \centering
-\includegraphics[width=0.88\textwidth]{assets/fabius_fractional_transform_frontiers_bundle/figure_nonlocal_tails.pdf}
+\includegraphics[width=0.88\textwidth]{assets/fabius_fractional_transform_frontiers_bundle/figure_nonlocal_tails.png}
 \caption{Weyl and Riesz fractional derivatives outside the support of
 $\Up$.  Dashed curves are their leading $x^{-1-\alpha}$ terms.  The agreement
 illustrates how noninteger differentiation creates exact algebraic tails.}
@@ -21443,7 +21548,7 @@ finite Fourier grid.
 
 \subsection{All-order endpoint expansions}
 
-\Cref{p11:thm:first-correction} shows that once a weighted de Haan expansion for
+Theorem~\ref{p11:thm:first-correction} shows that once a weighted de Haan expansion for
 $G(ut)/G(u)$ is known, fractional integration converts powers of $\log t$ to
 digamma and polygamma constants.  At higher orders one expects complete Bell
 polynomials in derivatives of the beta function.  The missing ingredient is

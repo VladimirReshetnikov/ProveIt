@@ -1,13 +1,12 @@
 # Fractional integral calculus for the Fabius--Rvachev system
 
-> **Consolidation note.** The standalone report source and PDF were absorbed
-> into Part IX of the
-> [consolidated volume](../../Integration_and_Transform_Frontiers.tex). This
-> directory now contains only supporting assets; Git history preserves the
-> former standalone files.
+> **Archived companion bundle.** The former standalone manuscript is now
+> consolidated in `../../Integration_and_Transform_Frontiers.tex`, with the
+> rendered report at `../../Integration_and_Transform_Frontiers.pdf`. This
+> directory retains its supporting computations and figures.
 
-This bundle contains the LaTeX source, compiled PDF, numerical verification
-script, generated results, and figures for the report
+This bundle contains the numerical verification script, generated results,
+and figures for the former standalone report
 
 > **Fractional Integral Calculus and Complex-Order Transform Hierarchies for
 > the Fabius--Rvachev System**
@@ -20,9 +19,12 @@ The repository audit is pinned to ProveIt commit
 A recent TeX Live installation is sufficient:
 
 ```bash
-latexmk -pdf -interaction=nonstopmode -halt-on-error \
-  fabius_fractional_integrals_report.tex
+(cd ../.. && pdflatex -interaction=nonstopmode -halt-on-error Integration_and_Transform_Frontiers.tex)
+(cd ../.. && pdflatex -interaction=nonstopmode -halt-on-error Integration_and_Transform_Frontiers.tex)
+(cd ../.. && pdflatex -interaction=nonstopmode -halt-on-error Integration_and_Transform_Frontiers.tex)
 ```
+
+These commands update `../../Integration_and_Transform_Frontiers.pdf`.
 
 ## Regenerate numerical experiments
 

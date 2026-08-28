@@ -13,8 +13,8 @@ its complete zero-based primitive ladder:
 The formula includes order zero and every real endpoint.  Since the bounded
 Fabius function agrees with the signed extension on `(-∞, 1]`, the same
 identity holds there.  The generic polynomial commutator then yields finite
-closed forms for every natural monomial weight, again with all order-zero and
-endpoint cases included.
+closed forms for arbitrary polynomial weights, with monomials and the cubic
+ordinary primitive recorded as explicit corollaries.
 -/
 
 open scoped BigOperators ContDiff Interval
@@ -121,6 +121,27 @@ theorem normalizedVolterra_fabiusReal_of_le_one
     _ = 2 ^ n.choose 2 * fabiusReal F (x / 2 ^ n) := by
       rw [fabiusReal_eq_extendedFabius_of_le_one F hF harg]
 
+/-- Finite closed form for every polynomial weight of the signed Fabius
+extension.  The formula is global and includes order zero. -/
+theorem normalizedVolterra_polynomial_mul_extendedFabius
+    (F : BoundedFabius) (hF : IsFabius F)
+    (n : ℕ) (P : Polynomial ℝ) (x : ℝ) :
+    normalizedVolterra n 0 (fun t => P.eval t * extendedFabius F t) x =
+      ∑ r ∈ range (P.natDegree + 1),
+        (-1 : ℝ) ^ r * (n.ascFactorial r : ℝ) *
+          (P.hasseDeriv r).eval x * 2 ^ (n + r).choose 2 *
+            extendedFabius F (x / 2 ^ (n + r)) := by
+  have hint : IntervalIntegrable (extendedFabius F) volume 0 x :=
+    (extendedFabius_contDiff F hF).continuous.intervalIntegrable _ _
+  rw [show (fun t => P.eval t * extendedFabius F t) =
+      (fun t => P.eval t • extendedFabius F t) by rfl]
+  rw [normalizedVolterra_polynomial n 0 x P (extendedFabius F) hint]
+  apply Finset.sum_congr rfl
+  intro r _
+  rw [normalizedVolterra_extendedFabius F hF]
+  simp only [smul_eq_mul]
+  ring
+
 /-- Finite closed form for every natural monomial weight of the signed
 extension.  The formula is global and includes order zero. -/
 theorem normalizedVolterra_pow_mul_extendedFabius
@@ -138,6 +159,27 @@ theorem normalizedVolterra_pow_mul_extendedFabius
   apply Finset.sum_congr rfl
   intro r hr
   rw [normalizedVolterra_extendedFabius F hF]
+  simp only [smul_eq_mul]
+  ring
+
+/-- Finite polynomial formula for the bounded Fabius function on its maximal
+signed-extension range `x ≤ 1`. -/
+theorem normalizedVolterra_polynomial_mul_fabiusReal_of_le_one
+    (F : BoundedFabius) (hF : IsFabius F)
+    (n : ℕ) (P : Polynomial ℝ) {x : ℝ} (hx : x ≤ 1) :
+    normalizedVolterra n 0 (fun t => P.eval t * fabiusReal F t) x =
+      ∑ r ∈ range (P.natDegree + 1),
+        (-1 : ℝ) ^ r * (n.ascFactorial r : ℝ) *
+          (P.hasseDeriv r).eval x * 2 ^ (n + r).choose 2 *
+            fabiusReal F (x / 2 ^ (n + r)) := by
+  have hint : IntervalIntegrable (fabiusReal F) volume 0 x :=
+    hF.contDiff.continuous.intervalIntegrable _ _
+  rw [show (fun t => P.eval t * fabiusReal F t) =
+      (fun t => P.eval t • fabiusReal F t) by rfl]
+  rw [normalizedVolterra_polynomial n 0 x P (fabiusReal F) hint]
+  apply Finset.sum_congr rfl
+  intro r _
+  rw [normalizedVolterra_fabiusReal_of_le_one F hF (n + r) hx]
   simp only [smul_eq_mul]
   ring
 
@@ -159,6 +201,21 @@ theorem normalizedVolterra_pow_mul_fabiusReal_of_le_one
   intro r hr
   rw [normalizedVolterra_fabiusReal_of_le_one F hF (n + r) hx]
   simp only [smul_eq_mul]
+  ring
+
+/-- The cubic ordinary primitive, recorded explicitly as a regression theorem
+for the factorial and dyadic scaling in the finite commutator. -/
+theorem integral_cube_mul_fabiusReal_eq
+    (F : BoundedFabius) (hF : IsFabius F) {x : ℝ} (hx : x ≤ 1) :
+    (∫ t in 0..x, t ^ 3 * fabiusReal F t) =
+      x ^ 3 * fabiusReal F (x / 2) -
+        6 * x ^ 2 * fabiusReal F (x / 4) +
+        48 * x * fabiusReal F (x / 8) -
+        384 * fabiusReal F (x / 16) := by
+  have h := normalizedVolterra_pow_mul_fabiusReal_of_le_one F hF 1 3 hx
+  rw [normalizedVolterra_one] at h
+  norm_num [Finset.sum_range_succ, Nat.ascFactorial, Nat.choose] at h
+  convert h using 1
   ring
 
 end Fabius

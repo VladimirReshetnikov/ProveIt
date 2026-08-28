@@ -10,11 +10,11 @@ only supporting assets; git history preserves the former standalone files.
 CONTENTS
 --------
 
-fabius_integral_frontiers.tex
-    Complete 29-page LaTeX source of the research report.
+../../Integration_and_Transform_Frontiers.tex
+    Canonical consolidated source.
 
-fabius_integral_frontiers.pdf
-    Compiled A4 PDF.
+../../Integration_and_Transform_Frontiers.pdf
+    Rendered consolidated volume.
 
 numerical_experiments.py
     Fully commented, deterministic numerical checks and figure generation.
@@ -51,13 +51,13 @@ A TeX distribution containing pdfLaTeX and the standard packages named in the
 preamble is required. From this directory, run exactly three passes, then
 remove the sidecar files:
 
-    pdflatex -interaction=nonstopmode -halt-on-error fabius_integral_frontiers.tex
-    pdflatex -interaction=nonstopmode -halt-on-error fabius_integral_frontiers.tex
-    pdflatex -interaction=nonstopmode -halt-on-error fabius_integral_frontiers.tex
-    rm -f *.aux *.log *.out *.toc
+    (cd ../.. && pdflatex -interaction=nonstopmode -halt-on-error Integration_and_Transform_Frontiers.tex)
+    (cd ../.. && pdflatex -interaction=nonstopmode -halt-on-error Integration_and_Transform_Frontiers.tex)
+    (cd ../.. && pdflatex -interaction=nonstopmode -halt-on-error Integration_and_Transform_Frontiers.tex)
+    (cd ../.. && rm -f *.aux *.log *.out *.toc)
 
-The supplied PDF was built with pdfTeX 1.40.26. The final build has 29 pages,
-resolved cross-references, and no reported LaTeX warnings or overfull boxes.
+The former standalone PDF was built with pdfTeX 1.40.26 and had 29 pages.
+The canonical output is now the consolidated PDF named above.
 
 SCOPE AND PROOF STATUS
 ----------------------

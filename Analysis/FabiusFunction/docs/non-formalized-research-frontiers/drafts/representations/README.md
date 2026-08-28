@@ -1,8 +1,8 @@
 # Representations
 
 Series and orthogonal-expansion representations of the up-function,
-consolidated (2026-08-28) into the 106-page single volume
-[`Representation_Frontiers/`](Representation_Frontiers/):
+consolidated (2026-08-28) into the single volume
+[`Representation_Frontiers/`](Representation_Frontiers/) (106 pp):
 
 - **Part I** — *Resolvent, Continued-Fraction, and Transform
   Representations of the Fabius–Rvachev System* (Jacobi coefficients,

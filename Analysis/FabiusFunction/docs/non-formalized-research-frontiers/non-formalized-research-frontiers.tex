@@ -1068,9 +1068,10 @@ for every $x\in\R$.
 \subsection{The survival-function Fubini identity}
 \label{integration:sec:survival-fubini}
 
-A particularly useful bridge, absent from the main article's probability chapter, identifies
-integration against the Fabius law with an ordinary integral against $\Up$.  It is the compact
-support version of the layer-cake or tail-integration formula.
+The main article's probability chapter records the scalar differentiable bridge between
+integration against the Fabius law and an ordinary integral against $\Up$.  The formal
+development now also contains the stronger Banach-valued partial and full layer-cake forms
+recorded below.
 
 For $t\ge0$, support and \eqref{integration:eq:CDF-is-F} give
 \begin{equation}
@@ -1125,6 +1126,51 @@ The survival function uses the open ray $(t,\infty)$.  The CDF uses $(-\infty,t]
 complements are exact, and no endpoint atom enters because $\mu$ has a continuous CDF.
 Likewise, replacing $(0,1)$ by any of the standard half-open versions changes no Lebesgue
 integral.  The formal proof nevertheless records these null-set conversions explicitly.
+\end{remark}
+
+\begin{theorem}[Banach-valued survival layer cake]
+\label{integration:thm:survival-layer-cake}
+Let \(E\) be a real Banach space and \(0\le c\le1\).  If \(k:\R\to E\) is
+interval-integrable on \([0,c]\), then
+\begin{equation}
+ \int_0^c \Up(t)k(t)\dd t
+ =\int_{\R}\left(\int_0^{\min\{z,c\}}k(t)\dd t\right)\dd\mu(z).
+ \label{integration:eq:survival-layer-cake-partial}
+\end{equation}
+If \(k\) is interval-integrable on \([0,1]\), then
+\begin{equation}
+ \int_0^1 \Up(t)k(t)\dd t
+ =\int_{\R}\left(\int_0^z k(t)\dd t\right)\dd\mu(z).
+ \label{integration:eq:survival-layer-cake-full}
+\end{equation}
+No positivity hypothesis is imposed on \(k\); in particular \(E=\C\) gives the
+complex-kernel form.
+\end{theorem}
+
+The exact specializations are
+\lean{ProbabilityRepresentation.intervalIntegral_rvachevUp_smul_eq_integral_min}
+and \lean{ProbabilityRepresentation.intervalIntegral_rvachevUp_smul_eq_integral} in
+\path{ProbabilityLaplaceMoments.lean}.  Their reusable finite-measure versions---including
+the support-free clamped identity---are the three
+\lean{intervalIntegral_survival_smul_eq_integral_clamp},
+\lean{intervalIntegral_survival_smul_eq_integral_min_of_ae_mem_Icc}, and
+\lean{intervalIntegral_survival_smul_eq_integral_of_ae_mem_Icc} declarations in
+\path{SurvivalLayerCake.lean}, all derived from
+\lean{integral_smul_setIntegral_subgraph} in \path{SubgraphFubini.lean}.
+
+\begin{remark}[Formalized inverse layer-cake boundary]
+The same subgraph engine proves a real- or complex-weighted, Banach-valued inverse-clock
+identity on compact rectangles.  For the Fabius clocks its explicit-primitive and
+pointwise-\(C^1\) forms are
+\lean{intervalIntegral_smul_intervalIntegral_fabiusInv} and
+\lean{intervalIntegral_smul_comp_fabiusInv} in \path{InverseLayerCake.lean}.
+The real weighted-area specialization is
+\lean{intervalIntegral_mul_fabiusInv_eq}.  The module also exports
+\lean{intervalIntegral_fabiusInv_eq_intervalIntegral_rvachevUp} and
+\lean{intervalIntegral_fabiusInv_eq_one_half}, which identify the inverse area with the
+unit-interval $\Up$ area and with \(1/2\).  These are full-interval theorems.  They do not
+package an arbitrary absolutely continuous primitive, a variable-upper-endpoint area
+identity, higher or fractional inverse primitives, or complex Mellin continuation.
 \end{remark}
 
 \subsection{Raw, endpoint, and tilted Laplace moments}
@@ -2455,9 +2501,20 @@ The compatibility head--tail, probability, scalar-law, and unit-interval surface
 The nineteen-declaration named geometric weight, series, and law API: summability and mass,
 continuity and measurability, affine splitting, reflection, and carried-\([0,1]\) results;
 \cref{integration:sec:weighted-naturality}.\\
+\path{SubgraphFubini.lean} &
+\lean{integral_smul_setIntegral_subgraph}, the real- or complex-weighted Banach-valued
+subgraph exchange over arbitrary s-finite measures; \cref{integration:sec:survival-fubini}.\\
+\path{SurvivalLayerCake.lean} &
+The support-free clamped and interval-supported partial/full Banach-valued survival
+identities; \cref{integration:thm:survival-layer-cake}.\\
+\path{InverseLayerCake.lean} &
+Generic inverse-clock and Fabius explicit-primitive/pointwise-\(C^1\) layer cake, the full
+weighted inverse-area identity, equality with the $\Up$ area, and the inverse mean \(1/2\);
+\cref{integration:sec:survival-fubini}.\\
 \path{ProbabilityLaplaceMoments.lean} &
-Almost-sure support, restriction to $[0,1]$, survival function, the compact-support Fubini
-identity, raw and endpoint moment identifications, zero-tilt normalization, and positivity;
+Almost-sure support, restriction to $[0,1]$, survival function, the partial/full Rvachev
+survival layer cake, the differentiable compact-support Fubini identity, raw and endpoint
+moment identifications, zero-tilt normalization, and positivity;
 \cref{integration:sec:survival-fubini,integration:sec:probability-laplace}.\\
 \path{LaplaceMoments.lean} &
 \lean{tiltedSurvivalMoment}, \lean{fabiusLaplaceMoment}, the differential recurrence,

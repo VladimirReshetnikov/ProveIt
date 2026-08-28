@@ -121,8 +121,8 @@
 \large Exact arithmetic, probability, Fourier analysis, and corrected sharp asymptotics}
 \author{Human-readable synthesis of the formal development\\
 \small Vladimir Reshetnikov's \texttt{ProveIt} repository}
-\date{Integrated repository snapshot: 27 August 2026\\
-\small mainline checkpoint \nolinkurl{01b45d809}; Volterra addendum
+\date{Integrated repository snapshot: 28 August 2026\\
+\small mainline checkpoint \nolinkurl{68a0daecb}; Volterra addendum
 \nolinkurl{e109088ed}}
 
 \begin{document}
@@ -1094,6 +1094,40 @@ displayed transport identities deliberately use uniform measure restricted to
 \([0,1]\).  They do not by themselves prove the frontier report's two-function
 integration-by-parts identity, complex Mellin continuation, or fractional-power
 substitutions.
+
+A separate subgraph-Fubini argument does provide the exact first-order weighted
+inverse identity, without differentiating either clock.
+
+\begin{theorem}[Weighted Fabius inverse layer cake]
+\label{thm:weighted-fabius-inverse-layer-cake}
+Let \(\phi\) be interval-integrable on \([0,1]\), with real or complex values, and
+let \(\psi\) be interval-integrable there with values in a compatible Banach space.
+Then
+\begin{equation}
+ \int_0^1 \phi(u)\left(\int_0^{I(u)}\psi(x)\dd x\right)\dd u
+ =\int_0^1\left(\int_{F(x)}^1\phi(u)\dd u\right)\psi(x)\dd x.
+ \label{eq:weighted-fabius-inverse-layer-cake}
+\end{equation}
+If \(\Psi(0)=0\), \(\psi\) is continuous on \([0,1]\), and
+\(\Psi'(x)=\psi(x)\) pointwise there, the inner primitive on the left may be
+replaced by \(\Psi(I(u))\).
+\end{theorem}
+
+The explicit-primitive and pointwise-\(C^1\) forms are respectively
+\lean{intervalIntegral_smul_intervalIntegral_fabiusInv} and
+\lean{intervalIntegral_smul_comp_fabiusInv} in \path{InverseLayerCake.lean}.
+Their generic compact-rectangle versions are
+\lean{intervalIntegral_smul_intervalIntegral_of_lt_iff_lt} and
+\lean{intervalIntegral_smul_comp_of_lt_iff_lt}; all four use the strict order
+equivalence \(F(x)<u\Longleftrightarrow x<I(u)\).  The reusable arbitrary-s-finite-measure
+engine is \lean{integral_smul_setIntegral_subgraph} in
+\path{SubgraphFubini.lean}.  Finally,
+\lean{intervalIntegral_mul_fabiusInv_eq} is the real weighted-area specialization;
+\lean{intervalIntegral_fabiusInv_eq_intervalIntegral_rvachevUp} and
+\lean{intervalIntegral_fabiusInv_eq_one_half} identify the inverse area with the
+unit-interval \(\Up\) area and with \(1/2\), respectively.
+These declarations do not assert the frontier reports' arbitrary-absolutely-continuous,
+variable-upper-endpoint, higher-order, fractional, or complex-Mellin extensions.
 
 \subsection{The normalized geometric family}
 
@@ -3093,6 +3127,20 @@ If \(g,g':\R\to\R\) are continuous and \(g\) has derivative \(g'(t)\) at every
  \int_{[0,1]}g(x)\,\dd\mu_X(x)
  =g(0)+\int_0^1g'(t)\Up(t)\dd t.                           \label{eq:survival-fubini}
 \end{equation}
+More generally, let \(E\) be a real Banach space and let \(0\le c\le1\).  For a
+map \(k:\R\to E\), with interval integrability on \([0,c]\) in the first line
+and on \([0,1]\) in the second, the partial and full survival layer-cake
+identities are
+\begin{align}
+ \int_0^c \Up(t)k(t)\dd t
+ &=\int_{\R}\left(\int_0^{\min\{z,c\}}k(t)\dd t\right)\dd\mu_X(z),
+ \label{eq:survival-layer-cake-partial}\\
+ \int_0^1 \Up(t)k(t)\dd t
+ &=\int_{\R}\left(\int_0^z k(t)\dd t\right)\dd\mu_X(z).
+ \label{eq:survival-layer-cake-full}
+\end{align}
+No positivity assumption is imposed on \(k\); taking \(E=\C\) gives the
+complex-kernel form used by transform arguments.
 For \(s\in\R\) and \(k\in\N\), put
 \begin{equation}
  L_k(s)=\int_{[0,1]}\e^{-sx}x^k\,\dd\mu_X(x).              \label{eq:raw-laplace-moment}
@@ -3122,7 +3170,16 @@ variables real, are
 \begin{proof}[Formal proof]
 The survival identity and integration-by-parts formula are
 \lean{weightedSumDistribution_real_Ioi_eq_rvachevUp_of_nonneg} and
-\lean{integral_unit_eq_zero_add_integral_deriv_mul_rvachevUp}.  The tilted and zero-tilt
+\lean{integral_unit_eq_zero_add_integral_deriv_mul_rvachevUp}.  The Banach-valued
+partial and full formulas \eqref{eq:survival-layer-cake-partial}--
+\eqref{eq:survival-layer-cake-full} are
+\lean{ProbabilityRepresentation.intervalIntegral_rvachevUp_smul_eq_integral_min}
+and \lean{ProbabilityRepresentation.intervalIntegral_rvachevUp_smul_eq_integral}.
+Their finite-measure, support-free and interval-supported engines are the three
+\lean{intervalIntegral_survival_smul_eq_integral_clamp},
+\lean{intervalIntegral_survival_smul_eq_integral_min_of_ae_mem_Icc}, and
+\lean{intervalIntegral_survival_smul_eq_integral_of_ae_mem_Icc} declarations in
+\path{SurvivalLayerCake.lean}.  The tilted and zero-tilt
 identities are
 \lean{unitLaplaceMoment_weightedSumDistribution_eq_fabiusLaplaceMoment},
 \lean{unitLaplaceMoment_weightedSumDistribution_zero_eq_halfMoment}, and
@@ -6699,9 +6756,12 @@ That rule explains several choices made above:
       probability laws, with no support or range restriction and an almost-everywhere
       sublevel characterization; a compact pointwise specialization feeds the clamped
       Fabius inverse.  This proves strongly measurable
-      Banach-valued substitution with Lean's totalized Bochner integral, but not the
-      frontier report's two-function integration-by-parts, fractional, or complex-Mellin
-      identities.
+      Banach-valued substitution with Lean's totalized Bochner integral.  A separate
+      weighted-subgraph development proves Banach-valued survival layer cake and the
+      full-interval Fabius inverse identity for an explicit interval-integrable primitive
+      or a pointwise-\(C^1\) primitive.  It does not package the frontier reports'
+      arbitrary-absolutely-continuous incomplete integration-by-parts, fractional, or
+      complex-Mellin identities.
 \item Step cells use the formal half-endpoint indicator, including its point value at a
       shared boundary.
 \item The Fourier chapter distinguishes the real punctured-limit statement from the stronger
@@ -6718,9 +6778,12 @@ That rule explains several choices made above:
       outside the formal corpus.
 \item Integer-order Volterra integration is formal at arbitrary base point and endpoint in
       a real Banach space, including strict FTC, order composition, polynomial weights,
-      Taylor reconstruction, and the exact Fabius ladder.  The frontier reports' fractional
-      Riemann--Liouville orders, complex weights, and inverse/quantile integral identities
-      remain outside this integer-order result.
+      Taylor reconstruction, and the exact Fabius ladder.  Separately, the weighted
+      inverse-layer-cake API permits real or complex scalar weights and a Banach-valued
+      kernel on the full unit interval.  Fractional Riemann--Liouville orders, partial or
+      higher inverse primitives, arbitrary-absolutely-continuous packaging, and complex
+      Mellin continuation
+      remain outside these results.
 \item Endpoint asymptotics retain exact phases and the proved remainder scopes; numerical
       fits and unproved coefficient formulas are absent.
 \end{itemize}
@@ -6749,10 +6812,11 @@ supported \(\Up\) supplies refinement, Fourier, spline, and Legendre viewpoints;
 signed \(\mathcal F\) supplies the global dilation and binary-translation formulas.  Exact
 bridges connect them to finite atomic laws, weak convergence, centered splines, moments,
 generic weighted distributions, geometrically weighted uniform laws, exact quantile
-transport, reciprocal-power values, dyadic algorithms, half-base \(q\)-binomial identities,
-prefix sums, denominator-free arbitrary-base geometric interpolation, normalized
-integer-order Volterra primitives and polynomial weights, endpoint Laplace analysis, and
-computable approximation.
+transport, Banach-valued survival layer cake, weighted inverse layer cake,
+reciprocal-power values, dyadic algorithms, half-base \(q\)-binomial identities, prefix
+sums, denominator-free arbitrary-base geometric interpolation, normalized integer-order
+Volterra primitives and polynomial weights, endpoint Laplace analysis, and computable
+approximation.
 
 The most important methodological conclusion is equally concrete: the primary document is
 now a map of proved mathematics.  Research claims can move back from the frontier only after
@@ -6778,10 +6842,11 @@ Definitions, existence, uniqueness &
 Shape and regularity &
 \path{Differential.lean}, \path{Monotonicity.lean}, \path{Convexity.lean},
 \path{Regularity.lean}\\
-Probability, weighted-law naturality and affine recursion, quantile transport, and finite approximants &
+Probability, weighted-law naturality, quantile transport, layer cake, and finite approximants &
 \path{WeightedUniformSeries.lean}, \path{WeightedUniformDistribution.lean},
 \path{GeometricUniformLaw.lean}, \path{ProbabilityRepresentation.lean},
-\path{QuantileTransport.lean},
+\path{QuantileTransport.lean}, \path{SubgraphFubini.lean},
+\path{SurvivalLayerCake.lean}, \path{InverseLayerCake.lean},
 \path{EarlyApproximants.lean},
 \path{EarlyMeasureBridge.lean}, \path{WeakConvergence.lean},
 \path{ProbabilityLaplaceMoments.lean}, \path{LaplaceMoments.lean},
@@ -7046,8 +7111,8 @@ V.~Reshetnikov,
 V.~Reshetnikov,
 \newblock \emph{ProveIt: Analysis/FabiusFunction},
 \newblock Lean~4 formal development, integrated source snapshot
-\texttt{01b45d809716b874ee5bfd6639c96be9b98e0865}, consulted 27 August 2026.
-\newblock \url{https://github.com/VladimirReshetnikov/ProveIt/tree/01b45d809716b874ee5bfd6639c96be9b98e0865/Analysis/FabiusFunction}.
+\texttt{68a0daecbb523a924fdb9d6d184ea8110e6d8f54}, consulted 28 August 2026.
+\newblock \url{https://github.com/VladimirReshetnikov/ProveIt/tree/68a0daecbb523a924fdb9d6d184ea8110e6d8f54/Analysis/FabiusFunction}.
 \newblock The four affine and base-point declarations identified in
 \Cref{sec:normalized-volterra} were checked on the side branch at commit
 \texttt{e109088ed17186e7fcff8043cb3c1d9b5a131b8e}, on the same date.

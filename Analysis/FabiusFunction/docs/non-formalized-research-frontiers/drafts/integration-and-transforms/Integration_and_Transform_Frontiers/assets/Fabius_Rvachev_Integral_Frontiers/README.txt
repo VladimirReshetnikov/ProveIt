@@ -1,19 +1,21 @@
 FABIUS--RVACHEV INTEGRAL TRANSFORMS AND FRACTIONAL CALCULUS
 ===========================================================
 
-CONSOLIDATION NOTE
-------------------
-The standalone report source and PDF were absorbed into Part VII of
-../../Integration_and_Transform_Frontiers.tex. This directory now contains
-only supporting assets; git history preserves the former standalone files.
+ARCHIVED COMPANION BUNDLE
+-------------------------
+
+The former standalone manuscript is now consolidated in
+../../Integration_and_Transform_Frontiers.tex, with the rendered report at
+../../Integration_and_Transform_Frontiers.pdf. This directory retains its
+supporting computations and figures.
 
 Contents
 --------
-Fabius_Rvachev_Integral_Transforms_and_Fractional_Calculus.tex
-    Main LaTeX research report.
+../../Integration_and_Transform_Frontiers.tex
+    Current consolidated LaTeX research report.
 
-Fabius_Rvachev_Integral_Transforms_and_Fractional_Calculus.pdf
-    Compiled and visually inspected PDF.
+../../Integration_and_Transform_Frontiers.pdf
+    Compiled consolidated PDF.
 
 numerical_experiments.py
     Fully commented reproducible numerical experiments.  It generates the
@@ -34,13 +36,12 @@ Build
 Run numerical experiments (optional):
     python numerical_experiments.py
 
-Compile the report from this directory:
-    pdflatex -interaction=nonstopmode -halt-on-error Fabius_Rvachev_Integral_Transforms_and_Fractional_Calculus.tex
-    pdflatex -interaction=nonstopmode -halt-on-error Fabius_Rvachev_Integral_Transforms_and_Fractional_Calculus.tex
-    pdflatex -interaction=nonstopmode -halt-on-error Fabius_Rvachev_Integral_Transforms_and_Fractional_Calculus.tex
+Compile the consolidated report from this directory with three passes:
+    (cd ../.. && pdflatex -interaction=nonstopmode -halt-on-error Integration_and_Transform_Frontiers.tex)
+    (cd ../.. && pdflatex -interaction=nonstopmode -halt-on-error Integration_and_Transform_Frontiers.tex)
+    (cd ../.. && pdflatex -interaction=nonstopmode -halt-on-error Integration_and_Transform_Frontiers.tex)
 
-Remove auxiliary build files after checking the final log:
-    rm -f *.aux *.log *.out *.toc
+These commands update ../../Integration_and_Transform_Frontiers.pdf.
 
 Python dependencies
 -------------------

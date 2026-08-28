@@ -1,14 +1,17 @@
 # Derivative Norm Spectra and Dual Moment Geometries of the Fabius--Rvachev System
 
-This bundle accompanies the research report prepared from a recursive audit of all
-LaTeX documents under `Analysis/FabiusFunction/docs` in Vladimir Reshetnikov's
-`ProveIt` repository, pinned to commit
+This archived companion bundle preserves the reproducibility code, figures,
+and data from the former standalone research report prepared from a recursive
+audit of all LaTeX documents under `Analysis/FabiusFunction/docs` in Vladimir
+Reshetnikov's `ProveIt` repository, pinned to commit
 `0341bbf91cb867f4510bc8431cf59878208de771` (27 August 2026).
+The report itself is now incorporated into the consolidated source and PDF two
+levels above this directory.
 
 ## Main files
 
-- `Fabius_Derivative_Norm_Spectrum.tex` -- complete LaTeX source.
-- `Fabius_Derivative_Norm_Spectrum.pdf` -- rendered 26-page report.
+- `../../Spectra_and_Arithmetic_Frontiers.tex` -- consolidated LaTeX source.
+- `../../Spectra_and_Arithmetic_Frontiers.pdf` -- consolidated rendered report.
 - `numerical_experiments.py` -- fully commented reproducibility code.
 - `figures/` -- PDF figures used by LaTeX and PNG preview copies.
 - `data/` -- CSV tables and a plain-text numerical run summary.
@@ -43,11 +46,14 @@ the central identities.
 
 ## Compile the report
 
-Run twice so that the table of contents and cross-references settle:
+From this companion directory, run three passes so that the table of contents
+and cross-references settle:
 
 ```bash
-pdflatex -interaction=nonstopmode -halt-on-error Fabius_Derivative_Norm_Spectrum.tex
-pdflatex -interaction=nonstopmode -halt-on-error Fabius_Derivative_Norm_Spectrum.tex
+cd ../..
+pdflatex -interaction=nonstopmode -halt-on-error Spectra_and_Arithmetic_Frontiers.tex
+pdflatex -interaction=nonstopmode -halt-on-error Spectra_and_Arithmetic_Frontiers.tex
+pdflatex -interaction=nonstopmode -halt-on-error Spectra_and_Arithmetic_Frontiers.tex
 ```
 
 A TeX Live installation containing Libertinus, `amsmath`, `mathtools`, `booktabs`,

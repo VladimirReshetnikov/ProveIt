@@ -15,9 +15,8 @@ not alter the snapshot-relative novelty audit.
 
 ## Package contents
 
-- `fabius_antiderivatives.pdf` — rendered report; rebuild it whenever the TeX
-  source changes.
-- `fabius_antiderivatives.tex` — complete standalone LaTeX source.
+- `../../Integration_and_Transform_Frontiers.tex` — canonical consolidated source.
+- `../../Integration_and_Transform_Frontiers.pdf` — rendered consolidated volume.
 - `numerical_experiments.py` — commented exact and high-precision checks.
 - `verification_output.txt` — deterministic output from the default run.
 - `fractional_power_checks.csv` — machine-readable comparison table.
@@ -87,10 +86,10 @@ source is sufficient.  Build three times so references, the table of contents,
 and page numbers all settle, then remove the sidecars:
 
 ```bash
-pdflatex -interaction=nonstopmode -halt-on-error fabius_antiderivatives.tex
-pdflatex -interaction=nonstopmode -halt-on-error fabius_antiderivatives.tex
-pdflatex -interaction=nonstopmode -halt-on-error fabius_antiderivatives.tex
-rm -f *.aux *.log *.out *.toc
+(cd ../.. && pdflatex -interaction=nonstopmode -halt-on-error Integration_and_Transform_Frontiers.tex)
+(cd ../.. && pdflatex -interaction=nonstopmode -halt-on-error Integration_and_Transform_Frontiers.tex)
+(cd ../.. && pdflatex -interaction=nonstopmode -halt-on-error Integration_and_Transform_Frontiers.tex)
+(cd ../.. && rm -f *.aux *.log *.out *.toc)
 ```
 
 ## Reproduce the numerical checks

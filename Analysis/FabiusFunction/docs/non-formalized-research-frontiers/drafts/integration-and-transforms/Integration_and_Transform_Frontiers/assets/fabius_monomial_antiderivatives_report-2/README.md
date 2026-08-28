@@ -12,8 +12,8 @@ Rvachev functions. The repository audit is pinned to ProveIt commit
 
 ## Main files
 
-- `Dyadic_Primitive_Ladders_Fabius_Rvachev.pdf` - rendered 30-page report.
-- `Dyadic_Primitive_Ladders_Fabius_Rvachev.tex` - complete LaTeX source.
+- `../../Integration_and_Transform_Frontiers.tex` - canonical consolidated source.
+- `../../Integration_and_Transform_Frontiers.pdf` - rendered consolidated volume.
 - `fabius_integrals_experiments.py` - commented numerical and exact-rational experiments.
 - `requirements.txt` - Python dependencies for the experiments.
 
@@ -96,10 +96,10 @@ python fabius_integrals_experiments.py --output-dir .
 Compile the report with three explicit passes, then remove the generated sidecars:
 
 ```bash
-pdflatex -interaction=nonstopmode -halt-on-error Dyadic_Primitive_Ladders_Fabius_Rvachev.tex
-pdflatex -interaction=nonstopmode -halt-on-error Dyadic_Primitive_Ladders_Fabius_Rvachev.tex
-pdflatex -interaction=nonstopmode -halt-on-error Dyadic_Primitive_Ladders_Fabius_Rvachev.tex
-rm -f *.aux *.log *.out *.toc
+(cd ../.. && pdflatex -interaction=nonstopmode -halt-on-error Integration_and_Transform_Frontiers.tex)
+(cd ../.. && pdflatex -interaction=nonstopmode -halt-on-error Integration_and_Transform_Frontiers.tex)
+(cd ../.. && pdflatex -interaction=nonstopmode -halt-on-error Integration_and_Transform_Frontiers.tex)
+(cd ../.. && rm -f *.aux *.log *.out *.toc)
 ```
 
 The recorded reference run used Python 3.13.5, NumPy 2.3.5, SciPy 1.17.0,

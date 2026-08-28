@@ -1,19 +1,17 @@
 # Integral, Transform, and Fractional-Calculus Frontiers for the Fabius-Rvachev System
 
-> **Consolidation note.** The standalone report source and PDF were absorbed
-> into Part VIII of the
-> [consolidated volume](../../Integration_and_Transform_Frontiers.tex). This
-> directory now contains only supporting assets; Git history preserves the
-> former standalone files.
+> **Archived companion bundle.** The former standalone manuscript is now
+> consolidated in `../../Integration_and_Transform_Frontiers.tex`, with the
+> rendered report at `../../Integration_and_Transform_Frontiers.pdf`. This
+> directory retains its supporting computations and figures.
 
-This archive contains the LaTeX source and compiled PDF of a 25-page research
-report, together with a deterministic Python program used for exact arithmetic
-and independent numerical checks.
+This archive contains the deterministic Python program used for exact
+arithmetic and independent numerical checks of the former standalone report.
 
 ## Contents
 
-- `Fabius_Integral_Transform_Fractional_Frontiers.tex` - complete manuscript.
-- `Fabius_Integral_Transform_Fractional_Frontiers.pdf` - compiled and visually preflighted report.
+- `../../Integration_and_Transform_Frontiers.tex` - current consolidated manuscript.
+- `../../Integration_and_Transform_Frontiers.pdf` - compiled consolidated report.
 - `numerical_experiments.py` - commented exact/numerical verification program.
 - `experiments_summary.txt` - exact moments/Jacobi coefficients and all residuals.
 - `jacobi_coefficients.tex` - generated exact coefficient table included by the manuscript.
@@ -72,16 +70,12 @@ A TeX Live installation containing `pdflatex`, `libertinus`, `amsmath`,
 Run from this directory:
 
 ```bash
-pdflatex -interaction=nonstopmode -halt-on-error Fabius_Integral_Transform_Fractional_Frontiers.tex
-pdflatex -interaction=nonstopmode -halt-on-error Fabius_Integral_Transform_Fractional_Frontiers.tex
-pdflatex -interaction=nonstopmode -halt-on-error Fabius_Integral_Transform_Fractional_Frontiers.tex
+(cd ../.. && pdflatex -interaction=nonstopmode -halt-on-error Integration_and_Transform_Frontiers.tex)
+(cd ../.. && pdflatex -interaction=nonstopmode -halt-on-error Integration_and_Transform_Frontiers.tex)
+(cd ../.. && pdflatex -interaction=nonstopmode -halt-on-error Integration_and_Transform_Frontiers.tex)
 ```
 
-To remove auxiliary build files while preserving the PDF:
-
-```bash
-rm -f *.aux *.log *.out *.toc
-```
+These commands update `../../Integration_and_Transform_Frontiers.pdf`.
 
 ## Verification performed for this release
 

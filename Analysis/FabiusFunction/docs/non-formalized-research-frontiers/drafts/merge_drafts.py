@@ -13,6 +13,8 @@ Per member:
   - split preamble / body at \begin{document} ... \end{document};
   - strip \maketitle, \tableofcontents, titling commands, and member-local
     page-number resets from the body;
+  - demote member-local \part / \part* headings so the generated wrapper owns
+    the volume's one-part-per-member hierarchy;
   - prefix every label/ref/cite key with p<i>: to avoid collisions;
   - relocate \includegraphics/\input/\lstinputlisting/\verbatiminput
     paths into assets/<member>/, honoring the member's \graphicspath,
@@ -212,6 +214,22 @@ def strip_titling(body):
     body = re.sub(r'\\setcounter\{page\}\{[^{}]+\}', '', body)
     return body
 
+PART_LINE_PAT = re.compile(r'^([ \t]*)\\part(\*?)(?![A-Za-z@])', re.M)
+PROTECTED_BODY_PAT = re.compile(
+    r'\\begin\{(verbatim\*?|Verbatim\*?|BVerbatim|LVerbatim|SaveVerbatim|'
+    r'lstlisting|minted|alltt|comment)\}'
+    r'.*?\\end\{\1\}', re.S)
+
+def demote_member_parts(text):
+    """Demote member-local part headings without rewriting literal examples."""
+    out, pos = [], 0
+    for match in PROTECTED_BODY_PAT.finditer(text):
+        out.append(PART_LINE_PAT.sub(r'\1\\section\2', text[pos:match.start()]))
+        out.append(match.group(0))
+        pos = match.end()
+    out.append(PART_LINE_PAT.sub(r'\1\\section\2', text[pos:]))
+    return ''.join(out)
+
 def extract_title(pre):
     # A PDF title commonly contains commas.  Stopping at the first comma made
     # wrapper titles such as "Gamma Duality, Total Positivity, ..." collapse
@@ -271,7 +289,7 @@ def consolidate(group_dir, members, out_name, title, out_subdir=None):
     # union because the `name not in all_pkgs` check already prevents
     # double-loading with clashing options
     PKG_BLOCK = {
-        'lmodern', 'libertinus', 'libertine', 'newtxtext',
+        'lmodern', 'libertinus', 'libertine', 'libertinust1math', 'newtxtext',
         'newtxmath', 'newtx', 'newpxtext', 'newpxmath', 'mathpazo',
         'times', 'txfonts', 'pxfonts', 'kpfonts', 'fourier',
         'fontspec', 'inputenc', 'fontenc', 'babel', 'geometry',
@@ -307,6 +325,7 @@ def consolidate(group_dir, members, out_name, title, out_subdir=None):
         pre, body = split_doc(tex)
         provenance.append((mdir, mtex, sha256(path), extract_title(pre) or mdir))
         body = strip_titling(body)
+        body = demote_member_parts(body)
         body = prefix_labels(body, pfx)
         gm = re.search(r'\\graphicspath\{+([^{}]*?)/?\}+', pre)
         gpath = (gm.group(1).strip() + '/') if gm and gm.group(1).strip() else ''
@@ -463,18 +482,22 @@ def consolidate(group_dir, members, out_name, title, out_subdir=None):
     newtitle = ('\\title{\\bfseries %s}\n\\author{}\n'
                 '\\date{Consolidated 28 August 2026}\n' % title)
     base_pre = normalize_base_fonts(base_pre)
-    # members may want xcolor's named palettes while the base loads
-    # xcolor optionless; passing the options up front is harmless
+    # Member counter resets (especially `\appendix`) can otherwise reuse PDF
+    # destination names across parts. Members may also want xcolor's named
+    # palettes while the base loads xcolor optionless; pass both options before
+    # either package is loaded.
     base_pre = re.sub(r'(\\documentclass[^\n]*\n)',
                       '\\g<1>\\\\PassOptionsToPackage'
-                      '{dvipsnames,svgnames}{xcolor}\n'
-                      '\\PassOptionsToPackage{hypertexnames=false}{hyperref}\n',
+                      '{hypertexnames=false}{hyperref}\n'
+                      '\\\\PassOptionsToPackage'
+                      '{dvipsnames,svgnames}{xcolor}\n',
                       base_pre, count=1)
-    metadata = ('\\hypersetup{pdftitle={%s},pdfauthor={},'
-                'pdfsubject={Consolidated Fabius--Rvachev research frontiers}}\n'
-                % title)
-    out = (base_pre + '\n'.join(extra_pkgs) + '\n' + newtitle + metadata
-           + '\\begin{document}\n\\maketitle\n\\tableofcontents\n\\clearpage\n'
+    pdf_metadata = (
+        '\\hypersetup{pdftitle={%s},pdfauthor={},'
+        'pdfsubject={Consolidated Fabius--Rvachev research frontiers}}\n' % title
+        if 'hyperref' in all_pkgs else '')
+    out = (base_pre + '\n'.join(extra_pkgs) + '\n' + pdf_metadata +
+           newtitle + '\\begin{document}\n\\maketitle\n\\tableofcontents\n\\clearpage\n'
            + banner + '\n'.join(parts) + '\n\\end{document}\n')
     io.open(os.path.join(out_dir, out_name + '.tex'), 'w', encoding='utf-8', newline='\n').write(out)
     print('wrote', os.path.join(out_dir, out_name + '.tex'))

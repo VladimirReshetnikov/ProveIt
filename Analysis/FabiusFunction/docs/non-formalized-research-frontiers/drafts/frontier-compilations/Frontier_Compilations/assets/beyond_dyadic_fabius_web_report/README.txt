@@ -7,7 +7,7 @@ This package accompanies the research report:
   A geometric q-Fabius--Rvachev family, endpoint laws, zero arithmetic,
   Bernoulli--Bell polynomial calculus, and phase-aware extrapolation
 
-The report is now displayed as Part XIII (absorbed report X) of
+The report is now displayed as Part X (absorbed report X) of
 ../../Frontier_Compilations.tex; this directory retains only its supporting
 assets.
 

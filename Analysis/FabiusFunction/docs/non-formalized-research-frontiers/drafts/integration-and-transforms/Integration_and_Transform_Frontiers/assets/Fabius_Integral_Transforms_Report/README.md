@@ -1,18 +1,27 @@
 # Fabius Integral and Transform Research Report
 
-> **Consolidation note.** The standalone report source and PDF were absorbed
-> into Part IV of the
-> [consolidated volume](../../Integration_and_Transform_Frontiers.tex). This
-> directory now contains only supporting assets; Git history preserves the
-> former standalone files.
+> **Archived companion bundle.** The former standalone manuscript is now
+> consolidated in `../../Integration_and_Transform_Frontiers.tex`, with the
+> rendered report at `../../Integration_and_Transform_Frontiers.pdf`. This
+> directory retains its supporting computations.
 
 This package contains:
 
-- `Fabius_Integral_Transforms_Report.tex` - LaTeX source.
-- `Fabius_Integral_Transforms_Report.pdf` - compiled report.
+- `../../Integration_and_Transform_Frontiers.tex` - current consolidated source.
+- `../../Integration_and_Transform_Frontiers.pdf` - compiled consolidated report.
 - `experiments.py` - commented exact/numerical experiment code.
 - `numerical_results.json` - machine-readable output from the experiments.
 - `numerical_results.tex` - generated LaTeX table included by the report.
+
+Rebuild the consolidated report from this directory with three passes:
+
+```bash
+(cd ../.. && pdflatex -interaction=nonstopmode -halt-on-error Integration_and_Transform_Frontiers.tex)
+(cd ../.. && pdflatex -interaction=nonstopmode -halt-on-error Integration_and_Transform_Frontiers.tex)
+(cd ../.. && pdflatex -interaction=nonstopmode -halt-on-error Integration_and_Transform_Frontiers.tex)
+```
+
+These commands update `../../Integration_and_Transform_Frontiers.pdf`.
 
 Reproduce the numerical data with:
 
