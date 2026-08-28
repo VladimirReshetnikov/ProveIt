@@ -104,7 +104,7 @@ Lambert-Localized Moments in the Fabius--Rvachev System\\[0.45em]
 phase-resolved endpoint tilting, and large-order transfer}
 \author{Frontier research report for Vladimir Reshetnikov's \texttt{ProveIt} project}
 \date{Repository snapshot: 27 August 2026\\
-\small commit \nolinkurl{00c2f223339f4a9d3ab306c56d42da9f4d3e0bf1}}
+\small commit \nolinkurl{158dd2e12d7412142d79a53d91d8fcbdfdfb5d97}}
 
 \begin{document}
 \maketitle
@@ -1224,6 +1224,23 @@ $\exp(-t(\log N)^2)$ beats every power of $N$.  The tail, including the region
 $Z>N$, is therefore smaller than the asserted error.  Finally, raw moments are
 complete Bell polynomials in cumulants, which proves the last assertion.
 \end{proof}
+
+\paragraph{Lean status.}
+The finite algebraic last sentence is now formal.  Under an arbitrary
+probability measure, with integrability assumed only for the powers occurring
+in a chosen polynomial, the theorem
+\texttt{integral\_eval}\textsubscript{2}\allowbreak
+\texttt{\_eq\_sum\_completeBell}\allowbreak
+\texttt{\_momentCumulant} in
+\path{PolynomialExpectationCumulant.lean} rewrites its expectation as the
+coefficient-weighted complete Bell transform of the formal cumulants of its
+raw moments.  The universal polynomials \(P_r\), their formal exponential
+identity, recurrence, scalar evaluation, and first values are developed in
+\path{EndpointTransferPolynomials.lean}.  These finite identities do
+\emph{not} identify the formal cumulants with the analytic tilted cumulants
+\(K_r(s)\), nor do they formalize the asymptotic expansion
+\eqref{eq:endpoint-transfer}, the mod-Gamma estimate, or its remainder and
+tail bounds; those analytic steps remain frontier work.
 
 \subsection{The first two corrections}
 

@@ -119,7 +119,7 @@
 \author{Merged and expanded companion report to the Fabius--Rvachev formal development\\
 \small Vladimir Reshetnikov's \texttt{ProveIt} repository}
 \date{Repository snapshot: 27 August 2026\\
-\small source snapshot at commit \nolinkurl{252d22694ac58a7ed54854cbec38960166257889}}
+\small source snapshot at commit \nolinkurl{158dd2e12d7412142d79a53d91d8fcbdfdfb5d97}}
 
 \begin{document}
 \maketitle
@@ -286,7 +286,7 @@ is not by itself evidence of formalization.  Statements proved in Lean carry the
 declaration names in the text, typeset as \lean{Fabius.thueMorseSign}; statements without
 such a citation must not be inferred to have a formal counterpart.
 
-The current inventory in \cref{sec:formalized-modules} consists of seventy-seven compiled
+The current inventory in \cref{sec:formalized-modules} consists of seventy-eight compiled
 Lean modules.  It covers the finite algebraic, automata, moment, Fourier, rarefaction,
 Dirichlet--Mellin, word-combinatorial, and Fabius--Rvachev bridges recorded there, often in
 greater generality than the displayed prose.  The dependency-aware map in
@@ -2439,8 +2439,13 @@ module \path{MomentCumulantAlgebra.lean} factorially normalizes that layer
 into the named transforms \lean{Fabius.completeBellPolynomial} and
 \lean{Fabius.momentCumulant}, proves the classical Bell recurrence and
 their normalized inverse laws, and establishes functoriality over
-commutative \(\mathbb Q\)-algebras.  This remains generic formal algebra:
-it supplies no Thue--Morse-specific probabilistic interpretation.
+commutative \(\mathbb Q\)-algebras.  The downstream module
+\path{PolynomialExpectationCumulant.lean} applies these transforms to the
+integral of an arbitrary finite polynomial, first as a raw-moment sum and
+then as a complete-Bell sum with the exact zeroth-mass correction; its
+normalized and probability-measure forms are corollaries.  This is a generic
+finite polynomial interface, not a Thue--Morse-specific law or an infinite
+analytic expansion.
 
 For \(E_j=-a_j/j\), the ruler convolution
 (\cref{thm:ruler-convolution}) says that the sign sequence obeys the same
@@ -6206,7 +6211,7 @@ valuation, carry, and Pascal-row formulas remain genuinely base-two features.
 \subsection{Formalized modules (August 2026)}
 \label{sec:formalized-modules}
 
-The first tranches of the formalization now exist as seventy-seven
+The first tranches of the formalization now exist as seventy-eight
 compiled Lean modules in \repo{}, complementing the corpus modules
 (\path{Parity.lean}, \path{TwoAdic.lean}, \path{ThueMorsePrefix.lean},
 \path{ThueMorseGenerating.lean}, \path{ThueMorseExponential.lean},
@@ -6267,6 +6272,7 @@ Module & Contents \\
 \path{ThueMorsePartition.lean} & Ruler-recurrence uniqueness and the partition and explicit Bell-polynomial formulae for \(\eps_n\), obtained by specializing the generic partition engine. \\
 \path{ExponentialBell.lean} & Equality of the finite weighted-partition coefficient function with \path{SaddleExpansion.expCoeff} over every commutative \(\mathbb Q\)-algebra, by recurrence uniqueness. \\
 \path{MomentCumulantAlgebra.lean} & Factorial normalization and denormalization; the complete Bell and inverse moment--cumulant transforms; their classical recurrence, normalized all-index inverse laws, and functoriality over every commutative \(\mathbb Q\)-algebra. \\
+\path{PolynomialExpectationCumulant.lean} & Finite polynomial integrals from support-local raw moments, their complete-Bell/formal-cumulant rewrite with the exact zeroth-mass correction for arbitrary measures, and the normalized and probability-measure specializations. \\
 \path{ThueMorseIntegerLift.lean} & The integral algebraic lift constructed in closed Catalan--binomial form; Catalan parity at Mersenne indices; the unconditional parity theorem \(c_n\equiv\tau(n)\), \(\eps_n=(-1)^{c_n}\). \\
 \path{ThueMorseBoundaryFlatness.lean} & The lacunary product \(\mathcal E(t)\) as an infinite product: self-similarity, positivity, monotonicity, the effective upper bound \(\mathcal E(t)\le2^{\binom m2}t^m\) at every level \(m\), and the matching lower bound \(2^{\binom m2}(t/2)^m\mathcal E(\frac12)\le\mathcal E(t)\) under the dyadic matching \(\frac12\le2^mt\le2\). \\
 \path{ThueMorseDirichlet.lean} & The shifted Dirichlet series in the real regime: conditional convergence for every \(\sigma>0\) by Dirichlet's test, and the dyadic parameter equation \(D(\sigma,a)=2^{-\sigma}(D(\sigma,\frac a2)-D(\sigma,\frac{a+1}2))\). \\
@@ -6788,7 +6794,7 @@ Second-pass additions & Even-modulus collapse of rarefied sums from exact prefix
 V.~Reshetnikov,
 \newblock \emph{ProveIt: Analysis/FabiusFunction},
 \newblock GitHub repository, source snapshot
-\nolinkurl{252d22694ac58a7ed54854cbec38960166257889}, 2026.
+\nolinkurl{158dd2e12d7412142d79a53d91d8fcbdfdfb5d97}, 2026.
 
 \bibitem{prouhet1851}
 E.~Prouhet,

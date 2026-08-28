@@ -80,13 +80,14 @@ This report studies a different asymptotic variable: the truncation level in the
 finite product
 \(P_n(\xi)=\prod_{\nu=1}^n\sinc(\xi/2^\nu)\).
 
-For a general geometric base \(b>1\), with \(q=b^{-2}\), we prove an exact analytic
-factorization
+For a general geometric base \(b>1\), with \(q=b^{-2}\), we prove, in the
+disc \(\lvert q^n\xi^2\rvert<\pi^2b^2\), the total exact analytic factorization
 \[
- \frac{P_{b,n}(\xi)}{P_b(\xi)}
- =\exp\!\left(\sum_{k\geq1}c_k(b)\,\xi^{2k}q^{kn}\right)
- =\sum_{r\geq0}\alpha_r(b)\,\xi^{2r}q^{rn}.
+ P_{b,n}(\xi)
+ =P_b(\xi)\exp\!\left(\sum_{k\geq1}c_k(b)\,\xi^{2k}q^{kn}\right)
+ =P_b(\xi)\sum_{r\geq0}\alpha_r(b)\,\xi^{2r}q^{rn}.
 \]
+Off the zero set of \(P_b\), division gives the corresponding quotient form.
 The cumulants \(c_k(b)\) are explicit Bernoulli-number combinations and the
 coefficients \(\alpha_r(b)\) are complete Bell polynomials. Lagrange evaluation
 at the geometric nodes \(1,q,\ldots,q^m\) then gives a universal extrapolant
@@ -96,9 +97,10 @@ at the geometric nodes \(1,q,\ldots,q^m\) then gives a universal extrapolant
  w_j^{(m)}=\frac{(-1)^{m-j}q^{(m-j)(m-j+1)/2}}
  {(q;q)_j(q;q)_{m-j}}.
 \]
-Its complete error series has the closed q-binomial form
+On the same disc and off the zero set of \(P_b\), its complete error series has
+the closed q-binomial form
 \[
- \frac{\mathcal R_{m,n}P_b}{P_b}-1
+ \frac{\mathcal R_{m,n}P_b(\xi)}{P_b(\xi)}-1
  =(-1)^m q^{\binom{m+1}{2}}
  \sum_{r\geq m+1}\qbinom{r-1}{m}\alpha_r(b)\xi^{2r}q^{rn}.
 \]
@@ -124,8 +126,13 @@ priority search over the entire literature has been completed.
 \noindent\textbf{Status of results.}
 Every result labelled theorem, proposition, lemma, or corollary below has a proof
 in this report. The numerical tables are reproducible from
-\path{verify_frontier_results.py}. No claim in this report has yet been
-formalized in Lean.
+\path{verify_frontier_results.py}.  The denominator-free finite
+\(q\)-binomial theorem is formalized in \path{FiniteQBinomialCore.lean}, while
+\path{GeometricLagrange.lean} proves mass one, cancellation of the first
+geometric modes, the first surviving moment, and module-valued Richardson
+exactness.  The report-specific all-residual Gaussian \(q\)-formula and the
+analytic sinc-product acceleration, error bounds, spline
+limits, and inverse-function consequences remain unformalized.
 
 \tableofcontents
 
@@ -564,7 +571,8 @@ q-Pochhammer form.
 
 \begin{theorem}[exact q-binomial error]
 \label{thm:exacterror}
-Let \(z=q^n\xi^2\), and suppose \(\abs z<\pi^2b^2\). Then
+Let \(z=q^n\xi^2\), and suppose \(\abs z<\pi^2b^2\).  If
+\(P_b(\xi)\ne0\), then
 \begin{equation}
  \frac{\mathcal R_{m,n}P_b(\xi)}{P_b(\xi)}-1
  =(-1)^m q^{\binom{m+1}{2}}
@@ -572,10 +580,19 @@ Let \(z=q^n\xi^2\), and suppose \(\abs z<\pi^2b^2\). Then
  \qbinom{r-1}{m}\alpha_r(b)z^r.
  \label{eq:exacterror}
 \end{equation}
-At a common zero of \(P_b\) and all the finite products, the multiplied identity
-remains valid and both sides vanish. In particular,
+Without the nonvanishing hypothesis, the total statement is the multiplied
+identity
 \begin{equation}
- \frac{\mathcal R_{m,n}P_b}{P_b}-1
+ \mathcal R_{m,n}P_b(\xi)-P_b(\xi)
+ =P_b(\xi)(-1)^m q^{\binom{m+1}{2}}
+ \sum_{r=m+1}^{\infty}
+ \qbinom{r-1}{m}\alpha_r(b)z^r.                         \label{eq:exacterror-multiplied}
+\end{equation}
+At a common zero of \(P_b\) and all the finite products, both sides of
+\eqref{eq:exacterror-multiplied} vanish.  In particular, for fixed
+\(m\) and fixed \(\xi\ne0\) with \(P_b(\xi)\ne0\), as \(n\to\infty\),
+\begin{equation}
+ \frac{\mathcal R_{m,n}P_b(\xi)}{P_b(\xi)}-1
  \sim (-1)^m q^{\binom{m+1}{2}}
  \alpha_{m+1}(b)\xi^{2m+2}q^{(m+1)n}.
  \label{eq:leadingerror}
@@ -583,9 +600,23 @@ remains valid and both sides vanish. In particular,
 \end{theorem}
 
 \begin{proof}
-Insert \(\Phi_b(z)=\sum_{r\geq0}\alpha_rz^r\) into
-\eqref{eq:operatoridentity}. The coefficient of \(z^r\) is
-\(\alpha_rW_m(q^r)\). Apply \cref{lem:qmoments}.
+Apply the total tail identity \eqref{eq:exacttail} separately to each
+\(P_{b,n+j}(\xi)\), multiply by \(w_j^{(m)}\), and sum.  This gives
+\[
+ \mathcal R_{m,n}P_b(\xi)
+ =P_b(\xi)\sum_{j=0}^m w_j^{(m)}\Phi_b(q^jz)
+\]
+without division, including at zeros.  Insert
+\(\Phi_b(z)=\sum_{r\geq0}\alpha_rz^r\); absolute convergence in the stated
+disc permits the finite sum to pass through the series.  The coefficient of
+\(z^r\) is \(\alpha_rW_m(q^r)\), so \cref{lem:qmoments} gives
+\eqref{eq:exacterror-multiplied}.  Division by \(P_b(\xi)\) gives
+\eqref{eq:exacterror} exactly on its stated locus.
+
+Finally, analyticity at zero makes the residual series its first nonzero term
+plus \(O(z^{m+2})\).  Since \(z=q^n\xi^2\), while
+\(\alpha_{m+1}(b)>0\) by \cref{prop:Bell} and \(\xi\ne0\), that term is
+nonzero and yields \eqref{eq:leadingerror}.
 \end{proof}
 
 This identity is substantially stronger than the statement that Richardson

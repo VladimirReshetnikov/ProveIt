@@ -120,7 +120,7 @@
 \author{Human-readable synthesis of the formal development\\
 \small Vladimir Reshetnikov's \texttt{ProveIt} repository}
 \date{Repository snapshot: 27 August 2026\\
-\small commit \nolinkurl{252d22694ac58a7ed54854cbec38960166257889}}
+\small commit \nolinkurl{158dd2e12d7412142d79a53d91d8fcbdfdfb5d97}}
 
 \begin{document}
 \maketitle
@@ -2111,6 +2111,52 @@ Equation \eqref{eq:bell-cumulant-inverses} is
 \eqref{eq:bell-cumulant-naturality}, formalized by
 \lean{map_completeBellPolynomial} and \lean{map_momentCumulant}.  All declarations are in
 \path{MomentCumulantAlgebra.lean} and assume only a commutative \(\Q\)-algebra.
+\end{proof}
+
+\begin{proposition}[Finite polynomial expectations from moments and formal cumulants]
+\label{thm:polynomial-expectation-cumulant}
+Let \(\Omega\) be a measurable space, let \(\mu\) be any measure on it, let
+\(S\) be a semiring with a semiring homomorphism \(\varphi:S\to\R\), and let
+\(Z:\Omega\to\R\).  For \(p\in S[X]\), write
+\[
+ p_n=[X^n]p,\qquad
+ p_\varphi(x)=\sum_{n\in\operatorname{supp}(p)}\varphi(p_n)x^n,
+ \qquad
+ m_n=\operatorname{moment}_\mu(Z;n).
+\]
+Here \(\operatorname{moment}_\mu\) uses Mathlib's totalized Bochner-integral
+convention; whenever \(Z^n\) is integrable it is the ordinary integral
+\(\int_\Omega Z(\omega)^n\,\dd\mu(\omega)\).
+Assume only that \(Z^n\) is integrable for
+\(n\in\operatorname{supp}(p)\), and put
+\(\kappa=\mathcal K(m)\).  Then
+\begin{align}
+ \int_\Omega p_\varphi(Z(\omega))\,\dd\mu(\omega)
+   &=\sum_{n\in\operatorname{supp}(p)}\varphi(p_n)m_n,
+                                                               \label{eq:polynomial-integral-moments}\\
+   &=\sum_{n\in\operatorname{supp}(p)}
+       \varphi(p_n)\mathcal B(\kappa)_n
+       +\varphi(p_0)(m_0-1).                                \label{eq:polynomial-integral-cumulants}
+\end{align}
+If \(m_0=1\), the correction in
+\eqref{eq:polynomial-integral-cumulants} vanishes.  This holds
+automatically when \(\mu\) is a probability measure.
+\end{proposition}
+
+\begin{proof}[Formal proof]
+All four public identifiers share the prefix
+\texttt{integral\_eval}\textsubscript{2}\texttt{\_eq\_sum\_}.
+In the order of the two displayed equations, the \(m_0=1\) corollary,
+and the probability-measure corollary, their suffixes are
+\begin{enumerate}[label=(\roman*),leftmargin=2.8em,itemsep=0pt,topsep=2pt]
+ \item \path{moment};
+ \item \path{completeBell_momentCumulant_with_mass_correction};
+ \item \path{completeBell_momentCumulant_of_moment_zero_eq_one};
+ \item \path{completeBell_momentCumulant}.
+\end{enumerate}
+They are declared in \path{PolynomialExpectationCumulant.lean}.
+They require neither boundedness nor independence, and no integrability
+assumptions for powers outside the finite support of \(p\).
 \end{proof}
 
 \subsection{The probability--Laplace bridge}
@@ -5469,6 +5515,7 @@ Moments and exact arithmetic &
 \path{MomentPowerSeries.lean}, \path{UnitLaplaceMomentBounds.lean},
 \path{NormalizedEvenMoments.lean},
 \path{BernoulliRecurrences.lean}, \path{MomentCumulantAlgebra.lean},
+\path{PolynomialExpectationCumulant.lean},
 \path{WeightedScaleMultiplicity.lean},
 \path{ExactInversePower.lean}, \path{Parity.lean}, \path{TwoAdic.lean}\\
 Finite polynomial functionals and geometric Lagrange/Richardson exactness &
@@ -5670,8 +5717,8 @@ V.~Reshetnikov,
 V.~Reshetnikov,
 \newblock \emph{ProveIt: Analysis/FabiusFunction},
 \newblock Lean~4 formal development, source snapshot
-\texttt{252d22694ac58a7ed54854cbec38960166257889}, consulted 27 August 2026.
-\newblock \url{https://github.com/VladimirReshetnikov/ProveIt/tree/252d22694ac58a7ed54854cbec38960166257889/Analysis/FabiusFunction}.
+\texttt{158dd2e12d7412142d79a53d91d8fcbdfdfb5d97}, consulted 27 August 2026.
+\newblock \url{https://github.com/VladimirReshetnikov/ProveIt/tree/158dd2e12d7412142d79a53d91d8fcbdfdfb5d97/Analysis/FabiusFunction}.
 
 \end{thebibliography}
 
