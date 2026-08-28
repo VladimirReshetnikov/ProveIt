@@ -82,9 +82,7 @@ cross-referenced internally; unchanged by the reorganization).
 
 | Directory | Document | Previous path |
 | --- | --- | --- |
-| `Fabius_Inverse_Frontier_Report_Source_and_PDF/` | *Inverse Frontiers for the Fabius–Rvachev System* | `drafts/Fabius_Inverse_Frontier_Report_Source_and_PDF/` |
-| `fabius_frontier_dyadic_inverse_barnes_report/` | *Dyadic Inverse Germs and Barnes–Rvachev Deconvolution* | `drafts/fabius_frontier_dyadic_inverse_barnes_report/` |
-| `Fabius_Dyadic_Self_Sampling_Frontier_Package/` | *Dyadic Self-Sampling, Alias Superconvergence, and Rvachev–Appell Deconvolution* | `drafts/Fabius_Dyadic_Self_Sampling_Frontier_Package/` |
+| `Inverse_and_Sampling_Frontiers/` | *Inverse and Sampling Frontiers for the Fabius–Rvachev System* — consolidation (2026-08-28) of the former `Fabius_Inverse_Frontier_Report_Source_and_PDF/` (*Inverse Frontiers*), `fabius_frontier_dyadic_inverse_barnes_report/` (*Dyadic Inverse Germs and Barnes–Rvachev Deconvolution*), and `Fabius_Dyadic_Self_Sampling_Frontier_Package/` (*Dyadic Self-Sampling, Alias Superconvergence, and Rvachev–Appell Deconvolution*); their assets live under `assets/`, provenance with SHA-256 in the document | absorbed drafts deleted; git history is the archive |
 
 ## representations — `representations/`
 
