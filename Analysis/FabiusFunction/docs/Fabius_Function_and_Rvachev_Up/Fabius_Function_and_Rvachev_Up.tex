@@ -121,8 +121,9 @@
 \large Exact arithmetic, probability, Fourier analysis, and corrected sharp asymptotics}
 \author{Human-readable synthesis of the formal development\\
 \small Vladimir Reshetnikov's \texttt{ProveIt} repository}
-\date{Repository snapshot: 27 August 2026\\
-\small commit \nolinkurl{80a35fda2b8e2978fe2bd54124b4a43ac7c2ed45}}
+\date{Integrated repository snapshot: 27 August 2026\\
+\small mainline snapshot \nolinkurl{8e7aa582661f2828302f70748efe20d02d8ae9c7};
+Volterra addendum \nolinkurl{3da579387}}
 
 \begin{document}
 \maketitle
@@ -1462,6 +1463,51 @@ an exponential, and is therefore strictly positive.  The canonical product is
 \lean{rvachevFourierProduct_eq_canonical} in \path{SincCanonicalProduct.lean}.
 \end{proof}
 
+The exponent in the canonical product has a finite, base-generic double-counting
+origin that is useful independently of sinc products.  For \(b,N,J\in\N\), put
+\[
+ c_J(b,m):=\#\{j\in\{0,\ldots,J\}:b^j\mid m\}.
+\]
+If \(q>0\), multiplication by \(q\) identifies the positive multiples of \(q\)
+not exceeding \(N\) with \(1,\ldots,\lfloor N/q\rfloor\).  Consequently, for
+every function \(f\) into a commutative monoid,
+\begin{align}
+ \prod_{1\le n\le\lfloor N/q\rfloor}f(qn)
+   &=\prod_{\substack{1\le m\le N\\q\mid m}}f(m),
+                                                               \label{eq:base-layer-reindexing}\\
+ \prod_{j=0}^{J}\prod_{1\le n\le\lfloor N/b^j\rfloor}f(b^jn)
+   &=\prod_{m=1}^{N}f(m)^{c_J(b,m)}\qquad(b>0).             \label{eq:base-layer-regrouping}
+\end{align}
+For \(b>1\) and \(m\ne0\), if the displayed layer range reaches the
+multiplicity, that is, if
+\(\operatorname{multiplicity}(b,m)\le J\), then
+\begin{equation}
+ c_J(b,m)=\operatorname{multiplicity}(b,m)+1.               \label{eq:base-layer-count}
+\end{equation}
+Thus, under the explicit hypothesis
+\(\operatorname{multiplicity}(b,m)\le J\) for every \(1\le m\le N\),
+\begin{equation}
+ \prod_{j=0}^{J}\prod_{1\le n\le\lfloor N/b^j\rfloor}f(b^jn)
+ =\prod_{m=1}^{N}f(m)^{\operatorname{multiplicity}(b,m)+1}. \label{eq:base-layer-multiplicity}
+\end{equation}
+The same three identities hold in every additive commutative monoid, with
+products and powers replaced by sums and natural scalar multiples.  In Lean,
+the underlying finite-set equality is \lean{filter_dvd_eq_image};
+\eqref{eq:base-layer-reindexing} and its additive companion are
+\lean{prod_multiples_eq_prod_filter} and
+\lean{sum_multiples_eq_sum_filter};
+\eqref{eq:base-layer-regrouping} and its companion are
+\lean{prod_layers_eq_prod_pow_card} and
+\lean{sum_layers_eq_sum_nsmul_card}; and
+\eqref{eq:base-layer-count}--\eqref{eq:base-layer-multiplicity} and the final
+additive companion are \lean{card_filter_pow_dvd},
+\lean{prod_layers_eq_prod_pow_multiplicity}, and
+\lean{sum_layers_eq_sum_nsmul_multiplicity}, all in
+\path{BaseLayerRegrouping.lean}.  These are finite algebraic identities.  In
+particular they assert no infinite-product convergence, and the sufficient
+layer-coverage condition must be supplied explicitly rather than inferred by
+the API from a bound such as \(N<b^{J+1}\).
+
 \subsection{Total local factorization and exact complex zero jets}
 \label{sec:fourier-integer-zero-jets}
 
@@ -1484,19 +1530,51 @@ equalities retain the points where either factor vanishes.  They are respectivel
 \path{IntegerZeroLocalFactorization.lean}; the last theorem allows an arbitrary
 nonzero \emph{complex} scale, with no order or reality hypothesis.
 
-Here is the reusable differential principle that will read off the leading
-coefficient.  Over any nontrivially normed field, if \(U\) is \(C^n\) at zero,
-then
+Here is the reusable all-order differential principle.  Let \(\mathbb K\) be
+any nontrivially normed field, let \(E\) be a normed \(\mathbb K\)-space, and
+let \(U:\mathbb K\to E\) be \(C^k\) at zero.  For every \(n,k\in\N\),
+\begin{equation}
+ D^k\!\left(z\mapsto z^n\mathbin{\cdot}U(z)\right)(0)
+ =\begin{cases}
+   \bigl(\binom{k}{n}:\mathbb K\bigr)(n!:\mathbb K)\mathbin{\cdot}
+      D^{k-n}U(0),&n\leq k,\\[1mm]
+   0,&k<n,
+  \end{cases}                                                     \label{eq:factored-all-index-jet}
+\end{equation}
+where \(\mathbin{\cdot}\) denotes scalar action on \(E\).  This is the
+vector-valued theorem \lean{iteratedDeriv_pow_smul_zero_eq_ite} in
+\path{LeadingJet.lean}.  At the index \(k=n+r\), its conditional disappears:
+\begin{equation}
+ D^{n+r}\!\left(z\mapsto z^n\mathbin{\cdot}U(z)\right)(0)
+ =\bigl(\binom{n+r}{n}:\mathbb K\bigr)(n!:\mathbb K)\mathbin{\cdot}
+   D^rU(0).                                                       \label{eq:factored-all-order-jet}
+\end{equation}
+The vector and scalar forms of \eqref{eq:factored-all-order-jet} are
+\lean{iteratedDeriv_pow_smul_zero_add} and
+\lean{iteratedDeriv_pow_mul_zero_add}.  If a scalar-valued function \(f\)
+agrees with \(z^nU(z)\) merely on a neighborhood of zero, the same formula is
+\lean{iteratedDeriv_eq_choose_factorial_mul_of_eventuallyEq_pow_mul}; no
+separate regularity hypothesis on \(f\) is needed.  At an arbitrary center
+\(z_0\), a vector-valued germ
+\(f(z)=(z-z_0)^n\mathbin{\cdot}U(z)\) has the all-index form
+\lean{iteratedDeriv_eq_ite_of_eventuallyEq_sub_pow_smul} and the \(n+r\) form
+\lean{iteratedDeriv_eq_choose_factorial_smul_of_eventuallyEq_sub_pow_smul};
+the scalar specialization is
+\lean{iteratedDeriv_eq_choose_factorial_mul_of_eventuallyEq_sub_pow_mul}.
+
+The coefficient is deliberately the product
+\(\binom{n+r}{n}n!\), with both natural numbers cast into \(\mathbb K\), not
+the quotient \((n+r)!/r!\).  Thus none of these theorems requires factorial
+division, characteristic zero, completeness, or analyticity.  In positive
+characteristic the displayed scalar can vanish, so the generic statement
+identifies the first \emph{potentially} nonzero jet rather than asserting
+nonvanishing.  Setting \(r=0\) recovers the compatibility formula
 \begin{equation}
  \left.\frac{\dd^n}{\dd z^n}\bigl(z^nU(z)\bigr)\right|_{z=0}
-   =n!\,U(0).                                                       \label{eq:factored-leading-jet}
+   =n!\,U(0),                                                       \label{eq:factored-leading-jet}
 \end{equation}
-This is \lean{iteratedDeriv_pow_mul_zero} in \path{LeadingJet.lean}.  More
-generally, the same conclusion holds for a function \(f\) whenever
-\(f(z)=z^nU(z)\) merely throughout a neighborhood of zero; this germ form is
-\lean{iteratedDeriv_eq_factorial_mul_of_eventuallyEq_pow_mul}.  Thus no global
-factorization, analyticity, or separately supplied regularity of \(f\) is
-needed.
+exported as \lean{iteratedDeriv_pow_mul_zero}; its zero-germ companion is
+\lean{iteratedDeriv_eq_factorial_mul_of_eventuallyEq_pow_mul}.
 
 We now apply the total sinc identities to the standalone product
 \(\Phi=\lean{rvachevFourierProduct}\).  Put
@@ -1565,8 +1643,21 @@ The Lean definition \lean{integerZeroLocalCofactor} is total for every integer
 \end{equation}
 by \lean{rvachevFourierProduct_int_add_eq_pow_mul_cofactor}; the same equality
 holds as a germ at \(w=0\) by
-\lean{rvachevFourierProduct_int_add_eventuallyEq_pow_mul_cofactor}.
-Moreover \(U_m\) is analytic at zero, and its exact central value is
+\lean{rvachevFourierProduct_int_add_eventuallyEq_pow_mul_cofactor}.  In the
+original coordinate this is the centered germ
+\[
+ \Phi(z)=(z-m)^{d_m}U_m(z-m)
+ \quad\hbox{near }z=m,
+\]
+exported as
+\lean{rvachevFourierProduct_int_eventuallyEq_sub_pow_mul_cofactor}.
+
+For every integer parameter \(m\), with no parity or nonzero hypothesis, the
+total quotient \(U_m\) is analytic at every point \(w_0\) satisfying
+\(m+w_0\ne0\), by
+\lean{integerZeroLocalCofactor_analyticAt_of_add_ne}.  For nonzero \(m\), its
+local-origin specialization is \lean{integerZeroLocalCofactor_analyticAt}.
+Its exact central value is
 \begin{equation}
  U_m(0)=-\frac{\Phi(q_m/2)}{m^{d_m}}\ne0.                          \label{eq:integer-zero-unit-value}
 \end{equation}
@@ -1591,11 +1682,22 @@ entire leading jet:
  \Phi^{(d_m)}(m)
    &=-\frac{d_m!\,\Phi(q_m/2)}{m^{d_m}}\ne0.                       \label{eq:integer-zero-leading-jet}
 \end{align}
+In fact the division-free all-order identity is, for every \(r\in\N\),
+\begin{equation}
+ \boxed{\quad
+ \Phi^{(d_m+r)}(m)
+ =\binom{d_m+r}{d_m}d_m!\,U_m^{(r)}(0).
+ \quad}                                                           \label{eq:integer-zero-all-higher-jets}
+\end{equation}
 The order statement is
 \lean{analyticOrderAt_rvachevFourierProduct_int}; the lower derivatives are
 \lean{iteratedDeriv_rvachevFourierProduct_int_eq_zero_of_lt}; the displayed
-leading coefficient is \lean{iteratedDeriv_rvachevFourierProduct_int}; and its
-nonvanishing is also exported directly as
+all-order formula is
+\lean{iteratedDeriv_rvachevFourierProduct_int_add_order}; the displayed
+leading coefficient combines its \(r=0\) case with
+\lean{integerZeroLocalCofactor_zero} and is exported as
+\lean{iteratedDeriv_rvachevFourierProduct_int}; and its nonvanishing is also
+exported directly as
 \lean{iteratedDeriv_rvachevFourierProduct_int_ne_zero}, all in
 \path{IntegerZeroAnalyticOrder.lean}.  This strengthens the real
 positive-integer limit in \Cref{thm:fourier-zeros}: it is a signed-integer,
@@ -1911,6 +2013,183 @@ The exact bound, attainment, and supremum statements are
 \lean{iteratedDeriv_fabiusReal_inv_two_pow_all}, and
 \lean{isGreatest_abs_iteratedDeriv_fabiusReal_all} in
 \path{BoundedDerivatives.lean}.
+
+\subsection{Normalized Volterra calculus and exact primitive ladders}
+\label{sec:normalized-volterra}
+
+The repeated-integration identities admit a foundation that is independent of the Fabius
+function.  Let \(E\) be a real normed vector space, let \(a,x\in\R\), and let
+\(f:\R\to E\).  Define the normalized Volterra operators by
+\begin{align}
+ \mathsf J_{0,a}f(x)&:=f(x),\label{eq:volterra-zero}\\
+ \mathsf J_{n+1,a}f(x)&:=
+   \int_a^x\frac{(x-t)^n}{n!}\,f(t)\dd t.\label{eq:volterra-kernel}
+\end{align}
+The integral is the oriented interval integral, so no relation between \(a\) and \(x\) is
+imposed.  These are \lean{normalizedVolterra_zero} and
+\lean{normalizedVolterra_succ}, built from the definition
+\lean{normalizedVolterra} in \path{NormalizedVolterra.lean}.
+
+There is also a literal operator-theoretic construction.  Put
+\[
+ (\mathsf V_a f)(x):=\int_a^x f(t)\dd t,
+ \qquad \mathsf V_a^{[n]}f:=\underbrace{\mathsf V_a\circ\cdots\circ
+ \mathsf V_a}_{n\ \mathrm{times}}f,
+ \qquad \mathsf V_a^{[0]}f=f.
+\]
+The Lean definitions are \lean{volterraPrimitive} and \lean{iteratedPrimitive}.
+Literal iteration makes the additive semigroup law transparent:
+\begin{equation}
+ \mathsf V_a^{[m+n]}f
+ =\mathsf V_a^{[m]}\bigl(\mathsf V_a^{[n]}f\bigr).
+ \label{eq:volterra-semigroup}
+\end{equation}
+This is \lean{iteratedPrimitive_add}, without a continuity hypothesis.  If \(E\) is complete
+and \(f\) is continuous, every rung is continuous and the strict fundamental theorem of
+calculus gives
+\begin{equation}
+ \mathsf V_a^{[n+1]}f
+ \text{ has strict derivative }
+ \mathsf V_a^{[n]}f(x)\text{ at }x.                       \label{eq:volterra-strict-ftc}
+\end{equation}
+Consequently
+\begin{equation}
+ \bigl(\mathsf V_a^{[k+m]}f\bigr)^{(k)}
+ =\mathsf V_a^{[m]}f,
+ \qquad
+ \mathsf V_a^{[n]}f=\mathsf J_{n,a}f.                    \label{eq:volterra-iterate-kernel}
+\end{equation}
+The exact declarations are \lean{continuous_iteratedPrimitive},
+\lean{iteratedPrimitive_succ_hasStrictDerivAt},
+\lean{iteratedDeriv_iteratedPrimitive_add},
+\lean{contDiff_iteratedPrimitive}, and
+\lean{iteratedPrimitive_eq_normalizedVolterra}.  Thus the direct Cauchy kernel carries the
+literal semigroup and strict-FTC interpretation, while its definition remains usable under
+the weaker interval-integrability assumptions needed below.
+The transported kernel-level statements are
+\lean{normalizedVolterra_succ_hasStrictDerivAt},
+\lean{iteratedDeriv_normalizedVolterra_add},
+\lean{contDiff_normalizedVolterra}, and
+\lean{normalizedVolterra_add}: for continuous inputs, the canonical kernels themselves are
+\(C^n\), lose one Volterra order under differentiation, and compose by addition of
+their orders.
+
+\begin{theorem}[Taylor--Volterra reconstruction]
+\label{thm:taylor-volterra-reconstruction}
+If \(E\) is complete and \(g:\R\to E\) is \(C^{n+1}\), then for arbitrary
+\(a,x\in\R\),
+\begin{equation}
+ \mathsf J_{n+1,a}\bigl(g^{(n+1)}\bigr)(x)
+ =g(x)-\sum_{k=0}^{n}\frac{(x-a)^k}{k!}\,g^{(k)}(a).
+ \label{eq:taylor-volterra-reconstruction}
+\end{equation}
+In particular, if \(g^{(k)}(a)=0\) for \(0\le k\le n\), then
+\(\mathsf J_{n+1,a}(g^{(n+1)})(x)=g(x)\).
+\end{theorem}
+
+\begin{proof}[Formal proof]
+Equation \eqref{eq:taylor-volterra-reconstruction} is the oriented integral-remainder
+theorem in the normalization \eqref{eq:volterra-kernel}; Lean records it as
+\lean{normalizedVolterra_succ_iteratedDeriv_eq_sub_taylor}.  Vanishing of the finite jet
+annihilates the Taylor polynomial termwise, giving
+\lean{normalizedVolterra_succ_iteratedDeriv_eq_of_zero_jet}.  Both declarations are in
+\path{NormalizedVolterra.lean}.  Applied to the literal iterate
+\(g=\mathsf V_a^{[n+1]}f\), derivative cancellation supplies the top derivative \(f\),
+while every lower derivative is still a positive-order primitive and therefore vanishes at
+\(a\).  This gives the conceptual proof of
+\eqref{eq:volterra-iterate-kernel}.
+\end{proof}
+
+The same normalization exposes a finite polynomial commutator.  Write
+\[
+ n^{\overline r}:=n(n+1)\cdots(n+r-1),\qquad n^{\overline0}:=1,
+\]
+let \(d=\operatorname{natdeg}P\), and let \(D_H^{[r]}P\) denote the \(r\)-th Hasse
+derivative of \(P\in\R[X]\).
+For every \(f\), the algebraic kernel-raising identity is
+\begin{equation}
+ \mathsf J_{n,a}\bigl((x-\,\cdot\,)^r f\bigr)(x)
+ =n^{\overline r}\mathsf J_{n+r,a}f(x).                 \label{eq:volterra-kernel-raising}
+\end{equation}
+If \(f\) is interval integrable between \(a\) and \(x\), then
+\begin{align}
+ \mathsf J_{n,a}(P f)(x)
+ &=\sum_{r=0}^{d}(-1)^r n^{\overline r}
+      \bigl(D_H^{[r]}P\bigr)(x)\,\mathsf J_{n+r,a}f(x),  \label{eq:volterra-polynomial}\\
+ \mathsf J_{n,a}\bigl(t^p f(t)\bigr)(x)
+ &=\sum_{r=0}^{p}(-1)^r\binom pr n^{\overline r}x^{p-r}
+      \mathsf J_{n+r,a}f(x).                             \label{eq:volterra-monomial}
+\end{align}
+All three identities include \(n=0\), both endpoint orders, and \(a=x\); the monomial
+identity also includes \(p=0\).
+At order zero the convention
+\(0^{\overline0}=1\), \(0^{\overline r}=0\) for \(r>0\), makes the formulas literal rather
+than exceptional.  They are \lean{normalizedVolterra_kernel_pow},
+\lean{normalizedVolterra_polynomial}, and \lean{normalizedVolterra_monomial} in
+\path{NormalizedVolterra.lean}.  The proof is finite and triangular: expand
+\(P(t)\) at the upper endpoint \(x\) in the Hasse basis
+\((t-x)^r=(-1)^r(x-t)^r\), pass the finite sum through the integral, and absorb each kernel
+power using \eqref{eq:volterra-kernel-raising}.  No differentiability of \(f\) is used.
+
+For the signed Fabius extension, Taylor--Volterra reconstruction turns the global dilation
+law into a complete primitive ladder.
+\begin{theorem}[Exact Fabius primitive ladders]
+\label{thm:fabius-volterra-ladders}
+For every \(n\in\N\) and \(x\in\R\),
+\begin{equation}
+ \mathsf J_{n,0}\mathcal F(x)
+ =2^{\binom n2}\mathcal F\!\left(\frac{x}{2^n}\right).   \label{eq:extended-fabius-volterra}
+\end{equation}
+For the bounded Fabius function, the corresponding identity holds on the full half-line on
+which it agrees with the signed extension:
+\begin{equation}
+ \mathsf J_{n,0}F(x)
+ =2^{\binom n2}F\!\left(\frac{x}{2^n}\right)
+ \qquad(x\le1).                                          \label{eq:bounded-fabius-volterra}
+\end{equation}
+Moreover, for every \(p\in\N\),
+\begin{align}
+ \mathsf J_{n,0}\bigl(t^p\mathcal F(t)\bigr)(x)
+ &=\sum_{r=0}^{p}(-1)^r\binom pr n^{\overline r}x^{p-r}
+   2^{\binom{n+r}{2}}
+   \mathcal F\!\left(\frac{x}{2^{n+r}}\right),          \label{eq:extended-fabius-monomial-volterra}\\
+ \mathsf J_{n,0}\bigl(t^pF(t)\bigr)(x)
+ &=\sum_{r=0}^{p}(-1)^r\binom pr n^{\overline r}x^{p-r}
+   2^{\binom{n+r}{2}}
+   F\!\left(\frac{x}{2^{n+r}}\right)
+   \qquad(x\le1).                                       \label{eq:bounded-fabius-monomial-volterra}
+\end{align}
+The signed formulas are global in \(x\); all four formulas include order \(n=0\), and
+both weighted formulas include \(p=0\).
+\end{theorem}
+
+\begin{proof}[Formal proof]
+For fixed \(n\), set
+\(G_n(x)=2^{\binom n2}\mathcal F(x/2^n)\).  The global derivative chain
+\eqref{eq:global-derivatives} gives \(G_n^{(n)}=\mathcal F\), and every lower derivative of
+\(G_n\) vanishes at zero because \(\mathcal F(0)=0\).  The zero-jet case of
+\Cref{thm:taylor-volterra-reconstruction} proves
+\eqref{eq:extended-fabius-volterra}.  Agreement of \(F\) and \(\mathcal F\) throughout
+\((-\infty,1]\) gives \eqref{eq:bounded-fabius-volterra}; the oriented segment between \(0\)
+and any \(x\le1\) stays in that half-line.  Finally
+\eqref{eq:volterra-monomial} gives the two finite weighted formulas term by term.
+
+The exact Lean declarations are \lean{normalizedVolterra_extendedFabius},
+\lean{normalizedVolterra_fabiusReal_of_le_one},
+\lean{normalizedVolterra_pow_mul_extendedFabius}, and
+\lean{normalizedVolterra_pow_mul_fabiusReal_of_le_one} in
+\path{FabiusAntiderivatives.lean}.  The half-line agreement used in the bounded statement is
+\lean{fabiusReal_eq_extendedFabius_of_le_one} in \path{GlobalExtension.lean}.
+\end{proof}
+
+\begin{boxedremark}
+The proved scope here is natural-order Volterra integration and finite real-polynomial
+weights.  No result above claims complex-power weights, normal convergence or Mellin
+continuation in a weight exponent, fractional-order Volterra operators, a piecewise global
+closed form for the bounded function beyond \(x\le1\), primitives of the folded function
+\(\Up\), or primitives of the inverse Fabius function.  Those distinct extensions remain in
+the research-frontier documents until exact Lean counterparts are available.
+\end{boxedremark}
 
 \subsection{Dyadic derivative cells and exact value distributions}
 \label{sec:rvachev-derivative-distribution}
@@ -5737,6 +6016,48 @@ These are \lean{expCoeff_logCoeff_eq_ite} and
 \path{SaddleLogExpansionAlgebra.lean} and
 \path{SaddleLogExpansionPowerSeries.lean}.
 
+The recurrence-defined logarithm is also multiplicative at the level of
+formal power series.  Let \(R\) be a commutative \(\Q\)-algebra and define
+\[
+ \mathfrak L(C):=\lean{SaddleExpansion.logOf}(C),
+ \qquad C\in R[[X]],
+\]
+by applying \lean{logSeries} to the coefficient family of \(C\).  Rebuilding
+a series from that family gives \(C\) itself by
+\lean{SaddleExpansion.massSeries_coeff}; this reconstruction lemma needs only
+that \(R\) be a commutative ring.  For every \(C\), even before a unit-constant
+hypothesis is imposed,
+\begin{equation}
+ [X^0]\mathfrak L(C)=0,                                    \label{eq:formal-log-zero-constant}
+\end{equation}
+which is \lean{SaddleExpansion.constantCoeff_logOf}.  If
+\([X^0]C=1\), then
+\begin{equation}
+ C\,\mathfrak L(C)'=C',                                   \label{eq:formal-log-differential-equation}
+\end{equation}
+by \lean{SaddleExpansion.mul_derivative_logOf}; conversely,
+\lean{SaddleExpansion.logOf_eq_of} says that
+\eqref{eq:formal-log-zero-constant} and
+\eqref{eq:formal-log-differential-equation} characterize \(\mathfrak L(C)\)
+uniquely.
+
+It follows that unit-constant series satisfy
+\begin{equation}
+ \mathfrak L(AB)=\mathfrak L(A)+\mathfrak L(B),
+ \qquad \mathfrak L(1)=0,                                 \label{eq:formal-log-multiplicative}
+\end{equation}
+and, for every finite set \(S\) and family with \([X^0]F_i=1\),
+\begin{equation}
+ \mathfrak L\!\left(\prod_{i\in S}F_i\right)
+ =\sum_{i\in S}\mathfrak L(F_i).                         \label{eq:formal-log-finite-product}
+\end{equation}
+These are \lean{SaddleExpansion.logOf_mul},
+\lean{SaddleExpansion.logOf_one}, and
+\lean{SaddleExpansion.logOf_prod} in
+\path{LogSeriesMultiplicative.lean}.  They are identities in \(R[[X]]\): no
+convergence, analytic logarithm, branch choice, or passage to an infinite
+product is asserted.
+
 \subsection{Universal finite endpoint-transfer algebra}
 \label{sec:endpoint-transfer-polynomials}
 
@@ -6017,9 +6338,14 @@ into the theorem-backed narrative here.  The remaining research material is pres
 \path{Analysis/FabiusFunction/docs/non-formalized-research-frontiers/}.
 \end{quote}
 
-In particular, the inverse/saddle, repeated-integration, small-argument,
-analytic generic-\(q\) transform and convergence claims, and other deferred results remain available there with
-an explicit warning that they are not part of the formal corpus.
+In particular, the inverse/saddle, complex-power and fractional-order
+repeated-integration, small-argument, analytic generic-\(q\) transform and convergence,
+and other deferred claims
+remain available there with an explicit warning that they are not part of the formal
+corpus.  Natural-order Volterra integration and finite polynomial weights are instead
+formalized in \Cref{sec:normalized-volterra}, while the finite base-generic
+Gaussian/Richardson algebra is formalized in
+\Cref{prop:geometric-principal-residuals}.
 
 \section{Conclusion}
 \label{sec:conclusion}
@@ -6029,8 +6355,9 @@ The bounded \(F\) supplies the probability and arithmetic viewpoints; the compac
 supported \(\Up\) supplies refinement, Fourier, spline, and Legendre viewpoints; and the
 signed \(\mathcal F\) supplies the global dilation and binary-translation formulas.  Exact
 bridges connect them to finite atomic laws, weak convergence, centered splines, moments,
-reciprocal-power values, dyadic algorithms, half-base \(q\)-binomial identities, prefix
-sums, denominator-free arbitrary-base geometric interpolation, endpoint Laplace analysis,
+reciprocal-power values, normalized Volterra primitives and polynomial weights, dyadic
+algorithms, half-base \(q\)-binomial identities, prefix sums, denominator-free
+arbitrary-base geometric interpolation, endpoint Laplace analysis,
 and computable approximation.
 
 The most important methodological conclusion is equally concrete: the primary document is
@@ -6058,7 +6385,8 @@ Shape and regularity &
 \path{Differential.lean}, \path{Monotonicity.lean}, \path{Convexity.lean},
 \path{Regularity.lean}\\
 Probability and finite approximants &
-\path{ProbabilityRepresentation.lean}, \path{EarlyApproximants.lean},
+\path{WeightedUniformSeries.lean}, \path{ProbabilityRepresentation.lean},
+\path{EarlyApproximants.lean},
 \path{EarlyMeasureBridge.lean}, \path{WeakConvergence.lean},
 \path{ProbabilityLaplaceMoments.lean}, \path{LaplaceMoments.lean},
 \path{StepMeasureBridge.lean}, \path{StepApproximationLimit.lean},
@@ -6076,13 +6404,15 @@ Fourier analysis &
 \path{PeakRayEnvelope.lean}, \path{GlobalDecayEnvelope.lean},
 \path{RvachevFourierDecay.lean}, \path{VarianceBookkeeping.lean},
 \path{BirkhoffVariance.lean}, \path{BirkhoffProductBridge.lean}\\
-Local leading-jet calculus &
+Local all-order jet calculus &
 \path{LeadingJet.lean}\\
 Global derivatives, value distributions, and flatness &
 \path{GlobalExtension.lean}, \path{GlobalBounds.lean},
 \path{BoundedDerivatives.lean}, \path{RvachevDerivativeDistribution.lean},
 \path{EffectiveFlatness.lean}, \path{SharpFlatness.lean},
 \path{FabiusFlatness.lean}\\
+Normalized Volterra calculus and exact Fabius primitives &
+\path{NormalizedVolterra.lean}, \path{FabiusAntiderivatives.lean}\\
 Analyticity, inverse, elementary obstruction &
 \path{NowhereAnalytic.lean}, \path{FabiusInverse.lean},
 \path{ElementaryFunction.lean}, \path{NotElementary.lean},
@@ -6098,11 +6428,15 @@ Moments and exact arithmetic &
 Universal exponential, Bell, and endpoint-transfer algebra &
 \path{SaddleExpansionAlgebra.lean}, \path{ExponentialPartition.lean},
 \path{ExponentialBell.lean},
-\path{EndpointTransferPolynomials.lean}\\
+\path{EndpointTransferPolynomials.lean},
+\path{LogSeriesMultiplicative.lean}\\
+Finite base-layer arithmetic &
+\path{BaseLayerRegrouping.lean}\\
 Finite polynomial functionals and geometric Lagrange/Richardson exactness &
 \path{FinitePolynomialFunctional.lean}, \path{CompleteHomogeneous.lean},
-\path{GeometricCompleteHomogeneous.lean}, \path{GeometricLagrange.lean},
-\path{LagrangeResidualMoments.lean}, \path{GeometricResidualMoments.lean},
+\path{GeometricLagrange.lean}, \path{LagrangeResidualMoments.lean},
+\path{GeometricCompleteHomogeneous.lean},
+\path{GeometricResidualMoments.lean},
 \path{GeometricQBinomialLagrange.lean}, \path{GeometricRichardson.lean},
 \path{GeometricLagrangeWeights.lean},
 \path{GeometricLagrangeQBinomial.lean},
@@ -6307,8 +6641,12 @@ V.~Reshetnikov,
 V.~Reshetnikov,
 \newblock \emph{ProveIt: Analysis/FabiusFunction},
 \newblock Lean~4 formal development, source snapshot
-\texttt{80a35fda2b8e2978fe2bd54124b4a43ac7c2ed45}, consulted 27 August 2026.
-\newblock \url{https://github.com/VladimirReshetnikov/ProveIt/tree/80a35fda2b8e2978fe2bd54124b4a43ac7c2ed45/Analysis/FabiusFunction}.
+\texttt{8e7aa582661f2828302f70748efe20d02d8ae9c7}, consulted 27 August 2026.
+\newblock \url{https://github.com/VladimirReshetnikov/ProveIt/tree/8e7aa582661f2828302f70748efe20d02d8ae9c7/Analysis/FabiusFunction}.
+\newblock The normalized Volterra and Fabius-antiderivative addendum was
+checked at commit \texttt{3da579387b3848128f0d90dcf761d44bff04dba5}, on the
+same date.
+\newblock \url{https://github.com/VladimirReshetnikov/ProveIt/tree/3da579387b3848128f0d90dcf761d44bff04dba5/Analysis/FabiusFunction}.
 
 \end{thebibliography}
 

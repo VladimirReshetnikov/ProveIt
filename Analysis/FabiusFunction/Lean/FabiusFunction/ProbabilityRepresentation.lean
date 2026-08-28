@@ -1,4 +1,5 @@
 import FabiusFunction.Existence
+import FabiusFunction.WeightedUniformSeries
 import Mathlib.MeasureTheory.Constructions.UnitInterval
 import Mathlib.MeasureTheory.Integral.Prod
 import Mathlib.Probability.CDF
@@ -44,37 +45,20 @@ namespace ProbabilityRepresentation
 set_option autoImplicit false
 noncomputable section
 
-/-- The sample space of countably many points of the closed unit interval. -/
-abbrev SampleSpace := ℕ → Set.Icc (0 : ℝ) 1
-
-/-- Product Lebesgue probability measure on `[0,1]^ℕ`. -/
-noncomputable def uniformProduct : Measure SampleSpace :=
-  Measure.infinitePi (fun _ : ℕ => (volume : Measure (Set.Icc (0 : ℝ) 1)))
-
-/-- `uniformProduct` is a probability measure, inherited coordinatewise
-from Lebesgue measure on `[0,1]`.  This instance is what lets
-`weightedCoordinateSum` be read as a random variable. -/
-instance : IsProbabilityMeasure uniformProduct := by
-  unfold uniformProduct
-  infer_instance
-
-/-- The coordinate projections are mutually independent uniform random
-variables.  This is the prose proposition following Theorem 3 in the paper. -/
-lemma independent_uniform_coordinates :
-    iIndepFun (fun n : ℕ => fun ω : SampleSpace => ω n) uniformProduct := by
-  unfold uniformProduct
-  exact iIndepFun_infinitePi (X := fun _ x => x) (fun _ => measurable_id)
-
-/-- Each coordinate projection has the uniform probability law on `[0,1]`. -/
-lemma coordinate_has_uniform_law (n : ℕ) :
-    uniformProduct.map (fun ω : SampleSpace => ω n) =
-      (volume : Measure (Set.Icc (0 : ℝ) 1)) := by
-  unfold uniformProduct
-  rw [Measure.infinitePi_map_eval]
-
 /-- The random series `X₁/2 + X₂/4 + ⋯`, with zero-based Lean indexing. -/
 noncomputable def weightedCoordinateSum (ω : SampleSpace) : ℝ :=
   ∑' n : ℕ, (ω n : ℝ) / 2 / (2 : ℝ) ^ n
+
+/-- The dyadic random series is the specialization of the general
+uniform-coordinate series to the weights `1 / 2 / 2 ^ n`. -/
+theorem weightedCoordinateSum_eq_weightedUniformSeries (ω : SampleSpace) :
+    weightedCoordinateSum ω =
+      weightedUniformSeries (fun n : ℕ => (1 : ℝ) / 2 / (2 : ℝ) ^ n) ω := by
+  unfold weightedCoordinateSum weightedUniformSeries
+  apply tsum_congr
+  intro n
+  simp only [smul_eq_mul]
+  ring
 
 private lemma summable_coordinate_series (ω : SampleSpace) :
     Summable (fun n : ℕ => (ω n : ℝ) / 2 / (2 : ℝ) ^ n) := by
@@ -129,59 +113,6 @@ lemma weightedCoordinateSum_le_one (ω : SampleSpace) :
 lemma weightedCoordinateSum_mem_Icc (ω : SampleSpace) :
     weightedCoordinateSum ω ∈ Icc (0 : ℝ) 1 :=
   ⟨weightedCoordinateSum_nonneg ω, weightedCoordinateSum_le_one ω⟩
-
-/-- Delete the first coordinate. -/
-def tail (ω : SampleSpace) : SampleSpace := fun n => ω (Nat.succ n)
-
-/-- The shift `tail` is measurable, being a reindexing of the coordinate
-projections. -/
-lemma measurable_tail : Measurable tail := by
-  exact measurable_pi_lambda _ fun n => measurable_pi_apply (Nat.succ n)
-
-/-- The product measure is invariant under deleting the first
-coordinate: `tail` pushes `uniformProduct` forward to itself. -/
-lemma uniformProduct_map_tail : uniformProduct.map tail = uniformProduct := by
-  change (Measure.infinitePi fun _ : ℕ => (volume : Measure (Set.Icc (0 : ℝ) 1))).map
-      (fun ω n => ω (Nat.succ n)) =
-    Measure.infinitePi fun _ : ℕ => (volume : Measure (Set.Icc (0 : ℝ) 1))
-  rw [Measure.map_infinitePi_infinitePi_of_inj Nat.succ_injective]
-
-private lemma independent_head_tail :
-    IndepFun (fun ω : SampleSpace => ω 0) tail uniformProduct := by
-  have hi := independent_uniform_coordinates
-  apply IndepFun.indepFun_process (measurable_pi_apply 0)
-    (fun n => measurable_pi_apply (Nat.succ n))
-  intro s
-  let t : Finset ℕ := s.image Nat.succ
-  have hdisj : Disjoint ({0} : Finset ℕ) t := by
-    rw [Finset.disjoint_left]
-    intro n hn0 hnt
-    simp only [Finset.mem_singleton] at hn0
-    subst n
-    rcases Finset.mem_image.mp hnt with ⟨n, _hn, hn⟩
-    omega
-  have hfin := iIndepFun.indepFun_finset ({0} : Finset ℕ) t hdisj hi
-    (fun n => measurable_pi_apply n)
-  let takeHead : ((i : ({0} : Finset ℕ)) → Set.Icc (0 : ℝ) 1) →
-      Set.Icc (0 : ℝ) 1 := fun z => z ⟨0, by simp⟩
-  let reindex : ((i : t) → Set.Icc (0 : ℝ) 1) →
-      ((i : s) → Set.Icc (0 : ℝ) 1) :=
-    fun z i => z ⟨Nat.succ i, Finset.mem_image.mpr ⟨i, i.property, rfl⟩⟩
-  have hcomp := hfin.comp (by fun_prop : Measurable takeHead)
-    (by fun_prop : Measurable reindex)
-  simpa only [Function.comp_def, takeHead, reindex, t] using hcomp
-
-/-- The head and the tail are jointly distributed as the product of a
-uniform `[0,1]` variable with an independent copy of `uniformProduct`.
-This is the measure-level form of `independent_head_tail`. -/
-lemma uniformProduct_map_head_tail :
-    uniformProduct.map (fun ω : SampleSpace => (ω 0, tail ω)) =
-      (volume : Measure (Set.Icc (0 : ℝ) 1)).prod uniformProduct := by
-  have h := independent_head_tail.map_prod_eq_prod_map_map
-    (measurable_pi_apply 0).aemeasurable measurable_tail.aemeasurable
-  rw [uniformProduct_map_tail] at h
-  have hhead := coordinate_has_uniform_law 0
-  rwa [hhead] at h
 
 /-- One step of the recurrence: the random series at `ω` equals
 `(ω 0 + X (tail ω)) / 2`.  This pointwise identity is what
@@ -270,31 +201,6 @@ lemma weightedSumDistribution_selfSimilar :
   apply Measure.map_congr
   filter_upwards with ω
   exact weightedCoordinateSum_split ω
-
-/-- Reflect every coordinate in the midpoint of the unit interval. -/
-def reflectCoordinates (ω : SampleSpace) : SampleSpace :=
-  fun n => unitInterval.symm (ω n)
-
-/-- The coordinatewise reflection `t ↦ 1 - t` is measurable on the
-sample space. -/
-lemma measurable_reflectCoordinates : Measurable reflectCoordinates := by
-  exact measurable_pi_lambda _ fun n =>
-    unitInterval.measurable_symm.comp (measurable_pi_apply n)
-
-/-- Lebesgue measure on `[0,1]` is invariant under `t ↦ 1 - t`, hence so
-is the product measure: `reflectCoordinates` pushes `uniformProduct`
-forward to itself. -/
-lemma uniformProduct_map_reflectCoordinates :
-    uniformProduct.map reflectCoordinates = uniformProduct := by
-  change (Measure.infinitePi fun _ : ℕ => (volume : Measure (Set.Icc (0 : ℝ) 1))).map
-      (fun ω n => unitInterval.symm (ω n)) =
-    Measure.infinitePi fun _ : ℕ => (volume : Measure (Set.Icc (0 : ℝ) 1))
-  rw [Measure.infinitePi_map_pi
-    (fun _ : ℕ => (volume : Measure (Set.Icc (0 : ℝ) 1)))
-    (fun _ => unitInterval.measurable_symm)]
-  congr 1
-  funext n
-  exact unitInterval.measurePreserving_symm.map_eq
 
 /-- Reflecting every coordinate sends the random series `X` to `1 - X`;
 the constant comes from `∑' n, 1 / 2 / 2 ^ n = 1`. -/

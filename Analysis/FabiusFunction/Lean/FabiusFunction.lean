@@ -1,7 +1,3 @@
-import FabiusFunction.VolterraTaylor
-import FabiusFunction.VolterraPolynomial
-import FabiusFunction.FabiusPrimitives
-import FabiusFunction.FabiusPolynomialPrimitives
 import FabiusFunction.CompleteHomogeneous
 import FabiusFunction.FiniteQBinomialCore
 import FabiusFunction.GeometricCompleteHomogeneous
@@ -14,6 +10,7 @@ import FabiusFunction.GeometricLagrangeWeights
 import FabiusFunction.GeometricLagrangeQBinomial
 import FabiusFunction.GeometricLagrangeQMoments
 import FabiusFunction.LambertPhaseLockedRichardson
+import FabiusFunction.WeightedUniformSeries
 import FabiusFunction.Paper05442
 import FabiusFunction.Paper06487
 import FabiusFunction.PaperFabiusAsymptotic
@@ -186,6 +183,8 @@ import FabiusFunction.EffectiveFlatness
 import FabiusFunction.SharpFlatness
 import FabiusFunction.FabiusInverse
 import FabiusFunction.GlobalBounds
+import FabiusFunction.NormalizedVolterra
+import FabiusFunction.FabiusAntiderivatives
 import FabiusFunction.RvachevDerivativeDistribution
 import FabiusFunction.BoundedDerivatives
 import FabiusFunction.NowhereAnalytic
@@ -226,6 +225,13 @@ Every finite even Legendre partial sum is also proved to be the unique
 least-squares best polynomial approximation in its degree class.
 The inverse-dyadic recurrence also has a finite nonrecursive solution as an
 explicit weighted sum over ordered compositions.
+
+The reusable integration layer exposes normalized Volterra operators on
+arbitrary real Banach spaces, their literal-iteration semigroup and strict FTC
+calculus, a Taylor reconstruction theorem, and exact polynomial commutators.
+Its Fabius specialization gives the complete signed primitive ladder on all
+of `ℝ`, the bounded ladder on the maximal range `x ≤ 1`, and finite formulas
+for every natural monomial weight.
 
 The regularity layer adds the sharp global shape of the two functions: the
 single differential equation `F'(x) = 2 up(2x - 1)` valid on all of `ℝ`, the
