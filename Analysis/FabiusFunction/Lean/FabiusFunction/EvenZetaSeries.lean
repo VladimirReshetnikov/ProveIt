@@ -42,7 +42,7 @@ noncomputable def evenZeta (k : ℕ) : ℝ :=
 theorem summable_one_div_add_one_pow {k : ℕ} (hk : k ≠ 0) :
     Summable fun n : ℕ => 1 / ((n : ℝ) + 1) ^ (2 * k) := by
   have h2k : 1 < 2 * k := by omega
-  have h := summable_one_div_nat_pow.mpr h2k
+  have h := Real.summable_one_div_nat_pow.mpr h2k
   have h' := (summable_nat_add_iff 1).mpr h
   refine h'.congr fun n => ?_
   push_cast
@@ -57,7 +57,7 @@ theorem hasSum_evenZeta {k : ℕ} (hk : k ≠ 0) :
 theorem evenZeta_pos {k : ℕ} (hk : k ≠ 0) : 0 < evenZeta k := by
   have h0 : (fun n : ℕ => 1 / ((n : ℝ) + 1) ^ (2 * k)) 0 = 1 := by norm_num
   have hle : (fun n : ℕ => 1 / ((n : ℝ) + 1) ^ (2 * k)) 0 ≤ evenZeta k :=
-    le_tsum (summable_one_div_add_one_pow hk) 0 fun n _ => by positivity
+    Summable.le_tsum (summable_one_div_add_one_pow hk) 0 fun n _ => by positivity
   rw [h0] at hle
   linarith
 
@@ -67,7 +67,7 @@ decrease, `evenZeta l ≤ evenZeta k`.  This is the "replace `ζ(2r)` by
 theorem evenZeta_anti {k l : ℕ} (hk : k ≠ 0) (hkl : k ≤ l) :
     evenZeta l ≤ evenZeta k := by
   have hl : l ≠ 0 := by omega
-  refine tsum_le_tsum (fun n => ?_) (summable_one_div_add_one_pow hl)
+  refine Summable.tsum_le_tsum (fun n => ?_) (summable_one_div_add_one_pow hl)
     (summable_one_div_add_one_pow hk)
   have h1 : (1 : ℝ) ≤ (n : ℝ) + 1 := by positivity
   exact one_div_le_one_div_of_le (by positivity)
