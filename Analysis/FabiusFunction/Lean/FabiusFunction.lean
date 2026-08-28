@@ -252,6 +252,7 @@ import FabiusFunction.DyadicSpecializations
 import FabiusFunction.EvaluatorPopcount
 import FabiusFunction.PrefixKernelCounting
 import FabiusFunction.ThueMorseFormalProduct
+import FabiusFunction.GlobalBlockFold
 
 /-!
 # Fabius function

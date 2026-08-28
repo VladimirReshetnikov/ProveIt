@@ -14409,12 +14409,20 @@ analytic formula is not exposed as a public theorem with these variables and hyp
  =(-1)^{\wt(B)}F\!\left(\frac C{2^n}\right).
 \]
 \end{candidate}
-\begin{obligation}
+\begin{obligation}[Discharged]
 Package the quotient--remainder decomposition, folded numerator, and Thue--Morse block sign
 as a public theorem about \lean{extendedFabiusDyadicValue}; then compose it with
 \lean{extendedFabiusDyadicValue_cast}.  The evaluator definition, its cast theorem, and the
 private first-block fold used inside the proof do not themselves state the displayed result.
 \end{obligation}
+Both levels are now public in \path{GlobalBlockFold.lean}, with the register's explicit
+variables and hypotheses \(a=2sB+R\), \(0<a\), \(R<2s\): the executable fold is
+\lean{extendedFabiusDyadicValue\_block\_fold}, the folded-numerator bound \(0\le C\le s\)
+is \lean{blockFoldCore\_le}, and the displayed analytic formula
+\(\mathcal F(a/2^n)=(-1)^{\wt(B)}F(C/2^n)\), for every bounded Fabius function, is
+\lean{extendedFabius\_block\_fold}, composed through
+\lean{extendedFabiusDyadicValue\_cast}, \lean{fabiusDyadicUnit\_eq\_fabiusDyadic}, and
+\lean{fabiusDyadic\_cast}.
 
 \subsection{Least-common-denominator valuation}
 
