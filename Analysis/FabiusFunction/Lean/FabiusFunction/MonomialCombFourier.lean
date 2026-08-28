@@ -65,8 +65,8 @@ derivative of the scaled transform:
 theorem fourier_monomialRvachevSchwartz (F : BoundedFabius)
     (hF : IsFabius F) (p : ℕ) {u : ℝ} (hu : u ≠ 0) (w : ℝ) :
     (-(2 * (Real.pi : ℂ) * Complex.I)) ^ p •
-        𝓕 (monomialRvachevSchwartz F hF p u hu) w =
-      iteratedDeriv p (𝓕 (scaledRvachevSchwartz F hF u hu)) w := by
+        𝓕 (⇑(monomialRvachevSchwartz F hF p u hu)) w =
+      iteratedDeriv p (𝓕 (⇑(scaledRvachevSchwartz F hF u hu))) w := by
   have hint : ∀ (k : ℕ), (k : ℕ∞) ≤ (p : ℕ∞) →
       Integrable
         (fun x : ℝ => x ^ k • scaledRvachevSchwartz F hF u hu x) :=
