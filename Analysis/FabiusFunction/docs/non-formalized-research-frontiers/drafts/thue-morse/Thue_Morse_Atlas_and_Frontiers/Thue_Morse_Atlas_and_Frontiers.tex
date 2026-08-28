@@ -9098,7 +9098,7 @@ the \(F\leftrightarrow\Up\) passage carried at measure level by
 conjuncts of \leanPartx{Fabius.normalization\_dictionary}: later shell or saddle arguments
 can cite the dictionary instead of reassembling sign and \(2\pi\) conventions at each use.
 
-\begin{obligation}[Reusable geometric-tail API]
+\begin{obligation}[Reusable geometric-tail API --- discharged]
 The identity ``tail equals a scaled copy of the whole object'' occurs simultaneously for
 products, convolutions, random series, and cumulant generating functions.  A small abstract
 library for geometrically self-similar tails would make the dyadic case a specialization
@@ -9131,11 +9131,21 @@ is a specialization: \path{MeasureRefinement.lean} now derives the measure-level
 random-tail law \eqref{p2:eq:random-tail} from the refinement equation through this API
 (see the \emph{Formal version} paragraph in \cref{p2:sec:probability}), and the
 random-variable representation underlying it is \path{ProbabilityRepresentation.lean},
-with the equality-in-law splitting in \path{RandomSeriesLaw.lean}.  The obligation is
-retained only for its cumulant quarter: the cumulant-generating instance
-\eqref{p2:eq:cumulant-operator} has no formal counterpart yet, and a single statement
-instantiating to all four faces at once remains open --- though the product and
-convolution faces now each have the abstract library the obligation asked for.
+with the equality-in-law splitting in \path{RandomSeriesLaw.lean}.  The cumulant
+quarter is now formal as well: \path{GeometricCgfTails.lean} proves the moment tail law
+unconditionally (the moment generating function of a convolution factors with no
+integrability hypotheses, \leanPartx{Fabius.mgf\_id\_conv} and
+\leanPartx{Fabius.mgf\_id\_self\_similar}), the cumulant tail law
+\(K_\mu(t)=\sum_{k<m}K_\nu(c^kt)+K_\mu(c^mt)\) under finite exponential moments
+(\leanPartx{Fabius.cgf\_id\_self\_similar}), and the dyadic instance with every
+hypothesis discharged by compact support
+(\leanPartx{Fabius.cgf\_uniformDigitPrefix},
+\leanPartx{Fabius.cgf\_rvachevMeasure\_self\_similar}).  With that, each of the four
+faces has the abstract library the obligation asked for, with the dyadic case a
+specialization, and the obligation is discharged.  (The operator-exponential display
+\eqref{p2:eq:cumulant-operator} itself --- the deconvolution calculus --- is a stronger
+analytic statement and remains open, as does a single statement instantiating to
+all four faces at once.)
 
 \section{Frontier conjectures and next deductions}
 \label{p2:sec:frontiers}
