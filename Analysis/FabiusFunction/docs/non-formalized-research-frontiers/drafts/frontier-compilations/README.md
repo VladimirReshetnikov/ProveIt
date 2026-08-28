@@ -2,7 +2,7 @@
 
 The broad multi-topic "collected new results" report series,
 consolidated (2026-08-28) into the single volume
-[`Frontier_Compilations/`](Frontier_Compilations/) (262 pp, ten parts):
+[`Frontier_Compilations/`](Frontier_Compilations/) (258 pp, ten parts):
 
 - **Part I** — *Tail Quadrature, Exact Dyadic Error Laws, …*
   (formerly `Fabius_Rvachev_Frontier_Report/`);

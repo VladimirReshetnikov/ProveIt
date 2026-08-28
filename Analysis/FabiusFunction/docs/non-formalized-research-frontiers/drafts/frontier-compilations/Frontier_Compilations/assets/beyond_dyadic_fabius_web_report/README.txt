@@ -7,6 +7,12 @@ This package accompanies the research report:
   A geometric q-Fabius--Rvachev family, endpoint laws, zero arithmetic,
   Bernoulli--Bell polynomial calculus, and phase-aware extrapolation
 
+This directory is an archived companion bundle preserving the computations,
+data, and figures that accompanied the formerly standalone report.  The report
+now appears in the consolidated volume: its source is
+../../Frontier_Compilations.tex and its rendered PDF is
+../../Frontier_Compilations.pdf.
+
 Repository corpus
 -----------------
 The comparison corpus is every *.tex file under
@@ -21,10 +27,10 @@ not found in the inspected repository snapshot.  No claim of global
 mathematical priority is made.  Proved statements, conjectures, and open
 problems are labeled separately.
 
-Package contents
-----------------
-  fabius_frontier_report.tex        LaTeX source (standalone)
-  fabius_frontier_report.pdf        Compiled 30-page report
+Archived companion contents
+----------------------------
+  ../../Frontier_Compilations.tex    Consolidated volume source
+  ../../Frontier_Compilations.pdf    Rendered consolidated volume
   numerical_experiments.py          Deterministic, commented experiments
   q_family_densities.pdf            Generated figure
   standardized_cumulants.pdf        Generated figure
@@ -48,20 +54,23 @@ the distributional fixed-point equation, checks exact cumulant formulas,
 evaluates rigorous endpoint bounds, tests phase-aware extrapolation, and
 verifies reciprocal-integer Fourier-zero multiplicities.
 
-Compiling the report
---------------------
-A recent TeX Live installation with latexmk is recommended:
+Compiling the consolidated report
+---------------------------------
+A recent TeX Live installation is sufficient.  From this archived companion
+directory, run exactly three serial pdflatex passes:
 
-  latexmk -pdf -interaction=nonstopmode -halt-on-error \
-    fabius_frontier_report.tex
+  cd ../..
+  pdflatex -interaction=nonstopmode -halt-on-error Frontier_Compilations.tex
+  pdflatex -interaction=nonstopmode -halt-on-error Frontier_Compilations.tex
+  pdflatex -interaction=nonstopmode -halt-on-error Frontier_Compilations.tex
 
-The source uses Libertinus when available and falls back to Latin Modern.
-The four generated figure PDFs must remain in the same directory as the
-TeX source.
+These commands rebuild ../../Frontier_Compilations.pdf.  The source uses
+Libertinus when available and falls back to Latin Modern.  The archived figure
+PDFs remain beside the numerical script that regenerates them.
 
 Quality-control record
 ----------------------
-The supplied PDF was compiled with pdfTeX/latexmk, checked for unresolved
-references, opened with PyMuPDF, and rendered page-by-page at 180 dpi.
-All 30 pages were visually reviewed; no clipping, overlap, or broken glyph
-was found.
+Before consolidation, the standalone PDF was compiled with pdfTeX, checked
+for unresolved references, opened with PyMuPDF, and rendered page-by-page at
+180 dpi.  All 30 pages were visually reviewed; no clipping, overlap, or broken
+glyph was found.

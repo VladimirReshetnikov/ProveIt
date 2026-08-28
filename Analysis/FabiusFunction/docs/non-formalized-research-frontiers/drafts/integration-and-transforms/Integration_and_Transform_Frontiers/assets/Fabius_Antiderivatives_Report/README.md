@@ -1,6 +1,11 @@
 # Antiderivatives of Monomially Weighted Fabius-Type Functions
 
-This package accompanies the research report prepared on 27 August 2026.
+> **Archived companion bundle.** The former standalone manuscript is now
+> consolidated in `../../Integration_and_Transform_Frontiers.tex`, with the
+> rendered report at `../../Integration_and_Transform_Frontiers.pdf`. This
+> directory retains its supporting computations and validation records.
+
+This package accompanied the research report prepared on 27 August 2026.
 The source audit is tied to ProveIt commit
 `32d6d36c51d803289e6d6a0dc0c37753766eba47` and is documented in Sections 1
 and Appendix A of the report. The report now also carries a later
@@ -9,9 +14,8 @@ not alter the snapshot-relative novelty audit.
 
 ## Package contents
 
-- `fabius_antiderivatives.pdf` — rendered report; rebuild it whenever the TeX
-  source changes.
-- `fabius_antiderivatives.tex` — complete standalone LaTeX source.
+- `../../Integration_and_Transform_Frontiers.pdf` — current consolidated report.
+- `../../Integration_and_Transform_Frontiers.tex` — current consolidated source.
 - `numerical_experiments.py` — commented exact and high-precision checks.
 - `verification_output.txt` — deterministic output from the default run.
 - `fractional_power_checks.csv` — machine-readable comparison table.
@@ -61,12 +65,16 @@ A TeX Live installation with `pdflatex` and the packages imported by the
 source is sufficient.  Build three times so references, the table of contents,
 and page numbers all settle, then remove the sidecars:
 
+From this archived companion directory, compile the consolidated source three
+times in its own directory:
+
 ```bash
-pdflatex -interaction=nonstopmode -halt-on-error fabius_antiderivatives.tex
-pdflatex -interaction=nonstopmode -halt-on-error fabius_antiderivatives.tex
-pdflatex -interaction=nonstopmode -halt-on-error fabius_antiderivatives.tex
-rm -f *.aux *.log *.out *.toc
+(cd ../.. && pdflatex -interaction=nonstopmode -halt-on-error Integration_and_Transform_Frontiers.tex)
+(cd ../.. && pdflatex -interaction=nonstopmode -halt-on-error Integration_and_Transform_Frontiers.tex)
+(cd ../.. && pdflatex -interaction=nonstopmode -halt-on-error Integration_and_Transform_Frontiers.tex)
 ```
+
+These commands update `../../Integration_and_Transform_Frontiers.pdf`.
 
 ## Reproduce the numerical checks
 

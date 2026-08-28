@@ -1,13 +1,18 @@
 # Dyadic Primitive Ladders and Mellin-Newton Antiderivatives
 
-This archive accompanies the report on antiderivatives of monomially weighted Fabius and
+> **Archived companion bundle.** The former standalone manuscript is now
+> consolidated in `../../Integration_and_Transform_Frontiers.tex`, with the
+> rendered report at `../../Integration_and_Transform_Frontiers.pdf`. This
+> directory retains its supporting computations and figure.
+
+This archive accompanied the report on antiderivatives of monomially weighted Fabius and
 Rvachev functions. The repository audit is pinned to ProveIt commit
 `a2541a7ee373c0e297de04424f8921ce881e62b7` (27 August 2026).
 
 ## Main files
 
-- `Dyadic_Primitive_Ladders_Fabius_Rvachev.pdf` - rendered 28-page report.
-- `Dyadic_Primitive_Ladders_Fabius_Rvachev.tex` - complete LaTeX source.
+- `../../Integration_and_Transform_Frontiers.pdf` - rendered consolidated report.
+- `../../Integration_and_Transform_Frontiers.tex` - current consolidated source.
 - `fabius_integrals_experiments.py` - commented numerical and exact-rational experiments.
 - `requirements.txt` - Python dependencies for the experiments.
 
@@ -61,9 +66,12 @@ python fabius_integrals_experiments.py --output-dir .
 Compile the report (a TeX Live installation with `latexmk` is recommended):
 
 ```bash
-latexmk -pdf -interaction=nonstopmode -halt-on-error \
-  Dyadic_Primitive_Ladders_Fabius_Rvachev.tex
+(cd ../.. && pdflatex -interaction=nonstopmode -halt-on-error Integration_and_Transform_Frontiers.tex)
+(cd ../.. && pdflatex -interaction=nonstopmode -halt-on-error Integration_and_Transform_Frontiers.tex)
+(cd ../.. && pdflatex -interaction=nonstopmode -halt-on-error Integration_and_Transform_Frontiers.tex)
 ```
+
+These commands update `../../Integration_and_Transform_Frontiers.pdf`.
 
 The recorded reference run used Python 3.13.5, NumPy 2.3.5, SciPy 1.17.0,
 Matplotlib 3.10.8, and pdfTeX 1.40.26. The code is not tied to those exact versions.

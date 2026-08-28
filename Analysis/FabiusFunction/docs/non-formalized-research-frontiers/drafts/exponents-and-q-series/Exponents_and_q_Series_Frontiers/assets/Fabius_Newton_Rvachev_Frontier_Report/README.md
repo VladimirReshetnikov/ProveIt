@@ -1,7 +1,8 @@
 # Exponent-Sequence and Newton-Basis Frontiers for the Fabius-Rvachev System
 
-This archive accompanies the 34-page frontier report prepared from the recursive
-LaTeX corpus under:
+This archived companion directory preserves the code, figures, and data from
+the former 34-page frontier report prepared from the recursive LaTeX corpus
+under:
 
 `Analysis/FabiusFunction/docs`
 
@@ -14,10 +15,13 @@ snapshot. Historical revisions are treated as mathematical lineages rather than
 as independent claims; current descendants and distinctive archived material set
 the non-duplication boundary.
 
+The report itself is now incorporated into the consolidated source and PDF two
+levels above this directory.
+
 ## Contents
 
-- `Exponent_Sequence_Newton_Rvachev_Frontiers.tex` - complete LaTeX source.
-- `Exponent_Sequence_Newton_Rvachev_Frontiers.pdf` - rendered report.
+- `../../Exponents_and_q_Series_Frontiers.tex` - consolidated LaTeX source.
+- `../../Exponents_and_q_Series_Frontiers.pdf` - consolidated rendered report.
 - `numerical_experiments.py` - fully commented, deterministic numerical checks.
 - `requirements.txt` - Python package versions used for the supplied results.
 - `figures/` - the two figures embedded in the report.
@@ -35,12 +39,13 @@ A TeX Live installation containing Libertinus, `latexmk`, `amsmath`, `booktabs`,
 `longtable`, `tabularx`, `cleveref`, `hyperref`, and `listings` is sufficient.
 The report was built with TeX Live 2025/dev, pdfTeX 1.40.26, and latexmk 4.86.
 
-From the archive root:
+From this companion directory:
 
 ```bash
-pdflatex -interaction=nonstopmode -halt-on-error Exponent_Sequence_Newton_Rvachev_Frontiers.tex
-pdflatex -interaction=nonstopmode -halt-on-error Exponent_Sequence_Newton_Rvachev_Frontiers.tex
-pdflatex -interaction=nonstopmode -halt-on-error Exponent_Sequence_Newton_Rvachev_Frontiers.tex
+cd ../..
+pdflatex -interaction=nonstopmode -halt-on-error Exponents_and_q_Series_Frontiers.tex
+pdflatex -interaction=nonstopmode -halt-on-error Exponents_and_q_Series_Frontiers.tex
+pdflatex -interaction=nonstopmode -halt-on-error Exponents_and_q_Series_Frontiers.tex
 ```
 
 The source falls back to Latin Modern if Libertinus is unavailable.
