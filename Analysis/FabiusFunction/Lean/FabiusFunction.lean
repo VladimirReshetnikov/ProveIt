@@ -20,6 +20,7 @@ import FabiusFunction.PaperKFoldThueMorse
 import FabiusFunction.FinitePolynomialFunctional
 import FabiusFunction.WeightedScaleMultiplicity
 import FabiusFunction.MomentCumulantAlgebra
+import FabiusFunction.QuadraticCompositionalInverse
 import FabiusFunction.PolynomialExpectationCumulant
 import FabiusFunction.ThueMorseBitSupport
 import FabiusFunction.ThueMorseBooleanCube

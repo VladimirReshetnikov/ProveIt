@@ -297,10 +297,8 @@ theorem weightedUniformSeries_smul
     {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
     (c : ℝ) (w : ℕ → E) (ω : SampleSpace) :
     weightedUniformSeries (fun n => c • w n) ω =
-      c • weightedUniformSeries w ω := by
-  unfold weightedUniformSeries
-  simpa only [smul_smul, mul_comm] using
-    (tsum_const_smul'' (f := fun n => (ω n : ℝ) • w n) c)
+      c • weightedUniformSeries w ω :=
+  weightedUniformSeries_smul_weights c w ω
 
 /-! ## Laws of weighted series -/
 
