@@ -100,6 +100,8 @@
 \newcommand{\Agen}{\mathcal A}
 \newcommand{\Zspec}{\mathcal Z}
 \newcommand{\Mellin}{\mathcal M}
+\newcommand{\lean}[1]{%
+  \ifmmode\text{\texttt{\detokenize{#1}}}\else\nolinkurl{#1}\fi}
 
 \newenvironment{statusbox}[1]{%
   \par\medskip\noindent\begin{center}\begin{minipage}{0.94\textwidth}%
@@ -282,8 +284,23 @@ it is not an assertion of exhaustive worldwide priority.
 Results explicitly labeled \statusproved{} are proved in this manuscript.  Results labeled
 \statusderived{} use a theorem already developed in the audited frontier corpus (most often
 the sharp Pascal-hierarchy Fourier or endpoint asymptotic) and then add a new deduction.
-Items labeled \statusopen{} are conjectures or proposed programs.  None of the new results is
-represented as already formalized in Lean.
+Items labeled \statusopen{} are conjectures or proposed programs.
+
+A fourth, orthogonal label is now carried alongside these three.  Wherever a statement of this
+report---or an exactly reusable core of one---already has a machine-checked counterpart in the
+repository's Lean library, that declaration is cited inline in typewriter type---for instance
+\lean{Fabius.weightedScaleMultiplicity}---together with its module under
+\path{Analysis/FabiusFunction/Lean/FabiusFunction/}.  Roughly a dozen such citations appear
+below.  In most of them the formal statement is \emph{more general} than the one printed here
+(arbitrary base instead of $2$, arbitrary coefficient ring or module instead of $\R$, arbitrary
+geometric ratio instead of $q\in(0,1)$); in a few it is a strict specialization, such as the
+$\ell^1$ weight norm, which is formalized only at $q=1/2$.  Each citation says which.  These
+labels concern representation only, not correctness: no result of this report is formalized end
+to end, and every result below that carries no such citation is unformalized.  In particular
+the entire probabilistic layer, the entire analytic layer---Fourier envelopes for the Pascal
+hierarchy of rank at least two, Mellin contour displacement, exponential Tauberian transfer,
+Berry--Esseen for non-identically-distributed summands, total-variation and Wasserstein
+distances---and the automatic-sequence machinery have no Lean counterpart at all.
 \end{statusbox}
 
 \section{The exponent-sequence convolution monoid}
@@ -337,7 +354,14 @@ For every admissible $a$:
 \item if $\sum_ha_h=\infty$, then $X_a$ has a compactly supported $C^\infty$ density;
       if only finitely many $a_h$ are nonzero, its law is a finite uniform box spline.
 \end{enumerate}
-All four assertions are \statusproved.
+All four assertions are \statusproved.  Formally, only the classical case $a_h\equiv1$ is
+represented: \lean{Fabius.rvachevFourier_eq_product} (\lean{FourierProduct.lean}) identifies the
+Fourier transform of the Rvachev up-function with the sinc product \eqref{eq:Phi-a} at
+$a_h\equiv1$, in the same normalization \eqref{eq:sinc-normalized}, and
+\lean{Fabius.ProbabilityRepresentation.rvachevUp_eq_weightedSum_probability_global}
+(\lean{ProbabilityRepresentation.lean}) is the matching dyadic-uniform-series representation,
+stated in the Fabius normalization $\sum_{h\ge0}2^{-h-1}V_h$ on $[0,1]$, which is
+$(X_a+R_a)/2$ in the notation used here.  Nothing about a general admissible $a$ is formalized.
 \end{theorem}
 
 \begin{proof}
@@ -403,7 +427,14 @@ $\ord_{z=\pm n}\Phi_a=m_a(n)$.  For $\Re s>1$,
  \quad}
  \label{eq:zeta-a}
 \end{equation}
-Both statements are \statusproved.
+Both statements are \statusproved.  The multiplicity function \eqref{eq:m-a} is formalized as
+\lean{Fabius.weightedScaleMultiplicity} (\lean{WeightedScaleMultiplicity.lean}), and in two
+directions more generally than it is used here: the base $2$ is replaced by an arbitrary $b$,
+and the weights $a_h$ may lie in an arbitrary additive commutative monoid rather than in $\N_0$.
+The canonical product \eqref{eq:canonical-a} is formalized only at $a_h\equiv1$, as
+\lean{Fabius.rvachevFourierProduct_eq_canonical} (\lean{SincCanonicalProduct.lean}), whose
+exponent is the classical $\vtwo(n)+1$; the general-$a$ product and the spectral zeta
+\eqref{eq:zeta-a} are not formalized.
 \end{theorem}
 
 \begin{proof}
@@ -456,7 +487,12 @@ For every positive integer $N$,
  &=N A(1/2)-\sum_{j\ge0}b_j(N)\tau_j(a).
  \label{eq:M-bit}
 \end{align}
-This is \statusproved.
+This is \statusproved.  The floor form \eqref{eq:M-floor} is formalized as
+\lean{Fabius.sum_range_weightedScaleMultiplicity} (\lean{WeightedScaleMultiplicity.lean}), over
+the finite range $h<N$ that already contains every nonzero term, and again for an arbitrary base
+$b\ne1$ and weights in an arbitrary additive commutative monoid, so the Lean statement is
+strictly more general than \eqref{eq:M-floor}.  The two defect forms
+\eqref{eq:M-defect}--\eqref{eq:M-bit} are not formalized.
 \end{theorem}
 
 \begin{proof}
@@ -498,7 +534,12 @@ Then, away from the integer zeros,
  \label{eq:sign-master}
 \end{equation}
 Moreover $\varepsilon_a$ is a $2$-automatic sequence if and only if the parity word
-$(\bar a_h)_{h\ge0}$ is eventually periodic.  Both statements are \statusproved.
+$(\bar a_h)_{h\ge0}$ is eventually periodic.  Both statements are \statusproved.  At
+$a_h\equiv1$ the sign law \eqref{eq:sign-master} is formalized as
+\lean{Fabius.rvachevFourierProduct_eq_thueMorse_sign_mul_norm} (\lean{ThueMorseLobeSign.lean}),
+in the equivalent form $\Phi(x)=(-1)^{\wt(N)}\lVert\Phi(x)\rVert$ on the lobe $(N,N+1)$.  The
+general parity character \eqref{eq:epsilon-a} is not formalized, and neither is the automaticity
+criterion, for want of any automatic-sequence or $2$-kernel theory in the library.
 \end{theorem}
 
 \begin{proof}
@@ -550,7 +591,22 @@ and the first surviving power moment is
  \quad}
  \label{eq:first-surviving}
 \end{equation}
-This is \statusproved.
+This is \statusproved.  Its sharp-moment core is formalized, and in greater generality:
+\lean{Fabius.sum_powerset_neg_one_pow_pow_card} (\lean{ThueMorseSparseProuhet.lean}) evaluates
+\[
+ \sum_{T\subseteq S}(-1)^{|T|}\Bigl(x+\sum_{j\in T}w_j\Bigr)^{|S|}
+ =(-1)^{|S|}\,|S|!\prod_{j\in S}w_j
+\]
+for an arbitrary finite index set $S$, arbitrary step weights $w_j$ in an arbitrary commutative
+ring, and every offset $x$.  Taking $S=O_L(a)$ and $w_h=2^h$ produces exactly the constant
+$(-1)^{\omega_L(a)}\omega_L(a)!\,2^{\sum_{h\in O_L(a)}h}$ of \eqref{eq:first-surviving},
+independently of $x$, and the companion
+\lean{Fabius.sum_powerset_neg_one_pow_eval_of_degree_lt} is the vanishing
+\eqref{eq:Prouhet-vanish} for every polynomial of degree below $|S|$;
+\lean{Fabius.sum_submask_neg_one_pow_pow} is the binary specialization in which $S$ is the bit
+support of an integer.  What is not formalized is the factorization \eqref{eq:T-a-L} itself, nor
+the free-even-layer step that sums the offset-independent core over the $2^{L-\omega_L(a)}$
+even-layer offsets.
 \end{theorem}
 
 \begin{proof}
@@ -632,7 +688,14 @@ or explicitly
  \label{eq:partition-moments}
 \end{equation}
 This is a direct, established Bell-polynomial conversion applied to the new master cumulant
-formula.
+formula.  The conversion itself is formalized: \eqref{eq:bell-moments} is
+\lean{Fabius.completeBellPolynomial} (\lean{MomentCumulantAlgebra.lean}), the explicit partition
+sum \eqref{eq:partition-moments} is \lean{Fabius.partitionExpSum}
+(\lean{ExponentialPartition.lean}), and the two are proved to agree by
+\lean{Fabius.partitionExpSum_eq_expCoeff} (\lean{ExponentialBell.lean}); all three hold in an
+arbitrary commutative $\Q$-algebra, so the formal statement is considerably more general than
+this application.  Its cumulant input \cref{thm:cumulants} is not formalized, so the corollary
+is not yet formally available as stated.
 \end{corollary}
 
 \subsection{Zero spectrum and cumulants determine one another}
@@ -737,7 +800,19 @@ For every integer $h\ge r+1$ the first nonvanishing value is
    \qbinom{h-1}{r}{q}.}
  \label{eq:q-survivor}
 \end{equation}
-This is \statusproved.
+This is \statusproved.  The weights \eqref{eq:lagrange-weight-product} are formalized as
+\lean{Fabius.geometricLagrangeWeight} (\lean{GeometricLagrange.lean}); the annihilation
+\eqref{eq:q-annihilation} is \lean{Fabius.sum_geometricLagrangeWeight_mul_pow}, with the
+normalization at $h=0$ recorded as the genuine boundary value $0^0=1$, and the case $h=r+1$ of
+\eqref{eq:q-survivor} is \lean{Fabius.sum_geometricLagrangeWeight_mul_pow_succ}.  Both are
+proved over an arbitrary field, for every $q$ whose powers $q^0,\ldots,q^r$ are distinct, so
+neither uses the hypothesis $q\in(0,1)$ imposed here.  The closed Gaussian form
+\eqref{eq:q-weights} and the range $h>r+1$ of \eqref{eq:q-survivor} are not formalized for
+general $q$; what is available for the latter is
+\lean{Fabius.sum_lagrangeEvalWeight_mul_pow_card_add} (\lean{LagrangeResidualMoments.lean}),
+which expresses every higher moment of an arbitrary distinct-node Lagrange row through a
+complete homogeneous polynomial, leaving exactly the principal specialization
+$H_n(1,q,\ldots,q^r)=\qbinom{n+r}{r}{q}$ to be supplied.
 \end{lemma}
 
 \begin{proof}
@@ -796,7 +871,15 @@ Moreover,
  \left(A(q^m)-\sum_{h=0}^{r}a_hq^{mh}\right).
  \label{eq:Rrm-bound}
 \end{equation}
-All three statements are \statusproved.
+All three statements are \statusproved.  The exactness half is formalized:
+\lean{Fabius.geometricLagrange_richardson_exact} (\lean{GeometricLagrange.lean}) proves that the
+weights \eqref{eq:lagrange-weight-product} annihilate the first $r$ geometric error modes of a
+sample block beginning at an arbitrary index and return the constant term exactly.  It is
+stated for samples in an arbitrary module over an arbitrary field, with no positivity
+hypothesis, no nonzero condition on $q$ and no lower bound on the starting index, so it covers
+more than the real nonnegative-coefficient setting used here.  The exact tail
+\eqref{eq:Rrm-exact}, the sign \eqref{eq:Rrm-sign} and the bound \eqref{eq:Rrm-bound} are not
+formalized.
 \end{theorem}
 
 \begin{proof}
@@ -849,7 +932,17 @@ $q=1/4$,
  =1.96926035366826943194719369697\ldots.
  \label{eq:qquarter-condition}
 \end{equation}
-This is \statusproved.
+This is \statusproved.  Identity \eqref{eq:condition-number} is formalized only at the half
+base $q=1/2$, and is therefore a strict specialization of what is stated here:
+\lean{Fabius.sum_abs_discreteLimitWeight} (\lean{FabiusDiscreteLimitToeplitz.lean}) evaluates
+the $\ell^1$ norm of the $r$th Toeplitz row as $(-1/2;1/2)_r/(1/2;1/2)_r$, and
+\lean{Fabius.discreteLimitWeight_eq_geometricLagrangeWeight} identifies that row, after the
+reversal $j\mapsto r-j$, with the weights \eqref{eq:lagrange-weight-product}.  General $q$, and
+hence both the cumulant grid $q=1/4$ and the limiting value \eqref{eq:qquarter-condition}, is
+not formalized.  The finite $q$-binomial theorem used in the proof below is however available
+in full generality as \lean{Fabius.finite_qBinomial_theorem} (\lean{FiniteQBinomialCore.lean}),
+over an arbitrary commutative ring and for every $q$ and $z$, which is exactly the input a
+general-$q$ proof would need.
 \end{theorem}
 
 \begin{proof}
@@ -938,7 +1031,19 @@ Since $S^m=(I+\Delta)^m$, one also has the finite-difference factorization
  \label{eq:finite-difference-factorization}
 \end{equation}
 The final identity is initially an identity of analytic germs; all apparent poles cancel
-whenever the left side is entire.  These statements are \statusproved.
+whenever the left side is entire.  These statements are \statusproved.  The exponent-level
+content of \eqref{eq:shift-refinement}--\eqref{eq:mshift-refinement}---that passing to $S^ma$
+exposes the first $m$ layers and shifts the rest---is formalized as
+\lean{Fabius.weightedScaleMultiplicity_base_pow_mul} (\lean{WeightedScaleMultiplicity.lean}),
+for an arbitrary base $b>1$ and weights in an arbitrary additive commutative monoid.  The
+analytic identities themselves are formalized only at $a_h\equiv1$, as
+\lean{Fabius.rvachevFourierProduct_two_mul} and \lean{Fabius.rvachevFourierProduct_two_pow_mul}
+(\lean{SincProductShells.lean}); these are instances of \lean{Fabius.tprod_geom_scale} and
+\lean{Fabius.tprod_geom_scale_pow} (\lean{GeometricScaleProducts.lean}), which renormalize a
+scale product $\prod_ng(z/c^n)$ for an arbitrary factor function $g$, an arbitrary nonzero ratio
+$c$ and an arbitrary commutative topological monoid---but for one fixed $g$, so they do not by
+themselves reach a variable exponent sequence.  The finite-difference factorization
+\eqref{eq:finite-difference-factorization} is not formalized.
 \end{theorem}
 
 \begin{proof}
@@ -1069,7 +1174,12 @@ integer-zero multiplicity, spectral zeta, and even cumulants are
    \sum_{r=0}^{d}c_r\frac{4^j}{(4^j-1)^{r+1}}.
  \label{eq:kappaP}
 \end{align}
-All formulas are \statusproved.
+All formulas are \statusproved.  Of these, \eqref{eq:mP} is formalized one Newton component at
+a time: \lean{Fabius.weightedScaleMultiplicity_choose} (\lean{WeightedScaleMultiplicity.lean})
+proves $m(n)=\binom{\vtwo(n)+1}{r+1}$ for the single Pascal weight $h\mapsto\binom hr$, for an
+arbitrary base, its hockey-stick input being \lean{Fabius.inclusivePrefixSum_choose}.
+Assembling those components into the signed sum over $r$, and every other formula in the
+theorem, is not formalized.
 \end{theorem}
 
 \begin{proof}
@@ -1167,7 +1277,12 @@ For $p=2$ this is the familiar lower-Lambert coordinate of the classical Fabius 
 the branch notation and inversion conventions follow \cite{corless1996}.
 For $p>2$ it gives a single closed coordinate in which the polynomial-weight endpoint
 transseries should be organized; the Mellin calculation in \cref{sec:mellin} explains the
-periodic coefficients that decorate it.
+periodic coefficients that decorate it.  Only the $p=2$ coordinate is formalized:
+\lean{Fabius.lowerLambertW} (\lean{LowerLambertW.lean}), a definitional alias of the library's
+real lower branch \lean{Real.lambertWLower}, inverts $w\mapsto w\e^w$ on $(-\infty,-1]$, with
+functional equation \lean{Fabius.lowerLambertW_mul_exp} and uniqueness
+\lean{Fabius.lowerLambertW_unique}.  The generalized coordinate
+\eqref{eq:generalized-lambert} itself has no Lean counterpart.
 
 
 \section{An alternating Newton family of positive-definite Pascal quotients}
@@ -1281,7 +1396,13 @@ In particular,
  \Var(Y_d)=\frac1{12}\left(1+3^{-(d+1)}\right).
  \label{eq:Psi-variance}
 \end{equation}
-These are \statusproved.
+These are \statusproved.  The hockey-stick step behind \eqref{eq:Psi-multiplicity} is
+formalized as \lean{Fabius.inclusivePrefixSum_choose} (\lean{WeightedScaleMultiplicity.lean}),
+which proves $\sum_{h\le v}\binom hd=\binom{v+1}{d+1}$ for a general Pascal column; together
+with \lean{Fabius.weightedScaleMultiplicity} it supplies the whole arithmetic content of
+\eqref{eq:Psi-multiplicity} apart from the exceptional $h=0$ term.  The spectral zeta
+\eqref{eq:Psi-zeta}, the cumulants \eqref{eq:Psi-cumulants} and the variance
+\eqref{eq:Psi-variance} are not formalized.
 \end{theorem}
 
 \begin{proof}
@@ -1336,7 +1457,12 @@ Then
 The length-$2^L$ lobe-sign block attached to $P_d$ annihilates every power of degree
 $<\omega_d(L)$, and its first surviving power moment is given exactly by
 \eqref{eq:first-surviving}.  Thus the Prouhet order remains linear in $L$, but its slope is
-the binary cylinder density selected by $d$.
+the binary cylinder density selected by $d$.  The Lucas input \eqref{eq:Pd-lucas} is formalized
+as \lean{Fabius.odd_choose_iff_bitSupport_subset} (\lean{ThueMorseLucasSupport.lean}), in the
+submask form ``$\binom nk$ is odd exactly when the binary support of $k$ is contained in that of
+$n$'', with \lean{Fabius.oddBinomialIndices_eq_image_powerset} parametrizing the odd positions
+of a Pascal row by the powerset of the bit support.  The density count
+\eqref{eq:Pd-prouhet-density} is not formalized.
 \end{corollary}
 
 \begin{proof}
@@ -1546,7 +1672,17 @@ Using the spectral zeta from \eqref{eq:zeta-a}, this becomes the reflection form
 \end{equation}
 Thus the endpoint asymptotic and the integer-zero divisor are two Mellin views of the same
 generating function.  The contour-transfer interpretation follows the harmonic-sum Mellin
-framework of \cite{flajolet1995}.  This is \statusproved.
+framework of \cite{flajolet1995}.  This is \statusproved.  Neither \eqref{eq:kernel-mellin} nor
+\eqref{eq:La-mellin} is formalized.  The library does prove the sibling real-variable integral
+\lean{Fabius.bose_mellin_integral_zeta} (\lean{MellinBose.lean}),
+$\int_0^\infty x^{a-1}\log(1-\e^{-x})\dd x=-\Gamma(a)\zeta(a+1)$ for real $a>0$: the same
+$\Gamma\zeta$ right-hand side, but for the bare kernel $\log(1-\e^{-u})$ and on the half-line to
+the right of the strip in \eqref{eq:kernel-mellin}, so it is a companion identity and not
+\eqref{eq:kernel-mellin} itself.  The double pole of $\Gamma(w)\zeta(w+1)$ at $w=0$ that governs
+the hierarchy below is regularized by
+\lean{Fabius.tendsto_gammaZetaRegularProduct_finitePart} (\lean{MellinFinitePart.lean}).  The
+subtraction of $\log u$, the continuation to $-1<\Re w<0$, and the complex-variable form all
+remain to be supplied.
 \end{theorem}
 
 \begin{proof}
@@ -1856,8 +1992,12 @@ possible universal bracket under these constraints.
 
 \paragraph{Why it is plausible.}
 The remainder kernel in \eqref{eq:Rrm-exact} has one sign on the coefficient cone and is the
-unique kernel annihilating the first $r$ monomials.  A proof should be expressible as a
-finite-dimensional linear-programming duality or a Chebyshev-system extremal argument.
+unique kernel annihilating the first $r$ monomials.  That uniqueness is already formal:
+\lean{Fabius.eq_lagrangeEvalWeight_of_moments} (\lean{GeometricLagrange.lean}) shows that on any
+finite family of distinct field-valued nodes the Lagrange row is the only row with the
+prescribed moments, with no nonzeroness or positivity assumption on the competing weights.  A
+proof of the conjecture should be expressible as a finite-dimensional linear-programming
+duality or a Chebyshev-system extremal argument.
 
 \begin{conjecture}[Rational refinement transseries]
 \label{conj:rational-transseries}
@@ -1961,7 +2101,19 @@ A dependency-aware order is as follows.
 \end{enumerate}
 
 These statements require only finite sums, polynomials, valuations, and existing
-$q$-binomial infrastructure.
+$q$-binomial infrastructure.  Several of them are in fact already discharged in the library, in
+greater generality than is needed here: step~1 and the floor identity of step~2 by
+\lean{Fabius.weightedScaleMultiplicity} and
+\lean{Fabius.sum_range_weightedScaleMultiplicity}; the sharp moment of step~4 by
+\lean{Fabius.sum_powerset_neg_one_pow_pow_card}, together with its vanishing companion
+\lean{Fabius.sum_powerset_neg_one_pow_eval_of_degree_lt}; and the annihilation and first
+surviving moment of step~5 by \lean{Fabius.sum_geometricLagrangeWeight_mul_pow} and
+\lean{Fabius.sum_geometricLagrangeWeight_mul_pow_succ}, with
+\lean{Fabius.geometricLagrange_richardson_exact} already giving module-valued Richardson
+exactness.  What genuinely remains in Phase~I is the binary defect \eqref{eq:M-bit}, the
+automaticity equivalence of step~3, the sign-product factorization \eqref{eq:T-a-L} and its
+free-even-layer count, the closed Gaussian-binomial form \eqref{eq:q-weights}, and the
+general-$q$ survivor \eqref{eq:q-survivor} with the sign-certified remainder built on it.
 
 \subsection{Phase II: probability and entire products}
 
@@ -1986,8 +2138,9 @@ $q$-binomial infrastructure.
       periodic residue expansion.
 \item Transfer the existing Pascal-hierarchy Fourier envelope to a general polynomial by
       the Newton factorization and lower-order comparison.
-\item Prove the leading small-ball and inverse laws using the already formalized exponential
-      Tauberian infrastructure, or isolate that theorem as a reusable library component.
+\item Prove the leading small-ball and inverse laws.  The library contains no de
+      Bruijn--Voss exponential Tauberian transfer, so this step must begin by isolating that
+      theorem as a reusable library component.
 \item Only then lift the classical all-orders saddle and inverse-Lambert machinery to the
       higher-order pole hierarchy.
 \end{enumerate}
