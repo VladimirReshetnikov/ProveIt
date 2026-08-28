@@ -121,8 +121,9 @@
 \large Exact arithmetic, probability, Fourier analysis, and corrected sharp asymptotics}
 \author{Human-readable synthesis of the formal development\\
 \small Vladimir Reshetnikov's \texttt{ProveIt} repository}
-\date{Repository snapshot: 27 August 2026\\
-\small base commit \nolinkurl{7b05fce557a326c435f9521ee1a55039429ef116};
+\date{Integrated repository snapshot: 27 August 2026\\
+\small shared base commit \nolinkurl{7b05fce557a326c435f9521ee1a55039429ef116};\\
+mainline declarations/reports \nolinkurl{4069e588554c8f77b6a0a3ba8fb4389880601653};
 Volterra addendum \nolinkurl{3da579387}}
 
 \begin{document}
@@ -145,14 +146,15 @@ finite models and quantitative approximation results.  The analytic part develop
 formal sinc and cosine products, Fourier inversion and Poisson summation, exact moment
 recurrences, and the Fourier--Legendre expansion.  The arithmetic part gives reciprocal-power
 values, Thue--Morse formulas for arbitrary dyadic arguments, executable binary reduction,
-two-adic information, and the exact half-base $q$-binomial identities present in Lean.
+two-adic information, exact half-base values, and denominator-free arbitrary-base
+$q$-binomial and geometric-interpolation identities present in Lean.
 
 The endpoint chapters report only the negative-Laplace decompositions, periodic correction,
 lower-Lambert formulas, saddle estimates, and correction terms that have named proved
-counterparts in the formal source.  Plausible extensions, numerical observations, generic
-$q$-analogues, and other arguments not yet represented by an exact Lean theorem are kept in
-the companion volume under \path{docs/non-formalized-research-frontiers/}, not in this
-primary exposition.
+counterparts in the formal source.  Plausible extensions, numerical observations,
+unformalized analytic generic-$q$ extensions, and other arguments not yet represented by an exact
+Lean theorem are kept in the companion volume under
+\path{docs/non-formalized-research-frontiers/}, not in this primary exposition.
 \end{abstract}
 
 \tableofcontents
@@ -1461,6 +1463,51 @@ an exponential, and is therefore strictly positive.  The canonical product is
 \lean{rvachevFourier_eq_canonical} in the same facade module, built from
 \lean{rvachevFourierProduct_eq_canonical} in \path{SincCanonicalProduct.lean}.
 \end{proof}
+
+The exponent in the canonical product has a finite, base-generic double-counting
+origin that is useful independently of sinc products.  For \(b,N,J\in\N\), put
+\[
+ c_J(b,m):=\#\{j\in\{0,\ldots,J\}:b^j\mid m\}.
+\]
+If \(q>0\), multiplication by \(q\) identifies the positive multiples of \(q\)
+not exceeding \(N\) with \(1,\ldots,\lfloor N/q\rfloor\).  Consequently, for
+every function \(f\) into a commutative monoid,
+\begin{align}
+ \prod_{1\le n\le\lfloor N/q\rfloor}f(qn)
+   &=\prod_{\substack{1\le m\le N\\q\mid m}}f(m),
+                                                               \label{eq:base-layer-reindexing}\\
+ \prod_{j=0}^{J}\prod_{1\le n\le\lfloor N/b^j\rfloor}f(b^jn)
+   &=\prod_{m=1}^{N}f(m)^{c_J(b,m)}\qquad(b>0).             \label{eq:base-layer-regrouping}
+\end{align}
+For \(b>1\) and \(m\ne0\), if the displayed layer range reaches the
+multiplicity, that is, if
+\(\operatorname{multiplicity}(b,m)\le J\), then
+\begin{equation}
+ c_J(b,m)=\operatorname{multiplicity}(b,m)+1.               \label{eq:base-layer-count}
+\end{equation}
+Thus, under the explicit hypothesis
+\(\operatorname{multiplicity}(b,m)\le J\) for every \(1\le m\le N\),
+\begin{equation}
+ \prod_{j=0}^{J}\prod_{1\le n\le\lfloor N/b^j\rfloor}f(b^jn)
+ =\prod_{m=1}^{N}f(m)^{\operatorname{multiplicity}(b,m)+1}. \label{eq:base-layer-multiplicity}
+\end{equation}
+The same three identities hold in every additive commutative monoid, with
+products and powers replaced by sums and natural scalar multiples.  In Lean,
+the underlying finite-set equality is \lean{filter_dvd_eq_image};
+\eqref{eq:base-layer-reindexing} and its additive companion are
+\lean{prod_multiples_eq_prod_filter} and
+\lean{sum_multiples_eq_sum_filter};
+\eqref{eq:base-layer-regrouping} and its companion are
+\lean{prod_layers_eq_prod_pow_card} and
+\lean{sum_layers_eq_sum_nsmul_card}; and
+\eqref{eq:base-layer-count}--\eqref{eq:base-layer-multiplicity} and the final
+additive companion are \lean{card_filter_pow_dvd},
+\lean{prod_layers_eq_prod_pow_multiplicity}, and
+\lean{sum_layers_eq_sum_nsmul_multiplicity}, all in
+\path{BaseLayerRegrouping.lean}.  These are finite algebraic identities.  In
+particular they assert no infinite-product convergence, and the sufficient
+layer-coverage condition must be supplied explicitly rather than inferred by
+the API from a bound such as \(N<b^{J+1}\).
 
 \subsection{Total local factorization and exact complex zero jets}
 \label{sec:fourier-integer-zero-jets}
@@ -3403,9 +3450,17 @@ Here $q$ is the Gaussian base and the ratio of the geometric nodes; it is unrela
 additive translation $Q$ in the translated Fabius formulas below.  Because
 Theorem~\ref{thm:geometric-q-binomial-lagrange} is base-generic, the explicit
 Gaussian--Lagrange identification and its residual moments are no longer research-frontier
-obligations at Gaussian base $q=1/4$.  The analytic quarter-base prefix or spectral-tail
-expansion, its remainder estimates, and the resulting acceleration and convergence claims
-remain in the research-frontier volume.
+obligations at Gaussian base $q=1/4$.  Over rational $0<q<1$,
+\path{GeometricLagrangeQBinomial.lean} and
+\path{GeometricLagrangeQMoments.lean} additionally express the weights and
+all residual moments in the established quotient-defined $q$-Pochhammer and
+$q$-binomial notation, prove the residual sign, and compute the exact finite
+$\ell^1$ norm of the row.  Their dedicated quarter-base corollaries include
+\lean{quarterGeometricLagrangeQMoment_eq_residual_qBinomial} and
+\lean{sum_abs_quarterGeometricLagrangeWeight_eq_qPochhammer_ratio}.
+The analytic quarter-base prefix or spectral-tail expansion, its infinite
+condition-number limit, remainder estimates, and the resulting acceleration
+and convergence claims remain in the research-frontier volume.
 
 The polynomial in \eqref{eq:half-q-binomial-theorem} has the complete rational root locus
 \begin{equation}
@@ -4158,6 +4213,85 @@ specialization \lean{sum_lagrangeEvalWeight_mul_pow_card_add} are in
 \path{LagrangeResidualMoments.lean}.  Thus
 \eqref{eq:lagrange-all-residual-moments} extends the preceding first-error
 formula rather than replacing its low-degree exactness foundation.
+
+\begin{proposition}[Principal specialization and denominator-free geometric residuals]
+\label{prop:geometric-principal-residuals}
+Let $R$ first be a commutative semiring.  For arbitrary $c,q\in R$ and
+$p,r\in\N$, complete homogeneous evaluation on a geometric alphabet is
+\begin{align}
+ h_r(1,q,\ldots,q^p)&={p+r\brack p}_q,                    \label{eq:complete-homogeneous-geometric}\\
+ h_r(c,cq,\ldots,cq^p)&=c^r{p+r\brack p}_q.              \label{eq:complete-homogeneous-scaled-geometric}
+\end{align}
+These identities are recursive and denominator-free: they remain valid at
+$q=0$, at roots of unity, in positive characteristic, and in the zero
+semiring.
+
+Now let $R$ be a commutative ring and let $w_0,\ldots,w_p\in R$.  If
+\begin{equation}
+ \sum_{k=0}^{p}w_k(q^k)^d=0^d\qquad(0\le d\le p),        \label{eq:geometric-exact-row-hypothesis}
+\end{equation}
+then every positive moment is
+\begin{equation}
+ \sum_{k=0}^{p}w_k(q^k)^m
+ =(-1)^p q^{\binom{p+1}{2}}{m-1\brack p}_q,
+ \qquad m>0.                                             \label{eq:geometric-exact-row-all-moments}
+\end{equation}
+There is a strictly more general scaled-node form.  If exactness is assumed
+directly on the displayed nodes,
+\begin{equation}
+ \sum_{k=0}^{p}w_k(cq^k)^d=0^d\qquad(0\le d\le p),       \label{eq:scaled-geometric-exact-row-hypothesis}
+\end{equation}
+then
+\begin{equation}
+ \sum_{k=0}^{p}w_k(cq^k)^m
+ =c^m(-1)^p q^{\binom{p+1}{2}}{m-1\brack p}_q,
+ \qquad m>0.                                             \label{eq:scaled-geometric-exact-row-all-moments}
+\end{equation}
+No nonzeroness or unit hypothesis is imposed on $c$; this direct scaled
+hypothesis is therefore meaningful even for zero divisors.
+
+Over a field, distinctness of $1,q,\ldots,q^p$ supplies
+\eqref{eq:geometric-exact-row-hypothesis} for the Lagrange weights
+$\lambda_{p,k}^{(q)}$.  Consequently, for every block start $s\in\N$,
+\begin{equation}
+ \sum_{k=0}^{p}\lambda_{p,k}^{(q)}(q^{s+k})^m
+ =(-1)^p q^{sm+\binom{p+1}{2}}{m-1\brack p}_q,
+ \qquad m>0.                                             \label{eq:shifted-geometric-lagrange-all-moments}
+\end{equation}
+\end{proposition}
+
+\begin{proof}[Formal proof]
+The semiring-level infrastructure is
+\lean{completeHomogeneousEval_smul},
+\lean{completeHomogeneousEval_option_zero},
+\lean{completeHomogeneousEval_fin_succ},
+\lean{completeHomogeneousEvalOn_range}, and
+\lean{completeHomogeneousEvalAt_zero} in
+\path{CompleteHomogeneous.lean}.  Splitting off the leading variable $1$
+and scaling the remaining alphabet by $q$ turns the head--tail recurrence
+into q-Pascal's recurrence.  This proves
+\lean{completeHomogeneousEval_geometric}; its common-scale and range-indexed
+forms are \lean{completeHomogeneousEval_scaled_geometric} and
+\lean{completeHomogeneousEvalOn_range_pow_eq_gaussianBinomial}, all in
+\path{GeometricCompleteHomogeneous.lean}.
+
+The offset-degree engines for $m=p+1+r$ are
+\lean{sum_weight_mul_geometric_pow_succ_add} and
+\lean{sum_weight_mul_scaled_geometric_pow_succ_add}.  Above-diagonal
+vanishing of the recursive Gaussian coefficient folds the cancelled degrees
+and every higher residual into
+\lean{sum_weight_mul_geometric_pow_of_pos} and
+\lean{sum_weight_mul_scaled_geometric_pow_of_pos}.  Their field-valued
+Lagrange specializations are
+\lean{sum_geometricLagrangeWeight_mul_pow_succ_add},
+\lean{sum_geometricLagrangeWeight_mul_pow_of_pos},
+\lean{sum_geometricLagrangeWeight_mul_scaled_geometric_pow_of_pos}, and
+\lean{sum_geometricLagrangeWeight_mul_shifted_pow_of_pos} in
+\path{GeometricResidualMoments.lean}.  The pre-existing pointwise closed
+weight and cleared-denominator formulas remain in
+\path{GeometricQBinomialLagrange.lean}; its positive-moment theorem is now a
+thin corollary of this denominator-free engine.
+\end{proof}
 
 For the present half-geometric grid, write $\lambda_{n,k}^{(1/2)}$ for the
 evaluation-at-zero weight belonging to the node $2^{-k}$.  The Toeplitz row is exactly the
@@ -5827,6 +5961,48 @@ These are \lean{expCoeff_logCoeff_eq_ite} and
 \path{SaddleLogExpansionAlgebra.lean} and
 \path{SaddleLogExpansionPowerSeries.lean}.
 
+The recurrence-defined logarithm is also multiplicative at the level of
+formal power series.  Let \(R\) be a commutative \(\Q\)-algebra and define
+\[
+ \mathfrak L(C):=\lean{SaddleExpansion.logOf}(C),
+ \qquad C\in R[[X]],
+\]
+by applying \lean{logSeries} to the coefficient family of \(C\).  Rebuilding
+a series from that family gives \(C\) itself by
+\lean{SaddleExpansion.massSeries_coeff}; this reconstruction lemma needs only
+that \(R\) be a commutative ring.  For every \(C\), even before a unit-constant
+hypothesis is imposed,
+\begin{equation}
+ [X^0]\mathfrak L(C)=0,                                    \label{eq:formal-log-zero-constant}
+\end{equation}
+which is \lean{SaddleExpansion.constantCoeff_logOf}.  If
+\([X^0]C=1\), then
+\begin{equation}
+ C\,\mathfrak L(C)'=C',                                   \label{eq:formal-log-differential-equation}
+\end{equation}
+by \lean{SaddleExpansion.mul_derivative_logOf}; conversely,
+\lean{SaddleExpansion.logOf_eq_of} says that
+\eqref{eq:formal-log-zero-constant} and
+\eqref{eq:formal-log-differential-equation} characterize \(\mathfrak L(C)\)
+uniquely.
+
+It follows that unit-constant series satisfy
+\begin{equation}
+ \mathfrak L(AB)=\mathfrak L(A)+\mathfrak L(B),
+ \qquad \mathfrak L(1)=0,                                 \label{eq:formal-log-multiplicative}
+\end{equation}
+and, for every finite set \(S\) and family with \([X^0]F_i=1\),
+\begin{equation}
+ \mathfrak L\!\left(\prod_{i\in S}F_i\right)
+ =\sum_{i\in S}\mathfrak L(F_i).                         \label{eq:formal-log-finite-product}
+\end{equation}
+These are \lean{SaddleExpansion.logOf_mul},
+\lean{SaddleExpansion.logOf_one}, and
+\lean{SaddleExpansion.logOf_prod} in
+\path{LogSeriesMultiplicative.lean}.  They are identities in \(R[[X]]\): no
+convergence, analytic logarithm, branch choice, or passage to an infinite
+product is asserted.
+
 \subsection{Universal finite endpoint-transfer algebra}
 \label{sec:endpoint-transfer-polynomials}
 
@@ -6090,7 +6266,12 @@ That rule explains several choices made above:
       explicitly in \Cref{sec:fourier-integer-zero-jets}.
 \item Flatness uses natural powers, and the analytic-locus claims use precisely the domains
       proved in \path{NowhereAnalytic.lean}.
-\item The \(q\)-calculus is restricted to the half-base identities actually present in Lean.
+\item The \(q\)-calculus distinguishes the half-base Fabius identities from the
+      base-generic finite Gaussian/Richardson algebra: recursive Gaussian coefficients,
+      principal specializations, denominator-free geometric residual moments, closed
+      finite-node weights, and the proved quarter-base specialization are formal.
+      Analytic generic-\(q\) transforms, convergence, and quarter-sinc acceleration remain
+      outside the formal corpus.
 \item Endpoint asymptotics retain exact phases and the proved remainder scopes; numerical
       fits and unproved coefficient formulas are absent.
 \end{itemize}
@@ -6103,10 +6284,13 @@ into the theorem-backed narrative here.  The remaining research material is pres
 \end{quote}
 
 In particular, the inverse/saddle, complex-power and fractional-order
-repeated-integration, small-argument, generic \(q\)-calculus, and other deferred claims
+repeated-integration, small-argument, analytic generic-\(q\) transform and convergence,
+and other deferred claims
 remain available there with an explicit warning that they are not part of the formal
 corpus.  Natural-order Volterra integration and finite polynomial weights are instead
-formalized in \Cref{sec:normalized-volterra}.
+formalized in \Cref{sec:normalized-volterra}, while the finite base-generic
+Gaussian/Richardson algebra is formalized in
+\Cref{prop:geometric-principal-residuals}.
 
 \section{Conclusion}
 \label{sec:conclusion}
@@ -6117,7 +6301,8 @@ supported \(\Up\) supplies refinement, Fourier, spline, and Legendre viewpoints;
 signed \(\mathcal F\) supplies the global dilation and binary-translation formulas.  Exact
 bridges connect them to finite atomic laws, weak convergence, centered splines, moments,
 reciprocal-power values, normalized Volterra primitives and polynomial weights, dyadic
-algorithms, half-base \(q\)-binomial identities, prefix sums, endpoint Laplace analysis,
+algorithms, half-base \(q\)-binomial identities, prefix sums, denominator-free
+arbitrary-base geometric interpolation, endpoint Laplace analysis,
 and computable approximation.
 
 The most important methodological conclusion is equally concrete: the primary document is
@@ -6145,7 +6330,8 @@ Shape and regularity &
 \path{Differential.lean}, \path{Monotonicity.lean}, \path{Convexity.lean},
 \path{Regularity.lean}\\
 Probability and finite approximants &
-\path{ProbabilityRepresentation.lean}, \path{EarlyApproximants.lean},
+\path{WeightedUniformSeries.lean}, \path{ProbabilityRepresentation.lean},
+\path{EarlyApproximants.lean},
 \path{EarlyMeasureBridge.lean}, \path{WeakConvergence.lean},
 \path{ProbabilityLaplaceMoments.lean}, \path{LaplaceMoments.lean},
 \path{StepMeasureBridge.lean}, \path{StepApproximationLimit.lean},
@@ -6187,11 +6373,21 @@ Moments and exact arithmetic &
 Universal exponential, Bell, and endpoint-transfer algebra &
 \path{SaddleExpansionAlgebra.lean}, \path{ExponentialPartition.lean},
 \path{ExponentialBell.lean},
-\path{EndpointTransferPolynomials.lean}\\
+\path{EndpointTransferPolynomials.lean},
+\path{LogSeriesMultiplicative.lean}\\
+Finite base-layer arithmetic &
+\path{BaseLayerRegrouping.lean}\\
 Finite polynomial functionals and geometric Lagrange/Richardson exactness &
 \path{FinitePolynomialFunctional.lean}, \path{CompleteHomogeneous.lean},
 \path{GeometricLagrange.lean}, \path{LagrangeResidualMoments.lean},
-\path{GeometricQBinomialLagrange.lean}\\
+\path{GeometricCompleteHomogeneous.lean},
+\path{GeometricResidualMoments.lean},
+\path{GeometricQBinomialLagrange.lean}, \path{GeometricRichardson.lean},
+\path{GeometricLagrangeWeights.lean},
+\path{GeometricLagrangeQBinomial.lean},
+\path{GeometricLagrangeQMoments.lean}\\
+Phase-locked reciprocal-grid Richardson algebra &
+\path{LambertPhaseLockedRichardson.lean}\\
 Dyadic and \(q\)-binomial formulas &
 \path{DyadicClosedForm.lean}, \path{DyadicAnalytic.lean}, \path{GlobalDyadic.lean},
 \path{DyadicCorrectness.lean}, \path{FiniteQBinomialCore.lean}, \path{HalfQBinomial.lean},
@@ -6392,8 +6588,12 @@ V.~Reshetnikov,
 \newblock Lean~4 formal development, source snapshot
 \texttt{7b05fce557a326c435f9521ee1a55039429ef116}, consulted 27 August 2026.
 \newblock \url{https://github.com/VladimirReshetnikov/ProveIt/tree/7b05fce557a326c435f9521ee1a55039429ef116/Analysis/FabiusFunction}.
-\newblock The normalized Volterra and Fabius-antiderivative addendum was
-checked at commit \texttt{3da579387} on the same date.
+\newblock The mainline declaration/report integration was checked at commit
+\texttt{4069e588554c8f77b6a0a3ba8fb4389880601653}, and the normalized Volterra and
+Fabius-antiderivative addendum at commit
+\texttt{3da579387b3848128f0d90dcf761d44bff04dba5}, on the same date.
+\newblock \url{https://github.com/VladimirReshetnikov/ProveIt/tree/4069e588554c8f77b6a0a3ba8fb4389880601653/Analysis/FabiusFunction}.
+\newblock \url{https://github.com/VladimirReshetnikov/ProveIt/tree/3da579387b3848128f0d90dcf761d44bff04dba5/Analysis/FabiusFunction}.
 
 \end{thebibliography}
 

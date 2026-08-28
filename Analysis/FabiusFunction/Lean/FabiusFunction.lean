@@ -5,6 +5,12 @@ import FabiusFunction.GeometricLagrange
 import FabiusFunction.LagrangeResidualMoments
 import FabiusFunction.GeometricResidualMoments
 import FabiusFunction.GeometricQBinomialLagrange
+import FabiusFunction.GeometricRichardson
+import FabiusFunction.GeometricLagrangeWeights
+import FabiusFunction.GeometricLagrangeQBinomial
+import FabiusFunction.GeometricLagrangeQMoments
+import FabiusFunction.LambertPhaseLockedRichardson
+import FabiusFunction.WeightedUniformSeries
 import FabiusFunction.Paper05442
 import FabiusFunction.Paper06487
 import FabiusFunction.PaperFabiusAsymptotic
@@ -146,6 +152,7 @@ import FabiusFunction.CollatzWielandt
 import FabiusFunction.LacunaryProductToSum
 import FabiusFunction.LogSeriesMultiplicative
 import FabiusFunction.BaseLayerRegrouping
+import FabiusFunction.ShellEnvelopeExplicit
 import FabiusFunction.RvachevFourierDecay
 import FabiusFunction.BoundednessSkeleton
 import FabiusFunction.TransferOperatorStep

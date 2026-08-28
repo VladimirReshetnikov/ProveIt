@@ -17,14 +17,25 @@ The script requires Python 3, mpmath, and SymPy. It uses no network access.
 
 Compile the report
 ------------------
-latexmk -pdf q_richardson_sinc_frontier.tex
+pdflatex -interaction=nonstopmode -halt-on-error q_richardson_sinc_frontier.tex
+pdflatex -interaction=nonstopmode -halt-on-error q_richardson_sinc_frontier.tex
+pdflatex -interaction=nonstopmode -halt-on-error q_richardson_sinc_frontier.tex
 
 The report was compiled with pdfLaTeX. It uses standard TeX Live packages and
-Latin Modern fonts.
+Libertinus when available, with Latin Modern as its explicit fallback.
 
 Scope and status
 ----------------
 The report's theorems are proved in the LaTeX source and numerically checked by
-the script. They have not yet been formalized in Lean. "Repository-new" means
-absent from the audited *.tex corpus under the stated ProveIt repository path;
-it is not an unconditional claim of priority over all external literature.
+the script. The denominator-free finite q-binomial, principal-specialization,
+scaled exact-row, and all-positive-moment algebra is formalized in Lean. For
+rational 0 < q < 1, the finite Lagrange weights, all residual moments and their
+signs, the exact finite l1 norm, and q=1/4 specializations also have Lean counterparts. The
+generic and reconciled rational layers are recorded at source checkpoints
+1e761ed77583e9870ceeaeb2c74ac824094f0f3f and
+f77ff7c296b99050107948f5aa2a9488aec01d05, respectively. The
+analytic sinc-tail acceleration, transformed error and remainder, spline,
+inverse, and infinite-limit claims remain research frontiers. "Repository-new"
+means absent from the audited *.tex corpus under the
+stated ProveIt repository path; it is not an unconditional claim of priority
+over all external literature.

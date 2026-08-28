@@ -31,13 +31,15 @@ results include order zero and oriented endpoints.
 The report also develops an absolutely and locally uniformly convergent
 Newton–Volterra series for arbitrary complex powers, negative-power and
 Mellin/Newton identities, the exterior branches of a global bounded piecewise
-formula, complete folded formulas for Rvachev's up-function,
+formula, complete folded formulas for Rvachev's up-function, formulas for
+reflected and complementary Fabius transforms, exact higher derivatives,
 Riemann–Liouville orders, and first- and higher-order primitives of the inverse
-Fabius function. It derives conditional inverse-primitive and order-statistic
-asymptotics from the repository's inverse endpoint equivalent. Those
-complex/fractional/Mellin, global-piecewise, Rvachev-folded, and inverse
-developments remain research-frontier material unless a separate repository
-source explicitly supplies a Lean counterpart.
+Fabius function. It derives inverse-primitive and order-statistic asymptotics
+from the repository's now-formalized inverse endpoint equivalent and clearly
+labels conjectural refinements. Those complex/fractional/Mellin,
+global-piecewise, Rvachev-folded, and inverse developments remain
+research-frontier material unless a separate repository source explicitly
+supplies a Lean counterpart.
 
 ## Lean crosswalk
 

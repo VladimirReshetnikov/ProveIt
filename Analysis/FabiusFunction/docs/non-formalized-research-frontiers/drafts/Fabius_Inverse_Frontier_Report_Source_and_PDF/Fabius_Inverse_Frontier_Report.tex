@@ -1609,11 +1609,59 @@ the formal series is represented by the analytic local inverse and enters the pl
 for all large $n$.
 \end{obligation}
 
-\begin{obligation}[Geometric Lagrange moments]
-Formalize \eqref{eq:all-filter-moments} using the finite $q$-binomial theorem.  This lemma
-can then serve both the existing forward Richardson hierarchy and the inverse hierarchy here.
-The quarter-error sign theorem additionally needs the ordinary Lagrange remainder formula.
-\end{obligation}
+\begin{remark}[Formalized geometric Lagrange core]
+The former obligation to formalize \eqref{eq:all-filter-moments} is discharged
+at post-snapshot checkpoint
+\nolinkurl{1e761ed77583e9870ceeaeb2c74ac824094f0f3f}.  The reusable layer in
+\path{CompleteHomogeneous.lean} consists of
+\nolinkurl{completeHomogeneousEval_smul},
+\nolinkurl{completeHomogeneousEval_option_zero},
+\nolinkurl{completeHomogeneousEval_fin_succ},
+\nolinkurl{completeHomogeneousEvalOn_range}, and
+\nolinkurl{completeHomogeneousEvalAt_zero}.  Over every commutative semiring,
+\path{GeometricCompleteHomogeneous.lean} gives
+\[
+ h_n(1,q,\ldots,q^p)=\qbinom{n+p}{p}{q},
+ \qquad
+ h_n(c,cq,\ldots,cq^p)=c^n\qbinom{n+p}{p}{q}
+\]
+through \nolinkurl{completeHomogeneousEval_geometric},
+\nolinkurl{completeHomogeneousEval_scaled_geometric}, and the range bridge
+\nolinkurl{completeHomogeneousEvalOn_range_pow_eq_gaussianBinomial}.
+
+Over every commutative ring,
+\nolinkurl{sum_weight_mul_scaled_geometric_pow_succ_add} and
+\nolinkurl{sum_weight_mul_scaled_geometric_pow_of_pos} assume exactness
+directly on the nodes \(c q^j\); no nonzero, unit, distinctness, or division
+hypothesis is used, even when \(c\) is a zero divisor.  Their unscaled forms
+are \nolinkurl{sum_weight_mul_geometric_pow_succ_add} and
+\nolinkurl{sum_weight_mul_geometric_pow_of_pos}.  For \(m>0\), the resulting
+identity is
+\[
+ \sum_{j=0}^{p}w_j(cq^j)^m
+ =c^m(-1)^p q^{\binom{p+1}{2}}\qbinom{m-1}{p}{q}.
+\]
+Finite-node injectivity is needed only to instantiate the Lagrange weights in
+a field.  The corresponding declarations are
+\nolinkurl{sum_geometricLagrangeWeight_mul_pow_succ_add},
+\nolinkurl{sum_geometricLagrangeWeight_mul_pow_of_pos},
+\nolinkurl{sum_geometricLagrangeWeight_mul_scaled_geometric_pow_of_pos}, and
+\nolinkurl{sum_geometricLagrangeWeight_mul_shifted_pow_of_pos}; the last has
+the exact \(q\)-exponent
+\(start\,m+\binom{p+1}{2}\).  Taking \(p=s-1\), \(c=1\), and \(q=1/4\), after
+supplying the elementary finite-node injectivity, gives
+\eqref{eq:all-filter-moments} exactly.
+
+The report-facing rational \(q\)-Pochhammer and quarter-base corollaries,
+including the finite residual sign kernel, are supplied by
+\path{GeometricQBinomialLagrange.lean} and
+\path{GeometricLagrangeQMoments.lean}.
+
+This closes only the finite interpolation algebra.  The inverse-germ
+substitution, its uniform remainder, and the quarter-error sign/enclosure
+theorem---which additionally uses the ordinary Lagrange remainder
+sign---remain formalization frontiers.
+\end{remark}
 
 \begin{obligation}[Two-scale endpoint reversion]
 Build a small asymptotic algebra in the variables $\rho^{-1}$, $\log\rho$, and a phase on
@@ -1622,9 +1670,10 @@ forward expansion through $A_1$ and elementary Taylor bounds.  The all-orders re
 then be layered on top of the already formalized forward saddle expansion.
 \end{obligation}
 
-The first four obligations are largely algebraic and should be substantially easier than the
-existing saddle analysis.  The fifth is analytically deeper, but the forward uniform remainder
-estimates already present in the development remove its most difficult input.
+The first three remaining obligations are largely algebraic and should be substantially easier
+than the existing saddle analysis.  The final two-scale endpoint reversion is analytically
+deeper, but the forward uniform remainder estimates already present in the development remove
+its most difficult input.
 
 \section{Further deductions and frontier problems}
 \label{sec:frontier-problems}

@@ -28,14 +28,19 @@ the derivative at that order is nonzero.
   factorization away from its removable denominator.
 * `rvachevFourierProduct_int_add_eventuallyEq_pow_mul_cofactor` — the same
   factorization as an equality of germs at the local origin.
-* `integerZeroLocalCofactor_analyticAt` and
+* `rvachevFourierProduct_int_eventuallyEq_sub_pow_mul_cofactor` — the centered
+  germ in the original complex coordinate.
+* `integerZeroLocalCofactor_analyticAt_of_add_ne`,
+  `integerZeroLocalCofactor_analyticAt`, and
   `integerZeroLocalCofactor_zero` — analyticity and its exact central value.
 * `integerZeroLocalCofactor_zero_ne` — the cofactor is a local analytic unit.
 * `analyticOrderAt_rvachevFourierProduct_int` — the exact complex zero order.
 * `iteratedDeriv_rvachevFourierProduct_int_eq_zero_of_lt` and
-  `iteratedDeriv_rvachevFourierProduct_int` — the lower-jet vanishing and
-  exact first nonzero derivative; the nonvanishing theorem is retained as a
-  convenience corollary.
+  `iteratedDeriv_rvachevFourierProduct_int_add_order` — the lower-jet
+  vanishing and every higher jet in terms of the analytic cofactor.
+* `iteratedDeriv_rvachevFourierProduct_int` — the exact first nonzero
+  derivative; the nonvanishing theorem is retained as a convenience
+  corollary.
 -/
 
 set_option autoImplicit false
@@ -134,42 +139,72 @@ theorem rvachevFourierProduct_int_add_eventuallyEq_pow_mul_cofactor
   exact hden.mono fun w hw =>
     rvachevFourierProduct_int_add_eq_pow_mul_cofactor m hm w hw
 
-/-- The local cofactor is analytic at the origin for every nonzero integer
-center. -/
-theorem integerZeroLocalCofactor_analyticAt (m : ℤ) (hm : m ≠ 0) :
-    AnalyticAt ℂ (integerZeroLocalCofactor m) 0 := by
+/-- **Centered integer-zero germ.**  In the original complex coordinate,
+the sinc product is locally `(z-m)^d` times the translated analytic cofactor.
+This is a reusable input for analytic order, all higher jets, and reciprocal
+pole calculations. -/
+theorem rvachevFourierProduct_int_eventuallyEq_sub_pow_mul_cofactor
+    (m : ℤ) (hm : m ≠ 0) :
+    rvachevFourierProduct =ᶠ[nhds (m : ℂ)]
+      fun z => (z - (m : ℂ)) ^ (padicValNat 2 m.natAbs + 1) *
+        integerZeroLocalCofactor m (z - (m : ℂ)) := by
+  have hcoord : Tendsto (fun z : ℂ => z - (m : ℂ))
+      (nhds (m : ℂ)) (nhds 0) := by
+    have hcontinuous : ContinuousAt (fun z : ℂ => z - (m : ℂ)) (m : ℂ) :=
+      continuousAt_id.sub continuousAt_const
+    change Tendsto (fun z : ℂ => z - (m : ℂ))
+      (nhds (m : ℂ)) (nhds ((m : ℂ) - (m : ℂ))) at hcontinuous
+    simpa only [sub_self] using hcontinuous
+  have hcomp :=
+    (rvachevFourierProduct_int_add_eventuallyEq_pow_mul_cofactor m hm).comp_tendsto
+      hcoord
+  filter_upwards [hcomp] with z hz
+  have hcenter : (m : ℂ) + (z - (m : ℂ)) = z := by ring
+  simpa only [Function.comp_apply, hcenter] using hz
+
+/-- The local cofactor is analytic at every point away from its sole
+totalized denominator singularity `w = -m`.  No parity or nonzero hypothesis
+on the integer parameter is needed. -/
+theorem integerZeroLocalCofactor_analyticAt_of_add_ne
+    (m : ℤ) {w₀ : ℂ} (hden0 : (m : ℂ) + w₀ ≠ 0) :
+    AnalyticAt ℂ (integerZeroLocalCofactor m) w₀ := by
   let d := padicValNat 2 m.natAbs + 1
   let q := Nat.divMaxPow m.natAbs 2
   have hprefix : AnalyticAt ℂ
       (fun w : ℂ => ∏ h ∈ range d,
-        complexSinc ((Real.pi : ℂ) * w / (2 : ℂ) ^ h)) 0 := by
+        complexSinc ((Real.pi : ℂ) * w / (2 : ℂ) ^ h)) w₀ := by
     apply Finset.analyticAt_fun_prod
     intro h hh
     have hinner : AnalyticAt ℂ
-        (fun w : ℂ => (Real.pi : ℂ) * w / (2 : ℂ) ^ h) 0 := by
+        (fun w : ℂ => (Real.pi : ℂ) * w / (2 : ℂ) ^ h) w₀ := by
       fun_prop
     exact (complexSinc_differentiable.analyticAt _).comp hinner
   have htail : AnalyticAt ℂ
       (fun w : ℂ => rvachevFourierProduct
-        ((q : ℂ) / 2 + (Int.sign m : ℂ) * w / (2 : ℂ) ^ d)) 0 := by
+        ((q : ℂ) / 2 + (Int.sign m : ℂ) * w / (2 : ℂ) ^ d)) w₀ := by
     have hinner : AnalyticAt ℂ
         (fun w : ℂ =>
-          (q : ℂ) / 2 + (Int.sign m : ℂ) * w / (2 : ℂ) ^ d) 0 := by
+          (q : ℂ) / 2 + (Int.sign m : ℂ) * w / (2 : ℂ) ^ d) w₀ := by
       fun_prop
     exact (rvachevFourierProduct_differentiable.analyticAt _).comp hinner
-  have hden : AnalyticAt ℂ (fun w : ℂ => ((m : ℂ) + w) ^ d) 0 := by
+  have hden : AnalyticAt ℂ (fun w : ℂ => ((m : ℂ) + w) ^ d) w₀ := by
     fun_prop
-  have hmC : (m : ℂ) ≠ 0 := by exact_mod_cast hm
-  have hden0 : ((m : ℂ) + (0 : ℂ)) ^ d ≠ 0 := by
-    simpa using pow_ne_zero d hmC
+  have hdenPow : ((m : ℂ) + w₀) ^ d ≠ 0 := pow_ne_zero d hden0
   change AnalyticAt ℂ
     (fun w : ℂ =>
       (-(∏ h ∈ range d,
           complexSinc ((Real.pi : ℂ) * w / (2 : ℂ) ^ h)) *
         rvachevFourierProduct
           ((q : ℂ) / 2 + (Int.sign m : ℂ) * w / (2 : ℂ) ^ d)) /
-        ((m : ℂ) + w) ^ d) 0
-  exact (hprefix.neg.mul htail).div hden hden0
+        ((m : ℂ) + w) ^ d) w₀
+  exact (hprefix.neg.mul htail).div hden hdenPow
+
+/-- The local cofactor is analytic at the origin for every nonzero integer
+center. -/
+theorem integerZeroLocalCofactor_analyticAt (m : ℤ) (hm : m ≠ 0) :
+    AnalyticAt ℂ (integerZeroLocalCofactor m) 0 := by
+  have hmC : (m : ℂ) ≠ 0 := by exact_mod_cast hm
+  exact integerZeroLocalCofactor_analyticAt_of_add_ne m (by simpa using hmC)
 
 /-- Exact value of the totalized cofactor at the integer center.  For
 `m = 0` this is only a division-by-zero identity; its analytic-unit
@@ -213,12 +248,10 @@ theorem analyticOrderAt_rvachevFourierProduct_int
     simpa only [U] using
       (integerZeroLocalCofactor_analyticAt m hm).fun_comp_of_eq hinner (by ring)
   · simpa only [U, sub_self] using integerZeroLocalCofactor_zero_ne m hm
-  · have hmC : (m : ℂ) ≠ 0 := by exact_mod_cast hm
-    filter_upwards [eventually_ne_nhds hmC] with z hz
-    have hcenter : (m : ℂ) + (z - (m : ℂ)) = z := by ring
-    have hlocal := rvachevFourierProduct_int_add_eq_pow_mul_cofactor
-      m hm (z - (m : ℂ)) (by simpa only [hcenter] using hz)
-    simpa only [U, hcenter, smul_eq_mul] using hlocal
+  · filter_upwards [
+      rvachevFourierProduct_int_eventuallyEq_sub_pow_mul_cofactor m hm]
+      with z hz
+    simpa only [U, smul_eq_mul] using hz
 
 /-- All complex derivatives below the exact integer-zero order vanish. -/
 theorem iteratedDeriv_rvachevFourierProduct_int_eq_zero_of_lt
@@ -230,6 +263,41 @@ theorem iteratedDeriv_rvachevFourierProduct_int_eq_zero_of_lt
       (rvachevFourierProduct_differentiable.analyticAt (m : ℂ))).mp
       (analyticOrderAt_rvachevFourierProduct_int m hm)
   exact hjet.1 j hj
+
+/-- **Every higher complex jet at an integer zero.**  If
+`d = v₂(|m|)+1`, then the `(d+r)`-th derivative is the division-free
+binomial-factorial multiple of the `r`-th derivative of the analytic local
+cofactor.  The leading-jet formula below is the case `r = 0`. -/
+theorem iteratedDeriv_rvachevFourierProduct_int_add_order
+    (m : ℤ) (hm : m ≠ 0) (r : ℕ) :
+    iteratedDeriv (padicValNat 2 m.natAbs + 1 + r)
+        rvachevFourierProduct (m : ℂ) =
+      ((padicValNat 2 m.natAbs + 1 + r).choose
+          (padicValNat 2 m.natAbs + 1) : ℂ) *
+        ((padicValNat 2 m.natAbs + 1).factorial : ℂ) *
+          iteratedDeriv r (integerZeroLocalCofactor m) 0 := by
+  let d := padicValNat 2 m.natAbs + 1
+  change iteratedDeriv (d + r) rvachevFourierProduct (m : ℂ) =
+    ((d + r).choose d : ℂ) * (d.factorial : ℂ) *
+      iteratedDeriv r (integerZeroLocalCofactor m) 0
+  have hfactor :
+      (fun w : ℂ => rvachevFourierProduct ((m : ℂ) + w)) =ᶠ[nhds 0]
+        fun w => w ^ d * integerZeroLocalCofactor m w := by
+    simpa only [d] using
+      rvachevFourierProduct_int_add_eventuallyEq_pow_mul_cofactor m hm
+  have hlocal :=
+    iteratedDeriv_eq_choose_factorial_mul_of_eventuallyEq_pow_mul
+      d r hfactor (integerZeroLocalCofactor_analyticAt m hm).contDiffAt
+  have hshift := congrFun
+    (iteratedDeriv_comp_const_add (d + r) rvachevFourierProduct (m : ℂ))
+    (0 : ℂ)
+  calc
+    iteratedDeriv (d + r) rvachevFourierProduct (m : ℂ) =
+        iteratedDeriv (d + r)
+          (fun w : ℂ => rvachevFourierProduct ((m : ℂ) + w)) 0 := by
+      simpa only [add_zero] using hshift.symm
+    _ = ((d + r).choose d : ℂ) * (d.factorial : ℂ) *
+        iteratedDeriv r (integerZeroLocalCofactor m) 0 := hlocal
 
 /-- **Exact leading complex jet.**  At every nonzero integer center, the
 first nonzero derivative is the odd-tail value times the explicit factorial
@@ -247,28 +315,12 @@ theorem iteratedDeriv_rvachevFourierProduct_int
   change iteratedDeriv d rvachevFourierProduct (m : ℂ) =
     -(d.factorial : ℂ) * rvachevFourierProduct ((q : ℂ) / 2) /
       (m : ℂ) ^ d
-  have hfactor :
-      (fun w : ℂ => rvachevFourierProduct ((m : ℂ) + w)) =ᶠ[nhds 0]
-        fun w => w ^ d * integerZeroLocalCofactor m w := by
-    simpa only [d] using
-      rvachevFourierProduct_int_add_eventuallyEq_pow_mul_cofactor m hm
-  have hlocal :
-      iteratedDeriv d
-          (fun w : ℂ => rvachevFourierProduct ((m : ℂ) + w)) 0 =
-        (d.factorial : ℂ) * integerZeroLocalCofactor m 0 :=
-    iteratedDeriv_eq_factorial_mul_of_eventuallyEq_pow_mul d hfactor
-      (integerZeroLocalCofactor_analyticAt m hm).contDiffAt
-  have hshift :
-      iteratedDeriv d
-          (fun w : ℂ => rvachevFourierProduct ((m : ℂ) + w)) 0 =
-        iteratedDeriv d rvachevFourierProduct (m : ℂ) := by
-    simpa using congrFun
-      (iteratedDeriv_comp_const_add d rvachevFourierProduct (m : ℂ)) (0 : ℂ)
   calc
     iteratedDeriv d rvachevFourierProduct (m : ℂ) =
-        iteratedDeriv d
-          (fun w : ℂ => rvachevFourierProduct ((m : ℂ) + w)) 0 := hshift.symm
-    _ = (d.factorial : ℂ) * integerZeroLocalCofactor m 0 := hlocal
+        (d.factorial : ℂ) * integerZeroLocalCofactor m 0 := by
+      simpa only [d, add_zero, Nat.choose_self, Nat.cast_one, one_mul,
+        iteratedDeriv_zero] using
+        iteratedDeriv_rvachevFourierProduct_int_add_order m hm 0
     _ = -(d.factorial : ℂ) * rvachevFourierProduct ((q : ℂ) / 2) /
         (m : ℂ) ^ d := by
       rw [integerZeroLocalCofactor_zero]

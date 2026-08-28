@@ -170,6 +170,17 @@ repository snapshot.  The principal novelty filter was comparison against all 57
 listed in \texttt{corpus\_inventory.txt}, including frozen versions, the living syntheses,
 the Thue--Morse atlas, all included paper sources, and the twelve Fourier-decay drafts and
 audits.
+
+Since that pinned snapshot, \path{WeightedUniformSeries.lean} has formalized the reusable
+product space and absolutely summable Banach-valued uniform-coordinate series: pointwise
+summability, continuity and measurability, arbitrary-weight head--tail and reflection
+identities, the norm bound, and the nonnegative and unit-mass range bounds.  The central
+declarations include \path{weightedUniformSeries}, \path{weightedUniformSeries_split},
+\path{weightedUniformSeries_reflect}, and \path{weightedUniformSeries_mem_unitInterval}.
+This module does not define the geometric weights $(1-q)q^j$ or a $q$-specific law,
+pushforward/CDF, refinement equation, characteristic-function product, moments, cumulants,
+full-support theorem, or density.  Thus all report-specific $q$-family statements remain
+frontier claims.
 \end{boxedremark}
 
 \tableofcontents
@@ -1596,6 +1607,12 @@ The following order minimizes dependence on asymptotic machinery.
 \item Prove support, symmetry, the distributional refinement, and the CDF integral equation.
 \item Derive characteristic-function products from finite products plus dominated convergence.
 \end{enumerate}
+
+Since the pinned snapshot, item 2 has acquired reusable generic construction infrastructure
+in \path{WeightedUniformSeries.lean}: \path{weightedUniformSeries} constructs a pointwise
+summable series for arbitrary norm-summable weights on the independent-uniform product
+space, but the geometric weights and every $q$-specific specialization in items 1--4 remain
+open.
 
 \subsection{Analysis layer}
 

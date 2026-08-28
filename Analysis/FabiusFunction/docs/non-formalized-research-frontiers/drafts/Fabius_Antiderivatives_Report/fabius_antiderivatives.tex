@@ -214,13 +214,19 @@ described below changes the current formalization status, not this historical
 snapshot audit.
 
 \begin{statusbox}[Status convention used in this report]
-Every item labeled theorem, proposition, lemma, or corollary is supplied with
-a mathematical proof here, but that label alone does not assert a Lean proof.
-``Repository input'' means that an already established result is imported from
-the audited corpus.  ``Conjecture'' means that the statement is supported by
-the preceding analysis but is not proved.  Only the declarations in the
-crosswalk below are claimed to be machine checked by the present status
-update; all other new claims in this report remain non-formalized.
+Every item labeled theorem, proposition, lemma, or corollary is either proved
+in place, derived immediately from a proved identity, or explicitly identified
+as an imported standard theorem; that label alone does not assert a Lean
+proof.  In particular, the first formula in \cref{thm:Q-derivatives} is the
+classical Lagrange inverse-derivative formula; the report cites that result and
+proves only the coefficient conversion used here.  ``Repository input'' means
+that an already established result is imported from the audited corpus.
+``Conjecture'' means that the statement is supported by the preceding analysis
+but is not proved.  Besides repository inputs---including derivative identities
+already present in the audited corpus and a post-snapshot Lean proof of the
+inverse endpoint equivalent---only the declarations in the crosswalk below are
+claimed to be machine checked by the present status update; all other new
+claims in this report remain non-formalized.
 \end{statusbox}
 
 \subsection{Lean formalization update}
@@ -678,7 +684,8 @@ No principal value or regularization is involved: the flat zero of \(F\) makes
 from \(x^{-m}\Up(x)\), which is singular at the origin because \(\Up(0)=1\).
 
 \begin{corollary}[Endpoint localization]\label{cor:endpoint-localization}
-Fix \(n\geq1\) and \(\alpha\in\C\).  As \(x\downarrow0\),
+Fix \(n\geq1\) and \(\alpha\in\C\) with \(\Rea\alpha\geq0\).  As
+\(x\downarrow0\),
 \begin{equation}
  \Jn_n[t^\alpha F(t)](x)
  \sim x^\alpha(\Jn_nF)(x)
@@ -693,10 +700,19 @@ the nonnegative measure
 \((x-t)^{n-1}F(t)\dd t\) on \([0,x]\).  Its mass below \((1-\delta)x\) is
 negligible relative to its total mass, because comparison with fixed dilates
 of \(F\) shows concentration in \([(1-\delta)x,x]\).  On that interval
-\((t/x)^\alpha\to1\) uniformly as \(\delta\downarrow0\).  The quotient of the
-two sides of \eqref{eq:localization} is the expectation of
+\((t/x)^\alpha\to1\) uniformly as \(\delta\downarrow0\).  Moreover,
+\(|(t/x)^\alpha|=(t/x)^{\Rea\alpha}\leq1\) on \((0,x]\), so the complementary
+part contributes at most twice its vanishing normalized mass.  The quotient of
+the two sides of \eqref{eq:localization} is the expectation of
 \((t/x)^\alpha\) under this normalized measure, hence tends to one.
 \end{proof}
+
+For \(\Rea\alpha<0\), the same localization is expected and is consistent
+with the exact Newton--Volterra series, but the preceding concentration
+argument alone does not prove it: \((t/x)^\alpha\) is then unbounded near
+zero.  Extending \eqref{eq:localization} to that half-plane requires a separate
+uniform-integrability estimate from quantitative flatness (or from the sharp
+endpoint expansion), and no such extension is asserted here.
 
 The first correction displayed by \eqref{eq:master-alpha-n} is
 \begin{equation}
@@ -1226,9 +1242,14 @@ for \(x=1\), endpoint flatness supplies the limiting interpretation.
 \end{proposition}
 
 \begin{proof}
-Tonelli's theorem gives \eqref{eq:fractional-stoploss} exactly as in
-\cref{cor:J-moment}.  At one, replace \(1-X\) by the identically distributed
-\(X\).  For \(x>1\), expand \((1-X/x)^\nu\) and take expectations.
+Since \(\Rea\nu>0\), the absolute value of the kernel is
+\((x-t)^{\Rea\nu-1}\), which is integrable on the finite triangular region
+arising after insertion of
+\(F(t)=\E\1_{\{X\leq t\}}\).  Fubini's theorem therefore gives
+\eqref{eq:fractional-stoploss}; for positive real \(\nu\), this reduces to the
+Tonelli argument in \cref{cor:J-moment}.  At one, replace \(1-X\) by the
+identically distributed \(X\).  For \(x>1\), expand
+\((1-X/x)^\nu\) and take expectations.
 \end{proof}
 
 \begin{theorem}[Fractional-order Newton--Volterra formula]\label{thm:fractional-commutator}
@@ -1324,7 +1345,8 @@ For a complex weight \(\alpha\), the same substitution and one integration by
 parts give the following exact reduction to a power of \(F\).
 
 \begin{proposition}[Weighted inverse primitive]\label{prop:inverse-weighted}
-Let \(x=Q(y)\).  If \(\alpha\neq-1\) and \(\Rea\alpha\geq-1\), then
+Let \(0<y\leq1\) and \(x=Q(y)\).  If \(\alpha\neq-1\) and
+\(\Rea\alpha\geq-1\), then
 \begin{equation}
  \boxed{\quad
  \int_0^yu^\alpha Q(u)\dd u
@@ -1339,7 +1361,10 @@ At the exceptional exponent,
  =Q(y)\log y-\int_0^{Q(y)}\log F(t)\dd t.
  \quad}                                                        \label{eq:inverse-log}
 \end{equation}
-For real \(\alpha<-1\), the improper integral diverges.
+For real \(\alpha<-1\) and every \(y>0\), the improper integral diverges.
+At \(y=0\), the convergent cases above extend with value zero by taking the
+right-hand limit; this convention is needed because the displayed factors
+\(y^{\alpha+1}\) and \(\log y\) are not themselves defined at zero.
 \end{proposition}
 
 \begin{proof}
@@ -1402,9 +1427,11 @@ where reflection was used in the last step.
 \end{theorem}
 
 \begin{proof}
-Insert \eqref{eq:Q-indicator} into \eqref{eq:RL-def} and interchange the
-integrals.  For a fixed \(t\leq Q(y)\), the variable \(u\) ranges from
-\(F(t)\) to \(y\), and
+Insert \eqref{eq:Q-indicator} into \eqref{eq:RL-def}.  Because
+\(\Rea\nu>0\), the absolute value of the resulting kernel is integrable on
+the finite region \(0\leq F(t)\leq u\leq y\); hence Fubini's theorem permits
+interchanging the integrals.  For a fixed \(t\leq Q(y)\), the variable \(u\)
+ranges from \(F(t)\) to \(y\), and
 \[
  \frac1{\Gamma(\nu)}\int_{F(t)}^y(y-u)^{\nu-1}\dd u
  =\frac{(y-F(t))^\nu}{\Gamma(\nu+1)}.
@@ -1421,18 +1448,19 @@ For a natural weight \(p\), the same argument gives
  \int_{F(t)}^y(y-u)^{\nu-1}u^p\dd u\dd t.
  \quad}                                                        \label{eq:inverse-weighted-fractional}
 \end{equation}
-The inner integral is an incomplete beta function:
+For \(y>0\), the inner integral is an incomplete beta function:
 \begin{equation}
  y^{p+\nu}
  \left[B(p+1,\nu)-B_{F(t)/y}(p+1,\nu)\right].                 \label{eq:inverse-beta}
 \end{equation}
-When both \(p\) and \(\nu=n\) are nonnegative integers, it is a finite
-polynomial in \(y\) and \(F(t)\).
+When \(p\) is a nonnegative integer and \(\nu=n\) is a positive integer, it
+is a finite polynomial in \(y\) and \(F(t)\).
 
 \subsection{Higher derivatives of the inverse}
-Let \(x=Q(y)\in(0,1)\).  Lagrange inversion gives an exact all-orders formula
-that can be combined with the Thue--Morse derivative expression
-\eqref{eq:F-derivative-up}.
+Let \(x=Q(y)\in(0,1)\).  The classical Lagrange inverse-derivative formula
+\cite{Comtet} gives an exact all-orders identity that can be combined with the
+Thue--Morse derivative expression \eqref{eq:F-derivative-up}.  We import that
+classical identity here rather than reprove Lagrange inversion.
 
 \begin{theorem}[Lagrange formula for inverse derivatives]\label{thm:Q-derivatives}
 For \(n\geq1\),
@@ -1453,6 +1481,17 @@ then equivalently
  [z^{n-1}]\left(1+\sum_{m\geq1}a_m(x)z^m\right)^{-n}.          \label{eq:Q-coefficient}
 \end{equation}
 \end{theorem}
+
+Indeed, writing \(t=x+z\) gives
+\[
+ \frac{t-x}{F(t)-F(x)}
+ =\frac1{F'(x)}
+ \left(1+\sum_{m\geq1}a_m(x)z^m\right)^{-1}.
+\]
+Raising this identity to the \(n\)-th power and taking the
+\((n-1)\)-st derivative at \(z=0\) multiplies the coefficient of
+\(z^{n-1}\) by \((n-1)!\), proving the equivalence of
+\eqref{eq:Q-Lagrange} and \eqref{eq:Q-coefficient}.
 
 The first cases are
 \begin{align}
@@ -1478,9 +1517,14 @@ endpoint equivalent
  \exp\!\left[-\sqrt{2\log2\,\log(1/y)}\right]
  \qquad(y\downarrow0).                                        \label{eq:Q-asympt-input}
 \end{equation}
-This statement is marked ``Derived'' rather than Lean-formalized in the source,
-so the results of this section are rigorous consequences conditional on that
-repository input \cite{ProveItFrontiers}.
+At the audited snapshot this statement was marked ``Derived'' rather than
+Lean-formalized in the source.  The current Lean development now proves
+precisely this equivalence as
+\path{Fabius.fabiusInv_isEquivalent_fabiusInverseAsymptoticMain} in
+\path{FabiusInverseAsymptotic.lean}.  Thus the results below are
+unconditional mathematical consequences of a now-formalized input, although
+their integral and order-statistic deductions have not themselves yet been
+translated into Lean \cite{ProveItFrontiers}.
 
 Put
 \begin{equation}
@@ -1497,8 +1541,7 @@ so \(Q\) is slowly varying at zero.
 \subsection{Weighted primitives near zero}
 
 \begin{theorem}[Karamata law for inverse primitives]\label{thm:Q-Karamata}
-Assume \eqref{eq:Q-asympt-input}.  Let \(\alpha>-1\) and \(\nu>0\) be real.
-Then, as \(y\downarrow0\),
+Let \(\alpha>-1\) and \(\nu>0\) be real.  Then, as \(y\downarrow0\),
 \begin{equation}
  \boxed{\quad
  \RL^\nu[u^\alpha Q(u)](y)
@@ -1533,8 +1576,7 @@ The boundary exponent \(\alpha=-1\) is convergent but belongs to a different
 scale.
 
 \begin{theorem}[Logarithmic inverse primitive]\label{thm:Q-log-asympt}
-Assume \eqref{eq:Q-asympt-input}.  As \(y\downarrow0\), with
-\(T=\log(1/y)\),
+As \(y\downarrow0\), with \(T=\log(1/y)\),
 \begin{align}
  \int_0^y\frac{Q(u)}u\dd u
  &\sim\frac{2\sqrt T}{a}Q(y)                                  \label{eq:Q-log-relative}\\
@@ -1560,7 +1602,7 @@ transfers the equivalent from the model integrand to \(Q(\e^{-s})\).
 \end{proof}
 
 \subsection{Large weighted quantile moments}
-Define
+For \(p\in\N_0\), define
 \begin{equation}
  q_p=\int_0^1u^pQ(u)\dd u,
  \qquad
@@ -1572,7 +1614,7 @@ Reflection \eqref{eq:Q-reflect} gives the exact identity
 \end{equation}
 
 \begin{theorem}[Large quantile-moment correction]\label{thm:large-quantile}
-Assume \eqref{eq:Q-asympt-input}.  As \(p\to\infty\),
+As \(p\to\infty\) through the nonnegative integers,
 \begin{equation}
  C_p\sim\frac{Q(1/p)}p,                                       \label{eq:Cp-asympt}
 \end{equation}
@@ -1610,7 +1652,7 @@ Let \(M_n=\max(X_1,\ldots,X_n)\) and
 The theorem immediately gives a compact order-statistic equivalent.
 
 \begin{corollary}[Extreme order statistics and high inverse order]\label{cor:extreme-order}
-Assume \eqref{eq:Q-asympt-input}.  Then
+As \(n\to\infty\) through the positive integers,
 \begin{equation}
  \boxed{\quad
  \E m_n=1-\E M_n\sim Q(1/n).
