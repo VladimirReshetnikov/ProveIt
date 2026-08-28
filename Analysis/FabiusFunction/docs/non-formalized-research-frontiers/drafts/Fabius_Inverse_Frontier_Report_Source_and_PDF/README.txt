@@ -14,11 +14,18 @@ Compile
 -------
 Run from this directory:
 
-    latexmk -pdf -interaction=nonstopmode Fabius_Inverse_Frontier_Report.tex
+    pdflatex -interaction=nonstopmode -halt-on-error Fabius_Inverse_Frontier_Report.tex
+    pdflatex -interaction=nonstopmode -halt-on-error Fabius_Inverse_Frontier_Report.tex
+    pdflatex -interaction=nonstopmode -halt-on-error Fabius_Inverse_Frontier_Report.tex
 
 The PDF uses only standard TeX Live packages and the bundled figures.
 The Python scripts are not needed to compile the report.  To rerun them, install
 Python 3 with sympy, mpmath, and matplotlib.
+
+The geometric Lagrange-moment obligation is discharged post-snapshot at Lean
+checkpoint 1e761ed77583e9870ceeaeb2c74ac824094f0f3f.  The inverse-germ,
+uniform-remainder, quarter-sign/enclosure, and endpoint-reversion obligations
+retain their explicit frontier status in the report.
 
 Scope and priority note
 -----------------------

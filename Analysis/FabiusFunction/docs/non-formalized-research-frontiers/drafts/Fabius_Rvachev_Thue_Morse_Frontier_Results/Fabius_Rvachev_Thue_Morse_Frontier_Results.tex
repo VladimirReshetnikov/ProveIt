@@ -1165,6 +1165,21 @@ The reindexed series is independent of $Y_m$ and has the law of $Y_\infty$.  Con
 the corresponding densities gives \eqref{eq:density-deconv}.
 \end{proof}
 
+\emph{Formal versions.}  The measure form of \eqref{eq:density-deconv} is formalized in
+\path{MeasureRefinement.lean}: with $\mu_{\Up}$ the Borel probability measure with density
+$\Up$ (\lean{Fabius.rvachevMeasure}), the one-step refinement equation
+$\mu_{\Up}=\mathrm{Unif}[-\tfrac12,\tfrac12]\ast\bigl(\mu_{\Up}\circ(\cdot/2)^{-1}\bigr)$ is
+\lean{Fabius.rvachevMeasure\_refinement}, and the $m$-fold form matching the split in this
+proof --- the first $m$ uniform digits convolved with a $2^{-m}$-scale copy of the whole ---
+is \lean{Fabius.rvachevMeasure\_eq\_prefix\_conv}, with the digit-prefix law
+\lean{Fabius.uniformDigitPrefix} defined by the digit recursion and its characteristic
+function evaluated as the finite sinc product
+(\lean{Fabius.charFun\_uniformDigitPrefix}); the uniform-digit integral itself is the
+reusable \lean{Fabius.charFun\_volume\_restrict\_Icc}.  The proof runs by exactly the
+characteristic-function route anticipated in the promotion table below.  The
+random-variable phrasing \eqref{eq:random-tail}, over an explicit product probability
+space, is not formalized; the measure identity is its full analytic content.
+
 \subsection{Cumulants are the same zeta--Lambert coefficients}
 
 Let $\kappa_j$ and $\mu_j$ denote the cumulants and moments of $Y_\infty$.
@@ -1849,8 +1864,9 @@ denominator-free polynomial, normalized weight under node injectivity, and every
 residual moment; \(q=1/2\) is linked to the Toeplitz row. \\
 Random-tail law
 \eqref{eq:random-tail} & independent random variables, almost-sure summation, equality in law &
-Split and reindex the convergent random series.  A characteristic-function proof may be
-shorter if the current probability library lacks convenient random-series infrastructure. \\
+\emph{Delivered} in measure form in \path{MeasureRefinement.lean}, by exactly the
+characteristic-function route this row predicted: the refinement equation and its
+$m$-fold iterate, via \lean{charFun\_conv} and the formal Fourier product. \\
 Weak expansion
 \eqref{eq:weak-expansion} & Taylor theorem with remainder, expectation inequalities, symmetry &
 Condition on the finite sum; use bounded support to make the remainder estimate immediate. \\
@@ -1879,10 +1895,11 @@ A practical promotion sequence is therefore
 \]
 The first four stages already yield exact identities and acceleration mechanisms.  The final
 stage adds the sharp radius and explicit zeta remainder.  This ordering minimizes the amount
-of new complex analysis that must be trusted at any one time.  Of the boxed chain, the
-finite bridges, tail reindexing, $q$-interpolation, and analytic-logarithm stages are now
-formal (see the \emph{Formal version} paragraphs above); the probabilistic splitting is the
-one stage that remains.
+of new complex analysis that must be trusted at any one time.  Every stage of the boxed
+chain now has a formal counterpart (see the \emph{Formal version} paragraphs above): the
+finite bridges, tail reindexing, $q$-interpolation, and analytic logarithms directly, and
+the probabilistic splitting in measure form (\path{MeasureRefinement.lean}); of the
+splitting, only the random-variable representation itself is unformalized.
 
 \begin{obligation}[Canonical normalization theorem]
 The repository uses several Fourier-transform conventions across historical manuscripts.
@@ -1919,10 +1936,12 @@ absolutely summable family with every norm below one, over an arbitrary index ty
 geometric family --- the self-similar tail par excellence --- as its first instance.
 (The negative-Laplace tail \eqref{eq:G-tail-self} is formal too, but as an independent
 induction on the functional equation rather than as an instance of that API --- which is
-itself a small illustration of the duplication the obligation is about.)  The obligation is
-retained because its other three instances ---
-convolutions, random series, and cumulant generating functions, that is
-\eqref{eq:density-deconv}, \eqref{eq:random-tail} and \eqref{eq:cumulant-operator} --- have no
+itself a small illustration of the duplication the obligation is about.)  The convolution
+instance \eqref{eq:density-deconv} is now formal as well, in measure form
+(\path{MeasureRefinement.lean}, see the \emph{Formal version} paragraph in
+\cref{sec:probability}).  The obligation is retained because the random-series and
+cumulant-generating instances --- \eqref{eq:random-tail} as a statement about random
+variables, and \eqref{eq:cumulant-operator} --- have no
 formal counterpart, and because nothing yet expresses the four as instances of one statement.
 
 \section{Frontier conjectures and next deductions}

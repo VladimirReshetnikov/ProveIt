@@ -1329,6 +1329,17 @@ The interpolation moments are
  \label{eq:w-annihilation}
 \end{equation}
 
+\paragraph{Lean boundary for the weights.}
+The source-level individual quotient is already represented by
+\path{geometricLagrangeWeight_eq_gaussianBinomial_div} in
+\path{GeometricQBinomialLagrange.lean}, over a field and under injectivity of
+\(j\mapsto q^j\) on \(\{0,\ldots,p\}\).  Its numerator deliberately uses
+\path{gaussianBinomial q p (p - j)}; the symmetric-index notation in
+\eqref{eq:w-qbinomial} is the equivalent paper convention, not a newly added
+generic symmetry theorem.  This closed-weight API predates the
+principal-specialization and generic-residual tranche described below.  In the
+present real range \(0<q<1\), its finite-node hypothesis is automatic.
+
 \begin{theorem}[Exact $q$-Richardson recovery; \statusnew]
 \label{thm:exact-recovery}
 For every $n,N\ge0$,
@@ -1379,7 +1390,8 @@ Let $h_r$ be the complete homogeneous symmetric polynomial.  For $r\ge p+1$,
  \boxed{
  \sum_{j=0}^{p}w_{p,j}(q)q^{jr}
  =(-1)^pq^{\binom{p+1}{2}}
- h_{r-p-1}(1,q,\ldots,q^p).
+ h_{r-p-1}(1,q,\ldots,q^p)
+ =(-1)^pq^{\binom{p+1}{2}}\qbinom{r-1}{p}{q}.
  }
  \label{eq:w-residual}
 \end{equation}
@@ -1393,6 +1405,39 @@ Indeed, the generating function of the left side is
 This identity is the exact analogue of the transformed-moment formulas used in classical
 Richardson error analysis.  Here it also quantifies what happens when a numerical or symbolic
 approximation replaces the exact prefix polynomial.
+
+\paragraph{Post-snapshot Lean status.}
+At source checkpoint \path{1e761ed77583e9870ceeaeb2c74ac824094f0f3f},
+\path{completeHomogeneousEval_geometric} proves
+\[
+ h_s(1,q,\ldots,q^p)=\qbinom{s+p}{p}{q}
+\]
+over every commutative semiring, without division or a distinct-node
+hypothesis.  Its literal right-hand side is the recursive term
+\path{gaussianBinomial q (s + p) p}, which agrees with the displayed quotient
+in the present field setting.  The Lagrange formula \eqref{eq:w-residual} is
+the surviving range of \path{sum_geometricLagrangeWeight_mul_pow_of_pos}; its
+field hypothesis and finite-node injectivity are exactly those needed to
+construct the weights.  The generic theorem
+\path{sum_weight_mul_geometric_pow_of_pos} assumes only the low moments
+themselves and therefore permits repeated nodes over an arbitrary commutative
+ring.
+
+There is also a denominator-free scaled exact-row form.  If weights
+\(a_0,\ldots,a_p\) over a commutative ring satisfy
+\[
+ \sum_{j=0}^{p}a_j(cq^j)^d=0^d\qquad(0\le d\le p),
+\]
+then \path{sum_weight_mul_scaled_geometric_pow_succ_add} gives, for \(s\ge0\),
+\[
+ \sum_{j=0}^{p}a_j(cq^j)^{p+1+s}
+ =c^{p+1+s}(-1)^p q^{\binom{p+1}{2}}\qbinom{p+s}{p}{q}.
+\]
+Exactness is assumed directly after scaling, so \(c\) need not be a unit or
+even nonzero.  These results discharge the finite principal-specialization and
+residual-moment algebra only.  The prefix-polynomial identifications and
+\cref{thm:exact-recovery} are not consequences
+of them and remain outside the Lean development at this checkpoint.
 
 \subsection{Worked centered recovery in degree six}
 
@@ -1495,8 +1540,7 @@ Then $T_n$ is a zero of $M$ and a pole of $R$ of order $\mu(n)$.
 
 Write $n=2^vu$ with $u$ odd and define
 \begin{equation}
- C_u=M(\pi\ii u)
-e0.
+ C_u=M(\pi\ii u)\ne0.
  \label{eq:Cu}
 \end{equation}
 The number $C_u$ is a real sinc product:
@@ -1911,7 +1955,7 @@ Proposed module & Principal declarations \\
 \texttt{ThueMorseBarnesDifference.lean}
 & Binary subset-product expansion and the two monomial collapse theorems. \\
 \texttt{AppellRichardson.lean}
-& Tail self-similarity, finite-prefix polynomial expansion, Gaussian $q$-binomial weights, and exact recovery. \\
+& Reuse the compiled Gaussian $q$-binomial weights, principal specialization, and residual moments; formalize tail self-similarity, the finite-prefix polynomial expansion, and exact Appell/Rvachev recovery. \\
 \texttt{ReciprocalSincPoles.lean}
 & Pole order, leading Laurent coefficient, first double-pole principal part, and shell transfer to coefficients. \\
 \texttt{AppellLambertThreshold.lean}

@@ -618,10 +618,18 @@ removable points.  The all-nonzero-integer statement is
 \path{Fabius.rvachevFourierProduct_int_add_factorization}; its divided
 germ form is
 \path{Fabius.rvachevFourierProduct_int_add_eventuallyEq_pow_mul_cofactor}.
-The cofactor is analytic and nonzero, so Lean proves the exact order, every
+The cofactor is analytic and nonzero at the local origin, so Lean proves the exact order, every
 lower-jet vanishing, and the leading identity
-\eqref{eq:first-zero-jet}.  The generic leading-jet engine is
-\path{LeadingJet.lean}.  The logarithmic coefficients
+\eqref{eq:first-zero-jet}.  More generally, if that cofactor is denoted by
+\(U_m\) and \(d=1+\nu_2(|m|)\), Lean proves every higher jet as
+\[
+ \Phi^{(d+r)}(m)=\binom{d+r}{d}d!\,U_m^{(r)}(0)
+ \qquad(r\in\N)
+\]
+in \path{Fabius.iteratedDeriv_rvachevFourierProduct_int_add_order}.
+The generic engine in \path{LeadingJet.lean} is vector-valued and computes
+every derivative index over an arbitrary nontrivially normed field.  The
+explicit normalization in \eqref{eq:local-Bell-form}, the logarithmic coefficients
 \eqref{eq:gamma1}--\eqref{eq:gamma-general} and the Bell-polynomial formula
 \eqref{eq:Bell-zero-jets} for \(s>0\) remain human-readable frontier
 results, not named Lean theorems.

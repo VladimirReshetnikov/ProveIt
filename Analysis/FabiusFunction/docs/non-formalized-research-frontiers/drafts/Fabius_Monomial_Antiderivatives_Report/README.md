@@ -1,8 +1,41 @@
 # Fabius Monomial Antiderivatives and Inverse-Quantile Integrals
 
-This archive contains a 23-page frontier research report prepared from the recursive TeX corpus under `Analysis/FabiusFunction/docs` in Vladimir Reshetnikov's `ProveIt` repository, together with reproducible exact and numerical checks.
+This archive contains a frontier research report prepared from the recursive
+TeX corpus under `Analysis/FabiusFunction/docs` in Vladimir Reshetnikov's
+`ProveIt` repository, together with reproducible exact and numerical checks.
 
 The novelty statements in the report are **snapshot-relative**: they mean that the stated formulas were not found in the audited repository snapshot of 27 August 2026. They are not unconditional claims of worldwide priority.
+
+## Current Lean formalization status
+
+The natural-order core of the report is now formalized, in stronger form than
+the original statements:
+
+- `FabiusFunction.NormalizedVolterra` defines the literal iterator
+  `iteratedPrimitive` and the Cauchy-kernel operator `normalizedVolterra` for
+  arbitrary real normed-space-valued inputs, arbitrary base points, oriented
+  endpoints, and every natural order, including order zero.
+- `iteratedPrimitive_eq_normalizedVolterra` identifies literal repeated
+  integration with the normalized kernel for continuous Banach-valued inputs.
+  The same
+  module proves the generic finite commutators
+  `normalizedVolterra_polynomial` and `normalizedVolterra_monomial`; these need
+  only interval integrability of the input.
+- `FabiusFunction.FabiusAntiderivatives` proves the global signed ladder
+  `normalizedVolterra_extendedFabius` and its finite natural-monomial formula
+  `normalizedVolterra_pow_mul_extendedFabius` for every real endpoint.
+- For the bounded Fabius function, the exact formalized scope is the proved
+  initial half-line `x <= 1`, not just `[0,1]`. The declarations are
+  `normalizedVolterra_fabiusReal_of_le_one` and
+  `normalizedVolterra_pow_mul_fabiusReal_of_le_one`.
+
+Everything beyond that natural-order finite core remains a research frontier
+in this report: complex powers and their convergence/remainder estimates,
+logarithmic and Mellin consequences, fractional primitive order, Rvachev
+piecewise and fractional primitives, inverse-Fabius primitives and
+asymptotics, and the bounded function's global piecewise continuation for
+`x > 1`. The numerical experiments provide checks, not Lean proofs of those
+claims.
 
 ## Archive contents
 
@@ -16,13 +49,15 @@ The novelty statements in the report are **snapshot-relative**: they mean that t
 
 ## Principal results
 
-For the bounded Fabius function `F`, the report proves the zero-based primitive ladder
+For the bounded Fabius function `F`, the report proves the zero-based primitive
+ladder on the formalized range `x <= 1`
 
 ```text
-A_n(x) = 2^{n(n-1)/2} F(x/2^n),     A_n'(x) = A_{n-1}(x),     A_0=F.
+A_n(x) = 2^{n(n-1)/2} F(x/2^n),     A_n'(x) = A_{n-1}(x) (n>=1),     A_0=F.
 ```
 
-It follows that, for every nonnegative integer `p`, a finite closed form is
+It follows that, for every nonnegative integer `p` and `x <= 1`, a finite
+closed form is
 
 ```text
 ∫ x^p F(x) dx
@@ -86,6 +121,7 @@ The source is self-contained. A typical TeX Live build is:
 pdflatex -interaction=nonstopmode -halt-on-error Fabius_Monomial_Antiderivatives.tex
 pdflatex -interaction=nonstopmode -halt-on-error Fabius_Monomial_Antiderivatives.tex
 pdflatex -interaction=nonstopmode -halt-on-error Fabius_Monomial_Antiderivatives.tex
+rm -f *.aux *.log *.out *.toc
 ```
 
 The document uses the Libertinus text family when available and falls back to Latin Modern. The supplied PDF was built with TeX Live and has embedded fonts, hyperlinks, a table of contents, and PDF bookmarks.

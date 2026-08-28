@@ -268,7 +268,9 @@ def run(output_dir: Path, d_count: int, c_count: int, dps: int) -> None:
 
     csv_path = output_dir / "fractional_power_checks.csv"
     with csv_path.open("w", newline="", encoding="utf-8") as handle:
-        writer = csv.DictWriter(handle, fieldnames=comparison_rows[0].keys())
+        writer = csv.DictWriter(
+            handle, fieldnames=comparison_rows[0].keys(), lineterminator="\n"
+        )
         writer.writeheader()
         writer.writerows(comparison_rows)
 

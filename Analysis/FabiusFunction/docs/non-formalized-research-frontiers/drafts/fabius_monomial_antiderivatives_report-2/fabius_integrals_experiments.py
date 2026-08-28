@@ -303,7 +303,7 @@ def inverse_quantile_integral(grid: FabiusGrid, y: float, p: int, samples: int =
 
 def write_rows(path: Path, rows: Iterable[dict[str, object]], fieldnames: Sequence[str]) -> None:
     with path.open("w", newline="", encoding="utf-8") as stream:
-        writer = csv.DictWriter(stream, fieldnames=fieldnames)
+        writer = csv.DictWriter(stream, fieldnames=fieldnames, lineterminator="\n")
         writer.writeheader()
         writer.writerows(rows)
 
