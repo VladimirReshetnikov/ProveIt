@@ -39,7 +39,7 @@ namespace Fabius
 
 /-- The Euler factors of the sinc at `πx` are `1 - x²/(n+1)²`:
 `1 + sineTerm x n` in Mathlib's normalization. -/
-theorem one_add_sineTerm_eq (x : ℂ) (n : ℕ) :
+theorem one_add_sineTerm_eq_one_sub_sq_div (x : ℂ) (n : ℕ) :
     1 + sineTerm x n = 1 - x ^ 2 / ((n : ℂ) + 1) ^ 2 := by
   rw [sineTerm, sub_eq_add_neg, neg_div]
 
@@ -92,7 +92,7 @@ theorem complexSinc_pi_mul_eq_cexp {x : ℂ} (hx : ‖x‖ < 1) :
       Complex.exp (-∑' r : ℕ,
         (evenZeta (r + 1) : ℂ) * x ^ (2 * (r + 1)) / ((r : ℂ) + 1)) := by
   rw [← tprod_one_add_sineTerm x,
-    tprod_congr (one_add_sineTerm_eq x),
+    tprod_congr (one_add_sineTerm_eq_one_sub_sq_div x),
     tprod_one_sub_eq_cexp_powerSum (sinc_family_norm_lt_one hx)
       (sinc_family_norm_summable x)]
   congr 2
