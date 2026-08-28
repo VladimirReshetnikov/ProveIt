@@ -1,5 +1,6 @@
 import FabiusFunction.Arithmetic
 import FabiusFunction.ThueMorseBitSupport
+import FabiusFunction.DyadicClosedForm
 
 /-!
 # Interior-call complexity of the dyadic evaluator

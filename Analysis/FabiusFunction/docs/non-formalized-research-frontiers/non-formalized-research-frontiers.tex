@@ -14388,10 +14388,20 @@ to the inequality; the weaker candidate is the unconditional corollary
 Earlier prose derived the dyadic formula through Taylor integrals, block substitutions,
 and the exact remainder \(-F(y)\).  The final rational identities are formal, but those
 intermediate analytic equations are not public theorem-for-theorem counterparts.
-\begin{obligation}
+\begin{obligation}[Discharged]
 Formalize named Taylor integral identities for the bounded and signed global functions,
 including the blockwise changes of variables and the exact remainder.
 \end{obligation}
+The intermediate analytic equations are now public theorems.  In
+\path{DyadicAnalytic.lean}: the dyadic Taylor sum \lean{analyticTaylorSum} with coefficient
+data \lean{analyticInverseValue} at the scales \lean{inverseTwoPowReal}; the Taylor-level
+Fabius differential equation \lean{analyticTaylorSum\_derivative\_identity}; the exact-remainder
+identity \lean{analytic\_scale\_recurrence} (\(F(2^{-m}+y)=\mathrm{Taylor}_m(y)-F(y)\) for
+\(0\le y\le2^{-m}\), the register's remainder \(-F(y)\) with no error term); and the
+blockwise change of variables \lean{fabiusReal\_dyadic\_bit\_recurrence}, the identity behind
+every interior step of the exact evaluator.  The signed global function satisfies the same
+law on the same window: \lean{extendedFabius\_scale\_recurrence} in \path{GlobalDyadic.lean},
+via agreement with the bounded function on the unit interval.
 
 \subsection{Global block fold for the signed evaluator}
 
