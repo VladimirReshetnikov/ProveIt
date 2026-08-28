@@ -527,7 +527,8 @@ theorem integral_mul_eval_eq_zero_of_forall_pow (F : BoundedFabius)
       fun x : ℝ => ∑ j ∈ Finset.range (q.natDegree + 1),
         q.coeff j * (s.eval x * x ^ j) := by
     funext x
-    rw [Polynomial.eval_eq_sum_range, Finset.mul_sum]
+    have hq' := Polynomial.eval_eq_sum_range (p := q) x
+    rw [hq', Finset.mul_sum]
     exact Finset.sum_congr rfl fun j _ => by ring
   rw [hexp, integral_finsetSum _ fun j _ => (hintpow j).const_mul _]
   refine Finset.sum_eq_zero fun j hj => ?_
@@ -553,16 +554,19 @@ theorem eq_upOrthoPolynomial_of_monic_of_orthogonal
     rcases eq_or_lt_of_le hm with hEq | hlt
     · have h1 : q.coeff m = 1 := by
         have h := hmon.coeff_natDegree
-        rwa [hdeg, ← hEq] at h
+        rwa [hdeg, hEq] at h
       have h2 : (upOrthoPolynomial F n).coeff m = 1 := by
         have h := (upOrthoPolynomial_monic F hF n).coeff_natDegree
-        rwa [natDegree_upOrthoPolynomial F hF n, ← hEq] at h
+        rwa [natDegree_upOrthoPolynomial F hF n, hEq] at h
       rw [h1, h2, sub_self]
-    · have h1 : q.coeff m = 0 :=
-        Polynomial.coeff_eq_zero_of_natDegree_lt (hdeg ▸ hlt)
-      have h2 : (upOrthoPolynomial F n).coeff m = 0 :=
-        Polynomial.coeff_eq_zero_of_natDegree_lt
-          ((natDegree_upOrthoPolynomial F hF n) ▸ hlt)
+    · have h1 : q.coeff m = 0 := by
+        refine Polynomial.coeff_eq_zero_of_natDegree_lt ?_
+        rw [hdeg]
+        exact hlt
+      have h2 : (upOrthoPolynomial F n).coeff m = 0 := by
+        refine Polynomial.coeff_eq_zero_of_natDegree_lt ?_
+        rw [natDegree_upOrthoPolynomial F hF n]
+        exact hlt
       rw [h1, h2, sub_zero]
   have hdorth : ∀ j < n,
       ∫ x, d.eval x * x ^ j ∂(rvachevMeasure F) = 0 := by
@@ -613,6 +617,8 @@ theorem eq_upOrthoPolynomial_of_monic_of_orthogonal
 end Uniqueness
 
 section Symmetry
+
+open scoped ENNReal NNReal
 
 /-- The up-measure is negation-invariant at the level of integrals:
 the density is even and Lebesgue measure is negation-invariant. -/
