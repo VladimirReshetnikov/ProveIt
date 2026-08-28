@@ -39,6 +39,9 @@ directories are deleted; git history is the archive.
 
 ## Unmerged members
 
+- `inverse_fabius_asymptotics_report/` — *Complete Small-Argument
+  Asymptotics of the Inverse Fabius Function* (fifth wave, unpacked
+  2026-08-28).
 - `inverse_fabius_all_orders_package/` — *Closed All-Orders Endpoint
   Asymptotics for the Inverse Fabius Function* (fourth wave, unpacked
   2026-08-28; not yet folded into `Inverse_and_Sampling_Frontiers/`).

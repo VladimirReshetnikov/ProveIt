@@ -108,6 +108,8 @@ import FabiusFunction.AlgebraicInverseGerm
 import FabiusFunction.GeometricCgfTails
 import FabiusFunction.DyadicCombTrapezoid
 import FabiusFunction.IncompleteBetaMaster
+import FabiusFunction.MomentHankelMatrix
+import FabiusFunction.MomentHankelValues
 import FabiusFunction.SincProductShells
 import FabiusFunction.SharpGelfondBound
 import FabiusFunction.SincProductPeakRay
