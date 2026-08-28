@@ -171,16 +171,20 @@ listed in \texttt{corpus\_inventory.txt}, including frozen versions, the living 
 the Thue--Morse atlas, all included paper sources, and the twelve Fourier-decay drafts and
 audits.
 
-Since that pinned snapshot, \path{WeightedUniformSeries.lean} has formalized the reusable
-product space and absolutely summable Banach-valued uniform-coordinate series: pointwise
-summability, continuity and measurability, arbitrary-weight head--tail and reflection
-identities, the norm bound, and the nonnegative and unit-mass range bounds.  The central
-declarations include \path{weightedUniformSeries}, \path{weightedUniformSeries_split},
-\path{weightedUniformSeries_reflect}, and \path{weightedUniformSeries_mem_unitInterval}.
-This module does not define the geometric weights $(1-q)q^j$ or a $q$-specific law,
-pushforward/CDF, refinement equation, characteristic-function product, moments, cumulants,
-full-support theorem, or density.  Thus all report-specific $q$-family statements remain
-frontier claims.
+Since that pinned snapshot, \path{WeightedUniformSeries.lean} and
+\path{WeightedUniformDistribution.lean} have formalized the reusable product space,
+absolutely summable Banach-valued uniform-coordinate series, and their pushforward laws,
+including arbitrary-weight affine head--tail decomposition, scalar naturality, reflection,
+and interval concentration.  The specialization \path{GeometricUniformLaw.lean} defines
+$w_j(q)=(1-q)q^j$ and $X_q$ for every real $q$, proves absolute convergence and total mass
+one for $|q|<1$, and establishes the independent-copy affine refinement and law reflection.
+For $0\le q<1$ it proves concentration on $[0,1]$, including $q=0$; at $q=1/2$,
+\path{ProbabilityRepresentation.lean} identifies both the random series and its law with
+the classical dyadic construction.
+
+This promotion does not prove that the topological support is exactly $[0,1]$, nor does it
+define or analyze the general-$q$ CDF, density, characteristic-function product, moments,
+cumulants, or smoothness.  Those report claims remain frontier mathematics.
 \end{boxedremark}
 
 \tableofcontents
@@ -308,6 +312,16 @@ $X_q\in[0,1]$.  Replacing every $U_j$ by $1-U_j$ shows
 The support is all of $[0,1]$: every open subinterval of $[0,1]$ receives positive
 probability by constraining finitely many $U_j$ and leaving a sufficiently short tail free.
 
+\paragraph{Current formalization boundary.}
+The declarations \path{hasSum_geometricUniformWeight},
+\path{geometricUniformSeries_mem_Icc}, and
+\path{geometricUniformDistribution_Icc} formalize the series, its unit total weight, and
+concentration on $[0,1]$.  They do not yet formalize the stronger assertion in the preceding
+sentence that every open subinterval has positive mass, so exact topological support remains
+open.  Likewise \path{geometricUniformDistribution_reflection} proves
+$X_q\overset d=1-X_q$, but the displayed CDF and density symmetries still require the
+separate no-atoms and density layers.
+
 \subsection{Recovery of the classical functions}
 
 At $q=1/2$,
@@ -360,6 +374,12 @@ $v=(x-cu)/q$ yields \eqref{eq:cdf-refinement-b}, and differentiation gives
 \eqref{eq:density-refinement}; smoothness needed for the differentiation follows from
 \Cref{thm:smoothness} below, or one may first interpret the derivative distributionally.
 \end{proof}
+
+\paragraph{Current formalization boundary.}
+The measure identity \eqref{eq:distributional-refinement} is formalized exactly as
+\path{geometricUniformDistribution_selfSimilar}; its proof uses the public joint head--tail
+law \path{uniformProduct_map_head_tail_geometricUniformSeries}.  The two CDF integrals and
+the density identity in this proposition have not yet been promoted.
 
 For $q=1/2$ and $0\le x\le1/2$, the second term in
 \eqref{eq:density-refinement} vanishes, so
@@ -1608,11 +1628,11 @@ The following order minimizes dependence on asymptotic machinery.
 \item Derive characteristic-function products from finite products plus dominated convergence.
 \end{enumerate}
 
-Since the pinned snapshot, item 2 has acquired reusable generic construction infrastructure
-in \path{WeightedUniformSeries.lean}: \path{weightedUniformSeries} constructs a pointwise
-summable series for arbitrary norm-summable weights on the independent-uniform product
-space, but the geometric weights and every $q$-specific specialization in items 1--4 remain
-open.
+Since the pinned snapshot, items 1 and 2 have been formalized, in stronger pointwise form,
+by \path{WeightedUniformSeries.lean}, \path{WeightedUniformDistribution.lean}, and
+\path{GeometricUniformLaw.lean}.  The law-reflection and independent-copy affine-refinement
+parts of item 3 are also formalized.  Exact topological support and the CDF integral equation
+in item 3 remain open, as does the characteristic-function program in item 4.
 
 \subsection{Analysis layer}
 
