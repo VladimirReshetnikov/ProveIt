@@ -3,7 +3,7 @@ import FabiusFunction.LacunaryProductToSum
 import Mathlib.Algebra.BigOperators.Ring.Finset
 
 /-!
-# The centered Rvachev Fourier prefix as a Thue--Morse polynomial
+# The denominator-cleared centered Rvachev sinc prefix as a Thue--Morse polynomial
 
 At the dyadically dilated real argument `2^(m+1) w`, the first `m+1`
 factors of the centered sinc product are, in reverse order,
@@ -20,7 +20,7 @@ where `T_m` is the odd-frequency Thue--Morse sine polynomial.  No
 division by `w` occurs, so the formula includes `w = 0`.
 
 The normalization `Q(z) = Phi(z / (2*pi))` and the centered shell law
-then turn the finite identity into the full Fourier-image bridge
+then turn the finite identity into the full sinc-product bridge
 
 `2^(m + (m+1).choose 2) w^(m+1) Phi(2^m w / pi)
   = T_m(w) Phi(w / (2*pi))`.
@@ -29,12 +29,15 @@ The public product form of `T_m` also makes its removable zero, its parity,
 and its complete factor-level zero criterion available without reopening the
 trigonometric sum.
 
-Thus the Thue--Morse polynomial is exactly the new finite shell acquired
-by the Rvachev Fourier image under a dyadic dilation.  The final zero
-criteria record the corresponding finite and infinite statements: away
-from the removable point `w = 0`, the centered prefix vanishes exactly when
-the Thue--Morse sine polynomial does, while the full Fourier image vanishes
-exactly when either that finite shell or the remaining tail vanishes.
+Thus the Thue--Morse polynomial is exactly the denominator-cleared finite
+shell acquired by the Rvachev sinc-product model under a dyadic dilation.
+The final zero criteria record the corresponding finite and infinite
+statements.  Away from the removable point `w = 0`, the centered prefix
+vanishes exactly when the Thue--Morse sine polynomial does.  The raw shell
+factorization initially gives a finite-shell-or-tail criterion for the full
+product.  On the real axis the global zero classification shows that every
+tail zero already forces the `j = 0` shell factor to vanish, so the sharp
+criterion is simply that the Thue--Morse polynomial vanishes.
 -/
 
 set_option autoImplicit false
@@ -194,7 +197,8 @@ private theorem centeredSincPartialProduct_dyadic_clear
           intro j _hj
           exact ofReal_mul_complexSinc ((2 : ℝ) ^ j * w)
 
-/-- **Centered finite Fourier prefix = Thue--Morse sine polynomial.**
+/-- **Denominator-cleared centered sinc prefix = Thue--Morse sine
+polynomial.**
 
 This is the exact cross-multiplied formula
 
@@ -228,7 +232,7 @@ theorem centeredSincPartialProduct_dyadic_eq_thueMorse
     _ = (thueMorseSinePolynomial m w : ℂ) := htmC
 
 /-- **The finite zero criterion.**  Away from the removable point `w = 0`,
-the centered Fourier prefix vanishes exactly at the zeros of its associated
+the centered sinc prefix vanishes exactly at the zeros of its associated
 Thue--Morse sine polynomial. -/
 theorem centeredSincPartialProduct_dyadic_eq_zero_iff
     (m : ℕ) {w : ℝ} (hw : w ≠ 0) :
@@ -273,15 +277,18 @@ theorem centeredSincPartialProduct_dyadic_eq_zero_iff_exists
   rw [centeredSincPartialProduct_dyadic_eq_zero_iff m hw,
     thueMorseSinePolynomial_eq_zero_iff]
 
-/-- **The exact Rvachev Fourier-image bridge.**  The Thue--Morse
-polynomial is precisely the finite shell acquired when the Fourier image is
-dilated from `w / (2*pi)` to `2^m w / pi`:
+/-- **The exact Rvachev Fourier-product bridge.**  The Thue--Morse
+polynomial is precisely the denominator-cleared finite shell acquired when
+the sinc-product model is dilated from `w / (2*pi)` to `2^m w / pi`:
 
 `2^(m + (m+1).choose 2) w^(m+1) Phi(2^m w / pi)
   = T_m(w) Phi(w / (2*pi))`.
 
-The identity is algebraic and total.  Its only analytic input is the already
-proved centered shell factorization of the convergent sinc product. -/
+The cross-multiplied identity is total.  Its only analytic input is the
+already proved centered shell factorization of the convergent sinc product.
+It is a theorem about `rvachevFourierProduct`; identifying that product with
+the integral transform `rvachevFourier F` additionally requires
+`rvachevFourier_eq_product F hF`. -/
 theorem rvachevFourierProduct_dyadic_eq_thueMorse
     (m : ℕ) (w : ℝ) :
     ((2 : ℂ) ^ (m + (m + 1).choose 2) * (w : ℂ) ^ (m + 1)) *
@@ -335,10 +342,11 @@ theorem rvachevFourierProduct_dyadic_eq_thueMorse
           ((w : ℂ) / (2 * (Real.pi : ℂ))) := by
       rw [centeredSincProduct_eq_rvachevFourierProduct]
 
-/-- **Zero transfer across a dyadic Fourier shell.**  Away from `w = 0`, a
-zero at the dilated argument comes either from the newly exposed
-Thue--Morse shell or from the undilated tail, and these are the only two
-possibilities. -/
+/-- **Raw zero transfer across a dyadic sinc-product shell.**  Away from
+`w = 0`, the shell factorization expresses a zero at the dilated argument as
+a zero of either the newly exposed Thue--Morse shell or the undilated tail.
+For real `w` the tail alternative is subsumed by the shell alternative; see
+`rvachevFourierProduct_dyadic_eq_zero_iff_thueMorse` below. -/
 theorem rvachevFourierProduct_dyadic_eq_zero_iff
     (m : ℕ) {w : ℝ} (hw : w ≠ 0) :
     rvachevFourierProduct
@@ -379,6 +387,64 @@ theorem rvachevFourierProduct_dyadic_eq_zero_iff
       rw [rvachevFourierProduct_dyadic_eq_thueMorse]
       exact hshell
     exact (mul_eq_zero.mp hscaled).resolve_left hcoefficient
+
+/-- A zero of the undilated real-axis tail already kills the first sine
+factor of every exposed dyadic shell.  Indeed, the global zero
+classification makes `w / (2*pi)` a nonzero integer, hence makes `w` an
+integral multiple of `2*pi`. -/
+private theorem thueMorseSinePolynomial_eq_zero_of_tail_eq_zero
+    (m : ℕ) (w : ℝ)
+    (htail : rvachevFourierProduct
+      ((w : ℂ) / (2 * (Real.pi : ℂ))) = 0) :
+    thueMorseSinePolynomial m w = 0 := by
+  rcases (rvachevFourierProduct_eq_zero_iff _).mp htail with
+    ⟨k, _hk, hk⟩
+  have hpi : (Real.pi : ℂ) ≠ 0 := by
+    exact_mod_cast Real.pi_ne_zero
+  have hden : (2 * (Real.pi : ℂ)) ≠ 0 :=
+    mul_ne_zero (by norm_num) hpi
+  have hwC :
+      (w : ℂ) = (((2 * k : ℤ) : ℂ) * (Real.pi : ℂ)) := by
+    calc
+      (w : ℂ) = (k : ℂ) * (2 * (Real.pi : ℂ)) :=
+        (div_eq_iff hden).mp hk
+      _ = (((2 * k : ℤ) : ℂ) * (Real.pi : ℂ)) := by
+        push_cast
+        ring
+  have hwR : w = ((2 * k : ℤ) : ℝ) * Real.pi := by
+    apply Complex.ofReal_injective
+    simpa using hwC
+  apply (thueMorseSinePolynomial_eq_zero_iff m w).2
+  refine ⟨0, Nat.zero_lt_succ m, ?_⟩
+  simpa [hwR] using Real.sin_int_mul_pi (2 * k)
+
+/-- **Sharp real-axis zero criterion for a dyadic Fourier-product shell.**
+Away from the removable point `w = 0`, the dilated Rvachev sinc-product
+model vanishes exactly when its denominator-cleared Thue--Morse shell does.
+The apparently additional tail alternative in the raw shell factorization
+is already a zero of the shell's `j = 0` sine factor. -/
+theorem rvachevFourierProduct_dyadic_eq_zero_iff_thueMorse
+    (m : ℕ) {w : ℝ} (hw : w ≠ 0) :
+    rvachevFourierProduct
+        ((2 : ℂ) ^ m * (w : ℂ) / (Real.pi : ℂ)) = 0 ↔
+      thueMorseSinePolynomial m w = 0 := by
+  rw [rvachevFourierProduct_dyadic_eq_zero_iff m hw]
+  constructor
+  · rintro (htm | htail)
+    · exact htm
+    · exact thueMorseSinePolynomial_eq_zero_of_tail_eq_zero m w htail
+  · exact Or.inl
+
+/-- Factor-level form of the sharp real-axis zero criterion.  The dilated
+Rvachev sinc-product model vanishes exactly when one of the `m + 1` exposed
+lacunary sine factors vanishes. -/
+theorem rvachevFourierProduct_dyadic_eq_zero_iff_exists
+    (m : ℕ) {w : ℝ} (hw : w ≠ 0) :
+    rvachevFourierProduct
+        ((2 : ℂ) ^ m * (w : ℂ) / (Real.pi : ℂ)) = 0 ↔
+      ∃ j < m + 1, Real.sin ((2 : ℝ) ^ j * w) = 0 := by
+  rw [rvachevFourierProduct_dyadic_eq_zero_iff_thueMorse m hw,
+    thueMorseSinePolynomial_eq_zero_iff]
 
 end
 

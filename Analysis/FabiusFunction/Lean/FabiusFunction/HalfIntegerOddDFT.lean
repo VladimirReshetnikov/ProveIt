@@ -14,8 +14,11 @@ root-of-unity filter:
 provided `zeta` is a primitive `(2 * N)`-th root of unity.  This file proves
 that identity over an arbitrary commutative domain and then pushes it through
 every power of a finite odd-frequency discrete Fourier transform.  The result
-is the all-order Ramanujan-filtered convolution formula underlying the
-cyclotomic power traces in the half-integer report.
+is an all-order odd-coset-filtered convolution formula underlying the
+cyclotomic power traces in the half-integer report.  For the report's
+power-of-two modulus the odd labels are precisely the units, so this becomes
+the classical Ramanujan filter; for arbitrary `N` it is the more general odd
+coset rather than the unit group.
 
 Everything here is finite algebra.  There are no infinite sums, no Fourier
 series, no termwise differentiation, and no decay or limiting arguments.
@@ -32,9 +35,12 @@ Main declarations:
 * `sum_odd_powers_eq_root_filter` is the raw odd-coset geometric filter.
 * `primitive_evenRoot_half_pow_eq_neg_one` identifies the half-period of a
   primitive even-order root with `-1`.
-* `sum_odd_powers_eq_ramanujan` is the explicit divisibility-and-sign filter.
+* `sum_odd_powers_eq_ramanujan` is the explicit divisibility-and-sign
+  odd-coset filter, specializing to the classical Ramanujan filter at dyadic
+  `N`.
 * `oddDFT` and `oddDFTPowerTrace` are the unnormalized odd-frequency DFT and
-  its full power trace; `oddDFT_add_period` records its exact label period.
+  its full power trace; `oddDFT_add_period` records the period-`N` label
+  identity.
 * `oddDFTPowerTrace_eq_indexSumExpansion` separates the universal multinomial
   expansion from the later root-of-unity filter.
 * `oddRamanujanConvolution` is the congruence-filtered coefficient
@@ -44,7 +50,7 @@ Main declarations:
   used by Fourier coefficients.
 * `sum_range_two_mul_eq_add_self_sum_of_reflect` isolates the purely additive
   folding step that changes a full odd orbit into a half orbit once the
-  required reflection symmetry has been proved; its ring-valued wrapper
+  required reflection symmetry has been proved; its semiring-valued wrapper
   collects the two halves as multiplication by `2`.
 -/
 
@@ -115,13 +121,15 @@ theorem primitive_evenRoot_half_pow_eq_neg_one {R : Type*}
     exact IsPrimitiveRoot.pow (by omega) hζ (by ring)
   exact IsPrimitiveRoot.eq_neg_one_of_two_right hhalf
 
-/-- **Odd-coset Ramanujan filter.**  A primitive `(2 * N)`-th root turns the
+/-- **Odd-coset character filter.**  A primitive `(2 * N)`-th root turns the
 sum over all odd frequency labels into the signed congruence detector
 
 `N * (-1) ^ (S / N) * [N ∣ S]`.
 
 This is the finite character identity used by every power trace in the
-half-integer spectral report. -/
+half-integer spectral report.  When `N` is a power of two, the odd labels are
+the units modulo `2 * N` and this is the classical Ramanujan sum; for general
+`N` the theorem intentionally sums the whole odd coset. -/
 theorem sum_odd_powers_eq_ramanujan {R : Type*} [CommRing R] [IsDomain R]
     {ζ : R} {N : ℕ} (hζ : IsPrimitiveRoot ζ (2 * N))
     (hN : 0 < N) (S : ℕ) :
@@ -138,17 +146,17 @@ theorem sum_odd_powers_eq_ramanujan {R : Type*} [CommRing R] [IsDomain R]
 /-! ## Odd-frequency DFT power traces -/
 
 /-- The unnormalized discrete Fourier coefficient at the odd label `2k+1`,
-for a block of length `2 * N`.  Its definition only needs a commutative
-semiring; additive inverses enter later, when the half-period phase is
-identified with `-1`. -/
-def oddDFT {R : Type*} [CommSemiring R] (ζ : R) (N : ℕ)
+for a block of length `2 * N`.  Its definition only needs a semiring;
+additive inverses and commutative multiplication enter later, when the
+half-period phase and all-order product expansion are used. -/
+def oddDFT {R : Type*} [Semiring R] (ζ : R) (N : ℕ)
     (f : Fin (2 * N) → R) (k : ℕ) : R :=
   ∑ j : Fin (2 * N), f j * ζ ^ ((2 * k + 1) * j.val)
 
 /-- Odd-frequency labels are periodic modulo `N` as soon as `ζ` has period
 `2 * N`.  Primitivity and the domain hypotheses used by the Ramanujan filter
 are not needed for this elementary fact. -/
-theorem oddDFT_add_period {R : Type*} [CommSemiring R]
+theorem oddDFT_add_period {R : Type*} [Semiring R]
     {ζ : R} {N : ℕ} (hζ : ζ ^ (2 * N) = 1)
     (f : Fin (2 * N) → R) (k : ℕ) :
     oddDFT ζ N f (k + N) = oddDFT ζ N f k := by
@@ -162,7 +170,7 @@ theorem oddDFT_add_period {R : Type*} [CommSemiring R]
     pow_add, hperiod, mul_one]
 
 /-- The full power trace over the `N` odd frequency labels modulo `2 * N`. -/
-def oddDFTPowerTrace {R : Type*} [CommSemiring R] (ζ : R) (N : ℕ)
+def oddDFTPowerTrace {R : Type*} [Semiring R] (ζ : R) (N : ℕ)
     (f : Fin (2 * N) → R) (m : ℕ) : R :=
   ∑ k ∈ range N, oddDFT ζ N f k ^ m
 
@@ -203,7 +211,7 @@ theorem oddDFTPowerTrace_eq_indexSumExpansion {R : Type*}
             ∑ k ∈ range N,
               ζ ^ ((2 * k + 1) * oddDFTIndexSum J) := by
       refine Finset.sum_congr rfl (fun J _ => ?_)
-      rw [← Finset.mul_sum]
+      rw [Finset.mul_sum]
       refine Finset.sum_congr rfl (fun k _ => ?_)
       calc
         ∏ ℓ : Fin m,
@@ -233,9 +241,10 @@ def oddRamanujanConvolution {R : Type*} [CommRing R] (N m : ℕ)
 the odd DFT coefficients sum to `N` times a signed congruence-filtered
 `m`-fold convolution of the original samples.
 
-This is the finite algebraic content of the Ramanujan trace formula.  It holds
-for every order, including `m = 0`, over every commutative domain containing a
-primitive `(2 * N)`-th root. -/
+This is the finite algebraic content of the odd-coset trace formula,
+specializing to the Ramanujan trace formula when `N` is a power of two.  It
+holds for every order, including `m = 0`, over every commutative domain
+containing a primitive `(2 * N)`-th root. -/
 theorem oddDFTPowerTrace_eq_ramanujanConvolution {R : Type*}
     [CommRing R] [IsDomain R] {ζ : R} {N : ℕ}
     (hζ : IsPrimitiveRoot ζ (2 * N)) (hN : 0 < N)
@@ -280,8 +289,8 @@ def normalizedOddDFT {F : Type*} [Field F] (ζ : F) (N : ℕ)
     (f : Fin (2 * N) → F) (k : ℕ) : F :=
   (N : F)⁻¹ * oddDFT ζ N f k
 
-/-- The normalized coefficients inherit the same exact period in their
-frequency label. -/
+/-- The normalized coefficients inherit the same period-`N` identity in
+their frequency label. -/
 theorem normalizedOddDFT_add_period {F : Type*} [Field F]
     {ζ : F} {N : ℕ} (hζ : ζ ^ (2 * N) = 1)
     (f : Fin (2 * N) → F) (k : ℕ) :
@@ -343,14 +352,14 @@ theorem sum_range_two_mul_eq_add_self_sum_of_reflect
         exact hreflect k (Finset.mem_range.mp hk)
   rw [hupper]
 
-/-- Ring-valued form of `sum_range_two_mul_eq_add_self_sum_of_reflect`, with
-the two identical halves collected as scalar multiplication by `2`. -/
-theorem sum_range_two_mul_eq_two_mul_sum_of_reflect {R : Type*} [CommRing R]
+/-- Semiring-valued form of `sum_range_two_mul_eq_add_self_sum_of_reflect`,
+with the two identical halves collected as left multiplication by `2`. -/
+theorem sum_range_two_mul_eq_two_mul_sum_of_reflect {R : Type*} [Semiring R]
     (M : ℕ) (g : ℕ → R)
     (hreflect : ∀ k < M, g (2 * M - 1 - k) = g k) :
     ∑ k ∈ range (2 * M), g k = (2 : R) * ∑ k ∈ range M, g k := by
-  rw [sum_range_two_mul_eq_add_self_sum_of_reflect M g hreflect]
-  ring
+  simpa [two_mul] using
+    sum_range_two_mul_eq_add_self_sum_of_reflect M g hreflect
 
 /-- Full-to-half folding for normalized odd DFT power traces.  No sample
 symmetry is smuggled into the statement: the caller supplies the exact

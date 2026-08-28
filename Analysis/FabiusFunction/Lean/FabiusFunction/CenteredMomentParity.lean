@@ -1,4 +1,5 @@
 import FabiusFunction.CenteredMomentCumulants
+import FabiusFunction.SaddleLogExpansionPowerSeries
 
 /-!
 # Parity of centered Rvachev cumulants
@@ -13,9 +14,9 @@ integral-domain hypothesis.
 The second half packages the existing compressed series `momentPS` as the
 ordinary full exponential generating series in a variable `t`, by replacing
 `X` with `t²`.  This supplies unambiguous full-order moment, logarithmic, and
-cumulant coefficient families.  Their even coefficients recover the existing
-compressed coefficients, and every odd logarithmic coefficient and cumulant
-vanishes.
+cumulant coefficient families.  Their even moments, logarithmic coefficients,
+and cumulants recover the corresponding compressed families, while every odd
+moment, logarithmic coefficient, and cumulant vanishes.
 -/
 
 set_option autoImplicit false
@@ -131,6 +132,11 @@ theorem centeredRvachevFullMoment_eq_zero_of_odd
   simp [centeredRvachevFullMoment, factorialDenormalize,
     centeredRvachevFullMomentCoefficient_eq_zero_of_odd hn]
 
+/-- Canonical-index form: every odd full centered Rvachev moment vanishes. -/
+@[simp] theorem centeredRvachevFullMoment_odd (n : ℕ) :
+    centeredRvachevFullMoment (2 * n + 1) = 0 := by
+  exact centeredRvachevFullMoment_eq_zero_of_odd ⟨n, rfl⟩
+
 /-- The coefficient of order `n` in the formal logarithm of the full centered
 Rvachev moment series.  Unlike `centeredRvachevLogCoefficient`, this family is
 indexed by the ordinary order rather than by half the even order. -/
@@ -146,9 +152,58 @@ theorem centeredRvachevFullLogCoefficient_eq_zero_of_odd
     centeredRvachevFullMomentCoefficient
     (fun _ hj ↦ centeredRvachevFullMomentCoefficient_eq_zero_of_odd hj) hn
 
+/-- Canonical-index form: every odd coefficient of the full centered Rvachev
+formal logarithm vanishes. -/
+@[simp] theorem centeredRvachevFullLogCoefficient_odd (n : ℕ) :
+    centeredRvachevFullLogCoefficient (2 * n + 1) = 0 := by
+  exact centeredRvachevFullLogCoefficient_eq_zero_of_odd ⟨n, rfl⟩
+
+/-- The even full-series logarithmic coefficient of order `2n` is the
+existing compressed logarithmic coefficient of order `n`. -/
+@[simp] theorem centeredRvachevFullLogCoefficient_even (n : ℕ) :
+    centeredRvachevFullLogCoefficient (2 * n) =
+      centeredRvachevLogCoefficient n := by
+  have hfullMass :
+      SaddleExpansion.massSeries centeredRvachevFullMomentCoefficient =
+        centeredRvachevFullMomentPowerSeries := by
+    ext m
+    simp [centeredRvachevFullMomentCoefficient]
+  have hcompressedMass :
+      SaddleExpansion.massSeries centeredRvachevMomentCoefficient = momentPS := by
+    ext m
+    simp
+  have hmomentPS0 : PowerSeries.constantCoeff momentPS = 1 := by
+    rw [← PowerSeries.coeff_zero_eq_constantCoeff_apply]
+    simp
+  have hlogSeries :
+      SaddleExpansion.logSeries centeredRvachevFullMomentCoefficient =
+        PowerSeries.expand 2 (by omega)
+          (SaddleExpansion.logSeries centeredRvachevMomentCoefficient) := by
+    rw [SaddleExpansion.logSeries_eq_logOf _
+        centeredRvachevFullMomentCoefficient_zero,
+      SaddleExpansion.logSeries_eq_logOf _
+        centeredRvachevMomentCoefficient_zero,
+      hfullMass, hcompressedMass]
+    simpa [centeredRvachevFullMomentPowerSeries] using
+      (SaddleExpansion.logOf_expand 2 (by omega) momentPS hmomentPS0)
+  have hcoeff := congrArg (PowerSeries.coeff (2 * n)) hlogSeries
+  simpa only [centeredRvachevFullLogCoefficient,
+    centeredRvachevLogCoefficient, SaddleExpansion.coeff_logSeries,
+    PowerSeries.coeff_expand_mul] using hcoeff
+
 /-- The full centered Rvachev cumulant of ordinary order `n`. -/
 def centeredRvachevFullCumulant (n : ℕ) : ℚ :=
   factorialDenormalize centeredRvachevFullLogCoefficient n
+
+/-- The even full centered Rvachev cumulant of order `2n` is the existing
+compressed-even cumulant indexed by `n`. -/
+@[simp] theorem centeredRvachevFullCumulant_even (n : ℕ) :
+    centeredRvachevFullCumulant (2 * n) =
+      centeredRvachevEvenCumulant n := by
+  rw [centeredRvachevFullCumulant, factorialDenormalize,
+    centeredRvachevFullLogCoefficient_even,
+    centeredRvachevEvenCumulant, EvenMomentCumulant.evenMomentCumulant,
+    centeredRvachevLogCoefficient, centeredRvachevMomentCoefficient]
 
 /-- Every odd centered Rvachev cumulant vanishes. -/
 theorem centeredRvachevFullCumulant_eq_zero_of_odd

@@ -287,6 +287,8 @@ power of that variable. -/
   induction n with
   | zero => simp
   | succ n ih =>
+      change completeHomogeneousEvalOn (insert i ∅) a (n + 1) =
+        a i ^ (n + 1)
       rw [completeHomogeneousEvalOn_insert_succ
         (s := (∅ : Finset ι)) (i := i) (by simp) a n,
         ih, completeHomogeneousEvalOn_empty_succ, add_zero, pow_succ]
