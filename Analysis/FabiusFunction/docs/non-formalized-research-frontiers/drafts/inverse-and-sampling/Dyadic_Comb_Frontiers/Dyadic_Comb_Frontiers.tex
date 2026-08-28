@@ -2607,11 +2607,17 @@ Synthesis from Rvachev Up-Atoms}
 reproduction/quadrature order of the up-translate system at
 radius-to-spacing ratio $M$ is exactly $\vtwo(M)$, with the general-%
 ratio first defect carrying the values $\Phi(q\ell/2)$ for $M=2^{\nu}q$.
-For dyadic meshes the monomial core of \eqref{eq:up-composite-mesh} is
-kernel-verified
-(\nolinkurl{Fabius.tsum_shifted_monomial_eq_integral_real} in
-\nolinkurl{MonomialCombExactness.lean}); the composite-mesh statement
-is the same Poisson argument with the coarser valuation count.
+\Cref{thm:up-composite-mesh} itself is now kernel-verified in full polynomial form:
+\nolinkurl{Fabius.tsum_shifted_polynomial_eq_integral_nat} in
+\nolinkurl{CompositeMeshExactness.lean} proves
+\(\sum_{k\in\Z}P(\theta+k)\,\Up((\theta+k)/M)=\int P(x)\Up(x/M)\dd x\) for every mesh
+\(M\ge1\), every real shift, and every \(\deg P\le\vtwo(M)\) --- the derivative
+vanishing at the alias frequencies \(M\ell\) is exactly the valuation count
+\(\vtwo(M\ell)+1\ge\vtwo(M)+1\) (\nolinkurl{Fabius.iteratedDeriv_rvachevFourier_nat_mul_int_eq_zero}),
+and the polynomial assembly runs at a general positive real scale
+(\nolinkurl{Fabius.tsum_shifted_polynomial_eq_integral_of_forall_monomial}), of which the
+dyadic level (\nolinkurl{Fabius.tsum_shifted_monomial_eq_integral_real} in
+\nolinkurl{MonomialCombExactness.lean}) and the composite mesh are the two instances.
 
 \subsection{Phase cubature and the phase--resolution separation}
 
