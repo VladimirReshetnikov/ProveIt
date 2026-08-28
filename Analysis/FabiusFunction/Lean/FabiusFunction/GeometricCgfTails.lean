@@ -66,6 +66,8 @@ theorem mgf_id_conv [SFinite μ] [SFinite ν] (t : ℝ) :
   calc ∫ p : ℝ × ℝ, exp (t * (p.1 + p.2)) ∂(μ.prod ν)
       = ∫ p : ℝ × ℝ, exp (t * p.1) * exp (t * p.2) ∂(μ.prod ν) := by
         refine integral_congr_ae (Filter.Eventually.of_forall fun p => ?_)
+        show Real.exp (t * (p.1 + p.2)) =
+          Real.exp (t * p.1) * Real.exp (t * p.2)
         rw [mul_add, Real.exp_add]
     _ = (∫ x, exp (t * x) ∂μ) * ∫ y, exp (t * y) ∂ν :=
         integral_prod_mul (fun x => exp (t * x)) fun y => exp (t * y)
@@ -127,8 +129,8 @@ theorem cgf_id_mulPrefix (ν : Measure ℝ) [IsProbabilityMeasure ν]
     cgf id (mulPrefix ν c m) t =
       ∑ k ∈ Finset.range m, cgf id ν (c ^ k * t) := by
   simp only [cgf]
-  rw [mgf_id_mulPrefix,
-    Real.log_prod _ _ fun k _ => (mgf_pos (hint k)).ne']
+  rw [mgf_id_mulPrefix]
+  exact Real.log_prod fun k _ => (mgf_pos (X := id) (hint k)).ne'
 
 /-- **The cumulant tail law**: from the one-step refinement, the
 cumulant generating function splits off `m` geometric digit layers,
@@ -144,9 +146,11 @@ theorem cgf_id_self_similar {c : ℝ} [IsProbabilityMeasure μ]
   simp only [cgf]
   rw [mgf_id_self_similar h m t,
     Real.log_mul
-      (Finset.prod_ne_zero_iff.mpr fun k _ => (mgf_pos (hν k)).ne')
-      (mgf_pos hμ).ne',
-    Real.log_prod _ _ fun k _ => (mgf_pos (hν k)).ne']
+      (Finset.prod_ne_zero_iff.mpr fun k _ =>
+        (mgf_pos (X := id) (hν k)).ne')
+      (mgf_pos (X := id) hμ).ne']
+  congr 1
+  exact Real.log_prod fun k _ => (mgf_pos (X := id) (hν k)).ne'
 
 end CumulantLayer
 
