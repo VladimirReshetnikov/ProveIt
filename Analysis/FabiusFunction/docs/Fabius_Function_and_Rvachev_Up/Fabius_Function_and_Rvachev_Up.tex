@@ -1141,6 +1141,103 @@ uniform convergence \lean{fabiusUniformSpline_tendstoUniformly_extendedFabius}. 
 global form strengthens and packages the analytic input used by the complex-shift and
 discrete-limit results below.
 
+\subsection{The exact quarter cell of the finite spline}
+\label{sec:finite-quarter-cell}
+
+The indexing used in the inverse-frontier calculations is shifted by one from
+\eqref{eq:centered-spline}.  Write
+\begin{equation}
+ P_n(x):=S_{n-1}(x)\qquad(n\ge1).                           \label{eq:report-finite-approximant}
+\end{equation}
+In Lean this is \lean{reportFiniteFabiusApproximant}; keeping the definition explicit
+prevents a degree-one indexing error.  The complete dyadic cell about $1/4$ has a remarkably simple
+closed form.
+
+\begin{theorem}[Exact two-sided quarter cell]
+\label{thm:finite-quarter-cell}
+For every $n\ge3$ and every real $z$ with $|z|\le2^{-n}$,
+\begin{equation}
+ \boxed{
+ P_n\!\left(\frac14+z\right)
+ =\frac5{72}+z+4z^2-\frac49\,4^{-n}.}                     \label{eq:finite-quarter-quadratic}
+\end{equation}
+Consequently,
+\begin{align}
+ P_n\!\left(\frac14+z\right)-P_n\!\left(\frac14-z\right)
+   &=2z,                                                    \label{eq:finite-quarter-reflection}\\
+ P_n\!\left(\frac14+z\right)+P_n\!\left(\frac14-z\right)
+   -2P_n\!\left(\frac14\right)
+   &=8z^2.                                                  \label{eq:finite-quarter-second-difference}
+\end{align}
+Moreover, $P_n$ is strictly increasing on the whole closed interval
+\[
+ \left[\frac14-2^{-n},\frac14+2^{-n}\right].
+\]
+\end{theorem}
+
+\begin{proof}[Formal proof]
+Equation \eqref{eq:finite-quarter-quadratic} is
+\lean{reportFiniteFabiusApproximant_quarter_eq_quadratic}, with its absolute-value
+wrapper \lean{reportFiniteFabiusApproximant_quarter_twoSided}.  The proof computes the
+safe cutoff on the entire closed cell, including the exceptional right endpoint, and
+reduces the remaining block to the first two Thue--Morse moments beyond the Prouhet
+cancellation range.  The reflection and centered second-difference identities are
+\lean{reportFiniteFabiusApproximant_quarter_reflection} and
+\lean{reportFiniteFabiusApproximant_quarter_centralSecondDifference}.  Strict
+monotonicity on the full cell is
+\lean{strictMonoOn_reportFiniteFabiusApproximant_quarter_twoSided}.  The finite
+moment extraction is centralized in \path{QuarterSplineLocalPolynomial.lean}; the
+two-sided semantic wrappers are in \path{QuarterSplineTwoSided.lean}.
+
+For completeness, the two signed Thue--Morse moments that survive beyond the
+Prouhet cancellation range are worth recording.  If
+\[
+ M_m(d):=\sum_{r<2^m}\varepsilon_r r^d,
+\]
+then
+\begin{align}
+ M_m(m+1)
+   &=(-1)^m2^{\binom m2}m!\,
+     \frac{(m+1)(2^m-1)}2,                                  \label{eq:tm-moment-add-one}\\
+ M_m(m+2)
+   &=(-1)^m2^{\binom m2}m!(m+1)(m+2)
+     \left(\frac{(2^m-1)^2}{8}+\frac{4^m-1}{72}\right).
+                                                               \label{eq:tm-moment-add-two}
+\end{align}
+These are \lean{thueMorsePowerSumRing_add_one_real} and
+\lean{thueMorsePowerSumRing_add_two_real}.  Their translated degree-$m+2$
+extractor and the normalized quarter specialization are
+\lean{thueMorse_translated_power_sum_add_two_real},
+\lean{normalized_thueMorse_translated_power_sum_add_two}, and
+\lean{normalized_quarter_thueMorse_block}.  This is the exact arithmetic
+source of both the constant $5/72$ and the finite-depth correction in
+\eqref{eq:finite-quarter-quadratic}.
+\end{proof}
+
+Define the positive displacement
+\begin{equation}
+ \delta_n:=
+ \frac{\sqrt{1+\frac{64}{9}4^{-n}}-1}{8}.                    \label{eq:finite-quarter-displacement}
+\end{equation}
+For every $n\ge3$, the finite-spline identity
+\begin{equation}
+ P_n\!\left(\frac14+\delta_n\right)=\frac5{72}               \label{eq:finite-quarter-displacement-value}
+\end{equation}
+is \lean{reportFiniteFabiusApproximant_quarterPrefix_value}; the proof also
+establishes that $\delta_n\le2^{-n}$, so the point lies inside the exact cell.
+The same quadratic yields an exact inverse value, but only after an inverse has been
+specified.  For $n\ge3$, if $G$ is any left inverse of $P_n$ on the right half-cell
+$[1/4,1/4+2^{-n}]$, then
+\begin{equation}
+ G\!\left(\frac5{72}\right)
+ =\frac14+\frac{\sqrt{1+\frac{64}{9}4^{-n}}-1}{8}.          \label{eq:finite-quarter-conditional-inverse}
+\end{equation}
+This conditional statement is
+\lean{reportFiniteFabiusApproximant_quarterPrefix_quantile}.  It does not define a
+canonical finite inverse $G_n$, identify $G$ with the limiting inverse
+\lean{fabiusInv}, or assert convergence of finite inverse branches.  Those are separate
+analytic questions, not consequences of the cell polynomial alone.
+
 \section{Fourier products, inversion, and Poisson summation}
 \label{sec:fourier}
 
@@ -1265,6 +1362,70 @@ This is exactly \lean{prod_sin_two_pow_eq_thueMorse_sum} in
 The final sine becomes \(\sin(2^mw)\), which appends the last factor to
 the product over \(j<m\).  The formal statement is over real \(w\); no
 complex continuation or neighboring cosine-product identity is asserted.
+\end{proof}
+
+The same polynomial is exactly the denominator-cleared shell of the centered sinc
+product.  Define, for $N\in\N$,
+\begin{equation}
+ Q_N(w):=\prod_{r=0}^{N-1}\sinc\!\left(\frac{w}{2^{r+1}}\right),
+ \qquad
+ T_m(w):=\sum_{n=0}^{2^m-1}\varepsilon_n
+   \sin\!\left(\frac{m\pi}{2}+(2n+1)w\right).              \label{eq:centered-sinc-prefix-tm}
+\end{equation}
+
+\begin{theorem}[Denominator-cleared Thue--Morse sinc shell]
+\label{thm:centered-sinc-thue-morse-shell}
+For every $m\in\N$ and $w\in\R$,
+\begin{align}
+ T_m(w)
+   &=2^m\prod_{j=0}^{m}\sin(2^jw),                         \label{eq:tm-sine-polynomial-product}\\
+ 2^{m+\binom{m+1}{2}}w^{m+1}Q_{m+1}(2^{m+1}w)
+   &=T_m(w),                                                \label{eq:centered-sinc-cleared-shell}\\
+ 2^{m+\binom{m+1}{2}}w^{m+1}
+   \Phi\!\left(\frac{2^mw}{\pi}\right)
+   &=T_m(w)\Phi\!\left(\frac{w}{2\pi}\right).           \label{eq:rvachev-product-thue-morse-shell}
+\end{align}
+All three identities are total at $w=0$; in particular, no removable denominator is
+cancelled there.  The polynomial has parity
+\begin{equation}
+ T_m(-w)=(-1)^{m+1}T_m(w),                                 \label{eq:tm-sine-polynomial-parity}
+\end{equation}
+and its complete factor-level zero criterion is
+\begin{equation}
+ T_m(w)=0
+ \quad\Longleftrightarrow\quad
+ \exists\,j<m+1:\ \sin(2^jw)=0.                          \label{eq:tm-sine-polynomial-zeros}
+\end{equation}
+If $w\ne0$, then both the finite prefix and the dilated full product vanish exactly
+when $T_m(w)$ does:
+\begin{align}
+ Q_{m+1}(2^{m+1}w)=0
+   &\Longleftrightarrow T_m(w)=0,                           \label{eq:centered-sinc-prefix-zero-iff}\\
+ \Phi\!\left(\frac{2^mw}{\pi}\right)=0
+   &\Longleftrightarrow T_m(w)=0.                           \label{eq:rvachev-product-zero-iff-tm}
+\end{align}
+\end{theorem}
+
+\begin{proof}[Formal proof]
+The definition, product identity, value at zero, parity, and factor-level zero criterion
+are \lean{thueMorseSinePolynomial},
+\lean{thueMorseSinePolynomial_eq_prod_sin_two_pow},
+\lean{thueMorseSinePolynomial_zero},
+\lean{thueMorseSinePolynomial_neg}, and
+\lean{thueMorseSinePolynomial_eq_zero_iff}.  The two cross-multiplied identities are
+\lean{centeredSincPartialProduct_dyadic_eq_thueMorse} and
+\lean{rvachevFourierProduct_dyadic_eq_thueMorse}.  Their sharp zero criteria are
+\lean{centeredSincPartialProduct_dyadic_eq_zero_iff} and
+\lean{rvachevFourierProduct_dyadic_eq_zero_iff_thueMorse}; the latter uses the already
+proved global real-axis zero classification to show that the apparent tail-zero
+alternative is already a zero of the first exposed sine factor.  All declarations are
+in \path{CenteredRvachevThueMorseFourier.lean}.
+
+Here $\Phi$ denotes the standalone convergent product
+\lean{rvachevFourierProduct}.  Passing from
+\eqref{eq:rvachev-product-thue-morse-shell} to the integral Fourier transform of a
+particular bounded Fabius solution uses the separate identification
+\lean{rvachevFourier_eq_product}; it is not hidden in the finite algebra.
 \end{proof}
 
 \begin{theorem}[Dyadic shell factorization]
@@ -1716,6 +1877,71 @@ DFT and its inverse.  Summability of \(a\) is the only convergence
 hypothesis; norm-summability is not assumed.
 \end{proof}
 
+\subsection{Finite odd-coset DFT traces}
+\label{sec:finite-odd-dft}
+
+There is also a finite root-of-unity calculation behind the half-integer spectral
+frontier.  It is useful to isolate it from every analytic alias or limiting argument.
+
+\begin{theorem}[Odd-coset character filter and all-order trace]
+\label{thm:odd-coset-dft-trace}
+Let $N>0$, let $R$ be a commutative domain, and let
+$\zeta\in R$ be a primitive $2N$-th root of unity.  Then, for every
+$S\in\N$,
+\begin{equation}
+ \sum_{k=0}^{N-1}\zeta^{(2k+1)S}
+ =\begin{cases}
+   N(-1)^{S/N},&N\mid S,\\
+   0,&N\nmid S.
+  \end{cases}                                               \label{eq:odd-coset-root-filter}
+\end{equation}
+For samples $f_0,\ldots,f_{2N-1}\in R$, put
+\begin{equation}
+ A_k:=\sum_{j=0}^{2N-1}f_j\zeta^{(2k+1)j},
+ \qquad S(J):=\sum_{\ell=1}^{m}J_\ell,                    \label{eq:odd-dft-definition}
+\end{equation}
+where $J=(J_1,\ldots,J_m)\in\{0,\ldots,2N-1\}^m$, and define
+\begin{equation}
+ \mathcal C_{N,m}(f):=
+ \sum_J
+  \begin{cases}
+   (-1)^{S(J)/N}\prod_{\ell=1}^{m}f_{J_\ell},&N\mid S(J),\\
+   0,&N\nmid S(J).
+  \end{cases}                                               \label{eq:odd-dft-convolution}
+\end{equation}
+Then, for every $m\in\N$, including $m=0$,
+\begin{equation}
+ \sum_{k=0}^{N-1}A_k^m=N\,\mathcal C_{N,m}(f).             \label{eq:odd-dft-power-trace}
+\end{equation}
+Over a field, normalizing each coefficient by $N$ gives
+\begin{equation}
+ \sum_{k=0}^{N-1}\left(\frac{A_k}{N}\right)^m
+ =\frac{N}{N^m}\,\mathcal C_{N,m}(f).                     \label{eq:normalized-odd-dft-power-trace}
+\end{equation}
+The labels also satisfy the period-$N$ identity $A_{k+N}=A_k$.
+\end{theorem}
+
+\begin{proof}[Formal proof]
+Equation \eqref{eq:odd-coset-root-filter} is
+\lean{sum_odd_powers_eq_ramanujan}.  The unnormalized and normalized trace identities
+are \lean{oddDFTPowerTrace_eq_ramanujanConvolution} and
+\lean{normalizedOddDFTPowerTrace_eq_ramanujanConvolution}; the coefficient and
+convolution definitions are \lean{oddDFT} and \lean{oddRamanujanConvolution}.  The
+label identity is \lean{oddDFT_add_period}.  The tuple expansion before applying the
+root filter is separately exposed as
+\lean{oddDFTPowerTrace_eq_indexSumExpansion}.  These declarations are in
+\path{HalfIntegerOddDFT.lean}.
+
+For arbitrary $N$, \eqref{eq:odd-coset-root-filter} sums the complete odd coset
+modulo $2N$.  It is the classical Ramanujan sum precisely in the power-of-two
+application, where the odd residues are exactly the units.  Passing from a full odd
+orbit to one representative from each reflection pair is available as
+\lean{normalizedOddDFTPowerTrace_eq_two_mul_half}, but only under the exact reflection
+hypothesis supplied by its caller.  No theorem here identifies the $f_j$ with sampled
+Fabius data, proves an inverse DCT or a bilateral alias formula, or supplies an analytic
+error estimate.
+\end{proof}
+
 \subsection{Moment expansion of the Fourier transform}
 
 With
@@ -2028,11 +2254,73 @@ reindexing is \lean{evenMersenneProduct_eq_prod_Ico}, and positivity is
 proved natural normalization, not a claim that the displayed denominator is already
 reduced.
 
+\subsection{Full centered moment and cumulant parity}
+\label{sec:centered-cumulant-parity}
+
+The even-indexed sequence $c_n$ admits a canonical full-order formal packaging.  Define
+\begin{equation}
+ M(t):=\sum_{n\ge0}\mu_n\frac{t^n}{n!}
+      :=\sum_{n\ge0}c_n\frac{t^{2n}}{(2n)!},
+ \qquad
+ K(t):=\log M(t)=\sum_{n\ge0}\kappa_n\frac{t^n}{n!}.       \label{eq:centered-full-moment-cumulant-series}
+\end{equation}
+These are formal power series over $\Q$; no analytic convergence is needed.
+
+\begin{theorem}[Parity and Bernoulli--Mersenne cumulants]
+\label{thm:centered-full-cumulants}
+For every $n\in\N$,
+\begin{equation}
+ \mu_{2n}=c_n,\qquad \mu_{2n+1}=0,\qquad \kappa_{2n+1}=0. \label{eq:centered-full-parity}
+\end{equation}
+Moreover $\kappa_0=0$, and for every $n\ge1$,
+\begin{equation}
+ \boxed{
+ \kappa_{2n}=\frac{2^{2n-1}B_{2n}}{n(4^n-1)}.}             \label{eq:centered-bernoulli-mersenne-cumulant}
+\end{equation}
+Consequently, for every $N\ge1$,
+\begin{equation}
+ c_N=\frac1N\sum_{r=1}^{N}
+   \binom{2N}{2r}\frac{2^{2r-1}B_{2r}}{4^r-1}\,c_{N-r}.   \label{eq:centered-bernoulli-mersenne-recurrence}
+\end{equation}
+\end{theorem}
+
+\begin{proof}[Formal proof]
+The full moment series, its coefficients, and the factorially denormalized families are
+\lean{centeredRvachevFullMomentPowerSeries},
+\lean{centeredRvachevFullMoment}, and
+\lean{centeredRvachevFullCumulant}.  Even recovery and odd vanishing are
+\lean{centeredRvachevFullMoment_even},
+\lean{centeredRvachevFullMoment_odd},
+\lean{centeredRvachevFullCumulant_even}, and
+\lean{centeredRvachevFullCumulant_odd} in
+\path{CenteredMomentParity.lean}.  The generic mechanism is the involution
+$t\mapsto-t$: an even coefficient family is fixed by it, whereas an odd logarithmic
+coefficient changes sign.  This is formalized without an integral-domain hypothesis by
+\lean{SaddleExpansion.logCoeff_eq_zero_of_odd_coeff}; the reusable substitution law
+\lean{SaddleExpansion.logOf_expand} shows that formal logarithms commute with
+$X\mapsto X^p$.
+
+The positive even formula \eqref{eq:centered-bernoulli-mersenne-cumulant} is
+\lean{centeredRvachevEvenCumulant_eq_bernoulliMersenne_formula}, and
+\eqref{eq:centered-bernoulli-mersenne-recurrence} is
+\lean{moment_bernoulliMersenne_recurrence}, both in
+\path{SinhDivBernoulliLog.lean}.  The construction is the formal full-order family
+canonically attached to the already established even moments.  Interpreting every
+$\mu_n$ as a separately integrated ordinary moment would additionally require the
+corresponding all-order integral bridge; that analytic identification is not being
+smuggled into the formal series statement.
+\end{proof}
+
 \subsection{Universal Bell and cumulant transforms}
 \label{sec:moment-cumulant-algebra}
 
 The algebra converting moments to cumulants is independent of the particular Fabius
-law.  Let \(R\) be any commutative \(\Q\)-algebra and let \(a:\N\to R\).  Write
+law.  Over every commutative \(\Q\)-algebra, vanishing of all odd moments forces
+every odd coefficient of the formal logarithm, and hence every odd formal cumulant,
+to vanish.  The generic declarations are
+\lean{SaddleExpansion.logCoeff_eq_zero_of_odd_coeff} and
+\lean{momentCumulant_eq_zero_of_odd_moments}.  Let \(R\) be any commutative
+\(\Q\)-algebra and let \(a:\N\to R\).  Write
 \begin{equation}
  (\mathcal Na)_n=\frac{a_n}{n!},
  \qquad
@@ -2963,6 +3251,95 @@ obligations at Gaussian base $q=1/4$.  The analytic quarter-base prefix or spect
 expansion, its remainder estimates, and the resulting acceleration and convergence claims
 remain in the research-frontier volume.
 
+The same finite row acts coefficientwise on every formal power series.  For
+$q\in\Q$, $p,n\in\N$, and $D(X)\in\Q[[X]]$, define
+\begin{equation}
+ \mathcal R_{q,p,n}D
+ :=\sum_{j=0}^{p}\lambda_{p,j}^{(q)}
+      D\!\left(q^{n+j}X\right).                              \label{eq:generic-geometric-formal-filter}
+\end{equation}
+Then, for every $m\in\N$, without a node-distinctness assumption,
+\begin{equation}
+ [X^m]\mathcal R_{q,p,n}D
+ =[X^m]D\,q^{nm}
+   \sum_{j=0}^{p}\lambda_{p,j}^{(q)}(q^j)^m.                 \label{eq:generic-geometric-filter-coeff}
+\end{equation}
+If $q\ne0$ and $(q;q)_p\ne0$, the constant coefficient is preserved and
+degrees $1,\ldots,p$ vanish.  If moreover $0<q<1$ and $m>p$, then
+\begin{equation}
+ \boxed{
+ [X^m]\mathcal R_{q,p,n}D
+ =[X^m]D\,(-1)^p q^{\binom{p+1}{2}}
+   \qbinom{m-1}{p}{q}\,q^{nm}.}                              \label{eq:generic-geometric-filter-qbinomial}
+\end{equation}
+Coefficient extraction from a finite rescaling filter is
+\lean{finiteRescaleFilter_coeff}; equations
+\eqref{eq:generic-geometric-filter-coeff} and
+\eqref{eq:generic-geometric-filter-qbinomial} are
+\lean{geometricRichardsonPowerSeriesFilter_coeff} and
+\lean{geometricRichardsonPowerSeriesFilter_coeff_eq_qBinomial}.  The constant and
+cancelled-degree statements are
+\lean{geometricRichardsonPowerSeriesFilter_coeff_zero} and
+\lean{geometricRichardsonPowerSeriesFilter_coeff_eq_zero}.  Thus the quarter
+Catalan calculation below is a specialization of a reusable filter theorem, not an
+isolated coefficient computation.
+
+There is nevertheless a second exact quarter-base result at the level of formal power
+series.  Let \(D(Q)=\sum_{m\ge0}\delta_mQ^m\in\Q[[Q]]\) be the unique series with
+zero constant coefficient satisfying
+\begin{equation}
+ D(Q)+4D(Q)^2=\frac49Q.                                    \label{eq:quarter-catalan-formal-equation}
+\end{equation}
+Its positive coefficients are
+\begin{equation}
+ \delta_{r+1}=(-1)^r C_r\frac{2^{4r+2}}{9^{r+1}},          \label{eq:quarter-catalan-formal-coefficients}
+\end{equation}
+where \(C_r\) is the \(r\)-th Catalan number.  For the geometric Lagrange weights
+\(\lambda_{p,j}^{(1/4)}\) on \(1,4^{-1},\ldots,4^{-p}\), define the coefficientwise
+filter
+\begin{equation}
+ \mathcal R_{p,n}(Q):=
+ \sum_{j=0}^{p}\lambda_{p,j}^{(1/4)}D(4^{-(n+j)}Q).         \label{eq:quarter-catalan-richardson-filter}
+\end{equation}
+
+\begin{theorem}[Formal Catalan--Gaussian quarter filter]
+\label{thm:quarter-catalan-richardson-filter}
+For every \(p,n\in\N\), all coefficients of
+\(\mathcal R_{p,n}\) through degree \(p\) vanish.  For \(m>p\),
+\begin{equation}
+ [Q^m]\mathcal R_{p,n}
+ =\delta_m(-1)^p4^{-\binom{p+1}{2}}
+   \qbinom{m-1}{p}{1/4}\,4^{-nm}.                          \label{eq:quarter-catalan-filter-residual}
+\end{equation}
+The first surviving coefficient has positive sign and the closed form
+\begin{equation}
+ \boxed{
+ [Q^{p+1}]\mathcal R_{p,n}
+ =\frac{C_p\,2^{4p+2}}
+ {9^{p+1}4^{\binom{p+1}{2}+n(p+1)}}.}                      \label{eq:quarter-catalan-filter-leading}
+\end{equation}
+\end{theorem}
+
+\begin{proof}[Formal proof]
+The series \(D\), its coefficient formula, its quadratic equation, and its uniqueness are
+\lean{quarterCatalanGermSeries},
+\lean{quarterCatalanGermSeries_coeff_succ},
+\lean{quarterCatalanGermSeries_equation}, and
+\lean{existsUnique_quarterCatalanGermSeries} in
+\path{QuarterCatalanGerm.lean}.  The filter is
+\lean{quarterCatalanRichardsonFilter}.  Cancellation, the complete residual formula, and
+the leading coefficient are
+\lean{quarterCatalanRichardsonFilter_coeff_eq_zero_of_le},
+\lean{quarterCatalanRichardsonFilter_coeff_eq_qBinomial}, and
+\lean{quarterCatalanRichardsonFilter_firstUncancelled_coeff} in
+\path{QuarterCatalanRichardson.lean}.
+
+Every assertion here is coefficientwise in \(\Q[[Q]]\).  It neither asserts that the
+formal germ converges to a real finite-prefix inverse nor supplies a remainder estimate,
+sign theorem for a real extrapolation error, or analytic acceleration result.  Those
+claims remain distinct from the proved Gaussian cancellation algebra.
+\end{proof}
+
 The polynomial in \eqref{eq:half-q-binomial-theorem} has the complete rational root locus
 \begin{equation}
  \sum_{k=0}^{n}(-1)^k2^{-\binom k2}\qbinom nk{1/2}z^k=0
@@ -3714,6 +4091,26 @@ specialization \lean{sum_lagrangeEvalWeight_mul_pow_card_add} are in
 \path{LagrangeResidualMoments.lean}.  Thus
 \eqref{eq:lagrange-all-residual-moments} extends the preceding first-error
 formula rather than replacing its low-degree exactness foundation.
+
+On a geometric alphabet the symmetric residual itself has a closed Gaussian form.  For
+every commutative semiring, every $q$, and all $p,r\in\N$,
+\begin{equation}
+ h_r(1,q,\ldots,q^p)=\qbinom{p+r}{r}{q}.                   \label{eq:complete-homogeneous-geometric}
+\end{equation}
+This principal specialization is
+\lean{completeHomogeneousEvalOn_geometric_range}; it is total at $q=0$ and at roots
+of unity and uses no division.  Over a field, if the finite nodes
+$1,q,\ldots,q^p$ are distinct, it converts
+\eqref{eq:lagrange-all-residual-moments} at target zero into
+\begin{equation}
+ \sum_{k=0}^{p}\lambda_{p,k}^{(q)}(q^k)^{p+1+r}
+ =(-1)^p q^{\binom{p+1}{2}}\qbinom{p+r}{r}{q}.             \label{eq:geometric-complete-homogeneous-residual}
+\end{equation}
+The latter is
+\lean{sum_geometricLagrangeWeight_mul_pow_succ_add_eq_gaussianBinomial} in
+\path{GeometricLagrangeCompleteHomogeneous.lean}.  Thus the semiring symmetric-polynomial
+identity is unconditional, while only its Lagrange-weight interpretation requires finite
+node injectivity.
 
 For the present half-geometric grid, write $\lambda_{n,k}^{(1/2)}$ for the
 evaluation-at-zero weight belonging to the node $2^{-k}$.  The Toeplitz row is exactly the
@@ -5041,6 +5438,57 @@ These are \lean{tendsto_fabiusLambertPhase_nhdsGT_zero_atTop} and
 \lean{tendsto_inv_fabiusLambertPhase_nhdsGT_zero} in
 \path{FabiusLambertRates.lean}.
 
+\subsubsection{Phase-locked reciprocal Richardson algebra}
+
+The exact inverse relation also supplies a finite lattice on which every periodic
+coefficient is frozen, not merely asymptotically stable.  Fix
+$\lambda_0>1/L$ and set
+\begin{equation}
+ x_j=(\lambda_0+j)2^{-(\lambda_0+j)},
+ \qquad h_j=(\lambda_0+j)^{-1}.                             \label{eq:lambert-phase-locked-nodes}
+\end{equation}
+Then $x_j\in\mathcal D_L^\circ$ and
+\begin{equation}
+ \lambda(x_j)=\lambda_0+j.                                \label{eq:lambert-phase-locked-inversion}
+\end{equation}
+Consequently every one-periodic function $G$ satisfies
+$G(\lambda(x_j))=G(\lambda_0)$.
+
+For $0\le j\le r$, let $\omega_{r,j}$ be the evaluation-at-zero Lagrange
+weight on $h_0,\ldots,h_r$.  Its explicit real form is
+\begin{equation}
+ \omega_{r,j}
+ =\frac{(-1)^{r-j}}{r!}\binom rj(\lambda_0+j)^r.           \label{eq:lambert-reciprocal-weight}
+\end{equation}
+These weights obey
+\begin{align}
+ \sum_{j=0}^{r}\omega_{r,j}&=1,                            \label{eq:lambert-reciprocal-mass}\\
+ \sum_{j=0}^{r}\omega_{r,j}(\lambda_0+j)^{-m}&=0
+   \qquad(1\le m\le r),                                   \label{eq:lambert-reciprocal-cancellation}\\
+ \sum_{j=0}^{r}\omega_{r,j}G(\lambda(x_j))&=G(\lambda_0). \label{eq:lambert-periodic-preservation}
+\end{align}
+Every residual moment is explicit as well.  For $t\ge0$,
+\begin{equation}
+ \sum_{j=0}^{r}\omega_{r,j}(\lambda_0+j)^{-(r+1+t)}
+ =(-1)^r\left(\prod_{j=0}^{r}(\lambda_0+j)^{-1}\right)
+ h_t(h_0,\ldots,h_r).                                      \label{eq:lambert-reciprocal-residual}
+\end{equation}
+
+The node geometry, phase locking, and periodic preservation are
+\lean{fabiusLambertPhase_phaseLockedNode},
+\lean{Periodic.apply_fabiusLambertPhase_phaseLockedNode}, and
+\lean{sum_shiftedReciprocalLagrangeWeight_mul_periodicPhaseLocked}.  The weight formula,
+cancellation, and all-residual identity are
+\lean{shiftedReciprocalLagrangeWeight_eq_choose_of_pos},
+\lean{sum_shiftedReciprocalLagrangeWeight_mul_invPow_eq_zero}, and
+\lean{sum_shiftedReciprocalLagrangeWeight_residual} in
+\path{LambertPhaseLockedRichardson.lean}.
+
+This is exact finite interpolation algebra.  It does not by itself extract the endpoint
+fluctuation $\Psi$ from sampled values of $F$, justify applying an asymptotic expansion
+uniformly across the row, or prove a Richardson remainder estimate.  Such analytic steps
+must be supplied separately.
+
 The corrected main term is
 \begin{equation}
  \mathcal M(x)=
@@ -5701,12 +6149,15 @@ Probability and finite approximants &
 \path{EarlyMeasureBridge.lean}, \path{WeakConvergence.lean},
 \path{ProbabilityLaplaceMoments.lean}, \path{LaplaceMoments.lean},
 \path{StepMeasureBridge.lean}, \path{StepApproximationLimit.lean},
-\path{FabiusUniformSpline.lean}, \path{FabiusComputability.lean}\\
+\path{FabiusUniformSpline.lean}, \path{QuarterSplineLocalPolynomial.lean},
+\path{QuarterSplineTwoSided.lean}, \path{FabiusComputability.lean}\\
 Fourier analysis &
 \path{FourierProduct.lean}, \path{FourierAnalytic.lean},
 \path{OriginalPaperSupplement.lean}, \path{PoissonSummation.lean},
-\path{SummableCyclicAlias.lean}, \path{ThueMorseFourier.lean},
+\path{SummableCyclicAlias.lean}, \path{HalfIntegerOddDFT.lean},
+\path{ThueMorseFourier.lean},
 \path{ThueMorseSineProduct.lean}, \path{LacunaryProductToSum.lean},
+\path{CenteredRvachevThueMorseFourier.lean},
 \path{RenormalizationIdentity.lean}, \path{SincProductShells.lean},
 \path{SincPrefixBound.lean},
 \path{SincCanonicalProduct.lean}, \path{PhiZeroOrder.lean},
@@ -5727,6 +6178,8 @@ Moments and exact arithmetic &
 \path{MomentPowerSeries.lean}, \path{UnitLaplaceMomentBounds.lean},
 \path{NormalizedEvenMoments.lean},
 \path{BernoulliRecurrences.lean}, \path{MomentCumulantAlgebra.lean},
+\path{CenteredMomentCumulants.lean}, \path{CenteredMomentParity.lean},
+\path{SinhDivBernoulliLog.lean},
 \path{PolynomialExpectationCumulant.lean},
 \path{WeightedScaleMultiplicity.lean},
 \path{ExactInversePower.lean}, \path{Parity.lean}, \path{TwoAdic.lean}\\
@@ -5737,10 +6190,12 @@ Universal exponential, Bell, and endpoint-transfer algebra &
 Finite polynomial functionals and geometric Lagrange/Richardson exactness &
 \path{FinitePolynomialFunctional.lean}, \path{CompleteHomogeneous.lean},
 \path{GeometricLagrange.lean}, \path{LagrangeResidualMoments.lean},
-\path{GeometricQBinomialLagrange.lean}\\
+\path{GeometricQBinomialLagrange.lean},
+\path{GeometricLagrangeCompleteHomogeneous.lean}\\
 Dyadic and \(q\)-binomial formulas &
 \path{DyadicClosedForm.lean}, \path{DyadicAnalytic.lean}, \path{GlobalDyadic.lean},
 \path{DyadicCorrectness.lean}, \path{FiniteQBinomialCore.lean}, \path{HalfQBinomial.lean},
+\path{QuarterCatalanGerm.lean}, \path{QuarterCatalanRichardson.lean},
 \path{FabiusDyadicQBinomialScalar.lean}, \path{FabiusQBinomialFormula.lean},
 \path{FabiusRawQBinomialScalar.lean},
 \path{FabiusBinaryReductionSeries.lean}, \path{FabiusParityPowerSeries.lean},
@@ -5761,7 +6216,8 @@ Endpoint asymptotics &
 \path{MellinBose.lean}, \path{MellinFinitePart.lean},
 \path{BoseFinitePartIntegral.lean},
 \path{LowerLambertW.lean}, \path{FabiusLambertPhase.lean},
-\path{FabiusLambertSaddle.lean}, \path{FabiusSharpLambertMain.lean},
+\path{FabiusLambertSaddle.lean}, \path{LambertPhaseLockedRichardson.lean},
+\path{FabiusSharpLambertMain.lean},
 \path{FabiusWikipediaMain.lean},
 \path{FabiusDecayComparison.lean},
 \path{FabiusSharpAsymptotic.lean}, \path{FabiusFullAsymptoticExpansion.lean},
