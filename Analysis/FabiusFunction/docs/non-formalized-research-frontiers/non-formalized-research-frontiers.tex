@@ -13850,8 +13850,8 @@ estimate is its order-zero case.
 
 Let \(F\) denote the bounded Fabius function and \(\Up\) Rvachev's compactly supported
 up-function.  Write \(c_n=\int_{-1}^{1}x^{2n}\Up(x)\dd x\).  The general dyadic evaluator
-is proved correct, but these specializations have no named theorems:
-\begin{candidate}
+is proved correct, and these specializations now have named theorems:
+\begin{candidate}[Discharged]
 \[
  c_1=\frac19,\qquad
  F(1/4)=\frac5{72},\qquad
@@ -13859,10 +13859,19 @@ is proved correct, but these specializations have no named theorems:
  F(3/8)=\frac{73}{288}.
 \]
 \end{candidate}
-\begin{obligation}
+\begin{obligation}[Discharged]
 Prove named specializations by reducing the exact evaluator and bridge each result to the
 analytic function.
 \end{obligation}
+All four values now have named theorems in \path{DyadicSpecializations.lean}, each in the
+two requested forms.  The executable reductions are \lean{moment_one} (`\(\mu_1=1/9\)' from
+the defining recurrence), \lean{fabiusDyadic_two_one}, \lean{fabiusDyadic_three_one}, and
+\lean{fabiusDyadic_three_three}, closed by rational normalization of the dyadic formula.
+The analytic bridges are \lean{integral_sq_mul_rvachev_eq_one_ninth} together with its
+interval form \lean{intervalIntegral_sq_mul_rvachev_eq_one_ninth} (the display's
+\(c_1\)), and \lean{fabiusReal_one_quarter}, \lean{fabiusReal_one_eighth},
+\lean{fabiusReal_three_eighths}, valid for every bounded Fabius function via
+\lean{fabiusDyadic_cast} and \lean{integral_even_pow_mul_rvachev_eq_moment}.
 
 \subsection{Popcount complexity}
 
