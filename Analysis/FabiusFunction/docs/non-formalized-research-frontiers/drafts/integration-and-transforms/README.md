@@ -11,6 +11,8 @@ Members: `Fabius_Antiderivatives_Report`,
 `fabius_monomial_antiderivatives_report-2`,
 `Fabius_Integral_Transforms_Report`,
 `Fabius_Integral_and_Transform_Frontiers`,
-`Fabius_Rvachev_Integral_Frontiers`, `fabius_integral_frontiers_bundle`.
+`Fabius_Rvachev_Integral_Frontiers`, `fabius_integral_frontiers_bundle`,
+`Fabius_Integral_Transform_Fractional_Frontiers`,
+`Fabius_Rvachev_Fractional_Integral_Report`.
 
 See [`../MANIFEST.md`](../MANIFEST.md) for titles and the previous paths.

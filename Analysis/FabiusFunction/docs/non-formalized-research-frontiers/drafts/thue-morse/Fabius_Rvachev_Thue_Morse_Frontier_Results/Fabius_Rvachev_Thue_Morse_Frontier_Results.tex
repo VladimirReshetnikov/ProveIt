@@ -1176,9 +1176,14 @@ is \lean{Fabius.rvachevMeasure\_eq\_prefix\_conv}, with the digit-prefix law
 function evaluated as the finite sinc product
 (\lean{Fabius.charFun\_uniformDigitPrefix}); the uniform-digit integral itself is the
 reusable \lean{Fabius.charFun\_volume\_restrict\_Icc}.  The proof runs by exactly the
-characteristic-function route anticipated in the promotion table below.  The
-random-variable phrasing \eqref{eq:random-tail}, over an explicit product probability
-space, is not formalized; the measure identity is its full analytic content.
+characteristic-function route anticipated in the promotion table below.  On the
+random-variable side, the representation itself is formalized independently in
+\path{ProbabilityRepresentation.lean}: the product probability space of uniform digits,
+the random series $Y_\infty$, and the identifications
+$F(x)=\Prob[Y\le x]$ and $\Up(x)=\Prob[Y\le1-|x|]$ (Arias de Reyna's Theorem~3).  What
+remains unformalized of \eqref{eq:random-tail} is only its equality-in-law splitting as a
+statement about those random variables; its analytic content is the measure identity
+above.
 
 \subsection{Cumulants are the same zeta--Lambert coefficients}
 
@@ -1939,9 +1944,10 @@ induction on the functional equation rather than as an instance of that API --- 
 itself a small illustration of the duplication the obligation is about.)  The convolution
 instance \eqref{eq:density-deconv} is now formal as well, in measure form
 (\path{MeasureRefinement.lean}, see the \emph{Formal version} paragraph in
-\cref{sec:probability}).  The obligation is retained because the random-series and
-cumulant-generating instances --- \eqref{eq:random-tail} as a statement about random
-variables, and \eqref{eq:cumulant-operator} --- have no
+\cref{sec:probability}), and the random-variable representation underlying
+\eqref{eq:random-tail} is \path{ProbabilityRepresentation.lean}.  The obligation is
+retained because the equality-in-law splitting of the random series and the
+cumulant-generating instance \eqref{eq:cumulant-operator} have no
 formal counterpart, and because nothing yet expresses the four as instances of one statement.
 
 \section{Frontier conjectures and next deductions}
