@@ -142,6 +142,7 @@ import FabiusFunction.CollatzWielandt
 import FabiusFunction.LacunaryProductToSum
 import FabiusFunction.LogSeriesMultiplicative
 import FabiusFunction.BaseLayerRegrouping
+import FabiusFunction.ShellEnvelopeExplicit
 import FabiusFunction.RvachevFourierDecay
 import FabiusFunction.BoundednessSkeleton
 import FabiusFunction.TransferOperatorStep
