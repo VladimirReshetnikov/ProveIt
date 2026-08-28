@@ -462,10 +462,11 @@ theorem integral_upOrthoPolynomial_sq (F : BoundedFabius)
       · have hNe : N = m + 1 := by omega
         subst hNe
         rw [if_pos rfl]
-        have hdeg := natDegree_upOrthoPolynomial F hF (m + 1)
-        rw [← hdeg,
-          Polynomial.Monic.coeff_natDegree
-            (upOrthoPolynomial_monic F hF (m + 1))]
+        have hc : (upOrthoPolynomial F (m + 1)).coeff (m + 1) = 1 := by
+          have h := Polynomial.Monic.coeff_natDegree
+            (upOrthoPolynomial_monic F hF (m + 1))
+          rwa [natDegree_upOrthoPolynomial F hF (m + 1)] at h
+        rw [hc]
         exact sub_self 1
   have hsplit : (fun x : ℝ => (upOrthoPolynomial F n).eval x ^ 2) =
       fun x : ℝ => (upOrthoPolynomial F n).eval x *

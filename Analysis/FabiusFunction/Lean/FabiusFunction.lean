@@ -112,6 +112,7 @@ import FabiusFunction.MomentHankelMatrix
 import FabiusFunction.MomentHankelValues
 import FabiusFunction.OrthogonalPolynomialConstruction
 import FabiusFunction.OrthogonalPolynomialValues
+import FabiusFunction.CompositeMeshExactness
 import FabiusFunction.CauchySurvival
 import FabiusFunction.CauchyHigherPowers
 import FabiusFunction.MonomialCombFourier
