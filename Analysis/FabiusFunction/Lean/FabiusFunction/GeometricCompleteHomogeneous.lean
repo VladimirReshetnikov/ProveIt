@@ -127,19 +127,21 @@ theorem completeHomogeneousEvalOn_range_pow_eq_gaussianBinomial_degree
       gaussianBinomial q (p + r) r := by
   induction p generalizing r with
   | zero =>
-      simp
+      simpa using
+        (completeHomogeneousEvalOn_range_pow_eq_gaussianBinomial q 0 r)
   | succ p ih =>
       induction r with
       | zero =>
-          simp
+          simpa using
+            (completeHomogeneousEvalOn_range_pow_eq_gaussianBinomial q (p + 1) 0)
       | succ r ihr =>
           have hrange :
-              Finset.insert (p + 1) (Finset.range (p + 1)) =
+              insert (p + 1) (Finset.range (p + 1)) =
                 Finset.range ((p + 1) + 1) :=
-            (Finset.range_succ (p + 1)).symm
+            (Finset.range_add_one (n := p + 1)).symm
           have hrec := completeHomogeneousEvalOn_insert_succ
             (s := Finset.range (p + 1)) (i := p + 1)
-            (Finset.not_mem_range_self (p + 1))
+            Finset.notMem_range_self
             (fun j : ℕ ↦ q ^ j) r
           rw [hrange] at hrec
           rw [show Nat.succ p + 1 = (p + 1) + 1 by omega,
@@ -149,9 +151,9 @@ theorem completeHomogeneousEvalOn_range_pow_eq_gaussianBinomial_degree
           have hgoal :
               Nat.succ p + (r + 1) = (p + r + 1) + 1 := by omega
           have hexponent : p + r + 1 - r = p + 1 := by omega
-          rw [hinner, houter, hgoal,
-            gaussianBinomial_succ_succ, hexponent]
-          exact add_comm _ _
+          rw [hinner, houter, hgoal]
+          simpa only [hexponent, add_comm] using
+            (gaussianBinomial_succ_succ q (p + r + 1) r).symm
 
 /-- Complementary-index symmetry in an additively parameterized Gaussian
 row.  The identity holds over every commutative semiring, including at
