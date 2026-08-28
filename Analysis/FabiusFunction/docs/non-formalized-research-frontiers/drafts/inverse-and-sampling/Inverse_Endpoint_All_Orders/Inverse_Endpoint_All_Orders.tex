@@ -514,9 +514,12 @@ phase derivatives occur.
 
 Expanding $\Phi=\sum\phi_{r,s}z^{r}w^{s}$ gives the fully unrolled
 partition form
-$d_n=\sum_k\tfrac1k
-\sum_{r_1+\dots+r_k=n-k,\;s_1+\dots+s_k=k-1}
-\prod_j\phi_{r_j,s_j}$ --- convenient for proofs, while
+\[
+ d_n=\sum_k\tfrac1k
+ \sum_{r_1+\dots+r_k=n-k,\;s_1+\dots+s_k=k-1}
+ \prod_j\phi_{r_j,s_j}
+\]
+--- convenient for proofs, while
 \eqref{eq:diagonal-dn} is convenient for implementation.
 
 \begin{theorem}[Direct partial-Bell formula for $g_n$]
@@ -649,9 +652,13 @@ $\deg_\ell d_1=1$ and $\deg_\ell d_n\le n-1$ for $n\ge2$, with
 \end{equation}
 explicitly $[\ell]d_2=-\Psi'(\theta)/(2L^{2})$,
 $[\ell^{2}]d_3=(\Psi''(\theta)-L)/(8L^{3})$, and
-$[\ell^{\,n-1}]d_n
-=(-1)^{n-1}\Psi^{(n-1)}(\theta)/(2^{n-1}L^{n}(n-1)!)$ for
-$n\ge4$.  For the logarithmic coefficients,
+\[
+ [\ell^{\,n-1}]d_n
+ =(-1)^{n-1}\,
+ \frac{\Psi^{(n-1)}(\theta)}{2^{\,n-1}L^{n}\,(n-1)!}
+ \qquad(n\ge4).
+\]
+For the logarithmic coefficients,
 $\deg_\ell h_1=\deg_\ell h_2=1$, $\deg_\ell h_n\le n-1$
 ($n\ge3$), with $[\ell]h_1=\tfrac12$,
 $[\ell]h_2=(\Psi'(\theta)-1)/(2L)$,
@@ -1016,16 +1023,16 @@ the steep-phase Newton gain of
 
 With $P_r=\Psi^{(r)}(\vartheta)$ (and $P=P_0$), the diagonal
 extraction gives
-\begin{equation}
- d_1=\frac PL,
+\begin{align}
+ d_1&=\frac PL,
  \qquad
  d_2=\frac{A_1-\beta/2}{L}+\frac{PP_1}{L^{2}},
- \qquad
- d_3=\frac{A_2-\beta A_1+\beta^{2}/4}{L}
+ \notag\\
+ d_3&=\frac{A_2-\beta A_1+\beta^{2}/4}{L}
  +\frac{A_1P_1+A_1'P-\tfrac12(P^{2}+P+\beta P_1)}{L^{2}}
  +\frac{P(PP_2+2P_1^{2})}{2L^{3}},
  \label{eq:W-d123}
-\end{equation}
+\end{align}
 matching the $\rho$-scale recursion
 $d_2=(\Psi'd_1+A_1-\beta/2)/L$ specialized to the new
 $d_1$ --- the two carriers share one recursion, they differ only in
@@ -1055,14 +1062,15 @@ $A_1^{(0)}=\tfrac1{24}+\tfrac1{2L}$,
 $A_2^{(0)}=\tfrac1{4L^{2}}$,
 $A_3^{(0)}=-\tfrac7{2880}-\tfrac1{24L}-\tfrac1{4L^{2}}+\tfrac1{6L^{3}}$
 gives the regression targets
-\begin{equation}
+\begin{gather}
  h_1^{(0)}=0,\quad
  h_2^{(0)}=\frac5{24},\quad
- h_3^{(0)}=-\frac{L+4}{24L},\quad
+ h_3^{(0)}=-\frac{L+4}{24L},
+ \notag\\
  h_4^{(0)}=\frac{37L^{2}+120L+1080}{2880L^{2}},\quad
  g_4^{(0)}=\frac{199L^{2}+240L+2160}{5760L^{2}}.
  \label{eq:zero-periodic}
-\end{equation}
+\end{gather}
 
 The highest-derivative law is \emph{carrier-invariant}: the W-scale
 coefficients obey exactly

@@ -743,13 +743,17 @@ at its mean $R_d/2$ and using $K+R_d/2=-d/2$,
  \Bigr]\!\left(r-\tfrac d2\right),
 \]
 and the two product formulas
-$\E\,\e^{z(L-R_d/2)}
-=\prod_{m=1}^{d}\frac{\sinh(2^{m-1}z)}{2^{m}\sinh(z/2)}$ and
-$\MM_u(Mz)=\MM_u(z)\prod_{r=0}^{d-1}\frac{\sinh(2^{r}z)}{2^{r}z}$
+\begin{gather*}
+ \E\,\e^{z(L-R_d/2)}
+ =\prod_{m=1}^{d}\frac{\sinh(2^{m-1}z)}{2^{m}\sinh(z/2)},
+ \\
+ \MM_u(Mz)=\MM_u(z)\prod_{r=0}^{d-1}\frac{\sinh(2^{r}z)}{2^{r}z}
+\end{gather*}
 cancel factor by factor to \eqref{eq:H-def}.  The logarithm follows
-from $\log\bigl[2\sinh(z/2)/z\bigr]
-=\sum_mB_{2m}z^{2m}/(2m\,(2m)!)$ and the cumulant series of
-$\MM_u$.
+from the classical expansion
+$\log\bigl[2\sinh(z/2)/z\bigr]
+=\sum_mB_{2m}z^{2m}/(2m\,(2m)!)$ together with the cumulant series
+of $\MM_u$.
 \end{proof}
 
 \begin{algorithm}[Output-sensitive exact synthesis]
@@ -1854,7 +1858,9 @@ the Appell-weighted synthesis direction over the same machinery.
 Truncations of the fast symbol (acting on degrees shown):
 \[
  H_0=1,\quad H_1=1+\bigO(z^{2}),\quad
- H_2=1-\tfrac5{36}z^{2}+\bigO(z^{4}),\quad
+ H_2=1-\tfrac5{36}z^{2}+\bigO(z^{4}),
+\]
+\[
  H_3=1-\tfrac{13}{72}z^{2}+\bigO(z^{4}),\quad
  H_4=1-\tfrac29z^{2}+\tfrac{857}{32400}z^{4}+\bigO(z^{6});
 \]
