@@ -16,9 +16,9 @@ regime `0 < α` and `a ≤ x`.  The codomain is an arbitrary real normed
 space.  The main bridge identifies every positive natural order exactly with
 `normalizedVolterra`.
 
-The beta-convolution and fractional-order semigroup laws are deliberately
-left to a later module: their proofs require a separate triangular Fubini
-argument and should not be hidden inside the elementary operator API.
+The shifted beta-kernel integral is evaluated exactly.  The full
+fractional-order semigroup law is left to a later theorem because it additionally
+requires a triangular Fubini argument for the input function.
 -/
 
 open scoped Interval Real

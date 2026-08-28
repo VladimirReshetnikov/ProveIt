@@ -1,10 +1,9 @@
 # Confluent Digital Extrapolation and Lambert-Phase Tomography
 
-This archived companion bundle preserves the reproducible numerical experiments and
-generated data for a frontier report on the Fabius--Rvachev--Thue--Morse system. The
-formerly standalone manuscript now appears in the consolidated frontier volume: its
-source is `../../Frontier_Compilations.tex`, and its rendered PDF is
-`../../Frontier_Compilations.pdf`.
+This supporting-asset bundle contains the reproducible numerical experiments and generated
+data for a frontier report on the Fabius--Rvachev--Thue--Morse system. The report is now
+displayed as Part VI of
+[`../../Frontier_Compilations.tex`](../../Frontier_Compilations.tex).
 
 ## Corpus boundary
 
@@ -48,10 +47,8 @@ Natural-boundary behavior, sharp alias asymptotics, optimal span/conditioning tr
 irrational near-locks, higher-rank strip widths, and late Bell-coefficient resurgence are
 stated separately as conjectures or research programs.
 
-## Archived companion files
+## Files
 
-- `../../Frontier_Compilations.tex` -- source of the consolidated volume containing this report.
-- `../../Frontier_Compilations.pdf` -- rendered consolidated volume.
 - `numerical_experiments.py` -- extensively commented exact and high-precision checks.
 - `corpus_manifest.txt` -- complete 78-path audit boundary.
 - `experiment_results.txt` -- compact human-readable verification summary.
@@ -62,7 +59,7 @@ stated separately as conjectures or research programs.
 - `gamma_zeta_coefficients.csv`, `gamma_zeta_decay.png` -- endpoint Fourier coefficient decay.
 - `tomography_errors.csv`, `tomography_errors.png` -- controlled radial--angular experiment.
 - `requirements.txt` -- Python dependencies.
-- `SHA256SUMS` -- checksums for the packaged files.
+- `SHA256SUMS` -- checksums for the retained supporting files.
 
 ## Reproduction
 
@@ -73,19 +70,21 @@ python -m pip install -r requirements.txt
 python numerical_experiments.py --output-dir . --precision 90
 ```
 
-From this archived companion directory, rebuild the consolidated paper with
-exactly three serial `pdflatex` passes:
+Rebuild the consolidated paper from this asset directory with the
+repository-required three passes:
 
 ```bash
 cd ../..
 pdflatex -interaction=nonstopmode -halt-on-error Frontier_Compilations.tex
 pdflatex -interaction=nonstopmode -halt-on-error Frontier_Compilations.tex
 pdflatex -interaction=nonstopmode -halt-on-error Frontier_Compilations.tex
+rm -f *.aux *.log *.out *.toc
 ```
 
-These commands rebuild `../../Frontier_Compilations.pdf`. The archived computation used
-Python 3.13.5, mpmath 1.3.0, NumPy 2.3.5, and Matplotlib 3.10.8. The consolidated
-manuscript uses the Libertinus Type 1 package when available and falls back to Latin Modern.
+The canonical output is
+[`../../Frontier_Compilations.pdf`](../../Frontier_Compilations.pdf). The original
+standalone build used Python 3.13.5, mpmath 1.3.0, NumPy 2.3.5, Matplotlib 3.10.8,
+latexmk 4.86, and pdfTeX 1.40.26.
 
 ## Numerical-status note
 

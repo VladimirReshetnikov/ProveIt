@@ -37,7 +37,7 @@
   urlcolor=linkblue,
   pdftitle={Integration and Transform Frontiers for the Fabius--Rvachev System},
   pdfsubject={Consolidated integration, transform, inverse, and fractional-calculus frontiers},
-  pdfkeywords={Fabius function, Rvachev up-function, integration, transforms, fractional calculus},
+  pdfkeywords={Fabius function, Rvachev up-function, Volterra operator, antiderivative, inverse, transforms, fractional calculus},
   pdfauthor={Research report prepared for Vladimir Reshetnikov}
 }
 
@@ -59,6 +59,10 @@
 \allowdisplaybreaks
 
 \newtheorem{theorem}{Theorem}[section]
+\newcommand{\integrationreportreset}{%
+  \clearpage
+  \setcounter{section}{0}%
+  \renewcommand{\thesection}{\arabic{section}}}
 \newtheorem{proposition}[theorem]{Proposition}
 \newtheorem{lemma}[theorem]{Lemma}
 \newtheorem{corollary}[theorem]{Corollary}
@@ -122,27 +126,30 @@ Fractional Orders, and Inverse-Quantile Integrals}
 \usepackage{multicol}
 \usepackage{caption}
 \usepackage{float}
-\usepackage{siunitx}
+\IfFileExists{siunitx.sty}{\usepackage{siunitx}}{\newcommand{\num}[1]{\ensuremath{##1}}}
 \title{\bfseries Integration and Transform Frontiers for the Fabius--Rvachev System}
 \author{}
 \date{Consolidated 28 August 2026}
 \begin{document}
 \maketitle
+\begingroup
+\sloppy
 \tableofcontents
+\endgroup
 \clearpage
 \section*{Provenance}
 This volume consolidates the following drafts verbatim (labels, citation keys, and
 asset paths mechanically prefixed per part; no mathematical content altered).
 The absorbed drafts are deleted from the working tree; git history is the archive.
 \begin{itemize}
-\item \path{Fabius_Antiderivatives_Report/fabius_antiderivatives.tex} \\ {\footnotesize SHA-256 \path{a98d5c809140185025cb3d50f60948a18827d4af39d845f25675def599447b4b}}
-\item \path{Fabius_Monomial_Antiderivatives_Report/Fabius_Monomial_Antiderivatives.tex} \\ {\footnotesize SHA-256 \path{e29b191af6e71e981e206834f52d4caf59309e28c4912a4b31c7d83f774174af}}
-\item \path{fabius_monomial_antiderivatives_report-2/Dyadic_Primitive_Ladders_Fabius_Rvachev.tex} \\ {\footnotesize SHA-256 \path{57c13a753eef34c8d12d65f51ccf3a01ef7e4b65e6ac21dc36e81a7f5383bc48}}
-\item \path{Fabius_Integral_Transforms_Report/Fabius_Integral_Transforms_Report.tex} \\ {\footnotesize SHA-256 \path{94823103afe8b4d8e2fdb818bf8f1b827b82fb19273faf27b732111e2f903fa8}}
+\item \path{Fabius_Antiderivatives_Report/fabius_antiderivatives.tex} \\ {\footnotesize SHA-256 \path{e1669eb704563db2c54a412d7fa8a823a31df5cef11074d6d321872cf16fa307}}
+\item \path{Fabius_Monomial_Antiderivatives_Report/Fabius_Monomial_Antiderivatives.tex} \\ {\footnotesize SHA-256 \path{c5d4249608e73d97353e96ce988f1726ddf4fabc49184fa0464296cefb96c13c}}
+\item \path{fabius_monomial_antiderivatives_report-2/Dyadic_Primitive_Ladders_Fabius_Rvachev.tex} \\ {\footnotesize SHA-256 \path{0db04b7afb6b00ea32ddc56db36058125fce0d510fff71c64aae0d6683c67304}}
+\item \path{Fabius_Integral_Transforms_Report/Fabius_Integral_Transforms_Report.tex} \\ {\footnotesize SHA-256 \path{1d522db99ebaf89395254d43b5991c686c9fc7cc18f6a0628d8d9990f7554906}}
 \item \path{Fabius_Integral_and_Transform_Frontiers/fabius_integrals_and_transforms_frontier_report.tex} \\ {\footnotesize SHA-256 \path{51a6a43bdef1687c09632c9bf5c5e5fa05c9fe09d8f5116170b126c24d38d514}}
-\item \path{fabius_integral_frontiers_bundle/fabius_integral_frontiers.tex} \\ {\footnotesize SHA-256 \path{e674b1a903ba7ad60e53709cb20c51caafd42f10b20ce55b9bfa11b3c598b147}}
-\item \path{Fabius_Rvachev_Integral_Frontiers/Fabius_Rvachev_Integral_Transforms_and_Fractional_Calculus.tex} \\ {\footnotesize SHA-256 \path{aff1826c5ea6635b866a15dc40b0cca45119670bbea57990fb400cd17f590315}}
-\item \path{Fabius_Integral_Transform_Fractional_Frontiers/Fabius_Integral_Transform_Fractional_Frontiers.tex} \\ {\footnotesize SHA-256 \path{341b50e1ce42d1ae90bd229b650f0362e63426d8e79acdca612475ce7ee14053}}
+\item \path{fabius_integral_frontiers_bundle/fabius_integral_frontiers.tex} \\ {\footnotesize SHA-256 \path{1f803a82e8e9f974ada0194fe479eb684395a3620442ec51b748496872ba1b30}}
+\item \path{Fabius_Rvachev_Integral_Frontiers/Fabius_Rvachev_Integral_Transforms_and_Fractional_Calculus.tex} \\ {\footnotesize SHA-256 \path{a4188ca61f67574383e751695dea8782737ff2fe2cbdc8f9cf1ec58a2abcc2af}}
+\item \path{Fabius_Integral_Transform_Fractional_Frontiers/Fabius_Integral_Transform_Fractional_Frontiers.tex} \\ {\footnotesize SHA-256 \path{28f01f1eb87a011d0b33183085ba2cea72b6329023dd5670f01aba7b65b5e519}}
 \item \path{Fabius_Rvachev_Fractional_Integral_Report/fabius_fractional_integrals_report.tex} \\ {\footnotesize SHA-256 \path{4ac009fc3875b1e016fe47f7691564ccdd9d29c358fc71266ca29450db886b19}}
 \item \path{Fabius_Fractional_Integral_Transform_Frontiers/fabius_fractional_integral_transform_frontiers.tex} \\ {\footnotesize SHA-256 \path{6a7efa41ab6574ce314512abddf6b79b367fc367792b7ebcc7054daba5ceb509}}
 \item \path{fabius_fractional_transform_frontiers_bundle/fabius_fractional_transform_frontiers.tex} \\ {\footnotesize SHA-256 \path{816637825d0d1cb88160611cebdd4172291adee0c4f5760d762c73eb954ea77c}}
@@ -212,6 +219,7 @@ supersedes only contrary historical formalization wording in the absorbed snapsh
 provenance hashes above remain unchanged.
 \end{statusbox}
 \clearpage
+\integrationreportreset
 \part{Antiderivatives of Monomially Weighted Fabius-Type Functions}
 % Absorbed from Fabius_Antiderivatives_Report/fabius_antiderivatives.tex
 
@@ -338,6 +346,20 @@ kernel with literal repeated application of the first primitive.  Thus the
 formal result is not confined to the scalar Fabius case or to ordered
 endpoints.
 
+The same module now has a generic affine and basepoint calculus with arbitrary
+real normed targets, focused-build verified at compiled checkpoint
+\texttt{e109088ed}.  The division-free forward form
+\path{normalizedVolterra_affine} holds for every real scale \(c\), including
+\(c=0\) and negative \(c\), while the inverse form
+\path{normalizedVolterra_comp_affine} assumes \(c\ne0\).
+\path{normalizedVolterra_basepoint_shift} assumes interval integrability
+only on the local pieces from \(a\) to \(b\) and from \(b\) to \(x\), imposes
+no order on \(a,b,x\), and includes \(n=0\).  Its zero-tail specialization
+\path{normalizedVolterra_succ_eq_taylor_of_eq_zero} retains only integrability
+from \(a\) to \(b\), is for positive order, and assumes vanishing on
+the open unoriented interval between \(b\) and \(x\); it requires neither
+endpoint order nor endpoint values.
+
 \begin{longtable}{@{}p{0.34\textwidth}p{0.60\textwidth}@{}}
 \toprule
 Mathematical content & Exact Lean declaration and module\\
@@ -359,6 +381,14 @@ Positive-real fractional kernel, elementary algebra, and positive-integer bridge
 \path{fractionalVolterra_nat_succ}, together with
 \path{intervalIntegral_fractionalVolterra_betaKernel}, in
 \path{FabiusFunction.FractionalVolterra}.\\[1mm]
+Affine covariance for all real scales, and its nonzero-scale inverse&
+\path{normalizedVolterra_affine} and
+\path{normalizedVolterra_comp_affine} in
+\path{FabiusFunction.NormalizedVolterra}.\\[1mm]
+Local basepoint shift and positive-order open-interval zero-tail Taylor jet&
+\path{normalizedVolterra_basepoint_shift} and
+\path{normalizedVolterra_succ_eq_taylor_of_eq_zero} in
+\path{FabiusFunction.NormalizedVolterra}.\\[1mm]
 Kernel raising and arbitrary finite polynomial weights&
 \path{normalizedVolterra_kernel_pow},
 \path{normalizedVolterra_polynomial}, and
@@ -386,8 +416,12 @@ degeneracies require no side conditions.  The Fabius specializations likewise
 include order zero.  For the bounded function the proved dyadic formula holds
 on \(( -\infty,1]\), not merely on \([0,1]\).
 
+The affine and basepoint theorems above are general operator identities.  They
+do not themselves calculate explicit Fabius or Rvachev-up coefficients, and
+they do not assemble any of the report's piecewise formulas.
+
 The generic positive-real Riemann--Liouville kernel layer in the new table row is now
-formalized, but no claim of this update extends to the infinite complex-power
+formalized.  No claim of this update extends to the infinite complex-power
 Newton--Volterra series or its normal convergence, the Mellin/Newton and
 negative-power consequences, a fractional-order semigroup,
 fractional Fabius or Rvachev formulas, the \(x>1\) branches of the bounded global
@@ -1920,11 +1954,15 @@ must still be controlled.
 The following directions appear especially promising.
 \begin{enumerate}
 \item \textbf{Lean formalization.}  The reusable first wave is complete:
-\path{FabiusFunction.NormalizedVolterra} supplies the Banach-valued operator,
-the literal-iteration bridge, and the finite polynomial/monomial commutators;
+\path{FabiusFunction.NormalizedVolterra} supplies the real-normed-space operator,
+affine covariance for every real scale (with the inverse form restricted to
+nonzero scale), local basepoint shifts, open-tail Taylor jets, and the finite
+polynomial/monomial commutators; its literal-iteration/FTC bridge uses a Banach target;
 \path{FabiusFunction.FabiusAntiderivatives} supplies the signed and bounded
-integer ladders and their natural-monomial consequences.  The next finite
-targets are the exterior \(x>1\) branch and matching jets in
+integer ladders and their natural-monomial consequences.  The new generic
+transport and jet identities do not themselves give the explicit Fabius/up
+coefficients or piecewise assembly.  The next finite targets are the exterior
+\(x>1\) branch and matching jets in
 \eqref{p1:eq:global-Hnp}, followed independently by the inverse identity
 \eqref{p1:eq:inverse-first}.  The normal-convergence proof of
 \eqref{p1:eq:master-alpha-n}, its Mellin consequences, and fractional order form
@@ -1983,6 +2021,17 @@ Object & Exact formula, leading result, and current Lean status\\
 Object & Exact formula, leading result, and current Lean status\\
 \midrule
 \endhead
+Generic affine covariance&
+\path{normalizedVolterra_affine} is a Lean-formalized forward identity for
+arbitrary real normed targets and every \(c\in\R\), including zero and negative scales;
+\path{normalizedVolterra_comp_affine} assumes \(c\ne0\).\\[1mm]
+Generic basepoint and zero-tail calculus&
+\path{normalizedVolterra_basepoint_shift} is Lean formalized with local
+interval integrability on \(a\) to \(b\) and \(b\) to \(x\), no endpoint order,
+and \(n=0\) included.  The zero-tail theorem retains only integrability from
+\(a\) to \(b\), is positive-order, and assumes vanishing on
+the open unoriented interval between \(b\) and \(x\), with no endpoint order
+or endpoint-value condition.\\[1mm]
 Generic polynomial weight&
 Finite Hasse-derivative formula \eqref{p1:eq:polynomial-commutator}; Lean
 formalized for normed-space-valued inputs, arbitrary base and endpoint, and
@@ -2089,9 +2138,11 @@ endpoint asymptotics, but not \eqref{p1:eq:inverse-first},
 treats exponent sequences, sinc products, Prouhet cancellation, and
 q-Richardson reconstruction, not \eqref{p1:eq:moment-newton}.  These are
 snapshot-relative source-document comparisons.  The later Lean modules listed
-in the status crosswalk now formalize the integer Volterra core, while the
-complex, fractional, Mellin, folded, inverse, and exterior-piecewise claims
-remain outside that formalized core.
+in the status crosswalk now formalize the integer Volterra core together with
+generic affine transport, local basepoint shifts, and positive-order open-tail
+Taylor jets.  Those generic declarations do not supply explicit Fabius/up
+coefficients or piecewise assembly; the complex, fractional, Mellin, folded,
+inverse, and exterior-piecewise claims remain outside that formalized core.
 
 \section{Exact initial values and sample antiderivatives}
 
@@ -2326,6 +2377,7 @@ L.~Comtet,
   belowskip=0.8em
 }
 
+\integrationreportreset
 \part{Fabius Monomial Antiderivatives and Inverse-Quantile Integrals}
 % Absorbed from Fabius_Monomial_Antiderivatives_Report/Fabius_Monomial_Antiderivatives.tex
 
@@ -2389,7 +2441,17 @@ order zero.  For continuous Banach-valued inputs,
 with the Cauchy kernel; without a completeness assumption,
 \decl{normalizedVolterra_polynomial} and
 \decl{normalizedVolterra_monomial} prove the finite polynomial and
-natural-monomial commutators.  The
+natural-monomial commutators.  Also for arbitrary real normed targets, the
+forward form \decl{normalizedVolterra_affine} covers every real scale \(c\), including
+\(c=0\) and negative \(c\), while its inverse form
+\decl{normalizedVolterra_comp_affine} assumes \(c\ne0\).
+\decl{normalizedVolterra_basepoint_shift} needs interval integrability only
+from \(a\) to \(b\) and from \(b\) to \(x\), has no endpoint-order hypothesis,
+and includes \(n=0\).
+\decl{normalizedVolterra_succ_eq_taylor_of_eq_zero} retains only integrability
+from \(a\) to \(b\), is positive-order, and assumes vanishing on
+the open unoriented interval between \(b\) and \(x\), with neither endpoint
+order nor endpoint values.  The
 module \decl{FabiusFunction.FabiusAntiderivatives} proves the signed global
 ladder and monomial formula in
 \decl{normalizedVolterra_extendedFabius} and
@@ -2397,6 +2459,11 @@ ladder and monomial formula in
 \decl{normalizedVolterra_fabiusReal_of_le_one} and
 \decl{normalizedVolterra_pow_mul_fabiusReal_of_le_one} hold on the proved
 initial half-line $x\le1$, not merely on $[0,1]$.
+
+These four new declarations are generic transport and finite Taylor-jet
+identities.  They do not themselves compute explicit Fabius/up coefficients
+or assemble piecewise formulas.  They were focused-build verified at compiled
+checkpoint \texttt{e109088ed}.
 
 The generic positive-real ordered-endpoint fractional kernel and its positive-integer
 bridge are now formalized in \decl{FabiusFunction.FractionalVolterra}.  No Lean
@@ -2719,7 +2786,9 @@ $x\ge1$, whereas $\mathcal F$ continues in alternating compact blocks.
 The Lean theorems cover the bounded formulas through $x\le1$ and the signed
 formulas globally.  The elementary bounded continuation
 \eqref{p2:eq:Ip-outside} for $x>1$ has not been packaged as a theorem in this
-antiderivative layer.  Nor have the later complex-power convergence theorem,
+antiderivative layer.  Generic affine transport, basepoint shifts, and
+open-interval zero-tail Taylor jets are formalized, but they do not supply its
+explicit Fabius coefficients or its piecewise assembly.  Nor have the later complex-power convergence theorem,
 Mellin continuation, fractional-index constructions, Rvachev primitive
 formulas, or the local, higher-order, and fractional inverse-function reductions
 been formalized.  They remain
@@ -3677,7 +3746,10 @@ The following projects are concrete and separable.
 \begin{enumerate}
 \item \textbf{Lean continuation.}  The natural-order primitive ladder and the
 finite polynomial/monomial commutators are complete, including their stronger
-Banach-valued Volterra forms.  The next boundary is the complex series, which
+real-normed-target Volterra forms, affine covariance, and local
+basepoint/zero-tail Taylor-jet calculus.  These generic results do not supply
+explicit Fabius/up coefficients or piecewise assembly.  The next analytic
+boundary is the complex series, which
 requires an effective flatness lemma, a falling-factorial derivative library,
 and a uniform remainder theorem.
 \item \textbf{Certified fractional evaluation.}  Combine the exact rational recurrence \eqref{p2:eq:V-recurrence} with an
@@ -3734,6 +3806,21 @@ oriented endpoints, including order zero. \\
 Semigroup law, strict FTC ladder, and equality of literal iteration with the
 kernel formula for continuous inputs. \\
 \decl{FabiusFunction.NormalizedVolterra} &
+\decl{normalizedVolterra_affine},
+\decl{normalizedVolterra_comp_affine} &
+Forward affine covariance for arbitrary real normed targets and every real
+\(c\), including zero and negative scales; the inverse form assumes
+\(c\ne0\). \\
+\decl{FabiusFunction.NormalizedVolterra} &
+\decl{normalizedVolterra_basepoint_shift} &
+Basepoint shift with interval integrability only from \(a\) to \(b\) and from
+\(b\) to \(x\), no endpoint order, and every order including \(n=0\). \\
+\decl{FabiusFunction.NormalizedVolterra} &
+\decl{normalizedVolterra_succ_eq_taylor_of_eq_zero} &
+Positive-order Taylor jet with integrability only from \(a\) to \(b\) and
+vanishing on the open unoriented interval between \(b\) and \(x\); neither
+endpoint order nor endpoint values are constrained. \\
+\decl{FabiusFunction.NormalizedVolterra} &
 \decl{normalizedVolterra_kernel_pow} &
 All-order kernel raising with the exact rising-factorial coefficient. \\
 \decl{FabiusFunction.NormalizedVolterra} &
@@ -3767,8 +3854,10 @@ Finite natural-monomial formula for the bounded function when $x\le1$. \\
 \endgroup
 
 Thus the former placeholder declarations for the integer ladder and finite
-polynomial weights are retired.  The remaining obligations are genuinely
-analytic or nonlinear:
+polynomial weights are retired.  The generic affine and basepoint declarations
+do not calculate explicit Fabius/up coefficients or assemble report-specific
+piecewise branches.  The remaining obligations are analytic, nonlinear, or
+explicit piecewise specializations:
 \begin{itemize}
 \item the complex-power series \eqref{p2:eq:complex-series}, including absolute
 and compact-local uniform convergence and a formal remainder bound;
@@ -4021,7 +4110,9 @@ V.~Reshetnikov,
   stringstyle=\color{deepred}
 }
 
-\part{Dyadic Primitive Ladders and Mellin--Newton Antiderivatives for the Fabius--Rvachev System}
+\integrationreportreset
+\part[Dyadic primitive ladders and Mellin--Newton antiderivatives]
+{Dyadic Primitive Ladders and Mellin--Newton Antiderivatives for the Fabius--Rvachev System}
 % Absorbed from fabius_monomial_antiderivatives_report-2/Dyadic_Primitive_Ladders_Fabius_Rvachev.tex
 
 
@@ -4088,9 +4179,9 @@ statistics of independent Fabius random variables.
 
 Exact reciprocal-dyadic formulae, Thue--Morse and $q$-binomial substitutions, numerical
 experiments, a negative-power tail model driven by the proved log-periodic endpoint
-asymptotic, conjectures, and a Lean formalization plan complete the report.  All statements
-are labeled as inherited, proved here, numerical, or conjectural.  Priority outside the
-pinned corpus is not asserted.
+asymptotic, conjectures, a current Lean crosswalk, and a narrowed formalization plan complete
+the report.  All statements are labeled as inherited, proved here, numerical, or
+conjectural.  Priority outside the pinned corpus is not asserted.
 \end{abstract}
 
 
@@ -4137,8 +4228,8 @@ The report uses four statuses.
 \toprule
 Inherited & A theorem or definition already present in the pinned corpus, usually with a
 matching Lean declaration.\\
-Proved here & A complete paper proof is supplied below from inherited facts.  It is not yet
-claimed to be formalized.\\
+Proved here & A complete paper proof is supplied below from inherited facts.  It is not
+claimed to be formalized unless a later source-status note names an exact Lean declaration.\\
 Numerical & A reproducible finite-precision or exact-rational experiment in the accompanying
 Python program.\\
 Conjectural & A statement suggested by the proved structure and experiments, with the missing
@@ -4146,6 +4237,60 @@ analytic step identified.\\
 \bottomrule
 \end{tabularx}
 \end{center}
+
+\subsection{Current Lean crosswalk for the normalized Volterra layer}
+
+The novelty audit above remains pinned to the source snapshot on the title page.  The
+following implementation-status note is later: the declarations listed here are present at
+the compiled Lean checkpoint \texttt{e109088ed}, verified by a focused build.  Write
+\begin{equation}
+ \mathsf J_{n,a}f(x):=
+ \begin{cases}
+ f(x),&n=0,\\[1mm]
+ \displaystyle\frac1{(n-1)!}\int_a^x(x-t)^{n-1}f(t)\,\dd t,&n>0.
+ \end{cases}                                                \label{p3:eq:lean-volterra-crosswalk}
+\end{equation}
+In \path{FabiusFunction.NormalizedVolterra}, the exact crosswalk is as follows.
+\begin{itemize}
+\item \path{normalizedVolterra_affine} is the division-free forward identity
+\begin{equation}
+ \mathsf J_{n,ca+d}f(cx+d)
+ =c^n\mathsf J_{n,a}\bigl(t\mapsto f(ct+d)\bigr)(x).          \label{p3:eq:lean-affine-forward}
+\end{equation}
+It holds for every real $c$, including $c=0$ and negative $c$, and includes $n=0$.
+It has no integrability or completeness hypothesis and permits any real normed target.
+\item \path{normalizedVolterra_comp_affine} is the inverse-smul form
+\begin{equation}
+ \mathsf J_{n,a}\bigl(t\mapsto f(ct+d)\bigr)(x)
+ =(c^n)^{-1}\mathsf J_{n,ca+d}f(cx+d),\qquad c\ne0.           \label{p3:eq:lean-affine-inverse}
+\end{equation}
+The nonzero-scale hypothesis is essential to this divided form.
+\item \path{normalizedVolterra_basepoint_shift} states, assuming interval integrability of
+$f$ from $a$ to $b$ and from $b$ to $x$,
+\begin{equation}
+ \mathsf J_{n,a}f(x)=\mathsf J_{n,b}f(x)
+ +\sum_{k=0}^{n-1}\frac{(x-b)^k}{k!}\mathsf J_{n-k,a}f(b).    \label{p3:eq:lean-basepoint-shift}
+\end{equation}
+No ordering of $a,b,x$ is imposed; at $n=0$ the sum is empty and the identity remains
+valid.
+\item \path{normalizedVolterra_succ_eq_taylor_of_eq_zero} states that if $f$ is interval
+integrable from $a$ to $b$ and vanishes on the open unoriented interval between $b$
+and $x$, then
+\begin{equation}
+ \mathsf J_{n+1,a}f(x)
+ =\sum_{k=0}^{n}\frac{(x-b)^k}{k!}\mathsf J_{n+1-k,a}f(b).    \label{p3:eq:lean-zero-tail}
+\end{equation}
+No endpoint values or endpoint ordering are required, and the vanishing hypothesis is
+vacuous when $b=x$.
+\end{itemize}
+Thus the generic positive-order zero-tail assertion---the fact that a Volterra primitive is
+a finite Taylor polynomial after the input vanishes---is formally verified.  This generic
+result does not by itself identify report-specific coefficients.  Separately,
+\path{normalizedVolterra_pow_mul_extendedFabius} and
+\path{normalizedVolterra_pow_mul_fabiusReal_of_le_one} already formalize the signed-global
+and bounded-$F$ natural-monomial coefficients (the latter on $x\le1$).  The survival,
+shifted-\(\Up\), and exterior piecewise moment specializations displayed later retain the
+paper-level status assigned in this report.
 
 \subsection{Main new theorem package}
 
@@ -4377,10 +4522,11 @@ The first cases are strikingly compact:
  \int x^2F(x)\,\dd x
  &=x^2F(x/2)-4xF(x/4)+16F(x/8)+C,                             \label{p3:eq:example-p2}\\
  \int x^3F(x)\,\dd x
- &=x^3F(x/2)-6x^2F(x/4)+48xF(x/8)-512F(x/16)+C.               \label{p3:eq:example-p3}
+ &=x^3F(x/2)-6x^2F(x/4)+48xF(x/8)-384F(x/16)+C.               \label{p3:eq:example-p3}
 \end{align}
-The powers $1,2,16,512,\ldots$ are $2^{\binom{k+1}{2}}$, not a geometric sequence; the
-triangular exponent is forced by iterating the dilation derivative.
+The dyadic factors $1,2,8,64,\ldots$ are $2^{\binom{k+1}{2}}$, not a geometric sequence;
+the triangular exponent is forced by iterating the dilation derivative (the displayed
+coefficients also contain the falling-factorial factors).
 
 \begin{remark}[General $n$th antiderivative]
 Formula \eqref{p3:eq:monomial-nfold} is the unique $n$th antiderivative whose first $n$ Taylor
@@ -5462,16 +5608,22 @@ promising:
 Such an algorithm would return certified enclosures for $M(-a)$, $D(-a)$, and inverse
 negative moments, not merely high-precision decimal approximations.
 
-\section{Lean formalization roadmap}
+\section{Remaining Lean formalization roadmap}
 \label{p3:sec:lean}
 
-The exact algebra is unusually formalization-friendly.  A sensible dependency order is:
+At compiled checkpoint \texttt{e109088ed}, the generic affine, base-point-change, and
+zero-tail Taylor-jet calculus is already covered by the four declarations in
+\cref{p3:eq:lean-affine-forward,p3:eq:lean-affine-inverse,p3:eq:lean-basepoint-shift,p3:eq:lean-zero-tail}.
+In particular, the generic polynomial shape after leaving the support is no longer a
+roadmap item, and the signed-global and bounded-$F$ natural-monomial coefficients are
+already formalized separately.  Identifying the remaining survival, folded-\(\Up\), and
+exterior piecewise coefficients is a distinct specialization.  The remaining work can
+therefore be narrowed to:
 
 \begin{enumerate}
-\item define $J_m$ from the existing signed extension and prove $J_{m+1}'=J_m$;
-\item identify $J_m$ with the iterated interval integral on $[0,1]$;
-\item prove \eqref{p3:eq:poly-primitive} by polynomial induction or finite telescoping;
-\item specialize to monomials and derive the reciprocal-dyadic rational theorem;
+\item add narrowly packaged specializations for the report's survival, shifted $\Up$, and
+      exterior piecewise coefficient formulas, without reproving the generic Volterra
+      algebra or the already formalized signed/bounded $F$ cases;
 \item establish \cref{p3:lem:J-bound} using the probability measure already present in the
       development;
 \item prove normal convergence of \eqref{p3:eq:fractional-series} on compact exponent sets;
@@ -5484,10 +5636,11 @@ The exact algebra is unusually formalization-friendly.  A sensible dependency or
 \item add order-statistic formulations after the nonlinear hierarchy has a stable API.
 \end{enumerate}
 
-The only analytically substantial step is local normal convergence in $\alpha$.  It can be
+The principal analytically substantial step is local normal convergence in $\alpha$.  It can be
 reduced to the already formalized flatness estimates plus a standard compact bound on
-$\binom\alpha k$.  The integer polynomial theorem and inverse identity require no new deep
-analysis.
+$\binom\alpha k$.  The generic integer polynomial and zero-tail algebra is already in Lean;
+the remaining report-specific coefficient identifications and the inverse identity require
+no new deep analysis.
 
 \section{Conclusion}
 \label{p3:sec:conclusion}
@@ -5509,8 +5662,9 @@ area-under-an-inverse formula closed by $F(Q/2)$.  New nonlinear objects first a
 higher inverse order, where powers of $F$ encode order statistics.
 
 The most concrete next results are a rigorous log-periodic tail theorem, a dyadic functional
-system for $H_{\beta,j}$, and Lean formalization of the primitive ladder and exponent-Newton
-duality.  These are narrow enough to attack directly and broad enough to connect the exact
+system for $H_{\beta,j}$, and Lean formalization of the still-open exponent--Newton duality
+and report-specific coefficient crosswalk beyond the generic Volterra layer.  These are
+narrow enough to attack directly and broad enough to connect the exact
 integral calculus back to the main arithmetic and asymptotic architecture of the repository.
 
 \appendix
@@ -5698,8 +5852,9 @@ No. & Path relative to \path{Analysis/FabiusFunction/docs/}\\
 From the extracted archive directory:
 \begin{lstlisting}[style=python]
 python fabius_integrals_experiments.py --output-dir .
-latexmk -pdf -interaction=nonstopmode \
-  Dyadic_Primitive_Ladders_Fabius_Rvachev.tex
+pdflatex -interaction=nonstopmode -halt-on-error Integration_and_Transform_Frontiers.tex
+pdflatex -interaction=nonstopmode -halt-on-error Integration_and_Transform_Frontiers.tex
+pdflatex -interaction=nonstopmode -halt-on-error Integration_and_Transform_Frontiers.tex
 \end{lstlisting}
 
 The program generates:
@@ -5806,6 +5961,7 @@ source snapshot \texttt{a2541a7ee373c0e297de04424f8921ce881e62b7}, consulted 27 
 \newcommand{\RePart}{\operatorname{Re}}
 \newcommand{\ImPart}{\operatorname{Im}}
 
+\integrationreportreset
 \part{Integral Calculus and Transform Dualities for the Fabius--Rvachev System}
 % Absorbed from Fabius_Integral_Transforms_Report/Fabius_Integral_Transforms_Report.tex
 
@@ -5837,6 +5993,13 @@ Riemann--Liouville primitives of arbitrary order for powers of \(\F\) and \(\Q\)
 beta-weighted formulas, Bernoulli-polynomial integrals, order-statistic representations,
 Cauchy transforms, and Gini/autocorrelation integrals expressed through the infinite
 sinc product.  Numerical experiments are supplied in a reproducible Python script.
+
+A post-snapshot Lean audit now provides the generic continuous-linear naturality and
+conditional operator/scalar affine-recursion substrate for weighted uniform laws, together
+with the named geometric weights \((1-q)q^n\), their probability law, self-similarity,
+reflection, carried-unit-interval results, and the half-base bridges.  This does not
+formalize the report's inverse-pair, fractional-power, complex-Mellin, density, transform,
+moment, or fixed-point uniqueness consequences.
 
 Here ``new'' means absent from the recursively audited LaTeX corpus of the referenced
 ProveIt directory at the time of writing.  It is not a claim of worldwide priority.
@@ -5876,8 +6039,10 @@ Probability interpretation of \(\F\), compact support and refinement equations f
 language for all integrals.\\
 Generic weighted-uniform laws and support-free quantile transport & The formal source now
 contains arbitrary Banach-valued distribution splitting and reflection, exact interval
-mass for nonnegative real weights, a support-free atom-compatible quantile pushforward,
-its compact specialization, and the clamped Fabius inverse theorem.\\
+mass for nonnegative real weights, continuous-linear and scalar naturality, conditional
+operator/scalar affine recursions, the named geometric-uniform probability law and its
+carried-\([0,1]\) specialization, a support-free atom-compatible quantile pushforward, its
+compact specialization, and the clamped Fabius inverse theorem.\\
 Exact dyadic values, rational moment recurrences, Bernoulli and \(q\)-binomial structure &
 Inputs to the new Mellin/Newton continuation; these arithmetic results are not reproved
 in full.\\
@@ -5998,7 +6163,7 @@ theorem accepts an arbitrary independently chosen summable tail-weight sequence 
 The shifted tail \(v_n=w_{n+1}\) appears only when that theorem is specialized to split
 one parent law \(\mu_w\).
 
-The exact new declarations are
+The declarations for this probability, splitting, reflection, and carried-set layer are
 \nolinkurl{Fabius.ProbabilityRepresentation.uniformProduct_map_head_tail_comp},
 \nolinkurl{Fabius.ProbabilityRepresentation.weightedUniformDistribution},
 \nolinkurl{Fabius.ProbabilityRepresentation.isProbabilityMeasure_weightedUniformDistribution},
@@ -6007,7 +6172,93 @@ The exact new declarations are
 \nolinkurl{Fabius.ProbabilityRepresentation.weightedUniformDistribution_reflection},
 \nolinkurl{Fabius.ProbabilityRepresentation.weightedUniformDistribution_Icc}, and
 \nolinkurl{Fabius.ProbabilityRepresentation.weightedUniformDistribution_compl_Icc}.
-They do not supply a geometric-\(q\) density, CDF, or refinement theorem.
+The exact dyadic-to-generic law bridge is
+\nolinkurl{Fabius.ProbabilityRepresentation.weightedSumDistribution_eq_weightedUniformDistribution}.
+
+The module now also proves the generic measure-theoretic engine behind affine
+self-similarity.  If measurable \(g\) and \(\Phi\) satisfy
+\(f(\omega)=\Phi(\omega_0,g(\tau\omega))\) almost everywhere, then
+
+\[
+ f_*\mathbf P=\Phi_*\bigl(\lambda_{[0,1]}\otimes g_*\mathbf P\bigr),
+\]
+
+with no separate measurability assumption on \(f\); a pointwise version is a corollary.
+For a norm-summable sequence in a real Banach space and a continuous linear map \(L\),
+\(L(S_w)=S_{Lw}\), and the corresponding Borel laws satisfy \(L_*\mu_w=\mu_{Lw}\);
+the target normed space need not be complete.  Pointwise scalar naturality needs neither
+summability nor completeness, whereas its law-level version retains source completeness,
+Borel structure, and summability.  If \(w_{n+1}=A(w_n)\) for a continuous linear
+endomorphism \(A\), then
+\[
+ A_*\mu_w=\mu_{w^+},\qquad
+ S_w(\omega)=\omega_0w_0+A(S_w(\tau\omega)),\qquad
+ \mu_w=\bigl((u,z)\mapsto u w_0+A z\bigr)_*
+   \bigl(\lambda_{[0,1]}\otimes\mu_w\bigr).
+\]
+The scalar case \(A=c\,\mathrm{id}\) is valid for arbitrary real \(c\), subject only to
+the displayed norm-summability hypothesis on the weights at the series-splitting and law
+levels.
+
+The eleven declarations in this naturality tranche are
+\nolinkurl{Fabius.ProbabilityRepresentation.uniformProduct_map_of_ae_head_tail_recursion},
+\nolinkurl{Fabius.ProbabilityRepresentation.uniformProduct_map_of_head_tail_recursion},
+\nolinkurl{Fabius.ProbabilityRepresentation.weightedUniformSeries_map},
+\nolinkurl{Fabius.ProbabilityRepresentation.weightedUniformSeries_smul},
+\nolinkurl{Fabius.ProbabilityRepresentation.weightedUniformDistribution_map},
+\nolinkurl{Fabius.ProbabilityRepresentation.weightedUniformDistribution_smul},
+\nolinkurl{Fabius.ProbabilityRepresentation.weightedUniformDistribution_map_eq_shift},
+\nolinkurl{Fabius.ProbabilityRepresentation.weightedUniformSeries_split_of_shift_eq_map},
+\nolinkurl{Fabius.ProbabilityRepresentation.weightedUniformDistribution_split_of_shift_eq_map},
+\nolinkurl{Fabius.ProbabilityRepresentation.weightedUniformSeries_geometric_split}, and
+\nolinkurl{Fabius.ProbabilityRepresentation.weightedUniformDistribution_geometric_split}.
+The last two generic names express only a conditional scalar weight shift; the named
+specialization is a separate layer.
+
+The seven compatibility declarations are
+\nolinkurl{Fabius.ProbabilityRepresentation.weightedUniformSeries_smul_weights},
+\nolinkurl{Fabius.ProbabilityRepresentation.uniformProduct_map_head_tail_function},
+\nolinkurl{Fabius.ProbabilityRepresentation.weightedUniformDistribution_isProbabilityMeasure},
+\nolinkurl{Fabius.ProbabilityRepresentation.weightedUniformDistribution_smul_weights},
+\nolinkurl{Fabius.ProbabilityRepresentation.uniformProduct_map_head_tail_weightedUniformSeries},
+\nolinkurl{Fabius.ProbabilityRepresentation.weightedUniformDistribution_unitInterval}, and
+\nolinkurl{Fabius.ProbabilityRepresentation.weightedUniformDistribution_compl_unitInterval}.
+The law-level scalar compatibility identity is oriented as
+\(\mu_{cw}=(x\mapsto cx)_*\mu_w\).
+
+For every real \(q\), the named weights are \(w_n(q)=(1-q)q^n\), with exact zero and
+successor formulas.  Under \(|q|<1\) they are norm-summable with total mass one; their
+series is continuous and measurable, and the probability law satisfies the exact
+head--tail product identity, affine self-similarity, and reflection.  Under
+\(0\le q<1\), the weights are nonnegative, the series lies in \([0,1]\), and the law gives
+mass one to that interval and zero to its complement.  The nineteen declarations are
+\nolinkurl{Fabius.ProbabilityRepresentation.geometricUniformWeight},
+\nolinkurl{Fabius.ProbabilityRepresentation.geometricUniformWeight_zero},
+\nolinkurl{Fabius.ProbabilityRepresentation.geometricUniformWeight_succ},
+\nolinkurl{Fabius.ProbabilityRepresentation.hasSum_geometricUniformWeight},
+\nolinkurl{Fabius.ProbabilityRepresentation.summable_norm_geometricUniformWeight},
+\nolinkurl{Fabius.ProbabilityRepresentation.geometricUniformWeight_nonneg},
+\nolinkurl{Fabius.ProbabilityRepresentation.geometricUniformSeries},
+\nolinkurl{Fabius.ProbabilityRepresentation.continuous_geometricUniformSeries},
+\nolinkurl{Fabius.ProbabilityRepresentation.measurable_geometricUniformSeries},
+\nolinkurl{Fabius.ProbabilityRepresentation.geometricUniformSeries_split},
+\nolinkurl{Fabius.ProbabilityRepresentation.geometricUniformSeries_reflect},
+\nolinkurl{Fabius.ProbabilityRepresentation.geometricUniformSeries_mem_Icc},
+\nolinkurl{Fabius.ProbabilityRepresentation.geometricUniformDistribution},
+\nolinkurl{Fabius.ProbabilityRepresentation.geometricUniformDistribution_isProbabilityMeasure},
+\nolinkurl{Fabius.ProbabilityRepresentation.uniformProduct_map_head_tail_geometricUniformSeries},
+\nolinkurl{Fabius.ProbabilityRepresentation.geometricUniformDistribution_selfSimilar},
+\nolinkurl{Fabius.ProbabilityRepresentation.geometricUniformDistribution_reflection},
+\nolinkurl{Fabius.ProbabilityRepresentation.geometricUniformDistribution_Icc}, and
+\nolinkurl{Fabius.ProbabilityRepresentation.geometricUniformDistribution_compl_Icc}.
+The exact half-base bridges are
+\nolinkurl{Fabius.ProbabilityRepresentation.weightedCoordinateSum_eq_geometricUniformSeries_one_half}
+and
+\nolinkurl{Fabius.ProbabilityRepresentation.weightedSumDistribution_eq_geometricUniformDistribution_one_half}.
+
+Still outside the formal layer are equality of topological support with \([0,1]\),
+atomlessness, the \(q\)-specific CDF and density identities, characteristic-function
+products, moments and cumulants, and uniqueness of the affine measure fixed point.
 \end{statusbox}
 
 \subsection{Moment-generating and Fourier products}
@@ -7726,6 +7977,7 @@ Cambridge University Press, 2009.
 \definecolor{softblue}{RGB}{235,242,249}
 \definecolor{darkgreen}{RGB}{20,95,65}
 
+\integrationreportreset
 \part{Integral and Transform Frontiers for the Fabius and Rvachev Functions}
 % Absorbed from Fabius_Integral_and_Transform_Frontiers/fabius_integrals_and_transforms_frontier_report.tex
 
@@ -9250,6 +9502,7 @@ chapters on Bernoulli numbers, Bell polynomials, orthogonal polynomials, and asy
 \newcommand{\normPartvv}[1]{\lVert#1\rVert}
 \newcommand{\set}[1]{\left\{#1\right\}}
 
+\integrationreportreset
 \part{Integral and Transform Frontiers for the Fabius--Rvachev System}
 % Absorbed from fabius_integral_frontiers_bundle/fabius_integral_frontiers.tex
 
@@ -9380,6 +9633,59 @@ Numerical constants and checks & computational &
 FFT inversion of the infinite sinc product \\
 \bottomrule
 \end{longtable}
+
+\subsection{Current Lean crosswalk for the normalized Volterra layer}
+
+The proof labels above record the status of the report's mathematical arguments.  A later
+implementation checkpoint now verifies the reusable operator layer: the declarations below
+are present at compiled Lean commit \texttt{e109088ed}, verified by a focused build.  Put
+\begin{equation}
+ \mathsf J_{n,a}f(x):=
+ \begin{cases}
+ f(x),&n=0,\\[1mm]
+ \displaystyle\frac1{(n-1)!}\int_a^x(x-t)^{n-1}f(t)\,\dd t,&n>0.
+ \end{cases}                                                \label{p6:eq:lean-volterra-current}
+\end{equation}
+The exact declarations in \path{FabiusFunction.NormalizedVolterra} are:
+\begin{itemize}
+\item \path{normalizedVolterra_affine}, the division-free identity
+\begin{equation}
+ \mathsf J_{n,ca+d}f(cx+d)
+ =c^n\mathsf J_{n,a}\bigl(t\mapsto f(ct+d)\bigr)(x),          \label{p6:eq:lean-affine-current}
+\end{equation}
+for every real \(c\), including \(c=0\) and negative scales, and including \(n=0\).  It
+requires neither integrability nor completeness and works in any real normed target;
+\item \path{normalizedVolterra_comp_affine}, the inverse-smul form
+\begin{equation}
+ \mathsf J_{n,a}\bigl(t\mapsto f(ct+d)\bigr)(x)
+ =(c^n)^{-1}\mathsf J_{n,ca+d}f(cx+d),\qquad c\ne0,           \label{p6:eq:lean-comp-affine-current}
+\end{equation}
+whose nonzero-scale hypothesis is required by the division;
+\item \path{normalizedVolterra_basepoint_shift}, which, under interval integrability from
+\(a\) to \(b\) and from \(b\) to \(x\), proves
+\begin{equation}
+ \mathsf J_{n,a}f(x)=\mathsf J_{n,b}f(x)
+ +\sum_{k=0}^{n-1}\frac{(x-b)^k}{k!}\mathsf J_{n-k,a}f(b).    \label{p6:eq:lean-basepoint-current}
+\end{equation}
+There is no ordering hypothesis on \(a,b,x\), and \(n=0\) is included;
+\item \path{normalizedVolterra_succ_eq_taylor_of_eq_zero}, which assumes integrability only
+from \(a\) to \(b\) and vanishing of \(f\) on the open unoriented interval between \(b\) and
+\(x\), and proves
+\begin{equation}
+ \mathsf J_{n+1,a}f(x)
+ =\sum_{k=0}^{n}\frac{(x-b)^k}{k!}\mathsf J_{n+1-k,a}f(b).    \label{p6:eq:lean-zero-tail-current}
+\end{equation}
+It imposes neither endpoint values nor endpoint order; when \(b=x\), the vanishing condition
+is vacuous.
+\end{itemize}
+Accordingly, the generic assertion that a positive-order Volterra primitive becomes a finite
+Taylor polynomial after the input vanishes is Lean formalized.  Separately,
+\path{normalizedVolterra_pow_mul_extendedFabius} and
+\path{normalizedVolterra_pow_mul_fabiusReal_of_le_one} formalize the signed-global and
+bounded-\(F\) natural-monomial coefficients, the latter on \(x\le1\).  The generic operator
+theorem alone does not identify the displayed \(1-F\), shifted-\(\upf\), or exterior
+piecewise moment coefficients; those report-specific evaluations retain their existing
+paper-proof status.
 
 \section{Normalization and structural identities}
 
@@ -9518,17 +9824,20 @@ For \(0\le x\le1\),
  \mathrm D^{-n}(1-F(x))
  =(-1)^nA_nF\!\left(\frac{1-x}{2^n}\right)+P_{n-1}(x).   \label{p6:eq:one-minus-F}
 \end{equation}
-More generally, on every interval where the relevant global branch is fixed,
+More generally, for \(a\ne0\), on every interval where the relevant global branch is fixed,
 \begin{equation}
  \mathrm D^{-n}F(ax+b)
  =a^{-n}A_n\FF\!\left(\frac{ax+b}{2^n}\right)+P_{n-1}(x). \label{p6:eq:affine-primitive}
 \end{equation}
+The condition \(a\ne0\) is required by this inverse-scaled formula.  It is distinct from the
+division-free forward covariance \eqref{p6:eq:lean-affine-current}, which remains valid when the
+scale is zero.
 \end{corollary}
 
 \begin{proof}
 For \eqref{p6:eq:up-local-primitive}, differentiating the right side \(n\) times gives
 \(\FF(x+1)=\upf(x)\) on \([-1,1]\).  Formula \eqref{p6:eq:one-minus-F} follows from
-\(1-F(x)=F(1-x)\).  The affine formula is the chain rule.
+\(1-F(x)=F(1-x)\).  The affine formula is the chain rule for \(a\ne0\).
 \end{proof}
 
 \subsection{Global causal primitives of \(\upf\)}
@@ -9561,6 +9870,18 @@ with the upper limit understood as \(\min(x,1)\) once \(x>1\).  Then
 Only the last branch needs comment.  Expand \((x-t)^{n-1}\); odd moments vanish by
 evenness of \(\upf\), and the even moments are \(c_j\).
 \end{proof}
+
+\begin{remark}[Formal status of the zero tail]
+At compiled checkpoint \texttt{e109088ed}, the declaration
+\begin{center}
+\path{normalizedVolterra_succ_eq_taylor_of_eq_zero}
+\end{center}
+formally supplies the generic finite Taylor polynomial once the integrand vanishes beyond
+the support.  It does not by itself prove the explicit \(c_j\)-coefficient identification in
+\eqref{p6:eq:up-causal-piecewise}, nor the analogous displayed \(F\)- or
+\(\upf\)-specific coefficients; those specializations remain at the report's paper-proof
+status.
+\end{remark}
 
 \subsection{Definite dyadic integrals become exact arithmetic}
 
@@ -10704,10 +11025,15 @@ The integer relation \(\mathcal R(0)+2\mathcal R(1)=1\) is the first boundary da
 
 \subsection{Formalization roadmap}
 
-The most Lean-ready statements are algebraic or measure-theoretic:
+At compiled checkpoint \texttt{e109088ed}, the generic affine, base-point-change, and
+zero-tail polynomial calculus in
+\cref{p6:eq:lean-affine-current,p6:eq:lean-comp-affine-current,p6:eq:lean-basepoint-current,p6:eq:lean-zero-tail-current}
+is no longer a roadmap item, and the signed-global and bounded-\(F\) natural-monomial
+coefficients are formalized separately.  The remaining Lean-ready work is more narrowly:
 \begin{enumerate}
-  \item the primitive ladder, by induction from the existing derivative theorem;
-  \item the finite polynomial-weight formula, by differentiation and Pascal identities;
+  \item add narrowly packaged specializations for the report's \(1-F\), shifted-\(\upf\),
+        and exterior piecewise moment-coefficient formulas, without reproving the generic
+        Volterra layer or the already formalized signed/bounded \(F\) cases;
   \item the inverse primitive, by change of variables and integration by parts;
   \item the pushforward theorem, by a finite block partition and Thue--Morse balance;
   \item the inverse \(L^p\) identity and divergence threshold;
@@ -10736,7 +11062,8 @@ fractional self-similarity.
 
 These results open a coherent frontier joining antiderivatives, quantiles, integral
 transforms, dyadic arithmetic, Thue--Morse signs, Bell polynomials, and Lambert--\(W\)
-asymptotics.  They also isolate several compact statements suitable for formal proof.
+asymptotics.  The remaining formal targets are the report-specific and analytic statements
+not covered by the compiled generic Volterra layer.
 
 \appendix
 \section{Corpus map used in the audit}
@@ -10883,7 +11210,7 @@ NIST Digital Library of Mathematical Functions,
 \newcommand{\KPartxx}{\mathcal K}
 \newcommand{\Phiup}{\Phi}
 \newcommand{\littleo}{o}
-\newcommand{\repoPartxx}{\texttt{ProveIt/Analysis/FabiusFunction/docs}}
+\newcommand{\repoPartxx}{\nolinkurl{ProveIt/Analysis/FabiusFunction/docs}}
 \definecolor{statusblue}{RGB}{25,72,120}
 \definecolor{statusgreen}{RGB}{18,105,68}
 \definecolor{statusorange}{RGB}{157,86,0}
@@ -10891,8 +11218,8 @@ NIST Digital Library of Mathematical Functions,
 \definecolor{codegray}{RGB}{245,245,245}
 \newcommand{\PV}{\operatorname{PV}}
 
-\part{Integral Transforms and Fractional Calculus for the Fabius and Rvachev Functions 
-\large Exact antiderivative hierarchie}
+\integrationreportreset
+\part{Integral Transforms and Fractional Calculus for the Fabius and Rvachev Functions}
 % Absorbed from Fabius_Rvachev_Integral_Frontiers/Fabius_Rvachev_Integral_Transforms_and_Fractional_Calculus.tex
 
 
@@ -10960,8 +11287,12 @@ Statements marked \statusproved{} are proved in this report from definitions and
 analysis.  Statements marked \statusderived{} combine such arguments with a theorem already
 present in the audited repository, chiefly the exact periodic negative-Laplace decomposition
 or the endpoint quadratic law.  Decimal values and plots are \statusnumeric{}.  Conjectures
-are marked \statusopen{}.  None of the new results is represented as already formalized in
-Lean.
+are marked \statusopen{}.  Since the audit snapshot, Lean has formalized the natural-order
+normalized Volterra kernel, the signed-global and bounded Fabius primitive ladders, all
+natural-monomial weights, and the support-free quantile pushforward with its Banach-valued
+substitution corollary.  Those foundations do not imply the nonlinear inverse transmutation,
+fractional-order, Mellin-continuation, or named \(\Up\)-tail results developed here; those
+remain frontier claims.
 
 
 \clearpage
@@ -12946,20 +13277,21 @@ problem.
 
 A practical Lean development can proceed in increasing order of analytic difficulty:
 \begin{enumerate}
-\item prove the integer primitive ladder and weighted polynomial formulas from the existing
-      global dilation API;
-\item use the now-formalized positive-real Riemann--Liouville kernel API and prove the
-      still-open Fabius-specific order-shift identity;
+\item[\(\checkmark\)] use the now-formalized integer primitive ladder and weighted polynomial
+       formulas in \path{NormalizedVolterra.lean} and \path{FabiusAntiderivatives.lean};
+\item[\(\checkmark\)] use the now-formalized positive-real Riemann--Liouville kernel API;
+      the Fabius-specific order-shift identity remains to be proved;
 \item formalize the moment endpoint and fractional dyadic lattice;
-\item formalize monotone substitutions for $F$ and $G$, yielding the inverse transmutation
-      theorem;
+\item[\(\checkmark\)] use the now-formalized support-free quantile pushforward and compact
+      Fabius substitution from \path{QuantileTransport.lean}; the stronger nonlinear
+      \(F\)--\(G\) transmutation theorem remains to be proved;
 \item define $\Aop_q$ and prove the cocycle and derivative ladder;
 \item combine the existing exact periodic decomposition with the Thue--Morse Laplace product
       to formalize the defect and rigidity theorem;
 \item only then address Riesz kernels and the Gevrey boundary theorem.
 \end{enumerate}
-The first five stages require mostly real integration, Gamma identities, and existing Fabius
-lemmas.  The sixth stage reuses the strongest current Gamma--zeta formalization and would make
+The unfinished early stages require mostly real integration, Gamma identities, and existing
+Fabius lemmas.  The sixth stage reuses the strongest current Gamma--zeta formalization and would make
 the report's flagship theorem machine checked.
 
 % -----------------------------------------------------------------------------
@@ -13209,7 +13541,8 @@ V. Reshetnikov et al.,
   belowskip=0.8em
 }
 
-\part{Integral}
+\integrationreportreset
+\part{Integral, Transform, and Fractional-Calculus Frontiers for the Fabius--Rvachev System}
 % Absorbed from Fabius_Integral_Transform_Fractional_Frontiers/Fabius_Integral_Transform_Fractional_Frontiers.tex
 
 
@@ -13269,6 +13602,19 @@ literature.  \statusprovedPartll{} marks deductions proved here and not located 
 audited corpus in the displayed form.  \statusconditional{} requires an explicit
 regularity hypothesis.  \statusconjecture{} is an open proposal.  Numerical
 agreement never substitutes for proof.
+\end{statusbox}
+
+\begin{statusbox}
+\textbf{Current Lean boundary.}
+The natural-order normalized Volterra kernel, its signed-global and bounded
+Fabius ladders, and every natural-monomial specialization are formalized in
+\path{NormalizedVolterra.lean} and \path{FabiusAntiderivatives.lean}.
+The support-free quantile pushforward and its Banach-valued substitution
+corollary are formalized in \path{QuantileTransport.lean}.  These results do
+not imply the stronger layer-cake and inverse-transmutation identities studied
+below.  Named primitives of \(\Up\) based at \(-1\), reflected and piecewise
+support-tail formulas, inverse-function primitives, complex-power or Mellin
+continuation, and every genuinely fractional order remain frontier material.
 \end{statusbox}
 
 
@@ -13936,6 +14282,15 @@ analytic continuation.  Exponential weights similarly yield
 \end{align}
 
 \subsection{All repeated antiderivatives as truncated moments}
+
+Throughout the truncated-moment formulas, powers of a positive part mean
+\[
+ u_+^s:=\mathbf 1_{\{u>0\}}u^s.
+\]
+Thus the zeroth truncated power is the strict-positivity indicator, while
+negative exponents are evaluated only where \(u>0\).  Replacing \(>\) by
+\(\ge\) does not change any expectation below because the relevant laws are
+continuous.
 
 For integer \(n\ge1\),
 \begin{align}
@@ -14724,8 +15079,9 @@ script is deterministic and uses no Monte Carlo simulation.
 From the extracted archive directory:
 \begin{lstlisting}[style=reportcode]
 python numerical_experiments.py --output-dir reproduced
-latexmk -pdf -interaction=nonstopmode -halt-on-error \
-  Fabius_Integral_Transform_Fractional_Frontiers.tex
+pdflatex -interaction=nonstopmode -halt-on-error Integration_and_Transform_Frontiers.tex
+pdflatex -interaction=nonstopmode -halt-on-error Integration_and_Transform_Frontiers.tex
+pdflatex -interaction=nonstopmode -halt-on-error Integration_and_Transform_Frontiers.tex
 \end{lstlisting}
 The generated table \path{jacobi_coefficients.tex} and all three figures are
 included in the PDF build.
@@ -14799,7 +15155,7 @@ frontier is to prove the self-neglecting property required in
 transseries through the beta kernel.  This should produce
 \begin{equation}
  \int_0^1\Up(x)^p\dd x
- =\QF(1/p)\left(1-\gamma h_p+c_2h_p^2+	ext{periodic corrections}+\cdots\right),
+ =\QF(1/p)\left(1-\gamma h_p+c_2h_p^2+\text{periodic corrections}+\cdots\right),
  \label{p8:eq:power-full-frontier}
 \end{equation}
 where \(c_2\) should involve moments of \(\log E\), hence \(\pi^2/6\) and
@@ -14951,15 +15307,15 @@ not stop at the pinned snapshot.
 \section{Reproducibility manifest}
 \label{p8:app:manifest}
 
-The companion ZIP archive contains:
+The consolidated volume and its retained companion assets comprise:
 \begin{center}
 \begin{tabularx}{0.96\textwidth}{@{}p{0.42\textwidth}X@{}}
 \toprule
 Path & Purpose \\
 \midrule
-\path{Fabius_Integral_Transform_Fractional_Frontiers.tex}
+\path{Integration_and_Transform_Frontiers.tex}
 & Complete LaTeX manuscript \\
-\path{Fabius_Integral_Transform_Fractional_Frontiers.pdf}
+\path{Integration_and_Transform_Frontiers.pdf}
 & Compiled and visually inspected report \\
 \path{numerical_experiments.py}
 & Commented exact/numerical verification program \\
@@ -15121,6 +15477,7 @@ L.~de Haan and A.~Ferreira,
   belowskip=0.8em
 }
 
+\integrationreportreset
 \part{Fractional Integral Calculus and Complex-Order Transform Hierarchies for the Fabius--Rvachev System}
 % Absorbed from Fabius_Rvachev_Fractional_Integral_Report/fabius_fractional_integrals_report.tex
 
@@ -17128,7 +17485,8 @@ the infinite sinc product,
 \newcommand{\MPartiii}{\mathfrak M}
 \newcommand{\LiPartiii}{\operatorname{Li}}
 
-\part{Integral}
+\integrationreportreset
+\part{Integral, Transform, and Fractional-Order Frontiers for the Fabius--Rvachev System}
 % Absorbed from Fabius_Fractional_Integral_Transform_Frontiers/fabius_fractional_integral_transform_frontiers.tex
 
 
@@ -19112,7 +19470,10 @@ five-point differentiation of \(I^{1-\sigma}\Q\), avoiding the severe conditioni
 loss in direct division by the flat density \(\F'\).
 \end{enumerate}
 
+\begingroup
+\setlength{\tabcolsep}{5pt}
 \input{assets/Fabius_Fractional_Integral_Transform_Frontiers/new_numerical_results.tex}
+\endgroup
 
 At \(|x|=1.2\), where the exterior moment series converges most slowly among the
 displayed points, eighteen exact moments already give errors between
@@ -19497,8 +19858,12 @@ to regenerate \path{new_numerical_results.tex},
 \path{numerical_results.txt}, and \path{numerical_results.json}.  Rebuild the
 PDF with
 \begin{verbatim}
-latexmk -pdf -interaction=nonstopmode -halt-on-error \
-  fabius_fractional_integral_transform_frontiers.tex
+pdflatex -interaction=nonstopmode -halt-on-error \
+  Integration_and_Transform_Frontiers.tex
+pdflatex -interaction=nonstopmode -halt-on-error \
+  Integration_and_Transform_Frontiers.tex
+pdflatex -interaction=nonstopmode -halt-on-error \
+  Integration_and_Transform_Frontiers.tex
 \end{verbatim}
 The experiment uses NumPy, SciPy, and mpmath.  All exact moments are represented by
 \path{fractions.Fraction}; the FFT and quadratures are used only as independent
@@ -19606,6 +19971,9 @@ Communications in Partial Differential Equations \textbf{32} (2007), 1245--1260.
 \newcommand{\Kord}{\mathcal K}
 \newcommand{\Sord}{\mathcal S}
 \newtheorem{conditionaltheorem}[theorem]{Conditional theorem}
+\crefalias{conditionaltheorem}{theorem}
+\crefname{conditionaltheorem}{conditional theorem}{conditional theorems}
+\Crefname{conditionaltheorem}{Conditional theorem}{Conditional theorems}
 \newenvironment{proofidea}{\par\smallskip\noindent\textit{Proof architecture.}\ }{\hfill$\square$\par\smallskip}
 \newenvironment{boxedresult}{%
   \par\smallskip\noindent\begin{center}\begin{minipage}{0.94\textwidth}%
@@ -19629,7 +19997,8 @@ Communications in Partial Differential Equations \textbf{32} (2007), 1245--1260.
   belowskip=0.8em
 }
 
-\part{Fractional Quantile Transmutation}
+\integrationreportreset
+\part{Fractional Quantile Transmutation, Complex-Order Resolvents, and Nonlocal Rvachev Calculus}
 % Absorbed from fabius_fractional_transform_frontiers_bundle/fabius_fractional_transform_frontiers.tex
 
 
@@ -21185,7 +21554,7 @@ the Fourier-energy check uses the sinc product independently.
 
 \begin{figure}[htbp]
 \centering
-\includegraphics[width=0.88\textwidth]{assets/fabius_fractional_transform_frontiers_bundle/figure_quantile_fractional.pdf}
+\includegraphics[width=0.88\textwidth]{assets/fabius_fractional_transform_frontiers_bundle/figure_quantile_fractional.png}
 \caption{The inverse Fabius function together with its half-order
 Riemann--Liouville integral and half-order Caputo derivative.  The Caputo
 operator amplifies endpoint structure, whereas the fractional integral
@@ -21195,7 +21564,7 @@ smooths it.}
 
 \begin{figure}[htbp]
 \centering
-\includegraphics[width=0.88\textwidth]{assets/fabius_fractional_transform_frontiers_bundle/figure_stieltjes_convergence.pdf}
+\includegraphics[width=0.88\textwidth]{assets/fabius_fractional_transform_frontiers_bundle/figure_stieltjes_convergence.png}
 \caption{Convergence of the exact-moment expansion
 \eqref{p11:eq:Stieltjes-moment-series} at two real/complex parameter pairs.}
 \label{p11:fig:stieltjes-convergence}
@@ -21203,7 +21572,7 @@ smooths it.}
 
 \begin{figure}[htbp]
 \centering
-\includegraphics[width=0.88\textwidth]{assets/fabius_fractional_transform_frontiers_bundle/figure_difference_hierarchy.pdf}
+\includegraphics[width=0.88\textwidth]{assets/fabius_fractional_transform_frontiers_bundle/figure_difference_hierarchy.png}
 \caption{Several real-order slices of the entire difference hierarchy.  The
 order $-1$ slice is the difference density, order $0$ is its tail, and
 positive orders are fractional positive-part integrals.}
@@ -21212,7 +21581,7 @@ positive orders are fractional positive-part integrals.}
 
 \begin{figure}[htbp]
 \centering
-\includegraphics[width=0.88\textwidth]{assets/fabius_fractional_transform_frontiers_bundle/figure_nonlocal_tails.pdf}
+\includegraphics[width=0.88\textwidth]{assets/fabius_fractional_transform_frontiers_bundle/figure_nonlocal_tails.png}
 \caption{Weyl and Riesz fractional derivatives outside the support of
 $\Up$.  Dashed curves are their leading $x^{-1-\alpha}$ terms.  The agreement
 illustrates how noninteger differentiation creates exact algebraic tails.}
@@ -21530,7 +21899,9 @@ The numerical script requires Python 3 with NumPy, SciPy, mpmath, and
 Matplotlib.  Running
 \begin{lstlisting}[style=pythonstyle]
 python numerical_experiments.py
-latexmk -pdf fabius_fractional_transform_frontiers.tex
+pdflatex -interaction=nonstopmode -halt-on-error Integration_and_Transform_Frontiers.tex
+pdflatex -interaction=nonstopmode -halt-on-error Integration_and_Transform_Frontiers.tex
+pdflatex -interaction=nonstopmode -halt-on-error Integration_and_Transform_Frontiers.tex
 \end{lstlisting}
 regenerates the tables, figures, and PDF.  The \texttt{--quick} option uses a
 $2^{15}$-point grid for a fast smoke test; the reported values use $2^{17}$.

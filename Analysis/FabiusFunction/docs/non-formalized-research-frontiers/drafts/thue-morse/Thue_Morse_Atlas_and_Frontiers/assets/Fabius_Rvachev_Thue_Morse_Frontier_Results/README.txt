@@ -1,19 +1,16 @@
-Fabius–Rvachev–Thue–Morse Frontier Results — archived companion assets
-=======================================================================
+Fabius–Rvachev–Thue–Morse Frontier Results: Part II assets
+============================================================
 
-Consolidated deliverables
--------------------------
-The former standalone report has been absorbed into:
+Consolidated document
+---------------------
+This directory is an asset and reproducibility bundle for Part II of:
 
     ../../Thue_Morse_Atlas_and_Frontiers.tex
     ../../Thue_Morse_Atlas_and_Frontiers.pdf
 
-This directory retains only the report's figures and reproducibility
-materials. To rebuild the consolidated volume, run from its directory:
-
-    pdflatex -interaction=nonstopmode -halt-on-error Thue_Morse_Atlas_and_Frontiers.tex
-    pdflatex -interaction=nonstopmode -halt-on-error Thue_Morse_Atlas_and_Frontiers.tex
-    pdflatex -interaction=nonstopmode -halt-on-error Thue_Morse_Atlas_and_Frontiers.tex
+It is not a document build root and contains no standalone TeX or PDF
+manuscript.  The figures/ directory is required by the consolidated source;
+compile that source from the volume directory two levels above this one.
 
 Reproducibility material
 ------------------------

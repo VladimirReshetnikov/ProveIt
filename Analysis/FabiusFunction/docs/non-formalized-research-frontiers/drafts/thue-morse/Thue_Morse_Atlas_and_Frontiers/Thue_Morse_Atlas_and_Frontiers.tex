@@ -16,7 +16,7 @@
 \usepackage{titlesec}
 \usepackage{listings}
 \usepackage{xurl}
-\usepackage{hyperref}
+\usepackage[hypertexnames=false]{hyperref}
 \usepackage[nameinlink,noabbrev]{cleveref}
 
 \definecolor{linkblue}{RGB}{25,75,135}
@@ -28,14 +28,14 @@
   linkcolor=linkblue,
   citecolor=linkblue,
   urlcolor=linkblue,
-  pdftitle={A Unified Formula Atlas for the Thue--Morse Sequence},
-  pdfsubject={Digital, valuative, Pascal, automatic, finite-difference, spectral, and analytic representations},
-  pdfkeywords={Thue-Morse, Prouhet, binary digit sum, Lucas theorem, Kummer theorem, Pascal triangle, Mahler equation, Walsh transform, Riesz product, Fabius function}
+  pdftitle={The Thue--Morse Sequence: Formula Atlas and Fabius--Rvachev Frontier Results},
+  pdfsubject={Formula atlas, finite-block calculus, Fourier and Laplace products, q-binomial extrapolation, and Lean crosswalks},
+  pdfkeywords={Thue-Morse, Prouhet, binary digit sum, Lucas theorem, Kummer theorem, Pascal triangle, Mahler equation, Walsh transform, Riesz product, Fabius function, Rvachev up-function, sinc product, q-binomial extrapolation}
 }
 
 \pagestyle{fancy}
 \fancyhf{}
-\fancyhead[L]{\small Thue--Morse formula atlas}
+\fancyhead[L]{\small Thue--Morse atlas and frontiers}
 \fancyhead[R]{\small\nouppercase{\leftmark}}
 \fancyfoot[C]{\thepage}
 \renewcommand{\headrulewidth}{0.4pt}
@@ -130,8 +130,9 @@
 \tableofcontents
 \clearpage
 \section*{Provenance}
-This volume consolidates the following drafts verbatim (labels, citation keys, and
-asset paths mechanically prefixed per part; no mathematical content altered).
+This volume consolidates the following drafts content-preservingly (labels, citation keys,
+and asset paths mechanically prefixed per part; wrapper metadata and counter state
+normalized; no mathematical content altered).
 The absorbed drafts are deleted from the working tree; git history is the archive.
 \begin{itemize}
 \item \path{Thue_Morse_Formula_Atlas/Thue_Morse_Formula_Atlas.tex} \\ {\footnotesize SHA-256 \path{bafeee49431ae8d65e16ec0b978ca4adda6b10b82dbe2c0ddf10def444334795}}
@@ -7115,6 +7116,10 @@ L.~Spiegelhofer,
   belowskip=0.8em
 }
 
+% Part I ends in appendix mode; Part II retains the source report's Arabic sectioning.
+\clearpage
+\setcounter{section}{0}
+\renewcommand{\thesection}{\arabic{section}}
 \part{Finite-Block Calculus for the Fabius--Rvachev--Thue--Morse System}
 % Absorbed from Fabius_Rvachev_Thue_Morse_Frontier_Results/Fabius_Rvachev_Thue_Morse_Frontier_Results.tex
 
@@ -9264,9 +9269,9 @@ corrected endpoint asymptotics.\\
 & Map between human mathematics, Lean files, dependencies, and proof status.\\
 \path{non-formalized-research-frontiers/non-formalized-research-frontiers.tex}
 & Consolidated gap register and non-formalized frontier synthesis.\\
-\path{non-formalized-research-frontiers/drafts/Thue_Morse_Formula_Atlas/Thue_Morse_Formula_Atlas.tex}
-& Current comprehensive formula atlas; principal source for the block polynomial and shifted
-Dirichlet continuation.\\
+\path{non-formalized-research-frontiers/drafts/thue-morse/Thue_Morse_Atlas_and_Frontiers/Thue_Morse_Atlas_and_Frontiers.tex}
+& Current consolidated Thue--Morse volume; Part~I is the comprehensive formula atlas and
+principal source for the block polynomial and shifted Dirichlet continuation.\\
 \path{non-formalized-research-frontiers/drafts/rvachev_up_fourier_decay/}
 & Twelve active manuscripts: the initial wave, comparative and second-wave audits, a gentle
 guide, the asymptotic-product problem statement, successive waves 2--8, and the final
@@ -9379,9 +9384,9 @@ manuscript, 2026.
 
 \bibitem{p2:proveit-atlas}
 V.~Reshetnikov,
-\emph{A Unified Formula Atlas for the Thue--Morse Sequence}, living repository manuscript,
-2026.
-\url{https://github.com/VladimirReshetnikov/ProveIt/blob/main/Analysis/FabiusFunction/docs/non-formalized-research-frontiers/drafts/Thue_Morse_Formula_Atlas/Thue_Morse_Formula_Atlas.tex}
+\emph{The Thue--Morse Sequence: Formula Atlas and Fabius--Rvachev Frontier Results}, living
+repository manuscript, 2026; Part~I contains the unified formula atlas.
+\url{https://github.com/VladimirReshetnikov/ProveIt/blob/main/Analysis/FabiusFunction/docs/non-formalized-research-frontiers/drafts/thue-morse/Thue_Morse_Atlas_and_Frontiers/Thue_Morse_Atlas_and_Frontiers.tex}
 
 \bibitem{p2:proveit-fourier}
 V.~Reshetnikov,

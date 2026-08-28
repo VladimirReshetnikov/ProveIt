@@ -1,15 +1,14 @@
 # Zero-Divisor-Preserving q-Richardson Extrapolation
 
-This archived companion bundle preserves the reproducible computations and
-source data that accompanied the report
+This archive accompanies the report
 
 > **Zero-Divisor-Preserving q-Richardson Extrapolation for the Fabius–Rvachev Sinc Product**
 
 prepared from a recursive audit of the LaTeX documentation under
 `Analysis/FabiusFunction/docs` in Vladimir Reshetnikov's `ProveIt` repository.
-The formerly standalone manuscript now appears in the consolidated frontier
-volume: its source is `../../Frontier_Compilations.tex`, and its rendered PDF
-is `../../Frontier_Compilations.pdf`.
+The report is now displayed as Part III of
+[`../../Frontier_Compilations.tex`](../../Frontier_Compilations.tex); this
+directory retains only its supporting assets.
 
 ## Audited snapshot
 
@@ -45,10 +44,8 @@ The report develops two theorem packages that were not found in the audited corp
 Novelty is claimed relative to the pinned repository corpus and the targeted literature
 search recorded in the report, not as an unconditional worldwide priority claim.
 
-## Archived companion contents
+## Supporting-asset contents
 
-- `../../Frontier_Compilations.tex` — source of the consolidated volume containing this report.
-- `../../Frontier_Compilations.pdf` — rendered consolidated volume.
 - `corpus_manifest.txt` — exact recursive path inventory.
 - `corpus_manifest_table.tex` — breakable LaTeX form of the inventory.
 - `code/frontier_experiments.py` — fully commented high-precision experiment suite.
@@ -56,7 +53,7 @@ search recorded in the report, not as an unconditional worldwide priority claim.
 - `figures/*.png` — all generated figures used in the report.
 - `experiment_summary.txt` — compact run summary.
 - `requirements.txt` — Python dependencies.
-- `SHA256SUMS` — checksums for the packaged files.
+- `SHA256SUMS` — checksums for the retained supporting files.
 
 ## Reproduce the numerical experiments
 
@@ -80,18 +77,19 @@ versions used to prepare the archive, a complete run takes only a few seconds.
 
 ## Rebuild the consolidated PDF
 
-A reasonably complete TeX Live installation is sufficient. From this archived
-companion directory, run exactly three serial `pdflatex` passes:
+A reasonably complete TeX Live installation is sufficient. From this asset directory,
+move to the consolidated-volume directory and run the repository-required three passes:
 
 ```bash
 cd ../..
 pdflatex -interaction=nonstopmode -halt-on-error Frontier_Compilations.tex
 pdflatex -interaction=nonstopmode -halt-on-error Frontier_Compilations.tex
 pdflatex -interaction=nonstopmode -halt-on-error Frontier_Compilations.tex
+rm -f *.aux *.log *.out *.toc
 ```
 
-These commands rebuild `../../Frontier_Compilations.pdf`. The document uses
-Libertinus when available and falls back to Latin Modern.
+The canonical output is
+[`../../Frontier_Compilations.pdf`](../../Frontier_Compilations.pdf).
 
 ## Verification notes
 

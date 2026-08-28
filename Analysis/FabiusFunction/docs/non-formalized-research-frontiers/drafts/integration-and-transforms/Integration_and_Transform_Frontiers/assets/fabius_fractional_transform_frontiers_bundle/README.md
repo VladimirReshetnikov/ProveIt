@@ -70,7 +70,7 @@ The script reconstructs `up` independently from the infinite sinc product by inv
 
 ## Building the PDF
 
-A standard TeX Live installation with `latexmk`, pdfLaTeX, Libertinus (or the built-in Latin Modern fallback), and the packages named in the preamble is sufficient:
+A standard TeX Live installation with `pdflatex`, Libertinus (or the built-in Latin Modern fallback), and the packages named in the preamble is sufficient:
 
 ```bash
 (cd ../.. && pdflatex -interaction=nonstopmode -halt-on-error Integration_and_Transform_Frontiers.tex)

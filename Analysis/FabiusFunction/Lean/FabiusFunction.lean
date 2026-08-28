@@ -26,6 +26,7 @@ import FabiusFunction.ReciprocalExponentialGenerating
 import FabiusFunction.QuadraticCompositionalInverse
 import FabiusFunction.PolynomialExpectationCumulant
 import FabiusFunction.ThueMorseBitSupport
+import FabiusFunction.AffineDifferenceOrbit
 import FabiusFunction.ThueMorseBooleanCube
 import FabiusFunction.ThueMorseValuation
 import FabiusFunction.ThueMorseDigits
