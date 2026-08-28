@@ -85,17 +85,21 @@ history is the archive. Reproducibility files remain under the volume's
 `assets/` directory, with each former package's README updated for its
 new location.
 
-A second wave of five separate member reports arrived 2026-08-28 and
-stays unmerged until deliberately folded into the volume:
-`Fabius_Rvachev_Multiresolution_Representations` (dyadic
-multiresolution and sampling frontiers),
-`Fabius_Rvachev_Polyphase_Representation_Report` (polyphase,
-operator, and jump-measure representations),
-`Fabius_Rvachev_Thue_Morse_Representation_Frontiers` (sampling,
-Padé, Mellin, resolvent, and product–integral atlas),
-`rvachev_fabius_representations_2026` (unit-circle, Bessel, and
-spectral–monodromy representations), and
-`fabius_rvachev_report_package` (integral, series, product, and
-operator representations with Fredholm and Mellin–Barnes bridges).
+The five second-wave reports that arrived 2026-08-28 were
+consolidated the same day into the companion volume
+[`Representation_Second_Wave/`](Representation_Second_Wave/)
+(183 pp, five parts): I — *Integral, Series, Product, and Operator
+Representations* (formerly `fabius_rvachev_report_package/`);
+II — *Polyphase, Operator, and Jump-Measure Representations*
+(formerly `Fabius_Rvachev_Polyphase_Representation_Report/`);
+III — *Sampling, Padé, Mellin, Resolvent, and Product–Integral
+Representations* (formerly
+`Fabius_Rvachev_Thue_Morse_Representation_Frontiers/`);
+IV — *Unit-Circle, Bessel, and Spectral–Monodromy Representations*
+(formerly `rvachev_fabius_representations_2026/`);
+V — *Dyadic Multiresolution and Sampling Frontiers* (formerly
+`Fabius_Rvachev_Multiresolution_Representations/`).  Same mechanical
+content-preserving merge as the first volume; absorbed member
+directories deleted, provenance with SHA-256 in the volume.
 
 See [`../MANIFEST.md`](../MANIFEST.md) for titles and provenance.

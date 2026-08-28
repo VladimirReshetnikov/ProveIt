@@ -195,10 +195,10 @@ The article makes this double cancellation explicit.  The inner Thue--Morse sum 
 
 \section{Introduction: the special functions are structural}
 
-The Fabius function occupies an unusual intersection of smooth analysis, refinement equations, probability, arithmetic, binary combinatorics, and exact computation.  It is infinitely differentiable, yet its behavior at dyadic points is controlled by rational sequences with rapidly growing denominators.  It is linked to Rvachev's compactly supported atomic function, to an infinite convolution of uniform distributions, to the Thue--Morse sequence, and to functional equations in which the independent variable is repeatedly doubled.  The Lean development in the \texttt{ProveIt} repository gives a broad formal account of these connections and proves, among many other results, the $q$-binomial formulas that motivate this article \cite{ProveIt}.
+The Fabius function occupies an unusual intersection of smooth analysis, refinement equations, probability, arithmetic, binary combinatorics, and exact computation.  It is infinitely differentiable, yet its behavior at dyadic points is controlled by rational sequences with rapidly growing denominators.  It is linked to Rvachev's compactly supported atomic function, to an infinite convolution of uniform distributions, to the Thue--Morse sequence, and to functional equations in which the independent variable is repeatedly doubled.  The Lean development in the \texttt{ProveIt} repository gives a broad formal account of these connections and proves, among many other results, the $q$-binomial formulas that motivate this article \cite{p3:ProveIt}.
 
 The formula that initially attracts attention is of the following shape.  For nonnegative integers $m,n$, let $s_2(r)$ denote the sum of the binary digits of $r$ and put $\tm_r=(-1)^{s_2(r)}$.  Then the exact dyadic value is represented by
-\begin{equation}\label{eq:headline}
+\begin{equation}\label{p3:eq:headline}
 \boxed{
 \G\!\left(\frac{m}{2^n}\right)
 =
@@ -209,7 +209,7 @@ The formula that initially attracts attention is of the following shape.  For no
 \sum_{r=0}^{m2^k-1}
 \tm_r\left(r-m2^k+\frac12\right)^{n+k}.}
 \end{equation}
-Here $\G$ denotes the signed global Fabius extension.  On $0\le m\le 2^n$, it agrees with the usual bounded Fabius function $\F$ on $[0,1]$.  The formula was proposed experimentally in 2019 \cite{ReshetnikovMSE}; the cited Lean development proves it for all $m,n\in\N$, including all edge cases and all non-reduced representations of a dyadic number.
+Here $\G$ denotes the signed global Fabius extension.  On $0\le m\le 2^n$, it agrees with the usual bounded Fabius function $\F$ on $[0,1]$.  The formula was proposed experimentally in 2019 \cite{p3:ReshetnikovMSE}; the cited Lean development proves it for all $m,n\in\N$, including all edge cases and all non-reduced representations of a dyadic number.
 
 Three questions naturally arise.
 
@@ -258,16 +258,16 @@ The literature often writes the same letter $F$ for two closely related but logi
 \begin{definition}[Bounded Fabius function]
 A bounded Fabius function is a smooth function $\F:\R\to[0,1]$ satisfying
 \begin{align}
-  \F(x)&=0 &&(x\le 0),\label{eq:Fleft}\\
-  \F(x)&=1 &&(x\ge 1),\label{eq:Fright}\\
-  \F(1-x)&=1-\F(x) &&(0\le x\le1),\label{eq:Fsym}\\
-  \F'(x)&=2\F(2x) &&(0\le x\le\tfrac12).\label{eq:Fder}
+  \F(x)&=0 &&(x\le 0),\label{p3:eq:Fleft}\\
+  \F(x)&=1 &&(x\ge 1),\label{p3:eq:Fright}\\
+  \F(1-x)&=1-\F(x) &&(0\le x\le1),\label{p3:eq:Fsym}\\
+  \F'(x)&=2\F(2x) &&(0\le x\le\tfrac12).\label{p3:eq:Fder}
 \end{align}
 The standard existence-and-uniqueness theorem identifies a unique such function.
 \end{definition}
 
 The compactly supported Rvachev function is obtained by folding $\F$ about the origin:
-\begin{equation}\label{eq:updef}
+\begin{equation}\label{p3:eq:updef}
 \upfun(x)=
 \begin{cases}
  \F(x+1),&x\le0,\\
@@ -277,25 +277,25 @@ The compactly supported Rvachev function is obtained by folding $\F$ about the o
 It is supported in $[-1,1]$, is even, and is infinitely differentiable.  Conversely, the restriction of $\upfun(x-1)$ to $[0,1]$ recovers the usual Fabius profile.
 
 The signed global extension used in the arithmetic literature is
-\begin{equation}\label{eq:globalext}
+\begin{equation}\label{p3:eq:globalext}
   \G(x)=\sum_{j=0}^{\infty}\tm_j\,
   \upfun(x-2j-1).
 \end{equation}
-Because $\upfun$ has compact support, only finitely many summands can be nonzero at a fixed $x$.  Thus \eqref{eq:globalext} is pointwise a finite sum.  It agrees with $\F$ on $[0,1]$ but can be negative outside that interval.  For example, $\G(3)=-1$.
+Because $\upfun$ has compact support, only finitely many summands can be nonzero at a fixed $x$.  Thus \eqref{p3:eq:globalext} is pointwise a finite sum.  It agrees with $\F$ on $[0,1]$ but can be negative outside that interval.  For example, $\G(3)=-1$.
 
-This distinction matters in \eqref{eq:headline}.  When $m\le2^n$, the argument $m/2^n$ lies in $[0,1]$ and the right-hand side equals $\F(m/2^n)$.  For arbitrary $m$, the same finite expression computes the signed extension $\G(m/2^n)$.
+This distinction matters in \eqref{p3:eq:headline}.  When $m\le2^n$, the argument $m/2^n$ lies in $[0,1]$ and the right-hand side equals $\F(m/2^n)$.  For arbitrary $m$, the same finite expression computes the signed extension $\G(m/2^n)$.
 
 \subsection{Half moments and the exact inverse-dyadic sequence}
 
 The arithmetic of inverse powers of two is most efficiently organized through a rational sequence.  Let $d_n$ denote the half-moment sequence associated with $\upfun$; analytically one may normalize it by
-\begin{equation}\label{eq:halfmoments}
+\begin{equation}\label{p3:eq:halfmoments}
  d_0=1,
  \qquad
  d_{n+1}=(n+1)\int_0^1 t^n\upfun(t)\,\dd t
  \quad(n\ge0).
 \end{equation}
 The exact arithmetic development proves that every $d_n$ is rational.  Introduce the factorially normalized sequence
-\begin{equation}\label{eq:an}
+\begin{equation}\label{p3:eq:an}
   a_n=\frac{d_n}{n!}.
 \end{equation}
 It begins
@@ -305,21 +305,21 @@ It begins
  a_4=\frac{143}{32400},\ldots
 \]
 and satisfies the elementary recurrence
-\begin{equation}\label{eq:arec}
+\begin{equation}\label{p3:eq:arec}
   a_n=\frac{1}{2^n-1}
   \sum_{j=0}^{n-1}\frac{a_j}{(n-j+1)!}
   \qquad(n\ge1).
 \end{equation}
 The bridge to the Fabius function is
-\begin{equation}\label{eq:Fainverse}
+\begin{equation}\label{p3:eq:Fainverse}
  \boxed{\F(2^{-n})=2^{-\binom n2}a_n.}
 \end{equation}
-This relation is one of the principal endpoints of the arithmetic development of Arias de Reyna and of its Lean formalization \cite{AriasArithmetic,ProveIt}.
+This relation is one of the principal endpoints of the arithmetic development of Arias de Reyna and of its Lean formalization \cite{p3:AriasArithmetic,p3:ProveIt}.
 
 \begin{table}[H]
 \centering
-\caption{The first inverse-dyadic values obtained from \eqref{eq:arec} and \eqref{eq:Fainverse}.}
-\label{tab:firstvalues}
+\caption{The first inverse-dyadic values obtained from \eqref{p3:eq:arec} and \eqref{p3:eq:Fainverse}.}
+\label{p3:tab:firstvalues}
 \begin{tabular}{@{}ccll@{}}
 \toprule
 $n$ & $2^{-n}$ & $a_n$ & $\F(2^{-n})$\\
@@ -337,8 +337,8 @@ $n$ & $2^{-n}$ & $a_n$ & $\F(2^{-n})$\\
 
 \subsection{The formal refinement equation}
 
-The recurrence \eqref{eq:arec} becomes conceptually clearer after passing to a formal power series.  Set
-\begin{equation}\label{eq:Adef}
+The recurrence \eqref{p3:eq:arec} becomes conceptually clearer after passing to a formal power series.  Set
+\begin{equation}\label{p3:eq:Adef}
   A(X)=\sum_{n=0}^{\infty}a_nX^n,
   \qquad
   E(X)=\frac{\e^X-1}{X}
@@ -348,13 +348,13 @@ Both are understood first as formal series over $\Q$, so no convergence issue is
 \[
   \sum_{j=0}^{n}\frac{a_j}{(n-j+1)!}.
 \]
-For $n\ge1$, recurrence \eqref{eq:arec} says that this is $2^na_n$; the same identity is immediate for $n=0$.  Hence
-\begin{equation}\label{eq:Arefine}
+For $n\ge1$, recurrence \eqref{p3:eq:arec} says that this is $2^na_n$; the same identity is immediate for $n=0$.  Hence
+\begin{equation}\label{p3:eq:Arefine}
   \boxed{A(2X)=E(X)A(X).}
 \end{equation}
 
-Equation \eqref{eq:Arefine} is the algebraic core of the later $q$-binomial argument.  Iterating it at the negative dyadic arguments $-X,-2X,-4X,\ldots$ gives
-\begin{equation}\label{eq:Aiterate}
+Equation \eqref{p3:eq:Arefine} is the algebraic core of the later $q$-binomial argument.  Iterating it at the negative dyadic arguments $-X,-2X,-4X,\ldots$ gives
+\begin{equation}\label{p3:eq:Aiterate}
  A(-2^kX)
   =\left(\prod_{j=0}^{k-1}E(-2^jX)\right)A(-X).
 \end{equation}
@@ -376,12 +376,12 @@ The correct finite-difference calculus for this grid is the $q$-calculus with re
 
 \begin{definition}[$q$-Pochhammer symbol]
 For a base $q$, a parameter $a$, and $n\in\N$, the finite $q$-Pochhammer symbol or $q$-shifted factorial is
-\begin{equation}\label{eq:qpochdef}
+\begin{equation}\label{p3:eq:qpochdef}
   \qpoch{a}{q}{n}=\prod_{j=0}^{n-1}(1-aq^j),
   \qquad \qpoch{a}{q}{0}=1.
 \end{equation}
 When $|q|<1$, its infinite counterpart is
-\begin{equation}\label{eq:qpochinf}
+\begin{equation}\label{p3:eq:qpochinf}
   \qpoch{a}{q}{\infty}=\prod_{j=0}^{\infty}(1-aq^j).
 \end{equation}
 For several parameters one writes
@@ -391,23 +391,23 @@ For several parameters one writes
 \]
 \end{definition}
 
-The terminology can be misleading to a newcomer.  The ordinary Pochhammer symbol $(a)_n=a(a+1)\cdots(a+n-1)$ is an additive shifted product, whereas \eqref{eq:qpochdef} is multiplicative.  The common name reflects the fact that both are the fundamental coefficient packages for their respective hypergeometric theories.
+The terminology can be misleading to a newcomer.  The ordinary Pochhammer symbol $(a)_n=a(a+1)\cdots(a+n-1)$ is an additive shifted product, whereas \eqref{p3:eq:qpochdef} is multiplicative.  The common name reflects the fact that both are the fundamental coefficient packages for their respective hypergeometric theories.
 
 The elementary recurrence
-\begin{equation}\label{eq:qpochrec}
+\begin{equation}\label{p3:eq:qpochrec}
  \qpoch{a}{q}{n+1}=\qpoch{a}{q}{n}(1-aq^n)
 \end{equation}
 is the multiplicative analogue of appending one factor to a factorial.  Another frequently used splitting identity is
-\begin{equation}\label{eq:qpochsplit}
+\begin{equation}\label{p3:eq:qpochsplit}
  \qpoch{a}{q}{n+m}=\qpoch{a}{q}{n}\qpoch{aq^n}{q}{m}.
 \end{equation}
 
 The zeros are especially important for us.  If $a=q^{-d}$ and $0\le d<n$, then the factor with index $j=d$ vanishes, so
-\begin{equation}\label{eq:qpochzero}
+\begin{equation}\label{p3:eq:qpochzero}
  \qpoch{q^{-d}}{q}{n}=0\qquad(0\le d<n).
 \end{equation}
 At $q=1/2$, this says
-\begin{equation}\label{eq:halfzeros}
+\begin{equation}\label{p3:eq:halfzeros}
  \qpoch{2^d}{\frac12}{n}=0\qquad(d<n).
 \end{equation}
 Thus $\qpoch{z}{1/2}{n}$ is, up to its nonzero leading factor, the polynomial whose roots are precisely
@@ -419,43 +419,43 @@ This root set is the exact geometric grid generated by dyadic dilation.
 \subsection{\texorpdfstring{$q$-integers and $q$-factorials}{q-integers and q-factorials}}
 
 For $q\ne1$, define
-\begin{equation}\label{eq:qinteger}
+\begin{equation}\label{p3:eq:qinteger}
  [n]_q=\frac{1-q^n}{1-q}=1+q+\cdots+q^{n-1},
  \qquad
  [n]_q!=\prod_{j=1}^{n}[j]_q.
 \end{equation}
 Then
-\begin{equation}\label{eq:qfactorialpoch}
+\begin{equation}\label{p3:eq:qfactorialpoch}
  \qpoch{q}{q}{n}=(1-q)^n[n]_q!.
 \end{equation}
 As $q\to1$, one has $[n]_q\to n$ and $[n]_q!\to n!$.  This limiting relation is one reason $q$-objects are called deformations or analogues of classical combinatorial objects.
 
 For $0<q<1$, the same product also enters the $q$-gamma function
-\begin{equation}\label{eq:qgamma}
+\begin{equation}\label{p3:eq:qgamma}
  \Gamma_q(z)=(1-q)^{1-z}
  \frac{\qpoch{q}{q}{\infty}}{\qpoch{q^z}{q}{\infty}},
 \end{equation}
-which satisfies $\Gamma_q(z+1)=[z]_q\Gamma_q(z)$ and tends to the ordinary gamma function as $q\uparrow1$.  The Fabius formulas do not require $q$-gamma functions, but this context explains why the finite product in \eqref{eq:headline} belongs to a substantial special-function theory rather than being an isolated notation \cite{DLMF17,GasperRahman,KacCheung}.
+which satisfies $\Gamma_q(z+1)=[z]_q\Gamma_q(z)$ and tends to the ordinary gamma function as $q\uparrow1$.  The Fabius formulas do not require $q$-gamma functions, but this context explains why the finite product in \eqref{p3:eq:headline} belongs to a substantial special-function theory rather than being an isolated notation \cite{p3:DLMF17,p3:GasperRahman,p3:KacCheung}.
 
 \subsection{The half-base specialization and Mersenne products}
 
 Write
-\begin{equation}\label{eq:pn}
+\begin{equation}\label{p3:eq:pn}
  p_n=\qpoch{\frac12}{\frac12}{n}
      =\prod_{j=1}^{n}(1-2^{-j})
 \end{equation}
 and introduce the Mersenne product
-\begin{equation}\label{eq:Mn}
+\begin{equation}\label{p3:eq:Mn}
  M_n=\prod_{j=1}^{n}(2^j-1),
  \qquad M_0=1.
 \end{equation}
 Factoring $2^{-j}$ from the $j$th term yields
-\begin{equation}\label{eq:pMersenne}
+\begin{equation}\label{p3:eq:pMersenne}
  \boxed{
  p_n=2^{-\binom{n+1}{2}}M_n.}
 \end{equation}
-Consequently the apparently mixed denominator in \eqref{eq:headline} has the purely arithmetic form
-\begin{equation}\label{eq:fullDenM}
+Consequently the apparently mixed denominator in \eqref{p3:eq:headline} has the purely arithmetic form
+\begin{equation}\label{p3:eq:fullDenM}
  \boxed{
  2^{n^2}p_n=2^{\binom n2}M_n.}
 \end{equation}
@@ -466,12 +466,12 @@ The finite products $p_n$ decrease to the positive constant
   p_\infty=\qpoch{\frac12}{\frac12}{\infty}
   \approx0.2887880950866024212788997\ldots.
 \]
-Only finite $p_n$ occur in the exact dyadic formulas, but the nonzero limit helps explain why the dominant growth in \eqref{eq:fullDenM} comes from the explicit power $2^{n^2}$ rather than from an exponentially small $q$-product.
+Only finite $p_n$ occur in the exact dyadic formulas, but the nonzero limit helps explain why the dominant growth in \eqref{p3:eq:fullDenM} comes from the explicit power $2^{n^2}$ rather than from an exponentially small $q$-product.
 
 \subsection{Basic hypergeometric context}
 
 The $q$-Pochhammer symbol is the basic building block of basic hypergeometric series.  A common convention is
-\begin{equation}\label{eq:rphis}
+\begin{equation}\label{p3:eq:rphis}
  {}_r\phi_s\!\left(
  \begin{matrix}a_1,\ldots,a_r\\ b_1,\ldots,b_s\end{matrix};q,z\right)
  =\sum_{n=0}^{\infty}
@@ -480,13 +480,13 @@ The $q$-Pochhammer symbol is the basic building block of basic hypergeometric se
  \left((-1)^nq^{\binom n2}\right)^{1+s-r}z^n.
 \end{equation}
 The infinite $q$-binomial theorem is the ${}_1\phi_0$ identity
-\begin{equation}\label{eq:infqbinomial}
+\begin{equation}\label{p3:eq:infqbinomial}
  \sum_{n=0}^{\infty}
  \frac{\qpoch{a}{q}{n}}{\qpoch{q}{q}{n}}z^n
  =\frac{\qpoch{az}{q}{\infty}}{\qpoch{z}{q}{\infty}},
  \qquad |q|<1,\quad |z|<1.
 \end{equation}
-Our Fabius argument uses the finite rather than infinite $q$-binomial theorem.  Nevertheless, \eqref{eq:rphis}--\eqref{eq:infqbinomial} place the notation within the standard hierarchy of $q$-special functions catalogued by the DLMF \cite{DLMF17}.
+Our Fabius argument uses the finite rather than infinite $q$-binomial theorem.  Nevertheless, \eqref{p3:eq:rphis}--\eqref{p3:eq:infqbinomial} place the notation within the standard hierarchy of $q$-special functions catalogued by the DLMF \cite{p3:DLMF17}.
 
 \section{Gaussian binomial coefficients}
 
@@ -494,7 +494,7 @@ Our Fabius argument uses the finite rather than infinite $q$-binomial theorem.  
 
 \begin{definition}[Gaussian coefficient]
 For $0\le k\le n$, the Gaussian or $q$-binomial coefficient is
-\begin{equation}\label{eq:qbindef}
+\begin{equation}\label{p3:eq:qbindef}
  \qbinom{n}{k}{q}
  =\frac{\qpoch{q}{q}{n}}
         {\qpoch{q}{q}{k}\qpoch{q}{q}{n-k}}
@@ -503,29 +503,29 @@ For $0\le k\le n$, the Gaussian or $q$-binomial coefficient is
 It is set equal to zero when $k>n$.
 \end{definition}
 
-Despite the quotient in \eqref{eq:qbindef}, $\qbinom{n}{k}{q}$ is a polynomial in $q$ with nonnegative integer coefficients.  It is symmetric in $k$ and $n-k$,
-\begin{equation}\label{eq:qbinsymm}
+Despite the quotient in \eqref{p3:eq:qbindef}, $\qbinom{n}{k}{q}$ is a polynomial in $q$ with nonnegative integer coefficients.  It is symmetric in $k$ and $n-k$,
+\begin{equation}\label{p3:eq:qbinsymm}
  \qbinom{n}{k}{q}=\qbinom{n}{n-k}{q},
 \end{equation}
 and it tends to the ordinary binomial coefficient as $q\to1$:
-\begin{equation}\label{eq:qbinlimit}
+\begin{equation}\label{p3:eq:qbinlimit}
  \lim_{q\to1}\qbinom{n}{k}{q}=\binom nk.
 \end{equation}
 Two useful $q$-Pascal recurrences are
 \begin{align}
  \qbinom{n+1}{k}{q}
- &=\qbinom{n}{k}{q}+q^{n+1-k}\qbinom{n}{k-1}{q},\label{eq:qpascal1}\\
+ &=\qbinom{n}{k}{q}+q^{n+1-k}\qbinom{n}{k-1}{q},\label{p3:eq:qpascal1}\\
  \qbinom{n+1}{k}{q}
  &=q^k\qbinom{n}{k}{q}+\qbinom{n}{k-1}{q}.
- \label{eq:qpascal2}
+ \label{p3:eq:qpascal2}
 \end{align}
 They are equivalent by symmetry.  Just as the ordinary Pascal recurrence proves the binomial theorem, either form proves the finite $q$-binomial theorem.
 
 \subsection{The finite \texorpdfstring{$q$-binomial theorem}{q-binomial theorem}}
 
-\begin{theorem}[Finite $q$-binomial theorem]\label{thm:finiteqbinomial}
+\begin{theorem}[Finite $q$-binomial theorem]\label{p3:thm:finiteqbinomial}
 For every $n\in\N$,
-\begin{equation}\label{eq:finiteqbinomial}
+\begin{equation}\label{p3:eq:finiteqbinomial}
  \boxed{
  \qpoch{z}{q}{n}
  =\sum_{k=0}^{n}(-1)^kq^{\binom{k}{2}}
@@ -545,15 +545,15 @@ After shifting the index in the second term, the coefficient of $z^k$ becomes
  (-1)^kq^{\binom{k}{2}}
  \left(\qbinom{n}{k}{q}+q^{n+1-k}\qbinom{n}{k-1}{q}\right),
 \]
-which is the desired coefficient by \eqref{eq:qpascal1}.
+which is the desired coefficient by \eqref{p3:eq:qpascal1}.
 \end{proof}
 
-At $q\to1$, \eqref{eq:finiteqbinomial} reduces to
+At $q\to1$, \eqref{p3:eq:finiteqbinomial} reduces to
 \[
  (1-z)^n=\sum_{k=0}^{n}(-1)^k\binom nkz^k.
 \]
 For the Fabius function, however, the important feature is not the classical limit but the root set of the product at $q=1/2$:
-\begin{equation}\label{eq:finitehalf}
+\begin{equation}\label{p3:eq:finitehalf}
  \qpoch{z}{\frac12}{n}
  =\sum_{k=0}^{n}(-1)^k2^{-\binom{k}{2}}
    \halfqbinom{n}{k}z^k.
@@ -562,11 +562,11 @@ Evaluating at $z=2^d$ gives
 \begin{align}
  \sum_{k=0}^{n}(-1)^k2^{-\binom{k}{2}}
    \halfqbinom{n}{k}(2^d)^k&=0 &&(d<n),
- \label{eq:verticalzero}\\
+ \label{p3:eq:verticalzero}\\
  \sum_{k=0}^{n}(-1)^k2^{-\binom{k}{2}}
    \halfqbinom{n}{k}(2^n)^k
  &=(-1)^nM_n.
- \label{eq:verticalendpoint}
+ \label{p3:eq:verticalendpoint}
 \end{align}
 The endpoint follows from
 \[
@@ -578,21 +578,21 @@ These are exactly the cancellations needed in the Fabius proof.
 
 \subsection{Combinatorial meaning and reciprocal base}
 
-When $q$ is a prime power, $\qbinom{n}{k}{q}$ counts the $k$-dimensional linear subspaces of the vector space $\mathbb F_q^n$.  This interpretation explains the positivity and integrality of its coefficients, though the polynomial identity itself makes sense for an arbitrary indeterminate or scalar $q$ \cite{Andrews,Stanley}.
+When $q$ is a prime power, $\qbinom{n}{k}{q}$ counts the $k$-dimensional linear subspaces of the vector space $\mathbb F_q^n$.  This interpretation explains the positivity and integrality of its coefficients, though the polynomial identity itself makes sense for an arbitrary indeterminate or scalar $q$ \cite{p3:Andrews,p3:Stanley}.
 
 The value $q=1/2$ is not a field size, so the direct counting interpretation no longer applies.  Nevertheless, reciprocal-base symmetry gives
-\begin{equation}\label{eq:reciprocalqbin}
+\begin{equation}\label{p3:eq:reciprocalqbin}
  \qbinom{n}{k}{q^{-1}}
  =q^{-k(n-k)}\qbinom{n}{k}{q}.
 \end{equation}
 Taking $q=2$ yields
-\begin{equation}\label{eq:halfvs2}
+\begin{equation}\label{p3:eq:halfvs2}
  \boxed{
  \halfqbinom{n}{k}
  =2^{-k(n-k)}\qbinom{n}{k}{2}.}
 \end{equation}
-Thus every half-base coefficient is a power-of-two rescaling of the number of $k$-planes in $\mathbb F_2^n$.  Equivalently, using the Mersenne products from \eqref{eq:Mn},
-\begin{equation}\label{eq:halfqMersenne}
+Thus every half-base coefficient is a power-of-two rescaling of the number of $k$-planes in $\mathbb F_2^n$.  Equivalently, using the Mersenne products from \eqref{p3:eq:Mn},
+\begin{equation}\label{p3:eq:halfqMersenne}
  \boxed{
  \halfqbinom{n}{k}
  =\frac{M_n}{M_kM_{n-k}2^{k(n-k)}}.}
@@ -620,24 +620,24 @@ The conspicuous numerators $2^j-1$ are the same Mersenne factors that occur in $
 \subsection{A geometric finite-difference stencil}
 
 The most illuminating interpretation for the Fabius formula is interpolation rather than subspace counting.  Fix $n$ and define
-\begin{equation}\label{eq:nodesweights}
+\begin{equation}\label{p3:eq:nodesweights}
  x_k=-2^k,
  \qquad
  w_{n,k}=(-1)^k2^{-\binom{k}{2}}\halfqbinom{n}{k}
  \qquad(0\le k\le n).
 \end{equation}
-Then \eqref{eq:verticalzero}--\eqref{eq:verticalendpoint} become
-\begin{equation}\label{eq:momentannihilation}
+Then \eqref{p3:eq:verticalzero}--\eqref{p3:eq:verticalendpoint} become
+\begin{equation}\label{p3:eq:momentannihilation}
  \sum_{k=0}^{n}w_{n,k}x_k^d=
  \begin{cases}
  0,&d<n,\\
  M_n,&d=n.
  \end{cases}
 \end{equation}
-Indeed, $x_k^d=(-1)^d(2^d)^k$, so the extra sign changes the endpoint $(-1)^nM_n$ in \eqref{eq:verticalendpoint} into $+M_n$.
+Indeed, $x_k^d=(-1)^d(2^d)^k$, so the extra sign changes the endpoint $(-1)^nM_n$ in \eqref{p3:eq:verticalendpoint} into $+M_n$.
 
-Equation \eqref{eq:momentannihilation} says that the functional
-\begin{equation}\label{eq:Dndef}
+Equation \eqref{p3:eq:momentannihilation} says that the functional
+\begin{equation}\label{p3:eq:Dndef}
  \mathcal D_n[f]=\frac1{M_n}\sum_{k=0}^{n}w_{n,k}f(-2^k)
 \end{equation}
 extracts the leading coefficient of every polynomial of degree at most $n$.  If
@@ -649,9 +649,9 @@ This is a geometric analogue of the normalized $n$th forward difference.
 
 There is an exact Lagrange-interpolation identity behind this statement.
 
-\begin{proposition}[Barycentric form of the half-base weights]\label{prop:barycentric}
+\begin{proposition}[Barycentric form of the half-base weights]\label{p3:prop:barycentric}
 For $x_k=-2^k$,
-\begin{equation}\label{eq:barycentric}
+\begin{equation}\label{p3:eq:barycentric}
  \boxed{
  \frac{w_{n,k}}{M_n}
  =\frac{1}{\displaystyle\prod_{\substack{0\le j\le n\\j\ne k}}(x_k-x_j)}.}
@@ -676,10 +676,10 @@ so they contribute $2^{k(n-k)}M_{n-k}$.  Therefore
  \prod_{j\ne k}(x_k-x_j)
  =(-1)^k2^{\binom{k}{2}+k(n-k)}M_kM_{n-k}.
 \]
-Substituting \eqref{eq:halfqMersenne} into \eqref{eq:nodesweights} gives the reciprocal of this product after division by $M_n$.
+Substituting \eqref{p3:eq:halfqMersenne} into \eqref{p3:eq:nodesweights} gives the reciprocal of this product after division by $M_n$.
 \end{proof}
 
-The right-hand side of \eqref{eq:barycentric} is the standard coefficient of $f(x_k)$ in the formula for the leading coefficient of the Lagrange interpolant through the nodes $x_0,\ldots,x_n$.  Thus the $q$-binomial coefficients in the Fabius formula can be read as \emph{barycentric weights for a geometric grid}.  This viewpoint will turn a complicated double sum into a coefficient extractor.
+The right-hand side of \eqref{p3:eq:barycentric} is the standard coefficient of $f(x_k)$ in the formula for the leading coefficient of the Lagrange interpolant through the nodes $x_0,\ldots,x_n$.  Thus the $q$-binomial coefficients in the Fabius formula can be read as \emph{barycentric weights for a geometric grid}.  This viewpoint will turn a complicated double sum into a coefficient extractor.
 
 \begin{example}
 For $n=2$, the nodes are $-1,-2,-4$.  The weights are
@@ -700,7 +700,7 @@ which is exactly the leading-coefficient functional for quadratic interpolation 
 \subsection{The signed sequence}
 
 Let $s_2(r)$ be the number of $1$'s in the binary expansion of $r$, and define
-\begin{equation}\label{eq:tmdef}
+\begin{equation}\label{p3:eq:tmdef}
  \tm_r=(-1)^{s_2(r)}.
 \end{equation}
 The first terms are
@@ -708,51 +708,51 @@ The first terms are
  1,-1,-1,1,-1,1,1,-1,\ldots.
 \]
 The binary recurrences
-\begin{equation}\label{eq:tmrec}
+\begin{equation}\label{p3:eq:tmrec}
  \tm_{2r}=\tm_r,
  \qquad
  \tm_{2r+1}=-\tm_r
 \end{equation}
 encode the self-similar structure of the sequence.  If $0\le s<2^k$, then binary concatenation produces no carries, and
-\begin{equation}\label{eq:tmblockmult}
+\begin{equation}\label{p3:eq:tmblockmult}
  \tm_{h2^k+s}=\tm_h\tm_s.
 \end{equation}
 This block multiplicativity is the key to extending the inverse-power formula to arbitrary dyadic numerators.
 
 \subsection{The generating polynomial}
 
-From \eqref{eq:tmrec}, one obtains by induction
-\begin{equation}\label{eq:tmgeneratingpoly}
+From \eqref{p3:eq:tmrec}, one obtains by induction
+\begin{equation}\label{p3:eq:tmgeneratingpoly}
  \sum_{r=0}^{2^k-1}\tm_r z^r
  =\prod_{j=0}^{k-1}(1-z^{2^j}).
 \end{equation}
 Every factor on the right vanishes at $z=1$, so the generating polynomial has a zero of order $k$ there.  Differentiating, or equivalently expanding around $z=1$, yields the classical Prouhet cancellation:
-\begin{equation}\label{eq:prouhet}
+\begin{equation}\label{p3:eq:prouhet}
  \sum_{r=0}^{2^k-1}\tm_r r^d=0
  \qquad(0\le d<k).
 \end{equation}
 More generally, translation does not affect the vanishing of moments below degree $k$:
-\begin{equation}\label{eq:prouhettranslate}
+\begin{equation}\label{p3:eq:prouhettranslate}
  \sum_{r=0}^{2^k-1}\tm_r(r+c)^d=0
  \qquad(d<k).
 \end{equation}
 This follows either by the binomial theorem or from the exponential generating function below.
 
 The first nonzero moment is
-\begin{equation}\label{eq:prouhetfirst}
+\begin{equation}\label{p3:eq:prouhetfirst}
  \sum_{r=0}^{2^k-1}\tm_r r^k
  =(-1)^k2^{\binom{k}{2}}k!.
 \end{equation}
-The factor $2^{\binom{k}{2}}$ is the product $\prod_{j=0}^{k-1}2^j$ contributed by the $k$ dyadic scales in \eqref{eq:tmgeneratingpoly}.
+The factor $2^{\binom{k}{2}}$ is the product $\prod_{j=0}^{k-1}2^j$ contributed by the $k$ dyadic scales in \eqref{p3:eq:tmgeneratingpoly}.
 
 \subsection{Centered power sums}
 
 The exact Fabius formula uses powers centered at the right endpoint of the block.  Define
-\begin{equation}\label{eq:Tkd}
+\begin{equation}\label{p3:eq:Tkd}
  T_{k,d}=\sum_{r=0}^{2^k-1}\tm_r(r-2^k)^d.
 \end{equation}
 Translation invariance of the leading Prouhet cancellations gives
-\begin{equation}\label{eq:Tvanish}
+\begin{equation}\label{p3:eq:Tvanish}
  T_{k,d}=0\quad(d<k),
  \qquad
  T_{k,k}=(-1)^k2^{\binom{k}{2}}k!.
@@ -760,58 +760,58 @@ Translation invariance of the leading Prouhet cancellations gives
 The centered convention is not arbitrary: after an exponential transform, it produces an especially clean factor $\e^{-X}$ that matches the Fabius refinement series.
 
 Consider the finite exponential sum
-\begin{equation}\label{eq:Ckdef}
+\begin{equation}\label{p3:eq:Ckdef}
  C_k(X)=\sum_{r=0}^{2^k-1}\tm_r\e^{(r-2^k)X}
        =\sum_{d=0}^{\infty}T_{k,d}\frac{X^d}{d!}.
 \end{equation}
-Applying \eqref{eq:tmgeneratingpoly} with $z=\e^X$ gives
+Applying \eqref{p3:eq:tmgeneratingpoly} with $z=\e^X$ gives
 \begin{align}
  C_k(X)
  &=\e^{-2^kX}\prod_{j=0}^{k-1}(1-\e^{2^jX})\notag\\
  &=(-1)^k\e^{-X}\prod_{j=0}^{k-1}(1-\e^{-2^jX}).
- \label{eq:Ckfactor}
+ \label{p3:eq:Ckfactor}
 \end{align}
 The second form uses $\sum_{j=0}^{k-1}2^j=2^k-1$.
 
-By \eqref{eq:Tvanish}, $C_k$ has an exact zero of order $k$ at $X=0$.  Remove it by defining
-\begin{equation}\label{eq:Hkdef}
+By \eqref{p3:eq:Tvanish}, $C_k$ has an exact zero of order $k$ at $X=0$.  Remove it by defining
+\begin{equation}\label{p3:eq:Hkdef}
  H_k(X)=\frac{C_k(X)}{X^k}
        =\sum_{n=0}^{\infty}
          \frac{T_{k,n+k}}{(n+k)!}X^n.
 \end{equation}
-Factoring $2^jX$ from the $j$th term in \eqref{eq:Ckfactor} yields
-\begin{equation}\label{eq:Hkfactor}
+Factoring $2^jX$ from the $j$th term in \eqref{p3:eq:Ckfactor} yields
+\begin{equation}\label{p3:eq:Hkfactor}
  \boxed{
  H_k(X)=(-1)^k2^{\binom{k}{2}}\e^{-X}
  \prod_{j=0}^{k-1}
  \frac{1-\e^{-2^jX}}{2^jX}.}
 \end{equation}
 Since
-\begin{equation}\label{eq:Enegative}
+\begin{equation}\label{p3:eq:Enegative}
  E(-aX)=\frac{\e^{-aX}-1}{-aX}
        =\frac{1-\e^{-aX}}{aX},
 \end{equation}
-we can rewrite \eqref{eq:Hkfactor} as
-\begin{equation}\label{eq:HkE}
+we can rewrite \eqref{p3:eq:Hkfactor} as
+\begin{equation}\label{p3:eq:HkE}
  \boxed{
  H_k(X)=(-1)^k2^{\binom{k}{2}}\e^{-X}
  \prod_{j=0}^{k-1}E(-2^jX).}
 \end{equation}
-Compare this with the iterated Fabius refinement identity \eqref{eq:Aiterate}: the products are identical.
+Compare this with the iterated Fabius refinement identity \eqref{p3:eq:Aiterate}: the products are identical.
 
 \subsection{Translated blocks}
 
 For a common shift $c$, set
-\begin{equation}\label{eq:Ttrans}
+\begin{equation}\label{p3:eq:Ttrans}
  T_{k,d}(c)=\sum_{r=0}^{2^k-1}\tm_r(r-2^k+c)^d.
 \end{equation}
 Its exponential series is simply
-\begin{equation}\label{eq:Ctrans}
+\begin{equation}\label{p3:eq:Ctrans}
  \sum_{d=0}^{\infty}T_{k,d}(c)\frac{X^d}{d!}
  =\e^{cX}C_k(X).
 \end{equation}
 After removing $X^k$,
-\begin{equation}\label{eq:Htrans}
+\begin{equation}\label{p3:eq:Htrans}
  H_k^{(c)}(X)
  :=\sum_{n=0}^{\infty}\frac{T_{k,n+k}(c)}{(n+k)!}X^n
  =\e^{cX}H_k(X).
@@ -823,31 +823,31 @@ This one-line identity is the source of the much stronger statement that the com
 \subsection{A family of quotient series}
 
 Define
-\begin{equation}\label{eq:Rkdef}
+\begin{equation}\label{p3:eq:Rkdef}
  R_k(X)=\e^{-X}\prod_{j=0}^{k-1}E(-2^jX).
 \end{equation}
-Then \eqref{eq:HkE} becomes
-\begin{equation}\label{eq:HkRk}
+Then \eqref{p3:eq:HkE} becomes
+\begin{equation}\label{p3:eq:HkRk}
  H_k(X)=(-1)^k2^{\binom{k}{2}}R_k(X).
 \end{equation}
-On the other hand, multiplying \eqref{eq:Aiterate} by $\e^{-X}$ gives
-\begin{equation}\label{eq:RkA}
+On the other hand, multiplying \eqref{p3:eq:Aiterate} by $\e^{-X}$ gives
+\begin{equation}\label{p3:eq:RkA}
  \boxed{
  R_k(X)A(-X)=\e^{-X}A(-2^kX).}
 \end{equation}
 Because $A(0)=a_0=1$, the formal series $A(-X)$ is a unit.  It is therefore useful to introduce a polynomial parameter $x$ and write
-\begin{equation}\label{eq:Rparam}
+\begin{equation}\label{p3:eq:Rparam}
  R(x;X)=\frac{\e^{-X}A(xX)}{A(-X)}.
 \end{equation}
 Then $R_k(X)=R(-2^k;X)$.
 
 For each fixed $n$, the coefficient
-\begin{equation}\label{eq:rnpoly}
+\begin{equation}\label{p3:eq:rnpoly}
  r_n(x)=\coeff{X}{n}R(x;X)
 \end{equation}
 is a polynomial in $x$ of degree at most $n$.  More importantly, its leading coefficient is $a_n$.  Indeed, the only way to obtain a term $x^nX^n$ is to take $a_nx^nX^n$ from $A(xX)$ and constant terms from both $\e^{-X}$ and $A(-X)^{-1}$.
 
-\begin{proposition}[Coefficient polynomial]\label{prop:coefficientpoly}
+\begin{proposition}[Coefficient polynomial]\label{p3:prop:coefficientpoly}
 For every $n\ge0$,
 \[
  r_n(x)=a_nx^n+\text{a polynomial of degree at most }n-1.
@@ -858,18 +858,18 @@ This proposition packages the formal-series induction used in the Lean proof int
 
 \subsection{Geometric divided differences extract \texorpdfstring{$a_n$}{a[n]}}
 
-Apply the leading-coefficient functional \eqref{eq:Dndef} to the polynomial $r_n(x)$.  Using \eqref{eq:momentannihilation} or, equivalently, the Lagrange weights \eqref{eq:barycentric}, we obtain
-\begin{equation}\label{eq:extractan}
+Apply the leading-coefficient functional \eqref{p3:eq:Dndef} to the polynomial $r_n(x)$.  Using \eqref{p3:eq:momentannihilation} or, equivalently, the Lagrange weights \eqref{p3:eq:barycentric}, we obtain
+\begin{equation}\label{p3:eq:extractan}
  \frac1{M_n}\sum_{k=0}^{n}w_{n,k}
  \coeff{X}{n}R_k(X)=a_n.
 \end{equation}
 Thus
-\begin{equation}\label{eq:weightedR}
+\begin{equation}\label{p3:eq:weightedR}
  \boxed{
  \sum_{k=0}^{n}w_{n,k}\coeff{X}{n}R_k(X)=M_na_n.}
 \end{equation}
 
-This is the decisive coefficient-isolation identity.  It can also be proved without explicitly introducing $R(x;X)$: one expands \eqref{eq:RkA}, uses the moment annihilation \eqref{eq:momentannihilation}, and inducts on the coefficient degree.  That is the style formalized in \texttt{FabiusQBinomialFormula.lean}.  The divided-difference viewpoint explains what the induction is doing.
+This is the decisive coefficient-isolation identity.  It can also be proved without explicitly introducing $R(x;X)$: one expands \eqref{p3:eq:RkA}, uses the moment annihilation \eqref{p3:eq:momentannihilation}, and inducts on the coefficient degree.  That is the style formalized in \texttt{FabiusQBinomialFormula.lean}.  The divided-difference viewpoint explains what the induction is doing.
 
 \begin{greenbox}[Why the half-base is forced]
 If a refinement equation evolved along a geometric orbit $1,\lambda,\lambda^2,\ldots$, the natural node polynomial would be
@@ -886,7 +886,7 @@ Its expansion coefficients are Gaussian binomial coefficients at $q=\lambda^{-1}
 \subsection{The normalized numerator}
 
 For a common translation parameter $c$, define
-\begin{equation}\label{eq:Nncdef}
+\begin{equation}\label{p3:eq:Nncdef}
  \mathcal N_n(c)=
  \sum_{k=0}^{n}
  \frac{\halfqbinom{n}{k}}
@@ -894,7 +894,7 @@ For a common translation parameter $c$, define
  T_{k,n+k}(c),
 \end{equation}
 where $T_{k,d}(c)$ is the translated centered Thue--Morse sum from
-\eqref{eq:Ttrans}.  The centered numerator is $\mathcal N_n(0)$, and the
+\eqref{p3:eq:Ttrans}.  The centered numerator is $\mathcal N_n(0)$, and the
 formula displayed in the introduction uses $\mathcal N_n(1/2)$.
 
 Because
@@ -902,7 +902,7 @@ Because
  \frac{T_{k,n+k}(0)}{(n+k)!}=\coeff{X}{n}H_k(X)
 \]
 and $2^{k(k-1)}=2^{2\binom{k}{2}}$, identity
-\eqref{eq:HkRk} gives
+\eqref{p3:eq:HkRk} gives
 \begin{align}
  \mathcal N_n(0)
  &=\sum_{k=0}^{n}
@@ -911,7 +911,7 @@ and $2^{k(k-1)}=2^{2\binom{k}{2}}$, identity
  &=\sum_{k=0}^{n}
    (-1)^k2^{-\binom{k}{2}}\halfqbinom{n}{k}
    \coeff{X}{n}R_k(X)\notag\\
- &=\sum_{k=0}^{n}w_{n,k}\coeff{X}{n}R_k(X).\label{eq:Nweighted}
+ &=\sum_{k=0}^{n}w_{n,k}\coeff{X}{n}R_k(X).\label{p3:eq:Nweighted}
 \end{align}
 The rather specific factor $2^{k(k-1)}$ in the original formula has now
 been accounted for.  One factor $2^{\binom{k}{2}}$ is produced when the
@@ -919,9 +919,9 @@ order-$k$ zero of the Thue--Morse product is removed; the second is needed
 to leave the $q$-binomial interpolation weight
 $2^{-\binom{k}{2}}$.
 
-Combining \eqref{eq:Nweighted} with the geometric divided-difference
-identity \eqref{eq:weightedR} yields the compact evaluation
-\begin{equation}\label{eq:Ncenteredvalue}
+Combining \eqref{p3:eq:Nweighted} with the geometric divided-difference
+identity \eqref{p3:eq:weightedR} yields the compact evaluation
+\begin{equation}\label{p3:eq:Ncenteredvalue}
  \boxed{\mathcal N_n(0)=M_na_n.}
 \end{equation}
 This equality is the heart of the formula.  Everything in the denominator
@@ -931,7 +931,7 @@ multiple of $a_n$.
 \subsection{Normalizing by the half-base Pochhammer product}
 
 Recall from the half-base specialization that
-\begin{equation}\label{eq:Mnpnagain}
+\begin{equation}\label{p3:eq:Mnpnagain}
  M_n=2^{\binom{n+1}{2}}p_n,
  \qquad p_n=\qpoch{\frac12}{\frac12}{n}.
 \end{equation}
@@ -940,15 +940,15 @@ Therefore
  \frac{\mathcal N_n(0)}{2^{n^2}p_n}
  &=2^{\binom{n+1}{2}-n^2}a_n\notag\\
  &=2^{-\binom n2}a_n\notag\\
- &=\F(2^{-n}),\label{eq:normalizationfinish}
+ &=\F(2^{-n}),\label{p3:eq:normalizationfinish}
 \end{align}
-where the last step is \eqref{eq:Fainverse}.  We have proved the centered
+where the last step is \eqref{p3:eq:Fainverse}.  We have proved the centered
 version of the exact formula.
 
 \begin{theorem}[Inverse-dyadic $q$-binomial--Thue--Morse formula]
-\label{thm:inverseqformula}
+\label{p3:thm:inverseqformula}
 For every $n\in\N$,
-\begin{equation}\label{eq:inverseqformula}
+\begin{equation}\label{p3:eq:inverseqformula}
  \boxed{
  \F(2^{-n})=
  \frac{1}{2^{n^2}\qpoch{\frac12}{\frac12}{n}}
@@ -960,15 +960,15 @@ For every $n\in\N$,
 \end{equation}
 The same value is obtained after replacing every $r-2^k$ by
 $r-2^k+c$, for any common rational, real, or complex translation $c$;
-this strengthening is proved in \cref{sec:translation}.
+this strengthening is proved in \cref{p3:sec:translation}.
 \end{theorem}
 
 \begin{proof}
 The inner sum divided by $(n+k)!$ is the coefficient of $X^n$ in
-$H_k(X)$.  After \eqref{eq:HkRk}, the outer coefficients become the
+$H_k(X)$.  After \eqref{p3:eq:HkRk}, the outer coefficients become the
 geometric interpolation weights $w_{n,k}$.  They extract the leading
 coefficient $a_n$ of the polynomial $r_n(x)$, producing $M_na_n$ by
-\eqref{eq:weightedR}.  The normalization \eqref{eq:normalizationfinish}
+\eqref{p3:eq:weightedR}.  The normalization \eqref{p3:eq:normalizationfinish}
 then gives the asserted Fabius value.
 \end{proof}
 
@@ -976,7 +976,7 @@ then gives the asserted Fabius value.
 
 It is useful to see the derivation as a sequence of transformations, none of
 which is mysterious by itself:
-\begin{equation}\label{eq:proofdiagram}
+\begin{equation}\label{p3:eq:proofdiagram}
 \begin{aligned}
 &\text{Thue--Morse power sum}
 &&\longleftrightarrow&&
@@ -1074,23 +1074,23 @@ order-$k$ zero together with the interpolation normalization.  These are not
 parameters that can be changed independently while retaining the identity.
 \end{greenbox}
 
-\section{Translation invariance and scalar extension}\label{sec:translation}
+\section{Translation invariance and scalar extension}\label{p3:sec:translation}
 
 \subsection{Why a common shift disappears}
 
-The half shift in \eqref{eq:headline} is aesthetically natural because it
+The half shift in \eqref{p3:eq:headline} is aesthetically natural because it
 centers the arithmetic around half-integers, but it is not mathematically
-essential.  In fact, the complete numerator \eqref{eq:Nncdef} is independent
+essential.  In fact, the complete numerator \eqref{p3:eq:Nncdef} is independent
 of $c$.  The reason is another triangular vanishing argument.
 
 Set
-\begin{equation}\label{eq:Snc}
+\begin{equation}\label{p3:eq:Snc}
  S_n^{(c)}(X)=
  \sum_{k=0}^{n}
  \frac{\halfqbinom{n}{k}}{2^{k(k-1)}}H_k^{(c)}(X).
 \end{equation}
-Then by \eqref{eq:Htrans},
-\begin{equation}\label{eq:Sntranslate}
+Then by \eqref{p3:eq:Htrans},
+\begin{equation}\label{p3:eq:Sntranslate}
  S_n^{(c)}(X)=\e^{cX}S_n^{(0)}(X).
 \end{equation}
 The coefficient of $X^d$ in $S_n^{(0)}$ is
@@ -1100,12 +1100,12 @@ The coefficient of $X^d$ in $S_n^{(0)}$ is
 For $d<n$, the coefficient polynomial $r_d(x)$ has degree at most $d<n$,
 so the geometric divided difference annihilates it.  At degree $n$, it
 extracts $M_na_n$.  Hence
-\begin{equation}\label{eq:Snorder}
+\begin{equation}\label{p3:eq:Snorder}
  S_n^{(0)}(X)=M_na_nX^n+O(X^{n+1}).
 \end{equation}
 Multiplication by $\e^{cX}=1+cX+\cdots$ cannot alter the coefficient of
 $X^n$ when all preceding coefficients vanish.  Therefore
-\begin{equation}\label{eq:Nconstant}
+\begin{equation}\label{p3:eq:Nconstant}
  \boxed{\mathcal N_n(c)=\mathcal N_n(0)=M_na_n.}
 \end{equation}
 
@@ -1129,7 +1129,7 @@ identity holds for every $c\in\R$ and every $c\in\C$.
 
 \subsection{Why the polynomial formulation matters in Lean}
 
-For rational $c$, identity \eqref{eq:Sntranslate} already gives a direct
+For rational $c$, identity \eqref{p3:eq:Sntranslate} already gives a direct
 formal-power-series proof.  Extending the statement to arbitrary real and
 complex shifts is more robust if one first constructs the numerator as an
 actual polynomial $N_n(Q)\in\Q[Q]$ and proves
@@ -1187,7 +1187,7 @@ The map
  r\longmapsto 2^k-1-r
 \]
 complements the lowest $k$ binary digits.  Therefore
-\begin{equation}\label{eq:tmreflection}
+\begin{equation}\label{p3:eq:tmreflection}
  \tm_{2^k-1-r}=(-1)^k\tm_r
  \qquad(0\le r<2^k).
 \end{equation}
@@ -1199,7 +1199,7 @@ For $d=n+k$, reflection gives
    (r-2^k+1-q)^d\notag\\
  &=(-1)^n
    \sum_{r=0}^{2^k-1}\tm_r
-   (r-2^k+1-q)^{n+k}.\label{eq:rawreflection}
+   (r-2^k+1-q)^{n+k}.\label{p3:eq:rawreflection}
 \end{align}
 The sign is independent of $k$.  Since $n^2\equiv n\pmod2$,
 \[
@@ -1207,9 +1207,9 @@ The sign is independent of $k$.  Since $n^2\equiv n\pmod2$,
 \]
 The two signs cancel, yielding the raw form.
 
-\begin{corollary}[Raw-coordinate identity]\label{cor:rawformula}
+\begin{corollary}[Raw-coordinate identity]\label{p3:cor:rawformula}
 For every $n\in\N$ and every rational, real, or complex $q$,
-\begin{equation}\label{eq:rawformula}
+\begin{equation}\label{p3:eq:rawformula}
  \boxed{
  \F(2^{-n})=
  \frac{1}{(-2)^{n^2}\qpoch{\frac12}{\frac12}{n}}
@@ -1220,34 +1220,34 @@ For every $n\in\N$ and every rational, real, or complex $q$,
 \end{equation}
 \end{corollary}
 
-Formula \eqref{eq:rawformula} is not a distinct phenomenon.  It is the
+Formula \eqref{p3:eq:rawformula} is not a distinct phenomenon.  It is the
 centered formula viewed through the binary complement symmetry of a complete
 block.
 
-\section{Every dyadic numerator}\label{sec:arbitrarym}
+\section{Every dyadic numerator}\label{p3:sec:arbitrarym}
 
 \subsection{A finite Thue--Morse prefix series}
 
 The inverse-dyadic case corresponds to a single block.  To treat
 $m/2^n$, define the finite exponential prefix
-\begin{equation}\label{eq:Bmdef}
+\begin{equation}\label{p3:eq:Bmdef}
  B_m(X)=\sum_{h=0}^{m-1}\tm_h\e^{(m-1-h)X}.
 \end{equation}
 The empty sum gives $B_0(X)=0$, while $B_1(X)=1$.  Thus the inverse-dyadic
 argument is the special case $m=1$.
 
 Consider the longer centered block
-\begin{equation}\label{eq:Dmkdef}
+\begin{equation}\label{p3:eq:Dmkdef}
  D_{m,k}(X)=
  \sum_{r=0}^{m2^k-1}\tm_r\e^{(r-m2^k)X}.
 \end{equation}
 Write $r=h2^k+s$ with $0\le h<m$ and $0\le s<2^k$.  Binary digits do not
 overlap in this decomposition, so
-\begin{equation}\label{eq:tmblockmultiplicative}
+\begin{equation}\label{p3:eq:tmblockmultiplicative}
  \tm_{h2^k+s}=\tm_h\tm_s.
 \end{equation}
 A direct calculation then gives the factorization
-\begin{equation}\label{eq:Dfactor}
+\begin{equation}\label{p3:eq:Dfactor}
  \boxed{D_{m,k}(X)=B_m(-2^kX)C_k(X).}
 \end{equation}
 Indeed, the exponent on the right is
@@ -1256,7 +1256,7 @@ Indeed, the exponent on the right is
 \]
 After removing the order-$k$ zero from $C_k$, the relevant shifted series is
 therefore
-\begin{equation}\label{eq:Dshiftedfactor}
+\begin{equation}\label{p3:eq:Dshiftedfactor}
  \frac{D_{m,k}(X)}{X^k}=B_m(-2^kX)H_k(X).
 \end{equation}
 This is the exact generalization of the one-block factorization.
@@ -1264,7 +1264,7 @@ This is the exact generalization of the one-block factorization.
 \subsection{The same divided difference with an inserted prefix}
 
 Introduce
-\begin{equation}\label{eq:Smparam}
+\begin{equation}\label{p3:eq:Smparam}
  R_m(x;X)=B_m(xX)R(x;X)
  =\frac{\e^{-X}B_m(xX)A(xX)}{A(-X)}.
 \end{equation}
@@ -1274,7 +1274,7 @@ For fixed $n$, the coefficient
 \]
 is a polynomial in $x$ of degree at most $n$.  Its leading coefficient is
 not merely $a_n$ but
-\begin{equation}\label{eq:rmnleading}
+\begin{equation}\label{p3:eq:rmnleading}
  \coeff{X}{n}\bigl(B_m(X)A(X)\bigr).
 \end{equation}
 To see this, observe that
@@ -1282,31 +1282,31 @@ $B_m(xX)A(xX)=(B_mA)(xX)$; obtaining $x^nX^n$ forces degree $n$ from that
 factor and constant terms from $\e^{-X}/A(-X)$.
 
 The same geometric divided difference now yields
-\begin{equation}\label{eq:generalextract}
+\begin{equation}\label{p3:eq:generalextract}
  \sum_{k=0}^{n}w_{n,k}
  \coeff{X}{n}\bigl(B_m(-2^kX)R_k(X)\bigr)
  =M_n\coeff{X}{n}\bigl(B_m(X)A(X)\bigr).
 \end{equation}
 The left-hand side is exactly the normalized $q$-binomial combination of
-the long-block moments in \eqref{eq:Dmkdef}.  The right-hand side is the
+the long-block moments in \eqref{p3:eq:Dmkdef}.  The right-hand side is the
 finite-prefix coefficient that already occurs in the classical rational
 formula for the signed dyadic Fabius value.  In the normalization used here,
 that identity is
-\begin{equation}\label{eq:dyadicprefixcoefficient}
+\begin{equation}\label{p3:eq:dyadicprefixcoefficient}
  \boxed{
  \G\!\left(\frac{m}{2^n}\right)
  =2^{-\binom n2}\coeff{X}{n}\bigl(B_m(X)A(X)\bigr).}
 \end{equation}
-For $m=1$, $B_1=1$, and \eqref{eq:dyadicprefixcoefficient} reduces to
-\eqref{eq:Fainverse}.
+For $m=1$, $B_1=1$, and \eqref{p3:eq:dyadicprefixcoefficient} reduces to
+\eqref{p3:eq:Fainverse}.
 
-Equations \eqref{eq:generalextract}, \eqref{eq:Mnpnagain}, and
-\eqref{eq:dyadicprefixcoefficient} prove the full formula.
+Equations \eqref{p3:eq:generalextract}, \eqref{p3:eq:Mnpnagain}, and
+\eqref{p3:eq:dyadicprefixcoefficient} prove the full formula.
 
-\begin{theorem}[All nonnegative dyadic numerators]\label{thm:alldyadic}
+\begin{theorem}[All nonnegative dyadic numerators]\label{p3:thm:alldyadic}
 For all $m,n\in\N$ and every common translation $c$ in $\Q$, $\R$, or
 $\C$,
-\begin{equation}\label{eq:alldyadic}
+\begin{equation}\label{p3:eq:alldyadic}
 \boxed{
 \G\!\left(\frac{m}{2^n}\right)
 =
@@ -1319,17 +1319,17 @@ $\C$,
 \end{equation}
 For $0\le m\le2^n$, the left-hand side equals the bounded function
 $\F(m/2^n)$.  Setting $c=1/2$ gives the source formula
-\eqref{eq:headline}.
+\eqref{p3:eq:headline}.
 \end{theorem}
 
 \subsection{Why the common translation remains harmless}
 
 For general $m$, translating every long block multiplies
 $D_{m,k}(X)/X^k$ by $\e^{cX}$.  The weighted aggregate in
-\eqref{eq:generalextract} still has no coefficients below degree $n$,
+\eqref{p3:eq:generalextract} still has no coefficients below degree $n$,
 because multiplication by $B_m(-2^kX)$ merely changes the coefficient
 polynomial while preserving its degree bound.  Hence the same argument as in
-\cref{sec:translation} proves that the coefficient of degree $n$ is
+\cref{p3:sec:translation} proves that the coefficient of degree $n$ is
 unchanged.  The formalization proves the stronger polynomial statement before
 specializing the scalar.
 
@@ -1339,7 +1339,7 @@ A dyadic rational has many presentations:
 \[
  \frac{m}{2^n}=\frac{2m}{2^{n+1}}=\frac{4m}{2^{n+2}}=\cdots.
 \]
-The right side of \eqref{eq:alldyadic} changes drastically when $(m,n)$ is
+The right side of \eqref{p3:eq:alldyadic} changes drastically when $(m,n)$ is
 replaced by $(2m,n+1)$: the number of outer terms increases, every inner
 range changes, the $q$-Pochhammer denominator changes, and the exponents
 increase.  Nevertheless the value is unchanged because both expressions are
@@ -1354,9 +1354,9 @@ cancellation and is rarely numerically efficient.
 
 \subsection{Unit-interval and global interpretations}
 
-When $0\le m\le2^n$, formula \eqref{eq:alldyadic} computes a number in
+When $0\le m\le2^n$, formula \eqref{p3:eq:alldyadic} computes a number in
 $[0,1]$, namely the usual Fabius value.  When $m>2^n$, it computes the signed
-global extension from \eqref{eq:globalext}.  This is not a cosmetic domain
+global extension from \eqref{p3:eq:globalext}.  This is not a cosmetic domain
 extension: the sign pattern between consecutive two-unit blocks is governed
 by $\tm_j$, and the scale-zero term in the later global series is needed to
 distinguish even and odd blocks.
@@ -1367,7 +1367,7 @@ integer-block identity for $\G(m)$, with all conventions fixed by finite sums
 rather than by limiting arguments.
 
 \section{From finite Taylor reduction to a global \texorpdfstring{$q$-series}{q-series}}
-\label{sec:globalseries}
+\label{p3:sec:globalseries}
 
 The finite dyadic identities already explain the special functions.  The
 formal development goes further: it inserts the same $q$-binomial numerator
@@ -1378,7 +1378,7 @@ formula readable.
 \subsection{The normalized numerator as a Taylor coefficient}
 
 For a scalar $q$ in a characteristic-zero field, let
-\begin{equation}\label{eq:Nnqscalar}
+\begin{equation}\label{p3:eq:Nnqscalar}
  \mathcal N_n^{(q)}=
  \sum_{k=0}^{n}
  \frac{\halfqbinom{n}{k}}
@@ -1388,19 +1388,19 @@ For a scalar $q$ in a characteristic-zero field, let
 \end{equation}
 Translation invariance says that this is independent of $q$.  Its useful
 Taylor normalization is
-\begin{equation}\label{eq:Ntaylornormalization}
+\begin{equation}\label{p3:eq:Ntaylornormalization}
  \boxed{
  \frac{\mathcal N_n^{(q)}}
       {2^{\binom n2}\qpoch{\frac12}{\frac12}{n}}
  =2^na_n=\frac{2^nd_n}{n!}.}
 \end{equation}
-Notice that the power of two in \eqref{eq:Ntaylornormalization} is
+Notice that the power of two in \eqref{p3:eq:Ntaylornormalization} is
 $2^{\binom n2}$ rather than $2^{n^2}$.  The latter normalization produces
 the inverse-dyadic function value; the former produces the coefficient
 needed in a Taylor reduction polynomial.
 
 For $m\in\N$, define
-\begin{equation}\label{eq:Qmqdef}
+\begin{equation}\label{p3:eq:Qmqdef}
  \mathcal Q_m^{(q)}(y)=
  \frac1{2^{\binom{m+1}{2}}}
  \sum_{n=0}^{m}
@@ -1408,9 +1408,9 @@ For $m\in\N$, define
  \frac{\mathcal N_n^{(q)}}
       {2^{\binom n2}\qpoch{\frac12}{\frac12}{n}}.
 \end{equation}
-Substitution of \eqref{eq:Ntaylornormalization}, followed by the change of
+Substitution of \eqref{p3:eq:Ntaylornormalization}, followed by the change of
 index $j=m-n$, gives
-\begin{equation}\label{eq:QTaylor}
+\begin{equation}\label{p3:eq:QTaylor}
  \mathcal Q_m^{(q)}(y)
  =\sum_{j=0}^{m}
  2^{\binom{j+1}{2}-\binom{m-j}{2}}
@@ -1418,13 +1418,13 @@ index $j=m-n$, gives
 \end{equation}
 The right-hand side is the finite Fabius Taylor-reduction polynomial; in
 particular it contains no $q$.  Thus the formidable-looking nested sum
-\eqref{eq:Qmqdef} is merely an alternative exact presentation of a familiar
+\eqref{p3:eq:Qmqdef} is merely an alternative exact presentation of a familiar
 finite polynomial.
 
-\begin{theorem}[$q$-binomial Taylor identity]\label{thm:qTaylor}
+\begin{theorem}[$q$-binomial Taylor identity]\label{p3:thm:qTaylor}
 For every $m\in\N$, every scalar $q$ in a characteristic-zero field, and
 every scalar $y$,
-\begin{equation}\label{eq:qTayloridentity}
+\begin{equation}\label{p3:eq:qTayloridentity}
  \boxed{\mathcal Q_m^{(q)}(y)=
  \sum_{j=0}^{m}
  2^{\binom{j+1}{2}-\binom{m-j}{2}}
@@ -1436,22 +1436,22 @@ Consequently $\mathcal Q_m^{(q)}(y)$ is pointwise independent of $q$.
 The formal proof reverses a finite sum and checks one triangular identity
 among exponents of two.  Conceptually, however, all the work has already
 been done by the constant-polynomial identity
-\eqref{eq:Nconstant}.
+\eqref{p3:eq:Nconstant}.
 
 \subsection{Binary prefixes and tails}
 
 Let $x\ge0$.  At scale $m$, define the binary prefix and residual tail
-\begin{equation}\label{eq:prefixTail}
+\begin{equation}\label{p3:eq:prefixTail}
  p_m(x)=\lfloor2^mx\rfloor,
  \qquad
  y_m(x)=x-\frac{p_m(x)}{2^m}.
 \end{equation}
 Then
-\begin{equation}\label{eq:tailbounds}
+\begin{equation}\label{p3:eq:tailbounds}
  0\le y_m(x)<2^{-m}.
 \end{equation}
 To make the scale-$0$ formula uniform, define the previous prefix by
-\begin{equation}\label{eq:previousPrefix}
+\begin{equation}\label{p3:eq:previousPrefix}
  p_{m-1}^{*}(x)=
  \begin{cases}
   \lfloor x/2\rfloor,&m=0,\\
@@ -1463,7 +1463,7 @@ The exposed binary digit is
  p_m(x)-2p_{m-1}^{*}(x)\in\{0,1\}.
 \]
 The signed reduction coefficient is
-\begin{equation}\label{eq:epsilonm}
+\begin{equation}\label{p3:eq:epsilonm}
  \epsilon_m(x)=
  (-1)^{s_2(p_m(x))}
  \bigl(2p_{m-1}^{*}(x)-p_m(x)\bigr).
@@ -1480,14 +1480,14 @@ information.
 
 Finite Taylor reduction along successive binary tails gives an exact
 telescope with a residual term.  Let
-\begin{equation}\label{eq:Tmdef}
+\begin{equation}\label{p3:eq:Tmdef}
  \mathcal T_m(y)=
  \sum_{j=0}^{m}
  2^{\binom{j+1}{2}-\binom{m-j}{2}}
  a_{m-j}\frac{y^j}{j!}.
 \end{equation}
 For every $N\ge0$,
-\begin{equation}\label{eq:finitetelescope}
+\begin{equation}\label{p3:eq:finitetelescope}
  \G(x)=
  \sum_{m=0}^{N}\epsilon_m(x)\mathcal T_m(y_m(x))
  +\rho_N(x),
@@ -1495,19 +1495,19 @@ For every $N\ge0$,
 where the remainder is a signed copy of $\G(y_N(x))$.  Since
 $0\le y_N(x)<2^{-N}$ and $\F(y)\le2y$ on $0\le y\le1/2$, one obtains for
 $N\ge1$
-\begin{equation}\label{eq:remainderbound}
+\begin{equation}\label{p3:eq:remainderbound}
  |\rho_N(x)|\le2^{1-N}.
 \end{equation}
 Moreover, the individual terms satisfy a geometric majorant; for $m\ge2$,
-\begin{equation}\label{eq:summandbound}
+\begin{equation}\label{p3:eq:summandbound}
  \left|\epsilon_m(x)\mathcal T_m(y_m(x))\right|
  \le4\,2^{-(m-1)}.
 \end{equation}
 Thus the resulting series is absolutely convergent.
 
-\begin{theorem}[Global binary-reduction series]\label{thm:globalbinary}
+\begin{theorem}[Global binary-reduction series]\label{p3:thm:globalbinary}
 For every $x\ge0$,
-\begin{equation}\label{eq:globalbinary}
+\begin{equation}\label{p3:eq:globalbinary}
  \boxed{
  \G(x)=\sum_{m=0}^{\infty}
  \epsilon_m(x)\mathcal T_m(y_m(x)),}
@@ -1518,12 +1518,12 @@ $\F(x)$.
 
 \subsection{Substituting the \texorpdfstring{$q$-binomial polynomial}{q-binomial polynomial}}
 
-By \cref{thm:qTaylor}, one may replace $\mathcal T_m$ in
-\eqref{eq:globalbinary} by $\mathcal Q_m^{(q)}$ for any real or complex
+By \cref{p3:thm:qTaylor}, one may replace $\mathcal T_m$ in
+\eqref{p3:eq:globalbinary} by $\mathcal Q_m^{(q)}$ for any real or complex
 $q$.  This gives a global series whose individual finite summands visibly
 contain $q$-Pochhammer symbols, Gaussian coefficients, and Thue--Morse power
 sums:
-\begin{equation}\label{eq:globalqcompact}
+\begin{equation}\label{p3:eq:globalqcompact}
  \boxed{
  \G(x)=\sum_{m=0}^{\infty}
  \epsilon_m(x)\mathcal Q_m^{(q)}(y_m(x)),
@@ -1557,11 +1557,11 @@ the summand can be written as
       {2^{k(k-1)}(n+k)!}
  \sum_{r=0}^{2^k-1}
  \tm_r(r-2^k+q)^{n+k}.
- \label{eq:globalqliteral}
+ \label{p3:eq:globalqliteral}
 \end{align}
-Formula \eqref{eq:globalqliteral} is close to the literal nested expression
+Formula \eqref{p3:eq:globalqliteral} is close to the literal nested expression
 formalized in \path{FabiusGlobalQBinomialSeries.lean}.  The compact
-notation in \eqref{eq:globalqcompact} reveals its architecture more clearly:
+notation in \eqref{p3:eq:globalqcompact} reveals its architecture more clearly:
 a binary digit coefficient, a finite Taylor polynomial, and inside that
 polynomial the same constant $q$-binomial numerator already studied at
 inverse dyadic points.
@@ -1659,18 +1659,18 @@ gauge-like freedom in the presentation of the finite identity.
 \subsection{The power \texorpdfstring{$2^{n^2}$}{2 to the n-squared}}
 
 The square exponent combines two triangular exponents:
-\begin{equation}\label{eq:squaresplit}
+\begin{equation}\label{p3:eq:squaresplit}
  n^2=\binom{n+1}{2}+\binom n2.
 \end{equation}
 The first triangle converts $p_n$ to $M_n$; the second is the inverse-dyadic
-Fabius scaling in \eqref{eq:Fainverse}.  Thus the apparently abrupt $n^2$
+Fabius scaling in \eqref{p3:eq:Fainverse}.  Thus the apparently abrupt $n^2$
 normalization is the sum of the geometric-grid normalization and the
 refinement normalization.
 
 \begin{table}[H]
 \centering
 \caption{Structural dictionary for the exact formula.}
-\label{tab:roles}
+\label{p3:tab:roles}
 \begin{tabularx}{\textwidth}{@{}>{\raggedright\arraybackslash}p{0.29\textwidth}X@{}}
 \toprule
 Ingredient & Structural role\\
@@ -1701,13 +1701,13 @@ For a function $f$, the ordinary $k$th forward difference at $0$ is
 \]
 It annihilates polynomials of degree below $k$.  The Thue--Morse block
 functional
-\begin{equation}\label{eq:PTMfunctional}
+\begin{equation}\label{p3:eq:PTMfunctional}
  \mathcal P_k[f]=\sum_{r=0}^{2^k-1}\tm_rf(r)
 \end{equation}
 uses many more nodes, but it also annihilates every polynomial of degree
 below $k$.  Its generating polynomial factors as a product of first
 differences at step sizes $1,2,4,\ldots,2^{k-1}$:
-\begin{equation}\label{eq:PTMoperators}
+\begin{equation}\label{p3:eq:PTMoperators}
  \mathcal P_k[f]
  =\left.\prod_{j=0}^{k-1}(1-\mathsf E^{2^j})f\right|_{0},
 \end{equation}
@@ -1722,7 +1722,7 @@ The outer functional
 \]
 annihilates polynomials of degree below $n$ in the node variable.  It is the
 leading divided difference on a geometric grid.  In contrast with
-\eqref{eq:PTMoperators}, its geometry is multiplicative: moving from one
+\eqref{p3:eq:PTMoperators}, its geometry is multiplicative: moving from one
 node to the next multiplies by $2$.
 
 The exact Fabius formula composes these two operations:
@@ -1767,7 +1767,7 @@ a peculiarity of one isolated function.
 \end{greenbox}
 
 \section{How the Lean formalization is organized}
-\label{sec:leanarchitecture}
+\label{p3:sec:leanarchitecture}
 
 The mathematical proof can be written in a few pages once the correct
 interpolation picture is known.  A formal proof must additionally specify
@@ -1780,7 +1780,7 @@ that architecture rather than a line-by-line reproduction of the code.
 
 The portion of the development most directly relevant to the present article
 has the following conceptual dependency graph:
-\begin{equation}\label{eq:dependencygraph}
+\begin{equation}\label{p3:eq:dependencygraph}
 \begin{gathered}
  \texttt{Basic}
  \longrightarrow
@@ -1808,7 +1808,7 @@ The arrows indicate mathematical use, not necessarily every import in the
 source tree.
 
 \begin{longtable}{@{}L{0.37\textwidth}L{0.56\textwidth}@{}}
-\caption{Principal Lean modules and their roles.}\label{tab:leanmodules}\\
+\caption{Principal Lean modules and their roles.}\label{p3:tab:leanmodules}\\
 \toprule
 Module & Main mathematical responsibility\\
 \midrule
@@ -1899,23 +1899,23 @@ One of the most reusable pieces of the main module is an abstract weighted
 coefficient lemma.  In mathematical language it says the following.
 
 Suppose a family $P_k(X)$ satisfies
-\begin{equation}\label{eq:abstractPk}
+\begin{equation}\label{p3:eq:abstractPk}
  P_k(X)A(-X)=\e^{-X}A(x_kX),
 \end{equation}
 and weights $w_k$ obey
-\begin{equation}\label{eq:abstractmoments}
+\begin{equation}\label{p3:eq:abstractmoments}
  \sum_kw_kx_k^d=0\qquad(d<n).
 \end{equation}
 Then
-\begin{equation}\label{eq:abstractisolation}
+\begin{equation}\label{p3:eq:abstractisolation}
  \sum_kw_k\coeff{X}{n}P_k(X)
  =\left(\sum_kw_kx_k^n\right)a_n.
 \end{equation}
 The proof is a strong induction on $n$.  Extract the coefficient of $X^n$
-from \eqref{eq:abstractPk}; the top coefficient of $P_k$ is expressed as a
+from \eqref{p3:eq:abstractPk}; the top coefficient of $P_k$ is expressed as a
 known rescaled coefficient minus a convolution involving lower coefficients
 of $P_k$.  After weighting and summing, the rescaled term collapses by
-\eqref{eq:abstractmoments}; every lower convolution collapses by the
+\eqref{p3:eq:abstractmoments}; every lower convolution collapses by the
 induction hypothesis and another moment zero.
 
 Our divided-difference proof packages the same argument by saying that
@@ -2038,32 +2038,32 @@ The actual development supplies all finiteness conditions, casts, nonzero
 denominators, and coefficient-convolution details suppressed here.
 
 \section{Arithmetic and computational perspectives}
-\label{sec:computation}
+\label{p3:sec:computation}
 
 \subsection{Mersenne factors in the rational coefficients}
 
 At $q=1/2$, all Gaussian coefficients and Pochhammer factors lie in $\Q$.
 Their odd parts are controlled by the products $2^j-1$.  Formula
-\eqref{eq:halfqMersenne} gives
+\eqref{p3:eq:halfqMersenne} gives
 \[
  \halfqbinom{n}{k}
  =\frac{M_n}{M_kM_{n-k}2^{k(n-k)}}.
 \]
 Substituting this into the outer coefficient of
-\eqref{eq:inverseqformula} shows that, before cancellation with the global
+\eqref{p3:eq:inverseqformula} shows that, before cancellation with the global
 normalization, every odd prime factor comes from one of three sources:
 Mersenne factors, factorials, or the Thue--Morse power sums themselves.
 This is one reason exact dyadic Fabius values exhibit intricate denominator
 arithmetic despite arising from a smooth function.
 
-The recurrence \eqref{eq:arec} is usually the efficient route for computing
+The recurrence \eqref{p3:eq:arec} is usually the efficient route for computing
 $\F(2^{-n})$ exactly.  The q-binomial formula is more valuable as a
 structural identity: it reveals a hidden interpolation mechanism and relates
 seemingly unrelated binary objects.
 
 \subsection{Severe cancellation}
 
-For moderate $n$, the terms in \eqref{eq:inverseqformula} can be much larger
+For moderate $n$, the terms in \eqref{p3:eq:inverseqformula} can be much larger
 than their sum.  There are three sources of cancellation:
 \begin{enumerate}[leftmargin=2.2em]
 \item positive and negative powers within each Thue--Morse block;
@@ -2110,7 +2110,7 @@ in the q-binomial expression.
 
 \subsection{A rational consistency check}
 
-From \eqref{eq:Ncenteredvalue}, the full centered numerator for $n=2$ is
+From \eqref{p3:eq:Ncenteredvalue}, the full centered numerator for $n=2$ is
 \[
  M_2a_2=3\cdot\frac5{36}=\frac5{12},
 \]
@@ -2140,7 +2140,7 @@ order argument proves every coefficient cancellation simultaneously.
 
 \subsection{Why this is not primarily a basic hypergeometric summation}
 
-The notation in \eqref{eq:headline} resembles a terminating basic
+The notation in \eqref{p3:eq:headline} resembles a terminating basic
 hypergeometric expression, and the outer coefficient can certainly be
 written in $q$-factorial notation.  Yet the proof does not proceed by
 recognizing the entire double sum as a standard ${}_r\phi_s$ evaluation.
@@ -2159,11 +2159,11 @@ basic hypergeometric series.
 \subsection{Relation to \texorpdfstring{$q$-difference operators}{q-difference operators}}
 
 A standard $q$-derivative is
-\begin{equation}\label{eq:qderivative}
+\begin{equation}\label{p3:eq:qderivative}
  D_qf(x)=\frac{f(x)-f(qx)}{(1-q)x}.
 \end{equation}
 Repeated $q$-differentiation samples a multiplicative grid.  Our operator
-$\mathcal D_n$ is not exactly an iterate of \eqref{eq:qderivative}, because
+$\mathcal D_n$ is not exactly an iterate of \eqref{p3:eq:qderivative}, because
 it is normalized as a leading divided difference on the fixed nodes
 $-1,-2,\ldots,-2^n$.  Nevertheless both objects arise from the same
 principle: ordinary derivatives and finite differences are adapted to
@@ -2259,7 +2259,7 @@ following table is intended as a practical reading guide.
 
 \begin{longtable}{@{}L{0.25\textwidth}L{0.25\textwidth}L{0.42\textwidth}@{}}
 \caption{Mathematical notation and corresponding names in the formal development.}
-\label{tab:notationcrosswalk}\\
+\label{p3:tab:notationcrosswalk}\\
 \toprule
 Object in this article & Common alternative notation & Lean-side description\\
 \midrule
@@ -2499,7 +2499,7 @@ implementations.  All entries are exact.
 \begin{table}[H]
 \centering
 \caption{Small half-base products, recurrence coefficients, and Fabius values.}
-\label{tab:exactdata}
+\label{p3:tab:exactdata}
 \begin{tabular}{@{}ccccc@{}}
 \toprule
 $n$ & $p_n$ & $M_n$ & $a_n$ & $\F(2^{-n})$\\
@@ -2538,61 +2538,61 @@ and the references below.
 
 \begin{thebibliography}{99}
 
-\bibitem{AriasDefinition}
+\bibitem{p3:AriasDefinition}
 J. Arias de Reyna,
 \emph{An infinitely differentiable function with compact support: Definition
 and properties},
 English translation of an article in \emph{Rev. Real Acad. Ciencias Madrid}
 \textbf{76} (1982), 21--38; arXiv:1702.05442 (2017).
 
-\bibitem{AriasArithmetic}
+\bibitem{p3:AriasArithmetic}
 J. Arias de Reyna,
 \emph{Arithmetic of the Fabius function},
 arXiv:1702.06487v3 (2017).
 
-\bibitem{ReshetnikovMSE}
+\bibitem{p3:ReshetnikovMSE}
 V. Reshetnikov,
 \emph{Conjectured formula for the Fabius function},
 Mathematics Stack Exchange, question 3283519, 5 July 2019.
 
-\bibitem{ProveIt}
+\bibitem{p3:ProveIt}
 V. Reshetnikov,
 \emph{ProveIt: Analysis/FabiusFunction},
 Lean formalization repository,
 \url{https://github.com/VladimirReshetnikov/ProveIt/tree/main/Analysis/FabiusFunction},
 accessed 24 August 2026.
 
-\bibitem{DLMF17}
+\bibitem{p3:DLMF17}
 NIST Digital Library of Mathematical Functions,
 Chapter 17, \emph{$q$-Hypergeometric and Related Functions},
 and \S5.18, \emph{$q$-Gamma and $q$-Beta Functions},
 F. W. J. Olver et al., eds.,
 \url{https://dlmf.nist.gov/17}.
 
-\bibitem{GasperRahman}
+\bibitem{p3:GasperRahman}
 G. Gasper and M. Rahman,
 \emph{Basic Hypergeometric Series},
 2nd ed., Encyclopedia of Mathematics and its Applications 96,
 Cambridge University Press, 2004.
 
-\bibitem{Andrews}
+\bibitem{p3:Andrews}
 G. E. Andrews,
 \emph{The Theory of Partitions},
 Encyclopedia of Mathematics and its Applications,
 Addison--Wesley, 1976; Cambridge University Press reprint, 1998.
 
-\bibitem{Stanley}
+\bibitem{p3:Stanley}
 R. P. Stanley,
 \emph{Enumerative Combinatorics}, Vol. 1,
 2nd ed., Cambridge Studies in Advanced Mathematics 49,
 Cambridge University Press, 2012.
 
-\bibitem{KacCheung}
+\bibitem{p3:KacCheung}
 V. Kac and P. Cheung,
 \emph{Quantum Calculus},
 Universitext, Springer, 2002.
 
-\bibitem{AlloucheShallit}
+\bibitem{p3:AlloucheShallit}
 J.-P. Allouche and J. Shallit,
 \emph{Automatic Sequences: Theory, Applications, Generalizations},
 Cambridge University Press, 2003.

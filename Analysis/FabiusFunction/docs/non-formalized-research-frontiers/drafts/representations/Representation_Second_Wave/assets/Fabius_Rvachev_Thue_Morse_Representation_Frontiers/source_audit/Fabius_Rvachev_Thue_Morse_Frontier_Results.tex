@@ -161,7 +161,7 @@ research directions are labeled as conjectures or formalization obligations.
 \clearpage
 
 \section{Corpus audit and research positioning}
-\label{sec:audit}
+\label{p3:sec:audit}
 
 \subsection{What was inspected}
 
@@ -175,7 +175,7 @@ manuscripts; the non-elementarity article and Lean walkthrough provide logical a
 context; and the papers directory contains source TeX for relevant primary literature.
 The archive is explicitly a provenance-preserving collection of frozen versions, with
 byte-identical or otherwise redundant entries pruned from the historical catalogue
-\cite{proveit-primary,proveit-frontiers,proveit-atlas,proveit-fourier,proveit-archive}.
+\cite{p3:proveit-primary,p3:proveit-frontiers,p3:proveit-atlas,p3:proveit-fourier,p3:proveit-archive}.
 
 The audit protocol was therefore:
 \begin{enumerate}
@@ -188,7 +188,7 @@ The audit protocol was therefore:
 \item search the corpus for the candidate identities and coefficient patterns before calling
       them new to the corpus.
 \end{enumerate}
-A complete source ledger appears in \cref{app:ledger}.
+A complete source ledger appears in \cref{p3:app:ledger}.
 
 \subsection{Established pillars}
 
@@ -245,12 +245,11 @@ Keyword searches of the inspected TeX corpus did not locate the all-orders $4^{-
 formula, the sharp-radius remainder bound, or the $q$-binomial extrapolation scheme in the
 form proved below.  Searches of arXiv and publisher records located the classical Fabius,
 Thue--Morse, lacunary-product, automatic-sequence, arithmetic, Dirichlet-series, and
-Lambert-$W$ sources used for context \cite{arias1982,arias2017arith,aistleitner2015,
-toth2022,corless1996,allouche2003}, but did not constitute an exhaustive priority search.  Accordingly, every novelty statement in this report is
+Lambert-$W$ sources used for context \cite{p3:arias1982,p3:arias2017arith,p3:aistleitner2015,p3:toth2022,p3:corless1996,p3:allouche2003}, but did not constitute an exhaustive priority search.  Accordingly, every novelty statement in this report is
 corpus-relative.
 
 \section{Objects, normalizations, and exact background}
-\label{sec:objects}
+\label{p3:sec:objects}
 
 \subsection{The signed block polynomial}
 
@@ -259,7 +258,7 @@ Let
  \eps_n=(-1)^{s_2(n)},\qquad
  P_m(z)=\sum_{n=0}^{2^m-1}\eps_n z^n
        =\prod_{j=0}^{m-1}\left(1-z^{2^j}\right),
- \label{eq:Pm}
+ \label{p3:eq:Pm}
 \end{equation}
 where $s_2(n)$ is the binary digit sum.  The product identity is the finite form of the
 Thue--Morse generating-product law.  Its zero of order $m$ at $z=1$ is exactly the Prouhet
@@ -271,10 +270,10 @@ Use $\sinc z=\sin z/z$ with $\sinc0=1$, and define
 \begin{align}
  Q_m(t)&=\prod_{k=1}^{m}\sinc\!\left(\frac{t}{2^k}\right),
  &Q_\infty(t)&=\prod_{k=1}^{\infty}\sinc\!\left(\frac{t}{2^k}\right),
- \label{eq:Qdef}\\
+ \label{p3:eq:Qdef}\\
  G_m(-s)&=\prod_{k=1}^{m}\frac{1-\e^{-s/2^k}}{s/2^k},
  &G(-s)&=\prod_{k=1}^{\infty}\frac{1-\e^{-s/2^k}}{s/2^k}.
- \label{eq:Gdef}
+ \label{p3:eq:Gdef}
 \end{align}
 The products converge locally uniformly and define entire functions after removable values
 at zero are supplied.
@@ -287,16 +286,16 @@ the normalized Rvachev density satisfies
 \begin{equation}
  \widehat{\Up}(\xi)=Q_\infty(2\pi\xi)
  =\prod_{j=0}^{\infty}\sinc\!\left(\frac{\pi\xi}{2^j}\right).
- \label{eq:upFourier}
+ \label{p3:eq:upFourier}
 \end{equation}
 The bounded Fabius distribution is related by
 \begin{equation}
  F'(x)=2\Up(2x-1),\qquad
  F(x)=\int_{-1}^{2x-1}\Up(y)\dd y\quad(0\le x\le1).
- \label{eq:Fup}
+ \label{p3:eq:Fup}
 \end{equation}
 These conventions agree with the repository's primary exposition
-\cite{proveit-primary,arias1982}.
+\cite{p3:proveit-primary,p3:arias1982}.
 
 \subsection{The lower-Lambert phase}
 
@@ -304,32 +303,32 @@ Write $L=\log2$.  For small $x>0$, the canonical endpoint phase variable is
 \begin{equation}
  \lambda(x)=-\frac{W_{-1}(-Lx)}{L},
  \qquad x=\lambda(x)2^{-\lambda(x)}.
- \label{eq:lambda}
+ \label{p3:eq:lambda}
 \end{equation}
 The associated leading saddle scale is
 \begin{equation}
  s_0(x)=2^{\lambda(x)}=\frac{\lambda(x)}{x}.
- \label{eq:s0}
+ \label{p3:eq:s0}
 \end{equation}
 The repository's endpoint theory adds periodic corrections in $\log_2s$ and an all-orders
-saddle expansion.  Our use of \eqref{eq:s0} below is computational: it measures how many
+saddle expansion.  Our use of \eqref{p3:eq:s0} below is computational: it measures how many
 factors of the exact product are needed near that scale.  It is not a replacement for the
 periodically corrected saddle analysis.
 
 \section{One Thue--Morse block, two exact product bridges}
-\label{sec:bridges}
+\label{p3:sec:bridges}
 
 \subsection{Oscillatory specialization: the Fourier bridge}
 
 \begin{theorem}[Exact finite Thue--Morse--sinc identity]
-\label{thm:finite-sinc}
+\label{p3:thm:finite-sinc}
 For every integer $m\ge1$ and every $t\in\C$,
 \begin{equation}
  \boxed{
  P_m\!\left(\e^{\ii t/2^{m-1}}\right)
  =(-\ii)^m t^m 2^{-\binom m2}
    \e^{\ii t(1-2^{-m})}Q_m(t).}
- \label{eq:finite-sinc}
+ \label{p3:eq:finite-sinc}
 \end{equation}
 Equivalently, with the removable value at $t=0$ understood,
 \begin{equation}
@@ -337,7 +336,7 @@ Equivalently, with the removable value at $t=0$ understood,
  Q_m(t)=\ii^m2^{\binom m2}t^{-m}
  \e^{-\ii t(1-2^{-m})}
  \sum_{n=0}^{2^m-1}\eps_n\e^{\ii nt/2^{m-1}}.}
- \label{eq:normalized-TM-Fourier}
+ \label{p3:eq:normalized-TM-Fourier}
 \end{equation}
 \newresult
 \end{theorem}
@@ -363,11 +362,11 @@ The product of the phases is
  =\e^{\ii t(1-2^{-m})},
 \]
 and the sinc factors are $\sinc(t/2),\ldots,\sinc(t/2^m)$.  This gives
-\eqref{eq:finite-sinc}; the sum form follows from \eqref{eq:Pm}.
+\eqref{p3:eq:finite-sinc}; the sum form follows from \eqref{p3:eq:Pm}.
 \end{proof}
 
 \begin{remark}[Prouhet cancellation becomes the normalization]
-The factor $t^{-m}$ in \eqref{eq:normalized-TM-Fourier} is harmless precisely because
+The factor $t^{-m}$ in \eqref{p3:eq:normalized-TM-Fourier} is harmless precisely because
 $P_m$ has a zero of order $m$ at $1$.  Thus the same cancellation that annihilates the first
 $m$ power moments also regularizes the Fourier approximation at the origin.
 \end{remark}
@@ -375,7 +374,7 @@ $m$ power moments also regularizes the Fourier approximation at the origin.
 \subsection{Decaying specialization: the endpoint Laplace bridge}
 
 \begin{theorem}[Exact finite Thue--Morse--Laplace identity]
-\label{thm:finite-Laplace}
+\label{p3:thm:finite-Laplace}
 For every integer $m\ge1$ and every $s\in\C$,
 \begin{equation}
  \boxed{
@@ -383,7 +382,7 @@ For every integer $m\ge1$ and every $s\in\C$,
  P_m\!\left(\e^{-s/2^m}\right)
  =\frac{2^{m(m+1)/2}}{s^m}
   \sum_{n=0}^{2^m-1}\eps_n\e^{-ns/2^m}.}
- \label{eq:finite-Laplace}
+ \label{p3:eq:finite-Laplace}
 \end{equation}
 Again, the apparent singularity at $s=0$ is removable.
 \newresult
@@ -413,13 +412,13 @@ truncated negative-Laplace product $G_m(-s)$.  No asymptotic argument is involve
 \subsection{The omitted tail is a scaled copy of the whole}
 
 \begin{proposition}[Exact tail self-similarity]
-\label{prop:tail-self}
+\label{p3:prop:tail-self}
 For every $m\ge0$,
 \begin{align}
  Q_\infty(t)&=Q_m(t)Q_\infty(t/2^m),
- \label{eq:Q-tail-self}\\
+ \label{p3:eq:Q-tail-self}\\
  G(-s)&=G_m(-s)G(-s/2^m).
- \label{eq:G-tail-self}
+ \label{p3:eq:G-tail-self}
 \end{align}
 \newresult
 \end{proposition}
@@ -431,35 +430,35 @@ scaled argument.
 \end{proof}
 
 \begin{corollary}[Exact finite Thue--Morse factorization of the full products]
-\label{cor:full-TM-factor}
+\label{p3:cor:full-TM-factor}
 For $m\ge1$,
 \begin{align}
  Q_\infty(t)
  &=\ii^m2^{\binom m2}t^{-m}\e^{-\ii t(1-2^{-m})}
    P_m\!\left(\e^{\ii t/2^{m-1}}\right)Q_\infty(t/2^m),
- \label{eq:full-Q-TM}\\
+ \label{p3:eq:full-Q-TM}\\
  G(-s)
  &=\frac{2^{m(m+1)/2}}{s^m}
    P_m\!\left(\e^{-s/2^m}\right)G(-s/2^m).
- \label{eq:full-G-TM}
+ \label{p3:eq:full-G-TM}
 \end{align}
 Thus every truncation error is represented by the original entire function in a small
 argument.
 \end{corollary}
 
 \section{The zeta--Lambert tail calculus}
-\label{sec:zeta-tail}
+\label{p3:sec:zeta-tail}
 
 \subsection{A local logarithm of the sinc function}
 
 \begin{lemma}[Euler--zeta expansion]
-\label{lem:logsinc}
+\label{p3:lem:logsinc}
 For $|z|<\pi$,
 \begin{equation}
  \boxed{
  \log\sinc z
  =-\sum_{r=1}^{\infty}\frac{\zeta(2r)}{r\pi^{2r}}z^{2r}.}
- \label{eq:logsinc}
+ \label{p3:eq:logsinc}
 \end{equation}
 The logarithm is the branch vanishing at $z=0$.
 \end{lemma}
@@ -477,11 +476,11 @@ convergence permits interchanging the sums, and the inner sum over $n$ is $\zeta
 \subsection{All orders, exact radius, explicit remainder}
 
 \begin{theorem}[All-orders sinc-tail expansion]
-\label{thm:all-orders-Q}
+\label{p3:thm:all-orders-Q}
 Let $m\ge0$.  For
 \begin{equation}
  |t|<\pi2^{m+1},
- \label{eq:Q-domain}
+ \label{p3:eq:Q-domain}
 \end{equation}
 the quotient $Q_\infty(t)/Q_m(t)$ is nonzero and
 \begin{equation}
@@ -490,16 +489,16 @@ the quotient $Q_\infty(t)/Q_m(t)$ is nonzero and
  =-\sum_{r=1}^{\infty}
  \frac{\zeta(2r)}{r\pi^{2r}(4^r-1)}
  t^{2r}4^{-rm}.}
- \label{eq:Q-all-orders}
+ \label{p3:eq:Q-all-orders}
 \end{equation}
-The disk in \eqref{eq:Q-domain} is maximal for this Taylor logarithm: its boundary contains
+The disk in \eqref{p3:eq:Q-domain} is maximal for this Taylor logarithm: its boundary contains
 the nearest zeros $t=\pm\pi2^{m+1}$ of the tail.
 \newresult
 \end{theorem}
 
 \begin{proof}
-By \cref{prop:tail-self}, the quotient is $Q_\infty(t/2^m)$.  Apply
-\cref{lem:logsinc} to every factor and sum:
+By \cref{p3:prop:tail-self}, the quotient is $Q_\infty(t/2^m)$.  Apply
+\cref{p3:lem:logsinc} to every factor and sum:
 \begin{align*}
  \log Q_\infty(t/2^m)
  &=-\sum_{k=1}^{\infty}\sum_{r=1}^{\infty}
@@ -523,24 +522,24 @@ The first terms are
  -\frac{t^6}{178605}64^{-m}
  -\frac{t^8}{9639000}256^{-m}
  -\cdots\right).
- \label{eq:Q-first-terms}
+ \label{p3:eq:Q-first-terms}
 \end{equation}
 
 \begin{theorem}[Certified tail remainder]
-\label{thm:Q-remainder}
+\label{p3:thm:Q-remainder}
 Let $N\ge0$ and put
 \begin{equation}
  x_m(t)=\frac{|t|}{\pi2^{m+1}}<1.
- \label{eq:xmt}
+ \label{p3:eq:xmt}
 \end{equation}
 If $R_{N,m}(t)$ denotes the part of the positive series in
-\eqref{eq:Q-all-orders} with $r\ge N+1$, then
+\eqref{p3:eq:Q-all-orders} with $r\ge N+1$, then
 \begin{equation}
  \boxed{
  |R_{N,m}(t)|
  \le \frac{4\zeta(2)}{3}
  \frac{x_m(t)^{2N+2}}{(N+1)(1-x_m(t)^2)}.}
- \label{eq:Q-remainder-bound}
+ \label{p3:eq:Q-remainder-bound}
 \end{equation}
 For real $t$ in the stated disk, $R_{N,m}(t)\ge0$.
 \newresult
@@ -563,34 +562,34 @@ For $N\ge0$ define
  Q_m^{[N]}(t)=Q_m(t)
  \exp\!\left[-\sum_{r=1}^{N}
  \frac{\zeta(2r)t^{2r}}{r\pi^{2r}(4^r-1)}4^{-rm}\right].
- \label{eq:Qcorrected}
+ \label{p3:eq:Qcorrected}
 \end{equation}
 For $N=0$, this is $Q_m$.
 \end{definition}
 
 \begin{corollary}[Arbitrary-order convergence]
-\label{cor:arbitrary-Q}
+\label{p3:cor:arbitrary-Q}
 For every compact set $K\subset\C$ and every fixed $N\ge0$,
 \begin{equation}
  Q_m^{[N]}(t)=Q_\infty(t)
  \left(1+\bigO_K(4^{-(N+1)m})\right)
  \qquad(t\in K,\ m\to\infty).
- \label{eq:arbitrary-Q}
+ \label{p3:eq:arbitrary-Q}
 \end{equation}
-Moreover, after inserting \eqref{eq:normalized-TM-Fourier}, the left side is a normalized
+Moreover, after inserting \eqref{p3:eq:normalized-TM-Fourier}, the left side is a normalized
 length-$2^m$ Thue--Morse exponential sum multiplied by only $N$ explicit zeta corrections.
 \newresult
 \end{corollary}
 
 \begin{proof}
-For all sufficiently large $m$, $K$ lies in the disk \eqref{eq:Q-domain}.  The exact quotient
+For all sufficiently large $m$, $K$ lies in the disk \eqref{p3:eq:Q-domain}.  The exact quotient
 $Q_\infty/Q_m^{[N]}$ is $\exp(-R_{N,m})$.  The bound
-\eqref{eq:Q-remainder-bound}, uniformly on $K$, is $\bigO_K(4^{-(N+1)m})$; exponentiation
+\eqref{p3:eq:Q-remainder-bound}, uniformly on $K$, is $\bigO_K(4^{-(N+1)m})$; exponentiation
 preserves that order.
 \end{proof}
 
 \begin{corollary}[Fourier approximation to the up-function]
-\label{cor:up-Fourier-block}
+\label{p3:cor:up-Fourier-block}
 For fixed $\xi\in\C$,
 \begin{align}
  \widehat\Up(\xi)
@@ -603,7 +602,7 @@ For fixed $\xi\in\C$,
  \exp\!\left[-\sum_{r=1}^{N}
  \frac{\zeta(2r)(2\pi\xi)^{2r}}{r\pi^{2r}(4^r-1)}4^{-rm}\right]
  \left(1+\bigO_{\xi,N}(4^{-(N+1)m})\right).
- \label{eq:up-TM-approx}
+ \label{p3:eq:up-TM-approx}
 \end{align}
 Thus the infinite Fourier product admits an arbitrary-order approximation from one finite
 digital block.
@@ -611,13 +610,13 @@ digital block.
 
 \subsection{Why the coefficient array is a Lambert series}
 
-Put $q=1/4$.  Then \eqref{eq:Q-all-orders} becomes
+Put $q=1/4$.  Then \eqref{p3:eq:Q-all-orders} becomes
 \begin{equation}
  \log\frac{Q_\infty(t)}{Q_m(t)}
  =-\sum_{r=1}^{\infty}
  \frac{\zeta(2r)}{r\pi^{2r}}t^{2r}
  \frac{q^{r(m+1)}}{1-q^r}.
- \label{eq:Q-Lambert}
+ \label{p3:eq:Q-Lambert}
 \end{equation}
 The kernel $q^r/(1-q^r)$ is the elementary Lambert-series kernel.  Expanding it as
 $\sum_{\ell\ge1}q^{r\ell}$ reconstructs the omitted factors.  This is a direct analytic
@@ -625,7 +624,7 @@ connection between the sinc product and $q$-series: the base is $q=1/4$ because 
 is even and the geometric frequency scale is $1/2$.
 
 \begin{theorem}[General geometric base]
-\label{thm:base-b}
+\label{p3:thm:base-b}
 Let $b>1$ and
 \[
  Q_{m,b}(t)=\prod_{k=1}^{m}\sinc(t/b^k),\qquad
@@ -637,32 +636,32 @@ For $|t|<\pi b^{m+1}$,
  \log\frac{Q_{\infty,b}(t)}{Q_{m,b}(t)}
  =-\sum_{r=1}^{\infty}\frac{\zeta(2r)}{r\pi^{2r}}t^{2r}
  \frac{q^{r(m+1)}}{1-q^r}.}
- \label{eq:base-b}
+ \label{p3:eq:base-b}
 \end{equation}
 \newresult
 \end{theorem}
 
 \begin{proof}
-Repeat the proof of \cref{thm:all-orders-Q}, replacing the geometric sum in $4^{-r}$ by the
+Repeat the proof of \cref{p3:thm:all-orders-Q}, replacing the geometric sum in $4^{-r}$ by the
 one in $b^{-2r}$.
 \end{proof}
 
 \section{An all-orders finite-block formula for the endpoint Laplace product}
-\label{sec:Laplace-tail}
+\label{p3:sec:Laplace-tail}
 
 \subsection{Centering removes the linear tail}
 
 \begin{lemma}[Fourier--Laplace rotation]
-\label{lem:GQ}
+\label{p3:lem:GQ}
 For every $s\in\C$,
 \begin{equation}
  \boxed{G(-s)=\e^{-s/2}Q_\infty(\ii s/2).}
- \label{eq:GQ}
+ \label{p3:eq:GQ}
 \end{equation}
 More generally,
 \begin{equation}
  G_m(-s)=\e^{-\frac{s}{2}(1-2^{-m})}Q_m(\ii s/2).
- \label{eq:GmQm}
+ \label{p3:eq:GmQm}
 \end{equation}
 \end{lemma}
 
@@ -680,12 +679,12 @@ Define the centered products
 \begin{equation}
  C(-s)=\e^{s/2}G(-s),\qquad
  C_m(-s)=\e^{\frac{s}{2}(1-2^{-m})}G_m(-s).
- \label{eq:centered-G}
+ \label{p3:eq:centered-G}
 \end{equation}
 Then $C(-s)=Q_\infty(\ii s/2)$ and
 \begin{equation}
  C(-s)=C_m(-s)C(-s/2^m).
- \label{eq:centered-tail}
+ \label{p3:eq:centered-tail}
 \end{equation}
 The centering is not cosmetic: the raw tail has a first-order error, while the centered tail
 has a second-order error.
@@ -693,7 +692,7 @@ has a second-order error.
 \subsection{Bernoulli--zeta expansion of the negative tail}
 
 \begin{theorem}[All-orders negative-Laplace tail]
-\label{thm:G-all-orders}
+\label{p3:thm:G-all-orders}
 For $|u|<4\pi$,
 \begin{equation}
  \boxed{
@@ -701,21 +700,21 @@ For $|u|<4\pi$,
  =-\frac{u}{2}
  +\sum_{r=1}^{\infty}
  \frac{B_{2r}}{2\,r\,(2r)!\,(4^r-1)}u^{2r}.}
- \label{eq:G-all-orders}
+ \label{p3:eq:G-all-orders}
 \end{equation}
 Equivalently,
 \begin{equation}
  \log C(-u)
  =\frac{u^2}{72}-\frac{u^4}{43200}
   +\frac{u^6}{11430720}-\frac{u^8}{2467584000}+\cdots.
- \label{eq:C-first}
+ \label{p3:eq:C-first}
 \end{equation}
 The radius $4\pi$ is exact.
 \newresult
 \end{theorem}
 
 \begin{proof}
-Use \cref{lem:GQ} and \cref{thm:all-orders-Q} with $m=0$ and $t=\ii u/2$:
+Use \cref{p3:lem:GQ} and \cref{p3:thm:all-orders-Q} with $m=0$ and $t=\ii u/2$:
 \[
  \log G(-u)=-\frac u2
  -\sum_{r\ge1}\frac{\zeta(2r)}{r\pi^{2r}(4^r-1)}
@@ -730,25 +729,25 @@ $u=\pm4\pi\ii$, coming from $1-\e^{-u/2}$, so the logarithmic radius is exact.
 \end{proof}
 
 \begin{corollary}[Certified remainder for the centered Laplace tail]
-\label{cor:G-remainder}
-Let $y=|u|/(4\pi)<1$.  If the series in \eqref{eq:G-all-orders} is stopped after $u^{2N}$,
+\label{p3:cor:G-remainder}
+Let $y=|u|/(4\pi)<1$.  If the series in \eqref{p3:eq:G-all-orders} is stopped after $u^{2N}$,
 while the exact linear term $-u/2$ is retained, then the remainder $\mathcal R_N(u)$ obeys
 \begin{equation}
  |\mathcal R_N(u)|
  \le \frac{4\zeta(2)}{3}
  \frac{y^{2N+2}}{(N+1)(1-y^2)}.
- \label{eq:G-rem}
+ \label{p3:eq:G-rem}
 \end{equation}
 \end{corollary}
 
 \begin{proof}
-This is \cref{thm:Q-remainder} at $m=0$, $t=\ii u/2$.
+This is \cref{p3:thm:Q-remainder} at $m=0$, $t=\ii u/2$.
 \end{proof}
 
 \subsection{The endpoint product from one finite digital block}
 
 \begin{theorem}[Finite Thue--Morse endpoint formula with all corrections]
-\label{thm:G-TM-all}
+\label{p3:thm:G-TM-all}
 Let $m\ge1$, $s\in\C$, and $u=s/2^m$.  If $|u|<4\pi$, then
 \begin{equation}
  \boxed{
@@ -760,38 +759,38 @@ Let $m\ge1$, $s\in\C$, and $u=s/2^m$.  If $|u|<4\pi$, then
  +\sum_{r=1}^{\infty}
  \frac{B_{2r}}{2\,r\,(2r)!\,(4^r-1)}u^{2r}\right].
  \end{aligned}}
- \label{eq:G-TM-all}
+ \label{p3:eq:G-TM-all}
 \end{equation}
 Stopping the correction series after $r=N$ incurs the explicit logarithmic error
-\eqref{eq:G-rem}.  In sum form, $P_m(\e^{-u})=\sum_{n<2^m}\eps_n\e^{-nu}$.
+\eqref{p3:eq:G-rem}.  In sum form, $P_m(\e^{-u})=\sum_{n<2^m}\eps_n\e^{-nu}$.
 \newresult
 \end{theorem}
 
 \begin{proof}
-Combine the exact factorization \eqref{eq:full-G-TM} with
-\cref{thm:G-all-orders} applied to the tail $G(-u)$.
+Combine the exact factorization \eqref{p3:eq:full-G-TM} with
+\cref{p3:thm:G-all-orders} applied to the tail $G(-u)$.
 \end{proof}
 
 \begin{remark}[Arithmetic-to-asymptotic bridge]
 The exact dyadic arithmetic literature typically uses finite coefficient extraction and
 $q$-binomial identities, whereas endpoint asymptotics use the infinite product $G(-s)$ and a
-saddle.  Formula \eqref{eq:G-TM-all} gives an intermediate object: a single finite
+saddle.  Formula \eqref{p3:eq:G-TM-all} gives an intermediate object: a single finite
 Thue--Morse exponential sum, multiplied by a convergent universal correction whose
 coefficients are Bernoulli or zeta values.  It is exact within its natural logarithmic disk,
 not merely asymptotic in $m$.
 \end{remark}
 
 \section{$q$-binomial Richardson acceleration on the spectral scale}
-\label{sec:richardson}
+\label{p3:sec:richardson}
 
 \subsection{An analytic error germ in $q^m$}
 
-Put $q=1/4$.  From \eqref{eq:Q-tail-self},
+Put $q=1/4$.  From \eqref{p3:eq:Q-tail-self},
 \begin{equation}
  Q_m(t)=Q_\infty(t)H_t(q^m),
  \qquad
  H_t(r)=\frac{1}{Q_\infty(t\sqrt r)}.
- \label{eq:Hdef}
+ \label{p3:eq:Hdef}
 \end{equation}
 Although a square root appears in the notation, $Q_\infty$ is even, so $H_t$ is a genuine
 meromorphic function of $r$.  Its Taylor expansion at $0$ is
@@ -799,14 +798,14 @@ meromorphic function of $r$.  Its Taylor expansion at $0$ is
  H_t(r)=\exp\!\left(\sum_{\nu\ge1}
  \frac{\zeta(2\nu)t^{2\nu}}{\nu\pi^{2\nu}(4^\nu-1)}r^\nu\right)
  =\sum_{n\ge0}h_n(t)r^n.
- \label{eq:Hseries}
+ \label{p3:eq:Hseries}
 \end{equation}
 For $t\ne0$, the nearest pole occurs at $r=4\pi^2/t^2$.  The first coefficients are
 \begin{equation}
  h_0=1,\qquad h_1=\frac{t^2}{18},\qquad
  h_2=\frac{31t^4}{16200},\qquad
  h_3=\frac{2347t^6}{42865200}.
- \label{eq:hfirst}
+ \label{p3:eq:hfirst}
 \end{equation}
 
 \subsection{Geometric-grid weights are Gaussian binomials}
@@ -819,72 +818,72 @@ For $(q;q)_n=\prod_{k=1}^{n}(1-q^k)$, define
  =\frac{(-1)^{p-j}q^{\binom{p-j+1}{2}}}{(q;q)_p}
    \qbinom{p}{j}{q},
  \qquad 0\le j\le p.
- \label{eq:weights}
+ \label{p3:eq:weights}
 \end{equation}
 
 \begin{lemma}[Lagrange characterization]
-\label{lem:weights}
-The numbers in \eqref{eq:weights} are the Lagrange weights for evaluating at $r=0$ from the
+\label{p3:lem:weights}
+The numbers in \eqref{p3:eq:weights} are the Lagrange weights for evaluating at $r=0$ from the
 geometric nodes $1,q,\ldots,q^p$:
 \begin{equation}
  w_{p,j}=\prod_{\substack{0\le\ell\le p\\\ell\ne j}}
  \frac{-q^\ell}{q^j-q^\ell}.
- \label{eq:weights-Lagrange}
+ \label{p3:eq:weights-Lagrange}
 \end{equation}
 Consequently,
 \begin{equation}
  \sum_{j=0}^{p}w_{p,j}=1,
  \qquad
  \sum_{j=0}^{p}w_{p,j}q^{jn}=0\quad(1\le n\le p),
- \label{eq:moment-cancel}
+ \label{p3:eq:moment-cancel}
 \end{equation}
 and
 \begin{equation}
  \sum_{j=0}^{p}w_{p,j}q^{j(p+1)}
  =(-1)^pq^{p(p+1)/2}.
- \label{eq:first-uncancelled}
+ \label{p3:eq:first-uncancelled}
 \end{equation}
 \end{lemma}
 
 \begin{proof}
-Split the denominator in \eqref{eq:weights-Lagrange} into $\ell<j$ and $\ell>j$, factor the
-powers of $q$, and collect the factors $1-q^k$.  This gives \eqref{eq:weights}.  The moment
+Split the denominator in \eqref{p3:eq:weights-Lagrange} into $\ell<j$ and $\ell>j$, factor the
+powers of $q$, and collect the factors $1-q^k$.  This gives \eqref{p3:eq:weights}.  The moment
 identities state that Lagrange interpolation reproduces the monomials $1,r,\ldots,r^p$ at
 $r=0$.  For $r^{p+1}$, the interpolation error is the nodal polynomial
 $\prod_{\ell=0}^{p}(r-q^\ell)$; evaluation at $0$ gives
-$(-1)^{p+1}q^{p(p+1)/2}$ for $f-P$, hence \eqref{eq:first-uncancelled} for $P-f$.
+$(-1)^{p+1}q^{p(p+1)/2}$ for $f-P$, hence \eqref{p3:eq:first-uncancelled} for $P-f$.
 \end{proof}
 
 \begin{theorem}[$q$-binomial spectral Richardson extrapolation]
-\label{thm:qRichardson}
+\label{p3:thm:qRichardson}
 Define
 \begin{equation}
  \mathcal R_{m,p}(t)=\sum_{j=0}^{p}w_{p,j}Q_{m+j}(t),
  \qquad q=\frac14.
- \label{eq:Rmp}
+ \label{p3:eq:Rmp}
 \end{equation}
 For every compact $K\subset\C$ and fixed $p$,
 \begin{equation}
  \boxed{
  \mathcal R_{m,p}(t)=Q_\infty(t)+\bigO_K(q^{(p+1)m})
  \quad(t\in K).}
- \label{eq:Richardson-order}
+ \label{p3:eq:Richardson-order}
 \end{equation}
 More precisely,
 \begin{equation}
  \mathcal R_{m,p}(t)-Q_\infty(t)
  =Q_\infty(t)(-1)^pq^{p(p+1)/2}h_{p+1}(t)q^{(p+1)m}
  +\bigO_K(q^{(p+2)m}).
- \label{eq:Richardson-leading}
+ \label{p3:eq:Richardson-leading}
 \end{equation}
 Every $Q_{m+j}$ may be replaced by its exact finite Thue--Morse representation
-\eqref{eq:normalized-TM-Fourier}; hence \eqref{eq:Rmp} is a finite digital extrapolation
+\eqref{p3:eq:normalized-TM-Fourier}; hence \eqref{p3:eq:Rmp} is a finite digital extrapolation
 formula with Gaussian-binomial coefficients.
 \newresult
 \end{theorem}
 
 \begin{proof}
-Insert \eqref{eq:Hseries} into \eqref{eq:Rmp}:
+Insert \eqref{p3:eq:Hseries} into \eqref{p3:eq:Rmp}:
 \begin{align*}
  \frac{\mathcal R_{m,p}(t)}{Q_\infty(t)}
  &=\sum_{j=0}^{p}w_{p,j}\sum_{n\ge0}h_n(t)q^{n(m+j)}\\
@@ -892,19 +891,19 @@ Insert \eqref{eq:Hseries} into \eqref{eq:Rmp}:
    \left(\sum_{j=0}^{p}w_{p,j}q^{jn}\right).
 \end{align*}
 The inner sums are $1$ at $n=0$, vanish for $1\le n\le p$, and equal
-\eqref{eq:first-uncancelled} at $n=p+1$.  Local uniform convergence of the analytic $H_t$
+\eqref{p3:eq:first-uncancelled} at $n=p+1$.  Local uniform convergence of the analytic $H_t$
 series gives the uniform remainder on compact $t$-sets.
 \end{proof}
 
 \begin{corollary}[A derivative bound version]
-\label{cor:Richardson-bound}
+\label{p3:cor:Richardson-bound}
 Suppose $t\in\R$ and the interval $[0,q^m]$ contains no pole of $H_t$.  Then for some
 $\theta\in(0,q^m)$,
 \begin{equation}
  \frac{\mathcal R_{m,p}(t)}{Q_\infty(t)}-1
  =\frac{(-1)^pq^{(p+1)m+p(p+1)/2}}{(p+1)!}
  H_t^{(p+1)}(\theta).
- \label{eq:Richardson-remainder}
+ \label{p3:eq:Richardson-remainder}
 \end{equation}
 In particular, a supremum bound on $H_t^{(p+1)}$ gives a fully certified extrapolation error.
 \end{corollary}
@@ -919,20 +918,20 @@ The first four weight rows are
  p=1:&\quad \left(-\frac13,\frac43\right),\notag\\
  p=2:&\quad \left(\frac1{45},-\frac49,\frac{64}{45}\right),\notag\\
  p=3:&\quad \left(-\frac1{2835},\frac4{135},-\frac{64}{135},\frac{4096}{2835}\right),
- \label{eq:weights-first}\\
+ \label{p3:eq:weights-first}\\
  p=4:&\quad \left(\frac1{722925},-\frac4{8505},\frac{64}{2025},
  -\frac{4096}{8505},\frac{1048576}{722925}\right).\notag
 \end{align}
 
 \begin{remark}[Two complementary accelerations]
-The zeta correction \eqref{eq:Qcorrected} uses one block level and analytic coefficients.
-The $q$-Richardson formula \eqref{eq:Rmp} uses $p+1$ consecutive block levels but no zeta
+The zeta correction \eqref{p3:eq:Qcorrected} uses one block level and analytic coefficients.
+The $q$-Richardson formula \eqref{p3:eq:Rmp} uses $p+1$ consecutive block levels but no zeta
 values.  Both exploit the same analytic germ in $4^{-m}$, so their observed orders agree:
 correction through $N$ and extrapolation degree $p=N$ both leave order $4^{-(N+1)m}$.
 \end{remark}
 
 \section{Exact random tails and a weak differential expansion}
-\label{sec:probability}
+\label{p3:sec:probability}
 
 \subsection{The random-series model}
 
@@ -942,23 +941,23 @@ put
  Y_m=\sum_{k=1}^{m}2^{-k}V_k,
  \qquad
  Y_\infty=\sum_{k=1}^{\infty}2^{-k}V_k.
- \label{eq:Ydef}
+ \label{p3:eq:Ydef}
 \end{equation}
 Then $Y_\infty$ has density $\Up$, while $Y_m$ has the compactly supported centered uniform
 spline density $u_m$.  Their characteristic functions are $Q_\infty$ and $Q_m$.
 
 \begin{theorem}[Exact random-tail decomposition]
-\label{thm:random-tail}
+\label{p3:thm:random-tail}
 There is an independent copy $Y_\infty'$ of $Y_\infty$ such that
 \begin{equation}
  \boxed{Y_\infty\ \stackrel{d}{=}\ Y_m+2^{-m}Y_\infty'.}
- \label{eq:random-tail}
+ \label{p3:eq:random-tail}
 \end{equation}
 Consequently, in density form,
 \begin{equation}
  \boxed{
  \Up=u_m*\left(2^m\Up(2^m\,\cdot)\right).}
- \label{eq:density-deconv}
+ \label{p3:eq:density-deconv}
 \end{equation}
 \newresult
 \end{theorem}
@@ -970,7 +969,7 @@ Split the infinite sum after $m$ and reindex:
  =2^{-m}\sum_{\ell=1}^{\infty}2^{-\ell}V_{m+\ell}.
 \]
 The reindexed series is independent of $Y_m$ and has the law of $Y_\infty$.  Convolution of
-the corresponding densities gives \eqref{eq:density-deconv}.
+the corresponding densities gives \eqref{p3:eq:density-deconv}.
 \end{proof}
 
 \subsection{Cumulants are the same zeta--Lambert coefficients}
@@ -978,14 +977,14 @@ the corresponding densities gives \eqref{eq:density-deconv}.
 Let $\kappa_j$ and $\mu_j$ denote the cumulants and moments of $Y_\infty$.
 
 \begin{theorem}[Closed cumulant formula]
-\label{thm:cumulants}
+\label{p3:thm:cumulants}
 All odd cumulants vanish, and for $r\ge1$,
 \begin{equation}
  \boxed{
  \kappa_{2r}
  =(-1)^{r+1}\frac{(2r)!\zeta(2r)}{r\pi^{2r}(4^r-1)}
  =\frac{2^{2r-1}B_{2r}}{r(4^r-1)}.}
- \label{eq:cumulants}
+ \label{p3:eq:cumulants}
 \end{equation}
 In particular,
 \begin{equation}
@@ -993,7 +992,7 @@ In particular,
  \kappa_4=-\frac2{225},\qquad
  \kappa_6=\frac{16}{3969},\qquad
  \kappa_8=-\frac{16}{3825}.
- \label{eq:cumulants-first}
+ \label{p3:eq:cumulants-first}
 \end{equation}
 \newresult
 \end{theorem}
@@ -1004,7 +1003,7 @@ The cumulant expansion of the characteristic function is
  \log\E\e^{\ii tY_\infty}
  =\sum_{r\ge1}\kappa_{2r}\frac{(\ii t)^{2r}}{(2r)!}.
 \]
-Set $m=0$ in \eqref{eq:Q-all-orders} and identify coefficients.  The Bernoulli form follows
+Set $m=0$ in \eqref{p3:eq:Q-all-orders} and identify coefficients.  The Bernoulli form follows
 from the classical evaluation of $\zeta(2r)$.
 \end{proof}
 
@@ -1014,20 +1013,20 @@ The first even moments, obtained from the complete Bell polynomials in the cumul
  \mu_4=\frac{19}{675},\qquad
  \mu_6=\frac{583}{59535},\qquad
  \mu_8=\frac{132809}{32531625}.
- \label{eq:moments-first}
+ \label{p3:eq:moments-first}
 \end{equation}
 
 \subsection{A certified weak expansion}
 
 \begin{theorem}[Weak differential expansion of the up-law]
-\label{thm:weak-expansion}
+\label{p3:thm:weak-expansion}
 Let $N\ge0$ and $\varphi\in C^{2N+2}([-1,1])$.  Then
 \begin{equation}
  \boxed{
  \E\varphi(Y_\infty)
  =\sum_{j=0}^{N}\frac{\mu_{2j}}{(2j)!}4^{-jm}
    \E\varphi^{(2j)}(Y_m)+\mathcal E_{N,m}(\varphi),}
- \label{eq:weak-expansion}
+ \label{p3:eq:weak-expansion}
 \end{equation}
 where $\mu_0=1$ and
 \begin{equation}
@@ -1035,13 +1034,13 @@ where $\mu_0=1$ and
  |\mathcal E_{N,m}(\varphi)|
  \le\frac{4^{-(N+1)m}}{(2N+2)!}
  \|\varphi^{(2N+2)}\|_{L^\infty([-1,1])}.}
- \label{eq:weak-bound}
+ \label{p3:eq:weak-bound}
 \end{equation}
 \newresult
 \end{theorem}
 
 \begin{proof}
-Condition on $Y_m$ in \eqref{eq:random-tail} and Taylor-expand
+Condition on $Y_m$ in \eqref{p3:eq:random-tail} and Taylor-expand
 $\varphi(Y_m+2^{-m}Y_\infty')$ through degree $2N+1$.  Symmetry kills every odd moment.
 Since $|Y_\infty'|\le1$, the Taylor remainder is bounded by
 $2^{-(2N+2)m}\|\varphi^{(2N+2)}\|_\infty/(2N+2)!$.
@@ -1057,23 +1056,23 @@ The first terms are therefore
  &\quad
  +\frac{583\,64^{-m}}{42865200}\E\varphi^{(6)}(Y_m)
  +\bigO_\varphi(256^{-m}).
- \label{eq:weak-first}
+ \label{p3:eq:weak-first}
 \end{align}
 
 \begin{corollary}[Distributional spline expansion]
-\label{cor:distributional}
+\label{p3:cor:distributional}
 In the sense of distributions, for every fixed $N$,
 \begin{equation}
  \Up
  =\sum_{j=0}^{N}\frac{\mu_{2j}}{(2j)!}4^{-jm}D^{2j}u_m
  +\bigO_{\mathcal D'}(4^{-(N+1)m}).
- \label{eq:distributional}
+ \label{p3:eq:distributional}
 \end{equation}
 In particular,
 \begin{equation}
  \Up=u_m+\frac{4^{-m}}{18}D^2u_m
  +\frac{19\,16^{-m}}{16200}D^4u_m+\cdots.
- \label{eq:distributional-first}
+ \label{p3:eq:distributional-first}
 \end{equation}
 \end{corollary}
 
@@ -1087,34 +1086,34 @@ Formally, and exactly at the level of the local Fourier logarithm,
 \begin{equation}
  \Up=\exp\!\left(\sum_{r\ge1}
  \frac{\kappa_{2r}}{(2r)!}4^{-rm}D^{2r}\right)u_m.
- \label{eq:cumulant-operator}
+ \label{p3:eq:cumulant-operator}
 \end{equation}
 Expanding the exponential changes cumulants into moments and recovers
-\eqref{eq:distributional}.  This is a deconvolution calculus for the finite uniform splines
+\eqref{p3:eq:distributional}.  This is a deconvolution calculus for the finite uniform splines
 already present in the repository's repeated-integration and probabilistic constructions.
 \end{remark}
 
 \section{Lambert-$W$ complexity of endpoint product truncation}
-\label{sec:Lambert-complexity}
+\label{p3:sec:Lambert-complexity}
 
 \subsection{The canonical scale and the tail variable}
 
 For $0<x<1/(\e L)$, let $\lambda(x)$ and $s_0(x)$ be given by
-\eqref{eq:lambda}--\eqref{eq:s0}.  At an integer truncation level $m$, the entire omitted
+\eqref{p3:eq:lambda}--\eqref{p3:eq:s0}.  At an integer truncation level $m$, the entire omitted
 product is governed by the single tail variable
 \begin{equation}
  u_{x,m}=\frac{s_0(x)}{2^m}=2^{\lambda(x)-m}.
- \label{eq:uxm}
+ \label{p3:eq:uxm}
 \end{equation}
 If $m=\lceil\lambda(x)+h\rceil$, then
 \begin{equation}
  2^{-h-1}<u_{x,m}\le2^{-h}.
- \label{eq:u-window}
+ \label{p3:eq:u-window}
 \end{equation}
 Thus each extra factor beyond the Lambert phase halves the raw tail variable.
 
 \begin{theorem}[Raw and centered depth laws]
-\label{thm:depth-law}
+\label{p3:thm:depth-law}
 Let
 \begin{align}
  \delta_{\rm raw}(u)&=|G(-u)-1|,\\
@@ -1125,14 +1124,14 @@ As $u\to0^+$,
  \delta_{\rm raw}(u)=\frac u2+\bigO(u^2),
  \qquad
  \delta_{\rm ctr}(u)=\frac{u^2}{72}+\bigO(u^4).
- \label{eq:tail-orders}
+ \label{p3:eq:tail-orders}
 \end{equation}
 Consequently, for $m=\lceil\lambda(x)+h\rceil$ and $h\to\infty$,
 \begin{equation}
  \delta_{\rm raw}(u_{x,m})=\Theta(2^{-h}),
  \qquad
  \delta_{\rm ctr}(u_{x,m})=\Theta(4^{-h}),
- \label{eq:h-orders}
+ \label{p3:eq:h-orders}
 \end{equation}
 with absolute two-sided constants once $h$ is sufficiently large.  If
 $m_{\rm raw}(x,\eta)$ and $m_{\rm ctr}(x,\eta)$ denote the least depths which make the
@@ -1141,11 +1140,11 @@ respective errors at most $\eta$, then as $\eta\downarrow0$,
  \boxed{
  m_{\rm raw}(x,\eta)
  =-\frac{W_{-1}(-Lx)}{L}+\log_2\frac1\eta+\bigO(1),}
- \label{eq:mraw}\\
+ \label{p3:eq:mraw}\\
  \boxed{
  m_{\rm ctr}(x,\eta)
  =-\frac{W_{-1}(-Lx)}{L}+\frac12\log_2\frac1\eta+\bigO(1).}
- \label{eq:mctr}
+ \label{p3:eq:mctr}
 \end{align}
 The $\bigO(1)$ constants may be chosen uniformly for $x$ in any sufficiently small interval
 $(0,x_0]$.
@@ -1153,7 +1152,7 @@ $(0,x_0]$.
 \end{theorem}
 
 \begin{proof}
-Equation \eqref{eq:tail-orders} is the beginning of \eqref{eq:G-all-orders}:
+Equation \eqref{p3:eq:tail-orders} is the beginning of \eqref{p3:eq:G-all-orders}:
 \[
  G(-u)=\exp\!\left(-\frac u2+\frac{u^2}{72}+\bigO(u^4)\right),
  \qquad
@@ -1162,9 +1161,9 @@ Equation \eqref{eq:tail-orders} is the beginning of \eqref{eq:G-all-orders}:
 Hence there are positive constants $c_i,C_i$ and $u_0$ such that
 $c_1u\le\delta_{\rm raw}(u)\le C_1u$ and
 $c_2u^2\le\delta_{\rm ctr}(u)\le C_2u^2$ for $0<u<u_0$.
-Combine these inequalities with \eqref{eq:u-window}.  Solving $2^{-h}\asymp\eta$ and
+Combine these inequalities with \eqref{p3:eq:u-window}.  Solving $2^{-h}\asymp\eta$ and
 $4^{-h}\asymp\eta$, then adding the base depth $\lambda(x)$ and absorbing the ceiling into
-$\bigO(1)$, gives \eqref{eq:mraw}--\eqref{eq:mctr}.
+$\bigO(1)$, gives \eqref{p3:eq:mraw}--\eqref{p3:eq:mctr}.
 \end{proof}
 
 \begin{remark}[Why centering halves the precision surcharge]
@@ -1172,13 +1171,13 @@ At the leading saddle scale, reaching relative tolerance $\eta$ in the raw produ
 roughly $\log_2(1/\eta)$ factors beyond $\lambda$.  Removing the exactly known linear factor
 $\e^{-u/2}$ makes the residual even, so only half as many additional factors are required.
 This is a concrete algorithmic consequence of the probability centering hidden in
-\cref{lem:GQ}.
+\cref{p3:lem:GQ}.
 \end{remark}
 
 \subsection{A finite-block endpoint evaluation protocol}
 
 \begin{algorithm}[Lambert-aware finite-block product evaluation]
-\label{alg:Lambert}
+\label{p3:alg:Lambert}
 Given small $x>0$, target logarithmic correction order $N$, and tolerance $\eta$:
 \begin{enumerate}
 \item Compute $\lambda=-W_{-1}(-x\log2)/\log2$ and $s_0=2^\lambda=\lambda/x$.
@@ -1186,13 +1185,13 @@ Given small $x>0$, target logarithmic correction order $N$, and tolerance $\eta$
 \[
  m=\left\lceil\lambda+\frac12\log_2\frac1\eta+c_N\right\rceil,
 \]
-where $c_N$ is a small safety margin determined from \eqref{eq:G-rem}.
+where $c_N$ is a small safety margin determined from \eqref{p3:eq:G-rem}.
 \item Set $u=s_0/2^m$ and evaluate the finite digital sum
 \[
  P_m(\e^{-u})=\sum_{n=0}^{2^m-1}\eps_n\e^{-nu}
 \]
 or its product form.
-\item Reconstruct $G(-s_0)$ from \eqref{eq:G-TM-all}, using the first $N$ Bernoulli
+\item Reconstruct $G(-s_0)$ from \eqref{p3:eq:G-TM-all}, using the first $N$ Bernoulli
 corrections and the explicit remainder bound.
 \end{enumerate}
 \end{algorithm}
@@ -1205,26 +1204,26 @@ for that larger endpoint calculation; it does not suppress the periodic phase.
 \end{warning}
 
 \section{A Thue--Morse Barnes-type tower from Dirichlet trivial zeros}
-\label{sec:gamma-tower}
+\label{p3:sec:gamma-tower}
 
 \subsection{Input from the Atlas}
 
 The Thue--Morse Atlas establishes that, for $a>0$, the shifted Dirichlet series
 \begin{equation}
  D(s,a)=\sum_{n\ge0}\frac{\eps_n}{(n+a)^s}
- \label{eq:Dsa}
+ \label{p3:eq:Dsa}
 \end{equation}
 has an entire continuation $\widetilde D(s,a)$, satisfies
 \begin{equation}
  \widetilde D(s,a)=2^{-s}\left[
  \widetilde D\!\left(s,\frac a2\right)
  -\widetilde D\!\left(s,\frac{a+1}{2}\right)\right],
- \label{eq:D-dyadic}
+ \label{p3:eq:D-dyadic}
 \end{equation}
 and has trivial zeros
 \begin{equation}
  \widetilde D(-r,a)=0\qquad(r=0,1,2,\ldots).
- \label{eq:Dzeros}
+ \label{p3:eq:Dzeros}
 \end{equation}
 It also supplies the Mellin representation
 \begin{equation}
@@ -1232,10 +1231,10 @@ It also supplies the Mellin representation
  \int_0^\infty t^{s-1}\e^{-at}\mathcal E(t)\dd t,
  \qquad
  \mathcal E(t)=\prod_{j\ge0}(1-\e^{-2^jt}),
- \label{eq:D-Mellin}
+ \label{p3:eq:D-Mellin}
 \end{equation}
 where the extraordinary flatness of $\mathcal E$ at zero makes the continuation entire
-\cite{proveit-atlas,toth2022}.
+\cite{p3:proveit-atlas,p3:toth2022}.
 
 \subsection{The derivative tower}
 
@@ -1244,34 +1243,34 @@ For each integer $r\ge0$ and $a>0$, define
 \begin{equation}
  \Gamma_r^{\rm TM}(a)
  =\exp\!\left(\partial_s\widetilde D(-r,a)\right).
- \label{eq:gammaTM}
+ \label{p3:eq:gammaTM}
 \end{equation}
 \end{definition}
 
 \begin{theorem}[Mellin, dyadic, and differential laws]
-\label{thm:gamma-tower}
-The functions \eqref{eq:gammaTM} satisfy:
+\label{p3:thm:gamma-tower}
+The functions \eqref{p3:eq:gammaTM} satisfy:
 \begin{align}
  \log\Gamma_r^{\rm TM}(a)
  &=(-1)^rr!\int_0^\infty
  t^{-r-1}\e^{-at}\mathcal E(t)\dd t,
- \label{eq:gamma-Mellin}\\
+ \label{p3:eq:gamma-Mellin}\\
  \Gamma_r^{\rm TM}(a)
  &=\left(
  \frac{\Gamma_r^{\rm TM}(a/2)}
  {\Gamma_r^{\rm TM}((a+1)/2)}
  \right)^{2^r},
- \label{eq:gamma-dyadic}\\
+ \label{p3:eq:gamma-dyadic}\\
  \frac{\dd}{\dd a}\log\Gamma_r^{\rm TM}(a)
  &=r\log\Gamma_{r-1}^{\rm TM}(a)
  \qquad(r\ge1).
- \label{eq:gamma-differential}
+ \label{p3:eq:gamma-differential}
 \end{align}
 More generally, for $0\le k\le r$,
 \begin{equation}
  \frac{\dd^k}{\dd a^k}\log\Gamma_r^{\rm TM}(a)
  =\fall{r}{k}\log\Gamma_{r-k}^{\rm TM}(a).
- \label{eq:gamma-iterated}
+ \label{p3:eq:gamma-iterated}
 \end{equation}
 \newresult
 \end{theorem}
@@ -1281,12 +1280,12 @@ Near $s=-r$, the reciprocal gamma function has the expansion
 \[
  \frac1{\Gamma(s)}=(-1)^rr!(s+r)+\bigO((s+r)^2).
 \]
-The Mellin integral in \eqref{eq:D-Mellin} is finite there, so differentiation gives
-\eqref{eq:gamma-Mellin}.
+The Mellin integral in \eqref{p3:eq:D-Mellin} is finite there, so differentiation gives
+\eqref{p3:eq:gamma-Mellin}.
 
-Differentiate \eqref{eq:D-dyadic} with respect to $s$ and set $s=-r$.  The derivative of
+Differentiate \eqref{p3:eq:D-dyadic} with respect to $s$ and set $s=-r$.  The derivative of
 $2^{-s}$ is multiplied by the bracket of values at $s=-r$, which vanishes by
-\eqref{eq:Dzeros}.  Hence
+\eqref{p3:eq:Dzeros}.  Hence
 \[
  \partial_s\widetilde D(-r,a)
  =2^r\left[
@@ -1294,7 +1293,7 @@ $2^{-s}$ is multiplied by the bracket of values at $s=-r$, which vanishes by
  -\partial_s\widetilde D\!\left(-r,\frac{a+1}{2}\right)
  \right].
 \]
-Exponentiation gives \eqref{eq:gamma-dyadic}.
+Exponentiation gives \eqref{p3:eq:gamma-dyadic}.
 
 Finally, differentiation of the Dirichlet/Mellin continuation in the parameter gives
 \[
@@ -1305,13 +1304,13 @@ Differentiate this identity in $s$:
  \partial_a\partial_s\widetilde D(s,a)
  =-\widetilde D(s+1,a)-s\partial_s\widetilde D(s+1,a).
 \]
-At $s=-r$ with $r\ge1$, the first term vanishes by \eqref{eq:Dzeros}, leaving
-$r\partial_s\widetilde D(1-r,a)$.  This proves \eqref{eq:gamma-differential}; iteration gives
-\eqref{eq:gamma-iterated}.
+At $s=-r$ with $r\ge1$, the first term vanishes by \eqref{p3:eq:Dzeros}, leaving
+$r\partial_s\widetilde D(1-r,a)$.  This proves \eqref{p3:eq:gamma-differential}; iteration gives
+\eqref{p3:eq:gamma-iterated}.
 \end{proof}
 
 \begin{corollary}[The Woods--Robbins layer]
-\label{cor:Woods-Robbins}
+\label{p3:cor:Woods-Robbins}
 If $G_{\rm WR}(a,b)$ denotes the convergent Thue--Morse product used in the Atlas, for which
 \[
  \log G_{\rm WR}(a,b)=\partial_s\widetilde D(0,b)
@@ -1320,7 +1319,7 @@ If $G_{\rm WR}(a,b)$ denotes the convergent Thue--Morse product used in the Atla
 then
 \begin{equation}
  G_{\rm WR}(a,b)=\frac{\Gamma_0^{\rm TM}(b)}{\Gamma_0^{\rm TM}(a)}.
- \label{eq:WR-gamma}
+ \label{p3:eq:WR-gamma}
 \end{equation}
 Thus the known product is the ratio law at the base of an infinite dyadic differential
 tower.
@@ -1328,14 +1327,14 @@ tower.
 
 \begin{remark}[Why ``Barnes-type'']
 The hierarchy is not asserted to be a classical Barnes multiple-gamma family.  The name refers
-to the derivative ladder \eqref{eq:gamma-differential}: higher levels integrate logarithms of
+to the derivative ladder \eqref{p3:eq:gamma-differential}: higher levels integrate logarithms of
 lower levels, while the dyadic equation carries the automatic-sequence structure.  This
 packaging appears to be absent from the inspected Atlas even though all analytic ingredients
 needed for its proof are present there.
 \end{remark}
 
 \section{Numerical verification and order diagnostics}
-\label{sec:numerics}
+\label{p3:sec:numerics}
 
 All computations in this section used 100-decimal arithmetic.  Product tails were extended
 far beyond the displayed precision.  The calculations are reproducibility checks for the
@@ -1349,13 +1348,13 @@ proved identities, not evidence on which the proofs depend.
 \toprule
 Identity & level & argument & relative residual \\
 \midrule
-oscillatory \eqref{eq:finite-sinc} & $m=1$ & $t=0.37$ & $7.3\times10^{-102}$\\
-oscillatory \eqref{eq:finite-sinc} & $m=3$ & $t=2.125$ & $1.9\times10^{-101}$\\
-oscillatory \eqref{eq:finite-sinc} & $m=7$ & $t=5.75$ & $7.0\times10^{-101}$\\
-oscillatory \eqref{eq:finite-sinc} & $m=10$ & $t=-3.4$ & $3.8\times10^{-99}$\\
-Laplace \eqref{eq:finite-Laplace} & $m=4$ & $s=3.2$ & $5.6\times10^{-101}$\\
-Laplace \eqref{eq:finite-Laplace} & $m=8$ & $s=11.5$ & $3.0\times10^{-100}$\\
-Laplace \eqref{eq:finite-Laplace} & $m=12$ & $s=0.019$ & $9.4\times10^{-96}$\\
+oscillatory \eqref{p3:eq:finite-sinc} & $m=1$ & $t=0.37$ & $7.3\times10^{-102}$\\
+oscillatory \eqref{p3:eq:finite-sinc} & $m=3$ & $t=2.125$ & $1.9\times10^{-101}$\\
+oscillatory \eqref{p3:eq:finite-sinc} & $m=7$ & $t=5.75$ & $7.0\times10^{-101}$\\
+oscillatory \eqref{p3:eq:finite-sinc} & $m=10$ & $t=-3.4$ & $3.8\times10^{-99}$\\
+Laplace \eqref{p3:eq:finite-Laplace} & $m=4$ & $s=3.2$ & $5.6\times10^{-101}$\\
+Laplace \eqref{p3:eq:finite-Laplace} & $m=8$ & $s=11.5$ & $3.0\times10^{-100}$\\
+Laplace \eqref{p3:eq:finite-Laplace} & $m=12$ & $s=0.019$ & $9.4\times10^{-96}$\\
 \bottomrule
 \end{tabular}
 \end{center}
@@ -1365,11 +1364,11 @@ The residual level is consistent with accumulated arbitrary-precision rounding.
 
 \begin{figure}[htbp]
 \centering
-\includegraphics[width=0.97\textwidth]{figures/spectral_convergence.png}
+\includegraphics[width=0.97\textwidth]{assets/Fabius_Rvachev_Thue_Morse_Representation_Frontiers/figures/spectral_convergence.png}
 \caption{Relative errors at $t=5$.  Every zeta correction or Richardson degree raises the
 power of $4^{-m}$ by one, exactly as predicted by
-\cref{cor:arbitrary-Q,thm:qRichardson}.}
-\label{fig:spectral-convergence}
+\cref{p3:cor:arbitrary-Q,p3:thm:qRichardson}.}
+\label{p3:fig:spectral-convergence}
 \end{figure}
 
 A least-squares fit to the final five points of each curve gives:
@@ -1393,7 +1392,7 @@ $q$-Richardson $p=3$ & $4.00000013$ & $4$\\
 \subsection{Weak expansion check}
 
 For $\varphi(y)=\e^y$, all derivatives equal $\e^y$, so
-\cref{thm:weak-expansion} becomes a direct moment correction to the finite moment-generating
+\cref{p3:thm:weak-expansion} becomes a direct moment correction to the finite moment-generating
 function.  The relative errors are:
 \begin{center}
 \small
@@ -1429,7 +1428,7 @@ $3$ & $1.23\times10^{-1}$ & $1.81\times10^{-3}$ & $6.12\times10^{-5}$ & $2.54\ti
 \end{tabular}
 \end{center}
 The deterioration as $u$ approaches the exact radius $4\pi$ is governed by the certified
-bound \eqref{eq:G-rem}.
+bound \eqref{p3:eq:G-rem}.
 
 \subsection{Lambert-depth experiment}
 
@@ -1441,11 +1440,11 @@ For $x=10^{-8}$,
 
 \begin{figure}[htbp]
 \centering
-\includegraphics[width=0.97\textwidth]{figures/lambert_truncation.png}
+\includegraphics[width=0.97\textwidth]{assets/Fabius_Rvachev_Thue_Morse_Representation_Frontiers/figures/lambert_truncation.png}
 \caption{Tail error when $m=\lceil\lambda(x)+h\rceil$.  Ceiling effects create the steps.
 The raw tail gains about one binary digit per extra factor; the centered tail gains about two,
-as proved in \cref{thm:depth-law}.}
-\label{fig:Lambert-depth}
+as proved in \cref{p3:thm:depth-law}.}
+\label{p3:fig:Lambert-depth}
 \end{figure}
 
 At $h=8$, for example, $m=40$ and $u\approx2.8699\times10^{-3}$; the raw tail error is
@@ -1453,13 +1452,13 @@ $1.43\times10^{-3}$ while the centered tail error is $1.14\times10^{-7}$.
 
 \clearpage
 \section{Consequences for the existing research program}
-\label{sec:consequences}
+\label{p3:sec:consequences}
 
 \subsection{A new exact-arithmetic/Fourier bridge}
 
 The Atlas treats the block polynomial $P_m$ as a digital and algebraic object, while the
 Fourier-decay program treats dyadic sinc products through shell dynamics and lacunary sine
-products.  Theorem \ref{thm:finite-sinc} shows these are not merely related by analogy:
+products.  Theorem \ref{p3:thm:finite-sinc} shows these are not merely related by analogy:
 $P_m$ is the finite sinc product after one explicit normalization.  This provides a direct
 translation dictionary:
 \begin{center}
@@ -1491,7 +1490,7 @@ error expansion is even.  Gaussian binomials now appear in a second structural r
  \text{exact dyadic values: }q=\frac12,
  \qquad
  \text{spectral-tail acceleration: }q=\frac14.
- \label{eq:two-q}
+ \label{p3:eq:two-q}
 \end{equation}
 This distinction is conceptually useful.  It prevents the $q$-binomial notation from being
 viewed as an incidental encoding of one exact formula; it reflects two different geometric
@@ -1504,7 +1503,7 @@ prove convergence.  The random-tail theorem strengthens the conceptual picture:
 \[
  \text{limit law} = \text{finite spline law} + \text{scaled independent copy of the limit law}.
 \]
-The weak expansion \eqref{eq:weak-expansion} then supplies every correction coefficient and a
+The weak expansion \eqref{p3:eq:weak-expansion} then supplies every correction coefficient and a
 one-line remainder bound.  For numerical integration against smooth observables, the result
 is immediately useful: one may integrate against the elementary finite spline $u_m$ and add
 explicit derivative corrections, without ever sampling the limiting density directly.
@@ -1513,11 +1512,11 @@ explicit derivative corrections, without ever sampling the limiting density dire
 
 The endpoint theory's difficult part is the periodically modulated saddle, not the mere
 existence of the product.  Nevertheless, every saddle evaluation repeatedly calls the
-negative-Laplace product and its derivatives.  Formula \eqref{eq:G-TM-all} suggests a hybrid
+negative-Laplace product and its derivatives.  Formula \eqref{p3:eq:G-TM-all} suggests a hybrid
 implementation:
 \begin{enumerate}
 \item use the existing lower-Lambert phase and periodic saddle jets to choose $s$;
-\item choose $m$ from the centered depth law \eqref{eq:mctr};
+\item choose $m$ from the centered depth law \eqref{p3:eq:mctr};
 \item evaluate the exact finite Thue--Morse block and a few Bernoulli corrections;
 \item differentiate the finite factorization rather than the infinite product.
 \end{enumerate}
@@ -1534,7 +1533,7 @@ interpolation.  Only the analytic logarithm and explicit zeta remainder require 
 complex-analysis layer.  This makes the package a plausible next formalization target.
 
 \section{Lean formalization roadmap}
-\label{sec:formalization}
+\label{p3:sec:formalization}
 
 The finite-block calculus has been deliberately organized so that the algebraic core can be
 formalized before the analytic refinements.  The following dependency table separates the
@@ -1555,46 +1554,46 @@ Target & Minimal ingredients & Suggested proof strategy and principal risk \\
 \midrule
 \endhead
 Finite Thue--Morse product
-\eqref{eq:Pm} & finite products, binary recursion, geometric sums & Prove
+\eqref{p3:eq:Pm} & finite products, binary recursion, geometric sums & Prove
 $P_{m+1}(z)=P_m(z)(1-z^{2^m})$ and identify coefficients by induction.  This should be almost
 entirely algebraic. \\
 Finite sinc bridge
-\eqref{eq:finite-sinc} & complex exponential identities, finite-product reindexing & Rewrite
+\eqref{p3:eq:finite-sinc} & complex exponential identities, finite-product reindexing & Rewrite
 $1-\e^{2\ii x}=-2\ii\e^{\ii x}\sin x$, then normalize powers of two.  The only nuisance is a
 clean treatment of the removable value at $t=0$. \\
 Finite Laplace bridge
-\eqref{eq:finite-Laplace} & real or complex exponentials, finite products & Substitute
+\eqref{p3:eq:finite-Laplace} & real or complex exponentials, finite products & Substitute
 $z=\e^{-s/2^m}$ in the block product and reindex.  This is the simplest new theorem in the
 package. \\
 Exact tail self-similarity
-\eqref{eq:Q-tail-self}--\eqref{eq:G-tail-self} & convergence of infinite products, shifted
+\eqref{p3:eq:Q-tail-self}--\eqref{p3:eq:G-tail-self} & convergence of infinite products, shifted
 indices & Establish a reusable infinite-product reindexing lemma.  Existing repository
 convergence results should discharge the side conditions. \\
 Euler--zeta logarithm
-\eqref{eq:logsinc} & local analytic logarithm, Euler's sine product, normal convergence & This is
+\eqref{p3:eq:logsinc} & local analytic logarithm, Euler's sine product, normal convergence & This is
 the main library-level analytic obligation.  One may alternatively prove the power series by
 differentiating the cotangent expansion and fixing the constant at zero. \\
 Certified zeta remainder
-\eqref{eq:Q-remainder-bound} & positivity, monotonicity of $\zeta(2r)$, geometric series & Once
-\eqref{eq:Q-all-orders} exists, the bound is elementary and avoids delicate asymptotic
+\eqref{p3:eq:Q-remainder-bound} & positivity, monotonicity of $\zeta(2r)$, geometric series & Once
+\eqref{p3:eq:Q-all-orders} exists, the bound is elementary and avoids delicate asymptotic
 machinery. \\
 $q$-Richardson weights
-\eqref{eq:weights}--\eqref{eq:first-uncancelled} & finite Lagrange interpolation,
+\eqref{p3:eq:weights}--\eqref{p3:eq:first-uncancelled} & finite Lagrange interpolation,
 $q$-Pochhammer algebra & First formalize the interpolation characterization
-\eqref{eq:weights-Lagrange}; derive the Gaussian-binomial form as a normalization lemma. \\
+\eqref{p3:eq:weights-Lagrange}; derive the Gaussian-binomial form as a normalization lemma. \\
 Random-tail law
-\eqref{eq:random-tail} & independent random variables, almost-sure summation, equality in law &
+\eqref{p3:eq:random-tail} & independent random variables, almost-sure summation, equality in law &
 Split and reindex the convergent random series.  A characteristic-function proof may be
 shorter if the current probability library lacks convenient random-series infrastructure. \\
 Weak expansion
-\eqref{eq:weak-expansion} & Taylor theorem with remainder, expectation inequalities, symmetry &
+\eqref{p3:eq:weak-expansion} & Taylor theorem with remainder, expectation inequalities, symmetry &
 Condition on the finite sum; use bounded support to make the remainder estimate immediate. \\
 Lambert depth law
-\eqref{eq:mraw}--\eqref{eq:mctr} & branch $W_{-1}$, ceilings, local exponential estimates & The
+\eqref{p3:eq:mraw}--\eqref{p3:eq:mctr} & branch $W_{-1}$, ceilings, local exponential estimates & The
 analytic estimate is elementary after the definition of $\lambda$; the likely missing piece is
 a convenient formal API for the lower real Lambert branch. \\
 Thue--Morse gamma tower
-\eqref{eq:gamma-Mellin}--\eqref{eq:gamma-iterated} & holomorphic parameter differentiation,
+\eqref{p3:eq:gamma-Mellin}--\eqref{p3:eq:gamma-iterated} & holomorphic parameter differentiation,
 reciprocal-gamma zero, Atlas Dirichlet continuation & Reuse the Atlas continuation theorem;
 prove the simple-zero coefficient of $1/\Gamma$ at each nonpositive integer; then
 differentiate the dyadic equation and the shift parameter identity. \\
@@ -1631,52 +1630,52 @@ rather than four separate proofs.
 \end{obligation}
 
 \section{Frontier conjectures and next deductions}
-\label{sec:frontiers}
+\label{p3:sec:frontiers}
 
 The proved results isolate several questions which are both sharper and more tractable than
 the broad open-ended prompts in the older frontier notebooks.  The statements below are
 intentionally separated from the theorem package.
 
 \begin{conjecture}[Certified endpoint evaluator with near-optimal product depth]
-\label{conj:endpoint-evaluator}
+\label{p3:conj:endpoint-evaluator}
 There is a fully explicit algorithm which, for sufficiently small $x>0$ and target relative
 error $\eta$, evaluates $F(x)$ using
 \begin{equation}
  -\frac{W_{-1}(-x\log2)}{\log2}
  +\frac12\log_2\frac1\eta+\bigO(1)
- \label{eq:conj-depth}
+ \label{p3:eq:conj-depth}
 \end{equation}
 product layers, together with a bounded-order periodic saddle jet, and whose final error is
 rigorously at most $\eta$.  The coefficient $1/2$ in the precision surcharge is optimal among
 methods which first center the omitted product but do not cancel its quadratic cumulant.
 \end{conjecture}
 
-The depth estimate itself is proved in \cref{thm:depth-law}.  What remains is to propagate the
+The depth estimate itself is proved in \cref{p3:thm:depth-law}.  What remains is to propagate the
 product error, its differentiated versions, and the periodic saddle displacement through the
 complete inversion formula.  The conjectured optimality should follow from the nonzero
 variance $\kappa_2=1/9$.
 
 \begin{conjecture}[Cumulant-cancelled endpoint hierarchy]
-\label{conj:cumulant-depth}
+\label{p3:conj:cumulant-depth}
 After removing the first $N$ even cumulants of the centered tail in addition to the linear
 factor, the extra depth required for tolerance $\eta$ is
 \begin{equation}
  \frac{1}{2N+2}\log_2\frac1\eta+\bigO_N(1).
- \label{eq:cumulant-depth-conj}
+ \label{p3:eq:cumulant-depth-conj}
 \end{equation}
 Equivalently, the $N$-corrected finite block should require only one additional product layer
 for every $2N+2$ requested binary digits of tail accuracy.
 \end{conjecture}
 
-This is already a theorem for the isolated product, by \eqref{eq:G-rem}; the conjectural part
+This is already a theorem for the isolated product, by \eqref{p3:eq:G-rem}; the conjectural part
 is that the same saving survives uniformly through the full saddle inversion, including all
 needed derivatives and the periodic phase.
 
 \begin{conjecture}[Strong spline correction away from knots]
-\label{conj:strong-spline}
+\label{p3:conj:strong-spline}
 Fix $N\ge0$ and a compact interval $K\subset(-1,1)$.  After excluding a neighborhood of the
 knots of the finite spline $u_m$ whose width is comparable to $2^{-m}$, the distributional
-expansion \eqref{eq:distributional} admits a pointwise or Hölder-norm version through order
+expansion \eqref{p3:eq:distributional} admits a pointwise or Hölder-norm version through order
 $N$, with remainder $\bigO_K(4^{-(N+1)m})$ after the natural derivative scaling.
 \end{conjecture}
 
@@ -1687,7 +1686,7 @@ expansion on cells separated from their endpoints.  Establishing the best norm a
 layer is a concrete approximation-theoretic problem.
 
 \begin{conjecture}[Dual-$q$ transmutation]
-\label{conj:dual-q}
+\label{p3:conj:dual-q}
 There is a direct coefficient-level transform taking a substantial class of the repository's
 $q=1/2$ exact dyadic formulae into $q=1/4$ spectral-tail acceleration identities, with the
 squaring $q\mapsto q^2$ explained by parity or centering rather than by an ad hoc substitution.
@@ -1699,10 +1698,10 @@ useful form of the conjecture would turn Gaussian-binomial coefficient extractio
 $q=1/2$ into geometric-grid interpolation at $q=1/4$.
 
 \begin{conjecture}[Automatic Barnes hierarchy]
-\label{conj:automatic-Barnes}
+\label{p3:conj:automatic-Barnes}
 The functions $\Gamma_r^{\rm TM}$ possess canonical Weierstrass products and asymptotic
-normalizations for which the dyadic law \eqref{eq:gamma-dyadic} and differential ladder
-\eqref{eq:gamma-differential} uniquely characterize the hierarchy, analogously to the role of
+normalizations for which the dyadic law \eqref{p3:eq:gamma-dyadic} and differential ladder
+\eqref{p3:eq:gamma-differential} uniquely characterize the hierarchy, analogously to the role of
 convexity or normalization in classical gamma-type characterizations.
 \end{conjecture}
 
@@ -1713,7 +1712,7 @@ multiply by functions invisible to the differential recursion.
 
 \subsection{General radix and nonuniform tails}
 
-The base-$b$ theorem \eqref{eq:base-b} shows that the zeta--Lambert mechanism does not depend
+The base-$b$ theorem \eqref{p3:eq:base-b} shows that the zeta--Lambert mechanism does not depend
 on binary arithmetic.  What is special to base two is the simultaneous existence of the
 Thue--Morse block polynomial, the simple two-branch functional equation, and the Fabius/up
 probability model.  A next generalization is to replace the uniform summands by centered
@@ -1730,7 +1729,7 @@ a characteristic product is a natural interface between automatic sequences and 
 supported refinable laws.
 
 \section{Conclusion}
-\label{sec:conclusion}
+\label{p3:sec:conclusion}
 
 The documentation corpus already supplied the large pieces: a careful separation of the
 Fabius and up-function normalizations, an exact dyadic arithmetic theory rich in
@@ -1782,7 +1781,7 @@ for formal verification.
 \appendix
 \clearpage
 \section{Coefficient and extrapolation tables}
-\label{app:coefficients}
+\label{p3:app:coefficients}
 
 \subsection{Zeta--Lambert and centered Laplace coefficients}
 
@@ -1835,7 +1834,7 @@ the first coefficients are monomials in $t^2$:
  h_5(t)&=\frac{3309760579t^{10}}{88561680752160000}.
 \end{align*}
 They are complete exponential Bell polynomials in $a_1t^2,a_2t^4,\ldots$.  Consequently,
-all leading constants in \eqref{eq:Richardson-leading} are exact rational multiples of
+all leading constants in \eqref{p3:eq:Richardson-leading} are exact rational multiples of
 $Q_\infty(t)t^{2p+2}$.
 
 \subsection{Gaussian-binomial extrapolation weights}
@@ -1859,7 +1858,7 @@ compensated summation should be used rather than forming the rational coefficien
 point.
 
 \section{Reproducibility protocol}
-\label{app:reproducibility}
+\label{p3:app:reproducibility}
 
 The numerical checks used direct high-precision arithmetic and did not fit coefficients that
 were subsequently inserted into proofs.  The following pseudocode records the independent
@@ -1917,7 +1916,7 @@ $1,2,3,4$ to roughly seven significant digits for the raw, first-, second-, and 
 schemes.  The figures embedded in this report were generated from the same data.
 
 \section{Complete corpus ledger and deduplication map}
-\label{app:ledger}
+\label{p3:app:ledger}
 
 \subsection{Living documentation treated as authoritative}
 
@@ -2045,36 +2044,36 @@ content map so that superseded copies did not distort novelty checks.
 
 \begin{thebibliography}{99}
 
-\bibitem{proveit-primary}
+\bibitem{p3:proveit-primary}
 V.~Reshetnikov,
 \emph{The Fabius Function and Rvachev's Up-Function: Exact arithmetic, probability, Fourier
 analysis, and corrected sharp asymptotics}, living repository manuscript, 2026.
 \url{https://github.com/VladimirReshetnikov/ProveIt/blob/main/Analysis/FabiusFunction/docs/Fabius_Function_and_Rvachev_Up/Fabius_Function_and_Rvachev_Up.tex}
 
-\bibitem{proveit-frontiers}
+\bibitem{p3:proveit-frontiers}
 V.~Reshetnikov,
 \emph{Non-Formalized Research Frontiers for the Fabius Function}, living repository
 manuscript, 2026.
 \url{https://github.com/VladimirReshetnikov/ProveIt/blob/main/Analysis/FabiusFunction/docs/non-formalized-research-frontiers/non-formalized-research-frontiers.tex}
 
-\bibitem{proveit-atlas}
+\bibitem{p3:proveit-atlas}
 V.~Reshetnikov,
 \emph{A Unified Formula Atlas for the Thue--Morse Sequence}, living repository manuscript,
 2026.
 \url{https://github.com/VladimirReshetnikov/ProveIt/blob/main/Analysis/FabiusFunction/docs/non-formalized-research-frontiers/drafts/Thue_Morse_Formula_Atlas/Thue_Morse_Formula_Atlas.tex}
 
-\bibitem{proveit-fourier}
+\bibitem{p3:proveit-fourier}
 V.~Reshetnikov,
 \emph{The Fourier Decay of Rvachev's Up-Function: Final Resolution}, living repository
 manuscript, 2026.
 \url{https://github.com/VladimirReshetnikov/ProveIt/blob/main/Analysis/FabiusFunction/docs/non-formalized-research-frontiers/drafts/rvachev_up_fourier_decay/rvachev_up_fourier_decay-5/Rvachev_Up_Fourier_Decay_Final.tex}
 
-\bibitem{proveit-archive}
+\bibitem{p3:proveit-archive}
 V.~Reshetnikov,
 \emph{Archive of historical document versions}, provenance README, 2026.
 \url{https://github.com/VladimirReshetnikov/ProveIt/tree/main/Analysis/FabiusFunction/docs/archive}
 
-\bibitem{arias1982}
+\bibitem{p3:arias1982}
 J.~Arias de Reyna,
 \emph{An infinitely differentiable function with compact support: Definition and properties},
 English translation of \emph{Definici\'on y estudio de una funci\'on indefinidamente
@@ -2082,30 +2081,30 @@ diferenciable de soporte compacto}, Rev. Real Acad. Ciencias Madrid \textbf{76} 
 21--38; arXiv:1702.05442 (2017).
 \url{https://arxiv.org/abs/1702.05442}
 
-\bibitem{arias2017arith}
+\bibitem{p3:arias2017arith}
 J.~Arias de Reyna,
 \emph{Arithmetic of the Fabius function}, arXiv:1702.06487v3 (2017).
 \url{https://arxiv.org/abs/1702.06487}
 
-\bibitem{aistleitner2015}
+\bibitem{p3:aistleitner2015}
 C.~Aistleitner, R.~Hofer, and G.~Larcher,
 \emph{On parametric Thue--Morse sequences and lacunary trigonometric products},
 arXiv:1502.06738v2 (2015).
 \url{https://arxiv.org/abs/1502.06738}
 
-\bibitem{toth2022}
+\bibitem{p3:toth2022}
 L.~T\'oth,
 \emph{Linear Combinations of Dirichlet Series Associated with the Thue--Morse Sequence},
 INTEGERS \textbf{22} (2022), Article 98; arXiv:2211.13570.
 \url{https://arxiv.org/abs/2211.13570}
 
-\bibitem{corless1996}
+\bibitem{p3:corless1996}
 R.~M. Corless, G.~H. Gonnet, D.~E.~G. Hare, D.~J. Jeffrey, and D.~E. Knuth,
 \emph{On the Lambert $W$ function}, Advances in Computational Mathematics \textbf{5} (1996),
 329--359.
 \url{https://doi.org/10.1007/BF02124750}
 
-\bibitem{allouche2003}
+\bibitem{p3:allouche2003}
 J.-P. Allouche and J.~Shallit,
 \emph{Automatic Sequences: Theory, Applications, Generalizations}, Cambridge University
 Press, 2003.

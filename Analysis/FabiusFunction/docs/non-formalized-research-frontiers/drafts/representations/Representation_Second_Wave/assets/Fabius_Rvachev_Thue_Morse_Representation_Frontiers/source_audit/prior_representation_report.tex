@@ -102,7 +102,7 @@
 \begin{abstract}
 This report audits the LaTeX corpus in the repository subtree
 \path{Analysis/FabiusFunction/docs}, including its living expositions, consolidated frontier
-volume, active draft families, archive lineages, and paper transcriptions \cite{Repository}.  The repository already contains an unusually
+volume, active draft families, archive lineages, and paper transcriptions \cite{p3:Repository}.  The repository already contains an unusually
 broad theory of the Fabius function, Rvachev's \(\Up\)-function, their dyadic values,
 Thue--Morse expansions, Fourier products, moment and cumulant algebra, inverse asymptotics,
 and spectral decay.  The objective here is therefore not to reproduce that material, but to
@@ -164,7 +164,7 @@ The repository's own pinned audit ledger records 67 LaTeX paths at the following
 \small\texttt{32d6d36c51d803289e6d6a0dc0c37753766eba47}.
 \end{center}
 The live tree inspected on 27 August 2026 contains additional current drafts, notably the
-self-sampling, inverse, and Newton/Rvachev reports.  Appendix~\ref{app:corpus} records the pinned ledger and the live
+self-sampling, inverse, and Newton/Rvachev reports.  Appendix~\ref{p3:app:corpus} records the pinned ledger and the live
 additions used in this study.
 
 \subsection{Non-duplication protocol}
@@ -214,11 +214,11 @@ The most substantial additions are:
 
 \subsection{The functions}
 
-Let \(F:[0,1]\to[0,1]\) denote the bounded Fabius function \cite{Fabius1966,AriasTranslation}, extended by \(0\) on
+Let \(F:[0,1]\to[0,1]\) denote the bounded Fabius function \cite{p3:Fabius1966,p3:AriasTranslation}, extended by \(0\) on
 \(( -\infty,0]\) and by \(1\) on \([1,\infty)\).  On the unit interval it satisfies
 \begin{align}
- F(0)&=0, & F(1)&=1, & F(1-x)&=1-F(x), \label{eq:F-symmetry}\\
- F'(x)&=2F(2x) &&(0\le x\le\tfrac12). \label{eq:F-diff}
+ F(0)&=0, & F(1)&=1, & F(1-x)&=1-F(x), \label{p3:eq:F-symmetry}\\
+ F'(x)&=2F(2x) &&(0\le x\le\tfrac12). \label{p3:eq:F-diff}
 \end{align}
 The Rvachev function is written
 \begin{equation}
@@ -227,12 +227,12 @@ The Rvachev function is written
  F(x+1),&-1\le x\le0,\\
  F(1-x),&0\le x\le1,\\
  0,&|x|\ge1.
- \end{cases}                                                \label{eq:rho-fold}
+ \end{cases}                                                \label{p3:eq:rho-fold}
 \end{equation}
 Then \(\rho\) is even, strictly positive on \((-1,1)\), normalized by
 \(\int\rho=1\), flat at \(\pm1\), and satisfies
 \begin{equation}
- \rho'(x)=2\bigl(\rho(2x+1)-\rho(2x-1)\bigr).                \label{eq:rho-dde}
+ \rho'(x)=2\bigl(\rho(2x+1)-\rho(2x-1)\bigr).                \label{p3:eq:rho-dde}
 \end{equation}
 
 \subsection{Fourier convention and basic transforms}
@@ -241,60 +241,60 @@ We use
 \begin{equation}
  \widehat f(\xi)=\int_{\R}f(x)e^{-2\pi i\xi x}\,\dd x,
  \qquad
- f(x)=\int_{\R}\widehat f(\xi)e^{2\pi i\xi x}\,\dd\xi.       \label{eq:fourier-convention}
+ f(x)=\int_{\R}\widehat f(\xi)e^{2\pi i\xi x}\,\dd\xi.       \label{p3:eq:fourier-convention}
 \end{equation}
 Set
 \begin{equation}
  \Phi(\xi):=\widehat\rho(\xi),
  \qquad
- \sincpi(z):=\frac{\sin(\pi z)}{\pi z},\quad \sincpi(0)=1. \label{eq:Phi-def}
+ \sincpi(z):=\frac{\sin(\pi z)}{\pi z},\quad \sincpi(0)=1. \label{p3:eq:Phi-def}
 \end{equation}
 The classical products are
 \begin{equation}
  \Phi(z)=\prod_{n=0}^{\infty}\sincpi\!\left(\frac{z}{2^n}\right)
- =\prod_{m=1}^{\infty}\cos\!\left(\frac{\pi z}{2^m}\right)^m. \label{eq:Phi-products}
+ =\prod_{m=1}^{\infty}\cos\!\left(\frac{\pi z}{2^m}\right)^m. \label{p3:eq:Phi-products}
 \end{equation}
 The scaling law is
 \begin{equation}
- \Phi(z)=\sincpi(z)\Phi(z/2).                                \label{eq:Phi-scaling}
+ \Phi(z)=\sincpi(z)\Phi(z/2).                                \label{p3:eq:Phi-scaling}
 \end{equation}
 
 \subsection{The probability model}
 
 Let \(U_1,U_2,\dots\) be independent random variables, uniform on \([-1,1]\), and set
 \begin{equation}
- X=\sum_{k=1}^{\infty}2^{-k}U_k.                              \label{eq:X-series}
+ X=\sum_{k=1}^{\infty}2^{-k}U_k.                              \label{p3:eq:X-series}
 \end{equation}
 Then \(X\) has density \(\rho\).  Equivalently,
 \begin{equation}
- X\overset{\mathrm d}=\frac{U+X'}2,                           \label{eq:X-fixed-point}
+ X\overset{\mathrm d}=\frac{U+X'}2,                           \label{p3:eq:X-fixed-point}
 \end{equation}
 where \(U\sim\operatorname{Unif}[-1,1]\) and \(X'\) is an independent copy of \(X\).
 The moment generating function is
 \begin{equation}
  M(t):=\E e^{tX}
  =\prod_{k=1}^{\infty}\frac{\sinh(t/2^k)}{t/2^k}
- =\Phi\!\left(\frac{it}{2\pi}\right).                       \label{eq:M-product}
+ =\Phi\!\left(\frac{it}{2\pi}\right).                       \label{p3:eq:M-product}
 \end{equation}
 The even moments are
 \begin{equation}
  \mu_{2n}:=\E X^{2n}=\int_{-1}^{1}x^{2n}\rho(x)\,\dd x,
- \qquad \mu_{2n+1}=0.                                      \label{eq:moments}
+ \qquad \mu_{2n+1}=0.                                      \label{p3:eq:moments}
 \end{equation}
 Finally, if
 \begin{equation}
- Y=\frac{X+1}{2},                                             \label{eq:Y-affine}
+ Y=\frac{X+1}{2},                                             \label{p3:eq:Y-affine}
 \end{equation}
 then \(F\) is the distribution function of \(Y\), and
 \begin{equation}
- F'(x)=2\rho(2x-1),\qquad 0<x<1.                              \label{eq:F-density}
+ F'(x)=2\rho(2x-1),\qquad 0<x<1.                              \label{p3:eq:F-density}
 \end{equation}
 
 \section{Audited representation atlas}
 
 This section compresses the principal representation families already present in the
 repository and places the new formulas beside them.  Proofs of the new entries begin in
-Section~\ref{sec:cauchy}.
+Section~\ref{p3:sec:cauchy}.
 
 \subsection{Real-space and probability representations of \(\rho\)}
 
@@ -302,7 +302,7 @@ Section~\ref{sec:cauchy}.
 Since \(2^{-k}U_k\) is uniform on \([-2^{-k},2^{-k}]\),
 \begin{equation}
  \rho=\mathop{\ast}_{k=1}^{\infty}
- \left(2^{k-1}\one_{[-2^{-k},2^{-k}]}\right).                \label{eq:rho-convolution}
+ \left(2^{k-1}\one_{[-2^{-k},2^{-k}]}\right).                \label{p3:eq:rho-convolution}
 \end{equation}
 This is the real-space counterpart of the sinc product.
 
@@ -311,7 +311,7 @@ For every bounded continuous test function \(g\),
 \begin{equation}
  \int_{-1}^{1}g(x)\rho(x)\,\dd x
  =\int_{[-1,1]^{\N}}g\!\left(\sum_{k\ge1}2^{-k}u_k\right)
-   \prod_{k\ge1}\frac{\dd u_k}{2}.                           \label{eq:cube-pushforward}
+   \prod_{k\ge1}\frac{\dd u_k}{2}.                           \label{p3:eq:cube-pushforward}
 \end{equation}
 Formally, this may be written as a Dirac-delta integral for \(\rho(x)\).
 
@@ -322,12 +322,12 @@ Put
  \qquad
  a_{N,j}=\frac{2^N-1-2j}{2^N},
  \qquad
- \eps_j=(-1)^{\wt(j)}.                                      \label{eq:aNj}
+ \eps_j=(-1)^{\wt(j)}.                                      \label{p3:eq:aNj}
 \end{equation}
 The density \(\rho_N\) of \(X_N\) is
 \begin{equation}
  \rho_N(x)=\frac{2^{N(N-1)/2}}{(N-1)!}
- \sum_{j=0}^{2^N-1}\eps_j\,(x+a_{N,j})_+^{N-1}.             \label{eq:finite-spline}
+ \sum_{j=0}^{2^N-1}\eps_j\,(x+a_{N,j})_+^{N-1}.             \label{p3:eq:finite-spline}
 \end{equation}
 For each fixed derivative order, \(\rho_N\to\rho\) uniformly after \(N\) is sufficiently
 large relative to that order.  The repository develops several centered and one-sided
@@ -337,9 +337,9 @@ variants with explicit error control.
 Because \(\Phi\) is real and even,
 \begin{align}
  \rho(x)&=\int_{\R}\Phi(\xi)e^{2\pi i x\xi}\,\dd\xi,
-                                                                  \label{eq:rho-fourier-inversion}\\
+                                                                  \label{p3:eq:rho-fourier-inversion}\\
  \rho(x)&=2\int_0^{\infty}\Phi(\xi)\cos(2\pi x\xi)\,\dd\xi.
-                                                                  \label{eq:rho-cosine}
+                                                                  \label{p3:eq:rho-cosine}
 \end{align}
 The audited corpus also contains Poisson-summation formulas, Legendre expansions,
 periodized cosine series, dyadic spline limits, and endpoint transseries.  They are not
@@ -352,14 +352,14 @@ Let \(\nu_2(n)\) be the exponent of \(2\) in \(n\).  The nonzero integer \(n\) i
 multiplicity \(1+\nu_2(|n|)\), and
 \begin{equation}
  \Phi(z)=\prod_{n=1}^{\infty}
- \left(1-\frac{z^2}{n^2}\right)^{1+\nu_2(n)}.                \label{eq:canonical-product}
+ \left(1-\frac{z^2}{n^2}\right)^{1+\nu_2(n)}.                \label{p3:eq:canonical-product}
 \end{equation}
 
 \paragraph{Gamma product (\statusderived).}
 Euler's reflection identity gives
 \begin{equation}
  \Phi(z)=\prod_{k=0}^{\infty}
- \frac{1}{\Gamma(1+z/2^k)\Gamma(1-z/2^k)}.                  \label{eq:gamma-product}
+ \frac{1}{\Gamma(1+z/2^k)\Gamma(1-z/2^k)}.                  \label{p3:eq:gamma-product}
 \end{equation}
 This is the natural entry point for the Barnes and multiple-gamma compressions studied in
 current repository drafts.
@@ -369,33 +369,33 @@ For \(|z|<1\),
 \begin{equation}
  \log\Phi(z)
  =-\sum_{m=1}^{\infty}
- \frac{\zeta(2m)}{m(1-2^{-2m})}z^{2m}.                       \label{eq:logPhi-zeta}
+ \frac{\zeta(2m)}{m(1-2^{-2m})}z^{2m}.                       \label{p3:eq:logPhi-zeta}
 \end{equation}
 The coefficient sequence is the spectral zeta function
 \begin{equation}
  Z_{\Phi}(s)=\sum_{n=1}^{\infty}\frac{1+\nu_2(n)}{n^s}
- =\frac{\zeta(s)}{1-2^{-s}}.                                \label{eq:spectral-zeta}
+ =\frac{\zeta(s)}{1-2^{-s}}.                                \label{p3:eq:spectral-zeta}
 \end{equation}
 
 \paragraph{Fredholm determinant (\statusnew).}
-Section~\ref{sec:fredholm} upgrades \eqref{eq:canonical-product} to
+Section~\ref{p3:sec:fredholm} upgrades \eqref{p3:eq:canonical-product} to
 \begin{equation}
- \Phi(z)=\det(I-z^2\cK),                                    \label{eq:fredholm-preview}
+ \Phi(z)=\det(I-z^2\cK),                                    \label{p3:eq:fredholm-preview}
 \end{equation}
 for an explicit positive trace-class diagonal operator \(\cK\).  This makes
-\eqref{eq:spectral-zeta} literally the trace zeta function of \(\cK\).
+\eqref{p3:eq:spectral-zeta} literally the trace zeta function of \(\cK\).
 
 \subsection{Moment, cumulant, and Bell-polynomial representations}
 
 The moment generating function has the convergent Taylor series
 \begin{equation}
- M(t)=\sum_{n=0}^{\infty}\mu_{2n}\frac{t^{2n}}{(2n)!}.       \label{eq:M-moment-series}
+ M(t)=\sum_{n=0}^{\infty}\mu_{2n}\frac{t^{2n}}{(2n)!}.       \label{p3:eq:M-moment-series}
 \end{equation}
 Its logarithm is
 \begin{equation}
  \log M(t)=
  \sum_{m=1}^{\infty}
- \frac{2^{2m-1}B_{2m}}{m(2m)!(4^m-1)}t^{2m},                \label{eq:M-cumulant}
+ \frac{2^{2m-1}B_{2m}}{m(2m)!(4^m-1)}t^{2m},                \label{p3:eq:M-cumulant}
 \end{equation}
 so all moments are complete Bell polynomials in explicit Bernoulli/Mersenne cumulants.
 These formulas, together with reciprocal Bell expansions for \(1/\Phi\), are developed
@@ -407,9 +407,9 @@ The CDF inversion formula gives
 \begin{equation}
  F(x)=\frac12+\frac1\pi\int_0^{\infty}
  \Phi(\xi)\frac{\sin(2\pi(2x-1)\xi)}{\xi}\,\dd\xi,
- \qquad 0<x<1.                                               \label{eq:F-CDF-Fourier}
+ \qquad 0<x<1.                                               \label{p3:eq:F-CDF-Fourier}
 \end{equation}
-Section~\ref{sec:fabius-transforms} adds closed Laplace and Fourier transforms of \(F\) as
+Section~\ref{p3:sec:fabius-transforms} adds closed Laplace and Fourier transforms of \(F\) as
 a function, as well as transforms of its derivative measure and its inverse.
 
 \subsection{A compact atlas table}
@@ -417,7 +417,7 @@ a function, as well as transforms of its derivative measure and its inverse.
 \small
 \begin{longtable}{@{}p{0.15\textwidth}p{0.56\textwidth}p{0.07\textwidth}p{0.09\textwidth}@{}}
 \caption{Representation atlas.  Tags refer to the audited-corpus novelty boundary.}
-\label{tab:atlas}\\
+\label{p3:tab:atlas}\\
 \toprule
 Object & Representation family & Tag & Location \\
 \midrule
@@ -427,45 +427,45 @@ Object & Representation family & Tag & Location \\
 \midrule
 \endhead
 \(\rho\) & fold of \(F\), compact-support DDE, infinite convolution, random dyadic sum & \statusknown & \S2--3 \\
-\(\rho\) & finite Thue--Morse truncated-power splines & \statusknown & \eqref{eq:finite-spline} \\
-\(\rho\) & Fourier inversion, cosine integral, Poisson and Legendre series & \statusknown & \eqref{eq:rho-fourier-inversion} \\
-\(\rho\) & boundary jump of a finite logarithmic resolvent sum & \statusnew & Thm.~\ref{thm:finite-log} \\
-\(\Phi\) & sinc product and weighted cosine product & \statusknown & \eqref{eq:Phi-products} \\
-\(\Phi\) & canonical integer-zero product & \statusknown & \eqref{eq:canonical-product} \\
-\(\Phi\) & gamma/Barnes products & \statusknown/\statusderived & \eqref{eq:gamma-product} \\
-\(\Phi\) & zeta-exponential series & \statusknown & \eqref{eq:logPhi-zeta} \\
-\(\Phi\) & trace-class Fredholm determinant & \statusnew & Thm.~\ref{thm:fredholm} \\
-\(\Phi'/\Phi\) & cotangent dyadic sum & \statusnew & \eqref{eq:logder-cot} \\
-\(\Phi'/\Phi\) & weighted tangent dyadic sum & \statusnew & \eqref{eq:logder-tan} \\
-\(\Phi'/\Phi\) & valuation-weighted partial fractions & \statusnew & \eqref{eq:logder-zero} \\
-\((\log\Phi)^{(r)}\) & digamma and Hurwitz-zeta hierarchy & \statusnew & Thm.~\ref{thm:hurwitz} \\
-\(M\) & hyperbolic-sinc product, moment series, Bell cumulants & \statusknown & \eqref{eq:M-product}--\eqref{eq:M-cumulant} \\
-\(M\) & positive Fredholm determinant & \statusnew & \eqref{eq:M-fredholm} \\
-\(R\) & moment Laurent series & \statusnew & \eqref{eq:R-moment} \\
-\(R\) & Laplace transform of the hyperbolic product & \statusnew & \eqref{eq:R-Laplace} \\
-\(R\) & one-sided Fourier--Laplace integral & \statusnew & \eqref{eq:R-Fourier-Laplace} \\
-\(R\) & logarithmic fixed-point expectation & \statusnew & \eqref{eq:R-log-fixed} \\
-\(R\) & dyadic functional-differential equation & \statusnew & \eqref{eq:R-dde} \\
-\(R^{(n)}\) & finite Thue--Morse affine orbit of \(R\) & \statusnew & \eqref{eq:R-derivative-tree} \\
-\(R\) & finite \(2^N\)-logarithm limit & \statusnew & \eqref{eq:RN-log} \\
-\(R\) & Jacobi continued fraction & \statusnew & \eqref{eq:R-J-fraction} \\
-\(R\) & Gaussian-quadrature partial fractions & \statusnew & \eqref{eq:gauss-partial} \\
-\(\sum\mu_{2n}t^n\) & Stieltjes continued fraction and product integral & \statusnew & \eqref{eq:O-S-fraction} \\
-\(F\) & CDF sine-product integral & \statusderived & \eqref{eq:F-CDF-Fourier} \\
-\(F\) & exact Laplace transform on \([0,1]\) & \statusnew & \eqref{eq:F-Laplace} \\
-\(F\) & exact Fourier transform on \([0,1]\) & \statusnew & \eqref{eq:F-Fourier} \\
-\(\rho|_{[0,1]}\) & exact one-sided Laplace/Fourier/sine transforms & \statusnew & Thm.~\ref{thm:one-sided} \\
-\(F^{-1}\) & pushforward expectation, Laplace, Fourier, and Cauchy transforms & \statusnew & Thm.~\ref{thm:inverse-pushforward} \\
+\(\rho\) & finite Thue--Morse truncated-power splines & \statusknown & \eqref{p3:eq:finite-spline} \\
+\(\rho\) & Fourier inversion, cosine integral, Poisson and Legendre series & \statusknown & \eqref{p3:eq:rho-fourier-inversion} \\
+\(\rho\) & boundary jump of a finite logarithmic resolvent sum & \statusnew & Thm.~\ref{p3:thm:finite-log} \\
+\(\Phi\) & sinc product and weighted cosine product & \statusknown & \eqref{p3:eq:Phi-products} \\
+\(\Phi\) & canonical integer-zero product & \statusknown & \eqref{p3:eq:canonical-product} \\
+\(\Phi\) & gamma/Barnes products & \statusknown/\statusderived & \eqref{p3:eq:gamma-product} \\
+\(\Phi\) & zeta-exponential series & \statusknown & \eqref{p3:eq:logPhi-zeta} \\
+\(\Phi\) & trace-class Fredholm determinant & \statusnew & Thm.~\ref{p3:thm:fredholm} \\
+\(\Phi'/\Phi\) & cotangent dyadic sum & \statusnew & \eqref{p3:eq:logder-cot} \\
+\(\Phi'/\Phi\) & weighted tangent dyadic sum & \statusnew & \eqref{p3:eq:logder-tan} \\
+\(\Phi'/\Phi\) & valuation-weighted partial fractions & \statusnew & \eqref{p3:eq:logder-zero} \\
+\((\log\Phi)^{(r)}\) & digamma and Hurwitz-zeta hierarchy & \statusnew & Thm.~\ref{p3:thm:hurwitz} \\
+\(M\) & hyperbolic-sinc product, moment series, Bell cumulants & \statusknown & \eqref{p3:eq:M-product}--\eqref{p3:eq:M-cumulant} \\
+\(M\) & positive Fredholm determinant & \statusnew & \eqref{p3:eq:M-fredholm} \\
+\(R\) & moment Laurent series & \statusnew & \eqref{p3:eq:R-moment} \\
+\(R\) & Laplace transform of the hyperbolic product & \statusnew & \eqref{p3:eq:R-Laplace} \\
+\(R\) & one-sided Fourier--Laplace integral & \statusnew & \eqref{p3:eq:R-Fourier-Laplace} \\
+\(R\) & logarithmic fixed-point expectation & \statusnew & \eqref{p3:eq:R-log-fixed} \\
+\(R\) & dyadic functional-differential equation & \statusnew & \eqref{p3:eq:R-dde} \\
+\(R^{(n)}\) & finite Thue--Morse affine orbit of \(R\) & \statusnew & \eqref{p3:eq:R-derivative-tree} \\
+\(R\) & finite \(2^N\)-logarithm limit & \statusnew & \eqref{p3:eq:RN-log} \\
+\(R\) & Jacobi continued fraction & \statusnew & \eqref{p3:eq:R-J-fraction} \\
+\(R\) & Gaussian-quadrature partial fractions & \statusnew & \eqref{p3:eq:gauss-partial} \\
+\(\sum\mu_{2n}t^n\) & Stieltjes continued fraction and product integral & \statusnew & \eqref{p3:eq:O-S-fraction} \\
+\(F\) & CDF sine-product integral & \statusderived & \eqref{p3:eq:F-CDF-Fourier} \\
+\(F\) & exact Laplace transform on \([0,1]\) & \statusnew & \eqref{p3:eq:F-Laplace} \\
+\(F\) & exact Fourier transform on \([0,1]\) & \statusnew & \eqref{p3:eq:F-Fourier} \\
+\(\rho|_{[0,1]}\) & exact one-sided Laplace/Fourier/sine transforms & \statusnew & Thm.~\ref{p3:thm:one-sided} \\
+\(F^{-1}\) & pushforward expectation, Laplace, Fourier, and Cauchy transforms & \statusnew & Thm.~\ref{p3:thm:inverse-pushforward} \\
 \bottomrule
 \end{longtable}
 \normalsize
 
-\section{The Cauchy--Stieltjes transform}\label{sec:cauchy}
+\section{The Cauchy--Stieltjes transform}\label{p3:sec:cauchy}
 
 \begin{definition}
 For \(z\in\C\setminus[-1,1]\), define
 \begin{equation}
- R(z)=\int_{-1}^{1}\frac{\rho(x)}{z-x}\,\dd x=\E\frac1{z-X}. \label{eq:R-def}
+ R(z)=\int_{-1}^{1}\frac{\rho(x)}{z-x}\,\dd x=\E\frac1{z-X}. \label{p3:eq:R-def}
 \end{equation}
 \end{definition}
 
@@ -473,59 +473,59 @@ The transform \(R\) is odd because \(\rho\) is even.  It is an anti-Herglotz fun
 when \(\operatorname{Im}z>0\),
 \begin{equation}
  \operatorname{Im}R(z)
- =-\operatorname{Im}z\int_{-1}^{1}\frac{\rho(x)}{|z-x|^2}\,\dd x<0. \label{eq:R-anti-Herglotz}
+ =-\operatorname{Im}z\int_{-1}^{1}\frac{\rho(x)}{|z-x|^2}\,\dd x<0. \label{p3:eq:R-anti-Herglotz}
 \end{equation}
 In particular, \(R\) has no zeros off the cut.  For real \(z>1\), \(R(z)>0\); for
 \(z<-1\), \(R(z)<0\).
 
-\begin{theorem}[Four complementary representations of \(R\)]\label{thm:R-representations}
+\begin{theorem}[Four complementary representations of \(R\)]\label{p3:thm:R-representations}
 The following formulas hold.
 
 \begin{enumerate}[label=(\roman*)]
 \item For \(|z|>1\),
 \begin{equation}
- R(z)=\sum_{n=0}^{\infty}\frac{\mu_{2n}}{z^{2n+1}}.          \label{eq:R-moment}
+ R(z)=\sum_{n=0}^{\infty}\frac{\mu_{2n}}{z^{2n+1}}.          \label{p3:eq:R-moment}
 \end{equation}
 \item For \(\operatorname{Re}z>1\),
 \begin{equation}
  R(z)=\int_0^{\infty}e^{-zt}
- \prod_{k=1}^{\infty}\frac{\sinh(t/2^k)}{t/2^k}\,\dd t.    \label{eq:R-Laplace}
+ \prod_{k=1}^{\infty}\frac{\sinh(t/2^k)}{t/2^k}\,\dd t.    \label{p3:eq:R-Laplace}
 \end{equation}
 \item For \(\operatorname{Im}z>0\),
 \begin{equation}
- R(z)=-2\pi i\int_0^{\infty}e^{2\pi i z\xi}\Phi(\xi)\,\dd\xi. \label{eq:R-Fourier-Laplace}
+ R(z)=-2\pi i\int_0^{\infty}e^{2\pi i z\xi}\Phi(\xi)\,\dd\xi. \label{p3:eq:R-Fourier-Laplace}
 \end{equation}
 For \(\operatorname{Im}z<0\), take the conjugate counterpart.
 \item For \(-1<x<1\), the non-tangential boundary values satisfy
 \begin{align}
  \rho(x)&=-\frac1\pi\lim_{y\downarrow0}\operatorname{Im}R(x+iy),
-                                                               \label{eq:R-boundary-density}\\
+                                                               \label{p3:eq:R-boundary-density}\\
  \PV\int_{-1}^{1}\frac{\rho(t)}{x-t}\,\dd t
  &=\lim_{y\downarrow0}\operatorname{Re}R(x+iy)
- =2\pi\int_0^{\infty}\Phi(\xi)\sin(2\pi x\xi)\,\dd\xi.     \label{eq:R-boundary-Hilbert}
+ =2\pi\int_0^{\infty}\Phi(\xi)\sin(2\pi x\xi)\,\dd\xi.     \label{p3:eq:R-boundary-Hilbert}
 \end{align}
 \end{enumerate}
 \end{theorem}
 
 \begin{proof}
 For \(|z|>1\), expand \((z-X)^{-1}=z^{-1}\sum_{m\ge0}(X/z)^m\), use
-\(|X|\le1\), and then symmetry.  This gives \eqref{eq:R-moment}.
+\(|X|\le1\), and then symmetry.  This gives \eqref{p3:eq:R-moment}.
 
 For \(\operatorname{Re}z>1\),
 \[
  \frac1{z-X}=\int_0^{\infty}e^{-(z-X)t}\,\dd t.
 \]
 Fubini's theorem is justified because \(X\le1\).  Taking expectation and using
-\eqref{eq:M-product} yields \eqref{eq:R-Laplace}.
+\eqref{p3:eq:M-product} yields \eqref{p3:eq:R-Laplace}.
 
 For \(\operatorname{Im}z>0\),
 \[
  \frac1{z-x}=-2\pi i\int_0^{\infty}e^{2\pi i(z-x)\xi}\,\dd\xi.
 \]
 The exponential damping from \(\operatorname{Im}z>0\), together with the rapid decay of
-\(\Phi\), permits Fubini and gives \eqref{eq:R-Fourier-Laplace}.  Finally,
-Plemelj's boundary formula gives \eqref{eq:R-boundary-density}; taking real parts of
-\eqref{eq:R-Fourier-Laplace} gives \eqref{eq:R-boundary-Hilbert}.
+\(\Phi\), permits Fubini and gives \eqref{p3:eq:R-Fourier-Laplace}.  Finally,
+Plemelj's boundary formula gives \eqref{p3:eq:R-boundary-density}; taking real parts of
+\eqref{p3:eq:R-Fourier-Laplace} gives \eqref{p3:eq:R-boundary-Hilbert}.
 \end{proof}
 
 \begin{remark}
@@ -540,11 +540,11 @@ and inversion theories.
 
 \subsection{Logarithmic fixed-point identity}
 
-\begin{theorem}[Logarithmic fixed point]\label{thm:R-log-fixed}
+\begin{theorem}[Logarithmic fixed point]\label{p3:thm:R-log-fixed}
 For real \(z>1\),
 \begin{equation}
  R(z)=\int_{-1}^{1}\rho(y)
- \log\!\left(\frac{2z+1-y}{2z-1-y}\right)\,\dd y.           \label{eq:R-log-fixed}
+ \log\!\left(\frac{2z+1-y}{2z-1-y}\right)\,\dd y.           \label{p3:eq:R-log-fixed}
 \end{equation}
 The identity extends by analytic continuation to any simply connected subdomain of
 \(\C\setminus[-1,1]\), with the logarithm chosen by continuation from large positive
@@ -552,27 +552,27 @@ The identity extends by analytic continuation to any simply connected subdomain 
 \end{theorem}
 
 \begin{proof}
-Use the fixed point \eqref{eq:X-fixed-point} and condition on \(X'\):
+Use the fixed point \eqref{p3:eq:X-fixed-point} and condition on \(X'\):
 \begin{align*}
  R(z)
  &=\E\left[\int_{-1/2}^{1/2}
    \frac{\dd u}{z-u-X'/2}\right]\\
  &=\E\log\!\left(\frac{z+1/2-X'/2}{z-1/2-X'/2}\right),
 \end{align*}
-which is \eqref{eq:R-log-fixed} after multiplying numerator and denominator by \(2\).
+which is \eqref{p3:eq:R-log-fixed} after multiplying numerator and denominator by \(2\).
 \end{proof}
 
 \subsection{Functional-differential equation}
 
-\begin{theorem}[Resolvent equation]\label{thm:R-dde}
+\begin{theorem}[Resolvent equation]\label{p3:thm:R-dde}
 For every \(z\in\C\setminus[-1,1]\),
 \begin{equation}
- \boxed{R'(z)=2\bigl(R(2z+1)-R(2z-1)\bigr).}                \label{eq:R-dde}
+ \boxed{R'(z)=2\bigl(R(2z+1)-R(2z-1)\bigr).}                \label{p3:eq:R-dde}
 \end{equation}
 \end{theorem}
 
 \begin{proof}
-Differentiate \eqref{eq:R-log-fixed} first for \(z>1\):
+Differentiate \eqref{p3:eq:R-log-fixed} first for \(z>1\):
 \begin{align*}
  R'(z)
  &=\E\left(\frac{2}{2z+1-X'}-\frac{2}{2z-1-X'}\right)\\
@@ -582,34 +582,34 @@ Both sides are holomorphic on \(\C\setminus[-1,1]\), so the identity theorem giv
 stated continuation.
 \end{proof}
 
-This is the transform-side analogue of the Rvachev equation \eqref{eq:rho-dde}.  It is
+This is the transform-side analogue of the Rvachev equation \eqref{p3:eq:rho-dde}.  It is
 not merely a Fourier rephrasing: it acts on the spectral parameter of a Cauchy transform and
 therefore interacts directly with moments, Pad\'e approximation, and orthogonal polynomials.
 
 \subsection{All-order Thue--Morse derivative tree}
 
-\begin{theorem}[Thue--Morse derivative orbit]\label{thm:R-derivative-tree}
+\begin{theorem}[Thue--Morse derivative orbit]\label{p3:thm:R-derivative-tree}
 For every integer \(n\ge0\),
 \begin{equation}
  \boxed{
  R^{(n)}(z)=2^{n(n+1)/2}
  \sum_{j=0}^{2^n-1}\eps_j\,
  R\bigl(2^n z+2^n-1-2j\bigr).
- }                                                           \label{eq:R-derivative-tree}
+ }                                                           \label{p3:eq:R-derivative-tree}
 \end{equation}
 Consequently,
 \begin{equation}
  \int_{-1}^{1}\frac{\rho(x)}{(z-x)^{n+1}}\,\dd x
  =\frac{(-1)^n2^{n(n+1)/2}}{n!}
  \sum_{j=0}^{2^n-1}\eps_j
- R\bigl(2^n z+2^n-1-2j\bigr).                               \label{eq:R-kernel-tree}
+ R\bigl(2^n z+2^n-1-2j\bigr).                               \label{p3:eq:R-kernel-tree}
 \end{equation}
 \end{theorem}
 
 \begin{proof}
-The case \(n=0\) is trivial and \(n=1\) is \eqref{eq:R-dde}.  Assume the formula at
+The case \(n=0\) is trivial and \(n=1\) is \eqref{p3:eq:R-dde}.  Assume the formula at
 order \(n\).  Differentiating contributes a factor \(2^n\), and then applying
-\eqref{eq:R-dde} contributes another factor \(2\).  The exponent therefore changes by
+\eqref{p3:eq:R-dde} contributes another factor \(2\).  The exponent therefore changes by
 \(n+1\), from \(n(n+1)/2\) to \((n+1)(n+2)/2\).
 
 For the shifts, write \(a_{n,j}=2^n-1-2j\).  The two children are
@@ -619,31 +619,31 @@ For the shifts, write \(a_{n,j}=2^n-1-2j\).  The two children are
  2a_{n,j}-1=2^{n+1}-1-2(2j+1).
 \]
 The signs obey \(\eps_{2j}=\eps_j\) and \(\eps_{2j+1}=-\eps_j\), exactly matching the
-subtraction in \eqref{eq:R-dde}.  This proves \eqref{eq:R-derivative-tree}.  Formula
-\eqref{eq:R-kernel-tree} follows from
+subtraction in \eqref{p3:eq:R-dde}.  This proves \eqref{p3:eq:R-derivative-tree}.  Formula
+\eqref{p3:eq:R-kernel-tree} follows from
 \[
  R^{(n)}(z)=(-1)^n n!\int_{-1}^{1}\frac{\rho(x)}{(z-x)^{n+1}}\,\dd x.
 \]
 \end{proof}
 
-Taking boundary imaginary parts in \eqref{eq:R-derivative-tree} recovers the familiar
+Taking boundary imaginary parts in \eqref{p3:eq:R-derivative-tree} recovers the familiar
 iterated derivative formula for \(\rho\).  The new point is that the same finite
 Thue--Morse orbit controls every higher Cauchy kernel, not only the density derivatives.
 
 \subsection{Uniqueness in the Stieltjes class}
 
-\begin{proposition}\label{prop:R-uniqueness}
+\begin{proposition}\label{p3:prop:R-uniqueness}
 Among Cauchy transforms of probability measures supported on \([-1,1]\), \(R\) is the
-unique solution of \eqref{eq:R-dde} satisfying
+unique solution of \eqref{p3:eq:R-dde} satisfying
 \begin{equation}
- R(z)=\frac1z+\bigO(z^{-3})\qquad(z\to\infty).               \label{eq:R-normalization}
+ R(z)=\frac1z+\bigO(z^{-3})\qquad(z\to\infty).               \label{p3:eq:R-normalization}
 \end{equation}
 \end{proposition}
 
 \begin{proof}
 Let \(G(z)=\sum_{r\ge0}m_r z^{-r-1}\) be the Laurent expansion at infinity of any such
 Cauchy transform.  The normalization gives \(m_0=1\) and \(m_1=0\).  Substitute this
-expansion into \eqref{eq:R-dde}.  In the coefficient of \(z^{-r-2}\), the contribution
+expansion into \eqref{p3:eq:R-dde}.  In the coefficient of \(z^{-r-2}\), the contribution
 containing \(m_r\) is
 \[
  -(r+1)m_r+\frac{r+1}{2^r}m_r
@@ -663,7 +663,7 @@ The finite random sum \(X_N\) has two exact representations: its density is a
 Thue--Morse spline, while its Cauchy transform is a Thue--Morse sum of logarithms.  The
 second formula appears to be absent from the audited corpus.
 
-\begin{theorem}[Finite logarithmic formula]\label{thm:finite-log}
+\begin{theorem}[Finite logarithmic formula]\label{p3:thm:finite-log}
 Let
 \[
  R_N(z)=\E\frac1{z-X_N},
@@ -676,19 +676,19 @@ For \(z\notin[-1+2^{-N},1-2^{-N}]\), with logarithms continued consistently from
  R_N(z)=\frac{2^{N(N-1)/2}}{(N-1)!}
  \sum_{j=0}^{2^N-1}\eps_j
  (z+a_{N,j})^{N-1}\Log(z+a_{N,j}).
- }                                                           \label{eq:RN-log}
+ }                                                           \label{p3:eq:RN-log}
 \end{equation}
 Moreover, \(R_N\to R\) locally uniformly on \(\C\setminus[-1,1]\), so
 \begin{equation}
  R(z)=\lim_{N\to\infty}\frac{2^{N(N-1)/2}}{(N-1)!}
  \sum_{j=0}^{2^N-1}\eps_j
- (z+a_{N,j})^{N-1}\Log(z+a_{N,j}).                           \label{eq:R-log-limit}
+ (z+a_{N,j})^{N-1}\Log(z+a_{N,j}).                           \label{p3:eq:R-log-limit}
 \end{equation}
-Finally, the upper boundary jump of \eqref{eq:RN-log} is exactly the spline
-\eqref{eq:finite-spline}:
+Finally, the upper boundary jump of \eqref{p3:eq:RN-log} is exactly the spline
+\eqref{p3:eq:finite-spline}:
 \begin{equation}
  \rho_N(x)=-\frac1\pi\operatorname{Im}R_N(x+i0).
-                                                                    \label{eq:RN-boundary}
+                                                                    \label{p3:eq:RN-boundary}
 \end{equation}
 \end{theorem}
 
@@ -697,7 +697,7 @@ For \(a>0\), convolution with the uniform density on \([-a,a]\) sends a Cauchy t
 \(G'(z)\) to
 \begin{equation}
  \frac1{2a}\int_{-a}^{a}G'(z-u)\,\dd u
- =\frac{G(z+a)-G(z-a)}{2a}.                                  \label{eq:uniform-difference}
+ =\frac{G(z+a)-G(z-a)}{2a}.                                  \label{p3:eq:uniform-difference}
 \end{equation}
 Start from the point mass at zero, whose Cauchy transform is \(1/z\).  An \(N\)-fold
 antiderivative is
@@ -705,7 +705,7 @@ antiderivative is
  H_N(z)=\frac{z^{N-1}\Log z}{(N-1)!};
  \qquad H_N^{(N)}(z)=\frac1z.
 \]
-Applying \eqref{eq:uniform-difference} successively with \(a_k=2^{-k}\) gives
+Applying \eqref{p3:eq:uniform-difference} successively with \(a_k=2^{-k}\) gives
 \[
  R_N(z)=\frac{1}{\prod_{k=1}^{N}2a_k}
  \sum_{\sigma\in\{\pm1\}^N}
@@ -717,7 +717,7 @@ Since
  \frac1{\prod_{k=1}^{N}2a_k}=2^{N(N-1)/2},
 \]
 and binary subsets identify the shifts and signs with \(a_{N,j}\) and \(\eps_j\), this is
-\eqref{eq:RN-log}.
+\eqref{p3:eq:RN-log}.
 
 The residual tail \(X-X_N\) has support in \([-2^{-N},2^{-N}]\), so \(X_N\to X\)
 almost surely and uniformly in support.  The kernels \((z-x)^{-1}\) are uniformly
@@ -727,36 +727,36 @@ For the boundary value, \(\operatorname{Im}\Log(x+a+i0)=\pi\) when \(x+a<0\) and
 when \(x+a>0\).  The alternating finite difference annihilates every polynomial of degree
 less than \(N\), so the sum of the full powers \((x+a_{N,j})^{N-1}\) is zero.  Replacing the
 negative-part sum by minus the positive-part sum yields exactly
-\eqref{eq:finite-spline}.  This proves \eqref{eq:RN-boundary}.
+\eqref{p3:eq:finite-spline}.  This proves \eqref{p3:eq:RN-boundary}.
 \end{proof}
 
 \begin{remark}[Two complementary approximation geometries]
 The finite-convolution approximant \(R_N\) is a sum of logarithms and preserves the dyadic
-construction.  The Jacobi approximants in Section~\ref{sec:jacobi} are rational functions
+construction.  The Jacobi approximants in Section~\ref{p3:sec:jacobi} are rational functions
 and preserve moments.  Both converge locally uniformly off the support, but their poles,
 branch cuts, and error mechanisms are completely different.  This duality suggests hybrid
 algorithms: use finite convolution to resolve endpoint geometry and a short Jacobi fraction
 to compress the remaining moment error.
 \end{remark}
 
-\section{Exact transforms of \(F\), one-sided \(\Up\), and \(F^{-1}\)}\label{sec:fabius-transforms}
+\section{Exact transforms of \(F\), one-sided \(\Up\), and \(F^{-1}\)}\label{p3:sec:fabius-transforms}
 
 \subsection{The Laplace and Fourier transforms of \(F\)}
 
-\begin{theorem}[Transform of the Fabius function]\label{thm:F-transform}
+\begin{theorem}[Transform of the Fabius function]\label{p3:thm:F-transform}
 For complex \(s\), with the value at \(s=0\) understood by continuity,
 \begin{equation}
  \boxed{
  \int_0^1 e^{-sx}F(x)\,\dd x
  =\frac{e^{-s/2}M(s/2)-e^{-s}}{s}.
- }                                                           \label{eq:F-Laplace}
+ }                                                           \label{p3:eq:F-Laplace}
 \end{equation}
 Equivalently, for real or complex \(\xi\),
 \begin{equation}
  \boxed{
  \int_0^1F(x)e^{-2\pi i\xi x}\,\dd x
  =\frac{e^{-\pi i\xi}\Phi(\xi/2)-e^{-2\pi i\xi}}{2\pi i\xi}.
- }                                                           \label{eq:F-Fourier}
+ }                                                           \label{p3:eq:F-Fourier}
 \end{equation}
 At \(\xi=0\), the value is \(1/2\).
 \end{theorem}
@@ -764,23 +764,23 @@ At \(\xi=0\), the value is \(1/2\).
 \begin{proof}
 The distributional Laplace transform of \(Y\) is
 \begin{equation}
- \int_0^1 e^{-sx}\,\dd F(x)=\E e^{-sY}=e^{-s/2}M(s/2).       \label{eq:dF-Laplace}
+ \int_0^1 e^{-sx}\,\dd F(x)=\E e^{-sY}=e^{-s/2}M(s/2).       \label{p3:eq:dF-Laplace}
 \end{equation}
 Integration by parts gives
 \[
  \int_0^1e^{-sx}\,\dd F(x)
  =e^{-s}+s\int_0^1e^{-sx}F(x)\,\dd x,
 \]
-which is \eqref{eq:F-Laplace}.  Substitute \(s=2\pi i\xi\) and use
+which is \eqref{p3:eq:F-Laplace}.  Substitute \(s=2\pi i\xi\) and use
 \(M(\pi i\xi)=\Phi(\xi/2)\).
 \end{proof}
 
 Separating real and imaginary parts gives the explicit sine and cosine transforms
 \begin{align}
  \int_0^1F(x)\cos(2\pi\xi x)\,\dd x
- &=\frac{\sin(2\pi\xi)-\Phi(\xi/2)\sin(\pi\xi)}{2\pi\xi},    \label{eq:F-cosine-transform}\\
+ &=\frac{\sin(2\pi\xi)-\Phi(\xi/2)\sin(\pi\xi)}{2\pi\xi},    \label{p3:eq:F-cosine-transform}\\
  \int_0^1F(x)\sin(2\pi\xi x)\,\dd x
- &=\frac{\Phi(\xi/2)\cos(\pi\xi)-\cos(2\pi\xi)}{2\pi\xi}. \label{eq:F-sine-transform}
+ &=\frac{\Phi(\xi/2)\cos(\pi\xi)-\cos(2\pi\xi)}{2\pi\xi}. \label{p3:eq:F-sine-transform}
 \end{align}
 
 \subsection{One-sided transforms of the up-function}
@@ -788,74 +788,74 @@ Separating real and imaginary parts gives the explicit sine and cosine transform
 On \([0,1]\), \(\rho(x)=F(1-x)=1-F(x)\).  Therefore the previous theorem immediately
 yields the following closed forms.
 
-\begin{theorem}[One-sided transform package]\label{thm:one-sided}
+\begin{theorem}[One-sided transform package]\label{p3:thm:one-sided}
 For complex \(s\), with the removable value at zero,
 \begin{equation}
  \boxed{
  \int_0^1e^{-sx}\rho(x)\,\dd x
  =\frac{1-e^{-s/2}M(s/2)}{s}.
- }                                                           \label{eq:rho-one-sided-Laplace}
+ }                                                           \label{p3:eq:rho-one-sided-Laplace}
 \end{equation}
 Consequently,
 \begin{equation}
  \boxed{
  \int_0^1e^{-2\pi i\xi x}\rho(x)\,\dd x
  =\frac{1-e^{-\pi i\xi}\Phi(\xi/2)}{2\pi i\xi}.
- }                                                           \label{eq:rho-one-sided-Fourier}
+ }                                                           \label{p3:eq:rho-one-sided-Fourier}
 \end{equation}
 The half-line cosine and sine transforms are
 \begin{align}
  \int_0^1\rho(x)\cos(2\pi\xi x)\,\dd x
- &=\frac12\Phi(\xi),                                        \label{eq:rho-half-cos}\\
+ &=\frac12\Phi(\xi),                                        \label{p3:eq:rho-half-cos}\\
  \int_0^1\rho(x)\sin(2\pi\xi x)\,\dd x
- &=\frac{1-\Phi(\xi/2)\cos(\pi\xi)}{2\pi\xi}.             \label{eq:rho-half-sin}
+ &=\frac{1-\Phi(\xi/2)\cos(\pi\xi)}{2\pi\xi}.             \label{p3:eq:rho-half-sin}
 \end{align}
 \end{theorem}
 
-The sum of \eqref{eq:rho-one-sided-Laplace} at \(s\) and \(-s\) recovers
+The sum of \eqref{p3:eq:rho-one-sided-Laplace} at \(s\) and \(-s\) recovers
 \(M(s)\) precisely because
 \begin{equation}
- M(s)=\frac{2\sinh(s/2)}{s}M(s/2),                           \label{eq:M-scaling}
+ M(s)=\frac{2\sinh(s/2)}{s}M(s/2),                           \label{p3:eq:M-scaling}
 \end{equation}
-which is the hyperbolic continuation of \eqref{eq:Phi-scaling}.
+which is the hyperbolic continuation of \eqref{p3:eq:Phi-scaling}.
 
 \subsection{The inverse Fabius function as a transport map}
 
 Let \(I=F^{-1}\) on \([0,1]\).  Since \(I\) pushes Lebesgue measure forward to the law
 of \(Y\), every integral of a composition with \(I\) reduces to the up-law.
 
-\begin{theorem}[Inverse pushforward master identity]\label{thm:inverse-pushforward}
+\begin{theorem}[Inverse pushforward master identity]\label{p3:thm:inverse-pushforward}
 For every Borel function \(g\) for which one side is integrable,
 \begin{equation}
  \boxed{
  \int_0^1g(I(u))\,\dd u
  =\int_0^1g(x)\,\dd F(x)
  =\int_{-1}^{1}g\!\left(\frac{x+1}{2}\right)\rho(x)\,\dd x.
- }                                                           \label{eq:inverse-master}
+ }                                                           \label{p3:eq:inverse-master}
 \end{equation}
 In particular,
 \begin{align}
  \int_0^1 e^{-sI(u)}\,\dd u
- &=e^{-s/2}M(s/2),                                           \label{eq:inverse-Laplace}\\
+ &=e^{-s/2}M(s/2),                                           \label{p3:eq:inverse-Laplace}\\
  \int_0^1 e^{-2\pi i\xi I(u)}\,\dd u
- &=e^{-\pi i\xi}\Phi(\xi/2),                              \label{eq:inverse-Fourier}\\
+ &=e^{-\pi i\xi}\Phi(\xi/2),                              \label{p3:eq:inverse-Fourier}\\
  \int_0^1\frac{\dd u}{z-I(u)}
- &=2R(2z-1),\qquad z\in\C\setminus[0,1],                   \label{eq:inverse-Cauchy}\\
+ &=2R(2z-1),\qquad z\in\C\setminus[0,1],                   \label{p3:eq:inverse-Cauchy}\\
  \int_0^1I(u)^n\,\dd u
  &=2^{-n}\sum_{r=0}^{\lfloor n/2\rfloor}
-   \binom{n}{2r}\mu_{2r}.                                   \label{eq:inverse-moments}
+   \binom{n}{2r}\mu_{2r}.                                   \label{p3:eq:inverse-moments}
 \end{align}
 \end{theorem}
 
 \begin{proof}
 If \(U\) is uniform on \([0,1]\), then \(I(U)\) has CDF \(F\), hence the same law as
-\(Y\).  This proves \eqref{eq:inverse-master}.  The remaining formulas follow by taking
+\(Y\).  This proves \eqref{p3:eq:inverse-master}.  The remaining formulas follow by taking
 \(g(x)=e^{-sx}\), \(e^{-2\pi i\xi x}\), \((z-x)^{-1}\), and \(x^n\), respectively,
-and then using \eqref{eq:Y-affine} and symmetry of \(X\).
+and then using \eqref{p3:eq:Y-affine} and symmetry of \(X\).
 \end{proof}
 
 \begin{remark}
-Formula \eqref{eq:inverse-Cauchy} transports the entire Jacobi-fraction theory of \(R\) to
+Formula \eqref{p3:eq:inverse-Cauchy} transports the entire Jacobi-fraction theory of \(R\) to
 the inverse Fabius function.  Thus a function whose pointwise inverse asymptotics involve
 Lambert \(W\) nevertheless has a globally simple Cauchy transform when sampled with
 uniform measure in its range variable.
@@ -865,27 +865,27 @@ uniform measure in its range variable.
 
 \subsection{Three meromorphic expansions}
 
-\begin{theorem}[Cotangent, tangent, and zero-set formulas]\label{thm:three-logder}
+\begin{theorem}[Cotangent, tangent, and zero-set formulas]\label{p3:thm:three-logder}
 Away from the integer zero set of \(\Phi\),
 \begin{align}
  \frac{\Phi'(z)}{\Phi(z)}
  &=\sum_{k=0}^{\infty}
  \left[
  \frac{\pi}{2^k}\cot\!\left(\frac{\pi z}{2^k}\right)-\frac1z
- \right],                                                    \label{eq:logder-cot}\\
+ \right],                                                    \label{p3:eq:logder-cot}\\
  &=-\pi\sum_{m=1}^{\infty}\frac{m}{2^m}
- \tan\!\left(\frac{\pi z}{2^m}\right),                    \label{eq:logder-tan}\\
- &=-2z\sum_{n=1}^{\infty}\frac{1+\nu_2(n)}{n^2-z^2}.       \label{eq:logder-zero}
+ \tan\!\left(\frac{\pi z}{2^m}\right),                    \label{p3:eq:logder-tan}\\
+ &=-2z\sum_{n=1}^{\infty}\frac{1+\nu_2(n)}{n^2-z^2}.       \label{p3:eq:logder-zero}
 \end{align}
 All three series converge locally normally on compact subsets avoiding the poles.
 \end{theorem}
 
 \begin{proof}
 Differentiate the logarithm of each of the three products
-\eqref{eq:Phi-products} and \eqref{eq:canonical-product}.  For large \(k\), the bracket
-in \eqref{eq:logder-cot} and the term in \eqref{eq:logder-tan} are \(\bigO(4^{-k})\)
-uniformly on compact sets.  The terms in \eqref{eq:logder-zero} are bounded by a constant
-times \((1+\nu_2(n))/n^2\), which is summable by \eqref{eq:spectral-zeta} at \(s=2\).
+\eqref{p3:eq:Phi-products} and \eqref{p3:eq:canonical-product}.  For large \(k\), the bracket
+in \eqref{p3:eq:logder-cot} and the term in \eqref{p3:eq:logder-tan} are \(\bigO(4^{-k})\)
+uniformly on compact sets.  The terms in \eqref{p3:eq:logder-zero} are bounded by a constant
+times \((1+\nu_2(n))/n^2\), which is summable by \eqref{p3:eq:spectral-zeta} at \(s=2\).
 \end{proof}
 
 The three forms have different numerical regimes.  The tangent sum is usually the fastest
@@ -896,11 +896,11 @@ sum exposes multiplicities and supports rigorous rational tail bounds.
 
 The valuation weight has the divisor decomposition
 \begin{equation}
- 1+\nu_2(n)=\sum_{k=0}^{\infty}\one_{2^k\mid n}.             \label{eq:valuation-indicators}
+ 1+\nu_2(n)=\sum_{k=0}^{\infty}\one_{2^k\mid n}.             \label{p3:eq:valuation-indicators}
 \end{equation}
 This turns the zero sum into a dyadic superposition of classical special functions.
 
-\begin{theorem}[Digamma and Hurwitz-zeta representations]\label{thm:hurwitz}
+\begin{theorem}[Digamma and Hurwitz-zeta representations]\label{p3:thm:hurwitz}
 Let \(\psi=\Gamma'/\Gamma\).  Then
 \begin{equation}
  \boxed{
@@ -910,7 +910,7 @@ Let \(\psi=\Gamma'/\Gamma\).  Then
  \psi\!\left(1-\frac{z}{2^k}\right)
  -\psi\!\left(1+\frac{z}{2^k}\right)
  \right].
- }                                                           \label{eq:logder-digamma}
+ }                                                           \label{p3:eq:logder-digamma}
 \end{equation}
 For every integer \(r\ge2\),
 \begin{equation}
@@ -921,18 +921,18 @@ For every integer \(r\ge2\),
  -\zeta\!\left(r,1-\frac{z}{2^k}\right)
  +(-1)^{r-1}\zeta\!\left(r,1+\frac{z}{2^k}\right)
  \right].
- }                                                           \label{eq:logder-hurwitz}
+ }                                                           \label{p3:eq:logder-hurwitz}
 \end{equation}
 \end{theorem}
 
 \begin{proof}
-From \eqref{eq:canonical-product}, for \(r\ge1\), paired symmetrically when \(r=1\),
+From \eqref{p3:eq:canonical-product}, for \(r\ge1\), paired symmetrically when \(r=1\),
 \begin{equation}
  (\log\Phi)^{(r)}(z)
  =(r-1)!\sum_{n\ge1}(1+\nu_2(n))
- \left[-\frac1{(n-z)^r}+\frac{(-1)^{r-1}}{(n+z)^r}\right].   \label{eq:logder-general-zero}
+ \left[-\frac1{(n-z)^r}+\frac{(-1)^{r-1}}{(n+z)^r}\right].   \label{p3:eq:logder-general-zero}
 \end{equation}
-Insert \eqref{eq:valuation-indicators}, write \(n=2^k m\), and sum over \(m\ge1\).
+Insert \eqref{p3:eq:valuation-indicators}, write \(n=2^k m\), and sum over \(m\ge1\).
 For \(r\ge2\), the inner sums are Hurwitz zeta functions.  For \(r=1\), the convergent
 paired sum is the standard digamma difference.
 \end{proof}
@@ -940,14 +940,14 @@ paired sum is the standard digamma difference.
 \begin{corollary}[Local jet data at nonzero zeros]
 Let \(N\ne0\) be an integer and \(d_N=1+\nu_2(|N|)\).  Then
 \begin{equation}
- \frac{\Phi'(z)}{\Phi(z)}=\frac{d_N}{z-N}+H_N(z),             \label{eq:local-logder-zero}
+ \frac{\Phi'(z)}{\Phi(z)}=\frac{d_N}{z-N}+H_N(z),             \label{p3:eq:local-logder-zero}
 \end{equation}
 where \(H_N\) is holomorphic near \(N\), and every derivative of \(H_N\) can be written
 as an absolutely convergent valuation-weighted Hurwitz-zeta sum.  Thus the complete local
 Taylor jet of \(\Phi(z)/(z-N)^{d_N}\) is algorithmically explicit.
 \end{corollary}
 
-\section{A Fredholm determinant for the Fourier product}\label{sec:fredholm}
+\section{A Fredholm determinant for the Fourier product}\label{p3:sec:fredholm}
 
 The canonical product can be realized as an ordinary Fredholm determinant, not merely as a
 formal spectral product.
@@ -959,26 +959,26 @@ Let
 \end{equation}
 and define the positive diagonal operator \(\cK\) on \(\ell^2(\mathcal I)\) by
 \begin{equation}
- \cK e_{n,r}=\frac1{n^2}e_{n,r}.                             \label{eq:K-def}
+ \cK e_{n,r}=\frac1{n^2}e_{n,r}.                             \label{p3:eq:K-def}
 \end{equation}
 \end{definition}
 
-\begin{theorem}[Fredholm determinant representation]\label{thm:fredholm}
+\begin{theorem}[Fredholm determinant representation]\label{p3:thm:fredholm}
 The operator \(\cK\) is trace class and
 \begin{align}
- \boxed{\Phi(z)=\det(I-z^2\cK)},                             \label{eq:Phi-fredholm}\\
- \boxed{M(t)=\det\!\left(I+\frac{t^2}{4\pi^2}\cK\right)}.  \label{eq:M-fredholm}
+ \boxed{\Phi(z)=\det(I-z^2\cK)},                             \label{p3:eq:Phi-fredholm}\\
+ \boxed{M(t)=\det\!\left(I+\frac{t^2}{4\pi^2}\cK\right)}.  \label{p3:eq:M-fredholm}
 \end{align}
 Furthermore,
 \begin{align}
- \tr(\cK^m)&=\frac{\zeta(2m)}{1-2^{-2m}},                   \label{eq:K-traces}\\
+ \tr(\cK^m)&=\frac{\zeta(2m)}{1-2^{-2m}},                   \label{p3:eq:K-traces}\\
  \frac{\Phi'(z)}{\Phi(z)}
- &=-2z\,\tr\!\left(\cK(I-z^2\cK)^{-1}\right).            \label{eq:K-resolvent-trace}
+ &=-2z\,\tr\!\left(\cK(I-z^2\cK)^{-1}\right).            \label{p3:eq:K-resolvent-trace}
 \end{align}
 \end{theorem}
 
 \begin{proof}
-By \eqref{eq:spectral-zeta},
+By \eqref{p3:eq:spectral-zeta},
 \[
  \tr\cK=\sum_{n\ge1}\frac{1+\nu_2(n)}{n^2}
  =\frac{\zeta(2)}{1-2^{-2}}<\infty,
@@ -990,14 +990,14 @@ with multiplicity:
  =\prod_{n\ge1}\left(1-\frac{z^2}{n^2}\right)^{1+\nu_2(n)}
  =\Phi(z).
 \]
-Substituting \(z=it/(2\pi)\) gives \eqref{eq:M-fredholm}.  Formula
-\eqref{eq:K-traces} is again \eqref{eq:spectral-zeta}, and differentiating the Fredholm
-logarithm gives \eqref{eq:K-resolvent-trace}.
+Substituting \(z=it/(2\pi)\) gives \eqref{p3:eq:M-fredholm}.  Formula
+\eqref{p3:eq:K-traces} is again \eqref{p3:eq:spectral-zeta}, and differentiating the Fredholm
+logarithm gives \eqref{p3:eq:K-resolvent-trace}.
 \end{proof}
 
 \begin{remark}
 This representation converts several scalar identities into operator identities.  For
-example, the zeta expansion \eqref{eq:logPhi-zeta} is the standard trace expansion
+example, the zeta expansion \eqref{p3:eq:logPhi-zeta} is the standard trace expansion
 \[
  \log\det(I-z^2\cK)=-\sum_{m\ge1}\frac{z^{2m}}m\tr(\cK^m).
 \]
@@ -1005,23 +1005,23 @@ It also suggests perturbation theory for generalized exponent sequences: changin
 multiplicity sequence changes only the diagonal spectral multiplicities.
 \end{remark}
 
-\section{Jacobi continued fractions and exact rational coefficients}\label{sec:jacobi}
+\section{Jacobi continued fractions and exact rational coefficients}\label{p3:sec:jacobi}
 
 \subsection{Exact moment recurrence}
 
-\begin{proposition}[Moment recurrence]\label{prop:moment-recurrence}
+\begin{proposition}[Moment recurrence]\label{p3:prop:moment-recurrence}
 The even moments satisfy \(\mu_0=1\) and, for \(n\ge1\),
 \begin{equation}
  \boxed{
  (4^n-1)\mu_{2n}
  =\sum_{j=1}^{n}\binom{2n}{2j}\frac{\mu_{2n-2j}}{2j+1}.
- }                                                           \label{eq:moment-recurrence}
+ }                                                           \label{p3:eq:moment-recurrence}
 \end{equation}
 In particular, every \(\mu_{2n}\) is rational.
 \end{proposition}
 
 \begin{proof}
-Raise \eqref{eq:X-fixed-point} to the \(2n\)-th power and take expectations:
+Raise \eqref{p3:eq:X-fixed-point} to the \(2n\)-th power and take expectations:
 \[
  4^n\mu_{2n}
  =\sum_{j=0}^{n}\binom{2n}{2j}\E U^{2j}\,\mu_{2n-2j}.
@@ -1034,7 +1034,7 @@ Since \(\E U^{2j}=1/(2j+1)\), the \(j=0\) term is \(\mu_{2n}\).  Move it to the 
 Let \(P_n\) be the monic orthogonal polynomials for the probability measure
 \(\rho(x)\dd x\), and let
 \begin{equation}
- h_n=\int_{-1}^{1}P_n(x)^2\rho(x)\,\dd x.                    \label{eq:hn}
+ h_n=\int_{-1}^{1}P_n(x)^2\rho(x)\,\dd x.                    \label{p3:eq:hn}
 \end{equation}
 Evenness forces the diagonal Jacobi parameters to vanish, so
 \begin{equation}
@@ -1043,7 +1043,7 @@ Evenness forces the diagonal Jacobi parameters to vanish, so
  \qquad
  P_{n+1}(x)=xP_n(x)-\beta_nP_{n-1}(x),
  \qquad
- \beta_n=\frac{h_n}{h_{n-1}}>0.                              \label{eq:monic-recurrence}
+ \beta_n=\frac{h_n}{h_{n-1}}>0.                              \label{p3:eq:monic-recurrence}
 \end{equation}
 The first polynomials are
 \begin{align}
@@ -1056,43 +1056,43 @@ The first polynomials are
 
 \subsection{The Jacobi and Stieltjes fractions}
 
-\begin{theorem}[Jacobi continued fraction]\label{thm:J-fraction}
+\begin{theorem}[Jacobi continued fraction]\label{p3:thm:J-fraction}
 The Cauchy transform has the locally uniform continued fraction
 \begin{equation}
  \boxed{
  R(z)=\cfrac{1}{z-\cfrac{\beta_1}{z-\cfrac{\beta_2}{z-
            \cfrac{\beta_3}{z-\ddots}}}}.
- }                                                           \label{eq:R-J-fraction}
+ }                                                           \label{p3:eq:R-J-fraction}
 \end{equation}
 The coefficients are positive rational numbers.
 \end{theorem}
 
 \begin{proof}
 Positivity follows from \(\beta_n=h_n/h_{n-1}\), and rationality follows because
-Gram--Schmidt applied to the rational moment functional \eqref{eq:moment-recurrence}
+Gram--Schmidt applied to the rational moment functional \eqref{p3:eq:moment-recurrence}
 uses only rational operations.  Markov's theorem for compactly supported positive measures
-identifies the continued fraction generated by \eqref{eq:monic-recurrence} with the Cauchy
-transform and gives local uniform convergence off the support \cite{VanAssche1993,SimonOPRL}.
+identifies the continued fraction generated by \eqref{p3:eq:monic-recurrence} with the Cauchy
+transform and gives local uniform convergence off the support \cite{p3:VanAssche1993,p3:SimonOPRL}.
 \end{proof}
 
 Define the ordinary even-moment generating function
 \begin{equation}
  \cO(t)=\sum_{n=0}^{\infty}\mu_{2n}t^n
  =\int_{-1}^{1}\frac{\rho(x)}{1-tx^2}\,\dd x,
- \qquad |t|<1.                                               \label{eq:O-def}
+ \qquad |t|<1.                                               \label{p3:eq:O-def}
 \end{equation}
-Substituting \(t=z^{-2}\) into \eqref{eq:R-J-fraction} gives the contracted fraction.
+Substituting \(t=z^{-2}\) into \eqref{p3:eq:R-J-fraction} gives the contracted fraction.
 
-\begin{corollary}[Stieltjes fraction and product integral]\label{cor:S-fraction}
+\begin{corollary}[Stieltjes fraction and product integral]\label{p3:cor:S-fraction}
 For \(|t|<1\),
 \begin{align}
  \boxed{
  \cO(t)=\cfrac{1}{1-\cfrac{\beta_1t}{1-\cfrac{\beta_2t}{1-
                \cfrac{\beta_3t}{1-\ddots}}}}
- }                                                           \label{eq:O-S-fraction}\\
+ }                                                           \label{p3:eq:O-S-fraction}\\
  \cO(t)=\int_0^{\infty}e^{-u}
  \prod_{k=1}^{\infty}
- \frac{\sinh(\sqrt t\,u/2^k)}{\sqrt t\,u/2^k}\,\dd u.    \label{eq:O-product-integral}
+ \frac{\sinh(\sqrt t\,u/2^k)}{\sqrt t\,u/2^k}\,\dd u.    \label{p3:eq:O-product-integral}
 \end{align}
 \end{corollary}
 
@@ -1107,22 +1107,22 @@ and then average over \(X\), obtaining \(M(\sqrt t\,u)\).
 For \(s\ge0\), \(\cO(-s)\) is completely monotone:
 \begin{equation}
  (-1)^m\frac{\dd^m}{\dd s^m}\cO(-s)
- =m!\int_{-1}^{1}\frac{x^{2m}\rho(x)}{(1+sx^2)^{m+1}}\,\dd x>0. \label{eq:O-complete-monotone}
+ =m!\int_{-1}^{1}\frac{x^{2m}\rho(x)}{(1+sx^2)^{m+1}}\,\dd x>0. \label{p3:eq:O-complete-monotone}
 \end{equation}
 Thus the even moments form a Stieltjes moment sequence, and the fraction
-\eqref{eq:O-S-fraction} belongs to the classical positive Stieltjes class.
+\eqref{p3:eq:O-S-fraction} belongs to the classical positive Stieltjes class.
 
 \subsection{Hankel determinants}
 
 Let
 \begin{equation}
- \Delta_n=\det[\mu_{i+j}]_{i,j=0}^{n-1},\qquad \Delta_0=1.  \label{eq:Hankel}
+ \Delta_n=\det[\mu_{i+j}]_{i,j=0}^{n-1},\qquad \Delta_0=1.  \label{p3:eq:Hankel}
 \end{equation}
 Then
 \begin{equation}
  h_n=\frac{\Delta_{n+1}}{\Delta_n},
  \qquad
- \boxed{\beta_n=\frac{\Delta_{n+1}\Delta_{n-1}}{\Delta_n^2}}. \label{eq:beta-Hankel}
+ \boxed{\beta_n=\frac{\Delta_{n+1}\Delta_{n-1}}{\Delta_n^2}}. \label{p3:eq:beta-Hankel}
 \end{equation}
 Because odd moments vanish, each \(\Delta_n\) factors after a parity permutation into an
 even-even and odd-odd moment determinant.  This parity factorization is useful for exact
@@ -1131,11 +1131,11 @@ arithmetic and should be exploited in future Lean formalization.
 \subsection{Exact coefficients and numerical evidence}
 
 The accompanying Python program computes the moments by
-\eqref{eq:moment-recurrence} and then uses the exact symmetric Stieltjes procedure
-\eqref{eq:monic-recurrence}.  Selected results are:
+\eqref{p3:eq:moment-recurrence} and then uses the exact symmetric Stieltjes procedure
+\eqref{p3:eq:monic-recurrence}.  Selected results are:
 
 \begin{center}
-\input{generated_tables.tex}
+\input{assets/Fabius_Rvachev_Thue_Morse_Representation_Frontiers/generated_tables.tex}
 \end{center}
 
 The full numerators and denominators through \(n=40\) are in
@@ -1145,36 +1145,36 @@ floating-point artifact.
 
 \begin{figure}[htbp]
 \centering
-\includegraphics[width=0.78\textwidth]{jacobi_coefficients.pdf}
+\includegraphics[width=0.78\textwidth]{assets/Fabius_Rvachev_Thue_Morse_Representation_Frontiers/jacobi_coefficients.pdf}
 \caption{Exact Jacobi coefficients converted to decimals.  The dashed line is the proved
 limit \(1/4\).}
-\label{fig:beta}
+\label{p3:fig:beta}
 \end{figure}
 
 \begin{figure}[htbp]
 \centering
-\includegraphics[width=0.78\textwidth]{jacobi_scaled_deficit.pdf}
+\includegraphics[width=0.78\textwidth]{assets/Fabius_Rvachev_Thue_Morse_Representation_Frontiers/jacobi_scaled_deficit.pdf}
 \caption{The diagnostic quantity
 \(n^2(1/4-\beta_n)/(\log n)^2\).  The range \(n\le40\) is evidence, not an asymptotic
 proof.}
-\label{fig:beta-scaled}
+\label{p3:fig:beta-scaled}
 \end{figure}
 
 \subsection{The limiting coefficient}
 
-\begin{theorem}[Nevai-class limit]\label{thm:beta-limit}
+\begin{theorem}[Nevai-class limit]\label{p3:thm:beta-limit}
 The Jacobi coefficients satisfy
 \begin{equation}
- \boxed{\lim_{n\to\infty}\beta_n=\frac14.}                  \label{eq:beta-limit}
+ \boxed{\lim_{n\to\infty}\beta_n=\frac14.}                  \label{p3:eq:beta-limit}
 \end{equation}
 \end{theorem}
 
 \begin{proof}
 The measure \(\rho(x)\dd x\) has essential support \([-1,1]\), and its density is strictly
 positive for every \(x\in(-1,1)\).  The Denisov--Rakhmanov theorem therefore places its
-orthonormal Jacobi matrix in the Nevai class of \([-1,1]\) \cite{Denisov2004,SimonOPRL}: the off-diagonal orthonormal
+orthonormal Jacobi matrix in the Nevai class of \([-1,1]\) \cite{p3:Denisov2004,p3:SimonOPRL}: the off-diagonal orthonormal
 coefficients tend to \(1/2\), and the diagonal coefficients tend to zero.  In the monic
-recurrence \eqref{eq:monic-recurrence}, \(\beta_n\) is the square of the off-diagonal
+recurrence \eqref{p3:eq:monic-recurrence}, \(\beta_n\) is the square of the off-diagonal
 orthonormal coefficient, hence tends to \(1/4\).
 \end{proof}
 
@@ -1183,7 +1183,7 @@ orthonormal coefficient, hence tends to \(1/4\).
 Let \(Q_{N-1}\) be the polynomial of the second kind
 \begin{equation}
  Q_{N-1}(z)=\int_{-1}^{1}
- \frac{P_N(z)-P_N(x)}{z-x}\rho(x)\,\dd x.                    \label{eq:second-kind}
+ \frac{P_N(z)-P_N(x)}{z-x}\rho(x)\,\dd x.                    \label{p3:eq:second-kind}
 \end{equation}
 The \(N\)-th Jacobi convergent is \(Q_{N-1}/P_N\).  If
 \(x_{1,N},\dots,x_{N,N}\) are the zeros of \(P_N\), then
@@ -1192,14 +1192,14 @@ The \(N\)-th Jacobi convergent is \(Q_{N-1}/P_N\).  If
  \frac{Q_{N-1}(z)}{P_N(z)}
  =\sum_{j=1}^{N}\frac{w_{j,N}}{z-x_{j,N}},
  \qquad w_{j,N}>0,\quad \sum_jw_{j,N}=1.
- }                                                           \label{eq:gauss-partial}
+ }                                                           \label{p3:eq:gauss-partial}
 \end{equation}
 This is the Cauchy transform of the \(N\)-node Gaussian quadrature measure for \(\rho\),
 and it matches moments through degree \(2N-1\).  The exact error identity is
 \begin{equation}
  R(z)-\frac{Q_{N-1}(z)}{P_N(z)}
  =\frac1{P_N(z)^2}\int_{-1}^{1}
- \frac{P_N(x)^2}{z-x}\rho(x)\,\dd x.                        \label{eq:Markov-error}
+ \frac{P_N(x)^2}{z-x}\rho(x)\,\dd x.                        \label{p3:eq:Markov-error}
 \end{equation}
 Hence every Gaussian resolvent approximant is a strict lower bound for \(R(z)\) when
 \(z>1\), and a strict upper bound when \(z<-1\).
@@ -1223,33 +1223,33 @@ up-law, complementary to the continuous finite-convolution models of Section~5.
 
 Let
 \begin{equation}
- S(z)=\int_0^1\frac{\dd F(x)}{z-x}=\E\frac1{z-Y}.            \label{eq:S-def}
+ S(z)=\int_0^1\frac{\dd F(x)}{z-x}=\E\frac1{z-Y}.            \label{p3:eq:S-def}
 \end{equation}
-The affine relation \eqref{eq:Y-affine} gives
+The affine relation \eqref{p3:eq:Y-affine} gives
 \begin{equation}
- \boxed{S(z)=2R(2z-1).}                                     \label{eq:S-R}
+ \boxed{S(z)=2R(2z-1).}                                     \label{p3:eq:S-R}
 \end{equation}
 Consequently, every representation of \(R\) immediately yields one for \(S\).  For example,
 for \(|2z-1|>1\),
 \begin{equation}
- S(z)=2\sum_{n=0}^{\infty}\frac{\mu_{2n}}{(2z-1)^{2n+1}},   \label{eq:S-moment}
+ S(z)=2\sum_{n=0}^{\infty}\frac{\mu_{2n}}{(2z-1)^{2n+1}},   \label{p3:eq:S-moment}
 \end{equation}
 and \(S\) has a Jacobi fraction obtained by the affine change of variable in
-\eqref{eq:R-J-fraction}.
+\eqref{p3:eq:R-J-fraction}.
 
 \subsection{A determinant form of the Fabius Laplace transform}
 
-Combining \eqref{eq:F-Laplace} with \eqref{eq:M-fredholm} gives
+Combining \eqref{p3:eq:F-Laplace} with \eqref{p3:eq:M-fredholm} gives
 \begin{equation}
  \int_0^1e^{-sx}F(x)\,\dd x
  =\frac{e^{-s/2}
- \det\!\left(I+\dfrac{s^2}{16\pi^2}\cK\right)-e^{-s}}{s}.  \label{eq:F-Laplace-determinant}
+ \det\!\left(I+\dfrac{s^2}{16\pi^2}\cK\right)-e^{-s}}{s}.  \label{p3:eq:F-Laplace-determinant}
 \end{equation}
 Similarly,
 \begin{equation}
  \int_0^1e^{-sx}\rho(x)\,\dd x
  =\frac{1-e^{-s/2}
- \det\!\left(I+\dfrac{s^2}{16\pi^2}\cK\right)}{s}.         \label{eq:rho-half-determinant}
+ \det\!\left(I+\dfrac{s^2}{16\pi^2}\cK\right)}{s}.         \label{p3:eq:rho-half-determinant}
 \end{equation}
 These are literal combinations of a compact-support transform with a trace-class spectral
 determinant.
@@ -1267,7 +1267,7 @@ representations:
    \prod_{k\ge1}\frac{\sinh(\sqrt t\,u/2^k)}{\sqrt t\,u/2^k}\,\dd u\\
  &=\cfrac{1}{1-\cfrac{\beta_1t}{1-\cfrac{\beta_2t}{1-\ddots}}}.
  \end{aligned}
- }                                                           \label{eq:triangle}
+ }                                                           \label{p3:eq:triangle}
 \end{equation}
 The first line is arithmetic, the second is multiplicative and analytic, and the third is
 orthogonal-polynomial/geometric.  Equality of the three creates a direct bridge among the
@@ -1281,13 +1281,13 @@ Jacobi parameters.
 The script \texttt{rvachev\_frontier\_experiments.py} performs the following operations.
 
 \begin{enumerate}
-\item It computes \(\mu_0,\mu_2,\dots\) exactly using \eqref{eq:moment-recurrence}.
+\item It computes \(\mu_0,\mu_2,\dots\) exactly using \eqref{p3:eq:moment-recurrence}.
 \item It constructs the monic orthogonal polynomials using the symmetric three-term
       recurrence and exact rational inner products.
 \item It writes all exact \(\beta_n\) through a user-selected order to CSV.
-\item It checks \eqref{eq:R-dde} independently using a long moment expansion.
+\item It checks \eqref{p3:eq:R-dde} independently using a long moment expansion.
 \item It compares the cotangent, tangent, and zero-set formulas for \(\Phi'/\Phi\).
-\item It generates Figures~\ref{fig:beta} and \ref{fig:beta-scaled}.
+\item It generates Figures~\ref{p3:fig:beta} and \ref{p3:fig:beta-scaled}.
 \end{enumerate}
 
 The default order is 40.  On the reference environment the full run takes tens of seconds;
@@ -1324,45 +1324,45 @@ nonzero points.  The zero-set formula, truncated at \(10^5\), differed by
 
 The following conjectures are deliberately separated from the proved results.
 
-\begin{conjecture}[Strict Jacobi monotonicity]\label{conj:beta-monotone}
+\begin{conjecture}[Strict Jacobi monotonicity]\label{p3:conj:beta-monotone}
 The exact Jacobi coefficients are strictly increasing:
 \begin{equation}
- 0<\beta_1<\beta_2<\cdots<\frac14.                            \label{eq:beta-monotone}
+ 0<\beta_1<\beta_2<\cdots<\frac14.                            \label{p3:eq:beta-monotone}
 \end{equation}
 \end{conjecture}
 
 Exact arithmetic verifies the inequalities through \(n=40\).  The upper limit is proved by
-Theorem~\ref{thm:beta-limit}, but monotonicity does not follow from the
+Theorem~\ref{p3:thm:beta-limit}, but monotonicity does not follow from the
 Denisov--Rakhmanov theorem and appears to require a Fabius-specific argument.
 
-\begin{conjecture}[Logarithmically corrected recurrence rate]\label{conj:beta-rate}
+\begin{conjecture}[Logarithmically corrected recurrence rate]\label{p3:conj:beta-rate}
 There exists a constant \(C_{\Up}\in(0,\infty)\) such that
 \begin{equation}
  \frac14-\beta_n
- \sim C_{\Up}\frac{(\log n)^2}{n^2}.                         \label{eq:beta-rate}
+ \sim C_{\Up}\frac{(\log n)^2}{n^2}.                         \label{p3:eq:beta-rate}
 \end{equation}
 \end{conjecture}
 
-The scaled quantity in Figure~\ref{fig:beta-scaled} rises from approximately \(0.674\) at
+The scaled quantity in Figure~\ref{p3:fig:beta-scaled} rises from approximately \(0.674\) at
 \(n=20\) to \(0.766\) at \(n=40\).  This is too short a range to determine a constant or
 even to exclude a different slowly varying factor.  The conjecture is motivated jointly by
 the data and by the squared-logarithmic endpoint scale of \(\rho\).  A Riemann--Hilbert or
 strong Szeg\H{o} analysis adapted to the endpoint flatness is the natural next step.
 
-\begin{conjecture}[Dyadically regularized Mittag--Leffler expansion]\label{conj:ML}
+\begin{conjecture}[Dyadically regularized Mittag--Leffler expansion]\label{p3:conj:ML}
 Let \(d_n=1+\nu_2(|n|)\), and let \(\operatorname{PP}_n(z)\) be the principal part of
 \(1/\Phi(z)\) at the nonzero integer \(n\).  There exists a canonical dyadic grouping and a
 finite genus of subtraction polynomials such that
 \begin{equation}
  \frac1{\Phi(z)}
  =E(z)+\sum_{n\in\mathbb Z\setminus\{0\}}^{\mathrm{dyadic}}
- \left(\operatorname{PP}_n(z)-\text{canonical subtraction at }n\right), \label{eq:ML-conj}
+ \left(\operatorname{PP}_n(z)-\text{canonical subtraction at }n\right), \label{p3:eq:ML-conj}
 \end{equation}
 where \(E\) is an explicitly controlled entire function, ideally constant or of very low
 order.
 \end{conjecture}
 
-The local principal parts are computable from Theorem~\ref{thm:hurwitz}; the unresolved
+The local principal parts are computable from Theorem~\ref{p3:thm:hurwitz}; the unresolved
 issue is a global summation scheme compatible with the unbounded dyadic multiplicities.
 
 \begin{problem}[Arithmetic of \(\beta_n\)]
@@ -1383,18 +1383,18 @@ while the first correction should retain the Lambert--\(W\)/log-square endpoint 
 The repository's Newton/Rvachev theory replaces the unit exponent sequence in the sinc
 product by general integer sequences.  Construct the corresponding Cauchy transforms and
 derive coupled affine functional equations when the exponent sequence is closed under a
-Pascal or shift operator.  The Fredholm model of Section~\ref{sec:fredholm} suggests that
+Pascal or shift operator.  The Fredholm model of Section~\ref{p3:sec:fredholm} suggests that
 the Fourier side is easy; the real-space fixed-point law is the main obstacle.
 \end{problem}
 
 \begin{problem}[Fractional resolvent dynamics]
-Equation \eqref{eq:R-dde} gives every integer derivative as a finite Thue--Morse orbit.
+Equation \eqref{p3:eq:R-dde} gives every integer derivative as a finite Thue--Morse orbit.
 Seek a fractional-order interpolation
 \[
  D_z^{\alpha}R(z)=\int_{\Gamma_\alpha}K_\alpha(j)
  R(2^\alpha z+\text{affine shift}(j))\,\dd j
 \]
-that reduces to \eqref{eq:R-derivative-tree} for \(\alpha\in\N\).  A semigroup built from
+that reduces to \eqref{p3:eq:R-derivative-tree} for \(\alpha\in\N\).  A semigroup built from
 the two affine branches \(z\mapsto2z\pm1\) may provide the correct operator calculus.
 \end{problem}
 
@@ -1403,7 +1403,7 @@ A Lean development can be staged as follows:
 \begin{enumerate}
 \item define the Cauchy transform of the canonical up probability measure;
 \item prove the logarithmic fixed-point identity first on \((1,\infty)\);
-\item differentiate under the integral and formalize \eqref{eq:R-dde};
+\item differentiate under the integral and formalize \eqref{p3:eq:R-dde};
 \item prove the Thue--Morse derivative tree by induction on binary children;
 \item define rational moments and the monic Stieltjes procedure;
 \item construct finite Jacobi convergents and prove the Gaussian error identity;
@@ -1421,9 +1421,9 @@ level as \(F\), \(\rho\), and \(\Phi\).  Immediate goals are:
 
 \begin{enumerate}
 \item derive quantitative bounds for \(R\) near the cut from the sharp Fourier decay;
-\item study the Hilbert transform \eqref{eq:R-boundary-Hilbert}, including its zeros and
+\item study the Hilbert transform \eqref{p3:eq:R-boundary-Hilbert}, including its zeros and
       endpoint asymptotics;
-\item use \eqref{eq:R-dde} to continue asymptotic expansions along dyadic affine rays;
+\item use \eqref{p3:eq:R-dde} to continue asymptotic expansions along dyadic affine rays;
 \item compare finite-logarithmic and Jacobi rational approximants uniformly near the
       support.
 \end{enumerate}
@@ -1433,7 +1433,7 @@ level as \(F\), \(\rho\), and \(\Phi\).  Immediate goals are:
 The exact \(J\)-fraction opens a separate research direction:
 
 \begin{enumerate}
-\item prove or disprove Conjecture~\ref{conj:beta-monotone};
+\item prove or disprove Conjecture~\ref{p3:conj:beta-monotone};
 \item determine strong asymptotics of \(P_n\), \(h_n\), and \(\beta_n\);
 \item construct Fabius-specific Gauss--Kronrod or nested positive rules;
 \item investigate whether the dyadic moment recurrence induces a nonlinear recurrence or
@@ -1456,7 +1456,7 @@ The Fredholm determinant and Hurwitz-zeta hierarchy suggest:
 
 \subsection{Inverse-function program}
 
-The pushforward formulas \eqref{eq:inverse-master}--\eqref{eq:inverse-Cauchy} show that
+The pushforward formulas \eqref{p3:eq:inverse-master}--\eqref{p3:eq:inverse-Cauchy} show that
 many global integral questions about \(F^{-1}\) are easier than pointwise questions.
 Promising directions include:
 
@@ -1493,7 +1493,7 @@ analysis and formalization.
 
 \appendix
 
-\section{Reproducibility instructions}\label{app:repro}
+\section{Reproducibility instructions}\label{p3:app:repro}
 
 From the directory containing this report, run
 \begin{lstlisting}[language=bash]
@@ -1512,14 +1512,14 @@ The exact arithmetic uses Python's \texttt{fractions.Fraction}.  The numerical c
 \texttt{mpmath}; plotting uses \texttt{matplotlib}.  The script contains detailed comments,
 normalization statements, argument validation, and exact orthogonality checks.
 
-\section{Corpus audit ledger}\label{app:corpus}
+\section{Corpus audit ledger}\label{p3:app:corpus}
 
 The pinned 67-path inventory and the additional live draft families used in the audit are
 listed in the accompanying source fragment \texttt{corpus\_inventory.tex}.
 
-\input{corpus_inventory.tex}
+\input{assets/Fabius_Rvachev_Thue_Morse_Representation_Frontiers/corpus_inventory.tex}
 
-\section{Selected exact data}\label{app:data}
+\section{Selected exact data}\label{p3:app:data}
 
 The first eleven even moments and first twelve Jacobi coefficients are typeset in the main
 text.  The CSV files contain the exact data through order 40.  Selected late-order decimal
@@ -1543,38 +1543,38 @@ values are:
 
 \begin{thebibliography}{99}
 
-\bibitem{Arias2018}
+\bibitem{p3:Arias2018}
 J. Arias de Reyna,
 \newblock Arithmetic of the Fabius function,
 \newblock \emph{Integers} \textbf{18} (2018), Paper A51.
 
-\bibitem{AriasTranslation}
+\bibitem{p3:AriasTranslation}
 J. Arias de Reyna,
 \newblock An infinitely differentiable function,
 \newblock English translation and modern exposition, arXiv:1702.05442.
 
-\bibitem{Denisov2004}
+\bibitem{p3:Denisov2004}
 S. A. Denisov,
 \newblock On Rakhmanov's theorem for Jacobi matrices,
 \newblock \emph{Proc. Amer. Math. Soc.} \textbf{132} (2004), 847--852.
 
-\bibitem{Fabius1966}
+\bibitem{p3:Fabius1966}
 J. Fabius,
 \newblock A probabilistic example of a nowhere analytic \(C^\infty\)-function,
 \newblock \emph{Z. Wahrscheinlichkeitstheorie verw. Geb.} \textbf{5} (1966), 173--174.
 
-\bibitem{Repository}
+\bibitem{p3:Repository}
 V. Reshetnikov et al.,
 \newblock \emph{ProveIt: Analysis/FabiusFunction/docs},
 \newblock GitHub repository, audited 27 August 2026,
 \newblock \url{https://github.com/VladimirReshetnikov/ProveIt/tree/main/Analysis/FabiusFunction/docs}.
 
-\bibitem{SimonOPRL}
+\bibitem{p3:SimonOPRL}
 B. Simon,
 \newblock \emph{Orthogonal Polynomials on the Real Line, Part 1: Classical Theory},
 \newblock American Mathematical Society Colloquium Publications, vol.~54, AMS, 2005.
 
-\bibitem{VanAssche1993}
+\bibitem{p3:VanAssche1993}
 W. Van Assche,
 \newblock The impact of Stieltjes' work on continued fractions and orthogonal polynomials,
 \newblock in \emph{Thomas Jan Stieltjes: Collected Papers}, 1993; arXiv:math/9307220.
