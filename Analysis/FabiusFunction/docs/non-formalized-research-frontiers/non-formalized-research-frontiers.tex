@@ -13760,7 +13760,7 @@ estimate is its order-zero case.
 Let \(F\) denote the bounded Fabius function and \(\Up\) Rvachev's compactly supported
 up-function.  Write \(c_n=\int_{-1}^{1}x^{2n}\Up(x)\dd x\).  The general dyadic evaluator
 is proved correct, but these specializations have no named theorems:
-\begin{candidate}
+\begin{candidate}[Discharged]
 \[
  c_1=\frac19,\qquad
  F(1/4)=\frac5{72},\qquad
@@ -13768,10 +13768,19 @@ is proved correct, but these specializations have no named theorems:
  F(3/8)=\frac{73}{288}.
 \]
 \end{candidate}
-\begin{obligation}
+\begin{obligation}[Discharged]
 Prove named specializations by reducing the exact evaluator and bridge each result to the
 analytic function.
 \end{obligation}
+All four values now have named theorems in \path{DyadicSpecializations.lean}, each in the
+two requested forms.  The executable reductions are \lean{moment_one} (`\(\mu_1=1/9\)' from
+the defining recurrence), \lean{fabiusDyadic_two_one}, \lean{fabiusDyadic_three_one}, and
+\lean{fabiusDyadic_three_three}, closed by rational normalization of the dyadic formula.
+The analytic bridges are \lean{integral_sq_mul_rvachev_eq_one_ninth} together with its
+interval form \lean{intervalIntegral_sq_mul_rvachev_eq_one_ninth} (the display's
+\(c_1\)), and \lean{fabiusReal_one_quarter}, \lean{fabiusReal_one_eighth},
+\lean{fabiusReal_three_eighths}, valid for every bounded Fabius function via
+\lean{fabiusDyadic_cast} and \lean{integral_even_pow_mul_rvachev_eq_moment}.
 
 \subsection{Popcount complexity}
 
@@ -13887,7 +13896,7 @@ formula at \(p=1\) and \(x=1\) gives \(S_2(1)=1\), whereas the proposed integral
 \(1/2\).  The public Lean recurrence concerns the centered finite CDF, not this all-real raw
 spline.
 \end{warning}
-\begin{obligation}
+\begin{obligation}[Discharged]
 Expose a public all-real theorem for the positive-part formula with its exact normalization,
 domain, and pointwise-finiteness interpretation.  If a raw-spline smoothing law is desired,
 first formulate the correct identity and domain rather than reusing the refuted display
@@ -13897,6 +13906,20 @@ above.  The public declarations
 fixed-range positive-spline lemmas and a bridge valid only on \([0,1]\) do not state these
 global claims.
 \end{obligation}
+The all-real theorem is now public in \path{FabiusUniformSpline.lean}:
+\lean{fabiusUniformSpline_eq_tsum_positivePart} states, for \(p\ge1\) and every real \(x\),
+\[
+ S_p(x)=\bigl(2^{\binom p2}\,p!\bigr)^{-1}
+ \sum_{r\ge0}(-1)^{\wt(r)}\left(2^px-\tfrac12-r\right)_+^{p},
+\]
+with \(\sum_{r\ge0}\) read as a \lean{tsum} and the positive part as
+\(\max(\,\cdot\,,0)^p\); the pointwise-finiteness interpretation is its companion
+\lean{positivePart_summand_support_finite}, which exhibits the summand's support inside
+\(\{r<\lceil 2^px\rceil\}\).  The proof needs no fixed-range detour: left of the support both
+sides vanish, and for \(x\ge0\) the positive parts cut the \lean{tsum} down to exactly the
+definitional prefix of the centered spline, the reversed power contributing the sign
+\((-1)^p\) absorbed by the normalizing constant.  No raw-spline smoothing law is asserted,
+in accordance with the warning above.
 
 \subsection{What ``a factor of two'' is intended to compare}
 
@@ -13926,7 +13949,7 @@ bounds, not the actual pointwise errors, and makes no optimality claim.
 The centered-spline error estimate and pointwise CDF convergence are public Lean results.
 The removed prose also compared the uniform estimate with weak convergence for the same
 finite laws:
-\begin{candidate}
+\begin{candidate}[Discharged]
 For \(p\ge1\), let \(\mu_p\) be the law of the finite weighted uniform-coordinate sum,
 translated to the right by \(2^{-p-1}\), and let \(\mu\) be the
 weighted-infinite-sum law.  Their CDFs are respectively \(C_p\) and \(F\), and
@@ -13937,7 +13960,20 @@ On \([0,1]\), the identification \(C_p=S_p\) recovers the centered-spline estima
 Consequently \(\mu_p\) converges weakly to \(\mu\), with the displayed uniform-CDF rate
 providing quantitative information beyond the resulting unquantified convergence statement.
 \end{candidate}
-\begin{obligation}
+Every part of this candidate is now public Lean.  The translated finite law is
+\lean{uniformCenteredPartialLaw} in \path{UniformSplineWeakConvergence.lean}, a probability
+measure by instance, with CDF identified as the midpoint-corrected finite CDF by
+\lean{cdf_uniformCenteredPartialLaw}; the displayed all-real bound is
+\lean{abs_uniformCenteredPartialCDF_sub_fabiusReal_le} in \path{FabiusComputability.lean};
+and the weak convergence \(\mu_p\to\mu\) in the probability-measure topology is
+\lean{uniformCenteredPartialLaw_tendsto}, proved by L\'evy's continuity theorem from the
+pointwise characteristic-function convergence
+\lean{tendsto_charFun_uniformCenteredPartialLaw}, itself a dominated-convergence consequence
+of the pointwise partial-sum convergence \lean{tendsto_uniformPartialSum}.  As instructed
+below, the proof does not route through \lean{finiteConvolutionProbability_tendsto}; the
+phrase \emph{strictly stronger} is rendered as the neutral comparison above, so no
+nonconverse is required.
+\begin{obligation}[Discharged]
 Bundle the translated finite laws and the limiting law as probability measures; identify
 their CDFs; combine the existing interval estimate with support facts to obtain the displayed
 all-real bound; and prove that the bound implies convergence in the probability-measure weak
