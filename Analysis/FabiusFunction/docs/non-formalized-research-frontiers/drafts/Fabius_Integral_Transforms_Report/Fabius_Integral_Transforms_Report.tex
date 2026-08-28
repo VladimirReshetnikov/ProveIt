@@ -9,11 +9,14 @@
 \usepackage{booktabs,longtable,tabularx,array}
 \usepackage{enumitem}
 \usepackage[dvipsnames]{xcolor}
-\usepackage{siunitx}
 \usepackage[most]{tcolorbox}
 \usepackage{fancyhdr}
 \usepackage{hyperref}
 \usepackage[nameinlink,noabbrev]{cleveref}
+
+% The generated numerical table needs only stable verbatim decimal rendering;
+% avoid a heavyweight `siunitx` dependency for this single command.
+\newcommand{\num}[1]{\texttt{#1}}
 
 \hypersetup{
   colorlinks=true,
@@ -23,7 +26,6 @@
   pdftitle={Integral Calculus and Transform Dualities for the Fabius--Rvachev System},
   pdfauthor={Research report prepared for the ProveIt project}
 }
-\sisetup{group-separator={\,},group-minimum-digits=4,output-exponent-marker=\mathrm{e}}
 \setlist{itemsep=2pt,topsep=4pt}
 \setlength{\parindent}{1.25em}
 \setlength{\parskip}{0.15em}
@@ -149,6 +151,10 @@ The following table states the boundary used in this report.
 Probability interpretation of \(\F\), compact support and refinement equations for
 \(\upf\), and the infinite sinc product & Normalization and the common probabilistic
 language for all integrals.\\
+Generic weighted-uniform laws and support-free quantile transport & The formal source now
+contains arbitrary Banach-valued distribution splitting and reflection, exact interval
+mass for nonnegative real weights, a support-free atom-compatible quantile pushforward,
+its compact specialization, and the clamped Fabius inverse theorem.\\
 Exact dyadic values, rational moment recurrences, Bernoulli and \(q\)-binomial structure &
 Inputs to the new Mellin/Newton continuation; these arithmetic results are not reproved
 in full.\\
@@ -161,8 +167,33 @@ standard Appell consequence for repeated primitives outside the support is recal
 Earlier integration-frontier material on elementary weighted inverse identities & Treated
 as precursor material.  The present contribution is the full two-function calculus,
 complex-parameter continuation, fractional-power duality, and transform consequences.\\
+Normalized integer-order Volterra calculus and signed-global Fabius primitives &
+Now formalized independently in \texttt{NormalizedVolterra.lean} and
+\texttt{FabiusAntiderivatives.lean}: arbitrary-base oriented kernels, literal iteration,
+strict FTC, the order semigroup, Taylor reconstruction, polynomial weights, and exact
+dyadic Fabius primitive ladders.\\
 \bottomrule
 \end{longtable}
+
+\begin{statusbox}[Formalization update: what has crossed the frontier]
+At repository snapshot
+\texttt{0770442945d65bac5530c4f214c6c52c4cb9fbdc}, Lean proves the complete
+\emph{integer-order} substrate used by this report, in greater generality than the
+Fabius-only statements: the normalized Volterra operator is Banach-valued, based at an
+arbitrary real point, and uses oriented endpoints.  Literal iteration equals the Cauchy
+kernel for continuous inputs; strict FTC, additive composition of orders, Taylor
+reconstruction, kernel raising, and finite polynomial commutators are all formal.
+For every \(n,p\in\N\), the signed extension has exact global formulas for
+\(J_0^n\mathcal F\) and \(J_0^n(t^p\mathcal F(t))\); the bounded \(\F\) has the same
+formulas for \(x\le1\).
+
+The integer Volterra results do \emph{not} by themselves formalize inverse-pair
+substitutions, noninteger or complex powers, fractional Riemann--Liouville operators,
+negative-moment continuation, order statistics, or transform identities.  Support-free
+measure-level quantile transport, together with its compact specialization, is now formal
+separately, as recorded below; the report's stronger incomplete inverse-pair formulas remain
+research-frontier mathematics.
+\end{statusbox}
 
 \begin{resultbox}[Results not found in the audited corpus]
 The following package appears to be new relative to the repository corpus: the universal
@@ -226,6 +257,30 @@ The self-decomposition
 \end{equation}
 holds with \(U\sim\mathrm{Unif}[0,1]\) independent of a copy \(Y'\) of \(Y\).
 It will generate both the positive- and negative-moment recurrences.
+
+\begin{statusbox}[Formal arbitrary-weight law underlying the dyadic split]
+The current Lean source proves the distributional mechanism before specializing the
+weights.  For every norm-summable sequence in a real Banach space with its Borel
+structure, the weighted uniform-coordinate pushforward is a probability law, splits as
+an independent uniform head plus the shifted-tail law, and is invariant under reflection
+through half the total vector weight.  Nonnegative real weights give mass one to their
+natural interval and mass zero to its complement.  The law definition itself remains
+total even without measurability.  More generally, the weighted head--tail joint-law
+theorem accepts an arbitrary independently chosen summable tail-weight sequence \(v\).
+The shifted tail \(v_n=w_{n+1}\) appears only when that theorem is specialized to split
+one parent law \(\mu_w\).
+
+The exact new declarations are
+\nolinkurl{Fabius.ProbabilityRepresentation.uniformProduct_map_head_tail_comp},
+\nolinkurl{Fabius.ProbabilityRepresentation.weightedUniformDistribution},
+\nolinkurl{Fabius.ProbabilityRepresentation.isProbabilityMeasure_weightedUniformDistribution},
+\nolinkurl{Fabius.ProbabilityRepresentation.uniformProduct_map_head_tailWeightedUniformSeries},
+\nolinkurl{Fabius.ProbabilityRepresentation.weightedUniformDistribution_split},
+\nolinkurl{Fabius.ProbabilityRepresentation.weightedUniformDistribution_reflection},
+\nolinkurl{Fabius.ProbabilityRepresentation.weightedUniformDistribution_Icc}, and
+\nolinkurl{Fabius.ProbabilityRepresentation.weightedUniformDistribution_compl_Icc}.
+They do not supply a geometric-\(q\) density, CDF, or refinement theorem.
+\end{statusbox}
 
 \subsection{Moment-generating and Fourier products}
 
@@ -305,6 +360,35 @@ For example
 
 The classical area identity for a function and its inverse is only the first member of
 a much larger family.  The following theorem is the main algebraic engine of the report.
+
+\begin{statusbox}[Exact boundary of the formal quantile theorems]
+The foundational measure-transport theorem is support-free.  Let \(\mu\) be any
+probability measure on \(\R\), and let \(Q\) be almost-everywhere measurable for uniform
+measure on \([0,1]\).  If, for every \(x\in\R\),
+\[
+ Q(y)\le x\quad\Longleftrightarrow\quad y\le\operatorname{cdf}_{\mu}(x)
+ \quad\text{for almost every \(y\in[0,1]\)},
+\]
+then \(Q_*\lambda_{[0,1]}=\mu\).  There is no support assumption on \(\mu\) and no
+requirement that \(Q\) take its source into \([0,1]\).  A compact specialization replaces
+the almost-everywhere sublevel hypothesis by a pointwise order characterization on the
+unit square, together with a.e. support and interval preservation.  Both theorems permit
+atoms.
+
+The Fabius specialization uses the globally clamped inverse but restricts the uniform
+source to \([0,1]\); every strongly measurable Banach-valued statistic has the
+corresponding integral identity,
+with no integrability assumption because both Bochner integrals are totalized.
+
+The exact declarations are
+\nolinkurl{Fabius.map_quantile_eq},
+\nolinkurl{Fabius.map_inverseCDF_volume_restrict_Icc},
+\nolinkurl{Fabius.map_fabiusInv_restrict_Icc_eq_weightedSumDistribution}, and
+\nolinkurl{Fabius.integral_comp_fabiusInv_restrict_Icc_eq_weightedSumDistribution}
+in \texttt{QuantileTransport.lean}.  The two-function identity below is still a
+frontier claim: it contains incomplete integration-by-parts information not implied by
+the pushforward equality alone.
+\end{statusbox}
 
 \begin{theorem}[two-function inverse-pair identity]\label{thm:AB}
 Let \(A,B\) be absolutely continuous on \([0,1]\).  For every \(z\in[0,1]\),
@@ -976,6 +1060,19 @@ For \(\Re\alpha>0\), write
  (I_0^\alpha f)(x)
  =\frac1{\Gamma(\alpha)}\int_0^x(x-t)^{\alpha-1}f(t)\dd t.
 \end{equation}
+
+\begin{statusbox}[Integer versus fractional proof status]
+For \(n\in\N\), the operator \(I_0^n\) here is the formal normalized Volterra operator
+\(J_0^n\).  In particular, Lean proves
+\[
+ I_0^n\F(x)=2^{\binom n2}\F\!\left(\frac{x}{2^n}\right)
+ \qquad(x\le1),
+\]
+including \(n=0\), and proves the analogous global identity for the signed extension.
+It also proves every natural-monomial weight as a finite dyadic sum.  The probabilistic
+truncated-moment representation below, its inverse companion, and every noninteger
+\(\alpha\) remain outside that formal result.
+\end{statusbox}
 
 \subsection{Fractional inverse-pair duality}
 
@@ -1680,7 +1777,8 @@ coefficients is a natural extension.
 
 The most accessible Lean targets are:
 \begin{enumerate}
-\item the measure-theoretic quantile transport and \cref{thm:AB};
+\item extend the formal support-free quantile pushforward to the two-function identity
+      \cref{thm:AB};
 \item the power identity \cref{eq:power-complete} and its polynomial corollaries;
 \item the positive and negative moment recurrences;
 \item positivity, monotonicity, and convergence of \(C_r\);
@@ -1754,8 +1852,10 @@ normalization.
 
 The next decisive steps are to determine whether the phase profile is exactly constant,
 to connect its Fourier modes with the spectral corrections already present in endpoint
-asymptotics, and to formalize the inverse-pair and moment recurrences.  These directions
-are sufficiently concrete to support both high-precision experiments and Lean proofs.
+asymptotics, and to formalize the inverse-pair, fractional-order, and moment recurrences.
+The reusable integer-order Volterra layer and its exact Fabius specialization are already
+formal; these remaining directions are sufficiently concrete to support both
+high-precision experiments and Lean proofs.
 
 \appendix
 

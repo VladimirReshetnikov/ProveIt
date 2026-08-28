@@ -122,8 +122,7 @@
 \author{Human-readable synthesis of the formal development\\
 \small Vladimir Reshetnikov's \texttt{ProveIt} repository}
 \date{Integrated repository snapshot: 27 August 2026\\
-\small mainline snapshot \nolinkurl{f7daf632f2db839fe091de0d080e22a9b50c286a};
-geometric-law addendum \nolinkurl{9f059d9b2}}
+\small commit \nolinkurl{fbfffd928711d0f3e199417b913c9770718d2154}}
 
 \begin{document}
 \maketitle
@@ -141,12 +140,23 @@ to their Lean proofs.
 The probabilistic part identifies $F$ and $\Up$ with exact probability expressions for an
 infinite weighted sum of independent uniform coordinates.  Finite atomic convolution laws,
 weak convergence, half-weighted step approximants, and centered uniform splines give proved
-finite models and quantitative approximation results.  The analytic part develops the
+finite models and quantitative approximation results.  At the reusable level, arbitrary
+absolutely summable vector weights now have probability, head--tail, and reflection laws,
+while nonnegative real weights have exact carried-interval laws; a support-free quantile
+theorem transports uniform measure through
+the clamped Fabius inverse and gives Banach-valued quantile substitution.  The analytic part develops the
 formal sinc and cosine products, Fourier inversion and Poisson summation, exact moment
 recurrences, and the Fourier--Legendre expansion.  The arithmetic part gives reciprocal-power
 values, Thue--Morse formulas for arbitrary dyadic arguments, executable binary reduction,
 two-adic information, exact half-base values, and denominator-free arbitrary-base
 $q$-binomial and geometric-interpolation identities present in Lean.
+
+Repeated integration is developed once, before its Fabius specialization, as an oriented
+normalized Volterra calculus for functions with values in an arbitrary real Banach space.
+Literal iteration and the Cauchy kernel are identified exactly; strict FTC, additive
+composition of orders, Taylor reconstruction, and finite polynomial commutators then give
+closed forms for every integer-order primitive of the signed extension and every
+natural-monomial weight.
 
 The endpoint chapters report only the negative-Laplace decompositions, periodic correction,
 lower-Lambert formulas, saddle estimates, and correction terms that have named proved
@@ -238,10 +248,15 @@ separate the bounded function \(F\), the bump \(\Up\), and the signed extension
 \(\mathcal F\); construct the canonical function; and record the exact uniqueness and shape
 theorems.  The probability chapter then gives the weighted-uniform representation and its
 three finite approximations: atomic convolution measures, half-weighted step functions, and
-centered uniform splines.
+centered uniform splines.  It also isolates the arbitrary-weight distribution laws and the
+support-free and compact inverse-CDF transport theorems before specializing them back to the Fabius
+quantile.
 
 The Fourier and global-extension chapters collect the proved product, inversion, Poisson,
-derivative, exact dyadic-cell distribution, bound, and flatness APIs.  They lead to the exact
+derivative, normalized repeated-integration, exact dyadic-cell distribution, bound, and
+flatness APIs.  The repeated-integration layer is first proved for arbitrary continuous
+Banach-valued inputs and polynomial weights, then specialized to the signed and bounded
+Fabius functions.  These chapters lead to the exact
 analytic locus of \(F\), the proved nonanalyticity regions for \(\Up\) and \(\mathcal F\),
 the totalized inverse on \([0,1]\), and the formal non-elementarity results.  The moment and
 arithmetic chapters then derive the rational recurrences, reciprocal-power identities, path
@@ -838,6 +853,143 @@ bounded Fabius fixed point.  The exact canonical specializations are
 \path{ProbabilityRepresentation.lean}.
 \end{proof}
 
+\subsection{Generic weighted laws and support-free quantile transport}
+\label{sec:weighted-laws-quantile}
+
+The probability mechanism does not depend on the dyadic weights.  Let
+\(\Omega=[0,1]^{\N}\), let \(\mathbf P\) be product Lebesgue measure, and let
+\(\tau\omega=(\omega_1,\omega_2,\ldots)\).  For a real normed vector space \(E\)
+equipped with a measurable structure and weights \(w:\N\to E\), put
+\begin{equation}
+ S_w(\omega):=\sum_{n=0}^{\infty}\omega_n w_n,\qquad
+ \mu_w:=(S_w)_*\mathbf P,\qquad w_n^+:=w_{n+1}.             \label{eq:weighted-law-def}
+\end{equation}
+The series \(S_w\) and the pushforward \(\mu_w\) are totalized Lean definitions: they
+exist syntactically even without summability or measurability.  The law statements below
+add precisely the hypotheses that make those definitions analytically meaningful.
+
+\begin{theorem}[Head--tail product law and arbitrary weighted distributions]
+\label{thm:generic-weighted-law}
+For every measurable map \(g:\Omega\to A\) into an arbitrary measurable space,
+\begin{equation}
+ \bigl(\omega\mapsto(\omega_0,g(\tau\omega))\bigr)_*\mathbf P
+ =\lambda_{[0,1]}\otimes g_*\mathbf P,                       \label{eq:generic-head-tail-map}
+\end{equation}
+where \(\lambda_{[0,1]}\) is Lebesgue measure restricted to the unit interval.
+
+Now let \(E\) be a real Banach space with its Borel measurable structure.  If
+\(\sum_n\lVert w_n\rVert<\infty\), then \(\mu_w\) is a probability measure.  The
+weighted joint law is more general and independent of any parent sequence: for every separately chosen
+\(v:\N\to E\) with \(\sum_n\lVert v_n\rVert<\infty\),
+\begin{equation}
+ \bigl(\omega\mapsto(\omega_0,S_v(\tau\omega))\bigr)_*\mathbf P
+ =\lambda_{[0,1]}\otimes\mu_v.                               \label{eq:weighted-head-tail-map}
+\end{equation}
+Under full summability, with \(W=\sum_n w_n\) and
+\(A_w(u,z)=u\,w_0+z\),
+\begin{align}
+ \mu_w&=(A_w)_*\bigl(\lambda_{[0,1]}\otimes\mu_{w^+}\bigr),  \label{eq:weighted-law-split}\\
+ (x\mapsto W-x)_*\mu_w&=\mu_w.                              \label{eq:weighted-law-reflection}
+\end{align}
+Thus every absolutely summable vector-weight law is centrally symmetric about \(W/2\).
+If \(E=\R\) and every \(w_n\ge0\), then
+\begin{equation}
+ \mu_w([0,W])=1,\qquad \mu_w\bigl(\R\setminus[0,W]\bigr)=0.  \label{eq:weighted-law-support}
+\end{equation}
+This is a carried-set statement; it does not assert that the topological support equals
+the whole interval.
+\end{theorem}
+
+Equation \eqref{eq:generic-head-tail-map} is
+\lean{ProbabilityRepresentation.uniformProduct_map_head_tail_comp}.
+Definition \eqref{eq:weighted-law-def} uses the existing
+\lean{ProbabilityRepresentation.weightedUniformSeries} and the new
+\lean{ProbabilityRepresentation.weightedUniformDistribution}; its totalization boundary
+is part of the latter definition's statement.  The probability and weighted head--tail
+results are
+\lean{ProbabilityRepresentation.isProbabilityMeasure_weightedUniformDistribution} and
+\lean{ProbabilityRepresentation.uniformProduct_map_head_tailWeightedUniformSeries}.
+The latter is the arbitrary-\(v\) statement \eqref{eq:weighted-head-tail-map};
+the shifted choice \(v=w^+\) is made only in the subsequent split of \(\mu_w\).
+Equations \eqref{eq:weighted-law-split}--\eqref{eq:weighted-law-reflection} are
+\lean{ProbabilityRepresentation.weightedUniformDistribution_split} and
+\lean{ProbabilityRepresentation.weightedUniformDistribution_reflection}; the two exact
+mass statements in \eqref{eq:weighted-law-support} are
+\lean{ProbabilityRepresentation.weightedUniformDistribution_Icc} and
+\lean{ProbabilityRepresentation.weightedUniformDistribution_compl_Icc}.
+These are exactly the eight new public declarations in
+\path{WeightedUniformSeries.lean}.
+
+The same measure language gives a clean inverse-CDF theorem without differentiating an
+inverse.
+
+\begin{theorem}[Support-free and compact inverse-CDF transport]
+\label{thm:compact-inverse-cdf-transport}
+Let \(\mu\) be an arbitrary probability measure on \(\R\), with no support
+restriction, and let \(Q:\R\to\R\) be almost-everywhere measurable for
+\(\lambda_{[0,1]}\).  If, for every \(x\in\R\),
+\begin{equation}
+ Q(y)\le x\quad\Longleftrightarrow\quad
+ y\le\operatorname{cdf}_{\mu}(x)
+ \quad\text{for \(\lambda_{[0,1]}\)-almost every \(y\)},     \label{eq:quantile-map-support-free}
+\end{equation}
+then
+\begin{equation}
+ Q_*\lambda_{[0,1]}=\mu.                                    \label{eq:quantile-map}
+\end{equation}
+Thus neither \(Q([0,1])\subseteq[0,1]\) nor compact support of \(\mu\) belongs to the
+foundational theorem; null-set choices of quantile convention are immaterial.
+
+There is also a pointwise compact specialization.  Suppose now that \(\mu\) is carried
+almost everywhere by \([0,1]\), and:
+\begin{enumerate}
+\item \(Q([0,1])\subseteq[0,1]\);
+\item for every \(x,y\in[0,1]\),
+      \[
+       Q(y)\le x\quad\Longleftrightarrow\quad
+       y\le\operatorname{cdf}_{\mu}(x).
+      \]
+\end{enumerate}
+Together with the same source-a.e. measurability, these hypotheses again imply
+\eqref{eq:quantile-map}.  Both versions permit atoms.
+\end{theorem}
+
+The support-free theorem is exactly \lean{map_quantile_eq}; its compact specialization
+is \lean{map_inverseCDF_volume_restrict_Icc}, both in
+\path{QuantileTransport.lean}.  In both cases only the \emph{source measure} is
+restricted to \([0,1]\).  The first theorem neither controls nor needs the values of
+\(Q\) outside a source-full-measure set.
+
+\begin{corollary}[Fabius quantile substitution]
+\label{cor:fabius-quantile-transport}
+Let \(I=\lean{fabiusInv}\) be the Fabius inverse obtained by first clamping its argument
+to \([0,1]\), and let \(\mu_X\) be the dyadic weighted-sum distribution in
+\eqref{eq:F-CDF}.  Then
+\begin{equation}
+ I_*\lambda_{[0,1]}=\mu_X.                                  \label{eq:fabius-quantile-map}
+\end{equation}
+Consequently, for every strongly measurable map \(\Phi:\R\to E\) into a real Banach
+space,
+\begin{equation}
+ \int_{[0,1]}\Phi(I(y))\dd y
+ =\int_{\R}\Phi(x)\,\dd\mu_X(x).                            \label{eq:fabius-quantile-integral}
+\end{equation}
+No separate integrability hypothesis is imposed.  Lean's Bochner integral is totalized
+to zero in the non-integrable case, and the measure-map theorem identifies the two
+totalized integrals there as well.
+\end{corollary}
+
+The measure identity and Banach-valued integral identity are respectively
+\lean{map_fabiusInv_restrict_Icc_eq_weightedSumDistribution} and
+\lean{integral_comp_fabiusInv_restrict_Icc_eq_weightedSumDistribution} in
+\path{QuantileTransport.lean}.  Together with the support-free and compact statements
+above, they are exactly the four public declarations of that module.  The clamped
+definition of \(I\) is global, but both
+displayed transport identities deliberately use uniform measure restricted to
+\([0,1]\).  They do not by themselves prove the frontier report's two-function
+integration-by-parts identity, complex Mellin continuation, or fractional-power
+substitutions.
+
 \subsection{The normalized geometric family}
 
 The same product probability space supports a more general family without changing the
@@ -865,12 +1017,13 @@ is included.  At \(q=1/2\), both \(X_q\) and \(\mu_q\) are exactly the dyadic ra
 and law above.
 
 \begin{proof}[Formal proof]
-The arbitrary-weight pushforward law, affine head--tail decomposition, scalar naturality,
+The canonical arbitrary-weight pushforward law, affine head--tail decomposition,
 reflection, and interval concentration are
 \lean{weightedUniformDistribution_split},
-\lean{weightedUniformDistribution_smul_weights},
 \lean{weightedUniformDistribution_reflection}, and
 \lean{weightedUniformDistribution_Icc} in
+\path{WeightedUniformSeries.lean}.  Scalar naturality is
+\lean{weightedUniformDistribution_smul_weights} in
 \path{WeightedUniformDistribution.lean}.  Their geometric specializations are
 \lean{hasSum_geometricUniformWeight},
 \lean{summable_norm_geometricUniformWeight},
@@ -2067,182 +2220,182 @@ The exact bound, attainment, and supremum statements are
 \lean{isGreatest_abs_iteratedDeriv_fabiusReal_all} in
 \path{BoundedDerivatives.lean}.
 
-\subsection{Normalized Volterra calculus and exact primitive ladders}
+\subsection{Normalized Volterra calculus and exact Fabius primitives}
 \label{sec:normalized-volterra}
 
-The repeated-integration identities admit a foundation that is independent of the Fabius
-function.  Let \(E\) be a real normed vector space, let \(a,x\in\R\), and let
-\(f:\R\to E\).  Define the normalized Volterra operators by
+Repeated integration is most useful here in a form that remembers the base point, works for
+either orientation of the endpoints, and does not introduce a new normalization at order
+zero.  Let \(E\) be a real normed vector space, \(f:\R\to E\), and \(a\in\R\).  Write
 \begin{align}
- \mathsf J_{0,a}f(x)&:=f(x),\label{eq:volterra-zero}\\
- \mathsf J_{n+1,a}f(x)&:=
-   \int_a^x\frac{(x-t)^n}{n!}\,f(t)\dd t.\label{eq:volterra-kernel}
+ (V_af)(x)&:=\int_a^x f(t)\dd t,                                      \label{eq:volterra-first}\\
+ L_a^0f&:=f, & L_a^{n+1}f&:=V_a(L_a^nf),                              \label{eq:volterra-literal}\\
+ J_a^0f(x)&:=f(x), &
+ J_a^{n+1}f(x)&:=\int_a^x\frac{(x-t)^n}{n!}\,f(t)\dd t.               \label{eq:volterra-normalized}
 \end{align}
-The integral is the oriented interval integral, so no relation between \(a\) and \(x\) is
-imposed.  These are \lean{normalizedVolterra_zero} and
-\lean{normalizedVolterra_succ}, built from the definition
+Scalar multiplication in \(E\) is understood in the last display.  These are oriented
+interval integrals: no hypothesis such as \(a\le x\) occurs.  In Lean they are the three
+public definitions \lean{volterraPrimitive}, \lean{iteratedPrimitive}, and
 \lean{normalizedVolterra} in \path{NormalizedVolterra.lean}.
 
-There is also a literal operator-theoretic construction.  Put
-\[
- (\mathsf V_a f)(x):=\int_a^x f(t)\dd t,
- \qquad \mathsf V_a^{[n]}f:=\underbrace{\mathsf V_a\circ\cdots\circ
- \mathsf V_a}_{n\ \mathrm{times}}f,
- \qquad \mathsf V_a^{[0]}f=f.
-\]
-The Lean definitions are \lean{volterraPrimitive} and \lean{iteratedPrimitive}.
-Literal iteration makes the additive semigroup law transparent:
-\begin{equation}
- \mathsf V_a^{[m+n]}f
- =\mathsf V_a^{[m]}\bigl(\mathsf V_a^{[n]}f\bigr).
- \label{eq:volterra-semigroup}
-\end{equation}
-This is \lean{iteratedPrimitive_add}, without a continuity hypothesis.  If \(E\) is complete
-and \(f\) is continuous, every rung is continuous and the strict fundamental theorem of
-calculus gives
-\begin{equation}
- \mathsf V_a^{[n+1]}f
- \text{ has strict derivative }
- \mathsf V_a^{[n]}f(x)\text{ at }x.                       \label{eq:volterra-strict-ftc}
-\end{equation}
-Consequently
-\begin{equation}
- \bigl(\mathsf V_a^{[k+m]}f\bigr)^{(k)}
- =\mathsf V_a^{[m]}f,
- \qquad
- \mathsf V_a^{[n]}f=\mathsf J_{n,a}f.                    \label{eq:volterra-iterate-kernel}
-\end{equation}
-The exact declarations are \lean{continuous_iteratedPrimitive},
-\lean{iteratedPrimitive_succ_hasStrictDerivAt},
-\lean{iteratedDeriv_iteratedPrimitive_add},
-\lean{contDiff_iteratedPrimitive}, and
-\lean{iteratedPrimitive_eq_normalizedVolterra}.  Thus the direct Cauchy kernel carries the
-literal semigroup and strict-FTC interpretation, while its definition remains usable under
-the weaker interval-integrability assumptions needed below.
-The transported kernel-level statements are
-\lean{normalizedVolterra_succ_hasStrictDerivAt},
-\lean{iteratedDeriv_normalizedVolterra_add},
-\lean{contDiff_normalizedVolterra}, and
-\lean{normalizedVolterra_add}: for continuous inputs, the canonical kernels themselves are
-\(C^n\), lose one Volterra order under differentiation, and compose by addition of
-their orders.
-
-\begin{theorem}[Taylor--Volterra reconstruction]
-\label{thm:taylor-volterra-reconstruction}
-If \(E\) is complete and \(g:\R\to E\) is \(C^{n+1}\), then for arbitrary
-\(a,x\in\R\),
-\begin{equation}
- \mathsf J_{n+1,a}\bigl(g^{(n+1)}\bigr)(x)
- =g(x)-\sum_{k=0}^{n}\frac{(x-a)^k}{k!}\,g^{(k)}(a).
- \label{eq:taylor-volterra-reconstruction}
-\end{equation}
-In particular, if \(g^{(k)}(a)=0\) for \(0\le k\le n\), then
-\(\mathsf J_{n+1,a}(g^{(n+1)})(x)=g(x)\).
+\begin{theorem}[Literal primitive ladder]
+\label{thm:literal-volterra-ladder}
+For every \(m,n\in\N\), literal iteration satisfies
+\begin{align}
+ L_a^0f&=f, &
+ L_a^{n+1}f&=V_a(L_a^nf),                                      \label{eq:literal-volterra-rec}\\
+ L_a^{m+n}f&=L_a^m(L_a^nf), &
+ L_a^{n+1}f(a)&=0.                                             \label{eq:literal-volterra-semigroup}
+\end{align}
+If \(E\) is complete and \(f\) is continuous, then every \(L_a^nf\) is continuous and
+\begin{align}
+ D(L_a^{n+1}f)(x)&=L_a^nf(x),                                  \label{eq:literal-volterra-ftc}\\
+ D^k(L_a^{k+m}f)&=L_a^mf,                                      \label{eq:literal-volterra-cancel}\\
+ D^k(L_a^nf)&=L_a^{n-k}f\qquad(k\le n).                        \label{eq:literal-volterra-bounded-cancel}
+\end{align}
+The derivative in \eqref{eq:literal-volterra-ftc} exists in the strict sense, and
+\(L_a^nf\) is \(C^n\).
 \end{theorem}
 
-\begin{proof}[Formal proof]
-Equation \eqref{eq:taylor-volterra-reconstruction} is the oriented integral-remainder
-theorem in the normalization \eqref{eq:volterra-kernel}; Lean records it as
-\lean{normalizedVolterra_succ_iteratedDeriv_eq_sub_taylor}.  Vanishing of the finite jet
-annihilates the Taylor polynomial termwise, giving
-\lean{normalizedVolterra_succ_iteratedDeriv_eq_of_zero_jet}.  Both declarations are in
-\path{NormalizedVolterra.lean}.  Applied to the literal iterate
-\(g=\mathsf V_a^{[n+1]}f\), derivative cancellation supplies the top derivative \(f\),
-while every lower derivative is still a positive-order primitive and therefore vanishes at
-\(a\).  This gives the conceptual proof of
-\eqref{eq:volterra-iterate-kernel}.
-\end{proof}
+The four algebraic identities are respectively
+\lean{iteratedPrimitive_zero}, \lean{iteratedPrimitive_succ},
+\lean{iteratedPrimitive_add}, and \lean{iteratedPrimitive_succ_self}.  Continuity is
+\lean{continuous_volterraPrimitive} and \lean{continuous_iteratedPrimitive}.  The strict
+and ordinary pointwise FTC statements, and its equality-of-functions form, are
+\lean{iteratedPrimitive_succ_hasStrictDerivAt},
+\lean{iteratedPrimitive_succ_hasDerivAt}, and
+\lean{deriv_iteratedPrimitive_succ}.  The two cancellation formulas and the smoothness
+statement are \lean{iteratedDeriv_iteratedPrimitive_add},
+\lean{iteratedDeriv_iteratedPrimitive}, and \lean{contDiff_iteratedPrimitive}.
 
-The same normalization exposes a finite polynomial commutator.  Write
+\begin{theorem}[Canonical Cauchy kernel]
+\label{thm:normalized-volterra-calculus}
+The normalized kernel has the total order-zero and positive-order rules
+\begin{align}
+ J_a^0f(x)&=f(x), &
+ J_a^{n+1}f(x)&=\int_a^x\frac{(x-t)^n}{n!}f(t)\dd t,             \label{eq:J-unfold}\\
+ J_a^1f(x)&=\int_a^x f(t)\dd t, &
+ J_a^{n+1}f(a)&=0.                                             \label{eq:J-one-base}
+\end{align}
+If \(f=g\) on the closed unoriented interval between \(a\) and \(x\), then
+\(J_a^nf(x)=J_a^ng(x)\).  Real scalar multiplication commutes with \(J_a^n\), and any
+finite sum of interval-integrable inputs may be passed through it.
+
+If \(E\) is complete and \(f\) is continuous, then literal iteration and the kernel agree,
+\begin{equation}
+ L_a^nf=J_a^nf,                                               \label{eq:literal-equals-J}
+\end{equation}
+and hence
+\begin{align}
+ D(J_a^{n+1}f)(x)&=J_a^nf(x) &&\text{strictly},               \label{eq:J-strict-ftc}\\
+ D^k(J_a^{k+m}f)&=J_a^mf,                                    \label{eq:J-cancel}\\
+ J_a^{m+n}f&=J_a^m(J_a^nf).                                  \label{eq:J-semigroup}
+\end{align}
+Moreover \(J_a^nf\) is \(C^n\).
+\end{theorem}
+
+The four unfolding and base-point declarations are
+\lean{normalizedVolterra_zero}, \lean{normalizedVolterra_succ},
+\lean{normalizedVolterra_one}, and \lean{normalizedVolterra_succ_self}; locality,
+scalar compatibility, and finite additivity are \lean{normalizedVolterra_congr},
+\lean{normalizedVolterra_smul}, and \lean{normalizedVolterra_finsetSum}.
+Equation \eqref{eq:literal-equals-J} is
+\lean{iteratedPrimitive_eq_normalizedVolterra}.  The remaining conclusions are, in the
+order displayed, \lean{normalizedVolterra_succ_hasStrictDerivAt},
+\lean{deriv_normalizedVolterra_succ},
+\lean{iteratedDeriv_normalizedVolterra_add},
+\lean{normalizedVolterra_add}, and \lean{contDiff_normalizedVolterra}.
+
+The finite algebra of polynomial weights is especially clean when written with rising
+factorials.  Put
 \[
  n^{\overline r}:=n(n+1)\cdots(n+r-1),\qquad n^{\overline0}:=1,
 \]
-let \(d=\operatorname{natdeg}P\), and let \(D_H^{[r]}P\) denote the \(r\)-th Hasse
-derivative of \(P\in\R[X]\).
-For every \(f\), the algebraic kernel-raising identity is
-\begin{equation}
- \mathsf J_{n,a}\bigl((x-\,\cdot\,)^r f\bigr)(x)
- =n^{\overline r}\mathsf J_{n+r,a}f(x).                 \label{eq:volterra-kernel-raising}
-\end{equation}
-If \(f\) is interval integrable between \(a\) and \(x\), then
-\begin{align}
- \mathsf J_{n,a}(P f)(x)
- &=\sum_{r=0}^{d}(-1)^r n^{\overline r}
-      \bigl(D_H^{[r]}P\bigr)(x)\,\mathsf J_{n+r,a}f(x),  \label{eq:volterra-polynomial}\\
- \mathsf J_{n,a}\bigl(t^p f(t)\bigr)(x)
- &=\sum_{r=0}^{p}(-1)^r\binom pr n^{\overline r}x^{p-r}
-      \mathsf J_{n+r,a}f(x).                             \label{eq:volterra-monomial}
-\end{align}
-All three identities include \(n=0\), both endpoint orders, and \(a=x\); the monomial
-identity also includes \(p=0\).
-At order zero the convention
-\(0^{\overline0}=1\), \(0^{\overline r}=0\) for \(r>0\), makes the formulas literal rather
-than exceptional.  They are \lean{normalizedVolterra_kernel_pow},
-\lean{normalizedVolterra_polynomial}, and \lean{normalizedVolterra_monomial} in
-\path{NormalizedVolterra.lean}.  The proof is finite and triangular: expand
-\(P(t)\) at the upper endpoint \(x\) in the Hasse basis
-\((t-x)^r=(-1)^r(x-t)^r\), pass the finite sum through the integral, and absorb each kernel
-power using \eqref{eq:volterra-kernel-raising}.  No differentiability of \(f\) is used.
+and write \(P^{[r]}\) for the \(r\)-th Hasse derivative of a real polynomial \(P\).
 
-For the signed Fabius extension, Taylor--Volterra reconstruction turns the global dilation
-law into a complete primitive ladder.
-\begin{theorem}[Exact Fabius primitive ladders]
-\label{thm:fabius-volterra-ladders}
-For every \(n\in\N\) and \(x\in\R\),
+\begin{theorem}[Kernel raising, polynomial commutator, and Taylor reconstruction]
+\label{thm:volterra-polynomial-taylor}
+For every \(n,r\in\N\) and fixed endpoint \(x\),
 \begin{equation}
- \mathsf J_{n,0}\mathcal F(x)
- =2^{\binom n2}\mathcal F\!\left(\frac{x}{2^n}\right).   \label{eq:extended-fabius-volterra}
+ J_a^n\bigl((x-\mathord\cdot)^r f\bigr)(x)
+ =n^{\overline r}J_a^{n+r}f(x).                              \label{eq:J-kernel-raising}
 \end{equation}
-For the bounded Fabius function, the corresponding identity holds on the full half-line on
-which it agrees with the signed extension:
-\begin{equation}
- \mathsf J_{n,0}F(x)
- =2^{\binom n2}F\!\left(\frac{x}{2^n}\right)
- \qquad(x\le1).                                          \label{eq:bounded-fabius-volterra}
-\end{equation}
-Moreover, for every \(p\in\N\),
+This includes \(n=0\): the rising factorial retains the identity when \(r=0\) and
+annihilates the positive shifts when \(r>0\).  If \(f\) is interval integrable between
+\(a\) and \(x\), then
 \begin{align}
- \mathsf J_{n,0}\bigl(t^p\mathcal F(t)\bigr)(x)
+ J_a^n(Pf)(x)
+ &=\sum_{r=0}^{\operatorname{natdeg}P}
+   (-1)^r n^{\overline r}P^{[r]}(x)J_a^{n+r}f(x),            \label{eq:J-polynomial}\\
+ J_a^n(t^pf(t))(x)
  &=\sum_{r=0}^{p}(-1)^r\binom pr n^{\overline r}x^{p-r}
-   2^{\binom{n+r}{2}}
-   \mathcal F\!\left(\frac{x}{2^{n+r}}\right),          \label{eq:extended-fabius-monomial-volterra}\\
- \mathsf J_{n,0}\bigl(t^pF(t)\bigr)(x)
- &=\sum_{r=0}^{p}(-1)^r\binom pr n^{\overline r}x^{p-r}
-   2^{\binom{n+r}{2}}
-   F\!\left(\frac{x}{2^{n+r}}\right)
-   \qquad(x\le1).                                       \label{eq:bounded-fabius-monomial-volterra}
+   J_a^{n+r}f(x).                                           \label{eq:J-monomial}
 \end{align}
-The signed formulas are global in \(x\); all four formulas include order \(n=0\), and
-both weighted formulas include \(p=0\).
+Here the second left side means \(J_a^n(t\mapsto t^pf(t))(x)\).  The formulas have
+separate positive-order companions in which \(n\) is written \(n+1\); those companions
+have the same hypotheses and retain the literal Cauchy-kernel order.
+
+Finally, if \(E\) is complete and \(g:\R\to E\) is \(C^{n+1}\), then
+\begin{equation}
+ J_a^{n+1}(D^{n+1}g)(x)
+ =g(x)-\sum_{k=0}^{n}\frac{(x-a)^k}{k!}D^kg(a).              \label{eq:J-taylor-remainder}
+\end{equation}
+In particular, if \(D^kg(a)=0\) for \(0\le k\le n\), then the left side is exactly
+\(g(x)\).
 \end{theorem}
 
-\begin{proof}[Formal proof]
-For fixed \(n\), set
-\(G_n(x)=2^{\binom n2}\mathcal F(x/2^n)\).  The global derivative chain
-\eqref{eq:global-derivatives} gives \(G_n^{(n)}=\mathcal F\), and every lower derivative of
-\(G_n\) vanishes at zero because \(\mathcal F(0)=0\).  The zero-jet case of
-\Cref{thm:taylor-volterra-reconstruction} proves
-\eqref{eq:extended-fabius-volterra}.  Agreement of \(F\) and \(\mathcal F\) throughout
-\((-\infty,1]\) gives \eqref{eq:bounded-fabius-volterra}; the oriented segment between \(0\)
-and any \(x\le1\) stays in that half-line.  Finally
-\eqref{eq:volterra-monomial} gives the two finite weighted formulas term by term.
+The positive-order and all-order kernel identities are
+\lean{normalizedVolterra_succ_kernel_pow} and
+\lean{normalizedVolterra_kernel_pow}.  The Hasse-derivative formulas are
+\lean{normalizedVolterra_succ_polynomial} and
+\lean{normalizedVolterra_polynomial}; their monomial specializations are
+\lean{normalizedVolterra_succ_monomial} and
+\lean{normalizedVolterra_monomial}.  Taylor's formula and its zero-jet reconstruction
+are \lean{normalizedVolterra_succ_iteratedDeriv_eq_sub_taylor} and
+\lean{normalizedVolterra_succ_iteratedDeriv_eq_of_zero_jet}.  Thus every declaration in
+the generic module has a literal mathematical counterpart above, including the order-zero
+and endpoint cases.
 
-The exact Lean declarations are \lean{normalizedVolterra_extendedFabius},
-\lean{normalizedVolterra_fabiusReal_of_le_one},
-\lean{normalizedVolterra_pow_mul_extendedFabius}, and
+The signed Fabius dilation law now enters only at the specialization step.
+
+\begin{theorem}[Complete integer primitive ladder of the Fabius functions]
+\label{thm:fabius-volterra-ladder}
+For every \(n,p\in\N\) and \(x\in\R\),
+\begin{align}
+ J_0^n\mathcal F(x)
+ &=2^{\binom n2}\mathcal F\!\left(\frac{x}{2^n}\right),     \label{eq:J-global-Fabius}\\
+ J_0^n(t^p\mathcal F(t))(x)
+ &=\sum_{r=0}^{p}(-1)^r\binom pr n^{\overline r}x^{p-r}
+   2^{\binom{n+r}{2}}
+   \mathcal F\!\left(\frac{x}{2^{n+r}}\right).              \label{eq:J-weighted-global-Fabius}
+\end{align}
+For the bounded function the same formulas hold whenever \(x\le1\):
+\begin{align}
+ J_0^nF(x)
+ &=2^{\binom n2}F\!\left(\frac{x}{2^n}\right),              \label{eq:J-bounded-Fabius}\\
+ J_0^n(t^pF(t))(x)
+ &=\sum_{r=0}^{p}(-1)^r\binom pr n^{\overline r}x^{p-r}
+   2^{\binom{n+r}{2}}
+   F\!\left(\frac{x}{2^{n+r}}\right).                       \label{eq:J-weighted-bounded-Fabius}
+\end{align}
+All four identities include \(n=0\), arbitrary endpoint orientation, and the natural
+power convention \(0^0=1\).
+\end{theorem}
+
+The four displayed statements are exactly
+\lean{normalizedVolterra_extendedFabius},
+\lean{normalizedVolterra_pow_mul_extendedFabius},
+\lean{normalizedVolterra_fabiusReal_of_le_one}, and
 \lean{normalizedVolterra_pow_mul_fabiusReal_of_le_one} in
-\path{FabiusAntiderivatives.lean}.  The half-line agreement used in the bounded statement is
-\lean{fabiusReal_eq_extendedFabius_of_le_one} in \path{GlobalExtension.lean}.
-\end{proof}
-
-\begin{boxedremark}
-The proved scope here is natural-order Volterra integration and finite real-polynomial
-weights.  No result above claims complex-power weights, normal convergence or Mellin
-continuation in a weight exponent, fractional-order Volterra operators, a piecewise global
-closed form for the bounded function beyond \(x\le1\), primitives of the folded function
-\(\Up\), or primitives of the inverse Fabius function.  Those distinct extensions remain in
-the research-frontier documents until exact Lean counterparts are available.
-\end{boxedremark}
+\path{FabiusAntiderivatives.lean}.  Their proof architecture is deliberately triangular:
+the global dilation equation identifies the \(n\)-th derivative of the scaled candidate;
+its initial Taylor jet vanishes; \eqref{eq:J-taylor-remainder} reconstructs the candidate;
+and \eqref{eq:J-monomial} supplies every natural polynomial weight.  The bounded formulas
+use \lean{fabiusReal_eq_extendedFabius_of_le_one}: the oriented segment from \(0\) to any
+\(x\le1\) remains inside the half-line on which the two functions agree.  Fractional Volterra
+orders, complex powers, normal or Mellin continuation in a weight exponent, a bounded
+piecewise continuation for \(x>1\), folded-\(\Up\) primitives, and inverse-function
+repeated-primitive identities remain separate analytic frontiers; they are not consequences
+asserted by this theorem.
 
 \subsection{Dyadic derivative cells and exact value distributions}
 \label{sec:rvachev-derivative-distribution}
@@ -6366,6 +6519,18 @@ That rule explains several choices made above:
 \begin{itemize}
 \item The finite probability approximation uses atomic convolution measures and the exact
       weak-convergence API, not an unformalized continuous box-convolution density.
+\item Arbitrary norm-summable vector weights have formal probability, head--tail, and
+      reflection laws; nonnegative real weights additionally have exact carried-interval
+      laws.  The pushforward-law definition itself is total even without measurability;
+      its probability and map identities state the summability, completeness, and Borel
+      hypotheses explicitly.
+\item Quantile transport is formal at the measure level first for arbitrary real
+      probability laws, with no support or range restriction and an almost-everywhere
+      sublevel characterization; a compact pointwise specialization feeds the clamped
+      Fabius inverse.  This proves strongly measurable
+      Banach-valued substitution with Lean's totalized Bochner integral, but not the
+      frontier report's two-function integration-by-parts, fractional, or complex-Mellin
+      identities.
 \item Step cells use the formal half-endpoint indicator, including its point value at a
       shared boundary.
 \item The Fourier chapter distinguishes the real punctured-limit statement from the stronger
@@ -6380,6 +6545,11 @@ That rule explains several choices made above:
       finite-node weights, and the proved quarter-base specialization are formal.
       Analytic generic-\(q\) transforms, convergence, and quarter-sinc acceleration remain
       outside the formal corpus.
+\item Integer-order Volterra integration is formal at arbitrary base point and endpoint in
+      a real Banach space, including strict FTC, order composition, polynomial weights,
+      Taylor reconstruction, and the exact Fabius ladder.  The frontier reports' fractional
+      Riemann--Liouville orders, complex weights, and inverse/quantile integral identities
+      remain outside this integer-order result.
 \item Endpoint asymptotics retain exact phases and the proved remainder scopes; numerical
       fits and unproved coefficient formulas are absent.
 \end{itemize}
@@ -6391,13 +6561,12 @@ into the theorem-backed narrative here.  The remaining research material is pres
 \path{Analysis/FabiusFunction/docs/non-formalized-research-frontiers/}.
 \end{quote}
 
-In particular, the inverse/saddle, complex-power and fractional-order
-repeated-integration, small-argument, analytic generic-\(q\) transform and convergence,
-and other deferred claims
-remain available there with an explicit warning that they are not part of the formal
-corpus.  Natural-order Volterra integration and finite polynomial weights are instead
-formalized in \Cref{sec:normalized-volterra}, while the finite base-generic
-Gaussian/Richardson algebra is formalized in
+In particular, inverse-function repeated integration and saddle expansions, complex-power
+and fractional-order integration, small-argument analysis, analytic generic-\(q\) transforms,
+convergence claims, and other deferred results remain available there with an explicit warning
+that they are not part of the formal corpus.  Natural-order Volterra integration and finite
+polynomial weights are formalized in \Cref{sec:normalized-volterra}, while the finite
+base-generic Gaussian/Richardson algebra is formalized in
 \Cref{prop:geometric-principal-residuals}.
 
 \section{Conclusion}
@@ -6408,10 +6577,11 @@ The bounded \(F\) supplies the probability and arithmetic viewpoints; the compac
 supported \(\Up\) supplies refinement, Fourier, spline, and Legendre viewpoints; and the
 signed \(\mathcal F\) supplies the global dilation and binary-translation formulas.  Exact
 bridges connect them to finite atomic laws, weak convergence, centered splines, moments,
-reciprocal-power values, normalized Volterra primitives and polynomial weights, dyadic
-algorithms, half-base \(q\)-binomial identities, prefix sums, geometrically weighted
-uniform laws, denominator-free arbitrary-base geometric interpolation, endpoint Laplace analysis,
-and computable approximation.
+generic weighted distributions, geometrically weighted uniform laws, exact quantile
+transport, reciprocal-power values, dyadic algorithms, half-base \(q\)-binomial identities,
+prefix sums, denominator-free arbitrary-base geometric interpolation, normalized
+integer-order Volterra primitives and polynomial weights, endpoint Laplace analysis, and
+computable approximation.
 
 The most important methodological conclusion is equally concrete: the primary document is
 now a map of proved mathematics.  Research claims can move back from the frontier only after
@@ -6437,9 +6607,10 @@ Definitions, existence, uniqueness &
 Shape and regularity &
 \path{Differential.lean}, \path{Monotonicity.lean}, \path{Convexity.lean},
 \path{Regularity.lean}\\
-Probability and finite approximants &
+Probability, weighted laws, quantile transport, and finite approximants &
 \path{WeightedUniformSeries.lean}, \path{WeightedUniformDistribution.lean},
 \path{GeometricUniformLaw.lean}, \path{ProbabilityRepresentation.lean},
+\path{QuantileTransport.lean},
 \path{EarlyApproximants.lean},
 \path{EarlyMeasureBridge.lean}, \path{WeakConvergence.lean},
 \path{ProbabilityLaplaceMoments.lean}, \path{LaplaceMoments.lean},
@@ -6460,13 +6631,13 @@ Fourier analysis &
 \path{BirkhoffVariance.lean}, \path{BirkhoffProductBridge.lean}\\
 Local all-order jet calculus &
 \path{LeadingJet.lean}\\
+Integer-order Volterra calculus and exact Fabius primitives &
+\path{NormalizedVolterra.lean}, \path{FabiusAntiderivatives.lean}\\
 Global derivatives, value distributions, and flatness &
 \path{GlobalExtension.lean}, \path{GlobalBounds.lean},
 \path{BoundedDerivatives.lean}, \path{RvachevDerivativeDistribution.lean},
 \path{EffectiveFlatness.lean}, \path{SharpFlatness.lean},
 \path{FabiusFlatness.lean}\\
-Normalized Volterra calculus and exact Fabius primitives &
-\path{NormalizedVolterra.lean}, \path{FabiusAntiderivatives.lean}\\
 Analyticity, inverse, elementary obstruction &
 \path{NowhereAnalytic.lean}, \path{FabiusInverse.lean},
 \path{ElementaryFunction.lean}, \path{NotElementary.lean},
@@ -6540,23 +6711,31 @@ Legendre expansion and computability &
 \label{app:notation}
 
 \begin{center}
-\begin{tabular}{@{}lll@{}}
+\begin{tabularx}{\textwidth}{@{}
+  >{\raggedright\arraybackslash}p{0.13\textwidth}
+  >{\raggedright\arraybackslash}p{0.49\textwidth}
+  >{\raggedright\arraybackslash}X@{}}
 \toprule
 Article & Lean & Meaning\\
 \midrule
-\(F\) & \lean{fabiusReal fabius} & bounded canonical Fabius function\\
-\(\Up\) & \lean{rvachevUp fabius} & compactly supported fold\\
-\(\mathcal F\) & \lean{extendedFabius fabius} & signed global extension\\
-\(I\) & \lean{fabiusInv fabius fabius_spec} & totalized inverse\\
-\(c_n\) & \lean{moment n} & even moment\\
-\(d_n\) & \lean{halfMoment n} & half moment\\
-\(P_w(n)\) & \lean{inclusivePrefixSum w n} & inclusive weighted prefix\\
-\(W_{b,w}(n)\) & \lean{weightedScaleMultiplicity b w n} & weighted scale multiplicity\\
-\(\nu_b(n)\) & \lean{padicValNat b n} & maximal whole-base power exponent\\
-\(\varepsilon_n\) & \lean{thueMorseSign n} & signed Thue--Morse value\\
-\(\wt(n)\) & \lean{binaryWeight n} & binary digit sum\\
+\(F\) & \lean{fabiusReal}\hspace{0.35em}\lean{fabius} & bounded canonical Fabius function\\
+\(\Up\) & \lean{rvachevUp}\hspace{0.35em}\lean{fabius} & compactly supported fold\\
+\(\mathcal F\) & \lean{extendedFabius}\hspace{0.35em}\lean{fabius} & signed global extension\\
+\(S_w\) & \lean{ProbabilityRepresentation.weightedUniformSeries}\hspace{0.35em}\lean{w} & weighted coordinate series\\
+\(\mu_w\) & \lean{ProbabilityRepresentation.weightedUniformDistribution}\hspace{0.35em}\lean{w} & its pushforward law\\
+\(V_af\) & \lean{volterraPrimitive}\hspace{0.35em}\lean{a}\hspace{0.35em}\lean{f} & first oriented primitive at base \(a\)\\
+\(L_a^nf\) & \lean{iteratedPrimitive}\hspace{0.35em}\lean{n}\hspace{0.35em}\lean{a}\hspace{0.35em}\lean{f} & literal \(n\)-fold primitive\\
+\(J_a^nf\) & \lean{normalizedVolterra}\hspace{0.35em}\lean{n}\hspace{0.35em}\lean{a}\hspace{0.35em}\lean{f} & normalized Cauchy-kernel primitive\\
+\(I\) & \lean{fabiusInv}\hspace{0.35em}\lean{fabius}\hspace{0.35em}\lean{fabius_spec} & totalized inverse\\
+\(c_n\) & \lean{moment}\hspace{0.35em}\lean{n} & even moment\\
+\(d_n\) & \lean{halfMoment}\hspace{0.35em}\lean{n} & half moment\\
+\(P_w(n)\) & \lean{inclusivePrefixSum}\hspace{0.35em}\lean{w}\hspace{0.35em}\lean{n} & inclusive weighted prefix\\
+\(W_{b,w}(n)\) & \lean{weightedScaleMultiplicity}\hspace{0.35em}\lean{b}\hspace{0.35em}\lean{w}\hspace{0.35em}\lean{n} & weighted scale multiplicity\\
+\(\nu_b(n)\) & \lean{padicValNat}\hspace{0.35em}\lean{b}\hspace{0.35em}\lean{n} & maximal whole-base power exponent\\
+\(\varepsilon_n\) & \lean{thueMorseSign}\hspace{0.35em}\lean{n} & signed Thue--Morse value\\
+\(\wt(n)\) & \lean{binaryWeight}\hspace{0.35em}\lean{n} & binary digit sum\\
 \bottomrule
-\end{tabular}
+\end{tabularx}
 \end{center}
 
 \begin{thebibliography}{99}
@@ -6694,12 +6873,9 @@ V.~Reshetnikov,
 \bibitem{proveit}
 V.~Reshetnikov,
 \newblock \emph{ProveIt: Analysis/FabiusFunction},
-\newblock Lean~4 formal development, source snapshot
-\texttt{f7daf632f2db839fe091de0d080e22a9b50c286a}, consulted 27 August 2026.
-\newblock \url{https://github.com/VladimirReshetnikov/ProveIt/tree/f7daf632f2db839fe091de0d080e22a9b50c286a/Analysis/FabiusFunction}.
-\newblock The geometric uniform-law addendum was checked at commit
-\texttt{9f059d9b20d8648deb5a0cd4c97b8a50fbb0aeab}, on the same date.
-\newblock \url{https://github.com/VladimirReshetnikov/ProveIt/tree/9f059d9b20d8648deb5a0cd4c97b8a50fbb0aeab/Analysis/FabiusFunction}.
+\newblock Lean~4 formal development, integrated source snapshot
+\texttt{fbfffd928711d0f3e199417b913c9770718d2154}, consulted 27 August 2026.
+\newblock \url{https://github.com/VladimirReshetnikov/ProveIt/tree/fbfffd928711d0f3e199417b913c9770718d2154/Analysis/FabiusFunction}.
 
 \end{thebibliography}
 
