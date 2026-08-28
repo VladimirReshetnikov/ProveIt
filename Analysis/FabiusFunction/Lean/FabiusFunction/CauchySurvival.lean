@@ -98,7 +98,7 @@ theorem integral_inv_sub_eq_mass_smul_add_intervalIntegral_measureReal_Ioi
     μ hab hμ hz]
   have hIic_eq : (fun t : ℝ =>
       μ.real (Iic t) • ((z - (t : ℂ))⁻¹ ^ 2)) =
-      fun t => μ.real univ • ((z - (t : ℂ))⁻¹ ^ 2) -
+      fun t : ℝ => μ.real univ • ((z - (t : ℂ))⁻¹ ^ 2) -
         μ.real (Ioi t) • ((z - (t : ℂ))⁻¹ ^ 2) := by
     funext t
     rw [hsplit t, sub_smul]
@@ -150,7 +150,8 @@ theorem fabiusStieltjesTransform_eq_inv_add_intervalIntegral_rvachevUp
     intervalIntegral.integral_sub hk_int hup_int,
     intervalIntegral_inv_sub_sq (by norm_num : (0 : ℝ) ≤ 1) hz']
   have hz0 : z - ((0 : ℝ) : ℂ) = z := by norm_num
-  rw [hz0]
+  have hz1 : z - ((1 : ℝ) : ℂ) = z - 1 := by norm_num
+  rw [hz0, hz1]
   abel
 
 end Fabius
