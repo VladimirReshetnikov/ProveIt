@@ -1827,6 +1827,17 @@ finite prefix-sum primitive, and the Thue--Morse stencil
 \eqref{eq:tm-stencil} (pure finite algebra plus support
 reasoning).  Steps (1)--(3), (5)--(8), and (10) are finite
 algebra; only (4) and (9) need Schwartz-class Poisson summation.
+\emph{Update (28 Aug 2026):} the analytic engine of (4) and (9) is
+now largely in the library ---
+\nolinkurl{Fabius.tsum_shifted_monomial_eq_integral_real}
+(\nolinkurl{MonomialCombExactness.lean}) kernel-verifies the dual
+(quadrature) face
+$\sum_{k}(\theta+k)^{p}\Up(2^{-m}(\theta+k))
+=\int x^{p}\Up(2^{-m}x)\dd x$ for every real shift and $p\le m$,
+via Schwartz-class Poisson summation with the nonzero aliases killed
+by the integer-zero-order theorem
+(\nolinkurl{MonomialCombAlias.lean}); what remains for (4)/(9) is
+the Appell-weighted synthesis direction over the same machinery.
 \end{statusbox}
 
 \appendix
