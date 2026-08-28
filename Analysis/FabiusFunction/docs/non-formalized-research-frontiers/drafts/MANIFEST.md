@@ -51,8 +51,7 @@ cross-referenced internally; unchanged by the reorganization).
 
 | Directory | Document | Previous path |
 | --- | --- | --- |
-| `Fabius_Newton_Rvachev_Frontier_Report/` | *Exponent-Sequence and Newton-Basis Frontiers* (convolution monoid, Gaussian-q rows; Lean-crosswalked) | `drafts/Fabius_Newton_Rvachev_Frontier_Report/` |
-| `fabius_frontier_results/` | *q-Binomial Richardson Acceleration of Geometric Sinc Products* | `drafts/fabius_frontier_results/` |
+| `Exponents_and_q_Series_Frontiers/` | *Exponent-Sequence and q-Series Frontiers* — consolidation (2026-08-28) of the former `Fabius_Newton_Rvachev_Frontier_Report/` (*Exponent-Sequence and Newton-Basis Frontiers*, Lean-crosswalked) and `fabius_frontier_results/` (*q-Binomial Richardson Acceleration of Geometric Sinc Products*); their assets live under `assets/`, provenance with SHA-256 in the document | absorbed drafts deleted; git history is the archive |
 
 ## spectra-and-arithmetic — `spectra-and-arithmetic/`
 
