@@ -23,7 +23,10 @@ so no PDF was rebuilt for it.
 The Fourier-decay corpus: eight independently written source documents on
 the decay envelope of `Û = ∏ sinc(2πξ/2^k)`, two audits, and a
 popularization. Kept in its historical directory (heavily
-cross-referenced internally; unchanged by the reorganization).
+cross-referenced internally; unchanged by the reorganization), and
+**deliberately excluded from the 2026-08-28 consolidations**: the
+separate-documents structure is audit evidence — the audits compare the
+sources *as* independent documents (see the group README).
 
 | Directory | Document |
 | --- | --- |
