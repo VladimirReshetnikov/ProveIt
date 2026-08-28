@@ -560,41 +560,36 @@ theorem qBinomial_succ_succ_of_pos_of_lt_one'
         qBinomial_eq_zero_of_lt q hnk]
       ring
 
-private noncomputable def rationalQBinomialSummand
-    (q : ℚ) (n : ℕ) (z : ℚ) (k : ℕ) : ℚ :=
-  (-1 : ℚ) ^ k * q ^ (k.choose 2) * qBinomial n k q * z ^ k
-
-private theorem rationalQBinomialSummand_zero
-    (q : ℚ) (hqpos : 0 < q) (hqone : q < 1)
-    (n : ℕ) (z : ℚ) :
-    rationalQBinomialSummand q n z 0 = 1 := by
-  simp [rationalQBinomialSummand, qBinomial_eq_quotient,
-    (qPochhammer_self_pos_of_pos_of_lt_one q hqpos hqone n).ne']
-
-private theorem rationalQBinomialSummand_succ_succ
-    (q : ℚ) (hqpos : 0 < q) (hqone : q < 1)
-    (n k : ℕ) (hk : k ≤ n) (z : ℚ) :
-    rationalQBinomialSummand q (n + 1) z (k + 1) =
-      rationalQBinomialSummand q n z (k + 1) -
-        z * q ^ n * rationalQBinomialSummand q n z k := by
-  rw [rationalQBinomialSummand, rationalQBinomialSummand,
-    rationalQBinomialSummand,
-    qBinomial_succ_succ_of_pos_of_lt_one' q hqpos hqone]
-  rw [choose_succ_two, pow_add, pow_succ, pow_succ]
-  have hsum : k + (n - k) = n := Nat.add_sub_of_le hk
-  have hknpow : q ^ k * q ^ (n - k) = q ^ n := by
-    rw [← pow_add, hsum]
-  ring_nf
-  linear_combination
-    -(qBinomial n k q * z * z ^ k * (-1 : ℚ) ^ k *
-      q ^ (k.choose 2)) * hknpow
-
-private theorem rationalQBinomialSummand_above
-    (q : ℚ) (n : ℕ) (z : ℚ) :
-    rationalQBinomialSummand q n z (n + 1) = 0 := by
-  rw [rationalQBinomialSummand,
-    qBinomial_eq_zero_of_lt q (Nat.lt_succ_self n)]
-  ring
+/-- On `0 < q < 1`, the repository's quotient-defined rational
+`qBinomial` agrees with the denominator-free Gaussian coefficient from the
+finite q-binomial core. -/
+theorem gaussianBinomial_eq_qBinomial_of_pos_of_lt_one
+    (q : ℚ) (hqpos : 0 < q) (hqone : q < 1) (n k : ℕ) :
+    gaussianBinomial q n k = qBinomial n k q := by
+  induction n generalizing k with
+  | zero =>
+      cases k with
+      | zero =>
+          rw [gaussianBinomial_zero_zero,
+            qBinomial_eq_quotient q (le_refl 0)]
+          simp
+      | succ k =>
+          rw [gaussianBinomial_zero_succ,
+            qBinomial_eq_zero_of_lt q (by omega)]
+  | succ n ih =>
+      cases k with
+      | zero =>
+          have hPochhammer : qPochhammer q q (n + 1) ≠ 0 :=
+            (qPochhammer_self_pos_of_pos_of_lt_one
+              q hqpos hqone (n + 1)).ne'
+          rw [gaussianBinomial_zero_right,
+            qBinomial_eq_quotient q (Nat.zero_le (n + 1)),
+            Nat.sub_zero, qPochhammer_zero, one_mul,
+            div_self hPochhammer]
+      | succ k =>
+          rw [gaussianBinomial_succ_succ,
+            qBinomial_succ_succ_of_pos_of_lt_one' q hqpos hqone,
+            ih (k + 1), ih k]
 
 /-- Finite q-binomial theorem over the rational interval `0 < q < 1`:
 
@@ -608,68 +603,9 @@ theorem qBinomial_theorem_of_pos_of_lt_one
     (∑ k ∈ Finset.range (n + 1),
       (-1 : ℚ) ^ k * q ^ (k.choose 2) * qBinomial n k q * z ^ k) =
       qPochhammer z q n := by
-  change (∑ k ∈ Finset.range (n + 1),
-    rationalQBinomialSummand q n z k) = _
-  induction n with
-  | zero => simp [finiteQPochhammer, rationalQBinomialSummand,
-      qBinomial_eq_quotient]
-  | succ n ih =>
-      have hrec :
-          (∑ k ∈ Finset.range (n + 1),
-              rationalQBinomialSummand q (n + 1) z (k + 1)) =
-            ∑ k ∈ Finset.range (n + 1),
-              (rationalQBinomialSummand q n z (k + 1) -
-                z * q ^ n * rationalQBinomialSummand q n z k) := by
-        apply Finset.sum_congr rfl
-        intro k hk
-        exact rationalQBinomialSummand_succ_succ q hqpos hqone n k
-          (by simpa using Finset.mem_range.mp hk) z
-      have htail :
-          1 + (∑ k ∈ Finset.range (n + 1),
-              rationalQBinomialSummand q n z (k + 1)) =
-            ∑ k ∈ Finset.range (n + 1),
-              rationalQBinomialSummand q n z k := by
-        calc
-          1 + (∑ k ∈ Finset.range (n + 1),
-              rationalQBinomialSummand q n z (k + 1)) =
-              ∑ k ∈ Finset.range (n + 2),
-                rationalQBinomialSummand q n z k := by
-            have hs := (Finset.sum_range_succ'
-              (fun k ↦ rationalQBinomialSummand q n z k) (n + 1)).symm
-            rw [show n + 1 + 1 = n + 2 by omega] at hs
-            rw [rationalQBinomialSummand_zero q hqpos hqone n z] at hs
-            simpa [add_comm] using hs
-          _ = (∑ k ∈ Finset.range (n + 1),
-                rationalQBinomialSummand q n z k) +
-                rationalQBinomialSummand q n z (n + 1) := by
-            exact Finset.sum_range_succ _ _
-          _ = _ := by
-            rw [rationalQBinomialSummand_above, add_zero]
-      rw [show n + 1 + 1 = n + 2 by omega, Finset.sum_range_succ']
-      rw [rationalQBinomialSummand_zero q hqpos hqone (n + 1) z]
-      rw [hrec, Finset.sum_sub_distrib, ← Finset.mul_sum]
-      calc
-        (∑ x ∈ Finset.range (n + 1),
-              rationalQBinomialSummand q n z (x + 1)) -
-              z * q ^ n *
-                (∑ i ∈ Finset.range (n + 1),
-                  rationalQBinomialSummand q n z i) + 1 =
-            (1 + ∑ x ∈ Finset.range (n + 1),
-              rationalQBinomialSummand q n z (x + 1)) -
-              z * q ^ n *
-                (∑ i ∈ Finset.range (n + 1),
-                  rationalQBinomialSummand q n z i) := by ring
-        _ = (∑ i ∈ Finset.range (n + 1),
-              rationalQBinomialSummand q n z i) -
-              z * q ^ n *
-                (∑ i ∈ Finset.range (n + 1),
-                  rationalQBinomialSummand q n z i) := by rw [htail]
-        _ = (1 - z * q ^ n) *
-              (∑ i ∈ Finset.range (n + 1),
-                rationalQBinomialSummand q n z i) := by ring
-        _ = qPochhammer z q (n + 1) := by
-          rw [ih, qPochhammer_succ]
-          ring
+  simpa only [gaussianBinomial_eq_qBinomial_of_pos_of_lt_one
+      q hqpos hqone, finiteQPochhammerIn_rat_eq] using
+    (finite_qBinomial_theorem q z n)
 
 /-- The positive triangular Gaussian sum is the numerator `(-q;q)_p` of
 the exact condition number. -/

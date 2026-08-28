@@ -173,11 +173,10 @@ theorem pascalDyadicMultiplicity_two_pow_mul
 row `m - 1` gives the next entry in the following row. -/
 theorem sum_range_choose_fixed (m r : ℕ) :
     ∑ h ∈ range m, h.choose r = m.choose (r + 1) := by
-  induction m with
+  cases m with
   | zero => simp
-  | succ m ih =>
-      rw [sum_range_succ, ih, Nat.choose_succ_succ']
-      exact Nat.add_comm _ _
+  | succ m =>
+      simpa [inclusivePrefixSum] using inclusivePrefixSum_choose m r
 
 /-- The positive rank-`r+1` dyadic multiplicity is exactly the Pascal-weight
 specialization of the base-generic scale-multiplicity calculus.

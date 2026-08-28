@@ -3,7 +3,7 @@ import Mathlib.Algebra.Polynomial.BigOperators
 import Mathlib.Algebra.Polynomial.Eval.Coeff
 import Mathlib.Data.Nat.Choose.Basic
 import Mathlib.Tactic.FieldSimp
-import Mathlib.Tactic.Omega
+import Lean.Elab.Tactic.Omega
 import Mathlib.Tactic.Ring
 
 /-!
@@ -65,7 +65,8 @@ theorem geometricRootPolynomial_succ (q : R) (n : ℕ) :
 @[simp] theorem geometricRootPolynomial_eval (q x : R) (n : ℕ) :
     (geometricRootPolynomial q n).eval x =
       ∏ r ∈ Finset.range n, (1 - q ^ (r + 1) * x) := by
-  simp [geometricRootPolynomial]
+  rw [geometricRootPolynomial, Polynomial.eval_prod]
+  simp
 
 /-- The value at one is the finite geometric Pochhammer product
 `∏ r < n, (1 - q^(r+1))`. -/
@@ -153,7 +154,8 @@ private theorem geometricRootFactor_leadingCoeff
       -(q ^ (r + 1)) := by
   rw [← Polynomial.coeff_natDegree,
     geometricRootFactor_natDegree q hq r]
-  simp [Polynomial.coeff_one]
+  simp only [Polynomial.coeff_sub, Polynomial.coeff_one,
+    if_false one_ne_zero, Polynomial.coeff_C_mul_X, if_pos rfl, zero_sub]
 
 /-- Over a domain, a nonzero base gives the raw polynomial its expected
 degree `n`. -/
@@ -355,7 +357,7 @@ theorem geometricRootPolynomial_inv_eval_one_mul_signedPowers
   intro r _hr
   rw [inv_pow]
   field_simp [pow_ne_zero _ hq]
-  <;> ring
+  ring
 
 /-- The first evaluation beyond the forward Richardson roots is the quotient
 of the original- and inverse-base normalizing products. -/
