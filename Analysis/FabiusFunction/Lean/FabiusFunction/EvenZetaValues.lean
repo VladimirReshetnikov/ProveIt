@@ -27,6 +27,7 @@ forms of the frontier drafts — e.g. the first correction
 set_option autoImplicit false
 
 open Real
+open scoped Nat
 
 namespace Fabius
 

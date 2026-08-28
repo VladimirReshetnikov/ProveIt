@@ -2124,17 +2124,25 @@ certifying $0.66126807<\varrho_1<0.66134891$ in exact arithmetic,
 hence $2.74801262<\kappa_1<2.74818899$.  This is the strongest
 rigor statement about $\kappa_1$ in the corpus, and it is machine-checkable.
 
-The reduction the certificate rests on is itself now formal, even though
-the certificate is not.  \lean{CollatzWielandt}'s
+The reduction the certificate rests on is formal.  \lean{CollatzWielandt}'s
 \lean{perron\_root\_mem\_of\_two\_sided} proves that any continuous $h$
 that is positive on $[0,1]$ and satisfies $m\,h\le\Lop_1h\le M\,h$ there
 brackets the growth root, $m\le\varrho_1\le M$ --- with no eigenfunction,
 $\Lop_1$ being the operator \eqref{eq:L1} verbatim; and in its abstract
 form \lean{collatzWielandt\_bracket} the argument mentions neither
 $\Lop_1$ nor $[0,1]$ nor sine and cosine, using only monotonicity and
-positive homogeneity.  What remains outside the library is the numerical
-half: exhibiting the explicit test function and discharging the two
-rational-polynomial positivity checks by Sturm sequences.
+positive homogeneity.  The numerical half is now formal as well, by a
+different and Sturm-free route: \lean{PerronRootEnclosure} carries the
+same cubic test function through the tangent half-angle dictionary
+$t=\tan(\pi x/4)$ and certifies the two degree-$12$ integer-polynomial
+inequalities on $[0,1]$ with $32$-piece subdivided Bernstein
+certificates (\lean{BernsteinPositivity}), yielding the kernel-checked
+enclosure $0.66126798\le\varrho_1\le0.66134921$.  Only the last two
+digits of the SymPy enclosure above are given up; recovering them
+needs on the order of two thousand pieces, since the endpoints above
+approximate the exact range of $\Lop_1h/h$ to within $10^{-8}$.
+The $\kappa_1$ consequence remains unformalized (it needs interval
+bounds on $\log\pi$, $\log2$, and $\log\varrho_1$).
 
 \subsection{Exact spot identities}
 
@@ -2248,14 +2256,24 @@ input to the singularity argument of \cref{thm:impossible}.
 \item The $\varrho_1$ enclosure via the Sturm certificate: rational
 positivity on an interval; decidable, and the certificate is already
 machine-readable.
-\textbf{Half done.}  The reduction is formal ---
-\lean{CollatzWielandt}'s \lean{perron\_root\_mem\_of\_two\_sided}
-brackets the Perron root from any continuous positive test function
-$h$ with $m\,h\le\Lop_1h\le M\,h$ on $[0,1]$, no eigenfunction needed,
-and \lean{collatzWielandt\_bracket} proves it abstractly in the operator
-and the set.  What is left is exhibiting the explicit $h$ and
-discharging the two rational positivity checks; no Sturm module exists
-yet (\cref{ssec:certificate}).
+\textbf{Done}, at marginally wider constants and with no Sturm module
+at all: \lean{PerronRootEnclosure} exhibits Document 4's optimized
+cubic test function and certifies
+\[
+ 0.66126798\le\varrho_1\le0.66134921
+\]
+(\lean{perron\_root\_enclosure}, \lean{exists\_perron\_root\_enclosure})
+by discharging the two positivity checks with $32$-piece subdivided
+Bernstein certificates --- exact integer coefficients, verified by ring
+normalization and literal sign checks alone
+(\lean{BernsteinPositivity}, \lean{nonneg\_on\_Icc\_of\_pieces}).  The
+reduction underneath is the previously formal
+\lean{perron\_root\_mem\_of\_two\_sided}.  The SymPy enclosure of
+\cref{ssec:certificate} is ${\approx}10^{-7}$ sharper; its endpoints
+sit within $10^{-8}$ of the exact range of $\Lop_1h/h$, so reaching
+them by subdivision needs roughly two thousand pieces (the method
+converges quadratically in the piece width) --- a mechanical, if bulky,
+sharpening.
 \item The valley asymptotics (elementary boundary-maximum analysis).
 \textbf{The local half is done}: the zero order at $m$ is exactly
 $1+\vtwo(m)$ with an explicit positive constant

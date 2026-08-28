@@ -1,5 +1,7 @@
 import FabiusFunction.CollatzWielandt
 import FabiusFunction.BernsteinPositivity
+import Mathlib.Tactic.IntervalCases
+import Mathlib.Tactic.FunProp
 
 /-!
 # A kernel-checked enclosure for the Perron root `ρ₁`

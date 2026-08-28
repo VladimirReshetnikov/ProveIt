@@ -552,6 +552,20 @@ For $|z|<\pi$, expand $\log(1-w)=-\sum_{r\ge1}w^r/r$.  Absolute local uniform
 convergence permits interchanging the sums, and the inner sum over $n$ is $\zeta(2r)$.
 \end{proof}
 
+\emph{Formal versions.}  The branch-free content of \eqref{eq:logsinc} is formalized in
+\path{SincZetaSeries.lean} as the exponential identity
+\lean{Fabius.complexSinc\_pi\_mul\_eq\_cexp}: for complex $x$ with $|x|<1$,
+$\sinc(\pi x)=\exp\bigl(-\sum_{r\ge1}\zeta(2r)x^{2r}/r\bigr)$, the values $\zeta(2r)$ carried
+as the elementary series \lean{Fabius.evenZeta} (\path{EvenZetaSeries.lean}); the $|z|<\pi$
+normalization printed above is \lean{Fabius.complexSinc\_eq\_cexp}.  For real $0<|x|<1$ the
+boxed logarithmic form itself is \lean{Fabius.log\_sin\_div\_pi\_mul}, the branch being the
+real logarithm --- exactly the branch vanishing at $0$.  The interchange of sums is performed
+once, in greater generality than this lemma needs (an arbitrary absolutely summable family
+with every norm below $1$, over an arbitrary index type), by the Euler log transform
+\lean{Fabius.hasSum\_powerSum\_log\_one\_sub} of \path{EulerLogTransform.lean}; the closed
+evaluations $\zeta(2)=\pi^2/6$ and $\zeta(4)=\pi^4/90$ and the general Bernoulli form are
+\path{EvenZetaValues.lean}.
+
 \subsection{All orders, exact radius, explicit remainder}
 
 \begin{theorem}[All-orders sinc-tail expansion]
@@ -591,6 +605,18 @@ By \cref{prop:tail-self}, the quotient is $Q_\infty(t/2^m)$.  Apply
 The closest zero of $Q_\infty(w)$ to $w=0$ is $w=\pm2\pi$, arising from the factor
 $\sinc(w/2)$.  Scaling by $w=t/2^m$ proves maximality.
 \end{proof}
+
+\emph{Formal versions.}  The theorem is formalized in \path{SincZetaDyadic.lean}, in the
+normalization $\Phi(z)=Q_\infty(2\pi z)$ and in exponential form.  At $m=0$,
+\lean{Fabius.rvachevFourierProduct\_eq\_cexp} proves
+$\Phi(z)=\exp\bigl(-\sum_{r\ge1}\zeta(2r)4^rz^{2r}/(r(4^r-1))\bigr)$ on $|z|<1$; for general
+$m$, \lean{Fabius.rvachevFourierProduct\_eq\_prefix\_mul\_cexp} is the exact factorization
+$\Phi(z)=\bigl(\prod_{j<m}\sinc(\pi z/2^j)\bigr)\exp\bigl(-\sum_{r\ge1}
+\zeta(2r)4^r(z/2^m)^{2r}/(r(4^r-1))\bigr)$ on $|z|<2^m$ --- identity \eqref{eq:Q-all-orders}
+with the quotient cleared and the finite prefix explicit.  The engine is one application of
+the Euler log transform to the pair family $(z/2^h)^2/(n+1)^2$ over $\N\times\N$; its power
+sums are evaluated for \emph{every} complex $z$, with no smallness hypothesis
+(\lean{Fabius.sinc\_pair\_powerSum}).  Maximality of the disk is not formalized.
 
 The first terms are
 \begin{equation}
@@ -633,6 +659,16 @@ Use $\zeta(2r)\le\zeta(2)$, $4^r/(4^r-1)\le4/3$, and
 $1/r\le1/(N+1)$ for $r\ge N+1$, then sum the geometric series.
 \end{proof}
 
+\emph{Formal versions.}  \path{SincZetaRemainder.lean} packages the coefficient as
+\lean{Fabius.sincZetaCoeff} and proves \eqref{eq:Q-remainder-bound} verbatim as
+\lean{Fabius.norm\_sincZeta\_tail\_le}, with $x_m(t)=\|w\|$ for $w=z/2^m$, alongside the
+term-by-term nonnegativity for real arguments (\lean{Fabius.sincZeta\_tail\_nonneg}) and the
+three-factor coefficient estimate of this proof
+(\lean{Fabius.sincZetaCoeff\_le}, resting on the antitonicity
+\lean{Fabius.evenZeta\_anti} of the even zeta values).  The constant is carried symbolically
+as $\tfrac43\zeta(2)$; the numerical value $2\pi^2/9$ follows from
+\lean{Fabius.evenZeta\_one} (\path{EvenZetaValues.lean}).
+
 \subsection{Arbitrary-order finite Thue--Morse approximants}
 
 \begin{definition}[Zeta-corrected block approximant]
@@ -666,6 +702,16 @@ $Q_\infty/Q_m^{[N]}$ is $\exp(-R_{N,m})$.  The bound
 \eqref{eq:Q-remainder-bound}, uniformly on $K$, is $\bigO_K(4^{-(N+1)m})$; exponentiation
 preserves that order.
 \end{proof}
+
+\emph{Formal versions.}  The quantitative content is
+\lean{Fabius.rvachevFourierProduct\_eq\_prefix\_mul\_correction\_mul\_tail}
+(\path{SincZetaRemainder.lean}): on $|z|<2^m$, exactly
+$\Phi(z)=\bigl(\prod_{j<m}\sinc(\pi z/2^j)\bigr)\cdot
+\exp\bigl(-\sum_{r=1}^{N}c_r(z/2^m)^{2r}\bigr)\cdot\exp\bigl(-R_{N}(z/2^m)\bigr)$, the finite
+prefix being the length-$2^m$ Thue--Morse block of \cref{cor:full-TM-factor}, the middle
+factor the $N$ zeta corrections of \eqref{eq:Qcorrected}, and the tail exponent bounded by
+\lean{Fabius.norm\_sincZeta\_tail\_le}.  The $\bigO_K$ formulation printed here is a direct
+reading of that bound and is not separately formalized.
 
 \begin{corollary}[Fourier approximation to the up-function]
 \label{cor:up-Fourier-block}
@@ -701,6 +747,14 @@ The kernel $q^r/(1-q^r)$ is the elementary Lambert-series kernel.  Expanding it 
 $\sum_{\ell\ge1}q^{r\ell}$ reconstructs the omitted factors.  This is a direct analytic
 connection between the sinc product and $q$-series: the base is $q=1/4$ because the logarithm
 is even and the geometric frequency scale is $1/2$.
+
+The kernel itself is now formal, in a generality independent of the sinc product: for complex
+$|w|<1$ and $|c|<1$, \lean{Fabius.tsum\_log\_one\_sub\_geom} (\path{EulerLogTransform.lean})
+proves $\sum_{k\ge0}\log(1-wc^k)=-\sum_{r\ge1}w^r/(r(1-c^r))$, and
+\lean{Fabius.tprod\_one\_sub\_geom\_eq\_cexp} is the exponential $q$-Pochhammer form
+$(w;c)_\infty=\exp\bigl(-\sum_{r\ge1}w^r/(r(1-c^r))\bigr)$, with real counterparts
+(\lean{Fabius.tsum\_log\_one\_sub\_geom\_real},
+\lean{Fabius.tprod\_one\_sub\_geom\_eq\_rexp}).
 
 \begin{theorem}[General geometric base]
 \label{thm:base-b}
@@ -1701,16 +1755,18 @@ finite-product algebra.  Tail self-similarity is reindexing.  The weak expansion
 theorem plus independence and symmetry.  The $q$-Richardson weights are finite Lagrange
 interpolation.  Only the analytic logarithm and explicit zeta remainder require a substantial
 complex-analysis layer.  This makes the package a plausible next formalization target --- and
-in part it is not a target at all but already done: as the \emph{Formal version} paragraphs
-throughout \cref{sec:objects,sec:bridges,sec:richardson,sec:gamma-tower} record, the block
-identity, both finite bridges in their unnormalized form, both halves of tail
-self-similarity, the Fourier--Laplace rotation, the Lagrange characterization of the
+in large part it is not a target at all but already done: as the \emph{Formal version}
+paragraphs throughout \cref{sec:objects,sec:bridges,sec:zeta-tail,sec:richardson,sec:gamma-tower}
+record, the block identity, both finite bridges in their unnormalized form, both halves of
+tail self-similarity, the Fourier--Laplace rotation, the Lagrange characterization of the
 $q$-Richardson weights with all three of its moment identities together with their closed
-$q$-binomial form (compiled in \path{GeometricQBinomialLagrange.lean}), and the $r=0$ layer
-of the gamma tower already have Lean counterparts, several of them more general than the
-statements printed here.  The analytic logarithm, explicit zeta remainder, weighted
-Richardson remainder, and convergence claims still require the surrounding analysis layer;
-these are the remaining formalization targets.
+$q$-binomial form (compiled in \path{GeometricQBinomialLagrange.lean}), the $r=0$ layer
+of the gamma tower, and now the entire zeta--Lambert tail calculus --- the Euler--zeta
+logarithm, the all-orders expansion, the certified remainder, and the exact
+prefix--corrections--tail split (\path{EulerLogTransform.lean}, \path{SincZetaSeries.lean},
+\path{SincZetaDyadic.lean}, \path{SincZetaRemainder.lean}) --- already have Lean
+counterparts, several of them more general than the statements printed here.  The weighted
+Richardson remainder and the probabilistic layer are the remaining formalization targets.
 
 \section{Lean formalization roadmap}
 \label{sec:formalization}
@@ -1774,13 +1830,14 @@ Exact tail self-similarity
 indices & Establish a reusable infinite-product reindexing lemma.  Existing repository
 convergence results should discharge the side conditions. \\
 Euler--zeta logarithm
-\eqref{eq:logsinc} & local analytic logarithm, Euler's sine product, normal convergence & This is
-the main library-level analytic obligation.  One may alternatively prove the power series by
-differentiating the cotangent expansion and fixing the constant at zero. \\
+\eqref{eq:logsinc} & local analytic logarithm, Euler's sine product, normal convergence &
+\emph{Delivered} in \path{SincZetaSeries.lean} (exponential and real-logarithm forms), on
+the general Euler log transform of \path{EulerLogTransform.lean}; the all-orders identity
+\eqref{eq:Q-all-orders} is \path{SincZetaDyadic.lean}. \\
 Certified zeta remainder
-\eqref{eq:Q-remainder-bound} & positivity, monotonicity of $\zeta(2r)$, geometric series & Once
-\eqref{eq:Q-all-orders} exists, the bound is elementary and avoids delicate asymptotic
-machinery. \\
+\eqref{eq:Q-remainder-bound} & positivity, monotonicity of $\zeta(2r)$, geometric series &
+\emph{Delivered} in \path{SincZetaRemainder.lean}: the verbatim bound, real-argument
+nonnegativity, and the exact prefix--corrections--tail split. \\
 $q$-Richardson weights
 \eqref{eq:weights}--\eqref{eq:first-uncancelled} & finite Lagrange interpolation,
 $q$-Pochhammer algebra & \emph{Delivered} in
@@ -1819,7 +1876,10 @@ A practical promotion sequence is therefore
 \]
 The first four stages already yield exact identities and acceleration mechanisms.  The final
 stage adds the sharp radius and explicit zeta remainder.  This ordering minimizes the amount
-of new complex analysis that must be trusted at any one time.
+of new complex analysis that must be trusted at any one time.  Of the boxed chain, the
+finite bridges, tail reindexing, $q$-interpolation, and analytic-logarithm stages are now
+formal (see the \emph{Formal version} paragraphs above); the probabilistic splitting is the
+one stage that remains.
 
 \begin{obligation}[Canonical normalization theorem]
 The repository uses several Fourier-transform conventions across historical manuscripts.
@@ -1850,6 +1910,10 @@ is exactly the abstract library asked for on the product side:
 \lean{Fabius.tprod_geom_scale} and \lean{Fabius.tprod_geom_scale_pow} are proved for an
 arbitrary function from a field into a commutative topological monoid and an arbitrary scale,
 with the dyadic sinc shells obtained as specializations, exactly as the obligation proposes.
+The logarithmic face of the same abstraction is now \path{EulerLogTransform.lean}: the
+transform $\sum_i\log(1-a_i)=-\sum_{r\ge1}\bigl(\sum_ia_i^r\bigr)/r$ for an arbitrary
+absolutely summable family with every norm below one, over an arbitrary index type, with the
+geometric family --- the self-similar tail par excellence --- as its first instance.
 (The negative-Laplace tail \eqref{eq:G-tail-self} is formal too, but as an independent
 induction on the functional equation rather than as an instance of that API --- which is
 itself a small illustration of the duplication the obligation is about.)  The obligation is

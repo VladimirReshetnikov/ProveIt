@@ -44,7 +44,7 @@ theorem nonneg_on_Icc_of_pieces (P : ℝ → ℝ) (n : ℕ) (hn : 0 < n)
     exact lt_of_le_of_lt (min_le_left _ _) this
   have hnt0 : (0:ℝ) ≤ n * t := mul_nonneg hnR.le ht0
   have hile : (i : ℝ) ≤ n * t := by
-    rcases le_or_lt (⌊n * t⌋₊) (n - 1) with hcase | hcase
+    rcases le_or_gt (⌊n * t⌋₊) (n - 1) with hcase | hcase
     · have hieq : i = ⌊n * t⌋₊ := by omega
       rw [hieq]
       exact Nat.floor_le hnt0
@@ -52,7 +52,7 @@ theorem nonneg_on_Icc_of_pieces (P : ℝ → ℝ) (n : ℕ) (hn : 0 < n)
       rw [hieq]
       exact (Nat.cast_le.mpr hcase.le).trans (Nat.floor_le hnt0)
   have hlt : n * t ≤ (i : ℝ) + 1 := by
-    rcases le_or_lt (⌊n * t⌋₊) (n - 1) with hcase | hcase
+    rcases le_or_gt (⌊n * t⌋₊) (n - 1) with hcase | hcase
     · have hieq : i = ⌊n * t⌋₊ := by omega
       rw [hieq]
       exact le_of_lt (Nat.lt_floor_add_one _)
