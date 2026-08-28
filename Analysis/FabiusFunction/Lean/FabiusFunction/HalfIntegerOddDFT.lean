@@ -34,15 +34,18 @@ Main declarations:
   primitive even-order root with `-1`.
 * `sum_odd_powers_eq_ramanujan` is the explicit divisibility-and-sign filter.
 * `oddDFT` and `oddDFTPowerTrace` are the unnormalized odd-frequency DFT and
-  its full power trace.
+  its full power trace; `oddDFT_add_period` records its exact label period.
+* `oddDFTPowerTrace_eq_indexSumExpansion` separates the universal multinomial
+  expansion from the later root-of-unity filter.
 * `oddRamanujanConvolution` is the congruence-filtered coefficient
   convolution.
 * `oddDFTPowerTrace_eq_ramanujanConvolution` is the all-order trace formula.
 * `normalizedOddDFTPowerTrace_eq_ramanujanConvolution` gives the normalization
   used by Fourier coefficients.
-* `sum_range_two_mul_eq_two_mul_sum_of_reflect` isolates the purely finite
+* `sum_range_two_mul_eq_add_self_sum_of_reflect` isolates the purely additive
   folding step that changes a full odd orbit into a half orbit once the
-  required reflection symmetry has been proved.
+  required reflection symmetry has been proved; its ring-valued wrapper
+  collects the two halves as multiplication by `2`.
 -/
 
 set_option autoImplicit false
@@ -83,15 +86,7 @@ theorem sum_odd_powers_eq_root_filter {R : Type*} [CommRing R] [IsDomain R]
 appears in the odd-coset filter. -/
 lemma two_mul_dvd_two_mul_iff (N S : ℕ) :
     2 * N ∣ 2 * S ↔ N ∣ S := by
-  constructor
-  · rintro ⟨c, hc⟩
-    refine ⟨c, ?_⟩
-    have hc' : 2 * S = 2 * (N * c) := by
-      simpa [mul_assoc] using hc
-    omega
-  · rintro ⟨c, rfl⟩
-    refine ⟨c, ?_⟩
-    ring
+  exact mul_dvd_mul_iff_left (by norm_num : (2 : ℕ) ≠ 0)
 
 /-- For a primitive root of order `2 * N`, the raw filter condition is exactly
 the congruence condition `N ∣ S`.  This version retains the root-valued phase;
@@ -143,13 +138,31 @@ theorem sum_odd_powers_eq_ramanujan {R : Type*} [CommRing R] [IsDomain R]
 /-! ## Odd-frequency DFT power traces -/
 
 /-- The unnormalized discrete Fourier coefficient at the odd label `2k+1`,
-for a block of length `2 * N`. -/
-def oddDFT {R : Type*} [CommRing R] (ζ : R) (N : ℕ)
+for a block of length `2 * N`.  Its definition only needs a commutative
+semiring; additive inverses enter later, when the half-period phase is
+identified with `-1`. -/
+def oddDFT {R : Type*} [CommSemiring R] (ζ : R) (N : ℕ)
     (f : Fin (2 * N) → R) (k : ℕ) : R :=
   ∑ j : Fin (2 * N), f j * ζ ^ ((2 * k + 1) * j.val)
 
+/-- Odd-frequency labels are periodic modulo `N` as soon as `ζ` has period
+`2 * N`.  Primitivity and the domain hypotheses used by the Ramanujan filter
+are not needed for this elementary fact. -/
+theorem oddDFT_add_period {R : Type*} [CommSemiring R]
+    {ζ : R} {N : ℕ} (hζ : ζ ^ (2 * N) = 1)
+    (f : Fin (2 * N) → R) (k : ℕ) :
+    oddDFT ζ N f (k + N) = oddDFT ζ N f k := by
+  classical
+  unfold oddDFT
+  refine Finset.sum_congr rfl (fun j _hj => ?_)
+  have hperiod : ζ ^ ((2 * N) * j.val) = 1 := by
+    rw [← pow_mul, hζ, one_pow]
+  rw [show (2 * (k + N) + 1) * j.val =
+      (2 * k + 1) * j.val + (2 * N) * j.val by ring,
+    pow_add, hperiod, mul_one]
+
 /-- The full power trace over the `N` odd frequency labels modulo `2 * N`. -/
-def oddDFTPowerTrace {R : Type*} [CommRing R] (ζ : R) (N : ℕ)
+def oddDFTPowerTrace {R : Type*} [CommSemiring R] (ζ : R) (N : ℕ)
     (f : Fin (2 * N) → R) (m : ℕ) : R :=
   ∑ k ∈ range N, oddDFT ζ N f k ^ m
 
@@ -158,31 +171,21 @@ depends on a tuple through this single additive statistic. -/
 def oddDFTIndexSum {N m : ℕ} (J : Fin m → Fin (2 * N)) : ℕ :=
   ∑ ℓ : Fin m, (J ℓ).val
 
-/-- The signed, congruence-filtered `m`-fold convolution of a length-`2N`
-sample block.  It is defined over any commutative ring and makes no reference
-to a root of unity. -/
-def oddRamanujanConvolution {R : Type*} [CommRing R] (N m : ℕ)
-    (f : Fin (2 * N) → R) : R :=
-  ∑ J : Fin m → Fin (2 * N),
-    if N ∣ oddDFTIndexSum J then
-      (-1 : R) ^ (oddDFTIndexSum J / N) * ∏ ℓ : Fin m, f (J ℓ)
-    else 0
-
-/-- **All-order odd-frequency power trace formula.**  The `m`-th powers of
-the odd DFT coefficients sum to `N` times a signed congruence-filtered
-`m`-fold convolution of the original samples.
-
-This is the finite algebraic content of the Ramanujan trace formula.  It holds
-for every order, including `m = 0`, over every commutative domain containing a
-primitive `(2 * N)`-th root. -/
-theorem oddDFTPowerTrace_eq_ramanujanConvolution {R : Type*}
-    [CommRing R] [IsDomain R] {ζ : R} {N : ℕ}
-    (hζ : IsPrimitiveRoot ζ (2 * N)) (hN : 0 < N)
+/-- **Universal odd-DFT trace expansion.**  Before using any
+root-of-unity orthogonality, an `m`-th power trace is a sum over sample
+tuples, and its character depends on a tuple only through
+`oddDFTIndexSum`.  This purely distributive layer works over every
+commutative semiring. -/
+theorem oddDFTPowerTrace_eq_indexSumExpansion {R : Type*}
+    [CommSemiring R] (ζ : R) (N : ℕ)
     (f : Fin (2 * N) → R) (m : ℕ) :
     oddDFTPowerTrace ζ N f m =
-      (N : R) * oddRamanujanConvolution N m f := by
+      ∑ J : Fin m → Fin (2 * N),
+        (∏ ℓ : Fin m, f (J ℓ)) *
+          ∑ k ∈ range N,
+            ζ ^ ((2 * k + 1) * oddDFTIndexSum J) := by
   classical
-  unfold oddDFTPowerTrace oddDFT oddRamanujanConvolution
+  unfold oddDFTPowerTrace oddDFT
   calc
     ∑ k ∈ range N,
         (∑ j : Fin (2 * N), f j * ζ ^ ((2 * k + 1) * j.val)) ^ m =
@@ -215,7 +218,39 @@ theorem oddDFTPowerTrace_eq_ramanujanConvolution {R : Type*}
         _ = (∏ ℓ : Fin m, f (J ℓ)) *
               ζ ^ ((2 * k + 1) * oddDFTIndexSum J) := by
           simp only [oddDFTIndexSum, Finset.mul_sum]
-    _ = ∑ J : Fin m → Fin (2 * N),
+
+/-- The signed, congruence-filtered `m`-fold convolution of a length-`2N`
+sample block.  It is defined over any commutative ring and makes no reference
+to a root of unity. -/
+def oddRamanujanConvolution {R : Type*} [CommRing R] (N m : ℕ)
+    (f : Fin (2 * N) → R) : R :=
+  ∑ J : Fin m → Fin (2 * N),
+    if N ∣ oddDFTIndexSum J then
+      (-1 : R) ^ (oddDFTIndexSum J / N) * ∏ ℓ : Fin m, f (J ℓ)
+    else 0
+
+/-- **All-order odd-frequency power trace formula.**  The `m`-th powers of
+the odd DFT coefficients sum to `N` times a signed congruence-filtered
+`m`-fold convolution of the original samples.
+
+This is the finite algebraic content of the Ramanujan trace formula.  It holds
+for every order, including `m = 0`, over every commutative domain containing a
+primitive `(2 * N)`-th root. -/
+theorem oddDFTPowerTrace_eq_ramanujanConvolution {R : Type*}
+    [CommRing R] [IsDomain R] {ζ : R} {N : ℕ}
+    (hζ : IsPrimitiveRoot ζ (2 * N)) (hN : 0 < N)
+    (f : Fin (2 * N) → R) (m : ℕ) :
+    oddDFTPowerTrace ζ N f m =
+      (N : R) * oddRamanujanConvolution N m f := by
+  classical
+  rw [oddDFTPowerTrace_eq_indexSumExpansion]
+  unfold oddRamanujanConvolution
+  calc
+    ∑ J : Fin m → Fin (2 * N),
+          (∏ ℓ : Fin m, f (J ℓ)) *
+            ∑ k ∈ range N,
+              ζ ^ ((2 * k + 1) * oddDFTIndexSum J) =
+        ∑ J : Fin m → Fin (2 * N),
           (∏ ℓ : Fin m, f (J ℓ)) *
             (if N ∣ oddDFTIndexSum J then
               (N : R) * (-1 : R) ^ (oddDFTIndexSum J / N)
@@ -244,6 +279,15 @@ odd DFT by the half-length `N`. -/
 def normalizedOddDFT {F : Type*} [Field F] (ζ : F) (N : ℕ)
     (f : Fin (2 * N) → F) (k : ℕ) : F :=
   (N : F)⁻¹ * oddDFT ζ N f k
+
+/-- The normalized coefficients inherit the same exact period in their
+frequency label. -/
+theorem normalizedOddDFT_add_period {F : Type*} [Field F]
+    {ζ : F} {N : ℕ} (hζ : ζ ^ (2 * N) = 1)
+    (f : Fin (2 * N) → F) (k : ℕ) :
+    normalizedOddDFT ζ N f (k + N) = normalizedOddDFT ζ N f k := by
+  unfold normalizedOddDFT
+  rw [oddDFT_add_period hζ]
 
 /-- The full power trace of the normalized odd-frequency coefficients. -/
 def normalizedOddDFTPowerTrace {F : Type*} [Field F] (ζ : F) (N : ℕ)
@@ -279,10 +323,11 @@ theorem normalizedOddDFTPowerTrace_eq_ramanujanConvolution {F : Type*}
 representative from each pair.  The hypothesis is intentionally explicit:
 the Fourier-algebra layer only uses the reflection once an application has
 proved it from the symmetry of its samples or of its analytic Fourier data. -/
-theorem sum_range_two_mul_eq_two_mul_sum_of_reflect {R : Type*} [CommRing R]
-    (M : ℕ) (g : ℕ → R)
+theorem sum_range_two_mul_eq_add_self_sum_of_reflect
+    {A : Type*} [AddCommMonoid A] (M : ℕ) (g : ℕ → A)
     (hreflect : ∀ k < M, g (2 * M - 1 - k) = g k) :
-    ∑ k ∈ range (2 * M), g k = (2 : R) * ∑ k ∈ range M, g k := by
+    ∑ k ∈ range (2 * M), g k =
+      (∑ k ∈ range M, g k) + ∑ k ∈ range M, g k := by
   rw [show 2 * M = M + M by ring, Finset.sum_range_add]
   have hupper : ∑ k ∈ range M, g (M + k) = ∑ k ∈ range M, g k := by
     calc
@@ -297,6 +342,14 @@ theorem sum_range_two_mul_eq_two_mul_sum_of_reflect {R : Type*} [CommRing R]
           omega]
         exact hreflect k (Finset.mem_range.mp hk)
   rw [hupper]
+
+/-- Ring-valued form of `sum_range_two_mul_eq_add_self_sum_of_reflect`, with
+the two identical halves collected as scalar multiplication by `2`. -/
+theorem sum_range_two_mul_eq_two_mul_sum_of_reflect {R : Type*} [CommRing R]
+    (M : ℕ) (g : ℕ → R)
+    (hreflect : ∀ k < M, g (2 * M - 1 - k) = g k) :
+    ∑ k ∈ range (2 * M), g k = (2 : R) * ∑ k ∈ range M, g k := by
+  rw [sum_range_two_mul_eq_add_self_sum_of_reflect M g hreflect]
   ring
 
 /-- Full-to-half folding for normalized odd DFT power traces.  No sample
