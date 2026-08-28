@@ -2,7 +2,7 @@
 
 Series and orthogonal-expansion representations of the up-function,
 consolidated (2026-08-28) into the single volume
-[`Representation_Frontiers/`](Representation_Frontiers/) (106 pp):
+[`Representation_Frontiers/`](Representation_Frontiers/) (107 pp):
 
 - **Part I** — *Fabius–Rvachev Representation Frontiers* (Jacobi
   coefficients, exact even moments, resolvent and
@@ -18,8 +18,12 @@ consolidated (2026-08-28) into the single volume
   `Fabius_Rvachev_Multiresolution_Report/`).
 
 (The random-variable representation itself is formalized in
-`ProbabilityRepresentation.lean`; this volume explores analytic
-expansions beyond it.)
+`ProbabilityRepresentation.lean`.  The reusable affine-difference iterate,
+open-domain derivative propagation theorem, and dyadic Thue--Morse orbit are
+formalized in `AffineDifferenceOrbit.lean`.  The Cauchy--Stieltjes transform of
+the up measure and its one-step resolvent DDE are still open; the affine module
+formalizes only the conditional passage from that identity to its all-order
+orbit.)
 
 The member drafts were absorbed verbatim (labels, citation keys, and
 asset paths mechanically prefixed per part; no mathematical content
