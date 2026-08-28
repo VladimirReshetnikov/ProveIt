@@ -143,6 +143,40 @@ theorem geometricUniformDistribution_isProbabilityMeasure
   exact weightedUniformDistribution_isProbabilityMeasure
     (summable_norm_geometricUniformWeight hq)
 
+/-! ## Absolute continuity and absence of atoms -/
+
+/-- For every `|q| < 1`, the geometric uniform law is absolutely continuous
+with respect to Lebesgue measure.
+
+Indeed its zeroth weight is `1 - q`, which is nonzero throughout this open
+parameter range.  No positivity assumption on `q` is needed. -/
+theorem geometricUniformDistribution_absolutelyContinuous
+    {q : ℝ} (hq : |q| < 1) :
+    geometricUniformDistribution q ≪ (volume : Measure ℝ) := by
+  have hq1 : q < 1 := (abs_lt.mp hq).2
+  have hweight : geometricUniformWeight q 0 ≠ 0 := by
+    rw [geometricUniformWeight_zero]
+    exact sub_ne_zero.mpr (ne_of_gt hq1)
+  simpa only [geometricUniformDistribution] using
+    (weightedUniformDistribution_absolutelyContinuous
+      (summable_norm_geometricUniformWeight hq) ⟨0, hweight⟩)
+
+/-- For every `|q| < 1`, the geometric uniform law has null singletons.
+
+As with the generic weighted result, this is exposed as a theorem producing
+the typeclass so that downstream developments can install it locally under
+their parameter hypothesis. -/
+theorem geometricUniformDistribution_nullSingletonClass
+    {q : ℝ} (hq : |q| < 1) :
+    NullSingletonClass (geometricUniformDistribution q) := by
+  have hq1 : q < 1 := (abs_lt.mp hq).2
+  have hweight : geometricUniformWeight q 0 ≠ 0 := by
+    rw [geometricUniformWeight_zero]
+    exact sub_ne_zero.mpr (ne_of_gt hq1)
+  simpa only [geometricUniformDistribution] using
+    (weightedUniformDistribution_nullSingletonClass
+      (summable_norm_geometricUniformWeight hq) ⟨0, hweight⟩)
+
 /-- The first coordinate and an independent copy of the full geometric
 series have their product law. -/
 theorem uniformProduct_map_head_tail_geometricUniformSeries
