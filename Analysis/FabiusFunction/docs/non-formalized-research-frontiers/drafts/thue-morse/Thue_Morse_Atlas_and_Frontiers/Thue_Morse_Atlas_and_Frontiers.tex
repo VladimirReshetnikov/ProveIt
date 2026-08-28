@@ -9117,13 +9117,25 @@ geometric family --- the self-similar tail par excellence --- as its first insta
 (The negative-Laplace tail \eqref{p2:eq:G-tail-self} is formal too, but as an independent
 induction on the functional equation rather than as an instance of that API --- which is
 itself a small illustration of the duplication the obligation is about.)  The convolution
-instance \eqref{p2:eq:density-deconv} is now formal as well, in measure form
-(\path{MeasureRefinement.lean}, see the \emph{Formal version} paragraph in
-\cref{p2:sec:probability}), and the random-variable representation underlying
-\eqref{p2:eq:random-tail} is \path{ProbabilityRepresentation.lean}.  The obligation is
-retained because, although \path{RandomSeriesLaw.lean} now proves the equality-in-law
-splitting, the cumulant-generating instance \eqref{p2:eq:cumulant-operator} has no formal
-counterpart, and nothing yet expresses all four faces as instances of one statement.
+quarter is now discharged in the same abstract style:
+\path{GeometricConvolutionTails.lean} builds the prefix system \(P_0=\delta_0\),
+\(P_{m+1}=\nu\ast T_*P_m\) of an arbitrary digit measure under an arbitrary measurable
+additive endomorphism and proves, by pure convolution algebra, the cocycle law
+\(P_{m+n}=P_m\ast(T^m)_*P_n\) (\leanPartx{Fabius.digitPrefix\_add}) and the geometric tail
+law --- from the one-step refinement \(\mu=\nu\ast T_*\mu\) alone, \(\mu=P_m\ast(T^m)_*\mu\)
+for every \(m\) (\leanPartx{Fabius.self\_similar\_conv\_iterate}) --- together with the
+real-scale specialization and the finite product formula
+\(\operatorname{charFun}(P_m)(t)=\prod_{k<m}\operatorname{charFun}\nu(c^kt)\)
+(\leanPartx{Fabius.charFun\_mulPrefix}).  The dyadic instance \eqref{p2:eq:density-deconv}
+is a specialization: \path{MeasureRefinement.lean} now derives the measure-level
+random-tail law \eqref{p2:eq:random-tail} from the refinement equation through this API
+(see the \emph{Formal version} paragraph in \cref{p2:sec:probability}), and the
+random-variable representation underlying it is \path{ProbabilityRepresentation.lean},
+with the equality-in-law splitting in \path{RandomSeriesLaw.lean}.  The obligation is
+retained only for its cumulant quarter: the cumulant-generating instance
+\eqref{p2:eq:cumulant-operator} has no formal counterpart yet, and a single statement
+instantiating to all four faces at once remains open --- though the product and
+convolution faces now each have the abstract library the obligation asked for.
 
 \section{Frontier conjectures and next deductions}
 \label{p2:sec:frontiers}

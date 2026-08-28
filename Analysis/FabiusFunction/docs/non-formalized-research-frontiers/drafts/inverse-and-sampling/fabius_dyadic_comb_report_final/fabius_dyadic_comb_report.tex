@@ -1,0 +1,1823 @@
+\documentclass[11pt]{article}
+
+\usepackage[letterpaper,margin=1in]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage{microtype}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{booktabs,longtable,array}
+\usepackage{enumitem}
+\usepackage{xcolor}
+\usepackage{hyperref}
+\usepackage[nameinlink,capitalise]{cleveref}
+\usepackage{listings}
+\usepackage{fancyhdr}
+\usepackage{url}
+\setlength{\emergencystretch}{2em}
+
+\hypersetup{
+  colorlinks=true,
+  linkcolor=blue!50!black,
+  citecolor=green!35!black,
+  urlcolor=blue!60!black,
+  pdftitle={Dyadic-Comb Quadrature for the Fabius and Rvachev Functions},
+  pdfauthor={Research report prepared for Vladimir Reshetnikov}
+}
+
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{Dyadic-comb quadrature for Fabius and Rvachev functions}
+\fancyhead[R]{\thepage}
+\setlength{\headheight}{14pt}
+
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{conjecture}[theorem]{Conjecture}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{remark}[theorem]{Remark}
+\newtheorem{example}[theorem]{Example}
+
+\DeclareMathOperator{\sinc}{sinc}
+\DeclareMathOperator{\ord}{ord}
+\DeclareMathOperator{\sgn}{sgn}
+\DeclareMathOperator{\FP}{FP}
+\newcommand{\Up}{\operatorname{up}}
+\newcommand{\eps}{\varepsilon}
+\newcommand{\dd}{\,\mathrm{d}}
+\newcommand{\e}{\mathrm{e}}
+\newcommand{\ii}{\mathrm{i}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\Mell}{\mathcal{M}}
+\newcommand{\fall}[2]{#1^{\underline{#2}}}
+\newcommand{\rise}[2]{#1^{\overline{#2}}}
+\newcommand{\bigO}{\mathcal{O}}
+
+\lstdefinestyle{pythonstyle}{
+  language=Python,
+  basicstyle=\ttfamily\small,
+  keywordstyle=\color{blue!55!black},
+  commentstyle=\color{green!35!black},
+  stringstyle=\color{red!45!black},
+  showstringspaces=false,
+  breaklines=true,
+  frame=single,
+  columns=fullflexible
+}
+
+\title{\bfseries Dyadic-Comb Quadrature for the Fabius and Rvachev Functions\\[0.4em]
+\large Exact Polynomial Moments, Fractional Mellin Corrections, and Iterated Sums}
+\author{Research report prepared for Vladimir Reshetnikov}
+\date{28 August 2026}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+Let $F$ be the Fabius function, let $\Up$ be Rvachev's compactly supported
+$C^\infty$ function, and put $h=2^{-m}$.  This report studies weighted sums of
+$F$ and $\Up$ on the dyadic comb $h\Z$, with particular emphasis on monomial
+weights.  The main result is an exact shifted quadrature theorem:
+\[
+ h\sum_{k\in\Z}\bigl(h(k+\theta)\bigr)^p
+ \Up\bigl(h(k+\theta)\bigr)
+ =\int_{-1}^{1}x^p\Up(x)\dd x
+ \qquad(0\le p\le m),
+\]
+valid for every real shift $\theta$.  Its mechanism is the increasing
+multiplicity of the integer zeros of the infinite sinc product
+$\widehat{\Up}$.  We derive the complete finite $2$-adic alias decomposition,
+a closed first-failure series, phase-dependent superconvergence, and a
+Bell--Bernoulli formula for every higher alias jet.
+
+For the one-sided Fabius comb we obtain a second exact stabilization law.  If
+$M=2^m$, $h=M^{-1}$, $p\in\N_0$, and
+$\tau(0)=0$, $\tau(p)=2\lceil p/2\rceil$ for $p\ge1$, then
+\[
+ h\sum_{a=0}^{M}(ah)^pF(ah)
+ =\frac{h^{p+1}B_{p+1}(M+1)-d_{p+1}}{p+1}
+ \qquad(m\ge\tau(p)),
+\]
+where $d_s$ is the Mellin moment of the Fabius probability density.  An
+all-depth Hurwitz-zeta--Thue--Morse formula is also proved.  For fractional
+powers, the punctured Rvachev comb has the universal singular correction
+$2\zeta(-\alpha)h^{\alpha+1}$, with a shifted version governed by two Hurwitz
+zeta values.  Negative powers are treated by Mellin continuation and a
+logarithmic transition at $\alpha=-1$.  Finally, the $n$-fold discrete prefix
+sum is reduced to a binomial Cauchy kernel and, at full support, to a finite
+combination of exact moments.  The report includes exact-arithmetic and
+high-precision numerical experiments and records conjectures and directions
+for formalization, $q$-filters, inverse-Fabius sums, and Lambert-$W$ remainder
+asymptotics.
+\end{abstract}
+
+\tableofcontents
+
+\section{Executive summary of the new results}
+
+The following statements are proved in this report.  ``New'' below means new
+relative to the live ProveIt exposition and its consolidated frontier volume
+at the time of the audit; no universal priority claim is made without a
+broader literature search.
+
+\begin{enumerate}[leftmargin=2.2em]
+\item \textbf{Shift-independent exact quadrature for $\Up$.}
+At depth $m$, every translate of the dyadic comb integrates exactly every
+polynomial of degree at most $m$ against $\Up$.
+
+\item \textbf{A finite $2$-adic alias hierarchy.}
+For a monomial of degree $p>m$, only the valuation layers
+$v_2(\ell)=0,1,\dots,p-m-1$ can contribute to the Poisson error.  Thus a
+formally infinite Fourier error has only finitely many arithmetic types.
+
+\item \textbf{First-failure and superconvergent phases.}
+The degree-$m+1$ error is an explicit odd-frequency series involving
+$\widehat{\Up}(q/2)$.  If $m$ is even, the centered and half-shifted combs gain
+one extra exact odd degree.  If $m$ is odd, the quarter-shifted combs gain one
+extra exact even degree.
+
+\item \textbf{Bell--Bernoulli alias jets.}
+Every derivative of $\widehat{\Up}$ at an integer zero is expressed by a
+complete exponential Bell polynomial.  The finite sinc block contributes an
+explicit Bernoulli-number logarithmic jet.
+
+\item \textbf{Exact Fabius right-comb stabilization.}
+For natural $p$, the right Riemann comb of $x^pF(x)$ becomes exactly equal to a
+finite Euler--Maclaurin polynomial as soon as $m\ge2\lceil p/2\rceil$.  The
+closed form contains one Bernoulli polynomial and one Fabius-law moment.
+
+\item \textbf{All-depth complex-power formula.}
+For arbitrary complex $\alpha$, the finite Fabius comb is a finite
+Thue--Morse sum of differences of Hurwitz zeta values.  For natural $p$ this
+reduces to Bernoulli polynomials; for negative integers it reduces to
+harmonic-number combinations.
+
+\item \textbf{Fractional and negative Rvachev powers.}
+For the punctured comb of $|x|^\alpha\Up(x)$, the sole algebraic correction is
+$2\zeta(-\alpha)h^{\alpha+1}$; the rest is smaller than every power of $h$.
+The Mellin transform has only one pole, at $\alpha=-1$, because
+$\Up(x)-1$ is flat at the origin.
+
+\item \textbf{Closed $n$-fold iterated sums.}
+The $n$-fold prefix sum has the exact binomial kernel
+$\binom{N-j+n-1}{n-1}$.  At the right edge of the support, polynomial
+exactness converts it into a finite moment formula for $\Up$ and a finite
+Bernoulli--moment formula for $F$.
+
+\item \textbf{An integer-base extension.}
+The same proof works for the compact density whose Fourier transform is
+$\prod_{j\ge0}\sinc(\pi\xi/b^j)$: the $b$-adic comb at depth $m$ is exact
+through degree $m$ for every integer $b\ge2$.
+\end{enumerate}
+
+\section{Repository audit and separation from prior work}
+\label{sec:audit}
+
+\subsection{Scope of the audit}
+
+The current documentation tree contains the mathematical glossary, the main
+Fabius/Rvachev exposition, the non-elementarity article, the Lean
+walkthrough, the consolidated non-formalized frontier volume, a papers
+library, and a frozen archive of historical versions.  The live TeX sources
+were read directly.  The archive manifest was used to identify historical
+versions, byte-identical duplicates, and documents absorbed into the
+consolidated frontier volume; mathematically distinct archived themes were
+then cross-checked against that canonical consolidation.  This avoids
+counting successive drafts as independent results while retaining their
+mathematical content.
+
+The audit concentrated on the following existing ingredients:
+\begin{itemize}[leftmargin=2em]
+\item the relation between $F$ and $\Up$ and the compact-support Fourier
+product;
+\item exact dyadic point values expressed through signed Thue--Morse sums and
+moments;
+\item the multiplicity and leading derivative of every integer zero of the
+infinite sinc product;
+\item Poisson summation and the unweighted partition of unity;
+\item moment recurrences, Bernoulli-polynomial identities, and $q$-product
+representations;
+\item continuous repeated integration and separate work on repeated prefix
+sums of the signed Thue--Morse sequence;
+\item endpoint and inverse-function asymptotics involving Lambert $W$.
+\end{itemize}
+
+Targeted searches in the live main exposition and consolidated frontier
+volume found no theorem formulated as a shifted dyadic-comb quadrature rule,
+no polynomial moment exactness statement of degree growing with the mesh
+depth, and no Fabius right-comb stabilization formula of the form proved
+below.  The present report therefore treats those statements as new relative
+to the audited repository.  Existing repeated-integration formulas are
+continuous Volterra identities; the iterated sums in \cref{sec:iterated} are
+discrete and use a different kernel.
+
+\subsection{Canonical repository sources}
+
+The live source tree is at
+\begin{center}
+\url{https://github.com/VladimirReshetnikov/ProveIt/tree/main/Analysis/FabiusFunction/docs}.
+\end{center}
+The principal mathematical source is
+\begin{center}
+\url{https://github.com/VladimirReshetnikov/ProveIt/blob/main/Analysis/FabiusFunction/docs/Fabius_Function_and_Rvachev_Up/Fabius_Function_and_Rvachev_Up.tex}.
+\end{center}
+The canonical non-formalized frontier source is
+\begin{center}
+\url{https://github.com/VladimirReshetnikov/ProveIt/blob/main/Analysis/FabiusFunction/docs/non-formalized-research-frontiers/non-formalized-research-frontiers.tex}.
+\end{center}
+Its README records the consolidation of the former dyadic, $q$-connection,
+repeated-integration, convergence, and inverse/saddle notebooks.  The frozen
+archive and its provenance manifest are at
+\begin{center}
+\url{https://github.com/VladimirReshetnikov/ProveIt/tree/main/Analysis/FabiusFunction/docs/archive}.
+\end{center}
+
+\begin{remark}[Novelty standard]
+The exact identities below are proved from established ingredients, not
+inferred from numerical data.  Nevertheless, a claim that they have never
+appeared anywhere in the literature would require a larger bibliographic
+search than was possible here.  Conjectural statements are explicitly
+labeled.
+\end{remark}
+
+\section{Notation and established ingredients}
+\label{sec:background}
+
+\subsection{Fabius and Rvachev normalizations}
+
+Let $\Up:\R\to\R$ be the even $C^\infty$ function supported on $[-1,1]$ and
+normalized by
+\[
+ \int_{-1}^{1}\Up(x)\dd x=1.
+\]
+On $[0,1]$, the Fabius function and Rvachev function are related by
+\begin{equation}
+ \Up(x)=F(1-x),\qquad 0\le x\le1,
+ \label{eq:up-F-relation}
+\end{equation}
+and on $[-1,0]$ by $\Up(x)=F(1+x)$.  Equivalently, the Fabius probability
+density on $[0,1]$ is
+\begin{equation}
+ \rho(x):=F'(x)=2\Up(2x-1).
+ \label{eq:fabius-density}
+\end{equation}
+Both $F$ at $0$ and $1-F$ at $1$ are flat: every derivative vanishes at the
+corresponding endpoint.  Consequently $\Up(x)-1$ is flat at $x=0$, while
+$\Up$ is flat at $x=\pm1$.
+
+We use the Fourier convention
+\[
+ \widehat f(\xi)=\int_{\R}f(x)\e^{-2\pi\ii\xi x}\dd x.
+\]
+The Fourier transform of $\Up$ is the infinite sinc product
+\begin{equation}
+ \Phi(\xi):=\widehat{\Up}(\xi)
+ =\prod_{j=0}^{\infty}\sinc\!\left(\frac{\pi\xi}{2^j}\right),
+ \qquad \sinc z:=\frac{\sin z}{z}.
+ \label{eq:Phi-product}
+\end{equation}
+It is even, real on the real axis, and rapidly decreasing together with all
+its derivatives.
+
+\subsection{Moments}
+
+Define centered moments
+\begin{equation}
+ \mu_p:=\int_{-1}^{1}x^p\Up(x)\dd x,
+ \qquad
+ c_n:=\mu_{2n}.
+ \label{eq:mu-c}
+\end{equation}
+Evenness gives $\mu_{2n+1}=0$.  The rational sequence $c_n$ satisfies
+\begin{equation}
+ c_0=1,
+ \qquad
+ (2n+1)(2^{2n}-1)c_n
+ =\sum_{j=0}^{n-1}\binom{2n+1}{2j}c_j.
+ \label{eq:c-recurrence}
+\end{equation}
+Let
+\begin{equation}
+ d_s:=\int_0^1 x^s\rho(x)\dd x
+ \label{eq:d-complex}
+\end{equation}
+for complex $s$.  Since $\rho$ is flat at both endpoints, $d_s$ is entire.
+For $r\in\N_0$,
+\begin{equation}
+ d_r=2^{-r}\sum_{j=0}^{\lfloor r/2\rfloor}\binom r{2j}c_j.
+ \label{eq:d-from-c}
+\end{equation}
+Integration by parts gives the continuous Fabius moment
+\begin{equation}
+ I_p:=\int_0^1x^pF(x)\dd x=\frac{1-d_{p+1}}{p+1}.
+ \label{eq:F-continuous-moment}
+\end{equation}
+More generally, the right side extends to every complex exponent by a
+removable singularity at $p=-1$; see \cref{sec:F-fractional}.
+
+\subsection{Integer zero multiplicities}
+
+For a nonzero integer $n$, write
+\[
+ d(n):=v_2(|n|)+1,
+ \qquad n=\sigma 2^{d(n)-1}q,
+ \quad q\ge1\text{ odd},\quad \sigma\in\{\pm1\}.
+\]
+Exactly $d(n)$ factors in \eqref{eq:Phi-product} vanish at $n$, and the
+established integer-zero formula is
+\begin{equation}
+ \ord_{\xi=n}\Phi=d(n),
+ \qquad
+ \Phi^{(d(n))}(n)
+ =-\frac{d(n)!}{n^{d(n)}}\Phi\!\left(\frac q2\right).
+ \label{eq:integer-leading-jet}
+\end{equation}
+This multiplicity growth is the central engine of the comb identities.
+
+\subsection{Exact dyadic point values}
+
+Put $\eps_r=(-1)^{s_2(r)}$, where $s_2(r)$ is the binary digit sum, and define
+\begin{equation}
+ P_m(t):=\sum_{j=0}^{\lfloor m/2\rfloor}
+ \binom m{2j}c_j t^{m-2j},
+ \qquad
+ C_m:=\frac{2^{-m(m+1)/2}}{m!}.
+ \label{eq:Pm-Cm}
+\end{equation}
+For $M=2^m$ and $0\le a\le M$, the exact point formula is
+\begin{equation}
+ F\!\left(\frac aM\right)
+ =C_m\sum_{r=0}^{a-1}\eps_r P_m(2a-2r-1).
+ \label{eq:F-dyadic-point}
+\end{equation}
+This formula supplies the finite arithmetic representations in
+\cref{sec:finite-arithmetic,sec:F-comb} and the exact numerical experiments.
+
+\section{Shifted dyadic-comb quadrature for \texorpdfstring{$\Up$}{up}}
+\label{sec:up-comb}
+
+Let
+\[
+ M=2^m,\qquad h=M^{-1},\qquad \theta\in\R,
+\]
+and define the shifted weighted comb
+\begin{equation}
+ Q_{m,p}(\theta)
+ :=h\sum_{k\in\Z}\bigl(h(k+\theta)\bigr)^p
+ \Up\bigl(h(k+\theta)\bigr).
+ \label{eq:Qmp}
+\end{equation}
+The sum is finite because $\Up$ is compactly supported.
+
+\subsection{Exact Poisson representation}
+
+\begin{lemma}[Shifted Poisson formula]
+For every $p\in\N_0$,
+\begin{equation}
+ Q_{m,p}(\theta)
+ =\mu_p+
+ \left(-\frac{1}{2\pi\ii}\right)^p
+ \sum_{\ell\in\Z\setminus\{0\}}
+ \e^{2\pi\ii\ell\theta}\Phi^{(p)}(M\ell).
+ \label{eq:Q-Poisson}
+\end{equation}
+The series is absolutely convergent.
+\end{lemma}
+
+\begin{proof}
+Apply shifted Poisson summation to $f_p(x)=x^p\Up(x)$:
+\[
+ h\sum_k f_p(h(k+\theta))
+ =\sum_{\ell\in\Z}\e^{2\pi\ii\ell\theta}\widehat f_p(M\ell).
+\]
+Differentiating the Fourier transform gives
+\[
+ \widehat f_p(\xi)=\left(-\frac{1}{2\pi\ii}\right)^p\Phi^{(p)}(\xi).
+\]
+The zero-frequency term is $\mu_p$.  Rapid decay of $\Phi^{(p)}$ gives
+absolute convergence.
+\end{proof}
+
+\subsection{Exact polynomial moments}
+
+\begin{theorem}[Shifted dyadic exactness]
+\label{thm:shifted-exactness}
+For every $m\in\N_0$, every real shift $\theta$, and every polynomial $P$ of
+degree at most $m$,
+\begin{equation}
+ h\sum_{k\in\Z}P\bigl(h(k+\theta)\bigr)
+ \Up\bigl(h(k+\theta)\bigr)
+ =\int_{-1}^{1}P(x)\Up(x)\dd x.
+ \label{eq:polynomial-exactness}
+\end{equation}
+In particular,
+\begin{equation}
+ Q_{m,p}(\theta)=\mu_p
+ \qquad(0\le p\le m).
+ \label{eq:monomial-exactness}
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+For $\ell\ne0$,
+\[
+ \ord_{\xi=M\ell}\Phi
+ =v_2(M|\ell|)+1=m+v_2(|\ell|)+1\ge m+1.
+\]
+Hence $\Phi^{(p)}(M\ell)=0$ for every $p\le m$.  The alias sum in
+\eqref{eq:Q-Poisson} vanishes term by term.  Linearity gives the polynomial
+statement.
+\end{proof}
+
+\begin{corollary}[Partition and exact centered moments]
+For every $m$ and $\theta$,
+\[
+ h\sum_k\Up(h(k+\theta))=1.
+\]
+For the centered comb,
+\[
+ h\sum_k(kh)^{2r}\Up(kh)=c_r\quad(2r\le m),
+ \qquad
+ h\sum_k(kh)^{2r+1}\Up(kh)=0.
+\]
+The second odd identity in fact holds at every depth by symmetry.
+\end{corollary}
+
+\begin{remark}[Strang--Fix interpretation]
+The theorem is a quadrature analogue of the Strang--Fix principle: zeros of a
+Fourier transform at the nonzero dual lattice, with increasing multiplicity,
+force polynomial reproduction.  What is special here is that the generating
+function itself is fixed while the zero multiplicity sampled by the dyadic
+dual lattice grows linearly with $m$.
+\end{remark}
+
+\subsection{Finite \texorpdfstring{$2$}{2}-adic alias decomposition}
+
+For $p>m$, infinitely many aliases remain, but only finitely many valuation
+layers can be nonzero.
+
+\begin{proposition}[Finite valuation hierarchy]
+\label{prop:alias-layers}
+For every $p\in\N_0$,
+\begin{equation}
+ Q_{m,p}(\theta)-\mu_p
+ =\left(-\frac{1}{2\pi\ii}\right)^p
+ \sum_{v=0}^{p-m-1}
+ \sum_{\substack{q\in\Z\\q\ \mathrm{odd}}}
+ \e^{2\pi\ii 2^vq\theta}
+ \Phi^{(p)}(2^{m+v}q),
+ \label{eq:alias-layers}
+\end{equation}
+where the outer sum is empty when $p\le m$.
+\end{proposition}
+
+\begin{proof}
+Write every nonzero alias uniquely as $\ell=2^vq$ with $q$ odd.  Its zero
+order is $m+v+1$.  The $p$th derivative vanishes whenever $p<m+v+1$, or
+equivalently $v>p-m-1$.
+\end{proof}
+
+This decomposition is useful computationally: increasing $p$ activates one
+new $2$-adic shell at a time.  It also suggests valuation-sensitive
+Richardson filters; see \cref{sec:future}.
+
+\subsection{The first failure and special phases}
+
+\begin{theorem}[Degree $m+1$ error]
+\label{thm:first-failure}
+For $p=m+1$,
+\begin{equation}
+\begin{split}
+ Q_{m,m+1}(\theta)-\mu_{m+1}
+ ={}&-\left(-\frac{1}{2\pi\ii}\right)^{m+1}
+ \frac{(m+1)!}{2^{m(m+1)}}\\
+ &\times
+ \sum_{\substack{\ell\in\Z\\\ell\ \mathrm{odd}}}
+ \frac{\Phi(|\ell|/2)}{\ell^{m+1}}
+ \e^{2\pi\ii\ell\theta}.
+\end{split}
+\label{eq:first-failure}
+\end{equation}
+The right side is not identically zero as a function of $\theta$.  Thus the
+uniform degree $m$ in \cref{thm:shifted-exactness} is sharp.
+\end{theorem}
+
+\begin{proof}
+Only odd aliases survive by \cref{prop:alias-layers}.  At $M\ell$, the zero
+order is $m+1$, and \eqref{eq:integer-leading-jet} gives
+\[
+ \Phi^{(m+1)}(M\ell)
+ =-\frac{(m+1)!}{(M\ell)^{m+1}}\Phi(\ell/2).
+\]
+Substitution into \eqref{eq:Q-Poisson} yields \eqref{eq:first-failure}.  Its
+Fourier coefficient at frequency $1$ is nonzero because $\Phi(1/2)\ne0$.
+\end{proof}
+
+\begin{corollary}[Phase superconvergence]
+\label{cor:phase-super}
+At the first failing degree $p=m+1$:
+\begin{enumerate}[label=(\roman*),leftmargin=2em]
+\item if $m$ is even, then
+$Q_{m,m+1}(0)=Q_{m,m+1}(1/2)=\mu_{m+1}=0$;
+\item if $m$ is odd, then
+$Q_{m,m+1}(1/4)=Q_{m,m+1}(3/4)=\mu_{m+1}$.
+\end{enumerate}
+\end{corollary}
+
+\begin{proof}
+If $m$ is even, then $m+1$ is odd; pairing $\ell$ and $-\ell$ cancels at
+$\theta=0$ and $1/2$.  If $m$ is odd, then $m+1$ is even; the pair is
+proportional to $\cos(2\pi\ell\theta)$, which vanishes for every odd $\ell$ at
+the quarter shifts.
+\end{proof}
+
+The complete zero set of the first-failure trigonometric series is not known;
+this becomes \cref{conj:phase-classification}.
+
+\subsection{All higher integer jets: Bell and Bernoulli structure}
+
+The leading derivative \eqref{eq:integer-leading-jet} is enough for exactness,
+but arbitrary $p$ requires higher jets.  They admit a compact factorization.
+For $n\ne0$, write $d=d(n)$, $n=\sigma2^{d-1}q$ as above, and define
+\begin{equation}
+ P_d^{\mathrm{sinc}}(w)
+ :=\prod_{j=0}^{d-1}\sinc\!\left(\frac{\pi w}{2^j}\right).
+ \label{eq:finite-sinc-block}
+\end{equation}
+Factoring the $d$ vanishing sinc terms gives the exact local identity
+\begin{equation}
+ \Phi(n+w)=w^d U_n(w),
+ \qquad
+ U_n(w)=-\frac{P_d^{\mathrm{sinc}}(w)}{(n+w)^d}
+ \Phi\!\left(\frac q2+\frac{\sigma w}{2^d}\right).
+ \label{eq:local-factorization}
+\end{equation}
+
+Let $Y_r$ denote the complete exponential Bell polynomial and set
+\[
+ \lambda_s(n):=\left.\frac{\dd^s}{\dd w^s}\log U_n(w)\right|_{w=0}.
+\]
+
+\begin{proposition}[Bell-polynomial alias jets]
+\label{prop:Bell-jets}
+For every $r\ge0$,
+\begin{equation}
+ \Phi^{(d+r)}(n)
+ =\frac{(d+r)!}{r!}U_n(0)
+ Y_r\bigl(\lambda_1(n),\dots,\lambda_r(n)\bigr),
+ \qquad
+ U_n(0)=-\frac{\Phi(q/2)}{n^d}.
+ \label{eq:Bell-jets}
+\end{equation}
+Moreover,
+\begin{equation}
+\begin{split}
+ \lambda_s(n)={}&
+ \left(\log P_d^{\mathrm{sinc}}\right)^{(s)}(0)
+ +\sigma^s2^{-ds}
+ \left(\log\Phi\right)^{(s)}(q/2)\\
+ &+(-1)^s\frac{d(s-1)!}{n^s}.
+\end{split}
+\label{eq:lambda-s}
+\end{equation}
+The finite sinc contribution vanishes for odd $s$, while for $s=2j$,
+\begin{equation}
+ \left(\log P_d^{\mathrm{sinc}}\right)^{(2j)}(0)
+ =-\frac{2^{2j-1}|B_{2j}|}{j}\pi^{2j}
+ \frac{1-2^{-2jd}}{1-2^{-2j}}.
+ \label{eq:Bernoulli-log-jet}
+\end{equation}
+\end{proposition}
+
+\begin{proof}
+Differentiate $w^dU_n(w)$ and use
+$U_n^{(r)}(0)=U_n(0)Y_r(\lambda_1,\dots,\lambda_r)$.  Formula
+\eqref{eq:lambda-s} follows by logarithmically differentiating
+\eqref{eq:local-factorization}.  Finally,
+\[
+ \log\sinc z
+ =-\sum_{j\ge1}\frac{2^{2j-1}|B_{2j}|}{j(2j)!}z^{2j},
+\]
+and summing the geometric progression over the $d$ sinc factors gives
+\eqref{eq:Bernoulli-log-jet}.
+\end{proof}
+
+Equations \eqref{eq:alias-layers} and \eqref{eq:Bell-jets} provide a fully
+algorithmic exact description for every natural degree $p$: only finitely
+many valuation layers are active, and every active derivative is a finite
+Bell polynomial in explicit local data.
+
+\section{Finite arithmetic formulas for centered and absolute Rvachev combs}
+\label{sec:finite-arithmetic}
+
+The Fourier formulas are structurally transparent.  For exact rational
+arithmetic at a fixed depth, it is useful to insert the point-value formula
+\eqref{eq:F-dyadic-point} directly.
+
+Define the punctured absolute comb
+\begin{equation}
+ A_{m,p}:=h\sum_{k\in\Z\setminus\{0\}}|kh|^p\Up(kh),
+ \qquad p\in\N_0.
+ \label{eq:Amp}
+\end{equation}
+The puncture removes the ambiguous $0^0$ and is also the correct convention
+for negative powers.  Since $\Up(k/M)=F(1-|k|/M)$,
+\begin{equation}
+ A_{m,p}=\frac{2C_m}{M^{p+1}}
+ \sum_{r=0}^{M-2}\eps_r
+ \sum_{t=0}^{M-r-2}(M-r-1-t)^pP_m(2t+1).
+ \label{eq:absolute-finite-double}
+\end{equation}
+This is an exact finite rational formula for every $m,p\in\N_0$.
+
+To expose Bernoulli polynomials, put $L=M-r-1$.  Expanding both powers and
+using Faulhaber's formula gives
+\begin{equation}
+\begin{split}
+ A_{m,p}={}&\frac{2C_m}{M^{p+1}}
+ \sum_{r=0}^{M-2}\eps_r
+ \sum_{j=0}^{\lfloor m/2\rfloor}\binom m{2j}c_j
+ \sum_{u=0}^{p}(-1)^u\binom puL^{p-u}\\
+ &\times\sum_{v=0}^{m-2j}\binom{m-2j}{v}2^v
+ \frac{B_{u+v+1}(L)-B_{u+v+1}}{u+v+1}.
+\end{split}
+\label{eq:absolute-Bernoulli}
+\end{equation}
+For the signed centered comb,
+\[
+ Q_{m,p}(0)=
+ \begin{cases}
+ 0,&p\text{ odd},\\
+ A_{m,p},&p\text{ even and }p>0,\\
+ 1,&p=0.
+ \end{cases}
+\]
+When $p\le m$, \eqref{eq:absolute-Bernoulli} collapses to $c_{p/2}$ for even
+$p$ by \cref{thm:shifted-exactness}.  Thus the formula yields a family of
+nontrivial finite Thue--Morse--Bernoulli identities.
+
+\section{The one-sided Fabius dyadic comb}
+\label{sec:F-comb}
+
+Define, first for natural $p$,
+\begin{equation}
+ R_{m,p}:=h\sum_{a=0}^{M}(ah)^pF(ah),
+ \qquad M=2^m,\\ h=M^{-1}.
+ \label{eq:Rmp}
+\end{equation}
+For $p=0$ the term at $a=0$ is zero because $F(0)=0$.
+
+\subsection{All-depth formula for complex powers}
+
+For $\alpha\in\C$, define $0^\alpha F(0)$ by its continuous value $0$.  The
+flatness of $F$ at the origin makes this legitimate for every $\alpha$.
+Put
+\begin{equation}
+ R_m(\alpha):=h\sum_{a=0}^{M}(ah)^\alpha F(ah).
+ \label{eq:Rmalpha}
+\end{equation}
+
+\begin{theorem}[Hurwitz-zeta--Thue--Morse formula]
+\label{thm:Hurwitz-F-comb}
+For every $m\in\N_0$ and $\alpha\in\C$,
+\begin{equation}
+\begin{split}
+ R_m(\alpha)
+ ={}&\frac{C_m}{M^{\alpha+1}}
+ \sum_{r=0}^{M-1}\eps_r
+ \sum_{j=0}^{\lfloor m/2\rfloor}\binom m{2j}c_j
+ \sum_{\ell=0}^{m-2j}\binom{m-2j}{\ell}2^\ell
+ (-2r-1)^{m-2j-\ell}\\
+ &\times\Bigl[
+ \zeta(-\alpha-\ell,r+1)
+ -\zeta(-\alpha-\ell,M+1)
+ \Bigr].
+\end{split}
+\label{eq:Hurwitz-F-comb}
+\end{equation}
+The difference of Hurwitz zeta functions is entire in $\alpha$; any apparent
+pole cancels.
+\end{theorem}
+
+\begin{proof}
+Insert \eqref{eq:F-dyadic-point} into \eqref{eq:Rmalpha}, interchange the
+finite sums, and expand
+\[
+ (2a-2r-1)^{m-2j}
+ =\sum_{\ell=0}^{m-2j}\binom{m-2j}{\ell}
+ (2a)^\ell(-2r-1)^{m-2j-\ell}.
+\]
+The remaining finite power sum is
+\[
+ \sum_{a=r+1}^{M}a^{\alpha+\ell}
+ =\zeta(-\alpha-\ell,r+1)-\zeta(-\alpha-\ell,M+1).
+\]
+\end{proof}
+
+For $\alpha=p\in\N_0$, use
+$\zeta(-n,x)=-B_{n+1}(x)/(n+1)$ to obtain a fully rational
+Bernoulli--Thue--Morse formula at every depth.  For negative integer
+$\alpha$, the same expression becomes a finite combination of generalized
+harmonic numbers.  Formula \eqref{eq:Hurwitz-F-comb} is therefore the broadest
+closed form in this report: it includes natural, fractional, and negative
+powers without changing the finite outer arithmetic.
+
+\subsection{Exact stabilization for natural powers}
+
+Set
+\begin{equation}
+ \tau(0):=0,
+ \qquad
+ \tau(p):=2\left\lceil\frac p2\right\rceil
+ =\begin{cases}p,&p\text{ even},\\p+1,&p\text{ odd},\end{cases}
+ \quad p\ge1.
+ \label{eq:tau}
+\end{equation}
+
+\begin{theorem}[Exact Fabius right-comb formula]
+\label{thm:F-stabilization}
+For $p\in\N_0$ and $m\ge\tau(p)$,
+\begin{equation}
+ \boxed{
+ R_{m,p}
+ =\frac{h^{p+1}B_{p+1}(M+1)-d_{p+1}}{p+1}.}
+ \label{eq:F-stabilized-Bernoulli}
+\end{equation}
+Equivalently,
+\begin{equation}
+ R_{m,p}
+ =I_p+\frac h2
+ +\sum_{r=1}^{\lfloor(p+1)/2\rfloor}
+ \frac{B_{2r}}{(2r)!}\fall p{2r-1}h^{2r}.
+ \label{eq:F-stabilized-EM}
+\end{equation}
+Thus the Euler--Maclaurin expansion terminates and becomes exact at the stated
+dyadic depth.
+\end{theorem}
+
+\begin{proof}
+Let $f_p(x)=x^pF(x)$ on $[0,1]$ and define the composite trapezoidal sum
+\[
+ T_{m,p}:=h\left(\frac{f_p(0)}2+
+ \sum_{a=1}^{M-1}f_p(ah)+\frac{f_p(1)}2\right).
+\]
+Since $f_p(0)=0$ and $f_p(1)=1$,
+\begin{equation}
+ R_{m,p}=T_{m,p}+\frac h2.
+ \label{eq:R-vs-T}
+\end{equation}
+Poisson summation for the zero extension of $f_p$, with the standard
+half-value convention at the endpoints, gives
+\[
+ T_{m,p}=\sum_{\ell\in\Z}\widehat f_p(M\ell),
+ \qquad
+ \widehat f_p(\xi)=\int_0^1f_p(x)\e^{-2\pi\ii\xi x}\dd x.
+\]
+For a nonzero integer $q$, integrate by parts $p+1$ times.  Flatness of $F$ at
+$0$ and of $1-F$ at $1$ gives
+\begin{equation}
+ \widehat f_p(q)
+ =-\sum_{s=0}^{p}\frac{\fall p s}{(2\pi\ii q)^{s+1}}
+ +\frac{\widehat g_p(q)}{(2\pi\ii q)^{p+1}},
+ \qquad
+ g_p:=D^{p+1}(x^pF).
+ \label{eq:IBP-Fourier}
+\end{equation}
+Pairing $q$ and $-q$ in the first sum leaves exactly the Bernoulli terms in
+\eqref{eq:F-stabilized-EM}.  It remains to show that the last alias sum
+vanishes.
+
+Let $\rho=F'$ and $A=\widehat\rho$.  The operator identity
+\begin{equation}
+ g_p=\prod_{r=2}^{p+1}(xD+r)\rho
+ \label{eq:g-operator}
+\end{equation}
+transforms into
+\begin{equation}
+ \widehat g_p(\xi)
+ =\prod_{s=1}^{p}(s-\xi D_\xi)A(\xi).
+ \label{eq:g-hat-operator}
+\end{equation}
+From \eqref{eq:fabius-density},
+\begin{equation}
+ A(\xi)=\e^{-\pi\ii\xi}\Phi(\xi/2).
+ \label{eq:A-Phi}
+\end{equation}
+At $q=M\ell$, $\ell\ne0$, the zero order of $A$ is
+\begin{equation}
+ \ord_{\xi=q}A=m+v_2(|\ell|).
+ \label{eq:A-zero-order}
+\end{equation}
+If $p$ is odd and $m\ge p+1$, this order is greater than $p$, so
+$\widehat g_p(q)=0$ term by term.  If $p$ is even and $m>p$, the same is true.
+At the boundary case $m=p$, only odd $\ell$ have zero order exactly $p$.
+Then every lower derivative vanishes and
+\[
+ \widehat g_p(q)=(-q)^pA^{(p)}(q).
+\]
+Moreover, all lower derivatives of $\Phi(\xi/2)$ vanish at $q$, so
+\[
+ A^{(p)}(q)=\e^{-\pi\ii q}2^{-p}\Phi^{(p)}(q/2).
+\]
+For even $p$ this is real and even in $q$ (including the case $p=m=0$).
+Thus the numerator is even, whereas $(2\pi\ii q)^{p+1}$ changes sign under
+$q\mapsto-q$.  The two aliases cancel.
+Hence the remainder in \eqref{eq:IBP-Fourier} sums to zero whenever
+$m\ge\tau(p)$.
+
+Finally, expanding $B_{p+1}(M+1)$ at $M=1/h$ gives
+\[
+ \frac{h^{p+1}B_{p+1}(M+1)-1}{p+1}
+ =\frac h2+
+ \sum_{r=1}^{\lfloor(p+1)/2\rfloor}
+ \frac{B_{2r}}{(2r)!}\fall p{2r-1}h^{2r}.
+\]
+Combining this with \eqref{eq:F-continuous-moment} proves
+\eqref{eq:F-stabilized-Bernoulli}.
+\end{proof}
+
+\begin{example}
+The first cases are
+\[
+ R_{m,0}=\frac12+\frac h2,
+\]
+\[
+ R_{m,1}=\frac{1-d_2}{2}+\frac h2+\frac{h^2}{12}
+ \qquad(m\ge2),
+\]
+\[
+ R_{m,2}=\frac{1-d_3}{3}+\frac h2+\frac{h^2}{6}
+ \qquad(m\ge2),
+\]
+and
+\[
+ R_{m,3}=\frac{1-d_4}{4}+\frac h2+\frac{h^2}{4}-\frac{h^4}{120}
+ \qquad(m\ge4).
+\]
+\end{example}
+
+\begin{remark}
+The proof explains the parity in $\tau(p)$.  Odd $p$ requires all aliases of
+$A$ to have order $>p$.  Even $p$ permits the boundary order $p$ because the
+remaining Fourier terms cancel in symmetric pairs.
+\end{remark}
+
+\subsection{An exact absolute-power corollary for \texorpdfstring{$\Up$}{up}}
+
+The Fabius result yields a stronger exact formula for the absolute centered
+comb than polynomial exactness alone.
+
+\begin{theorem}[Absolute integer powers]
+\label{thm:absolute-integer}
+For $p\in\N_0$ and $m\ge\tau(p)$,
+\begin{equation}
+ \boxed{
+ A_{m,p}
+ =\frac{2d_{p+1}}{p+1}
+ +2\zeta(-p)h^{p+1}.}
+ \label{eq:absolute-integer-closed}
+\end{equation}
+The first term is the continuous absolute moment
+\begin{equation}
+ \int_{-1}^{1}|x|^p\Up(x)\dd x
+ =\frac{2d_{p+1}}{p+1}.
+ \label{eq:absolute-continuous}
+\end{equation}
+Consequently:
+\begin{itemize}[leftmargin=2em]
+\item for positive even $p$, the comb is exactly equal to the integral;
+\item for odd $p$, the sole error is the exact zeta correction
+$2\zeta(-p)h^{p+1}$;
+\item for $p=0$, the punctured comb is $1-h$, since $2\zeta(0)=-1$.
+\end{itemize}
+\end{theorem}
+
+\begin{proof}
+For $p\ge1$, use \eqref{eq:up-F-relation} and change $a=M-k$:
+\[
+ A_{m,p}=2h\sum_{k=1}^{M}(kh)^pF(1-kh)
+ =2\sum_{j=0}^{p}(-1)^j\binom pj R_{m,j}.
+\]
+The same binomial combination of the integrals $I_j$ equals
+$2d_{p+1}/(p+1)$.  Insert \eqref{eq:F-stabilized-EM}.  Alternating finite
+differences annihilate every falling factorial of degree $<p$; the only
+surviving endpoint term occurs when $p$ is odd and has degree $p$.  It equals
+$2\zeta(-p)h^{p+1}$ by $\zeta(-p)=-B_{p+1}/(p+1)$.  The case $p=0$ follows
+from the partition of unity after deleting the central term $h\Up(0)=h$.
+\end{proof}
+
+This theorem is the integer resonance of the fractional-power expansion in
+the next section.
+
+\section{Fractional and negative powers}
+\label{sec:fractional}
+
+\subsection{Branch conventions}
+
+On a two-sided comb, $x^\alpha$ is ambiguous for noninteger $\alpha$.  We
+therefore separate
+\[
+ |x|^\alpha
+ \qquad\text{and}\qquad
+ \sgn(x)|x|^\alpha.
+\]
+A chosen complex branch can be reconstructed.  For example, with the
+principal value $(-x)^\alpha=\e^{\pi\ii\alpha}x^\alpha$ for $x>0$,
+\begin{equation}
+ x^\alpha
+ =\frac{1+\e^{\pi\ii\alpha}}2|x|^\alpha
+ +\frac{1-\e^{\pi\ii\alpha}}2\sgn(x)|x|^\alpha.
+ \label{eq:branch-decomposition}
+\end{equation}
+
+\subsection{The Mellin transform of \texorpdfstring{$\Up$}{up}}
+
+For $\Re\alpha>-1$, define
+\begin{equation}
+ \Mell_{\Up}(\alpha)
+ :=\int_{-1}^{1}|x|^\alpha\Up(x)\dd x
+ =2\int_0^1x^\alpha\Up(x)\dd x.
+ \label{eq:Mellin-up}
+\end{equation}
+Since $\Up(x)-1$ is flat at $0$,
+\begin{equation}
+ \Mell_{\Up}(\alpha)
+ =\frac{2}{\alpha+1}
+ +2\int_0^1x^\alpha(\Up(x)-1)\dd x.
+ \label{eq:Mellin-continuation}
+\end{equation}
+The second term is entire in $\alpha$.  Therefore $\Mell_{\Up}$ extends
+meromorphically to $\C$ with exactly one pole, at $\alpha=-1$, of residue
+$2$.
+
+Using $\Up(x)=F(1-x)$ and the symmetric Fabius density gives the useful
+identity
+\begin{equation}
+ \Mell_{\Up}(\alpha)=\frac{2d_{\alpha+1}}{\alpha+1},
+ \label{eq:Mellin-d}
+\end{equation}
+first for $\Re\alpha>-1$ and then meromorphically.  Thus the generalized
+Fabius moment $d_s$ is the natural analytic continuation of all absolute
+Rvachev moments.
+
+\subsection{Universal zeta correction}
+
+For every real $\alpha$, define the punctured comb
+\begin{equation}
+ A_m(\alpha):=h\sum_{k\in\Z\setminus\{0\}}|kh|^\alpha\Up(kh).
+ \label{eq:A-alpha}
+\end{equation}
+For $\alpha>-1$ this is a quadrature approximation to
+$\Mell_{\Up}(\alpha)$.
+
+\begin{lemma}[Cutoff-monomial summation]
+\label{lem:cutoff-mellin}
+Let $\chi\in C_c^\infty([0,\infty))$ be equal to $1$ near $0$, let
+$0<\theta\le1$, and let $\beta>-1$.  Then, for every $N>0$,
+\begin{equation}
+\begin{split}
+ h\sum_{k=0}^{\infty}\bigl(h(k+\theta)\bigr)^\beta
+ \chi\bigl(h(k+\theta)\bigr)
+ ={}&\int_0^\infty x^\beta\chi(x)\dd x\\
+ &+\zeta(-\beta,\theta)h^{\beta+1}+\bigO_{\beta,N,\chi}(h^N).
+\end{split}
+\label{eq:cutoff-mellin}
+\end{equation}
+The formula continues meromorphically in $\beta$ if the integral is read as
+its Mellin finite part.  The only collision of the two displayed residues is
+at $\beta=-1$.
+\end{lemma}
+
+\begin{proof}
+Put
+\[
+ \chi^*(s):=\int_0^\infty \chi(x)x^{s-1}\dd x.
+\]
+For $\Re s>0$, integration by parts gives
+\[
+ \chi^*(s)=-\frac1s\int_0^\infty\chi'(x)x^s\dd x.
+\]
+The integral on the right is entire and rapidly decreasing in every vertical
+strip, because $\chi'$ is supported in a compact subinterval of
+$(0,\infty)$.  Hence $\chi^*$ is meromorphic with a single pole at $s=0$,
+of residue $1$, and has rapid vertical decay away from that pole.
+
+For $c>\beta+1$, Mellin inversion and absolute convergence give
+\[
+ h^{\beta+1}\sum_{k=0}^\infty(k+\theta)^\beta
+ \chi\bigl(h(k+\theta)\bigr)
+ =\frac1{2\pi\ii}\int_{c-\ii\infty}^{c+\ii\infty}
+ \chi^*(s)\zeta(s-\beta,\theta)h^{\beta+1-s}\dd s.
+\]
+Move the contour to $\Re s=-A$.  The Hurwitz zeta pole at $s=\beta+1$
+contributes $\chi^*(\beta+1)=\int x^\beta\chi(x)\dd x$, and the pole of
+$\chi^*$ at $s=0$ contributes
+$\zeta(-\beta,\theta)h^{\beta+1}$.  There are no other poles because $\chi$
+is locally constant at the origin.  Polynomial vertical-strip bounds for the
+Hurwitz zeta function and the rapid decay of $\chi^*$ make the shifted
+integral $\bigO(h^{\beta+1+A})$.  Taking $A$ arbitrarily large proves
+\eqref{eq:cutoff-mellin}.  The same contour identity supplies the stated
+meromorphic continuation.
+\end{proof}
+
+\begin{theorem}[Fractional absolute-power asymptotic]
+\label{thm:fractional-zeta}
+Fix real $\alpha>-1$.  For every $N>0$,
+\begin{equation}
+ \boxed{
+ A_m(\alpha)
+ =\Mell_{\Up}(\alpha)
+ +2\zeta(-\alpha)h^{\alpha+1}
+ +\bigO_{\alpha,N}(h^N).}
+ \label{eq:fractional-zeta}
+\end{equation}
+For nonnegative integer $\alpha=p$, the remainder becomes identically zero
+once $m\ge\tau(p)$, by \cref{thm:absolute-integer}.
+\end{theorem}
+
+\begin{proof}
+Choose a cutoff $\chi$ as in \cref{lem:cutoff-mellin}, supported inside the
+positive half of the support.  On $[0,\infty)$ write
+\[
+ x^\alpha\Up(x)=x^\alpha\chi(x)
+ +x^\alpha\bigl(\Up(x)-\chi(x)\bigr).
+\]
+The second summand extends by zero to a $C_c^\infty$ function: flatness of
+$\Up-1$ removes the apparent singularity at $0$, and flatness of $\Up$
+handles the support endpoint.  Poisson summation therefore makes its comb
+error $\bigO(h^N)$ for every $N$.  Apply
+\cref{lem:cutoff-mellin} with $\theta=1$ to the first summand.  The positive
+half-comb contributes $\zeta(-\alpha)h^{\alpha+1}$, and evenness supplies an
+identical negative-half contribution.  Adding the two integral terms gives
+$\Mell_{\Up}(\alpha)$.
+\end{proof}
+
+The striking feature is the absence of an ordinary infinite Euler--Maclaurin
+series: the flatness of $\Up-1$ kills every higher local coefficient.  At
+integer powers the zeta value explains the parity phenomenon:
+$\zeta(-2r)=0$, while $\zeta(-(2r+1))$ is a nonzero Bernoulli number.
+
+\subsection{Shifted fractional combs}
+
+For $0<\theta<1$, define
+\begin{align}
+ A_{m,\theta}(\alpha)
+ &:=h\sum_{k\in\Z}|h(k+\theta)|^\alpha
+ \Up(h(k+\theta)),
+ \label{eq:shifted-abs-alpha}\\
+ S_{m,\theta}(\alpha)
+ &:=h\sum_{k\in\Z}\sgn(k+\theta)|h(k+\theta)|^\alpha
+ \Up(h(k+\theta)).
+ \label{eq:shifted-signed-alpha}
+\end{align}
+
+\begin{theorem}[Shifted Hurwitz corrections]
+\label{thm:shifted-Hurwitz}
+For fixed real $\alpha>-1$, fixed $0<\theta<1$, and every $N>0$,
+\begin{align}
+ A_{m,\theta}(\alpha)
+ ={}&\Mell_{\Up}(\alpha)
+ +h^{\alpha+1}\bigl[
+ \zeta(-\alpha,\theta)+\zeta(-\alpha,1-\theta)
+ \bigr]
+ +\bigO(h^N),
+ \label{eq:shifted-abs-Hurwitz}\\
+ S_{m,\theta}(\alpha)
+ ={}&h^{\alpha+1}\bigl[
+ \zeta(-\alpha,\theta)-\zeta(-\alpha,1-\theta)
+ \bigr]
+ +\bigO(h^N).
+ \label{eq:shifted-signed-Hurwitz}
+\end{align}
+\end{theorem}
+
+\begin{proof}
+Split the shifted lattice at the origin.  Its positive distances are
+$h(k+\theta)$ for $k\ge0$, while its negative distances are
+$h(k+1-\theta)$ for $k\ge0$.  Apply
+\cref{lem:cutoff-mellin} with shifts $\theta$ and $1-\theta$ to the two local
+monomials, and use Poisson summation for the two smooth flat remainders.  The
+absolute comb adds the two singular contributions.  The signed comb
+subtracts them, and its continuous integral vanishes because $\Up$ is even.
+\end{proof}
+
+The two Hurwitz zeta values are the right- and left-hand singular lattice
+contributions.  At natural integer powers, the reflection identity for
+Bernoulli polynomials makes these formulas consistent with the exact shifted
+quadrature theorem and the special phases in \cref{cor:phase-super}.
+
+\subsection{Negative powers and the logarithmic transition}
+
+For $-1<\alpha<0$, \eqref{eq:fractional-zeta} is an ordinary convergent
+quadrature statement.  At and below $-1$, the continuous integral diverges,
+but the Mellin continuation gives a canonical renormalization.
+
+\begin{proposition}[Renormalized negative powers]
+\label{prop:negative-powers}
+For fixed real $\alpha<-1$, define the meromorphic value of
+$\Mell_{\Up}(\alpha)$ by \eqref{eq:Mellin-continuation}.  Then, away from
+$\alpha=-1$,
+\begin{equation}
+ A_m(\alpha)-2\zeta(-\alpha)h^{\alpha+1}
+ \longrightarrow \Mell_{\Up}(\alpha)
+ \qquad(m\to\infty),
+ \label{eq:negative-renormalized}
+\end{equation}
+with a superalgebraic remainder after the singular term is removed.
+At $\alpha=-1$,
+\begin{equation}
+ A_m(-1)
+ =2\log M+2\gamma
+ +2\int_0^1\frac{\Up(x)-1}{x}\dd x+\bigO_N(h^N)
+ \qquad\text{for every }N>0.
+ \label{eq:alpha-minus-one}
+\end{equation}
+\end{proposition}
+
+\begin{proof}
+Use the meromorphic continuation in \cref{lem:cutoff-mellin} for the singular
+cutoff term and Poisson summation for the flat remainder.  This proves
+\eqref{eq:negative-renormalized}, in fact with an $\bigO_{\alpha,N}(h^N)$
+remainder for every $N$.
+
+For the transition point write $\alpha=-1+\varepsilon$.  From
+\eqref{eq:Mellin-continuation},
+\[
+ \Mell_{\Up}(-1+\varepsilon)
+ =\frac2\varepsilon
+ +2\int_0^1\frac{\Up(x)-1}{x}\dd x+O(\varepsilon),
+\]
+whereas
+\[
+ 2\zeta(1-\varepsilon)h^\varepsilon
+ =-\frac2\varepsilon+2\log M+2\gamma+O(\varepsilon).
+\]
+The poles cancel.  Taking the finite part at $\varepsilon=0$ gives
+\eqref{eq:alpha-minus-one}; the contour remainder is again smaller than every
+power of $h$.
+\end{proof}
+
+Thus:
+\begin{itemize}[leftmargin=2em]
+\item $-1<\alpha<0$: ordinary convergence after a decaying correction;
+\item $\alpha=-1$: logarithmic divergence;
+\item $\alpha<-1$: power divergence
+$2\zeta(-\alpha)h^{\alpha+1}$ plus a finite-part limit.
+\end{itemize}
+
+\subsection{Fractional and negative powers for \texorpdfstring{$F$}{F}}
+\label{sec:F-fractional}
+
+The one-sided Fabius problem is qualitatively simpler at the origin because
+$F$ is flat there.  Define
+\begin{equation}
+ I_F(\alpha):=\int_0^1x^\alpha F(x)\dd x.
+ \label{eq:IF-alpha}
+\end{equation}
+This is an entire function of $\alpha$.  Integration by parts gives
+\begin{equation}
+ I_F(\alpha)=\frac{1-d_{\alpha+1}}{\alpha+1},
+ \label{eq:IF-d-alpha}
+\end{equation}
+with a removable singularity at $\alpha=-1$.  In particular,
+\begin{equation}
+ I_F(-1)=-d'_0=-\int_0^1\log x\,\rho(x)\dd x.
+ \label{eq:IF-minus-one}
+\end{equation}
+Every negative power is integrable because $F(x)=O(x^N)$ for every $N$ as
+$x\downarrow0$.
+
+For the finite comb $R_m(\alpha)$, \cref{thm:Hurwitz-F-comb} is exact at every
+depth.  Its large-$m$ Poincare expansion is especially simple.
+
+\begin{theorem}[Fabius Euler--Maclaurin expansion]
+\label{thm:F-fractional-EM}
+For fixed $\alpha\in\C$ and every $K\ge1$,
+\begin{equation}
+ R_m(\alpha)
+ =I_F(\alpha)+\frac h2
+ +\sum_{r=1}^{K-1}\frac{B_{2r}}{(2r)!}
+ \fall\alpha{2r-1}h^{2r}
+ +\bigO_{\alpha,K}(h^{2K}).
+ \label{eq:F-fractional-EM}
+\end{equation}
+For $\alpha=p\in\N_0$, the falling factorials terminate and
+\cref{thm:F-stabilization} shows that the finite series is exactly equal to
+the comb once $m\ge\tau(p)$.
+\end{theorem}
+
+\begin{proof}
+The function $x^\alpha F(x)$, extended by zero at $0$, is $C^\infty$.  At
+$x=0$ all derivatives vanish.  At $x=1$, flatness of $1-F$ implies that its
+$n$th derivative equals $\fall\alpha n$.  The ordinary Euler--Maclaurin
+formula therefore reduces to \eqref{eq:F-fractional-EM}; adding $h/2$ converts
+the trapezoidal sum to the endpoint-inclusive right comb.
+\end{proof}
+
+\section{Iterated sums of arbitrary order}
+\label{sec:iterated}
+
+\subsection{The universal binomial kernel}
+
+Let $a_j$ be a sequence indexed from a fixed lower bound $j_0$, and define the
+scaled prefix operator
+\[
+ (\mathsf P_h a)_N:=h\sum_{j=j_0}^{N}a_j.
+\]
+
+\begin{lemma}[Discrete Cauchy kernel]
+\label{lem:prefix-kernel}
+For every order $n\ge1$,
+\begin{equation}
+ (\mathsf P_h^n a)_N
+ =h^n\sum_{j=j_0}^{N}
+ \binom{N-j+n-1}{n-1}a_j.
+ \label{eq:prefix-kernel}
+\end{equation}
+\end{lemma}
+
+\begin{proof}
+The formula is immediate for $n=1$.  Summing once more and using the hockey
+stick identity
+\[
+ \sum_{r=j}^{N}\binom{r-j+n-1}{n-1}
+ =\binom{N-j+n}{n}
+\]
+proves the induction step.
+\end{proof}
+
+This answers the purely combinatorial part of the iterated-sum problem.  The
+Fabius/Rvachev structure enters when the upper endpoint is the right edge of
+the support.
+
+\subsection{Full-support \texorpdfstring{$n$}{n}-fold Rvachev sum}
+
+Let
+\begin{equation}
+ T_{m,p}^{(n)}
+ :=h^n\sum_{j=-M}^{M}
+ \binom{M-j+n-1}{n-1}(jh)^p\Up(jh).
+ \label{eq:T-iter-up}
+\end{equation}
+Define the polynomial kernel
+\begin{equation}
+ K_{n,h}(x)
+ :=\frac1{(n-1)!}\prod_{s=1}^{n-1}(1-x+sh).
+ \label{eq:Knh}
+\end{equation}
+Then
+\begin{equation}
+ T_{m,p}^{(n)}
+ =h\sum_{j=-M}^{M}(jh)^pK_{n,h}(jh)\Up(jh).
+ \label{eq:T-as-comb}
+\end{equation}
+The weight has degree $p+n-1$, so \cref{thm:shifted-exactness} applies.
+
+\begin{theorem}[Exact $n$-fold Rvachev sum]
+\label{thm:iterated-up}
+If $m\ge p+n-1$, then
+\begin{equation}
+ \boxed{
+ T_{m,p}^{(n)}
+ =\int_{-1}^{1}x^pK_{n,h}(x)\Up(x)\dd x.}
+ \label{eq:iter-up-integral}
+\end{equation}
+Equivalently, if $e_r$ denotes the elementary symmetric polynomial,
+\begin{equation}
+ T_{m,p}^{(n)}
+ =\frac1{(n-1)!}
+ \sum_{\ell=0}^{n-1}(-1)^\ell
+ e_{n-1-\ell}(1+h,1+2h,\dots,1+(n-1)h)
+ \mu_{p+\ell}.
+ \label{eq:iter-up-moments}
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+Equation \eqref{eq:T-as-comb} follows from
+\[
+ h^{n-1}\binom{M-j+n-1}{n-1}
+ =\frac1{(n-1)!}\prod_{s=1}^{n-1}(1-jh+sh).
+\]
+Apply polynomial exactness, then expand the product in powers of $x$.
+\end{proof}
+
+Because odd moments vanish, \eqref{eq:iter-up-moments} usually contains only
+about half of its nominal terms.  It is a complete closed form in rational
+moments $c_r$.
+
+\subsection{Full-support \texorpdfstring{$n$}{n}-fold Fabius sum}
+
+Define
+\begin{equation}
+ S_{m,p}^{(n)}
+ :=h^n\sum_{j=0}^{M}
+ \binom{M-j+n-1}{n-1}(jh)^pF(jh).
+ \label{eq:S-iter-F}
+\end{equation}
+As before,
+\[
+ S_{m,p}^{(n)}
+ =h\sum_{j=0}^{M}(jh)^pK_{n,h}(jh)F(jh).
+\]
+
+\begin{theorem}[Exact $n$-fold Fabius sum]
+\label{thm:iterated-F}
+If
+\begin{equation}
+ m\ge\tau(p+n-1)=2\left\lceil\frac{p+n-1}{2}\right\rceil,
+ \label{eq:iter-F-threshold}
+\end{equation}
+then
+\begin{equation}
+\boxed{
+\begin{aligned}
+ S_{m,p}^{(n)}={}&\frac1{(n-1)!}
+ \sum_{\ell=0}^{n-1}(-1)^\ell
+ e_{n-1-\ell}(1+h,\dots,1+(n-1)h)\\
+ &\times
+ \frac{h^{p+\ell+1}B_{p+\ell+1}(M+1)-d_{p+\ell+1}}
+ {p+\ell+1}.
+\end{aligned}}
+\label{eq:iter-F-closed}
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+Expand $K_{n,h}$ and apply \cref{thm:F-stabilization} to each power
+$p+\ell$.  The threshold in \eqref{eq:iter-F-threshold} is the maximum of
+$\tau(p+\ell)$ for $0\le\ell\le n-1$.
+\end{proof}
+
+\subsection{Arbitrary upper endpoints and noninteger weights}
+
+At an intermediate dyadic endpoint $N=a<M$, \cref{lem:prefix-kernel} remains
+an exact answer:
+\[
+ h^n\sum_{j=0}^{a}\binom{a-j+n-1}{n-1}(jh)^pF(jh).
+\]
+For natural $p$, inserting \eqref{eq:F-dyadic-point} and expanding the
+polynomial kernel reduces the result to finite Bernoulli-polynomial sums.  For
+complex $\alpha$, the same manipulation produces finite differences of
+Hurwitz zeta functions, exactly as in \cref{thm:Hurwitz-F-comb}.
+
+For $\Up$ with fractional or negative absolute powers, the kernel
+$K_{n,h}(x)$ has a Taylor series at the singular point $x=0$.  Applying the
+shifted singular Euler--Maclaurin theorem term by term yields corrections
+\[
+ \sum_{r\ge0} \kappa_r\zeta(-\alpha-r)h^{\alpha+r+1},
+\]
+where $\kappa_r$ is the $r$th Taylor coefficient of the even part of
+$K_{n,h}$.  Unlike the unweighted case, more than one zeta term can occur
+because the iterated kernel is not locally constant.
+
+\section{Integer-base extension and \texorpdfstring{$q$}{q}-connections}
+\label{sec:base-b}
+
+For an integer $b\ge2$, consider
+\begin{equation}
+ \Phi_b(\xi):=\prod_{j=0}^{\infty}
+ \sinc\!\left(\frac{\pi\xi}{b^j}\right).
+ \label{eq:Phi-b}
+\end{equation}
+It is the Fourier transform of a compactly supported $C^\infty$ probability
+density $\Up_b$, obtained as an infinite convolution of centered uniform
+laws at geometrically decreasing scales.
+
+\begin{theorem}[$b$-adic comb exactness]
+\label{thm:b-adic}
+Let $h=b^{-m}$.  For every real shift $\theta$ and every polynomial $P$ of
+degree at most $m$,
+\begin{equation}
+ h\sum_{k\in\Z}P(h(k+\theta))\Up_b(h(k+\theta))
+ =\int_{\R}P(x)\Up_b(x)\dd x.
+ \label{eq:b-adic-exactness}
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+At every nonzero dual-lattice point $b^m\ell$, the factors with
+$j=0,1,\dots,m$ all vanish.  Thus $\Phi_b$ has zero order at least $m+1$.
+Shifted Poisson summation repeats the proof of
+\cref{thm:shifted-exactness}.
+\end{proof}
+
+This extension clarifies which part of the phenomenon is genuinely dyadic:
+the exactness requires an integer geometric base so that the Fourier zeros
+align with the dual lattice.  The finer valuation and Thue--Morse structure
+is special to $b=2$.
+
+The $q$-connections appear at several levels:
+\begin{itemize}[leftmargin=2em]
+\item the finite sinc block in \eqref{eq:finite-sinc-block} is a geometric
+product whose logarithmic jets are finite $q$-geometric sums;
+\item the moment generating function
+\[
+ \int\e^{tx}\Up(x)\dd x
+ =\prod_{j=0}^{\infty}\frac{\sinh(t/2^{j+1})}{t/2^{j+1}}
+\]
+produces Bernoulli and Bell polynomials by logarithmic expansion;
+\item valuation-layer cancellation suggests Gaussian-binomial or
+$q$-difference filters that annihilate selected alias shells;
+\item for a nonintegral scale ratio $q^{-1}$, exact lattice alignment is lost,
+but finite linear combinations of nearby scales may restore prescribed
+orders of cancellation.
+\end{itemize}
+
+\section{Numerical experiments}
+\label{sec:numerics}
+
+All rational tests were performed with Python's \texttt{Fraction}; no
+floating-point tolerance was used.  The accompanying file
+\texttt{fabius\_dyadic\_comb\_experiments.py} contains the exact point-value
+formula, moment recurrences, Bernoulli polynomials, all-depth comb formula,
+shifted tests, and iterated sums.  The fractional tests use \texttt{mpmath}
+with 70 decimal digits.
+
+\subsection{Moments}
+
+The first centered moments are
+\begin{center}
+\begin{tabular}{c|c}
+\toprule
+$n$ & $c_n=\int x^{2n}\Up(x)\dd x$\\
+\midrule
+0 & $1$\\
+1 & $1/9$\\
+2 & $19/675$\\
+3 & $583/59535$\\
+4 & $132809/32531625$\\
+5 & $46840699/24405225075$\\
+\bottomrule
+\end{tabular}
+\end{center}
+The first Fabius-law moments are
+\[
+ d_0=1,\quad d_1=\frac12,\quad d_2=\frac5{18},\quad
+ d_3=\frac16,\quad d_4=\frac{143}{1350},\quad
+ d_5=\frac{19}{270}.
+\]
+
+\subsection{Observed stabilization thresholds}
+
+For $0\le p\le10$, the first depth at which
+\eqref{eq:F-stabilized-Bernoulli} holds exactly is:
+\begin{center}
+\begin{tabular}{c|rrrrrrrrrrr}
+\toprule
+$p$&0&1&2&3&4&5&6&7&8&9&10\\
+\midrule
+first exact $m$&0&2&2&4&4&6&6&8&8&10&10\\
+$\tau(p)$&0&2&2&4&4&6&6&8&8&10&10\\
+\bottomrule
+\end{tabular}
+\end{center}
+This supports the optimality conjecture in \cref{conj:threshold-optimal}.
+
+\subsection{Shifted first-failure errors}
+
+The following exact errors illustrate \cref{cor:phase-super}.
+\begin{center}
+\begin{tabular}{c|c|c|c}
+\toprule
+$m$ & $p=m+1$ & shift $\theta$ & $Q_{m,p}(\theta)-\mu_p$\\
+\midrule
+1&2&$0$&$1/72$\\
+1&2&$1/4$&$0$\\
+2&3&$0$&$0$\\
+2&3&$1/4$&$-4643/11059200$\\
+3&4&$0$&$-23/5529600$\\
+3&4&$1/4$&$0$\\
+4&5&$0$&$0$\\
+4&5&$1/4$&$4966069/383551316951040$\\
+\bottomrule
+\end{tabular}
+\end{center}
+Every tested shift was exactly correct for all degrees $0\le p\le m$.
+
+\subsection{Fractional corrected sequences}
+
+The table displays
+\[
+ A_m(\alpha)-2\zeta(-\alpha)h^{\alpha+1}.
+\]
+Rapid stabilization is visible even at modest depths.
+\begin{center}
+\begin{tabular}{c|c|c|c}
+\toprule
+$m$ & $\alpha=1/2$ & $\alpha=3/2$ & $\alpha=-1/2$\\
+\midrule
+5  & 0.4913969866635627 & 0.1707208835823527 & 2.7852273786291746\\
+6  & 0.4913969866528344 & 0.1707208835839721 & 2.7852273785097793\\
+7  & 0.4913969866527990 & 0.1707208835839732 & 2.7852273785136532\\
+8  & 0.4913969866527990 & 0.1707208835839732 & 2.7852273785136552\\
+9  & 0.4913969866527990 & 0.1707208835839732 & 2.7852273785136552\\
+10 & 0.4913969866527990 & 0.1707208835839732 & 2.7852273785136552\\
+\bottomrule
+\end{tabular}
+\end{center}
+For $\alpha=5/2$, the corrected value stabilizes to
+$0.0754523281224172153620023427\ldots$.
+
+\subsection{Reproduction instructions}
+
+From the archive directory, run
+\begin{lstlisting}[style=pythonstyle]
+python fabius_dyadic_comb_experiments.py > numerical_results.txt
+\end{lstlisting}
+The script has no mandatory third-party dependency for exact tests.  If
+\texttt{mpmath} is unavailable, use
+\begin{lstlisting}[style=pythonstyle]
+python fabius_dyadic_comb_experiments.py --skip-fractional
+\end{lstlisting}
+
+\section{Conjectures and frontier directions}
+\label{sec:future}
+
+\begin{conjecture}[Optimal Fabius threshold]
+\label{conj:threshold-optimal}
+For every $p\ge1$, the condition $m\ge\tau(p)$ in
+\cref{thm:F-stabilization} is best possible: the stabilized formula fails at
+$m=\tau(p)-1$.
+\end{conjecture}
+
+This is verified exactly for $1\le p\le10$.  A proof should reduce the first
+nonvanishing Fabius alias layer to a signed odd-frequency series and establish
+that its value cannot cancel.
+
+\begin{conjecture}[Classification of first-failure phases]
+\label{conj:phase-classification}
+Modulo $1$, the phase zeros forced by parity in \cref{cor:phase-super} are the
+only zeros common to every depth of the corresponding parity:
+\begin{itemize}[leftmargin=2em]
+\item for even $m$, only $\theta=0,1/2$ are universally superconvergent at
+degree $m+1$;
+\item for odd $m$, only $\theta=1/4,3/4$ are universally superconvergent at
+degree $m+1$.
+\end{itemize}
+Individual depths may have accidental additional zeros.
+\end{conjecture}
+
+\subsection{Promising research programs}
+
+\paragraph{1. Valuation-selective extrapolation.}
+Because degree $p$ activates only finitely many shells
+$v_2(\ell)\le p-m-1$, combine depths $m,m+1,\dots,m+r$ with coefficients that
+annihilate the first $r$ shells.  The coefficients should have a natural
+$q$-binomial description with $q=2^{-1}$ or $2^{-p}$.  This may yield exact
+finite filters rather than merely asymptotic Richardson extrapolation.
+
+\paragraph{2. Denominator and $2$-adic valuation laws.}
+Equations \eqref{eq:absolute-Bernoulli},
+\eqref{eq:F-stabilized-Bernoulli}, and \eqref{eq:iter-F-closed} invite exact
+valuation analysis.  Determine the reduced denominator of $R_{m,p}$ and of
+the iterated sums, and isolate the contributions of Bernoulli denominators,
+$m!$, and the Fabius moment denominators.  Von Staudt--Clausen should interact
+nontrivially with the dyadic cancellations.
+
+\paragraph{3. Complete alias-kernel sign theory.}
+A sign or total-positivity theorem for the odd-frequency coefficients
+$\Phi((2r+1)/2)$ would settle threshold optimality and phase uniqueness.  The
+cosine expansion of $\Up$ and the signed Thue--Morse product may provide two
+complementary approaches.
+
+\paragraph{4. Fractional transseries and Lambert $W$.}
+After removing the zeta singular term, the remainder is superalgebraic.  The
+repo's endpoint/small-argument asymptotics suggest that its logarithm is
+controlled by the same saddle geometry and Lambert-$W$ scales as the Fourier
+decay of $\Phi$.  Derive an explicit beyond-all-orders expansion for
+\[
+ A_m(\alpha)-\Mell_{\Up}(\alpha)-2\zeta(-\alpha)h^{\alpha+1}
+\]
+uniformly in $\alpha$.
+
+\paragraph{5. Inverse-Fabius combs.}
+Study
+\[
+ h\sum_{k}x_k^pF^{-1}(x_k),\qquad x_k=h(k+\theta),
+\]
+where the inverse has logarithmic/Lambert-$W$ endpoint behavior.  Singular
+Euler--Maclaurin should produce non-power corrections, and the exact inverse
+dyadic formulas in the repository may permit arithmetic special cases.
+
+\paragraph{6. Nonintegral geometric ratios.}
+For
+$\Phi_q(\xi)=\prod_{j\ge0}\sinc(\pi q^j\xi)$ with $q^{-1}\notin\N$, exact
+lattice alignment is lost.  Search for finite multiscale filters whose
+Fourier symbols vanish to prescribed order at the relevant approximate
+aliases.  Gaussian binomial coefficients are a natural candidate.
+
+\paragraph{7. Formalization.}
+The proof of \cref{thm:shifted-exactness} requires a Schwartz-class Poisson
+theorem, Fourier differentiation, and the already formalized integer zero
+multiplicity.  The Fabius stabilization theorem additionally needs a
+piecewise-smooth Poisson/trapezoidal lemma and the operator identity
+\eqref{eq:g-hat-operator}.  These are modular Lean targets and would fit the
+repository's promotion policy.
+
+\paragraph{8. Multidimensional tensor and radial variants.}
+Tensor products immediately give exact cubature on dyadic lattices with
+coordinatewise degree bounds.  More interesting is a radial construction
+whose Fourier transform inherits valuation-dependent zero multiplicities on
+spherical lattice shells.
+
+\section{Conclusion}
+
+Dyadic point arithmetic and dyadic-comb quadrature are two faces of the same
+Fourier structure.  The point formulas use signed Thue--Morse cancellation in
+physical space; the comb formulas use increasing zero multiplicity in
+frequency space.  Their combination produces exact results that are stronger
+than ordinary numerical quadrature:
+\begin{itemize}[leftmargin=2em]
+\item arbitrary shifted combs reproduce all $\Up$-moments through degree $m$;
+\item natural Fabius combs stabilize to a finite Bernoulli expression at a
+sharp-looking parity threshold;
+\item fractional powers have a universal zeta correction and no further
+algebraic tail;
+\item negative powers admit a canonical Mellin finite part;
+\item repeated summation closes in a finite moment basis.
+\end{itemize}
+The resulting framework connects Poisson summation, $2$-adic zero geometry,
+Strang--Fix reproduction, Bernoulli and Bell polynomials, Hurwitz zeta values,
+Thue--Morse arithmetic, and the Lambert-$W$ asymptotic frontier.  It also
+provides several concrete formalization and computation targets.
+
+\appendix
+
+\section{Proof details for the Bernoulli boundary sum}
+
+Starting from \eqref{eq:IBP-Fourier}, the boundary contribution to
+$T_{m,p}-I_p$ is
+\[
+ -\sum_{s=0}^{p}\frac{\fall p s}{(2\pi\ii M)^{s+1}}
+ \sum_{\ell\ne0}\ell^{-(s+1)}.
+\]
+Odd powers of $\ell^{-1}$ cancel.  Put $s=2r-1$.  Then
+\[
+ -\frac{2\zeta(2r)}{(2\pi\ii)^{2r}}M^{-2r}
+ \fall p{2r-1}
+ =\frac{B_{2r}}{(2r)!}\fall p{2r-1}h^{2r},
+\]
+using
+\[
+ \zeta(2r)=(-1)^{r+1}\frac{B_{2r}(2\pi)^{2r}}{2(2r)!}.
+\]
+This gives precisely \eqref{eq:F-stabilized-EM} before the spectral remainder
+is considered.
+
+\section{Low-order exact identities}
+
+For convenient reference:
+\begin{align*}
+ \mu_0&=1,&
+ \mu_1&=0,&
+ \mu_2&=\frac19,&
+ \mu_3&=0,&
+ \mu_4&=\frac{19}{675},\\
+ \Mell_{\Up}(0)&=1,&
+ \Mell_{\Up}(1)&=\frac5{18},&
+ \Mell_{\Up}(2)&=\frac19,&
+ \Mell_{\Up}(3)&=\frac{143}{2700}.&&
+\end{align*}
+For the punctured absolute comb, once the threshold is reached,
+\begin{align*}
+ A_{m,0}&=1-h,\\
+ A_{m,1}&=\frac5{18}-\frac{h^2}{6},\\
+ A_{m,2}&=\frac19,\\
+ A_{m,3}&=\frac{143}{2700}+\frac{h^4}{60},\\
+ A_{m,4}&=\frac{19}{675}.
+\end{align*}
+Here $2\zeta(-1)=-1/6$ and $2\zeta(-3)=1/60$.
+
+For the first iterated Rvachev orders,
+\begin{align*}
+ T_{m,p}^{(1)}&=\mu_p,\qquad m\ge p,\\
+ T_{m,p}^{(2)}&=(1+h)\mu_p-\mu_{p+1},\qquad m\ge p+1,\\
+ T_{m,p}^{(3)}&=\frac12\left((1+h)(1+2h)\mu_p
+ -(2+3h)\mu_{p+1}+\mu_{p+2}\right),\\
+ &\hspace{9.4cm}m\ge p+2.
+\end{align*}
+
+\section{Source audit table}
+
+\begin{longtable}{>{\raggedright\arraybackslash}p{0.36\textwidth}>{\raggedright\arraybackslash}p{0.57\textwidth}}
+\toprule
+Source group & Role in this report\\
+\midrule
+\endfirsthead
+\toprule
+Source group & Role in this report\\
+\midrule
+\endhead
+\path{FabiusFunction_Mathematical_Glossary.tex}
+& Normalizations, notation, and cross-reference map.\\
+\path{Fabius_Function_and_Rvachev_Up.tex}
+& Fourier product, moments, Poisson summation, integer zero multiplicities,
+exact dyadic point values, Bernoulli and $q$ identities.\\
+\path{Non_Elementarity_of_the_Fabius_Function.tex}
+& Analytic/flatness context; no comb formula duplicated.\\
+\path{fabius_lean_walkthrough.tex}
+& Formalization boundary and candidate theorem dependencies.\\
+\texttt{non-formalized-}\newline\texttt{research-frontiers.tex}
+& Consolidated dyadic, $q$, repeated-integration, convergence, and
+inverse/saddle research; used to avoid duplication and identify open proof
+obligations.\\
+Archive manifest and frozen historical versions
+& Provenance and identification of earlier drafts, including the separate
+$K$-fold signed Thue--Morse summation note.  These are distinguished from the
+weighted Fabius/Rvachev comb sums studied here.\\
+Papers library
+& Arias de Reyna sources and historical background.\\
+\bottomrule
+\end{longtable}
+
+\section{Implementation notes}
+
+The exact code uses the recurrence \eqref{eq:c-recurrence} and the point
+formula \eqref{eq:F-dyadic-point}.  At a fixed depth, all $F(a/2^m)$ are
+computed as a convolution of the Thue--Morse signs with the odd samples of
+$P_m$.  The implementation is intentionally transparent rather than
+asymptotically optimized.  Exact depths through $m\approx10$ are fast enough
+for the tables in this report.
+
+The all-depth natural-power check uses
+\[
+ \sum_{a=r+1}^{M}a^n
+ =\frac{B_{n+1}(M+1)-B_{n+1}(r+1)}{n+1},
+\]
+which is the integer specialization of \eqref{eq:Hurwitz-F-comb}.  Bernoulli
+numbers are generated exactly from their triangular recurrence, so the code
+does not require a computer algebra system.
+
+\begin{thebibliography}{99}
+
+\bibitem{AriasArithmetic}
+J. Arias de Reyna,
+\emph{Arithmetic of the Fabius function},
+arXiv:1702.06487, version 3, 2017 (manuscript dated 2018).
+\url{https://arxiv.org/abs/1702.06487}.
+
+\bibitem{AriasCompact}
+J. Arias de Reyna,
+\emph{An infinitely differentiable function with compact support: definition
+and properties},
+Rev. Real Acad. Ciencias Madrid 76 (1982), 21--38;
+English version at arXiv:1702.05442.
+
+\bibitem{deBoorRon}
+C. de Boor and A. Ron,
+\emph{Fourier analysis of the approximation power of principal
+shift-invariant spaces},
+Constructive Approximation 8 (1992), 427--462.
+\url{https://doi.org/10.1007/BF01203462}.
+
+\bibitem{StrangFix}
+G. Strang and G. Fix,
+\emph{A Fourier analysis of the finite element variational method},
+in Constructive Aspects of Functional Analysis, C.I.M.E., 1973,
+pp. 793--840.
+
+\bibitem{TrefethenWeideman}
+L. N. Trefethen and J. A. C. Weideman,
+\emph{The exponentially convergent trapezoidal rule},
+SIAM Review 56 (2014), no. 3, 385--458.
+\url{https://doi.org/10.1137/130932132}.
+
+\bibitem{Navot1961}
+I. Navot,
+\emph{An extension of the Euler--Maclaurin summation formula to functions
+with a branch singularity},
+Journal of Mathematics and Physics 40 (1961), 271--276.
+
+\bibitem{Navot1962}
+I. Navot,
+\emph{A further extension of the Euler--Maclaurin summation formula},
+Journal of Mathematics and Physics 41 (1962), 155--163.
+\url{https://doi.org/10.1002/sapm1962411155}.
+
+\bibitem{DLMF}
+NIST Digital Library of Mathematical Functions,
+chapters on Bernoulli polynomials and the Hurwitz zeta function.
+\url{https://dlmf.nist.gov/}.
+
+\bibitem{ProveItMain}
+V. Reshetnikov,
+\emph{Fabius Function and Rvachev Up}, live TeX exposition in the ProveIt
+repository, accessed 28 August 2026.
+\url{https://github.com/VladimirReshetnikov/ProveIt/tree/main/Analysis/FabiusFunction/docs}.
+
+\bibitem{ProveItFrontier}
+V. Reshetnikov,
+\emph{Non-formalized Fabius research frontiers}, consolidated TeX volume in
+the ProveIt repository, accessed 28 August 2026.
+
+\end{thebibliography}
+
+\end{document}

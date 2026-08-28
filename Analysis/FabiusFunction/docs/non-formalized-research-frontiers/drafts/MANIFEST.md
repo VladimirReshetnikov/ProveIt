@@ -74,6 +74,11 @@ sources *as* independent documents (see the group README).
 | --- | --- | --- |
 | `Inverse_and_Sampling_Frontiers/` | *Inverse and Sampling Frontiers for the Fabius–Rvachev System* — consolidation (2026-08-28) of the former `Fabius_Inverse_Frontier_Report_Source_and_PDF/` (*Inverse Frontiers*), `fabius_frontier_dyadic_inverse_barnes_report/` (*Dyadic Inverse Germs and Barnes–Rvachev Deconvolution*), and `Fabius_Dyadic_Self_Sampling_Frontier_Package/` (*Dyadic Self-Sampling, Alias Superconvergence, and Rvachev–Appell Deconvolution*); their assets live under `assets/`, provenance with SHA-256 in the document | absorbed drafts deleted; git history is the archive |
 | `fabius_dyadic_interpolation_report/` | *Dyadic-Comb Interpolation of the Fabius and Rvachev Functions* (Runge instability, endpoint-jet constraints, exact arithmetic, stable local alternatives) | `drafts/incoming/…zip` (unpacked 2026-08-28, second wave) |
+| `fabius_interpolation_report/` | *Dyadic-Comb Interpolation of the Fabius and Rvachev Functions* — an **independent write-up with the same title** as `fabius_dyadic_interpolation_report/` (substantially different text; kept separate like the Fourier-decay sources) | `drafts/incoming/fabius_dyadic_interpolation_report.zip` (unpacked 2026-08-28, third wave) |
+| `Fabius_Rvachev_Dyadic_Interpolation_Report/` | *Global Polynomial Interpolation of the Fabius and Rvachev Functions on Dyadic Combs* | `drafts/incoming/…zip` (unpacked 2026-08-28, third wave) |
+| `Fabius_Dyadic_Comb_Sums_Report_Package/` | *Dyadic-Comb Sums for the Fabius–Rvachev System* (with `generated/` data tables) | `drafts/incoming/…zip` (unpacked 2026-08-28, third wave) |
+| `fabius-dyadic-comb-sums-report/` | *Dyadic-Comb Moments of the Fabius and Rvachev Functions* | `drafts/incoming/…zip` (unpacked 2026-08-28, third wave) |
+| `fabius_dyadic_comb_report_final/` | *Dyadic-Comb Quadrature for the Fabius and Rvachev Functions* | `drafts/incoming/fabius_dyadic_comb_report_bundle.zip` (unpacked 2026-08-28, third wave) |
 
 ## representations — `representations/`
 

@@ -23,4 +23,21 @@ until deliberately folded into the volume:
 the Fabius and Rvachev Functions*: Runge instability, endpoint-jet
 constraints, exact arithmetic, stable local alternatives).
 
+A third wave (also 2026-08-28) added five more separate members, all
+on dyadic-comb sampling sums and interpolation:
+
+- `Fabius_Dyadic_Comb_Sums_Report_Package/` — *Dyadic-Comb Sums for
+  the Fabius–Rvachev System* (with `generated/` data tables);
+- `fabius-dyadic-comb-sums-report/` — *Dyadic-Comb Moments of the
+  Fabius and Rvachev Functions*;
+- `fabius_dyadic_comb_report_final/` — *Dyadic-Comb Quadrature for
+  the Fabius and Rvachev Functions*;
+- `fabius_interpolation_report/` — *Dyadic-Comb Interpolation of the
+  Fabius and Rvachev Functions* — an independent write-up **with the
+  same title** as the second-wave member above (substantially
+  different text; kept separate the way the Fourier-decay sources
+  are);
+- `Fabius_Rvachev_Dyadic_Interpolation_Report/` — *Global Polynomial
+  Interpolation of the Fabius and Rvachev Functions on Dyadic Combs*.
+
 See [`../MANIFEST.md`](../MANIFEST.md) for titles and the previous paths.
