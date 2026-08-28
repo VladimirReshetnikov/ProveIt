@@ -334,13 +334,36 @@ Named geometric uniform law &
 \nolinkurl{geometricUniformDistribution_support_eq_Icc},
 \nolinkurl{weightedSumDistribution_support_eq_Icc} &
 \nolinkurl{GeometricUniformLaw.lean}, \nolinkurl{ProbabilityRepresentation.lean} \\
-Weighted survival and inverse layer cake &
+Weighted survival, lower-CDF, fractional, and inverse layer cake &
 \nolinkurl{integral_smul_setIntegral_subgraph},
+\nolinkurl{integral_smul_setIntegral_supergraph},
 \nolinkurl{intervalIntegral_survival_smul_eq_integral_clamp},
+\nolinkurl{intervalIntegral_cdf_smul_eq_integral_clamp},
+\nolinkurl{fractionalVolterra_measureReal_Iic_eq_integral_posPart},
+\nolinkurl{fractionalVolterra_fabiusReal_eq_integral_posPart},
 \nolinkurl{intervalIntegral_smul_comp_fabiusInv},
 \nolinkurl{intervalIntegral_fabiusInv_eq_one_half} &
 \nolinkurl{SubgraphFubini.lean}, \nolinkurl{SurvivalLayerCake.lean},
+\nolinkurl{CDFLayerCake.lean}, \nolinkurl{FractionalCDFLayerCake.lean},
+\nolinkurl{FabiusFractionalIntegral.lean},
 \nolinkurl{InverseLayerCake.lean}, \nolinkurl{ProbabilityLaplaceMoments.lean} \\
+Absolutely-continuous inverse-pair calculus &
+\nolinkurl{intervalIntegral_deriv_mul_comp_add_comp_mul_deriv_of_lt_iff_lt},
+\nolinkurl{intervalIntegral_deriv_mul_fabiusReal_add_fabiusInv_mul_deriv},
+\nolinkurl{intervalIntegral_fabiusReal_add_fabiusInv_eq_one} &
+\nolinkurl{InversePairIntegral.lean} \\
+Finite-node and geometric formal-series filters &
+\nolinkurl{finitePowerSeriesFilter},
+\nolinkurl{coeff_finitePowerSeriesFilter},
+\nolinkurl{finitePowerSeriesFilter_rescale},
+\nolinkurl{map_finitePowerSeriesFilter},
+\nolinkurl{coeff_finitePowerSeriesFilter_of_exact_of_le},
+\nolinkurl{geometricSeriesFilter},
+\nolinkurl{coeff_geometricSeriesFilter_of_exact},
+\nolinkurl{geometricSeriesFilter_eq_residual_mk},
+\nolinkurl{geometricLagrangeSeriesFilter_eq_residual_mk} &
+\nolinkurl{FinitePowerSeriesFilter.lean},
+\nolinkurl{GeometricPowerSeriesFilter.lean} \\
 Totalized inverse & \nolinkurl{fabiusInv}, \nolinkurl{deriv_deriv_fabiusInv_eq_zero_iff}, \nolinkurl{tendsto_deriv_fabiusInv_atTop_at_zero_right}, \nolinkurl{fabiusInv_differentiableAt_iff}, \nolinkurl{fabiusInv_contDiffAt_infty_iff}, \nolinkurl{fabiusInv_analyticAt_iff} & \nolinkurl{FabiusInverse.lean}, \nolinkurl{InverseNotElementary.lean} \\
 Lower-Lambert coordinate & \nolinkurl{fabiusLambertPhase} & \nolinkurl{FabiusLambertSaddle.lean} \\
 All-orders saddle expansion & saddle mass/log coefficient declarations & \nolinkurl{FabiusFullAsymptoticExpansion.lean} and related modules \\
@@ -480,7 +503,10 @@ a longer proof-oriented or frontier discussion here: principally
 \path{ElementaryFunction.lean}, \path{NotElementary.lean},
 \path{InverseNotElementary.lean}, \path{ProbabilityLaplaceMoments.lean}, and
 \path{FractionalVolterra.lean}, together with
-\path{FractionalVolterraSemigroup.lean}.\\
+\path{FractionalVolterraSemigroup.lean}, \path{CDFLayerCake.lean},
+\path{FractionalCDFLayerCake.lean}, \path{FabiusFractionalIntegral.lean},
+\path{InversePairIntegral.lean}, \path{FinitePowerSeriesFilter.lean}, and
+\path{GeometricPowerSeriesFilter.lean}.\\
 \textbf{Missing engine} & A generic theorem family that the main article deliberately leaves in
 the module guide: path sums, Toeplitz rows, formal coefficient recurrences, finite
 remainders, and Gaussian polynomial estimates.\\
@@ -861,8 +887,11 @@ be the pushforward law.  It is a probability measure and
 \end{equation}
 The Lean declarations are \lean{weightedCoordinateSum},
 \lean{continuous\_weightedCoordinateSum}, \lean{weightedSumDistribution},
-\lean{weightedSumDistribution_Icc}, \lean{weightedSumDistribution_compl_Icc}, and the exact
-topological-support theorem \lean{weightedSumDistribution_support_eq_Icc}.
+\lean{weightedSumDistribution_Icc}, \lean{weightedSumDistribution_compl_Icc},
+\lean{ae_weightedSumDistribution_mem_Icc},
+\lean{weightedSumDistribution_restrict_Icc}, and the exact topological-support theorem
+\lean{weightedSumDistribution_support_eq_Icc}.  The almost-everywhere and restriction
+declarations are owned upstream by \path{ProbabilityRepresentation.lean}.
 
 \subsubsection{Deleting the head coordinate}
 
@@ -1236,6 +1265,60 @@ the support-free clamped identity---are the three
 \path{SurvivalLayerCake.lean}, all derived from
 \lean{integral_smul_setIntegral_subgraph} in \path{SubgraphFubini.lean}.
 
+\begin{theorem}[Atom-preserving lower-CDF and fractional Fabius layer cake]
+\label{integration:thm:fractional-cdf-layer-cake}
+For a finite measure \(\nu\) on \(\R\), \(a\le b\), and a Banach-valued map \(k\)
+interval-integrable on \([a,b]\),
+\begin{equation}
+ \int_a^b \nu(({-\infty},t])k(t)\dd t
+ =\int_{\R}\left(
+   \int_{\min\{\max\{z,a\},b\}}^b k(t)\dd t\right)\dd\nu(z).
+ \label{integration:eq:cdf-layer-cake-clamp}
+\end{equation}
+For the partial identity on \([c,b]\), only \(c\le b\) and the one-sided
+almost-everywhere bound \(z\le b\) are needed.  Compact support on \([a,b]\) gives the
+convenient partial corollary and the full terminal-primitive identity.  No atomlessness
+hypothesis is needed.
+For the Fabius law \(\mu\), every \(\alpha>0\), and every \(x\in\R\),
+\begin{equation}
+ I_{0+}^{\alpha}F(x)
+ =\frac{1}{\Gamma(\alpha+1)}\int_{\R}(x-z)_+^\alpha\dd\mu(z)
+ =\frac{1}{\Gamma(\alpha+1)}
+   \int_{\Omega}(x-X(\omega))_+^\alpha\dd\mathbf P(\omega).
+ \label{integration:eq:fabius-fractional-stopped-power}
+\end{equation}
+At \(x=1\), reflection of \(\mu\) turns the stopped power into the ordinary moment:
+\begin{equation}
+ I_{0+}^{\alpha}F(1)
+ =\frac{1}{\Gamma(\alpha+1)}\int_{\R}z^\alpha\dd\mu(z)
+ =\frac{1}{\Gamma(\alpha+1)}
+   \int_{\Omega}X(\omega)^\alpha\dd\mathbf P(\omega).
+ \label{integration:eq:fabius-fractional-endpoint-moment}
+\end{equation}
+\end{theorem}
+
+The closed-supergraph engine is \lean{integral_smul_setIntegral_supergraph}.  Its four
+finite-measure forms in \path{CDFLayerCake.lean} are
+\lean{intervalIntegral_cdf_smul_eq_integral_clamp},
+\lean{intervalIntegral_cdf_smul_eq_integral_max_of_ae_le},
+\lean{intervalIntegral_cdf_smul_eq_integral_max_of_ae_mem_Icc}, and
+\lean{intervalIntegral_cdf_smul_eq_integral_of_ae_mem_Icc}.  The support-free clamped,
+lower-supported positive-part, probability-CDF positive-part, and compactly supported
+endpoint-power consequences in
+\path{FractionalCDFLayerCake.lean} are
+\lean{fractionalVolterra_measureReal_Iic_eq_integral_clamp},
+\lean{fractionalVolterra_measureReal_Iic_eq_integral_posPart},
+\lean{fractionalVolterra_cdf_eq_integral_posPart}, and
+\lean{fractionalVolterra_measureReal_Iic_eq_integral_rpow_of_ae_mem_Icc}.  Finally,
+\lean{ProbabilityRepresentation.fractionalVolterra_fabiusReal_eq_integral_posPart},
+\lean{ProbabilityRepresentation.fractionalVolterra_fabiusReal_eq_uniformProduct_integral_posPart},
+\lean{ProbabilityRepresentation.fractionalVolterra_fabiusReal_one_eq_integral_rpow}, and
+\lean{ProbabilityRepresentation.fractionalVolterra_fabiusReal_one_eq_uniformProduct_integral_rpow}
+in \path{FabiusFractionalIntegral.lean} are exactly the two Fabius displays above.  These
+are positive-real integral identities, not complex-order continuations, fractional
+derivatives, Caputo formulas, or folded-Rvachev, quantile, or inverse-function
+specializations.
+
 \begin{remark}[Formalized inverse layer-cake boundary]
 The same subgraph engine proves a real- or complex-weighted, Banach-valued inverse-clock
 identity on compact rectangles.  For the Fabius clocks its explicit-primitive and
@@ -1246,9 +1329,17 @@ The real weighted-area specialization is
 \lean{intervalIntegral_mul_fabiusInv_eq}.  The module also exports
 \lean{intervalIntegral_fabiusInv_eq_intervalIntegral_rvachevUp} and
 \lean{intervalIntegral_fabiusInv_eq_one_half}, which identify the inverse area with the
-unit-interval $\Up$ area and with \(1/2\).  These are full-interval theorems.  They do not
-package an arbitrary absolutely continuous primitive, a variable-upper-endpoint area
-identity, higher or fractional inverse primitives, or complex Mellin continuation.
+unit-interval $\Up$ area and with \(1/2\).  These are full-interval theorems.  Separately,
+\lean{intervalIntegral_deriv_mul_comp_add_comp_mul_deriv_of_lt_iff_lt} in
+\path{InversePairIntegral.lean} packages arbitrary real absolutely-continuous outer
+functions on an arbitrary ordered compact rectangle whose two clocks preserve the displayed
+intervals and satisfy the strict inverse-order relation.  Clock measurability is derived,
+not assumed, and degenerate ordered intervals are included.  Its Fabius wrapper and area-sum
+specialization are
+\lean{intervalIntegral_deriv_mul_fabiusReal_add_fabiusInv_mul_deriv} and
+\lean{intervalIntegral_fabiusReal_add_fabiusInv_eq_one}.  These declarations still do not
+package a variable-upper-endpoint area identity, improper singular-endpoint extensions,
+higher or fractional inverse primitives, or complex Mellin continuation.
 \end{remark}
 
 \begin{remark}[Formalized positive-real fractional Volterra boundary]
@@ -1291,10 +1382,34 @@ If the target is complete, \(a\le x\), and \(f\) is continuous on \([a,x]\), the
  =I_{a+}^{\alpha}\!\left[u\mapsto I_{a+}^{\beta}f(u)\right](x).
  \label{integration:eq:fractional-volterra-semigroup}
 \end{equation}
+For a complete target, \(v\in E\), and \(a<x\), the same module proves
+\begin{align}
+ I_{a+}^{\alpha}\!\left[t\mapsto
+   \frac{(t-a)^{\beta-1}}{\Gamma(\beta)}v\right](x)
+ &=\frac{(x-a)^{\alpha+\beta-1}}{\Gamma(\alpha+\beta)}v,
+ &&\alpha,\beta>0,
+ \label{integration:eq:fractional-volterra-normalized-rpow}\\
+ I_{a+}^{\alpha}\!\left[t\mapsto(t-a)^\rho v\right](x)
+ &=\frac{\Gamma(\rho+1)(x-a)^{\alpha+\rho}}
+        {\Gamma(\alpha+\rho+1)}v,
+ &&\alpha>0,\ \rho>-1.
+ \label{integration:eq:fractional-volterra-rpow}
+\end{align}
+The constant specialization includes \(a=x\):
+\begin{equation}
+ I_{a+}^{\alpha}[t\mapsto v](x)
+ =\frac{(x-a)^\alpha}{\Gamma(\alpha+1)}v
+ \qquad(\alpha>0,\ a\le x).
+ \label{integration:eq:fractional-volterra-const}
+\end{equation}
+The exact declarations are \lean{fractionalVolterra_normalized_rpow_smul},
+\lean{fractionalVolterra_rpow_smul}, and \lean{fractionalVolterra_const}.
 No order-zero operator law, reversed-endpoint fractional interpretation, semigroup theorem
-for merely interval-integrable inputs or noncomplete targets, separately packaged general
-power/constant evaluation, Caputo or other fractional derivative, complex-order theorem,
-or Fabius-, Rvachev-, or inverse-function specialization is included in these modules.
+for merely interval-integrable inputs or noncomplete targets, Caputo or other fractional
+derivative, complex-order theorem, hierarchy-specific semigroup, or Rvachev- or
+inverse-function fractional specialization is included.  The positive-real Fabius-CDF
+specialization is recorded separately in
+\cref{integration:thm:fractional-cdf-layer-cake}.
 \end{remark}
 
 \subsection{Raw, endpoint, and tilted Laplace moments}
@@ -2636,14 +2751,30 @@ singletons, and support equal to the series range for \(|q|<1\), with exact supp
 for \(0\le q<1\);
 \cref{integration:sec:weighted-naturality}.\\
 \path{SubgraphFubini.lean} &
-\lean{integral_smul_setIntegral_subgraph}, the real- or complex-weighted Banach-valued
-subgraph exchange over arbitrary s-finite measures; \cref{integration:sec:survival-fubini}.\\
+\lean{integral_smul_setIntegral_subgraph} and
+\lean{integral_smul_setIntegral_supergraph}, the real- or complex-weighted Banach-valued
+open-subgraph and atom-preserving closed-supergraph exchanges over arbitrary s-finite
+measures; \cref{integration:sec:survival-fubini}.\\
 \path{SurvivalLayerCake.lean} &
 The support-free clamped and interval-supported partial/full Banach-valued survival
 identities; \cref{integration:thm:survival-layer-cake}.\\
+\path{CDFLayerCake.lean}, \path{FractionalCDFLayerCake.lean} &
+The support-free clamped, one-sided-upper-supported partial, compactly supported partial,
+and full Banach-valued lower-CDF identities, followed by the positive-real clamped,
+lower-supported positive-part, probability-CDF, and compact endpoint-power fractional forms;
+\cref{integration:thm:fractional-cdf-layer-cake}.\\
+\path{FabiusFractionalIntegral.lean} &
+The distribution-law and product-sample-space positive-real stopped-power formulas for
+every real endpoint, together with both unit-endpoint ordinary-moment forms;
+\cref{integration:thm:fractional-cdf-layer-cake}.\\
 \path{InverseLayerCake.lean} &
 Generic inverse-clock and Fabius explicit-primitive/pointwise-\(C^1\) layer cake, the full
 weighted inverse-area identity, equality with the $\Up$ area, and the inverse mean \(1/2\);
+\cref{integration:sec:survival-fubini}.\\
+\path{InversePairIntegral.lean} &
+The real two-function absolutely-continuous inverse-pair identity on arbitrary ordered
+compact rectangles, with clock monotonicity and measurable clamped representatives derived
+from interval preservation and the strict order equivalence; its Fabius wrapper and area sum;
 \cref{integration:sec:survival-fubini}.\\
 \path{FractionalVolterra.lean}, \path{FractionalVolterraSemigroup.lean} &
 The total real-order Gamma-normalized operator, its unconditional endpoint/locality/scalar,
@@ -2651,15 +2782,17 @@ order-one, and positive-natural-order rules, and its positive-order ordered-endp
 continuous-kernel integrability and input additivity; raw shifted-beta-kernel integrability
 for positive orders and ordered endpoints \(s\le x\); the raw and normalized values under a
 strict endpoint inequality; and additive composition of positive orders for continuous
-Banach-valued inputs on ordered compact intervals.  No corresponding semigroup for merely
-interval-integrable inputs or noncomplete targets, separately packaged power/constant
-specialization, fractional derivative, complex order, order-zero law, reversed-endpoint
-fractional interpretation, or hierarchy-specific specialization;
+Banach-valued inputs on ordered compact intervals.  Normalized shifted powers, arbitrary
+shifted real powers in the sharp range \(\rho>-1\), and constants have their exact
+Gamma-quotient values.  No corresponding semigroup for merely interval-integrable inputs
+or noncomplete targets, fractional derivative, complex order, order-zero law,
+reversed-endpoint fractional interpretation, or hierarchy-specific semigroup;
 \cref{integration:rem:fractional-volterra-boundary}.\\
 \path{ProbabilityLaplaceMoments.lean} &
-Almost-sure support, restriction to $[0,1]$, survival function, the partial/full Rvachev
-survival layer cake, the differentiable compact-support Fubini identity, raw and endpoint
-moment identifications, zero-tilt normalization, and positivity;
+The survival function, partial/full Rvachev survival layer cake, differentiable
+compact-support Fubini identity, raw and endpoint moment identifications, zero-tilt
+normalization, and positivity; the dyadic almost-sure support and restriction declarations
+are owned upstream by \path{ProbabilityRepresentation.lean};
 \cref{integration:sec:survival-fubini,integration:sec:probability-laplace}.\\
 \path{LaplaceMoments.lean} &
 \lean{tiltedSurvivalMoment}, \lean{fabiusLaplaceMoment}, the differential recurrence,
@@ -2675,6 +2808,12 @@ and the exact composition formula for $F(2^{-n})$; \cref{integration:sec:path-su
 Corrected prefix length, exact $q$-binomial row mass, total-variation bound $16$, the generic
 finite-row Toeplitz theorem, and the specialization $q(n,j)=2n-j$;
 \cref{integration:sec:toeplitz,integration:sec:fabius-toeplitz}.\\
+\path{FinitePowerSeriesFilter.lean}, \path{GeometricPowerSeriesFilter.lean} &
+The coefficientwise diagonal action of arbitrary finite-node weighted rescale filters,
+rescaling and coefficient-ring naturality, exactness through the prescribed order, and the
+denominator-free Gaussian residual multiplier for geometric filters, including the
+distinct-node Lagrange specialization.  These are formal power-series identities only and
+assert no analytic convergence, norm bound, or remainder estimate.\\
 \path{SaddleExpansionAlgebra.lean} &
 \lean{expCoeff}, its differential equation, uniqueness, naturality, rescaling, addition,
 parity, and \lean{HasAsymptoticExpansion}; \cref{integration:sec:poincare-api,integration:sec:exp-coeff}.\\

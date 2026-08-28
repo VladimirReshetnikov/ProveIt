@@ -122,8 +122,7 @@
 \author{Human-readable synthesis of the formal development\\
 \small Vladimir Reshetnikov's \texttt{ProveIt} repository}
 \date{Integrated repository snapshot: 28 August 2026\\
-\small mainline checkpoint \nolinkurl{ff66f0ed5}; foundational addendum
-\nolinkurl{216724856}}
+\small source merge \nolinkurl{067ec6e13}}
 
 \begin{document}
 \maketitle
@@ -874,7 +873,11 @@ and
 \lean{ProbabilityRepresentation.weightedSumDistribution_eq_geometricUniformDistribution_one_half}
 identify the dyadic series and law with the named geometric specialization at \(q=1/2\).
 Its exact topological support is recorded by
-\lean{ProbabilityRepresentation.weightedSumDistribution_support_eq_Icc}.
+\lean{ProbabilityRepresentation.weightedSumDistribution_support_eq_Icc}.  The same
+\path{ProbabilityRepresentation.lean} ownership now includes the almost-everywhere carried
+support and restriction identity
+\lean{ProbabilityRepresentation.ae_weightedSumDistribution_mem_Icc} and
+\lean{ProbabilityRepresentation.weightedSumDistribution_restrict_Icc}.
 \end{proof}
 
 \subsection{Generic weighted laws and support-free quantile transport}
@@ -2725,6 +2728,30 @@ If, moreover, \(E\) is complete, \(a\le x\), and \(f\) is continuous on
  =I_{a+}^{\alpha}\!\left[u\mapsto I_{a+}^{\beta}f(u)\right](x).
  \label{eq:fractional-volterra-semigroup}
 \end{equation}
+For \(v\in E\), completeness of \(E\), and a strict endpoint \(a<x\), the same
+beta calculation gives the normalized shifted-power rule
+\begin{equation}
+ I_{a+}^{\alpha}\!\left[t\mapsto
+   \frac{(t-a)^{\beta-1}}{\Gamma(\beta)}v\right](x)
+ =\frac{(x-a)^{\alpha+\beta-1}}{\Gamma(\alpha+\beta)}v
+ \qquad(\alpha,\beta>0),
+ \label{eq:fractional-volterra-normalized-rpow}
+\end{equation}
+and, for \(\rho>-1\),
+\begin{equation}
+ I_{a+}^{\alpha}\!\left[t\mapsto(t-a)^\rho v\right](x)
+ =\frac{\Gamma(\rho+1)(x-a)^{\alpha+\rho}}
+        {\Gamma(\alpha+\rho+1)}v
+ \qquad(\alpha>0).
+ \label{eq:fractional-volterra-rpow}
+\end{equation}
+The constant specialization includes the degenerate endpoint:
+\begin{equation}
+ I_{a+}^{\alpha}[t\mapsto v](x)
+ =\frac{(x-a)^\alpha}{\Gamma(\alpha+1)}v
+ \qquad(\alpha>0,\ a\le x).
+ \label{eq:fractional-volterra-const}
+\end{equation}
 \end{theorem}
 
 The definition and eight exact theorems in \path{FractionalVolterra.lean} are
@@ -2733,15 +2760,18 @@ The definition and eight exact theorems in \path{FractionalVolterra.lean} are
 \lean{intervalIntegrable_fractionalVolterra_kernel},
 \lean{fractionalVolterra_add_input}, \lean{fractionalVolterra_one}, and
 \lean{fractionalVolterra_nat_succ}, together with
-\lean{intervalIntegral_fractionalVolterra_betaKernel}.  The three theorems in
+\lean{intervalIntegral_fractionalVolterra_betaKernel}.  The six theorems in
 \path{FractionalVolterraSemigroup.lean} are
 \lean{intervalIntegrable_fractionalVolterra_betaKernel},
-\lean{intervalIntegral_fractionalVolterra_normalizedBetaKernel}, and
+\lean{intervalIntegral_fractionalVolterra_normalizedBetaKernel},
+\lean{fractionalVolterra_normalized_rpow_smul},
+\lean{fractionalVolterra_rpow_smul}, \lean{fractionalVolterra_const}, and
 \lean{fractionalVolterra_add}.  Together these modules prove no order-zero operator law,
 reversed-endpoint fractional interpretation, semigroup theorem for merely
-interval-integrable inputs or noncomplete targets, separately packaged general
-power/constant evaluation, Caputo or other fractional derivative, complex-order theorem,
-or Fabius-, \(\Up\)-, or inverse-function specialization.
+interval-integrable inputs or noncomplete targets, Caputo or other fractional derivative,
+complex-order theorem, hierarchy-specific semigroup, or \(\Up\)- or inverse-function
+fractional specialization.  The positive-real Fabius-CDF specialization is recorded in
+\Cref{sec:probability-laplace-bridge}.
 
 The signed Fabius dilation law now enters only at the specialization step.
 
@@ -2784,7 +2814,9 @@ use \lean{fabiusReal_eq_extendedFabius_of_le_one}: the oriented segment from \(0
 \begin{boxedremark}
 The generic positive-real operator is formalized in
 \Cref{thm:fractional-volterra-foundation}, including its positive-real, ordered-endpoint,
-continuous-Banach-input semigroup.  Fractional Fabius or Rvachev formulas,
+continuous-Banach-input semigroup and its shifted-power and constant evaluations.  The
+positive-real Fabius-CDF stopped-power and endpoint-moment formulas are formalized in
+\Cref{thm:fabius-fractional-stopped-power}.  Fractional Rvachev formulas,
 hierarchy-adapted or complex-order semigroups, semigroup laws for merely
 interval-integrable inputs or noncomplete targets, complex powers, normal or Mellin
 continuation in a weight exponent, a piecewise global closed form for the bounded function
@@ -3342,6 +3374,69 @@ identities are
 \end{align}
 No positivity assumption is imposed on \(k\); taking \(E=\C\) gives the
 complex-kernel form used by transform arguments.
+
+The atom-preserving closed-supergraph dual is the lower-CDF layer cake.  For any finite
+measure \(\nu\) on \(\R\), \(a\le b\), and Banach-valued \(k\) interval-integrable on
+\([a,b]\),
+\begin{equation}
+ \int_a^b \nu(({-\infty},t])k(t)\dd t
+ =\int_{\R}\left(
+   \int_{\min\{\max\{z,a\},b\}}^b k(t)\dd t\right)\dd\nu(z).
+ \label{eq:cdf-layer-cake-clamp}
+\end{equation}
+For the partial terminal form on \([c,b]\), only \(c\le b\) and the one-sided
+almost-everywhere bound \(z\le b\) are needed.  Compact support on \([a,b]\) gives the
+convenient partial corollary and the full form; the closed rays retain any atoms of \(\nu\).
+
+\begin{theorem}[Fractional stopped-power formula for the Fabius CDF]
+\label{thm:fabius-fractional-stopped-power}
+For every positive real \(\alpha\) and every \(x\in\R\),
+\begin{equation}
+ I_{0+}^{\alpha}F(x)
+ =\frac{1}{\Gamma(\alpha+1)}
+   \int_{\R}(x-z)_+^\alpha\dd\mu_X(z)
+ =\frac{1}{\Gamma(\alpha+1)}
+   \int_{\Omega}(x-X(\omega))_+^\alpha\dd\mathbf P(\omega).
+ \label{eq:fabius-fractional-stopped-power}
+\end{equation}
+This includes \(x\le0\), where both sides vanish.  At the unit endpoint, reflection of
+the weighted-sum law gives
+\begin{equation}
+ I_{0+}^{\alpha}F(1)
+ =\frac{1}{\Gamma(\alpha+1)}\int_{\R}z^\alpha\dd\mu_X(z)
+ =\frac{1}{\Gamma(\alpha+1)}
+   \int_{\Omega}X(\omega)^\alpha\dd\mathbf P(\omega).
+ \label{eq:fabius-fractional-endpoint-moment}
+\end{equation}
+\end{theorem}
+
+The generic closed-supergraph engine is
+\lean{integral_smul_setIntegral_supergraph} in \path{SubgraphFubini.lean}.  Its finite-measure
+clamped, one-sided-upper-supported partial, compactly supported partial, and full forms are
+\lean{intervalIntegral_cdf_smul_eq_integral_clamp},
+\lean{intervalIntegral_cdf_smul_eq_integral_max_of_ae_le},
+\lean{intervalIntegral_cdf_smul_eq_integral_max_of_ae_mem_Icc}, and
+\lean{intervalIntegral_cdf_smul_eq_integral_of_ae_mem_Icc} in
+\path{CDFLayerCake.lean}.  The positive-real fractional forms---respectively without a
+support hypothesis, with only an almost-everywhere lower support bound, directly for a
+probability CDF under that same bound, and at the endpoint of an almost-everywhere compact
+support interval---are
+\lean{fractionalVolterra_measureReal_Iic_eq_integral_clamp},
+\lean{fractionalVolterra_measureReal_Iic_eq_integral_posPart},
+\lean{fractionalVolterra_cdf_eq_integral_posPart}, and
+\lean{fractionalVolterra_measureReal_Iic_eq_integral_rpow_of_ae_mem_Icc} in
+\path{FractionalCDFLayerCake.lean}.  Finally,
+\lean{ProbabilityRepresentation.fractionalVolterra_fabiusReal_eq_integral_posPart},
+\lean{ProbabilityRepresentation.fractionalVolterra_fabiusReal_eq_uniformProduct_integral_posPart},
+\lean{ProbabilityRepresentation.fractionalVolterra_fabiusReal_one_eq_integral_rpow}, and
+\lean{ProbabilityRepresentation.fractionalVolterra_fabiusReal_one_eq_uniformProduct_integral_rpow}
+in \path{FabiusFractionalIntegral.lean} are exactly
+\eqref{eq:fabius-fractional-stopped-power}--
+\eqref{eq:fabius-fractional-endpoint-moment}.  These declarations require neither a density
+nor atomlessness.  They prove positive-real integral identities, not a fractional
+derivative, a Caputo formula, a complex-order continuation, or a folded-\(\Up\), quantile,
+or inverse-function specialization.
+
 For \(s\in\R\) and \(k\in\N\), put
 \begin{equation}
  L_k(s)=\int_{[0,1]}\e^{-sx}x^k\,\dd\mu_X(x).              \label{eq:raw-laplace-moment}
@@ -7115,10 +7210,13 @@ That rule explains several choices made above:
       operator at every positive natural order.  The shifted real beta kernel is evaluated
       exactly when both orders are positive and the endpoint inequality is strict; its raw
       kernel is interval-integrable also at a coincident endpoint.  In a complete target,
-      two positive orders compose for a continuous input on an ordered compact interval.
-      The modules prove no corresponding law for merely interval-integrable inputs or
-      noncomplete targets, no fractional derivative or complex-order result, and no
-      Fabius-specific fractional formula.  Separately, the weighted
+      shifted powers and constants have exact Gamma-quotient values, and two positive
+      orders compose for a continuous input on an ordered compact interval.  The
+      atom-preserving lower-CDF layer cake also gives the positive-real Fabius stopped-power
+      identity for every real endpoint and its unit-endpoint moment.  The modules prove no
+      corresponding semigroup law for merely interval-integrable inputs or noncomplete
+      targets, no fractional derivative or complex-order result, and no folded-Rvachev or
+      inverse-function fractional formula.  Separately, the weighted
       inverse-layer-cake API permits real or complex scalar weights and a Banach-valued
       kernel on the full unit interval.  Variable-endpoint or higher inverse primitives,
       fractional Fabius/inverse identities (including Caputo identities and semigroup
@@ -7187,13 +7285,14 @@ Shape and regularity &
 \path{Differential.lean}, \path{Monotonicity.lean}, \path{Convexity.lean},
 \path{Regularity.lean}\\
 Probability, weighted-law naturality, absolute continuity, exact support and affine recursion,
-quantile transport, layer cake, and finite approximants &
+quantile transport, survival/CDF layer cake, fractional stopped powers, and finite approximants &
 \path{WeightedUniformSeries.lean}, \path{WeightedUniformDistribution.lean},
 \path{WeightedUniformSupport.lean}, \path{GeometricUniformLaw.lean},
 \path{ProbabilityRepresentation.lean},
 \path{QuantileTransport.lean}, \path{SubgraphFubini.lean},
-\path{SurvivalLayerCake.lean}, \path{InverseLayerCake.lean},
-\path{InversePairIntegral.lean},
+\path{SurvivalLayerCake.lean}, \path{CDFLayerCake.lean},
+\path{FractionalCDFLayerCake.lean}, \path{FabiusFractionalIntegral.lean},
+\path{InverseLayerCake.lean}, \path{InversePairIntegral.lean},
 \path{EarlyApproximants.lean},
 \path{EarlyMeasureBridge.lean}, \path{WeakConvergence.lean},
 \path{ProbabilityLaplaceMoments.lean}, \path{LaplaceMoments.lean},
@@ -7315,6 +7414,7 @@ Article & Lean & Meaning\\
 \(J_a^nf\) & \lean{normalizedVolterra}\hspace{0.35em}\lean{n}\hspace{0.35em}\lean{a}\hspace{0.35em}\lean{f} & normalized Cauchy-kernel primitive\\
 \(I_{a+}^{\alpha}f\) & \lean{fractionalVolterra} & total real-order Gamma-normalized Volterra operator\\
 \(I_{a+}^{\alpha+\beta}f=I_{a+}^{\alpha}I_{a+}^{\beta}f\) & \lean{fractionalVolterra_add} & positive orders, ordered endpoint, continuous Banach-valued input\\
+\(I_{0+}^{\alpha}F(x)=\E[(x-X)_+^\alpha]/\Gamma(\alpha+1)\) & \lean{ProbabilityRepresentation.fractionalVolterra_fabiusReal_eq_uniformProduct_integral_posPart} & positive real order, every real endpoint\\
 \(I\) & \lean{fabiusInv}\hspace{0.35em}\lean{fabius}\hspace{0.35em}\lean{fabius_spec} & totalized inverse\\
 \(c_n\) & \lean{moment}\hspace{0.35em}\lean{n} & even moment\\
 \(d_n\) & \lean{halfMoment}\hspace{0.35em}\lean{n} & half moment\\
@@ -7462,14 +7562,9 @@ V.~Reshetnikov,
 \bibitem{proveit}
 V.~Reshetnikov,
 \newblock \emph{ProveIt: Analysis/FabiusFunction},
-\newblock Lean~4 formal development, integrated source snapshot
-\texttt{ff66f0ed55591b23af74c34d3f1aaa0e1ed99e56}, consulted 28 August 2026.
-\newblock \url{https://github.com/VladimirReshetnikov/ProveIt/tree/ff66f0ed55591b23af74c34d3f1aaa0e1ed99e56/Analysis/FabiusFunction}.
-\newblock The inverse-pair integral theorem, finite formal-series filter, geometric
-Gaussian residual filter, and strengthened denominator-free finite \(q\)-binomial
-declarations were checked at commit
-\texttt{21672485601447ed2da543191f6d477c2a47f2b7}, on the same date.
-\newblock \url{https://github.com/VladimirReshetnikov/ProveIt/tree/21672485601447ed2da543191f6d477c2a47f2b7/Analysis/FabiusFunction}.
+\newblock Lean~4 formal development, integrated source merge
+\texttt{067ec6e13a734d0bd3713bcc0652bc83ad5252b9}, consulted 28 August 2026.
+\newblock \url{https://github.com/VladimirReshetnikov/ProveIt/tree/067ec6e13a734d0bd3713bcc0652bc83ad5252b9/Analysis/FabiusFunction}.
 
 \end{thebibliography}
 

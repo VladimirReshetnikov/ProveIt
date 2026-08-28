@@ -161,7 +161,9 @@ by the eleven absorbed reports.  A later formalization now supplies their common
 measure-theoretic first-order engine.  The theorem
 \path{Fabius.integral_smul_setIntegral_subgraph} in
 \path{SubgraphFubini.lean} is a real- or complex-scalar, Banach-valued weighted Fubini
-identity for measurable subgraphs over arbitrary s-finite measures.
+identity for measurable subgraphs over arbitrary s-finite measures.  Its
+atom-preserving closed-supergraph dual is
+\path{Fabius.integral_smul_setIntegral_supergraph} in the same module.
 \path{SurvivalLayerCake.lean} specializes it to finite measures, first without a support
 hypothesis by clamping the stopping point and then, for measures carried by a compact
 interval, in partial and full stopped-primitive forms.  The exact Rvachev specializations
@@ -169,6 +171,18 @@ interval, in partial and full stopped-primitive forms.  The exact Rvachev specia
 and
 \path{Fabius.ProbabilityRepresentation.intervalIntegral_rvachevUp_smul_eq_integral}
 are in \path{ProbabilityLaplaceMoments.lean}.
+
+On the closed-supergraph side, \path{CDFLayerCake.lean} exports the support-free clamped
+identity \path{Fabius.intervalIntegral_cdf_smul_eq_integral_clamp}; the stronger partial
+terminal identity
+\path{Fabius.intervalIntegral_cdf_smul_eq_integral_max_of_ae_le}, which assumes only
+\(c\le b\) and almost-everywhere upper support \(z\le b\); its compact-support corollary
+\path{Fabius.intervalIntegral_cdf_smul_eq_integral_max_of_ae_mem_Icc}; and the full
+compact-support form \path{Fabius.intervalIntegral_cdf_smul_eq_integral_of_ae_mem_Icc}.
+All use closed lower rays and therefore retain atoms.  The dyadic law's carried-support
+declarations \path{Fabius.ProbabilityRepresentation.ae_weightedSumDistribution_mem_Icc}
+and \path{Fabius.ProbabilityRepresentation.weightedSumDistribution_restrict_Icc} are owned
+by \path{ProbabilityRepresentation.lean}, not by the downstream moment module.
 
 For inverse clocks, \path{InverseLayerCake.lean} proves the generic and Fabius-specific
 weighted identities both with an explicit interval-integrable primitive kernel and, under
@@ -192,8 +206,10 @@ both absolutely-continuous factors to be the identity gives
 This update does \emph{not} claim incomplete identities at a variable upper endpoint,
 improper extensions through singular endpoints, higher inverse primitives, a
 fractional-order semigroup for merely interval-integrable inputs or noncomplete targets,
-Fabius/inverse-specific Riemann--Liouville or any Caputo
-formulas, complex Mellin continuations, or a named wrapper having simultaneously the
+Fabius-specific Riemann--Liouville formulas beyond the all-real-endpoint positive-order
+stopped-power and unit-endpoint moment identities recorded in the next status box,
+folded-Rvachev, quantile-transmutation, or inverse-function fractional formulas, any Caputo
+or other fractional-derivative theorem, complex-order or complex-Mellin continuations, or a named wrapper having simultaneously the
 absorbed report's arbitrary-\(L^1\) kernel and arbitrary absolutely-continuous primitive
 hypotheses when that wrapper is not literally exported by the declarations above.  Those
 distinctions supersede only contrary historical status wording; the provenance hashes
@@ -243,13 +259,78 @@ For a complete target, \(a\le x\), and an input continuous on \([a,x]\),
  =I_{a+}^{\alpha}\!\left[u\mapsto I_{a+}^{\beta}f(u)\right](x).
  \label{p0:eq:fractional-volterra-semigroup}
 \end{equation}
+The other three declarations in this six-theorem companion module evaluate shifted powers
+and constants in an arbitrary real Banach target.  For \(v\in E\) and \(a<x\),
+\begin{align}
+ I_{a+}^{\alpha}\!\left[t\mapsto
+   \frac{(t-a)^{\beta-1}}{\Gamma(\beta)}v\right](x)
+ &=\frac{(x-a)^{\alpha+\beta-1}}{\Gamma(\alpha+\beta)}v,
+ &&\alpha,\beta>0,
+ \label{p0:eq:fractional-volterra-normalized-rpow}\\
+ I_{a+}^{\alpha}\!\left[t\mapsto(t-a)^\rho v\right](x)
+ &=\frac{\Gamma(\rho+1)(x-a)^{\alpha+\rho}}
+        {\Gamma(\alpha+\rho+1)}v,
+ &&\alpha>0,\ \rho>-1.
+ \label{p0:eq:fractional-volterra-rpow}
+\end{align}
+These are \path{Fabius.fractionalVolterra_normalized_rpow_smul} and
+\path{Fabius.fractionalVolterra_rpow_smul}.  The declaration
+\path{Fabius.fractionalVolterra_const} also includes the degenerate endpoint:
+\begin{equation}
+ I_{a+}^{\alpha}[t\mapsto v](x)
+ =\frac{(x-a)^\alpha}{\Gamma(\alpha+1)}v
+ \qquad(\alpha>0,\ a\le x).
+ \label{p0:eq:fractional-volterra-const}
+\end{equation}
+
+The four theorems in \path{FractionalCDFLayerCake.lean} combine this kernel with the
+closed-supergraph layer cake.  They are the support-free clamped theorem
+\path{Fabius.fractionalVolterra_measureReal_Iic_eq_integral_clamp}, the one-sided
+lower-supported positive-part theorem
+\path{Fabius.fractionalVolterra_measureReal_Iic_eq_integral_posPart}, its direct
+probability-CDF wrapper \path{Fabius.fractionalVolterra_cdf_eq_integral_posPart}, and the
+compact endpoint-power theorem
+\path{Fabius.fractionalVolterra_measureReal_Iic_eq_integral_rpow_of_ae_mem_Icc}.
+Writing \(\mu_X\) for the dyadic weighted-sum law, \(X\) for its coordinate series, and
+\(\mathbf P\) for the underlying product measure, the
+four declarations in \path{FabiusFractionalIntegral.lean} give, for every \(\alpha>0\) and
+every real \(x\),
+\begin{equation}
+ I_{0+}^{\alpha}F(x)
+ =\frac{1}{\Gamma(\alpha+1)}\int_{\R}(x-z)_+^\alpha\dd\mu_X(z)
+ =\frac{1}{\Gamma(\alpha+1)}
+   \int_{[0,1]^{\N}}(x-X(\omega))_+^\alpha\dd\mathbf P(\omega),
+ \label{p0:eq:fabius-fractional-stopped-power}
+\end{equation}
+including \(x\le0\).  At \(x=1\), reflection gives
+\begin{equation}
+ I_{0+}^{\alpha}F(1)
+ =\frac{1}{\Gamma(\alpha+1)}\int_{\R}z^\alpha\dd\mu_X(z)
+ =\frac{1}{\Gamma(\alpha+1)}
+   \int_{[0,1]^{\N}}X(\omega)^\alpha\dd\mathbf P(\omega).
+ \label{p0:eq:fabius-fractional-endpoint-moment}
+\end{equation}
+The law/sample-space pairs are, respectively,
+\path{Fabius.ProbabilityRepresentation.fractionalVolterra_fabiusReal_eq_integral_posPart},
+\path{Fabius.ProbabilityRepresentation.fractionalVolterra_fabiusReal_eq_uniformProduct_integral_posPart},
+\path{Fabius.ProbabilityRepresentation.fractionalVolterra_fabiusReal_one_eq_integral_rpow},
+and
+\path{Fabius.ProbabilityRepresentation.fractionalVolterra_fabiusReal_one_eq_uniformProduct_integral_rpow}.
 
 This tranche proves no order-zero operator law, reversed-endpoint fractional
 interpretation, semigroup theorem for merely interval-integrable inputs or noncomplete
-targets, separately packaged general power or constant specialization, Caputo or other
-fractional derivative, complex-order theorem, or Fabius-, Rvachev-, quantile-, or
-inverse-function specialization.  In particular, it
-does not discharge the report-local fractional identities named below.  This status box
+targets, Caputo or other fractional derivative, complex-order theorem, hierarchy-specific
+semigroup, or Rvachev-, quantile-, or inverse-function fractional specialization.  Formula
+\eqref{p0:eq:fabius-fractional-stopped-power} exactly discharges the positive-real integral
+line \eqref{p8:eq:F-fractional-integral}, including its all-real endpoint range, and gives
+the positive-real slices of \eqref{p1:eq:fractional-stoploss},
+\eqref{p4:eq:RL-F-prob}, \eqref{p9:eq:RL-F-prob}, and
+\eqref{p10:eq:RL-F-prob}; the endpoint theorem gives their positive-real moment forms.
+Its positive-integer specialization also gives \eqref{p1:eq:J-stoploss}.
+Their complex-order continuations remain open, as does the fractional-derivative line
+\eqref{p8:eq:F-fractional-derivative}.  The power and constant theorems make several
+boundary terms below reusable but do not by themselves package the folded-Rvachev,
+quantile-transmutation, weighted incomplete-beta, or inverse-function formulas.  This status box
 supersedes only contrary historical formalization wording in the absorbed snapshots; the
 provenance hashes above remain unchanged.
 \end{statusbox}
@@ -467,9 +548,12 @@ continuous-Banach-input semigroup in the new table rows are now formalized.  No 
 this update extends to the infinite complex-power
 Newton--Volterra series or its normal convergence, the Mellin/Newton and
 negative-power consequences, a semigroup for merely interval-integrable inputs or
-noncomplete targets, a complex-order or hierarchy-adapted semigroup, fractional Fabius or
-Rvachev formulas, the \(x>1\) branches of the bounded global
-piecewise formula, folded Rvachev primitives or their Fourier renormalization, or the
+noncomplete targets, or a complex-order or hierarchy-adapted semigroup.  The
+all-real-endpoint positive-order Fabius stopped-power and unit-endpoint moment identities in
+\path{FabiusFractionalIntegral.lean} are formalized; no claim extends beyond them to other
+hierarchy-specific fractional Fabius formulas, the \(x>1\) branches of the bounded global
+piecewise formula, folded or other fractional Rvachev primitives or their Fourier
+renormalization, or the
 partial, higher-order, and fractional inverse-Fabius primitives or inverse asymptotics developed below.
 The separate full-interval weighted inverse layer-cake theorem and complete
 proper-compact absolutely-continuous inverse-pair theorem recorded in the consolidated
@@ -14439,10 +14523,15 @@ For \(\alpha>0\), the left Riemann--Liouville integral is
 For \(a\le x\), the real-normed-space-valued version of this positive-real kernel is
 \path{fractionalVolterra} in \path{FabiusFunction.FractionalVolterra}, with its semigroup
 in \path{FabiusFunction.FractionalVolterraSemigroup} and the exact API recorded in the
-consolidated status box.  Its definition is total, but the modules prove no
+consolidated status box.  Its definition is total, but those two operator modules prove no
 reversed-endpoint fractional interpretation, semigroup for merely interval-integrable
-inputs or noncomplete targets, fractional derivative, complex order, or Fabius-specific
-identity; the raw beta kernel is interval-integrable for two positive orders and a
+inputs or noncomplete targets, fractional derivative, complex order, or hierarchy-specific
+identity.  Separately, \path{FabiusFunction.FabiusFractionalIntegral} proves the
+all-real-endpoint positive-order Fabius stopped-power identity
+\eqref{p0:eq:fabius-fractional-stopped-power} and both unit-endpoint moment forms
+\eqref{p0:eq:fabius-fractional-endpoint-moment}.  It does not supply folded-Rvachev,
+quantile-transmutation, inverse-function, complex-order, or fractional-derivative formulas.
+The raw beta kernel is interval-integrable for two positive orders and a
 non-strict endpoint inequality, while its raw and normalized evaluations assume a strict
 endpoint inequality.
 For \(n-1<\alpha<n\),
