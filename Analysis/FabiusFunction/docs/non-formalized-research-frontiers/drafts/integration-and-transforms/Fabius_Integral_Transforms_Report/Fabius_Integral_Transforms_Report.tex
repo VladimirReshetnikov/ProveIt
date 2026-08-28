@@ -116,6 +116,13 @@ beta-weighted formulas, Bernoulli-polynomial integrals, order-statistic represen
 Cauchy transforms, and Gini/autocorrelation integrals expressed through the infinite
 sinc product.  Numerical experiments are supplied in a reproducible Python script.
 
+A post-snapshot Lean audit now provides the generic continuous-linear naturality and
+conditional operator/scalar affine-recursion substrate for weighted uniform laws, together
+with the named geometric weights \((1-q)q^n\), their probability law, self-similarity,
+reflection, carried-unit-interval results, and the half-base bridges.  This does not
+formalize the report's inverse-pair, fractional-power, complex-Mellin, density, transform,
+moment, or fixed-point uniqueness consequences.
+
 Here ``new'' means absent from the recursively audited LaTeX corpus of the referenced
 ProveIt directory at the time of writing.  It is not a claim of worldwide priority.
 Each statement is labelled in context as proved, computational, or conjectural.
@@ -154,8 +161,10 @@ Probability interpretation of \(\F\), compact support and refinement equations f
 language for all integrals.\\
 Generic weighted-uniform laws and support-free quantile transport & The formal source now
 contains arbitrary Banach-valued distribution splitting and reflection, exact interval
-mass for nonnegative real weights, a support-free atom-compatible quantile pushforward,
-its compact specialization, and the clamped Fabius inverse theorem.\\
+mass for nonnegative real weights, continuous-linear and scalar naturality, conditional
+operator/scalar affine recursions, the named geometric-uniform probability law and its
+carried-\([0,1]\) specialization, a support-free atom-compatible quantile pushforward, its
+compact specialization, and the clamped Fabius inverse theorem.\\
 Exact dyadic values, rational moment recurrences, Bernoulli and \(q\)-binomial structure &
 Inputs to the new Mellin/Newton continuation; these arithmetic results are not reproved
 in full.\\
@@ -277,7 +286,7 @@ theorem accepts an arbitrary independently chosen summable tail-weight sequence 
 The shifted tail \(v_n=w_{n+1}\) appears only when that theorem is specialized to split
 one parent law \(\mu_w\).
 
-The exact new declarations are
+The declarations for this probability, splitting, reflection, and carried-set layer are
 \nolinkurl{Fabius.ProbabilityRepresentation.uniformProduct_map_head_tail_comp},
 \nolinkurl{Fabius.ProbabilityRepresentation.weightedUniformDistribution},
 \nolinkurl{Fabius.ProbabilityRepresentation.isProbabilityMeasure_weightedUniformDistribution},
@@ -286,7 +295,93 @@ The exact new declarations are
 \nolinkurl{Fabius.ProbabilityRepresentation.weightedUniformDistribution_reflection},
 \nolinkurl{Fabius.ProbabilityRepresentation.weightedUniformDistribution_Icc}, and
 \nolinkurl{Fabius.ProbabilityRepresentation.weightedUniformDistribution_compl_Icc}.
-They do not supply a geometric-\(q\) density, CDF, or refinement theorem.
+The exact dyadic-to-generic law bridge is
+\nolinkurl{Fabius.ProbabilityRepresentation.weightedSumDistribution_eq_weightedUniformDistribution}.
+
+The module now also proves the generic measure-theoretic engine behind affine
+self-similarity.  If measurable \(g\) and \(\Phi\) satisfy
+\(f(\omega)=\Phi(\omega_0,g(\tau\omega))\) almost everywhere, then
+
+\[
+ f_*\mathbf P=\Phi_*\bigl(\lambda_{[0,1]}\otimes g_*\mathbf P\bigr),
+\]
+
+with no separate measurability assumption on \(f\); a pointwise version is a corollary.
+For a norm-summable sequence in a real Banach space and a continuous linear map \(L\),
+\(L(S_w)=S_{Lw}\), and the corresponding Borel laws satisfy \(L_*\mu_w=\mu_{Lw}\);
+the target normed space need not be complete.  Pointwise scalar naturality needs neither
+summability nor completeness, whereas its law-level version retains source completeness,
+Borel structure, and summability.  If \(w_{n+1}=A(w_n)\) for a continuous linear
+endomorphism \(A\), then
+\[
+ A_*\mu_w=\mu_{w^+},\qquad
+ S_w(\omega)=\omega_0w_0+A(S_w(\tau\omega)),\qquad
+ \mu_w=\bigl((u,z)\mapsto u w_0+A z\bigr)_*
+   \bigl(\lambda_{[0,1]}\otimes\mu_w\bigr).
+\]
+The scalar case \(A=c\,\mathrm{id}\) is valid for arbitrary real \(c\), subject only to
+the displayed norm-summability hypothesis on the weights at the series-splitting and law
+levels.
+
+The eleven declarations in this naturality tranche are
+\nolinkurl{Fabius.ProbabilityRepresentation.uniformProduct_map_of_ae_head_tail_recursion},
+\nolinkurl{Fabius.ProbabilityRepresentation.uniformProduct_map_of_head_tail_recursion},
+\nolinkurl{Fabius.ProbabilityRepresentation.weightedUniformSeries_map},
+\nolinkurl{Fabius.ProbabilityRepresentation.weightedUniformSeries_smul},
+\nolinkurl{Fabius.ProbabilityRepresentation.weightedUniformDistribution_map},
+\nolinkurl{Fabius.ProbabilityRepresentation.weightedUniformDistribution_smul},
+\nolinkurl{Fabius.ProbabilityRepresentation.weightedUniformDistribution_map_eq_shift},
+\nolinkurl{Fabius.ProbabilityRepresentation.weightedUniformSeries_split_of_shift_eq_map},
+\nolinkurl{Fabius.ProbabilityRepresentation.weightedUniformDistribution_split_of_shift_eq_map},
+\nolinkurl{Fabius.ProbabilityRepresentation.weightedUniformSeries_geometric_split}, and
+\nolinkurl{Fabius.ProbabilityRepresentation.weightedUniformDistribution_geometric_split}.
+The last two generic names express only a conditional scalar weight shift; the named
+specialization is a separate layer.
+
+The seven compatibility declarations are
+\nolinkurl{Fabius.ProbabilityRepresentation.weightedUniformSeries_smul_weights},
+\nolinkurl{Fabius.ProbabilityRepresentation.uniformProduct_map_head_tail_function},
+\nolinkurl{Fabius.ProbabilityRepresentation.weightedUniformDistribution_isProbabilityMeasure},
+\nolinkurl{Fabius.ProbabilityRepresentation.weightedUniformDistribution_smul_weights},
+\nolinkurl{Fabius.ProbabilityRepresentation.uniformProduct_map_head_tail_weightedUniformSeries},
+\nolinkurl{Fabius.ProbabilityRepresentation.weightedUniformDistribution_unitInterval}, and
+\nolinkurl{Fabius.ProbabilityRepresentation.weightedUniformDistribution_compl_unitInterval}.
+The law-level scalar compatibility identity is oriented as
+\(\mu_{cw}=(x\mapsto cx)_*\mu_w\).
+
+For every real \(q\), the named weights are \(w_n(q)=(1-q)q^n\), with exact zero and
+successor formulas.  Under \(|q|<1\) they are norm-summable with total mass one; their
+series is continuous and measurable, and the probability law satisfies the exact
+head--tail product identity, affine self-similarity, and reflection.  Under
+\(0\le q<1\), the weights are nonnegative, the series lies in \([0,1]\), and the law gives
+mass one to that interval and zero to its complement.  The nineteen declarations are
+\nolinkurl{Fabius.ProbabilityRepresentation.geometricUniformWeight},
+\nolinkurl{Fabius.ProbabilityRepresentation.geometricUniformWeight_zero},
+\nolinkurl{Fabius.ProbabilityRepresentation.geometricUniformWeight_succ},
+\nolinkurl{Fabius.ProbabilityRepresentation.hasSum_geometricUniformWeight},
+\nolinkurl{Fabius.ProbabilityRepresentation.summable_norm_geometricUniformWeight},
+\nolinkurl{Fabius.ProbabilityRepresentation.geometricUniformWeight_nonneg},
+\nolinkurl{Fabius.ProbabilityRepresentation.geometricUniformSeries},
+\nolinkurl{Fabius.ProbabilityRepresentation.continuous_geometricUniformSeries},
+\nolinkurl{Fabius.ProbabilityRepresentation.measurable_geometricUniformSeries},
+\nolinkurl{Fabius.ProbabilityRepresentation.geometricUniformSeries_split},
+\nolinkurl{Fabius.ProbabilityRepresentation.geometricUniformSeries_reflect},
+\nolinkurl{Fabius.ProbabilityRepresentation.geometricUniformSeries_mem_Icc},
+\nolinkurl{Fabius.ProbabilityRepresentation.geometricUniformDistribution},
+\nolinkurl{Fabius.ProbabilityRepresentation.geometricUniformDistribution_isProbabilityMeasure},
+\nolinkurl{Fabius.ProbabilityRepresentation.uniformProduct_map_head_tail_geometricUniformSeries},
+\nolinkurl{Fabius.ProbabilityRepresentation.geometricUniformDistribution_selfSimilar},
+\nolinkurl{Fabius.ProbabilityRepresentation.geometricUniformDistribution_reflection},
+\nolinkurl{Fabius.ProbabilityRepresentation.geometricUniformDistribution_Icc}, and
+\nolinkurl{Fabius.ProbabilityRepresentation.geometricUniformDistribution_compl_Icc}.
+The exact half-base bridges are
+\nolinkurl{Fabius.ProbabilityRepresentation.weightedCoordinateSum_eq_geometricUniformSeries_one_half}
+and
+\nolinkurl{Fabius.ProbabilityRepresentation.weightedSumDistribution_eq_geometricUniformDistribution_one_half}.
+
+Still outside the formal layer are equality of topological support with \([0,1]\),
+atomlessness, the \(q\)-specific CDF and density identities, characteristic-function
+products, moments and cumulants, and uniqueness of the affine measure fixed point.
 \end{statusbox}
 
 \subsection{Moment-generating and Fourier products}

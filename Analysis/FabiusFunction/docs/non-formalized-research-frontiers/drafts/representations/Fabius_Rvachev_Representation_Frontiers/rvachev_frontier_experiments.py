@@ -395,7 +395,7 @@ def fraction_to_latex(q: Fraction) -> str:
 
 def write_moment_csv(path: Path, moments: Sequence[Fraction]) -> None:
     with path.open("w", newline="", encoding="utf-8") as handle:
-        writer = csv.writer(handle)
+        writer = csv.writer(handle, lineterminator="\n")
         writer.writerow(["n", "moment", "numerator", "denominator", "decimal"])
         for n, q in enumerate(moments):
             writer.writerow([2 * n, f"mu_{2*n}", q.numerator, q.denominator, float(q)])
@@ -403,7 +403,7 @@ def write_moment_csv(path: Path, moments: Sequence[Fraction]) -> None:
 
 def write_jacobi_csv(path: Path, beta: Sequence[Fraction]) -> None:
     with path.open("w", newline="", encoding="utf-8") as handle:
-        writer = csv.writer(handle)
+        writer = csv.writer(handle, lineterminator="\n")
         writer.writerow(
             [
                 "n",
@@ -553,7 +553,6 @@ def numerical_checks(output_dir: Path, digits: int = 50) -> str:
             f"             |cot-tan|={mp.nstr(abs(cot_value-tan_value),8)}  "
             f"|cot-zero|={mp.nstr(abs(cot_value-zero_value),8)}"
         )
-    lines.append("")
 
     report = "\n".join(lines) + "\n"
     (output_dir / "numerical_checks.txt").write_text(report, encoding="utf-8")

@@ -2,7 +2,6 @@ import Mathlib.Algebra.Group.Units.Basic
 import Mathlib.Data.Nat.Choose.Sum
 import Mathlib.Tactic.NormNum
 import Mathlib.Tactic.Ring
-import Lean.Elab.Tactic.Omega
 
 /-!
 # Division-free Bell-polynomial inversion
@@ -14,10 +13,10 @@ convolution is
 `(a ⋆ b) n = ∑ k ≤ n, (n.choose k) · a k · b (n-k)`.
 
 Over a semiring this operation has a product rule under the shift
-`a ↦ (n ↦ a (n+1))` and is associative.  It admits cancellation when the
-zeroth coefficient of the fixed factor is a unit and addition in the
-coefficient semiring is left-cancellative.  Over a commutative semiring the
-complete Bell family `complete κ` is the unique solution of
+`a ↦ (n ↦ a (n+1))` and is associative.  It admits cancellation when addition
+is left-cancellative and the zeroth coefficient of the fixed factor is a unit.
+Over a commutative semiring the complete Bell family `complete κ` is the unique
+solution of
 
 `B 0 = 1`,  `B (n+1) = (B ⋆ shift κ) n`.
 
@@ -111,10 +110,10 @@ theorem binomialConv_succ (a b : ℕ → R) (n : ℕ) :
   rw [Finset.sum_choose_succ_mul (fun i j => a i * b j) n,
     binomialConv_eq_sum_range, binomialConv_eq_sum_range]
   congr 1
-  · refine Finset.sum_congr rfl fun i hi => ?_
-    have hi' : i ≤ n := Nat.lt_succ_iff.mp (Finset.mem_range.mp hi)
-    simp only [shift_apply]
-    rw [show n + 1 - i = n - i + 1 by omega]
+  refine Finset.sum_congr rfl fun i hi => ?_
+  have hi' : i ≤ n := Nat.lt_succ_iff.mp (Finset.mem_range.mp hi)
+  simp only [shift_apply]
+  rw [show n + 1 - i = n - i + 1 by omega]
 
 /-- Shifting a convolution differentiates its two factors, in the formal
 exponential-generating-function sense. -/
@@ -159,11 +158,11 @@ theorem binomialConv_assoc (a b c : ℕ → R) :
       _ = binomialConv a (binomialConv b c) (n + 1) :=
             (binomialConv_succ _ _ n).symm
 
-/-- Right cancellation for binomial convolution when the fixed sequence has a
-unit zeroth coefficient and the coefficient semiring has left-cancellative
-addition.  Higher coefficients are recovered triangularly. -/
-theorem binomialConv_right_cancel [IsLeftCancelAdd R] {a b w : ℕ → R}
-    (hw : IsUnit (w 0))
+/-- Right cancellation for binomial convolution when addition is
+left-cancellative and the fixed sequence has a unit zeroth coefficient.  Higher
+coefficients are recovered triangularly. -/
+theorem binomialConv_right_cancel {a b w : ℕ → R} (hw : IsUnit (w 0))
+    [IsLeftCancelAdd R]
     (h : ∀ n, binomialConv a w n = binomialConv b w n) : a = b := by
   funext n
   induction n using Nat.strong_induction_on with
@@ -245,31 +244,31 @@ theorem shift_complete (κ : ℕ → R) :
   exact complete_succ κ n
 
 /-- The exponential addition law for complete Bell families:
-`complete (κ + μ) = complete κ ⋆ complete μ`. -/
-theorem complete_add (κ μ : ℕ → R) :
-    complete (κ + μ) = binomialConv (complete κ) (complete μ) := by
+`complete (κ + λ) = complete κ ⋆ complete λ`. -/
+theorem complete_add (κ eta : ℕ → R) :
+    complete (κ + eta) = binomialConv (complete κ) (complete eta) := by
   symm
-  refine eq_complete_of_recurrence (κ + μ) _ ?_ ?_
+  refine eq_complete_of_recurrence (κ + eta) _ ?_ ?_
   · simp [binomialConv]
   · intro n
     rw [binomialConv_succ, shift_complete, shift_complete]
     calc
-      binomialConv (complete κ) (binomialConv (complete μ) (shift μ)) n +
-          binomialConv (binomialConv (complete κ) (shift κ)) (complete μ) n
-        = binomialConv (binomialConv (complete κ) (complete μ)) (shift μ) n +
-            binomialConv (binomialConv (complete κ) (complete μ)) (shift κ) n := by
+      binomialConv (complete κ) (binomialConv (complete eta) (shift eta)) n +
+          binomialConv (binomialConv (complete κ) (shift κ)) (complete eta) n
+        = binomialConv (binomialConv (complete κ) (complete eta)) (shift eta) n +
+            binomialConv (binomialConv (complete κ) (complete eta)) (shift κ) n := by
               rw [← binomialConv_assoc,
-                binomialConv_assoc (complete κ) (shift κ) (complete μ),
-                binomialConv_comm (shift κ) (complete μ), ← binomialConv_assoc]
-      _ = binomialConv (binomialConv (complete κ) (complete μ))
-          (shift κ + shift μ) n := by
+                binomialConv_assoc (complete κ) (shift κ) (complete eta),
+                binomialConv_comm (shift κ) (complete eta), ← binomialConv_assoc]
+      _ = binomialConv (binomialConv (complete κ) (complete eta))
+          (shift κ + shift eta) n := by
             rw [congrFun (binomialConv_add_right
-              (binomialConv (complete κ) (complete μ)) (shift κ) (shift μ)) n,
+              (binomialConv (complete κ) (complete eta)) (shift κ) (shift eta)) n,
               Pi.add_apply]
             ac_rfl
-      _ = binomialConv (binomialConv (complete κ) (complete μ))
-          (shift (κ + μ)) n := by
-            have hs : shift (κ + μ) = shift κ + shift μ := by rfl
+      _ = binomialConv (binomialConv (complete κ) (complete eta))
+          (shift (κ + eta)) n := by
+            have hs : shift (κ + eta) = shift κ + shift eta := by rfl
             rw [hs]
 
 /-- The first complete Bell polynomial is `κ₁`. -/
@@ -279,13 +278,13 @@ theorem complete_one (κ : ℕ → R) : complete κ 1 = κ 1 := by
 
 /-- The second complete Bell polynomial is `κ₁² + κ₂`. -/
 theorem complete_two (κ : ℕ → R) : complete κ 2 = κ 1 ^ 2 + κ 2 := by
-  norm_num [complete, Finset.sum_range_succ]
+  simp [complete, Finset.sum_range_succ]
   ring
 
 /-- The third complete Bell polynomial is `κ₁³ + 3κ₁κ₂ + κ₃`. -/
 theorem complete_three (κ : ℕ → R) :
     complete κ 3 = κ 1 ^ 3 + 3 * κ 1 * κ 2 + κ 3 := by
-  norm_num [complete, Finset.sum_range_succ]
+  simp [complete, Finset.sum_range_succ]
   ring
 
 end CommSemiring
@@ -396,7 +395,7 @@ theorem cumulant_two (m : ℕ → R) : cumulant m 2 = m 2 - m 1 ^ 2 := by
 /-- The third cumulant is `m₃ - 3m₁m₂ + 2m₁³`. -/
 theorem cumulant_three (m : ℕ → R) :
     cumulant m 3 = m 3 - 3 * m 1 * m 2 + 2 * m 1 ^ 3 := by
-  norm_num [cumulant, Finset.sum_range_succ]
+  simp [cumulant, Finset.sum_range_succ]
   ring
 
 end CommRing
