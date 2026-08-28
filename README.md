@@ -26,9 +26,10 @@ the formal semantics.
 > than real failures. `lake build -j1` does **not** help: Lake 5.0.0 removed
 > the `-j` flag and rejects `--jobs` too, so the limits go in the environment.
 > Build **one module per `lake build` invocation, in topological order**, with
-> `LAKE_JOBS=1` and `LEAN_NUM_THREADS=0` set &mdash; see
-> [the caution in the Lean workspace section](#lean-workspace) for what each
-> variable bounds and the measurements behind them, and
+> `LAKE_JOBS=1` set and `LEAN_NUM_THREADS` left alone &mdash; see
+> [the caution in the Lean workspace section](#lean-workspace) for what the
+> variable bounds and the measurements behind it (including why
+> `LEAN_NUM_THREADS=0` costs a ~30&times; slowdown), and
 > [`Analysis/FabiusFunction/AGENTS.md`](Analysis/FabiusFunction/AGENTS.md)
 > for the driver, the retry rule, and the Windows traps.
 
@@ -190,19 +191,27 @@ requirement to build Lean one module at a time.
 > One invocation is not by itself one process: Lake sizes its worker pool to
 > hardware concurrency and starts one `lean.exe` **per core** whenever the
 > target has a stale dependency set. On this machine several agent sessions
-> share 13 GB, so that fan-out starves all of them. Set both limits on every
-> build:
+> share 13 GB, so that fan-out starves all of them. Bound the number of
+> processes on every build:
 >
 > ```bash
-> LAKE_JOBS=1 LEAN_NUM_THREADS=0 lake build <one target>
+> LAKE_JOBS=1 lake build <one target>
 > ```
 >
-> `LAKE_JOBS` bounds the number of `lean.exe` processes and
-> `LEAN_NUM_THREADS` bounds the threads inside each one; they are
-> independent, so set both. Lake `5.0.0` accepts neither `-j` nor `--jobs`,
-> so these environment variables are the only control. Measured 2026-08-27:
-> a facade build over a stale dependency set spawned **11 concurrent
-> `lean.exe`**, and **exactly one** under `LAKE_JOBS=1`.
+> `LAKE_JOBS` bounds the number of `lean.exe` processes, which is what
+> exhausts RAM. Lake `5.0.0` accepts neither `-j` nor `--jobs`, so the
+> environment variable is the only control. Measured 2026-08-27: a facade
+> build over a stale dependency set spawned **11 concurrent `lean.exe`**,
+> and **exactly one** under `LAKE_JOBS=1`.
+>
+> **Do not set `LEAN_NUM_THREADS=0`.** It does not mean "auto" &mdash; it
+> serializes elaboration *inside* the one process, and it is not what limits
+> memory. Measured the same day, under the same competing load:
+> `FabiusFunction.AlgebraicBranch` took **~35 minutes** with
+> `LEAN_NUM_THREADS=0`, against **~60 seconds** without it; three further
+> modules built in 172 s, 214 s and 145 s with the variable unset. If a
+> single process is itself too large, set a small *positive* value (2&ndash;4),
+> never `0`.
 >
 > Starvation does not look like starvation. It surfaces as errors that read
 > like corruption:
@@ -232,7 +241,6 @@ The root workspace is pinned by [`lean-toolchain`](lean-toolchain) and
 ```powershell
 lake exe cache get
 $env:LAKE_JOBS=1
-$env:LEAN_NUM_THREADS=0
 lake build +FabiusFunction.Basic
 ```
 
@@ -241,9 +249,10 @@ machine it must be **serialized**: build one module per `lake build`
 invocation, in topological order. Parallel Lean workers exhaust RAM and report
 `failed to read file '...olean'`, which looks like corruption but is not; the
 same module compiles on a serial retry. `lake build -j1` is not a workaround
-(Lake 5.0.0 removed `-j` and rejects `--jobs`), which is why `LAKE_JOBS=1` and
-`LEAN_NUM_THREADS=0` are set in the environment instead, as the caution above
-describes. The
+(Lake 5.0.0 removed `-j` and rejects `--jobs`), which is why `LAKE_JOBS=1` is
+set in the environment instead, as the caution above describes (and
+`LEAN_NUM_THREADS` is left alone &mdash; `0` serializes elaboration for a
+~30&times; slowdown). The
 [`Analysis/FabiusFunction` agent guide](Analysis/FabiusFunction/AGENTS.md)
 has the driver and the retry rule.
 
@@ -251,7 +260,6 @@ Focused examples are:
 
 ```powershell
 $env:LAKE_JOBS=1
-$env:LEAN_NUM_THREADS=0
 # Run exactly one target at a time:
 lake build JacobianConjecture
 lake build +PolynomialFormulas

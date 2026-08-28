@@ -1,5 +1,5 @@
 import FabiusFunction.Existence
-import FabiusFunction.WeightedUniformSeries
+import FabiusFunction.GeometricUniformLaw
 import Mathlib.Probability.CDF
 
 /-!
@@ -54,6 +54,18 @@ theorem weightedCoordinateSum_eq_weightedUniformSeries (ω : SampleSpace) :
   apply tsum_congr
   intro n
   simp only [smul_eq_mul]
+  ring
+
+/-- At `q = 1 / 2`, the geometric uniform series is exactly the dyadic
+random series used in the Fabius probability representation. -/
+theorem weightedCoordinateSum_eq_geometricUniformSeries_one_half
+    (ω : SampleSpace) :
+    weightedCoordinateSum ω = geometricUniformSeries (1 / 2) ω := by
+  rw [weightedCoordinateSum_eq_weightedUniformSeries]
+  unfold geometricUniformSeries weightedUniformSeries
+  apply tsum_congr
+  intro n
+  simp only [geometricUniformWeight, smul_eq_mul, div_pow, one_pow]
   ring
 
 private abbrev dyadicWeight (n : ℕ) : ℝ :=
@@ -144,6 +156,16 @@ theorem weightedSumDistribution_eq_weightedUniformDistribution :
         (fun n : ℕ => (1 : ℝ) / 2 / (2 : ℝ) ^ n) := by
   unfold weightedSumDistribution weightedUniformDistribution
   rw [weightedCoordinateSum_eq_weightedUniformSeries_fun]
+
+/-- The classical dyadic law is the half-base member of the geometric
+uniform family. -/
+theorem weightedSumDistribution_eq_geometricUniformDistribution_one_half :
+    weightedSumDistribution = geometricUniformDistribution (1 / 2) := by
+  rw [weightedSumDistribution, geometricUniformDistribution,
+    weightedUniformDistribution]
+  apply Measure.map_congr
+  filter_upwards with ω
+  exact weightedCoordinateSum_eq_geometricUniformSeries_one_half ω
 
 /-- The law of the random series is a probability measure, being the
 pushforward of one along a measurable map. -/

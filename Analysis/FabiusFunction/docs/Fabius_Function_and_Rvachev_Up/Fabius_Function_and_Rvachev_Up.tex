@@ -121,8 +121,8 @@
 \large Exact arithmetic, probability, Fourier analysis, and corrected sharp asymptotics}
 \author{Human-readable synthesis of the formal development\\
 \small Vladimir Reshetnikov's \texttt{ProveIt} repository}
-\date{Repository snapshot: 27 August 2026\\
-\small commit \nolinkurl{0770442945d65bac5530c4f214c6c52c4cb9fbdc}}
+\date{Integrated repository snapshot: 27 August 2026\\
+\small commit \nolinkurl{fbfffd928711d0f3e199417b913c9770718d2154}}
 
 \begin{document}
 \maketitle
@@ -989,6 +989,60 @@ displayed transport identities deliberately use uniform measure restricted to
 \([0,1]\).  They do not by themselves prove the frontier report's two-function
 integration-by-parts identity, complex Mellin continuation, or fractional-power
 substitutions.
+
+\subsection{The normalized geometric family}
+
+The same product probability space supports a more general family without changing the
+measure-theoretic argument.  For \(q\in\R\) with \(\lvert q\rvert<1\), put
+\begin{equation}
+ w_n(q)=(1-q)q^n,
+ \qquad
+ X_q=\sum_{n=0}^{\infty}w_n(q)U_n,
+ \qquad
+ \mu_q=\operatorname{law}(X_q).                            \label{eq:geometric-uniform-law}
+\end{equation}
+The weights are absolutely summable and have total mass one.  The series is continuous and
+measurable on the full product space, and its law satisfies the exact affine refinement
+\begin{equation}
+ \mu_q
+ =\bigl(\operatorname{Unif}[0,1]\otimes\mu_q\bigr)
+    \mathbin{\mathrm{map}}
+      \bigl((u,x)\mapsto(1-q)u+qx\bigr).                   \label{eq:geometric-law-refinement}
+\end{equation}
+Equivalently, \(X_q\overset d=(1-q)U_0+qX_q'\), where \(X_q'\) is an independent copy.
+Coordinate reflection gives
+\(\mu_q\mathbin{\mathrm{map}}(x\mapsto1-x)=\mu_q\).
+When \(0\le q<1\), every weight is nonnegative and \(\mu_q([0,1])=1\); the endpoint \(q=0\)
+is included.  At \(q=1/2\), both \(X_q\) and \(\mu_q\) are exactly the dyadic random series
+and law above.
+
+\begin{proof}[Formal proof]
+The canonical arbitrary-weight pushforward law, affine head--tail decomposition,
+reflection, and interval concentration are
+\lean{weightedUniformDistribution_split},
+\lean{weightedUniformDistribution_reflection}, and
+\lean{weightedUniformDistribution_Icc} in
+\path{WeightedUniformSeries.lean}.  Scalar naturality is
+\lean{weightedUniformDistribution_smul_weights} in
+\path{WeightedUniformDistribution.lean}.  Their geometric specializations are
+\lean{hasSum_geometricUniformWeight},
+\lean{summable_norm_geometricUniformWeight},
+\lean{continuous_geometricUniformSeries},
+\lean{measurable_geometricUniformSeries},
+\lean{geometricUniformSeries_split},
+\lean{geometricUniformDistribution_isProbabilityMeasure},
+\lean{geometricUniformDistribution_selfSimilar},
+\lean{geometricUniformDistribution_reflection}, and
+\lean{geometricUniformDistribution_Icc} in
+\path{GeometricUniformLaw.lean}.  Exact half-base recovery is
+\lean{weightedCoordinateSum_eq_geometricUniformSeries_one_half} and
+\lean{weightedSumDistribution_eq_geometricUniformDistribution_one_half} in
+\path{ProbabilityRepresentation.lean}.
+\end{proof}
+
+These declarations prove concentration on \([0,1]\), not yet that the topological support is
+exactly that interval.  They also make no claim here about the general-\(q\) CDF, densities,
+Fourier products, moments, cumulants, or smoothness.
 
 \subsection{Finite atomic laws and weak convergence}
 
@@ -6523,11 +6577,11 @@ The bounded \(F\) supplies the probability and arithmetic viewpoints; the compac
 supported \(\Up\) supplies refinement, Fourier, spline, and Legendre viewpoints; and the
 signed \(\mathcal F\) supplies the global dilation and binary-translation formulas.  Exact
 bridges connect them to finite atomic laws, weak convergence, centered splines, moments,
-generic weighted distributions, exact quantile transport, reciprocal-power values, dyadic
-algorithms, half-base \(q\)-binomial identities, prefix
-sums, denominator-free arbitrary-base geometric interpolation, normalized integer-order
-Volterra primitives and polynomial weights, endpoint Laplace analysis, and computable
-approximation.
+generic weighted distributions, geometrically weighted uniform laws, exact quantile
+transport, reciprocal-power values, dyadic algorithms, half-base \(q\)-binomial identities,
+prefix sums, denominator-free arbitrary-base geometric interpolation, normalized
+integer-order Volterra primitives and polynomial weights, endpoint Laplace analysis, and
+computable approximation.
 
 The most important methodological conclusion is equally concrete: the primary document is
 now a map of proved mathematics.  Research claims can move back from the frontier only after
@@ -6554,7 +6608,8 @@ Shape and regularity &
 \path{Differential.lean}, \path{Monotonicity.lean}, \path{Convexity.lean},
 \path{Regularity.lean}\\
 Probability, weighted laws, quantile transport, and finite approximants &
-\path{WeightedUniformSeries.lean}, \path{ProbabilityRepresentation.lean},
+\path{WeightedUniformSeries.lean}, \path{WeightedUniformDistribution.lean},
+\path{GeometricUniformLaw.lean}, \path{ProbabilityRepresentation.lean},
 \path{QuantileTransport.lean},
 \path{EarlyApproximants.lean},
 \path{EarlyMeasureBridge.lean}, \path{WeakConvergence.lean},
@@ -6818,9 +6873,9 @@ V.~Reshetnikov,
 \bibitem{proveit}
 V.~Reshetnikov,
 \newblock \emph{ProveIt: Analysis/FabiusFunction},
-\newblock Lean~4 formal development, source snapshot
-\texttt{0770442945d65bac5530c4f214c6c52c4cb9fbdc}, consulted 27 August 2026.
-\newblock \url{https://github.com/VladimirReshetnikov/ProveIt/tree/0770442945d65bac5530c4f214c6c52c4cb9fbdc/Analysis/FabiusFunction}.
+\newblock Lean~4 formal development, integrated source snapshot
+\texttt{fbfffd928711d0f3e199417b913c9770718d2154}, consulted 27 August 2026.
+\newblock \url{https://github.com/VladimirReshetnikov/ProveIt/tree/fbfffd928711d0f3e199417b913c9770718d2154/Analysis/FabiusFunction}.
 
 \end{thebibliography}
 
