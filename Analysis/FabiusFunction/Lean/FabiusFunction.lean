@@ -195,6 +195,7 @@ import FabiusFunction.InverseLayerCake
 import FabiusFunction.QuantileTransport
 import FabiusFunction.GlobalBounds
 import FabiusFunction.NormalizedVolterra
+import FabiusFunction.FractionalVolterra
 import FabiusFunction.FabiusAntiderivatives
 import FabiusFunction.RvachevDerivativeDistribution
 import FabiusFunction.BoundedDerivatives

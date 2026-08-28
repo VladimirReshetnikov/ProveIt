@@ -122,8 +122,8 @@
 \author{Human-readable synthesis of the formal development\\
 \small Vladimir Reshetnikov's \texttt{ProveIt} repository}
 \date{Integrated repository snapshot: 28 August 2026\\
-\small mainline checkpoint \nolinkurl{68a0daecb}; Volterra addendum
-\nolinkurl{e109088ed}}
+\small mainline checkpoint \nolinkurl{12841262d}; fractional-Volterra addendum
+\nolinkurl{69086ec87}}
 
 \begin{document}
 \maketitle
@@ -160,7 +160,10 @@ normalized Volterra calculus whose algebra takes values in an arbitrary real nor
 For continuous inputs in a complete target, literal iteration and the Cauchy kernel are
 identified exactly; strict FTC, additive composition of orders, Taylor reconstruction, and
 finite polynomial commutators then give closed forms for every integer-order primitive of
-the signed extension and every natural-monomial weight.
+the signed extension and every natural-monomial weight.  A separate Gamma-normalized
+operator supplies the positive-real Riemann--Liouville kernel over arbitrary real normed
+spaces on ordered endpoints and agrees exactly with the normalized integer operator at
+every positive natural order.
 
 The endpoint chapters report only the negative-Laplace decompositions, periodic correction,
 lower-Lambert formulas, saddle estimates, and correction terms that have named proved
@@ -2545,6 +2548,54 @@ are \lean{normalizedVolterra_succ_iteratedDeriv_eq_sub_taylor} and
 the generic module has a literal mathematical counterpart above, including the order-zero
 and endpoint cases.
 
+For a real order \(\alpha\), define the total oriented operator
+\begin{equation}
+ (I_{a+}^{\alpha}f)(x)
+ :=\int_a^x\frac{(x-t)^{\alpha-1}}{\Gamma(\alpha)}f(t)\dd t.
+ \label{eq:fractional-volterra}
+\end{equation}
+Here the real power is Lean's total real-power convention.  Its classical
+Riemann--Liouville interpretation below is restricted to \(0<\alpha\) and \(a\le x\).
+
+\begin{theorem}[Positive-real fractional Volterra foundation]
+\label{thm:fractional-volterra-foundation}
+Let \(E\) be a real normed vector space and \(f,g:\R\to E\).  For arbitrary real
+\(\alpha,a,x,c\), the operator vanishes at its base point, depends only on the input on
+the closed unoriented interval between \(a\) and \(x\), and satisfies
+\begin{align}
+ I_{a+}^{\alpha}(cf)(x)&=cI_{a+}^{\alpha}f(x),
+ & I_{a+}^{1}f(x)&=\int_a^x f(t)\dd t.                       \label{eq:fractional-volterra-algebra}
+\end{align}
+For every \(n\in\N\), without endpoint-order or regularity assumptions,
+\begin{equation}
+ I_{a+}^{n+1}f(x)=J_a^{n+1}f(x).                             \label{eq:fractional-volterra-natural}
+\end{equation}
+If \(0<\alpha\), \(a\le x\), and \(f\) and \(g\) are continuous on \([a,x]\), then
+the two fractional kernels are interval-integrable and
+\begin{equation}
+ I_{a+}^{\alpha}(f+g)(x)
+ =I_{a+}^{\alpha}f(x)+I_{a+}^{\alpha}g(x).                  \label{eq:fractional-volterra-add-input}
+\end{equation}
+For \(0<\alpha\), \(0<\beta\), and \(s<x\), the shifted real beta kernel has the exact value
+\begin{equation}
+ \int_s^x(x-u)^{\alpha-1}(u-s)^{\beta-1}\dd u
+ =(x-s)^{\alpha+\beta-1}
+   \frac{\Gamma(\alpha)\Gamma(\beta)}{\Gamma(\alpha+\beta)}.
+ \label{eq:fractional-volterra-beta-kernel}
+\end{equation}
+\end{theorem}
+
+The definition and eight exact theorems in \path{FractionalVolterra.lean} are
+\lean{fractionalVolterra}, \lean{fractionalVolterra_self},
+\lean{fractionalVolterra_congr}, \lean{fractionalVolterra_smul},
+\lean{intervalIntegrable_fractionalVolterra_kernel},
+\lean{fractionalVolterra_add_input}, \lean{fractionalVolterra_one}, and
+\lean{fractionalVolterra_nat_succ}, together with
+\lean{intervalIntegral_fractionalVolterra_betaKernel}.  This elementary kernel layer proves no
+order-zero operator law, reversed-endpoint fractional interpretation, fractional-order
+semigroup, general power/constant evaluation, Caputo or other fractional
+derivative, complex-order theorem, or Fabius-, \(\Up\)-, or inverse-function specialization.
+
 The signed Fabius dilation law now enters only at the specialization step.
 
 \begin{theorem}[Complete integer primitive ladder of the Fabius functions]
@@ -2584,15 +2635,16 @@ use \lean{fabiusReal_eq_extendedFabius_of_le_one}: the oriented segment from \(0
 \(x\le1\) remains inside the half-line on which the two functions agree.
 
 \begin{boxedremark}
-The proved scope here is natural-order Volterra integration and finite real-polynomial
-weights.  Fractional Volterra orders, complex powers, normal or Mellin continuation in a
-weight exponent, a piecewise global closed form for the bounded function beyond \(x\le1\),
+The generic positive-real operator is formalized in
+\Cref{thm:fractional-volterra-foundation}, but fractional Fabius or Rvachev formulas, a
+fractional-order semigroup, complex powers, normal or Mellin continuation in a weight
+exponent, a piecewise global closed form for the bounded function beyond \(x\le1\),
 primitives of the folded function \(\Up\), and primitives of the inverse Fabius function
-remain separate analytic frontiers; they are not consequences asserted by this theorem.
-In particular, the generic affine and base-point theorems do not themselves supply named
-Fabius-specific declarations for the \(\Up\) ladder based at \(-1\), the reflected
-\(1-F\) ladder, arbitrary affine copies of \(F\), or the full piecewise polynomial tail
-after the support of \(\Up\); those packaged specializations also remain frontier targets.
+remain separate analytic frontiers.  In particular, the generic affine and base-point
+theorems do not themselves supply named Fabius-specific declarations for the \(\Up\)
+ladder based at \(-1\), the reflected \(1-F\) ladder, arbitrary affine copies of \(F\), or
+the full piecewise polynomial tail after the support of \(\Up\); those packaged
+specializations also remain frontier targets.
 \end{boxedremark}
 
 \subsection{Dyadic derivative cells and exact value distributions}
@@ -6778,11 +6830,16 @@ That rule explains several choices made above:
       outside the formal corpus.
 \item Integer-order Volterra integration is formal at arbitrary base point and endpoint in
       a real Banach space, including strict FTC, order composition, polynomial weights,
-      Taylor reconstruction, and the exact Fabius ladder.  Separately, the weighted
+      Taylor reconstruction, and the exact Fabius ladder.  A separate total real-order
+      operator over arbitrary real normed spaces has the classical continuous-input kernel
+      and additivity theorems when \(0<\alpha\) and \(a\le x\), and agrees with the integer
+      operator at every positive natural order.  The shifted real beta kernel is evaluated
+      exactly when both orders are positive and the endpoint inequality is strict.  The
+      module proves no fractional-order semigroup, fractional derivative, complex-order result, or Fabius-specific
+      fractional formula.  Separately, the weighted
       inverse-layer-cake API permits real or complex scalar weights and a Banach-valued
-      kernel on the full unit interval.  Fractional Riemann--Liouville orders, partial or
-      higher inverse primitives, arbitrary-absolutely-continuous packaging, and complex
-      Mellin continuation
+      kernel on the full unit interval.  Partial or higher inverse primitives,
+      arbitrary-absolutely-continuous packaging, and complex Mellin continuation
       remain outside these results.
 \item Endpoint asymptotics retain exact phases and the proved remainder scopes; numerical
       fits and unproved coefficient formulas are absent.
@@ -6815,7 +6872,8 @@ generic weighted distributions, geometrically weighted uniform laws, exact quant
 transport, Banach-valued survival layer cake, weighted inverse layer cake,
 reciprocal-power values, dyadic algorithms, half-base \(q\)-binomial identities, prefix
 sums, denominator-free arbitrary-base geometric interpolation, normalized integer-order
-Volterra primitives and polynomial weights, endpoint Laplace analysis, and computable
+and positive-real fractional Volterra foundations, exact integer Fabius primitives and
+polynomial weights, endpoint Laplace analysis, and computable
 approximation.
 
 The most important methodological conclusion is equally concrete: the primary document is
@@ -6867,9 +6925,10 @@ Fourier analysis &
 \path{BirkhoffVariance.lean}, \path{BirkhoffProductBridge.lean}\\
 Local all-order jet calculus &
 \path{LeadingJet.lean}\\
-Normalized integer-order Volterra calculus, affine covariance, base-point shifts,
-and exact Fabius primitives &
-\path{NormalizedVolterra.lean}, \path{FabiusAntiderivatives.lean}\\
+Normalized integer- and positive-real-order Volterra calculus, affine covariance,
+base-point shifts, and exact integer Fabius primitives &
+\path{NormalizedVolterra.lean}, \path{FractionalVolterra.lean},
+\path{FabiusAntiderivatives.lean}\\
 Global derivatives, value distributions, and flatness &
 \path{GlobalExtension.lean}, \path{GlobalBounds.lean},
 \path{BoundedDerivatives.lean}, \path{RvachevDerivativeDistribution.lean},
@@ -6963,6 +7022,7 @@ Article & Lean & Meaning\\
 \(V_af\) & \lean{volterraPrimitive}\hspace{0.35em}\lean{a}\hspace{0.35em}\lean{f} & first oriented primitive at base \(a\)\\
 \(L_a^nf\) & \lean{iteratedPrimitive}\hspace{0.35em}\lean{n}\hspace{0.35em}\lean{a}\hspace{0.35em}\lean{f} & literal \(n\)-fold primitive\\
 \(J_a^nf\) & \lean{normalizedVolterra}\hspace{0.35em}\lean{n}\hspace{0.35em}\lean{a}\hspace{0.35em}\lean{f} & normalized Cauchy-kernel primitive\\
+\(I_{a+}^{\alpha}f\) & \lean{fractionalVolterra} & total real-order Gamma-normalized Volterra operator\\
 \(I\) & \lean{fabiusInv}\hspace{0.35em}\lean{fabius}\hspace{0.35em}\lean{fabius_spec} & totalized inverse\\
 \(c_n\) & \lean{moment}\hspace{0.35em}\lean{n} & even moment\\
 \(d_n\) & \lean{halfMoment}\hspace{0.35em}\lean{n} & half moment\\
@@ -7111,12 +7171,12 @@ V.~Reshetnikov,
 V.~Reshetnikov,
 \newblock \emph{ProveIt: Analysis/FabiusFunction},
 \newblock Lean~4 formal development, integrated source snapshot
-\texttt{68a0daecbb523a924fdb9d6d184ea8110e6d8f54}, consulted 28 August 2026.
-\newblock \url{https://github.com/VladimirReshetnikov/ProveIt/tree/68a0daecbb523a924fdb9d6d184ea8110e6d8f54/Analysis/FabiusFunction}.
-\newblock The four affine and base-point declarations identified in
-\Cref{sec:normalized-volterra} were checked on the side branch at commit
-\texttt{e109088ed17186e7fcff8043cb3c1d9b5a131b8e}, on the same date.
-\newblock \url{https://github.com/VladimirReshetnikov/ProveIt/tree/e109088ed17186e7fcff8043cb3c1d9b5a131b8e/Analysis/FabiusFunction}.
+\texttt{12841262d0e0e21e67e53a0d0ba0e55d44469f7d}, consulted 28 August 2026.
+\newblock \url{https://github.com/VladimirReshetnikov/ProveIt/tree/12841262d0e0e21e67e53a0d0ba0e55d44469f7d/Analysis/FabiusFunction}.
+\newblock The positive-real fractional-Volterra declarations identified in
+\Cref{thm:fractional-volterra-foundation} were checked on the side branch at commit
+\texttt{69086ec878b48491547a048ca61c9b8db44391ac}, on the same date.
+\newblock \url{https://github.com/VladimirReshetnikov/ProveIt/tree/69086ec878b48491547a048ca61c9b8db44391ac/Analysis/FabiusFunction}.
 
 \end{thebibliography}
 
