@@ -37,13 +37,25 @@ deduplication record are Appendix E of the volume; every source's
 supporting files live under its `assets/`.  The absorbed draft
 directories are deleted; git history is the archive.
 
-## Unmerged members
+## `Inverse_Endpoint_All_Orders/`
 
-- `inverse_fabius_asymptotics_report/` — *Complete Small-Argument
-  Asymptotics of the Inverse Fabius Function* (fifth wave, unpacked
-  2026-08-28).
-- `inverse_fabius_all_orders_package/` — *Closed All-Orders Endpoint
-  Asymptotics for the Inverse Fabius Function* (fourth wave, unpacked
-  2026-08-28; not yet folded into `Inverse_and_Sampling_Frontiers/`).
+Editorially merged (2026-08-28) from the two same-topic
+inverse-asymptotics drafts of the fourth and fifth waves:
+`inverse_fabius_all_orders_package/` (*Closed All-Orders Endpoint
+Asymptotics for the Inverse Fabius Function*) and
+`inverse_fabius_asymptotics_report/` (*Complete Small-Argument
+Asymptotics of the Inverse Fabius Function*).  Both prove the closed
+Lagrange–Bürmann coefficient formula, the universal highest logarithm,
+the explicit third correction, and the elasticity recurrence — stated
+once in the merged volume, with the independently derived third
+corrections verified algebraically identical.  One source contributes
+the structure laws (top-jet transfer, Fourier/strip algebra,
+phase-locked tomography, derivative hierarchy, exact-dyadic-quantile
+numerics), the other the constrained-partition saddle engine and the
+exact 2-adic completion of the Laplace exponent (dyadic Bose tail,
+Mellin bridge, exact saddle map).  Complements — and imports the prior
+inverse corrections of — `Inverse_and_Sampling_Frontiers/`.  Absorbed
+directories deleted; provenance with SHA-256 in the volume's
+Appendix C and `assets/SHA256SUMS-absorbed.txt`.
 
 See [`../MANIFEST.md`](../MANIFEST.md) for titles and previous paths.
