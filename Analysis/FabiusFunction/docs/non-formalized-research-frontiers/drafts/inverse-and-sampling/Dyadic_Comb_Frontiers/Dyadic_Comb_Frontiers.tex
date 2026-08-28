@@ -222,7 +222,7 @@ instability to the surrounding arithmetic of the corpus.
 
 All theorems come with complete proofs; numerical claims are exact
 rational computations or high-precision scans with stated grids; and
-conjectures are labeled as such.  Provenance of the seven absorbed
+conjectures are labeled as such.  Provenance of the eight absorbed
 reports, with SHA-256 hashes, is recorded in
 Appendix~\ref{app:provenance}.
 \end{abstract}
@@ -1943,8 +1943,12 @@ closure}
 \label{sec:periodized}
 
 The collapse of \cref{sec:em} was stated for monomial weights on the
-dyadic endpoint comb.  This section, absorbed from the tenth-wave
-Euler--Maclaurin report, extends the same spectral mechanism in four
+dyadic endpoint comb.  This section, an editorial merge of the
+tenth-wave Euler--Maclaurin report and its independently written
+eleventh-wave twin (\emph{Exhaustion, Euler--Maclaurin, and Spectral
+Exactness for Fabius--Rvachev Monomial Integrals}; overlapping
+theorems stated once, each twin's unique layers kept, shared constants
+verified identical), extends the same spectral mechanism in four
 independent directions: general polynomial weights at \emph{every real
 shift}; \emph{arbitrary integer meshes}, classified by their $2$-adic
 valuation; a telescoping ``generalized exhaustion'' hierarchy whose
@@ -2027,6 +2031,42 @@ is exactly the $\chi$-form coefficient
 trapezoidal identity \eqref{eq:EM-exact-remainder}: the corrector
 $H_P$ packages the same boundary jets that there summed to the
 Bernoulli polynomial part.
+
+\subsection{The exact all-mesh alias--Bernoulli identity}
+
+Before any threshold, the alias error has a \emph{closed finite}
+probabilistic form.  Writing $\widetilde B_r(t)=B_r(\{t\})$ for the
+periodized Bernoulli function and
+\begin{equation}
+ C_{a,r}(M,\theta):=\E\bigl[Y^{a}\,\widetilde B_r(MY-\theta)\bigr]
+ \label{eq:alias-correlation}
+\end{equation}
+for the Fabius variable $Y$, the layer-cake representation
+$F(x)=\E\,\mathbf 1_{Y\le x}$ and Faulhaber's formula for the random
+threshold sum $\sum_{a\ge\lceil MY-\theta\rceil}(a+\theta)^{n}$ give,
+for \emph{every} integer $M\ge1$, every $\theta\in[0,1]$, and every
+$n\ge0$,
+\begin{equation}
+ \boxed{\;
+ \mathcal A^{\mathrm{raw}}_{M,\theta}[x^{n}]-I_n
+ =\sum_{r=1}^{n+1}\frac{\binom n{r-1}}{r\,M^{r}}
+ \Bigl[B_r(\theta)-(-1)^{r}C_{n+1-r,\,r}(M,\theta)\Bigr],\;}
+ \label{eq:all-mesh}
+\end{equation}
+where $\mathcal A^{\mathrm{raw}}$ is the uncorrected grid average;
+equivalently, the corrected rule's error \eqref{eq:alias-general} equals
+$\sum_{r}\frac{(-1)^{r+1}}{r!M^{r}}\fall n{r-1}\,C_{n+1-r,r}(M,\theta)$.
+This is an exact identity, not an expansion: the Bernoulli addition and
+reflection formulas expand $B_{n+1}(M+\theta)$ and
+$B_{n+1}(MY+1-\{MY-\theta\})$, the $r=0$ term reproduces
+$I_n=(1-\E Y^{n+1})/(n+1)$, and no limit is taken.  The Fourier series
+of $\widetilde B_r$ together with
+$\E[Y^{a}\e^{2\pi\ii tY}]=\chi^{(a)}(-t)/(-2\pi\ii)^{a}$ shows that
+$C_{a,r}(M,\theta)=0$ whenever $a<\vtwo(M)$ (the correlation
+annihilation form of \cref{thm:composite-termination}); below the
+threshold, \eqref{eq:all-mesh} compresses the full infinite Fourier
+information into finitely many random periodic Bernoulli moments ---
+the form best suited to exact arithmetic and to formalization.
 
 \subsection{Composite-mesh termination and the reflection reduction}
 
@@ -2155,6 +2195,77 @@ Fabius--Euler--Maclaurin transference form of the spectral rationality
 \cref{thm:D-rational}: the same values $D(2r)/\pi^{2r}\in\Q$ emerge
 from the corrected monomial rules one level below threshold.
 
+The eleventh-wave twin extends the first defect from the dyadic mesh
+to every mesh at the critical valuation, in two equivalent closed
+forms.  For $P=a_dx^{d}+\cdots$ and $M=2^{d}q$ with $q$ odd, the
+corrected error is the \emph{single} periodic Bernoulli moment
+\begin{equation}
+ \mathcal A_{M,\theta}[P]-I_P
+ =a_d\,\frac{(-1)^{d+1}}{(d+1)\,M^{d+1}}\,
+ \E\bigl[\widetilde B_{d+1}(qY+\theta)\bigr]
+ =a_d\,\frac{(-1)^{d+1}d!}{(2\pi\ii M)^{d+1}}
+ \sum_{\substack{k\in\Z\setminus\{0\}\\ k\ \mathrm{odd}}}
+ \frac{\Phi(kq/2)\,\e^{2\pi\ii k\theta}}{k^{d+1}}
+ \label{eq:general-q-defect}
+\end{equation}
+(only the $r=1$ correlation of \eqref{eq:all-mesh} survives, and the
+leading jet evaluates it); at $q=1$ this is
+\cref{thm:F-first-defect}.  Two consequences deserve display.  First,
+a parity superconvergence \emph{one level below} the uniform
+threshold: for even $d$ and $\theta\in\{0,\tfrac12,1\}$ the corrected
+rule is already exact at $\vtwo(M)=d$, because $Y\overset d=1-Y$ and
+odd $q$ make the law of $\{qY+\theta\}$ symmetric under
+$u\mapsto1-u$ while $B_{d+1}(1-u)=-B_{d+1}(u)$ --- extending the
+$\theta=0$ statement of \cref{thm:reflection-reduction} to the
+midpoint and upper rules.  Second, at $q=1$, $\theta=0$ the defect is
+governed by the \emph{Bernoulli moments} of the Fabius law,
+$\beta_m:=\E B_m(Y)$:
+\begin{equation}
+ \mathcal A_{2^{d},0}[x^{d}]-I_d
+ =\frac{(-1)^{d+1}\,\beta_{d+1}}{(d+1)\,2^{d(d+1)}},
+ \qquad
+ \beta_2=-\tfrac1{18},\quad
+ \beta_4=\tfrac{23}{1350},\quad
+ \beta_6=-\tfrac{1543}{119070},\quad
+ \beta_8=\tfrac{1196113}{65063250},
+ \label{eq:beta-defect}
+\end{equation}
+with $\beta_{2m+1}=0$ by symmetry.  Comparing the two forms of
+\eqref{eq:general-q-defect} at $q=1$ yields the exact spectral
+identity
+\begin{equation}
+ \boxed{\;
+ \beta_{2m}\;=\;\E B_{2m}(Y)
+ \;=\;(-1)^{m}\,\frac{2\,(2m)!}{(2\pi)^{2m}}\,D(2m),\;}
+ \label{eq:beta-D}
+\end{equation}
+so the Bernoulli moments of the Fabius law are rational multiples of
+the spectral Dirichlet values --- and \cref{thm:D-positive} settles
+their signs at once:
+
+\begin{corollary}[Alternating Bernoulli moments]
+\label{cor:beta-sign}
+$(-1)^{m}\beta_{2m}>0$ for every $m\ge1$.  Consequently the
+$q=1$ endpoint defect \eqref{eq:beta-defect} is nonzero for every odd
+$d$, with sign $(-1)^{(d+1)/2}$.  (The eleventh-wave twin posed this
+sign law as a conjecture; the first-harmonic bound of
+\cref{thm:D-positive} proves it.)
+\end{corollary}
+
+Numerically the $\beta_{2m}$ are also familiar from the companion
+polynomial volume: up to sign they are the canonical defect special
+values $\mathcal E_{2m-1}(0)$ of \emph{Exact Polynomial Synthesis
+from Rvachev Up-Atoms}
+($\mathcal E_1(0)=\tfrac1{18}$, $\mathcal E_3(0)=-\tfrac{23}{1350}$,
+$\mathcal E_5(0)=\tfrac{1543}{119070}$,
+$\mathcal E_7(0)=-\tfrac{1196113}{65063250}$), as both reduce to the
+same $D$-values through \eqref{eq:beta-D} and that volume's
+defect--quadrature duality.  For general odd $q$ the nonvanishing of
+$\E\widetilde B_{2m}(qY)$ --- equivalently of the twisted series
+$\sum_{k\,\mathrm{odd}}\Phi(kq/2)k^{-2m}$ --- remains open
+(\cref{q:twisted-D-positivity}): for $q\ge3$ the first harmonic
+$\Phi(q/2)$ is small and dominance fails.
+
 \subsection{Spectral positivity: the conjecture becomes a theorem}
 
 \begin{theorem}[First-harmonic dominance; $D(2r)>0$ for all $r$]
@@ -2248,8 +2359,17 @@ and $J\ge N_0$,
 both $r$-sums finite; in base $b$ (both levels past threshold, which
 requires $\vtwo(b)>0$) the level increment is
 $(b-1)P(1)/(2b^{j})-\sum_rc_r(P)(b^{2r}-1)b^{-2rj}$.  For an odd base
-the zero multiplicity does not grow with the level, and no finite
-termination arises from the present mechanism.
+the zero multiplicity does not grow with the level and no finite
+termination arises from the present mechanism --- but the corrected
+error is still \emph{supergeometric} in the level: for every
+$s>d+1$,
+$\abs{\mathcal A_{b^{N},\theta}[P]-I_P}
+\le 2\zeta(s)(2\pi b^{N})^{-s}\,\lVert(PF)^{(s)}\rVert_{L^1}$,
+since the corrected integrand is $C^\infty$-periodic; the dichotomy
+is exactness for even bases against
+faster-than-every-fixed-geometric-rate decay for odd ones.  Variable
+mesh chains $M_N=\prod_{j\le N}b_j$ interpolate: exactness begins at
+the first $N$ with $\sum_{j\le N}\vtwo(b_j)>d$.
 \end{theorem}
 
 \begin{proof}
@@ -2289,7 +2409,15 @@ $\chi_R(1)I_P$.
 
 This is a derivative-free closure of the Euler--Maclaurin correction:
 the endpoint jets determine which geometric modes exist, and one
-eliminates them from consecutive raw sums alone.  Explicitly,
+eliminates them from consecutive raw sums alone.  The even-mode part
+of the annihilator is naturally Gaussian-binomial at $q=\tfrac14$:
+$\prod_{r=1}^{R}(E-4^{-r})
+=\sum_{k}(-1)^{R-k}4^{-\binom{R-k+1}2}
+\genfrac{[}{]}{0pt}{}{R}{k}_{1/4}E^{k}$ --- a second $q$-geometry
+beside the corpus's $q=\tfrac12$ dyadic-value formulas ($\tfrac12$ is
+the spatial refinement ratio, $\tfrac14$ the Bernoulli error ratio),
+connecting these filters to the $q$-Richardson calculus of the
+exponents volume.  Explicitly,
 \begin{equation}
  I_n=\frac{Q_2-6Q_3+8Q_4}{3}\ (n=1,2),
  \qquad
@@ -2336,6 +2464,43 @@ kernel-verified
 (\nolinkurl{Fabius.tsum_shifted_monomial_eq_integral_real} in
 \nolinkurl{MonomialCombExactness.lean}); the composite-mesh statement
 is the same Poisson argument with the coarser valuation count.
+
+\subsection{Half-interval Rvachev rules and the boundary-topology
+trichotomy}
+
+Substituting $x\mapsto1-x$ turns $x^{n}\Up(x)$ on $[0,1]$ into
+$(1-x)^{n}F(x)$, whose endpoint jet at $1$ is concentrated in the
+single order $n$.  The whole Bernoulli corrector therefore collapses
+to one term: for $\vtwo(M)>n$ and every shift $\eta$,
+\begin{equation}
+ \boxed{\;
+ \int_0^1x^{n}\Up(x)\dd x
+ =\frac1M\sum_{a=0}^{M-1}
+ \Bigl(\frac{a+\eta}{M}\Bigr)^{n}
+ \Up\!\Bigl(\frac{a+\eta}{M}\Bigr)
+ +\frac{B_{n+1}(\eta)}{(n+1)\,M^{n+1}},\;}
+ \label{eq:half-up-rule}
+\end{equation}
+and at the open endpoint grid ($\eta=0$, $n\ge1$) the correction is
+the single Bernoulli number $B_{n+1}/((n+1)M^{n+1})$.  The exhaustion
+series of $x^{n}\Up$ on $[0,1]$ accordingly either \emph{terminates}
+--- for even $n\ge2$, $B_{n+1}=0$, the open dyadic sum is exactly the
+integral from level $N\ge n$ on and every later detail vanishes ---
+or, for odd $n$, has the single geometric mode
+$B_{n+1}\,2^{-(n+1)N}/(n+1)$, giving the exact two-level recovery
+\begin{equation}
+ \int_0^1x^{n}\Up
+ =\frac{2^{\,n+1}\,Q_{N+1}[x^{n}\Up]-Q_N[x^{n}\Up]}{2^{\,n+1}-1}
+ \qquad(n\ \text{odd},\ N>n).
+ \label{eq:half-up-two-level}
+\end{equation}
+The three support geometries thus align with the number of surviving
+Bernoulli modes: $x^{n}F$ on $[0,1]$ keeps the full endpoint jet
+($\floor{(n+1)/2}+1$ modes, \cref{thm:ruffa-tail}); the half-interval
+$\Up$ keeps exactly one; and the full symmetric support keeps none ---
+there \cref{thm:up-composite-mesh} terminates the exhaustion outright
+(level-$N$ spacing $2^{1-N}$ integrates degree $\le N-1$ exactly).
+Boundary topology alone dictates the exhaustion complexity.
 
 \subsection{Thue--Morse moment identities and the Bernoulli triangle}
 
@@ -2384,6 +2549,29 @@ from explicitly classifiable phase cancellations; a route is the
 zero-set rigidity of $\chi$ on the alias sets
 $b^{j}\Z\setminus\{0\}$.
 \end{conjecture}
+
+\begin{question}[Twisted spectral positivity]
+\label{q:twisted-D-positivity}
+For odd $q\ge3$ and $m\ge1$, is
+$\sum_{k\,\mathrm{odd}}\Phi(kq/2)k^{-2m}\ne0$ --- equivalently
+$\E\widetilde B_{2m}(qY)\ne0$?  The $q=1$ case is
+\cref{thm:D-positive}; for $q\ge3$ the leading harmonic is small and
+a genuinely different mechanism (perhaps the Thue--Morse sign
+statistics of $\Phi(kq/2)$ along $k$) is needed.  A positive answer
+would make the sufficient thresholds of
+\cref{thm:composite-termination,thm:reflection-reduction} sharp at
+every odd part.
+\end{question}
+
+\begin{question}[Higher-defect hierarchy at low valuation]
+\label{q:defect-hierarchy}
+For $\vtwo(M)=v<d$, several jet layers survive; reduce all
+correlations $C_{a,r}(M,\theta)$ of \eqref{eq:all-mesh} to periodic
+Bernoulli moments at the odd scale with coefficients in the
+sinc-product jets --- the one-row case is
+\eqref{eq:general-q-defect}, and the valuation-graded structure
+should parallel \cref{conj:jets}.
+\end{question}
 
 \begin{question}[Complete mesh classification]
 \label{q:mesh-classification}
@@ -4657,7 +4845,7 @@ points and reproduction commands are in each package's
 \section{Provenance of the absorbed sources}
 \label{app:provenance}
 
-This volume absorbs the following seven drafts (all dated 28 August
+This volume absorbs the following eight drafts (all dated 28 August
 2026; SHA-256 of each main \texttt{.tex} source at absorption).  The
 supporting material of each --- experiment scripts, CSV/data files,
 figures, READMEs, and the sources' own SHA manifests --- is preserved
@@ -4748,6 +4936,29 @@ series and spectral rationality
 (= \cref{thm:odd-defect,thm:D-rational}), the leading-jet lemma, the
 dyadic shifted Rvachev quadrature (= \cref{thm:shifted-exactness}),
 and the phase-superconvergence parity pattern. \\
+\addlinespace
+\emph{Exhaustion, Euler--Maclaurin, and Spectral Exactness for
+Fabius--Rvachev Monomial Integrals} (eleventh wave;
+\nolinkurl{fabius_rvachev_exhaustion_euler_maclaurin_bundle};
+\texttt{7ba2cb99a591\ldots})
+& The tenth-wave report's independently written twin, merged into
+\cref{sec:periodized}: the exact all-mesh alias--Bernoulli identity
+\eqref{eq:all-mesh} (layer cake + Faulhaber; no threshold), the
+general-$q$ first defect in Bernoulli-moment and spectral forms
+\eqref{eq:general-q-defect} with midpoint/upper parity
+superconvergence one level below threshold, the Bernoulli moments
+$\beta_{2m}=\E B_{2m}(Y)$ with the spectral identity
+\eqref{eq:beta-D} (whose sign law, conjectured by the twin, follows
+from \cref{thm:D-positive} --- \cref{cor:beta-sign}), the
+one-correction half-interval Rvachev rule \eqref{eq:half-up-rule}
+with the termination/one-mode exhaustion dichotomy and two-level
+recovery, the supergeometric odd-base bound, variable mesh chains,
+and the $q=\tfrac14$ Gaussian-binomial filter form.  Deduplicated:
+the telescoping exhaustion frame, the corrected shifted rule and its
+$\vtwo(M)>d$ threshold, the dyadic first defect, the $F$-side Ruffa
+tails, the base-$b$ dichotomy skeleton, the Thue--Morse moment
+family, and the full-support Rvachev quadrature (all already present
+from the tenth wave or the volume core). \\
 \bottomrule
 \end{tabular}
 \end{center}
