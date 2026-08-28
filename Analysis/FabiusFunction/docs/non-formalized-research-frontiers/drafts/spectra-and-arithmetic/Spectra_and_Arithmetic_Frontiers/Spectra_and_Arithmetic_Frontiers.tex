@@ -46,19 +46,29 @@
 \setlist[enumerate]{leftmargin=2.3em,itemsep=0.25em,topsep=0.4em}
 \setlength{\emergencystretch}{3em}
 
+% ed.: alias counters so cleveref prints each environment's own name
+% (with plain shared counters every \cref rendered as "theorem").
+\usepackage{aliascnt}
+\newcommand{\newsharedtheorem}[2]{%
+  \newaliascnt{#1}{theorem}%
+  \newtheorem{#1}[#1]{#2}%
+  \aliascntresetthe{#1}%
+}
 \newtheorem{theorem}{Theorem}[section]
-\newtheorem{proposition}[theorem]{Proposition}
-\newtheorem{lemma}[theorem]{Lemma}
-\newtheorem{corollary}[theorem]{Corollary}
-\newtheorem{conjecture}[theorem]{Conjecture}
-\newtheorem{problem}[theorem]{Problem}
+\crefname{warning}{warning}{warnings}
+\Crefname{warning}{Warning}{Warnings}
+\newsharedtheorem{proposition}{Proposition}
+\newsharedtheorem{lemma}{Lemma}
+\newsharedtheorem{corollary}{Corollary}
+\newsharedtheorem{conjecture}{Conjecture}
+\newsharedtheorem{problem}{Problem}
 \theoremstyle{definition}
-\newtheorem{definition}[theorem]{Definition}
-\newtheorem{algorithm}[theorem]{Algorithm}
-\newtheorem{example}[theorem]{Example}
+\newsharedtheorem{definition}{Definition}
+\newsharedtheorem{algorithm}{Algorithm}
+\newsharedtheorem{example}{Example}
 \theoremstyle{remark}
-\newtheorem{remark}[theorem]{Remark}
-\newtheorem{warning}[theorem]{Warning}
+\newsharedtheorem{remark}{Remark}
+\newsharedtheorem{warning}{Warning}
 
 \newcommand{\R}{\mathbb R}
 \newcommand{\C}{\mathbb C}
