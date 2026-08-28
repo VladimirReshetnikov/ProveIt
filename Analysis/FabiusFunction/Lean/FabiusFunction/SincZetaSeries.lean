@@ -60,13 +60,15 @@ theorem sinc_family_norm_lt_one {x : ℂ} (hx : ‖x‖ < 1) (n : ℕ) :
 theorem sinc_family_norm_summable (x : ℂ) :
     Summable fun n : ℕ => ‖x ^ 2 / ((n : ℂ) + 1) ^ 2‖ := by
   have h := (summable_one_div_add_one_pow one_ne_zero).mul_left (‖x‖ ^ 2)
-  refine h.congr fun n => ?_
-  rw [norm_div, norm_pow, norm_pow,
-    show ((n : ℂ) + 1) = ((n + 1 : ℕ) : ℂ) by push_cast; ring,
-    Complex.norm_natCast]
-  push_cast
-  rw [mul_one_div]
-  norm_num
+  have h' : Summable fun n : ℕ => ‖x‖ ^ 2 * (1 / ((n : ℝ) + 1) ^ 2) := by
+    simpa using h
+  refine h'.congr fun n => ?_
+  have hn : ‖((n : ℂ) + 1)‖ = (n : ℝ) + 1 := by
+    rw [show ((n : ℂ) + 1) = ((n + 1 : ℕ) : ℂ) by push_cast; ring,
+      Complex.norm_natCast]
+    push_cast
+    ring
+  rw [norm_div, norm_pow, norm_pow, hn, mul_one_div]
 
 /-- The power sums of the sinc Euler family are even zeta values:
 `∑' n, (x²/(n+1)²)^(r+1) = ζ(2(r+1)) · x^(2(r+1))`. -/
@@ -119,14 +121,9 @@ theorem complexSinc_pi_mul_ofReal {x : ℝ} (hx : |x| < 1) :
         evenZeta (r + 1) * x ^ (2 * (r + 1)) / ((r : ℝ) + 1)) : ℝ) : ℂ) := by
   have h := complexSinc_pi_mul_eq_cexp (x := (x : ℂ))
     (by rwa [Complex.norm_real, Real.norm_eq_abs])
-  rw [h, ← Complex.ofReal_exp]
-  congr 1
-  calc -∑' r : ℕ, (evenZeta (r + 1) : ℂ) * (x : ℂ) ^ (2 * (r + 1)) / ((r : ℂ) + 1)
-      = -∑' r : ℕ, ((evenZeta (r + 1) * x ^ (2 * (r + 1)) / ((r : ℝ) + 1) : ℝ) : ℂ) := by
-        congr 1
-        exact tsum_congr fun r => by push_cast; ring
-    _ = ((-∑' r : ℕ, evenZeta (r + 1) * x ^ (2 * (r + 1)) / ((r : ℝ) + 1) : ℝ) : ℂ) := by
-        rw [← Complex.ofReal_tsum, Complex.ofReal_neg]
+  rw [h, Complex.ofReal_exp, Complex.ofReal_neg, Complex.ofReal_tsum]
+  congr 2
+  exact tsum_congr fun r => by push_cast; ring
 
 /-- **`eq:logsinc` for real arguments**: for `0 < |x| < 1`,
 

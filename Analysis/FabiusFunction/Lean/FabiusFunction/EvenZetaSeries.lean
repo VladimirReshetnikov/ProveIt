@@ -69,7 +69,9 @@ theorem evenZeta_anti {k l : ℕ} (hk : k ≠ 0) (hkl : k ≤ l) :
   have hl : l ≠ 0 := by omega
   refine Summable.tsum_le_tsum (fun n => ?_) (summable_one_div_add_one_pow hl)
     (summable_one_div_add_one_pow hk)
-  have h1 : (1 : ℝ) ≤ (n : ℝ) + 1 := by positivity
+  have h1 : (1 : ℝ) ≤ (n : ℝ) + 1 := by
+    have := Nat.cast_nonneg (α := ℝ) n
+    linarith
   exact one_div_le_one_div_of_le (by positivity)
     (pow_le_pow_right₀ h1 (by omega))
 
