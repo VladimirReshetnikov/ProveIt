@@ -1618,7 +1618,7 @@ building a general symbolic differential ring, but its formulas are exact transc
 
 The results separate naturally into five Lean-sized packages.
 
-\begin{obligation}[Polynomial smoothing and inverse moment operator]
+\begin{obligation}[Polynomial smoothing and inverse moment operator --- discharged]
 Formalize that, for a polynomial $q$ of degree at most $r$,
 \[
  M(aD)q=J \quad\Longrightarrow\quad
@@ -1627,6 +1627,27 @@ Formalize that, for a polynomial $q$ of degree at most $r$,
 This requires only finite sums after the degree bound is known; no convergence theorem for
 formal differential operators is needed.
 \end{obligation}
+
+\emph{Post-snapshot status.}  This obligation is discharged, in more generality than
+stated, by \path{SmoothingOperatorInversion.lean}.  The module develops the operator
+calculus of formal power series acting on polynomials through $aD$ over an arbitrary
+commutative semiring: \nolinkurl{Fabius.seriesDerivOp} is the finite action
+$\varphi(aD)q=\sum_{m\le\deg q}\varphi_m a^m q^{(m)}$,
+\nolinkurl{Fabius.seriesDerivOp_mul} proves that substitution is multiplicative (the
+Cauchy product of series acts as the composition of operators, with the double sum
+collapsing along antidiagonals because every term beyond the degree differentiates the
+polynomial to zero), and \nolinkurl{Fabius.seriesDerivOp_left_inverse} concludes that
+mutually inverse series give mutually inverse operators on every polynomial --- no
+topology or convergence theorem anywhere, exactly as the obligation predicts.  The
+displayed implication is \nolinkurl{Fabius.eq_seriesDerivOp_of_seriesDerivOp_eq}, and
+for an even reciprocal series (all odd coefficients zero, as for $1/M$ by
+\eqref{p1:eq:reciprocal-MGF}) the truncation at $\lfloor r/2\rfloor$ is
+\nolinkurl{Fabius.eq_sum_even_of_seriesDerivOp_eq}, which reads verbatim
+$q=\sum_{j=0}^{\lfloor r/2\rfloor}\psi_{2j}a^{2j}D^{2j}J$ with
+$\psi_{2j}=(-1)^jb_j$.  What remains outside the module is only the analytic
+identification of the abstract series with the moment generating function of $Y$ ---
+that is the business of the algebraic-inverse-germ obligation below, not of the
+operator calculus.
 
 \begin{obligation}[Plateau-to-polynomial localization]
 Connect the existing almost-everywhere derivative plateau for $p_n^{(r)}$ to the statement
