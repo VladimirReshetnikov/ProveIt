@@ -112,6 +112,7 @@ import FabiusFunction.MomentHankelMatrix
 import FabiusFunction.MomentHankelValues
 import FabiusFunction.MonomialCombFourier
 import FabiusFunction.MonomialCombDerivatives
+import FabiusFunction.MonomialCombAlias
 import FabiusFunction.SincProductShells
 import FabiusFunction.SharpGelfondBound
 import FabiusFunction.SincProductPeakRay
