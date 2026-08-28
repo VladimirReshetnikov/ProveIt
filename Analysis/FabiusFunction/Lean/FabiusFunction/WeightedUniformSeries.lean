@@ -20,6 +20,9 @@ geometric Fabius families:
 
 * absolute summability and continuity of the coordinate series;
 * splitting off the head coordinate with an arbitrary shifted weight tail;
+* a generic head--tail recursion principle for pushforward laws;
+* naturality under continuous linear maps;
+* operator and scalar geometric self-similarity;
 * reflection about half of the total weight;
 * the corresponding probability law, product splitting, and central symmetry;
 * measure-theoretic support bounds for nonnegative real weights.
@@ -141,6 +144,44 @@ theorem uniformProduct_map_head_tail_comp
     rw [← Measure.map_map hg measurable_tail, uniformProduct_map_tail]
   rwa [hhead, htail] at hjoint
 
+/-- An almost-everywhere head--tail recursion induces the corresponding
+product-law recursion.
+
+This statement is independent of linear structure and weighted series.  It
+packages the common measure-theoretic argument behind affine fixed-point laws:
+the head is one fresh uniform coordinate, while the tail statistic has the
+same law on a fresh copy and is independent of that head. -/
+theorem uniformProduct_map_of_ae_head_tail_recursion
+    {E F : Type*} [MeasurableSpace E] [MeasurableSpace F]
+    {f : SampleSpace → F} {g : SampleSpace → E}
+    (hg : Measurable g) (combine : Set.Icc (0 : ℝ) 1 × E → F)
+    (hcombine : Measurable combine)
+    (hrec : f =ᵐ[uniformProduct] fun ω => combine (ω 0, g (tail ω))) :
+    uniformProduct.map f =
+      ((volume : Measure (Set.Icc (0 : ℝ) 1)).prod
+        (uniformProduct.map g)).map combine := by
+  rw [← uniformProduct_map_head_tail_comp hg]
+  rw [Measure.map_map
+    (f := fun ω : SampleSpace => (ω 0, g (tail ω)))
+    (g := combine) hcombine
+    ((measurable_pi_apply 0).prodMk (hg.comp measurable_tail))]
+  exact Measure.map_congr hrec
+
+/-- A pointwise measurable head--tail recursion induces the corresponding
+product-law recursion.  This convenient form specializes
+`uniformProduct_map_of_ae_head_tail_recursion`. -/
+theorem uniformProduct_map_of_head_tail_recursion
+    {E F : Type*} [MeasurableSpace E] [MeasurableSpace F]
+    {f : SampleSpace → F} {g : SampleSpace → E}
+    (hg : Measurable g) (combine : Set.Icc (0 : ℝ) 1 × E → F)
+    (hcombine : Measurable combine)
+    (hrec : ∀ ω, f ω = combine (ω 0, g (tail ω))) :
+    uniformProduct.map f =
+      ((volume : Measure (Set.Icc (0 : ℝ) 1)).prod
+        (uniformProduct.map g)).map combine :=
+  uniformProduct_map_of_ae_head_tail_recursion hg combine hcombine
+    (ae_of_all _ hrec)
+
 /-- Reflect every coordinate in the midpoint of the unit interval. -/
 def reflectCoordinates (ω : SampleSpace) : SampleSpace :=
   fun n => unitInterval.symm (ω n)
@@ -230,6 +271,35 @@ theorem measurable_weightedUniformSeries
     Measurable (weightedUniformSeries w) :=
   (continuous_weightedUniformSeries hw).measurable
 
+/-- Continuous linear maps commute with absolutely summable uniform-coordinate
+series.  Completeness is needed only in the source space, where it turns the
+norm-summable weight majorant into convergence of the original series; the
+target need not be complete. -/
+theorem weightedUniformSeries_map
+    {E F : Type*}
+    [NormedAddCommGroup E] [NormedSpace ℝ E] [CompleteSpace E]
+    [NormedAddCommGroup F] [NormedSpace ℝ F]
+    (L : E →L[ℝ] F) {w : ℕ → E} (hw : Summable fun n => ‖w n‖)
+    (ω : SampleSpace) :
+    L (weightedUniformSeries w ω) =
+      weightedUniformSeries (fun n => L (w n)) ω := by
+  rw [weightedUniformSeries, weightedUniformSeries,
+    L.map_tsum (summable_weightedUniformSeries_terms hw ω)]
+  apply tsum_congr
+  intro n
+  exact L.map_smul (ω n : ℝ) (w n)
+
+/-- Scalar multiplication commutes with a uniform-coordinate series without
+any summability or completeness hypothesis.  This uses the total infinite-sum
+identity for scalar multiplication over a division ring, so it remains valid
+even when the underlying series is not summable. -/
+theorem weightedUniformSeries_smul
+    {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    (c : ℝ) (w : ℕ → E) (ω : SampleSpace) :
+    weightedUniformSeries (fun n => c • w n) ω =
+      c • weightedUniformSeries w ω :=
+  weightedUniformSeries_smul_weights c w ω
+
 /-! ## Laws of weighted series -/
 
 /-- The distribution of an arbitrary weighted uniform-coordinate series.
@@ -242,6 +312,54 @@ noncomputable def weightedUniformDistribution
     {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E] [MeasurableSpace E]
     (w : ℕ → E) : Measure E :=
   uniformProduct.map (weightedUniformSeries w)
+
+/-- Pushforward of a weighted-uniform law by a continuous linear map is the
+law obtained by mapping every weight.  As for the series-level theorem, the
+target normed space need not be complete. -/
+theorem weightedUniformDistribution_map
+    {E F : Type*}
+    [NormedAddCommGroup E] [NormedSpace ℝ E] [CompleteSpace E]
+    [MeasurableSpace E] [BorelSpace E]
+    [NormedAddCommGroup F] [NormedSpace ℝ F]
+    [MeasurableSpace F] [BorelSpace F]
+    (L : E →L[ℝ] F) {w : ℕ → E} (hw : Summable fun n => ‖w n‖) :
+    (weightedUniformDistribution w).map L =
+      weightedUniformDistribution (fun n => L (w n)) := by
+  rw [weightedUniformDistribution,
+    Measure.map_map L.continuous.measurable
+      (measurable_weightedUniformSeries hw)]
+  exact Measure.map_congr
+    (ae_of_all _ (weightedUniformSeries_map L hw))
+
+/-- Scalar pushforward is the law obtained by multiplying every weight by the
+same scalar.  Unlike the pointwise theorem, this law-level statement records
+summability so that both totalized measure maps are genuine pushforwards. -/
+theorem weightedUniformDistribution_smul
+    {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E] [CompleteSpace E]
+    [MeasurableSpace E] [BorelSpace E]
+    (c : ℝ) {w : ℕ → E} (hw : Summable fun n => ‖w n‖) :
+    (weightedUniformDistribution w).map (fun x => c • x) =
+      weightedUniformDistribution (fun n => c • w n) := by
+  rw [weightedUniformDistribution, weightedUniformDistribution,
+    Measure.map_map (by fun_prop : Measurable fun x : E => c • x)
+      (measurable_weightedUniformSeries hw)]
+  apply Measure.map_congr
+  filter_upwards with ω
+  exact (weightedUniformSeries_smul c w ω).symm
+
+/-- When the shifted weights are the image under one fixed operator, pushing
+the parent law through that operator is exactly the shifted-tail law. -/
+theorem weightedUniformDistribution_map_eq_shift
+    {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E] [CompleteSpace E]
+    [MeasurableSpace E] [BorelSpace E]
+    (A : E →L[ℝ] E) {w : ℕ → E} (hw : Summable fun n => ‖w n‖)
+    (hshift : ∀ n, w (Nat.succ n) = A (w n)) :
+    (weightedUniformDistribution w).map A =
+      weightedUniformDistribution (fun n => w (Nat.succ n)) := by
+  rw [weightedUniformDistribution_map A hw]
+  congr 1
+  funext n
+  exact (hshift n).symm
 
 /-- The law of an absolutely summable weighted series is a probability
 measure.  This is stated as a theorem, rather than a global instance, because
@@ -309,25 +427,72 @@ theorem weightedUniformDistribution_split
   have hwtail : Summable fun n => ‖w (Nat.succ n)‖ := by
     simpa only [Nat.succ_eq_add_one] using
       (summable_nat_add_iff (f := fun n => ‖w n‖) 1).mpr hw
-  rw [← uniformProduct_map_head_tailWeightedUniformSeries hwtail]
-  rw [weightedUniformDistribution]
-  have hf : Measurable (fun ω : SampleSpace =>
-      (ω 0, weightedUniformSeries (fun n => w (Nat.succ n)) (tail ω))) :=
-    (measurable_pi_apply 0).prodMk
-      ((measurable_weightedUniformSeries hwtail).comp measurable_tail)
-  have hg : Measurable
-      (fun p : Set.Icc (0 : ℝ) 1 × E => (p.1 : ℝ) • w 0 + p.2) :=
-    (((continuous_subtype_val.comp continuous_fst).smul continuous_const).add
-      continuous_snd).measurable
-  rw [Measure.map_map
-    (μ := uniformProduct)
-    (f := fun ω : SampleSpace =>
-      (ω 0, weightedUniformSeries (fun n => w (Nat.succ n)) (tail ω)))
-    (g := fun p : Set.Icc (0 : ℝ) 1 × E => (p.1 : ℝ) • w 0 + p.2)
-    hg hf]
-  apply Measure.map_congr
-  filter_upwards with ω
-  exact weightedUniformSeries_split hw ω
+  exact uniformProduct_map_of_head_tail_recursion
+    (measurable_weightedUniformSeries hwtail)
+    (fun p : Set.Icc (0 : ℝ) 1 × E => (p.1 : ℝ) • w 0 + p.2)
+    ((((continuous_subtype_val.comp continuous_fst).smul continuous_const).add
+      continuous_snd).measurable)
+    (weightedUniformSeries_split hw)
+
+/-- If shifting the weights applies one fixed continuous linear operator, then
+splitting off the first coordinate gives an operator-affine pointwise
+recursion. -/
+theorem weightedUniformSeries_split_of_shift_eq_map
+    {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E] [CompleteSpace E]
+    (A : E →L[ℝ] E) {w : ℕ → E} (hw : Summable fun n => ‖w n‖)
+    (hshift : ∀ n, w (Nat.succ n) = A (w n)) (ω : SampleSpace) :
+    weightedUniformSeries w ω =
+      (ω 0 : ℝ) • w 0 + A (weightedUniformSeries w (tail ω)) := by
+  have hwfun : (fun n => w (Nat.succ n)) = fun n => A (w n) :=
+    funext hshift
+  rw [weightedUniformSeries_split hw, hwfun,
+    ← weightedUniformSeries_map A hw]
+
+/-- An operator-geometric weight recursion produces the exact affine
+fixed-point law driven by one fresh uniform coordinate. -/
+theorem weightedUniformDistribution_split_of_shift_eq_map
+    {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E] [CompleteSpace E]
+    [MeasurableSpace E] [BorelSpace E]
+    (A : E →L[ℝ] E) {w : ℕ → E} (hw : Summable fun n => ‖w n‖)
+    (hshift : ∀ n, w (Nat.succ n) = A (w n)) :
+    weightedUniformDistribution w =
+      ((volume : Measure (Set.Icc (0 : ℝ) 1)).prod
+        (weightedUniformDistribution w)).map
+          (fun p => (p.1 : ℝ) • w 0 + A p.2) := by
+  exact uniformProduct_map_of_head_tail_recursion
+    (measurable_weightedUniformSeries hw)
+    (fun p : Set.Icc (0 : ℝ) 1 × E => (p.1 : ℝ) • w 0 + A p.2)
+    ((((continuous_subtype_val.comp continuous_fst).smul continuous_const).add
+      (A.continuous.comp continuous_snd)).measurable)
+    (weightedUniformSeries_split_of_shift_eq_map A hw hshift)
+
+/-- Scalar-geometric weights satisfy the familiar affine pointwise recursion.
+No sign or size condition on the scalar is required beyond the explicit
+summability hypothesis on the weights. -/
+theorem weightedUniformSeries_geometric_split
+    {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E] [CompleteSpace E]
+    (c : ℝ) {w : ℕ → E} (hw : Summable fun n => ‖w n‖)
+    (hshift : ∀ n, w (Nat.succ n) = c • w n) (ω : SampleSpace) :
+    weightedUniformSeries w ω =
+      (ω 0 : ℝ) • w 0 + c • weightedUniformSeries w (tail ω) := by
+  simpa using weightedUniformSeries_split_of_shift_eq_map
+    (c • ContinuousLinearMap.id ℝ E) hw hshift ω
+
+/-- Scalar-geometric weights satisfy the exact affine fixed-point law.  The
+only analytic premise is norm summability of the displayed weight sequence;
+in particular no positivity or contraction hypothesis is built into the
+theorem. -/
+theorem weightedUniformDistribution_geometric_split
+    {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E] [CompleteSpace E]
+    [MeasurableSpace E] [BorelSpace E]
+    (c : ℝ) {w : ℕ → E} (hw : Summable fun n => ‖w n‖)
+    (hshift : ∀ n, w (Nat.succ n) = c • w n) :
+    weightedUniformDistribution w =
+      ((volume : Measure (Set.Icc (0 : ℝ) 1)).prod
+        (weightedUniformDistribution w)).map
+          (fun p => (p.1 : ℝ) • w 0 + c • p.2) := by
+  simpa using weightedUniformDistribution_split_of_shift_eq_map
+    (c • ContinuousLinearMap.id ℝ E) hw hshift
 
 /-- The law of an absolutely summable vector-weighted series is centrally
 symmetric: reflection through half the total weight preserves the law. -/
