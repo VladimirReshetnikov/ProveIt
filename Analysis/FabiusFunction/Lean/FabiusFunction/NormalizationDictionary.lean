@@ -1,4 +1,5 @@
 import FabiusFunction.RandomSeriesLaw
+import FabiusFunction.EffectiveFlatness
 
 /-!
 # The canonical normalization dictionary
@@ -28,7 +29,8 @@ exponent transform, and `charFun` is Mathlib's characteristic function
    frequency again.
 
 Each entry exists as a named theorem
-(`rvachevUp_eq_weightedSumCDF` + `weightedSumCDF_eq_fabiusReal`,
+(`rvachevUp_eq_fabiusReal_one_sub_abs` from `EffectiveFlatness.lean` —
+hypothesis-free, by reflection and evenness alone —
 `rvachevFourier_eq_product`, `rvachevMeasure_charFun_pos`,
 `charFun_weightedSumDistribution`); the dictionary bundles them into
 the single named package the roadmap asks for.
@@ -41,13 +43,6 @@ open MeasureTheory Complex
 namespace Fabius
 
 open ProbabilityRepresentation
-
-/-- The `F ↔ up` rescaling in its uniform absolute-value form:
-`up(x) = F(1 - |x|)` for every real `x`. -/
-theorem rvachevUp_eq_fabiusReal_one_sub_abs (F : BoundedFabius)
-    (hF : IsFabius F) (x : ℝ) :
-    rvachevUp F x = fabiusReal F (1 - |x|) := by
-  rw [rvachevUp_eq_weightedSumCDF F hF, weightedSumCDF_eq_fabiusReal F hF]
 
 /-- **The canonical normalization dictionary** (the Thue–Morse
 roadmap's obligation, packaged): with the convention
@@ -65,7 +60,7 @@ theorem normalization_dictionary (F : BoundedFabius) (hF : IsFabius F) :
       (∀ t : ℝ, charFun weightedSumDistribution t =
         cexp (((2⁻¹ * t : ℝ) : ℂ) * I) *
           rvachevFourier F (((2⁻¹ * t : ℝ) : ℂ) / (2 * Real.pi))) :=
-  ⟨rvachevUp_eq_fabiusReal_one_sub_abs F hF,
+  ⟨rvachevUp_eq_fabiusReal_one_sub_abs F,
     rvachevFourier_eq_product F hF,
     rvachevMeasure_charFun_pos F hF,
     charFun_weightedSumDistribution F hF⟩
