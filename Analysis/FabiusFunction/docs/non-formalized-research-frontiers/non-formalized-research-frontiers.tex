@@ -14675,12 +14675,22 @@ whereas the centered coordinate
 row.  Retaining either naive convention leaves a defect that the other correction does not
 repair.
 \end{candidate}
-\begin{obligation}
+\begin{obligation}[Discharged]
 Package two separate failure witnesses---an explicit counterexample to matching \(P_k\)
 with prefix row \(k\), and the endpoint obstruction for the naive grid coordinate---and
 combine them into a theorem saying that neither correction alone gives the corrected
 coefficient-and-coordinate interpretation.
 \end{obligation}
+The witnesses and their combination are now theorems in
+\path{ThueMorseApproximation.lean}, beside the corrected identity.  The naive-order
+witness is \lean{iteratedPrefix\_ne\_approximationPolynomial\_coeff\_same\_index}: at \(k=1\),
+\(m=1\), inside the dyadic cutoff, the row value is \(0\) while \([z^1]P_1=1\) --- a defect
+purely in the coefficients, untouched by any coordinate convention.  The naive-coordinate
+witness is \lean{naiveGridCoordinate\_ne\_stepIntervalLeft}: the uncentered grid
+(\lean{naiveGridCoordinate}) puts the first level-one cell's left endpoint at \(-1/4\)
+while the corrected tiling requires \(-1/2\) --- a defect purely in the geometry, untouched
+by any order convention.  The combined statement is
+\lean{order\_and\_coordinate\_corrections\_independent}.
 
 \section{Already-preserved audit dispositions}
 
