@@ -21,7 +21,8 @@ geometric Fabius families:
 * absolute summability and continuity of the coordinate series;
 * splitting off the head coordinate with an arbitrary shifted weight tail;
 * reflection about half of the total weight;
-* ordered support bounds for nonnegative real weights.
+* the corresponding probability law, product splitting, and central symmetry;
+* measure-theoretic support bounds for nonnegative real weights.
 
 The public sample-space, shift, independence, and reflection declarations
 formerly lived in `ProbabilityRepresentation`.  They retain exactly the same
@@ -119,6 +120,27 @@ lemma uniformProduct_map_head_tail :
   have hhead := coordinate_has_uniform_law 0
   rwa [hhead] at h
 
+/-- A measurable statistic of the tail is jointly distributed with the head
+as one uniform coordinate times the statistic's law on a fresh copy of the
+full coordinate process.
+
+This formulation is independent of weighted series: it is the reusable
+head--tail product-map principle behind every first-coordinate decomposition
+below. -/
+theorem uniformProduct_map_head_tail_comp
+    {E : Type*} [MeasurableSpace E] {g : SampleSpace → E}
+    (hg : Measurable g) :
+    uniformProduct.map (fun ω : SampleSpace => (ω 0, g (tail ω))) =
+      (volume : Measure (Set.Icc (0 : ℝ) 1)).prod (uniformProduct.map g) := by
+  have hind := independent_head_tail.comp measurable_id hg
+  have hjoint := hind.map_prod_eq_prod_map_map
+    (measurable_pi_apply 0).aemeasurable
+    (hg.comp measurable_tail).aemeasurable
+  have hhead := coordinate_has_uniform_law 0
+  have htail : uniformProduct.map (g ∘ tail) = uniformProduct.map g := by
+    rw [← Measure.map_map hg measurable_tail, uniformProduct_map_tail]
+  rwa [hhead, htail] at hjoint
+
 /-- Reflect every coordinate in the midpoint of the unit interval. -/
 def reflectCoordinates (ω : SampleSpace) : SampleSpace :=
   fun n => unitInterval.symm (ω n)
@@ -208,6 +230,44 @@ theorem measurable_weightedUniformSeries
     Measurable (weightedUniformSeries w) :=
   (continuous_weightedUniformSeries hw).measurable
 
+/-! ## Laws of weighted series -/
+
+/-- The distribution of an arbitrary weighted uniform-coordinate series.
+
+As with `Measure.map` itself, this definition is total even when the series
+map is not measurable; in that case Mathlib's totalized map is the zero
+measure.  Absolute summability and completeness enter the theorems below,
+where they provide measurability and hence a genuine probability law. -/
+noncomputable def weightedUniformDistribution
+    {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E] [MeasurableSpace E]
+    (w : ℕ → E) : Measure E :=
+  uniformProduct.map (weightedUniformSeries w)
+
+/-- The law of an absolutely summable weighted series is a probability
+measure.  This is stated as a theorem, rather than a global instance, because
+measurability genuinely depends on the summability hypothesis. -/
+theorem isProbabilityMeasure_weightedUniformDistribution
+    {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E] [CompleteSpace E]
+    [MeasurableSpace E] [BorelSpace E]
+    {w : ℕ → E} (hw : Summable fun n => ‖w n‖) :
+    IsProbabilityMeasure (weightedUniformDistribution w) :=
+  Measure.isProbabilityMeasure_map
+    (measurable_weightedUniformSeries hw).aemeasurable
+
+/-- The head coordinate and the weighted series formed from the shifted
+weights and tail coordinates have the product of their marginal laws. -/
+theorem uniformProduct_map_head_tailWeightedUniformSeries
+    {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E] [CompleteSpace E]
+    [MeasurableSpace E] [BorelSpace E]
+    {v : ℕ → E} (hv : Summable fun n => ‖v n‖) :
+    uniformProduct.map
+        (fun ω : SampleSpace =>
+          (ω 0, weightedUniformSeries v (tail ω))) =
+      (volume : Measure (Set.Icc (0 : ℝ) 1)).prod
+        (weightedUniformDistribution v) := by
+  exact uniformProduct_map_head_tail_comp
+    (measurable_weightedUniformSeries hv)
+
 /-- Splitting off the first coordinate shifts an arbitrary weight sequence.
 No geometric relation between consecutive weights is assumed. -/
 theorem weightedUniformSeries_split
@@ -234,6 +294,66 @@ theorem weightedUniformSeries_reflect
     rw [sub_smul, one_smul]
   simp_rw [hterm]
   rw [(hw.of_norm).tsum_sub (summable_weightedUniformSeries_terms hw ω)]
+
+/-- The law of a weighted series is obtained by adding the uniformly scaled
+head weight to an independent copy of the shifted-tail series.  No geometric
+relation between consecutive weights is required. -/
+theorem weightedUniformDistribution_split
+    {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E] [CompleteSpace E]
+    [MeasurableSpace E] [BorelSpace E]
+    {w : ℕ → E} (hw : Summable fun n => ‖w n‖) :
+    weightedUniformDistribution w =
+      ((volume : Measure (Set.Icc (0 : ℝ) 1)).prod
+        (weightedUniformDistribution (fun n => w (Nat.succ n)))).map
+          (fun p => (p.1 : ℝ) • w 0 + p.2) := by
+  have hwtail : Summable fun n => ‖w (Nat.succ n)‖ := by
+    simpa only [Nat.succ_eq_add_one] using
+      (summable_nat_add_iff (f := fun n => ‖w n‖) 1).mpr hw
+  rw [← uniformProduct_map_head_tailWeightedUniformSeries hwtail]
+  rw [weightedUniformDistribution]
+  have hf : Measurable (fun ω : SampleSpace =>
+      (ω 0, weightedUniformSeries (fun n => w (Nat.succ n)) (tail ω))) :=
+    (measurable_pi_apply 0).prodMk
+      ((measurable_weightedUniformSeries hwtail).comp measurable_tail)
+  have hg : Measurable
+      (fun p : Set.Icc (0 : ℝ) 1 × E => (p.1 : ℝ) • w 0 + p.2) :=
+    (((continuous_subtype_val.comp continuous_fst).smul continuous_const).add
+      continuous_snd).measurable
+  rw [Measure.map_map
+    (μ := uniformProduct)
+    (f := fun ω : SampleSpace =>
+      (ω 0, weightedUniformSeries (fun n => w (Nat.succ n)) (tail ω)))
+    (g := fun p : Set.Icc (0 : ℝ) 1 × E => (p.1 : ℝ) • w 0 + p.2)
+    hg hf]
+  apply Measure.map_congr
+  filter_upwards with ω
+  exact weightedUniformSeries_split hw ω
+
+/-- The law of an absolutely summable vector-weighted series is centrally
+symmetric: reflection through half the total weight preserves the law. -/
+theorem weightedUniformDistribution_reflection
+    {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E] [CompleteSpace E]
+    [MeasurableSpace E] [BorelSpace E]
+    {w : ℕ → E} (hw : Summable fun n => ‖w n‖) :
+    (weightedUniformDistribution w).map
+        (fun x => (∑' n : ℕ, w n) - x) =
+      weightedUniformDistribution w := by
+  rw [weightedUniformDistribution,
+    Measure.map_map (by fun_prop : Measurable fun x : E => (∑' n : ℕ, w n) - x)
+      (measurable_weightedUniformSeries hw)]
+  calc
+    uniformProduct.map
+        ((fun x : E => (∑' n : ℕ, w n) - x) ∘ weightedUniformSeries w) =
+        uniformProduct.map (weightedUniformSeries w ∘ reflectCoordinates) := by
+      apply Measure.map_congr
+      filter_upwards with ω
+      exact (weightedUniformSeries_reflect hw ω).symm
+    _ = (uniformProduct.map reflectCoordinates).map
+        (weightedUniformSeries w) := by
+      rw [Measure.map_map (measurable_weightedUniformSeries hw)
+        measurable_reflectCoordinates]
+    _ = uniformProduct.map (weightedUniformSeries w) := by
+      rw [uniformProduct_map_reflectCoordinates]
 
 /-- The norm of a weighted coordinate series is at most the total norm of
 its weights. -/
@@ -279,6 +399,31 @@ theorem weightedUniformSeries_mem_Icc
     weightedUniformSeries w ω ∈ Icc 0 (∑' n : ℕ, w n) :=
   ⟨weightedUniformSeries_nonneg hwnonneg ω,
     weightedUniformSeries_le_tsum hw hwnonneg ω⟩
+
+/-- The law of a nonnegative real weighted series is carried by its natural
+pointwise interval from zero to the total weight. -/
+theorem weightedUniformDistribution_Icc
+    {w : ℕ → ℝ} (hw : Summable fun n => ‖w n‖)
+    (hwnonneg : ∀ n, 0 ≤ w n) :
+    weightedUniformDistribution w (Icc 0 (∑' n : ℕ, w n)) = 1 := by
+  rw [weightedUniformDistribution,
+    Measure.map_apply (measurable_weightedUniformSeries hw) measurableSet_Icc]
+  have hpreimage :
+      weightedUniformSeries w ⁻¹' Icc 0 (∑' n : ℕ, w n) = Set.univ :=
+    Set.eq_univ_of_forall (weightedUniformSeries_mem_Icc hw hwnonneg)
+  rw [hpreimage, measure_univ]
+
+/-- A nonnegative real weighted series assigns no mass outside its natural
+support interval. -/
+@[simp]
+theorem weightedUniformDistribution_compl_Icc
+    {w : ℕ → ℝ} (hw : Summable fun n => ‖w n‖)
+    (hwnonneg : ∀ n, 0 ≤ w n) :
+    weightedUniformDistribution w ((Icc 0 (∑' n : ℕ, w n))ᶜ) = 0 := by
+  letI : IsProbabilityMeasure (weightedUniformDistribution w) :=
+    isProbabilityMeasure_weightedUniformDistribution hw
+  rw [measure_compl measurableSet_Icc (by simp),
+    weightedUniformDistribution_Icc hw hwnonneg, measure_univ, tsub_self]
 
 /-- Unit-mass nonnegative weights produce a point of the unit interval. -/
 theorem weightedUniformSeries_mem_unitInterval

@@ -184,6 +184,7 @@ import FabiusFunction.Convexity
 import FabiusFunction.EffectiveFlatness
 import FabiusFunction.SharpFlatness
 import FabiusFunction.FabiusInverse
+import FabiusFunction.QuantileTransport
 import FabiusFunction.GlobalBounds
 import FabiusFunction.NormalizedVolterra
 import FabiusFunction.FabiusAntiderivatives
@@ -234,6 +235,13 @@ calculus, a Taylor reconstruction theorem, and exact polynomial commutators.
 Its Fabius specialization gives the complete signed primitive ladder on all
 of `ℝ`, the bounded ladder on the maximal range `x ≤ 1`, and finite formulas
 for every natural monomial weight.
+
+The probability interface also exposes a support-free inverse-CDF transport
+principle from an almost-everywhere sublevel identity.  Its compact Fabius
+specialization identifies uniform measure transported by the total inverse
+with the binary weighted-sum law, and therefore supplies Banach-valued quantile
+substitution without repeating a change-of-variables argument for each
+statistic.
 
 The regularity layer adds the sharp global shape of the two functions: the
 single differential equation `F'(x) = 2 up(2x - 1)` valid on all of `ℝ`, the
