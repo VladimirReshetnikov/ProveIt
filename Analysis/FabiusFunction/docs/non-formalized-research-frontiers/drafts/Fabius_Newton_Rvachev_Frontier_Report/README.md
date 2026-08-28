@@ -1,6 +1,6 @@
 # Exponent-Sequence and Newton-Basis Frontiers for the Fabius-Rvachev System
 
-This archive accompanies the 33-page frontier report prepared from the recursive
+This archive accompanies the 34-page frontier report prepared from the recursive
 LaTeX corpus under:
 
 `Analysis/FabiusFunction/docs`
@@ -38,11 +38,18 @@ The report was built with TeX Live 2025/dev, pdfTeX 1.40.26, and latexmk 4.86.
 From the archive root:
 
 ```bash
-latexmk -pdf -interaction=nonstopmode -halt-on-error \
-  Exponent_Sequence_Newton_Rvachev_Frontiers.tex
+pdflatex -interaction=nonstopmode -halt-on-error Exponent_Sequence_Newton_Rvachev_Frontiers.tex
+pdflatex -interaction=nonstopmode -halt-on-error Exponent_Sequence_Newton_Rvachev_Frontiers.tex
+pdflatex -interaction=nonstopmode -halt-on-error Exponent_Sequence_Newton_Rvachev_Frontiers.tex
 ```
 
 The source falls back to Latin Modern if Libertinus is unavailable.
+
+The title pin remains the report's historical audit snapshot.  Its explicit
+post-snapshot note records that the denominator-free geometric principal
+specialization and all residual moments are formalized at Lean checkpoint
+`1e761ed77583e9870ceeaeb2c74ac824094f0f3f`; the report's analytic remainder,
+tomography, and exponent-sequence claims retain their stated frontier status.
 
 ## Reproduce the numerical experiments
 

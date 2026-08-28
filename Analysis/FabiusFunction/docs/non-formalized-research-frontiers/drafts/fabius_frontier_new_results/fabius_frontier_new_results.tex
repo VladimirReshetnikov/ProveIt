@@ -1289,69 +1289,123 @@ packaging task is:
 This step requires no delicate asymptotics.
 
 \paragraph{Post-snapshot algebraic progress.}
-The finite (q)-filter algebra and reciprocal-grid phase locking, closed
-weights, cancellation, and all-order residual moments are now machine-checked.
-\texttt{CompleteHomogeneous.lean} evaluates Mathlib's complete homogeneous
-symmetric polynomial on arbitrary finite families, while
-\texttt{LagrangeResidualMoments.lean} identifies the corresponding monomial
-quotient and remainder by a monic nodal polynomial and proves every higher
-moment of an arbitrary polynomially exact finite row.  Its Lagrange
-specialization is
-\path{sum_lagrangeEvalWeight_mul_pow_card_add}, and the geometric-grid
-specialization is
-\path{sum_geometricLagrangeWeight_mul_pow_card_add}.
-
-The denominator-free bridge \texttt{GeometricQBinomialLagrange.lean} proves
-the arbitrary-ratio numerator identity over commutative rings.  Its theorem
-\texttt{reversed\_finite\_qBinomial\_theorem} identifies the generating
-polynomial with \(\prod_{k<r}(z-q^{k+1})\), and
-\texttt{sum\_geometricLagrangeWeight\_mul\_pow\_eq\_gaussianBinomial}
-computes every positive residual moment over a field from finite-node
-injectivity.  The reversed index in its numerator is deliberate; no
-unproved Gaussian symmetry is used.
-
-The modules \texttt{GeometricRichardson.lean},
-\texttt{GeometricLagrangeWeights.lean},
-\texttt{GeometricLagrangeQBinomial.lean}, and
-\texttt{GeometricLagrangeQMoments.lean} identify the finite geometric
-Richardson polynomial and its Lagrange weights, prove the q-Pochhammer and
-Gaussian-binomial weight formulas, and compute every rational \(q\)-moment
-under a nonzero-base and nonvanishing finite-denominator hypothesis.  For
-\(0<q<1\) they give every positive residual, establish its exact sign, and
-compute the finite exact \(\ell^1\) norm.  In particular,
-\path{quarterGeometricLagrangeQMoment_eq_residual_qBinomial} and
-\path{sum_abs_quarterGeometricLagrangeWeight_eq_qPochhammer_ratio} supply the
-report-facing \(q=1/4\) algebra.  At \(q=1/2\),
+The later module \path{GeometricLagrange.lean} now formalizes Lagrange
+evaluation weights for arbitrary distinct nodes, polynomial and module-valued
+exactness, the first omitted monomial moment, and geometric-node
+specializations.  The compiled bridge
+\path{GeometricQBinomialLagrange.lean} now supplies the arbitrary-ratio
+algebra needed here.  Its \path{geometricQBinomialWeightNumerator} is
+zero for \(j>r\), and for \(j\le r\) is literally
+\( (-1)^{r-j}q^{\binom{r-j+1}{2}}
+\texttt{gaussianBinomial}\ q\ r\ (r-j)\).  The theorem
+\path{reversed_finite_qBinomial_theorem} identifies the corresponding
+sum with \(\prod_{k<r}(z-q^{k+1})\) without division.  Under
+\path{Set.InjOn} of \(k\mapsto q^k\) on \(\{0,\ldots,r\}\),
+\path{geometricLagrangeWeight_eq_gaussianBinomial_div} normalizes this
+numerator by \((q;q)_r\), while
+\path{sum_geometricLagrangeWeight_mul_pow_eq_gaussianBinomial} gives,
+for every \(m>0\),
+\[
+ \sum_{j=0}^{r}\lambda_{r,j}(q)(q^j)^m
+ =(-1)^r q^{r(r+1)/2}
+   \texttt{gaussianBinomial}\ q\ (m-1)\ r.
+\]
+Thus the weight formula and every positive residual moment, including the
+\(q=1/4\) specialization whenever the nodes are injective, are no longer
+formalization obligations.  The reverse index \((r-j)\) above is deliberate:
+the source does not silently replace it by \(j\) using a generic Gaussian
+symmetry theorem.  At \(q=1/2\),
 \texttt{FabiusDiscreteLimitToeplitz.lean} identifies the same weights with
-the normalized Toeplitz row and supplies its reverse moments and exact total
-variation.
+the half-base Toeplitz row and retains its all-degree reverse moments and
+exact total variation.  The later rational geometric-moment layer also proves
+the finite condition-number identity \cref{eq:qcondition}; its infinite limit
+and decimal evaluation, together with all analytic error, remainder, and
+convergence claims, remain frontier.
 
-Independently, \texttt{ExponentialPartition.lean} and
+At post-snapshot checkpoint
+\nolinkurl{1e761ed77583e9870ceeaeb2c74ac824094f0f3f}, the algebraic route to the
+same residual formula was strengthened and factored through complete
+homogeneous polynomials.  The five reusable declarations added to
+\path{CompleteHomogeneous.lean} are
+\nolinkurl{completeHomogeneousEval_smul},
+\nolinkurl{completeHomogeneousEval_option_zero},
+\nolinkurl{completeHomogeneousEval_fin_succ},
+\nolinkurl{completeHomogeneousEvalOn_range}, and
+\nolinkurl{completeHomogeneousEvalAt_zero}.  Over every commutative semiring,
+\path{GeometricCompleteHomogeneous.lean} proves
+\[
+ h_n(1,q,\ldots,q^r)=\qbinom{n+r}{r}{q},
+ \qquad
+ h_n(c,cq,\ldots,cq^r)=c^n\qbinom{n+r}{r}{q}
+\]
+as \nolinkurl{completeHomogeneousEval_geometric} and
+\nolinkurl{completeHomogeneousEval_scaled_geometric}; the range-indexed form
+is
+\nolinkurl{completeHomogeneousEvalOn_range_pow_eq_gaussianBinomial}.
+
+Over every commutative ring, the hypotheses of
+\nolinkurl{sum_weight_mul_scaled_geometric_pow_succ_add} and
+\nolinkurl{sum_weight_mul_scaled_geometric_pow_of_pos} impose exactness
+directly on the displayed nodes \(c q^j\), not first on \(q^j\).  Thus zero
+and zero-divisor scales require no cancellation.  Their unscaled companions
+are \nolinkurl{sum_weight_mul_geometric_pow_succ_add} and
+\nolinkurl{sum_weight_mul_geometric_pow_of_pos}.  The field-valued
+distinct-node consequences are
+\nolinkurl{sum_geometricLagrangeWeight_mul_pow_succ_add},
+\nolinkurl{sum_geometricLagrangeWeight_mul_pow_of_pos},
+\nolinkurl{sum_geometricLagrangeWeight_mul_scaled_geometric_pow_of_pos}, and
+\nolinkurl{sum_geometricLagrangeWeight_mul_shifted_pow_of_pos}.  In particular,
+the generic scaled positive moment is exactly
+\[
+ \sum_{j=0}^{r}w_j(cq^j)^m
+ =c^m(-1)^r q^{\binom{r+1}{2}}
+   \texttt{gaussianBinomial}\ q\ (m-1)\ r
+ \qquad(m>0),
+\]
+provided the same row reproduces evaluation at zero through degree \(r\) on
+those scaled nodes.  These sixteen declarations use no division at the
+commutative-semiring or commutative-ring layers; finite-node injectivity enters
+only in the Lagrange field corollaries.
+
+The later rational layer is implemented in
+\begin{center}
+\texttt{GeometricRichardson.lean}\\
+\texttt{GeometricLagrangeWeights.lean}\\
+\texttt{GeometricLagrangeQBinomial.lean}\\
+\texttt{GeometricLagrangeQMoments.lean}.
+\end{center}
+Together these modules identify the finite geometric Richardson polynomial
+with its Lagrange row, prove the \(q\)-Pochhammer and Gaussian-binomial weight
+formulas, and compute every rational \(q\)-moment
+under the exact nonzero-base and nonvanishing-denominator hypotheses.  For
+\(0<q<1\), they establish every residual sign and the finite exact
+\(\ell^1\) norm.  The declarations
+\path{quarterGeometricLagrangeQMoment_eq_residual_qBinomial} and
+\path{sum_abs_quarterGeometricLagrangeWeight_eq_qPochhammer_ratio} provide
+the report-facing \(q=1/4\) specializations.
+
+Independently,
+\texttt{ExponentialPartition.lean} and
 \texttt{ExponentialBell.lean} identify the universal weighted-partition
 formula for an exponential coefficient with
 \texttt{SaddleExpansion.expCoeff} over every commutative
-\(\mathbb Q\)-algebra.  The module \texttt{MomentCumulantAlgebra.lean}
-factorially normalizes that engine into named complete-Bell and inverse
-moment--cumulant transforms.  Thus the coefficient mechanism behind
-\eqref{eq:h-Bell} is available generically, although its displayed
-complete-homogeneous power-sum specialization has not yet been packaged as a
-theorem.
+\(\mathbb Q\)-algebra.  The later \texttt{MomentCumulantAlgebra.lean}
+factorially normalizes the same engine into named complete-Bell and inverse
+moment--cumulant transforms, with the classical Bell recurrence and
+normalized inverse laws.  In particular, the coefficient mechanism behind
+\eqref{eq:h-Bell} can reuse these bridges with
+\(E_k=k^{-1}\sum_i a_i^k\) for \(k\ge1\).  The geometric principal
+specialization and all finite geometric residual moments are therefore no
+longer formalization obligations.
 
-Finally, \texttt{LambertPhaseLockedRichardson.lean} proves exact lower-Lambert
-phase locking, the factorial and binomial reciprocal-grid weights, their
-cancellation moments, and the report-shaped all-order identity
+Finally, \texttt{LambertPhaseLockedRichardson.lean} proves the exact
+lower-Lambert phase locking, factorial and binomial reciprocal-grid weights,
+their cancellation moments, and the report-shaped all-order identity
 \path{sum_shiftedReciprocalLagrangeWeight_mul_invPow_eq_completeHomogeneous}.
-The proof is a specialization of the universal Lagrange residual theorem, so
-it requires neither rational-function differentiation nor analytic
-coefficient extraction.
-
-These declarations do not prove the generating-series characterization
-\eqref{eq:complete-homogeneous}, the Bell/harmonic-sum identity
-\eqref{eq:h-Bell}, the infinite limit or decimal value in
-\eqref{eq:qcondition-limit}--\eqref{eq:qcondition-dyadic}, the Lambert-row
-conditioning asymptotics and Bernoulli diagnostics, the derivative-extractor
-weights, any sinc-tail transformed-error or bracketing theorem, or any
-analytic phase-extraction estimate.
+The still-open algebraic item is the Bell/harmonic-sum presentation
+\eqref{eq:h-Bell}; the transformed sinc-tail identities, analytic Richardson
+remainder and bracketing, infinite condition-number limits, and analytic
+phase-extraction estimates also remain frontier obligations.
 
 \subsection{Analytic theorem chain}
 
