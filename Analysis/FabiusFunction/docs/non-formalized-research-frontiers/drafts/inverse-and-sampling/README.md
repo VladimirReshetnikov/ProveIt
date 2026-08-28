@@ -1,8 +1,11 @@
 # Inverse and sampling
 
 The inverse function's frontiers and the sampling/deconvolution circle of
-ideas, consolidated (2026-08-28) into the single volume
-[`Inverse_and_Sampling_Frontiers/`](Inverse_and_Sampling_Frontiers/):
+ideas, in two consolidated volumes.
+
+## `Inverse_and_Sampling_Frontiers/`
+
+Consolidated (2026-08-28) from:
 
 - **Part I** — *Inverse Frontiers for the Fabius–Rvachev System*
   (formerly `Fabius_Inverse_Frontier_Report_Source_and_PDF/`);
@@ -17,27 +20,27 @@ asset paths mechanically prefixed per part; no mathematical content
 altered) and their directories deleted; provenance with SHA-256 hashes
 is recorded in the volume itself, and git history is the archive.
 
-A second-wave separate member arrived 2026-08-28 and stays unmerged
-until deliberately folded into the volume:
-`fabius_dyadic_interpolation_report` (*Dyadic-Comb Interpolation of
-the Fabius and Rvachev Functions*: Runge instability, endpoint-jet
-constraints, exact arithmetic, stable local alternatives).
+## `Dyadic_Comb_Frontiers/`
 
-A third wave (also 2026-08-28) added five more separate members, all
-on dyadic-comb sampling sums and interpolation:
+Editorially merged (2026-08-28) from the six dyadic-comb drafts of the
+second and third waves — three on comb sums/quadrature
+(`Fabius_Dyadic_Comb_Sums_Report_Package/`,
+`fabius-dyadic-comb-sums-report/`, `fabius_dyadic_comb_report_final/`)
+and three on global polynomial interpolation
+(`fabius_dyadic_interpolation_report/`, `fabius_interpolation_report/`,
+`Fabius_Rvachev_Dyadic_Interpolation_Report/`).  Because the six
+sources largely re-derived one another's core results, this volume is a
+true merge (unified notation, one statement per shared theorem with the
+best proof, all source-specific material retained) rather than a
+part-per-source concatenation.  Provenance with SHA-256 hashes and the
+deduplication record are Appendix E of the volume; every source's
+supporting files live under its `assets/`.  The absorbed draft
+directories are deleted; git history is the archive.
 
-- `Fabius_Dyadic_Comb_Sums_Report_Package/` — *Dyadic-Comb Sums for
-  the Fabius–Rvachev System* (with `generated/` data tables);
-- `fabius-dyadic-comb-sums-report/` — *Dyadic-Comb Moments of the
-  Fabius and Rvachev Functions*;
-- `fabius_dyadic_comb_report_final/` — *Dyadic-Comb Quadrature for
-  the Fabius and Rvachev Functions*;
-- `fabius_interpolation_report/` — *Dyadic-Comb Interpolation of the
-  Fabius and Rvachev Functions* — an independent write-up **with the
-  same title** as the second-wave member above (substantially
-  different text; kept separate the way the Fourier-decay sources
-  are);
-- `Fabius_Rvachev_Dyadic_Interpolation_Report/` — *Global Polynomial
-  Interpolation of the Fabius and Rvachev Functions on Dyadic Combs*.
+## Unmerged members
 
-See [`../MANIFEST.md`](../MANIFEST.md) for titles and the previous paths.
+- `inverse_fabius_all_orders_package/` — *Closed All-Orders Endpoint
+  Asymptotics for the Inverse Fabius Function* (fourth wave, unpacked
+  2026-08-28; not yet folded into `Inverse_and_Sampling_Frontiers/`).
+
+See [`../MANIFEST.md`](../MANIFEST.md) for titles and previous paths.

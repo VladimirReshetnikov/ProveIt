@@ -1,0 +1,1446 @@
+\documentclass[11pt,oneside]{article}
+
+\usepackage[a4paper,margin=25mm,headheight=15pt]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\IfFileExists{libertinus.sty}{\usepackage{libertinus}}{\usepackage{lmodern}}
+\usepackage{microtype}
+\usepackage{amsmath,amssymb,amsthm,mathtools,mathrsfs,bm}
+\usepackage{booktabs,longtable,tabularx,array,multirow}
+\usepackage{enumitem}
+\usepackage{xcolor}
+\usepackage{graphicx}
+\usepackage{listings}
+\usepackage{xurl}
+\usepackage{fancyhdr}
+\usepackage{titlesec}
+\usepackage{hyperref}
+\usepackage[nameinlink,noabbrev]{cleveref}
+
+\definecolor{linkblue}{RGB}{22,73,130}
+\definecolor{shadegray}{RGB}{246,247,249}
+\definecolor{rulegray}{RGB}{190,197,205}
+\definecolor{provedgreen}{RGB}{27,110,78}
+\definecolor{conjectureorange}{RGB}{165,88,18}
+\hypersetup{
+  colorlinks=true,
+  linkcolor=linkblue,
+  citecolor=linkblue,
+  urlcolor=linkblue,
+  pdftitle={Exact Polynomial Synthesis by Finite Rvachev Up-Function Dictionaries},
+  pdfauthor={OpenAI, prepared for Vladimir Reshetnikov},
+  pdfsubject={Finite exact polynomial representation by shifted and scaled Rvachev up-functions},
+  pdfkeywords={Rvachev up function, Fabius function, Strang-Fix, polynomial reproduction, Thue-Morse, q-integer, Appell polynomials, shift-invariant space}
+}
+
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small Exact Rvachev polynomial synthesis}
+\fancyhead[R]{\small\nouppercase{\leftmark}}
+\fancyfoot[C]{\thepage}
+\renewcommand{\headrulewidth}{0.4pt}
+\titleformat{\section}{\Large\bfseries}{\thesection}{0.7em}{}
+\titleformat{\subsection}{\large\bfseries}{\thesubsection}{0.7em}{}
+\titleformat{\subsubsection}{\normalsize\bfseries}{\thesubsubsection}{0.7em}{}
+\setcounter{secnumdepth}{3}
+\setcounter{tocdepth}{2}
+\setlist[itemize]{leftmargin=2em,itemsep=0.25em,topsep=0.4em}
+\setlist[enumerate]{leftmargin=2.3em,itemsep=0.25em,topsep=0.4em}
+\setlength{\emergencystretch}{2em}
+
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{conjecture}[theorem]{Conjecture}
+\newtheorem{question}[theorem]{Question}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{algorithm}[theorem]{Algorithm}
+\newtheorem{example}[theorem]{Example}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+\newtheorem{warning}[theorem]{Warning}
+
+\newcommand{\R}{\mathbb R}
+\newcommand{\C}{\mathbb C}
+\newcommand{\Q}{\mathbb Q}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\N}{\mathbb N}
+\newcommand{\Up}{\operatorname{up}}
+\newcommand{\sinc}{\operatorname{sinc}}
+\newcommand{\e}{\mathrm e}
+\newcommand{\ii}{\mathrm i}
+\newcommand{\dd}{\,\mathrm d}
+\newcommand{\E}{\mathbb E}
+\newcommand{\supp}{\operatorname{supp}}
+\newcommand{\Span}{\operatorname{span}}
+\newcommand{\ord}{\operatorname{ord}}
+\newcommand{\vtwo}{v_2}
+\newcommand{\eps}{\varepsilon}
+\newcommand{\PiD}{\Pi_d}
+\newcommand{\bigO}{\mathcal O}
+\newcommand{\Repo}{\texttt{ProveIt}}
+\newcommand{\file}[1]{\nolinkurl{#1}}
+
+\newenvironment{resultbox}{%
+  \par\smallskip\noindent\begin{center}\begin{minipage}{0.94\textwidth}%
+  \color{black}\hrule\vspace{0.55em}\small
+}{%
+  \vspace{0.55em}\hrule\end{minipage}\end{center}\smallskip
+}
+
+\newenvironment{statusbox}[1]{%
+  \par\smallskip\noindent\begin{center}\begin{minipage}{0.94\textwidth}%
+  \textbf{#1.}\quad
+}{%
+  \end{minipage}\end{center}\smallskip
+}
+
+\lstdefinestyle{pseudo}{
+  basicstyle=\ttfamily\small,
+  backgroundcolor=\color{shadegray},
+  frame=single,
+  rulecolor=\color{rulegray},
+  columns=fullflexible,
+  keepspaces=true,
+  showstringspaces=false,
+  xleftmargin=0.7em,
+  xrightmargin=0.7em,
+  aboveskip=0.8em,
+  belowskip=0.8em
+}
+
+\title{\bfseries Exact Polynomial Synthesis by Finite Rvachev Up-Function Dictionaries\\[0.4em]
+\large Dyadic zero multiplicities, cyclotomic nullspaces, Thue--Morse certificates, and output-sensitive algorithms}
+\author{Research report prepared for Vladimir Reshetnikov\\
+\small Repository snapshot and literature audit: 28 August 2026}
+\date{28 August 2026}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+Let $u=\Up$ be Rvachev's nonnegative $C^\infty$ function supported on $[-1,1]$ and normalized by $\int u=1$.  This report solves a concrete synthesis problem: represent an arbitrary polynomial exactly on a prescribed compact interval by a finite signed sum of shifted and scaled copies of $u$.
+
+For a polynomial of degree at most $d$, the minimal dyadic scale-to-grid ratio is $M=2^d$.  A direct Strang--Fix construction first gives a global cardinal identity with polynomial coefficient sequence $Q=M_u(MD)^{-1}P$, where $M_u$ is the moment generating function of $u$.  Restriction to one unit cell gives $2M$ active atoms.  We then determine the complete dyadic alias nullspace.  Its characteristic polynomial is
+\[
+ A_d(z)=\prod_{j=1}^{d}\frac{1-z^{2^j}}{1-z}
+       =\prod_{\ell=1}^{d}(z^{2^{\ell-1}}+1)^{d-\ell+1},
+\]
+with degree $2M-d-2$.  Consequently, the local up-spline space has the unexpectedly small exact dimension $d+2$.  Every polynomial of degree at most $d$ therefore has a unique representation in a proved endpoint basis of only $d+2$ common-scale atoms.  This count is sharp for any fixed dictionary of nontrivial affine up-atoms whose span is required to contain all of $\Pi_d$, not merely for the dyadic dictionary.
+
+The recurrence reduction can itself be compressed.  An output-sensitive algorithm computes the $d+2$ coefficients without constructing any exponentially long vector.  Its central differential symbol is
+\[
+ H_d(z)=\left(\frac{z}{2\sinh(z/2)}\right)^d\frac1{M_u(z)},
+\]
+whose logarithm is an explicit Bernoulli series.  For an interval divided into $J$ normalized cells, the same method gives exactly $J+d+1$ atoms and a scale-localization tradeoff.  We also obtain: a one-scalar necessary and sufficient polynomiality certificate; a particularly simple Thue--Morse formula for that certificate; a canonical one-dimensional nonpolynomial defect and its complete Fourier series; rationality and denominator control; exact local dimension and uniqueness statements; affine covariance; numerical conditioning diagnostics; and several conjectures concerning centrally supported bases, arbitrary nonlattice atoms, optimal conditioning, and multivariate extensions.
+
+The basic fact that atomic functions can reproduce polynomials is part of the historical Rvachev literature.  The novelty claims made here are deliberately narrower: they concern the explicit finite common-scale construction, the full alias-nullspace and $q$-integer factorization, the sharp $d+2$ local dimension/minimality theorem, the output-sensitive Bernoulli algorithm, the Thue--Morse certificate, and the defect formula, relative to both the audited repository and the sources located in the literature search.  No claim of global priority is made without qualification.
+\end{abstract}
+
+\tableofcontents
+\newpage
+
+\section{Problem, answer, and status of the results}
+
+\subsection{The synthesis problem}
+Let $p\in\R[x]$ and let $I=[a,b]$ with $a<b$.  We seek a finite identity
+\begin{equation}
+ p(x)=\sum_{r=1}^{N}c_r\,
+ u\!\left(\frac{x-\tau_r}{\sigma_r}\right),
+ \qquad x\in[a,b],                                      \label{eq:general-problem}
+\end{equation}
+with nonzero scales $\sigma_r$, real shifts $\tau_r$, and real amplitudes $c_r$.  Signed amplitudes are essential in general.  The requested identity is functional, not merely interpolation at finitely many nodes.
+
+The principal construction in this report uses a common positive scale and an arithmetic grid of shifts.  It is already strong enough to solve \eqref{eq:general-problem} for every polynomial and interval, with only degree-plus-two atoms when one accepts a broad support footprint.
+
+\subsection{The main finite formula}
+Let $n=\deg p$ and choose an integer $d\ge n$.  Choose an integer localization parameter $J\ge1$, set
+\begin{equation}
+ h=\frac{b-a}{J},\qquad M=2^d,\qquad P(t)=p(a+ht),        \label{eq:normalization}
+\end{equation}
+and compute the rational-linear functionals $b_0(P),\ldots,b_{J+d}(P)$ by Algorithm~\ref{alg:fast}.  Then
+\begin{equation}
+ \boxed{
+ p(x)=\frac1M\sum_{r=0}^{J+d}b_r(P)\,
+ u\!\left(
+ \frac{x-a-h(M-d-1+r)}{Mh}
+ \right),\qquad a\le x\le b.}                           \label{eq:main-physical}
+\end{equation}
+For $J=1$, exactly $d+2$ atoms occur.  Increasing $J$ decreases the physical scale $Mh=2^d(b-a)/J$ but raises the atom count to $J+d+1$.
+
+\begin{resultbox}
+\textbf{Central answer.}  Every degree-$d$ polynomial on every nondegenerate compact interval is exactly a finite signed sum of $d+2$ shifted copies of one common dilation of the Rvachev up-function.  The shifts and dilation are explicit, all coefficients are obtained by a finite exact algorithm, rational input produces rational output, and $d+2$ is optimal among all fixed dictionaries of nontrivial affine up-atoms that reproduce the whole space $\Pi_d$.
+\end{resultbox}
+
+\subsection{Status labels and novelty boundary}
+The report distinguishes four kinds of statements.
+\begin{itemize}
+\item \textbf{Imported facts} are taken from the audited repository or standard shift-invariant-space theory: the sinc product, exact integer zero multiplicities, partition of unity, the moment generating function, the Rvachev--Appell inverse, nowhere analyticity, and the general Strang--Fix principle.
+\item \textbf{Proved here} means that a complete mathematical derivation is supplied in this report.  These include the orientation with up-atoms as the synthesized functions, the cyclotomic alias nullspace, local dimension, endpoint basis, fast algorithm, certificate, and defect formula.
+\item \textbf{Computational evidence} is exact symbolic experimentation or independent numerical quadrature supplied by the accompanying Python program.
+\item \textbf{Conjectural} statements are explicitly labelled and are not used in proofs.
+\end{itemize}
+
+Polynomial reproduction by shifts of atomic functions is historically known; see Rvachev's survey and later atomic-function literature \cite{rvachev1990,kravchenko2015}.  The classical Fourier criterion is the Strang--Fix theory \cite{strangfix1973,jia1998}.  Thus the existence theorem by itself is not presented as a global first.  The finer finite-dimensional and algorithmic package below was not found in the audited \Repo{} corpus, and no identical package was located in the targeted literature search.
+
+\section{Repository audit and inherited structure}
+\label{sec:audit}
+
+\subsection{Scope of the source audit}
+The source tree under
+\begin{center}
+\path{Analysis/FabiusFunction/docs}
+\end{center}
+was recursively inventoried at the 28 August 2026 repository snapshot.  The audit included the primary expository documents, the papers directory, the archive and its provenance maps, and every standalone LaTeX draft listed by the reorganized frontier manifest.  Because the archive contains superseded and consolidated versions of many reports, the comparison was performed at source/formula level: document inventories and provenance maps were combined with searches for polynomial reproduction, shift synthesis, Strang--Fix conditions, Appell/Kabaya--Iri polynomials, aliasing, root-of-unity filters, and finite up-function sums.  The documents most directly relevant to the present problem were then read closely around every matching formula and proof.
+
+The current draft manifest groups the live frontier corpus into Fourier decay, Thue--Morse, exponents and $q$-series, spectra and arithmetic, integration and transforms, inverse and sampling, representations, and broad frontier compilations \cite{repoManifest}.  This report is written to complement that organization rather than repeat it.
+
+\subsection{Facts imported from the primary synthesis}
+We use the normalization in the repository's main synthesis \cite{repoMain}.  The Rvachev function $u=\Up$ is even, nonnegative, supported on $[-1,1]$, belongs to $C_c^\infty(\R)$, and has integral one.  With
+\begin{equation}
+ \widehat f(\xi)=\int_{\R}f(x)\e^{-2\pi\ii x\xi}\dd x,
+\end{equation}
+its Fourier transform is the entire product
+\begin{equation}
+ \widehat u(\xi)=\prod_{j=0}^{\infty}
+ \sinc\!\left(\frac{\pi\xi}{2^j}\right),
+ \qquad \sinc z=\frac{\sin z}{z}.                         \label{eq:fourier-product}
+\end{equation}
+The zero set is exactly $\Z\setminus\{0\}$, and
+\begin{equation}
+ \ord_{\xi=m}\widehat u=1+\vtwo(m),
+ \qquad m\in\Z\setminus\{0\}.                          \label{eq:integer-orders}
+\end{equation}
+The repository also proves the Poisson partition identities
+\begin{equation}
+ \sum_{k\in\Z}u\!\left(t+\frac{k}{m}\right)=m
+ \quad(m\in\N),
+ \qquad
+ \sum_{k\in\Z}u(t+k)=1.                                  \label{eq:partition}
+\end{equation}
+
+\subsection{Moment and Appell data imported from the inverse/sampling volume}
+The moment generating function is
+\begin{equation}
+ M_u(z)=\int_{-1}^{1}\e^{zx}u(x)\dd x
+ =\prod_{j=0}^{\infty}
+ \frac{\sinh(z/2^{j+1})}{z/2^{j+1}}.                      \label{eq:mgf}
+\end{equation}
+Its even cumulants are
+\begin{equation}
+ \log M_u(z)=\sum_{r\ge1}\kappa_{2r}\frac{z^{2r}}{(2r)!},
+ \qquad
+ \kappa_{2r}=\frac{B_{2r}}{2r(1-4^{-r})}.                 \label{eq:cumulants}
+\end{equation}
+The centered Rvachev--Appell polynomials $\mathcal A_n$ are defined by
+\begin{equation}
+ \frac{\e^{xz}}{M_u(z)}
+ =\sum_{n\ge0}\mathcal A_n(x)\frac{z^n}{n!},             \label{eq:appell-egf}
+\end{equation}
+and satisfy
+\begin{equation}
+ M_u(D)\mathcal A_n(x)=x^n,
+ \qquad
+ \int_{-1}^{1}\mathcal A_n(x-y)u(y)\dd y=x^n.            \label{eq:appell-deconv}
+\end{equation}
+The audited inverse/sampling volume also contains the exact self-sampling quadrature and the finite identity
+\begin{equation}
+ x^n=2^{-N}\sum_{k\in\Z}
+ \mathcal A_n\!\left(x-\frac{k+\theta}{2^N}\right)
+ u\!\left(\frac{k+\theta}{2^N}\right),
+ \qquad n\le N.                                           \label{eq:repo-opposite-orientation}
+\end{equation}
+In \eqref{eq:repo-opposite-orientation}, the translated functions are polynomials and the up-values are scalar weights.  Our problem has the opposite orientation: translated and dilated copies of $u$ are the functions, and polynomial data become their amplitudes.  This distinction is the main nonduplication boundary.
+
+\subsection{Nonpolynomiality on every open interval}
+The repository's non-elementarity report proves that the Fabius function agrees with no elementary function, hence with no polynomial, on any subset of $[0,1]$ having nonempty interior \cite{repoNonElementary}.  Since
+\begin{equation}
+ u(x)=F(1-|x|),\qquad |x|\le1,                              \label{eq:F-up}
+\end{equation}
+no active affine copy of $u$ is polynomial on an open interval contained in the interior of its support.  This fact will turn an upper dimension bound into an exact dimension theorem.
+
+\section{Normalization and the common-scale dictionary}
+
+\subsection{Normalized atoms}
+For a scale ratio $\rho>0$ and $k\in\Z$, define
+\begin{equation}
+ \psi_{\rho,k}(t)=\frac1\rho\,
+ u\!\left(\frac{t-k}{\rho}\right).                       \label{eq:psi-general}
+\end{equation}
+Then
+\begin{equation}
+ \widehat{\psi_{\rho,k}}(\xi)
+ =\e^{-2\pi\ii k\xi}\widehat u(\rho\xi),                \label{eq:psi-fourier}
+\end{equation}
+$\psi_{\rho,k}$ has support $[k-\rho,k+\rho]$, and its integral is one.
+
+The physical interval problem reduces to the normalized interval by \eqref{eq:normalization}.  Once
+\begin{equation}
+ P(t)=\sum_r c_r u\!\left(\frac{t-k_r}{M}\right),
+ \qquad 0\le t\le J,                                      \label{eq:normalized-rep}
+\end{equation}
+then replacing $t$ by $(x-a)/h$ gives the corresponding physical shifts and scale.
+
+\subsection{Why the minimal global cardinal ratio is dyadic}
+\begin{theorem}[Integer scale and exact reproduction order]
+\label{thm:scale-classification}
+Let $\rho>0$.  The integer translates of $\psi_{\rho,0}$ form a partition of unity,
+\begin{equation}
+ \sum_{k\in\Z}\psi_{\rho,k}(t)=1,                        \label{eq:rho-partition}
+\end{equation}
+if and only if $\rho$ is a positive integer.  If $\rho\in\N$, the dual-lattice zeros of $\widehat u(\rho\xi)$ have minimum multiplicity
+\begin{equation}
+ 1+\vtwo(\rho),                                           \label{eq:rho-min-mult}
+\end{equation}
+so its Strang--Fix polynomial reproduction order is exactly $\vtwo(\rho)$.  Consequently, among cardinal systems of integer translates with global polynomial reproduction, the smallest scale-to-shift ratio capable of reproducing every polynomial of degree at most $d$ is
+\begin{equation}
+ \boxed{\rho=2^d.}                                        \label{eq:minimal-rho}
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+The $n$th Fourier coefficient of the one-periodic sum in \eqref{eq:rho-partition} is $\widehat u(\rho n)$.  It is one at $n=0$.  It vanishes for every $n\ne0$ exactly when $\rho n$ is a nonzero integer for every $n\ne0$; the exact zero set of $\widehat u$ makes this equivalent to $\rho\in\N$.
+
+For integer $\rho$ and $n\ne0$, \eqref{eq:integer-orders} gives
+\[
+ \ord_{\xi=n}\widehat u(\rho\xi)
+ =1+\vtwo(\rho n)
+ =1+\vtwo(\rho)+\vtwo(n).
+\]
+The minimum occurs at odd $n$.  The classical necessary-and-sufficient zero conditions for polynomial reproduction by a compactly supported shift generator then give degree $\vtwo(\rho)$ \cite{strangfix1973,jia1998}.  The least integer with $\vtwo(\rho)\ge d$ is $2^d$.
+\end{proof}
+
+This minimality statement is about the global cardinal system on the integer shift lattice.  Within the dyadic common-scale local family, the exact dimension and basis results in Sections~\ref{sec:dimension}--\ref{sec:endpoint-basis} show that the same choice is also sharp in the relevant fixed-dictionary sense.  No assertion is made here that $2^d$ is the smallest possible ratio among arbitrary noninteger, nonlattice, or target-adaptive local systems.
+
+\begin{remark}
+Odd overscaling does not buy polynomial order.  If $\rho=2^dq$ with $q$ odd, the order remains $d$, while the support and the number of active atoms increase.  This is one reason the rest of the report fixes $M=2^d$.
+\end{remark}
+
+\section{Global cardinal synthesis and polynomial deconvolution}
+
+\subsection{A Poisson lemma for polynomial coefficients}
+Fix $d\ge0$ and put
+\begin{equation}
+ M=2^d,\qquad \psi_k=\psi_{M,k}.                           \label{eq:M-psi}
+\end{equation}
+
+\begin{lemma}[Polynomial coefficient Poisson collapse]
+\label{lem:poisson-collapse}
+For every polynomial $Q$ of degree at most $d$,
+\begin{equation}
+ \sum_{k\in\Z}Q(k)\psi_k(t)
+ =\int_{-1}^{1}Q(t-My)u(y)\dd y.                          \label{eq:poisson-collapse}
+\end{equation}
+Both sides are globally defined; the sum is locally finite.
+\end{lemma}
+
+\begin{proof}
+For fixed $t$, apply Poisson summation to
+\[
+ f_t(x)=Q(x)\frac1M u\!\left(\frac{t-x}{M}\right),
+\]
+which is $C_c^\infty$.  The zero-frequency term is the right side of \eqref{eq:poisson-collapse}.  Multiplication by the degree-$d$ polynomial $Q$ expresses every nonzero Fourier sample $\widehat f_t(n)$ as a linear combination of derivatives of $\widehat u(M\xi)$ through order $d$, evaluated at $\xi=n$.  At $n\ne0$, \eqref{eq:integer-orders} gives zero order
+\[
+ 1+\vtwo(Mn)=d+1+\vtwo(n)>d,
+\]
+so every nonzero Poisson alias vanishes.
+\end{proof}
+
+\subsection{The deconvolution polynomial}
+Let $D=\dd/\dd t$.  Because $u$ is even,
+\begin{equation}
+ \int_{-1}^{1}Q(t-My)u(y)\dd y=M_u(MD)Q(t).                \label{eq:averaging-op}
+\end{equation}
+The operator is triangular with unit diagonal on polynomials and is therefore invertible.
+
+\begin{theorem}[Global exact up-atom synthesis]
+\label{thm:global-synthesis}
+Let $P\in\Pi_d$ and define
+\begin{equation}
+ Q=M_u(MD)^{-1}P
+ =\exp\!\left(
+ -\sum_{r\ge1}\kappa_{2r}\frac{(MD)^{2r}}{(2r)!}
+ \right)P.                                                 \label{eq:Q-deconv}
+\end{equation}
+The exponential truncates.  Then
+\begin{equation}
+ \boxed{
+ P(t)=\frac1M\sum_{k\in\Z}Q(k)
+ u\!\left(\frac{t-k}{M}\right),\qquad t\in\R.}          \label{eq:global-up-synthesis}
+\end{equation}
+For $P(t)=t^n$,
+\begin{equation}
+ Q(t)=M^n\mathcal A_n(t/M).                                \label{eq:Q-monomial-Appell}
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+Combine Lemma~\ref{lem:poisson-collapse} with \eqref{eq:averaging-op} and the definition of $Q$.  Formula \eqref{eq:Q-monomial-Appell} follows from the generating function \eqref{eq:appell-egf} after the dilation $z\mapsto Mz$.
+\end{proof}
+
+The first differential terms are
+\begin{equation}
+ Q=P-\frac{M^2}{18}P''
+ +\frac{31M^4}{16200}P^{(4)}
+ -\frac{2347M^6}{42865200}P^{(6)}+\cdots.                 \label{eq:Q-first}
+\end{equation}
+
+\subsection{Finite restriction to an interval}
+On $[0,J]$, only centers
+\begin{equation}
+ k=-M+1,-M+2,\ldots,J+M-1                                \label{eq:active-J}
+\end{equation}
+meet the open interval through the interior of their support.  Thus \eqref{eq:global-up-synthesis} immediately becomes a finite sum with $J+2M-1$ active atoms.  For $J=1$ there are $2M=2^{d+1}$ atoms.  The rest of the report compresses this exponential count.
+
+\section{A first finite compression by partition pairs}
+
+On one unit interval, the partition identity has a local two-term form.  For $1\le r\le M$ and $0\le t\le1$,
+\begin{equation}
+ \psi_{r-M}(t)+\psi_r(t)=\frac1M.                         \label{eq:pair-identity}
+\end{equation}
+Indeed, $(t-r)/M\in[-1,0]$ and $u(x)+u(x+1)=1$ there.
+
+Let $q_k=Q(k)$ and
+\begin{equation}
+ S=\sum_{j=-M+1}^{0}q_j.                                  \label{eq:S-pair}
+\end{equation}
+Then the $2M$-atom sum compresses to $M+1$ atoms:
+\begin{proposition}[Pair-compressed representation]
+\label{prop:pair-compress}
+For $0\le t\le1$,
+\begin{equation}
+ P(t)=\sum_{r=0}^{M}A_r\psi_r(t),                         \label{eq:pair-rep}
+\end{equation}
+where
+\begin{align}
+ A_0&=S,\notag\\
+ A_r&=q_r-q_{r-M},\qquad 1\le r<M,                       \label{eq:pair-coeffs}\\
+ A_M&=S+q_M-q_0.\notag
+\end{align}
+\end{proposition}
+
+This representation is simple and can be useful numerically, but $M+1$ is still exponential in $d$.  It is also nonunique once $M+1>d+2$.  The exact alias nullspace reveals the true dimension.
+
+\section{The complete dyadic alias nullspace}
+\label{sec:alias-nullspace}
+
+\subsection{Root-of-unity annihilations}
+Let
+\begin{equation}
+ \omega=\e^{2\pi\ii/M}.                                   \label{eq:omega}
+\end{equation}
+For $1\le j<M$ and $s\ge0$, consider the exponential-polynomial coefficient sequence
+\begin{equation}
+ n_k^{(j,s)}=k^s\omega^{jk}.                               \label{eq:alias-seq}
+\end{equation}
+
+\begin{theorem}[Full dyadic alias family]
+\label{thm:alias-family}
+For every $1\le j<M$ and every $0\le s\le\vtwo(j)$,
+\begin{equation}
+ \sum_{k\in\Z}k^s\omega^{jk}\psi_k(t)=0,
+ \qquad t\in\R.                                          \label{eq:alias-zero}
+\end{equation}
+The total number of independent relations is
+\begin{equation}
+ R_d=\sum_{j=1}^{M-1}(\vtwo(j)+1)=2M-d-2.                 \label{eq:R-count}
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+The Fourier transform of the twisted polynomial comb
+\(
+ \sum_k k^s\omega^{jk}\delta_k
+\)
+is supported, with derivatives through order $s$, on the coset $j/M+\Z$.  At $\xi=j/M+n$ the multiplier $\widehat u(M\xi)$ is evaluated at $j+Mn$.  Since $0<j<M=2^d$,
+\begin{equation}
+ \vtwo(j+Mn)=\vtwo(j),                                    \label{eq:v2-coset}
+\end{equation}
+so the zero order is $1+\vtwo(j)>s$.  The product distribution is zero.
+
+The sequences \eqref{eq:alias-seq} are the standard generalized eigensequences for distinct roots $\omega^j$, with multiplicity $\vtwo(j)+1$.  Their restrictions to any $R_d$ consecutive integers are independent by the confluent Vandermonde theorem.  Finally, among $1,\ldots,2^d-1$, exactly $2^{d-r-1}$ integers have $2$-adic valuation $r$, giving \eqref{eq:R-count}.
+\end{proof}
+
+\subsection{The cyclotomic annihilator}
+The relation space is the solution space of one recurrence.  Define
+\begin{equation}
+ A_d(z)=\prod_{j=1}^{M-1}(z-\omega^j)^{\vtwo(j)+1}.        \label{eq:A-roots}
+\end{equation}
+
+\begin{theorem}[$q$-integer and cyclotomic factorization]
+\label{thm:A-factor}
+The alias annihilator has the exact factorizations
+\begin{align}
+ A_d(z)
+ &=\prod_{\ell=1}^{d}
+   (z^{2^{\ell-1}}+1)^{d-\ell+1}                         \label{eq:A-cyclotomic}\\
+ &=\prod_{m=1}^{d}\frac{1-z^{2^m}}{1-z}
+ =\prod_{m=1}^{d}[2^m]_z.                                \label{eq:A-qint}
+\end{align}
+It is monic, has positive integer coefficients, is palindromic, and satisfies
+\begin{equation}
+ \deg A_d=R_d=2M-d-2,
+ \qquad
+ A_d(1)=2^{d(d+1)/2}.                                     \label{eq:A-degree-mass}
+\end{equation}
+If
+\begin{equation}
+ A_d(z)=\sum_{\ell=0}^{R_d}a_\ell z^\ell,                \label{eq:A-coeff}
+\end{equation}
+then $a_\ell$ counts tuples
+\begin{equation}
+ (r_1,\ldots,r_d),\qquad
+ 0\le r_m<2^m,\qquad \sum_{m=1}^{d}r_m=\ell.            \label{eq:A-counting}
+\end{equation}
+In particular, $(a_\ell)$ is symmetric, unimodal, and log-concave.
+\end{theorem}
+
+\begin{proof}
+The roots of $z^{2^{\ell-1}}+1$ are precisely the $M$th roots $\omega^j$ with $\vtwo(j)=d-\ell$.  Their required multiplicity is $d-\ell+1$, proving \eqref{eq:A-cyclotomic}.  Since
+\(
+ [2^m]_z=\prod_{\ell=1}^{m}(z^{2^{\ell-1}}+1),
+\)
+multiplicities telescope to \eqref{eq:A-qint}.  The degree and mass follow by summing $2^m-1$ and multiplying $2^m$.  The coefficient interpretation follows by expanding the product of uniform blocks.  Each block is a finite log-concave sequence and convolution preserves log-concavity.
+\end{proof}
+
+\begin{remark}[A probability law hidden in the annihilator]
+Let $U_m$ be independent and uniform on $\{0,1,\ldots,2^m-1\}$.  If
+\begin{equation}
+ L=\sum_{m=1}^{d}U_m,                                     \label{eq:L-random}
+\end{equation}
+then
+\begin{equation}
+ \Pr(L=\ell)=\frac{a_\ell}{A_d(1)},
+ \qquad \E L=\frac{R_d}{2}.                              \label{eq:L-law}
+\end{equation}
+This finite convolution law is the key to the output-sensitive algorithm.
+\end{remark}
+
+\section{Exact local dimension and sharp common-dictionary sparsity}
+\label{sec:dimension}
+
+\subsection{The one-cell space}
+Define
+\begin{equation}
+ V_d=\Span\{\psi_k|_{[0,1]}:-M+1\le k\le M\}.            \label{eq:Vd}
+\end{equation}
+
+\begin{theorem}[Exact local dimension]
+\label{thm:local-dim}
+For every $d\ge0$,
+\begin{equation}
+ \boxed{\dim V_d=d+2.}                                    \label{eq:local-dim}
+\end{equation}
+Moreover,
+\begin{equation}
+ V_d\cap\R[t]=\Pi_d.                                      \label{eq:poly-intersection}
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+There are $2M$ active atoms.  By \cref{thm:alias-family}, their coefficient kernel contains $R_d=2M-d-2$ independent vectors.  Hence
+\(
+ \dim V_d\le2M-R_d=d+2.
+\)
+By \cref{thm:global-synthesis}, $\Pi_d\subset V_d$, so $\dim V_d\ge d+1$.  At least one active atom, for example $\psi_0$, is not polynomial on $(0,1)$ by the nowhere-analyticity result recalled in \cref{sec:audit}.  Therefore $V_d$ strictly contains $\Pi_d$, giving $\dim V_d\ge d+2$ and hence equality.
+
+If $V_d$ contained a polynomial outside $\Pi_d$, that polynomial together with $\Pi_d$ would span the $(d+2)$-dimensional space $V_d$.  Every atom would then be polynomial on $[0,1]$, contradicting the same nonpolynomiality fact.  Thus \eqref{eq:poly-intersection} holds.
+\end{proof}
+
+\begin{corollary}[The alias relations are complete]
+\label{cor:kernel-complete}
+The kernel of the finite synthesis map
+\begin{equation}
+ T_d:\R^{2M}\to V_d,
+ \qquad
+ (q_k)\longmapsto\sum_{k=-M+1}^{M}q_k\psi_k|_{[0,1]},     \label{eq:finite-T}
+\end{equation}
+has dimension $R_d$ and is exactly the restriction of the recurrence solution space
+\begin{equation}
+ A_d(E)n=0,
+ \qquad (En)_k=n_{k+1}.                                   \label{eq:A-recurrence}
+\end{equation}
+\end{corollary}
+
+\begin{proposition}[Universal fixed-dictionary lower bound]
+\label{prop:universal-fixed-lower}
+Let $I$ be a nondegenerate interval, and let
+\begin{equation}
+ f_r(x)=u\!\left(\frac{x-\tau_r}{\sigma_r}\right),
+ \qquad \sigma_r\ne0,
+ \qquad 1\le r\le N,                                    \label{eq:arbitrary-atoms}
+\end{equation}
+be affine up-atoms whose restrictions to $I$ are not identically zero.  If
+\begin{equation}
+ \Pi_d|_I\subseteq\Span\{f_1|_I,\ldots,f_N|_I\},          \label{eq:fixed-dict-spans}
+\end{equation}
+then
+\begin{equation}
+ \boxed{N\ge d+2.}                                       \label{eq:universal-fixed-lower}
+\end{equation}
+\end{proposition}
+
+\begin{proof}
+Every nonzero affine up-atom is nonpolynomial on $I$: nonzero overlap with its support contains an open subinterval on which an affine copy of $u$ would otherwise agree with a polynomial, contradicting the nowhere-analyticity fact in \cref{sec:audit}.  If $N\le d$, dimension is insufficient.  If $N=d+1$ and the span contains the $(d+1)$-dimensional space $\Pi_d|_I$, the two spaces are equal, forcing every $f_r|_I$ to be polynomial.  This is impossible.
+\end{proof}
+
+\begin{corollary}[Generic target count in the common dyadic dictionary]
+\label{cor:minimal-count}
+A generic polynomial in $\Pi_d$ cannot be represented by $d+1$ or fewer active atoms from the finite common-scale dyadic dictionary.
+\end{corollary}
+
+\begin{proof}
+Take the finite union, over all subsets of size at most $d+1$, of their spans intersected with $\Pi_d$.  Proposition~\ref{prop:universal-fixed-lower} makes every such intersection a proper linear subspace, so the union has Lebesgue measure zero in polynomial coefficient space.
+\end{proof}
+
+\begin{warning}
+Proposition~\ref{prop:universal-fixed-lower} settles optimality for every \emph{fixed} affine up-dictionary that must reproduce the whole polynomial space.  It does not settle a target-adaptive nonlinear question: can the shifts and scales be chosen separately for one given polynomial so that a generic target uses only $d+1$ atoms?  That stronger rigidity statement is formulated as Conjecture~\ref{conj:global-minimality}.
+\end{warning}
+
+\section{A proved \texorpdfstring{$d+2$}{d+2}-atom endpoint basis}
+\label{sec:endpoint-basis}
+
+\subsection{Recurrence elimination}
+Write
+\begin{equation}
+ K=-M+1,\qquad R=R_d=2M-d-2.                              \label{eq:K-R}
+\end{equation}
+Then
+\begin{equation}
+ K+R=M-d-1.                                                \label{eq:first-endpoint}
+\end{equation}
+Let $Q$ be the deconvolution polynomial in \eqref{eq:Q-deconv}, and set $q_k=Q(k)$ on the active range.
+
+\begin{algorithm}[Full recurrence reduction]
+\label{alg:slow}
+Let $A_d(z)=\sum_{\ell=0}^{R}a_\ell z^\ell$, with $a_R=1$.
+\begin{enumerate}
+\item Set $n_k=q_k$ for $k=K,K+1,\ldots,K+R-1$.
+\item Extend $n$ by the monic recurrence
+\begin{equation}
+ n_{k+R}=-\sum_{\ell=0}^{R-1}a_\ell n_{k+\ell}.           \label{eq:recurrence-extension}
+\end{equation}
+\item Put $b_k=q_k-n_k$ for $K+R\le k\le M$.
+\end{enumerate}
+\end{algorithm}
+
+\begin{theorem}[Endpoint basis and unique sparse synthesis]
+\label{thm:endpoint-basis}
+The $d+2$ functions
+\begin{equation}
+ \mathcal B_d^+=
+ \{\psi_k|_{[0,1]}:M-d-1\le k\le M\}                     \label{eq:right-basis}
+\end{equation}
+form a basis of $V_d$.  For every $P\in\Pi_d$, Algorithm~\ref{alg:slow} gives the unique identity
+\begin{equation}
+ \boxed{
+ P(t)=\frac1M\sum_{k=M-d-1}^{M}b_k
+ u\!\left(\frac{t-k}{M}\right),\qquad0\le t\le1.}      \label{eq:endpoint-rep}
+\end{equation}
+If $P\in\Q[t]$, all $b_k$ are rational.
+\end{theorem}
+
+\begin{proof}
+The recurrence extension $n$ belongs to the complete nullspace \eqref{eq:A-recurrence}, so its synthesis is zero.  By construction, $q-n$ vanishes at the first $R$ active centers and is supported at the last $2M-R=d+2$ centers.  Thus every element of $V_d$ lies in the span of \eqref{eq:right-basis}.  Since \cref{thm:local-dim} gives dimension $d+2$, the functions form a basis and the representation is unique.  Integer recurrence coefficients preserve rationality.
+\end{proof}
+
+Together with Proposition~\ref{prop:universal-fixed-lower}, \cref{thm:endpoint-basis} proves a global fixed-dictionary optimality statement: $d+2$ is the least possible number of nontrivial affine up-atoms in any fixed dictionary whose span contains all of $\Pi_d$ on the interval.
+
+Reflection $t\mapsto1-t$ gives an equally valid left endpoint basis.  The right basis is algebraically canonical but geometrically asymmetric; this matters for conditioning and support overhang.
+
+\section{The output-sensitive exact algorithm}
+\label{sec:fast}
+
+\subsection{Why the exponential recurrence can be avoided}
+The full annihilator has degree $R\asymp2^{d+1}$.  Yet the desired output has only $d+2$ numbers.  The key is to compute the residual of $A_d(E)$ on the polynomial deconvolution sequence without expanding $A_d$.
+
+Let
+\begin{equation}
+ A_1=A_d(1)=2^{d(d+1)/2}.                                 \label{eq:A1}
+\end{equation}
+For the random variable $L$ in \eqref{eq:L-random}, palindromicity gives mean $R/2$, and
+\begin{equation}
+ \E\e^{z(L-R/2)}
+ =\prod_{m=1}^{d}
+ \frac{\sinh(2^{m-1}z)}{2^m\sinh(z/2)}.                  \label{eq:centered-L-mgf}
+\end{equation}
+On the other hand, splitting the product \eqref{eq:mgf} at depth $d$ gives
+\begin{equation}
+ M_u(Mz)=M_u(z)\prod_{r=0}^{d-1}
+ \frac{\sinh(2^rz)}{2^rz}.                               \label{eq:mgf-split}
+\end{equation}
+The ratio simplifies dramatically.
+
+\begin{definition}[Fast differential symbol]
+\label{def:H}
+Define
+\begin{equation}
+ H_d(z)=\left(\frac{z}{2\sinh(z/2)}\right)^d\frac1{M_u(z)}. \label{eq:H-def}
+\end{equation}
+Its logarithm is the explicit Bernoulli series
+\begin{equation}
+ \boxed{
+ \log H_d(z)=
+ -\sum_{m\ge1}
+ \frac{B_{2m}}{2m(2m)!}
+ \left(d+\frac1{1-4^{-m}}\right)z^{2m}.}                 \label{eq:H-log}
+\end{equation}
+Only terms through degree $\deg P$ can act on $P$.
+\end{definition}
+
+\begin{theorem}[Compressed residual identity]
+\label{thm:g-identity}
+Let $Q=M_u(MD)^{-1}P$, $K=-M+1$, and
+\begin{equation}
+ g_r=(A_d(E)Q)(K+r).                                      \label{eq:g-def}
+\end{equation}
+Then, for every integer $r$,
+\begin{equation}
+ \boxed{
+ g_r=A_1\,[H_d(D)P]\!\left(r-\frac d2\right).}          \label{eq:g-fast}
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+Using $a_\ell/A_1=\Pr(L=\ell)$,
+\[
+ (A_d(E)Q)(x)=A_1\E Q(x+L).
+\]
+Center $L$ and use $K+R/2=-d/2$ to obtain
+\[
+ g_r=A_1\left[
+ M_{L-R/2}(D)M_u(MD)^{-1}P
+ \right]\!\left(r-\frac d2\right).
+\]
+The quotient of \eqref{eq:centered-L-mgf} by \eqref{eq:mgf-split} is exactly \eqref{eq:H-def}.
+\end{proof}
+
+\subsection{Triangular recovery of the endpoint coefficients}
+Let $b_0,\ldots,b_{d+1}$ denote the recurrence residual coefficients at centers
+\begin{equation}
+ k_r=M-d-1+r.                                              \label{eq:k-r}
+\end{equation}
+Palindromicity $a_{R-j}=a_j$ gives
+\begin{equation}
+ g_r=\sum_{s=0}^{r}a_{r-s}b_s,
+ \qquad0\le r\le d+1.                                    \label{eq:triangular-conv}
+\end{equation}
+Since $a_0=1$, this is solved without division.
+
+\begin{algorithm}[Output-sensitive exact synthesis]
+\label{alg:fast}
+Input: $P\in\Pi_d$.
+\begin{enumerate}
+\item Set $M=2^d$, $A_1=2^{d(d+1)/2}$.
+\item Compute the truncation of $H_d(z)$ through degree $\deg P$ from \eqref{eq:H-log}, and form $G=H_d(D)P$.
+\item Compute only $a_0,\ldots,a_{d+1}$ of
+\(
+ A_d(z)=\prod_{m=1}^{d}(1+z+\cdots+z^{2^m-1})
+\)
+by truncated sliding-window convolutions.
+\item For $0\le r\le d+1$, set
+\begin{equation}
+ g_r=A_1G(r-d/2).                                         \label{eq:alg-g}
+\end{equation}
+\item Solve
+\begin{equation}
+ b_0=g_0,
+ \qquad
+ b_r=g_r-\sum_{s=0}^{r-1}a_{r-s}b_s.                     \label{eq:alg-b}
+\end{equation}
+\item Return \eqref{eq:endpoint-rep} with $b_{k_r}=b_r$.
+\end{enumerate}
+\end{algorithm}
+
+\begin{theorem}[Correctness and arithmetic complexity]
+\label{thm:fast-correct}
+Algorithm~\ref{alg:fast} returns exactly the same coefficients as the full recurrence Algorithm~\ref{alg:slow}.  With standard quadratic truncated-series arithmetic, it uses
+\begin{equation}
+ \bigO(d^2)                                                \label{eq:complexity-one-cell}
+\end{equation}
+rational arithmetic operations and stores $\bigO(d)$ rational numbers.  In particular, it is polynomial in the output size rather than exponential in the dyadic scale $M$.
+\end{theorem}
+
+\begin{proof}
+The identity \eqref{eq:g-fast} computes the same $g_r$ as the full annihilator.  Equation \eqref{eq:triangular-conv} follows by applying $A_d(E)$ to the recurrence residual and using the fact that its first $R$ entries vanish.  Forward substitution therefore recovers the same endpoint vector.  Truncated exponentiation of an even series, differential application, low-coefficient convolution, and the triangular solve each require at most quadratic arithmetic work in $d$.
+\end{proof}
+
+\section{Several cells: exact sparsity--localization tradeoff}
+\label{sec:multicell}
+
+For $J\ge1$, define the local space
+\begin{equation}
+ V_{d,J}=\Span\{\psi_k|_{[0,J]}:-M+1\le k\le J+M-1\}.    \label{eq:VdJ}
+\end{equation}
+
+\begin{theorem}[Multi-cell dimension and endpoint basis]
+\label{thm:multicell}
+For every $J\ge1$,
+\begin{equation}
+ \boxed{\dim V_{d,J}=J+d+1,\qquad
+ V_{d,J}\cap\R[t]=\Pi_d.}                                \label{eq:multi-dim}
+\end{equation}
+The functions with consecutive centers
+\begin{equation}
+ M-d-1,M-d,\ldots,M+J-1                                  \label{eq:multi-basis-centers}
+\end{equation}
+form a basis.  Every $P\in\Pi_d$ has a unique representation in this basis with $J+d+1$ atoms.
+\end{theorem}
+
+\begin{proof}
+There are $J+2M-1$ active atoms, while the same $R_d$ global alias relations remain independent, so
+\[
+ \dim V_{d,J}\le J+2M-1-R_d=J+d+1.
+\]
+The $d+2$ endpoint-basis atoms on the first cell are independent.  Add the atoms with centers $M+1,\ldots,M+J-1$.  The atom centered at $M+r$ vanishes on $[0,r]$ and is nonzero immediately to the right of $r$, while all later added atoms still vanish there.  Cell-by-cell restriction gives triangular independence, proving the lower bound.  A polynomial in $V_{d,J}$ restricts on the first cell to an element of $V_d\cap\R[t]=\Pi_d$, so it has global degree at most $d$.  Recurrence elimination of the first $R_d$ active coefficients leaves exactly the centers \eqref{eq:multi-basis-centers}.
+\end{proof}
+
+The fast algorithm changes only in its output length.  For $r=0,\ldots,J+d$, compute
+\begin{equation}
+ g_r=A_1[H_d(D)P](r-d/2),                                 \label{eq:multi-g}
+\end{equation}
+and solve the same triangular convolution \eqref{eq:alg-b}.  Only $a_0,\ldots,a_{J+d}$ are required.  The arithmetic count is
+\begin{equation}
+ \bigO\bigl(d^2+d(J+d)+(J+d)^2\bigr).                    \label{eq:multi-complexity}
+\end{equation}
+
+Substitution of $t=(x-a)/h$ proves the physical formula \eqref{eq:main-physical}.  The right endpoint basis has total support footprint
+\begin{equation}
+ \left[a-(d+1)h,\ b+(2M-1)h\right].                       \label{eq:support-footprint}
+\end{equation}
+Reflection gives the opposite asymmetry.  Thus $J$ is a genuine localization knob: larger $J$ means more atoms but a smaller physical scale and smaller overhang.
+
+\section{A one-scalar polynomiality certificate}
+\label{sec:certificate}
+
+Let an arbitrary active coefficient vector be written in increasing-center order:
+\begin{equation}
+ q=(q_0,\ldots,q_{2M-1}),
+ \qquad q_j\text{ multiplies }\psi_{K+j},\quad K=-M+1.    \label{eq:q-order}
+\end{equation}
+Define the forward difference $\Delta=E-1$.
+
+\begin{theorem}[Exact polynomiality certificate]
+\label{thm:certificate}
+Set
+\begin{equation}
+ \Lambda_d(q)=\bigl[A_d(E)\Delta^{d+1}q\bigr]_K.          \label{eq:Lambda-operator}
+\end{equation}
+Then
+\begin{equation}
+ \boxed{
+ \sum_{j=0}^{2M-1}q_j\psi_{K+j}\text{ is polynomial on }[0,1]
+ \iff \Lambda_d(q)=0.}                                    \label{eq:Lambda-iff}
+\end{equation}
+When $q_j=(K+j)^{d+1}$,
+\begin{equation}
+ \Lambda_d(q)=A_d(1)(d+1)!.                              \label{eq:Lambda-normalization}
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+Every polynomial synthesis coefficient sequence differs from a degree-$d$ deconvolution polynomial sequence by a null sequence.  The former is killed by $\Delta^{d+1}$ and the latter by $A_d(E)$, so $\Lambda_d$ vanishes on the complete preimage of $\Pi_d$.  That preimage has dimension
+\(
+ R_d+(d+1)=2M-1.
+\)
+The functional is nonzero because \eqref{eq:Lambda-normalization} follows from $\Delta^{d+1}k^{d+1}=(d+1)!$ and $A_d(E)1=A_d(1)$.  Therefore its kernel is exactly the polynomial preimage.
+\end{proof}
+
+\subsection{The Thue--Morse simplification}
+Let
+\begin{equation}
+ \eps_r=(-1)^{s_2(r)},                                    \label{eq:TM-sign}
+\end{equation}
+where $s_2(r)$ is the binary digit sum.  The annihilator identity \eqref{eq:A-qint} gives
+\begin{align}
+ A_d(z)(z-1)^{d+1}
+ &=(z-1)\prod_{m=1}^{d}(z^{2^m}-1)\notag\\
+ &=(-1)^{d+1}(1-z)
+   \prod_{m=1}^{d}(1-z^{2^m})\notag\\
+ &=(-1)^{d+1}(1-z)
+   \sum_{r=0}^{M-1}\eps_r z^{2r}.                        \label{eq:TM-factor}
+\end{align}
+
+\begin{corollary}[Finite Thue--Morse certificate]
+\label{cor:TM-certificate}
+The scalar in \cref{thm:certificate} has the exceptionally simple form
+\begin{equation}
+ \boxed{
+ \Lambda_d(q)=(-1)^{d+1}
+ \sum_{r=0}^{M-1}\eps_r\,(q_{2r}-q_{2r+1}).}             \label{eq:TM-certificate}
+\end{equation}
+Thus exact polynomiality is decided by one signed first difference over a finite Thue--Morse block.
+\end{corollary}
+
+\begin{resultbox}
+\textbf{Thue--Morse bridge.}  The same finite Prouhet product that annihilates low polynomial moments is the complete codimension-one obstruction to an arbitrary local up-spline being polynomial.  The $q$-integer alias annihilator and the Thue--Morse difference filter are two factorizations of the same operator.
+\end{resultbox}
+
+\section{The canonical nonpolynomial defect and its Fourier series}
+\label{sec:defect}
+
+The dimension theorem says that $V_d$ is one dimension larger than $\Pi_d$.  We now identify that extra direction explicitly.
+
+Set
+\begin{equation}
+ m=d+1,
+ \qquad
+ S_m(t)=\sum_{k\in\Z}k^m\psi_k(t).                        \label{eq:Sm}
+\end{equation}
+The sum is locally finite.  Its zero-frequency Poisson component is
+\begin{equation}
+ \mathcal P_{m,M}(t)=\int_{-1}^{1}(t-My)^m u(y)\dd y.     \label{eq:Pmm}
+\end{equation}
+Define the periodic alias residue
+\begin{equation}
+ \mathcal E_d(t)=S_m(t)-\mathcal P_{m,M}(t).              \label{eq:Edef}
+\end{equation}
+
+\begin{theorem}[Explicit periodic residue]
+\label{thm:defect-Fourier}
+The function $\mathcal E_d$ is nonzero, $C^\infty$, one-periodic, and mean zero.  It has the absolutely convergent Fourier series
+\begin{equation}
+ \boxed{
+ \mathcal E_d(t)=
+ -\frac{(d+1)!}{(2\pi\ii)^{d+1}}
+ \sum_{\substack{n\in\Z\\ n\text{ odd}}}
+ \frac{\widehat u(n/2)}{n^{d+1}}\e^{2\pi\ii nt}.}       \label{eq:defect-series}
+\end{equation}
+Consequently,
+\begin{equation}
+ \mathcal E_d(t+1/2)=-\mathcal E_d(t).                    \label{eq:defect-half}
+\end{equation}
+For $d+1$ even it is a cosine series; for $d+1$ odd it is a sine series.
+\end{theorem}
+
+\begin{proof}
+The Fourier transform of $\sum_k k^m\delta_k$ is
+\[
+ \left(-\frac1{2\pi\ii}\right)^m
+ \sum_{n\in\Z}\delta_n^{(m)}.
+\]
+Multiplication by $\widehat u(M\xi)$ leaves at $n=0$ precisely the polynomial distribution corresponding to \eqref{eq:Pmm}.  At nonzero even $n$, the zero order $1+\vtwo(Mn)$ exceeds $m$.  At odd $n$, the zero order equals $m$ and only the leading derivative survives.  The exact leading jet from \eqref{eq:integer-orders} and the sinc product is
+\[
+ \frac{\dd^m}{\dd\xi^m}\widehat u(M\xi)\bigg|_{\xi=n}
+ =-\frac{m!\widehat u(n/2)}{n^m}.
+\]
+This gives \eqref{eq:defect-series}.  Superalgebraic Fourier decay gives absolute convergence with all derivatives.  Only odd frequencies occur, proving \eqref{eq:defect-half}; nonvanishing follows because $\widehat u(n/2)\ne0$ for odd $n$.
+\end{proof}
+
+There is an important subtlety.  The periodic residue $\mathcal E_d$ by itself is \emph{not} in $V_d$, because otherwise $t^{d+1}$ would also belong to $V_d$, contradicting \eqref{eq:poly-intersection}.  The canonical local defect is instead
+\begin{equation}
+ \mathcal D_d(t)
+ =S_m(t)-\bigl(\mathcal P_{m,M}(t)-t^m\bigr)
+ =t^{d+1}+\mathcal E_d(t).                                \label{eq:Ddef}
+\end{equation}
+The subtracted term has degree at most $d$ because the leading term of $\mathcal P_{m,M}$ is $t^m$.
+
+\begin{corollary}[Canonical direct sum and defect coordinate]
+\label{cor:defect-decomp}
+One has
+\begin{equation}
+ \boxed{V_d=\Pi_d\oplus\Span\{\mathcal D_d\}.}           \label{eq:direct-sum}
+\end{equation}
+For an arbitrary coefficient vector $q$, the coefficient of $\mathcal D_d$ in this decomposition is
+\begin{equation}
+ c_{\mathrm{def}}(q)=
+ \frac{\Lambda_d(q)}{A_d(1)(d+1)!}.                       \label{eq:defect-coordinate}
+\end{equation}
+\end{corollary}
+
+\begin{proof}
+The restriction of $S_m$ belongs to $V_d$, and $\mathcal P_{m,M}-t^m$ has degree at most $d$, so $\mathcal D_d\in V_d$.  Its certificate equals the certificate of the coefficient sequence $k^{d+1}$, namely $A_d(1)(d+1)!$ by \eqref{eq:Lambda-normalization}; hence it is not in $\Pi_d$.  The direct sum follows from \eqref{eq:local-dim}.  Since $\Lambda_d$ vanishes on the synthesis kernel, it descends to a linear functional on $V_d$.  Applying that functional to $f=P+c\mathcal D_d$ annihilates $P\in\Pi_d$ and gives \eqref{eq:defect-coordinate}.
+\end{proof}
+
+\section{Arithmetic structure and exactness properties}
+
+\subsection{Linearity and affine covariance}
+Every stage of the construction is linear in $P$.  Translation and scaling of the physical interval are handled entirely by \eqref{eq:normalization}; no new analytic calculation is needed.  Consequently, precomputed coefficient functionals for the monomial basis may be assembled for any polynomial.
+
+\subsection{Rationality and denominator control}
+Write
+\begin{equation}
+ \frac1{M_u(z)}=\sum_{n\ge0}\alpha_n\frac{z^n}{n!},       \label{eq:alpha-egf}
+\end{equation}
+where
+\begin{equation}
+ \alpha_0=1,\quad
+ \alpha_2=-\frac19,\quad
+ \alpha_4=\frac{31}{675},\quad
+ \alpha_6=-\frac{2347}{59535},\quad
+ \alpha_8=\frac{1904369}{32531625}.                      \label{eq:alpha-values}
+\end{equation}
+For $P\in\Z[t]$,
+\begin{equation}
+ Q(t)=\sum_{n=0}^{d}\alpha_n M^n\frac{P^{(n)}(t)}{n!}.   \label{eq:Q-alpha}
+\end{equation}
+Since $P^{(n)}/n!\in\Z[t]$, the denominators of all dense values $Q(k)$ divide the least common multiple of the denominators of $\alpha_0,\ldots,\alpha_d$.  The recurrence has integer coefficients and introduces no additional denominator.  Therefore the same bound applies to the sparse $b_r$; the raw-up amplitudes $b_r/M$ add only the dyadic factor $M$.
+
+\subsection{Uniqueness and nonuniqueness}
+The $2M$-atom dense representation is highly nonunique after restriction to $[0,1]$: its coefficient affine space has dimension $R_d$.  The pair-compressed representation is generally still nonunique.  The endpoint representation is unique because it uses a basis.  Alternative $d+2$-atom bases, when they exist, give different unique coordinates and may have very different conditioning.
+
+\subsection{Support and endpoint flatness}
+Every up-atom is $C^\infty$ and flat at the boundary of its compact support.  Hence the finite representation extends to a compactly supported $C^\infty$ function outside the target interval, while agreeing exactly with the polynomial inside.  This gives an explicit smooth compactly supported extension operator for polynomial data.  It is not a polynomial extension globally; all nonpolynomial correction is pushed outside or into the one-dimensional defect direction.
+
+\section{Explicit examples}
+\label{sec:examples}
+
+The coefficients below multiply raw copies of $u$, not the normalized $\psi_k$.
+
+\begin{example}[Constant]
+For $d=0$, $M=1$,
+\begin{equation}
+ 1=u(t)+u(t-1),\qquad0\le t\le1.                          \label{eq:ex-d0}
+\end{equation}
+\end{example}
+
+\begin{example}[Linear monomial]
+For $d=1$, $M=2$,
+\begin{equation}
+ t=-\frac12u(t/2)
+ +u\!\left(\frac{t-1}{2}\right)
+ +\frac12u\!\left(\frac{t-2}{2}\right).                 \label{eq:ex-d1}
+\end{equation}
+\end{example}
+
+\begin{example}[Quadratic monomial]
+For $d=2$, $M=4$,
+\begin{equation}
+ \begin{aligned}
+ t^2={}&\frac{13}{9}u\!\left(\frac{t-1}{4}\right)
+ -\frac{31}{9}u\!\left(\frac{t-2}{4}\right)\\
+ &+\frac{49}{9}u\!\left(\frac{t-3}{4}\right)
+ +\frac{5}{9}u\!\left(\frac{t-4}{4}\right).
+ \end{aligned}                                            \label{eq:ex-d2}
+\end{equation}
+\end{example}
+
+\begin{example}[Cubic monomial]
+For $d=3$, $M=8$,
+\begin{equation}
+ \begin{aligned}
+ t^3={}&-14u\!\left(\frac{t-4}{8}\right)
+ +\frac{136}{3}u\!\left(\frac{t-5}{8}\right)
+ -\frac{208}{3}u\!\left(\frac{t-6}{8}\right)\\
+ &+\frac{280}{3}u\!\left(\frac{t-7}{8}\right)
+ -\frac{106}{3}u\!\left(\frac{t-8}{8}\right).
+ \end{aligned}                                            \label{eq:ex-d3}
+\end{equation}
+\end{example}
+
+For $t^4$, $M=16$, the six raw-up coefficients are shown in \cref{tab:d4}.
+\begin{table}[htbp]
+\centering
+\caption{Endpoint representation of $t^4$ on $[0,1]$: coefficient $c_k$ multiplies $u((t-k)/16)$.}
+\label{tab:d4}
+\begin{tabular}{cr}
+\toprule
+$k$ & $c_k$\\
+\midrule
+11 & $257824/675$\\
+12 & $-358624/225$\\
+13 & $2010496/675$\\
+14 & $-2528896/675$\\
+15 & $661024/135$\\
+16 & $-2567968/675$\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\section{Numerical experiments and conditioning}
+\label{sec:numerics}
+
+\subsection{Independent Fourier verification}
+The accompanying program evaluates
+\begin{equation}
+ u(x)=2\int_0^\infty\widehat u(\xi)
+ \cos(2\pi x\xi)\dd\xi                                   \label{eq:inverse-fourier-num}
+\end{equation}
+by a product truncation and fixed Gauss--Legendre quadrature on each unit frequency lobe.  This is independent of the coefficient derivation.  The exact symbolic fast algorithm was also compared against the full exponential recurrence.
+
+\begin{table}[htbp]
+\centering
+\caption{Maximum error on a 17-point grid for the sparse representation of $t^d$.  The Fourier integral was cut at $\xi=80$ with 48 Gauss nodes per unit lobe.}
+\label{tab:numerical-errors}
+\begin{tabular}{cc}
+\toprule
+$d$ & maximum absolute error\\
+\midrule
+0 & $2.7082\times10^{-12}$\\
+1 & $2.7088\times10^{-12}$\\
+2 & $1.5028\times10^{-11}$\\
+3 & $2.8798\times10^{-10}$\\
+4 & $1.6227\times10^{-8}$\\
+5 & $5.0834\times10^{-6}$\\
+6 & $6.9441\times10^{-4}$\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+The exact identities do not deteriorate with $d$; the increasing residual is floating-point cancellation.  The minimal endpoint basis places sample arguments near a very flat support edge and its coefficients grow rapidly.  Therefore exact rational coefficient generation and high-precision evaluation of $u$ are recommended.
+
+\subsection{Practical basis choices}
+There is no universally best representation.
+\begin{itemize}
+\item The $d+2$ endpoint basis minimizes atom count within the common dictionary and has a triangular exact construction, but can be ill-conditioned.
+\item The $M+1$ pair compression has more atoms and sometimes much smaller coefficients, but not uniformly.
+\item A target-aware basis can be chosen by rank-revealing QR or singular-value analysis of high-precision samples, followed by an exact rational solve in the quotient coordinates.
+\item The nullspace can be used for $\ell^1$, $\ell^2$, or minimax coefficient optimization without changing the represented polynomial.
+\item Increasing $J$ reduces the dilation in physical units and may substantially improve locality, at the cost of one atom per added cell.
+\end{itemize}
+
+\section{A central-basis conjecture}
+\label{sec:central-conjecture}
+
+The endpoint basis is proved but asymmetric.  A natural alternative is the consecutive central block
+\begin{equation}
+ \mathcal C_d=\{\psi_0,\psi_1,\ldots,\psi_{d+1}\}|_{[0,1]}. \label{eq:central-block}
+\end{equation}
+Reduce these atoms to the endpoint basis using the integer recurrence.  Let $\Delta_d^{\mathrm{cen}}$ be the determinant of the resulting $(d+2)\times(d+2)$ integer matrix.
+
+\begin{conjecture}[Central consecutive basis]
+\label{conj:central-basis}
+For every $d\ge0$,
+\begin{equation}
+ \Delta_d^{\mathrm{cen}}\ne0.                              \label{eq:central-nonzero}
+\end{equation}
+Equivalently, $\mathcal C_d$ is a basis of $V_d$.
+\end{conjecture}
+
+Exact computation gives the values in \cref{tab:central-det} through $d=12$.
+\begin{table}[htbp]
+\centering
+\caption{Exact determinant evidence for Conjecture~\ref{conj:central-basis}.}
+\label{tab:central-det}
+\small
+\begin{tabular}{r r}
+\toprule
+$d$ & $\Delta_d^{\mathrm{cen}}$\\
+\midrule
+0 & $1$\\
+1 & $1$\\
+2 & $3$\\
+3 & $-1$\\
+4 & $255$\\
+5 & $-6145$\\
+6 & $524287$\\
+7 & $-62914561$\\
+8 & $17716740095$\\
+9 & $-9620726743041$\\
+10 & $11047892835893247$\\
+11 & $-25076042725198921729$\\
+12 & $113484369541461161541631$\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+Nonvanishing does not imply good numerical conditioning.  Indeed, some low-degree central coordinates are larger than the endpoint coordinates.  The conjecture is algebraic, not a stability assertion.  Its determinant sequence appears to have rich divisibility structure and may admit a resultant or cyclotomic interpretation.
+
+\section{Further extensions}
+\label{sec:extensions}
+
+\subsection{Integer scales with an odd factor}
+Let $\rho=2^dq$ with $q$ odd.  \Cref{thm:scale-classification} proves that the reproduction degree remains $d$.  The root-of-unity alias argument gives a larger annihilator
+\begin{equation}
+ A_{\rho,d}(z)=
+ \prod_{r=0}^{d}\frac{z^{\rho/2^r}-1}{z-1},              \label{eq:general-M-A}
+\end{equation}
+whose degree is
+\begin{equation}
+ 2\rho-q-d-1.                                             \label{eq:general-M-degree}
+\end{equation}
+Indeed, the minimum zero multiplicity on the coset $j/\rho+\Z$ is
+\begin{equation}
+ 1+\min\{\vtwo(j),d\}.                                   \label{eq:general-M-mu}
+\end{equation}
+This proves an upper bound $q+d+1$ for the one-cell local dimension.  Exact computation strongly suggests that the bound is attained.
+
+\begin{conjecture}[Odd overscaling dimension]
+\label{conj:odd-dim}
+For $\rho=2^dq$ with $q$ odd, the one-cell local space generated by the active integer shifts of $\rho^{-1}u((\cdot-k)/\rho)$ has dimension
+\begin{equation}
+ q+d+1.                                                    \label{eq:odd-dim}
+\end{equation}
+Thus every odd overscaling factor adds exactly $q-1$ nonpolynomial defect directions while adding no polynomial reproduction order.
+\end{conjecture}
+
+\subsection{Tensor products}
+For a box in $\R^s$ and coordinatewise degree bounds $d_1,\ldots,d_s$, tensoring the one-dimensional construction gives an immediate exact representation by
+\begin{equation}
+ \prod_{j=1}^{s}(d_j+2)                                   \label{eq:tensor-count}
+\end{equation}
+products of one-dimensional up-atoms.  This is exact for the tensor-product polynomial space.  For total degree at most $d$, the tensor count is far above the polynomial dimension $\binom{d+s}{s}$; a multivariate alias-ideal compression is an attractive frontier problem.
+
+\subsection{Smooth polynomial extension operators}
+Formula \eqref{eq:main-physical} defines a linear map from $\Pi_d$ to $C_c^\infty(\R)$ that is the identity on $[a,b]$.  Unlike generic extension theorems, it has an explicit finite atomic representation.  Questions of minimal support, symmetry, norm growth, and compatibility across adjacent intervals connect this construction to partition-of-unity methods, meshfree trial spaces, and exact boundary patches.
+
+\section{Conjectures and research directions}
+
+\begin{conjecture}[Target-adaptive atom-count rigidity]
+\label{conj:global-minimality}
+Fix $d\ge0$ and a nondegenerate interval $I$.  For Lebesgue-almost every $P\in\Pi_d$, there is no identity on $I$ of the form
+\begin{equation}
+ P(x)=\sum_{r=1}^{N}c_r\,
+ u\!\left(\frac{x-\tau_r}{\sigma_r}\right),
+ \qquad N\le d+1,
+ \qquad \sigma_r\ne0,                                   \label{eq:adaptive-conjecture}
+\end{equation}
+when the amplitudes, shifts, and scales may all depend on $P$.  Classify the exceptional polynomials, if any.
+\end{conjecture}
+
+The fixed-dictionary lower bound is Proposition~\ref{prop:universal-fixed-lower}, and the generic finite-dyadic version is Corollary~\ref{cor:minimal-count}.  The target-adaptive statement is genuinely nonlinear: an uncountable family of parameter-dependent spans replaces the finite union used in the dyadic proof.  Resolving it appears to require a rigidity theorem for cancellations among nonanalytic affine copies of $u$.
+
+\begin{conjecture}[Quadratic bit growth for normalized monomials]
+For the endpoint coefficients of $t^d$ in lowest terms, the maximum numerator and denominator bit lengths are $\bigO(d^2)$.
+\end{conjecture}
+
+The fast algorithm makes such a result plausible because $\log A_d(1)=\Theta(d^2)$ and all operator series are Bernoulli-rational, but cancellation and Bernoulli denominators make a proof nontrivial.
+
+\begin{question}[Condition-optimal basis]
+Among all $(d+2)$-subsets of the active dyadic dictionary, which basis minimizes a chosen stability functional: the $L^\infty$ coefficient norm for all unit-norm polynomials, the smallest sampled singular value, a Lebesgue-type constant, or support overhang?
+\end{question}
+
+\begin{question}[Defect special values]
+Can the periodic residue \eqref{eq:defect-series} be evaluated at dyadic rational arguments in closed form through Fabius values, finite Thue--Morse sums, or $q$-binomial coefficients?  Its odd-frequency support and the values $\widehat u(n/2)$ suggest a direct bridge to the repository's half-integer spectral arithmetic.
+\end{question}
+
+\begin{question}[Central determinant sequence]
+Find a product, resultant, or recurrence for $\Delta_d^{\mathrm{cen}}$.  Determine its prime divisors and possible links to Fermat-type factors visible in the values $255$ and $524287$.
+\end{question}
+
+\begin{question}[Positive synthesis]
+Characterize polynomials that admit nonnegative amplitudes in an overcomplete up-dictionary.  Constants do; sign-changing polynomials do not.  For strictly positive polynomials, the problem becomes a finite-dimensional cone membership question after choosing a scale and interval.
+\end{question}
+
+\begin{question}[Beyond base two]
+For base-$b$ atomic functions, replace the $2$-adic zero divisor by its base-$b$ analogue.  Determine the corresponding cyclotomic annihilator, digit-sequence certificate, and local defect dimension.  The expected certificate should involve a generalized Prouhet digit character.
+\end{question}
+
+\begin{question}[Formal verification]
+A compact Lean formalization path is:
+\begin{enumerate}
+\item polynomial-weighted Poisson summation and the global synthesis theorem;
+\item root-of-unity comb derivatives and exact alias multiplicities;
+\item the $q$-integer factorization of $A_d$;
+\item the local dimension argument using the existing nowhere-analyticity theorem;
+\item recurrence elimination and the finite Thue--Morse certificate;
+\item formal power-series proof of the $H_d$ cancellation.
+\end{enumerate}
+Most analytic prerequisites already exist in the repository.
+\end{question}
+
+\section{Conclusions}
+
+The polynomial synthesis problem has a clean exact answer because several structures align:
+\begin{enumerate}
+\item the dyadic sinc product gives zero multiplicity $1+\vtwo(m)$;
+\item the minimal degree-$d$ dilation is therefore $2^d$;
+\item moment deconvolution produces the correct polynomial coefficient sequence;
+\item all nonzero dyadic alias cosets generate a large, explicitly factored nullspace;
+\item its $q$-integer annihilator reduces $2^{d+1}$ active atoms to $d+2$;
+\item the same annihilator is a finite convolution law, which cancels against the Rvachev moment product and yields the output-sensitive operator $H_d$;
+\item after one additional finite difference, the annihilator becomes a finite Thue--Morse filter, producing a one-scalar exactness certificate;
+\item the single local nonpolynomial direction has an explicit odd-frequency Fourier residue.
+\end{enumerate}
+
+The resulting construction is exact, finite, affine-covariant, rational over rational input, and algorithmically practical in exact arithmetic.  Its main unresolved issues are geometric and nonlinear: how to choose a well-conditioned fixed basis with small support, and whether target-dependent mixed shifts and scales can ever beat the $d+2$ count for a generic individual polynomial.
+
+\appendix
+
+\section{Pseudocode for the fast interval algorithm}
+
+\begin{lstlisting}[style=pseudo,caption={Exact polynomial synthesis on an arbitrary interval.}]
+INPUT: polynomial p(x), interval [a,b], d >= degree(p), integer J >= 1
+OUTPUT: coefficients c_r, shifts tau_r, common scale sigma
+
+h <- (b-a)/J
+M <- 2^d
+P(t) <- p(a+h*t)
+N <- J+d
+
+# H_d(z) from its Bernoulli logarithm, truncated at degree(P)
+logH(z) <- - sum_{m>=1} B_{2m}/(2m(2m)!)
+                  * (d + 1/(1-4^{-m})) z^(2m)
+H(z) <- exp(logH(z)) mod z^(degree(P)+1)
+G(t) <- H(D) P(t)
+
+# Low coefficients of A_d(z)=prod_{m=1}^d(1+...+z^(2^m-1))
+a[0..N] <- truncated sliding-window product
+A1 <- 2^(d(d+1)/2)
+
+for r=0..N:
+    g[r] <- A1 * G(r-d/2)
+
+bcoef[0] <- g[0]
+for r=1..N:
+    bcoef[r] <- g[r] - sum_{s=0}^{r-1} a[r-s]*bcoef[s]
+
+for r=0..N:
+    c[r] <- bcoef[r]/M
+    tau[r] <- a + h*(M-d-1+r)
+
+sigma <- M*h
+return c, tau, sigma
+
+IDENTITY: p(x)=sum_{r=0}^N c[r] up((x-tau[r])/sigma), a<=x<=b
+\end{lstlisting}
+
+\section{Low-order operator data}
+
+The first terms of $H_d$ are most compactly stated through \eqref{eq:H-log}.  Truncated to the degree on which they act:
+\begin{align}
+ H_0(z)&=1,\notag\\
+ H_1(z)&=1+\bigO(z^2),\notag\\
+ H_2(z)&=1-\frac{5}{36}z^2+\bigO(z^4),\notag\\
+ H_3(z)&=1-\frac{13}{72}z^2+\bigO(z^4),\notag\\
+ H_4(z)&=1-\frac{2}{9}z^2+\frac{857}{32400}z^4+\bigO(z^6).
+                                                                    \label{eq:H-low}
+\end{align}
+The first low annihilator coefficients are
+\begin{center}
+\begin{tabular}{c l}
+\toprule
+$d$ & $(a_0,a_1,\ldots,a_{d+1})$\\
+\midrule
+1 & $(1,1,0)$\\
+2 & $(1,2,2,2)$\\
+3 & $(1,3,5,7,8)$\\
+4 & $(1,4,9,16,24,32)$\\
+5 & $(1,5,14,30,54,86,126)$\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\section{Accompanying computational files}
+
+The archive contains:
+\begin{itemize}
+\item \file{rvachev_polynomial_representation.py}: exact symbolic algorithms, the fast and full recurrence constructions, pair compression, both polynomiality certificates, determinant experiments, and independent Fourier evaluation;
+\item \file{generate_report_data.py}: reproducible generation of the tables;
+\item \file{monomial_sparse_coefficients.csv}: exact endpoint coefficients through degree $8$;
+\item \file{central_basis_determinants.csv}: exact determinant evidence through degree $12$;
+\item \file{numerical_residuals.csv}: independent Fourier-quadrature residuals;
+\item \file{operator_and_annihilator_table.txt} and \file{exact_checks.txt}: audit summaries.
+\end{itemize}
+The exact self-test compares the output-sensitive and full-recurrence algorithms on one, two, and three cells for two polynomial families through degree $10$, verifies the two forms of $\Lambda_d$, and checks the normalization \eqref{eq:Lambda-normalization}.
+
+\section{Repository nonduplication checklist}
+
+The following adjacent results were found and deliberately not presented as new:
+\begin{itemize}
+\item exact zero multiplicity $1+\vtwo(m)$ for $\widehat u$;
+\item partition of unity and Poisson summation;
+\item dyadic self-sampling quadrature of degree $N$;
+\item the Rvachev--Appell/Kabaya--Iri inverse moment sequence;
+\item continuous convolutional deconvolution;
+\item finite reproduction with translated Appell polynomials weighted by sampled up-values;
+\item Bell--Bernoulli and Thue--Morse arithmetic already developed elsewhere in the corpus.
+\end{itemize}
+
+The following package appears new relative to the audited repository snapshot:
+\begin{itemize}
+\item exact synthesis with shifted/scaled up-atoms as the functions;
+\item complete finite dyadic alias nullspace and its $q$-integer annihilator;
+\item $\dim V_d=d+2$ and $V_d\cap\R[t]=\Pi_d$;
+\item a proved, unique, common-scale $d+2$ endpoint basis and universal fixed-dictionary minimality;
+\item the output-sensitive $H_d$ algorithm;
+\item the $J+d+1$ multi-cell localization theorem;
+\item the one-scalar certificate and its finite Thue--Morse form;
+\item the canonical defect coordinate and Fourier residue;
+\item the central-basis determinant conjecture and exact evidence.
+\end{itemize}
+
+\begin{thebibliography}{99}
+
+\bibitem{repoMain}
+V.~Reshetnikov,
+\newblock \emph{The Fabius Function and Rvachev's Up-Function: Exact Arithmetic, Probability, Fourier Analysis, and Corrected Sharp Asymptotics},
+\newblock \Repo{} repository, \path{Analysis/FabiusFunction/docs/Fabius_Function_and_Rvachev_Up/}, snapshot 28 August 2026,
+\newblock \url{https://github.com/VladimirReshetnikov/ProveIt}.
+
+\bibitem{repoInverse}
+V.~Reshetnikov,
+\newblock \emph{Inverse and Sampling Frontiers for the Fabius--Rvachev System},
+\newblock \Repo{} repository, \path{Analysis/FabiusFunction/docs/non-formalized-research-frontiers/drafts/inverse-and-sampling/}, snapshot 28 August 2026.
+
+\bibitem{repoNonElementary}
+V.~Reshetnikov,
+\newblock \emph{Non-Elementarity of the Fabius Function},
+\newblock \Repo{} repository, \path{Analysis/FabiusFunction/docs/Non_Elementarity_of_the_Fabius_Function/}, snapshot 28 August 2026.
+
+\bibitem{repoManifest}
+V.~Reshetnikov,
+\newblock \emph{Draft Manifest},
+\newblock \Repo{} repository, \path{Analysis/FabiusFunction/docs/non-formalized-research-frontiers/drafts/MANIFEST.md}, 28 August 2026.
+
+\bibitem{fabius1966}
+J.~Fabius,
+\newblock A probabilistic example of a nowhere analytic $C^\infty$-function,
+\newblock \emph{Zeitschrift f\"ur Wahrscheinlichkeitstheorie und Verwandte Gebiete} \textbf{5} (1966), 173--174.
+
+\bibitem{rvachev1971}
+V.~L.~Rvachev and V.~A.~Rvachev,
+\newblock A certain finite function,
+\newblock \emph{Dopovidi Akademii Nauk Ukrains'koi RSR, Series A} (1971), 705--707, 764.
+
+\bibitem{rvachev1979}
+V.~L.~Rvachev and V.~A.~Rvachev,
+\newblock \emph{Non-classical Methods of Approximation Theory in Boundary Value Problems},
+\newblock Naukova Dumka, Kiev, 1979 (Russian).
+
+\bibitem{rvachev1990}
+V.~A.~Rvachev,
+\newblock Compactly supported solutions of functional-differential equations and their applications,
+\newblock \emph{Russian Mathematical Surveys} \textbf{45} (1990), no.~1, 87--120.
+
+\bibitem{arias1982}
+J.~Arias de Reyna,
+\newblock An infinitely differentiable function with compact support: definition and properties,
+\newblock English translation of the 1982 article, arXiv:1702.05442 (2017).
+
+\bibitem{arias2018}
+J.~Arias de Reyna,
+\newblock Arithmetic of the Fabius function,
+\newblock \emph{INTEGERS} \textbf{18} (2018), Article A51; arXiv:1702.06487v3.
+
+\bibitem{strangfix1973}
+G.~Strang and G.~Fix,
+\newblock A Fourier analysis of the finite element variational method,
+\newblock in \emph{Constructive Aspects of Functional Analysis}, Edizioni Cremonese, Rome, 1973, 793--840.
+
+\bibitem{jia1998}
+R.-Q.~Jia,
+\newblock Shift-invariant spaces and linear operator equations,
+\newblock \emph{Israel Journal of Mathematics} \textbf{103} (1998), 259--288.
+
+\bibitem{charina2021}
+M.~Charina and V.~Yu.~Protasov,
+\newblock Analytic functions in local shift-invariant spaces and analytic limits of level dependent subdivision,
+\newblock \emph{Journal of Fourier Analysis and Applications} \textbf{27} (2021), Article 45, DOI: \nolinkurl{10.1007/s00041-021-09836-z}.
+
+\bibitem{lee2009}
+S.~L.~Lee,
+\newblock Approximation of Gaussian by scaling functions and biorthogonal scaling polynomials,
+\newblock \emph{Bulletin of the Malaysian Mathematical Sciences Society} (2) \textbf{32} (2009), no.~3, 261--282.
+
+\bibitem{roman1984}
+S.~Roman,
+\newblock \emph{The Umbral Calculus},
+\newblock Academic Press, 1984.
+
+\bibitem{alloucheshallit2003}
+J.-P.~Allouche and J.~Shallit,
+\newblock \emph{Automatic Sequences: Theory, Applications, Generalizations},
+\newblock Cambridge University Press, 2003.
+
+\bibitem{kravchenko2015}
+V.~F.~Kravchenko, O.~V.~Kravchenko, Ya.~Yu.~Konovalov, V.~I.~Pustovoit, and D.~V.~Churikov,
+\newblock Atomic, WA-systems, and R-functions applied in modern radio physics problems: Part III,
+\newblock \emph{Journal of Communications Technology and Electronics} \textbf{60} (2015), 707--736,
+DOI: \nolinkurl{10.1134/S1064226915070104}.
+
+\end{thebibliography}
+
+\end{document}
