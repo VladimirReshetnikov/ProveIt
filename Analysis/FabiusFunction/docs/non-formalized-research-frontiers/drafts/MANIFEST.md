@@ -88,13 +88,4 @@ series even where a single title leans toward another group.
 
 | Directory | Document | Previous path |
 | --- | --- | --- |
-| `Fabius_Rvachev_Frontier_Report/` | *Tail Quadrature, Exact Dyadic Error Laws, …* | `drafts/Fabius_Rvachev_Frontier_Report/` |
-| `Fabius_Rvachev_Frontier_Report-2/` | *Arithmetic Spectra of the Rvachev Sinc Product* | `drafts/Fabius_Rvachev_Frontier_Report-2/` |
-| `Fabius_Rvachev_Frontier_Report-3/` | *Zero-Divisor-Preserving q-Richardson Extrapolation for the Fabius–Rvachev Sinc Product* | `drafts/Fabius_Rvachev_Frontier_Report-3/` |
-| `Fabius_Rvachev_Frontier_Report_2026-08-27/` | *Midpoint Transmutation, Dyadic Cardinal Reproduction, …* | `drafts/Fabius_Rvachev_Frontier_Report_2026-08-27/` |
-| `Fabius_Rvachev_New_Frontiers/` | *Gamma Duality, Total Positivity, and …* | `drafts/Fabius_Rvachev_New_Frontiers/` |
-| `fabius_frontier_report_bundle/` | *Confluent Digital Extrapolation and …* | `drafts/fabius_frontier_report_bundle/` |
-| `fabius_frontier_results_bundle/` | *Dyadic Spectral Determinants for the Fabius–Rvachev System* | `drafts/fabius_frontier_results_bundle/` |
-| `fabius_frontier_new_results/` | *Logarithmic q-Richardson Acceleration and Lambert Phase Locking in Fabius–Rvachev Analysis* | `drafts/fabius_frontier_new_results/` |
-| `fabius_frontier_spectral_endpoint_report_bundle/` | *Binary Spectral–Endpoint Bridges for the Fabius and Rvachev Functions* | `drafts/fabius_frontier_spectral_endpoint_report_bundle/` |
-| `beyond_dyadic_fabius_web_report/` | *Beyond the Dyadic Fabius Web* | `drafts/beyond_dyadic_fabius_web_report/` |
+| `Frontier_Compilations/` | *Collected Frontier Reports for the Fabius–Rvachev System* (262 pp, 10 parts) — consolidation (2026-08-28) of the former `Fabius_Rvachev_Frontier_Report/`, `-2/`, `-3/`, `Fabius_Rvachev_Frontier_Report_2026-08-27/`, `Fabius_Rvachev_New_Frontiers/`, `fabius_frontier_report_bundle/`, `fabius_frontier_results_bundle/`, `fabius_frontier_new_results/`, `fabius_frontier_spectral_endpoint_report_bundle/`, and `beyond_dyadic_fabius_web_report/` (part order and former titles in the group README); assets under `assets/`, provenance with SHA-256 in the document | absorbed drafts deleted; git history is the archive |
