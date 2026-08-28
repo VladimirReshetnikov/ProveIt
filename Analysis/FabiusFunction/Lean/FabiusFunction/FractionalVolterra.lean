@@ -1,5 +1,5 @@
 import FabiusFunction.NormalizedVolterra
-import Mathlib.Analysis.SpecialFunctions.Gamma.Basic
+import Mathlib.Analysis.SpecialFunctions.Gamma.Beta
 import Mathlib.Analysis.SpecialFunctions.Integrability.Basic
 
 /-!
@@ -142,5 +142,90 @@ theorem fractionalVolterra_nat_succ
   simp only [fractionalVolterra, normalizedVolterra_succ, Nat.cast_add,
     Nat.cast_one, add_sub_cancel_right, Real.rpow_natCast,
     Real.Gamma_nat_eq_factorial]
+
+/-- Evaluation of the shifted real beta kernel on a nondegenerate interval. -/
+theorem intervalIntegral_fractionalVolterra_betaKernel
+    {α β s x : ℝ} (hα : 0 < α) (hβ : 0 < β) (hsx : s < x) :
+    (∫ u in s..x,
+        (x - u) ^ (α - 1) * (u - s) ^ (β - 1)) =
+      (x - s) ^ (α + β - 1) *
+        (Real.Gamma α * Real.Gamma β / Real.Gamma (α + β)) := by
+  let L : ℝ := x - s
+  have hL : 0 < L := by
+    simpa only [L] using sub_pos.mpr hsx
+  have hscaled :
+      (∫ y in 0..L,
+          y ^ (β - 1) * (L - y) ^ (α - 1)) =
+        L ^ (α + β - 1) *
+          (Real.Gamma α * Real.Gamma β /
+            Real.Gamma (α + β)) := by
+    apply Complex.ofReal_injective
+    rw [← intervalIntegral.integral_ofReal]
+    calc
+      (∫ y in 0..L,
+          ((y ^ (β - 1) * (L - y) ^ (α - 1) : ℝ) : ℂ)) =
+          ∫ y in 0..L,
+          (y : ℂ) ^ ((β : ℂ) - 1) *
+            ((L : ℂ) - y) ^ ((α : ℂ) - 1) := by
+        apply intervalIntegral.integral_congr
+        intro y hy
+        rw [uIcc_of_le hL.le] at hy
+        change ((y ^ (β - 1) * (L - y) ^ (α - 1) : ℝ) : ℂ) =
+          (y : ℂ) ^ ((β : ℂ) - 1) *
+            ((L : ℂ) - (y : ℂ)) ^ ((α : ℂ) - 1)
+        rw [Complex.ofReal_mul,
+          Complex.ofReal_cpow hy.1,
+          Complex.ofReal_cpow (sub_nonneg.mpr hy.2)]
+        push_cast
+        rfl
+      _ = (L : ℂ) ^ ((β : ℂ) + (α : ℂ) - 1) *
+          Complex.betaIntegral (β : ℂ) (α : ℂ) :=
+        Complex.betaIntegral_scaled (β : ℂ) (α : ℂ) hL
+      _ = ((L ^ (α + β - 1) *
+          (Real.Gamma α * Real.Gamma β /
+            Real.Gamma (α + β)) : ℝ) : ℂ) := by
+        rw [Complex.betaIntegral_eq_Gamma_mul_div
+          (β : ℂ) (α : ℂ)
+          (by simpa using hβ) (by simpa using hα)]
+        have hexp :
+            (β : ℂ) + (α : ℂ) - 1 =
+              ((α + β - 1 : ℝ) : ℂ) := by
+          push_cast
+          ring
+        have hsum :
+            (β : ℂ) + (α : ℂ) = ((α + β : ℝ) : ℂ) := by
+          push_cast
+          ring
+        rw [hexp, hsum, Complex.Gamma_ofReal β,
+          Complex.Gamma_ofReal α,
+          Complex.Gamma_ofReal (α + β),
+          ← Complex.ofReal_cpow hL.le]
+        push_cast
+        ring
+  calc
+    (∫ u in s..x,
+        (x - u) ^ (α - 1) * (u - s) ^ (β - 1)) =
+        ∫ u in s..x,
+          (u - s) ^ (β - 1) *
+            (L - (u - s)) ^ (α - 1) := by
+      apply intervalIntegral.integral_congr
+      intro u _hu
+      have hu : L - (u - s) = x - u := by
+        dsimp only [L]
+        ring
+      change (x - u) ^ (α - 1) * (u - s) ^ (β - 1) =
+        (u - s) ^ (β - 1) * (L - (u - s)) ^ (α - 1)
+      rw [hu, mul_comm]
+    _ = ∫ y in 0..L,
+        y ^ (β - 1) * (L - y) ^ (α - 1) := by
+      simpa only [sub_self, L] using
+        (intervalIntegral.integral_comp_sub_right
+          (a := s) (b := x)
+          (fun y : ℝ =>
+            y ^ (β - 1) * (L - y) ^ (α - 1)) s)
+    _ = (x - s) ^ (α + β - 1) *
+        (Real.Gamma α * Real.Gamma β /
+          Real.Gamma (α + β)) := by
+      simpa only [L] using hscaled
 
 end Fabius
