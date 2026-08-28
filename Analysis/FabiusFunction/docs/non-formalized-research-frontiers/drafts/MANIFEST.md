@@ -8,6 +8,9 @@ either integrated into the primary exposition or absorbed into the
 canonical frontier volume, the draft is deleted; this manifest must be
 updated when that happens.
 
+New drafts arrive through `incoming/` (as archives or directories),
+are unpacked into the matching group, and are recorded here.
+
 Reorganized into thematic groups on 2026-08-28. Path strings inside the
 documents themselves (corpus inventories, provenance banners,
 `\nolinkurl{...}` pointers) predate the reorganization and refer to the
@@ -73,6 +76,7 @@ cross-referenced internally; unchanged by the reorganization).
 | `fabius_integral_frontiers_bundle/` | *Integral and Transform Frontiers* (bundle variant) | `drafts/fabius_integral_frontiers_bundle/` |
 | `Fabius_Integral_Transform_Fractional_Frontiers/` | *Integral, Transform, and Fractional Frontiers* | `drafts/Fabius_Integral_Transform_Fractional_Frontiers/` (arrived 2026-08-28) |
 | `Fabius_Rvachev_Fractional_Integral_Report/` | *Fractional Integral Calculus and Complex-Order Transform Hierarchies for the Fabius–Rvachev System* | `drafts/Fabius_Rvachev_Fractional_Integral_Report/` (arrived 2026-08-28) |
+| `Fabius_Fractional_Integral_Transform_Frontiers/` | *Integral, Transform, and Fractional-Order Frontiers for the Fabius–Rvachev System* | `drafts/incoming/…zip` (unpacked 2026-08-28) |
 
 ## inverse-and-sampling — `inverse-and-sampling/`
 
@@ -81,6 +85,14 @@ cross-referenced internally; unchanged by the reorganization).
 | `Fabius_Inverse_Frontier_Report_Source_and_PDF/` | *Inverse Frontiers for the Fabius–Rvachev System* | `drafts/Fabius_Inverse_Frontier_Report_Source_and_PDF/` |
 | `fabius_frontier_dyadic_inverse_barnes_report/` | *Dyadic Inverse Germs and Barnes–Rvachev Deconvolution* | `drafts/fabius_frontier_dyadic_inverse_barnes_report/` |
 | `Fabius_Dyadic_Self_Sampling_Frontier_Package/` | *Dyadic Self-Sampling, Alias Superconvergence, and Rvachev–Appell Deconvolution* | `drafts/Fabius_Dyadic_Self_Sampling_Frontier_Package/` |
+
+## representations — `representations/`
+
+Series and orthogonal-expansion representations of the up-function.
+
+| Directory | Document | Previous path |
+| --- | --- | --- |
+| `Fabius_Rvachev_Representation_Frontiers/` | *Fabius–Rvachev Representation Frontiers* (Jacobi coefficients, exact even moments, resolvent and logarithmic-derivative identities) | `drafts/incoming/…zip` (unpacked 2026-08-28) |
 
 ## frontier-compilations — `frontier-compilations/`
 
