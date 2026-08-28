@@ -414,6 +414,12 @@ nondecreasing on all of $\R$.  It is also convenient to note that the reflection
 \end{equation}
 Indeed, for $x<0$ both sides equal $1$ by \eqref{eq:F-left} and \eqref{eq:F-right}, and for
 $x>1$ both sides equal $0$.
+The evenness of \(\Up\) in \eqref{eq:shape-unified-derivative} also gives the global
+first-jet reflection law
+\begin{equation}
+ F'(1-x)=F'(x)\qquad(x\in\R),                              \label{eq:shape-derivative-reflection}
+\end{equation}
+formalized as \lean{deriv_fabiusReal_one_sub} in \path{Differential.lean}.
 
 \begin{theorem}[Positivity, strict monotonicity, bijectivity]
 \label{thm:shape-bijection}
@@ -2136,6 +2142,177 @@ The exact bound, attainment, and supremum statements are
 \lean{iteratedDeriv_fabiusReal_inv_two_pow_all}, and
 \lean{isGreatest_abs_iteratedDeriv_fabiusReal_all} in
 \path{BoundedDerivatives.lean}.
+
+In fact the single attaining point belongs to a complete matched-grid pattern.  For
+$k,m\in\N$ with $0\le m<2^k$,
+\begin{equation}
+ F^{(k)}\!\left(\frac{m}{2^k}\right)
+ =\begin{cases}
+   0,&m\text{ even},\\
+   2^{\binom{k+1}{2}}\varepsilon_{\lfloor m/2\rfloor},&m\text{ odd}.
+  \end{cases}                                             \label{eq:fabius-dyadic-jet-thue-morse}
+\end{equation}
+Thus the even numerators are exactly the zeros, while every odd numerator attains the
+sharp absolute bound and the surviving signs form the Thue--Morse word.  The exact formula,
+zero classification, and odd-node norm statement are
+\lean{iteratedDeriv_fabiusReal_dyadicGrid_eq_ite},
+\lean{iteratedDeriv_fabiusReal_dyadicGrid_eq_zero_iff}, and
+\lean{abs_iteratedDeriv_fabiusReal_dyadicGrid_of_odd} in
+\path{BoundedDerivatives.lean}.
+
+\subsection{Exact midpoint--endpoint transmutation}
+\label{sec:midpoint-endpoint-transfer}
+
+Subtracting the affine midpoint jet reveals an exact signed copy of the endpoint profile,
+not merely a finite Taylor approximation.
+
+\begin{theorem}[Midpoint--endpoint transfer and the complete midpoint jet]
+\label{thm:midpoint-endpoint-transfer}
+For every $0\le h\le\tfrac12$,
+\begin{align}
+ F\!\left(\tfrac12+h\right)
+   &=\tfrac12+2h-F(h),&
+ F\!\left(\tfrac12-h\right)
+   &=\tfrac12-2h+F(h),                                    \label{eq:midpoint-value-transfer}\\
+ F'\!\left(\tfrac12+h\right)
+   &=2-F'(h),&
+ F'\!\left(\tfrac12-h\right)
+   &=2-F'(h).                                             \label{eq:midpoint-first-jet-transfer}
+\end{align}
+Moreover, every higher midpoint derivative vanishes:
+\begin{equation}
+ F^{(k)}\!\left(\tfrac12\right)=0
+ \qquad(k\in\N,\ k\ge2).                                  \label{eq:midpoint-higher-jets}
+\end{equation}
+Thus the complete Taylor jet at the midpoint is affine, even though $F$ is not analytic
+there.
+\end{theorem}
+
+\begin{proof}[Formal proof]
+The value identities are \lean{fabiusReal_midpoint_add_eq} and
+\lean{fabiusReal_midpoint_sub_eq}.  The first proof shows that
+$h\mapsto F(\tfrac12+h)+F(h)$ has constant derivative $2$, then compares its value at
+zero; reflection gives the companion identity.  The two endpoint-inclusive first-jet
+identities are \lean{deriv_fabiusReal_midpoint_add_eq} and
+\lean{deriv_fabiusReal_midpoint_sub_eq}; the latter reuses the global first-jet reflection
+law \lean{deriv_fabiusReal_one_sub}.  Finally
+\lean{iteratedDeriv_fabiusReal_half_eq_zero_of_two_le} proves
+\eqref{eq:midpoint-higher-jets}: the below-one bounded derivative formula at $1/2$
+samples the signed extension at the even integer $2^{k-1}$.  All midpoint-transfer
+declarations are in \path{MidpointEndpointTransfer.lean}.
+
+The value $F(1/2)=1/2$, slope $F'(1/2)=2$, and midpoint nonanalyticity are respectively
+\lean{fabius_half}, \lean{deriv_fabiusReal_half}, and \lean{fabius_analyticAt_iff}.
+\end{proof}
+
+The transmutation transports exact integral data as well.  For every real oriented radius
+$a$, global complementary reflection gives
+\begin{equation}
+ \int_{1/2-a}^{1/2+a}F(x)\,\dd x=a.                       \label{eq:midpoint-centered-mass}
+\end{equation}
+This all-real strengthening of the frontier report's $0\le a\le1/2$ identity is
+\lean{intervalIntegral_fabiusReal_centered}.  On the closed half-cell define
+\[
+ D_+(h):=F(\tfrac12+h)-\tfrac12-2h,
+ \qquad
+ D_-(h):=F(\tfrac12-h)-\tfrac12+2h.
+\]
+Then $D_+=-F$ and $D_-=F$ pointwise.  Consequently, for every weight
+$w:\R\to\R$ and $0\le a\le1/2$, oriented interval integration gives
+\begin{align}
+ \int_0^a w(h)D_+(h)\,\dd h&=-\int_0^a w(h)F(h)\,\dd h,
+                                                               \label{eq:midpoint-weighted-right}\\
+ \int_0^a w(h)D_-(h)\,\dd h&= \int_0^a w(h)F(h)\,\dd h.       \label{eq:midpoint-weighted-left}
+\end{align}
+These are \lean{intervalIntegral_mul_fabiusReal_midpoint_add_defect_eq_neg} and
+\lean{intervalIntegral_mul_fabiusReal_midpoint_sub_defect_eq}.  The constant-weight form
+of \eqref{eq:midpoint-weighted-right}, named
+\lean{intervalIntegral_fabiusReal_midpoint_add_defect_eq_neg}, is exactly the central
+defect integral stated in the frontier report.  For $n\in\N$, taking
+$w(h)=(a-h)^n/n!$ gives every Cauchy kernel for an anchored repeated primitive at once;
+this specialization is
+\lean{intervalIntegral_repeatedPrimitiveKernel_fabiusReal_midpoint_add_defect_eq_neg}.
+
+\begin{boxedremark}
+\textbf{Exact current boundary.}
+The value and derivative identities hold on the full closed half-cell, and the centered
+mass identity holds for every oriented real radius.  The arbitrary-weight theorem is
+pointwise transport under an interval integral; the named Cauchy-kernel family records the
+usual repeated-primitive kernels, but no recursively defined primitive operator is
+introduced.  These results do not by themselves assert local affineness, analytic
+continuation, an inverse-defect asymptotic, or a finite spline quarter-cell formula.
+\end{boxedremark}
+
+\subsection{Exact inverse midpoint defect}
+\label{sec:inverse-midpoint-defect}
+
+Let $I$ denote the totalized inverse of the bounded Fabius function and remove its
+midpoint and affine midpoint jet in two stages:
+\begin{equation}
+ h(\delta):=I\!\left(\tfrac12+\delta\right)-\tfrac12,
+ \qquad
+ E(\delta):=h(\delta)-\tfrac{\delta}{2}.                   \label{eq:inverse-midpoint-definitions}
+\end{equation}
+These are \lean{fabiusInvMidpointOffset} and
+\lean{fabiusInvMidpointDefect}.  The totalization matters only outside the unit
+range.  Their endpoint normalizations are
+\begin{equation}
+ h(0)=E(0)=0,\qquad
+ h\!\left(\tfrac12\right)=\tfrac12,\qquad
+ E\!\left(\tfrac12\right)=\tfrac14.                        \label{eq:inverse-midpoint-endpoints}
+\end{equation}
+On the central half-cell the following identities are exact.
+
+\begin{theorem}[Inverse midpoint fixed point]
+\label{thm:inverse-midpoint-fixed-point}
+For $0\le\delta\le\tfrac12$,
+\begin{align}
+ 0\le h(\delta)&\le\tfrac12,                               \label{eq:inverse-offset-range}\\
+ \delta&=2h(\delta)-F\bigl(h(\delta)\bigr),                 \label{eq:inverse-offset-equation}\\
+ h(\delta)&=\tfrac{\delta}{2}
+             +\tfrac12F\bigl(h(\delta)\bigr),              \label{eq:inverse-offset-fixed-point}\\
+ E(\delta)&=\tfrac12F\bigl(h(\delta)\bigr)
+            =\tfrac12F\!\left(\tfrac{\delta}{2}+E(\delta)\right),
+                                                               \label{eq:inverse-defect-fixed-point}\\
+ 0\le E(\delta)&\le\tfrac14.                               \label{eq:inverse-defect-range}
+\end{align}
+In fact \eqref{eq:inverse-offset-range} holds for every $\delta\ge0$.  Globally,
+including the clamped tails of the totalized inverse,
+\begin{equation}
+ h(-\delta)=-h(\delta),\qquad E(-\delta)=-E(\delta)
+ \qquad(\delta\in\R).                                      \label{eq:inverse-midpoint-odd}
+\end{equation}
+\end{theorem}
+
+\begin{proof}[Formal proof]
+The four identities in \eqref{eq:inverse-midpoint-endpoints} are
+\lean{fabiusInvMidpointOffset_zero},
+\lean{fabiusInvMidpointDefect_zero},
+\lean{fabiusInvMidpointOffset_half}, and
+\lean{fabiusInvMidpointDefect_half}.  For nonnegative $\delta$, monotonicity
+of the totalized inverse at $1/2$, together with its global upper bound, gives
+\lean{fabiusInvMidpointOffset_mem_Icc}.  When $\delta\le1/2$, applying $F$ to
+$I(1/2+\delta)$ and then using the midpoint--endpoint identity
+\eqref{eq:midpoint-value-transfer} gives
+\lean{fabiusInvMidpointOffset_equation}.  Elementary rearrangement yields
+\lean{fabiusInvMidpointOffset_fixedPoint},
+\lean{fabiusInvMidpointDefect_eq_half_fabiusReal}, and the self-contained defect
+equation \lean{fabiusInvMidpointDefect_fixedPoint}.  Positivity, monotonicity, and
+$F(1/2)=1/2$ give the sharp uniform enclosure
+\lean{fabiusInvMidpointDefect_mem_Icc}.  Finally the global inverse reflection law
+gives \lean{fabiusInvMidpointOffset_neg} and
+\lean{fabiusInvMidpointDefect_neg}.  All declarations are in
+\path{InverseMidpointDefect.lean}.
+\end{proof}
+
+\begin{boxedremark}
+\textbf{Exact current boundary.}
+The fixed-point equation is a finite identity.  It is not, by itself, a proof that
+$E(\delta)=O(\delta^N)$ for every $N$, that
+$E(\delta)\sim\tfrac12F(\delta/2)$, or that logarithmic or Lambert--\(W\)
+asymptotics transfer through the implicit argument.  Those require quantitative
+flatness and stability estimates beyond the algebra proved here.
+\end{boxedremark}
 
 \subsection{Dyadic derivative cells and exact value distributions}
 \label{sec:rvachev-derivative-distribution}
@@ -4369,11 +4546,16 @@ formula rather than replacing its low-degree exactness foundation.
 On a geometric alphabet the symmetric residual itself has a closed Gaussian form.  For
 every commutative semiring, every $q$, and all $p,r\in\N$,
 \begin{equation}
- h_r(1,q,\ldots,q^p)=\qbinom{p+r}{r}{q}.                   \label{eq:complete-homogeneous-geometric}
+ h_r(1,q,\ldots,q^p)
+ =\qbinom{p+r}{p}{q}=\qbinom{p+r}{r}{q}.                   \label{eq:complete-homogeneous-geometric}
 \end{equation}
-This principal specialization is
-\lean{completeHomogeneousEvalOn_geometric_range}; it is total at $q=0$ and at roots
-of unity and uses no division.  Over a field, if the finite nodes
+The two principal-specialization orientations are
+\lean{completeHomogeneousEvalOn_range_pow_eq_gaussianBinomial} and
+\lean{completeHomogeneousEvalOn_range_pow_eq_gaussianBinomial_degree}; comparing them
+gives the denominator-free symmetries \lean{gaussianBinomial_add_symm} and
+\lean{gaussianBinomial_symm}.  The report-facing alias is
+\lean{completeHomogeneousEvalOn_geometric_range}.  All of these statements are total at
+$q=0$ and at roots of unity and use no division.  Over a field, if the finite nodes
 $1,q,\ldots,q^p$ are distinct, it converts
 \eqref{eq:lagrange-all-residual-moments} at target zero into
 \begin{equation}
@@ -6448,11 +6630,13 @@ Local leading-jet calculus &
 \path{LeadingJet.lean}\\
 Global derivatives, value distributions, and flatness &
 \path{GlobalExtension.lean}, \path{GlobalBounds.lean},
-\path{BoundedDerivatives.lean}, \path{RvachevDerivativeDistribution.lean},
+\path{BoundedDerivatives.lean}, \path{MidpointEndpointTransfer.lean},
+\path{RvachevDerivativeDistribution.lean},
 \path{EffectiveFlatness.lean}, \path{SharpFlatness.lean},
 \path{FabiusFlatness.lean}\\
 Analyticity, inverse, elementary obstruction &
 \path{NowhereAnalytic.lean}, \path{FabiusInverse.lean},
+\path{InverseMidpointDefect.lean},
 \path{ElementaryFunction.lean}, \path{NotElementary.lean},
 \path{InverseBranch.lean}, \path{InverseNotElementary.lean}\\
 Moments and exact arithmetic &

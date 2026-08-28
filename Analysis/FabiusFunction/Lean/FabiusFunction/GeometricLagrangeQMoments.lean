@@ -395,7 +395,7 @@ theorem gaussianBinomial_eq_qBinomial_of_pos_of_lt_one
       simpa only [Nat.sub_add_cancel hk] using
         (qPochhammer_self_add q (n - k) k)
     rw [qBinomial_eq_quotient q hk, hsplit, ← hfactorial]
-    field_simp [hkNe, hnkNe] <;> ring
+    field_simp [hkNe, hnkNe]
   · have hkn : n < k := Nat.lt_of_not_ge hk
     rw [gaussianBinomial_eq_zero_of_lt q hkn,
       qBinomial_eq_zero_of_lt q hkn]
@@ -606,7 +606,9 @@ theorem sum_qBinomial_triangular_succ_eq_neg_qPochhammer
       have hsign : (-1 : ℚ) ^ k * (-1 : ℚ) ^ k = 1 := by
         rw [← mul_pow]
         norm_num
-      rw [choose_succ_two, pow_add, neg_pow]
+      have hneg : (-q) ^ k = (-1 : ℚ) ^ k * q ^ k := by
+        rw [neg_pow]
+      rw [choose_succ_two, pow_add, hneg]
       calc
         q ^ (k.choose 2) * q ^ k * qBinomial p k q =
             1 * q ^ (k.choose 2) * q ^ k * qBinomial p k q := by ring

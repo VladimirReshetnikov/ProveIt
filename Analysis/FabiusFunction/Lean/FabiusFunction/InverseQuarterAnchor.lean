@@ -90,6 +90,7 @@ For the order-`n` finite Fabius spline the frontier report takes `Q = 4^-n`.
 def quarterInverseGerm (Q : ℝ) : ℝ :=
   (Real.sqrt (1 + (64 / 9) * Q) - 1) / 8
 
+/-- The exact quarter inverse germ vanishes at the unperturbed parameter. -/
 @[simp]
 theorem quarterInverseGerm_zero : quarterInverseGerm 0 = 0 := by
   norm_num [quarterInverseGerm]

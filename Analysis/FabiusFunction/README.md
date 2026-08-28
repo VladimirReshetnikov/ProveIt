@@ -166,7 +166,7 @@ complex exponential generating function are also represented explicitly.
 From the repository root, the complete public surface is checked with
 
 ```sh
-LAKE_JOBS=1 LEAN_NUM_THREADS=0 lake build +FabiusFunction
+LAKE_JOBS=1 LEAN_NUM_THREADS=1 lake build +FabiusFunction
 ```
 
 Use `import FabiusFunction` when downstream code needs the entire development.
@@ -175,17 +175,20 @@ points:
 
 | Purpose | Focused import | Good starting declarations |
 | --- | --- | --- |
-| Definitions, the bounded characterization, and folded `up` | `FabiusFunction.Basic`, `FabiusFunction.Differential` | `BoundedFabius`, `IsFabius`, `rvachevUp`, `rvachevUp_even`, `rvachevUp_eq_zero_of_not_mem_Ioo`, `support_rvachev_subset_Ioo`, `rvachev_hasDerivAt` |
+| Definitions, the bounded characterization, folded `up`, and the global first-jet reflection law | `FabiusFunction.Basic`, `FabiusFunction.Differential` | `BoundedFabius`, `IsFabius`, `rvachevUp`, `rvachevUp_even`, `rvachevUp_eq_zero_of_not_mem_Ioo`, `support_rvachev_subset_Ioo`, `rvachev_hasDerivAt`, `fabius_hasDerivAt`, `deriv_fabiusReal`, `deriv_fabiusReal_one_sub` |
+| Sharp bounded derivatives and the exact zero-interleaved Thue--Morse pattern on every matched dyadic grid | `FabiusFunction.BoundedDerivatives` | `iteratedDeriv_fabiusReal_of_lt_one`, `iteratedDeriv_fabiusReal_dyadicGrid_eq_ite`, `iteratedDeriv_fabiusReal_dyadicGrid_eq_zero_iff`, `abs_iteratedDeriv_fabiusReal_dyadicGrid_of_odd`, `abs_iteratedDeriv_fabiusReal_le`, `isGreatest_abs_iteratedDeriv_fabiusReal` |
 | Existence, uniqueness, and the canonical functions | `FabiusFunction.PaperStatements` | `existsUnique_fabius`, `fabius`, `fabius_spec`, `globalFabius` |
 | Original compact-support characterization and bounded/original bridge | `FabiusFunction.OriginalUniqueness` | `IsOriginalFabius`, `IsOriginalFabius.mk_of_derivative_law`, `IsFabius.isOriginalFabius_rvachevUp`, `rvachevUp_eq_iff_eqOn_Iic_one`, `isFabius_iff_isOriginalFabius_rvachevUp_and_rightTail`, `isOriginalFabius_iff_existsUnique_isFabius` |
 | Product-probability and CDF representations | `FabiusFunction.ProbabilityRepresentation` | `weightedSumCDF_eq_fabiusReal`, `fabiusReal_eq_weightedSum_probability`, `rvachevUp_eq_weightedSumCDF`, `rvachevUp_eq_weightedSum_probability_global` |
+| Exact midpoint--endpoint value and first-jet transfer, complete higher midpoint jet, centered mass, and weighted primitive kernels | `FabiusFunction.MidpointEndpointTransfer` | `fabiusReal_midpoint_add_eq`, `fabiusReal_midpoint_sub_eq`, `deriv_fabiusReal_midpoint_add_eq`, `deriv_fabiusReal_midpoint_sub_eq`, `iteratedDeriv_fabiusReal_half_eq_zero_of_two_le`, `intervalIntegral_fabiusReal_centered`, `intervalIntegral_mul_fabiusReal_midpoint_add_defect_eq_neg`, `intervalIntegral_mul_fabiusReal_midpoint_sub_defect_eq`, `intervalIntegral_fabiusReal_midpoint_add_defect_eq_neg`, `intervalIntegral_repeatedPrimitiveKernel_fabiusReal_midpoint_add_defect_eq_neg` |
+| Exact inverse-midpoint offset and defect fixed points, endpoint normalizations, positive-cell enclosures, and global oddness | `FabiusFunction.InverseMidpointDefect` | `fabiusInvMidpointOffset`, `fabiusInvMidpointDefect`, `fabiusInvMidpointOffset_zero`, `fabiusInvMidpointDefect_zero`, `fabiusInvMidpointOffset_half`, `fabiusInvMidpointDefect_half`, `fabiusInvMidpointOffset_mem_Icc`, `fabiusInvMidpointOffset_equation`, `fabiusInvMidpointOffset_fixedPoint`, `fabiusInvMidpointDefect_eq_half_fabiusReal`, `fabiusInvMidpointDefect_fixedPoint`, `fabiusInvMidpointDefect_mem_Icc`, `fabiusInvMidpointOffset_neg`, `fabiusInvMidpointDefect_neg` |
 | Exact finite-spline cell around `1/4`, with two-sided reflection, curvature, and conditional inverse identities | `FabiusFunction.QuarterSplineLocalPolynomial`, `FabiusFunction.QuarterSplineTwoSided` | `reportFiniteFabiusApproximant_quarter_twoSided`, `reportFiniteFabiusApproximant_quarter_reflection`, `reportFiniteFabiusApproximant_quarter_centralSecondDifference`, `strictMonoOn_reportFiniteFabiusApproximant_quarter_twoSided`, `reportFiniteFabiusApproximant_quarterPrefix_value`, `reportFiniteFabiusApproximant_quarterPrefix_quantile` |
 | Weighted-partition exponential coefficients over commutative `ℚ`-algebras | `FabiusFunction.ExponentialPartition`, `FabiusFunction.ExponentialBell` | `partitionExpSum_recurrence`, `partitionExpSum_succ`, `partitionExpSum_eq_sum_div`, `partitionExpSum_eq_expCoeff` |
 | Complete Bell and moment--cumulant transforms over commutative `ℚ`-algebras | `FabiusFunction.MomentCumulantAlgebra` | `factorialNormalize`, `completeBellPolynomial`, `momentCumulant`, `completeBellPolynomial_succ`, `completeBellPolynomial_momentCumulant`, `momentCumulant_completeBellPolynomial` |
 | Full-order centered Rvachev moment, logarithmic-coefficient, and cumulant parity, with positive even-order Bernoulli--Mersenne cumulants | `FabiusFunction.CenteredMomentParity`, `FabiusFunction.SinhDivBernoulliLog` | `centeredRvachevFullMoment_even`, `centeredRvachevFullMoment_odd`, `centeredRvachevFullLogCoefficient_even`, `centeredRvachevFullLogCoefficient_odd`, `centeredRvachevFullCumulant_even`, `centeredRvachevFullCumulant_odd`, `centeredRvachevEvenCumulant_eq_bernoulliMersenne` |
 | Finite polynomial integrals from raw moments and formal cumulants | `FabiusFunction.PolynomialExpectationCumulant` | `integral_eval₂_eq_sum_moment`, `integral_eval₂_eq_sum_completeBell_momentCumulant_with_mass_correction`, `integral_eval₂_eq_sum_completeBell_momentCumulant_of_moment_zero_eq_one`, `integral_eval₂_eq_sum_completeBell_momentCumulant` |
 | Universal endpoint-transfer polynomials and their formal exponential series | `FabiusFunction.EndpointTransferPolynomials` | `endpointTransferPolynomial_succ`, `endpointTransferPolynomial_eq_partitionExpSum`, `endpointTransferSeries_eq_exp_subst`, `aeval_endpointTransferPolynomial`, `map_endpointTransferSeries` |
-| Complete homogeneous evaluations and denominator-free geometric principal specialization | `FabiusFunction.CompleteHomogeneous`, `FabiusFunction.GeometricCompleteHomogeneous` | `completeHomogeneousEval_eq_eval_hsymm`, `completeHomogeneousEval_smul`, `completeHomogeneousEval_option_zero`, `completeHomogeneousEval_fin_succ`, `completeHomogeneousEval_geometric`, `completeHomogeneousEval_scaled_geometric` |
+| Complete homogeneous evaluations, denominator-free geometric principal specialization, and Gaussian symmetry | `FabiusFunction.CompleteHomogeneous`, `FabiusFunction.GeometricCompleteHomogeneous` | `completeHomogeneousEval_eq_eval_hsymm`, `completeHomogeneousEval_smul`, `completeHomogeneousEval_option_zero`, `completeHomogeneousEval_fin_succ`, `completeHomogeneousEval_geometric`, `completeHomogeneousEval_scaled_geometric`, `completeHomogeneousEvalOn_range_pow_eq_gaussianBinomial`, `completeHomogeneousEvalOn_range_pow_eq_gaussianBinomial_degree`, `gaussianBinomial_add_symm`, `gaussianBinomial_symm` |
 | Every residual moment of finite interpolation and geometric Richardson rows | `FabiusFunction.LagrangeResidualMoments`, `FabiusFunction.GeometricResidualMoments` | `sum_weight_mul_pow_card_add`, `sum_lagrangeEvalWeight_mul_pow_card_add`, `sum_weight_mul_geometric_pow_of_pos`, `sum_weight_mul_scaled_geometric_pow_succ_add`, `sum_weight_mul_scaled_geometric_pow_of_pos`, `sum_geometricLagrangeWeight_mul_pow_of_pos`, `sum_geometricLagrangeWeight_mul_shifted_pow_of_pos` |
 | Geometric Richardson filters, Gaussian coefficients, all residual moments, and finite conditioning | `FabiusFunction.GeometricQBinomialLagrange`, `FabiusFunction.GeometricRichardson`, `FabiusFunction.GeometricLagrangeWeights`, `FabiusFunction.GeometricLagrangeQBinomial`, `FabiusFunction.GeometricLagrangeQMoments` | `reversed_finite_qBinomial_theorem`, `sum_geometricLagrangeWeight_mul_pow_eq_gaussianBinomial`, `geometricLagrangeWeightPolynomial_eq_forwardGeometricRichardsonPolynomial`, `geometricLagrangeQMoment_eq_residual_qBinomial`, `sum_abs_geometricLagrangeWeight_eq_prod`; the rational closed forms use their stated nonzero-base and nonvanishing finite-denominator hypotheses, while sign and variation assume `0 < q < 1` |
 | Report-facing geometric complete-homogeneous bridges | `FabiusFunction.GeometricLagrangeCompleteHomogeneous` | `completeHomogeneousEvalOn_geometric_range`, `sum_geometricLagrangeWeight_mul_pow_succ_add_eq_gaussianBinomial`, `geometricLagrangeQMoment_eq_residual_qBinomial_via_completeHomogeneous` |
@@ -471,7 +474,52 @@ function is locally constant, and the single remaining point `x = 1` is caught
 by continuity.  The consequences are flatness at the origin
 (`Fabius.iteratedDeriv_fabiusReal_zero`), the global bound
 `Fabius.abs_iteratedDeriv_fabiusReal_le`, and the exact attained supremum
-`Fabius.isGreatest_abs_iteratedDeriv_fabiusReal`.
+`Fabius.isGreatest_abs_iteratedDeriv_fabiusReal`.  More sharply, on the
+matched mesh `m / 2^k` with `m < 2^k`, the `k`th derivative vanishes exactly
+at even numerators; at odd numerators it is the sharp amplitude
+`2^C(k+1,2)` times `thueMorseSign (m / 2)`.  Hence every odd grid point is an
+extremizer, not only the familiar point `2^-k`.
+
+`MidpointEndpointTransfer.lean` identifies the entire midpoint defect with
+the endpoint profile on the closed half-cell:
+
+```text
+F(1/2 + h) = 1/2 + 2h - F(h),
+F(1/2 - h) = 1/2 - 2h + F(h)       for 0 ≤ h ≤ 1/2.
+```
+
+Both translated first derivatives equal `2 - F'(h)`, and every iterated
+derivative of order at least two vanishes at `1/2`.  The same pointwise
+identity gives the all-real oriented centered-mass formula
+`∫_[1/2-a,1/2+a] F = a`, arbitrary-weight right and left defect-transfer
+identities, and every Cauchy kernel `(a-h)^n/n!` for anchored repeated
+primitives.  These are exact pointwise and finite-integral theorems, not an
+analytic-germ assertion or a finite-spline quarter-cell statement.
+
+`InverseMidpointDefect.lean` then converts that transmutation into an exact
+implicit equation for the totalized inverse.  With
+
+```text
+h(δ) = F⁻¹(1/2 + δ) - 1/2,
+E(δ) = h(δ) - δ/2,
+```
+
+one has, throughout `0 ≤ δ ≤ 1/2`,
+
+```text
+δ = 2h(δ) - F(h(δ)),
+h(δ) = δ/2 + F(h(δ))/2,
+E(δ) = F(h(δ))/2 = F(δ/2 + E(δ))/2,
+0 ≤ h(δ) ≤ 1/2,        0 ≤ E(δ) ≤ 1/4.
+```
+
+The endpoints are exact: `h(0)=E(0)=0`, while
+`h(1/2)=1/2` and `E(1/2)=1/4`, so both displayed upper bounds are attained.
+The offset enclosure actually holds for every `δ ≥ 0`, and both `h` and `E`
+are globally odd, including the clamped inverse tails.  The fixed point is an
+exact algebraic identity; no all-orders defect bound, asymptotic equivalence,
+logarithmic expansion, or Lambert-W transfer is inferred without the
+additional quantitative estimates those conclusions require.
 
 `NowhereAnalytic.lean` transfers the unnumbered non-analyticity corollary from
 `up` to `F` and determines the analytic locus exactly:

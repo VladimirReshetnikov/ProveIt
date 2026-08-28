@@ -424,7 +424,7 @@ theorem sum_shiftedReciprocalLagrangeWeight_mul_periodicPhaseLocked
           shiftedReciprocalLagrangeWeight lambda r j * G lambda := by
       apply Finset.sum_congr rfl
       intro j _hj
-      rw [hG.apply_fabiusLambertPhase_phaseLockedNode hlambda j]
+      rw [Periodic.apply_fabiusLambertPhase_phaseLockedNode hG hlambda j]
     _ = (∑ j ∈ Finset.range (r + 1),
           shiftedReciprocalLagrangeWeight lambda r j) * G lambda := by
       rw [Finset.sum_mul]
@@ -526,10 +526,14 @@ theorem sum_shiftedReciprocalLagrangeWeight_residual
       shiftedReciprocalLagrangeWeight lambda r j *
         (lambda + (j : K))⁻¹ ^ (r + 1 + t)) =
       (-1 : K) ^ r *
-        (∏ j ∈ Finset.range (r + 1), lambda + (j : K))⁻¹ *
+        (∏ j ∈ Finset.range (r + 1), (lambda + (j : K)))⁻¹ *
           completeHomogeneousEvalOn (Finset.range (r + 1))
             (shiftedReciprocalNode lambda) t := by
-  simpa only [shiftedReciprocalNode, Finset.prod_inv_distrib] using
+  change _ = (-1 : K) ^ r *
+    (∏ j ∈ Finset.range (r + 1), (lambda + (j : K)))⁻¹ *
+      completeHomogeneousEvalOn (Finset.range (r + 1))
+        (fun j : ℕ ↦ (lambda + (j : K))⁻¹) t
+  simpa only [Finset.prod_inv_distrib] using
     (sum_shiftedReciprocalLagrangeWeight_mul_invPow_card_add lambda r t)
 
 /-- The first inverse-power moment beyond the cancelled range is the signed

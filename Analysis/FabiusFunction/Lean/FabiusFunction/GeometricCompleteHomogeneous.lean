@@ -26,6 +26,8 @@ recurrence into q-Pascal's recurrence.
   scale on the geometric alphabet.
 * `completeHomogeneousEvalOn_range_pow_eq_gaussianBinomial` gives the same
   result in the `Finset.range` representation used by interpolation rows.
+* `gaussianBinomial_add_symm` and `gaussianBinomial_symm` prove
+  complementary-index symmetry without division or cancellation.
 -/
 
 set_option autoImplicit false
@@ -108,6 +110,81 @@ theorem completeHomogeneousEvalOn_range_pow_eq_gaussianBinomial
       gaussianBinomial q (n + p) p := by
   rw [completeHomogeneousEvalOn_range]
   exact completeHomogeneousEval_geometric q n p
+
+/-- **Degree-indexed principal specialization.**  On the `p + 1` variables
+`1, q, ..., q^p`, the degree-`r` complete homogeneous polynomial is the
+denominator-free Gaussian coefficient `[p+r choose r]_q`.
+
+This is the orientation in which the lower Gaussian index records the
+homogeneous degree.  Its direct adjoining-variable proof is the dual of
+`completeHomogeneousEval_geometric`; comparing the two orientations below
+will expose Gaussian symmetry without division or cancellation. -/
+theorem completeHomogeneousEvalOn_range_pow_eq_gaussianBinomial_degree
+    {R : Type*} [CommSemiring R]
+    (q : R) (p r : ℕ) :
+    completeHomogeneousEvalOn (Finset.range (p + 1))
+        (fun j : ℕ ↦ q ^ j) r =
+      gaussianBinomial q (p + r) r := by
+  induction p generalizing r with
+  | zero =>
+      simp
+  | succ p ih =>
+      induction r with
+      | zero =>
+          simp
+      | succ r ihr =>
+          have hrange :
+              Finset.insert (p + 1) (Finset.range (p + 1)) =
+                Finset.range ((p + 1) + 1) :=
+            (Finset.range_succ (p + 1)).symm
+          have hrec := completeHomogeneousEvalOn_insert_succ
+            (s := Finset.range (p + 1)) (i := p + 1)
+            (Finset.not_mem_range_self (p + 1))
+            (fun j : ℕ ↦ q ^ j) r
+          rw [hrange] at hrec
+          rw [show Nat.succ p + 1 = (p + 1) + 1 by omega,
+            hrec, ihr, ih (r + 1)]
+          have hinner : Nat.succ p + r = p + r + 1 := by omega
+          have houter : p + (r + 1) = p + r + 1 := by omega
+          have hgoal :
+              Nat.succ p + (r + 1) = (p + r + 1) + 1 := by omega
+          have hexponent : p + r + 1 - r = p + 1 := by omega
+          rw [hinner, houter, hgoal,
+            gaussianBinomial_succ_succ, hexponent]
+          exact add_comm _ _
+
+/-- Complementary-index symmetry in an additively parameterized Gaussian
+row.  The identity holds over every commutative semiring, including at
+singular values of `q`, because it compares two denominator-free principal
+specializations of the same complete homogeneous polynomial. -/
+theorem gaussianBinomial_add_symm
+    {R : Type*} [CommSemiring R]
+    (q : R) (p r : ℕ) :
+    gaussianBinomial q (p + r) p =
+      gaussianBinomial q (p + r) r := by
+  calc
+    gaussianBinomial q (p + r) p =
+        gaussianBinomial q (r + p) p := by
+      rw [Nat.add_comm p r]
+    _ = completeHomogeneousEvalOn (Finset.range (p + 1))
+          (fun j : ℕ ↦ q ^ j) r :=
+      (completeHomogeneousEvalOn_range_pow_eq_gaussianBinomial
+        q p r).symm
+    _ = gaussianBinomial q (p + r) r :=
+      completeHomogeneousEvalOn_range_pow_eq_gaussianBinomial_degree
+        q p r
+
+/-- Reflection `k ↦ n - k` for denominator-free Gaussian coefficients.
+No theorem about quotients is used, so symmetry remains valid when a finite
+q-Pochhammer denominator vanishes. -/
+theorem gaussianBinomial_symm
+    {R : Type*} [CommSemiring R]
+    (q : R) {n k : ℕ} (hk : k ≤ n) :
+    gaussianBinomial q n (n - k) =
+      gaussianBinomial q n k := by
+  have hsymm := gaussianBinomial_add_symm q k (n - k)
+  rw [Nat.add_sub_of_le hk] at hsymm
+  exact hsymm.symm
 
 end
 

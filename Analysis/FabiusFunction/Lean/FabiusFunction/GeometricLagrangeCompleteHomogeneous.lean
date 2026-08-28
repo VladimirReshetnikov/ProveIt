@@ -1,92 +1,56 @@
-import FabiusFunction.LagrangeResidualMoments
+import FabiusFunction.GeometricResidualMoments
 import FabiusFunction.GeometricLagrangeQMoments
 
 /-!
-# Complete-homogeneous form of geometric Lagrange residuals
+# Compatibility bridges for geometric complete-homogeneous residuals
 
-The universal residual theorem in `LagrangeResidualMoments` expresses every
-moment beyond polynomial exactness through a complete homogeneous symmetric
-polynomial.  On the geometric nodes
+The structural proofs behind this file now live in two canonical modules:
 
-`1, q, ..., q^p`,
+* `GeometricCompleteHomogeneous` proves the principal specialization
+  `h_r(1, q, ..., q^p) = gaussianBinomial q (p + r) p` over an arbitrary
+  commutative semiring; and
+* `GeometricResidualMoments` combines that specialization with the universal
+  residual theorem, first for any exact row over a commutative ring and then
+  for geometric Lagrange weights over a field.
 
-that symmetric polynomial is the denominator-free Gaussian coefficient
-`gaussianBinomial q (p + r) r`.  This file proves that principal
-specialization directly from the adjoining-variable recurrence, then applies
-the shared target-zero specialization
-`sum_lagrangeEvalWeight_mul_pow_card_add_zero`.
+This module retains the report-facing declaration names introduced before
+that separation and supplies the rational bridge to the quotient-defined
+`qBinomial`.  Every proof below is consequently a thin specialization of a
+canonical theorem: there is no second symmetric-function induction, product
+calculation, or interpolation argument.
 
-The resulting all-residual formula is valid over an arbitrary field under the
-exact finite node-injectivity hypothesis.  Over `ℚ`, the established bridge
-from `gaussianBinomial` to the quotient-defined `qBinomial` identifies it with
-`geometricLagrangeQMoment_eq_residual_qBinomial`; no second q-binomial
-recurrence or interpolation argument is introduced here.
+The canonical residual theorem uses the lower index `p`, whereas the original
+report-facing API used the complementary presentation `[p+r choose r]_q`.
+`GeometricCompleteHomogeneous` now proves both principal-specialization
+orientations and derives their equality as the denominator-free symmetry
+theorem `gaussianBinomial_add_symm`.  The compatibility declarations can
+therefore retain their original types without replaying any structural proof.
 -/
 
 set_option autoImplicit false
 
 open scoped BigOperators
-open Finset Set
 
 namespace Fabius
 
 noncomputable section
 
-/-! ## Principal specialization on a geometric alphabet -/
+/-! ## Report-facing aliases of the canonical algebraic results -/
 
-/-- **Principal specialization of the complete homogeneous polynomial.**
-
-On the `p + 1` variables `1, q, ..., q^p`, the degree-`r` complete
-homogeneous polynomial is the denominator-free Gaussian coefficient
-`[p+r choose r]_q`.  The identity holds in every commutative semiring and at
-every value of `q`.
-
-The proof follows the same one-variable adjoining recurrence on both sides;
-it does not reproduce the finite q-binomial theorem. -/
+/-- Report-facing range-indexed form of the geometric principal
+specialization.  The proof is owned by `GeometricCompleteHomogeneous`. -/
 theorem completeHomogeneousEvalOn_geometric_range
     {R : Type*} [CommSemiring R]
     (q : R) (p r : ℕ) :
     completeHomogeneousEvalOn (Finset.range (p + 1))
         (fun j : ℕ ↦ q ^ j) r =
-      gaussianBinomial q (p + r) r := by
-  induction p generalizing r with
-  | zero =>
-      simp
-  | succ p ih =>
-      induction r with
-      | zero =>
-          simp
-      | succ r ihr =>
-          have hrange :
-              insert (p + 1) (Finset.range (p + 1)) =
-                Finset.range ((p + 1) + 1) :=
-            (Finset.range_succ (p + 1)).symm
-          have hrec := completeHomogeneousEvalOn_insert_succ
-            (s := Finset.range (p + 1)) (i := p + 1)
-            (Finset.not_mem_range_self (p + 1))
-            (fun j : ℕ ↦ q ^ j) r
-          rw [hrange] at hrec
-          rw [show Nat.succ p + 1 = (p + 1) + 1 by omega,
-            hrec, ihr, ih (r + 1)]
-          have hinner : Nat.succ p + r = p + r + 1 := by omega
-          have houter : p + (r + 1) = p + r + 1 := by omega
-          have hgoal :
-              Nat.succ p + (r + 1) = (p + r + 1) + 1 := by omega
-          have hexponent : p + r + 1 - r = p + 1 := by omega
-          rw [hinner, houter, hgoal,
-            gaussianBinomial_succ_succ, hexponent]
-          exact add_comm _ _
+      gaussianBinomial q (p + r) r :=
+  completeHomogeneousEvalOn_range_pow_eq_gaussianBinomial_degree
+    q p r
 
-/-! ## All residual moments on geometric nodes -/
-
-/-- **All geometric Lagrange residual moments.**
-
-For `p + 1` distinct geometric nodes, the moment in degree `p + 1 + r` is
-the first omitted triangular factor times the Gaussian coefficient
-`[p+r choose r]_q`.  This is the geometric specialization of
-`sum_lagrangeEvalWeight_mul_pow_card_add_zero`, not a second interpolation
-proof.
--/
+/-- Report-facing offset-degree form of all geometric Lagrange residual
+moments.  Distinctness is used only by the canonical theorem to obtain the
+low moments of the Lagrange row. -/
 theorem sum_geometricLagrangeWeight_mul_pow_succ_add_eq_gaussianBinomial
     {F : Type*} [Field F]
     (q : F) (p r : ℕ)
@@ -96,31 +60,21 @@ theorem sum_geometricLagrangeWeight_mul_pow_succ_add_eq_gaussianBinomial
       geometricLagrangeWeight q p k * (q ^ k) ^ (p + 1 + r)) =
       (-1 : F) ^ p * q ^ (p + 1).choose 2 *
         gaussianBinomial q (p + r) r := by
-  classical
-  have hresidual := sum_lagrangeEvalWeight_mul_pow_card_add_zero
-    (Finset.range (p + 1)) (fun k : ℕ ↦ q ^ k) hnode
-      (by simp : (Finset.range (p + 1)).Nonempty) r
   calc
     (∑ k ∈ Finset.range (p + 1),
         geometricLagrangeWeight q p k * (q ^ k) ^ (p + 1 + r)) =
-        -(∏ k ∈ Finset.range (p + 1), -(q ^ k)) *
-          completeHomogeneousEvalOn (Finset.range (p + 1))
-            (fun k : ℕ ↦ q ^ k) r := by
-      simpa only [geometricLagrangeWeight, Finset.card_range] using
-        hresidual
-    _ = -(∏ k ∈ Finset.range (p + 1), -(q ^ k)) *
-          gaussianBinomial q (p + r) r := by
-      rw [completeHomogeneousEvalOn_geometric_range]
+        (-1 : F) ^ p * q ^ (p + 1).choose 2 *
+          gaussianBinomial q (p + r) p :=
+      sum_geometricLagrangeWeight_mul_pow_succ_add q p r hnode
     _ = (-1 : F) ^ p * q ^ (p + 1).choose 2 *
           gaussianBinomial q (p + r) r := by
-      rw [Finset.prod_neg, Finset.card_range,
-        Finset.prod_pow_eq_pow_sum, Finset.sum_range_id,
-        Nat.choose_two_right, pow_succ]
-      ring
+      rw [gaussianBinomial_add_symm q p r]
 
-/-- Rational `geometricLagrangeQMoment` form of the denominator-free residual
-identity.  Its assumptions are exactly those needed by the established
-finite-node injectivity theorem. -/
+/-! ## Rational bridges -/
+
+/-- Rational `geometricLagrangeQMoment` form of the denominator-free
+residual identity.  Its assumptions are exactly those needed by the
+established finite-node injectivity theorem. -/
 theorem geometricLagrangeQMoment_eq_residual_gaussianBinomial
     (q : ℚ) (hq : q ≠ 0) (p r : ℕ)
     (hPochhammer : qPochhammer q q p ≠ 0) :
@@ -137,9 +91,9 @@ theorem geometricLagrangeQMoment_eq_residual_gaussianBinomial
     sum_geometricLagrangeWeight_mul_pow_succ_add_eq_gaussianBinomial
       q p r hnodes
 
-/-- On `0 < q < 1`, the geometric principal specialization is the symmetric
-quotient-defined coefficient `[p+r choose p]_q` used by the existing
-geometric moment API. -/
+/-- On `0 < q < 1`, geometric principal specialization is the
+quotient-defined coefficient `[p+r choose p]_q` used by the rational moment
+API. -/
 theorem completeHomogeneousEvalOn_geometric_range_eq_qBinomial
     (q : ℚ) (hqpos : 0 < q) (hqone : q < 1) (p r : ℕ) :
     completeHomogeneousEvalOn (Finset.range (p + 1))
@@ -156,8 +110,8 @@ theorem completeHomogeneousEvalOn_geometric_range_eq_qBinomial
       rw [show p + r - r = p by omega]
 
 /-- The complete-homogeneous derivation specializes to exactly the existing
-`geometricLagrangeQMoment_eq_residual_qBinomial` formula (with
-`m = p + 1 + r`). -/
+`geometricLagrangeQMoment_eq_residual_qBinomial` formula, with
+`m = p + 1 + r`. -/
 theorem geometricLagrangeQMoment_eq_residual_qBinomial_via_completeHomogeneous
     (q : ℚ) (hqpos : 0 < q) (hqone : q < 1) (p r : ℕ) :
     geometricLagrangeQMoment q p (p + 1 + r) =
