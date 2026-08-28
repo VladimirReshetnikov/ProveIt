@@ -17,4 +17,10 @@ asset paths mechanically prefixed per part; no mathematical content
 altered) and their directories deleted; provenance with SHA-256 hashes
 is recorded in the volume itself, and git history is the archive.
 
+A second-wave separate member arrived 2026-08-28 and stays unmerged
+until deliberately folded into the volume:
+`fabius_dyadic_interpolation_report` (*Dyadic-Comb Interpolation of
+the Fabius and Rvachev Functions*: Runge instability, endpoint-jet
+constraints, exact arithmetic, stable local alternatives).
+
 See [`../MANIFEST.md`](../MANIFEST.md) for titles and the previous paths.

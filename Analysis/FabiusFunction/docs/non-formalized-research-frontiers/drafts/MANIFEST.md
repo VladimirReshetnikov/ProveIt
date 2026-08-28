@@ -73,6 +73,7 @@ sources *as* independent documents (see the group README).
 | Directory | Document | Previous path |
 | --- | --- | --- |
 | `Inverse_and_Sampling_Frontiers/` | *Inverse and Sampling Frontiers for the Fabius–Rvachev System* — consolidation (2026-08-28) of the former `Fabius_Inverse_Frontier_Report_Source_and_PDF/` (*Inverse Frontiers*), `fabius_frontier_dyadic_inverse_barnes_report/` (*Dyadic Inverse Germs and Barnes–Rvachev Deconvolution*), and `Fabius_Dyadic_Self_Sampling_Frontier_Package/` (*Dyadic Self-Sampling, Alias Superconvergence, and Rvachev–Appell Deconvolution*); their assets live under `assets/`, provenance with SHA-256 in the document | absorbed drafts deleted; git history is the archive |
+| `fabius_dyadic_interpolation_report/` | *Dyadic-Comb Interpolation of the Fabius and Rvachev Functions* (Runge instability, endpoint-jet constraints, exact arithmetic, stable local alternatives) | `drafts/incoming/…zip` (unpacked 2026-08-28, second wave) |
 
 ## representations — `representations/`
 
