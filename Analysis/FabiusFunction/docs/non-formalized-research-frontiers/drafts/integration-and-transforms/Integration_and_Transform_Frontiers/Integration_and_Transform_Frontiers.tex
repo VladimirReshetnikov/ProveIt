@@ -459,7 +459,14 @@ finite measure almost surely supported on \([a,b]\), and
 Fabius instance \(S_{\rm unit}(z)=z^{-1}+\int_0^1\Up(t)(z-t)^{-2}\dd t\) --- the transform
 through the up-density itself, with the closed kernel primitive
 \path{Fabius.intervalIntegral\_inv\_sub\_sq} shared by both.  The full higher-power
-families remain unexported.
+families are now exported by \path{CauchyHigherPowers.lean}: for every $p\ge1$,
+\path{Fabius.integral\_pow\_inv\_sub\_eq\_mass\_smul\_sub\_intervalIntegral\_measureReal\_Iic}
+and \path{Fabius.integral\_pow\_inv\_sub\_eq\_mass\_smul\_add\_intervalIntegral\_measureReal\_Ioi}
+give the CDF and survival integration by parts at resolvent power $p$,
+\(\int(z-x)^{-p}\dd\mu=\mu(\R)(z-b)^{-p}-p\int_a^b\mu((-\infty,t])(z-t)^{-(p+1)}\dd t\)
+and its lower-endpoint survival companion, with the closed primitive
+\path{Fabius.intervalIntegral\_pow\_inv\_sub}; the first power recovers the formulas
+above.
 
 \path{CauchyRenormalization.lean} adds five public theorems.  The declarations
 \path{Fabius.mapsTo_rvachevCauchyDomain_two_mul_add_one} and
