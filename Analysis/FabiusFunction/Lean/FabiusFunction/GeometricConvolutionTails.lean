@@ -83,7 +83,7 @@ theorem isProbabilityMeasure_digitPrefix {ν : Measure M} {T : M →+ M}
 /-- A single digit: `P₁ = ν`. -/
 theorem digitPrefix_one (ν : Measure M) [SFinite ν] {T : M →+ M}
     (hT : Measurable T) : digitPrefix ν T 1 = ν := by
-  rw [digitPrefix, digitPrefix, Measure.map_dirac hT, map_zero,
+  rw [digitPrefix, digitPrefix, map_dirac' hT, map_zero,
     Measure.conv_dirac_zero]
 
 /-- The shared inductive step of the cocycle and tail laws: push the
