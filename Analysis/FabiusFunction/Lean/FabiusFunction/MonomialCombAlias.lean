@@ -13,8 +13,8 @@ monomial sample function vanishes for `p ≤ m`.
   (`ℓ ≠ 0`): the integer-zero order there is `v₂(2^m ℓ)+1 ≥ m+1`.
 * `fourier_monomialRvachevSchwartz_int_eq_zero` — hence the Fourier
   transform of `x^p·up(2^{-m}x)` vanishes at every nonzero integer
-  frequency: through the stage-one/-two identities, that transform is
-  a nonzero multiple of the vanishing derivative.
+  frequency: through the identities of stages one and two, that
+  transform is a nonzero multiple of the vanishing derivative.
 
 The second half assembles Poisson summation: with all nonzero
 aliases gone, the shifted comb sum equals the zero-frequency term,
