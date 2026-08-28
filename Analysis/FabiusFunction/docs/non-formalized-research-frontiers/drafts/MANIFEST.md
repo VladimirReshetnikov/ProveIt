@@ -57,6 +57,8 @@ sources *as* independent documents (see the group README).
 
 | `Atomic_Functions_Beyond_Dyadic_Report/` | *Atomic Functions Beyond the Critical Dyadic Case* (30 pp, fourteenth wave, from `incoming/Atomic_Functions_Beyond_Dyadic_Report.zip`) — English reconstruction and expansion of Rvachev atomic-function source material: the geometric family ĥ_a = ∏ sinc(t a⁻ʲ), probabilistic representation as geometric uniform sums, full-measure spline structure for a > 2 and the critical h₂ = up, gap hierarchy/fractal-string geometry on (2,6), Gaussian cumulant limit, periodic correction bases, degree-critical limits; figures, CSV audits, deterministic experiments, SHA-256 manifest | new arrival (2026-08-28); kept a separate member pending deliberate merge into the volume |
 
+| `Rvachev_Atomic_Functions_Report/` | *Atomic Functions, Rvachev's up-Function, and Smooth Cantor Splines* (28 pp, fifteenth wave, arrived as a bare directory in `incoming/`) — English reconstruction and research expansion of the same Russian atomic-function source as the fourteenth wave, written independently: generalized h_a parameters, smooth Cantor-spline structure and gap-length checks at a = 3, local degree distributions, fup central-limit cumulants; figures, CSV diagnostics, deterministic experiments, SHA-256 sums | new arrival (2026-08-28); kept a separate member pending deliberate merge into the volume |
+
 ## spectra-and-arithmetic — `spectra-and-arithmetic/`
 
 | Directory | Document | Previous path |

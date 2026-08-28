@@ -133,3 +133,11 @@ family h_a beyond the binary point — same subject as the volume's Part VI, wri
 independently — with gap-hierarchy/fractal-string geometry, Gaussian cumulant limits,
 periodic correction bases, and reproducible experiments. It stays separate until
 deliberately merged into the volume.
+
+A fifteenth-wave arrival, `Rvachev_Atomic_Functions_Report/` (*Atomic Functions,
+Rvachev's up-Function, and Smooth Cantor Splines*), joins the group as another
+separate member: an independent English reconstruction and expansion of the same
+Russian atomic-function source as the fourteenth wave — generalized h_a parameters,
+smooth Cantor-spline structure with gap diagnostics at a = 3, local degree
+distributions, and fup central-limit cumulants. It stays separate until deliberately
+merged into the volume.
