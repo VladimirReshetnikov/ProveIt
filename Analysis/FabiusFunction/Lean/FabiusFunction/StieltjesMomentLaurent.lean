@@ -57,7 +57,7 @@ theorem ae_mem_Ioo_rvachevMeasure (F : BoundedFabius)
   have hcompl : rvachevMeasure F (Set.Ioo (-1 : ℝ) 1)ᶜ = 0 :=
     (prob_compl_eq_zero_iff measurableSet_Ioo).mpr
       (rvachevMeasure_Ioo_eq_one F hF)
-  exact ae_iff.mpr (by simpa using hcompl)
+  exact mem_ae_iff.mpr hcompl
 
 /-- Off the support the Cauchy kernel is integrable: it is bounded by
 `(|z|-1)⁻¹` almost everywhere. -/
@@ -113,12 +113,14 @@ theorem integral_inv_sub_eq_sum_upMoment_add (F : BoundedFabius)
     have h := (integrable_pow_rvachevMeasure F hF k).const_mul
       ((z ^ (k + 1))⁻¹)
     refine h.congr (Filter.Eventually.of_forall fun x => ?_)
+    dsimp only
     rw [division_def, mul_comm]
   have hintrem : Integrable
       (fun x : ℝ => x ^ N / (z ^ N * (z - x))) (rvachevMeasure F) := by
     have h := (integrable_pow_div_sub_rvachevMeasure F hF hz N).const_mul
       ((z ^ N)⁻¹)
     refine h.congr (Filter.Eventually.of_forall fun x => ?_)
+    dsimp only
     rw [division_def, division_def, mul_inv]
     ring
   calc ∫ x, (z - x)⁻¹ ∂(rvachevMeasure F)
