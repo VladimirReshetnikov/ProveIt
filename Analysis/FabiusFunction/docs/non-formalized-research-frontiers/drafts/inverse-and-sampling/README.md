@@ -32,7 +32,20 @@ and three on global polynomial interpolation
 sources largely re-derived one another's core results, this volume is a
 true merge (unified notation, one statement per shared theorem with the
 best proof, all source-specific material retained) rather than a
-part-per-source concatenation.  Provenance with SHA-256 hashes and the
+part-per-source concatenation.  A seventh source, the tenth-wave
+`Fabius_Euler_Maclaurin_Report_Package/` (*Euler–Maclaurin and
+Exhaustion Quadratures for Fabius and Rvachev Moments*), was absorbed
+2026-08-28 as the Bernoulli-periodization section of Part I: shifted
+corrected rules for general polynomial weights, composite-mesh 2-adic
+termination and reflection reduction, phase-modulated first-defect
+series with Fabius-side forced phases, the first-harmonic proof that
+D(2r) > 0 for every r (settling the volume's spectral-positivity
+conjecture, and with it the odd half of the sharp-threshold
+conjecture), the closed Ruffa exhaustion tail with derivative-free
+rational Richardson extraction, the base-b termination dichotomy, the
+composite-mesh Rvachev quadrature (sharp by the companion polynomial
+volume's scale classification), and the Thue–Morse moment-identity
+family.  Provenance with SHA-256 hashes and the
 deduplication record are Appendix E of the volume; every source's
 supporting files live under its `assets/`.  The absorbed draft
 directories are deleted; git history is the archive.

@@ -222,7 +222,7 @@ instability to the surrounding arithmetic of the corpus.
 
 All theorems come with complete proofs; numerical claims are exact
 rational computations or high-precision scans with stated grids; and
-conjectures are labeled as such.  Provenance of the six absorbed
+conjectures are labeled as such.  Provenance of the seven absorbed
 reports, with SHA-256 hashes, is recorded in
 Appendix~\ref{app:provenance}.
 \end{abstract}
@@ -1508,9 +1508,12 @@ explicit is part of \cref{conj:jets}.
 
 The exactness matrix verified through level $8$ shows the first defect
 occurring exactly at $p=\tau^{-1}$-boundary, and every entry of
-\cref{tab:first-defects} is nonzero.  The following two conjectures,
-stated in the absorbed sources in several equivalent forms, remain the
-central open problems of this part.
+\cref{tab:first-defects} is nonzero.  Of the two central problems
+stated here in the absorbed sources' equivalent forms, the second
+(spectral positivity) has since been settled in full by the
+first-harmonic bound of \cref{thm:D-positive}, which also proves the
+odd-$m$ half of the first; the even-$m$ half of the sharp-threshold
+conjecture remains open.
 
 \begin{conjecture}[Sharp threshold]
 \label{conj:exact-degree}
@@ -1522,17 +1525,19 @@ accidental cancellation occurs among the surviving alias jets.
 Verified exactly for $m\le8$.
 \end{conjecture}
 
-\begin{conjecture}[Spectral positivity]
+\begin{remark}[Spectral positivity --- resolved]
 \label{conj:positivity}
-$D(2r)>0$ for every $r\ge1$; equivalently, by
-\eqref{eq:D-rational}, the odd-level defects satisfy
-$\sgn\defect_{m,m}=(-1)^{(m+1)/2}$.  Verified for $r\le6$ by the
-exact values \eqref{eq:D-values} and
-\eqref{eq:D-values-higher}.  The summands alternate in sign by
-\eqref{eq:half-sign}, so this is not termwise trivial; the first
-harmonic dominates for large $r$ by \eqref{eq:D-first-harmonic}, and
-the open content is a uniform estimate at small $r$.
-\end{conjecture}
+% ed.: formerly the Spectral positivity conjecture; settled by the
+% tenth-wave Euler--Maclaurin report's first-harmonic bound.
+$D(2r)>0$ holds for \emph{every} $r\ge1$, and equivalently
+$\sgn\defect_{m,m}=(-1)^{(m+1)/2}$ for all odd $m$: although the
+summands alternate in sign by \eqref{eq:half-sign}, the first
+harmonic dominates the whole tail uniformly in $r$ ---
+\cref{thm:D-positive} below proves
+$D(2r)\ge\Phi(\tfrac12)-(\tfrac{\pi^2}8-1)>\tfrac49-\tfrac14>0$
+by two elementary estimates.  The exact values \eqref{eq:D-values}
+and \eqref{eq:D-values-higher} remain the sharp quantitative data.
+\end{remark}
 
 \begin{conjecture}[Arithmetic closure of higher alias jets]
 \label{conj:jets}
@@ -1552,8 +1557,8 @@ Use the half-scale relation \eqref{eq:half-scale} to split odd residues
 modulo powers of two and search for a Mahler-type functional equation
 for the entire function $D(s)$.  The exact values
 \eqref{eq:D-values} provide unusually rigid interpolation data; a
-closed recurrence would in particular settle
-\cref{conj:positivity}.
+closed recurrence would in particular give a second, structural proof
+of the positivity theorem \cref{thm:D-positive}.
 \end{problem}
 
 \section{Shifted Rvachev quadrature and the alias calculus}
@@ -1932,6 +1937,487 @@ $m\ge\tau(p)$ it collapses to \eqref{eq:absolute-integer-closed},
 producing a family of nontrivial finite Thue--Morse--Bernoulli
 identities; below threshold it evaluates the defect layers of
 \cref{prop:alias-layers} exactly.
+
+\section{Bernoulli periodization, composite meshes, and the exhaustion
+closure}
+\label{sec:periodized}
+
+The collapse of \cref{sec:em} was stated for monomial weights on the
+dyadic endpoint comb.  This section, absorbed from the tenth-wave
+Euler--Maclaurin report, extends the same spectral mechanism in four
+independent directions: general polynomial weights at \emph{every real
+shift}; \emph{arbitrary integer meshes}, classified by their $2$-adic
+valuation; a telescoping ``generalized exhaustion'' hierarchy whose
+infinite tail closes into finitely many geometric terms past the
+threshold, with an exact derivative-free Richardson extraction; and the
+composite-mesh extension of the shifted Rvachev quadrature of
+\cref{sec:up-comb}.  As a by-product, the first-harmonic bound proved
+here settles the spectral-positivity conjecture of
+\cref{sec:dirichlet} in full (\cref{thm:D-positive}).
+
+Throughout this section $M\ge1$ is an \emph{arbitrary} integer mesh
+(not necessarily a power of two) and $s=\vtwo(M)$; the dyadic case
+$M=2^{m}$ recovers the earlier sections.
+
+\subsection{The Bernoulli corrector and the shifted rule}
+
+Let $B_k(x)$ denote the Bernoulli polynomials,
+$t\e^{xt}/(\e^t-1)=\sum_kB_k(x)t^k/k!$.  For a polynomial $P$ of
+degree $d$ put
+\begin{equation}
+ H_P(x)=\sum_{j=0}^{d}\frac{P^{(j)}(1)}{(j+1)!}\,B_{j+1}(x),
+ \qquad
+ R_P(x)=P(x)F(x)-H_P(x).
+ \label{eq:HP-corrector}
+\end{equation}
+
+\begin{lemma}[Endpoint-jump interpolation]
+\label{lem:bern-jump}
+$H_P^{(k)}(1)-H_P^{(k)}(0)=P^{(k)}(1)$ for every $k\ge0$; since $F$ is
+flat at both endpoints, $(PF)^{(k)}(1)-(PF)^{(k)}(0)=P^{(k)}(1)$ as
+well, so every derivative of $R_P$ matches at $0$ and $1$ and $R_P$
+extends to a $C^\infty$ one-periodic function.
+\end{lemma}
+
+\begin{proof}
+$B_n'=nB_{n-1}$ and $B_n(1)=B_n(0)$ except $B_1(1)-B_1(0)=1$; in the
+$k$th derivative of \eqref{eq:HP-corrector} only $j=k$ contributes an
+endpoint difference.
+\end{proof}
+
+\begin{definition}[Corrected shifted Fabius rule]
+\label{def:shifted-rule}
+For $\theta\in\R$ and $x_a=(a+\theta)/M$,
+\begin{equation}
+ \mathcal A_{M,\theta}[P]
+ =\frac1M\sum_{a=0}^{M-1}P(x_a)F(x_a)
+ -\sum_{j=0}^{d}
+ \frac{P^{(j)}(1)\,B_{j+1}(\theta)}{(j+1)!\,M^{j+1}}.
+ \label{eq:shifted-rule}
+\end{equation}
+\end{definition}
+
+By the Bernoulli multiplication identity
+$M^{-1}\sum_{a<M}B_k((a+\theta)/M)=M^{-k}B_k(\theta)$ and
+$\int_0^1B_k=0$ ($k\ge1$),
+\begin{equation}
+ \mathcal A_{M,\theta}[P]=\frac1M\sum_{a=0}^{M-1}R_P(x_a),
+ \qquad
+ \int_0^1R_P=\int_0^1PF=:I_P,
+ \label{eq:periodized-average}
+\end{equation}
+so the corrected rule is exactly a finite sample average of a smooth
+periodic function, and the finite-grid alias identity gives the pure
+alias error
+\begin{equation}
+ \mathcal A_{M,\theta}[P]-I_P
+ =\sum_{\ell\ne0}\e^{2\pi\ii\ell\theta}\,\widehat{R_P}(M\ell),
+ \qquad
+ \widehat{R_P}(q)
+ =\sum_{j=0}^{d}\frac{1}{(2\pi\ii q)^{j+1}}
+ \int_0^1P^{(j)}(x)\,\rho(x)\,\e^{-2\pi\ii qx}\dd x
+ \quad(q\ne0),
+ \label{eq:alias-general}
+\end{equation}
+the coefficient formula by iterating $R_P'=R_{P'}+P\rho-P(1)$ (from the
+Appell relation $H_P'=P(1)+H_{P'}$) and periodic integration by parts.
+For $P=x^{p}$, $\theta=0$, $M=2^{m}$, formula \eqref{eq:alias-general}
+is exactly the $\chi$-form coefficient
+\eqref{eq:gp-hat-chi}, and \eqref{eq:shifted-rule} rearranges into the
+trapezoidal identity \eqref{eq:EM-exact-remainder}: the corrector
+$H_P$ packages the same boundary jets that there summed to the
+Bernoulli polynomial part.
+
+\subsection{Composite-mesh termination and the reflection reduction}
+
+\begin{theorem}[$2$-adic termination on arbitrary meshes]
+\label{thm:composite-termination}
+If $s=\vtwo(M)\ge d+1$, then
+$\mathcal A_{M,\theta}[P]=I_P$ for \emph{every} shift $\theta\in\R$.
+\end{theorem}
+
+\begin{proof}
+Each integral in \eqref{eq:alias-general} is a combination of
+derivatives of $\chi$ of order at most $d-j\le d$ at $q=M\ell$, and
+$\chi$ vanishes there to order $\vtwo(M\ell)=s+\vtwo(\ell)\ge d+1$ (the
+order of $\Phi$ at $M\ell/2$, by \eqref{eq:Phi-zero-order}).
+\end{proof}
+
+The odd part of $M$ is irrelevant: meshes $M=2^{s}q$ with $q$ odd are
+exactly as good as $2^{s}$.  (The condition is sufficient, not
+necessary --- symmetry and phases can force extra cancellation, which
+is precisely what the next theorem exploits.)
+
+\begin{theorem}[Reflection reduction at the endpoint phase]
+\label{thm:reflection-reduction}
+Write $P^*(x)=P(1-x)$ and split
+$P=P_{\mathrm s}+P_{\mathrm a}$ into symmetric and antisymmetric parts
+about $x=\tfrac12$.  For the endpoint rule ($\theta=0$),
+\begin{equation}
+ \mathcal A_{M,0}[P]+\mathcal A_{M,0}[P^*]=\int_0^1P(x)\dd x
+ =I_P+I_{P^*},
+ \label{eq:reflection-pair}
+\end{equation}
+so the quadrature defect vanishes on $P_{\mathrm s}$ and is odd under
+reflection; if $P_{\mathrm a}=0$ the endpoint rule is exact for every
+integer $M$, and in general
+$\vtwo(M)\ge\deg P_{\mathrm a}+1$ suffices.
+\end{theorem}
+
+\begin{proof}
+Pair $a\leftrightarrow M-a$ on the grid and $x\mapsto1-x$ in the
+integral, using the reflection $F(1-x)=1-F(x)$: the paired Fabius
+samples add to plain polynomial samples, and the boundary corrections
+combine into the classical (exact) Euler--Maclaurin identity for the
+polynomial $P$ itself.  Then apply \cref{thm:composite-termination}
+to $P_{\mathrm a}$.
+\end{proof}
+
+For $P=x^{p}$ the antisymmetric degree is $p-1$ for even $p>0$ and $p$
+for odd $p$, so the endpoint rule for $I_p$ is exact once
+$\vtwo(M)\ge p$ (even $p$) or $\vtwo(M)\ge p+1$ (odd $p$): on dyadic
+meshes this recovers the threshold $\tau(p)=2\ceil{p/2}$ of
+\eqref{eq:tau} and extends it verbatim to every integer mesh with the
+same $2$-adic valuation.  Explicitly, whenever
+$\vtwo(M)\ge\tau(p)$,
+\begin{equation}
+ I_p=\frac1M\sum_{a=1}^{M-1}\Bigl(\frac aM\Bigr)^{p}
+ F\!\Bigl(\frac aM\Bigr)
+ +\frac1{2M}
+ -\sum_{r=1}^{\floor{(p+1)/2}}
+ \frac{B_{2r}}{(2r)!}\,\fall p{2r-1}\,M^{-2r}.
+ \label{eq:Ip-composite}
+\end{equation}
+
+\subsection{The shifted first defect and its forced phases}
+
+One level before the threshold the defect is again a single
+half-integer Dirichlet series, now phase-modulated.  Extend the
+spectral series of \cref{sec:dirichlet} by
+\begin{equation}
+ D_{\cos}(s;\theta)
+ =\sum_{\substack{q\ge1\\q\ \mathrm{odd}}}
+ \frac{\Phi(q/2)}{q^{s}}\cos(2\pi q\theta),
+ \qquad
+ D_{\sin}(s;\theta)
+ =\sum_{\substack{q\ge1\\q\ \mathrm{odd}}}
+ \frac{\Phi(q/2)}{q^{s}}\sin(2\pi q\theta),
+ \label{eq:D-phase}
+\end{equation}
+so $D(s)=D_{\cos}(s;0)$.
+
+\begin{theorem}[Shifted first defect on the Fabius side]
+\label{thm:F-first-defect}
+Let $P$ have degree $d\ge1$ and leading coefficient $a_d$, and take the
+critical dyadic mesh $M=2^{d}$.  Then
+\begin{equation}
+ \mathcal A_{2^{d},\theta}[P]-I_P
+ =\frac{2\,a_d\,d!}{(2\pi 2^{d})^{d+1}}
+ \begin{cases}
+ (-1)^{(d+1)/2}\,D_{\cos}(d+1;\theta),&d\ \text{odd},\\[0.25em]
+ (-1)^{d/2+1}\,D_{\sin}(d+1;\theta),&d\ \text{even}:
+ \end{cases}
+ \label{eq:F-first-defect}
+\end{equation}
+only the leading coefficient of $P$ survives.
+\end{theorem}
+
+\begin{proof}
+At aliases $q=2^{d}\ell$, even $\ell$ meet zeros of order at least
+$d+1$; for odd $\ell$ only the $j=0$ term of
+\eqref{eq:alias-general} with the leading monomial survives, and the
+leading jet \eqref{eq:integer-leading-jet} evaluates
+$\chi^{(d)}(2^{d}\ell)=-2^{-d}d!\,(2^{d-1}\ell)^{-d}\Phi(\ell/2)$.
+Pair $\pm\ell$; the parity of $d$ decides cosine against sine.
+\end{proof}
+
+\begin{corollary}[Parity-forced phases]
+\label{cor:F-phases}
+At dyadic level $N$ the corrected shifted rule is exact through degree
+$N-1$ for every shift, and through degree $N$ at the forced phases
+$\theta\equiv0,\tfrac12\pmod1$ for even $N$ and
+$\theta\equiv\tfrac14,\tfrac34\pmod1$ for odd $N$.
+\end{corollary}
+
+\begin{proof}
+$\sin(2\pi q\theta)=0$ at $\theta\in\{0,\tfrac12\}$ for all integers
+$q$; $\cos(2\pi q\theta)=0$ at $\theta\in\{\tfrac14,\tfrac34\}$ for
+all odd $q$.
+\end{proof}
+
+This is the Fabius-side companion of the Rvachev-side phase
+superconvergence \cref{cor:phase-super} --- the same parity pattern by
+the same odd-harmonic mechanism, with different nodes and weights (the
+Fabius rule requires the Bernoulli corrector before the spectrum
+becomes visible; for $\Up$ all endpoint jets vanish and no corrector is
+needed).  Read backward at $\theta=0$, \cref{thm:F-first-defect} is a
+Fabius--Euler--Maclaurin transference form of the spectral rationality
+\cref{thm:D-rational}: the same values $D(2r)/\pi^{2r}\in\Q$ emerge
+from the corrected monomial rules one level below threshold.
+
+\subsection{Spectral positivity: the conjecture becomes a theorem}
+
+\begin{theorem}[First-harmonic dominance; $D(2r)>0$ for all $r$]
+\label{thm:D-positive}
+For every $r\ge1$,
+\begin{equation}
+ D(2r)\;\ge\;\Phi(\tfrac12)-\Bigl(\frac{\pi^{2}}8-1\Bigr)
+ \;>\;\frac49-\frac14\;>\;0.
+ \label{eq:D-positive}
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+With $t_j=\pi/2^{\,j+1}$ one has
+$\Phi(\tfrac12)=\prod_{j\ge0}\sin(t_j)/t_j$.  Since
+$\sin t\ge t-t^{3}/6$ gives $\sin(t)/t\ge1-t^{2}/6$ on
+$[0,\pi/2]$, and $\prod_j(1-u_j)\ge1-\sum_ju_j$ for
+$u_j\in[0,1]$,
+\[
+ \Phi(\tfrac12)\ \ge\ 1-\frac16\sum_{j\ge0}t_j^{2}
+ =1-\frac{\pi^{2}}{18}
+ \;>\;\frac49.
+\]
+On the other hand $\abs{\Phi(q/2)}\le1$ and $q^{2r}\ge q^{2}$ give
+\[
+ \sum_{\substack{q\ge3\\q\ \mathrm{odd}}}
+ \frac{\abs{\Phi(q/2)}}{q^{2r}}
+ \le\sum_{\substack{q\ge3\\q\ \mathrm{odd}}}\frac1{q^{2}}
+ =\frac{\pi^{2}}8-1<\frac14 ,
+\]
+so the first harmonic dominates the whole tail at every order.
+\end{proof}
+
+\begin{corollary}[Odd-level sharpness]
+\label{cor:odd-sharp}
+$\defect_{m,m}\ne0$ for every odd $m$, with
+$\sgn\defect_{m,m}=(-1)^{(m+1)/2}$; the odd-$m$ half of
+\cref{conj:exact-degree} is therefore proved, and for every polynomial
+with nonzero antisymmetric part the sufficient threshold of
+\cref{thm:reflection-reduction} cannot be lowered by one dyadic level.
+The even-$m$ half of \cref{conj:exact-degree} (nonvanishing of
+$\defect_{m,m+1}$, which mixes two jet series) remains open.
+\end{corollary}
+
+\begin{proof}
+Combine \cref{thm:D-positive} with the odd-level defect identity
+\eqref{eq:odd-defect-series} and, for the sharpness statement, with
+\cref{thm:F-first-defect} at $\theta=0$ applied to the antisymmetric
+part (odd leading degree gives the cosine branch, whose value at
+$\theta=0$ is $D(d+1)>0$).
+\end{proof}
+
+\subsection{The exhaustion series and its closed tail}
+
+The ``integration via summation'' identity
+\begin{equation}
+ \int_0^1f=\sum_{j\ge1}\Lambda_j[f],
+ \qquad
+ \Lambda_j[f]:=2^{-j}\sum_{a=1}^{2^{j}-1}(-1)^{a+1}f(a/2^{j}),
+ \label{eq:ruffa}
+\end{equation}
+(Ruffa's generalized method of exhaustion) is the telescoping of
+nested endpoint-excluded Riemann sums: with
+$Q_j[f]=2^{-j}\sum_{a=1}^{2^{j}-1}f(a/2^{j})$ one has
+$\Lambda_j=Q_j-Q_{j-1}$, so the $J$th partial sum of \eqref{eq:ruffa}
+is exactly $Q_J[f]$ and the identity holds for every Riemann-integrable
+$f$ --- the optimal natural hypothesis, with no bounded-variation
+assumption.  In base $b$ the level increment carries the weights $1$ at
+nodes not divisible by $b$ and $1-b$ at the others, and telescopes the
+same way.
+
+For Fabius integrands the tail of \eqref{eq:ruffa} \emph{closes}: past
+the threshold the corrected rule is exact, so the raw sums are an
+explicit exponential polynomial in the level.
+
+\begin{theorem}[Closed exhaustion tail]
+\label{thm:ruffa-tail}
+Let $P$ have endpoint threshold $N_0$ (so
+\eqref{eq:Ip-composite} holds at $M=2^{N}$, $N\ge N_0$), and write
+$c_r(P)=\dfrac{B_{2r}}{(2r)!}P^{(2r-1)}(1)$.  Then, for $j\ge N_0+1$
+and $J\ge N_0$,
+\begin{equation}
+ \Lambda_j[PF]
+ =\frac{P(1)}{2^{\,j+1}}
+ -\sum_{r\ge1}c_r(P)\,(2^{2r}-1)\,2^{-2rj},
+ \qquad
+ I_P-Q_J[PF]
+ =\frac{P(1)}{2^{\,J+1}}-\sum_{r\ge1}c_r(P)\,2^{-2rJ},
+ \label{eq:closed-tail}
+\end{equation}
+both $r$-sums finite; in base $b$ (both levels past threshold, which
+requires $\vtwo(b)>0$) the level increment is
+$(b-1)P(1)/(2b^{j})-\sum_rc_r(P)(b^{2r}-1)b^{-2rj}$.  For an odd base
+the zero multiplicity does not grow with the level, and no finite
+termination arises from the present mechanism.
+\end{theorem}
+
+\begin{proof}
+Rearrange \eqref{eq:Ip-composite} at consecutive levels and subtract.
+\end{proof}
+
+For example, $P=x^{3}$ has $N_0=4$, $c_1=\tfrac14$,
+$c_2=-\tfrac1{120}$, so for $j\ge5$
+$\Lambda_j[x^{3}F]=2^{-j-1}-\tfrac34\,2^{-2j}+\tfrac18\,2^{-4j}$ and
+$I_3-Q_J=2^{-J-1}-\tfrac14 2^{-2J}+\tfrac1{120}2^{-4J}$ for
+$J\ge4$: the nominally infinite exhaustion process becomes finite
+exact arithmetic.
+
+\subsection{Derivative-free rational extrapolation}
+
+\begin{theorem}[Post-threshold annihilator]
+\label{thm:annihilator-comb}
+Let $R=\floor{(d+1)/2}$ and
+$\chi_R(z)=(z-\tfrac12)\prod_{r=1}^{R}(z-4^{-r})$, and let $E$ shift
+the dyadic level, $(Ea)_j=a_{j+1}$.  Then for $j\ge N_0$,
+\begin{equation}
+ \chi_R(E)\,\bigl(Q_j[PF]-I_P\bigr)=0,
+ \qquad\text{hence}\qquad
+ I_P=\frac{\sum_{k}a_k\,Q_{j+k}[PF]}{\chi_R(1)}
+ \quad\text{where }\chi_R(z)=\sum_ka_kz^{k}.
+ \label{eq:annihilator}
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+By \eqref{eq:closed-tail}, $Q_j-I_P$ is a finite combination of
+$\lambda^{j}$ with
+$\lambda\in\{\tfrac12,4^{-1},\ldots,4^{-R}\}$, each killed by
+$E-\lambda$; applying $\chi_R(E)$ to $Q_j=I_P+(Q_j-I_P)$ leaves
+$\chi_R(1)I_P$.
+\end{proof}
+
+This is a derivative-free closure of the Euler--Maclaurin correction:
+the endpoint jets determine which geometric modes exist, and one
+eliminates them from consecutive raw sums alone.  Explicitly,
+\begin{equation}
+ I_n=\frac{Q_2-6Q_3+8Q_4}{3}\ (n=1,2),
+ \qquad
+ I_n=\frac{-Q_4+22Q_5-104Q_6+128Q_7}{45}\ (n=3,4),
+ \label{eq:richardson-explicit}
+\end{equation}
+with $Q_j=Q_j[x^{n}F]$; all samples are exact rationals by the dyadic
+evaluator of \cref{sec:dyadic-values}, and the absorbed package
+verifies e.g.\ $(-Q_4+22Q_5-104Q_6+128Q_7)/45=\tfrac{1207}{5400}$ for
+$n=3$ in exact arithmetic.
+
+\subsection{Composite-mesh Rvachev quadrature}
+
+The shifted quadrature \cref{thm:shifted-exactness} extends verbatim
+from dyadic levels to arbitrary integer meshes:
+
+\begin{theorem}[Composite-mesh self-sampling]
+\label{thm:up-composite-mesh}
+For every integer $M\ge1$, every real $\theta$, and every polynomial
+$P$ with $\deg P\le\vtwo(M)$,
+\begin{equation}
+ \frac1M\sum_{k\in\Z}
+ P\!\Bigl(\frac{k+\theta}{M}\Bigr)
+ \Up\!\Bigl(\frac{k+\theta}{M}\Bigr)
+ =\int_{-1}^{1}P(x)\,\Up(x)\dd x.
+ \label{eq:up-composite-mesh}
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+Shifted Poisson summation aliases at $M\ell$, where $\Phi$ vanishes to
+order $1+\vtwo(M\ell)\ge1+\vtwo(M)$, killing all required derivatives.
+\end{proof}
+
+Again the odd part of $M$ is irrelevant --- and here the $2$-adic
+condition is \emph{sharp}: the companion volume \emph{Exact Polynomial
+Synthesis from Rvachev Up-Atoms}
+(\nolinkurl{representations/Up_Polynomial_Synthesis/}) proves that the
+reproduction/quadrature order of the up-translate system at
+radius-to-spacing ratio $M$ is exactly $\vtwo(M)$, with the general-%
+ratio first defect carrying the values $\Phi(q\ell/2)$ for $M=2^{\nu}q$.
+For dyadic meshes the monomial core of \eqref{eq:up-composite-mesh} is
+kernel-verified
+(\nolinkurl{Fabius.tsum_shifted_monomial_eq_integral_real} in
+\nolinkurl{MonomialCombExactness.lean}); the composite-mesh statement
+is the same Poisson argument with the coarser valuation count.
+
+\subsection{Thue--Morse moment identities and the Bernoulli triangle}
+
+Substituting the exact dyadic evaluator \eqref{eq:L-H}-style values
+into \eqref{eq:Ip-composite} at $M=2^{N}$, $N\ge\tau(n)$, gives an
+infinite family of exact finite Thue--Morse identities for every
+Fabius moment,
+\begin{equation}
+ I_n
+ =\frac{2^{-N(n+1)-\binom{N+1}2}}{N!}
+ \sum_{a=1}^{2^{N}-1}a^{n}
+ \sum_{h=0}^{a-1}\eps_h
+ \sum_{k=0}^{\floor{N/2}}\binom N{2k}c_k\,(2a-2h-1)^{N-2k}
+ +2^{-N-1}
+ -\sum_{r=1}^{\floor{(n+1)/2}}
+ \frac{B_{2r}}{(2r)!}\,\fall n{2r-1}\,2^{-2rN},
+ \label{eq:In-TM-family}
+\end{equation}
+whose left side is independent of $N$ --- the members are linked by the
+recurrence \eqref{eq:annihilator}.  Three Bernoulli mechanisms meet
+here: endpoint Bernoulli numbers encode the periodicity defect of
+$PF$; cumulant Bernoulli numbers encode the probability law behind $F$
+(through the moments $c_k$); and the sinc zeros force their difference
+to be a finite dyadic sample sum.  This triangle can be used for
+symbolic elimination in either direction --- solving for dyadic Fabius
+sums in Bell-polynomial terms, or extracting moment recurrences from
+families of exact grids.
+
+\subsection{Further directions from the absorbed report}
+
+\begin{conjecture}[Fabius-side phase classification]
+\label{conj:F-phase-zeros}
+For every $r\ge1$ the only zeros modulo one of
+$D_{\cos}(2r;\theta)$ are $\theta=\tfrac14,\tfrac34$, and the only
+zeros of $D_{\sin}(2r+1;\theta)$ are $\theta=0,\tfrac12$ --- the
+Fabius-side companion of \cref{conj:phase-classification}; first-%
+harmonic dominance controls the total mass but not neighbourhoods of
+the forced zeros.
+\end{conjecture}
+
+\begin{conjecture}[Odd-base nontermination]
+\label{conj:odd-base}
+For odd $b$ and any $P$ with nonzero antisymmetric part, the
+Bernoulli-corrected base-$b$ rules terminate at no finite level apart
+from explicitly classifiable phase cancellations; a route is the
+zero-set rigidity of $\chi$ on the alias sets
+$b^{j}\Z\setminus\{0\}$.
+\end{conjecture}
+
+\begin{question}[Complete mesh classification]
+\label{q:mesh-classification}
+For fixed $P$ and $\theta$, are the exact integer meshes precisely the
+union of the $2$-adically forced family
+(\cref{thm:composite-termination}), the reflection-symmetric family
+(\cref{thm:reflection-reduction}), and finitely many phase-alias
+cancellation families generated by the leading homogeneous part?
+\end{question}
+
+\begin{question}[Analytic weights with Lambert-truncated correctors]
+\label{q:analytic-weights}
+For a nonpolynomial weight $w$, subtracting a degree-$d$ Bernoulli
+endpoint-jet corrector leaves a $d$-times-matched periodic function
+with a quantitative alias remainder; increasing $d$ with the mesh
+suggests an optimally truncated scheme whose truncation index should
+exhibit the lower-Lambert scale of the endpoint asymptotics.  Prove a
+uniform ``first surviving alias + Lambert-controlled remainder''
+theorem; fractional powers $x^{\alpha}$ ($\alpha>-1$), regularized at
+$0$ by the extreme flatness of $F$, are the natural test family, and
+quantile transport of the exact $PF$ rules through $F^{-1}$ the
+natural application.
+\end{question}
+
+The Lean-facing layer of this section is deliberately elementary:
+the jump lemma \cref{lem:bern-jump}, the finite-grid average
+\eqref{eq:periodized-average}, the coefficient recursion in
+\eqref{eq:alias-general}, the reflection pairing, the finite geometric
+tail algebra of \cref{thm:ruffa-tail}, and the annihilator
+\eqref{eq:annihilator} are all finite algebra over the existing sinc
+zero-order and Poisson APIs; the exact tables of the absorbed package
+(\nolinkurl{assets/Fabius_Euler_Maclaurin_Report_Package/}) serve as
+regression data.
+
 
 \section{Complex, fractional, and negative powers}
 \label{sec:complex}
@@ -2495,9 +2981,10 @@ $D(8)$ in \eqref{eq:D-values}.
 \label{sec:frontiers-sums}
 
 Beyond the conjectures already stated
-(\cref{conj:exact-degree,conj:positivity,conj:jets,conj:phase-classification}
-and \cref{prob:D-recurrence,prob:sharp-valuations}), the absorbed
-sources converge on the following programs.
+(\cref{conj:exact-degree,conj:jets,conj:phase-classification,conj:F-phase-zeros,conj:odd-base}
+and \cref{prob:D-recurrence,prob:sharp-valuations}; the former
+spectral-positivity conjecture is now \cref{thm:D-positive}), the
+absorbed sources converge on the following programs.
 
 \begin{problem}[Row-polynomial geometry]
 \label{prob:row-geometry}
@@ -4170,7 +4657,7 @@ points and reproduction commands are in each package's
 \section{Provenance of the absorbed sources}
 \label{app:provenance}
 
-This volume absorbs the following six drafts (all dated 28 August
+This volume absorbs the following seven drafts (all dated 28 August
 2026; SHA-256 of each main \texttt{.tex} source at absorption).  The
 supporting material of each --- experiment scripts, CSV/data files,
 figures, READMEs, and the sources' own SHA manifests --- is preserved
@@ -4241,6 +4728,26 @@ nodes; general confluent Hermite data and tables; $M=256$
 optimized-divergence data; ordinary Lebesgue-constant measurements;
 Lambert peak-migration saddle; mock-Chebyshev/rational-Hermite
 survey and references. \\
+\addlinespace
+\emph{Euler--Maclaurin and Exhaustion Quadratures for Fabius and
+Rvachev Moments} (tenth wave;
+\nolinkurl{Fabius_Euler_Maclaurin_Report_Package};
+\texttt{9ea76d14b863\ldots})
+& The Bernoulli-periodization section \cref{sec:periodized}: shifted
+corrected rules for general polynomial weights, composite-mesh
+$2$-adic termination and reflection reduction, the phase-modulated
+first-defect series and Fabius-side forced phases, the first-harmonic
+positivity proof (\cref{thm:D-positive}, settling the former
+spectral-positivity conjecture), the closed exhaustion tail and
+derivative-free rational Richardson extraction, base-$b$ dichotomy,
+composite-mesh Rvachev quadrature, the Thue--Morse moment-identity
+family, and the mesh/phase/analytic-weight frontier items.
+Deduplicated: the corpus background, the dyadic endpoint collapse and
+its threshold (= \cref{thm:EM-collapse} route), the odd-level defect
+series and spectral rationality
+(= \cref{thm:odd-defect,thm:D-rational}), the leading-jet lemma, the
+dyadic shifted Rvachev quadrature (= \cref{thm:shifted-exactness}),
+and the phase-superconvergence parity pattern. \\
 \bottomrule
 \end{tabular}
 \end{center}

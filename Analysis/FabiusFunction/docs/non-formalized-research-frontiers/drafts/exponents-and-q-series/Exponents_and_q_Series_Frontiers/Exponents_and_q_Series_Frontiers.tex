@@ -161,6 +161,7 @@ The absorbed drafts are deleted from the working tree; git history is the archiv
 \item \path{finite_sinc_products_report/finite_sinc_products_report.tex} \\ {\footnotesize SHA-256 \path{e01c3a2716d1c28ba6982510870775490981056b3f97b2a2b3f79002b2ef11b1}} (eighth wave, folded in 2026-08-28)
 \item \path{Rvachev_Piecewise_Approximation_Fourier_Images/Rvachev_Piecewise_Approximation_Fourier_Images.tex} \\ {\footnotesize SHA-256 \path{e70c2dd20b1ad71d44096d9c5c462596e36be202833bdbb5235efd4fba8355fd}} (ninth wave; merged editorially into Part~IV)
 \item \path{rvachev_fourier_frontier_report/rvachev_piecewise_fourier_frontier.tex} \\ {\footnotesize SHA-256 \path{23acde817ac19802ffed9cc19e80a80368d70315f87edf41e9fdc3f54c2a970b}} (ninth wave; merged editorially into Part~IV)
+\item \path{fabius_finite_products_frontier/finite_sinc_frontier.tex} \\ {\footnotesize SHA-256 \path{e7d436a8a236e6c04f5b7a56dd846ea42aada67c12b0e2ff4dc03f45d3b31e48}} (tenth wave; Part~V)
 \end{itemize}
 \clearpage
 \part{Exponent-Sequence and Newton-Basis Frontiers for the Fabius--Rvachev System}
@@ -6758,6 +6759,1492 @@ V.~Reshetnikov,
 \newblock Recursive integration over piecewise polynomials: closed
 form?,
 \newblock Mathematics Stack Exchange, question 240687, 2012.
+
+\end{thebibliography}
+
+
+
+%% ================= Part V =================
+% Non-duplicate preamble layer for Part V (dead definitions of the
+% source preamble dropped; theorem environments and shared letters
+% already provided by the volume; \repo re-declared for this part's
+% path idiom -- all earlier pages are already typeset).
+\newcommand{\eps}{\varepsilon}
+\newcommand{\pos}[1]{\left(#1\right)_{+}}
+\newcommand{\KL}{\operatorname{D}}
+\newcommand{\Ent}{\operatorname{h}}
+\newcommand{\Fish}{\operatorname{I}}
+\newcommand{\baseline}{\textcolor{linkblue}{\textsf{baseline}}}
+\newcommand{\newresult}{\textcolor{deepgreen}{\textsf{proved here}}}
+\newcommand{\conjstatus}{\textcolor{deepred}{\textsf{conjectural}}}
+\renewcommand{\repo}{\nolinkurl{Analysis/FabiusFunction/docs}}
+\newenvironment{proofidea}{\par\smallskip\noindent\textit{Proof architecture.}\ }{\hfill\(\square\)\par\smallskip}
+\newenvironment{boxedremark}{%
+  \par\smallskip\noindent\begin{center}\begin{minipage}{0.94\textwidth}%
+  \color{black}\hrule\vspace{0.6em}\small
+}{%
+  \vspace{0.6em}\hrule\end{minipage}\end{center}\smallskip
+}
+% ed.: restore arabic section numbering after Part IV
+\setcounter{section}{0}
+\renewcommand{\thesection}{\arabic{section}}
+\part{Finite Dyadic Sinc Products and Exact Transport Geometry of
+Rvachev Spline Approximants}
+% Absorbed from fabius_finite_products_frontier/finite_sinc_frontier.tex (tenth wave)
+
+\begin{abstract}
+Let
+\[
+ \Phi_N(\xi)=\prod_{j=1}^{N}\sinc\!\left(\frac{\xi}{2^j}\right),
+ \qquad
+ \Phi(\xi)=\prod_{j=1}^{\infty}\sinc\!\left(\frac{\xi}{2^j}\right),
+ \qquad \sinc z=\frac{\sin z}{z},
+\]
+and let $u_N$ and $u=\Up$ be their inverse Fourier transforms in the angular-frequency convention.  The established Fabius--Rvachev corpus identifies $u_N$ as a degree-$N-1$ compactly supported spline with a Thue--Morse truncated-power formula and proves strong convergence, an all-orders $4^{-N}$ deconvolution expansion, and signed $q$-Richardson acceleration.  Those facts are used here as input rather than relabelled as new.
+
+The main new result is an exact convergence-geometry package.  Writing $\mu_N=u_N\,\dd x$ and $\mu=u\,\dd x$, we prove that $\mu_N$ increases to $\mu$ in convex order while remaining more peaked about the origin.  The density error crosses zero at the fixed points $\pm\tfrac12$, independently of $N$.  Consequently, for every $N\ge2$,
+\[
+ W_1(\mu_N,\mu)=d_{\rm K}(\mu_N,\mu)=\frac{4^{-N}}9,
+ \qquad
+ d_{\rm TV}(\mu_N,\mu)=\frac{2\,4^{-N}}9,
+\]
+and the stop-loss and order-two Zolotarev distances both equal $4^{-N}/18$.  We also prove $W_\infty(\mu_N,\mu)=2^{-N}$, derive an exact Thue--Morse spline formula for the call potential, and show that its maximum and its total area are both $4^{-N}/18$.  These identities imply a positivity obstruction: no convex combination of consecutive finite-product laws can cancel the leading $4^{-N}$ error in any of the preceding finite metrics; signed weights are structurally necessary for Richardson acceleration.
+
+The report further derives the all-orders stop-loss profile, smooth-test and interior-quantile expansions, and a finite-$p$ versus $p=\infty$ transport crossover.  Fully reproducible FFT experiments verify the exact constants and give strong evidence for new entropy, forward-relative-entropy, Fisher-information, and fixed-$p$ Wasserstein asymptotics.  The latter are explicitly marked conjectural where a weighted endpoint remainder theorem is still required.
+\end{abstract}
+
+
+\section{Audit boundary, status discipline, and contribution map}
+\label{p5:sec:audit}
+
+\subsection{Pinned corpus and recursive reading strategy}
+
+The source boundary is the repository commit
+\begin{center}
+\texttt{21758aba2f8e200342be2a7b321247dac80efc00}
+\end{center}
+from 28 August 2026.  A recursive inventory of \repo{} returned $95$ paths with extension \texttt{.tex}.  The tree contains the canonical exposition, imported papers, historical archive copies, a living consolidated frontier volume, and current thematic draft consolidations.  Reading every historical revision as an independent mathematical source would overcount the same theorem many times.  Accordingly, the audit followed the repository's own consolidation policy:
+
+\begin{enumerate}
+\item inventory every \texttt{.tex} path recursively;
+\item read the canonical exposition and the consolidated frontier volume as the current mathematical spine;
+\item read the live draft manifest and every topic-specific source capable of overlapping finite sinc products, splines, $q$-Richardson acceleration, transport, entropy, or multiresolution analysis;
+\item normalize archived duplicates against their live successor and use imported papers as literature baselines rather than repository discoveries;
+\item run formula-level searches for the proposed new invariants: convex order, peakedness, single crossing, stop-loss, Zolotarev, exact Wasserstein/Kolmogorov/TV constants, and positive-mixture obstructions.
+\end{enumerate}
+
+This is the same cumulative-audit methodology used by the recent frontier reports.  The phrases ``proved here'' and ``new'' below mean that no explicit counterpart was located in the pinned corpus after the preceding source- and formula-level audit.  They do not assert exhaustive worldwide priority.
+
+\subsection{Established material deliberately excluded from novelty claims}
+
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{0.25\textwidth}>{\raggedright\arraybackslash}p{0.68\textwidth}@{}}
+\toprule
+Layer & Audited prior material used as input \\
+\midrule
+\endfirsthead
+\toprule
+Layer & Audited prior material used as input \\
+\midrule
+\endhead
+Function theory & Existence, uniqueness, support, symmetry, positivity, flatness, refinement equations, and the relation between the bounded Fabius CDF and the even up-density.\\
+Probability & Weighted sums of independent uniform variables, finite atomic and finite spline laws, exact tail coupling, reflection, and weak/strong convergence.\\
+Finite splines & Thue--Morse truncated-power formulas, exact dyadic knots, repeated-integration formulas, support bounds, and exact rational evaluation at dyadic points.\\
+Fourier analysis & Infinite and finite sinc products, local uniform convergence, Fourier inversion, rapid decay, zeros and multiplicities, Poisson summation, and cosine sampling formulas.\\
+Asymptotics & The logarithmic tail expansion in powers of $4^{-N}$, Bell--Bernoulli coefficient algebra, all-orders physical-space expansion, and zero-preserving signed $q$-Richardson acceleration.\\
+Endpoint theory & Correct lower-Lambert coordinate, nonconstant periodic Gamma--zeta phase, and all-orders endpoint and inverse-endpoint expansions.\\
+Multiresolution & Haar and Faber--Schauder expansions, exact energy tails, Bernstein/Kummer representations, and weighted-cube geometry.\\
+\bottomrule
+\end{longtable}
+
+The finite-spline construction and the $q$-Richardson machinery are therefore restated only compactly enough to make the new deductions self-contained.
+
+\subsection{New theorem package}
+
+The proved contribution is the following linked package.
+
+\begin{enumerate}
+\item \newresult: a convex-order chain $\mu_N\preceq_{\rm cx}\mu_{N+1}\preceq_{\rm cx}\mu$ together with a peakedness chain for all centered intervals;
+\item \newresult: the exact moment identity
+\[
+ \E\abs{X_N}=\frac5{18}-\frac{4^{-N}}9;
+\]
+\item \newresult: a fixed single-crossing law for $u_N-u$, with crossings at $0$ and $\pm\tfrac12$ and no $N$-dependent drift;
+\item \newresult: exact $W_1$, Kolmogorov, total-variation, stop-loss, Zolotarev, and $W_\infty$ errors, including the sole first-stage exception;
+\item \newresult: an exact piecewise-polynomial call/put potential and an all-orders profile whose leading term is $u/18$;
+\item \newresult: an exact no-go theorem for positive mixture acceleration in all the preceding finite metrics;
+\item \newresult: monotone entropy and Fisher-information facts, including the exact criterion $\Fish(u_N)<\infty\iff N\ge3$ and the exact divergence $\KL(u\Vert u_N)=\infty$;
+\item \conjstatus: weighted endpoint expansions for entropy, forward KL, Fisher information, and fixed finite-$p$ Wasserstein distance, supported by high-resolution computations.
+\end{enumerate}
+
+\section{Normalization and the common probability space}
+\label{p5:sec:model}
+
+\subsection{Fourier convention}
+
+Throughout the report,
+\begin{equation}
+ \widehat f(\xi)=\int_{\R}f(x)\e^{-\ii\xi x}\dd x,
+ \qquad
+ f(x)=\frac1{2\pi}\int_{\R}\widehat f(\xi)\e^{\ii\xi x}\dd\xi.
+ \label{p5:eq:fourier}
+\end{equation}
+The sinc function is entire after filling the removable singularity:
+\[
+ \sinc z=\begin{cases}\sin z/z,&z\ne0,\\1,&z=0.\end{cases}
+\]
+Define
+\begin{equation}
+ \Phi_N(\xi)=\prod_{j=1}^{N}\sinc\!\left(\frac{\xi}{2^j}\right),
+ \qquad
+ \Phi(\xi)=\prod_{j=1}^{\infty}\sinc\!\left(\frac{\xi}{2^j}\right).
+ \label{p5:eq:products}
+\end{equation}
+The infinite product converges locally uniformly on $\C$ and rapidly decreases on the real axis.  Its inverse Fourier transform is the normalized Rvachev function $u=\Up$, supported on $[-1,1]$ with $u(0)=1$ and $\int u=1$.
+
+\subsection{Uniform coordinates and exact tail self-similarity}
+
+Let $V_1,V_2,\ldots$ be independent $\operatorname{Unif}[-1,1]$ variables, and put
+\begin{equation}
+ X_N=\sum_{j=1}^{N}2^{-j}V_j,
+ \qquad
+ X=\sum_{j=1}^{\infty}2^{-j}V_j.
+ \label{p5:eq:random-series}
+\end{equation}
+Then $\Phi_N$ and $\Phi$ are the characteristic functions of $X_N$ and $X$, and their densities are $u_N$ and $u$.  Set
+\begin{equation}
+ \eps_N=2^{-N},\qquad a_N=1-\eps_N.
+ \label{p5:eq:eps-a}
+\end{equation}
+Removing the first $N$ coordinates and relabelling them gives the exact identity
+\begin{equation}
+ X=X_N+\eps_N X',
+ \label{p5:eq:tail-coupling}
+\end{equation}
+where $X'$ is an independent copy of $X$.  Equivalently,
+\begin{equation}
+ \Phi(\xi)=\Phi_N(\xi)\Phi(\eps_N\xi),
+ \qquad
+ u=u_N*k_N,
+ \qquad
+ k_N(x)=\eps_N^{-1}u(x/\eps_N).
+ \label{p5:eq:tail-factorization}
+\end{equation}
+This identity is the source of both the elementary coupling rate $\eps_N$ and the much sharper cancellation rate $\eps_N^2=4^{-N}$.
+
+Let $H_N$ and $H$ denote the CDFs of $X_N$ and $X$ and write
+\begin{equation}
+ d_N(x)=H_N(x)-H(x).
+ \label{p5:eq:dN}
+\end{equation}
+All laws are symmetric and have mean zero.
+
+\section{Exact finite inverse transforms: dyadic box splines}
+\label{p5:sec:splines}
+
+\subsection{Convolution and support}
+
+The density of $2^{-j}V_j$ is
+\begin{equation}
+ b_j(x)=2^{j-1}\mathbf 1_{[-2^{-j},2^{-j}]}(x),
+ \label{p5:eq:boxes}
+\end{equation}
+so
+\begin{equation}
+ u_N=b_1*b_2*\cdots*b_N.
+ \label{p5:eq:convolution}
+\end{equation}
+This immediately implies positivity, symmetry, unit mass, and
+\begin{equation}
+ \supp u_N=[-a_N,a_N].
+ \label{p5:eq:support}
+\end{equation}
+Each $b_j$ is log-concave; convolution preserves log-concavity, hence $u_N$ is even, log-concave, and nonincreasing on $[0,\infty)$.  Because the first box has half-width $1/2$ while the remaining boxes have total half-width $1/2-\eps_N$, there is an exact central plateau:
+\begin{equation}
+ u_N(x)=1\qquad (\abs{x}\le\eps_N).
+ \label{p5:eq:plateau}
+\end{equation}
+The limiting function is flat but not locally constant at the origin: $u(0)=1$ and $u^{(r)}(0)=0$ for every $r\ge1$.
+
+\subsection{Thue--Morse knots and truncated powers}
+
+Put
+\begin{equation}
+ \kappa_{N,m}=-1+\frac{2m+1}{2^N},
+ \qquad 0\le m<2^N,
+ \label{p5:eq:knots}
+\end{equation}
+and let $\tau(m)=(-1)^{\wt(m)}$ be the signed Thue--Morse sequence.
+
+\begin{theorem}[Finite Thue--Morse spline; \baseline]
+For $N\ge1$,
+\begin{equation}
+ u_N(x)=\frac{2^{\binom N2}}{(N-1)!}
+ \sum_{m=0}^{2^N-1}\tau(m)\pos{x-\kappa_{N,m}}^{N-1}.
+ \label{p5:eq:spline-formula}
+\end{equation}
+Thus $u_N$ is piecewise polynomial of degree $N-1$, belongs to $C^{N-2}(\R)$ for $N\ge2$, and its distributional $N$th derivative is
+\begin{equation}
+ D^Nu_N=2^{\binom N2}\sum_{m=0}^{2^N-1}\tau(m)\delta_{\kappa_{N,m}}.
+ \label{p5:eq:distributional-derivative}
+\end{equation}
+Equivalently,
+\begin{equation}
+ [u_N^{(N-1)}]_{\kappa_{N,m}}
+ =2^{\binom N2}\tau(m).
+ \label{p5:eq:jumps}
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+For independent uniforms on intervals of lengths $\ell_1,\ldots,\ell_N$, inclusion--exclusion gives the density
+\[
+ \frac1{(N-1)!\prod_j\ell_j}
+ \sum_{S\subseteq\{1,\ldots,N\}}(-1)^{\abs S}
+ \pos{x-x_{\min}-\sum_{j\in S}\ell_j}^{N-1}.
+\]
+Here $\ell_j=2^{1-j}$, $x_{\min}=-a_N$, and
+$\prod_j\ell_j=2^{-\binom N2}$.  The subset sum has a unique binary encoding $m$, its sign is $\tau(m)$, and its translated knot is precisely \eqref{p5:eq:knots}.  Distributional differentiation proves \eqref{p5:eq:distributional-derivative} and \eqref{p5:eq:jumps}.
+\end{proof}
+
+\begin{remark}
+The right side of \eqref{p5:eq:spline-formula} is a severely cancelling sum of $2^N$ large truncated powers.  Its positivity and compact support are nearly invisible algebraically and immediate probabilistically.  Direct floating-point evaluation is therefore ill-conditioned for large $N$; recursive convolution, B-spline evaluation, or the Fourier-series method of \cref{p5:sec:numerics} is preferable.
+\end{remark}
+
+\subsection{Refinement recurrences}
+
+Convolving by the $(N+1)$st box gives
+\begin{equation}
+ u_{N+1}(x)=2^N\int_{x-2^{-(N+1)}}^{x+2^{-(N+1)}}u_N(t)\dd t,
+ \label{p5:eq:averaging}
+\end{equation}
+and differentiation gives
+\begin{equation}
+ u_{N+1}'(x)=2^N\left[
+ u_N\!\left(x+2^{-(N+1)}\right)
+ -u_N\!\left(x-2^{-(N+1)}\right)
+ \right].
+ \label{p5:eq:derivative-rec}
+\end{equation}
+Separating the first coordinate in \eqref{p5:eq:random-series}, for $\eps_N<x<a_N$,
+\begin{equation}
+ u_N(x)=1-H_{N-1}(2x-1),
+ \qquad
+ u_N'(x)=-2u_{N-1}(2x-1),
+ \label{p5:eq:first-coordinate-finite}
+\end{equation}
+while
+\begin{equation}
+ u(x)=1-H(2x-1),
+ \qquad
+ u'(x)=-2u(2x-1),
+ \qquad 0<x<1.
+ \label{p5:eq:first-coordinate-limit}
+\end{equation}
+These elementary identities will turn the CDF ordering into a complete sign diagram for the density error.
+
+\section{Established all-orders deconvolution expansion}
+\label{p5:sec:allorders}
+
+This section records the minimum asymptotic machinery needed later.  It is part of the audited baseline.
+
+\subsection{Reciprocal product and Bell coefficients}
+
+From \eqref{p5:eq:tail-factorization},
+\begin{equation}
+ \Phi_N(\xi)=\frac{\Phi(\xi)}{\Phi(\eps_N\xi)}.
+ \label{p5:eq:deconvolution-quotient}
+\end{equation}
+Near zero,
+\begin{equation}
+ -\log\Phi(z)=\sum_{r=1}^{\infty}c_rz^{2r},
+ \qquad
+ c_r=\frac{\zeta(2r)}{r\pi^{2r}(4^r-1)}.
+ \label{p5:eq:logphi}
+\end{equation}
+Define $b_m$ by
+\begin{equation}
+ \frac1{\Phi(z)}=\exp\!\left(\sum_{r\ge1}c_rz^{2r}\right)
+ =\sum_{m=0}^{\infty}b_mz^{2m}.
+ \label{p5:eq:bmdef}
+\end{equation}
+In complete Bell-polynomial notation,
+\begin{equation}
+ b_m=\frac1{m!}\mathcal B_m(1!c_1,2!c_2,\ldots,m!c_m).
+ \label{p5:eq:bell-bm}
+\end{equation}
+The first coefficients are
+\begin{equation}
+ b_0=1,
+ \quad b_1=\frac1{18},
+ \quad b_2=\frac{31}{16200},
+ \quad b_3=\frac{2347}{42865200},
+ \quad b_4=\frac{1904369}{1311675120000}.
+ \label{p5:eq:first-b}
+\end{equation}
+They also satisfy the convenient recurrence
+\begin{equation}
+ mb_m=\sum_{r=1}^{m}r c_r b_{m-r}.
+ \label{p5:eq:b-rec}
+\end{equation}
+
+\subsection{Physical-space expansion}
+
+\begin{theorem}[All-orders finite-product expansion; \baseline]
+For fixed integers $M,r\ge0$,
+\begin{equation}
+ u_N
+ =\sum_{m=0}^{M}(-1)^m b_m\eps_N^{2m}u^{(2m)}
+ +\bigO_{C^r}(\eps_N^{2M+2}).
+ \label{p5:eq:physical-expansion}
+\end{equation}
+In particular,
+\begin{equation}
+ 4^N(u_N-u)\longrightarrow-\frac1{18}u''
+ \qquad\text{in every }C^r(\R).
+ \label{p5:eq:leading-density}
+\end{equation}
+\end{theorem}
+
+\begin{proofidea}
+Insert \eqref{p5:eq:bmdef} into \eqref{p5:eq:deconvolution-quotient}.  Under the Fourier convention \eqref{p5:eq:fourier}, multiplication by $\xi^{2m}$ corresponds to $(-1)^mD^{2m}$.  A compact-frequency Taylor expansion plus the rapid real-axis decay of $\Phi$, followed by a growing-frequency cutoff, controls every derivative of the remainder.  The repository contains the corresponding certified logarithmic tail and $q$-Richardson forms.
+\end{proofidea}
+
+The leading coefficient has an immediate variance interpretation.  Since
+\begin{equation}
+ \Var X=\frac13\sum_{j\ge1}4^{-j}=\frac19,
+ \label{p5:eq:varX}
+\end{equation}
+small convolution by the tail $\eps_NX'$ has variance $\eps_N^2/9$, and the inverse heat-like correction has coefficient one half of that variance, namely $\eps_N^2/18$.
+
+\section{Convex order and peakedness}
+\label{p5:sec:order}
+
+\subsection{Two orderings}
+
+For integrable probability measures with equal means, $\nu\preceq_{\rm cx}\mu$ means
+\[
+ \int\varphi\dd\nu\le\int\varphi\dd\mu
+\]
+for every convex $\varphi$ for which the expectations exist.  For symmetric laws on $\R$, say that $\nu$ is \emph{more peaked} than $\mu$ if
+\begin{equation}
+ \nu([-r,r])\ge\mu([-r,r])\qquad(r\ge0).
+ \label{p5:eq:peaked}
+\end{equation}
+Convex order compares spread through convex tests; peakedness compares every centered interval.  Neither implication holds for arbitrary symmetric laws, but both arise here from the same convolution chain.
+
+\begin{lemma}[Centered intervals are maximal]
+Let $f$ be an even density nonincreasing on $[0,\infty)$.  Then for every $r\ge0$ the map
+\[
+ y\longmapsto\int_{-r}^{r}f(x-y)\dd x
+\]
+is even and nonincreasing for $y\ge0$.  In particular, every interval of length $2r$ has at most as much $f$-mass as $[-r,r]$.
+\end{lemma}
+
+\begin{proof}
+For $y>0$, differentiation at regular points gives
+\[
+ \frac{\dd}{\dd y}\int_{-r}^{r}f(x-y)\dd x
+ =f(-r-y)-f(r-y)=f(r+y)-f(\abs{r-y})\le0.
+\]
+Approximation handles the finitely nonsmooth spline case.  This is the one-dimensional content of Anderson's symmetric-unimodal inequality \cite{p5:Anderson1955}.
+\end{proof}
+
+\begin{theorem}[Convex-order and peakedness chain; \newresult]
+For every $N\ge1$,
+\begin{equation}
+ \mu_N\preceq_{\rm cx}\mu_{N+1}\preceq_{\rm cx}\mu,
+ \label{p5:eq:convex-chain}
+\end{equation}
+and
+\begin{equation}
+ \Prob(\abs{X_N}\le r)
+ \ge\Prob(\abs{X_{N+1}}\le r)
+ \ge\Prob(\abs X\le r)
+ \qquad(r\ge0).
+ \label{p5:eq:peaked-chain}
+\end{equation}
+Consequently,
+\begin{equation}
+ d_N(x)\ge0\quad(x\ge0),
+ \qquad
+ d_N(x)\le0\quad(x\le0).
+ \label{p5:eq:cdf-sign}
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+Write $X_{N+1}=X_N+Z_{N+1}$ with $Z_{N+1}$ independent and mean zero.  Conditional Jensen gives
+\[
+ \E\varphi(X_N+Z_{N+1})\ge\E\varphi(X_N),
+\]
+and iteration, followed by dominated convergence, proves \eqref{p5:eq:convex-chain}.
+
+The density $u_N$ is even and unimodal.  Conditional on the independent tail $T$, the event $\abs{X_N+T}\le r$ asks for the $u_N$-mass of a translate of $[-r,r]$.  The preceding lemma bounds it by the centered mass, proving \eqref{p5:eq:peaked-chain}.  For a symmetric continuous law,
+\[
+ H(x)=\frac12+\frac12\Prob(\abs X\le x),\qquad x\ge0,
+\]
+which gives \eqref{p5:eq:cdf-sign}.
+\end{proof}
+
+\section{Exact moments and the single-crossing law}
+\label{p5:sec:crossing}
+
+\subsection{A quadratic absolute-value identity}
+
+The exact metric constants all originate in one elementary calculation.
+
+\begin{lemma}
+If $U\sim\operatorname{Unif}[-\tfrac12,\tfrac12]$ and $\abs r\le\tfrac12$, then
+\begin{equation}
+ \E\abs{U+r}=r^2+\frac14.
+ \label{p5:eq:uniform-absolute}
+\end{equation}
+\end{lemma}
+
+\begin{proof}
+The zero of $u+r$ lies inside the integration interval, and direct integration gives
+\[
+ \int_{-1/2}^{1/2}\abs{u+r}\dd u
+ =\frac12\left(\frac12-r\right)^2
+  +\frac12\left(\frac12+r\right)^2
+ =r^2+\frac14.
+\]
+\end{proof}
+
+\begin{theorem}[Exact first absolute moment; \newresult]
+For every $N\ge1$,
+\begin{equation}
+ \boxed{
+ \E\abs{X_N}=\frac5{18}-\frac{4^{-N}}9,
+ \qquad
+ \E\abs X=\frac5{18}.}
+ \label{p5:eq:absolute-moments}
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+Write $X_N=U+R_N$, where $U=V_1/2$ is uniform on $[-1/2,1/2]$ and
+\[
+ R_N=\sum_{j=2}^{N}2^{-j}V_j,
+ \qquad \abs{R_N}\le\frac12.
+\]
+Conditioning and using \eqref{p5:eq:uniform-absolute},
+\[
+ \E\abs{X_N}=\frac14+\E R_N^2.
+\]
+Independence gives
+\[
+ \E R_N^2=\frac13\sum_{j=2}^{N}4^{-j}
+ =\frac1{36}\left(1-4^{1-N}\right),
+\]
+which proves the finite formula.  Letting $N\to\infty$ proves the limit.
+\end{proof}
+
+\subsection{The density error crosses at a fixed location}
+
+\begin{theorem}[Single-crossing theorem; \newresult]
+For every $N\ge1$, up to the irrelevant values at spline knots,
+\begin{equation}
+ u_N(x)-u(x)
+ \begin{cases}
+ >0,&0<\abs x<\tfrac12,\\
+ =0,&x=0\text{ or }\abs x=\tfrac12,\\
+ <0,&\tfrac12<\abs x<1.
+ \end{cases}
+ \label{p5:eq:single-crossing}
+\end{equation}
+Thus the positive half-axis crossing is exactly $x=1/2$ for every stage; it does not merely converge there.
+\end{theorem}
+
+\begin{proof}
+For $0\le x\le\eps_N$, \eqref{p5:eq:plateau} gives $u_N(x)=1\ge u(x)$, with equality only at $x=0$.  For $\eps_N<x<a_N$, subtract \eqref{p5:eq:first-coordinate-limit} from \eqref{p5:eq:first-coordinate-finite}:
+\begin{equation}
+ u_N(x)-u(x)=-d_{N-1}(2x-1).
+ \label{p5:eq:error-cdf-identity}
+\end{equation}
+By \eqref{p5:eq:cdf-sign}, the right side is positive for $x<1/2$, zero at $1/2$, and negative for $x>1/2$.  For $a_N\le x<1$, $u_N(x)=0<u(x)$.  Evenness completes the proof.  For $N=1$, the same conclusion follows directly from $u_1=\mathbf1_{[-1/2,1/2]}$.
+\end{proof}
+
+\begin{corollary}
+For $x\ge0$, $d_N$ is nondecreasing on $[0,1/2]$ and nonincreasing on $[1/2,\infty)$.  Hence
+\begin{equation}
+ \norm{H_N-H}_{\infty}=d_N(1/2).
+ \label{p5:eq:dk-at-half}
+\end{equation}
+\end{corollary}
+
+\section{Exact convergence metrics}
+\label{p5:sec:metrics}
+
+\subsection{Definitions}
+
+For laws $\nu,\mu$ on $\R$, define
+\begin{align}
+ W_1(\nu,\mu)&=\inf\E\abs{Y-Z},\\
+ d_{\rm K}(\nu,\mu)&=\sup_x\abs{F_\nu(x)-F_\mu(x)},\\
+ d_{\rm TV}(\nu,\mu)&=\frac12\int\abs{f_\nu-f_\mu},\\
+ W_\infty(\nu,\mu)&=\inf\operatorname*{ess\,sup}\abs{Y-Z},
+\end{align}
+where the infima range over couplings.  In one dimension,
+\begin{equation}
+ W_1(\nu,\mu)=\int_{\R}\abs{F_\nu(x)-F_\mu(x)}\dd x.
+ \label{p5:eq:w1-cdf}
+\end{equation}
+
+\begin{theorem}[Exact metric collapse; \newresult]
+For every $N\ge2$,
+\begin{equation}
+ \boxed{
+ W_1(\mu_N,\mu)
+ =d_{\rm K}(\mu_N,\mu)
+ =\frac{4^{-N}}9,}
+ \label{p5:eq:w1-dk}
+\end{equation}
+\begin{equation}
+ \boxed{
+ \norm{u_N-u}_1=\frac{4^{1-N}}9,
+ \qquad
+ d_{\rm TV}(\mu_N,\mu)=\frac{2\,4^{-N}}9.}
+ \label{p5:eq:tv-exact}
+\end{equation}
+At the first stage,
+\begin{equation}
+ W_1(\mu_1,\mu)=\frac1{36},
+ \qquad
+ d_{\rm K}(\mu_1,\mu)=\frac5{72},
+ \qquad
+ \norm{u_1-u}_1=\frac5{18},
+ \qquad
+ d_{\rm TV}(\mu_1,\mu)=\frac5{36}.
+ \label{p5:eq:first-exception}
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+By \eqref{p5:eq:cdf-sign},
+\[
+ W_1(\mu_N,\mu)=2\int_0^\infty d_N(x)\dd x.
+\]
+For any symmetric integrable law,
+\[
+ \E\abs X=2\int_0^\infty(1-H(x))\dd x.
+\]
+Subtracting the finite and limiting versions and applying \eqref{p5:eq:absolute-moments} gives
+\[
+ W_1(\mu_N,\mu)=\E\abs X-\E\abs{X_N}=\frac{4^{-N}}9.
+\]
+
+For $N\ge2$, write $X_N=U+R_N$ with $R_N=\tfrac12X_{N-1}'$.  Conditioning on $R_N$ at the threshold $1/2$ gives
+\[
+ H_N(1/2)=1-\E(R_N)_+=1-\frac14\E\abs{X_{N-1}}.
+\]
+The limiting identity is $H(1/2)=1-\tfrac14\E\abs X$, hence
+\[
+ d_N(1/2)=\frac14\left(\E\abs X-\E\abs{X_{N-1}}\right)
+ =\frac{4^{-N}}9.
+\]
+By \eqref{p5:eq:dk-at-half}, this is the Kolmogorov distance.
+
+The single-crossing theorem shows that the positive density error is supported on $(-1/2,1/2)$.  Its mass is
+\[
+ \int_{-1/2}^{1/2}(u_N-u)\dd x
+ =2d_N(1/2).
+\]
+Positive and negative masses are equal, so the $L^1$ norm is twice this quantity, namely $4d_N(1/2)$.  This proves \eqref{p5:eq:tv-exact}.
+
+For $N=1$, $H_1(1/2)=1$ and
+\[
+ H(1/2)=1-\frac14\E\abs X,
+\]
+so $d_1(1/2)=5/72$.  The same crossing argument gives the exceptional $L^1$ and TV constants, while the $W_1$ formula remains $4^{-1}/9=1/36$.
+\end{proof}
+
+\begin{remark}[Why the constants coincide]
+The equality $W_1=d_{\rm K}$ is not dimensionally universal; it is a rigid consequence of the chosen support normalization, symmetry, and the exact first-coordinate quadratic identity.  The equality persists at every $N\ge2$, not merely asymptotically.
+\end{remark}
+
+\subsection{Exact essential-supremum transport and the nonoptimal truncation coupling}
+
+\begin{theorem}[Endpoint-controlled transport; \newresult]
+For every $N\ge1$,
+\begin{equation}
+ \boxed{W_\infty(\mu_N,\mu)=2^{-N}.}
+ \label{p5:eq:winfty}
+\end{equation}
+The synchronous truncation coupling \eqref{p5:eq:tail-coupling} has exact $p$-cost
+\begin{equation}
+ \left(\E\abs{X-X_N}^p\right)^{1/p}
+ =2^{-N}\left(\E\abs X^p\right)^{1/p},
+ \qquad 1\le p<\infty,
+ \label{p5:eq:synchronous-cost}
+\end{equation}
+and is optimal for $p=\infty$ but dramatically nonoptimal for $p=1$.
+\end{theorem}
+
+\begin{proof}
+The coupling \eqref{p5:eq:tail-coupling} satisfies $\abs{X-X_N}\le2^{-N}$, proving the upper bound.  The support of $\mu_N$ ends at $a_N=1-2^{-N}$ while every interval $(1-\delta,1)$ has positive $\mu$-mass.  Any coupling must therefore move points arbitrarily close to $1$ by at least $1-a_N=2^{-N}$ in essential supremum.  This proves equality.  Equation \eqref{p5:eq:synchronous-cost} follows directly from $X-X_N=2^{-N}X'$.
+\end{proof}
+
+For $p=1$, the synchronous cost is $5\,2^{-N}/18$, whereas the optimum is $4^{-N}/9$.  Their ratio is
+\begin{equation}
+ \frac{(5/18)2^{-N}}{4^{-N}/9}=5\,2^{N-1}.
+ \label{p5:eq:coupling-ratio}
+\end{equation}
+Thus the obvious independent-tail coupling loses an exponentially growing factor in $W_1$, even though it is exactly optimal in $W_\infty$.
+
+\section{Stop-loss potentials, call splines, and Zolotarev distance}
+\label{p5:sec:stoploss}
+
+\subsection{Call and put transforms}
+
+Define
+\begin{equation}
+ C_N(t)=\E\pos{X_N-t},
+ \qquad
+ C(t)=\E\pos{X-t},
+ \qquad
+ K_N(t)=C(t)-C_N(t).
+ \label{p5:eq:call-def}
+\end{equation}
+Convex order gives $K_N\ge0$.  Because both laws are symmetric with mean zero,
+\begin{equation}
+ K_N(-t)=K_N(t).
+ \label{p5:eq:K-even}
+\end{equation}
+At regular points,
+\begin{equation}
+ K_N'(t)=H(t)-H_N(t)=-d_N(t),
+ \qquad
+ K_N''(t)=u(t)-u_N(t).
+ \label{p5:eq:K-derivatives}
+\end{equation}
+
+\begin{theorem}[Exact finite call spline; \newresult]
+Let $\kappa_{N,m}$ be \eqref{p5:eq:knots}.  Then
+\begin{equation}
+ P_N(t):=\E\pos{t-X_N}
+ =\frac{2^{\binom N2}}{(N+1)!}
+ \sum_{m=0}^{2^N-1}\tau(m)\pos{t-\kappa_{N,m}}^{N+1},
+ \label{p5:eq:put-spline}
+\end{equation}
+and
+\begin{equation}
+ C_N(t)=P_N(t)-t.
+ \label{p5:eq:call-spline}
+\end{equation}
+Thus the call and put transforms are exact degree-$N+1$ piecewise-polynomial splines with the same Thue--Morse knot set.
+\end{theorem}
+
+\begin{proof}
+The second distributional derivative of the right side of \eqref{p5:eq:put-spline} is exactly \eqref{p5:eq:spline-formula}, and both the function and its first derivative vanish to the left of the support.  Therefore it equals $\E(t-X_N)_+$.  Finally,
+\[
+ P_N(t)-C_N(t)=\E[(t-X_N)_+-(X_N-t)_+]=\E(t-X_N)=t.
+\]
+\end{proof}
+
+\subsection{Exact height, area, and order-two ideal metric}
+
+\begin{theorem}[Stop-loss geometry; \newresult]
+For every $N\ge1$, $K_N$ is even, nonnegative, nondecreasing on $(-\infty,0]$, and nonincreasing on $[0,\infty)$.  Moreover,
+\begin{equation}
+ \boxed{
+ \norm{K_N}_\infty=K_N(0)=\frac{4^{-N}}{18},}
+ \label{p5:eq:K-height}
+\end{equation}
+\begin{equation}
+ \boxed{
+ \int_{\R}K_N(t)\dd t=\frac{4^{-N}}{18}.}
+ \label{p5:eq:K-area}
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+Equation \eqref{p5:eq:cdf-sign} and $K_N'=-d_N$ show monotonicity and that the maximum occurs at zero.  Symmetry gives
+\[
+ K_N(0)=\E(X)_+-\E(X_N)_+
+ =\frac12\left(\E\abs X-\E\abs{X_N}\right)
+ =\frac{4^{-N}}{18}.
+\]
+For the area, use the standard call representation of twice differentiable convex tests, or simply test with $\varphi(x)=x^2/2$:
+\[
+ \int K_N(t)\dd t
+ =\frac12\left(\E X^2-\E X_N^2\right).
+\]
+Since
+\[
+ \Var X-\Var X_N=\frac13\sum_{j>N}4^{-j}=\frac{4^{-N}}9,
+\]
+\eqref{p5:eq:K-area} follows.
+\end{proof}
+
+The equality between height and area is another normalization-specific rigidity.  It says that the entire positive potential has effective width one at every scale even though its detailed profile changes with $N$.
+
+\begin{definition}[Order-two Zolotarev distance]
+For equal-mean laws with finite second moments, define
+\begin{equation}
+ \zeta_2(\nu,\mu)=
+ \sup_{\norm{f''}_\infty\le1}
+ \abs{\int f\dd\nu-\int f\dd\mu},
+ \label{p5:eq:zeta2-def}
+\end{equation}
+where $f'$ is locally absolutely continuous.  Affine terms are immaterial because the masses and means agree.
+\end{definition}
+
+\begin{corollary}[Exact stop-loss and Zolotarev metrics; \newresult]
+For every $N\ge1$,
+\begin{equation}
+ \boxed{
+ d_{\rm SL}(\mu_N,\mu):=\sup_t\abs{C_N(t)-C(t)}
+ =\zeta_2(\mu_N,\mu)
+ =\frac{4^{-N}}{18}.}
+ \label{p5:eq:sl-zeta}
+\end{equation}
+\end{corollary}
+
+\begin{proof}
+The stop-loss equality is \eqref{p5:eq:K-height}.  For admissible $f$,
+\[
+ \E f(X)-\E f(X_N)=\int_{\R}K_N(t)f''(t)\dd t,
+\]
+so the absolute value is at most $\int K_N=4^{-N}/18$.  Equality is attained by $f(x)=x^2/2$, whose second derivative is one.
+\end{proof}
+
+\subsection{All-orders stop-loss profile}
+
+Integrating \eqref{p5:eq:physical-expansion} twice, using flatness at the support endpoints, gives a direct analogue of the density expansion.
+
+\begin{theorem}[All-orders potential expansion; \newresult from baseline]
+For fixed $M,r\ge0$,
+\begin{equation}
+ K_N(t)=\sum_{m=1}^{M}(-1)^{m+1}b_m\eps_N^{2m}u^{(2m-2)}(t)
+ +\bigO_{C^r}(\eps_N^{2M+2}).
+ \label{p5:eq:K-expansion}
+\end{equation}
+In particular,
+\begin{equation}
+ 4^NK_N\longrightarrow\frac{u}{18}
+ \qquad\text{in every }C^r(\R).
+ \label{p5:eq:K-leading}
+\end{equation}
+At $t=0$, all terms after the first vanish because $u(0)=1$ and $u^{(k)}(0)=0$ for $k\ge1$; the leading value $4^{-N}/18$ is in fact exact.
+\end{theorem}
+
+\begin{proof}
+By \eqref{p5:eq:K-derivatives}, $K_N''=u-u_N$.  Substitute \eqref{p5:eq:physical-expansion}.  The unique twice-integrated solution vanishing with its derivative outside the support is \eqref{p5:eq:K-expansion}.  The leading term uses $b_1=1/18$.
+\end{proof}
+
+\section{A positivity obstruction to acceleration}
+\label{p5:sec:no-go}
+
+Signed $q$-Richardson combinations can cancel successive powers of $4^{-N}$, but they cease to be probability measures.  The exact crossing theorem proves that this loss of positivity is not accidental.
+
+Let $J\ge0$, let $\alpha_j\ge0$ with $\sum_{j=0}^{J}\alpha_j=1$, and define the mixture
+\begin{equation}
+ \nu_{N,\alpha}=\sum_{j=0}^{J}\alpha_j\mu_{N+j},
+ \qquad
+ A(\alpha)=\sum_{j=0}^{J}\alpha_j4^{-j}.
+ \label{p5:eq:mixture}
+\end{equation}
+
+\begin{theorem}[Exact positive-mixture errors; \newresult]
+For $N\ge2$,
+\begin{align}
+ W_1(\nu_{N,\alpha},\mu)
+ &=d_{\rm K}(\nu_{N,\alpha},\mu)
+ =\frac{4^{-N}}9A(\alpha),
+ \label{p5:eq:mix-w1}\\
+ d_{\rm TV}(\nu_{N,\alpha},\mu)
+ &=\frac{2\,4^{-N}}9A(\alpha),
+ \label{p5:eq:mix-tv}\\
+ d_{\rm SL}(\nu_{N,\alpha},\mu)
+ &=\zeta_2(\nu_{N,\alpha},\mu)
+ =\frac{4^{-N}}{18}A(\alpha).
+ \label{p5:eq:mix-sl}
+\end{align}
+The mixture density exceeds $u$ on $(-1/2,0)\cup(0,1/2)$, equals it at $0$ and $\pm1/2$ (up to knot conventions), and is below $u$ for $1/2<\abs x<1$, unless all mass is placed on a limiting stage.
+\end{theorem}
+
+\begin{proof}
+CDF, density, and call errors are linear under mixing.  Every $d_{N+j}$ has the same sign on each half-axis and the same maximizer $1/2$; every $u_{N+j}-u$ has the same sign on each side of $\abs x=1/2$; and every call gap is nonnegative with its maximum at zero.  Therefore no absolute-value cancellation occurs in any defining integral or supremum.  Substituting the exact stagewise constants and summing proves all formulas.
+\end{proof}
+
+\begin{corollary}[No positive Richardson acceleration]
+Among mixtures supported on the window $N,N+1,\ldots,N+J$, every metric in \eqref{p5:eq:mix-w1}--\eqref{p5:eq:mix-sl} is minimized by the trivial choice $\alpha_J=1$.  In particular, no nontrivial convex combination cancels the $4^{-N}$ term or improves the geometric order relative to its finest constituent.
+\end{corollary}
+
+\begin{proof}
+Since $4^{-j}$ is strictly decreasing, the convex average $A(\alpha)$ is minimized uniquely at its smallest entry $4^{-J}$.
+\end{proof}
+
+\begin{boxedremark}
+\textbf{Structural interpretation.}  Richardson acceleration needs negative weights because the entire positive cone generated by the finite-product laws points to the same side of the target in convex order, CDF order on each half-axis, density single-crossing order, and call-potential order.  The obstruction is simultaneous, exact, and metric-independent within this family.
+\end{boxedremark}
+
+\section{Smooth tests, CDFs, quantiles, and moment hierarchies}
+\label{p5:sec:smooth}
+
+\subsection{Smooth-test expansion}
+
+Let $\varphi$ be smooth with derivatives of at most polynomial growth.  Pairing \eqref{p5:eq:physical-expansion} with $\varphi$ and integrating by parts gives
+\begin{equation}
+ \E\varphi(X)-\E\varphi(X_N)
+ =\sum_{m=1}^{M}(-1)^{m+1}b_m\eps_N^{2m}
+ \E\varphi^{(2m)}(X)
+ +\bigO(\eps_N^{2M+2}).
+ \label{p5:eq:test-expansion}
+\end{equation}
+In particular,
+\begin{equation}
+ \E\varphi(X)-\E\varphi(X_N)
+ =\frac{4^{-N}}{18}\E\varphi''(X)+\bigO(16^{-N}).
+ \label{p5:eq:test-leading}
+\end{equation}
+For nonsmooth convex $\varphi$, the exact distributional form is
+\begin{equation}
+ \E\varphi(X)-\E\varphi(X_N)
+ =\int_{\R}K_N(t)\,\varphi''(\dd t),
+ \label{p5:eq:convex-measure}
+\end{equation}
+where $\varphi''$ is the nonnegative second-derivative measure.  Formula \eqref{p5:eq:convex-measure} is the precise bridge between convex order and the potential expansion.
+
+\subsection{CDF and interior quantile expansion}
+
+Integrating \eqref{p5:eq:physical-expansion} once gives
+\begin{equation}
+ H_N(x)=H(x)+\sum_{m=1}^{M}(-1)^mb_m\eps_N^{2m}u^{(2m-1)}(x)
+ +\bigO_{C^r}(\eps_N^{2M+2}).
+ \label{p5:eq:cdf-expansion}
+\end{equation}
+Thus
+\begin{equation}
+ d_N(x)=-\frac{4^{-N}}{18}u'(x)+\bigO(16^{-N}).
+ \label{p5:eq:cdf-leading}
+\end{equation}
+This leading term has the exact sign from \eqref{p5:eq:cdf-sign}, because $u'$ is positive on $(-1,0)$ and negative on $(0,1)$.
+
+Let $Q=H^{-1}$ and $Q_N=H_N^{-1}$.  On every compact probability interval $[\delta,1-\delta]$,
+\begin{equation}
+ Q_N(s)-Q(s)
+ =\frac{4^{-N}}{18}
+ \frac{u'(Q(s))}{u(Q(s))}
+ +\bigO_{\delta}(16^{-N}).
+ \label{p5:eq:quantile-leading}
+\end{equation}
+The logarithmic derivative $u'/u$ is the location score.  It is unbounded at the flat endpoints, which is why \eqref{p5:eq:quantile-leading} is not uniform in $s$ and why $W_\infty$ has the slower scale $2^{-N}$.
+
+\subsection{Exact cumulant tail}
+
+Since $X=X_N+\eps_NX'$ with independent terms, every cumulant satisfies
+\begin{equation}
+ \kappa_r(X)-\kappa_r(X_N)=\eps_N^r\kappa_r(X).
+ \label{p5:eq:cumulant-tail}
+\end{equation}
+Odd cumulants vanish.  Thus the variance error is exactly $4^{-N}/9$, while the $2r$th cumulant error is of order $4^{-rN}$.  The all-orders density expansion packages all these distinct moment scales into one differential series.
+
+\section{Numerical verification and reproducibility}
+\label{p5:sec:numerics}
+
+\subsection{Stable period-two Fourier reconstruction}
+
+Because $u_N$ and $u$ are supported inside one period of length two, their periodizations agree with them on $[-1,1]$.  Poisson summation gives
+\begin{align}
+ u_N(x)&=\frac12+\sum_{n=1}^{\infty}\Phi_N(\pi n)\cos(\pi nx),
+ \label{p5:eq:cosine-N}\\
+ u(x)&=\frac12+\sum_{n=1}^{\infty}\Phi(\pi n)\cos(\pi nx).
+ \label{p5:eq:cosine-limit}
+\end{align}
+For the limit, every nonzero even coefficient vanishes and the odd coefficients decay superalgebraically.  On the grid
+\[
+ x_k=-1+\frac{2k}{M},\qquad M=2^{18},
+\]
+these series are inverse FFTs after the phase correction $(-1)^n$.  Derivatives are obtained by multiplying the $n$th coefficient by $(\ii\pi n)^r$.  CDFs and call potentials are then cumulative trapezoidal integrals.  This route avoids the catastrophic cancellation of \eqref{p5:eq:spline-formula}.
+
+The archive contains the fully commented script \texttt{finite\_sinc\_experiments.py}.  It has no network dependency and writes all figures and tables from scratch.
+
+\subsection{Approximants and leading profiles}
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.91\textwidth]{assets/fabius_finite_products_frontier/figures/finite_spline_approximants.pdf}
+\caption{The inverse transforms $u_N$ are nonnegative degree-$N-1$ splines with support $[-1+2^{-N},1-2^{-N}]$ and plateau $[-2^{-N},2^{-N}]$.  Their geometric convergence is already visually rapid.}
+\label{p5:fig:approximants}
+\end{figure}
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.91\textwidth]{assets/fabius_finite_products_frontier/figures/scaled_density_error.pdf}
+\caption{The scaled errors $4^N(u_N-u)$ collapse onto the baseline limit $-u''/18$.  The zero pattern at $0$ and $\pm1/2$ is exact at every stage.}
+\label{p5:fig:density-error}
+\end{figure}
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.91\textwidth]{assets/fabius_finite_products_frontier/figures/scaled_stop_loss.pdf}
+\caption{The exact call-potential gaps satisfy $K_N(0)=4^{-N}/18$ and converge after scaling to $u/18$.  The central flatness is inherited from the up-function.}
+\label{p5:fig:stoploss}
+\end{figure}
+
+\subsection{Exact metric checks}
+
+\begin{table}[htbp]
+\centering
+\small
+\caption{FFT verification of two representative exact identities.  The table uses $M=2^{18}$ period-two samples.}
+\label{p5:tab:metric-check}
+\begin{tabular}{@{}rcccccc@{}}
+\toprule
+$N$ & $W_1$ numeric & $W_1$ exact & rel. error & $\max K_N$ numeric & exact & rel. error\\
+\midrule
+2 & $6.944444\times10^{-3}$ & $6.944444\times10^{-3}$ & $2.82e-10$ & $3.472222\times10^{-3}$ & $3.472222\times10^{-3}$ & $1.86e-10$ \\
+3 & $1.736111\times10^{-3}$ & $1.736111\times10^{-3}$ & $2.85e-11$ & $8.680556\times10^{-4}$ & $8.680556\times10^{-4}$ & $1.63e-12$ \\
+4 & $4.340278\times10^{-4}$ & $4.340278\times10^{-4}$ & $5.68e-10$ & $2.170139\times10^{-4}$ & $2.170139\times10^{-4}$ & $8.65e-12$ \\
+5 & $1.085069\times10^{-4}$ & $1.085069\times10^{-4}$ & $1.83e-09$ & $5.425347\times10^{-5}$ & $5.425347\times10^{-5}$ & $9.21e-11$ \\
+6 & $2.712674\times10^{-5}$ & $2.712674\times10^{-5}$ & $1.82e-09$ & $1.356337\times10^{-5}$ & $1.356337\times10^{-5}$ & $1.04e-10$ \\
+7 & $6.781684\times10^{-6}$ & $6.781684\times10^{-6}$ & $1.42e-10$ & $3.390842\times10^{-6}$ & $3.390842\times10^{-6}$ & $3.21e-10$ \\
+8 & $1.695421\times10^{-6}$ & $1.695421\times10^{-6}$ & $5.80e-08$ & $8.477105\times10^{-7}$ & $8.477105\times10^{-7}$ & $5.12e-09$ \\
+9 & $4.238552\times10^{-7}$ & $4.238553\times10^{-7}$ & $1.15e-07$ & $2.119276\times10^{-7}$ & $2.119276\times10^{-7}$ & $2.77e-09$ \\
+10 & $1.059638\times10^{-7}$ & $1.059638\times10^{-7}$ & $2.17e-07$ & $5.298191\times10^{-8}$ & $5.298191\times10^{-8}$ & $1.10e-08$ \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+The largest relative error in the tabulated $W_1$ values is $2.2\times10^{-7}$, occurring at the smallest absolute value $N=10$; the largest stop-loss relative error is $1.1\times10^{-8}$.  The same run numerically returns
+\begin{equation}
+ \int u=1,
+ \qquad
+ \int\abs{u'}=2,
+ \qquad
+ \int\abs{u''}=8
+ \label{p5:eq:diagnostics}
+\end{equation}
+to double precision.  The last identity also follows analytically from $u'(1/2)=-2u(0)=-2$ and the sign pattern of $u''$.
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.88\textwidth]{assets/fabius_finite_products_frontier/figures/exact_metric_rates.pdf}
+\caption{The finite metrics have exact $4^{-N}$ rates, whereas $W_\infty$ has exact rate $2^{-N}$.  This is the first indication of the finite-$p$/$p=\infty$ crossover.}
+\label{p5:fig:metric-rates}
+\end{figure}
+
+\section{Information geometry and finite-order transport frontiers}
+\label{p5:sec:information}
+
+This section separates rigorous monotonicity statements from asymptotic conjectures requiring endpoint-weighted remainder control.
+
+\subsection{Entropy monotonicity and convergence}
+
+For a density $f$, write
+\[
+ \Ent(f)=-\int f\log f,
+ \qquad
+ \Fish(f)=\int\frac{(f')^2}{f},
+\]
+with the usual conventions.
+
+\begin{theorem}[Entropy chain; \newresult]
+The sequence $\Ent(u_N)$ is strictly increasing and
+\begin{equation}
+ \Ent(u_N)\uparrow\Ent(u).
+ \label{p5:eq:entropy-chain}
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+Since $X_{N+1}=X_N+2^{-(N+1)}V_{N+1}$ with an independent nondegenerate summand, the entropy-power inequality gives $\Ent(u_{N+1})>\Ent(u_N)$.  The densities converge in $L^1$, are supported in $[-1,1]$, and satisfy $0\le u_N\le1$ because $u_N$ is a convolution of the unit-height first box with a probability density.  The continuous function $-x\log x$ on $[0,1]$ is uniformly bounded, so convergence in measure plus dominated convergence yields $\Ent(u_N)\to\Ent(u)$.
+\end{proof}
+
+\begin{proposition}[Asymmetric relative entropy; \newresult]
+For every finite $N$,
+\begin{equation}
+ \KL(u\Vert u_N)=+\infty,
+ \qquad
+ \KL(u_N\Vert u)<\infty.
+ \label{p5:eq:KL-asymmetry}
+\end{equation}
+\end{proposition}
+
+\begin{proof}
+The limiting density is strictly positive on $(-1,1)$, while $u_N$ vanishes on the two strips $a_N<\abs x<1$ of positive $u$-mass.  Hence the reverse logarithmic ratio is infinite there.  In the forward direction, $u$ is positive on the compact interior support of $u_N$, and the polynomial vanishing of $u_N$ at its own endpoints makes $u_N\log(u_N/u)$ integrable.
+\end{proof}
+
+\subsection{Fisher information}
+
+Near a support endpoint, the spline formula gives
+\begin{equation}
+ u_N(a_N-y)\asymp y^{N-1},
+ \qquad
+ u_N'(a_N-y)\asymp y^{N-2}.
+ \label{p5:eq:endpoint-power}
+\end{equation}
+Therefore $(u_N')^2/u_N\asymp y^{N-3}$.
+
+\begin{theorem}[Finite-stage Fisher criterion and monotonicity; \newresult]
+\begin{equation}
+ \Fish(u_N)<\infty\quad\Longleftrightarrow\quad N\ge3.
+ \label{p5:eq:fisher-criterion}
+\end{equation}
+For $N\ge3$,
+\begin{equation}
+ \Fish(u_{N+1})\le\Fish(u_N).
+ \label{p5:eq:fisher-monotone}
+\end{equation}
+Moreover $\Fish(u)\le\lim_{N\to\infty}\Fish(u_N)$.
+\end{theorem}
+
+\begin{proof}
+The integrability criterion follows from \eqref{p5:eq:endpoint-power}.  For monotonicity, the score of a convolution is the conditional expectation of the score of the first summand given the sum.  Conditional Jensen therefore decreases its squared $L^2$ norm.  The final inequality is lower semicontinuity of Fisher information under weak convergence.
+\end{proof}
+
+Equality of the limit with $\Fish(u)$ is strongly supported numerically and is included in the conjecture below.
+
+\subsection{Weighted information asymptotics}
+
+Set
+\begin{equation}
+ I=\Fish(u)=\int_{-1}^{1}\frac{u'(x)^2}{u(x)}\dd x,
+ \qquad
+ J=\int_{-1}^{1}\frac{u''(x)^2}{u(x)}\dd x,
+ \label{p5:eq:I-J}
+\end{equation}
+and
+\begin{equation}
+ L=\int_{-1}^{1}u(x)\left((\log u(x))''\right)^2\dd x.
+ \label{p5:eq:L-info}
+\end{equation}
+The FFT computation gives
+\begin{equation}
+ \Ent(u)\approx0.297039912826071,
+ \quad I\approx11.8007105434191,
+ \quad J\approx1619.745753585,
+ \quad L\approx485.548634253.
+ \label{p5:eq:numeric-info-constants}
+\end{equation}
+
+\begin{conjecture}[Information expansion]
+As $N\to\infty$,
+\begin{align}
+ \Ent(u)-\Ent(u_N)
+ &=\frac{4^{-N}}{18}I+\bigO(16^{-N}),
+ \label{p5:eq:entropy-conj}\\
+ \KL(u_N\Vert u)
+ &=\frac{16^{-N}}{648}J+\bigO(64^{-N}),
+ \label{p5:eq:KL-conj}\\
+ \Fish(u_N)
+ &=\Fish(u)+\frac{4^{-N}}9L+\bigO(16^{-N}).
+ \label{p5:eq:fisher-conj}
+\end{align}
+In particular, $\Fish(u_N)\downarrow\Fish(u)$.
+\end{conjecture}
+
+\begin{proofidea}
+Formally insert
+\[
+ u_N=u-\frac{\eps_N^2}{18}u''+\bigO(\eps_N^4)
+\]
+into the entropy, relative-entropy, and Fisher functionals.  The first variations give \eqref{p5:eq:entropy-conj}; the quadratic term of KL gives \eqref{p5:eq:KL-conj}.  For Fisher information, one integration-by-parts reduction turns the first variation into
+\[
+ \frac{\eps_N^2}{9}\int u((\log u)'')^2.
+\]
+The missing rigorous step is a version of \eqref{p5:eq:physical-expansion} in weighted spaces containing inverse powers of $u$.  Uniform $C^r$ control alone is insufficient because $u$ is flat at $\pm1$.  The repository's lower-Lambert endpoint expansion appears strong enough to supply the needed split-domain domination.
+\end{proofidea}
+
+\subsection{Fixed-order Wasserstein asymptotics}
+
+For $1\le p<\infty$, define the score moment
+\begin{equation}
+ J_p=\int_{-1}^{1}\abs{u'(x)}^p u(x)^{1-p}\dd x
+ =\int_0^1\abs{(\log u)'(Q(s))}^p\dd s.
+ \label{p5:eq:Jp}
+\end{equation}
+Flatness makes $J_p$ finite for each fixed $p$, although $J_p^{1/p}\to\infty$ as $p\to\infty$.
+
+\begin{conjecture}[Finite-$p$ transport law]
+For every fixed $1\le p<\infty$,
+\begin{equation}
+ \boxed{
+ W_p(\mu_N,\mu)
+ \sim\frac{4^{-N}}{18}J_p^{1/p}.}
+ \label{p5:eq:Wp-conj}
+\end{equation}
+For $p=1$, this is the proved exact formula because $J_1=\int\abs{u'}=2$.  For $p=2$,
+\begin{equation}
+ W_2(\mu_N,\mu)
+ \sim\frac{4^{-N}}{18}\sqrt{\Fish(u)}.
+ \label{p5:eq:W2-conj}
+\end{equation}
+\end{conjecture}
+
+\begin{proofidea}
+The interior quantile expansion \eqref{p5:eq:quantile-leading} gives
+\[
+ \abs{Q_N(s)-Q(s)}^p
+ \sim\left(\frac{4^{-N}}{18}\right)^p
+ \abs{(\log u)'(Q(s))}^p.
+\]
+Integrating over $s$ gives \eqref{p5:eq:Wp-conj}.  The endpoint layers must again be controlled with the lower-Lambert expansion; fixed $p$ should make their contribution negligible at the $4^{-Np}$ scale.
+\end{proofidea}
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.88\textwidth]{assets/fabius_finite_products_frontier/figures/information_transport_ratios.pdf}
+\caption{Measured values divided by the predicted leading terms in \eqref{p5:eq:entropy-conj}, \eqref{p5:eq:KL-conj}, and \eqref{p5:eq:W2-conj}.  All ratios approach one rapidly.}
+\label{p5:fig:info-ratios}
+\end{figure}
+
+\begin{table}[htbp]
+\centering
+\small
+\caption{Numerical evidence for the information and $W_2$ conjectures.  ``Ratio'' means measured value divided by the displayed leading asymptotic term.}
+\label{p5:tab:information}
+\begin{tabular}{@{}rcccccc@{}}
+\toprule
+$N$ & entropy gap & ratio & $D(u_N\Vert u)$ & ratio & $W_2$ & ratio\\
+\midrule
+3 & $1.057601\times10^{-2}$ & $1.03244285$ & $5.896794\times10^{-4}$ & $0.96628234$ & $3.018666\times10^{-3}$ & $1.01230978$ \\
+4 & $2.580642\times10^{-3}$ & $1.00770183$ & $3.762085\times10^{-5}$ & $0.98636290$ & $7.477592\times10^{-4}$ & $1.00304444$ \\
+5 & $6.414394\times10^{-4}$ & $1.00188982$ & $2.373649\times10^{-6}$ & $0.99573677$ & $1.865139\times10^{-4}$ & $1.00075897$ \\
+6 & $1.601326\times10^{-4}$ & $1.00046967$ & $1.488143\times10^{-7}$ & $0.99883278$ & $4.660192\times10^{-5}$ & $1.00018926$ \\
+7 & $4.001904\times10^{-5}$ & $1.00011722$ & $9.308961\times10^{-9}$ & $0.99969898$ & $1.164881\times10^{-5}$ & $1.00004596$ \\
+8 & $1.000388\times10^{-5}$ & $1.00002929$ & $5.819411\times10^{-10}$ & $0.99992405$ & $2.912086\times10^{-6}$ & $1.00000594$ \\
+9 & $2.500915\times10^{-6}$ & $1.00000732$ & $3.637339\times10^{-11}$ & $0.99998105$ & $7.280062\times10^{-7}$ & $0.99998492$ \\
+10 & $6.252253\times10^{-7}$ & $1.00000183$ & $2.273371\times10^{-12}$ & $0.99999627$ & $1.820097\times10^{-7}$ & $1.00002973$ \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.86\textwidth]{assets/fabius_finite_products_frontier/figures/fisher_information.pdf}
+\caption{Numerical monotone convergence of $\Fish(u_N)$ to $\Fish(u)\approx11.8007105434191$.  The measured first correction agrees with $4^{-N}L/9$.}
+\label{p5:fig:fisher}
+\end{figure}
+
+\subsection{The transport-order crossover near twice the truncation stage}
+
+The exact endpoint result $W_\infty=2^{-N}$ cannot be obtained by sending $p\to\infty$ after taking the fixed-$p$ asymptotic.  The lower-Lambert endpoint law suggests
+\begin{equation}
+ J_p^{1/p}=2^{p/2}\,p^{\theta+\smallo(1)}
+ \times\bigl(\text{bounded log-periodic factor}\bigr)
+ \label{p5:eq:Jp-growth}
+\end{equation}
+for a computable exponent $\theta$.  Balancing
+\[
+ 4^{-N}J_p^{1/p}\asymp2^{-N}
+\]
+then places the transition near
+\begin{equation}
+ p=2N+\bigO(\log N).
+ \label{p5:eq:crossover}
+\end{equation}
+
+\begin{conjecture}[Double-scaling transport crossover]
+There is a nontrivial profile $\mathcal W(\lambda,\vartheta)$ such that, with
+$p=2N+\lambda\log N+\bigO(1)$ and with $\vartheta$ the dyadic lower-Lambert phase,
+\begin{equation}
+ 2^N W_p(\mu_N,\mu)\longrightarrow\mathcal W(\lambda,\vartheta)
+ \label{p5:eq:crossover-profile}
+\end{equation}
+along phase-locked subsequences.  The profile interpolates between the score-moment regime and the endpoint value one.
+\end{conjecture}
+
+The periodic phase is not cosmetic: the repository's endpoint theory proves that it is nonconstant.  Any crossover theorem that averages it away prematurely is likely to miss subsequential structure.
+
+\section{Further deductions and research directions}
+\label{p5:sec:future}
+
+\subsection{Weighted endpoint remainder theorem}
+
+The most immediate target is a theorem of the schematic form
+\begin{equation}
+ \int_{-1}^{1}
+ \frac{\abs{u_N-u+\eps_N^2u''/18}^q}{u^{q-1}}
+ \dd x
+ =\bigO(\eps_N^{4q})
+ \label{p5:eq:weighted-remainder-goal}
+\end{equation}
+for suitable $q$, together with derivative analogues.  A proof should split the interval in the exact lower-Lambert coordinate, use the periodic endpoint transseries in the boundary layer, and use the ordinary $C^r$ expansion in the bulk.  This single technical result would rigorously settle \eqref{p5:eq:entropy-conj}, \eqref{p5:eq:KL-conj}, and fixed-$p$ cases of \eqref{p5:eq:Wp-conj}.
+
+\subsection{Exact Wasserstein values beyond first order}
+
+The one-dimensional optimal coupling is monotone, so
+\begin{equation}
+ W_p^p(\mu_N,\mu)=\int_0^1\abs{Q_N(s)-Q(s)}^p\dd s.
+ \label{p5:eq:Wp-quantile}
+\end{equation}
+The exact dyadic arithmetic of $H_N$ and the inverse-Fabius infrastructure suggest several possibilities:
+
+\begin{enumerate}
+\item exact recurrences or rapidly convergent series for $W_2^2$;
+\item arithmetic information about quadrature approximants to \eqref{p5:eq:Wp-quantile};
+\item bounds obtained from the exact call potential and one-dimensional Sobolev inequalities;
+\item phase-locked asymptotics for $p$ growing with $N$.
+\end{enumerate}
+
+\subsection{Total positivity and variation diminution}
+
+Every finite approximant is a convolution of boxes, hence belongs to the classical P\'olya-frequency/spline setting of Curry and Schoenberg \cite{p5:CurrySchoenberg1966}.  The fixed density crossing suggests a stronger variation-diminishing statement for the deconvolution chain:
+
+\begin{conjecture}[Higher derivative crossing hierarchy]
+For each fixed $r$, the error $u_N^{(r)}-u^{(r)}$ has, for all sufficiently large $N$, the same number and ordering of sign changes as $-u^{(r+2)}$, and the zeros converge with complete $4^{-N}$ expansions.  At special dyadic zeros forced by flatness, some crossings are exact at every stage.
+\end{conjecture}
+
+Such a theorem would turn the all-orders $C^r$ expansion into exact shape information and could yield closed formulas for additional $L^1$ derivative norms.
+
+\subsection{Nonlinear positive acceleration}
+
+The positive-mixture theorem rules out linear convex acceleration, but not nonlinear transformations that preserve nonnegativity and mass.  Promising candidates include:
+
+\begin{enumerate}
+\item exponentiating a Richardson combination of logarithmic characteristic-function tails and then proving positive definiteness;
+\item monotone transport extrapolation at the quantile level;
+\item entropy projection of a signed Richardson density onto the convex set of probability densities with prescribed moments;
+\item call-potential extrapolation followed by projection onto the cone of nonnegative convex-order gaps.
+\end{enumerate}
+
+Any such method must respect the exact support deficit, the fixed crossing at $1/2$, and the zero divisor of the finite Fourier product.
+
+\subsection{Formalization roadmap}
+
+The most Lean-friendly new results are elementary once the probability model is available:
+
+\begin{enumerate}
+\item the conditional formula \eqref{p5:eq:uniform-absolute};
+\item the exact absolute moment \eqref{p5:eq:absolute-moments};
+\item peakedness from one-dimensional interval rearrangement;
+\item the error identity \eqref{p5:eq:error-cdf-identity} and single crossing;
+\item exact $W_1$, Kolmogorov, and TV constants;
+\item the call spline \eqref{p5:eq:put-spline};
+\item exact potential height/area and the positive-mixture no-go theorem.
+\end{enumerate}
+
+The information conjectures should wait until the weighted endpoint calculus is formalized.  The exact metric package, by contrast, uses only finite sums, conditioning, symmetry, monotonicity, and elementary integration.
+
+\section{Compact theorem and formula index}
+\label{p5:sec:index}
+
+\begin{longtable}{@{}p{0.29\textwidth}p{0.61\textwidth}@{}}
+\toprule
+Object & Formula or property\\
+\midrule
+\endfirsthead
+\toprule
+Object & Formula or property\\
+\midrule
+\endhead
+Finite product & $\Phi_N(\xi)=\prod_{j=1}^{N}\sinc(\xi/2^j)$.\\
+Random variable & $X_N=\sum_{j=1}^{N}2^{-j}V_j$, $V_j\sim\operatorname{Unif}[-1,1]$.\\
+Tail & $X=X_N+2^{-N}X'$, $\Phi=\Phi_N\Phi(2^{-N}\cdot)$.\\
+Support/plateau & $\supp u_N=[-1+2^{-N},1-2^{-N}]$, $u_N=1$ on $[-2^{-N},2^{-N}]$.\\
+Knots & $\kappa_{N,m}=-1+(2m+1)/2^N$.\\
+Spline & Equation \eqref{p5:eq:spline-formula}; degree $N-1$, smoothness $C^{N-2}$.\\
+Leading density error & $4^N(u_N-u)\to-u''/18$.\\
+Convex order & $\mu_N\preceq_{\rm cx}\mu_{N+1}\preceq_{\rm cx}\mu$.\\
+Absolute moment & $\E\abs{X_N}=5/18-4^{-N}/9$.\\
+Single crossing & $u_N-u>0$ for $0<\abs x<1/2$, negative for $1/2<\abs x<1$.\\
+$W_1$ & $4^{-N}/9$ for all $N\ge1$.\\
+Kolmogorov & $4^{-N}/9$ for $N\ge2$; $5/72$ for $N=1$.\\
+Total variation & $2\,4^{-N}/9$ for $N\ge2$; $5/36$ for $N=1$.\\
+$W_\infty$ & $2^{-N}$.\\
+Call potential & $K_N=C-C_N\ge0$, exact finite spline from \eqref{p5:eq:put-spline}.\\
+Stop-loss/Zolotarev & Both equal $4^{-N}/18$.\\
+Potential profile & $4^NK_N\to u/18$ in every $C^r$.\\
+Positive mixture & Every finite metric is multiplied by $A(\alpha)=\sum\alpha_j4^{-j}$; no cancellation.\\
+Entropy & $\Ent(u_N)\uparrow\Ent(u)$.\\
+Reverse KL & $\KL(u\Vert u_N)=\infty$.\\
+Fisher & Finite iff $N\ge3$; nonincreasing thereafter.\\
+Conjectured $W_p$ & $W_p\sim4^{-N}J_p^{1/p}/18$ for fixed finite $p$.\\
+\bottomrule
+\end{longtable}
+
+\appendix
+
+\section{The first-stage exception in detail}
+\label{p5:app:first}
+
+The first approximant is
+\[
+ u_1=\mathbf1_{[-1/2,1/2]}.
+\]
+The CDF difference still has one positive maximum at $1/2$, but the reduction through $X_{N-1}$ would require the degenerate stage $X_0=0$.  Directly,
+\[
+ d_1(1/2)=H_1(1/2)-H(1/2)
+ =1-\left(1-\frac14\E\abs X\right)
+ =\frac5{72}.
+\]
+The density crossing then gives
+\[
+ \norm{u_1-u}_1=4d_1(1/2)=\frac5{18}.
+\]
+By contrast, $W_1$ depends on the absolute-moment difference and remains on the universal formula
+\[
+ W_1=\E\abs X-\E\abs{X_1}
+ =\frac5{18}-\frac14=\frac1{36}.
+\]
+The stop-loss value also remains universal:
+\[
+ K_1(0)=\frac12W_1=\frac1{72}.
+\]
+
+\section{Derivation of the Fisher first variation}
+\label{p5:app:fisher}
+
+Let $f_\eta=u+\eta v$ with $\int v=0$.  The first variation of Fisher information is
+\begin{equation}
+ \left.\frac{\dd}{\dd\eta}\Fish(f_\eta)\right|_{\eta=0}
+ =\int\left(\frac{2u'v'}u-\frac{u'^2v}{u^2}\right)\dd x.
+ \label{p5:eq:fisher-variation}
+\end{equation}
+For the finite-product deconvolution, $v=-u''/18$.  Put $s=(\log u)'$.  Since
+\[
+ \frac{u''}{u}=s'+s^2,
+ \qquad
+ \frac{u'''}u=s''+3ss'+s^3,
+\]
+the bracket before the factor $-1/18$ becomes
+\[
+ u\left(2ss''+5s^2s'+s^4\right).
+\]
+Integration by parts gives
+\[
+ \int2uss''=-2\int u\bigl((s')^2+s^2s'\bigr),
+\]
+and
+\[
+ 3\int us^2s'=-\int us^4.
+\]
+The quartic terms cancel, leaving
+\[
+ \int\left(\frac{2u'(-u''')}{u}+\frac{u'^2u''}{u^2}\right)\dd x
+ =2\int u(s')^2\dd x.
+\]
+Multiplication by $\eps_N^2/18$ therefore yields the conjectured first correction $\eps_N^2L/9$ in \eqref{p5:eq:fisher-conj}.
+
+\section{Reproducibility ledger}
+\label{p5:app:repro}
+
+\subsection{Archive contents}
+
+The companion archive contains:
+
+\begin{longtable}{@{}p{0.36\textwidth}p{0.56\textwidth}@{}}
+\toprule
+Path & Purpose\\
+\midrule
+\texttt{finite\_sinc\_frontier.tex} & Complete source of this report.\\
+\texttt{finite\_sinc\_frontier.pdf} & Compiled report.\\
+\texttt{finite\_sinc\_experiments.py} & Standalone, fully commented numerical experiment.\\
+\texttt{figures/*.pdf} & Vector figures included in the report.\\
+\texttt{figures/*.png} & Raster previews of the same figures.\\
+\texttt{data/metric\_verification.csv} & Numerical and exact metric values.\\
+\texttt{data/information\_transport.csv} & Entropy, KL, Fisher, and $W_2$ data.\\
+\texttt{data/reference\_constants.csv} & Computed normalization and information constants.\\
+\texttt{data/verification\_log.txt} & Human-readable diagnostics and maximum errors.\\
+\texttt{README.md} & Commands and dependency notes.\\
+\bottomrule
+\end{longtable}
+
+\subsection{Audited source hashes}
+
+The four directly materialized overlap-critical sources had the following SHA-256 hashes at audit time:
+
+\begin{longtable}{@{}p{0.38\textwidth}p{0.54\textwidth}@{}}
+\toprule
+Source & SHA-256\\
+\midrule
+\nolinkurl{Fabius_Function_and_Rvachev_Up.tex} & \nolinkurl{c2f203778b1889bff22e4839f369c16e50e9ef45799717f6f1357dc1df3f40d1}\\
+\nolinkurl{fabius-frontier-results.tex} & \nolinkurl{32953767492749ce7668a28896e76075ab3ab1f9c42f370c4e31e35638f21857}\\
+\nolinkurl{Fabius_Rvachev_Multiresolution_Representations.tex} & \nolinkurl{832c790e8bd247ea1569c7ef1ac09017a9c083d7c8f5ed17d57035e2aa82175c}\\
+\nolinkurl{Fabius_Dyadic_q_Connections.tex} & \nolinkurl{81a0a911ac7ab28e12c6b87ccaf76ffccaf32e48f873abff18fb7a2d01bcf3e5}\\
+\bottomrule
+\end{longtable}
+
+\subsection{Numerical command}
+
+From the report directory, the complete numerical layer is regenerated by
+\begin{lstlisting}[style=python]
+python finite_sinc_experiments.py --output . --grid-power 18 --max-stage 10
+\end{lstlisting}
+The PDF is then built with
+\begin{lstlisting}[style=python]
+latexmk -lualatex -interaction=nonstopmode -halt-on-error finite_sinc_frontier.tex
+\end{lstlisting}
+
+\begin{thebibliography}{99}
+
+\bibitem{p5:Anderson1955}
+T.~W. Anderson,
+\newblock The integral of a symmetric unimodal function over a symmetric convex set and some probability inequalities,
+\newblock \emph{Proc. Amer. Math. Soc.} \textbf{6} (1955), 170--176.
+\newblock doi:10.1090/S0002-9939-1955-0069229-1.
+
+\bibitem{p5:Arias2017}
+J. Arias de Reyna,
+\newblock An infinitely differentiable function with compact support: definition and properties,
+\newblock arXiv:1702.05442 (2017); English translation of \emph{Rev. Real Acad. Ciencias} \textbf{76} (1982), 21--38.
+
+\bibitem{p5:AriasArithmetic}
+J. Arias de Reyna,
+\newblock Arithmetic of the Fabius function,
+\newblock \emph{Integers} \textbf{18} (2018), A51; arXiv:1702.06487.
+
+\bibitem{p5:deBoor}
+C. de Boor,
+\newblock \emph{A Practical Guide to Splines}, revised edition,
+\newblock Springer, 2001.
+
+\bibitem{p5:CurrySchoenberg1966}
+H.~B. Curry and I.~J. Schoenberg,
+\newblock On P\'olya frequency functions IV: the fundamental spline functions and their limits,
+\newblock \emph{J. Analyse Math.} \textbf{17} (1966), 71--107.
+\newblock doi:10.1007/BF02788653.
+
+\bibitem{p5:Fabius1966}
+J. Fabius,
+\newblock A probabilistic example of a nowhere analytic $C^\infty$-function,
+\newblock \emph{Z. Wahrscheinlichkeitstheorie verw. Gebiete} \textbf{5} (1966), 173--174.
+\newblock doi:10.1007/BF00536652.
+
+\bibitem{p5:GasperRahman}
+G. Gasper and M. Rahman,
+\newblock \emph{Basic Hypergeometric Series}, second edition,
+\newblock Cambridge University Press, 2004.
+
+\bibitem{p5:JessenWintner1935}
+B. Jessen and A. Wintner,
+\newblock Distribution functions and the Riemann zeta function,
+\newblock \emph{Trans. Amer. Math. Soc.} \textbf{38} (1935), 48--88.
+\newblock doi:10.1090/S0002-9947-1935-1501802-5.
+
+\bibitem{p5:ShakedShanthikumar}
+M. Shaked and J.~G. Shanthikumar,
+\newblock \emph{Stochastic Orders},
+\newblock Springer, 2007.
+
+\bibitem{p5:Stam1959}
+A.~J. Stam,
+\newblock Some inequalities satisfied by the quantities of information of Fisher and Shannon,
+\newblock \emph{Information and Control} \textbf{2} (1959), 101--112.
+\newblock doi:10.1016/S0019-9958(59)90348-1.
+
+\bibitem{p5:Villani}
+C. Villani,
+\newblock \emph{Topics in Optimal Transportation},
+\newblock Graduate Studies in Mathematics 58, American Mathematical Society, 2003.
+
+\bibitem{p5:Zolotarev}
+V.~M. Zolotarev,
+\newblock \emph{Modern Theory of Summation of Random Variables},
+\newblock VSP, Utrecht, 1997.
+
+\bibitem{p5:ProveItPrimary}
+V. Reshetnikov,
+\newblock The Fabius function and Rvachev's up-function,
+\newblock source in the \texttt{ProveIt} repository, \repo{}, commit \texttt{21758aba2f8e200342be2a7b321247dac80efc00}.
+
+\bibitem{p5:ProveItFrontiers}
+V. Reshetnikov et al.,
+\newblock Non-formalized research frontiers and thematic draft consolidations for the Fabius--Rvachev system,
+\newblock \texttt{ProveIt} repository, \repo{}/\texttt{non-formalized-research-frontiers}, same commit.
 
 \end{thebibliography}
 
