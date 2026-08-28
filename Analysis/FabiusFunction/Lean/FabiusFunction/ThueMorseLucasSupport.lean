@@ -1,4 +1,5 @@
 import FabiusFunction.Parity
+import FabiusFunction.ThueMorseBitSupport
 import FabiusFunction.ThueMorseBooleanCube
 import FabiusFunction.ThueMorseMoments
 import FabiusFunction.ThueMorseSparseProuhet
@@ -13,16 +14,10 @@ positions of the `n`-th Pascal row with the Boolean cube of the bit
 support of `n`, giving the atlas's signed Pascal-support product and the
 balance corollary.
 
-* `testBit_sum_two_pow` — for **any** finite set `T` of bit positions,
-  `(∑_{j∈T} 2^j).testBit i = decide (i ∈ T)`: sums of distinct 2-powers
-  have exactly the prescribed binary support.  (No bound on `T` is
-  needed.)
-* `bitSupport_sum_two_pow` / `sum_two_pow_injective` — the encoding
-  `T ↦ ∑_{j∈T} 2^j` returns its own bit support and is globally
-  injective.  Both moved here from `ThueMorseBooleanMobius`, a
-  descendant of this module, which still sees them through its import.
-* `bitSupport_eq_empty_iff` — the bit support is empty exactly at
-  `n = 0`.
+The imported `ThueMorseBitSupport` foundation proves that finite sets of bit
+positions and sums of distinct two-powers are mutually inverse, globally and
+on bounded dyadic blocks.  This module starts from that dictionary and adds:
+
 * `odd_choose_iff_testBit` / `odd_choose_iff_land` /
   `odd_choose_iff_bitSupport_subset` — **Lucas's criterion**: `C(n,k)` is
   odd iff every set bit of `k` is a set bit of `n`, iff `k &&& n = k`,
@@ -58,7 +53,7 @@ open Finset
 
 namespace Fabius
 
-/-! ### Binary support of sums of distinct two-powers -/
+/-! ### Bit recursions for Lucas's criterion -/
 
 private theorem testBit_two_mul_zero (a : ℕ) : (2 * a).testBit 0 = false := by
   rw [Nat.testBit_zero]
@@ -76,92 +71,6 @@ private theorem testBit_two_mul_succ (a j : ℕ) :
 private theorem testBit_two_mul_add_one_succ (a j : ℕ) :
     (2 * a + 1).testBit (j + 1) = a.testBit j := by
   rw [Nat.testBit_succ, show (2 * a + 1) / 2 = a by omega]
-
-/-- Sums of distinct powers of two have exactly the prescribed binary
-support: `(∑_{j∈T} 2^j).testBit i = decide (i ∈ T)`, for every finite set
-`T` of bit positions. -/
-theorem testBit_sum_two_pow (T : Finset ℕ) (i : ℕ) :
-    (∑ j ∈ T, 2 ^ j).testBit i = decide (i ∈ T) := by
-  induction i generalizing T with
-  | zero =>
-      rw [Nat.testBit_zero, decide_eq_decide]
-      by_cases h0 : 0 ∈ T
-      · rw [← Finset.add_sum_erase _ _ h0, pow_zero]
-        obtain ⟨c, hc⟩ : 2 ∣ ∑ j ∈ T.erase 0, 2 ^ j :=
-          Finset.dvd_sum fun j hj => dvd_pow_self 2 (Finset.ne_of_mem_erase hj)
-        rw [hc]
-        constructor
-        · intro _; exact h0
-        · intro _; omega
-      · obtain ⟨c, hc⟩ : 2 ∣ ∑ j ∈ T, 2 ^ j :=
-          Finset.dvd_sum fun j hj =>
-            dvd_pow_self 2 (fun heq => h0 (heq ▸ hj))
-        rw [hc]
-        constructor
-        · intro h; omega
-        · intro h; exact absurd h h0
-  | succ i ih =>
-      have hsplit : ∑ j ∈ T, 2 ^ j =
-          (if 0 ∈ T then 1 else 0) +
-            2 * ∑ j ∈ (T.erase 0).image (· - 1), 2 ^ j := by
-        have himg : ∑ j ∈ (T.erase 0).image (· - 1), 2 ^ j =
-            ∑ j ∈ T.erase 0, 2 ^ (j - 1) := by
-          refine Finset.sum_image fun a ha b hb h => ?_
-          have ha1 : a ≠ 0 := Finset.ne_of_mem_erase ha
-          have hb1 : b ≠ 0 := Finset.ne_of_mem_erase hb
-          omega
-        rw [himg, Finset.mul_sum]
-        have hterm : ∀ j ∈ T.erase 0, 2 * 2 ^ (j - 1) = 2 ^ j := by
-          intro j hj
-          have hj1 : j ≠ 0 := Finset.ne_of_mem_erase hj
-          rw [← pow_succ']
-          congr 1
-          omega
-        rw [Finset.sum_congr rfl hterm]
-        by_cases h0 : 0 ∈ T
-        · rw [if_pos h0, ← Finset.add_sum_erase _ _ h0, pow_zero]
-        · rw [if_neg h0, zero_add, Finset.erase_eq_of_notMem h0]
-      rw [Nat.testBit_succ, hsplit,
-        show ((if 0 ∈ T then 1 else 0) +
-          2 * ∑ j ∈ (T.erase 0).image (· - 1), 2 ^ j) / 2 =
-          ∑ j ∈ (T.erase 0).image (· - 1), 2 ^ j by split_ifs <;> omega,
-        ih, decide_eq_decide]
-      simp only [Finset.mem_image, Finset.mem_erase]
-      constructor
-      · rintro ⟨a, ⟨ha0, haT⟩, ha⟩
-        have : a = i + 1 := by omega
-        rwa [← this]
-      · intro hiT
-        exact ⟨i + 1, ⟨by omega, hiT⟩, by omega⟩
-
-/-- The binary support of an encoded subset is the subset itself. -/
-theorem bitSupport_sum_two_pow (T : Finset ℕ) :
-    bitSupport (∑ j ∈ T, 2 ^ j) = T := by
-  ext j
-  rw [mem_bitSupport, testBit_sum_two_pow]
-  simp
-
-/-- The two-power encoding of finite bit sets is globally injective. -/
-theorem sum_two_pow_injective :
-    Function.Injective (fun T : Finset ℕ => ∑ j ∈ T, 2 ^ j) := by
-  intro T S h
-  ext j
-  have := congrArg (fun x => x.testBit j) h
-  simpa [testBit_sum_two_pow, decide_eq_decide] using this
-
-/-- The bit support is empty exactly at `n = 0`: the encoding of the
-empty set is `0`, and `0` has no set bits. -/
-theorem bitSupport_eq_empty_iff (n : ℕ) :
-    bitSupport n = ∅ ↔ n = 0 := by
-  constructor
-  · intro h
-    have hs := sum_two_pow_bitSupport n
-    rw [h, Finset.sum_empty] at hs
-    omega
-  · rintro rfl
-    refine Finset.eq_empty_of_forall_notMem fun j hj => ?_
-    rw [mem_bitSupport, Nat.zero_testBit] at hj
-    exact Bool.noConfusion hj
 
 /-! ### Lucas's criterion -/
 

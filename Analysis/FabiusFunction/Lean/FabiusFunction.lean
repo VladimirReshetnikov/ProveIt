@@ -15,11 +15,14 @@ import FabiusFunction.PaperKFoldThueMorse
 import FabiusFunction.FinitePolynomialFunctional
 import FabiusFunction.CompleteHomogeneous
 import FabiusFunction.FiniteQBinomialCore
+import FabiusFunction.GeometricQBinomialLagrange
 import FabiusFunction.WeightedScaleMultiplicity
 import FabiusFunction.MomentCumulantAlgebra
 import FabiusFunction.SaddleLogProductAlgebra
 import FabiusFunction.CenteredMomentCumulants
 import FabiusFunction.SinhDivBernoulliLog
+import FabiusFunction.PolynomialExpectationCumulant
+import FabiusFunction.ThueMorseBitSupport
 import FabiusFunction.ThueMorseBooleanCube
 import FabiusFunction.ThueMorseValuation
 import FabiusFunction.DyadicZeroMultiplicity
@@ -47,6 +50,7 @@ import FabiusFunction.ThueMorseFourier
 import FabiusFunction.ThueMorseSineProduct
 import FabiusFunction.ThueMorseFourierInversion
 import FabiusFunction.HalfIntegerOddDFT
+import FabiusFunction.SummableCyclicAlias
 import FabiusFunction.ThueMorseParseval
 import FabiusFunction.ThueMorseComplexity
 import FabiusFunction.ThueMorseArithmeticFilter
@@ -56,7 +60,6 @@ import FabiusFunction.ThueMorseHessenberg
 import FabiusFunction.ExponentialPartition
 import FabiusFunction.ThueMorsePartition
 import FabiusFunction.ExponentialBell
-import FabiusFunction.EndpointTransferPolynomials
 import FabiusFunction.ThueMorseIntegerLift
 import FabiusFunction.ThueMorseBoundaryFlatness
 import FabiusFunction.ThueMorseDirichlet

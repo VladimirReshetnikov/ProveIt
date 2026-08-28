@@ -1,8 +1,8 @@
 import FabiusFunction.FinitePolynomialFunctional
+import FabiusFunction.ThueMorseBitSupport
 import FabiusFunction.ThueMorseBooleanCube
 import Mathlib.Algebra.BigOperators.Group.Finset.Powerset
 import Mathlib.Algebra.Polynomial.Taylor
-import Mathlib.Data.Nat.BitIndices
 
 /-!
 # Sparse Prouhet identities: signed powerset sums annihilate polynomials
@@ -37,17 +37,15 @@ strictly more general than the atlas, whose steps are the powers of two.
   polynomial form of the same block cancellation.  It includes the true
   boundary case `m = 0`, where the zero polynomial is the unique polynomial
   of degree below zero.
-* `bitSupport` — the set of one-bit positions of `n`, with its dictionary
-  (`mem`, reconstruction `∑ 2^j = n`, cardinality `= binaryWeight n`), and
-  the **sparse Prouhet theorems** on the submasks of an arbitrary `n`:
+* The imported canonical `bitSupport` dictionary parametrizes the
+  **sparse Prouhet theorems** on the submasks of an arbitrary `n`:
   cancellation below `w(n)` and the sharp moment
   `(-1)^{w(n)} w(n)! 2^(β(n)) h^(w(n))`, where `β(n)` is the sum of the
   one-bit positions.
 * `sum_submask_neg_one_pow_eval_of_degree_lt` — the degree-valued sparse
   cancellation, whose boundary case at `n = 0` includes the zero polynomial.
-* `bitSupport_eq_toFinset_bitIndices` — the bridge identifying `bitSupport`
-  with Mathlib's `Nat.bitIndices`; the whole bit dictionary above is a
-  corollary of it, so no bit recursion is redone here.
+  The bridge to Mathlib's `Nat.bitIndices`, reconstruction, and cardinality
+  identities live upstream in `ThueMorseBitSupport`.
 
 The induction is the atlas's proof made exact: inserting one index into
 `S` replaces `p` by `p - taylor (w a) p`, whose degree drops; Mathlib's
@@ -425,66 +423,10 @@ theorem sum_thueMorseSign_mul_affine_pow_card {R : Type*} [CommRing R]
     sum_thueMorseSign_mul_affine_eval_eq_coeff_card
       m (Polynomial.X ^ m : R[X]) (Polynomial.natDegree_X_pow_le m) x h
 
-/-! ## Bit supports and sparse Prouhet identities -/
+/-! ## Sparse Prouhet identities on bit supports -/
 
-/-- The set of one-bit positions of `n`.  Every set position is at most
-`n`, so the window `range (n+1)` sees all of them. -/
-def bitSupport (n : ℕ) : Finset ℕ :=
-  (range (n + 1)).filter (fun j => n.testBit j)
-
-/-- Membership in the bit support is exactly the bit test.  The window
-`range (n+1)` is wide enough because a set bit at position `j` forces
-`2^j ≤ n` (Mathlib's `Nat.two_pow_le_of_mem_bitIndices`). -/
-theorem mem_bitSupport {n j : ℕ} :
-    j ∈ bitSupport n ↔ n.testBit j = true := by
-  rw [bitSupport, Finset.mem_filter, Finset.mem_range]
-  refine ⟨fun h => h.2, fun h => ⟨?_, h⟩⟩
-  have h2 : 2 ^ j ≤ n :=
-    Nat.two_pow_le_of_mem_bitIndices (Nat.mem_bitIndices.mpr h)
-  have hj : j < 2 ^ j := Nat.lt_two_pow_self
-  omega
-
-/-- **Bridge to Mathlib.**  The bit support is the finset of Mathlib's
-`Nat.bitIndices`, the sorted list of one-bit positions.  Every entry of
-the bit dictionary below is read off from this identification. -/
-theorem bitSupport_eq_toFinset_bitIndices (n : ℕ) :
-    bitSupport n = n.bitIndices.toFinset := by
-  ext j
-  simp [mem_bitSupport]
-
-/-- Shifting a list of positions up by one shifts the finset it spans. -/
-private theorem toFinset_map_succ (l : List ℕ) :
-    (l.map (· + 1)).toFinset = l.toFinset.image (· + 1) := by
-  ext j
-  simp
-
-/-- The bit support of an even number: shift every position up. -/
-theorem bitSupport_two_mul (k : ℕ) :
-    bitSupport (2 * k) = (bitSupport k).image (· + 1) := by
-  rw [bitSupport_eq_toFinset_bitIndices, bitSupport_eq_toFinset_bitIndices,
-    Nat.bitIndices_two_mul, toFinset_map_succ]
-
-/-- The bit support of an odd number: position zero plus the shifts. -/
-theorem bitSupport_two_mul_add_one (k : ℕ) :
-    bitSupport (2 * k + 1) = insert 0 ((bitSupport k).image (· + 1)) := by
-  rw [bitSupport_eq_toFinset_bitIndices, bitSupport_eq_toFinset_bitIndices,
-    Nat.bitIndices_two_mul_add_one, List.toFinset_cons, toFinset_map_succ]
-
-/-- **Reconstruction.**  The one-bit positions reconstruct the number:
-`∑_{j ∈ bitSupport n} 2^j = n`. -/
-theorem sum_two_pow_bitSupport (n : ℕ) :
-    ∑ j ∈ bitSupport n, 2 ^ j = n := by
-  rw [bitSupport_eq_toFinset_bitIndices,
-    List.sum_toFinset _ Nat.bitIndices_nodup,
-    Nat.sum_map_two_pow_bitIndices]
-
-/-- The bit support has `binaryWeight n` elements. -/
-theorem card_bitSupport (n : ℕ) :
-    (bitSupport n).card = binaryWeight n := by
-  have hsub : bitSupport n ⊆ range (n + 1) := Finset.filter_subset _ _
-  have hw := binaryWeight_sum_two_pow hsub
-  rw [sum_two_pow_bitSupport] at hw
-  omega
+/- The canonical bit-support dictionary, including reconstruction and the
+cardinality identity, is imported directly from `ThueMorseBitSupport`. -/
 
 /-- **Sparse Prouhet cancellation.**  The signed sum over the submasks of
 `n` (parametrized by the subsets of its bit support) annihilates

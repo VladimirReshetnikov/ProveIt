@@ -163,7 +163,7 @@ Finally, the reciprocal infinite sinc product yields an all-orders expansion of 
 q\text{-binomial acceleration}.
 \end{gathered}
 \]
-All proofs are given in ordinary analysis, with exact rational and high-precision checks.  The results are new relative to the audited corpus; they are not claimed here to be already Lean-formalized or to have undergone external peer review.
+All proofs are given in ordinary analysis, with exact rational and high-precision checks.  The results are new relative to the audited corpus.  The finite geometric \(q\)-binomial/Lagrange bridge identified below now has matching Lean declarations; the analytic approximation, error, remainder, conditioning, and convergence theorems are not thereby claimed formalized or externally peer reviewed.
 \end{abstract}
 
 \tableofcontents
@@ -216,7 +216,7 @@ Those two sentences are the main launch point of this report.  The first becomes
 
 \subsection{Status discipline}
 
-\statusbox{\textbf{Mathematical status.}  Every displayed frontier theorem below is accompanied by a proof or by an explicit reduction to standard Gaussian/Lobatto quadrature facts.  The low-order constants were independently checked by exact rational arithmetic or high-precision evaluation.  The results are presented as new relative to the audited \texttt{ProveIt} corpus.  A broad literature search did not locate these Fabius-specific formulas, but this report does not assert an exhaustive priority claim.  None of the new theorems is labelled as Lean-formalized unless and until a matching declaration exists in the trusted source tree.}
+\statusbox{\textbf{Mathematical status.}  Every displayed frontier theorem below is accompanied by a proof or by an explicit reduction to standard Gaussian/Lobatto quadrature facts.  The low-order constants were independently checked by exact rational arithmetic or high-precision evaluation.  The results are presented as new relative to the audited \texttt{ProveIt} corpus.  A broad literature search did not locate these Fabius-specific formulas, but this report does not assert an exhaustive priority claim.  Only the finite algebraic bridge explicitly cross-referenced to matching declarations in \path{GeometricQBinomialLagrange.lean} is labelled Lean-formalized; the report's analytic theorem families remain frontier.}
 
 \subsection{Executive list of new results}
 
@@ -1384,6 +1384,36 @@ Interpolate $f(x)=x^s$ at the $s$ nodes $q^j$.  Since $f(0)=0$, the interpolatio
 Rearranging proves the identity.
 \end{proof}
 
+\paragraph{Formal crosswalk.}
+Set \(r=s-1\) and \(k=j\).  The compiled module
+\path{GeometricQBinomialLagrange.lean} defines a numerator that is zero
+outside \(k\le r\) and, inside that range, is exactly
+\( (-1)^{r-k}q^{\binom{r-k+1}{2}}
+\texttt{gaussianBinomial}\ q\ r\ (r-k)\).
+Its \texttt{reversed\_finite\_qBinomial\_theorem} proves the
+denominator-free identity with product
+\(\prod_{h<r}(z-q^{h+1})\).  If \(k\mapsto q^k\) is injective on
+\(\{0,\ldots,r\}\),
+\texttt{geometricLagrangeWeight\_eq\_gaussianBinomial\_div} identifies
+the normalized numerator with the Lagrange weight, and
+\texttt{sum\_geometricLagrangeWeight\_mul\_pow\_eq\_gaussianBinomial}
+proves for every \(d>0\)
+\[
+ \sum_{k=0}^{r}\lambda_{s,k}(q)(q^k)^d
+ =(-1)^r q^{r(r+1)/2}
+   \texttt{gaussianBinomial}\ q\ (d-1)\ r.
+\]
+This discharges the finite weight and all positive residual-moment
+obligations generically, hence also at \(q=1/4\) whenever the node
+injectivity side condition is supplied.  The literal formal coefficient is
+reverse-indexed, \texttt{gaussianBinomial} \(q\ r\ (r-k)\); the displayed
+\(\qbinom{r}{k}{q}\) in \eqref{eq:lambda-qbinomial} must not be read as an
+implicit use of a generic symmetry theorem.  At \(q=1/2\), the existing
+\texttt{discreteLimitWeight\_eq\_geometricLagrangeWeight} supplies the
+half-base Toeplitz specialization.  None of this proves
+\cref{thm:q-richardson}: its analytic expansion, weighted remainder, and
+convergence assertions remain frontier.
+
 \subsection{Accelerated combinations}
 
 Define the signed combination
@@ -1752,10 +1782,13 @@ These cases can be formalized before a fully general quadrature library is compl
 \item Define the formal reciprocal coefficients $b_j$ from the power series of $1/\Phi$.
 \item Prove the logarithmic coefficient formula \eqref{eq:gamma-k} from Euler's sine product.
 \item Establish the fixed-order Fourier majorant used in \cref{thm:prefix-expansion}.
-\item Formalize geometric Lagrange interpolation and derive \eqref{eq:lambda-qbinomial}.
+\item Use the compiled \path{GeometricQBinomialLagrange.lean} bridge for the geometric Lagrange weights and all positive residual moments.
 \item Combine the two finite expansions to prove \cref{thm:q-richardson}.
 \end{enumerate}
-The $q$-binomial identity is finite and should fit the repository's existing half-base Gaussian interpolation machinery after replacing the base by $1/4$.
+The finite algebraic step is now available at arbitrary ratio under node
+injectivity, including \(q=1/4\); the remaining step is the analytic
+combination with controlled remainders.  Its \(q=1/2\) specialization is the
+existing half-base Toeplitz bridge.
 
 \section{Open problems and next frontier}
 \label{sec:open}
