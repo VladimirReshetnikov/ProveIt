@@ -45,8 +45,7 @@ theorem iteratedDeriv_rvachevFourier_two_pow_int_eq_zero
     (2 ^ m * ℓ) (mul_ne_zero (pow_ne_zero m two_ne_zero) hℓ) ?_
   have habs : (2 ^ m * ℓ : ℤ).natAbs = 2 ^ m * ℓ.natAbs := by
     rw [Int.natAbs_mul]
-    congr 1
-    simp
+    simp [Int.natAbs_pow]
   rw [habs]
   have hval : padicValNat 2 (2 ^ m * ℓ.natAbs) =
       m + padicValNat 2 ℓ.natAbs := by
@@ -68,7 +67,7 @@ theorem fourier_monomialRvachevSchwartz_int_eq_zero
     at hkey
   have hpt : ((((ℓ : ℝ) / ((2 : ℝ) ^ m)⁻¹ : ℝ)) : ℂ) =
       (2 : ℂ) ^ m * (ℓ : ℂ) := by
-    rw [div_inv_eq]
+    rw [division_def, inv_inv]
     push_cast
     ring
   rw [hpt, iteratedDeriv_rvachevFourier_two_pow_int_eq_zero F hF m hℓ hp,
