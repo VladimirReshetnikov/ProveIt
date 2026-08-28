@@ -57,4 +57,10 @@ wrappers, the separate higher-kernel integral identity, moment/Laurent and
 Laplace/Fourier expansions, boundary/Plemelj theory, generalized complex
 order, and Jacobi/Padé theory remain open.
 
+A new separate member arrived 2026-08-28 and stays unmerged until
+deliberately folded into the volume:
+`Fabius_Integral_Transforms_Report` (*Integral and Transform Calculus
+for the Fabius–Rvachev–Quantile System*) — distinct from the
+same-named 2026-08-27 report already absorbed as Part IV.
+
 See [`../MANIFEST.md`](../MANIFEST.md) for titles and the previous paths.

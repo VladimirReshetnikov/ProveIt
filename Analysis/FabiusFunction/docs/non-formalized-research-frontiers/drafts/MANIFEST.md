@@ -66,6 +66,7 @@ sources *as* independent documents (see the group README).
 | Directory | Document | Previous path |
 | --- | --- | --- |
 | `Integration_and_Transform_Frontiers/` | *Integration and Transform Frontiers for the Fabius–Rvachev System* (338 pp, 11 parts) — consolidation (2026-08-28) of the former `Fabius_Antiderivatives_Report/`, `Fabius_Monomial_Antiderivatives_Report/`, `fabius_monomial_antiderivatives_report-2/`, `Fabius_Integral_Transforms_Report/`, `Fabius_Integral_and_Transform_Frontiers/`, `fabius_integral_frontiers_bundle/`, `Fabius_Rvachev_Integral_Frontiers/`, `Fabius_Integral_Transform_Fractional_Frontiers/`, `Fabius_Rvachev_Fractional_Integral_Report/`, `Fabius_Fractional_Integral_Transform_Frontiers/`, and `fabius_fractional_transform_frontiers_bundle/` (part order and former titles in the group README); assets under `assets/`, provenance with SHA-256 in the document | absorbed drafts deleted; git history is the archive |
+| `Fabius_Integral_Transforms_Report/` | *Integral and Transform Calculus for the Fabius–Rvachev–Quantile System* (order-statistic spacings, beta–quantile lattices, dyadic resolvents, sinc energies, beyond-all-orders localization) — a new arrival, distinct from the same-named 2026-08-27 report absorbed into the volume as Part IV | `drafts/incoming/…zip` (unpacked 2026-08-28, second wave) |
 
 ## inverse-and-sampling — `inverse-and-sampling/`
 
@@ -80,6 +81,11 @@ Series and orthogonal-expansion representations of the up-function.
 | Directory | Document | Previous path |
 | --- | --- | --- |
 | `Representation_Frontiers/` | *Representation Frontiers for the Fabius–Rvachev System* (108 pp) — consolidation (2026-08-28) of the former `Fabius_Rvachev_Representation_Frontiers/` (*Fabius–Rvachev Representation Frontiers*: Jacobi coefficients, exact even moments, resolvent and logarithmic-derivative identities), `fabius_rvachev_representation_frontier/` (*Representation Atlas and New Analytic Bridges*), and `Fabius_Rvachev_Multiresolution_Report/` (*Dyadic Multiresolution and Product–Series Representations*); assets under `assets/`, provenance with SHA-256 in the document | absorbed drafts deleted (all three unpacked from `drafts/incoming/…zip` on 2026-08-28); git history is the archive |
+| `Fabius_Rvachev_Multiresolution_Representations/` | *Dyadic Multiresolution and Sampling Frontiers for the Fabius–Rvachev System* (exact rational wavelets, odd-lattice reconstruction, binomial layers, Bessel expansions, accelerated sinc energies) | `drafts/incoming/…zip` (unpacked 2026-08-28, second wave) |
+| `Fabius_Rvachev_Polyphase_Representation_Report/` | *Polyphase, Operator, and Jump-Measure Representations of the Fabius–Rvachev System* (sparse-scale sinc products, multidimensional section integrals, new Thue–Morse formulas) | `drafts/incoming/…zip` (unpacked 2026-08-28, second wave) |
+| `Fabius_Rvachev_Thue_Morse_Representation_Frontiers/` | *Sampling, Padé, Mellin, Resolvent, and Product–Integral Representations of the Fabius–Rvachev–Thue–Morse System* (audited atlas with second-wave frontier results) | `drafts/incoming/…zip` (unpacked 2026-08-28, second wave) |
+| `rvachev_fabius_representations_2026/` | *Unit-Circle, Bessel, and Spectral–Monodromy Representations* | `drafts/incoming/…zip` (unpacked 2026-08-28, second wave) |
+| `fabius_rvachev_report_package/` | *Integral, Series, Product, and Operator Representations for the Fabius–Rvachev System* (recursive corpus audit; Fredholm, exterior-power, total-positivity, heat-kernel, and Mellin–Barnes bridges) | `drafts/incoming/…zip` (unpacked 2026-08-28, second wave) |
 
 ## frontier-compilations — `frontier-compilations/`
 

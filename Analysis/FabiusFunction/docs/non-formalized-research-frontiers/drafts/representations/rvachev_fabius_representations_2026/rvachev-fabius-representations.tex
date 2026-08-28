@@ -1,0 +1,1851 @@
+\documentclass[11pt,oneside]{article}
+
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage{microtype}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools,bm}
+\usepackage{booktabs,longtable,tabularx,array,multirow}
+\usepackage{graphicx}
+\usepackage[dvipsnames]{xcolor}
+\usepackage{enumitem}
+\usepackage{fancyhdr}
+\usepackage{titlesec}
+\usepackage[most]{tcolorbox}
+\usepackage{listings}
+\usepackage{xurl}
+\usepackage{hyperref}
+\usepackage[capitalize,noabbrev]{cleveref}
+
+\hypersetup{
+  colorlinks=true,
+  linkcolor=MidnightBlue,
+  citecolor=ForestGreen,
+  urlcolor=BrickRed,
+  pdftitle={Unit-circle, Bessel, and spectral-monodromy representations of the Rvachev and Fabius functions},
+  pdfauthor={Research report}
+}
+
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0.55em}
+\setlength{\emergencystretch}{3em}
+\allowdisplaybreaks
+\renewcommand{\arraystretch}{1.16}
+\setlist{nosep,leftmargin=1.6em}
+
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{Rvachev--Fabius representations}
+\fancyhead[R]{\thepage}
+\renewcommand{\headrulewidth}{0.4pt}
+
+\titleformat{\section}{\Large\bfseries\color{MidnightBlue}}{\thesection}{0.7em}{}
+\titleformat{\subsection}{\large\bfseries\color{MidnightBlue}}{\thesubsection}{0.7em}{}
+\titleformat{\subsubsection}{\normalsize\bfseries}{\thesubsubsection}{0.7em}{}
+
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{conjecture}[theorem]{Conjecture}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{remark}[theorem]{Remark}
+\newtheorem{example}[theorem]{Example}
+
+\newtcolorbox{baselinebox}{
+  breakable,colback=gray!5,colframe=gray!55!black,
+  title=Repository baseline,fonttitle=\bfseries}
+\newtcolorbox{novelbox}{
+  breakable,colback=blue!3,colframe=MidnightBlue,
+  title=Repo-relative new result,fonttitle=\bfseries}
+\newtcolorbox{statusbox}{
+  breakable,colback=green!3,colframe=ForestGreen,
+  title=Status and reproducibility,fonttitle=\bfseries}
+\newtcolorbox{conjecturebox}{
+  breakable,colback=orange!5,colframe=BurntOrange,
+  title=Conjectural frontier,fonttitle=\bfseries}
+
+\newcommand{\Up}{\operatorname{up}}
+\newcommand{\sincpi}{\operatorname{sinc}_{\!\pi}}
+\newcommand{\dd}{\,\mathrm d}
+\newcommand{\ee}{\mathrm e}
+\newcommand{\ii}{\mathrm i}
+\newcommand{\E}{\mathbb E}
+\newcommand{\Pp}{\mathbb P}
+\newcommand{\N}{\mathbb N}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\D}{\mathbb D}
+\newcommand{\T}{\mathbb T}
+\newcommand{\Res}{\operatorname*{Res}}
+\newcommand{\PV}{\operatorname{PV}}
+\newcommand{\Log}{\operatorname{Log}}
+\newcommand{\sgn}{\operatorname{sgn}}
+\newcommand{\vTwo}{\nu_2}
+\newcommand{\Jouk}{\mathcal J}
+\newcommand{\CMV}{\mathcal C}
+\newcommand{\repo}{\textsc{ProveIt}}
+
+\lstset{
+  basicstyle=\ttfamily\small,
+  breaklines=true,
+  frame=single,
+  columns=fullflexible,
+  showstringspaces=false,
+  keywordstyle=\color{MidnightBlue},
+  commentstyle=\color{ForestGreen}
+}
+
+\title{\textbf{Unit-Circle, Bessel, and Spectral--Monodromy Representations}\\[0.3em]
+\large A comprehensive atlas for the Rvachev and Fabius functions, their Fourier images, and the Thue--Morse sequence}
+\author{Research report}
+\date{28 August 2026}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+This report audits the mathematical \LaTeX{} corpus under
+\url{https://github.com/VladimirReshetnikov/ProveIt/tree/main/Analysis/FabiusFunction/docs},
+including its subdirectories, source inventories, historical snapshots, imported papers,
+and living frontier reports. It first consolidates the repository's established
+probabilistic, convolutional, spline, Fourier, product, moment, resolvent, continued-fraction,
+multiresolution, integral-transform, and inverse-function representations. It then develops
+a repo-relative new coordinate system based on the probability--Chebyshev moments
+\[
+ c_n=\int_{-1}^{1}T_n(x)\Up(x)\dd x.
+\]
+These moments lift the Rvachev probability measure to a symmetric probability measure on the
+unit circle. The lift yields an exact Carath\'eodory function, a Joukowski representation of
+the Cauchy transform, weighted Chebyshev boundary series for \(\Up\), phase series for the
+Fabius function and its inverse, rational Schur--Verblunsky parameters, a CMV resolvent,
+Toeplitz determinants, and a Szeg\H{o} product.
+
+Jacobi--Anger expansions produce entire Bessel-series identities equal to the infinite sinc
+product and its canonical dyadic zero product, while modified Bessel series equal the
+hyperbolic moment-generating product. A Laplace--Bessel--Joukowski chain unifies these
+identities with the Cauchy transform. For the signed and unsigned Thue--Morse sequences, we
+derive argument-principle formulas from the multiplicities of the integer zeros of the
+Fourier image, local residue recurrences, a logarithmic-monodromy recovery formula for
+finite blocks, and a smooth Abel--Poisson regularization of the Rademacher sign product.
+
+Every theorem marked ``repo-relative new'' is proved here and was not located by exact-term
+or structural search in the audited repository. This phrase is deliberately narrower than
+a claim of worldwide priority. Conjectures and a research program are stated separately.
+The accompanying Python program uses exact rational arithmetic and high-precision numerics
+to verify the coefficient pipelines and analytic identities.
+\end{abstract}
+
+\begin{statusbox}
+The archive includes the full \LaTeX{} source, exact coefficient CSVs, generated tables,
+three convergence/parameter figures, a commented Python program, a numerical verification
+log, and a source-overlap ledger. The direct Schur algorithm and the independent Geronimus
+reconstruction agree exactly through the checked orders; the spectral Thue--Morse formulas
+pass for \(0\le n\le256\); and three independent Cauchy-transform evaluations agree to the
+precision recorded in \cref{sec:numerics}.
+\end{statusbox}
+
+\tableofcontents
+\clearpage
+
+\section{Scope, conventions, and nonduplication protocol}
+\label{sec:scope}
+
+\subsection{Normalized objects}
+
+We use the Rvachev probability density
+\[
+ \rho(x):=\Up(x),\qquad \rho\ge0,\qquad
+ \operatorname{supp}\rho=[-1,1],\qquad
+ \int_{-1}^{1}\rho(x)\dd x=1,
+\]
+which is even and \(C^\infty\), with every derivative flat at the endpoints. Its associated
+random variable admits the convergent series
+\begin{equation}
+ X=\sum_{k=1}^{\infty}2^{-k}U_k,
+ \qquad U_k\stackrel{\mathrm{iid}}{\sim}\operatorname{Unif}[-1,1].
+ \label{eq:X-random-series}
+\end{equation}
+Set
+\[
+ Y=\frac{X+1}{2},\qquad
+ F(u)=\Pp(Y\le u)=\int_{-1}^{2u-1}\rho(x)\dd x,
+ \qquad I(v)=F^{-1}(v).
+\]
+Thus, on \(0<u<1\),
+\begin{equation}
+ F'(u)=2\rho(2u-1).
+ \label{eq:Fprime-rho}
+\end{equation}
+
+The Fourier convention is
+\begin{equation}
+ \Phi(\xi)=\int_{-1}^{1}\rho(x)\ee^{-2\pi\ii\xi x}\dd x,
+ \qquad
+ \sincpi z=\frac{\sin(\pi z)}{\pi z},\quad \sincpi 0=1.
+ \label{eq:fourier-convention}
+\end{equation}
+The moment-generating and Cauchy transforms are
+\begin{equation}
+ M(t)=\E\ee^{tX},
+ \qquad
+ R(z)=\int_{-1}^{1}\frac{\rho(x)}{z-x}\dd x,
+ \qquad z\in\mathbb C\setminus[-1,1].
+ \label{eq:M-R-defs}
+\end{equation}
+For the Thue--Morse sequence we use
+\begin{equation}
+ \epsilon_n=(-1)^{s_2(n)},\qquad
+ \tau_n=\frac{1-\epsilon_n}{2}\in\{0,1\},
+ \label{eq:TM-conventions}
+\end{equation}
+where \(s_2(n)\) is the sum of the binary digits of \(n\).
+
+\subsection{Corpus audit}
+
+The current repository manifest organizes the documentation into Fourier-decay,
+Thue--Morse, exponent and \(q\)-series, spectral/arithmetic, integration and transform,
+inverse/sampling, representation, and frontier campaigns. The repository's own pinned
+corpus inventory enumerates sixty-seven source documents plus later living additions, while
+the multiresolution report records a source-level audit of eighty-nine \LaTeX{} paths at
+commit \texttt{924652f4a9a656fd957d2936b2f053747c6f6c47}. The consolidated frontier volume,
+the current manifest, and the overlap-sensitive living reports were used jointly so that
+historical duplicates did not masquerade as independent novelty.
+
+The following families are already present and are therefore treated as baseline rather
+than novelty: the infinite sinc product; the canonical zero product; finite box-convolution
+splines; finite Thue--Morse truncated-power formulas; Cauchy and logarithmic resolvents;
+moment/cumulant and Bell--Bernoulli formulas; transforms of \(F\) and \(F^{-1}\); digamma,
+Hurwitz-zeta, and cotangent logarithmic derivatives; Fredholm determinants; Jacobi and
+Stieltjes continued fractions; Haar, Schauder, Walsh, and beta-mixture expansions;
+fractional Volterra integrals; Mellin/Newton moments; inverse endpoint asymptotics; the
+half-integer sign formula; dyadic cardinal reproduction; and the non-holonomicity theorem
+from unbounded dyadic zero multiplicities.
+
+The exact terms and structures \emph{Carath\'eodory function, OPUC, Verblunsky coefficient,
+CMV matrix, Joukowski transform, probability--Chebyshev moment, Bessel product-series,
+argument-principle Thue--Morse formula}, and \emph{logarithmic-monodromy encoding} were not
+found in the current consolidated volume or in the relevant living reports. In particular,
+the multiresolution report's density-Chebyshev coefficients are different from the
+probability-Chebyshev moments introduced in \cref{sec:cheb}.
+
+\begin{baselinebox}
+The audit is documented in \texttt{corpus\_audit.txt}. Throughout the report, ``new'' means
+``not located in the audited \repo{} subtree.'' Standard external machinery---Jacobi--Anger
+expansions, the Schur algorithm, Geronimus relations, Szeg\H{o}'s theorem, CMV matrices,
+Shannon sampling, and the argument principle---is cited rather than claimed as new.
+\end{baselinebox}
+
+\subsection{Proof-status convention}
+
+A theorem or proposition without qualification is proved in this report. A boxed
+``repository baseline'' records known material used as input. Conjectures are numbered and
+visually separated. Numerical evidence is never promoted to a proof; exact rational
+calculations are identified as such.
+
+\section{Established representation atlas}
+\label{sec:baseline}
+
+This section compresses the repository's existing representation families into one
+normalization. It is included both for completeness and to make the genuinely new bridges
+in later sections transparent.
+
+\subsection{Random series, convolutions, and refinement}
+
+From \eqref{eq:X-random-series}, \(X\) satisfies the distributional fixed point
+\begin{equation}
+ X\ \stackrel d=\ \frac{X+U}{2},
+ \qquad U\sim\operatorname{Unif}[-1,1],\quad U\perp X.
+ \label{eq:distribution-fixed-point}
+\end{equation}
+Consequently \(\rho\) is an infinite convolution of normalized boxes,
+\begin{equation}
+ \rho=\underset{k\ge1}{*}\left(2^{k-1}\mathbf1_{[-2^{-k},2^{-k}]}\right),
+ \label{eq:infinite-convolution}
+\end{equation}
+and the finite truncation \(X_N=\sum_{k=1}^{N}2^{-k}U_k\) has a compactly supported
+polynomial-spline density \(\rho_N\). The refinement and differential identities can be
+written
+\begin{align}
+ \rho(x)&=\int_{-1}^{1}\rho(2x-u)\dd u,
+ \label{eq:rho-refinement}\\
+ \rho'(x)&=2\bigl(\rho(2x+1)-\rho(2x-1)\bigr).
+ \label{eq:rho-differential}
+\end{align}
+They imply the familiar Fabius functional-differential relations after the affine change
+\(x=2u-1\).
+
+\subsection{Finite Thue--Morse splines}
+
+Let
+\[
+ a_{N,j}=\frac{2^N-1-2j}{2^N},\qquad 0\le j<2^N.
+\]
+The finite convolution density has the exact truncated-power form
+\begin{equation}
+ \rho_N(x)=\frac{2^{N(N-1)/2}}{(N-1)!}
+ \sum_{j=0}^{2^N-1}\epsilon_j\,(x+a_{N,j})_+^{N-1}.
+ \label{eq:finite-spline}
+\end{equation}
+The cancellation of all polynomial pieces below degree \(N\) is a Prouhet--Thue--Morse
+phenomenon. Equivalently,
+\begin{equation}
+ P_N(z):=\prod_{r=0}^{N-1}(1-z^{2^r})
+ =\sum_{j=0}^{2^N-1}\epsilon_j z^j.
+ \label{eq:finite-TM-product}
+\end{equation}
+The corresponding unsigned block has
+\begin{equation}
+ \sum_{j=0}^{2^N-1}\tau_j z^j
+ =\frac12\left(\frac{1-z^{2^N}}{1-z}-P_N(z)\right).
+ \label{eq:unsigned-finite-product}
+\end{equation}
+
+\subsection{Fourier, hyperbolic, and canonical products}
+
+Independence in \eqref{eq:X-random-series} gives
+\begin{align}
+ \Phi(\xi)
+ &=\prod_{j=0}^{\infty}\sincpi\!\left(\frac{\xi}{2^j}\right),
+ \label{eq:phi-sinc-product}\\
+ M(t)
+ &=\prod_{k=1}^{\infty}\frac{\sinh(t/2^k)}{t/2^k}.
+ \label{eq:M-hyperbolic-product}
+\end{align}
+Rearranging Euler products yields
+\begin{align}
+ \Phi(\xi)
+ &=\prod_{m=1}^{\infty}
+ \left(1-\frac{\xi^2}{m^2}\right)^{1+\vTwo(m)},
+ \label{eq:phi-canonical-product}\\
+ M(t)
+ &=\prod_{m=1}^{\infty}
+ \left(1+\frac{t^2}{4\pi^2m^2}\right)^{1+\vTwo(m)}.
+ \label{eq:M-canonical-product}
+\end{align}
+Thus \(\Phi\) has a zero at every nonzero integer \(m\), of multiplicity
+\begin{equation}
+ d_m=1+\vTwo(|m|).
+ \label{eq:zero-multiplicity}
+\end{equation}
+Its logarithmic derivative is the normally convergent meromorphic series
+\begin{equation}
+ \frac{\Phi'(z)}{\Phi(z)}
+ =-2z\sum_{m=1}^{\infty}\frac{1+\vTwo(m)}{m^2-z^2}.
+ \label{eq:phi-log-derivative}
+\end{equation}
+The audited repository develops several equivalent cotangent, tangent, digamma, and
+Hurwitz-zeta rearrangements of this expression.
+
+\subsection{Moments, cumulants, Bell polynomials, and Bernoulli numbers}
+
+Write \(\mu_n=\E X^n\). Symmetry gives \(\mu_{2m+1}=0\). Applying
+\eqref{eq:distribution-fixed-point} gives the exact triangular recurrence
+\begin{equation}
+ \mu_n=\frac{1}{2^n-1}
+ \sum_{\substack{2\le k\le n\\k\ \mathrm{even}}}
+ \binom{n}{k}\frac{\mu_{n-k}}{k+1}
+ \qquad(n\ge2\ \mathrm{even}).
+ \label{eq:moment-recurrence}
+\end{equation}
+The cumulants are
+\begin{equation}
+ \kappa_{2m}=\frac{2^{2m-1}B_{2m}}{m(2^{2m}-1)},
+ \qquad \kappa_{2m+1}=0,
+ \label{eq:cumulants}
+\end{equation}
+and therefore
+\begin{equation}
+ \mu_n=Y_n(\kappa_1,\ldots,\kappa_n),
+ \label{eq:Bell-moments}
+\end{equation}
+where \(Y_n\) is the complete exponential Bell polynomial. These formulas make all moments
+rational and expose the Bernoulli and dyadic denominator structure.
+
+\subsection{Cauchy, logarithmic, determinant, and continued-fraction forms}
+
+For \(z\notin[-1,1]\), the Cauchy transform has the moment expansion
+\begin{equation}
+ R(z)=\sum_{n=0}^{\infty}\frac{\mu_n}{z^{n+1}},\qquad |z|>1,
+ \label{eq:R-moment-series}
+\end{equation}
+and, for \(\Re z>1\), the Laplace form
+\begin{equation}
+ R(z)=\int_0^{\infty}\ee^{-zt}M(t)\dd t.
+ \label{eq:R-Laplace}
+\end{equation}
+Differentiating under the integral or using \eqref{eq:rho-differential} gives
+\begin{equation}
+ R'(z)=2\bigl(R(2z+1)-R(2z-1)\bigr).
+ \label{eq:R-differential}
+\end{equation}
+The finite spline transform possesses the logarithmic formula
+\begin{equation}
+ R_N(z)=\frac{2^{N(N-1)/2}}{(N-1)!}
+ \sum_{j=0}^{2^N-1}\epsilon_j
+ (z+a_{N,j})^{N-1}\Log(z+a_{N,j}),
+ \label{eq:finite-log-resolvent}
+\end{equation}
+with polynomial ambiguities canceled by Prouhet identities. The living representation
+report also gives Fredholm determinant and Jacobi/Stieltjes continued-fraction forms. If
+\(P_n\) are the monic symmetric orthogonal polynomials,
+\begin{equation}
+ P_{n+1}(x)=xP_n(x)-\beta_nP_{n-1}(x),\qquad \beta_n>0,
+ \label{eq:Jacobi-recurrence}
+\end{equation}
+then
+\begin{equation}
+ R(z)=\cfrac{1}{z-\cfrac{\beta_1}{z-\cfrac{\beta_2}{z-\ddots}}}.
+ \label{eq:Jacobi-CF}
+\end{equation}
+
+\subsection{Fabius and inverse-function transform forms}
+
+The pushforward identity \(Y=(X+1)/2\) yields
+\begin{equation}
+ \int_0^1\ee^{-2\pi\ii\xi u}\dd F(u)
+ =\ee^{-\pi\ii\xi}\Phi(\xi/2).
+ \label{eq:F-measure-transform}
+\end{equation}
+For \(\xi\ne0\), integration by parts gives
+\begin{equation}
+ \int_0^1F(u)\ee^{-2\pi\ii\xi u}\dd u
+ =\frac{\ee^{-\pi\ii\xi}\Phi(\xi/2)-\ee^{-2\pi\ii\xi}}
+ {2\pi\ii\xi}.
+ \label{eq:F-function-transform}
+\end{equation}
+Since \(I(V)\) has distribution \(F\) when \(V\sim\operatorname{Unif}[0,1]\),
+\begin{equation}
+ \int_0^1\ee^{-2\pi\ii\xi I(v)}\dd v
+ =\ee^{-\pi\ii\xi}\Phi(\xi/2).
+ \label{eq:inverse-pushforward-transform}
+\end{equation}
+The repository further contains finite dyadic antiderivatives, complex powers, fractional
+Volterra operators, Mellin/Newton moments, inverse primitives and higher derivatives,
+Stieltjes/log-potential transforms, autocorrelation identities, and endpoint asymptotics.
+
+\begin{baselinebox}
+Equations \eqref{eq:infinite-convolution}--\eqref{eq:inverse-pushforward-transform} form the
+input atlas. Later sections do not claim these identities as new; they reorganize them
+through a unit-circle probability lift and derive consequences absent from the audited
+subtree.
+\end{baselinebox}
+
+\section{Probability--Chebyshev coordinates}
+\label{sec:cheb}
+
+\begin{definition}
+For \(n\ge0\), define the \emph{probability--Chebyshev moment}
+\begin{equation}
+ c_n:=\E[T_n(X)]=\int_{-1}^{1}T_n(x)\rho(x)\dd x,
+ \label{eq:cndef}
+\end{equation}
+where \(T_n(\cos\theta)=\cos(n\theta)\).
+\end{definition}
+
+Because \(\rho\) is even, \(c_{2m+1}=0\). These numbers are not the unweighted Chebyshev
+coefficients of the density: the integration measure in \eqref{eq:cndef} is
+\(\rho(x)\dd x\), not \(\dd x/\sqrt{1-x^2}\).
+
+\begin{theorem}[Exact Bell--Bernoulli formula]
+\label{thm:c-exact}
+For \(m\ge1\),
+\begin{equation}
+ c_{2m}=m\sum_{k=0}^{m}(-1)^{m-k}
+ \frac{(m+k-1)!}{(m-k)!(2k)!}\,2^{2k}\mu_{2k}.
+ \label{eq:c-moment-formula}
+\end{equation}
+Equivalently, with \(\kappa_{2j}\) as in \eqref{eq:cumulants},
+\begin{equation}
+ c_{2m}=m\sum_{k=0}^{m}(-1)^{m-k}
+ \frac{(m+k-1)!}{(m-k)!(2k)!}\,2^{2k}
+ Y_{2k}(0,\kappa_2,0,\kappa_4,\ldots,\kappa_{2k}).
+ \label{eq:c-Bell-Bernoulli}
+\end{equation}
+In particular every \(c_n\) is rational.
+\end{theorem}
+
+\begin{proof}
+For \(m\ge1\),
+\[
+ T_{2m}(x)=m\sum_{k=0}^{m}(-1)^{m-k}
+ \frac{(m+k-1)!}{(m-k)!(2k)!}(2x)^{2k}.
+\]
+Integrating termwise against \(\rho(x)\dd x\) proves \eqref{eq:c-moment-formula}; substituting
+\eqref{eq:Bell-moments} and \eqref{eq:cumulants} proves \eqref{eq:c-Bell-Bernoulli}.
+\end{proof}
+
+The first terms are
+\begin{align*}
+ c_0&=1,&c_2&=-\frac79,&c_4&=\frac{227}{675},&c_6&=-\frac{11237}{297675},\\
+ c_8&=-\frac{8241761}{227721375},&
+ c_{10}&=\frac{171586753}{8135075025},&
+ c_{12}&=-\frac{472381023339557}{45472425490366875}.
+\end{align*}
+The repeated negative sign at \(c_6,c_8\) warns against a naive alternating-sign conjecture.
+
+\begin{proposition}[Generating function]
+\label{prop:G-cheb}
+For \(|w|<1\),
+\begin{align}
+ G(w)&:=\sum_{n=0}^{\infty}c_nw^n
+ =\int_{-1}^{1}\frac{1-wx}{1-2wx+w^2}\rho(x)\dd x,
+ \label{eq:G-cheb}\\
+ &=1+\sum_{m=1}^{\infty}c_{2m}w^{2m}.
+ \label{eq:G-even}
+\end{align}
+\end{proposition}
+
+\begin{proof}
+Integrate the standard generating function
+\(\sum_{n\ge0}T_n(x)w^n=(1-wx)/(1-2wx+w^2)\) against the probability measure.
+\end{proof}
+
+For any \(0<r<1\), Cauchy coefficient extraction gives
+\begin{equation}
+ c_n=\frac{1}{2\pi r^n}\int_0^{2\pi}G(re^{\ii\theta})
+ \ee^{-\ii n\theta}\dd\theta.
+ \label{eq:c-Cauchy-coefficient}
+\end{equation}
+This will become an ordinary circle Fourier coefficient in the next section.
+
+\begin{novelbox}
+The sequence \(c_n\) is one rational coordinate system controlling a positive-real
+Carath\'eodory function, the Joukowski pullback of \(R\), a weighted Chebyshev expansion of
+\(\rho\), phase series for \(F\) and \(F^{-1}\), Bessel expansions of \(\Phi\) and \(M\),
+and rational OPUC/CMV data. This unification is the central structural result of the report.
+\end{novelbox}
+
+\section{Unit-circle lift and Carath\'eodory--Joukowski bridge}
+\label{sec:circle}
+
+\subsection{A canonical probability measure on the circle}
+
+Define a probability measure \(\nu\) on \(\T\) by
+\begin{equation}
+ \dd\nu(\theta)=\frac12\rho(\cos\theta)|\sin\theta|\dd\theta,
+ \qquad 0\le\theta<2\pi.
+ \label{eq:circle-lift}
+\end{equation}
+The map \(\theta\mapsto x=\cos\theta\) pushes \(\nu\) forward to \(\rho(x)\dd x\). Moreover,
+\(\nu\) is invariant under conjugation and the half-turn \(\zeta\mapsto-\zeta\).
+
+\begin{proposition}[Fourier moments of the lift]
+\label{prop:circle-moments}
+For every \(n\in\Z\),
+\begin{equation}
+ \int_{\T}\zeta^{-n}\dd\nu(\zeta)=c_{|n|}.
+ \label{eq:nu-moments}
+\end{equation}
+\end{proposition}
+
+\begin{proof}
+Imaginary parts cancel under conjugation, while
+\(\cos(n\arccos x)=T_n(x)\). The two preimages of each \(x\in(-1,1)\) contribute equally.
+\end{proof}
+
+\begin{definition}
+The Carath\'eodory function of \(\nu\) is
+\begin{equation}
+ C(w)=\int_{\T}\frac{\zeta+w}{\zeta-w}\dd\nu(\zeta),
+ \qquad w\in\D.
+ \label{eq:C-def}
+\end{equation}
+\end{definition}
+It is analytic in \(\D\), satisfies \(C(0)=1\), and has positive real part.
+
+\begin{theorem}[Carath\'eodory representation]
+\label{thm:C-representation}
+For \(|w|<1\),
+\begin{align}
+ C(w)
+ &=\int_{-1}^{1}\frac{1-w^2}{1-2wx+w^2}\rho(x)\dd x,
+ \label{eq:C-real-integral}\\
+ &=1+2\sum_{n=1}^{\infty}c_nw^n
+ =1+2\sum_{m=1}^{\infty}c_{2m}w^{2m},
+ \label{eq:C-series}\\
+ &=2G(w)-1.
+ \label{eq:C-G}
+\end{align}
+\end{theorem}
+
+\begin{proof}
+Pair \(e^{\ii\theta}\) and \(e^{-\ii\theta}\) in \eqref{eq:C-def}; their average kernel is
+\((1-w^2)/(1-2w\cos\theta+w^2)\). The geometric expansion
+\((\zeta+w)/(\zeta-w)=1+2\sum_{n\ge1}w^n\zeta^{-n}\) and
+\cref{prop:circle-moments} give the series.
+\end{proof}
+
+The positive harmonic regularization
+\begin{equation}
+ W_r(\theta):=\Re C(re^{\ii\theta})
+ =1+2\sum_{m=1}^{\infty}c_{2m}r^{2m}\cos(2m\theta)
+ \label{eq:Wr}
+\end{equation}
+preserves positivity for every \(0\le r<1\), unlike an arbitrary boundary truncation.
+
+\subsection{Joukowski uniformization}
+
+Let
+\begin{equation}
+ \Jouk(w)=\frac12(w+w^{-1}),\qquad 0<|w|<1,
+ \label{eq:Joukowski}
+\end{equation}
+with inverse branch
+\begin{equation}
+ w(z)=z-\sqrt{z^2-1},
+ \qquad \sqrt{z^2-1}\sim z\quad(z\to\infty).
+ \label{eq:Joukowski-inverse}
+\end{equation}
+
+\begin{theorem}[Exact Joukowski bridge]
+\label{thm:Joukowski-bridge}
+For \(0<|w|<1\),
+\begin{equation}
+ C(w)=\frac{1-w^2}{2w}R(\Jouk(w)).
+ \label{eq:C-R-Jouk}
+\end{equation}
+Equivalently, for \(z\in\mathbb C\setminus[-1,1]\),
+\begin{align}
+ R(z)&=\frac{2w(z)}{1-w(z)^2}C(w(z)),
+ \label{eq:R-C-w}\\
+ &=\frac{1+2\sum_{m=1}^{\infty}c_{2m}w(z)^{2m}}
+ {\sqrt{z^2-1}}.
+ \label{eq:R-Cheb-series}
+\end{align}
+\end{theorem}
+
+\begin{proof}
+Since \(\Jouk(w)-x=(1-2wx+w^2)/(2w)\), compare \eqref{eq:C-real-integral} with the
+definition of \(R\). On the chosen branch, \(\sqrt{z^2-1}=(1-w^2)/(2w)\).
+\end{proof}
+
+The ordinary moment series is centered at infinity in powers of \(z^{-1}\). By contrast,
+\eqref{eq:R-Cheb-series} uses the conformal coordinate of the slit plane, so it remains
+geometrically adapted even near the support.
+
+\subsection{Boundary recovery of \(\rho\)}
+
+Set
+\begin{equation}
+ W(\theta)=\pi\rho(\cos\theta)|\sin\theta|.
+ \label{eq:W-def}
+\end{equation}
+This is the density of \(\nu\) relative to \(\dd\theta/(2\pi)\). Endpoint flatness makes it a
+\(C^\infty\), \(\pi\)-periodic function.
+
+\begin{theorem}[Weighted Chebyshev boundary series]
+\label{thm:boundary-rho}
+For every \(\theta\),
+\begin{equation}
+ W(\theta)=\Re C(e^{\ii\theta})
+ =1+2\sum_{m=1}^{\infty}c_{2m}\cos(2m\theta),
+ \label{eq:W-Fourier}
+\end{equation}
+with convergence in \(C^k\) for every fixed \(k\). Consequently, for \(|x|<1\),
+\begin{equation}
+ \boxed{\displaystyle
+ \rho(x)=\frac{1+2\sum_{m=1}^{\infty}c_{2m}T_{2m}(x)}
+ {\pi\sqrt{1-x^2}}.}
+ \label{eq:rho-weighted-Cheb}
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+The boundary theorem for Poisson integrals gives \(\Re C(e^{\ii\theta})=W(\theta)\). Smoothness
+implies uniform convergence of all fixed derivatives. Substitute \(x=\cos\theta\).
+\end{proof}
+
+The harmonic conjugate is
+\begin{align}
+ \Im C(e^{\ii\theta})
+ &=2\sum_{m=1}^{\infty}c_{2m}\sin(2m\theta),
+ \label{eq:C-imag-series}\\
+ &=\PV\int_0^{2\pi}\cot\!\left(\frac{\theta-\varphi}{2}\right)\dd\nu(\varphi).
+ \label{eq:C-Hilbert}
+\end{align}
+Thus one disk-analytic function packages the density and its circular Hilbert transform.
+
+\subsection{Phase series for \(F\) and \(F^{-1}\)}
+
+For \(0<u<1\), put
+\begin{equation}
+ \theta(u)=\arccos(2u-1)\in(0,\pi).
+ \label{eq:theta-u}
+\end{equation}
+
+\begin{theorem}[Fabius phase series]
+\label{thm:F-phase}
+For \(0\le u\le1\),
+\begin{equation}
+ \boxed{\displaystyle
+ F(u)=1-\frac{\theta(u)}{\pi}
+ -\frac1\pi\sum_{m=1}^{\infty}\frac{c_{2m}}{m}\sin(2m\theta(u)).}
+ \label{eq:F-phase}
+\end{equation}
+For \(0<u<1\),
+\begin{equation}
+ F'(u)=\frac{\Re C(e^{\ii\theta(u)})}{\pi\sqrt{u(1-u)}}
+ =\frac{1+2\sum_{m\ge1}c_{2m}T_{2m}(2u-1)}{\pi\sqrt{u(1-u)}}.
+ \label{eq:Fprime-C}
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+Substitute \(x=\cos\varphi\) in \(F(u)=\int_{-1}^{2u-1}\rho(x)\dd x\):
+\(F(u)=\pi^{-1}\int_{\theta(u)}^\pi W(\varphi)\dd\varphi\). Integrate
+\eqref{eq:W-Fourier} termwise and differentiate.
+\end{proof}
+
+\begin{corollary}[Inverse phase equation]
+\label{cor:inverse-phase}
+For each \(v\in(0,1)\), let \(\Theta(v)\in(0,\pi)\) be the unique solution of
+\begin{equation}
+ v=1-\frac{\Theta}{\pi}
+ -\frac1\pi\sum_{m=1}^{\infty}\frac{c_{2m}}{m}\sin(2m\Theta).
+ \label{eq:Theta-implicit}
+\end{equation}
+Then
+\begin{align}
+ I(v)&=\frac{1+\cos\Theta(v)}{2},
+ \label{eq:I-phase}\\
+ I'(v)&=\frac{\pi\sqrt{I(v)(1-I(v))}}{\Re C(e^{\ii\Theta(v)})}.
+ \label{eq:Iprime-C}
+\end{align}
+\end{corollary}
+
+The explicit factors \(1/\sqrt{u(1-u)}\) do not create endpoint singularities in \(F'\): the
+numerator \(W\) is flat enough to cancel every algebraic divergence. In the inverse formula,
+\(1/W\) isolates the true rapid endpoint growth and is compatible with the Lambert--\(W\)
+asymptotics in the repository.
+
+\subsection{Disk form of the resolvent differential equation}
+
+Set
+\begin{equation}
+ A(w)=\frac{2wC(w)}{1-w^2}=R(\Jouk(w))
+ \label{eq:A-disk}
+\end{equation}
+and, as germs at \(w=0\),
+\begin{equation}
+ q_{\pm}(w)=2\Jouk(w)\pm1-
+ \sqrt{(2\Jouk(w)\pm1)^2-1},
+ \label{eq:qpm}
+\end{equation}
+choosing square roots so that \(q_\pm(w)\to0\).
+
+\begin{proposition}[Disk composition equation]
+\label{prop:disk-composition}
+Near \(w=0\),
+\begin{equation}
+ \frac{\dd}{\dd w}\left(\frac{2wC(w)}{1-w^2}\right)
+ =4\Jouk'(w)\left[
+ \frac{q_+(w)C(q_+(w))}{1-q_+(w)^2}
+ -\frac{q_-(w)C(q_-(w))}{1-q_-(w)^2}
+ \right].
+ \label{eq:disk-composition}
+\end{equation}
+\end{proposition}
+
+\begin{proof}
+Differentiate \(A(w)=R(\Jouk(w))\), apply \eqref{eq:R-differential}, and use
+\(R(\Jouk(q))=2qC(q)/(1-q^2)\) for each inverse branch.
+\end{proof}
+
+\section{Bessel series equal to the dyadic products}
+\label{sec:bessel}
+
+The Jacobi--Anger expansions
+\begin{align}
+ \ee^{-\ii z\cos\theta}
+ &=J_0(z)+2\sum_{n=1}^{\infty}(-\ii)^nJ_n(z)\cos(n\theta),
+ \label{eq:JA-ordinary}\\
+ \ee^{z\cos\theta}
+ &=I_0(z)+2\sum_{n=1}^{\infty}I_n(z)\cos(n\theta)
+ \label{eq:JA-modified}
+\end{align}
+turn the Fourier moments of \(\nu\) into Bessel coefficients.
+
+\begin{theorem}[Bessel--sinc--canonical product identity]
+\label{thm:Bessel-Phi}
+For every \(\xi\in\mathbb C\),
+\begin{equation}
+ \boxed{\displaystyle
+ \Phi(\xi)=J_0(2\pi\xi)
+ +2\sum_{m=1}^{\infty}(-1)^m c_{2m}J_{2m}(2\pi\xi).}
+ \label{eq:Phi-Bessel}
+\end{equation}
+The series is locally uniformly convergent, and
+\begin{align}
+ J_0(2\pi\xi)+2\sum_{m=1}^{\infty}(-1)^mc_{2m}J_{2m}(2\pi\xi)
+ &=\prod_{j=0}^{\infty}\sincpi\!\left(\frac{\xi}{2^j}\right)
+ \label{eq:Bessel-sinc}\\
+ &=\prod_{n=1}^{\infty}\left(1-\frac{\xi^2}{n^2}\right)^{1+\vTwo(n)}.
+ \label{eq:Bessel-canonical}
+\end{align}
+\end{theorem}
+
+\begin{proof}
+Under \(\nu\), \(X=\cos\Theta\). Integrate \eqref{eq:JA-ordinary} with
+\(z=2\pi\xi\); odd moments vanish and \((-\ii)^{2m}=(-1)^m\). The product equalities are
+\eqref{eq:phi-sinc-product} and \eqref{eq:phi-canonical-product}.
+\end{proof}
+
+For every \(r\ge0\), termwise differentiation gives
+\begin{equation}
+ \Phi^{(r)}(\xi)=(2\pi)^r\left[J_0^{(r)}(2\pi\xi)
+ +2\sum_{m=1}^{\infty}(-1)^mc_{2m}J_{2m}^{(r)}(2\pi\xi)\right].
+ \label{eq:Phi-Bessel-derivatives}
+\end{equation}
+At an integer zero \(N\ne0\), the first \(1+\vTwo(N)\) equations in this derivative ladder
+become exact Bessel cancellation identities. In particular,
+\begin{equation}
+ J_0(2\pi N)+2\sum_{m=1}^{\infty}(-1)^mc_{2m}J_{2m}(2\pi N)=0.
+ \label{eq:Bessel-integer-zero}
+\end{equation}
+
+\begin{theorem}[Modified-Bessel--hyperbolic identity]
+\label{thm:Bessel-M}
+For every \(t\in\mathbb C\),
+\begin{equation}
+ \boxed{\displaystyle
+ M(t)=I_0(t)+2\sum_{m=1}^{\infty}c_{2m}I_{2m}(t).}
+ \label{eq:M-Bessel}
+\end{equation}
+Moreover,
+\begin{align}
+ I_0(t)+2\sum_{m=1}^{\infty}c_{2m}I_{2m}(t)
+ &=\prod_{k=1}^{\infty}\frac{\sinh(t/2^k)}{t/2^k}
+ \label{eq:IBessel-hyperbolic}\\
+ &=\prod_{n=1}^{\infty}\left(1+\frac{t^2}{4\pi^2n^2}\right)^{1+\vTwo(n)}.
+ \label{eq:IBessel-canonical}
+\end{align}
+\end{theorem}
+
+\begin{proof}
+Integrate \eqref{eq:JA-modified} against \(\nu\) and invoke the product formulas for \(M\).
+\end{proof}
+
+\subsection{Laplace--Bessel--Joukowski chain}
+
+For \(\Re z>1\),
+\begin{equation}
+ \int_0^{\infty}\ee^{-zt}I_n(t)\dd t
+ =\frac{(z-\sqrt{z^2-1})^n}{\sqrt{z^2-1}}.
+ \label{eq:Laplace-In}
+\end{equation}
+
+\begin{theorem}[Three-level transform identity]
+\label{thm:Laplace-Bessel-Jouk}
+For \(\Re z>1\), with \(w=z-\sqrt{z^2-1}\),
+\begin{align}
+ R(z)
+ &=\int_0^{\infty}\ee^{-zt}
+ \prod_{k=1}^{\infty}\frac{\sinh(t/2^k)}{t/2^k}\dd t
+ \label{eq:R-Laplace-product-new}\\
+ &=\int_0^{\infty}\ee^{-zt}\left[I_0(t)+2\sum_{m=1}^{\infty}c_{2m}I_{2m}(t)\right]\dd t
+ \label{eq:R-Laplace-Bessel}\\
+ &=\frac{1+2\sum_{m=1}^{\infty}c_{2m}w^{2m}}{\sqrt{z^2-1}}.
+ \label{eq:R-Laplace-Jouk}
+\end{align}
+\end{theorem}
+
+\begin{proof}
+Insert \eqref{eq:M-hyperbolic-product} and \eqref{eq:M-Bessel} into
+\eqref{eq:R-Laplace}; use dominated convergence and \eqref{eq:Laplace-In}.
+\end{proof}
+
+\subsection{Fabius and inverse-Fabius transforms}
+
+For \(\xi\ne0\),
+\begin{equation}
+ \int_0^1F(u)\ee^{-2\pi\ii\xi u}\dd u
+ =\frac{\ee^{-\pi\ii\xi}
+ \left[J_0(\pi\xi)+2\sum_{m=1}^{\infty}(-1)^mc_{2m}J_{2m}(\pi\xi)\right]
+ -\ee^{-2\pi\ii\xi}}{2\pi\ii\xi}.
+ \label{eq:F-Bessel-transform}
+\end{equation}
+The value at \(\xi=0\) is \(1/2\). For the inverse pushforward,
+\begin{equation}
+ \int_0^1\ee^{-2\pi\ii\xi I(v)}\dd v
+ =\ee^{-\pi\ii\xi}\left[J_0(\pi\xi)+2\sum_{m=1}^{\infty}(-1)^mc_{2m}J_{2m}(\pi\xi)\right].
+ \label{eq:I-Bessel-transform}
+\end{equation}
+
+\begin{novelbox}
+Equations \eqref{eq:Bessel-sinc}, \eqref{eq:Bessel-canonical},
+\eqref{eq:IBessel-hyperbolic}, and \eqref{eq:IBessel-canonical} are direct series--product
+bridges: the same rational sequence \(c_{2m}\) expands both the Fourier image and the moment
+generating function in Bessel bases. No corresponding bridge was located in the audited
+repository.
+\end{novelbox}
+
+\section{Schur, Verblunsky, CMV, and Toeplitz representations}
+\label{sec:opuc}
+
+The Carath\'eodory function places the Rvachev measure in the theory of orthogonal
+polynomials on the unit circle (OPUC) \cite{SimonOPUC1,SimonOneFoot}. This creates a rational
+coefficient system distinct from, but explicitly coupled to, the repository's Jacobi
+coefficients.
+
+\subsection{Schur algorithm and rationality}
+
+Define
+\begin{equation}
+ f_0(w)=\frac{C(w)-1}{w(C(w)+1)},
+ \qquad C(w)=\frac{1+wf_0(w)}{1-wf_0(w)}.
+ \label{eq:Schur-first}
+\end{equation}
+Recursively set
+\begin{equation}
+ \alpha_n=f_n(0),\qquad
+ f_{n+1}(w)=\frac{f_n(w)-\alpha_n}{w(1-\alpha_nf_n(w))}.
+ \label{eq:Schur-recursion}
+\end{equation}
+All functions and coefficients are real under the present symmetries.
+
+\begin{theorem}[Rational Verblunsky coefficients]
+\label{thm:rational-alpha}
+The Schur parameters \(\alpha_n\) are the Verblunsky coefficients of \(\nu\). They satisfy
+\begin{equation}
+ \alpha_n\in\mathbb Q\cap(-1,1),\qquad \alpha_{2n}=0\quad(n\ge0).
+ \label{eq:alpha-rational-parity}
+\end{equation}
+The odd coefficients are obtained by exact rational operations from the moments \(c_{2m}\).
+\end{theorem}
+
+\begin{proof}
+The first assertion is the standard Carath\'eodory--Schur correspondence. Rationality follows
+because the Taylor coefficients of \(C\) are rational and every Schur step uses rational
+operations. The half-turn invariance \(\nu(E)=\nu(-E)\) forces all odd circle moments and,
+equivalently, every even-index Verblunsky coefficient to vanish. Infinite support gives
+\(|\alpha_n|<1\).
+\end{proof}
+
+The first nonzero values are
+\begin{align*}
+ \alpha_1&=-\frac79,&
+ \alpha_3&=-\frac{17}{25},&
+ \alpha_5&=-\frac{1849}{3087},\\
+ \alpha_7&=-\frac{3569379}{6492691},&
+ \alpha_9&=-\frac{445076883510763}{886612917691413},&
+ \alpha_{11}&=-\frac{594580974953911037169143}{1270428317522023221443375}.
+\end{align*}
+The exact program computes much longer coefficients without floating-point contamination.
+
+\subsection{Wall--Schur continued fraction}
+
+Solving \eqref{eq:Schur-recursion} for \(f_n\) gives
+\begin{equation}
+ f_n(w)=\frac{\alpha_n+w f_{n+1}(w)}{1+\alpha_n w f_{n+1}(w)}.
+ \label{eq:inverse-Schur-step}
+\end{equation}
+Iterating this Möbius recursion and inserting it into \eqref{eq:Schur-first} produces a
+Wall--Schur continued fraction for \(C\). Truncating after \(N\) parameters by setting
+\(f_N=0\) gives a rational \(C_N\) with positive real part in \(\D\). Therefore
+\begin{equation}
+ R_N^{\mathrm{Schur}}(z)=\frac{C_N(w(z))}{\sqrt{z^2-1}}
+ \label{eq:R-Schur-approximant}
+\end{equation}
+is a positivity-preserving rational/conformal approximation to the Cauchy transform. It is
+geometrically different from truncating the real-line Jacobi fraction
+\eqref{eq:Jacobi-CF}.
+
+\subsection{Geronimus bridge to Jacobi coefficients}
+
+For the symmetric pushforward under \(x=(\zeta+\zeta^{-1})/2\), the Geronimus relation
+simplifies because \(\alpha_{2n}=0\).
+
+\begin{theorem}[Exact Jacobi--Verblunsky conversion]
+\label{thm:Geronimus}
+With \(\alpha_{-1}=-1\), the monic Jacobi coefficients satisfy
+\begin{equation}
+ \boxed{\displaystyle
+ \beta_{n+1}=\frac14(1-\alpha_{2n-1})(1+\alpha_{2n+1})}
+ \qquad(n\ge0).
+ \label{eq:Geronimus}
+\end{equation}
+Equivalently,
+\begin{equation}
+ \alpha_{2n+1}=\frac{4\beta_{n+1}}{1-\alpha_{2n-1}}-1.
+ \label{eq:alpha-from-beta}
+\end{equation}
+\end{theorem}
+
+The first values
+\begin{equation}
+ \beta_1=\frac19,\quad
+ \beta_2=\frac{32}{225},\quad
+ \beta_3=\frac{619}{3675},\quad
+ \beta_4=\frac{835232}{4640643}
+ \label{eq:first-betas}
+\end{equation}
+reproduce \(\alpha_1,\alpha_3,\alpha_5,\alpha_7\). In the accompanying code, the
+\(\beta_n\) are generated by exact Gram--Schmidt from \(\mu_n\), while a direct formal Schur
+algorithm independently generates \(\alpha_n\); the pipelines agree exactly through the
+checked indices.
+
+\subsection{CMV resolvent}
+
+Let \(\CMV\) be the CMV matrix associated with \((\alpha_n)_{n\ge0}\) on
+\(\ell^2(\N_0)\), and let \(e_0=(1,0,\ldots)\). Its spectral measure at \(e_0\) is \(\nu\).
+
+\begin{theorem}[CMV representation]
+\label{thm:CMV}
+For \(|w|<1\),
+\begin{equation}
+ C(w)=\left\langle e_0,(\CMV+w)(\CMV-w)^{-1}e_0\right\rangle.
+ \label{eq:C-CMV}
+\end{equation}
+Consequently,
+\begin{equation}
+ R(\Jouk(w))=\frac{2w}{1-w^2}
+ \left\langle e_0,(\CMV+w)(\CMV-w)^{-1}e_0\right\rangle.
+ \label{eq:R-CMV}
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+Apply the spectral theorem to multiplication by \(\zeta\) in \(L^2(\nu)\), then express that
+unitary operator in the CMV basis. The second formula follows from
+\eqref{eq:C-R-Jouk}.
+\end{proof}
+
+\subsection{Toeplitz determinants and Szeg\H{o} product}
+
+Let
+\begin{equation}
+ D_N=\det[c_{j-k}]_{j,k=0}^{N-1},\qquad c_{-n}=c_n.
+ \label{eq:Toeplitz-D}
+\end{equation}
+These determinants are positive rationals.
+
+\begin{proposition}[Exact determinant product]
+\label{prop:Toeplitz-product}
+For \(N\ge1\),
+\begin{equation}
+ D_N=\prod_{j=0}^{N-2}(1-\alpha_j^2)^{N-1-j}.
+ \label{eq:Toeplitz-alpha}
+\end{equation}
+Only odd \(j\) contribute.
+\end{proposition}
+
+The weight \(W(\theta)\) is positive almost everywhere and
+\(\log W\in L^1(\T)\). The latter follows from the established endpoint asymptotics:
+although \(\rho(\cos\theta)\) is superflat, its logarithm grows only polylogarithmically in
+\(1/|\theta|\), which is integrable against \(\dd\theta\). Szeg\H{o}'s theorem gives
+\begin{equation}
+ \boxed{\displaystyle
+ \prod_{n=0}^{\infty}(1-\alpha_n^2)
+ =\exp\left(\frac1{2\pi}\int_0^{2\pi}\log W(\theta)\dd\theta\right).}
+ \label{eq:Szego-product}
+\end{equation}
+Rakhmanov's theorem also yields \(\alpha_n\to0\), because \(W>0\) almost everywhere.
+
+\begin{novelbox}
+Equations \eqref{eq:C-CMV}, \eqref{eq:R-CMV}, \eqref{eq:Toeplitz-alpha}, and
+\eqref{eq:Szego-product} give operator, determinant, and entropy-product representations of
+the Rvachev law. The associated CMV coefficients are exact rationals and are linked to the
+known Jacobi coefficients by \eqref{eq:Geronimus}.
+\end{novelbox}
+
+\section{Spectral, contour, and monodromy formulas for Thue--Morse}
+\label{sec:TM}
+
+This section derives representations for both \(\epsilon_n\) and \(\tau_n\) by treating the
+integer zeros of \(\Phi\) as spectral data. These formulas differ from the repository's
+coefficient, digit, half-integer-sign, trigonometric, and finite-product formulas.
+
+\subsection{Zero-counting encodes the full binary digit sum}
+
+Let
+\begin{equation}
+ N_\Phi(n):=\sum_{m=1}^{n}\bigl(1+\vTwo(m)\bigr),\qquad N_\Phi(0)=0.
+ \label{eq:Nphi-def}
+\end{equation}
+This is the number of positive zeros of \(\Phi\) in \((0,n+1/2)\), counted with multiplicity.
+
+\begin{theorem}[Spectral digit-sum identity]
+\label{thm:spectral-digit-sum}
+For every \(n\ge0\),
+\begin{equation}
+ N_\Phi(n)=n+\vTwo(n!)=2n-s_2(n).
+ \label{eq:Nphi-digit}
+\end{equation}
+Thus the complete binary digit sum, not only its parity, is recovered by
+\begin{equation}
+ \boxed{\displaystyle s_2(n)=2n-N_\Phi(n).}
+ \label{eq:digit-from-spectrum}
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+The first equality follows from \eqref{eq:zero-multiplicity}. Legendre's formula for the
+2-adic valuation gives \(\vTwo(n!)=n-s_2(n)\).
+\end{proof}
+
+Let \(\Gamma_n\) be any positively oriented contour enclosing precisely the positive integer
+zeros \(1,\ldots,n\), and no other zeros of \(\Phi\).
+
+\begin{corollary}[Argument-principle representations]
+\label{cor:argument-TM}
+For \(n\ge0\),
+\begin{align}
+ s_2(n)
+ &=2n-\frac{1}{2\pi\ii}\oint_{\Gamma_n}\frac{\Phi'(z)}{\Phi(z)}\dd z,
+ \label{eq:digit-contour}\\
+ \boxed{\displaystyle
+ \epsilon_n=\exp\left(\frac12\oint_{\Gamma_n}
+ \frac{\Phi'(z)}{\Phi(z)}\dd z\right),}
+ \label{eq:epsilon-contour}\\
+ \boxed{\displaystyle
+ \tau_n=\sin^2\left(\frac{1}{4\ii}\oint_{\Gamma_n}
+ \frac{\Phi'(z)}{\Phi(z)}\dd z\right).}
+ \label{eq:tau-contour}
+\end{align}
+\end{corollary}
+
+\begin{proof}
+The argument principle gives the contour integral as \(2\pi\ii N_\Phi(n)\). Since
+\(N_\Phi(n)\equiv s_2(n)\pmod2\), exponentiation gives \(\epsilon_n\), while
+\(\sin^2(\pi N_\Phi(n)/2)\) is its unsigned parity.
+\end{proof}
+
+Substitution of \eqref{eq:phi-log-derivative} turns the contour formulas into explicit
+meromorphic series integrals. Locally at a positive integer,
+\begin{equation}
+ \Res_{z=n}\frac{\Phi'(z)}{\Phi(z)}=1+\vTwo(n),
+ \label{eq:local-residue}
+\end{equation}
+and hence
+\begin{equation}
+ \frac{\epsilon_n}{\epsilon_{n-1}}
+ =\exp\left(\pi\ii\Res_{z=n}\frac{\Phi'(z)}{\Phi(z)}\right)
+ =(-1)^{1+\vTwo(n)}.
+ \label{eq:local-TM-ratio}
+\end{equation}
+Thus the local zero multiplicity records the carry chain when passing from \(n-1\) to \(n\).
+
+\subsection{Logarithmic monodromy of finite resolvents}
+
+The finite resolvent \eqref{eq:finite-log-resolvent} has branch points
+\begin{equation}
+ z_{N,j}=-a_{N,j},\qquad 0\le j<2^N.
+ \label{eq:branch-points}
+\end{equation}
+Let \(\Delta_jR_N\) denote the change after one positive analytic continuation around
+\(z_{N,j}\), holding all other logarithmic branches fixed.
+
+\begin{theorem}[Monodromy recovery of a finite Thue--Morse word]
+\label{thm:monodromy-TM}
+For \(z\) near \(z_{N,j}\),
+\begin{equation}
+ \Delta_jR_N(z)=2\pi\ii\frac{2^{N(N-1)/2}}{(N-1)!}
+ \epsilon_j(z-z_{N,j})^{N-1}.
+ \label{eq:monodromy-jump}
+\end{equation}
+Consequently,
+\begin{equation}
+ \boxed{\displaystyle
+ \epsilon_j=\frac{1}{2\pi\ii\,2^{N(N-1)/2}}
+ \left.\frac{\dd^{N-1}}{\dd z^{N-1}}\Delta_jR_N(z)\right|_{z=z_{N,j}},}
+ \label{eq:epsilon-monodromy}
+\end{equation}
+and \(\tau_j=(1-\epsilon_j)/2\).
+\end{theorem}
+
+\begin{proof}
+Only the \(j\)-th logarithm changes, by \(2\pi\ii\), around \(z_{N,j}\). This proves
+\eqref{eq:monodromy-jump}. Differentiating \(N-1\) times at the branch point cancels
+\((N-1)!\) and isolates \(\epsilon_j\).
+\end{proof}
+
+The finite Thue--Morse word is therefore the normalized monodromy representation of a single
+multivalued analytic function. This interpretation is stronger than saying that
+\(\epsilon_j\) merely occurs as an algebraic coefficient: the word is recovered from the
+analytic continuation operators themselves.
+
+\subsection{Abel--Poisson regularization of the Rademacher product}
+
+Define, for \(0<r<1\),
+\begin{align}
+ H_r(\theta)
+ &:=\frac{4}{\pi}\sum_{\ell=0}^{\infty}
+ \frac{r^{2\ell+1}}{2\ell+1}\sin((2\ell+1)\theta)
+ \label{eq:Hr-series}\\
+ &=\frac{2}{\pi}\operatorname{atan2}
+ \bigl(2r\sin\theta,1-r^2\bigr).
+ \label{eq:Hr-atan}
+\end{align}
+This is the Abel/Poisson regularization of \(\sgn(\sin\theta)\), and
+\(H_r(\theta)\to\sgn(\sin\theta)\) away from multiples of \(\pi\).
+
+For \(n\ge1\), put \(J_n=\lfloor\log_2(n+1/2)\rfloor\); for \(n=0\), interpret the product
+below as empty.
+
+\begin{theorem}[Smooth finite-product representation]
+\label{thm:Abel-TM}
+For every \(n\ge0\),
+\begin{align}
+ \boxed{\displaystyle
+ \epsilon_n=\lim_{r\uparrow1}
+ \prod_{j=0}^{J_n}H_r\!\left(\frac{\pi(n+1/2)}{2^j}\right),}
+ \label{eq:epsilon-Abel}\\
+ \boxed{\displaystyle
+ \tau_n=\frac12\left[1-
+ \lim_{r\uparrow1}\prod_{j=0}^{J_n}H_r\!\left(\frac{\pi(n+1/2)}{2^j}\right)\right].}
+ \label{eq:tau-Abel}
+\end{align}
+\end{theorem}
+
+\begin{proof}
+The signed Thue--Morse sequence has the Rademacher sign product
+\[
+ \epsilon_n=\prod_{j\ge0}\sgn\sin\!\left(\frac{\pi(n+1/2)}{2^j}\right).
+\]
+For \(j>J_n\), the angle lies in \((0,\pi)\), so the factor is \(+1\); only finitely many
+factors matter. Replace each by its Abel limit.
+\end{proof}
+
+The accompanying computation shows uniform convergence over the first 64 symbols: the
+maximum errors for \(r=0.9,0.99,0.999,0.9999\) are approximately
+\(0.937,0.237,0.0257,0.00259\), respectively. The formula is especially useful when a smooth
+analytic surrogate is preferable to a discontinuous sign function.
+
+\subsection{A cardinal Bessel--Thue--Morse expansion}
+
+Since \(\rho\) is supported in \([-1,1]\), the Paley--Wiener/Shannon formula at spacing
+\(1/2\) is
+\begin{equation}
+ \Phi(z)=\sum_{k\in\Z}\Phi(k/2)\sincpi(2z-k).
+ \label{eq:Shannon-Phi}
+\end{equation}
+All nonzero integer samples vanish. If
+\(A_n=|\Phi(n+1/2)|\), the existing half-integer sign law
+\(\sgn\Phi(n+1/2)=\epsilon_n\) therefore yields
+\begin{equation}
+ \Phi(z)=\sincpi(2z)+\sum_{n=0}^{\infty}\epsilon_nA_n
+ \left[\sincpi(2z-(2n+1))+\sincpi(2z+(2n+1))\right].
+ \label{eq:Shannon-TM}
+\end{equation}
+This formula is included as a derived synthesis rather than a primary novelty claim, because
+the latest repository report already develops a broad cardinal-reproduction ladder.
+
+\begin{novelbox}
+The contour formulas recover the full digit sum and both Thue--Morse normalizations from the
+zero divisor of \(\Phi\). The monodromy formula recovers each finite word from analytic
+continuation of \(R_N\), while the Abel formula replaces discontinuous Rademacher signs by
+finite products of harmonic functions.
+\end{novelbox}
+
+\section{Compact representation atlas}
+\label{sec:atlas}
+
+The following table collects the principal forms used in the report. ``Baseline'' means
+already present in the audited repository; ``new'' means derived here and not located in the
+repository; ``synthesis'' means a new combination of known ingredients whose components are
+individually present.
+
+\small
+\begin{longtable}{p{0.13\textwidth}p{0.49\textwidth}p{0.29\textwidth}}
+\caption{Representation atlas.}\label{tab:atlas}\\
+\toprule
+Object/type & Representation & Status and use\\
+\midrule
+\endfirsthead
+\toprule
+Object/type & Representation & Status and use\\
+\midrule
+\endhead
+\bottomrule
+\endfoot
+
+\(X\), random series &
+\(X=\sum_{k\ge1}2^{-k}U_k\), \(U_k\sim\operatorname{Unif}[-1,1]\) &
+Baseline; probability model\\
+
+\(X\), fixed point &
+\(X\stackrel d=(X+U)/2\) &
+Baseline; source of recurrences\\
+
+\(\rho\), convolution &
+\(\rho=*_{k\ge1}(2^{k-1}\mathbf1_{[-2^{-k},2^{-k}]})\) &
+Baseline; compact support and smoothness\\
+
+\(\rho_N\), spline &
+\(\rho_N=2^{N(N-1)/2}(N-1)!^{-1}\sum_{j<2^N}\epsilon_j(x+a_{N,j})_+^{N-1}\) &
+Baseline; finite exact form\\
+
+\(\rho\), refinement &
+\(\rho(x)=\int_{-1}^{1}\rho(2x-u)\dd u\) &
+Baseline; scaling\\
+
+\(\rho\), derivative &
+\(\rho'(x)=2[\rho(2x+1)-\rho(2x-1)]\) &
+Baseline; differential-difference law\\
+
+\(\Phi\), sinc product &
+\(\prod_{j\ge0}\sincpi(\xi/2^j)\) &
+Baseline; Fourier image\\
+
+\(\Phi\), zero product &
+\(\prod_{n\ge1}(1-\xi^2/n^2)^{1+\vTwo(n)}\) &
+Baseline; dyadic zero divisor\\
+
+\(\Phi\), Bessel series &
+\(J_0(2\pi\xi)+2\sum_{m\ge1}(-1)^mc_{2m}J_{2m}(2\pi\xi)\) &
+New; series--product bridge\\
+
+\(\Phi^{(r)}\) &
+Termwise derivatives of the Bessel series &
+New; zero-multiplicity sum rules\\
+
+\(M\), hyperbolic product &
+\(\prod_{k\ge1}\sinh(t/2^k)/(t/2^k)\) &
+Baseline; moment generating function\\
+
+\(M\), canonical product &
+\(\prod_{n\ge1}(1+t^2/(4\pi^2n^2))^{1+\vTwo(n)}\) &
+Baseline rearrangement\\
+
+\(M\), Bessel series &
+\(I_0(t)+2\sum_{m\ge1}c_{2m}I_{2m}(t)\) &
+New; modified-Bessel bridge\\
+
+\(\mu_n\) &
+Triangular rational recurrence \eqref{eq:moment-recurrence} &
+Baseline; exact moments\\
+
+\(\mu_n\) &
+Complete Bell polynomial in Bernoulli cumulants &
+Baseline; Bell--Bernoulli form\\
+
+\(c_{2m}\) &
+Finite transform of \(\mu_{2k}\), \eqref{eq:c-moment-formula} &
+New; exact probability-Chebyshev coordinates\\
+
+\(G(w)\) &
+\(\int(1-wx)(1-2wx+w^2)^{-1}\rho(x)\dd x\) &
+New; moment generating function in degree\\
+
+\(C(w)\) &
+\(\int_{\T}(\zeta+w)(\zeta-w)^{-1}\dd\nu\) &
+New; Carath\'eodory transform\\
+
+\(C(w)\), series &
+\(1+2\sum_{m\ge1}c_{2m}w^{2m}\) &
+New; positive-real disk series\\
+
+\(R(z)\), moments &
+\(\sum_{n\ge0}\mu_nz^{-n-1}\) &
+Baseline; expansion at infinity\\
+
+\(R(z)\), Laplace &
+\(\int_0^\infty e^{-zt}M(t)\dd t\) &
+Baseline; integral transform\\
+
+\(R(z)\), Joukowski &
+\([1+2\sum c_{2m}w(z)^{2m}]/\sqrt{z^2-1}\) &
+New; conformal series\\
+
+\(R(z)\), Bessel-Laplace &
+\(\int_0^\infty e^{-zt}[I_0(t)+2\sum c_{2m}I_{2m}(t)]\dd t\) &
+New synthesis\\
+
+\(R(z)\), Jacobi CF &
+\(1/(z-\beta_1/(z-\beta_2/(z-\cdots)))\) &
+Baseline; real-line continued fraction\\
+
+\(R(z)\), Schur/CMV &
+\(C(w(z))/\sqrt{z^2-1}\), with \(C\) a CMV resolvent element &
+New; unitary operator representation\\
+
+\(\rho(x)\), weighted Cheb &
+\([1+2\sum c_{2m}T_{2m}(x)]/[\pi\sqrt{1-x^2}]\) &
+New; boundary Fourier series\\
+
+\(F(u)\), phase series &
+\(1-\theta/\pi-\pi^{-1}\sum c_{2m}\sin(2m\theta)/m\) &
+New; \(\theta=\arccos(2u-1)\)\\
+
+\(F'(u)\) &
+\(\Re C(e^{i\theta})/[\pi\sqrt{u(1-u)}]\) &
+New; positive boundary quotient\\
+
+\(I(v)\), phase &
+\(I=(1+\cos\Theta)/2\), with \(\Theta\) solving \eqref{eq:Theta-implicit} &
+New; inverse trigonometric representation\\
+
+\(I'(v)\) &
+\(\pi\sqrt{I(1-I)}/\Re C(e^{i\Theta})\) &
+New; inverse derivative\\
+
+\(F\), Fourier &
+\([e^{-\pi i\xi}\Phi(\xi/2)-e^{-2\pi i\xi}]/(2\pi i\xi)\) &
+Baseline\\
+
+\(F\), Bessel Fourier &
+Insert the \(J_{2m}\)-series for \(\Phi(\xi/2)\) &
+New synthesis\\
+
+\(I\), pushforward &
+\(\int_0^1e^{-2\pi i\xi I(v)}\dd v=e^{-\pi i\xi}\Phi(\xi/2)\) &
+Baseline\\
+
+\(I\), Bessel pushforward &
+Insert the \(J_{2m}\)-series in the preceding formula &
+New synthesis\\
+
+OPUC data &
+Schur recursion with rational \(\alpha_{2m}=0\) &
+New; exact unit-circle coefficients\\
+
+Jacobi--OPUC &
+\(\beta_{n+1}=\tfrac14(1-\alpha_{2n-1})(1+\alpha_{2n+1})\) &
+New application of Geronimus\\
+
+Toeplitz &
+\(D_N=\prod_{j=0}^{N-2}(1-\alpha_j^2)^{N-1-j}\) &
+New determinant representation\\
+
+Szeg\H{o} product &
+\(\prod(1-\alpha_n^2)=\exp[(2\pi)^{-1}\int\log W]\) &
+New entropy/product invariant\\
+
+\(s_2(n)\), spectral &
+\(2n-(2\pi i)^{-1}\oint\Phi'/\Phi\) &
+New; full digit sum from zero divisor\\
+
+\(\epsilon_n\), contour &
+\(\exp[\tfrac12\oint\Phi'/\Phi]\) &
+New; signed Thue--Morse\\
+
+\(\tau_n\), contour &
+\(\sin^2[(4i)^{-1}\oint\Phi'/\Phi]\) &
+New; unsigned Thue--Morse\\
+
+Finite TM word &
+Normalized \((N-1)\)-st derivative of logarithmic monodromy &
+New; analytic-continuation encoding\\
+
+\(\epsilon_n\), Abel &
+Boundary limit of a finite product of \(H_r\)-factors &
+New; smooth harmonic regularization\\
+
+\(\Phi\), cardinal TM &
+Half-integer Shannon series with coefficients \(\epsilon_nA_n\) &
+Synthesis; overlaps repository cardinal program\\
+\end{longtable}
+\normalsize
+
+\section{Exact computations and numerical experiments}
+\label{sec:numerics}
+
+The file \texttt{numerical\_experiments.py} is deliberately self-contained. It uses
+\texttt{fractions.Fraction} for exact moments, Chebyshev moments, Jacobi coefficients, and
+Verblunsky coefficients; \texttt{mpmath} for 70-digit analytic checks; and
+\texttt{matplotlib} for the figures. The code follows two independent coefficient routes:
+
+\begin{enumerate}
+\item ordinary moments \(\to\) exact monic Gram--Schmidt \(\to\beta_n\to\alpha_n\) through
+Geronimus;
+\item ordinary moments \(\to c_n\to C(w)\to\alpha_n\) through a formal exact Schur algorithm.
+\end{enumerate}
+
+The two routes agree exactly through \(\alpha_{15}\) in the automated assertion. The script
+also verifies \(N_\Phi(n)=2n-s_2(n)\) for \(0\le n\le256\), the monodromy normalization for
+\(1\le N\le9\), and all positivity/unit-disk conditions for the computed coefficients.
+
+\input{generated_tables.tex}
+
+\subsection{Bessel convergence}
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.82\textwidth]{bessel_convergence.png}
+\caption{Maximum error on \(|\xi|\le4\) of the first \(M\) even-order terms in
+\eqref{eq:Phi-Bessel}, measured against a 90-factor sinc product. At \(M=20\), the recorded
+maximum is approximately \(1.35\times10^{-11}\).}
+\label{fig:bessel-convergence}
+\end{figure}
+
+At 40 even terms, the pointwise errors against a 120-factor product were approximately
+\begin{center}
+\begin{tabular}{c c}
+\toprule
+\(\xi\) & absolute error\\
+\midrule
+0.125 & below the 70-digit working threshold\\
+0.7 & \(9.1\times10^{-72}\)\\
+1.75 & \(5.5\times10^{-69}\)\\
+3.2 & \(7.4\times10^{-48}\)\\
+\bottomrule
+\end{tabular}
+\end{center}
+The degradation at \(\xi=3.2\) is expected: a fixed order truncation must resolve more
+oscillatory Bessel content as \(|\xi|\) grows.
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.82\textwidth]{mgf_bessel_convergence.png}
+\caption{Maximum error on \(0\le t\le8\) of the first \(M\) even-order terms in
+\eqref{eq:M-Bessel}, measured against a 90-factor hyperbolic product. At \(M=20\), the
+recorded maximum is approximately \(1.14\times10^{-30}\).}
+\label{fig:mgf-convergence}
+\end{figure}
+
+\subsection{Three independent Cauchy-transform evaluations}
+
+The Joukowski series, ordinary moment series, and direct Laplace-product integral agree as
+follows:
+\begin{center}
+\small
+\begin{tabular}{c c c c}
+\toprule
+\(z\) & Joukowski/Chebyshev & moment-series error & Laplace-product error\\
+\midrule
+1.5 & 0.7040034721763372090 & \(1.71\times10^{-22}\) & \(5.82\times10^{-17}\)\\
+2.0 & 0.5148540730138274802 & \(5.75\times10^{-33}\) & \(1.22\times10^{-27}\)\\
+3.0 & 0.3375690921956309530 & \(1.21\times10^{-47}\) & \(3.19\times10^{-45}\)\\
+\bottomrule
+\end{tabular}
+\normalsize
+\end{center}
+At \(z=1.5\), the moment series is closer to its unit-circle boundary of convergence and the
+quadrature tail is harder; the Joukowski coordinate remains well adapted to the slit plane.
+
+\subsection{Verblunsky data}
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.82\textwidth]{verblunsky_coefficients.png}
+\caption{The first twenty exact odd Verblunsky coefficients. All even coefficients vanish.
+The displayed odd values are negative and increase toward zero, motivating
+\cref{conj:alpha-monotone}; Rakhmanov's theorem proves convergence to zero but not the
+observed sign and monotonicity.}
+\label{fig:alpha}
+\end{figure}
+
+The figure is plotted from exact fractions, not from a fitted or floating-point recurrence.
+The largest fractions contain hundreds of digits; the CSV files preserve their exact
+numerators and denominators.
+
+\subsection{Reproducibility boundaries}
+
+The experiments verify identities already proved symbolically; they do not establish the
+conjectures in \cref{sec:conjectures}. Product truncation and quadrature errors are not given
+as formal interval bounds, so their decimal residuals should be read as consistency checks.
+A natural next step is to port the same recurrences to Arb or MPFI interval arithmetic.
+
+\section{Conjectures and frontier research program}
+\label{sec:conjectures}
+
+\begin{conjecturebox}
+The statements in this section are unproved unless explicitly described as conditional.
+They are motivated by exact data, standard OPUC theory, and the known endpoint asymptotics,
+but they should not be cited as theorems.
+\end{conjecturebox}
+
+\begin{conjecture}[Sign and monotonicity of odd Verblunsky coefficients]
+\label{conj:alpha-monotone}
+For every \(n\ge0\),
+\begin{equation}
+ -1<\alpha_{2n+1}<\alpha_{2n+3}<0.
+ \label{eq:conj-alpha-monotone}
+\end{equation}
+Thus the odd subsequence approaches zero strictly from below.
+\end{conjecture}
+
+The first twenty odd coefficients support the conjecture. A proof may be accessible through
+total positivity of Toeplitz minors, a comparison principle for the Schur algorithm, or a
+special sign-regularity property of the circle weight \(W\). Ordinary positivity of \(W\) is
+not enough; a genuinely stronger structural argument is needed.
+
+\begin{conjecture}[Logarithmic edge law]
+\label{conj:alpha-asymptotic}
+There is a constant \(A>0\) such that
+\begin{equation}
+ \alpha_{2n-1}\sim-A\frac{\log n}{n}.
+ \label{eq:alpha-asymptotic}
+\end{equation}
+If the Jacobi edge law has the form
+\begin{equation}
+ \frac14-\beta_{n+1}\sim C\frac{(\log n)^2}{n^2},
+ \label{eq:beta-edge-conj}
+\end{equation}
+then the Geronimus relation predicts \(A=2\sqrt C\).
+\end{conjecture}
+
+Indeed, writing \(\gamma_n=-\alpha_{2n-1}\),
+\[
+ \frac14-\beta_{n+1}
+ =\frac14\bigl(\gamma_{n+1}-\gamma_n+\gamma_n\gamma_{n+1}\bigr).
+\]
+For \(\gamma_n\asymp(\log n)/n\), the product term dominates the discrete derivative.
+This turns the real-line Jacobi edge problem into a unit-circle Schur asymptotic problem.
+
+\begin{conjecture}[Refined Szeg\H{o}--Toeplitz asymptotics]
+\label{conj:Toeplitz}
+The Toeplitz determinants \(D_N\) admit a strong asymptotic expansion whose first correction
+to the Szeg\H{o} linear term is governed by the logarithmic endpoint-flatness law of
+\(\rho\), and hence ultimately by the Lambert--\(W\) expansion appearing in the endpoint
+analysis.
+\end{conjecture}
+
+The weight is positive and smooth but has infinite-order zeros. It lies outside the most
+naive strictly-positive smooth-weight regime, making it a promising test case for extending
+Fisher--Hartwig and strong Szeg\H{o} methods to logarithmically superflat weights.
+
+\begin{conjecture}[Arithmetic structure of the Szeg\H{o} constant]
+\label{conj:Szego-constant}
+The entropy integral
+\begin{equation}
+ \mathcal S_\rho=\frac1{2\pi}\int_0^{2\pi}
+ \log\bigl(\pi\rho(\cos\theta)|\sin\theta|\bigr)\dd\theta
+ \label{eq:Szego-constant}
+\end{equation}
+has a representation in terms of the dyadic cumulant data, perhaps as a rapidly convergent
+series involving Bernoulli numbers, dyadic zeta factors, or a binary Barnes-type constant.
+\end{conjecture}
+
+\begin{conjecture}[Bessel zero hierarchy has a finite recursive basis]
+\label{conj:Bessel-basis}
+The derivative cancellation identities obtained from the zero of multiplicity
+\(1+\vTwo(N)\) at \(N\) can be reduced, using Bessel recurrences, to a triangular finite
+basis whose coefficient matrix has an explicit Thue--Morse or \(q\)-binomial factorization.
+\end{conjecture}
+
+\begin{conjecture}[Quantitative Abel convergence]
+\label{conj:Abel-rate}
+For \(n\ge1\) and \(r\) sufficiently close to one,
+\begin{equation}
+ \left|\epsilon_n-\prod_{j=0}^{J_n}H_r\!\left(
+ \frac{\pi(n+1/2)}{2^j}\right)\right|
+ \le C(1-r)\sum_{j=0}^{J_n}\frac{1}{|\sin(\pi(n+1/2)/2^j)|}
+ \label{eq:Abel-rate}
+\end{equation}
+with an absolute constant \(C\), and the reciprocal-sine sum admits a sharp bound in terms
+of the binary carry structure of \(n\).
+\end{conjecture}
+
+\subsection{Promising research directions}
+
+\begin{enumerate}
+\item \textbf{Rigorous OPUC asymptotics.} Derive the odd Verblunsky asymptotics directly from
+the superflat weight using nonlinear steepest descent for the OPUC Riemann--Hilbert problem,
+or via fine spectral theory of the CMV matrix.
+
+\item \textbf{Certified coefficient computation.} Combine exact rational recurrences with
+modular arithmetic and rational reconstruction. Hundreds of \(\alpha_n\) and \(\beta_n\)
+should be feasible without storing enormous intermediate fractions.
+
+\item \textbf{Fast inverse Fabius solvers.} Use the phase equation
+\eqref{eq:Theta-implicit} with FFT-evaluated trigonometric sums and safeguarded Newton steps.
+The positivity of \(\Re C\) gives a natural monotonicity certificate.
+
+\item \textbf{Entropy and determinant constants.} Numerically evaluate
+\(\mathcal S_\rho\), compare it with products of exact \(1-\alpha_n^2\), and use integer-
+relation searches only after rigorous tail bounds are available.
+
+\item \textbf{CMV/Jacobi scattering.} Treat the Rvachev Jacobi and CMV matrices as compact or
+slowly varying perturbations of the free models. The endpoint-flatness law should appear in
+reflection coefficients and spectral phase shifts.
+
+\item \textbf{Base-\(b\) and \(q\)-Rvachev lifts.} For generalized products with scales
+\(b^{-k}\) or exponent sequences, construct the analogous circle lift, identify the
+Carath\'eodory function, and compare rationality/algebraicity of its Schur parameters.
+
+\item \textbf{Monodromy categories.} Replace the binary finite spline by finite
+\(q\)-binomial or digit-weighted splines. Their logarithmic resolvents should carry a
+monodromy representation of the corresponding automatic word.
+
+\item \textbf{De Branges and Hermite interpolation.} The integer zero divisor has unbounded
+multiplicity. Build a complete interpolation basis adapted to the values of
+\(\Phi^{(r)}(n)\) for \(0\le r\le\vTwo(n)\), rather than ordinary simple-node Shannon
+sampling.
+
+\item \textbf{Bessel sum-rule algebra.} Organize \eqref{eq:Bessel-integer-zero} and its
+higher derivatives as identities in the Bessel differential algebra; search for finite
+closed combinations at powers of two.
+
+\item \textbf{Mellin matching.} Match the unit-circle phase representation to the repository's
+Mellin/Newton and Lambert--\(W\) endpoint expansions, obtaining uniform approximations from
+the center to the boundary.
+
+\item \textbf{Formal verification.} The moment recurrence, exact Chebyshev transform,
+Carath\'eodory series, and contour zero count are suitable for Lean formalization. The
+analytic boundary and Szeg\H{o} portions would require more functional-analysis
+infrastructure.
+
+\item \textbf{Interval numerics.} Recompute the figures with ball arithmetic, certify the
+Schur parameters and Bessel identities, and establish explicit truncation bounds for the
+phase series and Abel product.
+\end{enumerate}
+
+\section{Conclusion}
+\label{sec:conclusion}
+
+The audited repository already contains a remarkably broad representation theory: random
+series, splines, Thue--Morse coefficients, sinc and canonical products, exact moments,
+Bernoulli/Bell structure, resolvents, logarithmic finite transforms, determinant and
+continued-fraction forms, multiresolution expansions, integral transforms, inverse-function
+identities, and endpoint asymptotics. The main advance here is therefore not another
+isolated formula, but a new organizing bridge.
+
+The probability--Chebyshev moments \(c_n\) lift the Rvachev law to the circle. From that lift,
+one analytic function \(C\) simultaneously yields the density, the Fabius phase series, the
+inverse phase equation, the Joukowski Cauchy transform, Schur and CMV data, and Toeplitz
+products. The same coefficients turn the infinite sinc and hyperbolic products into ordinary
+and modified Bessel series. On the arithmetic side, the integer zero divisor of \(\Phi\)
+recovers the complete binary digit sum by the argument principle; finite logarithmic
+resolvents recover Thue--Morse words by monodromy; and Abel regularization gives a smooth
+finite-product representation.
+
+These bridges place the Rvachev--Fabius system at an intersection of probability,
+Fourier analysis, special functions, OPUC, operator theory, complex monodromy, automatic
+sequences, and dyadic asymptotics. The conjectures above are concrete enough for exact
+computation and theoretical attack, yet broad enough to connect several currently separate
+campaigns in the repository.
+
+\appendix
+
+\section{Proof details and convergence notes}
+\label{app:proofs}
+
+\subsection{Smoothness of the circle weight}
+
+Near \(\theta=0\), \(1-\cos\theta\asymp\theta^2\). Since \(\rho\) and all its derivatives
+vanish at \(x=1\), the composite \(\rho(\cos\theta)|\sin\theta|\) and all its derivatives tend
+to zero at the origin. The same holds at \(\pi\) and \(2\pi\). This justifies the
+\(C^\infty\) periodic extension used in \cref{thm:boundary-rho}, hence the superalgebraic
+decay of \(c_n\).
+
+\subsection{Local uniform convergence of Bessel series}
+
+For \(|z|\le R\), the standard bound \(|J_n(z)|\le (R/2)^n/n!\,e^{R^2/4}\) is sufficient.
+Since \(|c_n|\le1\), the series in \eqref{eq:Phi-Bessel} converges uniformly on compact sets.
+An analogous factorial-in-order bound for \(I_n\) proves local uniform convergence of
+\eqref{eq:M-Bessel}. Termwise differentiation follows from Weierstrass convergence.
+
+\subsection{Log-integrability of the circle weight}
+
+The established endpoint analysis of \(\rho(1-h)\) has logarithm growing on the scale of a
+quadratic or mildly corrected quadratic polynomial in \(\log(1/h)\). With
+\(h\asymp\theta^2\), any finite power of \(\log(1/\theta)\) is integrable near zero:
+\[
+ \int_0^\varepsilon \bigl|\log^k\theta\bigr|\dd\theta<\infty.
+\]
+The extra factor \(|\sin\theta|\) contributes only \(\log|\theta|\). Therefore
+\(\log W\in L^1\), as required by Szeg\H{o}'s theorem.
+
+\subsection{A direct expression for the circle measure}
+
+For any continuous \(h\) on \(\T\),
+\begin{equation}
+ \int_{\T}h(\zeta)\dd\nu(\zeta)
+ =\int_{-1}^{1}\frac{h(e^{\ii\arccos x})+h(e^{-\ii\arccos x})}{2}
+ \rho(x)\dd x.
+ \label{eq:nu-pushforward}
+\end{equation}
+This formula is often the fastest route for transporting real-line identities to the circle.
+
+\section{Reproducibility map}
+\label{app:code}
+
+\begin{longtable}{p{0.32\textwidth}p{0.60\textwidth}}
+\toprule
+File & Purpose\\
+\midrule
+\endfirsthead
+\toprule
+File & Purpose\\
+\midrule
+\endhead
+\bottomrule
+\endfoot
+\texttt{numerical\_experiments.py} & Exact moments, \(c_n\), Jacobi and Verblunsky
+coefficients; Bessel/product, Cauchy, spectral, Abel, and monodromy checks; figure and table
+generation.\\
+\texttt{numerical\_results.txt} & Human-readable verification transcript with decimal
+residuals.\\
+\texttt{chebyshev\_moments.csv} & Exact numerators, denominators, and decimal values of
+\(c_n\).\\
+\texttt{jacobi\_coefficients.csv} & Exact \(\beta_n\).\\
+\texttt{schur\_parameters.csv} & Exact \(\alpha_n\), including structural zeros.\\
+\texttt{generated\_tables.tex} & Tables inserted into this report.\\
+\texttt{corpus\_audit.txt} & Audit method, overlap exclusions, and novelty language.\\
+\texttt{README.txt} & Reproduction and compilation instructions.\\
+\end{longtable}
+
+The exact coefficient computation starts from only \eqref{eq:moment-recurrence}; all other
+rational quantities are consequences. This makes the computational chain auditable and
+suitable for independent reimplementation.
+
+\begin{thebibliography}{99}
+
+\bibitem{ProveIt}
+V. Reshetnikov,
+\emph{ProveIt: Analysis/FabiusFunction/docs}, living research repository,
+\url{https://github.com/VladimirReshetnikov/ProveIt/tree/main/Analysis/FabiusFunction/docs}.
+
+\bibitem{Fabius1966}
+J. Fabius,
+A probabilistic example of a nowhere analytic \(C^\infty\)-function,
+\emph{Zeitschrift f\"ur Wahrscheinlichkeitstheorie und Verwandte Gebiete} 5 (1966), 173--174.
+
+\bibitem{Rvachev}
+V. L. Rvachev,
+On a function with compact support that is infinitely differentiable,
+original work introducing the compactly supported ``up'' function; bibliographic and
+translated versions are catalogued in the repository's historical source files.
+
+\bibitem{DLMF-Bessel}
+NIST Digital Library of Mathematical Functions,
+Chapters 10 and 11: Bessel functions and generating/Jacobi--Anger expansions,
+\url{https://dlmf.nist.gov/10}.
+
+\bibitem{SimonOPUC1}
+B. Simon,
+\emph{Orthogonal Polynomials on the Unit Circle, Part 1: Classical Theory},
+American Mathematical Society Colloquium Publications, vol. 54.1, 2005.
+
+\bibitem{SimonOneFoot}
+B. Simon,
+OPUC on one foot,
+in \emph{Bull. Amer. Math. Soc.} and related expository notes on Carath\'eodory functions,
+Schur parameters, CMV matrices, and Geronimus relations.
+
+\bibitem{Szego}
+G. Szeg\H{o},
+\emph{Orthogonal Polynomials},
+American Mathematical Society Colloquium Publications, fourth edition, 1975.
+
+\bibitem{SimonOPRL}
+B. Simon,
+\emph{Orthogonal Polynomials on the Real Line},
+American Mathematical Society Colloquium Publications, vol. 54.4, 2005.
+
+\bibitem{Whittaker}
+E. T. Whittaker,
+On the functions which are represented by the expansions of the interpolation theory,
+\emph{Proceedings of the Royal Society of Edinburgh} 35 (1915), 181--194.
+
+\bibitem{Shannon}
+C. E. Shannon,
+Communication in the presence of noise,
+\emph{Proceedings of the IRE} 37 (1949), 10--21.
+
+\bibitem{AlloucheShallit}
+J.-P. Allouche and J. Shallit,
+\emph{Automatic Sequences: Theory, Applications, Generalizations},
+Cambridge University Press, 2003.
+
+\bibitem{Akhiezer}
+N. I. Akhiezer,
+\emph{The Classical Moment Problem and Some Related Questions in Analysis},
+Oliver \& Boyd, 1965.
+
+\end{thebibliography}
+
+\end{document}

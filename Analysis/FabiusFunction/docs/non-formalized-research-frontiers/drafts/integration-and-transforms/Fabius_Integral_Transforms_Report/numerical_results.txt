@@ -1,0 +1,71 @@
+FABIUS--RVACHEV INTEGRAL-TRANSFORM NUMERICAL CHECKS
+===================================================================
+Uniform grid: 2^17 subintervals
+
+1. Fixed-point and exact-value checks
+F(1/4), grid              = 0.06944444445737588
+F(1/4), exact 5/72         = 0.06944444444444445
+absolute error             = 1.293e-11
+max symmetry residual      = 0.000e+00
+
+2. Exact rational moments
+d_0 = 1  ~= 1
+d_1 = 1/2  ~= 0.5
+d_2 = 5/18  ~= 0.2777777777777778
+d_3 = 1/6  ~= 0.1666666666666667
+d_4 = 143/1350  ~= 0.1059259259259259
+d_5 = 19/270  ~= 0.07037037037037037
+d_6 = 1153/23814  ~= 0.04841689762324683
+d_7 = 583/17010  ~= 0.03427395649617872
+d_8 = 1616353/65063250  ~= 0.02484279527997756
+Centered even moments c_m=E[(2X-1)^(2m)] (first six):
+c_0 = 1
+c_1 = 1/9
+c_2 = 19/675
+c_3 = 583/59535
+c_4 = 132809/32531625
+c_5 = 46840699/24405225075
+
+3. Adjacent-order-statistic spacing theorem
+Integral exp(x) F(x)^2(1-F(x))^3 dx = 0.01412414022228613
+Order-statistic RHS                       = 0.01412414022563715
+absolute residual                         = 3.351e-12
+RL primitive order 1.65 at x=0.71, direct = 0.003973717998861839
+RL primitive order 1.65, spacing RHS       = 0.003973718000118132
+absolute residual                             = 1.256e-12
+
+4. Cauchy-transform functional-differential equation
+z=    (2+0j): |S1'(z)-2(S1(2z+1)-S1(2z-1))| = 2.220e-16
+z=(1.7+0.4j): |S1'(z)-2(S1(2z+1)-S1(2z-1))| = 7.850e-17
+z=(2.5-0.3j): |S1'(z)-2(S1(2z+1)-S1(2z-1))| = 9.310e-17
+
+5. Sinc-product energy and the F^2 constant
+A2 from F grid                          = 0.4044367679787557
+integral_0^64 Phi(xi)^2 dxi            = 0.4044367679839853 (quad err <= 4.50e-15)
+A2 from Gini/sinc complement           = 0.4044367679839934
+sum-rule left side (target 1/2)        = 0.4999999999999919
+sum-rule residual                      = 8.105e-15
+
+6. Balanced beta localization
+K_m=(2m+1) C(2m,m) int F^m(1-F)^m; theorem: K_m downarrow 1/2
+m        K_m                    K_m-1/2              log(delta)/(log m)^2
+1        0.5733793921274658   7.33793921e-02    nan
+2        0.5342950953658199   3.42950954e-02   -7.01994332
+5        0.509670110734078   9.67011073e-03   -1.79080906
+10       0.5030089982817735   3.00899828e-03   -1.09510744
+20       0.5007718239246493   7.71823925e-04   -0.79857647
+50       0.5000932209200453   9.32209200e-05   -0.60641561
+100      0.5000147741470243   1.47741470e-05   -0.52446461
+200      0.5000019041856246   1.90418562e-06   -0.46919984
+500      0.5000000931794168   9.31794168e-08   -0.41916550
+1000     0.5000000075715709   7.57157093e-09   -0.39186941
+2000     0.500000000508094   5.08094011e-10   -0.37041678
+Predicted limiting ratio: -0.180336880111
+The convergence is expected to be extremely slow; the grid also reaches
+its precision floor for the largest m.  These rows are diagnostic, not
+a numerical proof of the logarithmic asymptotic.
+
+7. Integrability contrast (interpretive numerical note)
+Negative moments E[X^{-s}] are finite for every fixed s>0, whereas
+the Lebesgue integral of F(x)^{-s} over x in (0,1) diverges.  The report
+proves this contrast from the quadratic endpoint logarithm.

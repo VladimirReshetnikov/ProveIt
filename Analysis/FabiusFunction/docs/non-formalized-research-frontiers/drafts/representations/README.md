@@ -46,4 +46,17 @@ history is the archive. Reproducibility files remain under the volume's
 `assets/` directory, with each former package's README updated for its
 new location.
 
+A second wave of five separate member reports arrived 2026-08-28 and
+stays unmerged until deliberately folded into the volume:
+`Fabius_Rvachev_Multiresolution_Representations` (dyadic
+multiresolution and sampling frontiers),
+`Fabius_Rvachev_Polyphase_Representation_Report` (polyphase,
+operator, and jump-measure representations),
+`Fabius_Rvachev_Thue_Morse_Representation_Frontiers` (sampling,
+Padé, Mellin, resolvent, and product–integral atlas),
+`rvachev_fabius_representations_2026` (unit-circle, Bessel, and
+spectral–monodromy representations), and
+`fabius_rvachev_report_package` (integral, series, product, and
+operator representations with Fredholm and Mellin–Barnes bridges).
+
 See [`../MANIFEST.md`](../MANIFEST.md) for titles and provenance.

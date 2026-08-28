@@ -1,0 +1,2543 @@
+\documentclass[11pt,oneside]{article}
+
+\usepackage[a4paper,margin=27mm,headheight=15pt]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\IfFileExists{libertinus.sty}{\usepackage{libertinus}}{\usepackage{lmodern}}
+\usepackage{microtype}
+\usepackage{amsmath,amssymb,amsthm,mathtools,mathrsfs}
+\usepackage{bm}
+\usepackage{booktabs,longtable,array,tabularx}
+\usepackage{graphicx}
+\usepackage{xcolor}
+\usepackage{enumitem}
+\usepackage{fancyhdr}
+\usepackage{titlesec}
+\usepackage{listings}
+\usepackage{xurl}
+\usepackage{hyperref}
+\usepackage[nameinlink,noabbrev]{cleveref}
+
+\definecolor{linkblue}{RGB}{25,75,135}
+\definecolor{shadegray}{RGB}{246,247,249}
+\definecolor{rulegray}{RGB}{195,201,208}
+\definecolor{newgreen}{RGB}{25,105,72}
+\definecolor{conjecturepurple}{RGB}{104,61,126}
+\hypersetup{
+  colorlinks=true,
+  linkcolor=linkblue,
+  citecolor=linkblue,
+  urlcolor=linkblue,
+  pdftitle={Dyadic Multiresolution and Sampling Frontiers for the Fabius--Rvachev System},
+  pdfsubject={Integral, series, product, limit, wavelet, and sampling representations},
+  pdfkeywords={Fabius function, Rvachev up-function, Faber-Schauder, Haar, Shannon sampling, sinc product, Bernstein polynomial, Bessel function, Thue-Morse}
+}
+
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small Fabius--Rvachev representation frontiers}
+\fancyhead[R]{\small\nouppercase{\leftmark}}
+\fancyfoot[C]{\thepage}
+\renewcommand{\headrulewidth}{0.4pt}
+
+\titleformat{\section}{\Large\bfseries}{\thesection}{0.7em}{}
+\titleformat{\subsection}{\large\bfseries}{\thesubsection}{0.7em}{}
+\titleformat{\subsubsection}{\normalsize\bfseries}{\thesubsubsection}{0.7em}{}
+\setcounter{secnumdepth}{3}
+\setcounter{tocdepth}{2}
+\setlist[itemize]{leftmargin=2em,itemsep=0.25em,topsep=0.4em}
+\setlist[enumerate]{leftmargin=2.3em,itemsep=0.25em,topsep=0.4em}
+\setlength{\emergencystretch}{2em}
+\allowdisplaybreaks
+
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{conjecture}[theorem]{Conjecture}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{algorithm}[theorem]{Algorithm}
+\newtheorem{example}[theorem]{Example}
+\newtheorem{problem}[theorem]{Problem}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+\newtheorem{warning}[theorem]{Warning}
+
+\newcommand{\R}{\mathbb R}
+\newcommand{\C}{\mathbb C}
+\newcommand{\Q}{\mathbb Q}
+\newcommand{\N}{\mathbb N}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\E}{\mathbb E}
+\newcommand{\Prob}{\mathbb P}
+\newcommand{\Up}{\operatorname{up}}
+\newcommand{\sinc}{\operatorname{sinc}}
+\newcommand{\sinhc}{\operatorname{sinhc}}
+\newcommand{\dd}{\,\mathrm d}
+\newcommand{\ii}{\mathrm i}
+\newcommand{\e}{\mathrm e}
+\newcommand{\supp}{\operatorname{supp}}
+\newcommand{\Var}{\operatorname{Var}}
+\newcommand{\wt}{\operatorname{wt}_2}
+\newcommand{\vtwo}{\nu_2}
+\newcommand{\bigO}{\mathcal O}
+\newcommand{\smallo}{o}
+\newcommand{\1}{\mathbf 1}
+\newcommand{\PW}{\operatorname{PW}}
+\newcommand{\Haus}{\mathcal H}
+\newcommand{\repo}{\texttt{ProveIt}}
+\newcommand{\baseline}{\textcolor{linkblue}{\textbf{Corpus baseline.}}\ }
+\newcommand{\newresult}{\textcolor{newgreen}{\textbf{New deduction relative to the pinned corpus.}}\ }
+\newcommand{\numerical}{\textcolor{newgreen}{\textbf{Exact/numerical check.}}\ }
+\newcommand{\conjstatus}{\textcolor{conjecturepurple}{\textbf{Conjecture.}}\ }
+
+\newenvironment{boxedremark}{%
+  \par\smallskip\noindent\begin{center}\begin{minipage}{0.94\textwidth}%
+  \color{black}\hrule\vspace{0.6em}\small
+}{%
+  \vspace{0.6em}\hrule\end{minipage}\end{center}\smallskip
+}
+
+\lstdefinestyle{code}{
+  basicstyle=\ttfamily\small,
+  backgroundcolor=\color{shadegray},
+  frame=single,
+  rulecolor=\color{rulegray},
+  columns=fullflexible,
+  keepspaces=true,
+  showstringspaces=false,
+  breaklines=true,
+  xleftmargin=0.7em,
+  xrightmargin=0.7em,
+  aboveskip=0.8em,
+  belowskip=0.8em
+}
+\lstset{style=code}
+
+\title{\bfseries Dyadic Multiresolution and Sampling Frontiers\\[0.25em]
+for the Fabius--Rvachev System\\[0.45em]
+\large Exact rational wavelets, odd-lattice reconstruction, binomial layers,\\
+Bessel expansions, and accelerated sinc energies}
+\author{Repository-aware analytic and computational investigation}
+\date{Pinned corpus: 27 August 2026\\
+\small commit \nolinkurl{f7daf632f2db839fe091de0d080e22a9b50c286a}}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+The bounded Fabius distribution function $F$, Rvachev's compactly supported
+function $\Up$, and the entire sinc product that is the Fourier transform of
+$\Up$ possess unusually many mutually illuminating descriptions.  This report
+first audits all $92$ TeX paths recursively present under
+\path{Analysis/FabiusFunction/docs} at the pinned repository commit.  Existing
+probability, convolution, functional--differential, Volterra, finite
+Thue--Morse spline, $q$-binomial, Fourier product, canonical-product,
+Fourier--Legendre, half-integer cosine, moment, Lambert--$W$, Bell-polynomial,
+and inverse-quantile representations are catalogued as prior corpus material,
+not reannounced as discoveries.
+
+The main new theorem package is dyadic and multiresolution in nature.  Exact
+rational values of $F$ at dyadic points give a uniformly convergent
+Faber--Schauder expansion with rational coefficients, an exact-rational
+piecewise-affine limit for the inverse Fabius function, a Haar expansion of
+the density, and a locally uniformly convergent Haar--$\sinc^2$ expansion of
+the infinite sinc product.  Haar Parseval then gives a positive rational series
+for
+\[
+ A_2=\int_0^1F(x)^2\dd x
+    =\frac1{2\pi}\int_0^\infty
+      \prod_{j\ge1}\sinc^2\!\left(\frac{t}{2^j}\right)\dd t,
+\]
+together with an all-orders dyadic tail expansion.  This turns an arithmetically
+opaque sinc integral into monotone exact rational approximants and produces a
+high-order acceleration yielding about sixty stable decimal digits from level
+$16$ dyadic data.
+
+Several additional representation families are derived.  Expanding every
+uniform coordinate into fair binary digits reorganizes the Fabius random
+series into independent binomial layers and proves the product identity
+\[
+ \prod_{j\ge1}\sinc\!\left(\frac{t}{2^j}\right)
+ =\prod_{n\ge2}\cos\!\left(\frac{t}{2^n}\right)^{n-1}.
+\]
+Paley--Wiener sampling reconstructs the same entire function solely from its
+odd $\pi$-lattice samples; the known even zero lattice then yields a hierarchy
+of new sample sum rules.  Chebyshev and Gegenbauer coefficients become
+Bessel transforms of the sinc product.  Dyadic Bernstein polynomials give
+exact-rational polynomial limits for $F$ and $\Up$, while their Fourier images
+are finite sums of Kummer functions.  Finally, finite approximants are
+identified with sublevel volumes and hyperplane sections of weighted cubes.
+Proofs, status labels, conjectures, a Lean formalization roadmap, and a fully
+commented Python verification program are included.
+\end{abstract}
+
+\tableofcontents
+\clearpage
+
+\section{Audit boundary, status discipline, and contribution map}
+\label{sec:audit}
+
+\subsection{Pinned recursive corpus}
+
+The source boundary of this report is the Git commit
+\begin{center}
+\nolinkurl{f7daf632f2db839fe091de0d080e22a9b50c286a}
+\end{center}
+of Vladimir Reshetnikov's \repo{} repository~\cite{proveit}.  The audit root is
+\path{Analysis/FabiusFunction/docs}.  A previously reconstructed pinned Git
+manifest contained $87$ recursive TeX paths.  During the audit the branch
+advanced by $25$ commits; pinning the new head and comparing trees revealed
+five added TeX paths and no removals.  Thus the current boundary contains
+exactly $92$ TeX paths.  The complete list, the five additions, and the
+modified-path ledger are included as
+\path{corpus_manifest_current.txt} in the accompanying archive.
+
+The five additions are three large integral/transform manuscripts and two
+generated numerical fragments.  They materially change the novelty boundary:
+finite and complex-power antiderivatives, fractional Volterra calculus,
+quantile beta transforms, Cauchy--Stieltjes hierarchies, inverse-Fabius
+resolvents, autocorrelations, order statistics, and a rational Jacobi
+continued fraction were already present by the pinned commit.  Those results
+are therefore baseline here.
+
+The audit did not treat archived revisions as independent corroboration.
+Historical copies were read for mathematically distinctive material, then
+deduplicated by lineage.  Imported TeX transcriptions of the papers of Arias
+de Reyna and of work on lacunary products were included in the collision
+search.  Targeted repository searches were also made for the exact phrases
+and formula shapes used below.  No occurrence was found for the Faber--Schauder
+midpoint-defect expansion, the rational Haar energy series, the triangular
+independent-binomial decomposition, the odd-sample cardinal formula, the
+Chebyshev--Bessel sinc integral, the dyadic Bernstein--Kummer transform, or the
+weighted-cube section representation.
+
+\subsection{Meaning of the status labels}
+
+Three labels are used throughout.
+
+\begin{itemize}
+\item \baseline means that the result, perhaps in a different normalization,
+      is explicit in the audited corpus or one of its imported sources.
+\item \newresult means that a proof is supplied here and that no explicit
+      counterpart was located in the pinned corpus after formula-level
+      searches.  It is not a claim of absolute publication priority.
+\item \conjstatus means that no proof is claimed.  Exact computations and
+      structural evidence are stated separately from the conjecture.
+\end{itemize}
+
+This distinction is especially important in the Fabius project: a new
+representation may be an elementary consequence of deep existing identities,
+while a visually similar formula may fail because it suppresses the
+nonconstant periodic phase in the endpoint asymptotics.
+
+\subsection{Existing material deliberately excluded from novelty claims}
+
+The following are treated as established inputs.
+
+\begin{longtable}{@{}p{0.28\textwidth}p{0.66\textwidth}@{}}
+\toprule
+Layer & Audited prior material \\
+\midrule
+\endfirsthead
+\toprule
+Layer & Audited prior material \\
+\midrule
+\endhead
+Basic functions & Separation of the bounded CDF $F$, the compactly supported even bump $\Up$, and the signed global extension $\mathcal F$; uniqueness, smoothness, support, symmetry, strict shape, and flat endpoints.\\
+Probability & Weighted sums of independent uniform coordinates, finite atomic and spline approximants, weak convergence, exact support bounds, and reflection.\\
+Arithmetic & Rational moments, reciprocal-power values $F(2^{-n})$, arbitrary dyadic evaluation, Thue--Morse formulas, $q$-Pochhammer and Gaussian-binomial forms, denominator and $2$-adic information.\\
+Fourier analysis & Infinite sinc and cosine products, Fourier inversion, Poisson and half-integer sampling identities in physical space, integer zeros with multiplicity $1+\vtwo(n)$, canonical products, sharp real-axis decay, spectral zeta and heat trace.\\
+Approximation & Finite Thue--Morse splines, repeated integration, Fourier--Legendre expansion, exact Strang--Fix reproduction, positive quadrature, and Richardson acceleration of truncated products.\\
+Integral transforms & Mellin, Laplace, Fourier, Cauchy, Stieltjes, logarithmic, correlation, spacing, order-statistic, inverse-quantile, and fractional-resolvent transforms.\\
+Endpoint theory & Correct lower-Lambert coordinate, nonconstant periodic Gamma--zeta correction, all-order Bell-polynomial expansion, inverse-quantile reversion, and phase-aware Richardson extraction.\\
+\bottomrule
+\end{longtable}
+
+\subsection{New theorem package}
+
+The report proves the following linked results.
+
+\begin{enumerate}
+\item An exact rational Faber--Schauder expansion of $F$, with sharp
+      $4^{-J}$ interpolation scale, sign symmetry, and curvature recovery;
+      inversion gives exact-rational piecewise-affine approximants to $G=F^{-1}$.
+\item A rational Haar expansion of $F'$ and $\Up$, and a corresponding
+      Haar--$\sinc^2$ series for the entire Fourier transform.
+\item A positive rational series for $A_2=\int_0^1F^2$, a certified geometric
+      tail bound, and a complete asymptotic expansion of its dyadic level
+      energies and tails.
+\item An independent-binomial layer representation obtained by regrouping
+      the binary digits of the uniform coordinates, including a finite
+      combinatorial CDF and probability polynomial.
+\item An odd-$\pi$-lattice Shannon reconstruction of the sinc product and a
+      hierarchy of sample identities forced by the higher even-zero
+      multiplicities.
+\item Chebyshev and Gegenbauer expansions whose coefficients are
+      Bessel transforms of the sinc product; the Legendre specialization
+      turns known rational coefficients into exact Bessel-product integrals.
+\item Exact-rational dyadic Bernstein limits and finite Kummer-function
+      formulas for their Fourier transforms.
+\item Weighted-cube sublevel-volume and hyperplane-section limits unifying
+      the probabilistic, spline, and Fourier-slice pictures.
+\end{enumerate}
+
+\section{Normalization and established representation atlas}
+\label{sec:atlas}
+
+\subsection{The three functions}
+
+Let $F:\R\to[0,1]$ denote the bounded Fabius distribution function~\cite{fabius1966,arias1982,arias2018}:
+\begin{equation}
+ F(x)=0\quad(x\le0),\qquad
+ F(x)=1\quad(x\ge1),                                      \label{eq:F-boundary}
+\end{equation}
+with
+\begin{equation}
+ F'(x)=2F(2x)\quad(0<x<\tfrac12),
+ \qquad F(x)+F(1-x)=1\quad(0\le x\le1).                  \label{eq:F-basic}
+\end{equation}
+Rvachev's function is~\cite{rvachev1971}
+\begin{equation}
+ \Up(y)=
+ \begin{cases}
+   F(1-|y|),& |y|\le1,\\
+   0,& |y|>1.
+ \end{cases}                                             \label{eq:up-definition}
+\end{equation}
+It is even, nonnegative, $C^\infty$, supported on $[-1,1]$, and normalized by
+$\int\Up=1$.  The conversion formulas are
+\begin{equation}
+ F'(x)=2\Up(2x-1),\qquad
+ F(x)=\Up(x-1)\quad(0\le x\le1),                         \label{eq:F-up-conversion}
+\end{equation}
+and, for $0\le x\le1$,
+\begin{equation}
+ \Up(x)=1-F(x)=F(1-x).                                   \label{eq:up-survival}
+\end{equation}
+
+The signed global continuation $\mathcal F$ satisfies
+$\mathcal F'(x)=2\mathcal F(2x)$ on all of $\R$ and agrees with $F$ on
+$[0,1]$.  It is indispensable for global derivative masks, but the new
+multiresolution formulas below concern the bounded $F$ and compactly supported
+$\Up$.  We never silently substitute one global convention for another.
+
+\subsection{Probability and infinite convolution}
+
+\baseline Let $U_1,U_2,\ldots$ be independent uniform random variables on
+$[0,1]$~\cite{jessen1935} and let $V_j=2U_j-1$, uniform on $[-1,1]$.  Then
+\begin{equation}
+ X=\sum_{j=1}^\infty\frac{U_j}{2^j},
+ \qquad
+ Y=2X-1=\sum_{j=1}^\infty\frac{V_j}{2^j},                \label{eq:random-series}
+\end{equation}
+$F(x)=\Prob(X\le x)$, and $Y$ has density $\Up$.  Consequently
+\begin{equation}
+ \Up=\mathop{\ast}_{j=1}^{\infty}
+ \left(2^{j-1}\1_{[-2^{-j},2^{-j}]}
+ \right)              \label{eq:infinite-convolution}
+\end{equation}
+in the sense of weak limits and, in fact, in the smooth-density topology
+available from the corpus.
+
+The survival interpretation
+\begin{equation}
+ \Up(t)=\Prob(X>t),\qquad 0\le t\le1,                    \label{eq:survival-probability}
+\end{equation}
+immediately gives, for absolutely continuous $H$,
+\begin{align}
+ \int_0^1H'(t)\Up(t)\dd t
+   &=\E[H(X)-H(0)],                                      \label{eq:master-survival}\\
+ \int_0^1H'(t)F(t)\dd t
+   &=H(1)-\E H(X).                                       \label{eq:master-cdf}
+\end{align}
+This is the compact master identity behind many moment, Laplace, logarithmic,
+and resolvent integrals in the audited transform reports.
+
+\subsection{Functional--differential and Volterra forms}
+
+\baseline Integrating \eqref{eq:F-basic} gives the primitive self-similarity
+\begin{equation}
+ F(x/2)=\int_0^xF(t)\dd t,
+ \qquad 0\le x\le1.                                     \label{eq:volterra-basic}
+\end{equation}
+Repeated integration produces exact primitive ladders.  The compact bump
+satisfies the global functional--differential equation
+\begin{equation}
+ \Up'(x)=2\Up(2x+1)-2\Up(2x-1),                         \label{eq:up-differential}
+\end{equation}
+and all higher derivatives are finite translates with Thue--Morse signs.
+The current corpus extends these identities to integer and fractional
+Volterra orders and to broad arbitrary-kernel transmutation formulas.
+
+\subsection{Fourier, Laplace, product, and canonical-product forms}
+
+We use the angular Fourier convention
+\begin{equation}
+ \Phi(t)=\int_{-1}^{1}\Up(y)\e^{-\ii ty}\dd y.           \label{eq:Phi-definition}
+\end{equation}
+The cycles-per-unit transform in the repository is
+$\widehat{\Up}(\xi)=\Phi(2\pi\xi)$.  Throughout,
+$\sinc z=\sin z/z$ with $\sinc0=1$.
+
+\baseline Independence in \eqref{eq:random-series} gives
+\begin{equation}
+ \boxed{\displaystyle
+ \Phi(t)=\prod_{j=1}^\infty\sinc\!\left(\frac{t}{2^j}\right).}
+                                                               \label{eq:sinc-product}
+\end{equation}
+The moment-generating function of $X$ is therefore
+\begin{equation}
+ M_X(s)=\E\e^{sX}
+ =\prod_{j=1}^\infty\frac{\e^{s/2^j}-1}{s/2^j}
+ =\e^{s/2}\Phi(\ii s/2).                                \label{eq:mgf-product}
+\end{equation}
+Its logarithm yields Bernoulli cumulants and Bell-polynomial moments.
+
+The complete complex zero divisor is the nonzero lattice $2\pi\Z$, with
+multiplicity $1+\vtwo(n)$ at $2\pi n$.  Equivalently,
+\begin{equation}
+ \Phi(t)=\prod_{n=1}^\infty
+ \left(1-\frac{t^2}{4\pi^2n^2}\right)^{1+\vtwo(n)},     \label{eq:canonical-product}
+\end{equation}
+where the symmetric genus-zero product converges normally.  The corpus
+contains the associated spectral zeta, determinant, heat trace, zero jets,
+and sharp real-axis decay theory.
+
+Fourier inversion gives
+\begin{equation}
+ \Up(y)=\frac1{2\pi}\int_{-\infty}^{\infty}
+          \Phi(t)\e^{\ii ty}\dd t,                       \label{eq:up-fourier-inversion}
+\end{equation}
+and symmetry gives the CDF representation
+\begin{equation}
+ F(x)=\frac12+\frac1\pi\int_0^\infty
+       \Phi(t)\frac{\sin((2x-1)t)}{t}\dd t,
+ \qquad 0<x<1.                                           \label{eq:F-sine-integral}
+\end{equation}
+The decay is faster than every power, so these are ordinary convergent
+integrals rather than distributional shorthand.
+
+The period-two extension of $\Up$ has only the constant and odd Fourier modes:
+\begin{equation}
+ \Up(y)=\frac12+\sum_{m=0}^\infty
+   \Phi((2m+1)\pi)\cos((2m+1)\pi y),\qquad |y|\le1.      \label{eq:physical-cosine-series}
+\end{equation}
+This physical-space cosine series is established corpus material.  The
+frequency-space odd-sample reconstruction in \cref{sec:shannon} is a distinct,
+dual statement.
+
+\subsection{Finite splines, exact dyadic arithmetic, and limits}
+
+\baseline Put $X_N=\sum_{j=1}^N2^{-j}U_j$ and let $F_N$ be its CDF.  Inclusion--exclusion
+for a weighted box gives the finite Thue--Morse spline
+\begin{equation}
+ F_N(x)=\frac{2^{N(N+1)/2}}{N!}
+ \sum_{k=0}^{2^N-1}(-1)^{\wt(k)}
+ \left(x-\frac{k}{2^N}\right)_+^N.                      \label{eq:finite-spline}
+\end{equation}
+Because $0\le X-X_N\le2^{-N}$,
+\begin{equation}
+ F_N(x-2^{-N})\le F(x)\le F_N(x).                        \label{eq:spline-bracket}
+\end{equation}
+This is simultaneously a probability limit, a piecewise-polynomial limit,
+and a finite alternating truncated-power representation.
+
+Every dyadic value is rational.  The reciprocal-power values
+$V_n=F(2^{-n})$ obey
+\begin{equation}
+ V_0=1,
+ \qquad
+ V_n=\frac{1}{2^{\binom n2}(2^n-1)}
+ \sum_{k=0}^{n-1}
+ \frac{2^{\binom k2}V_k}{(n-k+1)!}.                      \label{eq:V-recurrence}
+\end{equation}
+The repository further supplies finite Thue--Morse sums, $q$-Pochhammer and
+Gaussian-binomial forms, an executable highest-bit recursion for arbitrary
+$F(a/2^e)$, and exact denominator and valuation theorems.  Those exact values
+will become the coefficients of the new Faber and Haar representations.
+
+\subsection{Moment, orthogonal-polynomial, and endpoint forms}
+
+\baseline The even moments
+\begin{equation}
+ \mu_{2r}=\int_{-1}^{1}y^{2r}\Up(y)\dd y
+\end{equation}
+are rational and satisfy
+\begin{equation}
+ \Phi(t)=\sum_{r=0}^\infty(-1)^r\mu_{2r}\frac{t^{2r}}{(2r)!}.  \label{eq:moment-series}
+\end{equation}
+The even cumulants are
+\begin{equation}
+ \kappa_{2r}=\frac{2^{2r-1}B_{2r}}{r(2^{2r}-1)},
+ \qquad \kappa_{2r+1}=0,                                \label{eq:cumulants}
+\end{equation}
+and complete Bell polynomials convert the cumulants into the moments.
+The corpus also proves an absolutely and uniformly convergent
+Fourier--Legendre expansion of $\Up$ with exact rational coefficients.
+
+At the flat endpoints, the natural variable is the exact lower-Lambert
+coordinate~\cite{corless1996}
+\begin{equation}
+ \lambda(x)=-\frac{1}{\log2}
+ W_{-1}(-x\log2),
+ \qquad \lambda2^{-\lambda}=x.                           \label{eq:lower-lambert}
+\end{equation}
+The full endpoint expansion of $F$ contains a nonconstant one-periodic
+Gamma--zeta term in this coordinate, and its coefficients are generated by
+Bell-polynomial algebra.  The inverse function $G=F^{-1}$ inherits a
+phase-aware Lambert reversion.  These subtle asymptotics are baseline; below
+we formulate only new multiresolution questions that retain, rather than
+average away, this periodic phase.
+
+\subsection{A compact dictionary of established representations}
+
+For later comparison, \cref{tab:atlas} records the principal established
+forms in one place.
+
+\begin{longtable}{@{}p{0.22\textwidth}p{0.36\textwidth}p{0.34\textwidth}@{}}
+\caption{Established representation atlas used as input.}\label{tab:atlas}\\
+\toprule
+Object & Representation & Natural use \\
+\midrule
+\endfirsthead
+\toprule
+Object & Representation & Natural use \\
+\midrule
+\endhead
+$F$ & CDF of $\sum2^{-j}U_j$ & Monotonicity, coupling, quantiles, stochastic integrals.\\
+$\Up$ & Density of $\sum2^{-j}V_j$ & Symmetry, convolution, support, probability.\\
+$F$ & $F(x/2)=\int_0^xF$ & Primitive ladders and fractional Volterra calculus.\\
+$\Up$ & Infinite convolution of uniform boxes & Smoothness and finite spline approximants.\\
+$F_N$ & Finite Thue--Morse truncated-power sum & Exact computation and certified limits.\\
+$F(a/2^e)$ & Rational recurrence, bit recursion, $q$-binomial sums & Arithmetic and exact dyadic evaluation.\\
+$\Phi$ & Infinite sinc product & Global Fourier analysis and decay.\\
+$\Phi$ & Canonical product over $2\pi\Z$ with multiplicities & Zero spectrum, determinants, zeta and heat trace.\\
+$\Up$ & Fourier inversion integral & Arbitrary real arguments and analytic estimates.\\
+$F$ & Sine-integral CDF inversion & Arbitrary arguments and endpoint cancellation.\\
+$\Up$ & Period-two odd cosine series & Physical-space spectral approximation.\\
+$\Up$ & Fourier--Legendre series & Orthogonal approximation with rational coefficients.\\
+$M_X$ & Infinite exponential quotient product & Moments, cumulants, Laplace asymptotics.\\
+$F,G$ & Mellin, Stieltjes, beta-quantile, spacing transforms & Integral calculus and inverse-function identities.\\
+$F,G$ & Lower-Lambert periodic transseries & Sharp endpoint and inverse-endpoint analysis.\\
+\bottomrule
+\end{longtable}
+
+\section{Exact rational Faber--Schauder representation}
+\label{sec:faber}
+
+\subsection{Dyadic tents and midpoint defects}
+
+Following the classical Haar--Faber--Schauder multiresolution lineage~\cite{haar1910,faber1910,schauder1928,deboor2001}, for $m\ge0$ and $0\le k<2^m$, put
+\begin{equation}
+ \ell_{m,k}=\frac{k}{2^m},\qquad
+ r_{m,k}=\frac{k+1}{2^m},\qquad
+ \xi_{m,k}=\frac{2k+1}{2^{m+1}},\qquad
+ h_m=2^{-m-1}.                                           \label{eq:faber-cell}
+\end{equation}
+The normalized tent on this cell is
+\begin{equation}
+ \Lambda_{m,k}(x)=
+ \max\!\left(1-2^{m+1}|x-\xi_{m,k}|,0\right).            \label{eq:faber-tent}
+\end{equation}
+Its support is $[\ell_{m,k},r_{m,k}]$, its height is one,
+and its area is $h_m$.  Define the midpoint defect
+\begin{equation}
+ c_{m,k}=F(\xi_{m,k})-\frac{F(\ell_{m,k})+F(r_{m,k})}{2}. \label{eq:faber-coefficient}
+\end{equation}
+Every argument in \eqref{eq:faber-coefficient} is dyadic, so
+\begin{equation}
+ c_{m,k}\in\Q.                                           \label{eq:faber-rational}
+\end{equation}
+
+\begin{theorem}[Exact rational Faber--Schauder series]
+\label{thm:faber-series}
+For $J\ge0$, let
+\begin{equation}
+ S_JF(x)=x+\sum_{m=0}^{J-1}\sum_{k=0}^{2^m-1}
+              c_{m,k}\Lambda_{m,k}(x).                   \label{eq:faber-partial}
+\end{equation}
+Then $S_JF$ is exactly the piecewise-linear interpolant of $F$ on the dyadic
+mesh $2^{-J}\Z\cap[0,1]$.  Consequently
+\begin{equation}
+ \boxed{\displaystyle
+ F(x)=x+\sum_{m=0}^\infty\sum_{k=0}^{2^m-1}
+ c_{m,k}\Lambda_{m,k}(x)}                               \label{eq:faber-series}
+\end{equation}
+uniformly on $[0,1]$.
+\end{theorem}
+
+\begin{proof}
+The level-zero affine interpolant through $(0,F(0))=(0,0)$ and
+$(1,F(1))=(1,1)$ is $x$.  Passing from the mesh of level $m$ to that of level
+$m+1$ leaves all old nodes fixed and introduces one midpoint in each cell.
+The unique correction supported on that cell, zero at the endpoints and
+having the required midpoint value, is precisely
+$c_{m,k}\Lambda_{m,k}$.  Induction proves the interpolation statement.
+Uniform convergence follows from uniform continuity of $F$, since the error
+of linear interpolation on a mesh of diameter $2^{-J}$ is bounded by twice
+the modulus of continuity at that scale.  The stronger quantitative bound in
+\cref{thm:faber-error} follows from $F\in C^2$.
+\end{proof}
+
+\newresult The point of \cref{thm:faber-series} is not the abstract existence
+of a Schauder expansion; it is that every coefficient is an explicitly
+computable rational number supplied by the repository's exact dyadic
+arithmetic.  The partial sums are therefore exact rational piecewise-linear
+functions, not floating-point projections.
+
+\begin{corollary}[Rvachev form]
+\label{cor:up-faber}
+For $|y|\le1$,
+\begin{equation}
+ \boxed{\displaystyle
+ \Up(y)=1-|y|+
+ \sum_{m=0}^\infty\sum_{k=0}^{2^m-1}
+ c_{m,k}\Lambda_{m,k}(1-|y|).}                           \label{eq:up-faber}
+\end{equation}
+The series is uniformly convergent on $[-1,1]$ and is zero outside that
+interval after the usual compact-support extension.
+\end{corollary}
+
+\begin{proof}
+Substitute $x=1-|y|$ in \eqref{eq:faber-series} and use
+\eqref{eq:up-definition}.
+\end{proof}
+
+\subsection{Coefficient kernel, symmetry, signs, and curvature}
+
+\begin{proposition}[Triangular-kernel formula]
+\label{prop:faber-kernel}
+The midpoint defect has the exact integral representation
+\begin{equation}
+ \boxed{\displaystyle
+ c_{m,k}=-\frac12\int_{-h_m}^{h_m}
+ (h_m-|u|)F''(\xi_{m,k}+u)\dd u.}                        \label{eq:faber-kernel}
+\end{equation}
+In particular,
+\begin{equation}
+ |c_{m,k}|\le2^{-2m}.                                    \label{eq:faber-bound}
+\end{equation}
+\end{proposition}
+
+\begin{proof}
+The second symmetric difference satisfies
+\[
+ F(\xi+h)+F(\xi-h)-2F(\xi)
+ =\int_{-h}^{h}(h-|u|)F''(\xi+u)\dd u.
+\]
+Equation \eqref{eq:faber-kernel} follows from the definition of $c_{m,k}$.
+Moreover, $\|F''\|_\infty=8$: from
+$F'(x)=2\Up(2x-1)$ one has $\|F'\|_\infty=2$, and on the
+left half $F''(x)=4F'(2x)$, with the reflected formula on the right half.
+Since the triangular kernel has integral $h_m^2$, we obtain
+$|c_{m,k}|\le4h_m^2=2^{-2m}$.
+\end{proof}
+
+\begin{proposition}[Reflection and sign pattern]
+\label{prop:faber-sign}
+For every $m,k$,
+\begin{equation}
+ c_{m,2^m-1-k}=-c_{m,k}.                                 \label{eq:faber-reflection}
+\end{equation}
+Moreover, $c_{0,0}=0$, and for $m\ge1$,
+\begin{equation}
+ c_{m,k}<0\quad(0\le k<2^{m-1}),
+ \qquad
+ c_{m,k}>0\quad(2^{m-1}\le k<2^m).                     \label{eq:faber-sign}
+\end{equation}
+\end{proposition}
+
+\begin{proof}
+Reflection follows by applying $F(1-x)=1-F(x)$ to the three nodes in
+\eqref{eq:faber-coefficient}.  On $(0,1/2)$,
+$F''(x)=4F'(2x)>0$, so $F$ is strictly convex and every midpoint lies strictly
+below its chord.  On $(1/2,1)$ the reflected function is strictly concave.
+The level-zero defect vanishes because $F(1/2)=1/2$.
+\end{proof}
+
+\begin{proposition}[Curvature recovery]
+\label{prop:faber-curvature}
+Uniformly in $k$ as $m\to\infty$,
+\begin{equation}
+ -2^{2m+3}c_{m,k}
+ =F''(\xi_{m,k})+\bigO(4^{-m}).                          \label{eq:faber-curvature}
+\end{equation}
+More generally, for every fixed $Q\ge0$,
+\begin{equation}
+ c_{m,k}=-\sum_{r=0}^{Q}
+ \frac{F^{(2r+2)}(\xi_{m,k})h_m^{2r+2}}{(2r+2)!}
+ +\bigO(h_m^{2Q+4}),                                     \label{eq:faber-curvature-full}
+\end{equation}
+uniformly in $k$.
+\end{proposition}
+
+\begin{proof}
+Insert the Taylor expansion of $F''(\xi+u)$ into
+\eqref{eq:faber-kernel}.  Odd powers integrate to zero and
+\[
+ \int_{-h}^{h}(h-|u|)u^{2r}\dd u
+ =\frac{2h^{2r+2}}{(2r+1)(2r+2)}.
+\]
+The compact interval and smoothness of $F$ make the remainder uniform.
+\end{proof}
+
+The coefficients therefore encode exact dyadic samples of curvature.  This
+is especially suggestive near the flat endpoints, where the repository's
+Lambert--periodic asymptotics can be sampled through a purely rational
+sequence.
+
+\subsection{Sharp interpolation scale}
+
+\begin{theorem}[Uniform error and sharp asymptotic constant]
+\label{thm:faber-error}
+For every $J\ge0$,
+\begin{equation}
+ \|F-S_JF\|_\infty\le4^{-J}.                             \label{eq:faber-error-bound}
+\end{equation}
+The constant is asymptotically sharp:
+\begin{equation}
+ \boxed{\displaystyle
+ \lim_{J\to\infty}4^J\|F-S_JF\|_\infty=1.}              \label{eq:faber-error-limit}
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+On an interval of length $\Delta=2^{-J}$, the classical linear-interpolation
+remainder gives
+\[
+ |F(x)-S_JF(x)|\le\frac{\|F''\|_\infty}{8}\Delta^2
+ =\Delta^2=4^{-J}.
+\]
+For the matching lower asymptotic, take the cell immediately to the right of
+$x=1/4$ and evaluate at its midpoint.  The interpolation remainder is
+$-F''(\eta_J)\Delta^2/8$ for some $\eta_J$ in that cell.  Since
+$\eta_J\to1/4$ and $F''(1/4)=8$, its absolute value divided by $\Delta^2$
+tends to one.
+\end{proof}
+
+\begin{remark}
+The estimate is stronger than a generic Faber--Schauder convergence theorem:
+it identifies the exact global interpolation scale and its limiting constant.
+The extremal curvature occurs at the dyadic points $1/4$ and $3/4$, so the
+sharp constant is itself compatible with exact dyadic arithmetic.
+\end{remark}
+
+\subsection{Low-level exact coefficients}
+
+The first nonzero rows illustrate both rationality and reflection:
+\begin{align}
+ (c_{1,k})_{k=0}^{1}
+   &=\left(-\frac{13}{72},\frac{13}{72}\right),          \label{eq:faber-row1}\\
+ (c_{2,k})_{k=0}^{3}
+   &=\left(-\frac1{32},-\frac1{32},\frac1{32},\frac1{32}\right), \label{eq:faber-row2}\\
+ (c_{3,k})_{k=0}^{7}
+   &=\frac1{2073600}
+     (-3457,-28943,-28943,-3457,3457,28943,28943,3457).  \label{eq:faber-row3}
+\end{align}
+At level four, the left half is
+\begin{equation}
+ -\frac1{147456}(5,149,427,571,571,427,149,5),            \label{eq:faber-row4}
+\end{equation}
+and the right half is its negative reversal.  These rows were generated from
+\eqref{eq:V-recurrence} and the terminating dyadic bit recursion; no numerical
+integration entered.
+
+\subsection{A universal kernel dictionary}
+
+Uniform convergence permits termwise integration against every
+$K\in L^1(0,1)$:
+\begin{equation}
+ \int_0^1K(x)F(x)\dd x
+ =\int_0^1xK(x)\dd x
+ +\sum_{m=0}^\infty\sum_{k=0}^{2^m-1}
+ c_{m,k}\int_0^1K(x)\Lambda_{m,k}(x)\dd x.               \label{eq:faber-kernel-dictionary}
+\end{equation}
+When $K$ belongs to a parameterized locally bounded family, the same identity
+is locally uniform in the parameter.  Thus one exact coefficient table feeds
+polynomial moments, Laplace transforms, Fourier transforms, Stieltjes
+kernels, and fractional integral kernels.
+
+For $p\in\N_0$, define
+\begin{equation}
+ L_p(c,h)=2h\sum_{r=0}^{\lfloor p/2\rfloor}
+ \binom{p}{2r}\frac{c^{p-2r}h^{2r}}{(2r+1)(2r+2)}.       \label{eq:tent-moment}
+\end{equation}
+This is exactly the moment of a tent:
+\begin{equation}
+ \int_{c-h}^{c+h}x^p\left(1-\frac{|x-c|}{h}\right)\dd x
+ =L_p(c,h).                                              \label{eq:tent-moment-integral}
+\end{equation}
+Hence
+\begin{equation}
+ \boxed{\displaystyle
+ \int_0^1x^pF(x)\dd x
+ =\frac1{p+2}+
+ \sum_{m=0}^\infty\sum_{k=0}^{2^m-1}
+ c_{m,k}L_p(\xi_{m,k},h_m).}                             \label{eq:faber-polynomial-moment}
+\end{equation}
+Every summand is rational.  This does not replace the more compact moment
+recurrences in the corpus; it gives a new positive-scale decomposition whose
+truncation error is controlled directly by \eqref{eq:faber-error-bound}.
+
+Let
+\begin{equation}
+ A(t)=\int_0^1F(x)\e^{-\ii tx}\dd x.                     \label{eq:A-definition}
+\end{equation}
+The elementary tent transform is
+\begin{equation}
+ \int_0^1\Lambda_{m,k}(x)\e^{-\ii tx}\dd x
+ =h_m\e^{-\ii t\xi_{m,k}}
+   \sinc^2\!\left(\frac{th_m}{2}\right).                \label{eq:tent-transform}
+\end{equation}
+Therefore
+\begin{equation}
+ \boxed{\displaystyle
+ A(t)=\frac{\e^{-\ii t}(1+\ii t)-1}{t^2}
+ +\sum_{m=0}^\infty\sum_{k=0}^{2^m-1}
+ c_{m,k}h_m\e^{-\ii t\xi_{m,k}}
+ \sinc^2\!\left(\frac{th_m}{2}\right),}                \label{eq:F-faber-transform}
+\end{equation}
+with removable interpretation at $t=0$ and locally uniform convergence in
+$t\in\C$.  Integration by parts also gives the bridge
+\begin{equation}
+ \Phi(t)=\e^{-\ii t}+2\ii t\e^{\ii t}A(2t).             \label{eq:A-Phi-bridge}
+\end{equation}
+Replacing $t$ by $-\ii s$ turns \eqref{eq:F-faber-transform} into an entire
+Laplace series with $\sinhc^2$ kernels.
+
+\subsection{Exact-rational inverse interpolants}
+
+Let $G=F^{-1}:[0,1]\to[0,1]$.  The inverse-frontier manuscripts in the
+pinned corpus develop sharp endpoint reversion, inverse derivatives, and
+quantile transforms.  The Faber construction supplies a complementary
+finite exact representation.
+
+For $J\ge0$ and $0\le k\le2^J$, put
+\begin{equation}
+ y_{J,k}=F(k/2^J),
+ \qquad
+ d_{J,k}=y_{J,k+1}-y_{J,k}>0
+ \quad(0\le k<2^J).                                  \label{eq:inverse-knots}
+\end{equation}
+Every $y_{J,k}$ and $d_{J,k}$ is rational.  Define $G_J$ on
+$[y_{J,k},y_{J,k+1}]$ by
+\begin{equation}
+ G_J(y)=\frac{k}{2^J}
+ +\frac{2^{-J}}{d_{J,k}}(y-y_{J,k}).                   \label{eq:inverse-piecewise}
+\end{equation}
+Equivalently, with $s_{J,k}=2^{-J}/d_{J,k}$,
+\begin{equation}
+ G_J(y)=s_{J,0}y+
+ \sum_{k=1}^{2^J-1}(s_{J,k}-s_{J,k-1})(y-y_{J,k})_+.  \label{eq:inverse-hinge}
+\end{equation}
+
+\begin{theorem}[Exact-rational inverse limit]
+\label{thm:inverse-faber-limit}
+The map $G_J$ is the inverse of the Faber partial sum $S_JF$.  It is a
+strictly increasing piecewise-affine homeomorphism with rational knots,
+rational slopes, and the reflection law
+\begin{equation}
+ G_J(1-y)=1-G_J(y).                                      \label{eq:inverse-interpolant-symmetry}
+\end{equation}
+Moreover,
+\begin{equation}
+ \boxed{\displaystyle
+ G(y)=\lim_{J\to\infty}G_J(y)}                       \label{eq:inverse-faber-limit}
+\end{equation}
+uniformly on $[0,1]$.  If
+\begin{equation}
+ \omega_G(\delta)=
+ \sup_{|u-v|\le\delta}|G(u)-G(v)|,                  \label{eq:inverse-modulus}
+\end{equation}
+then the explicit estimate
+\begin{equation}
+ \boxed{\displaystyle
+ \|G_J-G\|_\infty\le\omega_G(4^{-J})}             \label{eq:inverse-faber-error}
+\end{equation}
+holds.
+\end{theorem}
+
+\begin{proof}
+The dyadic node values of $S_JF$ are $y_{J,k}$, and strict monotonicity of
+$F$ makes every chord slope positive.  Thus \eqref{eq:inverse-piecewise} is
+exactly $(S_JF)^{-1}$; \eqref{eq:inverse-hinge} is the standard
+slope-jump form of the same piecewise-affine map.  Reflection of the dyadic
+node table proves \eqref{eq:inverse-interpolant-symmetry}.
+
+Fix $y$ and put $x=G_J(y)$.  Since $S_JF(x)=y$ and
+$\|S_JF-F\|_\infty\le4^{-J}$,
+\[
+ y-4^{-J}\le F(x)\le y+4^{-J},
+\]
+with the endpoints clipped to $[0,1]$.  Applying the increasing map $G$
+places $x$ between the corresponding two quantiles, which gives
+\eqref{eq:inverse-faber-error}.  Uniform continuity of $G$ completes the
+proof.
+\end{proof}
+
+\newresult Equations \eqref{eq:inverse-piecewise} and
+\eqref{eq:inverse-hinge} give a finite exact-rational neural-spline or
+truncated-power representation of the inverse at every level.  The sharp
+Lambert-periodic endpoint expansion already in the corpus may be inserted
+into $\omega_G(4^{-J})$ to resolve the non-algebraic global convergence rate.
+
+\section{Rational Haar expansions and a Haar--sinc transform}
+\label{sec:haar}
+
+\subsection{The derivative as a dyadic martingale limit}
+
+Define the unnormalized Haar step
+\begin{equation}
+ H_{m,k}(x)=
+ \1_{[\ell_{m,k},\xi_{m,k})}(x)
+ -\1_{[\xi_{m,k},r_{m,k})}(x).                           \label{eq:haar-step}
+\end{equation}
+Then $\Lambda'_{m,k}=2^{m+1}H_{m,k}$ away from its three
+corners.
+
+\begin{theorem}[Exact rational Haar representation]
+\label{thm:haar-Fprime}
+The derivative of the Fabius function has the Haar expansion
+\begin{equation}
+ \boxed{\displaystyle
+ F'(x)=1+\sum_{m=0}^\infty\sum_{k=0}^{2^m-1}
+ 2^{m+1}c_{m,k}H_{m,k}(x).}                              \label{eq:haar-Fprime}
+\end{equation}
+The partial sum through $m=J-1$ is the derivative of $S_JF$ and equals the
+cell average of $F'$ on every dyadic cell of level $J$.  It converges to
+$F'$ in $L^p(0,1)$ for every $1\le p\le\infty$, where $p=\infty$ is
+understood in the essential-supremum sense.
+\end{theorem}
+
+\begin{proof}
+Differentiate the finite identity \eqref{eq:faber-partial}.  On a cell
+$[a,b]$ of the level-$J$ mesh, the derivative of the interpolant is
+$[F(b)-F(a)]/(b-a)$, which is the average of $F'$ on that cell.  These
+conditional averages converge uniformly to the continuous function $F'$ by
+uniform continuity.  Values at the finitely many grid corners are irrelevant
+in every $L^p$ space.
+\end{proof}
+
+Combining \eqref{eq:haar-Fprime} with \eqref{eq:F-up-conversion} yields
+\begin{equation}
+ \boxed{\displaystyle
+ \Up(2x-1)=\frac12+
+ \sum_{m=0}^\infty\sum_{k=0}^{2^m-1}
+ 2^m c_{m,k}H_{m,k}(x).}                                 \label{eq:haar-up}
+\end{equation}
+Thus the compact $C^\infty$ bump is an $L^\infty$ limit of exact rational
+step functions.  The apparent tension is useful: smoothness is encoded by
+strong cancellation across infinitely many dyadic scales.
+
+\subsection{Fourier transform of one Haar cell}
+
+A direct calculation gives
+\begin{equation}
+ \int_0^1H_{m,k}(x)\e^{-\ii tx}\dd x
+ =\e^{-\ii tk/2^m}
+   \frac{(1-\e^{-\ii t/2^{m+1}})^2}{\ii t}.              \label{eq:haar-transform}
+\end{equation}
+Apply this to \eqref{eq:haar-up}, remembering that the centered coordinate is
+$y=2x-1$.
+
+\begin{theorem}[Haar--$\sinc^2$ expansion of the sinc product]
+\label{thm:haar-Phi}
+For every $t\in\C$,
+\begin{align}
+ \Phi(t)
+ &=\sinc t+
+ \sum_{m=0}^\infty\sum_{k=0}^{2^m-1}
+ \frac{2^m c_{m,k}}{\ii t}
+ \e^{\ii t(1-2k/2^m)}
+ \left(1-\e^{-\ii t/2^m}\right)^2,                     \label{eq:haar-Phi-complex}\\
+ &=\sinc t-
+ \sum_{m=0}^\infty\sum_{k=0}^{2^m-1}
+ \frac{2^{m+2}c_{m,k}}{\ii t}
+ \e^{-\ii t y_{m,k}}
+ \sin^2\!\left(\frac{t}{2^{m+1}}\right),              \label{eq:haar-Phi-centered}
+\end{align}
+where
+\begin{equation}
+ y_{m,k}=\frac{2k+1}{2^m}-1.                             \label{eq:haar-center-y}
+\end{equation}
+Every apparent singularity at $t=0$ is removable, and both series converge
+normally on compact subsets of $\C$.
+\end{theorem}
+
+\begin{proof}
+Use
+\[
+ \Phi(t)=2\e^{\ii t}\int_0^1\Up(2x-1)\e^{-2\ii tx}\dd x
+\]
+and insert the finite Haar partial sums.  Equation
+\eqref{eq:haar-transform} with frequency $2t$ gives
+\eqref{eq:haar-Phi-complex}; factoring
+$(1-\e^{-\ii a})^2=-4\e^{-\ii a}\sin^2(a/2)$ gives
+\eqref{eq:haar-Phi-centered}.  For $t$ in a fixed compact set,
+\eqref{eq:faber-bound} and
+$|\sin(t/2^{m+1})|\le C_K2^{-m}$ bound the entire level-$m$ contribution by
+$C'_K4^{-m}$.  The Weierstrass test proves normal convergence.
+\end{proof}
+
+Pairing reflected coefficients gives a manifestly real formula on the real
+axis.
+
+\begin{corollary}[Real paired form]
+\label{cor:haar-Phi-real}
+For real $t$,
+\begin{equation}
+ \boxed{\displaystyle
+ \Phi(t)=\sinc t-
+ \sum_{m=1}^\infty\frac{2^{m+3}}{t}
+ \sin^2\!\left(\frac{t}{2^{m+1}}\right)
+ \sum_{k=0}^{2^{m-1}-1}c_{m,k}
+ \sin\!\left(t\left[1-\frac{2k+1}{2^m}\right]\right).} \label{eq:haar-Phi-real}
+\end{equation}
+\end{corollary}
+
+The representation \eqref{eq:haar-Phi-real} is a series--product bridge.  The
+left side is the infinite sinc product; the right side consists of exact
+rational curvature coefficients multiplied by elementary sine and
+$\sin^2$ factors.  It gives a new way to transfer arithmetic information from
+dyadic values of $F$ into the Fourier image.
+
+\section{A positive rational series for the sinc energy}
+\label{sec:energy}
+
+\subsection{Haar Parseval}
+
+Let
+\begin{equation}
+ A_2=\int_0^1F(x)^2\dd x.                                \label{eq:A2-definition}
+\end{equation}
+The audited integral report identifies the same constant with a sinc-product
+energy, but leaves its arithmetic nature open.  The Haar representation gives
+a monotone exact-rational decomposition.
+
+\begin{theorem}[Positive rational energy series]
+\label{thm:A2-rational-series}
+One has
+\begin{equation}
+ \boxed{\displaystyle
+ A_2=\frac14+
+ \sum_{m=0}^\infty2^m\sum_{k=0}^{2^m-1}c_{m,k}^2.}       \label{eq:A2-rational-series}
+\end{equation}
+Every summand is a nonnegative rational number.  Hence the partial sums
+\begin{equation}
+ R_J=\frac14+
+ \sum_{m=0}^{J-1}2^m\sum_{k=0}^{2^m-1}c_{m,k}^2          \label{eq:Rj-definition}
+\end{equation}
+are rational and increase monotonically to $A_2$.
+\end{theorem}
+
+\begin{proof}
+The Haar steps are pairwise orthogonal,
+$\|H_{m,k}\|_2^2=2^{-m}$, and all have zero mean.  Parseval applied to
+\eqref{eq:haar-Fprime} yields
+\begin{equation}
+ \int_0^1F'(x)^2\dd x
+ =1+\sum_{m=0}^\infty2^{m+2}\sum_{k=0}^{2^m-1}c_{m,k}^2. \label{eq:Fprime-parseval}
+\end{equation}
+On the other hand, $F'(x)=2\Up(2x-1)$ and evenness give
+\[
+ \int_0^1F'^2
+ =2\int_{-1}^{1}\Up(y)^2\dd y
+ =4\int_0^1F(x)^2\dd x=4A_2.
+\]
+Divide \eqref{eq:Fprime-parseval} by four.
+\end{proof}
+
+Angular Parseval and \eqref{eq:sinc-product} give the three-way identity
+\begin{equation}
+ \boxed{\displaystyle
+ \frac14+\sum_{m\ge0}2^m\sum_kc_{m,k}^2
+ =\int_0^1F(x)^2\dd x
+ =\frac1{2\pi}\int_0^\infty
+   \prod_{j=1}^\infty\sinc^2\!\left(\frac{t}{2^j}\right)\dd t.} \label{eq:A2-three-way}
+\end{equation}
+Thus an improper integral of a transcendental infinite product is represented
+by a positive series of exact rational squares.
+
+\begin{corollary}[Certified elementary tail bound]
+\label{cor:A2-tail-bound}
+For every $J\ge0$,
+\begin{equation}
+ 0<A_2-R_J\le\frac43\,4^{-J}.                            \label{eq:A2-tail-bound}
+\end{equation}
+\end{corollary}
+
+\begin{proof}
+By \eqref{eq:faber-bound}, the level-$m$ energy is at most
+\[
+ 2^m\cdot2^m\cdot2^{-4m}=4^{-m}.
+\]
+Sum the geometric tail from $m=J$.
+\end{proof}
+
+\subsection{Derivative norm scaling}
+
+Put
+\begin{equation}
+ I_r=\int_0^1\left(F^{(r)}(x)\right)^2\dd x,
+ \qquad r\ge1.                                           \label{eq:Ir-definition}
+\end{equation}
+The derivative tiling already present in the corpus implies the exact norm
+recurrence $I_r=4^rI_{r-1}$.  Since $I_1=4A_2$, this gives
+\begin{equation}
+ \boxed{\displaystyle
+ I_r=4^{r(r+1)/2}A_2.}                                   \label{eq:derivative-norm-scaling}
+\end{equation}
+We use this baseline identity to evaluate every coefficient in the new
+energy-tail expansion.
+
+\subsection{All-orders level asymptotics}
+
+Define the contribution of one dyadic scale by
+\begin{equation}
+ E_m=2^m\sum_{k=0}^{2^m-1}c_{m,k}^2,
+ \qquad A_2=\frac14+\sum_{m\ge0}E_m.                     \label{eq:Em-definition}
+\end{equation}
+
+\begin{theorem}[Complete asymptotic expansion of one level]
+\label{thm:Em-asymptotic}
+As $m\to\infty$,
+\begin{equation}
+ \boxed{\displaystyle
+ E_m\sim A_2\sum_{q=1}^\infty\beta_q4^{-qm},}            \label{eq:Em-asymptotic}
+\end{equation}
+where
+\begin{equation}
+ \boxed{\displaystyle
+ \beta_q=(-1)^{q+1}
+ \frac{2^{q(q+1)+1}(2^{2q}-1)}{(2q+2)!}.}                \label{eq:beta-formula}
+\end{equation}
+In particular,
+\begin{equation}
+ \beta_1=1,\
+ \beta_2=-\frac83,
+ \qquad
+ \beta_3=\frac{64}{5},
+ \qquad
+ \beta_4=-\frac{139264}{945}.                           \label{eq:beta-first}
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+A detailed remainder proof is given in \cref{app:energy-proof}; here is the
+coefficient calculation.  Write $\Delta=2^{-m}$ and $h=\Delta/2$.  At a cell
+center,
+\[
+ c_{m,k}=-\bigl(\cosh(hD)-1\bigr)F(\xi_{m,k}),
+ \qquad D=\frac{\dd}{\dd x},
+\]
+in the sense of an arbitrary finite Taylor expansion with uniform remainder.
+The midpoint Riemann sum differs from the corresponding integral by a
+superalgebraically small quantity because all derivatives entering the
+integrand are flat at both endpoints.  Hence
+\[
+ E_m\sim\Delta^{-2}\int_0^1
+ \bigl[(\cosh(hD)-1)F(x)\bigr]^2\dd x.
+\]
+Now
+\begin{equation}
+ (\cosh z-1)^2
+ =\sum_{r=2}^\infty
+   \frac{2^{2r-1}-2}{(2r)!}z^{2r}.                       \label{eq:cosh-square}
+\end{equation}
+Repeated integration by parts gives
+$\int F D^{2r}F=(-1)^rI_r$.  Substituting
+$h=\Delta/2$, setting $q=r-1$, and using
+\eqref{eq:derivative-norm-scaling} produces
+\eqref{eq:beta-formula}.
+\end{proof}
+
+\begin{corollary}[Leading level constant]
+\label{cor:Em-leading}
+\begin{equation}
+ \boxed{\displaystyle
+ \lim_{m\to\infty}4^mE_m=A_2.}                           \label{eq:Em-leading}
+\end{equation}
+\end{corollary}
+
+The same constant therefore controls the original integral, the total Haar
+energy, and the leading asymptotic energy at every sufficiently fine scale.
+This self-referential feature is a consequence of the exact derivative norm
+scaling.
+
+\subsection{All-orders tail and acceleration}
+
+Summing \eqref{eq:Em-asymptotic} geometrically gives the tail expansion.
+
+\begin{corollary}[Complete rational tail expansion]
+\label{cor:A2-tail-asymptotic}
+For $J\to\infty$,
+\begin{equation}
+ A_2-R_J\sim A_2\sum_{q=1}^\infty\gamma_q4^{-qJ},        \label{eq:A2-tail-asymptotic}
+\end{equation}
+where
+\begin{equation}
+ \gamma_q=\frac{\beta_q}{1-4^{-q}}.                     \label{eq:gamma-definition}
+\end{equation}
+The first coefficients are
+\begin{equation}
+ \gamma_1=\frac43,
+ \qquad
+ \gamma_2=-\frac{128}{45},
+ \qquad
+ \gamma_3=\frac{4096}{315},
+ \qquad
+ \gamma_4=-\frac{2097152}{14175}.                       \label{eq:gamma-first}
+\end{equation}
+In particular,
+\begin{equation}
+ \boxed{\displaystyle
+ \lim_{J\to\infty}4^J(A_2-R_J)=\frac43A_2.}             \label{eq:A2-tail-leading}
+\end{equation}
+\end{corollary}
+
+For any fixed truncation order $Q$, define
+\begin{equation}
+ A_2^{[Q]}(J)=
+ \frac{R_J}{1-\sum_{q=1}^{Q}\gamma_q4^{-qJ}}.            \label{eq:A2-accelerator}
+\end{equation}
+Then
+\begin{equation}
+ A_2^{[Q]}(J)-A_2=\bigO(4^{-(Q+1)J})                    \label{eq:A2-accelerator-error}
+\end{equation}
+for fixed $Q$.  The numerator and denominator in
+\eqref{eq:A2-accelerator} are rational, so every accelerated value is itself
+an exact rational number before decimal conversion.
+
+\numerical Exact level-$16$ data and seven tail coefficients give
+\begin{equation}
+ A_2\approx
+ 0.404436767983985281465621491145376633448000519787051529947065. \label{eq:A2-decimal}
+\end{equation}
+The stable digits agree across neighboring values of $J$ and $Q$, and the raw
+level-$16$ rational partial sum is
+$0.4044367678584316\ldots$.  The numerical table and convergence plot in
+\cref{sec:numerics} show the acceleration explicitly.
+
+\section{Triangular Bernoulli and independent-binomial layers}
+\label{sec:triangular}
+
+\subsection{Regrouping the binary digits}
+
+The uniform-coordinate representation \eqref{eq:random-series} hides a second
+independence structure.  Choose the nonterminating binary expansion only on
+the null set where two choices exist, and write
+\begin{equation}
+ U_j=\sum_{r=1}^\infty B_{j,r}2^{-r},                    \label{eq:uniform-bits}
+\end{equation}
+where all $B_{j,r}$ are independent Bernoulli$(1/2)$ variables.  The weight of
+$B_{j,r}$ in $X$ depends only on $n=j+r$.
+
+\begin{theorem}[Independent triangular binomial decomposition]
+\label{thm:triangular-binomial}
+There exist independent random variables
+\begin{equation}
+ K_n\sim\operatorname{Binomial}(n-1,\tfrac12),
+ \qquad n\ge2,                                           \label{eq:Kn-law}
+\end{equation}
+such that
+\begin{equation}
+ \boxed{\displaystyle
+ X=\sum_{n=2}^\infty\frac{K_n}{2^n}.}                    \label{eq:X-triangular}
+\end{equation}
+Equivalently, if $S_{n-1}$ is a sum of $n-1$ independent Rademacher signs and
+the sums are independent across $n$, then
+\begin{equation}
+ \boxed{\displaystyle
+ Y=2X-1=\sum_{n=2}^\infty\frac{S_{n-1}}{2^n}.}           \label{eq:Y-triangular}
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+Substitute \eqref{eq:uniform-bits} into
+$X=\sum_{j\ge1}2^{-j}U_j$ and rearrange the absolutely convergent nonnegative
+series:
+\[
+ X=\sum_{j,r\ge1}B_{j,r}2^{-(j+r)}
+  =\sum_{n\ge2}2^{-n}\sum_{j=1}^{n-1}B_{j,n-j}.
+\]
+For fixed $n$ the inner sum has the law in \eqref{eq:Kn-law}; different
+$n$ use disjoint sets of bits and are independent.  Centering each binomial
+sum proves \eqref{eq:Y-triangular}.
+\end{proof}
+
+This is not merely another proof of the random-series representation.  It
+changes the elementary building blocks from one uniform variable per scale to
+one increasingly concentrated binomial variable per antidiagonal of the
+binary digit array.
+
+\subsection{A triangular cosine product}
+
+\begin{corollary}[Product--product identity]
+\label{cor:triangular-product}
+The moment-generating function and centered Fourier transform factor as
+\begin{equation}
+ M_X(s)=\prod_{n=2}^\infty
+   \left(\frac{1+\e^{s/2^n}}{2}\right)^{n-1}.            \label{eq:triangular-mgf}
+\end{equation}
+\begin{equation}
+ \boxed{\displaystyle
+ \Phi(t)=\prod_{n=2}^\infty
+   \cos\!\left(\frac{t}{2^n}\right)^{n-1}
+ =\prod_{j=1}^\infty
+   \sinc\!\left(\frac{t}{2^j}\right).}                 \label{eq:triangular-cos-product}
+\end{equation}
+Both products converge normally on compact subsets of $\C$.
+\end{corollary}
+
+\begin{proof}
+The first two factorizations follow from independence in
+\cref{thm:triangular-binomial}.  For the last equality, use the classical
+binary product
+$\sinc z=\prod_{r\ge1}\cos(z/2^r)$ and regroup the normally convergent double
+product:
+\[
+ \prod_{j\ge1}\sinc(t/2^j)
+ =\prod_{j,r\ge1}\cos(t/2^{j+r})
+ =\prod_{n\ge2}\cos(t/2^n)^{n-1}.
+\]
+\end{proof}
+
+The logarithmic identity
+\begin{equation}
+ \log\Phi(t)=\sum_{n=2}^\infty(n-1)
+              \log\cos(t/2^n)                           \label{eq:triangular-log}
+\end{equation}
+reorganizes every cumulant as a weighted geometric sum.  It also offers a
+different truncation strategy: the exponent $n-1$ concentrates many tiny
+Rademacher increments into one layer.
+
+Let
+\begin{equation}
+ \Phi_N^\triangle(t)=\prod_{n=2}^{N}
+ \cos(t/2^n)^{n-1}.                                     \label{eq:triangular-finite-product}
+\end{equation}
+The omitted factor is quantitatively controlled.
+
+\begin{proposition}[Local triangular-product tail]
+\label{prop:triangular-tail}
+For $|t|\le2^N$, write $\Phi(t)=\Phi_N^\triangle(t)T_N(t)$, where
+$T_N(t)>0$ on the real axis.  Then
+\begin{equation}
+ 0\le-\log T_N(t)
+ \le \frac{(3N+1)t^2}{9\,4^N}.                           \label{eq:triangular-tail}
+\end{equation}
+\end{proposition}
+
+\begin{proof}
+For $n>N$, $|t|/2^n\le1/2$, and
+$0\le-\log\cos u\le u^2$ on $|u|\le1/2$.  Therefore
+\[
+ -\log T_N(t)
+ \le t^2\sum_{n>N}(n-1)4^{-n}
+ =\frac{(3N+1)t^2}{9\,4^N}.
+\]
+\end{proof}
+
+\subsection{Finite combinatorial CDFs}
+
+Define
+\begin{equation}
+ X_N^\triangle=\sum_{n=2}^{N}\frac{K_n}{2^n},
+ \qquad
+ \delta_N=\sum_{n>N}\frac{n-1}{2^n}=\frac{N+1}{2^N}.    \label{eq:triangular-truncation}
+\end{equation}
+The tail lies in $[0,\delta_N]$, so
+\begin{equation}
+ \Prob(X_N^\triangle\le x-\delta_N)
+ \le F(x)\le
+ \Prob(X_N^\triangle\le x).                             \label{eq:triangular-cdf-bracket}
+\end{equation}
+Expanding the independent binomial laws gives the finite sum
+\begin{equation}
+ \boxed{\displaystyle
+ F_N^\triangle(x)=2^{-N(N-1)/2}
+ \sum_{k_2=0}^{1}\cdots\sum_{k_N=0}^{N-1}
+ \left(\prod_{n=2}^{N}\binom{n-1}{k_n}\right)
+ \1_{\{\sum_{n=2}^{N}k_n2^{-n}\le x\}}.}              \label{eq:triangular-cdf}
+\end{equation}
+Then $F_N^\triangle(x)\to F(x)$ at every real $x$.
+
+The complete mass distribution is encoded by the integer polynomial
+\begin{equation}
+ \boxed{\displaystyle
+ P_N(q)=\prod_{n=2}^{N}
+       \left(1+q^{2^{N-n}}\right)^{n-1}.}                \label{eq:triangular-polynomial}
+\end{equation}
+Its degree and total coefficient sum are
+\begin{equation}
+ \deg P_N=2^N-N-1,
+ \qquad
+ P_N(1)=2^{N(N-1)/2}.                                    \label{eq:triangular-polynomial-data}
+\end{equation}
+If $p_{N,\ell}=[q^\ell]P_N(q)$, then
+\begin{equation}
+ \Prob(2^NX_N^\triangle=\ell)
+ =2^{-N(N-1)/2}p_{N,\ell},                              \label{eq:triangular-mass}
+\end{equation}
+and hence
+\begin{equation}
+ F(x)=\lim_{N\to\infty}
+ 2^{-N(N-1)/2}
+ \sum_{0\le\ell\le2^Nx}p_{N,\ell}.                    \label{eq:triangular-coefficient-limit}
+\end{equation}
+This is a limit of cumulative coefficient sums of explicit sparse products.
+It is complementary to the alternating Thue--Morse spline
+\eqref{eq:finite-spline}: one finite model is signed and polynomial in $x$;
+the other is positive and combinatorial on a dyadic lattice.
+
+Every factor in \eqref{eq:triangular-polynomial} is palindromic, so the
+coefficient sequence is symmetric.  Computation suggests substantially more.
+
+\begin{conjecture}[Triangular log-concavity]
+\label{conj:triangular-logconcavity}
+For every $N\ge2$, the coefficients of $P_N(q)$ are log-concave:
+\begin{equation}
+ p_{N,\ell}^2\ge p_{N,\ell-1}p_{N,\ell+1}
+ \qquad(1\le\ell<2^N-N-1).                              \label{eq:triangular-logconcavity}
+\end{equation}
+Consequently they are unimodal.
+\end{conjecture}
+
+\numerical The bundled program verifies
+\eqref{eq:triangular-logconcavity} in exact integer arithmetic for every
+$2\le N\le16$.  The largest checked polynomial has degree $65519$ and total
+mass $2^{120}$.  This is evidence, not a proof: sparse dilation products do
+not inherit log-concavity from their factors by a routine closure theorem.
+
+\section{Odd-lattice reconstruction of the Fourier image}
+\label{sec:shannon}
+
+\subsection{Paley--Wiener sampling}
+
+Because $\Up\in C_c^\infty([-1,1])$, its transform satisfies
+\begin{equation}
+ \Phi\in\PW_1\cap\mathscr S(\R):                        \label{eq:Phi-PW}
+\end{equation}
+$\Phi$ is entire of exponential type at most one, square-integrable on the
+real axis, and rapidly decreasing there.  The Whittaker--Shannon cardinal sampling theorem on
+$\PW_1$~\cite{paleywiener1934,whittaker1935,shannon1949} gives
+\begin{equation}
+ \Phi(z)=\sum_{k\in\Z}\Phi(k\pi)
+ \frac{\sin(z-k\pi)}{z-k\pi}.                            \label{eq:shannon-full}
+\end{equation}
+Rapid decay of the samples strengthens the usual $L^2$ statement to absolute
+and locally uniform convergence in $z\in\C$.
+
+All nonzero even samples vanish because $\Phi(2\pi n)=0$.  Put
+\begin{equation}
+ s_m=\Phi((2m+1)\pi)
+ =\prod_{j=1}^\infty
+   \sinc\!\left(\frac{(2m+1)\pi}{2^j}\right).           \label{eq:odd-samples}
+\end{equation}
+
+\begin{theorem}[Odd-sample cardinal representation]
+\label{thm:odd-shannon}
+For all $z\in\C$,
+\begin{align}
+ \boxed{\displaystyle
+ \Phi(z)=\frac{\sin z}{z}
+ -\sin z\sum_{m\in\Z}
+ \frac{\Phi((2m+1)\pi)}{z-(2m+1)\pi},}                 \label{eq:odd-shannon-two-sided}\\
+ \boxed{\displaystyle
+ \Phi(z)=\frac{\sin z}{z}
+ -2z\sin z\sum_{m=0}^\infty
+ \frac{s_m}{z^2-(2m+1)^2\pi^2}.}                        \label{eq:odd-shannon-paired}
+\end{align}
+At the apparent poles the expressions are interpreted by their removable
+limits.  Both series converge normally on compact subsets of $\C$ after those
+removals.
+\end{theorem}
+
+\begin{proof}
+In \eqref{eq:shannon-full}, the term $k=0$ is $\sin z/z$ and every nonzero
+even term vanishes.  For odd $k$,
+$\sin(z-k\pi)=-\sin z$, giving
+\eqref{eq:odd-shannon-two-sided}.  Pair the samples at $\pm(2m+1)\pi$ and use
+evenness of $\Phi$ to obtain \eqref{eq:odd-shannon-paired}.
+\end{proof}
+
+\newresult Equation \eqref{eq:physical-cosine-series} reconstructs the
+physical bump from the same odd samples.  Equation
+\eqref{eq:odd-shannon-paired} instead reconstructs the entire Fourier image
+at arbitrary complex arguments.  Together they make the odd sample sequence
+a two-sided coordinate system for both domains.
+
+For every compact $K\subset\C$, rapid sample decay implies the superalgebraic
+truncation estimate
+\begin{equation}
+ \sup_{z\in K}|\Phi(z)-\Phi_M(z)|=\bigO_{K,A}(M^{-A})
+ \qquad\text{for every }A>0,                             \label{eq:shannon-superalgebraic}
+\end{equation}
+where $\Phi_M$ retains $0\le m<M$ in the paired series.
+
+\subsection{Higher zero multiplicities as odd-sample sum rules}
+
+Factor \eqref{eq:odd-shannon-paired} as
+\begin{equation}
+ \Phi(z)=\sin z\,B(z),                                   \label{eq:Phi-sin-B}
+\end{equation}
+where, away from its removable odd-lattice singularities,
+\begin{equation}
+ B(z)=\frac1z-2z\sum_{m=0}^\infty
+ \frac{s_m}{z^2-(2m+1)^2\pi^2}.                          \label{eq:B-definition}
+\end{equation}
+At an even lattice point $z_n=2\pi n\ne0$, $B$ is analytic.  The established
+zero order $1+\vtwo(n)$ of $\Phi$ now becomes a hierarchy of identities among
+the odd samples.
+
+\begin{theorem}[Odd-sample zero-jet hierarchy]
+\label{thm:sample-jet-hierarchy}
+For every nonzero integer $n$,
+\begin{equation}
+ B^{(r)}(2\pi n)=0
+ \quad(0\le r<\vtwo(n)),
+ \qquad
+ B^{(\vtwo(n))}(2\pi n)\ne0.                             \label{eq:B-jet-hierarchy}
+\end{equation}
+In particular, for every positive even $n$,
+\begin{equation}
+ \boxed{\displaystyle
+ \sum_{m=0}^\infty
+ \frac{s_m}{4n^2-(2m+1)^2}=\frac1{8n^2}.}               \label{eq:sample-sum-rule-1}
+\end{equation}
+If $4\mid n$, then also
+\begin{equation}
+ \boxed{\displaystyle
+ \sum_{m=0}^\infty
+ \frac{s_m}{\bigl(4n^2-(2m+1)^2\bigr)^2}
+ =\frac1{32n^4}.}                                       \label{eq:sample-sum-rule-2}
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+The sine factor has a simple zero at $2\pi n$, while $\Phi$ has order
+$1+\vtwo(n)$; hence $B$ has order $\vtwo(n)$ there.  This proves
+\eqref{eq:B-jet-hierarchy}.  Setting $B(2\pi n)=0$ and dividing out powers of
+$\pi$ gives \eqref{eq:sample-sum-rule-1}.  Differentiate
+\eqref{eq:B-definition}:
+\[
+ B'(z)=-\frac1{z^2}
+ -2\sum_m\frac{s_m}{z^2-a_m^2}
+ +4z^2\sum_m\frac{s_m}{(z^2-a_m^2)^2},
+ \qquad a_m=(2m+1)\pi.
+\]
+If $4\mid n$, then $B'(2\pi n)=0$.  Substituting
+\eqref{eq:sample-sum-rule-1} yields \eqref{eq:sample-sum-rule-2}.
+\end{proof}
+
+Higher derivatives of $B$ give explicit rational combinations of
+\[
+ \sum_{m\ge0}\frac{s_m}
+ {(4n^2-(2m+1)^2)^j},\qquad j=1,2,\ldots,                \label{eq:sample-hierarchy-sums}
+\]
+whenever $2^r\mid n$.  This translates the $2$-adic zero multiplicity into a
+nested family of exact cardinal-sample identities.  It is a promising bridge
+between the spectral arithmetic already formalized in Lean and classical
+sampling theory.
+
+\section{Chebyshev, Gegenbauer, and Bessel--product expansions}
+\label{sec:bessel}
+
+\subsection{Chebyshev coefficients}
+
+Write the Chebyshev expansion in the standard form
+\begin{equation}
+ \Up(x)=\frac{a_0}{2}+\sum_{n=1}^\infty a_nT_n(x),
+ \qquad -1\le x\le1,                                    \label{eq:chebyshev-series}
+\end{equation}
+where
+\begin{equation}
+ a_n=\frac2\pi\int_{-1}^{1}
+ \frac{\Up(x)T_n(x)}{\sqrt{1-x^2}}\dd x.                \label{eq:chebyshev-coeff}
+\end{equation}
+Since $\Up(\cos\theta)$ is a smooth $2\pi$-periodic even function, the
+series converges absolutely and uniformly, and its coefficients decay faster
+than every power.
+
+The plane-wave identity
+\begin{equation}
+ \int_{-1}^{1}\frac{\e^{\ii tx}T_n(x)}{\sqrt{1-x^2}}\dd x
+ =\pi\ii^nJ_n(t)                                        \label{eq:cheb-plane-wave}
+\end{equation}
+turns the coefficients into transforms of the sinc product.
+
+\begin{theorem}[Chebyshev--Bessel sinc representation]
+\label{thm:cheb-bessel}
+All odd coefficients vanish, and for $r\ge0$,
+\begin{equation}
+ \boxed{\displaystyle
+ a_{2r}=\frac{2(-1)^r}{\pi}
+ \int_0^\infty J_{2r}(t)
+ \prod_{j=1}^\infty\sinc\!\left(\frac{t}{2^j}\right)\dd t.} \label{eq:cheb-bessel}
+\end{equation}
+The integral is absolutely convergent.
+\end{theorem}
+
+\begin{proof}
+Insert Fourier inversion \eqref{eq:up-fourier-inversion} into
+\eqref{eq:chebyshev-coeff}, apply Fubini, and use
+\eqref{eq:cheb-plane-wave}.  This gives
+\[
+ a_n=\frac{\ii^n}{\pi}\int_{-\infty}^{\infty}\Phi(t)J_n(t)\dd t.
+\]
+Parity kills odd $n$ and doubles the positive half-axis for even $n$.
+Rapid decay of $\Phi$ makes the integral absolute.
+\end{proof}
+
+The first numerical coefficients are approximately
+\begin{equation}
+ \begin{split}
+ a_0&= 0.681978961331094\ldots,\\
+ a_2&=-0.514948055352838\ldots,\\
+ a_4&= 0.195935940418300\ldots,\\
+ a_6&=-0.002356862179497\ldots,\\
+ a_8&=-0.028210793776951\ldots,\\
+ a_{10}&=0.011427972423053\ldots.
+ \end{split}                                             \label{eq:cheb-first}
+\end{equation}
+The sign change between $a_6$ and $a_8$ shows that a naive strict alternation
+conjecture would already be false.
+
+\subsection{A Gegenbauer family}
+
+Let $\lambda>0$, let $C_n^\lambda$ be the Gegenbauer polynomial, and put
+\begin{equation}
+ h_n^{(\lambda)}=
+ \int_{-1}^{1}(1-x^2)^{\lambda-1/2}
+ [C_n^\lambda(x)]^2\dd x
+ =\frac{\pi2^{1-2\lambda}\Gamma(n+2\lambda)}
+ {n!(n+\lambda)\Gamma(\lambda)^2}.                       \label{eq:gegenbauer-norm}
+\end{equation}
+Write
+\begin{equation}
+ \Up(x)=\sum_{n=0}^\infty a_n^{(\lambda)}C_n^\lambda(x),
+ \qquad
+ a_n^{(\lambda)}=\frac1{h_n^{(\lambda)}}
+ \int_{-1}^{1}\Up(x)C_n^\lambda(x)
+ (1-x^2)^{\lambda-1/2}\dd x.                            \label{eq:gegenbauer-series}
+\end{equation}
+Define
+\begin{equation}
+ K_{n,\lambda}=2^\lambda\sqrt\pi\,
+ \Gamma(\lambda+\tfrac12)\frac{(2\lambda)_n}{n!}.      \label{eq:gegenbauer-K}
+\end{equation}
+
+\begin{theorem}[Gegenbauer--Bessel family]
+\label{thm:gegenbauer-bessel}
+The odd coefficients vanish, and
+\begin{equation}
+ \boxed{\displaystyle
+ a_{2r}^{(\lambda)}=
+ \frac{(-1)^rK_{2r,\lambda}}{\pi h_{2r}^{(\lambda)}}
+ \int_0^\infty
+ \Phi(t)t^{-\lambda}J_{2r+\lambda}(t)\dd t.}            \label{eq:gegenbauer-bessel}
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+Use the plane-wave integral
+\[
+ \int_{-1}^{1}\e^{\ii tx}C_n^\lambda(x)
+ (1-x^2)^{\lambda-1/2}\dd x
+ =\ii^nK_{n,\lambda}t^{-\lambda}J_{n+\lambda}(t)
+\]
+
+after interpreting the right side by its entire normalized-Bessel
+continuation at $t=0$.  Fourier inversion and parity give
+\eqref{eq:gegenbauer-bessel}.
+\end{proof}
+
+The choice $\lambda=1/2$ recovers Legendre polynomials; standard normalization facts are as in~\cite{szego1975}.  If
+\begin{equation}
+ L_{2r}=\frac{4r+1}{2}\int_{-1}^{1}\Up(x)P_{2r}(x)\dd x \in\Q          \label{eq:legendre-coeff}
+\end{equation}
+is the exact rational coefficient from the established Fourier--Legendre
+expansion, and $j_n$ is the spherical Bessel function, then
+\begin{equation}
+ \boxed{\displaystyle
+ L_{2r}=\frac{(4r+1)(-1)^r}{\pi}
+ \int_0^\infty\Phi(t)j_{2r}(t)\dd t.}                   \label{eq:legendre-bessel}
+\end{equation}
+Thus the corpus's rational Legendre coefficients evaluate an infinite family
+of Bessel--sinc-product integrals exactly:
+\begin{equation}
+ \int_0^\infty j_{2r}(t)
+ \prod_{j\ge1}\sinc(t/2^j)\dd t
+ =\frac{(-1)^r\pi}{4r+1}L_{2r}.                         \label{eq:rational-bessel-integrals}
+\end{equation}
+
+\section{Exact-rational Bernstein limits and Kummer transforms}
+\label{sec:bernstein}
+
+\subsection{Dyadic Bernstein polynomials for F}
+
+Bernstein's probabilistic approximation scheme~\cite{bernstein1912} starts, for $n\ge1$, with
+\begin{equation}
+ (B_nF)(x)=\sum_{k=0}^{n}F(k/n)\binom nkx^k(1-x)^{n-k}.  \label{eq:bernstein-F}
+\end{equation}
+When $n=2^r$, every sample $F(k/n)$ is rational.  Hence $B_{2^r}F$ is an
+exact-rational polynomial in either the Bernstein or monomial basis.
+
+\begin{theorem}[Rational Bernstein limit with explicit error]
+\label{thm:bernstein-F}
+For $n=2^r$,
+\begin{equation}
+ \boxed{\displaystyle
+ F(x)=\lim_{r\to\infty}(B_{2^r}F)(x)}                   \label{eq:bernstein-limit}
+\end{equation}
+uniformly on $[0,1]$.  More precisely,
+\begin{equation}
+ |B_nF(x)-F(x)|
+ \le\frac{\|F''\|_\infty}{2n}x(1-x)
+ \le\frac1n.                                            \label{eq:bernstein-error}
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+If $K\sim\operatorname{Binomial}(n,x)$, then
+$B_nF(x)=\E F(K/n)$.  Taylor's theorem about $x$, the zero mean of
+$K/n-x$, and
+$\E(K/n-x)^2=x(1-x)/n$ give the first bound.  Use
+$\|F''\|_\infty=8$ and $x(1-x)\le1/4$ for the second.
+\end{proof}
+
+This is a different exact-rational limit from the Faber expansion.  Faber
+partial sums interpolate all dyadic nodes and converge like $4^{-J}$ when
+the mesh is $2^{-J}$; Bernstein polynomials smooth the node data by a binomial
+kernel and converge at the slower but shape-preserving order $2^{-J}$.
+
+\subsection{Finite Kummer sums for transforms}
+
+The beta--Kummer integral is
+\begin{equation}
+ \int_0^1\binom nkx^k(1-x)^{n-k}\e^{zx}\dd x
+ =\frac1{n+1}\,{}_1F_1(k+1;n+2;z).                      \label{eq:beta-kummer}
+\end{equation}
+Consequently the restricted Fabius transform
+$A(t)$ from \eqref{eq:A-definition} has the locally uniform entire limit
+\begin{equation}
+ \boxed{\displaystyle
+ A(t)=\lim_{r\to\infty}\frac1{2^r+1}
+ \sum_{k=0}^{2^r}F(k/2^r)
+ {}_1F_1(k+1;2^r+2;-\ii t).}                            \label{eq:F-bernstein-kummer}
+\end{equation}
+Every coefficient in every finite sum is rational.
+
+For the bump, put
+\begin{equation}
+ g(u)=\Up(2u-1)=F(1-|2u-1|),\qquad 0\le u\le1.           \label{eq:g-up}
+\end{equation}
+At dyadic nodes, $g(k/2^r)\in\Q$.  Approximate $g$ by $B_ng$ and transport
+back to $[-1,1]$.  Its Fourier image is the finite sum
+\begin{equation}
+ \Phi_n(t)=\frac{2\e^{\ii t}}{n+1}
+ \sum_{k=0}^{n}g(k/n)
+ {}_1F_1(k+1;n+2;-2\ii t).                              \label{eq:up-bernstein-kummer-finite}
+\end{equation}
+
+\begin{theorem}[Bernstein--Kummer representation of the sinc product]
+\label{thm:bernstein-kummer}
+Along dyadic degrees $n=2^r$,
+\begin{equation}
+ \boxed{\displaystyle
+ \prod_{j=1}^\infty\sinc\!\left(\frac{t}{2^j}\right)
+ =\lim_{r\to\infty}
+ \frac{2\e^{\ii t}}{2^r+1}
+ \sum_{k=0}^{2^r}F(1-|2k/2^r-1|)
+ {}_1F_1(k+1;2^r+2;-2\ii t).}                           \label{eq:bernstein-kummer-limit}
+\end{equation}
+The convergence is locally uniform in $t\in\C$.
+\end{theorem}
+
+\begin{proof}
+Bernstein's theorem gives $B_ng\to g$ uniformly.  On a compact set
+$K\subset\C$, the Fourier kernels on $[-1,1]$ are bounded by
+$\exp(\sup_{t\in K}|\operatorname{Im}t|)$, so uniform approximation of the
+physical functions implies locally uniform convergence of their transforms.
+Equation \eqref{eq:beta-kummer} evaluates each finite transform exactly.
+\end{proof}
+
+This representation combines a limit, a finite hypergeometric series, and
+exact dyadic arithmetic.  It is well suited to symbolic experimentation:
+for each fixed $r$ the entire approximant satisfies the differential
+relations of a finite family of Kummer functions, while the limit is known
+from the corpus to be non-holonomic in much stronger senses.
+
+\section{Weighted cube volumes and hyperplane sections}
+\label{sec:cube}
+
+\subsection{Sublevel volumes}
+
+Let $a_j=2^{-j}$ and $a^{(N)}=(a_1,\ldots,a_N)$.  The finite CDF in
+\eqref{eq:finite-spline} is exactly a weighted-cube sublevel volume:
+\begin{equation}
+ \boxed{\displaystyle
+ F_N(x)=\operatorname{vol}_N
+ \left\{u\in[0,1]^N:\sum_{j=1}^{N}a_ju_j\le x\right\}.} \label{eq:cube-sublevel}
+\end{equation}
+Therefore
+\begin{equation}
+ \boxed{\displaystyle
+ F(x)=\lim_{N\to\infty}\operatorname{vol}_N
+ \left\{u\in[0,1]^N:\sum_{j=1}^{N}2^{-j}u_j\le x\right\}}              \label{eq:cube-volume-limit}
+\end{equation}
+for every real $x$.  Equation \eqref{eq:finite-spline} is the
+inclusion--exclusion evaluation of the same polytope volume.
+
+One may also write the infinite-dimensional product-measure integral
+\begin{equation}
+ F(x)=\int_{[0,1]^\N}
+ \1_{\{\sum_{j\ge1}2^{-j}u_j\le x\}}\dd\bm u.           \label{eq:infinite-cube-integral}
+\end{equation}
+This is the geometric form of the probability model, but it emphasizes that
+the Fabius function is the distribution of weighted half-spaces cutting a
+Hilbert cube.
+
+\subsection{Hyperplane sections and a Fourier-slice limit}
+
+Let $v$ be uniform on $[-1,1]^N$ and set
+\begin{equation}
+ Y_N=a^{(N)}\cdot v.
+\end{equation}
+By the coarea formula, its density $u_N$ is
+\begin{equation}
+ \boxed{\displaystyle
+ u_N(y)=\frac{2^{-N}}{\|a^{(N)}\|_2}
+ \Haus^{N-1}
+ \left\{v\in[-1,1]^N:a^{(N)}\cdot v=y\right\}.}         \label{eq:cube-section-density}
+\end{equation}
+The Fourier-slice theorem reduces here to Fubini:
+\begin{equation}
+ \int_{\R}u_N(y)\e^{-\ii ty}\dd y
+ =\prod_{j=1}^{N}\sinc(t/2^j).                           \label{eq:cube-fourier-slice}
+\end{equation}
+The first three sinc factors give an integrable majorant for all later finite
+products, so dominated Fourier inversion yields uniform convergence
+$u_N\to\Up$.  Consequently
+\begin{equation}
+ \boxed{\displaystyle
+ \Up(y)=\lim_{N\to\infty}
+ \frac{2^{-N}}{\|a^{(N)}\|_2}
+ \Haus^{N-1}
+ \left\{v\in[-1,1]^N:a^{(N)}\cdot v=y\right\}.}         \label{eq:cube-section-limit}
+\end{equation}
+
+Equations \eqref{eq:cube-volume-limit}, \eqref{eq:cube-section-limit}, and
+\eqref{eq:cube-fourier-slice} form a volume--section--product triangle:
+sublevel volumes give $F$, codimension-one sections give $\Up$, and Fourier
+slices give the finite sinc products converging to $\Phi$.
+
+\section{Representation synthesis}
+\label{sec:synthesis}
+
+The formulas above are best viewed as a network rather than a list.  Exact
+dyadic arithmetic supplies Faber coefficients; differentiation turns them
+into Haar coefficients; Haar Parseval gives a positive energy series; Haar
+Fourier transforms give a new sinc-product series.  Independently, binary
+digits reorganize the same probability law into binomial layers, while
+compact support places the Fourier image in a sampling space.  Orthogonal
+polynomials and Bernstein polynomials then provide two different spectral and
+algebraic envelopes.
+
+\begingroup\small
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{0.18\textwidth}>{\raggedright\arraybackslash}p{0.31\textwidth}>{\raggedright\arraybackslash}p{0.23\textwidth}>{\raggedright\arraybackslash}p{0.198\textwidth}@{}}
+\caption{New representation families and their characteristic data.}\label{tab:new-synthesis}\\
+\toprule
+Representation & Formula type & Exact data & Convergence/control \\
+\midrule
+\endfirsthead
+\toprule
+Representation & Formula type & Exact data & Convergence/control \\
+\midrule
+\endhead
+Faber--Schauder & $F=x+\sum c_{m,k}\Lambda_{m,k}$ & Rational dyadic midpoint defects & Uniform; sharp error $\sim4^{-J}$.\\
+Inverse splines & $G_J=(S_JF)^{-1}$, formula \eqref{eq:inverse-hinge} & Rational knots and slopes & Uniform; error $\le\omega_G(4^{-J})$.\\
+Rvachev tents & $\Up(y)=1-|y|+\sum c\Lambda(1-|y|)$ & Same rational table & Uniform on support.\\
+Haar density & $F'=1+\sum2^{m+1}cH$ & Rational step coefficients & $L^p$, including essential $L^\infty$.\\
+Haar Fourier & $\Phi=\sinc+\sum c\,\e^{\ii\cdot}\sin^2/(\ii t)$ & Rational coefficients, elementary kernels & Normal on compact subsets of $\C$.\\
+Energy & $A_2=1/4+\sum2^m\sum c^2$ & Positive rational squares & Monotone, certified geometric tail.\\
+Energy asymptotic & $E_m\sim A_2\sum\beta_q4^{-qm}$ & Explicit rational $\beta_q,\gamma_q$ & Poincaré all orders.\\
+Triangular probability & $X=\sum2^{-n}K_n$ & Independent binomial layers & Almost sure and $L^p$.\\
+Triangular product & $\Phi=\prod\cos(t/2^n)^{n-1}$ & Integer exponents & Normal on compacta; local tail bound.\\
+Coefficient CDF & Cumulative coefficients of $P_N(q)$ & Positive integers & Bracket width $(N+1)2^{-N}$.\\
+Odd cardinal & Rational-kernel sum over $s_m=\Phi((2m+1)\pi)$ & Explicit sinc products & Locally uniform, superalgebraic truncation.\\
+Sample sum rules & Zero jets of $B(z)$ & $2$-adic multiplicities & Exact convergent identities.\\
+Chebyshev--\newline Gegenbauer & Bessel integrals of $\Phi$ & Existing moments/Legendre rationals & Absolute integrals; uniform polynomial series.\\
+Bernstein & Exact-rational polynomials at dyadic degrees & Dyadic values of $F$ & Uniform; explicit $1/n$ bound for $F$.\\
+Kummer Fourier & Finite ${}_1F_1$ sums, then $n\to\infty$ & Rational finite weights & Locally uniform entire convergence.\\
+Cube geometry & Sublevel volumes and hyperplane sections & Dyadic normal vector & CDF and uniform-density limits.\\
+\bottomrule
+\end{longtable}
+\endgroup
+
+Several hybrid formulas deserve emphasis:
+\begin{align}
+ \text{rational wavelets}+\text{elementary oscillation}
+ &\longrightarrow \text{entire sinc product},            \label{eq:hybrid1}\\
+ \text{odd sinc-product samples}+\text{rational resolvents}
+ &\longrightarrow \text{entire sinc product},            \label{eq:hybrid2}\\
+ \text{rational dyadic samples}+{}_1F_1
+ &\longrightarrow \text{entire sinc product},            \label{eq:hybrid3}\\
+ \text{rational Legendre coefficients}
+ &\longleftrightarrow \text{Bessel--sinc integrals}.       \label{eq:hybrid4}
+\end{align}
+The same function is therefore reconstructed from local curvature, stepwise
+martingale data, odd spectral samples, binomial coefficient arrays,
+orthogonal-polynomial periods, and weighted-polytope geometry.
+
+\section{Numerical and exact verification}
+\label{sec:numerics}
+
+\subsection{Reproducibility design}
+
+The archive contains
+\path{fabius_multiresolution_experiments.py}, a standalone, fully commented
+Python program.  Its arithmetic and analytic checks are intentionally
+separated.
+
+\begin{itemize}
+\item \emph{Exact layer.}  Python's \texttt{Fraction} type evaluates
+      \eqref{eq:V-recurrence}, every $F(a/2^{16})$, all Faber coefficients
+      below level $16$, every $R_J$, and every coefficient of $P_N$ for
+      $N\le16$.  Log-concavity is tested with integer inequalities.
+\item \emph{Independent analytic layer.}  The reference values of $F$ and
+      $\Up$ come from the period-two cosine series whose coefficients are
+      evaluated by the sinc product.  Haar, triangular, cardinal, Bessel, and
+      Kummer formulas are checked against this independent product route.
+\item \emph{Outputs.}  The run writes human-readable and JSON results, the
+      TeX tables included below, and four figures.  No network access or
+      hidden data files are used.
+\end{itemize}
+
+The exact level-$16$ table contains $65537$ rational dyadic values and is
+constructed by the terminating highest-bit recursion in roughly linear time
+in the table size.  The bundled run uses $90$ decimal digits for mpmath
+operations.
+
+\subsection{Faber convergence}
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.94\textwidth]{figures/faber_approximants.png}
+\caption{The exact-rational dyadic interpolants are the Faber partial sums.
+The level-$6$ curve is already visually indistinguishable from the independent
+sinc-product reconstruction on most of the interval.}
+\label{fig:faber-approximants}
+\end{figure}
+
+The observed maximum errors satisfy the rigorous bound $4^{-J}$ and the
+scaled errors approach the sharp constant one from
+\eqref{eq:faber-error-limit}.  At level $J=10$, the maximum grid residual
+against the independent Fourier evaluator is approximately $9.54\times10^{-7}$,
+consistent with $4^{-10}=9.5367\times10^{-7}$.
+
+\subsection{Energy partial sums and acceleration}
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.94\textwidth]{figures/energy_convergence.png}
+\caption{Raw positive rational partial sums converge geometrically.  Using
+four terms of the all-orders tail expansion removes several additional powers
+of $4^{-J}$.  Values below machine precision relative to the numerical
+reference are omitted automatically from the logarithmic plot.}
+\label{fig:energy-convergence}
+\end{figure}
+
+\input{generated_tables.tex}
+
+The decimal in \eqref{eq:A2-decimal} is not advertised as a formally certified
+$60$-digit interval: the all-orders theorem is asymptotic and the bundled run
+does not compute explicit constants in its remainder.  It is, however,
+stable under changes of both level and acceleration order.  For example, the
+five-term estimates from $J=12,13,14,15,16$ successively stabilize through
+roughly $8,12,16,20,$ and $21$ additional digits beyond the raw partials.  A
+rigorous high-precision enclosure can be obtained by combining a finite
+higher-order expansion with explicit derivative sup norms and an
+Euler--Maclaurin remainder.
+
+\subsection{Haar, triangular, and cardinal checks}
+
+Using levels $m<14$, the Haar--$\sinc^2$ formula
+\eqref{eq:haar-Phi-complex} has absolute residuals between
+$10^{-10}$ and $8\times10^{-9}$ at the tested real and complex arguments.
+This is the expected unresolved tail size.  The finite triangular product at
+$N=36$ agrees with the sinc product to the precision predicted by
+\eqref{eq:triangular-tail}.
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.94\textwidth]{figures/odd_sampling_convergence.png}
+\caption{Maximum residual of the odd-sample cardinal formula at two real and
+one complex test point.  The small nonmonotonic ripples reflect cancellation;
+the envelope decreases superalgebraically.}
+\label{fig:odd-sampling}
+\end{figure}
+
+With $40$ positive odd-sample pairs, the absolute residuals are
+$1.2\times10^{-14}$ to $3.9\times10^{-13}$ at the six test points listed in
+\path{numerical_results.txt}.  The explicit sum rules
+\eqref{eq:sample-sum-rule-1} and \eqref{eq:sample-sum-rule-2} can be checked
+from the same sample table.
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.94\textwidth]{figures/triangular_distribution.png}
+\caption{The positive mass distribution encoded by $P_{12}$.  Its broad,
+nearly flat central region is a finite-layer effect quite different from a
+single binomial law.}
+\label{fig:triangular-distribution}
+\end{figure}
+
+Exact integer arithmetic confirms palindromicity and log-concavity for every
+$2\le N\le16$; selected degrees are shown in
+\cref{tab:triangular-check}.  The checks are exhaustive over every interior
+coefficient, not random spot tests.
+
+\subsection{Bessel and Bernstein checks}
+
+The cosine-grid and Bessel-product evaluations in
+\cref{tab:chebyshev-check} agree to about $2\times10^{-8}$.  The residual is
+set by the finite cosine grid and finite Bessel integration cutoff, not by a
+symbolic approximation in the theorem.
+
+For the rational Bernstein approximants to $F$, the observed uniform errors
+are:
+\begin{center}
+\begin{tabular}{@{}rrr@{}}
+\toprule
+$n$ & observed error & rigorous bound $1/n$\\
+\midrule
+8   & $7.1353\times10^{-2}$ & $1.25\times10^{-1}$\\
+16  & $4.1193\times10^{-2}$ & $6.25\times10^{-2}$\\
+32  & $2.2565\times10^{-2}$ & $3.125\times10^{-2}$\\
+64  & $1.1906\times10^{-2}$ & $1.5625\times10^{-2}$\\
+128 & $6.1361\times10^{-3}$ & $7.8125\times10^{-3}$\\
+256 & $3.1214\times10^{-3}$ & $3.90625\times10^{-3}$\\
+\bottomrule
+\end{tabular}
+\end{center}
+At degree $32$ and $t=2.7$, direct quadrature of the Bernstein bump and the
+finite Kummer sum \eqref{eq:up-bernstein-kummer-finite} differ by
+$4.5\times10^{-17}$.
+
+\section{Conjectures and frontier directions}
+\label{sec:frontier}
+
+\subsection{Arithmetic nature of the energy constant}
+
+\begin{conjecture}[Irrationality of the Fabius energy]
+\label{conj:A2-irrational}
+The number
+\[
+ A_2=\int_0^1F(x)^2\dd x
+\]
+is irrational; plausibly it is transcendental.
+\end{conjecture}
+
+The positive rational expansion \eqref{eq:A2-rational-series} is more
+arithmetically structured than the original sinc integral.  A first serious
+attack should study the reduced denominators of $R_J$, their $p$-adic growth,
+and whether the tail asymptotic can be converted into rational-approximation
+bounds incompatible with algebraicity.  The main obstacle is that an
+excellent asymptotic expansion by itself does not provide the denominator
+separation needed for an irrationality proof.
+
+\subsection{Endpoint phase tomography through rational wavelets}
+
+For a cell entirely in $(0,1/4)$, the differential equation
+$F''(x)=8F(4x)$ and \eqref{eq:faber-kernel} give the exact scaled identity
+\begin{equation}
+ \boxed{\displaystyle
+ -4^{m-1}c_{m,k}
+ =\int_0^1\min(s,1-s)
+ F\!\left(2^{2-m}(k+s)\right)\dd s.}                    \label{eq:endpoint-wavelet-integral}
+\end{equation}
+Thus every fixed-$k$ coefficient ray is a positive triangular average of the
+endpoint function at a dyadically shrinking scale.
+
+\begin{conjecture}[Wavelet recovery of the Lambert phase]
+\label{conj:wavelet-phase}
+For each fixed $k\ge0$, the logarithm of
+$-c_{m,k}$ has an all-orders expansion obtained by applying boundary Laplace
+analysis to \eqref{eq:endpoint-wavelet-integral}.  Its leading exponential
+part is governed by the same lower-Lambert coordinate as $F$, and its bounded
+oscillatory part is a nonconstant translate of the repository's one-periodic
+endpoint correction.  Distinct $k$ determine distinct phase shifts but the
+same Fourier spectrum.
+\end{conjecture}
+
+This would turn exact rational coefficient rays into a tomography device for
+the periodic endpoint phase.  It is important not to replace the phase by its
+mean: the audited endpoint work proves that such averaging fails at the
+natural error scale.
+
+\subsection{The triangular coefficient problem}
+
+Conjecture \ref{conj:triangular-logconcavity} asks for a structural proof of
+log-concavity of a highly nonstandard sparse product.  Promising approaches
+include:
+\begin{itemize}
+\item induction through interlacing inequalities stronger than ordinary
+      log-concavity;
+\item a probabilistic proof using ultra-log-concavity under dyadically
+      weighted Bernoulli convolution;
+\item total positivity of the shift-and-add operators that multiply by
+      $(1+q^{2^r})^a$ when the lower scales are already present;
+\item a stable-polynomial or Lorentzian homogenization in extra variables,
+      followed by a carefully justified diagonal specialization.
+\end{itemize}
+A local central limit theorem with explicit lattice corrections for
+$X_N^\triangle$ would also quantify how the positive coefficient limit
+approaches the smooth Fabius density.
+
+\subsection{Odd samples as intrinsic spectral coordinates}
+
+The sampling formula uses all odd samples because the even samples are forced
+to vanish.  This suggests a constrained Paley--Wiener space
+\begin{equation}
+ \mathcal V=\{f\in\PW_1:f(2\pi n)=0\text{ for }n\ne0,
+ \text{ with the prescribed higher }2\text{-adic jets}\}.              \label{eq:constrained-PW}
+\end{equation}
+
+\begin{problem}[de Branges/sampling model]
+Construct an intrinsic reproducing-kernel or de Branges description of the
+closure generated by the Fabius zero divisor, and determine whether the odd
+samples form a natural Riesz coordinate sequence after the higher even-zero
+constraints are imposed.  Derive sharp weighted truncation inequalities for
+\eqref{eq:odd-shannon-paired} that exploit the exact zero multiplicities.
+\end{problem}
+
+The identities in \cref{thm:sample-jet-hierarchy} are the first algebraic
+constraints such a model must reproduce.
+
+\subsection{Nonlinear wavelet energies}
+
+For $p=2$, orthogonality collapses the energy to the positive diagonal sum
+\eqref{eq:A2-rational-series}.  For even $p>2$, products of Haar functions are
+still finite on each dyadic tree but no longer diagonal.
+
+\begin{problem}[Exact dyadic tree formulas for $L^p$ energies]
+Find finite-level tree recurrences and convergent rational series for
+\[
+ A_p=\int_0^1F(x)^p\dd x,
+ \qquad
+ U_p=\int_{-1}^{1}\Up(x)^p\dd x,
+\]
+starting with $p=3,4$.  Determine whether any rearrangement is positive and
+whether its level tails are again controlled by the derivative-norm spectrum.
+\end{problem}
+
+The order-statistic formulas in the current corpus evaluate many $A_p$-type
+integrals probabilistically; the wavelet problem asks for a genuinely local,
+multiscale arithmetic decomposition.
+
+\subsection{Orthogonal-polynomial coefficient geometry}
+
+The Chebyshev coefficients in \eqref{eq:cheb-first} do not alternate forever
+in the simplest way.  More nuanced questions remain.
+
+\begin{problem}[Sign and zero laws]
+Study the sign changes, asymptotic phase, and zero distribution of
+$a_{2r}^{(\lambda)}$ as functions of $r$ and $\lambda$.  Determine whether the
+Bessel integrals \eqref{eq:gegenbauer-bessel} admit saddle descriptions tied
+to the sharp real-axis decay rays of $\Phi$, and identify values of
+$\lambda$ for which the coefficients have additional arithmetic structure.
+\end{problem}
+
+The Legendre case is especially attractive because its coefficients are
+rational, making \eqref{eq:rational-bessel-integrals} an exact bridge between
+orthogonal-polynomial arithmetic and oscillatory integral analysis.
+
+\subsection{Base-b and geometric-weight extensions}
+
+The repository already develops a base-$b$ sinc-product and zero-spectrum
+theory.  Every new construction above has a plausible geometric-weight
+analogue:
+\begin{itemize}
+\item $b$-adic Faber systems with exact node arithmetic;
+\item regrouping base-$b$ digits along antidiagonals, producing multinomial
+      rather than binomial layers;
+\item cardinal sampling after identifying the appropriate forced zero
+      sublattice;
+\item Jacobi/Gegenbauer coefficients as Bessel transforms of the base-$b$
+      product;
+\item Bernstein limits along degrees $b^r$.
+\end{itemize}
+The dyadic case is exceptional because binary digit regrouping and Haar
+multiresolution are perfectly aligned; identifying which conclusions survive
+for $b>2$ should clarify which phenomena are genuinely dyadic.
+
+\subsection{Lean formalization roadmap}
+
+The new results are unusually formalization-friendly because their analytic
+core can be divided into finite exact layers and standard convergence lemmas.
+A practical order is:
+
+\begin{enumerate}
+\item Define $\Lambda_{m,k}$ and prove that the finite Faber sum is the dyadic
+      linear interpolant.  Import the existing exact dyadic evaluator to prove
+      coefficient rationality.
+\item Prove the $C^2$ interpolation bound and the sharp limit at $1/4$.
+\item Differentiate finite interpolants, identify conditional averages of
+      $F'$, and obtain $L^2$ convergence.  Haar orthogonality then proves
+      \eqref{eq:A2-rational-series} with minimal measure-theoretic overhead.
+\item Formalize the coefficient kernel \eqref{eq:faber-kernel}, the uniform
+      bound, and the first few energy-tail coefficients.  The all-orders
+      theorem can follow after an endpoint-flat Euler--Maclaurin library is in
+      place.
+\item Construct the triangular Bernoulli array on the existing infinite
+      product probability space.  Regroup nonnegative series and prove
+      independence of antidiagonals.
+\item Apply the existing Fourier product API to prove
+      \eqref{eq:triangular-cos-product}; keep the finite polynomial and exact
+      coefficient checks as executable definitions.
+\item Reuse a Paley--Wiener sampling theorem from mathlib if available, or
+      first formalize the rapidly decreasing special case needed for
+      \eqref{eq:odd-shannon-paired}.  The sample-jet identities then reduce to
+      differentiation of normally convergent rational series.
+\item Add the beta--Kummer integral and Bernstein convergence as a separate
+      approximation module; these require no endpoint asymptotics.
+\end{enumerate}
+
+The energy identity is the best first target: it combines exact dyadic
+arithmetic, finite orthogonality, and a single $L^2$ limit, and it creates a
+new formally verified representation of a constant already central to the
+integral reports.
+
+\section{Conclusion}
+\label{sec:conclusion}
+
+The Fabius--Rvachev system is often introduced through one striking identity:
+a compactly supported $C^\infty$ function whose Fourier transform is an
+infinite product of sinc functions.  The audited corpus already shows that
+this is only one face of a much larger structure involving uniform random
+series, Thue--Morse signs, $q$-binomial algebra, exact dyadic values, spectral
+multiplicities, Lambert--$W$ endpoint phases, Bell polynomials, and a rich
+integral-transform calculus.
+
+The new results add a multiresolution and sampling layer to that structure.
+Exact dyadic values are not merely isolated arithmetic curiosities: they are
+the coordinates of a rational Faber basis, and inversion of its finite
+interpolants gives exact-rational quantile splines.  Their discrete derivatives are
+rational Haar coefficients of the smooth density.  Orthogonality turns those
+coefficients into a positive rational expansion of the central sinc energy,
+and smooth self-similarity determines the complete tail expansion.  Binary
+digits reorganize the same law into independent binomial layers; compact
+support reorganizes the Fourier image into odd cardinal samples; plane-wave
+identities reorganize it into Bessel transforms; Bernstein's probabilistic
+polynomials reorganize it into finite Kummer sums; and finite-dimensional
+geometry reorganizes it into cube volumes and sections.
+
+No one representation dominates all others.  The sinc product is best for
+zeros and global frequency decay; the Faber series is best for exact local
+dyadic approximation; the Haar series is best for energy; the triangular
+layers are best for positive combinatorics; odd sampling is best for entire
+reconstruction from sparse spectral data; Bessel expansions connect to
+orthogonal approximation; Bernstein--Kummer limits provide finite entire
+approximants; and cube sections expose the underlying geometry.  The most
+promising next step is to formalize the rational energy series and then use
+its exact denominators and all-order tail to investigate the arithmetic nature
+of $A_2$.
+
+\appendix
+
+\section{Remainder proof for the all-orders energy expansion}
+\label{app:energy-proof}
+
+This appendix supplies a finite-order argument behind
+\cref{thm:Em-asymptotic}.  It avoids treating the nowhere-analytic function
+$F$ as if its formal differential-operator series converged.
+
+Let
+\begin{equation}
+ \Delta=2^{-m},\qquad h=\Delta/2,
+ \qquad x_k=(k+\tfrac12)\Delta.                          \label{eq:appendix-delta}
+\end{equation}
+For an arbitrary fixed integer $M\ge1$, Taylor's theorem with a uniform
+remainder gives
+\begin{equation}
+ c_{m,k}=-\sum_{r=1}^{M}
+ \frac{h^{2r}}{(2r)!}F^{(2r)}(x_k)
+ +\bigO(h^{2M+2}),                                       \label{eq:c-finite-taylor}
+\end{equation}
+uniformly in $k$.  Squaring this identity and retaining terms through any
+prescribed power of $\Delta$ is therefore legitimate.
+
+The level energy may be written as
+\begin{equation}
+ E_m=\Delta^{-2}
+ \left[\Delta\sum_{k=0}^{\Delta^{-1}-1}c_{m,k}^2\right]. \label{eq:Em-midpoint}
+\end{equation}
+Every coefficient in the finite expansion of $c_{m,k}^2$ is a product
+$F^{(a)}F^{(b)}$ with $a,b\ge2$.  All derivatives of $F$ of positive order
+vanish at $0$ and $1$.  Hence each such product and all of its derivatives
+vanish at both endpoints.  The midpoint Euler--Maclaurin formula therefore
+has no boundary correction of any algebraic order: for every fixed smooth
+product $G$ of this form and every $L\ge1$,
+\begin{equation}
+ \Delta\sum_{k=0}^{\Delta^{-1}-1}G(x_k)
+ =\int_0^1G(x)\dd x+\bigO_L(\Delta^L).                  \label{eq:flat-midpoint}
+\end{equation}
+Combining \eqref{eq:c-finite-taylor}--\eqref{eq:flat-midpoint} shows that the
+Poincaré coefficients of $E_m$ are the same as those of
+\begin{equation}
+ \Delta^{-2}\int_0^1
+ \left[\bigl(\cosh(hD)-1\bigr)F(x)\right]^2\dd x,       \label{eq:operator-asymptotic}
+\end{equation}
+where the right side is interpreted only as a formal device for extracting
+any finite number of Taylor coefficients.
+
+Since $\cosh(hD)-1$ contains only even positive powers of $D$, repeated
+integration by parts has no boundary terms.  Thus, coefficientwise,
+\begin{align}
+ \int_0^1[(\cosh(hD)-1)F]^2\dd x
+ &=\int_0^1F(\cosh(hD)-1)^2F\dd x                       \label{eq:operator-square}\\
+ &\sim\sum_{r=2}^\infty
+ \frac{2^{2r-1}-2}{(2r)!}h^{2r}(-1)^rI_r.               \label{eq:operator-coeff}
+\end{align}
+Now set $r=q+1$, use $h=\Delta/2$, and substitute
+$I_{q+1}=2^{(q+1)(q+2)}A_2$.  The coefficient of
+$\Delta^{2q}=4^{-qm}$ is
+\begin{align}
+ (-1)^{q+1}
+ \frac{2^{2q+1}-2}{(2q+2)!}
+ \frac{2^{(q+1)(q+2)}}{2^{2q+2}}A_2
+ &=(-1)^{q+1}
+ \frac{2^{q(q+1)+1}(2^{2q}-1)}{(2q+2)!}A_2,            \label{eq:beta-derivation}
+\end{align}
+which is $\beta_qA_2$.
+
+More explicitly, for every fixed $Q\ge1$ the preceding finite-order
+argument gives
+\begin{equation}
+ E_m=A_2\sum_{q=1}^{Q}\beta_q4^{-qm}
+ +\bigO_Q(4^{-(Q+1)m}).                                  \label{eq:Em-finite-asymptotic}
+\end{equation}
+Summing the remainder over $m\ge J$ proves the finite-order version of
+\eqref{eq:A2-tail-asymptotic} and the acceleration estimate
+\eqref{eq:A2-accelerator-error}.
+
+\section{Exact dyadic evaluation used by the experiments}
+\label{app:dyadic-algorithm}
+
+The experiments do not solve a discretized differential equation.  They use
+the repository's exact arithmetic in the following terminating form.
+
+\begin{algorithm}[Highest-bit evaluator]
+\label{alg:highest-bit}
+Assume the values $V_n=F(2^{-n})$ have been computed from
+\eqref{eq:V-recurrence}.  To evaluate $F(a/2^e)$ with
+$0<a<2^e$, write
+\begin{equation}
+ a=2^b+q,
+ \qquad 0\le q<2^b,
+ \qquad r=e-b,
+ \qquad y=q/2^e.                                        \label{eq:bit-decomposition}
+\end{equation}
+Then
+\begin{equation}
+ \boxed{\displaystyle
+ F(a/2^e)=
+ \sum_{j=0}^{r}
+ \frac{2^{j(j+1)/2}V_{r-j}}{j!}y^j-F(q/2^e).}           \label{eq:highest-bit-evaluator}
+\end{equation}
+Because $q<a$, a left-to-right table of all numerators memoizes every
+subproblem and terminates after clearing the set bits of $a$.
+\end{algorithm}
+
+For a fixed exponent $e$, the algorithm computes all $2^e+1$ values using
+$\bigO(e2^e)$ rational operations.  A single level-$16$ table then supplies
+all coarser Faber coefficients by exact subsampling.
+
+\section{Compact formula compendium}
+\label{app:compendium}
+
+For convenience, the principal formulas are collected here without proofs.
+The status column refers to the pinned corpus boundary, not to absolute
+historical priority.
+
+\begin{longtable}{@{}p{0.10\textwidth}p{0.72\textwidth}p{0.11\textwidth}@{}}
+\caption{Formula compendium.}\label{tab:compendium}\\
+\toprule
+Object & Formula & Status\\
+\midrule
+\endfirsthead
+\toprule
+Object & Formula & Status\\
+\midrule
+\endhead
+$F$ & $F(x)=\Prob(\sum_{j\ge1}2^{-j}U_j\le x)$ & baseline\\
+$\Up$ & $\Up(y)=\mathop{\ast}_{j\ge1}2^{j-1}\1_{[-2^{-j},2^{-j}]}(y)$ & baseline\\
+$\Phi$ & $\Phi(t)=\prod_{j\ge1}\sinc(t/2^j)$ & baseline\\
+$\Phi$ & $\Phi(t)=\prod_{n\ge1}(1-t^2/(4\pi^2n^2))^{1+\vtwo(n)}$ & baseline\\
+$F_N$ & $\dfrac{2^{N(N+1)/2}}{N!}\sum_{k<2^N}(-1)^{\wt(k)}(x-k/2^N)_+^N$ & baseline\\
+$F$ & $x+\sum_{m,k}c_{m,k}\Lambda_{m,k}(x)$ & new\\
+$G$ & $\lim_J\bigl[s_{J,0}y+\sum_k(s_{J,k}-s_{J,k-1})(y-y_{J,k})_+\bigr]$ & new\\
+$\Up$ & $1-|y|+\sum_{m,k}c_{m,k}\Lambda_{m,k}(1-|y|)$ & new\\
+$F'$ & $1+\sum_{m,k}2^{m+1}c_{m,k}H_{m,k}$ & new\\
+$\Phi$ & $\sinc t+\sum_{m,k}\dfrac{2^mc_{m,k}}{\ii t}\e^{\ii t(1-2k/2^m)}(1-\e^{-\ii t/2^m})^2$ & new\\
+$A_2$ & $\dfrac14+\sum_{m\ge0}2^m\sum_kc_{m,k}^2$ & new\\
+$E_m$ & $E_m\sim A_2\sum_{q\ge1}\beta_q4^{-qm}$ & new\\
+$X$ & $\sum_{n\ge2}2^{-n}K_n$, $K_n\sim\operatorname{Bin}(n-1,1/2)$ independent & new\\
+$\Phi$ & $\prod_{n\ge2}\cos(t/2^n)^{n-1}$ & new\\
+$F$ & $\lim_N2^{-N(N-1)/2}\sum_{\ell\le2^Nx}[q^\ell]P_N(q)$ & new\\
+$\Phi$ & $\dfrac{\sin z}{z}-2z\sin z\sum_{m\ge0}\dfrac{s_m}{z^2-(2m+1)^2\pi^2}$ & new\\
+$a_{2r}$ & $\dfrac{2(-1)^r}{\pi}\int_0^\infty J_{2r}(t)\Phi(t)\dd t$ & new\\
+$A(t)$ & $\lim_{r\to\infty}\dfrac1{2^r+1}\sum_kF(k/2^r){}_1F_1(k+1;2^r+2;-\ii t)$ & new\\
+$\Phi$ & Dyadic Bernstein--Kummer limit \eqref{eq:bernstein-kummer-limit} & new\\
+$F$ & Weighted-cube sublevel-volume limit \eqref{eq:cube-volume-limit} & new packaging\\
+$\Up$ & Weighted-cube hyperplane-section limit \eqref{eq:cube-section-limit} & new packaging\\
+\bottomrule
+\end{longtable}
+
+\section{Corpus and reproducibility files}
+\label{app:reproducibility}
+
+The accompanying archive contains:
+
+\begin{description}[style=nextline,leftmargin=0pt,labelwidth=0pt,labelsep=0pt]
+\item[\path{Fabius_Rvachev_Multiresolution_Representations.tex}]
+The complete source of this report.
+
+\item[\path{Fabius_Rvachev_Multiresolution_Representations.pdf}]
+The compiled report.
+
+\item[\path{fabius_multiresolution_experiments.py}]
+Exact and numerical verification code with detailed comments.
+
+\item[\path{numerical_results.txt} and \path{numerical_results.json}]
+Human-readable and machine-readable output of the bundled run.
+
+\item[\path{generated_tables.tex}]
+The tables included by \cref{sec:numerics}.
+
+\item[\path{figures/}]
+Four plots generated by the script.
+
+\item[\path{corpus_manifest_current.txt}]
+The $92$-path recursive TeX manifest, the five additions after the baseline
+snapshot, and the modified-path comparison ledger.
+
+\item[\path{README.md}, \path{requirements.txt}, and \path{SHA256SUMS.txt}]
+Reproduction instructions, pinned Python dependencies, and checksums.
+\end{description}
+
+The command used for the bundled numerical run is
+\begin{lstlisting}[language=bash]
+python fabius_multiresolution_experiments.py \
+    --max-exact-level 16 --precision 90
+\end{lstlisting}
+The program was executed with Python~3, NumPy, SciPy, mpmath, and Matplotlib.
+It does not access the network.
+
+\begin{thebibliography}{99}
+
+\bibitem{jessen1935}
+B.~Jessen and A.~Wintner,
+\newblock Distribution functions and the Riemann zeta function,
+\newblock \emph{Transactions of the American Mathematical Society}
+  \textbf{38} (1935), 48--88.
+
+\bibitem{fabius1966}
+J.~Fabius,
+\newblock A probabilistic example of a nowhere analytic $C^\infty$-function,
+\newblock \emph{Zeitschrift für Wahrscheinlichkeitstheorie und Verwandte Gebiete}
+  \textbf{5} (1966), 173--174.
+\newblock DOI: \nolinkurl{10.1007/BF00536652}.
+
+\bibitem{rvachev1971}
+V.~L.~Rvachev and V.~A.~Rvachev,
+\newblock A certain finite function,
+\newblock \emph{Dopovidi Akademii Nauk Ukrains'koi RSR, Series A}
+  (1971), 705--707, 764.  Ukrainian, with English and Russian summaries.
+
+\bibitem{arias1982}
+J.~Arias de Reyna,
+\newblock Definición y estudio de una función indefinidamente diferenciable de
+  soporte compacto,
+\newblock \emph{Revista de la Real Academia de Ciencias Exactas, Físicas y
+  Naturales de Madrid} \textbf{76} (1982), no.~1, 21--38.
+\newblock English translation: \emph{An infinitely differentiable function
+  with compact support: Definition and properties}, arXiv:\nolinkurl{1702.05442}.
+
+\bibitem{arias2018}
+J.~Arias de Reyna,
+\newblock Arithmetic of the Fabius function,
+\newblock \emph{INTEGERS} \textbf{18} (2018), Article A51;
+  arXiv:\nolinkurl{1702.06487}.
+
+\bibitem{haar1910}
+A.~Haar,
+\newblock Zur Theorie der orthogonalen Funktionensysteme,
+\newblock \emph{Mathematische Annalen} \textbf{69} (1910), 331--371.
+
+\bibitem{faber1910}
+G.~Faber,
+\newblock Über die Orthogonalfunktionen des Herrn Haar,
+\newblock \emph{Jahresbericht der Deutschen Mathematiker-Vereinigung}
+  \textbf{19} (1910), 104--112.
+
+\bibitem{schauder1928}
+J.~Schauder,
+\newblock Eine Eigenschaft des Haarschen Orthogonalsystems,
+\newblock \emph{Mathematische Zeitschrift} \textbf{28} (1928), 317--320.
+
+\bibitem{bernstein1912}
+S.~N.~Bernstein,
+\newblock Démonstration du théorème de Weierstrass fondée sur le calcul des
+  probabilités,
+\newblock \emph{Communications de la Société Mathématique de Kharkov},
+  2nd series, \textbf{13} (1912/1913), 1--2.
+
+\bibitem{paleywiener1934}
+R.~E.~A.~C.~Paley and N.~Wiener,
+\newblock \emph{Fourier Transforms in the Complex Domain},
+\newblock American Mathematical Society Colloquium Publications, vol.~19,
+  Providence, 1934.
+
+\bibitem{whittaker1935}
+J.~M.~Whittaker,
+\newblock \emph{Interpolatory Function Theory},
+\newblock Cambridge Tracts in Mathematics and Mathematical Physics, no.~33,
+  Cambridge University Press, 1935.
+
+\bibitem{shannon1949}
+C.~E.~Shannon,
+\newblock Communication in the presence of noise,
+\newblock \emph{Proceedings of the IRE} \textbf{37} (1949), no.~1, 10--21.
+\newblock DOI: \nolinkurl{10.1109/JRPROC.1949.232969}.
+
+\bibitem{szego1975}
+G.~Szegő,
+\newblock \emph{Orthogonal Polynomials}, 4th ed.,
+\newblock American Mathematical Society Colloquium Publications, vol.~23,
+  Providence, 1975.
+
+\bibitem{deboor2001}
+C.~de Boor,
+\newblock \emph{A Practical Guide to Splines}, revised ed.,
+\newblock Applied Mathematical Sciences, vol.~27, Springer, 2001.
+
+\bibitem{corless1996}
+R.~M.~Corless, G.~H.~Gonnet, D.~E.~G.~Hare, D.~J.~Jeffrey, and D.~E.~Knuth,
+\newblock On the Lambert $W$ function,
+\newblock \emph{Advances in Computational Mathematics}
+  \textbf{5} (1996), 329--359.
+
+\bibitem{proveit}
+V.~Reshetnikov,
+\newblock \emph{ProveIt: Analysis/FabiusFunction},
+\newblock Lean~4 formal development, repository snapshot
+\path{f7daf632f2db839fe091de0d080e22a9b50c286a}, 27 August 2026.
+\newblock \url{https://github.com/VladimirReshetnikov/ProveIt/tree/f7daf632f2db839fe091de0d080e22a9b50c286a/Analysis/FabiusFunction}.
+
+\end{thebibliography}
+
+\end{document}
