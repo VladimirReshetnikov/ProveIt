@@ -196,4 +196,73 @@ theorem abs_integral_inv_sub_sub_sum_le (F : BoundedFabius)
         rw [division_def]
         ring
 
+/-- Moments of the up-measure are bounded by one. -/
+theorem abs_upMoment_le_one (F : BoundedFabius) (hF : IsFabius F)
+    (k : ℕ) : |upMoment F k| ≤ 1 := by
+  haveI := rvachevMeasure_isProbability F hF
+  have h := norm_integral_le_of_norm_le_const
+    (μ := rvachevMeasure F) (f := fun x : ℝ => x ^ k) (C := 1) ?_
+  · rw [Real.norm_eq_abs] at h
+    simpa [upMoment] using h
+  · filter_upwards [ae_mem_Ioo_rvachevMeasure F hF] with x hx
+    have hxabs : |x| ≤ 1 := le_of_lt (abs_lt.mpr ⟨hx.1, hx.2⟩)
+    rw [Real.norm_eq_abs, abs_pow]
+    exact pow_le_one₀ (abs_nonneg x) hxabs
+
+/-- The Laurent series is summable: geometric comparison. -/
+theorem summable_upMoment_laurent (F : BoundedFabius)
+    (hF : IsFabius F) {z : ℝ} (hz : 1 < |z|) :
+    Summable (fun k : ℕ => upMoment F k / z ^ (k + 1)) := by
+  have hzpos : (0 : ℝ) < |z| := by linarith
+  refine Summable.of_norm_bounded
+    (g := fun k : ℕ => |z|⁻¹ ^ k * |z|⁻¹)
+    ((summable_geometric_of_lt_one (by positivity)
+      ((inv_lt_one₀ hzpos).mpr hz)).mul_right _) fun k => ?_
+  rw [Real.norm_eq_abs, abs_div, abs_pow]
+  calc |upMoment F k| / |z| ^ (k + 1) ≤ 1 / |z| ^ (k + 1) :=
+        div_le_div₀ (by norm_num) (abs_upMoment_le_one F hF k)
+          (by positivity) le_rfl
+    _ = |z|⁻¹ ^ k * |z|⁻¹ := by
+        rw [one_div, pow_succ, mul_inv, ← inv_pow]
+
+/-- **The convergent moment/Laurent series**: for `|z| > 1`,
+`∫ (z-x)⁻¹ dμ_up = ∑'_{k} m_k·z^{-(k+1)}`. -/
+theorem integral_inv_sub_eq_tsum_upMoment (F : BoundedFabius)
+    (hF : IsFabius F) {z : ℝ} (hz : 1 < |z|) :
+    ∫ x, (z - x)⁻¹ ∂(rvachevMeasure F) =
+      ∑' k : ℕ, upMoment F k / z ^ (k + 1) := by
+  have hsum := summable_upMoment_laurent F hF hz
+  have htend1 : Filter.Tendsto
+      (fun N => ∑ k ∈ Finset.range N, upMoment F k / z ^ (k + 1))
+      Filter.atTop
+      (nhds (∑' k : ℕ, upMoment F k / z ^ (k + 1))) :=
+    hsum.hasSum.tendsto_sum_nat
+  have hg : Filter.Tendsto (fun N : ℕ => (|z| - 1)⁻¹ / |z| ^ N)
+      Filter.atTop (nhds 0) := by
+    have h0 : Filter.Tendsto (fun N : ℕ => (|z|⁻¹) ^ N)
+        Filter.atTop (nhds 0) :=
+      tendsto_pow_atTop_nhds_zero_of_lt_one (by positivity)
+        ((inv_lt_one₀ (by linarith)).mpr hz)
+    have h1 := h0.const_mul ((|z| - 1)⁻¹)
+    rw [mul_zero] at h1
+    refine h1.congr fun N => ?_
+    rw [inv_pow, division_def]
+  have htend2 : Filter.Tendsto
+      (fun N => ∑ k ∈ Finset.range N, upMoment F k / z ^ (k + 1))
+      Filter.atTop
+      (nhds (∫ x, (z - x)⁻¹ ∂(rvachevMeasure F))) := by
+    rw [tendsto_iff_dist_tendsto_zero]
+    refine squeeze_zero (fun N => dist_nonneg) (fun N => ?_) hg
+    rw [Real.dist_eq, abs_sub_comm]
+    exact abs_integral_inv_sub_sub_sum_le F hF hz N
+  exact tendsto_nhds_unique htend2 htend1
+
+/-- `HasSum` form of the convergent Laurent expansion. -/
+theorem hasSum_upMoment_laurent (F : BoundedFabius) (hF : IsFabius F)
+    {z : ℝ} (hz : 1 < |z|) :
+    HasSum (fun k : ℕ => upMoment F k / z ^ (k + 1))
+      (∫ x, (z - x)⁻¹ ∂(rvachevMeasure F)) := by
+  rw [integral_inv_sub_eq_tsum_upMoment F hF hz]
+  exact (summable_upMoment_laurent F hF hz).hasSum
+
 end Fabius
