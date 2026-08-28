@@ -1,0 +1,1441 @@
+\documentclass[11pt]{article}
+
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage{microtype}
+\usepackage[a4paper,margin=25mm,headheight=14pt]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{booktabs,longtable,array,tabularx,multirow}
+\usepackage{graphicx,caption,subcaption,float}
+\usepackage{xcolor}
+\usepackage{enumitem}
+\usepackage{fancyhdr}
+\usepackage{hyperref}
+\usepackage[nameinlink,noabbrev]{cleveref}
+\usepackage{url}
+
+\graphicspath{{./}}
+\allowdisplaybreaks
+\setlength{\parindent}{1.25em}
+\setlength{\parskip}{0.25em}
+\setlist{nosep,leftmargin=2em}
+
+\definecolor{SourceBlue}{RGB}{42,82,125}
+\definecolor{RepoOlive}{RGB}{82,92,45}
+\definecolor{DerivedPurple}{RGB}{104,63,117}
+\definecolor{FrontierRed}{RGB}{135,55,55}
+\definecolor{SoftGray}{RGB}{245,245,242}
+
+\hypersetup{
+  colorlinks=true,
+  linkcolor=SourceBlue,
+  citecolor=RepoOlive,
+  urlcolor=DerivedPurple,
+  pdftitle={Atomic Functions, Rvachev's Up-Function, and Smooth Cantor Splines},
+  pdfauthor={OpenAI, prepared for Vladimir Reshetnikov}
+}
+
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{Atomic functions and Rvachev's \(\operatorname{up}\)}
+\fancyhead[R]{\thepage}
+\renewcommand{\headrulewidth}{0.3pt}
+
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{conjecture}[theorem]{Conjecture}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{algorithm}[theorem]{Algorithm}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+
+\newcommand{\Up}{\operatorname{up}}
+\newcommand{\Fup}{\operatorname{Fup}}
+\newcommand{\sinc}{\operatorname{sinc}}
+\newcommand{\supp}{\operatorname{supp}}
+\newcommand{\Sing}{\operatorname{Sing}}
+\newcommand{\Pol}{\operatorname{Pol}}
+\newcommand{\E}{\mathbb{E}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\dd}{\,\mathrm{d}}
+\newcommand{\qpoch}[2]{(#1;#2)}
+\newcommand{\SourceStatus}{\textcolor{SourceBlue}{\textsc{Source reconstruction}}}
+\newcommand{\RepoStatus}{\textcolor{RepoOlive}{\textsc{Repository synthesis}}}
+\newcommand{\DerivedStatus}{\textcolor{DerivedPurple}{\textsc{Derived in this report}}}
+\newcommand{\FrontierStatus}{\textcolor{FrontierRed}{\textsc{Conjectural frontier}}}
+\newcommand{\status}[1]{\par\smallskip\noindent\textbf{Status:} #1.\par\smallskip}
+\newcommand{\bitsum}{s_2}
+
+\title{\textbf{Atomic Functions, Rvachev's \(\operatorname{up}\)-Function,\\and Smooth Cantor Splines}\\[0.7em]
+\large An English reconstruction, corpus-aware synthesis, and new frontier results}
+\author{Prepared for Vladimir Reshetnikov}
+\date{28 August 2026}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+This report reconstructs in English the attached Russian chapter on atomic functions, corrects transcription defects by checking the rendered pages, and expands its mathematics in the notation used throughout the accompanying Fabius-function research corpus.  The source begins with compactly supported solutions of constant-coefficient differential--functional equations, develops the geometric-sinc family \(h_a\), specializes at \(a=2\) to Rvachev's \(\Up\)-function, derives exact values at self-similar boundary points, studies polynomial reproduction by translates, and introduces the first member \(\Fup_1\) of a related hierarchy.
+
+The reconstruction is supplemented by a probabilistic representation, Bernoulli cumulants and Bell-polynomial moments, \(q\)-Pochhammer structure, the Thue--Morse/Prouhet derivative mask, Strang--Fix and subdivision interpretations, and the connection between the edge pantograph equation and Lambert--\(W\) asymptotics for the inverse Fabius function.  Several results are proved here in a form not found in the audited repository snapshot: for \(a>2\), the exceptional set is identified exactly as a two-map Cantor set; every complementary gap has an exact polynomial degree and leading coefficient; the local degree of a uniformly sampled point has an exact geometric law; all derivatives admit an equimeasurability formula and closed \(L^p\)-norm identities; and the source's \(\Fup_1\) construction extends to a hierarchy admitting a finite shift reconstruction of \(\Up\) and a quantitative central-limit regime.
+
+Unproved statements are explicitly labeled as conjectures.  Reproducible numerical experiments for \(a=3\), the local-degree law, and the \(\Fup_n\) Gaussian limit accompany the report.
+\end{abstract}
+
+\tableofcontents
+
+\section*{Reading guide and provenance}
+\addcontentsline{toc}{section}{Reading guide and provenance}
+
+The report uses four provenance labels.
+\begin{center}
+\begin{tabularx}{0.94\textwidth}{>{\bfseries}l X}
+\toprule
+\SourceStatus & faithful translation or mathematically necessary repair of the attached chapter; original equation numbers are quoted as ``source (3.xx)''.\\
+\RepoStatus & connections and notation consolidated from the \texttt{Analysis/FabiusFunction/docs} corpus, audited recursively at repository commit \texttt{ffd6976ec23bc99107f811e4cda2133c58cc7518}.\\
+\DerivedStatus & a proof or construction developed in this report and not located in that audited corpus snapshot.  This is a corpus-relative claim, not a claim of priority over all literature.\\
+\FrontierStatus & a plausible but presently unproved conjecture or a proposed research program.\\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+The attached \LaTeX{} file is an OCR-derived transcription, so literal fidelity would preserve mathematical defects.  The governing policy here is instead 
+\emph{mathematical fidelity}: signs are fixed after choosing one Fourier convention, garbled indices are reconstructed from neighboring equations, and assertions that cannot be recovered uniquely are paraphrased rather than silently invented.  \Cref{app:repairs} records the most important repairs.
+
+\section{Why atomic functions arise}
+\status{\SourceStatus}
+
+Classical algebraic and trigonometric polynomials are universal approximation devices, but they are not local: changing one coefficient changes the approximant everywhere.  Compactly supported splines are local and lead to sparse or banded discretization matrices, but a spline of fixed degree has fixed smoothness and therefore does not form a single universal family for arbitrarily smooth targets.  Rvachev's motivating question is whether one can retain compact support while replacing finite smoothness by \(C^\infty\)-smoothness.
+
+A compactly supported spline of degree \(n\) can be built from finitely many convolutions of interval indicators.  Replacing a finite convolution by an infinite one suggests Fourier transforms of the form
+\begin{equation}
+  \widehat\varphi(t)=\prod_{k=1}^{\infty}\frac{\sin(\alpha_k t)}{\alpha_k t},
+  \qquad \alpha_k>0,\quad \sum_{k=1}^{\infty}\alpha_k<\infty.
+  \label{eq:generic-sinc-product}
+\end{equation}
+The summability of the interval half-widths gives compact support; the accumulation of increasingly fine smoothing factors gives infinite differentiability.  The simplest self-similar choice is \(\alpha_k=2^{-k}\), and its inverse Fourier transform is Rvachev's \(\Up\)-function.
+
+The historical geometric picture in the source is especially useful.  A differentiable compactly supported ``bump'' with one rising and one falling side has a derivative consisting of one positive bump and one negative bump.  Rvachev asked for a bump whose two derivative pieces are scaled copies of the original bump.  With support normalized to \([-1,1]\), the resulting equation is
+\begin{equation}
+  y'(x)=2y(2x+1)-2y(2x-1).
+  \label{eq:up-dfe-intro}
+\end{equation}
+The unique normalized compactly supported solution is \(\Up\).
+
+This moves the subject from ordinary constant-coefficient differential equations,
+\(P(D)y=0\), to differential--functional equations
+\begin{equation}
+  P(D)y(x)=\lambda\sum_{k=1}^{M}c_k y(ax-b_k),
+  \qquad a>1,
+  \label{eq:atomic-master}
+\end{equation}
+whose compactly supported solutions are called \emph{atomic functions}.  The Fourier transform remains effective because dilation and translation turn the right-hand side into a finite exponential mask times a rescaled transform.
+
+\section{The general Fourier-product construction}
+\label{sec:atomic-general}
+
+\subsection{Convention and transformed equation}
+
+Throughout,
+\begin{equation}
+  \widehat f(t)=\int_{\R}e^{-itx}f(x)\dd x,
+  \qquad
+  f(x)=\frac1{2\pi}\int_{\R}e^{itx}\widehat f(t)\dd t,
+  \qquad \sinc z=\frac{\sin z}{z},
+  \label{eq:fourier-convention}
+\end{equation}
+with \(\sinc 0=1\).  Put \(D=-i\,\mathrm d/\mathrm dx\), so that
+\(\widehat{P(D)y}(t)=P(t)\widehat y(t)\).  Define the exponential mask
+\begin{equation}
+  \mathcal E(t)=\frac1a\sum_{k=1}^{M}c_k e^{-itb_k/a}.
+  \label{eq:mask-E}
+\end{equation}
+Then \eqref{eq:atomic-master} becomes
+\begin{equation}
+  P(t)F(t)=\lambda\mathcal E(t)F(t/a),
+  \qquad F=\widehat y.
+  \label{eq:fourier-refinement}
+\end{equation}
+Iteration gives
+\begin{equation}
+  F(t)\prod_{j=0}^{n}P(a^{-j}t)
+   =\lambda^{n+1}\prod_{j=0}^{n}\mathcal E(a^{-j}t)F(a^{-n-1}t).
+  \label{eq:finite-iteration}
+\end{equation}
+Thus every zero of a denominator factor must be canceled by a zero from the mask along its multiplicative \(a\)-orbit.
+
+\subsection{Root matching and the infinite product}
+\status{\SourceStatus}
+
+Let \(A\) be the multiset of zeros of \(P\), and let \(B\) be the multiset of zeros of \(\mathcal E\).  Multiplicities are always counted.
+
+\begin{theorem}[Rvachev's root-matching criterion]
+\label{thm:root-matching}
+Under the hypotheses of the source chapter, equation \eqref{eq:atomic-master} has a nonzero compactly supported solution normalized by
+\(\int_{\R}y(x)\dd x=1\) if and only if the zeros of \(P\) can be injected into zeros of \(\mathcal E\) along inverse scale orbits: for every \(\alpha\in A\), one can choose an integer \(m\ge0\) such that
+\begin{equation}
+  a^{-m}\alpha\in B,
+  \label{eq:root-match}
+\end{equation}
+and the choices respect multiplicity.  If \(P\) and \(\mathcal E\) vanish to the same order \(r\) at the origin, then
+\begin{equation}
+  \lambda=\frac{P^{(r)}(0)}{\mathcal E^{(r)}(0)}.
+  \label{eq:lambda-origin}
+\end{equation}
+The normalized Fourier transform is
+\begin{equation}
+  F(t)=\prod_{j=0}^{\infty}
+  \frac{\lambda\mathcal E(a^{-j}t)}{P(a^{-j}t)}.
+  \label{eq:atomic-product}
+\end{equation}
+If the normalized solution has zero integral, it is obtained by differentiating a normalized solution with nonzero integral.
+\end{theorem}
+
+\begin{proof}[Proof architecture]
+Necessity follows from \eqref{eq:finite-iteration}: since \(F(a^{-n}t)\to F(0)=1\), an uncanceled denominator zero would force a pole.  For sufficiency, the root matching cancels all potential poles in \eqref{eq:atomic-product}.  The factors tend normally to one on compact sets because \(a^{-j}t\to0\), so the product is entire.  Its exponential type is bounded by the geometric sum of the translation scales, while repeated extraction of denominator factors gives decay faster than every power on the real axis.  Paley--Wiener then yields a compactly supported \(C^\infty\) inverse transform.  Substitution into \eqref{eq:fourier-refinement} proves the equation and the normalization fixes the scalar.
+\end{proof}
+
+The theorem says that an atomic function is not an arbitrary solution of a delay equation.  Its existence is controlled by an exact spectral divisibility condition between a polynomial symbol and a finite exponential mask.  This is the differential--functional analogue of divisibility conditions in subdivision schemes and refinable functions.
+
+\subsection{The first-order two-shift family}
+\status{\SourceStatus}
+
+Consider
+\begin{equation}
+  y'(x)+\alpha y(x)=\lambda\bigl(y(ax-b_1)+c\,y(ax-b_2)\bigr).
+  \label{eq:first-order-family}
+\end{equation}
+For \(\alpha\ne0\), root matching at a scale level \(m\ge0\) gives
+\begin{equation}
+  c=-\exp\!\left(\alpha(b_1-b_2)a^{-m-1}\right),
+  \qquad
+  \lambda=\frac{a\alpha}{1+c}.
+  \label{eq:first-order-params}
+\end{equation}
+When \(\alpha=0\), the mask must vanish at the origin, so \(c=-1\), and matching first derivatives gives
+\begin{equation}
+  \lambda=-\frac{a^2}{b_1-b_2}.
+  \label{eq:first-order-alpha-zero}
+\end{equation}
+After an affine change of variable, the canonical symmetric equation is
+\begin{equation}
+  y'(x)=\frac{a^2}{2}\bigl(y(ax+1)-y(ax-1)\bigr).
+  \label{eq:ha-dfe}
+\end{equation}
+The normalized solution of \eqref{eq:ha-dfe} is the family \(h_a\) developed next.
+
+\section{The geometric-sinc family \texorpdfstring{\(h_a\)}{h-a}}
+\label{sec:ha}
+
+\subsection{Four equivalent definitions}
+\status{\SourceStatus\ and \RepoStatus}
+
+For \(a>1\), let \(U_1,U_2,\ldots\) be independent random variables uniformly distributed on \([-1,1]\), and set
+\begin{equation}
+  X_a=\sum_{j=1}^{\infty}a^{-j}U_j,
+  \qquad b=\frac1{a-1}.
+  \label{eq:Xa}
+\end{equation}
+The series converges almost surely and takes values in \([-b,b]\).  Its characteristic function is
+\begin{equation}
+  \widehat h_a(t)=\E e^{-itX_a}
+   =\prod_{j=1}^{\infty}\sinc(ta^{-j}),
+  \label{eq:ha-fourier}
+\end{equation}
+where \(h_a\) denotes the density.  Equivalently,
+\begin{align}
+ h_a(x)&=\frac1{2\pi}\int_{\R}e^{itx}
+    \prod_{j=1}^{\infty}\sinc(ta^{-j})\dd t,
+    \label{eq:ha-inverse-fourier}\\
+ h_a(x)&=\frac a2\int_{ax-1}^{ax+1}h_a(u)\dd u,
+    \label{eq:ha-fixed-point}\\
+ h_a'(x)&=\frac{a^2}{2}\bigl(h_a(ax+1)-h_a(ax-1)\bigr).
+    \label{eq:ha-derivative}
+\end{align}
+The four descriptions are respectively probabilistic, Fourier analytic, integral-refinement, and differential--functional.
+
+\begin{proposition}
+For every \(a>1\), \(h_a\) is even, nonnegative, belongs to \(C_c^\infty(\R)\), has integral one, and
+\begin{equation}
+  \supp h_a=[-b,b].
+  \label{eq:ha-support}
+\end{equation}
+\end{proposition}
+
+\begin{proof}
+Evenness and nonnegativity follow from the random series.  The support is the Minkowski sum of the intervals \([-a^{-j},a^{-j}]\), hence \([-b,b]\).  Compact support also follows from Paley--Wiener because \eqref{eq:ha-fourier} is entire of exponential type \(b\).  To obtain \(C^\infty\), split the product after \(N\) factors.  Along the real axis, sufficiently many sinc factors contribute a factor \(O(|t|^{-1})\), so \(\widehat h_a(t)=O_N(|t|^{-N})\) for every \(N\).  Fourier inversion then gives all derivatives.
+\end{proof}
+
+The self-similar law behind \eqref{eq:ha-fixed-point} is
+\begin{equation}
+  X_a\ \overset{d}=\ \frac{U+X_a'}{a},
+  \label{eq:distributional-fixed-point}
+\end{equation}
+where \(U\sim\mathrm{Unif}[-1,1]\) and \(X_a'\) is an independent copy of \(X_a\).  This is the continuous-digit analogue of a Bernoulli convolution.  Unlike the two-point Bernoulli measure, the first digit already has a density; repeated convolution therefore produces a compactly supported smooth density for every \(a>1\).
+
+\subsection{Power series, moments, and a source bound}
+\status{\SourceStatus}
+
+Write
+\begin{equation}
+  \widehat h_a(t)=\sum_{k=0}^{\infty}c_{2k}(a)t^{2k},
+  \qquad c_0(a)=1.
+  \label{eq:ha-c-series}
+\end{equation}
+Using
+\begin{equation}
+  \widehat h_a(t)=\sinc(ta^{-1})\widehat h_a(ta^{-1}),
+  \label{eq:ha-fourier-refinement}
+\end{equation}
+and equating powers gives the cleaned form of source (3.32):
+\begin{equation}
+  c_{2k}(a)=\frac1{a^{2k}-1}
+  \sum_{\ell=0}^{k-1}
+  \frac{(-1)^{k-\ell}c_{2\ell}(a)}{(2k-2\ell+1)!},
+  \qquad k\ge1.
+  \label{eq:c-recurrence}
+\end{equation}
+If
+\begin{equation}
+  \mu_n(a)=\int_{-b}^{b}x^n h_a(x)\dd x,
+  \label{eq:moments-def}
+\end{equation}
+then \(\mu_{2k+1}=0\) and
+\begin{equation}
+  \mu_{2k}(a)=(-1)^k(2k)!c_{2k}(a).
+  \label{eq:moment-c}
+\end{equation}
+The source proves, with constants depending on \(a\),
+\begin{equation}
+  |c_{2k}(a)|\le C_a\,a^{-k(k+1)}
+     \left(\prod_{j=1}^{k}j!\right)^{-1},
+  \label{eq:source-c-bound}
+\end{equation}
+and consequently a superexponential moment estimate.  The factorial product is a first indication that the natural asymptotic scale is finer than an ordinary Gevrey class.
+
+\subsection{Bernoulli cumulants and Bell polynomials}
+\status{\RepoStatus}
+
+The cumulant generating function of a uniform variable on \([-1,1]\) is
+\(\log(\sinh z/z)\).  With Bernoulli numbers defined by
+\begin{equation}
+  \frac{z}{e^z-1}=\sum_{n=0}^{\infty}B_n\frac{z^n}{n!},
+  \label{eq:bernoulli-def}
+\end{equation}
+its nonzero cumulants are
+\begin{equation}
+  \kappa_{2m}(U)=\frac{2^{2m-1}B_{2m}}{m}.
+  \label{eq:uniform-cumulants}
+\end{equation}
+Cumulants add under independent sums and scale homogeneously, so
+\begin{equation}
+  \boxed{\quad
+  \kappa_{2m}(X_a)=
+    \frac{2^{2m-1}B_{2m}}{m(a^{2m}-1)},
+  \qquad \kappa_{2m+1}(X_a)=0.
+  \quad}
+  \label{eq:Xa-cumulants}
+\end{equation}
+Thus all moments are explicit complete Bell polynomials:
+\begin{equation}
+  \mu_n(a)=Y_n\bigl(\kappa_1(X_a),\ldots,\kappa_n(X_a)\bigr).
+  \label{eq:bell-moments}
+\end{equation}
+For example,
+\begin{align}
+  \mu_2(a)&=\frac1{3(a^2-1)},
+  \label{eq:mu2}\\
+  \mu_4(a)&=\frac1{3(a^2-1)^2}-\frac{2}{15(a^4-1)},
+  \label{eq:mu4}\\
+  \mu_6(a)&=\frac{5}{9(a^2-1)^3}
+    -\frac{2}{3(a^2-1)(a^4-1)}
+    +\frac{16}{63(a^6-1)}.
+  \label{eq:mu6}
+\end{align}
+This formulation separates two combinatorial layers cleanly: Bernoulli numbers encode the one-digit uniform law, while Bell polynomials assemble independent scaled digits.
+
+\subsection{The \texorpdfstring{\(q\)}{q}-Pochhammer layer}
+\status{\RepoStatus}
+
+Put \(q=a^{-2}\).  The denominator accumulated by repeatedly applying \eqref{eq:c-recurrence} is
+\begin{equation}
+  \prod_{j=1}^{k}(a^{2j}-1)
+   =a^{k(k+1)}(q;q)_k,
+  \qquad (q;q)_k=\prod_{j=1}^{k}(1-q^j).
+  \label{eq:qpoch-denominator}
+\end{equation}
+Hence the quadratic exponent \(a^{-k(k+1)}\) in \eqref{eq:source-c-bound} is not accidental: it is the monomial factor extracted from a finite \(q\)-Pochhammer symbol.  This is one of two distinct ``\(q\)-structures'' in the subject.  The other is the lacunary Thue--Morse product \(\prod(1-z^{2^j})\), discussed in \cref{sec:up}.  Conflating them obscures the fact that one comes from geometric dilation of moments while the other comes from binary branching of derivatives.
+
+\section{The supercritical regime \texorpdfstring{\(a>2\)}{a>2}: smooth Cantor splines}
+\label{sec:supercritical}
+
+\subsection{The source's full-measure polynomial decomposition}
+\status{\SourceStatus}
+
+For \(a>2\), set
+\begin{equation}
+  b_1=b\left(1-\frac2a\right)
+      =\frac{a-2}{a(a-1)}.
+  \label{eq:b1}
+\end{equation}
+If \(|x|<b_1\), then both \(ax+1>b\) and \(ax-1<-b\), so the two terms in \eqref{eq:ha-derivative} vanish.  Therefore
+\begin{equation}
+  h_a(x)=\frac a2,
+  \qquad |x|\le b_1.
+  \label{eq:central-plateau}
+\end{equation}
+The value follows either from source (3.40) or by integrating the refinement equation.  On two smaller intervals the derivative is a rescaled copy of this constant, so \(h_a\) is linear; on four still smaller intervals it is quadratic; and so on.  The source computes the total length
+\begin{equation}
+  2b_1\sum_{n=0}^{\infty}\left(\frac2a\right)^n=2b,
+  \label{eq:full-measure-polynomial}
+\end{equation}
+showing that \(h_a\) is locally polynomial almost everywhere.  It describes the complement as a nowhere-dense Cantor-type set of measure zero and notes that the Taylor series there is either a finite polynomial that fails to represent the function or has zero radius of convergence.
+
+The next results make that picture exact.
+
+\subsection{Exact exceptional set and gap indexing}
+\status{\DerivedStatus}
+
+Define the two contractions
+\begin{equation}
+  \phi_-(x)=\frac{x-1}{a},
+  \qquad
+  \phi_+(x)=\frac{x+1}{a},
+  \label{eq:ifs-maps}
+\end{equation}
+and their invariant Cantor set
+\begin{equation}
+  K_a=\left\{\sum_{j=1}^{\infty}\varepsilon_j a^{-j}:
+     \varepsilon_j\in\{-1,+1\}\right\}.
+  \label{eq:Ka}
+\end{equation}
+Because \(a>2\), the intervals \(\phi_-([-b,b])\) and \(\phi_+([-b,b])\) are disjoint.  Their open separation gap is
+\begin{equation}
+  G=(-b_1,b_1).
+  \label{eq:central-gap-G}
+\end{equation}
+For a word \(w=\varepsilon_1\cdots\varepsilon_n\in\{-,+\}^n\), let
+\(\phi_w=\phi_{\varepsilon_1}\circ\cdots\circ\phi_{\varepsilon_n}\) and
+\begin{equation}
+  G_w=\phi_w(G).
+  \label{eq:gap-word}
+\end{equation}
+The order of composition is immaterial to lengths and degree counts; it is fixed here only to make endpoint formulas unambiguous.
+
+\begin{theorem}[Exact smooth-Cantor-spline decomposition]
+\label{thm:exact-cantor-spline}
+For every \(a>2\),
+\begin{equation}
+  [-b,b]\setminus K_a=\bigsqcup_{n=0}^{\infty}
+     \bigsqcup_{|w|=n}G_w.
+  \label{eq:gap-decomposition}
+\end{equation}
+On each gap \(G_w\) of generation \(n=|w|\), the function \(h_a\) is a polynomial of exact degree \(n\).  Its leading coefficient is
+\begin{equation}
+  L_w=(-1)^{N_+(w)}
+  \frac{a^{(n+1)(n+2)/2}}{2^{n+1}n!},
+  \label{eq:gap-leading-coefficient}
+\end{equation}
+where \(N_+(w)\) is the number of right-branch symbols in \(w\).  The nonanalyticity set of \(h_a\) is exactly \(K_a\), and
+\begin{equation}
+  \dim_{\mathrm H}K_a=\dim_{\mathrm B}K_a=\frac{\log2}{\log a}.
+  \label{eq:Ka-dimension}
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+The standard open-set construction for \(\phi_\pm\) gives \eqref{eq:gap-decomposition} and \eqref{eq:Ka-dimension}.  The central gap has degree zero and leading coefficient \(a/2\), agreeing with \eqref{eq:gap-leading-coefficient} at \(n=0\).
+
+Suppose \(h_a\) has exact degree \(n-1\) and leading coefficient \(L_w\) on \(G_w\).  On the left child \(\phi_-(G_w)\), only \(h_a(ax+1)\) is active in \eqref{eq:ha-derivative}; on the right child \(\phi_+(G_w)\), only \(-h_a(ax-1)\) is active.  Therefore the leading coefficient on either child is obtained by multiplying \(L_w\) by
+\begin{equation}
+  \frac{a^2}{2}\cdot\frac{a^{n-1}}{n}
+  =\frac{a^{n+1}}{2n},
+  \label{eq:leading-recursion}
+\end{equation}
+with a sign reversal for the right child.  Iterating from \(a/2\) gives \eqref{eq:gap-leading-coefficient}; it is nonzero, proving exact degree.
+
+Every point outside \(K_a\) lies in a gap and is therefore an analytic point.  Conversely, every neighborhood of a point of \(K_a\) contains gaps of arbitrarily large generation.  If \(h_a\) were analytic in such a neighborhood, agreement with its polynomial restriction on one open gap would force it, by the identity theorem, to equal one fixed polynomial throughout the connected neighborhood.  This contradicts the presence of gaps carrying polynomials of arbitrarily high exact degree.  Thus the analytic set is precisely the complement of \(K_a\).
+\end{proof}
+
+\begin{remark}
+The countable set of endpoints of the gaps is the source's set \(\Sing_a^1\): at an endpoint of a generation-\(n\) gap, smooth matching forces all derivatives above degree \(n\) to vanish, so the Taylor series is finite but represents only the adjacent polynomial piece, not \(h_a\) across the endpoint.  At nonendpoint points of \(K_a\), the source asserts zero Taylor radius.  The exact set identification above separates the topological question (where analyticity fails) from the finer Taylor-growth question (how it fails).
+\end{remark}
+
+\subsection{An exact probability law for local polynomial degree}
+\status{\DerivedStatus}
+
+Choose \(Y_a\) uniformly from the support interval \([-b,b]\), and let \(D_a\) be the degree of the local polynomial containing \(Y_a\).  The value on \(K_a\) may be assigned arbitrarily because that set has measure zero.
+
+\begin{theorem}[Geometric local-degree law]
+\label{thm:local-degree-law}
+For \(a>2\),
+\begin{equation}
+  \Pr(D_a=n)=\left(1-\frac2a\right)\left(\frac2a\right)^n,
+  \qquad n=0,1,2,\ldots.
+  \label{eq:degree-geometric}
+\end{equation}
+Consequently,
+\begin{equation}
+  \E D_a=\frac2{a-2},
+  \qquad
+  \operatorname{Var}(D_a)=\frac{2a}{(a-2)^2}.
+  \label{eq:degree-moments}
+\end{equation}
+As \(a\downarrow2\),
+\begin{equation}
+  \left(1-\frac2a\right)D_a\ \Longrightarrow\ \mathrm{Exp}(1).
+  \label{eq:degree-critical-limit}
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+Each generation-\(n\) gap has length \(2b_1a^{-n}\), and there are \(2^n\) such gaps.  Dividing their total length by \(2b\) gives \eqref{eq:degree-geometric}.  The mean and variance are those of a geometric number of failures with success probability \(1-2/a\).  The exponential limit is the standard rare-success scaling of the geometric law.
+\end{proof}
+
+This law makes the transition at \(a=2\) quantitative.  For every fixed \(a>2\), almost every point has a finite local degree.  Yet the expected degree diverges like \(2/(a-2)\), and the renormalized degree converges to a continuous exponential variable.  At the critical value \(a=2\), the exceptional set fills the entire support and local polynomiality disappears.
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.82\textwidth]{local_degree_distribution.png}
+  \caption{Exact geometric local-degree distribution for \(a=3\), compared with a deterministic Monte Carlo experiment using \(400{,}000\) uniformly sampled support points.  The exact mean is \(2\) and the exact variance is \(6\); the observed values were \(2.003075\) and \(6.02305\).}
+  \label{fig:local-degree}
+\end{figure}
+
+\subsection{Thue--Morse derivative formula for general \texorpdfstring{\(a\)}{a}}
+\status{\SourceStatus\ with a coordinate-free reformulation}
+
+For \(n\ge1\), set
+\begin{equation}
+  C_{a,n}=\frac{a^{n(n+3)/2}}{2^n}.
+  \label{eq:Can}
+\end{equation}
+For \(\boldsymbol\varepsilon=(\varepsilon_1,\ldots,\varepsilon_n)\in\{\pm1\}^n\), put
+\begin{equation}
+  S(\boldsymbol\varepsilon)=\sum_{j=1}^{n}a^{n-j}\varepsilon_j,
+  \qquad
+  \chi(\boldsymbol\varepsilon)=\prod_{j=1}^{n}\varepsilon_j.
+  \label{eq:shift-sign}
+\end{equation}
+Repeated differentiation of \eqref{eq:ha-derivative} yields the cleaned form of source (3.49):
+\begin{equation}
+  h_a^{(n)}(x)=C_{a,n}
+  \sum_{\boldsymbol\varepsilon\in\{\pm1\}^n}
+  \chi(\boldsymbol\varepsilon)
+  h_a\!\left(a^n x+S(\boldsymbol\varepsilon)\right).
+  \label{eq:ha-nth-derivative}
+\end{equation}
+Ordering the sign words lexicographically converts \(\chi\) into the Thue--Morse sign
+\begin{equation}
+  \delta_k=(-1)^{\bitsum(k-1)},
+  \qquad k=1,\ldots,2^n.
+  \label{eq:delta-thue-morse}
+\end{equation}
+The source gives the equivalent recursion \(\delta_{2k-1}=\delta_k\), \(\delta_{2k}=-\delta_k\), \(\delta_1=1\).
+
+\subsection{Equimeasurability and all \texorpdfstring{\(L^p\)}{Lp} derivative norms}
+\status{\DerivedStatus}
+
+When \(a>2\), the supports of the \(2^n\) summands in \eqref{eq:ha-nth-derivative} are pairwise disjoint.  This elementary separation turns the derivative formula into a complete distributional identity.
+
+\begin{theorem}[Derivative equimeasurability]
+\label{thm:equimeasurability}
+Let \(a>2\), \(n\ge1\), and let \(\Phi:\R\to\R\) be Borel measurable whenever the integrals below exist.  Then
+\begin{align}
+ \frac1{2b}\int_{-b}^{b}\Phi\!\left(h_a^{(n)}(x)\right)\dd x
+ &=\left[1-\left(\frac2a\right)^n\right]\Phi(0)
+ \notag\\
+ &\quad+\frac12\left(\frac2a\right)^n
+  \frac1{2b}\int_{-b}^{b}
+   \left[\Phi(C_{a,n}h_a(t))+\Phi(-C_{a,n}h_a(t))\right]\dd t.
+ \label{eq:equimeasurability}
+\end{align}
+In particular, for \(1\le p<\infty\),
+\begin{equation}
+  \boxed{\quad
+  \|h_a^{(n)}\|_p=C_{a,n}\left(\frac2a\right)^{n/p}\|h_a\|_p.
+  \quad}
+  \label{eq:Lp-norm}
+\end{equation}
+Moreover,
+\begin{align}
+  \|h_a^{(n)}\|_1&=a^{n(n+1)/2},
+  \label{eq:L1-norm}\\
+  \|h_a^{(n)}\|_\infty
+  &=\frac{a^{(n+1)(n+2)/2}}{2^{n+1}}.
+  \label{eq:Linf-norm}
+\end{align}
+The relative measure of the active set \(\{h_a^{(n)}\ne0\}\) is exactly \((2/a)^n\).
+\end{theorem}
+
+\begin{proof}
+The support of a term indexed by \(\boldsymbol\varepsilon\) is an interval of length \(2ba^{-n}\).  The intervals are disjoint, and half the signs \(\chi\) are positive and half negative.  On any one interval, the change of variables
+\(t=a^nx+S(\boldsymbol\varepsilon)\) gives \(\dd x=a^{-n}\dd t\).  Summing over all sign words proves \eqref{eq:equimeasurability}.  Taking \(\Phi(u)=|u|^p\) gives \eqref{eq:Lp-norm}.  Since \(\|h_a\|_1=1\), \eqref{eq:L1-norm} follows.  Since the source plateau gives \(\|h_a\|_\infty=a/2\), \eqref{eq:Linf-norm} follows as well.
+\end{proof}
+
+\begin{corollary}[Exact derivative-value distribution]
+If \(Y_a\) is uniform on \([-b,b]\) and \(H_a=h_a(Y_a)\), then for \(n\ge1\)
+\begin{equation}
+ h_a^{(n)}(Y_a)\ \overset d=\
+ \begin{cases}
+  0, &\text{with probability }1-(2/a)^n,\\
+  +C_{a,n}H_a, &\text{with probability }(2/a)^n/2,\\
+  -C_{a,n}H_a, &\text{with probability }(2/a)^n/2,
+ \end{cases}
+ \label{eq:derivative-mixture-law}
+\end{equation}
+where the sign choice and \(H_a\) are independent in the nonzero branch.
+\end{corollary}
+
+The theorem sharply complements the source's supremum estimates.  It says not only how large a derivative can be, but exactly how its whole value distribution is obtained from that of \(h_a\): amplify by \(C_{a,n}\), attach a fair sign, and insert an atom at zero of mass \(1-(2/a)^n\).
+
+\subsection{Exact endpoint reconstruction from moments}
+\status{\SourceStatus\ with repaired indices}
+
+The endpoints of generation-\(n\) cylinder intervals can be encoded by binary digits.  Let
+\begin{equation}
+  \sigma_j(m)=(-1)^{p_{j+1}(m-1)},
+  \qquad 0\le j<n,
+  \label{eq:sigma-bits}
+\end{equation}
+where \(p_j(r)\in\{0,1\}\) is the \(j\)-th binary digit of \(r\), starting at the least significant digit.  Define
+\begin{equation}
+  x_m^{(n)}=a^{-n}\left(b-\sum_{j=0}^{n-1}a^j\sigma_j(m)\right),
+  \qquad 1\le m\le2^n.
+  \label{eq:xmn}
+\end{equation}
+Also put
+\begin{equation}
+  \beta_{m,k,n}=b+\sum_{j=0}^{n-1}a^j
+   \bigl(\sigma_j(k)-\sigma_j(m)\bigr).
+  \label{eq:beta-mkn}
+\end{equation}
+Then the cleaned moment formula represented by source (3.52)--(3.55) is
+\begin{align}
+ h_a(x_m^{(n)})
+ &=\frac{a^{-n(n-3)/2}}{2^n(n-1)!}
+ \sum_{r=0}^{\lfloor(n-1)/2\rfloor}
+   \binom{n-1}{2r}\mu_{2r}(a)
+   \sum_{k=1}^{m}\delta_k\,
+      \beta_{m,k,n}^{\,n-1-2r}.
+ \label{eq:endpoint-value}
+\end{align}
+This version absorbs the source's alternating \(c_{2r}\) into the positive moments through \eqref{eq:moment-c}.
+
+For \(0\le\ell<n\), write
+\begin{equation}
+  q=\left\lfloor\frac{m-1}{2^{n-\ell}}\right\rfloor,
+  \qquad s=q+1,
+  \qquad r=1+((m-1)\bmod 2^{n-\ell}).
+  \label{eq:endpoint-index-reduction}
+\end{equation}
+Then source (3.56)--(3.58) reduces derivatives to a lower-level endpoint value:
+\begin{equation}
+  h_a^{(\ell)}(x_m^{(n)})
+   =C_{a,\ell}\,\delta_s\,h_a(x_r^{(n-\ell)}).
+  \label{eq:endpoint-derivative-reduction}
+\end{equation}
+Consequently, the polynomial on the adjacent generation-\((n-1)\) gap is its finite Taylor polynomial at \(x_m^{(n)}\):
+\begin{equation}
+  h_a(x)=\sum_{\ell=0}^{n-1}
+   \frac{h_a^{(\ell)}(x_m^{(n)})}{\ell!}
+   (x-x_m^{(n)})^\ell.
+  \label{eq:gap-taylor-polynomial}
+\end{equation}
+Equations \eqref{eq:Xa-cumulants}, \eqref{eq:bell-moments}, \eqref{eq:endpoint-value}, and \eqref{eq:endpoint-derivative-reduction} therefore form an exact symbolic algorithm: Bernoulli numbers \(\to\) cumulants \(\to\) moments \(\to\) endpoint jets \(\to\) every polynomial gap.
+
+\subsection{Numerical anatomy of \texorpdfstring{\(h_3\)}{h3}}
+\status{\DerivedStatus\ numerical verification}
+
+The accompanying script iterates the exact fixed-point operator \eqref{eq:ha-fixed-point} on a uniform grid.  For \(a=3\), it verifies mass one to \(2.3\times10^{-16}\), reflection symmetry to \(1.4\times10^{-13}\), and the exact central plateau \(h_3=3/2\) on \([-1/6,1/6]\).  Polynomial fits on all gaps through generation three recover \eqref{eq:gap-leading-coefficient}; for example, the exact magnitudes are
+\begin{equation}
+  \frac32,\qquad \frac{27}{4}=6.75,\qquad
+  \frac{3^6}{16}=45.5625,\qquad
+  \frac{3^{10}}{96}=615.09375.
+  \label{eq:h3-leading-values}
+\end{equation}
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.9\textwidth]{ha_a3_density.png}
+  \caption{A fixed-point approximation to \(h_3\).  The central plateau is polynomial degree zero; the next gaps carry linear pieces; further gaps carry successively higher degrees and accumulate on the Cantor set \(K_3\).}
+  \label{fig:h3-density}
+\end{figure}
+
+\section{The critical function \texorpdfstring{\(\Up=h_2\)}{up = h2}}
+\label{sec:up}
+
+\subsection{Definition, normalization, and Fabius relation}
+\status{\SourceStatus\ and \RepoStatus}
+
+At \(a=2\), the two cylinder intervals meet exactly instead of being separated.  Define
+\begin{equation}
+  \Up(x)=h_2(x)=\frac1{2\pi}\int_{\R}e^{itx}
+     \prod_{j=1}^{\infty}\sinc(t2^{-j})\dd t.
+  \label{eq:up-fourier}
+\end{equation}
+Then
+\begin{equation}
+  \supp\Up=[-1,1],\qquad \Up(-x)=\Up(x),\qquad
+  \int_{-1}^{1}\Up(x)\dd x=1,
+  \label{eq:up-basic}
+\end{equation}
+and
+\begin{equation}
+  \Up'(x)=2\Up(2x+1)-2\Up(2x-1).
+  \label{eq:up-dfe}
+\end{equation}
+The Fabius function on \([0,1]\) is
+\begin{equation}
+  F(x)=\Up(x-1).
+  \label{eq:fabius-up}
+\end{equation}
+It satisfies
+\begin{equation}
+  F(0)=0,
+  \qquad F(1-x)=1-F(x),
+  \qquad F'(x)=2F(2x)\quad(0\le x\le1/2).
+  \label{eq:fabius-functional}
+\end{equation}
+The equality \(F(1-x)=1-F(x)\) is equivalent to the partition identity
+\begin{equation}
+  \Up(x)+\Up(x-1)=1,
+  \qquad 0\le x\le1.
+  \label{eq:up-partition}
+\end{equation}
+
+\subsection{Binary derivative mask and Thue--Morse sequence}
+\status{\SourceStatus}
+
+Specializing \eqref{eq:ha-nth-derivative} to \(a=2\) gives
+\begin{equation}
+  \Up^{(n)}(x)=2^{\binom{n+1}{2}}
+  \sum_{k=1}^{2^n}\delta_k
+  \Up\!\left(2^n x+2^n+1-2k\right),
+  \label{eq:up-nth-derivative}
+\end{equation}
+where \(\delta_k=(-1)^{\bitsum(k-1)}\).  The coefficient in \eqref{eq:up-nth-derivative} is obtained by multiplying the chain-rule factors \(2,2^2,\ldots,2^n\); this also repairs an ambiguous OCR exponent in source (3.63).
+
+The translated copies in \eqref{eq:up-nth-derivative} have disjoint interiors and tile the support.  Consequently,
+\begin{equation}
+  \|\Up^{(n)}\|_1=\|\Up^{(n)}\|_\infty
+  =2^{\binom{n+1}{2}}.
+  \label{eq:up-norms}
+\end{equation}
+The source uses this formula to show that every Taylor series on \((-1,1)\) has zero radius except at dyadic-rational points, where the Taylor series terminates but does not represent \(\Up\) across the point.  Hence \(\Up\) is nowhere real analytic on its support.
+
+The sign polynomial attached to \eqref{eq:up-nth-derivative} is
+\begin{equation}
+  T_n(z)=\sum_{k=0}^{2^n-1}(-1)^{\bitsum(k)}z^k
+        =\prod_{j=0}^{n-1}(1-z^{2^j}).
+  \label{eq:thue-morse-polynomial}
+\end{equation}
+The zero of order \(n\) at \(z=1\) gives the Prouhet cancellations
+\begin{equation}
+  \sum_{k=0}^{2^n-1}(-1)^{\bitsum(k)}k^r=0,
+  \qquad 0\le r<n.
+  \label{eq:prouhet-cancellation}
+\end{equation}
+Thus the same binary object controls derivative signs, moment cancellation, finite-difference annihilation, and polynomial reproduction.
+
+\subsection{The infinite sinc--cosine identity}
+\status{\RepoStatus}
+
+The elementary identity
+\begin{equation}
+  \sinc z=\prod_{m=1}^{\infty}\cos(z2^{-m})
+  \label{eq:sinc-cos-product}
+\end{equation}
+turns \eqref{eq:up-fourier} into
+\begin{equation}
+  \widehat\Up(t)
+   =\prod_{r=2}^{\infty}\cos(t2^{-r})^{r-1}.
+  \label{eq:up-cosine-product}
+\end{equation}
+The multiplicity \(r-1\) counts pairs \((j,m)\) with \(j+m=r\).  Formula \eqref{eq:up-cosine-product} is the bridge between the infinite convolution picture and the repeated binary averaging picture: multiplication by \(\cos(ct)\) in Fourier space is the operator
+\begin{equation}
+  f(x)\longmapsto\frac12\bigl(f(x-c)+f(x+c)\bigr).
+  \label{eq:cos-shift-average}
+\end{equation}
+It is also the natural starting point for the oscillatory Fourier-decay analysis developed elsewhere in the repository.  The logarithm of the absolute value is a lacunary Birkhoff sum,
+\begin{equation}
+  \log|\widehat\Up(t)|
+   =\sum_{r=2}^{\infty}(r-1)\log|\cos(t2^{-r})|,
+  \label{eq:fourier-log-sum}
+\end{equation}
+whose fine behavior depends on the binary orbit of \(t/\pi\).
+
+\subsection{Moments and exact dyadic values}
+\status{\SourceStatus\ with normalized indices}
+
+Let
+\begin{equation}
+  a_{2r}=\int_{-1}^{1}x^{2r}\Up(x)\dd x
+  =(-1)^r(2r)!c_{2r}(2),
+  \label{eq:up-even-moments}
+\end{equation}
+and define the half-moments
+\begin{equation}
+  b_m=\int_{0}^{1}x^m\Up(x)\dd x,
+  \qquad m\ge0.
+  \label{eq:b-moments}
+\end{equation}
+Integration by parts in \eqref{eq:up-dfe} gives the repaired form of source (3.66):
+\begin{equation}
+  b_m=\frac{1}{2^{m+1}(m+1)}
+  \sum_{r=0}^{\lfloor(m+1)/2\rfloor}
+     \binom{m+1}{2r}a_{2r}.
+  \label{eq:b-from-a}
+\end{equation}
+For \(n\ge1\), the first positive dyadic point from the left endpoint satisfies
+\begin{equation}
+  \Up(-1+2^{-n})
+    =\frac{b_{n-1}}{2^{\binom n2}(n-1)!}.
+  \label{eq:first-dyadic-value}
+\end{equation}
+More generally, for \(1\le k\le2^n\), Taylor's integral formula together with \eqref{eq:up-nth-derivative} gives
+\begin{align}
+ \Up(-1+k2^{-n})
+ &=\frac{2^{-\binom n2}}{n!}
+ \sum_{j=1}^{k}\delta_j
+ \sum_{r=0}^{\lfloor n/2\rfloor}
+   \binom n{2r}
+   \left(k-j+\frac12\right)^{n-2r}
+   2^{-2r}a_{2r}.
+ \label{eq:all-dyadic-values}
+\end{align}
+This formula exhibits the three algebraic sources of exact dyadic values:
+\begin{enumerate}
+  \item the Thue--Morse signs \(\delta_j\);
+  \item integer and half-integer powers;
+  \item moments whose denominators are governed by \((2^{-2};2^{-2})_r\).
+\end{enumerate}
+The arithmetic integrality results of Arias de Reyna refine this observation by proving that specific products clear all denominators.
+
+\subsection{A rapidly convergent binary evaluation algorithm}
+\status{\SourceStatus}
+
+The source constructs a recursive series from the fact that, on
+\([-1+2^{-n},-1+2^{-n+1}]\), the function
+\begin{equation}
+  \varphi_n(x)=\Up(x)+\Up(x-2^{-n})
+  \label{eq:phi-n}
+\end{equation}
+has vanishing derivative of order \(n+1\).  Hence it is an explicit degree-\(n\) polynomial there, giving
+\begin{equation}
+  \Up(x)=\sum_{\ell=0}^{n}
+   \frac{\Up^{(\ell)}(-1+2^{-n})}{\ell!}
+   (x+1-2^{-n})^\ell-\Up(x-2^{-n}).
+  \label{eq:up-recursive-eval}
+\end{equation}
+Repeatedly applying \eqref{eq:up-recursive-eval} along the binary expansion of \(x+1\) reduces evaluation to values exponentially close to the left endpoint.  The truncation error is bounded by \eqref{eq:first-dyadic-value}, and the source's moment estimate makes it smaller than a reciprocal factorial times an additional quadratic-exponential factor.  This algorithm is structurally preferable to a literal transcription of source (3.73), whose OCR has damaged several summation indices: it preserves the exact recurrence, exact endpoint jets, and rigorous error bound without guessing corrupted symbols.
+
+\subsection{The edge pantograph equation and generalized Fabius profiles}
+\status{\RepoStatus\ with a general-\(a\) extension}
+
+Set
+\begin{equation}
+  g_a(u)=h_a(-b+u),
+  \qquad 0\le u\le2b.
+  \label{eq:ga-edge}
+\end{equation}
+For \(0\le u\le2/a\), the second term in \eqref{eq:ha-derivative} lies outside the support, and
+\begin{equation}
+  g_a'(u)=\frac{a^2}{2}g_a(au).
+  \label{eq:ga-pantograph}
+\end{equation}
+Iterating gives the exact flat-edge identity
+\begin{equation}
+  g_a^{(n)}(u)=\frac{a^{n(n+3)/2}}{2^n}g_a(a^n u),
+  \qquad 0\le u\le2a^{-n}.
+  \label{eq:ga-iterated}
+\end{equation}
+Normalize the left-edge profile by
+\begin{equation}
+  F_a(x)=\frac2a h_a(-b+bx).
+  \label{eq:Fa-general}
+\end{equation}
+Then \(F_2=F\) on \([0,1]\), and
+\begin{equation}
+  F_a'(x)=\frac{a^2}{2(a-1)}F_a(ax)
+  \label{eq:Fa-pantograph}
+\end{equation}
+throughout the left-edge range for which the inactive translated copy remains outside the support.  Restricted to \(0\le x\le1/a\), this is a closed pantograph recursion on the normalized interval \([0,1]\).
+
+Equation \eqref{eq:Fa-pantograph} explains why the inverse Fabius function is naturally governed by the Lambert \(W\)-function.  Repeated scale differentiation produces exponents quadratic in the iteration depth.  Solving a leading relation of the schematic form
+\begin{equation}
+  \log\frac1{F_a(x)}\asymp C\bigl(\log_a(1/x)\bigr)^2
+  \label{eq:edge-log-square}
+\end{equation}
+for \(x\) requires inverting a variable that appears both linearly and inside a logarithm after lower-order corrections; Lambert \(W\) performs exactly that inversion.  The repository develops this asymptotic program to high order using Bell and Bernoulli polynomials.  Here the point is conceptual: the Lambert--\(W\) structure is already latent in the atomic-function edge equation.
+
+\section{Polynomial reproduction by translates of \texorpdfstring{\(\Up\)}{up}}
+\label{sec:polynomial-reproduction}
+
+\subsection{The source difference equation}
+\status{\SourceStatus}
+
+Consider a shift combination on the dyadic grid
+\begin{equation}
+  \Phi(x)=\sum_{k\in\Z}c_k\Up(x-k2^{-n}).
+  \label{eq:up-shift-combination}
+\end{equation}
+Differentiating \(n+1\) times and using \eqref{eq:up-nth-derivative} shows that \(\Phi\) is a polynomial of degree at most \(n\) precisely when
+\begin{equation}
+  \sum_{j=1}^{2^{n+1}}\delta_j c_{k+j}=0,
+  \qquad k\in\Z.
+  \label{eq:coefficient-difference}
+\end{equation}
+The characteristic polynomial is
+\begin{align}
+  Q_n(z)
+   &=\sum_{j=1}^{2^{n+1}}\delta_j z^{2^{n+1}-j}
+     \notag\\
+   &=(z-1)\prod_{r=1}^{n}(z^{2^r}-1).
+  \label{eq:Qn}
+\end{align}
+It satisfies \(Q_n(z)=Q_{n-1}(z)(z^{2^n}-1)\).  Its roots are dyadic roots of unity; the root \(z=1\) has multiplicity \(n+1\).  Therefore every polynomial sequence \(c_k\) of degree at most \(n\) satisfies \eqref{eq:coefficient-difference}, and the corresponding shift sum is a polynomial of degree at most \(n\).
+
+The full solution of the recurrence is an exponential polynomial.  If \(\omega\) ranges over the roots of \(Q_n\) and \(m(\omega)\) denotes multiplicity, then
+\begin{equation}
+  c_k=\sum_{\omega:Q_n(\omega)=0}
+  \sum_{r=0}^{m(\omega)-1}A_{\omega,r}k^r\omega^k.
+  \label{eq:exponential-polynomial-coeff}
+\end{equation}
+Taking real and imaginary parts gives the source's trigonometric-polynomial form (3.83).
+
+\subsection{Strang--Fix, subdivision, and Prouhet interpretations}
+\status{\RepoStatus}
+
+Equation \eqref{eq:coefficient-difference} has three equivalent readings.
+
+\paragraph{Finite differences.}
+The factor \((z-1)^{n+1}\mid Q_n(z)\) means that \(Q_n(E)\), with \(E c_k=c_{k+1}\), annihilates every degree-\(n\) polynomial sequence.  The remaining cyclotomic factors encode harmless dyadic oscillations.
+
+\paragraph{Strang--Fix conditions.}
+Polynomial reproduction by a principal shift-invariant space is controlled by the multiplicities of Fourier zeros at the dual lattice.  The sinc product \(\widehat\Up\) has precisely the nested dyadic zero multiplicities needed to reproduce polynomials at arbitrarily high order when the grid is refined accordingly.  The source recurrence is the spatial-domain form of this Fourier criterion.
+
+\paragraph{Subdivision masks.}
+The Thue--Morse polynomial \(T_{n+1}\) and the characteristic polynomial \(Q_n\) differ only by reversal and an overall sign.  Thus the derivative mask that creates \(2^{n+1}\) signed copies is also the annihilating mask for degree-\(n\) coefficient data.  This is a particularly transparent instance of the general duality between sum rules and vanishing moments.
+
+\begin{proposition}[Constructive polynomial reproduction]
+\label{prop:constructive-reproduction}
+For each \(n\ge0\) and each polynomial \(p\) of degree at most \(n\), there is a polynomial coefficient sequence \(c_k\) of degree at most \(n\) such that the locally finite sum
+\begin{equation}
+  p(x)=\sum_{k\in\Z}c_k\Up(x-k2^{-n})
+  \label{eq:poly-reproduce}
+\end{equation}
+identically on \(\R\).  The coefficients can be determined by matching \(n+1\) moments or values after using \eqref{eq:coefficient-difference} to guarantee that the left-hand side is a polynomial.
+\end{proposition}
+
+\begin{proof}
+Choose a polynomial ansatz \(c_k=\sum_{r=0}^{n}\alpha_r k^r\).  The factor \((z-1)^{n+1}\) in \(Q_n\) makes \eqref{eq:coefficient-difference} automatic, so the shift sum is a polynomial of degree at most \(n\).  The map from \((\alpha_0,\ldots,\alpha_n)\) to its polynomial coefficients is triangular with nonzero diagonal because \(\int\Up=1\) and the finest nonvanishing discrete moment occurs at the expected order.  Hence it is invertible.
+\end{proof}
+
+\subsection{Rvachev's uniqueness principle}
+\status{\SourceStatus}
+
+The source proves a rigidity theorem.  Let \(\varphi\in C_c^\infty(\R)\) have support \([-1,1]\), integral one, and suppose every monomial \(x^n\) can be represented by shifts \(\varphi(x-k2^{-n})\).  If in addition
+\begin{equation}
+  \lim_{n\to\infty}
+  \frac{\|\varphi^{(n)}\|_\infty}
+       {2^{\binom{n+2}{2}}}=0,
+  \label{eq:uniqueness-growth}
+\end{equation}
+then \(\varphi=\Up\).
+
+The proof repeatedly extracts functions \(\varphi_j\) satisfying
+\begin{equation}
+  \varphi_j'(x)=2\varphi_{j+1}(2x+1)-2\varphi_{j+1}(2x-1),
+  \label{eq:phi-chain}
+\end{equation}
+compares the chain with the stationary chain \(\Up,\Up,\ldots\), and contracts the difference by a factor \(1/2\) per level.  Condition \eqref{eq:uniqueness-growth} makes the distant tail negligible.  The source also explains sharpness: \(\Up+\alpha\Up'\) retains normalization and polynomial-reproduction properties, but its derivative growth is exactly too large for \eqref{eq:uniqueness-growth}.
+
+\section{The \texorpdfstring{\(\Fup_n\)}{Fup-n} hierarchy}
+\label{sec:fup}
+
+\subsection{The source construction of \texorpdfstring{\(\Fup_1\)}{Fup1}}
+\status{\SourceStatus}
+
+Using \(\sinc z=\cos(z/2)\sinc(z/2)\), the source rewrites
+\begin{equation}
+  \widehat\Up(t)
+  =\cos(t/4)\,\sinc(t/4)
+    \prod_{j=3}^{\infty}\sinc(t2^{-j}).
+  \label{eq:source-up-fup-factorization}
+\end{equation}
+It defines
+\begin{equation}
+  \widehat{\Fup_1}(t)
+   =\sinc(t/4)^2\prod_{j=3}^{\infty}\sinc(t2^{-j})
+  \label{eq:Fup1-fourier}
+\end{equation}
+and obtains the finite reconstruction
+\begin{equation}
+  \Up(x)=\frac12\left[
+    \Fup_1\!\left(x-\frac14\right)
+   +\Fup_1\!\left(x+\frac14\right)
+  \right].
+  \label{eq:Fup1-reconstruct}
+\end{equation}
+The Fourier product shows that \(\Fup_1\) is again a nonnegative compactly supported \(C^\infty\) probability density, now supported on \([-3/4,3/4]\).
+
+\subsection{A canonical continuation to all levels}
+\status{\DerivedStatus}
+
+The single source construction has a natural hierarchy.
+
+\begin{definition}[Generalized \(\Fup_n\)]
+For \(n\ge0\), define
+\begin{equation}
+  \widehat{\Fup_n}(t)
+   =\sinc(t2^{-n-1})^n\,\widehat\Up(t2^{-n}),
+  \label{eq:Fupn-def}
+\end{equation}
+with \(\Fup_0=\Up\).
+\end{definition}
+
+Let \(X\) have density \(\Up\), and let \(U_1,\ldots,U_n\) be independent \(\mathrm{Unif}[-1,1]\) variables, independent of \(X\).  Then \(\Fup_n\) is the density of
+\begin{equation}
+  Z_n=2^{-n}X+2^{-n-1}\sum_{r=1}^{n}U_r.
+  \label{eq:Zn}
+\end{equation}
+Therefore
+\begin{equation}
+  \supp\Fup_n=
+  \left[-\frac{n+2}{2^{n+1}},\frac{n+2}{2^{n+1}}\right].
+  \label{eq:Fupn-support}
+\end{equation}
+The hierarchy becomes progressively narrower in physical space while its standardized shape becomes increasingly Gaussian.
+
+\begin{theorem}[Finite shift reconstruction at every level]
+\label{thm:Fup-reconstruction}
+Let
+\begin{equation}
+  N_n=\sum_{r=2}^{n+1}(r-1)=\frac{n(n+1)}2.
+  \label{eq:Nn}
+\end{equation}
+Then
+\begin{equation}
+  \widehat\Up(t)=\widehat{\Fup_n}(t)
+  \prod_{r=2}^{n+1}\cos(t2^{-r})^{r-1}.
+  \label{eq:Fupn-fourier-reconstruct}
+\end{equation}
+Equivalently,
+\begin{equation}
+  \Up(x)=2^{-N_n}
+  \sum_{\boldsymbol\varepsilon\in\{\pm1\}^{N_n}}
+  \Fup_n\!\left(x+S_n(\boldsymbol\varepsilon)\right),
+  \label{eq:Fupn-shift-reconstruct}
+\end{equation}
+where
+\begin{equation}
+  S_n(\boldsymbol\varepsilon)
+  =\sum_{r=2}^{n+1}\sum_{s=1}^{r-1}
+     \varepsilon_{r,s}2^{-r}.
+  \label{eq:Fup-shifts}
+\end{equation}
+Repeated shifts with the same total displacement may of course be combined into binomial multiplicities.
+\end{theorem}
+
+\begin{proof}
+From \eqref{eq:Fupn-def},
+\begin{equation*}
+ \frac{\widehat\Up(t)}{\widehat{\Fup_n}(t)}
+ =\prod_{j=1}^{n}
+   \frac{\sinc(t2^{-j})}{\sinc(t2^{-n-1})}.
+\end{equation*}
+Iterating \(\sinc z=\cos(z/2)\sinc(z/2)\) in each quotient gives one factor \(\cos(t2^{-r})\) for each pair \(1\le j<r\le n+1\), hence multiplicity \(r-1\).  This proves \eqref{eq:Fupn-fourier-reconstruct}.  Expanding every cosine as the Fourier multiplier of a two-point average proves \eqref{eq:Fupn-shift-reconstruct}.
+\end{proof}
+
+This theorem upgrades source (3.100) from one averaging step to a triangular array of dyadic averaging steps.  It also explains the multiplicities in \eqref{eq:up-cosine-product}: letting \(n\to\infty\) turns the finite reconstruction mask into the full infinite one.
+
+\subsection{Exact cumulants and a Gaussian scaling limit}
+\status{\DerivedStatus}
+
+Let
+\begin{equation}
+  \sigma_n^2=\operatorname{Var}(Z_n).
+  \label{eq:sigma-n}
+\end{equation}
+Using \eqref{eq:Xa-cumulants} at \(a=2\), the even cumulants of \(Z_n\) are
+\begin{equation}
+  \boxed{\quad
+  \kappa_{2m}(Z_n)
+  =2^{-2mn}\frac{2^{2m-1}B_{2m}}{m}
+  \left(\frac1{2^{2m}-1}+\frac n{2^{2m}}\right).
+  \quad}
+  \label{eq:Zn-cumulants}
+\end{equation}
+In particular,
+\begin{equation}
+  \sigma_n^2=4^{-n}\frac{3n+4}{36}.
+  \label{eq:Zn-variance}
+\end{equation}
+Let \(W_n=Z_n/\sigma_n\).
+
+\begin{theorem}[Central-limit regime]
+\label{thm:Fup-clt}
+As \(n\to\infty\),
+\begin{equation}
+  W_n\Longrightarrow N(0,1).
+  \label{eq:Fup-clt}
+\end{equation}
+The Kolmogorov distance is \(O(n^{-1/2})\), and for every \(m\ge2\),
+\begin{equation}
+  \kappa_{2m}(W_n)=O(n^{1-m}).
+  \label{eq:standardized-cumulants}
+\end{equation}
+Thus the first non-Gaussian correction is of order \(1/n\) and is explicitly determined by \(B_4=-1/30\).
+\end{theorem}
+
+\begin{proof}
+After multiplication by \(2^{n+1}\), \(Z_n\) is the sum of \(n\) independent uniforms plus the bounded perturbation \(2X\).  Centering and normalizing therefore gives the classical central limit theorem, while Berry--Esseen gives \(O(n^{-1/2})\).  Formula \eqref{eq:standardized-cumulants} follows directly by dividing \eqref{eq:Zn-cumulants} by \(\sigma_n^{2m}\): the numerator is asymptotic to a constant times \(n2^{-2mn}\), whereas \(\sigma_n^{2m}\) is asymptotic to a constant times \(n^m2^{-2mn}\).
+\end{proof}
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.9\textwidth]{fup_clt.png}
+  \caption{Standardized \(\Fup_n\) densities for \(n=1,4,16,64\), compared with the standard Gaussian density.  The exact fourth standardized cumulants are approximately \(-0.456,-0.214,-0.0682,-0.0183\), respectively.}
+  \label{fig:fup-clt}
+\end{figure}
+
+\begin{remark}[A useful duality]
+The hierarchy has two apparently opposite descriptions.  In physical space, \(\Fup_n\) is a narrow convolution kernel assembled from \(n\) uniform digits plus a small \(\Up\) remainder.  In Fourier space, \(\Up\) is obtained from \(\Fup_n\) by a finite binary averaging mask of size \(2^{N_n}\).  The first description is adapted to probability and asymptotics; the second to exact reconstruction and filter-bank algorithms.
+\end{remark}
+
+\section{Connections to neighboring theories}
+\label{sec:connections}
+
+\subsection{Infinite convolutions and Jessen--Wintner theory}
+\status{\RepoStatus}
+
+The law of \(X_a\) is an infinite convolution of absolutely continuous compactly supported measures.  Classical work of Jessen and Wintner placed such random series in a broad theory of infinite convolutions and distribution functions.  In the present family the digit law is uniform, so smoothness is much stronger than for Bernoulli convolutions.  Nevertheless, the symbolic scales, exceptional sets, and Fourier products make the two subjects close enough that methods from self-similar measures remain relevant, especially after replacing the uniform digit by a discrete or mixed digit law.
+
+The supercritical Cantor set \(K_a\) should not be confused with the support of the probability law: \(h_a\) has the full interval \([-b,b]\) as support.  Rather, \(K_a\) is the set where the \emph{formula} for the density fails to stabilize to a finite-degree polynomial.  It is a singularity set for analyticity, not a singular support in the distributional sense.
+
+\subsection{Splines, refinable functions, and wavelets}
+\status{\RepoStatus}
+
+A finite convolution of interval indicators gives a cardinal \(B\)-spline; \(h_a\) is an infinite geometrically contracted version.  For \(a>2\), the result is an unusual ``fractal spline'': each complementary gap carries an ordinary polynomial, the pieces match to all orders, and the knot set is a Cantor set.  At \(a=2\), the knots become dense enough to fill the support and the local-polynomial description collapses, although the same refinement equation survives.
+
+The derivative mask \(T_n(z)\) has \(n\) vanishing moments, while the polynomial-reproduction mask \(Q_n(z)\) has \(n+1\) sum rules at \(z=1\).  This is exactly the duality encountered in wavelet and subdivision theory.  Atomic functions therefore provide a testbed in which compact support, infinite smoothness, exact refinement, arbitrarily high polynomial reproduction, and explicitly computable masks coexist.
+
+\subsection{Pantograph and de Rham equations}
+\status{\RepoStatus}
+
+The edge equation \eqref{eq:ga-pantograph} is a pantograph equation: the derivative at \(u\) is controlled by the value at the dilated point \(au\).  The global equation \eqref{eq:ha-fixed-point} is a linear self-similar integral equation, and the endpoint recursion follows the same symbolic dynamics as de Rham functional equations.  This suggests importing transfer-operator and thermodynamic-formalism methods to study pointwise derivative growth on \(K_a\).
+
+\subsection{Bernoulli and Bell polynomials}
+\status{\RepoStatus}
+
+Bernoulli numbers enter through the logarithm of the one-digit characteristic function; Bell polynomials convert cumulants to moments; partial Bell polynomials also organize coefficient extraction in the inverse-function and Lambert--\(W\) expansions.  These are not separate coincidences.  They are the additive and compositional faces of the same exponential-generating-function calculus:
+\begin{equation}
+  \log\widehat h_a(t)
+  \quad\xrightarrow{\text{Bernoulli}}\quad
+  \{\kappa_n\}
+  \quad\xrightarrow{\text{Bell}}\quad
+  \{\mu_n\},
+  \label{eq:bern-bell-pipeline}
+\end{equation}
+while inversion of the edge asymptotic uses Bell polynomials again to compose and revert transseries.
+
+\subsection{Two \texorpdfstring{\(q\)}{q}-calculi}
+\status{\RepoStatus}
+
+The moment denominators involve ordinary \(q\)-Pochhammer symbols with \(q=a^{-2}\), whereas the binary masks involve the substitution sequence \(z\mapsto z^2\).  The former is a multiplicative scale calculus in the \emph{coefficient index}; the latter is a lacunary scale calculus in the \emph{spatial shift index}.  Their interaction is especially visible in exact dyadic values: a Thue--Morse weighted sum combines moments whose denominators are \(q\)-products.
+
+\subsection{Fourier decay and arithmetic orbits}
+\status{\RepoStatus}
+
+For large \(|t|\), roughly \(\log_a|t|\) sinc factors have arguments larger than one, producing the familiar quadratic logarithmic envelope
+\begin{equation}
+  \log|\widehat h_a(t)|
+  =-\frac{(\log|t|)^2}{2\log a}+O(\log|t|)
+  \label{eq:rough-fourier-envelope}
+\end{equation}
+away from exceptional alignments with zeros and near-zeros.  The sharp problem is not the leading envelope but the oscillatory correction: binary or base-\(a\) arithmetic determines how often the orbit \(a^{-j}t\) approaches a multiple of \(\pi\).  This explains why pointwise, averaged, limsup, and liminf decay laws need not coincide.
+
+\subsection{Fractional calculus and integral transforms}
+\status{\RepoStatus}
+
+Because \(\widehat h_a\) is explicit, fractional derivatives and integrals can be defined spectrally by multiplying by \((it)^\alpha\) or \(|t|^\alpha\).  Mellin transforms probe the edge flatness, Laplace transforms encode one-sided moments, and wavelet transforms exploit the built-in multiscale refinement.  These extensions are natural, but they require care at branch cuts and at the compact-support endpoints; they are therefore best treated as transform-theoretic continuations of the Fourier product rather than as formal differentiation of the differential--functional equation.
+
+\section{Corpus-relative new results obtained here}
+\label{sec:new-results}
+\status{\DerivedStatus}
+
+For clarity, the mathematically proved additions of this report are collected here.
+
+\begin{enumerate}[label=\textbf{R\arabic*.}]
+  \item \textbf{Exact nonanalytic set for \(a>2\).}  The source's Cantor-like null set is exactly \(K_a\) in \eqref{eq:Ka}, with Hausdorff and box dimension \(\log2/\log a\); see \cref{thm:exact-cantor-spline}.
+
+  \item \textbf{Exact gap degree and leading coefficient.}  Every generation-\(n\) gap carries a polynomial of exact degree \(n\), with coefficient \eqref{eq:gap-leading-coefficient}.  This yields a simple symbolic certification of polynomial pieces without solving for all lower coefficients.
+
+  \item \textbf{Geometric local-degree law.}  A uniformly sampled support point has local degree distributed by \eqref{eq:degree-geometric}, with the critical exponential limit \eqref{eq:degree-critical-limit}.
+
+  \item \textbf{Derivative equimeasurability.}  Formula \eqref{eq:equimeasurability} determines the complete value distribution of every derivative for \(a>2\), and gives all \(L^p\)-norms in closed form.
+
+  \item \textbf{General \(\Fup_n\) hierarchy.}  Definition \eqref{eq:Fupn-def} extends the source's \(\Fup_1\), while \cref{thm:Fup-reconstruction} reconstructs \(\Up\) by a finite triangular dyadic averaging mask.
+
+  \item \textbf{Exact \(\Fup_n\) cumulants and Gaussian limit.}  Formula \eqref{eq:Zn-cumulants} gives every cumulant; \cref{thm:Fup-clt} gives the standardized central-limit regime and the order of all non-Gaussian corrections.
+\end{enumerate}
+
+These results are structurally linked.  The exact gap theorem and derivative equimeasurability both come from separation of affine branches when \(a>2\).  The \(\Fup_n\) hierarchy and Gaussian limit both come from regrouping the sinc product into a finite block and a scaled tail.  In each case, a qualitative observation in the source becomes quantitative once the self-similar coding is made explicit.
+
+\section{Conjectures and frontier problems}
+\label{sec:conjectures}
+\status{\FrontierStatus}
+
+\begin{conjecture}[Nowhere analyticity in the overlap regime]
+\label{conj:overlap-analyticity}
+For every \(1<a\le2\), the density \(h_a\) is nowhere real analytic on the interior of its support.
+\end{conjecture}
+
+At \(a=2\) this is the classical Rvachev--Fabius phenomenon.  For \(1<a<2\), the two branches overlap, so the disjoint-support proof breaks down.  Nevertheless, the Fourier transform still has a quadratic-logarithmic decay envelope rather than exponential decay, which is incompatible with analyticity on the whole support.  The difficult step is upgrading global nonanalyticity to nonanalyticity at every point.  A promising route is a localized Paley--Wiener argument combined with the functional equation and unique continuation along the overlap graph.
+
+\begin{conjecture}[Multifractal Taylor growth on \(K_a\)]
+\label{conj:taylor-multifractal}
+For \(a>2\), nonendpoint points \(x\in K_a\) admit a symbolic Taylor-growth exponent
+\begin{equation}
+  \tau(x)=\limsup_{n\to\infty}
+  \frac{\log\bigl(|h_a^{(n)}(x)|/n!\bigr)}{n^2},
+  \label{eq:tau-x}
+\end{equation}
+whose level-set dimensions are given by a pressure function for the two-shift coding of \(K_a\).
+\end{conjecture}
+
+The source dichotomy ``finite Taylor polynomial or zero radius'' should be the first coarse layer of a richer spectrum.  Formula \eqref{eq:ha-nth-derivative} reduces pointwise derivative growth to the unique active branch itinerary, suggesting a subadditive thermodynamic formalism.
+
+\begin{conjecture}[General-base inverse-edge transseries]
+\label{conj:general-base-lambert}
+As \(y\downarrow0\), the inverse of the normalized edge profile \(F_a\) has a full transseries obtained from a Lambert--\(W\) core, inverse powers of \(W\), and a bounded log-periodic phase of period \(\log a\) in \(\log\log(1/y)\).
+\end{conjecture}
+
+The quadratic scale in \eqref{eq:edge-log-square} forces Lambert \(W\), while discrete dilation leaves room for periodic fluctuations in the logarithmic scale.  Establishing whether the phase is genuinely nonconstant, and in what summability sense the expansion holds, is a central asymptotic problem.
+
+\begin{conjecture}[Graph-directed atomic splines]
+\label{conj:graph-directed}
+For an \(m\)-branch first-order atomic equation whose affine images satisfy the open-set condition, the nonanalyticity set is the graph-directed attractor of the branch system; complementary components carry exact finite-degree polynomials; and the dimension of the nonanalyticity set is the zero of the associated pressure determinant.
+\end{conjecture}
+
+The two-branch theorem in \cref{thm:exact-cantor-spline} is the simplest case.  Multiple translations, unequal contraction ratios, and matrix-valued masks should lead to graph-directed smooth fractal splines.
+
+\begin{conjecture}[Uniform all-orders Edgeworth expansion for \(\Fup_n\)]
+\label{conj:fup-edgeworth}
+The standardized density of \(\Fup_n\) admits, uniformly on \(\R\), an Edgeworth expansion to arbitrary order whose coefficients are explicit polynomials in Bernoulli numbers and Hermite polynomials, with a remainder one order smaller than the last retained term.
+\end{conjecture}
+
+The exact cumulants \eqref{eq:Zn-cumulants} determine the formal expansion.  Uniformity should follow from the compact support, a Cram\'er condition uniform after standardization, and precise control of the scaled \(\Up\) remainder.
+
+\begin{conjecture}[Arithmetic rigidity of exceptional parameters]
+\label{conj:arithmetic-a}
+For algebraic \(a>2\), special values of \(h_a\) at cylinder endpoints satisfy denominator and integrality laws controlled by the algebraic norms of \(a^{2m}-1\); transcendental parameters generically have no comparable finite-denominator normalization.
+\end{conjecture}
+
+Formula \eqref{eq:endpoint-value} makes this plausible: all arithmetic enters through powers of \(a\), Bernoulli-number moments, and products \(a^{2m}-1\).  The dyadic results for \(a=2\) should be the first member of a broader arithmetic theory.
+
+\section{Promising research directions}
+\label{sec:future}
+
+\subsection{Rigorous analytic projects}
+
+\begin{enumerate}[label=\arabic*.]
+  \item \textbf{Prove \cref{conj:overlap-analyticity}.}  Develop a localized Fourier criterion for analyticity that is stable under the overlap refinement operator.  The cases where \(a\) is Pisot, Salem, algebraic non-Pisot, or transcendental may require different orbit estimates.
+
+  \item \textbf{Build the Taylor multifractal formalism.}  Express the active term in \eqref{eq:ha-nth-derivative} as a cocycle over the full shift, prove bounded distortion, and compute pressure numerically before attempting a full dimension theorem.
+
+  \item \textbf{Sharpen Fourier decay.}  Separate the deterministic quadratic envelope from arithmetic fluctuations and formulate theorems for pointwise limsup/liminf, logarithmic density, and averaged norms.  The cosine product \eqref{eq:up-cosine-product} is particularly suited to ergodic methods.
+
+  \item \textbf{Complete the \(F_a^{-1}\) transseries.}  Derive the general-base saddle equation from the Mellin or Laplace representation, solve it in Lambert--\(W\) form, and prove explicit remainder estimates stable under reversion.
+
+  \item \textbf{Extend root matching.}  Replace scalar \(P\) and \(\mathcal E\) by matrix symbols, allow several dilation factors, and characterize compact support through Smith normal forms or module divisibility over exponential-polynomial rings.
+\end{enumerate}
+
+\subsection{Exact computation and symbolic algebra}
+
+A practical exact engine for \(h_a\) at algebraic \(a>2\) can follow the pipeline
+\begin{equation}
+ \text{Bernoulli cumulants}
+ \to \text{Bell moments}
+ \to \text{endpoint values}
+ \to \text{endpoint jets}
+ \to \text{gap polynomials}.
+ \label{eq:exact-engine-pipeline}
+\end{equation}
+The data structure should index a gap by its sign word, store coefficients in the number field \(\mathbb Q(a)\), and exploit reflection symmetry.  Memoization of lower-level endpoint values makes the construction essentially a binary dynamic program.  Exact output could then be compared with interval-arithmetic evaluation of the Fourier product or fixed-point equation.
+
+\subsection{Formalization}
+
+The following pieces are unusually suitable for Lean formalization:
+\begin{enumerate}
+  \item the random-series existence and support bound;
+  \item the characteristic-function product;
+  \item the refinement and derivative equations;
+  \item the Thue--Morse derivative induction;
+  \item the open-set IFS decomposition for \(a>2\);
+  \item the exact gap-degree induction and leading coefficient;
+  \item the local-degree probability law;
+  \item cumulant and Bell-polynomial recurrences for exact moments.
+\end{enumerate}
+The analyticity statements are harder because they require a library for real-analytic identity principles and Taylor radii, but the exact polynomial decomposition already isolates the required lemmas.
+
+\subsection{Numerical certification}
+
+The included experiments are exploratory, not substitutes for proof.  A next version should use interval arithmetic to certify:
+\begin{enumerate}
+  \item fixed-point convergence in a specified Banach norm;
+  \item exact enclosure of gap polynomial coefficients;
+  \item Fourier-product truncation errors;
+  \item standardized \(\Fup_n\) density errors against Edgeworth approximants;
+  \item pressure and dimension estimates for proposed multifractal spectra.
+\end{enumerate}
+Because all operators are positive or affine on the relevant branches, rigorous enclosures should be considerably easier than for generic oscillatory special functions.
+
+\section{Conclusion}
+
+The attached chapter contains a remarkably modern synthesis: compact support from infinite convolution, exact self-similarity from a differential--functional equation, binary combinatorics in derivative masks, arbitrary-order polynomial reproduction, and the beginnings of a hierarchy of smooth refinable kernels.  Its most striking qualitative observation is the family \(h_a\) for \(a>2\): a nonanalytic \(C^\infty\) function that is literally a polynomial near almost every point.
+
+Making the symbolic dynamics explicit sharpens that observation.  The exceptional set is an exact Cantor attractor; gap generation equals polynomial degree; the leading coefficient has a closed product; local degree is geometrically distributed; and every derivative is an amplified signed copy of the original density supported on an exponentially shrinking fraction of the interval.  At the critical point \(a=2\), branch separation vanishes and the smooth Cantor spline becomes the nowhere-analytic \(\Up\)-function.  The same sinc product then connects Thue--Morse cancellation, \(q\)-products, Bernoulli cumulants, Bell moments, Lambert--\(W\) inversion, and polynomial-reproducing translates.
+
+The source's final \(\Fup_1\) identity is not an isolated trick: it begins a complete hierarchy with exact finite reconstructions and an emergent Gaussian limit.  Together, these structures make atomic functions a particularly fertile meeting point of approximation theory, probability, harmonic analysis, symbolic dynamics, arithmetic, and computer-assisted formal mathematics.
+
+\appendix
+
+\section{Source reconstruction and correction notes}
+\label{app:repairs}
+
+\status{\SourceStatus}
+
+The following table records the main places where a literal OCR translation would be misleading.
+
+\begin{longtable}{>{\raggedright\arraybackslash}p{0.16\textwidth} >{\raggedright\arraybackslash}p{0.35\textwidth} >{\raggedright\arraybackslash}p{0.41\textwidth}}
+\toprule
+Source location & OCR/transcription issue & Reconstruction used here\\
+\midrule
+\endfirsthead
+\toprule
+Source location & OCR/transcription issue & Reconstruction used here\\
+\midrule
+\endhead
+Fourier convention, (3.2) & The rendered source and OCR mix signs in the exponential and in the definition of \(D\). & One convention, \eqref{eq:fourier-convention}, is fixed globally; every mask sign and inverse transform is adjusted consistently.\\
+(3.5), (3.8) & The mask is variously read as \(g,\xi,\varepsilon\), or \(\mathcal E\). & The mask is uniformly denoted \(\mathcal E\), and the origin normalization is written as \eqref{eq:lambda-origin}.\\
+(3.31)--(3.35) & Several indices alternate incorrectly between \(j,\ell,k\); factorial bars are misread as absolute-value bars. & Coefficient comparison in \eqref{eq:ha-fourier-refinement} gives the unambiguous recurrence \eqref{eq:c-recurrence}; the source's final bound is retained as \eqref{eq:source-c-bound}.\\
+(3.48) & Parentheses and powers of \(a\) are damaged. & The general induction \eqref{eq:ha-nth-derivative} supersedes the unreliable second-derivative transcription.\\
+(3.51)--(3.58) & Binary digit subscripts, powers, and upper summation limits are heavily corrupted. & The endpoints, offsets, and reduction maps are rebuilt in \eqref{eq:xmn}--\eqref{eq:endpoint-derivative-reduction} from the preceding integral derivation and the derivative mask.\\
+(3.59) & The denominator \(l!\) is OCR'd as \(ll\). & Restored to the Taylor polynomial \eqref{eq:gap-taylor-polynomial}.\\
+(3.63)--(3.64) & The exponent in the derivative coefficient is visually ambiguous in OCR. & Direct induction gives \(2^{\binom{n+1}{2}}\), consistent with the norm formula \eqref{eq:up-norms}.\\
+(3.66) & The definition of \(b_{2k+1}\) has an index mismatch between the label and the integral. & A single half-moment sequence \(b_m\) is defined in \eqref{eq:b-moments}, producing \eqref{eq:b-from-a}.\\
+(3.73)--(3.75) & Several binary-tail variables and summation indices are unrecoverable from OCR alone. & The exact recursive polynomial identity \eqref{eq:up-recursive-eval} and its endpoint error bound are stated instead of inventing a damaged closed string.\\
+(8.85) & Obvious chapter-number typo. & Read as source (3.85).\\
+Uniqueness theorem & The derivative-growth condition is split and malformed. & Reconstructed as \eqref{eq:uniqueness-growth}, which is confirmed by the source's counterexample \(\Up+\alpha\Up'\).\\
+(3.98) & One factor index is OCR'd inconsistently. & Re-derived from \(\sinc z=\cos(z/2)\sinc(z/2)\), yielding \eqref{eq:source-up-fup-factorization}.\\
+\bottomrule
+\end{longtable}
+
+\section{Crosswalk to the attached chapter}
+\label{app:crosswalk}
+
+\begin{longtable}{p{0.18\textwidth}p{0.32\textwidth}p{0.42\textwidth}}
+\toprule
+Source equations & Subject & Location in this report\\
+\midrule
+\endfirsthead
+\toprule
+Source equations & Subject & Location in this report\\
+\midrule
+\endhead
+(3.1)--(3.12) & General atomic equation, Fourier mask, root matching, infinite product & \Cref{sec:atomic-general}, especially \eqref{eq:atomic-master}--\eqref{eq:atomic-product}\\
+(3.13)--(3.23) & First-order two-shift family and symmetric normalization & \eqref{eq:first-order-family}--\eqref{eq:ha-dfe}\\
+(3.24)--(3.28) & Definition of \(h_a\), random series, support, refinement & \Cref{sec:ha}, \eqref{eq:Xa}--\eqref{eq:ha-derivative}\\
+(3.29)--(3.38) & Maclaurin coefficients, moments, decay estimates & \eqref{eq:ha-c-series}--\eqref{eq:source-c-bound}\\
+(3.39)--(3.45) & Almost-everywhere polynomial structure, central plateau, first linear pieces & \Cref{sec:supercritical}, especially \eqref{eq:central-plateau} and \cref{thm:exact-cantor-spline}\\
+(3.46)--(3.59) & Taylor integral formula, derivative mask, endpoint values and gap polynomials & \eqref{eq:ha-nth-derivative}, \eqref{eq:endpoint-value}--\eqref{eq:gap-taylor-polynomial}\\
+(3.60)--(3.64) & \(\Up\), support, differential equation, derivative norms & \eqref{eq:up-fourier}--\eqref{eq:up-norms}\\
+(3.65)--(3.75) & Moments, dyadic values, recursive binary evaluation & \eqref{eq:up-even-moments}--\eqref{eq:up-recursive-eval}\\
+(3.76)--(3.83) & Polynomial shift combinations and characteristic roots & \Cref{sec:polynomial-reproduction}, \eqref{eq:up-shift-combination}--\eqref{eq:exponential-polynomial-coeff}\\
+(3.84)--(3.97) & Uniqueness of \(\Up\) as a universal representing function & \eqref{eq:uniqueness-growth}--\eqref{eq:phi-chain}\\
+(3.98)--(3.100) & Definition and reconstruction of \(\Fup_1\) & \eqref{eq:source-up-fup-factorization}--\eqref{eq:Fup1-reconstruct}\\
+\bottomrule
+\end{longtable}
+
+\section{Numerical experiment details}
+\label{app:numerics}
+
+The file \texttt{numerical\_experiments.py} is deterministic and requires Python 3.10 or newer, NumPy, SciPy, and Matplotlib.  It generates the three figures used above and the following machine-readable diagnostics:
+\begin{itemize}
+  \item \texttt{ha\_a3\_diagnostics.csv}: mass, plateau, symmetry, and support checks;
+  \item \texttt{gap\_length\_check\_a3.csv}: exact and computed generation lengths;
+  \item \texttt{polynomial\_gap\_fit\_a3.csv}: fitted versus exact leading coefficients through generation three;
+  \item \texttt{generalized\_ha\_parameters.csv}: \(b,b_1,\dim K_a,\E D_a,\operatorname{Var}D_a,\operatorname{Var}X_a\) for representative \(a\);
+  \item \texttt{fup\_clt\_cumulants.csv}: exact and empirical standardized cumulants;
+  \item \texttt{local\_degree\_monte\_carlo.txt}: simulation summary.
+\end{itemize}
+
+The fixed-point computation applies
+\begin{equation}
+  (T_af)(x)=\frac a2\int_{ax-1}^{ax+1}f(u)\dd u
+  \label{eq:numerical-Ta}
+\end{equation}
+on a uniform support grid, evaluating integrals through a cumulative trapezoidal primitive and linear interpolation.  The operator is exact at the mathematical level; only quadrature and interpolation are discretized.  Polynomial gaps are fitted only after their exact intervals and degrees are known, so the fit tests coefficients rather than discovering the structure retrospectively.
+
+For the \(\Fup_n\) experiment, samples are generated directly from \eqref{eq:Zn}; no numerical inverse Fourier transform is needed.  Exact cumulants from \eqref{eq:Zn-cumulants} provide an independent check on the empirical density and moments.
+
+\begin{thebibliography}{99}
+
+\bibitem{Rvachev1990}
+V.~A. Rvachev,
+\newblock Compactly supported solutions of functional-differential equations and their applications,
+\newblock \emph{Russian Mathematical Surveys} \textbf{45} (1990), no.~1, 87--120,
+\newblock \href{https://doi.org/10.1070/RM1990v045n01ABEH002324}{doi:10.1070/RM1990v045n01ABEH002324}.
+
+\bibitem{Fabius1966}
+J.~Fabius,
+\newblock A probabilistic example of a nowhere analytic \(C^\infty\)-function,
+\newblock \emph{Zeitschrift f\"ur Wahrscheinlichkeitstheorie und Verwandte Gebiete} \textbf{5} (1966), 173--174,
+\newblock \href{https://doi.org/10.1007/BF01436454}{doi:10.1007/BF01436454}.
+
+\bibitem{JessenWintner1935}
+B.~Jessen and A.~Wintner,
+\newblock Distribution functions and the Riemann zeta function,
+\newblock \emph{Transactions of the American Mathematical Society} \textbf{38} (1935), no.~1, 48--88,
+\newblock \href{https://doi.org/10.1090/S0002-9947-1935-1501802-5}{doi:10.1090/S0002-9947-1935-1501802-5}.
+
+\bibitem{Arias2017Definition}
+J.~Arias de Reyna,
+\newblock An infinitely differentiable function with compact support: definition and properties,
+\newblock arXiv:1702.05442, 2017.
+
+\bibitem{Arias2017Arithmetic}
+J.~Arias de Reyna,
+\newblock Arithmetic of the Fabius function,
+\newblock arXiv:1702.06487, 2017.
+
+\bibitem{StrangFix1973}
+G.~Strang and G.~Fix,
+\newblock A Fourier analysis of the finite element variational method,
+\newblock in G.~Geymonat (ed.), \emph{Constructive Aspects of Functional Analysis}, C.I.M.E., Edizioni Cremonese, Rome, 1973, pp.~793--840.
+
+\bibitem{deRham1957}
+G.~de Rham,
+\newblock Sur quelques courbes d\'efinies par des \'equations fonctionnelles,
+\newblock \emph{Rendiconti del Seminario Matematico, Universit\`a e Politecnico di Torino} \textbf{16} (1956--1957), 101--113.
+
+\bibitem{PeresSolomyak1996}
+Y.~Peres and B.~Solomyak,
+\newblock Absolute continuity of Bernoulli convolutions, a simple proof,
+\newblock \emph{Mathematical Research Letters} \textbf{3} (1996), 231--239.
+
+\bibitem{ProveItCorpus}
+V.~Reshetnikov,
+\newblock \emph{ProveIt: Fabius Function Documentation and Formalization Corpus},
+\newblock repository directory \texttt{Analysis/FabiusFunction/docs}, audited at commit \texttt{ffd6976ec23bc99107f811e4cda2133c58cc7518}, 2026.
+
+\end{thebibliography}
+
+\end{document}

@@ -76,6 +76,7 @@ theorem upOrthoPolynomial_three_term (F : BoundedFabius)
     rw [Polynomial.natDegree_mul Polynomial.X_ne_zero
       (upOrthoPolynomial_monic F hF (n + 1)).ne_zero,
       Polynomial.natDegree_X, natDegree_upOrthoPolynomial F hF (n + 1)]
+    omega
   have hkey : r = 0 := by
     refine eq_zero_of_natDegree_lt_of_orthogonal F hF
       (n := n + 2) ?_ ?_
@@ -151,7 +152,11 @@ theorem upOrthoPolynomial_three_term (F : BoundedFabius)
           Polynomial.eval_mul, Polynomial.eval_mul, Polynomial.eval_C,
           Polynomial.eval_X, pow_succ]
         ring
-      rw [hre, MeasureTheory.integral_sub (hint1.sub hint2) hint3,
+      have hint12 : Integrable (fun x : ℝ =>
+          (upOrthoPolynomial F (n + 1)).eval x * x ^ (j + 1) -
+            (upOrthoPolynomial F (n + 2)).eval x * x ^ j)
+          (rvachevMeasure F) := hint1.sub hint2
+      rw [hre, MeasureTheory.integral_sub hint12 hint3,
         MeasureTheory.integral_sub hint1 hint2,
         MeasureTheory.integral_const_mul]
       rcases Nat.lt_or_ge j n with hjn | hjn

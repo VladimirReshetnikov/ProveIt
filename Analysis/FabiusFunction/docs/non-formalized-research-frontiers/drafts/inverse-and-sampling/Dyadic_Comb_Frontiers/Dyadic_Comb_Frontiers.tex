@@ -2606,7 +2606,16 @@ Synthesis from Rvachev Up-Atoms}
 (\nolinkurl{representations/Up_Polynomial_Synthesis/}) proves that the
 reproduction/quadrature order of the up-translate system at
 radius-to-spacing ratio $M$ is exactly $\vtwo(M)$, with the general-%
-ratio first defect carrying the values $\Phi(q\ell/2)$ for $M=2^{\nu}q$.
+ratio first defect carrying the values $\Phi(q\ell/2)$ for $M=2^{\nu}q$.  The
+sharpness is now kernel-verified at the transform level: \path{CombFirstDefect.lean}
+proves that at degree $p=\vtwo(M)+1$ the first Poisson alias survives ---
+\nolinkurl{Fabius.iteratedDeriv_rvachevFourierProduct_nat_mul_int_of_odd} evaluates the
+$p$-th derivative of $\Phi$ at an odd multiple $M\ell$ to its exact nonzero value
+$-p!\,\Phi(q'/2)/(M\ell)^p$ with $q'$ the odd part of $M\ell$ (precisely the tabulated
+first-defect values), and
+\nolinkurl{Fabius.fourier_monomialRvachevSchwartz_nat_int_ne_zero_of_odd} concludes that
+the transform of $x^{\vtwo(M)+1}\Up(x/M)$ does \emph{not} vanish at odd integer
+frequencies, so the quadrature order of the mesh-$M$ comb is exactly $\vtwo(M)$.
 \Cref{thm:up-composite-mesh} itself is now kernel-verified in full polynomial form:
 \nolinkurl{Fabius.tsum_shifted_polynomial_eq_integral_nat} in
 \nolinkurl{CompositeMeshExactness.lean} proves

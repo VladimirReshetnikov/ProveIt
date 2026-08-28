@@ -125,3 +125,11 @@ part-boundary section numbering (Part II had rendered with
 provenance with SHA-256 in the document itself.
 
 See [`../MANIFEST.md`](../MANIFEST.md) for titles and the previous paths.
+
+A fourteenth-wave arrival, `Atomic_Functions_Beyond_Dyadic_Report/` (*Atomic Functions
+Beyond the Critical Dyadic Case*), joins the group as a separate member: an English
+reconstruction and expansion of Rvachev atomic-function material on the geometric
+family h_a beyond the binary point — same subject as the volume's Part VI, written
+independently — with gap-hierarchy/fractal-string geometry, Gaussian cumulant limits,
+periodic correction bases, and reproducible experiments. It stays separate until
+deliberately merged into the volume.
