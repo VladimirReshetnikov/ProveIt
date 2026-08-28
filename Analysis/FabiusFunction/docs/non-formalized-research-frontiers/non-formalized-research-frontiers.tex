@@ -232,10 +232,13 @@ quarantined so that no unformalized claim can be mistaken for part of the verifi
 exposition or lost while awaiting a machine-checked proof.
 The post-consolidation audit also records the newly formalized generic naturality,
 conditional affine-recursion, and exact-support API for weighted uniform series and the named
-geometric-\(q\) weights, series, probability law, recurrence, and reflection.  For every
-\(|q|<1\) the geometric law has support equal to its exact series range, and for
-\(0\le q<1\) that support is \([0,1]\).  Atomlessness, CDF/density identities, transforms,
-moments/cumulants, and fixed-point uniqueness remain in the frontier.
+geometric-\(q\) weights, series, probability law, recurrence, and reflection.  Every
+norm-summable real weighted law with a nonzero coefficient is absolutely continuous with
+respect to Lebesgue measure and has null singletons.  For every \(|q|<1\) the geometric law
+has those properties and support equal to its exact series range, and for \(0\le q<1\) that
+support is \([0,1]\).  A named general-\(q\) CDF and explicit density, their CDF/density
+identities, transforms, moments/cumulants, smoothness, and fixed-point uniqueness remain in
+the frontier.
 
 Closely overlapping presentations have been merged rather than concatenated.  Each topic
 uses the strongest or most complete source as its backbone, imports independent proofs,
@@ -316,6 +319,8 @@ Generic weighted uniform series and laws &
 \nolinkurl{uniformProduct_map_of_ae_head_tail_recursion},
 \nolinkurl{weightedUniformSeries_map},
 \nolinkurl{weightedUniformDistribution_split_of_shift_eq_map},
+\nolinkurl{weightedUniformDistribution_absolutelyContinuous},
+\nolinkurl{weightedUniformDistribution_nullSingletonClass},
 \nolinkurl{weightedUniformDistribution_support_eq_range},
 \nolinkurl{weightedUniformDistribution_support_eq_Icc_min_max} &
 \nolinkurl{WeightedUniformSeries.lean}, \nolinkurl{WeightedUniformDistribution.lean},
@@ -323,6 +328,8 @@ Generic weighted uniform series and laws &
 Named geometric uniform law &
 \nolinkurl{geometricUniformWeight},
 \nolinkurl{geometricUniformDistribution_selfSimilar},
+\nolinkurl{geometricUniformDistribution_absolutelyContinuous},
+\nolinkurl{geometricUniformDistribution_nullSingletonClass},
 \nolinkurl{geometricUniformDistribution_support_eq_range},
 \nolinkurl{geometricUniformDistribution_support_eq_Icc},
 \nolinkurl{weightedSumDistribution_support_eq_Icc} &
@@ -349,8 +356,10 @@ general ordered-composition coefficient formulas, Fourier-amplitude estimates, a
 claim marked derived, numerical, conjectural, or open remain in this frontier until an exact
 Lean declaration is audited.  The named weights \((1-q)q^n\), their law, measure recurrence,
 reflection, support equal to the series range for \(|q|<1\), and exact support \([0,1]\) for
-\(0\le q<1\) are now exact formal inputs.  Atomlessness, \(q\)-specific CDF or density
-equations, transforms, moments/cumulants, and uniqueness of a measure fixed point are not.
+\(0\le q<1\), together with absolute continuity and null singletons throughout \(|q|<1\),
+are now exact formal inputs.  A named \(q\)-CDF and explicit density, their \(q\)-specific
+equations, transforms, moments/cumulants, smoothness, and uniqueness of a measure fixed point
+are not.
 \end{boxedremark}
 
 
@@ -377,9 +386,9 @@ hypotheses.  The analytic-locus chapter then develops the generic elementary-fun
 obstruction and applies it to the forward Fabius family and its total inverse.  The
 probability chapters supply the measure-theoretic bridges between the product law, its
 survival function, tilted Laplace moments, finite atomic laws, and half-weighted step
-approximants, together with the post-snapshot continuous-linear naturality and conditional
-operator/scalar affine-recursion API for arbitrary weighted uniform laws and its named
-geometric-\(q\) specialization.  Two reusable
+approximants, together with the post-snapshot continuous-linear naturality, conditional
+operator/scalar affine-recursion, and real absolute-continuity APIs for arbitrary weighted
+uniform laws and the named geometric-\(q\) specialization.  Two reusable
 discrete engines follow: weighted path sums for triangular
 recurrences and a finite-row Toeplitz convergence theorem.  Finally, the part exposes the
 generic machinery used by the all-orders saddle proof: parameter-dependent Poincar\'e
@@ -404,9 +413,10 @@ generalizations, and formulas that still lack exact declarations.  Its presence 
 notebook should be attributed to the formal library merely because a related definition or
 weaker theorem exists.  The primary exposition contains the audited, declaration-backed
 subset.  Among the obligations retained here are generic moment-matrix consequences,
-arbitrary-family Toeplitz wording, generic Gaussian coefficient bounds, and the topological
-support, atomlessness, CDF/density, transform, moment/cumulant, and uniqueness layers beyond
-the formalized named geometric-\(q\) measure recurrence.  The inverse
+arbitrary-family Toeplitz wording, generic Gaussian coefficient bounds, and the named
+general-\(q\) CDF, explicit density, CDF/density equations, transform, moment/cumulant,
+smoothness, and uniqueness layers beyond the formalized geometric-\(q\) measure recurrence,
+absolute continuity, null-singleton, and exact-support results.  The inverse
 endpoint and Fabius-specific coefficient obligations are tracked in \cref{part:inverse}.
 \end{boxedremark}
 
@@ -930,6 +940,14 @@ If \(A:E\to E\) is continuous linear and \(w_{n+1}=A(w_n)\), then
 The scalar case \(A=c\,\mathrm{id}\) requires no sign or contraction condition on \(c\)
 beyond the explicit norm-summability hypothesis on the displayed weights.
 
+For real laws there is also an absolute-continuity smoothing principle.  If \(\nu\) is any
+s-finite measure on \(\R\) and \(a\ne0\), then the image of
+\(\operatorname{Unif}[0,1]\otimes\nu\) under \((u,x)\mapsto ua+x\) is absolutely continuous
+with respect to Lebesgue measure.  Consequently a norm-summable real weighted law \(\mu_w\)
+is absolutely continuous whenever \(w_n\ne0\) for at least one index \(n\); the nonzero
+coefficient need not be the head.  Under the same hypotheses every singleton is
+\(\mu_w\)-null.
+
 The eleven public declarations in this tranche are
 \lean{ProbabilityRepresentation.uniformProduct_map_of_ae_head_tail_recursion},
 \lean{ProbabilityRepresentation.uniformProduct_map_of_head_tail_recursion},
@@ -958,6 +976,16 @@ scalar-shift theorems.  The compatibility surface additionally exports
 \lean{ProbabilityRepresentation.weightedUniformDistribution_compl_unitInterval} through
 \path{WeightedUniformSeries.lean} and \path{WeightedUniformDistribution.lean}.  The
 law-level scalar wrapper is oriented as \(\mu_{cw}=(x\mapsto cx)_*\mu_w\).
+
+The four-declaration absolute-continuity tranche in
+\path{WeightedUniformDistribution.lean} consists of
+\lean{ProbabilityRepresentation.uniformScaledAdd_absolutelyContinuous},
+\lean{ProbabilityRepresentation.weightedUniformDistribution_absolutelyContinuous_of_head_ne_zero},
+\lean{ProbabilityRepresentation.weightedUniformDistribution_absolutelyContinuous}, and
+\lean{ProbabilityRepresentation.weightedUniformDistribution_nullSingletonClass}.  The first
+allows an arbitrary s-finite tail law, the second assumes \(w_0\ne0\), and the sharp final
+pair assumes only \(\exists n,\ w_n\ne0\); the last theorem returns Mathlib's
+\texttt{NullSingletonClass} explicitly.
 
 The separate exact-support layer has ten public declarations in
 \path{WeightedUniformSupport.lean}:
@@ -995,9 +1023,11 @@ the weights are norm-summable with sum one, \(S_q\) is continuous and measurable
 together with pointwise and law-level reflection.  Under \(0\le q<1\), the weights are
 nonnegative, the series lies in \([0,1]\), and the law gives mass one to that interval and
 zero to its complement.  For every \(|q|<1\), its topological support is exactly the series
-range; under \(0\le q<1\), both that range and the support are exactly \([0,1]\).
+range, its law is absolutely continuous with respect to Lebesgue measure, and all singletons
+are null; neither of the latter two statements needs \(q\ge0\).  Under \(0\le q<1\), both
+the series range and the support are exactly \([0,1]\).
 
-The twenty-one declarations are
+The twenty-three declarations are
 \lean{ProbabilityRepresentation.geometricUniformWeight},
 \lean{ProbabilityRepresentation.geometricUniformWeight_zero},
 \lean{ProbabilityRepresentation.geometricUniformWeight_succ},
@@ -1012,6 +1042,8 @@ The twenty-one declarations are
 \lean{ProbabilityRepresentation.geometricUniformSeries_mem_Icc},
 \lean{ProbabilityRepresentation.geometricUniformDistribution},
 \lean{ProbabilityRepresentation.geometricUniformDistribution_isProbabilityMeasure},
+\lean{ProbabilityRepresentation.geometricUniformDistribution_absolutelyContinuous},
+\lean{ProbabilityRepresentation.geometricUniformDistribution_nullSingletonClass},
 \lean{ProbabilityRepresentation.uniformProduct_map_head_tail_geometricUniformSeries},
 \lean{ProbabilityRepresentation.geometricUniformDistribution_selfSimilar},
 \lean{ProbabilityRepresentation.geometricUniformDistribution_reflection},
@@ -1027,9 +1059,10 @@ identify the dyadic series and law with this specialization, while
 \lean{ProbabilityRepresentation.weightedSumDistribution_support_eq_Icc} records the exact
 support of the dyadic law.
 
-The exact range and support identities are now formal.  Atomlessness, \(q\)-specific CDF and
-density identities, transforms, moments and cumulants, and uniqueness of the affine measure
-fixed point remain outside the formal boundary for the general geometric family.
+Absolute continuity, null singletons, and the exact range and support identities are now
+formal.  A named general-\(q\) CDF and explicit density, their \(q\)-specific equations,
+transforms, moments and cumulants, smoothness, and uniqueness of the affine measure fixed
+point remain outside the formal boundary for the general geometric family.
 
 \begin{proposition}[The smoothing equation for the CDF]
 \label{integration:prop:CDF-smoothing-detailed}
@@ -1074,10 +1107,13 @@ Thus the law is reflection invariant:
  (x\mapsto1-x)_\#\mu=\mu.
  \label{integration:eq:law-reflection}
 \end{equation}
-Conditioning on the tail \(X'\), the head coordinate \(U_0\) is uniform, so
-\((U_0+X')/2\) has no atoms; equivalently, the law is absolutely continuous after
-convolution with the head uniform law.  Thus \(H\) is continuous.  Reflection invariance
-then gives
+Conditioning on the tail \(X'\), the head coordinate \(U_0\) is uniform, so the law of
+\((U_0+X')/2\) is absolutely continuous with respect to Lebesgue measure.  This smoothing
+step is now formalized by
+\lean{ProbabilityRepresentation.geometricUniformDistribution_absolutelyContinuous} at
+\(q=1/2\);
+\lean{ProbabilityRepresentation.geometricUniformDistribution_nullSingletonClass} packages
+the resulting null singletons.  Thus \(H\) is continuous.  Reflection invariance then gives
 \begin{equation}
  H(1-y)=1-H(y).
  \label{integration:eq:CDF-reflection}
@@ -2565,7 +2601,9 @@ The eleven-declaration generic tranche: almost-everywhere and pointwise head--ta
 recursion, continuous-linear and scalar naturality, shifted-law transport, and
 operator/scalar affine recursions; \cref{integration:sec:weighted-naturality}.\\
 \path{WeightedUniformDistribution.lean} &
-The compatibility head--tail, probability, scalar-law, and unit-interval surface;
+The compatibility head--tail, probability, scalar-law, and unit-interval surface, followed by
+the four-declaration s-finite uniform-smoothing, sharp weighted-law absolute-continuity, and
+null-singleton tranche;
 \cref{integration:sec:weighted-naturality}.\\
 \path{WeightedUniformSupport.lean} &
 The ten-declaration exact-support tranche: open positivity for arbitrary products,
@@ -2573,9 +2611,10 @@ continuous-pushforward support, support equal to the series range, exact signed-
 min/max intervals, and the nonnegative and unit-mass specializations;
 \cref{integration:sec:weighted-naturality}.\\
 \path{GeometricUniformLaw.lean} &
-The twenty-one-declaration named geometric weight, series, and law API: summability and mass,
-continuity and measurability, affine splitting, reflection, support equal to the series range
-for \(|q|<1\), and exact support \([0,1]\) for \(0\le q<1\);
+The twenty-three-declaration named geometric weight, series, and law API: summability and
+mass, continuity and measurability, affine splitting, reflection, absolute continuity, null
+singletons, and support equal to the series range for \(|q|<1\), with exact support \([0,1]\)
+for \(0\le q<1\);
 \cref{integration:sec:weighted-naturality}.\\
 \path{SubgraphFubini.lean} &
 \lean{integral_smul_setIntegral_subgraph}, the real- or complex-weighted Banach-valued
@@ -2669,16 +2708,19 @@ $\Up$, the signed extension, or the total inverse, including the enlarged admiss
 inverse-branch class.\\
 Product probability law & Headline proof only & Uniform convergence and measurability,
 head--tail pushforward identity, coordinate reflection, and exact dyadic support \([0,1]\).\\
-Generic weighted-law naturality and support & Not recorded in the pinned companion snapshot &
+Generic weighted-law naturality, absolute continuity, and support & Not recorded in the pinned companion snapshot &
 Almost-everywhere and pointwise head--tail recursion, continuous-linear and scalar
 naturality, shifted-law transport, conditional operator/scalar affine fixed-point laws, and
-the seven-name compatibility surface; a separate ten-name tranche gives support equal to
-the series range, exact signed-real min/max intervals, and nonnegative specializations.\\
+the seven-name compatibility surface; a four-name tranche gives s-finite uniform smoothing,
+sharp nontrivial weighted-law absolute continuity, and null singletons; a separate ten-name
+tranche gives support equal to the series range, exact signed-real min/max intervals, and
+nonnegative specializations.\\
 Named geometric-\(q\) law & Not recorded in the pinned companion snapshot &
 Exact weights, summability and mass, series and probability law, affine self-similarity,
-reflection, support equal to the series range for \(|q|<1\), exact support \([0,1]\) for
-\(0\le q<1\), and both half-base bridges; atomlessness, CDF/density identities, transforms,
-moments/cumulants, and fixed-point uniqueness remain outside the formal boundary.\\
+reflection, absolute continuity, null singletons, and support equal to the series range for
+\(|q|<1\), exact support \([0,1]\) for \(0\le q<1\), and both half-base bridges; a named
+general-\(q\) CDF and explicit density, their equations, transforms, moments/cumulants,
+smoothness, and fixed-point uniqueness remain outside the formal boundary.\\
 Probability--Laplace bridge & Absent & Generic Banach-valued partial and full survival layer
 cake, inverse layer cake and exact inverse area, identification of raw, endpoint, and tilted
 moments, complete monotonicity, and half-moment interpretation.\\
