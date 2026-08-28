@@ -122,8 +122,7 @@
 \author{Human-readable synthesis of the formal development\\
 \small Vladimir Reshetnikov's \texttt{ProveIt} repository}
 \date{Integrated repository snapshot: 27 August 2026\\
-\small shared base commit \nolinkurl{7b05fce557a326c435f9521ee1a55039429ef116};\\
-mainline declarations/reports \nolinkurl{4069e588554c8f77b6a0a3ba8fb4389880601653};
+\small mainline snapshot \nolinkurl{8e7aa582661f2828302f70748efe20d02d8ae9c7};
 Volterra addendum \nolinkurl{3da579387}}
 
 \begin{document}
@@ -1531,19 +1530,51 @@ equalities retain the points where either factor vanishes.  They are respectivel
 \path{IntegerZeroLocalFactorization.lean}; the last theorem allows an arbitrary
 nonzero \emph{complex} scale, with no order or reality hypothesis.
 
-Here is the reusable differential principle that will read off the leading
-coefficient.  Over any nontrivially normed field, if \(U\) is \(C^n\) at zero,
-then
+Here is the reusable all-order differential principle.  Let \(\mathbb K\) be
+any nontrivially normed field, let \(E\) be a normed \(\mathbb K\)-space, and
+let \(U:\mathbb K\to E\) be \(C^k\) at zero.  For every \(n,k\in\N\),
+\begin{equation}
+ D^k\!\left(z\mapsto z^n\mathbin{\cdot}U(z)\right)(0)
+ =\begin{cases}
+   \bigl(\binom{k}{n}:\mathbb K\bigr)(n!:\mathbb K)\mathbin{\cdot}
+      D^{k-n}U(0),&n\leq k,\\[1mm]
+   0,&k<n,
+  \end{cases}                                                     \label{eq:factored-all-index-jet}
+\end{equation}
+where \(\mathbin{\cdot}\) denotes scalar action on \(E\).  This is the
+vector-valued theorem \lean{iteratedDeriv_pow_smul_zero_eq_ite} in
+\path{LeadingJet.lean}.  At the index \(k=n+r\), its conditional disappears:
+\begin{equation}
+ D^{n+r}\!\left(z\mapsto z^n\mathbin{\cdot}U(z)\right)(0)
+ =\bigl(\binom{n+r}{n}:\mathbb K\bigr)(n!:\mathbb K)\mathbin{\cdot}
+   D^rU(0).                                                       \label{eq:factored-all-order-jet}
+\end{equation}
+The vector and scalar forms of \eqref{eq:factored-all-order-jet} are
+\lean{iteratedDeriv_pow_smul_zero_add} and
+\lean{iteratedDeriv_pow_mul_zero_add}.  If a scalar-valued function \(f\)
+agrees with \(z^nU(z)\) merely on a neighborhood of zero, the same formula is
+\lean{iteratedDeriv_eq_choose_factorial_mul_of_eventuallyEq_pow_mul}; no
+separate regularity hypothesis on \(f\) is needed.  At an arbitrary center
+\(z_0\), a vector-valued germ
+\(f(z)=(z-z_0)^n\mathbin{\cdot}U(z)\) has the all-index form
+\lean{iteratedDeriv_eq_ite_of_eventuallyEq_sub_pow_smul} and the \(n+r\) form
+\lean{iteratedDeriv_eq_choose_factorial_smul_of_eventuallyEq_sub_pow_smul};
+the scalar specialization is
+\lean{iteratedDeriv_eq_choose_factorial_mul_of_eventuallyEq_sub_pow_mul}.
+
+The coefficient is deliberately the product
+\(\binom{n+r}{n}n!\), with both natural numbers cast into \(\mathbb K\), not
+the quotient \((n+r)!/r!\).  Thus none of these theorems requires factorial
+division, characteristic zero, completeness, or analyticity.  In positive
+characteristic the displayed scalar can vanish, so the generic statement
+identifies the first \emph{potentially} nonzero jet rather than asserting
+nonvanishing.  Setting \(r=0\) recovers the compatibility formula
 \begin{equation}
  \left.\frac{\dd^n}{\dd z^n}\bigl(z^nU(z)\bigr)\right|_{z=0}
-   =n!\,U(0).                                                       \label{eq:factored-leading-jet}
+   =n!\,U(0),                                                       \label{eq:factored-leading-jet}
 \end{equation}
-This is \lean{iteratedDeriv_pow_mul_zero} in \path{LeadingJet.lean}.  More
-generally, the same conclusion holds for a function \(f\) whenever
-\(f(z)=z^nU(z)\) merely throughout a neighborhood of zero; this germ form is
-\lean{iteratedDeriv_eq_factorial_mul_of_eventuallyEq_pow_mul}.  Thus no global
-factorization, analyticity, or separately supplied regularity of \(f\) is
-needed.
+exported as \lean{iteratedDeriv_pow_mul_zero}; its zero-germ companion is
+\lean{iteratedDeriv_eq_factorial_mul_of_eventuallyEq_pow_mul}.
 
 We now apply the total sinc identities to the standalone product
 \(\Phi=\lean{rvachevFourierProduct}\).  Put
@@ -1612,8 +1643,21 @@ The Lean definition \lean{integerZeroLocalCofactor} is total for every integer
 \end{equation}
 by \lean{rvachevFourierProduct_int_add_eq_pow_mul_cofactor}; the same equality
 holds as a germ at \(w=0\) by
-\lean{rvachevFourierProduct_int_add_eventuallyEq_pow_mul_cofactor}.
-Moreover \(U_m\) is analytic at zero, and its exact central value is
+\lean{rvachevFourierProduct_int_add_eventuallyEq_pow_mul_cofactor}.  In the
+original coordinate this is the centered germ
+\[
+ \Phi(z)=(z-m)^{d_m}U_m(z-m)
+ \quad\hbox{near }z=m,
+\]
+exported as
+\lean{rvachevFourierProduct_int_eventuallyEq_sub_pow_mul_cofactor}.
+
+For every integer parameter \(m\), with no parity or nonzero hypothesis, the
+total quotient \(U_m\) is analytic at every point \(w_0\) satisfying
+\(m+w_0\ne0\), by
+\lean{integerZeroLocalCofactor_analyticAt_of_add_ne}.  For nonzero \(m\), its
+local-origin specialization is \lean{integerZeroLocalCofactor_analyticAt}.
+Its exact central value is
 \begin{equation}
  U_m(0)=-\frac{\Phi(q_m/2)}{m^{d_m}}\ne0.                          \label{eq:integer-zero-unit-value}
 \end{equation}
@@ -1638,11 +1682,22 @@ entire leading jet:
  \Phi^{(d_m)}(m)
    &=-\frac{d_m!\,\Phi(q_m/2)}{m^{d_m}}\ne0.                       \label{eq:integer-zero-leading-jet}
 \end{align}
+In fact the division-free all-order identity is, for every \(r\in\N\),
+\begin{equation}
+ \boxed{\quad
+ \Phi^{(d_m+r)}(m)
+ =\binom{d_m+r}{d_m}d_m!\,U_m^{(r)}(0).
+ \quad}                                                           \label{eq:integer-zero-all-higher-jets}
+\end{equation}
 The order statement is
 \lean{analyticOrderAt_rvachevFourierProduct_int}; the lower derivatives are
 \lean{iteratedDeriv_rvachevFourierProduct_int_eq_zero_of_lt}; the displayed
-leading coefficient is \lean{iteratedDeriv_rvachevFourierProduct_int}; and its
-nonvanishing is also exported directly as
+all-order formula is
+\lean{iteratedDeriv_rvachevFourierProduct_int_add_order}; the displayed
+leading coefficient combines its \(r=0\) case with
+\lean{integerZeroLocalCofactor_zero} and is exported as
+\lean{iteratedDeriv_rvachevFourierProduct_int}; and its nonvanishing is also
+exported directly as
 \lean{iteratedDeriv_rvachevFourierProduct_int_ne_zero}, all in
 \path{IntegerZeroAnalyticOrder.lean}.  This strengthens the real
 positive-integer limit in \Cref{thm:fourier-zeros}: it is a signed-integer,
@@ -6349,7 +6404,7 @@ Fourier analysis &
 \path{PeakRayEnvelope.lean}, \path{GlobalDecayEnvelope.lean},
 \path{RvachevFourierDecay.lean}, \path{VarianceBookkeeping.lean},
 \path{BirkhoffVariance.lean}, \path{BirkhoffProductBridge.lean}\\
-Local leading-jet calculus &
+Local all-order jet calculus &
 \path{LeadingJet.lean}\\
 Global derivatives, value distributions, and flatness &
 \path{GlobalExtension.lean}, \path{GlobalBounds.lean},
@@ -6586,13 +6641,11 @@ V.~Reshetnikov,
 V.~Reshetnikov,
 \newblock \emph{ProveIt: Analysis/FabiusFunction},
 \newblock Lean~4 formal development, source snapshot
-\texttt{7b05fce557a326c435f9521ee1a55039429ef116}, consulted 27 August 2026.
-\newblock \url{https://github.com/VladimirReshetnikov/ProveIt/tree/7b05fce557a326c435f9521ee1a55039429ef116/Analysis/FabiusFunction}.
-\newblock The mainline declaration/report integration was checked at commit
-\texttt{4069e588554c8f77b6a0a3ba8fb4389880601653}, and the normalized Volterra and
-Fabius-antiderivative addendum at commit
-\texttt{3da579387b3848128f0d90dcf761d44bff04dba5}, on the same date.
-\newblock \url{https://github.com/VladimirReshetnikov/ProveIt/tree/4069e588554c8f77b6a0a3ba8fb4389880601653/Analysis/FabiusFunction}.
+\texttt{8e7aa582661f2828302f70748efe20d02d8ae9c7}, consulted 27 August 2026.
+\newblock \url{https://github.com/VladimirReshetnikov/ProveIt/tree/8e7aa582661f2828302f70748efe20d02d8ae9c7/Analysis/FabiusFunction}.
+\newblock The normalized Volterra and Fabius-antiderivative addendum was
+checked at commit \texttt{3da579387b3848128f0d90dcf761d44bff04dba5}, on the
+same date.
 \newblock \url{https://github.com/VladimirReshetnikov/ProveIt/tree/3da579387b3848128f0d90dcf761d44bff04dba5/Analysis/FabiusFunction}.
 
 \end{thebibliography}
