@@ -1,10 +1,6 @@
 import FabiusFunction.Existence
 import FabiusFunction.WeightedUniformSeries
-import Mathlib.MeasureTheory.Constructions.UnitInterval
-import Mathlib.MeasureTheory.Integral.Prod
 import Mathlib.Probability.CDF
-import Mathlib.Probability.Independence.InfinitePi
-import Mathlib.Probability.Independence.Process.Basic
 
 /-!
 # The product-probability representation of Rvachev's function
@@ -60,29 +56,39 @@ theorem weightedCoordinateSum_eq_weightedUniformSeries (ω : SampleSpace) :
   simp only [smul_eq_mul]
   ring
 
-private lemma summable_coordinate_series (ω : SampleSpace) :
-    Summable (fun n : ℕ => (ω n : ℝ) / 2 / (2 : ℝ) ^ n) := by
-  refine (summable_geometric_two' 1).of_norm_bounded (fun n => ?_)
-  have hn : 0 ≤ (ω n : ℝ) / 2 / (2 : ℝ) ^ n :=
-    div_nonneg (div_nonneg (ω n).property.1 (by norm_num)) (by positivity)
-  rw [Real.norm_eq_abs, abs_of_nonneg hn]
-  gcongr
-  exact (ω n).property.2
+private abbrev dyadicWeight (n : ℕ) : ℝ :=
+  (1 : ℝ) / 2 / (2 : ℝ) ^ n
+
+private lemma dyadicWeight_nonneg (n : ℕ) : 0 ≤ dyadicWeight n := by
+  positivity
+
+private lemma summable_norm_dyadicWeight :
+    Summable (fun n : ℕ => ‖dyadicWeight n‖) := by
+  have hnorm : (fun n : ℕ => ‖dyadicWeight n‖) = dyadicWeight := by
+    funext n
+    rw [Real.norm_eq_abs, abs_of_nonneg (dyadicWeight_nonneg n)]
+  rw [hnorm]
+  exact summable_geometric_two' 1
+
+private lemma tsum_dyadicWeight : ∑' n : ℕ, dyadicWeight n = 1 :=
+  tsum_geometric_two' 1
+
+private lemma dyadicWeight_shift (n : ℕ) :
+    dyadicWeight (Nat.succ n) = (1 / 2 : ℝ) • dyadicWeight n := by
+  simp only [dyadicWeight, Nat.succ_eq_add_one, pow_succ, smul_eq_mul]
+  field_simp
+
+private lemma weightedCoordinateSum_eq_weightedUniformSeries_fun :
+    weightedCoordinateSum = weightedUniformSeries dyadicWeight := by
+  funext ω
+  exact weightedCoordinateSum_eq_weightedUniformSeries ω
 
 /-- The random series is continuous on the sample space, because it
 converges uniformly against the summable geometric majorant
 `n ↦ 1 / 2 / 2 ^ n`. -/
 lemma continuous_weightedCoordinateSum : Continuous weightedCoordinateSum := by
-  apply continuous_tsum
-  · intro n
-    fun_prop
-  · exact summable_geometric_two' 1
-  · intro n ω
-    have hn : 0 ≤ (ω n : ℝ) / 2 / (2 : ℝ) ^ n :=
-      div_nonneg (div_nonneg (ω n).property.1 (by norm_num)) (by positivity)
-    rw [Real.norm_eq_abs, abs_of_nonneg hn]
-    gcongr
-    exact (ω n).property.2
+  rw [weightedCoordinateSum_eq_weightedUniformSeries_fun]
+  exact continuous_weightedUniformSeries summable_norm_dyadicWeight
 
 /-- Measurability of the random series, read off from its continuity.
 This is the hypothesis that lets `uniformProduct` be pushed forward to
@@ -93,68 +99,75 @@ lemma measurable_weightedCoordinateSum : Measurable weightedCoordinateSum :=
 /-- The random series is nonnegative, since every summand is. -/
 lemma weightedCoordinateSum_nonneg (ω : SampleSpace) :
     0 ≤ weightedCoordinateSum ω := by
-  exact tsum_nonneg fun n =>
-    div_nonneg (div_nonneg (ω n).property.1 (by norm_num)) (by positivity)
+  rw [weightedCoordinateSum_eq_weightedUniformSeries]
+  exact weightedUniformSeries_nonneg dyadicWeight_nonneg ω
 
 /-- The random series is at most `1`, by comparison with
 `∑' n, 1 / 2 / 2 ^ n = 1`.  With `weightedCoordinateSum_nonneg` this
 gives `weightedCoordinateSum_mem_Icc`. -/
 lemma weightedCoordinateSum_le_one (ω : SampleSpace) :
     weightedCoordinateSum ω ≤ 1 := by
-  rw [weightedCoordinateSum]
-  calc
-    _ ≤ ∑' n : ℕ, (1 : ℝ) / 2 / (2 : ℝ) ^ n :=
-      (summable_coordinate_series ω).tsum_le_tsum
-        (fun n => by gcongr; exact (ω n).property.2)
-        (summable_geometric_two' 1)
-    _ = 1 := tsum_geometric_two' 1
+  rw [weightedCoordinateSum_eq_weightedUniformSeries]
+  simpa only [tsum_dyadicWeight] using
+    weightedUniformSeries_le_tsum summable_norm_dyadicWeight
+      dyadicWeight_nonneg ω
 
 /-- The random series takes values in the closed unit interval pointwise. -/
 lemma weightedCoordinateSum_mem_Icc (ω : SampleSpace) :
-    weightedCoordinateSum ω ∈ Icc (0 : ℝ) 1 :=
-  ⟨weightedCoordinateSum_nonneg ω, weightedCoordinateSum_le_one ω⟩
+    weightedCoordinateSum ω ∈ Icc (0 : ℝ) 1 := by
+  rw [weightedCoordinateSum_eq_weightedUniformSeries]
+  simpa only [tsum_dyadicWeight] using
+    weightedUniformSeries_mem_Icc summable_norm_dyadicWeight
+      dyadicWeight_nonneg ω
 
 /-- One step of the recurrence: the random series at `ω` equals
 `(ω 0 + X (tail ω)) / 2`.  This pointwise identity is what
 `weightedSumDistribution_selfSimilar` transports to the level of laws. -/
 lemma weightedCoordinateSum_split (ω : SampleSpace) :
     weightedCoordinateSum ω = ((ω 0 : ℝ) + weightedCoordinateSum (tail ω)) / 2 := by
-  rw [weightedCoordinateSum, (summable_coordinate_series ω).tsum_eq_zero_add]
-  simp only [pow_zero, div_one]
-  have htail : (∑' n : ℕ, (ω (n + 1) : ℝ) / 2 / (2 : ℝ) ^ (n + 1)) =
-      weightedCoordinateSum (tail ω) / 2 := by
-    rw [weightedCoordinateSum, ← tsum_div_const]
-    congr 1
-    funext n
-    simp only [tail, Nat.succ_eq_add_one, pow_succ]
-    field_simp
-  rw [htail]
+  rw [weightedCoordinateSum_eq_weightedUniformSeries ω,
+    weightedCoordinateSum_eq_weightedUniformSeries (tail ω),
+    weightedUniformSeries_geometric_split (c := (1 / 2 : ℝ))
+      summable_norm_dyadicWeight dyadicWeight_shift]
+  simp only [dyadicWeight, pow_zero, div_one, smul_eq_mul]
   ring
 
 /-- The distribution of the random series. -/
 noncomputable def weightedSumDistribution : Measure ℝ :=
   uniformProduct.map weightedCoordinateSum
 
+/-- The dyadic random-series law is the specialization of the general
+uniform-coordinate law to the weights `1 / 2 / 2 ^ n`. -/
+theorem weightedSumDistribution_eq_weightedUniformDistribution :
+    weightedSumDistribution =
+      weightedUniformDistribution
+        (fun n : ℕ => (1 : ℝ) / 2 / (2 : ℝ) ^ n) := by
+  unfold weightedSumDistribution weightedUniformDistribution
+  rw [weightedCoordinateSum_eq_weightedUniformSeries_fun]
+
 /-- The law of the random series is a probability measure, being the
 pushforward of one along a measurable map. -/
-instance : IsProbabilityMeasure weightedSumDistribution :=
-  Measure.isProbabilityMeasure_map measurable_weightedCoordinateSum.aemeasurable
+instance : IsProbabilityMeasure weightedSumDistribution := by
+  rw [weightedSumDistribution_eq_weightedUniformDistribution]
+  exact isProbabilityMeasure_weightedUniformDistribution
+    summable_norm_dyadicWeight
 
 /-- The law of the random series is supported on the closed unit interval. -/
 lemma weightedSumDistribution_Icc :
     weightedSumDistribution (Icc (0 : ℝ) 1) = 1 := by
-  rw [weightedSumDistribution, Measure.map_apply measurable_weightedCoordinateSum
-    measurableSet_Icc]
-  have hpreimage : weightedCoordinateSum ⁻¹' Icc (0 : ℝ) 1 = Set.univ :=
-    Set.eq_univ_of_forall weightedCoordinateSum_mem_Icc
-  rw [hpreimage, measure_univ]
+  rw [weightedSumDistribution_eq_weightedUniformDistribution]
+  simpa only [tsum_dyadicWeight] using
+    weightedUniformDistribution_Icc summable_norm_dyadicWeight
+      dyadicWeight_nonneg
 
 /-- The weighted-sum law assigns no mass outside its natural support. -/
 @[simp]
 lemma weightedSumDistribution_compl_Icc :
     weightedSumDistribution ((Icc (0 : ℝ) 1)ᶜ) = 0 := by
-  rw [measure_compl measurableSet_Icc (by simp),
-    weightedSumDistribution_Icc, measure_univ, tsub_self]
+  rw [weightedSumDistribution_eq_weightedUniformDistribution]
+  simpa only [tsum_dyadicWeight] using
+    weightedUniformDistribution_compl_Icc summable_norm_dyadicWeight
+      dyadicWeight_nonneg
 
 /-- The pair (first coordinate, series of the remaining coordinates) has
 law `volume` times `weightedSumDistribution`: the head is uniform on
@@ -163,16 +176,10 @@ lemma uniformProduct_map_head_tailSum :
     uniformProduct.map
         (fun ω : SampleSpace => (ω 0, weightedCoordinateSum (tail ω))) =
       (volume : Measure (Set.Icc (0 : ℝ) 1)).prod weightedSumDistribution := by
-  have hind := independent_head_tail.comp measurable_id measurable_weightedCoordinateSum
-  have h := hind.map_prod_eq_prod_map_map (measurable_pi_apply 0).aemeasurable
-    (measurable_weightedCoordinateSum.comp measurable_tail).aemeasurable
-  have hhead := coordinate_has_uniform_law 0
-  have htail : uniformProduct.map (weightedCoordinateSum ∘ tail) =
-      weightedSumDistribution := by
-    rw [← Measure.map_map measurable_weightedCoordinateSum measurable_tail,
-      uniformProduct_map_tail]
-    rfl
-  rwa [hhead, htail] at h
+  simpa only [← weightedCoordinateSum_eq_weightedUniformSeries,
+    ← weightedSumDistribution_eq_weightedUniformDistribution] using
+      (uniformProduct_map_head_tailWeightedUniformSeries
+        (v := dyadicWeight) summable_norm_dyadicWeight)
 
 /-- Self-similarity of the law: `weightedSumDistribution` is the image of
 `volume` times `weightedSumDistribution` under `p ↦ (p.1 + p.2) / 2`.
@@ -182,39 +189,30 @@ lemma weightedSumDistribution_selfSimilar :
     weightedSumDistribution =
       ((volume : Measure (Set.Icc (0 : ℝ) 1)).prod weightedSumDistribution).map
         (fun p => ((p.1 : ℝ) + p.2) / 2) := by
-  change uniformProduct.map weightedCoordinateSum =
-    ((volume : Measure (Set.Icc (0 : ℝ) 1)).prod
-      (uniformProduct.map weightedCoordinateSum)).map
-        (fun p => ((p.1 : ℝ) + p.2) / 2)
-  have hjoint : uniformProduct.map
-        (fun ω : SampleSpace => (ω 0, weightedCoordinateSum (tail ω))) =
-      (volume : Measure (Set.Icc (0 : ℝ) 1)).prod
-        (uniformProduct.map weightedCoordinateSum) := by
-    simpa only [weightedSumDistribution] using uniformProduct_map_head_tailSum
-  rw [← hjoint]
-  rw [Measure.map_map (μ := uniformProduct)
-    (f := fun ω : SampleSpace => (ω 0, weightedCoordinateSum (tail ω)))
-    (g := fun p : Set.Icc (0 : ℝ) 1 × ℝ => ((p.1 : ℝ) + p.2) / 2)
-    (by fun_prop)
-    ((measurable_pi_apply 0).prodMk
-      (measurable_weightedCoordinateSum.comp measurable_tail))]
-  apply Measure.map_congr
-  filter_upwards with ω
-  exact weightedCoordinateSum_split ω
+  simp only [weightedSumDistribution_eq_weightedUniformDistribution]
+  calc
+    weightedUniformDistribution dyadicWeight =
+        ((volume : Measure (Set.Icc (0 : ℝ) 1)).prod
+          (weightedUniformDistribution dyadicWeight)).map
+            (fun p => (p.1 : ℝ) • dyadicWeight 0 + (1 / 2 : ℝ) • p.2) :=
+      weightedUniformDistribution_geometric_split
+        (c := (1 / 2 : ℝ)) summable_norm_dyadicWeight dyadicWeight_shift
+    _ = ((volume : Measure (Set.Icc (0 : ℝ) 1)).prod
+          (weightedUniformDistribution dyadicWeight)).map
+            (fun p => ((p.1 : ℝ) + p.2) / 2) := by
+      apply Measure.map_congr
+      filter_upwards with p
+      simp only [dyadicWeight, pow_zero, div_one, smul_eq_mul]
+      ring
 
 /-- Reflecting every coordinate sends the random series `X` to `1 - X`;
 the constant comes from `∑' n, 1 / 2 / 2 ^ n = 1`. -/
 lemma weightedCoordinateSum_reflect (ω : SampleSpace) :
     weightedCoordinateSum (reflectCoordinates ω) = 1 - weightedCoordinateSum ω := by
-  rw [weightedCoordinateSum, weightedCoordinateSum]
-  have hterm (n : ℕ) :
-      ((reflectCoordinates ω n : Set.Icc (0 : ℝ) 1) : ℝ) / 2 / (2 : ℝ) ^ n =
-        (1 : ℝ) / 2 / (2 : ℝ) ^ n - (ω n : ℝ) / 2 / (2 : ℝ) ^ n := by
-    simp only [reflectCoordinates, unitInterval.symm, Subtype.coe_mk]
-    ring
-  simp_rw [hterm]
-  rw [(summable_geometric_two' 1).tsum_sub (summable_coordinate_series ω),
-    tsum_geometric_two' 1]
+  rw [weightedCoordinateSum_eq_weightedUniformSeries (reflectCoordinates ω),
+    weightedCoordinateSum_eq_weightedUniformSeries ω]
+  simpa only [tsum_dyadicWeight] using
+    weightedUniformSeries_reflect summable_norm_dyadicWeight ω
 
 /-- The law of the random series is invariant under `x ↦ 1 - x`, i.e. it
 is symmetric about `1/2`.  It gives `weightedSumCDF_symmetry` here, and
@@ -222,19 +220,10 @@ is reused in `ProbabilityLaplaceMoments` to relate the endpoint moments
 of the law at `0` and at `1`. -/
 lemma weightedSumDistribution_reflection :
     weightedSumDistribution.map (fun x : ℝ => 1 - x) = weightedSumDistribution := by
-  rw [weightedSumDistribution,
-    Measure.map_map (by fun_prop : Measurable fun x : ℝ => 1 - x)
-      measurable_weightedCoordinateSum]
-  calc
-    uniformProduct.map ((fun x : ℝ => 1 - x) ∘ weightedCoordinateSum) =
-        uniformProduct.map (weightedCoordinateSum ∘ reflectCoordinates) := by
-      apply Measure.map_congr
-      filter_upwards with ω
-      exact (weightedCoordinateSum_reflect ω).symm
-    _ = (uniformProduct.map reflectCoordinates).map weightedCoordinateSum := by
-      rw [Measure.map_map measurable_weightedCoordinateSum measurable_reflectCoordinates]
-    _ = uniformProduct.map weightedCoordinateSum := by
-      rw [uniformProduct_map_reflectCoordinates]
+  simp only [weightedSumDistribution_eq_weightedUniformDistribution]
+  simpa only [tsum_dyadicWeight] using
+    weightedUniformDistribution_reflection
+      (w := dyadicWeight) summable_norm_dyadicWeight
 
 
 /-- Its cumulative distribution function. -/
@@ -370,13 +359,9 @@ lemma weightedSumCDF_zero_of_nonpos {x : ℝ} (hx : x ≤ 0) :
       have hne : (ω 0 : ℝ) ≠ 0 := fun h => hn (Subtype.ext h)
       have hpos : 0 < (ω 0 : ℝ) := lt_of_le_of_ne (ω 0).property.1 (Ne.symm hne)
       have hle : (ω 0 : ℝ) / 2 ≤ weightedCoordinateSum ω := by
-        rw [weightedCoordinateSum, (summable_coordinate_series ω).tsum_eq_zero_add]
-        simp only [pow_zero, div_one]
-        apply le_add_of_nonneg_right
-        apply tsum_nonneg
-        intro n
-        exact div_nonneg (div_nonneg (ω (n + 1)).property.1 (by norm_num))
-          (pow_nonneg (by norm_num) _)
+        rw [weightedCoordinateSum_split]
+        have htail := weightedCoordinateSum_nonneg (tail ω)
+        linarith
       linarith
     apply measure_mono_null hcoord
     calc
