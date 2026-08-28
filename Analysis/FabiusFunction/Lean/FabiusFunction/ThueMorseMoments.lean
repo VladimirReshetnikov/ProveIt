@@ -1,4 +1,5 @@
 import FabiusFunction.ThueMorseBlockAlgebra
+import FabiusFunction.ThueMorseBitSupport
 import FabiusFunction.ThueMorseExponential
 import Mathlib.RingTheory.PowerSeries.Basic
 import Mathlib.RingTheory.PowerSeries.Exp
@@ -54,9 +55,9 @@ The last two sections prove the **complete power-moment composition
 formula** on an arbitrary finite set `S` of bit positions, of which the
 dyadic block is the case `S = range m`.
 
-* `binaryWeight_sum_two_pow_eq_card` and `thueMorseSign_sum_two_pow` — the
-  hypothesis-free weight and sign laws: `wt(∑_{j∈T} 2^j) = |T|` and
-  `ε(∑_{j∈T} 2^j) = (-1)^|T|` for every finite `T`, no block bound needed.
+* The imported `binaryWeight_sum_two_pow_eq_card` and
+  `thueMorseSign_sum_two_pow` laws identify the weight and sign of every
+  finite two-power encoding, with no block bound.
 * `prod_one_sub_pow_powerset'` — the master product for an **arbitrary**
   exponent function `e : ℕ → ℕ`, over any commutative ring:
   `∏_{j∈S} (1 - z^(e j)) = ∑_{T⊆S} (-1)^|T|·z^(∑_{j∈T} e j)`.  Expanding
@@ -302,23 +303,8 @@ theorem sum_thueMorseSign_mul_midpoint_pow_self (m : ℕ) :
 
 /-! ### Master products on arbitrary two-power supports -/
 
-/-- The binary weight of a sum of distinct two-powers is the number of
-summands — for every finite set of positions, with no block bound. -/
-theorem binaryWeight_sum_two_pow_eq_card (T : Finset ℕ) :
-    binaryWeight (∑ j ∈ T, 2 ^ j) = T.card := by
-  refine binaryWeight_sum_two_pow (m := (∑ j ∈ T, 2 ^ j) + 1) ?_
-  intro j hj
-  rw [Finset.mem_range]
-  have h1 : 2 ^ j ≤ ∑ i ∈ T, 2 ^ i :=
-    Finset.single_le_sum (fun i _ => Nat.zero_le _) hj
-  have h2 : j < 2 ^ j := Nat.lt_two_pow_self
-  omega
-
-/-- The Thue–Morse sign of a sum of distinct two-powers is the parity of
-the number of summands. -/
-theorem thueMorseSign_sum_two_pow (T : Finset ℕ) :
-    thueMorseSign (∑ j ∈ T, 2 ^ j) = (-1 : ℤ) ^ T.card := by
-  rw [thueMorseSign, binaryWeight_sum_two_pow_eq_card]
+/- The unrestricted weight and sign dictionary for distinct two-power sums
+is supplied by the foundational `ThueMorseBitSupport` module. -/
 
 /-- **Master product for an arbitrary exponent function.**  Over any
 commutative ring `R`, any finite set of indices `S : Finset ℕ` and any

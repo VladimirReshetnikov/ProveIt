@@ -1,4 +1,6 @@
-import FabiusFunction.ThueMorseLucasSupport
+import FabiusFunction.ThueMorseBitSupport
+import FabiusFunction.ThueMorseBooleanCube
+import Mathlib.Data.Nat.Bitwise
 
 /-!
 # The Walsh spectrum of the Thue–Morse block
