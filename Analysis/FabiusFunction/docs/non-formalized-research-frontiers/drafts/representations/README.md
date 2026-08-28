@@ -2,7 +2,7 @@
 
 Series and orthogonal-expansion representations of the up-function,
 consolidated (2026-08-28) into the single volume
-[`Representation_Frontiers/`](Representation_Frontiers/) (107 pp):
+[`Representation_Frontiers/`](Representation_Frontiers/) (108 pp):
 
 - **Part I** — *Resolvent, Continued-Fraction, and Transform
   Representations of the Fabius–Rvachev System* (Jacobi coefficients,
@@ -18,13 +18,16 @@ consolidated (2026-08-28) into the single volume
   energies, inverse-quantile duality; formerly
   `Fabius_Rvachev_Multiresolution_Report/`).
 
-(The random-variable representation itself is formalized in
-`ProbabilityRepresentation.lean`.  The reusable affine-difference iterate,
-open-domain derivative propagation theorem, and dyadic Thue--Morse orbit are
-formalized in `AffineDifferenceOrbit.lean`.  The Cauchy--Stieltjes transform of
-the up measure and its one-step resolvent DDE are still open; the affine module
-formalizes only the conditional passage from that identity to its all-order
-orbit.)
+(The random-variable representation is formalized in
+`ProbabilityRepresentation.lean`, and `RandomSeriesLaw.lean` identifies the
+unit-interval law with the affine image of the up measure.
+`CauchyTransform.lean` defines the report-sign Cauchy--Stieltjes transforms and
+proves their measure forms, the up-density form, holomorphy off the named interval cuts,
+first-derivative kernel formulas, and the affine bridge
+`S(z) = 2 R(2z - 1)`.  `AffineDifferenceOrbit.lean` formalizes the reusable
+conditional all-order passage.  The logarithmic fixed point, the one-step
+resolvent DDE, and hence its measure-specific Thue--Morse orbit and kernel
+identity remain open.)
 
 The mathematical bodies of the member drafts were preserved (labels,
 citation keys, and asset paths were mechanically prefixed per part),
