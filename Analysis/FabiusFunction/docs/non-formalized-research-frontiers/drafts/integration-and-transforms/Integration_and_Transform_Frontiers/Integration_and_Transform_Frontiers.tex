@@ -15789,7 +15789,13 @@ ratios $a_n=h_{n+1}/h_n$ are well-defined and positive
 \path{MomentHankelValues.lean} identifies the measure moments with the exact rational
 moment recursion (\nolinkurl{Fabius.upMoment\_even}; odd moments vanish) and evaluates the
 first data in closed form --- $h_1=1$, $h_2=\tfrac19$, $a_0=1$, and $a_1=\tfrac19$, the
-variance (\nolinkurl{Fabius.hankelDet\_two}, \nolinkurl{Fabius.hankelRatio\_one}).  The finite
+variance (\nolinkurl{Fabius.hankelDet\_two}, \nolinkurl{Fabius.hankelRatio\_one}).  The orthogonal
+polynomials themselves are now constructed:
+\path{OrthogonalPolynomialConstruction.lean} realizes $h_nP_n(x)$ as the bordered
+Hankel determinant (\nolinkurl{Fabius.hankelOrthoValue}) and proves the orthogonality
+relations $\int P_n(x)\,x^{j}\dd\mu_{\Up}=0$ for $j<n$
+(\nolinkurl{Fabius.integral\_hankelOrthoValue\_mul\_pow}) by the classical duplicated-row
+argument, formalized through the last-row cofactor expansion.  The finite
 J-fraction convergents and the deeper certificates remain open.
 
 % --------------------------------------------------------------------------
