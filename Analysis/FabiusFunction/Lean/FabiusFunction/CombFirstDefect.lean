@@ -53,6 +53,7 @@ theorem iteratedDeriv_rvachevFourierProduct_nat_mul_int_of_odd
         Nat.odd_iff.mp (Int.natAbs_odd.mpr hℓ)
       omega
     rw [habs, padicValNat.mul hM (Int.natAbs_ne_zero.mpr hℓ0), hodd]
+    omega
   have h := iteratedDeriv_rvachevFourierProduct_int ((M : ℤ) * ℓ) hm0
   rw [hval] at h
   have hpt : ((((M : ℤ) * ℓ : ℤ)) : ℂ) = (M : ℂ) * (ℓ : ℂ) := by
