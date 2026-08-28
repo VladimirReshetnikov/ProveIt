@@ -118,4 +118,89 @@ theorem fourier_monomialRvachevSchwartz_nat_int_ne_zero_of_odd
   · exact pow_ne_zero _ hu_ne h'
   · exact hD_ne h'
 
+/-- Sharp valuation form of the alias vanishing: the `p`-th
+derivative dies at `M·ℓ` whenever `p ≤ v₂(M) + v₂(ℓ)` — the mesh and
+the frequency contribute their two-adic valuations jointly. -/
+theorem iteratedDeriv_rvachevFourier_nat_mul_int_eq_zero_of_le
+    (F : BoundedFabius) (hF : IsFabius F) {M : ℕ} (hM : M ≠ 0)
+    {ℓ : ℤ} (hℓ : ℓ ≠ 0) {p : ℕ}
+    (hp : p ≤ padicValNat 2 M + padicValNat 2 ℓ.natAbs) :
+    iteratedDeriv p (rvachevFourier F) ((M : ℂ) * (ℓ : ℂ)) = 0 := by
+  have hfun : rvachevFourier F = rvachevFourierProduct :=
+    funext (rvachevFourier_eq_product F hF)
+  rw [hfun]
+  have hpt : (M : ℂ) * (ℓ : ℂ) = ((((M : ℤ) * ℓ : ℤ)) : ℂ) := by
+    push_cast
+    ring
+  rw [hpt]
+  refine iteratedDeriv_rvachevFourierProduct_int_eq_zero_of_lt
+    ((M : ℤ) * ℓ) (mul_ne_zero (Int.natCast_ne_zero.mpr hM) hℓ) ?_
+  have habs : ((M : ℤ) * ℓ).natAbs = M * ℓ.natAbs := by
+    rw [Int.natAbs_mul]
+    simp
+  rw [habs]
+  have hval : padicValNat 2 (M * ℓ.natAbs) =
+      padicValNat 2 M + padicValNat 2 ℓ.natAbs :=
+    padicValNat.mul hM (Int.natAbs_ne_zero.mpr hℓ)
+  omega
+
+/-- Sharp valuation form of the transform vanishing. -/
+theorem fourier_monomialRvachevSchwartz_nat_int_eq_zero_of_le
+    (F : BoundedFabius) (hF : IsFabius F) {M : ℕ} (hM : M ≠ 0)
+    {p : ℕ} {ℓ : ℤ} (hℓ : ℓ ≠ 0)
+    (hp : p ≤ padicValNat 2 M + padicValNat 2 ℓ.natAbs) :
+    𝓕 (⇑(monomialRvachevSchwartz F hF p ((M : ℝ))⁻¹
+      (inv_ne_zero (Nat.cast_ne_zero.mpr hM)))) (ℓ : ℝ) = 0 := by
+  have hu : (0 : ℝ) < ((M : ℝ))⁻¹ :=
+    inv_pos.mpr (Nat.cast_pos.mpr (Nat.pos_of_ne_zero hM))
+  have hne : ((M : ℝ))⁻¹ ≠ 0 := hu.ne'
+  have hkey := fourier_monomialRvachevSchwartz F hF p hne (ℓ : ℝ)
+  rw [iteratedDeriv_fourier_scaledRvachevSchwartz F hF hu p (ℓ : ℝ)]
+    at hkey
+  have hpt : ((((ℓ : ℝ) / ((M : ℝ))⁻¹ : ℝ)) : ℂ) =
+      (M : ℂ) * (ℓ : ℂ) := by
+    rw [division_def, inv_inv]
+    push_cast
+    ring
+  rw [hpt, iteratedDeriv_rvachevFourier_nat_mul_int_eq_zero_of_le
+    F hF hM hℓ hp, smul_zero, smul_zero] at hkey
+  have hcoeff : ((-(2 * (Real.pi : ℂ) * Complex.I)) ^ p : ℂ) ≠ 0 := by
+    apply pow_ne_zero
+    simp only [neg_ne_zero]
+    exact mul_ne_zero (mul_ne_zero two_ne_zero
+      (Complex.ofReal_ne_zero.mpr Real.pi_ne_zero)) Complex.I_ne_zero
+  rcases smul_eq_zero.mp hkey with h | h
+  · exact absurd h hcoeff
+  · exact h
+
+/-- The zero-frequency Fourier coefficient of the comb is the
+integral. -/
+theorem fourier_monomialRvachevSchwartz_nat_zero (F : BoundedFabius)
+    (hF : IsFabius F) {M : ℕ} (hM : M ≠ 0) (p : ℕ) :
+    𝓕 (⇑(monomialRvachevSchwartz F hF p ((M : ℝ))⁻¹
+        (inv_ne_zero (Nat.cast_ne_zero.mpr hM)))) (0 : ℝ) =
+      ∫ x : ℝ, ((x ^ p * rvachevUp F (((M : ℝ))⁻¹ * x) : ℝ) : ℂ) := by
+  rw [Real.fourier_real_eq_integral_exp_smul]
+  refine integral_congr_ae (Filter.Eventually.of_forall fun v => ?_)
+  dsimp only
+  simp [monomialRvachevSchwartz_apply]
+
+/-- **The spectral display**: the shifted monomial comb *is* its
+Fourier series, at every degree, mesh, and shift.  Combined with the
+coefficient trichotomy — the zero frequency carries the integral
+(`fourier_monomialRvachevSchwartz_nat_zero`), frequencies with
+`p ≤ v₂(M) + v₂(ℓ)` vanish
+(`fourier_monomialRvachevSchwartz_nat_int_eq_zero_of_le`), and at the
+threshold degree the odd frequencies survive with exact values
+(`fourier_monomialRvachevSchwartz_nat_int_ne_zero_of_odd`) — this is
+the comb's complete spectral resolution. -/
+theorem tsum_shifted_monomial_eq_tsum_fourier (F : BoundedFabius)
+    (hF : IsFabius F) {M : ℕ} (hM : M ≠ 0) (p : ℕ) (θ : ℝ) :
+    ∑' k : ℤ, monomialRvachevSchwartz F hF p ((M : ℝ))⁻¹
+        (inv_ne_zero (Nat.cast_ne_zero.mpr hM)) (θ + k) =
+      ∑' ℓ : ℤ, 𝓕 (monomialRvachevSchwartz F hF p ((M : ℝ))⁻¹
+          (inv_ne_zero (Nat.cast_ne_zero.mpr hM))) ℓ *
+        fourier ℓ (θ : UnitAddCircle) :=
+  SchwartzMap.tsum_eq_tsum_fourier _ θ
+
 end Fabius
