@@ -8180,10 +8180,20 @@ characteristic-function route anticipated in the promotion table below.  On the
 random-variable side, the representation itself is formalized independently in
 \path{ProbabilityRepresentation.lean}: the product probability space of uniform digits,
 the random series $Y_\infty$, and the identifications
-$F(x)=\Prob[Y\le x]$ and $\Up(x)=\Prob[Y\le1-|x|]$ (Arias de Reyna's Theorem~3).  What
-remains unformalized of \eqref{p2:eq:random-tail} is only its equality-in-law splitting as a
-statement about those random variables; its analytic content is the measure identity
-above.
+$F(x)=\Prob[Y\le x]$ and $\Up(x)=\Prob[Y\le1-|x|]$ (Arias de Reyna's Theorem~3).  The
+bridge between the two sides is formalized in \path{RandomSeriesLaw.lean}: the up-measure
+is the pushforward of the law of $Y_\infty$ under $x\mapsto2x-1$
+(\leanPartx{Fabius.rvachevMeasure\_eq\_map\_weightedSum}, proved by the fundamental theorem
+of calculus for the folded derivative $F'=2\,\Up(2\cdot{}-1)$, which exhibits
+$y\mapsto F(\tfrac{y+1}{2})$ as the CDF of $\mu_{\Up}$); through it the characteristic
+function of the random series takes the closed form
+$\mathbb{E}\bigl[e^{itY_\infty}\bigr]=e^{it/2}\,\widehat{\Up}\bigl(t/(4\pi)\bigr)$
+(\leanPartx{Fabius.charFun\_weightedSumDistribution}), and the equality-in-law splitting of
+\eqref{p2:eq:random-tail} itself is a theorem about the law of the random series:
+$\operatorname{law}(Y_\infty)
+ =\bigl(\mathrm{Unif}[0,1]\ast\operatorname{law}(Y_\infty)\bigr)\circ(\cdot/2)^{-1}$
+(\leanPartx{Fabius.weightedSumDistribution\_self\_similar}).  Nothing of
+\eqref{p2:eq:random-tail} remains unformalized.
 
 \subsection{Cumulants are the same zeta--Lambert coefficients}
 
@@ -8903,8 +8913,11 @@ stage adds the sharp radius and explicit zeta remainder.  This ordering minimize
 of new complex analysis that must be trusted at any one time.  Every stage of the boxed
 chain now has a formal counterpart (see the \emph{Formal version} paragraphs above): the
 finite bridges, tail reindexing, $q$-interpolation, and analytic logarithms directly, and
-the probabilistic splitting in measure form (\path{MeasureRefinement.lean}); of the
-splitting, only the random-variable representation itself is unformalized.
+the probabilistic splitting twice over --- in measure form
+(\path{MeasureRefinement.lean}) and, through the affine bridge
+$\mu_{\Up}=\operatorname{law}(Y_\infty)\circ(2\cdot{}-1)^{-1}$, as the equality-in-law
+splitting of the random series itself (\path{RandomSeriesLaw.lean}).  Every stage of the
+chain is formal.
 
 \begin{obligation}[Canonical normalization theorem]
 The repository uses several Fourier-transform conventions across historical manuscripts.
@@ -8918,9 +8931,15 @@ convention unambiguously: \leanPartx{Fabius.rvachevFourier} is
 $\int_\R\Up(t)\e^{-2\pi\ii tz}\dd t$,
 \leanPartx{Fabius.rvachevFourier_eq_product} converts it into $Q_\infty$, and
 \leanPartx{Fabius.complexGeneratingFunction_eq_fourier_analytic} together with
-\leanPartx{Fabius.complexGeneratingFunction_neg_eq_tprod} carries the rotation to $G$.  What the
-obligation still asks for is the remaining leg --- the $F\leftrightarrow\Up$ rescaling
-\eqref{p2:eq:Fup} and the characteristic function of $Y_\infty$ --- packaged with the others as a
+\leanPartx{Fabius.complexGeneratingFunction_neg_eq_tprod} carries the rotation to $G$.  The
+characteristic-function leg is now formal as well:
+\leanPartx{Fabius.charFun\_weightedSumDistribution} evaluates
+$\mathbb{E}\bigl[e^{itY_\infty}\bigr]=e^{it/2}\,\widehat{\Up}\bigl(t/(4\pi)\bigr)$, fixing
+the rescaling between Mathlib's characteristic-function convention and
+\leanPartx{Fabius.rvachevFourier}, with the $F\leftrightarrow\Up$ passage carried at measure
+level by \leanPartx{Fabius.rvachevMeasure\_eq\_map\_weightedSum} and its CDF identity
+\leanPartx{Fabius.rvachevMeasure\_Iic}.  What the obligation still asks for is only the
+packaging: the rescalings exist as separate named theorems and should be bundled into a
 single named normalization theorem rather than reconstructed at each use.
 
 \begin{obligation}[Reusable geometric-tail API]
