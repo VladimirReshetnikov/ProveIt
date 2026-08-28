@@ -179,6 +179,7 @@ theorem finite_support_comb_nat (F : BoundedFabius) (hF : IsFabius F)
 `deg P ≤ v₂(M)`,
 `∑_{k∈ℤ} P(θ+k)·up((θ+k)/M) = ∫ P(x)·up(x/M) dx`.  Only the two-adic
 valuation of the mesh matters; its odd part is irrelevant. -/
+set_option maxHeartbeats 800000 in
 theorem tsum_shifted_polynomial_eq_integral_nat (F : BoundedFabius)
     (hF : IsFabius F) {M : ℕ} (hM : M ≠ 0) {P : Polynomial ℝ}
     (hdeg : P.natDegree ≤ padicValNat 2 M) (θ : ℝ) :
