@@ -149,8 +149,9 @@ positive-definite Pascal quotients, automatic lobe signs, and Gaussian boundary 
 \tableofcontents
 \clearpage
 \section*{Provenance}
-This volume consolidates the following drafts verbatim (labels, citation keys, and
-asset paths mechanically prefixed per part; no mathematical content altered).
+This volume preserves the absorbed theorem and proof bodies, with labels, citation keys,
+and asset paths mechanically prefixed per part.  Later edits add status-only Lean
+crosswalk annotations; the historical source hashes below are unchanged.
 The absorbed drafts are deleted from the working tree; git history is the archive.
 \begin{itemize}
 \item \path{Fabius_Newton_Rvachev_Frontier_Report/Exponent_Sequence_Newton_Rvachev_Frontiers.tex} \\ {\footnotesize SHA-256 \path{2c068211b3e5f85f410976f89eda3616b3d48c1e1817dabdded0db5e41429a22}}
@@ -317,15 +318,44 @@ rational geometric-Lagrange kernel used in the Gaussian-$q$ rows---closed weight
 residual moments and their sign, and the finite exact $\ell^1$ norm---is formalized at
 arbitrary ratio $0<q<1$, so the $q=1/4$ instance is covered, and the denominator-free
 principal specialization with the complete positive-degree geometric-moment identities behind
-\cref{p1:lem:q-weights} is formal as well (see the crosswalk paragraphs there).  These labels
-concern representation only, not correctness: no result of this report is formalized end
-to end, and every result below that carries no such citation is unformalized.  In particular
-the transformed infinite series, Richardson tomography and its analytic remainder, the
-infinite condition-number limit, the entire probabilistic layer, the entire analytic
-layer---Fourier envelopes for the Pascal hierarchy of rank at least two, Mellin contour
-displacement, exponential Tauberian transfer, Berry--Esseen for non-identically-distributed
-summands, total-variation and Wasserstein distances---and the automatic-sequence machinery
-have no Lean counterpart at all.
+\cref{p1:lem:q-weights} is formal as well (see the crosswalk paragraphs there).
+The post-snapshot module \path{AnalyticSeriesFilter.lean} now also proves the
+convergent-series analogue.  Its finite filter acts diagonally under Mathlib's
+\emph{unconditional} \path{Summable} hypothesis on each weighted sampled series,
+splits into an exact finite head and infinite tail, and specializes geometric and
+geometric-Lagrange rows to the complete Gaussian residual tail, including the
+shifted-scale form used in \eqref{p1:eq:Rrm-exact}.  The hypothesis is sharp at a
+zero-weight node: the weighted series is then identically zero, and no convergence
+of the corresponding unweighted sample is required.  It does not cover a series
+convergent only in its natural order at a boundary point, and it proves neither
+positivity, signs, bounds, uniform convergence, nor a sinc-product instantiation.
+
+An independent reusable layer is now present in
+\path{FractionalVolterraCalculus.lean} and
+\path{FabiusFractionalVolterra.lean}.  Positive affine scale changes on an ordered
+real interval are formalized.  For $\alpha\le0$, affine covariance is an identity for
+the totalized Lean interval-integral definition; a classical Riemann--Liouville or
+integrability interpretation is asserted only for positive order.  Gamma-normalized
+order raising assumes real $\alpha>0$, a
+continuous Banach-valued primitive, an interval-integrable derivative, and the
+right derivative \path{HasDerivWithinAt} on the open interval.  Its boundary-free
+form yields the exact dyadic shift for the signed Fabius extension when $x\ge0$,
+for the bounded Fabius function when $0\le x\le1$, and the $\Up$--Fabius bridge
+from base $-1$ when $x\ge-1$.  Complex orders and powers, Caputo or
+Riemann--Liouville derivative operators, weighted-monomial or iterated identities, negative-
+$x$ signed branches, endpoint lattices, hierarchy versions, and inverse/quantile
+formulas remain frontier.  These post-snapshot series and fractional APIs were
+checked at source checkpoint
+\path{22f801337}.
+
+These labels concern representation only, not correctness: report-specific
+probability and sinc-product instantiations still require their own bridges.  In
+particular the sign and bound in \eqref{p1:eq:Rrm-sign}--\eqref{p1:eq:Rrm-bound},
+the infinite condition-number limit, Fourier envelopes for the Pascal hierarchy
+of rank at least two, Mellin contour displacement, exponential Tauberian transfer,
+Berry--Esseen for non-identically-distributed summands, total-variation and
+Wasserstein distances, and the automatic-sequence machinery have no Lean
+counterpart here.
 \end{statusbox}
 
 \section{The exponent-sequence convolution monoid}
@@ -828,16 +858,17 @@ For every integer $h\ge r+1$ the first nonvanishing value is
 This is \statusproved.  The weights \eqref{p1:eq:lagrange-weight-product} are formalized as
 \lean{Fabius.geometricLagrangeWeight} (\lean{GeometricLagrange.lean}); the annihilation
 \eqref{p1:eq:q-annihilation} is \lean{Fabius.sum_geometricLagrangeWeight_mul_pow}, with the
-normalization at $h=0$ recorded as the genuine boundary value $0^0=1$, and the case $h=r+1$ of
-\eqref{p1:eq:q-survivor} is \lean{Fabius.sum_geometricLagrangeWeight_mul_pow_succ}.  Both are
-proved over an arbitrary field, for every $q$ whose powers $q^0,\ldots,q^r$ are distinct, so
-neither uses the hypothesis $q\in(0,1)$ imposed here.  The closed Gaussian form
-\eqref{p1:eq:q-weights} and the range $h>r+1$ of \eqref{p1:eq:q-survivor} are not formalized for
-general $q$; what is available for the latter is
-\lean{Fabius.sum_lagrangeEvalWeight_mul_pow_card_add} (\lean{LagrangeResidualMoments.lean}),
-which expresses every higher moment of an arbitrary distinct-node Lagrange row through a
-complete homogeneous polynomial, leaving exactly the principal specialization
-$H_n(1,q,\ldots,q^r)=\qbinom{n+r}{r}{q}$ to be supplied.
+normalization at $h=0$ recorded as the genuine boundary value $0^0=1$.  The
+division-free forward and reversed Gaussian numerators are supplied by
+\lean{GeometricQBinomialLagrange.lean}, while
+\lean{Fabius.sum_geometricLagrangeWeight_mul_pow_of_pos}
+(\lean{GeometricResidualMoments.lean}) gives \eqref{p1:eq:q-survivor} for every
+$h>0$; above-diagonal zero extension contains the range $1\le h\le r$ as well.
+These results hold over an arbitrary field whenever $q^0,\ldots,q^r$ are distinct,
+so positivity and the hypothesis $q\in(0,1)$ enter only in later sign arguments.
+The denominator-free principal specialization
+$H_n(1,q,\ldots,q^r)=\qbinom{n+r}{r}{q}$ is proved over commutative semirings in
+\lean{GeometricCompleteHomogeneous.lean}.
 \end{lemma}
 
 \begin{proof}
@@ -912,7 +943,11 @@ shifted nodes \(q^{m+j}\),
  \sum_{j=0}^{r}w_{r,j}(q)(q^{m+j})^h
  =(-1)^r q^{mh+\binom{r+1}{2}}\qbinom{h-1}{r}{q}.
 \]
-None of these finite theorems supplies the analytic remainder or its sign.
+The finite theorems alone make no convergence claim.  Their analytic companion
+\path{AnalyticSeriesFilter.lean} does supply the exact unconditionally summable
+Gaussian tail, including the shifted Lagrange row, under summability of each
+nonzero-weight sample.  It supplies neither the one-sided sign nor the numerical
+remainder bound used below.
 
 \subsection{Exact transformed series and sign certification}
 
@@ -948,15 +983,21 @@ Moreover,
  \left(A(q^m)-\sum_{h=0}^{r}a_hq^{mh}\right).
  \label{p1:eq:Rrm-bound}
 \end{equation}
-All three statements are \statusproved.  The exactness half is formalized:
+All three statements are \statusproved.  The finite exactness half is formalized:
 \lean{Fabius.geometricLagrange_richardson_exact} (\lean{GeometricLagrange.lean}) proves that the
 weights \eqref{p1:eq:lagrange-weight-product} annihilate the first $r$ geometric error modes of a
 sample block beginning at an arbitrary index and return the constant term exactly.  It is
 stated for samples in an arbitrary module over an arbitrary field, with no positivity
-hypothesis, no nonzero condition on $q$ and no lower bound on the starting index, so it covers
-more than the real nonnegative-coefficient setting used here.  The exact tail
-\eqref{p1:eq:Rrm-exact}, the sign \eqref{p1:eq:Rrm-sign} and the bound \eqref{p1:eq:Rrm-bound} are not
-formalized.
+hypothesis, no separate $q\ne0$ condition beyond finite-node injectivity, and no lower bound
+on the starting index, so it covers
+more than the real nonnegative-coefficient setting used here.  The full transformed
+tail \eqref{p1:eq:Rrm-exact} is now the shifted specialization
+\lean{Fabius.geometricLagrangeAnalyticSeriesFilter_shifted}
+(\lean{AnalyticSeriesFilter.lean}) under unconditional summability of the sampled
+series.  Only nonzero Lagrange weights create an unweighted convergence obligation;
+a zero-weight node is discharged identically.  This theorem excludes a
+conditionally-only boundary series and does not formalize the positivity argument,
+the sign \eqref{p1:eq:Rrm-sign}, or the bound \eqref{p1:eq:Rrm-bound}.
 \end{theorem}
 
 \begin{proof}
@@ -2175,8 +2216,10 @@ A dependency-aware order is as follows.
       and the first surviving moment \eqref{p1:eq:first-surviving}.
 \item The geometric Lagrange weights, Gaussian-binomial closed form, exact
       principal specialization, survivor moments, finite residual sign, and exact finite
-      norm are now formalized; transferring this finite kernel to the report's analytic
-      Richardson remainder remains open.
+      norm are now formalized.  The exact transformed series is also formalized under
+      unconditional summability in \path{AnalyticSeriesFilter.lean}; the report's
+      positivity, sign-certified bound, uniform estimates, and sinc-product application
+      remain open.
 \end{enumerate}
 
 These statements require only finite sums, polynomials, valuations, and existing
@@ -2191,8 +2234,9 @@ surviving moment of step~5 by \lean{Fabius.sum_geometricLagrangeWeight_mul_pow} 
 \lean{Fabius.geometricLagrange_richardson_exact} already giving module-valued Richardson
 exactness.  What genuinely remains in Phase~I is the binary defect \eqref{p1:eq:M-bit}, the
 automaticity equivalence of step~3, the sign-product factorization \eqref{p1:eq:T-a-L} and its
-free-even-layer count, the closed Gaussian-binomial form \eqref{p1:eq:q-weights}, and the
-general-$q$ survivor \eqref{p1:eq:q-survivor} with the sign-certified remainder built on it.
+free-even-layer count, and the report-specific ordered sign and bound built on the now-formal
+general-$q$ survivor.  The closed Gaussian-binomial form and every positive survivor moment
+are no longer Phase~I obligations.
 
 \subsection{Phase II: probability and entire products}
 
@@ -2426,9 +2470,13 @@ E3 & All-orders generalized inverse transseries & conjectural & uniform higher-p
 The finite weight, all-moment, residual-sign, and finite-norm identities in
 B3--B4 are formalized in \path{GeometricQBinomialLagrange.lean},
 \path{GeometricLagrangeQBinomial.lean}, and
-\path{GeometricLagrangeQMoments.lean}.  The tomography interpretation,
-one-sided analytic remainder, and infinite condition-number limit remain
-results of this report rather than claims about the current Lean corpus.
+\path{GeometricLagrangeQMoments.lean}.  The exact unconditionally summable
+transformed series, including the shifted Gaussian tail, is formalized in
+\path{AnalyticSeriesFilter.lean}; zero-weight nodes require no convergence of
+their unweighted samples.  The conditionally convergent boundary, the ordered
+one-sided sign and bound, the actual exponent-generating-function instantiation,
+uniform estimates, and the infinite condition-number limit remain results of
+this report rather than claims about the current Lean corpus.
 
 \section{Reproducibility manifest}
 \label{p1:app:manifest}
@@ -2646,9 +2694,12 @@ These modules prove the finite rational
 \(0<q<1\) weight formulas, the \(W_m(q^r)\) and \(q\)-Pochhammer moment
 presentations, all residual moments and their sign, and the exact finite
 \(\ell^1\) norm, including dedicated \(q=1/4\) corollaries.  The
-analytic sinc-product acceleration, transformed-error series, remainder and
-bracketing bounds, spline limits, infinite condition-number limit, and
-inverse-function consequences remain unformalized.
+generic transformed-error series is now formalized in
+\path{AnalyticSeriesFilter.lean} under unconditional summability, with
+nonzero-weight hypotheses only at samples that actually contribute.  Identifying
+its coefficients with the sinc-product tail, and proving the report's signs,
+remainder and bracketing bounds, uniform spline limits, infinite condition-number
+limit, and inverse-function consequences, remain unformalized.
 
 
 
@@ -3154,9 +3205,14 @@ zero or a zero divisor.  In the field-valued shifted block used here,
  =(-1)^m q^{nr+\binom{m+1}{2}}\qbinomPartx{r-1}{m}
  \qquad(r>0).
 \]
-These are finite algebraic statements only; they do not establish the power-
-series interchange or any analytic conclusion below.  All declarations in
-this paragraph were checked at source checkpoint
+These declarations are finite algebraic statements.  The separate module
+\path{AnalyticSeriesFilter.lean} now establishes the corresponding finite-sum/
+infinite-series interchange and exact Gaussian tail under unconditional
+summability of the contributing samples; a zero filter weight creates no
+unweighted summability obligation.  It does not identify the coefficient sequence
+below with an actual sinc-product quotient, cover conditionally-only boundary
+convergence, or establish signs, bounds, asymptotics, or uniform convergence.
+The finite declarations in this paragraph were checked at source checkpoint
 \path{1e761ed77583e9870ceeaeb2c74ac824094f0f3f}.
 
 \subsection{The complete error series}
@@ -3769,10 +3825,13 @@ quarter-base corollaries.  In particular the
 cancellations \(1\leq r\leq m\) and \eqref{p2:eq:Mrqbinom} have exact Lean
 counterparts.
 
-\item \textbf{Formal power series.} Work first in a characteristic-zero
-commutative ring. From \(\Phi=\exp(\sum c_kz^k)\), derive the Bell recurrence
-\eqref{p2:eq:alpharec}; then prove the coefficientwise filtered identity
-\eqref{p2:eq:exacterror}. This avoids analytic convergence in the first pass.
+\item \textbf{Formal and unconditionally summable series (partially formalized).}
+The coefficientwise geometric filter and its Gaussian residual are in
+\path{GeometricPowerSeriesFilter.lean}; \path{AnalyticSeriesFilter.lean} proves
+the matching exact tail for an abstract unconditionally summable coefficient
+series.  What remains here is to derive the Bell recurrence
+\eqref{p2:eq:alpharec} from \(\Phi=\exp(\sum c_kz^k)\) and connect that concrete
+series to the sinc-product quotient.
 
 \item \textbf{Analytic sinc logarithm.} Establish \eqref{p2:eq:logsinc} in a disk,
 sum the geometric scales, and identify the analytic power series with the actual
@@ -3780,10 +3839,10 @@ product. Existing repository lemmas about the sinc product should reduce the
 amount of new infrastructure.
 
 \item \textbf{Interpolation and positivity (partially formalized).}  The
-finite Lagrange weights and exact residual sign are proved.  The
-divided-difference representation of the analytic transformed error and the
-absolute-monotonicity argument for its full positive coefficient series remain
-frontier work.
+finite Lagrange weights, exact residual sign, and abstract unconditionally
+summable Gaussian tail are proved.  The divided-difference representation for
+the actual sinc transform, its absolute-monotonicity argument, quantitative
+bounds, and uniform control remain frontier work.
 
 \item \textbf{Fourier/measure layer.} Define the uniform box measures and their
 finite convolutions. Moment matching follows from derivatives of the
@@ -3881,9 +3940,10 @@ and local inversion then give a new interior approximation theory for the Fabius
 function and its inverse, complementary to the repository's Lambert--\(W\)
 endpoint asymptotics.
 
-These results create concrete next steps: continue the Lean formalization from
-the compiled finite \(q\)-algebra into the formal-series and analytic error
-layers, build a dyadic exact-evaluation implementation, and develop a matched
+These results create concrete next steps: connect the compiled formal and
+unconditionally summable Gaussian filter to the concrete sinc-product/Bell
+series, prove its ordered and uniform analytic error estimates, build a dyadic
+exact-evaluation implementation, and develop a matched
 two-parameter theory linking truncation acceleration to the periodic Lambert
 phase near the endpoint.
 

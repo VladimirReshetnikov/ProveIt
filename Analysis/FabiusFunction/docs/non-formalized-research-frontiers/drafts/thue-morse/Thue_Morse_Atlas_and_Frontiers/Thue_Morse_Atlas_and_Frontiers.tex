@@ -130,9 +130,10 @@
 \tableofcontents
 \clearpage
 \section*{Provenance}
-This volume consolidates the following drafts content-preservingly (labels, citation keys,
-and asset paths mechanically prefixed per part; wrapper metadata and counter state
-normalized; no mathematical content altered).
+This volume preserves the absorbed theorem and proof bodies, with labels, citation keys,
+and asset paths mechanically prefixed per part and wrapper metadata and counter state
+normalized.  Later edits add status-only Lean crosswalk annotations; the historical source
+hashes below are unchanged.
 The absorbed drafts are deleted from the working tree; git history is the archive.
 \begin{itemize}
 \item \path{Thue_Morse_Formula_Atlas/Thue_Morse_Formula_Atlas.tex} \\ {\footnotesize SHA-256 \path{bafeee49431ae8d65e16ec0b978ca4adda6b10b82dbe2c0ddf10def444334795}}
@@ -307,7 +308,7 @@ is not by itself evidence of formalization.  Statements proved in Lean carry the
 declaration names in the text, typeset as \lean{Fabius.thueMorseSign}; statements without
 such a citation must not be inferred to have a formal counterpart.
 
-The current inventory in \cref{p1:sec:formalized-modules} consists of ninety compiled
+The current inventory in \cref{p1:sec:formalized-modules} consists of ninety-three compiled
 Lean modules.  It covers the finite algebraic, automata, moment, Fourier, rarefaction,
 Dirichlet--Mellin, word-combinatorial, and Fabius--Rvachev bridges recorded there, often in
 greater generality than the displayed prose.  The dependency-aware map in
@@ -6278,7 +6279,7 @@ valuation, carry, and Pascal-row formulas remain genuinely base-two features.
 \subsection{Formalized modules (August 2026)}
 \label{p1:sec:formalized-modules}
 
-The first tranches of the formalization now exist as ninety
+The first tranches of the formalization now exist as ninety-three
 compiled Lean modules in \repo{}, complementing the corpus modules
 (\path{Parity.lean}, \path{TwoAdic.lean}, \path{ThueMorsePrefix.lean},
 \path{ThueMorseGenerating.lean}, \path{ThueMorseExponential.lean},
@@ -6288,7 +6289,9 @@ formula, generating products, Prouhet moments, and prefix theory.  The
 count is exactly the number of rows of the table below, one row per
 module; the proposal table of \Cref{p1:sec:formalization-order} re-lists
 some of these same modules under the boundaries that were originally
-proposed for them, and is a roadmap rather than a second inventory:
+proposed for them, and is a roadmap rather than a second inventory.  The
+series-filter and fractional-Volterra rows were checked at source
+checkpoint \path{22f801337}.
 
 {\small
 \begin{longtable}{@{}>{\raggedright\arraybackslash}p{0.34\textwidth}>{\raggedright\arraybackslash}p{0.58\textwidth}@{}}
@@ -6313,6 +6316,9 @@ Module & Contents \\
 \path{GeometricCompleteHomogeneous.lean} & The denominator-free principal specialization \(h_n(1,q,\ldots,q^r)={n+r\brack r}_q\) over arbitrary commutative semirings, including arbitrary common scale and the range-indexed form. \\
 \path{GeometricResidualMoments.lean} & Every positive moment of an arbitrary exact geometric row over any commutative ring, with repeated nodes and arbitrary scales allowed; geometric Lagrange rows, common dilations, and shifted blocks follow over fields under finite-node injectivity. \\
 \path{GeometricPowerSeriesFilter.lean} & Formal-series filtering at the nodes \(1,q,\ldots,q^p\): coefficient cancellation through the exactness order, the Gaussian multiplier in every positive degree, an all-index residual-series identity with the mass-one degree-zero boundary, and the geometric Lagrange specialization.  Analytic substitution, convergence, and remainder bounds are not asserted. \\
+\path{AnalyticSeriesFilter.lean} & Convergent-series form of an arbitrary finite rescaling filter: diagonal action, exact finite head and infinite tail, the target-zero constant boundary, and geometric and geometric-Lagrange Gaussian tails, including shifted scales.  Mathlib \path{Summable} is unconditional; hypotheses are imposed on weighted samples, so a zero-weight node needs no unweighted convergence.  Conditionally-only boundary series, signs, bounds, uniform convergence, and sinc-product instantiations are not asserted. \\
+\path{FractionalVolterraCalculus.lean} & Positive affine covariance on ordered real intervals for arbitrary real order and Gamma-normalized order raising for real \(\alpha>0\) in a complete normed real space, assuming continuity of the primitive, interval integrability of its displayed derivative, and the right derivative \path{HasDerivWithinAt} on the open interval; includes the zero-boundary form.  For \(\alpha\le0\), affine covariance is an identity for the totalized Lean interval-integral definition; a classical Riemann--Liouville or integrability interpretation is asserted only for positive order. \\
+\path{FabiusFractionalVolterra.lean} & Boundary-free order raising and affine covariance specialized to the dyadic Fabius--Rvachev system: the signed extension for \(x\ge0\), bounded Fabius for \(0\le x\le1\), and the \(\operatorname{up}\)-to-Fabius bridge based at \(-1\) for \(x\ge-1\), all for real \(\alpha>0\).  Complex, weighted-monomial, iterated, negative-branch, hierarchy, and inverse/quantile extensions remain outside the module. \\
 \path{LogSeriesMultiplicative.lean} & The recurrence-defined formal power-series logarithm over arbitrary commutative \(\mathbb Q\)-algebras: coefficient reconstruction, zero constant term, differential-equation characterization and uniqueness, binary product rule, unit law, and finite-product additivity; no analytic-logarithm or infinite-product claim. \\
 \path{FiniteQBinomialCore.lean} & Denominator-free Gaussian coefficients by both \(q\)-Pascal recurrences, functoriality under semiring maps, and reflection symmetry over commutative semirings; finite \(q\)-Pochhammer shift/concatenation laws, the full product--Gaussian factorial identities, and the finite \(q\)-binomial theorem over commutative rings, including zero and roots of unity. \\
 \path{GeometricQBinomialLagrange.lean} & The reversed finite \(q\)-binomial product for geometric Lagrange numerators, their global forward-index Gaussian form via division-free symmetry and zero extension, normalized weights under the intrinsic node-injectivity hypothesis, and every positive residual moment. \\
@@ -6423,7 +6429,7 @@ Ordinary addition & Carry cocycle \eqref{p1:eq:carry-sign} & Isolates the exact 
 Number-theoretic disguise & Central binomial valuation \eqref{p1:eq:central-thue-morse} & One classical integer stores the full binary weight. \\
 Pascal-row interpretation & Glaisher count or modulo-three residue & Uses the odd support of one row; the residue form avoids logarithms. \\
 Higher-dimensional Pascal & Multinomial count \eqref{p1:eq:multinomial-support} & Works with any number of variables. \\
-Formal power series & Finite/infinite products and coefficient-diagonal filters & Coefficients, Mahler equations, and exact finite filtering become algebraic; analytic evaluation and convergence remain separate obligations. \\
+Formal and convergent power series & Formal products plus coefficient-diagonal and analytic filters & Coefficients and Mahler equations remain algebraic; exact analytic filtering is available under unconditional summability, with zero-weight nodes discharged sharply.  Conditional boundary convergence, concrete product instantiation, signs, bounds, and uniform control remain separate obligations. \\
 Nonlocal coefficient formulas & Euler/Bell/determinant forms & Eliminate explicit digit notation and expose ruler convolutions. \\
 Finite polynomial row & Moment-functional extraction & Separates polynomial coefficients from row moments, supports scalar extension, and does not require distinct nodes or a nonzero surviving moment. \\
 Polynomial cancellation & Mixed finite differences & Proves all Prouhet moments in one operator identity. \\
@@ -8090,10 +8096,17 @@ together with constant-term, exactness, rescaling, and coefficient-map laws.
 zero and every positive Gaussian residual multiplier in one formal-series
 identity, while \path{map_geometricSeriesFilter} transports the entire
 identity along a commutative-semiring homomorphism.  These are identities in
-\texttt{PowerSeries}; they do not identify formal substitution with analytic
-evaluation, prove convergence of the functions \(Q_m\), or supply a uniform
-weighted remainder.  Consequently the analytic convergence and remainder
-claims in \cref{p2:thm:qRichardson} remain frontier.
+\texttt{PowerSeries}.  The new \path{AnalyticSeriesFilter.lean} separately
+proves the direct convergent-series analogue: under unconditional summability
+of each contributing sampled series it interchanges the finite node sum with
+the infinite series and gives the exact Gaussian residual tail, including the
+shifted geometric-Lagrange row.  Its hypotheses are imposed only at nonzero
+weights, so a zero-weight node requires no convergence of the unweighted
+sample.  It neither covers conditionally-only boundary series nor identifies
+the abstract coefficients with the functions \(Q_m\); it also supplies no
+sign, bound, asymptotic, or uniform-convergence theorem.  Consequently the
+concrete product bridge and the uniform analytic remainder claims in
+\cref{p2:thm:qRichardson} remain frontier.
 
 \begin{theorem}[$q$-binomial spectral Richardson extrapolation]
 \label{p2:thm:qRichardson}
@@ -8850,8 +8863,10 @@ of the gamma tower, and now the entire zeta--Lambert tail calculus --- the Euler
 logarithm, the all-orders expansion, the certified remainder, and the exact
 prefix--corrections--tail split (\path{EulerLogTransform.lean}, \path{SincZetaSeries.lean},
 \path{SincZetaDyadic.lean}, \path{SincZetaRemainder.lean}) --- already have Lean
-counterparts, several of them more general than the statements printed here.  The weighted
-Richardson remainder and the probabilistic layer are the remaining formalization targets.
+counterparts, several of them more general than the statements printed here.  The abstract
+weighted Richardson tail is now formal under unconditional summability in
+\path{AnalyticSeriesFilter.lean}.  Its sinc-product instantiation, ordered and uniform
+remainder bounds, and the probabilistic layer are the remaining formalization targets.
 
 \section{Lean formalization roadmap}
 \label{p2:sec:formalization}
@@ -8882,15 +8897,19 @@ Gaussian-binomial normalization \eqref{p2:eq:weights}, and the complete
 coefficientwise action on formal power series are now delivered at arbitrary
 ratio.  The last item is the generic diagonal-filter API of
 \path{FinitePowerSeriesFilter.lean} and its geometric residual specialization
-\path{GeometricPowerSeriesFilter.lean}; it does not evaluate a formal series as
-an analytic function.  The Euler--zeta logarithm and certified zeta remainder
+\path{GeometricPowerSeriesFilter.lean}.  The companion
+\path{AnalyticSeriesFilter.lean} evaluates an abstract coefficient series
+directly and gives the exact Gaussian tail whenever every contributing sample
+is unconditionally summable; zero weights impose no unweighted convergence
+condition.  It excludes conditionally-only boundary series and does not connect
+the abstract coefficients to the sinc product.  The Euler--zeta logarithm and certified zeta remainder
 have likewise since been delivered in \path{SincZetaSeries.lean} and
 \path{SincZetaRemainder.lean}, and the random-tail law exists in measure form in
-\path{MeasureRefinement.lean}.  What remains includes the analytic
-Richardson evaluation, weighted uniform remainder and convergence theorem,
+\path{MeasureRefinement.lean}.  What remains includes the concrete sinc-product
+Richardson identification, weighted uniform remainder and convergence theorem,
 the random-variable weak expansion, the Lambert depth law, and the levels
 $r\ge1$ of the gamma tower.  In particular, neither the formal filter identity
-nor its Gaussian coefficient multipliers imply the analytic bounds or
+nor the abstract unconditionally summable tail implies the analytic bounds or
 brackets stated later in this part.
 
 \begingroup
@@ -8947,8 +8966,11 @@ $q$-Pochhammer algebra & \emph{Delivered} in
 forward and reversed Gaussian forms, the reversed denominator-free polynomial,
 normalized weight under node injectivity, and every positive residual moment.
 \path{GeometricPowerSeriesFilter.lean} further packages the entire
-coefficientwise filter; analytic evaluation and its remainder are not part of
-this row.  The case \(q=1/2\) is linked to the Toeplitz row. \\
+coefficientwise filter, while \path{AnalyticSeriesFilter.lean} supplies the exact
+unconditionally summable analytic Gaussian tail and its shifted-scale form,
+with convergence required only for nonzero-weight samples.  Conditional boundary
+summation, the sinc-product coefficient bridge, and ordered or uniform remainder
+bounds are not part of this row.  The case \(q=1/2\) is linked to the Toeplitz row. \\
 Random-tail law
 \eqref{p2:eq:random-tail} & independent random variables, almost-sure summation, equality in law &
 \emph{Delivered} in measure form in \path{MeasureRefinement.lean}, by exactly the

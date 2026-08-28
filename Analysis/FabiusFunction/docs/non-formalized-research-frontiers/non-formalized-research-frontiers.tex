@@ -312,6 +312,21 @@ Object & Representative Lean name & Principal module family \\
 Bounded Fabius function & \nolinkurl{fabiusReal}, \nolinkurl{IsFabius} & \nolinkurl{Basic.lean}, \nolinkurl{PaperStatements.lean} \\
 Rvachev up-function & \nolinkurl{rvachevUp} & \nolinkurl{Basic.lean}, \nolinkurl{Differential.lean} \\
 Signed global extension & \nolinkurl{extendedFabius} & \nolinkurl{GlobalExtension.lean} \\
+Fractional Volterra calculus &
+\nolinkurl{fractionalVolterra}, \nolinkurl{fractionalVolterra_add},
+\nolinkurl{fractionalVolterra_affine}, \nolinkurl{fractionalVolterra_add_one_deriv} &
+\nolinkurl{FractionalVolterra.lean}, \nolinkurl{FractionalVolterraSemigroup.lean},
+\nolinkurl{FractionalVolterraCalculus.lean} \\
+Fractional Fabius--Rvachev shifts &
+\nolinkurl{fractionalVolterra_add_one_extendedFabius_of_nonneg},
+\nolinkurl{fractionalVolterra_add_one_fabiusReal},
+\nolinkurl{fractionalVolterra_add_one_rvachevUp} &
+\nolinkurl{FabiusFractionalVolterra.lean} \\
+Pointwise analytic finite filters &
+\nolinkurl{finiteAnalyticSeriesFilter},
+\nolinkurl{geometricAnalyticSeriesFilter},
+\nolinkurl{geometricLagrangeAnalyticSeriesFilter_shifted} &
+\nolinkurl{AnalyticSeriesFilter.lean} \\
 Exact dyadic evaluator & \nolinkurl{fabiusDyadicValue} & \nolinkurl{Arithmetic.lean}, \nolinkurl{PaperStatements.lean} \\
 Binary and q-binomial series & \nolinkurl{fabiusReductionSum} and global q-series declarations & \nolinkurl{TaylorReduction.lean}, \nolinkurl{FabiusGlobalQBinomialSeries.lean} \\
 Thue--Morse grid samples & \nolinkurl{correctedPrefixGridSample} & \nolinkurl{ThueMorseApproximation.lean} \\
@@ -479,8 +494,10 @@ Status & Meaning in this companion\\
 a longer proof-oriented or frontier discussion here: principally
 \path{ElementaryFunction.lean}, \path{NotElementary.lean},
 \path{InverseNotElementary.lean}, \path{ProbabilityLaplaceMoments.lean}, and
-\path{FractionalVolterra.lean}, together with
-\path{FractionalVolterraSemigroup.lean}.\\
+\path{AnalyticSeriesFilter.lean}, together with the fractional family
+\path{FractionalVolterra.lean}, \path{FractionalVolterraSemigroup.lean},
+\path{FractionalVolterraCalculus.lean}, and
+\path{FabiusFractionalVolterra.lean}.\\
 \textbf{Missing engine} & A generic theorem family that the main article deliberately leaves in
 the module guide: path sums, Toeplitz rows, formal coefficient recurrences, finite
 remainders, and Gaussian polynomial estimates.\\
@@ -1253,7 +1270,8 @@ identity, higher or fractional inverse primitives, or complex Mellin continuatio
 
 \begin{remark}[Formalized positive-real fractional Volterra boundary]
 \label{integration:rem:fractional-volterra-boundary}
-The definition \lean{fractionalVolterra} in \path{FractionalVolterra.lean} is a total
+At compiled full-facade checkpoint \texttt{22f801337}, the definition
+\lean{fractionalVolterra} in \path{FractionalVolterra.lean} is a total
 Gamma-normalized oriented interval integral for a real order, arbitrary real base and
 endpoint, and an input valued in any real normed space.  The unconditional declarations
 \lean{fractionalVolterra_self}, \lean{fractionalVolterra_congr},
@@ -1291,10 +1309,83 @@ If the target is complete, \(a\le x\), and \(f\) is continuous on \([a,x]\), the
  =I_{a+}^{\alpha}\!\left[u\mapsto I_{a+}^{\beta}f(u)\right](x).
  \label{integration:eq:fractional-volterra-semigroup}
 \end{equation}
-No order-zero operator law, reversed-endpoint fractional interpretation, semigroup theorem
-for merely interval-integrable inputs or noncomplete targets, separately packaged general
-power/constant evaluation, Caputo or other fractional derivative, complex-order theorem,
-or Fabius-, Rvachev-, or inverse-function specialization is included in these modules.
+The reusable companion \path{FractionalVolterraCalculus.lean} adds two further layers.
+For every real order, positive scale $c$, and ordered endpoint $a\le x$,
+\lean{fractionalVolterra_affine} gives positive affine covariance and
+\lean{fractionalVolterra_comp_affine} gives its inverse-smul form.  This identity is
+algebraic for the totalized Lean definition; only the positive-order regime has the usual
+classical Riemann--Liouville interpretation.  For \(\alpha>0\), a continuous Banach-valued
+function $g$, an interval-integrable $g'$, and the stated right-hand derivative on the
+interior, \lean{fractionalVolterra_add_one_deriv} proves
+\begin{equation}
+ I_{a+}^{\alpha+1}g'(x)
+ =I_{a+}^{\alpha}g(x)
+  -\frac{(x-a)^\alpha}{\Gamma(\alpha+1)}g(a).
+ \label{integration:eq:fractional-volterra-order-raising}
+\end{equation}
+The declaration \lean{fractionalVolterra_add_one_deriv_of_eq_zero} removes the boundary
+term when $g(a)=0$.
+
+Finally, \path{FabiusFractionalVolterra.lean} specializes that generic calculus.  For real
+\(\alpha>0\) it proves
+\begin{align}
+ I_{0+}^{\alpha+1}\widetilde F(x)
+ &=2^\alpha I_{0+}^{\alpha}\widetilde F(x/2), &&x\ge0,
+ \label{integration:eq:fractional-volterra-fabius-signed-shift}\\
+ I_{0+}^{\alpha+1}F(x)
+ &=2^\alpha I_{0+}^{\alpha}F(x/2), &&0\le x\le1,
+ \label{integration:eq:fractional-volterra-fabius-bounded-shift}\\
+ I_{-1+}^{\alpha+1}\Up(x)
+ &=2^\alpha I_{0+}^{\alpha}F((x+1)/2), &&x\ge-1.
+ \label{integration:eq:fractional-volterra-up-shift}
+\end{align}
+The exact declarations are
+\lean{fractionalVolterra_add_one_extendedFabius_of_nonneg},
+\lean{fractionalVolterra_add_one_fabiusReal}, and
+\lean{fractionalVolterra_add_one_rvachevUp}.
+
+No order-zero classical operator law, reversed-endpoint fractional interpretation,
+semigroup theorem for merely interval-integrable inputs or noncomplete targets, separately
+packaged general power/constant evaluation, Caputo or other fractional derivative,
+complex-order theorem, iterated fractional shift, endpoint-moment or dyadic-lattice wrapper,
+support-truncated hierarchy semigroup, full two-branch refinement, signed recurrence for
+negative endpoints, Up exterior/refinement formula, probability/stop-loss representation,
+or inverse-function fractional specialization is included in these modules.
+\end{remark}
+
+\begin{remark}[Formalized unconditional analytic-filter boundary]
+\label{integration:rem:analytic-series-filter-boundary}
+At the same compiled checkpoint, \path{AnalyticSeriesFilter.lean} turns the finite moment algebra of a row
+\((\xi_i,w_i)\) into an exact pointwise series theorem.  If each weighted sampled series
+\(
+  \sum_{m\ge0}w_i\bigl((\xi_i z)^m a_m\bigr)
+\)
+is unconditionally summable, then \lean{finiteAnalyticSeriesFilter_eq_tsum} proves
+\begin{equation}
+ \sum_i\sum_{m\ge0}w_i\bigl((\xi_i z)^m a_m\bigr)
+ =\sum_{m\ge0}\left(\sum_iw_i\xi_i^m\right)z^m a_m.
+ \label{integration:eq:analytic-series-filter-diagonal}
+\end{equation}
+The generic statement works over a commutative semiring acting on a normed additive group,
+and a zero weight needs no convergence at its node.  Exactness through degree $p$ splits
+off the reproduced finite head; at target zero the head is exactly $a_0$.  For a geometric
+row over a commutative ring with continuous constant scalar multiplication (each fixed
+scalar acts continuously), the finite row-moment factor in
+degree \(p+1+r\) is
+\begin{equation}
+ (-1)^p q^{\binom{p+1}{2}}\qbinom{p+r}{p}{q}.
+ \label{integration:eq:analytic-series-filter-gaussian-tail}
+\end{equation}
+This is \lean{geometricAnalyticSeriesFilter_eq_constant_add_gaussian_tsum}.  Assuming
+\(j\mapsto q^j\) is injective on \(\{0,\ldots,p\}\), the geometric-Lagrange and
+shifted-scale wrappers over a scalar field impose sample summability only where the
+corresponding weight is nonzero.
+
+These are Mathlib \lean{Summable}/\lean{tsum} identities and hence unconditional and
+pointwise.  They do not cover conditionally-only convergent boundary series, prove uniform
+convergence or quantitative bounds, determine residual signs or asymptotic acceleration
+rates, instantiate the row with coefficients of an actual sinc product, or supply a
+formal-\lean{PowerSeries}-evaluation bridge.
 \end{remark}
 
 \subsection{Raw, endpoint, and tilted Laplace moments}
@@ -2645,17 +2736,34 @@ identities; \cref{integration:thm:survival-layer-cake}.\\
 Generic inverse-clock and Fabius explicit-primitive/pointwise-\(C^1\) layer cake, the full
 weighted inverse-area identity, equality with the $\Up$ area, and the inverse mean \(1/2\);
 \cref{integration:sec:survival-fubini}.\\
-\path{FractionalVolterra.lean}, \path{FractionalVolterraSemigroup.lean} &
+\path{FractionalVolterra.lean}, \path{FractionalVolterraSemigroup.lean},
+\path{FractionalVolterraCalculus.lean} &
 The total real-order Gamma-normalized operator, its unconditional endpoint/locality/scalar,
 order-one, and positive-natural-order rules, and its positive-order ordered-endpoint
 continuous-kernel integrability and input additivity; raw shifted-beta-kernel integrability
 for positive orders and ordered endpoints \(s\le x\); the raw and normalized values under a
 strict endpoint inequality; and additive composition of positive orders for continuous
-Banach-valued inputs on ordered compact intervals.  No corresponding semigroup for merely
-interval-integrable inputs or noncomplete targets, separately packaged power/constant
-specialization, fractional derivative, complex order, order-zero law, reversed-endpoint
-fractional interpretation, or hierarchy-specific specialization;
+Banach-valued inputs on ordered compact intervals.  Positive affine covariance is formal for
+arbitrary real order and positive scale, and positive-order integration by parts raises the
+order of a right interior derivative with the exact left-boundary term.  No corresponding
+semigroup for merely interval-integrable inputs or noncomplete targets, separately packaged
+power/constant specialization, fractional derivative operator, complex order, order-zero
+classical law, or reversed-endpoint fractional interpretation;
 \cref{integration:rem:fractional-volterra-boundary}.\\
+\path{FabiusFractionalVolterra.lean} &
+The real-positive one-step fractional shift for the signed extension on $x\ge0$, the
+bounded function on \([0,1]\), and the \(-1\)-based Up-to-Fabius affine bridge on
+$x\ge-1$.  Iterated shifts, endpoint moments, dyadic-lattice wrappers, negative-endpoint
+signed branches, Up exterior/refinement laws, complex orders, fractional derivatives, and
+inverse/quantile formulas remain outside this module;
+\cref{integration:rem:fractional-volterra-boundary}.\\
+\path{AnalyticSeriesFilter.lean} &
+Unconditional pointwise diagonalization of finite coefficient filters under weighted
+sample-series summability, exact reproduced heads and explicit tails, and the Gaussian
+residual tail for geometric and geometric-Lagrange rows, including shifted scales.  No
+conditional boundary summation, uniform estimate, sign/rate theorem, sinc-product
+instantiation, or formal-power-series evaluation bridge;
+\cref{integration:rem:analytic-series-filter-boundary}.\\
 \path{ProbabilityLaplaceMoments.lean} &
 Almost-sure support, restriction to $[0,1]$, survival function, the partial/full Rvachev
 survival layer cake, the differentiable compact-support Fubini identity, raw and endpoint
@@ -2758,6 +2866,10 @@ Formal exponential/logarithm & Explicitly omitted & Recurrences, formal differen
 uniqueness, low orders, naturality, rescaling, addition, and parity.\\
 Finite formal-to-analytic remainder & Absent & Exact divisibility by the first omitted power
 and evaluated polynomial remainder.\\
+Pointwise analytic finite filters & Absent & Unconditional diagonalization under weighted
+sample-series summability, exact finite heads and tails, and Gaussian residual tails for
+geometric and geometric-Lagrange rows.  Conditional boundary series, uniform estimates,
+signs/rates, and sinc-product instantiation remain outside the formal result.\\
 Gaussian contraction/tails & Explicitly omitted & Moment recurrence, contraction functional,
 factorial coefficient weight, explicit tail, and all-orders radius.\\
 Fabius-specific saddle application & Split across overlapping notebooks & Consolidated once

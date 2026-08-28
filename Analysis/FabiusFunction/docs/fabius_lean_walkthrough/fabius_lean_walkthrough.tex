@@ -2106,8 +2106,52 @@ from the geometric Lagrange row.  The four resulting declarations are
 \nolinkurl{sum_geometricLagrangeWeight_mul_shifted_pow_of_pos}.  In the final
 form the nodes are \(q^{start+k}\), and the exponent of \(q\) is exactly
 \(start\,m+\binom{p+1}{2}\).  These sixteen declarations are finite algebra:
-they assert no analytic Richardson remainder, convergence rate, or sign bound
-for a sampled function.
+by themselves they assert no analytic Richardson remainder, convergence rate,
+or sign bound for a sampled function.
+
+\subsection{Unconditionally summable analytic filters}
+At compiled full-facade checkpoint \nolinkurl{22f801337},
+\nolinkurl{AnalyticSeriesFilter.lean} supplies the pointwise convergent-series
+counterpart of that finite algebra.  For a finite set of nodes \(\xi_i\),
+weights \(w_i\), coefficients \(a_m\), and a scale \(z\), it defines
+\[
+  \mathcal L_z(a)
+  =\sum_i\sum_{m\geq0}w_i\bigl((\xi_i z)^m a_m\bigr).
+\]
+Here the displayed products are scalar actions in Lean.  The generic
+declarations \nolinkurl{summable_finiteAnalyticSeriesFilter_diagonal} and
+\nolinkurl{finiteAnalyticSeriesFilter_eq_tsum} work over a commutative
+semiring acting on a normed additive group.  If every \emph{weighted} sampled
+series is unconditionally summable, they prove the exact diagonalization
+\[
+  \mathcal L_z(a)
+  =\sum_{m\geq0}\left(\sum_iw_i\xi_i^m\right)z^m a_m.
+\]
+A zero weight therefore creates no convergence obligation at its node.
+
+When the row reproduces a target through degree \(p\),
+\nolinkurl{finiteAnalyticSeriesFilter_eq_head_add_tail_of_exact} splits off
+the exact finite head and leaves an explicit infinite tail.  Its target-zero
+specialization preserves \(a_0\).  Over a commutative ring with continuous constant
+scalar multiplication (each fixed scalar acts continuously), the geometric theorem
+\nolinkurl{geometricAnalyticSeriesFilter_eq_constant_add_gaussian_tsum}
+identifies the finite row-moment factor in every residual tail term as
+\[
+  (-1)^p q^{\binom{p+1}{2}}\qbinom{p+r}{p}{q}.
+\]
+Assuming \(j\mapsto q^j\) is injective on \(\{0,\ldots,p\}\), the geometric-Lagrange
+wrapper over a scalar field and its shifted-scale form are
+\nolinkurl{geometricLagrangeAnalyticSeriesFilter_eq_constant_add_gaussian_tsum}
+and \nolinkurl{geometricLagrangeAnalyticSeriesFilter_shifted}.  Their
+summability hypotheses are imposed only at nodes whose Lagrange weight is
+nonzero.
+
+This is an exact pointwise \nolinkurl{tsum} theorem, using Mathlib's
+unconditional summation semantics.  It does not cover conditionally convergent
+boundary series and proves no uniform convergence, error bound, residual sign,
+asymptotic acceleration rate, or specialization to the coefficients of an
+actual sinc product.  A bridge from a formal \nolinkurl{PowerSeries}
+evaluation to these coefficient hypotheses is also still separate work.
 
 \subsection{Uniform central remainders}
 Formal coefficients alone do not prove an asymptotic expansion.  \nolinkurl{FabiusSaddleCentralAllOrders.lean} bounds the difference between the exact central integrand and its truncated polynomial approximation uniformly on the growing central window.
@@ -2605,22 +2649,36 @@ Read:
 \end{enumerate}
 This path emphasizes compact support, transform refinement, convolutions, and pointwise approximants.
 
-\subsubsection{Path D (post-snapshot): normalized primitives and polynomial weights}
+\subsubsection{Path D (post-snapshot): integer and fractional Volterra calculus}
+The fractional modules in this path were included in the compiled full-facade
+checkpoint \nolinkurl{22f801337}.
 Read:
 \begin{enumerate}
   \item \nolinkurl{NormalizedVolterra.lean};
-  \item \nolinkurl{GlobalExtension.lean}; and
-  \item \nolinkurl{FabiusAntiderivatives.lean}.
+  \item \nolinkurl{FractionalVolterra.lean} and
+        \nolinkurl{FractionalVolterraSemigroup.lean};
+  \item \nolinkurl{FractionalVolterraCalculus.lean};
+  \item \nolinkurl{GlobalExtension.lean} and
+        \nolinkurl{FabiusAntiderivatives.lean}; and
+  \item \nolinkurl{FabiusFractionalVolterra.lean}.
 \end{enumerate}
-The first module is the reusable layer: arbitrary base points and oriented
+The first module is the reusable natural-order layer: arbitrary base points and oriented
 endpoints, real normed-space-valued kernels and algebra, exact affine covariance
 for every real scale, arbitrary base-point shifts, and the zero-local-tail Taylor
 jet.  For continuous Banach-valued inputs it additionally identifies literal
 iteration with the direct kernel and supplies the semigroup's strict FTC,
-derivative cancellation, smoothness, and Taylor reconstruction.  The final
-module specializes that calculus only
-after the generic work is complete, obtaining the signed-global Fabius ladder,
-the bounded ladder on \(x\le1\), and finite monomial weights.
+derivative cancellation, smoothness, and Taylor reconstruction.
+\nolinkurl{FractionalVolterra.lean} and its semigroup companion give the
+Gamma-normalized real-order operator and positive-order composition on ordered
+intervals.  \nolinkurl{FractionalVolterraCalculus.lean} adds positive affine
+covariance for arbitrary real order and, for \(\alpha>0\), the exact
+integration-by-parts order-raising law with its left-endpoint boundary term.
+The two Fabius-specific modules are used only after this generic work:
+\nolinkurl{FabiusAntiderivatives.lean} gives the signed-global and bounded
+natural-order ladders and finite monomial weights, while
+\nolinkurl{FabiusFractionalVolterra.lean} gives the positive-real one-step
+fractional shifts for the signed extension on \(x\geq0\), the bounded function
+on \([0,1]\), and the bridge from \(\Up\) based at \(-1\) to \(F\).
 
 \subsubsection{Path E: sharp asymptotics}
 Read:
@@ -2916,6 +2974,9 @@ Rvachev up-function \(\Up\) & \nolinkurl{rvachevUp} & \nolinkurl{Basic.lean}; an
 Signed global extension \(\widetilde F\) & \nolinkurl{extendedFabius} & defined in \nolinkurl{Basic.lean}; cell and smoothness theory in \nolinkurl{GlobalExtension.lean} \\
 Normalized Volterra operator \(\mathsf J_{n,a}\) & \nolinkurl{normalizedVolterra}, \nolinkurl{iteratedPrimitive}, \nolinkurl{normalizedVolterra_affine}, \nolinkurl{normalizedVolterra_comp_affine}, \nolinkurl{normalizedVolterra_basepoint_shift}, \nolinkurl{normalizedVolterra_succ_eq_taylor_of_eq_zero} & direct kernel, literal iterator, affine transport, and base-point Taylor jets in \nolinkurl{NormalizedVolterra.lean} \\
 Exact Fabius primitive ladders & \nolinkurl{normalizedVolterra_extendedFabius}, \nolinkurl{normalizedVolterra_fabiusReal_of_le_one} & \nolinkurl{FabiusAntiderivatives.lean} \\
+Fractional Volterra operator and order calculus & \nolinkurl{fractionalVolterra}, \nolinkurl{fractionalVolterra_add}, \nolinkurl{fractionalVolterra_affine}, \nolinkurl{fractionalVolterra_add_one_deriv} & \nolinkurl{FractionalVolterra.lean}, \nolinkurl{FractionalVolterraSemigroup.lean}, and \nolinkurl{FractionalVolterraCalculus.lean} \\
+Fractional Fabius--Rvachev shifts & \nolinkurl{fractionalVolterra_add_one_extendedFabius_of_nonneg}, \nolinkurl{fractionalVolterra_add_one_fabiusReal}, \nolinkurl{fractionalVolterra_add_one_rvachevUp} & \nolinkurl{FabiusFractionalVolterra.lean} \\
+Pointwise analytic finite filters & \nolinkurl{finiteAnalyticSeriesFilter}, \nolinkurl{geometricAnalyticSeriesFilter}, \nolinkurl{geometricLagrangeAnalyticSeriesFilter_shifted} & unconditional diagonal, exact-head/tail, and Gaussian-residual identities in \nolinkurl{AnalyticSeriesFilter.lean} \\
 Exact even moment \(c_n\) & \nolinkurl{moment}, \nolinkurl{momentIntegral} & \nolinkurl{Arithmetic.lean}, \nolinkurl{Basic.lean}, and \nolinkurl{AnalyticMoments.lean} \\
 Normalized half moment \(d_n\) & \nolinkurl{halfMoment}, \nolinkurl{halfMomentIntegral} & \nolinkurl{Arithmetic.lean}, \nolinkurl{Basic.lean}, and \nolinkurl{AnalyticMoments.lean} \\
 Canonical moment numerators \(F_n,G_n\) & \nolinkurl{momentNumerator}, \nolinkurl{halfMomentNumerator} & \nolinkurl{Arithmetic.lean}, \nolinkurl{NormalizedEvenMoments.lean}, and \nolinkurl{NormalizedMoments.lean} \\
@@ -2966,6 +3027,9 @@ Module & Role in the development \\
 \nolinkurl{ScaleTranslation.lean} & Reusable chain-rule formulas for affine rescaling and translation of Fabius and up-functions. \\
 \nolinkurl{GlobalExtension.lean} & Local finiteness, smoothness, unit-interval agreement, and translation laws of the signed global extension. \\
 \nolinkurl{NormalizedVolterra.lean} & Base-point and endpoint-order independent repeated integration.  Over arbitrary real normed targets it provides direct normalized kernels, division-free affine covariance for every scale (and an inverse form at nonzero scale), arbitrary base-point shifts into a local tail plus finite jet, the zero-local-tail specialization, and finite Hasse-polynomial and monomial commutators.  Completeness is confined to the continuous literal-iterator/strict-FTC bridge, derivative cancellation and smoothness, and Taylor reconstruction. \\
+\nolinkurl{FractionalVolterra.lean} & Total Gamma-normalized real-order Volterra operator, unconditional endpoint/locality/scalar laws, the order-one and positive-natural-order bridges, and positive-order kernel integrability and input additivity on ordered intervals. \\
+\nolinkurl{FractionalVolterraSemigroup.lean} & Shifted beta-kernel integrability and evaluation, and addition of two positive real orders for continuous Banach-valued inputs on ordered compact intervals. \\
+\nolinkurl{FractionalVolterraCalculus.lean} & Positive-scale affine covariance at arbitrary real order on ordered endpoints, its inverse-smul form, and the positive-order integration-by-parts law raising the order of a right interior derivative, including the exact boundary-free specialization. \\
 \nolinkurl{GlobalDyadic.lean} & Exact dyadic identities for the signed extension with unrestricted and nonreduced representatives. \\
 \addlinespace[0.45em]
 \multicolumn{2}{l}{\textbf{Global shape, inversion, and computability}}\\[0.25em]
@@ -2976,6 +3040,7 @@ Module & Role in the development \\
 \nolinkurl{GlobalBounds.lean} & Sharp value and iterated-derivative bounds for the signed global extension and \(\Up\), including attainment and derivative-support control. \\
 \nolinkurl{BoundedDerivatives.lean} & Exact global sup-norm bounds for every derivative, including attainment. \\
 \nolinkurl{FabiusAntiderivatives.lean} & Complete natural-order primitive ladder for the signed extension at every real endpoint, its bounded specialization on \(x\le1\), and finite natural-monomial formulas for both. \\
+\nolinkurl{FabiusFractionalVolterra.lean} & Positive-real one-step fractional order shift for the signed extension on \(x\ge0\), its bounded specialization on \([0,1]\), and the affine bridge from \(\Up\) based at \(-1\) to the bounded Fabius function for \(x\ge-1\). \\
 \nolinkurl{EffectiveFlatness.lean} & Explicit power bounds at the flat endpoint. \\
 \nolinkurl{SharpFlatness.lean} & Factorial-strengthened endpoint power bounds for \(F\) and \(\Up\). \\
 \nolinkurl{NowhereAnalytic.lean} & Exact real-analytic loci: off the closed transition supports and nowhere on them. \\
@@ -3105,6 +3170,7 @@ Module & Role in the development \\
 \nolinkurl{GeometricCompleteHomogeneous.lean} & Denominator-free principal specialization \(h_n(1,q,\ldots,q^p)=\qbinom{n+p}{p}{q}\), its arbitrary common-scale form over every commutative semiring, and the range-indexed bridge used by interpolation rows. \\
 \nolinkurl{LagrangeResidualMoments.lean} & Every higher residual moment of a polynomially exact finite row, with a representation-independent commutative-ring theorem and the distinct-node Lagrange specialization. \\
 \nolinkurl{GeometricResidualMoments.lean} & Every positive residual moment on \(c,cq,\ldots,cq^p\) over a commutative ring, assuming exactness directly on those scaled nodes, together with distinct-node Lagrange, arbitrary-dilation, and shifted-block field corollaries. \\
+\nolinkurl{AnalyticSeriesFilter.lean} & Unconditional pointwise evaluation of finite coefficient filters: diagonalization under weighted sampled-series summability, exact finite heads and tails, and Gaussian residual tails for geometric and geometric-Lagrange rows, including shifted scales.  It does not supply conditional boundary summation, uniform estimates, asymptotic rates, or a sinc-product instantiation. \\
 \nolinkurl{GeometricRichardson.lean} & Generic geometric root polynomials and normalized forward Richardson polynomials, including their evaluation and coefficient interfaces. \\
 \nolinkurl{GeometricLagrangeWeights.lean} & Identification of the geometric Lagrange row with the Richardson coefficient polynomial and its complete-homogeneous all-order moments. \\
 \nolinkurl{GeometricLagrangeQBinomial.lean} & Field-valued q-Pochhammer weight formulas and report-facing rational q-binomial and quarter-base coefficient formulas. \\
@@ -3280,7 +3346,7 @@ Term or identifier & Meaning in this development \\
 \nolinkurl{atTop} & Filter describing a variable tending to positive infinity. \\
 \nolinkurl{nhdsWithin 0 (Set.Ioi 0)} & Right-hand approach to zero, the endpoint filter used for \(x\downarrow0\). \\
 \nolinkurl{eventually} & A property holding on some set belonging to a filter; used to encode large-variable thresholds. \\
-\nolinkurl{Summable} & Absolute or unconditional summability in the relevant normed additive group. \\
+\nolinkurl{Summable} & Unconditional summability in the relevant normed additive group.  In \nolinkurl{AnalyticSeriesFilter.lean} the generic hypothesis is on each weighted sampled series; specialized geometric statements require an unweighted sample only when its weight is nonzero. \\
 \nolinkurl{intervalIntegral} & Oriented integral over real endpoints, useful for FTC and integration by parts. \\
 \nolinkurl{MeasureTheory.Integrable} & Whole-space integrability; usually proved from compact support and continuity. \\
 \nolinkurl{SchwartzMap} & Smooth rapidly decreasing function type used for Fourier injectivity and Poisson summation. \\
