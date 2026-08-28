@@ -27,7 +27,7 @@ shifts, negative-branch and hierarchy formulas, and inverse/quantile versions
 remain research frontiers. These API claims were checked at source checkpoint
 `22f801337`.
 
-Member: `Exponents_and_q_Series_Frontiers` (80 pp, three parts) — the
+Member: `Exponents_and_q_Series_Frontiers` (97 pp, four parts) — the
 2026-08-28 consolidation of the two former drafts (Part I:
 Newton-basis frontiers; Part II: q-binomial Richardson), joined the
 same day by the eighth-wave report as **Part III** — *Finite Dyadic
@@ -44,9 +44,29 @@ form (extending Part II), a uniform scale-mixture representation
 quadrature hierarchy with exact constants — including the
 variance-matched positive `16^{-n}` scheme that the frontier corpus
 had proposed without construction, and a sixth-order exact-support
-Radau rule.  The fold also repaired the volume's part-boundary
-section numbering (Part II had rendered with `\appendix` letters
-G–N).  Supporting files under `assets/`, provenance with SHA-256 in
-the document itself.
+Radau rule — and by the two ninth-wave same-topic reports, **merged
+editorially** (shared core stated once, constants cross-checked,
+unique layers of each kept) as **Part IV** — *Fourier Images of the
+Repeated-Integration Approximants* (formerly
+`Rvachev_Piecewise_Approximation_Fourier_Images/` and
+`rvachev_fourier_frontier_report/`): the master factorization
+`f̂_n = Φ · A(2^{-n} t)` with the universal tail-transfer function
+`A = sinc z / Φ(z)`, its cotangent and valuation-weighted canonical
+products with signed divisor `1 − v₂(m)`, digit-sum zero counts and
+the Thue–Morse sign law, exact Taylor radius `4π` with dominant-pole
+coefficient asymptotics and an arithmetic Darboux hierarchy, the
+complete finite/limit zero-multiplicity filtration, the sharp
+`o(2^n)` relative-convergence window with forward/inverse
+conditioning thresholds at `4π·2^n` and `π·2^n`, the impossibility of
+globally stable convolutional deconvolution, weighted-`L^p` and
+Sobolev all-orders norm laws with explicit leading constants, exact
+algebraic mean-square Fourier tails with the sharp threshold
+`f_n ∈ H^s ⟺ s < n + 1/2`, and positive moment-matched atomic,
+dyadic-atomic, and polynomial-density closure menus at rates
+`16^{-n}`–`256^{-n}`, compared as a family against Part III's box
+mixtures.  The eighth-wave fold also repaired the volume's
+part-boundary section numbering (Part II had rendered with
+`\appendix` letters G–N).  Supporting files under `assets/`,
+provenance with SHA-256 in the document itself.
 
 See [`../MANIFEST.md`](../MANIFEST.md) for titles and the previous paths.

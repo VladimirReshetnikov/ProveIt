@@ -150,13 +150,17 @@ positive-definite Pascal quotients, automatic lobe signs, and Gaussian boundary 
 \clearpage
 \section*{Provenance}
 This volume preserves the absorbed theorem and proof bodies, with labels, citation keys,
-and asset paths mechanically prefixed per part.  Later edits add status-only Lean
+and asset paths mechanically prefixed per part.  Part~IV is an editorial merge of the two ninth-wave same-topic drafts
+(shared core stated once, unique layers kept, constants cross-checked);
+their verification packages are preserved verbatim under \path{assets/}.  Later edits add status-only Lean
 crosswalk annotations; the historical source hashes below are unchanged.
 The absorbed drafts are deleted from the working tree; git history is the archive.
 \begin{itemize}
 \item \path{Fabius_Newton_Rvachev_Frontier_Report/Exponent_Sequence_Newton_Rvachev_Frontiers.tex} \\ {\footnotesize SHA-256 \path{2c068211b3e5f85f410976f89eda3616b3d48c1e1817dabdded0db5e41429a22}}
 \item \path{fabius_frontier_results/q_richardson_sinc_frontier.tex} \\ {\footnotesize SHA-256 \path{3b612cf8bbc34c4bfa9b3fbefbee14c618ff2edbbe84bc38d7cbe6baece8fcf4}}
 \item \path{finite_sinc_products_report/finite_sinc_products_report.tex} \\ {\footnotesize SHA-256 \path{e01c3a2716d1c28ba6982510870775490981056b3f97b2a2b3f79002b2ef11b1}} (eighth wave, folded in 2026-08-28)
+\item \path{Rvachev_Piecewise_Approximation_Fourier_Images/Rvachev_Piecewise_Approximation_Fourier_Images.tex} \\ {\footnotesize SHA-256 \path{e70c2dd20b1ad71d44096d9c5c462596e36be202833bdbb5235efd4fba8355fd}} (ninth wave; merged editorially into Part~IV)
+\item \path{rvachev_fourier_frontier_report/rvachev_piecewise_fourier_frontier.tex} \\ {\footnotesize SHA-256 \path{23acde817ac19802ffed9cc19e80a80368d70315f87edf41e9fdc3f54c2a970b}} (ninth wave; merged editorially into Part~IV)
 \end{itemize}
 \clearpage
 \part{Exponent-Sequence and Newton-Basis Frontiers for the Fabius--Rvachev System}
@@ -5555,6 +5559,1205 @@ W.~Gautschi,
 J.-P.~Allouche and J.~Shallit,
 \newblock \emph{Automatic Sequences: Theory, Applications, Generalizations},
 \newblock Cambridge University Press, 2003.
+
+\end{thebibliography}
+
+
+
+%% ================= Part IV =================
+% ed.: restore arabic section numbering after Part III's appendices
+\setcounter{section}{0}
+\renewcommand{\thesection}{\arabic{section}}
+\part{Fourier Images of the Repeated-Integration Approximants}
+% Editorial merge of the two ninth-wave same-topic reports:
+%   Rvachev_Piecewise_Approximation_Fourier_Images/
+%     Rvachev_Piecewise_Approximation_Fourier_Images.tex
+%   rvachev_fourier_frontier_report/
+%     rvachev_piecewise_fourier_frontier.tex
+% Shared core stated once; unique layers of each source kept; all
+% shared constants cross-checked before merging.  See the provenance
+% list in the front matter for SHA-256 hashes.
+
+\begin{abstract}
+The repeated-integration approximants $f_n$ to Rvachev's up-function
+differ from the limit, on the Fourier side, by an exact dilation of a
+single universal meromorphic transfer function
+$A(z)=\sinc z/\Phi(z)=\prod_{m\ge1}(1-z^2/(\pi^2m^2))^{1-\vtwo(m)}$:
+$\widehat{f_n}=\Phi\cdot A(2^{-n}t)$.  The valuation-weighted divisor
+of $A$ yields digit-sum zero counts, a Thue--Morse sign law, the exact
+Taylor radius $4\pi$ with dominant-pole coefficient asymptotics and an
+arithmetic Darboux hierarchy, the complete finite/limit
+zero-multiplicity filtration, a sharp $o(2^n)$ relative-convergence
+window, forward and inverse conditioning thresholds at $4\pi2^n$ and
+$\pi2^n$, and the impossibility of any globally stable convolutional
+correction.  All-orders expansions hold in every polynomially weighted
+Fourier $L^p$ space and every Sobolev space, with explicit leading
+norm constants; the algebraic Fourier tails have exact mean-square
+constants and the sharp threshold $f_n\in H^s$ iff $s<n+\tfrac12$.
+Interpreting the construction as a tail closure and matching more
+moments of the true self-similar tail produces positive
+piecewise-polynomial approximants of arbitrary order --- atomic,
+dyadic-atomic, and polynomial-density menus with exact constants ---
+complementing the box-mixture hierarchy of Part~III.
+\end{abstract}
+
+%% ============== Part IV chunk 1: scope + finite objects ==============
+
+\section{Scope, sources, and relation to the prefix theory}
+\label{p4:sec:w-scope}
+
+This part is the editorial consolidation of two ninth-wave reports written
+independently on the same day and on the same subject --- the global Fourier
+geometry of the \emph{repeated-integration} approximants to Rvachev's
+up-function:
+\emph{Fourier Images of the Piecewise-Polynomial Approximants to Rvachev's
+Up-Function} (meromorphic tail transfer, weighted-norm asymptotics,
+moment-matched acceleration) and
+\emph{Fourier Images of Recursive Piecewise-Polynomial Approximations to
+Rvachev's Up Function} ($2$-adic divisors, critical spectral layers, exact
+Fourier tails, accelerated closures).  Their shared core --- the transfer
+quotient, its cotangent product and divisor, the Taylor radius $4\pi$ and
+dominant-pole asymptotics, the finite zero filtration, and the cumulant
+defects --- is stated once below with the stronger of the two treatments;
+each report's unique layers (respectively: the weighted-$L^p$ master theorem
+with its norm constants, the arithmetic Darboux hierarchy, and the
+Gauss/Lobatto/polynomial closure menu; the valuation-weighted canonical
+product, the digital divisor laws and Thue--Morse sign, the sharp critical
+window, the two conditioning thresholds, the deconvolution obstruction, the
+exact mean-square tail constants with the sharp Sobolev threshold, and the
+dyadic-node closure menu) are kept in full.  Every shared constant was
+verified identical between the sources before merging; the two independently
+derived zero-order laws, stated in different groupings, agree in all four
+valuation regimes.
+
+Where Part~III (\cref{p3:sec:exact-spline}) studies the ordinary prefix
+densities $p_n$ in physical space, the present part studies the twin family
+$f_n$ (the prefix with its smallest box doubled) on the Fourier side.  The
+two theories meet in the closure framework of \cref{p4:sec:w-closures}, where
+the three families of accelerated tail surrogates --- the box mixtures of
+\cref{p3:sec:positive}, and the atomic and polynomial closures below ---
+are compared as quadratures of three different laws.
+
+\emph{Convention.}  This part uses radian frequency,
+\begin{equation}
+ \widehat g(t)=\int_{\R}g(x)\e^{-\ii tx}\dd x,
+ \qquad
+ \sinc z=\begin{cases}\sin z/z,&z\ne0,\\1,&z=0,\end{cases}
+ \label{p4:eq:w-fourier-convention}
+\end{equation}
+so that
+\begin{equation}
+ \Phi(t):=\widehat{\Up}(t)=\prod_{k=1}^{\infty}\sinc\!\left(\frac{t}{2^k}\right),
+ \qquad \Phi(0)=1,
+ \label{p4:eq:w-phi-def}
+\end{equation}
+with $\Up$ the even $C^\infty$ probability density on $[-1,1]$.  The
+frequency-normalized product used elsewhere in this volume is
+$\Phi(2\pi\xi)$; in particular the zeros of \eqref{p4:eq:w-phi-def} sit at
+$2\pi m$, $m\in\Z\setminus\{0\}$, with order $1+\vtwo(m)$, and
+$\Phi(\pi)=0.5537712758888100953442174163\ldots$ equals the
+frequency-normalized product at one half.
+
+\section{The repeated-integration family and its Fourier products}
+\label{p4:sec:w-objects}
+
+\subsection{Recursion, box splines, and the head--tail model}
+
+With $f_0=\tfrac12\mathbf 1_{(-1,1)}$, the recursive integration scheme
+\begin{equation}
+ f_n(x)=2\int_{-1}^{x}\bigl(f_{n-1}(2t+1)-f_{n-1}(2t-1)\bigr)\dd t
+ =\int_{2x-1}^{2x+1}f_{n-1}(t)\dd t
+ \label{p4:eq:w-recursion}
+\end{equation}
+produces compactly supported piecewise-polynomial probability densities
+converging to $\Up$.  Writing $\beta_a=\tfrac1{2a}\mathbf 1_{[-a,a]}$ for
+the centered uniform density and unrolling the recursion,
+\begin{equation}
+ f_n=\beta_{2^{-1}}*\beta_{2^{-2}}*\cdots*\beta_{2^{-n}}*\beta_{2^{-n}}
+ =p_n*\beta_h,
+ \qquad h:=2^{-n},
+ \label{p4:eq:w-convolution}
+\end{equation}
+where $p_n=\beta_{2^{-1}}*\cdots*\beta_{2^{-n}}$ is the ordinary prefix of
+\cref{p3:sec:exact-spline}: a univariate box spline of degree $n$ supported
+on $[-1,1]$, with the smallest box occurring twice.  Probabilistically, if
+$X_n$ has density $f_n$, $X$ has density $\Up$, and
+$S_n=\sum_{k=1}^{n}2^{-k}U_k$ with $U_k$ independent uniform on $[-1,1]$,
+then
+\begin{equation}
+ X_n\overset d=S_n+hU,
+ \qquad
+ X\overset d=S_n+hX',
+ \qquad X'\overset d=X,
+ \label{p4:eq:w-tail-models}
+\end{equation}
+with all variables independent: the finite construction replaces the true
+self-similar tail $hX'$ by a single uniform variable $hU$.  This closure
+point of view drives the entire part.
+
+\subsection{Finite products and the master factorization}
+
+With $P_n(t)=\prod_{k=1}^{n}\sinc(t/2^k)=\widehat{p_n}(t)$,
+\begin{equation}
+ F_n(t):=\widehat{f_n}(t)=P_n(t)\sinc(ht),
+ \qquad
+ \Phi(t)=P_n(t)\,\Phi(ht).
+ \label{p4:eq:w-two-products}
+\end{equation}
+
+\begin{definition}[Tail-transfer quotient]
+\label{p4:def:w-A}
+The \emph{tail-transfer function} (or correction quotient) is the even
+meromorphic function
+\begin{equation}
+ A(z)=\frac{\sinc z}{\Phi(z)},
+ \label{p4:eq:w-A-def}
+\end{equation}
+interpreted at common zeros by meromorphic continuation.
+\end{definition}
+
+\begin{theorem}[Master factorization]
+\label{p4:thm:w-master}
+For every $n\ge1$,
+\begin{equation}
+ F_n(t)=\Phi(t)\,A(2^{-n}t),
+ \label{p4:eq:w-master}
+\end{equation}
+as an identity of entire functions after the implicit cancellations, and in
+the cancellation-free form
+$F_n(t)-\Phi(t)=P_n(t)\bigl(\sinc(ht)-\Phi(ht)\bigr)$.
+\end{theorem}
+
+\begin{proof}
+Divide the two identities in \eqref{p4:eq:w-two-products}.
+\end{proof}
+
+All stage dependence is thus an exact dilation of one universal meromorphic
+profile: the finite-stage problem separates into the rapidly decaying global
+carrier $\Phi(t)$ and the universal microscopic transfer $A(2^{-n}t)$.  The
+identity is stronger than an asymptotic statement --- in the renormalized
+coordinate $z=2^{-n}t$ the profile
+$\mathscr R_n(z)=F_n(2^nz)/\Phi(2^nz)=A(z)$ is independent of $n$, so the
+apparent convergence of the finite products is entirely the critical window
+moving to infinity, a boundary layer with an exact rather than asymptotic
+inner solution.
+
+%% ============== Part IV chunk 2: forms + canonical product + divisor ==============
+
+\section{Exact forms and the canonical valuation product}
+\label{p4:sec:w-forms}
+
+\subsection{Functional equations and renormalization products}
+
+The scaling identity $\Phi(2z)=\sinc z\,\Phi(z)$ gives three equivalent
+descriptions of the transfer quotient and a dyadic functional equation:
+\begin{align}
+ A(z)&=\frac{\Phi(2z)}{\Phi(z)^2}
+      =\frac{\cos(z/2)}{\Phi(z/2)},
+ \label{p4:eq:w-A-forms}\\
+ \frac{A(z)}{A(z/2)}
+ &=\frac{\sinc z}{\sinc^2(z/2)}
+  =\frac z2\cot\frac z2,
+ \label{p4:eq:w-A-functional}
+\end{align}
+the second form of \eqref{p4:eq:w-A-forms} by
+$\sinc z=\sinc(z/2)\cos(z/2)$ and one cancellation.  Iterating
+\eqref{p4:eq:w-A-functional} from $A(0)=1$ yields the cotangent
+renormalization product
+\begin{equation}
+ A(z)=\prod_{j=1}^{\infty}
+ \left(\frac{z}{2^j}\cot\frac{z}{2^j}\right),
+ \label{p4:eq:w-cot-product}
+\end{equation}
+normally convergent on compact pole-free sets since
+$u\cot u=1-u^2/3+\bigO(u^4)$; collecting equal cosine scales in
+$\sinc z=\prod_{j\ge1}\cos(z/2^j)$ gives the companion form
+$A(z)=\cos(z/2)\prod_{j\ge3}\cos(z/2^j)^{-(j-2)}$, which makes the dyadic
+pole hierarchy visually transparent.
+
+\subsection{The valuation-weighted canonical product}
+
+The arithmetic structure is clearest in a canonical product obtained by
+regrouping Euler's $\sinc z=\prod_{r\ge1}(1-z^2/(\pi^2r^2))$ across the
+dyadic scales: a fixed factor $1-z^2/(\pi^2m^2)$ occurs in
+$\sinc(z/2^k)$ once for every $k\ge1$ with $2^k\mid m$, i.e.\ $\vtwo(m)$
+times in $\Phi$.
+
+\begin{theorem}[Canonical products]
+\label{p4:thm:w-canonical}
+As an entire function,
+\begin{equation}
+ \Phi(z)=\prod_{m=1}^{\infty}
+ \left(1-\frac{z^2}{\pi^2m^2}\right)^{\vtwo(m)},
+ \label{p4:eq:w-phi-canonical}
+\end{equation}
+and as a meromorphic function,
+\begin{equation}
+ A(z)=\prod_{m=1}^{\infty}
+ \left(1-\frac{z^2}{\pi^2m^2}\right)^{1-\vtwo(m)},
+ \label{p4:eq:w-A-canonical}
+\end{equation}
+both locally uniformly in their natural domains (legitimate because
+$\sum_m\vtwo(m)m^{-2}=\sum_{j\ge1}\sum_{2^j\mid m}m^{-2}<\infty$).
+\end{theorem}
+
+\subsection{The complete divisor and local principal parts}
+
+\begin{theorem}[Divisor, removable values, and leading jets]
+\label{p4:thm:w-divisor}
+For every nonzero integer $m$,
+\begin{equation}
+ \ord_{z=\pi m}A=1-\vtwo(|m|).
+ \label{p4:eq:w-divisor}
+\end{equation}
+Explicitly: $A$ has a simple zero at every odd multiple of $\pi$; the points
+$2\pi q$ with $q$ odd are removable with the nonzero values
+\begin{equation}
+ A(2\pi q)=-\frac1{\Phi(\pi q)};
+ \label{p4:eq:w-removable}
+\end{equation}
+and at $z_0=\pi2^rq>0$ with $q$ odd and $r\ge2$ there is a pole of order
+$r-1$ with leading jet
+\begin{equation}
+ A(z)=-\frac{z_0^{\,r-1}}{\Phi(\pi q)}\,
+ (z-z_0)^{1-r}\bigl(1+\bigO(z-z_0)\bigr).
+ \label{p4:eq:w-principal-part}
+\end{equation}
+Equivalently, parametrizing the poles as $z=4\pi q'$ with
+$q'\in\Z\setminus\{0\}$, the pole order is $1+\vtwo(q')$.  In particular the
+nearest singularities are the simple poles at $\pm4\pi$, with
+\begin{equation}
+ \Res_{z=4\pi}A=-\frac{4\pi}{\Phi(\pi)}
+ =-22.6923481977102997779\ldots,
+ \qquad
+ \Res_{z=-4\pi}A=+\frac{4\pi}{\Phi(\pi)}.
+ \label{p4:eq:w-residues}
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+The order formula is immediate from \eqref{p4:eq:w-A-canonical}.  For the local
+jets use $A(z)=\cos(z/2)/\Phi(z/2)$ and put $w=z/2$, $w_0=z_0/2$.  Iterating
+the head splitting $r-1$ times,
+$\Phi(w)=\bigl(\prod_{k=1}^{r-1}\sinc(w/2^k)\bigr)\Phi(w/2^{r-1})$; at
+$w=w_0$ every displayed factor vanishes linearly, all the associated integer
+multiples are even except the last, so the product of their sign slopes is
+$-1$ and
+$\Phi(w)=-\bigl((w-w_0)/w_0\bigr)^{r-1}\Phi(\pi q)(1+\bigO(w-w_0))$.
+For $r\ge2$, $\cos(z_0/2)=1$, giving \eqref{p4:eq:w-principal-part}; for $r=1$,
+$\cos(\pi q)=-1$ gives \eqref{p4:eq:w-removable}.  The residue at $4\pi$ is the
+case $r=2$, $q=1$ of \eqref{p4:eq:w-principal-part}.
+\end{proof}
+
+The leading-jet formula \eqref{p4:eq:w-principal-part} evaluates, at every
+pole, the top Laurent coefficient in finite terms of $\Phi$ at odd
+multiples of $\pi$ --- the first layer of the closed-jet program posed in
+\cref{p4:sec:w-directions}.
+
+\begin{figure}[htbp]
+ \centering
+ \includegraphics[width=0.92\textwidth]{assets/Rvachev_Piecewise_Approximation_Fourier_Images/data/transfer_profile.pdf}
+ \caption{The universal transfer function on the first positive meromorphic
+ cell: simple zeros at $\pi$ and $3\pi$, a removable point at $2\pi$ with
+ value $-1/\Phi(\pi)$, and the first pole at $4\pi$.}
+ \label{p4:fig:w-transfer-profile}
+\end{figure}
+
+\section{Digital divisor laws and the Thue--Morse sign}
+\label{p4:sec:w-digital}
+
+The signed divisor sequence $1-\vtwo(m)$ has three exact arithmetic
+transforms, and its cumulative parity is a digit sum.
+
+\begin{theorem}[Digital divisor laws]
+\label{p4:thm:w-digital}
+Let $s_2(M)$ be the binary digit sum.  Then
+\begin{equation}
+ \sum_{m=1}^{M}\ord_{\pi m}A
+ =\sum_{m=1}^{M}\bigl(1-\vtwo(m)\bigr)
+ =M-\vtwo(M!)=s_2(M),
+ \label{p4:eq:w-digit-sum}
+\end{equation}
+the total pole multiplicity on $\{\pi,\ldots,M\pi\}$ is
+$\lceil M/2\rceil-s_2(M)$, and the divisor has the Lambert and Dirichlet
+series
+\begin{equation}
+ \sum_{m\ge1}(1-\vtwo(m))q^m
+ =\frac{q}{1-q}-\sum_{j\ge1}\frac{q^{2^j}}{1-q^{2^j}}
+ \quad(|q|<1),
+ \qquad
+ \sum_{m\ge1}\frac{1-\vtwo(m)}{m^s}
+ =\zeta(s)\,\frac{2^s-2}{2^s-1}
+ \quad(\Re s>1).
+ \label{p4:eq:w-divisor-series}
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+Legendre's formula $\vtwo(M!)=M-s_2(M)$ gives \eqref{p4:eq:w-digit-sum}; the
+pole count is
+$\sum_{m\le M}\max\{\vtwo(m)-1,0\}=\sum_{j\ge2}\lfloor M/2^j\rfloor
+=\vtwo(M!)-\lfloor M/2\rfloor$.  Since
+$\vtwo(m)=\sum_{j\ge1}\mathbf 1_{2^j\mid m}$, summation in $m$ gives both
+series, using $\sum_m\vtwo(m)m^{-s}=\zeta(s)/(2^s-1)$.
+\end{proof}
+
+\begin{corollary}[Thue--Morse sign law]
+\label{p4:cor:w-tm-sign}
+For every integer $M\ge0$ and every real $x\in(\pi M,\pi(M+1))$,
+\begin{equation}
+ \operatorname{sgn}A(x)=(-1)^{s_2(M)}.
+ \label{p4:eq:w-tm-sign}
+\end{equation}
+\end{corollary}
+
+\begin{proof}
+$A>0$ near $0$; crossing $\pi m$ flips the sign according to the parity of
+the signed order $1-\vtwo(m)$ (poles flip parity exactly as zeros do), and
+the cumulative parity through $M$ is $s_2(M)$ by \eqref{p4:eq:w-digit-sum}.
+\end{proof}
+
+The Thue--Morse sequence thus appears twice in the theory of the same
+splines, by different mechanisms: as subset-sum parity in the spatial
+truncated-power coefficients (\cref{p3:eq:truncated-power} for the prefix
+family), and as a cumulative valuation divisor in the signs of the universal
+Fourier correction.
+
+\begin{figure}[htbp]
+ \centering
+ \includegraphics[width=0.94\textwidth]{assets/rvachev_fourier_frontier_report/numerical_output/divisor_arithmetic.png}
+ \caption{The signed divisor order $1-\vtwo(m)$ and its cumulative sum,
+ which coincides exactly with the binary digit sum $s_2(M)$.}
+ \label{p4:fig:w-divisor-arithmetic}
+\end{figure}
+
+%% ============== Part IV chunk 3: Taylor coefficients ==============
+
+\section{Taylor coefficients: Bernoulli series, radius, and dominant poles}
+\label{p4:sec:w-coefficients}
+
+\subsection{The local logarithm and its arithmetic explanation}
+
+For $|z|<\pi$, the zero-free branch of $\log A$ at the origin is
+\begin{equation}
+ \log A(z)=\sum_{r=1}^{\infty}\ell_rz^{2r},
+ \qquad
+ \ell_r=-\frac{2^{2r-1}|B_{2r}|}{r\,(2r)!}\,
+ \frac{4^r-2}{4^r-1},
+ \label{p4:eq:w-logA}
+\end{equation}
+the local series already recorded with the repeated-integration corpus.
+The canonical product explains its shape arithmetically: logarithmic
+expansion of \eqref{p4:eq:w-A-canonical} gives
+\begin{equation}
+ \log A(z)
+ =-\sum_{r=1}^{\infty}\frac{z^{2r}}{r\pi^{2r}}
+ \sum_{m\ge1}\frac{1-\vtwo(m)}{m^{2r}}
+ =-\sum_{r=1}^{\infty}
+ \frac{\zeta(2r)}{r\pi^{2r}}\,\frac{2^{2r}-2}{2^{2r}-1}\,z^{2r},
+ \label{p4:eq:w-logA-zeta}
+\end{equation}
+by the divisor Dirichlet series \eqref{p4:eq:w-divisor-series}; Euler's
+evaluation of $\zeta(2r)$ recovers \eqref{p4:eq:w-logA}.  The coefficient
+factor $(4^r-2)/(4^r-1)$ is thus the divisor zeta quotient
+$\zeta(2r)^{-1}\sum_m(1-\vtwo(m))m^{-2r}$, and simultaneously the exact
+$2r$th cumulant defect ratio of \cref{p4:sec:w-cumulants}.
+
+Writing $A(z)=\sum_{r\ge0}\rho_rz^{2r}$, differentiation of
+$A=\exp\sum\ell_rw^r$ in $w=z^2$ gives the exact rational recurrence
+$r\rho_r=\sum_{k=1}^{r}k\ell_k\rho_{r-k}$, whence
+\begin{equation}
+ A(z)=1-\frac{z^2}{9}+\frac{2z^4}{2025}
+ +\frac{z^6}{2679075}
+ +\frac{58z^8}{10247461875}
+ +\frac{12622z^{10}}{345944065438125}
+ +\frac{449289436z^{12}}{1933714893977851359375}+\cdots.
+ \label{p4:eq:w-A-first-terms}
+\end{equation}
+
+\subsection{Radius and dominant-pole asymptotics}
+
+\begin{theorem}[Taylor radius and dominant-pole law]
+\label{p4:thm:w-radius}
+The Maclaurin series of $A$ has radius of convergence exactly $4\pi$: the
+zeros at $\pm\pi,\pm3\pi$ do not obstruct analyticity, the points $\pm2\pi$
+are removable, and the first genuine singularities are the simple poles at
+$\pm4\pi$.  Moreover there is a function $H$ holomorphic in $|z|<8\pi$ with
+\begin{equation}
+ A(z)=\frac{2/\Phi(\pi)}{1-z^2/(4\pi)^2}+H(z),
+ \label{p4:eq:w-pole-split}
+\end{equation}
+so for every fixed $\rho<8\pi$,
+\begin{equation}
+ \rho_r=\frac{2}{\Phi(\pi)\,(4\pi)^{2r}}
+ +\bigO_\rho(\rho^{-2r}),
+ \qquad
+ \lim_{r\to\infty}\rho_r(4\pi)^{2r}=\frac{2}{\Phi(\pi)}
+ =3.6115993860280564486832331013\ldots,
+ \label{p4:eq:w-rho-asymptotic}
+\end{equation}
+and $\rho_{r+1}/\rho_r\to(16\pi^2)^{-1}$.  In particular $\rho_r>0$ for all
+sufficiently large $r$.
+\end{theorem}
+
+\begin{proof}
+The paired principal parts at $\pm4\pi$ determined by
+\eqref{p4:eq:w-residues} sum to the rational model in
+\eqref{p4:eq:w-pole-split}; subtraction removes both first poles, the next
+poles are the double poles at $\pm8\pi$, and Cauchy's estimate on
+$|z|=\rho<8\pi$ bounds the remainder coefficients.
+\end{proof}
+
+Exponentiating the convergent logarithmic series is justified only for
+$|z|<\pi$, but the resulting formal recurrence computes the Taylor series of
+the meromorphic continuation, convergent throughout $|z|<4\pi$ --- the
+ordinary series reaches four times farther than the logarithm.
+
+The dominant-pole approximation is accurate remarkably early: exact rational
+computation gives
+\begin{center}
+\small
+\begin{tabular}{@{}rllllll@{}}
+\toprule
+$r$ & $3$ & $5$ & $10$ & $20$ & $30$ & $50$\\
+\midrule
+$\rho_r(4\pi)^{2r}$ & $0.40698$ & $3.58279$ & $3.611538$
+ & $3.6115993859$ & $3.6115993860280563$ & $3.61159938602805644868323101$\\
+\bottomrule
+\end{tabular}
+\end{center}
+with $\rho_r>0$ verified for $2\le r\le50$.
+
+\begin{proposition}[Arithmetic Darboux hierarchy]
+\label{p4:prop:w-darboux}
+For $q\ge1$ put $R_q=4\pi q$ and $d_q=1+\vtwo(q)$, and write the principal
+part of $A$ at $R_q$ as
+$\sum_{\ell=1}^{d_q}c_{q,\ell}(z-R_q)^{-\ell}$.  Then for each $Q\ge1$ and
+$R_Q<\rho<R_{Q+1}$,
+\begin{equation}
+ \rho_r=\sum_{q=1}^{Q}\sum_{\ell=1}^{d_q}
+ 2(-1)^\ell c_{q,\ell}\,R_q^{-2r-\ell}
+ \binom{2r+\ell-1}{\ell-1}
+ +\bigO_{Q,\rho}(\rho^{-2r}):
+ \label{p4:eq:w-darboux}
+\end{equation}
+each positive integer $q$ contributes the exponential scale $(4\pi q)^{-2r}$
+times a polynomial in $r$ of degree $\vtwo(q)$, so the $2$-adic hierarchy of
+pole orders becomes an arithmetic hierarchy of coefficient corrections
+\begin{equation}
+ \rho_r\sim\frac{2}{\Phi(\pi)(4\pi)^{2r}}
+ +\frac{\alpha_1r+\alpha_0}{(8\pi)^{2r}}
+ +\frac{\beta_0}{(12\pi)^{2r}}
+ +\frac{\gamma_2r^2+\gamma_1r+\gamma_0}{(16\pi)^{2r}}+\cdots,
+ \label{p4:eq:w-transseries}
+\end{equation}
+with the top constant of each block determined by the leading jet
+\eqref{p4:eq:w-principal-part}.
+\end{proposition}
+
+\begin{proof}
+Evenness pairs the principal part at $-R_q$ with signs $(-1)^\ell$; the
+coefficient of $z^{2r}$ in a paired principal part is
+$2(-1)^\ell c_{q,\ell}R_q^{-2r-\ell}\binom{2r+\ell-1}{\ell-1}$.  Subtract
+all paired principal parts with $q\le Q$ and apply Cauchy's estimate in
+$|z|<R_{Q+1}$.
+\end{proof}
+
+\begin{conjecture}[Global coefficient positivity]
+\label{p4:conj:w-positivity}
+Apart from $\rho_1=-1/9$, every Taylor coefficient of $A$ is positive.
+\end{conjecture}
+
+The dominant-pole law proves this for all large $r$, and exact arithmetic
+verifies it through $r=50$, but all nonconstant coefficients of $\log A$ are
+negative, so exponentiation produces alternating combinatorial sums and the
+finite gap is genuinely open.  Candidate routes: an explicit positive
+representation of $A(z)-1+z^2/9$ in $z^2$; a majorization of the negative
+logarithmic cumulants after exponentiation; a pole-subtracted
+Mittag--Leffler expansion with positivity-preserving remainder; or a
+sign-regular interpretation of the tail comparison.
+
+\begin{figure}[htbp]
+ \centering
+ \includegraphics[width=0.9\textwidth]{assets/Rvachev_Piecewise_Approximation_Fourier_Images/data/coefficient_asymptotic.pdf}
+ \caption{Normalized exact rational coefficients
+ $\rho_r\Phi(\pi)(4\pi)^{2r}/2$ against the nearest-pole prediction $1$; the
+ asymptotic is already highly accurate from $r=4$ onward.  The nearly linear
+ semilogarithmic error profile is consistent with the double poles at
+ $\pm8\pi$, whose contribution carries a linear polynomial factor in $r$ per
+ \cref{p4:eq:w-transseries}.}
+ \label{p4:fig:w-coefficient-asymptotic}
+\end{figure}
+
+%% ============== Part IV chunk 4: zero filtration + critical layer ==============
+
+\section{The finite zero filtration and its divisor realization}
+\label{p4:sec:w-filtration}
+
+Both $F_n$ and $\Phi$ vanish exactly on $2\pi\Z\setminus\{0\}$, but with
+different multiplicities --- a distinction invisible in magnitude plots and
+precisely responsible for the zeros and poles of the quotient.
+
+\begin{theorem}[Exact finite multiplicities]
+\label{p4:thm:w-filtration}
+Let $m\in\Z\setminus\{0\}$ and $v=\vtwo(|m|)$.  Then
+$\ord_{2\pi m}\Phi=v+1$, while
+\begin{equation}
+ \ord_{2\pi m}F_n
+ =\min(n,v+1)+\mathbf 1_{v\ge n-1}
+ =\min(v+1,n-1)+2\cdot\mathbf 1_{v\ge n-1}
+ =\begin{cases}
+ v+1,&v\le n-2,\\
+ n+1,&v\ge n-1.
+ \end{cases}
+ \label{p4:eq:w-finite-order}
+\end{equation}
+(The two groupings, from the factorizations
+$F_n=P_n\cdot\sinc(t/2^n)$ and
+$F_n=\bigl(\prod_{k<n}\sinc(t/2^k)\bigr)\sinc^2(t/2^n)$ respectively, were
+derived independently in the two sources and agree in all regimes.)
+Consequently the defect
+$\Delta_n(m)=\ord_{2\pi m}F_n-\ord_{2\pi m}\Phi$ is
+\begin{equation}
+ \Delta_n(m)=
+ \begin{cases}
+ 0,&v\le n-2 \quad\text{(exact jet resolution)},\\
+ 1,&v=n-1 \quad\text{(over-resolved by one order)},\\
+ 0,&v=n \quad\text{(exact again)},\\
+ n-v,&v\ge n+1 \quad\text{(unresolved high dyadic jet)}.
+ \end{cases}
+ \label{p4:eq:w-defect}
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+$\sinc(t/2^k)$ vanishes at $t=2\pi m$ iff $2^{k-1}\mid m$, i.e.\
+$k\le v+1$; among $k=1,\dots,n$ this contributes $\min(n,v+1)$, and the
+duplicated smallest box one more exactly when $v\ge n-1$.
+\end{proof}
+
+\begin{corollary}[Divisor-level realization]
+\label{p4:cor:w-realization}
+For every nonzero integer $M$,
+$\ord_{t=2^n\pi M}\bigl(F_n/\Phi\bigr)=1-\vtwo(|M|)$: at the critical
+scaling $t=2^nz$ the three exceptional layers of \eqref{p4:eq:w-defect} are
+exactly the divisor of $A$ --- the over-resolved layer $v=n-1$ is the simple
+zero of $A$ at odd multiples of $\pi$, the re-agreement layer $v=n$ is the
+removable point at $2\pi\cdot$odd, and each unresolved layer $v\ge n+1$ is
+the pole of order $v-n$.
+\end{corollary}
+
+\section{The critical spectral boundary layer}
+\label{p4:sec:w-critical}
+
+\subsection{The sharp relative-convergence window}
+
+Absolute convergence $F_n\to\Phi$ is strong on the real axis because both
+sides decay; relative convergence has an exact scale.
+
+\begin{theorem}[Sharp window criterion]
+\label{p4:thm:w-window}
+Let $T_n>0$.  With the quotient understood meromorphically,
+\begin{equation}
+ \sup_{|t|\le T_n}\left|\frac{F_n(t)}{\Phi(t)}-1\right|\longrightarrow0
+ \qquad\Longleftrightarrow\qquad
+ \frac{T_n}{2^n}\longrightarrow0,
+ \label{p4:eq:w-window-iff}
+\end{equation}
+and in the convergent regime
+\begin{equation}
+ \sup_{|t|\le T_n}\left|\frac{F_n(t)}{\Phi(t)}-1\right|
+ =\frac{T_n^2}{9\cdot4^n}\bigl(1+\bigO((T_n/2^n)^2)\bigr).
+ \label{p4:eq:w-window-sharp}
+\end{equation}
+For fixed $0<c<4\pi$ the critical supremum
+$\sup_{|t|\le c2^n}|F_n/\Phi-1|=\max_{|z|\le c}|A(z)-1|$ is independent of
+$n$ and nonzero; more generally, truncating the Taylor series of $A$ after
+$J-1$ terms leaves a relative error $\bigO(4^{-J\varepsilon n})$ on the
+subcritical band $|t|\le2^{(1-\varepsilon)n}$.
+\end{theorem}
+
+\begin{proof}
+By \cref{p4:thm:w-master}, $F_n/\Phi=A(t/2^n)$.  If $T_n/2^n\to0$, the local
+expansion $A(z)=1-z^2/9+\bigO(z^4)$ gives both convergence and
+\eqref{p4:eq:w-window-sharp}.  Otherwise a subsequence has
+$T_n/2^n\ge\varepsilon>0$, and since $A$ is nonconstant analytic,
+$\max_{|z|\le\varepsilon}|A(z)-1|>0$ (infinite if the window reaches a
+pole).  The critical identity is a change of variables.
+\end{proof}
+
+Hence $2^n$ is not merely a convenient scale but the exact boundary between
+uniform relative convergence and a nontrivial limiting profile.
+
+\subsection{Two conditioning thresholds and the deconvolution obstruction}
+
+Bandlimited to $|t|\le c\,2^n$, the exact relation between the finite and
+limiting transforms is the Fourier multiplier identity
+$\Pi\,f_n=A(2^{-n}D)\,\Pi\,\Up$ with symbol $A(2^{-n}t)$.  Forward
+application is governed by the first pole, inversion by the first zero.
+
+\begin{theorem}[Forward and inverse thresholds]
+\label{p4:thm:w-conditioning}
+Let $M_+(c)=\sup_{|z|\le c}|A(z)|$ and $M_-(c)=\sup_{|z|\le c}|A(z)|^{-1}$.
+Then $M_+(c)<\infty$ iff $c<4\pi$, and $M_-(c)<\infty$ iff $c<\pi$, with
+the blowup laws
+\begin{equation}
+ M_+(c)\sim\frac{4\pi}{\Phi(\pi)\,(4\pi-c)}
+ \quad(c\uparrow4\pi),
+ \qquad
+ M_-(c)\sim\frac{\pi\,\Phi(\pi)}{\pi-c}
+ \quad(c\uparrow\pi),
+ \label{p4:eq:w-blowup}
+\end{equation}
+the second from the local factorization
+$A(z)=\frac{\pi-z}{\pi\Phi(\pi)}(1+\bigO(\pi-z))$ near the first zero
+(using $\Phi(\pi/2)=\tfrac\pi2\Phi(\pi)$).
+\end{theorem}
+
+\begin{theorem}[No global stable convolutional correction]
+\label{p4:thm:w-deconvolution}
+There is no compactly supported distribution, finite measure, or $L^1$
+kernel $K_n$ with $f_n=\Up*K_n$, and none $L_n$ with $\Up=f_n*L_n$.
+\end{theorem}
+
+\begin{proof}
+The first identity forces $\widehat{K_n}(t)=A(2^{-n}t)$ everywhere by
+meromorphic continuation; the transform of a compactly supported
+distribution is entire and that of a finite measure is bounded on $\R$,
+while $A(2^{-n}t)$ has a real pole at $4\pi2^n$.  The reverse identity
+requires the symbol $1/A(2^{-n}t)$, with a real pole already at $\pi2^n$.
+\end{proof}
+
+The obstruction is stronger than ill-conditioning: the global
+translation-invariant correction kernel does not exist in any of the usual
+stable classes.  Away from the divisor one still has the exact shell
+transfer
+\begin{equation}
+ \log|F_n(2^nz)|-\log|\Phi(2^nz)|=\log|A(z)|,
+ \label{p4:eq:w-shell-transfer}
+\end{equation}
+so every asymptotic decay law for the limiting product on the sequence
+$t=2^nz$ transfers to the finite products with an exact $O(1)$ profile
+correction --- a direct bridge from the Fourier-decay corpus (which studies
+the envelope and transfer-operator behaviour of $\Phi$) to the finite
+piecewise-polynomial approximants, to be supplemented at divisor points by
+the multiplicity filtration \eqref{p4:eq:w-finite-order}.
+
+\begin{figure}[htbp]
+ \centering
+ \includegraphics[width=0.92\textwidth]{assets/rvachev_fourier_frontier_report/numerical_output/critical_boundary_layer.png}
+ \caption{Forward and inverse multiplier magnitudes on the critical scale
+ $z=t/2^n$: inverse instability begins at the first zero $z=\pi$, forward
+ instability at the first pole $z=4\pi$, with further inverse peaks at the
+ odd multiples of $\pi$.}
+ \label{p4:fig:w-conditioning}
+\end{figure}
+
+\begin{figure}[htbp]
+ \centering
+ \includegraphics[width=0.94\textwidth]{assets/Rvachev_Piecewise_Approximation_Fourier_Images/data/finite_spectra_log.pdf}
+ \caption{Absolute finite and limiting spectra on a logarithmic scale: each
+ fixed finite product has only algebraic far-field decay
+ (\cref{p4:sec:w-tails}), while $\Phi$ is rapidly decreasing; increasing $n$
+ pushes the discrepancy outward to the boundary layer $|t|\asymp2^n$.}
+ \label{p4:fig:w-finite-log}
+\end{figure}
+
+%% ============== Part IV chunk 5: norm asymptotics + cumulants + tails ==============
+
+\section{All-orders norm asymptotics}
+\label{p4:sec:w-norms}
+
+\subsection{The weighted-\texorpdfstring{$L^p$}{Lp} master theorem}
+
+The local Taylor series of $A$ promotes to a global norm theorem in every
+polynomially weighted Fourier space, because the head product supplies
+arbitrarily many powers of algebraic decay: for every fixed $N$ and $n\ge N$,
+$|P_n(t)|\le\prod_{k=1}^{N}\min(1,2^k/|t|)\le C_N(1+|t|)^{-N}$.  For
+$s\ge0$, $1\le p\le\infty$, write
+$\norm{g}_{L_s^p}=\norm{(1+|t|)^sg}_{L^p(\R)}$.
+
+\begin{theorem}[Weighted Fourier expansion]
+\label{p4:thm:w-weighted}
+Let $J\ge1$, $s\ge0$, $1\le p\le\infty$.  As $n\to\infty$,
+\begin{equation}
+ 4^{Jn}\left[
+ F_n(t)-\Phi(t)\sum_{j=0}^{J-1}\rho_j4^{-jn}t^{2j}
+ \right]
+ \longrightarrow \rho_J\,t^{2J}\Phi(t)
+ \qquad\text{in }L_s^p(\R),
+ \label{p4:eq:w-weighted-limit}
+\end{equation}
+and hence
+$\norm{F_n-\Phi\sum_{j<J}\rho_j4^{-jn}t^{2j}}_{L_s^p}
+ =|\rho_J|\,4^{-Jn}\norm{t^{2J}\Phi}_{L_s^p}+\smallo(4^{-Jn})$.
+\end{theorem}
+
+\begin{proof}
+Let $D_J(z)=\sinc z-\Phi(z)\sum_{j<J}\rho_jz^{2j}$, an entire function with
+$D_J(z)=\rho_Jz^{2J}+\bigO(z^{2J+2})$, and let $H_J(z)=D_J(z)/z^{2J}$
+(value $\rho_J$ at $0$), continuous and bounded on $\R$ since
+$|D_J(z)|\le C_J|z|^{2J}$ for $|z|\ge1$.  The two identities
+\eqref{p4:eq:w-two-products} give exactly
+\[
+ 4^{Jn}\Bigl[F_n(t)-\Phi(t)\sum_{j<J}\rho_j4^{-jn}t^{2j}\Bigr]
+ =t^{2J}P_n(t)\,H_J(2^{-n}t).
+\]
+Pointwise, $P_n\to\Phi$ and $H_J(2^{-n}t)\to\rho_J$; choosing
+$N>s+2J+1/p$ in the head-decay bound gives an $n$-independent $L^p$
+majorant after multiplication by $(1+|t|)^s$, and dominated convergence
+concludes.
+\end{proof}
+
+\begin{corollary}[Universal leading profile and norm constants]
+\label{p4:cor:w-leading}
+$4^n(F_n-\Phi)\to-\tfrac{t^2}9\Phi$ in every $L^p_s$, and
+$4^n\norm{F_n-\Phi}_{L^p}\to\tfrac19\norm{t^2\Phi}_{L^p}$.  The unweighted
+constants, by lobe-wise quadrature, are
+\begin{equation}
+ C_\infty=\frac19\sup_t t^2|\Phi(t)|=0.650851567393992\ldots
+ \quad(\text{maximizer }t_*=3.750573332377785\ldots),
+ \label{p4:eq:w-Cinf}
+\end{equation}
+$C_1=\tfrac19\int t^2|\Phi|\dd t=11.0486184433431\ldots$ and
+$C_2=\tfrac19(\int t^4|\Phi|^2\dd t)^{1/2}=2.00390775107366\ldots$
+(reproducible numerical values, not certified enclosures); the measured
+scaled norms at $n=8$ agree with all three limits to five significant
+digits.
+\end{corollary}
+
+\subsection{Sobolev expansions, energies, and monotonicity}
+
+Since $\widehat{\Up^{(2j)}}=(-1)^jt^{2j}\Phi$, the $p=2$ case transfers to
+physical space: for every fixed real $s\ge0$ and $J\ge1$, with
+$a_j=(-1)^j\rho_j$,
+\begin{equation}
+ 4^{Jn}\Bigl[
+ f_n-\sum_{j=0}^{J-1}a_j4^{-jn}\Up^{(2j)}
+ \Bigr]\longrightarrow a_J\Up^{(2J)}
+ \qquad\text{in } H^s(\R)
+ \label{p4:eq:w-sobolev}
+\end{equation}
+(also in every $C^m$ via $p=\infty$) --- the known physical-space expansion
+$f_n=\Up+\tfrac{4^{-n}}9\Up''+\tfrac{2\cdot16^{-n}}{2025}\Up^{(4)}
+-\tfrac{64^{-n}}{2679075}\Up^{(6)}+\cdots$ is simultaneously an asymptotic
+expansion in every fixed Sobolev topology.  On the energy level, with the
+convolution coefficients $d_q=\sum_{j=0}^{q}\rho_j\rho_{q-j}$ and
+$c_q=\sum_{j=1}^{q-1}\rho_j\rho_{q-j}$, expanding $|F_n|^2=|\Phi|^2A(ht)^2$
+gives, for every fixed $s$ and $M$,
+\begin{align}
+ \norm{f_n}_{\dot H^s}^2
+ &=\sum_{q=0}^{M-1}d_q\,4^{-qn}\norm{\Up}_{\dot H^{s+q}}^2
+ +\bigO_{s,M}(4^{-Mn})
+ =\norm{\Up}_{\dot H^s}^2
+ -\frac{2\cdot4^{-n}}9\norm{\Up}_{\dot H^{s+1}}^2
+ +\frac{29\cdot16^{-n}}{2025}\norm{\Up}_{\dot H^{s+2}}^2+\cdots,
+ \label{p4:eq:w-energy}\\
+ \norm{f_n-\Up}_{\dot H^s}^2
+ &=\sum_{q=2}^{M-1}c_q\,4^{-qn}\norm{\Up}_{\dot H^{s+q}}^2
+ +\bigO_{s,M}(4^{-Mn})
+ =\frac{16^{-n}}{81}\norm{\Up}_{\dot H^{s+2}}^2
+ -\frac{4\cdot64^{-n}}{18225}\norm{\Up}_{\dot H^{s+3}}^2+\cdots.
+ \label{p4:eq:w-error-energy}
+\end{align}
+Two consequences: the error-norm ratio
+$\norm{f_{n+1}-\Up}_{\dot H^s}/\norm{f_n-\Up}_{\dot H^s}\to\tfrac14$, and
+$\norm{f_n}_{\dot H^s}$ is eventually strictly increasing to
+$\norm{\Up}_{\dot H^s}$ (from the negative $4^{-n}$ term in
+\eqref{p4:eq:w-energy}).
+
+\begin{figure}[htbp]
+ \centering
+ \includegraphics[width=0.94\textwidth]{assets/Rvachev_Piecewise_Approximation_Fourier_Images/data/scaled_fourier_error.pdf}
+ \caption{The scaled errors $4^n(F_n-\Phi)$ converge globally to
+ $-t^2\Phi/9$, not only near the origin; \cref{p4:thm:w-weighted} makes the
+ convergence valid in every polynomially weighted $L^p$.}
+ \label{p4:fig:w-scaled-error}
+\end{figure}
+
+\section{Cumulant defects and finite moment polynomials}
+\label{p4:sec:w-cumulants}
+
+The transfer function is the quotient of the characteristic function of a
+uniform tail by that of the true self-similar tail, so cumulants
+diagonalize the comparison: comparing $\log A(ht)$ with the cumulant series
+of \eqref{p4:eq:w-tail-models} gives, for every $r\ge1$,
+\begin{equation}
+ \kappa_{2r}(X)=\frac{2^{2r}B_{2r}}{2r\,(4^r-1)},
+ \qquad
+ \kappa_{2r}(X_n)-\kappa_{2r}(X)
+ =\frac{2^{2r}B_{2r}}{2r}\cdot
+ \frac{4^r-2}{4^r-1}\cdot4^{-rn},
+ \label{p4:eq:w-cumulant-defect}
+\end{equation}
+with all odd cumulants zero: the $r$th term of the Bernoulli series
+\eqref{p4:eq:w-logA} \emph{is} the defect of the $2r$th cumulant, and the
+leading $4^{-n}$ rate is exactly the variance mismatch
+$\Var(X_n)-\Var(X)=\tfrac29\,4^{-n}$ between the uniform tail (variance
+$\tfrac13$) and the true tail (variance $\tfrac19$).  Bell-polynomial
+conversion gives finite-stage moment polynomials in $q=4^{-n}$ of degree at
+most the half-order,
+\begin{equation}
+ \E X_n^2=\frac19+\frac29q,
+ \qquad
+ \E X_n^4=\frac{19}{675}+\frac4{27}q+\frac{16}{675}q^2,
+ \qquad
+ \E X_n^6=\frac{583}{59535}+\frac{38}{405}q
+ +\frac{16}{405}q^2-\frac{16}{59535}q^3,
+ \label{p4:eq:w-moment-polys}
+\end{equation}
+against the limiting moments
+$\E X^2=\tfrac19$, $\E X^4=\tfrac{19}{675}$,
+$\E X^6=\tfrac{583}{59535}$, $\E X^8=\tfrac{132809}{32531625}$
+(cumulants $\tfrac19$, $-\tfrac2{225}$, $\tfrac{16}{3969}$,
+$-\tfrac{16}{3825}$) that determine the accelerated rules of
+\cref{p4:sec:w-closures}.
+
+\section{Exact algebraic Fourier tails and the Sobolev threshold}
+\label{p4:sec:w-tails}
+
+For fixed $n$ the finite spline has only finite smoothness, visible in the
+exact algebraic factorization
+\begin{equation}
+ F_n(t)=2^{\,n(n+3)/2}\,t^{-(n+1)}
+ \Bigl(\prod_{k=1}^{n-1}\sin(t/2^k)\Bigr)\sin^2(t/2^n).
+ \label{p4:eq:w-algebraic}
+\end{equation}
+The oscillatory numerator prevents a pointwise constant, but its mean
+square is exactly computable through a dyadic trigonometric integral.
+
+\begin{theorem}[Exact mean-square tail]
+\label{p4:thm:w-meansquare}
+Let
+$I_n=\frac1\pi\int_0^\pi\sin^4u\prod_{j=1}^{n-1}\sin^2(2^ju)\dd u$.  Then
+\begin{equation}
+ I_n=\frac{2^{n+2}+(-1)^{n+1}}{3\cdot2^{2n+1}},
+ \qquad
+ I_1=\frac38,\ I_2=\frac5{32},\ I_3=\frac{11}{128},\
+ I_4=\frac{21}{512},\ I_5=\frac{43}{2048},\ \ldots,
+ \label{p4:eq:w-In}
+\end{equation}
+and consequently
+\begin{equation}
+ \lim_{T\to\infty}\frac1T\int_0^Tt^{2n+2}|F_n(t)|^2\dd t
+ =2^{n(n+3)}I_n,
+ \qquad
+ \int_{|t|>T}|F_n|^2\dd t
+ =\frac{2^{n(n+3)+1}I_n}{2n+1}\,T^{-2n-1}+\bigO_n(T^{-2n-2}),
+ \label{p4:eq:w-tail-laws}
+\end{equation}
+with the ideal low-pass error
+$\norm{f_n-\Pi_Tf_n}_{\dot H^s}^2
+=\frac{2^{n(n+3)}I_n}{\pi(2n+1-2s)}T^{-(2n+1-2s)}+\bigO_n(T^{-(2n+2-2s)})$
+for $s<n+\tfrac12$, and the sharp threshold
+\begin{equation}
+ f_n\in H^s(\R)\quad\Longleftrightarrow\quad s<n+\tfrac12.
+ \label{p4:eq:w-Hs-threshold}
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+Let $Q_n(u)=\prod_{j=1}^{n-1}\sin^2(2^ju)$, with constant Fourier
+coefficient $2^{1-n}$ and $\cos4u$-coefficient $c_n$.  Since
+$\sin^4u=(3-4\cos2u+\cos4u)/8$ and all frequencies of $Q_n$ are multiples
+of $4$, $I_n=\tfrac38\,2^{1-n}+\tfrac{c_n}{16}$.  The highest-frequency
+coefficient of $Q_n$ is $(-1)^{n-1}2^{3-2n}$ at frequency $2^{n+1}-4$;
+multiplying by $\sin^2(2^nu)=(1-\cos(2^{n+1}u))/2$ gives the recurrence
+$c_{n+1}=\tfrac{c_n}2-\tfrac{(-1)^{n-1}2^{3-2n}}4$ with $c_2=-\tfrac12$,
+solved by $c_n=-\tfrac{2^{2-n}}3-\tfrac{(-1)^n2^{3-2n}}3$; substitution
+gives \eqref{p4:eq:w-In}.  The tail laws follow by substituting $u=t/2^n$ in
+\eqref{p4:eq:w-algebraic}, averaging the bounded periodic numerator against
+$t^{-\alpha}$ by integration by parts, and applying Plancherel; positivity
+of $I_n$ makes the weighted integral diverge at $s=n+\tfrac12$, proving
+sharpness.
+\end{proof}
+
+The threshold is the Fourier counterpart of the spline's final
+piecewise-constant derivative stage; \eqref{p4:eq:w-tail-laws} adds the leading
+constants, not just the exponents.
+
+%% ============== Part IV chunk 6: closures + comparison ==============
+
+\section{Positive moment-matched closures}
+\label{p4:sec:w-closures}
+
+\subsection{The closure framework and the rate theorem}
+
+The construction \eqref{p4:eq:w-tail-models} replaces the exact scaled tail
+law by a tractable one --- a \emph{closure}.  For a symmetric probability
+measure $\nu$ on $[-1,1]$ with characteristic function
+$\psi_\nu(z)=\int\e^{-\ii zx}\dd\nu(x)$, define
+\begin{equation}
+ g_{n,\nu}=p_n*(D_h\nu),
+ \qquad
+ \widehat{g_{n,\nu}}(t)=P_n(t)\,\psi_\nu(2^{-n}t),
+ \label{p4:eq:w-closure}
+\end{equation}
+where $D_h$ scales by $h=2^{-n}$.  The original spline is
+$\nu=\operatorname{Unif}[-1,1]$; every finitely supported $\nu$ gives a
+positive finite sum of shifted head splines
+$g_{n,\nu}=\sum_jw_j\,p_n(\,\cdot-2^{-n}t_j)$, a piecewise-polynomial
+density of degree $n-1$; a $\nu$ with piecewise-polynomial density of
+degree $d$ gives degree at most $n+d$; and the support is exactly $[-1,1]$
+iff $\supp\nu$ reaches both endpoints (since
+$\supp p_n=[-1+h,1-h]$).
+
+\begin{theorem}[Moment matching determines the spectral order]
+\label{p4:thm:w-closure-rate}
+If $\int x^k\dd\nu=\E X^k$ for $0\le k\le2M-1$ and
+$c_M=\frac{(-1)^M}{(2M)!}\bigl(\int x^{2M}\dd\nu-\E X^{2M}\bigr)\ne0$,
+then for every $s\ge0$, $1\le p\le\infty$,
+\begin{equation}
+ 4^{Mn}\bigl(\widehat{g_{n,\nu}}-\Phi\bigr)
+ \longrightarrow c_M\,t^{2M}\Phi(t)
+ \qquad\text{in }L^p_s(\R),
+ \label{p4:eq:w-closure-limit}
+\end{equation}
+and correspondingly in every $C^m$ and $\dot H^s$ in physical space.
+\end{theorem}
+
+\begin{proof}
+$\psi_\nu(z)-\Phi(z)=c_Mz^{2M}+\bigO(z^{2M+2})$ by symmetry and Taylor
+expansion at $0$; the exact difference is
+$P_n(t)(\psi_\nu(ht)-\Phi(ht))$, and the bounded-remainder plus
+head-decay argument of \cref{p4:thm:w-weighted} applies verbatim.
+\end{proof}
+
+\begin{theorem}[Arbitrary-order positive support-filling closures]
+\label{p4:thm:w-existence}
+For every $r\ge0$ there is a symmetric, finitely supported probability
+measure $\nu_r$ on $[-1,1]$ with positive mass at both endpoints matching
+the up moments through degree $2r+1$; consequently
+$\norm{g_{n,\nu_r}-\Up}_{C^m}=\bigO_{m,r}(4^{-(r+1)n})$ and likewise in
+every $\dot H^s$, with $g_{n,\nu_r}$ nonnegative, of total mass one, and of
+support exactly $[-1,1]$.
+\end{theorem}
+
+\begin{proof}
+Push the up law forward under $x\mapsto x^2$ to a measure on $[0,1]$; a
+positive Gauss--Radau rule containing the endpoint $1$ and exact through
+degree $r$ exists by standard quadrature theory; lifting each node $y_j$ to
+the symmetric pair $\pm\sqrt{y_j}$ with half weights (a zero node to $0$)
+gives $\nu_r$.  The rates follow from \cref{p4:thm:w-closure-rate}.
+\end{proof}
+
+\subsection{The explicit menu}
+
+Solving the moment equations with the rational moments of
+\cref{p4:sec:w-cumulants} yields two complementary explicit families: rules
+with minimal atom counts (irrational nodes allowed), and rules with dyadic
+rational nodes.  Both sources' overlapping entries agree exactly; the
+variance-matched three-point rule below was derived independently in both.
+
+\begin{center}
+\small
+\begin{tabularx}{\textwidth}{@{}l l c c X@{}}
+\toprule
+closure & tail measure $\nu$ & $M$ & $c_M$ & structure\\
+\midrule
+original uniform & $\operatorname{Unif}[-1,1]$ & 1 & $-1/9$
+ & exact support; the spline $f_n$ itself\\
+variance box & $\operatorname{Unif}[-1/\sqrt3,1/\sqrt3]$ & 2 & $-1/4050$
+ & narrower support; one rescaled box\\
+Lobatto--3 & $\tfrac89\delta_0+\tfrac1{18}(\delta_{-1}+\delta_1)$ & 2
+ & $7/2025$ & exact support; three shifts\\
+Gaussian--3 & $\tfrac{32}{57}\delta_0+\tfrac{25}{114}(\delta_{-a}+\delta_a)$,
+ $a=\sqrt{19/75}$ & 3 & $1238/334884375$
+ & narrower support; three shifts\\
+dyadic--5 & weights $\tfrac{376}{675},\tfrac{896}{2025},\tfrac1{2025}$ at
+ $0,\pm\tfrac12,\pm1$ (pair totals) & 3 & $71/21432600$
+ & exact support; five dyadic shifts\\
+Lobatto--5 & $\tfrac{78976}{153675}\delta_0
+ +\tfrac{2470629}{10262075}(\delta_{-b}+\delta_b)
+ +\tfrac{619}{270450}(\delta_{-1}+\delta_1)$, $b=\sqrt{683/3087}$ & 4
+ & $1006207/24604155961875$ & exact support; five shifts\\
+dyadic--7 & pair totals $\tfrac{10411}{2679075},
+ \tfrac{1003648}{2679075},\tfrac{581632}{2679075}$ at $\pm1,\pm\tfrac12,
+ \pm\tfrac14$, center $\tfrac{120376}{297675}$ & 4 & ---
+ & exact support; seven dyadic shifts\\
+polynomial $q_3$ & density $\tfrac{35}{32}(1-x^2)^3$ & 2 & $2/22275$
+ & exact support; one $C^{n+2}$ density of degree $n+6$\\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+The convergence scales are $4^{-Mn}$: rate $16^{-n}$ for the three
+$M=2$ rules, $64^{-n}$ for Gaussian--3 and dyadic--5, $256^{-n}$ for
+Lobatto--5 and dyadic--7.  Rules including $\pm1$ preserve the exact
+support; Gaussian rules maximize order per atom; the polynomial density
+achieves $16^{-n}$ with a single continuous piecewise-polynomial
+representation and the smallest leading constant of the $M=2$ entries
+($C_{q_3,\infty}=0.0507\ldots$ against $C_{\mathrm{L3},\infty}=1.952\ldots$
+and $C_{\mathrm{VB},\infty}=0.1394\ldots$, computed against
+$\sup|t|^{4}|\Phi|=564.7796\ldots$ at $t=16.3025\ldots$).  A fixed dyadic
+ladder is not guaranteed to retain positivity indefinitely, so
+\cref{p4:thm:w-existence} is the robust existence result while the dyadic
+menu gives convenient low-order formulas.  Cancellation makes direct
+double-precision verification of the $64^{-n}$ and $256^{-n}$ rules
+unreliable; the verification packages evaluate the scaled point errors at
+$120$ decimal digits and reproduce the predicted leading profiles
+(Gaussian--3 at $n=11$: $3.21182$ against the limit $3.21168$;
+Lobatto--5 at $n=14$: $873.5187$ against $873.5103$).
+
+\begin{figure}[htbp]
+ \centering
+ \includegraphics[width=0.94\textwidth]{assets/Rvachev_Piecewise_Approximation_Fourier_Images/data/accelerated_surrogates.pdf}
+ \caption{Absolute Fourier errors of the closure menu at stage $n=3$; the
+ faster rates are visible over most of the frequency range, with leading
+ profiles attaining maxima on progressively more distant lobes.}
+ \label{p4:fig:w-accelerated}
+\end{figure}
+
+\subsection{Three closure families and the prefix quadratures}
+
+Part III and this part together produce three structurally different
+positive acceleration families over the \emph{same} head spline $p_n$:
+\begin{enumerate}
+\item \emph{box mixtures} (\cref{p3:eq:gQ-spatial}): quadrature of the
+      squared-\emph{scale-mixture} law ($X\overset d=RU$ with
+      $Z=R^2\sim\nu$) --- each node contributes a box
+      $p_n*u_{\delta\sqrt{z_j}}$, giving mixtures of box splines of full
+      degree;
+\item \emph{atomic closures} (this part): quadrature of the up law itself
+      (equivalently, Gauss--Radau on the pushforward under $x\mapsto x^2$
+      lifted symmetrically) --- each node contributes a translate
+      $p_n(\cdot-ht_j)$, giving sums of shifted head splines of degree
+      $n-1$;
+\item \emph{polynomial closures}: a continuous tail density, giving one
+      smooth piecewise-polynomial density of slightly higher degree.
+\end{enumerate}
+The variance-matched members of the first two families have the same
+leading constant $|c_2|=1/4050$ --- the box mixture
+$p_n*u_{2^{-n}/\sqrt3}$ and the variance box above are the same
+approximant seen from the two quadrature variables --- while the
+endpoint-preserving members differ genuinely (the box family's Lobatto
+rule keeps $p_n$ itself as a component; the atomic family's endpoint atoms
+shift the head to $\pm1$).  Moment order controls the global scale
+$4^{-Mn}$ in every family; what distinguishes them is support exactness,
+smoothness, atom count, and the divisor of the critical transfer
+$B_\nu=\psi_\nu/\Phi$, which for generic rules has poles on the full
+dyadic zero lattice --- the original uniform tail is special in sharing
+many zeros with $\Phi$, which is what produced the removable/pole
+hierarchy of \cref{p4:thm:w-divisor}.  Moment order and critical zero
+matching are independent design objectives (\cref{p4:sec:w-directions}).
+
+\section{Directions, conjectures, and formalization targets}
+\label{p4:sec:w-directions}
+
+\begin{enumerate}
+\item \emph{Positivity} (\cref{p4:conj:w-positivity}) and the pole-resolved
+      transseries \eqref{p4:eq:w-transseries}: compute the full Laurent jets
+      at $4\pi q$ from finite products of $\Phi$-values at odd multiples
+      of $\pi$ (the leading jets are \eqref{p4:eq:w-principal-part}),
+      reorganize into an optimally truncated arithmetic transseries, and
+      decide eventual monotonicity of the normalized ratio.
+\item \emph{Hybrid tail design}: for prescribed $M,K$, find positive
+      $\nu$ matching moments through $2M-1$ while $\psi_\nu$ shares
+      prescribed zero jets with $\Phi$ at $2\pi,\ldots,2\pi K$ ---
+      a finite-dimensional positive trigonometric moment problem
+      (semidefinite search, then exact certificates); minimize atoms or
+      polynomial degree.  Rational or Pad\'e spectral multipliers encoding
+      the first poles offer an alternative postprocessing route around the
+      kernel obstruction of \cref{p4:thm:w-deconvolution}, with evenness,
+      Thue--Morse sign intervals, and no spurious real poles below a
+      chosen band as natural constraints.
+\item \emph{Optimal closures}: minimize the number of atoms at fixed
+      moment order with endpoint masses; minimize the first unmatched
+      moment; determine the largest order retaining positivity on a fixed
+      dyadic node ladder; minimize the forward multiplier norm on a target
+      band (quadrature meets minimax filter design).
+\item \emph{Modified local recursions}: derive finite vector-valued
+      refinement systems whose $n$th iterate is exactly a Gaussian,
+      Lobatto, or polynomial-tail closure, preserving the one-line
+      locality of \eqref{p4:eq:w-recursion} at higher order.
+\item \emph{Base-$q$ analogues}: for $\Phi_q(z)=\prod_{k\ge1}\sinc(z/q^k)$
+      and $A_q=\sinc z/\Phi_q$, the Euler regrouping suggests
+      $\ord_{\pi m}A_q=1-\nu_q(m)$ with divisor Dirichlet series
+      $\zeta(s)(q^s-2)/(q^s-1)$; determine which spectral and sign
+      phenomena survive and which are genuinely binary (for $q=2$ the
+      cumulative divisor collapses to the digit sum and the functional
+      equation to the cotangent product).
+\item \emph{Two-parameter asymptotics}: allow the Fourier weight $s_n$ to
+      grow with $n$ and locate the transition between the fixed-weight
+      theorem and the exact boundary layer; on the physical side this
+      quantifies how much spectral regularity a finite spline possesses at
+      a given stage, refining \eqref{p4:eq:w-Hs-threshold}.
+\item \emph{Transfer-operator bridge}: insert the shell identity
+      \eqref{p4:eq:w-shell-transfer} into the Fourier-decay corpus to obtain
+      a joint envelope/profile theorem for finite products, with
+      exceptional arithmetic points from \eqref{p4:eq:w-finite-order} and
+      uniformity near the first zero and pole.
+\item \emph{Lean targets}: the finite multiplicity formula
+      \eqref{p4:eq:w-finite-order}; the divisor count and digit-sum identity
+      \eqref{p4:eq:w-digit-sum}; the Taylor radius and first residues; the
+      $I_n$ recurrence and closed form \eqref{p4:eq:w-In}; the cumulant
+      defect \eqref{p4:eq:w-cumulant-defect}; exact moment verification,
+      positivity, and support of the explicit closures; and the shift-sum
+      identity behind \eqref{p4:eq:w-closure}.  The weighted-$L^p$ theorem is
+      modular: a bounded remainder, a finite-product decay lemma, and
+      dominated convergence.
+\end{enumerate}
+
+\section{Verification and reproducibility}
+\label{p4:sec:w-verification}
+
+The two absorbed packages provide independent verification pipelines,
+retained verbatim under
+\nolinkurl{assets/Rvachev_Piecewise_Approximation_Fourier_Images/} (exact
+SymPy coefficients through order $30$, $120$-digit mpmath evaluation of
+$\Phi(\pi)$, the residue, and the cancellation-sensitive accelerated
+errors, lobe-wise maximization, composite Gauss--Legendre norms on $700$
+lobes, symbolic verification of every quadrature rule; figures and CSV
+audit artifacts) and
+\nolinkurl{assets/rvachev_fourier_frontier_report/} (exact coefficients
+through order $50$, functional-identity checks, divisor partial sums
+against $s_2$, finite multiplicity tables, $100$-digit quadrature of
+$I_n$ against the closed form, rational verification of the dyadic
+closures; figures, coefficient CSV, and text summary).  Both scripts
+regenerate every figure and table from scratch
+(\texttt{fourier\_piecewise\_experiments.py},
+\texttt{rvachev\_fourier\_experiments.py}).  All shared constants agree
+between the two packages; the numerical work is ancillary throughout ---
+every theorem above has a complete proof independent of the computations.
+
+
+\begin{thebibliography}{9}
+
+\bibitem{p4:AriasTranslation}
+J.~Arias de Reyna,
+\newblock \emph{An infinitely differentiable function with compact
+support: Definition and properties}, English translation of the 1982
+article, arXiv:1702.05442 (2017).
+
+\bibitem{p4:Fabius1966}
+J.~Fabius,
+\newblock A probabilistic example of a nowhere analytic
+$C^\infty$-function,
+\newblock \emph{Z.~Wahrscheinlichkeitstheorie Verw.~Geb.}
+\textbf{5} (1966), 173--174.
+
+\bibitem{p4:Rvachev1990}
+V.~A.~Rvachev,
+\newblock Compactly supported solutions of functional-differential
+equations and their applications,
+\newblock \emph{Russian Math.~Surveys} \textbf{45} (1990), no.~1,
+87--120.
+
+\bibitem{p4:BoxSplines}
+C.~de Boor, K.~H\"ollig, and S.~Riemenschneider,
+\newblock \emph{Box Splines}, Applied Mathematical Sciences 98,
+Springer, 1993.
+
+\bibitem{p4:Gautschi}
+W.~Gautschi,
+\newblock \emph{Orthogonal Polynomials: Computation and
+Approximation}, Oxford University Press, 2004.
+
+\bibitem{p4:MSE240687}
+V.~Reshetnikov,
+\newblock Recursive integration over piecewise polynomials: closed
+form?,
+\newblock Mathematics Stack Exchange, question 240687, 2012.
 
 \end{thebibliography}
 
