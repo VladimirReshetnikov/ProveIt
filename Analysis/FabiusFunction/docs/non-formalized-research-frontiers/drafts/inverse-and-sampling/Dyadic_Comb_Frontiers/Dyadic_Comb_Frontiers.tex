@@ -2020,16 +2020,16 @@ $\int_0^1B_k=0$ ($k\ge1$),
 so the corrected rule is exactly a finite sample average of a smooth
 periodic function, and the finite-grid alias identity gives the pure
 alias error
-\begin{equation}
+\begin{align}
  \mathcal A_{M,\theta}[P]-I_P
- =\sum_{\ell\ne0}\e^{2\pi\ii\ell\theta}\,\widehat{R_P}(M\ell),
- \qquad
+ &=\sum_{\ell\ne0}\e^{2\pi\ii\ell\theta}\,\widehat{R_P}(M\ell),
+ \notag\\
  \widehat{R_P}(q)
- =\sum_{j=0}^{d}\frac{1}{(2\pi\ii q)^{j+1}}
+ &=\sum_{j=0}^{d}\frac{1}{(2\pi\ii q)^{j+1}}
  \int_0^1P^{(j)}(x)\,\rho(x)\,\e^{-2\pi\ii qx}\dd x
  \quad(q\ne0),
  \label{eq:alias-general}
-\end{equation}
+\end{align}
 the coefficient formula by iterating $R_P'=R_{P'}+P\rho-P(1)$ (from the
 Appell relation $H_P'=P(1)+H_{P'}$) and periodic integration by parts.
 For $P=x^{p}$, $\theta=0$, $M=2^{m}$, formula \eqref{eq:alias-general}
@@ -2605,7 +2605,7 @@ for the moments $I_p$.
 
 The error at dyadic resolution $M=2^{m}$ has the exact separated
 finite-rank form
-$\sum_{r=1}^{d+1}\frac{\fall d{r-1}}{r!}B_r(\theta)\,2^{-mr}$: phase
+$\sum_{r\le d+1}\fall d{r-1}\,B_r(\theta)\,2^{-mr}/r!$\,: phase
 acts on the Bernoulli basis while each resolution step scales the
 $r$th mode by $2^{-r}$ (a Ruffa layer by $1-2^{r}$ at the fine mesh),
 so phase filters and resolution filters commute and can be designed
@@ -2650,16 +2650,17 @@ directly in the shifted Euler--Maclaurin basis.  Applied to stable
 shifted sums it gives exact finite identities among Fabius values:
 with $\Theta_{s;M,d}=\sum_{j<2^{s}}t_j\,
 \mathcal A^{\mathrm{raw}}_{M,\,j/2^{s}}[x^{d}]$,
-\begin{equation}
+\begin{align}
  \Theta_{s;M,d}
- =\sum_{r=s}^{d+1}\frac{\fall d{r-1}}{r!}\,\beta_{s,r}\,M^{-r},
+ &=\sum_{r=s}^{d+1}\frac{\fall d{r-1}}{r!}\,\beta_{s,r}\,M^{-r},
  \qquad
  \Theta_{s;M,d}=0\ (s\ge d+2),
- \qquad
+ \notag\\
+ &\phantom{=}\;
  \boxed{\;\Theta_{d+1;M,d}
  =(-1)^{d+1}\,d!\,2^{-\binom{d+2}2}\,M^{-(d+1)}\;}
  \label{eq:tm-phase-filter}
-\end{equation}
+\end{align}
 --- e.g.\ $-1/(2M)$, $1/(8M^{2})$, $-1/(32M^{3})$, $3/(512M^{4})$ for
 $d=0,1,2,3$; at dyadic $M$ these are rational identities checkable in
 exact arithmetic, and descending $s$ from $d+1$ recovers every
@@ -2760,17 +2761,18 @@ Substituting the exact dyadic evaluator \eqref{eq:L-H}-style values
 into \eqref{eq:Ip-composite} at $M=2^{N}$, $N\ge\tau(n)$, gives an
 infinite family of exact finite Thue--Morse identities for every
 Fabius moment,
-\begin{equation}
+\begin{align}
  I_n
- =\frac{2^{-N(n+1)-\binom{N+1}2}}{N!}
+ ={}&\frac{2^{-N(n+1)-\binom{N+1}2}}{N!}
  \sum_{a=1}^{2^{N}-1}a^{n}
  \sum_{h=0}^{a-1}\eps_h
  \sum_{k=0}^{\floor{N/2}}\binom N{2k}c_k\,(2a-2h-1)^{N-2k}
- +2^{-N-1}
+ \notag\\
+ &+2^{-N-1}
  -\sum_{r=1}^{\floor{(n+1)/2}}
  \frac{B_{2r}}{(2r)!}\,\fall n{2r-1}\,2^{-2rN},
  \label{eq:In-TM-family}
-\end{equation}
+\end{align}
 whose left side is independent of $N$ --- the members are linked by the
 recurrence \eqref{eq:annihilator}.  Three Bernoulli mechanisms meet
 here: endpoint Bernoulli numbers encode the periodicity defect of
