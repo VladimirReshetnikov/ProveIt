@@ -6,8 +6,9 @@ The report proves two principal results.
 1. A factorized q-Richardson transform can be applied to the *zero-free tail*
    of the Rvachev sinc product and then multiplied by the finite prefix.  The
    prefix carries the complete zero divisor, while the extrapolated tail is
-   analytic and nonzero on the natural zero-free disk.  The resulting entire
-   approximation therefore preserves every included zero and its multiplicity.
+   analytic and nonzero on the natural zero-free disk.  The resulting
+   approximation is holomorphic on that disk and preserves every included zero
+   and its multiplicity.
 
 2. If M_r(q,a) is the magnitude of the signed logarithmic error at order r,
    then the same-parity nesting M_{r+2}<M_r holds uniformly for 0<a<1 exactly
@@ -323,7 +324,7 @@ def write_csv(path: Path, header: Sequence[str], rows: Iterable[Sequence[object]
     """Write a UTF-8 CSV with deterministic newlines."""
     path.parent.mkdir(parents=True, exist_ok=True)
     with path.open("w", encoding="utf-8", newline="") as stream:
-        writer = csv.writer(stream)
+        writer = csv.writer(stream, lineterminator="\n")
         writer.writerow(header)
         writer.writerows(rows)
 

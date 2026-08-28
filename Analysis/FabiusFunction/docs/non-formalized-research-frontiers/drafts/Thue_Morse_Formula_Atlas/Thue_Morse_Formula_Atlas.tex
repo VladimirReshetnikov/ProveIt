@@ -119,7 +119,7 @@
 \author{Merged and expanded companion report to the Fabius--Rvachev formal development\\
 \small Vladimir Reshetnikov's \texttt{ProveIt} repository}
 \date{Repository snapshot: 27 August 2026\\
-\small source snapshot at commit \nolinkurl{158dd2e12d7412142d79a53d91d8fcbdfdfb5d97}}
+\small source snapshot at commit \nolinkurl{7b05fce557a326c435f9521ee1a55039429ef116}}
 
 \begin{document}
 \maketitle
@@ -286,7 +286,7 @@ is not by itself evidence of formalization.  Statements proved in Lean carry the
 declaration names in the text, typeset as \lean{Fabius.thueMorseSign}; statements without
 such a citation must not be inferred to have a formal counterpart.
 
-The current inventory in \cref{sec:formalized-modules} consists of seventy-nine compiled
+The current inventory in \cref{sec:formalized-modules} consists of eighty-two compiled
 Lean modules.  It covers the finite algebraic, automata, moment, Fourier, rarefaction,
 Dirichlet--Mellin, word-combinatorial, and Fabius--Rvachev bridges recorded there, often in
 greater generality than the displayed prose.  The dependency-aware map in
@@ -1051,15 +1051,42 @@ namely \lean{Fabius.rvachevFourierProduct\_eq\_zero\_iff} in
 \]
 formalized as
 \lean{Fabius.rvachevFourierProduct\_eq\_canonical} in
-\path{SincCanonicalProduct.lean}.  For each positive integer \(m\),
-the real punctured limit
+\path{SincCanonicalProduct.lean}.  For each positive integer \(m\), the older
+real punctured limit
 \[
  \frac{|\Phi(x)|}{|x-m|^{1+\vtwo(m)}}\longrightarrow C_m>0
  \qquad(x\to m,\ x\ne m)
 \]
 is \lean{Fabius.tendsto\_norm\_div\_pow\_zero\_order} in
-\path{PhiZeroOrder.lean}; this is the exact positive-integer real-axis
-zero order, not a broader assertion about complex local multiplicity.
+\path{PhiZeroOrder.lean}.  The complex theory is now stronger.  For every
+nonzero \(m\in\Z\), put
+\[
+ d=1+\vtwo(|m|),\qquad
+ q=\operatorname{divMaxPow}(|m|,2),\qquad
+ \sigma=\operatorname{sign}(m).
+\]
+Then, for every \(w\in\C\),
+\[
+ (m+w)^d\Phi(m+w)
+ =-w^d\left(\prod_{h<d}\sinc\!\left(\frac{\pi w}{2^h}\right)\right)
+   \Phi\!\left(\frac q2+\sigma\frac{w}{2^d}\right).
+\]
+This total denominator-cleared identity is
+\lean{Fabius.rvachevFourierProduct\_int\_add\_factorization} in
+\path{IntegerZeroLocalFactorization.lean}.  Dividing on a neighborhood of
+zero produces an analytic nonvanishing cofactor, and Lean proves
+\[
+ \operatorname{ord}_{z=m}\Phi=d,\qquad
+ \Phi^{(j)}(m)=0\ (j<d),\qquad
+ \Phi^{(d)}(m)=-\frac{d!}{m^d}\Phi(q/2)\ne0.
+\]
+These are
+\lean{Fabius.analyticOrderAt\_rvachevFourierProduct\_int},
+\lean{Fabius.iteratedDeriv\_rvachevFourierProduct\_int\_eq\_zero\_of\_lt},
+\lean{Fabius.iteratedDeriv\_rvachevFourierProduct\_int}, and
+\lean{Fabius.iteratedDeriv\_rvachevFourierProduct\_int\_ne\_zero} in
+\path{IntegerZeroAnalyticOrder.lean}.  The exact leading coefficient is
+extracted by the field-generic local lemma in \path{LeadingJet.lean}.
 On the real axis the origin is the unique unit-modulus point:
 \[
  |\Phi(x)|=1\quad\Longleftrightarrow\quad x=0,
@@ -6220,7 +6247,7 @@ valuation, carry, and Pascal-row formulas remain genuinely base-two features.
 \subsection{Formalized modules (August 2026)}
 \label{sec:formalized-modules}
 
-The first tranches of the formalization now exist as seventy-nine
+The first tranches of the formalization now exist as eighty-two
 compiled Lean modules in \repo{}, complementing the corpus modules
 (\path{Parity.lean}, \path{TwoAdic.lean}, \path{ThueMorsePrefix.lean},
 \path{ThueMorseGenerating.lean}, \path{ThueMorseExponential.lean},
@@ -6315,6 +6342,9 @@ Module & Contents \\
 \path{BirkhoffProductBridge.lean} & The almost-everywhere bridge from the cocycle to the normalized dyadic sine product and the all-index logarithmic product variance \eqref{eq:sinc-log-variance}. \\
 \path{FourierProduct.lean} & The Rvachev sinc product and its identification with the Fourier transform, including the exact complex zero set \(\Phi(z)=0\iff z\in\Z\setminus\{0\}\). \\
 \path{RenormalizationIdentity.lean} & The standalone product identity \(\Phi(z)=\sinc(\pi z)\Phi(z/2)\) and its exact \(n\)-fold shell form. \\
+\path{IntegerZeroLocalFactorization.lean} & Total denominator-clearing identities for shifted and arbitrarily complex-scaled sinc factors; the global local-coordinate factorization at \(2^kq\), its odd-center form, and canonical positive-natural and signed-integer forms using the exact dyadic valuation and odd part. \\
+\path{LeadingJet.lean} & Field-generic extraction of the first potentially nonzero jet of \(z^nU(z)\), assuming only \(C^n\) regularity of \(U\) at zero, together with the germ-level eventually-equal form requiring no separate regularity hypothesis on the factored function. \\
+\path{IntegerZeroAnalyticOrder.lean} & Entirety of the standalone sinc product; nonvanishing at odd half-integers; the total integer-zero local cofactor, its divided pointwise and germ factorizations, analyticity and central value; exact complex analytic order at every nonzero integer; all lower-jet vanishings and the exact nonzero leading derivative. \\
 \path{SincProductShells.lean} & Exact dyadic shell factorization of \(|\Phi|\), its total cross-multiplied form at every real seed (including zero and the empty shell), and its Gelfond-rate bound along every nonzero real dyadic ray. \\
 \path{SincCanonicalProduct.lean} & The canonical product \(\prod_{m\ge1}(1-z^2/m^2)^{1+\vtwo(m)}\), obtained by regrouping the absolutely convergent double Euler product. \\
 \path{PhiZeroOrder.lean} & The exact positive-integer real-axis zero order \(1+\vtwo(m)\), expressed by a punctured norm quotient converging to a positive constant. \\
@@ -6804,7 +6834,7 @@ Second-pass additions & Even-modulus collapse of rarefied sums from exact prefix
 V.~Reshetnikov,
 \newblock \emph{ProveIt: Analysis/FabiusFunction},
 \newblock GitHub repository, source snapshot
-\nolinkurl{158dd2e12d7412142d79a53d91d8fcbdfdfb5d97}, 2026.
+\nolinkurl{7b05fce557a326c435f9521ee1a55039429ef116}, 2026.
 
 \bibitem{prouhet1851}
 E.~Prouhet,
