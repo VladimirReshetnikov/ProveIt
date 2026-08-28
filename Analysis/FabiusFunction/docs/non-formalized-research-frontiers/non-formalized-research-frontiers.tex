@@ -13447,27 +13447,43 @@ snapshot 25 August 2026.
 Former path:
 \nolinkurl{Primary_Exposition_Gap_Register/Primary_Exposition_Gap_Register.tex}.
 This post-consolidation register preserves smaller claims removed during the primary
-exposition's exact-counterpart audit.  Nothing in this part is claimed as a Lean theorem
-unless it is explicitly identified as formal background; every candidate below still needs
-a public theorem with the stated hypotheses and conclusion.
+exposition's exact-counterpart audit.  Candidate statements below are of two kinds.  A
+candidate marked \emph{discharged} carries a named Lean citation in the surrounding text:
+a public declaration now matches its hypotheses, normalization, domain and conclusion, and
+its former formalization obligation has been deleted.  A candidate carrying no such
+citation is still open; it is not claimed as a Lean theorem, and it still needs a public
+theorem with the stated hypotheses and conclusion.  Declarations identified as formal
+background support an open candidate without stating it.
+
+This register is audited against a library that keeps moving.  Six of its original
+obligations were discharged by formalization work that landed within days of the audit date:
+one on the audit date itself, four the day after, one the day after that.  The entries below
+record that outcome.
+The remaining open entries carry the same exposure: they are accurate as of the audit date
+recorded under \emph{Provenance} at the end of this part and can be overtaken in the same
+way, so re-check them against the current library before relying on them.
 \end{boxedremark}
 
 \section{Fourier-decay normalization}
 
-The source proves polynomially weighted decay.  The conventional shifted-weight form that
-was removed is:
-\begin{candidate}
+The source proves polynomially weighted decay.  The conventional shifted-weight form was
+removed from the primary exposition for want of a named counterpart; the library has since
+supplied one, so the statement is recorded here as proved rather than as a gap:
+\begin{candidate}[Discharged]
 For every \(N\in\N\), there is \(C_N>0\) such that
 \[
  |\widehat{\Up}(\xi)|\le C_N(1+|\xi|)^{-N}\qquad(\xi\in\R).
 \]
 \end{candidate}
-It is standardly equivalent to the proved estimate after a bounded-region argument and a
-change of constant, but it has no literal named Lean bridge.
-\begin{obligation}
-Derive the shifted-weight estimate, including \(|\xi|\le1\), and expose it as a public
-declaration.
-\end{obligation}
+It is standardly equivalent to the proved polynomially weighted estimate after a
+bounded-region argument and a change of constant, and it is now also a literal named Lean
+theorem: \lean{rvachevFourier_real_shiftedDecay} in \path{PoissonSummation.lean} states
+exactly the displayed bound for every exponent, universally quantified over all real
+arguments, so the range \(|\xi|\le1\) is covered by the statement itself rather than by a
+separate argument.  The formal library proves strictly more than the candidate:
+\lean{rvachevFourier_real_iteratedDeriv_shiftedDecay} in the same module gives the same
+shifted-weight majorant for every iterated derivative of the transform, and the displayed
+estimate is its order-zero case.
 
 \section{Dyadic specializations and evaluator cost}
 
@@ -13543,38 +13559,39 @@ private first-block fold used inside the proof do not themselves state the displ
 Let \(\Delta_n\) be the least common multiple of the reduced denominators of
 \(\Up(a/2^n)\) over odd support numerators \(a\).  Lean proves that the reduced denominator
 of \(F(2^{-n})\) divides \(\Delta_n\), and separately computes the two-adic valuation of
-\(F(2^{-n})\).  The deduction combining those facts is not yet a named theorem.
-\begin{candidate}
+\(F(2^{-n})\).  The deduction combining those facts is now a named theorem.
+\begin{candidate}[Discharged]
 For every \(n\ge1\),
 \[
  \nu_2(\Delta_n)\ge \binom n2+1+\nu_2(n!).
 \]
 \end{candidate}
-\begin{obligation}
-Formalize the bridge from denominator divisibility and rational two-adic valuation to the
-natural valuation of \(\Delta_n\), and expose the displayed inequality with its exact
-\(n\ge1\) hypothesis.  The relevant formal inputs are \lean{proposition_fifteen},
-\lean{dyadicDenominator_eq_fabiusDyadicDenominator}, and
-\lean{fabiusAtInverseTwoPow_padicVal_two_closed}.
-\end{obligation}
+This is \lean{dyadicDenominator_padicVal_two_lower_bound} in \path{PaperStatements.lean},
+which states the displayed inequality with exactly the hypothesis \(1\le n\).  Its proof is
+the requested bridge: it passes from the divisibility supplied by \lean{proposition_fifteen}
+to the natural two-adic valuation of \(\Delta_n\).
 
 \subsection{Rvachev rational-input wrapper}
 
 The formal API has exact reduced-rational \texttt{Option} wrappers for the bounded function
-and the signed global extension, but only an already decoded exponent--integer-numerator
-evaluator for \(\Up\).
-\begin{candidate}
+and the signed global extension.  For \(\Up\) it once had only an already decoded
+exponent--integer-numerator evaluator; the matching wrapper now exists.
+\begin{candidate}[Discharged]
 Define an exact rational-input evaluator for \(\Up\) that returns ``not dyadic'' exactly when
 the reduced denominator is not a power of two, and otherwise returns the rational value
 computed by \lean{rvachevDyadic}.
 \end{candidate}
-\begin{obligation}
-Define the wrapper and prove both an \texttt{eq\_none\_iff} recognition theorem and a
-successful-evaluation theorem identifying the result with analytic \(\Up\).  Reuse
-\lean{dyadicExponent?_exists_iff}, \lean{rvachevDyadic}, and
-\lean{rvachevDyadic_cast_global}; the existing wrappers \lean{evalFabiusDyadic} and
-\lean{evalExtendedFabiusDyadic} are the intended interface model.
-\end{obligation}
+The wrapper is \lean{evalRvachevDyadic} in \path{Arithmetic.lean}, built on
+\lean{dyadicExponent?} in the same shape as \lean{evalFabiusDyadic} and
+\lean{evalExtendedFabiusDyadic}.  Both requested theorems are public: the recognition
+theorem \lean{evalRvachevDyadic_eq_none_iff} in \path{DyadicCorrectness.lean}, and the
+correctness theorems \lean{evalRvachevDyadic_eq_some_correct} and
+\lean{evalRvachevDyadic_complete_correct} in \path{GlobalDyadic.lean}, the latter producing
+the rational value and its identification with analytic \(\Up\) for every dyadic rational
+input.  The formalization is more general than the candidate asked for: the recognition
+theorem is an instance of a single evaluator-generic lemma quantified over an arbitrary
+\(\N\to\Z\to\Q\) evaluator, so the same lemma also yields
+\lean{evalFabiusDyadic_eq_none_iff} and \lean{evalExtendedFabiusDyadic_eq_none_iff}.
 
 \section{Centered finite splines and local finiteness}
 
@@ -13617,7 +13634,7 @@ global claims.
 
 Let \(U_p(x)=\Pr(T_p\le x)\) be the uncentered finite CDF and
 \(C_p(x)=U_p(x-2^{-p-1})\) its midpoint correction.
-\begin{candidate}
+\begin{candidate}[Discharged]
 For every \(p\in\N\) and \(x\in\R\), the respective sandwich-and-Lipschitz arguments certify
 \[
  |U_p(x)-F(x)|\le 2^{1-p},
@@ -13626,13 +13643,15 @@ For every \(p\in\N\) and \(x\in\R\), the respective sandwich-and-Lipschitz argum
 \]
 Thus the centered construction halves this particular certified upper bound.
 \end{candidate}
-\begin{obligation}
-Package the two displayed certified inequalities and their direct factor-two comparison.
-No claim about the ratio of the actual pointwise errors or about optimal uniform errors is
-intended.  The sandwich theorems
-\lean{uniformPartialCDF_sandwich} and \lean{uniformCenteredPartialCDF_sandwich} prove the
-threshold displacements, but do not yet state these Lipschitz corollaries.
-\end{obligation}
+The two inequalities are \lean{abs_uniformPartialCDF_sub_fabiusReal_le} and
+\lean{abs_uniformCenteredPartialCDF_sub_fabiusReal_le} in \path{FabiusComputability.lean},
+each stated for every \(p\in\N\) and every real \(x\), and each deduced there from the
+sandwich theorems \lean{uniformPartialCDF_sandwich} and
+\lean{uniformCenteredPartialCDF_sandwich} together with the global Lipschitz bound.  The
+factor-two comparison is
+\lean{uniformCenteredPartialCDF_error_bound_eq_half_uniformPartialCDF_error_bound} in the
+same module, whose documentation states the intended reading verbatim: it compares the
+bounds, not the actual pointwise errors, and makes no optimality claim.
 
 \subsection{Uniform CDF control and weak convergence}
 
@@ -13667,15 +13686,16 @@ For fixed \(x\in\R\), consider
 \[
  n\longmapsto(-1)^{\wt(n)}\Up(x-2n-1).
 \]
-\begin{candidate}
+\begin{candidate}[Discharged]
 Its support in \(\N\) is finite; equivalently, only finitely many translates in the defining
 series for \(\mathcal F(x)\) are nonzero.
 \end{candidate}
-\begin{obligation}
-Export the eventual-zero or finite-support statement used internally by the signed-extension
-development.  The public summability theorem and the public single-block evaluation identify
-the value of the series, but neither has local finiteness as its conclusion.
-\end{obligation}
+The finite-support statement is public as
+\lean{extendedFabius_summand_hasFiniteSupport} in \path{GlobalExtension.lean}: for each
+fixed real \(x\) it asserts \texttt{Function.HasFiniteSupport} of the signed translate
+sequence itself, with local finiteness as its conclusion rather than as a step inside
+another proof.  The public summability theorem \lean{extendedFabius_summable} is now a
+corollary of it.
 
 \section{Step cells and corrected-prefix conventions}
 
@@ -13761,14 +13781,15 @@ formalized; the finite-stage dependence and non-equality statements remain quara
 
 \section{Complex-shift spline estimate}
 
-The proved estimate has the factor \(\exp(|Q-\tfrac12|)\).  Put
+The estimate cited by the primary exposition has the factor \(\exp(|Q-\tfrac12|)\).  Put
 \[
  N_p(x)=\max\!\left(0,\left\lfloor2^px+\frac12\right\rfloor\right),\qquad
  S_p^{(Q)}(x)=\frac{(-1)^p}{2^{\binom p2}p!}
  \sum_{r=0}^{N_p(x)-1}(-1)^{\wt(r)}(r-2^px+Q)^p,
 \]
-with an empty sum when \(N_p(x)=0\).  The removed proposed sharpening was:
-\begin{candidate}
+with an empty sum when \(N_p(x)=0\).  The proposed sharpening was removed from the primary
+exposition, and has since been formalized:
+\begin{candidate}[Discharged]
 For every \(p\in\N\) with \(p\ge1\), every \(Q\in\C\), and every \(x\in\R\),
 \[
  \left|S_p^{(Q)}(x)-S_p^{(1/2)}(x)\right|
@@ -13779,12 +13800,20 @@ For every \(p\in\N\) with \(p\ge1\), every \(Q\in\C\), and every \(x\in\R\),
 \begin{warning}
 The accompanying assertion that the relevant triangular exponent attains equality
 \emph{exactly in the top term} is false when \(p=2\): both endpoint indices attain the same
-exponent.
+exponent.  The formalization avoids the refuted claim by proving the exponent comparison as
+an inequality, from monotonicity of \(d\mapsto\binom d2\), and never asserts a unique
+maximizing index.
 \end{warning}
-\begin{obligation}
-Formalize the finite Taylor majorant, state the minimizer edge cases correctly, and prove a
-public \(\exp-1\) estimate if it survives that correction.
-\end{obligation}
+The public \(\exp-1\) estimate is
+\lean{norm_fabiusComplexShiftSpline_sub_center_le_half_pow_mul_exp_sub_one_all} in
+\path{FabiusComplexShiftSpline.lean}, and it is more general than the candidate: it carries
+no \(p\ge1\) hypothesis, holding for every \(p\in\N\) and every real \(x\), with the
+naturally truncated exponent making the degenerate degree an instance rather than an
+exception.  Its finite Taylor majorant is formalized separately, as the exact branch
+expansion \lean{fabiusComplexShiftSpline_sub_center_eq_taylorBranches} in the same module
+together with the reflected factorial sum bounded in
+\path{FabiusDiscreteLimitComplexShift.lean}.  The weaker \(\exp\) form
+\lean{norm_fabiusComplexShiftSpline_sub_center_le_half_pow_mul_exp_all} is derived from it.
 
 \section{Prefix-kernel interpretations}
 
@@ -13819,8 +13848,10 @@ only shorthand for finite stabilization.
 
 \section{Formal-background crosswalk}
 
-The following declarations support the proved background cited above.  None of them is a
-counterpart for the adjacent candidate statement.
+The following declarations support the proved background cited above.  None of them is
+itself a counterpart for the adjacent candidate statement; where a candidate has since
+acquired an exact counterpart, that declaration is named inline with the candidate and is
+not repeated in this table.
 
 \begingroup
 \footnotesize
