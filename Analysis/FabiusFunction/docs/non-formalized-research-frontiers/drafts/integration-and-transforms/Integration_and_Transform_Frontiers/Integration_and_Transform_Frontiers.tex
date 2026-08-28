@@ -138,8 +138,9 @@ Fractional Orders, and Inverse-Quantile Integrals}
 \endgroup
 \clearpage
 \section*{Provenance}
-This volume consolidates the following drafts verbatim (labels, citation keys, and
-asset paths mechanically prefixed per part; no mathematical content altered).
+This volume preserves the absorbed theorem and proof bodies, with labels, citation keys,
+and asset paths mechanically prefixed per part.  Later edits add status-only Lean
+crosswalk annotations; the historical source hashes below are unchanged.
 The absorbed drafts are deleted from the working tree; git history is the archive.
 \begin{itemize}
 \item \path{Fabius_Antiderivatives_Report/fabius_antiderivatives.tex} \\ {\footnotesize SHA-256 \path{e1669eb704563db2c54a412d7fa8a823a31df5cef11074d6d321872cf16fa307}}
@@ -189,10 +190,10 @@ clamped \path{IccExtend} versions internally.  The exact Fabius specialization i
 both absolutely-continuous factors to be the identity gives
 \path{Fabius.intervalIntegral_fabiusReal_add_fabiusInv_eq_one}.
 
-This update does \emph{not} claim incomplete identities at a variable upper endpoint,
+This inverse-layer-cake update does \emph{not} by itself claim incomplete identities at a variable upper endpoint,
 improper extensions through singular endpoints, higher inverse primitives, a
 fractional-order semigroup for merely interval-integrable inputs or noncomplete targets,
-Fabius/inverse-specific Riemann--Liouville or any Caputo
+inverse-specific Riemann--Liouville or any Caputo
 formulas, complex Mellin continuations, or a named wrapper having simultaneously the
 absorbed report's arbitrary-\(L^1\) kernel and arbitrary absolutely-continuous primitive
 hypotheses when that wrapper is not literally exported by the declarations above.  Those
@@ -201,7 +202,8 @@ above remain hashes of the unmodified absorbed sources.
 \end{statusbox}
 
 \begin{statusbox}[Current Lean status of the positive-real fractional Volterra core and semigroup]
-The later module \path{FractionalVolterra.lean} defines
+At compiled full-facade checkpoint \texttt{22f801337}, the later module
+\path{FractionalVolterra.lean} defines
 \path{Fabius.fractionalVolterra}, a total Gamma-normalized oriented interval integral for
 a real order, arbitrary real base and endpoint, and an input valued in any real normed
 space.  The unconditional declarations
@@ -244,14 +246,86 @@ For a complete target, \(a\le x\), and an input continuous on \([a,x]\),
  \label{p0:eq:fractional-volterra-semigroup}
 \end{equation}
 
-This tranche proves no order-zero operator law, reversed-endpoint fractional
-interpretation, semigroup theorem for merely interval-integrable inputs or noncomplete
-targets, separately packaged general power or constant specialization, Caputo or other
-fractional derivative, complex-order theorem, or Fabius-, Rvachev-, quantile-, or
-inverse-function specialization.  In particular, it
-does not discharge the report-local fractional identities named below.  This status box
-supersedes only contrary historical formalization wording in the absorbed snapshots; the
-provenance hashes above remain unchanged.
+The reusable module \path{FractionalVolterraCalculus.lean} now also proves
+\path{Fabius.fractionalVolterra_affine} and
+\path{Fabius.fractionalVolterra_comp_affine}: for an ordered endpoint and positive affine
+scale, the operator acquires exactly the factor $c^\alpha$, for arbitrary real order
+\(\alpha\).  This is an algebraic theorem about the totalized definition outside the
+classical positive-order regime.  For \(\alpha>0\), a continuous Banach-valued $g$, an
+interval-integrable $g'$, and the stated right-hand interior derivative,
+\path{Fabius.fractionalVolterra_add_one_deriv} proves
+\begin{equation}
+ I_{a+}^{\alpha+1}g'(x)
+ =I_{a+}^{\alpha}g(x)
+  -\frac{(x-a)^\alpha}{\Gamma(\alpha+1)}g(a),
+ \label{p0:eq:fractional-volterra-order-raising}
+\end{equation}
+with a boundary-free wrapper when $g(a)=0$.
+
+The specialization module \path{FabiusFractionalVolterra.lean} proves, for real
+\(\alpha>0\),
+\begin{align}
+ I_{0+}^{\alpha+1}\widetilde F(x)
+ &=2^\alpha I_{0+}^{\alpha}\widetilde F(x/2), &&x\ge0,
+ \label{p0:eq:fractional-volterra-signed-shift}\\
+ I_{0+}^{\alpha+1}F(x)
+ &=2^\alpha I_{0+}^{\alpha}F(x/2), &&0\le x\le1,
+ \label{p0:eq:fractional-volterra-bounded-shift}\\
+ I_{-1+}^{\alpha+1}\Up(x)
+ &=2^\alpha I_{0+}^{\alpha}F((x+1)/2), &&x\ge-1.
+ \label{p0:eq:fractional-volterra-up-shift}
+\end{align}
+The declarations are respectively
+\path{Fabius.fractionalVolterra_add_one_extendedFabius_of_nonneg},
+\path{Fabius.fractionalVolterra_add_one_fabiusReal}, and
+\path{Fabius.fractionalVolterra_add_one_rvachevUp}.
+
+This tranche still proves no order-zero classical operator law, reversed-endpoint
+fractional interpretation, semigroup theorem for merely interval-integrable inputs or
+noncomplete targets, separately packaged general power or constant specialization, Caputo
+or other fractional derivative operator, complex-order theorem, iterated shift,
+endpoint-moment or dyadic-lattice wrapper, weighted monomial formula, probability/stop-loss
+representation, hierarchy/support-truncated semigroup, full two-branch refinement,
+negative-endpoint signed recurrence, Up exterior/refinement theorem, or quantile/inverse
+specialization.  In particular, it does not discharge the stronger report-local fractional
+identities named below.  This status box supersedes only contrary historical formalization
+wording in the absorbed snapshots; the provenance hashes above remain unchanged.
+\end{statusbox}
+
+\begin{statusbox}[Current Lean status of pointwise analytic finite-series filters]
+At the same compiled checkpoint, \path{AnalyticSeriesFilter.lean} formalizes the convergent-series counterpart of
+the finite power-series filter algebra.  If every weighted sample
+\(
+  \sum_{m\ge0}w_i((\xi_i z)^m a_m)
+\)
+is unconditionally summable, then
+\path{Fabius.finiteAnalyticSeriesFilter_eq_tsum} proves the pointwise identity
+\begin{equation}
+ \sum_i\sum_{m\ge0}w_i((\xi_i z)^m a_m)
+ =\sum_{m\ge0}\left(\sum_iw_i\xi_i^m\right)z^m a_m.
+ \label{p0:eq:analytic-series-filter-diagonal}
+\end{equation}
+The generic theorem works for a commutative semiring acting on a normed additive group;
+zero-weight nodes impose no convergence obligation.  Finite moment exactness splits off the
+reproduced head, and the target-zero theorem preserves $a_0$.  For geometric rows over a
+commutative ring with continuous constant scalar multiplication (each fixed scalar acts
+continuously),
+\path{Fabius.geometricAnalyticSeriesFilter_eq_constant_add_gaussian_tsum} identifies the
+finite row-moment factor in degree $p+1+r$ as
+\begin{equation}
+ (-1)^p q^{\binom{p+1}{2}}
+ \genfrac{[}{]}{0pt}{}{p+r}{p}_{q};
+ \label{p0:eq:analytic-series-filter-gaussian-tail}
+\end{equation}
+assuming $j\mapsto q^j$ is injective on $\{0,\ldots,p\}$, geometric-Lagrange and
+shifted-scale wrappers over a scalar field are also formal, requiring an unweighted sample
+to be summable only when its weight is nonzero.
+
+These are unconditional pointwise \path{Summable}/\path{tsum} statements.  They do not
+cover conditionally-only convergent boundary series, uniform convergence, error or sign
+bounds, asymptotic acceleration rates, an actual sinc-product coefficient instantiation, or
+a bridge from formal \path{PowerSeries} evaluation to the analytic hypotheses.  This box
+updates formalization status only and leaves the absorbed reports' provenance hashes intact.
 \end{statusbox}
 \begin{statusbox}[Current Lean status of the ordinary Cauchy--Stieltjes core]
 For a bounded Fabius solution \(F\), the later module
@@ -344,9 +418,10 @@ integer core is now machine checked in Lean: this comprises the normalized
 Volterra operator, its identification with literal repeated integration, the
 finite polynomial and natural-monomial commutators, the global signed Fabius
 ladder, and the bounded formulas on the full range \(x\leq1\).  The infinite
-complex-power series, Mellin consequences, fractional orders, global exterior
-pieces, Rvachev folds, and the partial, higher-order, or fractional
-inverse-function formulas remain research-frontier material.  The separate
+complex-power series, Mellin consequences, remaining report-specific fractional formulas
+(including iterated, weighted, and complex-order formulas), global exterior pieces,
+Rvachev folds, and the partial, higher-order, or fractional inverse-function formulas
+remain research-frontier material.  The separate
 full-interval weighted inverse layer-cake identity and the complete proper-compact
 absolutely-continuous inverse-pair identity are covered by the current consolidated
 status note.
@@ -462,6 +537,20 @@ Positive-real beta convolution and additive composition of orders&
 \path{fractionalVolterra_add} in
 \path{FabiusFunction.FractionalVolterraSemigroup}; the last theorem assumes an ordered
 endpoint and a continuous Banach-valued input.\\[1mm]
+Positive affine covariance and derivative order raising&
+\path{fractionalVolterra_affine}, \path{fractionalVolterra_comp_affine},
+\path{fractionalVolterra_add_one_deriv}, and
+\path{fractionalVolterra_add_one_deriv_of_eq_zero} in
+\path{FabiusFunction.FractionalVolterraCalculus}; affine covariance uses a positive scale
+and arbitrary real order, while order raising assumes a positive order, a continuous
+Banach-valued primitive, a right interior derivative, and interval integrability of that
+derivative.\\[1mm]
+Positive-real Fabius--Rvachev fractional shifts&
+\path{fractionalVolterra_add_one_extendedFabius_of_nonneg},
+\path{fractionalVolterra_add_one_fabiusReal}, and
+\path{fractionalVolterra_add_one_rvachevUp} in
+\path{FabiusFunction.FabiusFractionalVolterra}; their endpoint domains are respectively
+$x\ge0$, $0\le x\le1$, and $x\ge-1$.\\[1mm]
 Affine covariance for all real scales, and its nonzero-scale inverse&
 \path{normalizedVolterra_affine} and
 \path{normalizedVolterra_comp_affine} in
@@ -501,14 +590,16 @@ The affine and basepoint theorems above are general operator identities.  They
 do not themselves calculate explicit Fabius or Rvachev-up coefficients, and
 they do not assemble any of the report's piecewise formulas.
 
-The generic positive-real Riemann--Liouville kernel and its ordered-endpoint,
-continuous-Banach-input semigroup in the new table rows are now formalized.  No claim of
-this update extends to the infinite complex-power
+The generic positive-real Riemann--Liouville kernel, its ordered-endpoint
+continuous-Banach-input semigroup, positive affine covariance, derivative order raising, and
+the three real-positive Fabius--Rvachev shifts in the new table rows are now formalized.  No
+claim of this update extends to the infinite complex-power
 Newton--Volterra series or its normal convergence, the Mellin/Newton and
 negative-power consequences, a semigroup for merely interval-integrable inputs or
-noncomplete targets, a complex-order or hierarchy-adapted semigroup, fractional Fabius or
-Rvachev formulas, the \(x>1\) branches of the bounded global
-piecewise formula, folded Rvachev primitives or their Fourier renormalization, or the
+noncomplete targets, a complex-order or hierarchy-adapted semigroup, iterated shifts,
+fractional derivatives, weighted fractional monomials, endpoint moments or dyadic-lattice
+wrappers, signed negative-endpoint branches, the \(x>1\) branches of the bounded global
+piecewise formula, folded/exterior Rvachev primitives or their Fourier renormalization, or the
 partial, higher-order, and fractional inverse-Fabius primitives or inverse asymptotics developed below.
 The separate full-interval weighted inverse layer-cake theorem and complete
 proper-compact absolutely-continuous inverse-pair theorem recorded in the consolidated
@@ -609,8 +700,16 @@ proves its elementary endpoint, locality, scalar, continuous-input additivity, o
 and positive-natural-order rules recorded in the consolidated status box.  The companion
 \path{FabiusFunction.FractionalVolterraSemigroup} proves additive composition of two
 positive real orders for a continuous Banach-valued input on an ordered compact interval.
-Neither module formalizes the complex-order reading of this display or any Fabius-specific
-formula below.
+\path{FabiusFunction.FractionalVolterraCalculus} additionally proves positive affine
+covariance and the Gamma-normalized one-step order-raising integration-by-parts law.
+Its specializations in \path{FabiusFunction.FabiusFractionalVolterra} give
+\(
+ I_{0+}^{\nu+1}F(x)=2^\nu I_{0+}^{\nu}F(x/2)
+\)
+on \([0,1]\), the signed version for $x\ge0$, and the corresponding Up-to-Fabius bridge
+from base $-1$.  These modules do not formalize the complex-order reading of this display,
+the iterations and complex-power/weighted formulas below, or fractional derivative and
+inverse/quantile operators.
 The notation \(\Jn_n=\RL^n\) will be used when the order is positive and
 integral.
 For a complex exponent \(\alpha\) and positive \(x\), we take
@@ -2048,7 +2147,12 @@ polynomial/monomial commutators; its literal-iteration/FTC bridge uses a Banach 
 \path{FabiusFunction.FabiusAntiderivatives} supplies the signed and bounded
 integer ladders and their natural-monomial consequences.  The new generic
 transport and jet identities do not themselves give the explicit Fabius/up
-coefficients or piecewise assembly.  The next finite targets are the exterior
+coefficients or piecewise assembly.  Independently, the positive-real fractional kernel,
+its continuous Banach-valued semigroup, positive affine covariance, the exact derivative
+order-raising boundary formula, and the one-step signed, bounded, and Up-to-Fabius shifts
+are now in \path{FractionalVolterra.lean}, \path{FractionalVolterraSemigroup.lean},
+\path{FractionalVolterraCalculus.lean}, and \path{FabiusFractionalVolterra.lean}.  The next
+finite targets are the exterior
 \(x>1\) branch and matching jets in
 \eqref{p1:eq:global-Hnp}, followed independently by the inverse identity
 \eqref{p1:eq:inverse-first}.  The normal-convergence proof of
@@ -2112,6 +2216,16 @@ Generic affine covariance&
 \path{normalizedVolterra_affine} is a Lean-formalized forward identity for
 arbitrary real normed targets and every \(c\in\R\), including zero and negative scales;
 \path{normalizedVolterra_comp_affine} assumes \(c\ne0\).\\[1mm]
+Generic positive-real fractional order raising&
+\path{fractionalVolterra_affine} and \path{fractionalVolterra_comp_affine} formalize
+positive affine covariance for arbitrary real order; for positive order,
+\path{fractionalVolterra_add_one_deriv} formalizes integration by parts with the exact
+left-endpoint boundary term.\\[1mm]
+One-step fractional Fabius--Rvachev shifts&
+\path{fractionalVolterra_add_one_extendedFabius_of_nonneg},
+\path{fractionalVolterra_add_one_fabiusReal}, and
+\path{fractionalVolterra_add_one_rvachevUp} are Lean formalized for real positive order on
+$x\ge0$, \([0,1]\), and $x\ge-1$, respectively.\\[1mm]
 Generic basepoint and zero-tail calculus&
 \path{normalizedVolterra_basepoint_shift} is Lean formalized with local
 interval integrability on \(a\) to \(b\) and \(b\) to \(x\), no endpoint order,
@@ -2229,9 +2343,10 @@ snapshot-relative source-document comparisons.  The later Lean modules listed
 in the status crosswalk now formalize the integer Volterra core together with
 generic affine transport, local basepoint shifts, and positive-order open-tail
 Taylor jets.  Those generic declarations do not supply explicit Fabius/up
-coefficients or piecewise assembly; the complex, fractional, Mellin, folded,
-partial or higher inverse, and exterior-piecewise claims remain outside that formalized
-core.  The complete proper-compact absolutely-continuous inverse-pair identity is now
+coefficients or piecewise assembly; the complex-power, Mellin, folded, partial or higher
+inverse, exterior-piecewise, and remaining report-specific fractional claims remain
+outside that formalized core.  The complete proper-compact absolutely-continuous
+inverse-pair identity is now
 formalized separately in \path{InversePairIntegral.lean}.
 
 \section{Exact initial values and sample antiderivatives}
@@ -2559,11 +2674,17 @@ The generic positive-real ordered-endpoint fractional kernel and its positive-in
 bridge are now formalized in \decl{FabiusFunction.FractionalVolterra};
 \decl{FabiusFunction.FractionalVolterraSemigroup} adds raw beta-kernel integrability, its
 normalized value, and additive composition of positive orders for continuous Banach-valued
-inputs on ordered compact intervals.  No Lean
+inputs on ordered compact intervals.  \decl{FabiusFunction.FractionalVolterraCalculus}
+adds positive affine covariance at arbitrary real order and the positive-order derivative
+order-raising law with its exact boundary term.
+\decl{FabiusFunction.FabiusFractionalVolterra} supplies the one-step signed, bounded, and
+Up-to-Fabius shifts on their stated endpoint domains.  No Lean
 formalization is claimed here for the complex-power series or its convergence and remainder
 estimates, the logarithmic and Mellin consequences, a semigroup for merely
 interval-integrable inputs or noncomplete targets, a complex-order or hierarchy-specific
-semigroup, a hierarchy-specific beta-kernel specialization, the Rvachev piecewise or fractional primitives,
+semigroup, a hierarchy-specific beta-kernel specialization, iterated shifts, fractional
+derivatives, weighted fractional monomials, endpoint-moment or dyadic-lattice wrappers, the
+negative-endpoint signed branch, the Rvachev piecewise/exterior or refinement formulas,
 the local, higher-order, or fractional inverse-function formulas and
 asymptotics, or the bounded function's
 piecewise continuation for $x>1$.  Those portions remain research frontiers;
@@ -2650,7 +2771,9 @@ law. & Frontier; informal consequence \\
 Fractional primitive index &
 A continuous-index Volterra semigroup together with a $q$-dilation transform and cocycle
 interpolating the integer ladder. &
-Generic positive-real ordered-continuous semigroup formalized; $q$-dilation structure conjectural \\
+Generic positive-real ordered-continuous semigroup, positive affine covariance, derivative
+order raising, and the real one-step Fabius--Rvachev shifts formalized; iterated/complex
+$q$-dilation structure conjectural \\
 \bottomrule
 \end{tabularx}
 \caption{Main contributions and status.}
@@ -2884,7 +3007,7 @@ formulas globally.  The elementary bounded continuation
 antiderivative layer.  Generic affine transport, basepoint shifts, and
 open-interval zero-tail Taylor jets are formalized, but they do not supply its
 explicit Fabius coefficients or its piecewise assembly.  Nor have the later complex-power convergence theorem,
-Mellin continuation, fractional-index constructions, Rvachev primitive
+Mellin continuation, remaining report-specific fractional-index constructions, Rvachev primitive
 formulas, or the local, higher-order, and fractional inverse-function reductions
 been formalized.  They remain
 frontier mathematics even where this report gives an analytic proof.
@@ -3834,7 +3957,9 @@ identity exactly at integer indices.  The obstruction is that the integer
 formula uses the special vector $F$ and does not arise from an operator
 identity on arbitrary functions.
 The positive-real semigroup premise for continuous Banach-valued inputs on ordered compact
-intervals is \decl{fractionalVolterra_add}; the holomorphic transform, scalar cocycle, and
+intervals is \decl{fractionalVolterra_add}.  The real one-step Fabius shift in
+\decl{fractionalVolterra_add_one_fabiusReal} proves the $n=1$ order increment underlying
+this conjecture; the iterated packaging, holomorphic transform, scalar cocycle, and
 complex-order continuation asserted here remain conjectural.
 \end{conjecture}
 
@@ -3845,8 +3970,11 @@ The following projects are concrete and separable.
 \item \textbf{Lean continuation.}  The natural-order primitive ladder and the
 finite polynomial/monomial commutators are complete, including their stronger
 real-normed-target Volterra forms, affine covariance, and local
-basepoint/zero-tail Taylor-jet calculus.  These generic results do not supply
-explicit Fabius/up coefficients or piecewise assembly.  The next analytic
+basepoint/zero-tail Taylor-jet calculus.  The positive-real fractional core now also has
+positive affine covariance, derivative order raising, and one-step signed, bounded, and
+Up-to-Fabius shifts.  These results do not supply iterated/complex-order packaging,
+fractional derivatives, weighted fractional formulas, endpoint lattices, or the report's
+piecewise branches.  The next analytic
 boundary is the complex series, which
 requires an effective flatness lemma, a falling-factorial derivative library,
 and a uniform remainder theorem.
@@ -3856,7 +3984,11 @@ explicit formal flatness estimate to produce interval bounds for
 \item \textbf{$q$-Richardson acceleration.}  Determine the full asymptotic
 expansion of the positive tail in \eqref{p2:eq:negative-series}.  The geometric
 scale suggests the $q=1/4$ Lagrange filters already developed in the frontier
-corpus.
+corpus.  \path{AnalyticSeriesFilter.lean} now supplies their generic
+unconditional pointwise Gaussian-residual series identity under explicit
+nonzero-weight sample summability; proving that this particular tail satisfies those
+hypotheses, together with uniform bounds, signs, and an acceleration rate, remains part of
+the proposed work.
 \item \textbf{Nonlinear Walsh compression.}  Replace the $2^{Nr}$ tuple sum in
 \eqref{p2:eq:finite-nonlinear} by orbit sums under coordinate permutation,
 bitwise XOR, and dyadic reflection; search for Gaussian-binomial collapse.
@@ -3929,6 +4061,24 @@ interval-integrable normed-space-valued input. \\
 \decl{normalizedVolterra_monomial} &
 Natural-monomial specialization, with every natural Volterra order and all
 base/endpoint cases included. \\
+\decl{FabiusFunction.FractionalVolterra} &
+\decl{fractionalVolterra}, \decl{fractionalVolterra_nat_succ} &
+Total Gamma-normalized real-order operator and its exact positive-natural-order bridge to
+\decl{normalizedVolterra}. \\
+\decl{FabiusFunction.FractionalVolterraSemigroup} &
+\decl{fractionalVolterra_add} &
+Addition of two positive real orders for a continuous Banach-valued input on an ordered
+compact interval, backed by the normalized beta-kernel theorem. \\
+\decl{FabiusFunction.FractionalVolterraCalculus} &
+\decl{fractionalVolterra_affine}, \decl{fractionalVolterra_comp_affine} &
+Positive affine covariance for arbitrary real order and its inverse-smul form; the scale is
+strictly positive and the endpoint is ordered. \\
+\decl{FabiusFunction.FractionalVolterraCalculus} &
+\decl{fractionalVolterra_add_one_deriv},
+\decl{fractionalVolterra_add_one_deriv_of_eq_zero} &
+Positive-order integration by parts for a continuous Banach-valued primitive with a right
+interior derivative and interval-integrable derivative, including the exact left-boundary
+term and its zero-boundary specialization. \\
 \decl{FabiusFunction.GlobalExtension} &
 \decl{fabiusReal_eq_extendedFabius_of_le_one} &
 Equality of the bounded function and signed extension throughout
@@ -3947,6 +4097,12 @@ every natural Volterra order. \\
 \decl{FabiusFunction.FabiusAntiderivatives} &
 \decl{normalizedVolterra_pow_mul_fabiusReal_of_le_one} &
 Finite natural-monomial formula for the bounded function when $x\le1$. \\
+\decl{FabiusFunction.FabiusFractionalVolterra} &
+\decl{fractionalVolterra_add_one_extendedFabius_of_nonneg},
+\decl{fractionalVolterra_add_one_fabiusReal},
+\decl{fractionalVolterra_add_one_rvachevUp} &
+Real-positive one-step shifts for the signed extension on $x\ge0$, the bounded function
+on \([0,1]\), and the Up-to-Fabius bridge based at $-1$ on $x\ge-1$. \\
 \bottomrule
 \end{longtable}
 \endgroup
@@ -3961,11 +4117,12 @@ explicit piecewise specializations:
 and compact-local uniform convergence and a formal remainder bound;
 \item logarithmic weights and the entire Mellin theory derived from that
 series;
-\item fractional Fabius/Rvachev formulas and any hierarchy-adapted or complex-order
-semigroup interpolating the natural orders (the generic positive-real kernel and its
-ordered-continuous semigroup are formal);
-\item the piecewise and fractional Rvachev formulas, including their Fourier
-sinc-product interpretations;
+\item iterated, endpoint-moment, dyadic-lattice, weighted-monomial, negative-endpoint, and
+full-refinement Fabius/Rvachev formulas, and any hierarchy-adapted or complex-order semigroup
+interpolating the natural orders (the generic positive-real kernel, its ordered-continuous
+semigroup and order raising, and the three real one-step specializations are formal);
+\item the remaining piecewise, exterior, refinement, and fractional-derivative Rvachev
+formulas, including their Fourier sinc-product interpretations;
 \item every inverse-Fabius primitive, nonlinear-power reduction, Thue--Morse
 limit, and endpoint asymptotic in this report; and
 \item a named global piecewise primitive theorem for the bounded function to
@@ -6183,9 +6340,15 @@ the generic positive-real ordered-endpoint kernel, elementary algebra, and posit
 compatibility, together with the strict-interval shifted beta-kernel value.  Its companion
 \texttt{FractionalVolterraSemigroup.lean} proves raw beta-kernel integrability, the
 normalized beta value, and additive composition of two positive orders for a continuous
-Banach-valued input on an ordered compact interval.  It proves no semigroup for merely
-interval-integrable inputs or noncomplete targets, fractional derivative, complex order, or
-hierarchy-specific specialization.
+Banach-valued input on an ordered compact interval.  The further module
+\texttt{FractionalVolterraCalculus.lean} proves positive affine covariance at arbitrary
+real order and, at positive order, the derivative order-raising identity with its exact
+left-endpoint boundary term.  \texttt{FabiusFractionalVolterra.lean} proves the one-step
+signed shift on $x\ge0$, the bounded shift on \([0,1]\), and the Up-to-Fabius bridge from
+base $-1$ on $x\ge-1$.  These modules prove no semigroup for merely interval-integrable
+inputs or noncomplete targets, fractional derivative operator, complex order, iterated or
+weighted shift, endpoint-moment/dyadic-lattice wrapper, negative-endpoint signed branch,
+exterior/refinement Up law, or inverse/quantile specialization.
 Support-free
 measure-level quantile transport, together with its compact specialization, is now formal
 separately, as recorded below.  The full-interval explicit-primitive and pointwise-\(C^1\)
@@ -7180,9 +7343,10 @@ For \(n\in\N\), the operator \(I_0^n\) here is the formal normalized Volterra op
  \qquad(x\le1),
 \]
 including \(n=0\), and proves the analogous global identity for the signed extension.
-It also proves every natural-monomial weight as a finite dyadic sum.  The probabilistic
-truncated-moment representation below, its inverse companion, and every noninteger
-\(\alpha\) remain outside that formal result.
+It also proves every natural-monomial weight as a finite dyadic sum.  The displayed
+noninteger-\(\alpha\) truncated-moment representation below and its inverse companion
+remain outside that formal result; the separate one-step positive-real-order Fabius and \(\Up\)
+shifts are now formalized.
 \end{statusbox}
 
 \subsection{Fractional inverse-pair duality}
@@ -7965,8 +8129,8 @@ normalization.
 The next decisive steps are to determine whether the phase profile is exactly constant,
 to connect its Fourier modes with the spectral corrections already present in endpoint
 asymptotics, and to formalize the remaining variable-upper-endpoint and improper-singular
-inverse-pair scope,
-fractional orders, and moment recurrences.
+inverse-pair scope, the remaining report-specific fractional formulas (including iterated,
+weighted, and complex-order formulas), and moment recurrences.
 The reusable integer-order Volterra layer and its exact Fabius specialization are already
 formal; these remaining directions are sufficiently concrete to support both
 high-precision experiments and Lean proofs.
@@ -11424,9 +11588,12 @@ or the endpoint quadratic law.  Decimal values and plots are \statusnumeric{}.  
 are marked \statusopen{}.  Since the audit snapshot, Lean has formalized the natural-order
 normalized Volterra kernel, the signed-global and bounded Fabius primitive ladders, all
 natural-monomial weights, and the support-free quantile pushforward with its Banach-valued
-substitution corollary.  Those foundations do not imply the nonlinear inverse transmutation,
-fractional-order, Mellin-continuation, or named \(\Up\)-tail results developed here; those
-remain frontier claims.
+substitution corollary.  It now also has the generic positive-real fractional semigroup,
+positive affine covariance, derivative order raising, and the real one-step signed, bounded,
+and Up-to-Fabius shifts on their explicit endpoint domains.  Those foundations do not imply
+the nonlinear inverse transmutation, complex-order continuation, fractional derivative,
+iterated/weighted/endpoint-lattice formulas, or named nonlocal \(\Up\)-tail results developed
+here; those remain frontier claims.
 
 
 \clearpage
@@ -12670,6 +12837,17 @@ Set $t=2u$.  The global version uses
 $\extF(t)=\frac{\dd}{\dd t}\extF(t/2)$ for all $t$.
 \end{proof}
 
+\begin{remark}[Exact Lean boundary of the order shift]
+For real \(\alpha>0\), the bounded identity in
+\eqref{p7:eq:fractional-shift} is exactly
+\path{Fabius.fractionalVolterra_add_one_fabiusReal}.  The declaration
+\path{Fabius.fractionalVolterra_add_one_extendedFabius_of_nonneg} proves the signed version
+for $x\ge0$.  Thus the real positive-order portion is machine checked; the report's
+complex-order reading and its signed claim at negative endpoints are not supplied by those
+declarations.  Iteration to \eqref{p7:eq:fractional-integer-shift} and the endpoint-moment
+lattice below are likewise separate frontier obligations.
+\end{remark}
+
 \begin{corollary}[Integer shift of a fractional base order]
 \label{p7:cor:fractional-integer-shift}
 For $n\in\N_0$, $\Ree\beta>0$, and $0\le x\le1$,
@@ -13414,7 +13592,9 @@ A practical Lean development can proceed in increasing order of analytic difficu
 \item[\(\checkmark\)] use the now-formalized integer primitive ladder and weighted polynomial
        formulas in \path{NormalizedVolterra.lean} and \path{FabiusAntiderivatives.lean};
 \item[\(\checkmark\)] use the now-formalized positive-real Riemann--Liouville kernel API;
-      the Fabius-specific order-shift identity remains to be proved;
+      its generic affine/order-raising calculus and the real-positive Fabius-specific
+      one-step order shift are now proved in \path{FractionalVolterraCalculus.lean} and
+      \path{FabiusFractionalVolterra.lean};
 \item formalize the moment endpoint and fractional dyadic lattice;
 \item[\(\checkmark\)] use the now-formalized support-free quantile pushforward and compact
       Fabius substitution from \path{QuantileTransport.lean}; the stronger nonlinear
@@ -13743,6 +13923,10 @@ agreement never substitutes for proof.
 The natural-order normalized Volterra kernel, its signed-global and bounded
 Fabius ladders, and every natural-monomial specialization are formalized in
 \path{NormalizedVolterra.lean} and \path{FabiusAntiderivatives.lean}.
+The positive-real fractional layer now additionally includes the generic continuous-input
+semigroup, positive affine covariance, derivative order raising, and the one-step signed,
+bounded, and Up-to-Fabius shifts in \path{FractionalVolterraSemigroup.lean},
+\path{FractionalVolterraCalculus.lean}, and \path{FabiusFractionalVolterra.lean}.
 The support-free quantile pushforward and its Banach-valued substitution
 corollary are formalized in \path{QuantileTransport.lean}.  The survival and inverse
 layer-cake kernels are formalized in \path{SurvivalLayerCake.lean} and
@@ -13750,10 +13934,11 @@ layer-cake kernels are formalized in \path{SurvivalLayerCake.lean} and
 complete proper-compact absolutely-continuous inverse-pair formula on arbitrary ordered
 source and level intervals, deriving monotonicity and measurable clamped extensions from
 the strict-order adjunction rather than assuming either clock measurable.  Named
-primitives of \(\Up\) based at \(-1\), reflected and piecewise support-tail formulas,
-variable-upper-endpoint and higher inverse primitives, complex-power or Mellin
-continuation, every genuinely fractional order, and wrappers not literally exported by
-these modules remain frontier material.
+iterated, exterior, endpoint-moment, and refinement primitives of \(\Up\) beyond the
+one-step bridge, reflected and piecewise support-tail formulas, variable-upper-endpoint and
+higher inverse primitives, complex-power or Mellin continuation, fractional derivative
+operators, complex orders, and wrappers not literally exported by these modules remain
+frontier material.
 \end{statusbox}
 
 
@@ -14478,12 +14663,16 @@ For \(\alpha>0\), the left Riemann--Liouville integral is
 For \(a\le x\), the real-normed-space-valued version of this positive-real kernel is
 \path{fractionalVolterra} in \path{FabiusFunction.FractionalVolterra}, with its semigroup
 in \path{FabiusFunction.FractionalVolterraSemigroup} and the exact API recorded in the
-consolidated status box.  Its definition is total, but the modules prove no
-reversed-endpoint fractional interpretation, semigroup for merely interval-integrable
-inputs or noncomplete targets, fractional derivative, complex order, or Fabius-specific
-identity; the raw beta kernel is interval-integrable for two positive orders and a
-non-strict endpoint inequality, while its raw and normalized evaluations assume a strict
-endpoint inequality.
+consolidated status box.  \path{FabiusFunction.FractionalVolterraCalculus} adds positive
+affine covariance and the derivative order-raising boundary formula, and
+\path{FabiusFunction.FabiusFractionalVolterra} adds the real one-step signed, bounded, and
+Up-to-Fabius shifts on their explicit endpoint domains.  The definition is total, but these
+modules prove no reversed-endpoint classical fractional interpretation, semigroup for merely
+interval-integrable inputs or noncomplete targets, fractional derivative operator, complex
+order, iterated/weighted shift, endpoint lattice, negative-endpoint signed branch, or full
+piecewise/refinement hierarchy; the raw beta kernel is interval-integrable for two positive
+orders and a non-strict endpoint inequality, while its raw and normalized evaluations assume
+a strict endpoint inequality.
 For \(n-1<\alpha<n\),
 \begin{equation}
  D_{a+}^{\alpha}g=\frac{\dd^n}{\dd x^n}I_{a+}^{n-\alpha}g,
@@ -16459,6 +16648,19 @@ $I_{0+}^{n-\beta}F^{(n)}(x)$ and substitute $s=2t-1$.  The factors are
 $2^n$ from differentiation, $2^{-1}$ from $\dd t$, and
 $2^{-(n-\beta-1)}$ from the kernel, leaving exactly $2^\beta$.
 \end{proof}
+
+\begin{remark}[Nearby formal integral bridge]
+The displayed Riemann--Liouville/Caputo \emph{derivative} theorem is not asserted to be
+formalized.  What is now machine checked is the adjacent real positive-order integral
+identity
+\[
+ I_{-1+}^{\alpha+1}\Up(x)
+ =2^\alpha I_{0+}^{\alpha}F((x+1)/2),\qquad x\ge-1,
+\]
+under the name \path{Fabius.fractionalVolterra_add_one_rvachevUp}.  Passing from it to
+\eqref{p9:eq:F-up-bridge-general} still requires the fractional-derivative and iterated
+derivative packaging stated in this report.
+\end{remark}
 
 \begin{remark}[Interpolation endpoints]
 For $0<\beta<1$, letting $\beta\downarrow0$ in

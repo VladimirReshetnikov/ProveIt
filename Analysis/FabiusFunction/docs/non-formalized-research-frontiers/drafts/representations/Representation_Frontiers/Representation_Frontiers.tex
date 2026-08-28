@@ -1820,6 +1820,44 @@ non-D-finiteness, the reciprocal-Gamma derivative coefficient used by the separa
 Thue--Morse tower, or the general integer-base collision order; those portions remain
 frontier claims despite occurring in the same theorem package below.
 
+\emph{Current post-checkpoint overlay.}  The historical boundary above is retained
+verbatim for \path{71ab6f6728fceb753c88d8b0573077a59acf2682}.  At source commit
+\path{0ba35abd4}, \path{ReciprocalGammaJets.lean} adds exactly five public
+declarations:
+\leanPartx{Fabius.deriv_Gamma_inv_neg_nat},
+\leanPartx{Fabius.hasDerivAt_Gamma_inv_neg_nat},
+\leanPartx{Fabius.hasDerivAt_Gamma_inv_zero},
+\leanPartx{Fabius.analyticOrderAt_Gamma_inv_neg_nat}, and
+\leanPartx{Fabius.tendsto_Gamma_inv_div_add_nat}.  They give, for every
+\(r\in\N\), the first jet \((\Gamma^{-1})'(-r)=(-1)^r r!\), simple analytic
+order one, and the same punctured local coefficient.  These are theorems about
+the entire reciprocal function; they do not assign a derivative to raw Gamma
+at a pole.
+
+The same commit gives the first eight public declarations of
+\path{ThueMorseGammaTower.lean}:
+\leanPartx{Fabius.hasDerivAt_dirichletMellinContinuation_neg_nat},
+\leanPartx{Fabius.deriv_dirichletMellinContinuation_neg_nat},
+\leanPartx{Fabius.thueMorseGammaLog},
+\leanPartx{Fabius.thueMorseGammaTower},
+\leanPartx{Fabius.thueMorseGammaLog_eq_mellin},
+\leanPartx{Fabius.thueMorseGammaLog_eq_integral},
+\leanPartx{Fabius.thueMorseGammaLog_dyadic}, and
+\leanPartx{Fabius.thueMorseGammaTower_dyadic}.  For every \(r\in\N\) and
+\(a>0\), they identify the continuation first jet with
+\((-1)^r r!\) times the Mellin value, give its real-integral form, and prove the
+dyadic GammaLog and exponentiated tower laws.  The GammaLog and tower
+definitions are total for every real \(a\), but those identification theorems
+assume \(a>0\).  GammaLog is a chosen derivative coordinate, not a proved
+\leanPartx{Complex.log} identity.  The current integrated tree adds the ninth
+public declaration \leanPartx{Fabius.ofReal_exp_mpLimit_eq_gammaTower_div},
+the level-zero tower quotient for positive \(a,b\).  Accordingly the first-jet,
+Mellin/integral GammaLog, dyadic log/tower, and ratio layers are no longer
+frontiers.  The parameter-\(a\) differential and iterated differential ladder
+remains open, as do the raw Gamma tprod, canonical regrouping,
+logarithmic/digamma, Gamma-product Malmsten/heat-trace integrals, D-finite, and general-base claims
+listed above.
+
 A fully commented Python program independently checks the principal identities, produces
 four figures, and records truncation diagnostics.  ``Proved here'' means proved in this
 report and not found by targeted collision searches in the audited repository; it is not a
@@ -3542,6 +3580,16 @@ The shortest Lean route to the new results is modular.
       here is the distinct raw-product claim: construct
       \(\prod_h\Gamma(1+2^{-h}z)\) locally uniformly away from its poles and identify it there
       with the formal meromorphic inverse.
+\item \emph{First-jet/tower follow-up delivered.}
+      \path{ReciprocalGammaJets.lean} proves the exact first jet, simple analytic
+      order, and punctured local coefficient of reciprocal Gamma at every
+      nonpositive integer.  \path{ThueMorseGammaTower.lean} transfers those jets
+      to every trivial zero of the entire Dirichlet--Mellin continuation and
+      proves the Mellin/integral GammaLog, dyadic log/tower, and level-zero
+      master-product ratio laws.  Its definitions are total in the real
+      parameter, while the theorems use positive parameters; the remaining
+      parameter-differential ladder requires differentiation under the Mellin
+      integral.
 \item Reuse the formal zero-multiplicity theorem to prove non-D-finiteness in a small
       analytic-ODE module.
 \item Build $Z_\tau$ by conditioning a standard Gaussian on the already developed
@@ -3623,6 +3671,16 @@ Mahler and zero-orbit laws, reflection, the dyadic Rvachev identity, and exact d
 zero/pole orders.  The raw Gamma-product realization and the canonical, logarithmic,
 digamma, integral, heat-trace, D-finite, derivative-tower, and general-base extensions retain
 their frontier status.
+
+The current overlay sharpens only the last of those historical boundaries:
+commit \path{0ba35abd4} supplies all reciprocal-Gamma first jets and the
+first eight continuation GammaLog/tower declarations, and the current
+integrated tree adds the level-zero master-product ratio.  Thus the
+Mellin/integral GammaLog and dyadic log/tower layers are formal at every natural
+level.  Only the parameter-differential and iterated differential ladder remains
+frontier within that tower; the raw Gamma product and the canonical,
+logarithmic/digamma, Malmsten/heat-trace, D-finite, and general-base extensions
+remain frontier claims.
 
 \appendix
 

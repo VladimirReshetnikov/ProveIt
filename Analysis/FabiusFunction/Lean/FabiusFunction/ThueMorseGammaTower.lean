@@ -1,10 +1,9 @@
-import FabiusFunction.ReciprocalGammaJets
-import FabiusFunction.ThueMorseEntireContinuation
+import FabiusFunction.ThueMorseGDirichlet
 
 /-!
 # The first two laws of the Thue--Morse Gamma tower
 
-The entire shifted Dirichlet continuation
+For a positive real parameter, the entire shifted Dirichlet continuation
 
 `D(s,a) = Γ(s)⁻¹ * mellin (mellinKernel a) s`
 
@@ -29,6 +28,8 @@ it additionally requires a parameter-under-the-Mellin-integral theorem.
 * `thueMorseGammaLog_eq_mellin` is the exact Mellin formula.
 * `thueMorseGammaLog_dyadic` and `thueMorseGammaTower_dyadic` are the dyadic
   parameter laws.
+* `ofReal_exp_mpLimit_eq_gammaTower_div` identifies the master-product limit
+  with the quotient of level-zero tower values.
 -/
 
 set_option autoImplicit false
@@ -58,11 +59,17 @@ theorem deriv_dirichletMellinContinuation_neg_nat
         mellin (mellinKernel a) (-(r : ℂ)) :=
   (hasDerivAt_dirichletMellinContinuation_neg_nat a ha r).deriv
 
-/-- The logarithmic level `r` of the Thue--Morse Gamma tower. -/
+/-- The logarithmic level `r` of the Thue--Morse Gamma tower.
+
+This definition is total in `a`; its Mellin, integral, and dyadic laws below
+assume `a > 0`. -/
 noncomputable def thueMorseGammaLog (r : ℕ) (a : ℝ) : ℂ :=
   deriv (dirichletMellinContinuation a) (-(r : ℂ))
 
-/-- The exponentiated level `r` of the Thue--Morse Gamma tower. -/
+/-- The exponentiated level `r` of the Thue--Morse Gamma tower.
+
+This definition is total in `a`; its analytic identifications below assume
+`a > 0`. -/
 noncomputable def thueMorseGammaTower (r : ℕ) (a : ℝ) : ℂ :=
   Complex.exp (thueMorseGammaLog r a)
 
@@ -154,5 +161,15 @@ theorem thueMorseGammaTower_dyadic (r : ℕ) (a : ℝ) (ha : 0 < a) :
   congr 1
   push_cast
   ring
+
+/-- The real master-product limit, after the canonical embedding into
+`ℂ`, is the quotient of the level-zero Gamma-tower values. -/
+theorem ofReal_exp_mpLimit_eq_gammaTower_div
+    (a b : ℝ) (ha : 0 < a) (hb : 0 < b) :
+    ((Real.exp (mpLimit a b) : ℝ) : ℂ) =
+      thueMorseGammaTower 0 b / thueMorseGammaTower 0 a := by
+  rw [Complex.ofReal_exp, mpLimit_eq_deriv_sub a b ha hb]
+  simp only [thueMorseGammaTower, thueMorseGammaLog, Nat.cast_zero,
+    neg_zero, Complex.exp_sub]
 
 end Fabius

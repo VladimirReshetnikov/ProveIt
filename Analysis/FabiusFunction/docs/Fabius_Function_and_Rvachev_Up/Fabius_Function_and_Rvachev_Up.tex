@@ -122,7 +122,7 @@
 \author{Human-readable synthesis of the formal development\\
 \small Vladimir Reshetnikov's \texttt{ProveIt} repository}
 \date{Integrated repository snapshot: 28 August 2026\\
-\small source checkpoint \nolinkurl{71ab6f672}}
+\small compiler-validated checkpoint \nolinkurl{22f801337}}
 
 \begin{document}
 \maketitle
@@ -157,8 +157,10 @@ values, Thue--Morse formulas for arbitrary dyadic arguments, executable binary r
 two-adic information, exact half-base values, and denominator-free arbitrary-base
 $q$-binomial and geometric-interpolation identities present in Lean.  A compact-rectangle
 inverse-pair theorem integrates arbitrary absolutely-continuous outer functions without a
-clock-measurability hypothesis, while finite formal-series filters package arbitrary-node
-moment exactness and the complete denominator-free Gaussian residual on geometric nodes.
+clock-measurability hypothesis.  Finite formal-series filters package arbitrary-node
+moment exactness and the complete denominator-free Gaussian residual on geometric nodes;
+their analytic companion gives the same head--tail law for unconditionally summable
+weighted sampled coefficient series, without a convergence obligation at zero-weight nodes.
 
 Repeated integration is developed once, before its Fabius specialization, as an oriented
 normalized Volterra calculus whose algebra takes values in an arbitrary real normed space.
@@ -169,13 +171,17 @@ the signed extension and every natural-monomial weight.  A separate Gamma-normal
 operator supplies the positive-real Riemann--Liouville kernel over arbitrary real normed
 spaces on ordered endpoints and agrees exactly with the normalized integer operator at
 every positive natural order.  For continuous inputs in a complete target, two positive
-real orders compose additively on every ordered compact interval.
+real orders compose additively on every ordered compact interval.  Positive affine
+covariance, Gamma-normalized order raising from an interior right derivative, and the first
+exact fractional shifts of the signed, bounded, and folded Fabius functions are also proved
+on their stated ordered domains.
 
 The endpoint chapters report only the negative-Laplace decompositions, periodic correction,
 lower-Lambert formulas, saddle estimates, and correction terms that have named proved
 counterparts in the formal source.  Plausible extensions, numerical observations,
-unformalized analytic generic-$q$ extensions, and other arguments not yet represented by an exact
-Lean theorem are kept in the companion volume under
+conditionally convergent boundary filters, sinc-specific generic-$q$ acceleration,
+complex-order and iterated fractional formulas, and other arguments not yet represented by
+an exact Lean theorem are kept in the companion volume under
 \path{docs/non-formalized-research-frontiers/}, not in this primary exposition.
 \end{abstract}
 
@@ -2073,12 +2079,72 @@ There is an important representation boundary.  Mathlib assigns
 also has the totalized value zero there.  Accordingly
 \lean{geometricGamma} and \lean{dyadicGamma} are defined as pointwise inverses
 of the entire reciprocal products, and a pole is carried by negative
-\lean{meromorphicOrderAt}, not by an infinite point value.  The declarations
-above do not identify these functions with the raw products
+\lean{meromorphicOrderAt}, not by an infinite point value.  At that checkpoint,
+the declarations above do not identify these functions with the raw products
 \(\prod_n\Gamma(1+q^nz)\) away from their poles, and they assert no arithmetic
 Weierstrass regrouping, logarithmic or digamma series, Malmsten or heat-trace
 integral, D-finiteness result, reciprocal-Gamma derivative coefficient for the
 Thue--Morse tower, or general integer-base collision order.
+
+The post-checkpoint source commit \path{0ba35abd4} closes the reciprocal-Gamma
+first-jet and Thue--Morse Gamma-tower tranche in two further modules.
+\path{ReciprocalGammaJets.lean} has exactly five public declarations:
+\lean{deriv_Gamma_inv_neg_nat},
+\lean{hasDerivAt_Gamma_inv_neg_nat},
+\lean{hasDerivAt_Gamma_inv_zero},
+\lean{analyticOrderAt_Gamma_inv_neg_nat}, and
+\lean{tendsto_Gamma_inv_div_add_nat}.  For every \(r\in\N\), they identify
+\[
+ \left(\Gamma^{-1}\right)'(-r)=(-1)^r r!,\qquad
+ \operatorname{ord}_{-r}\Gamma^{-1}=1,
+ \qquad
+ \frac{\Gamma(s)^{-1}}{s+r}\longrightarrow(-1)^r r!
+ \quad(s\to-r,\ s\ne-r),
+\]
+with \lean{hasDerivAt_Gamma_inv_zero} retaining the origin compatibility name.
+These are statements about the entire reciprocal function
+\(s\mapsto\Gamma(s)^{-1}\): they do not assign a value or derivative to the raw
+Gamma function at one of its poles.
+
+At the same commit, \path{ThueMorseGammaTower.lean} has exactly eight public
+declarations:
+\lean{hasDerivAt_dirichletMellinContinuation_neg_nat},
+\lean{deriv_dirichletMellinContinuation_neg_nat},
+\lean{thueMorseGammaLog},
+\lean{thueMorseGammaTower},
+\lean{thueMorseGammaLog_eq_mellin},
+\lean{thueMorseGammaLog_eq_integral},
+\lean{thueMorseGammaLog_dyadic}, and
+\lean{thueMorseGammaTower_dyadic}.  The first two give, for \(a>0\) and
+\(r\in\N\),
+\[
+ \widetilde D_a'(-r)=(-1)^r r!\,
+   \operatorname{Mellin}(t\mapsto e^{-at}\mathcal E(t))(-r).
+\]
+The two definitions are total for every real \(a\); their Mellin, integral, and
+dyadic identification theorems assume exactly \(a>0\).  In particular
+\lean{thueMorseGammaLog} is the chosen coordinate
+\(L_r(a):=\widetilde D_a'(-r)\), not a proved identity with
+\lean{Complex.log} of \lean{thueMorseGammaTower}; the latter is defined as
+\(T_r(a):=\exp L_r(a)\).  The formal laws are
+\[
+ L_r(a)=(-1)^r r!\int_0^\infty t^{-r-1}e^{-at}\mathcal E(t)\,dt,
+ \quad
+ L_r(a)=2^r\bigl(L_r(a/2)-L_r((a+1)/2)\bigr),
+\]
+and
+\[
+ T_r(a)=\left(\frac{T_r(a/2)}{T_r((a+1)/2)}\right)^{2^r}.
+\]
+The current integrated tree adds the ninth public tower declaration
+\lean{ofReal_exp_mpLimit_eq_gammaTower_div}: for \(a,b>0\), the complex
+embedding of \lean{Real.exp} of \lean{mpLimit} at \((a,b)\) is
+\(T_0(b)/T_0(a)\).  Within this tower tranche, only the differential and
+iterated differential ladder in the real parameter \(a\) remains frontier; it
+requires a parameter-under-the-Mellin-integral theorem.  The raw Gamma product,
+canonical regrouping, logarithmic/digamma expansions, Gamma-product Malmsten
+and heat-trace representations, D-finiteness, and general-base collision order listed above
+remain separate frontiers.
 \end{proof}
 
 The exponent in the canonical product has a finite, base-generic double-counting
@@ -2819,10 +2885,10 @@ For a real order \(\alpha\), define the total oriented operator
 Here the real power is Lean's total real-power convention.  Its classical
 Riemann--Liouville interpretation below is restricted to \(0<\alpha\) and \(a\le x\).
 
-\begin{theorem}[Positive-real fractional Volterra foundation and semigroup]
+\begin{theorem}[Positive-real fractional Volterra foundation, covariance, and order raising]
 \label{thm:fractional-volterra-foundation}
 Let \(E\) be a real normed vector space and \(f,g:\R\to E\).  For arbitrary real
-\(\alpha,a,x,c\), the operator vanishes at its base point, depends only on the input on
+\(\alpha,a,x,c,d\), the operator vanishes at its base point, depends only on the input on
 the closed unoriented interval between \(a\) and \(x\), and satisfies
 \begin{align}
  I_{a+}^{\alpha}(cf)(x)&=cI_{a+}^{\alpha}f(x),
@@ -2846,7 +2912,7 @@ interval-integrable.  If \(s<x\), its raw value is
    \frac{\Gamma(\alpha)\Gamma(\beta)}{\Gamma(\alpha+\beta)}.
  \label{eq:fractional-volterra-beta-kernel}
 \end{equation}
-and its Gamma-normalized form is
+Its Gamma-normalized form is
 \begin{equation}
  \int_s^x
  \frac{(x-u)^{\alpha-1}}{\Gamma(\alpha)}
@@ -2861,6 +2927,29 @@ If, moreover, \(E\) is complete, \(a\le x\), and \(f\) is continuous on
  =I_{a+}^{\alpha}\!\left[u\mapsto I_{a+}^{\beta}f(u)\right](x).
  \label{eq:fractional-volterra-semigroup}
 \end{equation}
+For arbitrary real \(\alpha\), if \(0<c\) and \(a\le x\), then the increasing affine
+change of variables is exact:
+\begin{align}
+ I_{(ca+d)+}^{\alpha}f(cx+d)
+ &=c^{\alpha}I_{a+}^{\alpha}\!\left[t\mapsto f(ct+d)\right](x),
+                                                               \label{eq:fractional-volterra-affine}\\
+ I_{a+}^{\alpha}\!\left[t\mapsto f(ct+d)\right](x)
+ &=\left(c^\alpha\right)^{-1}I_{(ca+d)+}^{\alpha}f(cx+d).     \label{eq:fractional-volterra-comp-affine}
+\end{align}
+These two totalized integral identities require no regularity, integrability,
+completeness, or cancellation hypothesis.
+
+Finally suppose \(E\) is complete, \(0<\alpha\), \(a\le x\), \(g\) is continuous on
+\([a,x]\), and \(g'\) is interval-integrable there.  It is enough that \(g'(t)\) be
+the right derivative of \(g\) at each \(t\in(a,x)\); a two-sided derivative is not
+required.  Then
+\begin{equation}
+ I_{a+}^{\alpha+1}g'(x)
+ =I_{a+}^{\alpha}g(x)
+  -\frac{(x-a)^\alpha}{\Gamma(\alpha+1)}g(a).                \label{eq:fractional-volterra-add-one-deriv}
+\end{equation}
+If \(g(a)=0\), the boundary term vanishes.  Both statements include the degenerate
+ordered interval \(a=x\).
 \end{theorem}
 
 The definition and eight exact theorems in \path{FractionalVolterra.lean} are
@@ -2873,13 +2962,49 @@ The definition and eight exact theorems in \path{FractionalVolterra.lean} are
 \path{FractionalVolterraSemigroup.lean} are
 \lean{intervalIntegrable_fractionalVolterra_betaKernel},
 \lean{intervalIntegral_fractionalVolterra_normalizedBetaKernel}, and
-\lean{fractionalVolterra_add}.  Together these modules prove no order-zero operator law,
-reversed-endpoint fractional interpretation, semigroup theorem for merely
-interval-integrable inputs or noncomplete targets, separately packaged general
-power/constant evaluation, Caputo or other fractional derivative, complex-order theorem,
-or Fabius-, \(\Up\)-, or inverse-function specialization.
+\lean{fractionalVolterra_add}.  The four theorems in
+\path{FractionalVolterraCalculus.lean} are
+\lean{fractionalVolterra_affine}, \lean{fractionalVolterra_comp_affine},
+\lean{fractionalVolterra_add_one_deriv}, and
+\lean{fractionalVolterra_add_one_deriv_of_eq_zero}.  Thus the reusable fractional
+foundation has one definition and fifteen public theorems.  It proves no classical
+order-zero law, reversed-endpoint fractional interpretation, semigroup theorem for
+merely interval-integrable inputs or noncomplete targets, separately packaged general
+power/constant evaluation, Caputo or Riemann--Liouville derivative operator, or
+complex-order theorem.
 
 The signed Fabius dilation law now enters only at the specialization step.
+
+\begin{theorem}[Exact first fractional shifts of the Fabius--Rvachev system]
+\label{thm:fabius-fractional-volterra-shift}
+Let \(0<\alpha\).  The signed extension satisfies, for every \(x\ge0\),
+\begin{equation}
+ I_{0+}^{\alpha+1}\mathcal F(x)
+ =2^\alpha I_{0+}^{\alpha}\mathcal F\!\left(\frac{x}{2}\right).
+ \label{eq:fractional-global-Fabius-shift}
+\end{equation}
+The bounded function satisfies, for every \(x\in[0,1]\),
+\begin{equation}
+ I_{0+}^{\alpha+1}F(x)
+ =2^\alpha I_{0+}^{\alpha}F\!\left(\frac{x}{2}\right).
+ \label{eq:fractional-bounded-Fabius-shift}
+\end{equation}
+Finally the compactly supported fold, integrated from its left support endpoint, obeys
+for every \(x\ge-1\)
+\begin{equation}
+ I_{(-1)+}^{\alpha+1}\Up(x)
+ =2^\alpha I_{0+}^{\alpha}F\!\left(\frac{x+1}{2}\right).
+ \label{eq:fractional-rvachev-Up-shift}
+\end{equation}
+\end{theorem}
+
+The three statements are exactly
+\lean{fractionalVolterra_add_one_extendedFabius_of_nonneg},
+\lean{fractionalVolterra_add_one_fabiusReal}, and
+\lean{fractionalVolterra_add_one_rvachevUp} in
+\path{FabiusFractionalVolterra.lean}.  Their domains are part of the statements:
+the signed formula does not cover \(x<0\), the bounded formula is confined to
+\([0,1]\), and the \(\Up\) bridge starts at \(-1\).
 
 \begin{theorem}[Complete integer primitive ladder of the Fabius functions]
 \label{thm:fabius-volterra-ladder}
@@ -2920,16 +3045,17 @@ use \lean{fabiusReal_eq_extendedFabius_of_le_one}: the oriented segment from \(0
 \begin{boxedremark}
 The generic positive-real operator is formalized in
 \Cref{thm:fractional-volterra-foundation}, including its positive-real, ordered-endpoint,
-continuous-Banach-input semigroup.  Fractional Fabius or Rvachev formulas,
-hierarchy-adapted or complex-order semigroups, semigroup laws for merely
-interval-integrable inputs or noncomplete targets, complex powers, normal or Mellin
-continuation in a weight exponent, a piecewise global closed form for the bounded function
-beyond \(x\le1\), primitives of the folded function \(\Up\), and primitives of the inverse
-Fabius function remain separate analytic frontiers.  In particular, the generic affine and base-point
-theorems do not themselves supply named Fabius-specific declarations for the \(\Up\)
-ladder based at \(-1\), the reflected \(1-F\) ladder, arbitrary affine copies of \(F\), or
-the full piecewise polynomial tail after the support of \(\Up\); those packaged
-specializations also remain frontier targets.
+continuous-Banach-input semigroup, positive-scale affine covariance, and right-derivative
+order-raising identity.  The first signed, bounded, and \(\Up\)-to-\(F\) fractional shifts
+are formalized in \Cref{thm:fabius-fractional-volterra-shift}.  What remains includes the
+signed branch for \(x<0\), iterated fractional shifts, endpoint moments and weighted
+monomials, hierarchy- or support-truncated semigroups, a full two-branch refinement law,
+fractional probability/stop-loss and inverse/quantile formulas, classical order-zero or
+reversed-endpoint interpretations, Caputo and Riemann--Liouville derivative operators,
+complex powers and complex order, and normal or Mellin continuation.  At integer order,
+separately named packages for the reflected \(1-F\) ladder, arbitrary affine copies of
+\(F\), and the full piecewise polynomial tail after the support of \(\Up\) also remain
+frontier targets.
 \end{boxedremark}
 
 \subsection{Dyadic derivative cells and exact value distributions}
@@ -4315,9 +4441,11 @@ $q$-binomial notation, prove the residual sign, and compute the exact finite
 $\ell^1$ norm of the row.  Their dedicated quarter-base corollaries include
 \lean{quarterGeometricLagrangeQMoment_eq_residual_qBinomial} and
 \lean{sum_abs_quarterGeometricLagrangeWeight_eq_qPochhammer_ratio}.
-The analytic quarter-base prefix or spectral-tail expansion, its infinite
-condition-number limit, remainder estimates, and the resulting acceleration
-and convergence claims remain in the research-frontier volume.
+The generic unconditionally summable geometric filter and its exact Gaussian
+\(\mathsf{tsum}\) tail are proved in \Cref{prop:analytic-series-filter}.  What remains in
+the research-frontier volume is the actual quarter-base sinc-prefix or spectral-tail
+instantiation, including its coefficient bridge, infinite condition-number limit, sign
+and remainder estimates, uniform accelerated convergence, and derivative formulas.
 
 The polynomial in \eqref{eq:half-q-binomial-theorem} has the complete rational root locus
 \begin{equation}
@@ -5229,6 +5357,70 @@ specializations are
 \lean{geometricLagrangeSeriesFilter_eq_residual_mk}.  Every series in this
 paragraph is formal: none of these declarations asserts analytic convergence,
 evaluation at a nonzero argument, or an infinite acceleration formula.
+
+There is now a separate convergent-series companion.  It deliberately uses
+Mathlib's unconditional summability rather than silently identifying a natural-order
+boundary sum with a \(\mathsf{tsum}\).
+
+\begin{proposition}[Unconditionally summable analytic filters and their Gaussian tail]
+\label{prop:analytic-series-filter}
+Let \(K\) be a commutative semiring, let \(E\) be a normed additive commutative group
+with a \(K\)-module structure, let \(S\) be finite, and choose nodes \(x_i\in K\),
+weights \(w_i\in K\), coefficients \(a_m\in E\), and a scale \(z\in K\).  Define
+\begin{equation}
+ \mathcal A_{S,x,w}(a;z)
+ :=\sum_{i\in S}\sum_{m\ge0}w_i(x_i z)^m a_m.              \label{eq:finite-analytic-series-filter}
+\end{equation}
+Assume for every \(i\in S\) that the displayed weighted inner series is
+unconditionally summable.  Then the finite and infinite sums interchange and
+\begin{equation}
+ \mathcal A_{S,x,w}(a;z)
+ =\sum_{m\ge0}\left(\sum_{i\in S}w_i x_i^m\right)z^m a_m. \label{eq:finite-analytic-series-filter-diagonal}
+\end{equation}
+If, moreover,
+\(\sum_{i\in S}w_i x_i^d=t^d\) for \(0\le d\le p\), then
+\begin{align}
+ \mathcal A_{S,x,w}(a;z)
+ &=\sum_{d=0}^{p}(tz)^d a_d                                      \notag\\
+ &\quad+\sum_{r\ge0}
+ \left(\sum_{i\in S}w_i x_i^{p+1+r}\right)
+ z^{p+1+r}a_{p+1+r}.                                      \label{eq:finite-analytic-series-filter-head-tail}
+\end{align}
+At target \(t=0\), the finite head is exactly \(a_0\), including \(p=0\); the
+positive degrees never pass through the \(0^0\) boundary.
+
+Now let \(K\) be a commutative ring with continuous constant scalar multiplication on
+\(E\) (each fixed scalar acts continuously), take
+\(x_j=q^j\) for \(0\le j\le p\), and suppose the row is exact at zero through
+degree \(p\); write \(\mathcal A_{q,p,w}\) for this geometric specialization.  It is
+enough to assume unconditional summability of
+\(\sum_m(q^jz)^m a_m\) only when \(w_j\ne0\).  Then
+\begin{equation}
+ \mathcal A_{q,p,w}(a;z)
+ =a_0+\sum_{r\ge0}
+ (-1)^p q^{\binom{p+1}{2}}{p+r\brack p}_q
+ z^{p+1+r}a_{p+1+r}.                                     \label{eq:geometric-analytic-series-filter-tail}
+\end{equation}
+Over a field, distinct geometric nodes supply the Lagrange specialization and its
+shifted-scale form \(z=q^{\mathrm{start}}\).  A zero-weight node imposes no convergence
+condition: its weighted series is identically zero.
+\end{proposition}
+
+The definitions are \lean{finiteAnalyticSeriesFilter} and
+\lean{geometricAnalyticSeriesFilter} in \path{AnalyticSeriesFilter.lean}.  The generic
+diagonal, exact-head, and zero-target declarations are
+\lean{summable_finiteAnalyticSeriesFilter_diagonal},
+\lean{finiteAnalyticSeriesFilter_eq_tsum},
+\lean{finiteAnalyticSeriesFilter_eq_head_add_tail_of_exact}, and
+\lean{finiteAnalyticSeriesFilter_eq_constant_add_tail_of_exact_zero}.  The Gaussian,
+Lagrange, and shifted-scale tail declarations are
+\lean{geometricAnalyticSeriesFilter_eq_constant_add_gaussian_tsum},
+\lean{geometricLagrangeAnalyticSeriesFilter_eq_constant_add_gaussian_tsum}, and
+\lean{geometricLagrangeAnalyticSeriesFilter_shifted}.  Thus this module has exactly two
+definitions and seven public theorems.  These results exclude series converging only in
+their natural order at a boundary point.  They also assert no formal-to-analytic
+power-series evaluation bridge, actual sinc-product coefficient instantiation, uniform
+convergence, sign or norm bound, or asymptotic acceleration theorem.
 
 For the present half-geometric grid, write $\lambda_{n,k}^{(1/2)}$ for the
 evaluation-at-zero weight belonging to the node $2^{-k}$.  The Toeplitz row is exactly the
@@ -7249,9 +7441,13 @@ That rule explains several choices made above:
       specializations, denominator-free geometric residual moments, forward closed
       finite-node numerators, and the proved quarter-base specialization are formal.
       Generic finite formal-series filters act diagonally coefficientwise, and exact
-      geometric rows have the all-degree Gaussian residual multiplier.  These are purely
-      formal-series statements: analytic generic-\(q\) transforms, series evaluation,
-      convergence, and quarter-sinc acceleration remain outside the formal corpus.
+      geometric rows have the all-degree Gaussian residual multiplier.  Their analytic
+      companion interchanges finite filters with unconditionally summable weighted
+      coefficient series, splits exact heads from infinite tails, and gives the exact
+      Gaussian \(\mathsf{tsum}\) tail for geometric and Lagrange rows.  Zero-weight nodes
+      impose no convergence condition.  Conditionally-only convergent boundary series,
+      formal-to-analytic power-series evaluation, a sinc-product instantiation, uniform
+      estimates, signs, and quarter-sinc acceleration remain outside the formal corpus.
 \item Integer-order Volterra integration is formal at arbitrary base point and endpoint in
       a real Banach space, including strict FTC, order composition, polynomial weights,
       Taylor reconstruction, and the exact Fabius ladder.  A separate total real-order
@@ -7261,13 +7457,18 @@ That rule explains several choices made above:
       exactly when both orders are positive and the endpoint inequality is strict; its raw
       kernel is interval-integrable also at a coincident endpoint.  In a complete target,
       two positive orders compose for a continuous input on an ordered compact interval.
-      The modules prove no corresponding law for merely interval-integrable inputs or
-      noncomplete targets, no fractional derivative or complex-order result, and no
-      Fabius-specific fractional formula.  Separately, the weighted
+      Positive affine covariance holds at arbitrary real order for an ordered endpoint and
+      positive scale, and Gamma-normalized order raising needs only a continuous primitive,
+      an interval-integrable displayed derivative, and that derivative from the right on
+      the open interval.  The first exact fractional shifts are proved for the signed
+      extension on \(x\ge0\), the bounded function on \([0,1]\), and the \(\Up\)-to-\(F\)
+      bridge based at \(-1\) on \(x\ge-1\).  The modules prove no corresponding semigroup
+      law for merely interval-integrable inputs or noncomplete targets, no Caputo or
+      Riemann--Liouville derivative operator, and no complex-order result.  Separately, the weighted
       inverse-layer-cake API permits real or complex scalar weights and a Banach-valued
       kernel on the full unit interval.  Variable-endpoint or higher inverse primitives,
-      fractional Fabius/inverse identities (including Caputo identities and semigroup
-      laws), improper-integral limits, and complex Mellin continuation
+      iterated or negative-branch fractional Fabius identities, fractional inverse
+      identities, improper-integral limits, and complex Mellin continuation
       remain outside these results.
 \item Endpoint asymptotics retain exact phases and the proved remainder scopes; numerical
       fits and unproved coefficient formulas are absent.
@@ -7281,14 +7482,17 @@ into the theorem-backed narrative here.  The remaining research material is pres
 \end{quote}
 
 In particular, inverse-function repeated integration and saddle expansions, improper
-inverse integrals, complex-power and fractional-order integration, small-argument analysis,
-analytic generic-\(q\) transforms, convergence claims, and other deferred results remain
-available there with an explicit warning that they are not part of the formal corpus.
-Natural-order Volterra integration and finite
+inverse integrals, complex-power and complex-order integration, conditionally convergent
+boundary transforms, sinc-tail instantiations and estimates, small-argument analysis, and
+other deferred results remain available there with an explicit warning that they are not
+part of the formal corpus.  Positive-real order raising, the first fractional
+Fabius--Rvachev shifts, and unconditional generic-\(q\) series transforms have moved into
+the theorem-backed narrative.  Natural-order Volterra integration and finite
 polynomial weights are formalized in \Cref{sec:normalized-volterra}; the compact-rectangle
 absolutely-continuous inverse calculus is \Cref{thm:ac-inverse-pair}; and the finite
-base-generic Gaussian/Richardson algebra and its formal-series filter are formalized in
-\Cref{prop:geometric-principal-residuals,prop:finite-power-series-filter}.
+base-generic Gaussian/Richardson algebra and its formal and unconditionally summable
+series filters are formalized in
+\Cref{prop:geometric-principal-residuals,prop:finite-power-series-filter,prop:analytic-series-filter}.
 
 \section{Conclusion}
 \label{sec:conclusion}
@@ -7302,9 +7506,10 @@ generic weighted distributions, geometrically weighted uniform laws, exact quant
 transport, Banach-valued survival layer cake, weighted inverse layer cake,
 arbitrary absolutely-continuous inverse-pair calculus, reciprocal-power values, dyadic
 algorithms, half-base \(q\)-binomial identities, prefix sums, denominator-free
-arbitrary-base geometric interpolation, finite formal-series filters and their Gaussian
-residuals, normalized integer-order and positive-real fractional Volterra foundations,
-exact integer Fabius primitives and polynomial weights, endpoint Laplace analysis, and
+  arbitrary-base geometric interpolation, finite formal-series and unconditionally summable
+  analytic filters with their Gaussian residuals, normalized integer-order and positive-real
+  fractional Volterra foundations, exact integer Fabius primitives and first fractional
+  Fabius--Rvachev shifts, polynomial weights, endpoint Laplace analysis, and
 computable approximation.
 
 The most important methodological conclusion is equally concrete: the primary document is
@@ -7360,13 +7565,15 @@ Fourier analysis &
 Summable-scale products and geometric reciprocal-Gamma factorization &
 \path{ScaledInfiniteProducts.lean}, \path{GeometricReciprocalGamma.lean},
 \path{DyadicGammaOrder.lean}\\
+Reciprocal-Gamma first jets and the Thue--Morse Gamma tower &
+\path{ReciprocalGammaJets.lean}, \path{ThueMorseGammaTower.lean}\\
 Local all-order jet calculus &
 \path{LeadingJet.lean}\\
 Normalized integer- and positive-real-order Volterra calculus, affine covariance,
-base-point shifts, and exact integer Fabius primitives &
+order raising, and exact integer and first fractional Fabius--Rvachev shifts &
 \path{NormalizedVolterra.lean}, \path{FractionalVolterra.lean},
-\path{FractionalVolterraSemigroup.lean},
-\path{FabiusAntiderivatives.lean}\\
+\path{FractionalVolterraSemigroup.lean}, \path{FractionalVolterraCalculus.lean},
+\path{FabiusAntiderivatives.lean}, \path{FabiusFractionalVolterra.lean}\\
 Global derivatives, value distributions, and flatness &
 \path{GlobalExtension.lean}, \path{GlobalBounds.lean},
 \path{BoundedDerivatives.lean}, \path{RvachevDerivativeDistribution.lean},
@@ -7391,9 +7598,11 @@ Universal exponential, Bell, and endpoint-transfer algebra &
 \path{LogSeriesMultiplicative.lean}\\
 Finite base-layer arithmetic &
 \path{BaseLayerRegrouping.lean}\\
-Finite polynomial and formal-series filters, and geometric Lagrange/Richardson exactness &
+Finite polynomial, formal-series, and analytic-series filters, and geometric
+Lagrange/Richardson exactness &
 \path{FinitePolynomialFunctional.lean}, \path{CompleteHomogeneous.lean},
 \path{FinitePowerSeriesFilter.lean}, \path{GeometricPowerSeriesFilter.lean},
+\path{AnalyticSeriesFilter.lean},
 \path{GeometricLagrange.lean}, \path{LagrangeResidualMoments.lean},
 \path{GeometricCompleteHomogeneous.lean},
 \path{GeometricResidualMoments.lean},
@@ -7465,7 +7674,11 @@ Article & Lean & Meaning\\
 \(L_a^nf\) & \lean{iteratedPrimitive}\hspace{0.35em}\lean{n}\hspace{0.35em}\lean{a}\hspace{0.35em}\lean{f} & literal \(n\)-fold primitive\\
 \(J_a^nf\) & \lean{normalizedVolterra}\hspace{0.35em}\lean{n}\hspace{0.35em}\lean{a}\hspace{0.35em}\lean{f} & normalized Cauchy-kernel primitive\\
 \(I_{a+}^{\alpha}f\) & \lean{fractionalVolterra} & total real-order Gamma-normalized Volterra operator\\
-\(I_{a+}^{\alpha+\beta}f=I_{a+}^{\alpha}I_{a+}^{\beta}f\) & \lean{fractionalVolterra_add} & positive orders, ordered endpoint, continuous Banach-valued input\\
+semigroup \(I^\alpha\) & \lean{fractionalVolterra_add} & positive orders, ordered endpoint, continuous Banach-valued input\\
+affine \(I_{a+}^{\alpha}\) & \lean{fractionalVolterra_affine} & arbitrary real order, positive scale, ordered endpoint\\
+\(I_{a+}^{\alpha+1}g'\) & \lean{fractionalVolterra_add_one_deriv} & positive order, continuous primitive, integrable interior right derivative, exact Gamma boundary term\\
+fractional \(\mathcal F\) & \lean{fractionalVolterra_add_one_extendedFabius_of_nonneg} & \(I_{0+}^{\alpha+1}\mathcal F(x)=2^\alpha I_{0+}^{\alpha}\mathcal F(x/2)\), \(\alpha>0\), \(x\ge0\)\\
+\(\mathcal A_{S,x,w}(a;z)\) & \lean{finiteAnalyticSeriesFilter} & finite filter of unconditionally summable weighted coefficient series\\
 \(I\) & \lean{fabiusInv}\hspace{0.35em}\lean{fabius}\hspace{0.35em}\lean{fabius_spec} & totalized inverse\\
 \(c_n\) & \lean{moment}\hspace{0.35em}\lean{n} & even moment\\
 \(d_n\) & \lean{halfMoment}\hspace{0.35em}\lean{n} & half moment\\
@@ -7614,8 +7827,11 @@ V.~Reshetnikov,
 V.~Reshetnikov,
 \newblock \emph{ProveIt: Analysis/FabiusFunction},
 \newblock Lean~4 formal development, integrated source snapshot
-\texttt{71ab6f6728fceb753c88d8b0573077a59acf2682}, consulted 28 August 2026.
-\newblock \url{https://github.com/VladimirReshetnikov/ProveIt/tree/71ab6f6728fceb753c88d8b0573077a59acf2682/Analysis/FabiusFunction}.
+\texttt{22f801337}, consulted 28 August 2026.
+\newblock \url{https://github.com/VladimirReshetnikov/ProveIt/tree/22f801337/Analysis/FabiusFunction}.
+\newblock The fractional affine/order-raising calculus, first fractional
+Fabius--Rvachev shifts, and unconditionally summable analytic-series filters are included
+in that compiler-validated checkpoint.
 
 \end{thebibliography}
 

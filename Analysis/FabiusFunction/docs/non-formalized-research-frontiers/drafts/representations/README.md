@@ -2,7 +2,7 @@
 
 Series and orthogonal-expansion representations of the up-function,
 consolidated (2026-08-28) into the single volume
-[`Representation_Frontiers/`](Representation_Frontiers/) (109 pp):
+[`Representation_Frontiers/`](Representation_Frontiers/) (110 pp):
 
 - **Part I** — *Resolvent, Continued-Fraction, and Transform
   Representations of the Fabius–Rvachev System* (Jacobi coefficients,
@@ -42,6 +42,31 @@ the raw Gamma tprod away from its poles, arithmetic canonical regrouping,
 logarithmic/digamma/Malmsten/heat/integral identities, D-finiteness,
 general-base pole orders, and the reciprocal-Gamma derivative coefficient
 needed by the separate Thue--Morse tower.
+
+That paragraph is retained as the historical
+`71ab6f6728fceb753c88d8b0573077a59acf2682` boundary.  The current overlay pins
+the next tranche to `0ba35abd4`: the five public declarations of
+`ReciprocalGammaJets.lean` are `deriv_Gamma_inv_neg_nat`,
+`hasDerivAt_Gamma_inv_neg_nat`, `hasDerivAt_Gamma_inv_zero`,
+`analyticOrderAt_Gamma_inv_neg_nat`, and `tendsto_Gamma_inv_div_add_nat`.
+They establish the exact first jet, simple analytic order, and punctured local
+coefficient of the entire reciprocal Gamma function at every nonpositive
+integer, without assigning a derivative to raw Gamma at a pole.
+
+The first eight public declarations of `ThueMorseGammaTower.lean` at that commit
+are `hasDerivAt_dirichletMellinContinuation_neg_nat`,
+`deriv_dirichletMellinContinuation_neg_nat`, `thueMorseGammaLog`,
+`thueMorseGammaTower`, `thueMorseGammaLog_eq_mellin`,
+`thueMorseGammaLog_eq_integral`, `thueMorseGammaLog_dyadic`, and
+`thueMorseGammaTower_dyadic`; the current integrated tree adds
+`ofReal_exp_mpLimit_eq_gammaTower_div` as the ninth.  Their definitions are
+total for every real parameter, while the Mellin, integral, dyadic, and ratio
+theorems use positive parameters.  GammaLog is a chosen derivative coordinate,
+not a proved `Complex.log` identity.  Only the parameter differential/iterated
+ladder remains open within this tower; the raw Gamma tprod, arithmetic
+canonical regrouping, Gamma-product logarithmic/digamma/Malmsten/heat-trace
+identities, D-finiteness, and general-base pole orders remain separate
+frontiers.
 
 The mathematical bodies of the member drafts were preserved (labels,
 citation keys, and asset paths were mechanically prefixed per part),

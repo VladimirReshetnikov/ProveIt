@@ -130,9 +130,10 @@
 \tableofcontents
 \clearpage
 \section*{Provenance}
-This volume consolidates the following drafts content-preservingly (labels, citation keys,
-and asset paths mechanically prefixed per part; wrapper metadata and counter state
-normalized; no mathematical content altered).
+This volume preserves the absorbed theorem and proof bodies, with labels, citation keys,
+and asset paths mechanically prefixed per part and wrapper metadata and counter state
+normalized.  Later edits add status-only Lean crosswalk annotations; the historical source
+hashes below are unchanged.
 The absorbed drafts are deleted from the working tree; git history is the archive.
 \begin{itemize}
 \item \path{Thue_Morse_Formula_Atlas/Thue_Morse_Formula_Atlas.tex} \\ {\footnotesize SHA-256 \path{bafeee49431ae8d65e16ec0b978ca4adda6b10b82dbe2c0ddf10def444334795}}
@@ -307,7 +308,7 @@ is not by itself evidence of formalization.  Statements proved in Lean carry the
 declaration names in the text, typeset as \lean{Fabius.thueMorseSign}; statements without
 such a citation must not be inferred to have a formal counterpart.
 
-The current inventory in \cref{p1:sec:formalized-modules} consists of eighty-nine compiled
+The current inventory in \cref{p1:sec:formalized-modules} consists of ninety-five compiled
 Lean modules.  It covers the finite algebraic, automata, moment, Fourier, rarefaction,
 Dirichlet--Mellin, word-combinatorial, and Fabius--Rvachev bridges recorded there, often in
 greater generality than the displayed prose.  The dependency-aware map in
@@ -6278,7 +6279,7 @@ valuation, carry, and Pascal-row formulas remain genuinely base-two features.
 \subsection{Formalized modules (August 2026)}
 \label{p1:sec:formalized-modules}
 
-The first tranches of the formalization now exist as eighty-nine
+The first tranches of the formalization now exist as ninety-five
 compiled Lean modules in \repo{}, complementing the corpus modules
 (\path{Parity.lean}, \path{TwoAdic.lean}, \path{ThueMorsePrefix.lean},
 \path{ThueMorseGenerating.lean}, \path{ThueMorseExponential.lean},
@@ -6288,7 +6289,9 @@ formula, generating products, Prouhet moments, and prefix theory.  The
 count is exactly the number of rows of the table below, one row per
 module; the proposal table of \Cref{p1:sec:formalization-order} re-lists
 some of these same modules under the boundaries that were originally
-proposed for them, and is a roadmap rather than a second inventory:
+proposed for them, and is a roadmap rather than a second inventory.  The
+series-filter and fractional-Volterra rows were checked at source
+checkpoint \path{22f801337}.
 
 {\small
 \begin{longtable}{@{}>{\raggedright\arraybackslash}p{0.34\textwidth}>{\raggedright\arraybackslash}p{0.58\textwidth}@{}}
@@ -6313,6 +6316,9 @@ Module & Contents \\
 \path{GeometricCompleteHomogeneous.lean} & The denominator-free principal specialization \(h_n(1,q,\ldots,q^r)={n+r\brack r}_q\) over arbitrary commutative semirings, including arbitrary common scale and the range-indexed form. \\
 \path{GeometricResidualMoments.lean} & Every positive moment of an arbitrary exact geometric row over any commutative ring, with repeated nodes and arbitrary scales allowed; geometric Lagrange rows, common dilations, and shifted blocks follow over fields under finite-node injectivity. \\
 \path{GeometricPowerSeriesFilter.lean} & Formal-series filtering at the nodes \(1,q,\ldots,q^p\): coefficient cancellation through the exactness order, the Gaussian multiplier in every positive degree, an all-index residual-series identity with the mass-one degree-zero boundary, and the geometric Lagrange specialization.  Analytic substitution, convergence, and remainder bounds are not asserted. \\
+\path{AnalyticSeriesFilter.lean} & Convergent-series form of an arbitrary finite rescaling filter: diagonal action, exact finite head and infinite tail, the target-zero constant boundary, and geometric and geometric-Lagrange Gaussian tails, including shifted scales.  Mathlib \path{Summable} is unconditional; hypotheses are imposed on weighted samples, so a zero-weight node needs no unweighted convergence.  Conditionally-only boundary series, signs, bounds, uniform convergence, and sinc-product instantiations are not asserted. \\
+\path{FractionalVolterraCalculus.lean} & Positive affine covariance on ordered real intervals for arbitrary real order and Gamma-normalized order raising for real \(\alpha>0\) in a complete normed real space, assuming continuity of the primitive, interval integrability of its displayed derivative, and the right derivative \path{HasDerivWithinAt} on the open interval; includes the zero-boundary form.  For \(\alpha\le0\), affine covariance is an identity for the totalized Lean interval-integral definition; a classical Riemann--Liouville or integrability interpretation is asserted only for positive order. \\
+\path{FabiusFractionalVolterra.lean} & Boundary-free order raising and affine covariance specialized to the dyadic Fabius--Rvachev system: the signed extension for \(x\ge0\), bounded Fabius for \(0\le x\le1\), and the \(\operatorname{up}\)-to-Fabius bridge based at \(-1\) for \(x\ge-1\), all for real \(\alpha>0\).  Complex, weighted-monomial, iterated, negative-branch, hierarchy, and inverse/quantile extensions remain outside the module. \\
 \path{LogSeriesMultiplicative.lean} & The recurrence-defined formal power-series logarithm over arbitrary commutative \(\mathbb Q\)-algebras: coefficient reconstruction, zero constant term, differential-equation characterization and uniqueness, binary product rule, unit law, and finite-product additivity; no analytic-logarithm or infinite-product claim. \\
 \path{FiniteQBinomialCore.lean} & Denominator-free Gaussian coefficients by both \(q\)-Pascal recurrences, functoriality under semiring maps, and reflection symmetry over commutative semirings; finite \(q\)-Pochhammer shift/concatenation laws, the full product--Gaussian factorial identities, and the finite \(q\)-binomial theorem over commutative rings, including zero and roots of unity. \\
 \path{GeometricQBinomialLagrange.lean} & The reversed finite \(q\)-binomial product for geometric Lagrange numerators, their global forward-index Gaussian form via division-free symmetry and zero extension, normalized weights under the intrinsic node-injectivity hypothesis, and every positive residual moment. \\
@@ -6335,6 +6341,7 @@ Module & Contents \\
 \path{ThueMorseMultinomial.lean} & Kummer's criterion for multinomial coefficients, the multinomial support count \(O_r(n)=r^{\wt(n)}\), the signed \(r\)-nomial row formula, the exact \(r\)-nomial logarithm. \\
 \path{ThueMorseFourier.lean} & The circle factor \(|1-\e^{\ii\theta}|^2=2-2\cos\theta\) and the finite Riesz product with its nonnegativity. \\
 \path{ThueMorseSineProduct.lean} & The half-angle factorization, the complex sine-product closed form of the Thue--Morse trigonometric polynomial, and its arbitrary-phase affine real sine form. \\
+\path{ThueMorseComplexProductBridge.lean} & Total complex finite Thue--Morse sinc and negative-Laplace bridges at every level: complex-argument sine and half-angle forms, normalized prefixes with empty-level, successor, and origin laws, denominator-free block equalities valid at the removable origin, quotient normalizations away from zero, and the exact finite Fourier--Laplace rotation. \\
 \path{LacunaryProductToSum.lean} & Binary-weight complementation on a dyadic block, the induced global-sign reflection, quarter-turn cosine parity, and the exact real lacunary sine product as a Thue--Morse sum. \\
 \path{ThueMorseFourierInversion.lean} & Root-of-unity orthogonality and finite Fourier inversion over any field with a primitive root, specialized to the dyadic DFT over \(\mathbb C\). \\
 \path{SummableCyclicAlias.lean} & Finite-range scalar twists of summable families in complete uniform additive groups, and bilateral integer residue sums with forward and inverse \(\operatorname{ZMod}\) Fourier transforms in complete Hausdorff uniform complex modules; no norm or absolute-convergence hypothesis is imposed. \\
@@ -6365,6 +6372,8 @@ Module & Contents \\
 \path{ThueMorseEntireContinuation.lean} & The entire continuation: flatness of every order at zero, exponential decay, local integrability, entirety of \(\Gamma^{-1}\cdot\)Mellin, the trivial zeros at the nonpositive integers, agreement with \(D(\sigma,a)\) on \(\sigma>1\), and the dyadic parameter equation at \emph{every} complex \(s\) by the identity theorem. \\
 \path{FrullaniIntegral.lean} & The Frullani integral \(\int_0^\infty(\e^{-pt}-\e^{-qt})t^{-1}\dd t=\log(q/p)\), by differentiation under the integral sign; not in Mathlib. \\
 \path{ThueMorseGDirichlet.lean} & The derivative bridge \(\log G(a,b)=D'(0,b)-D'(0,a)\): the closed integral form of \(\log G\), \((1/\Gamma)'(0)=1\), and the derivative of the entire continuation at zero. \\
+\path{ReciprocalGammaJets.lean} & Exact first jets of the entire reciprocal Gamma function at every nonpositive integer: derivative \((-1)^r r!\), simple analytic order, the punctured local coefficient, and the retained origin compatibility theorem; no derivative is assigned to raw Gamma at a pole. \\
+\path{ThueMorseGammaTower.lean} & Exact first jets of the entire Dirichlet--Mellin continuation, total GammaLog and exponentiated tower definitions, Mellin and real-integral GammaLog formulas, dyadic log and tower laws for positive parameter, and the positive-parameter level-zero master-product ratio; GammaLog is a chosen coordinate, while the parameter-differential ladder remains outside the module. \\
 \path{ThueMorseQuarterProduct.lean} & The quarter product \(G(1/4,3/4)=1/2\) from Woods--Robbins by parity splitting, and the value \(1/2\) of the half-shifted block product. \\
 \path{ThueMorseDiscSeries.lean} & The Thue--Morse power series as a holomorphic function on the unit disc: the complex-disc product wrapper \(F(z)=\prod_{j=0}^{\infty}(1-z^{2^j})\), locally uniform convergence, the analytic Mahler equation and its iterate, and the real-ray bound \(|F(x)|\le1-x\). \\
 \path{ThueMorseNaturalBoundary.lean} & The natural-boundary theorem: radial vanishing at dyadic roots of unity, two-power roots approximating every circle point, and the double identity-theorem argument. \\
@@ -6422,7 +6431,7 @@ Ordinary addition & Carry cocycle \eqref{p1:eq:carry-sign} & Isolates the exact 
 Number-theoretic disguise & Central binomial valuation \eqref{p1:eq:central-thue-morse} & One classical integer stores the full binary weight. \\
 Pascal-row interpretation & Glaisher count or modulo-three residue & Uses the odd support of one row; the residue form avoids logarithms. \\
 Higher-dimensional Pascal & Multinomial count \eqref{p1:eq:multinomial-support} & Works with any number of variables. \\
-Formal power series & Finite/infinite products and coefficient-diagonal filters & Coefficients, Mahler equations, and exact finite filtering become algebraic; analytic evaluation and convergence remain separate obligations. \\
+Formal and convergent power series & Formal products plus coefficient-diagonal and analytic filters & Coefficients and Mahler equations remain algebraic; exact analytic filtering is available under unconditional summability, with zero-weight nodes discharged sharply.  Conditional boundary convergence, concrete product instantiation, signs, bounds, and uniform control remain separate obligations. \\
 Nonlocal coefficient formulas & Euler/Bell/determinant forms & Eliminate explicit digit notation and expose ruler convolutions. \\
 Finite polynomial row & Moment-functional extraction & Separates polynomial coefficients from row moments, supports scalar extension, and does not require distinct nodes or a nonzero surviving moment. \\
 Polynomial cancellation & Mixed finite differences & Proves all Prouhet moments in one operator identity. \\
@@ -7175,7 +7184,7 @@ counterparts in \nolinkurl{Analysis/FabiusFunction/Lean/FabiusFunction/}, in som
 there in greater generality than they are stated here.  Wherever this is so, a paragraph
 headed \emph{Formal version} follows the statement and gives the exact declaration names,
 typeset as \leanPartx{Fabius.thueMorseSign}, together with the module they live in; where the Lean
-statement is weaker (real argument only, or the identity before a normalization) or stronger
+statement is weaker (for example coefficientwise rather than analytically evaluated) or stronger
 (arbitrary ring, arbitrary base, arbitrary interpolation ratio) than the statement here, the
 paragraph says which.  Absence of such a paragraph means only that no formal counterpart was
 located, and must not be read as a claim that none exists.  A paper proof is in any case not
@@ -7412,18 +7421,20 @@ and the sinc factors are $\sinc(t/2),\ldots,\sinc(t/2^m)$.  This gives
 \eqref{p2:eq:finite-sinc}; the sum form follows from \eqref{p2:eq:Pm}.
 \end{proof}
 
-\emph{Formal version.}  The unnormalized half of \eqref{p2:eq:finite-sinc} is
-\leanPartx{Fabius.sum_thueMorseSign_exp_eq_sin_prod} (\path{ThueMorseSineProduct.lean}), which
-states, for real $x$ and every $m$,
-\[
- \sum_{n<2^m}\eps_n\e^{\ii nx}
- =(-2\ii)^m\e^{\ii(2^m-1)x/2}\prod_{j<m}\sin\!\left(\frac{2^jx}{2}\right),
-\]
-the half-angle factorization $1-\e^{\ii v}=-2\ii\,\e^{\ii v/2}\sin(v/2)$ being isolated as
-\leanPartx{Fabius.one_sub_exp_mul_I}.  Setting $x=t/2^{m-1}$ and extracting the linear factor from
-each $\sin(t/2^k)$ turns it into \eqref{p2:eq:finite-sinc}.  The Lean statement is therefore this
-theorem before the $\sinc$ normalization, and only for real $t$; the removable value at $t=0$
-and the extension to complex $t$ are not part of it.
+\emph{Formal version.}  The total denominator-free form of
+\eqref{p2:eq:finite-sinc} is
+\leanPartx{Fabius.thueMorseBlock_cexp_eq_sincPrefix_of_pos}
+(\path{ThueMorseComplexProductBridge.lean}); the stronger all-level scaling is
+\leanPartx{Fabius.thueMorseBlock_cexp_eq_sincPrefix}.  The Lean prefix
+\leanPartx{Fabius.shiftedComplexSincPrefix} is exactly $Q_m(t)$.
+The primary equality is over $\C$ and includes $t=0$, while
+\leanPartx{Fabius.shiftedComplexSincPrefix_apply_zero} gives $Q_m(0)=1$.
+For $t\ne0$, the quotient normalization
+\eqref{p2:eq:normalized-TM-Fourier} is
+\leanPartx{Fabius.shiftedComplexSincPrefix_eq_thueMorseBlock_cexp_of_pos}.
+The supporting complex-argument sine product and half-angle identity are
+\leanPartx{Fabius.sum_thueMorseSign_cexp_eq_sin_prod} and
+\leanPartx{Fabius.one_sub_cexp_mul_I}.
 
 \begin{remark}[Prouhet cancellation becomes the normalization]
 The factor $t^{-m}$ in \eqref{p2:eq:normalized-TM-Fourier} is harmless precisely because
@@ -7462,15 +7473,21 @@ The denominator in $G_m(-s)$ is
 which proves the identity.
 \end{proof}
 
-\emph{Formal version.}  The block identity underlying \eqref{p2:eq:finite-Laplace} is
-\leanPartx{Fabius.sum_range_two_pow_thueMorseSign_exp} (\path{ThueMorseInfiniteProduct.lean}):
-\[
- \sum_{n<2^m}\eps_n\e^{-nt}=\prod_{j<m}\left(1-\e^{-2^jt}\right)
-\]
-for every real $t$ and every $m$, with no convergence hypothesis.  At $t=s/2^m$ this is the
-content of \eqref{p2:eq:finite-Laplace} \emph{before} division by
-$\prod_{k\le m}(s/2^k)$: the normalizing factor $2^{m(m+1)/2}s^{-m}$, the removable
-singularity at $s=0$, and the passage to complex $s$ are not part of the Lean statement.
+\emph{Formal version.}  The total denominator-free form underlying
+\eqref{p2:eq:finite-Laplace} is
+\leanPartx{Fabius.thueMorseBlock_exp_neg_eq_laplacePrefix}
+(\path{ThueMorseComplexProductBridge.lean}).  Its prefix
+\leanPartx{Fabius.complexLaplacePrefix} is exactly $G_m(-s)$, and the theorem
+holds for every $m\ge0$ and every $s\in\C$, including $s=0$.
+The normalized origin value is
+\leanPartx{Fabius.complexLaplacePrefix_apply_zero}.  Away from zero,
+\leanPartx{Fabius.complexLaplacePrefix_eq_thueMorseBlock_exp_neg} is precisely
+the quotient form printed in \eqref{p2:eq:finite-Laplace}.  The factor identity
+\leanPartx{Fabius.complexExpm1Div_neg_eq_exp_mul_complexSinc} and its finite
+product corollary
+\leanPartx{Fabius.complexLaplacePrefix_eq_exp_mul_shiftedComplexSincPrefix}
+also give the exact rotation \eqref{p2:eq:GmQm}, with no condition at the
+removable origin.
 
 \begin{boxedremark}
 \textbf{The exact finite-block principle.}
@@ -7828,7 +7845,10 @@ states that generating function to be $\e^{z/2}\widehat\Up(\ii z/(4\pi))$ for ev
 $z\in\C$; and \leanPartx{Fabius.rvachevFourier_eq_product} (\path{FourierProduct.lean}) replaces
 $\widehat\Up$ by its sinc product.  Since $\widehat\Up(\ii z/(4\pi))=Q_\infty(\ii z/2)$ in the
 normalization \eqref{p2:eq:upFourier}, and $Q_\infty$ is even, the composite at $z=-s$ is exactly
-\eqref{p2:eq:GQ}.  The finite form \eqref{p2:eq:GmQm} has no separate Lean statement.
+\eqref{p2:eq:GQ}.  The finite form \eqref{p2:eq:GmQm} is the total theorem
+\leanPartx{Fabius.complexLaplacePrefix_eq_exp_mul_shiftedComplexSincPrefix}
+in \path{ThueMorseComplexProductBridge.lean}; its factor-level engine is
+\leanPartx{Fabius.complexExpm1Div_neg_eq_exp_mul_complexSinc}.
 
 Define the centered products
 \begin{equation}
@@ -8078,10 +8098,17 @@ together with constant-term, exactness, rescaling, and coefficient-map laws.
 zero and every positive Gaussian residual multiplier in one formal-series
 identity, while \path{map_geometricSeriesFilter} transports the entire
 identity along a commutative-semiring homomorphism.  These are identities in
-\texttt{PowerSeries}; they do not identify formal substitution with analytic
-evaluation, prove convergence of the functions \(Q_m\), or supply a uniform
-weighted remainder.  Consequently the analytic convergence and remainder
-claims in \cref{p2:thm:qRichardson} remain frontier.
+\texttt{PowerSeries}.  The new \path{AnalyticSeriesFilter.lean} separately
+proves the direct convergent-series analogue: under unconditional summability
+of each contributing sampled series it interchanges the finite node sum with
+the infinite series and gives the exact Gaussian residual tail, including the
+shifted geometric-Lagrange row.  Its hypotheses are imposed only at nonzero
+weights, so a zero-weight node requires no convergence of the unweighted
+sample.  It neither covers conditionally-only boundary series nor identifies
+the abstract coefficients with the functions \(Q_m\); it also supplies no
+sign, bound, asymptotic, or uniform-convergence theorem.  Consequently the
+concrete product bridge and the uniform analytic remainder claims in
+\cref{p2:thm:qRichardson} remain frontier.
 
 \begin{theorem}[$q$-binomial spectral Richardson extrapolation]
 \label{p2:thm:qRichardson}
@@ -8606,20 +8633,63 @@ Thus the known product is the ratio law at the base of an infinite dyadic differ
 tower.
 \end{corollary}
 
-\emph{Formal version.}  The $r=0$ layer of the tower is formalized.  The hypothesis of this
-corollary --- the derivative bridge $\log G_{\rm WR}(a,b)=\partial_s\widetilde D(0,b)
--\partial_s\widetilde D(0,a)$ --- is \leanPartx{Fabius.mpLimit_eq_deriv_sub}
-(\path{ThueMorseGDirichlet.lean}), for all $a,b>0$, with $\log G_{\rm WR}(a,b)$ realized as
-\leanPartx{Fabius.mpLimit}, the limit of the convergent series
-$\sum_n\eps_n\log\bigl((n+a)/(n+b)\bigr)$, and $\widetilde D$ realized by the entire Mellin
-continuation cited above.  Its analytic ingredient is
-\leanPartx{Fabius.hasDerivAt_dirichletMellinContinuation_zero}, itself resting on
-$(1/\Gamma)'(0)=1$ (\leanPartx{Fabius.hasDerivAt_Gamma_inv_zero}).  Since
-$\Gamma_0^{\rm TM}=\exp\bigl(\partial_s\widetilde D(0,\cdot)\bigr)$ by
-\eqref{p2:eq:gammaTM}, \eqref{p2:eq:WR-gamma} is that theorem exponentiated.  The layers $r\ge1$ of
-\cref{p2:thm:gamma-tower} are not formalized: the missing ingredient is the derivative of the
-continuation at $s=-r$, which needs the simple-zero coefficient of $1/\Gamma$ at each
-nonpositive integer rather than at the origin alone.
+\emph{Formal version and exact current API.}  The older origin-only bridge remains
+\leanPartx{Fabius.mpLimit_eq_deriv_sub} in \path{ThueMorseGDirichlet.lean}, for
+all \(a,b>0\), with \leanPartx{Fabius.mpLimit} the limit of
+\(\sum_n\eps_n\log((n+a)/(n+b))\).  The post-checkpoint source commit
+\path{0ba35abd4} closes every spectral level used in the Mellin and dyadic parts
+of \cref{p2:thm:gamma-tower}.  First, \path{ReciprocalGammaJets.lean} has exactly
+five public declarations:
+\leanPartx{Fabius.deriv_Gamma_inv_neg_nat},
+\leanPartx{Fabius.hasDerivAt_Gamma_inv_neg_nat},
+\leanPartx{Fabius.hasDerivAt_Gamma_inv_zero},
+\leanPartx{Fabius.analyticOrderAt_Gamma_inv_neg_nat}, and
+\leanPartx{Fabius.tendsto_Gamma_inv_div_add_nat}.  For every \(r\in\N\), these
+give
+\[
+ (\Gamma^{-1})'(-r)=(-1)^r r!,\qquad
+ \operatorname{ord}_{-r}(\Gamma^{-1})=1,\qquad
+ \frac{\Gamma(s)^{-1}}{s+r}\longrightarrow(-1)^r r!
+ \quad(s\to-r,\ s\ne-r).
+\]
+They concern the entire reciprocal function \(s\mapsto\Gamma(s)^{-1}\); no
+derivative value is assigned to the raw Gamma function at a pole.
+
+At the same commit, \path{ThueMorseGammaTower.lean} has exactly eight public
+declarations:
+\leanPartx{Fabius.hasDerivAt_dirichletMellinContinuation_neg_nat},
+\leanPartx{Fabius.deriv_dirichletMellinContinuation_neg_nat},
+\leanPartx{Fabius.thueMorseGammaLog},
+\leanPartx{Fabius.thueMorseGammaTower},
+\leanPartx{Fabius.thueMorseGammaLog_eq_mellin},
+\leanPartx{Fabius.thueMorseGammaLog_eq_integral},
+\leanPartx{Fabius.thueMorseGammaLog_dyadic}, and
+\leanPartx{Fabius.thueMorseGammaTower_dyadic}.  For \(a>0\) and \(r\in\N\),
+the first two identify
+\[
+ \partial_s\widetilde D(-r,a)=(-1)^r r!\,
+ \operatorname{Mellin}(t\mapsto e^{-at}\mathcal E(t))(-r),
+\]
+and the four identification theorems give its Mellin/integral form and the
+exact dyadic log and tower laws for every \(r\).  The definitions
+\leanPartx{Fabius.thueMorseGammaLog} and
+\leanPartx{Fabius.thueMorseGammaTower} are total for every real \(a\), whereas
+their Mellin, integral, and dyadic theorems assume exactly \(a>0\).  Formally,
+\leanPartx{Fabius.thueMorseGammaLog} is the chosen coordinate
+\(L_r(a):=\partial_s\widetilde D(-r,a)\), and the tower is defined by
+\(T_r(a):=\exp L_r(a)\); no identity
+\(L_r(a)=\operatorname{Complex.log}(T_r(a))\) is proved.  Thus the left side of
+\eqref{p2:eq:gamma-Mellin} should be read as this chosen GammaLog coordinate in
+the Lean crosswalk, not as a branch theorem for the complex logarithm.
+
+The current integrated tree adds the ninth public tower declaration
+\leanPartx{Fabius.ofReal_exp_mpLimit_eq_gammaTower_div}: for \(a,b>0\), the
+complex embedding of \(\exp(\operatorname{mpLimit}(a,b))\) is
+\(T_0(b)/T_0(a)\), exactly the formal ratio law for
+\eqref{p2:eq:WR-gamma}.  The only unformalized assertions within
+\cref{p2:thm:gamma-tower} are now the parameter-\(a\) differential and iterated
+differential laws \eqref{p2:eq:gamma-differential}--\eqref{p2:eq:gamma-iterated};
+they require differentiation under the Mellin integral.
 
 \begin{remark}[Why ``Barnes-type'']
 The hierarchy is not asserted to be a classical Barnes multiple-gamma family.  The name refers
@@ -8829,16 +8899,20 @@ interpolation.  Only the analytic logarithm and explicit zeta remainder require 
 complex-analysis layer.  This makes the package a plausible next formalization target --- and
 in large part it is not a target at all but already done: as the \emph{Formal version}
 paragraphs throughout \cref{p2:sec:objects,p2:sec:bridges,p2:sec:zeta-tail,p2:sec:richardson,p2:sec:gamma-tower}
-record, the block identity, both finite bridges in their unnormalized form, both halves of
+record, the block identity, both finite bridges in total normalized complex form, with
+denominator-free equalities at the origin and quotient corollaries away from zero, both halves of
 tail self-similarity, the Fourier--Laplace rotation, the Lagrange characterization of the
 $q$-Richardson weights with all three of its moment identities together with their closed
-$q$-binomial form (compiled in \path{GeometricQBinomialLagrange.lean}), the $r=0$ layer
-of the gamma tower, and now the entire zeta--Lambert tail calculus --- the Euler--zeta
+$q$-binomial form (compiled in \path{GeometricQBinomialLagrange.lean}), every spectral
+level of the GammaLog/tower Mellin and dyadic laws together with the level-zero
+master-product ratio, and now the entire zeta--Lambert tail calculus --- the Euler--zeta
 logarithm, the all-orders expansion, the certified remainder, and the exact
 prefix--corrections--tail split (\path{EulerLogTransform.lean}, \path{SincZetaSeries.lean},
 \path{SincZetaDyadic.lean}, \path{SincZetaRemainder.lean}) --- already have Lean
-counterparts, several of them more general than the statements printed here.  The weighted
-Richardson remainder and the probabilistic layer are the remaining formalization targets.
+counterparts, several of them more general than the statements printed here.  The abstract
+weighted Richardson tail is now formal under unconditional summability in
+\path{AnalyticSeriesFilter.lean}.  Its sinc-product instantiation, ordered and uniform
+remainder bounds, and the probabilistic layer are the remaining formalization targets.
 
 \section{Lean formalization roadmap}
 \label{p2:sec:formalization}
@@ -8848,17 +8922,17 @@ formalized before the analytic refinements.  The following dependency table sepa
 short, high-confidence lemmas from the portions that require additions to the surrounding
 analysis library.
 
-Five of its rows have since been overtaken by the library --- two of them completely --- and
-are retained because the table is also a dependency map.  The finite Thue--Morse product
+Several rows have since been overtaken by the library and are retained because
+the table is also a dependency map.  The finite Thue--Morse product
 \eqref{p2:eq:Pm} is
 \leanPartx{Fabius.prod_one_sub_pow_eq_sum_thueMorseSign}, proved over an arbitrary commutative
-ring, not by the coefficient induction suggested below.  The finite sinc bridge
-\eqref{p2:eq:finite-sinc} and the finite Laplace bridge \eqref{p2:eq:finite-Laplace} exist as
-\leanPartx{Fabius.sum_thueMorseSign_exp_eq_sin_prod} and
-\leanPartx{Fabius.sum_range_two_pow_thueMorseSign_exp}, in each case for real argument and in the
-form preceding the $\sinc$, respectively $2^{m(m+1)/2}s^{-m}$, normalization; what those rows
-still describe accurately is the remaining work, namely the removable value at the origin and
-the extension to complex argument.  Exact tail self-similarity
+ring, not by the coefficient induction suggested below.  The finite sinc and
+Laplace bridges \eqref{p2:eq:finite-sinc}--\eqref{p2:eq:finite-Laplace} are now
+fully discharged in \path{ThueMorseComplexProductBridge.lean}.  Their primary
+equalities are complex and total at the origin; the factors $t^m$ and $s^m$
+expose the removable zeros, the prefix-at-zero simp laws give normalized value
+one, and the printed quotient normalizations are supplied as corollaries under
+the corresponding nonzero hypothesis.  Exact tail self-similarity
 \eqref{p2:eq:Q-tail-self}--\eqref{p2:eq:G-tail-self} is fully discharged, and the reusable
 reindexing lemma the row asks for is exactly what was proved:
 \leanPartx{Fabius.tprod_geom_scale_pow} is stated for an arbitrary function into a commutative
@@ -8869,15 +8943,20 @@ Gaussian-binomial normalization \eqref{p2:eq:weights}, and the complete
 coefficientwise action on formal power series are now delivered at arbitrary
 ratio.  The last item is the generic diagonal-filter API of
 \path{FinitePowerSeriesFilter.lean} and its geometric residual specialization
-\path{GeometricPowerSeriesFilter.lean}; it does not evaluate a formal series as
-an analytic function.  The Euler--zeta logarithm and certified zeta remainder
+\path{GeometricPowerSeriesFilter.lean}.  The companion
+\path{AnalyticSeriesFilter.lean} evaluates an abstract coefficient series
+directly and gives the exact Gaussian tail whenever every contributing sample
+is unconditionally summable; zero weights impose no unweighted convergence
+condition.  It excludes conditionally-only boundary series and does not connect
+the abstract coefficients to the sinc product.  The Euler--zeta logarithm and certified zeta remainder
 have likewise since been delivered in \path{SincZetaSeries.lean} and
 \path{SincZetaRemainder.lean}, and the random-tail law exists in measure form in
-\path{MeasureRefinement.lean}.  What remains includes the analytic
-Richardson evaluation, weighted uniform remainder and convergence theorem,
-the random-variable weak expansion, the Lambert depth law, and the levels
-$r\ge1$ of the gamma tower.  In particular, neither the formal filter identity
-nor its Gaussian coefficient multipliers imply the analytic bounds or
+\path{MeasureRefinement.lean}.  What remains includes the concrete sinc-product
+Richardson identification, weighted uniform remainder and convergence theorem,
+the random-variable weak expansion, the Lambert depth law, and the
+parameter-\(a\) differential and iterated differential Gamma-tower ladder.
+In particular, neither the formal filter identity
+nor the abstract unconditionally summable tail implies the analytic bounds or
 brackets stated later in this part.
 
 \begingroup
@@ -8898,13 +8977,22 @@ Finite Thue--Morse product
 $P_{m+1}(z)=P_m(z)(1-z^{2^m})$ and identify coefficients by induction.  This should be almost
 entirely algebraic. \\
 Finite sinc bridge
-\eqref{p2:eq:finite-sinc} & complex exponential identities, finite-product reindexing & Rewrite
-$1-\e^{2\ii x}=-2\ii\e^{\ii x}\sin x$, then normalize powers of two.  The only nuisance is a
-clean treatment of the removable value at $t=0$. \\
+\eqref{p2:eq:finite-sinc} & complex exponential identities, finite-product
+reindexing & \emph{Delivered} in \path{ThueMorseComplexProductBridge.lean}:
+the all-level total equality is
+\leanPartx{Fabius.thueMorseBlock_cexp_eq_sincPrefix}, its positive-level atlas
+wrapper is \leanPartx{Fabius.thueMorseBlock_cexp_eq_sincPrefix_of_pos}, and the
+quotient and origin laws are
+\leanPartx{Fabius.shiftedComplexSincPrefix_eq_thueMorseBlock_cexp_of_pos} and
+\leanPartx{Fabius.shiftedComplexSincPrefix_apply_zero}. \\
 Finite Laplace bridge
-\eqref{p2:eq:finite-Laplace} & real or complex exponentials, finite products & Substitute
-$z=\e^{-s/2^m}$ in the block product and reindex.  This is the simplest new theorem in the
-package. \\
+\eqref{p2:eq:finite-Laplace} & complex exponentials, finite products &
+\emph{Delivered} in \path{ThueMorseComplexProductBridge.lean} by
+\leanPartx{Fabius.thueMorseBlock_exp_neg_eq_laplacePrefix}, with quotient
+corollary \leanPartx{Fabius.complexLaplacePrefix_eq_thueMorseBlock_exp_neg}
+and origin law \leanPartx{Fabius.complexLaplacePrefix_apply_zero}; the same
+module proves the finite Fourier--Laplace rotation in
+\leanPartx{Fabius.complexLaplacePrefix_eq_exp_mul_shiftedComplexSincPrefix}. \\
 Exact tail self-similarity
 \eqref{p2:eq:Q-tail-self}--\eqref{p2:eq:G-tail-self} & convergence of infinite products, shifted
 indices & Establish a reusable infinite-product reindexing lemma.  Existing repository
@@ -8925,8 +9013,11 @@ $q$-Pochhammer algebra & \emph{Delivered} in
 forward and reversed Gaussian forms, the reversed denominator-free polynomial,
 normalized weight under node injectivity, and every positive residual moment.
 \path{GeometricPowerSeriesFilter.lean} further packages the entire
-coefficientwise filter; analytic evaluation and its remainder are not part of
-this row.  The case \(q=1/2\) is linked to the Toeplitz row. \\
+coefficientwise filter, while \path{AnalyticSeriesFilter.lean} supplies the exact
+unconditionally summable analytic Gaussian tail and its shifted-scale form,
+with convergence required only for nonzero-weight samples.  Conditional boundary
+summation, the sinc-product coefficient bridge, and ordered or uniform remainder
+bounds are not part of this row.  The case \(q=1/2\) is linked to the Toeplitz row. \\
 Random-tail law
 \eqref{p2:eq:random-tail} & independent random variables, almost-sure summation, equality in law &
 \emph{Delivered} in measure form in \path{MeasureRefinement.lean}, by exactly the
@@ -8940,10 +9031,14 @@ Lambert depth law
 analytic estimate is elementary after the definition of $\lambda$; the likely missing piece is
 a convenient formal API for the lower real Lambert branch. \\
 Thue--Morse gamma tower
-\eqref{p2:eq:gamma-Mellin}--\eqref{p2:eq:gamma-iterated} & holomorphic parameter differentiation,
-reciprocal-gamma zero, Atlas Dirichlet continuation & Reuse the Atlas continuation theorem;
-prove the simple-zero coefficient of $1/\Gamma$ at each nonpositive integer; then
-differentiate the dyadic equation and the shift parameter identity. \\
+\eqref{p2:eq:gamma-Mellin}--\eqref{p2:eq:gamma-iterated} & reciprocal-Gamma
+first jets, Atlas Dirichlet continuation, parameter differentiation &
+\emph{Mellin and dyadic layers delivered}: \path{ReciprocalGammaJets.lean}
+proves the exact simple reciprocal-Gamma jet at every nonpositive integer, and
+\path{ThueMorseGammaTower.lean} proves every continuation first jet, the
+Mellin/integral GammaLog levels, both dyadic laws, and the level-zero
+master-product ratio.  Only \eqref{p2:eq:gamma-differential}--\eqref{p2:eq:gamma-iterated}
+remain; they need a parameter-under-the-Mellin-integral theorem. \\
 \bottomrule
 \end{longtable}
 \endgroup
