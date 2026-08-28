@@ -178,6 +178,24 @@ def completeHomogeneousEvalAt
     (s : Finset ι) (a : ι → R) (x : R) (n : ℕ) : R :=
   completeHomogeneousEval (Option.elim' x (fun i : s ↦ a i)) n
 
+/-- A complete homogeneous function has value one in degree zero when its
+variables are indexed by a `Finset`. -/
+@[simp] theorem completeHomogeneousEvalOn_zero
+    {R ι : Type*} [CommSemiring R]
+    (s : Finset ι) (a : ι → R) :
+    completeHomogeneousEvalOn s a 0 = 1 := by
+  exact completeHomogeneousEval_zero _
+
+/-- There is no positive-degree complete homogeneous monomial in an empty
+family of variables. -/
+@[simp] theorem completeHomogeneousEvalOn_empty_succ
+    {R ι : Type*} [CommSemiring R]
+    (a : ι → R) (n : ℕ) :
+    completeHomogeneousEvalOn (∅ : Finset ι) a (n + 1) = 0 := by
+  simpa only [completeHomogeneousEvalOn] using
+    (completeHomogeneousEval_isEmpty_succ
+      (fun i : (∅ : Finset ι) ↦ a i) n)
+
 private theorem completeHomogeneousEvalOn_insert_eq_option
     {R ι : Type*} [CommSemiring R] [DecidableEq ι]
     {s : Finset ι} {i : ι} (hi : i ∉ s) (a : ι → R) (n : ℕ) :
@@ -243,6 +261,36 @@ theorem completeHomogeneousEvalAt_succ
     x * completeHomogeneousEval b n +
       completeHomogeneousEval (fun i : s ↦ a i) (n + 1)
   rw [completeHomogeneousEval_option_succ, hbnone, hbsome]
+
+/-- Adjoining a distinguished zero variable does not change a complete
+homogeneous evaluation.  This is the specialization that turns the universal
+Lagrange residual at target `0` into the ordinary complete homogeneous
+function of the interpolation nodes. -/
+@[simp] theorem completeHomogeneousEvalAt_zero
+    {R ι : Type*} [CommSemiring R]
+    (s : Finset ι) (a : ι → R) (n : ℕ) :
+    completeHomogeneousEvalAt s a 0 n =
+      completeHomogeneousEvalOn s a n := by
+  cases n with
+  | zero =>
+      simp [completeHomogeneousEvalAt, completeHomogeneousEvalOn]
+  | succ n =>
+      simp [completeHomogeneousEvalAt_succ]
+
+/-- A complete homogeneous function in one variable is the corresponding
+power of that variable. -/
+@[simp] theorem completeHomogeneousEvalOn_singleton
+    {R ι : Type*} [CommSemiring R]
+    (i : ι) (a : ι → R) (n : ℕ) :
+    completeHomogeneousEvalOn {i} a n = (a i) ^ n := by
+  classical
+  induction n with
+  | zero => simp
+  | succ n ih =>
+      rw [completeHomogeneousEvalOn_insert_succ
+        (s := (∅ : Finset ι)) (i := i) (by simp) a n,
+        ih, completeHomogeneousEvalOn_empty_succ, add_zero, pow_succ]
+      ac_rfl
 
 /-- The univariate polynomial `h_n(X, a_1, ..., a_d)`, characterized by
 
