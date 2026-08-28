@@ -150,7 +150,7 @@ theorem momentHankel_posDef (F : BoundedFabius) (hF : IsFabius F)
     have heval : ∀ t : ℝ, p.eval t = ∑ i, x i * t ^ (i : ℕ) := by
       intro t
       rw [hp]
-      simp [Polynomial.eval_finset_sum]
+      simp [Polynomial.eval_finsetSum]
     have hcoeff : ∀ i₀ : Fin n, p.coeff (i₀ : ℕ) = x i₀ := by
       intro i₀
       rw [hp, Polynomial.finsetSum_coeff]
@@ -184,7 +184,7 @@ theorem momentHankel_posDef (F : BoundedFabius) (hF : IsFabius F)
       rw [Polynomial.IsRoot, heval t]
       exact (pow_eq_zero_iff two_ne_zero).mp h0
     refine lt_of_lt_of_le ?_ (measure_mono hsupp)
-    rw [measure_diff_null (rvachevMeasure_finite_eq_zero F
+    rw [measure_sdiff_null (rvachevMeasure_finite_eq_zero F
       (Polynomial.finite_setOf_isRoot hpne))]
     rw [rvachevMeasure_Ioo_eq_one F hF]
     exact zero_lt_one
