@@ -230,10 +230,11 @@ conjectural extensions, and explanations built on top of the current Lean librar
 organized into six thematic syntheses followed by a post-audit gap register.  They remain
 quarantined so that no unformalized claim can be mistaken for part of the verified primary
 exposition or lost while awaiting a machine-checked proof.
-The post-consolidation audit also records the newly formalized generic naturality and
-conditional affine-recursion API for weighted uniform series and the named
-geometric-\(q\) weights, series, probability law, recurrence, reflection, and carried-set
-results.  Equality of topological support, atomlessness, CDF/density identities, transforms,
+The post-consolidation audit also records the newly formalized generic naturality,
+conditional affine-recursion, and exact-support API for weighted uniform series and the named
+geometric-\(q\) weights, series, probability law, recurrence, and reflection.  For every
+\(|q|<1\) the geometric law has support equal to its exact series range, and for
+\(0\le q<1\) that support is \([0,1]\).  Atomlessness, CDF/density identities, transforms,
 moments/cumulants, and fixed-point uniqueness remain in the frontier.
 
 Closely overlapping presentations have been merged rather than concatenated.  Each topic
@@ -314,13 +315,17 @@ Thue--Morse grid samples & \nolinkurl{correctedPrefixGridSample} & \nolinkurl{Th
 Generic weighted uniform series and laws &
 \nolinkurl{uniformProduct_map_of_ae_head_tail_recursion},
 \nolinkurl{weightedUniformSeries_map},
-\nolinkurl{weightedUniformDistribution_split_of_shift_eq_map} &
+\nolinkurl{weightedUniformDistribution_split_of_shift_eq_map},
+\nolinkurl{weightedUniformDistribution_support_eq_range},
+\nolinkurl{weightedUniformDistribution_support_eq_Icc_min_max} &
 \nolinkurl{WeightedUniformSeries.lean}, \nolinkurl{WeightedUniformDistribution.lean},
-\nolinkurl{ProbabilityRepresentation.lean} \\
+\nolinkurl{WeightedUniformSupport.lean}, \nolinkurl{ProbabilityRepresentation.lean} \\
 Named geometric uniform law &
 \nolinkurl{geometricUniformWeight},
 \nolinkurl{geometricUniformDistribution_selfSimilar},
-\nolinkurl{weightedSumDistribution_eq_geometricUniformDistribution_one_half} &
+\nolinkurl{geometricUniformDistribution_support_eq_range},
+\nolinkurl{geometricUniformDistribution_support_eq_Icc},
+\nolinkurl{weightedSumDistribution_support_eq_Icc} &
 \nolinkurl{GeometricUniformLaw.lean}, \nolinkurl{ProbabilityRepresentation.lean} \\
 Totalized inverse & \nolinkurl{fabiusInv}, \nolinkurl{deriv_deriv_fabiusInv_eq_zero_iff}, \nolinkurl{tendsto_deriv_fabiusInv_atTop_at_zero_right}, \nolinkurl{fabiusInv_differentiableAt_iff}, \nolinkurl{fabiusInv_contDiffAt_infty_iff}, \nolinkurl{fabiusInv_analyticAt_iff} & \nolinkurl{FabiusInverse.lean}, \nolinkurl{InverseNotElementary.lean} \\
 Lower-Lambert coordinate & \nolinkurl{fabiusLambertPhase} & \nolinkurl{FabiusLambertSaddle.lean} \\
@@ -336,9 +341,9 @@ Thue--Morse rates, repeated-integration norm identities, inverse endpoint asympt
 general ordered-composition coefficient formulas, Fourier-amplitude estimates, and any
 claim marked derived, numerical, conjectural, or open remain in this frontier until an exact
 Lean declaration is audited.  The named weights \((1-q)q^n\), their law, measure recurrence,
-reflection, and carried-\([0,1]\) statements are now exact formal inputs.  Equality of
-topological support with \([0,1]\), atomlessness, \(q\)-specific CDF or density equations,
-transforms, moments/cumulants, and uniqueness of a measure fixed point are not.
+reflection, support equal to the series range for \(|q|<1\), and exact support \([0,1]\) for
+\(0\le q<1\) are now exact formal inputs.  Atomlessness, \(q\)-specific CDF or density
+equations, transforms, moments/cumulants, and uniqueness of a measure fixed point are not.
 \end{boxedremark}
 
 
@@ -830,12 +835,15 @@ be the pushforward law.  It is a probability measure and
 \begin{equation}
  \mu([0,1])=1,
  \qquad
- \mu(\R\setminus[0,1])=0.
+ \mu(\R\setminus[0,1])=0,
+ \qquad
+ \supp(\mu)=[0,1].
  \label{integration:eq:law-support}
 \end{equation}
 The Lean declarations are \lean{weightedCoordinateSum},
-\lean{continuous\_weightedCoordinateSum}, \lean{weightedSumDistribution}, and the support
-lemmas surrounding them.
+\lean{continuous\_weightedCoordinateSum}, \lean{weightedSumDistribution},
+\lean{weightedSumDistribution_Icc}, \lean{weightedSumDistribution_compl_Icc}, and the exact
+topological-support theorem \lean{weightedSumDistribution_support_eq_Icc}.
 
 \subsubsection{Deleting the head coordinate}
 
@@ -943,6 +951,27 @@ scalar-shift theorems.  The compatibility surface additionally exports
 \path{WeightedUniformSeries.lean} and \path{WeightedUniformDistribution.lean}.  The
 law-level scalar wrapper is oriented as \(\mu_{cw}=(x\mapsto cx)_*\mu_w\).
 
+The separate exact-support layer has ten public declarations in
+\path{WeightedUniformSupport.lean}:
+\lean{ProbabilityRepresentation.isOpenPosMeasure_infinitePi},
+\lean{ProbabilityRepresentation.uniformProduct_isOpenPosMeasure},
+\lean{ProbabilityRepresentation.support_map_eq_closure_range_of_continuous},
+\lean{ProbabilityRepresentation.weightedUniformSeries_constCoordinates},
+\lean{ProbabilityRepresentation.weightedUniformDistribution_support_eq_range},
+\lean{ProbabilityRepresentation.range_weightedUniformSeries_eq_Icc_min_max},
+\lean{ProbabilityRepresentation.weightedUniformDistribution_support_eq_Icc_min_max},
+\lean{ProbabilityRepresentation.range_weightedUniformSeries_eq_Icc},
+\lean{ProbabilityRepresentation.weightedUniformDistribution_support_eq_Icc}, and
+\lean{ProbabilityRepresentation.weightedUniformDistribution_support_eq_unitInterval}.
+Thus an arbitrary norm-summable weighted law in a complete Borel real normed space has
+support exactly the range of its continuous series map.  For arbitrary signed real weights,
+both range and support are exactly
+\[
+ \left[\sum_n\min\{w_n,0\},\ \sum_n\max\{w_n,0\}\right];
+\]
+cancellation creates no gaps.  Constant coordinate paths give the nonnegative specialization
+\([0,\sum_n w_n]\), including the degenerate zero-total-weight case.
+
 There is now also a named specialization.  For
 \[
  w_n(q)=(1-q)q^n,\qquad S_q=S_{w(q)},\qquad \mu_q=\mu_{w(q)},
@@ -957,9 +986,10 @@ the weights are norm-summable with sum one, \(S_q\) is continuous and measurable
 \]
 together with pointwise and law-level reflection.  Under \(0\le q<1\), the weights are
 nonnegative, the series lies in \([0,1]\), and the law gives mass one to that interval and
-zero to its complement.
+zero to its complement.  For every \(|q|<1\), its topological support is exactly the series
+range; under \(0\le q<1\), both that range and the support are exactly \([0,1]\).
 
-The nineteen declarations are
+The twenty-one declarations are
 \lean{ProbabilityRepresentation.geometricUniformWeight},
 \lean{ProbabilityRepresentation.geometricUniformWeight_zero},
 \lean{ProbabilityRepresentation.geometricUniformWeight_succ},
@@ -977,18 +1007,21 @@ The nineteen declarations are
 \lean{ProbabilityRepresentation.uniformProduct_map_head_tail_geometricUniformSeries},
 \lean{ProbabilityRepresentation.geometricUniformDistribution_selfSimilar},
 \lean{ProbabilityRepresentation.geometricUniformDistribution_reflection},
-\lean{ProbabilityRepresentation.geometricUniformDistribution_Icc}, and
-\lean{ProbabilityRepresentation.geometricUniformDistribution_compl_Icc} in
+\lean{ProbabilityRepresentation.geometricUniformDistribution_Icc},
+\lean{ProbabilityRepresentation.geometricUniformDistribution_compl_Icc},
+\lean{ProbabilityRepresentation.geometricUniformDistribution_support_eq_range}, and
+\lean{ProbabilityRepresentation.geometricUniformDistribution_support_eq_Icc} in
 \path{GeometricUniformLaw.lean}.  At \(q=1/2\),
 \lean{ProbabilityRepresentation.weightedCoordinateSum_eq_geometricUniformSeries_one_half}
 and
 \lean{ProbabilityRepresentation.weightedSumDistribution_eq_geometricUniformDistribution_one_half}
-identify the dyadic series and law with this specialization.
+identify the dyadic series and law with this specialization, while
+\lean{ProbabilityRepresentation.weightedSumDistribution_support_eq_Icc} records the exact
+support of the dyadic law.
 
-These are carried-set and fixed-point identities, not equality of topological support or
-uniqueness.  Atomlessness, \(q\)-specific CDF and density identities, transforms, moments
-and cumulants, and uniqueness of the affine measure fixed point remain outside the formal
-boundary.
+The exact range and support identities are now formal.  Atomlessness, \(q\)-specific CDF and
+density identities, transforms, moments and cumulants, and uniqueness of the affine measure
+fixed point remain outside the formal boundary for the general geometric family.
 
 \begin{proposition}[The smoothing equation for the CDF]
 \label{integration:prop:CDF-smoothing-detailed}
@@ -2441,8 +2474,9 @@ the class enlarged by admissible inverse branches; \cref{integration:sec:not-ele
 The product sample space, uniformly convergent coordinate sum, pushforward law, the exact
 dyadic-to-generic bridge
 \lean{ProbabilityRepresentation.weightedSumDistribution_eq_weightedUniformDistribution},
-the two half-base geometric bridges, head--tail split, coordinate reflection, and
-identification of the CDF with $F$;
+the two half-base geometric bridges, head--tail split, coordinate reflection,
+the exact support theorem \lean{ProbabilityRepresentation.weightedSumDistribution_support_eq_Icc},
+and identification of the CDF with $F$;
 \cref{integration:sec:product-law}.\\
 \path{WeightedUniformSeries.lean} &
 The eleven-declaration generic tranche: almost-everywhere and pointwise head--tail map
@@ -2451,9 +2485,15 @@ operator/scalar affine recursions; \cref{integration:sec:weighted-naturality}.\\
 \path{WeightedUniformDistribution.lean} &
 The compatibility head--tail, probability, scalar-law, and unit-interval surface;
 \cref{integration:sec:weighted-naturality}.\\
+\path{WeightedUniformSupport.lean} &
+The ten-declaration exact-support tranche: open positivity for arbitrary products,
+continuous-pushforward support, support equal to the series range, exact signed-real
+min/max intervals, and the nonnegative and unit-mass specializations;
+\cref{integration:sec:weighted-naturality}.\\
 \path{GeometricUniformLaw.lean} &
-The nineteen-declaration named geometric weight, series, and law API: summability and mass,
-continuity and measurability, affine splitting, reflection, and carried-\([0,1]\) results;
+The twenty-one-declaration named geometric weight, series, and law API: summability and mass,
+continuity and measurability, affine splitting, reflection, support equal to the series range
+for \(|q|<1\), and exact support \([0,1]\) for \(0\le q<1\);
 \cref{integration:sec:weighted-naturality}.\\
 \path{ProbabilityLaplaceMoments.lean} &
 Almost-sure support, restriction to $[0,1]$, survival function, the compact-support Fubini
@@ -2527,16 +2567,17 @@ Non-elementarity & Absent & No local agreement on any set with nonempty interior
 $\Up$, the signed extension, or the total inverse, including the enlarged admissible
 inverse-branch class.\\
 Product probability law & Headline proof only & Uniform convergence and measurability,
-head--tail pushforward identity, coordinate reflection, and global support bookkeeping.\\
-Generic weighted-law naturality & Not recorded in the pinned companion snapshot &
+head--tail pushforward identity, coordinate reflection, and exact dyadic support \([0,1]\).\\
+Generic weighted-law naturality and support & Not recorded in the pinned companion snapshot &
 Almost-everywhere and pointwise head--tail recursion, continuous-linear and scalar
 naturality, shifted-law transport, conditional operator/scalar affine fixed-point laws, and
-the seven-name compatibility surface.\\
+the seven-name compatibility surface; a separate ten-name tranche gives support equal to
+the series range, exact signed-real min/max intervals, and nonnegative specializations.\\
 Named geometric-\(q\) law & Not recorded in the pinned companion snapshot &
 Exact weights, summability and mass, series and probability law, affine self-similarity,
-reflection, carried-\([0,1]\) laws, and both half-base bridges; equality of topological
-support, atomlessness, CDF/density identities, transforms, moments/cumulants, and
-fixed-point uniqueness remain outside the formal boundary.\\
+reflection, support equal to the series range for \(|q|<1\), exact support \([0,1]\) for
+\(0\le q<1\), and both half-base bridges; atomlessness, CDF/density identities, transforms,
+moments/cumulants, and fixed-point uniqueness remain outside the formal boundary.\\
 Probability--Laplace bridge & Absent & Survival-function Fubini identity, identification of
 raw, endpoint, and tilted moments, complete monotonicity, and half-moment interpretation.\\
 Atomic-to-step bridge & Compressed & Half-endpoint null-set conversion, exact cell overlap,

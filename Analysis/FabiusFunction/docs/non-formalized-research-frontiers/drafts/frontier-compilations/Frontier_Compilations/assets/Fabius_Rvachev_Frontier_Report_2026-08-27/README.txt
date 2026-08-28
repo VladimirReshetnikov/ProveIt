@@ -1,18 +1,21 @@
 FABIUS--RVACHEV FRONTIER REPORT
 ===============================
 
+Current consolidation status
+----------------------------
+This retained companion directory preserves the auxiliary files for source
+report IV of the consolidated Frontier_Compilations volume.  The former
+standalone manuscript now appears in ../../Frontier_Compilations.tex and its
+rendered PDF in ../../Frontier_Compilations.pdf.  Those volume files are
+referenced rather than duplicated here.  Other paths below are relative to
+this companion directory unless stated otherwise.
+
 Title
 -----
 Midpoint Transmutation, Dyadic Cardinal Reproduction, and Holonomic
 Obstructions: New deductions around the Fabius function, its inverse,
 Rvachev's up-function, Thue--Morse cancellation, Lambert-W asymptotics,
 and q-scale algebra.
-
-This directory is an archived companion bundle preserving the computations,
-data, and figures that accompanied the formerly standalone report.  The report
-now appears in the consolidated volume: its source is
-../../Frontier_Compilations.tex and its rendered PDF is
-../../Frontier_Compilations.pdf.
 
 Repository scope
 ----------------
@@ -30,8 +33,8 @@ Novelty convention
 of global historical priority.  Established repository results are separated
 from corpus-relative deductions and from conjectural/open directions.
 
-Archived companion contents
-----------------------------
+Retained companion contents
+---------------------------
   ../../Frontier_Compilations.tex      Consolidated volume source.
   ../../Frontier_Compilations.pdf      Rendered consolidated volume.
   frontier_experiments.py             Fully commented symbolic/numerical code.
@@ -41,7 +44,7 @@ Archived companion contents
   results/reproduction_errors.csv     Cardinal-reproduction residuals.
   figures/*.pdf, figures/*.png        Vector and raster report figures.
   requirements.txt                    Python dependencies.
-  SHA256SUMS.txt                      Checksums for all payload files.
+  SHA256SUMS.txt                      Checksums for retained payload files.
 
 Reproduce the numerical work
 ----------------------------
@@ -57,7 +60,7 @@ centralized in the Settings dataclass near the top of the script.
 
 Build the consolidated report
 -----------------------------
-A recent TeX Live installation is sufficient.  From this archived companion
+A recent TeX Live installation is sufficient.  From this retained companion
 directory, run exactly three serial pdflatex passes:
 
   cd ../..
@@ -81,7 +84,8 @@ Main proved deductions
 
 Verification status
 -------------------
-Before consolidation, the standalone LaTeX source compiled without unresolved
-references or citations, and its PDF was rendered page by page at 200 dpi and
-inspected for clipping, overlap, broken glyphs, and figure placement.  The
-included Python script was rerun in this environment before packaging.
+The standalone source compiled without unresolved references or citations when
+the original package was prepared, and its 26-page PDF was inspected page by
+page at 200 dpi for clipping, overlap, broken glyphs, and figure placement.  The
+included Python script was rerun in that environment.  The consolidated PDF is
+built and inspected at the volume level.

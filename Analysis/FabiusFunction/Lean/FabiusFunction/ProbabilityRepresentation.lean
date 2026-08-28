@@ -167,6 +167,13 @@ theorem weightedSumDistribution_eq_geometricUniformDistribution_one_half :
   filter_upwards with ω
   exact weightedCoordinateSum_eq_geometricUniformSeries_one_half ω
 
+/-- The classical dyadic weighted-sum law has topological support exactly
+the closed unit interval. -/
+theorem weightedSumDistribution_support_eq_Icc :
+    weightedSumDistribution.support = Icc (0 : ℝ) 1 := by
+  rw [weightedSumDistribution_eq_geometricUniformDistribution_one_half]
+  exact geometricUniformDistribution_support_eq_Icc (by norm_num) (by norm_num)
+
 /-- The law of the random series is a probability measure, being the
 pushforward of one along a measurable map. -/
 instance : IsProbabilityMeasure weightedSumDistribution := by

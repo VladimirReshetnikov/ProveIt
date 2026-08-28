@@ -1,10 +1,11 @@
 # Confluent Digital Extrapolation and Lambert-Phase Tomography
 
-This archived companion bundle preserves the reproducible numerical experiments and
-generated data for a frontier report on the Fabius--Rvachev--Thue--Morse system. The
-formerly standalone manuscript now appears in the consolidated frontier volume: its
-source is `../../Frontier_Compilations.tex`, and its rendered PDF is
-`../../Frontier_Compilations.pdf`.
+This retained companion directory preserves the reproducible numerical experiments and
+generated data for source report VI of the consolidated Fabius--Rvachev--Thue--Morse
+frontier volume. The formerly standalone manuscript now appears in
+`../../Frontier_Compilations.tex`, and its rendered PDF is
+`../../Frontier_Compilations.pdf`. Those volume files are referenced rather than duplicated
+here. Other paths below are relative to this companion directory unless stated otherwise.
 
 ## Corpus boundary
 
@@ -48,7 +49,7 @@ Natural-boundary behavior, sharp alias asymptotics, optimal span/conditioning tr
 irrational near-locks, higher-rank strip widths, and late Bell-coefficient resurgence are
 stated separately as conjectures or research programs.
 
-## Archived companion files
+## Retained companion files
 
 - `../../Frontier_Compilations.tex` -- source of the consolidated volume containing this report.
 - `../../Frontier_Compilations.pdf` -- rendered consolidated volume.
@@ -62,7 +63,7 @@ stated separately as conjectures or research programs.
 - `gamma_zeta_coefficients.csv`, `gamma_zeta_decay.png` -- endpoint Fourier coefficient decay.
 - `tomography_errors.csv`, `tomography_errors.png` -- controlled radial--angular experiment.
 - `requirements.txt` -- Python dependencies.
-- `SHA256SUMS` -- checksums for the packaged files.
+- `SHA256SUMS` -- checksums for the retained files.
 
 ## Reproduction
 
@@ -73,7 +74,7 @@ python -m pip install -r requirements.txt
 python numerical_experiments.py --output-dir . --precision 90
 ```
 
-From this archived companion directory, rebuild the consolidated paper with
+From this retained companion directory, rebuild the consolidated paper with
 exactly three serial `pdflatex` passes:
 
 ```bash

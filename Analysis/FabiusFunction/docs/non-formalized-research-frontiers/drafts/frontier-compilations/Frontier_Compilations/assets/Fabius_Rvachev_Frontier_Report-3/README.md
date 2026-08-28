@@ -1,15 +1,16 @@
 # Zero-Divisor-Preserving q-Richardson Extrapolation
 
-This archived companion bundle preserves the reproducible computations and
-source data that accompanied the report
+This retained companion directory preserves the reproducible computations and source data
+that accompanied source report III of the consolidated volume
 
 > **Zero-Divisor-Preserving q-Richardson Extrapolation for the Fabius–Rvachev Sinc Product**
 
 prepared from a recursive audit of the LaTeX documentation under
 `Analysis/FabiusFunction/docs` in Vladimir Reshetnikov's `ProveIt` repository.
-The formerly standalone manuscript now appears in the consolidated frontier
-volume: its source is `../../Frontier_Compilations.tex`, and its rendered PDF
-is `../../Frontier_Compilations.pdf`.
+The formerly standalone manuscript now appears in the consolidated frontier volume: its
+source is `../../Frontier_Compilations.tex`, and its rendered PDF is
+`../../Frontier_Compilations.pdf`. Those volume files are referenced rather than duplicated
+here. Paths below are relative to this companion directory unless stated otherwise.
 
 ## Audited snapshot
 
@@ -45,7 +46,7 @@ The report develops two theorem packages that were not found in the audited corp
 Novelty is claimed relative to the pinned repository corpus and the targeted literature
 search recorded in the report, not as an unconditional worldwide priority claim.
 
-## Archived companion contents
+## Retained companion contents
 
 - `../../Frontier_Compilations.tex` — source of the consolidated volume containing this report.
 - `../../Frontier_Compilations.pdf` — rendered consolidated volume.
@@ -56,11 +57,11 @@ search recorded in the report, not as an unconditional worldwide priority claim.
 - `figures/*.png` — all generated figures used in the report.
 - `experiment_summary.txt` — compact run summary.
 - `requirements.txt` — Python dependencies.
-- `SHA256SUMS` — checksums for the packaged files.
+- `SHA256SUMS` — checksums for the retained files.
 
 ## Reproduce the numerical experiments
 
-Python 3.10 or newer is recommended. From the archive root:
+Python 3.10 or newer is recommended. From this asset directory:
 
 ```bash
 python -m venv .venv
@@ -76,12 +77,12 @@ python code/frontier_experiments.py --output-dir .
 The script has no network dependency. It regenerates `data/`, `figures/`, and
 `experiment_summary.txt`. It performs internal consistency checks between the closed
 q-Lagrange identities, exact coefficient series, and direct sinc products. With the
-versions used to prepare the archive, a complete run takes only a few seconds.
+versions used to prepare the original package, a complete run takes only a few seconds.
 
 ## Rebuild the consolidated PDF
 
-A reasonably complete TeX Live installation is sufficient. From this archived
-companion directory, run exactly three serial `pdflatex` passes:
+A reasonably complete TeX Live installation is sufficient. From this companion directory,
+run exactly three serial `pdflatex` passes:
 
 ```bash
 cd ../..
@@ -95,7 +96,8 @@ Libertinus when available and falls back to Latin Modern.
 
 ## Verification notes
 
-The packaged numerical outputs were regenerated from a clean temporary directory and
-compared byte-for-byte with the included CSV and PNG files. Before consolidation, the
-standalone PDF was rendered page by page at 180 dpi and visually inspected for clipping,
-overlap, broken glyphs, and unreadable equations.
+The retained numerical outputs were regenerated from a clean temporary directory and
+compared byte-for-byte with the included CSV and PNG files when the standalone package was
+prepared. Before consolidation, its PDF was rendered page by page at 180 dpi and visually
+inspected for clipping, overlap, broken glyphs, and unreadable equations. The consolidated
+PDF is built and inspected at the volume level.

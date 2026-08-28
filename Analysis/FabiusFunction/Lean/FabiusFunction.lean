@@ -12,6 +12,7 @@ import FabiusFunction.GeometricLagrangeQMoments
 import FabiusFunction.LambertPhaseLockedRichardson
 import FabiusFunction.WeightedUniformSeries
 import FabiusFunction.WeightedUniformDistribution
+import FabiusFunction.WeightedUniformSupport
 import FabiusFunction.GeometricUniformLaw
 import FabiusFunction.Paper05442
 import FabiusFunction.Paper06487
