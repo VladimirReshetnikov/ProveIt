@@ -189,6 +189,19 @@ Chebyshev system with Vandermonde interpolation determinants, and the
 construction is an explicit compactly supported $C^\infty$ extension
 operator for polynomial data.
 
+\emph{The oversampled lattice.}  A third construction detaches the
+dictionary from its special lattice: the reproduction order of the
+translate system at radius-to-spacing ratio $m$ is exactly
+$\vtwo(m)$, the physical scale is free, and an explicit interval
+algorithm produces, for any prescribed atom radius $\rho$, an exact
+plateau supported in $[A-2\rho,B+2\rho]$ described by only
+$\bigO(d)$ field elements with $(2m+1)$-local evaluation.  Its
+real-space face is a ghost-atom antiderivative calculus and the exact
+dyadic derivative stencil
+$D^{d}\,u\bigl((x-c)/2^{d}h\bigr)
+=h^{-d}2^{-\binom d2}\sum_k\eps_k\,u(\cdots)$ --- Thue--Morse signs,
+the convolution inverse of the ladder's binary-partition weights.
+
 \emph{Combined results.}  The dictionary bound sharpens the ladder
 count: the minimal number $N_d$ of up-atoms sufficient for all of
 $\PiD$ on an interval satisfies $N_0=2$ and $N_d\le d+2$, with
@@ -216,13 +229,15 @@ hashes, is in \cref{sec:provenance-poly}.
 \section*{Provenance and merge conventions}
 \addcontentsline{toc}{section}{Provenance and merge conventions}
 
-This volume is an editorial consolidation (28 August 2026) of two
-fourth-wave drafts that solve the same problem by different routes;
-shared foundations are stated once, each construction keeps its own
-chapter, their overlapping material (Appell calculus, Thue--Morse
-products, rationality, tensor products, extension operators,
-conditioning, Lean roadmaps) is merged, and the comparison chapter and
-the cross-volume defect identities are new to the consolidation.
+This volume is an editorial consolidation (28 August 2026) of three
+drafts --- two of the fourth wave and one of the seventh --- that
+solve the same problem by different routes; shared foundations are
+stated once, each construction keeps its own chapter, their
+overlapping material (Appell calculus, Thue--Morse products,
+rationality, sharp-order statements, tensor products, extension
+operators, conditioning, Lean roadmaps) is merged, and the comparison
+chapter and the cross-volume defect identities are new to the
+consolidation.
 \Cref{sec:provenance-poly} records the absorbed sources with SHA-256
 hashes and the deduplication detail; their supporting files are under
 \nolinkurl{assets/}.
@@ -1279,6 +1294,203 @@ endpoint basis of \cref{sec:dictionary}, whose minimal atom count
 also comes at the price of large signed coefficients.
 \end{remark}
 
+
+\section{The oversampled lattice: free scales, ghost antiderivatives,
+and the Thue--Morse stencil}
+\label{sec:lattice}
+
+The third absorbed source detaches the dictionary construction from
+the special lattice $M=2^{d}$ at unit spacing: the reproduction order
+depends only on the \emph{ratio} of atom radius to center spacing,
+and the physical scale is free.  This adds an interval algorithm with
+prescribed support, a real-space antiderivative calculus dual to the
+ladder of \cref{sec:ladder}, and the exact dyadic derivative stencil.
+
+\subsection{Twisted Poisson summation and general ratios}
+
+\begin{lemma}[Twisted Poisson identity]
+\label{lem:twisted-poisson}
+For $m\in\N_{>0}$, $t\in\R$, $z\in\C$, with
+$\MM_u$ the moment generating function,
+\begin{equation}
+ \sum_{k\in\Z}\e^{kz}\,u\!\left(\frac{t-k}{m}\right)
+ =m\sum_{n\in\Z}\e^{(z-2\pi\ii n)t}\,
+ \MM_u\!\bigl(-mz+2\pi\ii mn\bigr),
+ \label{eq:twisted-poisson}
+\end{equation}
+both sides entire in $z$.
+\end{lemma}
+
+\begin{proof}
+Poisson summation for the smooth compactly supported
+$x\mapsto\e^{zx}u((t-x)/m)$, whose $n$-th Fourier coefficient is
+$m\,\e^{(z-2\pi\ii n)t}\MM_u(-mz+2\pi\ii mn)$.
+\end{proof}
+
+At a nonzero frequency $n$, the alias factor vanishes at $z=0$ to
+order $1+\vtwo(mn)\ge\vtwo(m)+1$.  Dividing
+\eqref{eq:twisted-poisson} by $m\MM_u(mz)$ and comparing Taylor
+coefficients gives, in one stroke, the general-ratio version of the
+global synthesis: with the scaled deconvolution Appell samples
+\begin{equation}
+ A^{(m)}_r(k):=m^{\,r-1}\,\Gd_r(k/m)
+ =\frac1m\sum_{j=0}^{r}\binom rj k^{\,r-j}\,\beta^{(m)}_j,
+ \qquad
+ \frac1{\MM_u(mz)}=\sum_n\beta^{(m)}_n\frac{z^{n}}{n!},
+ \label{eq:scaled-appell}
+\end{equation}
+one has, for every $m\in\N_{>0}$ and $0\le r\le\vtwo(m)$,
+\begin{equation}
+ t^{\,r}=\sum_{k\in\Z}A^{(m)}_r(k)\,
+ u\!\left(\frac{t-k}{m}\right)
+ \qquad(t\in\R),
+ \label{eq:general-reproduction}
+\end{equation}
+locally finite, and the order $\vtwo(m)$ is \emph{sharp}
+(\cref{thm:scale-classification}); the same argument works for any
+$C_c^\infty$ generator of unit mass whose transform vanishes to
+order $d+1$ at the nonzero dual lattice.  The probabilistic content
+of the deconvolution is exact:
+$q^{\sharp}=\MM_u(mD)^{-1}q$ is the unique polynomial with
+$\E\,q^{\sharp}(t+mZ)=q(t)$ --- the coefficients undo smoothing by a
+random up-distributed displacement.
+
+The first failure at degree $L=\vtwo(m)+1$ generalizes the defect
+series \eqref{eq:defect-series} beyond dyadic ratios: for
+$m=2^{\nu}q$ with $q$ odd,
+\begin{equation}
+ \sum_{k\in\Z}A^{(m)}_L(k)\,u\!\left(\frac{t-k}{m}\right)-t^{L}
+ =\frac{(-1)^{L+1}L!}{(2\pi\ii)^{L}}
+ \sum_{\substack{n\in\Z\\ n\ \mathrm{odd}}}
+ \frac{\widehat u(qn/2)}{n^{L}}\,\e^{-2\pi\ii nt},
+ \label{eq:general-defect}
+\end{equation}
+nonzero because $\widehat u(q/2)\ne0$: an odd factor $q$ in the ratio
+replaces the half-integer values $\widehat u(n/2)$ by
+$\widehat u(qn/2)$ --- the arithmetic face of the odd-overscaling
+phenomenon of \cref{conj:odd-dim}.
+
+\subsection{The physical-scale interval algorithm}
+
+Affine reduction makes the lattice fully physical: for
+$p\in\PiD$, an interval $I=[A,B]$, an origin $x_0$, a spacing $h>0$,
+and any ratio $m$ with $\vtwo(m)\ge d$ (canonically $m=2^{d}$), put
+$\rho=mh$ and
+$p^{\sharp}_\rho=\MM_u(\rho D)^{-1}p$.  Then
+\begin{equation}
+ \boxed{\;
+ p(x)=\frac1m
+ \sum_{k=\ceil{(A-x_0)/h-m}}^{\floor{(B-x_0)/h+m}}
+ p^{\sharp}_\rho(x_0+kh)\,
+ u\!\left(\frac{x-x_0-kh}{\rho}\right)
+ \qquad(x\in[A,B]),
+ \;}
+ \label{eq:interval-algorithm}
+\end{equation}
+a finite $C^\infty$ plateau supported in $[A-2\rho,\,B+2\rho]$ with
+at most $\floor{m((B-A)/\rho+2)}+1$ atoms, rational for rational
+data, matching \emph{every} endpoint jet of $p$ (all derivatives
+agree on the interior; take one-sided limits).  Two practical
+features distinguish it from both normal forms above: the
+representation is determined by $\bigO(d)$ field elements (the
+polynomial $p^{\sharp}_\rho$ and the lattice parameters), however
+long the interval; and evaluation at a point touches at most
+$2m+1$ atoms.  The atom count
+$2^{d}(B-A)/\rho+2^{d+1}+\bigO(1)$ exposes the radius--density
+tradeoff: shrinking the support collar costs interior atoms, and the
+$2^{d+1}$ boundary-overlap term never disappears --- the lattice-side
+counterpart of the ladder's collar--atom law
+(\cref{thm:collar}), with the dictionary's $d+2$ and the ladder's
+$2d+2$ as the atom-minimal and scale-sparse extremes.
+
+\subsection{Ghost antiderivatives and the exact derivative stencil}
+
+The refinement derivative also supports a purely real-space route,
+dual to the antiderivative train of \cref{sec:ladder}.  Writing
+$U_{a,c}(x)=u((x-c)/a)$, the \emph{parent--child identity}
+\begin{equation}
+ D\,U_{2a,c}
+ =\frac1a\bigl(U_{a,c-a}-U_{a,c+a}\bigr)
+ \label{eq:parent-child}
+\end{equation}
+converts differentiation into a two-term difference one scale down.
+A finite child sum $\sum_{j=L}^{R}b_jU_{a,c+(2j+1)a}$ has a finite
+parent antiderivative iff $\sum_jb_j=0$, in which case the parent
+coefficients are the prefix sums $\sum_{r\le j}b_r$ --- and the
+zero-sum obstruction is repaired by \emph{ghost atoms}: children
+whose supports miss the working interval carry the compensating
+mass, and the split of that mass between the two ends is a free
+constant of integration, canonically fixed by the
+$\ell^{2}$- or $\ell^\infty$-optimal choices
+$\gamma_2=-\frac1N\sum P_j$,
+$\gamma_\infty=-\tfrac12(\max P_j+\min P_j)$.  Iterating from a
+partition-of-unity representation of $p^{(d)}$ downward gives a
+local, sparse, boundary-adaptable alternative to
+\eqref{eq:interval-algorithm} in which scales may change per stage.
+
+Iterating \eqref{eq:parent-child} upward instead gives the exact
+dyadic derivative stencil:
+\begin{equation}
+ \boxed{\;
+ D^{\,d}\,U_{2^{d}h,\,c}(x)
+ =h^{-d}\,2^{-\binom d2}
+ \sum_{k=0}^{2^{d}-1}\eps_k\,
+ U_{h,\;c+(2k-(2^{d}-1))h}(x),
+ \;}
+ \label{eq:tm-stencil}
+\end{equation}
+with the signed Thue--Morse signs $\eps_k$: each differentiation
+doubles the leaves and appends a binary digit carrying the sign, the
+chain-rule factors multiplying to $h^{-d}2^{-\binom d2}$.  Together
+with \cref{thm:iterated-J} this closes a perfect duality:
+\emph{integration} spreads one atom into a train weighted by the
+partition numbers $p_m(N)$ (the causal inverse of the Thue--Morse
+block, \cref{prop:tm-green}), while \emph{differentiation} contracts
+a coarse atom into a block weighted by the Thue--Morse signs
+themselves --- the two convolution inverses of one stencil, realized
+by up-atoms at dyadic scales.  The Gaussian-binomial deformation
+$\prod_{j<d}(1-yq^{j})
+=\sum_r(-1)^{r}q^{\binom r2}\genfrac{[}{]}{0pt}{}{d}{r}_q y^{r}$
+suggests geometrically scaled stencils
+(\cref{q:qgeometric}).
+
+\subsection{Finite sinc prefixes}
+
+Truncating the Fourier product at $N$ factors gives the
+piecewise-polynomial generator $u_N$ (an $N$-fold uniform
+convolution, support radius $1-2^{-N}$), whose lattice has exact
+reproduction degree $\min(N-1,\vtwo(m))$, whose cumulants obey the
+exact truncation law
+$\kappa^{(N)}_{2r}=(1-2^{-2rN})\,\kappa_{2r}$, and whose Appell
+coefficients converge to the up-versions at the dyadic rate
+\begin{equation}
+ A^{(m)}_{r,N}=A^{(m)}_r
+ +\binom r2\kappa_2m^{2}\,2^{-2N}A^{(m)}_{r-2}
+ +\bigO_{r,m}\bigl(2^{-4N}\bigr):
+ \label{eq:finite-appell}
+\end{equation}
+exact spline plateaux of any prescribed finite order, converging
+coefficientwise to the $C^\infty$ theory.
+
+\subsection{Verification and arithmetic}
+
+The absorbed package verifies the interval algorithm in exact
+rational arithmetic: the worked degree-four example
+($p=\tfrac75-3x+2x^{2}-\tfrac12x^{3}+\tfrac37x^{4}$ on
+$[-\tfrac12,\tfrac32]$, $m=16$, $\rho=2$,
+$p^{\sharp}_2=\tfrac{1301}{1575}-\tfrac73y+\tfrac67y^{2}
+-\tfrac12y^{3}+\tfrac37y^{4}$, $49$ atoms) has residual
+\emph{exactly zero} at $129$ dyadic points, and seven generic tests
+of degrees $0$--$6$ likewise return exact zero
+(\nolinkurl{assets/Rvachev_Up_Exact_Polynomial_Representation_Report/}).
+Arithmetically, every reduced cumulant $\kappa_{2r}$ has \emph{odd}
+denominator (the single factor of two in the reduced denominator of
+$B_{2r}$ cancels against $2^{2r-1}/r$), which yields explicit
+$2$-adic denominator bounds for all output coefficients: for data in
+$2^{-s}\Z[1/O]$ ($O$ odd) the coefficients lie in
+$2^{-[s(d+1)+d+\nu]}\Z[1/O']$, all further growth odd
+(\cref{q:odd-denominator}).
+
 \section{Dictionary versus ladder, and the minimal atom count}
 \label{sec:comparison}
 
@@ -1313,8 +1525,14 @@ Discrete engine & alias annihilator $A_d=\prod[2^{m}]_z$
 The two discrete engines are the two directions of one convolution
 identity ($\ThetaTM$ against its causal inverse), and the two
 coefficient calculi are the two members of the Appell pair
-\eqref{eq:appell-pair}.  The comparison also settles more of the
-minimal-atom question than either source alone.
+\eqref{eq:appell-pair}.  The oversampled lattice of
+\cref{sec:lattice} is the third normal form, extremal in a third
+sense: many atoms ($2^{d}(B-A)/\rho+2^{d+1}+\bigO(1)$) but an
+$\bigO(d)$-element \emph{description} with $2m+1$-local
+evaluation, a free physical scale, and full endpoint-jet matching
+--- with the ghost-antiderivative route as its sparse, per-stage
+adaptable variant.  The comparison also settles more of the
+minimal-atom question than any source alone.
 
 \begin{theorem}[Minimal atom counts]
 \label{thm:minimal-atoms}
@@ -1524,6 +1742,68 @@ polynomials on residue classes modulo $2^{m-1}$, and connect them to
 Mahler-type functional equations.
 \end{problem}
 
+\begin{conjecture}[Lattice minimality and atom complexity]
+\label{conj:lattice-minimality}
+(i) There is a length threshold $L_d$ such that any exact one-scale
+lattice representation of a degree-$d$ polynomial on an interval of
+length $\ge L_dh$, with no atom identically zero there, forces
+$\vtwo(m)\ge d$: long plateaux cannot beat the stationary binary
+order by boundary engineering.  (ii) For intervals comparable to the
+atom radius and bounded support enlargement, every one-scale exact
+representation of all of $\PiD$ needs $\Omega(2^{d})$ atoms in the
+worst case, making the canonical $2^{d+1}+\bigO(1)$ boundary count
+order-optimal.  (The fixed-dictionary count of
+\cref{prop:fixed-lower} bounds \emph{dimension}; these bound
+\emph{lattice atom numbers}.)
+\end{conjecture}
+
+\begin{conjecture}[Stable radius, ghost limit, local Chebyshev]
+\label{conj:lattice-analytic}
+For fixed $p$ and interval, the coefficient norm of the canonical
+lattice representation has a finite minimizing radius $\rho_*>0$,
+governed by the nearest complex critical scale of
+$1/\MM_u(\rho z)$ (the lattice sibling of
+\cref{conj:conditioning-scale}).  The $\ell^{2}$-optimal
+ghost-antiderivative iterates converge, after matching scale and
+lattice, to the canonical Appell samples.  And for generic ordered
+centers on a sufficiently short interval avoiding support endpoints,
+finite equal-scale up-translate families form an extended Chebyshev
+system.
+\end{conjecture}
+
+\begin{question}[Sharp odd-denominator law]
+\label{q:odd-denominator}
+Every reduced cumulant $\kappa_{2r}$ has odd denominator
+(\cref{sec:lattice}); determine the exact $2$-adic valuation of the
+reduced $A^{(m)}_r(u)$ at dyadic $u$ (conjecturally a function only
+of the dyadic denominator of $u$ and the binary digit sums of the
+Bell partitions of $r$, all irregular growth confined to odd primes
+dividing $2^{2j}-1$ and Bernoulli numerators).
+\end{question}
+
+\begin{question}[Endpoint asymptotics of the Appell table]
+\label{q:appell-endpoint}
+In the boundary scaling $u=1+\delta_d$ with
+$\delta_d2^{d}/d$ bounded away from $0$ and $\infty$, the dominant
+saddle $z_d$ of $\Gd_d(u)=[z^{d}]d!\,\e^{uz}/\MM_u(z)$ should obey
+$d=\delta_dz_d+\log_2z_d+\Theta(1)$, and the full expansion should
+carry a nonconstant one-periodic lower-Lambert phase --- the
+polynomial-synthesis face of the corpus's Fabius endpoint machinery
+(fixed-$u$ coefficients are instead governed by the nearest
+imaginary poles of $1/\MM_u$).
+\end{question}
+
+\begin{question}[$q$-geometric stencils]
+\label{q:qgeometric}
+Is there a nonstationary atomic family with geometrically varying
+scales whose exact derivative/reproduction stencils have Gaussian
+binomial coefficients $(-1)^{r}q^{\binom r2}
+\genfrac{[}{]}{0pt}{}{d}{r}_q$, interacting at $q=2$ with the
+Rvachev refinement equation and degenerating at $q\to1$ to ordinary
+finite differences?  (This subsumes the base-$b$ question of
+\cref{sec:extensions} on the stencil side.)
+\end{question}
+
 \begin{statusbox}{Lean formalization roadmap}
 In dependency order, all finite or formal-power-series layers first:
 (1) the telescoping identity of \cref{prop:one-step} and the
@@ -1540,8 +1820,13 @@ formalized integer zero orders);
 \cref{thm:local-dim} via the existing non-elementarity theorem;
 (8) recurrence elimination, the Thue--Morse certificate, and the
 formal cancellation proof of the $H_d$ symbol
-\eqref{eq:H-def}.  Steps (1)--(3) and (5)--(8) are finite algebra;
-only (4) needs Schwartz-class Poisson summation.
+\eqref{eq:H-def}; (9) twisted Poisson summation
+\eqref{eq:twisted-poisson} and the general-ratio reproduction
+\eqref{eq:general-reproduction}; (10) the parent--child identity,
+finite prefix-sum primitive, and the Thue--Morse stencil
+\eqref{eq:tm-stencil} (pure finite algebra plus support
+reasoning).  Steps (1)--(3), (5)--(8), and (10) are finite
+algebra; only (4) and (9) need Schwartz-class Poisson summation.
 \end{statusbox}
 
 \appendix
@@ -1612,17 +1897,41 @@ Appell coefficient transform with Bernoulli--Bell closed forms,
 Wronskian/Chebyshev structure, extension operator, collar--atom
 tradeoff, anticausal mixing, conditioning analysis, worked quartic
 with figures, classical Rvachev bibliography. \\
+\addlinespace
+\emph{Exact Polynomial Plateaux from Rvachev's Up-Function}
+(seventh wave;
+\nolinkurl{Rvachev_Up_Exact_Polynomial_Representation_Report};
+SHA in \nolinkurl{assets/SHA256SUMS-absorbed.txt})
+& The oversampled lattice of \cref{sec:lattice}: twisted Poisson
+identity, general-ratio reproduction with sharp order
+$\vtwo(m)$ and the general first-defect series
+\eqref{eq:general-defect}, probabilistic deconvolution
+characterization, the physical-scale interval algorithm with
+truncation indices, support/atom-count bounds, jet matching,
+compressed $\bigO(d)$ description and $(2m+1)$-locality; the
+ghost-atom antiderivative calculus and the Thue--Morse derivative
+stencil \eqref{eq:tm-stencil}; finite sinc-prefix generators with
+the exact cumulant truncation law; generator-independent theorem;
+odd-cumulant-denominator arithmetic; worked degree-four example with
+exact-zero verification; the lattice-side conjectures and questions
+of \cref{sec:frontiers-poly}. \\
 \bottomrule
 \end{tabular}
 \end{center}
 
-The exact SHA-256 hashes of the two absorbed \texttt{.tex} sources
+The exact SHA-256 hashes of the three absorbed \texttt{.tex} sources
 are recorded in \nolinkurl{assets/SHA256SUMS-absorbed.txt}.
 \emph{What was deduplicated}: the corpus background (normalization,
 probability model, MGF/cumulants, Fourier zeros), the Appell
-calculus, the Thue--Morse products, rationality and affine
-covariance, tensor products, extension-operator remarks, conditioning
-warnings, and the Lean roadmaps, each of which both sources develop.
+calculus (the third source's up-Appell family
+$A^{(m)}_r(u)=m^{r-1}\Gd_r(u/m)$ is the same deconvolution family in
+a scaled normalization --- verified on $P_2,P_4$), the Thue--Morse
+products, the sharp-order statement (the third source's exact
+stationary order $\vtwo(m)$ is
+\cref{thm:scale-classification}), rationality and affine covariance,
+tensor products (the third source adds per-coordinate ratios),
+extension-operator remarks, conditioning warnings, and the Lean
+roadmaps.
 \emph{What is new to the consolidation}: the unified Appell-pair and
 Green-pair framing of \cref{sec:shared}, the comparison table and the
 sharpened bound $N_d\le d+2$ of \cref{thm:minimal-atoms}, and the

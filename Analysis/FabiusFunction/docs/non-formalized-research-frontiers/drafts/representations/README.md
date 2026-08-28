@@ -105,7 +105,7 @@ directories deleted, provenance with SHA-256 in the volume.
 The two fourth-wave polynomial-representation drafts (2026-08-28) were
 merged the same day into the volume
 [`Up_Polynomial_Synthesis/`](Up_Polynomial_Synthesis/) (*Exact
-Polynomial Synthesis from Rvachev Up-Atoms*, 19 pp): the common-scale
+Polynomial Synthesis from Rvachev Up-Atoms*, 22 pp): the common-scale
 dictionary construction (formerly
 `Rvachev_Up_Polynomial_Representation_Package/`, *Exact Polynomial
 Synthesis by Finite Rvachev Up-Function Dictionaries*) and the
@@ -117,8 +117,21 @@ foundations stated once, the two constructions compared, the minimal
 atom count sharpened to `N_d <= d+2`, and the canonical defect
 identified with the shifted-quadrature first failure of the
 `Dyadic_Comb_Frontiers` volume (exact special values via the spectral
-Dirichlet values `D(2r)`).  Absorbed directories deleted; provenance
-with SHA-256 in the volume's Appendix B and
-`assets/SHA256SUMS-absorbed.txt`.
+Dirichlet values `D(2r)`).  A third source, the seventh-wave draft
+`Rvachev_Up_Exact_Polynomial_Representation_Report/` (*Exact
+Polynomial Plateaux from Rvachev's Up-Function*), was absorbed the
+same day as the oversampled-lattice chapter: twisted Poisson
+summation, exact reproduction order `v_2(m)` at radius-to-spacing
+ratio `m` with the general-ratio defect series, the physical-scale
+interval algorithm (`O(d)`-element description, `(2m+1)`-local
+evaluation, full endpoint-jet matching), ghost-atom antiderivative
+calculus, the exact Thue–Morse dyadic derivative stencil (convolution
+inverse of the ladder's binary-partition weights), finite sinc-prefix
+generators with the exact cumulant truncation law, and
+odd-denominator cumulant arithmetic; its rational-arithmetic
+verification package lives under
+`assets/Rvachev_Up_Exact_Polynomial_Representation_Report/`.
+Absorbed directories deleted; provenance with SHA-256 in the volume's
+Appendix B and `assets/SHA256SUMS-absorbed.txt`.
 
 See [`../MANIFEST.md`](../MANIFEST.md) for titles and provenance.
