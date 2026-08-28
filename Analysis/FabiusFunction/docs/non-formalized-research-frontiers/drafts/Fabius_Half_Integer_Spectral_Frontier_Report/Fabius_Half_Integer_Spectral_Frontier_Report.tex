@@ -291,7 +291,7 @@ Weighted Prouhet theorem & Proves equality of every positive weighted even momen
 Spectral quadrature & Shows $\sum_k\eps_kw_kP((2k+1)^2)=P(0)/2$ for every polynomial $P$. & \newresult \\
 Dyadic moment filtration & Converts every derivative jet at a reduced dyadic point into a half-integer spectral moment and identifies its exact terminating depth. & \newresult\ formulation \\
 Beyond-all-orders remainder & Rewrites $F(x)$ after subtraction of an arbitrary cosine Taylor polynomial, with all algebraic terms cancelling exactly. & \newresult \\
-Exact dyadic alias transform & Gives a finite DCT of dyadic Fabius values equal to a complete folded half-integer alias class. & \newresult \\
+Exact dyadic alias transform & Gives a finite DCT of dyadic Fabius values equal to a complete folded half-integer alias class. & \newresult\ Abstract cyclic engine formal; specialization remains a separate Lean obligation. \\
 Certified convergence & Gives a uniform $2^{-n^2/2+\bigO(n)}$ error bound from the folded coefficient to $\PhiU(r/2)$. & \newresult \\
 $q$-binomial spectral approximants & Substitutes the finite Gaussian-binomial formula into the DCT, producing exact cyclotomic approximants. & \newresult \\
 Cyclotomic orbit traces & Constructs rational orbit polynomials and explicit Ramanujan-filtered power traces. & \newresult \\
@@ -494,7 +494,7 @@ The displayed support-interval identity is already formalized as
 \path{Fabius.rvachev_cosine_series} in
 \path{PoissonSummation.lean}.  That theorem supplies the exact odd
 half-integer cosine series.  The all-orders differentiated-series packaging
-and the weighted Prouhet, alias-transform, cyclotomic-trace, and Lambert
+and the weighted Prouhet, specialized dyadic alias-transform, cyclotomic-trace, and Lambert
 consequences developed below remain separate formalization obligations.
 
 \begin{remark}
@@ -815,6 +815,50 @@ would destroy the phenomenon.  We formulate this as an open problem in
 \end{remark}
 
 \section{The exact dyadic alias transform}\label{sec:dct}
+
+\subsection{The abstract cyclic aliasing foundation}
+
+The reusable summation mechanism underlying this section is now formal.  In
+its most general convergence form, if a summable family \(a:B\to E\) is
+multiplied by scalars that factor through a finite label type, the twisted
+family remains summable.  This is valid in every complete uniform additive
+group with a continuous distributive scalar action; no norm is required.
+
+For a summable bilateral family \(a:\Z\to E\), define
+\[
+ \mathcal R_s(a):=\sum_{\substack{\ell\in\Z\\\bar\ell=s}}a(\ell).
+\]
+If \(E\) is also Hausdorff, then for every natural modulus, including zero,
+the residue family
+\(s\mapsto\mathcal R_s(a)\) has sum \(\sum_{\ell\in\Z}a(\ell)\).
+For a positive modulus \(M\) and a complete Hausdorff uniform complex
+module, put
+\[
+ \mathcal A_k(a):=
+ \sum_{\ell\in\Z}\chi_M(-\bar\ell k)a(\ell).
+\]
+Every twisted series is summable, and the unnormalized DFT satisfies
+\[
+ \mathcal D_M(\mathcal R_\bullet(a))(k)=\mathcal A_k(a),
+ \qquad
+ \mathcal R_s(a)=\frac1M\sum_{k\in\Z/M\Z}
+   \chi_M(ks)\mathcal A_k(a).
+\]
+
+\paragraph{Lean status.}
+The finite-range engine is
+\path{Fabius.summable_finite_range_smul}.  The residue and Fourier sums are
+\path{Fabius.intResidueTsum} and \path{Fabius.intFourierTsum}; the remaining
+statements are
+\path{Fabius.intFourierSummand_summable},
+\path{Fabius.hasSum_intResidueTsum},
+\path{Fabius.sum_intResidueTsum},
+\path{Fabius.dft_intResidueTsum}, and
+\path{Fabius.intResidueTsum_eq_dft_average}, all in
+\path{SummableCyclicAlias.lean}.  This foundation does not by itself prove
+\eqref{eq:alias-identity}: that specialization still requires inserting the
+absolutely convergent Fourier series of \(P\) and identifying its finite DFT
+with the sampled values \(A_{n,r}\).
 
 \subsection{Folded coefficients}
 
@@ -1732,9 +1776,12 @@ sequence permits uniform termwise differentiation of a Fourier series.
 
 \subsection{Layer 3: alias limits and estimates}
 
-Formalize the infinite alias identity by applying the finite character filter to
-an absolutely convergent Fourier series.  Then prove the selected-factor bound
-and sum the shifted zeta tail.  The exact target statements are
+The complete-uniform-module residue decomposition and its forward and inverse
+cyclic DFT are formalized in \path{SummableCyclicAlias.lean}.  What remains is
+to instantiate that engine with the absolutely convergent Fourier
+coefficients of \(P\), identify the resulting finite transform with
+\(A_{n,r}\), prove the selected-factor bound, and sum the shifted zeta tail.
+The exact remaining target statements are
 \eqref{eq:alias-identity}, \eqref{eq:alias-error-general}, and
 \eqref{eq:alias-error-n}.  No contour integration is needed.
 

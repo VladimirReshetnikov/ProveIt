@@ -90,6 +90,8 @@
 \newcommand{\vtwo}{v_2}
 \newcommand{\qbinom}[3]{\genfrac{[}{]}{0pt}{}{#1}{#2}_{#3}}
 \newcommand{\repo}{\nolinkurl{Analysis/FabiusFunction}}
+\newcommand{\leanevaltwo}[1]{%
+  \nolinkurl{integral_eval}\texttt{\textsubscript{2}}\nolinkurl{#1}}
 
 \newenvironment{proofidea}{\par\smallskip\noindent\textit{Proof architecture.}\ }{\hfill$\square$\par\smallskip}
 \newenvironment{boxedremark}{%
@@ -136,6 +138,9 @@ A mathematically oriented reader should begin with Sections~\ref{ch:objects}, \r
 \section*{Scope and conventions}
 \addcontentsline{toc}{section}{Scope and conventions}
 The repository is active source code, and module boundaries can evolve.  Names and dependencies described here refer to commit \nolinkurl{eaea1b9afe2b7ff0b7dd880bd1710e303dec6d80} on the \texttt{codex/fabius-both-papers} branch, inspected on 25 August 2026.  The walkthrough quotes identifiers and very short fragments where useful, but it paraphrases proof bodies rather than reproducing them.  The exact Lean source remains the authoritative statement of hypotheses, namespaces, coercions, and imported lemmas.  Claims described as questions, conjectures, conditional results, audits, or counterexamples are not silently promoted here to proved positive theorems.
+The only exceptions are passages explicitly labelled as post-snapshot and the
+corresponding rows in Appendix~\ref{app:modules}; their individual source
+checkpoints are recorded with that addendum.
 
 Mathematically, two functions must be kept distinct throughout:
 \begin{itemize}
@@ -174,7 +179,7 @@ and the umbrella import is \nolinkurl{FabiusFunction.lean}.  The Lake package de
 
 The normal build command from the project root is:
 \begin{lstlisting}[style=pseudo]
-lake build +FabiusFunction
+LAKE_JOBS=1 LEAN_NUM_THREADS=0 lake build +FabiusFunction
 \end{lstlisting}
 The source claims in this walkthrough are pinned to commit
 \nolinkurl{eaea1b9afe2b7ff0b7dd880bd1710e303dec6d80}.  Before reproducing a
@@ -182,7 +187,8 @@ declaration or module count, check the checkout with \texttt{git rev-parse
 HEAD}; a moving \texttt{main} branch is not a reproducible specification.
 After dependencies have been installed, a focused edit loop can build one
 module at a time with a Lake target such as
-\texttt{lake build +FabiusFunction.DyadicAnalytic}.  The root-module build
+\texttt{LAKE\_JOBS=1 LEAN\_NUM\_THREADS=0 lake build
++FabiusFunction.DyadicAnalytic}.  The root-module build
 remains the release check.
 
 A useful first test file is:
@@ -2008,6 +2014,39 @@ coefficient of every saddle \emph{mass} coefficient.  Its header notes the
 analogous logarithmic transfer, but that transfer is not proved in this
 module.
 
+\subsection{Universal endpoint-transfer polynomials and finite expectations}
+Two explicitly post-snapshot modules isolate the finite algebra behind an
+endpoint-transfer step.  \nolinkurl{EndpointTransferPolynomials.lean} defines
+universal polynomials \(P_r\in\Q[X]\) by the formal identity
+\[
+  \exp\!\left(-\sum_{j\geq2}\frac{X^j t^{j-1}}{j}\right)
+  =\sum_{r\geq0}P_r(X)t^r.
+\]
+Theorems \nolinkurl{endpointTransferPolynomial_succ},
+\nolinkurl{endpointTransferPolynomial_eq_partitionExpSum}, and
+\nolinkurl{endpointTransferSeries_eq_exp_subst} connect the recursive,
+weighted-partition, and formal-series descriptions.  The evaluation theorems
+\nolinkurl{aeval_endpointTransferPolynomial} and
+\nolinkurl{map_endpointTransferSeries} show that the construction is natural
+in every commutative rational algebra.  These are formal-algebra statements:
+they assert no analytic convergence, branch choice, or remainder estimate.
+
+\nolinkurl{PolynomialExpectationCumulant.lean} supplies the complementary
+finite integration bridge.  The theorem
+\leanevaltwo{_eq_sum_moment} expands the integral of a polynomial
+evaluation into coefficient-weighted raw moments, assuming integrability only
+for powers in the polynomial's support.  The theorem
+\leanevaltwo{_eq_sum_completeBell_momentCumulant_with_mass_correction}
+rewrites those moments through the complete Bell transform of their formal
+cumulants and adds the exact constant-term correction
+\(\varphi(p_0)(m_0-1)\).  The normalized theorem
+\leanevaltwo{_eq_sum_completeBell_momentCumulant_of_moment_zero_eq_one}
+and the probability-measure specialization
+\leanevaltwo{_eq_sum_completeBell_momentCumulant} remove that
+correction.  Taking \(p=P_r\) composes the two finite interfaces, but neither
+module proves the analytic endpoint-transfer expansion, Taylor remainders, or
+tail estimates.
+
 \subsection{Uniform central remainders}
 Formal coefficients alone do not prove an asymptotic expansion.  \nolinkurl{FabiusSaddleCentralAllOrders.lean} bounds the difference between the exact central integrand and its truncated polynomial approximation uniformly on the growing central window.
 
@@ -2973,10 +3012,19 @@ Module & Role in the development \\
 \nolinkurl{FabiusSharpAsymptoticTransfer.lean} & General transfer lemmas for logarithmic and exponential asymptotic equivalence. \\
 \nolinkurl{FabiusSharpAsymptotic.lean} & Correct sharp formula with periodic phase, first error bound, and asymptotic equivalence. \\
 \addlinespace[0.45em]
-\multicolumn{2}{l}{\textbf{Post-snapshot exponential and moment--cumulant algebra}}\\[0.25em]
+\multicolumn{2}{l}{\textbf{Post-snapshot exponential, cumulant, endpoint-transfer, and interpolation algebra}}\\[0.25em]
 \nolinkurl{ExponentialPartition.lean} & Weighted partitions and their reciprocal-factorial coefficient sum over arbitrary commutative \(\mathbb Q\)-algebras, including the marked-part and normalized successor recurrences and the field quotient bridge. \\
 \nolinkurl{ExponentialBell.lean} & Recurrence-uniqueness bridge identifying the finite weighted-partition family with \nolinkurl{SaddleExpansion.expCoeff}. \\
 \nolinkurl{MomentCumulantAlgebra.lean} & Factorial normalization, the complete Bell transform and inverse moment--cumulant transform, the classical Bell recurrence, normalized inverse laws, and functoriality over arbitrary commutative \(\mathbb Q\)-algebras. \\
+\nolinkurl{EndpointTransferPolynomials.lean} & Universal endpoint-transfer polynomials over \(\mathbb Q[X]\): recurrence, weighted-partition formula, exact formal exponential series, finite truncation, evaluation naturality, and the coefficients through order three. \\
+\nolinkurl{PolynomialExpectationCumulant.lean} & Finite polynomial integrals as coefficient-weighted raw moments and complete Bell transforms of formal cumulants, including the exact zeroth-moment correction and the probability-measure specialization. \\
+\nolinkurl{CompleteHomogeneous.lean} & Evaluation and adjoining-variable recurrences for complete homogeneous symmetric polynomials, together with their univariate quotient polynomial, over arbitrary commutative semirings or rings as appropriate. \\
+\nolinkurl{LagrangeResidualMoments.lean} & Every higher residual moment of a polynomially exact finite row, with a representation-independent commutative-ring theorem and the distinct-node Lagrange specialization. \\
+\nolinkurl{GeometricRichardson.lean} & Generic geometric root polynomials and normalized forward Richardson polynomials, including their evaluation and coefficient interfaces. \\
+\nolinkurl{GeometricLagrangeWeights.lean} & Identification of the geometric Lagrange row with the Richardson coefficient polynomial and its complete-homogeneous all-order moments. \\
+\nolinkurl{GeometricLagrangeQBinomial.lean} & Field-valued q-Pochhammer weight formulas and report-facing rational q-binomial and quarter-base coefficient formulas. \\
+\nolinkurl{GeometricLagrangeQMoments.lean} & Closed forms for every rational geometric moment under nonzero-base and nonvanishing finite-denominator hypotheses, with exact residual sign and finite total variation for \(0<q<1\) and dedicated quarter-base corollaries. \\
+\nolinkurl{LambertPhaseLockedRichardson.lean} & Exact lower-Lambert phase locking, reciprocal-grid Lagrange weights, cancellation, and every complete-homogeneous residual moment. \\
 \addlinespace[0.45em]
 \multicolumn{2}{l}{\textbf{Central integral and all-order machinery}}\\[0.25em]
 \nolinkurl{FabiusSaddleReduction.lean} & Algebraic reduction of the inversion integral to a normalized central weight. \\
@@ -3049,11 +3097,24 @@ Module & Role in the development \\
 \begin{remark}
 Some helper files are intentionally absent from this table, and a few families may acquire additional leaves as the repository evolves.  The umbrella module and the actual import graph remain the definitive inventory.  Duplicate-looking module names usually mark distinct proof stages---for example, raw algebra versus scalar specialization, or a central estimate versus its all-order strengthening.
 
-The three rows headed by \nolinkurl{ExponentialPartition.lean},
-\nolinkurl{ExponentialBell.lean}, and \nolinkurl{MomentCumulantAlgebra.lean}
-are a post-snapshot addendum.  The first two were checked at code checkpoint
+The seven rows headed by \nolinkurl{ExponentialPartition.lean},
+\nolinkurl{ExponentialBell.lean}, \nolinkurl{MomentCumulantAlgebra.lean},
+\nolinkurl{EndpointTransferPolynomials.lean}, and
+\nolinkurl{PolynomialExpectationCumulant.lean}, followed by
+\nolinkurl{CompleteHomogeneous.lean} and
+\nolinkurl{LagrangeResidualMoments.lean}, are a post-snapshot addendum.
+The first two were checked at code checkpoint
 \nolinkurl{e119db9032ab2641955d47e1da1338a8386aac4d}; the third reflects
-mainline checkpoint \nolinkurl{3989cd9d3} on 27 August 2026.
+mainline checkpoint \nolinkurl{3989cd9d3}; the endpoint-transfer polynomials
+were checked at checkpoint
+\nolinkurl{a86aee8e203812816fa5a0e97b9e077a0a6f974e}; and the finite
+polynomial-integral bridge is present at checkpoint
+\nolinkurl{6e9148873264978eef43181d6bd214c36cdc405a}.  The two interpolation
+rows reflect checkpoints
+\nolinkurl{deefddd335b55bd74b7ac13d782a0b58fb7e2e93} and
+\nolinkurl{cf6cd332660db235675fe3214d5bf757cb424086}, all on 27 August 2026.
+The subsequent five geometric and Lambert rows reflect source checkpoint
+\nolinkurl{c45276994d9411a45bef409ad6bc481771613113}, also on 27 August 2026.
 The title-page pin and reproduction count continue to describe the older
 audited snapshot.
 \end{remark}
@@ -3258,11 +3319,12 @@ environment.
 \subsection{Build and inspect trust}
 The release-level library check is
 \begin{lstlisting}[style=pseudo,language={}]
-lake build +FabiusFunction
+LAKE_JOBS=1 LEAN_NUM_THREADS=0 lake build +FabiusFunction
 \end{lstlisting}
-On memory-constrained machines the repository policy recommends building one
-prefixed module target per Lake invocation while debugging.  It also requires
-a source audit for declarations that bypass ordinary proof checking:
+The repository policy requires one prefixed module target per Lake invocation,
+with \texttt{LAKE\_JOBS=1} and \texttt{LEAN\_NUM\_THREADS=0}, including during
+debugging.  It also requires a source audit for declarations that bypass
+ordinary proof checking:
 \begin{lstlisting}[style=pseudo,language={}]
 rg -n '\b(sorry|admit)\b' \
   Analysis/FabiusFunction/Lean -g '*.lean'

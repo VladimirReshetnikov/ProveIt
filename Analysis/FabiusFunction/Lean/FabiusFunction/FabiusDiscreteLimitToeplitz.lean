@@ -1,5 +1,5 @@
 import FabiusFunction.FabiusRawQBinomialFormula
-import FabiusFunction.GeometricLagrange
+import FabiusFunction.GeometricQBinomialLagrange
 import Mathlib.Topology.MetricSpace.Pseudo.Constructions
 
 /-!
@@ -14,8 +14,10 @@ variation, and supplies a general finite-row Toeplitz convergence theorem.
 
 The algebraic row is also identified pointwise with the Lagrange evaluation
 weights on the reversed geometric grid `1, 1/2, ..., (1/2)^n`.  Consequently
-the q-Richardson theorem is a direct specialization of the field- and
-module-generic engine in `GeometricLagrange`.
+the q-Richardson theorem is a direct specialization of the field-generic
+Gaussian closed form in `GeometricQBinomialLagrange` and the module-generic
+engine in `GeometricLagrange`.  The same bridge evaluates every positive
+reversed-row moment, including all residuals beyond the cancellation range.
 
 The range-length convention uses a half-cell correction.  In particular it
 continues to encode the original inclusive upper bound when that bound is
@@ -414,8 +416,7 @@ coefficient of the `n`-th Fabius Toeplitz row is exactly the evaluation-at-
 zero Lagrange weight belonging to the reversed node `(1/2)^(n-j)`.
 
 This conceptual identification includes `n=j=0`; its proof uses only the
-moment characterization of Lagrange interpolation and the row generating
-polynomial above. -/
+generic Gaussian/Lagrange closed form, specialized at the half base. -/
 theorem discreteLimitWeight_eq_geometricLagrangeWeight
     {n j : ℕ} (hj : j ≤ n) :
     discreteLimitWeight n j =
@@ -424,19 +425,19 @@ theorem discreteLimitWeight_eq_geometricLagrangeWeight
       Set.InjOn (fun k : ℕ => (1 / 2 : ℚ) ^ k)
         (Finset.range (n + 1)) :=
     (pow_right_injective₀ (a := (1 / 2 : ℚ)) (by norm_num) (by norm_num)).injOn
-  have hi : n - j ∈ Finset.range (n + 1) :=
-    Finset.mem_range.mpr (by omega)
-  have hmoment : ∀ d < (Finset.range (n + 1)).card,
-      ∑ k ∈ Finset.range (n + 1),
-        discreteLimitWeight n (n - k) * ((1 / 2 : ℚ) ^ k) ^ d =
-          (0 : ℚ) ^ d := by
-    intro d hd
-    exact sum_range_discreteLimitWeight_reverse_moment n d
-      (Nat.lt_succ_iff.mp (by simpa only [Finset.card_range] using hd))
-  have hweight := eq_lagrangeEvalWeight_of_moments
-    (Finset.range (n + 1)) (fun k : ℕ => (1 / 2 : ℚ) ^ k) 0 hnode
-      (fun k => discreteLimitWeight n (n - k)) hmoment hi
-  simpa only [Nat.sub_sub_self hj, geometricLagrangeWeight] using hweight
+  calc
+    discreteLimitWeight n j =
+        geometricQBinomialWeightNumerator (1 / 2 : ℚ) n (n - j) /
+          finiteQPochhammerIn (1 / 2 : ℚ) (1 / 2 : ℚ) n := by
+      simp only [discreteLimitWeight,
+        geometricQBinomialWeightNumerator_eq_of_le
+          (1 / 2 : ℚ) (Nat.sub_le n j),
+        Nat.sub_sub_self hj, gaussianBinomial_half_eq_halfQBinomial,
+        finiteQPochhammerIn_rat_eq, halfQPochhammer]
+      ring
+    _ = geometricLagrangeWeight (1 / 2 : ℚ) n (n - j) :=
+      (geometricLagrangeWeight_eq_gaussianBinomial_div
+        (1 / 2 : ℚ) n (n - j) hnode (Nat.sub_le n j)).symm
 
 /-- Reverse orientation of `discreteLimitWeight_eq_geometricLagrangeWeight`,
 convenient when a geometric sample block is reindexed as a Toeplitz row. -/
@@ -447,6 +448,41 @@ theorem geometricLagrangeWeight_half_eq_discreteLimitWeight
   simpa only [Nat.sub_sub_self hk] using
     (discreteLimitWeight_eq_geometricLagrangeWeight
       (n := n) (j := n - k) (Nat.sub_le n k)).symm
+
+/-- **Complete positive moments of the reversed Toeplitz row.**  Beyond the
+cancelled range, every residual moment remains one half-Gaussian
+coefficient.  For `0 < d`,
+
+`sum_k d[n,n-k] ((1/2)^k)^d =
+  (-1)^n (1/2)^(n(n+1)/2) halfQBinomial (d-1) n`.
+
+Thus `d ≤ n` recovers cancellation and `d = n + 1` gives the first
+surviving moment; the statement also includes `n = 0`. -/
+theorem sum_range_discreteLimitWeight_reverse_moment_eq_halfQBinomial
+    (n d : ℕ) (hd : 0 < d) :
+    (∑ k ∈ Finset.range (n + 1),
+      discreteLimitWeight n (n - k) * ((1 / 2 : ℚ) ^ k) ^ d) =
+      (-1 : ℚ) ^ n * (1 / 2 : ℚ) ^ (n * (n + 1) / 2) *
+        halfQBinomial (d - 1) n := by
+  have hnode :
+      Set.InjOn (fun k : ℕ => (1 / 2 : ℚ) ^ k)
+        (Finset.range (n + 1)) :=
+    (pow_right_injective₀ (a := (1 / 2 : ℚ)) (by norm_num) (by norm_num)).injOn
+  calc
+    (∑ k ∈ Finset.range (n + 1),
+        discreteLimitWeight n (n - k) * ((1 / 2 : ℚ) ^ k) ^ d) =
+        ∑ k ∈ Finset.range (n + 1),
+          geometricLagrangeWeight (1 / 2 : ℚ) n k *
+            ((1 / 2 : ℚ) ^ k) ^ d := by
+      apply Finset.sum_congr rfl
+      intro k hk
+      rw [geometricLagrangeWeight_half_eq_discreteLimitWeight
+        (Nat.lt_succ_iff.mp (Finset.mem_range.mp hk))]
+    _ = (-1 : ℚ) ^ n * (1 / 2 : ℚ) ^ (n * (n + 1) / 2) *
+          halfQBinomial (d - 1) n := by
+      simpa only [gaussianBinomial_half_eq_halfQBinomial] using
+        sum_geometricLagrangeWeight_mul_pow_eq_gaussianBinomial
+          (1 / 2 : ℚ) n d hnode hd
 
 /-- Reindexing a Toeplitz row turns it into the corresponding geometric
 Lagrange row on any module-valued sample block.  No module laws beyond the

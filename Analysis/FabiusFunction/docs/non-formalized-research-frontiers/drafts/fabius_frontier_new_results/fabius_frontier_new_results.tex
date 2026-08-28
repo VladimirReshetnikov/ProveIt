@@ -1279,40 +1279,79 @@ The sinc-side results are well suited to formalization because their analytic an
 
 \subsection{Algebraic theorem chain}
 
-The lowest-risk formalization order is:
+The absolute-weight, Lambert-weight/cancellation, and reciprocal-moment tasks
+in the post-snapshot plan are now discharged.  The remaining purely algebraic
+packaging task is:
 \begin{enumerate}
-\item prove the product form of $\lambda_{r,j}$ and its Gaussian-binomial simplification;
-\item prove the moment identity \cref{eq:qmoment-full} from the finite $q$-binomial theorem;
-\item prove the absolute weight sum \cref{eq:qcondition};
-\item prove the Lambert weight formula and cancellation moments;
-\item prove the reciprocal moment identity \cref{eq:lambert-moments} by rational-function coefficients;
-\item identify the complete-homogeneous coefficients with the already
-      formalized complete-Bell power-sum specialization.
+\item package the complete-homogeneous/Bell power-sum identity using the
+      already formalized complete-Bell machinery.
 \end{enumerate}
-These steps require no delicate asymptotics.
+This step requires no delicate asymptotics.
 
 \paragraph{Post-snapshot algebraic progress.}
-The later module \texttt{GeometricLagrange.lean} now formalizes Lagrange
-evaluation weights for arbitrary distinct nodes, polynomial and module-valued
-exactness, the first omitted monomial moment, and geometric-node
-specializations.  At the dyadic ratio \(q=1/2\), the later
-\texttt{FabiusDiscreteLimitToeplitz.lean} identifies the closed
-\(q\)-binomial row with those Lagrange weights and proves its all-degree
-reverse moments and exact total variation.  These results do not yet supply
-the arbitrary-ratio formulas used above---in particular the \(q=1/4\)
-residual moments and condition number.  Independently,
-\texttt{ExponentialPartition.lean} and
+The finite (q)-filter algebra and reciprocal-grid phase locking, closed
+weights, cancellation, and all-order residual moments are now machine-checked.
+\texttt{CompleteHomogeneous.lean} evaluates Mathlib's complete homogeneous
+symmetric polynomial on arbitrary finite families, while
+\texttt{LagrangeResidualMoments.lean} identifies the corresponding monomial
+quotient and remainder by a monic nodal polynomial and proves every higher
+moment of an arbitrary polynomially exact finite row.  Its Lagrange
+specialization is
+\path{sum_lagrangeEvalWeight_mul_pow_card_add}, and the geometric-grid
+specialization is
+\path{sum_geometricLagrangeWeight_mul_pow_card_add}.
+
+The denominator-free bridge \texttt{GeometricQBinomialLagrange.lean} proves
+the arbitrary-ratio numerator identity over commutative rings.  Its theorem
+\texttt{reversed\_finite\_qBinomial\_theorem} identifies the generating
+polynomial with \(\prod_{k<r}(z-q^{k+1})\), and
+\texttt{sum\_geometricLagrangeWeight\_mul\_pow\_eq\_gaussianBinomial}
+computes every positive residual moment over a field from finite-node
+injectivity.  The reversed index in its numerator is deliberate; no
+unproved Gaussian symmetry is used.
+
+The modules \texttt{GeometricRichardson.lean},
+\texttt{GeometricLagrangeWeights.lean},
+\texttt{GeometricLagrangeQBinomial.lean}, and
+\texttt{GeometricLagrangeQMoments.lean} identify the finite geometric
+Richardson polynomial and its Lagrange weights, prove the q-Pochhammer and
+Gaussian-binomial weight formulas, and compute every rational \(q\)-moment
+under a nonzero-base and nonvanishing finite-denominator hypothesis.  For
+\(0<q<1\) they give every positive residual, establish its exact sign, and
+compute the finite exact \(\ell^1\) norm.  In particular,
+\path{quarterGeometricLagrangeQMoment_eq_residual_qBinomial} and
+\path{sum_abs_quarterGeometricLagrangeWeight_eq_qPochhammer_ratio} supply the
+report-facing \(q=1/4\) algebra.  At \(q=1/2\),
+\texttt{FabiusDiscreteLimitToeplitz.lean} identifies the same weights with
+the normalized Toeplitz row and supplies its reverse moments and exact total
+variation.
+
+Independently, \texttt{ExponentialPartition.lean} and
 \texttt{ExponentialBell.lean} identify the universal weighted-partition
 formula for an exponential coefficient with
 \texttt{SaddleExpansion.expCoeff} over every commutative
-\(\mathbb Q\)-algebra.  The later \texttt{MomentCumulantAlgebra.lean}
-factorially normalizes the same engine into named complete-Bell and inverse
-moment--cumulant transforms, with the classical Bell recurrence and
-normalized inverse laws.  In particular, the coefficient mechanism behind
-\eqref{eq:h-Bell} can reuse these bridges with
-\(E_k=k^{-1}\sum_i a_i^k\) for \(k\ge1\).  The displayed
-complete-homogeneous specialization, the Richardson error formulas, and every
-analytic estimate in this report remain distinct formalization obligations.
+\(\mathbb Q\)-algebra.  The module \texttt{MomentCumulantAlgebra.lean}
+factorially normalizes that engine into named complete-Bell and inverse
+moment--cumulant transforms.  Thus the coefficient mechanism behind
+\eqref{eq:h-Bell} is available generically, although its displayed
+complete-homogeneous power-sum specialization has not yet been packaged as a
+theorem.
+
+Finally, \texttt{LambertPhaseLockedRichardson.lean} proves exact lower-Lambert
+phase locking, the factorial and binomial reciprocal-grid weights, their
+cancellation moments, and the report-shaped all-order identity
+\path{sum_shiftedReciprocalLagrangeWeight_mul_invPow_eq_completeHomogeneous}.
+The proof is a specialization of the universal Lagrange residual theorem, so
+it requires neither rational-function differentiation nor analytic
+coefficient extraction.
+
+These declarations do not prove the generating-series characterization
+\eqref{eq:complete-homogeneous}, the Bell/harmonic-sum identity
+\eqref{eq:h-Bell}, the infinite limit or decimal value in
+\eqref{eq:qcondition-limit}--\eqref{eq:qcondition-dyadic}, the Lambert-row
+conditioning asymptotics and Bernoulli diagnostics, the derivative-extractor
+weights, any sinc-tail transformed-error or bracketing theorem, or any
+analytic phase-extraction estimate.
 
 \subsection{Analytic theorem chain}
 
@@ -1326,15 +1365,16 @@ The analytic side can then proceed as follows:
 \item add termwise differentiation on compact zero-free intervals.
 \end{enumerate}
 
-The endpoint input is already formalized with its exact phase and every finite remainder:
-the periodic coefficient functions are
+The endpoint input is already formalized with its exact phase and every finite
+remainder: the periodic coefficient functions are
 \texttt{fabiusSaddleLogCoefficient}, and the expansion is proved in
-\path{FabiusFullAsymptoticExpansion.lean}.  What remains in the frontier namespace is the
-phase-locked extraction transform itself and the verification that its weighted use of
-those uniform remainders has precisely the strength asserted in
-\cref{thm:Psi-extraction}.  The arbitrary-node interpolation foundation is already
-available in \path{GeometricLagrange.lean}; the closed reciprocal-grid weights and their
-all-residual moments are the next algebraic obligations.
+\path{FabiusFullAsymptoticExpansion.lean}.  Exact phase locking, the closed
+reciprocal-grid weights, their low-order cancellations, and all their residual
+moments are now supplied by
+\path{LambertPhaseLockedRichardson.lean}.  What remains in the frontier is the
+analytic phase-extraction transform itself: no current declaration combines
+the growing reciprocal-grid weights with the uniform saddle remainders at the
+strength asserted in \cref{thm:Psi-extraction}.
 
 \section{Open problems and next frontier steps}
 \label{sec:open}

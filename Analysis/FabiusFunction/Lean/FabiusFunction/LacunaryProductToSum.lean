@@ -34,6 +34,17 @@ The following two ingredients remain useful independent symmetries:
 * `neg_one_pow_mul_cos_sub` — the phase parity.
 * `sum_thueMorseSign_mul_sin_affine` — the upstream affine factorization.
 * `prod_sin_two_pow_eq_thueMorse_sum` — **the identity**.
+
+Relation to `ThueMorseSineProduct.sum_thueMorseSign_exp_eq_sin_prod`,
+which gives the same product its *complex* generating form
+`∑_{n<2ᵐ} εₙe^{inx} = (−2i)ᵐe^{i(2ᵐ−1)x/2}∏_{j<m} sin(2ʲx/2)`: taking
+real parts there produces a cosine sum over the `2ᵐ` *centered*
+frequencies `2n−2ᵐ+1`, which is symmetric under `n ↦ 2ᵐ−1−n` — by
+exactly the complement law proved below.  Folding along that symmetry
+halves the length and turns the cosines into sines, which is the form
+proved here: `2ᵐ` real terms at the *positive odd* frequencies.  The
+folded form is the one real analysis wants, and the fold is not
+formal — it is where the Thue–Morse reflection symmetry enters.
 -/
 
 set_option autoImplicit false

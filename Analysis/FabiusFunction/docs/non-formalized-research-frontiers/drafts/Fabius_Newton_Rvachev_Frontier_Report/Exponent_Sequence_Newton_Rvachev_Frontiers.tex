@@ -293,14 +293,18 @@ repository's Lean library, that declaration is cited inline in typewriter type--
 \path{Analysis/FabiusFunction/Lean/FabiusFunction/}.  Roughly a dozen such citations appear
 below.  In most of them the formal statement is \emph{more general} than the one printed here
 (arbitrary base instead of $2$, arbitrary coefficient ring or module instead of $\R$, arbitrary
-geometric ratio instead of $q\in(0,1)$); in a few it is a strict specialization, such as the
-$\ell^1$ weight norm, which is formalized only at $q=1/2$.  Each citation says which.  These
-labels concern representation only, not correctness: no result of this report is formalized end
+geometric ratio instead of $q\in(0,1)$).  Each citation says which.  In particular the finite
+rational geometric-Lagrange kernel used in the Gaussian-$q$ rows---closed weights, all
+residual moments and their sign, and the finite exact $\ell^1$ norm---is formalized at
+arbitrary ratio $0<q<1$, so the $q=1/4$ instance is covered.  These labels concern
+representation only, not correctness: no result of this report is formalized end
 to end, and every result below that carries no such citation is unformalized.  In particular
-the entire probabilistic layer, the entire analytic layer---Fourier envelopes for the Pascal
-hierarchy of rank at least two, Mellin contour displacement, exponential Tauberian transfer,
-Berry--Esseen for non-identically-distributed summands, total-variation and Wasserstein
-distances---and the automatic-sequence machinery have no Lean counterpart at all.
+the transformed infinite series, Richardson tomography and its analytic remainder, the
+infinite condition-number limit, the entire probabilistic layer, the entire analytic
+layer---Fourier envelopes for the Pascal hierarchy of rank at least two, Mellin contour
+displacement, exponential Tauberian transfer, Berry--Esseen for non-identically-distributed
+summands, total-variation and Wasserstein distances---and the automatic-sequence machinery
+have no Lean counterpart at all.
 \end{statusbox}
 
 \section{The exponent-sequence convolution monoid}
@@ -2096,8 +2100,9 @@ A dependency-aware order is as follows.
       periodic parity words.
 \item Prove the finite sign-product factorization \eqref{eq:T-a-L}, its exact order at one,
       and the first surviving moment \eqref{eq:first-surviving}.
-\item Add the geometric Lagrange weights, Gaussian-binomial closed form, exact survivor, and
-      sign-certified Richardson remainder.
+\item The geometric Lagrange weights, Gaussian-binomial closed form, exact
+      survivor, and finite residual sign are now formalized; transferring this
+      finite kernel to the report's analytic Richardson remainder remains open.
 \end{enumerate}
 
 These statements require only finite sums, polynomials, valuations, and existing
@@ -2342,6 +2347,14 @@ E2 & Polynomial/log-periodic pole hierarchy & proved structurally & Mellin resid
 E3 & All-orders generalized inverse transseries & conjectural & uniform higher-pole saddle analysis needed\\
 \bottomrule
 \end{longtable}
+
+\paragraph{Lean crosswalk for B3--B4.}
+The finite weight, all-moment, residual-sign, and finite-norm identities in
+B3--B4 are formalized in \path{GeometricQBinomialLagrange.lean},
+\path{GeometricLagrangeQBinomial.lean}, and
+\path{GeometricLagrangeQMoments.lean}.  The tomography interpretation,
+one-sided analytic remainder, and infinite condition-number limit remain
+results of this report rather than claims about the current Lean corpus.
 
 \section{Reproducibility manifest}
 \label{app:manifest}
