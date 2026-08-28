@@ -77,6 +77,7 @@ cross-referenced internally; unchanged by the reorganization).
 | `Fabius_Integral_Transform_Fractional_Frontiers/` | *Integral, Transform, and Fractional Frontiers* | `drafts/Fabius_Integral_Transform_Fractional_Frontiers/` (arrived 2026-08-28) |
 | `Fabius_Rvachev_Fractional_Integral_Report/` | *Fractional Integral Calculus and Complex-Order Transform Hierarchies for the Fabius–Rvachev System* | `drafts/Fabius_Rvachev_Fractional_Integral_Report/` (arrived 2026-08-28) |
 | `Fabius_Fractional_Integral_Transform_Frontiers/` | *Integral, Transform, and Fractional-Order Frontiers for the Fabius–Rvachev System* | `drafts/incoming/…zip` (unpacked 2026-08-28) |
+| `fabius_fractional_transform_frontiers_bundle/` | *Fabius Fractional Transform Frontiers* (nonlocal tails, difference hierarchy, quantile-fractional and Stieltjes figures) | `drafts/incoming/…zip` (unpacked 2026-08-28) |
 
 ## inverse-and-sampling — `inverse-and-sampling/`
 

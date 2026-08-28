@@ -1,0 +1,2160 @@
+\documentclass[11pt,oneside]{article}
+
+\usepackage[a4paper,margin=27mm,headheight=15pt]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\IfFileExists{libertinus.sty}{\usepackage{libertinus}}{\usepackage{lmodern}}
+\usepackage{microtype}
+\usepackage{amsmath,amssymb,amsthm,mathtools,mathrsfs}
+\usepackage{bm}
+\usepackage{booktabs,longtable,array,tabularx}
+\usepackage{graphicx}
+\usepackage{xcolor}
+\usepackage{enumitem}
+\usepackage{fancyhdr}
+\usepackage{titlesec}
+\usepackage{listings}
+\usepackage{xurl}
+\usepackage{hyperref}
+\usepackage[nameinlink,noabbrev]{cleveref}
+
+\definecolor{linkblue}{RGB}{25,75,135}
+\definecolor{shadegray}{RGB}{246,247,249}
+\definecolor{rulegray}{RGB}{195,201,208}
+\hypersetup{
+  colorlinks=true,
+  linkcolor=linkblue,
+  citecolor=linkblue,
+  urlcolor=linkblue,
+  pdftitle={Fractional Quantile Transmutation, Complex-Order Resolvents, and Nonlocal Rvachev Calculus},
+  pdfauthor={OpenAI GPT-5.6 Pro, prepared for Vladimir Reshetnikov},
+  pdfsubject={New integral and fractional-calculus identities for the Fabius and Rvachev functions},
+  pdfkeywords={Fabius function, Rvachev up-function, inverse Fabius function, fractional calculus, Stieltjes transform, Caputo derivative, Weyl derivative, Riesz fractional Laplacian, Thue-Morse}
+}
+
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small Fractional Fabius--Rvachev calculus}
+\fancyhead[R]{\small\nouppercase{\leftmark}}
+\fancyfoot[C]{\thepage}
+\renewcommand{\headrulewidth}{0.4pt}
+
+\titleformat{\section}{\Large\bfseries}{\thesection}{0.7em}{}
+\titleformat{\subsection}{\large\bfseries}{\thesubsection}{0.7em}{}
+\titleformat{\subsubsection}{\normalsize\bfseries}{\thesubsubsection}{0.7em}{}
+\setcounter{secnumdepth}{3}
+\setcounter{tocdepth}{2}
+\setlist[itemize]{leftmargin=2em,itemsep=0.28em,topsep=0.45em}
+\setlist[enumerate]{leftmargin=2.3em,itemsep=0.28em,topsep=0.45em}
+\setlength{\emergencystretch}{2.5em}
+\allowdisplaybreaks[2]
+
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{conjecture}[theorem]{Conjecture}
+\newtheorem{conditionaltheorem}[theorem]{Conditional theorem}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{example}[theorem]{Example}
+\newtheorem{problem}[theorem]{Problem}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+\newtheorem{warning}[theorem]{Normalization warning}
+
+\newcommand{\R}{\mathbb R}
+\newcommand{\C}{\mathbb C}
+\newcommand{\N}{\mathbb N}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\E}{\mathbb E}
+\newcommand{\Prob}{\mathbb P}
+\newcommand{\Up}{\operatorname{up}}
+\newcommand{\sinc}{\operatorname{sinc}}
+\newcommand{\Var}{\operatorname{Var}}
+\newcommand{\Cov}{\operatorname{Cov}}
+\newcommand{\supp}{\operatorname{supp}}
+\newcommand{\Log}{\operatorname{Log}}
+\newcommand{\sgn}{\operatorname{sgn}}
+\newcommand{\dd}{\,\mathrm d}
+\newcommand{\ii}{\mathrm i}
+\newcommand{\e}{\mathrm e}
+\newcommand{\bigO}{\mathcal O}
+\newcommand{\smallo}{o}
+\newcommand{\RL}{\mathrm{RL}}
+\newcommand{\Caputo}{\mathrm C}
+\newcommand{\repo}{\texttt{ProveIt}}
+\newcommand{\pathcode}[1]{\texttt{\detokenize{#1}}}
+\newcommand{\poch}[2]{\left(#1\right)_{#2}}
+\newcommand{\abs}[1]{\left|#1\right|}
+\newcommand{\norm}[1]{\left\lVert#1\right\rVert}
+\newcommand{\ind}{\mathbf 1}
+\newcommand{\LapF}{\mathcal L_F}
+\newcommand{\Kord}{\mathcal K}
+\newcommand{\Sord}{\mathcal S}
+
+\newenvironment{proofidea}{\par\smallskip\noindent\textit{Proof architecture.}\ }{\hfill$\square$\par\smallskip}
+\newenvironment{boxedresult}{%
+  \par\smallskip\noindent\begin{center}\begin{minipage}{0.94\textwidth}%
+  \hrule\vspace{0.65em}\small
+}{%
+  \vspace{0.65em}\hrule\end{minipage}\end{center}\smallskip
+}
+
+\lstdefinestyle{pythonstyle}{
+  language=Python,
+  basicstyle=\ttfamily\small,
+  backgroundcolor=\color{shadegray},
+  frame=single,
+  rulecolor=\color{rulegray},
+  columns=fullflexible,
+  keepspaces=true,
+  showstringspaces=false,
+  breaklines=true,
+  xleftmargin=0.7em,
+  xrightmargin=0.7em,
+  aboveskip=0.8em,
+  belowskip=0.8em
+}
+
+\title{\bfseries Fractional Quantile Transmutation,\\
+Complex-Order Resolvents, and Nonlocal Rvachev Calculus\\[0.45em]
+\large New integral and transform frontiers for $F$, $F^{-1}$, and $\operatorname{up}$}
+\author{Research report prepared for Vladimir Reshetnikov}
+\date{Repository snapshot: 27 August 2026\\
+\small \repo\ commit \texttt{22f3939f162b8fe9481b4affcd6ea12e7f45e8fd}}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+Let $F$ be the Fabius distribution function on $[0,1]$, let $G=F^{-1}$,
+and let $\Up$ be Rvachev's compactly supported even density.  This report
+develops an operator-level calculus for integrals and fractional derivatives
+involving all three functions.  Its main result is a quantile--Volterra
+transmutation: for arbitrary complex integration order $\beta$ with
+$\Re\beta>0$, a Riemann--Liouville integral of $\phi\circ G$ is converted into
+an ordinary integral with kernel $(u-F(x))^\beta$.  The formula extends
+entirely in a power parameter, thereby covering positive, negative, and
+complex powers of $G$, as well as logarithmic powers obtained by
+parameter differentiation.  A parallel transmutation is proved for Caputo
+derivatives of every noninteger order; the compact differential operator
+$\LapF=(F')^{-1}\frac{\dd}{\dd x}$ packages all higher inverse-function Bell
+polynomials.
+
+A two-parameter generalized Stieltjes transform
+$\Sord_\lambda(z)=\int_0^1(z-x)^{-\lambda}\dd F(x)$ is then developed.  It
+satisfies a dyadic differential equation, an order-lowering refinement
+identity, a moment expansion, an exact fractional order-shift calculus in
+$z$, and a boundary-jump formula that recovers a right-sided fractional
+integral of $F'$.  For Rvachev's function, Weyl and Riesz fractional
+derivatives obey an exact order-lowering dilation equation.  Unlike ordinary
+derivatives, noninteger derivatives destroy compact support; outside
+$[-1,1]$ their algebraic tails have convergent expansions whose coefficients
+are the exact rational even moments of $\Up$.
+
+Finally, if $D=X_2-X_1$ for independent Fabius variables, the normalized
+positive-part transform
+$\Kord_\beta(a)=\E(D-a)_+^\beta/\Gamma(\beta+1)$ extends to an entire function
+of the order $\beta$ at every interior threshold.  Positive orders are
+fractional stop-loss integrals, order $0$ is a tail probability, order $-1$
+is the autocorrelation density, and negative integers are its derivatives.
+The whole hierarchy satisfies a triangular dyadic refinement equation and a
+fractional Fourier-energy identity.  Numerical experiments reconstructing
+$\Up$ from its infinite sinc product verify the new identities to between
+roughly $10^{-9}$ and $10^{-13}$.  The report distinguishes proved results,
+conditional endpoint refinements, and conjectural research directions, and
+records its novelty only relative to the audited repository snapshot rather
+than claiming exhaustive global priority.
+\end{abstract}
+
+\tableofcontents
+\newpage
+
+\section{Scope, corpus audit, and novelty boundary}
+\label{sec:scope}
+
+\subsection{Repository snapshot}
+
+The requested corpus was the recursive tree
+\pathcode{Analysis/FabiusFunction/docs} in Vladimir Reshetnikov's
+\repo\ repository \cite{ProveIt}.  The audit was pinned to commit
+\texttt{22f3939f162b8fe9481b4\allowbreak affcd6ea12e7f45e8fd}; pinning matters because the
+branch moved during the audit.  GitHub's indexed code search returned 84
+\texttt{.tex} sources under this tree.  They fall into four broad classes:
+
+\begin{enumerate}
+\item the principal human-readable exposition and mathematical glossary;
+\item proved-result notes tied closely to the Lean development;
+\item non-formalized frontier reports and successive drafts;
+\item imported papers, translations, and OCR-corrected literature used as
+      background sources.
+\end{enumerate}
+
+All paths were recursively inventoried and searched for the terms relevant to
+integrals, transforms, inverse functions, Mellin and Fourier analysis,
+negative powers, and fractional calculus.  Earlier versions and imported
+copies were de-duplicated by path, title, and mathematical content.  The most
+important overlap checks were made against the two newest broad syntheses:
+
+\begin{itemize}
+\item \url{non-formalized-research-frontiers/drafts/Fabius_Integral_and_Transform_Frontiers/fabius_integrals_and_transforms_frontier_report.tex};
+\item \url{non-formalized-research-frontiers/drafts/fabius_integral_frontiers_bundle/fabius_integral_frontiers.tex}.
+\end{itemize}
+
+These already subsume much of the material in the monomial-antiderivative,
+dyadic primitive-ladder, derivative-norm, inverse-beta, and Mellin-frontier
+reports.  Consequently, this report does not spend pages reproving the
+standard polynomial primitive ladder or reproducing tables already present
+there.
+
+\subsection{What the repository already contained}
+
+The following topics were treated as part of the prior-art boundary for this
+snapshot:
+
+\begin{itemize}
+\item ordinary and iterated primitives of $F$, $1-F$, and $\Up$, including
+      monomial, polynomial, complex-power, and several negative-power
+      weights;
+\item dyadic reduction of primitives and exact moment recurrences;
+\item causal fractional integrals of $\Up$, Mellin transforms, and moment-tail
+      expansions;
+\item inverse-Fabius integer layer-cake formulas, beta/Jacobi transforms, and
+      inverse moments;
+\item the ordinary Cauchy--Stieltjes transform and its basic dyadic equation;
+\item derivative norms, Fourier--Parseval formulas, and basic
+      autocorrelation identities;
+\item endpoint expansions expressed through lower Lambert $W$, including
+      log-periodic corrections;
+\item the warning that a naive single-dilation fractional analogue of the
+      integer derivative equation is obstructed by the dyadic log-periodic
+      phase.
+\end{itemize}
+
+The present work uses those facts as infrastructure.  In particular, it does
+not claim novelty for the probabilistic representation, the sinc product, the
+moment recurrences, or the endpoint Lambert structure.
+
+\subsection{Results that are new relative to the audited snapshot}
+
+The novelty comparison found no existing occurrence of the following
+operator systems in the repository:
+
+\begin{enumerate}
+\item the arbitrary-order quantile--Volterra transmutation
+      \eqref{eq:quantile-transmutation}, including its entire continuation in
+      a power parameter and the resulting logarithmic identities;
+\item the all-orders Caputo transmutation through
+      $\LapF=(F')^{-1}D_x$;
+\item the generalized Stieltjes family $\Sord_\lambda(z)$ as a coupled
+      complex-order/dyadic system, including fractional order shifts in the
+      spectral variable and fractional boundary inversion;
+\item the exact Weyl order-lowering dilation law and the rational-moment
+      algebraic tails of Weyl and Riesz derivatives of $\Up$;
+\item the entire order hierarchy $\Kord_\beta(a)$ for Fabius differences,
+      with negative orders equal to autocorrelation derivatives and with a
+      triangular refinement equation valid by analytic continuation.
+\end{enumerate}
+
+\begin{warning}
+The word ``new'' below always means ``not found in the audited repository at
+the pinned commit.''  The external literature on fractional transforms is
+large, and no absolute priority claim is made.  The formulas are nevertheless
+derived from first principles here and are suitable for independent checking
+or formalization.
+\end{warning}
+
+\section{Common probabilistic and analytic model}
+\label{sec:model}
+
+\subsection{The three functions}
+
+We use the standard probabilistic realization of the Fabius distribution
+\cite{Fabius1966,arias1982}.  Let $U_1,U_2,\ldots$ be independent random
+variables uniformly distributed on $[0,1]$, and define
+\begin{equation}
+ X:=\sum_{j=1}^{\infty}\frac{U_j}{2^j},
+ \qquad
+ Y:=2X-1.
+ \label{eq:X-Y-def}
+\end{equation}
+Then $X\in[0,1]$, $Y\in[-1,1]$, and
+\begin{equation}
+ F(x):=\Prob\{X\le x\},
+ \qquad
+ G(u):=F^{-1}(u),
+ \qquad
+ \Prob\{Y\in\dd y\}=\Up(y)\dd y.
+\end{equation}
+The normalizations used throughout are
+\begin{align}
+ F'(x)&=2\Up(2x-1), &&0<x<1, \label{eq:density-relation}\\
+ F(1-x)&=1-F(x), &
+ G(1-u)&=1-G(u), \label{eq:symmetry-FG}\\
+ \Up(-y)&=\Up(y), &
+ \int_{-1}^{1}\Up(y)\dd y&=1. \label{eq:up-symmetry}
+\end{align}
+In particular,
+\begin{equation}
+ F(x)=\int_{-1}^{2x-1}\Up(y)\dd y,
+ \qquad
+ \Up(y)=
+ \begin{cases}
+ F(1+y),&-1\le y\le0,\\
+ F(1-y),&0\le y\le1,\\
+ 0,&|y|\ge1.
+ \end{cases}
+ \label{eq:F-up-dictionary}
+\end{equation}
+
+The random series has the fixed-point forms
+\begin{equation}
+ X\overset d=\frac{U+X'}2,
+ \qquad
+ Y\overset d=\frac{V+Y'}2,
+ \label{eq:fixed-points}
+\end{equation}
+where $U\sim\mathrm{Unif}[0,1]$, $V\sim\mathrm{Unif}[-1,1]$, and the primed
+variables are independent copies.  This random-series and infinite-product
+view goes back to Jessen--Wintner and its later Fabius/Rvachev formulations
+\cite{JessenWintner,Fabius1966,arias1982}.  With Fourier convention
+$\widehat f(\xi)=\int_{\R}e^{-\ii\xi x}f(x)\dd x$,
+\begin{equation}
+ \widehat{\Up}(\xi)
+ =\prod_{j=1}^{\infty}\sinc\!\left(\frac{\xi}{2^j}\right),
+ \qquad \sinc z:=\frac{\sin z}{z}.
+ \label{eq:up-fourier-product}
+\end{equation}
+
+\subsection{Quantile and density dictionaries}
+
+For every integrable test function $\psi$,
+\begin{equation}
+ \int_0^1\psi(G(u))\dd u
+ =\int_0^1\psi(x)\dd F(x)
+ =\int_{-1}^{1}\psi\!\left(\frac{1+y}{2}\right)\Up(y)\dd y.
+ \label{eq:three-way-dictionary}
+\end{equation}
+This simple identity is the common source of the inverse-function,
+Stieltjes, and autocorrelation formulas below.  It gives, for example,
+\begin{equation}
+ d_n:=\E X^n=\int_0^1G(u)^n\dd u,
+ \qquad
+ c_n:=\E Y^{2n}=\int_{-1}^{1}y^{2n}\Up(y)\dd y.
+\end{equation}
+The fixed-point equations yield exact rational recurrences; related moment
+recurrences are developed in \cite{arias1982,Have}:
+\begin{align}
+ d_0&=1,
+ &
+ (2^n-1)d_n
+ &=\sum_{k=0}^{n-1}\binom nk\frac{d_k}{n-k+1},
+ \label{eq:d-moment-recurrence}\\
+ c_0&=1,
+ &
+ c_n
+ &=\frac{1}{(2n+1)(4^n-1)}
+   \sum_{k=0}^{n-1}\binom{2n+1}{2k}c_k.
+ \label{eq:c-moment-recurrence}
+\end{align}
+Thus
+\begin{equation}
+ c_0=1,
+ \quad c_1=\frac19,
+ \quad c_2=\frac{19}{675},
+ \quad c_3=\frac{583}{59535},
+ \quad c_4=\frac{132809}{32531625},\ldots
+ \label{eq:first-c-moments}
+\end{equation}
+The value $c_2=19/675$ is important in the nonlocal tail expansions; replacing
+it by $1/75$ would correspond to a different and incorrect normalization.
+
+\subsection{Fractional-calculus conventions}
+
+We follow the standard Riemann--Liouville, Caputo, Weyl, and Riesz
+normalizations of \cite{Caputo1967,Samko,Kilbas}.  For $a<u$,
+$\Re\beta>0$, and locally integrable $h$, the left
+Riemann--Liouville integral is
+\begin{equation}
+ (I_{a+}^{\beta}h)(u)
+ :=\frac1{\Gamma(\beta)}
+   \int_a^u(u-v)^{\beta-1}h(v)\dd v.
+ \label{eq:RL-def}
+\end{equation}
+For $m-1<\alpha<m$, $m\in\N$, the Caputo derivative is
+\begin{equation}
+ ({}^{\Caputo}D_{a+}^{\alpha}h)(u)
+ :=\frac1{\Gamma(m-\alpha)}
+   \int_a^u(u-v)^{m-\alpha-1}h^{(m)}(v)\dd v.
+ \label{eq:Caputo-def}
+\end{equation}
+For $0<\alpha<1$, this reduces to the familiar integral of $h'$.  Right-sided
+operators use the standard sign $(-1)^m$.
+
+On the whole line, let
+$k_\sigma(x)=x_+^{\sigma-1}/\Gamma(\sigma)$ denote the standard
+Gamma-normalized causal homogeneous distribution, continued entirely in
+$\sigma$.  The left Weyl operator is
+$D_+^\alpha f:=k_{-\alpha}*f$.  Wherever the multiplier is an ordinary
+function, and elsewhere in the corresponding boundary-value distributional
+sense,
+\begin{equation}
+ \widehat{D_+^\alpha f}(\xi)=(\ii\xi)^\alpha\widehat f(\xi),
+ \label{eq:Weyl-def}
+\end{equation}
+with the branch obtained from the causal kernel.  This normalization removes
+zero-frequency polynomial ambiguities and makes the order family entire.  The
+Riesz fractional Laplacian is
+\begin{equation}
+ \widehat{(-\Delta)^{\alpha/2}f}(\xi)=|\xi|^\alpha\widehat f(\xi).
+ \label{eq:Riesz-def}
+\end{equation}
+Different fractional derivatives answer different boundary-value questions;
+no formula below silently identifies Caputo, Riemann--Liouville, Weyl, and
+Riesz operators.
+
+\section{An entire-order primitive ladder}
+\label{sec:entire-ladder}
+
+Before turning to the genuinely new inverse-function formulas, it is useful
+to package ordinary derivatives and antiderivatives in a normalization that
+continues through every integer order.
+
+\subsection{Fabius distribution ladder}
+
+For $x\in(0,1)$ and initially $\Re\beta>-1$, define
+\begin{equation}
+ \mathfrak F_\beta(x)
+ :=\frac1{\Gamma(\beta+1)}
+   \int_0^x(x-t)^\beta F'(t)\dd t.
+ \label{eq:F-entire-ladder}
+\end{equation}
+For $\beta>0$, this is $I_{0+}^{\beta}F(x)$; at $\beta=0$ it is $F(x)$.
+
+\begin{proposition}[Entire order continuation]
+For every fixed $x\in(0,1)$, $\beta\mapsto\mathfrak F_\beta(x)$ extends to an
+entire function.  It obeys
+\begin{equation}
+ \frac{\partial}{\partial x}\mathfrak F_\beta(x)
+ =\mathfrak F_{\beta-1}(x)
+ \label{eq:F-order-ladder}
+\end{equation}
+for all $\beta\in\C$, and at negative integers
+\begin{equation}
+ \mathfrak F_{-m}(x)=F^{(m)}(x),\qquad m\ge1.
+ \label{eq:F-negative-orders}
+\end{equation}
+\end{proposition}
+
+\begin{proof}
+Write $s=x-t$.  Because $F'$ and all of its derivatives vanish at $0$,
+repeated integration by parts gives, for every $N\ge0$ and
+$\Re\beta>-N-1$,
+\begin{equation}
+ \mathfrak F_\beta(x)
+ =\frac1{\Gamma(\beta+N+1)}
+   \int_0^x s^{\beta+N}F^{(N+1)}(x-s)\dd s.
+ \label{eq:F-continuation-form}
+\end{equation}
+The formulas agree on overlaps and cover the whole $\beta$-plane.  The
+reciprocal Gamma factor cancels the Mellin poles at the nonpositive integers.
+Differentiation proves \eqref{eq:F-order-ladder}; substituting $\beta=-m$ in
+\eqref{eq:F-continuation-form} with $N=m$ gives
+$F^{(m)}(x)-F^{(m)}(0)=F^{(m)}(x)$.
+\end{proof}
+
+\subsection{Rvachev ladder and exterior moment series}
+
+For $x>-1$ and initially $\Re\sigma>0$, put
+\begin{equation}
+ \mathfrak U_\sigma(x)
+ :=\frac1{\Gamma(\sigma)}
+   \int_{-1}^{\min(x,1)}(x-t)^{\sigma-1}\Up(t)\dd t.
+ \label{eq:up-entire-ladder}
+\end{equation}
+For $-1<x<1$, flatness at $-1$ again gives an entire continuation in
+$\sigma$, with
+\begin{equation}
+ \partial_x\mathfrak U_\sigma=\mathfrak U_{\sigma-1},
+ \qquad
+ \mathfrak U_0=\Up,
+ \qquad
+ \mathfrak U_{-m}=\Up^{(m)}.
+ \label{eq:up-entire-order-values}
+\end{equation}
+For $x>1$, the binomial series converges absolutely and yields
+\begin{equation}
+ \mathfrak U_\sigma(x)
+ =\frac{x^{\sigma-1}}{\Gamma(\sigma)}
+  \sum_{j=0}^{\infty}
+  \frac{\poch{1-\sigma}{2j}}{(2j)!}
+  \frac{c_j}{x^{2j}}.
+ \label{eq:up-exterior-general-series}
+\end{equation}
+The Weyl tail formula of \Cref{sec:weyl-riesz} is precisely the specialization
+$\sigma=-\alpha$ of this exterior ladder.  Thus ordinary antiderivatives,
+ordinary derivatives, and nonlocal fractional tails are not separate
+phenomena; they are different slices of one Gamma-normalized order family.
+
+\section{Quantile--Volterra transmutation}
+\label{sec:quantile-transmutation}
+
+\subsection{The master theorem}
+
+The basic obstacle in integrating $G=F^{-1}$ is the derivative
+$G'(u)=1/F'(G(u))$, which becomes very large at both endpoints.  A layer-cake
+rearrangement removes this derivative completely.
+
+\begin{theorem}[Quantile--Volterra transmutation]
+\label{thm:quantile-transmutation}
+Let $0\le a<u<1$, put $q_a=G(a)$ and $q=G(u)$, let $\Re\beta>0$, and let
+$\phi$ be absolutely continuous on $[q_a,q]$.  Then
+\begin{equation}
+ I_{a+}^{\beta}\!\left[\phi(G)-\phi(q_a)\right](u)
+ =\frac1{\Gamma(\beta+1)}
+  \int_{q_a}^{q}\phi'(x)\bigl(u-F(x)\bigr)^\beta\dd x.
+ \label{eq:quantile-transmutation}
+\end{equation}
+For $a=0$ and $\phi(0)=0$,
+\begin{equation}
+ I_{0+}^{\beta}(\phi\circ G)(u)
+ =\frac1{\Gamma(\beta+1)}
+  \int_0^{G(u)}\phi'(x)\bigl(u-F(x)\bigr)^\beta\dd x.
+ \label{eq:quantile-transmutation-zero}
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+For $v\in[a,u]$,
+\begin{align}
+ \phi(G(v))-\phi(q_a)
+ &=\int_{q_a}^{G(v)}\phi'(x)\dd x\\
+ &=\int_{q_a}^{q}\phi'(x)\ind_{\{F(x)\le v\}}\dd x.
+\end{align}
+Fubini's theorem is immediate for nonnegative $\phi'$ and follows for an
+arbitrary absolutely continuous $\phi$ by applying the same argument to its
+positive and negative variations.  Hence
+\begin{align}
+ I_{a+}^{\beta}[\phi(G)-\phi(q_a)](u)
+ &=\frac1{\Gamma(\beta)}
+   \int_{q_a}^{q}\phi'(x)
+   \int_{F(x)}^u(u-v)^{\beta-1}\dd v\dd x\\
+ &=\frac1{\Gamma(\beta+1)}
+   \int_{q_a}^{q}\phi'(x)(u-F(x))^\beta\dd x.
+\end{align}
+For complex $\beta$, the kernel is positive real before exponentiation, so
+there is no branch ambiguity.
+\end{proof}
+
+\begin{boxedresult}
+The theorem trades an integral over probability level $v$ containing the
+inverse $G(v)$ for an integral over physical position $x$ containing only the
+forward Fabius function.  The singular inverse derivative never appears.
+For $\beta=n\in\N$, it gives every $n$-fold antiderivative at once; for
+noninteger $\beta$, the same formula is a genuine fractional primitive.
+\end{boxedresult}
+
+\subsection{Powers, negative powers, and an entire parameter}
+
+Taking $\phi(x)=x^p$ gives, initially for $\Re p>0$,
+\begin{equation}
+ I_{0+}^{\beta}G^p(u)
+ =\frac{p}{\Gamma(\beta+1)}
+  \int_0^{q}x^{p-1}(u-F(x))^\beta\dd x,
+ \qquad q=G(u).
+ \label{eq:power-transmutation}
+\end{equation}
+The endpoint flatness of $F$ permits much more.
+
+\begin{theorem}[Entire continuation in the power]
+\label{thm:entire-p}
+Fix $u\in(0,1)$ and $\Re\beta>0$.  The function
+$p\mapsto I_{0+}^{\beta}G^p(u)$, initially represented by
+\eqref{eq:power-transmutation}, extends to an entire function of $p\in\C$:
+\begin{equation}
+ I_{0+}^{\beta}G^p(u)
+ =\frac{1}{\Gamma(\beta+1)}\left[
+ u^\beta q^p
+ +p\int_0^q x^{p-1}
+   \left((u-F(x))^\beta-u^\beta\right)\dd x
+ \right].
+ \label{eq:power-entire-continuation}
+\end{equation}
+Here $q^p=\exp(p\log q)$ with the real logarithm.
+\end{theorem}
+
+\begin{proof}
+Add and subtract $u^\beta$ inside \eqref{eq:power-transmutation}; for
+$\Re p>0$,
+$p\int_0^q x^{p-1}u^\beta\dd x=u^\beta q^p$.  Near $x=0$,
+\begin{equation}
+ (u-F(x))^\beta-u^\beta
+ =-\beta u^{\beta-1}F(x)+\bigO(F(x)^2).
+\end{equation}
+Since $F(x)$ is flat at zero, the regularized Mellin integral converges
+locally uniformly for every $p\in\C$.  It is therefore entire, as is $q^p$.
+\end{proof}
+
+This formula gives convergent representations for every negative and complex
+power.  It also explains why negative inverse moments are much better
+behaved here than for an algebraic endpoint distribution: the superpolynomial
+flatness of $F$ defeats every pole $x^{p-1}$.
+
+\subsection{Logarithmic powers and exponential generating functions}
+
+Differentiate \eqref{eq:power-entire-continuation} at $p=0$.
+
+\begin{corollary}[Fractional logarithmic moments]
+For every integer $m\ge1$,
+\begin{align}
+ I_{0+}^{\beta}\!\left[(\log G)^m\right](u)
+ =\frac1{\Gamma(\beta+1)}\Bigg[
+ &u^\beta(\log q)^m\\
+ &+m\int_0^q\frac{(\log x)^{m-1}}x
+ \left((u-F(x))^\beta-u^\beta\right)\dd x
+ \Bigg].
+ \label{eq:log-power-transmutation}
+\end{align}
+\end{corollary}
+
+Likewise, with $\phi(x)=e^{sx}$,
+\begin{equation}
+ I_{0+}^{\beta}\!\left(e^{sG}-1\right)(u)
+ =\frac{s}{\Gamma(\beta+1)}
+  \int_0^q e^{sx}(u-F(x))^\beta\dd x.
+ \label{eq:exp-quantile-transmutation}
+\end{equation}
+Expanding either side in $s$ simultaneously generates all positive integer
+powers.  Differentiating with respect to $s$ at nonzero values generates
+exponentially tilted inverse moments.
+
+\subsection{Definite integrals and fractional order statistics}
+
+At $u=1$, \eqref{eq:quantile-transmutation-zero} becomes
+\begin{equation}
+ I_{0+}^{\beta}(\phi\circ G)(1)
+ =\frac1{\Gamma(\beta+1)}
+  \int_0^1\phi'(x)(1-F(x))^\beta\dd x.
+ \label{eq:definite-quantile-general}
+\end{equation}
+For $\phi(x)=x$ and symmetry,
+\begin{equation}
+ I_{0+}^{\beta}G(1)
+ =\frac1{\Gamma(\beta+1)}\int_0^1F(x)^\beta\dd x.
+ \label{eq:definite-G-fractional}
+\end{equation}
+When $\beta=n\in\N$, if $M_n=\max(X_1,\ldots,X_n)$, then
+$\Prob(M_n\le x)=F(x)^n$ and
+\begin{equation}
+ n!\,I_{0+}^{n}G(1)
+ =\int_0^1F(x)^n\dd x
+ =\E(1-M_n).
+ \label{eq:order-statistic-interpretation}
+\end{equation}
+Thus the integration order continuously interpolates the expected gap above
+a maximum of an integer number of samples.  Formula
+\eqref{eq:definite-G-fractional} provides a natural ``fractional sample-size''
+extension without inventing a noninteger collection of random variables.
+For $n=1$, it gives $\int_0^1G(u)\dd u=1/2$.
+
+More generally,
+\begin{equation}
+ I_{0+}^{\beta}G^p(1)
+ =\frac{p}{\Gamma(\beta+1)}
+  \int_0^1x^{p-1}(1-F(x))^\beta\dd x,
+ \label{eq:definite-power-general}
+\end{equation}
+with entire continuation in $p$ supplied by
+\eqref{eq:power-entire-continuation}.  This is a two-parameter bridge between
+inverse moments and beta-like powers of the forward distribution.
+
+\subsection{Log-convexity and Turan inequalities in the order}
+
+Suppose $\phi'\ge0$.  For real $\beta>-1$, define the direct-kernel
+order transform
+\begin{equation}
+ T_\beta(u)
+ :=\int_{q_a}^{q}\phi'(x)(u-F(x))^\beta\dd x.
+ \label{eq:T-beta-def}
+\end{equation}
+For $\beta>0$ this equals
+$\Gamma(\beta+1)I_{a+}^{\beta}[\phi(G)-\phi(q_a)](u)$ by
+\Cref{thm:quantile-transmutation}; the direct integral also makes sense on
+the larger interval $\beta>-1$.
+
+\begin{proposition}[Order log-convexity]
+For real $\beta>-1$ in the interval of convergence, $T_\beta(u)$ is
+log-convex.  In particular, whenever all three terms exist,
+\begin{equation}
+ T_\beta(u)^2\le T_{\beta-h}(u)T_{\beta+h}(u).
+ \label{eq:Turan-order}
+\end{equation}
+If $M=\phi(q)-\phi(q_a)>0$, then
+\begin{equation}
+ \left(\frac{T_\beta(u)}{M}\right)^{1/\beta}
+ \quad\text{is nondecreasing for }\beta>0.
+ \label{eq:power-mean-order}
+\end{equation}
+\end{proposition}
+
+\begin{proof}
+Normalize $\phi'(x)\dd x$ to a probability measure and apply Holder's
+inequality to the positive random variable $u-F(x)$.  The second assertion
+is the monotonicity of power means.
+\end{proof}
+
+The Turan inequality is potentially useful for obtaining rigorous bounds on
+fractional primitives from adjacent integer orders already known exactly or
+recursively.
+
+\subsection{Semigroup identity after transmutation}
+
+The Riemann--Liouville semigroup $I^{\gamma}I^{\beta}=I^{\beta+\gamma}$
+becomes the nontrivial forward-function identity
+\begin{align}
+ &I_{a+}^{\gamma}\left[
+ \frac1{\Gamma(\beta+1)}
+ \int_{q_a}^{G(v)}\phi'(x)(v-F(x))^\beta\dd x
+ \right](u)\notag\\
+ &\hspace{35mm}=
+ \frac1{\Gamma(\beta+\gamma+1)}
+ \int_{q_a}^{q}\phi'(x)(u-F(x))^{\beta+\gamma}\dd x.
+ \label{eq:transmuted-semigroup}
+\end{align}
+This is immediate from the theorem but useful computationally: two nested
+fractional integrations in the quantile variable collapse to one forward
+Fabius kernel.
+
+\section{Caputo derivatives of the inverse Fabius function}
+\label{sec:caputo}
+
+\subsection{Orders between zero and one}
+
+\begin{theorem}[Caputo quantile transmutation]
+\label{thm:caputo-transmutation}
+Let $0<\alpha<1$, $0\le a<u<1$, and let $\phi$ be continuously
+differentiable on $[G(a),G(u)]$.  Then
+\begin{equation}
+ {}^{\Caputo}D_{a+}^{\alpha}(\phi\circ G)(u)
+ =\frac1{\Gamma(1-\alpha)}
+  \int_{G(a)}^{G(u)}
+  \phi'(x)(u-F(x))^{-\alpha}\dd x.
+ \label{eq:caputo-transmutation}
+\end{equation}
+Whenever the endpoint integral converges, $a=0$ is allowed.
+\end{theorem}
+
+\begin{proof}
+By definition,
+\begin{equation}
+ {}^{\Caputo}D_{a+}^{\alpha}(\phi\circ G)(u)
+ =\frac1{\Gamma(1-\alpha)}
+  \int_a^u(u-v)^{-\alpha}\phi'(G(v))G'(v)\dd v.
+\end{equation}
+Set $v=F(x)$.  Since $G'(F(x))F'(x)=1$, the inverse derivative cancels
+exactly, producing \eqref{eq:caputo-transmutation}.
+\end{proof}
+
+For powers,
+\begin{equation}
+ {}^{\Caputo}D_{0+}^{\alpha}G^p(u)
+ =\frac{p}{\Gamma(1-\alpha)}
+  \int_0^{q}x^{p-1}(u-F(x))^{-\alpha}\dd x,
+ \qquad \Re p>0.
+ \label{eq:caputo-powers}
+\end{equation}
+For $p=1$,
+\begin{equation}
+ {}^{\Caputo}D_{0+}^{\alpha}G(u)
+ =\frac1{\Gamma(1-\alpha)}
+  \int_0^{G(u)}(u-F(x))^{-\alpha}\dd x.
+ \label{eq:caputo-G}
+\end{equation}
+The singularity at $x=G(u)$ is only of order $(G(u)-x)^{-\alpha}$ and is
+therefore integrable.
+
+With the standard right-Caputo sign convention and the symmetry of $G$,
+\begin{equation}
+ {}^{\Caputo}D_{1-}^{\alpha}G(u)
+ =-{}^{\Caputo}D_{0+}^{\alpha}G(1-u).
+ \label{eq:right-left-caputo-symmetry}
+\end{equation}
+
+\subsection{Every noninteger Caputo order}
+
+The cancellation in \Cref{thm:caputo-transmutation} is the first member of a
+larger hierarchy.  Define the first-order differential operator
+\begin{equation}
+ \LapF:=\frac1{F'(x)}\frac{\dd}{\dd x}.
+ \label{eq:L-F-def}
+\end{equation}
+It is differentiation with respect to probability level, pulled back to the
+$x$ coordinate.
+
+\begin{lemma}[Inverse Bell polynomials in operator form]
+For every integer $m\ge0$ and every smooth $\phi$,
+\begin{equation}
+ \left.\frac{\dd^m}{\dd u^m}\phi(G(u))\right|_{u=F(x)}
+ =\LapF^m\phi(x).
+ \label{eq:L-F-chain}
+\end{equation}
+\end{lemma}
+
+\begin{proof}
+The case $m=1$ is the inverse-function rule.  If the formula holds at $m$,
+then differentiation in $u$ at $u=F(x)$ is exactly the operation
+$(F'(x))^{-1}D_x=\LapF$.
+\end{proof}
+
+The first three cases are
+\begin{align}
+ \LapF\phi
+ &=\frac{\phi'}{F'},\\
+ \LapF^2\phi
+ &=\frac{\phi''}{(F')^2}-\frac{\phi'F''}{(F')^3},\\
+ \LapF^3\phi
+ &=\frac{\phi'''}{(F')^3}
+ -\frac{3\phi''F''+\phi'F'''}{(F')^4}
+ +\frac{3\phi'(F'')^2}{(F')^5}.
+ \label{eq:first-LF-powers}
+\end{align}
+These are precisely the inverse-function Bell-polynomial expressions, but the
+operator notation scales to arbitrary order without combinatorial clutter.
+
+\begin{theorem}[All-orders Caputo transmutation]
+\label{thm:all-caputo}
+Let $m-1<\alpha<m$, $m\in\N$, and let $0<a<u<1$.  If $\phi$ is smooth on
+$[G(a),G(u)]$, then
+\begin{equation}
+ {}^{\Caputo}D_{a+}^{\alpha}(\phi\circ G)(u)
+ =\frac1{\Gamma(m-\alpha)}
+  \int_{G(a)}^{G(u)}
+  (u-F(x))^{m-\alpha-1}
+  (\LapF^m\phi)(x)F'(x)\dd x.
+ \label{eq:all-order-caputo-transmutation}
+\end{equation}
+The endpoint $a=0$ is valid whenever the displayed integral converges.
+\end{theorem}
+
+\begin{proof}
+Insert \eqref{eq:L-F-chain} into the Caputo definition
+\eqref{eq:Caputo-def} and substitute $v=F(x)$.
+\end{proof}
+
+For integer $m$, \eqref{eq:L-F-chain} itself gives the complete formula for
+the $m$th derivative of any composite $\phi(G(u))$; for an $n$-fold
+antiderivative, \Cref{thm:quantile-transmutation} with $\beta=n$ gives the
+corresponding complete formula.  Thus the two transmutations cover all
+integer and noninteger orders on both sides of order zero.
+
+\subsection{Abel inversion identity}
+
+If $\phi(0)=0$ and the relevant operators exist, the standard identity
+$I_{0+}^{\alpha}{}^{\Caputo}D_{0+}^{\alpha}(\phi\circ G)=\phi\circ G$ becomes
+\begin{align}
+ I_{0+}^{\alpha}\Bigg[
+ \frac1{\Gamma(1-\alpha)}
+ \int_0^{G(v)}\phi'(x)(v-F(x))^{-\alpha}\dd x
+ \Bigg](u)
+ =\phi(G(u)).
+ \label{eq:Abel-inversion-quantile}
+\end{align}
+This is an Abel-type inversion formula whose data are expressed entirely
+through the forward function $F$.  It suggests stable numerical schemes for
+$G$ that avoid differentiating a numerically inverted CDF.
+
+\subsection{Endpoint asymptotics}
+
+Set
+\begin{equation}
+ q=G(u),
+ \qquad
+ \rho(u):=\frac{qF'(q)}{F(q)}
+ =\frac{G(u)}{uG'(u)}.
+ \label{eq:rho-def}
+\end{equation}
+The sharp endpoint analysis in the audited repository \cite{ProveIt},
+combined with standard regular-variation language \cite{BGT}, implies
+\begin{equation}
+ \log\frac1{G(u)}
+ \sim\sqrt{2\log 2\,\log\frac1u},
+ \qquad
+ \rho(u)\sim
+ \sqrt{\frac{2\log(1/u)}{\log2}}.
+ \label{eq:G-leading-endpoint}
+\end{equation}
+In particular, $G$ is slowly varying at zero: for every fixed $t>0$,
+$G(tu)/G(u)\to1$ as $u\downarrow0$.
+
+\begin{proposition}[Leading fractional primitives]
+\label{prop:leading-RL-G}
+For fixed $\beta>0$ and $p>0$,
+\begin{equation}
+ I_{0+}^{\beta}G^p(u)
+ \sim\frac{u^\beta G(u)^p}{\Gamma(\beta+1)},
+ \qquad u\downarrow0.
+ \label{eq:RL-G-leading}
+\end{equation}
+\end{proposition}
+
+\begin{proof}
+After $v=ut$,
+\begin{equation}
+ I_{0+}^{\beta}G^p(u)
+ =\frac{u^\beta G(u)^p}{\Gamma(\beta)}
+  \int_0^1(1-t)^{\beta-1}
+  \frac{G(ut)^p}{G(u)^p}\dd t.
+\end{equation}
+The uniform convergence theorem and Potter bounds for slowly varying
+functions give dominated convergence.  The remaining integral is $1/\beta$.
+\end{proof}
+
+\begin{proposition}[Caputo endpoint laws]
+\label{prop:caputo-endpoints}
+For fixed $0<\alpha<1$ and $p>0$,
+\begin{equation}
+ {}^{\Caputo}D_{0+}^{\alpha}G^p(u)
+ \sim\frac{u^{-\alpha}G(u)^p}{\Gamma(1-\alpha)},
+ \qquad u\downarrow0.
+ \label{eq:caputo-left-leading}
+\end{equation}
+For $p=1$, writing $s=1-u$,
+\begin{equation}
+ {}^{\Caputo}D_{0+}^{\alpha}G(1-s)
+ \sim\Gamma(\alpha)
+ \frac{s^{-\alpha}G(s)}{\rho(s)},
+ \qquad s\downarrow0.
+ \label{eq:caputo-right-leading}
+\end{equation}
+\end{proposition}
+
+\begin{proofidea}
+The first assertion is the order-zero boundary case of the monotone-density
+theorem for fractional derivatives of slowly varying functions.  It can also
+be derived from the cancellation-safe Marchaud form
+\begin{equation}
+ {}^{\Caputo}D_{0+}^{\alpha}f(u)
+ =\frac{u^{-\alpha}}{\Gamma(1-\alpha)}\left[
+ f(u)+\alpha\int_0^1
+ \frac{f(u)-f(ut)}{(1-t)^{\alpha+1}}\dd t
+ \right].
+\end{equation}
+For the right endpoint, symmetry gives
+\begin{equation}
+ {}^{\Caputo}D_{0+}^{\alpha}G(1-s)
+ =\frac1{\Gamma(1-\alpha)}
+  \int_s^1(r-s)^{-\alpha}G'(r)\dd r.
+\end{equation}
+Now $G'(r)=r^{-1}G(r)/\rho(r)$ is regularly varying with index $-1$.
+Scaling $r=sy$ gives
+$\int_1^\infty(y-1)^{-\alpha}y^{-1}\dd y
+=\Gamma(1-\alpha)\Gamma(\alpha)$.
+\end{proofidea}
+
+\begin{theorem}[Fractional integrability frontier]
+\label{thm:caputo-Lp}
+For $0<\alpha<1$ and $0<r<\infty$,
+\begin{equation}
+ {}^{\Caputo}D_{0+}^{\alpha}G\in L^r(0,1)
+ \quad\Longleftrightarrow\quad
+ r\le\frac1\alpha.
+ \label{eq:caputo-Lp-frontier}
+\end{equation}
+The same threshold holds for $G^p$ with any fixed $p>0$.
+\end{theorem}
+
+\begin{proof}
+At either endpoint, \Cref{prop:caputo-endpoints} is a power
+$u^{-\alpha}$ times a slowly varying factor.  For $\alpha r<1$ the power is
+integrable; for $\alpha r>1$ no slowly varying factor can repair the power
+divergence.  At the critical exponent $r=1/\alpha$, use
+\eqref{eq:G-leading-endpoint}: after $L=\log(1/u)$, the integral is bounded by
+an integral of $\exp(-c\sqrt L)$ times a power of $L$, which converges.
+\end{proof}
+
+The critical endpoint is unusually included.  This is a direct consequence
+of the stretched-exponential-in-$\sqrt{\log}$ decay of $G$, and would fail for
+many more slowly decaying quantiles.
+
+\subsection{First correction and the log-periodic phase}
+
+The leading term uses only slow variation.  A first correction requires a
+quantitative de Haan expansion.  The repository's sharp endpoint theory
+contains a nonconstant dyadic periodic phase, so it is important not to hide
+that phase inside an unjustified constant.
+
+\begin{conditionaltheorem}[First fractional correction]
+\label{thm:first-correction}
+Assume that, in each of the weighted $L^1$ spaces used below,
+\begin{equation}
+ \frac{G(ut)}{G(u)}
+ =1+\frac{\log t}{\rho(u)}
+ +\bigO\!\left(\frac{(1+|\log t|)^2}{\rho(u)^2}\right)
+ \label{eq:de-Haan-assumption}
+\end{equation}
+with an error uniform as $u\downarrow0$.  Then
+\begin{equation}
+ \frac{\Gamma(\beta+1)I_{0+}^{\beta}G^p(u)}
+      {u^\beta G(u)^p}
+ =1-\frac{p\,[\psi(\beta+1)+\gamma]}{\rho(u)}
+ +\bigO(\rho(u)^{-2}),
+ \label{eq:RL-first-correction}
+\end{equation}
+where $\psi$ is the digamma function and $\gamma$ is Euler's constant.
+Moreover,
+\begin{equation}
+ \frac{\Gamma(1-\alpha)u^\alpha
+       {}^{\Caputo}D_{0+}^{\alpha}G^p(u)}{G(u)^p}
+ =1+\frac{p[-\psi(1-\alpha)-\gamma]}{\rho(u)}
+ +\bigO(\rho(u)^{-2}).
+ \label{eq:Caputo-first-correction}
+\end{equation}
+\end{conditionaltheorem}
+
+\begin{proofidea}
+For \eqref{eq:RL-first-correction}, insert
+\eqref{eq:de-Haan-assumption} after $v=ut$.  The coefficient is the beta
+expectation
+\begin{equation}
+ \beta\int_0^1(1-t)^{\beta-1}\log t\dd t
+ =-\psi(\beta+1)-\gamma.
+\end{equation}
+For Caputo, use the Marchaud form.  The coefficient is
+\begin{equation}
+ \alpha\int_0^1\frac{-\log t}{(1-t)^{\alpha+1}}\dd t
+ =-\psi(1-\alpha)-\gamma.
+\end{equation}
+\end{proofidea}
+
+\begin{conjecture}[Phase-refined de Haan expansion]
+\label{conj:de-Haan}
+The Fabius inverse satisfies \eqref{eq:de-Haan-assumption} with a complete
+asymptotic expansion in $\rho(u)^{-1}$ whose coefficients are polynomials in
+$\log t$ and smooth periodic functions of the exact lower-Lambert dyadic
+phase.  The periodic dependence first enters beyond the universal
+coefficients displayed in \eqref{eq:RL-first-correction} and
+\eqref{eq:Caputo-first-correction}.
+\end{conjecture}
+
+This conjecture is deliberately compatible with the repository's proof that
+the endpoint phase is nonconstant; it does not replace the phase by a scalar.
+
+\section{A complex-order generalized Stieltjes system}
+\label{sec:stieltjes}
+
+\subsection{Definition and elementary structure}
+
+The generalized Stieltjes class and its positivity theory provide the
+natural ambient transform language \cite{Sokal}.  Work first on the principal
+slit plane
+\begin{equation}
+ \Omega:=\C\setminus(-\infty,1].
+\end{equation}
+For $z\in\Omega$, use the principal branch of $\Log(z-x)$ simultaneously for
+all $x\in[0,1]$ and define
+\begin{equation}
+ \Sord_\lambda(z)
+ :=\int_0^1(z-x)^{-\lambda}\dd F(x)
+ =\int_0^1(z-G(u))^{-\lambda}\dd u.
+ \label{eq:generalized-Stieltjes-def}
+\end{equation}
+The upper and lower banks of the slit supply the boundary values used below;
+other branches live naturally on the universal cover of
+$\C\setminus[0,1]$.  For each fixed $z\in\Omega$,
+$\lambda\mapsto\Sord_\lambda(z)$ is entire, because the compact family
+$\{\Log(z-x):0\le x\le1\}$ is bounded.  Parameter derivatives
+generate logarithmic kernels:
+\begin{equation}
+ (-\partial_\lambda)^m\Sord_\lambda(z)
+ =\int_0^1(z-x)^{-\lambda}\Log^m(z-x)\dd F(x).
+ \label{eq:lambda-log-kernels}
+\end{equation}
+
+For $z\in\Omega$ with $|z|>1$ the binomial expansion gives
+\begin{equation}
+ \Sord_\lambda(z)
+ =z^{-\lambda}\sum_{n=0}^{\infty}
+  \frac{\poch{\lambda}{n}}{n!}\frac{d_n}{z^n}.
+ \label{eq:Stieltjes-moment-series}
+\end{equation}
+Every coefficient is rational and computable from
+\eqref{eq:d-moment-recurrence}.  At negative integer orders,
+$\Sord_{-m}(z)=\E(z-X)^m$ is a polynomial; positive integer orders are the
+successive derivatives of the ordinary Stieltjes transform.
+
+\subsection{Dyadic order recurrence}
+
+\begin{theorem}[Dyadic generalized-Stieltjes equations]
+\label{thm:Stieltjes-dyadic}
+For all $z\in\Omega$ and all $\lambda\in\C$, by analytic continuation across
+the removable value $\lambda=1$,
+\begin{equation}
+ \Sord_\lambda(z)
+ =\frac{2^\lambda}{1-\lambda}
+  \left[\Sord_{\lambda-1}(2z)
+       -\Sord_{\lambda-1}(2z-1)\right].
+ \label{eq:Stieltjes-order-recurrence}
+\end{equation}
+It also satisfies the same-order differential--dyadic equation
+\begin{equation}
+ \partial_z\Sord_\lambda(z)
+ =2^{\lambda+1}
+  \left[\Sord_\lambda(2z)-\Sord_\lambda(2z-1)\right],
+ \label{eq:Stieltjes-differential-dyadic}
+\end{equation}
+and the order-raising derivative identity
+\begin{equation}
+ \partial_z\Sord_\lambda(z)=-\lambda\Sord_{\lambda+1}(z).
+ \label{eq:Stieltjes-order-raising}
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+Using $X\overset d=(U+X')/2$,
+\begin{align}
+ \Sord_\lambda(z)
+ &=2^\lambda\E\int_0^1(2z-X'-u)^{-\lambda}\dd u\\
+ &=\frac{2^\lambda}{1-\lambda}
+   \E\left[(2z-X')^{1-\lambda}
+          -(2z-1-X')^{1-\lambda}\right].
+\end{align}
+This is \eqref{eq:Stieltjes-order-recurrence}.  Differentiating it and using
+\eqref{eq:Stieltjes-order-raising} gives
+\eqref{eq:Stieltjes-differential-dyadic}; alternatively, differentiate under
+the defining integral and use the density refinement equation.
+\end{proof}
+
+At $\lambda=1$, the removable limit is the logarithmic identity
+\begin{equation}
+ \Sord_1(z)
+ =2\E\left[\Log(2z-X)-\Log(2z-1-X)\right].
+ \label{eq:Stieltjes-lambda-one-log}
+\end{equation}
+
+For the centered variable $Y$, define
+\begin{equation}
+ \mathcal C_\lambda(w):=\E(w-Y)^{-\lambda}.
+\end{equation}
+Then
+\begin{equation}
+ \Sord_\lambda(z)=2^\lambda\mathcal C_\lambda(2z-1),
+ \qquad
+ \mathcal C_\lambda'(w)
+ =2^\lambda\left[
+ \mathcal C_\lambda(2w+1)-\mathcal C_\lambda(2w-1)
+ \right].
+ \label{eq:centered-Stieltjes-equation}
+\end{equation}
+The latter is a transform-level analogue of Rvachev's differential equation.
+
+\subsection{Laplace representation and exact fractional order shifts}
+
+For $\Re z>1$ and $\Re\lambda>0$, the standard Laplace--Gamma
+representation \cite{Widder} gives
+\begin{align}
+ \Sord_\lambda(z)
+ &=\frac1{\Gamma(\lambda)}
+   \int_0^\infty t^{\lambda-1}e^{-zt}M_X(t)\dd t,
+ \label{eq:Stieltjes-Laplace}\\
+ M_X(t)
+ &=\E e^{tX}
+ =e^{t/2}\widehat\Up(\ii t/2).
+ \label{eq:MX-up}
+\end{align}
+The sinc product becomes an infinite product of hyperbolic sinc factors on
+the imaginary axis.
+
+Let $A=-\partial_z$, and define $A^\nu$ on this Laplace class by multiplying
+the integrand by $t^\nu$.  This is the natural Weyl fractional power of the
+positive generator $-\partial_z$ on the right half-plane.
+
+\begin{theorem}[Fractional spectral order shift]
+\label{thm:fractional-Stieltjes-shift}
+Whenever $\Re z>1$, $\Re\lambda>0$, and $\Re(\lambda+\nu)>0$,
+\begin{equation}
+ A^\nu\Sord_\lambda(z)
+ =\frac{\Gamma(\lambda+\nu)}{\Gamma(\lambda)}
+  \Sord_{\lambda+\nu}(z).
+ \label{eq:fractional-Stieltjes-shift}
+\end{equation}
+In particular, for $n\in\N$,
+\begin{equation}
+ \frac{\dd^n}{\dd z^n}\Sord_\lambda(z)
+ =(-1)^n\poch{\lambda}{n}\Sord_{\lambda+n}(z),
+ \label{eq:nth-Stieltjes-derivative}
+\end{equation}
+and the $n$-fold ordinary primitive is
+\begin{equation}
+ \int\!\cdots\!\int\Sord_\lambda(z)\dd z^n
+ =(-1)^n\frac{\Gamma(\lambda-n)}{\Gamma(\lambda)}
+  \Sord_{\lambda-n}(z)+P_{n-1}(z),
+ \label{eq:nth-Stieltjes-antiderivative}
+\end{equation}
+away from the exceptional integer parameters, with $P_{n-1}$ an arbitrary
+polynomial of degree at most $n-1$.
+\end{theorem}
+
+\begin{proof}
+Apply the multiplier $t^\nu$ to \eqref{eq:Stieltjes-Laplace} and compare with
+the same representation at order $\lambda+\nu$.
+\end{proof}
+
+For $\nu>0$, the inverse power $A^{-\nu}$ is a fractional antiderivative with
+boundary condition at $+\infty$:
+\begin{equation}
+ (A^{-\nu}f)(z)
+ =\frac1{\Gamma(\nu)}\int_z^\infty(w-z)^{\nu-1}f(w)\dd w.
+ \label{eq:right-infinity-antiderivative}
+\end{equation}
+Thus \eqref{eq:fractional-Stieltjes-shift} gives an exact continuum of
+spectral derivatives and antiderivatives, not merely an interpolation of
+integer formulas.
+
+\subsection{Boundary jump as a fractional integral of the density}
+
+\begin{theorem}[Fractional Plemelj--Abel jump]
+\label{thm:Stieltjes-jump}
+Let $0<\lambda<1$ and $0<x<1$.  The nontangential boundary values satisfy
+\begin{equation}
+ \Sord_\lambda(x+\ii0)-\Sord_\lambda(x-\ii0)
+ =-2\ii\sin(\pi\lambda)
+  \int_x^1(t-x)^{-\lambda}F'(t)\dd t.
+ \label{eq:Stieltjes-jump}
+\end{equation}
+Equivalently,
+\begin{equation}
+ I_{1-}^{1-\lambda}F'(x)
+ =-\frac{\Gamma(\lambda)}{2\pi\ii}
+  \left[\Sord_\lambda(x+\ii0)-\Sord_\lambda(x-\ii0)\right].
+ \label{eq:fractional-Stieltjes-inversion}
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+For $t<x$, $x-t$ lies on the positive real axis and has no jump.  For $t>x$,
+\begin{equation}
+ (x-t+\ii0)^{-\lambda}-(x-t-\ii0)^{-\lambda}
+ =-2\ii\sin(\pi\lambda)(t-x)^{-\lambda}.
+\end{equation}
+Integrate against $F'(t)\dd t$ and use
+$\Gamma(\lambda)\Gamma(1-\lambda)=\pi/\sin(\pi\lambda)$.
+\end{proof}
+
+At $\lambda=1$, the usual Stieltjes inversion recovers the density itself.
+For $0<\lambda<1$, the jump recovers a right-sided fractional integral of the
+density; applying a right Riemann--Liouville derivative then reconstructs
+$F'$.  This gives a continuum of inversion formulas connecting complex
+boundary data to fractional real-variable smoothing.
+
+\subsection{Endpoint values and inverse moments}
+
+Because the Fabius density is flat at both endpoints, all inverse moments
+exist.  The endpoint value
+\begin{equation}
+ \Sord_\lambda(1)
+ =\E(1-X)^{-\lambda}
+ =\E X^{-\lambda}
+ =\int_0^1G(u)^{-\lambda}\dd u
+ \label{eq:Stieltjes-endpoint-negative-moment}
+\end{equation}
+therefore extends entire in $\lambda$.  Formula
+\eqref{eq:Stieltjes-order-recurrence}, interpreted at endpoint limits, offers
+a dyadic recursion for these inverse moments.  Combining it with
+\eqref{eq:Stieltjes-moment-series} is a promising route to new $q$-series and
+$q$-binomial representations at dyadic spectral points.
+
+\section{Weyl and Riesz fractional calculus of Rvachev's function}
+\label{sec:weyl-riesz}
+
+\subsection{Exact order-lowering dilation law}
+
+The ordinary Rvachev equation \cite{arias1982,Rvachev1990} is
+\begin{equation}
+ \Up'(x)=2\Up(2x+1)-2\Up(2x-1).
+ \label{eq:ordinary-up-equation}
+\end{equation}
+A naive attempt to replace the derivative by a fractional derivative while
+keeping $\Up$ on the right is false.  The correct equation lowers the order on
+the right-hand side.
+
+\begin{theorem}[Weyl order-lowering equation]
+\label{thm:Weyl-dilation}
+For every $\alpha\in\C$, as tempered distributions and with a consistent
+branch of $(\ii\xi)^\alpha$,
+\begin{equation}
+ D_+^\alpha\Up(x)
+ =2^\alpha\left[
+ (D_+^{\alpha-1}\Up)(2x+1)
+ -(D_+^{\alpha-1}\Up)(2x-1)
+ \right].
+ \label{eq:Weyl-order-lowering}
+\end{equation}
+At $\alpha=1$ this is \eqref{eq:ordinary-up-equation}; at integer $n$ it gives
+all higher derivative equations.
+\end{theorem}
+
+\begin{proof}
+The Fourier transform of the right-hand side is
+\begin{align}
+ 2^\alpha\ii\sin(\xi/2)
+ (\ii\xi/2)^{\alpha-1}\widehat\Up(\xi/2)
+ &=2\ii\sin(\xi/2)(\ii\xi)^{\alpha-1}
+   \widehat\Up(\xi/2)\\
+ &=(\ii\xi)^\alpha\widehat\Up(\xi),
+\end{align}
+where the last equality uses
+$\widehat\Up(\xi)=\sinc(\xi/2)\widehat\Up(\xi/2)$.
+\end{proof}
+
+The theorem is the structurally correct fractional generalization: the
+self-similarity survives, but the dilation intertwines adjacent derivative
+orders.  No contradiction with the repository's log-periodic obstruction
+arises, because the right side is not a scalar multiple of the original
+$\Up$.
+
+\subsection{One-sided Weyl tails}
+
+For $0<\alpha<1$, the left Marchaud--Weyl derivative is
+\begin{equation}
+ D_+^\alpha f(x)
+ =\frac{\alpha}{\Gamma(1-\alpha)}
+  \int_0^\infty\frac{f(x)-f(x-t)}{t^{1+\alpha}}\dd t.
+ \label{eq:Marchaud-left}
+\end{equation}
+If $x>1$, then $\Up(x)=0$ and only the translated support contributes.
+
+\begin{theorem}[Convergent Weyl tail series]
+\label{thm:Weyl-tail}
+For $0<\alpha<1$ and $x>1$,
+\begin{equation}
+ D_+^\alpha\Up(x)
+ =\frac{x^{-1-\alpha}}{\Gamma(-\alpha)}
+  \sum_{j=0}^{\infty}
+  \frac{\poch{\alpha+1}{2j}}{(2j)!}
+  \frac{c_j}{x^{2j}}.
+ \label{eq:Weyl-tail-series}
+\end{equation}
+The series converges absolutely for every $x>1$.  In particular,
+\begin{equation}
+ D_+^\alpha\Up(x)
+ =\frac{x^{-1-\alpha}}{\Gamma(-\alpha)}
+  \left[
+   1+\frac{(\alpha+1)(\alpha+2)}{18x^2}
+   +\frac{19\poch{\alpha+1}{4}}{16200x^4}
+   +\cdots
+  \right].
+ \label{eq:Weyl-first-tail-terms}
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+For $x>1$, \eqref{eq:Marchaud-left} becomes
+\begin{equation}
+ D_+^\alpha\Up(x)
+ =\frac1{\Gamma(-\alpha)}
+  \int_{-1}^{1}(x-y)^{-1-\alpha}\Up(y)\dd y.
+\end{equation}
+Expand $(1-y/x)^{-1-\alpha}$.  Odd moments vanish and the even moments are
+$c_j$.  Absolute convergence follows from $|y/x|<1$.
+\end{proof}
+
+Since $\Gamma(-\alpha)<0$, the left Weyl tail is negative to the right of the
+support.  The right Weyl derivative has the reflected tail to the left.
+Ordinary integer derivatives retain compact support, but every genuinely
+noninteger Weyl derivative develops an algebraic tail.  This is a sharp,
+quantified form of nonlocality.
+
+\subsection{Riesz fractional-Laplacian tails}
+
+For $0<\alpha<2$, the one-dimensional fractional Laplacian can be normalized
+as
+\begin{equation}
+ (-\Delta)^{\alpha/2}f(x)
+ =C_\alpha\,\operatorname{pv}
+  \int_{\R}\frac{f(x)-f(y)}{|x-y|^{1+\alpha}}\dd y,
+ \qquad
+ C_\alpha=\frac{\Gamma(1+\alpha)\sin(\pi\alpha/2)}{\pi}.
+ \label{eq:Riesz-integral}
+\end{equation}
+
+\begin{theorem}[Riesz tail series]
+For $0<\alpha<2$ and $|x|>1$,
+\begin{equation}
+ (-\Delta)^{\alpha/2}\Up(x)
+ =-C_\alpha|x|^{-1-\alpha}
+  \sum_{j=0}^{\infty}
+  \frac{\poch{\alpha+1}{2j}}{(2j)!}
+  \frac{c_j}{|x|^{2j}}.
+ \label{eq:Riesz-tail-series}
+\end{equation}
+Hence
+\begin{equation}
+ (-\Delta)^{\alpha/2}\Up(x)
+ \sim-C_\alpha|x|^{-1-\alpha}.
+ \label{eq:Riesz-leading-tail}
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+Outside the support, $\Up(x)=0$, so the principal value is unnecessary and
+\eqref{eq:Riesz-integral} is minus a positive potential integral.  Expand the
+kernel exactly as in \Cref{thm:Weyl-tail}.
+\end{proof}
+
+The coefficients in both nonlocal tails are rational and obey the explicit
+recurrence \eqref{eq:c-moment-recurrence}.  Thus a global fractional
+operation converts the compactly supported atomic function into an
+algebraically decaying function whose complete exterior expansion is
+arithmetically controlled by the same moment sequence that appears in the
+Fabius theory.
+
+\section{An entire-order hierarchy from Fabius differences}
+\label{sec:difference-hierarchy}
+
+\subsection{Autocorrelation and the difference density}
+
+Let $X_1,X_2$ be independent copies of $X$ and put
+\begin{equation}
+ D:=X_2-X_1\in[-1,1].
+ \label{eq:D-def}
+\end{equation}
+Its density $h$ is even.  If
+\begin{equation}
+ R(s):=\int_{\R}\Up(y)\Up(y+s)\dd y,
+ \label{eq:up-autocorrelation}
+\end{equation}
+then scaling $D=(Y_2-Y_1)/2$ gives
+\begin{equation}
+ h(a)=2R(2a).
+ \label{eq:h-R-relation}
+\end{equation}
+Equivalently,
+\begin{equation}
+ h(a)=\int_0^1F'(x)F'(x+a)\dd x,
+ \label{eq:h-F-density-correlation}
+\end{equation}
+where $F'$ is extended by zero outside $[0,1]$.  Thus $h$ is $C^\infty$ and
+flat at $\pm1$.
+
+\subsection{Gamma-normalized positive-part order}
+
+For $a\in(-1,1)$ and initially $\Re\beta>-1$, define
+\begin{equation}
+ \Kord_\beta(a)
+ :=\frac{\E(D-a)_+^\beta}{\Gamma(\beta+1)}
+ =\frac1{\Gamma(\beta+1)}
+  \int_a^1(d-a)^\beta h(d)\dd d.
+ \label{eq:K-beta-def}
+\end{equation}
+
+\begin{warning}
+The Gamma factor is part of the definition.  For example,
+$\E(D_+)^2=1/36$, but
+$\Kord_2(0)=\E(D_+)^2/\Gamma(3)=1/72$.  This normalization is what makes the
+order ladder coefficient-free.
+\end{warning}
+
+\begin{theorem}[Entire stop-loss order]
+\label{thm:K-entire}
+For every fixed $a\in(-1,1)$, $\beta\mapsto\Kord_\beta(a)$ extends to an
+entire function.  For every $N\ge0$ and $\Re\beta>-N-1$,
+\begin{equation}
+ \Kord_\beta(a)
+ =\frac{(-1)^N}{\Gamma(\beta+N+1)}
+  \int_0^{1-a}t^{\beta+N}h^{(N)}(a+t)\dd t.
+ \label{eq:K-entire-continuation}
+\end{equation}
+It satisfies the entire-order differential ladder
+\begin{equation}
+ -\partial_a\Kord_\beta(a)=\Kord_{\beta-1}(a),
+ \label{eq:K-order-ladder}
+\end{equation}
+and at negative integers
+\begin{equation}
+ \Kord_{-m}(a)=(-1)^{m-1}h^{(m-1)}(a),
+ \qquad m\ge1.
+ \label{eq:K-negative-orders}
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+Set $t=d-a$ in \eqref{eq:K-beta-def}.  Repeated integration by parts moves
+derivatives onto $h(a+t)$.  Every upper boundary term vanishes because $h$
+is flat at $1$; every lower term vanishes in the initial half-plane and is
+then encoded by the zeros of $1/\Gamma(\beta+1)$.  The resulting formulas
+\eqref{eq:K-entire-continuation} agree on overlaps and give an entire
+continuation.  Differentiating in $a$ proves \eqref{eq:K-order-ladder}; taking
+$N=m$ in \eqref{eq:K-entire-continuation} gives
+\eqref{eq:K-negative-orders}.
+\end{proof}
+
+The order axis now has a concrete interpretation:
+\begin{equation}
+ \begin{array}{c|c}
+ \beta & \Kord_\beta(a)\\ \hline
+ \beta>0 & \text{fractional positive-part or stop-loss integral}\\
+ 0 & \Prob(D>a)\\
+ -1 & h(a)\\
+ -2 & -h'(a)\\
+ -m & (-1)^{m-1}h^{(m-1)}(a).
+ \end{array}
+ \label{eq:K-order-dictionary}
+\end{equation}
+Thus a single entire function of the order joins tail probabilities,
+autocorrelations, derivatives, and fractional antiderivatives.
+
+\subsection{Triangular dyadic refinement}
+
+From \eqref{eq:fixed-points},
+\begin{equation}
+ D\overset d=\frac{V+D'}2,
+ \label{eq:D-fixed-point}
+\end{equation}
+where $V=U_2-U_1$ has triangular density
+$\tau(v)=1-|v|$ on $[-1,1]$ and $D'$ is an independent copy.
+
+\begin{theorem}[Entire-order triangular refinement]
+\label{thm:K-refinement}
+For every $a\in\R$ and initially $\Re\beta>-1$,
+\begin{equation}
+ \Kord_\beta(a)
+ =2^{-\beta}\int_{-1}^{1}(1-|v|)
+  \Kord_\beta(2a-v)\dd v.
+ \label{eq:K-refinement}
+\end{equation}
+For fixed interior $a$, the identity extends to every $\beta\in\C$ by
+\Cref{thm:K-entire}.
+\end{theorem}
+
+\begin{proof}
+Condition on $V=v$ in \eqref{eq:D-fixed-point}:
+\begin{equation}
+ (D-a)_+^\beta
+ =2^{-\beta}(D'-(2a-v))_+^\beta.
+\end{equation}
+Integrate against the triangular density and divide by
+$\Gamma(\beta+1)$.
+\end{proof}
+
+At $\beta=-1$, \eqref{eq:K-refinement} is the density refinement equation;
+at lower negative integers it gives all derivative refinements.  At positive
+orders it supplies a stable recursive equation for fractional stop-loss
+integrals.
+
+\subsection{A double inverse-Fabius integral}
+
+Using $X_j=G(U_j)$ with independent uniforms,
+\begin{equation}
+ \Kord_\beta(a)
+ =\frac1{\Gamma(\beta+1)}
+  \int_0^1\!\int_0^1
+  \bigl(G(v)-G(u)-a\bigr)_+^\beta\dd u\dd v.
+ \label{eq:K-double-inverse}
+\end{equation}
+This is a definite integral involving two inverse Fabius functions, while
+\eqref{eq:h-R-relation} expresses the same hierarchy through Rvachev
+autocorrelation and \eqref{eq:h-F-density-correlation} through the forward
+density.  It is therefore a literal three-function bridge.
+
+At $a=0$ and $\beta=1$, the Gini mean-difference identity gives the mixed
+forward-function integral
+\begin{equation}
+ \Kord_1(0)
+ =\frac12\E|X_2-X_1|
+ =\int_0^1F(x)(1-F(x))\dd x.
+ \label{eq:Gini-Fabius-integral}
+\end{equation}
+Numerically this constant is
+$0.0955632320160\ldots$.
+
+\subsection{Fractional Fourier energy}
+
+The characteristic function of $D$ is
+\begin{equation}
+ \varphi_D(t)=|\varphi_X(t)|^2
+ =\widehat\Up(t/2)^2.
+ \label{eq:D-characteristic}
+\end{equation}
+The standard fractional-moment identity \cite{Samko,Kilbas} now gives a
+transform formula.
+
+\begin{theorem}[Fractional sinc-product energy]
+\label{thm:K-energy}
+For $0<\beta<2$,
+\begin{equation}
+ \Kord_\beta(0)
+ =\frac{\sin(\pi\beta/2)}{\pi}
+  \int_0^\infty
+  \frac{1-\widehat\Up(t/2)^2}{t^{1+\beta}}\dd t.
+ \label{eq:K-fractional-energy}
+\end{equation}
+In particular,
+\begin{equation}
+ \int_0^1F(x)(1-F(x))\dd x
+ =\frac1\pi\int_0^\infty
+  \frac{1-\widehat\Up(t/2)^2}{t^2}\dd t.
+ \label{eq:Gini-sinc-product}
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+For $0<\beta<2$,
+\begin{equation}
+ |x|^\beta
+ =\frac{2\Gamma(\beta+1)\sin(\pi\beta/2)}\pi
+  \int_0^\infty\frac{1-\cos(tx)}{t^{1+\beta}}\dd t.
+\end{equation}
+Take expectation with $x=D$, use symmetry
+$\E(D_+)^\beta=\frac12\E|D|^\beta$, and divide by
+$\Gamma(\beta+1)$.
+\end{proof}
+
+\subsection{Exact even orders}
+
+For $n\ge0$, independence and $D=(Y_2-Y_1)/2$ give
+\begin{equation}
+ \Kord_{2n}(0)
+ =\frac{1}{2(2n)!4^n}
+  \sum_{k=0}^{n}\binom{2n}{2k}c_kc_{n-k}.
+ \label{eq:K-even-exact}
+\end{equation}
+The first values are
+\begin{align}
+ \Kord_2(0)&=\frac1{72},\\
+ \Kord_4(0)&=\frac{11}{64800},\\
+ \Kord_6(0)&=\frac{211}{171460800},\\
+ \Kord_8(0)&=\frac{31657}{5246700480000},\\
+ \Kord_{10}(0)&=\frac{7647271}{354246723008640000}.
+ \label{eq:K-even-first-values}
+\end{align}
+These rational constants are new mixed integral evaluations; by
+\eqref{eq:K-double-inverse}, each is a double integral of an even power of a
+difference of inverse Fabius values over the upper triangle $v>u$.
+
+\section{Numerical experiments}
+\label{sec:numerics}
+
+\subsection{Reconstruction method}
+
+The accompanying script \pathcode{numerical_experiments.py} reconstructs
+$\Up$ directly from \eqref{eq:up-fourier-product}.  On a periodic interval of
+length $4$ with $N=2^{17}$ Fourier modes it evaluates
+\begin{equation}
+ \prod_{j=1}^{35}\sinc(\xi/2^j)
+\end{equation}
+and applies an inverse FFT.  The interval is wider than the exact support, so
+there is no wrap-around overlap.  The CDF is obtained by cumulative
+quadrature and the inverse $G$ by monotonicity-preserving PCHIP interpolation.
+Independent exact recurrences generate $d_n$ and $c_n$ as rational numbers.
+
+The principal sanity checks, including the exact dyadic value
+$F(1/4)=5/72$ \cite{Haugland,ariasArithmetic,ProveIt}, are
+\begin{equation}
+ \int_{-1}^{1}\Up=1,
+ \qquad
+ \max\Up=1,
+ \qquad
+ \int_{-1}^{1}y^2\Up(y)\dd y=\frac19,
+ \qquad
+ F\!\left(\frac14\right)=\frac5{72}.
+\end{equation}
+At full resolution, the computed value of $F(1/4)$ differs from $5/72$ by
+about $1.6\times10^{-10}$.
+
+\subsection{Independent checks}
+
+For the quantile theorem, the left side is integrated directly in $u$ and the
+right side directly in $x$; for negative powers, the regularized entire
+continuation is compared with the direct inverse integral.  Caputo values are
+checked against a cancellation-safe Marchaud formula that uses only values
+of $G$, not the transmuted $x$ integral.  The generalized Stieltjes equations
+are checked by density quadrature, and the moment series uses exact rational
+$d_n$.  Difference refinements use high-accuracy weighted quadrature, while
+the Fourier-energy check uses the sinc product independently.
+
+\input{numerical_results.tex}
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.88\textwidth]{figure_quantile_fractional.pdf}
+\caption{The inverse Fabius function together with its half-order
+Riemann--Liouville integral and half-order Caputo derivative.  The Caputo
+operator amplifies endpoint structure, whereas the fractional integral
+smooths it.}
+\label{fig:quantile-fractional}
+\end{figure}
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.88\textwidth]{figure_stieltjes_convergence.pdf}
+\caption{Convergence of the exact-moment expansion
+\eqref{eq:Stieltjes-moment-series} at two real/complex parameter pairs.}
+\label{fig:stieltjes-convergence}
+\end{figure}
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.88\textwidth]{figure_difference_hierarchy.pdf}
+\caption{Several real-order slices of the entire difference hierarchy.  The
+order $-1$ slice is the difference density, order $0$ is its tail, and
+positive orders are fractional positive-part integrals.}
+\label{fig:difference-hierarchy}
+\end{figure}
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.88\textwidth]{figure_nonlocal_tails.pdf}
+\caption{Weyl and Riesz fractional derivatives outside the support of
+$\Up$.  Dashed curves are their leading $x^{-1-\alpha}$ terms.  The agreement
+illustrates how noninteger differentiation creates exact algebraic tails.}
+\label{fig:nonlocal-tails}
+\end{figure}
+
+\subsection{Boundary jump experiment}
+
+At $x=0.4$ and $\lambda=0.35$, the predicted jump from
+\eqref{eq:Stieltjes-jump} was compared with
+$\Sord_\lambda(x+\ii\varepsilon)-\Sord_\lambda(x-\ii\varepsilon)$.  The
+absolute discrepancies for
+$\varepsilon=10^{-2},3\cdot10^{-3},10^{-3},3\cdot10^{-4},10^{-4}$ were,
+respectively,
+\begin{equation}
+ 5.89\cdot10^{-2},\quad
+ 1.80\cdot10^{-2},\quad
+ 6.01\cdot10^{-3},\quad
+ 1.81\cdot10^{-3},\quad
+ 6.02\cdot10^{-4}.
+\end{equation}
+The regular decrease is consistent with convergence to the fractional
+Plemelj boundary value.  This is a deliberately harsher test than the
+off-cut functional equations, because it resolves a singular limit with a
+finite Fourier grid.
+
+\section{Further deductions and research directions}
+\label{sec:future}
+
+\subsection{All-order endpoint expansions}
+
+\Cref{thm:first-correction} shows that once a weighted de Haan expansion for
+$G(ut)/G(u)$ is known, fractional integration converts powers of $\log t$ to
+digamma and polygamma constants.  At higher orders one expects complete Bell
+polynomials in derivatives of the beta function.  The missing ingredient is
+not fractional calculus but uniform control of the exact dyadic endpoint
+phase.
+
+\begin{problem}[Phase-aware Watson lemma]
+Prove a Watson--de Haan lemma for slowly varying functions whose second-order
+auxiliary function contains a smooth periodic term of a lower-Lambert phase,
+and apply it simultaneously to Riemann--Liouville and Caputo kernels.
+\end{problem}
+
+A successful theorem would mechanically generate all correction terms in
+\eqref{eq:RL-G-leading} and \eqref{eq:caputo-left-leading}, with coefficients
+expressible through Bell polynomials and polygamma values.  This is a natural
+meeting point of the repository's Lambert-$W$, Bell-polynomial, and fractional
+calculus strands.
+
+\subsection{A two-dimensional holonomic-like lattice}
+
+The pair of equations
+\begin{equation}
+ \partial_z\Sord_\lambda=-\lambda\Sord_{\lambda+1},
+ \qquad
+ \Sord_\lambda(z)=\frac{2^\lambda}{1-\lambda}
+ [\Sord_{\lambda-1}(2z)-\Sord_{\lambda-1}(2z-1)]
+\end{equation}
+forms a lattice in continuous order $\lambda$ and dyadically transformed
+spectral position $z$.  The fractional shift theorem
+\eqref{eq:fractional-Stieltjes-shift} fills the gaps between integer lattice
+levels.
+
+\begin{problem}[Special spectral points]
+Determine whether $\Sord_\lambda(z)$ at dyadic $z$ admits convergent
+$q$-binomial, continued-fraction, or Mahler-type representations that extend
+the known rational moment and dyadic-value formulas.  Particularly natural
+points are $z=2^m$, $z=1+2^{-m}$, and the centered points $w=2z-1$ fixed or
+periodic under $w\mapsto2w\pm1$.
+\end{problem}
+
+\begin{conjecture}[Dyadic resolvent rigidity]
+For each real $\lambda>0$, the differential--dyadic equation
+\eqref{eq:Stieltjes-differential-dyadic}, the asymptotic
+$\Sord_\lambda(z)\sim z^{-\lambda}$ at infinity, and the generalized
+Stieltjes positivity conditions uniquely characterize $\Sord_\lambda$.
+\end{conjecture}
+
+This would be a transform-side uniqueness theorem parallel to the uniqueness
+of the original Rvachev function.
+
+\subsection{Zeros in the order plane}
+
+For fixed $a\in(-1,1)$, $\Kord_\beta(a)$ is entire in $\beta$, and its values
+at negative integers are signed derivatives of $h$.  The zeros in the order
+plane therefore interpolate the oscillatory geometry of every derivative of
+the autocorrelation density.
+
+\begin{conjecture}[Symmetry-forced order zeros]
+Evenness gives the exact lattice of forced zeros
+$\Kord_{-2m}(0)=0$ for $m\ge1$.  These zeros are eventually simple, and any
+additional sufficiently far-left real zeros interlace the forced lattice.
+A more flexible version asks whether the Jensen polynomials of a suitably
+shifted and rescaled order function become hyperbolic asymptotically.
+\end{conjecture}
+
+This is speculative, but it is numerically accessible because
+\eqref{eq:K-entire-continuation} remains stable far to the left after choosing
+$N$ large enough.
+
+\subsection{Spectral analysis of the triangular refinement operator}
+
+For each order define
+\begin{equation}
+ (\mathcal T_\beta f)(a)
+ :=2^{-\beta}\int_{-1}^{1}(1-|v|)f(2a-v)\dd v.
+\end{equation}
+Then $\Kord_\beta$ is a fixed point of $\mathcal T_\beta$.  The order enters
+both the scalar prefactor and the regularity class selected by the boundary
+conditions.
+
+\begin{problem}[Order-dependent refinement spectrum]
+Develop the spectrum of $\mathcal T_\beta$ on weighted Sobolev, Mellin, or
+entire-function spaces.  Determine whether analytic perturbation in $\beta$
+controls the zero set and growth of $\Kord_\beta(a)$.
+\end{problem}
+
+The triangular kernel has Fourier transform
+$\sinc^2(\xi/2)$, so this problem may connect the squared sinc product for the
+difference distribution to the original single sinc product for $\Up$.
+
+\subsection{Higher-dimensional differences and B-spline noise}
+
+For independent Fabius variables and coefficients $\varepsilon_j\in\{\pm1\}$,
+consider
+\begin{equation}
+ D_m:=\sum_{j=1}^{m}\varepsilon_jX_j.
+\end{equation}
+The fixed-point noise becomes a compact B-spline distribution obtained from a
+signed sum of uniforms.  The same construction gives an entire hierarchy
+\begin{equation}
+ \Kord_{m,\beta}(a)
+ :=\frac{\E(D_m-a)_+^\beta}{\Gamma(\beta+1)}
+\end{equation}
+and a refinement equation whose kernel is that B-spline.  Even orders are
+finite polynomials in the rational moments $d_n$ or $c_n$.  This is a broad
+family of exact definite integrals involving several inverse Fabius
+functions.
+
+\subsection{Fractional operators and q-binomial arithmetic}
+
+The exact moment series in \eqref{eq:Stieltjes-moment-series}, the exterior
+series \eqref{eq:Weyl-tail-series}, and the exact even values
+\eqref{eq:K-even-exact} are all built from rational moment sequences.  Those
+sequences are already connected in the repository to $q$-Pochhammer symbols
+and Gaussian binomial coefficients at $q=2$ or $q=1/2$.
+
+\begin{problem}[Arithmetic compression]
+Find direct $q$-hypergeometric forms for
+\begin{equation}
+ \sum_{n\ge0}\frac{\poch{\lambda}{n}}{n!}d_nz^{-n},
+ \qquad
+ \sum_{j\ge0}\frac{\poch{\alpha+1}{2j}}{(2j)!}c_jx^{-2j},
+\end{equation}
+possibly after extracting the dominant lower-Lambert phase or applying a
+Borel transform.  Determine denominator bounds for their Taylor
+coefficients as functions of the order parameters.
+\end{problem}
+
+\subsection{Formalization roadmap}
+
+The most direct Lean formalization order is:
+
+\begin{enumerate}
+\item prove the layer-cake form of \Cref{thm:quantile-transmutation} first for
+      nonnegative $\phi'$ and real $\beta>0$, then extend by signed measures;
+\item formalize the operator identity
+      $(D_u^m(\phi\circ G))\circ F=\LapF^m\phi$ on compact subintervals of
+      $(0,1)$;
+\item derive the Caputo transmutation from change of variables;
+\item define $\Sord_\lambda$ initially for real $\lambda>0$ and real $z>1$,
+      where all kernels are positive, then add complex analyticity;
+\item formalize $\Kord_\beta$ for real $\beta>-1$, its refinement equation,
+      and the integer negative-order identities before attempting entire
+      continuation;
+\item use the already formalized sinc product and moment recurrences for the
+      Weyl/Riesz exterior expansions.
+\end{enumerate}
+
+The first, second, and fifth steps require mostly measure theory, ordinary
+calculus, and Gamma identities.  They should be substantially easier than the
+sharp endpoint asymptotic development already present in the repository.
+
+\section{Conclusion}
+\label{sec:conclusion}
+
+The integral theory of the Fabius and Rvachev functions becomes much more
+coherent when the integration order itself is treated as a variable.  Three
+operator families organize most of the new structure:
+
+\begin{enumerate}
+\item the quantile--Volterra kernel
+      $(u-F(x))^\beta/\Gamma(\beta+1)$, which turns arbitrary-order
+      primitives and Caputo derivatives of $G$ into forward-function
+      integrals;
+\item the complex-order resolvent $\Sord_\lambda(z)$, whose spectral
+      derivatives, dyadic refinements, moment expansions, and boundary jumps
+      are all order shifts of one another;
+\item the entire positive-part hierarchy $\Kord_\beta(a)$, which joins
+      inverse-Fabius double integrals, Fabius density correlations, Rvachev
+      autocorrelations, fractional energies, and all derivatives of the
+      difference density.
+\end{enumerate}
+
+The Weyl/Riesz analysis adds a complementary lesson: compact support is an
+integer-order phenomenon.  Noninteger differentiation immediately produces
+algebraic tails, but the tails are not mysterious; every coefficient is an
+exact rational Rvachev moment.  Together, these formulas connect the
+repository's existing themes -- dyadic refinement, sinc products, rational
+moments, inverse asymptotics, Bell polynomials, Lambert $W$, and
+$q$-arithmetic -- through a common continuous order parameter.
+
+\appendix
+
+\section{Proof details for analytic continuation}
+\label{app:continuation}
+
+\subsection{Why the reciprocal Gamma factor is canonical}
+
+Let $g\in C^\infty[0,L]$ be flat at $L$, and define initially for
+$\Re\beta>-1$
+\begin{equation}
+ M_g(\beta):=\frac1{\Gamma(\beta+1)}\int_0^L t^\beta g(t)\dd t.
+\end{equation}
+Repeated integration by parts gives
+\begin{equation}
+ M_g(\beta)
+ =\frac{(-1)^N}{\Gamma(\beta+N+1)}
+  \int_0^L t^{\beta+N}g^{(N)}(t)\dd t.
+ \label{eq:generic-entire-Mellin}
+\end{equation}
+This is entire in $\beta$.  At $\beta=-m$,
+\begin{equation}
+ M_g(-m)=(-1)^{m-1}g^{(m-1)}(0).
+ \label{eq:generic-negative-value}
+\end{equation}
+Both \Cref{thm:K-entire} and the ladders of \Cref{sec:entire-ladder} are
+instances of this elementary lemma.  The zeros of $1/\Gamma(\beta+1)$ are
+not an ornamental normalization: they cancel the poles of the local Mellin
+transform generated by the Taylor series of $g$ at zero.
+
+\subsection{Complex powers and branches}
+
+In the quantile formulas, $u-F(x)\ge0$ and $x>0$, so
+$(u-F(x))^\beta$ and $x^p$ use real logarithms on the open integration
+interval.  In the generalized Stieltjes transform, $z-x$ moves in a compact
+subset of the principal cut plane when $z\in\Omega$; a single branch of
+$\Log$ is fixed for all $x\in[0,1]$.  The upper and lower banks define the
+Plemelj values on $(0,1)$.  Statements on other cuts are branch-local and do
+not assert monodromy-free continuation around the support.
+
+\section{Moment recurrences and exact constants}
+\label{app:moments}
+
+From $X=(U+X')/2$,
+\begin{equation}
+ 2^nd_n=\sum_{k=0}^n\binom nk\frac{d_k}{n-k+1}.
+\end{equation}
+Separating the $k=n$ term gives \eqref{eq:d-moment-recurrence}.  The first
+values are
+\begin{equation}
+ d_0=1,
+ \quad d_1=\frac12,
+ \quad d_2=\frac5{18},
+ \quad d_3=\frac16,
+ \quad d_4=\frac{143}{1350},
+ \quad d_5=\frac{19}{270},
+ \quad d_6=\frac{1153}{23814}.
+\end{equation}
+
+Similarly, $Y=(V+Y')/2$ and $\E V^{2m}=1/(2m+1)$ give
+\begin{equation}
+ 4^nc_n
+ =\sum_{k=0}^n\binom{2n}{2k}
+   \frac{c_k}{2(n-k)+1}.
+\end{equation}
+After separating $k=n$ and using
+\begin{equation}
+ \frac1{2(n-k)+1}\binom{2n}{2k}
+ =\frac1{2n+1}\binom{2n+1}{2k},
+\end{equation}
+one obtains \eqref{eq:c-moment-recurrence}.
+
+For the difference moments,
+\begin{equation}
+ \E D^{2n}
+ =\frac1{4^n}\sum_{k=0}^n
+  \binom{2n}{2k}c_kc_{n-k}.
+\end{equation}
+Symmetry contributes the factor $1/2$ for the positive half, and the
+Gamma normalization contributes $(2n)!$, giving
+\eqref{eq:K-even-exact}.
+
+\section{Reproducibility notes}
+\label{app:reproducibility}
+
+The archive accompanying this report contains:
+
+\begin{itemize}
+\item \pathcode{fabius_fractional_transform_frontiers.tex}, the source of this
+      report;
+\item \pathcode{fabius_fractional_transform_frontiers.pdf}, the rendered
+      report;
+\item \pathcode{numerical_experiments.py}, the fully commented experiment
+      script;
+\item \pathcode{numerical_results.txt} and
+      \pathcode{numerical_results.tex}, generated numerical output;
+\item four figures in both PDF and PNG forms;
+\item \pathcode{README.md}, \pathcode{CORPUS_AUDIT.md}, and
+      \pathcode{SHA256SUMS}.
+\end{itemize}
+
+The numerical script requires Python 3 with NumPy, SciPy, mpmath, and
+Matplotlib.  Running
+\begin{lstlisting}[style=pythonstyle]
+python numerical_experiments.py
+latexmk -pdf fabius_fractional_transform_frontiers.tex
+\end{lstlisting}
+regenerates the tables, figures, and PDF.  The \texttt{--quick} option uses a
+$2^{15}$-point grid for a fast smoke test; the reported values use $2^{17}$.
+
+\section{Corpus novelty matrix}
+\label{app:corpus-matrix}
+
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{0.29\textwidth}>{\raggedright\arraybackslash}p{0.30\textwidth}>{\raggedright\arraybackslash}p{0.31\textwidth}@{}}
+\toprule
+Topic & Prior repository coverage & Contribution of this report\\
+\midrule
+\endfirsthead
+\toprule
+Topic & Prior repository coverage & Contribution of this report\\
+\midrule
+\endhead
+Polynomial and monomial primitives
+& Extensive formulas for integer powers, negative powers, and dyadic
+  reduction
+& Used only as baseline; not rederived in detail\\
+\addlinespace
+Fractional primitives of $F$ and $\Up$
+& Causal fractional integrals and Mellin/moment-tail formulas
+& Gamma-normalized entire-order packaging and connection to nonlocal exterior
+  tails\\
+\addlinespace
+Inverse Fabius integrals
+& Integer layer-cake formulas, beta transforms, inverse moments
+& Arbitrary complex-order quantile--Volterra theorem; entire power parameter;
+  logarithmic and exponential families\\
+\addlinespace
+Fractional derivatives of $G$
+& No Caputo transmutation found
+& Exact orders $(0,1)$ and arbitrary orders through $\LapF^m$; endpoint and
+  $L^r$ theory\\
+\addlinespace
+Stieltjes transforms
+& Ordinary Cauchy/Stieltjes transform and a dyadic equation
+& Complex order, order recurrence, fractional spectral shifts, moment series,
+  and fractional boundary inversion\\
+\addlinespace
+Fractional derivatives of $\Up$
+& Fourier norm spectrum and warning against naive scaling
+& Exact Weyl order-lowering dilation; convergent Weyl/Riesz algebraic tails\\
+\addlinespace
+Autocorrelation and differences
+& Basic correlation identities and selected norms
+& Entire positive-part order, negative-order derivatives, triangular
+  refinement, inverse double integrals, and fractional energy\\
+\addlinespace
+Endpoint asymptotics
+& Sharp lower-Lambert and nonconstant periodic phase
+& Slow-variation consequences for fractional operators; phase-aware
+  conditional correction and conjecture\\
+\bottomrule
+\end{longtable}
+
+\begin{thebibliography}{99}
+
+\bibitem{arias1982}
+J. Arias de Reyna,
+\emph{An infinitely differentiable function with compact support: definition
+and properties}, English translation of Rev. Real Acad. Ciencias Exactas
+Fis. Natur. \textbf{76} (1982), 21--38, arXiv:1702.05442.
+
+\bibitem{ariasArithmetic}
+J. Arias de Reyna,
+\emph{Arithmetic of the Fabius function},
+arXiv:1702.06487, 2017.
+
+\bibitem{BGT}
+N. H. Bingham, C. M. Goldie, and J. L. Teugels,
+\emph{Regular Variation}, Cambridge University Press, 1987.
+
+\bibitem{Caputo1967}
+M. Caputo,
+\emph{Linear models of dissipation whose $Q$ is almost frequency
+independent--II}, Geophysical Journal of the Royal Astronomical Society
+\textbf{13} (1967), 529--539.
+
+\bibitem{Fabius1966}
+J. Fabius,
+\emph{A probabilistic example of a nowhere analytic $C^\infty$-function},
+Z. Wahrscheinlichkeitstheorie verw. Gebiete \textbf{5} (1966), 173--174.
+
+\bibitem{Rvachev1990}
+V. A. Rvachev,
+\emph{Compactly supported solutions of functional-differential equations
+and their applications}, Russian Mathematical Surveys \textbf{45} (1990),
+87--120.
+
+\bibitem{Haugland}
+J. K. Haugland,
+\emph{Evaluating the Fabius function}, arXiv:1609.07999.
+
+\bibitem{Have}
+S. G. Have,
+\emph{A recurrence relation for the odd order moments of the Fabius
+function}, arXiv:1703.01904.
+
+\bibitem{JessenWintner}
+B. Jessen and A. Wintner,
+\emph{Distribution functions and the Riemann zeta function},
+Transactions of the American Mathematical Society \textbf{38} (1935),
+48--88.
+
+\bibitem{Kilbas}
+A. A. Kilbas, H. M. Srivastava, and J. J. Trujillo,
+\emph{Theory and Applications of Fractional Differential Equations},
+Elsevier, 2006.
+
+\bibitem{ProveIt}
+V. Reshetnikov,
+\emph{ProveIt: formal and non-formalized research on the Fabius and Rvachev
+functions}, GitHub repository, snapshot commit
+\texttt{22f3939f162b8fe9481b4affcd6ea12e7f45e8fd}, 27 August 2026.
+
+\bibitem{Samko}
+S. G. Samko, A. A. Kilbas, and O. I. Marichev,
+\emph{Fractional Integrals and Derivatives: Theory and Applications},
+Gordon and Breach, 1993.
+
+\bibitem{Sokal}
+A. D. Sokal,
+\emph{Real-variables characterization of generalized Stieltjes functions},
+Expositiones Mathematicae \textbf{28} (2010), 179--185;
+arXiv:0902.0065.
+
+\bibitem{Widder}
+D. V. Widder,
+\emph{The Laplace Transform}, Princeton University Press, 1946.
+
+\end{thebibliography}
+
+\end{document}
