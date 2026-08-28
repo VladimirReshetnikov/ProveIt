@@ -222,6 +222,7 @@ import FabiusFunction.BernsteinPositivity
 import FabiusFunction.PerronRootEnclosure
 import FabiusFunction.MeasureRefinement
 import FabiusFunction.RandomSeriesLaw
+import FabiusFunction.CauchyTransform
 
 /-!
 # Fabius function
