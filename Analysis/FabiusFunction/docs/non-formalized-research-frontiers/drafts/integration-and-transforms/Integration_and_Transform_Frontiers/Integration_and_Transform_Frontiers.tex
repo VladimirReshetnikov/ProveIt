@@ -15833,8 +15833,36 @@ minors (\nolinkurl{Fabius.hankelOrthoPolynomial\_coeff}), and its top coefficien
 Hankel determinant itself, $[x^n]\,(h_nP_n)=h_n$
 (\nolinkurl{Fabius.hankelOrthoPolynomial\_coeff\_top}: deleting the monomial row and the
 last column leaves exactly the plain Hankel block, with sign $(-1)^{n+n}=1$) --- so with
-positivity the polynomial is genuinely of degree $n$ and monic after division by $h_n$.
-The finite J-fraction convergents and the deeper certificates remain open.
+positivity the polynomial is genuinely of degree $n$ and monic after division by $h_n$
+(\nolinkurl{Fabius.upOrthoPolynomial}, with \nolinkurl{Fabius.upOrthoPolynomial\_monic} and exact degree).
+The layer now runs considerably deeper.  \emph{Values}: the integral of $h_nP_n$ against
+its own leading monomial is the \emph{next} Hankel determinant --- the $n$-shifted moment
+row completes the $(n{+}1)$-th Hankel block (\nolinkurl{Fabius.integral\_hankelOrthoValue\_mul\_pow\_self}) --- giving the
+\textbf{norm identity} $\int P_n^2\,\dd\mu_{\Up}=a_n=h_{n+1}/h_n$
+(\nolinkurl{Fabius.integral\_upOrthoPolynomial\_sq}), with the concrete anchors $P_0=1$,
+$P_1=x$, and $\int x^2\dd\mu_{\Up}=a_1=\tfrac19$ (\nolinkurl{Fabius.upOrthoPolynomial\_one},
+\nolinkurl{Fabius.integral\_sq\_eq\_hankelRatio\_one}).  \emph{Structure}: orthogonality holds
+against every polynomial of degree $<n$ (\nolinkurl{Fabius.integral\_hankelOrthoValue\_mul\_eval}),
+a nonzero polynomial has positive squared mass
+(\nolinkurl{Fabius.integral\_sq\_eval\_pos}), and the monic orthogonal polynomial is
+\emph{unique} (\nolinkurl{Fabius.eq\_upOrthoPolynomial\_of\_monic\_of\_orthogonal}).  \emph{Symmetry}:
+the up-measure is negation-invariant (\nolinkurl{Fabius.integral\_comp\_neg\_rvachevMeasure}),
+so by uniqueness $P_n(-x)=(-1)^nP_n(x)$ (\nolinkurl{Fabius.upOrthoPolynomial\_comp\_neg\_X}),
+the odd pairings $\int P_n(x)\,x^j\dd\mu_{\Up}$ with $n+j$ odd all vanish, and the Jacobi
+diagonal is identically zero, $\int x\,P_n(x)^2\dd\mu_{\Up}=0$
+(\nolinkurl{Fabius.integral\_mul\_sq\_upOrthoPolynomial\_eq\_zero}).  \emph{Recurrence}: on these
+inputs the \textbf{three-term recurrence} is itself formal,
+\[x\,P_{n+1}=P_{n+2}+\frac{a_{n+1}}{a_n}\,P_n,\qquad x\,P_0=P_1\]
+(\nolinkurl{Fabius.upOrthoPolynomial\_three\_term}, \nolinkurl{Fabius.upOrthoPolynomial\_three\_term\_zero}, with a pointwise
+form): the defect $x P_{n+1}-P_{n+2}-(a_{n+1}/a_n)P_n$ has degree $\le n{+}1$ (the
+monic leading terms cancel) and is orthogonal to $x^j$ for all $j<n+2$ --- below $n$
+by orthogonality, at $j=n$ by the exact cancellation of the two Hankel-ratio
+moments, at $j=n+1$ by parity --- so it has zero squared mass and vanishes
+(\nolinkurl{Fabius.eq\_zero\_of\_natDegree\_lt\_of\_orthogonal}).  The recurrence coefficient
+is the ratio of consecutive squared norms, and the $n=0$ instance extracts the
+concrete $P_2=x^2-\tfrac19$ (\nolinkurl{Fabius.upOrthoPolynomial\_two}).  The J-fraction
+layer thus has its three-term engine; the second-kind polynomials, the continued
+fraction of the Stieltjes transform, and the deeper certificates remain open.
 
 % --------------------------------------------------------------------------
 \section{Conclusion}
