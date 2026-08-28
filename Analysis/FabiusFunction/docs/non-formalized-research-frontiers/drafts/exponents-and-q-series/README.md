@@ -27,7 +27,7 @@ shifts, negative-branch and hierarchy formulas, and inverse/quantile versions
 remain research frontiers. These API claims were checked at source checkpoint
 `22f801337`.
 
-Member: `Exponents_and_q_Series_Frontiers` (157 pp, six parts) — the
+Member: `Exponents_and_q_Series_Frontiers` (168 pp, six parts) — the
 2026-08-28 consolidation of the two former drafts (Part I:
 Newton-basis frontiers; Part II: q-binomial Richardson), joined the
 same day by the eighth-wave report as **Part III** — *Finite Dyadic
@@ -96,7 +96,30 @@ constants of Parts III–V), the critical `a ↓ 2` collapse, the
 reconstructed uniqueness theorem, and a conjecture register
 (periodic-Lambert endpoint expansion, critical double scaling,
 lattice obstruction without rational powers, strict log-concavity for
-`1 < a < 2`).  The eighth-wave fold also repaired the volume's
+`1 < a < 2`).  The fourteenth wave brought a twin — *Atomic Functions
+Beyond the Critical Dyadic Case* (formerly
+`Atomic_Functions_Beyond_Dyadic_Report/`), a second independent
+reconstruction of the same chapter — which was **merged editorially
+into Part VI** (2026-08-28): the shared translation and `h_a` core are
+stated once (both editions agreed on every commonly transcribed
+equation), and its distinctive layers became dedicated sections — the
+fractal-string geometry of `K_a` (geometric zeta
+`ℓ₀^s/(1 − 2a^{−s})`, complex dimensions `D_a + 2πik/log a`, an exact
+tube formula with continuous nonconstant one-periodic profile, hence
+Minkowski non-measurability, with explicit logarithmic average), the
+geometric local-degree law `P(N_a = r) = ((a−2)/a)(2/a)^r` with
+`(a−2)/2 · N_a → Exp(1)` as `a ↓ 2` (the first marginal of the
+critical double-scaling program), quantitative Gaussian (`a ↓ 1`) and
+uniform (`a → ∞`) parameter limits with exact rates and an exactly
+uniform expanding core, the exact general-base negative-Laplace
+decomposition with real-analytic one-periodic correction whose
+Fourier modes are `−Γ(−χ_k)ζ(1−χ_k)/log a` (settling the
+transform-level half of the periodic-Lambert conjecture and pinning
+the Lambert normalization `c_a = √a·log a/2`), the divisor-polynomial
+form of `log M_a`, the canonical Fup ladder `G_n → 2·up(2x)`, and
+three new register entries (overlap-regime nowhere analyticity,
+algebraic-breakpoint arithmetic, a bridge between the two periodic
+profiles).  The eighth-wave fold also repaired the volume's
 part-boundary section numbering (Part II had rendered with
 `\appendix` letters G–N).  Supporting files under `assets/`,
 provenance with SHA-256 in the document itself.

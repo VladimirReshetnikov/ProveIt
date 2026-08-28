@@ -170,7 +170,11 @@ positive-definite Pascal quotients, automatic lobe signs, and Gaussian boundary 
 This volume preserves the absorbed theorem and proof bodies, with labels, citation keys,
 and asset paths mechanically prefixed per part.  Part~IV is an editorial merge of the two ninth-wave same-topic drafts
 (shared core stated once, unique layers kept, constants cross-checked);
-their verification packages are preserved verbatim under \path{assets/}.  Later edits add status-only Lean
+Part~VI likewise merges the two independent reconstructions of Rvachev's Chapter~3
+(thirteenth and fourteenth waves): the shared translation and $h_a$ core are stated once,
+and the fourteenth-wave fractal-string, parameter-limit, general-base Laplace, and
+$\operatorname{Fup}$-ladder layers are folded in as new sections.
+The verification packages of all merged drafts are preserved verbatim under \path{assets/}.  Later edits add status-only Lean
 crosswalk annotations; the historical source hashes below are unchanged.
 The absorbed drafts are deleted from the working tree; git history is the archive.
 \begin{itemize}
@@ -181,6 +185,7 @@ The absorbed drafts are deleted from the working tree; git history is the archiv
 \item \path{rvachev_fourier_frontier_report/rvachev_piecewise_fourier_frontier.tex} \\ {\footnotesize SHA-256 \path{23acde817ac19802ffed9cc19e80a80368d70315f87edf41e9fdc3f54c2a970b}} (ninth wave; merged editorially into Part~IV)
 \item \path{fabius_finite_products_frontier/finite_sinc_frontier.tex} \\ {\footnotesize SHA-256 \path{e7d436a8a236e6c04f5b7a56dd846ea42aada67c12b0e2ff4dc03f45d3b31e48}} (tenth wave; Part~V)
 \item \path{atomic_sinc_splines_report_package/atomic_sinc_splines_report.tex} \\ {\footnotesize SHA-256 \path{1c65e30feb6589de33512ce659b87261f240c538813c454efc7d5eef4be54f6f}} (thirteenth wave; Part~VI --- translation and frontier expansion of Rvachev's Chapter~3)
+\item \path{Atomic_Functions_Beyond_Dyadic_Report/Atomic_Functions_Beyond_Dyadic.tex} \\ {\footnotesize SHA-256 \path{021d14ffcac62fa18a9a11ba48dce4bb1c58f8da9ffa6b7c1f47f659f112c8b6}} (fourteenth wave; merged editorially into Part~VI --- second independent reconstruction of the same chapter, contributing the fractal-string/tube-formula, degree-law, parameter-limit, general-base Gamma--zeta Laplace, and $\operatorname{Fup}$-ladder layers)
 \end{itemize}
 \clearpage
 \part{Exponent-Sequence and Newton-Basis Frontiers for the Fabius--Rvachev System}
@@ -8339,6 +8344,11 @@ V. Reshetnikov et al.,
 % Absorbed from atomic_sinc_splines_report_package/atomic_sinc_splines_report.tex (thirteenth wave): an English
 % translation and frontier expansion of Rvachev's Chapter 3 on the
 % geometric family h_a.
+% Merged editorially with Atomic_Functions_Beyond_Dyadic_Report/ (fourteenth wave),
+% a second independent reconstruction of the same chapter; its new layers
+% (fractal strings/tube formula, degree law, parameter limits, general-base
+% Gamma-zeta Laplace decomposition, Fup ladder) appear as dedicated sections,
+% and its shared translation/h_a core is deduplicated against this part.
 
 \begin{abstract}
 The attached Russian chapter develops \emph{atomic functions}: compactly supported
@@ -8372,6 +8382,18 @@ A deterministic Python program checks the exact moment and Prouhet identities,
 computes Fourier inversions without Monte Carlo sampling, and reproduces all
 figures and tables in the package.  Claims not yet formalized in Lean are kept
 outside the repository's trusted theorem boundary and are labeled accordingly.
+
+This part also absorbs a second, independent reconstruction of the same chapter
+(fourteenth wave).  Its distinctive layers are folded in below: the complete
+fractal-string geometry of the exceptional set for $a>2$ (geometric zeta
+function, lattice of complex dimensions, an exact tube formula with nonconstant
+logarithmic oscillation, and Minkowski non-measurability); the local polynomial
+degree as a geometric random variable, with an exponential scaling limit as
+$a\downarrow2$; quantitative Gaussian ($a\downarrow1$) and uniform
+($a\to\infty$) parameter limits; an exact arbitrary-base negative-Laplace
+decomposition whose one-periodic correction has Gamma--zeta Fourier modes
+$-\Gamma(-\chi_k)\zeta(1-\chi_k)/\log a$; and a canonical $\Fup$ ladder
+extending the source's surviving $\Fup_1$ construction.
 \end{abstract}
 
 \begin{scopebox}
@@ -8396,6 +8418,15 @@ numbers such as ``(8.85)'', and occasional reversed Fourier signs.  Whenever the
 PDF image resolves a formula, it is preferred.  Otherwise the reconstruction is
 checked against adjacent identities, normalization, and the source's own proof.
 No text is silently completed beyond the surviving endpoint of Section 5.
+
+The fourteenth-wave package reconstructed the same OCR and page images
+independently and reached the same readings on every equation both editions
+transcribe, including the two damaged ranges (3.54)--(3.58) and
+(3.73)--(3.75), for which both editions record the invariant content (finite
+moment reduction at cylinder endpoints; the bit-recursive evaluator with
+remainder at most $\Up(-1+2^{-N})$) rather than a fabricated literal
+transcription.  Its OCR-reconstruction ledger is preserved in
+\path{assets/Atomic_Functions_Beyond_Dyadic_Report/}.
 \end{scopebox}
 
 
@@ -8473,10 +8504,27 @@ $R_a(z)=1/M_a(z)$.  The first uniform correction and its exact norm are
 \]
 for $a\ge2$.
 
-\item \conjflag\ The endpoint $b-X_a$ has a multiplicatively periodic saddle
-structure.  The lower branch $W_{-1}$ of Lambert's function again supplies the
-natural inverse coordinate, now with period one in $\log_a s$.  A precise
-all-orders expansion is formulated as a research target.
+\item \newflag\ (Fourteenth wave.)  The complementary gaps of $K_a$ form a
+self-similar fractal string with geometric zeta function
+$\ell_0^s/(1-2a^{-s})$, complex dimensions
+$D_a+2\pi\ii k/\log a$ on a vertical lattice, and an exact tube formula whose
+normalized profile is continuous, one-periodic in $\log_a(1/\eps)$, and
+nonconstant; hence $K_a$ is not Minkowski measurable.  A Lebesgue-typical point
+of the support lies in a gap whose exact polynomial degree is geometric with
+parameter $(a-2)/a$, and $\tfrac{a-2}2N_a\to\operatorname{Exp}(1)$ as
+$a\downarrow2$.
+
+\item \newflag\ (Fourteenth wave.)  Quantitative parameter limits at both ends:
+$X_a/\sigma_a\to N(0,1)$ as $a\downarrow1$ with explicit standardized-cumulant
+scaling, and $aX_a\to\operatorname{Unif}[-1,1]$ as $a\to\infty$ with exact
+$W_\infty$ and total-variation rates and an exactly uniform expanding core.
+
+\item \newflag\ (Fourteenth wave.)  The endpoint saddle structure is now exact
+at the transform level in every base: the log-Laplace sum admits the closed
+decomposition of \cref{p6:thm:general-periodic}, whose one-periodic term is real
+analytic with Fourier modes $-\Gamma(-\chi_k)\zeta(1-\chi_k)/\log a$,
+$\chi_k=2\pi\ii k/\log a$.  \conjflag\ The density-level all-orders saddle
+expansion in the lower-Lambert coordinate remains a research target.
 \end{enumerate}
 
 \section{Corpus audit, normalization, and editorial method}
@@ -9082,9 +9130,55 @@ Then multiplication by $\cos(t/4)$ gives the exact averaging identity
  \Fup_1(x-1/4)+\Fup_1(x+1/4)
  \right).
 \end{equation}
-Nothing beyond this identity survives in the supplied files.  A systematic
-factor-redistribution hierarchy is proposed in \cref{p6:sec:future-directions}, but
-it is not presented as translated source material.
+Nothing beyond this identity survives in the supplied files.
+
+\subsection{A canonical \texorpdfstring{$\Fup$}{Fup} ladder}
+
+The following continuation is new material (fourteenth wave), not translated
+source text.  The same halving identity that produced $\Fup_1$ forces a unique
+one-parameter ladder.  In the source's angular variable, put
+\begin{equation}\label{p6:eq:H-tail}
+ H(t)=\prod_{j\ge2}\sinc(t2^{-j}),
+\end{equation}
+and define $G_n$ for $n\ge0$ by
+\begin{equation}\label{p6:eq:Gn-hat}
+ \widehat G_n(t/2\pi)=H(t)\,\sinc\bigl(t2^{-(n+1)}\bigr).
+\end{equation}
+Then $G_0=\Up$ and $G_1=\Fup_1$.
+
+\begin{proposition}[Dyadic $\Fup$ ladder]\label{p6:prop:fup-ladder}
+For $n\ge1$,
+\begin{equation}\label{p6:eq:Gn-recursion}
+ G_{n-1}(x)=\frac12\left(
+ G_n\bigl(x-2^{-(n+1)}\bigr)+G_n\bigl(x+2^{-(n+1)}\bigr)
+ \right),
+\end{equation}
+and the support radius of $G_n$ is $\tfrac12+2^{-(n+1)}$.  Moreover,
+\begin{equation}\label{p6:eq:Gn-limit}
+ G_n\longrightarrow2\Up(2\,\cdot\,)
+ \qquad\text{in }C^m(\R)\text{ for every fixed }m.
+\end{equation}
+\end{proposition}
+
+\begin{proof}
+The halving identity $\sinc(t2^{-n})=\cos(t2^{-(n+1)})\sinc(t2^{-(n+1)})$
+gives $\widehat G_{n-1}(t/2\pi)=\cos(t2^{-(n+1)})\,\widehat G_n(t/2\pi)$,
+which is \eqref{p6:eq:Gn-recursion}.  Pointwise
+$\widehat G_n(t/2\pi)\to H(t)$, and $H$ is the transform of the density of
+$\sum_{j\ge2}2^{-j}U_j=X_2/2$, namely $2\Up(2x)$.  Since $|t|^mH(t)$ is
+integrable and the products are dominated by finitely many common factors,
+dominated Fourier inversion gives $C^m$ convergence.  The support radius is the
+sum of the uniform half-widths in \eqref{p6:eq:Gn-hat}.
+\end{proof}
+
+Iterating \eqref{p6:eq:Gn-recursion} writes $\Up$ as an average of $2^n$
+translates of $G_n$; in the limit, the translate locations distribute as the
+centered dyadic Bernoulli sum, whose law is uniform on $[-1/2,1/2]$, and the
+first-step convolution identity for $\Up$ is recovered.  The $\Fup$
+construction is thus a finite Rademacher factorization of the uniform smoothing
+mask.  The general multiplicity-vector hierarchy remains a research direction
+(\cref{p6:sec:future-directions}); the ladder above is its first rung, with
+every rung explicit.
 
 \section{Repository crosswalk: \texorpdfstring{$F$}{F}, \texorpdfstring{$\Up$}{up}, and the geometric-\texorpdfstring{$q$}{q} law}
 
@@ -9291,6 +9385,17 @@ separated:
 \item $q^m/(1-q^m)$ sums that cumulant over geometric scales;
 \item Bell polynomials exponentiate cumulants back to moments.
 \end{itemize}
+Expanding each Lambert factor as $\sum_{r\ge1}q^{mr}$ and collecting powers of
+$q$ gives the equivalent divisor-polynomial form (fourteenth wave)
+\begin{equation}\label{p6:eq:divisor-polynomial}
+ \log M_a(z)=\sum_{n\ge1}q^{n}
+ \sum_{m\mid n}
+ \frac{2^{2m-1}B_{2m}}{m\,(2m)!}\,z^{2m},
+ \qquad q=a^{-2}.
+\end{equation}
+Each coefficient of $q^n$ is a polynomial over the divisors of $n$, the exact
+analogue for this family of the divisor sums that organize the repository's
+Lambert-series chapters.
 
 \subsection{\texorpdfstring{$q$}{q}-binomial organization of finite products}
 
@@ -9685,6 +9790,205 @@ $r$ gaps are the intervals on which the local polynomial degree is exactly $r$.
 Their union has full measure in the support $[-1/2,1/2]$.}
 \label{p6:fig:cantor-atlas}
 \end{figure}
+
+\section{Fractal strings, complex dimensions, and the exact tube formula}
+\label{p6:sec:fractal-string}
+
+This section (fourteenth wave) upgrades the qualitative dimension count of
+\cref{p6:thm:gap-decomposition} to a complete quantitative geometry of the
+exceptional set: every classical statistic of $K_a$---its geometric zeta
+function, its complex dimensions, its tube volume, and the distribution of the
+local polynomial degree---has a closed form.
+
+\subsection{The gap string and its complex dimensions}
+
+By \cref{p6:thm:gap-decomposition}, the bounded complementary intervals of
+$K_a$ form the self-similar fractal string
+\begin{equation}\label{p6:eq:gap-string}
+ \mathcal L_a:\qquad
+ \ell_r=\ell_0a^{-r}
+ \ \text{with multiplicity }2^r
+ \ (r\ge0),
+ \qquad
+ \ell_0=2b_1=\frac{2(a-2)}{a(a-1)}.
+\end{equation}
+
+\begin{theorem}[Dimension, geometric zeta function, and complex dimensions]
+\label{p6:thm:complex-dimensions}
+For $a>2$, the Hausdorff and Minkowski dimensions of $K_a$ agree,
+\begin{equation}\label{p6:eq:minkowski-dimension}
+ \dim_{\mathrm H}K_a=\dim_{\mathrm M}K_a=D_a:=\frac{\log2}{\log a},
+\end{equation}
+and the geometric zeta function of the string \eqref{p6:eq:gap-string},
+\begin{equation}\label{p6:eq:fractal-zeta}
+ \zeta_{\mathcal L_a}(s)
+ =\sum_{r\ge0}2^r\ell_r^{\,s}
+ =\frac{\ell_0^{\,s}}{1-2a^{-s}},
+ \qquad\Re s>D_a,
+\end{equation}
+extends meromorphically to $\C$ with simple poles exactly at the vertical
+lattice
+\begin{equation}\label{p6:eq:complex-dimensions}
+ s_k=D_a+\frac{2\pi\ii k}{\log a},
+ \qquad k\in\Z,
+ \qquad
+ \operatorname*{res}_{s=s_k}\zeta_{\mathcal L_a}(s)
+ =\frac{\ell_0^{\,s_k}}{\log a}.
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+The two-map system \eqref{p6:eq:Tpm} satisfies the open-set condition for
+$a>2$, so Hutchinson's theorem \cite{p6:hutchinson} gives
+$\dim_{\mathrm H}K_a=D_a$ from the similarity equation $2a^{-D}=1$; the tube
+formula below shows that $\eps^{D_a-1}V_a(\eps)$ is bounded above and below by
+positive constants, which pins the Minkowski dimension at $D_a$ as well.  The
+gap sum \eqref{p6:eq:fractal-zeta} is geometric.  Solving $2a^{-s}=1$ gives the
+pole lattice, and differentiating the denominator gives
+$\dd(1-2a^{-s})/\dd s=2a^{-s}\log a=\log a$ at every $s_k$, hence the residue.
+\end{proof}
+
+The vertical arithmetic progression \eqref{p6:eq:complex-dimensions} is the
+canonical lattice pattern of a self-similar fractal string in the sense of
+Lapidus and van Frankenhuijsen \cite{p6:lapidus-vf}.  What is distinctive here
+is that it enters the analysis of a $C^\infty$ function: the singular set of
+the smooth spline $h_a$ carries the same complex dimensions as its
+complementary gap string.
+
+\subsection{An exact tube formula}
+
+For $\eps>0$, let
+\begin{equation}\label{p6:eq:tube-def}
+ V_a(\eps)=
+ \bigl|\{x\in(-b_a,b_a)\setminus K_a:\operatorname{dist}(x,K_a)<\eps\}\bigr|
+\end{equation}
+be the inner tube volume.  Each gap of length $\ell$ contributes
+$\min(2\eps,\ell)$.
+
+\begin{theorem}[Exact tube formula and Minkowski non-measurability]
+\label{p6:thm:tube-formula}
+Let $a>2$ and $0<2\eps<\ell_0$, and put
+$N(\eps)=\bigl\lfloor\log_a\bigl(\ell_0/(2\eps)\bigr)\bigr\rfloor$.  Then
+\begin{equation}\label{p6:eq:exact-tube}
+ V_a(\eps)=2\eps\bigl(2^{N(\eps)+1}-1\bigr)
+ +\frac{\ell_0\,(2/a)^{N(\eps)+1}}{1-2/a}.
+\end{equation}
+With $x=\log_a(\ell_0/(2\eps))$ and $\theta=\{x\}$ its fractional part,
+\begin{equation}\label{p6:eq:tube-normalized}
+ \eps^{D_a-1}V_a(\eps)
+ =\mathcal M_a(\theta)-2\eps^{D_a},
+\end{equation}
+where the one-periodic profile
+\begin{equation}\label{p6:eq:minkowski-profile}
+ \mathcal M_a(\theta)=\ell_0^{\,D_a}
+ \left[
+ 2^{\,2-D_a-\theta}
+ +\frac{2^{\,1-D_a}a^{(D_a-1)(1-\theta)}}{1-2/a}
+ \right],
+ \qquad0\le\theta<1,
+\end{equation}
+is continuous under periodic identification and nonconstant.  Hence $K_a$ is
+not Minkowski measurable, although its upper and lower Minkowski contents are
+finite and positive.  The logarithmic average of the profile is
+\begin{equation}\label{p6:eq:average-minkowski}
+ \int_0^1\mathcal M_a(\theta)\,\dd\theta
+ =\ell_0^{\,D_a}\,2^{\,1-D_a}
+ \left(\frac1{\log2}+\frac1{\log(a/2)}\right).
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+The depth-$r$ gaps with $r\le N(\eps)$ are wider than $2\eps$ and contribute
+$2\eps$ each; the remaining gaps are covered entirely.  Summing the finite
+geometric count and the infinite geometric length tail gives
+\eqref{p6:eq:exact-tube}.  Substituting $\eps=(\ell_0/2)a^{-x}$ and using
+$a^{D_a}=2$ turns the two terms into
+\eqref{p6:eq:tube-normalized}--\eqref{p6:eq:minkowski-profile}; matching the
+one-sided limits $\theta\to1^-$ and $\theta=0$ reduces, after dividing by
+$2^{1-D_a}$, to the identity $1+\tfrac1{1-2/a}=2+\tfrac{2/a}{1-2/a}$, so the
+profile is continuous on the circle.  It is nonconstant because
+$2^{-\theta}$ and $a^{(D_a-1)(1-\theta)}$ are nonconstant exponentials with
+positive coefficients that are linearly independent from the constants.
+Integrating each exponential over one period gives
+\eqref{p6:eq:average-minkowski}.  Boundedness of the positive continuous
+profile between its minimum and maximum gives finite positive upper and lower
+Minkowski contents, and nonconstancy denies Minkowski measurability.
+\end{proof}
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.94\textwidth]{assets/Atomic_Functions_Beyond_Dyadic_Report/figures/tube_oscillation_a_3.pdf}
+\caption{The exact normalized tube volume for $a=3$.  The approach to a
+nonconstant one-periodic profile in $\log_a(1/\eps)$ verifies the lattice
+oscillation of \cref{p6:thm:tube-formula}.}
+\label{p6:fig:tube-oscillation}
+\end{figure}
+
+\subsection{The local polynomial degree as a random variable}
+
+Choose a point uniformly with respect to normalized Lebesgue measure on
+$(-b_a,b_a)$.  Since $K_a$ is null, the point almost surely lies in a unique
+gap; let $N_a$ be the exact polynomial degree of $h_a$ on that gap, which by
+\cref{p6:prop:polynomial-gap} equals the gap depth.
+
+\begin{theorem}[Geometric degree law and critical exponential limit]
+\label{p6:thm:degree-law}
+For $a>2$,
+\begin{equation}\label{p6:eq:degree-geometric}
+ \Prob(N_a=r)=\frac{a-2}{a}\left(\frac2a\right)^{r},
+ \qquad r=0,1,2,\ldots,
+\end{equation}
+so that
+\begin{equation}\label{p6:eq:degree-moments}
+ \E N_a=\frac2{a-2},
+ \qquad
+ \operatorname{Var}(N_a)=\frac{2a}{(a-2)^2}.
+\end{equation}
+With $p_a=(a-2)/a$, as $a\downarrow2$,
+\begin{equation}\label{p6:eq:degree-critical-limit}
+ p_aN_a\ \xrightarrow{\ d\ }\ \operatorname{Exp}(1),
+ \qquad\text{equivalently}\qquad
+ \frac{a-2}{2}\,N_a\ \xrightarrow{\ d\ }\ \operatorname{Exp}(1).
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+The total length of the depth-$r$ gaps is $2^r\ell_0a^{-r}$; dividing by
+$2b_a=2/(a-1)$ gives \eqref{p6:eq:degree-geometric}, a geometric law on $\N_0$
+with success parameter $p_a$, whence \eqref{p6:eq:degree-moments}.  For the
+limit,
+$\Prob(p_aN_a>x)=(1-p_a)^{\lfloor x/p_a\rfloor+1}\to\e^{-x}$ for every
+$x>0$, and $p_a\sim(a-2)/2$.
+\end{proof}
+
+This makes the phrase ``polynomial almost everywhere'' quantitative: near the
+critical base, a typical polynomial piece has degree of exact order
+$(a-2)^{-1}$.  It also identifies the first marginal of the critical
+double-scaling program of \cref{p6:sec:future-directions}: the depth variable,
+rescaled by $(a-2)/2$, is exponential in the limit, and what remains open is
+the joint limit of the word address, the gap geometry, and the polynomial
+coefficients.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.94\textwidth]{assets/Atomic_Functions_Beyond_Dyadic_Report/figures/degree_critical_limit.pdf}
+\caption{Distribution functions of $p_aN_a$ approaching $1-\e^{-x}$ as
+$a\downarrow2$ (\cref{p6:thm:degree-law}).}
+\label{p6:fig:degree-limit}
+\end{figure}
+
+\begin{novelbox}
+Two periodic phenomena with the same vertical spacing $2\pi/\log a$ occur in
+this part: the complex dimensions \eqref{p6:eq:complex-dimensions} of the gap
+string, producing tube oscillations in $\log_a(1/\eps)$, and the Gamma--zeta
+Fourier modes of the endpoint Laplace correction in
+\cref{p6:sec:general-laplace}, producing endpoint oscillations in $\log_a u$.
+They have different amplitudes and arise from different objects---one from the
+geometry of $K_a$, one from the law of $X_a$ near its endpoint---but both are
+consequences of the same exact multiplicative lattice.  Whether a natural
+spectral operator carries one profile into the other is posed in
+\cref{p6:sec:future-directions}.
+\end{novelbox}
 
 \section{Polynomial reproduction beyond the binary point}
 
@@ -10098,7 +10402,119 @@ $a=2$.}
 \label{p6:fig:family-profiles}
 \end{figure}
 
+\section{Parameter limits: the Gaussian and uniform ends of the family}
+\label{p6:sec:parameter-limits}
+
+The previous section treats the critical deformation $a\downarrow2$.  This
+section (fourteenth wave) settles the two extreme ends of the parameter range,
+completing the limit atlas of the family: normalized Gaussian behavior as
+$a\downarrow1$, exact uniform behavior as $a\to\infty$, and quantitative rates
+at both ends.
+
+\subsection{The many-small-summands limit \texorpdfstring{$a\downarrow1$}{a down to 1}}
+
+By \eqref{p6:eq:m2}, the standard deviation is
+$\sigma_a=\bigl(3(a^2-1)\bigr)^{-1/2}$; let $Z_a=X_a/\sigma_a$.
+
+\begin{theorem}[Gaussian limit and first characteristic correction]
+\label{p6:thm:gaussian-limit}
+As $a\downarrow1$,
+\begin{equation}\label{p6:eq:gaussian-limit}
+ Z_a\ \xrightarrow{\ d\ }\ N(0,1).
+\end{equation}
+The standardized cumulants are, for $m\ge2$,
+\begin{equation}\label{p6:eq:standardized-cumulant}
+ \lambda_{2m}(a)
+ =\frac{\kappa_{2m}(X_a)}{\sigma_a^{2m}}
+ =\frac{3^m2^{2m}B_{2m}\,(a^2-1)^m}{2m\,(a^{2m}-1)}
+ =\bigO\bigl((a-1)^{m-1}\bigr),
+\end{equation}
+with in particular
+\begin{equation}\label{p6:eq:lambda4}
+ \lambda_4(a)=-\frac65\,\frac{a^2-1}{a^2+1}.
+\end{equation}
+Consequently, for every fixed $T>0$, uniformly for real $|t|\le T$,
+\begin{equation}\label{p6:eq:gaussian-first-correction}
+ \E\,\e^{\ii tZ_a}
+ =\e^{-t^2/2}
+ \left[1-\frac{a^2-1}{20\,(a^2+1)}\,t^4
+ +\bigO_T\bigl((a-1)^2\bigr)\right].
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+The triangular array $Z_a=\sum_j\sqrt{3(a^2-1)}\,a^{-j}U_j$ has total variance
+one and maximal coefficient tending to zero, so the Lindeberg theorem gives
+\eqref{p6:eq:gaussian-limit}.  Formula \eqref{p6:eq:standardized-cumulant} is
+\eqref{p6:eq:kappa} divided by $\sigma_a^{2m}$; writing $a=1+\eta$, the ratio
+$(a^2-1)^m/(a^{2m}-1)\sim2^{m-1}\eta^{m-1}/m$ gives the order.  Since the
+log-characteristic function of $Z_a$ is
+$-t^2/2+\lambda_4(a)t^4/4!+\bigO_T((a-1)^2)$ on $|t|\le T$, and
+$\lambda_4/4!=-\tfrac{a^2-1}{20(a^2+1)}$, exponentiation gives
+\eqref{p6:eq:gaussian-first-correction}.
+\end{proof}
+
+\begin{conjbox}
+\textbf{Uniform local Edgeworth expansion.}
+The characteristic expansion \eqref{p6:eq:gaussian-first-correction} and the
+superpolynomial Fourier decay of \cref{p6:eq:Fourier-logGaussian} make an
+all-orders local Edgeworth expansion for the normalized densities
+$\sigma_ah_a(\sigma_a\,\cdot)$ and their derivatives plausible.  The open
+difficulty is uniform control of the large-frequency range as $a\downarrow1$:
+in normalized units the envelope \eqref{p6:eq:Fourier-logGaussian} becomes
+effective only beyond frequencies of order
+$\sigma_a\asymp(a-1)^{-1/2}$, so the central and tail regimes must be split at
+a threshold that itself diverges in the joint limit.
+\end{conjbox}
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.94\textwidth]{assets/Atomic_Functions_Beyond_Dyadic_Report/figures/gaussian_cumulant_limit.pdf}
+\caption{The exact standardized fourth cumulant \eqref{p6:eq:lambda4} and its
+first asymptotic term as $a\downarrow1$.}
+\label{p6:fig:gaussian-limit}
+\end{figure}
+
+\subsection{The single-dominant-summand limit \texorpdfstring{$a\to\infty$}{a to infinity}}
+
+Rescale by the leading weight: put $Y_a=aX_a=U_1+T_a$ with
+$T_a=\sum_{j\ge2}a^{-(j-1)}U_j$, so $|T_a|\le1/(a-1)$ almost surely.
+
+\begin{theorem}[Uniform limit with exact core]\label{p6:thm:uniform-limit}
+Let $U\sim\operatorname{Unif}[-1,1]$ and let $g_a(y)=h_a(y/a)/a$ denote the
+density of $Y_a$.  For every $a>2$,
+\begin{equation}\label{p6:eq:uniform-bounds}
+ W_\infty\bigl(\mathcal L(Y_a),\mathcal L(U)\bigr)\le\frac1{a-1},
+ \qquad
+ d_{\mathrm{TV}}\bigl(\mathcal L(Y_a),\mathcal L(U)\bigr)\le\frac1{2(a-1)},
+\end{equation}
+and the convergence is exact on an expanding central core:
+\begin{equation}\label{p6:eq:uniform-core}
+ g_a(y)=\frac12
+ \qquad\text{for}\qquad
+ |y|\le\frac{a-2}{a-1}.
+\end{equation}
+All discrepancy is confined to the two boundary layers
+$\tfrac{a-2}{a-1}<|y|\le\tfrac{a}{a-1}$, each of width $2/(a-1)$.
+\end{theorem}
+
+\begin{proof}
+The coupling $Y_a=U_1+T_a$ gives the $W_\infty$ bound.  Conditional on
+$T_a=r$, the law of $Y_a$ is uniform on $[r-1,r+1]$, whose total variation
+distance from $\operatorname{Unif}[-1,1]$ is $|r|/2$; averaging over $r$ and
+convexity of total variation give the second bound.  Finally
+$g_a(y)=h_a(y/a)/a$, and the plateau \eqref{p6:eq:plateau} of half-width $b_1$
+becomes \eqref{p6:eq:uniform-core} because $ab_1=(a-2)/(a-1)$, with plateau
+height $(a/2)/a=1/2$.
+\end{proof}
+
+Together with \cref{p6:prop:C-r-to-up}, the family therefore interpolates
+between three classical laws with explicit rates: Gaussian after normalization
+at $a\downarrow1$, the nowhere-analytic critical atom at $a=2$, and the
+single uniform digit after rescaling at $a\to\infty$.
+
 \section{Endpoint tails, inverse Fabius behavior, and Lambert \texorpdfstring{$W$}{W}}
+\label{p6:sec:general-laplace}
 
 \subsection{The endpoint random series}
 
@@ -10125,7 +10541,12 @@ $a^j/(2s)$ and the remaining factors are close to one.  Therefore
 \end{equation}
 with an unavoidable bounded oscillation in the fractional part of $\log_a s$.
 This is the same discrete-scale mechanism that produces the periodic correction
-in the repository's binary endpoint asymptotics.
+in the repository's binary endpoint asymptotics.  The heuristic
+\eqref{p6:eq:Laplace-log-leading} is made exact, in every base, in
+\cref{p6:thm:general-periodic} below: in the variable $u=2s$, the full
+log-Laplace transform is a quadratic-plus-linear polynomial in $\log u$, plus a
+real-analytic one-periodic function of $\log_au$, plus an explicit
+exponentially small tail, with no error term.
 
 \subsection{Why the lower Lambert branch appears}
 
@@ -10142,8 +10563,160 @@ The lower branch is required because $u\to+\infty$ as $y\downarrow0$; see~\cite{
 For $a=2$, this is exactly the coordinate used in the repository's inverse and
 small-argument expansions.
 
+\subsection{The exact periodic decomposition in every base}
+
+The heuristics above are now made exact (fourteenth wave).  For $u>0$, put
+\begin{equation}\label{p6:eq:kernel-varkappa}
+ \varkappa(u)=\log\frac{1-\e^{-u}}{u},
+ \qquad
+ \Lambda_a(u)=\sum_{j=1}^{\infty}\varkappa\bigl(ua^{-j}\bigr),
+\end{equation}
+so that $\log L_a(s)=\Lambda_a(2s)$ by \eqref{p6:eq:Ya-Laplace}.  The kernel
+$\varkappa$ is exactly the kernel of the binary Mellin reflection theory of
+Part~I (\cref{p1:thm:mellin-reflection}); here it is summed over a single
+geometric orbit in an arbitrary base.  Termwise,
+\begin{equation}\label{p6:eq:Lambda-dilation}
+ \Lambda_a(au)=\Lambda_a(u)+\varkappa(u).
+\end{equation}
+Define the exponentially convergent, nonnegative tail sum
+\begin{equation}\label{p6:eq:Ea-def}
+ E_a(u)=\sum_{n=0}^{\infty}-\log\bigl(1-\e^{-ua^{n}}\bigr)\ \ge0,
+ \qquad u>0,
+\end{equation}
+and put
+\begin{equation}\label{p6:eq:Pa-def}
+ P_a(x)=\Lambda_a(a^x)+\frac{\log a}{2}\,x^2-\frac{\log a}{2}\,x-E_a(a^x).
+\end{equation}
+
+\begin{theorem}[General-base exact periodic decomposition]
+\label{p6:thm:general-periodic}
+For every $a>1$, the function $P_a$ is one-periodic, and for every $u>0$,
+\begin{equation}\label{p6:eq:general-exact-Laplace}
+ \Lambda_a(u)=
+ -\frac{(\log u)^2}{2\log a}+\frac{\log u}{2}
+ +P_a\bigl(\log_au\bigr)+E_a(u),
+\end{equation}
+with
+\begin{equation}\label{p6:eq:Ea-bound}
+ 0\le E_a(u)\le
+ \frac{\e^{-u}}{(1-\e^{-u})\bigl(1-\e^{-(a-1)u}\bigr)}
+ =\bigO_a(\e^{-u})
+ \qquad(u\to\infty).
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+Dropping the $n=0$ term in \eqref{p6:eq:Ea-def} gives
+$E_a(a^{x+1})=E_a(a^x)+\log(1-\e^{-a^x})$, while
+$\varkappa(a^x)=\log(1-\e^{-a^x})-x\log a$.  With the dilation identity
+\eqref{p6:eq:Lambda-dilation},
+\[
+ P_a(x+1)-P_a(x)
+ =\varkappa(a^x)+x\log a
+ -\bigl(E_a(a^{x+1})-E_a(a^x)\bigr)=0,
+\]
+so $P_a$ is one-periodic.  Rearranging \eqref{p6:eq:Pa-def} at $x=\log_au$
+gives \eqref{p6:eq:general-exact-Laplace}.  For the tail bound, use
+$-\log(1-z)\le z/(1-z)$ for $0<z<1$ and $a^n\ge1+n(a-1)$, then sum the
+resulting geometric series.
+\end{proof}
+
+At $a=2$, the bound \eqref{p6:eq:Ea-bound} becomes
+$E_2(u)\le\e^{-u}/(1-\e^{-u})^2$, exactly the tail form in the repository's
+primary binary exposition; \cref{p6:thm:general-periodic} is thus a base-$a$
+renormalization of the same mechanism, not an analogy.
+
+\subsection{Gamma--zeta Fourier modes of the periodic term}
+
+Let
+\begin{equation}\label{p6:eq:Psi-a}
+ \overline P_a=\int_0^1P_a(x)\,\dd x,
+ \qquad
+ \Psi_a=P_a-\overline P_a,
+ \qquad
+ \chi_k=\frac{2\pi\ii k}{\log a}.
+\end{equation}
+
+\begin{theorem}[General-base Gamma--zeta modes]
+\label{p6:thm:general-fourier-modes}
+For every $a>1$ and every $k\ne0$,
+\begin{equation}\label{p6:eq:general-gamma-zeta}
+ \widehat\Psi_a(k)=\int_0^1\Psi_a(x)\,\e^{-2\pi\ii kx}\dd x
+ =-\frac{\Gamma(-\chi_k)\,\zeta(1-\chi_k)}{\log a}.
+\end{equation}
+The coefficients decay exponentially in $|k|$, so $P_a$ is real analytic; and
+every nonzero mode is nonzero, so $P_a$ is nonconstant.
+\end{theorem}
+
+\begin{proof}[Proof sketch]
+On the strip $-1<\Re s<0$, the kernel transform is
+$\int_0^\infty\varkappa(u)u^{s-1}\dd u=-\Gamma(s)\zeta(s+1)$
+(\cref{p1:thm:mellin-reflection}, there for the same kernel).  The harmonic sum
+$\Lambda_a(u)=\sum_{j\ge1}\varkappa(ua^{-j})$ therefore has Mellin transform
+$-\Gamma(s)\zeta(s+1)\,a^{s}/(1-a^{s})$ on the same strip, and Mellin inversion
+with the contour pushed across $\Re s=0$ produces: the quadratic and linear
+terms of \eqref{p6:eq:general-exact-Laplace} from the triple pole at $s=0$; the
+lattice modes from the simple poles of $1/(1-a^s)$ at $s=\chi_k$, whose
+residues sample the kernel transform at $s=-\chi_k$ after pairing $k\to-k$,
+giving \eqref{p6:eq:general-gamma-zeta}; and a remainder absorbed by
+$E_a$~\cite{p6:flajolet-gd}.  Stirling's bound
+$|\Gamma(\sigma+\ii t)|\asymp\e^{-\pi|t|/2}|t|^{\sigma-1/2}$ gives exponential
+decay in $|k|$.  Since $\Gamma$ has no zeros and $\zeta(1+\ii t)\ne0$ for
+$t\ne0$, every mode \eqref{p6:eq:general-gamma-zeta} is nonzero.
+\end{proof}
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.94\textwidth]{assets/Atomic_Functions_Beyond_Dyadic_Report/figures/periodic_correction_bases.pdf}
+\caption{Centered periodic corrections $\Psi_a=P_a-\overline P_a$ for several
+bases.  The dyadic oscillation has amplitude of order $10^{-6}$; the amplitude
+grows substantially with the base, following the mode formula
+\eqref{p6:eq:general-gamma-zeta}.}
+\label{p6:fig:periodic-correction}
+\end{figure}
+
+\begin{repobox}
+At $a=2$, the mode lattice $\chi_k=2\pi\ii k/\log2$ is precisely the vertical
+lattice of the repository's binary endpoint theory, and Part~I's reflection
+formula \eqref{p1:eq:mellin-reflection} is the composite-scale refinement in
+which an additional spectral factor $A(2^w)$ multiplies the same
+$\Gamma$--$\zeta$ kernel transform.  The theorem above is the single-scale,
+arbitrary-base member of that family.  Note also the second appearance of the
+lattice $2\pi\ii k/\log a$ in this part: the complex dimensions
+\eqref{p6:eq:complex-dimensions} of the gap string share the vertical spacing
+but not the amplitudes.
+\end{repobox}
+
+\subsection{The exact saddle and the general-base lower-Lambert coordinate}
+
+The decomposition also pins the saddle coordinate.  The exact saddle equation
+for the endpoint density at depth $y$ is
+\begin{equation}\label{p6:eq:exact-saddle}
+ y+2\Lambda_a'\bigl(2s_a(y)\bigr)=0.
+\end{equation}
+Differentiating \eqref{p6:eq:general-exact-Laplace},
+\[
+ y\,s=\log_a(2s)-\tfrac12-\frac{P_a'\bigl(\log_a2s\bigr)}{\log a}
+ -2s\,E_a'(2s),
+\]
+so, ignoring the bounded periodic derivative and the exponentially small tail,
+the variable $\rho=\log_a\bigl(2s/\sqrt a\bigr)$ satisfies
+\begin{equation}\label{p6:eq:r-Lambert-equation}
+ \rho\,a^{-\rho}=\frac{y\sqrt a}{2},
+\end{equation}
+whose large solution is the general-base lower-Lambert coordinate
+\begin{equation}\label{p6:eq:r-Lambert}
+ r_a(y)=-\frac1{\log a}
+ W_{-1}\!\left(-\frac{y\sqrt a\,\log a}{2}\right)
+ \longrightarrow\infty
+ \qquad(y\downarrow0).
+\end{equation}
+The half-unit shift hidden in $\sqrt a$ is exactly the linear term
+$+\tfrac12\log u$ of the decomposition; at $a=2$, this normalization matches
+the repository's binary inverse coordinate.
+
 \begin{conjbox}
-\textbf{All-orders endpoint expansion for $h_a$.}
+\textbf{All-orders endpoint expansion for $h_a$ (refined).}
 Let $\delta\downarrow0$ and
 $U_a(\delta)=-W_{-1}(-c_a\delta)$ for a normalization constant $c_a>0$.
 There exist smooth $1$-periodic coefficient functions
@@ -10162,9 +10735,20 @@ inverse of the affine $q$-CDF.  At $a=2$, after normalization, it must reduce to
 the existing binary expansion in the repository.
 \end{conjbox}
 
-The main unresolved tasks are to identify $c_a,A_a,B_a$ without convention
-ambiguity, construct the periodic saddle jets, and prove a uniform remainder.
-Mellin--Poisson analysis of \eqref{p6:eq:Ya-Laplace} is a promising route.
+% ed.: the transform-level half of this program is now closed by
+% \cref{p6:thm:general-periodic,p6:thm:general-fourier-modes} (fourteenth wave);
+% the closing task list below is updated accordingly.
+Of the tasks formerly open here, the identification of the normalization
+$c_a=\sqrt a\,\log a/2$ and of the leading-order constants, and the construction
+of the periodic phase, are settled at the transform level by
+\eqref{p6:eq:r-Lambert} and
+\cref{p6:thm:general-periodic,p6:thm:general-fourier-modes}: the order-one
+oscillation of the conjectured expansion must be $\Psi_a$ evaluated at the
+saddle phase, with the saddle jets generated by the derivatives of $P_a$.  What
+remains open is the density level: existence and uniqueness of the exact saddle
+\eqref{p6:eq:exact-saddle} for small $y$, the steepest-descent contour with a
+uniform remainder, and uniformity of all constants for $a$ in compact subsets
+of $(1,\infty)$.
 
 \section{Deterministic numerical experiments}
 
@@ -10273,6 +10857,39 @@ falls from approximately $1.67\times10^{-2}$ at $N=4$ to
 $1.69\times10^{-5}$ at $N=8$ for $a=2.2$.  This verifies the function-level
 statement rather than just the limiting norm.
 
+\subsection{Fourteenth-wave verification package}
+
+The second package (\path{assets/Atomic_Functions_Beyond_Dyadic_Report/},
+script \texttt{experiments.py}, fixed seed \texttt{20260828}) verifies the
+layers merged from the fourteenth wave.
+\begin{itemize}
+\item \textbf{Periodicity and decomposition.}  On a grid, the residual in
+$P_a(x+1)-P_a(x)$ stays below $3\times10^{-14}$ for
+$a\in\{1.2,\,1.5,\,2,\,2.6,\,3,\,5\}$
+(\texttt{data/periodicity\_residuals.csv}).
+\item \textbf{Gamma--zeta modes.}  Numerical Fourier coefficients of $\Psi_a$
+agree with \eqref{p6:eq:general-gamma-zeta} to between $10^{-12}$ and
+$10^{-16}$ (\texttt{data/periodic\_fourier\_validation.csv}); the larger
+dyadic first-mode error reflects resolving a mode of amplitude about
+$10^{-6}$ with double-precision quadrature, not a failure of the identity.
+During the merge, the identity was re-derived independently at
+30-digit precision, confirming the sign and value of
+\eqref{p6:eq:general-gamma-zeta} at $a\in\{2,3\}$, $k\in\{1,2\}$ to
+between $10^{-13}$ and $10^{-28}$, and the exact decomposition
+\eqref{p6:eq:general-exact-Laplace} to $10^{-31}$.
+\item \textbf{Tube formula and degree law.}  The exact tube volume
+\eqref{p6:eq:exact-tube} matches the direct gap sum, the normalized profile
+matches \eqref{p6:eq:minkowski-profile}, and the empirical laws of $p_aN_a$
+approach $1-\e^{-x}$ (\cref{p6:fig:tube-oscillation,p6:fig:degree-limit};
+\texttt{data/geometry\_and\_norms.csv}).
+\item \textbf{Bell moments.}  For $a=2.6$, a fixed-seed simulation of
+$250{,}000$ random sums confirms the exact Bell moments
+\eqref{p6:eq:moment-recurrence} through order ten at the expected Monte Carlo
+accuracy (\texttt{data/moment\_validation\_a\_2\_6.csv}).  This is the only
+Monte Carlo item in either package; every identity it touches is also verified
+exactly.
+\end{itemize}
+
 \section{Conjectures and future research directions}\label{p6:sec:future-directions}
 
 \subsection{A focused conjecture register}
@@ -10296,11 +10913,51 @@ for $a>2$, where it is the central support-separation plateau.
 The endpoint density, CDF, and inverse CDF admit full lower-Lambert expansions of
 the form \eqref{p6:eq:endpoint-conjecture}, with coefficient functions analytic in
 the phase and smooth in $a$ on compact subintervals of $(1,\infty)$.
+% ed.: transform-level half settled by the fourteenth wave; see the updated
+% closing discussion of the endpoint section.
+The transform-level structure --- the exact quadratic--linear--periodic
+decomposition, the Gamma--zeta modes of the phase, and the normalization
+$c_a=\sqrt a\log a/2$ of the Lambert coordinate --- is now proved
+(\cref{p6:thm:general-periodic,p6:thm:general-fourier-modes}); the conjecture
+retains the density-level saddle inversion and its uniformity in $a$.
 \end{conjecture}
 
 \begin{conjecture}[Critical double scaling]
 The $a\downarrow2$ polynomial-gap boundary layer has a universal limit after
 simultaneously sending the depth to infinity and keeping $(a-2)r$ bounded.
+% ed.: first marginal identified by the fourteenth wave.
+The first marginal is now known: by \cref{p6:thm:degree-law}, the depth of a
+Lebesgue-typical gap, rescaled by $(a-2)/2$, converges to a standard
+exponential law.  The remaining problem is the joint limit of word address,
+rescaled gap geometry, and polynomial coefficients, normalized by the exact
+derivative amplitudes of \cref{p6:prop:polynomial-gap}.
+\end{conjecture}
+
+\begin{conjecture}[Overlap-regime nowhere analyticity]
+For every $1<a\le2$, the density $h_a$ is nonanalytic at every point of the
+open interior of its support.  The case $a=2$ is the source theorem.  For
+$1<a<2$ the two refinement branches overlap, so the gap-degree and one-branch
+localization arguments disappear; a proof may require a transfer-operator or
+quasi-analyticity criterion adapted to the dilation equation.
+\end{conjecture}
+
+\begin{conjecture}[Arithmetic of algebraic breakpoints]
+For algebraic $a>2$, the exact values of $h_a$ and its derivatives at cylinder
+endpoints lie in the field generated by $a$ and the even moments, with
+denominator growth controlled by the ideals generated by $a^{2m}-1$.  The
+cumulant formula \eqref{p6:eq:kappa} suggests a systematic
+algebraic-denominator theory generalizing the dyadic rational arithmetic of
+Arias de Reyna and Haugland~\cite{p6:arias-arithmetic,p6:haugland}.
+\end{conjecture}
+
+\begin{conjecture}[A bridge between the two periodic profiles]
+There is a natural spectral operator, built from the smoothing transform or
+its transfer operator, relating the tube profile
+\eqref{p6:eq:minkowski-profile} of the gap string to the negative-Laplace
+profile $P_a$ of \eqref{p6:eq:Pa-def}.  The two profiles share the vertical
+lattice $2\pi\ii k/\log a$ but have very different amplitudes; even a rigorous
+obstruction to a simple relation would clarify how the geometry of $K_a$ and
+the endpoint probability of $X_a$ decouple.
 \end{conjecture}
 
 \subsection{Promising proof programs}
@@ -10334,17 +10991,25 @@ $\boldsymbol m=(m_1,m_2,\ldots)$ with finite deviation from $(1,1,\ldots)$:
  =\prod_{j\ge1}\sinc(2\pi2^{-j}\xi)^{m_j}.
 \]
 Cosine identities then relate neighboring vectors by finite shift averages.
-Questions include support, smoothness, exact dyadic values, polynomial
-reproduction order, and whether the resulting family forms a useful multiscale
-basis.
+% ed.: the first rung is now explicit (fourteenth wave).
+The one-parameter subfamily obtained by sliding a single doubled factor is now
+constructed in closed form: the ladder $G_n$ of \cref{p6:prop:fup-ladder}
+satisfies an exact two-translate recursion and converges in every $C^m$ to
+$2\Up(2\,\cdot)$.  The open questions concern the general multiplicity
+vectors: support, smoothness, exact dyadic values, polynomial reproduction
+order, and whether the resulting family forms a useful multiscale basis.
+A complete historical comparison also awaits a full copy of the source's
+$\Fup_n$ section, which breaks off at equation (3.100).
 
 \subsubsection{Mellin analysis of the endpoint product}
-Take the logarithm of \eqref{p6:eq:Ya-Laplace}, separate the main integral in the
-scale variable $j$, and apply Poisson summation to the residual function of
-$\log_a s$.  This should isolate the periodic phase before saddle inversion.
-The binary repository already contains the appropriate lower-Lambert and
-periodic-jet technology; the new work is to retain the parameter $a$ and control
-uniformity.
+% ed.: executed at the transform level by the fourteenth wave.
+This program is now carried out at the transform level:
+\cref{p6:thm:general-periodic} isolates the periodic phase exactly, and
+\cref{p6:thm:general-fourier-modes} computes its Fourier modes by sampling the
+kernel Mellin transform of Part~I on the lattice $-\chi_k$.  The remaining
+work is the saddle inversion at the density level with a uniform remainder in
+$a$, for which the binary repository's lower-Lambert and periodic-jet
+technology is the model.
 
 \subsubsection{Formalization roadmap}
 A Lean development can be staged so that every analytic obligation is small and
@@ -10363,6 +11028,14 @@ classification.
 \item For rational-power $a$, formalize the repeated-zero lemma; first prove
 periodized moment identities for compactly supported smooth functions, then
 obtain polynomial reproduction.
+\item Formalize the fourteenth-wave layers with elementary proofs: the
+geometric zeta function and tube formula are finite/geometric-series
+computations over the gap string; the degree law is a length count; the
+uniform limit is an explicit coupling; and the exact periodic decomposition
+\cref{p6:thm:general-periodic} is a telescoping identity of convergent sums,
+independent of any Mellin theory.  Only the Gamma--zeta mode formula requires
+the strip-extended kernel transform already listed as an obligation in
+Part~I.
 \item Keep the endpoint saddle, overlapping-regime strict log-concavity, and
 critical double-scaling claims in the frontier volume until their exact
 hypotheses and remainders are checked.
@@ -10393,6 +11066,14 @@ exact one-branch derivative localization.  At the critical point $a=2$, the
 gaps collapse, the signs become the classical Thue--Morse sequence, and the
 Fabius/Rvachev theory in the repository is recovered.
 
+The merged fourteenth-wave layers add a fifth manifestation of the same scale:
+the vertical lattice $2\pi\ii k/\log a$ appears twice, as the complex
+dimensions of the gap string governing tube oscillations and as the
+Gamma--zeta Fourier modes governing endpoint oscillations, while the parameter
+limits $a\downarrow1$, $a\downarrow2$, and $a\to\infty$ bracket the family
+between the Gaussian, the nowhere-analytic critical atom, and the uniform law
+with explicit rates at every end.
+
 \appendix
 \section{Concordance with the attached source}
 
@@ -10417,9 +11098,15 @@ endpoint evaluation & \Cref{p6:thm:gap-decomposition,p6:prop:polynomial-gap,p6:t
 \bottomrule
 \end{longtable}
 
+The fourteenth-wave package reconstructed the same equation ranges
+independently under the labels (S3.1)--(S3.100) and reached identical
+readings; its OCR-reconstruction ledger (recurring glyph confusions and the
+two damaged ranges) is preserved verbatim in
+\path{assets/Atomic_Functions_Beyond_Dyadic_Report/Atomic_Functions_Beyond_Dyadic.tex}.
+
 \section{Reproducibility and package contents}
 
-The archive contains:
+The thirteenth-wave archive contains:
 \begin{itemize}
 \item \texttt{atomic\_sinc\_splines\_report.tex} and the compiled PDF;
 \item \texttt{numerics.py}, with detailed comments and deterministic algorithms;
@@ -10440,6 +11127,18 @@ latexmk -pdf -interaction=nonstopmode -halt-on-error \
   atomic_sinc_splines_report.tex
 \end{lstlisting}
 The computations require no network access.
+
+The fourteenth-wave archive
+(\path{assets/Atomic_Functions_Beyond_Dyadic_Report/}) contains the merged
+report source \texttt{Atomic\_Functions\_Beyond\_Dyadic.tex}, the script
+\texttt{experiments.py} (NumPy, Matplotlib, mpmath; fixed seed
+\texttt{20260828}), the five figures in vector form, the four CSV tables
+cited in the numerics section, \texttt{README.md}, \texttt{requirements.txt},
+and \texttt{SHA256SUMS}.  From that directory,
+\begin{lstlisting}[style=repoPython]
+python experiments.py --output .
+\end{lstlisting}
+regenerates every figure and table deterministically.
 
 \begin{thebibliography}{99}
 
@@ -10527,6 +11226,22 @@ Y. Peres, W. Schlag, and B. Solomyak,
 ``Sixty years of Bernoulli convolutions,'' in
 \emph{Fractal Geometry and Stochastics II}, Progress in Probability 46,
 Birkh\"auser, 2000, 39--65.
+
+\bibitem{p6:hutchinson}
+J. E. Hutchinson,
+``Fractals and self-similarity,''
+\emph{Indiana University Mathematics Journal} 30 (1981), no.~5, 713--747.
+
+\bibitem{p6:lapidus-vf}
+M. L. Lapidus and M. van Frankenhuijsen,
+\emph{Fractal Geometry, Complex Dimensions and Zeta Functions:
+Geometry and Spectra of Fractal Strings}, 2nd ed.,
+Springer Monographs in Mathematics, Springer, 2013.
+
+\bibitem{p6:flajolet-gd}
+P. Flajolet, X. Gourdon, and P. Dumas,
+``Mellin transforms and asymptotics: Harmonic sums,''
+\emph{Theoretical Computer Science} 144 (1995), 3--58.
 
 \end{thebibliography}
 
