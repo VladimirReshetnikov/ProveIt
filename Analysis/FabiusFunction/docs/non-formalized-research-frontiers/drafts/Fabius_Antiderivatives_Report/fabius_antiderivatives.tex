@@ -1,0 +1,1920 @@
+\documentclass[11pt]{article}
+
+\usepackage[T1]{fontenc}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{newpxtext,newpxmath}
+\usepackage{mathtools,bm}
+\usepackage[margin=1in,headheight=14pt]{geometry}
+\usepackage{microtype}
+\usepackage{booktabs,longtable,tabularx,array}
+\usepackage{enumitem}
+\usepackage{xcolor}
+\usepackage{fancyhdr}
+\usepackage{hyperref}
+\usepackage[nameinlink,capitalize,noabbrev]{cleveref}
+\usepackage[most]{tcolorbox}
+\usepackage{listings}
+\usepackage{url}
+
+\definecolor{deepblue}{RGB}{31,67,112}
+\definecolor{deepgreen}{RGB}{32,104,80}
+\definecolor{warmgray}{RGB}{90,84,76}
+\definecolor{paleblue}{RGB}{239,245,251}
+\definecolor{palegreen}{RGB}{239,248,244}
+\definecolor{paleyellow}{RGB}{253,249,232}
+\definecolor{palered}{RGB}{253,240,239}
+
+\hypersetup{
+  colorlinks=true,
+  linkcolor=deepblue,
+  citecolor=deepgreen,
+  urlcolor=deepblue,
+  pdftitle={Antiderivatives of Monomially Weighted Fabius-Type Functions},
+  pdfauthor={OpenAI, research report prepared for Vladimir Reshetnikov}
+}
+
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small Antiderivatives of Fabius-Type Functions}
+\fancyhead[R]{\small \thepage}
+\renewcommand{\headrulewidth}{0.4pt}
+
+\setlist[itemize]{leftmargin=1.6em,itemsep=0.25em,topsep=0.4em}
+\setlist[enumerate]{leftmargin=1.8em,itemsep=0.3em,topsep=0.4em}
+\setlength{\parindent}{1.1em}
+\setlength{\parskip}{0.15em}
+\allowdisplaybreaks
+
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{conjecture}[theorem]{Conjecture}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{example}[theorem]{Example}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+
+\newtcolorbox{resultbox}[1][]{
+  enhanced,breakable,colback=paleblue,colframe=deepblue,
+  boxrule=0.7pt,arc=1.5mm,left=1.5mm,right=1.5mm,top=1mm,bottom=1mm,
+  title={#1},fonttitle=\bfseries
+}
+\newtcolorbox{statusbox}[1][]{
+  enhanced,breakable,colback=palegreen,colframe=deepgreen,
+  boxrule=0.7pt,arc=1.5mm,left=1.5mm,right=1.5mm,top=1mm,bottom=1mm,
+  title={#1},fonttitle=\bfseries
+}
+\newtcolorbox{warningbox}[1][]{
+  enhanced,breakable,colback=paleyellow,colframe=warmgray,
+  boxrule=0.7pt,arc=1.5mm,left=1.5mm,right=1.5mm,top=1mm,bottom=1mm,
+  title={#1},fonttitle=\bfseries
+}
+
+\newcommand{\F}{F}
+\newcommand{\Fs}{\mathcal F}
+\newcommand{\Up}{\operatorname{up}}
+\newcommand{\Q}{Q}
+\newcommand{\E}{\mathbb E}
+\newcommand{\Pp}{\mathbb P}
+\newcommand{\R}{\mathbb R}
+\newcommand{\C}{\mathbb C}
+\newcommand{\N}{\mathbb N}
+\newcommand{\dd}{\,\mathrm d}
+\newcommand{\e}{\mathrm e}
+\newcommand{\ii}{\mathrm i}
+\newcommand{\fall}[2]{#1^{\underline{#2}}}
+\newcommand{\rise}[2]{#1^{\overline{#2}}}
+\newcommand{\Jn}{\mathcal J}
+\newcommand{\RL}{\mathcal I}
+\newcommand{\M}{\mathcal M}
+\newcommand{\eps}{\varepsilon}
+\newcommand{\1}{\mathbf 1}
+\DeclareMathOperator{\sinc}{sinc}
+\DeclareMathOperator{\Li}{Li}
+\DeclareMathOperator{\Rea}{Re}
+\DeclareMathOperator{\Ima}{Im}
+
+\title{\bfseries Antiderivatives of Monomially Weighted\\[2mm]
+Fabius-Type Functions\\[2mm]
+\large Exact Volterra Ladders, Newton--Mellin Series, Rvachev Folds,\\
+Fractional Orders, and Inverse-Quantile Integrals}
+\author{Research report prepared for Vladimir Reshetnikov}
+\date{27 August 2026}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+Let \(F\) be the bounded Fabius distribution function, let \(\Up\) be Rvachev's
+compactly supported up-function, and let \(Q=F^{-1}\) on \([0,1]\).  This report
+constructs normalized antiderivatives of \(x^pF(x)\) and their higher-order
+Volterra analogues.  For \(p\in\N_0\), the answer is a finite closed expression
+in dyadically contracted Fabius values.  More generally, for every complex
+exponent \(\alpha\), every integer order \(n\geq1\), and \(0<x\leq1\), we prove
+a locally uniformly and absolutely convergent Newton--Volterra expansion
+\[
+ \frac1{(n-1)!}\int_0^x(x-t)^{n-1}t^\alpha F(t)\dd t
+ =\sum_{r\geq0}(-1)^r\binom{n+r-1}{r}\fall{\alpha}{r}
+ x^{\alpha-r}2^{\binom{n+r}{2}}F\!\left(\frac{x}{2^{n+r}}\right).
+\]
+Endpoint flatness makes this an entire function of \(\alpha\), including all
+negative powers; nonnegative integral exponents are exactly the terminating
+cases.  At \(x=1\), the coefficients become the Fabius moments and give a
+Newton interpolation formula, a two-parameter family of exact moment
+identities, and a logarithmic constant
+\[
+ \int_0^1\frac{F(x)}x\dd x
+ =-\E\log X
+ =\sum_{n\geq1}\frac{d_n}{n}
+ =\log2+\frac12\sum_{n\geq1}\frac{c_n}{n}.
+\]
+We derive global piecewise formulas, exponential generating functions,
+Bell--Bernoulli cumulant forms, formulas for \(F(1-x)=1-F(x)\), complete
+piecewise antiderivatives of \(x^p\Up(x)\), exact higher derivatives in
+Thue--Morse form, and Riemann--Liouville extensions of nonintegral order.
+For the inverse Fabius function we obtain closed change-of-variable formulas,
+including
+\[
+ \int_0^yQ(u)\dd u=yQ(y)-F\!\left(\frac{Q(y)}2\right),\qquad
+ \RL^\nu Q(y)=\frac1{\Gamma(\nu+1)}
+ \int_0^{Q(y)}(y-F(t))^\nu\dd t.
+\]
+Combining the inverse endpoint equivalent already developed in the repository
+with regular-variation arguments yields new asymptotics for weighted inverse
+primitives and for large quantile moments.  The final sections separate proved
+statements from conjectural saddle refinements, record reproducible numerical
+checks, and propose Lean formalization and arithmetic directions.
+\end{abstract}
+
+\tableofcontents
+\newpage
+
+\section{Scope, status, and corpus audit}
+
+\subsection{The source corpus}
+The requested source tree was audited recursively at the repository snapshot
+identified in its own frontier inventory as commit
+\texttt{32d6d36c51d803289e6d6a0dc0c37753766eba47} (27 August 2026).  That
+inventory records 67 distinct \texttt{*.tex} paths under
+\path{Analysis/FabiusFunction/docs}.  The audit included the live primary
+exposition, the mathematical glossary, the Lean walkthrough, the
+non-elementarity article, the consolidated non-formalized frontier volume,
+the source-paper transcriptions, and the frozen archive and draft families
+\cite{ProveItPrimary,ProveItFrontiers,ProveItGlossary,ProveItLean,
+ProveItNonElementary,ProveItInventory}.
+
+Archived files contain many historical copies of material later consolidated
+into the live exposition or frontier volume.  For nonduplication, the present
+work therefore used two passes:
+\begin{enumerate}
+\item a path-complete inventory and phrase audit over the recursive corpus;
+\item theorem-level comparison against the live primary exposition and the
+      consolidated frontier volume, with targeted checks of the inverse,
+      repeated-integration, Newton/Richardson, moment, asymptotic, and
+      non-elementarity source families.
+\end{enumerate}
+The corpus already contains the basic functional equations, exact dyadic
+values, moment recurrences, the sinc product, all-orders endpoint asymptotics,
+repeated-averaging limits, and extensive inverse-function work.  It does
+\emph{not} develop the normalized antiderivative ladder of this report, the
+finite monomial formula, the arbitrary-complex-power Newton--Volterra series,
+or the inverse-primitive reductions below.  Literal searches for
+``antiderivative'' and ``indefinite integral'' returned no such treatment in
+the live primary or consolidated frontier source.  This establishes novelty
+\emph{relative to the audited repository}; it is not a claim that no equivalent
+identity has ever appeared elsewhere.  In particular, the base functional
+integral identity \(\int_0^xF(t)\dd t=F(x/2)\) is an immediate classical
+consequence of the defining equation.
+
+\begin{statusbox}[Status convention used in this report]
+Every item labeled theorem, proposition, lemma, or corollary is supplied with
+a mathematical proof here.  ``Repository input'' means that an already
+established result is imported from the audited corpus.  ``Conjecture'' means
+that the statement is supported by the preceding analysis but is not proved.
+None of the new theorems in this report has yet been translated into Lean.
+\end{statusbox}
+
+\subsection{What ``closed form'' means here}
+The repository proves strong non-elementarity statements for \(F\), \(\Up\),
+and \(Q\) \cite{ProveItNonElementary,ProveItFrontiers}.  Consequently an
+antiderivative of \(x^pF(x)\) cannot generally be elementary on any interior
+interval: if it were, its derivative divided by \(x^p\) on a subinterval not
+containing zero would make \(F\) elementary there.  The meaningful native
+closed class is therefore the algebra generated by polynomials, rational
+constants, and finitely many dyadically scaled Fabius values.  The finite
+formula in \cref{thm:global-integer} is closed in precisely that sense.
+
+\section{Normalization and probabilistic infrastructure}
+
+\subsection{The three Fabius-type functions}
+We follow the repository's careful distinction between three objects.  The
+bounded distribution function is
+\[
+ F(x)=0\quad(x\leq0),\qquad F(x)=1\quad(x\geq1),
+\]
+with
+\begin{align}
+ F(1-x)&=1-F(x), &&x\in\R,                                      \label{eq:F-reflect}\\
+ F'(x)&=2F(2x), &&0\leq x\leq\tfrac12.                           \label{eq:F-left-diff}
+\end{align}
+The compactly supported Rvachev function is
+\begin{equation}
+ \Up(x)=F(1-|x|),                                                \label{eq:up-def}
+\end{equation}
+and the signed global extension is
+\begin{equation}
+ \Fs(x)=\sum_{m\geq0}(-1)^{s_2(m)}\Up(x-2m-1),
+ \qquad \Fs'(x)=2\Fs(2x).                                      \label{eq:signed-def}
+\end{equation}
+Here \(s_2(m)\) is the binary digit sum.  The bounded and signed functions
+coincide on \(( -\infty,1]\), but not globally
+\cite{ProveItPrimary,AriasArithmetic}.
+
+Let \((U_j)_{j\geq1}\) be independent uniform random variables on \([0,1]\),
+and put
+\begin{equation}
+ X=\sum_{j\geq1}2^{-j}U_j.                                      \label{eq:X-def}
+\end{equation}
+Then \(F\) is the distribution function of \(X\), and \(X\overset d=1-X\).
+The density of \(Y=2X-1\) is \(\Up\).  We use the moments
+\begin{equation}
+ d_n=\E X^n,
+ \qquad
+ c_n=\E(2X-1)^{2n}=\int_{-1}^1x^{2n}\Up(x)\dd x.                \label{eq:dc-def}
+\end{equation}
+The repository establishes
+\begin{align}
+ d_0&=1,\qquad
+ (n+1)(2^n-1)d_n=\sum_{k=0}^{n-1}\binom{n+1}{k}d_k,             \label{eq:d-rec}\\
+ d_n&=n!\,2^{\binom n2}F(2^{-n}),                               \label{eq:d-dyadic}\\
+ c_n&=\frac{2d_{2n+1}}{2n+1}.                                  \label{eq:c-d}
+\end{align}
+The moment generating function
+\begin{equation}
+ G(z)=\E\e^{zX}=\sum_{n\geq0}d_n\frac{z^n}{n!}
+ =\prod_{j\geq1}\frac{\e^{z/2^j}-1}{z/2^j}                    \label{eq:G-product}
+\end{equation}
+satisfies
+\begin{equation}
+ G(2z)=\frac{\e^z-1}{z}G(z),\qquad G(-z)=\e^{-z}G(z).           \label{eq:G-fe}
+\end{equation}
+At imaginary arguments, the centered transform
+\(\e^{-z}G(2z)\) becomes the familiar infinite sinc product for \(\Up\)
+\cite{AriasCompact,Rvachev1990,ProveItPrimary}.
+
+\subsection{Normalized integer and fractional primitives}
+For an integer \(n\geq1\), define the normalized Volterra primitive
+\begin{equation}
+ (\Jn_nf)(x)=\frac1{(n-1)!}\int_0^x(x-t)^{n-1}f(t)\dd t.         \label{eq:J-def}
+\end{equation}
+It is the unique solution of \(D^nu=f\) whose derivatives of orders
+\(0,\dots,n-1\) vanish at zero.  Every other \(n\)-fold antiderivative differs
+from it by a polynomial of degree at most \(n-1\).
+
+For \(\Rea\nu>0\), the Riemann--Liouville version is
+\begin{equation}
+ (\RL^\nu f)(x)=\frac1{\Gamma(\nu)}
+ \int_0^x(x-t)^{\nu-1}f(t)\dd t.                               \label{eq:RL-def}
+\end{equation}
+The notation \(\Jn_n=\RL^n\) will be used when the order is integral.
+For a complex exponent \(\alpha\) and positive \(x\), we take
+\(x^\alpha=\exp(\alpha\log x)\) with the real logarithm.
+
+\section{The dyadic antiderivative ladder}
+
+\begin{theorem}[Exact normalized primitive ladder]\label{thm:ladder}
+For every integer \(n\geq1\) and every \(0\leq x\leq1\),
+\begin{equation}
+ \boxed{\quad
+ (\Jn_nF)(x)=2^{\binom n2}F\!\left(\frac{x}{2^n}\right).
+ \quad}                                                        \label{eq:J-ladder}
+\end{equation}
+For the signed global extension, the same formula holds for every real \(x\):
+\begin{equation}
+ D^{-n}_{0}\Fs(x)=2^{\binom n2}\Fs\!\left(\frac{x}{2^n}\right),              \label{eq:signed-primitive}
+\end{equation}
+where \(D^{-n}_{0}\) denotes the antiderivative with zero \((n-1)\)-jet at
+zero.
+\end{theorem}
+
+\begin{proof}
+Set \(H_n(x)=2^{\binom n2}F(x/2^n)\).  Since
+\(0\leq x/2^n\leq1/2\), \eqref{eq:F-left-diff} gives
+\[
+ H_n'(x)
+ =2^{\binom n2-n}F'(x/2^n)
+ =2^{\binom n2-n+1}F(x/2^{n-1})
+ =H_{n-1}(x).
+\]
+Iterating yields \(H_n^{(n)}=F\).  Infinite flatness of \(F\) at zero makes
+the first \(n\) initial data vanish, so uniqueness of the Volterra primitive
+proves \eqref{eq:J-ladder}.  The identical calculation with
+\(\Fs'(x)=2\Fs(2x)\) has no range restriction and proves
+\eqref{eq:signed-primitive}.
+\end{proof}
+
+\begin{remark}
+The range restriction in \eqref{eq:J-ladder} is essential for the bounded
+function: it is \(\Fs\), not the bounded CDF, that obeys the clean dilation
+equation on all of \(\R\).  The global bounded formula will instead be
+piecewise polynomial in \cref{thm:global-integer}.
+\end{remark}
+
+\begin{corollary}[Moment interpretation of the ladder]\label{cor:J-moment}
+For \(x\geq0\),
+\begin{equation}
+ (\Jn_nF)(x)=\frac1{n!}\E (x-X)_+^n.                            \label{eq:J-stoploss}
+\end{equation}
+In particular,
+\begin{equation}
+ (\Jn_nF)(1)=\frac{d_n}{n!}
+ =2^{\binom n2}F(2^{-n}).                                      \label{eq:J-one}
+\end{equation}
+\end{corollary}
+
+\begin{proof}
+Write \(F(t)=\E\1_{\{X\leq t\}}\), apply Tonelli's theorem, and integrate
+\((x-t)^{n-1}\) from \(t=X\) to \(t=x\).  At \(x=1\), symmetry gives
+\(\E(1-X)^n=\E X^n=d_n\).
+\end{proof}
+
+\section{The Newton--Volterra expansion for arbitrary powers}
+
+\subsection{A general commutator identity}
+The key algebraic mechanism does not depend on the Fabius function.
+
+\begin{theorem}[Newton--Volterra commutator]\label{thm:commutator}
+Let \(n\geq1\), \(x>0\), and suppose the displayed integrals converge.  Then
+for every complex \(\alpha\),
+\begin{equation}
+ \Jn_n[t^\alpha f(t)](x)
+ =\sum_{r=0}^{\infty}(-1)^r\binom{n+r-1}{r}\fall{\alpha}{r}
+ x^{\alpha-r}(\Jn_{n+r}f)(x),                                 \label{eq:general-commutator}
+\end{equation}
+whenever termwise integration is justified.  If \(\alpha=p\in\N_0\), the
+series terminates at \(r=p\) and is an algebraic identity for every locally
+integrable \(f\):
+\begin{equation}
+ \boxed{\quad
+ \Jn_n[t^pf(t)](x)
+ =\sum_{r=0}^{p}(-1)^r\binom{n+r-1}{r}\frac{p!}{(p-r)!}
+ x^{p-r}(\Jn_{n+r}f)(x).
+ \quad}                                                        \label{eq:finite-commutator}
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+Inside the Volterra kernel, expand about the upper endpoint:
+\[
+ t^\alpha=x^\alpha\left(1-\frac{x-t}{x}\right)^\alpha
+ =\sum_{r\geq0}(-1)^r\frac{\fall{\alpha}{r}}{r!}
+ x^{\alpha-r}(x-t)^r.
+\]
+After integration, the factor multiplying \(\Jn_{n+r}f\) is
+\[
+ \frac{\Gamma(n+r)}{\Gamma(n)r!}
+ =\binom{n+r-1}{r}.
+\]
+For \(p\in\N_0\), the binomial expansion is finite, so no convergence
+argument is needed.
+\end{proof}
+
+The first two operator recurrences encoded in \eqref{eq:finite-commutator} are
+\begin{align}
+ \Jn_n[t f(t)]&=x\Jn_nf-n\Jn_{n+1}f,                            \label{eq:xf-rec}\\
+ \Jn_n[t^pf(t)]&=x\Jn_n[t^{p-1}f(t)]-n\Jn_{n+1}[t^{p-1}f(t)].   \label{eq:triangular-rec}
+\end{align}
+They provide a convenient triangular implementation without symbolic
+integration.
+
+\subsection{The complete Fabius formula}
+
+\begin{theorem}[Arbitrary-complex-power Fabius primitive]\label{thm:newton-volterra}
+Let \(n\geq1\), \(0<x\leq1\), and \(\alpha\in\C\).  Then the integral
+\(\Jn_n[t^\alpha F(t)](x)\) exists, is entire as a function of \(\alpha\), and
+has the absolutely and locally uniformly convergent expansion
+\begin{equation}
+ \boxed{\begin{aligned}
+ \Jn_n[t^\alpha F(t)](x)
+ ={}&\sum_{r=0}^{\infty}(-1)^r\binom{n+r-1}{r}\fall{\alpha}{r}
+ 2^{\binom{n+r}{2}}x^{\alpha-r}
+ F\!\left(\frac{x}{2^{n+r}}\right).
+ \end{aligned}}                                                \label{eq:master-alpha-n}
+\end{equation}
+For \(\alpha=p\in\N_0\), this terminates and becomes
+\begin{equation}
+ \boxed{\begin{aligned}
+ \Jn_n[t^pF(t)](x)
+ ={}&\sum_{r=0}^{p}(-1)^r\binom{n+r-1}{r}\frac{p!}{(p-r)!}
+ 2^{\binom{n+r}{2}}x^{p-r}
+ F\!\left(\frac{x}{2^{n+r}}\right).
+ \end{aligned}}                                                \label{eq:finite-p-n}
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+Substitution of \eqref{eq:J-ladder} into
+\eqref{eq:general-commutator} gives the formal expression.  It remains to
+justify convergence for all \(\alpha\).
+
+Infinite flatness implies that for every integer \(M\geq0\) there is a finite
+constant \(C_M\) such that \(F(t)\leq C_Mt^M\) on \([0,1]\).  Hence, for every
+integer \(m\geq1\),
+\begin{equation}
+ 0\leq(\Jn_mF)(x)
+ \leq \frac{C_MM!}{(m+M)!}x^{m+M}.                             \label{eq:J-flat-bound}
+\end{equation}
+Indeed, this is the beta integral obtained by replacing \(F(t)\) with
+\(C_Mt^M\).  The absolute value of the \(r\)-th term of
+\eqref{eq:general-commutator}, with \(m=n+r\), is therefore at most
+\begin{equation}
+ C_MM!x^{\Rea\alpha+n+M}
+ \binom{n+r-1}{r}\frac{|\fall{\alpha}{r}|}{(n+r+M)!}.           \label{eq:term-bound}
+\end{equation}
+On a compact set of \(\alpha\)'s, the falling factorial is bounded by
+\(C\,r!r^B\) for some fixed \(B\).  Since
+\(\binom{n+r-1}{r}=O(r^{n-1})\), choosing \(M>B+1\) makes
+\eqref{eq:term-bound} summable uniformly on that compact set.  This proves
+absolute local uniform convergence.  The same flatness bound, with logarithmic
+powers inserted, permits differentiation under the defining integral and
+shows that it is entire in \(\alpha\).  The series and integral agree first in
+a half-plane where the ordinary binomial argument is immediate and then
+everywhere by the identity theorem; equivalently, one may use dominated
+convergence directly with \eqref{eq:term-bound}.
+\end{proof}
+
+\begin{resultbox}[Main closed form for the ordinary antiderivative]
+For \(0\leq x\leq1\) and \(p\in\N_0\), the normalized ordinary primitive is
+\begin{equation}
+ \int_0^x t^pF(t)\dd t
+ =\sum_{r=0}^{p}(-1)^r\frac{p!}{(p-r)!}
+ 2^{\binom{r+1}{2}}x^{p-r}
+ F\!\left(\frac{x}{2^{r+1}}\right).                            \label{eq:ordinary-p}
+\end{equation}
+Thus only \(p+1\) dyadically contracted Fabius evaluations are required.
+\end{resultbox}
+
+A useful one-step recurrence follows by integrating by parts once and changing
+variables:
+\begin{equation}
+ A_p(x):=\int_0^xt^pF(t)\dd t
+ =x^pF(x/2)-p\,2^pA_{p-1}(x/2),\qquad A_0(x)=F(x/2).             \label{eq:A-rec}
+\end{equation}
+Iteration of \eqref{eq:A-rec} is exactly \eqref{eq:ordinary-p}.
+
+\subsection{Remainders and the negative-power series}
+For the ordinary primitive \(n=1\), repeated integration by parts gives an
+especially transparent exact remainder.  For every integer \(N\geq0\),
+\begin{align}
+ \int_0^xt^\alpha F(t)\dd t
+ ={}&\sum_{r=0}^{N}(-1)^r\fall{\alpha}{r}
+ x^{\alpha-r}(\Jn_{r+1}F)(x)+R_N(\alpha,x),                    \label{eq:partial-alpha}\\
+ R_N(\alpha,x)
+ ={}&(-1)^{N+1}\fall{\alpha}{N+1}
+ \int_0^xt^{\alpha-N-1}(\Jn_{N+1}F)(t)\dd t.                  \label{eq:remainder-alpha}
+\end{align}
+If \(M> -\Rea\alpha-1\), \eqref{eq:J-flat-bound} yields
+\begin{equation}
+ |R_N(\alpha,x)|
+ \leq
+ \frac{|\fall{\alpha}{N+1}|C_MM!}
+ {(N+M+1)!(\Rea\alpha+M+1)}
+ x^{\Rea\alpha+M+1}.                                         \label{eq:remainder-bound}
+\end{equation}
+This estimate is useful even when direct evaluation of the extremely small
+Fabius terms would underflow.
+
+For a negative integer exponent \(\alpha=-m\), \(m\geq1\), the signs cancel
+and every term is positive:
+\begin{equation}
+ \boxed{\begin{aligned}
+ \int_0^xt^{-m}F(t)\dd t
+ =\sum_{r=0}^{\infty}
+ \frac{(m+r-1)!}{(m-1)!}
+ 2^{\binom{r+1}{2}}x^{-m-r}
+ F\!\left(\frac{x}{2^{r+1}}\right).
+ \end{aligned}}                                                \label{eq:negative-series}
+\end{equation}
+No principal value or regularization is involved: the flat zero of \(F\) makes
+\(x^{-m}F(x)\) integrable for every \(m\).  This behavior is sharply different
+from \(x^{-m}\Up(x)\), which is singular at the origin because \(\Up(0)=1\).
+
+\begin{corollary}[Endpoint localization]\label{cor:endpoint-localization}
+Fix \(n\geq1\) and \(\alpha\in\C\).  As \(x\downarrow0\),
+\begin{equation}
+ \Jn_n[t^\alpha F(t)](x)
+ \sim x^\alpha(\Jn_nF)(x)
+ =x^\alpha2^{\binom n2}F(x/2^n).                               \label{eq:localization}
+\end{equation}
+\end{corollary}
+
+\begin{proof}
+The sharp endpoint theory in the audited corpus implies rapid variation:
+for every fixed \(0<c<1\), \(F(cx)/F(x)\to0\) as \(x\downarrow0\).  Normalize
+the nonnegative measure
+\((x-t)^{n-1}F(t)\dd t\) on \([0,x]\).  Its mass below \((1-\delta)x\) is
+negligible relative to its total mass, because comparison with fixed dilates
+of \(F\) shows concentration in \([(1-\delta)x,x]\).  On that interval
+\((t/x)^\alpha\to1\) uniformly as \(\delta\downarrow0\).  The quotient of the
+two sides of \eqref{eq:localization} is the expectation of
+\((t/x)^\alpha\) under this normalized measure, hence tends to one.
+\end{proof}
+
+The first correction displayed by \eqref{eq:master-alpha-n} is
+\begin{equation}
+ \frac{\Jn_n[t^\alpha F(t)](x)}{x^\alpha\Jn_nF(x)}
+ =1-n\alpha\frac{\Jn_{n+1}F(x)}{x\Jn_nF(x)}+\cdots.             \label{eq:first-local-correction}
+\end{equation}
+The quotient on the right is governed by the repository's Lambert phase and
+periodic saddle fluctuation; extracting its complete expansion is posed as a
+frontier problem in \cref{sec:conjectures}.
+
+\section{Global closed form for natural powers}
+
+For integer powers the bounded extension of \(F\) permits a complete all-real
+answer.  Define
+\begin{equation}
+ H_{n,p}(x)=\frac1{(n-1)!}\int_0^x(x-t)^{n-1}t^pF(t)\dd t,       \label{eq:Hnp-def}
+\end{equation}
+with the usual oriented integral when \(x<0\).
+
+\begin{theorem}[Global piecewise formula]\label{thm:global-integer}
+For \(n\geq1\) and \(p\in\N_0\),
+\begin{equation}
+ H_{n,p}(x)=
+ \begin{cases}
+  0, & x\leq0,\\[1mm]
+  \displaystyle
+  \sum_{r=0}^{p}(-1)^r\binom{n+r-1}{r}\frac{p!}{(p-r)!}
+  2^{\binom{n+r}{2}}x^{p-r}
+  F\!\left(\frac{x}{2^{n+r}}\right),
+   & 0\leq x\leq1,\\[4mm]
+  \displaystyle
+  \frac{p!}{(p+n)!}x^{p+n}
+  -\frac1{(n-1)!}\sum_{j=0}^{n-1}(-1)^j\binom{n-1}{j}
+  x^{n-1-j}\frac{d_{p+j+1}}{p+j+1},
+   & x\geq1.
+ \end{cases}                                                    \label{eq:global-Hnp}
+\end{equation}
+The pieces have matching derivatives through order \(n-1\) at zero and one.
+\end{theorem}
+
+\begin{proof}
+The first two cases follow from the support convention and
+\cref{thm:newton-volterra}.  For \(x\geq1\), write
+\[
+ H_{n,p}(x)=\Jn_n[t^p](x)
+ -\frac1{(n-1)!}\int_0^1(x-t)^{n-1}t^p(1-F(t))\dd t.
+\]
+The first term is \(p!x^{p+n}/(p+n)!\).  Expand the finite polynomial kernel
+and use
+\begin{equation}
+ \int_0^1t^q(1-F(t))\dd t=\frac{d_{q+1}}{q+1},                 \label{eq:tail-moment}
+\end{equation}
+which is the standard tail integral for \(\E X^{q+1}\).  Since the formula
+was derived from a single Volterra integral, matching jets are automatic.
+\end{proof}
+
+For the ordinary primitive, the last branch simplifies to
+\begin{equation}
+ A_p(x)=\frac{x^{p+1}-d_{p+1}}{p+1},\qquad x\geq1.              \label{eq:Ap-right}
+\end{equation}
+This makes clear that the normalized antiderivative is constant-polynomial
+outside the transition interval, exactly as repeated integration of a compact
+transition requires.
+
+\section{Definite integrals, Newton interpolation, and moment identities}
+
+\subsection{The entire Mellin moment}
+Endpoint flatness makes
+\begin{equation}
+ M(s)=\E X^s=\int_0^1x^s\dd F(x)                               \label{eq:M-def}
+\end{equation}
+an entire function of \(s\in\C\).  Integration by parts, initially in a
+right half-plane and then by analytic continuation, gives
+\begin{equation}
+ \boxed{\quad
+ \mathcal A(\alpha):=\int_0^1x^\alpha F(x)\dd x
+ =\frac{1-M(\alpha+1)}{\alpha+1}.
+ \quad}                                                        \label{eq:A-M}
+\end{equation}
+The apparent singularity at \(\alpha=-1\) is removable.
+
+Putting \(x=1\) in \eqref{eq:master-alpha-n} and using
+\eqref{eq:J-one} gives the central Newton series.
+
+\begin{theorem}[Moment Newton series]\label{thm:moment-newton}
+For every \(\alpha\in\C\),
+\begin{equation}
+ \boxed{\quad
+ \mathcal A(\alpha)
+ =\sum_{r=0}^{\infty}(-1)^r\binom{\alpha}{r}
+ \frac{d_{r+1}}{r+1}.
+ \quad}                                                        \label{eq:moment-newton}
+\end{equation}
+More generally, for every integer \(n\geq1\),
+\begin{equation}
+ \boxed{\quad
+ \Jn_n[t^\alpha F(t)](1)
+ =\frac1{(n-1)!}\sum_{r=0}^{\infty}(-1)^r\binom{\alpha}{r}
+ \frac{d_{n+r}}{n+r}.
+ \quad}                                                        \label{eq:moment-newton-n}
+\end{equation}
+Both series converge absolutely and locally uniformly in \(\alpha\).
+\end{theorem}
+
+The terminology is literal.  If \(\Delta h(z)=h(z+1)-h(z)\), then
+\begin{equation}
+ \Delta^r\mathcal A(0)
+ =\int_0^1(x-1)^rF(x)\dd x
+ =(-1)^r\frac{d_{r+1}}{r+1}.                                  \label{eq:Newton-difference}
+\end{equation}
+Thus \eqref{eq:moment-newton} is the Newton interpolation series of the entire
+function \(\mathcal A\) from its nonnegative integral values.
+
+For \(p\in\N_0\), the series terminates and combines with \eqref{eq:A-M} to
+give
+\begin{equation}
+ \boxed{\quad
+ \int_0^1x^pF(x)\dd x=\frac{1-d_{p+1}}{p+1}.
+ \quad}                                                        \label{eq:integer-definite}
+\end{equation}
+Together with \eqref{eq:d-dyadic}, this yields the exact finite dyadic identity
+\begin{equation}
+ \sum_{r=0}^{p}(-1)^r\frac{p!}{(p-r)!}
+ 2^{\binom{r+1}{2}}F(2^{-r-1})
+ =\frac{1-d_{p+1}}{p+1}.                                      \label{eq:dyadic-finite-id}
+\end{equation}
+Every value in \eqref{eq:dyadic-finite-id} is rational and may be replaced by
+the repository's explicit \(q\)-binomial or integer-sequence formulas.
+
+\subsection{A two-parameter finite-difference identity}
+Expanding \((1-t)^{n-1}\) in the defining integral at \(x=1\) produces an
+independent form.  Equating it with \eqref{eq:moment-newton-n} gives the
+following exact identity.
+
+\begin{corollary}[Two-parameter moment identity]\label{cor:two-param}
+For \(n\geq1\) and \(p\in\N_0\),
+\begin{equation}
+ \boxed{\quad
+ \sum_{r=0}^{p}(-1)^r\binom pr\frac{d_{n+r}}{n+r}
+ =\sum_{j=0}^{n-1}(-1)^j\binom{n-1}{j}
+ \frac{1-d_{p+j+1}}{p+j+1}.
+ \quad}                                                        \label{eq:two-param-id}
+\end{equation}
+More generally, for every \(\alpha\in\C\), the finite left-hand side is
+replaced by its convergent Newton series and \(d_{p+j+1}\) by
+\(M(\alpha+j+1)\):
+\begin{equation}
+ \sum_{r\geq0}(-1)^r\binom\alpha r\frac{d_{n+r}}{n+r}
+ =\sum_{j=0}^{n-1}(-1)^j\binom{n-1}{j}
+ \frac{1-M(\alpha+j+1)}{\alpha+j+1},                           \label{eq:two-param-entire}
+\end{equation}
+where removable values are understood.
+\end{corollary}
+
+\subsection{Negative powers and logarithmic constants}
+For \(m\geq1\), \eqref{eq:moment-newton} becomes the positive series
+\begin{equation}
+ \int_0^1x^{-m}F(x)\dd x
+ =\sum_{n\geq1}\frac{(m+n-2)!}{(m-1)!\,n!}d_n.                 \label{eq:negative-moment-series}
+\end{equation}
+For \(m>1\), the Mellin form is
+\begin{equation}
+ \int_0^1x^{-m}F(x)\dd x=\frac{M(1-m)-1}{m-1}.                \label{eq:negative-M}
+\end{equation}
+At the removable case \(m=1\),
+\begin{equation}
+ \boxed{\quad
+ \int_0^1\frac{F(x)}x\dd x
+ =-M'(0)=-\E\log X
+ =\sum_{n\geq1}\frac{d_n}{n}.
+ \quad}                                                        \label{eq:log-constant-d}
+\end{equation}
+
+The centered moments give a second positive expansion.  Since
+\begin{equation}
+ M(s)=2^{-s}\sum_{q\geq0}\binom{s}{2q}c_q,                     \label{eq:M-centered}
+\end{equation}
+and \(\left.\frac{\dd}{\dd s}\binom{s}{2q}\right|_{s=0}
+=-1/(2q)\), one obtains
+\begin{equation}
+ \boxed{\quad
+ \int_0^1\frac{F(x)}x\dd x
+ =\log2+\frac12\sum_{q\geq1}\frac{c_q}{q}.
+ \quad}                                                        \label{eq:log-constant-c}
+\end{equation}
+Numerically, the accompanying code gives
+\begin{equation}
+ \int_0^1\frac{F(x)}x\dd x
+ =0.75824000040440865\ldots.                                  \label{eq:log-constant-num}
+\end{equation}
+
+\section{Exponential master functions and the sinc product}
+
+The entire family of integer-power primitives is encoded by an incomplete
+Laplace transform.  Applying \cref{thm:commutator} to \(\e^{zt}\), or simply
+expanding \(\e^{-z(x-t)}\) in the Volterra kernel, gives the following.
+
+\begin{theorem}[Exponential Volterra master]\label{thm:exp-master}
+For \(n\geq1\), \(0\leq x\leq1\), and \(z\in\C\),
+\begin{equation}
+ \boxed{\begin{aligned}
+ \Jn_n[\e^{zt}F(t)](x)
+ ={}&\e^{zx}\sum_{r=0}^{\infty}(-z)^r\binom{n+r-1}{r}
+ 2^{\binom{n+r}{2}}F\!\left(\frac{x}{2^{n+r}}\right).
+ \end{aligned}}                                                \label{eq:exp-master-n}
+\end{equation}
+The series is entire in \(z\).  At ordinary order \(n=1\),
+\begin{equation}
+ \int_0^x\e^{zt}F(t)\dd t
+ =\e^{zx}\sum_{m\geq1}(-z)^{m-1}2^{\binom m2}F(x/2^m).         \label{eq:exp-master-one}
+\end{equation}
+At \(x=1\),
+\begin{equation}
+ \boxed{\quad
+ \int_0^1\e^{zt}F(t)\dd t
+ =\frac{\e^z-G(z)}{z}
+ =\e^z\frac{1-G(-z)}{z},
+ \quad}                                                        \label{eq:exp-definite}
+\end{equation}
+with the removable value \(1/2\) at \(z=0\).
+\end{theorem}
+
+Taking \(p\) derivatives with respect to \(z\) at zero recovers
+\eqref{eq:finite-p-n}.  Thus \eqref{eq:exp-master-n} is a compact generating
+object for all natural monomial weights and all integral antiderivative orders.
+
+For the up-function, define the incomplete transform
+\begin{equation}
+ U(z,x)=\int_{-1}^x\e^{zt}\Up(t)\dd t.                          \label{eq:U-zx}
+\end{equation}
+On the left half, translation gives the particularly simple dyadic series
+\begin{equation}
+ U(z,x)=\e^{zx}\sum_{m\geq1}(-z)^{m-1}2^{\binom m2}
+ F\!\left(\frac{x+1}{2^m}\right),\qquad -1\leq x\leq0.        \label{eq:U-left-exp}
+\end{equation}
+At the right endpoint,
+\begin{equation}
+ \int_{-1}^1\e^{zt}\Up(t)\dd t
+ =\e^{-z}G(2z)=\frac{G(z)-G(-z)}{z}.                            \label{eq:up-mgf}
+\end{equation}
+For \(z=2\pi\ii\xi\), this is precisely the infinite sinc product, up to the
+chosen Fourier normalization.  Consequently all compact up-moments and their
+incomplete analogues arise by differentiating one dyadic Fabius series whose
+complete endpoint is the sinc product.
+
+\section{Bell and Bernoulli polynomial organization}
+
+Taking logarithms of \eqref{eq:G-product} and using the classical Bernoulli
+expansion gives
+\begin{equation}
+ \log G(z)=\frac z2+
+ \sum_{q\geq1}
+ \frac{B_{2q}}{2q(2q)!(2^{2q}-1)}z^{2q}.                       \label{eq:logG-Bernoulli}
+\end{equation}
+Hence the cumulants of \(X\) are
+\begin{equation}
+ \kappa_1=\frac12,\qquad
+ \kappa_{2q}=\frac{B_{2q}}{2q(2^{2q}-1)},\qquad
+ \kappa_{2q+1}=0\quad(q\geq1).                                \label{eq:cumulants}
+\end{equation}
+Writing \(Y_n\) for the complete exponential Bell polynomial,
+\begin{equation}
+ d_n=Y_n(\kappa_1,\ldots,\kappa_n).                             \label{eq:d-Bell}
+\end{equation}
+Therefore every definite natural-power primitive has the explicit
+Bell--Bernoulli form
+\begin{equation}
+ \int_0^1x^pF(x)\dd x
+ =\frac{1-Y_{p+1}(\kappa_1,\ldots,\kappa_{p+1})}{p+1}.          \label{eq:A-Bell}
+\end{equation}
+Substitution in \eqref{eq:global-Hnp} similarly expresses every exterior
+polynomial coefficient through Bernoulli numbers and Bell polynomials.  This
+provides a direct bridge between the antiderivative problem and the
+Bell--Bernoulli infrastructure already emphasized in the repository.
+
+\section{Reflection transforms: \texorpdfstring{$F(1-x)$}{F(1-x)} and
+\texorpdfstring{$1-F(x)$}{1-F(x)}}
+
+The global reflection identity \eqref{eq:F-reflect} means that the two
+transformations requested in the problem are the same function:
+\begin{equation}
+ F(1-x)=1-F(x),\qquad x\in\R.                                  \label{eq:transforms-same}
+\end{equation}
+For natural powers and every integer \(n\geq1\), linearity gives the complete
+normalized formula
+\begin{equation}
+ \boxed{\quad
+ \Jn_n[x^p(1-F(x))]
+ =\frac{p!}{(p+n)!}x^{p+n}-H_{n,p}(x),
+ \quad}                                                        \label{eq:complement-np}
+\end{equation}
+where \(H_{n,p}\) is the global piecewise expression
+\eqref{eq:global-Hnp}.  The same formula therefore applies verbatim to
+\(x^pF(1-x)\).
+
+For arbitrary complex \(\alpha\) on \(x>0\), an ordinary antiderivative is
+\begin{equation}
+ \int x^\alpha(1-F(x))\dd x=
+ \begin{cases}
+ \displaystyle \frac{x^{\alpha+1}}{\alpha+1}
+ -\int_0^x t^\alpha F(t)\dd t+C,&\alpha\neq-1,\\[3mm]
+ \displaystyle \log x-\int_0^x\frac{F(t)}t\dd t+C,&\alpha=-1,
+ \end{cases}                                                    \label{eq:complement-alpha}
+\end{equation}
+where the Fabius term is evaluated by \eqref{eq:master-alpha-n}.  Unlike the
+Fabius integral, a primitive normalized at zero exists only when
+\(\Rea\alpha>-1\), because \(1-F(0)=1\).  Formula
+\eqref{eq:complement-alpha} remains a valid local antiderivative on every
+positive interval avoiding zero for all \(\alpha\).
+
+At the complete endpoint, for \(\Rea\alpha>-1\),
+\begin{equation}
+ \int_0^1x^\alpha(1-F(x))\dd x
+ =\frac{M(\alpha+1)}{\alpha+1}.                                \label{eq:complement-M}
+\end{equation}
+Together, \eqref{eq:A-M} and \eqref{eq:complement-M} split the elementary
+beta integral \(1/(\alpha+1)\) into the lower-CDF and upper-tail contributions.
+
+\section{Rvachev up-function: complete weighted primitives}
+
+\subsection{First-order formulas and the singularity at zero}
+On \(0\leq x\leq1\), \(\Up(x)=1-F(x)\), so for
+\(\Rea\alpha>-1\),
+\begin{equation}
+ \int_0^xt^\alpha\Up(t)\dd t
+ =\frac{x^{\alpha+1}}{\alpha+1}
+ -\sum_{r\geq0}(-1)^r\fall\alpha r
+ 2^{\binom{r+1}{2}}x^{\alpha-r}
+ F\!\left(\frac{x}{2^{r+1}}\right).                            \label{eq:up-positive-alpha}
+\end{equation}
+The sum is the convergent Fabius series from \eqref{eq:master-alpha-n}.
+For \(\alpha=-1\), replace the elementary term by \(\log x\), obtaining a
+local primitive but not a convergent integral from zero.
+
+This exposes an important structural contrast:
+\begin{itemize}
+\item \(x^\alpha F(x)\) is integrable at zero for every
+      \(\alpha\in\C\), because \(F\) is infinitely flat;
+\item \(x^\alpha\Up(x)\) has the ordinary monomial threshold
+      \(\Rea\alpha>-1\), because \(\Up(0)=1\).
+\end{itemize}
+For a chosen upper-half-plane branch on the negative axis,
+\((-u)^\alpha=\e^{\pi\ii\alpha}u^\alpha\), evenness gives, whenever the
+integrals converge,
+\begin{equation}
+ \int_{-1}^xt^\alpha\Up(t)\dd t
+ =\e^{\pi\ii\alpha}
+ \left[
+ \int_0^1u^\alpha\Up(u)\dd u-
+ \int_0^{-x}u^\alpha\Up(u)\dd u
+ \right],\qquad -1\leq x\leq0.                                \label{eq:up-negative-alpha}
+\end{equation}
+For integer powers this becomes real and simplifies to finite Fabius sums.
+
+\subsection{All natural powers and all integer orders}
+Define the primitive based at the left support endpoint,
+\begin{equation}
+ U_{n,p}(x)=\frac1{(n-1)!}\int_{-1}^x(x-t)^{n-1}t^p\Up(t)\dd t,
+ \qquad n\geq1,\ p\in\N_0.                                    \label{eq:Unp-def}
+\end{equation}
+Let \(H_{n,j}\) be as in \eqref{eq:Hnp-def}, and define the full up-moments
+\begin{equation}
+ m_k^{\Up}=\int_{-1}^1t^k\Up(t)\dd t
+ =\begin{cases}0,&k\text{ odd},\\ c_{k/2},&k\text{ even}.
+ \end{cases}                                                    \label{eq:up-full-moment}
+\end{equation}
+
+\begin{theorem}[Global weighted up-primitive]\label{thm:up-global}
+For \(n\geq1\) and \(p\in\N_0\),
+\begin{equation}
+ U_{n,p}(x)=
+ \begin{cases}
+ 0,&x\leq-1,\\[1mm]
+ \displaystyle
+ \sum_{j=0}^p\binom pj(-1)^{p-j}H_{n,j}(x+1),
+ &-1\leq x\leq0,\\[4mm]
+ \displaystyle
+ \frac{(-1)^p}{(n-1)!}
+ \sum_{j=0}^{n-1}\binom{n-1}{j}
+ x^{n-1-j}\frac{d_{p+j+1}}{p+j+1}
+ +\frac{p!}{(p+n)!}x^{p+n}-H_{n,p}(x),
+ &0\leq x\leq1,\\[5mm]
+ \displaystyle
+ \frac1{(n-1)!}\sum_{j=0}^{n-1}(-1)^j\binom{n-1}{j}
+ x^{n-1-j}m_{p+j}^{\Up},
+ &x\geq1.
+ \end{cases}                                                    \label{eq:up-global}
+\end{equation}
+Every branch is finite, and the interior branches reduce further to the
+scaled-Fabius formula \eqref{eq:finite-p-n}.
+\end{theorem}
+
+\begin{proof}
+For \(-1\leq x\leq0\), set \(s=t+1\).  Then
+\(\Up(t)=F(s)\), \(t^p=(s-1)^p\), and the first finite sum follows.
+For \(0\leq x\leq1\), split the integral at zero.  The negative half is
+\[
+ \frac{(-1)^p}{(n-1)!}\int_0^1(x+1-s)^{n-1}(1-s)^pF(s)\dd s.
+\]
+Expand the polynomial in \(x\) and use
+\[
+ \int_0^1(1-s)^qF(s)\dd s=\frac{d_{q+1}}{q+1},
+\]
+which follows from \cref{cor:J-moment}.  The positive half equals
+\(\Jn_n[t^p]-H_{n,p}\).  For \(x\geq1\), the full support has been crossed;
+expand \((x-t)^{n-1}\) and insert the moments
+\eqref{eq:up-full-moment}.
+\end{proof}
+
+The unweighted case is worth displaying separately.  Put \(U_n=U_{n,0}\).
+Then
+\begin{equation}
+ U_n(x)=
+ \begin{cases}
+ 0,&x\leq-1,\\
+ \displaystyle 2^{\binom n2}F\!\left(\frac{x+1}{2^n}\right),
+ &-1\leq x\leq0,\\[2mm]
+ \displaystyle
+ \frac1{(n-1)!}\sum_{j=0}^{n-1}\binom{n-1}{j}
+ \frac{d_{j+1}}{j+1}x^{n-1-j}
+ +\frac{x^n}{n!}
+ -2^{\binom n2}F\!\left(\frac{x}{2^n}\right),
+ &0\leq x\leq1,\\[4mm]
+ \displaystyle
+ \frac1{(n-1)!}\sum_{q=0}^{\lfloor(n-1)/2\rfloor}
+ \binom{n-1}{2q}c_qx^{n-1-2q},&x\geq1.
+ \end{cases}                                                    \label{eq:up-unweighted-n}
+\end{equation}
+For \(n=1\), this is the cumulative distribution function of \(Y=2X-1\).
+For larger \(n\), its right tail is the moment polynomial of the compact up
+density.
+
+\section{Exact higher derivatives and inverse differentiation}
+
+\subsection{Thue--Morse derivative formulas}
+Let \(\eps_k=(-1)^{s_2(k)}\).  Iterating Rvachev's functional-differential
+equation gives the standard exact derivative formula
+\begin{equation}
+ \boxed{\quad
+ \Up^{(n)}(x)=2^{\binom{n+1}{2}}
+ \sum_{k=0}^{2^n-1}\eps_k\,
+ \Up(2^nx+2^n-1-2k).
+ \quad}                                                        \label{eq:up-derivative}
+\end{equation}
+Using \(F'(x)=2\Up(2x-1)\), one obtains, for \(m\geq1\),
+\begin{equation}
+ \boxed{\quad
+ F^{(m)}(x)=2^{\binom{m+1}{2}}
+ \sum_{k=0}^{2^{m-1}-1}\eps_k\,
+ \Up(2^mx-1-2k).
+ \quad}                                                        \label{eq:F-derivative-up}
+\end{equation}
+This version is valid globally for the bounded \(F\).  On the shrinking left
+cell \(0<x<2^{-m}\), it collapses to
+\begin{equation}
+ F^{(m)}(x)=2^{\binom{m+1}{2}}F(2^mx),                          \label{eq:F-left-higher}
+\end{equation}
+while the signed extension satisfies the same dilation formula on all of
+\(\R\):
+\begin{equation}
+ \Fs^{(m)}(x)=2^{\binom{m+1}{2}}\Fs(2^mx).                     \label{eq:Fs-higher}
+\end{equation}
+
+Leibniz's rule therefore gives a closed formula for the requested derivatives.
+For \(p\in\N_0\),
+\begin{equation}
+ D^n[x^p\Fs(x)]
+ =\sum_{j=0}^{\min(n,p)}\binom nj\frac{p!}{(p-j)!}x^{p-j}
+ 2^{\binom{n-j+1}{2}}\Fs(2^{n-j}x).                            \label{eq:derivative-signed-p}
+\end{equation}
+For arbitrary \(\alpha\in\C\) and \(x>0\), replace
+\(p!/(p-j)!\) by \(\fall\alpha j\) and sum through \(j=n\).
+For the bounded function, use
+\begin{equation}
+ D^n[x^\alpha F(x)]
+ =\sum_{j=0}^{n}\binom nj\fall\alpha j x^{\alpha-j}F^{(n-j)}(x),
+                                                                    \label{eq:derivative-bounded-alpha}
+\end{equation}
+with \eqref{eq:F-derivative-up}.  An identical Leibniz formula combined with
+\eqref{eq:up-derivative} handles \(x^\alpha\Up(x)\).
+
+\subsection{The derivative/antiderivative dictionary}
+The formulas may be summarized as follows.
+\begin{itemize}
+\item Positive derivative order introduces a finite Thue--Morse superposition
+      of dilated up-functions, or a single dilation for \(\Fs\).
+\item Negative integral order on \([0,1]\) introduces a single contracted
+      Fabius value, multiplied by \(2^{\binom n2}\).
+\item Multiplication by a natural monomial turns either operation into a finite
+      triangular sum; a nonintegral monomial changes the antiderivative sum
+      from finite to absolutely convergent.
+\end{itemize}
+This is the exact operator closure that replaces an elementary integration
+table for the Fabius family.
+
+\section{Fractional antiderivative order}
+
+The integer ladder has a natural Riemann--Liouville continuation, although the
+single-dilation collapse is special to integral order.
+
+\begin{proposition}[Probabilistic fractional primitive]\label{prop:fractional-F}
+For \(\Rea\nu>0\) and \(x\geq0\),
+\begin{equation}
+ \boxed{\quad
+ (\RL^\nu F)(x)=\frac1{\Gamma(\nu+1)}\E (x-X)_+^\nu.
+ \quad}                                                        \label{eq:fractional-stoploss}
+\end{equation}
+At \(x=1\), symmetry gives
+\begin{equation}
+ (\RL^\nu F)(1)=\frac{M(\nu)}{\Gamma(\nu+1)}.                  \label{eq:fractional-one}
+\end{equation}
+For \(x>1\),
+\begin{equation}
+ (\RL^\nu F)(x)=\frac{x^\nu}{\Gamma(\nu+1)}
+ \sum_{k\geq0}(-1)^k\binom\nu k d_kx^{-k};                    \label{eq:fractional-exterior}
+\end{equation}
+for \(x=1\), endpoint flatness supplies the limiting interpretation.
+\end{proposition}
+
+\begin{proof}
+Tonelli's theorem gives \eqref{eq:fractional-stoploss} exactly as in
+\cref{cor:J-moment}.  At one, replace \(1-X\) by the identically distributed
+\(X\).  For \(x>1\), expand \((1-X/x)^\nu\) and take expectations.
+\end{proof}
+
+\begin{theorem}[Fractional-order Newton--Volterra formula]\label{thm:fractional-commutator}
+Let \(\Rea\nu>0\), \(0<x\leq1\), and \(\alpha\in\C\).  Then
+\begin{equation}
+ \boxed{\quad
+ \RL^\nu[t^\alpha F(t)](x)
+ =\sum_{r\geq0}(-1)^r\frac{\rise\nu r}{r!}\fall\alpha r
+ x^{\alpha-r}(\RL^{\nu+r}F)(x).
+ \quad}                                                        \label{eq:fractional-alpha}
+\end{equation}
+The series converges absolutely and locally uniformly in \((\alpha,\nu)\) on
+compact subsets of \(\C\times\{\Rea\nu>0\}\).  For
+\(p\in\N_0\), it terminates:
+\begin{equation}
+ \RL^\nu[t^pF(t)](x)
+ =\sum_{r=0}^p(-1)^r\binom{\nu+r-1}{r}\frac{p!}{(p-r)!}
+ x^{p-r}(\RL^{\nu+r}F)(x).                                    \label{eq:fractional-p}
+\end{equation}
+At \(x=1\),
+\begin{equation}
+ \boxed{\quad
+ \RL^\nu[t^\alpha F(t)](1)
+ =\frac1{\Gamma(\nu)}
+ \sum_{r\geq0}(-1)^r\binom\alpha r
+ \frac{M(\nu+r)}{\nu+r}.
+ \quad}                                                        \label{eq:fractional-one-alpha}
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+Expand \(t^\alpha\) about \(x\) exactly as in
+\cref{thm:commutator}.  Raising the kernel power from \(\nu-1\) to
+\(\nu+r-1\) contributes
+\(\Gamma(\nu+r)/\Gamma(\nu)=\rise\nu r\).  The flatness estimate used in
+\cref{thm:newton-volterra}, with gamma functions replacing factorials, proves
+normal convergence.  Formula \eqref{eq:fractional-one-alpha} follows from
+\eqref{eq:fractional-one} and
+\[
+ \frac{\rise\nu r}{r!}\fall\alpha r
+ \frac1{\Gamma(\nu+r+1)}
+ =\frac1{\Gamma(\nu)}\binom\alpha r\frac1{\nu+r}.
+\]
+\end{proof}
+
+This fractional identity is an exact analytic continuation of the complete
+integer-order table.  It also shows that the moment function \(M(s)\), rather
+than a new special function, is the natural endpoint datum for fractional
+Fabius integration.
+
+\section{Antiderivatives of the inverse Fabius function}
+
+\subsection{Exact first-order reductions}
+Let
+\begin{equation}
+ Q(y)=F^{-1}(y),\qquad 0\leq y\leq1.                            \label{eq:Q-def}
+\end{equation}
+The repository establishes strict monotonicity of \(F\), smoothness of \(Q\)
+on \((0,1)\), reflection
+\begin{equation}
+ Q(1-y)=1-Q(y),                                                \label{eq:Q-reflect}
+\end{equation}
+and infinite endpoint slope
+\cite{ProveItPrimary,ProveItFrontiers}.  Substitution \(u=F(t)\) yields an
+unexpectedly compact primitive.
+
+\begin{theorem}[Closed primitive of the inverse]\label{thm:inverse-first}
+For \(0\leq y\leq1\),
+\begin{equation}
+ \boxed{\quad
+ \int_0^yQ(u)\dd u
+ =yQ(y)-F\!\left(\frac{Q(y)}2\right).
+ \quad}                                                        \label{eq:inverse-first}
+\end{equation}
+In particular,
+\begin{equation}
+ \int_0^1Q(u)\dd u=\frac12.                                   \label{eq:inverse-mean}
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+Put \(x=Q(y)\).  Then
+\[
+ \int_0^yQ(u)\dd u=\int_0^xtF'(t)\dd t
+ =xF(x)-\int_0^xF(t)\dd t.
+\]
+Apply \(F(x)=y\) and the base ladder
+\(\int_0^xF(t)\dd t=F(x/2)\).  At \(y=1\), use
+\(Q(1)=1\) and \(F(1/2)=1/2\).
+\end{proof}
+
+For a complex weight \(\alpha\), the same substitution and one integration by
+parts give the following exact reduction to a power of \(F\).
+
+\begin{proposition}[Weighted inverse primitive]\label{prop:inverse-weighted}
+Let \(x=Q(y)\).  If \(\alpha\neq-1\) and \(\Rea\alpha\geq-1\), then
+\begin{equation}
+ \boxed{\quad
+ \int_0^yu^\alpha Q(u)\dd u
+ =\frac{y^{\alpha+1}Q(y)}{\alpha+1}
+ -\frac1{\alpha+1}\int_0^{Q(y)}F(t)^{\alpha+1}\dd t.
+ \quad}                                                        \label{eq:inverse-weighted}
+\end{equation}
+At the exceptional exponent,
+\begin{equation}
+ \boxed{\quad
+ \int_0^y\frac{Q(u)}u\dd u
+ =Q(y)\log y-\int_0^{Q(y)}\log F(t)\dd t.
+ \quad}                                                        \label{eq:inverse-log}
+\end{equation}
+For real \(\alpha<-1\), the improper integral diverges.
+\end{proposition}
+
+\begin{proof}
+After \(u=F(t)\), the left side is
+\(\int_0^xtF(t)^\alpha F'(t)\dd t\).  Use
+\(F^\alpha F'=(F^{\alpha+1})'/(\alpha+1)\).  On the boundary line
+\(\Rea\alpha=-1\), the endpoint factor still vanishes because of the
+multiplying \(t\).  At \(\alpha=-1\), integrate
+\(t(\log F(t))'\).  The repository's endpoint asymptotic implies
+\(t\log F(t)\to0\).  Finally, \(Q(u)\) decays more slowly than every positive
+power of \(u\), so \(u^\alpha Q(u)\) cannot be integrable when
+\(\alpha<-1\).
+\end{proof}
+
+At \(y=1\) and \(p\in\N_0\),
+\begin{equation}
+ \boxed{\quad
+ \int_0^1u^pQ(u)\dd u
+ =\frac1{p+1}\left(1-\int_0^1F(t)^{p+1}\dd t\right).
+ \quad}                                                        \label{eq:inverse-definite-p}
+\end{equation}
+If \(X_1,\ldots,X_{p+1}\) are independent Fabius variables, then
+\begin{equation}
+ \int_0^1u^pQ(u)\dd u
+ =\frac1{p+1}\E\max(X_1,\ldots,X_{p+1}).                       \label{eq:inverse-order-stat}
+\end{equation}
+Thus weighted quantile integrals are normalized expected maxima.
+At \(p=-1\), formula \eqref{eq:inverse-log} gives the convergent constant
+\begin{equation}
+ \int_0^1\frac{Q(u)}u\dd u=-\int_0^1\log F(t)\dd t.            \label{eq:inverse-log-constant}
+\end{equation}
+
+\subsection{Higher and fractional inverse primitives}
+The indicator representation
+\begin{equation}
+ Q(u)=\int_0^1\1_{\{F(t)\leq u\}}\dd t                         \label{eq:Q-indicator}
+\end{equation}
+turns all higher primitives into one-dimensional integrals of powers of
+\(y-F(t)\).
+
+\begin{theorem}[All orders for the inverse]\label{thm:inverse-all-orders}
+For \(\Rea\nu>0\) and \(0\leq y\leq1\),
+\begin{equation}
+ \boxed{\quad
+ (\RL^\nu Q)(y)
+ =\frac1{\Gamma(\nu+1)}
+ \int_0^{Q(y)}(y-F(t))^\nu\dd t.
+ \quad}                                                        \label{eq:inverse-fractional}
+\end{equation}
+For an integer \(n\geq1\), this is
+\begin{equation}
+ (\Jn_nQ)(y)=\frac1{n!}\int_0^{Q(y)}(y-F(t))^n\dd t.           \label{eq:inverse-integer-n}
+\end{equation}
+At the complete endpoint,
+\begin{equation}
+ (\RL^\nu Q)(1)
+ =\frac1{\Gamma(\nu+1)}\int_0^1F(t)^\nu\dd t,                 \label{eq:inverse-fractional-one}
+\end{equation}
+where reflection was used in the last step.
+\end{theorem}
+
+\begin{proof}
+Insert \eqref{eq:Q-indicator} into \eqref{eq:RL-def} and interchange the
+integrals.  For a fixed \(t\leq Q(y)\), the variable \(u\) ranges from
+\(F(t)\) to \(y\), and
+\[
+ \frac1{\Gamma(\nu)}\int_{F(t)}^y(y-u)^{\nu-1}\dd u
+ =\frac{(y-F(t))^\nu}{\Gamma(\nu+1)}.
+\]
+At \(y=1\), substitute \(t\mapsto1-t\) and use
+\(1-F(t)=F(1-t)\).
+\end{proof}
+
+For a natural weight \(p\), the same argument gives
+\begin{equation}
+ \boxed{\quad
+ \RL^\nu[u^pQ(u)](y)
+ =\frac1{\Gamma(\nu)}\int_0^{Q(y)}
+ \int_{F(t)}^y(y-u)^{\nu-1}u^p\dd u\dd t.
+ \quad}                                                        \label{eq:inverse-weighted-fractional}
+\end{equation}
+The inner integral is an incomplete beta function:
+\begin{equation}
+ y^{p+\nu}
+ \left[B(p+1,\nu)-B_{F(t)/y}(p+1,\nu)\right].                 \label{eq:inverse-beta}
+\end{equation}
+When both \(p\) and \(\nu=n\) are nonnegative integers, it is a finite
+polynomial in \(y\) and \(F(t)\).
+
+\subsection{Higher derivatives of the inverse}
+Let \(x=Q(y)\in(0,1)\).  Lagrange inversion gives an exact all-orders formula
+that can be combined with the Thue--Morse derivative expression
+\eqref{eq:F-derivative-up}.
+
+\begin{theorem}[Lagrange formula for inverse derivatives]\label{thm:Q-derivatives}
+For \(n\geq1\),
+\begin{equation}
+ \boxed{\quad
+ Q^{(n)}(y)=
+ \left.\frac{\dd^{n-1}}{\dd t^{n-1}}
+ \left(\frac{t-x}{F(t)-F(x)}\right)^n\right|_{t=x}.
+ \quad}                                                        \label{eq:Q-Lagrange}
+\end{equation}
+If
+\begin{equation}
+ a_m(x)=\frac{F^{(m+1)}(x)}{(m+1)!F'(x)},                       \label{eq:am-inverse}
+\end{equation}
+then equivalently
+\begin{equation}
+ Q^{(n)}(y)=\frac{(n-1)!}{F'(x)^n}
+ [z^{n-1}]\left(1+\sum_{m\geq1}a_m(x)z^m\right)^{-n}.          \label{eq:Q-coefficient}
+\end{equation}
+\end{theorem}
+
+The first cases are
+\begin{align}
+ Q'&=\frac1{F'},                                               \label{eq:Q1}\\
+ Q''&=-\frac{F''}{(F')^3},                                    \label{eq:Q2}\\
+ Q'''&=\frac{3(F'')^2-F'F'''}{(F')^5},                         \label{eq:Q3}\\
+ Q''''&=\frac{-15(F'')^3+10F'F''F'''-(F')^2F''''}{(F')^7},     \label{eq:Q4}
+\end{align}
+all evaluated at \(x=Q(y)\).  Inserting \eqref{eq:F-derivative-up} makes each
+one a finite Thue--Morse expression in translated, dilated up-values.  On a
+left dyadic cell, \eqref{eq:F-left-higher} further collapses every derivative
+of \(F\) to a single scaled Fabius value.
+
+\section{New inverse-primitive asymptotics}
+\label{sec:inverse-asymptotics}
+
+\subsection{Repository input and slow variation}
+The consolidated frontier volume derives from the sharp Lambert expansion the
+endpoint equivalent
+\begin{equation}
+ Q(y)\sim
+ \frac{\sqrt{\log(1/y)}}{\e\sqrt{\log2}}
+ \exp\!\left[-\sqrt{2\log2\,\log(1/y)}\right]
+ \qquad(y\downarrow0).                                        \label{eq:Q-asympt-input}
+\end{equation}
+This statement is marked ``Derived'' rather than Lean-formalized in the source,
+so the results of this section are rigorous consequences conditional on that
+repository input \cite{ProveItFrontiers}.
+
+Put
+\begin{equation}
+ L=\log2,\qquad a=\sqrt{2L},\qquad K=\frac1{\e\sqrt L}.          \label{eq:Ka}
+\end{equation}
+Then \(Q(y)\sim K\sqrt T\e^{-a\sqrt T}\), where
+\(T=\log(1/y)\).  For every fixed \(c>0\), replacing \(T\) by
+\(T-\log c\) changes this expression by a factor tending to one.  Therefore
+\begin{equation}
+ \frac{Q(cy)}{Q(y)}\longrightarrow1,\qquad y\downarrow0,       \label{eq:Q-slow}
+\end{equation}
+so \(Q\) is slowly varying at zero.
+
+\subsection{Weighted primitives near zero}
+
+\begin{theorem}[Karamata law for inverse primitives]\label{thm:Q-Karamata}
+Assume \eqref{eq:Q-asympt-input}.  Let \(\alpha>-1\) and \(\nu>0\) be real.
+Then, as \(y\downarrow0\),
+\begin{equation}
+ \boxed{\quad
+ \RL^\nu[u^\alpha Q(u)](y)
+ \sim
+ \frac{\Gamma(\alpha+1)}{\Gamma(\alpha+\nu+1)}
+ y^{\alpha+\nu}Q(y).
+ \quad}                                                        \label{eq:Q-weighted-Karamata}
+\end{equation}
+In particular,
+\begin{align}
+ \int_0^yu^\alpha Q(u)\dd u
+ &\sim\frac{y^{\alpha+1}Q(y)}{\alpha+1},                       \label{eq:Q-first-Karamata}\\
+ (\RL^\nu Q)(y)&\sim\frac{y^\nu Q(y)}{\Gamma(\nu+1)}.         \label{eq:Q-fractional-Karamata}
+\end{align}
+\end{theorem}
+
+\begin{proof}
+Scale \(u=ys\) in the defining integral:
+\[
+ \RL^\nu[u^\alpha Q(u)](y)
+ =\frac{y^{\alpha+\nu}Q(y)}{\Gamma(\nu)}
+ \int_0^1(1-s)^{\nu-1}s^\alpha\frac{Q(ys)}{Q(y)}\dd s.
+\]
+Pointwise convergence to one follows from \eqref{eq:Q-slow}.  Potter bounds
+for slowly varying functions provide an integrable dominating beta kernel.
+The limiting integral is
+\(B(\alpha+1,\nu)/\Gamma(\nu)
+=\Gamma(\alpha+1)/\Gamma(\alpha+\nu+1)\).
+\end{proof}
+
+The boundary exponent \(\alpha=-1\) is convergent but belongs to a different
+scale.
+
+\begin{theorem}[Logarithmic inverse primitive]\label{thm:Q-log-asympt}
+Assume \eqref{eq:Q-asympt-input}.  As \(y\downarrow0\), with
+\(T=\log(1/y)\),
+\begin{align}
+ \int_0^y\frac{Q(u)}u\dd u
+ &\sim\frac{2\sqrt T}{a}Q(y)                                  \label{eq:Q-log-relative}\\
+ &\sim\frac{\sqrt2}{\e\log2}\,T
+ \exp\!\left[-\sqrt{2\log2\,T}\right].                     \label{eq:Q-log-explicit}
+\end{align}
+\end{theorem}
+
+\begin{proof}
+With \(u=\e^{-s}\),
+\[
+ \int_0^y\frac{Q(u)}u\dd u=\int_T^\infty Q(\e^{-s})\dd s.
+\]
+The input equivalent turns the integrand into
+\(K\sqrt s\e^{-a\sqrt s}\).  Substituting \(v=\sqrt s\) gives
+\[
+ 2K\int_{\sqrt T}^{\infty}v^2\e^{-av}\dd v
+ =2K\e^{-a\sqrt T}
+ \left(\frac{T}{a}+\frac{2\sqrt T}{a^2}+\frac2{a^3}\right).
+\]
+The leading term is \((2\sqrt T/a)Q(y)\).  A standard asymptotic sandwich
+transfers the equivalent from the model integrand to \(Q(\e^{-s})\).
+\end{proof}
+
+\subsection{Large weighted quantile moments}
+Define
+\begin{equation}
+ q_p=\int_0^1u^pQ(u)\dd u,
+ \qquad
+ C_p=\int_0^1(1-u)^pQ(u)\dd u.                                 \label{eq:qCp}
+\end{equation}
+Reflection \eqref{eq:Q-reflect} gives the exact identity
+\begin{equation}
+ q_p=\frac1{p+1}-C_p.                                          \label{eq:q-reflection}
+\end{equation}
+
+\begin{theorem}[Large quantile-moment correction]\label{thm:large-quantile}
+Assume \eqref{eq:Q-asympt-input}.  As \(p\to\infty\),
+\begin{equation}
+ C_p\sim\frac{Q(1/p)}p,                                       \label{eq:Cp-asympt}
+\end{equation}
+and therefore
+\begin{equation}
+ \boxed{\quad
+ q_p=\frac1{p+1}
+ -\frac{\sqrt{\log p}}{\e\sqrt{\log2}\,p}
+ \exp\!\left[-\sqrt{2\log2\,\log p}\right](1+o(1)).
+ \quad}                                                        \label{eq:qp-asympt}
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+Set \(u=t/p\).  Then
+\[
+ \frac{pC_p}{Q(1/p)}
+ =\int_0^p\left(1-\frac tp\right)^p
+ \frac{Q(t/p)}{Q(1/p)}\dd t.
+\]
+For fixed \(t>0\), the integrand tends to \(\e^{-t}\) by slow variation.
+Potter bounds and the elementary exponential bound on the binomial kernel
+supply domination after splitting the integral into a compact interval and a
+tail.  The limit is \(\int_0^\infty\e^{-t}\dd t=1\).  Substitute
+\eqref{eq:Q-asympt-input} at \(y=1/p\) and use
+\eqref{eq:q-reflection}.
+\end{proof}
+
+Let \(M_n=\max(X_1,\ldots,X_n)\) and
+\(m_n=\min(X_1,\ldots,X_n)\).  From
+\eqref{eq:inverse-order-stat} and symmetry,
+\begin{equation}
+ 1-\E M_n=\E m_n=\int_0^1F(t)^n\dd t.                           \label{eq:order-stat-id}
+\end{equation}
+The theorem immediately gives a compact order-statistic equivalent.
+
+\begin{corollary}[Extreme order statistics and high inverse order]\label{cor:extreme-order}
+Assume \eqref{eq:Q-asympt-input}.  Then
+\begin{equation}
+ \boxed{\quad
+ \E m_n=1-\E M_n\sim Q(1/n).
+ \quad}                                                        \label{eq:extreme-order-asympt}
+\end{equation}
+Consequently,
+\begin{equation}
+ (\Jn_nQ)(1)=\frac1{n!}\int_0^1F(t)^n\dd t
+ \sim\frac{Q(1/n)}{n!}.                                       \label{eq:high-inverse-order}
+\end{equation}
+\end{corollary}
+
+The correction \(Q(1/n)\) is stretched-logarithmic: it is smaller than every
+negative power of \(\log n\), but larger than \(n^{-\eps}\) for every fixed
+\(\eps>0\).  This scale is invisible to a conventional expansion in powers of
+\(1/n\).
+
+\section{Numerical experiments and reproducibility}
+
+The archive accompanying this report contains
+\path{numerical_experiments.py}, a fully commented Python script using only
+the standard library and \texttt{mpmath}.  It computes two independent moment
+systems:
+\begin{align}
+ (n+1)(2^n-1)d_n&=\sum_{k<n}\binom{n+1}{k}d_k,                 \label{eq:num-d}\\
+ (4^n-1)c_n&=\sum_{k<n}\binom{2n}{2k}\frac{c_k}{2(n-k)+1}.     \label{eq:num-c}
+\end{align}
+The second recurrence follows from
+\(H(2z)=(\sinh z/z)H(z)\) for the centered moment generating function and is
+independent of the first recurrence.  Exact rational arithmetic verifies
+\eqref{eq:integer-definite} for \(0\leq p\leq8\) and
+\eqref{eq:two-param-id} for \(1\leq n\leq6\), \(0\leq p\leq8\).
+
+\begin{table}[htbp]
+\centering
+\small
+\caption{Independent evaluations of
+\(\mathcal A(\alpha)=\int_0^1x^\alpha F(x)\dd x\).  The first column uses the
+Newton series \eqref{eq:moment-newton}; the second uses
+\eqref{eq:A-M} and the centered expansion \eqref{eq:M-centered}.  The shown
+discrepancies are truncation errors, not statistical errors.}
+\label{tab:fractional-checks}
+\begin{tabular}{@{}rlll@{}}
+\toprule
+\(\alpha\)&Newton--Fabius series&Centered-moment formula&absolute difference\\
+\midrule
+\(0.5\)&0.4209681733402671557991&0.4209681733402671557990&\(9.0\times10^{-23}\)\\
+\(-0.5\)&0.6073863107431723970836&0.6073863107431723973782&\(2.9\times10^{-19}\)\\
+\(-1\)&0.7582400004044086356798&0.7582400004044086568776&\(2.1\times10^{-17}\)\\
+\(-2\)&1.3148861440057837837803&1.3148861440058189655548&\(3.5\times10^{-14}\)\\
+\(2.3\)&0.2591812728638398877191737152&0.2591812728638398877191737148&\(3.7\times10^{-28}\)\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+The script also checks the exponential master identity at
+\(z=0.7+0.2\ii\).  The moment-series and independent infinite-product values
+of \(G(z)\) agree to approximately \(24\) decimal places, and the two sides of
+\eqref{eq:exp-definite} agree to the same precision.  Full machine-readable
+values are in \path{verification_output.txt} and
+\path{fractional_power_checks.csv}.
+
+\begin{warningbox}[Numerical interpretation]
+The positive series for negative powers converge more slowly as the negative
+exponent grows.  The displayed digits for \(\alpha=-2\) are therefore fewer
+than for positive or fractional exponents.  The code reports both truncations
+and their discrepancy rather than presenting unsupported extra digits.
+\end{warningbox}
+
+\section{Conjectures and frontier directions}
+\label{sec:conjectures}
+
+\subsection{A periodic saddle expansion for weighted primitives}
+The exact Newton--Volterra series and the repository's all-orders periodic
+Lambert expansion should combine into an all-orders local expansion of
+\eqref{eq:localization}.
+
+\begin{conjecture}[Weighted primitive saddle hierarchy]\label{conj:weighted-saddle}
+For fixed \(n\geq1\) and \(\alpha\in\C\), let \(\lambda_n(x)\) be the exact
+Lambert phase associated with \(x/2^n\).  There exist smooth one-periodic
+functions \(P_{j,n,\alpha}\) such that, for every \(N\geq1\),
+\begin{equation}
+ \frac{\Jn_n[t^\alpha F(t)](x)}
+ {x^\alpha2^{\binom n2}F(x/2^n)}
+ =1+\sum_{j=1}^{N-1}
+ \frac{P_{j,n,\alpha}(\lambda_n(x))}{\lambda_n(x)^j}
+ +O(\lambda_n(x)^{-N}).                                       \label{eq:conj-weighted-saddle}
+\end{equation}
+The first coefficient is obtained by inserting the phase expansion of
+\(\Jn_{n+1}F/(x\Jn_nF)\) into \eqref{eq:first-local-correction}.
+\end{conjecture}
+
+This conjecture is structurally plausible because each successive term of
+\eqref{eq:master-alpha-n} shifts the exact phase by approximately one unit,
+and the periodic fluctuation is therefore sampled coherently rather than
+averaged away.
+
+\subsection{Second-order large-quantile correction}
+Ignoring the next periodic inverse correction for a moment, expansion of the
+explicit leading model in \cref{thm:large-quantile} gives
+\[
+ \frac{Q(t/p)}{Q(1/p)}
+ =1+\frac{a\log t}{2\sqrt{\log p}}+O\!\left(\frac{1+|\log t|^2}{\log p}\right).
+\]
+Since \(\int_0^\infty\e^{-t}\log t\dd t=-\gamma\), this suggests the
+following conditional refinement.
+
+\begin{conjecture}[Universal first correction, modulo periodic inverse jets]
+\label{conj:quantile-second}
+If the relative error in \eqref{eq:Q-asympt-input} is uniformly
+\(o((\log(1/y))^{-1/2})\) on fixed multiplicative windows, then
+\begin{equation}
+ \frac{pC_p}{Q(1/p)}
+ =1-\frac{\gamma\sqrt{2\log2}}{2\sqrt{\log p}}
+ +o((\log p)^{-1/2}).                                         \label{eq:conj-quantile-second}
+\end{equation}
+In the full problem, the repository's periodic saddle jets may add a bounded
+oscillatory term at this same or the next scale; determining the precise
+interaction is open.
+\end{conjecture}
+
+\subsection{Large negative moments}
+The positive moment function \(M(s)\) is entire, so all negative moments
+\(N(r)=M(-r)=\E X^{-r}\) exist.  Exact integration by parts gives
+\begin{equation}
+ N(r)=1+r\int_0^1x^{-r-1}F(x)\dd x.                            \label{eq:negative-moment-exact}
+\end{equation}
+Inserting the repository's exact-phase expansion and applying Laplace's method
+in the Lambert variable leads to the next conjecture.
+
+\begin{conjecture}[Periodic large-negative-moment law]\label{conj:negative-moments}
+As real \(r\to+\infty\),
+\begin{equation}
+ \log M(-r)
+ =\frac{\log2}{2}r^2-r\log r
+ +\left(1+\frac{\log2}{2}\right)r
+ +\frac12\log r+C+\Omega(r)+o(1),                              \label{eq:conj-negative-moment}
+\end{equation}
+where \(C\) is constant and \(\Omega\) is a bounded smooth one-periodic
+function determined by the saddle fluctuation \(\Psi\).  For integral \(r\),
+the periodic phase is sampled at a fixed saddle class and may collapse into
+the constant term.
+\end{conjecture}
+
+The quadratic coefficient and the terms through \(\frac12\log r\) follow from
+the stationary phase near \(\lambda=r+1/2\); the exact periodic saddle shift
+must still be controlled.
+
+\subsection{Holonomicity, arithmetic, and formalization problems}
+The following directions appear especially promising.
+\begin{enumerate}
+\item \textbf{Lean formalization.}  Formalize \cref{thm:ladder} first, then the
+finite commutator \eqref{eq:finite-commutator}, the global formula
+\eqref{eq:global-Hnp}, and the inverse identity \eqref{eq:inverse-first}.
+These need only finite sums, elementary Volterra calculus, and results already
+present in the repository.  The normal-convergence proof of
+\eqref{eq:master-alpha-n} is a natural second wave.
+
+\item \textbf{Dyadic arithmetic.}  Substitute the repository's exact
+\(q\)-binomial evaluator into \eqref{eq:finite-p-n}.  Determine sharp
+2-adic valuations and odd denominator factors of
+\(H_{n,p}(a/2^m)\).  The two-parameter identity
+\eqref{eq:two-param-id} may create cancellations not visible term by term.
+
+\item \textbf{Newton-series uniqueness.}  Establish optimal growth classes in
+which \eqref{eq:moment-newton} is the unique Newton interpolation of
+\((1-d_{p+1})/(p+1)\).  The superpolynomial decay of \(d_n\) should yield
+stronger convergence than generic Carlson-type hypotheses.
+
+\item \textbf{Non-holonomicity.}  Test the conjecture that
+\(\mathcal A(\alpha)\) and \(M(\alpha)\) are not D-finite and that their
+integer samples are not P-recursive.  The dyadic functional equation for
+\(G\), the infinite Bernoulli cumulant sequence, and the periodic saddle
+fluctuation all point in this direction, but none alone is a proof.
+
+\item \textbf{Fractional order and Mellin--Barnes methods.}  Develop
+\eqref{eq:fractional-alpha} as a two-complex-variable special function in
+\((\alpha,\nu)\).  Its endpoint form \eqref{eq:fractional-one-alpha} may admit
+Mellin--Barnes continuation and residue expansions tied to the sinc product.
+
+\item \textbf{Inverse powers of the CDF.}  Study
+\(\int_0^xF(t)^s\dd t\), the sole new object in
+\eqref{eq:inverse-weighted}.  For positive integral \(s\) it represents order
+statistics; near \(s=0\) its one-sided derivatives involve
+\(\int(\log F)^k\), whose growth should encode the quadratic-log endpoint.
+
+\item \textbf{Fourier antiderivatives.}  The complete transform
+\eqref{eq:up-mgf} is an infinite sinc product, while the exterior branches of
+\eqref{eq:up-global} are moment polynomials.  A distributional Fourier theory
+that explicitly separates those polynomial tails from
+\((2\pi\ii\xi)^{-n}\widehat{\Up}(\xi)\) should produce useful compact
+renormalized primitives.
+
+\item \textbf{Order statistics and periodic corrections.}  Push
+\cref{thm:large-quantile} to all orders using the closed periodic inverse jets
+already present in the frontier volume.  This would transfer the Lambert--W
+and periodic structure into a new probabilistic observable:
+\(\E\min(X_1,\ldots,X_n)\).
+\end{enumerate}
+
+\section{Summary of principal formulas}
+
+\begin{longtable}{@{}p{0.28\textwidth}p{0.66\textwidth}@{}}
+\toprule
+Object & Exact formula or leading result\\
+\midrule
+\endfirsthead
+\toprule
+Object & Exact formula or leading result\\
+\midrule
+\endhead
+\(n\)-fold primitive of \(F\) on \([0,1]\)&
+\(\Jn_nF(x)=2^{\binom n2}F(x/2^n)\).\\[1mm]
+Natural monomial weight&
+Finite sum \eqref{eq:finite-p-n}; global completion \eqref{eq:global-Hnp}.\\[1mm]
+Complex monomial weight&
+Absolutely convergent Newton--Volterra series \eqref{eq:master-alpha-n}, entire
+in \(\alpha\).\\[1mm]
+Complete endpoint&
+\(\int_0^1x^\alpha F(x)\dd x=(1-M(\alpha+1))/(\alpha+1)\) and
+Newton series \eqref{eq:moment-newton}.\\[1mm]
+Negative integer weight&
+Positive dyadic series \eqref{eq:negative-series}; logarithmic constant
+\eqref{eq:log-constant-d}--\eqref{eq:log-constant-c}.\\[1mm]
+Reflection/complement&
+\(F(1-x)=1-F(x)\), and
+\(\Jn_n[x^p(1-F)]=p!x^{p+n}/(p+n)!-H_{n,p}\).\\[1mm]
+Rvachev up-function&
+Complete four-branch formula \eqref{eq:up-global}; exterior branches are
+moment polynomials.\\[1mm]
+Higher derivatives&
+Thue--Morse sums \eqref{eq:up-derivative} and
+\eqref{eq:F-derivative-up}; single dilation for \(\Fs\).\\[1mm]
+Fractional order&
+Probability formula \eqref{eq:fractional-stoploss} and commutator
+\eqref{eq:fractional-alpha}.\\[1mm]
+Inverse first primitive&
+\(\int_0^yQ(u)\dd u=yQ(y)-F(Q(y)/2)\), as in
+\eqref{eq:inverse-first}.\\[1mm]
+Inverse arbitrary order&
+\(\RL^\nu Q(y)=\Gamma(\nu+1)^{-1}\int_0^{Q(y)}(y-F(t))^\nu\dd t\).\\[1mm]
+Inverse endpoint asymptotic&
+Weighted Karamata law \eqref{eq:Q-weighted-Karamata}, logarithmic boundary
+\eqref{eq:Q-log-explicit}, and large moment correction \eqref{eq:qp-asympt}.\\
+\bottomrule
+\end{longtable}
+
+\appendix
+
+\section{Corpus comparison map}
+
+\begin{longtable}{@{}p{0.29\textwidth}p{0.65\textwidth}@{}}
+\toprule
+Source family & Role in the nonduplication audit\\
+\midrule
+\endfirsthead
+\toprule
+Source family & Role in the nonduplication audit\\
+\midrule
+\endhead
+\path{Fabius_Function_and_Rvachev_Up/}&
+Primary live exposition: bounded/signed conventions, shape, derivatives,
+moments, dyadic arithmetic, effective flatness, sharp Lambert asymptotics, and
+formalization status.\\[1mm]
+\path{FabiusFunction_Mathematical_Glossary/}&
+Notation and cross-reference normalization; used to prevent collisions among
+\(F\), \(\Up\), the signed extension, moments, and inverse conventions.\\[1mm]
+\path{fabius_lean_walkthrough/}&
+Map from human statements to Lean declarations; used to identify which imported
+facts are already formalized.\\[1mm]
+\path{Non_Elementarity_of_the_Fabius_Function/}&
+Analytic-locus and non-elementarity results; establishes why the native finite
+Fabius formula, rather than an elementary primitive, is the appropriate notion
+of closed form.\\[1mm]
+Consolidated frontier volume&
+Consolidated frontier volume: repeated averaging, inverse function,
+small-argument inversion, q-calculus, sinc-product decay, Lambert--W methods,
+periodic saddle jets, and other deferred claims.\\[1mm]
+Frontier draft packages&
+Package-level checks of inverse, exponent-sequence/Newton, repeated-integration,
+Fourier-decay, Thue--Morse, and asymptotic reports.  The Newton report concerns
+exponent sequences and q-Richardson reconstruction, not Newton series of
+monomial antiderivatives.\\[1mm]
+\path{papers/}&
+Source transcriptions and corrected papers, especially Arias de Reyna's compact
+support and arithmetic articles; used for historical formulas and moment
+normalizations.\\[1mm]
+\path{archive/}&
+Frozen early notes, primary-exposition revisions, q-calculus studies, and
+standalone reports.  Historical descendants were treated as lineages rather
+than independent novelty claims.\\
+\bottomrule
+\end{longtable}
+
+The decisive negative checks were not based only on titles.  The live primary
+source and consolidated frontier source were searched for the literal phrases
+``antiderivative'' and ``indefinite integral''; neither contains a treatment of
+the present problem.  The repeated-integration material concerns iterative
+averaging/convergence to \(\Up\), not the Volterra primitives here.  The
+inverse material treats regularity, dyadic inversion, non-elementarity, and
+endpoint asymptotics, but not \eqref{eq:inverse-first},
+\eqref{eq:inverse-fractional}, or weighted quantile integrals.  The Newton draft
+treats exponent sequences, sinc products, Prouhet cancellation, and
+q-Richardson reconstruction, not \eqref{eq:moment-newton}.
+
+\section{Exact initial values and sample antiderivatives}
+
+The first moments computed from \eqref{eq:d-rec} are
+\begin{align*}
+ d_0&=1,&
+ d_1&=\frac12,&
+ d_2&=\frac5{18},&
+ d_3&=\frac16,\\
+ d_4&=\frac{143}{1350},&
+ d_5&=\frac{19}{270},&
+ d_6&=\frac{1153}{23814},&
+ d_7&=\frac{583}{17010}.
+\end{align*}
+The first centered moments are
+\begin{align*}
+ c_0&=1,&
+ c_1&=\frac19,&
+ c_2&=\frac{19}{675},&
+ c_3&=\frac{583}{59535},&
+ c_4&=\frac{132809}{32531625}.
+\end{align*}
+
+For \(0\leq x\leq1\), the first ordinary primitives are
+\begin{align}
+ \int_0^xF(t)\dd t
+ &=F(x/2),                                                     \label{eq:sample-p0}\\
+ \int_0^xtF(t)\dd t
+ &=xF(x/2)-2F(x/4),                                           \label{eq:sample-p1}\\
+ \int_0^xt^2F(t)\dd t
+ &=x^2F(x/2)-4xF(x/4)+16F(x/8),                               \label{eq:sample-p2}\\
+ \int_0^xt^3F(t)\dd t
+ &=x^3F(x/2)-6x^2F(x/4)+48xF(x/8)-384F(x/16).                 \label{eq:sample-p3}
+\end{align}
+At \(x=1\), these equal respectively
+\begin{equation}
+ \frac12,\qquad \frac{13}{36},\qquad \frac5{18},\qquad
+ \frac{1207}{5400}.                                           \label{eq:sample-definite}
+\end{equation}
+For a first negative-power example,
+\begin{equation}
+ \int_0^x\frac{F(t)}t\dd t
+ =\sum_{r\geq0}r!\,2^{\binom{r+1}{2}}x^{-r-1}
+ F\!\left(\frac{x}{2^{r+1}}\right).                            \label{eq:sample-negative-one}
+\end{equation}
+For a fractional example,
+\begin{equation}
+ \int_0^xt^{1/2}F(t)\dd t
+ =\sum_{r\geq0}(-1)^r\fall{1/2}{r}
+ 2^{\binom{r+1}{2}}x^{1/2-r}
+ F\!\left(\frac{x}{2^{r+1}}\right).                            \label{eq:sample-half}
+\end{equation}
+
+\section{Derivation of the centered-moment recurrence}
+
+Let
+\begin{equation}
+ H(z)=\E\e^{z(2X-1)}=\sum_{n\geq0}c_n\frac{z^{2n}}{(2n)!}.      \label{eq:H-centered}
+\end{equation}
+The distributional fixed point
+\begin{equation}
+ 2X-1\ \overset d=\ \frac{V+(2X'-1)}2,                         \label{eq:Y-fixed}
+\end{equation}
+where \(V\) is uniform on \([-1,1]\) and \(X'\) is an independent copy of
+\(X\), gives
+\begin{equation}
+ H(2z)=\frac{\sinh z}{z}H(z).                                  \label{eq:H-functional}
+\end{equation}
+Equating coefficients of \(z^{2n}\) yields
+\begin{equation}
+ (4^n-1)c_n
+ =\sum_{k=0}^{n-1}\binom{2n}{2k}\frac{c_k}{2(n-k)+1},          \label{eq:c-recurrence}
+\end{equation}
+which is the independent recurrence used in the numerical checks.
+
+\section{Implementation notes}
+
+The supplied Python program has four layers.
+\begin{enumerate}
+\item Exact \texttt{Fraction} arithmetic generates the initial \(d_n\) and
+      \(c_n\), checks the terminating natural-power identity, and verifies the
+      two-parameter identity with no rounding.
+\item High-precision \texttt{mpmath} recurrences generate longer moment arrays.
+\item The Newton series \eqref{eq:moment-newton} and centered formula
+      \eqref{eq:M-centered} are evaluated independently for positive,
+      fractional, negative, and complex exponents.
+\item The moment series for \(G\) is compared with the independent product
+      \eqref{eq:G-product}, after which \eqref{eq:exp-definite} is checked.
+\end{enumerate}
+No Monte Carlo sampling is used.  The default parameters in the packaged
+output use 85 decimal digits, \(d_0,\ldots,d_{1500}\), and
+\(c_0,\ldots,c_{700}\).
+
+\begin{thebibliography}{99}
+
+\bibitem{ProveItPrimary}
+V.~Reshetnikov,
+\emph{The Fabius Function and Rvachev's Up-Function},
+ProveIt repository, live LaTeX exposition, snapshot 27 August 2026.
+\url{https://github.com/VladimirReshetnikov/ProveIt/blob/main/Analysis/FabiusFunction/docs/Fabius_Function_and_Rvachev_Up/Fabius_Function_and_Rvachev_Up.tex}.
+
+\bibitem{ProveItFrontiers}
+V.~Reshetnikov,
+\emph{Non-formalized Research Frontiers for the Fabius--Rvachev System},
+consolidated LaTeX volume, ProveIt repository, snapshot 27 August 2026.
+\url{https://github.com/VladimirReshetnikov/ProveIt/blob/main/Analysis/FabiusFunction/docs/non-formalized-research-frontiers/non-formalized-research-frontiers.tex}.
+
+\bibitem{ProveItGlossary}
+V.~Reshetnikov,
+\emph{Fabius Function Mathematical Glossary}, ProveIt repository.
+\url{https://github.com/VladimirReshetnikov/ProveIt/tree/main/Analysis/FabiusFunction/docs/FabiusFunction_Mathematical_Glossary}.
+
+\bibitem{ProveItLean}
+V.~Reshetnikov,
+\emph{Fabius Lean Walkthrough}, ProveIt repository.
+\url{https://github.com/VladimirReshetnikov/ProveIt/tree/main/Analysis/FabiusFunction/docs/fabius_lean_walkthrough}.
+
+\bibitem{ProveItNonElementary}
+V.~Reshetnikov,
+\emph{Non-Elementarity of the Fabius Function}, ProveIt repository.
+\url{https://github.com/VladimirReshetnikov/ProveIt/tree/main/Analysis/FabiusFunction/docs/Non_Elementarity_of_the_Fabius_Function}.
+
+\bibitem{ProveItInventory}
+V.~Reshetnikov,
+\emph{Exponent-Sequence and Newton-Basis Frontiers for the Fabius--Rvachev System},
+archive README recording the 67-path recursive LaTeX audit at commit
+\texttt{32d6d36c51d803289e6d6a0dc0c37753766eba47}, 27 August 2026.
+\url{https://github.com/VladimirReshetnikov/ProveIt/tree/main/Analysis/FabiusFunction/docs/non-formalized-research-frontiers/drafts/Fabius_Newton_Rvachev_Frontier_Report}.
+
+\bibitem{JessenWintner}
+B.~Jessen and A.~Wintner,
+``Distribution functions and the Riemann zeta function,''
+\emph{Transactions of the American Mathematical Society} \textbf{38} (1935),
+48--88.  DOI: 10.2307/1989728.
+
+\bibitem{Fabius1966}
+J.~Fabius,
+``A probabilistic example of a nowhere analytic \(C^\infty\)-function,''
+\emph{Zeitschrift f\"ur Wahrscheinlichkeitstheorie und Verwandte Gebiete}
+\textbf{5} (1966), 173--174.  DOI: 10.1007/BF00536652.
+
+\bibitem{Rvachev1990}
+V.~A.~Rvachev,
+``Compactly supported solutions of functional-differential equations and their
+applications,'' \emph{Russian Mathematical Surveys} \textbf{45}:1 (1990),
+87--120.  DOI: 10.1070/RM1990v045n01ABEH002324.
+
+\bibitem{AriasCompact}
+J.~Arias de Reyna,
+\emph{An Infinitely Differentiable Function with Compact Support: Definition
+and Properties}, arXiv:1702.05442 (2017); English translation of
+\emph{Rev. Real Acad. Ciencias Madrid} \textbf{76} (1982), 21--38.
+
+\bibitem{AriasArithmetic}
+J.~Arias de Reyna,
+``Arithmetic of the Fabius function,'' \emph{Integers} \textbf{18} (2018),
+Paper A51; arXiv:1702.06487.
+
+\bibitem{Haugland}
+J.~K.~Haugland,
+\emph{Evaluating the Fabius Function}, arXiv:1609.07999 (2016).
+
+\bibitem{AlloucheShallit}
+J.-P.~Allouche and J.~Shallit,
+\emph{Automatic Sequences: Theory, Applications, Generalizations},
+Cambridge University Press, 2003.
+
+\bibitem{CorlessLambert}
+R.~M.~Corless, G.~H.~Gonnet, D.~E.~G.~Hare, D.~J.~Jeffrey, and D.~E.~Knuth,
+``On the Lambert W function,'' \emph{Advances in Computational Mathematics}
+\textbf{5} (1996), 329--359.
+
+\bibitem{BinghamRegularVariation}
+N.~H.~Bingham, C.~M.~Goldie, and J.~L.~Teugels,
+\emph{Regular Variation}, Cambridge University Press, 1987.
+
+\bibitem{SamkoFractional}
+S.~G.~Samko, A.~A.~Kilbas, and O.~I.~Marichev,
+\emph{Fractional Integrals and Derivatives: Theory and Applications},
+Gordon and Breach, 1993.
+
+\bibitem{Comtet}
+L.~Comtet,
+\emph{Advanced Combinatorics}, Reidel, 1974.
+
+\end{thebibliography}
+
+\end{document}
