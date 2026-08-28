@@ -540,4 +540,175 @@ theorem stepApproximant_nonneg (n : ℕ) (x : ℝ) : 0 ≤ stepApproximant n x :
   intro m hm
   exact mul_nonneg (Nat.cast_nonneg _) (halfEndpointIntervalIndicator_nonneg _ _ _)
 
+/-! ## The exact histogram-cell tiling
+
+The gap register's *Exact histogram-cell tiling* candidate: the step
+cells `I_{n,m} = [stepIntervalLeft n m, stepIntervalRight n m]` are
+consecutive abutting intervals of common width `2^{-n}` whose union is
+the single closed interval `[-1 + (n+1)/2^{n+1}, 1 - (n+1)/2^{n+1}]`,
+consecutive cells meeting only at their shared endpoint.  The register
+also asks for positivity of every in-range coefficient of the
+approximation polynomial, upgrading the step approximant's support
+enclosure to an exact description. -/
+
+/-- Consecutive step cells abut: the right endpoint of cell `m` is the
+left endpoint of cell `m + 1`. -/
+theorem stepIntervalRight_eq_left_succ (n m : ℕ) :
+    stepIntervalRight n m = stepIntervalLeft n (m + 1) := by
+  unfold stepIntervalLeft stepIntervalRight
+  push_cast
+  ring
+
+/-- The right endpoints increase with the cell index. -/
+theorem stepIntervalRight_le_right {n : ℕ} {m m' : ℕ} (h : m ≤ m') :
+    stepIntervalRight n m ≤ stepIntervalRight n m' := by
+  unfold stepIntervalRight
+  have hmm : (m : ℝ) ≤ (m' : ℝ) := Nat.cast_le.mpr h
+  gcongr
+
+/-- **Consecutive cells meet only at their common endpoint** (the
+adjacency half of the register's tiling candidate). -/
+theorem stepInterval_inter_succ (n m : ℕ) :
+    Icc (stepIntervalLeft n m) (stepIntervalRight n m) ∩
+      Icc (stepIntervalLeft n (m + 1)) (stepIntervalRight n (m + 1)) =
+      {stepIntervalRight n m} := by
+  have hshare := stepIntervalRight_eq_left_succ n m
+  have h1 := stepIntervalLeft_lt_right n m
+  have h2 := stepIntervalLeft_lt_right n (m + 1)
+  have hRR : stepIntervalRight n m ≤ stepIntervalRight n (m + 1) := by
+    rw [hshare]
+    exact h2.le
+  rw [Set.Icc_inter_Icc, ← hshare, max_eq_right h1.le, min_eq_left hRR,
+    Set.Icc_self]
+
+/-- **Finite interval coverage**: for any top index, the abutting step
+cells tile a single closed interval. -/
+theorem stepInterval_biUnion (n g : ℕ) :
+    (⋃ m ∈ Finset.range (g + 1),
+      Icc (stepIntervalLeft n m) (stepIntervalRight n m)) =
+      Icc (stepIntervalLeft n 0) (stepIntervalRight n g) := by
+  induction g with
+  | zero => simp
+  | succ g ih =>
+      rw [Finset.range_add_one, Finset.set_biUnion_insert, ih, Set.union_comm,
+        show stepIntervalLeft n (g + 1) = stepIntervalRight n g from
+          (stepIntervalRight_eq_left_succ n g).symm,
+        Set.Icc_union_Icc_eq_Icc]
+      · exact (stepIntervalLeft_lt_right n 0).le.trans
+          (stepIntervalRight_le_right (Nat.zero_le g))
+      · rw [stepIntervalRight_eq_left_succ n g]
+        exact (stepIntervalLeft_lt_right n (g + 1)).le
+
+/-- The left endpoint of the first cell, evaluated. -/
+theorem stepIntervalLeft_zero_eq (n : ℕ) :
+    stepIntervalLeft n 0 = -1 + (n + 1) / (2 : ℝ) ^ (n + 1) := by
+  unfold stepIntervalLeft
+  have hcast : (approximationDegree n : ℝ) = 2 ^ (n + 1) - (n : ℝ) - 2 := by
+    have h := congrArg (fun k : ℕ => (k : ℝ)) (approximationDegree_eq n)
+    push_cast at h
+    linarith
+  have hpow : ((2 : ℝ) ^ (n + 1)) ≠ 0 := by positivity
+  rw [hcast]
+  field_simp
+  ring
+
+/-- The right endpoint of the last cell, evaluated. -/
+theorem stepIntervalRight_degree_eq (n : ℕ) :
+    stepIntervalRight n (approximationDegree n) =
+      1 - (n + 1) / (2 : ℝ) ^ (n + 1) := by
+  unfold stepIntervalRight
+  have hcast : (approximationDegree n : ℝ) = 2 ^ (n + 1) - (n : ℝ) - 2 := by
+    have h := congrArg (fun k : ℕ => (k : ℝ)) (approximationDegree_eq n)
+    push_cast at h
+    linarith
+  have hpow : ((2 : ℝ) ^ (n + 1)) ≠ 0 := by positivity
+  rw [hcast]
+  field_simp
+  ring
+
+/-- **The exact histogram-cell tiling** (the register's candidate,
+packaged): the `g_n + 1` step cells tile
+`[-1 + (n+1)/2^{n+1}, 1 - (n+1)/2^{n+1}]` exactly. -/
+theorem stepInterval_tiling (n : ℕ) :
+    (⋃ m ∈ Finset.range (approximationDegree n + 1),
+      Icc (stepIntervalLeft n m) (stepIntervalRight n m)) =
+      Icc (-1 + (n + 1) / (2 : ℝ) ^ (n + 1))
+        (1 - (n + 1) / (2 : ℝ) ^ (n + 1)) := by
+  rw [stepInterval_biUnion, stepIntervalLeft_zero_eq,
+    stepIntervalRight_degree_eq]
+
+/-- **Every in-range coefficient of the approximation polynomial is
+positive**: the polynomial is a product of all-ones geometric factors,
+so each coefficient up to the degree receives at least one contributing
+monomial.  This upgrades the step approximant's support enclosure to an
+exact support description, as the register's tiling obligation asks. -/
+theorem approximationPolynomial_coeff_pos (n : ℕ) :
+    ∀ {m : ℕ}, m ≤ approximationDegree n →
+      0 < (approximationPolynomial n).coeff m := by
+  induction n with
+  | zero =>
+      intro m hm
+      have hm0 : m = 0 := by
+        simpa [approximationDegree] using hm
+      simp [hm0]
+  | succ n ih =>
+      intro m hm
+      rw [approximationPolynomial_succ_product, Polynomial.coeff_mul]
+      have hD := approximationDegree_succ_add n
+      set i₀ : ℕ := min m (approximationDegree n) with hi₀
+      have hi₀le : i₀ ≤ approximationDegree n := min_le_right _ _
+      have hi₀m : i₀ ≤ m := min_le_left _ _
+      have hj₀ : m - i₀ < 2 ^ (n + 1) := by
+        rcases le_or_gt m (approximationDegree n) with h | h
+        · rw [hi₀, min_eq_left h]
+          have hpow : 0 < 2 ^ (n + 1) := Nat.two_pow_pos (n + 1)
+          omega
+        · rw [hi₀, min_eq_right h.le]
+          have hpow : 0 < 2 ^ (n + 1) := Nat.two_pow_pos (n + 1)
+          omega
+      refine Finset.sum_pos' (fun p _ => Nat.zero_le _) ⟨(i₀, m - i₀), ?_, ?_⟩
+      · rw [Finset.mem_antidiagonal]
+        omega
+      · have hp := ih hi₀le
+        have hq : (geometricPolynomial (2 ^ (n + 1))).coeff (m - i₀) = 1 := by
+          rw [geometricPolynomial_coeff, if_pos hj₀]
+        rw [hq, mul_one]
+        exact hp
+
+/-! ## The ordinary-closed counterexample
+
+The gap register's *Why half-endpoint cells are needed* candidate: the
+naive variant of the step approximant with ordinary closed-interval
+indicators double-counts every shared cell endpoint, already giving the
+value `2` instead of `1` at the origin for `n = 1`. -/
+
+/-- The ordinary closed-interval indicator — the naive convention that
+`halfEndpointIntervalIndicator` replaces. -/
+noncomputable def closedIntervalIndicator (a b x : ℝ) : ℝ :=
+  if a ≤ x ∧ x ≤ b then 1 else 0
+
+/-- The naive step approximant: the same coefficients and normalization
+as `stepApproximant`, with ordinary closed-interval indicators. -/
+noncomputable def naiveStepApproximant (n : ℕ) (x : ℝ) : ℝ :=
+  (2 : ℝ) ^ n / (2 : ℝ) ^ ((n + 1).choose 2) *
+    ∑ m ∈ range (approximationDegree n + 1),
+      ((approximationPolynomial n).coeff m : ℝ) *
+        closedIntervalIndicator (stepIntervalLeft n m)
+          (stepIntervalRight n m) x
+
+/-- **The double-counting counterexample** (the register's candidate):
+at `x = 0` the level-one cells `[-1/2, 0]` and `[0, 1/2]` each
+contribute a full unit under the ordinary closed convention, so the
+naive value is `2` — against `stepApproximant_one_zero`'s corrected
+value `1`.  This is the elementary reason the half-endpoint convention
+is needed. -/
+theorem naiveStepApproximant_one_zero : naiveStepApproximant 1 0 = 2 := by
+  have hp : approximationPolynomial 1 = 1 + X := by
+    rw [show 1 = 0 + 1 by omega, approximationPolynomial_succ]
+    simp
+  rw [naiveStepApproximant]
+  norm_num [approximationDegree, hp, stepIntervalLeft, stepIntervalRight,
+    closedIntervalIndicator, Finset.sum_range_succ]
+  norm_num [Polynomial.coeff_one]
+
 end Fabius

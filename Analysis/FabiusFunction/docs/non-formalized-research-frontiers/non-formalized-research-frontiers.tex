@@ -14597,7 +14597,7 @@ Put
  I_{n,m}=\left[\lambda_{n,m}-2^{-n-1},
                   \lambda_{n,m}+2^{-n-1}\right].
 \]
-\begin{candidate}
+\begin{candidate}[Discharged]
 Consecutive cells meet only at their common endpoint, and
 \[
  \bigcup_{m=0}^{g_n}I_{n,m}
@@ -14605,25 +14605,36 @@ Consecutive cells meet only at their common endpoint, and
           1-\frac{n+1}{2^{n+1}}\right].
 \]
 \end{candidate}
-\begin{obligation}
+\begin{obligation}[Discharged]
 Package adjacency, finite interval coverage, and both endpoint calculations as a public Lean
 theorem.  If ``support'' means \(\operatorname{Function.support}\) of the step approximant
 rather than the union of its defining cells, also prove positivity of every in-range
 coefficient: the current support theorem is only an enclosure.
 \end{obligation}
+The package is public in \path{EarlyApproximants.lean}.  Adjacency is
+\lean{stepIntervalRight_eq_left_succ} together with
+\lean{stepInterval_inter_succ}, which computes the intersection of consecutive cells as
+exactly the shared-endpoint singleton; coverage is \lean{stepInterval_biUnion} (abutting
+cells tile one closed interval, for any top index); the endpoint calculations are
+\lean{stepIntervalLeft_zero_eq} and \lean{stepIntervalRight_degree_eq}; and the displayed
+tiling identity, packaged, is \lean{stepInterval_tiling}.  The conditional coefficient
+half is also done: \lean{approximationPolynomial_coeff_pos} proves every in-range
+coefficient positive (each coefficient of the product of all-ones geometric factors
+receives at least one contributing monomial), upgrading the support enclosure to an exact
+description.
 
 \subsection{Why half-endpoint cells are needed}
 
 The public step approximant uses half weight at each cell endpoint.  The elementary
 counterexample that motivated that convention was removed because it has not itself been
 packaged as a theorem:
-\begin{candidate}
+\begin{candidate}[Discharged]
 Modify the level-one step approximant by replacing its half-endpoint representatives with
 ordinary closed-interval indicators, leaving its coefficients and normalization unchanged.
 At \(x=0\), the cells \([-1/2,0]\) and \([0,1/2]\) then each contribute one, so the modified
 value is \(2\), rather than the intended value \(1\).
 \end{candidate}
-\begin{obligation}
+\begin{obligation}[Discharged]
 Define the ordinary-closed variant and prove its level-one value at zero.  The public Lean API
 proves the endpoint values and adjacency law in
 \lean{halfEndpointIntervalIndicator_self_left},
@@ -14633,6 +14644,12 @@ proves the endpoint values and adjacency law in
 the displayed double-counting result.  A source comment explaining why the convention is
 useful is not a theorem.
 \end{obligation}
+The counterexample is now a theorem in \path{EarlyApproximants.lean}:
+\lean{closedIntervalIndicator} is the naive representative,
+\lean{naiveStepApproximant} the modified approximant with unchanged coefficients and
+normalization, and \lean{naiveStepApproximant_one_zero} proves the displayed
+double-counting value \(2\) at the origin for \(n=1\), directly against
+\lean{stepApproximant_one_zero}'s corrected value \(1\).
 
 \subsection{Independent roles of the order and coordinate corrections}
 
