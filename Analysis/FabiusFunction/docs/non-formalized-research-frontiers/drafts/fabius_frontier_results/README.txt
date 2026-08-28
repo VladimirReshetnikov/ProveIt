@@ -25,6 +25,10 @@ Latin Modern fonts.
 Scope and status
 ----------------
 The report's theorems are proved in the LaTeX source and numerically checked by
-the script. They have not yet been formalized in Lean. "Repository-new" means
-absent from the audited *.tex corpus under the stated ProveIt repository path;
-it is not an unconditional claim of priority over all external literature.
+the script.  For rational 0 < q < 1, its finite q-binomial/Lagrange weights,
+all residual moments and signs, and exact finite l1 norm now have Lean
+counterparts, including the q=1/4 specialization.  The analytic sinc-tail acceleration,
+transformed-error, remainder, spline, inverse, and infinite-limit claims do
+not.  "Repository-new" means absent from the audited *.tex corpus under the
+stated ProveIt repository path; it is not an unconditional claim of priority
+over all external literature.

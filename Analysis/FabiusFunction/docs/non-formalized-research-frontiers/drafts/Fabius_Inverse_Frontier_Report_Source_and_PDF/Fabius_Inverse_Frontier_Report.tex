@@ -1609,10 +1609,14 @@ the formal series is represented by the analytic local inverse and enters the pl
 for all large $n$.
 \end{obligation}
 
-\begin{obligation}[Geometric Lagrange moments]
-Formalize \eqref{eq:all-filter-moments} using the finite $q$-binomial theorem.  This lemma
-can then serve both the existing forward Richardson hierarchy and the inverse hierarchy here.
-The quarter-error sign theorem additionally needs the ordinary Lagrange remainder formula.
+\begin{obligation}[Analytic use of formalized geometric moments]
+The finite all-filter moment identity, its quarter-base specialization, and
+the residual sign kernel are now formalized in
+\path{GeometricQBinomialLagrange.lean} and
+\path{GeometricLagrangeQMoments.lean}.  It remains to instantiate the inverse
+analytic series, justify the required infinite-series interchange, and
+transfer the finite sign identity to the full quarter-error.  That last step
+still needs the analytic Lagrange remainder formula in the report's domain.
 \end{obligation}
 
 \begin{obligation}[Two-scale endpoint reversion]
