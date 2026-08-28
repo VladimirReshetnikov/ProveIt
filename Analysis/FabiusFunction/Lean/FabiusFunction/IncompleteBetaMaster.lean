@@ -37,6 +37,8 @@ open MeasureTheory Set
 
 namespace Fabius
 
+open ProbabilityRepresentation
+
 /-- **The incomplete beta integral**
 `B_z(a,b) = ∫₀ᶻ u^{a-1}(1-u)^{b-1} du` (real powers). -/
 noncomputable def incompleteBeta (z a b : ℝ) : ℝ :=
@@ -80,8 +82,9 @@ theorem integral_rpow_mul_rpow_eq_incompleteBeta
       show p + α - 1 = (α - 1) + p from by ring, Real.rpow_add hx]
     ring
   have h3 : x * x ^ (p + α - 1) = x ^ (p + α) := by
-    rw [show (p + α : ℝ) = 1 + (p + α - 1) from by ring,
-      Real.rpow_add hx, Real.rpow_one]
+    have hstep := Real.rpow_add_one hx.ne' (p + α - 1)
+    rw [show p + α - 1 + 1 = p + α from by ring] at hstep
+    rw [hstep, mul_comm]
   rw [h1, h2, ← mul_assoc, h3, incompleteBeta]
   congr 1
   refine intervalIntegral.integral_congr fun u _ => ?_
