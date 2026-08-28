@@ -480,4 +480,169 @@ theorem integral_upOrthoPolynomial_sq (F : BoundedFabius)
 
 end MonicNormalization
 
+section Uniqueness
+
+/-- **Positivity of squared mass**: a nonzero polynomial has positive
+`L²`-norm against the up-measure — the measure charges `(-1,1)` fully
+and annihilates the finite root set. -/
+theorem integral_sq_eval_pos (F : BoundedFabius) (hF : IsFabius F)
+    {q : Polynomial ℝ} (hq : q ≠ 0) :
+    0 < ∫ x, q.eval x ^ 2 ∂(rvachevMeasure F) := by
+  have hnonneg : 0 ≤ᵐ[rvachevMeasure F] fun t : ℝ => q.eval t ^ 2 :=
+    Filter.Eventually.of_forall fun t => sq_nonneg _
+  have hint : Integrable (fun t : ℝ => q.eval t ^ 2)
+      (rvachevMeasure F) := by
+    have h := integrable_polynomial_eval_rvachevMeasure F hF (q * q)
+    simpa [Polynomial.eval_mul, pow_two] using h
+  rw [integral_pos_iff_support_of_nonneg_ae hnonneg hint]
+  have hsupp : Set.Ioo (-1 : ℝ) 1 \ {t : ℝ | q.IsRoot t} ⊆
+      Function.support fun t : ℝ => q.eval t ^ 2 := by
+    intro t ht
+    simp only [Function.mem_support]
+    intro h0
+    refine ht.2 ?_
+    show q.IsRoot t
+    rw [Polynomial.IsRoot]
+    exact (pow_eq_zero_iff two_ne_zero).mp h0
+  refine lt_of_lt_of_le ?_ (measure_mono hsupp)
+  rw [measure_sdiff_null (rvachevMeasure_finite_eq_zero F
+      (Polynomial.finite_setOf_isRoot hq)),
+    rvachevMeasure_Ioo_eq_one F hF]
+  exact zero_lt_one
+
+/-- A polynomial orthogonal to all monomials below `n` annihilates
+every polynomial of degree `< n`. -/
+theorem integral_mul_eval_eq_zero_of_forall_pow (F : BoundedFabius)
+    (hF : IsFabius F) {n : ℕ} {s : Polynomial ℝ}
+    (hs : ∀ j < n, ∫ x, s.eval x * x ^ j ∂(rvachevMeasure F) = 0)
+    {q : Polynomial ℝ} (hq : q.natDegree < n) :
+    ∫ x, s.eval x * q.eval x ∂(rvachevMeasure F) = 0 := by
+  have hintpow : ∀ j : ℕ, Integrable
+      (fun x : ℝ => s.eval x * x ^ j) (rvachevMeasure F) := by
+    intro j
+    have h := integrable_polynomial_eval_rvachevMeasure F hF
+      (s * Polynomial.X ^ j)
+    simpa [Polynomial.eval_mul, Polynomial.eval_pow] using h
+  have hexp : (fun x : ℝ => s.eval x * q.eval x) =
+      fun x : ℝ => ∑ j ∈ Finset.range (q.natDegree + 1),
+        q.coeff j * (s.eval x * x ^ j) := by
+    funext x
+    rw [Polynomial.eval_eq_sum_range, Finset.mul_sum]
+    exact Finset.sum_congr rfl fun j _ => by ring
+  rw [hexp, integral_finsetSum _ fun j _ => (hintpow j).const_mul _]
+  refine Finset.sum_eq_zero fun j hj => ?_
+  rw [MeasureTheory.integral_const_mul,
+    hs j (lt_of_le_of_lt (Nat.lt_succ_iff.mp (Finset.mem_range.mp hj))
+      hq),
+    mul_zero]
+
+/-- **Uniqueness of the monic orthogonal polynomials**: a monic
+polynomial of degree `n` orthogonal to all lower monomials *is* the
+`n`-th orthogonal polynomial of the up-measure. -/
+theorem eq_upOrthoPolynomial_of_monic_of_orthogonal
+    (F : BoundedFabius) (hF : IsFabius F) {n : ℕ} {q : Polynomial ℝ}
+    (hmon : q.Monic) (hdeg : q.natDegree = n)
+    (horth : ∀ j < n, ∫ x, q.eval x * x ^ j ∂(rvachevMeasure F) = 0) :
+    q = upOrthoPolynomial F n := by
+  by_contra hne
+  set d : Polynomial ℝ := q - upOrthoPolynomial F n with hd
+  have hdne : d ≠ 0 := sub_ne_zero.mpr hne
+  have hcoeffs : ∀ m : ℕ, n ≤ m → d.coeff m = 0 := by
+    intro m hm
+    rw [hd, Polynomial.coeff_sub]
+    rcases eq_or_lt_of_le hm with hEq | hlt
+    · have h1 : q.coeff m = 1 := by
+        have h := hmon.coeff_natDegree
+        rwa [hdeg, ← hEq] at h
+      have h2 : (upOrthoPolynomial F n).coeff m = 1 := by
+        have h := (upOrthoPolynomial_monic F hF n).coeff_natDegree
+        rwa [natDegree_upOrthoPolynomial F hF n, ← hEq] at h
+      rw [h1, h2, sub_self]
+    · have h1 : q.coeff m = 0 :=
+        Polynomial.coeff_eq_zero_of_natDegree_lt (hdeg ▸ hlt)
+      have h2 : (upOrthoPolynomial F n).coeff m = 0 :=
+        Polynomial.coeff_eq_zero_of_natDegree_lt
+          ((natDegree_upOrthoPolynomial F hF n) ▸ hlt)
+      rw [h1, h2, sub_zero]
+  have hdorth : ∀ j < n,
+      ∫ x, d.eval x * x ^ j ∂(rvachevMeasure F) = 0 := by
+    intro j hj
+    have hsub : (fun x : ℝ => d.eval x * x ^ j) = fun x : ℝ =>
+        q.eval x * x ^ j -
+          (upOrthoPolynomial F n).eval x * x ^ j := by
+      funext x
+      rw [hd, Polynomial.eval_sub]
+      ring
+    have hint1 : Integrable (fun x : ℝ => q.eval x * x ^ j)
+        (rvachevMeasure F) := by
+      have h := integrable_polynomial_eval_rvachevMeasure F hF
+        (q * Polynomial.X ^ j)
+      simpa [Polynomial.eval_mul, Polynomial.eval_pow] using h
+    have hint2 : Integrable
+        (fun x : ℝ => (upOrthoPolynomial F n).eval x * x ^ j)
+        (rvachevMeasure F) := by
+      have h := integrable_polynomial_eval_rvachevMeasure F hF
+        (upOrthoPolynomial F n * Polynomial.X ^ j)
+      simpa [Polynomial.eval_mul, Polynomial.eval_pow] using h
+    have hPn : ∫ x, (upOrthoPolynomial F n).eval x * x ^ j
+        ∂(rvachevMeasure F) = 0 := by
+      have h := integral_upOrthoPolynomial_mul_eval F hF n
+        (Polynomial.X ^ j)
+        (by simpa [Polynomial.natDegree_X_pow] using hj)
+      simpa [Polynomial.eval_pow] using h
+    rw [hsub, MeasureTheory.integral_sub hint1 hint2, horth j hj, hPn,
+      sub_zero]
+  rcases Nat.eq_zero_or_pos n with hn0 | hnpos
+  · subst hn0
+    exact hdne (Polynomial.ext fun m => by
+      simpa using hcoeffs m (Nat.zero_le m))
+  · have hdlt : d.natDegree < n := by
+      have hle : d.natDegree ≤ n - 1 :=
+        Polynomial.natDegree_le_iff_coeff_eq_zero.mpr fun N hN =>
+          hcoeffs N (by omega)
+      omega
+    have hzero : ∫ x, d.eval x * d.eval x ∂(rvachevMeasure F) = 0 :=
+      integral_mul_eval_eq_zero_of_forall_pow F hF hdorth hdlt
+    have hzero' : ∫ x, d.eval x ^ 2 ∂(rvachevMeasure F) = 0 := by
+      have hfun : (fun x : ℝ => d.eval x ^ 2) =
+          fun x : ℝ => d.eval x * d.eval x := funext fun x => by ring
+      rw [hfun]
+      exact hzero
+    exact absurd hzero' (ne_of_gt (integral_sq_eval_pos F hF hdne))
+
+end Uniqueness
+
+section Symmetry
+
+/-- The up-measure is negation-invariant at the level of integrals:
+the density is even and Lebesgue measure is negation-invariant. -/
+theorem integral_comp_neg_rvachevMeasure (F : BoundedFabius)
+    (hF : IsFabius F) (f : ℝ → ℝ) :
+    ∫ x, f (-x) ∂(rvachevMeasure F) =
+      ∫ x, f x ∂(rvachevMeasure F) := by
+  have hbridge : ∀ g : ℝ → ℝ, ∫ x, g x ∂(rvachevMeasure F) =
+      ∫ x, g x * rvachevUp F x := by
+    intro g
+    rw [rvachevMeasure]
+    have hcoe : (fun x : ℝ => ENNReal.ofReal (rvachevUp F x)) =
+        fun x => ((rvachevUp F x).toNNReal : ℝ≥0∞) :=
+      funext fun x => rfl
+    rw [hcoe, integral_withDensity_eq_integral_smul
+      ((rvachev_contDiff F hF).continuous.measurable.real_toNNReal)]
+    refine integral_congr_ae (Filter.Eventually.of_forall fun x => ?_)
+    dsimp only
+    rw [NNReal.smul_def, Real.coe_toNNReal _ (rvachevUp_nonneg F x),
+      smul_eq_mul, mul_comm]
+  rw [hbridge (fun x => f (-x)), hbridge f]
+  calc ∫ x, f (-x) * rvachevUp F x
+      = ∫ x, f (-x) * rvachevUp F (-x) := by
+        refine integral_congr_ae
+          (Filter.Eventually.of_forall fun x => ?_)
+        dsimp only
+        rw [rvachevUp_even F x]
+    _ = ∫ x, f x * rvachevUp F x :=
+        integral_neg_eq_self (fun x => f x * rvachevUp F x) _
+
+end Symmetry
+
 end Fabius

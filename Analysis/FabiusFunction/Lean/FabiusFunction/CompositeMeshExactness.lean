@@ -136,36 +136,32 @@ theorem tsum_shifted_monomial_eq_integral_nat_real (F : BoundedFabius)
     _ = ((∫ x : ℝ, x ^ p * rvachevUp F (((M : ℝ))⁻¹ * x) : ℝ) : ℂ) :=
         integral_ofReal
 
-/-- The composite-mesh comb samples of any weight have finite
-support. -/
-theorem finite_support_comb_nat (F : BoundedFabius) (hF : IsFabius F)
-    {M : ℕ} (hM : M ≠ 0) (θ : ℝ) (g : ℝ → ℝ) :
+/-- The scaled comb samples of any weight have finite support: the
+up-factor vanishes outside `(-u, u)`. -/
+theorem finite_support_comb_scaled (F : BoundedFabius)
+    (hF : IsFabius F) {u : ℝ} (hu : 0 < u) (θ : ℝ) (g : ℝ → ℝ) :
     (Function.support fun k : ℤ =>
-      g (θ + k) * rvachevUp F (((M : ℝ))⁻¹ * (θ + k))).Finite := by
-  have hpow : (0 : ℝ) < (M : ℝ) :=
-    Nat.cast_pos.mpr (Nat.pos_of_ne_zero hM)
+      g (θ + k) * rvachevUp F (u⁻¹ * (θ + k))).Finite := by
+  have hune : u ≠ 0 := hu.ne'
   refine Set.Finite.subset
-    (Set.finite_Icc ⌈-(M : ℝ) - θ⌉ ⌊(M : ℝ) - θ⌋) ?_
+    (Set.finite_Icc ⌈-u - θ⌉ ⌊u - θ⌋) ?_
   intro k hk
-  have hne : rvachevUp F (((M : ℝ))⁻¹ * (θ + k)) ≠ 0 := by
+  have hne : rvachevUp F (u⁻¹ * (θ + k)) ≠ 0 := by
     intro h0
     exact (Function.mem_support.mp hk) (by rw [h0, mul_zero])
-  have hmem : ((M : ℝ))⁻¹ * (θ + k) ∈ Ioo (-1 : ℝ) 1 := by
+  have hmem : u⁻¹ * (θ + k) ∈ Ioo (-1 : ℝ) 1 := by
     by_contra hnot
     exact hne (rvachevUp_eq_zero_of_not_mem_Ioo F hF hnot)
-  have h1 : -(M : ℝ) < θ + k := by
-    have hlt : -1 * (M : ℝ) < (((M : ℝ))⁻¹ * (θ + k)) * (M : ℝ) := by
-      nlinarith [hmem.1]
-    calc -(M : ℝ) = -1 * (M : ℝ) := by ring
-      _ < (((M : ℝ))⁻¹ * (θ + k)) * (M : ℝ) := hlt
-      _ = θ + k := by field_simp
-  have h2 : θ + (k : ℝ) < (M : ℝ) := by
-    have hlt : (((M : ℝ))⁻¹ * (θ + k)) * (M : ℝ) < 1 * (M : ℝ) := by
-      nlinarith [hmem.2]
-    calc θ + (k : ℝ) = (((M : ℝ))⁻¹ * (θ + k)) * (M : ℝ) := by
-          field_simp
-      _ < 1 * (M : ℝ) := hlt
-      _ = (M : ℝ) := one_mul _
+  have heq : u * (u⁻¹ * (θ + k)) = θ + k := by
+    rw [← mul_assoc, mul_inv_cancel₀ hune, one_mul]
+  have h1 : -u < θ + k := by
+    have hlt := mul_lt_mul_of_pos_left hmem.1 hu
+    rw [heq] at hlt
+    linarith
+  have h2 : θ + (k : ℝ) < u := by
+    have hlt := mul_lt_mul_of_pos_left hmem.2 hu
+    rw [heq] at hlt
+    linarith
   constructor
   · rw [Int.ceil_le]
     push_cast
@@ -174,67 +170,81 @@ theorem finite_support_comb_nat (F : BoundedFabius) (hF : IsFabius F)
     push_cast
     linarith
 
+/-- **General-scale polynomial comb exactness**: whenever every
+monomial comb up to the degree of `P` is exact at the scale `u`, so is
+the `P`-comb.  The scale enters only through the monomial
+hypothesis. -/
+theorem tsum_shifted_polynomial_eq_integral_of_forall_monomial
+    (F : BoundedFabius) (hF : IsFabius F) {u : ℝ} (hu : 0 < u)
+    {P : Polynomial ℝ} (θ : ℝ)
+    (hmono : ∀ i ≤ P.natDegree,
+      ∑' k : ℤ, (θ + k) ^ i * rvachevUp F (u⁻¹ * (θ + k)) =
+        ∫ x : ℝ, x ^ i * rvachevUp F (u⁻¹ * x)) :
+    ∑' k : ℤ, P.eval (θ + k) * rvachevUp F (u⁻¹ * (θ + k)) =
+      ∫ x : ℝ, P.eval x * rvachevUp F (u⁻¹ * x) := by
+  have hup_cont : Continuous
+      (fun x : ℝ => rvachevUp F (u⁻¹ * x)) :=
+    (rvachev_contDiff F hF).continuous.comp (by fun_prop)
+  have hup_supp : HasCompactSupport
+      (fun x : ℝ => rvachevUp F (u⁻¹ * x)) := by
+    simpa only [smul_eq_mul] using
+      (rvachevUp_hasCompactSupport F hF).comp_smul
+        (inv_ne_zero hu.ne')
+  have hint : ∀ i : ℕ, Integrable
+      (fun x : ℝ => x ^ i * rvachevUp F (u⁻¹ * x)) :=
+    fun i => ((continuous_pow i).mul
+      hup_cont).integrable_of_hasCompactSupport (hup_supp.mul_left)
+  have hsummable : ∀ i : ℕ, Summable (fun k : ℤ =>
+      (θ + k) ^ i * rvachevUp F (u⁻¹ * (θ + k))) :=
+    fun i => summable_of_hasFiniteSupport
+      (finite_support_comb_scaled F hF hu θ (· ^ i))
+  calc ∑' k : ℤ, P.eval (θ + k) * rvachevUp F (u⁻¹ * (θ + k))
+      = ∑' k : ℤ, ∑ i ∈ Finset.range (P.natDegree + 1),
+          P.coeff i * ((θ + k) ^ i *
+            rvachevUp F (u⁻¹ * (θ + k))) := by
+        refine tsum_congr fun k => ?_
+        rw [Polynomial.eval_eq_sum_range, Finset.sum_mul]
+        exact Finset.sum_congr rfl fun i _ => by ring
+    _ = ∑ i ∈ Finset.range (P.natDegree + 1),
+          P.coeff i * ∑' k : ℤ, (θ + k) ^ i *
+            rvachevUp F (u⁻¹ * (θ + k)) := by
+        rw [Summable.tsum_finsetSum fun i _ =>
+          ((hsummable i).mul_left (P.coeff i))]
+        exact Finset.sum_congr rfl fun i _ => tsum_mul_left
+    _ = ∑ i ∈ Finset.range (P.natDegree + 1),
+          P.coeff i * ∫ x : ℝ, x ^ i *
+            rvachevUp F (u⁻¹ * x) := by
+        refine Finset.sum_congr rfl fun i hi => ?_
+        rw [hmono i (Nat.lt_succ_iff.mp (Finset.mem_range.mp hi))]
+    _ = ∑ i ∈ Finset.range (P.natDegree + 1),
+          ∫ x : ℝ, P.coeff i * (x ^ i *
+            rvachevUp F (u⁻¹ * x)) :=
+        Finset.sum_congr rfl fun i _ =>
+          (MeasureTheory.integral_const_mul _ _).symm
+    _ = ∫ x : ℝ, ∑ i ∈ Finset.range (P.natDegree + 1),
+          P.coeff i * (x ^ i * rvachevUp F (u⁻¹ * x)) :=
+        (integral_finsetSum _ fun i _ => (hint i).const_mul _).symm
+    _ = ∫ x : ℝ, P.eval x * rvachevUp F (u⁻¹ * x) := by
+        refine integral_congr_ae
+          (Filter.Eventually.of_forall fun x => ?_)
+        dsimp only
+        rw [Polynomial.eval_eq_sum_range, Finset.sum_mul]
+        exact Finset.sum_congr rfl fun i _ => by ring
+
 /-- **Composite-mesh self-sampling, polynomial form**: for every mesh
 `M ≥ 1`, every real shift `θ`, and every real polynomial `P` with
 `deg P ≤ v₂(M)`,
 `∑_{k∈ℤ} P(θ+k)·up((θ+k)/M) = ∫ P(x)·up(x/M) dx`.  Only the two-adic
 valuation of the mesh matters; its odd part is irrelevant. -/
-set_option maxHeartbeats 800000 in
 theorem tsum_shifted_polynomial_eq_integral_nat (F : BoundedFabius)
     (hF : IsFabius F) {M : ℕ} (hM : M ≠ 0) {P : Polynomial ℝ}
     (hdeg : P.natDegree ≤ padicValNat 2 M) (θ : ℝ) :
     ∑' k : ℤ, P.eval (θ + k) *
         rvachevUp F (((M : ℝ))⁻¹ * (θ + k)) =
       ∫ x : ℝ, P.eval x * rvachevUp F (((M : ℝ))⁻¹ * x) := by
-  have hup_cont : Continuous
-      (fun x : ℝ => rvachevUp F (((M : ℝ))⁻¹ * x)) :=
-    (rvachev_contDiff F hF).continuous.comp (by fun_prop)
-  have hup_supp : HasCompactSupport
-      (fun x : ℝ => rvachevUp F (((M : ℝ))⁻¹ * x)) := by
-    simpa only [smul_eq_mul] using
-      (rvachevUp_hasCompactSupport F hF).comp_smul
-        (inv_ne_zero (Nat.cast_ne_zero.mpr hM))
-  have hint : ∀ i : ℕ, Integrable
-      (fun x : ℝ => x ^ i * rvachevUp F (((M : ℝ))⁻¹ * x)) :=
-    fun i => ((continuous_pow i).mul
-      hup_cont).integrable_of_hasCompactSupport (hup_supp.mul_left)
-  have hsummable : ∀ i : ℕ, Summable (fun k : ℤ =>
-      (θ + k) ^ i * rvachevUp F (((M : ℝ))⁻¹ * (θ + k))) :=
-    fun i => summable_of_hasFiniteSupport
-      (finite_support_comb_nat F hF hM θ (· ^ i))
-  calc ∑' k : ℤ, P.eval (θ + k) *
-        rvachevUp F (((M : ℝ))⁻¹ * (θ + k))
-      = ∑' k : ℤ, ∑ i ∈ Finset.range (P.natDegree + 1),
-          P.coeff i * ((θ + k) ^ i *
-            rvachevUp F (((M : ℝ))⁻¹ * (θ + k))) := by
-        refine tsum_congr fun k => ?_
-        rw [Polynomial.eval_eq_sum_range, Finset.sum_mul]
-        exact Finset.sum_congr rfl fun i _ => by ring
-    _ = ∑ i ∈ Finset.range (P.natDegree + 1),
-          P.coeff i * ∑' k : ℤ, (θ + k) ^ i *
-            rvachevUp F (((M : ℝ))⁻¹ * (θ + k)) := by
-        rw [Summable.tsum_finsetSum fun i _ =>
-          ((hsummable i).mul_left (P.coeff i))]
-        exact Finset.sum_congr rfl fun i _ => tsum_mul_left
-    _ = ∑ i ∈ Finset.range (P.natDegree + 1),
-          P.coeff i * ∫ x : ℝ, x ^ i *
-            rvachevUp F (((M : ℝ))⁻¹ * x) := by
-        refine Finset.sum_congr rfl fun i hi => ?_
-        have hi' : i ≤ padicValNat 2 M :=
-          le_trans (Nat.lt_succ_iff.mp (Finset.mem_range.mp hi)) hdeg
-        rw [tsum_shifted_monomial_eq_integral_nat_real F hF hM hi' θ]
-    _ = ∑ i ∈ Finset.range (P.natDegree + 1),
-          ∫ x : ℝ, P.coeff i * (x ^ i *
-            rvachevUp F (((M : ℝ))⁻¹ * x)) :=
-        Finset.sum_congr rfl fun i _ =>
-          (MeasureTheory.integral_const_mul _ _).symm
-    _ = ∫ x : ℝ, ∑ i ∈ Finset.range (P.natDegree + 1),
-          P.coeff i * (x ^ i * rvachevUp F (((M : ℝ))⁻¹ * x)) :=
-        (integral_finsetSum _ fun i _ => (hint i).const_mul _).symm
-    _ = ∫ x : ℝ, P.eval x * rvachevUp F (((M : ℝ))⁻¹ * x) := by
-        refine integral_congr_ae (Filter.Eventually.of_forall fun x => ?_)
-        dsimp only
-        rw [Polynomial.eval_eq_sum_range, Finset.sum_mul]
-        exact Finset.sum_congr rfl fun i _ => by ring
+  refine tsum_shifted_polynomial_eq_integral_of_forall_monomial F hF
+    (Nat.cast_pos.mpr (Nat.pos_of_ne_zero hM)) θ fun i hi => ?_
+  exact tsum_shifted_monomial_eq_integral_nat_real F hF hM
+    (le_trans hi hdeg) θ
 
 end Fabius
