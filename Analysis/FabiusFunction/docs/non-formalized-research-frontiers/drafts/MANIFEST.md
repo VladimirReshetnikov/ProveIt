@@ -88,6 +88,7 @@ Series and orthogonal-expansion representations of the up-function.
 | Directory | Document | Previous path |
 | --- | --- | --- |
 | `Fabius_Rvachev_Representation_Frontiers/` | *Fabius–Rvachev Representation Frontiers* (Jacobi coefficients, exact even moments, resolvent and logarithmic-derivative identities) | `drafts/incoming/…zip` (unpacked 2026-08-28) |
+| `Fabius_Rvachev_Multiresolution_Report/` | *Dyadic Multiresolution and Product–Series Representations in the Fabius–Rvachev System* (rational mass arrays, Haar–Schauder expansions, Walsh–Thue–Morse products, beta-mixture limits, Bell–Bernoulli scale energies, inverse-quantile duality) | `drafts/incoming/…zip` (unpacked 2026-08-28) |
 
 ## frontier-compilations — `frontier-compilations/`
 
