@@ -2616,6 +2616,15 @@ first-defect values), and
 \nolinkurl{Fabius.fourier_monomialRvachevSchwartz_nat_int_ne_zero_of_odd} concludes that
 the transform of $x^{\vtwo(M)+1}\Up(x/M)$ does \emph{not} vanish at odd integer
 frequencies, so the quadrature order of the mesh-$M$ comb is exactly $\vtwo(M)$.
+The defect itself is now a formal object: \path{CombDefectSeries.lean} proves the comb's
+spectral display absolutely summable at every degree and mesh (Schwartz decay of the
+transform), subtracts the zero mode, and identifies the quadrature defect with the
+convergent alias series
+(\nolinkurl{Fabius.tsum_shifted_monomial_sub_integral}); at the threshold degree the even
+frequencies die by the sharp joint valuation count and the defect is carried by the
+odd frequencies alone (\nolinkurl{Fabius.tsum_shifted_monomial_sub_integral_odd}) --- the
+odd-level defect series of \cref{sec:dirichlet}, with the exact first-defect
+coefficients.
 \Cref{thm:up-composite-mesh} itself is now kernel-verified in full polynomial form:
 \nolinkurl{Fabius.tsum_shifted_polynomial_eq_integral_nat} in
 \nolinkurl{CompositeMeshExactness.lean} proves
