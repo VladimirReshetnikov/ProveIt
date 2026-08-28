@@ -56,6 +56,26 @@ The report develops five main bridges:
 
 The report also assembles a broad atlas of established probability, convolution, spline, product, sampling, Mellin, Laplace, moment, q-series, Lambert-W, and inverse-function representations.
 
+## Formalization status of package 1
+
+The novelty labels above are historical audit classifications and are
+unchanged.  Against formal source checkpoint
+`71ab6f6728fceb753c88d8b0573077a59acf2682`, the entire reciprocal product,
+its generic complex-contraction Mahler/zero/reflection laws, the dyadic
+Rvachev bridge, and the exact dyadic zero and meromorphic pole orders are
+formalized in `ScaledInfiniteProducts.lean`,
+`GeometricReciprocalGamma.lean`, and `DyadicGammaOrder.lean`.
+
+The formal Gamma-side object is the totalized pointwise inverse of the entire
+reciprocal product.  Mathlib gives `Complex.Gamma` value zero at a classical
+pole, and negative `meromorphicOrderAt` records the pole.  The formal tranche
+does not identify that inverse with the raw tprod of Gamma factors away from
+the poles.  The raw product, arithmetic canonical product, power/log series,
+digamma/resolvent, Malmsten and heat-trace integrals, Gamma-form Fourier
+integrals, D-finiteness, general-base pole orders, and the reciprocal-Gamma
+derivative coefficient required by the Thue--Morse tower remain frontier
+material.
+
 ## Reproducing the numerical experiments
 
 Requirements:

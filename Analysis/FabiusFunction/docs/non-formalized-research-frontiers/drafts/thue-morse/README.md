@@ -3,7 +3,7 @@
 The Thue-Morse side of the corpus, consolidated (2026-08-28) into the
 single volume [`Thue_Morse_Atlas_and_Frontiers.tex`](Thue_Morse_Atlas_and_Frontiers/Thue_Morse_Atlas_and_Frontiers.tex)
 ([PDF](Thue_Morse_Atlas_and_Frontiers/Thue_Morse_Atlas_and_Frontiers.pdf),
-127 pp):
+129 pp):
 
 - **Part I** — *A Unified Formula Atlas for the Thue–Morse Sequence*
   (formerly `Thue_Morse_Formula_Atlas/`);
@@ -22,6 +22,28 @@ Fourier--Laplace rotation between the two prefixes. The analytic-logarithm,
 certified-remainder, and measure-refinement results named in the volume also
 have formal counterparts; the remaining roadmap obligations stay explicitly
 labeled.
+
+The current reciprocal-Gamma jet/tower overlay preserves that historical
+status and pins the first tranche to `0ba35abd4`.  The exhaustive five-theorem
+API of `ReciprocalGammaJets.lean` is `deriv_Gamma_inv_neg_nat`,
+`hasDerivAt_Gamma_inv_neg_nat`, `hasDerivAt_Gamma_inv_zero`,
+`analyticOrderAt_Gamma_inv_neg_nat`, and `tendsto_Gamma_inv_div_add_nat`.
+It gives the exact first jet `(-1)^r r!`, simple analytic order, and punctured
+local coefficient of the entire reciprocal Gamma function at every `-r`; it
+does not assign a derivative to raw Gamma at a pole.
+
+At the same commit, the first eight public declarations of
+`ThueMorseGammaTower.lean` are
+`hasDerivAt_dirichletMellinContinuation_neg_nat`,
+`deriv_dirichletMellinContinuation_neg_nat`, `thueMorseGammaLog`,
+`thueMorseGammaTower`, `thueMorseGammaLog_eq_mellin`,
+`thueMorseGammaLog_eq_integral`, `thueMorseGammaLog_dyadic`, and
+`thueMorseGammaTower_dyadic`.  The current integrated tree adds the ninth,
+`ofReal_exp_mpLimit_eq_gammaTower_div`.  The two definitions are total for real
+`a`; the Mellin, integral, dyadic, and ratio theorems require positive
+parameters.  GammaLog is the chosen derivative coordinate, not a proved
+`Complex.log` identity.  Only the parameter-`a` differential and iterated
+differential ladder remains open in this tower tranche.
 
 The member drafts were absorbed content-preservingly (labels, citation
 keys, and asset paths mechanically prefixed per part; wrapper metadata

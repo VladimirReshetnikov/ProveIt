@@ -85,7 +85,9 @@ import FabiusFunction.ThueMorseMasterProduct
 import FabiusFunction.ThueMorseBlockProducts
 import FabiusFunction.ThueMorseEntireContinuation
 import FabiusFunction.FrullaniIntegral
+import FabiusFunction.ReciprocalGammaJets
 import FabiusFunction.ThueMorseGDirichlet
+import FabiusFunction.ThueMorseGammaTower
 import FabiusFunction.ThueMorseQuarterProduct
 import FabiusFunction.ThueMorseDiscSeries
 import FabiusFunction.ThueMorseNaturalBoundary
@@ -158,6 +160,9 @@ import FabiusFunction.RenormalizationIdentity
 import FabiusFunction.IntegerZeroLocalFactorization
 import FabiusFunction.LeadingJet
 import FabiusFunction.IntegerZeroAnalyticOrder
+import FabiusFunction.ScaledInfiniteProducts
+import FabiusFunction.GeometricReciprocalGamma
+import FabiusFunction.DyadicGammaOrder
 import FabiusFunction.SincPrefixBound
 import FabiusFunction.GlobalDecayEnvelope
 import FabiusFunction.LacunaryMeanSharp

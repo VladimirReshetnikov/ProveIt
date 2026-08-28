@@ -308,7 +308,7 @@ is not by itself evidence of formalization.  Statements proved in Lean carry the
 declaration names in the text, typeset as \lean{Fabius.thueMorseSign}; statements without
 such a citation must not be inferred to have a formal counterpart.
 
-The current inventory in \cref{p1:sec:formalized-modules} consists of ninety-three compiled
+The current inventory in \cref{p1:sec:formalized-modules} consists of ninety-five compiled
 Lean modules.  It covers the finite algebraic, automata, moment, Fourier, rarefaction,
 Dirichlet--Mellin, word-combinatorial, and Fabius--Rvachev bridges recorded there, often in
 greater generality than the displayed prose.  The dependency-aware map in
@@ -6279,7 +6279,7 @@ valuation, carry, and Pascal-row formulas remain genuinely base-two features.
 \subsection{Formalized modules (August 2026)}
 \label{p1:sec:formalized-modules}
 
-The first tranches of the formalization now exist as ninety-three
+The first tranches of the formalization now exist as ninety-five
 compiled Lean modules in \repo{}, complementing the corpus modules
 (\path{Parity.lean}, \path{TwoAdic.lean}, \path{ThueMorsePrefix.lean},
 \path{ThueMorseGenerating.lean}, \path{ThueMorseExponential.lean},
@@ -6372,6 +6372,8 @@ Module & Contents \\
 \path{ThueMorseEntireContinuation.lean} & The entire continuation: flatness of every order at zero, exponential decay, local integrability, entirety of \(\Gamma^{-1}\cdot\)Mellin, the trivial zeros at the nonpositive integers, agreement with \(D(\sigma,a)\) on \(\sigma>1\), and the dyadic parameter equation at \emph{every} complex \(s\) by the identity theorem. \\
 \path{FrullaniIntegral.lean} & The Frullani integral \(\int_0^\infty(\e^{-pt}-\e^{-qt})t^{-1}\dd t=\log(q/p)\), by differentiation under the integral sign; not in Mathlib. \\
 \path{ThueMorseGDirichlet.lean} & The derivative bridge \(\log G(a,b)=D'(0,b)-D'(0,a)\): the closed integral form of \(\log G\), \((1/\Gamma)'(0)=1\), and the derivative of the entire continuation at zero. \\
+\path{ReciprocalGammaJets.lean} & Exact first jets of the entire reciprocal Gamma function at every nonpositive integer: derivative \((-1)^r r!\), simple analytic order, the punctured local coefficient, and the retained origin compatibility theorem; no derivative is assigned to raw Gamma at a pole. \\
+\path{ThueMorseGammaTower.lean} & Exact first jets of the entire Dirichlet--Mellin continuation, total GammaLog and exponentiated tower definitions, Mellin and real-integral GammaLog formulas, dyadic log and tower laws for positive parameter, and the positive-parameter level-zero master-product ratio; GammaLog is a chosen coordinate, while the parameter-differential ladder remains outside the module. \\
 \path{ThueMorseQuarterProduct.lean} & The quarter product \(G(1/4,3/4)=1/2\) from Woods--Robbins by parity splitting, and the value \(1/2\) of the half-shifted block product. \\
 \path{ThueMorseDiscSeries.lean} & The Thue--Morse power series as a holomorphic function on the unit disc: the complex-disc product wrapper \(F(z)=\prod_{j=0}^{\infty}(1-z^{2^j})\), locally uniform convergence, the analytic Mahler equation and its iterate, and the real-ray bound \(|F(x)|\le1-x\). \\
 \path{ThueMorseNaturalBoundary.lean} & The natural-boundary theorem: radial vanishing at dyadic roots of unity, two-power roots approximating every circle point, and the double identity-theorem argument. \\
@@ -8631,20 +8633,63 @@ Thus the known product is the ratio law at the base of an infinite dyadic differ
 tower.
 \end{corollary}
 
-\emph{Formal version.}  The $r=0$ layer of the tower is formalized.  The hypothesis of this
-corollary --- the derivative bridge $\log G_{\rm WR}(a,b)=\partial_s\widetilde D(0,b)
--\partial_s\widetilde D(0,a)$ --- is \leanPartx{Fabius.mpLimit_eq_deriv_sub}
-(\path{ThueMorseGDirichlet.lean}), for all $a,b>0$, with $\log G_{\rm WR}(a,b)$ realized as
-\leanPartx{Fabius.mpLimit}, the limit of the convergent series
-$\sum_n\eps_n\log\bigl((n+a)/(n+b)\bigr)$, and $\widetilde D$ realized by the entire Mellin
-continuation cited above.  Its analytic ingredient is
-\leanPartx{Fabius.hasDerivAt_dirichletMellinContinuation_zero}, itself resting on
-$(1/\Gamma)'(0)=1$ (\leanPartx{Fabius.hasDerivAt_Gamma_inv_zero}).  Since
-$\Gamma_0^{\rm TM}=\exp\bigl(\partial_s\widetilde D(0,\cdot)\bigr)$ by
-\eqref{p2:eq:gammaTM}, \eqref{p2:eq:WR-gamma} is that theorem exponentiated.  The layers $r\ge1$ of
-\cref{p2:thm:gamma-tower} are not formalized: the missing ingredient is the derivative of the
-continuation at $s=-r$, which needs the simple-zero coefficient of $1/\Gamma$ at each
-nonpositive integer rather than at the origin alone.
+\emph{Formal version and exact current API.}  The older origin-only bridge remains
+\leanPartx{Fabius.mpLimit_eq_deriv_sub} in \path{ThueMorseGDirichlet.lean}, for
+all \(a,b>0\), with \leanPartx{Fabius.mpLimit} the limit of
+\(\sum_n\eps_n\log((n+a)/(n+b))\).  The post-checkpoint source commit
+\path{0ba35abd4} closes every spectral level used in the Mellin and dyadic parts
+of \cref{p2:thm:gamma-tower}.  First, \path{ReciprocalGammaJets.lean} has exactly
+five public declarations:
+\leanPartx{Fabius.deriv_Gamma_inv_neg_nat},
+\leanPartx{Fabius.hasDerivAt_Gamma_inv_neg_nat},
+\leanPartx{Fabius.hasDerivAt_Gamma_inv_zero},
+\leanPartx{Fabius.analyticOrderAt_Gamma_inv_neg_nat}, and
+\leanPartx{Fabius.tendsto_Gamma_inv_div_add_nat}.  For every \(r\in\N\), these
+give
+\[
+ (\Gamma^{-1})'(-r)=(-1)^r r!,\qquad
+ \operatorname{ord}_{-r}(\Gamma^{-1})=1,\qquad
+ \frac{\Gamma(s)^{-1}}{s+r}\longrightarrow(-1)^r r!
+ \quad(s\to-r,\ s\ne-r).
+\]
+They concern the entire reciprocal function \(s\mapsto\Gamma(s)^{-1}\); no
+derivative value is assigned to the raw Gamma function at a pole.
+
+At the same commit, \path{ThueMorseGammaTower.lean} has exactly eight public
+declarations:
+\leanPartx{Fabius.hasDerivAt_dirichletMellinContinuation_neg_nat},
+\leanPartx{Fabius.deriv_dirichletMellinContinuation_neg_nat},
+\leanPartx{Fabius.thueMorseGammaLog},
+\leanPartx{Fabius.thueMorseGammaTower},
+\leanPartx{Fabius.thueMorseGammaLog_eq_mellin},
+\leanPartx{Fabius.thueMorseGammaLog_eq_integral},
+\leanPartx{Fabius.thueMorseGammaLog_dyadic}, and
+\leanPartx{Fabius.thueMorseGammaTower_dyadic}.  For \(a>0\) and \(r\in\N\),
+the first two identify
+\[
+ \partial_s\widetilde D(-r,a)=(-1)^r r!\,
+ \operatorname{Mellin}(t\mapsto e^{-at}\mathcal E(t))(-r),
+\]
+and the four identification theorems give its Mellin/integral form and the
+exact dyadic log and tower laws for every \(r\).  The definitions
+\leanPartx{Fabius.thueMorseGammaLog} and
+\leanPartx{Fabius.thueMorseGammaTower} are total for every real \(a\), whereas
+their Mellin, integral, and dyadic theorems assume exactly \(a>0\).  Formally,
+\leanPartx{Fabius.thueMorseGammaLog} is the chosen coordinate
+\(L_r(a):=\partial_s\widetilde D(-r,a)\), and the tower is defined by
+\(T_r(a):=\exp L_r(a)\); no identity
+\(L_r(a)=\operatorname{Complex.log}(T_r(a))\) is proved.  Thus the left side of
+\eqref{p2:eq:gamma-Mellin} should be read as this chosen GammaLog coordinate in
+the Lean crosswalk, not as a branch theorem for the complex logarithm.
+
+The current integrated tree adds the ninth public tower declaration
+\leanPartx{Fabius.ofReal_exp_mpLimit_eq_gammaTower_div}: for \(a,b>0\), the
+complex embedding of \(\exp(\operatorname{mpLimit}(a,b))\) is
+\(T_0(b)/T_0(a)\), exactly the formal ratio law for
+\eqref{p2:eq:WR-gamma}.  The only unformalized assertions within
+\cref{p2:thm:gamma-tower} are now the parameter-\(a\) differential and iterated
+differential laws \eqref{p2:eq:gamma-differential}--\eqref{p2:eq:gamma-iterated};
+they require differentiation under the Mellin integral.
 
 \begin{remark}[Why ``Barnes-type'']
 The hierarchy is not asserted to be a classical Barnes multiple-gamma family.  The name refers
@@ -8858,8 +8903,9 @@ record, the block identity, both finite bridges in total normalized complex form
 denominator-free equalities at the origin and quotient corollaries away from zero, both halves of
 tail self-similarity, the Fourier--Laplace rotation, the Lagrange characterization of the
 $q$-Richardson weights with all three of its moment identities together with their closed
-$q$-binomial form (compiled in \path{GeometricQBinomialLagrange.lean}), the $r=0$ layer
-of the gamma tower, and now the entire zeta--Lambert tail calculus --- the Euler--zeta
+$q$-binomial form (compiled in \path{GeometricQBinomialLagrange.lean}), every spectral
+level of the GammaLog/tower Mellin and dyadic laws together with the level-zero
+master-product ratio, and now the entire zeta--Lambert tail calculus --- the Euler--zeta
 logarithm, the all-orders expansion, the certified remainder, and the exact
 prefix--corrections--tail split (\path{EulerLogTransform.lean}, \path{SincZetaSeries.lean},
 \path{SincZetaDyadic.lean}, \path{SincZetaRemainder.lean}) --- already have Lean
@@ -8907,8 +8953,9 @@ have likewise since been delivered in \path{SincZetaSeries.lean} and
 \path{SincZetaRemainder.lean}, and the random-tail law exists in measure form in
 \path{MeasureRefinement.lean}.  What remains includes the concrete sinc-product
 Richardson identification, weighted uniform remainder and convergence theorem,
-the random-variable weak expansion, the Lambert depth law, and the levels
-$r\ge1$ of the gamma tower.  In particular, neither the formal filter identity
+the random-variable weak expansion, the Lambert depth law, and the
+parameter-\(a\) differential and iterated differential Gamma-tower ladder.
+In particular, neither the formal filter identity
 nor the abstract unconditionally summable tail implies the analytic bounds or
 brackets stated later in this part.
 
@@ -8984,10 +9031,14 @@ Lambert depth law
 analytic estimate is elementary after the definition of $\lambda$; the likely missing piece is
 a convenient formal API for the lower real Lambert branch. \\
 Thue--Morse gamma tower
-\eqref{p2:eq:gamma-Mellin}--\eqref{p2:eq:gamma-iterated} & holomorphic parameter differentiation,
-reciprocal-gamma zero, Atlas Dirichlet continuation & Reuse the Atlas continuation theorem;
-prove the simple-zero coefficient of $1/\Gamma$ at each nonpositive integer; then
-differentiate the dyadic equation and the shift parameter identity. \\
+\eqref{p2:eq:gamma-Mellin}--\eqref{p2:eq:gamma-iterated} & reciprocal-Gamma
+first jets, Atlas Dirichlet continuation, parameter differentiation &
+\emph{Mellin and dyadic layers delivered}: \path{ReciprocalGammaJets.lean}
+proves the exact simple reciprocal-Gamma jet at every nonpositive integer, and
+\path{ThueMorseGammaTower.lean} proves every continuation first jet, the
+Mellin/integral GammaLog levels, both dyadic laws, and the level-zero
+master-product ratio.  Only \eqref{p2:eq:gamma-differential}--\eqref{p2:eq:gamma-iterated}
+remain; they need a parameter-under-the-Mellin-integral theorem. \\
 \bottomrule
 \end{longtable}
 \endgroup
