@@ -142,3 +142,10 @@ rendered with `\appendix` letters G–N).  Supporting files under
 `assets/`, provenance with SHA-256 in the document itself.
 
 See [`../MANIFEST.md`](../MANIFEST.md) for titles and the previous paths.
+
+A sixteenth-wave arrival, `Signed_Reciprocal_q_Fabius_Frontiers/` (*Signed and
+Reciprocal q-Fabius Frontiers*), joins the group as a separate member: the
+normalized geometric-uniform law Y_q = (1-q)∑ qʲU_j at negative and reciprocal
+parameters — signed densities, reciprocal Laplace duality, two-nome
+Pochhammer–Prouhet partition functions, and inverse-geometric endpoint lattices.
+It stays separate until deliberately merged into the volume.
