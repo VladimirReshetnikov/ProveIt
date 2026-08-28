@@ -105,6 +105,7 @@ import FabiusFunction.GeometricScaleProducts
 import FabiusFunction.GeometricConvolutionTails
 import FabiusFunction.SmoothingOperatorInversion
 import FabiusFunction.AlgebraicInverseGerm
+import FabiusFunction.GeometricCgfTails
 import FabiusFunction.SincProductShells
 import FabiusFunction.SharpGelfondBound
 import FabiusFunction.SincProductPeakRay
