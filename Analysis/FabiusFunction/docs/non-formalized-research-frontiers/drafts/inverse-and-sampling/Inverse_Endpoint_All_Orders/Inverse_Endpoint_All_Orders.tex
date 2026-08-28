@@ -58,21 +58,31 @@
 \allowdisplaybreaks[2]
 \numberwithin{equation}{section}
 
+% ed.: alias counters so cleveref prints each environment's own name
+% (with plain shared counters every \cref rendered as "theorem").
+\usepackage{aliascnt}
+\newcommand{\newsharedtheorem}[2]{%
+  \newaliascnt{#1}{theorem}%
+  \newtheorem{#1}[#1]{#2}%
+  \aliascntresetthe{#1}%
+}
 \newtheorem{theorem}{Theorem}[section]
-\newtheorem{proposition}[theorem]{Proposition}
-\newtheorem{lemma}[theorem]{Lemma}
-\newtheorem{corollary}[theorem]{Corollary}
-\newtheorem{identity}[theorem]{Identity}
-\newtheorem{conjecture}[theorem]{Conjecture}
-\newtheorem{problem}[theorem]{Problem}
+\newsharedtheorem{proposition}{Proposition}
+\newsharedtheorem{lemma}{Lemma}
+\newsharedtheorem{corollary}{Corollary}
+\newsharedtheorem{identity}{Identity}
+\newsharedtheorem{conjecture}{Conjecture}
+\newsharedtheorem{problem}{Problem}
 \theoremstyle{definition}
-\newtheorem{definition}[theorem]{Definition}
-\newtheorem{algorithm}[theorem]{Algorithm}
-\newtheorem{example}[theorem]{Example}
-\newtheorem{obligation}[theorem]{Formalization obligation}
+\newsharedtheorem{definition}{Definition}
+\newsharedtheorem{algorithm}{Algorithm}
+\newsharedtheorem{example}{Example}
+\newsharedtheorem{obligation}{Formalization obligation}
 \theoremstyle{remark}
-\newtheorem{remark}[theorem]{Remark}
-\newtheorem{warning}[theorem]{Warning}
+\newsharedtheorem{remark}{Remark}
+\newsharedtheorem{warning}{Warning}
+\crefname{conjecture}{conjecture}{conjectures}
+\Crefname{conjecture}{Conjecture}{Conjectures}
 \crefname{problem}{problem}{problems}
 \Crefname{problem}{Problem}{Problems}
 \crefname{identity}{identity}{identities}
