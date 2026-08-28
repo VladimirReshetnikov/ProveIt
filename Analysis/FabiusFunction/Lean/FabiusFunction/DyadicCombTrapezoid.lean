@@ -72,8 +72,8 @@ theorem sum_symmetric_grid (hsym : ∀ x, g (1 - x) = 1 - g x)
     rw [two_mul, h1]
     nth_rewrite 1 [h2]
     rw [← Finset.sum_add_distrib, Finset.sum_congr rfl hpair,
-      Finset.sum_const, nsmul_eq_mul, mul_one, Nat.cast_sub hM,
-      Nat.cast_one]
+      Finset.sum_const, nsmul_eq_mul, mul_one, Finset.card_range,
+      Nat.cast_sub hM, Nat.cast_one]
   linarith
 
 /-- **The trapezoidal sum of a reflection-symmetric function is
