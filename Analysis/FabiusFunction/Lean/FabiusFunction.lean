@@ -17,7 +17,9 @@ import FabiusFunction.WeightedUniformSeries
 import FabiusFunction.WeightedUniformDistribution
 import FabiusFunction.WeightedUniformSupport
 import FabiusFunction.ContinuousCDF
+import FabiusFunction.AffineIndependentCopy
 import FabiusFunction.GeometricUniformLaw
+import FabiusFunction.GeometricUniformUniqueness
 import FabiusFunction.GeometricUniformCDF
 import FabiusFunction.Paper05442
 import FabiusFunction.Paper06487
