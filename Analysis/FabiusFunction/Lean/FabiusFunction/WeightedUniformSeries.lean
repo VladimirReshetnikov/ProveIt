@@ -153,6 +153,20 @@ noncomputable def weightedUniformSeries
     (w : ℕ → E) (ω : SampleSpace) : E :=
   ∑' n : ℕ, (ω n : ℝ) • w n
 
+/-- Scaling every weight scales the corresponding uniform-coordinate
+series.  The identity is total and does not require a summability
+hypothesis. -/
+theorem weightedUniformSeries_smul_weights
+    {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    (a : ℝ) (w : ℕ → E) (ω : SampleSpace) :
+    weightedUniformSeries (fun n => a • w n) ω =
+      a • weightedUniformSeries w ω := by
+  unfold weightedUniformSeries
+  rw [← tsum_const_smul'' a]
+  apply tsum_congr
+  intro n
+  rw [smul_smul, smul_smul, mul_comm]
+
 private lemma norm_coordinate_smul_le
     {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
     (u : Set.Icc (0 : ℝ) 1) (x : E) :

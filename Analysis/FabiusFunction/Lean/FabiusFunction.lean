@@ -11,6 +11,8 @@ import FabiusFunction.GeometricLagrangeQBinomial
 import FabiusFunction.GeometricLagrangeQMoments
 import FabiusFunction.LambertPhaseLockedRichardson
 import FabiusFunction.WeightedUniformSeries
+import FabiusFunction.WeightedUniformDistribution
+import FabiusFunction.GeometricUniformLaw
 import FabiusFunction.Paper05442
 import FabiusFunction.Paper06487
 import FabiusFunction.PaperFabiusAsymptotic
