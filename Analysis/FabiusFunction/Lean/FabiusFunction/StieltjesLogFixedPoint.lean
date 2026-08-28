@@ -46,9 +46,10 @@ theorem integral_inv_sub_uniform_half {c : ℝ} (hc : 2⁻¹ < c) :
       linarith
     have h2 : HasDerivAt (fun v : ℝ => c - v) (-1) u := by
       simpa using (hasDerivAt_id u).const_sub c
-    have h3 := (Real.hasDerivAt_log hpos.ne').comp u h2
+    have h3 : HasDerivAt (fun v => Real.log (c - v))
+        ((-1) / (c - u)) u := h2.log hpos.ne'
     have h4 := h3.neg
-    simpa using h4
+    simpa [neg_div] using h4
   have hint : IntervalIntegrable (fun u => (c - u)⁻¹) volume
       (-(2⁻¹ : ℝ)) (2⁻¹ : ℝ) := by
     refine ContinuousOn.intervalIntegrable fun u hu => ?_
@@ -97,18 +98,20 @@ theorem integral_inv_sub_eq_integral_log (F : BoundedFabius)
     _ = ∫ x, ∫ u, (z - (x + u))⁻¹
           ∂(volume.restrict (Icc (-(2⁻¹ : ℝ)) 2⁻¹))
           ∂((rvachevMeasure F).map (2⁻¹ * ·)) :=
-        MeasureTheory.integral_conv hint
+        MeasureTheory.integral_conv
+          (μ := (rvachevMeasure F).map (2⁻¹ * ·))
+          (ν := volume.restrict (Icc (-(2⁻¹ : ℝ)) 2⁻¹)) hint
     _ = ∫ x, Real.log ((z - x + 2⁻¹) / (z - x - 2⁻¹))
           ∂((rvachevMeasure F).map (2⁻¹ * ·)) := by
         refine integral_congr_ae ?_
         have hae : ∀ᵐ x ∂((rvachevMeasure F).map (2⁻¹ * ·)),
             x ∈ Ioo (-(2⁻¹ : ℝ)) 2⁻¹ := by
-          rw [MeasureTheory.ae_map_iff
-            (measurable_const_mul _).aemeasurable measurableSet_Ioo]
+          refine (MeasureTheory.ae_map_iff
+            (measurable_const_mul _).aemeasurable measurableSet_Ioo).mpr
+            ?_
           filter_upwards [ae_mem_Ioo_rvachevMeasure F hF] with x' hx'
           exact ⟨by linarith [hx'.1], by linarith [hx'.2]⟩
         filter_upwards [hae] with x hx
-        dsimp only
         have hc : 2⁻¹ < z - x := by
           have := hx.2
           linarith
@@ -133,7 +136,6 @@ theorem integral_inv_sub_eq_integral_log (F : BoundedFabius)
           ∂(rvachevMeasure F) := by
         refine integral_congr_ae ?_
         filter_upwards [ae_mem_Ioo_rvachevMeasure F hF] with x hx
-        dsimp only
         congr 1
         have hpos1 : 0 < z - 2⁻¹ * x - 2⁻¹ := by
           linarith [hx.2]
