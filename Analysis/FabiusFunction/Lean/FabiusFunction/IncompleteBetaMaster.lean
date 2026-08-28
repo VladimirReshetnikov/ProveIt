@@ -1,5 +1,6 @@
 import FabiusFunction.ProbabilityLaplaceMoments
 import FabiusFunction.FractionalVolterra
+import FabiusFunction.CDFLayerCake
 
 /-!
 # The incomplete-beta master formula for weighted fractional integrals
@@ -215,6 +216,7 @@ theorem fractionalVolterra_rpow_mul_fabiusReal
           ∂weightedSumDistribution := by
         refine integral_congr_ae
           (ae_weightedSumDistribution_mem_Icc.mono fun z hz => ?_)
+        dsimp only
         rw [max_eq_left hz.1]
         have hc0 : (0 : ℝ) ≤ min z x := le_min hz.1 hx.le
         have hcx : min z x ≤ x := min_le_right z x
