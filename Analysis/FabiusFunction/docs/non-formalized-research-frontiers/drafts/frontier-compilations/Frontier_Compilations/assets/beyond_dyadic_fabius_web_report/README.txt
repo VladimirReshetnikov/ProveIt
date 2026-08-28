@@ -71,5 +71,5 @@ Quality-control record
 ----------------------
 Before consolidation, the standalone PDF was compiled with pdfTeX/latexmk,
 checked for unresolved references, opened with PyMuPDF, and rendered
-page-by-page at 180 dpi. All 30 pages were visually reviewed; no clipping,
+page-by-page at 180 dpi. All 31 pages were visually reviewed; no clipping,
 overlap, or broken glyph was found.
