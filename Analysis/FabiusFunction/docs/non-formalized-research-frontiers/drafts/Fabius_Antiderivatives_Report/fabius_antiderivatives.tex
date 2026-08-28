@@ -240,6 +240,20 @@ kernel with literal repeated application of the first primitive.  Thus the
 formal result is not confined to the scalar Fabius case or to ordered
 endpoints.
 
+The same module now has a generic affine and basepoint calculus with arbitrary
+real normed targets, focused-build verified at compiled checkpoint
+\texttt{e109088ed}.  The division-free forward form
+\path{normalizedVolterra_affine} holds for every real scale \(c\), including
+\(c=0\) and negative \(c\), while the inverse form
+\path{normalizedVolterra_comp_affine} assumes \(c\ne0\).
+\path{normalizedVolterra_basepoint_shift} assumes interval integrability
+only on the local pieces from \(a\) to \(b\) and from \(b\) to \(x\), imposes
+no order on \(a,b,x\), and includes \(n=0\).  Its zero-tail specialization
+\path{normalizedVolterra_succ_eq_taylor_of_eq_zero} retains only integrability
+from \(a\) to \(b\), is for positive order, and assumes vanishing on
+the open unoriented interval between \(b\) and \(x\); it requires neither
+endpoint order nor endpoint values.
+
 \begin{longtable}{@{}p{0.34\textwidth}p{0.60\textwidth}@{}}
 \toprule
 Mathematical content & Exact Lean declaration and module\\
@@ -252,6 +266,14 @@ Mathematical content & Exact Lean declaration and module\\
 Normalized kernel and literal-iteration bridge&
 \path{normalizedVolterra}, \path{iteratedPrimitive}, and
 \path{iteratedPrimitive_eq_normalizedVolterra} in
+\path{FabiusFunction.NormalizedVolterra}.\\[1mm]
+Affine covariance for all real scales, and its nonzero-scale inverse&
+\path{normalizedVolterra_affine} and
+\path{normalizedVolterra_comp_affine} in
+\path{FabiusFunction.NormalizedVolterra}.\\[1mm]
+Local basepoint shift and positive-order open-interval zero-tail Taylor jet&
+\path{normalizedVolterra_basepoint_shift} and
+\path{normalizedVolterra_succ_eq_taylor_of_eq_zero} in
 \path{FabiusFunction.NormalizedVolterra}.\\[1mm]
 Kernel raising and arbitrary finite polynomial weights&
 \path{normalizedVolterra_kernel_pow},
@@ -279,6 +301,10 @@ derivatives and rising factorials, so the order-zero identity and all endpoint
 degeneracies require no side conditions.  The Fabius specializations likewise
 include order zero.  For the bounded function the proved dyadic formula holds
 on \(( -\infty,1]\), not merely on \([0,1]\).
+
+The affine and basepoint theorems above are general operator identities.  They
+do not themselves calculate explicit Fabius or Rvachev-up coefficients, and
+they do not assemble any of the report's piecewise formulas.
 
 No claim of this update extends to the infinite complex-power
 Newton--Volterra series or its normal convergence, the Mellin/Newton and
@@ -1805,11 +1831,15 @@ must still be controlled.
 The following directions appear especially promising.
 \begin{enumerate}
 \item \textbf{Lean formalization.}  The reusable first wave is complete:
-\path{FabiusFunction.NormalizedVolterra} supplies the Banach-valued operator,
-the literal-iteration bridge, and the finite polynomial/monomial commutators;
+\path{FabiusFunction.NormalizedVolterra} supplies the real-normed-space operator,
+affine covariance for every real scale (with the inverse form restricted to
+nonzero scale), local basepoint shifts, open-tail Taylor jets, and the finite
+polynomial/monomial commutators; its literal-iteration/FTC bridge uses a Banach target;
 \path{FabiusFunction.FabiusAntiderivatives} supplies the signed and bounded
-integer ladders and their natural-monomial consequences.  The next finite
-targets are the exterior \(x>1\) branch and matching jets in
+integer ladders and their natural-monomial consequences.  The new generic
+transport and jet identities do not themselves give the explicit Fabius/up
+coefficients or piecewise assembly.  The next finite targets are the exterior
+\(x>1\) branch and matching jets in
 \eqref{eq:global-Hnp}, followed independently by the inverse identity
 \eqref{eq:inverse-first}.  The normal-convergence proof of
 \eqref{eq:master-alpha-n}, its Mellin consequences, and fractional order form
@@ -1868,6 +1898,17 @@ Object & Exact formula, leading result, and current Lean status\\
 Object & Exact formula, leading result, and current Lean status\\
 \midrule
 \endhead
+Generic affine covariance&
+\path{normalizedVolterra_affine} is a Lean-formalized forward identity for
+arbitrary real normed targets and every \(c\in\R\), including zero and negative scales;
+\path{normalizedVolterra_comp_affine} assumes \(c\ne0\).\\[1mm]
+Generic basepoint and zero-tail calculus&
+\path{normalizedVolterra_basepoint_shift} is Lean formalized with local
+interval integrability on \(a\) to \(b\) and \(b\) to \(x\), no endpoint order,
+and \(n=0\) included.  The zero-tail theorem retains only integrability from
+\(a\) to \(b\), is positive-order, and assumes vanishing on
+the open unoriented interval between \(b\) and \(x\), with no endpoint order
+or endpoint-value condition.\\[1mm]
 Generic polynomial weight&
 Finite Hasse-derivative formula \eqref{eq:polynomial-commutator}; Lean
 formalized for normed-space-valued inputs, arbitrary base and endpoint, and
@@ -1971,9 +2012,11 @@ endpoint asymptotics, but not \eqref{eq:inverse-first},
 treats exponent sequences, sinc products, Prouhet cancellation, and
 q-Richardson reconstruction, not \eqref{eq:moment-newton}.  These are
 snapshot-relative source-document comparisons.  The later Lean modules listed
-in the status crosswalk now formalize the integer Volterra core, while the
-complex, fractional, Mellin, folded, inverse, and exterior-piecewise claims
-remain outside that formalized core.
+in the status crosswalk now formalize the integer Volterra core together with
+generic affine transport, local basepoint shifts, and positive-order open-tail
+Taylor jets.  Those generic declarations do not supply explicit Fabius/up
+coefficients or piecewise assembly; the complex, fractional, Mellin, folded,
+inverse, and exterior-piecewise claims remain outside the formalized core.
 
 \section{Exact initial values and sample antiderivatives}
 

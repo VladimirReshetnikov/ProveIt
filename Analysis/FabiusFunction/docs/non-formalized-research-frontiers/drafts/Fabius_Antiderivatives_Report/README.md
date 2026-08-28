@@ -23,10 +23,25 @@ not alter the snapshot-relative novelty audit.
 
 The machine-checked integer core consists of the normalized Volterra operator,
 its equality with literal repeated integration for continuous Banach-valued
-inputs, the arbitrary finite polynomial and natural-monomial commutators, the
-signed Fabius primitive ladder at every real endpoint, and the bounded Fabius
-ladder and finite natural-monomial formulas on the full range `x ≤ 1`. These
-results include order zero and oriented endpoints.
+inputs, affine covariance, local basepoint and zero-tail Taylor-jet identities,
+the arbitrary finite polynomial and natural-monomial commutators, the signed
+Fabius primitive ladder at every real endpoint, and the bounded Fabius ladder
+and finite natural-monomial formulas on the full range `x ≤ 1`.
+The four affine/basepoint declarations below were focused-build verified at
+compiled checkpoint `e109088ed`.
+
+The generic affine and basepoint declarations have the following exact scope.
+The forward form `normalizedVolterra_affine` is valid for an arbitrary real
+normed target and every real scale `c`, including `c = 0` and negative `c`;
+`normalizedVolterra_comp_affine` is the inverse form and assumes `c ≠ 0`.
+`normalizedVolterra_basepoint_shift` assumes only interval integrability on
+the two local pieces from `a` to `b` and from `b` to `x`, requires no ordering
+of those endpoints, and includes `n = 0`.
+`normalizedVolterra_succ_eq_taylor_of_eq_zero` retains only integrability from
+`a` to `b` and is the positive-order result when the input vanishes on
+`uIoo b x`; it requires no endpoint order or endpoint values. These general
+operator identities do not themselves provide explicit Fabius/up coefficients
+or assemble a piecewise formula.
 
 The report also develops an absolutely and locally uniformly convergent
 Newton–Volterra series for arbitrary complex powers, negative-power and
@@ -46,6 +61,10 @@ supplies a Lean counterpart.
 - `FabiusFunction.NormalizedVolterra`
   - `normalizedVolterra`
   - `iteratedPrimitive_eq_normalizedVolterra`
+  - `normalizedVolterra_affine`
+  - `normalizedVolterra_comp_affine`
+  - `normalizedVolterra_basepoint_shift`
+  - `normalizedVolterra_succ_eq_taylor_of_eq_zero`
   - `normalizedVolterra_kernel_pow`
   - `normalizedVolterra_polynomial`
   - `normalizedVolterra_monomial`

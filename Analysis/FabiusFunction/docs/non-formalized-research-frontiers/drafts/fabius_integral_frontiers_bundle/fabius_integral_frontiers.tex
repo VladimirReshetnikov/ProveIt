@@ -205,6 +205,59 @@ FFT inversion of the infinite sinc product \\
 \bottomrule
 \end{longtable}
 
+\subsection{Current Lean crosswalk for the normalized Volterra layer}
+
+The proof labels above record the status of the report's mathematical arguments.  A later
+implementation checkpoint now verifies the reusable operator layer: the declarations below
+are present at compiled Lean commit \texttt{e109088ed}, verified by a focused build.  Put
+\begin{equation}
+ \mathsf J_{n,a}f(x):=
+ \begin{cases}
+ f(x),&n=0,\\[1mm]
+ \displaystyle\frac1{(n-1)!}\int_a^x(x-t)^{n-1}f(t)\,\dd t,&n>0.
+ \end{cases}                                                \label{eq:lean-volterra-current}
+\end{equation}
+The exact declarations in \path{FabiusFunction.NormalizedVolterra} are:
+\begin{itemize}
+\item \path{normalizedVolterra_affine}, the division-free identity
+\begin{equation}
+ \mathsf J_{n,ca+d}f(cx+d)
+ =c^n\mathsf J_{n,a}\bigl(t\mapsto f(ct+d)\bigr)(x),          \label{eq:lean-affine-current}
+\end{equation}
+for every real \(c\), including \(c=0\) and negative scales, and including \(n=0\).  It
+requires neither integrability nor completeness and works in any real normed target;
+\item \path{normalizedVolterra_comp_affine}, the inverse-smul form
+\begin{equation}
+ \mathsf J_{n,a}\bigl(t\mapsto f(ct+d)\bigr)(x)
+ =(c^n)^{-1}\mathsf J_{n,ca+d}f(cx+d),\qquad c\ne0,           \label{eq:lean-comp-affine-current}
+\end{equation}
+whose nonzero-scale hypothesis is required by the division;
+\item \path{normalizedVolterra_basepoint_shift}, which, under interval integrability from
+\(a\) to \(b\) and from \(b\) to \(x\), proves
+\begin{equation}
+ \mathsf J_{n,a}f(x)=\mathsf J_{n,b}f(x)
+ +\sum_{k=0}^{n-1}\frac{(x-b)^k}{k!}\mathsf J_{n-k,a}f(b).    \label{eq:lean-basepoint-current}
+\end{equation}
+There is no ordering hypothesis on \(a,b,x\), and \(n=0\) is included;
+\item \path{normalizedVolterra_succ_eq_taylor_of_eq_zero}, which assumes integrability only
+from \(a\) to \(b\) and vanishing of \(f\) on the open unoriented interval between \(b\) and
+\(x\), and proves
+\begin{equation}
+ \mathsf J_{n+1,a}f(x)
+ =\sum_{k=0}^{n}\frac{(x-b)^k}{k!}\mathsf J_{n+1-k,a}f(b).    \label{eq:lean-zero-tail-current}
+\end{equation}
+It imposes neither endpoint values nor endpoint order; when \(b=x\), the vanishing condition
+is vacuous.
+\end{itemize}
+Accordingly, the generic assertion that a positive-order Volterra primitive becomes a finite
+Taylor polynomial after the input vanishes is Lean formalized.  Separately,
+\path{normalizedVolterra_pow_mul_extendedFabius} and
+\path{normalizedVolterra_pow_mul_fabiusReal_of_le_one} formalize the signed-global and
+bounded-\(F\) natural-monomial coefficients, the latter on \(x\le1\).  The generic operator
+theorem alone does not identify the displayed \(1-F\), shifted-\(\upf\), or exterior
+piecewise moment coefficients; those report-specific evaluations retain their existing
+paper-proof status.
+
 \section{Normalization and structural identities}
 
 \subsection{The three related functions}
@@ -342,17 +395,20 @@ For \(0\le x\le1\),
  \mathrm D^{-n}(1-F(x))
  =(-1)^nA_nF\!\left(\frac{1-x}{2^n}\right)+P_{n-1}(x).   \label{eq:one-minus-F}
 \end{equation}
-More generally, on every interval where the relevant global branch is fixed,
+More generally, for \(a\ne0\), on every interval where the relevant global branch is fixed,
 \begin{equation}
  \mathrm D^{-n}F(ax+b)
  =a^{-n}A_n\FF\!\left(\frac{ax+b}{2^n}\right)+P_{n-1}(x). \label{eq:affine-primitive}
 \end{equation}
+The condition \(a\ne0\) is required by this inverse-scaled formula.  It is distinct from the
+division-free forward covariance \eqref{eq:lean-affine-current}, which remains valid when the
+scale is zero.
 \end{corollary}
 
 \begin{proof}
 For \eqref{eq:up-local-primitive}, differentiating the right side \(n\) times gives
 \(\FF(x+1)=\upf(x)\) on \([-1,1]\).  Formula \eqref{eq:one-minus-F} follows from
-\(1-F(x)=F(1-x)\).  The affine formula is the chain rule.
+\(1-F(x)=F(1-x)\).  The affine formula is the chain rule for \(a\ne0\).
 \end{proof}
 
 \subsection{Global causal primitives of \(\upf\)}
@@ -385,6 +441,18 @@ with the upper limit understood as \(\min(x,1)\) once \(x>1\).  Then
 Only the last branch needs comment.  Expand \((x-t)^{n-1}\); odd moments vanish by
 evenness of \(\upf\), and the even moments are \(c_j\).
 \end{proof}
+
+\begin{remark}[Formal status of the zero tail]
+At compiled checkpoint \texttt{e109088ed}, the declaration
+\begin{center}
+\path{normalizedVolterra_succ_eq_taylor_of_eq_zero}
+\end{center}
+formally supplies the generic finite Taylor polynomial once the integrand vanishes beyond
+the support.  It does not by itself prove the explicit \(c_j\)-coefficient identification in
+\eqref{eq:up-causal-piecewise}, nor the analogous displayed \(F\)- or
+\(\upf\)-specific coefficients; those specializations remain at the report's paper-proof
+status.
+\end{remark}
 
 \subsection{Definite dyadic integrals become exact arithmetic}
 
@@ -1212,8 +1280,8 @@ For \(n=1\), the value is \(\Phi(1)-\Phi(0)\).  The first nontrivial examples ar
  \int_0^1\bigl(\Phi'''(F)F'^3+3\Phi''(F)F'F''
    +\Phi'(F)F'''\bigr)\dd x&=0.                           \label{eq:Bell-n3}
 \end{align}
-After substituting \eqref{eq:derivative-orbit}, these become exact multiscale integral
-relations among the scales \(2x,4x,8x,\ldots\) of \(\FF\).  Bell and Bernoulli
+After substituting \eqref{eq:derivative-orbit}, these give exact multiscale relations among
+the \(\FF\)-scales \(2x,4x,8x,\ldots\).  Bell and Bernoulli
 polynomial weights can be inserted for \(\Phi\), creating a systematic family tied
 directly to the repository's existing polynomial machinery.
 
@@ -1523,10 +1591,15 @@ The integer relation \(\mathcal R(0)+2\mathcal R(1)=1\) is the first boundary da
 
 \subsection{Formalization roadmap}
 
-The most Lean-ready statements are algebraic or measure-theoretic:
+At compiled checkpoint \texttt{e109088ed}, the generic affine, base-point-change, and
+zero-tail polynomial calculus in
+\cref{eq:lean-affine-current,eq:lean-comp-affine-current,eq:lean-basepoint-current,eq:lean-zero-tail-current}
+is no longer a roadmap item, and the signed-global and bounded-\(F\) natural-monomial
+coefficients are formalized separately.  The remaining Lean-ready work is more narrowly:
 \begin{enumerate}
-  \item the primitive ladder, by induction from the existing derivative theorem;
-  \item the finite polynomial-weight formula, by differentiation and Pascal identities;
+  \item add narrowly packaged specializations for the report's \(1-F\), shifted-\(\upf\),
+        and exterior piecewise moment-coefficient formulas, without reproving the generic
+        Volterra layer or the already formalized signed/bounded \(F\) cases;
   \item the inverse primitive, by change of variables and integration by parts;
   \item the pushforward theorem, by a finite block partition and Thue--Morse balance;
   \item the inverse \(L^p\) identity and divergence threshold;
@@ -1555,7 +1628,8 @@ fractional self-similarity.
 
 These results open a coherent frontier joining antiderivatives, quantiles, integral
 transforms, dyadic arithmetic, Thue--Morse signs, Bell polynomials, and Lambert--\(W\)
-asymptotics.  They also isolate several compact statements suitable for formal proof.
+asymptotics.  The remaining formal targets are the report-specific and analytic statements
+not covered by the compiled generic Volterra layer.
 
 \appendix
 \section{Corpus map used in the audit}

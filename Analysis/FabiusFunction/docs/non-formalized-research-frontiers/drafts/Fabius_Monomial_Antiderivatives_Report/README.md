@@ -17,10 +17,18 @@ the original statements:
   endpoints, and every natural order, including order zero.
 - `iteratedPrimitive_eq_normalizedVolterra` identifies literal repeated
   integration with the normalized kernel for continuous Banach-valued inputs.
-  The same
-  module proves the generic finite commutators
+  The same module proves the generic finite commutators
   `normalizedVolterra_polynomial` and `normalizedVolterra_monomial`; these need
   only interval integrability of the input.
+- The forward affine theorem `normalizedVolterra_affine` has an arbitrary real
+  normed target and every real scale `c`, including `c = 0` and negative `c`.
+  Its inverse form `normalizedVolterra_comp_affine` assumes exactly `c ≠ 0`.
+- `normalizedVolterra_basepoint_shift` assumes only interval integrability on
+  the local pieces from `a` to `b` and from `b` to `x`, requires no endpoint
+  order, and includes `n = 0`. The positive-order theorem
+  `normalizedVolterra_succ_eq_taylor_of_eq_zero` retains only integrability
+  from `a` to `b`, assumes that the input vanishes on `uIoo b x`, and is for
+  positive order with no endpoint order or endpoint-value condition.
 - `FabiusFunction.FabiusAntiderivatives` proves the global signed ladder
   `normalizedVolterra_extendedFabius` and its finite natural-monomial formula
   `normalizedVolterra_pow_mul_extendedFabius` for every real endpoint.
@@ -28,6 +36,10 @@ the original statements:
   initial half-line `x <= 1`, not just `[0,1]`. The declarations are
   `normalizedVolterra_fabiusReal_of_le_one` and
   `normalizedVolterra_pow_mul_fabiusReal_of_le_one`.
+
+The four generic affine/basepoint declarations do not themselves compute
+explicit Fabius/up coefficients or assemble the report's piecewise formulas.
+They were focused-build verified at compiled checkpoint `e109088ed`.
 
 Everything beyond that natural-order finite core remains a research frontier
 in this report: complex powers and their convergence/remainder estimates,

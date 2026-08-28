@@ -185,7 +185,17 @@ order zero.  For continuous Banach-valued inputs,
 with the Cauchy kernel; without a completeness assumption,
 \decl{normalizedVolterra_polynomial} and
 \decl{normalizedVolterra_monomial} prove the finite polynomial and
-natural-monomial commutators.  The
+natural-monomial commutators.  Also for arbitrary real normed targets, the
+forward form \decl{normalizedVolterra_affine} covers every real scale \(c\), including
+\(c=0\) and negative \(c\), while its inverse form
+\decl{normalizedVolterra_comp_affine} assumes \(c\ne0\).
+\decl{normalizedVolterra_basepoint_shift} needs interval integrability only
+from \(a\) to \(b\) and from \(b\) to \(x\), has no endpoint-order hypothesis,
+and includes \(n=0\).
+\decl{normalizedVolterra_succ_eq_taylor_of_eq_zero} retains only integrability
+from \(a\) to \(b\), is positive-order, and assumes vanishing on
+the open unoriented interval between \(b\) and \(x\), with neither endpoint
+order nor endpoint values.  The
 module \decl{FabiusFunction.FabiusAntiderivatives} proves the signed global
 ladder and monomial formula in
 \decl{normalizedVolterra_extendedFabius} and
@@ -193,6 +203,11 @@ ladder and monomial formula in
 \decl{normalizedVolterra_fabiusReal_of_le_one} and
 \decl{normalizedVolterra_pow_mul_fabiusReal_of_le_one} hold on the proved
 initial half-line $x\le1$, not merely on $[0,1]$.
+
+These four new declarations are generic transport and finite Taylor-jet
+identities.  They do not themselves compute explicit Fabius/up coefficients
+or assemble piecewise formulas.  They were focused-build verified at compiled
+checkpoint \texttt{e109088ed}.
 
 No Lean formalization is claimed here for the complex-power series or its
 convergence and remainder estimates, the logarithmic and Mellin consequences,
@@ -512,7 +527,9 @@ $x\ge1$, whereas $\mathcal F$ continues in alternating compact blocks.
 The Lean theorems cover the bounded formulas through $x\le1$ and the signed
 formulas globally.  The elementary bounded continuation
 \eqref{eq:Ip-outside} for $x>1$ has not been packaged as a theorem in this
-antiderivative layer.  Nor have the later complex-power convergence theorem,
+antiderivative layer.  Generic affine transport, basepoint shifts, and
+open-interval zero-tail Taylor jets are formalized, but they do not supply its
+explicit Fabius coefficients or its piecewise assembly.  Nor have the later complex-power convergence theorem,
 Mellin continuation, fractional-index constructions, Rvachev primitive
 formulas, or inverse-function reductions been formalized.  They remain
 frontier mathematics even where this report gives an analytic proof.
@@ -1469,7 +1486,10 @@ The following projects are concrete and separable.
 \begin{enumerate}
 \item \textbf{Lean continuation.}  The natural-order primitive ladder and the
 finite polynomial/monomial commutators are complete, including their stronger
-Banach-valued Volterra forms.  The next boundary is the complex series, which
+real-normed-target Volterra forms, affine covariance, and local
+basepoint/zero-tail Taylor-jet calculus.  These generic results do not supply
+explicit Fabius/up coefficients or piecewise assembly.  The next analytic
+boundary is the complex series, which
 requires an effective flatness lemma, a falling-factorial derivative library,
 and a uniform remainder theorem.
 \item \textbf{Certified fractional evaluation.}  Combine the exact rational recurrence \eqref{eq:V-recurrence} with an
@@ -1526,6 +1546,21 @@ oriented endpoints, including order zero. \\
 Semigroup law, strict FTC ladder, and equality of literal iteration with the
 kernel formula for continuous inputs. \\
 \decl{FabiusFunction.NormalizedVolterra} &
+\decl{normalizedVolterra_affine},
+\decl{normalizedVolterra_comp_affine} &
+Forward affine covariance for arbitrary real normed targets and every real
+\(c\), including zero and negative scales; the inverse form assumes
+\(c\ne0\). \\
+\decl{FabiusFunction.NormalizedVolterra} &
+\decl{normalizedVolterra_basepoint_shift} &
+Basepoint shift with interval integrability only from \(a\) to \(b\) and from
+\(b\) to \(x\), no endpoint order, and every order including \(n=0\). \\
+\decl{FabiusFunction.NormalizedVolterra} &
+\decl{normalizedVolterra_succ_eq_taylor_of_eq_zero} &
+Positive-order Taylor jet with integrability only from \(a\) to \(b\) and
+vanishing on the open unoriented interval between \(b\) and \(x\); neither
+endpoint order nor endpoint values are constrained. \\
+\decl{FabiusFunction.NormalizedVolterra} &
 \decl{normalizedVolterra_kernel_pow} &
 All-order kernel raising with the exact rising-factorial coefficient. \\
 \decl{FabiusFunction.NormalizedVolterra} &
@@ -1559,8 +1594,10 @@ Finite natural-monomial formula for the bounded function when $x\le1$. \\
 \endgroup
 
 Thus the former placeholder declarations for the integer ladder and finite
-polynomial weights are retired.  The remaining obligations are genuinely
-analytic or nonlinear:
+polynomial weights are retired.  The generic affine and basepoint declarations
+do not calculate explicit Fabius/up coefficients or assemble report-specific
+piecewise branches.  The remaining obligations are analytic, nonlinear, or
+explicit piecewise specializations:
 \begin{itemize}
 \item the complex-power series \eqref{eq:complex-series}, including absolute
 and compact-local uniform convergence and a formal remainder bound;

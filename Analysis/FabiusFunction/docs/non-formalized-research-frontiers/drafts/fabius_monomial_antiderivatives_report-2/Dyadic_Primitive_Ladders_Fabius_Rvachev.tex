@@ -198,9 +198,9 @@ statistics of independent Fabius random variables.
 
 Exact reciprocal-dyadic formulae, Thue--Morse and $q$-binomial substitutions, numerical
 experiments, a negative-power tail model driven by the proved log-periodic endpoint
-asymptotic, conjectures, and a Lean formalization plan complete the report.  All statements
-are labeled as inherited, proved here, numerical, or conjectural.  Priority outside the
-pinned corpus is not asserted.
+asymptotic, conjectures, a current Lean crosswalk, and a narrowed formalization plan complete
+the report.  All statements are labeled as inherited, proved here, numerical, or
+conjectural.  Priority outside the pinned corpus is not asserted.
 \end{abstract}
 
 \tableofcontents
@@ -247,8 +247,8 @@ The report uses four statuses.
 \toprule
 Inherited & A theorem or definition already present in the pinned corpus, usually with a
 matching Lean declaration.\\
-Proved here & A complete paper proof is supplied below from inherited facts.  It is not yet
-claimed to be formalized.\\
+Proved here & A complete paper proof is supplied below from inherited facts.  It is not
+claimed to be formalized unless a later source-status note names an exact Lean declaration.\\
 Numerical & A reproducible finite-precision or exact-rational experiment in the accompanying
 Python program.\\
 Conjectural & A statement suggested by the proved structure and experiments, with the missing
@@ -256,6 +256,60 @@ analytic step identified.\\
 \bottomrule
 \end{tabularx}
 \end{center}
+
+\subsection{Current Lean crosswalk for the normalized Volterra layer}
+
+The novelty audit above remains pinned to the source snapshot on the title page.  The
+following implementation-status note is later: the declarations listed here are present at
+the compiled Lean checkpoint \texttt{e109088ed}, verified by a focused build.  Write
+\begin{equation}
+ \mathsf J_{n,a}f(x):=
+ \begin{cases}
+ f(x),&n=0,\\[1mm]
+ \displaystyle\frac1{(n-1)!}\int_a^x(x-t)^{n-1}f(t)\,\dd t,&n>0.
+ \end{cases}                                                \label{eq:lean-volterra-crosswalk}
+\end{equation}
+In \path{FabiusFunction.NormalizedVolterra}, the exact crosswalk is as follows.
+\begin{itemize}
+\item \path{normalizedVolterra_affine} is the division-free forward identity
+\begin{equation}
+ \mathsf J_{n,ca+d}f(cx+d)
+ =c^n\mathsf J_{n,a}\bigl(t\mapsto f(ct+d)\bigr)(x).          \label{eq:lean-affine-forward}
+\end{equation}
+It holds for every real $c$, including $c=0$ and negative $c$, and includes $n=0$.
+It has no integrability or completeness hypothesis and permits any real normed target.
+\item \path{normalizedVolterra_comp_affine} is the inverse-smul form
+\begin{equation}
+ \mathsf J_{n,a}\bigl(t\mapsto f(ct+d)\bigr)(x)
+ =(c^n)^{-1}\mathsf J_{n,ca+d}f(cx+d),\qquad c\ne0.           \label{eq:lean-affine-inverse}
+\end{equation}
+The nonzero-scale hypothesis is essential to this divided form.
+\item \path{normalizedVolterra_basepoint_shift} states, assuming interval integrability of
+$f$ from $a$ to $b$ and from $b$ to $x$,
+\begin{equation}
+ \mathsf J_{n,a}f(x)=\mathsf J_{n,b}f(x)
+ +\sum_{k=0}^{n-1}\frac{(x-b)^k}{k!}\mathsf J_{n-k,a}f(b).    \label{eq:lean-basepoint-shift}
+\end{equation}
+No ordering of $a,b,x$ is imposed; at $n=0$ the sum is empty and the identity remains
+valid.
+\item \path{normalizedVolterra_succ_eq_taylor_of_eq_zero} states that if $f$ is interval
+integrable from $a$ to $b$ and vanishes on the open unoriented interval between $b$
+and $x$, then
+\begin{equation}
+ \mathsf J_{n+1,a}f(x)
+ =\sum_{k=0}^{n}\frac{(x-b)^k}{k!}\mathsf J_{n+1-k,a}f(b).    \label{eq:lean-zero-tail}
+\end{equation}
+No endpoint values or endpoint ordering are required, and the vanishing hypothesis is
+vacuous when $b=x$.
+\end{itemize}
+Thus the generic positive-order zero-tail assertion---the fact that a Volterra primitive is
+a finite Taylor polynomial after the input vanishes---is formally verified.  This generic
+result does not by itself identify report-specific coefficients.  Separately,
+\path{normalizedVolterra_pow_mul_extendedFabius} and
+\path{normalizedVolterra_pow_mul_fabiusReal_of_le_one} already formalize the signed-global
+and bounded-$F$ natural-monomial coefficients (the latter on $x\le1$).  The survival,
+shifted-\(\Up\), and exterior piecewise moment specializations displayed later retain the
+paper-level status assigned in this report.
 
 \subsection{Main new theorem package}
 
@@ -487,10 +541,11 @@ The first cases are strikingly compact:
  \int x^2F(x)\,\dd x
  &=x^2F(x/2)-4xF(x/4)+16F(x/8)+C,                             \label{eq:example-p2}\\
  \int x^3F(x)\,\dd x
- &=x^3F(x/2)-6x^2F(x/4)+48xF(x/8)-512F(x/16)+C.               \label{eq:example-p3}
+ &=x^3F(x/2)-6x^2F(x/4)+48xF(x/8)-384F(x/16)+C.               \label{eq:example-p3}
 \end{align}
-The powers $1,2,16,512,\ldots$ are $2^{\binom{k+1}{2}}$, not a geometric sequence; the
-triangular exponent is forced by iterating the dilation derivative.
+The dyadic factors $1,2,8,64,\ldots$ are $2^{\binom{k+1}{2}}$, not a geometric sequence;
+the triangular exponent is forced by iterating the dilation derivative (the displayed
+coefficients also contain the falling-factorial factors).
 
 \begin{remark}[General $n$th antiderivative]
 Formula \eqref{eq:monomial-nfold} is the unique $n$th antiderivative whose first $n$ Taylor
@@ -1572,16 +1627,22 @@ promising:
 Such an algorithm would return certified enclosures for $M(-a)$, $D(-a)$, and inverse
 negative moments, not merely high-precision decimal approximations.
 
-\section{Lean formalization roadmap}
+\section{Remaining Lean formalization roadmap}
 \label{sec:lean}
 
-The exact algebra is unusually formalization-friendly.  A sensible dependency order is:
+At compiled checkpoint \texttt{e109088ed}, the generic affine, base-point-change, and
+zero-tail Taylor-jet calculus is already covered by the four declarations in
+\cref{eq:lean-affine-forward,eq:lean-affine-inverse,eq:lean-basepoint-shift,eq:lean-zero-tail}.
+In particular, the generic polynomial shape after leaving the support is no longer a
+roadmap item, and the signed-global and bounded-$F$ natural-monomial coefficients are
+already formalized separately.  Identifying the remaining survival, folded-\(\Up\), and
+exterior piecewise coefficients is a distinct specialization.  The remaining work can
+therefore be narrowed to:
 
 \begin{enumerate}
-\item define $J_m$ from the existing signed extension and prove $J_{m+1}'=J_m$;
-\item identify $J_m$ with the iterated interval integral on $[0,1]$;
-\item prove \eqref{eq:poly-primitive} by polynomial induction or finite telescoping;
-\item specialize to monomials and derive the reciprocal-dyadic rational theorem;
+\item add narrowly packaged specializations for the report's survival, shifted $\Up$, and
+      exterior piecewise coefficient formulas, without reproving the generic Volterra
+      algebra or the already formalized signed/bounded $F$ cases;
 \item establish \cref{lem:J-bound} using the probability measure already present in the
       development;
 \item prove normal convergence of \eqref{eq:fractional-series} on compact exponent sets;
@@ -1594,10 +1655,11 @@ The exact algebra is unusually formalization-friendly.  A sensible dependency or
 \item add order-statistic formulations after the nonlinear hierarchy has a stable API.
 \end{enumerate}
 
-The only analytically substantial step is local normal convergence in $\alpha$.  It can be
+The principal analytically substantial step is local normal convergence in $\alpha$.  It can be
 reduced to the already formalized flatness estimates plus a standard compact bound on
-$\binom\alpha k$.  The integer polynomial theorem and inverse identity require no new deep
-analysis.
+$\binom\alpha k$.  The generic integer polynomial and zero-tail algebra is already in Lean;
+the remaining report-specific coefficient identifications and the inverse identity require
+no new deep analysis.
 
 \section{Conclusion}
 \label{sec:conclusion}
@@ -1619,9 +1681,10 @@ area-under-an-inverse formula closed by $F(Q/2)$.  New nonlinear objects first a
 higher inverse order, where powers of $F$ encode order statistics.
 
 The most concrete next results are a rigorous log-periodic tail theorem, a dyadic functional
-system for $H_{\beta,j}$, and Lean formalization of the primitive ladder and exponent-Newton
-duality.  These are narrow enough to attack directly and broad enough to connect the exact
-integral calculus back to the main arithmetic and asymptotic architecture of the repository.
+system for $H_{\beta,j}$, and Lean formalization of the still-open exponent--Newton duality
+and report-specific coefficient crosswalk beyond the generic Volterra layer.  These are
+narrow enough to attack directly and broad enough to connect the exact integral calculus
+back to the main arithmetic and asymptotic architecture of the repository.
 
 \appendix
 
@@ -1808,8 +1871,10 @@ No. & Path relative to \path{Analysis/FabiusFunction/docs/}\\
 From the extracted archive directory:
 \begin{lstlisting}[style=python]
 python fabius_integrals_experiments.py --output-dir .
-latexmk -pdf -interaction=nonstopmode \
-  Dyadic_Primitive_Ladders_Fabius_Rvachev.tex
+pdflatex -interaction=nonstopmode -halt-on-error Dyadic_Primitive_Ladders_Fabius_Rvachev.tex
+pdflatex -interaction=nonstopmode -halt-on-error Dyadic_Primitive_Ladders_Fabius_Rvachev.tex
+pdflatex -interaction=nonstopmode -halt-on-error Dyadic_Primitive_Ladders_Fabius_Rvachev.tex
+rm -f *.aux *.log *.out *.toc
 \end{lstlisting}
 
 The program generates:

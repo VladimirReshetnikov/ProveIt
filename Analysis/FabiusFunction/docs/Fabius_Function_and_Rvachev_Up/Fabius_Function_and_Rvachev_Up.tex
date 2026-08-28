@@ -123,7 +123,7 @@
 \small Vladimir Reshetnikov's \texttt{ProveIt} repository}
 \date{Integrated repository snapshot: 27 August 2026\\
 \small mainline snapshot \nolinkurl{8e7aa582661f2828302f70748efe20d02d8ae9c7};
-Volterra addendum \nolinkurl{3da579387}}
+Volterra addenda \nolinkurl{3da579387}, \nolinkurl{e109088ed}}
 
 \begin{document}
 \maketitle
@@ -2030,6 +2030,20 @@ imposed.  These are \lean{normalizedVolterra_zero} and
 \lean{normalizedVolterra_succ}, built from the definition
 \lean{normalizedVolterra} in \path{NormalizedVolterra.lean}.
 
+The normalization is exactly covariant under every real affine map
+\(A(t)=ct+d\):
+\begin{align}
+ \mathsf J_{n,ca+d}f(cx+d)
+ &=c^n\mathsf J_{n,a}(f\circ A)(x),                     \label{eq:volterra-affine}\\
+ \mathsf J_{n,a}(f\circ A)(x)
+ &=(c^n)^{-1}\mathsf J_{n,ca+d}f(cx+d)
+ \qquad(c\ne0).                                        \label{eq:volterra-comp-affine}
+\end{align}
+The first, division-free form includes negative scales, whose sign is handled by the
+oriented integral, and even \(c=0\); it also includes order zero.  Neither form assumes
+integrability or completeness.  They are \lean{normalizedVolterra_affine} and
+\lean{normalizedVolterra_comp_affine}.
+
 There is also a literal operator-theoretic construction.  Put
 \[
  (\mathsf V_a f)(x):=\int_a^x f(t)\dd t,
@@ -2073,6 +2087,35 @@ The transported kernel-level statements are
 \lean{normalizedVolterra_add}: for continuous inputs, the canonical kernels themselves are
 \(C^n\), lose one Volterra order under differentiation, and compose by addition of
 their orders.
+
+Changing the base point also has an exact finite form.  If \(f\) is interval integrable
+on the two oriented pieces from \(a\) to \(b\) and from \(b\) to \(x\), then
+\begin{equation}
+ \mathsf J_{n,a}f(x)
+ =\mathsf J_{n,b}f(x)
+  +\sum_{k=0}^{n-1}\frac{(x-b)^k}{k!}\,
+      \mathsf J_{n-k,a}f(b).                            \label{eq:volterra-basepoint-shift}
+\end{equation}
+No ordering of \(a,b,x\) is required.  At \(n=0\) the sum is empty and both Volterra
+terms reduce to \(f(x)\).  This is \lean{normalizedVolterra_basepoint_shift}.  If, in
+addition, \(f\) vanishes on the open unoriented interval between \(b\) and \(x\), then
+the local positive-order tail is zero and
+\begin{equation}
+ \mathsf J_{n+1,a}f(x)
+ =\sum_{k=0}^{n}\frac{(x-b)^k}{k!}\,
+      \mathsf J_{n+1-k,a}f(b).                          \label{eq:volterra-zero-tail-taylor}
+\end{equation}
+Only interval integrability from \(a\) to \(b\) is assumed in this corollary; no value
+condition is imposed at either endpoint, and the vanishing hypothesis is vacuous when
+\(b=x\).  The declaration is
+\lean{normalizedVolterra_succ_eq_taylor_of_eq_zero}.
+
+The hypothesis boundary is therefore sharp: affine covariance, the base-point identities,
+and the direct kernel algebra take values in an arbitrary real normed vector space.
+Completeness is used only for the strict-FTC and smooth literal-iteration layer, its
+identification with the direct kernel, and the Taylor reconstruction below.  The four
+affine and base-point declarations just named are post-snapshot additions checked at
+code checkpoint \texttt{e109088ed}.
 
 \begin{theorem}[Taylor--Volterra reconstruction]
 \label{thm:taylor-volterra-reconstruction}
@@ -2188,7 +2231,11 @@ weights.  No result above claims complex-power weights, normal convergence or Me
 continuation in a weight exponent, fractional-order Volterra operators, a piecewise global
 closed form for the bounded function beyond \(x\le1\), primitives of the folded function
 \(\Up\), or primitives of the inverse Fabius function.  Those distinct extensions remain in
-the research-frontier documents until exact Lean counterparts are available.
+the research-frontier documents until exact Lean counterparts are available.  In
+particular, the generic affine and base-point theorems do not themselves supply named
+Fabius-specific declarations for the \(\Up\) ladder based at \(-1\), the reflected
+\(1-F\) ladder, arbitrary affine copies of \(F\), or the full piecewise polynomial tail
+after the support of \(\Up\); those packaged specializations also remain frontier targets.
 \end{boxedremark}
 
 \subsection{Dyadic derivative cells and exact value distributions}
@@ -6411,7 +6458,7 @@ Global derivatives, value distributions, and flatness &
 \path{BoundedDerivatives.lean}, \path{RvachevDerivativeDistribution.lean},
 \path{EffectiveFlatness.lean}, \path{SharpFlatness.lean},
 \path{FabiusFlatness.lean}\\
-Normalized Volterra calculus and exact Fabius primitives &
+Normalized Volterra calculus, affine covariance, base-point shifts, and exact Fabius primitives &
 \path{NormalizedVolterra.lean}, \path{FabiusAntiderivatives.lean}\\
 Analyticity, inverse, elementary obstruction &
 \path{NowhereAnalytic.lean}, \path{FabiusInverse.lean},
@@ -6643,10 +6690,14 @@ V.~Reshetnikov,
 \newblock Lean~4 formal development, source snapshot
 \texttt{8e7aa582661f2828302f70748efe20d02d8ae9c7}, consulted 27 August 2026.
 \newblock \url{https://github.com/VladimirReshetnikov/ProveIt/tree/8e7aa582661f2828302f70748efe20d02d8ae9c7/Analysis/FabiusFunction}.
-\newblock The normalized Volterra and Fabius-antiderivative addendum was
-checked at commit \texttt{3da579387b3848128f0d90dcf761d44bff04dba5}, on the
-same date.
+\newblock The normalized Volterra and Fabius-antiderivative addendum through its original
+core declarations was checked at commit
+\texttt{3da579387b3848128f0d90dcf761d44bff04dba5}, on the same date.  The four
+later affine and base-point declarations identified in
+\Cref{sec:normalized-volterra} were checked at commit
+\texttt{e109088ed17186e7fcff8043cb3c1d9b5a131b8e}.
 \newblock \url{https://github.com/VladimirReshetnikov/ProveIt/tree/3da579387b3848128f0d90dcf761d44bff04dba5/Analysis/FabiusFunction}.
+\newblock \url{https://github.com/VladimirReshetnikov/ProveIt/tree/e109088ed17186e7fcff8043cb3c1d9b5a131b8e/Analysis/FabiusFunction}.
 
 \end{thebibliography}
 
