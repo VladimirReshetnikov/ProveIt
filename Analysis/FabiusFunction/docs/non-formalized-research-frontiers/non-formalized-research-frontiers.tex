@@ -14733,10 +14733,20 @@ interpretations are not:
       power of the constant kernel.
 \end{itemize}
 \end{candidate}
-\begin{obligation}
+\begin{obligation}[Discharged]
 Choose a finite-support or locally finite convolution model, prove the counting bijection,
 and connect it to the existing \texttt{iteratedPrefixKernel}.
 \end{obligation}
+Both interpretations are now theorems in \path{PrefixKernelCounting.lean}, in the finite-support model: the
+tuples form \lean{Finset.Nat.antidiagonalTuple} and the convolution is the finite
+antidiagonal sum \lean{natConv}.  The counting bijection is
+\lean{card_antidiagonalTuple} (stars and bars for weak compositions: \(\binom{n+k}{k}\)
+ordered \((k+1)\)-tuples of naturals summing to \(n\)), proved from the
+first-coordinate decomposition \lean{antidiagonalTuple_succ_eq} and the hockey-stick
+identity; \lean{constKernelConvPow_eq_card} identifies the \(k\)-fold convolution power
+of the constant kernel with the tuple count; and the connections to the kernel are
+\lean{iteratedPrefixKernel_eq_card_antidiagonalTuple} and
+\lean{iteratedPrefixKernel_eq_constKernelConvPow}, for every \(k\ge1\).
 
 \section{An actual infinite formal product}
 

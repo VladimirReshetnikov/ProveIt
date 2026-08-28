@@ -250,6 +250,7 @@ import FabiusFunction.CauchyRenormalization
 import FabiusFunction.UniformSplineWeakConvergence
 import FabiusFunction.DyadicSpecializations
 import FabiusFunction.EvaluatorPopcount
+import FabiusFunction.PrefixKernelCounting
 
 /-!
 # Fabius function
