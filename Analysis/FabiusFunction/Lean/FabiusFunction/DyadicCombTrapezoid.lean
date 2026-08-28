@@ -137,4 +137,41 @@ theorem fabius_trapezoid_exact (F : BoundedFabius) (hF : IsFabius F)
 
 end FabiusInstance
 
+section OddComb
+
+/-- **Centered odd-power Rvachev comb sums vanish at every real
+scale**: `∑_{k∈ℤ} (uk)^{2r+1}·up(uk) = 0` for every `u` and `r`, by
+evenness of `up` alone.  This is the odd half of the comb volume's
+centered-moment corollary, valid at arbitrary — not only dyadic —
+scales and with no level restriction. -/
+theorem tsum_odd_pow_mul_rvachevUp (F : BoundedFabius) (u : ℝ)
+    (r : ℕ) :
+    ∑' k : ℤ, (u * k) ^ (2 * r + 1) * rvachevUp F (u * k) = 0 := by
+  have hneg : ∀ k : ℤ,
+      (u * ((-k : ℤ) : ℝ)) ^ (2 * r + 1) *
+        rvachevUp F (u * ((-k : ℤ) : ℝ)) =
+      -((u * k) ^ (2 * r + 1) * rvachevUp F (u * k)) := by
+    intro k
+    have h1 : (u * ((-k : ℤ) : ℝ)) = -(u * k) := by
+      push_cast
+      ring
+    rw [h1, (rvachevUp_even F) (u * k),
+      Odd.neg_pow ⟨r, by ring⟩]
+    ring
+  have key : ∑' k : ℤ, (u * k) ^ (2 * r + 1) * rvachevUp F (u * k) =
+      -∑' k : ℤ, (u * k) ^ (2 * r + 1) * rvachevUp F (u * k) := by
+    conv_lhs => rw [← (Equiv.neg ℤ).tsum_eq
+      (fun k : ℤ => (u * k) ^ (2 * r + 1) * rvachevUp F (u * k))]
+    have hterm : ∀ k : ℤ,
+        (fun k : ℤ => (u * k) ^ (2 * r + 1) * rvachevUp F (u * k))
+          ((Equiv.neg ℤ) k) =
+        -((u * k) ^ (2 * r + 1) * rvachevUp F (u * k)) := by
+      intro k
+      simp only [Equiv.neg_apply]
+      exact hneg k
+    rw [tsum_congr hterm, tsum_neg]
+  linarith
+
+end OddComb
+
 end Fabius
