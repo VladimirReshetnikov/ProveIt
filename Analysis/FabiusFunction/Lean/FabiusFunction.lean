@@ -203,6 +203,15 @@ import FabiusFunction.FabiusSaddleJetStirling
 import FabiusFunction.FabiusSaddleLeadingCoefficient
 import FabiusFunction.FabiusSecondSaddleCorrection
 import FabiusFunction.FabiusSecondSaddleExpansion
+import FabiusFunction.EulerLogTransform
+import FabiusFunction.EvenZetaSeries
+import FabiusFunction.EvenZetaValues
+import FabiusFunction.SincZetaSeries
+import FabiusFunction.SincZetaDyadic
+import FabiusFunction.SincZetaRemainder
+import FabiusFunction.BernsteinPositivity
+import FabiusFunction.PerronRootEnclosure
+import FabiusFunction.MeasureRefinement
 
 /-!
 # Fabius function
@@ -291,4 +300,28 @@ effective uniform continuity.  The same centered splines converge uniformly
 on all of `ℝ` to the signed extension with error at most `2⁻ᵖ`, while the
 finite binary-reduction telescope through scale `N ≥ 1` converges uniformly
 with error at most `2^(1-N)`.
+
+The zeta–Lambert tail calculus of the Thue–Morse frontier results is
+formalized end to end.  The engine is the Euler log transform: for any
+absolutely summable family with all norms below one, over any index type,
+`∑ log(1-aᵢ) = -∑_{r≥1} (∑ aᵢʳ)/r`, with branch-free exponential product
+forms and the Lambert-series logarithm of the infinite `q`-Pochhammer
+product as its geometric instance.  Feeding the Euler product of the sinc
+through it gives `lem:logsinc` — `sinc(πx) = exp(-∑ ζ(2r)x^{2r}/r)` on the
+unit disk, with the literal logarithmic form for real arguments — and over
+the pair index it gives the all-orders expansion of the whole dyadic
+product: `Φ(z) = exp(-∑ ζ(2r)4ʳz^{2r}/(r(4ʳ-1)))` on `‖z‖ < 1`, the exact
+prefix factorization on `‖z‖ < 2^m`, the certified tail remainder
+`(4ζ(2)/3)·x^{2N+2}/((N+1)(1-x²))`, and the exact three-factor
+prefix–corrections–tail form of `Φ`.  The even zeta values enter as
+elementary series with positivity, antitonicity, the closed evaluations
+`ζ(2) = π²/6` and `ζ(4) = π⁴/90`, the Bernoulli form, and agreement with
+`riemannZeta`.
+
+The Perron root `ρ₁` of the arithmetic-mean transfer operator is enclosed by
+kernel-checked arithmetic: `0.66126798 ≤ ρ₁ ≤ 0.66134921`, by carrying the
+audits' optimized cubic test function through the Collatz–Wielandt bracket
+with the two positivity checks discharged by 32-piece subdivided Bernstein
+certificates — integer coefficients verified by `ring` normalization, no
+Sturm sequences — on a general piecewise-positivity engine for `[0,1]`.
 -/

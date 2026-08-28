@@ -258,7 +258,25 @@ each nonzero integer $m$ with multiplicity $1+\vtwo(|m|)$, has exactly one
 critical point between consecutive integer zeros, and its sign on $(m,m+1)$
 is the signed Thue--Morse value $(-1)^{s_2(m)}$ (all four documents prove
 these; the sign statement is also in the Thue--Morse Formula Atlas,
-\S``The sign of the Fabius sinc product'').
+\S``The sign of the Fabius sinc product'').  All three background facts
+are formalized in this same normalization, and are cited here rather than
+reproved.  \emph{Multiplicity}: the dyadic zero lattice meets the integer
+$m\ge1$ exactly $1+\vtwo(m)$ times (\lean{LatticeFiber}) and
+$\|\Phi(x)\|/|x-m|^{1+\vtwo(m)}$ tends to an explicit positive constant
+along the punctured neighbourhood of $m$
+(\lean{PhiZeroOrder}, \lean{tendsto\_norm\_div\_pow\_zero\_order}), with
+the odd and $2^{j}$ extremes as corollaries (\lean{ValleyZeroOrders});
+the Lean statements are for $m\ge1$, the negative side following by
+evenness.  \emph{One peak}: $\log\|\Phi\|$ is strictly concave on every
+lobe (\lean{OnePeakPerLobe}), which with continuity of $\Phi$ on the real
+axis gives \emph{exactly one} maximizer of $|\Phi|$ per side lobe
+(\lean{RvachevProductContinuity}, \lean{existsUnique\_isMaxOn\_lobe}) and
+the central peak exactly at the origin (\lean{CentralLobePeakAtZero}) ---
+the equivalent maximizer form of ``one critical point per lobe'', which is
+what the library states.  \emph{Sign}:
+\lean{rvachevFourierProduct\_eq\_thueMorse\_sign\_mul\_norm}
+(\lean{ThueMorseLobeSign}), built on \lean{PhiRealSign},
+\lean{LobeSignCount} and \lean{LobeSignSelfSimilarity}.
 
 The question \cite{mse-decay} asks for a real $g$, ``elementary, if
 possible \dots\ analytic, positive and monotone decreasing (and having
@@ -347,6 +365,22 @@ weighted doubling transfer operator; $\kappa_q$ decreases strictly from
 $\kappa_0$ to $\kappa_\infty$.  The verified values are collected in
 \cref{app:constants}.
 
+The dictionary map itself is formalized.  \lean{KappaDictionary} defines
+$\kappa(\Lambda)=\tfrac12+\log_2(\pi/\Lambda)$ (\lean{kappaOf},
+\lean{kappaOf\_eq}), proves it strictly decreasing in the per-shell mean
+$\Lambda$ (\lean{kappaOf\_strictAntiOn}), and evaluates it at the three
+closed-form means $\Lambda=\tfrac12,\ \sqrt2/2,\ \sqrt3/2$ --- that is, at
+$\kappa_0$, $\kappa_2$, $\kappa_\infty$ (\lean{kappaOf\_half},
+\lean{kappaOf\_sqrt\_two}, \lean{kappaOf\_sqrt\_three}), together with the
+exact gaps.  The $\kappa_1$ row is deliberately absent there: the Perron
+root exists in the library only existentially, so every Lean statement
+about $\kappa_1$ carries it as a hypothesis.  What the dictionary does not
+supply is the \emph{attribution} of each $\kappa$ to its interpretation;
+that is formal so far only for $\kappa_\infty$, pinned from both sides by
+\lean{GlobalDecayEnvelope} and \lean{PeakRayEnvelope}, and, in measure
+rather than almost everywhere, for $\kappa_0$
+(\lean{KappaZeroInMeasure}, \lean{FluctuationTightness}).
+
 Two further interpretation issues are settled by the problem statement
 itself.  The convention $\sinc z=\sin z/z$ (argument already containing
 $\pi$) is forced by the stated zero set $\Z_{>0}$ and by the plot in the
@@ -403,6 +437,11 @@ sine-product identity of the Formula Atlas
 (\S``Sine and cosine products as Thue--Morse sums'') and is the bridge to
 Gelfond-type estimates: $2^nP_n(t)$ is the modulus of the Thue--Morse
 trigonometric polynomial $\sum_{r<2^n}(-1)^{s_2(r)}\e^{2\pi\ii rt}$.
+The identity is not merely spot-checked but proved: it is
+\lean{LacunaryProductToSum}'s
+\lean{prod\_sin\_two\_pow\_eq\_thueMorse\_sum},
+$2^m\prod_{j\le m}\sin(2^jw)=\sum_{n<2^m}\varepsilon_n
+\sin(m\pi/2+(2n+1)w)$, for every $m$ and every real $w$.
 
 \section{The answer to the original question}
 \label{sec:answer}
@@ -436,10 +475,13 @@ where $A_1$ is the limit of the dyadic-shell means of $|f|/g_1$
 (\cref{ssec:shells}).  The asymptotic $I_1(n):=\int_0^1P_n\to\kappa
 \lambda^n$ with $\lambda=\varrho_1$ is due to Fouvry--Mauduit
 \cite{fouvrymauduit1996}; the enclosure $0.66130<\lambda<0.66135$ is
-Lemma~5.1 of \cite{ahl2017}; and Document 4's exact-arithmetic
+Lemma~5.1 of \cite{ahl2017}; Document 4's exact-arithmetic
 Collatz--Wielandt certificate, which this audit executed verbatim
 (\cref{ssec:certificate}), proves $0.66126807<\varrho_1<0.66134891$
-by Sturm sequences alone.
+by Sturm sequences alone; and the kernel-checked Lean enclosure
+$0.66126798\le\varrho_1\le0.66134921$ certifies the same test
+function through subdivided Bernstein certificates
+(\lean{PerronRootEnclosure}, \cref{ssec:certificate}).
 
 \begin{theorem}[audited answer to \cite{mse-decay}]
 \label{thm:audit-answer}
@@ -508,6 +550,34 @@ $\Lop_1$ (see \cref{ssec:imported} for the exact division between proved
 and imported).  The negative part (iii) and the repair (iv) are proved
 here in full, since they are the audit's verdicts on the question itself.
 
+\emph{Formal status.}  The purely limit-theoretic cores of
+\cref{thm:audit-answer} are kernel-checked in the Lean development, each
+stated for an arbitrary cumulative mass function with the RPF input left
+as a hypothesis; they therefore make the theorem \emph{conditionally}
+formal, and are not the same thing as the statements above being
+formalized.  Item (i) is \lean{BoundednessSkeleton}'s
+\lean{eventually\_bounded\_of\_monotone\_of\_dyadic}: a monotone mass $G$
+with the dyadic normalization $G(2^K)/2^K\to A>0$ satisfies
+$A/4\le G(t)/t\le3A$ for all large $t$ --- a two-sided bracket, weaker
+than the sharp compact limit set asserted in (i).  The shell arithmetic of
+(iii) is \lean{CesaroProfileSkeleton}'s
+\lean{tendsto\_cumulative\_profile}: given the completed-shell limit $A$
+and the terminal partial-shell limit $P$ at mantissa $y$, the Ces\`aro
+ratio along $t=2^ky$ converges to $(A+P)/y$ --- exactly the profile
+$\mathscr P$ whose nonconstancy is the obstruction, with the aggregation
+step supplied by \lean{GeometricCesaro}
+(\lean{tendsto\_geom\_shell\_average}, itself a corollary of the general
+weighted Toeplitz theorem \lean{tendsto\_weighted\_average}).  Item (iv)
+is \lean{LogMeanSkeleton}'s \lean{tendsto\_sum\_add\_bdd\_div}.  What none
+of them contains is precisely the imported block of \cref{ssec:imported}:
+the RPF convergence that supplies the shell limits, and with it the
+singularity of $\nu$ that makes the profile nonconstant.  The library's
+Perron layer stops short of that --- existence of the root
+$\varrho_1\in[\tfrac12,\sqrt2/2]$ by Fekete
+(\lean{PerronRootExistence}) and the Lasota--Yorke pair for $\Lop_1$
+(\lean{TransferOperatorStep}, \lean{LasotaYorkeIteration}) are formal, the
+spectral gap and the eigenfunction are not.
+
 \begin{lemma}[reduction of \eqref{eq:Q2} to partial-shell linearity]
 \label[lemma]{lem:reduction}
 Let $g>0$ be measurable and $F(t)=\int_{t_0}^{t}|f|/g$.  If
@@ -525,6 +595,15 @@ $t=2^k$ and subtract:
 $F(2^ky)-F(2^k)=2^k\bigl(y-1+\smallo(1)\bigr)$, the error uniform for
 $y\in[1,2]$ since $y$ is bounded.
 \end{proof}
+
+\Cref{lem:reduction} is formalized, and in greater generality:
+\lean{ShellLinearity}'s \lean{tendsto\_shell\_increment} proves
+$\bigl(F(2^k(1+z))-F(2^k)\bigr)/2^k\to z$ for an \emph{arbitrary}
+$F:\R\to\R$ and every $z\ge0$, not only for $y=1+z\in[1,2]$, with the ray
+normalization $F(2^kc)/2^k\to c$ as
+\lean{tendsto\_ray\_div\_two\_pow}.  The uniformity in $y$ noted in the
+proof above is not part of the Lean statement, which fixes $z$ and takes
+the limit in $k$.
 
 \begin{proposition}[elementary two-sided bracket for $\varrho_1$]
 \label[proposition]{prop:bracket}
@@ -560,6 +639,18 @@ soft bound $\varrho_1\ge3^{-1/2}=0.577\ldots$ is all that
 \cref{thm:impossible} needs, and it is fully elementary.)
 \end{proof}
 
+Both halves of \cref{prop:bracket} are formalized.  The lower half is
+\lean{le\_mul\_integral\_prod\_abs\_sin\_two\_pow}
+(\lean{GelfondLogisticBound}), which is the statement above; the upper
+half is \lean{SincMeanBracket}'s
+\lean{integral\_prod\_abs\_sin\_two\_pow\_le}, which proves the
+\emph{sharper} $I_1(n+1)\le(\sqrt3/2)^{n}$ --- its pointwise input being
+the sharp uniform bound \lean{abs\_prod\_sin\_two\_pow\_le\_sharp}
+(\lean{SharpGelfondBound}) rather than the $\sqrt{5/3}$-constant bound
+used here.  So the Lean bracket
+$3^{-1/2}\le\liminf I_1(n)^{1/n}\le\limsup I_1(n)^{1/n}\le\sqrt3/2$ is
+this proposition's conclusion, reached by a slightly better route.
+
 \begin{proposition}[exact $L^2$ identity]
 \label[proposition]{prop:L2}
 $\int_0^1P_n(t)^2\dd t=2^{-n}$ for every $n\ge1$.
@@ -573,6 +664,14 @@ linearization; by uniqueness of binary representations no cancellation to
 frequency zero occurs, so only the constant term $1$ survives
 integration.
 \end{proof}
+
+Formalized, and more generally than stated: \lean{LacunaryRieszIntegral}
+proves the master orthogonality theorem
+\lean{integral\_cos\_mul\_rieszProduct} for arbitrary Hadamard-gap integer
+frequencies, amplitudes and phases, with \cref{prop:L2} the corollary
+\lean{integral\_prod\_sin\_sq\_two\_pow} --- valid there for every
+$n\ge0$ --- and \lean{integral\_prod\_sin\_sq\_pow} the same identity for
+an arbitrary integer base $b\ge2$.
 
 \begin{theorem}[impossibility of \eqref{eq:Q2} in the stabilizing class]
 \label{thm:impossible}
@@ -725,6 +824,14 @@ within-shell distribution that defeats \eqref{eq:Q2} is annihilated
 rather than merely averaged.
 \end{proof}
 
+The bookkeeping of this proof --- everything after ``$\beta_k\to
+\beta_\infty$'' --- is formalized as \lean{LogMeanSkeleton}'s
+\lean{tendsto\_sum\_add\_bdd\_div}: if $\beta_k\to L$ and the terminal
+partial shell $\gamma$ and endpoint correction $\delta$ are bounded, then
+$\bigl(\sum_{k<K}\beta_k+\gamma_K\bigr)/(K+\delta_K)\to L$.  The
+convergence $\beta_k\to\beta_\infty$ itself is the RPF input and is not
+formalized, so \cref{thm:logmean} is formally backed only conditionally.
+
 \subsection{Imported inputs, stated as obligations}
 \label{ssec:imported}
 
@@ -787,7 +894,12 @@ $I_1(n)^2\le I_2(n)=2^{-n}$, so $\varrho_1\le2^{-1/2}$ would be forced the
 other way---in fact $I_1(n)\ge I_2(n)/\max P_n\ge c(2/\sqrt3)^{-n}2^{-n}$
 gives the compatible ordering
 $\tfrac12<\varrho_1<\tfrac{1}{\sqrt2}$, consistent with
-$0.6613\in(0.5,0.7071)$.  Second, the deleted draft's exponent
+$0.6613\in(0.5,0.7071)$.  (The Cauchy--Schwarz half is formalized as
+\lean{LacunaryMeanSharp}'s
+\lean{integral\_prod\_abs\_sin\_two\_pow\_le\_sqrt\_two},
+$I_1(n)\le(\sqrt2/2)^n$, proved there for arbitrary Hadamard-gap integer
+frequencies and every integer base $b\ge2$; it is strictly better than the
+$(\sqrt3/2)$-route upper bound of \cref{prop:bracket}.)  Second, the deleted draft's exponent
 $\log_2(2\pi)$ is exactly $\kappa_2$; the draft was thus computing the
 root-mean-square envelope while claiming a pointwise and Ces\`aro-mean
 meaning for it.  Documents 3 and 4 were the first to make this diagnosis
@@ -847,8 +959,11 @@ $|f|$ has exactly one maximum
  E_n=\max_{n\le x\le n+1}|f(x)|=|f(\xi_n)|,
  \qquad \xi_n\in(n,n+1),
 \]
-per lobe, with signed value $(-1)^{s_2(n)}E_n$ (audited; the sign law is
-also the Atlas's ``sign of the Fabius sinc product'').  Reading the
+per lobe, with signed value $(-1)^{s_2(n)}E_n$ (audited, and both halves
+formalized --- \lean{existsUnique\_isMaxOn\_lobe} and
+\lean{rvachevFourierProduct\_eq\_thueMorse\_sign\_mul\_norm}, see
+\cref{sec:object}; the sign law is also the Atlas's ``sign of the Fabius
+sinc product'').  Reading the
 question as ``find the envelope of the sequence $E_n$'' is natural --- it
 is literally the subject of the companion question \cite{mse-extrema} ---
 and this section shows exactly how far that reading can be pushed.  The
@@ -868,9 +983,20 @@ Two audited facts anchor everything: away from the integers
  (\log|f|)''(x)=-2\sum_{k\ge1}(1+\vtwo(k))\frac{k^2+x^2}{(k^2-x^2)^2}<0,
  \label{eq:lobe-derivatives}
 \end{equation}
-so every lobe of $|f|$ is strictly log-concave with a unique peak.  The
-following comparison is the workhorse of the mean layer; it does not
-appear in any of the four documents.
+so every lobe of $|f|$ is strictly log-concave with a unique peak.  That
+conclusion is formalized, by a route that does not pass through
+\eqref{eq:lobe-derivatives}: \lean{LobeLogFactorization} proves the
+lattice log-series identity
+$\log\|\Phi(x)\|=\sum_{(h,r)}\log\bigl(1-x^2/(2^h(r+1))^2\bigr)$ at every
+non-lattice real $x$, \lean{CentralLobeConcavity} and
+\lean{SideLobeConcavity} give strict negativity of its termwise second
+derivative on the central and on every side lobe, and
+\lean{OnePeakPerLobe} assembles them.  The closed derivative formulas
+\eqref{eq:lobe-derivatives} themselves are not separately stated there.
+The following comparison is the workhorse of the mean layer; it does not
+appear in any of the four documents, and it is not formalized either ---
+the log-concavity input is, the quantitative $\delta_{\min}$ and
+curvature bookkeeping is not.
 
 \begin{lemma}[peak--integral comparison]
 \label[lemma]{lem:peak-integral}
@@ -1110,6 +1236,18 @@ $\sum_mP_n(m/2^n)^2=1$.  (Verified to $10^{-12}$ at $n=6,10,14$; even
 $m$ contribute exactly zero.)
 \end{proof}
 
+Both identities are formalized, each in a more general form.  (i) is
+\lean{SineProductRootsUnity}'s \lean{prod\_two\_sin\_pi\_div\_two\_pow},
+a specialization of \lean{prod\_two\_sin\_pi\_div}, which proves
+$\prod_{r=1}^{N-1}2\sin(\pi r/N)=N$ for every $N\ge1$.  (ii) is
+\lean{DiscreteLacunaryParseval}'s
+\lean{sum\_prod\_sin\_sq\_two\_pow}, a specialization of the master
+discrete orthogonality theorem \lean{sum\_cos\_mul\_rieszProduct}, which
+holds for arbitrary Hadamard-gap integer frequencies, amplitudes and
+phases on any grid of size $N\ge m_n$ --- the dyadic case
+$N=2^n$, $m_j=2^j$ sitting at the edge of that admissible resolution.
+Both Lean statements are for every $n\ge0$.
+
 Identity (ii) is the discrete twin of $\int_0^1P_n^2=2^{-n}$: the
 $q=2$ layer is rigid in both the continuous and the sampled world, a
 point taken up in \cref{sec:rms}.
@@ -1186,6 +1324,18 @@ $\sin2\pi x=(e_1-e_{-1})/2\ii$ and $1+3\cos2\pi x$ (direct check:
 $\Lop_2[3\cos2\pi x]=-\tfrac34(1+\cos2\pi x)$, so
 $\Lop_2[1+3\cos]=\tfrac12-\tfrac34-\tfrac34\cos=-\tfrac14(1+3\cos)$).
 \end{proof}
+
+All four displays of \cref{prop:L2-spectrum} are formalized in
+\lean{RMSTransferEigenfunctions}, in exactly this normalization of
+$\Lop_2$: \lean{rms\_transfer\_const\_eigen},
+\lean{rms\_transfer\_sin\_eigen},
+\lean{rms\_transfer\_one\_add\_cos\_eigen}, and the mode halving in its
+real form, \lean{rms\_transfer\_cos\_even\_mode} together with
+\lean{rms\_transfer\_sin\_even\_mode}.  They are stated pointwise in $x$
+--- elementary trigonometry, no operator object and no spectral theory ---
+so what is formal is the eigen-\emph{identities}, not the claim that
+$-\tfrac14$ is the subleading eigenvalue, which rests on the collocation
+bound below.
 
 Collocation places the rest of the spectrum below $3\cdot10^{-4}$ in
 modulus, so the shell-RMS ratios converge at the exact geometric rate
@@ -1615,6 +1765,23 @@ summation $\sum_{r=1}^{m-1}(m-r)2^{-r}=m-2+2^{1-m}$ yields
 $\pi^2/4-\pi^2/6=\pi^2/12=c_0$.)
 \end{proof}
 
+\Cref{thm:variance} is formalized exactly as stated, and for every $m$
+including the empty sum $m=0$: \lean{BirkhoffVariance}'s
+\lean{integral\_sq\_birkhoff\_sum\_all} in Birkhoff-sum form, and
+\lean{BirkhoffProductBridge}'s
+\lean{integral\_sq\_log\_prod\_two\_sin\_all} in the product form
+$\int_0^1\log^2\bigl|\prod_{k<m}2\sin(\pi2^kt)\bigr|$.  Its two inputs are
+formal as well: the covariance ladder $c_r=(\pi^2/12)2^{-r}$ for every lag
+$r$, over the genuine mod-one doubling map
+(\lean{CovarianceLadder}, \lean{integral\_cocycle\_covariance}), and both
+Clausen values, $\int_0^1\log^2(2\sin\pi t)\dd t=\pi^2/12$
+(\lean{CocycleParseval}, \lean{integral\_sq\_log\_two\_sin\_pi\_mul}) and
+$\int_0^1\log^2|\tan\pi t|\dd t=\pi^2/4$
+(\lean{GordinParseval}, \lean{integral\_sq\_log\_abs\_tan\_pi\_mul}).
+This is therefore the finite-$m$ kernel of \cref{find:ahl} in
+machine-checked form; the limit theorems that consume it are not (see
+after \cref{thm:lil-correct}).
+
 \begin{theorem}[corrected sharp constant]
 \label{thm:lil-correct}
 For Lebesgue-almost every $\alpha$,
@@ -1661,6 +1828,18 @@ $\sum_L\Prob(\psi\circ\T^L<-2\log L)<\infty$, so by Borel--Cantelli
 $\psi(\T^L\alpha)\ge-2\log L$ eventually a.e.  The product form follows
 by exponentiating and absorbing the index shift $L\mapsto L+1$.
 \end{proof}
+
+The Gordin algebra of this proof is formalized in
+\lean{DoublingCocycleIdentities}: the halving law $P\psi=\psi/2$
+(\lean{log\_two\_sin\_half\_add}), the identification
+$d=2\psi-\psi\circ\T=\log|\tan\pi t|$
+(\lean{two\_log\_two\_sin\_sub}), and the annihilation $Pd=0$
+(\lean{log\_abs\_tan\_half\_add}); with
+$\int_0^1d^2=\pi^2/4$ (\lean{GordinParseval}) this makes every ingredient
+of the variance formal.  \Cref{thm:lil-correct} itself is not: Mathlib has
+neither the stationary-ergodic martingale central limit theorem nor its
+law of the iterated logarithm, so the step from the exact variance to the
+constant $\pi/\sqrt2$ remains a named import.
 
 Independently of the martingale route, the constant $\pi$ is excluded by
 the tail calculus that any LIL proof must supply: with variance
@@ -1948,6 +2127,26 @@ certifying $0.66126807<\varrho_1<0.66134891$ in exact arithmetic,
 hence $2.74801262<\kappa_1<2.74818899$.  This is the strongest
 rigor statement about $\kappa_1$ in the corpus, and it is machine-checkable.
 
+The reduction the certificate rests on is formal.  \lean{CollatzWielandt}'s
+\lean{perron\_root\_mem\_of\_two\_sided} proves that any continuous $h$
+that is positive on $[0,1]$ and satisfies $m\,h\le\Lop_1h\le M\,h$ there
+brackets the growth root, $m\le\varrho_1\le M$ --- with no eigenfunction,
+$\Lop_1$ being the operator \eqref{eq:L1} verbatim; and in its abstract
+form \lean{collatzWielandt\_bracket} the argument mentions neither
+$\Lop_1$ nor $[0,1]$ nor sine and cosine, using only monotonicity and
+positive homogeneity.  The numerical half is now formal as well, by a
+different and Sturm-free route: \lean{PerronRootEnclosure} carries the
+same cubic test function through the tangent half-angle dictionary
+$t=\tan(\pi x/4)$ and certifies the two degree-$12$ integer-polynomial
+inequalities on $[0,1]$ with $32$-piece subdivided Bernstein
+certificates (\lean{BernsteinPositivity}), yielding the kernel-checked
+enclosure $0.66126798\le\varrho_1\le0.66134921$.  Only the last two
+digits of the SymPy enclosure above are given up; recovering them
+needs on the order of two thousand pieces, since the endpoints above
+approximate the exact range of $\Lop_1h/h$ to within $10^{-8}$.
+The $\kappa_1$ consequence remains unformalized (it needs interval
+bounds on $\log\pi$, $\log2$, and $\log\varrho_1$).
+
 \subsection{Exact spot identities}
 
 $I_2(n)=2^{-n}$ verified to $10^{-12}$ ($n=2,5,8,11$); the slow-ray
@@ -1999,7 +2198,23 @@ for the decay problem, with the new feature that here the fluctuation is
 driven by a \emph{singular} measure.  On the Lean side,
 \lean{FourierProduct}/\lean{PoissonSummation} already carry the product,
 the scaling law, and rapid decay; \lean{FabiusLogSquaredAsymptotic} and
-its neighbors carry the small-argument $-\log^2$ layer.
+its neighbors carry the small-argument $-\log^2$ layer.  The decay layer
+proper is by now substantially covered as well: the shell factorization
+and the $\kappa$-algebra (\lean{SincProductShells}); the sharp Gelfond
+bound and both mean brackets (\lean{SharpGelfondBound},
+\lean{SincMeanBracket}, \lean{LacunaryMeanSharp}); the exact variance
+package (\lean{BirkhoffVariance}, \lean{BirkhoffProductBridge},
+\lean{CovarianceLadder}, \lean{CocycleParseval}, \lean{GordinParseval});
+the lobe geometry --- zero orders, one peak, Thue--Morse sign
+(\lean{PhiZeroOrder}, \lean{OnePeakPerLobe},
+\lean{RvachevProductContinuity}, \lean{ThueMorseLobeSign}); the exponent
+dictionary (\lean{KappaDictionary}); the two-sided $\kappa_\infty$
+envelope (\lean{GlobalDecayEnvelope}, \lean{PeakRayEnvelope}); and the
+hypothesis-carrying skeletons of the mean theorems
+(\lean{ShellLinearity}, \lean{BoundednessSkeleton},
+\lean{CesaroProfileSkeleton}, \lean{LogMeanSkeleton}).  The gap between
+that list and this document is the RPF analytic block and the martingale
+limit theorems, exactly as \cref{ssec:imported} predicts.
 
 \subsection{Formalization targets, ordered by feasibility}
 
@@ -2044,12 +2259,62 @@ input to the singularity argument of \cref{thm:impossible}.
 \item The $\varrho_1$ enclosure via the Sturm certificate: rational
 positivity on an interval; decidable, and the certificate is already
 machine-readable.
+\textbf{Done}, at marginally wider constants and with no Sturm module
+at all: \lean{PerronRootEnclosure} exhibits Document 4's optimized
+cubic test function and certifies
+\[
+ 0.66126798\le\varrho_1\le0.66134921
+\]
+(\lean{perron\_root\_enclosure}, \lean{exists\_perron\_root\_enclosure})
+by discharging the two positivity checks with $32$-piece subdivided
+Bernstein certificates --- exact integer coefficients, verified by ring
+normalization and literal sign checks alone
+(\lean{BernsteinPositivity}, \lean{nonneg\_on\_Icc\_of\_pieces}).  The
+reduction underneath is the previously formal
+\lean{perron\_root\_mem\_of\_two\_sided}.  The SymPy enclosure of
+\cref{ssec:certificate} is ${\approx}10^{-7}$ sharper; its endpoints
+sit within $10^{-8}$ of the exact range of $\Lop_1h/h$, so reaching
+them by subdivision needs roughly two thousand pieces (the method
+converges quadratically in the piece width) --- a mechanical, if bulky,
+sharpening.
 \item The valley asymptotics (elementary boundary-maximum analysis).
+\textbf{The local half is done}: the zero order at $m$ is exactly
+$1+\vtwo(m)$ with an explicit positive constant
+(\lean{LatticeFiber}, \lean{ZeroOrderTail}, \lean{PhiZeroOrder}), and
+the two extremes --- simple zeros at odd integers, order $j+1$ at $2^j$,
+hence unbounded order along the dyadic integers --- are
+\lean{ValleyZeroOrders}.  The asymptotic constant of the valley law
+$E_{m2^k}\sim\frac{H(1)|H(m)|}{\e(k+1)}(m2^k)^{-(k+1)}$ is not
+formalized.
 \item The variance $\sigma^2=\pi^2/4$: Parseval for the Clausen series
 of $\log|2\sin\pi x|$ plus the geometric covariance sum; would also
 formally certify \cref{find:ahl}.
+\textbf{Done}, in the exact finite-$m$ form of \cref{thm:variance}
+rather than only in the limit: \lean{BirkhoffVariance}
+(\lean{integral\_sq\_birkhoff\_sum\_all}) and
+\lean{BirkhoffProductBridge}
+(\lean{integral\_sq\_log\_prod\_two\_sin\_all}) prove
+$\int_0^1S_m^2=\frac{\pi^2}{4}m-\frac{\pi^2}{3}(1-2^{-m})$ for every
+$m$, including $m=0$, on the covariance ladder
+\lean{CovarianceLadder} and the two Clausen values
+\lean{CocycleParseval}, \lean{GordinParseval}, with the Gordin algebra
+in \lean{DoublingCocycleIdentities}.  This item was still listed as an
+open target in earlier editions of this audit.
 \item Hardest: Birkhoff/ergodic layers and the Perron--Frobenius gap;
 import as named hypotheses first, as Documents 3 and 4 recommend.
+That recommendation has been carried out for the mean theorems: the
+limit-theoretic cores of \cref{thm:audit-answer}(i),(iii) and
+\cref{thm:logmean} are formal for an arbitrary cumulative mass with the
+RPF layer left as a hypothesis (\lean{BoundednessSkeleton},
+\lean{CesaroProfileSkeleton}, \lean{LogMeanSkeleton},
+\lean{GeometricCesaro}), as is \cref{lem:reduction}
+(\lean{ShellLinearity}).  On the operator side, existence of the growth
+root $\varrho_1\in[\tfrac12,\sqrt2/2]$ by Fekete
+(\lean{PerronRootExistence}) and the Lasota--Yorke pair
+(\lean{TransferOperatorStep}, \lean{LasotaYorkeIteration}) are formal;
+the spectral gap, the eigenfunction, the eigenmeasure and its
+singularity, and the martingale limit theorems are not, and remain the
+frontier.
 \end{enumerate}
 
 \section{Verdict}
