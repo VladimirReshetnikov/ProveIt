@@ -255,7 +255,7 @@ def main() -> None:
     raw_slope, accel_slope = make_figures(laws, endpoint)
 
     with (HERE/"numerical_summary.csv").open("w", newline="", encoding="utf-8") as f:
-        w = csv.writer(f)
+        w = csv.writer(f, lineterminator="\n")
         w.writerow(["type", "q", "x", "variance", "gamma4", "gamma6", "iterations", "diagnostic_1", "diagnostic_2"])
         for law in laws:
             w.writerow(["distribution", law.q, "", variance(law.q), gamma4(law.q), gamma6(law.q), law.iterations, law.mass_error, law.symmetry_error])

@@ -1146,7 +1146,7 @@ finite-state valuation problem.
 
 \subsection{Why the contiguous Thue--Morse block is uniquely dyadic}
 
-For an integer base $b\ge2$, consider the finite product
+For an integer base $b\ge2$ and $N\in\N$, consider the finite product
 \begin{equation}
  P_{b,N}(z)=\prod_{j=0}^{N-1}(1-z^{b^j}).                    \label{eq:b-product}
 \end{equation}
@@ -1161,28 +1161,30 @@ Expanding by subsets gives
 \begin{proposition}[Dyadic contiguity]
 \label{prop:dyadic-contiguity}
 The exponents in \eqref{eq:b-expansion} form a complete interval of consecutive integers if
-and only if $b=2$.  In that case,
+and only if $b=2$ or $N\le1$.  In the dyadic case,
 \begin{equation}
  P_{2,N}(z)=\sum_{n=0}^{2^N-1}(-1)^{\wt(n)}z^n,              \label{eq:tm-block}
 \end{equation}
-which is the contiguous signed Thue--Morse block.  For every $b\ge3$, the exponents are
-precisely the integers whose first $N$ base-$b$ digits belong to $\{0,1\}$; they form a
-sparse Cantor-type set with gaps.
+which is the contiguous signed Thue--Morse block.  For every $b\ge3$ and $N\ge2$, the
+exponents are precisely the integers whose first $N$ base-$b$ digits belong to $\{0,1\}$;
+they form a sparse Cantor-type set with gaps.
 \end{proposition}
 
 \begin{proof}
 For $b=2$, binary expansion is a bijection between $\{0,1\}^N$ and
-$\{0,1,\ldots,2^N-1\}$, and the subset size is the binary digit sum.  If $b\ge3$, the integer
-$2$ is absent already at the first digit, while $0$ and $1$ are present, so the exponent set
-is not contiguous.  The stated digit characterization is immediate from
-\eqref{eq:b-expansion}.
+$\{0,1,\ldots,2^N-1\}$, and the subset size is the binary digit sum.  For every base, the
+exponent set is $\{0\}$ when $N=0$ and $\{0,1\}$ when $N=1$.  Now suppose $b\ge3$ and
+$N\ge2$.  The exponents $0$, $1$, and $b$ occur, whereas $2$ cannot occur: reduction modulo
+$b$ would force its units digit to lie in $\{0,1\}$.  Hence the exponent set has a gap
+between $1$ and $b$ and is not an interval.  The stated digit characterization is immediate
+from \eqref{eq:b-expansion}.
 \end{proof}
 
 This gives a structural explanation for a feature that can otherwise look accidental.  The
 reciprocal-integer Fourier products exist for every base $b$, and their zero multiplicities
 are controlled by $v_b$.  But only $b=2$ makes the subset-product coefficients occupy every
-integer index.  The Thue--Morse sequence is therefore not merely one member of a uniform
-$b$-adic family; it is the unique no-gap member.
+integer index at every nontrivial length $N\ge2$.  The Thue--Morse sequence is therefore not
+merely one member of a uniform $b$-adic family; it is the unique persistent no-gap member.
 
 \begin{problem}[Sparse $b$-adic signed operators]
 For $b\ge3$, develop the analogue of the dyadic signed extension on the sparse digit set
@@ -1213,7 +1215,9 @@ $\lambda_m=\lambda+m$, $m=0,\ldots,p$; all have the same fractional phase.
 
 \begin{theorem}[Phase-aware Lagrange filter]
 \label{thm:phase-lagrange}
-For $m=0,\ldots,p$, define
+Let $p\in\N$.  Choose $\lambda_0>0$ sufficiently large that
+$h_u\in C^{p+1}[0,1/\lambda_0]$.  For every $\lambda\ge\lambda_0$ satisfying
+$\lambda\equiv u\pmod1$, and for $m=0,\ldots,p$, define
 \begin{equation}
  w_m^{(p)}(\lambda)
  =(-1)^{p-m}\frac{(\lambda+m)^p}{m!(p-m)!}.                  \label{eq:phase-weights}
@@ -1227,11 +1231,12 @@ Then
 and
 \begin{equation}
  \sum_{m=0}^{p}w_m^{(p)}(\lambda)R(\lambda+m)
- =L+\bigO_{u,p}(\lambda^{-p-1}).                             \label{eq:phase-accelerated}
+ =L+\bigO_{u,p}(\lambda^{-p-1})
+ \qquad(\lambda\to+\infty,\ \lambda\equiv u\!\pmod1).    \label{eq:phase-accelerated}
 \end{equation}
-More precisely, if $h_u\in C^{p+1}[0,1/\lambda]$, then the error is bounded by
+More precisely, the error is bounded by
 \begin{equation}
- \frac{\|h_u^{(p+1)}\|_\infty}{(p+1)!}
+ \frac{\|h_u^{(p+1)}\|_{L^\infty[0,1/\lambda]}}{(p+1)!}
  \prod_{m=0}^{p}\frac{1}{\lambda+m}.                        \label{eq:phase-error}
 \end{equation}
 \end{theorem}
@@ -1274,7 +1279,7 @@ A complementary operation removes periodic modes rather than preserving a single
 
 \begin{theorem}[Root-of-unity phase filter]
 \label{thm:phase-average}
-Let
+Let $M\in\N$ with $M\ge1$, and let
 \(
  \Psi(u)=\sum_{k\in\Z}c_k\e^{2\pi\ii ku}
 \)
