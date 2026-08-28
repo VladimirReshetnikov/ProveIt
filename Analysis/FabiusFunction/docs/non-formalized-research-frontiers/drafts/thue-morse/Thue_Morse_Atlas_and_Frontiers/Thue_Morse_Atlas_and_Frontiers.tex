@@ -9156,10 +9156,17 @@ hypothesis discharged by compact support
 (\leanPartx{Fabius.cgf\_uniformDigitPrefix},
 \leanPartx{Fabius.cgf\_rvachevMeasure\_self\_similar}).  With that, each of the four
 faces has the abstract library the obligation asked for, with the dyadic case a
-specialization, and the obligation is discharged.  (The operator-exponential display
+specialization, and the obligation is discharged.  The single statement instantiating
+to all four faces at once now exists as well: \path{GeometricTailDictionary.lean} proves
+\leanPartx{Fabius.geometric\_tail\_dictionary} --- from the one-step refinement
+\(\mu=\nu\ast(c\cdot)_*\mu\) alone, one theorem with four conjuncts: the measure face
+\(\mu=P_m\ast(c^m\cdot)_*\mu\), the product face \(\varphi_\mu(t)=\bigl(\prod_{k<m}\varphi_\nu(c^kt)\bigr)\,\varphi_\mu(c^mt)\)
+(whose assembly \leanPartx{Fabius.charFun\_self\_similar} it also provides), the unconditional
+moment face, and the cumulant face under finite exponential moments --- with the dyadic
+instance \leanPartx{Fabius.geometric\_tail\_dictionary\_up} carrying every hypothesis
+discharged by compact support.  (The operator-exponential display
 \eqref{p2:eq:cumulant-operator} itself --- the deconvolution calculus --- is a stronger
-analytic statement and remains open, as does a single statement instantiating to
-all four faces at once.)
+analytic statement and remains the one open part.)
 
 \section{Frontier conjectures and next deductions}
 \label{p2:sec:frontiers}
