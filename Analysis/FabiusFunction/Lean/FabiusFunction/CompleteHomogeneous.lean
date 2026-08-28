@@ -244,6 +244,19 @@ theorem completeHomogeneousEvalAt_succ
       completeHomogeneousEval (fun i : s ↦ a i) (n + 1)
   rw [completeHomogeneousEval_option_succ, hbnone, hbsome]
 
+/-- Adjoining a zero variable does not change a complete homogeneous
+evaluation.  This includes degree zero, where both sides are one. -/
+@[simp] theorem completeHomogeneousEvalAt_zero
+    {R ι : Type*} [CommSemiring R]
+    (s : Finset ι) (a : ι → R) (n : ℕ) :
+    completeHomogeneousEvalAt s a 0 n =
+      completeHomogeneousEvalOn s a n := by
+  cases n with
+  | zero =>
+      simp [completeHomogeneousEvalAt, completeHomogeneousEvalOn]
+  | succ n =>
+      simpa using completeHomogeneousEvalAt_succ s a 0 n
+
 /-- The univariate polynomial `h_n(X, a_1, ..., a_d)`, characterized by
 
 `Q_0 = 1`,  `Q_(n+1) = X * Q_n + C(h_(n+1)(a_1, ..., a_d))`.

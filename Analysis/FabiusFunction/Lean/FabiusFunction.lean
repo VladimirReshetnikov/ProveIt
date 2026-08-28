@@ -1,5 +1,9 @@
 import FabiusFunction.GeometricLagrange
+import FabiusFunction.GeometricLagrangeWeights
+import FabiusFunction.GeometricLagrangeQBinomial
+import FabiusFunction.GeometricLagrangeQMoments
 import FabiusFunction.LagrangeResidualMoments
+import FabiusFunction.LambertPhaseLockedRichardson
 import FabiusFunction.Paper05442
 import FabiusFunction.Paper06487
 import FabiusFunction.PaperFabiusAsymptotic
