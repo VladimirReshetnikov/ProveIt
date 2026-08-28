@@ -11,8 +11,8 @@ orientation `(z - x)⁻¹`, so both transforms below are the negatives of
 `MeasureTheory.resolventTransform`.
 
 The up-law transform is analytic off `[-1,1]`, the random-series transform is
-analytic off `[0,1]`, and their first derivatives are the expected squared
-Cauchy kernels.  The affine equality in law
+analytic off `[0,1]`, and their first derivatives are the negatives of the
+expected squared Cauchy kernels.  The affine equality in law
 `X = (Y + 1) / 2` gives the exact bridge
 
 `S(z) = 2 * R(2*z - 1)`.
