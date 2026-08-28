@@ -135,6 +135,8 @@ import FabiusFunction.ThueMorseLobeSign
 import FabiusFunction.LobeSignSelfSimilarity
 import FabiusFunction.RenormalizationIdentity
 import FabiusFunction.IntegerZeroLocalFactorization
+import FabiusFunction.LeadingJet
+import FabiusFunction.IntegerZeroAnalyticOrder
 import FabiusFunction.SincPrefixBound
 import FabiusFunction.GlobalDecayEnvelope
 import FabiusFunction.LacunaryMeanSharp
