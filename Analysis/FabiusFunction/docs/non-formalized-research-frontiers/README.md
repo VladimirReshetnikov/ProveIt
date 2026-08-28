@@ -105,7 +105,23 @@ through six were merged **editorially** into additional volumes
 `Inverse_Endpoint_All_Orders/`,
 `representations/Up_Polynomial_Synthesis/`): shared theorems stated
 once with the best proof, unified notation, cross-source constants
-verified, all source-specific material retained.  Every volume carries
+verified, all source-specific material retained.  Waves seven through
+thirteen (all 2026-08-28) were then absorbed into these standing
+volumes rather than opening new ones: the lattice draft became a
+chapter of `Up_Polynomial_Synthesis`; the two representation volumes
+were unified into the single eight-part `Representation_Frontiers`;
+the finite-sinc, Fourier-image, transport-geometry, and
+atomic-splines reports became Parts III–VI of
+`Exponents_and_q_Series_Frontiers`; and the three
+Euler–Maclaurin/exhaustion/phase reports were merged editorially into
+the comb volume's Bernoulli-periodization section, where the
+consolidation itself settled six previously open items (the spectral
+positivity D(2r) > 0, the twisted positivity at every odd scale with
+its Thue–Morse sign law, both phase-classification conjectures, the
+alternating Bernoulli-moment sign law, and the odd half of the sharp
+threshold).  Several volumes' part-boundary section numbering and
+page-counter handling were repaired along the way (edits are marked
+`% ed.:` in the sources).  Every volume carries
 a provenance section with each absorbed member's SHA-256; the absorbed
 directories were deleted (git history is the archive). The
 Fourier-decay corpus deliberately stays as separate documents: its

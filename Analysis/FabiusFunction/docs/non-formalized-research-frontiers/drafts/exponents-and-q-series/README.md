@@ -27,7 +27,7 @@ shifts, negative-branch and hierarchy formulas, and inverse/quantile versions
 remain research frontiers. These API claims were checked at source checkpoint
 `22f801337`.
 
-Member: `Exponents_and_q_Series_Frontiers` (124 pp, five parts) — the
+Member: `Exponents_and_q_Series_Frontiers` (157 pp, six parts) — the
 2026-08-28 consolidation of the two former drafts (Part I:
 Newton-basis frontiers; Part II: q-binomial Richardson), joined the
 same day by the eighth-wave report as **Part III** — *Finite Dyadic
@@ -80,7 +80,23 @@ entropy/Fisher monotonicity with the exact criterion
 `I(u_N) < inf iff N >= 3` and `KL(u || u_N) = inf`, and carefully
 flagged conjectural weighted expansions (entropy, forward KL, Fisher,
 fixed-p Wasserstein, and the `p ~ 2N` transport crossover with its
-lower-Lambert phase).  The eighth-wave fold also repaired the volume's
+lower-Lambert phase).  The thirteenth wave added **Part VI** —
+*Atomic Sinc-Product Splines Beyond the Binary Point* (formerly
+`atomic_sinc_splines_report_package/`): an English translation and
+frontier expansion of Rvachev's Chapter 3, treating the geometric
+family `h_a` as a genuine deformation of `up = h_2` — the general
+atomic-equation zero-matching criterion, closed Bernoulli cumulants
+`κ_2m = 2^2m B_2m/(2m(a^2m − 1))` with Bell/Lambert moment calculus,
+weighted Prouhet identities, exact derivative norms for `a ≥ 2`, the
+fractal polynomial-gap atlas for `a > 2` with the complete
+Taylor-germ trichotomy, the rational-power Strang–Fix reproduction
+theorem, the all-orders prefix expansion with leading profile
+`−h_a''/(6(a²−1))` (specializing at `a = 2` to the binary
+constants of Parts III–V), the critical `a ↓ 2` collapse, the
+reconstructed uniqueness theorem, and a conjecture register
+(periodic-Lambert endpoint expansion, critical double scaling,
+lattice obstruction without rational powers, strict log-concavity for
+`1 < a < 2`).  The eighth-wave fold also repaired the volume's
 part-boundary section numbering (Part II had rendered with
 `\appendix` letters G–N).  Supporting files under `assets/`,
 provenance with SHA-256 in the document itself.
