@@ -1,4 +1,5 @@
 import FabiusFunction.GeometricLagrangeQBinomial
+import FabiusFunction.GeometricQBinomialLagrange
 import Mathlib.Algebra.BigOperators.Intervals
 
 /-!
@@ -22,11 +23,11 @@ formula conventionally written
 
 `q^(p m) (q^(1-m); q)_p / (q; q)_p`.
 
-The proof does not duplicate interpolation or develop a second Gaussian
-polynomial.  It evaluates the coefficient polynomial already supplied by
-`GeometricLagrangeWeights`, identifies it with the normalized forward
-Richardson polynomial, and clears the common signed geometric product from
-its numerator and denominator.  This also yields the positive-index form
+The all-index q-Pochhammer formula evaluates the coefficient polynomial from
+`GeometricLagrangeWeights` and clears its common signed geometric product.
+For positive indices, the canonical denominator-free theorem from
+`GeometricQBinomialLagrange` gives the Gaussian coefficient directly; the
+q-factorial identity then recovers the equivalent positive-index form
 
 `S_(p,m)(q) = (-1)^p q^choose(p+1,2)
   (q^(m-p); q)_p / (q; q)_p`
@@ -37,7 +38,8 @@ at one fixed Richardson level.  It deliberately makes no comparison between
 two levels of the same parity: the corrected frontier report gives explicit
 admissible counterexamples to such monotonicity.
 
-The second half proves the finite q-binomial theorem for every rational
+The second half specializes the ring-generic finite q-binomial theorem to
+the repository's quotient-defined rational coefficient for every
 `0 < q < 1`, extending the existing `q = 1/2` specialization in
 `HalfQBinomial`.  It is then used to compute the exact total variation
 
@@ -206,8 +208,11 @@ theorem geometricLagrangeQMoment_eq_zero
       (Finset.range (p + 1)) :=
     pow_injOn_range_of_geometricQPochhammer_ne_zero
       q hq p hPochhammer'
-  exact sum_geometricLagrangeWeight_mul_pow_eq_zero
-    q p m hnodes hmpos hmp
+  rw [geometricLagrangeQMoment,
+    sum_geometricLagrangeWeight_mul_pow_eq_gaussianBinomial
+      q p m hnodes hmpos,
+    gaussianBinomial_eq_zero_of_lt q (by omega : m - 1 < p)]
+  ring
 
 /-- Above the cancelled range, the raw inverse-base numerator reverses to
 the positive-index q-Pochhammer product `(q^(m-p);q)_p`. -/
@@ -263,22 +268,32 @@ theorem geometricLagrangeQMoment_eq_residual_qPochhammer
     geometricLagrangeQMoment q p m =
       ((-1 : ℚ) ^ p * q ^ (p + 1).choose 2) *
         qPochhammer (q ^ (m - p)) q p / qPochhammer q q p := by
-  rw [geometricLagrangeQMoment_eq_forwardRichardson_eval
-    q hq p m hPochhammer,
-    forwardGeometricRichardsonPolynomial_eval,
-    geometricRootPolynomial_inv_eval_pow_eq_qPochhammer_of_le
-      q hq p m hpm.le]
   have hPochhammer' : geometricQPochhammer q p ≠ 0 := by
     rwa [geometricQPochhammer_rat_eq_qPochhammer]
   have hnodes : Set.InjOn (fun j : ℕ ↦ q ^ j)
       (Finset.range (p + 1)) :=
     pow_injOn_range_of_geometricQPochhammer_ne_zero
       q hq p hPochhammer'
-  have hden : (geometricRootPolynomial q⁻¹ p).eval 1 ≠ 0 :=
-    geometricRootPolynomial_inv_eval_one_ne_zero_of_nodes_injective
-      q hq p hnodes
-  apply (div_eq_div_iff hden hPochhammer).2
-  rw [← geometricRootPolynomial_inv_eval_one_mul_triangular q hq p]
+  have hfactorial :
+      qPochhammer q q p * gaussianBinomial q (m - 1) p =
+        qPochhammer (q ^ (m - p)) q p := by
+    simpa only [finiteQPochhammerIn_rat_eq,
+      show m - 1 - p + 1 = m - p by omega] using
+      (finiteQPochhammerIn_self_mul_gaussianBinomial
+        q (n := m - 1) (k := p) (by omega : p ≤ m - 1))
+  have hgaussian :
+      gaussianBinomial q (m - 1) p =
+        qPochhammer (q ^ (m - p)) q p / qPochhammer q q p := by
+    apply (eq_div_iff hPochhammer).2
+    rw [← hfactorial]
+    ring
+  have htriangular :
+      p * (p + 1) / 2 = (p + 1).choose 2 := by
+    simp [Nat.choose_two_right, Nat.mul_comm]
+  rw [geometricLagrangeQMoment,
+    sum_geometricLagrangeWeight_mul_pow_eq_gaussianBinomial
+      q p m hnodes (by omega),
+    htriangular, hgaussian]
   ring
 
 /-- Splitting a self q-Pochhammer product after its first `a` factors:
@@ -338,6 +353,38 @@ theorem qBinomial_pos_of_pos_of_lt_one
       (qPochhammer_self_pos_of_pos_of_lt_one q hqpos hqone k)
       (qPochhammer_self_pos_of_pos_of_lt_one q hqpos hqone (n - k)))
 
+/-- On `0 < q < 1`, the repository's quotient-defined rational
+`qBinomial` agrees with the denominator-free Gaussian coefficient from the
+finite q-binomial core.
+
+The proof is the denominator-free q-factorial identity followed by one
+legitimate cancellation.  In particular, it does not replay q-Pascal. -/
+theorem gaussianBinomial_eq_qBinomial_of_pos_of_lt_one
+    (q : ℚ) (hqpos : 0 < q) (hqone : q < 1) (n k : ℕ) :
+    gaussianBinomial q n k = qBinomial n k q := by
+  by_cases hk : k ≤ n
+  · have hkNe : qPochhammer q q k ≠ 0 :=
+      (qPochhammer_self_pos_of_pos_of_lt_one q hqpos hqone k).ne'
+    have hnkNe : qPochhammer q q (n - k) ≠ 0 :=
+      (qPochhammer_self_pos_of_pos_of_lt_one
+        q hqpos hqone (n - k)).ne'
+    have hfactorial :
+        qPochhammer q q k * gaussianBinomial q n k =
+          qPochhammer (q ^ (n - k + 1)) q k := by
+      simpa only [finiteQPochhammerIn_rat_eq] using
+        (finiteQPochhammerIn_self_mul_gaussianBinomial q hk)
+    have hsplit :
+        qPochhammer q q n =
+          qPochhammer q q (n - k) *
+            qPochhammer (q ^ (n - k + 1)) q k := by
+      simpa only [Nat.sub_add_cancel hk] using
+        (qPochhammer_self_add q (n - k) k)
+    rw [qBinomial_eq_quotient q hk, hsplit, ← hfactorial]
+    field_simp [hkNe, hnkNe] <;> ring
+  · have hkn : n < k := Nat.lt_of_not_ge hk
+    rw [gaussianBinomial_eq_zero_of_lt q hkn,
+      qBinomial_eq_zero_of_lt q hkn]
+
 /-- If `d` is positive, then `(q^d;q)_n` is positive for `0 < q < 1`.
 This is the positivity input for every factor in the residual moment. -/
 theorem qPochhammer_pow_pos_of_pos_of_lt_one
@@ -378,25 +425,31 @@ theorem qPochhammer_tail_div_self_eq_qBinomial
 
 `S_(p,m)(q) = (-1)^p q^choose(p+1,2) [m-1 choose p]_q`.
 
-The proof is the positive-index residual q-Pochhammer formula followed by
-`qPochhammer_tail_div_self_eq_qBinomial`; it does not invoke a second
-interpolation argument. -/
+This is a direct rational specialization of the canonical denominator-free
+Gaussian/Lagrange residual theorem. -/
 theorem geometricLagrangeQMoment_eq_residual_qBinomial
     (q : ℚ) (hqpos : 0 < q) (hqone : q < 1)
     (p m : ℕ) (hpm : p < m) :
     geometricLagrangeQMoment q p m =
       (-1 : ℚ) ^ p * q ^ (p + 1).choose 2 *
         qBinomial (m - 1) p q := by
-  rw [geometricLagrangeQMoment_eq_residual_qPochhammer
-    q hqpos.ne' p m
-      (qPochhammer_self_pos_of_pos_of_lt_one q hqpos hqone p).ne' hpm,
-    mul_div_assoc]
-  have hstart : m - p = (m - p - 1) + 1 := by omega
-  have htop : m - p - 1 + p = m - 1 := by omega
-  rw [hstart,
-    qPochhammer_tail_div_self_eq_qBinomial
-      q hqpos hqone (m - p - 1) p,
-    htop]
+  have hPochhammer : geometricQPochhammer q p ≠ 0 := by
+    rw [geometricQPochhammer_rat_eq_qPochhammer]
+    exact (qPochhammer_self_pos_of_pos_of_lt_one
+      q hqpos hqone p).ne'
+  have hnodes : Set.InjOn (fun j : ℕ ↦ q ^ j)
+      (Finset.range (p + 1)) :=
+    pow_injOn_range_of_geometricQPochhammer_ne_zero
+      q hqpos.ne' p hPochhammer
+  have htriangular :
+      p * (p + 1) / 2 = (p + 1).choose 2 := by
+    simp [Nat.choose_two_right, Nat.mul_comm]
+  rw [geometricLagrangeQMoment,
+    sum_geometricLagrangeWeight_mul_pow_eq_gaussianBinomial
+      q p m hnodes (by omega),
+    htriangular,
+    gaussianBinomial_eq_qBinomial_of_pos_of_lt_one
+      q hqpos hqone (m - 1) p]
 
 /-- The first uncancelled geometric moment is the signed triangular power
 `(-1)^p q^choose(p+1,2)`. -/
@@ -461,52 +514,43 @@ theorem qPochhammer_self_succ (q : ℚ) (n : ℕ) :
   rw [qPochhammer_succ, pow_succ]
   ring
 
-/-- The q-Pascal recurrence for the repository's quotient-defined Gaussian
-coefficient, valid on the interval where every denominator is positive. -/
+/-- Symmetric q-Pascal recurrence, in the orientation used by the finite
+q-binomial theorem. -/
+theorem qBinomial_succ_succ_of_pos_of_lt_one'
+    (q : ℚ) (hqpos : 0 < q) (hqone : q < 1) (n k : ℕ) :
+    qBinomial (n + 1) (k + 1) q =
+      qBinomial n (k + 1) q + q ^ (n - k) * qBinomial n k q := by
+  simpa only [gaussianBinomial_eq_qBinomial_of_pos_of_lt_one
+      q hqpos hqone] using
+    (gaussianBinomial_succ_succ q n k)
+
+/-- The complementary q-Pascal recurrence for the repository's
+quotient-defined Gaussian coefficient.  It is the symmetric reflection of
+`qBinomial_succ_succ_of_pos_of_lt_one'`. -/
 theorem qBinomial_succ_succ_of_pos_of_lt_one
     (q : ℚ) (hqpos : 0 < q) (hqone : q < 1) (n k : ℕ) :
     qBinomial (n + 1) (k + 1) q =
       qBinomial n k q + q ^ (k + 1) * qBinomial n (k + 1) q := by
   by_cases hkn : k < n
-  · have hk1n1 : k + 1 ≤ n + 1 := by omega
-    have hknle : k ≤ n := hkn.le
-    have hk1n : k + 1 ≤ n := hkn
-    have hPochhammerNe (r : ℕ) : qPochhammer q q r ≠ 0 :=
-      (qPochhammer_self_pos_of_pos_of_lt_one q hqpos hqone r).ne'
-    rw [qBinomial_eq_quotient q hk1n1,
-      qBinomial_eq_quotient q hknle,
-      qBinomial_eq_quotient q hk1n]
-    have hsub : n - k = (n - (k + 1)) + 1 := by omega
-    have hpow : q ^ (n + 1) = q ^ (k + 1) * q ^ (n - k) := by
-      rw [← pow_add]
-      congr 1
-      omega
-    have hkfactor : 1 - q ^ (k + 1) ≠ 0 := by
-      have hlt := pow_lt_one₀ hqpos.le hqone (by omega : k + 1 ≠ 0)
-      linarith
-    have hnfactor : 1 - q ^ (n - k) ≠ 0 := by
-      have hlt := pow_lt_one₀ hqpos.le hqone (by omega : n - k ≠ 0)
-      linarith
-    have hpowSub : q ^ (n - k) = q ^ (n - (k + 1)) * q := by
-      rw [hsub, pow_succ]
-    have hnfactor' : 1 + q ^ (n - (1 + k)) * (-q) ≠ 0 := by
-      have heq : 1 + q ^ (n - (1 + k)) * (-q) =
-          1 - q ^ (n - k) := by
-        rw [show 1 + k = k + 1 by omega, hpowSub]
-        ring
-      rw [heq]
-      exact hnfactor
-    have hden : 1 - q ^ (n - (k + 1) + 1) ≠ 0 := by
-      rw [← hsub]
-      exact hnfactor
-    rw [show n + 1 - (k + 1) = n - k by omega]
-    rw [qPochhammer_self_succ q n, qPochhammer_self_succ q k]
-    rw [hsub, qPochhammer_self_succ]
-    rw [hpow]
-    field_simp [hPochhammerNe, hkfactor, hnfactor, hnfactor']
-    rw [hpowSub]
-    field_simp [hden]
-    ring
+  · have hk1n : k + 1 ≤ n := hkn
+    have hk1n1 : k + 1 ≤ n + 1 := by omega
+    calc
+      qBinomial (n + 1) (k + 1) q =
+          qBinomial (n + 1) ((n + 1) - (k + 1)) q :=
+        (qBinomial_symm q hk1n1).symm
+      _ = qBinomial (n + 1) ((n - (k + 1)) + 1) q := by
+        rw [show (n + 1) - (k + 1) = (n - (k + 1)) + 1 by omega]
+      _ = qBinomial n ((n - (k + 1)) + 1) q +
+          q ^ (n - (n - (k + 1))) *
+            qBinomial n (n - (k + 1)) q :=
+        qBinomial_succ_succ_of_pos_of_lt_one'
+          q hqpos hqone n (n - (k + 1))
+      _ = qBinomial n k q +
+          q ^ (k + 1) * qBinomial n (k + 1) q := by
+        rw [show n - (k + 1) + 1 = n - k by omega,
+          qBinomial_symm q hkn.le,
+          Nat.sub_sub_self hk1n,
+          qBinomial_symm q hk1n]
   · have hnk : n ≤ k := Nat.le_of_not_gt hkn
     have hPochhammerNe (r : ℕ) : qPochhammer q q r ≠ 0 :=
       (qPochhammer_self_pos_of_pos_of_lt_one q hqpos hqone r).ne'
@@ -519,77 +563,6 @@ theorem qBinomial_succ_succ_of_pos_of_lt_one
         qBinomial_eq_zero_of_lt q hnk,
         qBinomial_eq_zero_of_lt q (by omega)]
       ring
-
-/-- Symmetric q-Pascal recurrence, in the orientation used by the finite
-q-binomial theorem. -/
-theorem qBinomial_succ_succ_of_pos_of_lt_one'
-    (q : ℚ) (hqpos : 0 < q) (hqone : q < 1) (n k : ℕ) :
-    qBinomial (n + 1) (k + 1) q =
-      qBinomial n (k + 1) q + q ^ (n - k) * qBinomial n k q := by
-  by_cases hkn : k < n
-  · have hk1n : k + 1 ≤ n := hkn
-    have hk1n1 : k + 1 ≤ n + 1 := by omega
-    calc
-      qBinomial (n + 1) (k + 1) q =
-          qBinomial (n + 1) ((n + 1) - (k + 1)) q :=
-        (qBinomial_symm q hk1n1).symm
-      _ = qBinomial (n + 1) (n - k) q := by
-        rw [show (n + 1) - (k + 1) = n - k by omega]
-      _ = qBinomial (n + 1) ((n - (k + 1)) + 1) q := by
-        rw [show n - k = (n - (k + 1)) + 1 by omega]
-      _ = qBinomial n (n - (k + 1)) q +
-          q ^ ((n - (k + 1)) + 1) *
-            qBinomial n ((n - (k + 1)) + 1) q :=
-        qBinomial_succ_succ_of_pos_of_lt_one
-          q hqpos hqone n (n - (k + 1))
-      _ = qBinomial n (k + 1) q +
-          q ^ (n - k) * qBinomial n k q := by
-        rw [qBinomial_symm q hk1n]
-        rw [show n - (k + 1) + 1 = n - k by omega]
-        rw [qBinomial_symm q hkn.le]
-  · have hnk : n ≤ k := Nat.le_of_not_gt hkn
-    have hPochhammerNe (r : ℕ) : qPochhammer q q r ≠ 0 :=
-      (qPochhammer_self_pos_of_pos_of_lt_one q hqpos hqone r).ne'
-    rcases hnk.eq_or_lt with rfl | hnk
-    · rw [qBinomial_eq_quotient q (le_refl (n + 1)),
-        qBinomial_eq_zero_of_lt q (Nat.lt_succ_self n),
-        qBinomial_eq_quotient q (le_refl n)]
-      simp [hPochhammerNe]
-    · rw [qBinomial_eq_zero_of_lt q (by omega),
-        qBinomial_eq_zero_of_lt q (by omega),
-        qBinomial_eq_zero_of_lt q hnk]
-      ring
-
-/-- On `0 < q < 1`, the repository's quotient-defined rational
-`qBinomial` agrees with the denominator-free Gaussian coefficient from the
-finite q-binomial core. -/
-theorem gaussianBinomial_eq_qBinomial_of_pos_of_lt_one
-    (q : ℚ) (hqpos : 0 < q) (hqone : q < 1) (n k : ℕ) :
-    gaussianBinomial q n k = qBinomial n k q := by
-  induction n generalizing k with
-  | zero =>
-      cases k with
-      | zero =>
-          rw [gaussianBinomial_zero_zero,
-            qBinomial_eq_quotient q (le_refl 0)]
-          simp
-      | succ k =>
-          rw [gaussianBinomial_zero_succ,
-            qBinomial_eq_zero_of_lt q (by omega)]
-  | succ n ih =>
-      cases k with
-      | zero =>
-          have hPochhammer : qPochhammer q q (n + 1) ≠ 0 :=
-            (qPochhammer_self_pos_of_pos_of_lt_one
-              q hqpos hqone (n + 1)).ne'
-          rw [gaussianBinomial_zero_right,
-            qBinomial_eq_quotient q (Nat.zero_le (n + 1)),
-            Nat.sub_zero, qPochhammer_zero, one_mul,
-            div_self hPochhammer]
-      | succ k =>
-          rw [gaussianBinomial_succ_succ,
-            qBinomial_succ_succ_of_pos_of_lt_one' q hqpos hqone,
-            ih (k + 1), ih k]
 
 /-- Finite q-binomial theorem over the rational interval `0 < q < 1`:
 
