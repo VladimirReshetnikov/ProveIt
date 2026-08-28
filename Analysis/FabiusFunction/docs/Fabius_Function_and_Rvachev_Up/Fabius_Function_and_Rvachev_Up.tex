@@ -3504,6 +3504,24 @@ Let \(\mu_X\) be the distribution of the weighted sum \(X\) from
 \begin{equation}
  \mu_X((t,\infty))=\Up(t)\qquad(t\ge0).                    \label{eq:survival-up}
 \end{equation}
+More generally, let \(E\) be a real Banach space and let
+\(k:[0,1]\to E\) be Bochner integrable.  Fubini gives the
+survival-kernel identity
+\begin{equation}
+ \int_{[0,1]}\left(\int_0^x k(t)\dd t\right)\dd\mu_X(x)
+ =\int_0^1\Up(t)\,k(t)\dd t.                              \label{eq:survival-kernel-banach}
+\end{equation}
+For every \(c\in[0,1]\), truncating the kernel gives the stronger endpoint
+family
+\begin{equation}
+ \int_{[0,1]}\left(\int_0^{\min\{x,c\}} k(t)\dd t\right)\dd\mu_X(x)
+ =\int_0^c\Up(t)\,k(t)\dd t.                              \label{eq:survival-kernel-clipped}
+\end{equation}
+Thus the scalar formula
+\(\int_0^1 k(t)\Up(t)\dd t=\E[K(X)]\), where
+\(K(x)=\int_0^xk(t)\dd t\), needs only \(k\in L^1(0,1)\).
+Taking \(E=\C\), regarded as a real Banach space, includes complex-valued
+kernels with no separate argument.
 If \(g,g':\R\to\R\) are continuous and \(g\) has derivative \(g'(t)\) at every
 \(t\in[0,1]\), then
 \begin{equation}
@@ -3537,9 +3555,25 @@ variables real, are
 \end{align}
 
 \begin{proof}[Formal proof]
-The survival identity and integration-by-parts formula are
-\lean{weightedSumDistribution_real_Ioi_eq_rvachevUp_of_nonneg} and
-\lean{integral_unit_eq_zero_add_integral_deriv_mul_rvachevUp}.  The tilted and zero-tilt
+The survival identity is
+\lean{weightedSumDistribution_real_Ioi_eq_rvachevUp_of_nonneg}, and
+the general Banach-valued Fubini theorem behind
+\eqref{eq:survival-kernel-banach} is
+\lean{integral_Icc_intervalIntegral_eq_intervalIntegral_smul_survival}.
+Its finite-measure clipped form \eqref{eq:survival-kernel-clipped} is
+\lean{integral_Icc_intervalIntegral_min_eq_intervalIntegral_smul_survival}.
+Its Fabius and report-oriented scalar forms are
+\lean{integral_Icc_intervalIntegral_eq_intervalIntegral_smul_rvachevUp} and
+\lean{intervalIntegral_mul_rvachevUp_eq_integral_Icc_intervalIntegral}.
+The endpoint-parameterized Fabius versions are
+\lean{integral_Icc_intervalIntegral_min_eq_intervalIntegral_smul_rvachevUp}
+and
+\lean{intervalIntegral_mul_rvachevUp_eq_integral_Icc_intervalIntegral_min}.
+The continuously differentiable formula \eqref{eq:survival-fubini} is the
+corollary
+\lean{integral_unit_eq_zero_add_integral_deriv_mul_rvachevUp}; these seven
+integration declarations are in \path{ProbabilityLaplaceMoments.lean}.
+The tilted and zero-tilt
 identities are
 \lean{unitLaplaceMoment_weightedSumDistribution_eq_fabiusLaplaceMoment},
 \lean{unitLaplaceMoment_weightedSumDistribution_zero_eq_halfMoment}, and

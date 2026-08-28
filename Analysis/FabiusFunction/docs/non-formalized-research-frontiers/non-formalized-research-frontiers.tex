@@ -121,7 +121,7 @@
 \large Six thematic syntheses awaiting Lean verification}
 \author{Research quarantine for the \texttt{ProveIt} Fabius development\\
 \small Eleven source notebooks in six syntheses plus a post-audit gap register}
-\date{Consolidated repository snapshot: 25 August 2026}
+\date{Consolidated repository snapshot: 28 August 2026}
 
 \begin{document}
 % Compatibility macros used by the consolidated source notebooks.  They are
@@ -1068,9 +1068,10 @@ for every $x\in\R$.
 \subsection{The survival-function Fubini identity}
 \label{integration:sec:survival-fubini}
 
-A particularly useful bridge, absent from the main article's probability chapter, identifies
-integration against the Fabius law with an ordinary integral against $\Up$.  It is the compact
-support version of the layer-cake or tail-integration formula.
+A particularly useful bridge identifies integration against the Fabius law
+with an ordinary integral against $\Up$.  It has now been formalized in a
+Banach-valued $L^1$ form and integrated into the main article; this section
+retains the Fubini mechanism and the original scalar consequence.
 
 For $t\ge0$, support and \eqref{integration:eq:CDF-is-F} give
 \begin{equation}
@@ -1079,7 +1080,39 @@ For $t\ge0$, support and \eqref{integration:eq:CDF-is-F} give
 \end{equation}
 The equality remains correct for $t>1$, when both sides are zero.
 
-\begin{theorem}[Expectation from the survival function]
+\begin{theorem}[Banach-valued survival-kernel identity]
+\label{integration:thm:survival-kernel-Banach}
+Let $E$ be a real Banach space and let $k:[0,1]\to E$ be Bochner integrable.
+Then
+\begin{equation}
+ \int_{[0,1]}\left(\int_0^x k(t)\dd t\right)\dd\mu(x)
+ =\int_0^1 \Up(t)\,k(t)\dd t.
+ \label{integration:eq:survival-kernel-Banach}
+\end{equation}
+In particular, for scalar $k$ and
+$K(x)=\int_0^xk(t)\dd t$,
+\[
+ \int_0^1k(t)\Up(t)\dd t=\E[K(X)].
+\]
+The choice $E=\C$, regarded as a real Banach space, gives the same identity
+for complex kernels.
+\end{theorem}
+
+\begin{proof}
+Put
+\[
+ A=\{(t,x)\in[0,1]\times\R:t<x\},
+ \qquad
+ H(t,x)=\mathbf1_A(t,x)k(t).
+\]
+Integrability of $k$ and finiteness of the probability law make $H$
+Bochner integrable.  Integrating first in $t$ gives
+$\int_0^xk(t)\dd t$ for $x\in[0,1]$; integrating first in $x$ gives
+$\mu((t,\infty))k(t)=\Up(t)k(t)$.  Bochner--Fubini equates the two
+iterated integrals.
+\end{proof}
+
+\begin{corollary}[Expectation from the survival function]
 \label{integration:thm:survival-Fubini}
 Let $g,g':\R\to\R$ be continuous and suppose
 \begin{equation}
@@ -1093,32 +1126,29 @@ Then
  =g(0)+\int_0^1 g'(t)\Up(t)\dd t.
  \label{integration:eq:survival-Fubini}
 \end{equation}
-\end{theorem}
+\end{corollary}
 
 \begin{proof}
-Put
-\begin{equation}
- A=\{(t,x)\in[0,1]\times\R:t<x\},
- \qquad
- K(t,x)=\mathbf1_A(t,x)g'(t).
- \label{integration:eq:Fubini-kernel}
-\end{equation}
-Continuity of $g'$ on the compact interval makes $K$ integrable with respect to
-$\operatorname{Leb}_{[0,1]}\otimes\mu$.  Integrating first in $t$ and using
-\eqref{integration:eq:g-FTC-hypothesis} gives, for $x\in[0,1]$,
-\begin{equation}
- \int_0^1K(t,x)\dd t=\int_0^xg'(t)\dd t=g(x)-g(0).
- \label{integration:eq:Fubini-first-order}
-\end{equation}
-Integrating first in $x$ gives
-\begin{equation}
- \int K(t,x)\dd\mu(x)=g'(t)\mu((t,\infty))=g'(t)\Up(t)
- \label{integration:eq:Fubini-second-order}
-\end{equation}
-by \eqref{integration:eq:survival-is-up}.  Fubini equates the two iterated integrals.  Since $\mu$ is a
-probability measure supported on $[0,1]$, the integral of the constant $g(0)$ is $g(0)$,
-and rearrangement yields \eqref{integration:eq:survival-Fubini}.
+Apply \cref{integration:thm:survival-kernel-Banach} to $k=g'$, use
+\eqref{integration:eq:g-FTC-hypothesis}, and add the constant $g(0)$.
 \end{proof}
+
+\paragraph{Formalization status.}
+The interval-general Banach theorem is
+\lean{integral_Icc_intervalIntegral_eq_intervalIntegral_smul_survival}.
+Its finite-measure clipped companion is
+\lean{integral_Icc_intervalIntegral_min_eq_intervalIntegral_smul_survival}.
+The Fabius full-endpoint specializations are
+\lean{integral_Icc_intervalIntegral_eq_intervalIntegral_smul_rvachevUp} and
+\lean{intervalIntegral_mul_rvachevUp_eq_integral_Icc_intervalIntegral};
+the corresponding clipped declarations proving the full
+\(c\in[0,1]\) family are
+\lean{integral_Icc_intervalIntegral_min_eq_intervalIntegral_smul_rvachevUp}
+and
+\lean{intervalIntegral_mul_rvachevUp_eq_integral_Icc_intervalIntegral_min};
+the differentiable corollary is
+\lean{integral_unit_eq_zero_add_integral_deriv_mul_rvachevUp}, all in
+\path{ProbabilityLaplaceMoments.lean}.
 
 \begin{remark}[Endpoint conventions disappear under integration]
 The survival function uses the open ray $(t,\infty)$.  The CDF uses $(-\infty,t]$.  Their
@@ -2456,8 +2486,9 @@ The nineteen-declaration named geometric weight, series, and law API: summabilit
 continuity and measurability, affine splitting, reflection, and carried-\([0,1]\) results;
 \cref{integration:sec:weighted-naturality}.\\
 \path{ProbabilityLaplaceMoments.lean} &
-Almost-sure support, restriction to $[0,1]$, survival function, the compact-support Fubini
-identity, raw and endpoint moment identifications, zero-tilt normalization, and positivity;
+Almost-sure support, restriction to $[0,1]$, survival function, the
+Banach-valued $L^1$ survival-kernel identity and its scalar differentiable
+corollary, raw and endpoint moment identifications, zero-tilt normalization, and positivity;
 \cref{integration:sec:survival-fubini,integration:sec:probability-laplace}.\\
 \path{LaplaceMoments.lean} &
 \lean{tiltedSurvivalMoment}, \lean{fabiusLaplaceMoment}, the differential recurrence,
