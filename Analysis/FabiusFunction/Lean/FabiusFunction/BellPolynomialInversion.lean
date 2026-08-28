@@ -42,8 +42,9 @@ triple sum and makes the exponential-series mechanism visible in the proof.
 * `Bell.complete_succ`, `Bell.eq_complete_of_recurrence`, and
   `Bell.complete_add` characterize the complete Bell transform and prove its
   exponential addition law.
-* `Bell.complete_cumulant` and `Bell.eq_cumulant_of_complete` are the two
-  directions of division-free moment--cumulant inversion.
+* `Bell.complete_cumulant`, `Bell.cumulant_complete`, and
+  `Bell.eq_cumulant_of_complete` give division-free moment--cumulant inversion
+  and its uniqueness form.
 -/
 
 set_option autoImplicit false
@@ -381,6 +382,12 @@ theorem eq_cumulant_of_complete {κ m : ℕ → R} (hκ0 : κ 0 = 0)
     m (n + 1) = complete κ (n + 1) := (congrFun hcomp (n + 1)).symm
     _ = binomialConv (complete κ) (shift κ) n := complete_succ κ n
     _ = binomialConv m (shift κ) n := by rw [hcomp]
+
+/-- Taking cumulants of a complete Bell family recovers every normalized
+cumulant sequence. -/
+theorem cumulant_complete (κ : ℕ → R) (hκ0 : κ 0 = 0) :
+    cumulant (complete κ) = κ :=
+  (eq_cumulant_of_complete hκ0 rfl).symm
 
 /-- The first cumulant is the first moment. -/
 @[simp]

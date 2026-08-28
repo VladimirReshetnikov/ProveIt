@@ -2,7 +2,7 @@
 
 Series and orthogonal-expansion representations of the up-function,
 consolidated (2026-08-28) into the single volume
-[`Representation_Frontiers/`](Representation_Frontiers/) (108 pp):
+[`Representation_Frontiers/`](Representation_Frontiers/) (106 pp):
 
 - **Part I** — *Fabius–Rvachev Representation Frontiers* (Jacobi
   coefficients, exact even moments, resolvent and

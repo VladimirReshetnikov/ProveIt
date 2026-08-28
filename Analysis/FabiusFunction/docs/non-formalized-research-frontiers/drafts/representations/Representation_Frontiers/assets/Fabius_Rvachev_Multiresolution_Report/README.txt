@@ -2,6 +2,14 @@ Dyadic Multiresolution and Product-Series Representations
 in the Fabius-Rvachev System
 =========================================================
 
+ARCHIVED COMPANION BUNDLE
+-------------------------
+
+The former standalone manuscript is now consolidated in
+../../Representation_Frontiers.tex, with the rendered report at
+../../Representation_Frontiers.pdf. This directory retains its supporting
+computations, validation records, and figures.
+
 Research report prepared for Vladimir Reshetnikov's ProveIt project.
 Repository audit pin:
   924652f4a9a656fd957d2936b2f053747c6f6c47
@@ -16,11 +24,11 @@ multiresolution family of representations.
 Archive contents
 ----------------
 
-fabius_rvachev_multiresolution_report.tex
-  Complete LaTeX source.
+../../Representation_Frontiers.tex
+  Current consolidated LaTeX source.
 
-fabius_rvachev_multiresolution_report.pdf
-  Rendered and visually checked 41-page report.
+../../Representation_Frontiers.pdf
+  Current rendered consolidated report.
 
 numerical_experiments.py
   Fully commented exact-symbolic and high-precision numerical checks.  It
@@ -57,16 +65,19 @@ The supplied run used 55 decimal digits, 160 sinc-product factors, and 200
 half-integer Fourier modes.  It completed 1016 exact Walsh-moment checks and 35
 q-binomial aggregate checks with no failures.
 
-Building the report
--------------------
+Building the consolidated report
+--------------------------------
 
 A TeX Live installation containing the packages named in the preamble is
-sufficient.  From this directory, run:
+sufficient. From this archived companion directory, run exactly three serial
+passes:
 
-  latexmk -pdf -interaction=nonstopmode -halt-on-error \
-    fabius_rvachev_multiresolution_report.tex
+  (cd ../.. && pdflatex -interaction=nonstopmode -halt-on-error Representation_Frontiers.tex)
+  (cd ../.. && pdflatex -interaction=nonstopmode -halt-on-error Representation_Frontiers.tex)
+  (cd ../.. && pdflatex -interaction=nonstopmode -halt-on-error Representation_Frontiers.tex)
 
-The figure PDF files must remain beside the LaTeX source.
+These commands update ../../Representation_Frontiers.pdf. The supporting
+figure files must remain in this directory.
 
 Status convention
 -----------------

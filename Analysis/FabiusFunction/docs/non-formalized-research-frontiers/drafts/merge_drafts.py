@@ -392,13 +392,28 @@ def consolidate(group_dir, members, out_name, title, out_subdir=None):
               '\\begin{itemize}\n' + prov_lines + '\n\\end{itemize}\n\\clearpage\n')
     newtitle = ('\\title{\\bfseries %s}\n\\author{}\n'
                 '\\date{Consolidated 28 August 2026}\n' % title)
-    # members may want xcolor's named palettes while the base loads
-    # xcolor optionless; passing the options up front is harmless
+    pdf_metadata = (
+        '\\hypersetup{pdftitle={%s},pdfauthor={}}\n' % title
+        if 'hyperref' in all_pkgs else '')
+    # Keep generated volumes on the repository's canonical prose font while
+    # retaining a portable fallback for hosts without Libertinus installed.
+    base_pre = re.sub(
+        r'\\usepackage\{lmodern\}',
+        r'\\IfFileExists{libertinus.sty}{\\usepackage{libertinus}}'
+        r'{\\usepackage{lmodern}}',
+        base_pre)
+    # Member counter resets (especially `\\appendix`) can otherwise reuse PDF
+    # destination names across parts. Members may also want xcolor's named
+    # palettes while the base loads xcolor optionless; passing both options up
+    # front is harmless.
     base_pre = re.sub(r'(\\documentclass[^\n]*\n)',
                       '\\g<1>\\\\PassOptionsToPackage'
+                      '{hypertexnames=false}{hyperref}\n'
+                      '\\\\PassOptionsToPackage'
                       '{dvipsnames,svgnames}{xcolor}\n',
                       base_pre, count=1)
-    out = (base_pre + '\n'.join(extra_pkgs) + '\n' + newtitle + '\\begin{document}\n\\maketitle\n\\tableofcontents\n\\clearpage\n'
+    out = (base_pre + '\n'.join(extra_pkgs) + '\n' + pdf_metadata +
+           newtitle + '\\begin{document}\n\\maketitle\n\\tableofcontents\n\\clearpage\n'
            + banner + '\n'.join(parts) + '\n\\end{document}\n')
     io.open(os.path.join(out_dir, out_name + '.tex'), 'w', encoding='utf-8', newline='\n').write(out)
     print('wrote', os.path.join(out_dir, out_name + '.tex'))

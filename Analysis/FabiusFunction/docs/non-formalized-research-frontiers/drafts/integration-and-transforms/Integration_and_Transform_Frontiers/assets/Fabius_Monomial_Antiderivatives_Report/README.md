@@ -1,8 +1,13 @@
 # Fabius Monomial Antiderivatives and Inverse-Quantile Integrals
 
-This archive contains a frontier research report prepared from the recursive
-TeX corpus under `Analysis/FabiusFunction/docs` in Vladimir Reshetnikov's
-`ProveIt` repository, together with reproducible exact and numerical checks.
+> **Archived companion bundle.** The former standalone manuscript is now
+> consolidated in `../../Integration_and_Transform_Frontiers.tex`, with the
+> rendered report at `../../Integration_and_Transform_Frontiers.pdf`. This
+> directory retains its supporting computations.
+
+This archive contains reproducible exact and numerical checks for a frontier
+research report prepared from the recursive TeX corpus under
+`Analysis/FabiusFunction/docs` in Vladimir Reshetnikov's `ProveIt` repository.
 
 The novelty statements in the report are **snapshot-relative**: they mean that the stated formulas were not found in the audited repository snapshot of 27 August 2026. They are not unconditional claims of worldwide priority.
 
@@ -39,8 +44,8 @@ claims.
 
 ## Archive contents
 
-- `Fabius_Monomial_Antiderivatives.tex` — complete LaTeX source.
-- `Fabius_Monomial_Antiderivatives.pdf` — rendered A4 report.
+- `../../Integration_and_Transform_Frontiers.tex` — current consolidated source.
+- `../../Integration_and_Transform_Frontiers.pdf` — rendered consolidated report.
 - `experiments.py` — commented, network-free exact and numerical verification code.
 - `numerical_results.txt` — full output from the production run.
 - `series_convergence.csv` — selected partial sums of the complex-exponent series.
@@ -118,10 +123,11 @@ The script makes no network requests. It verifies the polynomial primitive ident
 The source is self-contained. A typical TeX Live build is:
 
 ```bash
-pdflatex -interaction=nonstopmode -halt-on-error Fabius_Monomial_Antiderivatives.tex
-pdflatex -interaction=nonstopmode -halt-on-error Fabius_Monomial_Antiderivatives.tex
-pdflatex -interaction=nonstopmode -halt-on-error Fabius_Monomial_Antiderivatives.tex
-rm -f *.aux *.log *.out *.toc
+(cd ../.. && pdflatex -interaction=nonstopmode -halt-on-error Integration_and_Transform_Frontiers.tex)
+(cd ../.. && pdflatex -interaction=nonstopmode -halt-on-error Integration_and_Transform_Frontiers.tex)
+(cd ../.. && pdflatex -interaction=nonstopmode -halt-on-error Integration_and_Transform_Frontiers.tex)
 ```
+
+These commands update `../../Integration_and_Transform_Frontiers.pdf`.
 
 The document uses the Libertinus text family when available and falls back to Latin Modern. The supplied PDF was built with TeX Live and has embedded fonts, hyperlinks, a table of contents, and PDF bookmarks.

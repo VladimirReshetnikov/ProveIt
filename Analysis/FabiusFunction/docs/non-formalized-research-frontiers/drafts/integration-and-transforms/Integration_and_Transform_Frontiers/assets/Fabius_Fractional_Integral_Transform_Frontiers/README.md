@@ -1,11 +1,16 @@
 # Integral, Transform, and Fractional-Order Frontiers for the Fabius–Rvachev System
 
-This package contains a 39-page research report, its LaTeX source, a deterministic numerical verification program, the recursive repository-audit ledger, and all generated numerical outputs.
+> **Archived companion bundle.** The former standalone manuscript is now
+> consolidated in `../../Integration_and_Transform_Frontiers.tex`, with the
+> rendered report at `../../Integration_and_Transform_Frontiers.pdf`. This
+> directory retains its supporting computations and audit records.
+
+This package contains the deterministic numerical verification program, the recursive repository-audit ledger, and the generated numerical outputs that accompanied the former standalone report.
 
 ## Main files
 
-- `fabius_fractional_integral_transform_frontiers.tex` — complete manuscript source.
-- `fabius_fractional_integral_transform_frontiers.pdf` — compiled and visually inspected PDF.
+- `../../Integration_and_Transform_Frontiers.tex` — current consolidated manuscript source.
+- `../../Integration_and_Transform_Frontiers.pdf` — compiled consolidated report.
 - `fractional_frontier_experiments.py` — fully commented deterministic verification program.
 - `new_numerical_results.tex` — tables imported by the manuscript.
 - `numerical_results.txt` — human-readable numerical ledger.
@@ -62,8 +67,11 @@ numerical_results.json
 From this directory:
 
 ```bash
-latexmk -pdf -interaction=nonstopmode -halt-on-error \
-  fabius_fractional_integral_transform_frontiers.tex
+(cd ../.. && pdflatex -interaction=nonstopmode -halt-on-error Integration_and_Transform_Frontiers.tex)
+(cd ../.. && pdflatex -interaction=nonstopmode -halt-on-error Integration_and_Transform_Frontiers.tex)
+(cd ../.. && pdflatex -interaction=nonstopmode -halt-on-error Integration_and_Transform_Frontiers.tex)
 ```
+
+These commands update `../../Integration_and_Transform_Frontiers.pdf`.
 
 The delivered PDF was built with Python 3.13.5, NumPy 2.3.5, SciPy 1.17.0, mpmath 1.3.0, pdfTeX 1.40.26, and latexmk 4.86. The build has no overfull boxes or unresolved references. The remaining messages are harmless font-size substitutions, several underfull table cells, and hyperref bookmark warnings caused by mathematics in section titles.

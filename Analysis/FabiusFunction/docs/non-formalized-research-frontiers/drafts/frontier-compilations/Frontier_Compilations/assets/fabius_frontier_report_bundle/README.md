@@ -1,7 +1,10 @@
 # Confluent Digital Extrapolation and Lambert-Phase Tomography
 
-This bundle contains the LaTeX source, compiled PDF, reproducible numerical experiments,
-and generated data for a frontier report on the Fabius--Rvachev--Thue--Morse system.
+This archived companion bundle preserves the reproducible numerical experiments and
+generated data for a frontier report on the Fabius--Rvachev--Thue--Morse system. The
+formerly standalone manuscript now appears in the consolidated frontier volume: its
+source is `../../Frontier_Compilations.tex`, and its rendered PDF is
+`../../Frontier_Compilations.pdf`.
 
 ## Corpus boundary
 
@@ -45,10 +48,10 @@ Natural-boundary behavior, sharp alias asymptotics, optimal span/conditioning tr
 irrational near-locks, higher-rank strip widths, and late Bell-coefficient resurgence are
 stated separately as conjectures or research programs.
 
-## Files
+## Archived companion files
 
-- `fabius_frontier_report.tex` -- complete LaTeX manuscript.
-- `fabius_frontier_report.pdf` -- compiled 24-page report.
+- `../../Frontier_Compilations.tex` -- source of the consolidated volume containing this report.
+- `../../Frontier_Compilations.pdf` -- rendered consolidated volume.
 - `numerical_experiments.py` -- extensively commented exact and high-precision checks.
 - `corpus_manifest.txt` -- complete 78-path audit boundary.
 - `experiment_results.txt` -- compact human-readable verification summary.
@@ -70,15 +73,19 @@ python -m pip install -r requirements.txt
 python numerical_experiments.py --output-dir . --precision 90
 ```
 
-Compile the paper with a reasonably complete TeX Live installation:
+From this archived companion directory, rebuild the consolidated paper with
+exactly three serial `pdflatex` passes:
 
 ```bash
-latexmk -pdf -interaction=nonstopmode -halt-on-error fabius_frontier_report.tex
+cd ../..
+pdflatex -interaction=nonstopmode -halt-on-error Frontier_Compilations.tex
+pdflatex -interaction=nonstopmode -halt-on-error Frontier_Compilations.tex
+pdflatex -interaction=nonstopmode -halt-on-error Frontier_Compilations.tex
 ```
 
-The build used Python 3.13.5, mpmath 1.3.0, NumPy 2.3.5, Matplotlib 3.10.8,
-latexmk 4.86, and pdfTeX 1.40.26. The manuscript uses the Libertinus Type 1 package when
-available and falls back to Latin Modern.
+These commands rebuild `../../Frontier_Compilations.pdf`. The archived computation used
+Python 3.13.5, mpmath 1.3.0, NumPy 2.3.5, and Matplotlib 3.10.8. The consolidated
+manuscript uses the Libertinus Type 1 package when available and falls back to Latin Modern.
 
 ## Numerical-status note
 

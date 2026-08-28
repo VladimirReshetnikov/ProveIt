@@ -1,16 +1,19 @@
-Fabius–Rvachev–Thue–Morse Frontier Results
-============================================
+Fabius–Rvachev–Thue–Morse Frontier Results — archived companion assets
+=======================================================================
 
-Main deliverables
------------------
-Fabius_Rvachev_Thue_Morse_Frontier_Results.tex
-Fabius_Rvachev_Thue_Morse_Frontier_Results.pdf
+Consolidated deliverables
+-------------------------
+The former standalone report has been absorbed into:
 
-The figures/ directory is required when recompiling the LaTeX source.
-Compile from this directory with:
+    ../../Thue_Morse_Atlas_and_Frontiers.tex
+    ../../Thue_Morse_Atlas_and_Frontiers.pdf
 
-    latexmk -pdf -interaction=nonstopmode -halt-on-error \
-      Fabius_Rvachev_Thue_Morse_Frontier_Results.tex
+This directory retains only the report's figures and reproducibility
+materials. To rebuild the consolidated volume, run from its directory:
+
+    pdflatex -interaction=nonstopmode -halt-on-error Thue_Morse_Atlas_and_Frontiers.tex
+    pdflatex -interaction=nonstopmode -halt-on-error Thue_Morse_Atlas_and_Frontiers.tex
+    pdflatex -interaction=nonstopmode -halt-on-error Thue_Morse_Atlas_and_Frontiers.tex
 
 Reproducibility material
 ------------------------
