@@ -95,7 +95,8 @@ theorem tsum_shifted_polynomial_eq_integral (F : BoundedFabius)
     _ = ∑ i ∈ Finset.range (P.natDegree + 1),
           P.coeff i * ∑' k : ℤ, (θ + k) ^ i *
             rvachevUp F (((2 : ℝ) ^ m)⁻¹ * (θ + k)) := by
-        rw [tsum_sum fun i _ => ((hsummable i).mul_left (P.coeff i))]
+        rw [Summable.tsum_finsetSum fun i _ =>
+          ((hsummable i).mul_left (P.coeff i))]
         exact Finset.sum_congr rfl fun i _ => tsum_mul_left
     _ = ∑ i ∈ Finset.range (P.natDegree + 1),
           P.coeff i * ∫ x : ℝ, x ^ i *
@@ -104,10 +105,18 @@ theorem tsum_shifted_polynomial_eq_integral (F : BoundedFabius)
         have hi' : i ≤ m :=
           le_trans (Nat.lt_succ_iff.mp (Finset.mem_range.mp hi)) hdeg
         rw [tsum_shifted_monomial_eq_integral_real F hF m hi' θ]
+    _ = ∑ i ∈ Finset.range (P.natDegree + 1),
+          ∫ x : ℝ, P.coeff i * (x ^ i *
+            rvachevUp F (((2 : ℝ) ^ m)⁻¹ * x)) :=
+        Finset.sum_congr rfl fun i _ =>
+          (MeasureTheory.integral_const_mul _ _).symm
+    _ = ∫ x : ℝ, ∑ i ∈ Finset.range (P.natDegree + 1),
+          P.coeff i * (x ^ i * rvachevUp F (((2 : ℝ) ^ m)⁻¹ * x)) :=
+        (integral_finsetSum _ fun i _ => (hint i).const_mul _).symm
     _ = ∫ x : ℝ, P.eval x * rvachevUp F (((2 : ℝ) ^ m)⁻¹ * x) := by
-        rw [← integral_finsetSum _ fun i _ => (hint i).const_mul _]
         refine integral_congr_ae (Filter.Eventually.of_forall fun x => ?_)
+        dsimp only
         rw [Polynomial.eval_eq_sum_range, Finset.sum_mul]
-        exact (Finset.sum_congr rfl fun i _ => by ring).symm
+        exact Finset.sum_congr rfl fun i _ => by ring
 
 end Fabius
