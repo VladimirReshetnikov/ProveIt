@@ -27,7 +27,7 @@ shifts, negative-branch and hierarchy formulas, and inverse/quantile versions
 remain research frontiers. These API claims were checked at source checkpoint
 `22f801337`.
 
-Member: `Exponents_and_q_Series_Frontiers` (97 pp, four parts) — the
+Member: `Exponents_and_q_Series_Frontiers` (124 pp, five parts) — the
 2026-08-28 consolidation of the two former drafts (Part I:
 Newton-basis frontiers; Part II: q-binomial Richardson), joined the
 same day by the eighth-wave report as **Part III** — *Finite Dyadic
@@ -64,7 +64,23 @@ algebraic mean-square Fourier tails with the sharp threshold
 `f_n ∈ H^s ⟺ s < n + 1/2`, and positive moment-matched atomic,
 dyadic-atomic, and polynomial-density closure menus at rates
 `16^{-n}`–`256^{-n}`, compared as a family against Part III's box
-mixtures.  The eighth-wave fold also repaired the volume's
+mixtures.  A fifth part arrived with the tenth wave (formerly
+`fabius_finite_products_frontier/`) — **Part V**, *Finite Dyadic Sinc
+Products and Exact Transport Geometry of Rvachev Spline Approximants*:
+convex-order and peakedness chains for the prefix laws, the exact
+absolute moment `E|X_N| = 5/18 - 4^{-N}/9`, the fixed single crossing
+of the density error at `x = +-1/2` for every stage, the exact metric
+collapse `W_1 = d_K = 4^{-N}/9`, `TV = 2*4^{-N}/9`, stop-loss =
+second-order Zolotarev = `4^{-N}/18`, `W_inf = 2^{-N}` with the
+synchronous coupling optimal only at `p = inf`, the exact Thue-Morse
+call-potential spline, the positive-mixture no-go theorem (no convex
+combination of stages can cancel the leading error in any of these
+metrics — signed Richardson weights are structurally necessary),
+entropy/Fisher monotonicity with the exact criterion
+`I(u_N) < inf iff N >= 3` and `KL(u || u_N) = inf`, and carefully
+flagged conjectural weighted expansions (entropy, forward KL, Fisher,
+fixed-p Wasserstein, and the `p ~ 2N` transport crossover with its
+lower-Lambert phase).  The eighth-wave fold also repaired the volume's
 part-boundary section numbering (Part II had rendered with
 `\appendix` letters G–N).  Supporting files under `assets/`,
 provenance with SHA-256 in the document itself.
