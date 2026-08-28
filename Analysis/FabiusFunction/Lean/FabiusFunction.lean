@@ -16,7 +16,9 @@ import FabiusFunction.LambertPhaseLockedRichardson
 import FabiusFunction.WeightedUniformSeries
 import FabiusFunction.WeightedUniformDistribution
 import FabiusFunction.WeightedUniformSupport
+import FabiusFunction.ContinuousCDF
 import FabiusFunction.GeometricUniformLaw
+import FabiusFunction.GeometricUniformCDF
 import FabiusFunction.Paper05442
 import FabiusFunction.Paper06487
 import FabiusFunction.PaperFabiusAsymptotic
