@@ -32,10 +32,10 @@ and three on global polynomial interpolation
 sources largely re-derived one another's core results, this volume is a
 true merge (unified notation, one statement per shared theorem with the
 best proof, all source-specific material retained) rather than a
-part-per-source concatenation.  A seventh source, the tenth-wave
+part-per-source concatenation.  A seventh and an eighth source were absorbed 2026-08-28 as the
+Bernoulli-periodization section of Part I — the tenth-wave
 `Fabius_Euler_Maclaurin_Report_Package/` (*Euler–Maclaurin and
-Exhaustion Quadratures for Fabius and Rvachev Moments*), was absorbed
-2026-08-28 as the Bernoulli-periodization section of Part I: shifted
+Exhaustion Quadratures for Fabius and Rvachev Moments*): shifted
 corrected rules for general polynomial weights, composite-mesh 2-adic
 termination and reflection reduction, phase-modulated first-defect
 series with Fabius-side forced phases, the first-harmonic proof that
@@ -45,7 +45,20 @@ conjecture), the closed Ruffa exhaustion tail with derivative-free
 rational Richardson extraction, the base-b termination dichotomy, the
 composite-mesh Rvachev quadrature (sharp by the companion polynomial
 volume's scale classification), and the Thue–Morse moment-identity
-family.  Provenance with SHA-256 hashes and the
+family; and its independently written eleventh-wave twin
+(`fabius_rvachev_exhaustion_euler_maclaurin_bundle/`, *Exhaustion,
+Euler–Maclaurin, and Spectral Exactness for Fabius–Rvachev Monomial
+Integrals*), merged into the same section: the exact all-mesh alias–Bernoulli identity (layer cake +
+Faulhaber, valid below every threshold), the general-q first defect in
+Bernoulli-moment and spectral forms with midpoint/upper parity
+superconvergence one level below threshold, the Bernoulli-moment
+identity β₂ₘ = (−1)ᵐ·2(2m)!·D(2m)/(2π)²ᵐ (the twin's
+conjectured sign law now follows from the positivity theorem; up to
+sign these are the polynomial volume's defect values ℰ₂ₘ₋₁(0)),
+the one-correction half-interval Rvachev rule with its
+termination/one-mode exhaustion dichotomy and exact two-level
+recovery, the supergeometric odd-base bound, and the q=1/4
+Gaussian-binomial filter form.  Provenance with SHA-256 hashes and the
 deduplication record are Appendix E of the volume; every source's
 supporting files live under its `assets/`.  The absorbed draft
 directories are deleted; git history is the archive.
