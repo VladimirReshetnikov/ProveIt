@@ -1,4 +1,5 @@
 import FabiusFunction.WeightedUniformDistribution
+import FabiusFunction.WeightedUniformSupport
 
 /-!
 # Geometrically weighted uniform-coordinate laws
@@ -9,10 +10,11 @@ uniform-coordinate construction to
 `w q n = (1 - q) * q ^ n`.
 
 The definitions are total in `q`.  Absolute convergence, affine
-self-similarity, and reflection use the natural hypothesis `|q| < 1`;
-nonnegativity and concentration on `[0,1]` use `0 ≤ q < 1`.  In particular,
-the foundational law includes the endpoint `q = 0`.  Strict positivity is
-needed only by later density and CDF-change-of-variables arguments.
+self-similarity, reflection, and support as the exact series range use the
+natural hypothesis `|q| < 1`; nonnegativity, concentration, and exact
+interval support `[0,1]` use `0 ≤ q < 1`.  In particular, the foundational
+law includes the endpoint `q = 0`.  Strict positivity is needed only by later
+density and CDF-change-of-variables arguments.
 -/
 
 open Filter Set MeasureTheory ProbabilityTheory Topology
@@ -141,6 +143,40 @@ theorem geometricUniformDistribution_isProbabilityMeasure
   exact weightedUniformDistribution_isProbabilityMeasure
     (summable_norm_geometricUniformWeight hq)
 
+/-! ## Absolute continuity and absence of atoms -/
+
+/-- For every `|q| < 1`, the geometric uniform law is absolutely continuous
+with respect to Lebesgue measure.
+
+Indeed its zeroth weight is `1 - q`, which is nonzero throughout this open
+parameter range.  No positivity assumption on `q` is needed. -/
+theorem geometricUniformDistribution_absolutelyContinuous
+    {q : ℝ} (hq : |q| < 1) :
+    geometricUniformDistribution q ≪ (volume : Measure ℝ) := by
+  have hq1 : q < 1 := (abs_lt.mp hq).2
+  have hweight : geometricUniformWeight q 0 ≠ 0 := by
+    rw [geometricUniformWeight_zero]
+    exact sub_ne_zero.mpr (ne_of_gt hq1)
+  simpa only [geometricUniformDistribution] using
+    (weightedUniformDistribution_absolutelyContinuous
+      (summable_norm_geometricUniformWeight hq) ⟨0, hweight⟩)
+
+/-- For every `|q| < 1`, the geometric uniform law has null singletons.
+
+As with the generic weighted result, this is exposed as a theorem producing
+the typeclass so that downstream developments can install it locally under
+their parameter hypothesis. -/
+theorem geometricUniformDistribution_nullSingletonClass
+    {q : ℝ} (hq : |q| < 1) :
+    NullSingletonClass (geometricUniformDistribution q) := by
+  have hq1 : q < 1 := (abs_lt.mp hq).2
+  have hweight : geometricUniformWeight q 0 ≠ 0 := by
+    rw [geometricUniformWeight_zero]
+    exact sub_ne_zero.mpr (ne_of_gt hq1)
+  simpa only [geometricUniformDistribution] using
+    (weightedUniformDistribution_nullSingletonClass
+      (summable_norm_geometricUniformWeight hq) ⟨0, hweight⟩)
+
 /-- The first coordinate and an independent copy of the full geometric
 series have their product law. -/
 theorem uniformProduct_map_head_tail_geometricUniformSeries
@@ -216,6 +252,30 @@ theorem geometricUniformDistribution_compl_Icc
     (summable_norm_geometricUniformWeight hq)
     (geometricUniformWeight_nonneg hq0 hq1)
     (hasSum_geometricUniformWeight hq).tsum_eq
+
+/-- For every `|q| < 1`, the topological support of the geometric law is
+exactly the range of its geometric coordinate series.  This structural form
+also covers negative geometric ratios, whose range need not be an interval
+with endpoints `0` and `1`. -/
+theorem geometricUniformDistribution_support_eq_range
+    {q : ℝ} (hq : |q| < 1) :
+    (geometricUniformDistribution q).support =
+      Set.range (geometricUniformSeries q) := by
+  simpa only [geometricUniformDistribution, geometricUniformSeries] using
+    (weightedUniformDistribution_support_eq_range
+      (w := geometricUniformWeight q) (summable_norm_geometricUniformWeight hq))
+
+/-- For `0 ≤ q < 1`, the topological support of the geometric law is exactly
+the full unit interval. -/
+theorem geometricUniformDistribution_support_eq_Icc
+    {q : ℝ} (hq0 : 0 ≤ q) (hq1 : q < 1) :
+    (geometricUniformDistribution q).support = Icc (0 : ℝ) 1 := by
+  have hq : |q| < 1 := by simpa only [abs_of_nonneg hq0] using hq1
+  simpa only [geometricUniformDistribution] using
+    (weightedUniformDistribution_support_eq_unitInterval
+      (summable_norm_geometricUniformWeight hq)
+      (geometricUniformWeight_nonneg hq0 hq1)
+      (hasSum_geometricUniformWeight hq).tsum_eq)
 
 end
 

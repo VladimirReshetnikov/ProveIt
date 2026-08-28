@@ -4,6 +4,9 @@ import FabiusFunction.GeometricCompleteHomogeneous
 import FabiusFunction.GeometricLagrange
 import FabiusFunction.LagrangeResidualMoments
 import FabiusFunction.GeometricResidualMoments
+import FabiusFunction.FinitePowerSeriesFilter
+import FabiusFunction.GeometricPowerSeriesFilter
+import FabiusFunction.AnalyticSeriesFilter
 import FabiusFunction.GeometricQBinomialLagrange
 import FabiusFunction.GeometricRichardson
 import FabiusFunction.GeometricLagrangeWeights
@@ -13,6 +16,7 @@ import FabiusFunction.GeometricLagrangeCompleteHomogeneous
 import FabiusFunction.LambertPhaseLockedRichardson
 import FabiusFunction.WeightedUniformSeries
 import FabiusFunction.WeightedUniformDistribution
+import FabiusFunction.WeightedUniformSupport
 import FabiusFunction.GeometricUniformLaw
 import FabiusFunction.Paper05442
 import FabiusFunction.Paper06487
@@ -209,6 +213,7 @@ import FabiusFunction.FabiusInverse
 import FabiusFunction.MidpointEndpointTransfer
 import FabiusFunction.InverseMidpointDefect
 import FabiusFunction.InverseLayerCake
+import FabiusFunction.InversePairIntegral
 import FabiusFunction.QuantileTransport
 import FabiusFunction.InverseQuarterAnchor
 import FabiusFunction.QuarterCatalanGerm
@@ -218,7 +223,9 @@ import FabiusFunction.QuarterSplineTwoSided
 import FabiusFunction.GlobalBounds
 import FabiusFunction.NormalizedVolterra
 import FabiusFunction.FractionalVolterra
+import FabiusFunction.FractionalVolterraCalculus
 import FabiusFunction.FractionalVolterraSemigroup
+import FabiusFunction.FabiusFractionalVolterra
 import FabiusFunction.FabiusAntiderivatives
 import FabiusFunction.RvachevDerivativeDistribution
 import FabiusFunction.BoundedDerivatives
@@ -245,6 +252,7 @@ import FabiusFunction.BernsteinPositivity
 import FabiusFunction.PerronRootEnclosure
 import FabiusFunction.MeasureRefinement
 import FabiusFunction.RandomSeriesLaw
+import FabiusFunction.CauchyTransform
 import FabiusFunction.UniformSplineWeakConvergence
 import FabiusFunction.DyadicSpecializations
 
@@ -264,7 +272,11 @@ unit-interval Laplace moments, with bounded-Fabius specializations.
 Its foundational algebra includes finite weighted-moment coefficient
 extraction across arbitrary semiring homomorphisms and field-generic Lagrange
 evaluation on geometric grids, culminating in module-valued Richardson
-exactness at an arbitrary starting index.
+exactness at an arbitrary starting index.  Arbitrary finite-node rescale
+filters are diagonalized coefficientwise on formal power series, with exact
+Gaussian residual multipliers for geometric rows; the recursive Gaussian
+coefficients themselves have functorial, symmetric, denominator-free ring
+laws.
 It also exposes the exact Fourier--Legendre expansion of Rvachev's up
 function, with absolute uniform convergence on `[-1,1]`, and its translated
 monomial representation of the signed global Fabius function on `[0,2]`.
@@ -274,11 +286,15 @@ The inverse-dyadic recurrence also has a finite nonrecursive solution as an
 explicit weighted sum over ordered compositions.
 
 The reusable integration layer exposes normalized Volterra operators on
-arbitrary real Banach spaces, their literal-iteration semigroup and strict FTC
-calculus, a Taylor reconstruction theorem, and exact polynomial commutators.
+arbitrary real normed spaces and, under completeness where required, their
+literal-iteration semigroup, strict FTC calculus, and Taylor reconstruction;
+the exact polynomial commutators retain the weaker normed-space generality.
 Its Fabius specialization gives the complete signed primitive ladder on all
 of `ℝ`, the bounded ladder on the maximal range `x ≤ 1`, and finite formulas
-for every natural monomial weight.
+for every natural monomial weight.  A separate absolutely-continuous
+inverse-pair theorem derives monotonicity and measurable clamped extensions
+of both clocks from their strict order equivalence, then packages the full
+two-function compact-rectangle identity and its Fabius specialization.
 
 The probability interface also exposes a support-free inverse-CDF transport
 principle from an almost-everywhere sublevel identity.  Its compact Fabius

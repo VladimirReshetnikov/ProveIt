@@ -1,6 +1,6 @@
 \documentclass[11pt]{article}
 
-\usepackage[a4paper,margin=27mm,headheight=22pt]{geometry}
+\usepackage[a4paper,margin=27mm,headheight=24pt]{geometry}
 \usepackage[T1]{fontenc}
 \usepackage[utf8]{inputenc}
 \IfFileExists{libertinus.sty}{\usepackage{libertinus}}{\usepackage{lmodern}}
@@ -10,7 +10,7 @@
 \usepackage{booktabs,longtable,array,tabularx,multirow}
 \usepackage{enumitem}
 \usepackage{xcolor}
-\usepackage{hyperref}
+\usepackage[hypertexnames=false]{hyperref}
 \usepackage[nameinlink,capitalise,noabbrev]{cleveref}
 \crefname{conjecture}{conjecture}{conjectures}
 \Crefname{conjecture}{Conjecture}{Conjectures}
@@ -32,11 +32,10 @@
 \definecolor{codegray}{RGB}{246,246,246}
 
 \hypersetup{
-  hypertexnames=false,
   pdftitle={Collected Frontier Reports for the Fabius--Rvachev System},
-  pdfauthor={OpenAI, based on the ProveIt corpus by Vladimir Reshetnikov},
-  pdfsubject={Ten collected research-frontier reports on the Fabius function and Rvachev up-function},
-  pdfkeywords={Fabius function, Rvachev up-function, Thue-Morse, sinc products, q-Richardson extrapolation, spectral determinants, endpoint asymptotics},
+  pdfauthor={},
+  pdfsubject={Ten collected research-frontier reports on the Fabius function, Rvachev's up-function, Thue--Morse structure, q-series, spectral arithmetic, endpoint asymptotics, and geometric uniform distributions},
+  pdfkeywords={Fabius function, Rvachev up-function, Thue--Morse, infinite sinc product, q-series, Richardson extrapolation, spectral arithmetic, Lambert W, geometric uniform distribution},
   colorlinks=true,
   linkcolor=frontierblue,
   citecolor=frontiergreen,
@@ -59,11 +58,18 @@
 % appendices by changing \thesection globally.  Restore article-style section
 % numbering at every outer report boundary; internal \part divisions remain
 % untouched and retain their intended place in the collected hierarchy.
+\makeatletter
+\let\frontier@normal@H@refstepcounter\H@refstepcounter
+\let\frontier@normal@Hy@chapapp\Hy@chapapp
 \newcommand{\frontierreportpart}[1]{%
   \clearpage
+  \let\H@refstepcounter\frontier@normal@H@refstepcounter
+  \let\Hy@chapapp\frontier@normal@Hy@chapapp
+  \gdef\theHsection{\arabic{part}.\arabic{section}}%
   \setcounter{section}{0}%
   \renewcommand{\thesection}{\arabic{section}}%
   \part{#1}}
+\makeatother
 
 \newtheorem{theorem}{Theorem}[section]
 \newtheorem{proposition}[theorem]{Proposition}
@@ -137,12 +143,6 @@
   stringstyle=\color{frontierorange}
 }
 
-\title{\textbf{Tail Quadrature, Exact Dyadic Error Laws,\\
-and $q$-Binomial Acceleration for the Fabius--Rvachev System}\\[0.65em]
-\large New frontier results connecting Thue--Morse splines, positive Peano kernels, orthogonal polynomials, and infinite sinc products}
-\author{A research synthesis based on the \texttt{ProveIt} Fabius-function corpus}
-\date{27 August 2026}
-
 \usepackage{mathrsfs}
 \usepackage{graphicx}
 \usepackage[most]{tcolorbox}
@@ -160,9 +160,14 @@ and $q$-Binomial Acceleration for the Fabius--Rvachev System}\\[0.65em]
 \tableofcontents
 \clearpage
 \section*{Provenance}
-This volume consolidates the following drafts verbatim (labels, citation keys, and
-asset paths mechanically prefixed per part; no mathematical content altered).
-The absorbed drafts are deleted from the working tree; git history is the archive.
+This volume consolidates ten source reports.  The mathematical bodies of source reports
+1--9 are preserved modulo removal of their standalone document, title-page, and table-of-contents
+wrappers and mechanical prefixing of labels, citation keys, macro names, and asset paths.
+Source report 10 receives the same mechanical treatment and, additionally, post-snapshot
+Lean-status updates documenting the exact-support, absolute-continuity, and null-singleton
+results proved after its pinned audit.
+The hashes below identify the unmodified source files at their former paths.  The absorbed
+standalone drafts are deleted from the working tree; git history is the archive.
 \begin{itemize}
 \item \path{Fabius_Rvachev_Frontier_Report/Fabius_Rvachev_Frontier_Report.tex} \\ {\footnotesize SHA-256 \path{7b342573c12b29316cac302c5f52bd67521e0e40335319f7e384af20a7374c5d}}
 \item \path{Fabius_Rvachev_Frontier_Report-2/Fabius_Rvachev_Frontier_Report.tex} \\ {\footnotesize SHA-256 \path{607256e734ce082af18e1f982b40b8540adef17de329c7747d58450e4803a2a1}}
@@ -1440,9 +1445,24 @@ Rearranging proves the identity.
 \paragraph{Formal crosswalk.}
 Set \(r=s-1\) and \(k=j\).  The compiled module
 \path{GeometricQBinomialLagrange.lean} defines a numerator that is zero
-outside \(k\le r\) and, inside that range, is exactly
+outside \(k\le r\) and, by definition inside that range, has the reversed
+form
 \( (-1)^{r-k}q^{\binom{r-k+1}{2}}
 \texttt{gaussianBinomial}\ q\ r\ (r-k)\).
+The theorem \nolinkurl{gaussianBinomial_symm} in
+\path{FiniteQBinomialCore.lean} is division-free over every commutative
+semiring.  Together with zero extension it yields the global forward formula
+\[
+ \texttt{geometricQBinomialWeightNumerator}\ q\ r\ k
+ =(-1)^{r-k}q^{\binom{r-k+1}{2}}
+   \texttt{gaussianBinomial}\ q\ r\ k
+\]
+as \nolinkurl{geometricQBinomialWeightNumerator_eq_forward}.  Thus the
+Gaussian coefficient in \eqref{p1:eq:lambda-qbinomial} now agrees literally
+with the proved forward-index form.  The same core supplies
+\nolinkurl{map_gaussianBinomial}, both \(q\)-Pascal recurrences, finite
+\(q\)-Pochhammer shift and concatenation laws, the full denominator-free
+product--Gaussian factorial identity, and the finite \(q\)-binomial theorem.
 Its \nolinkurl{reversed_finite_qBinomial_theorem} proves the
 denominator-free identity with product
 \(\prod_{h<r}(z-q^{h+1})\).  If \(k\mapsto q^k\) is injective on
@@ -1458,14 +1478,27 @@ proves for every \(d>0\)
 \]
 This discharges the finite weight and all positive residual-moment
 obligations generically, hence also at \(q=1/4\) whenever the node
-injectivity side condition is supplied.  The literal formal coefficient is
-reverse-indexed, \texttt{gaussianBinomial} \(q\ r\ (r-k)\); the displayed
-\(\qbinom{r}{k}{q}\) in \eqref{p1:eq:lambda-qbinomial} must not be read as an
-implicit use of a generic symmetry theorem.  At \(q=1/2\), the existing
+injectivity side condition is supplied.  At \(q=1/2\), the existing
 \texttt{discreteLimitWeight\_eq\_geometricLagrangeWeight} supplies the
-half-base Toeplitz specialization.  None of this proves
-\cref{p1:thm:q-richardson}: its analytic expansion, weighted remainder, and
-convergence assertions remain frontier.
+half-base Toeplitz specialization.
+
+The finite operator itself is also formalized coefficientwise.
+\path{FinitePowerSeriesFilter.lean} proves over every commutative semiring
+that
+\[
+ [X^m]\sum_{k\in S}w_k f(a_kX)
+ =\left(\sum_{k\in S}w_ka_k^m\right)[X^m]f,
+\]
+and proves compatibility with a further rescaling and with coefficient-ring
+homomorphisms.  Its specialization \path{GeometricPowerSeriesFilter.lean}
+packages the mass-one degree-zero boundary and every positive Gaussian
+residual multiplier; in particular
+\nolinkurl{geometricLagrangeSeriesFilter_eq_residual_mk} is an all-index
+identity of formal power series.  These declarations do not interpret a
+formal series by analytic evaluation, prove convergence of the spline
+sequence, or control a weighted remainder.  Consequently
+\cref{p1:thm:q-richardson}, including its analytic expansion and convergence
+rate, remains frontier.
 
 \subsection{Accelerated combinations}
 
@@ -1835,13 +1868,16 @@ These cases can be formalized before a fully general quadrature library is compl
 \item Define the formal reciprocal coefficients $b_j$ from the power series of $1/\Phi$.
 \item Prove the logarithmic coefficient formula \eqref{p1:eq:gamma-k} from Euler's sine product.
 \item Establish the fixed-order Fourier majorant used in \cref{p1:thm:prefix-expansion}.
-\item Use the compiled \path{GeometricQBinomialLagrange.lean} bridge for the geometric Lagrange weights and all positive residual moments.
+\item Use the compiled \path{GeometricQBinomialLagrange.lean} bridge for the
+      forward Gaussian weight formula and all positive residual moments, and
+      \path{GeometricPowerSeriesFilter.lean} for their complete coefficientwise
+      action on a formal series.
 \item Combine the two finite expansions to prove \cref{p1:thm:q-richardson}.
 \end{enumerate}
-The finite algebraic step is now available at arbitrary ratio under node
-injectivity, including \(q=1/4\); the remaining step is the analytic
-combination with controlled remainders.  Its \(q=1/2\) specialization is the
-existing half-base Toeplitz bridge.
+The finite algebraic and formal-series steps are now available at arbitrary
+ratio under node injectivity, including \(q=1/4\); the remaining step is the
+analytic interpretation and combination with controlled remainders.  Its
+\(q=1/2\) specialization is the existing half-base Toeplitz bridge.
 
 \section{Open problems and next frontier}
 \label{p1:sec:open}
@@ -1962,6 +1998,7 @@ On the Fourier side, the reciprocal sinc product generates the complete correcti
 The most immediate next step is formalization of the ordinary-prefix potential and the explicit $r=2$ Gaussian and Lobatto schemes.  These cases require little new infrastructure, resolve a documented frontier gap, and provide compact theorem statements with exact rational certificates.
 
 \appendix
+\renewcommand*{\theHsection}{\arabic{part}.\arabic{section}}
 
 \section{Coefficient and constant tables}
 \label{p1:app:tables}
@@ -2737,7 +2774,7 @@ weights frequency lobes of the limiting $C^\infty$ bump itself.
 
 \begin{theorem}[Real-rooted derivative hierarchy \Derived]
 \label{p2:thm:LP}
-The entire function $\Phi$ belongs to the Laguerre--Polya class.  Consequently,
+The entire function $\Phi$ belongs to the class of Laguerre--Polya entire functions.  Consequently,
 every derivative $\Phi^{(r)}$ has only real zeros.  More precisely:
 \begin{enumerate}
 \item the zero $n\in\Z\setminus\{0\}$ is inherited by $\Phi'$ with multiplicity
@@ -3544,6 +3581,7 @@ residue trace of the Fourier zero spectrum.  Together they turn an infinite sinc
 product from a transform formula into an arithmetic spectral object.
 
 \appendix
+\renewcommand*{\theHsection}{\arabic{part}.\arabic{section}}
 
 \section{Residue calculation at the origin}
 \label{p2:app:residue}
@@ -3752,7 +3790,6 @@ Fabius--Rvachev Sinc Product}
 
 
 % Standalone front-matter page resets are suppressed in the collected volume.
-
 \begin{abstract}
 Let
 \[
@@ -4030,6 +4067,22 @@ where $(a;q)_n=\prod_{k=0}^{n-1}(1-aq^k)$.  Their transformed moments are
  \label{p3:eq:transformed-moments}
 \end{equation}
 This is the finite $q$-binomial cancellation mechanism already developed in the repository.
+
+\paragraph{Formal boundary.}
+The finite mechanism is compiled in a form stronger than the real
+specialization above.  \path{FiniteQBinomialCore.lean} proves the Gaussian
+map law and reflection symmetry without division, together with the finite
+product and \(q\)-Pochhammer concatenation identities;
+\path{GeometricQBinomialLagrange.lean} uses these results to provide the
+global forward numerator and every positive residual moment.
+\path{FinitePowerSeriesFilter.lean} then proves the diagonal action of an
+arbitrary finite rescaling filter, and
+\path{GeometricPowerSeriesFilter.lean} packages the geometric Lagrange row
+as an all-index formal-series residual identity.  This delivered layer is
+coefficientwise.  It does not evaluate the formal input on \(D_N\), establish
+the holomorphic logarithms below, or prove convergence, remainders, signs, or
+brackets for the analytic transforms in this part; those assertions retain
+their frontier status unless an explicit analytic declaration is cited.
 
 Away from zeros, the existing multiplicative transform can be written schematically as
 \[
@@ -4690,7 +4743,9 @@ precision-aware optimal order remains a separate numerical-analysis problem.
 
 \subsection{Reproducibility}
 
-The archive contains \path{code/frontier_experiments.py}.  It uses 60-decimal-digit
+The retained program
+\path{assets/Fabius_Rvachev_Frontier_Report-3/code/frontier_experiments.py}
+uses 60-decimal-digit
 \texttt{mpmath} arithmetic and performs the following independent checks:
 \begin{enumerate}
 \item direct verification of all finite $q$-Lagrange moment identities used in the tables;
@@ -4900,24 +4955,27 @@ This turns the existing extrapolation machinery into a global spectral tool and 
 compact target for formal verification.
 
 \appendix
+\renewcommand*{\theHsection}{\arabic{part}.\arabic{section}}
 
 \section{Complete recursive TeX manifest}\label{p3:app:manifest}
 
-The following manifest is included verbatim from \path{corpus_manifest.txt}.  The first four
-metadata lines are followed by the 68 unique paths used in the audit.
+The following manifest is included verbatim from
+\path{assets/Fabius_Rvachev_Frontier_Report-3/corpus_manifest.txt}.  The first four metadata
+lines are followed by the 68 unique paths used in the audit.
 
 \input{assets/Fabius_Rvachev_Frontier_Report-3/corpus_manifest_table.tex}
 
 \section{Reproduction files}\label{p3:app:files}
 
-The ZIP archive accompanying this report contains:
+The former standalone package's retained auxiliary payload is stored under
+\path{assets/Fabius_Rvachev_Frontier_Report-3/}.  The report source has been absorbed into
+\path{Frontier_Compilations.tex}, and its former standalone PDF is not retained.  Relative to
+that asset directory, the retained files are:
 \begin{longtable}{@{}p{0.42\textwidth}p{0.52\textwidth}@{}}
 \toprule
 Path & Purpose\\
 \midrule
 \endhead
-\path{fabius_frontier_report.tex} & Complete LaTeX source.\\
-\path{fabius_frontier_report.pdf} & Rendered report.\\
 \path{code/frontier_experiments.py} & Fully commented numerical experiment and figure generator.\\
 \path{data/same_parity_thresholds.csv} & Threshold roots $q_r$ and bases $b_r$.\\
 \path{data/same_parity_crossings.csv} & Representative unique crossing roots.\\
@@ -6179,6 +6237,7 @@ The integer zeros of the Fourier transform are not merely spectral curiosities: 
 Finally, the same dyadic structure obstructs holonomicity in two directions.  In physical space it produces dense nonanalyticity; in Fourier space it produces zeros of unbounded multiplicity.  The consequences extend from $F$, $F^{-1}$, and $\Up$ to their moment and Appell sequences.  These deductions are compact enough to be plausible formalization targets, yet broad enough to open new research programs in differential algebra, exact sampling, q-holonomicity, and base-$b$ generalization.
 
 \appendix
+\renewcommand*{\theHsection}{\arabic{part}.\arabic{section}}
 
 \section{Additional proof details}
 \label{p4:app:proof-details}
@@ -6231,29 +6290,33 @@ The unreduced exact forms emitted by SymPy are
 
 \section{Reproducibility files}
 \label{p4:app:reproducibility}
-The ZIP archive contains:
+The former standalone package's retained auxiliary payload is stored under
+\path{assets/Fabius_Rvachev_Frontier_Report_2026-08-27/}.  The report source has been
+absorbed into \path{Frontier_Compilations.tex}, and its former standalone PDF is not retained.
+Relative to that asset directory, the retained files are:
 \begin{center}
 \begin{tabularx}{0.96\textwidth}{@{}>{\footnotesize\ttfamily\raggedright\arraybackslash}p{0.38\textwidth}X@{}}
 \toprule
-fabius\_frontier\_report.tex & Complete report source.\\
-fabius\_frontier\_report.pdf & Compiled and visually inspected report.\\
 frontier\_experiments.py & Fully commented symbolic/numerical program.\\
 corpus\_manifest.txt & Recursive list of all fifty-seven audited TeX paths and the exclusion-search protocol.\\
 results/numerical\_results.txt & Human-readable ledger of parameters and outputs.\\
 results/inverse\_defect.csv & Machine-readable inverse-defect table.\\
 results/reproduction\_errors.csv & Machine-readable cardinal residual table.\\
 figures/*.png, figures/*.pdf & Source figures in raster and vector form.\\
+requirements.txt & Python dependency bounds.\\
 README.txt & Build and rerun instructions.\\
+SHA256SUMS.txt & SHA-256 checksums for retained package files.\\
 \bottomrule
 \end{tabularx}
 \end{center}
-The program can be rerun with
+From the consolidated volume directory, the program can be rerun with
 \begin{lstlisting}[style=code,language=bash]
-python frontier_experiments.py
+(cd assets/Fabius_Rvachev_Frontier_Report_2026-08-27 && \
+  python frontier_experiments.py)
 \end{lstlisting}
-and the report can be rebuilt with
+and the consolidated report can be rebuilt with
 \begin{lstlisting}[style=code,language=bash]
-latexmk -pdf -interaction=nonstopmode -halt-on-error fabius_frontier_report.tex
+latexmk -pdf -interaction=nonstopmode -halt-on-error Frontier_Compilations.tex
 \end{lstlisting}
 
 \section{Complete recursive TeX manifest}
@@ -7849,6 +7912,7 @@ This avoids formalizing the full Aissen--Schoenberg--Whitney theorem while
 still obtaining any requested moment inequality.
 
 \appendix
+\renewcommand*{\theHsection}{\arabic{part}.\arabic{section}}
 
 \section{Exact coefficients and normalized Tur\'an ratios}
 
@@ -8160,7 +8224,8 @@ transcriptions, and six small TeX fragments generated for tables or checks.  His
 revisions were read as mathematical lineages: a corrected successor supersedes an older
 normalization, but a distinctive result surviving only in an archive file still counts as
 prior art.  The complete path list is reproduced verbatim in \cref{p6:app:inventory} and is
-also supplied as \path{corpus_manifest.txt} \cite{p6:proveit}.
+also supplied as
+\path{assets/fabius_frontier_report_bundle/corpus_manifest.txt} \cite{p6:proveit}.
 
 \subsection{Strong negative controls}
 
@@ -9140,8 +9205,10 @@ inverse-Lambert coefficients so that the radial cancellation can be tested indep
 \section{Numerical and exact-arithmetic experiments}
 \label{p6:sec:experiments}
 
-The accompanying \path{numerical_experiments.py} is deliberately independent of the
-LaTeX source.  It uses exact \texttt{Fraction} arithmetic for all polynomial filters and
+The retained program
+\path{assets/fabius_frontier_report_bundle/numerical_experiments.py} is deliberately
+independent of the LaTeX source.  It uses exact \texttt{Fraction} arithmetic for all
+polynomial filters and
 90-decimal-digit \texttt{mpmath} arithmetic for Gamma--zeta calculations.  The zeta
 function is forced to use Euler--Maclaurin evaluation rather than an automatic method
 selection, avoiding threshold-dependent loss of reproducibility on the line $\Re s=1$.
@@ -9407,6 +9474,7 @@ while avoiding duplication of the substantial frontier results already present i
 repository.
 
 \appendix
+\renewcommand*{\theHsection}{\arabic{part}.\arabic{section}}
 
 \section{Auxiliary identities}
 \label{p6:app:identities}
@@ -9456,12 +9524,13 @@ $\Theta_m(q)$ gives \eqref{p6:eq:tm-condition-limit}.
 \section{Reproduction guide}
 \label{p6:app:reproduction}
 
-From the extracted report directory, run
+From the consolidated volume directory, run
 \begin{lstlisting}[style=code]
-python numerical_experiments.py --output-dir . --precision 90
-latexmk -pdf -interaction=nonstopmode -halt-on-error fabius_frontier_report.tex
+(cd assets/fabius_frontier_report_bundle && \
+  python numerical_experiments.py --output-dir . --precision 90)
+latexmk -pdf -interaction=nonstopmode -halt-on-error Frontier_Compilations.tex
 \end{lstlisting}
-The script regenerates:
+The script regenerates the following files inside the retained asset directory:
 \begin{itemize}
 \item \path{filter_conditioning.csv} and \path{conditioning_tradeoff.png};
 \item \path{lambert_conditioning.csv} and \path{lambert_conditioning.png};
@@ -9476,8 +9545,9 @@ coefficients and every normalization.
 \section{Complete pinned LaTeX inventory}
 \label{p6:app:inventory}
 
-The following manifest is included as a separate plain-text file in the archive.  It records
-the complete recursive 78-path corpus boundary used for the nonduplication audit.
+The following manifest is retained under
+\path{assets/fabius_frontier_report_bundle/corpus_manifest.txt}.  It records the complete
+recursive 78-path corpus boundary used for the nonduplication audit.
 
 \lstinputlisting[
   basicstyle=\ttfamily\scriptsize,
@@ -9595,7 +9665,6 @@ V. Reshetnikov,
 
 
 % Standalone front-matter page resets are suppressed in the collected volume.
-
 \begin{abstract}
 Let
 \[
@@ -11031,6 +11100,7 @@ comparison with the exact dyadic-value $q$-calculus offers a sharply defined
 next frontier.
 
 \appendix
+\renewcommand*{\theHsection}{\arabic{part}.\arabic{section}}
 \clearpage
 \begingroup
 \small
@@ -12434,9 +12504,17 @@ exactness, the first omitted monomial moment, and geometric-node
 specializations.  The compiled bridge
 \path{GeometricQBinomialLagrange.lean} now supplies the arbitrary-ratio
 algebra needed here.  Its \path{geometricQBinomialWeightNumerator} is
-zero for \(j>r\), and for \(j\le r\) is literally
+zero for \(j>r\), and for \(j\le r\) is definitionally written as
 \( (-1)^{r-j}q^{\binom{r-j+1}{2}}
-\texttt{gaussianBinomial}\ q\ r\ (r-j)\).  The theorem
+\texttt{gaussianBinomial}\ q\ r\ (r-j)\).  The division-free reflection
+theorem \path{gaussianBinomial_symm} from
+\path{FiniteQBinomialCore.lean} proves the standard forward-index formula,
+globally after zero extension, as
+\path{geometricQBinomialWeightNumerator_eq_forward}.  The core also proves
+functoriality \path{map_gaussianBinomial}, both \(q\)-Pascal recurrences,
+finite \(q\)-Pochhammer shift and concatenation laws, both denominator-free
+product--Gaussian factorial identities, and the finite \(q\)-binomial
+theorem.  The theorem
 \path{reversed_finite_qBinomial_theorem} identifies the corresponding
 sum with \(\prod_{k<r}(z-q^{k+1})\) without division.  Under
 \path{Set.InjOn} of \(k\mapsto q^k\) on \(\{0,\ldots,r\}\),
@@ -12451,15 +12529,30 @@ for every \(m>0\),
 \]
 Thus the weight formula and every positive residual moment, including the
 \(q=1/4\) specialization whenever the nodes are injective, are no longer
-formalization obligations.  The reverse index \((r-j)\) above is deliberate:
-the source does not silently replace it by \(j\) using a generic Gaussian
-symmetry theorem.  At \(q=1/2\),
+formalization obligations.  In particular, the report's displayed
+\(\qbinom{r}{j}{q}\) is now the literal forward-index theorem, while the
+reversed form remains available for the product proof.  At \(q=1/2\),
 \texttt{FabiusDiscreteLimitToeplitz.lean} identifies the same weights with
 the half-base Toeplitz row and retains its all-degree reverse moments and
 exact total variation.  The later rational geometric-moment layer also proves
 the finite condition-number identity \cref{p8:eq:qcondition}; its infinite limit
 and decimal evaluation, together with all analytic error, remainder, and
 convergence claims, remain frontier.
+
+The operator-level coefficient algebra is now reusable as well.
+\path{FinitePowerSeriesFilter.lean} defines
+\(\sum_{j\in S}w_j f(a_jX)\) over an arbitrary commutative semiring and
+proves that its degree-\(m\) coefficient is multiplied by
+\(\sum_jw_ja_j^m\); it also proves constant-term, exactness, rescaling, and
+coefficient-map laws.  \path{GeometricPowerSeriesFilter.lean} specializes
+to \(a_j=q^j\), proves cancellation through the exactness order, and gives
+the Gaussian residual multiplier in every positive degree.  Its
+\path{geometricLagrangeSeriesFilter_eq_residual_mk} records the degree-zero
+mass boundary and all positive degrees in one formal-series identity.  This
+is strictly a \texttt{PowerSeries} statement: analytic evaluation of the
+filtered series, convergence of product truncations, transformed remainders,
+signs, and brackets do not follow from it and remain governed by the analytic
+frontier stated below.
 
 At post-snapshot checkpoint
 \nolinkurl{1e761ed77583e9870ceeaeb2c74ac824094f0f3f}, the algebraic route to the
@@ -12651,6 +12744,7 @@ For the endpoint asymptotic, moving by integer steps in the exact lower-Lambert 
 The two mechanisms are complementary. One is globally algebraic in the truncation index and exceptionally stable; the other is phase-sensitive and designed to separate a periodic asymptotic invariant. Both are sufficiently explicit to support immediate symbolic checking, high-precision computation, and a staged Lean formalization.
 
 \appendix
+\renewcommand*{\theHsection}{\arabic{part}.\arabic{section}}
 
 \section{Original audited TeX inventory}
 \label{p8:app:inventory}
@@ -14181,6 +14275,7 @@ without erasing their different normalizations.  It also leaves a concrete forma
 program and several testable frontier questions.
 
 \appendix
+\renewcommand*{\theHsection}{\arabic{part}.\arabic{section}}
 \section{Supplementary derivations}
 
 \subsection{The coefficient formula by partitions}
@@ -14488,12 +14583,16 @@ block.  Finally, we give a phase-preserving Lagrange/Richardson filter for asymp
 remainders whose coefficients are periodic in a lower-Lambert phase, together with a
 Fourier phase-averaging filter and exact Lambert-$W$ node construction.
 
-A post-snapshot Lean audit now supplies the generic continuous-linear naturality and
-conditional operator/scalar affine-recursion engine for arbitrary norm-summable weighted
-uniform series.  It also defines this report's geometric-\(q\) weights, series, and law and
-proves their measure-level self-similarity, reflection, and carried-unit-interval results.
-It does not prove equality of topological support, atomlessness, CDF or density identities,
-transforms, moments or cumulants, or fixed-point uniqueness.
+A post-snapshot Lean audit now supplies the generic continuous-linear naturality,
+conditional operator/scalar affine-recursion, and real absolute-continuity engines for
+arbitrary norm-summable weighted uniform series.  Every such real law with a nonzero
+coefficient is absolutely continuous with respect to Lebesgue measure and has null
+singletons.  The audit also defines this report's geometric-\(q\) weights, series, and law and
+proves their measure-level self-similarity, reflection, absolute continuity, null singletons,
+and support equal to the series range for \(|q|<1\), with exact support \([0,1]\) for
+\(0\le q<1\).  It does not define a named general-\(q\) CDF or explicit density, nor prove
+their CDF or density identities, transforms, moments or cumulants, smoothness, or fixed-point
+uniqueness.
 
 The word \emph{new} is used only in a corpus-relative sense: these statements were not found
 in the 57 TeX sources inspected in the specified repository snapshot.  No claim of global
@@ -14512,22 +14611,29 @@ listed in \texttt{corpus\_inventory.txt}, including frozen versions, the living 
 the Thue--Morse atlas, all included paper sources, and the twelve Fourier-decay drafts and
 audits.
 
-Since that pinned snapshot, \path{WeightedUniformSeries.lean} and
-\path{WeightedUniformDistribution.lean} have formalized the reusable product space,
-absolutely summable Banach-valued uniform-coordinate series, and their pushforward laws,
-including the eleven-declaration generic naturality and operator-affine recursion tranche,
-the compatibility API, reflection, and interval concentration.  The specialization
+Since that pinned snapshot, \path{WeightedUniformSeries.lean},
+\path{WeightedUniformDistribution.lean}, and \path{WeightedUniformSupport.lean} have
+formalized the reusable product space, absolutely summable Banach-valued uniform-coordinate
+series, and their pushforward laws, including the eleven-declaration generic naturality and
+operator-affine recursion tranche, the compatibility API, the four-declaration real
+absolute-continuity tranche, and the ten-declaration exact-support tranche.  In particular,
+support equals the series range in a complete Borel real normed space, arbitrary signed real
+weights have the exact interval between the sums of their negative and positive parts, and
+every nontrivial norm-summable real weighted law is absolutely continuous with null
+singletons.  The specialization
 \path{GeometricUniformLaw.lean} defines
 $w_j(q)=(1-q)q^j$ and $X_q$ for every real $q$, proves absolute convergence and total mass
-one for $|q|<1$, and establishes the independent-copy affine refinement and law reflection.
-For $0\le q<1$ it proves concentration on $[0,1]$, including $q=0$; at $q=1/2$,
+one for $|q|<1$, and establishes the independent-copy affine refinement, law reflection,
+absolute continuity, null singletons, and support equal to the exact series range.  For
+$0\le q<1$ it proves that the range and support are exactly $[0,1]$, including $q=0$; at
+$q=1/2$,
 \path{ProbabilityRepresentation.lean} identifies both the random series and its law with
-the classical dyadic construction.
+the classical dyadic construction and proves its exact support is $[0,1]$.
 
-This promotion does not prove that the topological support is exactly $[0,1]$, nor does it
-define or analyze the general-$q$ CDF, density, characteristic-function product, moments,
-cumulants, smoothness, or uniqueness of the affine fixed point.  Those report claims remain
-frontier mathematics.
+This promotion does not define a named general-$q$ CDF or select an explicit
+Radon--Nikodym density, nor does it prove the $q$-specific CDF or density identities,
+characteristic-function product, moments, cumulants, smoothness, or uniqueness of the affine
+fixed point.  Those report claims remain frontier mathematics.
 \end{boxedremark}
 
 
@@ -14659,11 +14765,19 @@ probability by constraining finitely many $U_j$ and leaving a sufficiently short
 The declarations \path{hasSum_geometricUniformWeight},
 \path{geometricUniformSeries_mem_Icc}, and
 \path{geometricUniformDistribution_Icc} formalize the series, its unit total weight, and
-concentration on $[0,1]$.  They do not yet formalize the stronger assertion in the preceding
-sentence that every open subinterval has positive mass, so exact topological support remains
-open.  Likewise \path{geometricUniformDistribution_reflection} proves
-$X_q\overset d=1-X_q$, but the displayed CDF and density symmetries still require the
-separate no-atoms and density layers.
+concentration on $[0,1]$.  The stronger assertion in the preceding sentence is now captured
+by \path{geometricUniformDistribution_support_eq_Icc}: exact topological support is
+$[0,1]$.  The positive-mass formulation follows from the standard characterization of
+support, rather than from a separately named interval-mass theorem.  More generally,
+\path{geometricUniformDistribution_support_eq_range} identifies support with the exact
+series range for every $|q|<1$.  Likewise
+\path{geometricUniformDistribution_reflection} proves
+$X_q\overset d=1-X_q$.  The measure is absolutely continuous by
+\path{geometricUniformDistribution_absolutelyContinuous}, and
+\path{geometricUniformDistribution_nullSingletonClass} packages its null singletons, both
+for every \(|q|<1\) without a positivity hypothesis.  The displayed CDF symmetry has not
+been separately packaged from these measure-level inputs, and the density symmetry still
+requires choosing and analyzing an explicit density.
 
 \paragraph{Exact public API crosswalk.}
 All names in this paragraph lie in the namespace
@@ -14698,7 +14812,37 @@ The compatibility surface consists of
 \path{weightedUniformDistribution_smul_weights} is oriented as
 \(\mu_{cw}=(x\mapsto cx)_*\mu_w\).
 
-The nineteen declarations in the named specialization are
+The four declarations in the real absolute-continuity tranche are
+\path{uniformScaledAdd_absolutelyContinuous},
+\path{weightedUniformDistribution_absolutelyContinuous_of_head_ne_zero},
+\path{weightedUniformDistribution_absolutelyContinuous}, and
+\path{weightedUniformDistribution_nullSingletonClass}.  The first treats the image of a
+uniform coordinate and an arbitrary independent s-finite tail measure under
+\((u,x)\mapsto ua+x\) for \(a\ne0\).  The head-coordinate weighted theorem assumes
+\(w_0\ne0\); the sharp final pair assumes only norm summability and
+\(\exists n,\ w_n\ne0\), with the last returning Mathlib's
+\path{NullSingletonClass} explicitly.
+
+The ten declarations in the exact-support tranche are
+\path{isOpenPosMeasure_infinitePi},
+\path{uniformProduct_isOpenPosMeasure},
+\path{support_map_eq_closure_range_of_continuous},
+\path{weightedUniformSeries_constCoordinates},
+\path{weightedUniformDistribution_support_eq_range},
+\path{range_weightedUniformSeries_eq_Icc_min_max},
+\path{weightedUniformDistribution_support_eq_Icc_min_max},
+\path{range_weightedUniformSeries_eq_Icc},
+\path{weightedUniformDistribution_support_eq_Icc}, and
+\path{weightedUniformDistribution_support_eq_unitInterval}.
+They show first that a norm-summable Banach-valued law has support exactly the range of its
+series map.  For arbitrary signed real weights, that range and support are the closed interval
+\[
+ \left[\sum_n\min\{w_n,0\},\ \sum_n\max\{w_n,0\}\right].
+\]
+The nonnegative and unit-mass theorems are exact specializations, not merely concentration
+statements.
+
+The twenty-three declarations in the named specialization are
 \path{geometricUniformWeight},
 \path{geometricUniformWeight_zero},
 \path{geometricUniformWeight_succ},
@@ -14713,14 +14857,19 @@ The nineteen declarations in the named specialization are
 \path{geometricUniformSeries_mem_Icc},
 \path{geometricUniformDistribution},
 \path{geometricUniformDistribution_isProbabilityMeasure},
+\path{geometricUniformDistribution_absolutelyContinuous},
+\path{geometricUniformDistribution_nullSingletonClass},
 \path{uniformProduct_map_head_tail_geometricUniformSeries},
 \path{geometricUniformDistribution_selfSimilar},
 \path{geometricUniformDistribution_reflection},
-\path{geometricUniformDistribution_Icc}, and
-\path{geometricUniformDistribution_compl_Icc}.  Finally,
+\path{geometricUniformDistribution_Icc},
+\path{geometricUniformDistribution_compl_Icc},
+\path{geometricUniformDistribution_support_eq_range}, and
+\path{geometricUniformDistribution_support_eq_Icc}.  Finally,
 \path{weightedCoordinateSum_eq_geometricUniformSeries_one_half} and
 \path{weightedSumDistribution_eq_geometricUniformDistribution_one_half} are the exact
-series- and law-level bridges at \(q=1/2\).
+series- and law-level bridges at \(q=1/2\), while
+\path{weightedSumDistribution_support_eq_Icc} is the exact dyadic support corollary.
 
 \subsection{Recovery of the classical functions}
 
@@ -15894,11 +16043,13 @@ in the lattice spacing.
 
 \subsection{Reproducibility}
 
-Running
+From the consolidated volume directory, running
 \begin{lstlisting}[style=code]
-python3 numerical_experiments.py
+(cd assets/beyond_dyadic_fabius_web_report && \
+  python3 numerical_experiments.py)
 \end{lstlisting}
-from the report directory regenerates the four PDF figures, a CSV summary, and the text log.
+regenerates the four PDF figures, a CSV summary, and the text log inside the retained asset
+directory.
 The script contains detailed comments, parameter checks, deterministic stopping criteria, and
 no external data dependency.
 
@@ -16024,20 +16175,20 @@ The following order minimizes dependence on asymptotic machinery.
 \begin{enumerate}
 \item Define the geometric coefficient sequence $w_j(q)= (1-q)q^j$ and prove summability,
       nonnegativity, and total mass one.
-\item Name \(X_q\) and its law, then specialize the generic probability, carried-interval,
+\item Name \(X_q\) and its law, then specialize the generic probability, exact-support,
       reflection, continuous-linear naturality, and scalar affine-recursion theorems.
-\item Prove equality of the topological support with \([0,1]\), then derive the
-      \(q\)-specific CDF integral equation, atomlessness or absolute continuity as needed,
-      and the density refinement.
+\item Use the exact topological support \([0,1]\), absolute continuity, and null singletons to
+      derive the \(q\)-specific CDF integral equation and the explicit density refinement.
 \item Derive characteristic-function products from finite products plus dominated convergence.
 \end{enumerate}
 
 Since the pinned snapshot, items 1 and 2 have been formalized, in stronger pointwise form,
-by \path{WeightedUniformSeries.lean}, \path{WeightedUniformDistribution.lean}, and
-\path{GeometricUniformLaw.lean}.  The law-reflection and independent-copy affine-refinement
-parts of item 3 are also formalized.  Exact topological support and the CDF integral equation
-in item 3 remain open, as do atomlessness, the density consequences, fixed-point uniqueness,
-and the characteristic-function program in item 4.
+by \path{WeightedUniformSeries.lean}, \path{WeightedUniformDistribution.lean},
+\path{WeightedUniformSupport.lean}, and \path{GeometricUniformLaw.lean}; this includes the
+law-reflection, independent-copy affine-refinement, absolute-continuity, null-singleton, and
+exact-support assertions.  The named CDF, its integral equation, an explicit density and its
+refinement equation, and fixed-point uniqueness in item 3 remain open, as does the
+characteristic-function program in item 4.
 
 \subsection{Analysis layer}
 
@@ -16118,12 +16269,13 @@ and classify algebraic zero collisions.  Each problem is concrete enough to supp
 experiments and sufficiently structured to admit Lean formalization.
 
 \appendix
+\renewcommand*{\theHsection}{\arabic{part}.\arabic{section}}
 
 \section{Complete TeX corpus inventory}
 \label{p10:app:inventory}
 
-The following ledger was used to enforce corpus-relative nonduplication.  It is also included
-as the standalone file \texttt{corpus\_inventory.txt}.
+The following ledger was used to enforce corpus-relative nonduplication.  It is retained as
+\path{assets/beyond_dyadic_fabius_web_report/corpus_inventory.txt}.
 
 \lstinputlisting[style=code,basicstyle=\ttfamily\tiny]{assets/beyond_dyadic_fabius_web_report/corpus_inventory.txt}
 
@@ -16192,10 +16344,11 @@ but the finite-difference form may be easier to formalize algebraically.
 \section{Reproducibility manifest}
 \label{p10:app:manifest}
 
-The ZIP archive accompanying this report contains:
+The former standalone package's retained auxiliary payload is stored under
+\path{assets/beyond_dyadic_fabius_web_report/}.  The report source has been absorbed into
+\path{Frontier_Compilations.tex}, and its former standalone PDF is not retained.  Relative to
+that asset directory, the retained files are:
 \begin{itemize}
-\item \texttt{fabius\_frontier\_report.tex} --- the present source;
-\item \texttt{fabius\_frontier\_report.pdf} --- the compiled report;
 \item \texttt{numerical\_experiments.py} --- deterministic, commented experiments;
 \item \texttt{q\_family\_densities.pdf};
 \item \texttt{standardized\_cumulants.pdf};
@@ -16204,7 +16357,9 @@ The ZIP archive accompanying this report contains:
 \item \texttt{numerical\_summary.csv};
 \item \texttt{experiment\_output.txt};
 \item \texttt{corpus\_inventory.txt};
-\item \texttt{README.txt}.
+\item \texttt{requirements.txt};
+\item \texttt{README.txt};
+\item \texttt{SHA256SUMS.txt}.
 \end{itemize}
 All numerical outputs are reproducible from the Python file with NumPy and Matplotlib.
 

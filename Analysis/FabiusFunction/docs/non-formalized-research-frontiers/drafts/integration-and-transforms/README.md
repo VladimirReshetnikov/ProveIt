@@ -4,7 +4,7 @@ Antiderivatives, integral calculus, transform dualities, and fractional
 calculus of the Fabius–Rvachev system, consolidated (2026-08-28) into
 the single volume
 [`Integration_and_Transform_Frontiers/`](Integration_and_Transform_Frontiers/)
-(330 pp, eleven parts):
+(332 pp, eleven parts):
 
 - **Part I** — *Antiderivatives of Monomially Weighted Fabius-Type
   Functions* (formerly `Fabius_Antiderivatives_Report/`);
@@ -34,5 +34,17 @@ The member drafts were absorbed verbatim (labels, citation keys, and
 asset paths mechanically prefixed per part; no mathematical content
 altered) and their directories deleted; provenance with SHA-256 hashes
 is recorded in the volume itself, and git history is the archive.
+
+The current ordinary Cauchy–Stieltjes foundation is formalized in
+`CauchyTransform.lean`: it defines the report-oriented transforms of the
+canonical up and unit-interval laws, proves their measure forms, the up-density
+form, holomorphy off the named interval cuts, first-derivative kernel formulas,
+and the affine bridge.  In Lean's totalized Bochner-integral convention the
+bridge holds for every complex argument; in its classical analytic
+interpretation it reads `S(z) = 2 R(2z - 1)` off `[0,1]`, equivalently in the
+reverse direction off `[-1,1]`.  This does not yet include logarithmic fixed
+points, integration by parts through the CDF, boundary/Plemelj theory, the
+resolvent DDE and its all-order orbit, generalized complex order, or the
+Jacobi-fraction layer.
 
 See [`../MANIFEST.md`](../MANIFEST.md) for titles and the previous paths.
