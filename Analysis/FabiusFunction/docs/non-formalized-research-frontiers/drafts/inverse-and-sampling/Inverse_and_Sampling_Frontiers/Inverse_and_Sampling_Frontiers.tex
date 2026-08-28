@@ -1664,9 +1664,21 @@ The reusable formal root engine is now supplied by
 \nolinkurl{PowerSeries.Implicit.existsUnique_zeroConstant_root} applies to a
 polynomial over $\Q[[Q]]$ once its parameter-constant
 constant coefficient is zero and its parameter-constant linear coefficient is
-a unit.  What remains is to define the concrete polynomial
-$\mathcal A_r(z,Q)$ in Lean, verify those hypotheses, and instantiate the
-generic theorem.  Separately still open are the analytic realization of that
+a unit.  The definition, verification, and instantiation are now
+delivered by \path{AlgebraicInverseGerm.lean}, one level more generally than asked:
+for an arbitrary jet $J$ and arbitrary correction weights $b$ over any commutative
+ring, \nolinkurl{Fabius.germPolynomial} builds $\mathcal A(z,Q)=\sum_j b_jQ^jD^{2j}J(z)$
+as a single application of the smoothing-operator calculus of
+\path{SmoothingOperatorInversion.lean} (the weights become the even series
+$\sum_j b_jQ^jt^{2j}$ over $R[[Q]]$ and the germ is that series acting on the jet
+through $D$), \nolinkurl{Fabius.constantCoeff_coeff_germPolynomial} reduces the germ to
+the jet at $Q=0$, and \nolinkurl{Fabius.germRoot} with \nolinkurl{Fabius.existsUnique_germRoot}
+instantiates the engine: for $b_0=1$, $J(0)=0$, and $J'(0)$ a unit there is exactly
+one zero-constant formal root $\Delta(Q)$.  The truncated display form of
+\eqref{p1:eq:Ar-def} is \nolinkurl{Fabius.germPolynomial\_eq\_sum}, and the first concrete
+instance is formal too: \nolinkurl{Fabius.dyadicGermTwo} is the unique formal root of
+$\mathcal A_2(z,Q)=z+4z^2-\tfrac49Q$ from \eqref{p1:eq:A2local}, with $J_2=z+4z^2$ entered
+from $F(\tfrac12)=\tfrac12$, $F(1)=1$.  Still open are the analytic realization of the
 formal root, its identification with the local inverse, entry into the plateau
 interval for all large $n$, and the displayed quantile formula.
 \end{obligation}

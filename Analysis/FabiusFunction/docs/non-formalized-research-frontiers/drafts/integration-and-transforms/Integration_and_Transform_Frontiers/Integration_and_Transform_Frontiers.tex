@@ -15737,11 +15737,26 @@ arbitrary-absolutely-continuous-primitive layer-cake signature remains an open
 formalization step.
 \end{statusbox}
 
-\begin{obligation}[Special-function layer]
+\begin{obligation}[Special-function layer --- discharged]
 Introduce incomplete beta integrals and prove
 \cref{p8:thm:weighted-fractional-master} first for positive real parameters.
 Complex continuation can remain outside the initial formalization.
 \end{obligation}
+
+\emph{Post-snapshot status.}  This obligation is discharged by
+\path{IncompleteBetaMaster.lean}: \nolinkurl{Fabius.incompleteBeta} is the incomplete
+beta integral $\mathrm B_z(a,b)=\int_0^z u^{a-1}(1-u)^{b-1}\dd u$, and both displays of
+\cref{p8:thm:weighted-fractional-master} are formal at positive real parameters:
+\nolinkurl{Fabius.fractionalVolterra\_rpow\_mul\_rvachevUp} is
+\eqref{p8:eq:weighted-up-fractional} and
+\nolinkurl{Fabius.fractionalVolterra\_rpow\_mul\_fabiusReal} is
+\eqref{p8:eq:weighted-F-fractional}, for $\alpha>0$, $p\ge0$, and $0<x\le1$, with the
+clamp $\min(X/x,1)$ implementing the stopping (the $F$-display's indicator
+$\mathbf 1_{\{X<x\}}$ appears as $\mathrm B_0=0$ at clamped samples).  The proofs run
+through the survival and lower-CDF layer cakes and one scaling substitution $t=xu$
+(\nolinkurl{Fabius.integral\_rpow\_mul\_rpow\_eq\_incompleteBeta} and its reflection);
+the exponent range $p\in(-1,0)$ and complex continuation remain outside, as the
+obligation allows.
 
 \begin{obligation}[Transform layer]
 The compact-interval transforms, their first derivatives, the atom-exact
