@@ -1,5 +1,6 @@
 import FabiusFunction.MeasureRefinement
 import Mathlib.Probability.Moments.Basic
+import Mathlib.Analysis.SpecialFunctions.Integrals.Basic
 
 /-!
 # Geometrically self-similar cumulant tails
@@ -227,5 +228,39 @@ theorem cgf_rvachevMeasure_self_similar (F : BoundedFabius)
     (integrable_exp_rvachevMeasure F hF _)
 
 end DyadicInstance
+
+section UniformClosedForm
+
+/-- **The closed moment generating function of the uniform digit**:
+`M_U(t) = 2·sinh(t/2)/t` for `t ≠ 0` — the real-argument counterpart
+of the digit's characteristic function `sinc(t/2)`. -/
+theorem mgf_uniform_half (t : ℝ) (ht : t ≠ 0) :
+    mgf id (MeasureTheory.volume.restrict (Icc (-(2⁻¹ : ℝ)) 2⁻¹)) t =
+      2 * Real.sinh (t / 2) / t := by
+  simp only [mgf, id_eq]
+  rw [MeasureTheory.integral_Icc_eq_integral_Ioc,
+    ← intervalIntegral.integral_of_le
+      (by norm_num : -(2⁻¹ : ℝ) ≤ 2⁻¹),
+    intervalIntegral.integral_comp_mul_left ht, integral_exp,
+    smul_eq_mul, Real.sinh_eq]
+  have h1 : t * 2⁻¹ = t / 2 := by ring
+  have h2 : t * -2⁻¹ = -(t / 2) := by ring
+  rw [h1, h2]
+  field_simp
+  ring
+
+/-- The digit prefix's moment generating function in closed form: the
+finite hyperbolic-sinc product
+`M_{P_m}(t) = ∏_{k<m} 2·sinh(2^{-k}t/2)/(2^{-k}t)`. -/
+theorem mgf_uniformDigitPrefix (m : ℕ) (t : ℝ) (ht : t ≠ 0) :
+    mgf id (uniformDigitPrefix m) t =
+      ∏ k ∈ Finset.range m,
+        2 * Real.sinh ((2⁻¹ : ℝ) ^ k * t / 2) / ((2⁻¹ : ℝ) ^ k * t) := by
+  haveI := isProbability_uniform_half
+  rw [uniformDigitPrefix_eq_mulPrefix, mgf_id_mulPrefix]
+  exact Finset.prod_congr rfl fun k _ =>
+    mgf_uniform_half _ (mul_ne_zero (by positivity) ht)
+
+end UniformClosedForm
 
 end Fabius
