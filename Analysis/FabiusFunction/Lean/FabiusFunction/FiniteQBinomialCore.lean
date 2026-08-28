@@ -20,10 +20,15 @@ whereas the recursive coefficient and the finite theorem do not.
 
 ## Main results
 
-* `gaussianBinomial_succ_succ` is the q-Pascal recurrence.
+* `gaussianBinomial_succ_succ` and `gaussianBinomial_succ_succ_alt` are the
+  two q-Pascal recurrences, both valid for the zero-extended triangle.
+* `map_gaussianBinomial` records functoriality under semiring homomorphisms,
+  and `gaussianBinomial_symm` gives reflection across the row midpoint
+  without division or cancellation.
 * `gaussianBinomial_eq_zero_of_lt` and `gaussianBinomial_self` give the two
   triangular boundaries.
 * `finiteQPochhammerIn_succ_shift` peels the first product factor.
+* `finiteQPochhammerIn_add` splits a product after an arbitrary prefix.
 * `finiteQPochhammerIn_self_mul_gaussianBinomial` is the denominator-free
   q-factorial quotient identity.
 * `finite_qBinomial_theorem` is the finite product expansion over every
@@ -76,6 +81,35 @@ theorem finiteQPochhammerIn_succ_shift
       rw [pow_succ']
       ring
 
+/-- **Concatenation of finite q-Pochhammer products.**  Splitting after the
+first `m` factors shifts the initial parameter of the remaining `n` factors
+by `q ^ m`.
+
+The identity is valid over every commutative ring, including the empty
+prefix or suffix and every zero-divisor or positive-characteristic case. -/
+theorem finiteQPochhammerIn_add
+    {R : Type*} [CommRing R] (a q : R) (m n : ℕ) :
+    finiteQPochhammerIn a q (m + n) =
+      finiteQPochhammerIn a q m *
+        finiteQPochhammerIn (a * q ^ m) q n := by
+  unfold finiteQPochhammerIn
+  rw [Finset.prod_range_add]
+  congr 1
+  apply Finset.prod_congr rfl
+  intro j _hj
+  rw [pow_add]
+  ring
+
+/-- Splitting a self-parameter q-Pochhammer product after its first `m`
+factors.  This is the ring-generic form of the usual identity
+`(q;q)_(m+n) = (q;q)_m (q^(m+1);q)_n`. -/
+theorem finiteQPochhammerIn_self_add
+    {R : Type*} [CommRing R] (q : R) (m n : ℕ) :
+    finiteQPochhammerIn q q (m + n) =
+      finiteQPochhammerIn q q m *
+        finiteQPochhammerIn (q ^ (m + 1)) q n := by
+  simpa only [pow_succ'] using finiteQPochhammerIn_add q q m n
+
 private theorem finiteQPochhammerIn_pascal_combine
     {R : Type*} [CommRing R] (a q : R) (n : ℕ) :
     finiteQPochhammerIn a q (n + 1) +
@@ -122,6 +156,25 @@ theorem gaussianBinomial_succ_succ
         q ^ (n - k) * gaussianBinomial q n k := by
   rfl
 
+/-- Gaussian coefficients commute with every semiring homomorphism.  Thus
+all identities proved for the recursive universal coefficient specialize
+coefficientwise to quotient rings, finite characteristic, and scalar
+extensions. -/
+@[simp] theorem map_gaussianBinomial
+    {R S : Type*} [Semiring R] [Semiring S]
+    (φ : R →+* S) (q : R) (n k : ℕ) :
+    φ (gaussianBinomial q n k) = gaussianBinomial (φ q) n k := by
+  induction n generalizing k with
+  | zero =>
+      cases k <;> simp
+  | succ n ih =>
+      cases k with
+      | zero => simp
+      | succ k =>
+          rw [gaussianBinomial_succ_succ,
+            gaussianBinomial_succ_succ, map_add, map_mul, map_pow,
+            ih (k + 1), ih k]
+
 /-- Gaussian coefficients vanish strictly above the diagonal. -/
 theorem gaussianBinomial_eq_zero_of_lt
     {R : Type*} [Semiring R] (q : R) {n k : ℕ} (hk : n < k) :
@@ -149,6 +202,153 @@ theorem gaussianBinomial_eq_zero_of_lt
       rw [gaussianBinomial_succ_succ,
         gaussianBinomial_eq_zero_of_lt q (Nat.lt_succ_self n), ih]
       simp
+
+private theorem gaussianBinomial_succ_succ_alt_of_le
+    {R : Type*} [CommSemiring R] (q : R) {n k : ℕ} (hk : k ≤ n) :
+    gaussianBinomial q (n + 1) (k + 1) =
+      q ^ (k + 1) * gaussianBinomial q n (k + 1) +
+        gaussianBinomial q n k := by
+  induction n generalizing k with
+  | zero =>
+      have hk0 : k = 0 := Nat.eq_zero_of_le_zero hk
+      subst k
+      simp
+  | succ n ih =>
+      cases k with
+      | zero =>
+          calc
+            gaussianBinomial q (n + 1 + 1) 1 =
+                gaussianBinomial q (n + 1) 1 + q ^ (n + 1) := by
+              rw [gaussianBinomial_succ_succ]
+              simp
+            _ = (q * gaussianBinomial q n 1 + 1) +
+                q ^ (n + 1) := by
+              rw [ih (Nat.zero_le n)]
+              simp
+            _ = q * (gaussianBinomial q n 1 + q ^ n) + 1 := by
+              rw [pow_succ']
+              ring
+            _ = q * gaussianBinomial q (n + 1) 1 + 1 := by
+              rw [gaussianBinomial_succ_succ]
+              simp
+            _ = q ^ (0 + 1) * gaussianBinomial q (n + 1) (0 + 1) +
+                gaussianBinomial q (n + 1) 0 := by
+              simp
+      | succ k =>
+          have hkn : k ≤ n := Nat.succ_le_succ_iff.mp hk
+          by_cases hkn' : k = n
+          · subst k
+            rw [gaussianBinomial_self,
+              gaussianBinomial_eq_zero_of_lt q (by omega),
+              gaussianBinomial_self]
+            simp
+          · have hklt : k < n := lt_of_le_of_ne hkn hkn'
+            have hk1n : k + 1 ≤ n := by omega
+            have hsub : n + 1 - (k + 1) = n - k := by omega
+            have hpowLeft :
+                q ^ (n - k) * q ^ (k + 1) = q ^ (n + 1) := by
+              rw [← pow_add]
+              congr 1
+              omega
+            have hpowRight :
+                q ^ (k + 1 + 1) * q ^ (n - (k + 1)) =
+                  q ^ (n + 1) := by
+              rw [← pow_add]
+              congr 1
+              omega
+            have hleft :
+                q ^ (n - k) *
+                    (q ^ (k + 1) * gaussianBinomial q n (k + 1)) =
+                  q ^ (n + 1) * gaussianBinomial q n (k + 1) := by
+              rw [← mul_assoc, hpowLeft]
+            have hright :
+                q ^ (k + 1 + 1) *
+                    (q ^ (n - (k + 1)) *
+                      gaussianBinomial q n (k + 1)) =
+                  q ^ (n + 1) * gaussianBinomial q n (k + 1) := by
+              rw [← mul_assoc, hpowRight]
+            calc
+              gaussianBinomial q (n + 1 + 1) (k + 1 + 1) =
+                  gaussianBinomial q (n + 1) (k + 1 + 1) +
+                    q ^ (n - k) *
+                      gaussianBinomial q (n + 1) (k + 1) := by
+                rw [gaussianBinomial_succ_succ, hsub]
+              _ = (q ^ (k + 1 + 1) *
+                    gaussianBinomial q n (k + 1 + 1) +
+                      gaussianBinomial q n (k + 1)) +
+                    q ^ (n - k) *
+                      (q ^ (k + 1) *
+                          gaussianBinomial q n (k + 1) +
+                        gaussianBinomial q n k) := by
+                rw [ih hk1n, ih hkn]
+              _ = q ^ (k + 1 + 1) *
+                    (gaussianBinomial q n (k + 1 + 1) +
+                      q ^ (n - (k + 1)) *
+                        gaussianBinomial q n (k + 1)) +
+                  (gaussianBinomial q n (k + 1) +
+                    q ^ (n - k) * gaussianBinomial q n k) := by
+                simp only [mul_add, hleft, hright]
+                ac_rfl
+              _ = q ^ (k + 1 + 1) *
+                    gaussianBinomial q (n + 1) (k + 1 + 1) +
+                  gaussianBinomial q (n + 1) (k + 1) := by
+                rw [← gaussianBinomial_succ_succ,
+                  ← gaussianBinomial_succ_succ]
+
+/-- **The second q-Pascal recurrence.**  The zero extension of the Gaussian
+triangle makes the identity valid for every pair of natural indices:
+
+`[n+1 choose k+1]_q = q^(k+1) [n choose k+1]_q + [n choose k]_q`.
+
+No admissibility hypothesis, division, cancellation, or nonvanishing
+assumption on `q` is needed. -/
+theorem gaussianBinomial_succ_succ_alt
+    {R : Type*} [CommSemiring R] (q : R) (n k : ℕ) :
+    gaussianBinomial q (n + 1) (k + 1) =
+      q ^ (k + 1) * gaussianBinomial q n (k + 1) +
+        gaussianBinomial q n k := by
+  by_cases hk : k ≤ n
+  · exact gaussianBinomial_succ_succ_alt_of_le q hk
+  · have hnk : n < k := Nat.lt_of_not_ge hk
+    rw [gaussianBinomial_eq_zero_of_lt q (by omega : n + 1 < k + 1),
+      gaussianBinomial_eq_zero_of_lt q (by omega : n < k + 1),
+      gaussianBinomial_eq_zero_of_lt q hnk]
+    simp
+
+/-- **Reflection symmetry of recursive Gaussian coefficients.**  For every
+commutative semiring and every admissible index,
+`[n choose n-k]_q = [n choose k]_q`.
+
+The proof uses the two q-Pascal orientations and never divides or cancels a
+q-Pochhammer factor.  It therefore remains valid at `q = 0`, at roots of
+unity, in positive characteristic, in the presence of zero divisors, and in
+the zero semiring. -/
+theorem gaussianBinomial_symm
+    {R : Type*} [CommSemiring R] (q : R) {n k : ℕ} (hk : k ≤ n) :
+    gaussianBinomial q n (n - k) = gaussianBinomial q n k := by
+  induction n generalizing k with
+  | zero =>
+      have hk0 : k = 0 := Nat.eq_zero_of_le_zero hk
+      subst k
+      simp
+  | succ n ih =>
+      cases k with
+      | zero => simp
+      | succ k =>
+          have hkn : k ≤ n := Nat.succ_le_succ_iff.mp hk
+          by_cases hkn' : k = n
+          · subst k
+            simp
+          · have hklt : k < n := lt_of_le_of_ne hkn hkn'
+            have hk1n : k + 1 ≤ n := by omega
+            have hindex :
+                n + 1 - (k + 1) = (n - (k + 1)) + 1 := by
+              omega
+            rw [hindex,
+              gaussianBinomial_succ_succ_alt q n (n - (k + 1))]
+            rw [show n - (k + 1) + 1 = n - k by omega,
+              ih hkn, ih hk1n, gaussianBinomial_succ_succ]
+            ac_rfl
 
 /-- **Denominator-free q-factorial quotient identity.**  Multiplying the
 Gaussian coefficient `[n choose k]_q` by `(q;q)_k` selects the final `k`
@@ -220,6 +420,32 @@ theorem finiteQPochhammerIn_self_mul_gaussianBinomial
             have hkeq : k = n := Nat.le_antisymm hkn hnk
             subst k
             simp
+
+/-- **Full denominator-free q-factorial identity.**  The finite
+q-Pochhammer product in row `n` is the product of the two would-be quotient
+denominators and the recursive Gaussian coefficient.
+
+Unlike a quotient formula, this identity is meaningful and true at roots of
+unity, over positive-characteristic rings, and in the presence of zero
+divisors. -/
+theorem finiteQPochhammerIn_self_eq_mul_mul_gaussianBinomial
+    {R : Type*} [CommRing R] (q : R) {n k : ℕ} (hk : k ≤ n) :
+    finiteQPochhammerIn q q n =
+      finiteQPochhammerIn q q k * finiteQPochhammerIn q q (n - k) *
+        gaussianBinomial q n k := by
+  calc
+    finiteQPochhammerIn q q n =
+        finiteQPochhammerIn q q ((n - k) + k) := by
+      rw [Nat.sub_add_cancel hk]
+    _ = finiteQPochhammerIn q q (n - k) *
+        finiteQPochhammerIn (q ^ (n - k + 1)) q k :=
+      finiteQPochhammerIn_self_add q (n - k) k
+    _ = finiteQPochhammerIn q q (n - k) *
+        (finiteQPochhammerIn q q k * gaussianBinomial q n k) := by
+      rw [finiteQPochhammerIn_self_mul_gaussianBinomial q hk]
+    _ = finiteQPochhammerIn q q k * finiteQPochhammerIn q q (n - k) *
+        gaussianBinomial q n k := by
+      ring
 
 private def gaussianBinomialSummand
     {R : Type*} [CommRing R] (q z : R) (n k : ℕ) : R :=
