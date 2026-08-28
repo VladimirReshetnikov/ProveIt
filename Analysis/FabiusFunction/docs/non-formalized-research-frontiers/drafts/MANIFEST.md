@@ -55,6 +55,8 @@ sources *as* independent documents (see the group README).
 | --- | --- | --- |
 | `Exponents_and_q_Series_Frontiers/` | *Exponent-Sequence and q-Series Frontiers* — consolidation (2026-08-28) of the former `Fabius_Newton_Rvachev_Frontier_Report/` (*Exponent-Sequence and Newton-Basis Frontiers*, Lean-crosswalked) and `fabius_frontier_results/` (*q-Binomial Richardson Acceleration of Geometric Sinc Products*); their assets live under `assets/`, provenance with SHA-256 in the document | absorbed drafts deleted; git history is the archive |
 
+| `finite_sinc_products_report/` | *Finite dyadic sinc products and piecewise-polynomial approximants to Rvachev’s up-function* | `drafts/incoming/finite_sinc_products_report_bundle.zip` (unpacked 2026-08-28, seventh wave) |
+
 ## spectra-and-arithmetic — `spectra-and-arithmetic/`
 
 | Directory | Document | Previous path |
