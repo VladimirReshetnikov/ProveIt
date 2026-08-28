@@ -19,7 +19,11 @@ import FabiusFunction.PaperFabiusAsymptotic
 import FabiusFunction.PaperKFoldThueMorse
 import FabiusFunction.FinitePolynomialFunctional
 import FabiusFunction.WeightedScaleMultiplicity
+import FabiusFunction.BellPolynomialInversion
+import FabiusFunction.AppellSequence
 import FabiusFunction.MomentCumulantAlgebra
+import FabiusFunction.ReciprocalExponentialGenerating
+import FabiusFunction.QuadraticCompositionalInverse
 import FabiusFunction.PolynomialExpectationCumulant
 import FabiusFunction.ThueMorseBitSupport
 import FabiusFunction.ThueMorseBooleanCube
