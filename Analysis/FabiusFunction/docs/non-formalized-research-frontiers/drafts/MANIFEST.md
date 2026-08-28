@@ -63,17 +63,7 @@ cross-referenced internally; unchanged by the reorganization).
 
 | Directory | Document | Previous path |
 | --- | --- | --- |
-| `Fabius_Antiderivatives_Report/` | *Antiderivatives of Monomially Weighted* Fabius integrands | `drafts/Fabius_Antiderivatives_Report/` |
-| `Fabius_Monomial_Antiderivatives_Report/` | *Fabius Monomial Antiderivatives and Inverse-Quantile Integrals* | `drafts/Fabius_Monomial_Antiderivatives_Report/` |
-| `fabius_monomial_antiderivatives_report-2/` | *Dyadic Primitive Ladders and Mellin–Newton Antiderivatives* | `drafts/fabius_monomial_antiderivatives_report-2/` |
-| `Fabius_Integral_Transforms_Report/` | *Integral Calculus and Transform Dualities* | `drafts/Fabius_Integral_Transforms_Report/` |
-| `Fabius_Integral_and_Transform_Frontiers/` | *Integral and Transform Frontiers* | `drafts/Fabius_Integral_and_Transform_Frontiers/` |
-| `Fabius_Rvachev_Integral_Frontiers/` | *Integral Transforms and Fractional Calculus for the Fabius and Rvachev Functions* | `drafts/Fabius_Rvachev_Integral_Frontiers/` |
-| `fabius_integral_frontiers_bundle/` | *Integral and Transform Frontiers* (bundle variant) | `drafts/fabius_integral_frontiers_bundle/` |
-| `Fabius_Integral_Transform_Fractional_Frontiers/` | *Integral, Transform, and Fractional Frontiers* | `drafts/Fabius_Integral_Transform_Fractional_Frontiers/` (arrived 2026-08-28) |
-| `Fabius_Rvachev_Fractional_Integral_Report/` | *Fractional Integral Calculus and Complex-Order Transform Hierarchies for the Fabius–Rvachev System* | `drafts/Fabius_Rvachev_Fractional_Integral_Report/` (arrived 2026-08-28) |
-| `Fabius_Fractional_Integral_Transform_Frontiers/` | *Integral, Transform, and Fractional-Order Frontiers for the Fabius–Rvachev System* | `drafts/incoming/…zip` (unpacked 2026-08-28) |
-| `fabius_fractional_transform_frontiers_bundle/` | *Fabius Fractional Transform Frontiers* (nonlocal tails, difference hierarchy, quantile-fractional and Stieltjes figures) | `drafts/incoming/…zip` (unpacked 2026-08-28) |
+| `Integration_and_Transform_Frontiers/` | *Integration and Transform Frontiers for the Fabius–Rvachev System* (316 pp, 11 parts) — consolidation (2026-08-28) of the former `Fabius_Antiderivatives_Report/`, `Fabius_Monomial_Antiderivatives_Report/`, `fabius_monomial_antiderivatives_report-2/`, `Fabius_Integral_Transforms_Report/`, `Fabius_Integral_and_Transform_Frontiers/`, `fabius_integral_frontiers_bundle/`, `Fabius_Rvachev_Integral_Frontiers/`, `Fabius_Integral_Transform_Fractional_Frontiers/`, `Fabius_Rvachev_Fractional_Integral_Report/`, `Fabius_Fractional_Integral_Transform_Frontiers/`, and `fabius_fractional_transform_frontiers_bundle/` (part order and former titles in the group README); assets under `assets/`, provenance with SHA-256 in the document | absorbed drafts deleted; git history is the archive |
 
 ## inverse-and-sampling — `inverse-and-sampling/`
 
@@ -89,6 +79,7 @@ Series and orthogonal-expansion representations of the up-function.
 | --- | --- | --- |
 | `Fabius_Rvachev_Representation_Frontiers/` | *Fabius–Rvachev Representation Frontiers* (Jacobi coefficients, exact even moments, resolvent and logarithmic-derivative identities) | `drafts/incoming/…zip` (unpacked 2026-08-28) |
 | `Fabius_Rvachev_Multiresolution_Report/` | *Dyadic Multiresolution and Product–Series Representations in the Fabius–Rvachev System* (rational mass arrays, Haar–Schauder expansions, Walsh–Thue–Morse products, beta-mixture limits, Bell–Bernoulli scale energies, inverse-quantile duality) | `drafts/incoming/…zip` (unpacked 2026-08-28) |
+| `fabius_rvachev_representation_frontier/` | *Representation Atlas and New Analytic Bridges for the Fabius Function, Rvachev's Up-Function, and Their Fourier Images* | `drafts/incoming/…zip` (unpacked 2026-08-28) |
 
 ## frontier-compilations — `frontier-compilations/`
 
