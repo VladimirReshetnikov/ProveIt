@@ -22,6 +22,8 @@ import FabiusFunction.Paper06487
 import FabiusFunction.PaperFabiusAsymptotic
 import FabiusFunction.PaperKFoldThueMorse
 import FabiusFunction.FinitePolynomialFunctional
+import FabiusFunction.FiniteMomentGram
+import FabiusFunction.GramStieltjes
 import FabiusFunction.WeightedScaleMultiplicity
 import FabiusFunction.BellPolynomialInversion
 import FabiusFunction.AppellSequence
