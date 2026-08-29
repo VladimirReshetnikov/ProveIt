@@ -774,12 +774,13 @@ theorem analyticOrderAt_generalizedRvachevProduct_one (m : ℤ)
     (hm : m ≠ 0) :
     analyticOrderAt (generalizedRvachevProduct (fun _ => 1))
         ((m : ℤ) : ℂ)
-      = weightedScaleMultiplicity 2 (fun _ => 1) m.natAbs := by
+      = ((weightedScaleMultiplicity 2 (fun _ => (1 : ℕ))
+          m.natAbs : ℕ) : ℕ∞) := by
   have hfun : generalizedRvachevProduct (fun _ => 1)
       = rvachevFourierProduct := by
     funext w
     exact generalizedRvachevProduct_one w
   rw [hfun, analyticOrderAt_rvachevFourierProduct_int m hm,
-    weightedScaleMultiplicity_one_nat]
+    weightedScaleMultiplicity_one_nat, Nat.cast_add, Nat.cast_one]
 
 end Fabius
