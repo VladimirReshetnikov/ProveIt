@@ -112,7 +112,9 @@ import FabiusFunction.IncompleteBetaMaster
 import FabiusFunction.MomentHankelMatrix
 import FabiusFunction.MomentHankelValues
 import FabiusFunction.StieltjesMomentLaurent
+import FabiusFunction.RefinementConditioning
 import FabiusFunction.StieltjesLogFixedPoint
+import FabiusFunction.StieltjesResolventHierarchy
 import FabiusFunction.OrthogonalPolynomialConstruction
 import FabiusFunction.OrthogonalPolynomialValues
 import FabiusFunction.OrthogonalPolynomialParity
