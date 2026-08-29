@@ -140,14 +140,20 @@ Laplace/vertical-line dual, geometric multisection, the two-nome
 Pochhammer–Prouhet partition function, the exact inverse-geometric
 endpoint lattice with its jets and two-term asymptotics, and the
 resolution of the periodic-cocycle conjecture via Part VI's exact
-Laplace decomposition.  Three revised editions of the atomic-functions
+Laplace decomposition.  Four revised or expanded editions of the atomic-functions
 reports were then merged into Part VI, adding the spectral
 Stieltjes–Wigert bridge, the distance-Mellin law, the q-Gaussian
 derivative Gram geometry with theta-function Riesz bounds, the
 log-Weibull jet-intermittency law, a proof of the Fup_n Edgeworth
-register conjecture, and — for provenance — the Russian source scan
-itself, archived under the volume's assets (the raw OCR was deleted
-once its recoverable content was merged into the volume).  A new
+register conjecture, and — from the audit-aware expanded edition —
+the closed Gaussian-binomial Gram–Schmidt orthogonalization with its
+Rogers–Szegő identification, the wrapped-heat-kernel circle model,
+the MacMahon determinant constant with triple-product Riesz bounds,
+and the overlap-regime theta conjecture.  For provenance the first of
+these editions shipped the Russian source scan itself; the scan and
+the raw OCR were deleted once their recoverable content was merged
+and verified against the volume (SHA-256 hashes stay in the volume's
+provenance list; git history archives the files).  A new
 `lambert-w/` group collected four independently written articles on
 the Lambert W function itself; they were merged editorially into the
 single consolidated volume `Lambert_W_Guide/` (the most complete

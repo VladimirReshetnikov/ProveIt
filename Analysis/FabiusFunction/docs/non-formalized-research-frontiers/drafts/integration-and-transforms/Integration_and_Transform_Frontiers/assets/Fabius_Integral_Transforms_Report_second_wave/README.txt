@@ -44,3 +44,5 @@ python fabius_integral_transforms.py --grid-power 17
 
 The PDF was compiled with the LaTeX source in this directory.  The numerical
 program requires Python 3, NumPy, and SciPy.
+
+> **Editorial note (2026-08-28):** the report source (.tex) and compiled PDF listed above were removed from this directory after their content was merged into the volume `Integration_and_Transform_Frontiers.tex`; their SHA-256 hashes remain in the volume provenance section, and git history archives the files. This directory keeps only figures, data, and scripts.

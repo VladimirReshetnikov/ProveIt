@@ -101,3 +101,5 @@ up-function evaluator is deliberately independent of the synthesis formulas;
 it is used only as a numerical diagnostic.  Sparse endpoint bases can exhibit
 large cancellation at higher degree, so the numerical residuals should not be
 interpreted as limits on the exact identities.
+
+> **Editorial note (2026-08-28):** the report source (.tex) and compiled PDF listed above were removed from this directory after their content was merged into the volume `Up_Polynomial_Synthesis.tex`; their SHA-256 hashes remain in the volume provenance section, and git history archives the files. This directory keeps only figures, data, and scripts.

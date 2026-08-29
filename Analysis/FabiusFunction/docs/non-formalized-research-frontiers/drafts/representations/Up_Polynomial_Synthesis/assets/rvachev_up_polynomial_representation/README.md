@@ -29,3 +29,5 @@ From this directory:
 ```bash
 latexmk -pdf rvachev_up_polynomial_representation.tex
 ```
+
+> **Editorial note (2026-08-28):** the report source (.tex) and compiled PDF listed above were removed from this directory after their content was merged into the volume `Up_Polynomial_Synthesis.tex`; their SHA-256 hashes remain in the volume provenance section, and git history archives the files. This directory keeps only figures, data, and scripts.

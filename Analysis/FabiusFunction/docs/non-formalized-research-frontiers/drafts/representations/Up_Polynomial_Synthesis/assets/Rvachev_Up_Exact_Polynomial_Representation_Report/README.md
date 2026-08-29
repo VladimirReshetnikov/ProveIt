@@ -86,3 +86,5 @@ The report audited the LaTeX corpus under `Analysis/FabiusFunction/docs` in `Vla
 ```
 
 The final audit covered all 97 LaTeX sources in that snapshot.  The report explicitly treats the repository's existing Rvachev--Appell deconvolution, dyadic Strang--Fix exactness, self-sampling rules, and alias hierarchy as prior corpus inputs.  Its corpus-relative additions are the finite interval-synthesis algorithm, explicit truncation/support/atom-count bounds, common-scale obstruction and complexity results, ghost-antiderivative construction, Thue--Morse derivative stencil, finite-prefix transfer, and tensor-product extension.  No unconditional claim of world priority is made.
+
+> **Editorial note (2026-08-28):** the report source (.tex) and compiled PDF listed above were removed from this directory after their content was merged into the volume `Up_Polynomial_Synthesis.tex`; their SHA-256 hashes remain in the volume provenance section, and git history archives the files. This directory keeps only figures, data, and scripts.

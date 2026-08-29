@@ -73,3 +73,5 @@ Before consolidation, the standalone PDF was compiled with pdfTeX/latexmk,
 checked for unresolved references, opened with PyMuPDF, and rendered
 page-by-page at 180 dpi. All 31 pages were visually reviewed; no clipping,
 overlap, or broken glyph was found.
+
+> **Editorial note (2026-08-28):** the report source (.tex) and compiled PDF listed above were removed from this directory after their content was merged into the volume `Frontier_Compilations.tex`; their SHA-256 hashes remain in the volume provenance section, and git history archives the files. This directory keeps only figures, data, and scripts.

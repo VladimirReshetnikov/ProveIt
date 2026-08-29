@@ -53,3 +53,5 @@ NOTES
 * The supplied Lambert-W.zip source archive was consulted and is documented in
   Appendix B of the monograph.  Those third-party source files are not
   redistributed in this deliverable.
+
+> **Editorial note (2026-08-28):** the article source (.tex) and compiled PDF listed above were removed from this directory after their content was merged into the volume `Lambert_W_Guide.tex`; their SHA-256 hashes remain in the volume provenance appendix, and git history archives the files. This directory keeps only figures, data, and scripts.

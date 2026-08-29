@@ -96,3 +96,5 @@ The source falls back to Latin Modern if the Libertinus package is unavailable, 
 - the PDF passed structural preflight, contains embedded fonts, and was rendered page-by-page for visual inspection;
 - the ZIP archive was tested after creation;
 - checksums were recomputed after all final files were in place.
+
+> **Editorial note (2026-08-28):** the report source (.tex) and compiled PDF listed above were removed from this directory after their content was merged into the volume `Representation_Frontiers.tex`; their SHA-256 hashes remain in the volume provenance section, and git history archives the files. This directory keeps only figures, data, and scripts.

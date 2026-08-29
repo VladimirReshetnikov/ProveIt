@@ -67,3 +67,5 @@ latexmk -pdf -interaction=nonstopmode -halt-on-error \
 ```
 
 The source expects the generated table fragments under `generated/`, so run the Python program first when rebuilding from a clean checkout.
+
+> **Editorial note (2026-08-28):** the report source (.tex) and compiled PDF listed above were removed from this directory after their content was merged into the volume `Dyadic_Comb_Frontiers.tex`; their SHA-256 hashes remain in the volume provenance section, and git history archives the files. This directory keeps only figures, data, and scripts.

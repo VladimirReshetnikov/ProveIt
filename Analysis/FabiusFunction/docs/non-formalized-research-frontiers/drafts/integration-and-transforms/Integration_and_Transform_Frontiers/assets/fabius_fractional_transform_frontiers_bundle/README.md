@@ -91,3 +91,5 @@ The bundled PDF was built with pdfTeX 1.40.26 and visually checked after renderi
 - Snapshot date: 27 August 2026
 
 The branch moved during the investigation, so all overlap statements in the report are deliberately tied to this immutable commit.
+
+> **Editorial note (2026-08-28):** the report source (.tex) and compiled PDF listed above were removed from this directory after their content was merged into the volume `Integration_and_Transform_Frontiers.tex`; their SHA-256 hashes remain in the volume provenance section, and git history archives the files. This directory keeps only figures, data, and scripts.

@@ -38,3 +38,5 @@ pdflatex fabius_rvachev_exhaustion_euler_maclaurin.tex
 pdflatex fabius_rvachev_exhaustion_euler_maclaurin.tex
 
 The report was compiled and visually inspected in the delivered bundle.
+
+> **Editorial note (2026-08-28):** the report source (.tex) and compiled PDF listed above were removed from this directory after their content was merged into the volume `Dyadic_Comb_Frontiers.tex`; their SHA-256 hashes remain in the volume provenance section, and git history archives the files. This directory keeps only figures, data, and scripts.

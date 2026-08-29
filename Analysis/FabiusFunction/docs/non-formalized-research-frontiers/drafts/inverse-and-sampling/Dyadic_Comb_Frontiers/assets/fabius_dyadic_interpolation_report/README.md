@@ -43,3 +43,5 @@ All Fabius samples and check-grid reference values are first computed as exact r
 ## Interpretation of the CSV data
 
 The reported maximum errors are maxima over a fine dyadic check grid, not interval-certified continuous suprema. `check_level=11` means 2,049 check points in the affine interval `[0,1]`; for Rvachev's function this interval represents `t=2x-1`.
+
+> **Editorial note (2026-08-28):** the report source (.tex) and compiled PDF listed above were removed from this directory after their content was merged into the volume `Dyadic_Comb_Frontiers.tex`; their SHA-256 hashes remain in the volume provenance section, and git history archives the files. This directory keeps only figures, data, and scripts.

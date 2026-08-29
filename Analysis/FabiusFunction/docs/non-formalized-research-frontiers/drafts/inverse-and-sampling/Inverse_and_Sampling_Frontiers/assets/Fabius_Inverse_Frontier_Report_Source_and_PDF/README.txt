@@ -37,3 +37,5 @@ Scope and priority note
 -----------------------
 The report's novelty claims are relative to the recursively inspected 57-file
 repository corpus.  It does not claim unconditional global publication priority.
+
+> **Editorial note (2026-08-28):** the report source (.tex) and compiled PDF listed above were removed from this directory after their content was merged into the volume `Inverse_and_Sampling_Frontiers.tex`; their SHA-256 hashes remain in the volume provenance section, and git history archives the files. This directory keeps only figures, data, and scripts.

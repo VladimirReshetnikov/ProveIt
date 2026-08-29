@@ -128,3 +128,5 @@ The consolidated source contains the exact relocated figure paths.
 The original standalone build record remains available in git history. Current
 font, reference, page-count, and rendering checks apply to the consolidated PDF
 beside `Representation_Frontiers.tex`, not to a deleted standalone PDF.
+
+> **Editorial note (2026-08-28):** the report source (.tex) and compiled PDF listed above were removed from this directory after their content was merged into the volume `Representation_Frontiers.tex`; their SHA-256 hashes remain in the volume provenance section, and git history archives the files. This directory keeps only figures, data, and scripts.

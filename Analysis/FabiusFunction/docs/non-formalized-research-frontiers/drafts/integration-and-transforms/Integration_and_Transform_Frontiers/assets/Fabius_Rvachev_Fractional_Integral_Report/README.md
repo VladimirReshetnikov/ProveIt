@@ -57,3 +57,5 @@ No random sampling is used.
 corpus at the pinned commit. It is not a universal publication-priority claim.
 Theorems are proved in the article; conjectural statements and numerical
 observations are explicitly labelled.
+
+> **Editorial note (2026-08-28):** the report source (.tex) and compiled PDF listed above were removed from this directory after their content was merged into the volume `Integration_and_Transform_Frontiers.tex`; their SHA-256 hashes remain in the volume provenance section, and git history archives the files. This directory keeps only figures, data, and scripts.

@@ -27,3 +27,5 @@ pdflatex -interaction=nonstopmode -halt-on-error fabius-dyadic-comb-sums.tex
 
 The integer-power calculations use Python's exact `Fraction` arithmetic. The
 fractional-power table uses `mpmath`; the plot uses `matplotlib` when present.
+
+> **Editorial note (2026-08-28):** the report source (.tex) and compiled PDF listed above were removed from this directory after their content was merged into the volume `Dyadic_Comb_Frontiers.tex`; their SHA-256 hashes remain in the volume provenance section, and git history archives the files. This directory keeps only figures, data, and scripts.

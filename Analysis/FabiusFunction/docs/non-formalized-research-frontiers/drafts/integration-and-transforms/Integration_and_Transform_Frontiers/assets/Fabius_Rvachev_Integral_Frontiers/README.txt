@@ -53,3 +53,5 @@ The report labels results as proved here, derived from audited repository
 inputs, numerical, or conjectural/open.  "New" means new relative to the
 recursive ProveIt/Analysis/FabiusFunction/docs LaTeX corpus audited on
 27 August 2026, not an exhaustive claim of worldwide publication priority.
+
+> **Editorial note (2026-08-28):** the report source (.tex) and compiled PDF listed above were removed from this directory after their content was merged into the volume `Integration_and_Transform_Frontiers.tex`; their SHA-256 hashes remain in the volume provenance section, and git history archives the files. This directory keeps only figures, data, and scripts.

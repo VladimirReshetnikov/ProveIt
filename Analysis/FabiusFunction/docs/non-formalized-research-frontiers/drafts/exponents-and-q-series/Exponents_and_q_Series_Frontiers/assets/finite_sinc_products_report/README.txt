@@ -39,3 +39,5 @@ Research status
 The report distinguishes results already present in the ProveIt documentation
 from new theorems and conjectures developed here. The new material is proved in
 the report but has not been independently peer reviewed or formalized in Lean.
+
+> **Editorial note (2026-08-28):** the report source and compiled PDF listed above (and, where listed, the supplied source scan/OCR) were removed from this directory after their content was merged into the volume `Exponents_and_q_Series_Frontiers.tex`; their SHA-256 hashes remain in the volume provenance list (and in `SHA256SUMS` here where present), and git history archives the files. This directory keeps only figures, data, and scripts.

@@ -75,3 +75,5 @@ From this directory:
 These commands update `../../Integration_and_Transform_Frontiers.pdf`.
 
 The delivered PDF was built with Python 3.13.5, NumPy 2.3.5, SciPy 1.17.0, mpmath 1.3.0, pdfTeX 1.40.26, and latexmk 4.86. The build has no overfull boxes or unresolved references. The remaining messages are harmless font-size substitutions, several underfull table cells, and hyperref bookmark warnings caused by mathematics in section titles.
+
+> **Editorial note (2026-08-28):** the report source (.tex) and compiled PDF listed above were removed from this directory after their content was merged into the volume `Integration_and_Transform_Frontiers.tex`; their SHA-256 hashes remain in the volume provenance section, and git history archives the files. This directory keeps only figures, data, and scripts.
