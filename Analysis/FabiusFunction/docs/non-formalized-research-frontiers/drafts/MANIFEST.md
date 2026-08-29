@@ -68,6 +68,7 @@ Three independently written Lambert W article packages (seventeenth wave, 2026-0
 | `Lambert-W-Article/` | *A Real-Variable Guide to Its Branches, Identities, Series, Asymptotics, Bounds, Approximations, and Computation* |
 | `Lambert_W_Function_Article/` | *The Lambert W Function* (article package) |
 | `Lambert_W_article/` | *Real Branches, Series, Asymptotics, Bounds, Continued Fractions, Numerical Evaluation, and Applications* |
+| `Lambert-W-Function-article-4/` | *The Lambert W Function* (fourth independent article, eighteenth wave, 2026-08-28) |
 
 ## spectra-and-arithmetic — `spectra-and-arithmetic/`
 
