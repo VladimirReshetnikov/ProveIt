@@ -135,6 +135,7 @@ import FabiusFunction.OrthogonalPolynomialConstruction
 import FabiusFunction.OrthogonalPolynomialValues
 import FabiusFunction.OrthogonalPolynomialParity
 import FabiusFunction.OrthogonalPolynomialRecurrence
+import FabiusFunction.OrthogonalPolynomialJacobi
 import FabiusFunction.CompositeMeshExactness
 import FabiusFunction.CombFirstDefect
 import FabiusFunction.CombDefectSeries
