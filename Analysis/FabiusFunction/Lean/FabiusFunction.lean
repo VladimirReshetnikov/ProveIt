@@ -107,6 +107,7 @@ import FabiusFunction.ThueMorseHankel
 import FabiusFunction.LacunaryRieszIntegral
 import FabiusFunction.GelfondLogisticBound
 import FabiusFunction.GeometricScaleProducts
+import FabiusFunction.WeierstrassProductBound
 import FabiusFunction.GeometricConvolutionTails
 import FabiusFunction.SmoothingOperatorInversion
 import FabiusFunction.SmoothingOperatorExponential
