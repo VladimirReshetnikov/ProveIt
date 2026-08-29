@@ -83,12 +83,17 @@ theorem im_rvachevCauchyTransform_le (F : BoundedFabius)
     have h2 : z.im * (1 / (‖z‖ + 1) ^ 2) ≤
         z.im * (1 / Complex.normSq (z - (x : ℂ))) :=
       mul_le_mul_of_nonneg_left h1 (le_of_lt hz)
+    have h3 : z.im / (‖z‖ + 1) ^ 2 ≤
+        z.im / Complex.normSq (z - (x : ℂ)) := by
+      rw [div_eq_mul_one_div (z.im) ((‖z‖ + 1) ^ 2),
+        div_eq_mul_one_div (z.im) (Complex.normSq (z - (x : ℂ)))]
+      exact h2
     have him : RCLike.im ((z - (x : ℂ))⁻¹) =
         -(z.im / Complex.normSq (z - (x : ℂ))) := by
       rw [RCLike.im_to_complex, Complex.inv_im, Complex.sub_im,
         Complex.ofReal_im, sub_zero, neg_div]
-    rw [him, div_eq_mul_one_div, div_eq_mul_one_div]
-    exact neg_le_neg h2
+    rw [him]
+    exact neg_le_neg h3
   have hkey : ∫ x : ℝ,
       RCLike.im ((z - (x : ℂ))⁻¹) ∂(rvachevMeasure F) ≤
       -(z.im / (‖z‖ + 1) ^ 2) := by
