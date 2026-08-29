@@ -84,6 +84,9 @@
 \newcommand{\e}{\mathrm e}
 \newcommand{\dd}{\,\mathrm d}
 \newcommand{\one}{\mathbf 1}
+\newcommand{\E}{\mathbb E}
+\newcommand{\Prob}{\mathbb P}
+\newcommand{\wt}{\operatorname{wt}}
 \newcommand{\abs}[1]{\lvert #1\rvert}
 \newcommand{\norm}[1]{\lVert #1\rVert}
 \newcommand{\floor}[1]{\left\lfloor #1\right\rfloor}
@@ -119,6 +122,8 @@ The finite and infinite $q$-Pochhammer symbols and the Gaussian, or $q$-binomial
 
 This monograph develops those themes from first principles.  It proves the algebraic laws of shifted factorials; the polynomial, reciprocal, and cyclotomic structure of Gaussian coefficients; finite and infinite $q$-binomial theorems; weighted generalizations through elementary and complete symmetric functions; combinatorial and finite-geometric models; unimodality by $\mathfrak{sl}_2$ representation theory; the $q$-Gauss, $q$-Chu--Vandermonde, and $q$-Pfaff--Saalsch\"utz summations; Jackson calculus and the $q$-gamma and $q$-beta functions; Jacobi's triple product, Euler's pentagonal theorem, and the Rogers--Ramanujan identities through Bailey pairs; cyclotomic factorization, $q$-Lucas and $q$-Babbage congruences; negative upper indices and $q$-Newton interpolation; and a recent family of central $q$-binomial/Lambert-series evaluations.  Every displayed theorem used in the main development is accompanied by a proof, and the final appendices collect formulas, limiting transitions, and computational recipes.
 
+A final part develops three further connections motivated by the Fabius/Rvachev documentation in the ProveIt repository: a denominator-free definition of Gaussian coefficients over arbitrary commutative semirings and rings; exact divided-difference and Richardson filters on geometric grids, including closed residual moments and stability norms; and a complete half-base derivation of inverse-dyadic Fabius values from Thue--Morse cancellation and the finite $q$-binomial theorem.
+
 \chapter*{Preface and source map}
 \addcontentsline{toc}{chapter}{Preface and source map}
 The aim is not merely to list identities, but to expose the mechanisms that repeatedly generate them.  Three such mechanisms dominate:
@@ -130,6 +135,8 @@ The aim is not merely to list identities, but to expose the mechanisms that repe
 Once these mechanisms are visible, many formulas that initially appear unrelated become instances of the same principle.
 
 The supplied archive was used throughout.  In particular, the weighted subset framework of Konvalina motivates \Cref{chap:weighted}; Kupershmidt's treatment of the $q$-Newton binomial informs \Cref{chap:qcalculus,chap:qnewton}; Straub's seminar on $q$-binomial congruences is reflected in \Cref{chap:cyclotomic}; the formalized $q$-series project of Lau, Lee, and Ono motivates the algebraic-versus-analytic distinctions in \Cref{chap:formalization} and supplies a modern Bailey-pair route to the Rogers--Ramanujan identities; and the central $q$-binomial paper of Chern, Dilcher, and Jiu is developed, with a complete proof, in \Cref{chap:central}.  The archive's reference chapters and encyclopedia snapshots were checked against the standard sources listed in the bibliography.  Additional material was drawn from the classical books and articles of Andrews, Askey, Bailey, Gasper, Rahman, Rota, Goldman, Reiner, Stanton, White, and others, as well as the NIST Digital Library of Mathematical Functions.
+
+The live \texttt{docs} tree of the ProveIt Fabius project was also surveyed, including its mathematical glossary, primary Fabius/Rvachev exposition, Lean walkthrough, non-elementarity article, canonical non-formalized frontier volume, and archive catalog.  The material most directly relevant here is reorganized and reproved in \Cref{chap:universal-gaussian,chap:qfilters,chap:fabius-probability,chap:fabius-qformula}; exploratory claims not needed for those proofs are not imported.
 
 \section*{Two regimes for $q$}
 Throughout the finite algebraic chapters, $q$ may be an indeterminate and identities are understood in a polynomial or rational-function ring.  In analytic chapters, unless stated otherwise,
@@ -234,48 +241,6 @@ Every integer $j$ with $0\le j<rn$ has a unique representation $j=s+rt$ with $0\
 \)
 so the product may be regrouped into the $r$ residue classes.
 \end{proof}
-
-\begin{corollary}[Dissection with a remainder]\label{cor:dissection-remainder}
-\index{dissection!with a remainder}
-Let $r\ge1$ and $n\ge0$ be integers, let $0\le u<r$, and set $N=rn+u$.  Then
-\[
- (a;q)_N
- =\prod_{s=0}^{u-1}(aq^s;q^r)_{n+1}
-  \prod_{s=u}^{r-1}(aq^s;q^r)_n .
-\]
-For $u=0$ this is \Cref{prop:dissection}.
-\end{corollary}
-
-\begin{proof}
-Division with remainder by $r$ is a bijection between the nonnegative integers $j$ and the pairs $(s,\ell)$ with $0\le s<r$ and $\ell\ge0$, given by $j=s+r\ell$.  Fix a residue $s$ and count the $\ell$ for which $j=s+r\ell$ lies in the exponent set $\{0,\ldots,N-1\}$ of the defining product.  The condition $s+r\ell<rn+u$ reads
-\[
- r\ell<rn+(u-s).
-\]
-
-If $s<u$, then $0<u-s\le u<r$, so
-\[
- rn<rn+(u-s)\le rn+r=r(n+1).
-\]
-As $r\ell$ runs through the multiples of $r$, the inequality $r\ell<rn+(u-s)$ therefore holds exactly for $\ell=0,1,\ldots,n$, which is $n+1$ values.
-
-If $s\ge u$, then $u-s\le0$, so the inequality implies $r\ell<rn$, that is $\ell\le n-1$; conversely every such $\ell$ satisfies $s+r\ell\le s+r(n-1)=rn+(s-r)<rn\le N$.  Hence $\ell$ ranges over $0,\ldots,n-1$, which is $n$ values.
-
-The defining product is finite and its factors commute, so it may be reordered according to the residue of $j$ modulo $r$:
-\[
- (a;q)_N
- =\prod_{s=0}^{u-1}\ \prod_{\ell=0}^{n}\bigl(1-aq^{s}(q^{r})^{\ell}\bigr)\;
-  \prod_{s=u}^{r-1}\ \prod_{\ell=0}^{n-1}\bigl(1-aq^{s}(q^{r})^{\ell}\bigr).
-\]
-Each inner product is by definition a $q^r$-shifted factorial with argument $aq^s$, namely $(aq^s;q^r)_{n+1}$ in the first family and $(aq^s;q^r)_n$ in the second.  This is the asserted identity.  When $u=0$ the first family is empty and the second has all $r$ residues, recovering \Cref{prop:dissection}.
-\end{proof}
-
-\begin{remark}\label{rem:dissection-remainder-checks}
-Two consistency checks are worth recording.  The total number of linear factors on the right is
-\[
- u(n+1)+(r-u)n=rn+u=N,
-\]
-as it must be, since $(a;q)_N$ is a product of $N$ linear factors in $a$.  At the other extreme $n=0$ the corollary reads $(a;q)_u=\prod_{s=0}^{u-1}(aq^s;q^r)_1=\prod_{s=0}^{u-1}(1-aq^s)$, again the definition.  Combining the corollary with \Cref{prop:concat} in the form $(a;q)_{rn+u}=(a;q)_{rn}(aq^{rn};q)_u$ and dividing by \Cref{prop:dissection} recovers the identity $\prod_{s=0}^{u-1}(1-aq^{s+rn})=(aq^{rn};q)_u$, so the two decompositions agree.
-\end{remark}
 
 \begin{proposition}[Base reversal]\label{prop:base-reversal}
 For $n\ge0$ and $a\ne0$,
@@ -960,33 +925,6 @@ For $m,n\ge0$,
 Set $r=m$ in \eqref{eq:qvand1} and put $\ell=m-j$.  Then the exponent becomes $\ell^2$, while symmetry gives $\qbinom m{m-\ell}=\qbinom m\ell$ and the second factor is $\qbinom n\ell$.
 \end{proof}
 
-% Chapter: \ref{chap:finite-qbinomial} ("Finite $q$-binomial theorems and
-% inversion"), section "$q$-Vandermonde convolution".
-
-\begin{corollary}[Shifted central form]\label{cor:shifted-central-vandermonde}
-\index{$q$-Vandermonde convolution!shifted central form}
-For $N\in\N_0$ and $k\in\Z$,
-\begin{equation}
- \qbinom{2N}{N+k}
- =\sum_{\ell\in\Z}q^{\ell^2+\ell k}\,
- \qbinom N\ell\,\qbinom N{\ell+k},
- \label{eq:shifted-central-vandermonde}
-\end{equation}
-where a Gaussian coefficient whose lower index falls outside $\set{0,1,\dots,\text{upper index}}$ is read as $0$, so that only finitely many terms are nonzero.  The case $k=0$ is \Cref{cor:central-vandermonde} with $m=n=N$.
-\end{corollary}
-
-\begin{proof}
-If $\abs k>N$ both sides vanish: the left side because $N+k\notin\set{0,\dots,2N}$, and the right side because a nonzero term requires both $0\le\ell\le N$ and $0\le\ell+k\le N$, which forces $\abs k\le N$.
-
-Assume therefore $-N\le k\le N$ and set $r=N+k\in\set{0,\dots,2N}$.  \Cref{thm:q-vandermonde}, in the form \eqref{eq:qvand1} with $m=n=N$, gives
-\[
- \qbinom{2N}{N+k}
- =\sum_{j\in\Z}q^{(N-j)(N+k-j)}
- \qbinom Nj\,\qbinom N{N+k-j}.
-\]
-Substitute $\ell=N-j$.  Then $N+k-j=\ell+k$, so the exponent becomes $\ell(\ell+k)=\ell^2+\ell k$; the symmetry $\qbinom N{N-\ell}=\qbinom N\ell$ of \Cref{thm:qbinom-structure}\,(i) turns the first Gaussian coefficient into $\qbinom N\ell$, and the second is $\qbinom N{\ell+k}$.  This is \eqref{eq:shifted-central-vandermonde}.
-\end{proof}
-
 \section{\texorpdfstring{$q$}{q}-binomial inversion}
 
 \begin{theorem}[$q$-binomial inversion]\label{thm:qbinomial-inversion}
@@ -1179,193 +1117,6 @@ The coefficient of $x^{k+1}$ is $e_{n-k}(1,2,\dots,n)$.  The standard ordinary g
 \]
 follows from the recurrence for Stirling numbers of the second kind, or by induction on $n$; comparison with \eqref{eq:weighted-h-gen} proves the last formula.
 \end{proof}
-
-\section{Principal specialization of Schur polynomials}
-\index{Schur polynomial}
-\index{principal specialization}
-
-The two Gaussian entries of \Cref{thm:weighted-specializations}(ii) are the
-one-column and the one-row case of a single product formula.  Stating it
-requires no symmetric-function theory beyond determinants, because a Schur
-polynomial can be \emph{defined} by its bialternant.
-
-\begin{definition}\label{def:schur-bialternant}
-Let $m\ge1$ and let $\lambda=(\lambda_1\ge\lambda_2\ge\cdots\ge\lambda_m\ge0)$
-be a partition with at most $m$ parts, padded by zeros.  Put
-\[
- \mu_j=\lambda_j+m-j\quad(1\le j\le m),
- \qquad
- \delta=(m-1,m-2,\ldots,0),
-\]
-so that $\mu_1>\mu_2>\cdots>\mu_m\ge0$, and $\delta$ is the value of $\mu$ at
-$\lambda=0$.  For indeterminates $x_1,\ldots,x_m$ set
-\[
- a_\mu(x_1,\ldots,x_m)=\det\bigl(x_i^{\mu_j}\bigr)_{i,j=1}^{m},
-\]
-and define the \emph{Schur polynomial}
-\[
- s_\lambda(x_1,\ldots,x_m)
- =\frac{a_\mu(x_1,\ldots,x_m)}{a_\delta(x_1,\ldots,x_m)}.
-\]
-Finally put $n(\lambda)=\sum_{j=1}^{m}(j-1)\lambda_j$.
-\end{definition}
-
-\begin{lemma}[Vandermonde alternant]\label{lem:vandermonde-alternant}
-For indeterminates $y_1,\ldots,y_m$,
-\[
- \det\bigl(y_i^{\,j-1}\bigr)_{i,j=1}^{m}
- =\prod_{1\le i<j\le m}(y_j-y_i).
-\]
-Consequently $a_\delta(x_1,\ldots,x_m)=\prod_{1\le i<j\le m}(x_i-x_j)$, and
-$a_\delta$ divides $a_\mu$ in $\Z[x_1,\ldots,x_m]$, so $s_\lambda$ is a
-polynomial with integer coefficients.
-\end{lemma}
-
-\begin{proof}
-Induct on $m$; for $m=1$ both sides equal $1$.  Regard
-$D=\det(y_i^{\,j-1})_{i,j=1}^{m}$ as a polynomial in $y_m$ of degree at most
-$m-1$.  If $y_m=y_i$ for some $i<m$, two rows coincide and $D=0$; hence
-$\prod_{i<m}(y_m-y_i)$ divides $D$, and by the degree bound
-$D=c\prod_{i<m}(y_m-y_i)$ with $c$ free of $y_m$.  Expanding along the last
-row, the coefficient of $y_m^{\,m-1}$ in $D$ is the cofactor at position
-$(m,m)$, namely $\det(y_i^{\,j-1})_{i,j=1}^{m-1}$, which by induction equals
-$\prod_{1\le i<j\le m-1}(y_j-y_i)$.  Multiplying proves the formula.
-
-Reversing the order of the columns of $\bigl(x_i^{\,m-j}\bigr)_{i,j}$ turns
-the exponents $m-j$ into $j-1$ and multiplies the determinant by the sign
-$(-1)^{\binom m2}$ of the reversal permutation, so
-\[
- a_\delta=(-1)^{\binom m2}\prod_{1\le i<j\le m}(x_j-x_i)
- =\prod_{1\le i<j\le m}(x_i-x_j).
-\]
-For the divisibility, interchanging $x_i$ and $x_j$ interchanges two rows of
-$a_\mu$, so $a_\mu$ changes sign; setting $x_i=x_j$ therefore gives
-$a_\mu=0$, and $x_i-x_j$ divides $a_\mu$ in $\Z[x_1,\ldots,x_m]$.  The
-polynomials $x_i-x_j$ with $i<j$ are pairwise non-associate primes in that
-unique factorization domain, so their product, which is $a_\delta$, divides
-$a_\mu$.
-\end{proof}
-
-\begin{theorem}[Principal specialization of a Schur polynomial]\label{thm:schur-principal}
-Let $\lambda$ have at most $m$ parts.  Then, as an identity in $\Q(q)$,
-\[
- s_\lambda(1,q,q^2,\ldots,q^{m-1})
- =q^{n(\lambda)}
- \prod_{1\le i<j\le m}
- \frac{1-q^{\,\lambda_i-\lambda_j+j-i}}{1-q^{\,j-i}}.
-\]
-The left side lies in $\Z[q]$, so by \Cref{cor:safe-specialization} the
-identity persists at every complex $q$ once the right-hand quotient has been
-reduced; as displayed it is to be read at those $q$ with $q^{\,d}\ne1$ for
-$1\le d\le m-1$.
-\end{theorem}
-
-\begin{proof}
-Specialize $x_i=q^{\,i-1}$, so that $x_i^{\mu_j}=q^{(i-1)\mu_j}$.  Writing
-$y_j=q^{\mu_j}$, the matrix $\bigl(x_i^{\mu_j}\bigr)_{i,j}$ has entries
-$y_j^{\,i-1}$, hence is the transpose of $\bigl(y_i^{\,j-1}\bigr)_{i,j}$.
-A determinant is invariant under transposition, so
-\Cref{lem:vandermonde-alternant} gives
-\[
- a_\mu(1,q,\ldots,q^{m-1})
- =\prod_{1\le i<j\le m}\bigl(q^{\mu_j}-q^{\mu_i}\bigr).
-\]
-Because $\lambda$ is weakly decreasing we have $\mu_1>\cdots>\mu_m\ge0$, so
-$\mu_i-\mu_j>0$ whenever $i<j$, and we extract from each difference the
-\emph{smaller} power:
-% ed.: extracting q^{\mu_j} rather than q^{\mu_i} produces no sign at all.
-% ed.: The incoming survey's `factor the lower powers of q from each
-% ed.: difference' left \binom m2 minus signs unaccounted for.
-\[
- q^{\mu_j}-q^{\mu_i}=q^{\mu_j}\bigl(1-q^{\,\mu_i-\mu_j}\bigr).
-\]
-Hence
-\[
- a_\mu(1,q,\ldots,q^{m-1})
- =q^{A(\mu)}\prod_{1\le i<j\le m}\bigl(1-q^{\,\mu_i-\mu_j}\bigr),
- \qquad
- A(\mu)=\sum_{1\le i<j\le m}\mu_j=\sum_{j=1}^{m}(j-1)\mu_j,
-\]
-the last equality because $\mu_j$ is contributed once for each $i<j$.
-Applying this to $\mu=\delta$, where $\delta_i-\delta_j=j-i$, gives
-\[
- a_\delta(1,q,\ldots,q^{m-1})
- =q^{A(\delta)}\prod_{1\le i<j\le m}\bigl(1-q^{\,j-i}\bigr),
-\]
-a nonzero element of $\Q(q)$.  Dividing,
-\[
- s_\lambda(1,q,\ldots,q^{m-1})
- =q^{\,A(\mu)-A(\delta)}
- \prod_{1\le i<j\le m}
- \frac{1-q^{\,\mu_i-\mu_j}}{1-q^{\,j-i}}.
-\]
-Finally $\mu_i-\mu_j=\lambda_i-\lambda_j+j-i$ and
-\[
- A(\mu)-A(\delta)=\sum_{j=1}^{m}(j-1)(\mu_j-\delta_j)
- =\sum_{j=1}^{m}(j-1)\lambda_j=n(\lambda).
-\]
-The left side is a polynomial with integer coefficients by
-\Cref{lem:vandermonde-alternant}; the transfer to arbitrary complex $q$ is
-\Cref{lem:polynomial-identity-principle} together with
-\Cref{cor:safe-specialization}.
-\end{proof}
-
-\begin{corollary}[The one-column and one-row shadows]\label{cor:schur-e-h}
-Let $m=n\ge1$.
-\begin{enumerate}[label=\textup{(\roman*)}]
-\item For $0\le k\le n$ and $\lambda=(1^k)=(1,\ldots,1,0,\ldots,0)$,
-\[
- s_{(1^k)}(1,q,\ldots,q^{n-1})=q^{\binom k2}\qbinom nk.
-\]
-\item For $k\ge0$ and $\lambda=(k)$,
-\[
- s_{(k)}(1,q,\ldots,q^{n-1})=\qbinom{n+k-1}{k}.
-\]
-\end{enumerate}
-Since $s_{(1^k)}=e_k$ and $s_{(k)}=h_k$~\cite{Macdonald1995}, these are
-exactly the two Gaussian entries of \Cref{thm:weighted-specializations}(ii),
-that is, $C_k^n(\mathbf w)$ and $S_k^n(\mathbf w)$ at $w_i=q^{\,i-1}$.
-\end{corollary}
-
-\begin{proof}
-(i) Here $\lambda_i=1$ for $i\le k$ and $\lambda_i=0$ for $i>k$, so
-$n(\lambda)=\sum_{i\le k}(i-1)=\binom k2$, and $\lambda_i-\lambda_j$ vanishes
-except when $i\le k<j$, where it equals $1$.  The product of
-\Cref{thm:schur-principal} therefore collapses to
-\[
- \prod_{i=1}^{k}\prod_{j=k+1}^{n}
- \frac{1-q^{\,j-i+1}}{1-q^{\,j-i}}
- =\prod_{i=1}^{k}\frac{1-q^{\,n-i+1}}{1-q^{\,k-i+1}},
-\]
-the inner product telescoping.  The numerators are
-$(1-q^{n})(1-q^{n-1})\cdots(1-q^{\,n-k+1})=(q;q)_n/(q;q)_{n-k}$ and the
-denominators are $(1-q^k)\cdots(1-q)=(q;q)_k$, so the product is $\qbinom nk$.
-
-(ii) Here $\lambda_1=k$ and $\lambda_j=0$ for $j\ge2$, so $n(\lambda)=0$ and
-only the pairs $(1,j)$ contribute:
-\[
- \prod_{j=2}^{n}\frac{1-q^{\,k+j-1}}{1-q^{\,j-1}}
- =\frac{(q;q)_{n+k-1}\big/(q;q)_k}{(q;q)_{n-1}}
- =\qbinom{n+k-1}{k}.
- \qedhere
-\]
-\end{proof}
-
-\begin{remark}\label{rem:schur-hypotheses}
-Both hypotheses of \Cref{thm:schur-principal} are needed as stated.  If
-$\lambda$ had more than $m$ parts, $\mu$ would not be strictly decreasing and
-$a_\mu$ would vanish identically.  And the displayed quotient is meaningful
-only where $q^{\,j-i}\ne1$ for all $1\le i<j\le m$; at the excluded roots of
-unity, and at $q=1$, one must cancel first, exactly as prescribed by
-\Cref{cor:safe-specialization}.  After cancellation the limit $q\to1$ is
-\[
- s_\lambda(1,1,\ldots,1)
- =\prod_{1\le i<j\le m}\frac{\lambda_i-\lambda_j+j-i}{j-i},
-\]
-by $\lim_{q\to1}(1-q^a)/(1-q^b)=a/b$; this is Weyl's dimension formula for
-$\mathrm{GL}_m$, and it stands to \Cref{thm:schur-principal} exactly as
-\Cref{cor:qbinom-classical} stands to the Gaussian coefficient.
-\end{remark}
 
 \section{Weighted inversion}
 
@@ -1579,80 +1330,6 @@ Writing $n=k+j$ and separating the double sum gives
 \]
 Each factor equals the reciprocal infinite product by Euler's identity, proved later in \Cref{cor:euler-infinite}; alternatively, the equality follows already by taking $n\to\infty$ in \Cref{thm:reciprocal-finite}.  This gives the stated product.
 \end{proof}
-
-\begin{proposition}[Three-term recurrence]\label{prop:rogers-szego-three-term}
-\index{Rogers--Szeg\H{o} polynomial!three-term recurrence}
-For $n\ge1$,
-\[
- H_{n+1}(z;q)=(1+z)H_n(z;q)-z\,(1-q^n)H_{n-1}(z;q).
-\]
-\end{proposition}
-
-\begin{proof}
-% ed.: the incoming survey proved this by quoting a Pascal II instance in the
-% ed.: indices (n-1,k-1),(n-1,k-2), which does not effect the reduction, and
-% ed.: then appealing to ``a common factorial denominator''.  The argument below
-% ed.: replaces that step by the ratio identity displayed second, after which
-% ed.: the comparison is exactly eq:qpascal2.
-Both sides are polynomials in $z$, so it suffices to compare the coefficient
-of $z^k$ for every $k\in\Z$, using the convention $\qbinom nk=0$ for $k<0$ or
-$k>n$.  On the left that coefficient is $\qbinom{n+1}k$; on the right it is
-\[
- \qbinom nk+\qbinom n{k-1}-(1-q^n)\qbinom{n-1}{k-1}.
-\]
-We claim that for every $k\in\Z$ and every $n\ge1$,
-\[
- (1-q^n)\qbinom{n-1}{k-1}=\bigl(1-q^{\,n+1-k}\bigr)\qbinom n{k-1}.
-\]
-Granting the claim, the right-hand coefficient equals
-\[
- \qbinom nk+\Bigl(1-\bigl(1-q^{\,n+1-k}\bigr)\Bigr)\qbinom n{k-1}
- =\qbinom nk+q^{\,n+1-k}\qbinom n{k-1},
-\]
-which is the second $q$-Pascal recurrence \eqref{eq:qpascal2} with $n$
-replaced by $n+1$; by \Cref{thm:qpascal} that recurrence is valid for all $k$
-under the zero convention, and the right-hand coefficient is therefore
-$\qbinom{n+1}k$, as required.
-
-To prove the claim, let first $1\le k\le n$, so that $k-1\ge0$ and
-$n-k\ge0$ and both Gaussian coefficients are given by factorial quotients.
-From $(q;q)_n=(1-q^n)(q;q)_{n-1}$ and
-$(q;q)_{n-k+1}=(1-q^{\,n-k+1})(q;q)_{n-k}$,
-\[
- \frac{\qbinom n{k-1}}{\qbinom{n-1}{k-1}}
- =\frac{(q;q)_n\,(q;q)_{n-k}}{(q;q)_{n-1}\,(q;q)_{n-k+1}}
- =\frac{1-q^n}{1-q^{\,n-k+1}},
-\]
-and cross-multiplication gives the claim.  For $k\le0$ both sides vanish,
-since then $k-1<0$ and both Gaussian coefficients are zero.  For $k=n+1$ the
-left side vanishes because $\qbinom{n-1}{n}=0$ and the right side vanishes
-because $1-q^{\,n+1-k}=1-q^0=0$.  For $k>n+1$ every term is zero.  This
-exhausts all $k$ and completes the proof.
-\end{proof}
-
-\begin{corollary}[Dilation formula]\label{cor:rogers-szego-dilation}
-For $n\ge1$,
-\[
- H_n(qz;q)=H_n(z;q)-z\,(1-q^n)H_{n-1}(z;q).
-\]
-\end{corollary}
-
-\begin{proof}
-By \Cref{prop:rogers-szego-recurrence}, $H_n(qz;q)=H_{n+1}(z;q)-zH_n(z;q)$.
-Substituting \Cref{prop:rogers-szego-three-term} for $H_{n+1}(z;q)$ and
-cancelling $zH_n(z;q)$ gives the formula.
-\end{proof}
-
-\begin{remark}\label{rem:rogers-szego-three-term}
-The recurrence of \Cref{prop:rogers-szego-recurrence} moves the argument, from
-$z$ to $qz$; the one above does not.  It is therefore a three-term recurrence
-in the index $n$ alone, of the shape familiar from orthogonal polynomial
-sequences, and it evaluates $H_0,H_1,\ldots,H_N$ at a fixed numerical $z$ in
-$\OO(N)$ ring operations, without ever forming the Gaussian coefficients.  At
-$q=0$ every $\qbinom nk$ equals $1$ by \Cref{prop:extreme-specializations},
-the recurrence becomes $H_{n+1}=(1+z)H_n-zH_{n-1}$, and its solution is the
-geometric sum $1+z+\cdots+z^{n}$, as it must be.
-\end{remark}
 
 \chapter{Finite fields, Grassmannians, and rank enumeration}\label{chap:finite-geometry}
 \index{finite field}
@@ -1969,10 +1646,7 @@ For fixed $n$, $\Qbinom Nnq\to1/(q;q)_n$ as $N\to\infty$.  The limiting series c
  \left|\Qbinom Nnq\right|
  \le
  \frac{\prod_{j\ge1}(1+\abs q^j)}
-      {\bigl(\inf_{r\ge0}\abs{(q;q)_r}\bigr)^{2}},
-% ed.: squared the infimum --- the Gaussian coefficient has two
-% ed.: shifted-factorial factors in its denominator, so the derivation
-% ed.: bounds each by the infimum separately.
+      {\inf_{r\ge0}\abs{(q;q)_r}},
 \]
 where the denominator is positive because $(q;q)_r\to(q;q)_\infty\ne0$.  Thus the summands, extended by zero for $n>N$, are dominated by a constant multiple of $\abs q^{\binom n2}R^n$.  Dominated convergence, together with local uniform convergence of the products, now permits passage to the limit.
 \end{proof}
@@ -2265,20 +1939,7 @@ For \eqref{eq:qchu1}, put $b=q^{-n}$ in the $q$-Gauss sum.  The infinite product
  \frac{(cq^n,c/a;q)_\infty}{(c,cq^n/a;q)_\infty}
  =\frac{(c/a;q)_n}{(c;q)_n}.
 \]
-% ed.: the justification here formerly read ``Because the series terminates,
-% ed.: no convergence restriction remains.''  Termination makes both sides
-% ed.: DEFINED for all $(a,c)$, but it does not extend the EQUALITY, since the
-% ed.: product side was produced under the $q$-Gauss hypothesis
-% ed.: $\abs{cq^n/a}<1$.  What extends it is rationality plus agreement on a
-% ed.: nonempty open set, as stated below.
-The substitution is legitimate because $\{\abs b>\abs{c/a}\}$ is connected and
-meets Heine's initial region $\abs b<1$, so \Cref{thm:q-gauss} continues
-analytically to $b=q^{-n}$.  Both sides of \eqref{eq:qchu1} are now rational
-in $(a,c)$, and they agree on the nonempty open set $\abs{cq^n/a}<1$ where the
-$q$-Gauss hypothesis holds; a rational function vanishing on a nonempty open
-subset of $\C^2$ vanishes identically, so the identity holds wherever both
-sides are defined.  Termination alone would not give this: it makes the two
-sides defined, not equal.
+Because the series terminates, no convergence restriction remains.
 
 For \eqref{eq:qchu2}, let $b\to0$ in \Cref{thm:q-pfaff}, with its other numerator parameter equal to $a$.  Then $(b;q)_k\to1$ and $(abq^{1-n}/c;q)_k\to1$, so the left side becomes the displayed ${}_2\phi_1$.  On the right,
 \[
@@ -2523,74 +2184,6 @@ Induct on $n$ and multiply on the right by $X+Y$.  Since $Y^kX=q^kXY^k$, the coe
 \]
 by the first $q$-Pascal recurrence.
 \end{proof}
-
-\index{quantum affine space}
-\index{$q$-multinomial coefficient!as structure constants}
-
-\begin{corollary}[Noncommutative $q$-multinomial theorem]\label{cor:quantum-multinomial}
-Let $r\ge1$ and let $x_1,\dots,x_r$ be elements of an associative algebra over a commutative ring in which $q$ is a central element, and suppose that
-\[
- x_jx_i=qx_ix_j
- \qquad(1\le i<j\le r).
-\]
-Then, for every $n\ge0$,
-\[
- (x_1+\cdots+x_r)^n
- =\sum_{\substack{n_1,\dots,n_r\ge0\\ n_1+\cdots+n_r=n}}
- \qmultinom{n}{n_1,\dots,n_r}\,
- x_1^{n_1}x_2^{n_2}\cdots x_r^{n_r},
-\]
-where on the right the factors are written in increasing order of index.  Equivalently, the $q$-multinomial coefficients are exactly the structure constants that expand powers of $x_1+\cdots+x_r$ in the ordered monomial basis of the quantum affine $r$-space.
-\end{corollary}
-
-% ed.: the incoming survey states only that ``iterating the proof gives a
-% ed.: $q$-multinomial theorem''.  The ordering of the monomials is part of the
-% ed.: statement, not a convention, because $x_jx_i=qx_ix_j$ is imposed only for
-% ed.: $i<j$; centrality of $q$ is likewise recorded explicitly here.
-
-\begin{proof}
-Induct on $r$.  For $r=1$ there is nothing to prove, and $r=2$ is \Cref{thm:quantum-binomial}.
-
-Let $r\ge2$ and set $X=x_1$ and $Y=x_2+\cdots+x_r$.  Because $x_jx_1=qx_1x_j$ for every $j\ge2$ and $q$ is central,
-\[
- YX=\sum_{j=2}^{r}x_jx_1
- =q\sum_{j=2}^{r}x_1x_j
- =qXY,
-\]
-so \Cref{thm:quantum-binomial} applies to the pair $(X,Y)$ and gives
-\[
- (x_1+\cdots+x_r)^n
- =\sum_{k=0}^{n}\qbinom nk\,x_1^{\,n-k}\,(x_2+\cdots+x_r)^{k}.
-\]
-Substituting $n_1=n-k$ and using the symmetry $\qbinom nk=\qbinom n{n-k}$ of \Cref{thm:qbinom-structure}, this reads
-\[
- (x_1+\cdots+x_r)^n
- =\sum_{n_1=0}^{n}\qbinom n{n_1}\,x_1^{\,n_1}\,(x_2+\cdots+x_r)^{\,n-n_1}.
-\]
-The elements $x_2,\dots,x_r$ satisfy the same commutation relations among themselves, so the inductive hypothesis applies to them and gives, with $m=n-n_1$,
-\[
- (x_2+\cdots+x_r)^{m}
- =\sum_{\substack{n_2,\dots,n_r\ge0\\ n_2+\cdots+n_r=m}}
- \qmultinom{m}{n_2,\dots,n_r}\,x_2^{n_2}\cdots x_r^{n_r}.
-\]
-Since the coefficients are central, substitution produces precisely the ordered monomials $x_1^{n_1}x_2^{n_2}\cdots x_r^{n_r}$, the coefficient of $x_1^{n_1}\cdots x_r^{n_r}$ being
-\[
- \qbinom n{n_1}\qmultinom{n-n_1}{n_2,\dots,n_r}
- =\frac{\poch{q}{q}{n}}{\poch{q}{q}{n_1}\poch{q}{q}{n-n_1}}
- \cdot
- \frac{\poch{q}{q}{n-n_1}}{\poch{q}{q}{n_2}\cdots\poch{q}{q}{n_r}}
- =\qmultinom{n}{n_1,\dots,n_r}
-\]
-by the definition of the $q$-multinomial coefficient preceding \Cref{prop:qmult-factor}; the factor $\poch{q}{q}{n-n_1}$ telescopes away, exactly as in the proof of that proposition.  No factor was transposed at any stage after the expansion, so the monomials are produced in increasing order of index, as asserted.
-\end{proof}
-
-\begin{remark}[The same coefficient read combinatorially]\label{rem:quantum-multinomial-inversions}
-Expanding $(x_1+\cdots+x_r)^n$ without using any relation produces the $r^n$ words $x_{w_1}x_{w_2}\cdots x_{w_n}$ with $w\in\{1,\dots,r\}^n$.  Sorting such a word into increasing order uses one adjacent transposition for each inversion of $w$, and each transposition contributes exactly one factor $q$; hence
-\[
- x_{w_1}x_{w_2}\cdots x_{w_n}=q^{\inv(w)}x_1^{n_1}\cdots x_r^{n_r},
-\]
-where $n_i$ is the multiplicity of the letter $i$ in $w$.  Comparing coefficients with \Cref{cor:quantum-multinomial} recovers the multiset inversion enumerator of \Cref{thm:qmult-inversions}, and conversely that theorem proves \Cref{cor:quantum-multinomial} again.  The quantum affine space is therefore a purely algebraic encoding of the inversion statistic, just as \Cref{thm:quantum-binomial} encodes \Cref{thm:binary-inversions}.
-\end{remark}
 
 \begin{corollary}[Factorization of $q$-exponentials]\label{cor:qexp-factor}
 Assume $\abs q<1$.  Define
@@ -3045,160 +2638,6 @@ Its zeros are the simple points $z=-q^m$, $m\in\Z$.
 \begin{proof}
 The functional equation follows either from reindexing the bilateral series or from the proof above.  The product in \eqref{eq:jtp-plus} vanishes exactly when $1+zq^j=0$ or $1+q^{j+1}/z=0$, which together give $z=-q^m$ for $m\in\Z$.  Exactly one factor vanishes at each such point.
 \end{proof}
-
-% Chapter: \ref{chap:jtp} ("Jacobi's triple product").  A new section placed
-% immediately after the \end{proof} of \Cref{cor:theta-quasi}
-% \section{Euler's pentagonal number theorem} (line 2639).
-
-\section{A finite triple product}
-
-Jacobi's identity has an exact polynomial refinement.  The truncated product $(z;q)_N(q/z;q)_N$ is again a bilateral theta-like sum, with the factor $1/(q;q)_\infty$ replaced by a central Gaussian coefficient; letting $N\to\infty$ then reproves \Cref{thm:jtp} from finite algebra plus a single application of dominated convergence.
-
-\begin{theorem}[Finite triple product]\label{thm:finite-jtp}
-\index{Jacobi triple product!finite form}
-\index{theta function!polynomial analogue}
-For $N\in\N_0$ and $z\ne0$,
-\begin{equation}
- (z;q)_N\,(q/z;q)_N
- =\sum_{k=-N}^{N}(-1)^k q^{\binom k2}
- \qbinom{2N}{N+k}\,z^{k}.
- \label{eq:finite-jtp}
-\end{equation}
-Here $\binom k2$ denotes $k(k-1)/2$ for every integer $k$, negative $k$ included; equivalently $\binom{-m}{2}=\binom{m+1}{2}$ for $m\ge0$.
-% ed.: the ARTICLE uses this convention silently.  It is not cosmetic: at
-% ed.: $N=1$, $k=-1$ the coefficient is $q^{\binom{-1}{2}}=q$, and reading
-% ed.: $\binom{-1}{2}$ as $0$ would make the identity false.
-Both sides lie in $\Z[q][z,z^{-1}]$ and \eqref{eq:finite-jtp} is an identity there; in particular it carries no convergence hypothesis and holds with $q$ an indeterminate.
-\end{theorem}
-
-\begin{proof}
-By \Cref{thm:finite-qbinomial}, \eqref{eq:finite-qbinomial-minus},
-\[
- (z;q)_N=\sum_{i=0}^{N}(-1)^iq^{\binom i2}\qbinom Ni z^{i},
-\]
-and, replacing $z$ by $q/z$ in the same identity and using $\binom j2+j=\binom{j+1}{2}$,
-\[
- (q/z;q)_N=\sum_{j=0}^{N}(-1)^jq^{\binom{j+1}{2}}\qbinom Nj z^{-j}.
-\]
-Multiply the two expansions and collect the pairs contributing to $z^{k}$, namely those with $i=j+k$.  Since $(-1)^{j+k}(-1)^{j}=(-1)^k$, and since $\qbinom N{j+k}=0$ unless $0\le j+k\le N$, the inner sum may be extended over all $j\in\Z$:
-\[
- (z;q)_N(q/z;q)_N
- =\sum_{k\in\Z}(-1)^kz^{k}
- \sum_{j\in\Z}q^{\binom{j+k}{2}+\binom{j+1}{2}}
- \qbinom N{j+k}\,\qbinom Nj .
-\]
-The two binomial exponents combine cleanly.  As an identity between polynomials in $j$ and $k$,
-\[
- \binom{j+k}{2}+\binom{j+1}{2}-\binom k2
- =\tfrac12\bigl[(j+k)(j+k-1)+j(j+1)-k(k-1)\bigr]
- =j^2+jk,
-\]
-and being a polynomial identity it is valid for negative $k$ as well, with the convention above.  On a term with $\qbinom Nj\qbinom N{j+k}\ne0$ one has $0\le j\le N$ and $0\le j+k\le N$, so $j^2+jk=j(j+k)\ge0$ and no negative power of $q$ is created; terms with $j(j+k)<0$ carry a vanishing Gaussian coefficient.  Hence the inner sum equals
-\[
- q^{\binom k2}\sum_{j\in\Z}q^{\,j^2+jk}
- \qbinom Nj\,\qbinom N{j+k}
- =q^{\binom k2}\qbinom{2N}{N+k}
-\]
-by \Cref{cor:shifted-central-vandermonde}.  Therefore
-\[
- (z;q)_N(q/z;q)_N
- =\sum_{k\in\Z}(-1)^kq^{\binom k2}\qbinom{2N}{N+k}z^{k},
-\]
-and the summand vanishes for $\abs k>N$, which is \eqref{eq:finite-jtp}.  Both sides are Laurent polynomials in $z$ with coefficients in $\Z[q]$ because each Gaussian coefficient is such a polynomial by \Cref{thm:qbinom-structure}.
-\end{proof}
-
-\begin{example}\label{ex:finite-jtp-N1}
-At $N=1$ the coefficients are $\qbinom20=\qbinom22=1$ and $\qbinom21=1+q$, so \eqref{eq:finite-jtp} reads
-\[
- (1-z)(1-q/z)=-q z^{-1}+(1+q)-z,
-\]
-which is correct.  The coefficient $q^{\binom{-1}{2}}=q$ of $z^{-1}$ shows the convention for negative $k$ at work.  At $N=2$ one gets
-\[
- (z;q)_2(q/z;q)_2
- =q^{3}z^{-2}-q(1+q+q^{2}+q^{3})z^{-1}
- +(1+q+2q^{2}+q^{3}+q^{4})
- -(1+q+q^{2}+q^{3})z+qz^{2},
-\]
-% ed.: the first draft of this example printed four of these five
-% ed.: coefficients incorrectly; the line above is verified as an exact
-% ed.: identity in $\Q(q)(z)$.
-the coefficients being $\qbinom40=\qbinom44=1$,
-$\qbinom41=\qbinom43=1+q+q^2+q^3$ and
-$\qbinom42=1+q+2q^2+q^3+q^4$, with the outer $q$-powers
-$q^{\binom{-2}{2}}=q^{3}$, $q^{\binom{-1}{2}}=q$ and $q^{\binom22}=q$.
-\end{example}
-
-\begin{corollary}[Second proof of Jacobi's triple product]\label{cor:jtp-from-finite}
-Let $\abs q<1$ and $z\ne0$.  Letting $N\to\infty$ in \eqref{eq:finite-jtp} and multiplying by $(q;q)_\infty$ yields \eqref{eq:jtp-minus}.  The passage to the limit is uniform on every closed annulus $r\le\abs z\le R$ with $0<r\le R$.
-\end{corollary}
-
-\begin{proof}
-Extend the summand of \eqref{eq:finite-jtp} by zero, that is, read $\qbinom{2N}{N+k}=0$ for $\abs k>N$, so that the right side is a sum over all $k\in\Z$.
-
-\emph{A bound uniform in both $N$ and $k$.}  By \Cref{prop:qbinom-products},
-\[
- \qbinom{2N}{N+k}
- =\frac{(q;q)_{2N}}{(q;q)_{N+k}\,(q;q)_{N-k}}
- \qquad(\abs k\le N).
-\]
-Put
-\[
- \mu=\inf_{m\ge0}\abs{(q;q)_m},
- \qquad
- M=\prod_{j\ge1}\bigl(1+\abs q^{\,j}\bigr)<\infty .
-\]
-No factor of $(q;q)_m$ vanishes, because $\abs q<1$ forces $q^{\,j}\ne1$ for $j\ge1$, and $(q;q)_m\to(q;q)_\infty$, which is nonzero by \Cref{thm:poch-entire}.  A convergent sequence of nonzero numbers with nonzero limit is bounded away from $0$, so $\mu>0$; and $\abs{(q;q)_m}\le M$ for every $m$.  Hence
-\begin{equation}
- \left|\qbinom{2N}{N+k}\right|\le\frac{M}{\mu^{2}}
- \qquad\text{for all }N\ge0\text{ and all }k\in\Z .
- \label{eq:central-qbinom-uniform-bound}
-\end{equation}
-% ed.: the uniformity in $k$, not merely in $N$, is the point of
-% ed.: \eqref{eq:central-qbinom-uniform-bound}; it is what licenses the
-% ed.: dominated-convergence step below.  It requires $\mu>0$, not merely the
-% ed.: convergence of $(q;q)_m$, because two shifted factorials sit in the
-% ed.: denominator.  Compare the same device in \Cref{cor:euler-infinite}.
-
-\emph{A summable dominating function.}  For every integer $k$ one has
-\(
- \binom k2=\tfrac12(k^2-k)\ge\tfrac12\bigl(k^2-\abs k\bigr),
-\)
-with equality for $k\ge0$, so $\abs q^{\binom k2}\le\abs q^{(k^2-\abs k)/2}$.  On the annulus $r\le\abs z\le R$ we have $\abs{z^{k}}\le R^{\abs k}+r^{-\abs k}$.  Therefore, for all $N$ and all $z$ in the annulus,
-\[
- \left|(-1)^kq^{\binom k2}\qbinom{2N}{N+k}z^{k}\right|
- \le g(k)\defeq
- \frac{M}{\mu^{2}}\,\abs q^{\,(k^2-\abs k)/2}
- \bigl(R^{\abs k}+r^{-\abs k}\bigr),
-\]
-and $\sum_{k\in\Z}g(k)<\infty$, since $\abs q^{\,k^2/2}$ decays faster than any geometric sequence grows.
-
-\emph{The termwise limit.}  For each fixed $k$, using $(q;q)_m\to(q;q)_\infty\ne0$ again,
-\[
- \qbinom{2N}{N+k}
- =\frac{(q;q)_{2N}}{(q;q)_{N+k}\,(q;q)_{N-k}}
- \;\xrightarrow[N\to\infty]{}\;
- \frac{(q;q)_\infty}{(q;q)_\infty^{2}}
- =\frac1{(q;q)_\infty}.
-\]
-This is \Cref{thm:central-fixed-q} when $k=0$; the argument is unchanged for
-fixed $k\ne0$, since $N\pm k\to\infty$ with $N$.
-Dominated convergence for series, applied on the counting measure of $\Z$ with dominating function $g$, therefore gives
-\[
- \lim_{N\to\infty}\sum_{k\in\Z}(-1)^kq^{\binom k2}
- \qbinom{2N}{N+k}z^{k}
- =\frac1{(q;q)_\infty}\sum_{k\in\Z}(-1)^kq^{\binom k2}z^{k},
-\]
-The convergence is moreover uniform on the annulus: given $\eps>0$, choose $K$ with $\sum_{\abs k>K}g(k)<\eps/3$, which bounds the two tails simultaneously for every $N$ and every $z$ in the annulus because $g$ depends on neither; the remaining $2K+1$ terms converge because $\qbinom{2N}{N+k}\to1/(q;q)_\infty$ is a limit of numbers, and $\abs{z^k}\le R^{K}+r^{-K}$ there.  On the left of \eqref{eq:finite-jtp}, $(z;q)_N(q/z;q)_N\to(z;q)_\infty(q/z;q)_\infty$ locally uniformly on $\C^{*}$ by \Cref{thm:poch-entire}.  Multiplying by $(q;q)_\infty$ we obtain
-\[
- (q,z,q/z;q)_\infty
- =\sum_{k\in\Z}(-1)^kq^{\binom k2}z^{k},
-\]
-which is \eqref{eq:jtp-minus}.
-\end{proof}
-
-\begin{remark}[Two mechanisms for one identity]\label{rem:jtp-two-proofs}
-\Cref{thm:jtp} was proved above from a functional equation together with the Durfee-square evaluation of the constant Laurent coefficient.  \Cref{cor:jtp-from-finite} proves it instead from the polynomial identity \eqref{eq:finite-jtp}, whose only inputs are \Cref{thm:finite-qbinomial} and \Cref{thm:q-vandermonde}.  The second route separates algebra from analysis completely: \eqref{eq:finite-jtp} holds in $\Z[q][z,z^{-1}]$, and the entire analytic content is the single limit $\qbinom{2N}{N+k}\to1/(q;q)_\infty$, which is the same finite-to-infinite stabilization recorded coefficientwise in \Cref{prop:partition-stabilization} and columnwise in \Cref{thm:fixed-column-limit}.  That separation is exactly the architecture recommended in \Cref{chap:formalization}.  Note also that \eqref{eq:finite-jtp} is genuinely finer than \eqref{eq:jtp-minus}: its coefficients are the central Gaussian coefficients $\qbinom{2N}{N+k}$, which by \Cref{thm:qbinom-structure} are palindromic polynomials of degree $(N+k)(N-k)$, whereas in the limit every one of them collapses to the single $k$-independent factor $1/(q;q)_\infty$; what survives of the polynomial is not its constant term but its stabilised coefficient sequence, namely the partition numbers of \Cref{prop:partition-stabilization}.
-\end{remark}
 
 \section{Euler's pentagonal number theorem}
 
@@ -3682,67 +3121,6 @@ For $n=10$ and $k=4$, the values of $d$ for which $4\bmod d>10\bmod d$ are $d=5,
 \]
 The degrees add to $4+6+4+6=20=4(10-4)$, as required by reciprocity.
 \end{example}
-
-\begin{corollary}[MacMahon's $q$-Catalan polynomial]\label{cor:q-catalan}
-\index{Catalan number!$q$-analogue}
-For $n\ge0$ put
-\[
- C_n(q)\defeq\frac1{\qint{n+1}}\qbinom{2n}{n}.
-\]
-Then $C_n(q)\in\Z[q]$; it has degree $n(n-1)$, and $C_n(1)=\frac1{n+1}\binom{2n}{n}$.
-\end{corollary}
-
-\begin{proof}
-% ed.: the incoming survey proved this in one sentence -- `subtracting the
-% ed.: exponent of each \Phi_d in [n+1]_q from that in the central Gaussian
-% ed.: coefficient gives a nonnegative integer' -- which is the assertion, not
-% ed.: an argument.  The valuation comparison is carried out below, and the
-% ed.: cases d=1 and d\nmid n+1 are treated separately, as they must be.
-Since $q^{N}-1=\prod_{d\mid N}\Phi_d(q)$ and $\Phi_1(q)=q-1$,
-\[
- \qint{n+1}=\frac{q^{\,n+1}-1}{q-1}
- =\prod_{\substack{d\mid n+1\\ d>1}}\Phi_d(q).
-\]
-Hence $\nu_d(\qint{n+1})=1$ exactly for those $d>1$ dividing $n+1$, and
-$\nu_d(\qint{n+1})=0$ for every other $d$, the case $d=1$ included: indeed
-$\qint{n+1}$ takes the value $n+1\ne0$ at $q=1$, so $q-1$ does not divide it.
-
-Let $d>1$ divide $n+1$.  Then $n\equiv-1\pmod d$, so $n\bmod d=d-1$, while
-$2n\equiv-2\pmod d$ together with $0\le d-2<d$ gives $2n\bmod d=d-2$.
-Therefore
-\[
- n\bmod d=d-1>d-2=2n\bmod d,
-\]
-and the carry criterion \eqref{eq:carry-criterion} of
-\Cref{cor:squarefree-cyclotomic}, applied with upper index $2n$ and lower
-index $n$, gives $\Phi_d(q)\mid\qbinom{2n}{n}$, that is,
-$\nu_d\bigl(\qbinom{2n}{n}\bigr)=1$.  Combining the two paragraphs,
-\[
- \nu_d\bigl(\qbinom{2n}{n}\bigr)\ge\nu_d\bigl(\qint{n+1}\bigr)
- \qquad\text{for every }d\ge1,
-\]
-so $\qint{n+1}$ divides $\qbinom{2n}{n}$ in $\Q[q]$ and $C_n\in\Q[q]$.
-Moreover $\qint{n+1}=1+q+\cdots+q^{n}$ is monic and
-$\qbinom{2n}{n}\in\Z[q]$ by \Cref{cor:positivity}, so division with remainder
-in $\Z[q]$ produces a quotient in $\Z[q]$; by uniqueness of the quotient in
-$\Q[q]$ that quotient is $C_n$, whence $C_n\in\Z[q]$.
-
-Finally, $\deg\qbinom{2n}{n}=n\cdot n=n^2$ by
-\Cref{thm:qbinom-structure}(iii) and $\deg\qint{n+1}=n$, so
-$\deg C_n=n^2-n$.  Evaluating the polynomial identity
-$\qint{n+1}\,C_n(q)=\qbinom{2n}{n}$ at $q=1$ and using
-\Cref{cor:qbinom-classical} gives $(n+1)C_n(1)=\binom{2n}{n}$.
-\end{proof}
-
-\begin{remark}\label{rem:q-catalan-positivity}
-The argument above establishes integrality and says nothing about signs.  The
-coefficients of $C_n(q)$ are in fact nonnegative --- $C_n$ enumerates the
-Dyck paths of semilength $n$ by a suitable major-index statistic, for which
-see \cite{Stanley1999} --- but that is a combinatorial theorem and not a
-consequence of cyclotomic divisibility.  Compare \Cref{cor:path-area}, where
-the corresponding statistic for unrestricted monotone lattice paths is the
-area and the enumeration is the unconstrained $\qbinom{2n}{n}$.
-\end{remark}
 
 \section{The \texorpdfstring{$q$}{q}-Lucas congruence}
 
@@ -4764,39 +4142,6 @@ Take logarithms and apply \Cref{lem:basic-bernoulli-log} to every factor.  The l
 and the even terms give the sum in \eqref{eq:gaussian-bernoulli}.  Every argument of the basic series has modulus below $2\pi$ when $\abs t<2\pi/n$, so the finite sum converges there.
 \end{proof}
 
-\begin{remark}[Power-sum form of the coefficients]
-Let $S_m(N)=\sum_{j=1}^{N}j^{m}$ denote the $m$th power sum.  For every integer $m\ge1$, reindexing the first half of an inner sum by $i=n-k+j$ gives
-\[
- \sum_{j=1}^{k}\left((n-k+j)^{m}-j^{m}\right)
- =\sum_{i=n-k+1}^{n}i^{m}-\sum_{j=1}^{k}j^{m}
- =S_{m}(n)-S_{m}(k)-S_{m}(n-k).
-\]
-Applied with $m=2r$ to the inner sum of \eqref{eq:gaussian-bernoulli}, and with $m=1$ to the sum $\sum_{j=1}^{k}\bigl((n-k+j)-j\bigr)=\sum_{j=1}^{k}(n-k)$ that produced the linear term in the proof of \Cref{thm:gaussian-bernoulli}, this turns the expansion into
-\[
- \log\frac{\Qbinom nk{e^{-t}}}{\binom nk}
- =-\frac t2\bigl(S_1(n)-S_1(k)-S_1(n-k)\bigr)
- +\sum_{r=1}^{\infty}\frac{B_{2r}t^{2r}}{2r(2r)!}
- \bigl(S_{2r}(n)-S_{2r}(k)-S_{2r}(n-k)\bigr),
-\]
-still for $\abs t<2\pi/n$, the factor $-\tfrac12$ being the coefficient of $x$ in \eqref{eq:basic-bernoulli-log}.  The case $m=1$ of the display evaluates the linear bracket outright: $S_1(n)-S_1(k)-S_1(n-k)=\sum_{j=1}^{k}(n-k)=k(n-k)=D$.
-
-Three features become visible in this form.  First, each coefficient is a difference of Faulhaber polynomials, hence itself a polynomial in $n$ and $k$ with rational coefficients, of total degree exactly $2r+1$: since $S_{2r}(N)=N^{2r+1}/(2r+1)+O(N^{2r})$, the homogeneous part of top degree is $\bigl(n^{2r+1}-k^{2r+1}-(n-k)^{2r+1}\bigr)/(2r+1)$, whose coefficient of $n^{2r}k$ is $-\tfrac1{2r+1}\binom{2r+1}{1}(-1)=1$, so no cancellation lowers the degree.  Second, the expression is manifestly invariant under $k\mapsto n-k$, as it must be by the symmetry recorded in \Cref{thm:qbinom-structure}.  Third, at $r=1$ the identity $S_2(N)=N(N+1)(2N+1)/6$ gives
-\begin{align*}
- S_2(n)-S_2(k)-S_2(n-k)
- &=\frac{n(n+1)(2n+1)-k(k+1)(2k+1)}{6}\\
- &\qquad-\frac{(n-k)(n-k+1)(2n-2k+1)}{6}
- =k(n-k)(n+1)=D(n+1),
-\end{align*}
-the value used in \Cref{cor:gaussian-first-asymptotic} below.
-\end{remark}
-
-% ed.: the source states the expansion only in the power-sum form and omits the
-% ed.: range of validity, mentioning merely that the underlying Bernoulli series
-% ed.: converges for $\abs x<2\pi$; the assembled range $\abs t<2\pi/n$ of
-% ed.: \Cref{thm:gaussian-bernoulli} is the correct statement and is retained here.
-
-[The second "% ed.:" note of the draft (lines 47-49) is deleted: the source's phrase "the linear power-sum difference is $k(n-k)$" is correct and, in parallel with the following clause "the quadratic difference is $S_2(n)-S_2(k)-S_2(n-k)=\ldots$", unambiguous.  The header verdict should read "sharper / verified", not "verified-after-repair".  Dropping the \label is also recommended, since nothing cross-references the remark and no other remark in the monograph carries one.]
-
 \begin{corollary}[First terms]\label{cor:gaussian-first-asymptotic}
 With $D=k(n-k)$,
 \begin{align}
@@ -4863,93 +4208,24 @@ The numerator tends to $1$.  Since the number of factors is fixed,
 which proves both assertions.
 \end{proof}
 
-% ed.: replaces the former statement of thm:central-fixed-q (monograph lines
-% ed.: 4205--4222), which covered only the exactly central column.  The
-% ed.: incoming survey's proposition is correct as it stands, under its own
-% ed.: convention (survey line 47) that a Gaussian coefficient vanishes when
-% ed.: its lower index leaves $0,\ldots,n$; what is added here is the uniform
-% ed.: two-index form with an explicit error term, in the style of
-% ed.: \eqref{eq:fixed-column-error}.
-\begin{theorem}[Fixed-$q$ limit with both indices growing]\label{thm:central-fixed-q}
-Let $0<\abs q<1$.  For all integers $0\le k\le n$,
+\begin{theorem}[Central fixed-$q$ limit]\label{thm:central-fixed-q}
+For $0<\abs q<1$,
 \[
- \qbinom nk
- =\frac{(q^{k+1};q)_\infty\,(q^{n-k+1};q)_\infty}
-       {(q;q)_\infty\,(q^{n+1};q)_\infty},
-\]
-and consequently
-\[
- \qbinom nk
- =\frac1{(q;q)_\infty}
- \Bigl(1+O\bigl(\abs q^{\,\min(k,n-k)+1}\bigr)\Bigr),
-\]
-the implied constant depending only on $q$.  In particular,
-\[
- \lim_{\min(k,n-k)\to\infty}\qbinom nk=\frac1{(q;q)_\infty},
+ \lim_{m\to\infty}\qbinom{2m}{m}
+ =\frac1{(q;q)_\infty}.
  \tag{19.7}\label{eq:central-fixed-q}
 \]
-and for every fixed $r\in\Z$,
-\[
- \lim_{m\to\infty}\qbinom{2m}{m+r}=\frac1{(q;q)_\infty},
-\]
-the coefficient being read for $m\ge\abs r$, so that $m+r$ and $m-r$ are
-admissible indices.
 \end{theorem}
 
 \begin{proof}
-By \Cref{thm:poch-entire} applied at $a=q$, the product $(q;q)_\infty$
-converges, and it is nonzero: the zeros of $a\mapsto(a;q)_\infty$ are the
-points $q^{-j}$ with $j\ge0$, and $q=q^{-j}$ would give $q^{j+1}=1$, hence
-$\abs q=1$.  The same theorem at $a=q^{N+1}$ gives $(q^{N+1};q)_\infty\ne0$
-for every $N\ge0$.  The tail factorization of \Cref{prop:concat},
+By the factorial form,
 \[
- (q;q)_\infty=(q;q)_N\,(q^{N+1};q)_\infty,
+ \qbinom{2m}{m}
+ =\frac{(q;q)_{2m}}{(q;q)_m^2}.
 \]
-therefore yields $(q;q)_N=(q;q)_\infty/(q^{N+1};q)_\infty$.  Substituting this
-at $N=n$, $N=k$, and $N=n-k$ in the factorial form
-$\qbinom nk=(q;q)_n/\bigl((q;q)_k(q;q)_{n-k}\bigr)$ gives the first display.
-
-For the error term, let $M\ge0$.  By the elementary product estimate,
-\[
- \abs{(q^{M+1};q)_\infty-1}
- \le\prod_{j\ge M+1}\bigl(1+\abs q^{\,j}\bigr)-1
- \le\exp\Bigl(\frac{\abs q^{\,M+1}}{1-\abs q}\Bigr)-1
- \le C_q\abs q^{\,M+1},
- \qquad
- C_q=\frac{e^{1/(1-\abs q)}}{1-\abs q},
-\]
-since $\abs q^{\,M+1}/(1-\abs q)\le1/(1-\abs q)$ and $e^x-1\le xe^{x_0}$ for
-$0\le x\le x_0$.  Moreover
-\[
- \abs{(q^{M+1};q)_\infty}
- \ge\prod_{j\ge1}\bigl(1-\abs q^{\,j}\bigr)
- =(\abs q;\abs q)_\infty>0
-\]
-uniformly in $M$.  As $\min(k,n-k)\le n$, applying both bounds at $M=k$,
-$M=n-k$, and $M=n$ to the first display gives the second.
-
-The two limits follow at once: in the first, $\min(k,n-k)\to\infty$ by
-hypothesis; in the second, $n=2m$ and $k=m+r$ give
-$\min(k,n-k)=m-\abs r\to\infty$, which is also what makes both indices
-admissible once $m\ge\abs r$.
+Every finite shifted factorial tends to $(q;q)_\infty$ as its index tends to infinity.  The quotient therefore tends to
+$(q;q)_\infty/(q;q)_\infty^2$.
 \end{proof}
-
-\begin{remark}\label{rem:offcentre-qgreaterone}
-The off-centre column in the regime $q>1$ needs no new argument.  By
-\eqref{eq:qgreaterone-reciprocity} at upper index $2m$ and lower index $m+r$,
-whose exponent is $k(n-k)=(m+r)(m-r)=m^2-r^2$,
-\[
- \qbinom{2m}{m+r}=q^{m^2-r^2}\Qbinom{2m}{m+r}{q^{-1}},
-\]
-and \Cref{thm:central-fixed-q} applied with $q^{-1}$ in place of $q$, which is
-legitimate because $0<q^{-1}<1$, gives
-$\Qbinom{2m}{m+r}{q^{-1}}\to(q^{-1};q^{-1})_\infty^{-1}$.  Hence
-\[
- \qbinom{2m}{m+r}
- \sim\frac{q^{m^2-r^2}}{(q^{-1};q^{-1})_\infty},
-\]
-which is \eqref{eq:qgreaterone-central} at $r=0$.
-\end{remark}
 
 \begin{proposition}[Uniform elementary bound]\label{prop:gaussian-bound}
 For $0<q<1$ and $0\le k\le n$,
@@ -5125,7 +4401,7 @@ Subtract the two sequences.  The difference satisfies the homogeneous recurrence
 \end{proof}
 
 \begin{remark}[Creative telescoping]
-The $q$-Zeilberger method~\cite{PetkovsekWilfZeilberger1996} searches algorithmically for a rational multiple $G(n,k)=R(q^n,q^k)T(n,k)$ satisfying \eqref{eq:certificate}.  Once found, the certificate is independently checkable by rational-function arithmetic.  The search may be sophisticated, but verification is elementary: divide by $T(n,k)$ and clear denominators.
+The $q$-Zeilberger method searches algorithmically for a rational multiple $G(n,k)=R(q^n,q^k)T(n,k)$ satisfying \eqref{eq:certificate}.  Once found, the certificate is independently checkable by rational-function arithmetic.  The search may be sophisticated, but verification is elementary: divide by $T(n,k)$ and clear denominators.
 \end{remark}
 
 \section{Denominator clearing and specialization}
@@ -5147,80 +4423,6 @@ Clear all denominators to obtain a polynomial identity.  Polynomial evaluation i
 \end{proof}
 
 This principle is particularly important at roots of unity.  One should first rewrite a Gaussian coefficient as its polynomial, not substitute a root into the factorial quotient and accept an indeterminate $0/0$.
-
-\section{Integer-exponent translation and automated identity discovery}\label{sec:identity-discovery}
-
-A large class of Gaussian identities can be generated by starting from a terminating basic hypergeometric summation and replacing every shifted factorial whose parameter is an integral power of $q$ by factorial blocks.  This old method is now amenable to systematic symbolic search; the identity finder of Zhong and Zhao~\cite{ZhongZhao2026} organizes the necessary side conditions and backtracking choices.  The proof certificate, however, remains elementary substitution.
-
-\begin{lemma}[Two translation rules]\label{lem:integer-qpochhammer-translation}
-For nonnegative integers $a,n,m,k$ with $0\le k\le m$,
-\begin{align}
- \frac{(q^{a+1};q)_n}{(q;q)_n}
- &=\Qbinom{a+n}{n}{q},
- \label{eq:positive-integer-translation}\\
- \frac{(q^{-m};q)_k}{(q;q)_k}
- &=(-1)^kq^{-mk+\binom k2}\Qbinom{m}{k}{q}.
- \label{eq:negative-integer-translation}
-\end{align}
-More generally,
-\begin{equation}\label{eq:factorial-block-translation}
- (q^{a+1};q)_n=\frac{(q;q)_{a+n}}{(q;q)_a}.
-\end{equation}
-\end{lemma}
-
-\begin{proof}
-The factors in \eqref{eq:factorial-block-translation} are precisely
-$1-q^{a+1},\ldots,1-q^{a+n}$.  Division by $(q;q)_n$ gives
-\eqref{eq:positive-integer-translation}.  For the negative rule, factor
-$-q^{-m+j}$ from the $j$th factor:
-\begin{align*}
- (q^{-m};q)_k
- &=\prod_{j=0}^{k-1}(1-q^{-m+j})\\
- &=(-1)^kq^{-mk+\binom k2}
-   \prod_{j=0}^{k-1}(1-q^{m-j})\\
- &=(-1)^kq^{-mk+\binom k2}
-   \frac{(q;q)_m}{(q;q)_{m-k}}.
-\end{align*}
-Divide by $(q;q)_k$ to obtain \eqref{eq:negative-integer-translation}.
-\end{proof}
-
-\begin{theorem}[Certified integral-parameter translation]\label{thm:certified-integral-translation}
-Consider a terminating identity in which every summand and the closed form are products and quotients of monomials in $q$ and shifted factorials of the forms
-\[
- (q^{a+1};q)_n,
- \qquad
- (q^{-m};q)_k,
- \qquad
- (q;q)_r,
-\]
-with integer-valued parameters satisfying side conditions that keep all displayed finite indices nonnegative and all original denominators nonzero.  Replacing the factors by \eqref{eq:positive-integer-translation}--\eqref{eq:factorial-block-translation}, cancelling common factorial blocks, and collecting monomial powers of $q$ produces an algebraically equivalent identity in Gaussian coefficients and residual $q$-factorials.  If all residual factorial multiplicities cancel, the output is a pure $q$-binomial identity.
-\end{theorem}
-
-\begin{proof}
-Each replacement is an equality by \Cref{lem:integer-qpochhammer-translation}.  Products of equal rational functions are equal, cancellation of a common nonzero factor preserves equality under the stated generic assumptions, and collecting monomials is ordinary exponent arithmetic.  Hence the transformed summand agrees term by term with the original summand, and the transformed closed form agrees with the original closed form.  Summing the finitely many terms preserves equality.  Finally, clearing denominators turns the result into a polynomial identity, so removable exceptional specializations are recovered by \Cref{cor:safe-specialization}.
-\end{proof}
-
-\begin{remark}[Constraint generation]
-The nontrivial search problem is not verification but representation: the same factorial block can participate in several Gaussian coefficients, and the integer parameters must satisfy inequalities such as $0\le k\le m$.  An automated finder records the multiplicity of each $(q;q)_r$, searches for compatible triples
-\[
- \frac{(q;q)_u}{(q;q)_v(q;q)_{u-v}}
- =\Qbinom uvq,
-\]
-and carries the corresponding linear inequalities as side conditions.  Once a candidate decomposition is printed, \Cref{thm:certified-integral-translation} reduces its proof to exact algebra.
-\end{remark}
-
-\begin{corollary}[Mechanically checkable certificates]\label{cor:identity-finder-certificate}
-A computer-generated integral-parameter translation can be certified without trusting the search program: expand every Gaussian coefficient into factorial quotients, apply base reversal to every negative parameter, clear denominators, and compare the resulting Laurent monomials and finite products.
-\end{corollary}
-
-\begin{proof}
-The prescribed steps reverse the equalities in
-\Cref{lem:integer-qpochhammer-translation}.  After denominator clearing, equality is decidable by polynomial arithmetic.  Therefore the search code may be treated as a conjecture generator while the emitted certificate is checked independently.
-\end{proof}
-
-\begin{historicalnote}
-Recent formal libraries reinforce the same separation of concerns.  Eberl's Isabelle development~\cite{Eberl2024QAnalogues} formalizes Gaussian polynomials, finite and infinite $q$-Pochhammer symbols, Euler expansions, the $q$-binomial theorem, and $q$-Vandermonde.  The Lean developments cited earlier and the Fabius-function repository~\cite{ReshetnikovProveIt2026} similarly distinguish denominator-free polynomial recurrences from analytic infinite products.  This architecture is exactly what makes automated discovery compatible with proof-level reliability.
-\end{historicalnote}
 
 \section{Formal series versus analytic series}
 
@@ -5256,1040 +4458,1127 @@ Each step is justified by results already proved: finite product algebra in \Cre
 Formal verification forces distinctions that handwritten mathematics often suppresses: a finite product indexed by a natural number is not the same object as a bilateral product; a polynomial Gaussian coefficient is not definitionally the same as a rational factorial quotient; and a formal power-series identity does not automatically contain a proof of analytic convergence.  The Lean development of Lau, Lee, and Ono~\cite{LauLeeOno2026} turns these distinctions into reusable interfaces rather than obstacles.
 \end{historicalnote}
 
-\part{Geometric filters, dyadic structure, and the Fabius bridge}
 
-\chapter{Geometric interpolation and exact \texorpdfstring{$q$}{q}-filters}\label{chap:geometric-filters}
-\index{geometric interpolation}
-\index{Lagrange interpolation!geometric nodes}
-\index{Richardson extrapolation}
-\index{Gaussian coefficient!reversed row}
+\part{Universal specializations, geometric filters, and the dyadic bridge}
 
-The geometric grid
+\chapter{Denominator-free Gaussian algebra over rings}\label{chap:universal-gaussian}
+\index{Gaussian coefficient!over a ring}
+\index{specialization!denominator-free}
+\index{semiring}
+
+The factorial quotient
 \[
-  1,q,q^2,\ldots,q^n
+  \qbinom nk=\frac{(q;q)_n}{(q;q)_k(q;q)_{n-k}}
 \]
-is the natural interpolation grid for $q$-calculus.  The Newton basis on this grid was developed in \Cref{chap:qnewton}.  The complementary Lagrange viewpoint is equally useful: its weights are signed Gaussian coefficients, and every moment beyond the interpolation range is again a Gaussian coefficient.  This gives exact coefficient filters, closed error formulas for geometric Richardson extrapolation, and the algebraic mechanism behind several constructions in the Fabius-function literature.
+is ideal when $q$ is an indeterminate or a complex number away from the zeros of the displayed denominator.  It is not, however, a satisfactory \emph{definition} at a root of unity, in a ring with zero divisors, or in a proof assistant whose algebraic layer should not carry avoidable invertibility hypotheses.  The correct universal object is the polynomial determined by Pascal recursion.  This point is elementary, but it has far-reaching consequences: every identity proved without division can be transported to finite characteristic, quotient rings, truncated power-series rings, and roots of unity without first proving a cancellation theorem.
 
-\section{A reversed Gaussian row}
+\section{The universal Pascal construction}
 
-For $0\le k\le n$ define
-\begin{equation}\label{eq:reversed-gaussian-row}
- N_{n,k}(q)
- :=(-1)^{n-k}q^{\binom{n-k+1}{2}}\qbinom nk,
+\begin{definition}[Universal Gaussian polynomials]\label{def:universal-gaussian}
+Let $u$ be an indeterminate.  Define $G_{n,k}(u)\in\N[u]$ by
+\[
+ G_{0,0}(u)=1,
+ \qquad
+ G_{n,k}(u)=0\quad(k<0\text{ or }k>n),
+\]
+and
+\begin{equation}
+ G_{n+1,k}(u)=G_{n,k}(u)+u^{n+1-k}G_{n,k-1}(u).\label{eq:universal-pascal}
 \end{equation}
-and put $N_{n,k}(q)=0$ outside this range.  Although the definition is written with a quotient notation, $N_{n,k}(q)$ is a polynomial in $q$ with integral coefficients up to the displayed monomial and sign.
+For an element $a$ of a commutative semiring $R$, write
+\[
+ G^{R}_{n,k}(a):=G_{n,k}(a)\in R.
+\]
+When no confusion is possible, the superscript $R$ will be suppressed and the usual Gaussian notation $\Qbinom nk a$ will be used.
+\end{definition}
 
-\begin{theorem}[Reversed finite $q$-binomial theorem]\label{thm:reversed-qbinomial}
-For every $n\ge0$,
-\begin{equation}\label{eq:reversed-product}
- \sum_{k=0}^{n}N_{n,k}(q)z^k
- =\prod_{j=1}^{n}(z-q^j).
-\end{equation}
-Consequently, for every integer $d$ with $0\le d\le n$,
-\begin{equation}\label{eq:reversed-moments}
- \sum_{k=0}^{n}N_{n,k}(q)q^{kd}
- =
- \begin{cases}
-   (q;q)_n,&d=0,\\
-   0,&1\le d\le n.
- \end{cases}
-\end{equation}
+\begin{theorem}[Existence, uniqueness, and functoriality]\label{thm:universal-functoriality}
+The family in \Cref{def:universal-gaussian} is the unique family of polynomials satisfying the boundary conditions and \eqref{eq:universal-pascal}.  If $\phi:R\to S$ is a homomorphism of commutative semirings, then
+\[
+ \phi\!\left(G^R_{n,k}(a)\right)=G^S_{n,k}(\phi(a)).
+\]
+In particular, all coefficients of $G_{n,k}(u)$ are nonnegative integers, and specialization requires no division.
 \end{theorem}
 
 \begin{proof}
-Write the product on the right as
-\[
- \prod_{j=1}^{n}(z-q^j)
- =z^n\prod_{j=1}^{n}\left(1-\frac{q^j}{z}\right)
- =z^n(q/z;q)_n.
-\]
-The finite $q$-binomial theorem, \Cref{thm:finite-qbinomial}, gives
-\[
- z^n(q/z;q)_n
- =\sum_{r=0}^{n}(-1)^r q^{\binom r2+r}\qbinom nr z^{n-r}.
-\]
-Put $k=n-r$.  Since $\qbinom nr=\qbinom nk$ by symmetry and
-$\binom r2+r=\binom{r+1}{2}=\binom{n-k+1}{2}$, this is exactly
-\eqref{eq:reversed-product}.
-
-Now substitute $z=q^d$.  At $d=0$ the product is
-$\prod_{j=1}^{n}(1-q^j)=(q;q)_n$.  If $1\le d\le n$, the factor with
-$j=d$ vanishes.  This proves \eqref{eq:reversed-moments}.
+Starting with row $n=0$, recurrence \eqref{eq:universal-pascal} determines row $n+1$ from row $n$, so existence and uniqueness follow by induction.  The recurrence uses only $0$, $1$, addition, multiplication, and powers of $u$; hence it produces a polynomial in $\N[u]$.  Apply $\phi$ to the recurrence.  Because a semiring homomorphism preserves every operation appearing there, the image family satisfies the same boundary conditions and recurrence in $S$.  Uniqueness in $S$ gives the asserted identity.
 \end{proof}
 
-\begin{remark}[Denominator-free meaning]\label{rem:denominator-free-reversed}
-The identity \eqref{eq:reversed-product} belongs to $\Z[q,z]$ and therefore remains valid after mapping $q$ into any commutative ring.  No division by $1-q^j$ is needed.  This is the robust way to use Gaussian coefficients when $q$ is a root of unity or when the coefficient ring has zero divisors.
+\begin{proposition}[Symmetry and the second Pascal recurrence]\label{prop:universal-symmetry}
+For all $0\le k\le n$,
+\begin{equation}
+ G_{n,k}(u)=G_{n,n-k}(u).\label{eq:universal-symmetry}
+\end{equation}
+Consequently,
+\begin{equation}
+ G_{n+1,k}(u)=u^kG_{n,k}(u)+G_{n,k-1}(u).\label{eq:universal-second-pascal}
+\end{equation}
+Both identities remain valid after specialization to every commutative semiring.
+\end{proposition}
+
+\begin{proof}
+As proved combinatorially in \Cref{chap:combinatorics}, $G_{n,k}(u)$ is the generating polynomial for partitions whose Ferrers diagrams fit in a $k\times(n-k)$ rectangle, with exponent equal to the number of cells.  Transposition of the diagram is a weight-preserving bijection to partitions in an $(n-k)\times k$ rectangle, proving \eqref{eq:universal-symmetry} in $\N[u]$.  Replacing $k$ by $n+1-k$ in \eqref{eq:universal-pascal} and then using symmetry gives
+\[
+ G_{n+1,k}=G_{n,k-1}+u^kG_{n,k},
+\]
+which is \eqref{eq:universal-second-pascal}.  The specialization statement follows from \Cref{thm:universal-functoriality}.
+\end{proof}
+
+\begin{remark}
+The proof separates two logically different facts.  Pascal recursion is meaningful in a semiring, where subtraction need not exist.  Product expansions containing $(-1)^k$ require a ring.  This distinction is important in formal developments of $q$-series, where the algebraic layer should be stated at the weakest useful level; compare the formalization architecture in \cite{LauLeeOno2026}.
 \end{remark}
 
-\section{Lagrange weights at zero}
+\section{Finite products without quotients}
 
-Assume henceforth that $q$ lies in a field $K$ and that
-\[
- q^i\ne q^j\qquad(0\le i<j\le n).
-\]
-Equivalently, the nodes $1,q,\ldots,q^n$ are distinct.  Define
-\begin{equation}\label{eq:geometric-lagrange-weight}
- \lambda_{n,k}^{(q)}
- :=\frac{N_{n,k}(q)}{(q;q)_n}
- =\frac{(-1)^{n-k}q^{\binom{n-k+1}{2}}}{(q;q)_n}\qbinom nk.
-\end{equation}
-
-\begin{theorem}[Evaluation at zero on a geometric grid]\label{thm:geometric-evaluation-zero}
-For every polynomial $p\in K[X]$ of degree at most $n$,
-\begin{equation}\label{eq:geometric-eval-zero}
- p(0)=\sum_{k=0}^{n}\lambda_{n,k}^{(q)}p(q^k).
-\end{equation}
-Thus $\lambda_{n,k}^{(q)}$ are precisely the Lagrange interpolation weights for evaluation at $0$ on the nodes $1,q,\ldots,q^n$.
+\begin{theorem}[Universal finite $q$-binomial theorem]\label{thm:universal-finite-qbinomial}
+Let $R$ be a commutative ring and let $a,z\in R$.  Then, for every $n\ge0$,
+\begin{align}
+ \prod_{j=0}^{n-1}(1+za^j)
+ &=\sum_{k=0}^n a^{\binom{k}{2}}\Qbinom nk a z^k,\label{eq:universal-positive-finite}\\
+ \prod_{j=0}^{n-1}(1-za^j)
+ &=\sum_{k=0}^n(-1)^ka^{\binom{k}{2}}\Qbinom nk a z^k.\label{eq:universal-negative-finite}
+\end{align}
+No factor $1-a^j$ is assumed invertible.
 \end{theorem}
 
 \begin{proof}
-It is enough to verify \eqref{eq:geometric-eval-zero} on the basis
-$1,X,\ldots,X^n$.  For $p(X)=1$, \eqref{eq:reversed-moments} divided by
-$(q;q)_n$ gives $1$.  For $p(X)=X^d$ with $1\le d\le n$, the same identity gives $0=p(0)$.  Linearity proves the formula for every polynomial of degree at most $n$.
-
-The Lagrange interpolation functional at $0$ is the unique linear combination of the point evaluations $p\mapsto p(q^k)$ that agrees with $p\mapsto p(0)$ on all polynomials of degree at most $n$: uniqueness follows from invertibility of the Vandermonde matrix of the distinct nodes.  Hence the displayed coefficients are the Lagrange weights.
+We prove \eqref{eq:universal-negative-finite}; replacing $z$ by $-z$ gives \eqref{eq:universal-positive-finite}.  The assertion is clear for $n=0$.  Assume it for $n$ and multiply by $1-za^n$.  The coefficient of $z^k$ in the resulting product is
+\[
+ (-1)^ka^{\binom{k}{2}}\Qbinom nk a
+ +(-1)^ka^{n+\binom{k-1}{2}}\Qbinom n{k-1}a.
+\]
+Since
+\[
+ n+\binom{k-1}{2}=\binom{k}{2}+n+1-k,
+\]
+the expression equals
+\[
+ (-1)^ka^{\binom{k}{2}}
+ \left(\Qbinom nk a+a^{n+1-k}\Qbinom n{k-1}a\right)
+ =(-1)^ka^{\binom{k}{2}}\Qbinom{n+1}k a
+\]
+by \eqref{eq:universal-pascal}.  This proves the induction step.
 \end{proof}
 
-\begin{corollary}[Explicit product form]\label{cor:geometric-lagrange-product}
-For $0\le k\le n$,
-\begin{equation}\label{eq:geometric-lagrange-product}
- \lambda_{n,k}^{(q)}
- =\prod_{\substack{0\le j\le n\\j\ne k}}
-   \frac{-q^j}{q^k-q^j}.
-\end{equation}
-\end{corollary}
+\begin{theorem}[Denominator-free factorial identities]\label{thm:universal-factorial-identities}
+In every commutative ring and for $0\le k\le n$,
+\begin{align}
+ (a;a)_k\Qbinom nk a&=(a^{n-k+1};a)_k,\label{eq:universal-short-factorial}\\
+ (a;a)_n&=(a;a)_k(a;a)_{n-k}\Qbinom nk a.\label{eq:universal-full-factorial}
+\end{align}
+Thus the familiar factorial quotient is a consequence of a polynomial identity, not a prerequisite for defining the Gaussian coefficient.
+\end{theorem}
 
 \begin{proof}
-The right side is the usual Lagrange basis polynomial associated with the node $q^k$, evaluated at $0$.  By uniqueness in \Cref{thm:geometric-evaluation-zero}, it equals \eqref{eq:geometric-lagrange-weight}.  One can also simplify the product directly by splitting the factors with $j<k$ and $j>k$.
+Work first in the fraction field $\Q(u)$ of $\Z[u]$.  The usual product quotient
+\[
+ H_{n,k}(u)=\frac{(u;u)_n}{{(u;u)_k(u;u)_{n-k}}}
+\]
+satisfies the boundary conditions and the Pascal recurrence \eqref{eq:universal-pascal}; this follows by putting the two terms over the common denominator and using
+\[
+ (1-u^{n+1-k})+u^{n+1-k}(1-u^k)=1-u^{n+1}.
+\]
+By uniqueness, $H_{n,k}(u)=G_{n,k}(u)$ in $\Q(u)$.  Multiplying through by the nonzero polynomial denominators gives \eqref{eq:universal-full-factorial} in $\Z[u]$.  Cancelling the common factor $(u;u)_{n-k}$ in the integral domain $\Z[u]$ gives \eqref{eq:universal-short-factorial}.  Finally, the unique ring homomorphism $\Z[u]\to R$ with $u\mapsto a$ transports both polynomial identities to $R$.
 \end{proof}
 
-\begin{example}
-For $n=2$ the weights are
-\[
- \lambda_{2,0}^{(q)}=\frac{q^3}{(1-q)(1-q^2)},\qquad
- \lambda_{2,1}^{(q)}=-\frac{q(1+q)}{(1-q)(1-q^2)},\qquad
- \lambda_{2,2}^{(q)}=\frac1{(1-q)(1-q^2)}.
-\]
-They satisfy
-\[
- \sum_{k=0}^{2}\lambda_{2,k}^{(q)}=1,
- \qquad
- \sum_{k=0}^{2}\lambda_{2,k}^{(q)}q^k=0,
- \qquad
- \sum_{k=0}^{2}\lambda_{2,k}^{(q)}q^{2k}=0.
-\]
+\begin{example}[A root of unity]
+Let $a$ be a primitive $d$th root of unity.  The quotient defining $\Qbinom nk a$ may display $0/0$, but the polynomial $G_{n,k}(a)$ is unambiguous.  Equations \eqref{eq:universal-short-factorial}--\eqref{eq:universal-full-factorial} remain true, including in cases where every displayed product on the right vanishes.  This is the algebraic reason that the $q$-Lucas and cyclic-sieving specializations of \Cref{chap:cyclotomic} are safe.
 \end{example}
 
-\section{All residual moments}
-
-The vanishing moments in \eqref{eq:reversed-moments} are only the beginning.  Every later moment has a closed form.  The key fact is a universal remainder formula involving complete homogeneous symmetric functions.
-
-\begin{theorem}[Universal Lagrange residual formula]\label{thm:universal-lagrange-residual}
-Let $v_1,\ldots,v_N$ be distinct elements of a field, let
-\[
- \ell_i(x)=\prod_{\substack{1\le j\le N\\j\ne i}}
- \frac{x-v_j}{v_i-v_j},
-\]
-and let $h_r$ denote the complete homogeneous symmetric polynomial, with $h_0=1$.  For every $r\ge0$,
-\begin{equation}\label{eq:universal-residual}
- \sum_{i=1}^{N}\ell_i(x)v_i^{N+r}
- =x^{N+r}-\prod_{i=1}^{N}(x-v_i)\,
- h_r(x,v_1,\ldots,v_N).
-\end{equation}
-For exponents $0\le d<N$, the left side with $N+r$ replaced by $d$ is simply $x^d$.
-\end{theorem}
-
-\begin{proof}
-The assertion for $d<N$ is ordinary Lagrange interpolation.  For $r\ge0$, put
-\[
- P(T)=\prod_{i=1}^{N}(T-v_i),
- \qquad
- H_r(T)=T^{N+r}-P(T)h_r(T,v_1,\ldots,v_N).
-\]
-We first show that $\deg H_r<N$.  Write $e_j=e_j(v_1,\ldots,v_N)$ and
-$h_j=h_j(v_1,\ldots,v_N)$.  Then
-\[
- P(T)=\sum_{j=0}^{N}(-1)^je_jT^{N-j},
- \qquad
- h_r(T,v_1,\ldots,v_N)=\sum_{s=0}^{r}T^s h_{r-s}.
-\]
-For $0\le \ell\le r$, the coefficient of $T^{N+r-\ell}$ in their product is
-\[
- \sum_{j=0}^{\ell}(-1)^je_jh_{\ell-j}.
-\]
-By elementary--complete orthogonality, \Cref{cor:e-h-orthogonality}, this is $1$ when $\ell=0$ and $0$ for $1\le\ell\le r$.  Hence the terms of degrees $N,N+1,\ldots,N+r$ in $P(T)h_r(T,v_1,\ldots,v_N)$ agree with those of $T^{N+r}$, and therefore $\deg H_r<N$.
-
-At every node $v_i$ we have $P(v_i)=0$, so
-$H_r(v_i)=v_i^{N+r}$.  Since $H_r$ has degree less than $N$, Lagrange interpolation gives
-\[
- H_r(x)=\sum_{i=1}^{N}\ell_i(x)v_i^{N+r}.
-\]
-Substituting the definition of $H_r$ proves \eqref{eq:universal-residual}.
-\end{proof}
-
-\begin{theorem}[Complete geometric moment formula]\label{thm:complete-geometric-moments}
-Under the distinct-node hypothesis, for every integer $d\ge0$,
-\begin{equation}\label{eq:complete-geometric-moments}
- \sum_{k=0}^{n}\lambda_{n,k}^{(q)}q^{kd}
- =
- \begin{cases}
-  1,&d=0,\\
-  0,&1\le d\le n,\\
-  (-1)^nq^{\binom{n+1}{2}}\Qbinom{d-1}{n}{q},&d\ge n+1.
- \end{cases}
-\end{equation}
-Equivalently, with the convention that a Gaussian coefficient is zero outside its natural range,
-\begin{equation}\label{eq:complete-geometric-moments-compact}
- \sum_{k=0}^{n}\lambda_{n,k}^{(q)}q^{kd}
- =(-1)^nq^{\binom{n+1}{2}}\Qbinom{d-1}{n}{q}
- \qquad(d>0).
-\end{equation}
-\end{theorem}
-
-\begin{proof}
-The cases $0\le d\le n$ were proved in \Cref{thm:geometric-evaluation-zero}.  Let $d=n+1+r$ with $r\ge0$.  Apply \Cref{thm:universal-lagrange-residual} with target $x=0$ and nodes
-$v_k=q^k$ for $0\le k\le n$.  There are $N=n+1$ nodes, and the weights $\ell_k(0)$ are $\lambda_{n,k}^{(q)}$.  Since
-\[
- \prod_{k=0}^{n}(0-q^k)=(-1)^{n+1}q^{\binom{n+1}{2}},
-\]
-we obtain
-\[
- \sum_{k=0}^{n}\lambda_{n,k}^{(q)}q^{k(n+1+r)}
- =(-1)^nq^{\binom{n+1}{2}}h_r(1,q,\ldots,q^n).
-\]
-The geometric specialization in \Cref{thm:weighted-specializations} gives
-\[
- h_r(1,q,\ldots,q^n)=\Qbinom{n+r}{n}{q}.
-\]
-Because $n+r=d-1$, this is the desired formula.
-\end{proof}
-
-\begin{corollary}[Scaled geometric nodes]\label{cor:scaled-geometric-moments}
-Let $c\ne0$ and use the same weights $\lambda_{n,k}^{(q)}$ on the nodes $cq^k$.  Then for $d>0$,
-\[
- \sum_{k=0}^{n}\lambda_{n,k}^{(q)}(cq^k)^d
- =c^d(-1)^nq^{\binom{n+1}{2}}\Qbinom{d-1}{n}{q}.
-\]
-In particular, these weights evaluate every polynomial of degree at most $n$ at $0$ independently of the nonzero scale $c$.
-\end{corollary}
-
-\begin{proof}
-Factor $c^d$ from the moment sum and apply \Cref{thm:complete-geometric-moments}.  Exactness on polynomials follows by linearity.
-\end{proof}
-
-\section{Formal coefficient filters}
-
-For a formal power series $f(X)=\sum_{m\ge0}a_mX^m$, define
-\begin{equation}\label{eq:geometric-filter-definition}
- (\mathcal G_{n,q}f)(X)
- :=\sum_{k=0}^{n}\lambda_{n,k}^{(q)}f(q^kX).
-\end{equation}
-The sum is finite, so this is well defined over any coefficient field in which the weights exist.
-
-\begin{theorem}[Diagonal action and exact tail]\label{thm:geometric-filter-diagonal}
-For every formal power series $f(X)=\sum_{m\ge0}a_mX^m$,
-\begin{align}
- [X^m]\mathcal G_{n,q}f
- &=\left(\sum_{k=0}^{n}\lambda_{n,k}^{(q)}q^{km}\right)a_m,
- \label{eq:filter-diagonal}\\
- \mathcal G_{n,q}f(X)
- &=a_0+(-1)^nq^{\binom{n+1}{2}}
-   \sum_{r\ge0}\Qbinom{n+r}{n}{q}a_{n+1+r}X^{n+1+r}.
- \label{eq:filter-exact-tail}
-\end{align}
-Thus the filter deletes the coefficients of degrees $1,\ldots,n$ and multiplies every later coefficient by an explicit Gaussian polynomial.
-\end{theorem}
-
-\begin{proof}
-Substitution gives
-\[
- \mathcal G_{n,q}f(X)
- =\sum_{k=0}^{n}\lambda_{n,k}^{(q)}
-   \sum_{m\ge0}a_mq^{km}X^m.
-\]
-The outer sum is finite, so coefficient extraction may be interchanged with it, proving \eqref{eq:filter-diagonal}.  Apply \Cref{thm:complete-geometric-moments}: the multiplier is $1$ at $m=0$, is $0$ for $1\le m\le n$, and at $m=n+1+r$ is
-$(-1)^nq^{\binom{n+1}{2}}\Qbinom{n+r}{n}{q}$.  This gives \eqref{eq:filter-exact-tail}.
-\end{proof}
-
-\begin{corollary}[Geometric Richardson extrapolation]\label{cor:geometric-richardson}
-Let $f$ be analytic at $0$.  The values
-\[
- f(z),\ f(qz),\ \ldots,\ f(q^nz)
-\]
-produce the extrapolation formula
-\[
- \sum_{k=0}^{n}\lambda_{n,k}^{(q)}f(q^kz)
- =f(0)+O(z^{n+1})
- \qquad(z\to0),
-\]
-and the complete asymptotic error is the convergent specialization of
-\eqref{eq:filter-exact-tail}.
-\end{corollary}
-
-\begin{proof}
-Apply \Cref{thm:geometric-filter-diagonal} to the Taylor series of $f$.  The first nonconstant surviving term has degree $n+1$.
-\end{proof}
-
-\begin{theorem}[A quantitative analytic bound]\label{thm:geometric-filter-bound}
-Assume $0<q<1$ and
-$f(z)=\sum_{m\ge0}a_mz^m$ with
-$\abs{a_m}\le M R^{-m}$.  If $\abs z<R$, then
-\begin{equation}\label{eq:geometric-filter-bound}
- \left|\sum_{k=0}^{n}\lambda_{n,k}^{(q)}f(q^kz)-f(0)\right|
- \le
- \frac{M q^{\binom{n+1}{2}}}{(q;q)_n}
- \frac{(\abs z/R)^{n+1}}{1-\abs z/R}.
-\end{equation}
-\end{theorem}
-
-\begin{proof}
-For $r\ge0$,
-\[
- \Qbinom{n+r}{n}{q}
- =\frac{(q^{r+1};q)_n}{(q;q)_n}
- \le\frac1{(q;q)_n},
-\]
-because every factor in $(q^{r+1};q)_n$ lies in $(0,1)$.  Take absolute values in \eqref{eq:filter-exact-tail}, use the coefficient bound, and sum the resulting geometric series.
-\end{proof}
-
-\begin{remark}
-The exact multiplier in \eqref{eq:filter-exact-tail}, rather than merely the order estimate $O(z^{n+1})$, is the principal advantage of a geometric grid.  The complete tail is controlled by one Gaussian row.  This phenomenon is used repeatedly in geometric extrapolation, in formal power-series filters, and in the dyadic identities of the next chapter.
-\end{remark}
-
-\chapter{Half-base arithmetic and Prouhet--Thue--Morse cancellation}\label{chap:halfbase-thuemorse}
-\index{$q=1/2$ specialization}
-\index{Mersenne product}
-\index{Prouhet problem}
-\index{Thue--Morse sequence}
-
-The specialization $q=1/2$ turns factors $1-q^j$ into normalized Mersenne numbers.  It is especially important in exact formulas for the Fabius and Rvachev functions.  At this base, the finite $q$-binomial theorem produces a compact $n+1$-point Prouhet functional, while the classical Thue--Morse product produces a $2^n$-point functional.  Both annihilate all polynomials of degree below $n$, but their weights and node geometries are very different.
-
-\section{Mersenne normalization}
-
-Define
-\begin{equation}\label{eq:mersenne-product}
- \mathfrak m_0:=1,
- \qquad
- \mathfrak m_n:=\prod_{j=1}^{n}(2^j-1)
- \quad(n\ge1).
-\end{equation}
-
-\begin{theorem}[Half-base factorial and Gaussian formulas]\label{thm:halfbase-normalization}
-For $n\ge0$ and $0\le k\le n$,
-\begin{align}
- (1/2;1/2)_n
- &=2^{-\binom{n+1}{2}}\mathfrak m_n,
- \label{eq:halfbase-factorial}\\
- \Qbinom nk{1/2}
- &=2^{-k(n-k)}
-   \frac{\mathfrak m_n}{\mathfrak m_k\mathfrak m_{n-k}}.
- \label{eq:halfbase-gaussian}
-\end{align}
-\end{theorem}
-
-\begin{proof}
-Each factor satisfies
-\[
- 1-2^{-j}=2^{-j}(2^j-1).
-\]
-Multiplication for $1\le j\le n$ gives \eqref{eq:halfbase-factorial}, because
-$1+2+\cdots+n=\binom{n+1}{2}$.  Substitute this expression into
-\[
- \Qbinom nk{1/2}
- =\frac{(1/2;1/2)_n}{(1/2;1/2)_k(1/2;1/2)_{n-k}}.
-\]
-The power of $2$ in the quotient is
-\[
- -\binom{n+1}{2}+\binom{k+1}{2}+\binom{n-k+1}{2}
- =-k(n-k),
-\]
-which proves \eqref{eq:halfbase-gaussian}.
-\end{proof}
-
-\begin{theorem}[Dyadic evaluation of the finite product]\label{thm:dyadic-product-evaluation}
-For integers $m,n\ge0$,
-\begin{equation}\label{eq:dyadic-product-evaluation}
- (2^m;1/2)_n
- =
- \begin{cases}
-  0,&m<n,\\[3pt]
-  (-1)^n\dfrac{\mathfrak m_m}{\mathfrak m_{m-n}},&m\ge n.
- \end{cases}
-\end{equation}
-Equivalently,
-\begin{equation}\label{eq:halfbase-sum-evaluation}
- \sum_{k=0}^{n}(-1)^k2^{-\binom k2}
- \Qbinom nk{1/2}2^{mk}
- =
- \begin{cases}
-  0,&m<n,\\[3pt]
-  (-1)^n\dfrac{\mathfrak m_m}{\mathfrak m_{m-n}},&m\ge n.
- \end{cases}
-\end{equation}
-\end{theorem}
-
-\begin{proof}
-By definition,
-\[
- (2^m;1/2)_n=\prod_{j=0}^{n-1}(1-2^{m-j}).
-\]
-If $m<n$, the factor with $j=m$ is zero.  If $m\ge n$, every factor is negative and
-\[
- \prod_{j=0}^{n-1}(1-2^{m-j})
- =(-1)^n\prod_{r=m-n+1}^{m}(2^r-1)
- =(-1)^n\frac{\mathfrak m_m}{\mathfrak m_{m-n}}.
-\]
-The finite $q$-binomial theorem at $q=1/2$ and $z=2^m$ turns the left side into the sum in \eqref{eq:halfbase-sum-evaluation}.
-\end{proof}
-
-\begin{corollary}[Root locus]\label{cor:halfbase-root-locus}
-The polynomial
-\[
- \sum_{k=0}^{n}(-1)^k2^{-\binom k2}\Qbinom nk{1/2}z^k
-\]
-has the simple roots $1,2,4,\ldots,2^{n-1}$ and no others.
-\end{corollary}
-
-\begin{proof}
-It is $(z;1/2)_n=\prod_{j=0}^{n-1}(1-z/2^j)$, a degree-$n$ polynomial with exactly the displayed roots.
-\end{proof}
-
-\section{A compressed geometric Prouhet functional}
-
-Define nodes and weights
-\begin{equation}\label{eq:halfbase-prouhet-data}
- \xi_k:=-2^k,
- \qquad
- w_{n,k}:=(-1)^k2^{-\binom k2}\Qbinom nk{1/2}
- \qquad(0\le k\le n).
-\end{equation}
-
-\begin{theorem}[Geometric Prouhet identity]\label{thm:geometric-prouhet}
-For every polynomial $p$ of degree at most $n$,
-\begin{equation}\label{eq:geometric-prouhet}
- \sum_{k=0}^{n}w_{n,k}p(\xi_k)
- =\mathfrak m_n[X^n]p(X).
-\end{equation}
-In particular, the functional on the left annihilates every polynomial of degree less than $n$.
-\end{theorem}
-
-\begin{proof}
-It suffices to take $p(X)=X^d$ for $0\le d\le n$.  With $q=1/2$,
-\begin{align*}
- \sum_{k=0}^{n}w_{n,k}\xi_k^d
- &=(-1)^d\sum_{k=0}^{n}(-1)^kq^{\binom k2}
-   \Qbinom nkq q^{-kd}\\
- &=(-1)^d(q^{-d};q)_n
-\end{align*}
-by the finite $q$-binomial theorem.  If $d<n$, the factor with index $j=d$ in
-$(q^{-d};q)_n$ is zero.  At $d=n$, base reversal gives
-\[
- (q^{-n};q)_n=(-1)^nq^{-\binom{n+1}{2}}(q;q)_n.
-\]
-Therefore
-\[
- (-1)^n(q^{-n};q)_n
- =2^{\binom{n+1}{2}}(1/2;1/2)_n
- =\mathfrak m_n
-\]
-by \eqref{eq:halfbase-factorial}.  Linearity now proves \eqref{eq:geometric-prouhet}.
-\end{proof}
-
-\begin{corollary}[Affine form]\label{cor:geometric-prouhet-affine}
-For constants $a,b$ and every polynomial $p$ of degree at most $n$,
-\[
- \sum_{k=0}^{n}w_{n,k}p(a+b\xi_k)
- =b^n\mathfrak m_n[X^n]p(X).
-\]
-\end{corollary}
-
-\begin{proof}
-Apply \Cref{thm:geometric-prouhet} to the polynomial $X\mapsto p(a+bX)$.  Its leading coefficient is $b^n[X^n]p(X)$.
-\end{proof}
-
-\begin{remark}
-The identity uses only $n+1$ geometrically spaced nodes.  The price for this compression is that the weights are nonuniform rational numbers involving the half-base Gaussian row.  The Thue--Morse construction below uses $2^n$ equally weighted signs on an arithmetic grid instead.
-\end{remark}
-
-\section{The Thue--Morse product}
-
-For a nonnegative integer $r$, let $s_2(r)$ be the sum of the binary digits of $r$ and put
-\[
- \tau_r:=(-1)^{s_2(r)}.
-\]
-This is the signed Thue--Morse sequence.
-
-\begin{theorem}[Finite Thue--Morse product]\label{thm:thue-morse-product}
-For every $n\ge0$,
-\begin{equation}\label{eq:thue-morse-product}
- \sum_{r=0}^{2^n-1}\tau_r z^r
- =\prod_{j=0}^{n-1}(1-z^{2^j}).
-\end{equation}
-\end{theorem}
-
-\begin{proof}
-Every $r$ with $0\le r<2^n$ has a unique binary expansion
-$r=\sum_{j=0}^{n-1}\varepsilon_j2^j$ with $\varepsilon_j\in\{0,1\}$.  Expanding the product on the right, choose either $1$ or $-z^{2^j}$ from the $j$th factor.  The choice vector $(\varepsilon_0,\ldots,\varepsilon_{n-1})$ contributes
-\[
- (-1)^{\varepsilon_0+\cdots+\varepsilon_{n-1}}
- z^{\varepsilon_0+2\varepsilon_1+\cdots+2^{n-1}\varepsilon_{n-1}}
- =\tau_rz^r.
-\]
-Summing over all binary choices gives the identity.
-\end{proof}
-
-\begin{theorem}[Prouhet cancellation and first surviving moment]\label{thm:thue-morse-moments}
-For $n\ge1$,
-\begin{equation}\label{eq:thue-morse-moments}
- \sum_{r=0}^{2^n-1}\tau_r r^d
- =
- \begin{cases}
-  0,&0\le d<n,\\
-  (-1)^n2^{\binom n2}n!,&d=n.
- \end{cases}
-\end{equation}
-More generally, for every polynomial $p$ of degree at most $n$,
-\begin{equation}\label{eq:thue-morse-polynomial-functional}
- \sum_{r=0}^{2^n-1}\tau_r p(a+br)
- =(-1)^n2^{\binom n2}n!\,b^n[X^n]p(X).
-\end{equation}
-\end{theorem}
-
-\begin{proof}
-Let
-$P_n(z)=\sum_{r<2^n}\tau_rz^r$.  By \Cref{thm:thue-morse-product}, $P_n$ has a zero of order exactly $n$ at $z=1$, because every factor $1-z^{2^j}$ has a simple zero there.  The Euler operator $D=z\frac{d}{dz}$ satisfies
-\[
- D^dP_n(1)=\sum_{r<2^n}\tau_rr^d.
-\]
-For $d<n$, this is zero because $D^d$ is a linear combination of ordinary derivatives of orders at most $d$, all of which vanish at $1$.
-
-For $d=n$, the coefficient of the ordinary $n$th derivative in $D^n$ is $z^n$, while all lower derivatives still vanish at $1$.  Hence
-\[
- D^nP_n(1)=P_n^{(n)}(1).
-\]
-The leading coefficient of the local expansion at $1$ is the product of the first derivatives of the $n$ factors:
-\[
- P_n^{(n)}(1)
- =n!\prod_{j=0}^{n-1}\left.\frac{d}{dz}(1-z^{2^j})\right|_{z=1}
- =n!\prod_{j=0}^{n-1}(-2^j)
- =(-1)^n2^{\binom n2}n!.
-\]
-This proves \eqref{eq:thue-morse-moments}.  Apply it termwise to the polynomial $X\mapsto p(a+bX)$; all terms below degree $n$ vanish, and its leading coefficient is $b^n[X^n]p(X)$.  This gives \eqref{eq:thue-morse-polynomial-functional}.
-\end{proof}
-
-\begin{corollary}[Equal power sums]\label{cor:thue-morse-prouhet-partition}
-Partition $\{0,1,\ldots,2^n-1\}$ according to the parity of $s_2(r)$.  The two classes have equal sums of $d$th powers for every $0\le d<n$.
-\end{corollary}
-
-\begin{proof}
-Move the negative-sign terms in \eqref{eq:thue-morse-moments} to the other side.
-\end{proof}
-
-\section{Two cancellation mechanisms}
-
-\begin{principle}[Geometric versus binary Prouhet filters]\label{prin:two-prouhet-filters}
-There are two complementary exact functionals of order $n$:
-\begin{align*}
- \sum_{k=0}^{n}(-1)^k2^{-\binom k2}\Qbinom nk{1/2}p(-2^k)
- &=\mathfrak m_n[X^n]p,\\
- \sum_{r=0}^{2^n-1}(-1)^{s_2(r)}p(r)
- &=(-1)^n2^{\binom n2}n![X^n]p,
-\end{align*}
-valid for $\deg p\le n$.  The first uses a Gaussian row on a geometric grid; the second uses uniform signs generated by binary digits on an arithmetic grid.
-\end{principle}
-
-\begin{proof}
-These are \Cref{thm:geometric-prouhet,thm:thue-morse-moments}.
-\end{proof}
-
-The common product mechanism is now visible.  In the geometric case the annihilating polynomial is $(q^{-d};q)_n$ evaluated at integer $d$; in the binary case it is the product $\prod_{j<n}(1-z^{2^j})$ and its order of vanishing at $z=1$.  Both encode a hierarchy of moment cancellations by forcing a product to acquire prescribed zeros.
-
-\chapter{Geometric uniform sums, \texorpdfstring{$q$}{q}-cumulants, and the Fabius--Rvachev functions}\label{chap:geometric-uniform-fabius}
-\index{Fabius function}
-\index{Rvachev up function}
-\index{geometric uniform sum}
-\index{cumulant}
-\index{Bell polynomial}
-\index{sinc product}
-
-A second bridge from $q$-products to the Fabius theory is probabilistic.  Replace discrete binary digits by independent uniform coordinates and weight them geometrically.  The resulting random series has a smooth compactly supported density, a Fourier transform given by an infinite product of sinc functions, and cumulants containing the factors $1-q^{2m}$.  At $q=1/2$ its distribution function is the Fabius function and its centered density is the Rvachev up function~\cite{Fabius1966,Rvachev1990,AriasDeReyna1982,ReshetnikovProveIt2026}.
-
-\section{The geometric uniform random series}
-
-Let $0<q<1$, let $U_0,U_1,\ldots$ be independent random variables uniformly distributed on $[0,1]$, and define
-\begin{equation}\label{eq:geometric-uniform-series}
- X_q:=(1-q)\sum_{j=0}^{\infty}q^jU_j.
-\end{equation}
-
-\begin{theorem}[Convergence, support, symmetry, and self-similarity]\label{thm:geometric-uniform-basic}
-The series \eqref{eq:geometric-uniform-series} converges absolutely for every outcome and satisfies $0\le X_q\le1$.  Its topological support is $[0,1]$, and
-\begin{equation}\label{eq:geometric-uniform-mean-symmetry}
- \mathbb E X_q=\frac12,
- \qquad
- X_q\overset{d}=1-X_q.
-\end{equation}
-If $X_q'$ is an independent copy of $X_q$, then
-\begin{equation}\label{eq:geometric-uniform-fixed-point}
- X_q\overset{d}=(1-q)U_0+qX_q'.
-\end{equation}
-Consequently its distribution function $F_q(x)=\mathbb P(X_q\le x)$ satisfies
-\begin{equation}\label{eq:geometric-uniform-cdf-equation}
- F_q(x)=\int_0^1
- F_q\!\left(\frac{x-(1-q)u}{q}\right)\,du,
-\end{equation}
-where $F_q(y)=0$ for $y\le0$ and $F_q(y)=1$ for $y\ge1$.
-\end{theorem}
-
-\begin{proof}
-Because $0\le U_j\le1$,
-\[
- 0\le (1-q)\sum_{j=0}^{N-1}q^jU_j
- \le(1-q)\sum_{j=0}^{N-1}q^j\le1.
-\]
-The tail is bounded by
-\[
- (1-q)\sum_{j=N}^{\infty}q^j=q^N,
-\]
-so the series converges absolutely and takes values in $[0,1]$.
-
-Every $x\in[0,1]$ belongs to the support: if all of the first $N$ variables lie sufficiently close to $x$, then their weighted partial sum lies close to $x(1-q^N)$, and the remaining tail is at most $q^N$; the corresponding finite cylinder has positive probability.  No point outside $[0,1]$ can belong to the support.
-
-Linearity of expectation and the geometric sum give
-\[
- \mathbb EX_q=(1-q)\sum_{j\ge0}q^j\mathbb EU_j
- =\frac{1-q}{2}\frac1{1-q}=\frac12.
-\]
-Since $1-U_j$ are again independent uniform variables,
-\[
- 1-X_q=(1-q)\sum_{j\ge0}q^j(1-U_j)
-\]
-has the same distribution as $X_q$.  Splitting off the first term and reindexing the tail proves \eqref{eq:geometric-uniform-fixed-point}.  Conditioning on $U_0=u$ then gives
-\[
- \mathbb P((1-q)u+qX_q'\le x)
- =F_q\!\left(\frac{x-(1-q)u}{q}\right),
-\]
-and integration over $u\in[0,1]$ proves \eqref{eq:geometric-uniform-cdf-equation}.
-\end{proof}
-
-\section{Fourier product and cumulants}
-
-Use the entire function
-\[
- \operatorname{sinc}z:=
- \begin{cases}
-  \dfrac{\sin z}{z},&z\ne0,\\
-  1,&z=0.
- \end{cases}
-\]
-
-\begin{theorem}[Characteristic function]\label{thm:geometric-uniform-characteristic}
-For real $t$,
-\begin{equation}\label{eq:geometric-uniform-characteristic}
- \varphi_q(t):=\mathbb E\,e^{itX_q}
- =e^{it/2}\prod_{j=0}^{\infty}
- \operatorname{sinc}\!\left(\frac{(1-q)q^jt}{2}\right).
-\end{equation}
-The product converges uniformly on compact subsets of the complex $t$-plane and therefore defines an entire function.
-\end{theorem}
-
-\begin{proof}
-For a uniform variable $U$ on $[0,1]$ and any complex $s$,
-\[
- \mathbb Ee^{sU}=\int_0^1e^{su}\,du
- =e^{s/2}\frac{\sinh(s/2)}{s/2}.
-\]
-At $s=ita$ this becomes
-$e^{ita/2}\operatorname{sinc}(at/2)$.  Independence gives the finite product for the partial sum.  The phases combine because
-$\sum_{j\ge0}(1-q)q^j=1$.
-
-For compact $t$-sets, the arguments of the sinc factors are $O(q^j)$.  Since
-$\operatorname{sinc}z=1+O(z^2)$ near $0$, the series of deviations from $1$ is bounded by a constant multiple of $\sum q^{2j}$, uniformly on the compact set.  The standard uniform convergence criterion for infinite products proves locally uniform convergence to an entire function.  Passing to the limit in the finite characteristic functions gives \eqref{eq:geometric-uniform-characteristic}.
-\end{proof}
-
-Let $Y_q=X_q-1/2$.  We use Bernoulli numbers in the convention
-\begin{equation}\label{eq:bernoulli-convention-fabius}
- \frac{z}{e^z-1}=\sum_{m=0}^{\infty}B_m\frac{z^m}{m!}.
-\end{equation}
-The cumulants $\kappa_m(Y_q)$ are defined by
-\[
- \log\mathbb Ee^{tY_q}
- =\sum_{m\ge1}\kappa_m(Y_q)\frac{t^m}{m!}
-\]
-near $t=0$.
-
-\begin{theorem}[$q$-cumulants of the geometric uniform sum]\label{thm:q-cumulants-uniform}
-All odd cumulants of $Y_q$ vanish, and for $m\ge1$,
-\begin{equation}\label{eq:q-cumulants-uniform}
- \kappa_{2m}(Y_q)
- =\frac{B_{2m}}{2m}\,
-   \frac{(1-q)^{2m}}{1-q^{2m}}.
-\end{equation}
-Equivalently,
-\begin{equation}\label{eq:q-cumulant-log-mgf}
- \log\mathbb Ee^{tY_q}
- =\sum_{m=1}^{\infty}
-   \frac{B_{2m}}{2m(2m)!}
-   \frac{(1-q)^{2m}}{1-q^{2m}}t^{2m}
-\end{equation}
-for $t$ in a neighborhood of $0$.
-\end{theorem}
-
-\begin{proof}
-For $U$ uniform on $[0,1]$,
-\[
- \mathbb Ee^{t(U-1/2)}
- =\frac{\sinh(t/2)}{t/2}.
-\]
-Differentiating the logarithm gives
-\[
- \frac{d}{dt}\log\frac{\sinh(t/2)}{t/2}
- =\frac12\coth(t/2)-\frac1t.
-\]
-The Bernoulli generating function implies the classical Laurent expansion
-\[
- \frac12\coth(t/2)-\frac1t
- =\sum_{m=1}^{\infty}B_{2m}\frac{t^{2m-1}}{(2m)!}.
-\]
-Integrating from $0$ to $t$ yields
-\begin{equation}\label{eq:centered-uniform-logmgf}
- \log\frac{\sinh(t/2)}{t/2}
- =\sum_{m=1}^{\infty}
-   \frac{B_{2m}}{2m(2m)!}t^{2m}.
-\end{equation}
-Now
-\[
- Y_q=(1-q)\sum_{j\ge0}q^j(U_j-1/2).
-\]
-Cumulant generating functions add under independence.  Substitute
-$t(1-q)q^j$ into \eqref{eq:centered-uniform-logmgf}, sum over $j$, and use
-$\sum_{j\ge0}q^{2mj}=1/(1-q^{2m})$.  This proves
-\eqref{eq:q-cumulant-log-mgf}; comparison of coefficients gives
-\eqref{eq:q-cumulants-uniform}.  Only even powers occur, so all odd cumulants vanish.
-\end{proof}
-
-\begin{definition}[Complete exponential Bell polynomials]
-The polynomials $\mathcal B_n(x_1,\ldots,x_n)$ are defined by
-\begin{equation}\label{eq:complete-bell-definition}
- \exp\!\left(\sum_{r\ge1}x_r\frac{t^r}{r!}\right)
- =\sum_{n\ge0}\mathcal B_n(x_1,\ldots,x_n)\frac{t^n}{n!}.
+\section{The reversed Gaussian row as a spectral annihilator}
+
+\begin{definition}
+For $0\le k\le n$, define the reversed Gaussian coefficient
+\begin{equation}
+ N_{n,k}(u)=(-1)^{n-k}u^{\binom{n-k+1}{2}}G_{n,k}(u).\label{eq:reversed-gaussian-def}
 \end{equation}
 \end{definition}
 
-\begin{corollary}[All moments]\label{cor:geometric-uniform-moments}
-Let $\kappa_r=\kappa_r(Y_q)$, with the values in
-\Cref{thm:q-cumulants-uniform}.  Then
-\begin{equation}\label{eq:centered-moments-bell}
- \mathbb E(Y_q^n)=\mathcal B_n(\kappa_1,\ldots,\kappa_n).
+\begin{theorem}[Characteristic polynomial of a geometric row]\label{thm:reversed-gaussian-polynomial}
+For every $n\ge0$,
+\begin{equation}
+ \sum_{k=0}^nN_{n,k}(u)z^k
+ =\prod_{j=1}^n(z-u^j).\label{eq:reversed-gaussian-polynomial}
 \end{equation}
-The moments can also be generated recursively from $\mu_0=1$ by
-\begin{equation}\label{eq:moment-cumulant-recurrence}
- \mu_n=\sum_{r=1}^{n}\binom{n-1}{r-1}\kappa_r\mu_{n-r},
- \qquad \mu_n:=\mathbb E(Y_q^n).
+Consequently, for every integer $d\ge0$,
+\begin{equation}
+ \sum_{k=0}^nN_{n,k}(u)u^{kd}
+ =\prod_{j=1}^n(u^d-u^j).\label{eq:reversed-gaussian-moments}
 \end{equation}
-Finally,
-\begin{equation}\label{eq:raw-moments-from-centered}
- \mathbb E(X_q^n)=\sum_{j=0}^{n}\binom nj2^{j-n}\mu_j.
+In particular, with the convention $0^0=1$,
+\begin{equation}
+ \sum_{k=0}^nN_{n,k}(u)u^{kd}=(u;u)_n0^d,
+ \qquad 0\le d\le n.\label{eq:reversed-low-moments}
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+By \eqref{eq:universal-negative-finite},
+\[
+ \prod_{j=1}^n(z-u^j)
+ =z^n\prod_{j=1}^n\left(1-\frac{u^j}{z}\right)
+ =\sum_{r=0}^n(-1)^ru^{\binom{r+1}{2}}G_{n,r}(u)z^{n-r}.
+\]
+Set $k=n-r$ and use symmetry $G_{n,n-k}=G_{n,k}$.  The coefficient becomes exactly \eqref{eq:reversed-gaussian-def}, proving \eqref{eq:reversed-gaussian-polynomial}.  Substitution $z=u^d$ gives \eqref{eq:reversed-gaussian-moments}.  If $1\le d\le n$, one factor on the right is $u^d-u^d=0$; if $d=0$, the product is $\prod_{j=1}^n(1-u^j)=(u;u)_n$.
+\end{proof}
+
+\begin{corollary}[All residual moments]\label{cor:reversed-residual-moments}
+For $d\ge n+1$,
+\begin{equation}
+ \sum_{k=0}^nN_{n,k}(u)u^{kd}
+ =(-1)^nu^{\binom{n+1}{2}}(u;u)_n
+   \Qbinom{d-1}n u.\label{eq:reversed-residual-moments}
 \end{equation}
 \end{corollary}
 
 \begin{proof}
-The moment generating function is the exponential of the cumulant generating function.  Comparing it with the defining identity
-\eqref{eq:complete-bell-definition} proves \eqref{eq:centered-moments-bell}.  If
-$M(t)=\sum\mu_nt^n/n!$ and $K(t)=\sum\kappa_rt^r/r!$, then
-$M=e^K$ and $M'=K'M$.  Comparing the coefficient of $t^{n-1}$ gives
-\eqref{eq:moment-cumulant-recurrence}.  The last formula is the binomial expansion of $(Y_q+1/2)^n$.
+Factor $u^j$ from the $j$th factor in \eqref{eq:reversed-gaussian-moments}:
+\[
+ \prod_{j=1}^n(u^d-u^j)
+ =u^{\binom{n+1}{2}}\prod_{j=1}^n(u^{d-j}-1)
+ =(-1)^nu^{\binom{n+1}{2}}(u^{d-n};u)_n.
+\]
+Apply \eqref{eq:universal-short-factorial} with upper index $d-1$ and lower index $n$.
 \end{proof}
 
-\begin{corollary}[The half-base cumulants]\label{cor:halfbase-cumulants}
-At $q=1/2$,
-\begin{equation}\label{eq:halfbase-cumulants}
- \kappa_{2m}(Y_{1/2})
- =\frac{B_{2m}}{2m(2^{2m}-1)},
- \qquad
- \kappa_{2m+1}(Y_{1/2})=0.
+\begin{remark}
+Equations \eqref{eq:reversed-low-moments} and \eqref{eq:reversed-residual-moments} say that one Gaussian row is a finite spectral filter on the geometric modes $1,u^k,u^{2k},\ldots$.  The first $n$ nonconstant modes are annihilated, while every later mode has an explicit residual.  This interpretation is the bridge from Gaussian polynomials to extrapolation and, at $u=\tfrac12$, to the Fabius function.
+\end{remark}
+
+\section{M\"obius inversion on subspace lattices}
+
+The same coefficients arise from incidence algebra.  This is not merely another interpretation: it explains why the inverse of a Gaussian summation matrix has the sign and quadratic exponent occurring in \eqref{eq:reversed-gaussian-def}.
+
+\begin{theorem}[M\"obius function of the subspace lattice]\label{thm:subspace-mobius}
+Let $V$ be a $d$-dimensional vector space over $\F_Q$, where $Q$ is a prime power.  In the lattice of subspaces of $V$,
+\begin{equation}
+ \mu(0,V)=(-1)^dQ^{\binom d2}.\label{eq:subspace-mobius}
 \end{equation}
-Hence all moments of $X_{1/2}$ are rational and are computable to arbitrary order by \eqref{eq:moment-cumulant-recurrence}.
-\end{corollary}
-
-\begin{proof}
-In \eqref{eq:q-cumulants-uniform},
+More generally, if $U\subseteq W$, then
 \[
- \frac{(1-1/2)^{2m}}{1-2^{-2m}}
- =\frac1{2^{2m}-1}.
-\]
-The Bernoulli numbers are rational, so the recurrence uses only rational operations.
-\end{proof}
-
-\section{Superpolynomial Fourier decay and smoothness}
-
-\begin{theorem}[Log-Gaussian decay in frequency]\label{thm:geometric-uniform-fourier-decay}
-Put
-\[
- A=\frac{1-q}{2},
- \qquad
- b=\log(1/q)>0.
-\]
-For sufficiently large $\abs t$, with $L=\log(A\abs t)$,
-\begin{equation}\label{eq:log-gaussian-fourier-bound}
- \abs{\varphi_q(t)}
- \le \exp\!\left(-\frac{L^2}{2b}+\frac L2\right).
-\end{equation}
-In particular, for every $M\ge0$,
-\[
- \abs t^M\varphi_q(t)\in L^1(\R).
+ \mu(U,W)=(-1)^rQ^{\binom r2},\qquad r=\dim(W/U).
 \]
 \end{theorem}
 
 \begin{proof}
-The phase $e^{it/2}$ has absolute value $1$, and
-$\abs{\operatorname{sinc}u}\le\min(1,1/\abs u)$.  Choose
+The interval $[U,W]$ is isomorphic to the subspace lattice of $W/U$, so it suffices to take $U=0$.  We argue by induction on $d$.  The assertion is clear for $d=0$.  For $d>0$, the defining relation for the M\"obius function gives
 \[
- N=\floor{L/b}+1.
+ \mu(0,V)=-\sum_{X<V}\mu(0,X)
+ =-\sum_{j=0}^{d-1}\Qbinom djQ(-1)^jQ^{\binom j2},
 \]
-For $0\le j<N$ we have $A\abs t q^j\ge1$.  Hence
+because there are $\Qbinom djQ$ subspaces of dimension $j$.  The finite $q$-binomial theorem at $z=1$ gives
+\[
+ \sum_{j=0}^{d}\Qbinom djQ(-1)^jQ^{\binom j2}
+ =(1;Q)_d=0.
+\]
+Therefore the negative of the sum through $d-1$ is the missing $j=d$ term, namely $(-1)^dQ^{\binom d2}$.
+\end{proof}
+
+\begin{corollary}[$q$-binomial inversion revisited]\label{cor:qbinomial-inversion-mobius}
+If
+\[
+ g_n=\sum_{k=0}^n\qbinom nk f_k,
+\]
+then
+\begin{equation}
+ f_n=\sum_{k=0}^n(-1)^{n-k}q^{\binom{n-k}{2}}\qbinom nk g_k.\label{eq:qbinomial-inversion-mobius}
+\end{equation}
+Whenever $q=Q$ is a prime power, this is M\"obius inversion on the subspace lattice; as a polynomial identity, it holds for an indeterminate $q$ and hence under every safe specialization.
+\end{corollary}
+
+\begin{proof}
+For $q=Q$, define a function on subspaces that depends only on dimension.  Summation over all subspaces becomes the first displayed transform, and M\"obius inversion with \eqref{eq:subspace-mobius} gives \eqref{eq:qbinomial-inversion-mobius}.  Both sides are polynomials in $q$ with integer coefficients.  Since they agree for infinitely many prime powers, they agree identically in $\Z[q]$ and therefore under every specialization.  Alternatively, a direct proof follows by substituting the first transform into the second, using
+\[
+ \qbinom nk\qbinom kj=\qbinom nj\Qbinom{n-j}{k-j}q,
+\]
+and applying the finite $q$-binomial theorem at $z=1$ to the inner sum.
+\end{proof}
+
+
+\chapter{Geometric divided differences and exact \texorpdfstring{$q$}{q}-filters}\label{chap:qfilters}
+\index{divided difference!geometric grid}
+\index{Richardson extrapolation!$q$-geometric}
+\index{Lagrange interpolation!evaluation at zero}
+
+A Gaussian row can be read as an interpolation stencil.  The resulting formulas give exact annihilation of low-order geometric errors and explicit expressions for every residual term.  This chapter develops that statement in full generality before specializing to $q=\tfrac12$.
+
+\section{All monomial moments of a divided difference}
+
+Let $x_0,\ldots,x_n$ be pairwise distinct complex numbers and put
+\[
+ \Delta_k=\prod_{\substack{0\le j\le n\\j\ne k}}(x_k-x_j).
+\]
+For a function specified on the nodes, define
+\[
+ [x_0,\ldots,x_n]f=\sum_{k=0}^n\frac{f(x_k)}{\Delta_k}.
+\]
+
+\begin{theorem}[Leading-coefficient extraction]\label{thm:leading-coefficient-divdiff}
+If $P$ is a polynomial of degree at most $n$, then
+\begin{equation}
+ [x_0,\ldots,x_n]P=[t^n]P(t).\label{eq:leading-coefficient-divdiff}
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+The Lagrange interpolant of $P$ is
+\[
+ P(t)=\sum_{k=0}^nP(x_k)
+ \prod_{j\ne k}\frac{t-x_j}{x_k-x_j}.
+\]
+The coefficient of $t^n$ in the $k$th basis polynomial is $1/\Delta_k$.  Taking leading coefficients gives \eqref{eq:leading-coefficient-divdiff}.
+\end{proof}
+
+Let $h_r(x_0,\ldots,x_n)$ denote the complete homogeneous symmetric polynomial, determined by
+\begin{equation}
+ \sum_{r\ge0}h_r(x_0,\ldots,x_n)s^r
+ =\prod_{j=0}^n\frac1{1-sx_j}.\label{eq:complete-homogeneous-gen}
+\end{equation}
+We set $h_0=1$.
+
+\begin{theorem}[Complete residual moment formula]\label{thm:complete-residual-moments}
+For every $m\ge0$,
+\begin{equation}
+ [x_0,\ldots,x_n]t^m=
+ \begin{cases}
+ 0,&0\le m<n,\\
+ h_{m-n}(x_0,\ldots,x_n),&m\ge n.
+ \end{cases}\label{eq:complete-residual-moments}
+\end{equation}
+Equivalently,
+\begin{equation}
+ \sum_{k=0}^n\frac{x_k^{n+r}}{\Delta_k}
+ =h_r(x_0,\ldots,x_n),\qquad r\ge0.\label{eq:complete-residual-moments-r}
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+We first prove the formal generating identity
+\begin{equation}
+ [x_0,\ldots,x_n]\frac1{1-st}
+ =\frac{s^n}{\prod_{j=0}^n(1-sx_j)}.\label{eq:divdiff-resolvent}
+\end{equation}
+For $n=0$ this is immediate.  Assume it for $n-1$.  The recursive definition of divided differences gives
+\[
+ [x_0,\ldots,x_n]f
+ =\frac{[x_1,\ldots,x_n]f-[x_0,\ldots,x_{n-1}]f}{x_n-x_0}.
+\]
+For $f(t)=(1-st)^{-1}$, the induction hypothesis turns the numerator into
+\[
+ s^{n-1}\left(
+ \frac1{\prod_{j=1}^n(1-sx_j)}
+ -\frac1{\prod_{j=0}^{n-1}(1-sx_j)}
+ \right).
+\]
+After taking a common denominator, its numerator is
+$ s^{n-1}\bigl((1-sx_0)-(1-sx_n)\bigr)
+ =s^n(x_n-x_0)$, which proves \eqref{eq:divdiff-resolvent}.  Expand the left side as
+\[
+ \sum_{m\ge0}s^m[x_0,\ldots,x_n]t^m
+\]
+and the right side by \eqref{eq:complete-homogeneous-gen}.  Equality of coefficients proves \eqref{eq:complete-residual-moments}.
+\end{proof}
+
+\section{Evaluation at zero and the first omitted term}
+
+Define the Lagrange weights for evaluation at zero by
+\begin{equation}
+ \lambda_k=\prod_{j\ne k}\frac{-x_j}{x_k-x_j}.\label{eq:zero-lagrange-weights}
+\end{equation}
+Then $P(0)=\sum_k\lambda_kP(x_k)$ for every polynomial of degree at most $n$.
+
+\begin{theorem}[Exact residuals for the zero-evaluation filter]\label{thm:zero-filter-residuals}
+Assume none of the $x_k$ is zero and put $e_{n+1}=x_0x_1\cdots x_n$.  For every integer $d\ge0$,
+\begin{equation}
+ \sum_{k=0}^n\lambda_kx_k^d=
+ \begin{cases}
+ 1,&d=0,\\
+ 0,&1\le d\le n,\\
+ (-1)^ne_{n+1}h_{d-n-1}(x_0,\ldots,x_n),&d\ge n+1.
+ \end{cases}\label{eq:zero-filter-residuals}
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+The cases $0\le d\le n$ are exactly the polynomial reproduction property.  For $d\ge1$, rewrite \eqref{eq:zero-lagrange-weights} as
+\[
+ \lambda_k=(-1)^n\frac{e_{n+1}}{x_k\Delta_k}.
+\]
+Therefore
+\[
+ \sum_{k=0}^n\lambda_kx_k^d
+ =(-1)^ne_{n+1}\sum_{k=0}^n\frac{x_k^{d-1}}{\Delta_k}.
+\]
+Apply \Cref{thm:complete-residual-moments}.  When $1\le d\le n$, the divided difference vanishes; when $d\ge n+1$, it equals $h_{d-n-1}$.
+\end{proof}
+
+\begin{corollary}[First omitted monomial]\label{cor:first-omitted-monomial}
+For $d=n+1$,
+\begin{equation}
+ \sum_{k=0}^n\lambda_kx_k^{n+1}=(-1)^nx_0x_1\cdots x_n.\label{eq:first-omitted-monomial}
+\end{equation}
+Equivalently, the interpolation error at zero for $P(t)=t^{n+1}$ is the constant term of the node polynomial $\prod_{k=0}^n(t-x_k)$.
+\end{corollary}
+
+\begin{proof}
+Set $d=n+1$ in \eqref{eq:zero-filter-residuals} and use $h_0=1$.
+\end{proof}
+
+\section{Closed forms on a geometric grid}
+
+Take
+\[
+ x_k=cq^k,
+ \qquad 0\le k\le n,
+\]
+where $c\ne0$ and $1,q,\ldots,q^n$ are distinct.  The scale $c$ cancels from the weights.
+
+\begin{theorem}[Gaussian Lagrange weights]\label{thm:gaussian-lagrange-weights}
+The weights for evaluation at zero on the nodes $c,cq,\ldots,cq^n$ are
+\begin{equation}
+ \lambda_{n,k}^{(q)}
+ =\frac{(-1)^{n-k}q^{\binom{n-k+1}{2}}}{(q;q)_n}
+   \qbinom nk
+ =\frac{(-1)^{n-k}q^{\binom{n-k+1}{2}}}
+ {(q;q)_k(q;q)_{n-k}}.\label{eq:gaussian-lagrange-weights}
+\end{equation}
+For every $d\ge1$,
+\begin{equation}
+ \sum_{k=0}^n\lambda_{n,k}^{(q)}(cq^k)^d
+ =(-1)^nc^dq^{\binom{n+1}{2}}
+   \Qbinom{d-1}n q,\label{eq:geometric-filter-residual}
+\end{equation}
+where the Gaussian coefficient is understood to be zero when $d-1<n$.
+\end{theorem}
+
+\begin{proof}
+Formula \eqref{eq:gaussian-lagrange-weights} is the normalized reversed row of \Cref{thm:reversed-gaussian-polynomial}:
+\[
+ \lambda_{n,k}^{(q)}=\frac{N_{n,k}(q)}{(q;q)_n}.
+\]
+Indeed, \eqref{eq:reversed-low-moments} shows that these weights reproduce the constant mode and annihilate $q^{kd}$ for $1\le d\le n$, which uniquely characterizes evaluation at zero on the $n+1$ distinct nodes.  The second expression follows from the factorial identity \eqref{eq:universal-full-factorial}.
+
+For the residual, \Cref{thm:zero-filter-residuals} gives
+\[
+ (-1)^n(c^{n+1}q^{\binom{n+1}{2}})
+ h_{d-n-1}(c,cq,\ldots,cq^n).
+\]
+The reciprocal finite $q$-binomial theorem yields
+\[
+ \prod_{k=0}^n\frac1{1-cq^kt}
+ =\sum_{r\ge0}c^r\Qbinom{n+r}nq t^r,
+\]
+so
+\[
+ h_r(c,cq,\ldots,cq^n)=c^r\Qbinom{n+r}nq.
+\]
+Put $r=d-n-1$ to obtain \eqref{eq:geometric-filter-residual}.  For $1\le d\le n$, both sides vanish by the zero-extension convention.
+\end{proof}
+
+\begin{example}[The first three filters]
+For nodes $1,q,q^2,\ldots$, the first filters are
 \begin{align*}
- \abs{\varphi_q(t)}
- &\le\prod_{j=0}^{N-1}\frac1{A\abs t q^j}\\
- &=\exp\!\left(-NL+\frac{bN(N-1)}2\right).
+ n=0:&\qquad (1),\\
+ n=1:&\qquad \frac1{1-q}(-q,1),\\
+ n=2:&\qquad \frac1{(1-q)(1-q^2)}
+ \bigl(q^3,-q(1+q),1\bigr).
 \end{align*}
-Because $L\ge b(N-1)$, the exponent is at most
-$-bN(N-1)/2$.  For $L$ sufficiently large,
-$N\ge L/b$ and $N-1\ge L/b-1$, so
-\[
- -\frac{bN(N-1)}2
- \le-\frac{L^2}{2b}+\frac L2.
-\]
-This proves \eqref{eq:log-gaussian-fourier-bound}.
+Their dot product with $(1,1,\ldots)$ is $1$, while their dot product with $(1,q^d,\ldots,q^{nd})$ vanishes for $1\le d\le n$.
+\end{example}
 
-After the change of variables $L=\log(A t)$, the right side is a Gaussian in $L$ multiplied by $e^{L/2}$.  It therefore dominates every negative power of $t$.  More explicitly, for each $M$ the exponent
-$-L^2/(2b)+(M+3/2)L$ tends to $-\infty$ quadratically, which proves integrability of $\abs t^M\varphi_q(t)$.
-\end{proof}
-
-\begin{theorem}[Smooth compactly supported density]\label{thm:geometric-uniform-smooth-density}
-For every $0<q<1$, the distribution of $X_q$ has a $C^\infty$ density $f_q$ supported on $[0,1]$.  For every $m\ge0$,
-\begin{equation}\label{eq:geometric-uniform-density-fourier}
- f_q^{(m)}(x)
- =\frac1{2\pi}\int_{\R}(-it)^m e^{-itx}\varphi_q(t)\,dt.
+\begin{theorem}[Exact $q$-Richardson extrapolation]\label{thm:q-richardson}
+Let $0<|q|<1$, and suppose a sequence has an absolutely convergent geometric expansion
+\begin{equation}
+ s_j=L+\sum_{r=1}^{\infty}a_rq^{rj}\label{eq:geometric-error-expansion}
 \end{equation}
-All derivatives of $f_q$ vanish at the endpoints $0$ and $1$.
+for $j\ge\ell$.  Define
+\[
+ \mathcal R_{n,\ell}[s]
+ =\sum_{k=0}^n\lambda_{n,k}^{(q)}s_{\ell+k}.
+\]
+Then
+\begin{equation}
+ \mathcal R_{n,\ell}[s]-L
+ =(-1)^nq^{\binom{n+1}{2}}
+ \sum_{r=n+1}^{\infty}a_rq^{r\ell}\Qbinom{r-1}nq.\label{eq:q-richardson-residual}
+\end{equation}
+Thus the first $n$ geometric error modes are removed exactly.
 \end{theorem}
 
 \begin{proof}
-By \Cref{thm:geometric-uniform-fourier-decay}, $t^m\varphi_q(t)$ is integrable for every $m$.  Fourier inversion for a finite measure with integrable characteristic function gives the density
-\[
- f_q(x)=\frac1{2\pi}\int_{\R}e^{-itx}\varphi_q(t)\,dt.
-\]
-For completeness, one may obtain this directly by convolving the distribution with a centered Gaussian of variance $\varepsilon$: its density is the inverse transform of
-$\varphi_q(t)e^{-\varepsilon t^2/2}$.  Dominated convergence as
-$\varepsilon\downarrow0$ yields the displayed $f_q$ uniformly.  Against every compactly supported continuous test function, the Gaussian convolutions converge both to integration against $f_q$ and weakly to the original measure; hence that measure has density $f_q$.
-
-Because $t^m\varphi_q(t)$ is integrable, differentiation under the integral is justified by dominated convergence and gives \eqref{eq:geometric-uniform-density-fourier}.  Thus $f_q\in C^\infty(\R)$.  The random variable is supported on $[0,1]$, so the density is zero on the two open complementary half-lines.  Smoothness then forces every derivative to have value $0$ at both boundary points.
+Insert \eqref{eq:geometric-error-expansion} into the definition of $\mathcal R_{n,\ell}$.  Absolute convergence and the finiteness of the outer sum permit interchange of sums.  The constant term contributes $L\sum_k\lambda_{n,k}^{(q)}=L$.  For the $r$th mode, apply \eqref{eq:geometric-filter-residual} with $c=q^\ell$.  The modes $1\le r\le n$ vanish, and the remaining modes give \eqref{eq:q-richardson-residual}.
 \end{proof}
 
-\section{Finite spline approximants}
-
-Put
-\begin{equation}\label{eq:finite-geometric-uniform-sum}
- X_{q,N}:=(1-q)\sum_{j=0}^{N-1}q^jU_j,
- \qquad
- a_j:=(1-q)q^j.
+\begin{corollary}[A quantitative tail bound]\label{cor:q-richardson-bound}
+Assume $0<q<1$ and $|a_r|\le AR^{-r}$ for $r\ge1$, where $q^\ell<R$.  Then
+\begin{equation}
+ \left|\mathcal R_{n,\ell}[s]-L\right|
+ \le
+ \frac{Aq^{\binom{n+1}{2}}}{(q;q)_n}
+ \frac{(q^\ell/R)^{n+1}}{1-q^\ell/R}.\label{eq:q-richardson-bound}
 \end{equation}
-For $x\in\R$ and an integer $r\ge0$, write
-$x_+^r=(\max(x,0))^r$; when $r=0$, interpret $x_+^0$ as the indicator of $x>0$ away from the knots.
-
-The following nonidentically scaled uniform-sum formula is a box-spline form of the generalized Irwin--Hall distribution; compare Bradley and Gupta~\cite{BradleyGupta2004}.
-
-\begin{theorem}[Generalized uniform-sum spline]\label{thm:finite-uniform-spline}
-For $N\ge1$, the density of $X_{q,N}$ is
-\begin{equation}\label{eq:finite-uniform-spline}
- f_{q,N}(x)
- =\frac1{(N-1)!\prod_{j=0}^{N-1}a_j}
- \sum_{A\subseteq\{0,\ldots,N-1\}}
- (-1)^{\abs A}
- \left(x-\sum_{j\in A}a_j\right)_+^{N-1}.
-\end{equation}
-It is a compactly supported piecewise polynomial of degree at most $N-1$, and its Fourier transform is the corresponding finite product in
-\eqref{eq:geometric-uniform-characteristic}.
-\end{theorem}
+\end{corollary}
 
 \begin{proof}
-The density of $a_jU_j$ is $a_j^{-1}\one_{[0,a_j]}$.  Thus $f_{q,N}$ is the convolution of these $N$ box densities.  For $s>0$, its Laplace transform is
+For $r\ge n+1$,
 \[
- \prod_{j=0}^{N-1}\frac{1-e^{-a_js}}{a_js}.
+ 0<\Qbinom{r-1}nq
+ =\prod_{j=1}^n\frac{1-q^{r-j}}{1-q^j}
+ \le\frac1{(q;q)_n}.
 \]
-On the other hand,
-\[
- \int_0^\infty e^{-sx}\frac{(x-c)_+^{N-1}}{(N-1)!}\,dx
- =\frac{e^{-cs}}{s^N}.
-\]
-Taking the Laplace transform of the right side of
-\eqref{eq:finite-uniform-spline} therefore gives
-\[
- \frac1{s^N\prod_j a_j}
- \sum_A(-1)^{\abs A}e^{-s\sum_{j\in A}a_j}
- =\prod_{j=0}^{N-1}\frac{1-e^{-a_js}}{a_js},
-\]
-because the subset sum factors as $\prod_j(1-e^{-a_js})$.  Uniqueness of the Laplace transform proves the density formula.  Piecewise polynomiality is immediate from the truncated-power representation.  The Fourier product follows either by taking Fourier transforms of the box convolutions or by the finite version of the proof of \Cref{thm:geometric-uniform-characteristic}.
+Apply this estimate termwise in \eqref{eq:q-richardson-residual} and sum the resulting geometric series.
 \end{proof}
 
-\begin{theorem}[Dyadic Thue--Morse spline]\label{thm:dyadic-thue-morse-spline}
-At $q=1/2$,
-\begin{equation}\label{eq:dyadic-thue-morse-spline}
- f_{1/2,N}(x)
- =\frac{2^{\binom{N+1}{2}}}{(N-1)!}
- \sum_{r=0}^{2^N-1}(-1)^{s_2(r)}
- \left(x-\frac r{2^N}\right)_+^{N-1}.
-\end{equation}
-Thus, after translating by the mean $(1-2^{-N})/2$, the inverse Fourier transform of the $N$th partial sinc product is a Thue--Morse signed spline on the dyadic grid.
-\end{theorem}
+\section{Stability and exact total variation}
 
-\begin{proof}
-Here $a_j=2^{-j-1}$, so
-\[
- \prod_{j=0}^{N-1}a_j=2^{-\binom{N+1}{2}}.
-\]
-Every subset $A$ corresponds to a binary word $(\varepsilon_0,\ldots,\varepsilon_{N-1})$ and
-\[
- \sum_{j\in A}2^{-j-1}
- =\sum_{j=0}^{N-1}\varepsilon_j2^{-j-1}.
-\]
-Reversing the order of the bits identifies this number with $r/2^N$ for a unique
-$0\le r<2^N$, while $\abs A$ and $s_2(r)$ have the same parity.  Substitute these facts into \eqref{eq:finite-uniform-spline}.
-\end{proof}
+Exact cancellation can be numerically useless if the weights are enormous.  On a fixed geometric grid with $0<q<1$, the total variation has an unexpectedly clean closed form.
 
-\begin{corollary}[A coupling convergence bound]\label{cor:finite-uniform-convergence}
-Almost surely,
-\begin{equation}\label{eq:finite-uniform-tail-bound}
- 0\le X_q-X_{q,N}\le q^N.
+\begin{theorem}[Norm of the geometric filter]\label{thm:q-filter-norm}
+For $0<q<1$,
+\begin{equation}
+ \sum_{k=0}^n\left|\lambda_{n,k}^{(q)}\right|
+ =\frac{(-q;q)_n}{(q;q)_n}.\label{eq:q-filter-norm}
 \end{equation}
 Consequently,
-\begin{equation}\label{eq:cdf-coupling-bound}
- F_q(x-q^N)\le F_{q,N}(x)\le F_q(x+q^N).
+\[
+ \sup_{n\ge0}\sum_{k=0}^n|\lambda_{n,k}^{(q)}|
+ =\frac{(-q;q)_\infty}{(q;q)_\infty}<\infty.
+\]
+\end{theorem}
+
+\begin{proof}
+The denominator $(q;q)_n$ is positive, and the sign of \eqref{eq:gaussian-lagrange-weights} is $(-1)^{n-k}$.  Put $j=n-k$ and use symmetry of the Gaussian coefficient:
+\[
+ \sum_{k=0}^n|\lambda_{n,k}^{(q)}|
+ =\frac1{(q;q)_n}
+ \sum_{j=0}^nq^{\binom{j+1}{2}}\qbinom nj.
+\]
+The positive finite $q$-binomial theorem with $z=q$ gives
+\[
+ \sum_{j=0}^nq^{\binom j2}\qbinom njq^j=(-q;q)_n,
+\]
+proving \eqref{eq:q-filter-norm}.  Both finite products converge to nonzero limits when $0<q<1$, so the uniform bound follows.
+\end{proof}
+
+\begin{remark}
+This boundedness is a genuinely geometric phenomenon.  As $q\to1^-$ with $n$ fixed, the nodes coalesce and the weights diverge; but for a fixed $q<1$, increasing the order does not force unbounded total variation.  This helps explain why dyadic filters are effective in exact arithmetic and in high-precision computations.
+\end{remark}
+
+\section{The reciprocal grid and a leading-coefficient formula}
+
+The nodes $1,q^{-1},\ldots,q^{-n}$ give a second useful form, adapted to extracting the leading coefficient of a polynomial from values at an expanding geometric grid.
+
+\begin{theorem}[Reciprocal-grid coefficient extractor]\label{thm:reciprocal-grid-extractor}
+Assume $q\ne0$ and $1,q,\ldots,q^n$ are distinct.  If $P$ has degree at most $n$, then
+\begin{equation}
+ [t^n]P(t)=
+ \frac{(-1)^nq^{\binom{n+1}{2}}}{(q;q)_n}
+ \sum_{k=0}^n(-1)^kq^{\binom k2}\qbinom nkP(q^{-k}).\label{eq:reciprocal-grid-extractor}
 \end{equation}
-In particular,
-\begin{equation}\label{eq:cdf-uniform-rate}
- \sup_x\abs{F_{q,N}(x)-F_q(x)}
- \le \norm{f_q}_\infty q^N.
+\end{theorem}
+
+\begin{proof}
+Apply \Cref{thm:leading-coefficient-divdiff} to $x_k=q^{-k}$.  Splitting the barycentric denominator at $j=k$ gives
+\begin{align*}
+ \prod_{j\ne k}(q^{-k}-q^{-j})
+ &=\left(\prod_{j=0}^{k-1}q^{-k}(1-q^{k-j})\right)
+   \left(\prod_{j=k+1}^{n}(-q^{-j})(1-q^{j-k})\right)\\
+ &=(-1)^{n-k}q^{-\binom{n+1}{2}-\binom k2}
+   (q;q)_k(q;q)_{n-k}.
+\end{align*}
+Taking reciprocals and using
+\[
+ \frac1{(q;q)_k(q;q)_{n-k}}=\frac1{(q;q)_n}\qbinom nk
+\]
+turns the divided-difference formula into \eqref{eq:reciprocal-grid-extractor}.
+\end{proof}
+
+\section{The dyadic filter and Mersenne products}
+
+For $q=\tfrac12$, define
+\begin{equation}
+ \mathfrak m_n=\prod_{j=1}^n(2^j-1),\qquad \mathfrak m_0=1.\label{eq:mersenne-product-filter}
+\end{equation}
+
+\begin{corollary}[Integer-normalized dyadic weights]\label{cor:dyadic-lagrange-weights}
+On the nodes $1,2^{-1},\ldots,2^{-n}$,
+\begin{equation}
+ \lambda_{n,k}^{(1/2)}
+ =(-1)^{n-k}\frac{2^{\binom{k+1}{2}}}
+ {\mathfrak m_k\mathfrak m_{n-k}}.\label{eq:dyadic-lagrange-weights}
+\end{equation}
+Moreover, for every $d\ge1$,
+\begin{equation}
+ \sum_{k=0}^n\lambda_{n,k}^{(1/2)}2^{-kd}
+ =(-1)^n2^{-\binom{n+1}{2}}
+ \Qbinom{d-1}n{1/2}.\label{eq:dyadic-filter-residual}
 \end{equation}
 \end{corollary}
 
 \begin{proof}
-The omitted tail is nonnegative and bounded by
-$(1-q)\sum_{j\ge N}q^j=q^N$, proving
-\eqref{eq:finite-uniform-tail-bound}.  The inclusions
+The identities
 \[
- \{X_q\le x-q^N\}\subseteq\{X_{q,N}\le x\}
- \subseteq\{X_q\le x+q^N\}
+ (1/2;1/2)_n=2^{-\binom{n+1}{2}}\mathfrak m_n,
+ \qquad
+ \Qbinom nk{1/2}
+ =\frac{\mathfrak m_n}
+ {\mathfrak m_k\mathfrak m_{n-k}2^{k(n-k)}}
 \]
-give \eqref{eq:cdf-coupling-bound}.  Since $F_q$ has bounded density,
-$\abs{F_q(x+h)-F_q(x)}\le\norm{f_q}_\infty\abs h$; apply this on both sides.
+follow by factoring $2^{-j}$ from each $1-2^{-j}$ in the factorial quotient.  Substitute them into \eqref{eq:gaussian-lagrange-weights}; the power of $2$ simplifies because
+\[
+ \binom{n+1}{2}-\binom{n-k+1}{2}-k(n-k)=\binom{k+1}{2}.
+\]
+This proves \eqref{eq:dyadic-lagrange-weights}.  Equation \eqref{eq:dyadic-filter-residual} is \eqref{eq:geometric-filter-residual} with $c=1$ and $q=1/2$.
 \end{proof}
 
-\section{The Fabius and Rvachev specializations}
 
-Set $q=1/2$, write $X=X_{1/2}$, and let
-\[
- F(x):=\mathbb P(X\le x),
-\]
-extended by $F(x)=0$ for $x\le0$ and $F(x)=1$ for $x\ge1$.
+\chapter{Geometric uniform convolutions and the Fabius function}\label{chap:fabius-probability}
+\index{Fabius function}
+\index{uniform convolution!geometrically weighted}
+\index{moment generating function!Fabius distribution}
 
-\begin{theorem}[The probabilistic Fabius equation]\label{thm:probabilistic-fabius}
-The function $F$ is $C^\infty$, satisfies
+The Fabius function enters $q$-analysis through an infinite convolution whose scales form a geometric progression.  At the special ratio $q=\tfrac12$, the moment-generating function obeys the same dilation law that drives the half-base Gaussian filters.  This chapter develops the probabilistic model, its smoothness, its moments, and its inverse-dyadic values from first principles.  Historical background and arithmetic refinements can be found in \cite{JessenWintner1935,Fabius1966,AriasDeReyna2018}; the repository exposition \cite{ReshetnikovProveIt2026} is the immediate source of the dyadic $q$-connections developed in the next chapter.
+
+\section{A one-parameter family of geometric convolutions}
+
+Let $U_0,U_1,\ldots$ be independent random variables, each uniformly distributed on $[0,1]$.
+
+\begin{definition}
+For $0<\rho<1$, define
+\begin{equation}
+ X_\rho=(1-\rho)\sum_{j=0}^{\infty}\rho^jU_j.\label{eq:geometric-uniform-variable}
+\end{equation}
+Let $F_\rho(x)=\Prob(X_\rho\le x)$.
+\end{definition}
+
+\begin{theorem}[Existence, symmetry, and self-similarity]\label{thm:geometric-uniform-basic}
+The series in \eqref{eq:geometric-uniform-variable} converges for every outcome and satisfies $0\le X_\rho\le1$.  Furthermore,
 \begin{align}
- F(1-x)&=1-F(x),\label{eq:fabius-symmetry}\\
- F(x)&=\int_{2x-1}^{2x}F(u)\,du,\label{eq:fabius-integral-equation}\\
- F'(x)&=2F(2x)-2F(2x-1).\label{eq:fabius-global-derivative}
+ X_\rho&\mathrel{\overset{\mathrm d}{=}}1-X_\rho,\label{eq:geometric-uniform-symmetry}\\
+ X_\rho&\mathrel{\overset{\mathrm d}{=}}(1-\rho)U+\rho X_\rho',\label{eq:geometric-uniform-fixedpoint}
 \end{align}
-In particular, for $0\le x\le1/2$,
-\begin{equation}\label{eq:fabius-local-derivative}
- F'(x)=2F(2x).
-\end{equation}
-Together with $F(0)=0$, $F(1)=1$, and symmetry, this is the standard Fabius function.
+where $U$ is uniform on $[0,1]$, $X_\rho'$ is an independent copy of $X_\rho$, and $\overset{\mathrm d}{=}$ denotes equality in distribution.  Consequently,
+\[
+ F_\rho(1-x)=1-F_\rho(x)
+\]
+at every continuity point of $F_\rho$.
 \end{theorem}
 
 \begin{proof}
-Smoothness follows from \Cref{thm:geometric-uniform-smooth-density}.  Since $X$ has no atoms and $X\overset d=1-X$,
+Every summand is nonnegative, and the partial sums are bounded by
 \[
- F(1-x)=\mathbb P(1-X\le1-x)
- =\mathbb P(X\ge x)=1-F(x),
+ (1-\rho)\sum_{j=0}^{\infty}\rho^j=1,
 \]
-which proves \eqref{eq:fabius-symmetry}.
-
-At $q=1/2$, the fixed-point equation is
-$X\overset d=(U+X')/2$.  Conditioning on $U=u$ gives
+so the series converges pointwise and has values in $[0,1]$.  Since $1-U_j$ is again uniform on $[0,1]$ and the variables remain independent,
 \[
- F(x)=\int_0^1F(2x-u)\,du
- =\int_{2x-1}^{2x}F(v)\,dv,
+ 1-X_\rho=(1-\rho)\sum_{j=0}^{\infty}\rho^j(1-U_j)
+ \mathrel{\overset{\mathrm d}{=}}X_\rho,
 \]
-proving \eqref{eq:fabius-integral-equation}.  Differentiate using the fundamental theorem of calculus to obtain
-\eqref{eq:fabius-global-derivative}.  On $0\le x\le1/2$ the term $F(2x-1)$ is zero, giving \eqref{eq:fabius-local-derivative}.
+which proves \eqref{eq:geometric-uniform-symmetry}.  Separating the first summand gives
+\[
+ X_\rho=(1-\rho)U_0+\rho(1-\rho)\sum_{j=0}^{\infty}\rho^jU_{j+1},
+\]
+and the tail is an independent copy of $X_\rho$, proving \eqref{eq:geometric-uniform-fixedpoint}.  The distributional symmetry gives the stated relation for the distribution function.
 \end{proof}
 
-Let $f=F'$ and define the centered density
-\begin{equation}\label{eq:up-definition}
- \operatorname{up}(y):=
+Put
+\[
+ E(z)=\frac{\e^z-1}{z},\qquad E(0)=1.
+\]
+
+\begin{theorem}[Entire moment-generating product]\label{thm:geometric-uniform-mgf}
+The moment-generating function $A_\rho(z)=\E(\e^{zX_\rho})$ is entire and has the locally uniformly convergent product
+\begin{equation}
+ A_\rho(z)=\prod_{j=0}^{\infty}
+ E\bigl((1-\rho)\rho^jz\bigr).\label{eq:geometric-uniform-mgf}
+\end{equation}
+It obeys the refinement equation
+\begin{equation}
+ A_\rho(z)=E((1-\rho)z)A_\rho(\rho z).\label{eq:geometric-uniform-mgf-refine}
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+For a uniform random variable $U$,
+\[
+ \E(\e^{tU})=\int_0^1\e^{tu}\,\dd u=E(t).
+\]
+Independence gives the finite product for the partial sums in \eqref{eq:geometric-uniform-variable}.  On every compact set $|z|\le M$,
+\[
+ E((1-\rho)\rho^jz)=1+O_M(\rho^j),
+\]
+and $\sum_j\rho^j<\infty$; hence the infinite product converges locally uniformly to an entire function.  Since the partial sums converge boundedly to $X_\rho$, dominated convergence identifies this product with $A_\rho$.  Separating the factor $j=0$ proves \eqref{eq:geometric-uniform-mgf-refine}.
+\end{proof}
+
+Write
+\begin{equation}
+ A_\rho(z)=\sum_{n=0}^{\infty}a_n(\rho)z^n,
+ \qquad
+ a_n(\rho)=\frac{\E(X_\rho^n)}{n!}.\label{eq:geometric-uniform-moments}
+\end{equation}
+
+\begin{corollary}[Triangular moment recurrence]\label{cor:geometric-uniform-moment-recurrence}
+For $n\ge1$,
+\begin{equation}
+ (1-\rho^n)a_n(\rho)
+ =\sum_{j=0}^{n-1}
+ \frac{\rho^j(1-\rho)^{n-j}}{(n-j+1)!}a_j(\rho),
+ \qquad a_0(\rho)=1.\label{eq:geometric-uniform-moment-recurrence}
+\end{equation}
+\end{corollary}
+
+\begin{proof}
+Expand both factors in \eqref{eq:geometric-uniform-mgf-refine}:
+\[
+ \sum_{n\ge0}a_nz^n
+ =\left(\sum_{r\ge0}\frac{(1-\rho)^rz^r}{(r+1)!}\right)
+  \left(\sum_{j\ge0}a_j\rho^jz^j\right).
+\]
+Equating the coefficient of $z^n$ and moving the $j=n$ term to the left gives \eqref{eq:geometric-uniform-moment-recurrence}.
+\end{proof}
+
+\section{The dyadic law and smoothness}
+
+Set $\rho=\tfrac12$, write $X=X_{1/2}$, $F=F_{1/2}$, $A=A_{1/2}$, and $a_n=a_n(1/2)$.  Then
+\begin{equation}
+ X=\sum_{j=1}^{\infty}2^{-j}U_{j-1},
+ \qquad
+ A(z)=\prod_{j=1}^{\infty}E(z/2^j).\label{eq:fabius-random-variable}
+\end{equation}
+
+\begin{theorem}[The Fabius integral and differential equations]\label{thm:fabius-equations}
+Extend $F$ by $F(x)=0$ for $x\le0$ and $F(x)=1$ for $x\ge1$.  Then
+\begin{equation}
+ F(x)=\int_0^1F(2x-u)\,\dd u
+     =\int_{2x-1}^{2x}F(t)\,\dd t
+ \qquad(x\in\R).\label{eq:fabius-integral-equation}
+\end{equation}
+The function $F$ belongs to $C^\infty(\R)$, is constant outside $[0,1]$, and satisfies
+\begin{equation}
+ F'(x)=2\bigl(F(2x)-F(2x-1)\bigr).\label{eq:fabius-global-differential}
+\end{equation}
+In particular,
+\begin{equation}
+ F'(x)=2F(2x),\qquad 0\le x\le\tfrac12,\label{eq:fabius-left-differential}
+\end{equation}
+and
+\begin{equation}
+ F(1-x)=1-F(x),\qquad 0\le x\le1.\label{eq:fabius-symmetry}
+\end{equation}
+Every derivative of positive order vanishes at $0$ and at $1$.
+\end{theorem}
+
+\begin{proof}
+The fixed-point identity \eqref{eq:geometric-uniform-fixedpoint} becomes $X\overset{\mathrm d}{=}(U+X')/2$.  Conditioning on $U$ gives
+\[
+ F(x)=\int_0^1\Prob(X'\le2x-u)\,\dd u,
+\]
+which is \eqref{eq:fabius-integral-equation}.  If $g$ is bounded, then
+\[
+ (Tg)(x)=\int_{2x-1}^{2x}g(t)\,\dd t
+\]
+is continuous; indeed, translating the two endpoints by $2h$ changes the integral by at most $4\|g\|_\infty|h|$.  Thus $F=TF$ is continuous.  If $g\in C^r$, the fundamental theorem of calculus gives
+\[
+ (Tg)'(x)=2g(2x)-2g(2x-1),
+\]
+so $Tg\in C^{r+1}$.  Starting from continuity and iterating this observation proves $F\in C^\infty$ and gives \eqref{eq:fabius-global-differential}.  The left-hand formula follows because $F(2x-1)=0$ for $0\le x\le1/2$.  Symmetry follows from \eqref{eq:geometric-uniform-symmetry}; continuity removes the qualification about continuity points.  Finally, $F$ is constant on each side of the endpoints and is globally smooth, so all one-sided derivatives match and every positive-order derivative at $0$ and $1$ is zero.
+\end{proof}
+
+\begin{corollary}[Moment refinement at half base]\label{cor:fabius-moment-refinement}
+The entire function $A$ satisfies
+\begin{equation}
+ A(2z)=E(z)A(z),\label{eq:fabius-mgf-refinement}
+\end{equation}
+and its coefficients obey
+\begin{equation}
+ (2^n-1)a_n=\sum_{j=0}^{n-1}\frac{a_j}{(n-j+1)!},
+ \qquad a_0=1.\label{eq:fabius-moment-recurrence}
+\end{equation}
+\end{corollary}
+
+\begin{proof}
+Equation \eqref{eq:fabius-mgf-refinement} is \eqref{eq:geometric-uniform-mgf-refine} with $\rho=1/2$ and $z$ replaced by $2z$.  Equation \eqref{eq:fabius-moment-recurrence} follows from \eqref{eq:geometric-uniform-moment-recurrence} after multiplication by $2^n$.
+\end{proof}
+
+\section{Inverse-dyadic values as normalized moments}
+
+\begin{theorem}[Endpoint-moment identity]\label{thm:fabius-endpoint-moment}
+For every $n\ge0$,
+\begin{equation}
+ F(2^{-n})=2^{-\binom n2}a_n.\label{eq:fabius-endpoint-moment}
+\end{equation}
+Thus every inverse-dyadic value of $F$ is rational.
+\end{theorem}
+
+\begin{proof}
+The case $n=0$ is $F(1)=a_0=1$.  Let $n\ge1$.  Iterating \eqref{eq:fabius-left-differential} on $0\le x\le2^{-n}$ gives
+\begin{equation}
+ F^{(n)}(x)=2^{1+2+\cdots+n}F(2^nx)
+ =2^{\binom{n+1}{2}}F(2^nx).\label{eq:fabius-iterated-derivative}
+\end{equation}
+All derivatives of $F$ vanish at zero, so Taylor's formula with integral remainder gives
+\[
+ F(2^{-n})
+ =\frac1{(n-1)!}\int_0^{2^{-n}}(2^{-n}-t)^{n-1}F^{(n)}(t)\,\dd t.
+\]
+Substitute \eqref{eq:fabius-iterated-derivative} and then $u=2^nt$:
+\begin{equation}
+ F(2^{-n})
+ =\frac{2^{-\binom n2}}{(n-1)!}
+ \int_0^1(1-u)^{n-1}F(u)\,\dd u.\label{eq:fabius-endpoint-integral}
+\end{equation}
+By symmetry, $X\overset{\mathrm d}{=}1-X$, and Stieltjes integration by parts yields
+\[
+ \E(X^n)=\E((1-X)^n)
+ =\int_0^1(1-u)^n\,\dd F(u)
+ =n\int_0^1(1-u)^{n-1}F(u)\,\dd u.
+\]
+The integral in \eqref{eq:fabius-endpoint-integral}, divided by $(n-1)!$, is therefore $\E(X^n)/n!=a_n$, proving \eqref{eq:fabius-endpoint-moment}.  Rationality follows inductively from \eqref{eq:fabius-moment-recurrence}.
+\end{proof}
+
+\begin{theorem}[Nonrecursive composition sum]\label{thm:fabius-composition-sum}
+Let $\rho=(r_1,\ldots,r_\ell)\vDash n$ denote an ordered composition of $n$, and put $s_j=r_1+\cdots+r_j$.  For $n\ge1$,
+\begin{align}
+ a_n&=\sum_{\rho\vDash n}
+ \prod_{j=1}^{\ell}
+ \frac1{(2^{s_j}-1)(r_j+1)!},\label{eq:fabius-composition-a}\\
+ F(2^{-n})&=2^{-\binom n2}
+ \sum_{\rho\vDash n}
+ \prod_{j=1}^{\ell}
+ \frac1{(2^{s_j}-1)(r_j+1)!}.\label{eq:fabius-composition-F}
+\end{align}
+\end{theorem}
+
+\begin{proof}
+Rewrite \eqref{eq:fabius-moment-recurrence} as
+\begin{equation}
+ a_n=\sum_{r=1}^{n}\frac{a_{n-r}}{(2^n-1)(r+1)!}.\label{eq:fabius-moment-recurrence-r}
+\end{equation}
+We prove \eqref{eq:fabius-composition-a} by induction on $n$.  It is immediate for $n=1$.  In \eqref{eq:fabius-moment-recurrence-r}, choose the last part $r=r_\ell$ of a composition of $n$; the preceding parts form an arbitrary composition of $n-r$, and their partial sums are unchanged.  Appending $r$ introduces exactly the additional factor
+\[
+ \frac1{(2^n-1)(r+1)!}.
+\]
+Thus the recurrence enumerates every ordered composition exactly once, proving \eqref{eq:fabius-composition-a}.  Equation \eqref{eq:fabius-composition-F} follows from \Cref{thm:fabius-endpoint-moment}.
+\end{proof}
+
+\begin{example}
+The first coefficients are
+\[
+ a_0=1,
+ \qquad a_1=\frac12,
+ \qquad a_2=\frac5{36},
+ \qquad a_3=\frac1{36},
+\]
+so
+\[
+ F(1)=1,
+ \qquad F(1/2)=\frac12,
+ \qquad F(1/4)=\frac5{72},
+ \qquad F(1/8)=\frac1{288}.
+\]
+For $n=2$, the two compositions $(2)$ and $(1,1)$ contribute $1/18$ and $1/12$, respectively, giving $a_2=5/36$.
+\end{example}
+
+
+\chapter{Thue--Morse cancellation and a half-base \texorpdfstring{$q$}{q}-formula}\label{chap:fabius-qformula}
+\index{Thue--Morse sequence}
+\index{Prouhet cancellation}
+\index{Fabius function!$q$-binomial formula}
+
+The dyadic Fabius formula is generated by two independent cancellation devices.  A length-$2^k$ Thue--Morse block removes the first $k$ ordinary polynomial degrees.  A length-$(n+1)$ Gaussian row at $q=\tfrac12$ then removes the remaining dilation modes below degree $n$.  Their composition leaves one coefficient.  This section proves that mechanism in a form that is both translation-invariant and suitable for exact computation.
+
+\section{The signed binary product}
+
+Let $\wt(r)$ denote the number of $1$'s in the binary expansion of $r$, and set
+\begin{equation}
+ \tau_r=(-1)^{\wt(r)}.\label{eq:thue-morse-sign}
+\end{equation}
+
+\begin{theorem}[Finite Thue--Morse product]\label{thm:thue-morse-product}
+For every $k\ge0$,
+\begin{equation}
+ \sum_{r=0}^{2^k-1}\tau_rz^r
+ =\prod_{j=0}^{k-1}(1-z^{2^j}).\label{eq:thue-morse-product}
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+Every integer $0\le r<2^k$ has a unique binary expansion
+$r=\sum_{j=0}^{k-1}\varepsilon_j2^j$ with $\varepsilon_j\in\{0,1\}$.  Expanding the product on the right and choosing either $1$ or $-z^{2^j}$ from its $j$th factor produces the monomial
+\[
+ (-1)^{\varepsilon_0+\cdots+\varepsilon_{k-1}}
+ z^{\sum_j\varepsilon_j2^j}=\tau_rz^r.
+\]
+Summing over all choices proves the identity.
+\end{proof}
+
+\begin{theorem}[Prouhet cancellation with translation]\label{thm:thue-morse-prouhet}
+For every complex $c$ and every polynomial $P$ of degree less than $k$,
+\begin{equation}
+ \sum_{r=0}^{2^k-1}\tau_rP(r+c)=0.\label{eq:thue-morse-prouhet}
+\end{equation}
+For the first nonvanishing degree,
+\begin{equation}
+ \sum_{r=0}^{2^k-1}\tau_r(r+c)^k
+ =(-1)^k2^{\binom k2}k!,\label{eq:thue-morse-first-moment}
+\end{equation}
+which is independent of $c$.
+\end{theorem}
+
+\begin{proof}
+By \Cref{thm:thue-morse-product},
+\begin{align*}
+ \sum_{r=0}^{2^k-1}\tau_r\e^{(r+c)t}
+ &=\e^{ct}\prod_{j=0}^{k-1}(1-\e^{2^jt})\\
+ &=\e^{ct}\prod_{j=0}^{k-1}
+ \left(-2^jt+O(t^2)\right)\\
+ &=(-1)^k2^{0+1+\cdots+(k-1)}t^k+O(t^{k+1}).
+\end{align*}
+The coefficient of $t^d/d!$ on the left is
+$\sum_r\tau_r(r+c)^d$.  The coefficients through degree $k-1$ vanish, and the coefficient at degree $k$ is $(-1)^k2^{\binom k2}$, proving both claims for monomials.  Linearity gives \eqref{eq:thue-morse-prouhet} for every polynomial of degree below $k$.
+\end{proof}
+
+\begin{corollary}[Difference-operator factorization]\label{cor:thue-morse-difference-operator}
+If $D=\frac{\dd}{\dd c}$ and $\e^{hD}P(c)=P(c+h)$, then
+\begin{equation}
+ \sum_{r=0}^{2^k-1}\tau_rP(c+r)
+ =\prod_{j=0}^{k-1}(1-\e^{2^jD})P(c).\label{eq:thue-morse-difference-operator}
+\end{equation}
+Each factor lowers polynomial degree by at least one.
+\end{corollary}
+
+\begin{proof}
+Expand the commuting product of translation operators exactly as in the binary proof of \Cref{thm:thue-morse-product}.  The operator $1-\e^{hD}$ sends $P(c)$ to $P(c)-P(c+h)$, whose degree is at most $\deg P-1$.
+\end{proof}
+
+\section{Half-base Gaussian coefficients and Mersenne factors}
+
+Recall $\mathfrak m_n$ from \eqref{eq:mersenne-product-filter}.
+
+\begin{proposition}[The half-base dictionary]\label{prop:half-base-dictionary}
+For $0\le k\le n$,
+\begin{align}
+ (1/2;1/2)_n
+ &=2^{-\binom{n+1}{2}}\mathfrak m_n,\label{eq:halfbase-pochhammer-mersenne}\\
+ \Qbinom nk{1/2}
+ &=\frac{\mathfrak m_n}
+ {\mathfrak m_k\mathfrak m_{n-k}2^{k(n-k)}}.\label{eq:halfbase-gaussian-mersenne}
+\end{align}
+Moreover, for integers $m,n\ge0$,
+\begin{equation}
+ (2^m;1/2)_n=
  \begin{cases}
-  \dfrac12 f\!\left(\dfrac{y+1}{2}\right),&-1\le y\le1,\\[6pt]
-  0,&\abs y>1.
- \end{cases}
+ 0,&m<n,\\
+ (-1)^n\dfrac{\mathfrak m_m}{\mathfrak m_{m-n}},&m\ge n.
+ \end{cases}\label{eq:halfbase-termination}
 \end{equation}
-This is the Rvachev up function in the probability normalization
-$\int_{\R}\operatorname{up}(y)\,dy=1$.
+\end{proposition}
 
-\begin{theorem}[Infinite sinc product and the up equation]\label{thm:up-sinc-product}
-With the Fourier convention
-$\widehat g(t)=\int_{\R}e^{ity}g(y)\,dy$,
-\begin{equation}\label{eq:up-sinc-product}
- \widehat{\operatorname{up}}(t)
- =\prod_{k=1}^{\infty}\operatorname{sinc}\!\left(\frac{t}{2^k}\right).
+\begin{proof}
+For the first identity,
+\[
+ (1/2;1/2)_n
+ =\prod_{j=1}^n(1-2^{-j})
+ =2^{-\sum_{j=1}^nj}\prod_{j=1}^n(2^j-1).
+\]
+Substitute this formula into the factorial quotient for the Gaussian coefficient.  The power of $2$ in the denominator is
+\[
+ \binom{n+1}{2}-\binom{k+1}{2}-\binom{n-k+1}{2}=k(n-k),
+\]
+which proves \eqref{eq:halfbase-gaussian-mersenne}.  Finally,
+\[
+ (2^m;1/2)_n=\prod_{j=0}^{n-1}(1-2^{m-j}).
+\]
+If $m<n$, the factor $j=m$ is zero.  If $m\ge n$, put $s=m-j$; the product is
+\[
+ (-1)^n\prod_{s=m-n+1}^{m}(2^s-1)
+ =(-1)^n\frac{\mathfrak m_m}{\mathfrak m_{m-n}}.
+\]
+\end{proof}
+
+\begin{theorem}[The half-base $q$-Prouhet functional]\label{thm:q-prouhet-functional}
+Define
+\begin{equation}
+ w_{n,k}=(-1)^k2^{-\binom k2}\Qbinom nk{1/2}.\label{eq:q-prouhet-weights}
 \end{equation}
-Moreover,
-\begin{equation}\label{eq:up-functional-differential}
- \operatorname{up}'(y)
- =2\operatorname{up}(2y+1)-2\operatorname{up}(2y-1)
- \qquad(y\in\R).
+For every polynomial $P$ of degree at most $n$,
+\begin{equation}
+ \sum_{k=0}^nw_{n,k}P(-2^k)
+ =\mathfrak m_n[t^n]P(t).\label{eq:q-prouhet-functional}
 \end{equation}
 \end{theorem}
 
 \begin{proof}
-The random variable with density $\operatorname{up}$ is
-$Y=2X-1$.  Writing $V_j=2U_j-1$, we have independent uniform variables on $[-1,1]$ and
+By linearity it is enough to take $P(t)=t^d$, $0\le d\le n$.  Then the left side is
 \[
- Y=\sum_{j=0}^{\infty}2^{-j-1}V_j.
+ (-1)^d\sum_{k=0}^n(-1)^k2^{-\binom k2}
+ \Qbinom nk{1/2}2^{kd}.
 \]
-The characteristic function of $V_j$ is $\operatorname{sinc}t$.  Independence therefore gives
+The finite $q$-binomial theorem \eqref{eq:universal-negative-finite}, with $q=1/2$ and $z=2^d$, identifies the sum as
+$(-1)^d(2^d;1/2)_n$.  By \eqref{eq:halfbase-termination}, this is zero for $d<n$ and equals
 \[
- \mathbb Ee^{itY}
- =\prod_{j=0}^{\infty}\operatorname{sinc}(t/2^{j+1}),
+ (-1)^n(2^n;1/2)_n=\mathfrak m_n
 \]
-which is \eqref{eq:up-sinc-product}.
-
-From \eqref{eq:up-definition},
-$f(x)=2\operatorname{up}(2x-1)$.  Differentiate
-\eqref{eq:fabius-global-derivative} to obtain
-\[
- f'(x)=4f(2x)-4f(2x-1).
-\]
-Set $x=(y+1)/2$.  Because
-$\operatorname{up}'(y)=f'((y+1)/2)/4$, substitution of
-$f(t)=2\operatorname{up}(2t-1)$ gives
-\[
- \operatorname{up}'(y)
- =2\operatorname{up}(2y+1)-2\operatorname{up}(2y-1).
-\]
-The identity remains valid outside the support because all boundary derivatives vanish.
+for $d=n$.  These are exactly the values of the right side.
 \end{proof}
 
-\begin{remark}[Where the $q$-objects enter]
-The parameter $q$ controls four structures at once:
+\section{The translation-invariant Fabius sum}
+
+For $n,k\ge0$ and $Q\in\C$, define
+\begin{equation}
+ M_{k,d}(Q)=\sum_{r=0}^{2^k-1}\tau_r(r+Q)^d.\label{eq:thue-morse-power-sum}
+\end{equation}
+By \Cref{thm:thue-morse-prouhet}, $M_{k,d}(Q)=0$ for $d<k$.
+
+\begin{theorem}[Half-base Gaussian--Thue--Morse synthesis]\label{thm:fabius-q-synthesis}
+For every $n\ge0$ and every $Q\in\C$, put
+\begin{equation}
+ S_n(Q)=\sum_{k=0}^n
+ \frac{\Qbinom nk{1/2}}
+ {4^{\binom k2}(n+k)!}
+ M_{k,n+k}(Q).\label{eq:fabius-Sn}
+\end{equation}
+Then $S_n(Q)$ is independent of $Q$ and
+\begin{equation}
+ S_n(Q)=(-1)^n\mathfrak m_na_n.\label{eq:fabius-Sn-value}
+\end{equation}
+Consequently,
+\begin{equation}
+ \boxed{
+ F(2^{-n})=
+ \frac1{(-2)^{n^2}(1/2;1/2)_n}
+ \sum_{k=0}^n
+ \frac{\Qbinom nk{1/2}}
+ {4^{\binom k2}(n+k)!}
+ \sum_{r=0}^{2^k-1}(-1)^{\wt(r)}(r+Q)^{n+k}}\label{eq:fabius-q-formula}
+\end{equation}
+for every choice of the translation parameter $Q$.
+\end{theorem}
+
+\begin{proof}
+Coefficient extraction from the exponential gives
+\begin{align}
+ \frac{M_{k,n+k}(Q)}{(n+k)!}
+ &=[z^{n+k}]\e^{Qz}
+   \sum_{r=0}^{2^k-1}\tau_r\e^{rz}\\
+ &=[z^{n+k}]\e^{Qz}
+   \prod_{j=0}^{k-1}(1-\e^{2^jz}).\label{eq:thue-egf-coefficient}
+\end{align}
+From \eqref{eq:fabius-mgf-refinement}, iterated $k$ times,
+\begin{equation}
+ A(2^kz)=A(z)\prod_{j=0}^{k-1}E(2^jz).\label{eq:fabius-mgf-iterated}
+\end{equation}
+Since $1-\e^{2^jz}=-2^jzE(2^jz)$, equations \eqref{eq:thue-egf-coefficient}--\eqref{eq:fabius-mgf-iterated} give
+\begin{equation}
+ \frac{M_{k,n+k}(Q)}{(n+k)!}
+ =(-1)^k2^{\binom k2}
+ [z^n]\frac{\e^{Qz}A(2^kz)}{A(z)}.\label{eq:thue-fabius-coefficient}
+\end{equation}
+Insert this into \eqref{eq:fabius-Sn}.  Because
+$4^{-\binom k2}2^{\binom k2}=2^{-\binom k2}$,
+\begin{equation}
+ S_n(Q)=[z^n]\frac{\e^{Qz}}{A(z)}
+ \sum_{k=0}^n(-1)^k2^{-\binom k2}
+ \Qbinom nk{1/2}A(2^kz).\label{eq:fabius-Sn-filtered}
+\end{equation}
+Expand $A(2^kz)=\sum_{j\ge0}a_j2^{kj}z^j$ and use the finite $q$-binomial theorem:
+\begin{align}
+ &\sum_{k=0}^n(-1)^k2^{-\binom k2}
+ \Qbinom nk{1/2}A(2^kz)\\
+ &\qquad=\sum_{j\ge0}a_jz^j
+ \sum_{k=0}^n(-1)^k2^{-\binom k2}
+ \Qbinom nk{1/2}(2^j)^k\\
+ &\qquad=\sum_{j\ge0}a_j(2^j;1/2)_nz^j.\label{eq:fabius-mode-filter}
+\end{align}
+To extract $[z^n]$ in \eqref{eq:fabius-Sn-filtered}, only $j\le n$ can contribute because $\e^{Qz}/A(z)$ is a power series with constant term $1$.  Formula \eqref{eq:halfbase-termination} shows that every term with $j<n$ vanishes.  The sole survivor is $j=n$, and its contribution is
+\[
+ a_n(2^n;1/2)_n=(-1)^n\mathfrak m_na_n.
+\]
+This proves \eqref{eq:fabius-Sn-value}, and it also proves independence of $Q$: the translation factor contributes only its constant term.
+
+Finally, by \eqref{eq:halfbase-pochhammer-mersenne},
+\[
+ (-2)^{n^2}(1/2;1/2)_n
+ =(-1)^{n^2}2^{n^2-\binom{n+1}{2}}\mathfrak m_n
+ =(-1)^{n^2}2^{\binom n2}\mathfrak m_n.
+\]
+Since $n-n^2$ is even, dividing \eqref{eq:fabius-Sn-value} by this quantity gives
+$2^{-\binom n2}a_n=F(2^{-n})$ by \Cref{thm:fabius-endpoint-moment}.  This is \eqref{eq:fabius-q-formula}.
+\end{proof}
+
+\begin{example}[The first two nontrivial cases]\label{ex:fabius-q-small}
+For $n=1$,
+\[
+ S_1(Q)=Q+\frac{Q^2-(Q+1)^2}{2}=-\frac12.
+\]
+The denominator in \eqref{eq:fabius-q-formula} is
+$(-2)(1/2;1/2)_1=-1$, so $F(1/2)=1/2$.
+
+For $n=2$, the theorem gives $S_2(Q)=\mathfrak m_2a_2=3\cdot5/36=5/12$ for every $Q$.  Since
+\[
+ (-2)^4(1/2;1/2)_2=16\cdot\frac12\cdot\frac34=6,
+\]
+we obtain $F(1/4)=5/72$.
+\end{example}
+
+\section{Polynomial-time evaluation of the signed moments}
+
+The innermost sum in \eqref{eq:fabius-q-formula} has $2^k$ terms, but the binary self-similarity removes the apparent exponential cost.
+
+\begin{proposition}[Recurrence for Thue--Morse power sums]\label{prop:thue-morse-power-recurrence}
+For $k,d\ge0$,
+\begin{equation}
+ M_{0,d}(Q)=Q^d,\label{eq:thue-morse-power-base}
+\end{equation}
+and
+\begin{equation}
+ M_{k+1,d}(Q)
+ =-\sum_{j=1}^d\binom dj2^{kj}M_{k,d-j}(Q).\label{eq:thue-morse-power-recurrence}
+\end{equation}
+In particular, all $M_{k,d}(Q)$ with $0\le k\le n$ and $0\le d\le2n$ can be computed with a polynomial number of arithmetic operations.
+\end{proposition}
+
+\begin{proof}
+The signs satisfy $\tau_{r+2^k}=-\tau_r$ for $0\le r<2^k$.  Hence
+\begin{align*}
+ M_{k+1,d}(Q)
+ &=\sum_{r=0}^{2^k-1}\tau_r
+ \bigl((r+Q)^d-(r+Q+2^k)^d\bigr)\\
+ &=-\sum_{j=1}^d\binom dj2^{kj}
+ \sum_{r=0}^{2^k-1}\tau_r(r+Q)^{d-j},
+\end{align*}
+which is \eqref{eq:thue-morse-power-recurrence}.  Filling a triangular table in increasing $k$ and $d$ uses finitely many inner sums of length at most $2n$, so the operation count is polynomial in $n$.
+\end{proof}
+
+\begin{corollary}[Degree consumption]
+For every $k$, $M_{k,d}(Q)=0$ when $d<k$, and $M_{k,k}(Q)=(-1)^k2^{\binom k2}k!$.
+\end{corollary}
+
+\begin{proof}
+This follows from \Cref{thm:thue-morse-prouhet}; it also follows inductively from \eqref{eq:thue-morse-power-recurrence}, which makes the triangular vanishing explicit in computation.
+\end{proof}
+
+\section{What the formula is really doing}
+
+Equation \eqref{eq:fabius-q-formula} is not a disguised classical hypergeometric summation.  It is a composition of three exact operations:
 \begin{enumerate}
-\item the geometric coordinate weights $(1-q)q^j$;
-\item the factors $1-q^{2m}$ in the cumulants \eqref{eq:q-cumulants-uniform};
-\item the geometric interpolation nodes and Gaussian residual moments of \Cref{chap:geometric-filters};
-\item at $q=1/2$, the Mersenne products, dyadic Thue--Morse splines, and the Fabius--Rvachev functional equations.
+\item the Thue--Morse block contributes the factor
+$\prod_{j<k}(1-\e^{2^jz})$, consuming $k$ ordinary Taylor degrees;
+\item the Fabius refinement law converts that product into the dilation ratio $A(2^kz)/A(z)$;
+\item the finite Gaussian row at $q=1/2$ multiplies the $j$th dilation mode by $(2^j;1/2)_n$, annihilating every $j<n$ and retaining only $j=n$ at the required coefficient.
 \end{enumerate}
-Thus the appearance of $q$-Pochhammer and Gaussian coefficients in exact Fabius formulas is not accidental: both arise from the same geometric scaling law.
-\end{remark}
+The free translation $Q$ disappears because, after both cancellation stages, it can contribute only the constant coefficient of $\e^{Qz}/A(z)$.  Thus translation independence is not a coincidental polynomial simplification; it is a spectral statement.
+
+The same architecture suggests a broader research program.  Whenever an entire function satisfies a multiplicative dilation law
+\[
+ B(bz)=H(z)B(z)
+\]
+with $H$ admitting a finite signed-product realization, one may combine a digital cancellation sequence with a Gaussian filter at $q=b^{-1}$.  The universal ring formulation of \Cref{chap:universal-gaussian} is particularly useful here: the finite filter can be established algebraically before any analytic convergence argument is introduced.
+
+\section{Formal certification and automated identity discovery}
+
+Two recent computational directions complement the proof-oriented development above.  First, the Lean project of Lau, Lee, and Ono formalizes $q$-Pochhammer symbols, Gaussian coefficients, Bailey pairs, Jacobi's triple product, and the Rogers--Ramanujan identities while carefully separating formal algebra from analytic convergence \cite{LauLeeOno2026}.  Second, Zhong and Zhao's $q$-binomial identity finder systematically translates basic hypergeometric identities into Gaussian-coefficient identities and emits proof-producing transformation data \cite{ZhongZhao2024}.  The present chapters indicate a third target for automation: finite geometric filters whose correctness reduces to the universal Pascal recurrence and coefficient extraction.  In such a pipeline, a computer may discover a stencil or a dyadic formula, but the certificate remains a short polynomial identity of the kind proved in \Cref{thm:universal-finite-qbinomial,thm:complete-residual-moments,thm:fabius-q-synthesis}.
+
 
 \appendix
 
@@ -6323,7 +5612,6 @@ Name & Formula & Location\\
 \endhead
 Concatenation & $(a;q)_{m+n}=(a;q)_m(aq^m;q)_n$ & \Cref{prop:concat}\\[1pt]
 Dissection & $(a;q)_{rn}=\prod_{j=0}^{r-1}(aq^j;q^r)_n$ & \Cref{prop:dissection}\\[1pt]
-Dissection with remainder & $(a;q)_{rn+u}=\prod_{s<u}(aq^s;q^r)_{n+1}\prod_{s\ge u}(aq^s;q^r)_n$ & \Cref{cor:dissection-remainder}\\[1pt]
 Base reversal & $(a;q)_n=(-a)^nq^{\binom n2}(a^{-1}q^{1-n};q)_n$ & \Cref{prop:base-reversal}\\[1pt]
 Negative index & $(a;q)_{-n}=1/(aq^{-n};q)_n$ & \Cref{prop:negative-index}\\[1pt]
 Infinite logarithm & $\log(a;q)_\infty=-\sum_{r\ge1}a^r/(r(1-q^r))$ & \Cref{thm:lambert-log}\\[1pt]
@@ -6334,17 +5622,11 @@ Reciprocity & $\qbinom nk=q^{k(n-k)}\Qbinom nk{q^{-1}}$ & \Cref{thm:qbinom-struc
 Finite theorem & $(z;q)_n=\sum_k(-1)^kq^{\binom k2}\qbinom nkz^k$ & \Cref{thm:finite-qbinomial}\\[1pt]
 Reciprocal theorem & $(z;q)_{n+1}^{-1}=\sum_{k\ge0}\qbinom{n+k}kz^k$ & \Cref{thm:reciprocal-finite}\\[1pt]
 $q$-Vandermonde & $\qbinom{m+n}r=\sum_k q^{(m-k)(r-k)}\qbinom mk\qbinom n{r-k}$ & \Cref{thm:q-vandermonde}\\[1pt]
-$q$-binomial inversion & $b_n=\sum_k\qbinom nka_k\iff a_n=\sum_k(-1)^{n-k}q^{\binom{n-k}2}\qbinom nkb_k$ & \Cref{thm:qbinomial-inversion}\\[1pt]
 Infinite theorem & $\sum_{n\ge0}(a;q)_nz^n/(q;q)_n=(az;q)_\infty/(z;q)_\infty$ & \Cref{thm:infinite-qbinomial}\\[1pt]
-Euler I & $(z;q)_\infty=\sum_{n\ge0}(-1)^nq^{\binom n2}z^n/(q;q)_n$ & \Cref{cor:euler-infinite}\\[1pt]
-Euler II & $1/(z;q)_\infty=\sum_{n\ge0}z^n/(q;q)_n$, $\abs z<1$ & \Cref{cor:euler-infinite}\\[1pt]
 $q$-Gauss & ${}_2\phi_1(a,b;c;q,c/(ab))=(c/a,c/b;q)_\infty/(c,c/(ab);q)_\infty$ & \Cref{thm:q-gauss}\\[1pt]
-Heine & ${}_2\phi_1(a,b;c;q,z)=\dfrac{(b,az;q)_\infty}{(c,z;q)_\infty}\,{}_2\phi_1(c/b,z;az;q,b)$ & \Cref{thm:heine}\\[1pt]
 $q$-Pfaff--Saalsch\"utz & Terminating balanced ${}_3\phi_2$ product evaluation & \Cref{thm:q-pfaff}\\[1pt]
 $q$-Chu--Vandermonde & Two terminating ${}_2\phi_1$ evaluations & \Cref{cor:q-chu}\\[1pt]
 Ramanujan ${}_1\psi_1$ & ${}_1\psi_1(a;b;q,z)=(q,b/a,az,q/(az);q)_\infty/(b,q/a,z,b/(az);q)_\infty$ & \Cref{thm:1psi1}\\[1pt]
-Finite triple product & $(z;q)_N(q/z;q)_N=\sum_{k=-N}^{N}(-1)^kq^{\binom k2}\qbinom{2N}{N+k}z^k$ & \Cref{thm:finite-jtp}\\[1pt]
-
 Jacobi triple product & $\sum_{n\in\Z}(-1)^nq^{\binom n2}z^n=(q,z,q/z;q)_\infty$ & \Cref{thm:jtp}\\[1pt]
 Pentagonal theorem & $(q;q)_\infty=\sum_{n\in\Z}(-1)^nq^{n(3n-1)/2}$ & \Cref{thm:pentagonal}\\[1pt]
 $q$-derivative & $D_qf(x)=(f(x)-f(qx))/((1-q)x)$ & \Cref{prop:qderivative-rules}\\[1pt]
@@ -6375,24 +5657,6 @@ For fixed nonnegative integers, the following transitions are direct consequence
  &\lim_{q\to0}\qbinom nk&=1\quad(0\le k\le n).
 \end{align*}
 Each has been proved in the main text; the relevant references are \Cref{prop:classical-poch-limit,cor:qbinom-classical,thm:fixed-column-limit,thm:qgamma-classical-limit,prop:extreme-specializations}.
-
-\medskip
-% ed.: the first draft of this paragraph claimed the dictionary recorded no
-% ed.: finite-to-infinite transition at all, and conflated the columnwise
-% ed.: limit 1/(q;q)_k with the central limit 1/(q;q)_infty.  Both are
-% ed.: corrected here.
-Transitions in the size parameter, rather than in $q$, are already represented
-above by $\lim_{n\to\infty}\qbinom nk=1/(q;q)_k$.  Their central counterpart is
-\[
- \lim_{N\to\infty}\qbinom{2N}{N+k}=\frac1{(q;q)_\infty}
- \qquad(k\in\Z\text{ fixed},\ 0<\abs q<1),
-\]
-which is \Cref{thm:central-fixed-q} when $k=0$ and follows for every fixed $k$
-by the same argument; it is what carries the finite triple product
-\eqref{eq:finite-jtp} to Jacobi's \eqref{eq:jtp-minus}.  See
-\Cref{thm:finite-jtp,cor:jtp-from-finite}, and compare
-\Cref{prop:partition-stabilization}, which records the same stabilization
-coefficientwise.
 
 \section{Classical shadows of the main summations}
 
@@ -6587,11 +5851,6 @@ K.~M. O'Hara,
 Unimodality of Gaussian coefficients: a constructive proof,
 \emph{Journal of Combinatorial Theory, Series A} \textbf{53} (1990), 29--52.
 
-\bibitem{PetkovsekWilfZeilberger1996}
-M.~Petkov\v{s}ek, H.~S. Wilf, and D.~Zeilberger,
-\emph{$A=B$},
-A K Peters, Wellesley, MA, 1996.
-
 \bibitem{ReinerStantonWhite2004}
 V.~Reiner, D.~Stanton, and D.~White,
 The cyclic sieving phenomenon,
@@ -6642,44 +5901,35 @@ W.~Zudilin,
 Congruences for $q$-binomial coefficients,
 \emph{Annals of Combinatorics} \textbf{23} (2019), 1123--1135.
 
-\bibitem{AriasDeReyna1982}
+
+\bibitem{AriasDeReyna2018}
 J.~Arias de Reyna,
-An infinitely differentiable function with compact support: definition and properties,
-\emph{Revista de la Real Academia de Ciencias Exactas, Fisicas y Naturales de Madrid} \textbf{76} (1982), 21--38;
-English translation, arXiv:1702.05442.
-
-\bibitem{BradleyGupta2004}
-D.~M. Bradley and R.~C. Gupta,
-On the distribution of the sum of $n$ non-identically distributed uniform random variables,
-preprint, arXiv:math/0411298, 2004.
-
-\bibitem{Eberl2024QAnalogues}
-M.~Eberl,
-Combinatorial $q$-analogues,
-\emph{Archive of Formal Proofs}, 2024, current document revision February 2026,
-\url{https://isa-afp.org/entries/Combinatorial_Q_Analogues.html}.
+Arithmetic of the Fabius function,
+\emph{INTEGERS} \textbf{18} (2018), Article A51; arXiv:1702.06487.
 
 \bibitem{Fabius1966}
 J.~Fabius,
 A probabilistic example of a nowhere analytic $C^\infty$-function,
-\emph{Zeitschrift f\"ur Wahrscheinlichkeitstheorie und Verwandte Gebiete} \textbf{5} (1966), 173--174.
+\emph{Zeitschrift f\"ur Wahrscheinlichkeitstheorie und Verwandte Gebiete}
+\textbf{5} (1966), 173--174.
+
+\bibitem{JessenWintner1935}
+B.~Jessen and A.~Wintner,
+Distribution functions and the Riemann zeta function,
+\emph{Transactions of the American Mathematical Society}
+\textbf{38} (1935), 48--88.
 
 \bibitem{ReshetnikovProveIt2026}
 V.~Reshetnikov,
-\emph{ProveIt: Fabius Function development and documentation},
-GitHub repository, 2026,
-\url{https://github.com/VladimirReshetnikov/ProveIt}.
+\emph{ProveIt: Fabius Function and Rvachev Up documentation},
+source repository, 2026,
+\url{https://github.com/VladimirReshetnikov/ProveIt/tree/main/Analysis/FabiusFunction/docs},
+accessed August 2026.
 
-\bibitem{Rvachev1990}
-V.~A. Rvachev,
-Compactly supported solutions of functional-differential equations and their applications,
-\emph{Russian Mathematical Surveys} \textbf{45} (1990), no.~1, 87--120.
-
-\bibitem{ZhongZhao2026}
+\bibitem{ZhongZhao2024}
 H.~Zhong and L.~Zhao,
-$q$-binomial identities finder,
-\emph{Advances in Applied Mathematics} \textbf{172} (2026), article 102965;
-arXiv:2408.00186.
+$q$-Binomial identities finder,
+preprint, arXiv:2408.00186, version 2, 2024.
 
 \end{thebibliography}
 
