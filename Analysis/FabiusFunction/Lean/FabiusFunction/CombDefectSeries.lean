@@ -337,7 +337,7 @@ theorem tsum_shifted_monomial_sub_integral_even_deg
         = ∑' n : ℕ, f (((n + 1 : ℕ)) : ℤ) :=
           tsum_congr fun n => (hcast n).symm
       _ = ∑' n : ℕ, f (n : ℤ) := by
-          rw [hzero, hf0, zero_add]
+          rw [hzero, Nat.cast_zero, hf0, zero_add]
   have hZ : ∑' ℓ : ℤ, f ℓ = 2 * ∑' n : ℕ, f (n : ℤ) := by
     calc ∑' ℓ : ℤ, f ℓ
         = ∑' n : ℕ, (f (n : ℤ) + f (-((n : ℤ) + 1))) := hfold.symm
