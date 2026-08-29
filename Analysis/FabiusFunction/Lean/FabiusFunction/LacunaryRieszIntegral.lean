@@ -464,15 +464,21 @@ theorem integral_prod_one_sub_cos_two_pow (n : ℕ) :
   have h := integral_rieszProduct n (fun j => 2 ^ j) (fun _ => (-1 : ℝ))
     (fun _ => (0 : ℝ))
     (fun j => by
-      have : 2 * 2 ^ j ≤ 2 * 2 ^ j := le_rfl
-      simpa [pow_succ, mul_comm] using this)
-    (by simp)
-  have hcast : ∀ (j : ℕ) (t : ℝ),
-      1 + (-1 : ℝ) * Real.cos (2 * π * ((2 ^ j : ℕ) : ℝ) * t + 0) =
-        1 - Real.cos (2 * π * 2 ^ j * t) := by
-    intro j t
+      show 2 * 2 ^ j ≤ 2 ^ (j + 1)
+      exact le_of_eq (by ring))
+    (by
+      show 0 < 2 ^ 0
+      norm_num)
+  have hfun : ∀ t : ℝ,
+      (∏ j ∈ range n, (1 - Real.cos (2 * π * 2 ^ j * t))) =
+        ∏ j ∈ range n,
+          (1 + (-1 : ℝ) *
+            Real.cos (2 * π * ((2 ^ j : ℕ) : ℝ) * t + 0)) := by
+    intro t
+    refine Finset.prod_congr rfl fun j _ => ?_
     push_cast
     ring
-  simpa [hcast] using h
+  refine Eq.trans ?_ h
+  exact intervalIntegral.integral_congr fun t _ => hfun t
 
 end Fabius
