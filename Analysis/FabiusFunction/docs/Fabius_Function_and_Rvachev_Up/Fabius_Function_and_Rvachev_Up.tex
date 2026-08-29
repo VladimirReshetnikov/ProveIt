@@ -124,7 +124,8 @@
 \date{Integrated repository snapshot: 29 August 2026\\
 \small Cauchy/complex-product checkpoint \nolinkurl{a81a13b46};
 CDF/implicit checkpoint \nolinkurl{e6f535e5d};
-fractional-cutoff checkpoint \nolinkurl{149332f9d}}
+fractional-cutoff checkpoint \nolinkurl{149332f9d};
+inverse-layer-cake checkpoint \nolinkurl{37eab3c56}}
 
 \begin{document}
 \maketitle
@@ -1187,15 +1188,54 @@ Then
 If \(\Psi(0)=0\), \(\psi\) is continuous on \([0,1]\), and
 \(\Psi'(x)=\psi(x)\) pointwise there, the inner primitive on the left may be
 replaced by \(\Psi(I(u))\).
+If instead \(\Psi:\R\to\R\) is merely absolutely continuous on \([0,1]\),
+the same replacement is valid with \(\psi=\Psi'\) almost everywhere, for every
+real or complex interval-integrable weight \(\phi\); no separate integrability
+hypothesis on the right-hand side is needed.
 \end{theorem}
 
+The arbitrary-absolutely-continuous Fabius form is
+\lean{intervalIntegral_mul_comp_fabiusInv_of_absolutelyContinuousOnInterval}.
 The explicit-primitive and pointwise-\(C^1\) forms are respectively
 \lean{intervalIntegral_smul_intervalIntegral_fabiusInv} and
 \lean{intervalIntegral_smul_comp_fabiusInv} in \path{InverseLayerCake.lean}.
-Their generic compact-rectangle versions are
+
+The generic theorem does not require the primitive to vanish at the left endpoint.
+
+\begin{theorem}[Absolutely-continuous inverse layer cake on a rectangle]
+\label{thm:ac-weighted-inverse-layer-cake}
+Let \(a\le b\) and \(c\le d\).  Suppose \(C,Q:\R\to\R\) map
+\([a,b]\) into \([c,d]\) and \([c,d]\) into \([a,b]\), respectively, and
+\[
+ C(x)<u\quad\Longleftrightarrow\quad x<Q(u)
+ \qquad(x\in[a,b],\ u\in[c,d]).
+\]
+For \(\mathbb K=\R\) or \(\C\), let
+\(\phi:[c,d]\to\mathbb K\) be integrable and let
+\(\Psi:\R\to\R\) be absolutely continuous on \([a,b]\).  Then
+\begin{equation}
+ \int_c^d\phi(u)\bigl(\Psi(Q(u))-\Psi(a)\bigr)\dd u
+ =\int_a^b\Psi'(x)\left(\int_{C(x)}^d\phi(u)\dd u\right)\dd x.
+ \label{eq:ac-weighted-inverse-layer-cake}
+\end{equation}
+When \(\Psi(a)=0\), the subtraction on the left disappears.  No measurability
+hypothesis is imposed on either clock, and equality is allowed in either endpoint
+pair.  Values of the clocks outside the two displayed intervals play no role.
+\end{theorem}
+
+The order-theoretic engine is
+\lean{galoisConnection_Icc_restrict_of_lt_iff_lt}: the strict order equivalence
+makes the two interval restrictions a Galois connection and hence monotone.  A
+canonical clamped extension of the restricted inverse is therefore measurable.
+Consequently, the generic explicit-primitive and pointwise-\(C^1\) theorems
 \lean{intervalIntegral_smul_intervalIntegral_of_lt_iff_lt} and
-\lean{intervalIntegral_smul_comp_of_lt_iff_lt}; all four use the strict order
-equivalence \(F(x)<u\Longleftrightarrow x<I(u)\).  The reusable arbitrary-s-finite-measure
+\lean{intervalIntegral_smul_comp_of_lt_iff_lt} no longer assume clock
+measurability.  The subtraction and normalized forms of
+\eqref{eq:ac-weighted-inverse-layer-cake} are
+\lean{intervalIntegral_mul_comp_sub_of_lt_iff_lt_of_absolutelyContinuousOnInterval}
+and
+\lean{intervalIntegral_mul_comp_of_lt_iff_lt_of_absolutelyContinuousOnInterval}.
+The reusable arbitrary-s-finite-measure
 engine is \lean{integral_smul_setIntegral_subgraph} in
 \path{SubgraphFubini.lean}.  Finally,
 \lean{intervalIntegral_mul_fabiusInv_eq} is the real weighted-area specialization;
@@ -7648,13 +7688,19 @@ That rule explains several choices made above:
       Banach-valued substitution with Lean's totalized Bochner integral.  A separate
       weighted-subgraph development proves Banach-valued survival layer cake and the
       full-interval Fabius inverse identity for an explicit interval-integrable primitive
-      or a pointwise-\(C^1\) primitive.  Finally,
+      or a pointwise-\(C^1\) primitive.  Its strict-order hypothesis actually makes the
+      two compact-interval clock restrictions a Galois connection, so the generic
+      explicit and pointwise-\(C^1\) forms now derive clock measurability rather than
+      assuming it.  For a real-valued absolutely continuous primitive, a further generic
+      subtraction theorem and its normalized and Fabius forms accept every real or complex
+      \(L^1\) weight and require no separate complementary-integrability hypothesis.  Finally,
       \path{InversePairIntegral.lean} proves the two-function identity for arbitrary
       absolutely-continuous outer functions on an ordered compact rectangle, derives
       monotonicity on that rectangle and measurable canonical clamped extensions from the
       strict inverse-order relation, and supplies both the Fabius wrapper and its area sum.
-      These declarations do not package variable-upper-endpoint, higher-order,
-      improper-integral, fractional, or complex-Mellin identities.
+      These declarations do not package reversed-endpoint, variable-upper-endpoint,
+      higher-order, improper-integral, fractional, complex-valued arbitrary-AC-primitive,
+      or complex-Mellin identities.
 \item Step cells use the formal half-endpoint indicator, including its point value at a
       shared boundary.
 \item The Fourier chapter distinguishes the real punctured-limit statement from the stronger
@@ -7709,9 +7755,11 @@ That rule explains several choices made above:
       bridge based at \(-1\) on \(x\ge-1\).  The modules prove no corresponding semigroup
       law for merely interval-integrable inputs or noncomplete targets, no Caputo or
       Riemann--Liouville derivative operator, no complex-order result, and no iterated or
-      negative-branch shift, shifted lattice, or endpoint-\(\Up\) wrapper.  Separately, the weighted
-      inverse-layer-cake API permits real or complex scalar weights and a Banach-valued
-      kernel on the full unit interval.  Variable-endpoint or higher inverse primitives,
+      negative-branch shift, shifted lattice, or endpoint-\(\Up\) wrapper.  Separately, the
+      weighted inverse-layer-cake API permits real or complex scalar weights and a
+      Banach-valued explicit or pointwise-\(C^1\) primitive on the full unit interval; its
+      arbitrary-absolutely-continuous form retains a real-valued primitive.  Variable or
+      reversed endpoints, complex-valued arbitrary-AC primitives, higher inverse primitives,
       fractional inverse identities, improper-integral limits, and complex Mellin continuation
       remain outside these results.
 \item Endpoint asymptotics retain exact phases and the proved remainder scopes; numerical
@@ -7909,14 +7957,18 @@ Legendre expansion and computability &
 \section{Notation crosswalk}
 \label{app:notation}
 
-\begin{center}
-\begin{tabularx}{\textwidth}{@{}
+\begin{longtable}{@{}
   >{\raggedright\arraybackslash}p{0.13\textwidth}
   >{\raggedright\arraybackslash}p{0.49\textwidth}
-  >{\raggedright\arraybackslash}X@{}}
+  >{\raggedright\arraybackslash}p{0.32\textwidth}@{}}
 \toprule
 Article & Lean & Meaning\\
 \midrule
+\endfirsthead
+\toprule
+Article & Lean & Meaning\\
+\midrule
+\endhead
 \(F\) & \lean{fabiusReal}\hspace{0.35em}\lean{fabius} & bounded canonical Fabius function\\
 \(\Up\) & \lean{rvachevUp}\hspace{0.35em}\lean{fabius} & compactly supported fold\\
 \(\mathcal F\) & \lean{extendedFabius}\hspace{0.35em}\lean{fabius} & signed global extension\\
@@ -7945,8 +7997,7 @@ fractional \(\mathcal F\) & \lean{fractionalVolterra_add_one_extendedFabius_of_n
 \(\varepsilon_n\) & \lean{thueMorseSign}\hspace{0.35em}\lean{n} & signed Thue--Morse value\\
 \(\wt(n)\) & \lean{binaryWeight}\hspace{0.35em}\lean{n} & binary digit sum\\
 \bottomrule
-\end{tabularx}
-\end{center}
+\end{longtable}
 
 \begin{thebibliography}{99}
 
@@ -8092,6 +8143,11 @@ analytic-series filters, and the finite complex
 Thue--Morse product bridge were also compiler-validated at checkpoint
 \texttt{149332f9d}.
 \newblock \url{https://github.com/VladimirReshetnikov/ProveIt/tree/149332f9d/Analysis/FabiusFunction}.
+\newblock The interval-restricted Galois connection, measurable-free Banach-valued and
+pointwise-$C^1$ inverse layer-cake APIs, and the real- or complex-weighted
+arbitrary-$L^1$/real-absolutely-continuous Fabius wrapper were compiler-validated at
+checkpoint \texttt{37eab3c56cb28ab702878d71f7d1a87791adea44}.
+\newblock \url{https://github.com/VladimirReshetnikov/ProveIt/tree/37eab3c56cb28ab702878d71f7d1a87791adea44/Analysis/FabiusFunction}.
 \newblock The integrated source additionally contains the atom-exact Cauchy--CDF
 integration-by-parts layer and the exact Rvachev Cauchy-transform DDE/all-order
 Thue--Morse orbit in \path{CauchyCDF.lean} and \path{CauchyRenormalization.lean}; it does

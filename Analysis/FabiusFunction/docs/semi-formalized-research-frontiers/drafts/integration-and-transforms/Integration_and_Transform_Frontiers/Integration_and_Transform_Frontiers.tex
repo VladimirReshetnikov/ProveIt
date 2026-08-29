@@ -200,9 +200,28 @@ declarations \path{Fabius.ProbabilityRepresentation.ae_weightedSumDistribution_m
 and \path{Fabius.ProbabilityRepresentation.weightedSumDistribution_restrict_Icc} are owned
 by \path{ProbabilityRepresentation.lean}, not by the downstream moment module.
 
-For inverse clocks, \path{InverseLayerCake.lean} proves the generic and Fabius-specific
-weighted identities both with an explicit interval-integrable primitive kernel and, under
-pointwise \(C^1\) hypotheses, with a primitive composed with the inverse.  It also exports
+For inverse clocks, \path{InverseLayerCake.lean} first proves
+\path{Fabius.galoisConnection_Icc_restrict_of_lt_iff_lt}: interval preservation and the
+strict adjunction make the two compact-interval restrictions a Galois connection.  Thus
+its generic explicit-primitive and pointwise-\(C^1\) identities
+\path{Fabius.intervalIntegral_smul_intervalIntegral_of_lt_iff_lt} and
+\path{Fabius.intervalIntegral_smul_comp_of_lt_iff_lt} now derive the measurable clamped
+representative used by the subgraph proof rather than assuming either clock measurable.
+Their Fabius wrappers are
+\path{Fabius.intervalIntegral_smul_intervalIntegral_fabiusInv} and
+\path{Fabius.intervalIntegral_smul_comp_fabiusInv}; these four theorems allow real or
+complex weights and Banach-valued primitives.
+
+The same module also proves the arbitrary-absolutely-continuous layer cake for a
+real-valued primitive and any real or complex \(L^1\) weight.  The generic subtraction
+form is
+\path{Fabius.intervalIntegral_mul_comp_sub_of_lt_iff_lt_of_absolutelyContinuousOnInterval},
+its \(\Psi(a)=0\) corollary is
+\path{Fabius.intervalIntegral_mul_comp_of_lt_iff_lt_of_absolutelyContinuousOnInterval},
+and the exact Fabius wrapper is
+\path{Fabius.intervalIntegral_mul_comp_fabiusInv_of_absolutelyContinuousOnInterval}.
+Absolute continuity supplies derivative integrability, so no separate integrability
+hypothesis is imposed on the complementary side.  The module additionally exports
 \path{Fabius.intervalIntegral_mul_fabiusInv_eq}, the full weighted inverse-area identity,
 and the endpoint area theorems
 \path{Fabius.intervalIntegral_fabiusInv_eq_intervalIntegral_rvachevUp} and
@@ -227,9 +246,10 @@ stopped-power and unit-endpoint moment identities, the causal support-truncated 
 primitive and semigroup, and the three positive-real single-step Fabius--Rvachev order
 shifts recorded in the next status box, shifted dyadic-lattice or endpoint-moment formulas,
 quantile-transmutation, or inverse-function fractional formulas, any Caputo
-or other fractional-derivative theorem, complex-order or complex-Mellin continuations, or a named wrapper having simultaneously the
-absorbed report's arbitrary-\(L^1\) kernel and arbitrary absolutely-continuous primitive
-hypotheses when that wrapper is not literally exported by the declarations above.  Those
+or other fractional-derivative theorem, complex-order or complex-Mellin continuations,
+complex-valued arbitrary-absolutely-continuous primitives, reversed-endpoint layer cake,
+or named Fourier, Laplace, or Mellin consequences not literally exported by the
+declarations above.  Those
 distinctions supersede only contrary historical status wording; the provenance hashes
 above remain hashes of the unmodified absorbed sources.
 \end{statusbox}
@@ -6696,7 +6716,10 @@ explicit piecewise-coefficient, refinement, inverse, or quantile specialization.
 Support-free
 measure-level quantile transport, together with its compact specialization, is now formal
 separately, as recorded below.  The full-interval explicit-primitive and pointwise-\(C^1\)
-inverse layer-cake forms have also since been formalized.  Moreover,
+inverse layer-cake forms have also since been formalized, and now derive clock
+measurability from the compact-interval Galois connection.  The real-primitive,
+real- or complex-weighted arbitrary-\(L^1\)/absolutely-continuous subtraction theorem,
+its normalized corollary, and its Fabius wrapper are formal as well.  Moreover,
 \path{Fabius.intervalIntegral_deriv_mul_comp_add_comp_mul_deriv_of_lt_iff_lt} in
 \path{InversePairIntegral.lean} proves the complete absolutely-continuous identity on
 arbitrary ordered compact source and level intervals.  It requires no measurability
@@ -7058,7 +7081,17 @@ two-function identity below.  Separately,
 \nolinkurl{Fabius.intervalIntegral_smul_comp_fabiusInv} in
 \texttt{InverseLayerCake.lean} now prove its full-unit-interval layer-cake core for an
 explicit interval-integrable primitive and for a pointwise-\(C^1\) primitive,
-respectively.
+respectively.  Their generic forms no longer assume clock measurability: the helper
+\nolinkurl{Fabius.galoisConnection_Icc_restrict_of_lt_iff_lt} makes the interval
+restrictions a Galois connection and supplies the monotonicity used to construct a
+measurable clamped inverse.  For a real-valued absolutely continuous primitive and a real
+or complex \(L^1\) weight, the generic subtraction and normalized forms are
+\nolinkurl{Fabius.intervalIntegral_mul_comp_sub_of_lt_iff_lt_of_absolutelyContinuousOnInterval}
+and
+\nolinkurl{Fabius.intervalIntegral_mul_comp_of_lt_iff_lt_of_absolutelyContinuousOnInterval};
+their exact Fabius wrapper is
+\nolinkurl{Fabius.intervalIntegral_mul_comp_fabiusInv_of_absolutelyContinuousOnInterval}.
+No separate complementary-integrability hypothesis is required.
 
 The complete proper-compact absolutely-continuous theorem is now
 \nolinkurl{Fabius.intervalIntegral_deriv_mul_comp_add_comp_mul_deriv_of_lt_iff_lt}
@@ -14883,8 +14916,8 @@ substitute \(v=F(x)\) and integrate by parts.
 
 \begin{theorem}[Forward--inverse layer cake]
 \label{p8:thm:inverse-layercake}
-Let \(\phi\in L^1(0,1)\), and let \(\Psi\) be absolutely continuous with
-\(\Psi(0)=0\).  Whenever the right side is absolutely integrable,
+Let \(\mathbb K=\R\) or \(\C\), let \(\phi\in L^1((0,1);\mathbb K)\), and let
+\(\Psi:\R\to\R\) be absolutely continuous on \([0,1]\), with \(\Psi(0)=0\).  Then
 \begin{equation}
  \boxed{
  \int_0^1\phi(u)\Psi(\QF(u))\dd u
@@ -14895,18 +14928,37 @@ Let \(\phi\in L^1(0,1)\), and let \(\Psi\) be absolutely continuous with
 \end{theorem}
 
 \begin{statusbox}[Exact Lean scope of the inverse layer cake]
-The formula is machine checked in two exact forms in \path{InverseLayerCake.lean}.
+The displayed formula is exactly
+\path{Fabius.intervalIntegral_mul_comp_fabiusInv_of_absolutelyContinuousOnInterval}
+in \path{InverseLayerCake.lean}.  Its generic compact-rectangle parent is the stronger
+subtraction identity
+\begin{equation}
+ \int_c^d\phi(u)\bigl(\Psi(Q(u))-\Psi(a)\bigr)\dd u
+ =\int_a^b\Psi'(x)\left(\int_{C(x)}^d\phi(u)\dd u\right)\dd x,
+ \label{p8:eq:generic-ac-inverse-layercake}
+\end{equation}
+namely
+\path{Fabius.intervalIntegral_mul_comp_sub_of_lt_iff_lt_of_absolutelyContinuousOnInterval};
+\path{Fabius.intervalIntegral_mul_comp_of_lt_iff_lt_of_absolutelyContinuousOnInterval}
+is its \(\Psi(a)=0\) corollary.  Both accept real or complex \(L^1\) weights and a
+real-valued absolutely continuous primitive.  Absolute continuity supplies derivative
+integrability, so no separate integrability assumption is needed on the right.  Ordered
+source and level intervals may degenerate.
+
+The order helper \path{Fabius.galoisConnection_Icc_restrict_of_lt_iff_lt} proves that
+the compact-interval clock restrictions form a Galois connection.  Consequently the
+generic explicit-primitive and pointwise-\(C^1\) theorems now derive the measurable
+clamped inverse used by the subgraph argument and assume no clock measurability.  Their
+Fabius forms retain the older, wider codomain interfaces:
 \path{Fabius.intervalIntegral_smul_intervalIntegral_fabiusInv} takes an
 interval-integrable Banach-valued kernel and writes \(\Psi\) explicitly as its primitive;
 \path{Fabius.intervalIntegral_smul_comp_fabiusInv} gives the displayed composition when
 \(\Psi(0)=0\), its derivative is continuous on \([0,1]\), and the derivative identity
-holds pointwise there.  Both allow real or complex scalar weights.  There is no public
-wrapper here simultaneously accepting an arbitrary \(L^1\) weight and an arbitrary
-absolutely continuous \(\Psi\), so the theorem's full wording is not claimed as
-formalized.  The real-valued two-function theorem in \path{InversePairIntegral.lean}
-does accept two absolutely continuous factors on proper compact intervals, and requires
-no clock measurability, but it does not literally export this arbitrary-\(L^1\)
-layer-cake wrapper.
+holds pointwise there.  Both allow real or complex scalar weights and Banach-valued
+primitives.  The arbitrary-AC theorem does not extend that primitive codomain: it is
+real-valued.  Nor does this tranche export reversed-endpoint, variable-upper-endpoint,
+improper-singular, higher- or fractional-inverse, or named Fourier, Laplace, or Mellin
+corollaries.
 \end{statusbox}
 
 \begin{proof}
@@ -14915,12 +14967,14 @@ Write
 Since \(x<\QF(u)\) is equivalent to \(F(x)<u\), Fubini gives the result.
 \end{proof}
 
-With \(\Psi(x)=x^p\), \(\Re p>0\), this becomes
+For real \(p>0\), taking \(\Psi(x)=x^p\) gives
 \begin{equation}
  \int_0^1\phi(u)\QF(u)^p\dd u
  =p\int_0^1x^{p-1}\left(\int_{F(x)}^1\phi(u)\dd u\right)\dd x.
  \label{p8:eq:inverse-power-layercake}
 \end{equation}
+The report extends the same display to complex \(p\) with \(\Re p>0\).  That
+complex-valued-primitive continuation is not part of the arbitrary-AC Lean wrapper.
 Taking \(\phi=1\) proves the exact quantile-moment identity
 \begin{equation}
  \boxed{\int_0^1\QF(u)^p\dd u=m(p),}
@@ -15952,12 +16006,15 @@ inverse Fabius expansion.
 The survival-kernel obligation in \cref{p8:thm:survival-kernel} is discharged, including
 its partial form and Banach-valued kernels.  The inverse obligation in
 \cref{p8:thm:inverse-layercake} is discharged for an explicit interval-integrable
-primitive and for the pointwise-\(C^1\) composition form.  The complete proper-compact
+primitive, for the pointwise-\(C^1\) composition form, and for the report's exact
+real-primitive, real- or complex-weighted arbitrary-\(L^1\)/absolutely-continuous
+signature.  The strict adjunction supplies a Galois connection, so all three generic
+interfaces now derive clock measurability internally.  The complete proper-compact
 two-function identity is additionally discharged for arbitrary real-valued absolutely
 continuous factors by \path{InversePairIntegral.lean}, with clock measurability derived
-internally.  Packaging the report's exact arbitrary-\(L^1\)-weight,
-arbitrary-absolutely-continuous-primitive layer-cake signature remains an open
-formalization step.
+internally.  Complex-valued arbitrary-AC primitives, reversed or variable endpoints,
+improper singular endpoints, higher and fractional inverse primitives, and the report's
+named transform consequences remain outside this kernel tranche.
 \end{statusbox}
 
 \begin{obligation}[Special-function layer --- discharged]
@@ -20578,9 +20635,10 @@ coefficients is a natural extension.
 The most accessible Lean targets are:
 \begin{enumerate}
 \item package the remaining variable-upper-endpoint and improper-singular scope of
-      \cref{p10:thm:AB}; measure-level quantile transport, the explicit-primitive and
-      pointwise-\(C^1\) layer-cake core, and the complete proper-compact
-      absolutely-continuous identity are already formal;
+      \cref{p10:thm:AB}; measure-level quantile transport, the measurable-free
+      Galois/explicit-primitive/pointwise-\(C^1\) layer-cake core, the arbitrary-\(L^1\)
+      weight and real-valued absolutely-continuous-primitive wrapper, and the complete
+      proper-compact two-function absolutely-continuous identity are already formal;
 \item the power identity \cref{p10:eq:power-complete} and its polynomial corollaries;
 \item the positive and negative moment recurrences;
 \item positivity, monotonicity, and convergence of \(C_r\);
