@@ -233,6 +233,7 @@ import FabiusFunction.AlternatingNewtonZeta
 import FabiusFunction.GeneralizedZeroDivisor
 import FabiusFunction.LobeSignComplete
 import FabiusFunction.GeneralizedRealBound
+import FabiusFunction.GeneralizedExponentialType
 import FabiusFunction.RMSTransferEigenfunctions
 import FabiusFunction.LogFactorConcavity
 import FabiusFunction.CentralLobeConcavity
