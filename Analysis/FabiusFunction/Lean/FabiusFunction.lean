@@ -36,6 +36,7 @@ import FabiusFunction.SpectralZetaWeighted
 import FabiusFunction.ShiftDifferenceWeights
 import FabiusFunction.NewtonMultiplicityAssembly
 import FabiusFunction.NewtonBasisGeneratingFunction
+import FabiusFunction.NewtonSpectralZeta
 import FabiusFunction.BellPolynomialInversion
 import FabiusFunction.AppellSequence
 import FabiusFunction.MomentCumulantAlgebra
