@@ -47,6 +47,7 @@ import FabiusFunction.AffineDifferenceOrbit
 import FabiusFunction.ThueMorseBooleanCube
 import FabiusFunction.BitPositionGenerating
 import FabiusFunction.ParityCharacter
+import FabiusFunction.ParityCharacterKernel
 import FabiusFunction.GeneralizedProuhetBlock
 import FabiusFunction.BitPositionQBinomial
 import FabiusFunction.BinaryPartitionGreenInverse
