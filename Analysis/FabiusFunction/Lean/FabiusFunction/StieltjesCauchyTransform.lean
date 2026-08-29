@@ -1,4 +1,5 @@
 import FabiusFunction.StieltjesMomentLaurent
+import FabiusFunction.CauchyTransform
 
 /-!
 # The complex Cauchy transform of the up-measure
@@ -31,7 +32,7 @@ theorem integrable_inv_sub_complex_rvachevMeasure (F : BoundedFabius)
     Integrable (fun x : ℝ => (z - x)⁻¹) (rvachevMeasure F) := by
   haveI := rvachevMeasure_isProbability F hF
   refine Integrable.mono' (integrable_const ((‖z‖ - 1)⁻¹))
-    ((measurable_const.sub Complex.measurable_ofReal).inv
+    ((measurable_const.sub Complex.continuous_ofReal.measurable).inv
       .aestronglyMeasurable) ?_
   filter_upwards [ae_mem_Ioo_rvachevMeasure F hF] with x hx
   have hxabs : ‖(x : ℂ)‖ ≤ 1 := by
@@ -51,8 +52,8 @@ theorem integrable_pow_div_sub_complex_rvachevMeasure
       (rvachevMeasure F) := by
   haveI := rvachevMeasure_isProbability F hF
   refine Integrable.mono' (integrable_const ((‖z‖ - 1)⁻¹))
-    (((Complex.measurable_ofReal.pow_const N).div
-      (measurable_const.sub Complex.measurable_ofReal))
+    (((Complex.continuous_ofReal.measurable.pow_const N).div
+      (measurable_const.sub Complex.continuous_ofReal.measurable))
       .aestronglyMeasurable) ?_
   filter_upwards [ae_mem_Ioo_rvachevMeasure F hF] with x hx
   have hxabs : ‖(x : ℂ)‖ ≤ 1 := by
@@ -82,14 +83,23 @@ theorem integral_inv_sub_complex_eq_sum_upMoment_add
     intro h0
     rw [h0, norm_zero] at hz
     linarith
+  have hintpow0 : ∀ k : ℕ, Integrable
+      (fun x : ℝ => (x : ℂ) ^ k) (rvachevMeasure F) := by
+    intro k
+    refine Integrable.mono' (integrable_const 1)
+      ((Complex.continuous_ofReal.measurable.pow_const
+        k).aestronglyMeasurable) ?_
+    filter_upwards [ae_mem_Ioo_rvachevMeasure F hF] with x hx
+    rw [norm_pow, Complex.norm_real, Real.norm_eq_abs]
+    exact pow_le_one₀ (abs_nonneg x)
+      (le_of_lt (abs_lt.mpr ⟨hx.1, hx.2⟩))
   have hintpowC : ∀ k : ℕ, Integrable
       (fun x : ℝ => ((x : ℂ) ^ k / z ^ (k + 1))) (rvachevMeasure F) := by
     intro k
-    have h := ((integrable_pow_rvachevMeasure F hF k).ofReal
-      (𝕜 := ℂ)).const_mul ((z ^ (k + 1))⁻¹)
+    have h := (hintpow0 k).const_mul ((z ^ (k + 1))⁻¹)
     refine h.congr (Filter.Eventually.of_forall fun x => ?_)
     dsimp only
-    rw [Complex.ofReal_pow, division_def, mul_comm]
+    rw [division_def, mul_comm]
   have hintrem : Integrable
       (fun x : ℝ => (x : ℂ) ^ N / (z ^ N * (z - x)))
       (rvachevMeasure F) := by
@@ -126,8 +136,8 @@ theorem integral_inv_sub_complex_eq_sum_upMoment_add
               fun x : ℝ => (z ^ (k + 1))⁻¹ * ((x ^ k : ℝ) : ℂ) := by
             funext x
             rw [Complex.ofReal_pow, division_def, mul_comm]
-          rw [hfun, MeasureTheory.integral_const_mul, integral_ofReal,
-            upMoment, division_def, mul_comm]
+          rw [hfun, MeasureTheory.integral_const_mul,
+            integral_complex_ofReal, upMoment, division_def, mul_comm]
         · have hfun : (fun x : ℝ =>
               (x : ℂ) ^ N / (z ^ N * (z - x))) =
               fun x : ℝ => (z ^ N)⁻¹ * ((x : ℂ) ^ N / (z - x)) := by
@@ -153,7 +163,11 @@ theorem norm_integral_inv_sub_complex_sub_sum_le (F : BoundedFabius)
   rw [hrem, norm_mul, norm_inv, norm_pow]
   have hbound : ‖∫ x, (x : ℂ) ^ N / (z - x) ∂(rvachevMeasure F)‖ ≤
       (‖z‖ - 1)⁻¹ := by
-    refine norm_integral_le_of_norm_le_const ?_
+    have h := norm_integral_le_of_norm_le_const
+      (μ := rvachevMeasure F)
+      (f := fun x : ℝ => (x : ℂ) ^ N / (z - x))
+      (C := (‖z‖ - 1)⁻¹) ?_
+    · simpa using h
     filter_upwards [ae_mem_Ioo_rvachevMeasure F hF] with x hx
     have hxabs : ‖(x : ℂ)‖ ≤ 1 := by
       rw [Complex.norm_real, Real.norm_eq_abs]
@@ -239,8 +253,18 @@ theorem integral_inv_sub_complex_ofReal (F : BoundedFabius)
     (hF : IsFabius F) {z : ℝ} (hz : 1 < |z|) :
     ∫ x, (((z : ℝ) : ℂ) - x)⁻¹ ∂(rvachevMeasure F) =
       ((∫ x, (z - x)⁻¹ ∂(rvachevMeasure F) : ℝ) : ℂ) := by
-  rw [← integral_ofReal]
+  rw [← integral_complex_ofReal]
   refine integral_congr_ae (Filter.Eventually.of_forall fun x => ?_)
   rw [Complex.ofReal_inv, Complex.ofReal_sub]
+
+/-- **The Laurent expansion of the named Cauchy transform**: on the
+exterior of the unit disc the corpus's `rvachevCauchyTransform` is
+the convergent moment series `∑'_k m_k·z^{-(k+1)}`. -/
+theorem rvachevCauchyTransform_eq_tsum_upMoment (F : BoundedFabius)
+    (hF : IsFabius F) {z : ℂ} (hz : 1 < ‖z‖) :
+    rvachevCauchyTransform F z =
+      ∑' k : ℕ, (upMoment F k : ℂ) / z ^ (k + 1) := by
+  rw [rvachevCauchyTransform_apply]
+  exact integral_inv_sub_complex_eq_tsum_upMoment F hF hz
 
 end Fabius
