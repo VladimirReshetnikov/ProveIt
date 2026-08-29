@@ -1889,7 +1889,27 @@ For $p=2$ this is the familiar lower-Lambert coordinate of the classical Fabius 
 the branch notation and inversion conventions follow \cite{p1:corless1996}.
 For $p>2$ it gives a single closed coordinate in which the polynomial-weight endpoint
 transseries should be organized; the Mellin calculation in \cref{p1:sec:mellin} explains the
-periodic coefficients that decorate it.  Only the $p=2$ coordinate is formalized:
+periodic coefficients that decorate it.
+
+Equation \eqref{p1:eq:generalized-lambert} is formalized, in
+\path{GeneralizedLambertCoordinate.lean}: writing $q=p-1$,
+\lean{Fabius.generalizedLambertCoordinate} is $\lambda_P$ and
+\lean{Fabius.generalizedLambertCoordinate\_solves\_saddle} is the assertion that it solves
+\eqref{p1:eq:generalized-saddle-equation}.  The verification is pure algebra once
+$W\e^W=z$ is available; nothing analytic beyond that is used.  It is worth separating out the
+core, which carries the whole content and has no real powers in it: with $w=W_{-1}(u)$ and
+$\lambda=-qw$,
+\[
+ \lambda^{q}\e^{-\lambda}=(-q)^{q}\bigl(w\e^{w}\bigr)^{q}=(-qu)^{q}
+ \qquad(\lean{Fabius.pow\_mul\_exp\_neg\_lambert}).
+\]
+Everything else is the choice of $u$ making $(-qu)^q$ equal to $x/(C_Pp)$, and that is the only
+place the real power $(x/(C_Pp))^{1/q}$ enters, bringing its round-trip hypothesis
+$x/(C_Pp)\ge0$ with it.  The branch hypothesis is carried rather than derived: $W_{-1}$ satisfies
+its defining equation only on $(-\e^{-1},0)$, and which $x$ land there depends on $C_P$, $p$ and
+$q$ --- something settled here by context rather than by a formula, so the Lean statement asks
+for it.  At $q=1$ the coordinate collapses to $-W_{-1}(-x/(C_Pp))$
+(\lean{Fabius.generalizedLambertCoordinate\_one}), the shape the classical $p=2$ analysis uses:
 \lean{Fabius.lowerLambertW} (\lean{LowerLambertW.lean}), a definitional alias of the library's
 real lower branch \lean{Real.lambertWLower}, inverts $w\mapsto w\e^w$ on $(-\infty,-1]$, with
 functional equation \lean{Fabius.lowerLambertW_mul_exp} and uniqueness
