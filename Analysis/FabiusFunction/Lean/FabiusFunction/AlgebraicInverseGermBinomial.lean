@@ -41,7 +41,7 @@ theorem sq_rescale_binomial :
   congr 1
   ext n
   rw [PowerSeries.coeff_rescale, PowerSeries.coeff_C_mul,
-    PowerSeries.coeff_X, PowerSeries.coeff_X]
+    PowerSeries.coeff_X]
   by_cases h : n = 1 <;> simp [h]
 
 /-- The explicit series has zero constant term. -/
@@ -65,7 +65,7 @@ theorem dyadicBinomialGerm_solves :
       PowerSeries.rescale ((64 : ℚ) / 9)
         (binomialSeries ℚ ((1 : ℚ) / 2)) - 1 := by
     rw [dyadicBinomialGerm,
-      show (8 : PowerSeries ℚ) = PowerSeries.C (8 : ℚ) from by simp,
+      (map_ofNat (PowerSeries.C : ℚ →+* PowerSeries ℚ) 8).symm,
       ← mul_assoc, ← map_mul,
       show (8 : ℚ) * (8 : ℚ)⁻¹ = 1 from by norm_num, map_one,
       one_mul]
@@ -74,13 +74,10 @@ theorem dyadicBinomialGerm_solves :
         (binomialSeries ℚ ((1 : ℚ) / 2))) ^ 2 =
       9 + 64 * PowerSeries.X := by
     rw [sq_rescale_binomial, mul_add, mul_one,
-      show (9 : PowerSeries ℚ) = PowerSeries.C (9 : ℚ) from by simp,
+      (map_ofNat (PowerSeries.C : ℚ →+* PowerSeries ℚ) 9).symm,
       ← mul_assoc, ← map_mul,
-      show (9 : ℚ) * ((64 : ℚ) / 9) = (64 : ℚ) from by norm_num]
-    congr 1
-    · simp
-    · congr 1
-      simp
+      show (9 : ℚ) * ((64 : ℚ) / 9) = (64 : ℚ) from by norm_num,
+      map_ofNat, map_ofNat]
   have h144 : (144 : PowerSeries ℚ) ≠ 0 := by
     intro h
     have hc := congrArg (PowerSeries.constantCoeff) h
@@ -89,12 +86,10 @@ theorem dyadicBinomialGerm_solves :
   have hRHS : (144 : PowerSeries ℚ) *
       (PowerSeries.C ((4 : ℚ) / 9) * PowerSeries.X) =
       64 * PowerSeries.X := by
-    rw [show (144 : PowerSeries ℚ) = PowerSeries.C (144 : ℚ) from by
-        simp,
+    rw [(map_ofNat (PowerSeries.C : ℚ →+* PowerSeries ℚ) 144).symm,
       ← mul_assoc, ← map_mul,
-      show (144 : ℚ) * ((4 : ℚ) / 9) = (64 : ℚ) from by norm_num]
-    congr 1
-    simp
+      show (144 : ℚ) * ((4 : ℚ) / 9) = (64 : ℚ) from by norm_num,
+      map_ofNat]
   refine mul_left_cancel₀ h144 ?_
   rw [hRHS]
   linear_combination (9 * (8 * dyadicBinomialGerm + 1 +
@@ -134,7 +129,7 @@ theorem germPolynomial_dyadicTwo_eval (S : PowerSeries ℚ) :
   have hw1 : dyadicWeightsTwo 1 = -(1 / 18 : ℚ) := by
     simp [dyadicWeightsTwo]
   rw [hw0, hw1]
-  have hJeval : ((Function.iterate Polynomial.derivative (2 * 0)
+  have hJeval : ((Polynomial.derivative^[2 * 0]
       dyadicJetTwo).map (PowerSeries.C)).eval S = S + 4 * S ^ 2 := by
     show ((dyadicJetTwo).map (PowerSeries.C)).eval S = S + 4 * S ^ 2
     rw [dyadicJetTwo]
@@ -148,7 +143,7 @@ theorem germPolynomial_dyadicTwo_eval (S : PowerSeries ℚ) :
       (8 : PowerSeries ℚ) =
       -(PowerSeries.C ((4 : ℚ) / 9) * PowerSeries.X) := by
     rw [smul_eq_mul,
-      show (8 : PowerSeries ℚ) = PowerSeries.C (8 : ℚ) from by simp,
+      (map_ofNat (PowerSeries.C : ℚ →+* PowerSeries ℚ) 8).symm,
       mul_right_comm, ← map_mul,
       show (-(1 / 18 : ℚ)) * 8 = -((4 : ℚ) / 9) from by norm_num,
       map_neg, neg_mul]
