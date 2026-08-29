@@ -2146,6 +2146,177 @@ The infinite $q$-binomial theorem is the evaluation
  =\frac{(az;q)_\infty}{(z;q)_\infty}.
 \]
 
+% ---- Insert at the end of \Cref{chap:basic-hypergeometric},
+% ---- \section{Definition and convergence}, after the displayed
+% ---- ${}_1\phi_0$ evaluation (line 1746-1750) and before
+% ---- \section{Heine's transformation}.
+
+\index{basic hypergeometric series!classical limit}
+\index{hypergeometric series!ordinary ${}_rF_{r-1}$}
+
+When $s=r-1$ the factor $\bigl((-1)^nq^{\binom n2}\bigr)^{1+s-r}$ in the definition is identically $1$, so that
+\[
+ {}_r\phi_{r-1}\!\left[
+ \begin{matrix}a_1,\dots,a_r\\ b_1,\dots,b_{r-1}\end{matrix};q,z\right]
+ =\sum_{n=0}^{\infty}
+ \frac{\poch{a_1}{q}{n}\cdots\poch{a_r}{q}{n}}
+      {\poch{q}{q}{n}\poch{b_1}{q}{n}\cdots\poch{b_{r-1}}{q}{n}}\,z^n .
+\]
+Under the scaling $a_i=q^{\alpha_i}$, $b_j=q^{\beta_j}$ this family degenerates as $q\to1^-$ to the ordinary hypergeometric series
+\[
+ {}_rF_{r-1}\!\left(
+ \begin{matrix}\alpha_1,\dots,\alpha_r\\ \beta_1,\dots,\beta_{r-1}\end{matrix};z\right)
+ \defeq\sum_{n=0}^{\infty}
+ \frac{(\alpha_1)_n\cdots(\alpha_r)_n}
+      {n!\,(\beta_1)_n\cdots(\beta_{r-1})_n}\,z^n,
+ \qquad
+ (\alpha)_n=\alpha(\alpha+1)\cdots(\alpha+n-1),
+\]
+and -- this is the point of the next theorem -- the degeneration is valid for the full nonterminating series, not only for the terminating specializations tabulated in \Cref{app:limits}.
+
+\begin{theorem}[Classical limit of a nonterminating ${}_r\phi_{r-1}$]\label{thm:classical-hypergeometric-limit}
+Let $r\ge1$ and let $\alpha_1,\dots,\alpha_r,\beta_1,\dots,\beta_{r-1}\in\C$ satisfy
+\[
+ \beta_j\notin\{0,-1,-2,\dots\}\qquad(1\le j\le r-1).
+\]
+For $0<q<1$ let $q^{c}=e^{c\log q}$ with the real logarithm.  Then there is $q_0\in(0,1)$ such that for $q_0<q<1$ no denominator factor of
+\[
+ \mathcal F_q(z)\defeq
+ {}_r\phi_{r-1}\!\left[
+ \begin{matrix}q^{\alpha_1},\dots,q^{\alpha_r}\\
+               q^{\beta_1},\dots,q^{\beta_{r-1}}\end{matrix};q,z\right]
+\]
+vanishes, and for every $\rho\in(0,1)$
+\[
+ \lim_{q\to1^-}\mathcal F_q(z)
+ ={}_rF_{r-1}\!\left(
+ \begin{matrix}\alpha_1,\dots,\alpha_r\\ \beta_1,\dots,\beta_{r-1}\end{matrix};z\right)
+\]
+uniformly for $\abs z\le\rho$.  Both sides are analytic in $\abs z<1$.  If no $\alpha_i$ lies in $\{0,-1,-2,\dots\}$, both series have radius of convergence exactly $1$: for $\mathcal F_q$ this is \Cref{prop:phi-convergence}(ii), and for ${}_rF_{r-1}$ the ratio of consecutive terms is
+\[
+ \frac{z\prod_{i=1}^{r}(\alpha_i+n)}{(n+1)\prod_{j=1}^{r-1}(\beta_j+n)}\longrightarrow z
+ \qquad(n\to\infty).
+\]
+If some $\alpha_i$ is a nonpositive integer, both sides reduce to the same polynomial in $z$; see \Cref{rem:classical-limit-terminating}.
+\end{theorem}
+
+% ed.: the source omits the hypothesis $\beta_j\notin\{0,-1,-2,\dots\}$ (without
+% ed.: which the limiting ${}_rF_{r-1}$ is undefined) and says nothing about the
+% ed.: vanishing of the $q$-denominators; Step 1 supplies both.
+% ed.: the source also asserts that on compact subdisks ``term ratios are
+% ed.: uniformly bounded by a number below $1$ for $q$ sufficiently close to $1$''.
+% ed.: This is false for small $n$: for $r=2$, $\alpha=(5,5)$, $\beta=(1)$, $z=2/5$
+% ed.: the $n=0$ ratio tends to $z\cdot 5\cdot5/(1\cdot1)=10$ as $q\to1^-$.  The
+% ed.: correct argument, given in Steps 3--4, bounds the ratios only for
+% ed.: $m\ge m_0$ and absorbs the finitely many earlier terms into a constant.
+
+\begin{proof}
+Throughout put $\beta_r\defeq1$, so that $\poch{q}{q}{n}=\poch{q^{\beta_r}}{q}{n}$ and the $n$th summand
+\[
+ T_n(q)\defeq
+ \frac{\prod_{i=1}^{r}\poch{q^{\alpha_i}}{q}{n}}
+      {\prod_{i=1}^{r}\poch{q^{\beta_i}}{q}{n}}\,z^n
+\]
+has equally many Pochhammer factors above and below.
+
+\emph{Step 1: no denominator vanishes near $q=1$.}
+A factor $1-q^{\beta+m}$ with $m\ge0$ vanishes exactly when $(\beta+m)\log q\in2\pi i\Z$.  Writing $\beta+m=\sigma+i\tau$ and using that $\log q$ is real and nonzero, this forces $\sigma=0$ together with $\tau\log q\in2\pi\Z$.  If $\tau=\Im\beta=0$, the two conditions say $\beta=-m$, which the hypothesis excludes for $\beta=\beta_1,\dots,\beta_{r-1}$ and which is false for $\beta_r=1$.  If $\Im\beta\ne0$, then $\tau\log q$ is a nonzero multiple of $2\pi$, whence $\abs{\log q}\ge2\pi/\abs{\Im\beta}$.  Taking
+\[
+ q_0=\max\set{\exp\!\bigl(-2\pi/\abs{\Im\beta_j}\bigr):\Im\beta_j\ne0}
+\]
+(and $q_0$ arbitrary in $(0,1)$ if all $\beta_j$ are real) rules out every vanishing for $q_0<q<1$.
+
+\emph{Step 2: termwise convergence.}
+Fix $n$ and divide each of the $2r$ Pochhammer symbols by $(1-q)^n$; the powers of $(1-q)$ cancel, so
+\[
+ T_n(q)=
+ \frac{\prod_{i=1}^{r}\poch{q^{\alpha_i}}{q}{n}(1-q)^{-n}}
+      {\prod_{i=1}^{r}\poch{q^{\beta_i}}{q}{n}(1-q)^{-n}}\,z^n .
+\]
+By \Cref{prop:classical-poch-limit} the $i$th numerator factor tends to $(\alpha_i)_n$ and the $i$th denominator factor to $(\beta_i)_n$, with $(\beta_r)_n=(1)_n=n!$.  The hypothesis on the $\beta_j$ makes every $(\beta_i)_n$ nonzero, so
+\[
+ \lim_{q\to1^-}T_n(q)=t_n\defeq
+ \frac{(\alpha_1)_n\cdots(\alpha_r)_n}
+      {n!\,(\beta_1)_n\cdots(\beta_{r-1})_n}z^n .
+\]
+
+\emph{Step 3: two elementary estimates.}
+Put $t=-\log q>0$, so that $q^{w}=e^{-wt}$, and set $h(u)=1-e^{-ut}$ for $u\ge0$.
+\begin{enumerate}[label=\textup{(\alph*)}]
+\item If $w=\sigma+i\tau$ with $\sigma>0$, then
+\[
+ h(\sigma)\le\abs{1-e^{-wt}}\le h(\sigma)+\abs\tau\,t .
+\]
+Indeed, with $\varrho=e^{-\sigma t}\in(0,1)$ and $\phi=-\tau t$,
+$\abs{1-\varrho e^{i\phi}}^2=(1-\varrho)^2+2\varrho(1-\cos\phi)$.  Discarding the nonnegative second term gives the lower bound; using $1-\cos\phi\le\phi^2/2$ and $\varrho\le1$ gives $\abs{1-\varrho e^{i\phi}}^2\le(1-\varrho)^2+(\tau t)^2\le\bigl((1-\varrho)+\abs\tau t\bigr)^2$.
+\item $h$ is increasing and concave on $[0,\infty)$ with $h(0)=0$, so $u\mapsto h(u)/u$ is nonincreasing and therefore
+\[
+ \frac{h(v)}{h(u)}\le\max\Bigl(1,\frac vu\Bigr)\qquad(u,v>0).
+\]
+Moreover $e^{ut}\ge1+ut$ gives $h(u)\ge ut/(1+ut)$, that is, $h(u)^{-1}\le(ut)^{-1}+1$.
+\end{enumerate}
+
+\emph{Step 4: a majorant uniform in $q$ and in $\abs z\le\rho$.}
+Set $K=1+\max_{i}\abs{\alpha_i}+\max_{i}\abs{\beta_i}$ and fix an integer $m_0\ge2K$.  For $m\ge m_0$ the real numbers $\sigma_i=\Re\alpha_i+m$ and $\gamma_i=\Re\beta_i+m$ are at least $m/2>0$.  The ratio of consecutive summands is
+\[
+ \frac{T_{m+1}(q)}{T_m(q)}
+ =z\prod_{i=1}^{r}\frac{1-q^{\alpha_i+m}}{1-q^{\beta_i+m}},
+\]
+and for $m\ge m_0$ and every $t>0$, Step 3 gives
+\[
+ \abs{\frac{1-q^{\alpha_i+m}}{1-q^{\beta_i+m}}}
+ \le\frac{h(\sigma_i)+\abs{\Im\alpha_i}t}{h(\gamma_i)}
+ \le\max\Bigl(1,\frac{\sigma_i}{\gamma_i}\Bigr)
+  +\abs{\Im\alpha_i}t\Bigl(\frac1{\gamma_it}+1\Bigr)
+ \le1+\frac{6K}m+Kt,
+\]
+because $\max(1,\sigma_i/\gamma_i)\le1+\abs{\Re\alpha_i-\Re\beta_i}/\gamma_i\le1+4K/m$ and $\abs{\Im\alpha_i}/\gamma_i\le2K/m$.  Put $C=6rK$, fix $\rho\in(0,1)$, choose $t_1>0$ with $e^{rKt_1}\le\rho^{-1/2}$, and set $\theta=\rho^{1/2}<1$.  For $\abs z\le\rho$, $0<t\le t_1$ and $m\ge m_0$,
+\[
+ \abs{\frac{T_{m+1}(q)}{T_m(q)}}
+ \le\rho\Bigl(1+\frac{6K}m+Kt_1\Bigr)^{r}
+ \le\rho\,e^{rKt_1}e^{C/m}
+ \le\theta\,e^{C/m}.
+\]
+Multiplying these bounds and using $\sum_{m=m_0}^{n-1}m^{-1}\le1+\log(n/m_0)$,
+\[
+ \abs{T_n(q)}\le\abs{T_{m_0}(q)}\,\theta^{\,n-m_0}\,e^{C}\Bigl(\frac n{m_0}\Bigr)^{C}
+ \qquad(n>m_0).
+\]
+By Step 2 the finitely many functions $T_0,\dots,T_{m_0}$ converge as $q\to1^-$, hence are bounded, say by $B$, on some interval $(q_1,1)$; the bound is uniform in $\abs z\le\rho$ because $T_n(q)$ is $z^n$ times a function of $q$ alone.  Therefore, with
+\[
+ M_n\defeq B\ \ (n\le m_0),
+ \qquad
+ M_n\defeq B\,e^{C}m_0^{-C}\,n^{C}\theta^{\,n-m_0}\ \ (n>m_0),
+\]
+one has $\abs{T_n(q)}\le M_n$ for all $n\ge0$, all $\abs z\le\rho$ and all $q$ with $\max\bigl(q_0,q_1,e^{-t_1}\bigr)<q<1$, while $\sum_{n\ge0}M_n<\infty$ because $\theta<1$ dominates the polynomial factor $n^{C}$.
+
+\emph{Step 5: interchange.}
+The series $\sum_nT_n(q)$ is dominated by the summable sequence $(M_n)$ uniformly in $q$, so it converges uniformly in $q$ on that interval; each term has the limit $t_n$ by Step 2.  Dominated convergence with respect to counting measure (Tannery's theorem) therefore gives
+\[
+ \lim_{q\to1^-}\sum_{n\ge0}T_n(q)=\sum_{n\ge0}t_n,
+\]
+which is the asserted limit.  % ed.: the draft concluded uniformity from a $z$-independent majorant
+% ed.: alone, which gives only pointwise convergence in $z$; the head/tail
+% ed.: split below is what actually delivers it.
+For the uniformity, note first that letting $q\to1^-$ in
+$\abs{T_n(q)}\le M_n$ gives $\abs{t_n}\le M_n$ as well.  Let $\eps>0$ and
+choose $N>m_0$ with $\sum_{n>N}M_n<\eps/3$.  Writing $T_n(q)=z^ng_n(q)$ and
+$t_n=z^ng_n(1^-)$, where $g_n$ does not involve $z$, one has for every
+$\abs z\le\rho$
+\[
+ \Bigl\lvert\sum_{n\ge0}T_n(q)-\sum_{n\ge0}t_n\Bigr\rvert
+ \le\sum_{n\le N}\abs{g_n(q)-g_n(1^-)}+2\sum_{n>N}M_n,
+\]
+because $\abs z^n\le1$.  The first sum is a finite sum of quantities
+independent of $z$, each tending to $0$ by Step 2, hence is $<\eps/3$ once
+$q$ is close enough to $1$.  The convergence is therefore uniform on
+$\abs z\le\rho$.
+\end{proof}
+
+\begin{remark}[The terminating case]\label{rem:classical-limit-terminating}
+If some $\alpha_i$ is a nonpositive integer $-N$, the numerator factor $\poch{q^{-N}}{q}{n}$ vanishes for $n>N$, the series is a finite sum, and neither the restriction $\abs z<1$ nor Steps 3--5 are needed: applying \Cref{prop:classical-poch-limit} to each of the $N+1$ terms suffices.  That elementary mechanism is what underlies the itemized list in \Cref{app:limits}; \Cref{thm:classical-hypergeometric-limit} is its nonterminating counterpart, and the analytic work in Steps 3--5 is exactly the price of dropping the terminating hypothesis.
+\end{remark}
+
 \section{Heine's transformation}
 
 \begin{theorem}[Heine transformation]\label{thm:heine}
@@ -2351,6 +2522,172 @@ For \eqref{eq:qchu2}, let $b\to0$ in \Cref{thm:q-pfaff}, with its other numerato
 \]
 by comparing the leading factors of the two degree-$n$ polynomials in $1/b$.
 \end{proof}
+
+% =================================================================
+% INSERTION 1 of 1 for this item.
+% Chapter: \ref{chap:basic-hypergeometric} ("Basic hypergeometric series"),
+% section "The two $q$-Chu--Vandermonde sums".
+% Place immediately after the \end{proof} of \Cref{cor:q-chu}
+% (MONOGRAPH line 1943) and before \section{A hierarchy of mechanisms}.
+% =================================================================
+
+
+
+\begin{lemma}[Reversal of a terminating ${}_2\phi_1$]\label{lem:2phi1-reversal}
+\index{basic hypergeometric series!reversal of a terminating sum}
+Let $n\in\N_0$ and let $a$, $c$, $z$ be nonzero with $(c;q)_n\ne0$ and $(q^{1-n}/a;q)_n\ne0$.  Then
+\begin{equation}
+ {}_2\phi_1\!\left[
+ \begin{matrix}q^{-n},a\\c\end{matrix};q,z\right]
+ =(-1)^nq^{-\binom{n+1}{2}}z^{n}\frac{(a;q)_n}{(c;q)_n}\,
+ {}_2\phi_1\!\left[
+ \begin{matrix}q^{-n},\,q^{1-n}/c\\[2pt] q^{1-n}/a\end{matrix};q,
+ \,\frac{cq^{n+1}}{az}\right].
+ \label{eq:2phi1-reversal}
+\end{equation}
+Both series terminate at $n$, so \eqref{eq:2phi1-reversal} is an identity between rational functions of $a$, $c$, $z$ over $\Q(q)$; no convergence hypothesis enters.  The substitution $(a,c)\mapsto(q^{1-n}/c,\,q^{1-n}/a)$ is an involution, and applying \eqref{eq:2phi1-reversal} twice returns the original series.
+\end{lemma}
+
+\begin{proof}
+Since $r=2$ and $s=1$, the factor $\bigl((-1)^jq^{\binom j2}\bigr)^{1+s-r}$ in the definition of ${}_2\phi_1$ equals $1$, so the left side is $\sum_{j=0}^{n}T_j$ with
+\[
+ T_j=\frac{(q^{-n};q)_j(a;q)_j}{(q;q)_j(c;q)_j}\,z^{j}.
+\]
+We reverse the order of summation, writing $j=n-i$ with $0\le i\le n$.
+
+First record the reversal rule for a single finite shifted factorial.  Let $x\ne0$.  The concatenation law \Cref{prop:concat} gives $(x;q)_n=(x;q)_{n-i}(xq^{n-i};q)_i$, and base reversal \Cref{prop:base-reversal}, applied to the second factor, gives
+\[
+ (xq^{n-i};q)_i=(-x)^iq^{(n-i)i+\binom i2}\,(q^{1-n}/x;q)_i .
+\]
+Because $(n-i)i+\binom i2=ni-\binom{i+1}{2}$, these combine into
+\begin{equation}
+ (x;q)_{n-i}=(x;q)_n\,
+ \frac{(-1)^i x^{-i}q^{\binom{i+1}{2}-ni}}{(q^{1-n}/x;q)_i}.
+ \label{eq:poch-reversal-rule}
+\end{equation}
+
+Now apply \eqref{eq:poch-reversal-rule} to each of the four shifted factorials occurring in $T_{n-i}$.  The four bases $q^{-n},a,q,c$ reflect to $q,\,q^{1-n}/a,\,q^{-n},\,q^{1-n}/c$ respectively, the first and third of which are again members of the list (the reflection of $q^{-n}$ is $q$ and that of $q$ is $q^{-n}$, while $q^{1-n}/a$ and $q^{1-n}/c$ are new).  Explicitly,
+\begin{align*}
+ (q^{-n};q)_{n-i}&=(q^{-n};q)_n\,
+ \frac{(-1)^iq^{\binom{i+1}{2}}}{(q;q)_i},
+ &
+ (a;q)_{n-i}&=(a;q)_n\,
+ \frac{(-1)^ia^{-i}q^{\binom{i+1}{2}-ni}}{(q^{1-n}/a;q)_i},\\
+ (q;q)_{n-i}&=(q;q)_n\,
+ \frac{(-1)^iq^{\binom{i+1}{2}-ni-i}}{(q^{-n};q)_i},
+ &
+ (c;q)_{n-i}&=(c;q)_n\,
+ \frac{(-1)^ic^{-i}q^{\binom{i+1}{2}-ni}}{(q^{1-n}/c;q)_i}.
+\end{align*}
+Form the quotient $\bigl[(q^{-n};q)_{n-i}(a;q)_{n-i}\bigr]\big/\bigl[(q;q)_{n-i}(c;q)_{n-i}\bigr]$.  The four factors $(-1)^i$ cancel in pairs.  The four powers of $q$ contribute
+\[
+ \binom{i+1}{2}
+ +\left(\binom{i+1}{2}-ni\right)
+ -\left(\binom{i+1}{2}-ni-i\right)
+ -\left(\binom{i+1}{2}-ni\right)
+ =ni+i,
+\]
+the scalars contribute $a^{-i}c^{\,i}$, and the reflected shifted factorials
+contribute
+\[
+ \frac{(q^{-n};q)_i\,(q^{1-n}/c;q)_i}{(q;q)_i\,(q^{1-n}/a;q)_i}.
+\]
+Multiplying by $z^{n-i}=z^{n}z^{-i}$ and collecting the $i$-dependent
+scalars as $\bigl(cq^{n+1}/(az)\bigr)^{i}$, we obtain
+\[
+ T_{n-i}
+ =\frac{(q^{-n};q)_n(a;q)_n}{(q;q)_n(c;q)_n}\,z^{n}\;
+ \frac{(q^{-n};q)_i\,(q^{1-n}/c;q)_i}
+ {(q;q)_i\,(q^{1-n}/a;q)_i}
+ \left(\frac{cq^{n+1}}{az}\right)^{i}.
+\]
+By \Cref{cor:qminusN} with $N=k=n$,
+\[
+ (q^{-n};q)_n=(-1)^nq^{-n^2+\binom n2}(q;q)_n
+ =(-1)^nq^{-\binom{n+1}{2}}(q;q)_n,
+\]
+so the constant in front is $(-1)^nq^{-\binom{n+1}{2}}z^{n}(a;q)_n/(c;q)_n$.  Summing over $0\le i\le n$ gives \eqref{eq:2phi1-reversal}.  The final assertion follows because the reflected parameters are $a'=q^{1-n}/c$ and $c'=q^{1-n}/a$, so that $c'q^{\,n+1}/(a'z')=\bigl[(q^{1-n}/a)q^{\,n+1}\bigr]\big/\bigl[(q^{1-n}/c)\cdot cq^{\,n+1}/(az)\bigr]=z$, and the reflection is therefore an involution on the parameter pair.
+\end{proof}
+
+\begin{proposition}[The second $q$-Chu--Vandermonde sum by reversal]\label{prop:qchu2-by-reversal}
+Identity \eqref{eq:qchu2} is a formal consequence of \eqref{eq:qchu1}: it follows from \Cref{lem:2phi1-reversal} alone, without \Cref{thm:q-pfaff}, without \Cref{lem:cauchy-II}, and without any limiting process.
+\end{proposition}
+
+\begin{proof}
+Fix $n\in\N_0$ and nonzero parameters $A,C$ with $(A;q)_n\ne0$ and $(C;q)_n\ne0$.  Put
+\[
+ a=\frac{q^{1-n}}{C},\qquad
+ c=\frac{q^{1-n}}{A},\qquad
+ z=\frac{cq^{n}}{a}=\frac{Cq^{n}}{A}.
+\]
+These are nonzero, and by \Cref{prop:base-reversal} the hypotheses of \Cref{lem:2phi1-reversal} hold: $(c;q)_n=(q^{1-n}/A;q)_n=(-A)^{-n}q^{-\binom n2}(A;q)_n\ne0$ and $(q^{1-n}/a;q)_n=(C;q)_n\ne0$.  Since $az=cq^{n}$, the reflected argument in \eqref{eq:2phi1-reversal} is $cq^{n+1}/(az)=q$, and the reflected parameters are $q^{1-n}/c=A$ and $q^{1-n}/a=C$.  Hence \eqref{eq:2phi1-reversal} reads
+\[
+ {}_2\phi_1\!\left[
+ \begin{matrix}q^{-n},a\\c\end{matrix};q,\frac{cq^n}{a}\right]
+ =(-1)^nq^{-\binom{n+1}{2}}
+ \left(\frac{cq^{n}}{a}\right)^{n}
+ \frac{(a;q)_n}{(c;q)_n}\,
+ {}_2\phi_1\!\left[
+ \begin{matrix}q^{-n},A\\C\end{matrix};q,q\right].
+\]
+% ed.: the ARTICLE asserts that reversal returns \eqref{eq:qchu2} at the SAME
+% ed.: parameters $(a,c)$; it in fact returns it at the reflected pair
+% ed.: $(q^{1-n}/c,\,q^{1-n}/a)$.  Since that substitution is an involution of
+% ed.: $(\C^*)^2$, nothing is lost --- every admissible pair is reached --- but
+% ed.: the reflection must be carried explicitly, as here.
+The left side is $(c/a;q)_n/(c;q)_n$ by \eqref{eq:qchu1}, and $c/a=C/A$.  Solving for the remaining series and using $a/(cq^{n})=A/(Cq^{n})$,
+\[
+ {}_2\phi_1\!\left[
+ \begin{matrix}q^{-n},A\\C\end{matrix};q,q\right]
+ =(-1)^nq^{\binom{n+1}{2}}
+ \left(\frac{A}{Cq^{n}}\right)^{n}
+ \frac{(C/A;q)_n}{(a;q)_n}.
+\]
+By \Cref{prop:base-reversal} once more, $(a;q)_n=(q^{1-n}/C;q)_n=(-C)^{-n}q^{-\binom n2}(C;q)_n$.  Substituting and cancelling $C^{n}$ and the two signs,
+\[
+ {}_2\phi_1\!\left[
+ \begin{matrix}q^{-n},A\\C\end{matrix};q,q\right]
+ =q^{\binom{n+1}{2}+\binom n2-n^2}\,A^{n}\frac{(C/A;q)_n}{(C;q)_n}
+ =A^{n}\frac{(C/A;q)_n}{(C;q)_n},
+\]
+because $\binom{n+1}{2}+\binom n2=\tfrac{n^2+n}{2}+\tfrac{n^2-n}{2}=n^2$.  This is \eqref{eq:qchu2} at the pair $(A,C)$, which was an arbitrary admissible pair.  The auxiliary condition $(A;q)_n\ne0$ excludes only a proper algebraic
+subset of the parameter space, and both sides of \eqref{eq:qchu2} are
+rational functions of $(A,C)$ there; agreeing off a proper algebraic
+subset, they agree wherever both are defined.  This is the same
+identity-theorem step used for \eqref{eq:qchu1} in the proof of
+\Cref{cor:q-chu}.
+% ed.: the draft justified this by \Cref{lem:polynomial-identity-principle}
+% ed.: of chapter 20 -- a silent forward reference across eleven chapters,
+% ed.: and to a lemma stated for a single variable $q$ over $\Q$ rather than
+% ed.: for $(A,C)$ over $\C$.  Chapter 9's own idiom settles it with neither
+% ed.: problem.
+Every step used only finite products, so, after multiplication by $A^{-n}$ is undone and denominators are cleared, \eqref{eq:qchu2} holds over any commutative ring in which $q$ and $A$ are invertible.
+\end{proof}
+
+% =================================================================
+% AMENDMENT to \section{A hierarchy of mechanisms}, MONOGRAPH lines 1945--1960.
+% Replace the second display and the closing paragraph by the following.
+% =================================================================
+
+\section{A hierarchy of mechanisms}
+
+The proofs in this chapter form a hierarchy:
+\[
+ \text{finite $q$-Pascal}
+ \Longrightarrow \text{$q$-Cauchy}
+ \Longrightarrow \text{$q$-Pfaff--Saalsch\"utz},
+\]
+while
+\[
+\begin{gathered}
+ \text{infinite $q$-binomial}
+ \Longrightarrow \text{Heine}
+ \Longrightarrow \text{$q$-Gauss}\\
+ \Longrightarrow \text{first $q$-Chu--Vandermonde}
+ \Longrightarrow \text{second $q$-Chu--Vandermonde},
+\end{gathered}
+\]
+the last arrow being \Cref{prop:qchu2-by-reversal}.  The finite chain is valid in a commutative ring after denominators are cleared.  The infinite chain requires convergence or a suitable complete formal topology, but only as far as its third arrow: the first $q$-Chu--Vandermonde sum is already a rational, hence purely algebraic, identity, as the proof of \Cref{cor:q-chu} records, and by \Cref{lem:2phi1-reversal} the fourth arrow is finite-product algebra.  Thus \eqref{eq:qchu2} does not depend on \Cref{thm:q-pfaff}, and the two derivations of it given here are genuinely independent.  This distinction becomes important in computer formalization; see \Cref{chap:formalization}.
 
 \section{A hierarchy of mechanisms}
 
@@ -5316,6 +5653,84 @@ For a mixed algebraic-analytic $q$-identity, the following order minimizes hidde
 \begin{proof}
 Each step is justified by results already proved: finite product algebra in \Cref{chap:pochhammer}; polynomial identity and specialization by \Cref{lem:polynomial-identity-principle,cor:safe-specialization}; formal-to-analytic transfer by \Cref{thm:formal-analytic-transfer}; and the convergence theorems in \Cref{chap:infinite-qbinomial,chap:basic-hypergeometric,chap:bilateral}.  The ordering prevents an analytic operation from being used before its convergence hypothesis has been supplied.
 \end{proof}
+
+\section{Necessary conditions for a proposed identity}
+
+The results of this book supply, besides proofs, a set of cheap falsification
+tests.  They are worth isolating, because each is a \emph{necessary}
+condition that can be checked without expanding anything.
+
+\begin{principle}[Falsification tests]\label{prin:identity-tests}
+\index{identity!falsification tests}
+Let $L=R$ be a proposed identity whose two sides are built from Gaussian
+coefficients, shifted factorials, and explicit powers of $q$.  Each of the
+following is a necessary condition for $L=R$.
+\begin{enumerate}
+\item \emph{Degree and order.}  If $L$ and $R$ are polynomials in $q$, then
+ $\deg L=\deg R$ and $\ord_{q=0}L=\ord_{q=0}R$.  For a monomial
+ $F=q^{\alpha}\prod_i\qbinom{n_i}{k_i}$ these are
+ $\alpha+\sum_ik_i(n_i-k_i)$ and $\alpha$, by
+ \Cref{thm:qbinom-structure}(iii).
+\item \emph{Reversal.}  Substituting $q^{-1}$ for $q$ in a true identity
+ yields a true identity, and by \Cref{thm:qbinom-structure}(ii),(iv) that
+ substitution acts on a monomial $F$ as above by an explicit power:
+ $F(q^{-1})=q^{-c_F}F(q)$ with $c_F=\deg F+\ord F$.  If $L$ and $R$ are such
+ monomials with $c_L\ne c_R$, then $L=R$ forces $L=R=0$.
+\item \emph{The value $q=0$.}  After denominators have been cleared, the
+ substitution $q=0$ must give a true numerical identity; here
+ $\qbinom nk\big|_{q=0}=1$ by \Cref{prop:extreme-specializations}.
+\item \emph{The classical shadow.}  After division by the appropriate power
+ of $1-q$, the limit $q\to1$ must be a true identity between ordinary
+ binomial coefficients and factorials, since $\qbinom nk\to\binom nk$ by
+ \Cref{cor:qbinom-classical}; the standard scalings are collected in
+ \Cref{app:limits}.
+\item \emph{Small indices.}  Once the degree bound of item (i) is known, each
+ side is determined by finitely many coefficients, so agreement at
+ sufficiently many small indices is a genuine test; and if both sides satisfy
+ one and the same certified recurrence, \Cref{cor:identity-certification}
+ promotes finitely many agreements to a proof.
+\item \emph{Summand ratio.}  If a side is presented as a basic hypergeometric
+ series, the quotient of consecutive summands must be the rational function
+ of $q^k$ that the claimed ${}_r\phi_s$ normalization predicts; this is the
+ defining property of a $q$-hypergeometric term used in
+ \Cref{thm:telescoping-certificate}.  A mismatch localizes the error in the
+ parameters rather than in the evaluation.
+\end{enumerate}
+\end{principle}
+
+\begin{proof}
+Equal polynomials have equal degrees and equal orders at $q=0$, and for a
+monomial $F=q^{\alpha}\prod_i\qbinom{n_i}{k_i}$ each factor has constant term
+$1$ and degree $k_i(n_i-k_i)$ by \Cref{thm:qbinom-structure}(iii); this proves
+item (i).  For item (ii), \Cref{thm:qbinom-structure}(ii) gives
+$\Qbinom{n_i}{k_i}{q^{-1}}=q^{-k_i(n_i-k_i)}\qbinom{n_i}{k_i}$, so
+\[
+ F(q^{-1})=q^{-\alpha}\prod_i q^{-k_i(n_i-k_i)}\qbinom{n_i}{k_i}
+ =q^{-c_F}F(q),
+ \qquad
+ c_F=2\alpha+\sum_ik_i(n_i-k_i)=\deg F+\ord F,
+\]
+using $F(q)=q^{\alpha}\prod_i\qbinom{n_i}{k_i}$.  If $L=R$, then applying the
+substitution gives $q^{-c_L}L=q^{-c_R}R=q^{-c_R}L$, so
+$(q^{-c_L}-q^{-c_R})L=0$ in $\Q(q)$; when $c_L\ne c_R$ the first factor is
+nonzero and hence $L=0$.  Items (iii) and (iv) are the specializations
+recorded in \Cref{prop:extreme-specializations} and
+\Cref{cor:qbinom-classical}, legitimate after denominator clearing by
+\Cref{lem:polynomial-identity-principle} and \Cref{cor:safe-specialization}.
+Item (v) is \Cref{cor:identity-certification}.  Item (vi) is the definition of
+a $q$-hypergeometric term given before \Cref{thm:telescoping-certificate}.
+\end{proof}
+
+\begin{remark}\label{rem:tests-not-sufficient}
+The six conditions are necessary and not sufficient: passing all of them does
+not prove a candidate, and only the certified recurrence of item (v), or a
+proof organized as in \Cref{prin:proof-architecture}, does.  Their value is
+that every failure is cheap and localizing.  A misplaced $q^{\binom k2}$ or
+$q^{k(n-k)}$ is caught by (i) and (ii) before anything is expanded, a wrong
+sign or normalization by (iii), and a wrong classical analogue by (iv).  The
+algorithmic search for the certificate of item (v) is the subject of
+\cite{PetkovsekWilfZeilberger1996}.
+\end{remark}
 
 \begin{historicalnote}
 Formal verification forces distinctions that handwritten mathematics often suppresses: a finite product indexed by a natural number is not the same object as a bilateral product; a polynomial Gaussian coefficient is not definitionally the same as a rational factorial quotient; and a formal power-series identity does not automatically contain a proof of analytic convergence.  The Lean development of Lau, Lee, and Ono~\cite{LauLeeOno2026} turns these distinctions into reusable interfaces rather than obstacles.
