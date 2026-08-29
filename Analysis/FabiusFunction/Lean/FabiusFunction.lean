@@ -41,6 +41,9 @@ import FabiusFunction.ThueMorseBitSupport
 import FabiusFunction.AffineDifferenceOrbit
 import FabiusFunction.ThueMorseBooleanCube
 import FabiusFunction.BitPositionGenerating
+import FabiusFunction.BitPositionQBinomial
+import FabiusFunction.BinaryPartitionGreenInverse
+import FabiusFunction.DigitDefectCounting
 import FabiusFunction.ThueMorseValuation
 import FabiusFunction.ThueMorseDigits
 import FabiusFunction.ThueMorseEnumerators
