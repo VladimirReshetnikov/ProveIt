@@ -107,6 +107,7 @@ import FabiusFunction.SmoothingOperatorInversion
 import FabiusFunction.SmoothingOperatorExponential
 import FabiusFunction.AlgebraicInverseGerm
 import FabiusFunction.AlgebraicInverseGermAnalytic
+import FabiusFunction.AlgebraicInverseGermBinomial
 import FabiusFunction.GeometricCgfTails
 import FabiusFunction.GeometricTailDictionary
 import FabiusFunction.DyadicCombTrapezoid
