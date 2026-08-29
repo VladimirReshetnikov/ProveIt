@@ -1248,7 +1248,18 @@ analytic identities themselves are formalized only at $a_h\equiv1$, as
 scale product $\prod_ng(z/c^n)$ for an arbitrary factor function $g$, an arbitrary nonzero ratio
 $c$ and an arbitrary commutative topological monoid---but for one fixed $g$, so they do not by
 themselves reach a variable exponent sequence.  The finite-difference factorization
-\eqref{p1:eq:finite-difference-factorization} is not formalized.
+\eqref{p1:eq:finite-difference-factorization} is not formalized \emph{as an identity of products},
+for the same reason: it quantifies over canonical products at general weights.  Its
+exponent-level content is formal, however, in
+\path{ShiftDifferenceWeights.lean}: the identity $S^m=(I+\Delta)^m$ that drives it is the
+Gregory--Newton formula, and for a weight sequence valued in any additive commutative
+group
+\[
+  a_{h+m}=\sum_{r\le m}\binom{m}{r}\,(\Delta^{r}a)_h
+\]
+(\lean{Fabius.weight\_shift\_eq\_sum\_fwdDiff}), together with the inverse alternating form
+(\lean{Fabius.weight\_fwdDiff\_eq\_sum\_shift}).  So what is missing is exactly the passage
+from the exponent identity to the product identity, not the combinatorics.
 \end{theorem}
 
 \begin{proof}
