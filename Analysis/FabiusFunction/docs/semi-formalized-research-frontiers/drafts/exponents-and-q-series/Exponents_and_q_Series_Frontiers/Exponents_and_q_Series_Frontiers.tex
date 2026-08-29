@@ -1478,9 +1478,33 @@ analytic identities themselves are formalized only at $a_h\equiv1$, as
 scale product $\prod_ng(z/c^n)$ for an arbitrary factor function $g$, an arbitrary nonzero ratio
 $c$ and an arbitrary commutative topological monoid---but for one fixed $g$, so they do not by
 themselves reach a variable exponent sequence.  The finite-difference factorization
-\eqref{p1:eq:finite-difference-factorization} is not formalized \emph{as an identity of products},
-for the same reason: it quantifies over canonical products at general weights.  Its
-exponent-level content is formal, however, in
+\eqref{p1:eq:finite-difference-factorization} is now formalized as an identity of products,
+in \path{WeightLinearityProducts.lean}, and by supplying the passage the last sentence of this
+paragraph calls for --- once, and in the generality that sentence describes rather than for this
+display alone.  If a weight is any $\N$-linear combination of admissible weights,
+$a_h=\sum_{i\in s}c_i\,w_{i,h}$ over an arbitrary finite index set, then
+\[
+ \Phi_a(z)=\prod_{i\in s}\Phi_{w_i}(z)^{c_i}
+\]
+at every $z$ (\lean{Fabius.generalizedRvachevProduct\_linearCombination}), the proof being
+induction over $s$ on \lean{Fabius.generalizedRvachevProduct\_add} and the scaling law
+$\Phi_{k\cdot a}=\Phi_a^{\,k}$ (\lean{Fabius.generalizedRvachevProduct\_natMul}), with
+admissibility closed under the same combination.  Our display is the instance
+$s=\{0,\dots,m\}$, $c_r=\binom mr$, recorded as
+\lean{Fabius.generalizedRvachevProduct\_shift\_factorization} together with the identification
+$S^ma=(h\mapsto a_{h+m})$ (\lean{Fabius.shiftExponent\_iterate}).
+
+One hypothesis is genuinely needed and is exactly the germ caveat above.  The coefficients and
+the weights $w_i$ are natural numbers, because $\Phi_a$ is defined only for $a$ valued in
+$\N_0$; a combination with a negative coefficient names no transform at all.  So the Lean
+statement is the factorization \emph{wherever the differences $\Delta^ra$ are nonnegative},
+which is precisely the case in which our own display needs no passage through germs.  The
+signed case --- where the apparent poles cancel because the left side is entire --- is not
+formalized.  The remaining unformalized analytic identity in this theorem is the iterated
+dilation $\Phi_a(2^mz)$ itself; only the one-step law
+\lean{Fabius.generalizedRvachevProduct\_two\_mul} is available.
+
+The exponent-level content is formal as well, in
 \path{ShiftDifferenceWeights.lean}: the identity $S^m=(I+\Delta)^m$ that drives it is the
 Gregory--Newton formula, and for a weight sequence valued in any additive commutative
 group
@@ -1488,8 +1512,16 @@ group
   a_{h+m}=\sum_{r\le m}\binom{m}{r}\,(\Delta^{r}a)_h
 \]
 (\lean{Fabius.weight\_shift\_eq\_sum\_fwdDiff}), together with the inverse alternating form
-(\lean{Fabius.weight\_fwdDiff\_eq\_sum\_shift}).  So what is missing is exactly the passage
-from the exponent identity to the product identity, not the combinatorics.
+(\lean{Fabius.weight\_fwdDiff\_eq\_sum\_shift}).  These coefficients are moreover the only
+ones: applying $\Delta^s$ at $0$ to a Newton combination returns $c_s$ and annihilates every
+other basis vector, so the Newton basis is free and not merely spanning
+(\lean{Fabius.fwdDiff\_iter\_newtonCombination\_zero}, \lean{Fabius.newtonCombination\_injOn},
+\path{NewtonCoefficientUniqueness.lean}).
+
+So the split that this paragraph once described as a gap --- combinatorics formal, passage to
+products missing --- is closed on both sides, and the passage turned out to be cheaper than the
+combinatorics: it is one induction on \lean{Fabius.generalizedRvachevProduct\_add}, needing
+nothing about the particular identity being transported.
 \end{theorem}
 
 \begin{proof}
@@ -1631,9 +1663,23 @@ indices, at an arbitrary base, and over any semiring rather than only over $\Z$
 (\lean{Fabius.weightedScaleMultiplicity\_newton\_finset}, \lean{Fabius.weightedScaleMultiplicity\_newton}, and the literal display
 \lean{Fabius.weightedScaleMultiplicity\_newton\_two}).  The Gregory--Newton reading of the
 coefficients, $a_m=\sum_{r\le m}\binom mr(\Delta^ra)_0$, is
-\lean{Fabius.weight\_eq\_sum\_choose\_fwdDiff}; that it \emph{forces} the coefficients ---
-that $\Delta^s$ applied to a Newton sum returns $c_s$ --- is not formalized, so the module
-exhibits $\Delta^rP(0)$ as a valid choice rather than as the unique one.
+\lean{Fabius.weight\_eq\_sum\_choose\_fwdDiff}, and that it \emph{forces} the coefficients is
+now formal too, in \path{NewtonCoefficientUniqueness.lean}.  The Newton basis is triangular
+under $\Delta$, so applying $\Delta^k$ at $0$ to a Newton combination reads off the $k$-th
+coefficient and kills every other basis vector:
+\[
+ \Delta^k\Bigl(\textstyle\sum_{r\in s}\binom{\cdot}{r}c_r\Bigr)(0)
+ =\begin{cases}c_k,&k\in s,\\0,&k\notin s,\end{cases}
+\]
+over an arbitrary finite index set and an arbitrary additive commutative group of
+coefficients (\lean{Fabius.fwdDiff\_iter\_newtonCombination\_zero}).  The $k\notin s$ branch is
+what makes this an inversion rather than an evaluation --- it says the basis is free, not
+merely spanning --- and it is the half uniqueness needs
+(\lean{Fabius.newtonCombination\_injOn}, and over $\R$ for our own $\Phi_P$
+\lean{Fabius.fwdDiff\_iter\_newtonPoly\_zero}, \lean{Fabius.newtonPoly\_coeff\_unique}).
+Running the Gregory--Newton expansion back through the inversion returns the iterated forward
+differences (\lean{Fabius.fwdDiff\_iter\_weight\_zero}), so existence and uniqueness meet and
+$\Delta^rP(0)$ is the unique choice, not merely a valid one.
 
 Equations \eqref{p1:eq:AP-newton} and the arithmetic half of \eqref{p1:eq:RP} are formal
 in \path{NewtonBasisGeneratingFunction.lean}, resting on Mathlib's choose-geometric
