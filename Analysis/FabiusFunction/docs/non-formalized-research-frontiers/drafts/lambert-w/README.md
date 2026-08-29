@@ -21,8 +21,10 @@ practitioner's toolkit, further applications, and the r-Lambert
 outlook) are preserved in a complements section; a four-way concordance
 appendix records that the shared core agreed theorem for theorem and
 constant for constant, and a corpus-role section links W₋₁ to the
-Fabius endpoint theory.  The four source packages are preserved
-verbatim under `Lambert_W_Guide/assets/`, with SHA-256 provenance in
-the document itself.
+Fabius endpoint theory.  The four packages’ figures, data, and
+verification scripts are preserved under `Lambert_W_Guide/assets/`;
+the absorbed source documents themselves are deleted after merging,
+with SHA-256 provenance in the document itself (git history is the
+archive).
 
 See [`../MANIFEST.md`](../MANIFEST.md) for the group record.

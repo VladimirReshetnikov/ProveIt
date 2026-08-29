@@ -146,7 +146,8 @@ Stieltjes–Wigert bridge, the distance-Mellin law, the q-Gaussian
 derivative Gram geometry with theta-function Riesz bounds, the
 log-Weibull jet-intermittency law, a proof of the Fup_n Edgeworth
 register conjecture, and — for provenance — the Russian source scan
-and OCR themselves, archived under the volume's assets.  A new
+itself, archived under the volume's assets (the raw OCR was deleted
+once its recoverable content was merged into the volume).  A new
 `lambert-w/` group collected four independently written articles on
 the Lambert W function itself; they were merged editorially into the
 single consolidated volume `Lambert_W_Guide/` (the most complete
