@@ -187,4 +187,73 @@ theorem four_ninths_lt_re_rvachevFourierProduct_half :
   rw [rvachevFourierProduct_half_eq_ofReal, Complex.ofReal_re]
   exact four_ninths_lt_tprod_sinc_pi_div_two
 
+/-! ## An explicit nonvanishing window -/
+
+/-- **`Φ` at a real point is a real dyadic sinc product**, at every
+real `x`.  The half-frequency identification is the case
+`x = 1/2`. -/
+theorem rvachevFourierProduct_ofReal_eq_tprod_sinc (x : ℝ) :
+    rvachevFourierProduct ((x : ℝ) : ℂ) =
+      ((∏' n : ℕ, Real.sinc (Real.pi * x / 2 ^ n) : ℝ) : ℂ) := by
+  have hmul : Multipliable
+      (fun n : ℕ => Real.sinc (Real.pi * x / 2 ^ n)) :=
+    multipliable_sinc_two_pow (Real.pi * x)
+  have hcont : Continuous (Complex.ofRealHom : ℝ → ℂ) :=
+    Complex.continuous_ofReal
+  have hmap : ((∏' n : ℕ, Real.sinc (Real.pi * x / 2 ^ n) : ℝ) : ℂ) =
+      ∏' n : ℕ, ((Real.sinc (Real.pi * x / 2 ^ n) : ℝ) : ℂ) :=
+    hmul.map_tprod Complex.ofRealHom hcont
+  have hfac : ∀ n : ℕ,
+      complexSinc ((Real.pi : ℂ) * ((x : ℝ) : ℂ) / (2 : ℂ) ^ n) =
+        ((Real.sinc (Real.pi * x / 2 ^ n) : ℝ) : ℂ) := by
+    intro n
+    have harg : (Real.pi : ℂ) * ((x : ℝ) : ℂ) / (2 : ℂ) ^ n =
+        ((Real.pi * x / 2 ^ n : ℝ) : ℂ) := by
+      push_cast
+      ring
+    rw [harg, complexSinc_ofReal]
+  rw [rvachevFourierProduct, hmap]
+  exact tprod_congr hfac
+
+/-- The quantitative lower bound transported to the transform: for
+`(πx)² ≤ 6`, `1 - 2(πx)²/9 ≤ Re Φ(x)`. -/
+theorem one_sub_le_re_rvachevFourierProduct_ofReal {x : ℝ}
+    (hx : (Real.pi * x) ^ 2 ≤ 6) :
+    1 - 2 * (Real.pi * x) ^ 2 / 9 ≤
+      (rvachevFourierProduct ((x : ℝ) : ℂ)).re := by
+  rw [rvachevFourierProduct_ofReal_eq_tprod_sinc x, Complex.ofReal_re]
+  exact one_sub_le_tprod_sinc_two_pow hx
+
+/-- **The nonvanishing window**: whenever the deficit budget
+`2(πx)²` stays below `9`, `Φ(x)` is real and strictly positive. -/
+theorem re_rvachevFourierProduct_ofReal_pos {x : ℝ}
+    (hx : 2 * (Real.pi * x) ^ 2 < 9) :
+    0 < (rvachevFourierProduct ((x : ℝ) : ℂ)).re := by
+  have hx6 : (Real.pi * x) ^ 2 ≤ 6 := by linarith
+  have h := one_sub_le_re_rvachevFourierProduct_ofReal hx6
+  linarith
+
+/-- In particular `Φ` has no zero in that window. -/
+theorem rvachevFourierProduct_ofReal_ne_zero {x : ℝ}
+    (hx : 2 * (Real.pi * x) ^ 2 < 9) :
+    rvachevFourierProduct ((x : ℝ) : ℂ) ≠ 0 := by
+  intro h
+  have hpos := re_rvachevFourierProduct_ofReal_pos hx
+  rw [h, Complex.zero_re] at hpos
+  exact lt_irrefl 0 hpos
+
+/-- A concrete window: `Φ` is positive on `|x| ≤ 2/3`, since
+`2(2π/3)² < 9` already follows from `π < 3.15`. -/
+theorem re_rvachevFourierProduct_ofReal_pos_of_abs_le {x : ℝ}
+    (hx : |x| ≤ 2 / 3) :
+    0 < (rvachevFourierProduct ((x : ℝ) : ℂ)).re := by
+  have hpi : Real.pi < 3.15 := Real.pi_lt_d2
+  have hpi0 : (0 : ℝ) < Real.pi := Real.pi_pos
+  have hxsq : x ^ 2 ≤ (2 / 3) ^ 2 := by
+    have habs : |x| ^ 2 = x ^ 2 := sq_abs x
+    nlinarith [abs_nonneg x, hx]
+  refine re_rvachevFourierProduct_ofReal_pos ?_
+  have hmul : (Real.pi * x) ^ 2 = Real.pi ^ 2 * x ^ 2 := by ring
+  nlinarith [hpi, hpi0, hxsq, sq_nonneg x]
+
 end Fabius
