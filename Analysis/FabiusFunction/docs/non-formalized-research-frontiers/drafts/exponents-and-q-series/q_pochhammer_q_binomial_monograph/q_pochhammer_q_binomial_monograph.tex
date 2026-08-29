@@ -233,6 +233,48 @@ Every integer $j$ with $0\le j<rn$ has a unique representation $j=s+rt$ with $0\
 so the product may be regrouped into the $r$ residue classes.
 \end{proof}
 
+\begin{corollary}[Dissection with a remainder]\label{cor:dissection-remainder}
+\index{dissection!with a remainder}
+Let $r\ge1$ and $n\ge0$ be integers, let $0\le u<r$, and set $N=rn+u$.  Then
+\[
+ (a;q)_N
+ =\prod_{s=0}^{u-1}(aq^s;q^r)_{n+1}
+  \prod_{s=u}^{r-1}(aq^s;q^r)_n .
+\]
+For $u=0$ this is \Cref{prop:dissection}.
+\end{corollary}
+
+\begin{proof}
+Division with remainder by $r$ is a bijection between the nonnegative integers $j$ and the pairs $(s,\ell)$ with $0\le s<r$ and $\ell\ge0$, given by $j=s+r\ell$.  Fix a residue $s$ and count the $\ell$ for which $j=s+r\ell$ lies in the exponent set $\{0,\ldots,N-1\}$ of the defining product.  The condition $s+r\ell<rn+u$ reads
+\[
+ r\ell<rn+(u-s).
+\]
+
+If $s<u$, then $0<u-s\le u<r$, so
+\[
+ rn<rn+(u-s)\le rn+r=r(n+1).
+\]
+As $r\ell$ runs through the multiples of $r$, the inequality $r\ell<rn+(u-s)$ therefore holds exactly for $\ell=0,1,\ldots,n$, which is $n+1$ values.
+
+If $s\ge u$, then $u-s\le0$, so the inequality implies $r\ell<rn$, that is $\ell\le n-1$; conversely every such $\ell$ satisfies $s+r\ell\le s+r(n-1)=rn+(s-r)<rn\le N$.  Hence $\ell$ ranges over $0,\ldots,n-1$, which is $n$ values.
+
+The defining product is finite and its factors commute, so it may be reordered according to the residue of $j$ modulo $r$:
+\[
+ (a;q)_N
+ =\prod_{s=0}^{u-1}\ \prod_{\ell=0}^{n}\bigl(1-aq^{s}(q^{r})^{\ell}\bigr)\;
+  \prod_{s=u}^{r-1}\ \prod_{\ell=0}^{n-1}\bigl(1-aq^{s}(q^{r})^{\ell}\bigr).
+\]
+Each inner product is by definition a $q^r$-shifted factorial with argument $aq^s$, namely $(aq^s;q^r)_{n+1}$ in the first family and $(aq^s;q^r)_n$ in the second.  This is the asserted identity.  When $u=0$ the first family is empty and the second has all $r$ residues, recovering \Cref{prop:dissection}.
+\end{proof}
+
+\begin{remark}\label{rem:dissection-remainder-checks}
+Two consistency checks are worth recording.  The total number of linear factors on the right is
+\[
+ u(n+1)+(r-u)n=rn+u=N,
+\]
+as it must be, since $(a;q)_N$ is a product of $N$ linear factors in $a$.  At the other extreme $n=0$ the corollary reads $(a;q)_u=\prod_{s=0}^{u-1}(aq^s;q^r)_1=\prod_{s=0}^{u-1}(1-aq^s)$, again the definition.  Combining the corollary with \Cref{prop:concat} in the form $(a;q)_{rn+u}=(a;q)_{rn}(aq^{rn};q)_u$ and dividing by \Cref{prop:dissection} recovers the identity $\prod_{s=0}^{u-1}(1-aq^{s+rn})=(aq^{rn};q)_u$, so the two decompositions agree.
+\end{remark}
+
 \begin{proposition}[Base reversal]\label{prop:base-reversal}
 For $n\ge0$ and $a\ne0$,
 \[
@@ -1109,6 +1151,193 @@ The coefficient of $x^{k+1}$ is $e_{n-k}(1,2,\dots,n)$.  The standard ordinary g
 follows from the recurrence for Stirling numbers of the second kind, or by induction on $n$; comparison with \eqref{eq:weighted-h-gen} proves the last formula.
 \end{proof}
 
+\section{Principal specialization of Schur polynomials}
+\index{Schur polynomial}
+\index{principal specialization}
+
+The two Gaussian entries of \Cref{thm:weighted-specializations}(ii) are the
+one-column and the one-row case of a single product formula.  Stating it
+requires no symmetric-function theory beyond determinants, because a Schur
+polynomial can be \emph{defined} by its bialternant.
+
+\begin{definition}\label{def:schur-bialternant}
+Let $m\ge1$ and let $\lambda=(\lambda_1\ge\lambda_2\ge\cdots\ge\lambda_m\ge0)$
+be a partition with at most $m$ parts, padded by zeros.  Put
+\[
+ \mu_j=\lambda_j+m-j\quad(1\le j\le m),
+ \qquad
+ \delta=(m-1,m-2,\ldots,0),
+\]
+so that $\mu_1>\mu_2>\cdots>\mu_m\ge0$, and $\delta$ is the value of $\mu$ at
+$\lambda=0$.  For indeterminates $x_1,\ldots,x_m$ set
+\[
+ a_\mu(x_1,\ldots,x_m)=\det\bigl(x_i^{\mu_j}\bigr)_{i,j=1}^{m},
+\]
+and define the \emph{Schur polynomial}
+\[
+ s_\lambda(x_1,\ldots,x_m)
+ =\frac{a_\mu(x_1,\ldots,x_m)}{a_\delta(x_1,\ldots,x_m)}.
+\]
+Finally put $n(\lambda)=\sum_{j=1}^{m}(j-1)\lambda_j$.
+\end{definition}
+
+\begin{lemma}[Vandermonde alternant]\label{lem:vandermonde-alternant}
+For indeterminates $y_1,\ldots,y_m$,
+\[
+ \det\bigl(y_i^{\,j-1}\bigr)_{i,j=1}^{m}
+ =\prod_{1\le i<j\le m}(y_j-y_i).
+\]
+Consequently $a_\delta(x_1,\ldots,x_m)=\prod_{1\le i<j\le m}(x_i-x_j)$, and
+$a_\delta$ divides $a_\mu$ in $\Z[x_1,\ldots,x_m]$, so $s_\lambda$ is a
+polynomial with integer coefficients.
+\end{lemma}
+
+\begin{proof}
+Induct on $m$; for $m=1$ both sides equal $1$.  Regard
+$D=\det(y_i^{\,j-1})_{i,j=1}^{m}$ as a polynomial in $y_m$ of degree at most
+$m-1$.  If $y_m=y_i$ for some $i<m$, two rows coincide and $D=0$; hence
+$\prod_{i<m}(y_m-y_i)$ divides $D$, and by the degree bound
+$D=c\prod_{i<m}(y_m-y_i)$ with $c$ free of $y_m$.  Expanding along the last
+row, the coefficient of $y_m^{\,m-1}$ in $D$ is the cofactor at position
+$(m,m)$, namely $\det(y_i^{\,j-1})_{i,j=1}^{m-1}$, which by induction equals
+$\prod_{1\le i<j\le m-1}(y_j-y_i)$.  Multiplying proves the formula.
+
+Reversing the order of the columns of $\bigl(x_i^{\,m-j}\bigr)_{i,j}$ turns
+the exponents $m-j$ into $j-1$ and multiplies the determinant by the sign
+$(-1)^{\binom m2}$ of the reversal permutation, so
+\[
+ a_\delta=(-1)^{\binom m2}\prod_{1\le i<j\le m}(x_j-x_i)
+ =\prod_{1\le i<j\le m}(x_i-x_j).
+\]
+For the divisibility, interchanging $x_i$ and $x_j$ interchanges two rows of
+$a_\mu$, so $a_\mu$ changes sign; setting $x_i=x_j$ therefore gives
+$a_\mu=0$, and $x_i-x_j$ divides $a_\mu$ in $\Z[x_1,\ldots,x_m]$.  The
+polynomials $x_i-x_j$ with $i<j$ are pairwise non-associate primes in that
+unique factorization domain, so their product, which is $a_\delta$, divides
+$a_\mu$.
+\end{proof}
+
+\begin{theorem}[Principal specialization of a Schur polynomial]\label{thm:schur-principal}
+Let $\lambda$ have at most $m$ parts.  Then, as an identity in $\Q(q)$,
+\[
+ s_\lambda(1,q,q^2,\ldots,q^{m-1})
+ =q^{n(\lambda)}
+ \prod_{1\le i<j\le m}
+ \frac{1-q^{\,\lambda_i-\lambda_j+j-i}}{1-q^{\,j-i}}.
+\]
+The left side lies in $\Z[q]$, so by \Cref{cor:safe-specialization} the
+identity persists at every complex $q$ once the right-hand quotient has been
+reduced; as displayed it is to be read at those $q$ with $q^{\,d}\ne1$ for
+$1\le d\le m-1$.
+\end{theorem}
+
+\begin{proof}
+Specialize $x_i=q^{\,i-1}$, so that $x_i^{\mu_j}=q^{(i-1)\mu_j}$.  Writing
+$y_j=q^{\mu_j}$, the matrix $\bigl(x_i^{\mu_j}\bigr)_{i,j}$ has entries
+$y_j^{\,i-1}$, hence is the transpose of $\bigl(y_i^{\,j-1}\bigr)_{i,j}$.
+A determinant is invariant under transposition, so
+\Cref{lem:vandermonde-alternant} gives
+\[
+ a_\mu(1,q,\ldots,q^{m-1})
+ =\prod_{1\le i<j\le m}\bigl(q^{\mu_j}-q^{\mu_i}\bigr).
+\]
+Because $\lambda$ is weakly decreasing we have $\mu_1>\cdots>\mu_m\ge0$, so
+$\mu_i-\mu_j>0$ whenever $i<j$, and we extract from each difference the
+\emph{smaller} power:
+% ed.: extracting q^{\mu_j} rather than q^{\mu_i} produces no sign at all.
+% ed.: The incoming survey's `factor the lower powers of q from each
+% ed.: difference' left \binom m2 minus signs unaccounted for.
+\[
+ q^{\mu_j}-q^{\mu_i}=q^{\mu_j}\bigl(1-q^{\,\mu_i-\mu_j}\bigr).
+\]
+Hence
+\[
+ a_\mu(1,q,\ldots,q^{m-1})
+ =q^{A(\mu)}\prod_{1\le i<j\le m}\bigl(1-q^{\,\mu_i-\mu_j}\bigr),
+ \qquad
+ A(\mu)=\sum_{1\le i<j\le m}\mu_j=\sum_{j=1}^{m}(j-1)\mu_j,
+\]
+the last equality because $\mu_j$ is contributed once for each $i<j$.
+Applying this to $\mu=\delta$, where $\delta_i-\delta_j=j-i$, gives
+\[
+ a_\delta(1,q,\ldots,q^{m-1})
+ =q^{A(\delta)}\prod_{1\le i<j\le m}\bigl(1-q^{\,j-i}\bigr),
+\]
+a nonzero element of $\Q(q)$.  Dividing,
+\[
+ s_\lambda(1,q,\ldots,q^{m-1})
+ =q^{\,A(\mu)-A(\delta)}
+ \prod_{1\le i<j\le m}
+ \frac{1-q^{\,\mu_i-\mu_j}}{1-q^{\,j-i}}.
+\]
+Finally $\mu_i-\mu_j=\lambda_i-\lambda_j+j-i$ and
+\[
+ A(\mu)-A(\delta)=\sum_{j=1}^{m}(j-1)(\mu_j-\delta_j)
+ =\sum_{j=1}^{m}(j-1)\lambda_j=n(\lambda).
+\]
+The left side is a polynomial with integer coefficients by
+\Cref{lem:vandermonde-alternant}; the transfer to arbitrary complex $q$ is
+\Cref{lem:polynomial-identity-principle} together with
+\Cref{cor:safe-specialization}.
+\end{proof}
+
+\begin{corollary}[The one-column and one-row shadows]\label{cor:schur-e-h}
+Let $m=n\ge1$.
+\begin{enumerate}[label=\textup{(\roman*)}]
+\item For $0\le k\le n$ and $\lambda=(1^k)=(1,\ldots,1,0,\ldots,0)$,
+\[
+ s_{(1^k)}(1,q,\ldots,q^{n-1})=q^{\binom k2}\qbinom nk.
+\]
+\item For $k\ge0$ and $\lambda=(k)$,
+\[
+ s_{(k)}(1,q,\ldots,q^{n-1})=\qbinom{n+k-1}{k}.
+\]
+\end{enumerate}
+Since $s_{(1^k)}=e_k$ and $s_{(k)}=h_k$~\cite{Macdonald1995}, these are
+exactly the two Gaussian entries of \Cref{thm:weighted-specializations}(ii),
+that is, $C_k^n(\mathbf w)$ and $S_k^n(\mathbf w)$ at $w_i=q^{\,i-1}$.
+\end{corollary}
+
+\begin{proof}
+(i) Here $\lambda_i=1$ for $i\le k$ and $\lambda_i=0$ for $i>k$, so
+$n(\lambda)=\sum_{i\le k}(i-1)=\binom k2$, and $\lambda_i-\lambda_j$ vanishes
+except when $i\le k<j$, where it equals $1$.  The product of
+\Cref{thm:schur-principal} therefore collapses to
+\[
+ \prod_{i=1}^{k}\prod_{j=k+1}^{n}
+ \frac{1-q^{\,j-i+1}}{1-q^{\,j-i}}
+ =\prod_{i=1}^{k}\frac{1-q^{\,n-i+1}}{1-q^{\,k-i+1}},
+\]
+the inner product telescoping.  The numerators are
+$(1-q^{n})(1-q^{n-1})\cdots(1-q^{\,n-k+1})=(q;q)_n/(q;q)_{n-k}$ and the
+denominators are $(1-q^k)\cdots(1-q)=(q;q)_k$, so the product is $\qbinom nk$.
+
+(ii) Here $\lambda_1=k$ and $\lambda_j=0$ for $j\ge2$, so $n(\lambda)=0$ and
+only the pairs $(1,j)$ contribute:
+\[
+ \prod_{j=2}^{n}\frac{1-q^{\,k+j-1}}{1-q^{\,j-1}}
+ =\frac{(q;q)_{n+k-1}\big/(q;q)_k}{(q;q)_{n-1}}
+ =\qbinom{n+k-1}{k}.
+ \qedhere
+\]
+\end{proof}
+
+\begin{remark}\label{rem:schur-hypotheses}
+Both hypotheses of \Cref{thm:schur-principal} are needed as stated.  If
+$\lambda$ had more than $m$ parts, $\mu$ would not be strictly decreasing and
+$a_\mu$ would vanish identically.  And the displayed quotient is meaningful
+only where $q^{\,j-i}\ne1$ for all $1\le i<j\le m$; at the excluded roots of
+unity, and at $q=1$, one must cancel first, exactly as prescribed by
+\Cref{cor:safe-specialization}.  After cancellation the limit $q\to1$ is
+\[
+ s_\lambda(1,1,\ldots,1)
+ =\prod_{1\le i<j\le m}\frac{\lambda_i-\lambda_j+j-i}{j-i},
+\]
+by $\lim_{q\to1}(1-q^a)/(1-q^b)=a/b$; this is Weyl's dimension formula for
+$\mathrm{GL}_m$, and it stands to \Cref{thm:schur-principal} exactly as
+\Cref{cor:qbinom-classical} stands to the Gaussian coefficient.
+\end{remark}
+
 \section{Weighted inversion}
 
 \begin{theorem}[Symmetric-function inversion]\label{thm:weighted-inversion}
@@ -1321,6 +1550,80 @@ Writing $n=k+j$ and separating the double sum gives
 \]
 Each factor equals the reciprocal infinite product by Euler's identity, proved later in \Cref{cor:euler-infinite}; alternatively, the equality follows already by taking $n\to\infty$ in \Cref{thm:reciprocal-finite}.  This gives the stated product.
 \end{proof}
+
+\begin{proposition}[Three-term recurrence]\label{prop:rogers-szego-three-term}
+\index{Rogers--Szeg\H{o} polynomial!three-term recurrence}
+For $n\ge1$,
+\[
+ H_{n+1}(z;q)=(1+z)H_n(z;q)-z\,(1-q^n)H_{n-1}(z;q).
+\]
+\end{proposition}
+
+\begin{proof}
+% ed.: the incoming survey proved this by quoting a Pascal II instance in the
+% ed.: indices (n-1,k-1),(n-1,k-2), which does not effect the reduction, and
+% ed.: then appealing to ``a common factorial denominator''.  The argument below
+% ed.: replaces that step by the ratio identity displayed second, after which
+% ed.: the comparison is exactly eq:qpascal2.
+Both sides are polynomials in $z$, so it suffices to compare the coefficient
+of $z^k$ for every $k\in\Z$, using the convention $\qbinom nk=0$ for $k<0$ or
+$k>n$.  On the left that coefficient is $\qbinom{n+1}k$; on the right it is
+\[
+ \qbinom nk+\qbinom n{k-1}-(1-q^n)\qbinom{n-1}{k-1}.
+\]
+We claim that for every $k\in\Z$ and every $n\ge1$,
+\[
+ (1-q^n)\qbinom{n-1}{k-1}=\bigl(1-q^{\,n+1-k}\bigr)\qbinom n{k-1}.
+\]
+Granting the claim, the right-hand coefficient equals
+\[
+ \qbinom nk+\Bigl(1-\bigl(1-q^{\,n+1-k}\bigr)\Bigr)\qbinom n{k-1}
+ =\qbinom nk+q^{\,n+1-k}\qbinom n{k-1},
+\]
+which is the second $q$-Pascal recurrence \eqref{eq:qpascal2} with $n$
+replaced by $n+1$; by \Cref{thm:qpascal} that recurrence is valid for all $k$
+under the zero convention, and the right-hand coefficient is therefore
+$\qbinom{n+1}k$, as required.
+
+To prove the claim, let first $1\le k\le n$, so that $k-1\ge0$ and
+$n-k\ge0$ and both Gaussian coefficients are given by factorial quotients.
+From $(q;q)_n=(1-q^n)(q;q)_{n-1}$ and
+$(q;q)_{n-k+1}=(1-q^{\,n-k+1})(q;q)_{n-k}$,
+\[
+ \frac{\qbinom n{k-1}}{\qbinom{n-1}{k-1}}
+ =\frac{(q;q)_n\,(q;q)_{n-k}}{(q;q)_{n-1}\,(q;q)_{n-k+1}}
+ =\frac{1-q^n}{1-q^{\,n-k+1}},
+\]
+and cross-multiplication gives the claim.  For $k\le0$ both sides vanish,
+since then $k-1<0$ and both Gaussian coefficients are zero.  For $k=n+1$ the
+left side vanishes because $\qbinom{n-1}{n}=0$ and the right side vanishes
+because $1-q^{\,n+1-k}=1-q^0=0$.  For $k>n+1$ every term is zero.  This
+exhausts all $k$ and completes the proof.
+\end{proof}
+
+\begin{corollary}[Dilation formula]\label{cor:rogers-szego-dilation}
+For $n\ge1$,
+\[
+ H_n(qz;q)=H_n(z;q)-z\,(1-q^n)H_{n-1}(z;q).
+\]
+\end{corollary}
+
+\begin{proof}
+By \Cref{prop:rogers-szego-recurrence}, $H_n(qz;q)=H_{n+1}(z;q)-zH_n(z;q)$.
+Substituting \Cref{prop:rogers-szego-three-term} for $H_{n+1}(z;q)$ and
+cancelling $zH_n(z;q)$ gives the formula.
+\end{proof}
+
+\begin{remark}\label{rem:rogers-szego-three-term}
+The recurrence of \Cref{prop:rogers-szego-recurrence} moves the argument, from
+$z$ to $qz$; the one above does not.  It is therefore a three-term recurrence
+in the index $n$ alone, of the shape familiar from orthogonal polynomial
+sequences, and it evaluates $H_0,H_1,\ldots,H_N$ at a fixed numerical $z$ in
+$\OO(N)$ ring operations, without ever forming the Gaussian coefficients.  At
+$q=0$ every $\qbinom nk$ equals $1$ by \Cref{prop:extreme-specializations},
+the recurrence becomes $H_{n+1}=(1+z)H_n-zH_{n-1}$, and its solution is the
+geometric sum $1+z+\cdots+z^{n}$, as it must be.
+\end{remark}
 
 \chapter{Finite fields, Grassmannians, and rank enumeration}\label{chap:finite-geometry}
 \index{finite field}
@@ -2178,6 +2481,74 @@ Induct on $n$ and multiply on the right by $X+Y$.  Since $Y^kX=q^kXY^k$, the coe
 \]
 by the first $q$-Pascal recurrence.
 \end{proof}
+
+\index{quantum affine space}
+\index{$q$-multinomial coefficient!as structure constants}
+
+\begin{corollary}[Noncommutative $q$-multinomial theorem]\label{cor:quantum-multinomial}
+Let $r\ge1$ and let $x_1,\dots,x_r$ be elements of an associative algebra over a commutative ring in which $q$ is a central element, and suppose that
+\[
+ x_jx_i=qx_ix_j
+ \qquad(1\le i<j\le r).
+\]
+Then, for every $n\ge0$,
+\[
+ (x_1+\cdots+x_r)^n
+ =\sum_{\substack{n_1,\dots,n_r\ge0\\ n_1+\cdots+n_r=n}}
+ \qmultinom{n}{n_1,\dots,n_r}\,
+ x_1^{n_1}x_2^{n_2}\cdots x_r^{n_r},
+\]
+where on the right the factors are written in increasing order of index.  Equivalently, the $q$-multinomial coefficients are exactly the structure constants that expand powers of $x_1+\cdots+x_r$ in the ordered monomial basis of the quantum affine $r$-space.
+\end{corollary}
+
+% ed.: the incoming survey states only that ``iterating the proof gives a
+% ed.: $q$-multinomial theorem''.  The ordering of the monomials is part of the
+% ed.: statement, not a convention, because $x_jx_i=qx_ix_j$ is imposed only for
+% ed.: $i<j$; centrality of $q$ is likewise recorded explicitly here.
+
+\begin{proof}
+Induct on $r$.  For $r=1$ there is nothing to prove, and $r=2$ is \Cref{thm:quantum-binomial}.
+
+Let $r\ge2$ and set $X=x_1$ and $Y=x_2+\cdots+x_r$.  Because $x_jx_1=qx_1x_j$ for every $j\ge2$ and $q$ is central,
+\[
+ YX=\sum_{j=2}^{r}x_jx_1
+ =q\sum_{j=2}^{r}x_1x_j
+ =qXY,
+\]
+so \Cref{thm:quantum-binomial} applies to the pair $(X,Y)$ and gives
+\[
+ (x_1+\cdots+x_r)^n
+ =\sum_{k=0}^{n}\qbinom nk\,x_1^{\,n-k}\,(x_2+\cdots+x_r)^{k}.
+\]
+Substituting $n_1=n-k$ and using the symmetry $\qbinom nk=\qbinom n{n-k}$ of \Cref{thm:qbinom-structure}, this reads
+\[
+ (x_1+\cdots+x_r)^n
+ =\sum_{n_1=0}^{n}\qbinom n{n_1}\,x_1^{\,n_1}\,(x_2+\cdots+x_r)^{\,n-n_1}.
+\]
+The elements $x_2,\dots,x_r$ satisfy the same commutation relations among themselves, so the inductive hypothesis applies to them and gives, with $m=n-n_1$,
+\[
+ (x_2+\cdots+x_r)^{m}
+ =\sum_{\substack{n_2,\dots,n_r\ge0\\ n_2+\cdots+n_r=m}}
+ \qmultinom{m}{n_2,\dots,n_r}\,x_2^{n_2}\cdots x_r^{n_r}.
+\]
+Since the coefficients are central, substitution produces precisely the ordered monomials $x_1^{n_1}x_2^{n_2}\cdots x_r^{n_r}$, the coefficient of $x_1^{n_1}\cdots x_r^{n_r}$ being
+\[
+ \qbinom n{n_1}\qmultinom{n-n_1}{n_2,\dots,n_r}
+ =\frac{\poch{q}{q}{n}}{\poch{q}{q}{n_1}\poch{q}{q}{n-n_1}}
+ \cdot
+ \frac{\poch{q}{q}{n-n_1}}{\poch{q}{q}{n_2}\cdots\poch{q}{q}{n_r}}
+ =\qmultinom{n}{n_1,\dots,n_r}
+\]
+by the definition of the $q$-multinomial coefficient preceding \Cref{prop:qmult-factor}; the factor $\poch{q}{q}{n-n_1}$ telescopes away, exactly as in the proof of that proposition.  No factor was transposed at any stage after the expansion, so the monomials are produced in increasing order of index, as asserted.
+\end{proof}
+
+\begin{remark}[The same coefficient read combinatorially]\label{rem:quantum-multinomial-inversions}
+Expanding $(x_1+\cdots+x_r)^n$ without using any relation produces the $r^n$ words $x_{w_1}x_{w_2}\cdots x_{w_n}$ with $w\in\{1,\dots,r\}^n$.  Sorting such a word into increasing order uses one adjacent transposition for each inversion of $w$, and each transposition contributes exactly one factor $q$; hence
+\[
+ x_{w_1}x_{w_2}\cdots x_{w_n}=q^{\inv(w)}x_1^{n_1}\cdots x_r^{n_r},
+\]
+where $n_i$ is the multiplicity of the letter $i$ in $w$.  Comparing coefficients with \Cref{cor:quantum-multinomial} recovers the multiset inversion enumerator of \Cref{thm:qmult-inversions}, and conversely that theorem proves \Cref{cor:quantum-multinomial} again.  The quantum affine space is therefore a purely algebraic encoding of the inversion statistic, just as \Cref{thm:quantum-binomial} encodes \Cref{thm:binary-inversions}.
+\end{remark}
 
 \begin{corollary}[Factorization of $q$-exponentials]\label{cor:qexp-factor}
 Assume $\abs q<1$.  Define
@@ -3115,6 +3486,67 @@ For $n=10$ and $k=4$, the values of $d$ for which $4\bmod d>10\bmod d$ are $d=5,
 \]
 The degrees add to $4+6+4+6=20=4(10-4)$, as required by reciprocity.
 \end{example}
+
+\begin{corollary}[MacMahon's $q$-Catalan polynomial]\label{cor:q-catalan}
+\index{Catalan number!$q$-analogue}
+For $n\ge0$ put
+\[
+ C_n(q)\defeq\frac1{\qint{n+1}}\qbinom{2n}{n}.
+\]
+Then $C_n(q)\in\Z[q]$; it has degree $n(n-1)$, and $C_n(1)=\frac1{n+1}\binom{2n}{n}$.
+\end{corollary}
+
+\begin{proof}
+% ed.: the incoming survey proved this in one sentence -- `subtracting the
+% ed.: exponent of each \Phi_d in [n+1]_q from that in the central Gaussian
+% ed.: coefficient gives a nonnegative integer' -- which is the assertion, not
+% ed.: an argument.  The valuation comparison is carried out below, and the
+% ed.: cases d=1 and d\nmid n+1 are treated separately, as they must be.
+Since $q^{N}-1=\prod_{d\mid N}\Phi_d(q)$ and $\Phi_1(q)=q-1$,
+\[
+ \qint{n+1}=\frac{q^{\,n+1}-1}{q-1}
+ =\prod_{\substack{d\mid n+1\\ d>1}}\Phi_d(q).
+\]
+Hence $\nu_d(\qint{n+1})=1$ exactly for those $d>1$ dividing $n+1$, and
+$\nu_d(\qint{n+1})=0$ for every other $d$, the case $d=1$ included: indeed
+$\qint{n+1}$ takes the value $n+1\ne0$ at $q=1$, so $q-1$ does not divide it.
+
+Let $d>1$ divide $n+1$.  Then $n\equiv-1\pmod d$, so $n\bmod d=d-1$, while
+$2n\equiv-2\pmod d$ together with $0\le d-2<d$ gives $2n\bmod d=d-2$.
+Therefore
+\[
+ n\bmod d=d-1>d-2=2n\bmod d,
+\]
+and the carry criterion \eqref{eq:carry-criterion} of
+\Cref{cor:squarefree-cyclotomic}, applied with upper index $2n$ and lower
+index $n$, gives $\Phi_d(q)\mid\qbinom{2n}{n}$, that is,
+$\nu_d\bigl(\qbinom{2n}{n}\bigr)=1$.  Combining the two paragraphs,
+\[
+ \nu_d\bigl(\qbinom{2n}{n}\bigr)\ge\nu_d\bigl(\qint{n+1}\bigr)
+ \qquad\text{for every }d\ge1,
+\]
+so $\qint{n+1}$ divides $\qbinom{2n}{n}$ in $\Q[q]$ and $C_n\in\Q[q]$.
+Moreover $\qint{n+1}=1+q+\cdots+q^{n}$ is monic and
+$\qbinom{2n}{n}\in\Z[q]$ by \Cref{cor:positivity}, so division with remainder
+in $\Z[q]$ produces a quotient in $\Z[q]$; by uniqueness of the quotient in
+$\Q[q]$ that quotient is $C_n$, whence $C_n\in\Z[q]$.
+
+Finally, $\deg\qbinom{2n}{n}=n\cdot n=n^2$ by
+\Cref{thm:qbinom-structure}(iii) and $\deg\qint{n+1}=n$, so
+$\deg C_n=n^2-n$.  Evaluating the polynomial identity
+$\qint{n+1}\,C_n(q)=\qbinom{2n}{n}$ at $q=1$ and using
+\Cref{cor:qbinom-classical} gives $(n+1)C_n(1)=\binom{2n}{n}$.
+\end{proof}
+
+\begin{remark}\label{rem:q-catalan-positivity}
+The argument above establishes integrality and says nothing about signs.  The
+coefficients of $C_n(q)$ are in fact nonnegative --- $C_n$ enumerates the
+Dyck paths of semilength $n$ by a suitable major-index statistic, for which
+see \cite{Stanley1999} --- but that is a combinatorial theorem and not a
+consequence of cyclotomic divisibility.  Compare \Cref{cor:path-area}, where
+the corresponding statistic for unrestricted monotone lattice paths is the
+area and the enumeration is the unconstrained $\qbinom{2n}{n}$.
+\end{remark}
 
 \section{The \texorpdfstring{$q$}{q}-Lucas congruence}
 
@@ -4395,7 +4827,7 @@ Subtract the two sequences.  The difference satisfies the homogeneous recurrence
 \end{proof}
 
 \begin{remark}[Creative telescoping]
-The $q$-Zeilberger method searches algorithmically for a rational multiple $G(n,k)=R(q^n,q^k)T(n,k)$ satisfying \eqref{eq:certificate}.  Once found, the certificate is independently checkable by rational-function arithmetic.  The search may be sophisticated, but verification is elementary: divide by $T(n,k)$ and clear denominators.
+The $q$-Zeilberger method~\cite{PetkovsekWilfZeilberger1996} searches algorithmically for a rational multiple $G(n,k)=R(q^n,q^k)T(n,k)$ satisfying \eqref{eq:certificate}.  Once found, the certificate is independently checkable by rational-function arithmetic.  The search may be sophisticated, but verification is elementary: divide by $T(n,k)$ and clear denominators.
 \end{remark}
 
 \section{Denominator clearing and specialization}
@@ -4484,6 +4916,7 @@ Name & Formula & Location\\
 \endhead
 Concatenation & $(a;q)_{m+n}=(a;q)_m(aq^m;q)_n$ & \Cref{prop:concat}\\[1pt]
 Dissection & $(a;q)_{rn}=\prod_{j=0}^{r-1}(aq^j;q^r)_n$ & \Cref{prop:dissection}\\[1pt]
+Dissection with remainder & $(a;q)_{rn+u}=\prod_{s<u}(aq^s;q^r)_{n+1}\prod_{s\ge u}(aq^s;q^r)_n$ & \Cref{cor:dissection-remainder}\\[1pt]
 Base reversal & $(a;q)_n=(-a)^nq^{\binom n2}(a^{-1}q^{1-n};q)_n$ & \Cref{prop:base-reversal}\\[1pt]
 Negative index & $(a;q)_{-n}=1/(aq^{-n};q)_n$ & \Cref{prop:negative-index}\\[1pt]
 Infinite logarithm & $\log(a;q)_\infty=-\sum_{r\ge1}a^r/(r(1-q^r))$ & \Cref{thm:lambert-log}\\[1pt]
@@ -4494,8 +4927,12 @@ Reciprocity & $\qbinom nk=q^{k(n-k)}\Qbinom nk{q^{-1}}$ & \Cref{thm:qbinom-struc
 Finite theorem & $(z;q)_n=\sum_k(-1)^kq^{\binom k2}\qbinom nkz^k$ & \Cref{thm:finite-qbinomial}\\[1pt]
 Reciprocal theorem & $(z;q)_{n+1}^{-1}=\sum_{k\ge0}\qbinom{n+k}kz^k$ & \Cref{thm:reciprocal-finite}\\[1pt]
 $q$-Vandermonde & $\qbinom{m+n}r=\sum_k q^{(m-k)(r-k)}\qbinom mk\qbinom n{r-k}$ & \Cref{thm:q-vandermonde}\\[1pt]
+$q$-binomial inversion & $b_n=\sum_k\qbinom nka_k\iff a_n=\sum_k(-1)^{n-k}q^{\binom{n-k}2}\qbinom nkb_k$ & \Cref{thm:qbinomial-inversion}\\[1pt]
 Infinite theorem & $\sum_{n\ge0}(a;q)_nz^n/(q;q)_n=(az;q)_\infty/(z;q)_\infty$ & \Cref{thm:infinite-qbinomial}\\[1pt]
+Euler I & $(z;q)_\infty=\sum_{n\ge0}(-1)^nq^{\binom n2}z^n/(q;q)_n$ & \Cref{cor:euler-infinite}\\[1pt]
+Euler II & $1/(z;q)_\infty=\sum_{n\ge0}z^n/(q;q)_n$, $\abs z<1$ & \Cref{cor:euler-infinite}\\[1pt]
 $q$-Gauss & ${}_2\phi_1(a,b;c;q,c/(ab))=(c/a,c/b;q)_\infty/(c,c/(ab);q)_\infty$ & \Cref{thm:q-gauss}\\[1pt]
+Heine & ${}_2\phi_1(a,b;c;q,z)=\dfrac{(b,az;q)_\infty}{(c,z;q)_\infty}\,{}_2\phi_1(c/b,z;az;q,b)$ & \Cref{thm:heine}\\[1pt]
 $q$-Pfaff--Saalsch\"utz & Terminating balanced ${}_3\phi_2$ product evaluation & \Cref{thm:q-pfaff}\\[1pt]
 $q$-Chu--Vandermonde & Two terminating ${}_2\phi_1$ evaluations & \Cref{cor:q-chu}\\[1pt]
 Ramanujan ${}_1\psi_1$ & ${}_1\psi_1(a;b;q,z)=(q,b/a,az,q/(az);q)_\infty/(b,q/a,z,b/(az);q)_\infty$ & \Cref{thm:1psi1}\\[1pt]
@@ -4722,6 +5159,11 @@ Oxford Mathematical Monographs, Oxford University Press, 1995.
 K.~M. O'Hara,
 Unimodality of Gaussian coefficients: a constructive proof,
 \emph{Journal of Combinatorial Theory, Series A} \textbf{53} (1990), 29--52.
+
+\bibitem{PetkovsekWilfZeilberger1996}
+M.~Petkov\v{s}ek, H.~S. Wilf, and D.~Zeilberger,
+\emph{$A=B$},
+A K Peters, Wellesley, MA, 1996.
 
 \bibitem{ReinerStantonWhite2004}
 V.~Reiner, D.~Stanton, and D.~White,
