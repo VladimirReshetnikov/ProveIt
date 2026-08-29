@@ -453,4 +453,26 @@ theorem integral_prod_sin_sq_two_pow (n : ℕ) :
     norm_num
   simpa [hcast] using h
 
+/-- **Normalization of the Thue–Morse Riesz density.**  The atlas's
+finite density `ρ_n(t) = ∏_{j<n} (1 - cos (2π 2ʲ t))` has total mass
+one on a period.  This is `integral_rieszProduct` at the dyadic
+frequencies with amplitudes `a ≡ -1` and phases `φ ≡ 0`; nothing
+about the Thue–Morse structure enters, only the Hadamard gap. -/
+theorem integral_prod_one_sub_cos_two_pow (n : ℕ) :
+    ∫ t in (0:ℝ)..1,
+        ∏ j ∈ range n, (1 - Real.cos (2 * π * 2 ^ j * t)) = 1 := by
+  have h := integral_rieszProduct n (fun j => 2 ^ j) (fun _ => (-1 : ℝ))
+    (fun _ => (0 : ℝ))
+    (fun j => by
+      have : 2 * 2 ^ j ≤ 2 * 2 ^ j := le_rfl
+      simpa [pow_succ, mul_comm] using this)
+    (by simp)
+  have hcast : ∀ (j : ℕ) (t : ℝ),
+      1 + (-1 : ℝ) * Real.cos (2 * π * ((2 ^ j : ℕ) : ℝ) * t + 0) =
+        1 - Real.cos (2 * π * 2 ^ j * t) := by
+    intro j t
+    push_cast
+    ring
+  simpa [hcast] using h
+
 end Fabius

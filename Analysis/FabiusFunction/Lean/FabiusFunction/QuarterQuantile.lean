@@ -70,7 +70,17 @@ A third ingredient is missing for the volume's statement about `G_n`
 itself: knowing the root is unique *in the cell* does not pin down
 `G_n(5/72)` unless `P_n` attains `5/72` nowhere else.  The corpus has
 only `MonotoneOn (fabiusUniformSpline p) (Icc 0 1)`, never the strict
-form, so that step is not available here.
+form, so that step is not available *here*.
+
+It is available downstream, and in the opposite direction from the one
+this note expected: `FabiusFunction.UniformSplineStrictMono` shows the
+strict form is **false** — every centred spline is constant on
+`(-∞, 2^{-(p+1)})` and on `[1 - 2^{-(p+1)}, 1]`
+(`not_strictMonoOn_fabiusUniformSpline`) — and that strictness is not
+what the quantile step needs.  Plain monotonicity plus the strict
+endpoint inequalities of the local polynomial suffice, giving
+`Fabius.fabiusUniformSpline_quarterQuantile_eq` and
+`Fabius.eq_quarterQuantile_of_fabiusUniformSpline`.
 
 ## Main declarations
 
