@@ -273,3 +273,13 @@ kernel-verified four-face geometric-tail dictionary at every ratio
 product-form self-similarity into convolution form and instantiates
 `geometric_tail_dictionary` — the measure, characteristic-product,
 moment, and cumulant faces of the `m`-digit tail in one statement.
+The characteristic-product face is now closed in elementary terms:
+`GeometricSincFactorization.lean` computes the digit,
+`φ_digit(t) = e^{i(1-q)t/2}·sinc((1-q)t/2)`
+(`Fabius.charFun_geometricUniformDigit`), and proves the **finite sinc
+factorization at every ratio**
+`φ_q(t) = e^{i(1-q^m)t/2}·∏_{k<m} sinc((1-q)q^k t/2)·φ_q(q^m t)`
+(`Fabius.charFun_geometricUniformDistribution_prefix_sinc`, with the
+raw closed-factor form `_prefix`) — the finite half of Part IV's master
+factorization `F̂ₙ = Φ·A(2⁻ⁿs)` at `q = 1/2` and of Part VI's `ĥ_a`
+sinc products at `q = 1/a`, kernel-verified.
