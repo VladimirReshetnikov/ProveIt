@@ -1746,11 +1746,30 @@ family.  The crux is a single identity, and it is what makes the Newton basis th
 adapted to the dyadic problem: at $q=1/2$ \emph{every} Newton-basis generating function
 $q^r/(1-q)^{r+1}$ takes the value $2$, independently of $r$
 (\lean{Fabius.pow\_div\_one\_sub\_pow\_at\_half}), so the series collapses to the plain
-coefficient sum (\lean{Fabius.tsum\_newtonPoly}, \lean{Fabius.half\_mul\_tsum\_newtonPoly\_half}).  Reading that
-number as the \emph{support radius} of $\Phi_P$ is not formalized.  The product $\Phi_P$ is
-available (\path{GeneralizedRvachevProduct.lean}); what is missing is the \emph{support}
-statement of \cref{p1:thm:master-probability}, an analytic and probabilistic fact about
-the associated random variable rather than a property of the product itself.
+coefficient sum (\lean{Fabius.tsum\_newtonPoly}, \lean{Fabius.half\_mul\_tsum\_newtonPoly\_half}).
+
+Reading that number as the \emph{support radius} of $\Phi_P$ is half formalized.  The analytic
+half is, and needs no probability: by Paley--Wiener a law carried by $[-R,R]$ has a
+characteristic function of exponential type at most $R$, and that growth bound follows from the
+product directly,
+\[
+ \lVert\Phi_a(z)\rVert\le\exp\bigl(\pi\lVert z\rVert R_a\bigr),
+ \qquad R_a=\sum_{h\ge0}a_h2^{-h},
+\]
+for every $z\in\C$ (\lean{Fabius.norm\_generalizedRvachevProduct\_le\_exp},
+\path{GeneralizedExponentialType.lean}).  So $\Phi_a$ is entire of order at most one with type
+controlled by $R_a$, exactly as the support reading predicts.  The converse half --- that the
+type is no smaller, and that the law really is carried by $[-R_a,R_a]$ --- is the \emph{support}
+statement of \cref{p1:thm:master-probability}, a probabilistic fact about the associated random
+variable rather than a property of the product, and it remains unformalized.
+
+The sharpness of the factor estimate is the whole difficulty and is worth recording, since the
+obvious routes all fail: any constant $C>1$ in $\lVert\sinc w\rVert\le Ce^{\lVert w\rVert}$
+compounds to $C^{\sum_ha_h}$ across the factors and diverges whenever the weight has infinite
+total mass.  Writing $\sin$ as a difference of exponentials gives $e^{3\lVert w\rVert}$, which
+would inflate the type threefold.  The constant $1$ comes from comparing the sine series
+termwise against the hyperbolic sine, $\lVert\sin w\rVert\le\sinh\lVert w\rVert$, followed by
+$\sinh t\le te^t$ --- which is $1-2t\le e^{-2t}$ rearranged.
 
 The spectral zeta \eqref{p1:eq:ZP} \emph{is} formalized, in \path{NewtonSpectralZeta.lean},
 and it is exactly the composite of two identities already in hand: the general-weight zeta
