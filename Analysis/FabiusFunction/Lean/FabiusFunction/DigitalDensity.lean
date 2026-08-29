@@ -64,7 +64,8 @@ theorem card_filter_powerset_subset {s t : Finset α} (hst : s ⊆ t) :
       Finset.disjoint_of_subset_left hu disjoint_sdiff_self_left
     have hdv : Disjoint v s :=
       Finset.disjoint_of_subset_left hv disjoint_sdiff_self_left
-    have h : (u ∪ s) \ s = (v ∪ s) \ s := by rw [huv]
+    have h : (u ∪ s) \ s = (v ∪ s) \ s :=
+      congrArg (· \ s) huv
     rwa [Finset.union_sdiff_cancel_right hdu,
       Finset.union_sdiff_cancel_right hdv] at h
   rw [filter_powerset_subset hst, Finset.card_image_of_injOn hinj,
