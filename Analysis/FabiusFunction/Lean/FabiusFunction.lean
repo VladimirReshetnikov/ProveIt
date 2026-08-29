@@ -104,6 +104,7 @@ import FabiusFunction.GelfondLogisticBound
 import FabiusFunction.GeometricScaleProducts
 import FabiusFunction.GeometricConvolutionTails
 import FabiusFunction.SmoothingOperatorInversion
+import FabiusFunction.SmoothingOperatorExponential
 import FabiusFunction.AlgebraicInverseGerm
 import FabiusFunction.AlgebraicInverseGermAnalytic
 import FabiusFunction.GeometricCgfTails

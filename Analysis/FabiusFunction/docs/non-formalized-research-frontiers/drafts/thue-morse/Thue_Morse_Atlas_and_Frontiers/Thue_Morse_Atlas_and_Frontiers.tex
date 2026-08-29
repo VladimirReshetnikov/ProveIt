@@ -9164,9 +9164,20 @@ to all four faces at once now exists as well: \path{GeometricTailDictionary.lean
 (whose assembly \leanPartx{Fabius.charFun\_self\_similar} it also provides), the unconditional
 moment face, and the cumulant face under finite exponential moments --- with the dyadic
 instance \leanPartx{Fabius.geometric\_tail\_dictionary\_up} carrying every hypothesis
-discharged by compact support.  (The operator-exponential display
-\eqref{p2:eq:cumulant-operator} itself --- the deconvolution calculus --- is a stronger
-analytic statement and remains the one open part.)
+discharged by compact support.  The operator-exponential display
+\eqref{p2:eq:cumulant-operator} is now formal at exactly the level the remark asserts it:
+\path{SmoothingOperatorExponential.lean} proves that for any zero-constant exponent
+series over a rational algebra, the smoothing operator of its generated exponential
+acts on every polynomial as the finite (degreewise-nilpotent) exponential of the
+exponent's operator,
+\(\mathcal S_{\exp K}\,q=\sum_{d\le\deg q}\tfrac1{d!}\,\mathcal S_K^{\,d}\,q\)
+(\leanPartx{Fabius.seriesDerivOp\_expSeries}, with the coefficient identity
+\leanPartx{Fabius.expCoeff\_eq\_sum\_coeff\_pow} and the vanishing of low coefficients
+of powers of a zero-constant series) --- expanding the exponential changes cumulants
+into moments exactly as claimed, with the Fabius instance available through the
+moment--cumulant dictionary of \path{MomentCumulantAlgebra.lean}.  Only the
+distributional reading of \eqref{p2:eq:cumulant-operator} against the spline densities
+remains analytic.
 
 \section{Frontier conjectures and next deductions}
 \label{p2:sec:frontiers}
