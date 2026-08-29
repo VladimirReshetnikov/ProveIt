@@ -27,7 +27,7 @@ shifts, negative-branch and hierarchy formulas, and inverse/quantile versions
 remain research frontiers. These API claims were checked at source checkpoint
 `22f801337`.
 
-Member: `Exponents_and_q_Series_Frontiers` (194 pp, seven parts) — the
+Member: `Exponents_and_q_Series_Frontiers` (197 pp, seven parts) — the
 2026-08-28 consolidation of the two former drafts (Part I:
 Newton-basis frontiers; Part II: q-binomial Richardson), joined the
 same day by the eighth-wave report as **Part III** — *Finite Dyadic
@@ -169,12 +169,15 @@ rendered with `\appendix` letters G–N).  Supporting files under
 
 See [`../MANIFEST.md`](../MANIFEST.md) for titles and the previous paths.
 
-Further arrivals (2026-08-28): `Atomic_Functions_Beyond_Dyadic_Report-2/` and
-`-3/` are two further independently written versions of the fourteenth wave's
-atomic-functions report (itself since absorbed into the volume as part of the
-Part VI merge), the `-2` package including the Russian source scan and OCR.
-They stay separate members until deliberately merged into the volume.  (The
-q-orbit reports `Fabius_Q_Connections_Report/` and
-`Signed_Reciprocal_q_Fabius_Frontiers/` were merged editorially as the
-volume's Part VII; their packages are preserved under the volume's
-`assets/`.)
+The two revised fourteenth-wave editions
+(`Atomic_Functions_Beyond_Dyadic_Report-2/`, `-3/`) were merged into Part VI
+(2026-08-28): the Orlicz/rearrangement form of derivative equimeasurability,
+the spectral Stieltjes–Wigert bridge (squared-frequency moments
+`a^{n(n+2)}/2^n`, an explicit non-lognormal representing measure with closed
+Hankel determinants and orthogonal polynomials), the Mellin law of the
+distance to `K_a` (complex dimensions shifted by −1; distribution function =
+the exact tube formula), and — for provenance — the Russian source scan and
+OCR, archived under the volume's `assets/`.  (The q-orbit reports
+`Fabius_Q_Connections_Report/` and `Signed_Reciprocal_q_Fabius_Frontiers/`
+were merged editorially as the volume's Part VII; their packages are likewise
+preserved under `assets/`.)
