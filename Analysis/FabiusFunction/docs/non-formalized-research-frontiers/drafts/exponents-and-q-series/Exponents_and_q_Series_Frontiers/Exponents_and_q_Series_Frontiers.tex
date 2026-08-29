@@ -747,9 +747,13 @@ independently of $x$, and the companion
 \lean{Fabius.sum_powerset_neg_one_pow_eval_of_degree_lt} is the vanishing
 \eqref{p1:eq:Prouhet-vanish} for every polynomial of degree below $|S|$;
 \lean{Fabius.sum_submask_neg_one_pow_pow} is the binary specialization in which $S$ is the bit
-support of an integer.  What is not formalized is the factorization \eqref{p1:eq:T-a-L} itself, nor
-the free-even-layer step that sums the offset-independent core over the $2^{L-\omega_L(a)}$
-even-layer offsets.
+support of an integer.  The factorization \eqref{p1:eq:T-a-L} is formal as well, and over an
+arbitrary commutative ring rather than over $\Z[z]$: it is
+\lean{Fabius.prod\_one\_add\_neg\_one\_pow\_eq\_sum\_parityCharacter}
+(\path{ParityCharacter.lean}), the same identity already cited in
+\cref{p1:thm:lobe-sign}, read from right to left.  What is not formalized is the exact
+order $\omega_L(a)$ of its zero at $z=1$, and the free-even-layer step that sums the
+offset-independent core over the $2^{L-\omega_L(a)}$ even-layer offsets.
 \end{theorem}
 
 \begin{proof}
