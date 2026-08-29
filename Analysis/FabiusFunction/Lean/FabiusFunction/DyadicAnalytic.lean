@@ -24,12 +24,22 @@ namespace Fabius
 
 noncomputable section
 
-private def inverseTwoPowReal (n : ℕ) : ℝ := ((2 : ℝ) ^ n)⁻¹
+/-- The real dyadic scale `2^{-n}`, the base point of the register's
+Taylor identities. -/
+def inverseTwoPowReal (n : ℕ) : ℝ := ((2 : ℝ) ^ n)⁻¹
 
-private def analyticInverseValue (F : BoundedFabius) (n : ℕ) : ℝ :=
+/-- The bounded Fabius value at the dyadic scale `2^{-n}` — the Taylor
+coefficients' data. -/
+noncomputable def analyticInverseValue (F : BoundedFabius) (n : ℕ) : ℝ :=
   fabiusReal F (inverseTwoPowReal n)
 
-private def analyticTaylorSum (F : BoundedFabius) (m : ℕ) (y : ℝ) : ℝ :=
+/-- **The dyadic Taylor sum** of the register's *Independent analytic
+derivations*: the degree-`m` Taylor polynomial whose coefficients are the
+normalized Fabius values at the dyadic scales,
+`∑_k 2^{C(k+1,2)}·F(2^{-(m-k)})·y^k/k!`.  Its two public laws are the
+derivative recursion `analyticTaylorSum_derivative_identity` and the
+exact-remainder identity `analytic_scale_recurrence`. -/
+noncomputable def analyticTaylorSum (F : BoundedFabius) (m : ℕ) (y : ℝ) : ℝ :=
   ∑ k ∈ range (m + 1),
     (2 : ℝ) ^ (k + 1).choose 2 * analyticInverseValue F (m - k) *
       y ^ k / k.factorial
@@ -60,7 +70,11 @@ private lemma inverseTwoPowReal_le_half (n : ℕ) (hn : 1 ≤ n) :
   rw [Finset.sum_range_succ']
   simp
 
-private lemma analyticTaylorSum_derivative_identity
+/-- **The Taylor-level Fabius differential equation**: differentiating
+the order-`(m+1)` dyadic Taylor sum reproduces the order-`m` sum at the
+doubled argument — the image of `F'(x) = 2F(2x)` in the register's
+Taylor-integral derivation. -/
+theorem analyticTaylorSum_derivative_identity
     (F : BoundedFabius) (m : ℕ) (y : ℝ) :
     HasDerivAt (analyticTaylorSum F (m + 1))
       (2 * analyticTaylorSum F m (2 * y)) y := by
@@ -238,7 +252,12 @@ private lemma analytic_scale_recurrence_succ
   exact eq_of_has_deriv_right_eq hderivLhs hderivRhs
     hlhsCont.continuousOn hrhsCont.continuousOn hzero y ⟨hy0, hy⟩
 
-private theorem analytic_scale_recurrence
+/-- **The Taylor identity with exact remainder** (the register's
+*Independent analytic derivations*, bounded function): for `1 ≤ m` and
+`0 ≤ y ≤ 2^{-m}`,
+`F(2^{-m} + y) = analyticTaylorSum F m y - F(y)` — the remainder of the
+dyadic Taylor expansion is exactly `-F(y)`, with no error term. -/
+theorem analytic_scale_recurrence
     (F : BoundedFabius) (hF : IsFabius F) (m : ℕ) (hm : 1 ≤ m)
     (y : ℝ) (hy0 : 0 ≤ y) (hy : y ≤ inverseTwoPowReal m) :
     fabiusReal F (inverseTwoPowReal m + y) + fabiusReal F y =
@@ -367,7 +386,13 @@ private lemma analyticTaylorSum_eq_cast_horner
   intro k hk
   rw [analyticInverseValue_eq_fabiusAtInverseTwoPow F hF]
 
-private theorem fabiusReal_dyadic_bit_recurrence
+/-- **The blockwise change of variables** (the register's *Independent
+analytic derivations*): stripping the leading binary digit of the
+numerator turns the bounded value at `a/2^n` into the Horner form of the
+dyadic Taylor sum minus the exact remainder at the stripped
+remainder — the analytic identity that drives every interior step of
+the exact evaluator. -/
+theorem fabiusReal_dyadic_bit_recurrence
     (F : BoundedFabius) (hF : IsFabius F)
     (n a : ℕ) (ha0 : 0 < a) (ha : a ≤ 2 ^ n) :
     let leadingExponent := Nat.log2 a

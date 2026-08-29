@@ -1,5 +1,6 @@
 import FabiusFunction.CompleteHomogeneous
 import FabiusFunction.FiniteQBinomialCore
+import FabiusFunction.GaussianBinomialAtOne
 import FabiusFunction.GeometricCompleteHomogeneous
 import FabiusFunction.GeometricLagrange
 import FabiusFunction.LagrangeResidualMoments
@@ -13,18 +14,30 @@ import FabiusFunction.GeometricLagrangeWeights
 import FabiusFunction.GeometricLagrangeQBinomial
 import FabiusFunction.GeometricLagrangeQMoments
 import FabiusFunction.LambertPhaseLockedRichardson
+import FabiusFunction.PrincipalLambertW
+import FabiusFunction.LowerLambertW
+import FabiusFunction.LambertBranchDichotomy
 import FabiusFunction.WeightedUniformSeries
 import FabiusFunction.WeightedUniformDistribution
 import FabiusFunction.WeightedUniformSupport
 import FabiusFunction.ContinuousCDF
+import FabiusFunction.AffineIndependentCopy
 import FabiusFunction.GeometricUniformLaw
+import FabiusFunction.GeometricUniformUniqueness
 import FabiusFunction.GeometricUniformCDF
 import FabiusFunction.Paper05442
 import FabiusFunction.Paper06487
 import FabiusFunction.PaperFabiusAsymptotic
 import FabiusFunction.PaperKFoldThueMorse
 import FabiusFunction.FinitePolynomialFunctional
+import FabiusFunction.PolynomialMomentFunctional
 import FabiusFunction.WeightedScaleMultiplicity
+import FabiusFunction.SpectralZetaWeighted
+import FabiusFunction.ShiftDifferenceWeights
+import FabiusFunction.NewtonMultiplicityAssembly
+import FabiusFunction.NewtonBasisGeneratingFunction
+import FabiusFunction.NewtonSpectralZeta
+import FabiusFunction.NewtonCoefficientUniqueness
 import FabiusFunction.BellPolynomialInversion
 import FabiusFunction.AppellSequence
 import FabiusFunction.MomentCumulantAlgebra
@@ -35,6 +48,16 @@ import FabiusFunction.PolynomialExpectationCumulant
 import FabiusFunction.ThueMorseBitSupport
 import FabiusFunction.AffineDifferenceOrbit
 import FabiusFunction.ThueMorseBooleanCube
+import FabiusFunction.BitPositionGenerating
+import FabiusFunction.ParityCharacter
+import FabiusFunction.ParityCharacterKernel
+import FabiusFunction.DigitCharacterCongruence
+import FabiusFunction.GeneralizedProuhetBlock
+import FabiusFunction.ProuhetBlockZeroOrder
+import FabiusFunction.BitPositionQBinomial
+import FabiusFunction.BinaryPartitionGreenInverse
+import FabiusFunction.DigitDefectCounting
+import FabiusFunction.DigitDefectBitForm
 import FabiusFunction.ThueMorseValuation
 import FabiusFunction.ThueMorseDigits
 import FabiusFunction.ThueMorseEnumerators
@@ -42,10 +65,14 @@ import FabiusFunction.ThueMorseRarefied
 import FabiusFunction.ThueMorseAperiodicity
 import FabiusFunction.ThueMorseSparseProuhet
 import FabiusFunction.ThueMorseBlockAlgebra
+import FabiusFunction.ThueMorseProductIdentity
+import FabiusFunction.ApproximationLadder
 import FabiusFunction.ThueMorseMoments
 import FabiusFunction.ThueMorseArtinSchreier
 import FabiusFunction.ThueMorseEulerTransform
 import FabiusFunction.ThueMorseLucasSupport
+import FabiusFunction.DigitalDensity
+import FabiusFunction.SubmaskDensityAsymptotic
 import FabiusFunction.ThueMorseWalsh
 import FabiusFunction.ThueMorseComplexProductBridge
 import FabiusFunction.ThueMorseSparseMoments
@@ -85,7 +112,9 @@ import FabiusFunction.ThueMorseMasterProduct
 import FabiusFunction.ThueMorseBlockProducts
 import FabiusFunction.ThueMorseEntireContinuation
 import FabiusFunction.FrullaniIntegral
+import FabiusFunction.ReciprocalGammaJets
 import FabiusFunction.ThueMorseGDirichlet
+import FabiusFunction.ThueMorseGammaTower
 import FabiusFunction.ThueMorseQuarterProduct
 import FabiusFunction.ThueMorseDiscSeries
 import FabiusFunction.ThueMorseNaturalBoundary
@@ -96,8 +125,68 @@ import FabiusFunction.ThueMorseGelfond
 import FabiusFunction.PeriodDoublingHankel
 import FabiusFunction.ThueMorseHankel
 import FabiusFunction.LacunaryRieszIntegral
+import FabiusFunction.RieszSharpness
 import FabiusFunction.GelfondLogisticBound
 import FabiusFunction.GeometricScaleProducts
+import FabiusFunction.GeneralizedRvachevProduct
+import FabiusFunction.WeierstrassProductBound
+import FabiusFunction.SincLowerBound
+import FabiusFunction.SincProductPositive
+import FabiusFunction.RelativeHarmonicDominance
+import FabiusFunction.PlateauLocalization
+import FabiusFunction.PlateauDegree
+import FabiusFunction.PlateauConstant
+import FabiusFunction.UniformSplineStrictMono
+import FabiusFunction.QuarterCellEvaluation
+import FabiusFunction.PlateauLimit
+import FabiusFunction.QuarterQuantile
+import FabiusFunction.StieltjesInversion
+import FabiusFunction.PoissonApproximateIdentity
+import FabiusFunction.PoissonMassSwap
+import FabiusFunction.StieltjesPerron
+import FabiusFunction.GeneralQConditionNumber
+import FabiusFunction.LimitConditionNumber
+import FabiusFunction.CumulantGridConstant
+import FabiusFunction.MultipleAngleBounds
+import FabiusFunction.TentMoment
+import FabiusFunction.FaberSchauderDefect
+import FabiusFunction.GeometricConvolutionTails
+import FabiusFunction.SmoothingOperatorInversion
+import FabiusFunction.SmoothingOperatorExponential
+import FabiusFunction.AlgebraicInverseGerm
+import FabiusFunction.AlgebraicInverseGermAnalytic
+import FabiusFunction.AlgebraicInverseGermBinomial
+import FabiusFunction.GeometricCgfTails
+import FabiusFunction.GeometricTailDictionary
+import FabiusFunction.GeometricUniformDictionary
+import FabiusFunction.GeometricSincFactorization
+import FabiusFunction.DyadicCombTrapezoid
+import FabiusFunction.IncompleteBetaMaster
+import FabiusFunction.MomentHankelMatrix
+import FabiusFunction.MomentHankelValues
+import FabiusFunction.StieltjesMomentLaurent
+import FabiusFunction.StieltjesCauchyTransform
+import FabiusFunction.StieltjesHerglotz
+import FabiusFunction.RefinementConditioning
+import FabiusFunction.EntireKernelCalculus
+import FabiusFunction.StieltjesLogFixedPoint
+import FabiusFunction.StieltjesResolventHierarchy
+import FabiusFunction.StieltjesGeneralizedOrder
+import FabiusFunction.OrthogonalPolynomialConstruction
+import FabiusFunction.OrthogonalPolynomialValues
+import FabiusFunction.OrthogonalPolynomialParity
+import FabiusFunction.OrthogonalPolynomialRecurrence
+import FabiusFunction.OrthogonalPolynomialJacobi
+import FabiusFunction.CompositeMeshExactness
+import FabiusFunction.CombFirstDefect
+import FabiusFunction.CombDefectSeries
+import FabiusFunction.CauchySurvival
+import FabiusFunction.CauchyHigherPowers
+import FabiusFunction.MonomialCombFourier
+import FabiusFunction.MonomialCombDerivatives
+import FabiusFunction.MonomialCombAlias
+import FabiusFunction.MonomialCombExactness
+import FabiusFunction.PolynomialCombExactness
 import FabiusFunction.SincProductShells
 import FabiusFunction.SharpGelfondBound
 import FabiusFunction.SincProductPeakRay
@@ -133,6 +222,11 @@ import FabiusFunction.CesaroProfileSkeleton
 import FabiusFunction.LogMeanSkeleton
 import FabiusFunction.SincEulerProduct
 import FabiusFunction.SincCanonicalProduct
+import FabiusFunction.GeneralizedCanonicalForm
+import FabiusFunction.LobeSignLaw
+import FabiusFunction.CanonicalIntegerPoint
+import FabiusFunction.LobeSignNegative
+import FabiusFunction.GeneralizedRvachevEntire
 import FabiusFunction.RMSTransferEigenfunctions
 import FabiusFunction.LogFactorConcavity
 import FabiusFunction.CentralLobeConcavity
@@ -158,6 +252,9 @@ import FabiusFunction.RenormalizationIdentity
 import FabiusFunction.IntegerZeroLocalFactorization
 import FabiusFunction.LeadingJet
 import FabiusFunction.IntegerZeroAnalyticOrder
+import FabiusFunction.ScaledInfiniteProducts
+import FabiusFunction.GeometricReciprocalGamma
+import FabiusFunction.DyadicGammaOrder
 import FabiusFunction.SincPrefixBound
 import FabiusFunction.GlobalDecayEnvelope
 import FabiusFunction.LacunaryMeanSharp
@@ -165,6 +262,7 @@ import FabiusFunction.KappaDictionary
 import FabiusFunction.DyadicReflection
 import FabiusFunction.CollatzWielandt
 import FabiusFunction.LacunaryProductToSum
+import FabiusFunction.LacunaryProductToSumCosine
 import FabiusFunction.LogSeriesMultiplicative
 import FabiusFunction.BaseLayerRegrouping
 import FabiusFunction.ShellEnvelopeExplicit
@@ -232,9 +330,12 @@ import FabiusFunction.EvenZetaSeries
 import FabiusFunction.EvenZetaValues
 import FabiusFunction.SincZetaSeries
 import FabiusFunction.SincZetaDyadic
+import FabiusFunction.ExponentialDiskMaximality
 import FabiusFunction.SincZetaRemainder
 import FabiusFunction.BernsteinPositivity
 import FabiusFunction.PerronRootEnclosure
+import FabiusFunction.KappaOneEnclosure
+import FabiusFunction.KappaConstantEnclosures
 import FabiusFunction.MeasureRefinement
 import FabiusFunction.RandomSeriesLaw
 import FabiusFunction.CauchyTransform
@@ -242,6 +343,11 @@ import FabiusFunction.CauchyCDF
 import FabiusFunction.CauchyRenormalization
 import FabiusFunction.UniformSplineWeakConvergence
 import FabiusFunction.DyadicSpecializations
+import FabiusFunction.EvaluatorPopcount
+import FabiusFunction.PrefixKernelCounting
+import FabiusFunction.ThueMorseFormalProduct
+import FabiusFunction.GlobalBlockFold
+import FabiusFunction.NormalizationDictionary
 
 /-!
 # Fabius function
@@ -329,7 +435,7 @@ the expansion, so the public surface now carries
 `log F(x) = fabiusSharpLambertMain x + A₁(lambda)/lambda +
 A₂(lambda)/lambda² + O(lambda⁻³)` with both corrections written out.  See
 Part “Small-Argument Asymptotics Research Frontiers” of
-`docs/non-formalized-research-frontiers/non-formalized-research-frontiers.tex`.
+`docs/semi-formalized-research-frontiers/semi-formalized-research-frontiers.tex`.
 
 Finally, the canonical bounded Fabius function is proved computable in the
 Grzegorczyk sense: a primitive-recursive centered-spline evaluator preserves
