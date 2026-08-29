@@ -288,7 +288,6 @@ theorem re_charFun_rvachevMeasure_pos (F : BoundedFabius)
   have hpi0 : (0 : ℝ) < Real.pi := Real.pi_pos
   have harg : Real.pi * (t / (2 * Real.pi)) = t / 2 := by
     field_simp
-    ring
   have hbudget : 2 * (Real.pi * (t / (2 * Real.pi))) ^ 2 < 9 := by
     rw [harg]
     nlinarith [ht]
