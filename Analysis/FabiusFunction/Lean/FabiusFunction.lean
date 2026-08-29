@@ -32,6 +32,7 @@ import FabiusFunction.PaperKFoldThueMorse
 import FabiusFunction.FinitePolynomialFunctional
 import FabiusFunction.PolynomialMomentFunctional
 import FabiusFunction.WeightedScaleMultiplicity
+import FabiusFunction.SpectralZetaWeighted
 import FabiusFunction.ShiftDifferenceWeights
 import FabiusFunction.NewtonMultiplicityAssembly
 import FabiusFunction.NewtonBasisGeneratingFunction
