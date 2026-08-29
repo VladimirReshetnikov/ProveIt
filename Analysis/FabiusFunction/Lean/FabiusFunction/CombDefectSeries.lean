@@ -359,4 +359,128 @@ theorem tsum_shifted_monomial_sub_integral_even_deg
     rfl
   · rw [if_neg (fun hc => hn ((Int.odd_coe_nat n).mp hc)), if_neg hn]
 
+/-- A half-period shift flips every odd-frequency character. -/
+private theorem fourier_add_half_of_odd {ℓ : ℤ} (hℓ : Odd ℓ) (θ : ℝ) :
+    fourier ℓ (((θ + 1 / 2 : ℝ)) : UnitAddCircle) =
+      -fourier ℓ ((θ : ℝ) : UnitAddCircle) := by
+  obtain ⟨m, hm⟩ := hℓ
+  rw [fourier_coe_apply, fourier_coe_apply]
+  push_cast [hm]
+  rw [show 2 * (π : ℂ) * Complex.I * (2 * (m : ℂ) + 1) *
+        ((θ : ℂ) + 1 / 2) / 1 =
+      2 * (π : ℂ) * Complex.I * (2 * (m : ℂ) + 1) * (θ : ℂ) / 1 +
+        ((m : ℂ) * (2 * (π : ℂ) * Complex.I) + (π : ℂ) * Complex.I)
+      by ring,
+    Complex.exp_add, Complex.exp_add,
+    Complex.exp_int_mul_two_pi_mul_I, one_mul, Complex.exp_pi_mul_I,
+    mul_neg_one]
+
+/-- **Half-period antisymmetry of the threshold defect**: at the
+threshold degree `p = v₂(M)+1` the defect series lives on the odd
+frequencies alone, so shifting by half a period flips its sign —
+`defect(θ+1/2) = -defect(θ)` at every mesh and every shift. -/
+theorem tsum_shifted_monomial_sub_integral_add_half
+    (F : BoundedFabius) (hF : IsFabius F) {M : ℕ} (hM : M ≠ 0)
+    (θ : ℝ) :
+    (∑' k : ℤ, monomialRvachevSchwartz F hF (padicValNat 2 M + 1)
+        ((M : ℝ))⁻¹ (inv_ne_zero (Nat.cast_ne_zero.mpr hM))
+        (θ + 1 / 2 + k)) -
+      ∫ x : ℝ, ((x ^ (padicValNat 2 M + 1) *
+        rvachevUp F (((M : ℝ))⁻¹ * x) : ℝ) : ℂ) =
+      -((∑' k : ℤ, monomialRvachevSchwartz F hF (padicValNat 2 M + 1)
+          ((M : ℝ))⁻¹ (inv_ne_zero (Nat.cast_ne_zero.mpr hM))
+          (θ + k)) -
+        ∫ x : ℝ, ((x ^ (padicValNat 2 M + 1) *
+          rvachevUp F (((M : ℝ))⁻¹ * x) : ℝ) : ℂ)) := by
+  rw [tsum_shifted_monomial_sub_integral_odd F hF hM (θ + 1 / 2),
+    tsum_shifted_monomial_sub_integral_odd F hF hM θ, ← tsum_neg]
+  refine tsum_congr fun ℓ => ?_
+  by_cases hℓ : Odd ℓ
+  · rw [if_pos hℓ, if_pos hℓ, fourier_add_half_of_odd hℓ θ]
+    ring
+  · rw [if_neg hℓ, if_neg hℓ, neg_zero]
+
+/-- **Midpoint-average super-exactness**: at the threshold degree the
+`θ`-comb and the `(θ+1/2)`-comb average exactly to the integral —
+the trapezoid–midpoint pairing, formal at every mesh and every
+shift. -/
+theorem tsum_shifted_monomial_add_half_add (F : BoundedFabius)
+    (hF : IsFabius F) {M : ℕ} (hM : M ≠ 0) (θ : ℝ) :
+    (∑' k : ℤ, monomialRvachevSchwartz F hF (padicValNat 2 M + 1)
+        ((M : ℝ))⁻¹ (inv_ne_zero (Nat.cast_ne_zero.mpr hM))
+        (θ + k)) +
+      (∑' k : ℤ, monomialRvachevSchwartz F hF (padicValNat 2 M + 1)
+        ((M : ℝ))⁻¹ (inv_ne_zero (Nat.cast_ne_zero.mpr hM))
+        (θ + 1 / 2 + k)) =
+      2 * ∫ x : ℝ, ((x ^ (padicValNat 2 M + 1) *
+        rvachevUp F (((M : ℝ))⁻¹ * x) : ℝ) : ℂ) := by
+  linear_combination
+    tsum_shifted_monomial_sub_integral_add_half F hF hM θ
+
+/-- **The midpoint reflection**: at the threshold degree the midpoint
+comb defect is the exact negative of the endpoint comb defect. -/
+theorem tsum_half_shifted_monomial_sub_integral (F : BoundedFabius)
+    (hF : IsFabius F) {M : ℕ} (hM : M ≠ 0) :
+    (∑' k : ℤ, monomialRvachevSchwartz F hF (padicValNat 2 M + 1)
+        ((M : ℝ))⁻¹ (inv_ne_zero (Nat.cast_ne_zero.mpr hM))
+        (1 / 2 + k)) -
+      ∫ x : ℝ, ((x ^ (padicValNat 2 M + 1) *
+        rvachevUp F (((M : ℝ))⁻¹ * x) : ℝ) : ℂ) =
+      -((∑' k : ℤ, monomialRvachevSchwartz F hF (padicValNat 2 M + 1)
+          ((M : ℝ))⁻¹ (inv_ne_zero (Nat.cast_ne_zero.mpr hM))
+          (k : ℝ)) -
+        ∫ x : ℝ, ((x ^ (padicValNat 2 M + 1) *
+          rvachevUp F (((M : ℝ))⁻¹ * x) : ℝ) : ℂ)) := by
+  have h := tsum_shifted_monomial_sub_integral_add_half F hF hM 0
+  have h1 : (∑' k : ℤ, monomialRvachevSchwartz F hF
+      (padicValNat 2 M + 1) ((M : ℝ))⁻¹
+      (inv_ne_zero (Nat.cast_ne_zero.mpr hM)) ((0 : ℝ) + 1 / 2 + k)) =
+      ∑' k : ℤ, monomialRvachevSchwartz F hF (padicValNat 2 M + 1)
+        ((M : ℝ))⁻¹ (inv_ne_zero (Nat.cast_ne_zero.mpr hM))
+        (1 / 2 + k) :=
+    tsum_congr fun k => by rw [zero_add]
+  have h2 : (∑' k : ℤ, monomialRvachevSchwartz F hF
+      (padicValNat 2 M + 1) ((M : ℝ))⁻¹
+      (inv_ne_zero (Nat.cast_ne_zero.mpr hM)) ((0 : ℝ) + k)) =
+      ∑' k : ℤ, monomialRvachevSchwartz F hF (padicValNat 2 M + 1)
+        ((M : ℝ))⁻¹ (inv_ne_zero (Nat.cast_ne_zero.mpr hM))
+        (k : ℝ) :=
+    tsum_congr fun k => by rw [zero_add]
+  rw [h1, h2] at h
+  exact h
+
+/-- **Midpoint super-exactness at odd threshold degree**: the
+midpoint comb, like the endpoint comb, is exact one degree beyond
+the shifted threshold whenever `v₂(M)+1` is odd. -/
+theorem tsum_half_monomial_eq_integral_of_odd_deg (F : BoundedFabius)
+    (hF : IsFabius F) {M : ℕ} (hM : M ≠ 0)
+    (hodd : Odd (padicValNat 2 M + 1)) :
+    (∑' k : ℤ, monomialRvachevSchwartz F hF (padicValNat 2 M + 1)
+        ((M : ℝ))⁻¹ (inv_ne_zero (Nat.cast_ne_zero.mpr hM))
+        (1 / 2 + k)) =
+      ∫ x : ℝ, ((x ^ (padicValNat 2 M + 1) *
+        rvachevUp F (((M : ℝ))⁻¹ * x) : ℝ) : ℂ) := by
+  have h := tsum_half_shifted_monomial_sub_integral F hF hM
+  rw [tsum_monomial_eq_integral_of_odd_deg F hF hM hodd, sub_self,
+    neg_zero] at h
+  exact sub_eq_zero.mp h
+
+/-- **The midpoint Dirichlet fold at even threshold degree**: when
+`v₂(M)+1` is even the midpoint defect is minus twice the one-sided
+odd-frequency series — the mirror of the endpoint fold. -/
+theorem tsum_half_shifted_monomial_sub_integral_even_deg
+    (F : BoundedFabius) (hF : IsFabius F) {M : ℕ} (hM : M ≠ 0)
+    (heven : Even (padicValNat 2 M + 1)) :
+    (∑' k : ℤ, monomialRvachevSchwartz F hF (padicValNat 2 M + 1)
+        ((M : ℝ))⁻¹ (inv_ne_zero (Nat.cast_ne_zero.mpr hM))
+        (1 / 2 + k)) -
+      ∫ x : ℝ, ((x ^ (padicValNat 2 M + 1) *
+        rvachevUp F (((M : ℝ))⁻¹ * x) : ℝ) : ℂ) =
+      -(2 * ∑' n : ℕ, (if Odd n then
+        𝓕 (⇑(monomialRvachevSchwartz F hF (padicValNat 2 M + 1)
+            ((M : ℝ))⁻¹ (inv_ne_zero (Nat.cast_ne_zero.mpr hM))))
+          ((n : ℕ) : ℝ) else 0)) := by
+  rw [tsum_half_shifted_monomial_sub_integral F hF hM,
+    tsum_shifted_monomial_sub_integral_even_deg F hF hM heven]
+
 end Fabius
