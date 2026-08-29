@@ -1,4 +1,5 @@
 import FabiusFunction.StieltjesLogFixedPoint
+import FabiusFunction.RefinementConditioning
 
 /-!
 # The resolvent hierarchy of the Stieltjes transform
@@ -114,23 +115,9 @@ theorem integral_pow_inv_sub_succ (F : BoundedFabius)
         ((∫ x, (((2 * z - 1) - x)⁻¹) ^ n ∂(rvachevMeasure F)) -
           ∫ x, (((2 * z + 1) - x)⁻¹) ^ n ∂(rvachevMeasure F)) := by
   haveI := rvachevMeasure_isProbability F hF
-  haveI := isProbability_uniform_half
-  haveI : IsProbabilityMeasure ((rvachevMeasure F).map (2⁻¹ * ·)) :=
-    Measure.isProbabilityMeasure_map
-      (measurable_const_mul _).aemeasurable
   have habs : (1 : ℝ) < |z| := by
     rw [abs_of_pos (by linarith)]
     exact hz
-  have href : rvachevMeasure F =
-      ((rvachevMeasure F).map (2⁻¹ * ·)) ∗
-        (volume.restrict (Icc (-(2⁻¹ : ℝ)) 2⁻¹)) := by
-    conv_lhs => rw [rvachevMeasure_refinement F hF]
-    exact MeasureTheory.Measure.conv_comm _ _
-  have hint : Integrable (fun x => ((z - x)⁻¹) ^ (n + 1))
-      ((((rvachevMeasure F).map (2⁻¹ * ·)) ∗
-        (volume.restrict (Icc (-(2⁻¹ : ℝ)) 2⁻¹)) : Measure ℝ)) := by
-    rw [← href]
-    exact integrable_pow_inv_sub_rvachevMeasure F hF habs (n + 1)
   have hintA : Integrable (fun x => (((2 * z - 1) - x)⁻¹) ^ n)
       (rvachevMeasure F) :=
     integrable_pow_inv_sub_rvachevMeasure F hF
@@ -139,70 +126,50 @@ theorem integral_pow_inv_sub_succ (F : BoundedFabius)
       (rvachevMeasure F) :=
     integrable_pow_inv_sub_rvachevMeasure F hF
       (by rw [abs_of_pos (by linarith)]; linarith) n
-  calc ∫ x, ((z - x)⁻¹) ^ (n + 1) ∂(rvachevMeasure F)
-      = ∫ x, ((z - x)⁻¹) ^ (n + 1)
-          ∂((((rvachevMeasure F).map (2⁻¹ * ·)) ∗
-            (volume.restrict (Icc (-(2⁻¹ : ℝ)) 2⁻¹)) : Measure ℝ)) := by
-        rw [← href]
-    _ = ∫ x, ∫ u, ((z - (x + u))⁻¹) ^ (n + 1)
-          ∂(volume.restrict (Icc (-(2⁻¹ : ℝ)) 2⁻¹))
-          ∂((rvachevMeasure F).map (2⁻¹ * ·)) :=
-        by exact MeasureTheory.integral_conv hint
-    _ = ∫ x, ((((z - x) - 2⁻¹)⁻¹) ^ n -
-            (((z - x) + 2⁻¹)⁻¹) ^ n) / n
-          ∂((rvachevMeasure F).map (2⁻¹ * ·)) := by
-        refine integral_congr_ae ?_
-        have hae : ∀ᵐ x ∂((rvachevMeasure F).map (2⁻¹ * ·)),
-            x ∈ Ioo (-(2⁻¹ : ℝ)) 2⁻¹ := by
-          refine (MeasureTheory.ae_map_iff
-            (measurable_const_mul _).aemeasurable
-            measurableSet_Ioo).mpr ?_
-          filter_upwards [ae_mem_Ioo_rvachevMeasure F hF] with x' hx'
-          exact ⟨by linarith [hx'.1], by linarith [hx'.2]⟩
-        filter_upwards [hae] with x hx
-        have hc : 2⁻¹ < z - x := by
-          have := hx.2
-          linarith
-        have hin : ∀ u : ℝ,
-            ((z - (x + u))⁻¹) ^ (n + 1) =
-              (((z - x) - u)⁻¹) ^ (n + 1) := fun u => by
-          congr 2
-          ring
-        simp_rw [hin]
-        exact integral_pow_inv_sub_uniform_half hc hn
-    _ = ∫ x', (((z - 2⁻¹ * x' - 2⁻¹)⁻¹) ^ n -
+  have hmeas : Measurable fun x : ℝ =>
+      ((((z - x) - 2⁻¹)⁻¹) ^ n - (((z - x) + 2⁻¹)⁻¹) ^ n) / n :=
+    ((((measurable_const.sub measurable_id).sub
+      measurable_const).inv.pow_const n).sub
+      (((measurable_const.sub measurable_id).add
+        measurable_const).inv.pow_const n)).div_const _
+  have hcond := integral_eq_integral_digit_conditioning F hF
+    (integrable_pow_inv_sub_rvachevMeasure F hF habs (n + 1))
+    hmeas ?_
+  · rw [hcond]
+    calc ∫ x', (((z - 2⁻¹ * x' - 2⁻¹)⁻¹) ^ n -
             ((z - 2⁻¹ * x' + 2⁻¹)⁻¹) ^ n) / n
-          ∂(rvachevMeasure F) := by
-        have hmeas : Measurable fun x : ℝ =>
-            ((((z - x) - 2⁻¹)⁻¹) ^ n -
-              (((z - x) + 2⁻¹)⁻¹) ^ n) / n :=
-          ((((measurable_const.sub measurable_id).sub
-            measurable_const).inv.pow_const n).sub
-            (((measurable_const.sub measurable_id).add
-              measurable_const).inv.pow_const n)).div_const _
-        rw [MeasureTheory.integral_map
-          (measurable_const_mul _).aemeasurable
-          hmeas.aestronglyMeasurable]
-    _ = ∫ x', (2 ^ n / n) *
-            ((((2 * z - 1) - x')⁻¹) ^ n -
-              (((2 * z + 1) - x')⁻¹) ^ n)
-          ∂(rvachevMeasure F) := by
-        refine integral_congr_ae
-          (Filter.Eventually.of_forall fun x' => ?_)
-        dsimp only
-        have e1 : z - 2⁻¹ * x' - 2⁻¹ = ((2 * z - 1) - x') / 2 := by
+          ∂(rvachevMeasure F)
+        = ∫ x', (2 ^ n / n) *
+              ((((2 * z - 1) - x')⁻¹) ^ n -
+                (((2 * z + 1) - x')⁻¹) ^ n)
+            ∂(rvachevMeasure F) := by
+          refine integral_congr_ae
+            (Filter.Eventually.of_forall fun x' => ?_)
+          dsimp only
+          have e1 : z - 2⁻¹ * x' - 2⁻¹ = ((2 * z - 1) - x') / 2 := by
+            ring
+          have e2 : z - 2⁻¹ * x' + 2⁻¹ = ((2 * z + 1) - x') / 2 := by
+            ring
+          have hsc : ∀ a : ℝ, ((a / 2)⁻¹) ^ n = 2 ^ n * (a⁻¹) ^ n := by
+            intro a
+            rw [inv_div, div_pow, division_def, ← inv_pow]
+          rw [e1, e2, hsc, hsc]
           ring
-        have e2 : z - 2⁻¹ * x' + 2⁻¹ = ((2 * z + 1) - x') / 2 := by
-          ring
-        have hsc : ∀ a : ℝ, ((a / 2)⁻¹) ^ n = 2 ^ n * (a⁻¹) ^ n := by
-          intro a
-          rw [inv_div, div_pow, division_def, ← inv_pow]
-        rw [e1, e2, hsc, hsc]
-        ring
-    _ = (2 ^ n / n) *
-          ((∫ x, (((2 * z - 1) - x)⁻¹) ^ n ∂(rvachevMeasure F)) -
-            ∫ x, (((2 * z + 1) - x)⁻¹) ^ n ∂(rvachevMeasure F)) := by
-        rw [MeasureTheory.integral_const_mul,
-          MeasureTheory.integral_sub hintA hintB]
+      _ = (2 ^ n / n) *
+            ((∫ x, (((2 * z - 1) - x)⁻¹) ^ n ∂(rvachevMeasure F)) -
+              ∫ x, (((2 * z + 1) - x)⁻¹) ^ n ∂(rvachevMeasure F)) := by
+          rw [MeasureTheory.integral_const_mul,
+            MeasureTheory.integral_sub hintA hintB]
+  · filter_upwards [ae_map_mem_Ioo_half F hF] with x hx
+    have hc : 2⁻¹ < z - x := by
+      have := hx.2
+      linarith
+    have hin : ∀ u : ℝ,
+        ((z - (x + u))⁻¹) ^ (n + 1) =
+          (((z - x) - u)⁻¹) ^ (n + 1) := fun u => by
+      congr 2
+      ring
+    simp_rw [hin]
+    exact integral_pow_inv_sub_uniform_half hc hn
 
 end Fabius
