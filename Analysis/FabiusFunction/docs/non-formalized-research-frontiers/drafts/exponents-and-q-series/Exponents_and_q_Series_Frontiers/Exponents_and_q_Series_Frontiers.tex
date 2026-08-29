@@ -751,9 +751,24 @@ support of an integer.  The factorization \eqref{p1:eq:T-a-L} is formal as well,
 arbitrary commutative ring rather than over $\Z[z]$: it is
 \lean{Fabius.prod\_one\_add\_neg\_one\_pow\_eq\_sum\_parityCharacter}
 (\path{ParityCharacter.lean}), the same identity already cited in
-\cref{p1:thm:lobe-sign}, read from right to left.  What is not formalized is the exact
-order $\omega_L(a)$ of its zero at $z=1$, and the free-even-layer step that sums the
-offset-independent core over the $2^{L-\omega_L(a)}$ even-layer offsets.
+\cref{p1:thm:lobe-sign}, read from right to left.  The free-even-layer step is
+formal as well, in \path{GeneralizedProuhetBlock.lean}, so both boxed displays
+\eqref{p1:eq:Prouhet-vanish} and \eqref{p1:eq:first-surviving} are now theorems
+(\lean{Fabius.sum\_range\_two\_pow\_parityCharacter\_mul\_pow\_eq\_zero} and
+\lean{Fabius.sum\_range\_two\_pow\_parityCharacter\_mul\_pow}).  The mechanism is that
+$\varepsilon_a$ cannot see the even layers: splitting $T\subseteq\{0,\dots,L-1\}$ into $T\cap
+O_L(a)$ and its complement, the \emph{sign} depends only on $\lvert T\cap O_L(a)\rvert$ while
+the \emph{value} $\sum_{j\in T}2^j$ splits into an odd-layer part and an even-layer
+offset, so the block sum is a sum over even-layer offsets of a core that does not
+depend on the offset --- which is precisely why the factor $2^{L-\omega_L(a)}$ appears
+and nothing more.  The decomposition itself
+(\lean{Fabius.sum\_powerset\_range\_split}) is stated over an arbitrary additive
+commutative monoid for an arbitrary summand depending on the two parts, so it serves
+both displays; a constant-weight corollary recovers the classical Prouhet--Thue--Morse
+evaluation
+(\lean{Fabius.sum\_range\_two\_pow\_thueMorseSign\_mul\_pow}).  What is still not
+formalized is the exact order $\omega_L(a)$ of the zero of $T_{a,L}$ at $z=1$, which is
+the only remaining step of this theorem.
 \end{theorem}
 
 \begin{proof}
