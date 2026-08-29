@@ -558,14 +558,25 @@ Both statements are \statusproved.  The multiplicity function \eqref{p1:eq:m-a} 
 \lean{Fabius.weightedScaleMultiplicity} (\lean{WeightedScaleMultiplicity.lean}), and in two
 directions more generally than it is used here: the base $2$ is replaced by an arbitrary $b$,
 and the weights $a_h$ may lie in an arbitrary additive commutative monoid rather than in $\N_0$.
-The canonical \emph{form} \eqref{p1:eq:canonical-a}, which regroups the scale product
-into one factor per integer zero, is formalized only at $a_h\equiv1$, as
-\lean{Fabius.rvachevFourierProduct_eq_canonical} (\lean{SincCanonicalProduct.lean}), whose
-exponent is the classical $\vtwo(n)+1$; the underlying scale product $\Phi_a$ itself is now
-formal at a general admissible $a$ (\path{GeneralizedRvachevProduct.lean}, see
-\cref{p1:thm:master-probability}), so what the regrouping still needs is the
-multiplicative analogue of the fibre argument used for the spectral zeta below, not the
-product itself.  The spectral zeta \eqref{p1:eq:zeta-a} is now
+The canonical form \eqref{p1:eq:canonical-a} is formalized at a general admissible $a$,
+in \path{GeneralizedCanonicalForm.lean}:
+\[
+  \Phi_a(z)=\prod_{n\ge1}\left(1-\frac{z^2}{n^2}\right)^{m_a(n)}
+\]
+(\lean{Fabius.generalizedRvachevProduct\_eq\_canonical}).  The regrouping reuses, verbatim,
+the fibre equivalence already built for the classical case
+(\lean{Fabius.dyadicFactorEquiv}, \lean{SincCanonicalProduct.lean}): the map
+$(h,r)\mapsto(r+1)2^h$ has fibre $\{h:h\le\vtwo(n)\}$ over $n$.  The only change is that
+each factor now carries the exponent $a_h$, so the fibre product is a product of
+$\vtwo(n)+1$ powers of the \emph{same} base and collapses to a single power whose
+exponent is the prefix sum --- which is exactly $m_a(n)$.  That is why the multiplicity
+function was the right object to formalize first.  The classical statement is recovered
+as a corollary (\lean{Fabius.generalizedRvachevProduct\_one\_of\_canonical}).
+
+Two things the volume states alongside this display are \emph{not} formalized: the
+locally uniform convergence, and the consequence $\ord_{z=\pm n}\Phi_a=m_a(n)$.  The
+latter is a statement about an order of vanishing, and nothing in the corpus yet
+relates $m_a$ to \lean{analyticOrderAt}; the canonical form is its natural input.  The spectral zeta \eqref{p1:eq:zeta-a} is now
 formalized as well, in \path{SpectralZetaWeighted.lean}, for real $s>1$ and at an
 arbitrary base $b>1$, with the $\zeta$ factor left as its own $p$-series rather than
 identified with \lean{riemannZeta}
