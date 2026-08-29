@@ -1,4 +1,5 @@
 import FabiusFunction.StieltjesMomentLaurent
+import Mathlib.Probability.Moments.Basic
 
 /-!
 # The entire-kernel calculus of the up-measure
@@ -75,7 +76,7 @@ theorem mgf_id_rvachevMeasure_eq_tsum (F : BoundedFabius)
       congrFun Real.exp_eq_exp_ℝ (t * x)
     have h2 : NormedSpace.exp (t * x) =
         ∑' n : ℕ, ((n.factorial : ℝ))⁻¹ • (t * x) ^ n :=
-      congrFun NormedSpace.exp_eq_tsum (t * x)
+      congrFun (NormedSpace.exp_eq_tsum ℝ) (t * x)
     rw [h1, h2]
     refine tsum_congr fun n => ?_
     rw [smul_eq_mul, mul_pow]
