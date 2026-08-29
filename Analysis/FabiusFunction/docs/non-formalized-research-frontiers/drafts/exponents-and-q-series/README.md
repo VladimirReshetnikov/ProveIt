@@ -168,3 +168,13 @@ rendered with `\appendix` letters G–N).  Supporting files under
 `assets/`, provenance with SHA-256 in the document itself.
 
 See [`../MANIFEST.md`](../MANIFEST.md) for titles and the previous paths.
+
+Further arrivals (2026-08-28): `Atomic_Functions_Beyond_Dyadic_Report-2/` and
+`-3/` are two further independently written versions of the fourteenth wave's
+atomic-functions report (itself since absorbed into the volume as part of the
+Part VI merge), the `-2` package including the Russian source scan and OCR.
+They stay separate members until deliberately merged into the volume.  (The
+q-orbit reports `Fabius_Q_Connections_Report/` and
+`Signed_Reciprocal_q_Fabius_Frontiers/` were merged editorially as the
+volume's Part VII; their packages are preserved under the volume's
+`assets/`.)
