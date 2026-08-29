@@ -128,7 +128,7 @@ theorem tendsto_prefix_sinc_charFun {q : ℝ} (hq : |q| < 1) (t : ℝ) :
       simpa using h.mul_const t
     have h := ((continuous_charFun
       (μ := geometricUniformDistribution q)).tendsto 0).comp hq0
-    simpa [charFun_zero] using h
+    simpa [charFun_zero, Function.comp_def] using h
   have hfin : ∀ m : ℕ,
       (cexp (((2⁻¹ * ((1 - q ^ m) * t) : ℝ) : ℂ) * I) *
         ∏ k ∈ Finset.range m,
