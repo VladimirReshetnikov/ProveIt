@@ -176,6 +176,10 @@ stated once, and the distinctive layers of the later twins --- fractal strings,
 parameter limits, general-base Laplace theory, the two $\operatorname{Fup}$
 hierarchies, derivative equimeasurability, and the edge pantograph --- are folded in
 as new sections.
+Part~VII is an editorial merge of the two independent sixteenth/seventeenth-wave
+signed/reciprocal-$q$ reports (shared core --- sign conjugacy, multisection,
+cumulants, spectral Pochhammer factorization --- stated once with
+cross-checked constants; each wave's unique layers retained and labeled).
 The verification packages of all merged drafts are preserved verbatim under \path{assets/}.  Later edits add status-only Lean
 crosswalk annotations; the historical source hashes below are unchanged.
 The absorbed drafts are deleted from the working tree; git history is the archive.
@@ -189,6 +193,8 @@ The absorbed drafts are deleted from the working tree; git history is the archiv
 \item \path{atomic_sinc_splines_report_package/atomic_sinc_splines_report.tex} \\ {\footnotesize SHA-256 \path{1c65e30feb6589de33512ce659b87261f240c538813c454efc7d5eef4be54f6f}} (thirteenth wave; Part~VI --- translation and frontier expansion of Rvachev's Chapter~3)
 \item \path{Atomic_Functions_Beyond_Dyadic_Report/Atomic_Functions_Beyond_Dyadic.tex} \\ {\footnotesize SHA-256 \path{021d14ffcac62fa18a9a11ba48dce4bb1c58f8da9ffa6b7c1f47f659f112c8b6}} (fourteenth wave; merged editorially into Part~VI --- second independent reconstruction of the same chapter, contributing the fractal-string/tube-formula, degree-law, parameter-limit, general-base Gamma--zeta Laplace, and $\operatorname{Fup}$-ladder layers)
 \item \path{Rvachev_Atomic_Functions_Report/Atomic_Functions_Rvachev_Report.tex} \\ {\footnotesize SHA-256 \path{6a7f769197b695ce6f73510ecbead96997e75ae3856e5372e93950169b96a662}} (fifteenth wave; merged editorially into Part~VI --- third independent reconstruction of the same chapter, contributing the signed gap leading coefficients, derivative equimeasurability with the full $L^p$ ladder, the classical $\operatorname{Fup}_n$ hierarchy with its triangular reconstruction mask and Gaussian regime, and the edge pantograph equations)
+\item \path{Fabius_Q_Connections_Report/fabius_q_connections_report.tex} \\ {\footnotesize SHA-256 \path{5e45c732e77a72616c37d5d4d0617b065bb43fe2b525631a6bb2e589cd869f29}} (sixteenth wave, ``Beyond the Dyadic Fabius Web''; merged editorially into Part~VII with its seventeenth-wave twin)
+\item \path{Signed_Reciprocal_q_Fabius_Frontiers/Signed_Reciprocal_q_Fabius_Frontiers.tex} \\ {\footnotesize SHA-256 \path{ba843c7a4e0cc250e889c398ab5b72f9ade276f6ad9587b56cf22a4a5e7e2db8}} (seventeenth wave; merged editorially into Part~VII with its sixteenth-wave twin --- signed and reciprocal parameter orbits of the geometric-uniform family)
 \end{itemize}
 \clearpage
 \part{Exponent-Sequence and Newton-Basis Frontiers for the Fabius--Rvachev System}
@@ -11621,6 +11627,1516 @@ G. de Rham,
 ``Sur quelques courbes d\'efinies par des \'equations fonctionnelles,''
 \emph{Rendiconti del Seminario Matematico dell'Universit\`a e del Politecnico
 di Torino} 16 (1956--1957), 101--113.
+
+\end{thebibliography}
+
+
+% ed.: Part VII local macros (checked absent from the volume registry;
+% \abs and \norm are inherited from Part II's block)
+\newcommand{\Unif}{\operatorname{Unif}}
+\newcommand{\floor}[1]{\left\lfloor#1\right\rfloor}
+\newcommand{\ceil}[1]{\left\lceil#1\right\rceil}
+\newcommand{\pospart}[1]{\left(#1\right)_{+}}
+\newcommand{\Br}{\mathfrak B}
+\newcommand{\Zpart}{\mathscr Z}
+\newcommand{\Gr}{\operatorname{Gr}}
+% ed.: restore arabic section numbering after Part VI
+\setcounter{section}{0}
+\renewcommand{\thesection}{\arabic{section}}
+\part{Signed and Reciprocal q-Fabius Frontiers}
+% Editorial merge (2026-08-28) of the two independent same-topic reports of the
+% sixteenth and seventeenth waves:
+%   Fabius_Q_Connections_Report/fabius_q_connections_report.tex
+%     ("Beyond the Dyadic Fabius Web")
+%   Signed_Reciprocal_q_Fabius_Frontiers/Signed_Reciprocal_q_Fabius_Frontiers.tex
+%     ("Signed and Reciprocal q-Fabius Frontiers")
+% Shared core (sign conjugacy, multisection, cumulants, spectral Pochhammer
+% factorization) stated once with cross-checked constants; the unique layers of
+% each source are retained and labeled by wave.
+
+\begin{abstract}
+The geometric-uniform family
+\[
+ Y_q=(1-q)\sum_{j\ge0}q^jU_j,
+ \qquad U_j\stackrel{\mathrm{iid}}{\sim}\Unif[0,1],
+\]
+contains the classical Fabius distribution at $q=1/2$ and, through the affine
+crosswalk of Part~VI, the entire atomic family $h_a$ at $q=1/a$.  This part
+studies the full signed and reciprocal parameter orbit
+$\{q,-q,q^{-1},-q^{-1}\}$, merging two independently written sixteenth- and
+seventeenth-wave reports whose shared core agreed identity for identity.
+Three exact symmetries organize everything: $q\mapsto-q$ is an affine sign
+conjugacy of centered uniform digits, so negative parameters create no new
+normalized shapes; $q\mapsto q^m$ is residue-class decimation, which exhibits
+the Fabius law as an explicit convolution of two quarter-base laws and is the
+probabilistic face of $q$-Pochhammer dissection; and $q\mapsto q^{-1}$ is digit
+reversal at the finite level and exact convolution inversion
+$M_q(t)M_{1/q}(-t)=1$ at the germ level.  The centered transform is a product
+of $q^2$-Pochhammer symbols over the sine zeros, packaging the spectral zeta
+function and the Bernoulli cumulant dictionary
+$\kappa_n=\tfrac{B_n}{n}(1-q)^n/(1-q^n)$.
+
+The reciprocal germs at $q=\pm2,\pm4$ are not probability laws on $\R$, but
+they are exactly the Fourier transforms of infinite convolutions of Laplace
+laws: their moments are moments of a positive measure on the vertical line
+$\Re z=1/2$, their Hankel determinants have sign $(-1)^{\binom n2}$, and their
+orthogonal polynomials have all zeros on that line.  The inverse of geometric
+averaging is a $q$-Fabius--Bernoulli Appell family interpolating Bernoulli
+polynomials ($q=0$) and centered monomials ($q\to1^-$).  A moment polynomial
+$\mathcal P_n(q)=\tfrac{(q;q)_n}{(1-q)^n}\tfrac{m_n(q)}{n!}$ clears all poles,
+and the exact inverse-geometric endpoint lattice
+$G_q(q^n)=q^{\binom{n+1}2}\mathcal P_n(q)/(q;q)_n$ generalizes the classical
+$F(2^{-n})$ formula, with all derivative jets and a uniform two-term
+endpoint asymptotic
+$\log G_q(x)=-\ell^2/(2L)-\ell\log\ell/L+\bigO(\ell)$ and its square-root/log-log
+inversion.  A two-nome binary-cube partition function unifies Gaussian
+$q$-binomial coefficients and Thue--Morse Prouhet cancellation as perpendicular
+faces of one finite product; its renormalized maximal Prouhet jet is exactly
+the $q$-Fabius moment generating function, and its position-energy layers
+carry the Grassmannian/Hermitian finite-geometry square of Fu, Reiner,
+Stanton, and Thiem.  Finite signed derivative combs interpolate between the
+full dyadic Thue--Morse grid at $q=1/2$ and a signed Cantor skeleton of
+Hausdorff dimension $1/2$ at $q=1/4$.  The general-$q$ endpoint cocycle
+conjectured by the sixteenth wave is proved here by specializing Part~VI's
+exact periodic Laplace decomposition; the density-level all-orders
+Lambert-$W_{-1}$ expansion remains the principal open program.
+\end{abstract}
+
+\section{Audit boundary, twin provenance, and the merge}
+
+\subsection{The two sources and their agreement}
+
+This part merges two same-topic reports written independently against
+same-day snapshots of the repository: the sixteenth wave
+(\emph{Beyond the Dyadic Fabius Web}: negative-$q$ conjugacy, $q$-power
+decimation, sinc--Pochhammer factorization, Thue--Morse desingularization,
+reciprocal-radix limits) and the seventeenth wave (\emph{Signed and Reciprocal
+$q$-Fabius Frontiers}: the reciprocal moment germ and its Laplace dual,
+two-nome Pochhammer--Prouhet partition functions, moment polynomials, and
+inverse-geometric endpoint lattices).  On their common core the two reports
+proved the same theorems by the same mechanisms --- the affine sign conjugacy
+with dilation $(1+q)/(1-q)$, the residue-class multisection with weights
+$q^r/[m]_q$, the Bernoulli cumulant dictionary, and the spectral
+$q^2$-Pochhammer factorization --- with every shared constant verified
+identical before merging.  Their unique layers are complementary: the
+sixteenth wave contributes the finite reciprocal-radix duality by digit
+reversal, the Thue--Morse desingularization of finite laws, the digit-position
+master product with its position-parity companion, reciprocal $q$-Lagrange row
+reversal, the exact plateau phase, and general-radix Bell--Bernoulli formulas;
+the seventeenth wave contributes the reciprocal meromorphic germ and its
+convolution inversion, the Laplace/vertical-line spectral dual with Hankel
+signatures and orthogonal polynomials, the $q$-Fabius--Bernoulli Appell
+family, the moment polynomial $\mathcal P_n$, the two-nome partition function,
+the finite-geometry square, the box-spline comb geometry, and the exact
+endpoint lattice with its uniform asymptotics.
+
+\begin{statusbox}{Novelty and proof-status convention}
+Novelty markers in this part are relative to the two audited repository
+snapshots named in the provenance list, not claims of worldwide priority.
+Statements carry the volume's usual flags: \statusproved{} for results proved
+in the merged sources, \statusderived{} for deductions from audited corpus
+theorems, and \statusopen{} for conjectures and programs.  Numerical evidence
+never substitutes for proof; both packages are deterministic and their exact
+checks are summarized in the numerics section.
+\end{statusbox}
+
+\subsection{Roles of the letter \texorpdfstring{$q$}{q}}
+
+Following the seventeenth wave, four roles of the letter $q$ are kept separate
+whenever two of them coexist: the geometric ratio of the random series
+($Y_q$, $M_q$); the Gaussian-binomial or position-energy nome ($\rho$ in
+$(u;\rho)_N$, $\qbinom Nk\rho$); the geometric digit-projection scale
+($\sigma$ in $A_{\sigma,N}$); and the finite-field cardinality ($Q$).  The
+spectral Pochhammer nome is always $q^2$: centering makes every factor even,
+and evenness forgets the sign of the geometric scale.  The classical Fabius
+case has all of these equal to powers of $1/2$, which is contingent, not
+structural.
+
+\subsection{The two Klein-four orbits}
+
+The maps $s(q)=-q$ and $r(q)=q^{-1}$ commute and generate a Klein four-group
+away from $q=0$.  The parameter values studied throughout this part form two
+orbits,
+\[
+ \mathcal O_2=\left\{\tfrac12,-\tfrac12,2,-2\right\},
+ \qquad
+ \mathcal O_4=\left\{\tfrac14,-\tfrac14,4,-4\right\},
+\]
+with means and (formal) variances
+\begin{center}
+\begin{tabular}{c c c c}
+\toprule
+$q$ & status & mean & variance/formal second cumulant \\
+\midrule
+$1/2$ & Fabius probability law & $1/2$ & $1/36$ \\
+$-1/2$ & affine Fabius law on $[-1,2]$ & $1/2$ & $1/4$ \\
+$2$ & reciprocal moment germ & $1/2$ & $-1/36$ \\
+$-2$ & reciprocal signed germ & $1/2$ & $-1/4$ \\
+\addlinespace
+$1/4$ & quartic geometric probability law & $1/2$ & $1/20$ \\
+$-1/4$ & affine quartic law on $[-1/3,4/3]$ & $1/2$ & $5/36$ \\
+$4$ & reciprocal quartic germ & $1/2$ & $-1/20$ \\
+$-4$ & reciprocal signed quartic germ & $1/2$ & $-5/36$ \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\section{The geometric-uniform family and its reciprocal germ}
+\label{p7:sec:germ}
+
+\subsection{Definition, support, and uniqueness}
+
+Let $(U_j)_{j\ge0}$ be independent $\Unif[0,1]$ variables and, for real
+$|q|<1$,
+\begin{equation}\label{p7:eq:Yq}
+ Y_q=(1-q)\sum_{j=0}^{\infty}q^jU_j,
+ \qquad
+ Y_q-\frac12=(1-q)\sum_{j=0}^{\infty}q^jV_j,
+ \quad V_j=U_j-\tfrac12.
+\end{equation}
+The weights sum to one, so $\E Y_q=1/2$ for every real $|q|<1$, and the
+symmetry of the $V_j$ makes the law of $Y_q$ symmetric about $1/2$, including
+at negative $q$.  For $0\le q<1$ the support is $[0,1]$; at $q=1/2$ the CDF is
+the classical bounded Fabius function $F$.  For $q=-a$ with $0<a<1$, summing
+the positive and negative coefficient parts gives
+\begin{equation}\label{p7:eq:negative-support}
+ \supp Y_{-a}=\left[-\frac a{1-a},\ \frac1{1-a}\right],
+\end{equation}
+an interval (not a Cantor set), with midpoint $1/2$.  Separating the first
+digit gives the affine fixed point
+\begin{equation}\label{p7:eq:affine-fixed-point}
+ Y_q\overset d=(1-q)U+qY_q',
+\end{equation}
+and (sixteenth wave) the map
+$\nu\mapsto\Law((1-q)U+qZ)$, $Z\sim\nu$, is a $W_1$-contraction with ratio
+$|q|$ on laws with finite first moment, so \eqref{p7:eq:affine-fixed-point}
+has $\Law(Y_q)$ as its unique finite-mean solution.  We write
+$G_q(x)=\Prob(Y_q\le x)$ and $g_q=G_q'$ in the probability regime, and
+$m_n(q)=\E Y_q^n$, $a_n(q)=m_n(q)/n!$.
+
+\subsection{The universal Mahler equation and the reciprocal germ}
+
+Put $E(z)=(\e^z-1)/z$, $E(0)=1$.  For $|q|<1$ the moment generating function
+is entire,
+\begin{equation}\label{p7:eq:Mq-inside}
+ M_q(t)=\E\e^{tY_q}
+ =\prod_{j=0}^{\infty}E\bigl((1-q)q^jt\bigr),
+\end{equation}
+and splitting the factor $j=0$ gives the normalized Mahler equation
+\begin{equation}\label{p7:eq:Mahler}
+ \boxed{\,M_q(t)=E\bigl((1-q)t\bigr)\,M_q(qt).\,}
+\end{equation}
+For $|q|>1$ the series diverges, but (seventeenth wave) there is a canonical
+\emph{reciprocal germ}
+\begin{equation}\label{p7:eq:Mq-outside}
+ M_q(t)=
+ \left[\prod_{j=1}^{\infty}E\bigl((1-q)q^{-j}t\bigr)\right]^{-1},
+\end{equation}
+meromorphic on $\C$ and analytic at the origin; reindexing shows it satisfies
+the same equation \eqref{p7:eq:Mahler}.  The unit circle, not the sign of
+$q$, separates the probability and reciprocal regimes.
+
+\begin{theorem}[Uniqueness of the normalized formal solution]
+\label{p7:thm:formal-unique}
+Let $q\in\C$ with $q^n\ne1$ for all $n\ge1$.  There is a unique formal power
+series $M_q\in\C[[t]]$ with $M_q(0)=1$ satisfying \eqref{p7:eq:Mahler}; it is
+realized by \eqref{p7:eq:Mq-inside} for $|q|<1$ and by
+\eqref{p7:eq:Mq-outside} for $|q|>1$.  Equivalently, the exponential moment
+coefficients obey
+\begin{equation}\label{p7:eq:an-recurrence}
+ (1-q^n)\,a_n(q)=
+ \sum_{r=1}^{n}\frac{(1-q)^rq^{\,n-r}}{(r+1)!}\,a_{n-r}(q),
+ \qquad a_0=1,
+\end{equation}
+which at $q=1/2$ is the classical Fabius half-moment recurrence.
+\end{theorem}
+
+\begin{proof}
+Comparing the coefficient of $t^n$ in \eqref{p7:eq:Mahler} gives
+\eqref{p7:eq:an-recurrence}, and $1-q^n\ne0$ determines $a_n$ recursively.
+The convergent products satisfy the same equation and normalization.
+\end{proof}
+
+Since $E(-z)=\e^{-z}E(z)$ and the weights sum to one,
+$M_q(-t)=\e^{-t}M_q(t)$ in every regime.  The \emph{centered germ}
+\begin{equation}\label{p7:eq:Cq}
+ C_q(t)=\e^{-t/2}M_q(t),
+ \qquad C_q(-t)=C_q(t),
+\end{equation}
+is even, so all centered odd cumulants vanish --- ordinary reflection about
+$1/2$ inside the disk, an exact algebraic symmetry outside it.
+
+\section{The Klein-four sign and inversion calculus}
+\label{p7:sec:klein-four}
+
+\subsection{Negative parameters are affine positive laws}
+
+\begin{theorem}[Affine sign conjugacy; both waves independently]
+\label{p7:thm:sign-conjugacy}
+For $0<a<1$, put
+\[
+ \lambda_a=\frac{1+a}{1-a},\qquad\beta_a=\frac a{1-a}.
+\]
+Then
+\begin{equation}\label{p7:eq:sign-law}
+ \boxed{\,Y_{-a}\overset d=\lambda_aY_a-\beta_a,\qquad
+ Y_{-a}-\tfrac12\overset d=\lambda_a\bigl(Y_a-\tfrac12\bigr),\,}
+\end{equation}
+equivalently $M_{-a}(t)=\e^{-\beta_at}M_a(\lambda_at)$ and
+$C_{-a}(t)=C_a(\lambda_at)$.
+\end{theorem}
+
+\begin{proof}
+In the centered series \eqref{p7:eq:Yq}, replace $(-1)^jV_j$ by $V_j$ in law
+(the $V_j$ are symmetric and independent):
+$Y_{-a}-\tfrac12=(1+a)\sum_j(-a)^jV_j
+\overset d=(1+a)\sum_ja^jV_j=\lambda_a(Y_a-\tfrac12)$.
+\end{proof}
+
+\begin{corollary}[Complete transport]\label{p7:cor:transport}
+For $0<a<1$,
+\begin{align}
+ G_{-a}(x)&=G_a\!\left(\frac{x+\beta_a}{\lambda_a}\right),
+ \qquad
+ g_{-a}(x)=\frac1{\lambda_a}\,
+ g_a\!\left(\frac{x+\beta_a}{\lambda_a}\right),
+ \label{p7:eq:cdf-transport}\\
+ G_{-a}^{-1}(u)&=\lambda_aG_a^{-1}(u)-\beta_a,
+ \qquad 0<u<1.
+ \label{p7:eq:quantile-transport}
+\end{align}
+Every interior or endpoint expansion at $+a$ transfers exactly to $-a$; there
+is no independent negative-parameter asymptotic problem.  In particular
+\begin{equation}\label{p7:eq:negative-special}
+ Y_{-1/2}\overset d=3\,Y_{1/2}-1,
+ \qquad
+ Y_{-1/4}\overset d=\tfrac53\,Y_{1/4}-\tfrac13:
+\end{equation}
+the negative half-base law is the Fabius law stretched by $3$ onto $[-1,2]$,
+with $G_{-1/2}(x)=F\bigl(\tfrac{x+1}3\bigr)$ and density
+$\tfrac23\Up\bigl(\tfrac{2x-1}3\bigr)$ in Rvachev normalization.
+\end{corollary}
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.9\textwidth]{assets/Fabius_Q_Connections_Report/figures/physical_densities.pdf}
+\caption{Physical densities for $q=\pm\tfrac12,\pm\tfrac14$ (sixteenth-wave
+package).  The negative curves are exact affine stretches of their positive
+partners; the quarter-base profiles carry positive-length plateaus, while the
+half-base plateau is critical and collapses to the center
+(\cref{p7:thm:shape}).}
+\label{p7:fig:physical-densities}
+\end{figure}
+
+Standardizing removes the sign entirely (sixteenth wave): since
+$\sigma_{-a}=\lambda_a\sigma_a$, the variance-normalized laws satisfy
+$Z_{-a}\overset d=Z_a$, and the support-normalized density profile
+\begin{equation}\label{p7:eq:Uq-def}
+ \mathcal U_q(x)=R_qg_q\!\left(\tfrac12+R_qx\right),
+ \qquad
+ R_q=\frac{1-q}{2(1-\abs q)},
+ \qquad -1\le x\le1,
+\end{equation}
+obeys $\mathcal U_{-a}=\mathcal U_a$, with $\mathcal U_{1/2}=\Up$.  All
+normalized shape statistics are even functions of $q$.
+
+\subsection{Reciprocal inversion and the Cayley coordinate}
+
+\begin{theorem}[Reciprocal convolution inversion; seventeenth wave]
+\label{p7:thm:reciprocity}
+For every $q$ off the unit circle,
+\begin{equation}\label{p7:eq:reciprocity}
+ \boxed{\,M_q(t)\,M_{1/q}(-t)=1,
+ \qquad
+ C_q(t)\,C_{1/q}(t)=1.\,}
+\end{equation}
+At the coefficient level, the reciprocal moment row is the signed
+binomial-convolution inverse of the original row:
+$\sum_{k=0}^n\binom nk m_k(q)(-1)^{n-k}m_{n-k}(1/q)=\delta_{n0}$.
+\end{theorem}
+
+\begin{proof}
+For $|q|<1$,
+$M_{1/q}(-t)^{-1}
+=\prod_{j\ge1}E\bigl((1-q^{-1})q^j(-t)\bigr)
+=\prod_{j\ge1}E\bigl((1-q)q^{j-1}t\bigr)=M_q(t)$ by
+\eqref{p7:eq:Mq-outside}; interchange $q\leftrightarrow1/q$ for the other
+case, and combine with reflection for the centered form.
+\end{proof}
+
+In the Cayley coordinate $c(q)=(1+q)/(1-q)$ one has $c(-q)=c(q)^{-1}$ and
+$c(1/q)=-c(q)$, and the whole calculus is the pair
+\begin{equation}\label{p7:eq:cayley-calculus}
+ C_{-q}(t)=C_q\bigl(c(q)t\bigr),
+ \qquad
+ C_{1/q}(t)=C_q(t)^{-1}.
+\end{equation}
+For the two orbits, with $M=M_{1/2}$ and $N=M_{1/4}$:
+\begin{align}
+ M_{-1/2}(t)&=\e^{-t}M(3t),
+ &M_2(t)&=\e^t/M(t),
+ &M_{-2}(t)&=\e^{2t}/M(3t),
+ \label{p7:eq:dyadic-orbit}\\
+ M_{-1/4}(t)&=\e^{-t/3}N(5t/3),
+ &M_4(t)&=\e^t/N(t),
+ &M_{-4}(t)&=\e^{4t/3}/N(5t/3).
+ \label{p7:eq:quartic-orbit}
+\end{align}
+Even centered cumulants transform by
+$\kappa_{2m}(-q)=c(q)^{2m}\kappa_{2m}(q)$ and
+$\kappa_{2m}(1/q)=-\kappa_{2m}(q)$.
+
+\subsection{Finite reciprocal duality by digit reversal}
+
+The germ identity has an exact finite ancestor (sixteenth wave).  For
+$q\notin\{0,1\}$ with $q^m\ne1$, the normalized finite law
+\begin{equation}\label{p7:eq:finite-law}
+ Y_q^{[m]}=\alpha_{m,q}\sum_{j=0}^{m-1}q^jU_j,
+ \qquad
+ \alpha_{m,q}=\frac{1-q}{1-q^m},
+\end{equation}
+makes sense for \emph{every} such real $q$, and reversing the iid digit list
+proves
+\begin{equation}\label{p7:eq:finite-reciprocal}
+ \boxed{\,Y_q^{[m]}\overset d=Y_{q^{-1}}^{[m]},\,}
+ \qquad\text{and}\qquad
+ Y_q^{[m]}\Longrightarrow Y_{q^{-1}}
+ \quad(m\to\infty,\ \abs q>1),
+\end{equation}
+since $\alpha_{m,q}q^{m-1-j}=\alpha_{m,q^{-1}}q^{-j}$.  Thus the exterior
+parameters $2,-2,4,-4$, read through normalized finite sums, converge exactly
+to the interior laws at $1/2,-1/2,1/4,-1/4$: values $\abs q>1$ must not be
+inserted into the infinite series, but they have exact finite and limiting
+meanings after normalization and digit reversal.  The germ-level inversion
+\eqref{p7:eq:reciprocity} and the finite digit reversal are the analytic and
+combinatorial faces of the same duality.
+\section{Cumulants, spectral zeta, and shape}
+\label{p7:sec:cumulants}
+
+\subsection{The Bernoulli cumulant dictionary}
+
+\begin{theorem}[Signed/reciprocal cumulant dictionary; both waves]
+\label{p7:thm:cumulants}
+For every $q$ with $q^n\ne1$,
+\begin{equation}\label{p7:eq:cumulants}
+ \boxed{\ \kappa_1(q)=\frac12,
+ \qquad
+ \kappa_n(q)=\frac{B_n}{n}\,\frac{(1-q)^n}{1-q^n}
+ =\frac{B_n}{n}\,\frac{(1-q)^{n-1}}{[n]_q}
+ \quad(n\ge2),\ }
+\end{equation}
+with $[n]_q=1+q+\cdots+q^{n-1}$; all odd cumulants above the mean vanish, and
+\begin{equation}\label{p7:eq:variance}
+ \kappa_2(q)=\frac1{12}\,\frac{1-q}{1+q}.
+\end{equation}
+Moments are complete Bell polynomials,
+$m_n(q)=\Bell_n\bigl(\tfrac12,\kappa_2,0,\kappa_4,0,\ldots\bigr)$, hence exact
+rationals at every rational $q$.
+\end{theorem}
+
+\begin{proof}
+Insert $\log E(z)=\tfrac z2+\sum_{n\ge2}\tfrac{B_n}{n}\tfrac{z^n}{n!}$ into
+\eqref{p7:eq:Mq-inside} and sum $\sum_{j\ge0}q^{jn}=(1-q^n)^{-1}$; both sides
+of \eqref{p7:eq:cumulants} are rational in $q$ order by order and satisfy the
+unique recurrence of \cref{p7:thm:formal-unique}, which extends the formula to
+the reciprocal regime.
+\end{proof}
+
+The M\"obius factor $(1-q)/(1+q)$ already shows the two symmetries at the
+level of \eqref{p7:eq:variance}: $\kappa_{2m}(1/q)=-\kappa_{2m}(q)$ (inversion
+flips every even centered cumulant) and
+$\kappa_{2m}(-q)=c(q)^{2m}\kappa_{2m}(q)$.  The standardized cumulants
+\begin{equation}\label{p7:eq:standard-cumulants}
+ \kappa_{2m}(Z_q)=\frac{B_{2m}}{2m}\,12^m\,
+ \frac{(1-q^2)^m}{1-q^{2m}},
+ \qquad
+ \kappa_4(Z_q)=-\frac65\,\frac{1-q^2}{1+q^2},
+\end{equation}
+are even in $q$, making the normalized sign collapse algebraically
+transparent.
+
+\begin{statusbox}{Crosswalk to Part VI}
+Under the affine identification of \cref{p6:prop:q-crosswalk}
+($X_a\overset d=b_a(2Y_q-1)$ at $q=1/a$), the dictionary
+\eqref{p7:eq:cumulants} is equivalent to the cumulant formula
+\eqref{p6:eq:kappa}, and the standardized kurtosis in
+\eqref{p7:eq:standard-cumulants} is the $\lambda_4$ of Part~VI's Gaussian
+limit.  Likewise the Lindeberg limit $Z_q\Rightarrow N(0,1)$ as
+$\abs q\to1^-$, the uniform limit $Y_q\to U_0$ in $L^2$ as $q\to0$, the
+log-Gaussian Fourier envelope, and the exact plateau below are the
+$Y_q$-coordinate faces of \cref{p6:sec:parameter-limits},
+\cref{p6:eq:Fourier-logGaussian}, and the plateau
+\eqref{p6:eq:plateau}; they are stated here once in the $q$ normalization and
+not re-proved.
+\end{statusbox}
+
+\subsection{Spectral zeta and Fourier decay}
+
+The centered characteristic function is the sinc product
+\begin{equation}\label{p7:eq:psi-sinc}
+ \psi_q(t)=\E\,\e^{\ii t(Y_q-1/2)}
+ =\prod_{n=0}^{\infty}
+ \sinc\!\left(\frac{(1-q)q^nt}{2}\right),
+ \qquad
+ \psi_q(t)=\sinc\!\left(\tfrac{(1-q)t}2\right)\psi_q(qt),
+\end{equation}
+with positive zeros $\tau_{n,k}=2\pi k/\bigl((1-q)\abs q^n\bigr)$.  The
+indexed spectral zeta function evaluates in closed form (sixteenth wave,
+specializing the exponent-sequence machinery of Part~I):
+\begin{equation}\label{p7:eq:spectral-zeta}
+ \Zspec_q(s)=\sum_{n\ge0}\sum_{k\ge1}\tau_{n,k}^{-s}
+ =\left(\frac{1-q}{2\pi}\right)^{\!s}\frac{\zeta(s)}{1-\abs q^{\,s}},
+ \qquad
+ \log\psi_q(t)=-\sum_{m\ge1}\frac{\Zspec_q(2m)}m\,t^{2m},
+\end{equation}
+and $\kappa_{2m}(q)=(-1)^{m+1}2\,(2m-1)!\,\Zspec_q(2m)$.  The elementary
+cutoff argument gives the superpolynomial envelope
+$\log\abs{\psi_q(t)}\le-(\log\abs t)^2/(2\lambda)+\bigO_q(\log\abs t)$ with
+$\lambda=-\log\abs q$, so for every real $0<\abs q<1$ the law has a compactly
+supported $C^\infty$ density, all of whose derivatives vanish at both support
+endpoints.  The excluded case $q=0$ (the uniform law) marks a sharp regularity
+transition.
+
+\subsection{Log-concavity and the exact plateau phase}
+
+\begin{theorem}[Shape of the whole real family; sixteenth wave]
+\label{p7:thm:shape}
+For every real $0<\abs q<1$ the density $g_q$ is symmetric about $1/2$,
+positive on the interior of its support, log-concave, and unimodal.  For
+$0<a\le\tfrac12$,
+\begin{equation}\label{p7:eq:plateau}
+ g_a(x)=\frac1{1-a}
+ \quad\text{on }[a,\,1-a],
+ \qquad
+ g_{-a}(x)=\frac1{1+a}
+ \quad\text{on }\Bigl[\frac{a^2}{1-a},\,1-\frac{a^2}{1-a}\Bigr],
+\end{equation}
+these being the exact global maxima; for $a<\tfrac12$ the plateaus have
+positive length, and at $\abs q=\tfrac12$ they collapse to the central
+maximizer.
+\end{theorem}
+
+\begin{proof}
+Log-concavity: finite partial sums are convolutions of interval uniforms,
+log-concave by Pr\'ekopa--Leindler; the class is weakly closed, and the limit
+density is smooth.  Plateau: the fixed point \eqref{p7:eq:affine-fixed-point}
+writes $g_a$ as the uniform average
+$g_a(x)=\tfrac1{1-a}[G_a(x/a)-G_a((x-1+a)/a)]$; for $x\in[a,1-a]$ the first
+CDF value is $1$ and the second is $0$.  Convolution with a uniform kernel
+gives the matching upper bound, and the negative case is the affine image
+under \cref{p7:cor:transport}.
+\end{proof}
+
+In Part~VI coordinates the positive plateau is exactly the central plateau of
+$h_a$ at $a=1/q$; the phase boundary $\abs q=\tfrac12$ is the critical base
+$a=2$.  The conjecture that $\mathcal U_q$ is \emph{strictly} log-concave for
+$\tfrac12<\abs q<1$ is the register entry already recorded in Part~VI's
+future directions and is not repeated here.
+
+\section{Scale multisection and the half--quarter bridge}
+\label{p7:sec:multisection}
+
+\begin{theorem}[Geometric multisection; both waves]
+\label{p7:thm:multisection}
+Let $m\ge2$ and $[m]_q\ne0$, $q^n\ne1$.  As analytic germs,
+\begin{equation}\label{p7:eq:M-multisection}
+ \boxed{\ M_q(t)=\prod_{r=0}^{m-1}
+ M_{q^m}\!\left(\frac{q^r}{[m]_q}\,t\right),\ }
+\end{equation}
+and for $\abs q<1$ this is the distributional identity
+\begin{equation}\label{p7:eq:Y-multisection}
+ Y_q\overset d=\sum_{r=0}^{m-1}\frac{q^r}{[m]_q}\,Y_{q^m}^{(r)}
+\end{equation}
+with independent summands.  The cumulant compatibility check is the
+$q$-integer identity
+$\sum_{r<m}\bigl(q^r/[m]_q\bigr)^n=[m]_{q^n}/[m]_q^n$.
+\end{theorem}
+
+\begin{proof}
+Split the digit index as $j=mk+r$; the inner sums are independent copies of
+$Y_{q^m}$ with weights $(1-q)q^r/(1-q^m)$.  The reciprocal regime follows from
+the product definition \eqref{p7:eq:Mq-outside} by the same reindexing.
+\end{proof}
+
+The specializations at $m=2$ organize the two orbits into one system:
+\begin{align}
+ Y_{1/2}&\overset d=\tfrac23Y_{1/4}^{(0)}+\tfrac13Y_{1/4}^{(1)},
+ \label{p7:eq:half-quarter}\\
+ Y_{-1/2}&\overset d=2Y_{1/4}^{(0)}-Y_{1/4}^{(1)},
+ \qquad
+ M_2(t)=M_4(t/3)\,M_4(2t/3),
+ \label{p7:eq:signed-reciprocal-decimation}
+\end{align}
+and more generally
+$Y_{1/2}\overset d=(2^m-1)^{-1}\sum_{j<m}2^{m-1-j}Y_{2^{-m}}^{(j)}$: the
+Fabius law is a convolutional barycenter of the $q=2^{-m}$ family.  In the
+unnormalized centered coordinate $R_q=\sum_{j\ge0}q^jV_j$ the identity is
+cleaner still (seventeenth wave),
+\begin{equation}\label{p7:eq:R-multisection}
+ R_q\overset d=\sum_{r=0}^{m-1}q^rR_{q^m}^{(r)},
+ \qquad\text{so at }q=\tfrac12,\ m=2:\qquad
+ u_{1/2}=u_{1/4}*\bigl(2u_{1/4}(2\,\cdot)\bigr),
+\end{equation}
+where $u_q$ denotes the density of $R_q$ ($u_{1/2}$ is the Rvachev bump in
+its standard support normalization); the sixteenth wave states the same fact
+as $\Up=\mathcal D_{2/3}\,\mathcal U_{1/4}*\mathcal D_{1/3}\,\mathcal U_{1/4}$
+with $\mathcal D_c$ the $L^1$-dilation by $c$.  Multisection is
+simultaneously: an independent-sum decomposition of random digits, a
+convolution of densities, a factorization of Fourier products, and the
+elementary Pochhammer dissection
+$(a;q)_\infty=\prod_{r<m}(aq^r;q^m)_\infty$ --- the same identity in four
+coordinate systems, not four analogies.
+
+\section{Spectral \texorpdfstring{$q^2$}{q\^2}-Pochhammer products and zero divisors}
+\label{p7:sec:spectral}
+
+\subsection{The factorization inside and outside the disk}
+
+\begin{theorem}[Spectral Pochhammer factorization; both waves]
+\label{p7:thm:sinc-poch}
+For real $\abs q<1$,
+\begin{equation}\label{p7:eq:sinc-poch}
+ \boxed{\ \psi_q(t)=\prod_{k=1}^{\infty}
+ \left(\frac{(1-q)^2t^2}{4\pi^2k^2};\,q^2\right)_{\!\infty},\ }
+\end{equation}
+locally uniformly in $t\in\C$; equivalently
+$M_q(t)=\e^{t/2}\prod_k\bigl(-\tfrac{(1-q)^2t^2}{4\pi^2k^2};q^2\bigr)_\infty$.
+For $\abs q>1$ (seventeenth wave),
+\begin{equation}\label{p7:eq:sinc-poch-outside}
+ M_q(t)=\e^{t/2}\prod_{k=1}^{\infty}
+ \left(-\frac{(1-q^{-1})^2t^2}{4\pi^2k^2};\,q^{-2}\right)_{\!\infty}^{-1}:
+\end{equation}
+inversion is literally a zero--pole exchange in the same contracting nome.
+\end{theorem}
+
+\begin{proof}
+Insert Euler's product $\sinc z=\prod_k(1-z^2/\pi^2k^2)$ into every factor of
+\eqref{p7:eq:psi-sinc}; absolute convergence of the double perturbation series
+permits reordering, and the product over the scale index is a
+$q^2$-Pochhammer symbol.  Outside the disk, apply this to $1/C_{1/q}$.
+\end{proof}
+
+The nome is $q^2$, not $q$: centering makes every factor even, and evenness
+forgets the sign of each geometric scale.  Thus $q=\pm\tfrac12$ share nome
+$\tfrac14$ and $q=\pm\tfrac14$ share nome $\tfrac1{16}$, with
+$\psi_{-1/2}(t)=\psi_{1/2}(3t)$ and $\psi_{-1/4}(t)=\psi_{1/4}(5t/3)$, while
+their reciprocals use the same nomes with inverse factors.  Multisection of
+the random digits and multisection of the Pochhammer product are the same
+identity (sixteenth wave): dissecting \eqref{p7:eq:sinc-poch} by
+$(a;Q)_\infty=\prod_{j<m}(aQ^j;Q^m)_\infty$ reproduces
+\cref{p7:thm:multisection} factor by factor.
+
+\subsection{Integer zero divisors at reciprocal-integer ratio}
+
+For the base-$b$ member it is convenient to renormalize the centered
+transform as
+\begin{equation}\label{p7:eq:Phi-q}
+ \Phi_q(z)=\prod_{j=0}^{\infty}\sinc(\pi q^jz)
+ \qquad(\abs q<1),
+\end{equation}
+so that at $q=1/b$ the factor $j=0$ vanishes exactly at the nonzero integers.
+
+\begin{proposition}[Base-$b$ zero divisor; seventeenth wave]
+\label{p7:prop:base-b-zero}
+Let $q=1/b$ with integer $b\ge2$.  At every nonzero integer $n$,
+\begin{equation}\label{p7:eq:base-b-zero}
+ \ord_{z=n}\Phi_{1/b}(z)=1+\nu_b(n),
+ \qquad
+ \nu_b(n)=\max\{j\ge0:b^j\mid n\}.
+\end{equation}
+In particular $\ord_{z=n}\Phi_{1/4}(z)=1+\floor{\vtwo(n)/2}$: the quartic
+transform sees binary valuation levels in pairs, the spectral counterpart of
+even/odd scale decimation.
+\end{proposition}
+
+\begin{proof}
+The factor $\sinc(\pi z/b^j)$ vanishes simply at $z=n\ne0$ exactly when
+$b^j\mid n$, that is, for $0\le j\le\nu_b(n)$; all other factors are nonzero
+there.
+\end{proof}
+
+At $b=2$ this is the classical multiplicity $1+\vtwo(n)$ of the dyadic
+corpus; the general-$b$ statement is the single-scale case of Part~I's
+exponent-sequence zero calculus.
+\section{Reciprocal Laplace duality and vertical moment geometry}
+\label{p7:sec:laplace-dual}
+
+The formal variance $-\kappa_2(1/q)$ of a reciprocal germ is negative, so
+$M_q$ with $q>1$ is the MGF of no real probability law.  The seventeenth wave
+resolves this positively: the obstruction disappears on a vertical line.
+
+\begin{theorem}[Positive Laplace representation; seventeenth wave]
+\label{p7:thm:laplace-dual}
+Let $\abs q>1$, $r=1/q$, and let $Z_{j,k}$ ($j\ge0$, $k\ge1$) be independent
+standard symmetric Laplace variables (density $\tfrac12\e^{-\abs x}$).  With
+scales $b_{j,k}(r)=\abs{1-r}\,\abs r^j/(2\pi k)$, the double series
+\begin{equation}\label{p7:eq:Lr}
+ L_{r}=\sum_{j\ge0}\sum_{k\ge1}b_{j,k}(r)\,Z_{j,k}
+\end{equation}
+converges almost surely and in $L^2$, and
+\begin{equation}\label{p7:eq:C-laplace}
+ \boxed{\ C_q(t)=\E\,\e^{\ii tL_{r}},
+ \qquad
+ m_n(q)=\E\Bigl(\tfrac12+\ii L_{r}\Bigr)^{n}.\ }
+\end{equation}
+The reciprocal moments are ordinary polynomial moments of a positive measure
+on the vertical line $\Re z=\tfrac12$.
+\end{theorem}
+
+\begin{proof}
+By \eqref{p7:eq:sinc-poch} and reciprocity,
+$C_q(t)=1/C_r(t)=\prod_{j,k}\bigl(1+b_{j,k}(r)^2t^2\bigr)^{-1}$, the
+characteristic function of the displayed Laplace convolution;
+$\sum b_{j,k}^2=(1-r)^2\zeta(2)/(4\pi^2(1-r^2))<\infty$ gives Kolmogorov
+convergence, and $M_q(t)=\e^{t/2}C_q(t)=\E\exp\bigl(t(\tfrac12+\ii
+L_r)\bigr)$ near $0$.
+\end{proof}
+
+The Laplace cumulants close the circle through Euler's evaluation: a Laplace
+variable of scale $b$ has even cumulants $(2m)!\,b^{2m}/m$, so
+$\kappa_{2m}(L_r)$ is a $\zeta(2m)$-sum over the double lattice, and
+$B_{2m}=(-1)^{m+1}2(2m)!\zeta(2m)/(2\pi)^{2m}$ turns it into
+$\kappa_{2m}(q)=(-1)^m\kappa_{2m}(L_r)$ --- exactly the $\ii^{2m}$ of the
+vertical embedding.
+
+\begin{theorem}[Hankel signature; seventeenth wave]
+\label{p7:thm:hankel}
+For real $\abs q>1$ and every $n\ge1$, the moment Hankel determinant
+$\Delta_n(q)=\det(m_{i+j}(q))_{0\le i,j<n}$ satisfies
+\begin{equation}\label{p7:eq:hankel-signature}
+ \boxed{\ \sgn\Delta_n(q)=(-1)^{\binom n2},\ }
+\end{equation}
+and no $\Delta_n(q)$ vanishes.
+\end{theorem}
+
+\begin{proof}
+The real Hankel determinant $H_n$ of $L_r$ is strictly positive (its law has
+full support, so $1,x,\ldots,x^{n-1}$ are independent in $L^2$).  Translating
+a moment sequence is a unit-triangular change of basis, and scaling by $a$
+multiplies the $n$th determinant by $a^{n(n-1)}$; applying both to
+$\tfrac12+\ii L_r$ gives $\Delta_n(q)=\ii^{\,n(n-1)}H_n=(-1)^{\binom n2}H_n$.
+\end{proof}
+
+Consequently the reciprocal moment functional is quasi-definite: its monic
+orthogonal polynomials exist, satisfy
+$P_{n+1}(z)=(z-\tfrac12)P_n(z)+\beta_n^{(r)}P_{n-1}(z)$ with
+$\beta_n^{(r)}>0$ inherited from the symmetric Jacobi recurrence of $L_r$, and
+have all zeros on $\Re z=\tfrac12$.  Reciprocal $q$ does not destroy
+positivity; it rotates it onto a vertical line.  Determining the Jacobi
+coefficients $\beta_n^{(r)}$, their asymptotics, and their relation to the
+double geometric/harmonic scale lattice is posed in the frontier section.
+
+\section{\texorpdfstring{$q$}{q}-Fabius--Bernoulli Appell polynomials}
+\label{p7:sec:appell}
+
+On polynomials, geometric averaging $(\mathcal A_rf)(x)=\E f(x+Y_r)$ is the
+multiplier $M_r(D)$, so reciprocity identifies its inverse with no triangular
+solve (seventeenth wave):
+\begin{equation}\label{p7:eq:averaging-inverse}
+ \boxed{\ \mathcal A_r^{-1}=M_{1/r}(-D).\ }
+\end{equation}
+The reciprocal germ is the deconvolution symbol for geometric-uniform
+smoothing.  Define the Appell family
+\begin{equation}\label{p7:eq:appell-gen}
+ \sum_{n\ge0}\Br_n^{(r)}(x)\frac{t^n}{n!}
+ =\frac{\e^{xt}}{M_r(t)},
+\end{equation}
+so that $\tfrac{\dd}{\dd x}\Br_n^{(r)}=n\Br_{n-1}^{(r)}$ and
+\begin{equation}\label{p7:eq:appell-deconvolution}
+ \boxed{\ \E\,\Br_n^{(r)}(x+Y_r)=x^n.\ }
+\end{equation}
+The family interpolates two classical boundaries:
+\begin{equation}\label{p7:eq:appell-boundaries}
+ \Br_n^{(0)}(x)=B_n(x)
+ \quad\text{(ordinary Bernoulli polynomials)},
+ \qquad
+ \Br_n^{(r)}(x)\longrightarrow\Bigl(x-\tfrac12\Bigr)^{n}
+ \quad(r\to1^-),
+\end{equation}
+and from outside the disk,
+$M_q(t)\to t\e^t/(\e^t-1)=\sum B_n(1)t^n/n!$ as $\abs q\to\infty$: Bernoulli
+polynomials sit at both ends of the sign/reciprocal diagram.  The Mahler
+equation induces the refinement
+\begin{equation}\label{p7:eq:appell-mahler}
+ \Br_n^{(r)}(x)=
+ \sum_{k=0}^{n}\binom nk B_k\,(1-r)^kr^{\,n-k}\,
+ \Br_{n-k}^{(r)}\!\left(\frac xr\right)
+\end{equation}
+(with $B_1=-\tfrac12$), a Bernoulli-polynomial analogue of the Fabius Mahler
+equation; and the Bell form
+$\Br_n^{(r)}(x)=\Bell_n\bigl(x-\tfrac12,-\kappa_2(r),0,-\kappa_4(r),0,
+\ldots\bigr)$ gives
+\[
+ \Br_2^{(r)}=z^2-v_r,\quad
+ \Br_3^{(r)}=z^3-3v_rz,\quad
+ \Br_4^{(r)}=z^4-6v_rz^2+3v_r^2-\kappa_4(r),
+ \qquad z=x-\tfrac12,\ v_r=\kappa_2(r),
+\]
+with the reflection $\Br_n^{(r)}(1-x)=(-1)^n\Br_n^{(r)}(x)$.  Their
+arithmetic (von Staudt--Clausen analogues, multiplication theorems, root
+geometry) is a fresh research program.
+
+\section{The Fabius--Pochhammer moment polynomial}
+\label{p7:sec:moment-polynomial}
+
+The exponential moments $a_n(q)$ have poles at roots of unity.  Clearing them
+with the finite Pochhammer symbol produces a polynomial invariant
+(seventeenth wave):
+\begin{equation}\label{p7:eq:Pn-def}
+ \boxed{\ \mathcal P_n(q)=\frac{(q;q)_n}{(1-q)^n}\,\frac{m_n(q)}{n!}.\ }
+\end{equation}
+
+\begin{theorem}[Polynomial recurrence and boundaries]
+\label{p7:thm:Pn}
+$\mathcal P_n\in\Q[q]$ with $\deg\mathcal P_n\le\binom n2$,
+$\mathcal P_0=1$, and
+\begin{equation}\label{p7:eq:Pn-recurrence}
+ \mathcal P_n(q)=
+ \sum_{k=0}^{n-1}\frac{q^k}{(n-k+1)!}\,
+ \frac{(q;q)_{n-1}}{(q;q)_k}\,\mathcal P_k(q),
+\end{equation}
+with boundary data
+$\mathcal P_n(0)=\tfrac1{(n+1)!}$ and leading coefficient
+$[q^{\binom n2}]\mathcal P_n=B_n(1)/n!$ (so odd $n>1$ drop strictly below the
+degree bound).
+\end{theorem}
+
+\begin{proof}
+Multiply \eqref{p7:eq:an-recurrence} by $(q;q)_{n-1}/(1-q)^n$ and substitute
+$a_k=(1-q)^k\mathcal P_k/(q;q)_k$; the quotient
+$(q;q)_{n-1}/(q;q)_k$ is a polynomial and the degree bound follows by
+induction.  At $q=0$ only $k=0$ survives; as $q\to\infty$,
+$m_n(q)/n!\to B_n(1)/n!$ while $(q;q)_n/(1-q)^n\sim q^{\binom n2}$.
+\end{proof}
+
+The first values are
+\[
+ \mathcal P_1=\tfrac12,\qquad
+ \mathcal P_2=\frac{q+2}{12},\qquad
+ \mathcal P_3=\frac{q^2+q+1}{24},
+\]
+\[
+ \mathcal P_4=-\frac{(q^2+q+1)(q^4-2q^3-5q^2-3q-6)}{720},
+\]
+and the exact factorizations continue with
+\begin{align}
+ \mathcal P_5&=-\frac{[3]_q[5]_q\,(q^3-2q^2-2)}{1440},
+ \notag\\
+ \mathcal P_7&=\frac{[3]_q[5]_q[7]_q\,
+ (2q^8-6q^7+4q^6-3q^5+6q^4-4q^3+7q^2+3)}{120960},
+ \label{p7:eq:Pn-factorizations}
+\end{align}
+with an analogous $[3]_q[5]_q$ factor in $\mathcal P_6$.
+
+\begin{conjecture}[Odd $q$-integer divisor; seventeenth wave]
+\label{p7:conj:Pn-divisibility}
+For every $n\ge3$,
+$\prod_{3\le d\le n,\ d\ \mathrm{odd}}[d]_q$ divides $\mathcal P_n(q)$ in
+$\Q[q]$.  Checked symbolically through $n=16$.  Since
+$\prod_{d}[d]_q=\prod_e\Phi_e(q)^{\floor{(\floor{n/e}+1)/2}}$ over odd
+cyclotomic indices $e$, repeated cyclotomic jets --- not mere vanishing at
+primitive odd roots of unity --- must be controlled; the cancellation-order
+calculus of the two-nome partition function below is a candidate mechanism.
+\end{conjecture}
+
+The polynomial is not decorative: the exact endpoint lattice of
+\cref{p7:sec:endpoints} reads
+$G_q(q^n)=q^{\binom{n+1}2}\mathcal P_n(q)/(q;q)_n$, so $(q;q)_n$ is precisely
+the pole-clearing factor of the moment recurrence surfacing as the endpoint
+denominator --- Mersenne factors at $q=\tfrac12$, factors $4^j-1$ at
+$q=\tfrac14$.
+\section{Two master products on the binary cube}
+\label{p7:sec:master-products}
+
+The Thue--Morse product and the $q$-Pochhammer symbol are unified twice over
+by the two waves, through two complementary four-parameter products.  For
+$\epsilon\in\{0,1\}^N$ write
+$\abs\epsilon=\sum_j\epsilon_j$ (Hamming weight),
+$\Omega(\epsilon)=\sum_jj\epsilon_j$ (position energy), and
+$A_{\sigma,N}(\epsilon)=\sum_j\epsilon_j\sigma^j$ (geometric projection).
+
+\subsection{The two-nome partition function}
+
+\begin{definition}[Seventeenth wave]
+\label{p7:def:two-nome}
+For parameters $u,t,\rho,\sigma$ set
+\begin{equation}\label{p7:eq:Z-master}
+ \Zpart_N(u,t;\rho,\sigma)=
+ \prod_{j=0}^{N-1}\bigl(1-u\rho^j\e^{t\sigma^j}\bigr)
+ =\sum_{\epsilon\in\{0,1\}^N}
+ (-u)^{\abs\epsilon}\rho^{\Omega(\epsilon)}
+ \e^{tA_{\sigma,N}(\epsilon)}.
+\end{equation}
+\end{definition}
+
+Its $t=0$ face is finite Pochhammer/Gaussian calculus,
+$\Zpart_N(u,0;\rho,\sigma)=(u;\rho)_N
+=\sum_k(-u)^k\rho^{\binom k2}\qbinom Nk\rho$; its $(u,\rho)=(1,1)$ face is
+the geometric Prouhet generator
+$\prod_{j<N}(1-\e^{t\sigma^j})$.  The $q$-Pochhammer and Thue--Morse products
+are perpendicular faces of one object, and the two nomes must not be
+identified prematurely.  Splitting $j=mk+r$ gives simultaneous multisection in
+both nomes,
+\begin{equation}\label{p7:eq:Z-multisection}
+ \Zpart_{mN}(u,t;\rho,\sigma)
+ =\prod_{r=0}^{m-1}
+ \Zpart_N\bigl(u\rho^r,\,t\sigma^r;\,\rho^m,\sigma^m\bigr),
+\end{equation}
+whose faces are finite Pochhammer dissection and the comb convolution law of
+\cref{p7:sec:comb}, and whose normalized Prouhet jet recovers
+\cref{p7:thm:multisection}.  The mixed coefficients
+$\mathcal M_{N,k,m}=\sum_{\abs\epsilon=k}\rho^{\Omega(\epsilon)}
+A_{\sigma,N}(\epsilon)^m=(-1)^km!\,[u^kt^m]\Zpart_N$ refine each Gaussian row
+by geometric power moments, and the order of vanishing at $t=0$ is exactly
+$\#\{j<N:u\rho^j=1\}$ --- classical Prouhet cancellation is the maximal case
+$u=\rho=1$, while root-of-unity nomes select arithmetic progressions of digit
+positions and give exactly controlled \emph{partial} Prouhet cancellations.
+
+\subsection{The digit-position product and its position-parity companion}
+
+The sixteenth wave couples the position energy to the \emph{encoded integer}
+instead of the projected moment.  With $b_j(n)$ the binary digits of
+$n<2^m$, $\wt(n)=\sum_jb_j(n)$, and $\pi_2(n)=\sum_jj\,b_j(n)$,
+\begin{equation}\label{p7:eq:digit-master}
+ \Xi_m(u,z;q)=\prod_{j=0}^{m-1}\bigl(1-uq^jz^{2^j}\bigr)
+ =\sum_{n=0}^{2^m-1}(-u)^{\wt(n)}q^{\pi_2(n)}z^n,
+\end{equation}
+which simultaneously tracks the integer, its Hamming weight, and its occupied
+bit positions.  Setting $z=1$ gives
+$(u;q)_m=\sum_{n<2^m}(-u)^{\wt(n)}q^{\pi_2(n)}$, and at fixed weight
+\begin{equation}\label{p7:eq:fixed-weight}
+ \sum_{\substack{n<2^m\\ \wt(n)=k}}q^{\pi_2(n)}
+ =q^{\binom k2}\qbinom mkq,
+\end{equation}
+a specialization of the $q$-digital binomial theorem of Mansour and
+Nguyen~\cite{p7:mansour-nguyen}.  The shifted variant
+$\mathcal T_m(z;q)=\prod_{j<m}(1-q^{j+1}z^{2^j})
+=\sum_n(-1)^{\wt(n)}q^{\rho_2(n)}z^n$ with
+$\rho_2=\pi_2+\wt$ satisfies
+$\mathcal T_m(1;q)=(q;q)_m$; at negative nome $q=-r$ its coefficients become
+$\chi(n)r^{\rho_2(n)}$ with the \emph{position parity}
+$\chi(n)=(-1)^{\pi_2(n)}$.  The pair
+$\bigl((-1)^{\wt(n)},\chi(n)\bigr)$ is $2$-automatic with the four-state
+recurrences
+\begin{equation}\label{p7:eq:four-state}
+ \chi(2n)=\chi(2n+1)=\chi(n)\,(-1)^{\wt(n)},
+\end{equation}
+since doubling shifts every occupied position by one.  The infinite product
+satisfies the Mahler equation
+$\Xi_\infty(u,z;q)=(1-uz)\,\Xi_\infty(uq,z^2;q)$ and the finite reciprocity
+$\Xi_m(u,z;q)=(-u)^mq^{\binom m2}z^{2^m-1}\Xi_m(u^{-1},z^{-1};q^{-1})$ ---
+the digit-polynomial counterpart of the reciprocal law and the Lagrange row
+reversal below.
+
+\subsection{Prouhet moment transfer, desingularization, and Bell--Bernoulli}
+
+The Prouhet face carries an exact moment calculus, stated by the two waves in
+two equivalent dresses and merged here.
+
+\begin{theorem}[$q$-Prouhet moment transfer; both waves]
+\label{p7:thm:q-prouhet}
+Let $q\ne0$ be complex, $N\ge1$, and let
+$S_{N,m}(q)=\sum_{\epsilon}(-1)^{\abs\epsilon}A_{q,N}(\epsilon)^m$ be the
+signed power sums of the geometric subset sums.  With
+$T_{q,N}=\sum_{j<N}q^jU_j$,
+\begin{equation}\label{p7:eq:q-prouhet}
+ S_{N,m}(q)=0\quad(0\le m<N),
+ \qquad
+ \boxed{\ S_{N,N+\ell}(q)
+ =(-1)^N\frac{(N+\ell)!}{\ell!}\,q^{\binom N2}\,
+ \E\,T_{q,N}^{\,\ell}\ }
+ \quad(\ell\ge0).
+\end{equation}
+Equivalently (general-radix Bell--Bernoulli form), the same subset sums obey
+\begin{gather}
+ S_{N,N+\ell}(q)
+ =(-1)^Nq^{\binom N2}\frac{(N+\ell)!}{\ell!}\,
+ \Bell_\ell\bigl(\gamma_1,\ldots,\gamma_\ell\bigr),
+ \label{p7:eq:radix-bell}\\
+ \gamma_1=\tfrac12[N]_q,\qquad
+ \gamma_{2r}=\frac{B_{2r}}{2r}\,[N]_{q^{2r}},\qquad
+ \gamma_{2r+1}=0\quad(r\ge1),\notag
+\end{gather}
+and the finite product desingularizes into a normalized moment transform:
+with $\alpha_{N,q}=(1-q)/(1-q^N)$,
+\begin{equation}\label{p7:eq:desingularization}
+ \E\,\e^{t\left(Y_q^{[N]}-1/2\right)}
+ =\frac{(-1)^N\e^{-t/2}\,
+ \prod_{j<N}\bigl(1-\e^{\alpha_{N,q}q^jt}\bigr)}
+ {\alpha_{N,q}^{\,N}\,q^{\binom N2}\,t^{\,N}},
+\end{equation}
+which for $\abs q>1$ converges locally uniformly to the centered transform of
+$Y_{1/q}$.
+\end{theorem}
+
+\begin{proof}
+Factor $1-\e^{z}=-zE(z)$ in each term of the Prouhet face:
+$\prod_{j<N}(1-\e^{q^jt})=(-1)^Nq^{\binom N2}t^N\prod_{j<N}E(q^jt)$.  The
+explicit $t^N$ proves the vanishings; comparing the coefficient of
+$t^{N+\ell}$ gives \eqref{p7:eq:q-prouhet}, and expanding
+$\log\prod E(q^jt)$ by the uniform cumulant series gives
+\eqref{p7:eq:radix-bell} (the two right sides are the same number:
+$\E T_{q,N}^{\ell}=\ell!\,[t^\ell]\prod_{j<N}E(q^jt)$).  Dividing by the
+maximal Prouhet zero and centering gives \eqref{p7:eq:desingularization},
+and \eqref{p7:eq:finite-reciprocal} identifies the $\abs q>1$ limit.
+\end{proof}
+
+The first surviving moment is $S_{N,N}(q)=(-1)^NN!\,q^{\binom N2}$, and every
+$q$-Fabius moment is a normalized limit of first nonvanishing Thue--Morse
+jets:
+$m_\ell(q)=(1-q)^\ell\lim_N(-1)^Nq^{-\binom N2}
+\tfrac{\ell!}{(N+\ell)!}S_{N,N+\ell}(q)$.  In particular
+$b=2,-2,4,-4$ produce, through renormalized classical, negabinary, base-four,
+and negative base-four Thue--Morse exponential sums, exactly the laws at
+$q=\tfrac12,-\tfrac12,\tfrac14,-\tfrac14$.  The Fabius MGF is the normalized
+residual jet of the maximal Prouhet zero
+(\cref{p7:eq:desingularization} at $N\to\infty$; the same statement in the
+partition-function coordinate is
+$M_q(t)=\lim_N\Zpart_N(1,(1-q)t;1,q)\cdot
+\bigl[(-1)^N(1-q)^Nq^{\binom N2}t^N\bigr]^{-1}$).
+
+Two parity remarks connect the layers (sixteenth wave).  Centering the finite
+transform turns each factor into a hyperbolic sine; since $\sinh$ is odd, the
+radix sign change accumulates a global parity,
+\begin{equation}\label{p7:eq:sinh-parity}
+ \e^{-\frac12[N]_{-a}t}\,\prod_{j<N}\bigl(1-\e^{(-a)^jt}\bigr)
+ =(-1)^{\binom N2}\,
+ \e^{-\frac12[N]_{a}t}\,\prod_{j<N}\bigl(1-\e^{a^jt}\bigr),
+\end{equation}
+whereas the continuous centered factors are even sincs and absorb signs
+invisibly.  At the measure level (seventeenth wave), the signed comb
+$\Delta_{q,N}=\sum_\epsilon(-1)^{\abs\epsilon}\delta_{A_{q,N}(\epsilon)}$
+transports by
+\begin{equation}\label{p7:eq:comb-transport}
+ \Delta_{-a,N}=(-1)^{\floor{N/2}}\,\tau_{-c_{a,N}}\,\Delta_{a,N},
+ \qquad
+ \Delta_{q^{-1},N}=(D_{q^{-(N-1)}})_*\,\Delta_{q,N},
+\end{equation}
+($\tau_c$ translation, $D_c$ dilation, $c_{a,N}=a(1-a^{2\floor{N/2}})/(1-a^2)$,
+by complementing odd-position digits and by digit reversal respectively):
+sign is translation up to a global parity, inversion is dilation.  The
+Klein-four geometry acts identically on the infinite germ and on every finite
+comb.
+
+\section{Position-energy layers and the finite-geometry square}
+\label{p7:sec:position-energy}
+
+At fixed Hamming weight the position-energy layer is Gaussian,
+$H_{N,k}(\rho)=\sum_{\abs\epsilon=k}\rho^{\Omega(\epsilon)}
+=\rho^{\binom k2}\qbinom Nk\rho$, with reciprocity
+$H_{N,k}(\rho)=\rho^{k(N-1)}H_{N,k}(\rho^{-1})$ and
+$\qbinom Nk\rho=\rho^{k(N-k)}\qbinom Nk{\rho^{-1}}$.  At negative nome the
+signs are governed by two quadratic parities (seventeenth wave):
+\begin{equation}\label{p7:eq:H-signs}
+ \sgn H_{N,k}(-a)=(-1)^{\binom k2}
+ \quad(0<a<1),
+ \qquad
+ \sgn H_{N,k}(-a)=(-1)^{\binom k2+k(N-k)}
+ \quad(a>1),
+\end{equation}
+and pairing factors splits the negative row into two positive $a^2$-rows,
+$(z;-a)_{2m}=(z;a^2)_m(-az;a^2)_m$ --- the finite counterpart of sign
+conjugacy and decimation.  Interpreting the nome as a prime power connects
+the two orbits to finite geometry: $\qbinom NkQ$ counts $k$-planes in
+$\mathbb F_Q^N$, $\qbinom Nk{1/Q}=Q^{-k(N-k)}\#\Gr(k,\mathbb F_Q^N)$, and by
+Fu, Reiner, Stanton, and Thiem~\cite{p7:fu-reiner-stanton-thiem} the negative
+nome counts nondegenerate subspaces of Hermitian spaces:
+$\qbinom Nk{-Q}=(-Q)^{-k(N-k)}U_Q(N,k)$ and
+$\qbinom Nk{-1/Q}=Q^{-2k(N-k)}U_Q(N,k)$ over $\mathbb F_{Q^2}$.  The two
+orbits therefore carry a finite-geometry square: $\pm2,\pm\tfrac12$
+correspond to Grassmannians over $\mathbb F_2$ and Hermitian geometry over
+$\mathbb F_4$; $\pm4,\pm\tfrac14$ to $\mathbb F_4$ and $\mathbb F_{16}$.
+(For example $\#\Gr(2,\mathbb F_2^4)=35$ and $U_2(4,2)=240$ give
+$\qbinom42{1/2}=35/16$ and $\qbinom42{-1/2}=15/16$.)
+
+\section{Box-spline combs and the quartic Cantor skeleton}
+\label{p7:sec:comb}
+
+The centered finite law $R_{q,N}=\sum_{j<N}q^jV_j$ is a nonuniform box
+spline: with radius $A^{\mathrm{rad}}_{q,N}=\tfrac12\sum_{j<N}q^j$,
+\begin{gather}
+ B_{q,N}(x)=\frac1{(N-1)!\,q^{\binom N2}}
+ \sum_{\epsilon\in\{0,1\}^N}(-1)^{\abs\epsilon}
+ \pospart{x+A^{\mathrm{rad}}_{q,N}-A_{q,N}(\epsilon)}^{\,N-1},
+ \label{p7:eq:box-spline}\\
+ D^NB_{q,N}=q^{-\binom N2}\,
+ \tau_{-A^{\mathrm{rad}}_{q,N}}\,\Delta_{q,N},\notag
+\end{gather}
+so the $q$-Prouhet cancellation is precisely the vanishing of the first $N-1$
+distributional moments of the derivative comb, and $N$-fold integration
+converts the signed atoms into a positive spline.  At $q=\tfrac12$ the knots
+$A_{1/2,N}(\epsilon)$ fill a complete dyadic grid and the signs are the
+Thue--Morse sequence in binary order; at $q=\tfrac14$ the knots use only the
+digits $\{0,1\}$ in base four, and their infinite closure is the self-similar
+set
+\begin{equation}\label{p7:eq:quartic-cantor}
+ K^{\mathrm{raw}}_4=\Bigl\{\sum_{j\ge0}\epsilon_j4^{-j}:
+ \epsilon_j\in\{0,1\}\Bigr\},
+ \qquad
+ \dim_{\mathrm H}K^{\mathrm{raw}}_4=\frac{\log2}{\log4}=\frac12.
+\end{equation}
+The finite derivative comb is a signed Cantor skeleton even though the
+limiting density is $C^\infty$ with full interval support: integration
+through arbitrarily many uniform scales erases the gaps.  The comb
+multisection
+\begin{equation}\label{p7:eq:comb-multisection}
+ \Delta_{q,2N}=\Delta_{q^2,N}*(D_q)_*\Delta_{q^2,N}
+\end{equation}
+factors the full dyadic Thue--Morse comb into a convolution of two quartic
+Cantor combs --- the singular, derivative-level ancestor of the smooth
+convolution \eqref{p7:eq:half-quarter}.  (This comb calculus complements the
+dyadic-comb quadrature volume of the corpus, which studies unsigned
+equal-weight combs against $F$; here the combs are the signed Thue--Morse
+derivative skeletons of the family itself.)
+
+\begin{figure}[H]
+\centering
+\begin{minipage}[t]{0.48\textwidth}
+\centering
+\includegraphics[width=\textwidth]{assets/Signed_Reciprocal_q_Fabius_Frontiers/dyadic_thue_morse_comb.png}
+\end{minipage}\hfill
+\begin{minipage}[t]{0.48\textwidth}
+\centering
+\includegraphics[width=\textwidth]{assets/Signed_Reciprocal_q_Fabius_Frontiers/quartic_cantor_comb.png}
+\end{minipage}
+\caption{Signed derivative combs at level $N=9$ (ordinate: Thue--Morse
+sign).  Left, $q=1/2$: a full dyadic grid.  Right, $q=1/4$: base-four digits
+$\{0,1\}$ already displaying the dimension-$1/2$ Cantor geometry of
+\eqref{p7:eq:quartic-cantor}.}
+\label{p7:fig:combs}
+\end{figure}
+
+\section{Reciprocal \texorpdfstring{$q$}{q}-Lagrange rows}
+\label{p7:sec:lagrange}
+
+For evaluation at zero from geometric nodes $1,q,\ldots,q^n$, the Lagrange
+weights have the closed form
+$\lambda^{(q)}_{n,k}=(-1)^{n-k}q^{\binom{n-k+1}2}\qbinom nkq/(q;q)_n$, and
+digit --- here node --- reversal gives the exact row reversal (sixteenth
+wave)
+\begin{equation}\label{p7:eq:lagrange-reversal}
+ \boxed{\ \lambda^{(q)}_{n,k}=\lambda^{(q^{-1})}_{n,n-k}:\ }
+\end{equation}
+the rows for $q=2,-2,4,-4$ are exact reversals of the rows for
+$\tfrac12,-\tfrac12,\tfrac14,-\tfrac14$ (the geometric node list for
+$q^{-1}$, read backwards and rescaled by $q^n$, is the node list for $q$, and
+weights for evaluation at zero are scaling-invariant).  For example, at
+$n=5$, $q=\tfrac12$ the exact row is
+$\bigl(-\tfrac1{9765},\tfrac2{315},-\tfrac8{63},\tfrac{64}{63},
+-\tfrac{1024}{315},\tfrac{32768}{9765}\bigr)$, and the $q=2$ row is its
+reversal.  This is the interpolation-theoretic face of the same reciprocity
+that inverts the germ and dilates the comb, and it connects directly to the
+geometric-Lagrange and $q$-Richardson machinery of Parts~I--II.
+\section{Exact inverse-geometric endpoint lattices}
+\label{p7:sec:endpoints}
+
+\subsection{The stop-loss simplex formula}
+
+\begin{theorem}[Stop-loss endpoint formula; seventeenth wave]
+\label{p7:thm:stop-loss}
+Let $0<q<1$, $n\ge1$, and $0\le c\le(1-q)/q$.  Then
+\begin{equation}\label{p7:eq:stop-loss}
+ \boxed{\ G_q(q^nc)=
+ \frac{q^{\,n(n+1)/2}}{(1-q)^n\,n!}\,
+ \E\,\pospart{c-Y_q}^{\,n}.\ }
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+Split $Y_q=(1-q)\sum_{j<n}q^jU_j+q^nY_q'$ and condition on $Y_q'=y$.  The
+event becomes $\sum_{j<n}(1-q)q^jU_j\le q^n(c-y)$; the threshold is at most
+$q^nc\le(1-q)q^{n-1}$, the smallest coordinate width, so the upper cube
+constraints are inactive and the conditional probability is the full simplex
+volume
+$q^{n^2}(c-y)_+^n/\bigl(n!\prod_{j<n}(1-q)q^j\bigr)
+=q^{n(n+1)/2}(c-y)_+^n/\bigl((1-q)^nn!\bigr)$.  Average over $y$.
+\end{proof}
+
+\subsection{The lattice, its jets, and negative transport}
+
+For $0<q\le\tfrac12$ the value $c=1$ is admissible, and reflection
+$1-Y_q\overset d=Y_q$ turns the stop-loss moment into a raw moment.
+
+\begin{corollary}[Inverse-geometric endpoint identity]
+\label{p7:cor:inverse-geometric}
+For $0<q\le\tfrac12$ and $n\ge0$,
+\begin{equation}\label{p7:eq:inverse-geometric}
+ \boxed{\ G_q(q^n)=
+ \frac{q^{\binom{n+1}2}}{(1-q)^n}\,\frac{m_n(q)}{n!}
+ =\frac{q^{\binom{n+1}2}}{(q;q)_n}\,\mathcal P_n(q).\ }
+\end{equation}
+At $q=\tfrac12$ this is the classical dyadic formula
+$F(2^{-n})=2^{-\binom n2}m_n(\tfrac12)/n!$; at $q=\tfrac14$ it gives a new
+exact inverse-quartic lattice with first values
+\begin{equation}\label{p7:eq:quartic-values}
+ G_{1/4}\bigl(\tfrac14\bigr)=\tfrac16,\quad
+ G_{1/4}\bigl(\tfrac1{16}\bigr)=\tfrac1{240},\quad
+ G_{1/4}\bigl(\tfrac1{64}\bigr)=\tfrac1{51840},\quad
+ G_{1/4}\bigl(\tfrac1{256}\bigr)=\tfrac{121}{6768230400}.
+\end{equation}
+\end{corollary}
+
+\begin{theorem}[Endpoint derivative jets; seventeenth wave]
+\label{p7:thm:endpoint-jets}
+For $0<q\le\tfrac12$, $n\ge0$, and $0\le r\le n$,
+\begin{equation}\label{p7:eq:endpoint-jet}
+ \boxed{\ G_q^{(r)}(q^n)=
+ (1-q)^{-r}q^{-\binom r2}\,G_q\bigl(q^{\,n-r}\bigr)
+ =\frac{q^{\binom{n-r+1}2-\binom r2}}{(1-q)^n}\,
+ \frac{m_{n-r}(q)}{(n-r)!}.\ }
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+Conditioning on the first digit gives
+$G_q'(x)=\tfrac1{1-q}\bigl[G_q(x/q)-G_q((x-1+q)/q)\bigr]$; on the low
+interval $0\le x\le1-q$ the second term vanishes, so
+$G_q'(x)=(1-q)^{-1}G_q(x/q)$ --- the CDF face of the edge pantograph equation
+\eqref{p6:eq:edge-pantograph}.  Iterating $r$ times multiplies by
+$(1-q)^{-r}q^{-(0+1+\cdots+(r-1))}$ and dilates the argument to $x/q^r$; at
+$x=q^n$ every intermediate argument stays in the low interval because
+$q\le\tfrac12$ (at $q=\tfrac12$, by flat matching of the two smooth
+branches).
+\end{proof}
+
+In particular
+$g_q(q^n)=q^{\,n(n-1)/2}(1-q)^{-n}m_{n-1}(q)/(n-1)!$, and at $r=n$ the jet
+collapses to the elementary value $(1-q)^{-n}q^{-\binom n2}$.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.78\textwidth]{assets/Signed_Reciprocal_q_Fabius_Frontiers/quartic_endpoint_decay.png}
+\caption{Exact inverse-quartic lattice values
+\eqref{p7:eq:quartic-values} on a logarithmic ordinate.  The quadratic growth
+of $-\log G_{1/4}(4^{-n})$ is the discrete shadow of the two-term endpoint
+law of \cref{p7:thm:two-term}.}
+\label{p7:fig:quartic-endpoint}
+\end{figure}  By the affine
+transport \eqref{p7:eq:cdf-transport}, the negative laws inherit the whole
+lattice at the shifted nodes $\lambda_aa^n-\beta_a$ (accumulating at the left
+endpoint $-\beta_a$), with jets scaled by $\lambda_a^{-r}$; there is no
+independent negative-parameter endpoint problem.  Successive lattice ratios
+obey
+$G_q(q^{n+1})/G_q(q^n)\sim q^{\,n+1}/\bigl((1-q)(n+1)\bigr)$ --- faster than
+any geometric rate, the first visible sign of log-squared decay.
+
+\section{Endpoint asymptotics and the general-\texorpdfstring{$q$}{q} Lambert program}
+\label{p7:sec:endpoint-asymptotics}
+
+\subsection{A uniform two-term law and its inversion}
+
+\begin{theorem}[Uniform two-term endpoint asymptotic; seventeenth wave]
+\label{p7:thm:two-term}
+Fix $0<q\le\tfrac12$ and put $L=\log(1/q)$, $\ell=\log(1/x)$.  Then, as
+$x\downarrow0$,
+\begin{equation}\label{p7:eq:two-term}
+ \boxed{\ \log G_q(x)=
+ -\frac{\ell^2}{2L}-\frac{\ell\log\ell}{L}+\bigO_q(\ell).\ }
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+At lattice points, \eqref{p7:eq:inverse-geometric} gives
+$\log G_q(q^n)=-\tfrac L2n(n+1)-n\log(1-q)-\log n!+\log m_n(q)$.  Reflection
+gives the crude bounds $2^{-(n+1)}\le m_n(q)\le1$, so
+$\log m_n=\bigO(n)$; Stirling and $n=\ell/L$ give the display, and monotone
+bracketing between consecutive lattice points extends it to all $x$.
+\end{proof}
+
+\begin{corollary}[Inverse endpoint asymptotic]
+\label{p7:cor:inverse-asymptotic}
+For fixed $0<q\le\tfrac12$, as $y\downarrow0$,
+\begin{equation}\label{p7:eq:inverse-asymptotic}
+ \log\frac1{G_q^{-1}(y)}
+ =\sqrt{2L\log(1/y)}-\tfrac12\log\log(1/y)+\bigO_q(1).
+\end{equation}
+\end{corollary}
+
+The dyadic and quartic cases read
+$\log F(x)=-\tfrac{\log^2(1/x)}{2\log2}-\tfrac{\log(1/x)\log\log(1/x)}{\log2}
++\bigO(\log(1/x))$ and
+$\log G_{1/4}(x)=-\tfrac{\log^2(1/x)}{4\log2}
+-\tfrac{\log(1/x)\log\log(1/x)}{2\log2}+\bigO(\log(1/x))$: the quartic law is
+less flat at a common $x$ because its scale ladder descends faster.  These
+are deliberately weaker but uniform statements; the all-orders periodically
+corrected dyadic expansion lives in the inverse-endpoint volume of the
+corpus.
+
+\subsection{The periodic cocycle is now exact}
+
+The sixteenth wave formulated the Laplace-side structure as a conjecture: in
+the additive coordinate $y=\log((1-r)s)$, $\lambda=\log(1/r)$, the function
+$G_r^{\mathrm{coc}}(y)=\log\E\,\e^{-sY_r}$ satisfies the cocycle equation
+$G^{\mathrm{coc}}_r(y)-G^{\mathrm{coc}}_r(y-\lambda)
+=\log\bigl((1-\e^{-\e^y})/\e^y\bigr)$, and the conjecture asked for the
+normal form
+$-y^2/(2\lambda)-y/2+C_r+P_r(y/\lambda)+\smallo(1)$ with a real-analytic
+one-periodic $P_r$ whose Fourier coefficients come from a Mellin transform.
+
+\begin{theorem}[Resolution by the atomic decomposition]
+\label{p7:thm:cocycle-resolved}
+The conjectured normal form holds exactly, with an explicit exponentially
+small remainder and explicit Fourier coefficients.  Namely, with
+$u=(1-r)s$ and $a=1/r$,
+\begin{equation}\label{p7:eq:cocycle-exact}
+ \log\E\,\e^{-sY_r}
+ =\varkappa(u)+\Lambda_{a}(u)
+ =-\frac{(\log u)^2}{2\lambda}-\frac{\log u}{2}
+ +\Bigl[\varkappa(u)+\log u+P_{a}\bigl(\log_{a}u\bigr)\Bigr]
+ +E_{a}(u),
+\end{equation}
+where $\varkappa,\Lambda_a,P_a,E_a$ are the objects of
+\cref{p6:thm:general-periodic}: $P_{a}$ is one-periodic and real analytic
+with Fourier modes $-\Gamma(-\chi_k)\zeta(1-\chi_k)/\lambda$,
+$\chi_k=2\pi\ii k/\lambda$ (\cref{p6:thm:general-fourier-modes}), the bracket
+tends to $P_a(\log_au)$ up to $\bigO(\e^{-u})$ since
+$\varkappa(u)=-\log u+\bigO(\e^{-u})$, and
+$0\le E_{a}(u)\le\e^{-u}/\bigl((1-\e^{-u})(1-\e^{-(a-1)u})\bigr)$.
+\end{theorem}
+
+\begin{proof}
+$\E\,\e^{-sY_r}=\prod_{j\ge0}E\bigl(-(1-r)r^js\bigr)$ and
+$\log E(-v)=\varkappa(v)$, so the log-Laplace transform is
+$\sum_{j\ge0}\varkappa(ur^{j})=\varkappa(u)+\Lambda_{1/r}(u)$.  Apply the
+exact decomposition \eqref{p6:eq:general-exact-Laplace} at base $a=1/r$.
+\end{proof}
+
+Thus the transform-level half of the general-$q$ endpoint program is closed
+--- not only the existence of the periodic correction but its exact
+Gamma--zeta Fourier coefficients, uniformly in the base.  What remains open
+is the density level, exactly as in Part~VI:
+
+\begin{conjecture}[All-orders general-$q$ endpoint expansion; both waves]
+\label{p7:conj:all-orders}
+For each $0<q<1$, the density $g_q$, the CDF $G_q$, and the inverse
+$G_q^{-1}$ admit, near the left endpoint, complete transseries in inverse
+powers of the lower-Lambert coordinate
+$w_q(x)=-W_{-1}\bigl(-C_qx\bigr)$ (normalization $C_q$ fixed by the saddle
+of \eqref{p7:eq:cocycle-exact}), with coefficient functions real analytic and
+one-periodic in $w_q(x)/\log(1/q)$, generated by Bell polynomials in the
+derivatives of $P_{1/q}$, reducing at $q=\tfrac12$ to the corpus's dyadic
+lower-Lambert hierarchy and matching \cref{p7:thm:two-term} to two orders.
+By \cref{p7:cor:transport}, the negative-parameter cases require no separate
+analysis.  This is the same open program as Part~VI's refined endpoint
+conjecture, now with the quartic case singled out: decimation
+\eqref{p7:eq:half-quarter} couples the $q=\tfrac14$ periodic phase to the
+dyadic one at two interlaced scales, suggesting that the quartic profile can
+be reconstructed from the dyadic profile through a convolution saddle
+equation rather than computed from scratch.
+\end{conjecture}
+\section{Numerical experiments and reproducibility}
+\label{p7:sec:numerics}
+
+Both packages are deterministic (no random sampling) and preserved verbatim
+under \path{assets/}.
+
+\textbf{Sixteenth wave.}  The package is preserved under
+\path{assets/Fabius_Q_Connections_Report/}; its script
+\texttt{q\_fabius\_experiments.py} uses exact rational arithmetic for the
+finite $q$-binomial, Lagrange, and digit-product identities, 80-digit
+arithmetic for the analytic products, and a padded $2^{16}$-point FFT for
+density inversion.
+Selected residuals: sign conjugacy at $r=\tfrac12$ exact; decimation at
+$q=\tfrac12,m=3$ to $6.7\cdot10^{-16}$ (FFT); the sinc--Pochhammer logarithm
+at $q=-\tfrac12$ to $3.7\cdot10^{-72}$; Lagrange reciprocal reversal exact
+(zero rational mismatches) for all eight orbit values at $n=3,5,7$; the
+digit-position product exact at $m=8$; the standardized sign collapse at
+$r=\tfrac34$ to $4.8\cdot10^{-16}$; the quarter-base plateau height to
+$6.7\cdot10^{-16}$.  Figures: physical densities of the four interior laws
+(the negative curves exact affine stretches) and support-normalized profiles.
+
+\textbf{Seventeenth wave.}  The package is preserved under
+\path{assets/Signed_Reciprocal_q_Fabius_Frontiers/}; its script
+\texttt{numerical\_experiments.py} uses exact \texttt{Fraction} arithmetic
+for the moment recurrence (order $\le10$ at all eight values), affine
+conjugacy,
+reciprocal binomial-convolution inversion, decimation, position-energy
+layers ($N\le8$), the $q$-Prouhet transfer ($N\le7$, $\ell\le4$; all
+residuals identically zero), the $\mathcal P_n$ recurrence with polynomial
+long division for the divisor conjecture ($n\le16$), inverse-geometric
+endpoints ($n\le12$ at $q=\tfrac12,\tfrac14$), the Grassmannian/unitary
+square ($Q=2,4$, $N\le7$), and the reciprocal Hankel signature through order
+nine at $q=\pm2,\pm4$; plus $90$-digit checks of the Mahler, sign,
+reciprocal, and decimation product identities (largest residual
+$1.3\cdot10^{-40}$, from a deliberately finite $300$-factor truncation under
+an argument dilation of five).  Its exact computations were also used as a
+theorem-discovery filter: several plausible reciprocity formulas for
+$\mathcal P_n$ were rejected before statement --- in this subject,
+$q\leftrightarrow1/q$ introduces triangular powers that can make a wrong
+formula look valid in low degree.
+
+The exact moment table for the eight orbit values (through $m_6$; e.g.\
+$m_4(\tfrac12)=\tfrac{143}{1350}$, $m_6(2)=-\tfrac{16}{59535}$,
+$m_4(\tfrac14)=\tfrac{121}{850}$) is in
+\path{data/q_orbit_moments.csv} of the seventeenth-wave package, whose
+\path{data/} directory also carries the Prouhet, divisibility, endpoint,
+finite-geometry, and Hankel tables named in the sections above.
+
+\section{Conjectures, problems, and formalization roadmap}
+\label{p7:sec:frontier}
+
+\subsection{Frontier problems}
+
+Beyond \cref{p7:conj:Pn-divisibility,p7:conj:all-orders}, the merged register
+is:
+
+\begin{conjecture}[Generic natural boundary; seventeenth wave]
+\label{p7:conj:natural-boundary}
+For generic fixed $t\ne0$, the unit circle $\abs q=1$ is a natural boundary
+for $q\mapsto C_q(t)$, after removal of isolated removable degeneracies: the
+cumulant coefficients $(1-q)^{2m}/(1-q^{2m})$ have poles at all roots of
+unity, and no single-valued meromorphic continuation should cross a
+nontrivial arc.  A proof strategy is to isolate a primitive root-of-unity
+singularity in one cumulant order that lower orders cannot cancel; the
+partition function $\Zpart_N$ supplies finite approximants with explicit
+root-of-unity zero orders.
+\end{conjecture}
+
+\begin{problem}[Reciprocal orthogonal polynomials]
+Determine the Jacobi coefficients $\beta_n^{(r)}$ of the Laplace dual law
+\eqref{p7:eq:Lr} exactly or asymptotically; find the $q$-difference structure
+induced by adding one geometric layer; determine the limiting zero
+distribution; compare $r=\tfrac12$ and $r=\tfrac14$ through multisection;
+and decide membership in a tractable subclass of generalized gamma
+convolutions (the signed Laplace differences are not themselves a positive
+convolution on $\R_+$).
+\end{problem}
+
+\begin{problem}[Arithmetic of $\mathcal P_n$ and of the Appell family]
+Find the least $D_n$ with $D_n\mathcal P_n\in\Z[q]$ and compare its prime
+valuations with von Staudt--Clausen denominators and the Mersenne/Fermat
+factors of $(q;q)_n$ at rational $q$; describe the root geometry of
+$\mathcal P_n$ (forced cyclotomic zeros versus limiting curves); develop
+multiplication theorems and integrality for $\Br_n^{(r)}$.  Through
+decimation, investigate whether the dyadic value arithmetic of Arias de
+Reyna and Haugland decomposes into bilinear expressions in quarter-base
+values --- negative-parameter value questions reduce affinely and should
+never be duplicated.
+\end{problem}
+
+\begin{problem}[Two-nome phase diagram and root-of-unity renormalization]
+Carry out the $N\to\infty$ saddle analysis of the mixed coefficients of
+$\Zpart_N(u,t;\rho,\sigma)$ in the regimes $\abs\rho,\abs\sigma\lessgtr1$ and
+on the unit circles, where partial Prouhet cancellation and cyclotomic
+resonance occur; construct canonical renormalized limits of the finite laws,
+Lagrange rows, and digit products as $q$ approaches a root of unity; and
+derive the matrix Mahler system of the four-state pair
+$\bigl((-1)^{\wt(n)},\chi(n)\bigr)$ with its Dirichlet series.  Replacing the
+lacunary exponent $2^j$ by $b^j$ in $\Xi$ raises the corresponding
+joint natural-boundary question on multiplicative-dependence loci.
+\end{problem}
+
+\begin{problem}[Quartic Cantor renormalization]
+Quantify how the dimension-$\tfrac12$ knot geometry of
+\eqref{p7:eq:quartic-cantor} controls finite-level derivative norms and
+uniform/Sobolev convergence rates of the quartic box splines; build a
+multiresolution basis adapted to base-four digits $\{0,1\}$; and track the
+zero divisor $1+\floor{\vtwo(n)/2}$ against the dyadic $1+\vtwo(n)$ through
+the convolution \eqref{p7:eq:R-multisection}.
+\end{problem}
+
+\subsection{Lean formalization roadmap}
+
+The existing formal development (weighted-uniform series, geometric law,
+affine self-similarity, reflection, support, absolute continuity, the Fabius
+bridge) supports an incremental plan, merged from both waves.  The low-risk
+algebraic tranche: negative affine conjugacy (coordinatewise sign flip and
+affine pushforward), geometric multisection (reindex $j=mk+r$), the moment
+recurrence and formal uniqueness away from roots of unity, the reciprocity
+$M_qM_{1/q}(-\,\cdot)=1$, the position-energy layer over the finite
+$q$-binomial core, the two-nome partition function with its multisection, and
+the $q$-Prouhet transfer --- finite sums and products throughout, suitable
+for the repository's single-worker build.  The endpoint tranche: the
+simplex-volume stop-loss formula (upper cube constraints inactive under
+\eqref{p7:eq:stop-loss}'s threshold), the lattice identity, the derivative
+jets from the CDF pantograph equation, and the two-term asymptotic
+(Stirling, crude moment bounds, monotone bracketing) --- far lighter than the
+existing all-orders dyadic saddle machinery.  The reciprocal analytic
+tranche: the inverse product germ, the Euler rearrangement, the $L^2$ Laplace
+series, Hankel positivity and affine transport of determinants, and the
+quasi-definite orthogonal recurrence.  Suggested module names:
+\texttt{GeometricUniformSign}, \texttt{GeometricUniformMultisection},
+\texttt{GeometricProuhet}, \texttt{TwoNomePartition},
+\texttt{GeometricEndpoint}, \texttt{GeometricEndpointJets},
+\texttt{GeometricEndpointAsymptotic}.  The conjectures of this part remain in
+frontier quarantine until proved.
+
+\section{Conclusion}
+
+``Other $q$ values'' do not replace $\tfrac12$ by another number in old
+formulas; three transformations act on three layers.  Sign change is an
+affine map of the outer normalization --- the centered law is blind to it,
+the centered finite transform picks up only the parity
+$(-1)^{\binom N2}$, and the finite comb translates.  Inversion turns
+smoothing into deconvolution, zeros into poles, real moments into
+vertical-line moments, Lagrange rows into their reversals, and finite digit
+lists into their reversals.  Decimation splits scales into congruence
+classes, factoring the Fabius law over the quartic family, the dyadic
+Thue--Morse comb over quartic Cantor combs, and every Pochhammer product over
+its dissection.  The finite Gaussian nome and the geometric projection scale
+are independent coordinates of one binary-cube partition function whose
+renormalized maximal Prouhet jet is the $q$-Fabius moment germ, and whose
+position-energy layers carry Grassmannian and Hermitian finite geometry.
+Each positive contraction owns an exact inverse-geometric endpoint lattice
+with all its jets; each negative law inherits everything affinely; each
+reciprocal germ is positive on a vertical line.  The transform-level endpoint
+structure is now exact in every base through Part~VI's periodic
+decomposition; the density-level all-orders Lambert-$W_{-1}$ program, the
+$\mathcal P_n$ arithmetic, and the vertical orthogonal polynomials are the
+principal open frontiers.
+
+\begin{thebibliography}{99}
+
+\bibitem{p7:arias-definition}
+J. Arias de Reyna,
+``An infinitely differentiable function with compact support: Definition and
+properties,'' \emph{Rev. Real Acad. Ciencias Madrid} 76 (1982), 21--38;
+English translation, arXiv:1702.05442, 2017.
+
+\bibitem{p7:arias-arithmetic}
+J. Arias de Reyna,
+``Arithmetic of the Fabius function,'' arXiv:1702.06487, 2017.
+
+\bibitem{p7:fabius}
+J. Fabius,
+``A probabilistic example of a nowhere analytic $C^\infty$-function,''
+\emph{Zeitschrift f\"ur Wahrscheinlichkeitstheorie und Verwandte Gebiete}
+5 (1966), 173--174.
+
+\bibitem{p7:haugland}
+J. K. Haugland,
+``Evaluating the Fabius function,'' arXiv:1609.07999, 2016.
+
+\bibitem{p7:fu-reiner-stanton-thiem}
+A. M. Fu, V. Reiner, D. Stanton, and P. Thiem,
+``The negative $q$-binomial,''
+\emph{Electronic Journal of Combinatorics} 19 (2012), Paper P36.
+
+\bibitem{p7:mansour-nguyen}
+T. Mansour and H. D. Nguyen,
+``A $q$-digital binomial theorem,'' arXiv:1506.07945, 2015; see also
+H. D. Nguyen, ``A digital binomial theorem,'' arXiv:1412.3181, 2014.
+
+\bibitem{p7:allouche-shallit}
+J.-P. Allouche and J. Shallit,
+``The ubiquitous Prouhet--Thue--Morse sequence,'' in \emph{Sequences and
+Their Applications}, Springer, 1999, 1--16.
+
+\bibitem{p7:toth}
+L. T\'oth,
+``Linear combinations of Dirichlet series associated with the Thue--Morse
+sequence,'' \emph{Integers} 22 (2022), Article 98.
+
+\bibitem{p7:corless}
+R. M. Corless, G. H. Gonnet, D. E. G. Hare, D. J. Jeffrey, and D. E. Knuth,
+``On the Lambert $W$ function,'' \emph{Advances in Computational
+Mathematics} 5 (1996), 329--359.
+
+\bibitem{p7:gasper-rahman}
+G. Gasper and M. Rahman,
+\emph{Basic Hypergeometric Series}, 2nd ed., Cambridge University Press,
+2004; and NIST DLMF, Chapter 17, for $q$-Pochhammer and Gaussian-binomial
+conventions.
 
 \end{thebibliography}
 
