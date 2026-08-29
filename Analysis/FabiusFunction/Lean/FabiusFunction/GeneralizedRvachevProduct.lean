@@ -194,18 +194,24 @@ summable.
 
 The two steps are `exp t - 1 ≤ t · exp t` and the fact that a summable
 nonnegative sequence is bounded termwise by its own sum, so the
-factor `exp (v n)` is bounded by the constant `exp (∑' v)`. -/
+factor `exp (v n)` is bounded by the constant `exp (∑' v)`.
+
+The index type is arbitrary: both ingredients
+(`Summable.of_nonneg_of_le` and `Summable.le_tsum`) are
+index-generic, and the double-index case is needed downstream by
+`FabiusFunction.GeneralizedCanonicalForm`. -/
 theorem summable_norm_of_norm_le_exp_sub_one
-    {v : ℕ → ℝ} {x : ℕ → ℂ} (hv : Summable v) (h0 : ∀ n, 0 ≤ v n)
+    {ι : Type*} {v : ι → ℝ} {x : ι → ℂ} (hv : Summable v)
+    (h0 : ∀ n, 0 ≤ v n)
     (hx : ∀ n, ‖x n‖ ≤ Real.exp (v n) - 1) :
-    Summable fun n : ℕ => ‖x n‖ := by
+    Summable fun n => ‖x n‖ := by
   refine Summable.of_nonneg_of_le (fun n => norm_nonneg _) ?_
-    (hv.mul_right (Real.exp (∑' m : ℕ, v m)))
+    (hv.mul_right (Real.exp (∑' m, v m)))
   intro n
-  have hle : v n ≤ ∑' m : ℕ, v m := hv.le_tsum n fun m _ => h0 m
+  have hle : v n ≤ ∑' m, v m := hv.le_tsum n fun m _ => h0 m
   calc ‖x n‖ ≤ Real.exp (v n) - 1 := hx n
     _ ≤ v n * Real.exp (v n) := exp_sub_one_le_mul_exp (v n)
-    _ ≤ v n * Real.exp (∑' m : ℕ, v m) :=
+    _ ≤ v n * Real.exp (∑' m, v m) :=
         mul_le_mul_of_nonneg_left (Real.exp_le_exp.mpr hle) (h0 n)
 
 /-- **The weighted factor-deviation series converges.**  Under
