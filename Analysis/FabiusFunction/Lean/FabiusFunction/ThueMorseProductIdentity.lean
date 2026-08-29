@@ -53,7 +53,7 @@ theorem prod_one_sub_pow_two_pow (z : R) (n : ℕ) :
             (∑ j ∈ T, 2 ^ j)) :=
         sum_congr rfl hstep
     _ = ∑ j ∈ range (2 ^ n), (thueMorseSign j : R) * z ^ j :=
-        sum_powerset_two_pow n _
+        sum_powerset_two_pow n (fun j => (thueMorseSign j : R) * z ^ j)
 
 /-- The first difference `Δτ_n(j) = τ_n(j) - τ_n(j-1)` of the
 level-`n` Thue--Morse sign word padded by zero outside `[0, 2^n)` —
@@ -102,8 +102,8 @@ theorem one_sub_mul_prod_one_sub_pow_two_pow (z : R) (n : ℕ) :
     _ = ∑ j ∈ range (2 ^ n + 1),
           (((if j < 2 ^ n then thueMorseSign j else 0 : ℤ) : R) * z ^ j -
            ((if 1 ≤ j ∧ j ≤ 2 ^ n then thueMorseSign (j - 1) else 0 :
-             ℤ) : R) * z ^ j) :=
-        sum_sub_distrib.symm
+             ℤ) : R) * z ^ j) := by
+        rw [← sum_sub_distrib]
     _ = ∑ j ∈ range (2 ^ n + 1),
           (thueMorseWordDelta n j : R) * z ^ j := by
         refine sum_congr rfl fun j _ => ?_
