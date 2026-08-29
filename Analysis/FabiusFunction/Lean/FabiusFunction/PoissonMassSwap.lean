@@ -132,6 +132,7 @@ theorem integrable_poisson_kernel_swapped (t : ℝ) {ε : ℝ}
     Integrable fun x : ℝ => π⁻¹ * (ε / ((x - t) ^ 2 + ε ^ 2)) := by
   refine ((integrable_poisson_kernel t hε).const_mul π⁻¹).congr
     (Filter.Eventually.of_forall fun x => ?_)
+  dsimp only
   rw [poisson_kernel_symm x t ε]
 
 /-- **The kernel normalises in `x` as well**: for a fixed `t` and
