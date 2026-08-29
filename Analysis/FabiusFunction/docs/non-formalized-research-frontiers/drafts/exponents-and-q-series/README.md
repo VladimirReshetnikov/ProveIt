@@ -27,7 +27,7 @@ shifts, negative-branch and hierarchy formulas, and inverse/quantile versions
 remain research frontiers. These API claims were checked at source checkpoint
 `22f801337`.
 
-Member: `Exponents_and_q_Series_Frontiers` (205 pp, seven parts) — the
+Member: `Exponents_and_q_Series_Frontiers` (211 pp, seven parts) — the
 2026-08-28 consolidation of the two former drafts (Part I:
 Newton-basis frontiers; Part II: q-binomial Richardson), joined the
 same day by the eighth-wave report as **Part III** — *Finite Dyadic
@@ -199,7 +199,28 @@ monomial sequence against `ϑ₄(θ/2, 1/a)` — heat time `log a`), the
 MacMahon determinant constant `𝔐(a⁻²)` with parity-factored full-sequence
 determinants and triple-product Riesz forms with a verified numeric table,
 and the overlap-regime theta conjecture for `1 < a < 2`; its figures and
-data live under `assets/Atomic_Functions_Rvachev_Expanded_Report/`.  (The
-q-orbit reports `Fabius_Q_Connections_Report/` and
+data live under `assets/Atomic_Functions_Rvachev_Expanded_Report/`.  Two
+expanded fourteenth-wave editions
+(`Atomic_Functions_Beyond_Dyadic_Expanded/`,
+`Atomic_Functions_Beyond_Dyadic_Frontiers/`; both audit-aware, both
+re-shipping byte-identical copies of the source scan/OCR, again not
+retained) closed the round with disjoint layers: the physical-space
+Stieltjes–Wigert differential ladder `Υ_{a,n} = P_{a,n}(−d²/dx²) h_a`
+(compactly supported orthogonal system, closed norms, q-binomial
+derivative expansion, three-term operator recurrence) — identified during
+the merge with the fifteenth wave's Gram–Schmidt vectors,
+`Υ_{a,n} = (−1)^n ‖h^{(2n)}‖₂ ψ*_n`, a check that also caught and repaired
+a sign-convention slip in the closed Gram–Schmidt theorem's first
+printing — plus both parity derivative-jet Gram determinants, the
+autocorrelation germ `a^{n(n+2)}/2^n` with zero Taylor radius and provable
+ladder incompleteness, and the explicit-null-modes conjecture; and the
+exact derivative-energy factorization
+`μ_{a,n,p} = Law(S_{a,n} + a^{−n} Y_{a,p})` with `W∞ ≤ 2a^{−n}/(a−1)`
+convergence to the symmetric Bernoulli convolution (Cantor measure on
+`K_a` for `a > 2`, uniform at `a = 2`), exact Hausdorff support rate, the
+Rényi/Shannon entropy laws `H_β(n) = H_β(0) + n log(2/a)` with the
+information-dimension reading, and the overlap-regime energy conjecture;
+their figures and data live under the matching `assets/` directories.
+(The q-orbit reports `Fabius_Q_Connections_Report/` and
 `Signed_Reciprocal_q_Fabius_Frontiers/` were merged editorially as the
 volume's Part VII; their figures/data are likewise under `assets/`.)
