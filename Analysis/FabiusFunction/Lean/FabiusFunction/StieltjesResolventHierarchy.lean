@@ -183,10 +183,6 @@ theorem integral_pow_inv_sub_succ (F : BoundedFabius)
         rw [MeasureTheory.integral_map
           (measurable_const_mul _).aemeasurable
           hmeas.aestronglyMeasurable]
-        refine integral_congr_ae
-          (Filter.Eventually.of_forall fun x' => ?_)
-        dsimp only
-        congr 3 <;> ring
     _ = ∫ x', (2 ^ n / n) *
             ((((2 * z - 1) - x')⁻¹) ^ n -
               (((2 * z + 1) - x')⁻¹) ^ n)
@@ -198,8 +194,10 @@ theorem integral_pow_inv_sub_succ (F : BoundedFabius)
           ring
         have e2 : z - 2⁻¹ * x' + 2⁻¹ = ((2 * z + 1) - x') / 2 := by
           ring
-        rw [e1, e2, inv_div, div_pow, inv_div, div_pow,
-          division_def, division_def, ← inv_pow, ← inv_pow]
+        have hsc : ∀ a : ℝ, ((a / 2)⁻¹) ^ n = 2 ^ n * (a⁻¹) ^ n := by
+          intro a
+          rw [inv_div, div_pow, division_def, ← inv_pow]
+        rw [e1, e2, hsc, hsc]
         ring
     _ = (2 ^ n / n) *
           ((∫ x, (((2 * z - 1) - x)⁻¹) ^ n ∂(rvachevMeasure F)) -
