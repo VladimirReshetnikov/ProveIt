@@ -244,6 +244,27 @@ matching `assets/` directories.
 `Signed_Reciprocal_q_Fabius_Frontiers/` were merged editorially as the
 volume's Part VII; their figures/data are likewise under `assets/`.)
 
+Second member: `q_pochhammer_q_binomial_monograph/` (96 pp, book class) —
+*q-Pochhammer Symbols and q-Binomial Coefficients*, a standalone
+proof-oriented reference monograph on the q-machinery itself, filed
+2026-08-28 per the Lambert-W precedent (a reference companion rather
+than a research report, so it is kept as its own document instead of
+being merged into the frontier volume).  Its corpus role: Parts II, VI,
+and VII of the frontier volume, and the repository's formalized
+Gaussian-binomial core, consume exactly this machinery — shifted
+factorials, Gaussian coefficients with their cyclotomic structure,
+q-binomial theorems, q-Gauss summation, Jacobi's triple product, theta
+functions, Bailey pairs, q-Lucas congruences, q-Newton interpolation at
+geometric nodes, and Bernoulli asymptotics of Gaussian coefficients all
+appear in the frontier volume's q-Gaussian derivative-tower,
+Stieltjes–Wigert, and q-orbit chapters, and the monograph proves each
+from first principles with a formula atlas, a limit dictionary, a
+proof-dependency guide, and a formalization-architecture chapter.  It
+was audited on arrival (ten core theorems re-verified symbolically; the
+Chern–Dilcher–Jiu deleted-singularity identity and Ramanujan's ₁ψ₁
+verified numerically to 30 digits; one dominated-convergence majorant
+repaired with an `% ed.:` note).
+
 The wave volumes' central probabilistic object — the normalized
 geometric-uniform law `Y_q = (1-q)·∑ qʲU_j`, with `q = 1/2` the
 Fabius case and `q = 1/a` the atomic family `h_a` — now carries the
