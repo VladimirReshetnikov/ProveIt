@@ -1,0 +1,1268 @@
+\documentclass[10pt]{article}
+\usepackage[russian]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage[T2A]{fontenc}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage[version=4]{mhchem}
+\usepackage{stmaryrd}
+\usepackage{mathrsfs}
+\usepackage{bbold}
+
+\begin{document}
+\section*{ГЛАВА 3}
+\section*{АТОМАРНЫЕ ФУНКЦИИ}
+Важную роль в теории приближений и численных методах играют алгебраические и тригонометрические (экспоненциальные) полиномы. Однако этот универсальный аппарат приближения имеет следующий (существенный для практики) недостаток - «нефинитность» классических полиномов. В численных же методах часто желательно применять «локальные» (т. е. финитные) функции с носителями малого диаметра, так как (см. §6 гл. 2) в этом случае в соответствующих матрицах большинство элементов равны нулю, матрица - «редкая» или даже «ленточная» и при том же объеме оперативной памяти ЭВМ можно использовать аппроксимирующие подпространства более высоких размерностей, а следовательно, получить более точные приближения. Известные и широко применяемые $[7,17,18,71,83,88,90]$ локальные функции-сплайны (например, $B$-сплайны Шенберга) не универсальны в том смысле, что для получения оптимального приближения функций большей гладкости нужны сплайны более высокой степени. Таким образом, классические алгебраические и тригонометрические полиномы универсальны, но не локальны, сплайны же локальны, но не универсальны. Естественно, возникает вопрос о построении пространств функций, которые были бы одновременно локальны и универсальны. Желательно к тому же, чтобы их можно было легко вычислять. Функции, о которых речь идет ниже, на наш взгляд, настолько просты и удобны в работе, что ими целесообразно пополнить класс «элементарных» функций.
+
+Как же построены эти функции? Так как неуниверсальность сплайнов обусловлена уже их недостаточной гладкостью, то необходимо рассмотреть бесконечно дифференцируемые финитные функции. Финитные сплайны степени $n$, как хорошо известно, - это $n$ кратные свертки характеристических функций интервалов; эти финитные функции - бесконечнократные свертки характеристических функций интервалов. Для получения финитных функций длины интервалов должны достаточно быстро стремиться к нулю (сумма длин должна быть конечной). Если $\varphi(x)$ - искомая функция и\\
+$\hat{\varphi}(t)$ - ee фурье-образ, то
+
+$$
+\hat{\varphi}(t)=\prod_{k=1}^{\infty} \frac{\sin \alpha_{k} t}{\alpha_{k} t} ;
+$$
+
+здесь $\alpha_{k}$ монотонно стремятся к нулю, $\alpha_{k}>0, \sum_{k=1}^{\infty} \alpha_{k}<\infty$. Теперь из всех монотонно стремящихся к нулю последовательностей $\alpha= =\left\{\alpha_{k}\right\}$ выберем те, для которых $\varphi(x)=\varphi_{\alpha}(x)$ обладает достаточно хорошими аппроксимационными свойствами. По-видимому, наиболее простой и удобной будет функция $\varphi(x)$, соответствующая геометрической прогрессии $\alpha_{k}=2^{-k}$. Такой выбор $\alpha_{k}$ по крайней мере естествен. Обозначим эту функцию up $(x)$. Таким образом,
+
+$$
+\operatorname{up}(x)=\frac{1}{2 \pi} \int_{-\infty}^{\infty} e^{-i t x} \prod_{k=1}^{\infty} \frac{\sin t 2^{-k}}{t 2^{-k}} d t .
+$$
+
+Первоначально функция up $(x)$ появилась при следующих обстоятельствах. В 1967 г. В. Л. Рвачев поставил такую задачу. Если $\varphi(x)$ - финитная дифференцируемая функция, имеющая один участок возрастания и один участок убывания («горб»), то ее производная $\varphi^{\prime}(x)$ состоит из «горба» и «ямы». Существует ли функция $\varphi(x)$, у которой «горб» и «яма» производной подобны «горбу» самой функции? На языке уравнений это означает: существует ли финитное решение уравнения $y^{\prime}(x)=a[y(2 x+1)-y(2 x-1)]$, в котором для определенности считаем, что носитель $\varphi(x)$ - отрезок $[-1,1]$ ?
+
+В работе [52] доказаны существование и единственность такого финитного решения с интегралом, равным 1 , - это и есть функция up ( $x$ ). Таким образом, в то время как классические алгебраические и тригонометрические полиномы удовлетворяют однородным линейным дифференциальным уравнениям с постоянными коэффициентами, функция up ( $x$ ) (и другие аналогичные функции) удовлетворяет уравнениям вида
+
+$$
+L y(x)=\sum_{k=1}^{M} c_{k} y\left(a x-b_{k}\right),
+$$
+
+где $L$ - линейный дифференциальный оператор с постоянными коэффициентами. Эти уравнения близки к линейным дифференциальным уравнениям с постоянными коэффициентами в том смысле, что преобразование Фурье для них «работает» так же эффективно. Наблюдавшееся до сих пор некоторое невнимание к этим уравнениям и их решениям обусловлено, по-видимому, отсутствием их непосредственной физической интерпретации. В данной главе рассматриваются финитные решения (названные атомарными функциями) указанных выше уравнений с точки зрения их возможной применимости в конструктивной теории функций и численном анализе.
+
+\section*{§ 1. ОПРЕДЕЛЕНИЕ АТОМАРНЫХ ФУНКЦИИ}
+Атомарные функции - это финитные решения дифференциальнсфункциональных уравнений вида
+
+
+\begin{equation*}
+L y(x)=\lambda \sum_{k=1}^{M} c_{k} y\left(a x-b_{k}\right), \tag{3.1}
+\end{equation*}
+
+
+где $a>1, L$ - линейный обыкновенный дифференциальный оператор с постоянными коэффициентами.
+
+Обозначим оператор
+
+$$
+y(x) \rightarrow \sum_{k=1}^{M} c_{k} y\left(a x-b_{k}\right)
+$$
+
+через $R$. Первый вопрос, который необходимо выяснить: какие условия нужно наложить на $L$ и $R$, чтобы уравнение (3.1) для некоторых $\lambda \neq 0$ имело ненулевое финитное решение?
+
+Пусть $L=P(D)$, где $D=-i \frac{d}{d x}$, а
+
+$$
+P(\lambda)=\sum_{k=0}^{n} d_{k} \lambda^{k}
+$$
+
+Применим к обеим частям (3.1) преобразование Фурье
+
+$$
+\int_{-\infty}^{\infty} e^{i t x} L y(x) d x=\lambda \sum_{k=1}^{M} c_{k} \int_{-\infty}^{\infty} e^{i t x} y\left(a x-b_{k}\right) d x
+$$
+
+После очевидных выкладок получим
+
+
+\begin{equation*}
+P(t) F(t)=\lambda \sum_{k=1}^{M} \frac{c_{k}}{a} e^{i \frac{t b_{k}}{a}} F\left(\frac{t}{a}\right), \tag{3.2}
+\end{equation*}
+
+
+где
+
+$$
+F(t)=\int_{-\infty}^{\infty} e^{i t x} y(x) d x
+$$
+
+Положим
+
+$$
+\mathscr{E}(t)=\sum_{k=1}^{M} \frac{c_{k}}{a} e^{i \frac{t b_{k}}{a}}
+$$
+
+Рассмотрим сначала случай
+
+$$
+F(0)=\int_{-\infty}^{\infty} y(x) d x \neq 0
+$$
+
+Без ограничения общности можно считать, что
+
+
+\begin{equation*}
+F(0)=1 . \tag{3.3}
+\end{equation*}
+
+
+Тогда из (3.2) следует $P(0) F(0)=\lambda \mathscr{E}(0)$, т. е.
+
+
+\begin{equation*}
+d_{0}=\lambda \mathscr{E}(0) . \tag{3.4}
+\end{equation*}
+
+
+Пусть $P(\lambda)=d_{f} \lambda^{f}+\cdots+d_{n} \lambda^{n}$, где $d_{f} \neq 0\left(d_{0}=\cdots=d_{f-1}=\right.$ = 0). Тогда, последовательно дифференцируя (3.2) и полагая $t= =0$, получаем $f!d_{f}=\lambda \mathscr{E}(f)(0), \mathscr{E}(i)(0)=0,0 \leqslant j \leqslant f-1$. Отсюда
+
+
+\begin{equation*}
+\lambda=\frac{f!d_{f}}{g^{(f)}(0)} . \tag{3.5}
+\end{equation*}
+
+
+Пусть $A=\left\{\alpha_{1}, \ldots, \alpha_{n}\right\}$ - множество нулей многочлена $P(t)$ (с учетом кратности), $B=\left\{\beta_{1}, \ldots, \beta_{k}, \ldots\right\}$ - множество нулей функции $\mathscr{E}(t)$ (также с учетом кратности). Из $P(t) F(t)= =\lambda \mathscr{E}(t) F\left(t a^{-1}\right)$ следует
+
+
+\begin{equation*}
+P(t) F(t) P\left(t a^{-1}\right)=\lambda^{2} \mathscr{E}(t) \mathscr{E}\left(t a^{-1}\right) F\left(t a^{-2}\right) . \tag{3.6}
+\end{equation*}
+
+
+Так как (см. (3.2)) $P\left(t a^{-1}\right) F\left(t a^{-1}\right)=\lambda \mathscr{E}\left(t a^{-1}\right) F\left(t a^{-2}\right)$, то, умножив (3.2) на $P\left(t a^{-1}\right)$, получим (3.6)). Таким же образом получаем
+
+
+\begin{equation*}
+F(t) \prod_{k=0}^{n} P\left(t a^{-k}\right)=\lambda^{n+1} \prod_{k=0}^{n} \mathscr{E}\left(t a^{-k}\right) F\left(t a^{-n-1}\right) . \tag{3.7}
+\end{equation*}
+
+
+Поскольку $a>1$ и $F(0) \neq 0$, то начиная с некоторого $n$ имеем $F\left(t a^{-n-1}\right) \neq 0$ (для данного $t$ ). Отсюда каждый нуль функции $P\left(t a^{-m}\right)$ должен содержаться среди нулей функции $\mathscr{E}\left(t a^{-k(m)}\right)$ для некоторого $k(m)$.
+
+Теорема 1. Необходимым и достаточным условием существования финитного ненулевого решения уравнения (3.1) $y(x)$ такого, что
+
+$$
+\int_{-\infty}^{\infty} y(x) d x=1
+$$
+
+является следующее условие (И): существует инъекция $i: A \rightarrow B$ такая, что для всякого $\alpha_{i} \in A$ существует натуральное $m$, для которого $i\left(\alpha_{j}\right)=a^{-m} \alpha_{j} \in$ В. Коэффициент $\lambda$ получается при этом из (3.5), а решение имеет вид
+
+$$
+y(x)=\frac{1}{2 \pi} \int_{-\infty}^{\infty} e^{-i x t} F(t) d t,
+$$
+
+где
+
+
+\begin{equation*}
+F(t)=\prod_{k=0}^{\infty} \frac{\lambda \xi\left(t a^{-k}\right)}{P\left(t a^{-k}\right)} . \tag{3.8}
+\end{equation*}
+
+
+Доказательство. Достаточность. Нужно показать, что $F(t)$ - целая функция экспоненциального типа первого порядка pocta: $|F(t)|<C e^{k|t|}$ и $F_{1}(t) \in L_{1}(-\infty, \infty),|F(t)|<C_{m} t^{-m}$, $t \in \mathbb{R}, m \in N$. Тогда $y(x)$ по теореме Винера - Пэли - финитная функция, и выполнение уравнения (3.1) проверяется непосредственно.
+
+Пусть $|t| \leqslant R$. Тогда начиная с некоторого $N$ многочлен $P\left(t a^{-N}\right)$ в круге $|t| \leqslant R$ нулей, отличных от $t=0$, не имеет. Следовательно, $\frac{\lambda g\left(t a^{-k}\right)}{P\left(t a^{-k}\right)}$ при $k>N$ - аналитическая в круге $|t| \leqslant \leqslant R$ функция и
+
+$$
+\psi(t)=\prod_{k=N}^{\infty} \frac{\lambda \xi\left(t a^{-k}\right)}{P\left(t a^{-k}\right)}
+$$
+
+\begin{itemize}
+  \item также целая функция [21, с. 11, теорема 2]. Это следует из того, что ряд
+\end{itemize}
+
+$$
+\sum_{k=N}^{\infty}\left(\frac{\lambda \varepsilon\left(t a^{-k}\right)}{P\left(t a^{-k}\right)}-1\right)
+$$
+
+равномерно сходится в $|t| \leqslant R$, поскольку
+
+$$
+\left|\frac{\lambda E\left(t a^{-k}\right)}{P\left(t a^{-k}\right)}-1\right|<\frac{C_{p}}{a^{k}} .
+$$
+
+В силу условия (И) каждому нулю знаменателя в (3.8) соответствует свой нуль числителя, так что функция
+
+$$
+F(t)=\prod_{k=0}^{N-1} \frac{\lambda E\left(t a^{-k}\right)}{P\left(t a^{-k}\right)} \psi(t)
+$$
+
+также аналитическая в $|t| \leqslant R$ и, следовательно, целая, так как $R$ - любое.
+
+Пусть $\mu=\max _{|t|<a^{2} R}|F(t)|$, где $R=\max \left|\alpha_{k}\right|$. Тогда
+
+$$
+\begin{aligned}
+|F(t)| & \leqslant\left|\prod_{i=0}^{q_{0}} \frac{\lambda E\left(t a^{-j}\right)}{P\left(t a^{-j}\right)}\right| \mu ; \\
+q_{0} & =\left[\log _{a} \frac{|t|}{a^{2} R}\right]+1 .
+\end{aligned}
+$$
+
+Пусть $v=\min _{|t|>a R}|P(t)|>0$. Тогда при $|t|>a R$
+
+$$
+|F(t)|<\mu\left(\frac{|\lambda| \sum_{k=1}^{M}\left|\frac{c_{k}}{a}\right|}{v}\right)^{q_{0}} e^{|t| \frac{\max \left|b_{k}\right| a}{1-a}}<C e^{K|t|} .
+$$
+
+Рассмотрим поведение $F(t)$ на действительной оси. Пусть $\mu_{A}= =\max _{|t|<A}|F(t)|, t \in R, A \geqslant T ; T$ еыбирается из соотношения $|P(t)|> >\frac{d_{n}}{2}|t|^{n} \quad$ при $\quad|t| \geqslant T$ и $l=|\lambda| \sum_{k=1}^{M} \frac{\left|c_{k}\right|}{a}$. Тогда из
+
+$$
+F(t)=\frac{\lambda e(t)}{P(t)} F\left(\frac{t}{a}\right)
+$$
+
+следует
+
+$$
+|F(t)|<\frac{2 l}{d_{n} \mid t_{i}^{n}{ }^{n}} \mu_{A}
+$$
+
+при $A<|t|<a A, t \in \mathbb{R}$. Если
+
+$$
+A>\gamma>\sqrt[n]{\frac{\overline{2 l}}{d_{n}}},
+$$
+
+то $|F(t)|<\rho \mu_{A}$, где $0<\rho<1$. Следовательно, $\mu_{a A}=\mu_{A}$ и
+
+$$
+|F(t)|<\frac{2 l}{d_{n}|t|^{n}} \mu_{a}
+$$
+
+для $A<t<a^{2} A$. Таким образом,
+
+$$
+|F(t)|<\frac{2 l}{d_{n}|t|^{n}} \mu_{A}
+$$
+
+для всех $|t|>A, t \in \mathbb{R}$. Несложной модификацией этих рассуждений можно показать, что $F(t)$ на действительной оси убывает быстрей любой степени $t^{n}$. В самом деле, как уже показано ранее, на действительной оси $|F(t)|$ ограничена, а
+
+$$
+F(t)=\prod_{i=0}^{s} \frac{\lambda g\left(t a^{-i}\right)}{P\left(t a^{-j}\right)} F\left(t a^{-s-1}\right) .
+$$
+
+Таким образом, $y(x)$ - действительно финитная функция класса $C^{\infty}$. Достаточность доказана.
+
+Необходимость. Из того, что $y(x)$ финитна, следует, что $F(t)$ целая. Поэтому должна существовать инъекция
+
+$$
+\gamma: \bigcup_{k=0}^{\infty} a^{k} A \rightarrow \bigcup_{k=0}^{\infty} a^{k} B
+$$
+
+(здесь $a^{k} A=\left\{a^{k} \alpha_{1}, \ldots, a^{k} \alpha_{n}\right\}$, аналогично понимается $a^{k} B$, объединение здесь и далее считается дизъюнктивным). Действительно, каждое $\mu \neq 0, \mu \in \mathbb{C}$, в множествах $\bigcup_{k=0}^{\infty} a^{k} A$ и $\bigcup_{k=0}^{\infty} a^{k} B$ может встречаться только конечное число раз, т. е.
+
+$$
+\begin{aligned}
+& \mu \in \bigcup_{k=0}^{N_{1}} a^{k} A \quad \text { и } \quad \mu \notin \bigcup_{k=N_{1}+1}^{\infty} a^{k} A, \\
+& \mu \in \bigcup_{k=1}^{N_{2}} a^{k} B \quad \text { и } \quad \mu \notin \bigcup_{k=N_{2}+1}^{\infty} a^{k} B .
+\end{aligned}
+$$
+
+(Случай $\mu=0$ не вызывает затруднений, та́к как выше показано, что для $\mathscr{E}(t) \mu=0$ - нуль того же порядка, что и для $P(t)$ ). Тогда из (3.7) при $n>\max \left(N_{1}, N_{2}\right)$ следует, что $\mu$ встречается в $\bigcup_{k=0}^{\infty} a^{k} A$ не чаще, чем в $\bigcup_{k=0}^{\infty} a^{k} B$ (так как $F\left(\mu a^{-n-1}\right) \neq 0$ для достаточно больших n), и, следовательно, инъекция $\gamma$ существует.
+
+Положим
+
+$$
+\begin{gathered}
+S_{0}=\left\{\alpha_{i}: \alpha_{i} a^{-k} \notin A, k=1,2, \ldots\right\}, \\
+S_{1}=\left\{\alpha_{i} \in A \backslash S_{0}: \alpha_{i} a^{-k} \notin A \backslash S_{0}, k=1,2, \ldots\right\}, \\
+\dot{S}_{2}=\left\{\alpha_{i} \in A \backslash S_{0} \cup S_{1}: \alpha_{i} a^{-k} \in A \backslash S_{0} \cup S_{1}, k=1,2, \ldots\right\} ;
+\end{gathered}
+$$
+
+$S_{l}$ - последнее непустое $S_{j}$. Необходимо по инъекции
+
+$$
+\gamma: \bigcup_{k=0}^{\infty} a^{k} A \rightarrow \bigcup_{k=0}^{\infty} a^{k} B
+$$
+
+построить инъекцию $i$. Начнем с $\alpha_{i} \in S_{0}$. Каждому из них инъективно ставим в соответствие $i\left(\alpha_{j}\right) \in B$, а именно: $\gamma\left(\alpha_{j}\right)=a^{m} \beta_{s}$. Положим $i\left(\alpha_{j}\right)=\rho_{s}$. Инъективность очевидна.
+
+Теперь перестроим $\gamma$ в $\gamma_{1}$ следующим образом. Пусть $\alpha_{i_{r}} \in S_{0}$, $r=1, \ldots, r^{*}$. Расположим $j_{r}$ в некотором порядке. Рассмотрим $a^{k} \alpha_{i_{r}}, k=1,2, \ldots$ Положим для $\mu \in \bigcup_{k=0}^{\infty} a^{k} A$, где $\gamma_{1,0}=\gamma$,
+
+$$
+\gamma_{1, r}(\mu)= \begin{cases}\gamma_{1, r-1}(\mu), & \text { если } \quad \mu \neq a^{k} \alpha_{j_{r}} \text { и } \quad \gamma_{1, r-1}(\mu) \neq a^{l} i\left(\alpha_{j_{r}}\right) ; \\ a^{l} i\left(\alpha_{j_{r}}\right), & \text { если } \quad \mu=a^{l} \alpha_{j_{r}} ; \\ \gamma_{1, r-1}\left(a^{l} \alpha_{j_{r}}\right), & \text { если } \gamma_{1, r-1}(\mu)=a^{l} i\left(\alpha_{i_{r}}\right) .\end{cases}
+$$
+
+Пусть. $\gamma_{1}=\gamma_{1, r^{*}}$. Легко видеть, что для всех $\alpha_{i} \in S_{0} \gamma_{1}\left(a^{l} \alpha_{j}\right)= =a^{l} \gamma\left(\alpha_{j}\right)$.
+
+Переходим к $S_{1}$. Полагаем $i(\alpha)$ для $\alpha \in S_{1}$ следующим образом. Пусть $\gamma_{1}(\alpha)=a^{m} \beta_{s}$. Тогда $i(\alpha)=\beta_{s}$. Перестроим инъекцию $\gamma_{1}$ в инъекцию $\gamma_{2}$ аналогично тому, как $\gamma$ перестраивалась в $\gamma_{1}$. В конце концов получим требуемую инъекцию $i$. Теорема доказана.
+
+В теореме 1 рассматривался случай, когда $F(0)=1$. Пусть теперь $F(0)=0$. Тогда $F(t)=t^{r} G(t)$, где $G(0) \neq 0$. Без ограничения общности можно считать, что $G(0)=1$. Имеем
+
+$$
+\mathscr{P}(t) t^{r} G(t)=\lambda \mathscr{E}(t) \frac{t^{r}}{a^{r}} G\left(\frac{t}{a}\right)
+$$
+
+т. е.
+
+
+\begin{equation*}
+\mathscr{P}(t) G(t)=\frac{\lambda}{a^{r}} \mathscr{E}(t) G\left(\frac{t}{a}\right) \tag{3.9}
+\end{equation*}
+
+
+и, следовательно, приходим к условиям теоремы 1 с заменой $\lambda$ на $\lambda a^{-r}$. Поэтому
+
+$$
+\lambda=\frac{f!d_{f} a^{r}}{\mathscr{E}^{(f)}(0)}, \quad G(t)=\prod_{j=0}^{\infty} \frac{\lambda a^{-r} g_{\left(t a^{-i}\right)}}{\mathscr{P}\left(t a^{-i}\right)},
+$$
+
+и
+
+
+\begin{equation*}
+\varphi(x)=\frac{1}{2 \pi} \int_{-\infty}^{\infty} e^{-i t x} G(t) \mathrm{dt} \tag{3.10}
+\end{equation*}
+
+
+является решением уравнения
+
+
+\begin{equation*}
+L \varphi(x)=\lambda a^{-r} \sum_{k=1}^{M} \frac{c_{k}}{a} \varphi\left(a x-b_{k}\right) \tag{3.11}
+\end{equation*}
+
+
+Поскольку $F(t)=t^{r} G(t)$ - искомое решение уравнения (3.1), $y(x)$ имеет вид
+
+
+\begin{equation*}
+y(x)=C \varphi^{(k)}(x) . \tag{3.12}
+\end{equation*}
+
+
+Таким образом, приходим к следующей теореме.\\
+Теорема 2. Необходимым и достаточным условием существования ненулевых финитных решений уравнения (3.1) является условие (И). При выполнении этого условия для
+
+$$
+\lambda_{l}=\frac{a^{l} d_{f} f^{\prime}}{g^{(f)}(0)}
+$$
+
+существуют финитные решения $C \varphi_{l}(x), l \in N$, где
+
+$$
+\varphi_{0}(x)=\frac{1}{2 \pi} \int_{-\infty}^{\infty} e^{-i t x} \prod_{j=0}^{\infty} \frac{\lambda_{0} g^{\circ}\left(t a^{-j}\right)}{\mathscr{P}\left(t a^{-j}\right)} d t, \quad \varphi_{l}(x)=\varphi_{0}^{(l)}(x) .
+$$
+
+Замечание. $\varphi_{l}(x)$ линейно независимы.
+
+\section*{§ 2. УРАВНЕНИЕ ПЕРВОГО ПОРЯДКА}
+Исследуем подробно случай, когда $L=P(D)$, где
+
+
+\begin{gather*}
+P(t)=-i t+\alpha,  \tag{3.13}\\
+R: y(x) \rightarrow c_{1} y\left(a x-b_{1}\right)+c_{2} y\left(a x-b_{2}\right) . \tag{3.14}
+\end{gather*}
+
+
+Тогда
+
+$$
+\mathscr{E}(t)=\frac{c_{1}}{a} e^{i \frac{b_{1} t}{a}}+\frac{c_{2}}{a} e^{i \frac{b_{2} t}{a}} .
+$$
+
+Пусть $\alpha \neq 0$. Тогда $\lambda\left(\frac{c_{1}}{a}+\frac{c_{2}}{a}\right)=\alpha$ и
+
+
+\begin{equation*}
+\lambda=\frac{a \alpha}{c_{1}+c_{2}}, \quad A=\{i \alpha\} . \tag{3.15}
+\end{equation*}
+
+
+Исследуем нули $\mathscr{E}(t)$. Пусть $\mathscr{E}(t)=0$. Тогда
+
+
+\begin{equation*}
+e^{i \frac{\left(b_{1}-b_{2}\right) t}{a}}=-\frac{c_{2}}{c_{1}}, \quad \beta=\frac{\operatorname{Ln}\left(-\frac{c_{2}}{c_{1}}\right) a}{i\left(b_{1}-b_{2}\right)} . \tag{3.16}
+\end{equation*}
+
+
+Условие (И) означает, что существует $m \in N$ такое, что $i \alpha=\beta a^{n}$, т. е.
+
+
+\begin{equation*}
+\alpha=\frac{\operatorname{Ln}\left(-\frac{c_{2}}{c_{1}}\right) a^{m+1}}{b_{2}-b_{1}} . \tag{3.17}
+\end{equation*}
+
+
+Без ограничения общности можно считать $c_{1}=1$. Тогда
+
+
+\begin{equation*}
+c_{2}=-\exp \left[\left(b_{2}-b_{1}\right) \alpha a^{-m-1}\right] . \tag{3.18}
+\end{equation*}
+
+
+Таким образом, для данных $b_{1}, b_{2}$ и $\alpha \neq 0$ существует счетное число коэффициентов $c_{2, n}$, для которых (3.1), (3.13), (3.14) имеют ненулевые финитные решения.
+
+Пусть $\alpha=0$. Тогда
+
+
+\begin{gather*}
+c_{1}+c_{2}=0 \\
+\lambda\left(\frac{c_{1}}{a} \frac{i b_{1}}{a}+\frac{c_{2}}{a} \frac{i b_{2}}{a}\right)=-i \tag{3.19}
+\end{gather*}
+
+
+Положим для определенности $c_{1}=1$. При этом
+
+
+\begin{equation*}
+\lambda=\frac{a^{2}}{b_{1}-b_{2}} . \tag{3.20}
+\end{equation*}
+
+
+Условие (И) означает, что существует $\beta=0$. Нули функции $\mathscr{E}(t)$ даются формулой $\beta=\frac{\operatorname{Ln} 1 \cdot a}{i\left(b_{1}-b_{2}\right)}$, среди них 0 действительно содержится.
+
+Для $\alpha=0$ получаем единственное решение с $\int_{-\infty}^{\infty} y(x) d x=1$, имеющее вид
+
+
+\begin{equation*}
+y(x)=\frac{1}{2 \pi} \int_{-\infty}^{\infty} e^{-i t x} \prod_{j=0}^{\infty} \frac{a}{b_{2}-b_{1}} \frac{e^{i b_{1} t a-j-1}-e^{i b_{2} t a-i-1}}{t a^{-j}} \mathrm{dt} . \tag{3.21}
+\end{equation*}
+
+
+Сделав замену $x_{1}=x-\frac{b_{1}+b_{2}}{2}$, уравнение (3.1) с условиями (3.13) и (3.14) всегда можно привести к виду
+
+$$
+y^{\prime}(x)+\alpha y(x)=\lambda\left(c_{1} y\left(a x-b_{1}\right)+c_{2} y\left(a x+b_{1}\right)\right) .
+$$
+
+Подставив $x_{2}=\mu x$, получим
+
+
+\begin{equation*}
+y^{\prime}(x)+\alpha y(x)=\lambda(y(a x-1)+c y(a x+1)) . \tag{3.22}
+\end{equation*}
+
+
+Для $\alpha=0$ уравнение (3.22) имеет вид
+
+
+\begin{equation*}
+y^{\prime}(x)=\lambda(y(a x-1)-y(a x+1)) . \tag{3.23}
+\end{equation*}
+
+
+При этом
+
+
+\begin{equation*}
+y(x)=\frac{1}{2 \pi} \int_{-\infty}^{\infty} e^{i t x} \prod_{i=1}^{\infty} \frac{\sin t a^{-j}}{t a^{-j}} \mathrm{dt} ; \quad \lambda=-\frac{a^{2}}{2} . \tag{3.24}
+\end{equation*}
+
+
+При $a=2$ получаем $y(x)=u p(x)$. Обозначим функцию, определяемую формулой (3.24), $h_{a}(x)$. Выяснить вид носителя функции $h_{a}(x)$ можно, например, следующим образом. Как известно, функция $\frac{\sin t}{t}$ является характеристической функцией случайной величины, равномерно распределенной (р. р.) на отрезке [-1,1]. Тогда функция
+
+
+\begin{equation*}
+F_{a}(t)=\prod_{j=1}^{\infty} \frac{\sin t a^{-i}}{t a^{j}} \tag{3.25}
+\end{equation*}
+
+
+\begin{itemize}
+  \item характеристическая функция случайной величины
+\end{itemize}
+
+
+\begin{equation*}
+\xi(a)=\sum_{j=1}^{\infty} a^{-i} \xi_{j}, \tag{3.26}
+\end{equation*}
+
+
+где $\left\{\xi_{j}\right\}$ - последовательность независимых р. р. на $[-1,1]$ случайных величин. Функция $h_{a}(x)$ - плотность случайной величины $\xi(a)$. Теперь очевидно, что
+
+
+\begin{equation*}
+\operatorname{supp} h_{a}(x)=[-b, b], \tag{3.27}
+\end{equation*}
+
+
+где $b=\sum_{j=1}^{\infty} a^{-j}=\frac{1}{a-1}$. Тогда
+
+
+\begin{equation*}
+F_{a}(t)=\frac{\sin t a^{-1}}{t a^{-1}} F\left(t a^{-1}\right) . \tag{3.28}
+\end{equation*}
+
+
+Пусть $F_{a}(t)=\sum_{k=0}^{\infty} c_{k}(a) t^{k}$. Из (3.25) следует, что $c_{2 k+1}(a)=0$, так что
+
+
+\begin{equation*}
+F_{a}(t)=\sum_{k=0}^{\infty} c_{2 k}(a) t^{2 k} \tag{3.29}
+\end{equation*}
+
+
+Поскольку
+
+
+\begin{equation*}
+\frac{\sin t a^{-1}}{t a^{-1}}=\sum_{k=0}^{\infty}(-1)^{k} \frac{t^{2 k} a^{-2 k}}{(2 k+1)!}, \tag{3.30}
+\end{equation*}
+
+
+то (см. (3.28))
+
+
+\begin{equation*}
+c_{2 k}(a)=\sum_{j=0}^{k} \frac{c_{2 k-2 j}(-1)^{j} a^{-2 j}}{a^{2 k-2 j}(2 j+1)!}, \tag{3.31}
+\end{equation*}
+
+
+откуда
+
+$$
+c_{2 k}(a)\left(1-a^{-2 k}\right)=\sum_{j=1}^{k} \frac{c_{2 k-2 j}(a)(-1)^{j}}{(2 j+1)!} a^{-2 k}
+$$
+
+и, наконец,
+
+
+\begin{equation*}
+c_{2 k}(a)=\frac{1}{a^{2 k}-1} \sum_{l=0}^{k-1} \frac{c_{2 l}(a)(-1)^{k-l}}{(2 k-2 l+1)!} . \tag{3.32}
+\end{equation*}
+
+
+Нетрудно заметить, что $c_{0}(a)=1$. Из (3.32) следует
+
+$$
+\left|c_{2 k}(a)\right| \leqslant \frac{1}{a^{2 k}-1} \sum_{l=0}^{k-1} \frac{1}{(2 k-2 l+1) \mid} \max _{i<k}\left|c_{2 j}(a)\right| .
+$$
+
+Поскольку
+
+$$
+\sum_{l=0}^{k-1} \frac{1}{(2 k-2 l+1)!}<\sum_{j=0}^{\infty} \frac{1}{(2 j+1)!}=C_{1}<\infty,
+$$
+
+то начиная с некоторого $k \quad c_{2 k}(a)<\max _{i<k}\left|c_{2 j}(a)\right|$, откуда $\left|c_{2 k}(a)\right|< <C$ для всех $k$. Поэтому
+
+$$
+\left|c_{2 k}(a)\right| \leqslant\left(\prod_{j=1}^{k} \frac{1}{a^{2 i}-1}\right) C_{1}^{k} C_{2}
+$$
+
+и, следовательно, $\left|c_{2 k}(a)\right| \rightarrow 0$ при $k \rightarrow \infty$. Отсюда и из (3.32) следует
+
+
+\begin{equation*}
+\left|c_{2 k}(a)\right| \leqslant C_{3} \prod_{j=1}^{k} \frac{1}{\left(a^{2 j}-1\right)} \tag{3.33}
+\end{equation*}
+
+
+так как
+
+$$
+v_{k}=\sum_{l=0}^{k-1} \frac{\left|c_{2 l}(a)\right|}{(2 k-2 l+1) \mid} \rightarrow 0
+$$
+
+при $k \rightarrow \infty$, и начиная с некоторого $k v_{k}<1$. Из (3.33) нетрудно получить
+
+
+\begin{equation*}
+\left|c_{2 k}(a)\right|<c_{4} a^{-\sum_{i=1}^{k} 2 j}=C_{4} a^{-(k+1) k} \tag{3.34}
+\end{equation*}
+
+
+Оценку (3.34) можно еще улучшить. Скорость убывания $c_{2 k}(a)$ в дальнейшем понадобится, например, для оценки остаточного члена при разложении функции up ( $x$ ) в ряд специального вйда.
+
+Уточним поведение $v_{k}$ при $k \rightarrow \infty$. Из (3.34) получаем
+
+$$
+\begin{gathered}
+v_{k}<\sum_{l=0}^{k-1} \frac{C_{4} a^{-l(l+1)}}{(2 k-2 l+1)!}=C_{4} \sum_{j=1}^{k} \frac{a^{-(k-i+1)(k-j)}}{(2 j+1)!}= \\
+=C_{4}\left(\sum_{i=1}^{\left[\frac{k}{2}\right]} \frac{a^{-(k-i+1)(k-j)}}{(2 j+1)!}+\sum_{i=\left[\frac{k}{2}\right]+1} \frac{a^{-(k-i+1)(k-j)}}{(2 j+1)!}\right) \leqslant \\
+\leqslant C_{4}\left(a^{-\frac{k^{2}}{4}} \sum_{j=1}^{\left.\frac{k}{2}\right]} \frac{1}{(2 j+1)!}+\sum_{i=\left[\frac{k}{2}\right]+1}^{k} \frac{1}{(2 j+1)!}\right) \leqslant \\
+\leqslant C_{4}\left(C_{5} a^{-\frac{k^{2}}{4}}+C_{6} \frac{1}{(k+1)!}\right) \leqslant C_{7} \frac{1}{(k+1)!} .
+\end{gathered}
+$$
+
+Поскольку (см. (3.32)) $\left|c_{2 k}(a)\right| \leqslant \frac{1}{a^{2 k}-1} v_{k}$, то
+
+
+\begin{equation*}
+\left|c_{2 k}(a)\right| \leqslant \prod_{j=1}^{k} \frac{!}{a^{2 j}-1} \frac{C_{7}^{k}}{\prod_{j=1}^{k}(j+1)!} \leqslant C_{8} a^{-k(k+1)}\left(\prod_{j=1}^{k} j!\right)^{-1} . \tag{3.35}
+\end{equation*}
+
+
+Так как
+
+
+\begin{equation*}
+c_{2 k}(a)=\frac{F_{a}^{(2 k)}(0)}{(2 k)!}, \tag{3.36}
+\end{equation*}
+
+
+a
+
+
+\begin{equation*}
+F_{a}^{(2 k)}(0)=(-1)^{k} \int_{-\infty}^{\infty} x^{2 k} h_{a}(x) \mathrm{dx} \tag{3.37}
+\end{equation*}
+
+
+то
+
+
+\begin{equation*}
+\left|\int_{-\infty}^{\infty} x^{2 k} h_{a}(x) \mathrm{dx}\right| \leqslant C_{8} a^{-k(k+1)}(2 k)!\left(\prod_{j=1}^{k} j!\right)^{-1} \leqslant C_{9} a^{-k(k+1)} . \tag{3.38}
+\end{equation*}
+
+
+Рассмотрим $h_{a}(x)$ при $a>2$. Из (3.23) и (3.27) следует $h_{a}^{\prime}(x) \equiv \equiv 0$ на $\left[-b_{1}, b_{1}\right]$, где $b_{1}=b-\frac{2 b}{a}=b\left(1-\frac{2}{a}\right)>0$, и, значит, $h_{a}(x) \equiv$ const на $\left[-b_{1}, b_{1}\right]$. Аналогично получим, что на двух интервалах общей длины $2 \times 2 b_{1} a^{-1}$ функция $h_{a}(x)$ - многочлен первой степени, на четырех интервалах общей длины $4 \times 2 b_{1} a^{-2} h_{a}(x)$ - многочлен второй степени и т. д. Мера множества $P o l_{a}$ тех $x \in \operatorname{supp} h_{a}(x)$, у которых есть окрестность, где $h_{a}(x)$ - многочлен, составляет:
+
+
+\begin{equation*}
+\mu\left(P o l_{a}\right)=2 b_{1}+2 b_{1} \frac{2}{a}+2 b_{1}\left(\frac{2}{a}\right)^{2}+\cdots=2 b_{1} \frac{1}{1-\frac{2}{a}}=2 b, \tag{3.39}
+\end{equation*}
+
+
+т. е. $\mu\left(\right.$ Pol $\left._{a}\right)=\mu\left(\operatorname{supp} h_{a}(x)\right)$.
+
+Таким образом, $h_{a}(x)$ при $a>2$ на множестве полной меры многочлен, а на оставшемся множестве sing ${ }_{a}$ (нигде не плотном, типа известного канторова множества) меры 0 - неаналитическая функция (действительно, ряд Тейлора функции $h_{a}(x)$ в точках множества $\operatorname{sing}_{a}$ либо состоит из конечного числа членов и не сходится, следовательно, к $h_{a_{s}}^{\mathrm{f}}(x)$, либо имеет нулевой радиус сходимости). Итак, в полученном примере функций класса $C^{\infty}(\mathbb{R})$ почти в каждой точке ряд Тейлора - многочлен, но функции тем не менее не являются многочленами и не аналитичны.
+
+Поскольку кусочно-полиномиальные функции называются сплайнами, то функции $h_{a}(x)$ при $a>2$ естественно причислить к сплайнам класса $C^{\infty}$.
+
+Вычислим значения $h_{a}(x)$ при $a>2$. Пусть Sing ${ }_{a}^{1}$ - множество тех точек из Sing ${ }_{a}$, в которых ряд Тейлора - многочлен. Поскольку $h_{a}(x)$ - четная функция, рассмотрим только интервал $[-b, 0]$. Из (3.22) получаем
+
+$$
+\begin{aligned}
+h\left(-b_{1}\right) & =\int_{-b}^{b_{1}} h_{a}^{\prime}(x) \mathrm{dx}=-\lambda \int_{-b}^{b_{1}} h_{a}(a x+1) \mathrm{dx}= \\
+& =-\frac{\lambda}{a} \int_{-b}^{b} h_{a}(x) \mathrm{dx}=-\frac{\lambda}{a}
+\end{aligned}
+$$
+
+Таким образом, на $\left[-b_{1}, b_{1}\right] \quad h_{a}(x)=-\frac{\lambda}{a}$, а так как (см. (3.20)) $\lambda=-\frac{a^{2}}{2}$, то
+
+
+\begin{equation*}
+h_{a}(x)=\frac{a}{2} . \tag{3.40}
+\end{equation*}
+
+
+Поэтому
+
+
+\begin{equation*}
+\int_{-b_{1}}^{b_{1}} h_{a}(x) \mathrm{dx}=a b_{1}=\frac{a-2}{a-1} \tag{3.41}
+\end{equation*}
+
+
+и, следовательно,
+
+
+\begin{equation*}
+\int_{-b}^{b_{1}} h_{a}(x) \mathrm{dx}=\frac{1}{2}-\frac{1}{2} \frac{a-2}{a-1} . \tag{3.42}
+\end{equation*}
+
+
+Тогда
+
+
+\begin{gather*}
+h_{a}\left(-b+\frac{b-b_{1}}{a}\right)=\int_{-b}^{-b+\frac{b-b_{1}}{a}} h_{a}^{\prime}(x) \mathrm{dx}=-\lambda \int_{-b}^{-b+\frac{b-b_{1}}{a}} h_{a}(a x+1) \mathrm{dx}= \\
+=-\frac{\lambda}{a} \int_{-b}^{b_{1}} h_{a}(x) \mathrm{dx}=\frac{a}{2}\left(\frac{1}{2}-\frac{1}{2} \frac{a-2}{a-1}\right) . \tag{3.43}
+\end{gather*}
+
+
+Далее,
+
+
+\begin{gather*}
+h_{a}^{\prime}\left(-b+\frac{b-b_{1}}{a}\right)=\int_{-b}^{-b+\frac{b-b_{1}}{a}} h_{a}^{\prime \prime}(x) \mathrm{d} x= \\
+=\lambda^{2} a \int_{-b}^{-b+\left(b-b_{1}\right) a^{-1}} h_{a}\left(a^{2} x+a+1\right) \mathrm{d} x=\frac{\lambda^{2}}{a} \int_{-b}^{b} h_{a}(x) \mathrm{d} x=\frac{a^{3}}{4} . \tag{3.44}
+\end{gather*}
+
+
+Поэтому на $\left[-b+\frac{b-b_{1}}{a},-b_{1}-\frac{b-b_{1}}{a}\right]$.
+
+
+\begin{equation*}
+h_{a}(x)=\frac{a^{3}}{4}\left(x+b-\frac{b-b_{1}}{a}\right)+\frac{a}{2}\left(\frac{1}{2}-\frac{1}{2} \frac{a-2}{a-1}\right) . \tag{3.45}
+\end{equation*}
+
+
+Продолжая таким же образом, можно вычислить коэффициенты всех многочленов, из которых «составлена» функция $h_{a}(x)$, причем эти коэффициенты будут рациональным образом выражаться через $a$.
+
+Между моментами функции $h_{a}(x) \int_{-b}^{b} x^{2 n} h_{a}(x) \mathrm{dx}$ (а следовательно, и коэффициентами $c_{2 k}(a)$ ) и значениями функции $h_{a}(x)$ в некоторых точках существует следующая связь. По формуле Тейлора
+
+$$
+h_{a}(x)=\sum_{k=0}^{n} \frac{h_{a}^{(k)}(-b)}{k!}(x+b)^{k}+R_{n}(x),
+$$
+
+где
+
+
+\begin{equation*}
+R_{n}(x)=\frac{1}{n!} \int_{-b}^{x} h_{a}^{(n+1)}(\tau)(x-\tau)^{n} \mathrm{~d} \tau \tag{3.46}
+\end{equation*}
+
+
+Но $h_{a}^{(k)}(-b)=0, k \in N$. Поэтому
+
+
+\begin{equation*}
+h_{a}(x)=R_{n}(x) \tag{3.47}
+\end{equation*}
+
+
+Из (3.46) и (3.23) видно, что значения $h_{a}(x)$ в точках $x \in \operatorname{Sing}_{a}^{1}$ есть линейные комбинации моментов функции $h_{a}(x)$.
+
+Найдем выражения для $h_{a}^{(n)}(x)$ и опишем точки $x \in \operatorname{Sing}_{a}^{1}$. Из (3.23) следует
+
+
+\begin{align*}
+h_{a}^{\prime \prime}(x) & =\lambda^{2} a\left(h_{a}(a x+a+1)-h_{a}\left(a^{2} x+a-1\right)\right)- \\
+& \left.-h_{a}\left(a^{2} x-a+1\right)+h_{a}\left(a^{2} x-a-1\right)\right) . \tag{3.48}
+\end{align*}
+
+
+В итоге, продолжая дифференцировать $h_{a}(x)$ с использованием (3.23), получаем
+
+
+\begin{equation*}
+h_{a}^{(n)}(x)=|\lambda|^{n} a^{\frac{n(n-1)}{2}} \sum_{k=1}^{2^{n}} \delta_{k} h_{a}\left(a^{n} x+\sum_{j=1}^{n} a^{j-1}(-1)^{p_{j}(k-1)}\right), \tag{3.49}
+\end{equation*}
+
+
+где $p_{j}(k)$ - число, состоящее в $j$-м разряде двоичного разложения числа $k$ (т. е. числа $k$, записанного в двоичной системе счисления). Числа $\delta_{k}$ определяются следующим рекуррентным соотношением: $\delta_{2 k}=-\delta_{k}, \delta_{2 k-1}=\delta_{k}, \delta_{1}=1$.
+
+Теперь опишем точки множества Sing ${ }_{a}^{1}$. Точка $x_{0} \in \operatorname{Sing}_{a}^{1}$ в том и только в том случае, если существует натуральное $n$ и набор знаков + или - такой, что
+
+$$
+a^{n} x_{0}+\sum_{k=0}^{n-1}\left( \pm a^{k}\right)= \pm b
+$$
+
+т. е.
+
+
+\begin{equation*}
+x_{0}=\left( \pm b+\sum_{k=0}^{n-1}\left( \pm a^{k}\right)\right) a^{-n} \tag{3.50}
+\end{equation*}
+
+
+Пусть $x_{0} \in$ Sing $_{a}^{1}$. Величины $h_{a}^{(l)}\left(x_{0}\right)$ согласно (3.49) выражаются через значения $h_{a}(x)$ в точках вида
+
+$$
+x_{1}=a^{l} x_{0}+\sum_{i=0}^{l-1}( \pm a)
+$$
+
+Подставим вместо $x_{0}$ его значение из (3.50):
+
+$$
+\begin{aligned}
+& x_{1}=a^{l-n}\left( \pm b+\sum_{k=0}^{n-1}\left( \pm a^{k}\right)\right)+\sum_{i=0}^{l-1}\left( \pm a^{i}\right)= \\
+& =a^{l-n}\left( \pm b+\sum_{k=0}^{n-1}\left( \pm a^{k}\right)+\sum_{k=n-l}^{n-1}\left( \pm a^{k}\right)\right)
+\end{aligned}
+$$
+
+Достаточно считать, что $0<l<n$, поскольку при $n \leqslant l h_{a}^{(l)}\left(x_{0}\right)= =0$. Покажем, что для тех наборов знаков в сумме $\Sigma_{\mathrm{I}}=\sum_{k=0}^{n-1}\left( \pm a^{k}\right)$, для которых при $n-l \leqslant k<n-1$ хотя бы один из знаков при той же степени $a$ в сумме
+
+$$
+\sum_{\mathrm{II}}=\sum_{k=n-l}^{n-1}\left( \pm a^{k}\right)
+$$
+
+не противоположен, выполняется неравенство $\left|x_{1}\right| \geqslant b$ и, следовательно, $h_{a}\left(x_{1}\right)=0$. Действительно, пусть $k_{1}, k_{1} \geqslant n-l$, наибольшее из тех $k$, для которых у данных наборов знаков в $\Sigma_{\text {I }}$ и $\Sigma_{\text {II }}$ знаки при $a^{k}$ одинаковы. Тогда
+
+$$
+\begin{aligned}
+\left|\Sigma_{1}+\Sigma_{11}\right|> & 2 a^{k_{1}}-2 \sum_{k=n-l}^{k_{1}} a^{k}-\sum_{k=0}^{n-l-1} a^{k}=\frac{2\left(a^{k_{1}+1}-2 a^{k_{1}}\right)}{a-1}+ \\
+& +\frac{a^{n-l}}{a-1}+\frac{1}{a-1} \geqslant \frac{a^{n-l}}{a-1}+b
+\end{aligned}
+$$
+
+(так как $a>2$ ). Поэтому
+
+$$
+\left|a^{l-n}\left( \pm b+\sum_{\mathrm{I}}+\sum_{\mathrm{II}}\right)\right|>\frac{1}{a-1}=b .
+$$
+
+Для того (единственного) набора знаков в $\Sigma_{\text {II }}$, у которого знаки при $k \geqslant n-l$ противоположны знакам $\Sigma_{\mathrm{I}}$,
+
+$$
+x_{1}=a^{l-n}\left( \pm b+\sum_{k=0}^{n-l-1}( \pm a)\right)
+$$
+
+и в силу (3.50) $x_{1} \in \mathrm{Sing}_{a}^{1}$. Следовательно, и производные функции $h_{a}(x)$ в точках Sing ${ }_{a}^{1}$ рациональным образом выражаются через $a$ и $c_{2 k}(a)$ (т. е. в конце концов через $a$ ).
+
+Пусть $1 \leqslant m \leqslant 2^{n}$, а $x_{m}^{(n)} \in \operatorname{Sing}_{a}^{1}$ имеет вид
+
+
+\begin{equation*}
+x_{m}^{(n)}=\left(b-\sum_{k=0}^{n-1} a^{k}(-1)^{p_{k+1^{(m-1)}}}\right) a^{-n} . \tag{3.51}
+\end{equation*}
+
+
+Тогда согласно (3.47) и (3.49)
+
+
+\begin{gather*}
+h_{a}\left(x_{m}^{(n)}\right)=\frac{1}{(n-1)!} \int_{-b}^{x_{m}^{(n)}} h_{a}^{(n)}(\tau)\left(x_{m}^{(n)}-\tau\right)^{n-1} \mathrm{~d} \tau= \\
+=\frac{|\lambda|^{n} a^{\frac{n(n-1)}{2}}}{(n-1)!} \int_{-b}^{x_{m}^{(n)}} \sum_{k=1}^{m} \delta_{k} h_{a}\left(a^{n} \tau+\sum_{j=1}^{n} a^{j-1}(-1)^{p_{j}(k-1)}\right) \times \\
+\times\left(x_{m}^{(n)}-\tau\right)^{n-1} d \tau=\frac{|\lambda|^{n} a^{\frac{(n-1) n}{2}}}{(n-1)!} \sum_{k=1}^{m} \delta_{k} \int_{-b}^{x_{m}^{(n)}} h_{a}\left(a^{n} \tau+\right. \\
+\left.+\sum_{j=1}^{n} a^{j-1}(-1)^{p_{j}(k-1)}\right)\left(x_{m}^{(n)}-\tau\right)^{n-1} \mathrm{~d} \tau . \tag{3.52}
+\end{gather*}
+
+
+Сделаем в $k$-м интеграле в (3.52) замену
+
+$$
+t=a^{n} \tau+\sum_{i=1}^{n} a^{i-1}(-1)^{p_{j}(k-1)}
+$$
+
+Получим
+
+
+\begin{align*}
+h_{a}\left(x_{m}^{(n)}\right)= & \frac{|\lambda|^{n} a^{\frac{n(n-1)}{2}}}{(n-1)!} a^{-n} \sum_{k=1}^{m} \delta_{k} \int_{-b}^{b} h_{a}(t)\left(x_{m}^{(n)}-(t+\right. \\
+& \left.\left.+\sum_{i=0}^{n-1} a^{l}(-1)^{p_{i+1}(k-1)}\right) a^{-n}\right)^{n-1} \mathrm{dt} . \tag{3.53}
+\end{align*}
+
+
+Отсюда $\left(|\lambda|=\frac{a^{2}}{2}\right)$\\
+$h_{a}\left(x_{m}^{(n)}\right)=\frac{a^{2 n} a^{\frac{n(n-1)}{2}}}{(n-1)!2^{n}} a^{-n} a^{-n(n-1)} \sum_{k=1}^{m} \delta_{k} \sum_{l=0}^{\left[\frac{n-1}{2}\right]} C_{n-1}^{2 l} \beta_{m, k, n}^{n-1-2 l} \int_{-b}^{b} h_{a}(t) t^{2 l} \mathrm{dt}=$\\
+$=\frac{1}{(n-1)!2^{n}} a^{-\frac{n(n-3)}{2}\left[\frac{n-1}{2}\right]} \sum_{l=0}^{2 l} C_{n-1}^{2 l}(-1)^{l}(2 l)!c_{2 l}(a) \sum_{k=1}^{m} \delta_{k} \beta_{m, k, n}^{n-1-2 l}$,\\
+где
+
+$$
+\beta_{m, k, n}=b+\sum_{j=0}^{n-1} a^{i}\left((-1)^{p_{j+1}(k-1)}-(-1)^{p_{i+1}(m-1)}\right) .
+$$
+
+Например, для $m=1$, т. е. $x_{1}^{(n)}=-b+2 b a^{-n}$,
+
+
+\begin{equation*}
+h_{a}\left(x_{1}^{(n)}\right)=\frac{a^{-\frac{n(n-3)}{2}}}{(n-1)!2^{n}}\left[\frac{n-1}{2}\right] \sum_{l=0}^{2 l} C_{n-1}(-1)^{l}(2 l)!c_{2 l}(a) b^{n-1-2 l} . \tag{3.55}
+\end{equation*}
+
+
+Выведем формулу для $h_{a}^{(l)}\left(x_{m}^{(n)}\right)$. Из (3.49) следует
+
+
+\begin{equation*}
+h_{a}^{(l)}\left(x_{m}^{(n)}\right)=|\lambda|^{l} a^{\frac{l(l-1)}{2}} \delta_{s} h_{a}\left(a^{l} x_{m}^{(n)}+\sum_{j=0}^{l-1} a^{l}(-1)^{p_{i+1}(s-1)}\right), \tag{3.56}
+\end{equation*}
+
+
+где $s$ определяется из формулы $p_{1}(s-1)=p_{i+n-l}(m-1)$ : $s=\left[m 2^{l-n}\right]$. Таким образом,
+
+
+\begin{gather*}
+h_{a}^{(l)}\left(x_{m}^{(n)}\right)=|\lambda|^{l^{\frac{l(l-1)}{2}}} \delta_{s} h_{a}\left(a ^ { l - n } \left(b-\sum_{k=0}^{n-1} a^{k}(-1)^{p_{k+1}(m-1)}+\right.\right. \\
+\left.\left.+\sum_{j=0}^{l-1} a^{l}(-1)^{p_{i+1}(s-1)}\right)\right)=\frac{a^{\frac{l(l+3)}{2}}}{2^{l}} \delta_{s} h_{a}\left(x_{r}^{(n-l)}\right), \tag{3.57}
+\end{gather*}
+
+
+где $r=m-\left[m 2^{l-n}\right] 2^{n-l}+1$. Окончательно получаем
+
+
+\begin{gather*}
+h_{a}^{(l)}\left(x_{m}^{(n)}\right)=\frac{a^{-\frac{(n-l)(n-l+3)}{2}+\frac{l(l+3)}{2}}}{2^{n}(n-l-1)!} \delta_{s} \times \\
+\times \sum_{j=0}^{\left[\frac{n-l-1}{2}\right]} C_{n-l-1}^{2!}(-1)^{j}(2 j)!c_{2 j}(a) \sum_{k=1}^{r} \delta_{k} \beta_{r, k, n-l}^{n-l-1-2 j} . \tag{3.58}
+\end{gather*}
+
+
+Итак, на интервале $\left[x_{m}^{(n)}, x_{m}^{(n)}+2 b_{1} a^{-n+1}\right]$ функция $h_{a}(x)$ - многочлен степени $n-1$ вида
+
+
+\begin{equation*}
+h_{a}(x)=\sum_{l=0}^{n-1} \frac{h_{a}^{(l)}\left(x_{m}^{(n)}\right)}{l l}\left(x-x_{m}^{(n)}\right)^{l}, \tag{3.59}
+\end{equation*}
+
+
+где $h_{a}^{(l)}\left(x_{m}^{(n)}\right)$ вычисляются по формуле (3.58).
+
+\section*{§ 3. ФУНКция up( $x$ )}
+Рассмотрим $h_{a}(x)$ при $a=2$. По определению $h_{2}(x)=\operatorname{up}(x)$. Функция up $(x)$, введенная в работе [52], исследовалась в работах [53-57, 59, 60, 66]. Из (3.24) следует
+
+
+\begin{equation*}
+\operatorname{up}(x)=\frac{1}{2 \pi} \int_{-\infty}^{\infty} e^{i t x} \prod_{k=1}^{\infty} \frac{\sin t 2^{-k}}{t 2^{-k}} \mathrm{dt} . \tag{3.60}
+\end{equation*}
+
+
+Функция up $(x)$ - решение уравнения
+
+
+\begin{equation*}
+y^{\prime}(x)=2 y(2 x+1)-2 y(2 x-1), \tag{3.61}
+\end{equation*}
+
+
+причем
+
+
+\begin{equation*}
+\operatorname{supp} \operatorname{up}(x)=[-1,1] . \tag{3.62}
+\end{equation*}
+
+
+Производная $n$-го порядка функции up $(x)$ вычисляется по формуле
+
+
+\begin{equation*}
+\operatorname{up}^{(n)}(x)=2^{C_{n+1}^{2}} \sum_{k=1}^{2^{n}} \delta_{k} \operatorname{up}\left(2^{n} x+2^{n}+1-2 k\right) . \tag{3.63}
+\end{equation*}
+
+
+Легко заметить, что
+
+
+\begin{equation*}
+\left\|\operatorname{up}^{(n)}(x)\right\|_{C[-1,1]}=\left\|\operatorname{up}^{(n)}(x)\right\|_{L_{1}[-1,1]}=2^{C_{n+1}^{2}} . \tag{3.64}
+\end{equation*}
+
+
+В точках вида $k 2^{-n}$ (т. е. двоично-рациональных) ряд Тейлора функции up $(x)$ - многочлен степени $n$. Нетрудно убедиться, что в остальных точках носителя up $(x)$ - отрезка $[-1,1]$ - ряд Тейлора этой функции имеет нулевой радиус сходимости. Таким образом, в то время как функции $h_{a}(x)$ при $a>2$ аналитичны на множестве полной меры, функция up ( $x$ ) неаналитична ни в одной точке носителя. Повторяя рассуждения § 2, можно вычислить значения функции ир ( $x$ ) в двоично-рациональных точках, выразив их через момен-
+
+ты функции ир ( $x$ ). Приведем формулы для этих моментов:
+
+
+\begin{gather*}
+2 b_{2 k}=a_{2 k}=\int_{-1}^{1} x^{2 k} \text { up }(x) \mathrm{dx}=(-1)^{k} c_{2 k}(2)(2 k)!  \tag{3.65}\\
+b_{2 k+1}=\int_{0}^{1} x^{2 k+2} \text { up }(x) \mathrm{dx}=-\int_{0}^{1} \frac{x^{2 k+2}}{2 k+2} \text { up }^{\prime}(x) \mathrm{dx}= \\
+=\frac{1}{k+1} \int_{0}^{1} x^{2 k+2} \text { up }(2 x-1) \mathrm{dx}=\frac{1}{2 k+2} \int_{-1}^{1}\left(\frac{u+1}{2}\right)^{2 k+2} \text { up }(u) d u= \\
+=\frac{1}{2^{2 k+2}(2 k+2)} \sum_{j=0}^{k+1} C_{2 k+2}^{2 j} a_{2 j} \tag{3.66}
+\end{gather*}
+
+
+Теперь по формуле Тейлора получаем
+
+
+\begin{gather*}
+\operatorname{up}\left(-1+k 2^{-n}\right)=\frac{1}{n!} \int_{-1}^{-1+k 2^{-n}} \operatorname{up}^{(n+1)}(\tau)\left(-1+k 2^{-n}-\tau\right)^{n} d \tau= \\
+=\frac{2^{C_{n+2}^{2}}}{n!} \sum_{j=1}^{k} \delta_{j}^{-1+k 2^{-n}} \int_{-1}^{C^{2}} \operatorname{up}\left(2^{n+1} \tau+2^{n+1}+1-2 j\right)\left(-1+k 2^{-n}-\tau\right)^{n} \mathrm{~d} \tau= \\
+=\frac{2^{C_{n+2}-(n+1)}}{n!} \sum_{j=1}^{k} \delta_{i} \int_{-1}^{1} \operatorname{up}(t)\left(-1+k 2^{-n}-\left(t-2^{n+1}-1+2 j\right) \times\right. \\
+\left.\times 2^{-n-1}\right)^{n} \mathrm{dt}=\frac{2^{C_{n+2}^{2}}}{n!} \sum_{j=1}^{k} \delta_{j} \int_{-1}^{1} \operatorname{up}(t)\left(k-j+\frac{1}{2}-\frac{t}{2}\right)^{n} \mathrm{dt}= \\
+=\frac{2^{-n^{2}-n-1+C_{n+2}^{2}}}{n!} \sum_{j=1}^{k} \delta_{l} \sum_{l=0}^{\left[\frac{n}{2}\right]} C_{n}^{2 l}\left(k-j+\frac{1}{2}\right)^{n-2 t} a_{2 l^{2}}{ }^{-2 l} . \text { (3.67) } \tag{3.67}
+\end{gather*}
+
+
+Для точек вида $-1+2^{-n}$ поступим следующим образом [59]:
+
+
+\begin{gather*}
+\operatorname{up}\left(-1+2^{-n}\right)=\frac{1}{(n-1)!} \int_{-1}^{-1+2^{-n}} \operatorname{up}^{(n)}(\tau)\left(-1+2^{-n}-\tau\right)^{n-1} \mathrm{~d} \tau= \\
+=\frac{2^{c_{n+1}^{2}}}{(n-1)!} \int_{-1}^{-1+2^{-n}} \operatorname{up}\left(2^{n} \tau+2^{n}+1-2\right)\left(-1+2^{-n}-\tau\right)^{n-1} \mathrm{~d} \tau= \\
+=\frac{2^{c_{n+1}^{2}-n}}{(n-1)!} \int_{0}^{1} \operatorname{up}(t) t^{n-1} \mathrm{dt} \cdot 2^{-n(n-1)}=\frac{b_{n-1}}{2^{c_{n}^{2}}(n-1)!} . \tag{3.68}
+\end{gather*}
+
+
+По формуле (3.63) найдем\\
+$\operatorname{up}^{(l)}\left(-1+2^{-n}\right)=2^{c_{l+1}^{2}} \operatorname{up}\left(-1+2^{l-n}\right)=\frac{2^{c_{l+1}^{2}-c_{n-l}^{2}}}{(n-l-1)!} b_{n-l-1}$.
+
+Получим.теперь формулу для вычисления функции up ( $x$ ) при любом $x$. Достаточно рассмотреть случай $-1 \leqslant x \leqslant 0$, так как функция up $(x)$ четная. Для функции $\varphi_{n}(x)=\operatorname{up}(x)+\operatorname{up}\left(x-2^{-n}\right)$ на интервале $\left[-1+2^{-n},-1+2^{-n+1}\right]$ получаем $\varphi_{n}^{n+1}(x) \equiv 0$, так как $\delta_{2}=-\delta_{1}$. Следовательно, на этом интервале
+
+
+\begin{equation*}
+\varphi_{n}(x)=\sum_{l=0}^{n} \frac{\varphi_{n}^{(l)}\left(-1+2^{-n}\right)}{l l}\left(x+1-2^{-n}\right)^{l}, \tag{3.70}
+\end{equation*}
+
+
+причем $\varphi_{n}^{(l)}\left(-1+2^{-n}\right)=\operatorname{up}^{(l)}\left(-1+2^{-n}\right)$, так как $\operatorname{up}^{(l)}(-1)=0$. Таким образом, для $x \in\left[-1+2^{-n},-1+2^{-n+1}\right]$
+
+
+\begin{equation*}
+\operatorname{up}(x)=\sum_{l=0}^{n} \frac{\operatorname{up}^{(l)}\left(-1+2^{-n}\right)}{l!}\left(x+1-2^{-n}\right)-\operatorname{up}\left(x-2^{-n}\right), \tag{3.71}
+\end{equation*}
+
+
+т. е. для того чтобы вычислить функцию up $(x)$ на $\left[-1+2^{-n}\right.$, $\left.-1+2^{-n+1}\right]$, нужно знать ее значения на $\left[-1,-1+2^{-n}\right]$. Разбивая интервал $\left[-1,-1+2^{-n}\right]$ на интервалы $\left[-1,-1+2^{-n-1}\right]$ и $\left[-1+2^{-n-1},-1+2^{-n}\right]$ и повторяя те же выкладки, можем свести вычисление функции up $(x)$ на интервале $\left[-1+2^{-n-1},-1+\right. +2^{-n+1}$ ] к вычислению ее на $\left[-1,-1+2^{-n-1}\right]$. Тем самым получаем возможность записать некоторый ряд для вычисления значений функции up ( $x$ ), причем ряд быстро сходится. Действительно, на $\left[-1,-1+2^{-n}\right]$
+
+$$
+\begin{aligned}
+& 0 \leqslant \operatorname{up}(x) \leqslant \operatorname{up}\left(-1+2^{-n}\right), \\
+& \operatorname{up}\left(-1+2^{-n}\right)=\frac{b_{n-1}}{2^{c_{n}^{2}}(n-1)!} .
+\end{aligned}
+$$
+
+Следовательно, использовав оценку (3.38) для $c_{2 k}(a)$, получим
+
+
+\begin{equation*}
+\operatorname{up}\left(-1+2^{-n}\right) \leqslant \frac{a_{2}\left[\frac{n-1}{2}\right]}{2^{c_{n}^{2}}(n-1)!}<\frac{c_{9}}{2^{c_{n}^{2}+2\left[\frac{n-1}{2}\right]\left(2\left[\frac{n-1}{2}\right]+1\right)}} . \tag{3.72}
+\end{equation*}
+
+
+Выпишем этот ряд для $0 \leqslant x<1$ :\\
+$\operatorname{up}(x-1)=\sum_{k=1}^{\infty}(-1)^{s_{k}+1} p_{k} \sum_{j=0}^{k} \frac{2^{C_{j+1}^{2}} b_{k-j-1}}{2^{C_{k-j}^{2}}(k-j-1)!j!}\left(x-0, p_{1} \ldots p_{k}\right)^{i}$;
+
+
+\begin{equation*}
+b_{-1}=1, \quad 0!=(-1)!=1, \quad s_{k}=\sum_{j=1}^{k} p_{j} . \tag{3.73}
+\end{equation*}
+
+
+Здесь величины $b_{l}, l>0$, вычисляются по формулам (3.65), (3.66), а $x=0, p_{1} \ldots p_{k} \ldots$ - запись числа $x$ в двоичной системе счисления.
+
+Таким образом, $x-0, p_{1} \ldots p_{k}=x-\left[x 2^{k}\right] 2^{-k}$. Остаточный член
+
+
+\begin{equation*}
+R_{n}(x)=\operatorname{up}(x-1)-\sum_{k=1}^{n}(-1)^{s_{k}+1} \sum_{i=0}^{k} \frac{2^{c_{i+1}^{2}} b_{k-j-1}\left(x-0, p, \ldots p_{k}\right)^{i}}{2^{c_{k-j}^{2}}(k-j-1)!j!} \tag{3.74}
+\end{equation*}
+
+
+не превосходит up ( $-1+2^{-n}$ ), т. е.
+
+
+\begin{equation*}
+\left|R_{n}(x)\right| \leqslant \frac{C}{2^{2}+2\left[\frac{n-1}{2}\right]\left(2^{\left[\frac{n-1}{2}\right]+1}\right)_{(n-1)!}} \tag{3.75}
+\end{equation*}
+
+
+\section*{§ 4. ПРЕДСТАВЛЕНИЕ МНОГОЧЛЕНОВ В ВИДЕ ЛИНЕЙНЫХ КОМБИНАЦИЙ СДВИГОВ ФУНКЦИИ up( $x$ )}
+Из формулы (3.63) следует, что для того чтобы линейная комбинация сдвигов функции up $(x)$
+
+
+\begin{equation*}
+\varphi(x)=\sum_{k=-\infty}^{\infty} c_{k} \text { up }\left(x-k 2^{-n}\right) \tag{3.76}
+\end{equation*}
+
+
+была многочленом степени $n$, необходимо и достаточно выполнение системы равенств
+
+
+\begin{equation*}
+\sum_{j=1}^{2^{n+1}} c_{k+j} \delta_{j}=0, \quad k \in \mathbb{Z} \tag{3.77}
+\end{equation*}
+
+
+т. е. коэффициенты $c_{k}$ должны быть решением разностной однородной системы с постоянными коэффициентами (3.77). Поэтому должно выполняться условие
+
+
+\begin{equation*}
+c_{k}=\sum_{i=1}^{N} \sum_{l=0}^{p_{l}-1} c_{i l} k^{l}\left(\omega_{i}^{(n)}\right)^{k}, \tag{3.78}
+\end{equation*}
+
+
+где $\omega_{i}^{(n)}$ - корни уравнения (степени $2^{n+1}-1$ )
+
+
+\begin{equation*}
+Q_{n}(\lambda)=\sum_{k=1}^{2^{n+1}} \delta_{k} \lambda^{2^{n+1}-k}=0 \tag{3.79}
+\end{equation*}
+
+
+а $p_{i}$ - кратность корня $\omega_{i}^{(n)}$. Вычислим корни уравнения (3.79). Очевидно,
+
+
+\begin{equation*}
+Q_{0}(\lambda)=\lambda-1, \quad \omega_{1}^{(0)}=1 . \tag{3.80}
+\end{equation*}
+
+
+Кроме того, легко видеть, что многочлены $Q_{n}(\lambda)$ удовлетворяют рекуррентному соотношению
+
+
+\begin{equation*}
+Q_{n}(\lambda)=Q_{n-1}(\lambda)\left(\lambda^{2^{n}}-1\right) . \tag{3.81}
+\end{equation*}
+
+
+Поэтому корни характеристического уравнения (3.79) равны:
+
+
+\begin{equation*}
+\omega_{j}^{(n)}=\exp \left(2 \pi i j 2^{-l}\right), \tag{3.82}
+\end{equation*}
+
+
+тде $0 \leqslant j \leqslant 2^{l}, l=0,1, \ldots, n$. Окончательно получаем
+
+
+\begin{equation*}
+c_{k}=\sum_{i=1}^{2^{n}}\left[\cos \left(2 \pi j k 2^{-n}\right) \sum_{l=0}^{v_{2}(j)} c_{i l} k^{l}+\sin \left(2 \pi j k 2^{-n}\right) \sum_{l=0}^{v_{2}(j)} d_{j l} k^{l}\right], \tag{3.83}
+\end{equation*}
+
+
+где $v_{2}(j)-2$-адический показатель числа $j$, т. е. наибольшее целое число $v_{2}(j)$ такое, что $2^{v_{2}(j)}$ делит $j$. В частности, если $c_{k}$ - многочлен степени $n$ от индекса $k$, то функция $\sum_{k} c_{k}$ up $\left(x-k 2^{-n}\right)= =P_{n}(x)$ - многочлен степени $n$. Действительно, корень 1 имеет кратность $n+1\left(j=2^{n}\right)$. В работе [53] приведены формулы для представления $x^{n}$ в виде линейной комбинации сдвигов функции up (x).
+
+Докажем следующую теорему о единственности представляющей функции (т. е. функции, линейные комбинации сдвигов которой могут представлять собой многочлен сколь угодно высоких степеней). Эта теорема является усилением теорем, приведенных в работах [53, 66].
+
+Теорема. Пусть $\varphi(x)$ - финитная функция с носителем [-1,1] класса $C^{\infty}$, удовлетворяющая следующим условиям:\\
+1)
+
+$$
+\int_{-1}^{1} \varphi(x) \mathrm{d} x=1
+$$
+
+2.
+
+$$
+\frac{\lim _{n \rightarrow \infty}}{\| \varphi^{(n)}{ }^{n} C_{|-1,1|}}=0 ;
+$$
+
+\begin{enumerate}
+  \setcounter{enumi}{2}
+  \item для каждого натурального $n$ существуют коэффициенты $c_{j}^{(n)}$ такие, что
+\end{enumerate}
+
+$$
+\sum_{i=-\infty}^{\infty} c_{i}^{(n)} \varphi\left(x-j 2^{-n}\right)=x^{n} .
+$$
+
+Тогда $\varphi(x) \equiv \operatorname{up}(x)$.\\
+Доказательство. Из условия 1 теоремы следует
+
+$$
+\sum_{i=-\infty}^{\infty} c_{i}^{(0)} \varphi(x-j) \equiv 1,
+$$
+
+где коэффициенты $c_{j}^{(0)}$ обязательно равны 1. Отсюда $\varphi^{\prime}(x)= =2 \varphi_{1}(2 x+1)-2 \varphi_{1}(2 x-1)$, где $\varphi_{1}(x)$ - финитная функция с носителем $[-1,1]$ класса $C^{\infty}$, удовлетворяющая всем условиям теоремы. Аналогично находим
+
+$$
+\varphi_{1}^{\prime}(x)=2 \varphi_{2}(2 x+1)-2 \varphi_{2}(2 x-1),
+$$
+
+где $\varphi_{2}(x)$ удовлетворяет тем же условиям, и т. д. Получаем последовательность функций $\left\{\varphi_{n}(x)\right\}$, удовлетворяющих условиям теоремы и таких, что
+
+
+\begin{equation*}
+\varphi_{n}^{\prime}(x)=2 \varphi_{n+1}(2 x+1)-2 \varphi_{n+1}(2 x-1) . \tag{3.84}
+\end{equation*}
+
+
+Проинтегрируем (3.84):
+
+
+\begin{equation*}
+\varphi_{n}(x)=2 \int_{-1}^{x}\left(\varphi_{n+1}(2 t+1)-\varphi_{n+1}(2 t-1)\right) d t . \tag{8.85}
+\end{equation*}
+
+
+Из определения функции up $(x)$ имеем
+
+
+\begin{equation*}
+\operatorname{up}(x)=2 \int_{-1}^{x}(\operatorname{up}(2 t+1)-\operatorname{up}(2 t-1)) \mathrm{dt} \tag{3.86}
+\end{equation*}
+
+
+Из условия 2 теоремы следует
+
+
+\begin{equation*}
+\frac{\lim _{n \rightarrow \infty}}{n \rightarrow \varphi_{n+1} \|_{C}}=_{2^{n}} \frac{2^{-C_{n+2}^{2}}\left\|\varphi^{(n+1)}(x)\right\|_{C}}{2^{n}}=0 . \tag{3.87}
+\end{equation*}
+
+
+Кроме того, $\varphi_{n}(0)=1, \varphi_{n}(x-1)+\varphi_{n}(x)=1$ при $x \in[0,1]$. То же верно и для функции up $(x)$. Положим
+
+
+\begin{equation*}
+\gamma_{n}(x)=\operatorname{up}(x)-\varphi_{n}^{-}(x) . \tag{3.88}
+\end{equation*}
+
+
+Согласно (3.87)
+
+
+\begin{equation*}
+\varliminf_{n \rightarrow \infty} \frac{\left\|\gamma_{n+1}(x)\right\|_{C}}{2^{n}}=0 . \tag{3.89}
+\end{equation*}
+
+
+Функция $\gamma_{n}(x)$ обращается в 0 в точках $-1,0,1$ и, кроме того, для $x \in[0,1]$
+
+
+\begin{equation*}
+\gamma_{n}(x)=-\gamma_{n}(x-1) . \tag{3.90}
+\end{equation*}
+
+
+Из (3.84) и (3.88) находим
+
+
+\begin{equation*}
+\gamma_{n}(x)=2 \int_{-1}^{x}\left(\gamma_{n+1}(2 t+1)-\gamma_{n+1}(2 t-1)\right) \mathrm{dt} . \tag{3.91}
+\end{equation*}
+
+
+При $x \in\left[-1,-\frac{1}{2}\right]$ из (3.91) следует
+
+
+\begin{equation*}
+\left|\gamma_{n}(x)\right| \leqslant\left\|\gamma_{n+1}\right\|_{c} . \tag{3:92}
+\end{equation*}
+
+
+Согласно (3.90) неравенство (3.92) выполняется и на $\left[-\frac{1}{2}, 0\right]$ и, следовательно, на $[-1,1]$. Кроме того, в силу (3.90) на $[-1,0]$
+
+
+\begin{equation*}
+\left|\gamma_{n}(x)\right| \leqslant\left\|\gamma_{n+1}\right\| c \sigma_{1}(2 x+1), \tag{3.93}
+\end{equation*}
+
+
+где $\sigma_{1}(x)=1-|x|$. Поэтому
+
+
+\begin{equation*}
+\left\|\gamma_{n-1}(x)\right\|_{c} \leqslant \frac{1}{2}\left\|\varphi_{n+1}\right\|_{c} \tag{3.94}
+\end{equation*}
+
+
+и
+
+
+\begin{equation*}
+\left|\gamma_{n-1}(x)\right| \leqslant \frac{1}{2}\left\|\gamma_{n+1}\right\| c \sigma_{2}(2 x+H), \tag{3.95}
+\end{equation*}
+
+
+где
+
+
+\begin{equation*}
+\sigma_{n}(x)=2 \int_{-1}^{x}\left(\sigma_{n-1}(2 t+1)-\sigma_{n-1}(2 t-1)\right) \mathrm{dt} . \tag{3.96}
+\end{equation*}
+
+
+Продолжая эти рассуждения, получаем
+
+
+\begin{equation*}
+\left\|\gamma_{0}\right\|_{c}=\|\operatorname{up}(x)-\varphi(x)\|_{c} \leqslant\left(\frac{1}{2}\right)^{n}\left\|\gamma_{n+1}\right\| c . \tag{3.97}
+\end{equation*}
+
+
+Здесь использованы условия $0 \leqslant \sigma_{n}(x) \leqslant 1 ; \int_{-1}^{0} \sigma_{n}(x) \mathrm{dx}=\frac{1}{2}$.\\
+Поэтому из условия 3 теоремы и (3.89) следует $\left\|\gamma_{0}\right\|_{c}=0$, т. е. $\varphi(x) \equiv \mathrm{up}(x)$. Теорема доказана.
+
+Замечание. Ограничение на рост производных в условии 3 теоремы нельзя ослабить. Например, функция $\varphi(x)=\operatorname{up}(x)+\alpha \mathrm{up}^{\prime}(x)$, $\alpha \neq 0$, удовлетворяет условиям 1 и 3 теоремы, но
+
+$$
+\lim _{n \rightarrow \infty} \frac{\left\|\varphi^{(n)}(x)\right\|_{C}}{2^{C_{n+2}^{2}}}=|\alpha|
+$$
+
+и, конечно, теорема для нее не верна: up $(x) \neq u$ p $(x)+\alpha$ up $^{\prime}(x)$. Функции $\sigma_{n}(x)$, используемые при доказательстве теоремы,- финитные сплайны - подробно изучались в работах [62, 63].
+
+\section*{§ 5. ФУнкции $\operatorname{Fup}_{n}(x)$}
+Рассмотрим преобразование Фурье функции
+
+
+\begin{align*}
+F(t)=F_{2}(t)= & \prod_{j=1}^{\infty} \frac{\sin t 2^{-j}}{t 2^{-j}}=\frac{2 \cos \frac{t}{4} \sin \frac{t}{4}}{\frac{t}{2}} \prod_{j=2}^{\infty} \frac{\sin t 2^{-1}}{t 2^{-j}}= \\
+& =\cos \frac{t}{4}\left(\frac{\sin \frac{t}{4}}{\frac{t}{4}}\right) \prod_{j=3}^{\infty} \frac{\sin t 2^{-j}}{t 2^{-j}} . \tag{3.98}
+\end{align*}
+
+
+Положим
+
+
+\begin{align*}
+& F^{[1]}(t)=\left(\frac{\sin \frac{t}{4}}{\frac{t}{4}}\right)^{2} \prod_{j=3}^{\infty} \frac{\sin t 2^{-j}}{t 2^{-j}} ;  \tag{3.99}\\
+& F \operatorname{up}_{1}(x)=\frac{1}{2 \pi} \int_{-\infty}^{\infty} e^{-i t x} F^{[1]}(t) \mathrm{dt} .
+\end{align*}
+
+
+Тогда из (3.98) следует
+
+
+\begin{equation*}
+\operatorname{up}(x)=\left(F \operatorname{up}_{1}\left(x-\frac{1}{4}\right)+F \operatorname{up}_{1}\left(x+\frac{1}{4}\right)\right) 2^{-1} . \tag{3.100}
+\end{equation*}
+
+
+
+\end{document}

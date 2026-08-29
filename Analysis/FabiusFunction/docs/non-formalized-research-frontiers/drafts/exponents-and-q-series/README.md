@@ -149,3 +149,11 @@ normalized geometric-uniform law Y_q = (1-q)∑ qʲU_j at negative and reciproca
 parameters — signed densities, reciprocal Laplace duality, two-nome
 Pochhammer–Prouhet partition functions, and inverse-geometric endpoint lattices.
 It stays separate until deliberately merged into the volume.
+
+Seventeenth-wave arrivals (2026-08-28): `Atomic_Functions_Beyond_Dyadic_Report-2/` and
+`-3/` are two further independently written versions of the fourteenth wave's
+atomic-functions report (itself since absorbed into the volume), the `-2` package
+including the Russian source scan and OCR; and `Fabius_Q_Connections_Report/`
+(*Beyond the Dyadic Fabius Web*) brings the q-connection layer with residual tables,
+q-Lagrange weights, and cumulants. All stay separate members until deliberately
+merged into the volume.

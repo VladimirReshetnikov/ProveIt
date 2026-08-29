@@ -57,6 +57,20 @@ sources *as* independent documents (see the group README).
 
 | `Signed_Reciprocal_q_Fabius_Frontiers/` | *Signed and Reciprocal q-Fabius Frontiers* (39 pp, sixteenth wave, from `incoming/Signed_Reciprocal_q_Fabius_Frontiers_bundle.zip`) — the normalized geometric-uniform law Y_q = (1-q)∑ qʲU_j (q = 1/2 the Fabius case) at negative and reciprocal parameters: signed q densities, reciprocal Laplace duality, two-nome Pochhammer–Prouhet partition functions, inverse-geometric endpoint lattices, dyadic Thue–Morse and quartic Cantor combs; figures, deterministic experiments, SHA-256 sums | new arrival (2026-08-28); kept a separate member pending deliberate merge into the volume |
 
+| `Atomic_Functions_Beyond_Dyadic_Report-2/` | *Atomic Functions Beyond the Critical Dyadic Case* (seventeenth wave) — an independently written second version of the fourteenth-wave report (that one since absorbed into the volume), including the Russian source scan and its OCR (`source_rvachev_scan.pdf`, `source_rvachev_ocr.tex`), spectral q-Pearson and Gamma–zeta Fourier validations | new arrival (2026-08-28); separate member pending deliberate merge |
+| `Atomic_Functions_Beyond_Dyadic_Report-3/` | *Atomic Functions Beyond the Critical Dyadic Case* (seventeenth wave) — a third independent version: distance-to-singular-set diagnostics at a = 3, Gaussian cumulant-limit data, gap-geometry tables | new arrival (2026-08-28); separate member pending deliberate merge |
+| `Fabius_Q_Connections_Report/` | *Beyond the Dyadic Fabius Web* (29 pp, seventeenth wave, arrived as a bare directory) — q-connections of the Fabius system: residual tables, q-Lagrange weights, cumulants; LuaLaTeX source, deterministic experiments, SHA-256 sums | new arrival (2026-08-28); separate member pending deliberate merge |
+
+## lambert-w — `lambert-w/`
+
+Three independently written Lambert W article packages (seventeenth wave, 2026-08-28), kept as separate members per the Fourier-decay precedent; the group README carries the table. The function enters the corpus through the two-scale endpoint asymptotics and `LambertPhaseLockedRichardson.lean`.
+
+| Directory | Document |
+| --- | --- |
+| `Lambert-W-Article/` | *A Real-Variable Guide to Its Branches, Identities, Series, Asymptotics, Bounds, Approximations, and Computation* |
+| `Lambert_W_Function_Article/` | *The Lambert W Function* (article package) |
+| `Lambert_W_article/` | *Real Branches, Series, Asymptotics, Bounds, Continued Fractions, Numerical Evaluation, and Applications* |
+
 ## spectra-and-arithmetic — `spectra-and-arithmetic/`
 
 | Directory | Document | Previous path |
