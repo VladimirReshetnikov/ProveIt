@@ -31,10 +31,12 @@ integral is then the total mass of the probability measure `μ_up`.
 
 ## Scope
 
-Only the fixed-`ε` normalisation is proved.  Nothing here lets
-`ε → 0⁺`: the Stieltjes--Perron inversion theorem, and the
-Lebesgue-side approximate identity it needs, remain outside the
-corpus, exactly as the scope note of `StieltjesInversion` says.
+Only the fixed-`ε` normalisation is proved here.  Nothing in this
+module lets `ε → 0⁺`.  Both of the things that need is are proved
+elsewhere in the corpus: the Lebesgue-side approximate identity in
+`PoissonApproximateIdentity`, and the Stieltjes--Perron inversion
+itself in `StieltjesPerron`, which consumes this module's
+normalisation together with that one.
 
 ## Main declarations
 
