@@ -21,7 +21,14 @@ exactly here.
 
 * `gaussianBinomial_nat_one` — the `ℕ`-valued core;
 * `gaussianBinomial_one` — **the general form**, over any semiring;
-* `gaussianBinomial_one_eq_natCast_choose` — the cast-shaped variant.
+* `gaussianBinomial_one_eq_natCast_choose` — the cast-shaped variant;
+* `gaussianBinomial_one_eq_zero_of_lt` — vanishing above the
+  diagonal;
+* `finiteQPochhammerIn_one` — the `q`-Pochhammer symbol at `q = 1`
+  is `(1-a)^n`, with the `a = 0` and `a = 1` degenerations;
+* `sum_neg_one_pow_choose_mul_pow` — **the shadow of the
+  `q`-binomial theorem**: at `q = 1` it is the ordinary binomial
+  theorem.
 -/
 
 set_option autoImplicit false
