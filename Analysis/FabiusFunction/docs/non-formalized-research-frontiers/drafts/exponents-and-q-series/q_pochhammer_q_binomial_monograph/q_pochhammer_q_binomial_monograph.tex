@@ -960,6 +960,33 @@ For $m,n\ge0$,
 Set $r=m$ in \eqref{eq:qvand1} and put $\ell=m-j$.  Then the exponent becomes $\ell^2$, while symmetry gives $\qbinom m{m-\ell}=\qbinom m\ell$ and the second factor is $\qbinom n\ell$.
 \end{proof}
 
+% Chapter: \ref{chap:finite-qbinomial} ("Finite $q$-binomial theorems and
+% inversion"), section "$q$-Vandermonde convolution".
+
+\begin{corollary}[Shifted central form]\label{cor:shifted-central-vandermonde}
+\index{$q$-Vandermonde convolution!shifted central form}
+For $N\in\N_0$ and $k\in\Z$,
+\begin{equation}
+ \qbinom{2N}{N+k}
+ =\sum_{\ell\in\Z}q^{\ell^2+\ell k}\,
+ \qbinom N\ell\,\qbinom N{\ell+k},
+ \label{eq:shifted-central-vandermonde}
+\end{equation}
+where a Gaussian coefficient whose lower index falls outside $\set{0,1,\dots,\text{upper index}}$ is read as $0$, so that only finitely many terms are nonzero.  The case $k=0$ is \Cref{cor:central-vandermonde} with $m=n=N$.
+\end{corollary}
+
+\begin{proof}
+If $\abs k>N$ both sides vanish: the left side because $N+k\notin\set{0,\dots,2N}$, and the right side because a nonzero term requires both $0\le\ell\le N$ and $0\le\ell+k\le N$, which forces $\abs k\le N$.
+
+Assume therefore $-N\le k\le N$ and set $r=N+k\in\set{0,\dots,2N}$.  \Cref{thm:q-vandermonde}, in the form \eqref{eq:qvand1} with $m=n=N$, gives
+\[
+ \qbinom{2N}{N+k}
+ =\sum_{j\in\Z}q^{(N-j)(N+k-j)}
+ \qbinom Nj\,\qbinom N{N+k-j}.
+\]
+Substitute $\ell=N-j$.  Then $N+k-j=\ell+k$, so the exponent becomes $\ell(\ell+k)=\ell^2+\ell k$; the symmetry $\qbinom N{N-\ell}=\qbinom N\ell$ of \Cref{thm:qbinom-structure}\,(i) turns the first Gaussian coefficient into $\qbinom N\ell$, and the second is $\qbinom N{\ell+k}$.  This is \eqref{eq:shifted-central-vandermonde}.
+\end{proof}
+
 \section{\texorpdfstring{$q$}{q}-binomial inversion}
 
 \begin{theorem}[$q$-binomial inversion]\label{thm:qbinomial-inversion}
@@ -3005,6 +3032,160 @@ Its zeros are the simple points $z=-q^m$, $m\in\Z$.
 \begin{proof}
 The functional equation follows either from reindexing the bilateral series or from the proof above.  The product in \eqref{eq:jtp-plus} vanishes exactly when $1+zq^j=0$ or $1+q^{j+1}/z=0$, which together give $z=-q^m$ for $m\in\Z$.  Exactly one factor vanishes at each such point.
 \end{proof}
+
+% Chapter: \ref{chap:jtp} ("Jacobi's triple product").  A new section placed
+% immediately after the \end{proof} of \Cref{cor:theta-quasi}
+% \section{Euler's pentagonal number theorem} (line 2639).
+
+\section{A finite triple product}
+
+Jacobi's identity has an exact polynomial refinement.  The truncated product $(z;q)_N(q/z;q)_N$ is again a bilateral theta-like sum, with the factor $1/(q;q)_\infty$ replaced by a central Gaussian coefficient; letting $N\to\infty$ then reproves \Cref{thm:jtp} from finite algebra plus a single application of dominated convergence.
+
+\begin{theorem}[Finite triple product]\label{thm:finite-jtp}
+\index{Jacobi triple product!finite form}
+\index{theta function!polynomial analogue}
+For $N\in\N_0$ and $z\ne0$,
+\begin{equation}
+ (z;q)_N\,(q/z;q)_N
+ =\sum_{k=-N}^{N}(-1)^k q^{\binom k2}
+ \qbinom{2N}{N+k}\,z^{k}.
+ \label{eq:finite-jtp}
+\end{equation}
+Here $\binom k2$ denotes $k(k-1)/2$ for every integer $k$, negative $k$ included; equivalently $\binom{-m}{2}=\binom{m+1}{2}$ for $m\ge0$.
+% ed.: the ARTICLE uses this convention silently.  It is not cosmetic: at
+% ed.: $N=1$, $k=-1$ the coefficient is $q^{\binom{-1}{2}}=q$, and reading
+% ed.: $\binom{-1}{2}$ as $0$ would make the identity false.
+Both sides lie in $\Z[q][z,z^{-1}]$ and \eqref{eq:finite-jtp} is an identity there; in particular it carries no convergence hypothesis and holds with $q$ an indeterminate.
+\end{theorem}
+
+\begin{proof}
+By \Cref{thm:finite-qbinomial}, \eqref{eq:finite-qbinomial-minus},
+\[
+ (z;q)_N=\sum_{i=0}^{N}(-1)^iq^{\binom i2}\qbinom Ni z^{i},
+\]
+and, replacing $z$ by $q/z$ in the same identity and using $\binom j2+j=\binom{j+1}{2}$,
+\[
+ (q/z;q)_N=\sum_{j=0}^{N}(-1)^jq^{\binom{j+1}{2}}\qbinom Nj z^{-j}.
+\]
+Multiply the two expansions and collect the pairs contributing to $z^{k}$, namely those with $i=j+k$.  Since $(-1)^{j+k}(-1)^{j}=(-1)^k$, and since $\qbinom N{j+k}=0$ unless $0\le j+k\le N$, the inner sum may be extended over all $j\in\Z$:
+\[
+ (z;q)_N(q/z;q)_N
+ =\sum_{k\in\Z}(-1)^kz^{k}
+ \sum_{j\in\Z}q^{\binom{j+k}{2}+\binom{j+1}{2}}
+ \qbinom N{j+k}\,\qbinom Nj .
+\]
+The two binomial exponents combine cleanly.  As an identity between polynomials in $j$ and $k$,
+\[
+ \binom{j+k}{2}+\binom{j+1}{2}-\binom k2
+ =\tfrac12\bigl[(j+k)(j+k-1)+j(j+1)-k(k-1)\bigr]
+ =j^2+jk,
+\]
+and being a polynomial identity it is valid for negative $k$ as well, with the convention above.  On a term with $\qbinom Nj\qbinom N{j+k}\ne0$ one has $0\le j\le N$ and $0\le j+k\le N$, so $j^2+jk=j(j+k)\ge0$ and no negative power of $q$ is created; terms with $j(j+k)<0$ carry a vanishing Gaussian coefficient.  Hence the inner sum equals
+\[
+ q^{\binom k2}\sum_{j\in\Z}q^{\,j^2+jk}
+ \qbinom Nj\,\qbinom N{j+k}
+ =q^{\binom k2}\qbinom{2N}{N+k}
+\]
+by \Cref{cor:shifted-central-vandermonde}.  Therefore
+\[
+ (z;q)_N(q/z;q)_N
+ =\sum_{k\in\Z}(-1)^kq^{\binom k2}\qbinom{2N}{N+k}z^{k},
+\]
+and the summand vanishes for $\abs k>N$, which is \eqref{eq:finite-jtp}.  Both sides are Laurent polynomials in $z$ with coefficients in $\Z[q]$ because each Gaussian coefficient is such a polynomial by \Cref{thm:qbinom-structure}.
+\end{proof}
+
+\begin{example}\label{ex:finite-jtp-N1}
+At $N=1$ the coefficients are $\qbinom20=\qbinom22=1$ and $\qbinom21=1+q$, so \eqref{eq:finite-jtp} reads
+\[
+ (1-z)(1-q/z)=-q z^{-1}+(1+q)-z,
+\]
+which is correct.  The coefficient $q^{\binom{-1}{2}}=q$ of $z^{-1}$ shows the convention for negative $k$ at work.  At $N=2$ one gets
+\[
+ (z;q)_2(q/z;q)_2
+ =q^{3}z^{-2}-q(1+q+q^{2}+q^{3})z^{-1}
+ +(1+q+2q^{2}+q^{3}+q^{4})
+ -(1+q+q^{2}+q^{3})z+qz^{2},
+\]
+% ed.: the first draft of this example printed four of these five
+% ed.: coefficients incorrectly; the line above is verified as an exact
+% ed.: identity in $\Q(q)(z)$.
+the coefficients being $\qbinom40=\qbinom44=1$,
+$\qbinom41=\qbinom43=1+q+q^2+q^3$ and
+$\qbinom42=1+q+2q^2+q^3+q^4$, with the outer $q$-powers
+$q^{\binom{-2}{2}}=q^{3}$, $q^{\binom{-1}{2}}=q$ and $q^{\binom22}=q$.
+\end{example}
+
+\begin{corollary}[Second proof of Jacobi's triple product]\label{cor:jtp-from-finite}
+Let $\abs q<1$ and $z\ne0$.  Letting $N\to\infty$ in \eqref{eq:finite-jtp} and multiplying by $(q;q)_\infty$ yields \eqref{eq:jtp-minus}.  The passage to the limit is uniform on every closed annulus $r\le\abs z\le R$ with $0<r\le R$.
+\end{corollary}
+
+\begin{proof}
+Extend the summand of \eqref{eq:finite-jtp} by zero, that is, read $\qbinom{2N}{N+k}=0$ for $\abs k>N$, so that the right side is a sum over all $k\in\Z$.
+
+\emph{A bound uniform in both $N$ and $k$.}  By \Cref{prop:qbinom-products},
+\[
+ \qbinom{2N}{N+k}
+ =\frac{(q;q)_{2N}}{(q;q)_{N+k}\,(q;q)_{N-k}}
+ \qquad(\abs k\le N).
+\]
+Put
+\[
+ \mu=\inf_{m\ge0}\abs{(q;q)_m},
+ \qquad
+ M=\prod_{j\ge1}\bigl(1+\abs q^{\,j}\bigr)<\infty .
+\]
+No factor of $(q;q)_m$ vanishes, because $\abs q<1$ forces $q^{\,j}\ne1$ for $j\ge1$, and $(q;q)_m\to(q;q)_\infty$, which is nonzero by \Cref{thm:poch-entire}.  A convergent sequence of nonzero numbers with nonzero limit is bounded away from $0$, so $\mu>0$; and $\abs{(q;q)_m}\le M$ for every $m$.  Hence
+\begin{equation}
+ \left|\qbinom{2N}{N+k}\right|\le\frac{M}{\mu^{2}}
+ \qquad\text{for all }N\ge0\text{ and all }k\in\Z .
+ \label{eq:central-qbinom-uniform-bound}
+\end{equation}
+% ed.: the uniformity in $k$, not merely in $N$, is the point of
+% ed.: \eqref{eq:central-qbinom-uniform-bound}; it is what licenses the
+% ed.: dominated-convergence step below.  It requires $\mu>0$, not merely the
+% ed.: convergence of $(q;q)_m$, because two shifted factorials sit in the
+% ed.: denominator.  Compare the same device in \Cref{cor:euler-infinite}.
+
+\emph{A summable dominating function.}  For every integer $k$ one has
+\(
+ \binom k2=\tfrac12(k^2-k)\ge\tfrac12\bigl(k^2-\abs k\bigr),
+\)
+with equality for $k\ge0$, so $\abs q^{\binom k2}\le\abs q^{(k^2-\abs k)/2}$.  On the annulus $r\le\abs z\le R$ we have $\abs{z^{k}}\le R^{\abs k}+r^{-\abs k}$.  Therefore, for all $N$ and all $z$ in the annulus,
+\[
+ \left|(-1)^kq^{\binom k2}\qbinom{2N}{N+k}z^{k}\right|
+ \le g(k)\defeq
+ \frac{M}{\mu^{2}}\,\abs q^{\,(k^2-\abs k)/2}
+ \bigl(R^{\abs k}+r^{-\abs k}\bigr),
+\]
+and $\sum_{k\in\Z}g(k)<\infty$, since $\abs q^{\,k^2/2}$ decays faster than any geometric sequence grows.
+
+\emph{The termwise limit.}  For each fixed $k$, using $(q;q)_m\to(q;q)_\infty\ne0$ again,
+\[
+ \qbinom{2N}{N+k}
+ =\frac{(q;q)_{2N}}{(q;q)_{N+k}\,(q;q)_{N-k}}
+ \;\xrightarrow[N\to\infty]{}\;
+ \frac{(q;q)_\infty}{(q;q)_\infty^{2}}
+ =\frac1{(q;q)_\infty}.
+\]
+This is \Cref{thm:central-fixed-q} when $k=0$; the argument is unchanged for
+fixed $k\ne0$, since $N\pm k\to\infty$ with $N$.
+Dominated convergence for series, applied on the counting measure of $\Z$ with dominating function $g$, therefore gives
+\[
+ \lim_{N\to\infty}\sum_{k\in\Z}(-1)^kq^{\binom k2}
+ \qbinom{2N}{N+k}z^{k}
+ =\frac1{(q;q)_\infty}\sum_{k\in\Z}(-1)^kq^{\binom k2}z^{k},
+\]
+The convergence is moreover uniform on the annulus: given $\eps>0$, choose $K$ with $\sum_{\abs k>K}g(k)<\eps/3$, which bounds the two tails simultaneously for every $N$ and every $z$ in the annulus because $g$ depends on neither; the remaining $2K+1$ terms converge because $\qbinom{2N}{N+k}\to1/(q;q)_\infty$ is a limit of numbers, and $\abs{z^k}\le R^{K}+r^{-K}$ there.  On the left of \eqref{eq:finite-jtp}, $(z;q)_N(q/z;q)_N\to(z;q)_\infty(q/z;q)_\infty$ locally uniformly on $\C^{*}$ by \Cref{thm:poch-entire}.  Multiplying by $(q;q)_\infty$ we obtain
+\[
+ (q,z,q/z;q)_\infty
+ =\sum_{k\in\Z}(-1)^kq^{\binom k2}z^{k},
+\]
+which is \eqref{eq:jtp-minus}.
+\end{proof}
+
+\begin{remark}[Two mechanisms for one identity]\label{rem:jtp-two-proofs}
+\Cref{thm:jtp} was proved above from a functional equation together with the Durfee-square evaluation of the constant Laurent coefficient.  \Cref{cor:jtp-from-finite} proves it instead from the polynomial identity \eqref{eq:finite-jtp}, whose only inputs are \Cref{thm:finite-qbinomial} and \Cref{thm:q-vandermonde}.  The second route separates algebra from analysis completely: \eqref{eq:finite-jtp} holds in $\Z[q][z,z^{-1}]$, and the entire analytic content is the single limit $\qbinom{2N}{N+k}\to1/(q;q)_\infty$, which is the same finite-to-infinite stabilization recorded coefficientwise in \Cref{prop:partition-stabilization} and columnwise in \Cref{thm:fixed-column-limit}.  That separation is exactly the architecture recommended in \Cref{chap:formalization}.  Note also that \eqref{eq:finite-jtp} is genuinely finer than \eqref{eq:jtp-minus}: its coefficients are the central Gaussian coefficients $\qbinom{2N}{N+k}$, which by \Cref{thm:qbinom-structure} are palindromic polynomials of degree $(N+k)(N-k)$, whereas in the limit every one of them collapses to the single $k$-independent factor $1/(q;q)_\infty$; what survives of the polynomial is not its constant term but its stabilised coefficient sequence, namely the partition numbers of \Cref{prop:partition-stabilization}.
+\end{remark}
 
 \section{Euler's pentagonal number theorem}
 
@@ -6149,6 +6330,8 @@ Heine & ${}_2\phi_1(a,b;c;q,z)=\dfrac{(b,az;q)_\infty}{(c,z;q)_\infty}\,{}_2\phi
 $q$-Pfaff--Saalsch\"utz & Terminating balanced ${}_3\phi_2$ product evaluation & \Cref{thm:q-pfaff}\\[1pt]
 $q$-Chu--Vandermonde & Two terminating ${}_2\phi_1$ evaluations & \Cref{cor:q-chu}\\[1pt]
 Ramanujan ${}_1\psi_1$ & ${}_1\psi_1(a;b;q,z)=(q,b/a,az,q/(az);q)_\infty/(b,q/a,z,b/(az);q)_\infty$ & \Cref{thm:1psi1}\\[1pt]
+Finite triple product & $(z;q)_N(q/z;q)_N=\sum_{k=-N}^{N}(-1)^kq^{\binom k2}\qbinom{2N}{N+k}z^k$ & \Cref{thm:finite-jtp}\\[1pt]
+
 Jacobi triple product & $\sum_{n\in\Z}(-1)^nq^{\binom n2}z^n=(q,z,q/z;q)_\infty$ & \Cref{thm:jtp}\\[1pt]
 Pentagonal theorem & $(q;q)_\infty=\sum_{n\in\Z}(-1)^nq^{n(3n-1)/2}$ & \Cref{thm:pentagonal}\\[1pt]
 $q$-derivative & $D_qf(x)=(f(x)-f(qx))/((1-q)x)$ & \Cref{prop:qderivative-rules}\\[1pt]
@@ -6179,6 +6362,24 @@ For fixed nonnegative integers, the following transitions are direct consequence
  &\lim_{q\to0}\qbinom nk&=1\quad(0\le k\le n).
 \end{align*}
 Each has been proved in the main text; the relevant references are \Cref{prop:classical-poch-limit,cor:qbinom-classical,thm:fixed-column-limit,thm:qgamma-classical-limit,prop:extreme-specializations}.
+
+\medskip
+% ed.: the first draft of this paragraph claimed the dictionary recorded no
+% ed.: finite-to-infinite transition at all, and conflated the columnwise
+% ed.: limit 1/(q;q)_k with the central limit 1/(q;q)_infty.  Both are
+% ed.: corrected here.
+Transitions in the size parameter, rather than in $q$, are already represented
+above by $\lim_{n\to\infty}\qbinom nk=1/(q;q)_k$.  Their central counterpart is
+\[
+ \lim_{N\to\infty}\qbinom{2N}{N+k}=\frac1{(q;q)_\infty}
+ \qquad(k\in\Z\text{ fixed},\ 0<\abs q<1),
+\]
+which is \Cref{thm:central-fixed-q} when $k=0$ and follows for every fixed $k$
+by the same argument; it is what carries the finite triple product
+\eqref{eq:finite-jtp} to Jacobi's \eqref{eq:jtp-minus}.  See
+\Cref{thm:finite-jtp,cor:jtp-from-finite}, and compare
+\Cref{prop:partition-stabilization}, which records the same stabilization
+coefficientwise.
 
 \section{Classical shadows of the main summations}
 
