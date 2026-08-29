@@ -334,6 +334,7 @@ import FabiusFunction.ExponentialDiskMaximality
 import FabiusFunction.SincZetaRemainder
 import FabiusFunction.BernsteinPositivity
 import FabiusFunction.PerronRootEnclosure
+import FabiusFunction.KappaOneEnclosure
 import FabiusFunction.MeasureRefinement
 import FabiusFunction.RandomSeriesLaw
 import FabiusFunction.CauchyTransform
