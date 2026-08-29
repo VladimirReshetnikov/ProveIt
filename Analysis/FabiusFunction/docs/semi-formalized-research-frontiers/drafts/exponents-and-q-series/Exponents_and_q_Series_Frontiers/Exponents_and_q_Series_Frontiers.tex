@@ -3198,10 +3198,30 @@ presentations, all residual moments and their sign, and the exact finite
 \(\ell^1\) norm, including dedicated \(q=1/4\) corollaries.  The
 generic transformed-error series is now formalized in
 \path{AnalyticSeriesFilter.lean} under unconditional summability, with
-nonzero-weight hypotheses only at samples that actually contribute.  Identifying
-its coefficients with the sinc-product tail, and proving the report's signs,
-remainder and bracketing bounds, uniform spline limits, infinite condition-number
-limit, and inverse-function consequences, remain unformalized.
+nonzero-weight hypotheses only at samples that actually contribute.
+
+The infinite condition-number limit is formalized too, in
+\path{LimitConditionNumber.lean}, which lets $n$ grow in the closed form
+$\sum_{j\le n}\lvert w_q(n,j)\rvert=(-q;q)_n/(q;q)_n$ of
+\path{GeneralQConditionNumber.lean}: both families are multipliable, the finite
+symbols converge to $(a;q)_\infty$, and the condition numbers converge to
+$(-q;q)_\infty/(q;q)_\infty$
+(\lean{Fabius.tendsto\_sum\_abs\_qToeplitzWeight}) on the whole range
+$0\le q<1$.  The crux is positivity of the denominator, and it is worth
+recording how it is obtained, because the obvious route fails: the one-shot
+Weierstrass product bound has deficit budget $q/(1-q)$, which already reaches
+$1$ at $q=\tfrac12$, and its vacuity at $q=\tfrac34$ is recorded as a theorem
+rather than as prose (\lean{Fabius.weierstrass\_bound\_vacuous\_at\_three\_quarters}).
+Positivity instead comes from summability of the logarithms, which needs no
+threshold at all (\lean{Fabius.qPochhammerInf\_pos}).  The limit is bounded below
+by $1$, attained exactly at $q=0$, and by $1/(1-q)$
+(\lean{Fabius.one\_div\_one\_sub\_le\_qConditionNumberLimit}); it is unbounded as
+$q\uparrow1$, and at $q=999/1000$ is already at least $1000$.
+
+Identifying the coefficients of the transformed-error series with the
+sinc-product tail, and proving the report's signs, remainder and bracketing
+bounds, uniform spline limits, and inverse-function consequences, remain
+unformalized.
 
 
 
