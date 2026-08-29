@@ -1630,7 +1630,11 @@ For $h\ge1$, Lucas' theorem gives
  d\ \text{is a binary submask of }h-1.
  \label{p1:eq:Pd-lucas}
 \end{equation}
-This parity sequence is periodic, hence the Fourier-lobe sign sequence of $\Psi_d$ is
+The Lucas input to \eqref{p1:eq:Pd-lucas} is formal: \lean{Fabius.odd\_choose\_iff\_bitSupport\_subset}
+(\lean{ThueMorseLucasSupport.lean}) states that $\binom{n}{k}$ is odd exactly when the bit
+support of $k$ is contained in that of $n$, which is the submask criterion used here; the
+identification of $P_d(h)$ with the relevant binomial coefficient is not itself
+formalized.  This parity sequence is periodic, hence the Fourier-lobe sign sequence of $\Psi_d$ is
 $2$-automatic by \cref{p1:thm:lobe-sign}.  More precisely, among a complete sufficiently
 long binary block of values of $h-1$, the forced one-bits of $d$ reduce the density by a
 factor $2^{-s_2(d)}$.
