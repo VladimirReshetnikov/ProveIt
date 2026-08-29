@@ -27,7 +27,7 @@ shifts, negative-branch and hierarchy formulas, and inverse/quantile versions
 remain research frontiers. These API claims were checked at source checkpoint
 `22f801337`.
 
-Member: `Exponents_and_q_Series_Frontiers` (202 pp, seven parts) — the
+Member: `Exponents_and_q_Series_Frontiers` (205 pp, seven parts) — the
 2026-08-28 consolidation of the two former drafts (Part I:
 Newton-basis frontiers; Part II: q-binomial Richardson), joined the
 same day by the eighth-wave report as **Part III** — *Finite Dyadic
@@ -176,15 +176,30 @@ the spectral Stieltjes–Wigert bridge (squared-frequency moments
 `a^{n(n+2)}/2^n`, an explicit non-lognormal representing measure with closed
 Hankel determinants and orthogonal polynomials), the Mellin law of the
 distance to `K_a` (complex dimensions shifted by −1; distribution function =
-the exact tube formula), and — for provenance — the Russian source scan,
-archived under the volume's `assets/` (the raw OCR was deleted after its
-recoverable content was merged; the repair ledger lives in Part VI's
-concordance appendix).  The revised fifteenth-wave
+the exact tube formula), and — for provenance — the eleven-page Russian
+source scan itself, against which the translation layers were checked (the
+scan and the raw OCR were both deleted once their recoverable content was
+merged and verified; SHA-256 hashes stay in the volume's provenance list,
+the repair ledger lives in Part VI's concordance appendix, and git history
+archives the files).  The revised fifteenth-wave
 edition (`Atomic_Functions_Rvachev_Report_Package/`) followed: the
 q-Gaussian derivative Gram kernel `q^{(j−k)²}` with Pochhammer determinants
 and sharp Jacobi-theta Riesz bounds, the log-Weibull jet-intermittency law,
 and the proof of the uniform all-orders `Fup_n` Edgeworth expansion
-(resolving that register conjecture).  (The q-orbit reports
-`Fabius_Q_Connections_Report/` and `Signed_Reciprocal_q_Fabius_Frontiers/`
-were merged editorially as the volume's Part VII; their packages are likewise
-preserved under `assets/`.)
+(resolving that register conjecture).  An expanded fifteenth-wave edition
+(`Atomic_Functions_Rvachev_Expanded_Report/`, audit-aware — it marks the
+previously merged layers as inherited baseline) closed the Gram geometry:
+the Gaussian-binomial Gram–Schmidt theorem
+`ψ*_n = Σ_j q^{n−j}·[n,j]_{q²}·e_j` with norms `(q²;q²)_n`, explicit
+Cholesky and inverse Gram, the Rogers–Szegő identification of the
+orthogonalizers, the uniform-innovation corollary (each new derivative
+keeps an innovation of norm at least `(q²;q²)_∞^{1/2}`), the
+wrapped-heat-kernel circle model (each parity tower is unitarily the
+monomial sequence against `ϑ₄(θ/2, 1/a)` — heat time `log a`), the
+MacMahon determinant constant `𝔐(a⁻²)` with parity-factored full-sequence
+determinants and triple-product Riesz forms with a verified numeric table,
+and the overlap-regime theta conjecture for `1 < a < 2`; its figures and
+data live under `assets/Atomic_Functions_Rvachev_Expanded_Report/`.  (The
+q-orbit reports `Fabius_Q_Connections_Report/` and
+`Signed_Reciprocal_q_Fabius_Frontiers/` were merged editorially as the
+volume's Part VII; their figures/data are likewise under `assets/`.)
