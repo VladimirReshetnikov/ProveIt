@@ -118,6 +118,8 @@ import FabiusFunction.SincProductPositive
 import FabiusFunction.RelativeHarmonicDominance
 import FabiusFunction.PlateauLocalization
 import FabiusFunction.PlateauDegree
+import FabiusFunction.PlateauConstant
+import FabiusFunction.UniformSplineStrictMono
 import FabiusFunction.QuarterQuantile
 import FabiusFunction.StieltjesInversion
 import FabiusFunction.MultipleAngleBounds
