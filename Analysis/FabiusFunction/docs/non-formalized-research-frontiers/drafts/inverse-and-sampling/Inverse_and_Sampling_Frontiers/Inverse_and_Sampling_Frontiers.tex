@@ -1692,10 +1692,19 @@ polynomial of degree at most $r$
 therefore discharged for the finite spline.  The plateau, which the obligation treated as
 the \emph{input}, comes out as a \emph{corollary}: the $r$th iterated derivative of
 $\mathrm{fabiusUniformSpline}\,p$ is constant on the open dyadic cell
-(\nolinkurl{Fabius.iteratedDeriv_fabiusUniformSpline_const_dyadic}).  What is still open is
-only the closed-form \emph{value} of that constant, conjectured to be $2^{\binom{r+1}{2}}$
-up to sign, and the corresponding statement for the limit function rather than the finite
-spline.
+(\nolinkurl{Fabius.iteratedDeriv_fabiusUniformSpline_const_dyadic}).  Its \emph{value} is
+now proved as well, and it is the conjectured one, with no sign:
+\[
+  \partial^{\,r}\bigl(\mathrm{fabiusUniformSpline}\,p\bigr)\equiv 2^{\binom{r+1}{2}}
+  \quad\text{on the cell around }\xi_r=2^{-r},\qquad r\le p,
+\]
+(\nolinkurl{Fabius.iteratedDeriv_fabiusUniformSpline_dyadic}).  The three sign factors
+cancel, and the exponent collapses by the identity $pr+\binom{p-r}{2}=\binom{p}{2}+\binom{r+1}{2}$
+(\nolinkurl{Fabius.plateau_exponent_identity}; the hypothesis $r\le p$ is necessary, the
+sides differing already at $p=1$, $r=2$).  Striking, and recorded separately: the constant
+depends on $r$ alone and not on the level of the spline
+(\nolinkurl{Fabius.iteratedDeriv_fabiusUniformSpline_dyadic_indep_order}).  What remains is
+only the corresponding statement for the limit function rather than the finite spline.
 \end{obligation}
 
 \begin{obligation}[Algebraic inverse germ]
@@ -1757,8 +1766,17 @@ closed-form evaluation of the cell polynomial, i.e.
 \(\mathrm{fabiusUniformSpline}\,p\,(\tfrac14+z)=\tfrac{5}{72}+z+4z^{2}-\tfrac49 4^{-(p+1)}\)
 for \(\lvert z\rvert\le2^{-(p+1)}\) and \(p\ge2\) (the hypothesis is not decoration --- the
 display fails at $p=0,1$), together with an injectivity statement strong enough to pin
-down \(G_n\): the corpus currently has only monotonicity of the spline, never the strict
-form.
+down \(G_n\).  On that second point there is now a definite answer, and it is negative:
+the strict form is \emph{false}.  The spline is constant on $[0,2^{-p}]$ and again
+near $1$, so it is not injective on $[0,1]$, let alone strictly monotone
+(\nolinkurl{Fabius.not_injOn_fabiusUniformSpline},
+\nolinkurl{Fabius.not_strictMonoOn_fabiusUniformSpline}).  \path{UniformSplineStrictMono.lean}
+supplies the route that works with what the corpus does have: from \emph{monotonicity}
+together with the local quadratic on the cell, the anchor value is attained exactly at
+\(\mathrm{quarterQuantile}(n)\)
+(\nolinkurl{Fabius.eq_quarterQuantile_of_monotoneOn_of_localPoly},
+\nolinkurl{Fabius.existsUnique_mem_Icc_localPoly_root}, \nolinkurl{Fabius.strictMonoOn_quarterCell_of_localPoly}).  So
+the only remaining gap is the closed-form cell-polynomial evaluation itself.
 \end{obligation}
 
 \begin{remark}[Formalized geometric Lagrange core]
