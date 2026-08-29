@@ -554,8 +554,61 @@ theory are exact at every height: for every real \(x\) and every \(\varepsilon\n
 and \(\Rea R(x+i\varepsilon)=\int(x-t)/((x-t)^2+\varepsilon^2)\,\dd\mu_{\Up}(t)\) ---
 the Poisson and conjugate-Poisson displays
 (\nolinkurl{Fabius.im\_rvachevCauchyTransform\_eq},
-\nolinkurl{Fabius.re\_rvachevCauchyTransform\_eq}).  The boundary/Plemelj limits on
-the cut themselves remain open.
+\nolinkurl{Fabius.re\_rvachevCauchyTransform\_eq}).  \path{StieltjesInversion.lean} adds
+the kernel layer those displays run on: strict positivity, the sharp height bound
+\(\varepsilon/((x-t)^2+\varepsilon^2)\le\varepsilon^{-1}\) with its attainment at \(t=x\)
+(\nolinkurl{Fabius.poisson\_kernel\_pos}, \nolinkurl{Fabius.poisson\_kernel\_le\_inv},
+\nolinkurl{Fabius.poisson\_kernel\_self}), the normalisation \(\int\pi^{-1}\varepsilon/((x-t)^2+\varepsilon^2)\dd t=1\) ---
+inherited from Mathlib's Cauchy density rather than re-proved ---
+(\nolinkurl{Fabius.integral\_poisson\_kernel\_eq\_one}), integrability against the up-measure,
+and the far-field localisation \(\int_{\lvert t-x\rvert\ge\delta}\le\varepsilon/\delta^2\to0\)
+(\nolinkurl{Fabius.setIntegral\_poisson\_far\_le}, \nolinkurl{Fabius.tendsto\_setIntegral\_poisson\_far}) ---
+the concentration half of an approximate identity.  Consequently \(-\Ima R(x+i\varepsilon)/\pi\)
+is the up-measure integral of a probability density and lies in \([0,1/(\pi\varepsilon)]\)
+(\nolinkurl{Fabius.inv\_pi\_mul\_neg\_im\_rvachevCauchyTransform\_mem\_Icc}).
+
+Both halves of the approximate identity are now formal.  \path{PoissonApproximateIdentity.lean}
+supplies the Lebesgue-side tail \emph{exactly}, not as an estimate: each half-line integrates
+to \(\pi/2-\arctan(\delta/\varepsilon)\)
+(\nolinkurl{Fabius.setIntegral\_poisson\_kernel\_Ioi}, \nolinkurl{Fabius.setIntegral\_poisson\_kernel\_Iic}),
+so the two-sided tail is \(1-\tfrac{2}{\pi}\arctan(\delta/\varepsilon)\)
+(\nolinkurl{Fabius.setIntegral\_poisson\_density\_compl\_Ioo}) and the near mass
+\(\tfrac{2}{\pi}\arctan(\delta/\varepsilon)\); letting \(\varepsilon\to0^{+}\) gives the concentration
+(\nolinkurl{Fabius.tendsto\_setIntegral\_poisson\_density\_Ioo}, and the packaged
+\nolinkurl{Fabius.poisson\_kernel\_approximate\_identity}).  Two theorems are carried purely to
+keep the reading honest: the tail is \emph{strictly positive} at every \(\varepsilon>0\) and
+\(\delta>0\), so \(0\) is a limit and never a value
+(\nolinkurl{Fabius.setIntegral\_poisson\_density\_compl\_Ioo\_pos}), and at \(\delta=\varepsilon\) the
+tail is exactly \(1/2\) (\nolinkurl{Fabius.setIntegral\_poisson\_density\_compl\_Ioo\_self}) --- a
+calibration that any sign or factor-of-two slip would break.
+
+\path{PoissonMassSwap.lean} supplies the other variable: for each fixed height the Poisson
+extension of the up-measure is itself a probability density in \(x\),
+\(\int_{\R}-\tfrac1\pi\Ima R(x+i\varepsilon)\dd x=1\)
+(\nolinkurl{Fabius.integral\_inv\_pi\_mul\_neg\_im\_rvachevCauchyTransform\_eq\_one},
+\nolinkurl{Fabius.integral\_neg\_im\_rvachevCauchyTransform\_eq\_pi}), by a Tonelli swap over
+the nonnegative kernel.
+
+With both inputs in place the inversion theorem itself is now formal.
+\path{StieltjesPerron.lean} proves
+\[
+  \lim_{\varepsilon\to0^{+}}\;-\frac1\pi\int_{(a,b)}\Ima R(x+i\varepsilon)\dd x\;=\;\mu_{\Up}\bigl((a,b)\bigr)
+\]
+for every $a<b$ (\nolinkurl{Fabius.stieltjesPerron\_inversion},
+\nolinkurl{Fabius.tendsto\_setIntegral\_inv\_pi\_mul\_neg\_im}).  Notably there is \emph{no}
+endpoint hypothesis: the classical requirement $\mu(\{a\})=\mu(\{b\})=0$ is discharged rather
+than assumed, because the up-measure is absolutely continuous (\nolinkurl{Fabius.rvachevMeasure\_singleton}), and the reading is backed by the guard
+\nolinkurl{Fabius.rvachevMeasure\_real\_Icc\_eq\_Ioo} --- closed and open intervals carry the same
+mass, so nothing was quietly dropped.  The route is the expected one: the exchange
+(\nolinkurl{Fabius.setIntegral\_inv\_pi\_mul\_neg\_im\_eq}) turns the $x$-integral into a
+$\mu_{\Up}$-integral of the interval mass
+$P_\varepsilon(t)=\tfrac1\pi\bigl(\arctan\frac{b-t}{\varepsilon}-\arctan\frac{a-t}{\varepsilon}\bigr)$, whose pointwise
+limits are $1$ inside, $0$ outside and $\tfrac12$ at each endpoint
+(\nolinkurl{Fabius.tendsto\_poissonIntervalMass\_of\_mem\_Ioo} and neighbours), and dominated
+convergence finishes.  Here too the limits are guarded rather than described: $P_\varepsilon$
+is strictly positive and strictly below one everywhere
+(\nolinkurl{Fabius.poissonIntervalMass\_pos}, \nolinkurl{Fabius.poissonIntervalMass\_lt\_one}), so neither limit
+is ever attained, and \nolinkurl{Fabius.poissonIntervalMass\_calibration} pins the $\pi^{-1}$.
 
 \path{CauchyRenormalization.lean} adds five public theorems.  The declarations
 \path{Fabius.mapsTo_rvachevCauchyDomain_two_mul_add_one} and

@@ -1664,10 +1664,66 @@ that is the business of the algebraic-inverse-germ obligation below, not of the
 operator calculus.
 
 \begin{obligation}[Plateau-to-polynomial localization]
-Connect the existing almost-everywhere derivative plateau for $p_n^{(r)}$ to the statement
-that $p_n$ agrees with a degree-$r$ polynomial on the closed interval
-$[\xi_r-2^{-n},\xi_r+2^{-n}]$.  The clean route is repeated absolute continuity of the
-spline pieces.
+\emph{Discharged for the finite spline.}  \path{PlateauLocalization.lean} supplies both halves.
+On the object side, the corpus's uniform spline agrees on each dyadic cell with an
+\emph{explicit} polynomial of the cell (\nolinkurl{Fabius.uniformSplineCellPolynomial}),
+\nolinkurl{Fabius.fabiusUniformSpline_eqOn_cellPolynomial} and its centred and dyadic
+forms, with the degree bound \nolinkurl{Fabius.natDegree_uniformSplineCellPolynomial_le} --- so
+``agrees with a polynomial on a closed cell'' is now a theorem rather than a reading of
+the plateau.  The obligation's \emph{exact} interval is reached: for $r\le p$ the point
+$\xi_r=2^{-r}$ is a cell centre, and the spline agrees with that cell's polynomial on
+$[\xi_r-2^{-(p+1)},\xi_r+2^{-(p+1)}]$ ---
+(\nolinkurl{Fabius.fabiusUniformSpline_eqOn_cellPolynomial_dyadic}), which is
+$[\xi_r-2^{-n},\xi_r+2^{-n}]$ with $n=p+1$.  Both endpoints are included; at the right
+endpoint the newly activated truncated power vanishes identically, which is where
+$p>0$ enters.
+
+The \emph{degree} half is now proved as well, and without any plateau hypothesis.
+\path{PlateauDegree.lean} computes the exact degree of a full-block cell polynomial:
+the half-shifted Thue--Morse moments $\sum_{k<2^m}\eps_k(k+\tfrac12)^{\,j}$ vanish for
+$j<m$ by Prouhet, so
+\(\deg\bigl(\text{cell polynomial of the block } 2^m\bigr)=p-m\)
+(\nolinkurl{Fabius.natDegree_uniformSplineCellPolynomial_block_eq}).  The anchor cell at
+$\xi_r=2^{-r}$ has prefix length $2^{\,p-r}$, a block of order $p-r$, so the drop gives
+exactly $p-(p-r)=r$: on $[\xi_r-2^{-(p+1)},\xi_r+2^{-(p+1)}]$ the spline agrees with a
+polynomial of degree at most $r$
+(\nolinkurl{Fabius.exists_natDegree_le_eqOn_dyadic}), and the bound cannot be improved
+(\nolinkurl{Fabius.natDegree_uniformSplineCellPolynomial_dyadic}).  The obligation is
+therefore discharged for the finite spline.  The plateau, which the obligation treated as
+the \emph{input}, comes out as a \emph{corollary}: the $r$th iterated derivative of
+$\mathrm{fabiusUniformSpline}\,p$ is constant on the open dyadic cell
+(\nolinkurl{Fabius.iteratedDeriv_fabiusUniformSpline_const_dyadic}).  Its \emph{value} is
+now proved as well, and it is the conjectured one, with no sign:
+\[
+  \partial^{\,r}\bigl(\mathrm{fabiusUniformSpline}\,p\bigr)\equiv 2^{\binom{r+1}{2}}
+  \quad\text{on the cell around }\xi_r=2^{-r},\qquad r\le p,
+\]
+(\nolinkurl{Fabius.iteratedDeriv_fabiusUniformSpline_dyadic}).  The three sign factors
+cancel, and the exponent collapses by the identity $pr+\binom{p-r}{2}=\binom{p}{2}+\binom{r+1}{2}$
+(\nolinkurl{Fabius.plateau_exponent_identity}; the hypothesis $r\le p$ is necessary, the
+sides differing already at $p=1$, $r=2$).  Striking, and recorded separately: the constant
+depends on $r$ alone and not on the level of the spline
+(\nolinkurl{Fabius.iteratedDeriv_fabiusUniformSpline_dyadic_indep_order}).
+
+The relation to the limit function deserves a precise statement, because the two halves
+were in quite different states.  For the limit function the corpus \emph{already} had the
+value at the anchor: \(\partial^{k}\Up_{\mathrm{ext}}(2^{-k})=2^{\binom{k+1}{2}}\)
+(\nolinkurl{Fabius.iteratedDeriv_extendedFabius_inv_two_pow}, in \path{GlobalBounds.lean}).
+What was missing, and is what the work above supplies, is the \emph{finite-spline} plateau ---
+the same constant on a whole cell rather than at one point.  \path{PlateauLimit.lean} then
+joins them: at every admissible level the spline's derivative at the anchor \emph{equals}
+the limit function's, exactly and with no error term
+(\nolinkurl{Fabius.iteratedDeriv_fabiusUniformSpline_eq_globalFabius_dyadic},
+\nolinkurl{Fabius.iteratedDeriv_fabiusReal_dyadic}), so the convergence in \(p\) is by an
+eventually constant sequence
+(\nolinkurl{Fabius.tendsto_iteratedDeriv_fabiusUniformSpline_dyadic}).
+
+That module also records why a \emph{neighbourhood} version cannot be had by intersecting
+the levels: the cells around a point shrink, and
+\(\bigcap_p\left(a-2^{-(p+1)},a+2^{-(p+1)}\right)=\{a\}\)
+(\nolinkurl{Fabius.iInter_plateauCell}).  What survives every level is a single point, not
+an interval --- so the anchor statement is the sharp one, and no derivative convergence away
+from the anchor is claimed or used.
 \end{obligation}
 
 \begin{obligation}[Algebraic inverse germ]
@@ -1709,8 +1765,58 @@ root of $z+4z^2=\tfrac49Q$ (\nolinkurl{Fabius.dyadicBinomialGerm\_solves}) and u
 identifies it with the germ (\nolinkurl{Fabius.dyadicGermTwo\_eq\_binomial}), giving the
 closed coefficient formula $[Q^n]\Delta_2=\tfrac18\binom{1/2}{n}(\tfrac{64}{9})^n$ for every $n\ge1$
 (\nolinkurl{Fabius.coeff\_dyadicGermTwo\_of\_pos}) --- the Taylor coefficients of the
-analytic branch.  Still open are the identification with the local inverse, entry into
-the plateau interval for all large $n$, and the displayed quantile formula.
+analytic branch.
+
+The \emph{quantile layer} is now formal as far as the local data allow.
+\path{QuarterQuantile.lean} defines the candidate value
+\(\mathrm{quarterQuantile}(n)=\tfrac14+\mathrm{dyadicRootFun}(4^{-n})\)
+(\nolinkurl{Fabius.quarterQuantile}, \nolinkurl{Fabius.quarterQuantile\_eq}), which is exactly the
+volume's display \(\tfrac14+\bigl(\sqrt{1+\tfrac{64}{9}4^{-n}}-1\bigr)/8\); anchors the level
+\(5/72=F(1/4)\)
+(\nolinkurl{Fabius.quarterLocalPoly\_quarterQuantile\_eq\_fabiusReal}); proves the local
+quadratic strictly increasing above \(-1/8\)
+(\nolinkurl{Fabius.strictMonoOn\_quarterLocalPoly}) with the consequent uniqueness
+(\nolinkurl{Fabius.existsUnique\_quarterLocalPoly\_eq}); and locates the value in the cell
+with two-sided bounds and the limit \(\to\tfrac14\).  The identification itself is proved
+\emph{conditionally}: any \(P\) agreeing with the local quadratic on the cell and taking
+the value \(5/72\) there does so exactly at \(\mathrm{quarterQuantile}(n)\), for \(n\ge3\)
+(\nolinkurl{Fabius.eq\_quarterQuantile\_of\_localPoly}).  What is still missing is the
+closed-form evaluation of the cell polynomial, i.e.
+\(\mathrm{fabiusUniformSpline}\,p\,(\tfrac14+z)=\tfrac{5}{72}+z+4z^{2}-\tfrac49 4^{-(p+1)}\)
+for \(\lvert z\rvert\le2^{-(p+1)}\) and \(p\ge2\) (the hypothesis is not decoration --- the
+display fails at $p=0,1$), together with an injectivity statement strong enough to pin
+down \(G_n\).  On that second point there is now a definite answer, and it is negative:
+the strict form is \emph{false}.  The spline is constant on $[0,2^{-p}]$ and again
+near $1$, so it is not injective on $[0,1]$, let alone strictly monotone
+(\nolinkurl{Fabius.not_injOn_fabiusUniformSpline},
+\nolinkurl{Fabius.not_strictMonoOn_fabiusUniformSpline}).  \path{UniformSplineStrictMono.lean}
+supplies the route that works with what the corpus does have: from \emph{monotonicity}
+together with the local quadratic on the cell, the anchor value is attained exactly at
+\(\mathrm{quarterQuantile}(n)\)
+(\nolinkurl{Fabius.eq_quarterQuantile_of_monotoneOn_of_localPoly},
+\nolinkurl{Fabius.existsUnique_mem_Icc_localPoly_root}, \nolinkurl{Fabius.strictMonoOn_quarterCell_of_localPoly}).  That gap is now closed too.
+\path{QuarterCellEvaluation.lean} evaluates the cell polynomial in closed form:
+\[
+  \mathrm{fabiusUniformSpline}\,p\left(\tfrac14+z\right)
+  =\tfrac{5}{72}+z+4z^{2}-\tfrac49\,4^{-(p+1)},
+  \qquad 2\le p,\quad \lvert z\rvert\le 2^{-(p+1)}
+\]
+(\nolinkurl{Fabius.fabiusUniformSpline_quarter_cell},
+\nolinkurl{Fabius.fabiusUniformSpline_eq_quarterLocalPoly}).  The hypothesis \(2\le p\) is
+necessary and the file says so with theorems rather than prose: the display fails at
+\(p=0,1\) (\nolinkurl{Fabius.not_forall_quarterLocalPoly_of_lt_two}) and the \(4^{-p}\)
+misreading already fails at \(p=2\)
+(\nolinkurl{Fabius.fabiusUniformSpline_two_quarter_ne_shifted_exponent}).  Supplying this to
+the conditional theorems makes them unconditional: the anchor value is attained exactly at
+\(\mathrm{quarterQuantile}(n)\) and nowhere else in the cell
+(\nolinkurl{Fabius.existsUnique_fabiusUniformSpline_eq_quarterAnchor},
+\nolinkurl{Fabius.eq_quarterQuantile_of_fabiusUniformSpline_eq},
+\nolinkurl{Fabius.fabiusUniformSpline_quarterQuantile}).  The chain from the algebraic germ
+to the displayed quantile formula is therefore complete for the finite spline.
+
+The two closed-form half-shifted Thue--Morse moments that drive it are of independent
+interest, being one and two orders \emph{above} the Prouhet vanishing threshold:
+(\nolinkurl{Fabius.sum_thueMorseSign_mul_half_shift_pow_succ}, \nolinkurl{Fabius.sum_thueMorseSign_mul_half_shift_pow_add_two}).
 \end{obligation}
 
 \begin{remark}[Formalized geometric Lagrange core]

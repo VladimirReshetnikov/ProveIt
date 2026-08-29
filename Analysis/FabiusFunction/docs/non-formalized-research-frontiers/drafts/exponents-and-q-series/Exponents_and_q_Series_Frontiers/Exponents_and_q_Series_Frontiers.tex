@@ -466,7 +466,29 @@ $a_h\equiv1$, in the same normalization \eqref{p1:eq:sinc-normalized}, and
 \lean{Fabius.ProbabilityRepresentation.rvachevUp_eq_weightedSum_probability_global}
 (\lean{ProbabilityRepresentation.lean}) is the matching dyadic-uniform-series representation,
 stated in the Fabius normalization $\sum_{h\ge0}2^{-h-1}V_h$ on $[0,1]$, which is
-$(X_a+R_a)/2$ in the notation used here.  Nothing about a general admissible $a$ is formalized.
+$(X_a+R_a)/2$ in the notation used here.
+
+The transform itself is now formal at a general admissible $a$, in \path{GeneralizedRvachevProduct.lean}:
+\lean{Fabius.generalizedRvachevProduct} is $\Phi_a$ in the normalization
+\eqref{p1:eq:sinc-normalized}, and
+\lean{Fabius.generalizedSincFactors\_multipliable} gives convergence of the product at
+\emph{every} $z\in\C$ --- including the points where factors vanish, since
+multipliability in Mathlib's sense is unconditional convergence of the net of finite
+subproducts and admits the limit $0$.  Assertion (iii), $\Phi_{a+b}=\Phi_a\Phi_b$, is
+\lean{Fabius.generalizedRvachevProduct\_add}; the finite-support case of (iv) is
+\lean{Fabius.generalizedRvachevProduct\_eq\_prod}; the classical case is recovered as an
+identity, not merely a specialization
+(\lean{Fabius.generalizedRvachevProduct\_one}).  The zero divisor is formal in both
+directions --- $\Phi_a(z)=0$ exactly when $z=k2^h$ for a nonzero integer $k$ and some $h$
+with $a_h\ne0$
+(\lean{Fabius.generalizedRvachevProduct\_eq\_zero\_iff}) --- as is the one-step
+refinement law (\lean{Fabius.generalizedRvachevProduct\_two\_mul}).
+
+What is \emph{not} formalized is the analytic and probabilistic content of the theorem:
+locally uniform convergence and hence entirety, the support statement (i), the random
+variable $X_a$ and the convolution reading of (iii), and the smoothness dichotomy (iv).
+The module proves the algebraic and convergence skeleton on which those would rest, and
+its docstring says so explicitly.
 \end{theorem}
 
 \begin{proof}
@@ -536,10 +558,37 @@ Both statements are \statusproved.  The multiplicity function \eqref{p1:eq:m-a} 
 \lean{Fabius.weightedScaleMultiplicity} (\lean{WeightedScaleMultiplicity.lean}), and in two
 directions more generally than it is used here: the base $2$ is replaced by an arbitrary $b$,
 and the weights $a_h$ may lie in an arbitrary additive commutative monoid rather than in $\N_0$.
-The canonical product \eqref{p1:eq:canonical-a} is formalized only at $a_h\equiv1$, as
-\lean{Fabius.rvachevFourierProduct_eq_canonical} (\lean{SincCanonicalProduct.lean}), whose
-exponent is the classical $\vtwo(n)+1$; the general-$a$ product and the spectral zeta
-\eqref{p1:eq:zeta-a} are not formalized.
+The canonical form \eqref{p1:eq:canonical-a} is formalized at a general admissible $a$,
+in \path{GeneralizedCanonicalForm.lean}:
+\[
+  \Phi_a(z)=\prod_{n\ge1}\left(1-\frac{z^2}{n^2}\right)^{m_a(n)}
+\]
+(\lean{Fabius.generalizedRvachevProduct\_eq\_canonical}).  The regrouping reuses, verbatim,
+the fibre equivalence already built for the classical case
+(\lean{Fabius.dyadicFactorEquiv}, \lean{SincCanonicalProduct.lean}): the map
+$(h,r)\mapsto(r+1)2^h$ has fibre $\{h:h\le\vtwo(n)\}$ over $n$.  The only change is that
+each factor now carries the exponent $a_h$, so the fibre product is a product of
+$\vtwo(n)+1$ powers of the \emph{same} base and collapses to a single power whose
+exponent is the prefix sum --- which is exactly $m_a(n)$.  That is why the multiplicity
+function was the right object to formalize first.  The classical statement is recovered
+as a corollary (\lean{Fabius.generalizedRvachevProduct\_one\_of\_canonical}).
+
+Two things the volume states alongside this display are \emph{not} formalized: the
+locally uniform convergence, and the consequence $\ord_{z=\pm n}\Phi_a=m_a(n)$.  The
+latter is a statement about an order of vanishing, and nothing in the corpus yet
+relates $m_a$ to \lean{analyticOrderAt}; the canonical form is its natural input.  The spectral zeta \eqref{p1:eq:zeta-a} is now
+formalized as well, in \path{SpectralZetaWeighted.lean}, for real $s>1$ and at an
+arbitrary base $b>1$, with the $\zeta$ factor left as its own $p$-series rather than
+identified with \lean{riemannZeta}
+(\lean{Fabius.tsum\_weightedScaleMultiplicity\_succ\_rpow}).  Three hypotheses are
+carried and none is hidden: $1<s$, nonnegativity of the weights, and summability of
+$A(b^{-s})$ --- the last genuinely not automatic, since $a$ may grow arbitrarily fast.
+The rearrangement needs nothing about the canonical product: the fibre of
+$(h,k)\mapsto b^hk$ over $n$ is $\{h:b^h\mid n\}$, whose weight sum is exactly $m_a(n)$,
+and it is the formalization of $m_a$ at arbitrary base --- noted above --- that makes
+this reachable.  The unit-weight case is recorded as a guard
+(\lean{Fabius.tsum\_padicValNat\_succ\_rpow}).  The general-$a$ product remains
+unformalized.
 \end{theorem}
 
 \begin{proof}
@@ -596,8 +645,35 @@ This is \statusproved.  The floor form \eqref{p1:eq:M-floor} is formalized as
 \lean{Fabius.sum_range_weightedScaleMultiplicity} (\lean{WeightedScaleMultiplicity.lean}), over
 the finite range $h<N$ that already contains every nonzero term, and again for an arbitrary base
 $b\ne1$ and weights in an arbitrary additive commutative monoid, so the Lean statement is
-strictly more general than \eqref{p1:eq:M-floor}.  The two defect forms
-\eqref{p1:eq:M-defect}--\eqref{p1:eq:M-bit} are not formalized.
+strictly more general than \eqref{p1:eq:M-floor}.  The defect form \eqref{p1:eq:M-defect} is
+now formalized as well, in \path{DigitDefectCounting.lean}: with $A(1/2)=\sum_h a_h2^{-h}$
+(\lean{Fabius.dyadicWeightValue}) and $\rho_a(N)=\sum_h a_h\{N/2^h\}$
+(\lean{Fabius.dyadicDefect}), the identity
+$\sum_h a_h\lfloor N/2^h\rfloor=N\,A(1/2)-\rho_a(N)$ holds under the single hypothesis that
+$\sum_h|a_h|2^{-h}$ converges
+(\lean{Fabius.tsum\_mul\_natCast\_div\_two\_pow\_defect}), and the cumulative reading is
+\lean{Fabius.sum\_range\_weightedScaleMultiplicity\_real}.  Boundedness of $a$ is not needed:
+since $\{N/2^h\}\le N/2^h$, the same summability dominates both series.  At $a_h\equiv1$ the
+identity reduces to Legendre's $\sum_h\lfloor N/2^h\rfloor=2N-s_2(N)$, carried as a regression
+test (\lean{Fabius.sum\_range\_div\_two\_pow\_add\_digitSum}, \lean{Fabius.dyadicDefect\_one}).  The
+per-scale digit expansion $\{N/2^h\}=\sum_{j<h}b_j(N)2^{\,j-h}$ that the bit form
+\eqref{p1:eq:M-bit} rests on is also formal
+(\lean{Fabius.fract\_natCast\_div\_two\_pow\_eq\_sum\_range}), and so is the exchange of
+summation that converts it into \eqref{p1:eq:M-bit}, in
+\path{DigitDefectBitForm.lean}.  The tail weight
+$\tau_j(a)=\sum_{k\ge1}a_{j+k}2^{-k}$ is \lean{Fabius.dyadicTailWeight}, well defined by
+\lean{Fabius.summable\_dyadicTailWeight\_terms} and pinned against an off-by-one in the
+index convention by the halving recursion
+$\tau_j=(a_{j+1}+\tau_{j+1})/2$ (\lean{Fabius.dyadicTailWeight\_succ}) together with
+$\tau_j(1)=1$ (\lean{Fabius.dyadicTailWeight\_one}); the resolved defect
+$\rho_a(N)=\sum_j b_j(N)\tau_j(a)$ is
+\lean{Fabius.dyadicDefect\_eq\_sum\_range\_testBit} in windowed form and
+\lean{Fabius.dyadicDefect\_eq\_tsum\_testBit} unconditionally, and \eqref{p1:eq:M-bit}
+itself is \lean{Fabius.sum\_range\_weightedScaleMultiplicity\_bit}.  The exchange needs no
+Fubini on a triangular index set: only finitely many digits of $N$ are nonzero, so a fixed
+window reduces it to a finite sum of convergent series.  As a regression test the module
+re-derives $\sum_j b_j(N)=s_2(N)$ from the new machinery and lands it on the corpus's
+audited Legendre count (\lean{Fabius.tsum\_testBit\_eq\_digitSum}).
 \end{theorem}
 
 \begin{proof}
@@ -643,8 +719,67 @@ $(\bar a_h)_{h\ge0}$ is eventually periodic.  Both statements are \statusproved.
 $a_h\equiv1$ the sign law \eqref{p1:eq:sign-master} is formalized as
 \lean{Fabius.rvachevFourierProduct_eq_thueMorse_sign_mul_norm} (\lean{ThueMorseLobeSign.lean}),
 in the equivalent form $\Phi(x)=(-1)^{\wt(N)}\lVert\Phi(x)\rVert$ on the lobe $(N,N+1)$.  The
-general parity character \eqref{p1:eq:epsilon-a} is not formalized, and neither is the automaticity
-criterion, for want of any automatic-sequence or $2$-kernel theory in the library.
+general parity character \eqref{p1:eq:epsilon-a} is now formalized as \lean{Fabius.parityCharacter}
+(\lean{ParityCharacter.lean}).  Because $b_h(N)=1$ exactly when $h$ lies in the bit support
+of $N$, the exponent is a plain sum of weights over that support, and the corpus's
+Boolean-cube machinery applies verbatim: \lean{Fabius.parityCharacter\_const\_one} recovers the
+Thue--Morse sign at $a_h\equiv1$, \lean{Fabius.parityCharacter\_mod\_two} confirms that only the
+parity word $(\bar a_h)$ enters, and
+\lean{Fabius.prod\_one\_add\_neg\_one\_pow\_eq\_sum\_parityCharacter} gives the weighted product
+identity
+$\prod_{j<m}\bigl(1+(-1)^{a_j}z^{2^j}\bigr)=\sum_{n<2^m}\varepsilon_a(n)z^n$
+over an arbitrary commutative ring --- which at $a_h\equiv1$ is the finite Thue--Morse
+product identity.  The automaticity criterion is formal too, in \path{ParityCharacterKernel.lean},
+and the assessment that it needed automatic-sequence theory was too pessimistic: taking
+the standard finite-$2$-kernel characterization as the definition, the criterion is purely
+combinatorial.  Writing $\mathcal K(f)=\{n\mapsto f(2^kn+r):r<2^k\}$, one has
+\[
+  \mathcal K(\varepsilon_a)\ \text{finite}\quad\Longleftrightarrow\quad
+  (\bar a_h)_{h\ge0}\ \text{eventually periodic}
+\]
+(\lean{Fabius.finite\_twoKernel\_parityCharacter\_iff}).  The engine is the volume's own
+kernel-shift identity \eqref{p1:eq:kernel-shift}
+(\lean{Fabius.parityCharacter\_two\_pow\_mul\_add}), which rests on the bit-support split of
+$2^kn+r$: read at $r=0$ it places every shifted character in the kernel, and read in
+general it makes every kernel element $\pm$ a shifted character, so the kernel is covered
+by one image together with its negation.  The converse direction uses the probe
+$\varepsilon_{S^ka}(2^j)=(-1)^{\bar a_{k+j}}$
+(\lean{Fabius.parityCharacter\_shiftSeq\_two\_pow}) to turn equal characters into equal
+shifted parity words.  What the library still lacks is the \emph{equivalence} between a
+finite $2$-kernel and an automaton definition; that is imported from the literature as
+the meaning of the word, not proved.  The constant weight is recorded as a guard
+(\lean{Fabius.finite\_twoKernel\_thueMorseSign}): the weight word is periodic and the
+kernel finite, while the corpus's \lean{Fabius.thueMorseSign\_not\_eventually\_periodic} says the \emph{sign}
+sequence is not eventually periodic --- the criterion constrains the weight word, not the
+character.  The sign law \eqref{p1:eq:sign-master} splits in two, and its arithmetic
+half --- the observation, made here in one line, that $\lfloor N/2^h\rfloor\equiv b_h(N)$
+modulo two, so that the exponent \eqref{p1:eq:lobe-sign-count} is a digit character ---
+is formal in \path{DigitCharacterCongruence.lean}:
+\[
+  M_a(N)=\sum_h a_h\Bigl\lfloor\frac{N}{2^h}\Bigr\rfloor
+  \;\equiv\;\sum_{h\in\operatorname{supp}_2 N}a_h\pmod 2,
+  \qquad\text{hence}\quad(-1)^{M_a(N)}=\varepsilon_a(N)
+\]
+(\lean{Fabius.sum\_div\_two\_pow\_mul\_mod\_two}, \lean{Fabius.neg\_one\_pow\_sum\_div\_two\_pow}); the bridge is simply that
+the $h$-th bit of $N$ \emph{is} $\lfloor N/2^h\rfloor\bmod2$, and at the constant weight the
+statement becomes Legendre's count read modulo two
+(\lean{Fabius.neg\_one\_pow\_sum\_div\_two\_pow\_const\_one}).  The analytic half is formal as
+well, in \path{LobeSignLaw.lean}, so \eqref{p1:eq:lobe-sign-count} and \eqref{p1:eq:sign-master}
+are theorems --- on the \emph{open} lobes.  On $N<x<N+1$ the canonical form splits into
+a finite prefix of factors of index $n\le N$, each with a negative base, and a tail of
+positive ones, so
+\[
+  \sgn\Phi_a(x)=(-1)^{M_a(N)}=\varepsilon_a(N)
+\]
+(\lean{Fabius.generalizedRvachevProduct\_ofReal\_eq\_parityCharacter\_mul\_norm}).  The statement is
+carried across to $\Phi_a$ itself, not merely to a real surrogate, and the constant-weight
+case reproduces the corpus's existing Thue--Morse lobe sign.
+
+One scope caveat, stated because the volume's phrasing is wider than what is proved:
+the display above is qualified here \emph{away from the integer points altogether}, whereas
+\eqref{p1:eq:sign-master} is stated "away from the integer zeros".  An integer $x$ at
+which no factor of $\Phi_a$ vanishes --- possible when $a$ has zero layers --- falls inside
+the volume's claim and outside the formalized one.
 \end{theorem}
 
 \begin{proof}
@@ -709,9 +844,47 @@ independently of $x$, and the companion
 \lean{Fabius.sum_powerset_neg_one_pow_eval_of_degree_lt} is the vanishing
 \eqref{p1:eq:Prouhet-vanish} for every polynomial of degree below $|S|$;
 \lean{Fabius.sum_submask_neg_one_pow_pow} is the binary specialization in which $S$ is the bit
-support of an integer.  What is not formalized is the factorization \eqref{p1:eq:T-a-L} itself, nor
-the free-even-layer step that sums the offset-independent core over the $2^{L-\omega_L(a)}$
-even-layer offsets.
+support of an integer.  The factorization \eqref{p1:eq:T-a-L} is formal as well, and over an
+arbitrary commutative ring rather than over $\Z[z]$: it is
+\lean{Fabius.prod\_one\_add\_neg\_one\_pow\_eq\_sum\_parityCharacter}
+(\path{ParityCharacter.lean}), the same identity already cited in
+\cref{p1:thm:lobe-sign}, read from right to left.  The free-even-layer step is
+formal as well, in \path{GeneralizedProuhetBlock.lean}, so both boxed displays
+\eqref{p1:eq:Prouhet-vanish} and \eqref{p1:eq:first-surviving} are now theorems
+(\lean{Fabius.sum\_range\_two\_pow\_parityCharacter\_mul\_pow\_eq\_zero} and
+\lean{Fabius.sum\_range\_two\_pow\_parityCharacter\_mul\_pow}).  The mechanism is that
+$\varepsilon_a$ cannot see the even layers: splitting $T\subseteq\{0,\dots,L-1\}$ into $T\cap
+O_L(a)$ and its complement, the \emph{sign} depends only on $\lvert T\cap O_L(a)\rvert$ while
+the \emph{value} $\sum_{j\in T}2^j$ splits into an odd-layer part and an even-layer
+offset, so the block sum is a sum over even-layer offsets of a core that does not
+depend on the offset --- which is precisely why the factor $2^{L-\omega_L(a)}$ appears
+and nothing more.  The decomposition itself
+(\lean{Fabius.sum\_powerset\_range\_split}) is stated over an arbitrary additive
+commutative monoid for an arbitrary summand depending on the two parts.  Both boxed
+displays are in fact extremal cases of a single statement, formalized here in that
+stronger form: for \emph{every} integer polynomial $p$ of degree at most $\omega_L(a)$,
+\[
+  \sum_{n<2^L}\varepsilon_a(n)\,p(n)
+  =p_{\omega_L(a)}\cdot(-1)^{\omega_L(a)}\,\omega_L(a)!\;2^{\,L-\omega_L(a)}\,2^{\sum_{h\in O_L(a)}h},
+\]
+with $p_{\omega}$ the coefficient of $z^{\omega}$ and no nonzeroness hypothesis anywhere ---
+the zero polynomial and the case $\omega_L(a)=0$ are included
+(\lean{Fabius.sum\_range\_two\_pow\_parityCharacter\_mul\_eval}).  The vanishing
+\eqref{p1:eq:Prouhet-vanish} is that coefficient being zero below the threshold, and
+\eqref{p1:eq:first-surviving} is $p=z^{\omega_L(a)}$, where it is one.  A constant-weight
+corollary recovers the classical Prouhet--Thue--Morse evaluation
+(\lean{Fabius.sum\_range\_two\_pow\_thueMorseSign\_mul\_pow}).  The exact order of the zero
+of $T_{a,L}$ at $z=1$ is formal as well, in \path{ProuhetBlockZeroOrder.lean}, so this
+theorem is now formalized in all three of its displays:
+\[
+  \ord_{z=1}T_{a,L}=\lvert O_L(a)\rvert
+\]
+(\lean{Fabius.rootMultiplicity\_prouhetBlockPoly}) --- and so no zero at all when every
+layer below $L$ is even, a case the statement covers.  The mechanism is the
+factorization read in $\Z[z]$: an odd layer contributes $1-z^{2^h}$, a simple zero, while
+an even layer contributes $1+z^{2^h}$, which is $2$ at $z=1$; root multiplicity is
+additive over the product, so the order counts the odd layers.  The classical case is
+recorded separately (\lean{Fabius.rootMultiplicity\_prouhetBlockPoly\_const\_one}).
 \end{theorem}
 
 \begin{proof}
@@ -1105,12 +1278,59 @@ base $q=1/2$, and is therefore a strict specialization of what is stated here:
 \lean{Fabius.sum_abs_discreteLimitWeight} (\lean{FabiusDiscreteLimitToeplitz.lean}) evaluates
 the $\ell^1$ norm of the $r$th Toeplitz row as $(-1/2;1/2)_r/(1/2;1/2)_r$, and
 \lean{Fabius.discreteLimitWeight_eq_geometricLagrangeWeight} identifies that row, after the
-reversal $j\mapsto r-j$, with the weights \eqref{p1:eq:lagrange-weight-product}.  General $q$, and
-hence both the cumulant grid $q=1/4$ and the limiting value \eqref{p1:eq:qquarter-condition}, is
-not formalized.  The finite $q$-binomial theorem used in the proof below is however available
-in full generality as \lean{Fabius.finite_qBinomial_theorem} (\lean{FiniteQBinomialCore.lean}),
-over an arbitrary commutative ring and for every $q$ and $z$, which is exactly the input a
-general-$q$ proof would need.
+reversal $j\mapsto r-j$, with the weights \eqref{p1:eq:lagrange-weight-product}.  General $q$ is now formalized too, in
+\path{GeneralQConditionNumber.lean}, and the hypotheses turn out to split three ways.  The
+\emph{signed} generating identity needs \emph{no} hypothesis at all --- it is a direct reading
+of \lean{Fabius.finite_qBinomial_theorem} at the argument $qz$
+(\lean{Fabius.sum\_qToeplitzNumerator\_mul\_pow}, \lean{Fabius.sum\_qToeplitzWeight\_mul\_pow}), so the half base
+is entirely incidental there.  The strict alternation $(-1)^jw_q(n,j)>0$ needs $0<q<1$
+(\lean{Fabius.neg\_one\_pow\_mul\_qToeplitzWeight\_pos}), and the absolute-value identity
+$\sum_j\lvert w_q(n,j)\rvert=(-q;q)_n/(q;q)_n$ needs only $0\le q<1$ --- $q=0$ is admissible ---
+(\lean{Fabius.sum\_abs\_qToeplitzWeight}).  Both order hypotheses are shown necessary by
+counterexample rather than asserted: at $q=-1/2$ the alternation fails and the two sides are
+$1$ and $1/3$, and at $q=2$ they are $3$ and $-3$
+(\lean{Fabius.sum\_abs\_qToeplitzWeight\_ne\_of\_neg}, \lean{Fabius.sum\_abs\_qToeplitzWeight\_ne\_of\_one\_lt}).  As a
+machine-checked consistency check the two established half-base theorems are re-derived from
+the general ones
+(\lean{Fabius.sum\_abs\_discreteLimitWeight\_of\_qToeplitz}, \lean{Fabius.sum\_range\_discreteLimitWeight\_mul\_pow\_of\_qToeplitz}).  The passage to the limit in $r$
+is formal too, in \path{LimitConditionNumber.lean}: for $0\le q<1$ both
+families $j\mapsto1-aq^{j}$ are multipliable
+(\lean{Fabius.multipliable\_one\_sub\_mul\_pow}), the finite symbols
+converge to the infinite ones
+(\lean{Fabius.qPochhammerInf}, \lean{Fabius.tendsto\_finiteQPochhammerIn}),
+and $(q;q)_\infty>0$ (\lean{Fabius.qPochhammerInf\_self\_pos}), so the
+condition numbers converge to $(-q;q)_\infty/(q;q)_\infty$
+(\lean{Fabius.tendsto\_sum\_abs\_qToeplitzWeight}).  Positivity of the
+denominator is the crux, and it is obtained from the summability of the
+logarithms rather than from a Weierstrass product bound, which unpeeled
+is vacuous past $q=1/2$ --- itself recorded as a theorem
+(\lean{Fabius.weierstrass\_bound\_vacuous\_at\_three\_quarters}) rather
+than as a remark.  The failure of a uniform-in-$q$ bound is now
+effective as well: the limit is at least $1/(1-q)$
+(\lean{Fabius.one\_div\_one\_sub\_le\_qConditionNumberLimit}), hence
+unbounded as $q\to1^-$, with $q=999/1000$ exhibited
+(\lean{Fabius.thousand\_le\_qConditionNumberLimit}), and it equals $1$
+exactly at $q=0$
+(\lean{Fabius.one\_lt\_qConditionNumberLimit}, \lean{Fabius.qConditionNumberLimit\_zero}).
+So the half-base constant $16$ has no general-$q$ analogue, and that is
+a theorem.  The numerical value \eqref{p1:eq:qquarter-condition} at the
+cumulant grid is now certified as well, though only to finitely many
+places: \path{CumulantGridConstant.lean} proves the kernel-checked rational
+enclosure
+\[
+  1.969260353<\frac{(-1/4;1/4)_\infty}{(1/4;1/4)_\infty}<1.969260354
+\]
+(\lean{Fabius.qConditionNumberLimit\_quarter\_enclosure}), pinning the first
+nine decimals, with a coarser cut-$14$ companion at seven and a guard
+enclosing the denominator symbol alone to nine (\lean{Fabius.qPochhammerInf\_quarter\_enclosure}).  The reusable content is the
+machinery rather than the number: the prefix/tail split
+(\lean{Fabius.qPochhammerInf\_eq\_prefix\_mul\_tail}) exhibits the tail as again a
+$q$-Pochhammer symbol at the \emph{same} base with coefficient scaled by
+$q^N$, so each tail estimate is proved once rather than once per cut, and
+the estimates carry an abstract deficit budget rather than a threshold on
+$q$ --- there is no $q<1/2$ anywhere --- so they serve any base below $1$
+once the cut is taken large enough.  The remaining twenty quoted digits
+are not proved.
 \end{theorem}
 
 \begin{proof}
@@ -1211,7 +1431,18 @@ analytic identities themselves are formalized only at $a_h\equiv1$, as
 scale product $\prod_ng(z/c^n)$ for an arbitrary factor function $g$, an arbitrary nonzero ratio
 $c$ and an arbitrary commutative topological monoid---but for one fixed $g$, so they do not by
 themselves reach a variable exponent sequence.  The finite-difference factorization
-\eqref{p1:eq:finite-difference-factorization} is not formalized.
+\eqref{p1:eq:finite-difference-factorization} is not formalized \emph{as an identity of products},
+for the same reason: it quantifies over canonical products at general weights.  Its
+exponent-level content is formal, however, in
+\path{ShiftDifferenceWeights.lean}: the identity $S^m=(I+\Delta)^m$ that drives it is the
+Gregory--Newton formula, and for a weight sequence valued in any additive commutative
+group
+\[
+  a_{h+m}=\sum_{r\le m}\binom{m}{r}\,(\Delta^{r}a)_h
+\]
+(\lean{Fabius.weight\_shift\_eq\_sum\_fwdDiff}), together with the inverse alternating form
+(\lean{Fabius.weight\_fwdDiff\_eq\_sum\_shift}).  So what is missing is exactly the passage
+from the exponent identity to the product identity, not the combinatorics.
 \end{theorem}
 
 \begin{proof}
@@ -1346,8 +1577,40 @@ All formulas are \statusproved.  Of these, \eqref{p1:eq:mP} is formalized one Ne
 a time: \lean{Fabius.weightedScaleMultiplicity_choose} (\lean{WeightedScaleMultiplicity.lean})
 proves $m(n)=\binom{\vtwo(n)+1}{r+1}$ for the single Pascal weight $h\mapsto\binom hr$, for an
 arbitrary base, its hockey-stick input being \lean{Fabius.inclusivePrefixSum_choose}.
-Assembling those components into the signed sum over $r$, and every other formula in the
-theorem, is not formalized.
+The assembly of those components into the signed sum over $r$ is formal too, in
+\path{NewtonMultiplicityAssembly.lean}: it is nothing but linearity of the prefix sum
+in its weight sequence, so \eqref{p1:eq:mP} holds over an arbitrary Finset of Newton
+indices, at an arbitrary base, and over any semiring rather than only over $\Z$
+(\lean{Fabius.weightedScaleMultiplicity\_newton\_finset}, \lean{Fabius.weightedScaleMultiplicity\_newton}, and the literal display
+\lean{Fabius.weightedScaleMultiplicity\_newton\_two}).  The Gregory--Newton reading of the
+coefficients, $a_m=\sum_{r\le m}\binom mr(\Delta^ra)_0$, is
+\lean{Fabius.weight\_eq\_sum\_choose\_fwdDiff}; that it \emph{forces} the coefficients ---
+that $\Delta^s$ applied to a Newton sum returns $c_s$ --- is not formalized, so the module
+exhibits $\Delta^rP(0)$ as a valid choice rather than as the unique one.
+
+Equations \eqref{p1:eq:AP-newton} and the arithmetic half of \eqref{p1:eq:RP} are formal
+in \path{NewtonBasisGeneratingFunction.lean}, resting on Mathlib's choose-geometric
+family.  The crux is a single identity, and it is what makes the Newton basis the one
+adapted to the dyadic problem: at $q=1/2$ \emph{every} Newton-basis generating function
+$q^r/(1-q)^{r+1}$ takes the value $2$, independently of $r$
+(\lean{Fabius.pow\_div\_one\_sub\_pow\_at\_half}), so the series collapses to the plain
+coefficient sum (\lean{Fabius.tsum\_newtonPoly}, \lean{Fabius.half\_mul\_tsum\_newtonPoly\_half}).  Reading that
+number as the \emph{support radius} of $\Phi_P$ is not formalized.  The product $\Phi_P$ is
+available (\path{GeneralizedRvachevProduct.lean}); what is missing is the \emph{support}
+statement of \cref{p1:thm:master-probability}, an analytic and probabilistic fact about
+the associated random variable rather than a property of the product itself.
+
+The spectral zeta \eqref{p1:eq:ZP} \emph{is} formalized, in \path{NewtonSpectralZeta.lean},
+and it is exactly the composite of two identities already in hand: the general-weight zeta
+\eqref{p1:eq:zeta-a} evaluated at the Newton weight, with $A_P$ supplied by
+\eqref{p1:eq:AP-newton} at $q=2^{-s}$.  Clearing the negative powers turns each Newton
+term $q^r/(1-q)^{r+1}$ into $2^s/(2^s-1)^{r+1}$, which is the display
+(\lean{Fabius.tsum\_newtonPoly\_spectral\_zeta}).  The composite is slightly stronger than
+the juxtaposition of its inputs: the summability hypothesis that the general zeta must
+carry --- an arbitrary weight may grow too fast --- is here \emph{discharged}, since a
+polynomial weight is always admissible at a dyadic base
+(\lean{Fabius.summable\_newtonPoly\_rpow}).  The cumulants \eqref{p1:eq:kappaP} remain
+unformalized: they need the probabilistic model behind $\Phi_P$.
 \end{theorem}
 
 \begin{proof}
@@ -1606,10 +1869,23 @@ For $h\ge1$, Lucas' theorem gives
  d\ \text{is a binary submask of }h-1.
  \label{p1:eq:Pd-lucas}
 \end{equation}
-This parity sequence is periodic, hence the Fourier-lobe sign sequence of $\Psi_d$ is
+The Lucas input to \eqref{p1:eq:Pd-lucas} is formal: \lean{Fabius.odd\_choose\_iff\_bitSupport\_subset}
+(\lean{ThueMorseLucasSupport.lean}) states that $\binom{n}{k}$ is odd exactly when the bit
+support of $k$ is contained in that of $n$, which is the submask criterion used here; the
+identification of $P_d(h)$ with the relevant binomial coefficient is not itself
+formalized.  This parity sequence is periodic, hence the Fourier-lobe sign sequence of $\Psi_d$ is
 $2$-automatic by \cref{p1:thm:lobe-sign}.  More precisely, among a complete sufficiently
 long binary block of values of $h-1$, the forced one-bits of $d$ reduce the density by a
-factor $2^{-s_2(d)}$.
+factor $2^{-s_2(d)}$.  That density count is now formal: for $d<2^m$,
+\[
+  \#\{\,n<2^m:\ d\ \text{a binary submask of}\ n\,\}\;=\;2^{\,m-s_2(d)}
+\]
+(\lean{Fabius.card\_filter\_bitSupport\_subset}, \lean{DigitalDensity.lean}), and combining it
+with the Lucas criterion gives the same count for the odd binomial coefficients across a
+row block (\lean{Fabius.card\_filter\_odd\_choose}).  The subset bijection it rests on ---
+that the subsets of $t$ containing a fixed $s$ are the subsets of $t\setminus s$ with $s$
+adjoined --- is proved there as well (\lean{Fabius.filter\_powerset\_subset}); Mathlib carries
+only the graded form of that bijection.
 
 \begin{corollary}[Linear Prouhet order with a digital density]
 \label{p1:cor:Pd-prouhet}
@@ -1630,7 +1906,33 @@ as \lean{Fabius.odd_choose_iff_bitSupport_subset} (\lean{ThueMorseLucasSupport.l
 submask form ``$\binom nk$ is odd exactly when the binary support of $k$ is contained in that of
 $n$'', with \lean{Fabius.oddBinomialIndices_eq_image_powerset} parametrizing the odd positions
 of a Pascal row by the powerset of the bit support.  The density count
-\eqref{p1:eq:Pd-prouhet-density} is not formalized.
+\eqref{p1:eq:Pd-prouhet-density} is now formalized as well, in
+\path{SubmaskDensityAsymptotic.lean}, and with the implied constant
+exhibited rather than hidden inside the $\bigO$: writing
+$\omega(d,L)=\#\{n<L:\binom{n}{d}\ \text{odd}\}$
+(\lean{Fabius.submaskCount}, identified with that count by
+\lean{Fabius.submaskCount\_eq\_card\_filter\_odd\_choose}), one has the
+two-sided bound
+\[
+  \bigl\lvert\,2^{s_2(d)}\,\omega(d,L)-L\,\bigr\rvert\;\le\;2^{m}
+  \qquad\text{whenever}\ d<2^{m}
+\]
+(\lean{Fabius.abs\_two\_pow\_weight\_mul\_submaskCount\_sub\_le}), valid
+for \emph{every} $L$, not merely along complete blocks; taking $m=d$
+makes the constant depend on $d$ alone
+(\lean{Fabius.abs\_two\_pow\_weight\_mul\_submaskCount\_sub\_le\_self}).
+Dividing by $L$ gives the density itself as a limit,
+$\omega(d,L)/L\to2^{-s_2(d)}$
+(\lean{Fabius.tendsto\_card\_filter\_odd\_choose\_div\_atTop}).  The
+mechanism is periodicity: all bits of $d$ lie below $m$, so adding a
+multiple of $2^{m}$ leaves the submask condition unchanged
+(\lean{Fabius.bitSupport\_subset\_two\_pow\_mul\_add\_iff}), and the count
+over $[0,L)$ splits into $\lfloor L/2^{m}\rfloor$ full blocks --- each
+counted exactly by \lean{Fabius.card\_filter\_bitSupport\_subset} --- plus
+a partial block dominated by a full one.  What still stands between
+this and \eqref{p1:eq:Pd-prouhet-density} as stated is only the
+identification of $P_d(h)$ with the binomial coefficient, noted above
+as the remaining informal step.
 \end{corollary}
 
 \begin{proof}

@@ -2050,6 +2050,21 @@ enumerator respectively.  Its \(y^{r}\)-coefficient is now formal too: the
 (\lean{Fabius.sum\_pow\_bitPositionSum\_filter\_eq\_gaussianBinomial}), with the
 \(q=1\) shadow recovering the binomial coefficient.
 
+That shadow is now available in the generality the rest of the \(q\)-layer is stated in.
+\path{GaussianBinomialAtOne.lean} proves \(\left[\begin{smallmatrix}n\\k\end{smallmatrix}\right]_{1}=\binom{n}{k}\)
+over an \emph{arbitrary} semiring --- by an induction over \(\N\), where the \(q\)-Pascal
+recurrence degenerates to Pascal's rule, transported along the functoriality of the
+Gaussian coefficient (\lean{Fabius.gaussianBinomial\_nat\_one}, \lean{Fabius.gaussianBinomial\_one};
+the corpus previously had no \(q=1\) evaluation at all, and the graded aggregation's own
+version was confined to \(\Z\)).  Alongside it the \(q\)-Pochhammer symbol acquires the same
+specializations --- \((a;1)_n=(1-a)^n\), and the degenerate \(a=0\), \(a=1\) cases
+(\lean{Fabius.finiteQPochhammerIn\_one}, \lean{Fabius.finiteQPochhammerIn\_zero\_left},
+\lean{Fabius.finiteQPochhammerIn\_one\_left}) --- and together these give the consistency
+check the whole layer is measured against: the finite \(q\)-binomial theorem at \(q=1\)
+\emph{is} the ordinary binomial theorem,
+\(\sum_{k\le n}(-1)^k\binom{n}{k}z^k=(1-z)^n\)
+(\lean{Fabius.sum\_neg\_one\_pow\_choose\_mul\_pow}).
+
 The same block algebra also inverts.  The truncated product \(\Theta_m=\prod_{j<m}(1-z^{2^j})\)
 has the restricted binary partition counts as its convolution (Green) inverse:
 \(\Theta_m\cdot P_m=1\) in \(\Z[[z]]\)
@@ -4741,10 +4756,19 @@ geometric and dyadic specializations
 \lean{Fabius.integral\_prod\_sin\_sq\_pow} and
 \lean{Fabius.integral\_prod\_sin\_sq\_two\_pow}) is what the
 Fourier-decay audit of the Rvachev up-function uses.  The offset
-\(m_0\) in the super-increasing hypothesis cannot be dropped when
+\(m_0\) in the super-increasing hypothesis cannot simply be deleted when
 \(K\ne0\) --- the frequencies \(3,4,8,16,\dots\) with \(K=1\)
-resonate through \(m_1-m_0=1\) --- but that counterexample is recorded
-in prose in the module header, not formalized.
+resonate through \(m_1-m_0=1\) --- and that counterexample, formerly
+recorded in prose in the module header, is now formalized in
+\path{RieszSharpness.lean}.  The integral is evaluated exactly,
+\(\int_0^1\cos(2\pi t)\,(1+\cos 6\pi t)(1+\cos 8\pi t)\dd t=\tfrac14\)
+(\lean{Fabius.integral\_cos\_mul\_sharpProduct}), and packaged as an
+existential refutation
+(\lean{Fabius.exists\_superIncreasing\_probe\_integral\_ne}) in which two
+factors already suffice.  What this establishes is precise and no more: plain
+super-increasingness together with \(\lvert K\rvert<m_0\) does not \emph{suffice} once
+\(K\ne0\).  It is a single witness, and does not show the headroom hypothesis is
+the weakest \(K\)-free hypothesis yielding the conclusion.
 
 The finite measures converge weakly to the Thue--Morse spectral measure.  The
 formal notation
@@ -7738,7 +7762,22 @@ sums are evaluated for \emph{every} complex $z$, with no smallness hypothesis
 (\leanPartx{Fabius.sinc\_pair\_powerSum}).  Composed with the integral-to-product identity, the
 same series is the Fourier transform itself:
 $\widehat{\Up}(z)=\exp\bigl(-\sum_{r\ge1}\zeta(2r)4^rz^{2r}/(r(4^r-1))\bigr)$ on $|z|<1$
-(\leanPartx{Fabius.rvachevFourier\_eq\_cexp}).  Maximality of the disk is not formalized.
+(\leanPartx{Fabius.rvachevFourier\_eq\_cexp}).  Maximality of the disk is now formalized too, in
+\path{ExponentialDiskMaximality.lean}, and by an obstruction that uses none of the analysis:
+$\Phi$ vanishes at every nonzero integer while $\exp$ never vanishes, so $\Phi(1)=0$ is not
+an exponential value at all
+(\leanPartx{Fabius.rvachevFourierProduct\_int\_ne\_cexp}).  Quantifying over the exponent rather
+than fixing the Euler--zeta series makes the conclusion a statement about the disk rather
+than about one formula: no disk centred at the origin of radius greater than $1$ carries any
+representation of $\Phi$ as an exponential
+(\leanPartx{Fabius.not\_cexpRepresentable\_of\_one\_lt}), and the representable radii have greatest
+element exactly $1$
+(\leanPartx{Fabius.isGreatest\_cexpRepresentable\_radius}).  The same argument does \emph{not}
+settle the prefixed form on $|z|<2^m$ for $m\ge1$: there the finite prefix already vanishes at
+every nonzero integer, its $j=0$ factor being $\sinc(\pi n)$, so both sides vanish together on
+the zero set of $\Phi$ and the obstruction cannot detect a failure.  That too is recorded as a
+theorem rather than as a sentence
+(\leanPartx{Fabius.prod\_complexSinc\_int\_eq\_zero}), and maximality for $m\ge1$ stays open.
 
 The first terms are
 \begin{equation}
