@@ -55,3 +55,5 @@ values; every approximation plotted in the article is implemented separately.
 The user-supplied source archive is not duplicated in this package. Its relevant
 mathematical content is synthesized, attributed, and mapped to the article in
 Section 19 and the bibliography.
+
+> **Editorial note (2026-08-28):** the article source (.tex) and compiled PDF listed above were removed from this directory after their content was merged into the volume `Lambert_W_Guide.tex`; their SHA-256 hashes remain in the volume provenance appendix, and git history archives the files. This directory keeps only figures, data, and scripts.

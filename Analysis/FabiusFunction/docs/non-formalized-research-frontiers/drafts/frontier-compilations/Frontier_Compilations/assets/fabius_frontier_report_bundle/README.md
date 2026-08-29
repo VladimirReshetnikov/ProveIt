@@ -94,3 +94,5 @@ In the tomography experiment, the leading periodic function `A_0` is the actual 
 series from the endpoint theory. Higher coefficient functions `A_j`, `j >= 1`, are explicitly
 documented smooth surrogates used to test the new sampling/filter algebra; they are not
 presented as the true Fabius endpoint coefficients.
+
+> **Editorial note (2026-08-28):** the report source (.tex) and compiled PDF listed above were removed from this directory after their content was merged into the volume `Frontier_Compilations.tex`; their SHA-256 hashes remain in the volume provenance section, and git history archives the files. This directory keeps only figures, data, and scripts.

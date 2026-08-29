@@ -33,3 +33,5 @@ Dependencies: Python 3.10+, NumPy, SciPy, and mpmath.
 
 The term “new” in the report means not found in the recursively audited ProveIt
 LaTeX corpus at the time of writing; it is not a worldwide-priority claim.
+
+> **Editorial note (2026-08-28):** the report source (.tex) and compiled PDF listed above were removed from this directory after their content was merged into the volume `Integration_and_Transform_Frontiers.tex`; their SHA-256 hashes remain in the volume provenance section, and git history archives the files. This directory keeps only figures, data, and scripts.

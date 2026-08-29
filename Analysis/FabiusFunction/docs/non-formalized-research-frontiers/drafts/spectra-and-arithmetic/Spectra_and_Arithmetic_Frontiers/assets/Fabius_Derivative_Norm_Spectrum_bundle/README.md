@@ -59,3 +59,5 @@ pdflatex -interaction=nonstopmode -halt-on-error Spectra_and_Arithmetic_Frontier
 A TeX Live installation containing Libertinus, `amsmath`, `mathtools`, `booktabs`,
 `longtable`, `graphicx`, `hyperref`, and `cleveref` is sufficient. If Libertinus is not
 installed, the source automatically falls back to Latin Modern.
+
+> **Editorial note (2026-08-28):** the report source (.tex) and compiled PDF listed above were removed from this directory after their content was merged into the volume `Spectra_and_Arithmetic_Frontiers.tex`; their SHA-256 hashes remain in the volume provenance section, and git history archives the files. This directory keeps only figures, data, and scripts.

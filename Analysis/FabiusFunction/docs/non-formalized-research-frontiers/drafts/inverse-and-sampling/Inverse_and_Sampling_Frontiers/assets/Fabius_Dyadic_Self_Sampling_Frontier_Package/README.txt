@@ -45,3 +45,5 @@ Research-status convention
 The report distinguishes proved results, exact computer-assisted results, and conjectures.
 "New" means new relative to the audited ProveIt repository snapshot, not a claim of
 worldwide priority.
+
+> **Editorial note (2026-08-28):** the report source (.tex) and compiled PDF listed above were removed from this directory after their content was merged into the volume `Inverse_and_Sampling_Frontiers.tex`; their SHA-256 hashes remain in the volume provenance section, and git history archives the files. This directory keeps only figures, data, and scripts.

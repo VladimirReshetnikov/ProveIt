@@ -107,3 +107,5 @@ made against repository main commit
 Reported maxima are maxima on complete fine dyadic test grids, not computer-assisted proofs
 of the continuum supremum.  The report labels them numerical observations.  The algebraic
 factorization and cardinal-mode lower bounds are proved independently of those scans.
+
+> **Editorial note (2026-08-28):** the report source (.tex) and compiled PDF listed above were removed from this directory after their content was merged into the volume `Dyadic_Comb_Frontiers.tex`; their SHA-256 hashes remain in the volume provenance section, and git history archives the files. This directory keeps only figures, data, and scripts.

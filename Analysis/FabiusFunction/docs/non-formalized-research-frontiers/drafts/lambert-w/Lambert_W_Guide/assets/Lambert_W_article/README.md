@@ -44,3 +44,5 @@ latexmk -pdf -interaction=nonstopmode -halt-on-error lambert_w_article.tex
 
 The LaTeX source expects the generated files in `figures/`, `data/`, and the
 package root exactly as arranged here.
+
+> **Editorial note (2026-08-28):** the article source (.tex) and compiled PDF listed above were removed from this directory after their content was merged into the volume `Lambert_W_Guide.tex`; their SHA-256 hashes remain in the volume provenance appendix, and git history archives the files. This directory keeps only figures, data, and scripts.

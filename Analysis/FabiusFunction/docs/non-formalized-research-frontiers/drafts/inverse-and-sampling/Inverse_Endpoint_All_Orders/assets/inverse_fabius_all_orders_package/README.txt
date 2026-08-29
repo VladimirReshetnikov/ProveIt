@@ -48,3 +48,5 @@ Source corpus
 The report audits the LaTeX corpus under:
 https://github.com/VladimirReshetnikov/ProveIt/tree/main/Analysis/FabiusFunction/docs
 (including subdirectories), as accessed on 28 August 2026.
+
+> **Editorial note (2026-08-28):** the report source (.tex) and compiled PDF listed above were removed from this directory after their content was merged into the volume `Inverse_Endpoint_All_Orders.tex`; their SHA-256 hashes remain in the volume provenance section, and git history archives the files. This directory keeps only figures, data, and scripts.

@@ -80,3 +80,5 @@ Before consolidation, the standalone source compiled without unresolved
 references or citations, and its PDF was rendered page by page at 200 dpi and
 inspected for clipping, overlap, broken glyphs, and figure placement.  The
 included Python script was rerun in that environment before packaging.
+
+> **Editorial note (2026-08-28):** the report source (.tex) and compiled PDF listed above were removed from this directory after their content was merged into the volume `Frontier_Compilations.tex`; their SHA-256 hashes remain in the volume provenance section, and git history archives the files. This directory keeps only figures, data, and scripts.

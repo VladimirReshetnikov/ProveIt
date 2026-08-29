@@ -80,3 +80,5 @@ The finite spline formulas use alternating Thue-Morse sums. Long-double
 arithmetic and reflection symmetry are used through rank 10. At higher
 ranks the cancellation becomes severe, so arbitrary precision is preferable.
 The exact rational moment recurrence is independent of the spline model.
+
+> **Editorial note (2026-08-28):** the report source (.tex) and compiled PDF listed above were removed from this directory after their content was merged into the volume `Integration_and_Transform_Frontiers.tex`; their SHA-256 hashes remain in the volume provenance section, and git history archives the files. This directory keeps only figures, data, and scripts.

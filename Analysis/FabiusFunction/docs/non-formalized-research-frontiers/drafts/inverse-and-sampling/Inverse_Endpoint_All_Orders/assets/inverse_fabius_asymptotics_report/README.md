@@ -85,3 +85,5 @@ coefficients exactly in SymPy.  It also checks the exact Laplace decomposition,
 the 2-adic product/series identity, the Dirichlet-series identity, and the
 Mellin bridge at high precision.  The PDF was compiled with resolved references
 and visually inspected after rendering all 23 pages at 180 dpi.
+
+> **Editorial note (2026-08-28):** the report source (.tex) and compiled PDF listed above were removed from this directory after their content was merged into the volume `Inverse_Endpoint_All_Orders.tex`; their SHA-256 hashes remain in the volume provenance section, and git history archives the files. This directory keeps only figures, data, and scripts.

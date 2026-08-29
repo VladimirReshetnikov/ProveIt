@@ -75,3 +75,5 @@ PDF copies are also retained under `figures/` for convenient standalone use.
 
 The report is pinned to repository commit
 `ad82c27ffc6f90b3406f46c130c86d3cb83c6225`; see `CORPUS_AUDIT.txt`.
+
+> **Editorial note (2026-08-28):** the report source (.tex) and compiled PDF listed above were removed from this directory after their content was merged into the volume `Inverse_Endpoint_All_Orders.tex`; their SHA-256 hashes remain in the volume provenance section, and git history archives the files. This directory keeps only figures, data, and scripts.

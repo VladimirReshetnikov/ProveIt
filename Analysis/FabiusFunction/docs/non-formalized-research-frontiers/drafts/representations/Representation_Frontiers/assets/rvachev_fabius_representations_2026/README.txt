@@ -38,3 +38,5 @@ Recompiling the report
 
 Run numerical_experiments.py first because the report inputs
 `generated_tables.tex` and includes the generated figures.
+
+> **Editorial note (2026-08-28):** the report source (.tex) and compiled PDF listed above were removed from this directory after their content was merged into the volume `Representation_Frontiers.tex`; their SHA-256 hashes remain in the volume provenance section, and git history archives the files. This directory keeps only figures, data, and scripts.

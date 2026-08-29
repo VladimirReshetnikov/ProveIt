@@ -47,3 +47,5 @@ inverse, and infinite-limit claims remain research frontiers. "Repository-new"
 means absent from the audited *.tex corpus under the
 stated ProveIt repository path; it is not an unconditional claim of priority
 over all external literature.
+
+> **Editorial note (2026-08-28):** the report source and compiled PDF listed above (and, where listed, the supplied source scan/OCR) were removed from this directory after their content was merged into the volume `Exponents_and_q_Series_Frontiers.tex`; their SHA-256 hashes remain in the volume provenance list (and in `SHA256SUMS` here where present), and git history archives the files. This directory keeps only figures, data, and scripts.

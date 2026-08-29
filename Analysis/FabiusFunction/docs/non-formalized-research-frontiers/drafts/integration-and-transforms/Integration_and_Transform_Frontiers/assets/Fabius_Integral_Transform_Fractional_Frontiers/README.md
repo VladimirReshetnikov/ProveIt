@@ -86,3 +86,5 @@ These commands update `../../Integration_and_Transform_Frontiers.pdf`.
   equations, and figures.
 - Fresh numerical rerun: generated text, LaTeX table, and all three figures
   identically to the packaged versions.
+
+> **Editorial note (2026-08-28):** the report source (.tex) and compiled PDF listed above were removed from this directory after their content was merged into the volume `Integration_and_Transform_Frontiers.tex`; their SHA-256 hashes remain in the volume provenance section, and git history archives the files. This directory keeps only figures, data, and scripts.

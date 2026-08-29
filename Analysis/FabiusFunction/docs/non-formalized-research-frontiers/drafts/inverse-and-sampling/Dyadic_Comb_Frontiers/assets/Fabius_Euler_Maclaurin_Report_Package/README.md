@@ -57,3 +57,5 @@ Fabius-function corpus and the cited summation sources. The report explicitly
 retains known Fabius moment formulas and the existing dyadic shifted
 self-sampling theorem for Rvachev's up-function as prior art. No claim of
 universal publication priority is made.
+
+> **Editorial note (2026-08-28):** the report source (.tex) and compiled PDF listed above were removed from this directory after their content was merged into the volume `Dyadic_Comb_Frontiers.tex`; their SHA-256 hashes remain in the volume provenance section, and git history archives the files. This directory keeps only figures, data, and scripts.

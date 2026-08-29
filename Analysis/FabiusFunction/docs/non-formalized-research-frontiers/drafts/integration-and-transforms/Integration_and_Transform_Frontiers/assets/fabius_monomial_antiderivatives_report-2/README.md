@@ -104,3 +104,5 @@ Compile the report with three explicit passes, then remove the generated sidecar
 
 The recorded reference run used Python 3.13.5, NumPy 2.3.5, SciPy 1.17.0,
 Matplotlib 3.10.8, and pdfTeX 1.40.26. The code is not tied to those exact versions.
+
+> **Editorial note (2026-08-28):** the report source (.tex) and compiled PDF listed above were removed from this directory after their content was merged into the volume `Integration_and_Transform_Frontiers.tex`; their SHA-256 hashes remain in the volume provenance section, and git history archives the files. This directory keeps only figures, data, and scripts.

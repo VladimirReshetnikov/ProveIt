@@ -97,3 +97,5 @@ The packaged numerical outputs were regenerated from a clean temporary directory
 compared byte-for-byte with the included CSV and PNG files. Before consolidation, the
 standalone PDF was rendered page by page at 180 dpi and visually inspected for clipping,
 overlap, broken glyphs, and unreadable equations.
+
+> **Editorial note (2026-08-28):** the report source (.tex) and compiled PDF listed above were removed from this directory after their content was merged into the volume `Frontier_Compilations.tex`; their SHA-256 hashes remain in the volume provenance section, and git history archives the files. This directory keeps only figures, data, and scripts.
