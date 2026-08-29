@@ -176,7 +176,8 @@ theorem charFun_weightedSumDistribution_prefix_sinc (m : ℕ) (t : ℝ) :
   congr 2
   refine Finset.prod_congr rfl fun k _ => ?_
   congr 2
-  push_cast [one_div]
+  push_cast
+  rw [one_div (2 : ℝ)]
   ring
 
 /-- The dyadic finite products converge to the random-series
@@ -193,7 +194,8 @@ theorem tendsto_prefix_sinc_charFun_weightedSumDistribution (t : ℝ) :
   congr 1
   refine Finset.prod_congr rfl fun k _ => ?_
   congr 2
-  push_cast [one_div]
+  push_cast
+  rw [one_div (2 : ℝ)]
   ring
 
 end Fabius
