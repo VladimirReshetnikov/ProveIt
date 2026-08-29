@@ -267,7 +267,7 @@ theorem eq_quarterQuantile_of_monotoneOn_of_localPoly {P : ℝ → ℝ}
     x = quarterQuantile n := by
   have h0 : (0 : ℝ) < (1 / 2 : ℝ) ^ n := by positivity
   have hle : (1 / 2 : ℝ) ^ n ≤ 1 / 8 := half_pow_le_eighth hn
-  rcases le_or_lt (1 / 4 + (1 / 2 : ℝ) ^ n) x with hR | hR
+  rcases le_or_gt (1 / 4 + (1 / 2 : ℝ) ^ n) x with hR | hR
   · exfalso
     have hmem : (1 / 4 + (1 / 2 : ℝ) ^ n) ∈ Icc (0 : ℝ) 1 :=
       ⟨by linarith, by linarith⟩
@@ -283,7 +283,7 @@ theorem eq_quarterQuantile_of_monotoneOn_of_localPoly {P : ℝ → ℝ}
     have hstep := hmono hmem hx hR
     rw [hval, hPx] at hstep
     linarith [anchor_lt_quarterLocalPoly n]
-  · rcases le_or_lt x (1 / 4 - (1 / 2 : ℝ) ^ n) with hL | hL
+  · rcases le_or_gt x (1 / 4 - (1 / 2 : ℝ) ^ n) with hL | hL
     · exfalso
       have hmem : (1 / 4 - (1 / 2 : ℝ) ^ n) ∈ Icc (0 : ℝ) 1 :=
         ⟨by linarith, by linarith⟩
