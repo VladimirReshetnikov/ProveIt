@@ -50,25 +50,25 @@ theorem filter_powerset_subset {s t : Finset α} (hst : s ⊆ t) :
     rw [mem_sdiff] at hy ⊢
     exact ⟨hxt hy.1, hy.2⟩
   · rintro ⟨y, hy, rfl⟩
-    rw [mem_powerset] at hy
-    exact ⟨union_subset (hy.trans sdiff_subset) hst, subset_union_right⟩
+    exact ⟨union_subset (hy.trans sdiff_subset) hst,
+      subset_union_right⟩
 
 /-- The count: there are `2 ^ (|t| - |s|)` subsets of `t` containing
 `s`. -/
 theorem card_filter_powerset_subset {s t : Finset α} (hst : s ⊆ t) :
     #(t.powerset.filter (s ⊆ ·)) = 2 ^ (#t - #s) := by
-  rw [filter_powerset_subset hst]
-  rw [Finset.card_image_of_injOn, Finset.card_powerset,
-    Finset.card_sdiff hst]
-  intro u hu v hv huv
-  rw [mem_coe, mem_powerset] at hu hv
-  have hdu : Disjoint u s :=
-    Finset.disjoint_of_subset_left hu disjoint_sdiff_self_left
-  have hdv : Disjoint v s :=
-    Finset.disjoint_of_subset_left hv disjoint_sdiff_self_left
-  have h : (u ∪ s) \ s = (v ∪ s) \ s := by rw [huv]
-  rwa [Finset.union_sdiff_cancel_right hdu,
-    Finset.union_sdiff_cancel_right hdv] at h
+  have hinj : Set.InjOn (· ∪ s) ((t \ s).powerset : Set (Finset α)) := by
+    intro u hu v hv huv
+    rw [mem_coe, mem_powerset] at hu hv
+    have hdu : Disjoint u s :=
+      Finset.disjoint_of_subset_left hu disjoint_sdiff_self_left
+    have hdv : Disjoint v s :=
+      Finset.disjoint_of_subset_left hv disjoint_sdiff_self_left
+    have h : (u ∪ s) \ s = (v ∪ s) \ s := by rw [huv]
+    rwa [Finset.union_sdiff_cancel_right hdu,
+      Finset.union_sdiff_cancel_right hdv] at h
+  rw [filter_powerset_subset hst, Finset.card_image_of_injOn hinj,
+    Finset.card_powerset, Finset.card_sdiff_of_subset hst]
 
 /-- **The digital density.**  Among the naturals below `2 ^ m`, those
 whose binary expansion contains the mask of `d` number exactly
