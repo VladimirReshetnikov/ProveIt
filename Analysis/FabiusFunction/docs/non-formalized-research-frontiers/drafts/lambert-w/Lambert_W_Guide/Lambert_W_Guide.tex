@@ -16,6 +16,7 @@
 \usepackage{url}
 \usepackage{hyperref}
 \usepackage[nameinlink,noabbrev,capitalise]{cleveref}
+\usepackage{aliascnt}
 
 \graphicspath{{figures/}}
 \allowdisplaybreaks
@@ -32,17 +33,69 @@
   pdfsubject={Lambert W function, real branches, asymptotics, approximations, numerical methods}
 }
 
+% ed.: these share the `theorem' counter for a single numbering sequence, but
+% ed.: declared as \newtheorem{X}[theorem]{...} they also report that counter
+% ed.: name to cleveref, so every \Cref to a lemma, proposition, corollary,
+% ed.: definition, example, algorithm, remark, literature note or branch
+% ed.: warning printed ``Theorem''.  aliascnt keeps the shared numbering and
+% ed.: restores the true type.
 \newtheorem{theorem}{Theorem}[section]
-\newtheorem{lemma}[theorem]{Lemma}
-\newtheorem{proposition}[theorem]{Proposition}
-\newtheorem{corollary}[theorem]{Corollary}
-\newtheorem{definition}[theorem]{Definition}
-\newtheorem{example}[theorem]{Example}
-\newtheorem{algorithm}[theorem]{Algorithm}
+
+\newaliascnt{lemma}{theorem}
+\newtheorem{lemma}[lemma]{Lemma}
+\aliascntresetthe{lemma}
+
+\newaliascnt{proposition}{theorem}
+\newtheorem{proposition}[proposition]{Proposition}
+\aliascntresetthe{proposition}
+
+\newaliascnt{corollary}{theorem}
+\newtheorem{corollary}[corollary]{Corollary}
+\aliascntresetthe{corollary}
+
+\newaliascnt{definition}{theorem}
+\newtheorem{definition}[definition]{Definition}
+\aliascntresetthe{definition}
+
+\newaliascnt{example}{theorem}
+\newtheorem{example}[example]{Example}
+\aliascntresetthe{example}
+
+\newaliascnt{algorithm}{theorem}
+\newtheorem{algorithm}[algorithm]{Algorithm}
+\aliascntresetthe{algorithm}
+
 \theoremstyle{remark}
-\newtheorem{remark}[theorem]{Remark}
-\newtheorem{literaturenote}[theorem]{Literature note}
-\newtheorem{warning}[theorem]{Branch warning}
+\newaliascnt{remark}{theorem}
+\newtheorem{remark}[remark]{Remark}
+\aliascntresetthe{remark}
+
+\newaliascnt{literaturenote}{theorem}
+\newtheorem{literaturenote}[literaturenote]{Literature note}
+\aliascntresetthe{literaturenote}
+
+\newaliascnt{warning}{theorem}
+\newtheorem{warning}[warning]{Branch warning}
+\aliascntresetthe{warning}
+
+\crefname{lemma}{lemma}{lemmas}
+\Crefname{lemma}{Lemma}{Lemmas}
+\crefname{proposition}{proposition}{propositions}
+\Crefname{proposition}{Proposition}{Propositions}
+\crefname{corollary}{corollary}{corollaries}
+\Crefname{corollary}{Corollary}{Corollaries}
+\crefname{definition}{definition}{definitions}
+\Crefname{definition}{Definition}{Definitions}
+\crefname{example}{example}{examples}
+\Crefname{example}{Example}{Examples}
+\crefname{algorithm}{algorithm}{algorithms}
+\Crefname{algorithm}{Algorithm}{Algorithms}
+\crefname{remark}{remark}{remarks}
+\Crefname{remark}{Remark}{Remarks}
+\crefname{literaturenote}{literature note}{literature notes}
+\Crefname{literaturenote}{Literature note}{Literature notes}
+\crefname{warning}{branch warning}{branch warnings}
+\Crefname{warning}{Branch warning}{Branch warnings}
 
 \newcommand{\W}{W}
 \newcommand{\Wz}{W_0}

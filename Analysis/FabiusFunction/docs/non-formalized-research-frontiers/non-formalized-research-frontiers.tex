@@ -18,6 +18,7 @@
 \usepackage{xurl}
 \usepackage{hyperref}
 \usepackage[nameinlink,noabbrev]{cleveref}
+\usepackage{aliascnt}
 
 \definecolor{linkblue}{RGB}{25,75,135}
 \definecolor{shadegray}{RGB}{246,247,249}
@@ -54,20 +55,87 @@
 % otherwise be overfull.
 \setlength{\emergencystretch}{2em}
 
+% ed.: all of these share the `theorem' counter so that numbering runs in one
+% ed.: sequence.  Declared as \newtheorem{X}[theorem]{...} they also report the
+% ed.: counter name `theorem' to cleveref, so every \Cref to a proposition,
+% ed.: lemma, corollary, conjecture, definition, algorithm, example, remark,
+% ed.: warning, candidate statement or formalization obligation printed the
+% ed.: word ``Theorem''.  In this volume that is not merely untidy: a reference
+% ed.: to a formalization obligation or a candidate statement claiming to be a
+% ed.: theorem inverts the quarantine distinction the document exists to keep.
+% ed.: aliascnt gives each environment its own counter name aliased to
+% ed.: `theorem', so the shared numbering is preserved exactly while cleveref
+% ed.: sees the true type.
 \newtheorem{theorem}{Theorem}[section]
-\newtheorem{proposition}[theorem]{Proposition}
-\newtheorem{lemma}[theorem]{Lemma}
-\newtheorem{corollary}[theorem]{Corollary}
-\newtheorem{conjecture}[theorem]{Conjecture}
+
+\newaliascnt{proposition}{theorem}
+\newtheorem{proposition}[proposition]{Proposition}
+\aliascntresetthe{proposition}
+
+\newaliascnt{lemma}{theorem}
+\newtheorem{lemma}[lemma]{Lemma}
+\aliascntresetthe{lemma}
+
+\newaliascnt{corollary}{theorem}
+\newtheorem{corollary}[corollary]{Corollary}
+\aliascntresetthe{corollary}
+
+\newaliascnt{conjecture}{theorem}
+\newtheorem{conjecture}[conjecture]{Conjecture}
+\aliascntresetthe{conjecture}
+
 \theoremstyle{definition}
-\newtheorem{definition}[theorem]{Definition}
-\newtheorem{algorithm}[theorem]{Algorithm}
-\newtheorem{example}[theorem]{Example}
+\newaliascnt{definition}{theorem}
+\newtheorem{definition}[definition]{Definition}
+\aliascntresetthe{definition}
+
+\newaliascnt{algorithm}{theorem}
+\newtheorem{algorithm}[algorithm]{Algorithm}
+\aliascntresetthe{algorithm}
+
+\newaliascnt{example}{theorem}
+\newtheorem{example}[example]{Example}
+\aliascntresetthe{example}
+
 \theoremstyle{remark}
-\newtheorem{remark}[theorem]{Remark}
-\newtheorem{warning}[theorem]{Warning}
-\newtheorem{candidate}[theorem]{Candidate statement}
-\newtheorem{obligation}[theorem]{Formalization obligation}
+\newaliascnt{remark}{theorem}
+\newtheorem{remark}[remark]{Remark}
+\aliascntresetthe{remark}
+
+\newaliascnt{warning}{theorem}
+\newtheorem{warning}[warning]{Warning}
+\aliascntresetthe{warning}
+
+\newaliascnt{candidate}{theorem}
+\newtheorem{candidate}[candidate]{Candidate statement}
+\aliascntresetthe{candidate}
+
+\newaliascnt{obligation}{theorem}
+\newtheorem{obligation}[obligation]{Formalization obligation}
+\aliascntresetthe{obligation}
+
+\crefname{proposition}{proposition}{propositions}
+\Crefname{proposition}{Proposition}{Propositions}
+\crefname{lemma}{lemma}{lemmas}
+\Crefname{lemma}{Lemma}{Lemmas}
+\crefname{corollary}{corollary}{corollaries}
+\Crefname{corollary}{Corollary}{Corollaries}
+\crefname{conjecture}{conjecture}{conjectures}
+\Crefname{conjecture}{Conjecture}{Conjectures}
+\crefname{definition}{definition}{definitions}
+\Crefname{definition}{Definition}{Definitions}
+\crefname{algorithm}{algorithm}{algorithms}
+\Crefname{algorithm}{Algorithm}{Algorithms}
+\crefname{example}{example}{examples}
+\Crefname{example}{Example}{Examples}
+\crefname{remark}{remark}{remarks}
+\Crefname{remark}{Remark}{Remarks}
+\crefname{warning}{warning}{warnings}
+\Crefname{warning}{Warning}{Warnings}
+\crefname{candidate}{candidate statement}{candidate statements}
+\Crefname{candidate}{Candidate statement}{Candidate statements}
+\crefname{obligation}{formalization obligation}{formalization obligations}
+\Crefname{obligation}{Formalization obligation}{Formalization obligations}
 
 \newcommand{\R}{\mathbb R}
 \newcommand{\C}{\mathbb C}
