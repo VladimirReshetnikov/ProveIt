@@ -59,14 +59,11 @@ sources *as* independent documents (see the group README).
 
 ## lambert-w — `lambert-w/`
 
-Three independently written Lambert W article packages (seventeenth wave, 2026-08-28), kept as separate members per the Fourier-decay precedent; the group README carries the table. The function enters the corpus through the two-scale endpoint asymptotics and `LambertPhaseLockedRichardson.lean`.
+The Lambert W function enters the corpus through the two-scale endpoint asymptotics and `LambertPhaseLockedRichardson.lean`; four independently written article packages on the function itself arrived on 2026-08-28 and were **merged editorially** into one volume.
 
-| Directory | Document |
-| --- | --- |
-| `Lambert-W-Article/` | *A Real-Variable Guide to Its Branches, Identities, Series, Asymptotics, Bounds, Approximations, and Computation* |
-| `Lambert_W_Function_Article/` | *The Lambert W Function* (article package) |
-| `Lambert_W_article/` | *Real Branches, Series, Asymptotics, Bounds, Continued Fractions, Numerical Evaluation, and Applications* |
-| `Lambert-W-Function-article-4/` | *The Lambert W Function* (fourth independent article, eighteenth wave, 2026-08-28) |
+| Directory | Document | Previous path |
+| --- | --- | --- |
+| `Lambert_W_Guide/` | *The Lambert W Function: A Real-Variable Guide* (61 pp, consolidated edition, 2026-08-28) — editorial merge of the four independent treatments: the spine is the most complete article (branches, identities, exact branch-pair parametrization with Bernoulli gap expansions, derivative polynomials, integral calculus with all polynomial moments and Mellin integrals on both unbounded ends, local Taylor, Maclaurin with proved Lagrange–Bürmann, tree function/Cayley, signed Puiseux at the branch point with recurrences, unified Stirling-number logarithmic asymptotics for both branches, rigorous elementary bounds incl. Chatzigeorgiou's W₋₁ bracket, Padé and Euler continued fractions, Kalugin–Jeffrey–Corless cut integrals with complete monotonicity of W₀′, residual-certified branch-safe logarithmic Newton with monotone global starts, transcendental-equation catalogue, applications, Wright omega, complex-branch guide, problems with solutions, formula sheet); a complements section preserves the other three treatments' unique layers — the complete power-tower convergence theorem (exact interval e^{−e} ≤ a ≤ e^{1/e} with two-cycle exclusion and neutral endpoints), x^y = y^x, inverse-Taylor/Schröder corrections with branch-aware seeds, the logarithmic fixed-point iteration criterion (attracting iff \|W\|>1), branch-exchange involution, scaling identities, fixed points 2πin, unwinding-integer logarithm identity, closed Lagrange form of the Puiseux coefficients, square-root monodromy, the transcendence theorem (W_k(algebraic ≠ 0) is transcendental), a practitioner's toolkit (parameter gradients with the (1+w)^{−1} factor, differentiate-in-w, parametrize-by-w, floating-point hazards), further applications (patch residence via W₋₁, Wien displacement, linear-drag fall time, Schwarzschild tortoise inversion, π(x) < x/W₀(x)), and the r-Lambert/generalized-Lambert outlook; plus a corpus-role section and a four-way concordance appendix (all shared constants verified identical); assets preserve the four packages verbatim, provenance with SHA-256 in the document | absorbed member packages deleted; git history is the archive |
 
 ## spectra-and-arithmetic — `spectra-and-arithmetic/`
 

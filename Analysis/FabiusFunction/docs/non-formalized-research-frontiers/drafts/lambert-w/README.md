@@ -1,22 +1,28 @@
 # Lambert W
 
-Independently written article packages on the Lambert W function —
-its real branches, identities, series and asymptotics, bounds, continued
-fractions, Padé and Puiseux approximations, and numerical evaluation —
-which arrived together in `incoming/` on 2026-08-28 (seventeenth wave).
 The Lambert W function enters the Fabius–Rvachev corpus through the
 two-scale endpoint asymptotics and the phase-locked Richardson layer of
 the exponents-and-q-series group (`LambertPhaseLockedRichardson.lean`,
-the κ∞ decay gauge), but these articles treat the function itself, so
-they form their own group.
+the κ∞ decay gauge); the endpoint programs of that volume's Parts VI–VII
+and of the inverse-endpoint volume use the lower branch W₋₁ as their
+canonical coordinate.  These articles treat the function itself, so they
+form their own group.
 
-Following the Fourier-decay precedent, the same-topic sources are
-kept as separate members — independent writings are audit evidence —
-until deliberately merged:
+Four independently written article packages arrived together on
+2026-08-28 and were **merged editorially** (same day) into the single
+consolidated volume:
 
-| Directory | Document |
-| --- | --- |
-| `Lambert-W-Article/` | *The Lambert W Function: A Real-Variable Guide to Its Branches, Identities, Series, Asymptotics, Bounds, Approximations, and Computation* (monograph source with generated tables) |
-| `Lambert_W_Function_Article/` | *The Lambert W Function* (article package; Padé errors, asymptotic error for W₋₁) |
-| `Lambert_W_article/` | *The Lambert W Function: Real Branches, Series, Asymptotics, Bounds, Continued Fractions, Numerical Evaluation, and Applications* (with condition numbers, iteration convergence, Puiseux errors) |
-| `Lambert-W-Function-article-4/` | *The Lambert W Function* (fourth independent article, eighteenth wave; the archive carried no top-level directory — files gathered here on filing; branch-point, iteration, and asymptotic error figures) |
+Member: `Lambert_W_Guide/` — *The Lambert W Function: A Real-Variable
+Guide* (61 pp, consolidated edition).  The most complete of the four
+treatments forms the body; the unique layers of the other three (the
+complete power-tower convergence theorem, inverse-Taylor corrections,
+the branch-exchange involution, the transcendence theorem, a
+practitioner's toolkit, further applications, and the r-Lambert
+outlook) are preserved in a complements section; a four-way concordance
+appendix records that the shared core agreed theorem for theorem and
+constant for constant, and a corpus-role section links W₋₁ to the
+Fabius endpoint theory.  The four source packages are preserved
+verbatim under `Lambert_W_Guide/assets/`, with SHA-256 provenance in
+the document itself.
+
+See [`../MANIFEST.md`](../MANIFEST.md) for the group record.
