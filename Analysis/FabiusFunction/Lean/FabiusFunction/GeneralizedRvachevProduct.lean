@@ -47,6 +47,15 @@ larger developments; at `a h = 1` the corresponding statements are
 *real* axis, and continuity there) and `SincCanonicalProduct` (the
 canonical regrouping with multiplicity `1 + v₂ m`).
 
+Two of the three have since been carried out at general weight, both
+building on this file's `Multipliable` results:
+`FabiusFunction.GeneralizedCanonicalForm` proves the regrouping, and
+`FabiusFunction.GeneralizedRvachevEntire` proves locally uniform
+convergence on every ball, hence that `Φ_a` is entire.  The
+probabilistic model remains absent.  The sentence above still
+describes *this* file accurately — it is a statement of scope, not a
+claim about the corpus.
+
 The admissibility hypothesis is spelled `Summable fun h => a h / 2 ^ h`
 with the values cast into `ℝ`.  `DigitDefectCounting` states the same
 condition for *real* weight sequences as

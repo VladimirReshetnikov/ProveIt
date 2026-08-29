@@ -61,22 +61,33 @@ For `n = m + 1 ≥ 1` the canonical product splits at the single index
 where `R_n` is the product of all the *other* canonical factors, and
 `R_n(±n) ≠ 0`.
 
-**This is not an order-of-vanishing statement.**  The volume asserts,
-alongside `p1:eq:canonical-a` in `p1:thm:zero-zeta`, "In particular,
-`ord_{z=±n} Φ_a = m_a(n)`".  That is a statement about
+**This is not, by itself, an order-of-vanishing statement.**  The
+volume asserts, alongside `p1:eq:canonical-a` in `p1:thm:zero-zeta`,
+"In particular, `ord_{z=±n} Φ_a = m_a(n)`".  That is a statement about
 `analyticOrderAt`, and it needs analyticity of `Φ_a`, hence
-convergence uniform on compact sets.  The corpus has that whole
-story at the *constant* weight — `rvachevFourierProduct_differentiable`
-and `analyticOrderAt_rvachevFourierProduct_int` in
-`FabiusFunction.IntegerZeroAnalyticOrder` — and the resulting
-instance of the display is recorded below as
-`analyticOrderAt_generalizedRvachevProduct_one`.  For a general
-admissible `a` nothing supplies analyticity.  What is proved
-here is the algebraic input to such a statement: the factorization
-itself, together with the nonvanishing of the complementary factor at
-the two candidate zeros.  Turning it into an order statement would
-require, in addition, that `R_n` be analytic near `±n` — not proved
-anywhere in the corpus.
+convergence uniform on compact sets.  What is proved *here* is only
+the algebraic input to it: the factorization itself, together with the
+nonvanishing of the complementary factor at the two candidate zeros.
+
+The missing analytic ingredient — that `R_n` be analytic near `±n` —
+is supplied downstream by
+`FabiusFunction.GeneralizedRvachevEntire`, as
+`canonicalCofactor_differentiable`, and the order statement is
+completed there for every admissible weight
+(`analyticOrderAt_generalizedRvachevProduct_pos` and its reflection
+`..._neg_pos`).  Both consume this module's factorization
+(`generalizedRvachevProduct_eq_canonicalComplexFactor_mul`) and its
+nonvanishing lemmas (`canonicalCofactor_natCast_ne_zero`,
+`canonicalCofactor_neg_natCast_ne_zero`) unchanged, so nothing below
+was provisional.
+
+At the *constant* weight the corpus already had the whole story
+independently — `rvachevFourierProduct_differentiable` and
+`analyticOrderAt_rvachevFourierProduct_int` in
+`FabiusFunction.IntegerZeroAnalyticOrder` — and the resulting instance
+of the display, sharper in that it is indexed by an arbitrary nonzero
+integer, is recorded below as
+`analyticOrderAt_generalizedRvachevProduct_one`.
 
 The split of a `tprod` at a single index uses Mathlib's
 `Multipliable.tprod_eq_mul_tprod_ite'`, the `CommMonoid` form, whose

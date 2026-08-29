@@ -89,8 +89,12 @@ positive integer is computed.  No growth estimate on `Φ_a` is given.
   **(a) the uniform bound**: on `Metric.ball 0 R` the deviations of
   the raised sinc factors are eventually dominated by a summable
   sequence that does not depend on the point.
-* `Fabius.differentiableOn_generalizedRvachevProduct_ball` —
-  **(b)** `Φ_a` is holomorphic on every ball `Metric.ball 0 R`.
+* `Fabius.hasProdLocallyUniformlyOn_generalizedRvachevProduct` —
+  **(b) locally uniform convergence** of the defining product on every
+  ball `Metric.ball 0 R`.  This is the convergence the exponents
+  volume asserts alongside its canonical form.
+* `Fabius.differentiableOn_generalizedRvachevProduct_ball` — its
+  corollary: `Φ_a` is holomorphic on every ball `Metric.ball 0 R`.
 * `Fabius.generalizedRvachevProduct_differentiable` — **(c) the
   transform is entire**, for every admissible exponent sequence.
 * `Fabius.analyticAt_generalizedRvachevProduct` — the corresponding
@@ -287,8 +291,14 @@ theorem exists_summable_norm_generalizedSincFactor_sub_one_le
     (hb.trans hexp)
   exact hfin
 
-/-- **(b) Holomorphy on a ball.**  For every `R > 0` the generalized
-Rvachev transform is holomorphic on `Metric.ball 0 R`.
+/-- **(b) Locally uniform convergence on a ball.**  For every `R > 0`
+the defining product converges to `Φ_a` locally uniformly on
+`Metric.ball 0 R`.
+
+This is the hypothesis the exponents volume attaches to its canonical
+form --- "with locally uniform convergence" --- and it is stated here
+rather than left inside the holomorphy proof, because it is what the
+volume actually asserts; holomorphy is the corollary below.
 
 This is the Dedekind eta route of
 `ModularForm.differentiableOn_tprod_one_sub_pow` -- not the
@@ -306,11 +316,13 @@ the limit.  The final rewriting only undoes `1 + (x - 1) = x`.
 Note that no nonvanishing hypothesis is needed anywhere: the
 `one_add` form of the Mathlib lemma is insensitive to the zeros of
 `Φ_a`, which is essential here since the ball contains them. -/
-theorem differentiableOn_generalizedRvachevProduct_ball
+theorem hasProdLocallyUniformlyOn_generalizedRvachevProduct
     (a : ℕ → ℕ) (ha : Summable fun h : ℕ => (a h : ℝ) / 2 ^ h)
     {R : ℝ} (hR : 0 < R) :
-    DifferentiableOn ℂ (generalizedRvachevProduct a)
-      (Metric.ball (0 : ℂ) R) := by
+    HasProdLocallyUniformlyOn
+      (fun (n : ℕ) (z : ℂ) =>
+        complexSinc ((Real.pi : ℂ) * z / (2 : ℂ) ^ n) ^ a n)
+      (generalizedRvachevProduct a) (Metric.ball (0 : ℂ) R) := by
   obtain ⟨u, hu, hbd⟩ :=
     exists_summable_norm_generalizedSincFactor_sub_one_le a ha hR
   have hcts : ∀ n : ℕ, ContinuousOn (fun z : ℂ =>
@@ -323,17 +335,12 @@ theorem differentiableOn_generalizedRvachevProduct_ball
     (f := fun (n : ℕ) (z : ℂ) =>
       complexSinc ((Real.pi : ℂ) * z / (2 : ℂ) ^ n) ^ a n - 1)
     Metric.isOpen_ball hbd hcts
-  have hdiff : DifferentiableOn ℂ (fun z : ℂ => ∏' n : ℕ,
-      (1 + (complexSinc ((Real.pi : ℂ) * z / (2 : ℂ) ^ n) ^ a n
-        - 1))) (Metric.ball (0 : ℂ) R) := by
-    refine hprod.differentiableOn ?_ Metric.isOpen_ball
-    refine Filter.Eventually.of_forall fun t : Finset ℕ => ?_
-    show DifferentiableOn ℂ (fun z : ℂ => ∏ n ∈ t,
-      (1 + (complexSinc ((Real.pi : ℂ) * z / (2 : ℂ) ^ n) ^ a n
-        - 1))) (Metric.ball (0 : ℂ) R)
-    refine DifferentiableOn.fun_finsetProd fun n _ => ?_
-    exact ((differentiable_generalizedSincFactor a n).sub_const
-      1).differentiableOn.const_add 1
+  have hfactor : (fun (n : ℕ) (z : ℂ) =>
+      1 + (complexSinc ((Real.pi : ℂ) * z / (2 : ℂ) ^ n) ^ a n - 1))
+      = fun (n : ℕ) (z : ℂ) =>
+        complexSinc ((Real.pi : ℂ) * z / (2 : ℂ) ^ n) ^ a n := by
+    funext n z
+    ring
   have hfun : (fun z : ℂ => ∏' n : ℕ,
       (1 + (complexSinc ((Real.pi : ℂ) * z / (2 : ℂ) ^ n) ^ a n
         - 1))) = generalizedRvachevProduct a := by
@@ -343,8 +350,26 @@ theorem differentiableOn_generalizedRvachevProduct_ball
       = ∏' n : ℕ,
           complexSinc ((Real.pi : ℂ) * z / (2 : ℂ) ^ n) ^ a n
     exact tprod_congr fun n => by ring
-  rw [← hfun]
-  exact hdiff
+  rwa [hfactor, hfun] at hprod
+
+/-- **(b) Holomorphy on a ball**, read off from the locally uniform
+convergence: every finite subproduct is a finite product of entire
+functions, and `TendstoLocallyUniformlyOn.differentiableOn` --- which
+`HasProdLocallyUniformlyOn.differentiableOn` unfolds to --- transfers
+holomorphy to the limit. -/
+theorem differentiableOn_generalizedRvachevProduct_ball
+    (a : ℕ → ℕ) (ha : Summable fun h : ℕ => (a h : ℝ) / 2 ^ h)
+    {R : ℝ} (hR : 0 < R) :
+    DifferentiableOn ℂ (generalizedRvachevProduct a)
+      (Metric.ball (0 : ℂ) R) := by
+  refine (hasProdLocallyUniformlyOn_generalizedRvachevProduct a ha
+    hR).differentiableOn ?_ Metric.isOpen_ball
+  refine Filter.Eventually.of_forall fun t : Finset ℕ => ?_
+  show DifferentiableOn ℂ (fun z : ℂ => ∏ n ∈ t,
+    complexSinc ((Real.pi : ℂ) * z / (2 : ℂ) ^ n) ^ a n)
+    (Metric.ball (0 : ℂ) R)
+  exact DifferentiableOn.fun_finsetProd fun n _ =>
+    (differentiable_generalizedSincFactor a n).differentiableOn
 
 /-- **(c) The generalized Rvachev transform is entire.**
 

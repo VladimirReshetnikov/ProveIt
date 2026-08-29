@@ -573,18 +573,45 @@ exponent is the prefix sum --- which is exactly $m_a(n)$.  That is why the multi
 function was the right object to formalize first.  The classical statement is recovered
 as a corollary (\lean{Fabius.generalizedRvachevProduct\_one\_of\_canonical}).
 
-The locally uniform convergence the volume states alongside this display is not
-formalized, and neither is the consequence $\ord_{z=\pm n}\Phi_a=m_a(n)$ at a general
-weight --- that is a statement about \lean{analyticOrderAt} and so needs analyticity of
-$\Phi_a$, which needs the locally uniform convergence.  At the \emph{constant} weight,
-however, the corpus has the whole story, and the display is a theorem:
+The locally uniform convergence the volume states alongside this display, and the
+consequence $\ord_{z=\pm n}\Phi_a=m_a(n)$ that the volume draws from it, are both
+formalized at a general admissible $a$, in \path{GeneralizedRvachevEntire.lean}.  The
+convergence is \lean{Fabius.hasProdLocallyUniformlyOn\_generalizedRvachevProduct}, on
+every ball $\lVert z\rVert<R$; \lean{HasProdLocallyUniformlyOn} is by definition the
+locally uniform convergence of the finite subproducts, so this is the volume's clause
+verbatim rather than a surrogate for it.  Holomorphy on each ball
+(\lean{Fabius.differentiableOn\_generalizedRvachevProduct\_ball}) and hence entirety
+(\lean{Fabius.generalizedRvachevProduct\_differentiable}) follow, and with them the
+order statement in both halves:
+\[
+ \ord_{z=n}\Phi_a=m_a(n)
+ \quad\text{and}\quad
+ \ord_{z=-n}\Phi_a=m_a(n),
+ \qquad n\ge1,
+\]
+as \lean{Fabius.analyticOrderAt\_generalizedRvachevProduct\_pos} and
+\lean{Fabius.analyticOrderAt\_generalizedRvachevProduct\_neg\_pos}.  The hypothesis
+$n\ge1$ is not a limitation of the proof but of the statement: $\Phi_a(0)=1$, so the
+order at the origin is $0$, whereas $m_a(0)=a_0$ may be anything.
+
+Two remarks on how this was reached, both of which sharpen the volume.  First, the
+algebraic input was already in place before this module --- the factorization
+$\Phi_a(z)=(1-z^2/n^2)^{m_a(n)}R_n(z)$ with $R_n(\pm n)\ne0$
+(\lean{Fabius.generalizedRvachevProduct\_eq\_canonicalComplexFactor\_mul},
+\lean{Fabius.canonicalCofactor\_natCast\_ne\_zero}) --- so what was genuinely missing was
+analyticity of the cofactor $R_n$, supplied here as
+\lean{Fabius.canonicalCofactor\_differentiable}.  Second, the reflected half needs no
+evenness of $\Phi_a$: the mirror factorization
+$1-z^2/n^2=(z+n)\cdot\bigl(-(z-n)/n^2\bigr)$
+(\lean{Fabius.canonicalComplexFactor\_eq\_add\_mul}) is the same one line of algebra as
+its sibling, so both halves of $\ord_{z=\pm n}$ are proved directly and the appeal to
+$\Phi_a(-z)=\Phi_a(z)$ (\lean{Fabius.generalizedRvachevProduct\_neg},
+\path{LobeSignNegative.lean}) is not needed.  At the \emph{constant} weight the
+sharper integer-indexed form remains available:
 \lean{Fabius.analyticOrderAt\_generalizedRvachevProduct\_one} reads
 $\ord_{z=m}\Phi_{\mathbf1}=m_{\mathbf1}(\lvert m\rvert)$ for every nonzero integer $m$, chaining
 \lean{Fabius.analyticOrderAt\_rvachevFourierProduct\_int} (\path{IntegerZeroAnalyticOrder.lean})
-with the exponent identity.  For a general admissible $a$ the algebraic input is in place
---- the factorization $\Phi_a(z)=(1-z^2/n^2)^{m_a(n)}R_n(z)$ with $R_n(\pm n)\ne0$
-(\lean{Fabius.generalizedRvachevProduct\_eq\_canonicalComplexFactor\_mul},
-\lean{Fabius.canonicalCofactor\_natCast\_ne\_zero}) --- and only the analyticity is missing.  The spectral zeta \eqref{p1:eq:zeta-a} is now
+with the exponent identity.  The spectral zeta \eqref{p1:eq:zeta-a} is now
 formalized as well, in \path{SpectralZetaWeighted.lean}, for real $s>1$ and at an
 arbitrary base $b>1$, with the $\zeta$ factor left as its own $p$-series rather than
 identified with \lean{riemannZeta}
@@ -595,8 +622,10 @@ The rearrangement needs nothing about the canonical product: the fibre of
 $(h,k)\mapsto b^hk$ over $n$ is $\{h:b^h\mid n\}$, whose weight sum is exactly $m_a(n)$,
 and it is the formalization of $m_a$ at arbitrary base --- noted above --- that makes
 this reachable.  The unit-weight case is recorded as a guard
-(\lean{Fabius.tsum\_padicValNat\_succ\_rpow}).  The general-$a$ product remains
-unformalized.
+(\lean{Fabius.tsum\_padicValNat\_succ\_rpow}).  What \eqref{p1:eq:zeta-a} still lacks is
+narrower than the product: the corpus proves it for real $s>1$ with the first factor as
+its own $p$-series, so the extension to complex $s$ and the identification of that
+factor with \lean{riemannZeta} are the two remaining steps.
 \end{theorem}
 
 \begin{proof}
