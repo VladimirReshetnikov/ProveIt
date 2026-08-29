@@ -37,6 +37,7 @@ import FabiusFunction.ShiftDifferenceWeights
 import FabiusFunction.NewtonMultiplicityAssembly
 import FabiusFunction.NewtonBasisGeneratingFunction
 import FabiusFunction.NewtonSpectralZeta
+import FabiusFunction.NewtonCoefficientUniqueness
 import FabiusFunction.BellPolynomialInversion
 import FabiusFunction.AppellSequence
 import FabiusFunction.MomentCumulantAlgebra
