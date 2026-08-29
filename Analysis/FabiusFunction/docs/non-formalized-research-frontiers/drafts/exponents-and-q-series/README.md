@@ -27,7 +27,7 @@ shifts, negative-branch and hierarchy formulas, and inverse/quantile versions
 remain research frontiers. These API claims were checked at source checkpoint
 `22f801337`.
 
-Member: `Exponents_and_q_Series_Frontiers` (173 pp, six parts) — the
+Member: `Exponents_and_q_Series_Frontiers` (194 pp, seven parts) — the
 2026-08-28 consolidation of the two former drafts (Part I:
 Newton-basis frontiers; Part II: q-binomial Richardson), joined the
 same day by the eighth-wave report as **Part III** — *Finite Dyadic
@@ -136,7 +136,33 @@ of `up` by `n(n+1)/2` dyadic averaging steps, closed cumulants
 (Berry–Esseen `O(n^{−1/2})`), the edge pantograph equations
 generalizing `F′ = 2F(2·)` to every base, and further register
 entries (`Fup_n` Edgeworth, graph-directed atomic splines,
-pressure-function Taylor multifractal).  The eighth-wave fold also
+pressure-function Taylor multifractal).  The sixteenth and seventeenth
+waves arrived as same-topic twins on the signed and reciprocal
+parameter orbit `{q, −q, 1/q, −1/q}` of the geometric-uniform family
+and were **merged editorially as Part VII** — *Signed and Reciprocal
+q-Fabius Frontiers* (formerly `Fabius_Q_Connections_Report/`, *Beyond
+the Dyadic Fabius Web*, and `Signed_Reciprocal_q_Fabius_Frontiers/`):
+affine sign conjugacy (negative q creates no new normalized shapes),
+the reciprocal moment germ with `M_q(t)·M_{1/q}(−t) = 1` and finite
+digit-reversal duality giving `q = ±2, ±4` exact meaning, geometric
+multisection (the Fabius law as an explicit convolution of two
+quarter-base laws), the spectral q²-Pochhammer factorization, the
+Bernoulli cumulant dictionary with closed spectral zeta, log-concavity
+with the exact plateau phase `|q| ≤ 1/2`, the positive Laplace
+representation of reciprocal germs (vertical-line moments, Hankel
+signature `(−1)^C(n,2)`, orthogonal polynomials on `Re z = 1/2`), the
+q-Fabius–Bernoulli Appell deconvolution family, the moment polynomial
+`𝒫_n(q)` with its odd-q-integer divisor conjecture, the two-nome
+Pochhammer–Prouhet partition function and digit-position master
+product, the exact q-Prouhet moment transfer, the
+Grassmannian/Hermitian finite-geometry square, box-spline derivative
+combs with the dimension-1/2 quartic Cantor skeleton, reciprocal
+q-Lagrange row reversal, the exact inverse-geometric endpoint lattice
+`G_q(qⁿ) = q^C(n+1,2)·𝒫_n/(q;q)_n` with all jets and new
+inverse-quartic values, the uniform two-term endpoint asymptotic with
+its square-root/log-log inversion, and the resolution of the
+sixteenth wave's periodic-cocycle conjecture by Part VI's exact
+Gamma–zeta Laplace decomposition.  The eighth-wave fold also
 repaired the volume's part-boundary section numbering (Part II had
 rendered with `\appendix` letters G–N).  Supporting files under
 `assets/`, provenance with SHA-256 in the document itself.

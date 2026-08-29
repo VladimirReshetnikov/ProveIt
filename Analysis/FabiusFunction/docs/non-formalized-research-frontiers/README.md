@@ -130,7 +130,15 @@ periodic-Lambert conjecture), the two Fup hierarchies (the canonical
 ladder and the classical narrowing family with its triangular
 reconstruction and Gaussian regime), signed gap leading coefficients,
 derivative equimeasurability with the full L^p ladder, and the edge
-pantograph equations.  Several volumes' part-boundary section numbering and
+pantograph equations.  The sixteenth and seventeenth waves — same-topic
+twins on the signed/reciprocal parameter orbit of the geometric-uniform
+family — were merged editorially as that volume's Part VII, adding
+affine sign conjugacy, reciprocal germ inversion with its
+Laplace/vertical-line dual, geometric multisection, the two-nome
+Pochhammer–Prouhet partition function, the exact inverse-geometric
+endpoint lattice with its jets and two-term asymptotics, and the
+resolution of the periodic-cocycle conjecture via Part VI's exact
+Laplace decomposition.  Several volumes' part-boundary section numbering and
 page-counter handling were repaired along the way (edits are marked
 `% ed.:` in the sources).  Every volume carries
 a provenance section with each absorbed member's SHA-256; the absorbed
