@@ -93,6 +93,15 @@
 \newcommand{\defeq}{\mathrel{:=}}
 \newcommand{\qbase}{\;q}
 
+% ed.: status flags for the formalization register, \Cref{app:lean-status}.
+\definecolor{statusgreen}{RGB}{20,110,60}
+\definecolor{statusamber}{RGB}{160,100,10}
+\definecolor{statusred}{RGB}{150,40,40}
+\newcommand{\statusexact}{\textsf{\color{statusgreen}exact}}
+\newcommand{\statuspartial}{\textsf{\color{statusamber}partial}}
+\newcommand{\statusnone}{\textsf{\color{statusred}none}}
+\newcommand{\statusna}{\textsf{n/a}}
+
 \DeclarePairedDelimiter{\paren}{(}{)}
 \DeclarePairedDelimiter{\bracket}{[}{]}
 \DeclarePairedDelimiter{\bracep}{\lbrace}{\rbrace}
@@ -6472,6 +6481,348 @@ Read \Cref{chap:cyclotomic}.
 \end{gathered}
 \]
 Read \Cref{chap:pochhammer,chap:qgamma,chap:central,chap:asymptotics}.
+
+\chapter{Formalization status}\label{app:lean-status}
+\index{formalization status}
+
+Every mathematical result in this book is intended, eventually, to have a
+machine-checked proof in the Lean development that accompanies the Fabius
+project~\cite{ReshetnikovProveIt2026}.  This appendix records how far that
+has got, result by result, so that what remains can be planned rather than
+rediscovered.
+
+The classification is deliberately severe, and it is the same rule the
+project uses to decide whether a claim may leave its quarantine boundary.
+A result counts as formalized only when a current Lean declaration proves
+the \emph{exact} statement: same hypotheses, same domain, same
+normalization, same conclusion.  A related definition, a theorem with
+stronger hypotheses or a weaker conclusion, an executable computation, a
+numerical match, or an apparently immediate derivation is \emph{not} an
+exact counterpart.  In particular a Lean lemma that appears as a step
+inside the proof below does not formalize the result the proof concludes.
+
+\begin{description}
+\item[\statusexact] a named Lean declaration proves the same statement; the
+  declaration and its module are given.
+\item[\statuspartial] Lean has the result only in a special case, at a fixed
+  parameter, on a restricted domain, or with a weaker conclusion.  The named
+  declaration is the nearest one, and the shortfall is real.
+\item[\statusnone] nothing in the development proves it, even partially.
+\item[\statusna] the environment states a convention or an interface rather
+  than a mathematical claim.
+\end{description}
+
+Of the 182 labelled results, 17 are \statusexact, 26 are \statuspartial,
+136 are \statusnone, and 3 are \statusna.
+The formalized part is concentrated exactly where the Fabius development
+needed it: the finite Gaussian-coefficient core, the geometric Lagrange and
+filter calculus, half-base and Thue--Morse cancellation, and the geometric
+uniform law.  The classical analytic layer --- infinite products,
+nonterminating basic hypergeometric summation, Jacobi triple product,
+Bailey pairs --- is essentially untouched, and every infinite
+$q$-Pochhammer symbol in the development is still a finite product over a
+\texttt{Finset.range}.
+
+\section{By chapter}
+
+\begin{center}
+\begin{tabular}{@{}p{0.56\textwidth}rrrr@{}}
+\toprule
+Chapter & \statusexact & \statuspartial & \statusnone & \statusna\\
+\midrule
+The algebra of $q$-shifted factorials & 1 & 2 & 12 & 0\\
+$q$-integers and Gaussian coefficients & 1 & 2 & 5 & 0\\
+Finite $q$-binomial theorems and inversion & 1 & 1 & 7 & 0\\
+Weighted binomial coefficients and symmetric functions & 0 & 2 & 6 & 0\\
+Partitions, words, paths, and inversion statistics & 0 & 1 & 8 & 0\\
+Finite fields, Grassmannians, and rank enumeration & 0 & 1 & 5 & 0\\
+Symmetry and unimodality & 0 & 0 & 3 & 0\\
+The infinite $q$-binomial theorem & 0 & 0 & 5 & 0\\
+Basic hypergeometric series & 0 & 0 & 6 & 0\\
+Bilateral series and Ramanujan's \texorpdfstring{${}_1\psi_1$}{1psi1} sum & 0 & 0 & 2 & 0\\
+$q$-difference calculus and the quantum binomial & 0 & 0 & 10 & 0\\
+The $q$-gamma and $q$-beta functions & 0 & 0 & 8 & 0\\
+Jacobi's triple product & 0 & 0 & 6 & 0\\
+Partitions and product--sum identities & 0 & 0 & 4 & 0\\
+Bailey pairs and the Rogers--Ramanujan identities & 0 & 1 & 6 & 0\\
+Cyclotomic factorization and congruences & 0 & 0 & 9 & 0\\
+Negative upper indices and geometric Newton interpolation & 0 & 2 & 7 & 0\\
+Central $q$-binomial sums and Lambert series & 0 & 0 & 7 & 0\\
+Asymptotic regimes and Bernoulli expansions & 0 & 0 & 8 & 0\\
+Computation, certification, and formal proof architecture & 0 & 2 & 8 & 3\\
+Geometric interpolation and exact $q$-filters & 6 & 2 & 1 & 0\\
+Half-base arithmetic and Prouhet--Thue--Morse cancellation & 6 & 3 & 0 & 0\\
+Geometric uniform sums, $q$-cumulants, and the Fabius--Rvachev functions & 2 & 7 & 3 & 0\\
+\midrule
+\textbf{Total} & 17 & 26 & 136 & 3\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\section{By result}
+
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{0.28\textwidth}p{0.09\textwidth}>{\raggedright\arraybackslash}p{0.53\textwidth}@{}}
+\toprule
+Result & Status & Lean counterpart\\
+\midrule
+\endfirsthead
+\toprule
+Result & Status & Lean counterpart\\
+\midrule
+\endhead
+\midrule
+\multicolumn{3}{@{}l}{\itshape The algebra of $q$-shifted factorials}\\
+\midrule
+\Cref{prop:concat} & \statusexact & \texttt{finiteQPochhammerIn\_\allowbreak{}add}\newline{\footnotesize\texttt{FiniteQBinomialCore}}\\[2pt]
+\Cref{prop:dissection} & \statusnone & ---\\[2pt]
+\Cref{cor:dissection-remainder} & \statusnone & ---\\[2pt]
+\Cref{prop:base-reversal} & \statusnone & ---\\[2pt]
+\Cref{prop:negative-index} & \statusnone & ---\\[2pt]
+\Cref{cor:qminusN} & \statuspartial & \texttt{qPochhammer\_\allowbreak{}two\_\allowbreak{}pow\_\allowbreak{}eq\_\allowbreak{}mersenne\_\allowbreak{}div}\newline{\footnotesize\texttt{HalfQBinomial}}\\[2pt]
+\Cref{thm:partial-fraction} & \statusnone & ---\\[2pt]
+\Cref{prop:logder-finite} & \statusnone & ---\\[2pt]
+\Cref{thm:poch-entire} & \statusnone & ---\\[2pt]
+\Cref{prop:complex-concat} & \statusnone & ---\\[2pt]
+\Cref{prop:order-derivative} & \statusnone & ---\\[2pt]
+\Cref{thm:lambert-log} & \statuspartial & \texttt{tsum\_\allowbreak{}log\_\allowbreak{}one\_\allowbreak{}sub\_\allowbreak{}geom}\newline{\footnotesize\texttt{EulerLogTransform}}\\[2pt]
+\Cref{cor:divisor-sum} & \statusnone & ---\\[2pt]
+\Cref{thm:poch-dilog} & \statusnone & ---\\[2pt]
+\Cref{prop:classical-poch-limit} & \statusnone & ---\\[2pt]
+\midrule
+\multicolumn{3}{@{}l}{\itshape $q$-integers and Gaussian coefficients}\\
+\midrule
+\Cref{prop:qbinom-products} & \statuspartial & \texttt{qPochhammer\_\allowbreak{}tail\_\allowbreak{}div\_\allowbreak{}self\_\allowbreak{}eq\_\allowbreak{}qBinomial}\newline{\footnotesize\texttt{GeometricLagrangeQMoments}}\\[2pt]
+\Cref{thm:qpascal} & \statusexact & \texttt{gaussianBinomial\_\allowbreak{}succ\_\allowbreak{}succ\_\allowbreak{}alt}\newline{\footnotesize\texttt{FiniteQBinomialCore}}\\[2pt]
+\Cref{cor:positivity} & \statusnone & ---\\[2pt]
+\Cref{thm:qbinom-structure} & \statuspartial & \texttt{gaussianBinomial\_\allowbreak{}symm}\newline{\footnotesize\texttt{FiniteQBinomialCore (HalfQBinomial)}}\\[2pt]
+\Cref{cor:qbinom-classical} & \statusnone & ---\\[2pt]
+\Cref{prop:qmult-factor} & \statusnone & ---\\[2pt]
+\Cref{prop:adjacent-ratio} & \statusnone & ---\\[2pt]
+\Cref{thm:qbinom-moments} & \statusnone & ---\\[2pt]
+\midrule
+\multicolumn{3}{@{}l}{\itshape Finite $q$-binomial theorems and inversion}\\
+\midrule
+\Cref{thm:finite-qbinomial} & \statusexact & \texttt{finite\_\allowbreak{}qBinomial\_\allowbreak{}theorem}\newline{\footnotesize\texttt{FiniteQBinomialCore}}\\[2pt]
+\Cref{cor:alternating-qbinom} & \statuspartial & \texttt{halfQBinomial\_\allowbreak{}two\_\allowbreak{}pow\_\allowbreak{}sum\_\allowbreak{}eq\_\allowbreak{}zero}\newline{\footnotesize\texttt{HalfQBinomial}}\\[2pt]
+\Cref{cor:weighted-subsets} & \statusnone & ---\\[2pt]
+\Cref{thm:reciprocal-finite} & \statusnone & ---\\[2pt]
+\Cref{thm:q-vandermonde} & \statusnone & ---\\[2pt]
+\Cref{cor:central-vandermonde} & \statusnone & ---\\[2pt]
+\Cref{thm:qbinomial-inversion} & \statusnone & ---\\[2pt]
+\Cref{cor:qbinomial-orthogonality} & \statusnone & ---\\[2pt]
+\Cref{thm:q-cauchy} & \statusnone & ---\\[2pt]
+\midrule
+\multicolumn{3}{@{}l}{\itshape Weighted binomial coefficients and symmetric functions}\\
+\midrule
+\Cref{thm:weighted-pascal} & \statuspartial & \texttt{completeHomogeneousEval\_\allowbreak{}option\_\allowbreak{}succ}\newline{\footnotesize\texttt{CompleteHomogeneous}}\\[2pt]
+\Cref{thm:weighted-generating} & \statusnone & ---\\[2pt]
+\Cref{cor:e-h-orthogonality} & \statusnone & ---\\[2pt]
+\Cref{thm:weighted-specializations} & \statuspartial & \texttt{completeHomogeneousEval\_\allowbreak{}geometric}\newline{\footnotesize\texttt{GeometricCompleteHomogeneous}}\\[2pt]
+\Cref{lem:vandermonde-alternant} & \statusnone & ---\\[2pt]
+\Cref{thm:schur-principal} & \statusnone & ---\\[2pt]
+\Cref{cor:schur-e-h} & \statusnone & ---\\[2pt]
+\Cref{thm:weighted-inversion} & \statusnone & ---\\[2pt]
+\midrule
+\multicolumn{3}{@{}l}{\itshape Partitions, words, paths, and inversion statistics}\\
+\midrule
+\Cref{thm:binary-inversions} & \statusnone & ---\\[2pt]
+\Cref{thm:rectangle-partitions} & \statusnone & ---\\[2pt]
+\Cref{cor:partition-symmetries} & \statuspartial & \texttt{qBinomial\_\allowbreak{}symm}\newline{\footnotesize\texttt{HalfQBinomial}}\\[2pt]
+\Cref{cor:path-area} & \statusnone & ---\\[2pt]
+\Cref{thm:durfee-qvand} & \statusnone & ---\\[2pt]
+\Cref{thm:qmult-inversions} & \statusnone & ---\\[2pt]
+\Cref{prop:rogers-szego-recurrence} & \statusnone & ---\\[2pt]
+\Cref{prop:rogers-szego-three-term} & \statusnone & ---\\[2pt]
+\Cref{cor:rogers-szego-dilation} & \statusnone & ---\\[2pt]
+\midrule
+\multicolumn{3}{@{}l}{\itshape Finite fields, Grassmannians, and rank enumeration}\\
+\midrule
+\Cref{thm:subspace-count} & \statusnone & ---\\[2pt]
+\Cref{thm:geometric-pascal} & \statuspartial & \texttt{gaussianBinomial\_\allowbreak{}succ\_\allowbreak{}succ}\newline{\footnotesize\texttt{FiniteQBinomialCore}}\\[2pt]
+\Cref{thm:flag-count} & \statusnone & ---\\[2pt]
+\Cref{thm:rank-matrices} & \statusnone & ---\\[2pt]
+\Cref{thm:grassmann-poincare} & \statusnone & ---\\[2pt]
+\Cref{prop:qbinom-growth} & \statusnone & ---\\[2pt]
+\midrule
+\multicolumn{3}{@{}l}{\itshape Symmetry and unimodality}\\
+\midrule
+\Cref{lem:sl2-structure} & \statusnone & ---\\[2pt]
+\Cref{prop:exterior-character} & \statusnone & ---\\[2pt]
+\Cref{thm:qbinom-unimodal} & \statusnone & ---\\[2pt]
+\midrule
+\multicolumn{3}{@{}l}{\itshape The infinite $q$-binomial theorem}\\
+\midrule
+\Cref{thm:infinite-qbinomial} & \statusnone & ---\\[2pt]
+\Cref{cor:euler-infinite} & \statusnone & ---\\[2pt]
+\Cref{cor:ratio-expansion} & \statusnone & ---\\[2pt]
+\Cref{prop:formal-qbinomial} & \statusnone & ---\\[2pt]
+\Cref{prop:fixed-k-limit} & \statusnone & ---\\[2pt]
+\midrule
+\multicolumn{3}{@{}l}{\itshape Basic hypergeometric series}\\
+\midrule
+\Cref{prop:phi-convergence} & \statusnone & ---\\[2pt]
+\Cref{thm:heine} & \statusnone & ---\\[2pt]
+\Cref{thm:q-gauss} & \statusnone & ---\\[2pt]
+\Cref{lem:cauchy-II} & \statusnone & ---\\[2pt]
+\Cref{thm:q-pfaff} & \statusnone & ---\\[2pt]
+\Cref{cor:q-chu} & \statusnone & ---\\[2pt]
+\midrule
+\multicolumn{3}{@{}l}{\itshape Bilateral series and Ramanujan's \texorpdfstring{${}_1\psi_1$}{1psi1} sum}\\
+\midrule
+\Cref{prop:1psi1-convergence} & \statusnone & ---\\[2pt]
+\Cref{thm:1psi1} & \statusnone & ---\\[2pt]
+\midrule
+\multicolumn{3}{@{}l}{\itshape $q$-difference calculus and the quantum binomial}\\
+\midrule
+\Cref{prop:qderivative-rules} & \statusnone & ---\\[2pt]
+\Cref{thm:q-leibniz} & \statusnone & ---\\[2pt]
+\Cref{lem:qfalling-derivative} & \statusnone & ---\\[2pt]
+\Cref{thm:q-taylor} & \statusnone & ---\\[2pt]
+\Cref{thm:quantum-binomial} & \statusnone & ---\\[2pt]
+\Cref{cor:quantum-multinomial} & \statusnone & ---\\[2pt]
+\Cref{cor:qexp-factor} & \statusnone & ---\\[2pt]
+\Cref{prop:qexp-eigen} & \statusnone & ---\\[2pt]
+\Cref{thm:q-fundamental} & \statusnone & ---\\[2pt]
+\Cref{cor:q-integration-parts} & \statusnone & ---\\[2pt]
+\midrule
+\multicolumn{3}{@{}l}{\itshape The $q$-gamma and $q$-beta functions}\\
+\midrule
+\Cref{thm:qgamma-basic} & \statusnone & ---\\[2pt]
+\Cref{prop:qgamma-convex} & \statusnone & ---\\[2pt]
+\Cref{thm:q-bohr-mollerup} & \statusnone & ---\\[2pt]
+\Cref{thm:qgamma-classical-limit} & \statusnone & ---\\[2pt]
+\Cref{thm:qbeta} & \statusnone & ---\\[2pt]
+\Cref{cor:qbeta-recurrence} & \statusnone & ---\\[2pt]
+\Cref{thm:qgamma-multiplication} & \statusnone & ---\\[2pt]
+\Cref{prop:qgamma-reflection} & \statusnone & ---\\[2pt]
+\midrule
+\multicolumn{3}{@{}l}{\itshape Jacobi's triple product}\\
+\midrule
+\Cref{thm:jtp} & \statusnone & ---\\[2pt]
+\Cref{cor:theta-quasi} & \statusnone & ---\\[2pt]
+\Cref{thm:pentagonal} & \statusnone & ---\\[2pt]
+\Cref{cor:euler-partition-recurrence} & \statusnone & ---\\[2pt]
+\Cref{thm:jacobi-cubic} & \statusnone & ---\\[2pt]
+\Cref{cor:qgamma-theta} & \statusnone & ---\\[2pt]
+\midrule
+\multicolumn{3}{@{}l}{\itshape Partitions and product--sum identities}\\
+\midrule
+\Cref{thm:partition-products} & \statusnone & ---\\[2pt]
+\Cref{prop:bounded-partitions} & \statusnone & ---\\[2pt]
+\Cref{cor:durfee-all} & \statusnone & ---\\[2pt]
+\Cref{prop:partition-stabilization} & \statusnone & ---\\[2pt]
+\midrule
+\multicolumn{3}{@{}l}{\itshape Bailey pairs and the Rogers--Ramanujan identities}\\
+\midrule
+\Cref{lem:qdiff-annihilation} & \statuspartial & \texttt{halfQBinomial\_\allowbreak{}negativeDyadic\_\allowbreak{}polynomial\_\allowbreak{}sum\_\allowbreak{}eq\_\allowbreak{}zero\_\allowbreak{}of\_\allowbreak{}degre}\newline{\footnotesize\texttt{HalfQBinomial}}\\[2pt]
+\Cref{thm:bailey-inversion} & \statusnone & ---\\[2pt]
+\Cref{cor:unit-bailey-pairs} & \statusnone & ---\\[2pt]
+\Cref{lem:bailey-aux} & \statusnone & ---\\[2pt]
+\Cref{thm:bailey-limit-finite} & \statusnone & ---\\[2pt]
+\Cref{cor:bailey-limit-infinite} & \statusnone & ---\\[2pt]
+\Cref{thm:rogers-ramanujan} & \statusnone & ---\\[2pt]
+\midrule
+\multicolumn{3}{@{}l}{\itshape Cyclotomic factorization and congruences}\\
+\midrule
+\Cref{thm:cyclotomic-pochhammer} & \statusnone & ---\\[2pt]
+\Cref{cor:squarefree-cyclotomic} & \statusnone & ---\\[2pt]
+\Cref{cor:q-catalan} & \statusnone & ---\\[2pt]
+\Cref{lem:root-block} & \statusnone & ---\\[2pt]
+\Cref{thm:q-lucas} & \statusnone & ---\\[2pt]
+\Cref{cor:qminusone} & \statusnone & ---\\[2pt]
+\Cref{thm:csp-subsets} & \statusnone & ---\\[2pt]
+\Cref{thm:q-babbage} & \statusnone & ---\\[2pt]
+\Cref{cor:babbage-derivative} & \statusnone & ---\\[2pt]
+\midrule
+\multicolumn{3}{@{}l}{\itshape Negative upper indices and geometric Newton interpolation}\\
+\midrule
+\Cref{prop:negative-gaussian} & \statusnone & ---\\[2pt]
+\Cref{thm:generalized-pascal} & \statuspartial & \texttt{gaussianBinomial\_\allowbreak{}succ\_\allowbreak{}succ}\newline{\footnotesize\texttt{FiniteQBinomialCore}}\\[2pt]
+\Cref{cor:reciprocal-product-negative} & \statusnone & ---\\[2pt]
+\Cref{thm:upper-parameter-series} & \statusnone & ---\\[2pt]
+\Cref{thm:complex-gaussian-properties} & \statusnone & ---\\[2pt]
+\Cref{cor:complex-gaussian-classical} & \statusnone & ---\\[2pt]
+\Cref{thm:generalized-qbinomial} & \statuspartial & \texttt{finite\_\allowbreak{}qBinomial\_\allowbreak{}theorem}\newline{\footnotesize\texttt{FiniteQBinomialCore}}\\[2pt]
+\Cref{thm:geometric-newton} & \statusnone & ---\\[2pt]
+\Cref{cor:geometric-triangular} & \statusnone & ---\\[2pt]
+\midrule
+\multicolumn{3}{@{}l}{\itshape Central $q$-binomial sums and Lambert series}\\
+\midrule
+\Cref{lem:central-reduction} & \statusnone & ---\\[2pt]
+\Cref{thm:regular-central-sum} & \statusnone & ---\\[2pt]
+\Cref{cor:regular-central-classical} & \statusnone & ---\\[2pt]
+\Cref{thm:singular-central} & \statusnone & ---\\[2pt]
+\Cref{thm:central-components} & \statusnone & ---\\[2pt]
+\Cref{thm:classical-singular-central} & \statusnone & ---\\[2pt]
+\Cref{prop:lambert-tail-limit} & \statusnone & ---\\[2pt]
+\midrule
+\multicolumn{3}{@{}l}{\itshape Asymptotic regimes and Bernoulli expansions}\\
+\midrule
+\Cref{lem:basic-bernoulli-log} & \statusnone & ---\\[2pt]
+\Cref{thm:gaussian-bernoulli} & \statusnone & ---\\[2pt]
+\Cref{cor:gaussian-first-asymptotic} & \statusnone & ---\\[2pt]
+\Cref{thm:fixed-column-limit} & \statusnone & ---\\[2pt]
+\Cref{thm:central-fixed-q} & \statusnone & ---\\[2pt]
+\Cref{prop:gaussian-bound} & \statusnone & ---\\[2pt]
+\Cref{cor:qgreaterone} & \statusnone & ---\\[2pt]
+\Cref{prop:extreme-specializations} & \statusnone & ---\\[2pt]
+\midrule
+\multicolumn{3}{@{}l}{\itshape Computation, certification, and formal proof architecture}\\
+\midrule
+\Cref{alg:gaussian-dp} & \statusna & \\[2pt]
+\Cref{thm:gaussian-dp-correct} & \statuspartial & \texttt{gaussianBinomial}\newline{\footnotesize\texttt{FiniteQBinomialCore}}\\[2pt]
+\Cref{alg:cyclotomic-list} & \statusna & \\[2pt]
+\Cref{thm:cyclotomic-list-correct} & \statusnone & ---\\[2pt]
+\Cref{thm:telescoping-certificate} & \statusnone & ---\\[2pt]
+\Cref{cor:identity-certification} & \statusnone & ---\\[2pt]
+\Cref{lem:polynomial-identity-principle} & \statusnone & ---\\[2pt]
+\Cref{cor:safe-specialization} & \statusnone & ---\\[2pt]
+\Cref{lem:integer-qpochhammer-translation} & \statuspartial & \texttt{finiteQPochhammerIn\_\allowbreak{}self\_\allowbreak{}mul\_\allowbreak{}gaussianBinomial}\newline{\footnotesize\texttt{FiniteQBinomialCore}}\\[2pt]
+\Cref{thm:certified-integral-translation} & \statusnone & ---\\[2pt]
+\Cref{cor:identity-finder-certificate} & \statusnone & ---\\[2pt]
+\Cref{thm:formal-analytic-transfer} & \statusnone & ---\\[2pt]
+\Cref{prin:proof-architecture} & \statusna & \\[2pt]
+\midrule
+\multicolumn{3}{@{}l}{\itshape Geometric interpolation and exact $q$-filters}\\
+\midrule
+\Cref{thm:reversed-qbinomial} & \statusexact & \texttt{reversed\_\allowbreak{}finite\_\allowbreak{}qBinomial\_\allowbreak{}theorem}\newline{\footnotesize\texttt{GeometricQBinomialLagrange}}\\[2pt]
+\Cref{thm:geometric-evaluation-zero} & \statusexact & \texttt{geometricLagrangeWeight\_\allowbreak{}eq\_\allowbreak{}gaussianBinomial\_\allowbreak{}div}\newline{\footnotesize\texttt{GeometricQBinomialLagrange}}\\[2pt]
+\Cref{cor:geometric-lagrange-product} & \statusexact & \texttt{geometricLagrangeWeight\_\allowbreak{}eq\_\allowbreak{}product}\newline{\footnotesize\texttt{GeometricLagrangeWeights}}\\[2pt]
+\Cref{thm:universal-lagrange-residual} & \statusexact & \texttt{sum\_\allowbreak{}lagrangeEvalWeight\_\allowbreak{}mul\_\allowbreak{}pow\_\allowbreak{}card\_\allowbreak{}add}\newline{\footnotesize\texttt{LagrangeResidualMoments}}\\[2pt]
+\Cref{thm:complete-geometric-moments} & \statusexact & \texttt{sum\_\allowbreak{}geometricLagrangeWeight\_\allowbreak{}mul\_\allowbreak{}pow\_\allowbreak{}eq\_\allowbreak{}gaussianBinomial}\newline{\footnotesize\texttt{GeometricQBinomialLagrange}}\\[2pt]
+\Cref{cor:scaled-geometric-moments} & \statuspartial & \texttt{sum\_\allowbreak{}geometricLagrangeWeight\_\allowbreak{}mul\_\allowbreak{}scaled\_\allowbreak{}geometric\_\allowbreak{}pow\_\allowbreak{}of\_\allowbreak{}pos}\newline{\footnotesize\texttt{GeometricResidualMoments}}\\[2pt]
+\Cref{thm:geometric-filter-diagonal} & \statusexact & \texttt{coeff\_\allowbreak{}geometricSeriesFilter}\newline{\footnotesize\texttt{GeometricPowerSeriesFilter}}\\[2pt]
+\Cref{cor:geometric-richardson} & \statuspartial & \texttt{geometricLagrangeAnalyticSeriesFilter\_\allowbreak{}eq\_\allowbreak{}constant\_\allowbreak{}add\_\allowbreak{}gaussi}\newline{\footnotesize\texttt{AnalyticSeriesFilter}}\\[2pt]
+\Cref{thm:geometric-filter-bound} & \statusnone & ---\\[2pt]
+\midrule
+\multicolumn{3}{@{}l}{\itshape Half-base arithmetic and Prouhet--Thue--Morse cancellation}\\
+\midrule
+\Cref{thm:halfbase-normalization} & \statusexact & \texttt{halfQPochhammer\_\allowbreak{}eq\_\allowbreak{}mersenne\_\allowbreak{}div}\newline{\footnotesize\texttt{HalfQBinomial}}\\[2pt]
+\Cref{thm:dyadic-product-evaluation} & \statusexact & \texttt{qPochhammer\_\allowbreak{}two\_\allowbreak{}pow\_\allowbreak{}eq\_\allowbreak{}ite}\newline{\footnotesize\texttt{HalfQBinomial}}\\[2pt]
+\Cref{cor:halfbase-root-locus} & \statuspartial & \texttt{halfQBinomial\_\allowbreak{}sum\_\allowbreak{}eq\_\allowbreak{}zero\_\allowbreak{}iff}\newline{\footnotesize\texttt{HalfQBinomial}}\\[2pt]
+\Cref{thm:geometric-prouhet} & \statusexact & \texttt{halfQBinomial\_\allowbreak{}negativeDyadic\_\allowbreak{}polynomial\_\allowbreak{}sum\_\allowbreak{}eq\_\allowbreak{}mersenne}\newline{\footnotesize\texttt{HalfQBinomial}}\\[2pt]
+\Cref{cor:geometric-prouhet-affine} & \statuspartial & \texttt{halfQBinomial\_\allowbreak{}negativeDyadic\_\allowbreak{}polynomial\_\allowbreak{}sum\_\allowbreak{}eq\_\allowbreak{}mersenne}\newline{\footnotesize\texttt{HalfQBinomial}}\\[2pt]
+\Cref{thm:thue-morse-product} & \statusexact & \texttt{prod\_\allowbreak{}one\_\allowbreak{}sub\_\allowbreak{}pow\_\allowbreak{}two\_\allowbreak{}pow}\newline{\footnotesize\texttt{ThueMorseProductIdentity}}\\[2pt]
+\Cref{thm:thue-morse-moments} & \statusexact & \texttt{sum\_\allowbreak{}thueMorseSign\_\allowbreak{}mul\_\allowbreak{}affine\_\allowbreak{}pow\_\allowbreak{}eq\_\allowbreak{}zero}\newline{\footnotesize\texttt{ThueMorseSparseProuhet}}\\[2pt]
+\Cref{cor:thue-morse-prouhet-partition} & \statuspartial & \texttt{sum\_\allowbreak{}thueMorseSign\_\allowbreak{}mul\_\allowbreak{}affine\_\allowbreak{}pow\_\allowbreak{}eq\_\allowbreak{}zero}\newline{\footnotesize\texttt{ThueMorseSparseProuhet}}\\[2pt]
+\Cref{prin:two-prouhet-filters} & \statusexact & \texttt{halfQBinomial\_\allowbreak{}negativeDyadic\_\allowbreak{}polynomial\_\allowbreak{}sum\_\allowbreak{}eq\_\allowbreak{}mersenne}\newline{\footnotesize\texttt{HalfQBinomial}}\\[2pt]
+\midrule
+\multicolumn{3}{@{}l}{\itshape Geometric uniform sums, $q$-cumulants, and the Fabius--Rvachev functions}\\
+\midrule
+\Cref{thm:geometric-uniform-basic} & \statuspartial & \texttt{geometricUniformSeries\_\allowbreak{}mem\_\allowbreak{}Icc}\newline{\footnotesize\texttt{GeometricUniformLaw}}\\[2pt]
+\Cref{thm:geometric-uniform-characteristic} & \statuspartial & \texttt{charFun\_\allowbreak{}geometricUniformDistribution\_\allowbreak{}prefix\_\allowbreak{}sinc}\newline{\footnotesize\texttt{GeometricSincFactorization}}\\[2pt]
+\Cref{thm:q-cumulants-uniform} & \statusnone & ---\\[2pt]
+\Cref{cor:geometric-uniform-moments} & \statuspartial & \texttt{completeBellPolynomial}\newline{\footnotesize\texttt{MomentCumulantAlgebra}}\\[2pt]
+\Cref{cor:halfbase-cumulants} & \statusnone & ---\\[2pt]
+\Cref{thm:geometric-uniform-fourier-decay} & \statuspartial & \texttt{norm\_\allowbreak{}rvachevFourierProduct\_\allowbreak{}le\_\allowbreak{}decayGauge\_\allowbreak{}abs}\newline{\footnotesize\texttt{GlobalDecayEnvelope}}\\[2pt]
+\Cref{thm:geometric-uniform-smooth-density} & \statuspartial & \texttt{geometricUniformDistribution\_\allowbreak{}eq\_\allowbreak{}withDensity}\newline{\footnotesize\texttt{GeometricUniformCDF}}\\[2pt]
+\Cref{thm:finite-uniform-spline} & \statusnone & ---\\[2pt]
+\Cref{thm:dyadic-thue-morse-spline} & \statuspartial & \texttt{fabiusUniformSpline\_\allowbreak{}eq\_\allowbreak{}tsum\_\allowbreak{}positivePart}\newline{\footnotesize\texttt{FabiusUniformSpline}}\\[2pt]
+\Cref{cor:finite-uniform-convergence} & \statuspartial & \texttt{abs\_\allowbreak{}uniformPartialSum\_\allowbreak{}sub\_\allowbreak{}weightedCoordinateSum\_\allowbreak{}le}\newline{\footnotesize\texttt{FabiusUniformSpline}}\\[2pt]
+\Cref{thm:probabilistic-fabius} & \statusexact & \texttt{weightedSumCDF\_\allowbreak{}eq\_\allowbreak{}fabiusReal}\newline{\footnotesize\texttt{ProbabilityRepresentation}}\\[2pt]
+\Cref{thm:up-sinc-product} & \statusexact & \texttt{rvachevFourier\_\allowbreak{}eq\_\allowbreak{}product}\newline{\footnotesize\texttt{FourierProduct}}\\[2pt]
+\bottomrule
+\end{longtable}
 
 \backmatter
 
