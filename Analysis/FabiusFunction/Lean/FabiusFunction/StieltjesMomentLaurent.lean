@@ -32,10 +32,10 @@ open MeasureTheory
 
 namespace Fabius
 
-/-- Finite geometric expansion of the Cauchy kernel:
+/-- Finite geometric expansion of the Cauchy kernel, in any field:
 `(z-x)⁻¹ = ∑_{k<N} x^k/z^{k+1} + x^N/(z^N(z-x))`. -/
-theorem inv_sub_eq_sum_range_add (N : ℕ) {z x : ℝ} (hz : z ≠ 0)
-    (hzx : z - x ≠ 0) :
+theorem inv_sub_eq_sum_range_add {K : Type*} [Field K] (N : ℕ)
+    {z x : K} (hz : z ≠ 0) (hzx : z - x ≠ 0) :
     (z - x)⁻¹ = (∑ k ∈ Finset.range N, x ^ k / z ^ (k + 1)) +
       x ^ N / (z ^ N * (z - x)) := by
   induction N with
