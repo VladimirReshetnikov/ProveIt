@@ -33,6 +33,8 @@ import FabiusFunction.FinitePolynomialFunctional
 import FabiusFunction.PolynomialMomentFunctional
 import FabiusFunction.WeightedScaleMultiplicity
 import FabiusFunction.ShiftDifferenceWeights
+import FabiusFunction.NewtonMultiplicityAssembly
+import FabiusFunction.NewtonBasisGeneratingFunction
 import FabiusFunction.BellPolynomialInversion
 import FabiusFunction.AppellSequence
 import FabiusFunction.MomentCumulantAlgebra
