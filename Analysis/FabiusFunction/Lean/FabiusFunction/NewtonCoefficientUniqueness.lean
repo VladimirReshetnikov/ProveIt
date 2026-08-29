@@ -100,6 +100,8 @@ theorem fwdDiff_iter_newtonCombination_zero {G : Type*}
     intro r _
     rw [fwdDiff_iter_smul_const (1 : ℕ)
       (fun m : ℕ => ((m.choose r : ℤ))) (c r) k]
+    show (Δ_[1]^[k] (fun m : ℕ => ((m.choose r : ℤ))) 0) • c r
+      = if k = r then c r else 0
     rw [fwdDiff_iter_choose_zero]
     by_cases hkr : k = r
     · simp [hkr]
@@ -118,7 +120,6 @@ theorem newtonCombination_injOn {G : Type*} [AddCommGroup G]
       = fun m : ℕ => ∑ r ∈ s, ((m.choose r : ℤ)) • c' r)
     {k : ℕ} (hk : k ∈ s) : c k = c' k := by
   have h := congrArg (fun f : ℕ → G => Δ_[1]^[k] f 0) hEq
-  simp only at h
   rw [fwdDiff_iter_newtonCombination_zero s c k,
     fwdDiff_iter_newtonCombination_zero s c' k] at h
   simpa [hk] using h
@@ -150,7 +151,6 @@ theorem newtonPoly_coeff_unique {c c' : ℕ → ℝ} {d : ℕ}
     (hEq : newtonPoly c d = newtonPoly c' d) {k : ℕ} (hk : k ≤ d) :
     c k = c' k := by
   have h := congrArg (fun f : ℕ → ℝ => Δ_[1]^[k] f 0) hEq
-  simp only at h
   rwa [fwdDiff_iter_newtonPoly_zero c d k hk,
     fwdDiff_iter_newtonPoly_zero c' d k hk] at h
 
