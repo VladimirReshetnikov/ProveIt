@@ -14,10 +14,8 @@ Exit status is 1 when anything is unresolved, so this can gate a commit.
 """
 import io, os, re, sys
 
-LEAN = (r'C:/ProveIt/.claude/worktrees/fabius-function-formalization-4a6355'
-        r'/Analysis/FabiusFunction/Lean/FabiusFunction')
-DOCS = (r'C:/ProveIt/.claude/worktrees/fabius-function-formalization-4a6355'
-        r'/Analysis/FabiusFunction/docs/semi-formalized-research-frontiers')
+DOCS = os.path.dirname(os.path.abspath(__file__))
+LEAN = os.path.normpath(os.path.join(DOCS, '..', '..', 'Lean', 'FabiusFunction'))
 
 DECL = re.compile(
     r'^\s*(?:@\[[^\]]*\]\s*)?'

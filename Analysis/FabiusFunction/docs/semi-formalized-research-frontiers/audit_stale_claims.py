@@ -23,10 +23,8 @@ correct.  Every hit needs reading.  Exit status is always 0.
 """
 import io, os, re
 
-DOCS = (r'C:/ProveIt/.claude/worktrees/fabius-function-formalization-4a6355'
-        r'/Analysis/FabiusFunction/docs/semi-formalized-research-frontiers')
-LEAN = (r'C:/ProveIt/.claude/worktrees/fabius-function-formalization-4a6355'
-        r'/Analysis/FabiusFunction/Lean/FabiusFunction')
+DOCS = os.path.dirname(os.path.abspath(__file__))
+LEAN = os.path.normpath(os.path.join(DOCS, '..', '..', 'Lean', 'FabiusFunction'))
 
 # Phrases in a Lean docstring that go stale silently.  "not proved
 # here" stays literally true forever -- "here" means this module -- so
