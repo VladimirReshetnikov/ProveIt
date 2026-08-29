@@ -515,7 +515,29 @@ kernel integral
 \(\int_{-1/2}^{1/2}(c-u)^{-\alpha}\dd u=\bigl((c-\tfrac12)^{1-\alpha}-(c+\tfrac12)^{1-\alpha}\bigr)/(\alpha-1)\)
 (\nolinkurl{Fabius.integral\_rpow\_inv\_sub\_uniform\_half}) and fractional-kernel
 integrability off the support; the integer hierarchy is the specialization
-\(\alpha=n+1\).  The complex-\(z\) forms and the boundary/Plemelj layer remain open.
+\(\alpha=n+1\).  The \emph{complex-\(z\) layer} is now delivered by
+\path{StieltjesCauchyTransform.lean} and \path{StieltjesHerglotz.lean}: for every complex
+\(z\) with \(\lVert z\rVert>1\) the expansion with exact remainder, the geometric tail
+bound, and the convergent Laurent series hold verbatim
+(\nolinkurl{Fabius.integral\_inv\_sub\_complex\_eq\_sum\_upMoment\_add},
+\nolinkurl{Fabius.norm\_integral\_inv\_sub\_complex\_sub\_sum\_le},
+\nolinkurl{Fabius.integral\_inv\_sub\_complex\_eq\_tsum\_upMoment}), the kernel identity
+having been generalized to an arbitrary field
+(\nolinkurl{Fabius.inv\_sub\_eq\_sum\_range\_add}); the named transform of the
+renormalization layer carries the same series
+(\nolinkurl{Fabius.rvachevCauchyTransform\_eq\_tsum\_upMoment}), and the real program is
+its restriction (\nolinkurl{Fabius.integral\_inv\_sub\_complex\_ofReal}).  Off the real
+axis the kernel is integrable with bound \(\lvert\Ima z\rvert^{-1}\)
+(\nolinkurl{Fabius.integrable\_inv\_sub\_complex\_of\_im\_ne\_zero}), the transform
+reflects under conjugation, \(R(\bar z)=\overline{R(z)}\)
+(\nolinkurl{Fabius.rvachevCauchyTransform\_conj}), and it maps the upper half-plane
+strictly into the lower with the quantitative Herglotz bound
+\(\Ima R(z)\le-\Ima z/(\lVert z\rVert+1)^2\)
+(\nolinkurl{Fabius.im\_rvachevCauchyTransform\_le},
+\nolinkurl{Fabius.im\_rvachevCauchyTransform\_neg},
+\nolinkurl{Fabius.im\_rvachevCauchyTransform\_pos}) --- minus a Herglotz--Nevanlinna
+function, the orientation data of the boundary theory.  The boundary/Plemelj limits
+on the cut themselves remain open.
 
 \path{CauchyRenormalization.lean} adds five public theorems.  The declarations
 \path{Fabius.mapsTo_rvachevCauchyDomain_two_mul_add_one} and
