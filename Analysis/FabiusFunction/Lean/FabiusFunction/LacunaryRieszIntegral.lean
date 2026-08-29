@@ -62,18 +62,19 @@ hypothesis only up to index `n - 1` can always be extended to a
 globally admissible sequence (double onward), so the global hypothesis
 loses no applicability.
 
-**Sharpness (not formalized).**  For `K ≠ 0` the offset `m 0` in the
-super-increasing hypothesis cannot be dropped: dissociation is a
-genuinely stronger demand than `|K| < m 0`.  The frequencies
-`3, 4, 8, 16, …` are super-increasing in the plain sense
-(`∑_{i<j} m i < m j` for every `j`), and the probe `K = 1` lies below
-the floor `m 0 = 3`, yet the difference `m 1 - m 0 = 1` resonates with
-the probe:
+**Sharpness.**  For `K ≠ 0` the offset `m 0` in the super-increasing
+hypothesis cannot simply be deleted: dissociation is a genuinely
+stronger demand than `|K| < m 0`.  The frequencies `3, 4, 8, 16, …`
+are super-increasing in the plain sense (`∑_{i<j} m i < m j` for every
+`j`), and the probe `K = 1` lies below the floor `m 0 = 3`, yet the
+difference `m 1 - m 0 = 1` resonates with the probe:
 `∫ t in 0..1, cos (2π t)·(1 + cos (6π t))·(1 + cos (8π t)) = 1/4 ≠ 0`.
-So the mean-value corollaries are the only place where plain
-super-increasingness is enough.  This counterexample is a hand
-computation recorded here in prose; no declaration of this file states
-it.
+So plain super-increasingness is enough for the `K = 0` corollaries
+below, but not in general once `K ≠ 0`.  This counterexample is
+formalized in `FabiusFunction.RieszSharpness`:
+`Fabius.integral_cos_mul_sharpProduct` gives the value `1/4`, and
+`Fabius.exists_superIncreasing_probe_integral_ne` packages it as the
+refutation of the weakened hypothesis.
 -/
 
 set_option autoImplicit false
@@ -302,9 +303,13 @@ It is strictly *stronger* than the plain super-increasingness
 is why the name records the headroom rather than reading
 `_of_superIncreasing`.
 
-The extra offset `m 0` is necessary for `K ≠ 0`; see the module
-docstring for the counterexample `m = (3, 4, 8, 16, …)`, `K = 1`,
-which is recorded there in prose and is not formalized. -/
+The offset `m 0` cannot simply be deleted: plain super-increasingness
+`∀ j, ∑_{i<j} m i < m j` together with `|K| < m 0` does not suffice
+once `K ≠ 0`.  See `Fabius.exists_superIncreasing_probe_integral_ne`
+in `FabiusFunction.RieszSharpness` for the formalized witness
+`m = (3, 4, 8, 16, …)`, `K = 1`.  That is a single witness: it does
+not show this hypothesis is the weakest `K`-free hypothesis yielding
+the conclusion. -/
 theorem integral_cos_mul_rieszProduct_of_add_sum_le (n : ℕ)
     (m : ℕ → ℕ) (a φ : ℕ → ℝ) (K : ℤ) (ψ : ℝ)
     (hsi : ∀ j, m 0 + ∑ i ∈ range j, m i ≤ m j) (hK : K.natAbs < m 0) :
