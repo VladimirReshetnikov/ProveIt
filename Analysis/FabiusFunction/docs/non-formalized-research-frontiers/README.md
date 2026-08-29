@@ -205,6 +205,28 @@ matching thematic group above, and added to `drafts/MANIFEST.md`), but it
 must be audited, absorbed, and removed promptly — updating the manifest and
 group README on removal.
 
+### Consistency audits
+
+Two scripts here check the volumes against the Lean corpus, and both exit
+nonzero on failure. Run them together with `sh audit_all.sh` before pushing
+any change that touches either side.
+
+- `audit_crosswalk_names.py` — every `Fabius.*` name cited in a `.tex` file
+  resolves to a declaration or a namespace that exists in the corpus. The
+  corpus is scanned with a namespace stack, so dotted citations such as
+  `Fabius.SaddleExpansion.expCoeff` are matched whole rather than truncated at
+  the first dot. A citation that no longer resolves usually means a Lean
+  declaration was renamed without its crosswalk being updated.
+- `audit_facade_reachability.py` — every module on disk is reachable from the
+  library root `FabiusFunction.lean`. A newly added leaf module that nothing
+  imports is never elaborated by `lake build FabiusFunction`, so a whole-library
+  build would report success while silently skipping it.
+
+Neither script has standing exceptions. If one starts reporting a failure that
+looks spurious, fix the script rather than carrying the exception: the three
+false positives it used to report were hiding about ninety citations that were
+only being checked at their first component.
+
 Build the canonical document with exactly three `pdflatex` passes, inspect the
 rendered PDF, and commit the PDF with its source. A coordinator may authorize a
 source-only feature-branch checkpoint for semantic review before the rebuild;
