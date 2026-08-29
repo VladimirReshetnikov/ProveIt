@@ -1763,6 +1763,16 @@ type is no smaller, and that the law really is carried by $[-R_a,R_a]$ --- is th
 statement of \cref{p1:thm:master-probability}, a probabilistic fact about the associated random
 variable rather than a property of the product, and it remains unformalized.
 
+At the constant weight this says something checkable.  There $R_1=\sum_h2^{-h}=2$, so $\Phi$
+has exponential type at most $2\pi$ (\lean{Fabius.norm\_rvachevFourierProduct\_le\_exp},
+\path{ClassicalGrowth.lean}), and Paley--Wiener reads type $2\pi$ as support radius $1$ --- which
+is where the up-function actually lives, as \path{ProbabilityRepresentation.lean} establishes by
+a route that does not use any of this.  The agreement is a check on the normalization rather
+than a new claim about it.  The same module records
+$\lVert\Phi(x)\rVert\le1$ on the real axis
+(\lean{Fabius.norm\_rvachevFourierProduct\_ofReal\_le\_one}), which the corpus had not had for
+$\Phi$ either.
+
 The sharpness of the factor estimate is the whole difficulty and is worth recording, since the
 obvious routes all fail: any constant $C>1$ in $\lVert\sinc w\rVert\le Ce^{\lVert w\rVert}$
 compounds to $C^{\sum_ha_h}$ across the factors and diverges whenever the weight has infinite
