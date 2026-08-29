@@ -1,4 +1,5 @@
 import Mathlib.Analysis.SpecialFunctions.Trigonometric.Basic
+import Mathlib.Analysis.Complex.Trigonometric
 
 /-!
 # Multiple-angle domination bounds for sine and cosine

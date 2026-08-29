@@ -18228,4 +18228,46 @@ V.~Reshetnikov,
 
 
 
+
+\section*{Postscript: the Faber--Schauder and tent layers, formal}
+\addcontentsline{toc}{section}{Postscript: the Faber--Schauder and tent layers, formal}
+
+Two elementary layers underpinning the hat-function pictures of this volume are now
+kernel-verified.
+
+\smallskip
+\textbf{Faber--Schauder midpoint defects.}  \path{FaberSchauderDefect.lean} defines, for a
+bounded Fabius solution $F$, the second difference across the level-$m$ dyadic cell,
+\[
+  c_{m,k}\;=\;F\!\left(\tfrac{2k+1}{2^{m+1}}\right)-\tfrac12\left(F\!\left(\tfrac{k}{2^m}\right)+F\!\left(\tfrac{k+1}{2^m}\right)\right)
+\]
+(\nolinkurl{Fabius.faberSchauderDefect}), and proves that it is \emph{antisymmetric}
+under the dyadic reflection,
+$c_{m,\,2^m-1-k}=-c_{m,k}$
+(\nolinkurl{Fabius.faberSchauderDefect\_reflect}).  The sign is forced: $x\mapsto1-x$
+carries the strictly convex first half of $F$ onto the strictly concave second half, so
+it reverses every second difference.  Accordingly the defect is strictly negative on the
+first half
+(\nolinkurl{Fabius.faberSchauderDefect\_neg\_succ}, \nolinkurl{Fabius.faberSchauderDefect\_neg})
+and strictly positive on the second
+(\nolinkurl{Fabius.faberSchauderDefect\_pos\_succ}), with the exact values
+$c_{0,0}=0$, $c_{1,0}=-13/72$, $c_{2,0}=c_{2,1}=-1/32$ recorded as theorems.
+
+\smallskip
+\textbf{Tent moments.}  \path{TentMoment.lean} supplies the exact polynomial moments of
+a dyadic tent.  The symmetric single-power integral obeys a clean parity dichotomy,
+\[
+  \int_{-h}^{h}\left(1-\frac{|u|}{h}\right)u^{n}\,du
+  =\begin{cases}
+     \dfrac{2h^{n+1}}{(n+1)(n+2)}, & n \text{ even},\\[2mm]
+     0, & n \text{ odd},
+   \end{cases}
+\]
+(\nolinkurl{Fabius.integral\_tentProfile\_mul\_pow}), and the shifted moment of degree $p$
+about a centre $c$ is the corresponding binomial sum
+(\nolinkurl{Fabius.integral\_tentProfile\_mul\_pow\_shift}, and
+\nolinkurl{Fabius.integral\_tent\_mul\_pow} for the truncated tent \nolinkurl{Fabius.tent}
+itself).  Neither the corpus nor Mathlib previously carried any tent or B-spline
+moment API.
+
 \end{document}

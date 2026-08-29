@@ -110,6 +110,8 @@ import FabiusFunction.GelfondLogisticBound
 import FabiusFunction.GeometricScaleProducts
 import FabiusFunction.WeierstrassProductBound
 import FabiusFunction.MultipleAngleBounds
+import FabiusFunction.TentMoment
+import FabiusFunction.FaberSchauderDefect
 import FabiusFunction.GeometricConvolutionTails
 import FabiusFunction.SmoothingOperatorInversion
 import FabiusFunction.SmoothingOperatorExponential

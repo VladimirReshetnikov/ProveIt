@@ -24,8 +24,10 @@ determinant is then recovered from `h₄ = a₃·h₃`.
 * `hankelDet_three` — `h₃ = 32/18225`;
 * `hankelRatio_two` — **`a₂ = h₃/h₂ = 32/2025`**;
 * `upOrthoPolynomial_three` — **`P₃ = x³ - (19/75)·x`**;
-* `hankelRatio_three` — **`a₃ = 19808/7441875`**, from the norm
-  identity rather than a `4 × 4` determinant;
+* `upMoment_five` — the vanishing odd moment `m₅ = 0`;
+* `hankelRatio_three` — **`a₃ = 19808/7441875`**, from the
+  norm-producing moment `∫ P₃(x)·x³ dμ_up` rather than a `4 × 4`
+  determinant;
 * `hankelDet_four` — `h₄ = 633856/135628171875`;
 * `upOrthoPolynomial_four` —
   **`P₄ = x⁴ - (62/147)·x² + 619/33075`**.
@@ -200,7 +202,8 @@ theorem hankelRatio_three (F : BoundedFabius) (hF : IsFabius F) :
       (integrable_pow_rvachevMeasure F hF 6)
       ((integrable_pow_rvachevMeasure F hF 4).const_mul
         (19 / 75 : ℝ)),
-    MeasureTheory.integral_const_mul] at h
+    MeasureTheory.integral_const_mul (19 / 75 : ℝ)
+      (fun x : ℝ => x ^ 4)] at h
   have hmom : upMoment F 6 - (19 / 75 : ℝ) * upMoment F 4 =
       hankelRatio F 3 := h
   rw [← hmom, upMoment_six F hF, upMoment_four F hF]
