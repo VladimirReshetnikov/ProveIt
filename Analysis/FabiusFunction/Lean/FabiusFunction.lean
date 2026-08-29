@@ -126,6 +126,7 @@ import FabiusFunction.LacunaryRieszIntegral
 import FabiusFunction.RieszSharpness
 import FabiusFunction.GelfondLogisticBound
 import FabiusFunction.GeometricScaleProducts
+import FabiusFunction.GeneralizedRvachevProduct
 import FabiusFunction.WeierstrassProductBound
 import FabiusFunction.SincLowerBound
 import FabiusFunction.SincProductPositive
