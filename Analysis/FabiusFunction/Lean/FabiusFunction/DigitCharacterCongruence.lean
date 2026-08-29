@@ -18,9 +18,12 @@ that reduces this to a *digit* character: modulo two, `⌊N/2^h⌋` is the
 and hence `(-1)^{M_a(N)} = ε_a(N)`, the weighted parity character.
 
 This module proves the arithmetic half.  The analytic half is *not*
-proved here and cannot be with the present corpus: it needs the
-canonical product `Φ_a` at a general admissible weight, which the
-corpus carries only at `a ≡ 1`.
+proved here.  The product `Φ_a` at a general admissible weight does
+exist in the corpus, as `FabiusFunction.GeneralizedRvachevProduct`;
+what is missing is the sign analysis on a lobe — that for
+`x ∈ (N, N+1)` every factor of index at most `N` is negative and the
+rest positive, which is what makes `M_a(N)` the count of negative
+factors in the first place.
 
 The bridge is `Nat.testBit_eq_decide_div_mod_eq`, which is exactly the
 statement that the `h`-th bit of `N` is `⌊N/2^h⌋ mod 2`.  Everything
@@ -97,8 +100,10 @@ character: `(-1)^{M_a(N)} = ε_a(N)`.
 
 This is the arithmetic half of the volume's lobe-sign law.  The
 analytic half — that this sign *is* `sgn Φ_a` on the lobe `(N, N+1)` —
-needs the canonical product at a general weight and is not proved
-here. -/
+is not proved here.  `Φ_a` itself now exists, in
+`FabiusFunction.GeneralizedRvachevProduct`; what is missing is the
+sign analysis on a lobe, which needs the factor-by-factor argument
+that every factor with index at most `N` is negative there. -/
 theorem neg_one_pow_sum_div_two_pow (a : ℕ → ℕ) {N m : ℕ}
     (hm : N < 2 ^ m) :
     (-1 : ℤ) ^ (∑ h ∈ range m, N / 2 ^ h * a h) =

@@ -753,8 +753,10 @@ is formal in \path{DigitCharacterCongruence.lean}:
 the $h$-th bit of $N$ \emph{is} $\lfloor N/2^h\rfloor\bmod2$, and at the constant weight the
 statement becomes Legendre's count read modulo two
 (\lean{Fabius.neg\_one\_pow\_sum\_div\_two\_pow\_const\_one}).  What remains unformalized is
-the \emph{analytic} half, that this sign is $\sgn\Phi_a$ on the lobe $(N,N+1)$, which
-needs the canonical product at a general weight.
+the \emph{analytic} half, that this sign is $\sgn\Phi_a$ on the lobe $(N,N+1)$.  The
+product $\Phi_a$ is itself now available (\path{GeneralizedRvachevProduct.lean}); what is
+still needed is the sign analysis on a lobe --- that every factor of index at most $N$
+is negative there and the rest positive, which is the content of \eqref{p1:eq:lobe-sign-count}.
 \end{theorem}
 
 \begin{proof}
@@ -1570,8 +1572,10 @@ adapted to the dyadic problem: at $q=1/2$ \emph{every} Newton-basis generating f
 $q^r/(1-q)^{r+1}$ takes the value $2$, independently of $r$
 (\lean{Fabius.pow\_div\_one\_sub\_pow\_at\_half}), so the series collapses to the plain
 coefficient sum (\lean{Fabius.tsum\_newtonPoly}, \lean{Fabius.half\_mul\_tsum\_newtonPoly\_half}).  Reading that
-number as the \emph{support radius} of $\Phi_P$ is not formalized: it needs the canonical
-product at a general weight, which the corpus does not carry.
+number as the \emph{support radius} of $\Phi_P$ is not formalized.  The product $\Phi_P$ is
+available (\path{GeneralizedRvachevProduct.lean}); what is missing is the \emph{support}
+statement of \cref{p1:thm:master-probability}, an analytic and probabilistic fact about
+the associated random variable rather than a property of the product itself.
 
 The spectral zeta \eqref{p1:eq:ZP} \emph{is} formalized, in \path{NewtonSpectralZeta.lean},
 and it is exactly the composite of two identities already in hand: the general-weight zeta
