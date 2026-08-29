@@ -149,8 +149,11 @@ theorem analyticOrderAt_alternatingNewton_neg (d : ℕ) {n : ℕ}
     weightedScaleMultiplicity_alternatingNewton]
 
 /-- At an odd `n` the order is `1`: `v₂(n) = 0` and `C(0, d+1) = 0`.
-This is the volume's remark that every `Ψ_d` has a simple zero at
-every odd integer, uniformly in `d`. -/
+
+So every `Ψ_d` has a simple zero at every odd integer, uniformly in
+`d`.  The volume does not state this in that generality; what it
+states is the `d = 2` instance of it, inside the example recorded as
+guards below. -/
 theorem analyticOrderAt_alternatingNewton_odd (d : ℕ) {n : ℕ}
     (hn : 1 ≤ n) (hodd : ¬ 2 ∣ n) :
     analyticOrderAt
@@ -161,6 +164,70 @@ theorem analyticOrderAt_alternatingNewton_odd (d : ℕ) {n : ℕ}
     exact hodd (dvd_of_one_le_padicValNat (Nat.one_le_iff_ne_zero.mpr hne))
   rw [analyticOrderAt_alternatingNewton d hn, hv,
     Nat.choose_zero_succ]
+  rfl
+
+/-! ## Guards against the volume's `d = 2` example
+
+The volume works `d = 2` out by hand: it records the weight
+`P_2 = (1, 0, 0, 1, 3, 6, 10, 15, …)`, states that every integer with
+`v₂(n) ≤ 2` stays a simple zero, and prints the first three larger
+multiplicities as `2` at `n = 8`, `5` at `n = 16`, `11` at `n = 32`.
+Those numbers were obtained independently of anything here, so
+checking the general formula against them is a real test of it and
+not a restatement: they are `1 + C(v₂ n, 3)` at `v₂ = 3, 4, 5`. -/
+
+/-- The volume's `P_2 = (1, 0, 0, 1, 3, 6, 10, 15, …)`. -/
+theorem alternatingNewtonWeight_two_values :
+    alternatingNewtonWeight 2 0 = 1 ∧ alternatingNewtonWeight 2 1 = 0 ∧
+      alternatingNewtonWeight 2 2 = 0 ∧ alternatingNewtonWeight 2 3 = 1 ∧
+      alternatingNewtonWeight 2 4 = 3 ∧ alternatingNewtonWeight 2 5 = 6 ∧
+      alternatingNewtonWeight 2 6 = 10 ∧
+      alternatingNewtonWeight 2 7 = 15 := by
+  refine ⟨rfl, ?_, ?_, ?_, ?_, ?_, ?_, ?_⟩ <;>
+    simp [alternatingNewtonWeight] <;> decide
+
+/-- `v₂(2 ^ k) = k`, in the shape the three guards below need. -/
+theorem padicValNat_two_pow (k : ℕ) : padicValNat 2 (2 ^ k) = k :=
+  padicValNat_base_pow (by decide : 1 < 2) k
+
+/-- **`ord_{z=8} Ψ_2 = 2`**, the volume's first extra multiplicity. -/
+theorem weightedScaleMultiplicity_alternatingNewton_two_eight :
+    weightedScaleMultiplicity 2 (alternatingNewtonWeight 2) 8 = 2 := by
+  rw [show (8 : ℕ) = 2 ^ 3 by norm_num,
+    weightedScaleMultiplicity_alternatingNewton, padicValNat_two_pow]
+  decide
+
+/-- **`ord_{z=16} Ψ_2 = 5`**. -/
+theorem weightedScaleMultiplicity_alternatingNewton_two_sixteen :
+    weightedScaleMultiplicity 2 (alternatingNewtonWeight 2) 16 = 5 := by
+  rw [show (16 : ℕ) = 2 ^ 4 by norm_num,
+    weightedScaleMultiplicity_alternatingNewton, padicValNat_two_pow]
+  decide
+
+/-- **`ord_{z=32} Ψ_2 = 11`**. -/
+theorem weightedScaleMultiplicity_alternatingNewton_two_thirtyTwo :
+    weightedScaleMultiplicity 2 (alternatingNewtonWeight 2) 32 = 11 := by
+  rw [show (32 : ℕ) = 2 ^ 5 by norm_num,
+    weightedScaleMultiplicity_alternatingNewton, padicValNat_two_pow]
+  decide
+
+/-- The volume's "every integer with `v₂(n) ≤ 2` remains a simple
+zero", at `d = 2`: the multiplicity is `1` exactly while `C(v₂ n, 3)`
+vanishes, which is `v₂ n ≤ 2`. -/
+theorem weightedScaleMultiplicity_alternatingNewton_two_of_le
+    {n : ℕ} (hn : padicValNat 2 n ≤ 2) :
+    weightedScaleMultiplicity 2 (alternatingNewtonWeight 2) n = 1 := by
+  rw [weightedScaleMultiplicity_alternatingNewton,
+    Nat.choose_eq_zero_of_lt (by omega)]
+
+/-- The order form of the previous guard, at `n = 8`. -/
+theorem analyticOrderAt_alternatingNewton_two_eight :
+    analyticOrderAt
+        (generalizedRvachevProduct (alternatingNewtonWeight 2))
+        ((8 : ℕ) : ℂ) = 2 := by
+  rw [analyticOrderAt_alternatingNewton 2 (by norm_num : 1 ≤ 8),
+    show padicValNat 2 8 = 3 by
+      rw [show (8 : ℕ) = 2 ^ 3 by norm_num, padicValNat_two_pow]]
   rfl
 
 end Fabius
