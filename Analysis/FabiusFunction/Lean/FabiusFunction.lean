@@ -120,6 +120,8 @@ import FabiusFunction.PlateauLocalization
 import FabiusFunction.PlateauDegree
 import FabiusFunction.PlateauConstant
 import FabiusFunction.UniformSplineStrictMono
+import FabiusFunction.QuarterCellEvaluation
+import FabiusFunction.PlateauLimit
 import FabiusFunction.QuarterQuantile
 import FabiusFunction.StieltjesInversion
 import FabiusFunction.MultipleAngleBounds
