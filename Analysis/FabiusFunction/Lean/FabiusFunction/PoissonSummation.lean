@@ -39,7 +39,7 @@ noncomputable section
 
 /-- The Schwartz function obtained by positively rescaling Rvachev's compactly
 supported smooth function. -/
-private noncomputable def scaledRvachevSchwartz
+noncomputable def scaledRvachevSchwartz
     (F : BoundedFabius) (hF : IsFabius F) (u : ℝ) (hu : u ≠ 0) : SchwartzMap ℝ ℂ := by
   let f : ℝ → ℝ := fun x ↦ rvachevUp F (u * x)
   have hf_compact : HasCompactSupport f := by
@@ -51,12 +51,16 @@ private noncomputable def scaledRvachevSchwartz
   exact (hf_compact.comp_left (map_zero Complex.ofRealCLM)).toSchwartzMap
     (Complex.ofRealCLM.contDiff.comp hf_smooth)
 
-private lemma scaledRvachevSchwartz_apply
+/-- Evaluation of the scaled Rvachev Schwartz map is the complex embedding of
+the rescaled compactly supported function `up(u x)`. -/
+lemma scaledRvachevSchwartz_apply
     (F : BoundedFabius) (hF : IsFabius F) (u : ℝ) (hu : u ≠ 0) (x : ℝ) :
     scaledRvachevSchwartz F hF u hu x = (rvachevUp F (u * x) : ℂ) :=
   rfl
 
-private lemma fourier_scaledRvachevSchwartz
+/-- For positive scale `u`, Fourier transformation rescales the real-axis
+Rvachev transform by the reciprocal factor `u⁻¹`. -/
+lemma fourier_scaledRvachevSchwartz
     (F : BoundedFabius) (hF : IsFabius F) {u : ℝ} (hu : 0 < u) (w : ℝ) :
     𝓕 (scaledRvachevSchwartz F hF u hu.ne') w =
       (u⁻¹ : ℝ) • rvachevFourier F (((w / u : ℝ) : ℂ)) := by

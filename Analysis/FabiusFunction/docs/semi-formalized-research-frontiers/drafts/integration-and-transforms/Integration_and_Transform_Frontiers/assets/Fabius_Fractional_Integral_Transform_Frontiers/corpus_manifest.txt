@@ -1,0 +1,150 @@
+Recursive TeX audit ledger
+Repository: VladimirReshetnikov/ProveIt
+Root: Analysis/FabiusFunction/docs
+Audit date: 2026-08-27
+
+Scope and counting convention
+-----------------------------
+The audit has two layers.
+
+(1) A path-complete pinned baseline at commit
+    32d6d36c51d803289e6d6a0dc0c37753766eba47
+    contains exactly 67 distinct *.tex paths.  Its authoritative inventory is
+    Appendix A of Exponent_Sequence_Newton_Rvachev_Frontiers.tex.
+
+(2) The live main-branch tree was then traversed for later additions.  Five
+    later draft packages add 11 visible *.tex paths: seven files in the dyadic
+    self-sampling package and one file each in the inverse, Newton/exponent,
+    dyadic-inverse/Barnes, and q-Richardson/sinc packages.  Thus the current
+    tree inspected for this report contains 78 visible *.tex paths:
+
+        5 core synthesis/reference sources
+       32 frozen historical sources
+       34 active frontier-report or auxiliary TeX sources
+        7 paper transcriptions
+       --
+       78 total
+
+Generated table fragments were read together with their parent reports and
+underlying data.  They were counted as TeX paths but not as independent
+mathematical claims.  Frozen revisions were read for distinctive claims and
+provenance, but repeated theorems were counted once when setting the novelty
+boundary.
+
+A. Authoritative 67-path pinned baseline
+----------------------------------------
+ 1. FabiusFunction_Mathematical_Glossary/FabiusFunction_Mathematical_Glossary.tex
+ 2. Fabius_Function_and_Rvachev_Up/Fabius_Function_and_Rvachev_Up.tex
+ 3. Non_Elementarity_of_the_Fabius_Function/Non_Elementarity_of_the_Fabius_Function.tex
+ 4. fabius_lean_walkthrough/fabius_lean_walkthrough.tex
+ 5. semi-formalized-research-frontiers/semi-formalized-research-frontiers.tex
+ 6. archive/early-notes/Fabius Asymptotic/Fabius Asymptotic.tex
+ 7. archive/early-notes/K-fold summation over the signed Thue-Morse sequence/K-fold summation over the signed Thue-Morse sequence.tex
+ 8. archive/glossary/FabiusFunction_Mathematical_Glossary-2/FabiusFunction_Mathematical_Glossary.tex
+ 9. archive/glossary/FabiusFunction_Mathematical_Glossary/FabiusFunction_Mathematical_Glossary.tex
+10. archive/lean-walkthrough/Fabius_Function_Lean_Walkthrough/Fabius_Function_Lean_Walkthrough.tex
+11. archive/lean-walkthrough/fabius_lean_walkthrough/fabius_lean_walkthrough.tex
+12. archive/primary-exposition/Fabius_Function_and_Rvachev_Up-2/Fabius_Function_and_Rvachev_Up.tex
+13. archive/primary-exposition/Fabius_Function_and_Rvachev_Up-3/Fabius_Function_and_Rvachev_Up.tex
+14. archive/primary-exposition/Fabius_Function_and_Rvachev_Up/Fabius_Function_and_Rvachev_Up.tex
+15. archive/primary-exposition/Fabius_and_Rvachev_Up-2/Fabius_and_Rvachev_Up.tex
+16. archive/primary-exposition/Fabius_and_Rvachev_up/Fabius_and_Rvachev_up.tex
+17. archive/primary-exposition/Fabius_function_and_up_function/Fabius_function_and_up_function.tex
+18. archive/primary-supplements/Fabius_Function_Missing_Parts-2/Fabius_Function_Missing_Parts.tex
+19. archive/primary-supplements/Fabius_Function_Missing_Parts/Fabius_Function_Missing_Parts.tex
+20. archive/q-calculus/Fabius_q_Special_Functions/Fabius_q_Special_Functions.tex
+21. archive/q-calculus/fabius-q-special-functions/fabius-q-special-functions.tex
+22. archive/research-frontiers/Fabius_Dyadic_Asymptotic_Bridge/Fabius_Dyadic_Asymptotic_Bridge.tex
+23. archive/research-frontiers/Fabius_Dyadic_Formulae_and_Alternative_Representations/Fabius_Dyadic_Formulae_and_Alternative_Representations.tex
+24. archive/research-frontiers/Fabius_Dyadic_Formulae_to_Asymptotics/Fabius_Dyadic_Formulae_to_Asymptotics.tex
+25. archive/research-frontiers/Fabius_Dyadic_q_Connections/Fabius_Dyadic_q_Connections.tex
+26. archive/research-frontiers/Fabius_Thue_Morse_Convergence_Rate/Fabius_Thue_Morse_Convergence_Rate.tex
+27. archive/research-frontiers/Fabius_Thue_Morse_Convergence_Rates/Fabius_Thue_Morse_Convergence_Rates.tex
+28. archive/research-frontiers/Primary_Exposition_Gap_Register/Primary_Exposition_Gap_Register.tex
+29. archive/research-frontiers/Repeated_Integration_and_Rvachev_Up/Repeated_Integration_and_Rvachev_Up.tex
+30. archive/research-frontiers/Rvachev_Up_from_Repeated_Integration/Rvachev_Up_from_Repeated_Integration.tex
+31. archive/research-frontiers/Thue_Morse_Formula_Atlas-1/Thue_Morse_Formula_Atlas.tex
+32. archive/research-frontiers/Thue_Morse_Formula_Atlas-2/Consolidated_Formula_Atlas_for_the_Thue_Morse_Sequence.tex
+33. archive/research-frontiers/Thue_Morse_Formula_Atlas-3/Thue_Morse_Formula_Atlas.tex
+34. archive/research-frontiers/non-formalized-research-frontiers/semi-formalized-research-frontiers.tex
+35. archive/standalone-studies/Non_Elementarity_of_the_Fabius_Function/Non_Elementarity_of_the_Fabius_Function.tex
+36. archive/standalone-studies/Small_Argument_Asymptotics/Small_Argument_Asymptotics.tex
+37. archive/standalone-studies/fabius-inverse-dyadic-closed-form/fabius-inverse-dyadic-closed-form.tex
+38. semi-formalized-research-frontiers/drafts/Fabius_Arithmetic_Rays_Frontier_Report/Fabius_Arithmetic_Rays_Frontier_Report.tex
+39. semi-formalized-research-frontiers/drafts/Fabius_Half_Integer_Spectral_Frontier_Report/Fabius_Half_Integer_Spectral_Frontier_Report.tex
+40. semi-formalized-research-frontiers/drafts/Fabius_Rvachev_Frontier_Report-2/Fabius_Rvachev_Frontier_Report.tex
+41. semi-formalized-research-frontiers/drafts/Fabius_Rvachev_Frontier_Report/Fabius_Rvachev_Frontier_Report.tex
+42. semi-formalized-research-frontiers/drafts/Fabius_Rvachev_New_Frontiers/Fabius_Rvachev_New_Frontiers.tex
+43. semi-formalized-research-frontiers/drafts/Fabius_Rvachev_Thue_Morse_Frontier_Results/Fabius_Rvachev_Thue_Morse_Frontier_Results.tex
+44. semi-formalized-research-frontiers/drafts/Spectral_Arithmetic_Pascal_Rvachev_Hierarchy/Spectral_Arithmetic_Pascal_Rvachev_Hierarchy.tex
+45. semi-formalized-research-frontiers/drafts/Thue_Morse_Formula_Atlas/Thue_Morse_Formula_Atlas.tex
+46. semi-formalized-research-frontiers/drafts/fabius_frontier_new_results/fabius_frontier_new_results.tex
+47. semi-formalized-research-frontiers/drafts/fabius_frontier_results_bundle/fabius_frontier_results.tex
+48. semi-formalized-research-frontiers/drafts/fabius_frontier_spectral_endpoint_report_bundle/fabius_frontier_spectral_endpoint_report.tex
+49. semi-formalized-research-frontiers/drafts/rvachev_up_fourier_decay/Rvachev_Up_Fourier_Decay-2/Rvachev_Up_Fourier_Decay.tex
+50. semi-formalized-research-frontiers/drafts/rvachev_up_fourier_decay/Rvachev_Up_Fourier_Decay-3/Fourier_decay_of_Rvachev_up.tex
+51. semi-formalized-research-frontiers/drafts/rvachev_up_fourier_decay/Rvachev_Up_Fourier_Decay_Comparative_Audit/Rvachev_Up_Fourier_Decay_Comparative_Audit.tex
+52. semi-formalized-research-frontiers/drafts/rvachev_up_fourier_decay/Rvachev_Up_Fourier_Decay_Gentle_Guide/Rvachev_Up_Fourier_Decay_Gentle_Guide.tex
+53. semi-formalized-research-frontiers/drafts/rvachev_up_fourier_decay/Rvachev_Up_Fourier_Decay_Second_Wave_Audit/Rvachev_Up_Fourier_Decay_Second_Wave_Audit.tex
+54. semi-formalized-research-frontiers/drafts/rvachev_up_fourier_decay/asymptotic-decay-rate-of-an-infinite-product-of-sinc-functions/asymptotic-decay-rate-of-an-infinite-product-of-sinc-functions.tex
+55. semi-formalized-research-frontiers/drafts/rvachev_up_fourier_decay/rvachev_up_fourier_decay-1/rvachev_up_fourier_decay.tex
+56. semi-formalized-research-frontiers/drafts/rvachev_up_fourier_decay/rvachev_up_fourier_decay-4/rvachev_up_fourier_decay.tex
+57. semi-formalized-research-frontiers/drafts/rvachev_up_fourier_decay/rvachev_up_fourier_decay-5/Rvachev_Up_Fourier_Decay_Final.tex
+58. semi-formalized-research-frontiers/drafts/rvachev_up_fourier_decay/rvachev_up_fourier_decay-6/Rvachev_Up_Fourier_Decay_Final_Synthesis.tex
+59. semi-formalized-research-frontiers/drafts/rvachev_up_fourier_decay/rvachev_up_fourier_decay-7/rvachev_up_fourier_decay_final.tex
+60. semi-formalized-research-frontiers/drafts/rvachev_up_fourier_decay/rvachev_up_fourier_decay-8/rvachev_up_fourier_decay_final.tex
+61. papers/AIF_2017__67_2_637_0/AIF_2017__67_2_637_0-corrected.tex
+62. papers/AIF_2017__67_2_637_0/AIF_2017__67_2_637_0.tex
+63. papers/arXiv-1502.06738v2/Lacunary_products.tex
+64. papers/arXiv-1702.05442v1/09-Function.tex
+65. papers/arXiv-1702.06487v3/157-Arithmetic-v3.tex
+66. papers/arXiv-2211.13570v1/document.tex
+67. papers/ubiq15/ubiq15-corrected.tex
+
+B. Live-main supplement after the pinned baseline (11)
+------------------------------------------------------
+68. semi-formalized-research-frontiers/drafts/Fabius_Dyadic_Self_Sampling_Frontier_Package/Fabius_Dyadic_Self_Sampling_Frontier_Report.tex
+69. semi-formalized-research-frontiers/drafts/Fabius_Dyadic_Self_Sampling_Frontier_Package/appell_polynomials.tex
+70. semi-formalized-research-frontiers/drafts/Fabius_Dyadic_Self_Sampling_Frontier_Package/harmonic_tail_table.tex
+71. semi-formalized-research-frontiers/drafts/Fabius_Dyadic_Self_Sampling_Frontier_Package/quadrature_table.tex
+72. semi-formalized-research-frontiers/drafts/Fabius_Dyadic_Self_Sampling_Frontier_Package/quadrature_table_display.tex
+73. semi-formalized-research-frontiers/drafts/Fabius_Dyadic_Self_Sampling_Frontier_Package/spectral_check.tex
+74. semi-formalized-research-frontiers/drafts/Fabius_Dyadic_Self_Sampling_Frontier_Package/spectral_check_display.tex
+75. semi-formalized-research-frontiers/drafts/Fabius_Inverse_Frontier_Report_Source_and_PDF/Fabius_Inverse_Frontier_Report.tex
+76. semi-formalized-research-frontiers/drafts/Fabius_Newton_Rvachev_Frontier_Report/Exponent_Sequence_Newton_Rvachev_Frontiers.tex
+77. semi-formalized-research-frontiers/drafts/fabius_frontier_dyadic_inverse_barnes_report/fabius_frontier_dyadic_inverse_barnes.tex
+78. semi-formalized-research-frontiers/drafts/fabius_frontier_results/q_richardson_sinc_frontier.tex
+
+Integration-specific comparison protocol
+----------------------------------------
+The primary exposition, canonical frontier synthesis, all active report sources,
+auxiliary TeX fragments, paper transcriptions, and frozen integration/inverse
+notebooks were compared at theorem and section level.  Targeted literal and
+close-variant searches included:
+
+  antiderivative; indefinite integral; repeated primitive; weighted primitive;
+  inverse-pair area identity; quantile integral; order statistic; beta transform;
+  Mellin transform; Stieltjes transform; Cauchy transform; resolvent hierarchy;
+  negative moment; complex moment; Newton series; central moment series;
+  Riemann--Liouville; Caputo; fractional integral; fractional derivative;
+  fractional Laplacian; Riesz potential; Sobolev energy; Gagliardo seminorm;
+  digamma; trigamma; critical Lp; Floquet multiplier; dilation cocycle;
+  Gini mean difference; autocorrelation; sinc-square integral.
+
+Prior-art boundary
+------------------
+The audit treats as prior input: the probability/refinement definitions; exact
+dyadic arithmetic; q-binomial and Thue--Morse identities; rational moment and
+Bernoulli/Bell systems; the infinite sinc product and its spectral/Fourier-decay
+analysis; repeated integration and Rvachev--Appell systems; Lambert-W endpoint
+and inverse asymptotics; Newton/exponent-sequence and q-Richardson machinery;
+self-sampling quadrature; and the elementary weighted/inverse integration
+identities already absorbed into the canonical frontier volume.
+
+The strongest corpus-relative frontier claims of the accompanying report are
+therefore restricted to the explicitly proved fractional endpoint corrections,
+sharp critical Lp law, nonlocal exterior series and fractional energy identity,
+Cauchy/logarithmic transform fixed point and resolvent hierarchy, and the
+Floquet multiplier/cocycle that repairs fractional dyadic scaling.  This is a
+repository-relative nonduplication statement, not a claim of worldwide
+historical priority.

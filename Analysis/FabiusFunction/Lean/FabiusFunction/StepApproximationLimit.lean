@@ -140,12 +140,10 @@ theorem halfEndpointIntervalIndicator_add_adjacent {a b c : ℝ}
   unfold halfEndpointIntervalIndicator
   split_ifs <;> grind
 
-@[simp] theorem stepIntervalRight_eq_left_succ (n m : ℕ) :
-    stepIntervalRight n m = stepIntervalLeft n (m + 1) := by
-  unfold stepIntervalRight stepIntervalLeft
-  congr 1
-  push_cast
-  ring
+/- The abutting-cells identity `stepIntervalRight_eq_left_succ` now lives in
+`EarlyApproximants.lean` beside the cell definitions; this file keeps its
+original local `simp` scope for the telescoping arguments below. -/
+attribute [simp] stepIntervalRight_eq_left_succ
 
 /-- At a fixed level `n` the left endpoints `stepIntervalLeft n m` are
 strictly increasing in the cell index `m`, so the histogram cells of

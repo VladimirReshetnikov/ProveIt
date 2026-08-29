@@ -431,4 +431,29 @@ theorem evalRvachevDyadic_complete_correct
   exact ⟨value, hvalue,
     evalRvachevDyadic_eq_some_correct F hF x value hvalue⟩
 
+/-- **The Taylor identity with exact remainder for the signed global
+function** (the register's *Independent analytic derivations*, signed
+case): on the same window `0 ≤ y ≤ 2^{-m}`, `1 ≤ m`, the signed
+extension satisfies the identical law
+`ℱ(2^{-m} + y) = analyticTaylorSum F m y - ℱ(y)`, because both
+arguments lie in the unit interval where `ℱ` agrees with the bounded
+function. -/
+theorem extendedFabius_scale_recurrence (F : BoundedFabius)
+    (hF : IsFabius F) (m : ℕ) (hm : 1 ≤ m) (y : ℝ)
+    (hy0 : 0 ≤ y) (hy : y ≤ inverseTwoPowReal m) :
+    extendedFabius F (inverseTwoPowReal m + y) + extendedFabius F y =
+      analyticTaylorSum F m y := by
+  have hinv0 : 0 < inverseTwoPowReal m := by
+    rw [inverseTwoPowReal]
+    positivity
+  have hhalf : inverseTwoPowReal m ≤ 2⁻¹ := by
+    rw [inverseTwoPowReal,
+      show (2⁻¹ : ℝ) = ((2 : ℝ) ^ 1)⁻¹ by norm_num]
+    gcongr
+    all_goals norm_num
+  rw [extendedFabius_eq_fabiusReal F hF
+      ⟨by positivity, by linarith⟩,
+    extendedFabius_eq_fabiusReal F hF ⟨hy0, by linarith⟩]
+  exact analytic_scale_recurrence F hF m hm y hy0 hy
+
 end Fabius

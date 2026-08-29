@@ -11,7 +11,9 @@ Gamma-normalized beta integral on a nondegenerate interval.
 
 The semigroup theorem is stated in the classical causal regime: both orders
 are positive, the base point precedes the endpoint, and the input is
-continuous on the intervening compact interval.
+continuous on the intervening compact interval.  The same beta identity also
+gives closed forms for Gamma-normalized shifted powers, arbitrary shifted
+powers in the sharp `ρ > -1` range, and constant Banach-valued inputs.
 -/
 
 open scoped Interval Real
@@ -98,6 +100,76 @@ theorem intervalIntegral_fractionalVolterra_normalizedBetaKernel
     _ = (x - s) ^ (α + β - 1) / Real.Gamma (α + β) := by
       rw [intervalIntegral_fractionalVolterra_betaKernel hα hβ hsx]
       field_simp
+
+/-- A fractional Volterra operator sends a Gamma-normalized shifted power
+kernel of positive order `β` to the corresponding normalized kernel of order
+`α + β`.  The target may be any real Banach space. -/
+theorem fractionalVolterra_normalized_rpow_smul
+    {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E] [CompleteSpace E]
+    {α β a x : ℝ} (hα : 0 < α) (hβ : 0 < β) (hax : a < x) (v : E) :
+    fractionalVolterra α a
+        (fun t => ((t - a) ^ (β - 1) / Real.Gamma β) • v) x =
+      ((x - a) ^ (α + β - 1) / Real.Gamma (α + β)) • v := by
+  rw [fractionalVolterra]
+  simp_rw [smul_smul]
+  rw [intervalIntegral.integral_smul_const,
+    intervalIntegral_fractionalVolterra_normalizedBetaKernel hα hβ hax]
+
+/-- Fractional Volterra integration of a Banach-valued shifted real power.
+For `ρ > -1`, the sharp beta-integrability range, the order increases from
+`ρ` to `α + ρ` and the coefficient is the usual Gamma quotient.  A strict
+endpoint inequality avoids the genuine `0 ^ 0` mismatch possible when
+`α + ρ = 0`. -/
+theorem fractionalVolterra_rpow_smul
+    {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E] [CompleteSpace E]
+    {α ρ a x : ℝ} (hα : 0 < α) (hρ : -1 < ρ) (hax : a < x) (v : E) :
+    fractionalVolterra α a (fun t => (t - a) ^ ρ • v) x =
+      (Real.Gamma (ρ + 1) * (x - a) ^ (α + ρ) /
+        Real.Gamma (α + ρ + 1)) • v := by
+  have hβ : 0 < ρ + 1 := by linarith
+  have hΓβ : Real.Gamma (ρ + 1) ≠ 0 :=
+    (Real.Gamma_pos_of_pos hβ).ne'
+  have hexp : α + (ρ + 1) - 1 = α + ρ := by ring
+  have hsum : α + (ρ + 1) = α + ρ + 1 := by ring
+  calc
+    fractionalVolterra α a (fun t => (t - a) ^ ρ • v) x =
+        fractionalVolterra α a
+          (fun t => ((t - a) ^ ((ρ + 1) - 1) / Real.Gamma (ρ + 1)) •
+            (Real.Gamma (ρ + 1) • v)) x := by
+      apply fractionalVolterra_congr
+      intro t _ht
+      rw [add_sub_cancel_right]
+      change (t - a) ^ ρ • v =
+        ((t - a) ^ ρ / Real.Gamma (ρ + 1)) •
+          (Real.Gamma (ρ + 1) • v)
+      rw [smul_smul]
+      congr 1
+      field_simp
+    _ = ((x - a) ^ (α + (ρ + 1) - 1) /
+          Real.Gamma (α + (ρ + 1))) •
+          (Real.Gamma (ρ + 1) • v) :=
+      fractionalVolterra_normalized_rpow_smul hα hβ hax _
+    _ = (Real.Gamma (ρ + 1) * (x - a) ^ (α + ρ) /
+          Real.Gamma (α + ρ + 1)) • v := by
+      rw [hexp, hsum, smul_smul]
+      congr 1
+      ring
+
+/-- A positive-order fractional Volterra operator applied to a constant
+Banach-valued input.  Unlike the general shifted-power formula, this statement
+includes the degenerate endpoint because its output exponent `α` is positive. -/
+theorem fractionalVolterra_const
+    {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E] [CompleteSpace E]
+    {α a x : ℝ} (hα : 0 < α) (hax : a ≤ x) (v : E) :
+    fractionalVolterra α a (fun _ => v) x =
+      ((x - a) ^ α / Real.Gamma (α + 1)) • v := by
+  rcases hax.eq_or_lt with rfl | hax
+  · simp only [fractionalVolterra_self, sub_self,
+      Real.zero_rpow hα.ne', zero_div, zero_smul]
+  · simpa only [Real.rpow_zero, one_smul, zero_add, add_zero,
+      Real.Gamma_one, one_mul] using
+      (fractionalVolterra_rpow_smul
+        (α := α) (ρ := 0) (a := a) (x := x) hα (by norm_num) hax v)
 
 /-- Positive real-order fractional Volterra operators form a semigroup on a
 continuous input over an ordered compact interval. -/
