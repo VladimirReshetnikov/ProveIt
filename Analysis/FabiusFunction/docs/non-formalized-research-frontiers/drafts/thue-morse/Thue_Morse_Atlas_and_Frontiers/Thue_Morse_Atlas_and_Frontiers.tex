@@ -2041,8 +2041,38 @@ And the Boolean-cube master identity acquires its \emph{bit-position} companion:
 grades it by the sum of its bit positions (\lean{Fabius.bitPositionSum},
 \lean{Fabius.prod\_one\_add\_mul\_pow\_bitPositionSum}), over any commutative semiring;
 the \(y=1\) and \(q=1\) faces recover the \(q^{\sigma}\)-enumerator and the binary-weight
-enumerator respectively.  This is the generating function whose \(y^{r}\)-coefficient is
-the \(q\)-binomial aggregation of a dyadic block by Hamming weight.
+enumerator respectively.  Its \(y^{r}\)-coefficient is now formal too: the
+\(q\)-binomial aggregation of a dyadic block by Hamming weight,
+\[
+  \sum_{\substack{n<2^{N}\\ \wt(n)=r}} q^{\sigma(n)}
+  \;=\;q^{\binom{r}{2}}\genfrac[]{0pt}{}{N}{r}_{q},
+\]
+(\lean{Fabius.sum\_pow\_bitPositionSum\_filter\_eq\_gaussianBinomial}), with the
+\(q=1\) shadow recovering the binomial coefficient.
+
+The same block algebra also inverts.  The truncated product \(\Theta_m=\prod_{j<m}(1-z^{2^j})\)
+has the restricted binary partition counts as its convolution (Green) inverse:
+\(\Theta_m\cdot P_m=1\) in \(\Z[[z]]\)
+(\lean{Fabius.prod\_one\_sub\_X\_two\_pow\_mul\_binaryPartitionSeries}), whence the finite
+convolution \(\sum_{r}\eps_r\,p_m(N-r)=[N=0]\)
+(\lean{Fabius.thueMorseSign\_binaryPartitionCount\_convolution}).  The summation range
+there is \(r<\min(N+1,2^m)\) and not merely \(r<2^m\): truncated natural subtraction
+sends every \(r>N\) to \(p_m(0)=1\), so the naive range is false already at \(N=0\).
+
+Finally, the exact weighted zero-counting function acquires its \emph{defect} form.  For
+a real weight sequence with \(\sum_h|a_h|2^{-h}<\infty\),
+\[
+  \sum_{h\ge0}a_h\Bigl\lfloor\frac{N}{2^{h}}\Bigr\rfloor
+  \;=\;N\,A(\tfrac12)-\rho_a(N),
+  \qquad
+  A(\tfrac12)=\sum_{h}\frac{a_h}{2^{h}},\quad
+  \rho_a(N)=\sum_{h}a_h\Bigl\{\frac{N}{2^{h}}\Bigr\}
+\]
+(\lean{Fabius.tsum\_mul\_natCast\_div\_two\_pow\_defect}, with the corpus form
+\lean{Fabius.sum\_range\_weightedScaleMultiplicity\_real}).  Boundedness of \(a\) is not
+needed --- the summability hypothesis alone dominates both series.  At \(a\equiv1\) the
+identity reduces to Legendre's \(\sum_h\lfloor N/2^h\rfloor=2N-s_2(N)\), which is carried as a
+regression test (\lean{Fabius.sum\_range\_div\_two\_pow\_add\_digitSum}, \lean{Fabius.dyadicDefect\_one}).
 
 \begin{corollary}[Coefficient and block formulae]
 \label{p1:cor:coefficient-block}
