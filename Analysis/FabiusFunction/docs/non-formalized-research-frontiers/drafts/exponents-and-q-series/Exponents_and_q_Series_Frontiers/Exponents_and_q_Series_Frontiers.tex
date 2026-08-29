@@ -596,8 +596,21 @@ This is \statusproved.  The floor form \eqref{p1:eq:M-floor} is formalized as
 \lean{Fabius.sum_range_weightedScaleMultiplicity} (\lean{WeightedScaleMultiplicity.lean}), over
 the finite range $h<N$ that already contains every nonzero term, and again for an arbitrary base
 $b\ne1$ and weights in an arbitrary additive commutative monoid, so the Lean statement is
-strictly more general than \eqref{p1:eq:M-floor}.  The two defect forms
-\eqref{p1:eq:M-defect}--\eqref{p1:eq:M-bit} are not formalized.
+strictly more general than \eqref{p1:eq:M-floor}.  The defect form \eqref{p1:eq:M-defect} is
+now formalized as well, in \path{DigitDefectCounting.lean}: with $A(1/2)=\sum_h a_h2^{-h}$
+(\lean{Fabius.dyadicWeightValue}) and $\rho_a(N)=\sum_h a_h\{N/2^h\}$
+(\lean{Fabius.dyadicDefect}), the identity
+$\sum_h a_h\lfloor N/2^h\rfloor=N\,A(1/2)-\rho_a(N)$ holds under the single hypothesis that
+$\sum_h|a_h|2^{-h}$ converges
+(\lean{Fabius.tsum\_mul\_natCast\_div\_two\_pow\_defect}), and the cumulative reading is
+\lean{Fabius.sum\_range\_weightedScaleMultiplicity\_real}.  Boundedness of $a$ is not needed:
+since $\{N/2^h\}\le N/2^h$, the same summability dominates both series.  At $a_h\equiv1$ the
+identity reduces to Legendre's $\sum_h\lfloor N/2^h\rfloor=2N-s_2(N)$, carried as a regression
+test (\lean{Fabius.sum\_range\_div\_two\_pow\_add\_digitSum}, \lean{Fabius.dyadicDefect\_one}).  The
+per-scale digit expansion $\{N/2^h\}=\sum_{j<h}b_j(N)2^{\,j-h}$ that the bit form
+\eqref{p1:eq:M-bit} rests on is also formal
+(\lean{Fabius.fract\_natCast\_div\_two\_pow\_eq\_sum\_range}); what is not formalized is the
+exchange of summation that converts it into \eqref{p1:eq:M-bit} itself.
 \end{theorem}
 
 \begin{proof}
