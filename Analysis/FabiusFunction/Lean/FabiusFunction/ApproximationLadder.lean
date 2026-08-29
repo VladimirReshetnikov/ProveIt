@@ -47,9 +47,6 @@ theorem approximationPolynomialInt_eq_ladder (d : ℕ) :
     rw [one_sub_X_pow_mul_approximationPolynomialInt d,
       thueMorseBlockPolynomial_eq_ladder (d + 1)]
     congr 1
-    refine Finset.prod_congr rfl fun i _ => ?_
-    congr 1
-    omega
   exact mul_left_cancel₀ (pow_ne_zero _ one_sub_X_ne_zero) hcancel
 
 /-- The ladder form with the trivial top factor dropped. -/
