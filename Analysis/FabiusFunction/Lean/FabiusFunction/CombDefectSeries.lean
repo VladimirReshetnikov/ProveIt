@@ -267,4 +267,96 @@ theorem tsum_monomial_eq_integral_of_odd_deg (F : BoundedFabius)
   rw [hT] at h
   exact sub_eq_zero.mp h
 
+/-- **The endpoint Dirichlet fold at even threshold degree**: when
+`v₂(M)+1` is even, the `±ℓ` aliases reinforce and the endpoint defect
+is twice the one-sided odd-frequency series — the comb volume's
+`D`-series form on the up-side. -/
+theorem tsum_shifted_monomial_sub_integral_even_deg
+    (F : BoundedFabius) (hF : IsFabius F) {M : ℕ} (hM : M ≠ 0)
+    (heven : Even (padicValNat 2 M + 1)) :
+    (∑' k : ℤ, monomialRvachevSchwartz F hF (padicValNat 2 M + 1)
+        ((M : ℝ))⁻¹ (inv_ne_zero (Nat.cast_ne_zero.mpr hM)) (k : ℝ)) -
+      ∫ x : ℝ, ((x ^ (padicValNat 2 M + 1) *
+        rvachevUp F (((M : ℝ))⁻¹ * x) : ℝ) : ℂ) =
+      2 * ∑' n : ℕ, (if Odd n then
+        𝓕 (⇑(monomialRvachevSchwartz F hF (padicValNat 2 M + 1)
+            ((M : ℝ))⁻¹ (inv_ne_zero (Nat.cast_ne_zero.mpr hM))))
+          ((n : ℕ) : ℝ) else 0) := by
+  have h := tsum_shifted_monomial_sub_integral_odd F hF hM 0
+  have hcomb : (∑' k : ℤ, monomialRvachevSchwartz F hF
+      (padicValNat 2 M + 1) ((M : ℝ))⁻¹
+      (inv_ne_zero (Nat.cast_ne_zero.mpr hM)) ((0 : ℝ) + k)) =
+      ∑' k : ℤ, monomialRvachevSchwartz F hF (padicValNat 2 M + 1)
+        ((M : ℝ))⁻¹ (inv_ne_zero (Nat.cast_ne_zero.mpr hM)) (k : ℝ) :=
+    tsum_congr fun k => by rw [zero_add]
+  rw [hcomb] at h
+  rw [h]
+  set f : ℤ → ℂ := fun ℓ => if Odd ℓ then
+    𝓕 (monomialRvachevSchwartz F hF (padicValNat 2 M + 1)
+        ((M : ℝ))⁻¹ (inv_ne_zero (Nat.cast_ne_zero.mpr hM))) ℓ *
+      fourier ℓ (((0 : ℝ)) : UnitAddCircle) else 0 with hf
+  have hsum : Summable f := by
+    have hbig := summable_fourier_monomialRvachevSchwartz F hF hM
+      (padicValNat 2 M + 1) 0
+    refine (hbig.indicator {ℓ : ℤ | Odd ℓ}).congr fun ℓ => ?_
+    rw [Set.indicator_apply]
+    by_cases hℓ : Odd ℓ <;> simp [hℓ, hf]
+  have hnegf : ∀ ℓ : ℤ, f (-ℓ) = f ℓ := by
+    intro ℓ
+    simp only [hf]
+    by_cases hℓ : Odd ℓ
+    · rw [if_pos (odd_neg.mpr hℓ), if_pos hℓ]
+      have h0c : ((0 : ℝ) : UnitAddCircle) = 0 := by norm_num
+      rw [h0c, fourier_eval_zero, fourier_eval_zero, mul_one, mul_one]
+      show 𝓕 (⇑(monomialRvachevSchwartz F hF (padicValNat 2 M + 1)
+          ((M : ℝ))⁻¹ (inv_ne_zero (Nat.cast_ne_zero.mpr hM))))
+          (((-ℓ : ℤ)) : ℝ) =
+        𝓕 (⇑(monomialRvachevSchwartz F hF (padicValNat 2 M + 1)
+          ((M : ℝ))⁻¹ (inv_ne_zero (Nat.cast_ne_zero.mpr hM))))
+          ((ℓ : ℤ) : ℝ)
+      have hpar := fourier_monomialRvachevSchwartz_int_neg F hF hM
+        (padicValNat 2 M + 1) ℓ
+      rw [Even.neg_one_pow heven, one_mul] at hpar
+      exact hpar
+    · rw [if_neg (fun hc => hℓ (odd_neg.mp hc)), if_neg hℓ]
+  have hf0 : f 0 = 0 := by
+    simp [hf, Int.odd_iff]
+  have hfnat : Summable (fun n : ℕ => f (n : ℤ)) :=
+    hsum.comp_injective Nat.cast_injective
+  have hfnat1 : Summable (fun n : ℕ => f ((n : ℤ) + 1)) :=
+    hsum.comp_injective fun a b hab => by omega
+  have hfold := tsum_nat_add_neg_add_one hsum
+  have hstep : ∀ n : ℕ,
+      f (n : ℤ) + f (-((n : ℤ) + 1)) = f (n : ℤ) + f ((n : ℤ) + 1) :=
+    fun n => by rw [hnegf ((n : ℤ) + 1)]
+  have hshift : ∑' n : ℕ, f ((n : ℤ) + 1) = ∑' n : ℕ, f (n : ℤ) := by
+    have hzero := (tsum_eq_zero_add hfnat)
+    have hcast : ∀ n : ℕ, f (((n + 1 : ℕ)) : ℤ) = f ((n : ℤ) + 1) :=
+      fun n => by push_cast; rfl
+    calc ∑' n : ℕ, f ((n : ℤ) + 1)
+        = ∑' n : ℕ, f (((n + 1 : ℕ)) : ℤ) :=
+          tsum_congr fun n => (hcast n).symm
+      _ = ∑' n : ℕ, f (n : ℤ) := by
+          rw [hzero, hf0, zero_add]
+  have hZ : ∑' ℓ : ℤ, f ℓ = 2 * ∑' n : ℕ, f (n : ℤ) := by
+    calc ∑' ℓ : ℤ, f ℓ
+        = ∑' n : ℕ, (f (n : ℤ) + f (-((n : ℤ) + 1))) := hfold.symm
+      _ = ∑' n : ℕ, (f (n : ℤ) + f ((n : ℤ) + 1)) :=
+          tsum_congr hstep
+      _ = (∑' n : ℕ, f (n : ℤ)) + ∑' n : ℕ, f ((n : ℤ) + 1) :=
+          hfnat.tsum_add hfnat1
+      _ = 2 * ∑' n : ℕ, f (n : ℤ) := by
+          rw [hshift]
+          ring
+  rw [hZ]
+  congr 1
+  refine tsum_congr fun n => ?_
+  simp only [hf]
+  by_cases hn : Odd n
+  · rw [if_pos ((Int.odd_coe_nat n).mpr hn), if_pos hn]
+    have h0c : ((0 : ℝ) : UnitAddCircle) = 0 := by norm_num
+    rw [h0c, fourier_eval_zero, mul_one]
+    rfl
+  · rw [if_neg (fun hc => hn ((Int.odd_coe_nat n).mp hc)), if_neg hn]
+
 end Fabius
