@@ -490,8 +490,16 @@ the geometric tail bound \((|z|-1)^{-1}|z|^{-N}\)
 (\nolinkurl{Fabius.integral\_inv\_sub\_eq\_tsum\_upMoment}, \nolinkurl{Fabius.hasSum\_upMoment\_laurent});
 the moments \(m_k=\)~\nolinkurl{Fabius.upMoment} are the Hankel data of the orthogonal-polynomial
 layer, so the same numbers drive the determinant polynomials, the three-term recurrence,
-and the asymptotic expansion of the transform.  The complex-\(z\) form and the
-generalized-order layer remain open.
+and the asymptotic expansion of the transform.  The \emph{logarithmic fixed point} is
+delivered in real form by \path{StieltjesLogFixedPoint.lean}: the uniform digit
+integrates the Cauchy kernel to a logarithm,
+\(\int_{-1/2}^{1/2}(c-u)^{-1}\dd u=\log\frac{c+1/2}{c-1/2}\) for \(c>\tfrac12\)
+(\nolinkurl{Fabius.integral\_inv\_sub\_uniform\_half}), and conditioning the transform on
+the refinement tail gives \(R_1(z)=\E\log\frac{2z-X+1}{2z-X-1}\) for real \(z>1\)
+(\nolinkurl{Fabius.integral\_inv\_sub\_eq\_integral\_log}) --- the display of
+\cref{p10:thm:Cauchy-fixed-hierarchy}'s fixed-point equation, proved through the
+convolution form of the refinement.  The differentiated hierarchy, the complex-\(z\)
+forms, and the generalized-order layer remain open.
 
 \path{CauchyRenormalization.lean} adds five public theorems.  The declarations
 \path{Fabius.mapsTo_rvachevCauchyDomain_two_mul_add_one} and
