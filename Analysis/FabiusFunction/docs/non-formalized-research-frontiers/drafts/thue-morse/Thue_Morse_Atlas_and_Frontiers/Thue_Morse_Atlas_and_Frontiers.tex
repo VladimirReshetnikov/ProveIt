@@ -2050,6 +2050,21 @@ enumerator respectively.  Its \(y^{r}\)-coefficient is now formal too: the
 (\lean{Fabius.sum\_pow\_bitPositionSum\_filter\_eq\_gaussianBinomial}), with the
 \(q=1\) shadow recovering the binomial coefficient.
 
+That shadow is now available in the generality the rest of the \(q\)-layer is stated in.
+\path{GaussianBinomialAtOne.lean} proves \(\left[\begin{smallmatrix}n\\k\end{smallmatrix}\right]_{1}=\binom{n}{k}\)
+over an \emph{arbitrary} semiring --- by an induction over \(\N\), where the \(q\)-Pascal
+recurrence degenerates to Pascal's rule, transported along the functoriality of the
+Gaussian coefficient (\lean{Fabius.gaussianBinomial\_nat\_one}, \lean{Fabius.gaussianBinomial\_one};
+the corpus previously had no \(q=1\) evaluation at all, and the graded aggregation's own
+version was confined to \(\Z\)).  Alongside it the \(q\)-Pochhammer symbol acquires the same
+specializations --- \((a;1)_n=(1-a)^n\), and the degenerate \(a=0\), \(a=1\) cases
+(\lean{Fabius.finiteQPochhammerIn\_one}, \lean{Fabius.finiteQPochhammerIn\_zero\_left},
+\lean{Fabius.finiteQPochhammerIn\_one\_left}) --- and together these give the consistency
+check the whole layer is measured against: the finite \(q\)-binomial theorem at \(q=1\)
+\emph{is} the ordinary binomial theorem,
+\(\sum_{k\le n}(-1)^k\binom{n}{k}z^k=(1-z)^n\)
+(\lean{Fabius.sum\_neg\_one\_pow\_choose\_mul\_pow}).
+
 The same block algebra also inverts.  The truncated product \(\Theta_m=\prod_{j<m}(1-z^{2^j})\)
 has the restricted binary partition counts as its convolution (Green) inverse:
 \(\Theta_m\cdot P_m=1\) in \(\Z[[z]]\)
