@@ -6356,6 +6356,1410 @@ The parameter $q$ controls four structures at once:
 Thus the appearance of $q$-Pochhammer and Gaussian coefficients in exact Fabius formulas is not accidental: both arise from the same geometric scaling law.
 \end{remark}
 
+\chapter{Dyadic Gaussian--Thue--Morse structure and the values of \texorpdfstring{$F$}{F}}
+\label{chap:dyadic-gaussian-thue-morse}
+\index{Fabius function!dyadic values}
+\index{Thue--Morse sequence!Gaussian blocks}
+
+% ed.: this chapter is the editorial merge of the two closest sibling drafts of
+% ed.: this monograph, q_pochhammer_q_binomial_article-2 (its chapter
+% ed.: chap:dyadic-q) and q_pochhammer_q_binomial_monograph-3 (its five bridge
+% ed.: chapters).  Their material was first deduplicated separately against
+% ed.: Chapters 21--23, then against each other: of the 23 candidate results in
+% ed.: the second, 4 were outright duplicates of the first, 8 overlapped and are
+% ed.: stated here once in merged form, and 11 were independent.  Both siblings
+% ed.: were deleted afterwards; git history is the archive.
+
+The three preceding chapters built the geometric filters, the half-base
+arithmetic and the geometric uniform law separately.  This chapter runs them
+together in the one case where everything is exactly computable: the base
+$q=1/2$, where the geometric uniform sum is the Fabius variable, the Prouhet
+filter is the Thue--Morse sign, and the resulting closed formula evaluates
+$F$ at every inverse power of two.
+
+
+% ---- merged block M01 ----
+\begin{proposition}[The up function is a Fabius tail]\label{prop:up-tail}
+\index{Rvachev up function!tail representation}
+For $\abs y\le1$,
+\begin{equation}\label{eq:up-tail-reflection}
+ \operatorname{up}(y)=F(1-\abs y),
+\end{equation}
+and in particular, for $0\le t\le1$,
+\begin{equation}\label{eq:up-survival}
+ \operatorname{up}(t)=1-F(t)=\mathbb P(X\ge t).
+\end{equation}
+\end{proposition}
+
+\begin{proof}
+Let $-1\le y\le0$ and put $x=(y+1)/2\in[0,1/2]$.  By
+\eqref{eq:fabius-local-derivative}, $f(x)=2F(2x)=2F(y+1)$, so
+\eqref{eq:up-definition} gives
+$\operatorname{up}(y)=\tfrac12f(x)=F(1+y)=F(1-\abs y)$.
+
+Differentiating the symmetry \eqref{eq:fabius-symmetry} gives $f(1-x)=f(x)$, so
+$\operatorname{up}(-y)=\tfrac12f((1-y)/2)=\tfrac12f((1+y)/2)=\operatorname{up}(y)$;
+thus $\operatorname{up}$ is even and \eqref{eq:up-tail-reflection} holds on all of
+$[-1,1]$.  Finally, for $0\le t\le1$ the symmetry \eqref{eq:fabius-symmetry} turns
+$F(1-t)$ into $1-F(t)$, and $X$ has a density, so
+$1-F(t)=\mathbb P(X>t)=\mathbb P(X\ge t)$.
+\end{proof}
+
+% ---- merged block M02 ----
+\begin{corollary}[Tail form of the moments]\label{cor:up-moments}
+For every $n\ge1$,
+\begin{equation}\label{eq:up-moment-integral}
+ \mathbb EX^n=n\int_0^1t^{n-1}\operatorname{up}(t)\,\dd t.
+\end{equation}
+\end{corollary}
+
+\begin{proof}
+Since $X\ge0$, Tonelli's theorem applied to the nonnegative integrand
+$nt^{n-1}\one_{\{t<X\}}$ gives
+\[
+ \mathbb EX^n
+ =\mathbb E\int_0^Xnt^{n-1}\,\dd t
+ =\int_0^1nt^{n-1}\mathbb P(X\ge t)\,\dd t,
+\]
+because $0\le X\le1$.  Now apply \eqref{eq:up-survival}.
+\end{proof}
+
+% ---- merged block M03 ----
+% ed.: this block replaces the sibling lemma \texttt{lem:fabius-moment-dilation},
+% ed.: which stated only the case $q=1/2$.  Its labels are retained on the
+% ed.: corollary below, so that \Cref{lem:thue-morse-dilation-bridge},
+% ed.: \Cref{thm:dyadic-gaussian-thue-morse} and \Cref{thm:fabius-inverse-dyadic}
+% ed.: need no re-referencing.  Two mechanical renames are required in that
+% ed.: chain: $\Phi\mapsto\Lambda$ and $a_n\mapsto\alpha_n$.
+Write
+\begin{equation}\label{eq:uniform-mgf-kernel}
+ \Lambda(z)\defeq\int_0^1\e^{zu}\,\dd u=\frac{\e^z-1}{z},
+ \qquad\Lambda(0)\defeq1,
+\end{equation}
+an entire function with $\Lambda(z)=\sum_{r\ge0}z^r/(r+1)!$, and set
+\begin{equation}\label{eq:geometric-uniform-mgf-def}
+ \mathcal A_q(z)\defeq\mathbb E\,\e^{zX_q}=\sum_{n\ge0}\alpha^{(q)}_nz^n,
+ \qquad
+ \alpha^{(q)}_n\defeq\frac{\mathbb EX_q^{\,n}}{n!}.
+\end{equation}
+
+\begin{theorem}[Moment product, dilation equation, coefficient recurrence]
+\label{thm:geometric-uniform-mgf}
+\index{moment generating function}
+\index{Mahler functional equation}
+Let $0<q<1$.  Then $\mathcal A_q$ is entire, $\varphi_q(t)=\mathcal A_q(it)$ for all
+real $t$,
+\begin{align}
+ \mathcal A_q(z)&=\prod_{j=0}^{\infty}\Lambda\bigl((1-q)q^jz\bigr),
+ \label{eq:mgf-product}\\
+ \mathcal A_q(z)&=\Lambda\bigl((1-q)z\bigr)\,\mathcal A_q(qz),
+ \label{eq:mgf-refinement}
+\end{align}
+the product converging locally uniformly on $\C$.  Moreover $\mathcal A_q$ is the unique
+formal power series with constant term $1$ satisfying \eqref{eq:mgf-refinement}, and its
+coefficients satisfy $\alpha^{(q)}_0=1$ and
+\begin{equation}\label{eq:q-moment-recurrence}
+ (1-q^n)\,\alpha^{(q)}_n
+ =\sum_{r=0}^{n-1}\frac{(1-q)^{n-r}q^r}{(n-r+1)!}\,\alpha^{(q)}_r
+ \qquad(n\ge1).
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+By \Cref{thm:geometric-uniform-basic} we have $0\le X_q\le1$, so
+$\mathbb EX_q^{\,n}\le1$ and $\sum_n\abs z^n\mathbb EX_q^{\,n}/n!\le\e^{\abs z}$.  Hence
+$\mathcal A_q$ is entire and term-by-term integration is legitimate; substituting $z=it$
+reproduces $\varphi_q$.
+
+For the truncation $X_{q,N}$ of \eqref{eq:finite-geometric-uniform-sum}, independence
+gives
+\[
+ \mathbb E\e^{zX_{q,N}}
+ =\prod_{j=0}^{N-1}\int_0^1\e^{z(1-q)q^ju}\,\dd u
+ =\prod_{j=0}^{N-1}\Lambda\bigl((1-q)q^jz\bigr).
+\]
+On $\abs z\le R$ the arguments satisfy $\sum_{j\ge0}(1-q)q^j\abs z\le R$ and
+$\Lambda(w)=1+\OO(w)$ near $0$, so the standard criterion for infinite products gives
+local uniform convergence.  By \eqref{eq:finite-uniform-tail-bound},
+$0\le X_q-X_{q,N}\le q^N$ pointwise, so $\e^{zX_{q,N}}\to\e^{zX_q}$ uniformly on the
+sample space while remaining bounded by $\e^{R}$; dominated convergence identifies the
+limit and proves \eqref{eq:mgf-product}.
+
+Taking expectations in \eqref{eq:geometric-uniform-fixed-point} and using independence of
+$U_0$ and $X_q'$ yields
+$\mathcal A_q(z)=\mathbb E\e^{z(1-q)U_0}\cdot\mathbb E\e^{zqX_q'}$, which is
+\eqref{eq:mgf-refinement}.  Comparing the coefficient of $z^n$ in
+\[
+ \sum_{n\ge0}\alpha^{(q)}_nz^n
+ =\left(\sum_{s\ge0}\frac{(1-q)^sz^s}{(s+1)!}\right)
+  \left(\sum_{r\ge0}\alpha^{(q)}_rq^rz^r\right)
+\]
+gives $\alpha^{(q)}_n=\sum_{r=0}^{n}(1-q)^{n-r}q^r\alpha^{(q)}_r/(n-r+1)!$; the term $r=n$
+on the right is $q^n\alpha^{(q)}_n$, and moving it to the left proves
+\eqref{eq:q-moment-recurrence}.  Since $1-q^n\ne0$ for $n\ge1$, that recurrence determines
+every coefficient from its predecessors, which is the asserted formal uniqueness.
+\end{proof}
+
+\begin{corollary}[The half-base moment generating function]\label{lem:fabius-moment-dilation}
+\index{Fabius function!moment generating function}
+Write $X\defeq X_{1/2}$, $\mathcal A\defeq\mathcal A_{1/2}$ and
+$\alpha_n\defeq\alpha^{(1/2)}_n=\mathbb EX^n/n!$.  Then $\mathcal A$ is entire,
+$\mathcal A(it)=\varphi_{1/2}(t)$,
+\begin{align}
+ \mathcal A(z)&=\prod_{j=1}^{\infty}\Lambda\!\left(\frac z{2^j}\right),
+ \label{eq:fabius-mgf-product}\\
+ \mathcal A(2z)&=\Lambda(z)\,\mathcal A(z),
+ \label{eq:fabius-dilation}
+\end{align}
+and $\alpha_0=1$ with
+\begin{equation}\label{eq:fabius-coefficient-recurrence}
+ (2^n-1)\,\alpha_n=\sum_{r=0}^{n-1}\frac{\alpha_r}{(n-r+1)!}
+ \qquad(n\ge1).
+\end{equation}
+\end{corollary}
+
+\begin{proof}
+Put $q=1/2$ in \Cref{thm:geometric-uniform-mgf}.  The product
+\eqref{eq:mgf-product} becomes $\prod_{j\ge0}\Lambda(2^{-1}2^{-j}z)$, which is
+\eqref{eq:fabius-mgf-product}; replacing $z$ by $2z$ in \eqref{eq:mgf-refinement} gives
+\eqref{eq:fabius-dilation}.  In \eqref{eq:q-moment-recurrence} every summand acquires the
+factor $(1/2)^{n-r}(1/2)^r=2^{-n}$ and the left side is $(1-2^{-n})\alpha_n$;
+multiplication by $2^n$ gives \eqref{eq:fabius-coefficient-recurrence}.  Finally
+$\Lambda(is)=\e^{is/2}\operatorname{sinc}(s/2)$, so \eqref{eq:fabius-mgf-product} at
+$z=it$ is \eqref{eq:geometric-uniform-characteristic} at $q=1/2$; this is the sinc product
+of \Cref{thm:up-sinc-product}.
+\end{proof}
+
+\begin{example}[The first coefficients]\label{ex:fabius-first-coefficients}
+Recurrence \eqref{eq:fabius-coefficient-recurrence} gives
+\[
+ \alpha_0=1,\quad
+ \alpha_1=\tfrac12,\quad
+ \alpha_2=\tfrac5{36},\quad
+ \alpha_3=\tfrac1{36},\quad
+ \alpha_4=\tfrac{143}{32400},\quad
+ \alpha_5=\tfrac{19}{32400},
+\]
+equivalently $\mathbb EX^2=2!\,\alpha_2=5/18$ and $\mathbb EX^4=4!\,\alpha_4=143/1350$.
+These agree with the cumulant route of
+\Cref{cor:geometric-uniform-moments,cor:halfbase-cumulants}: for instance
+$\kappa_2(Y_{1/2})=B_2/(2\cdot3)=1/36$, so $\mathbb EX^2=\tfrac1{36}+\tfrac14=\tfrac5{18}$.
+\end{example}
+
+\begin{remark}[Two routes to the same rationals]\label{rem:moment-routes}
+Unlike the moment--cumulant recursion \eqref{eq:moment-cumulant-recurrence}, which is
+stated for the centred variable and needs Bernoulli input, the recursion
+\eqref{eq:fabius-coefficient-recurrence} is a triangular rational recursion in the raw
+coefficients alone: one rational division per index, no Bernoulli numbers and no Bell
+polynomials.  It is the cheaper and the numerically stable route to the values below.
+\end{remark}
+
+% ---- merged block M04 ----
+\begin{lemma}[Derivative iterates of the Fabius function]\label{lem:fabius-derivative-iterate}
+\index{Fabius function!derivative iterates}
+For every $m\ge0$,
+\begin{equation}\label{eq:fabius-derivative-iterate}
+ F^{(m)}(x)=2^{\binom{m+1}{2}}F\bigl(2^mx\bigr)
+ \qquad\bigl(0\le x\le2^{-m}\bigr).
+\end{equation}
+In particular $F^{(m)}(0)=0$ for every $m\ge0$.
+\end{lemma}
+
+\begin{proof}
+The case $m=0$ is trivial, and \eqref{eq:fabius-local-derivative} is the case $m=1$.
+Assume \eqref{eq:fabius-derivative-iterate} for $m$ and let $0\le x\le2^{-m-1}$, so that
+$0\le2^mx\le1/2$.  Differentiating and applying \eqref{eq:fabius-local-derivative} at
+$2^mx$ gives
+\[
+ F^{(m+1)}(x)=2^{\binom{m+1}{2}}2^mF'\bigl(2^mx\bigr)
+ =2^{\binom{m+1}{2}+m+1}F\bigl(2^{m+1}x\bigr),
+\]
+and $\binom{m+1}{2}+m+1=\binom{m+2}{2}$.  Since $F(0)=0$, evaluating
+\eqref{eq:fabius-derivative-iterate} at $x=0$ gives $F^{(m)}(0)=0$.
+\end{proof}
+
+\begin{theorem}[Half-moment evaluation]\label{thm:fabius-half-moment}
+\index{Fabius function!value at $2^{-n}$}
+For every $n\ge0$,
+\begin{equation}\label{eq:fabius-half-moment}
+ F\bigl(2^{-n}\bigr)=2^{-\binom n2}\alpha_n
+ =\frac{\mathbb EX^n}{n!\,2^{\binom n2}} .
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+For $n=0$ both sides are $F(1)=1$; let $n\ge1$.  By
+\Cref{lem:fabius-derivative-iterate} we have $F^{(j)}(0)=0$ for $0\le j<n$, and
+$F\in C^\infty$ by \Cref{thm:probabilistic-fabius}, so Taylor's formula with integral
+remainder at the point $2^{-n}$ reduces to the remainder alone:
+\[
+ F\bigl(2^{-n}\bigr)
+ =\frac1{(n-1)!}\int_0^{2^{-n}}\bigl(2^{-n}-t\bigr)^{n-1}F^{(n)}(t)\,\dd t
+ =\frac{2^{\binom{n+1}{2}}}{(n-1)!}
+   \int_0^{2^{-n}}\bigl(2^{-n}-t\bigr)^{n-1}F\bigl(2^nt\bigr)\,\dd t,
+\]
+where \eqref{eq:fabius-derivative-iterate} was used on the whole interval of integration.
+Substituting $u=2^nt$ produces the factor $2^{-n(n-1)}$ from $(2^{-n}-t)^{n-1}$ and the
+factor $2^{-n}$ from $\dd t$, and
+\[
+ \binom{n+1}{2}-n(n-1)-n=\frac{n(n+1)}2-n^2=-\binom n2 ,
+\]
+so that
+\[
+ F\bigl(2^{-n}\bigr)=\frac{2^{-\binom n2}}{(n-1)!}\int_0^1(1-u)^{n-1}F(u)\,\dd u .
+\]
+By \Cref{prop:up-tail}, $F(u)=\operatorname{up}(1-u)$ for $0\le u\le1$; substituting
+$t=1-u$ and applying \Cref{cor:up-moments},
+\[
+ \frac1{(n-1)!}\int_0^1t^{n-1}\operatorname{up}(t)\,\dd t
+ =\frac{\mathbb EX^n}{n\,(n-1)!}
+ =\alpha_n. \qedhere
+\]
+\end{proof}
+
+\begin{remark}[The same value by cutting a cube]\label{rem:half-moment-cube-cut}
+There is a second proof of \eqref{eq:fabius-half-moment} which uses neither
+\Cref{prop:up-tail} nor the smoothness of $F$.  Write
+$X=\sum_{j\ge1}2^{-j}V_j$ with $V_1,V_2,\ldots$ independent and uniform on $[0,1]$,
+multiply by $2^n$ and split the series after $n$ terms:
+\begin{equation}\label{eq:fabius-scaled-split}
+ 2^nX=\sum_{j=1}^{n}c_jV_j+X',
+ \qquad c_j\defeq2^{\,n-j},
+ \qquad X'\defeq\sum_{i\ge1}2^{-i}V_{n+i},
+\end{equation}
+where $X'$ is independent of $V_1,\ldots,V_n$ and distributed as $X$.  Conditionally on
+$X'=x$, the event $2^nX\le1$ reads $\sum_jc_jV_j\le t$ with $t\defeq1-x\in[0,1]$.  Each
+$c_j$ is an integer with $c_j\ge1$, so any $u\in[0,\infty)^n$ with $\sum_jc_ju_j\le t$
+automatically satisfies $u_j\le c_ju_j\le t\le1$: no upper constraint is active, the
+admissible region is the entire simplex, and its volume is
+$t^n/\bigl(n!\prod_jc_j\bigr)=(1-x)^n/\bigl(n!\,2^{\binom n2}\bigr)$, since
+$\prod_{j=1}^{n}2^{\,n-j}=2^{\binom n2}$.  Averaging over $X'$ and using
+$X\overset d=1-X$ from \eqref{eq:geometric-uniform-mean-symmetry} turns
+$\mathbb E[(1-X')^n]$ into $\mathbb E(X^n)$ and returns \eqref{eq:fabius-half-moment}.
+\end{remark}
+% ed.: this block merges two independent proofs of one value theorem.  The
+% ed.: sibling's \texttt{thm:fabius-inverse-dyadic} stated
+% ed.: \eqref{eq:fabius-half-moment} as its first assertion and proved
+% ed.: it by the cube cut; that theorem now states only the closed form
+% ed.: \eqref{eq:fabius-inverse-dyadic-closed} and cites
+% ed.: \Cref{thm:fabius-half-moment} here.  Both equation labels are attached to
+% ed.: \eqref{eq:fabius-half-moment} so that references from either chain resolve.
+% ed.: \Cref{lem:fabius-derivative-iterate} is needed later and has no counterpart
+% ed.: in the cube-cut argument.
+
+% ---- merged block A01 ----
+\section{Reciprocal nodes and the leading-coefficient filter}
+\index{geometric interpolation!reciprocal nodes}
+\index{finite difference!geometric}
+\index{Gaussian coefficient!reciprocal row}
+
+The filter $\mathcal G_{n,q}$ of \eqref{eq:geometric-filter-definition} reproduces the \emph{constant} coefficient of a series and annihilates the degrees $1,\ldots,n$.  Its companion reproduces the coefficient of degree $n$ and annihilates the degrees $0,\ldots,n-1$.  That companion lives on the reciprocal nodes $-q^{-k}$, its weights are again a signed Gaussian row, and its residual tail is again controlled by a single Gaussian row.  It is this second normalization, not the evaluation-at-zero one, that produces the exact dyadic formulas of \Cref{chap:geometric-uniform-fabius}.
+
+Throughout this section $q$ lies in a field $K$ and $q^j\ne1$ for $1\le j\le n$; from \Cref{thm:gaussian-coefficient-transfer} onwards $K$ is also assumed to have characteristic zero.  Put
+\begin{equation}\label{eq:reciprocal-nodes-weights}
+ x_k\defeq-q^{-k},
+ \qquad
+ W_{n,k}(q)\defeq(-1)^kq^{\binom k2}\qbinom nk
+ \qquad(0\le k\le n).
+\end{equation}
+The nodes are distinct, because $q^i=q^j$ with $0\le i<j\le n$ would force $q^{\,j-i}=1$.
+
+\begin{theorem}[Exact geometric moment transform]\label{thm:geometric-moment-transform}
+For every integer $d\ge0$,
+\begin{equation}\label{eq:geometric-moment-all}
+ \sum_{k=0}^{n}W_{n,k}(q)\,x_k^{\,d}
+ =(-1)^d(q^{-d};q)_n.
+\end{equation}
+In particular
+\begin{equation}\label{eq:geometric-moment-zero}
+ \sum_{k=0}^{n}W_{n,k}(q)\,x_k^{\,d}=0
+ \qquad(0\le d<n),
+\end{equation}
+and
+\begin{equation}\label{eq:geometric-moment-top}
+ \sum_{k=0}^{n}W_{n,k}(q)\,x_k^{\,n}
+ =q^{-\binom{n+1}{2}}(q;q)_n.
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+Since $x_k^{\,d}=(-1)^dq^{-kd}$, the left side of \eqref{eq:geometric-moment-all} equals
+\[
+ (-1)^d\sum_{k=0}^{n}(-1)^kq^{\binom k2}\qbinom nk\bigl(q^{-d}\bigr)^{k},
+\]
+which is $(-1)^d(q^{-d};q)_n$ by \eqref{eq:finite-qbinomial-minus} at $z=q^{-d}$.  If $0\le d<n$, the factor with $j=d$ in
+\[
+ (q^{-d};q)_n=\prod_{j=0}^{n-1}\bigl(1-q^{\,j-d}\bigr)
+\]
+is zero, which gives \eqref{eq:geometric-moment-zero}.  For $d=n$, extract $-q^{\,j-n}$ from each factor:
+\[
+ (q^{-n};q)_n
+ =(-1)^nq^{-\sum_{j=0}^{n-1}(n-j)}\prod_{j=0}^{n-1}\bigl(1-q^{\,n-j}\bigr)
+ =(-1)^nq^{-\binom{n+1}{2}}(q;q)_n,
+\]
+because $\sum_{j=0}^{n-1}(n-j)=\binom{n+1}{2}$.  Multiplication by the outer sign $(-1)^n$ proves \eqref{eq:geometric-moment-top}.
+\end{proof}
+
+\begin{corollary}[Leading-coefficient functional]\label{cor:reciprocal-leading-coefficient}
+If $p\in K[x]$ has degree at most $n$, then
+\begin{equation}\label{eq:reciprocal-leading-functional}
+ [x^n]p(x)
+ =\frac{q^{\binom{n+1}{2}}}{(q;q)_n}
+  \sum_{k=0}^{n}W_{n,k}(q)\,p\bigl(-q^{-k}\bigr).
+\end{equation}
+\end{corollary}
+
+\begin{proof}
+Write $p(x)=\sum_{d=0}^{n}b_dx^d$ and apply the functional termwise.  Every term with $d<n$ vanishes by \eqref{eq:geometric-moment-zero}, and the term $d=n$ contributes $b_n$ by \eqref{eq:geometric-moment-top}.
+\end{proof}
+
+\begin{remark}[Three faces of one weight row]\label{rem:reciprocal-weight-faces}
+The functional \eqref{eq:reciprocal-leading-functional} is not a new interpolation device.  It is the divided difference $y[x_0,\ldots,x_n]$ of \Cref{thm:geometric-newton} after the substitution $q\mapsto q^{-1}$, $x\mapsto-x$; in particular the closed evaluation of $\prod_{j\ne k}(x_k-x_j)$ needed for a Lagrange derivation, and the uniqueness of a functional returning the leading coefficient, are already contained in that theorem and in \Cref{thm:geometric-evaluation-zero}.  The Vandermonde determinant of the nodes differs only by $x\mapsto-x$ and a column reversal from the alternant $a_\delta(1,q^{-1},\ldots,q^{-n})$ evaluated inside the proof of \Cref{thm:schur-principal}.  At $q=1/2$ the data \eqref{eq:reciprocal-nodes-weights} become the data \eqref{eq:halfbase-prouhet-data}: $x_k=\xi_k$ and $W_{n,k}(1/2)=w_{n,k}$, so \Cref{thm:geometric-prouhet} is the case $q=1/2$ of \Cref{cor:reciprocal-leading-coefficient}.
+% ed.: an incoming draft restated the Lagrange-denominator evaluation, the
+% ed.: uniqueness of the functional and the geometric Vandermonde determinant
+% ed.: as fresh results; all three are the above, transported.  Only the
+% ed.: arbitrary-$d$ moment \eqref{eq:geometric-moment-all} and its
+% ed.: consequence \Cref{thm:reciprocal-exact-tail} are genuinely new here.
+\end{remark}
+
+% ---- merged block A02 ----
+\begin{theorem}[The reciprocal filter and its exact tail]\label{thm:reciprocal-exact-tail}
+For a formal power series $f(X)=\sum_{m\ge0}a_mX^m$ over $K$ put
+\begin{equation}\label{eq:reciprocal-filter-definition}
+ (\mathcal D_{n,q}f)(X)
+ \defeq\frac{q^{\binom{n+1}{2}}}{(q;q)_n}
+   \sum_{k=0}^{n}W_{n,k}(q)\,f(x_kX).
+\end{equation}
+Then
+\begin{align}
+ [X^m]\mathcal D_{n,q}f
+ &=\frac{q^{\binom{n+1}{2}}}{(q;q)_n}\,(-1)^m(q^{-m};q)_n\,a_m,
+ \label{eq:reciprocal-filter-diagonal}\\
+ (\mathcal D_{n,q}f)(X)
+ &=\sum_{r\ge0}(-1)^rq^{-nr}\Qbinom{n+r}{n}{q}\,a_{n+r}X^{\,n+r}.
+ \label{eq:reciprocal-filter-tail}
+\end{align}
+Thus $\mathcal D_{n,q}$ deletes the coefficients of degrees $0,\ldots,n-1$, reproduces $a_n$, and multiplies every later coefficient by an explicit signed Gaussian polynomial.  If $\deg f\le n$, then $(\mathcal D_{n,q}f)(1)=a_n$, in agreement with \Cref{cor:reciprocal-leading-coefficient}.
+\end{theorem}
+
+\begin{proof}
+The outer sum in \eqref{eq:reciprocal-filter-definition} is finite, so coefficient extraction commutes with it, and \eqref{eq:reciprocal-filter-diagonal} is \Cref{thm:geometric-moment-transform}.  The multiplier vanishes for $m<n$ by \eqref{eq:geometric-moment-zero}.  Let $m=n+r$ with $r\ge0$.  Extracting $-q^{\,j-n-r}$ from each factor of $(q^{-n-r};q)_n$ gives
+\[
+ (q^{-n-r};q)_n
+ =(-1)^nq^{\binom n2-n(n+r)}\bigl(q^{\,r+1};q\bigr)_n,
+\]
+since $\sum_{j=0}^{n-1}(j-n-r)=\binom n2-n(n+r)$ and $\prod_{j=0}^{n-1}(1-q^{\,n+r-j})=(q^{\,r+1};q)_n$.  Hence the sign becomes $(-1)^{n+r}(-1)^n=(-1)^r$, the total exponent of $q$ becomes
+\[
+ \binom{n+1}{2}+\binom n2-n(n+r)=-nr,
+\]
+and
+\[
+ \frac{(q^{\,r+1};q)_n}{(q;q)_n}
+ =\frac{(q;q)_{n+r}}{(q;q)_r(q;q)_n}
+ =\Qbinom{n+r}{n}{q},
+\]
+which is \eqref{eq:reciprocal-filter-tail}.
+\end{proof}
+
+\begin{remark}[The two exact tails]\label{rem:two-exact-tails}
+\Cref{thm:geometric-filter-diagonal,thm:reciprocal-exact-tail} are companions, not restatements.  Both multiply the surviving coefficients by one Gaussian row, but they extract different coefficients on different node sets: $\mathcal G_{n,q}$ evaluates at $0$ on the nodes $q^k$ and returns $a_0$ with tail multiplier $(-1)^nq^{\binom{n+1}{2}}\Qbinom{n+r}{n}{q}$, whereas $\mathcal D_{n,q}$ extracts the top coefficient on the nodes $-q^{-k}$ and returns $a_n$ with tail multiplier $(-1)^rq^{-nr}\Qbinom{n+r}{n}{q}$.  The $r$-dependent sign and the negative power of $q$ have no counterpart in \eqref{eq:filter-exact-tail}: reversing a polynomial exchanges the two functionals only in the finite-degree case, and a power series has no top coefficient to reverse.  For $0<q<1$ the estimate $\Qbinom{n+r}{n}{q}\le1/(q;q)_n$ used in \Cref{thm:geometric-filter-bound} applies verbatim to \eqref{eq:reciprocal-filter-tail}: if $f$ is analytic on $\abs z\le R$ with $R>q^{-n}$ and $M_R=\max_{\abs z=R}\abs{f}$, then
+\[
+ \abs{(\mathcal D_{n,q}f)(1)-a_n}
+ \le\frac{M_R}{(q;q)_nR^{\,n}}\cdot
+    \frac{q^{-n}/R}{1-q^{-n}/R}.
+\]
+% ed.: an incoming draft carried this bound as a separate corollary with its
+% ed.: own proof; it is the mirror of \Cref{thm:geometric-filter-bound} and is
+% ed.: recorded here as a remark instead.
+\end{remark}
+
+% ---- merged block A05 ----
+\begin{corollary}[Integrality and the exact $2$-adic valuation]\label{cor:halfbase-gaussian-valuation}
+\index{valuation!$2$-adic}
+\index{Gaussian coefficient!at $q=2$}
+For $0\le k\le n$,
+\begin{equation}\label{eq:halfbase-two-reciprocity}
+ \Qbinom nk{1/2}=2^{-k(n-k)}\Qbinom nk2 .
+\end{equation}
+The integer $\Qbinom nk2$ is odd; consequently $2^{\,k(n-k)}\Qbinom nk{1/2}$ is an odd integer and
+\begin{equation}\label{eq:halfbase-valuation}
+ \ord_2\Qbinom nk{1/2}=-k(n-k).
+\end{equation}
+\end{corollary}
+
+\begin{proof}
+Reciprocity, \Cref{thm:qbinom-structure}(ii), reads $\Qbinom nk{q^{-1}}=q^{-k(n-k)}\qbinom nk$; taking $q=2$ gives \eqref{eq:halfbase-two-reciprocity}.  By \Cref{cor:positivity} the Gaussian coefficient lies in $\N_0[q]$, and by \Cref{thm:qbinom-structure}(iii) its constant term is $1$; every other monomial $q^j$ with $j\ge1$ is even at $q=2$, so $\Qbinom nk2\equiv1\pmod2$.  An odd integer has $2$-adic valuation $0$, so \eqref{eq:halfbase-valuation} follows from \eqref{eq:halfbase-two-reciprocity}.
+\end{proof}
+
+\begin{remark}[Reading the valuation]\label{rem:halfbase-valuation-reading}
+Comparing \eqref{eq:halfbase-two-reciprocity} with \eqref{eq:halfbase-gaussian} identifies the odd integer explicitly:
+\[
+ \Qbinom nk2=\frac{\mathfrak m_n}{\mathfrak m_k\,\mathfrak m_{n-k}},
+\]
+and by \Cref{thm:subspace-count} it counts the $k$-dimensional subspaces of $\F_2^n$.  Thus the half-base Gaussian row is a finite-geometric count divided by an explicit power of two, and the exponent of that power is $k(n-k)$, the dimension of the Grassmannian.  In the same way \eqref{eq:halfbase-factorial} exhibits $(1/2;1/2)_n$ as a power-of-two normalization of a product of Mersenne numbers, with $\ord_2(1/2;1/2)_n=-\binom{n+1}{2}$ because $\mathfrak m_n$ is odd.
+% ed.: an incoming draft restated reciprocity and the $\F_2$-subspace count in
+% ed.: place; both are cross-referenced here instead.
+\end{remark}
+
+% ---- merged block M08 ----
+\begin{theorem}[Gaussian coefficient transfer]\label{thm:gaussian-coefficient-transfer}
+\index{coefficient transfer}
+\index{coefficient extraction!dyadic Gaussian}
+\index{double cancellation}
+Let $K$ have characteristic zero, let $q\in K^{\times}$ satisfy $q^j\ne1$ for $1\le j\le n$, and let
+\[
+ A(z)=\sum_{m\ge0}a_mz^m\in K[[z]],
+ \qquad a_0=1 .
+\]
+For each $0\le k\le n$ there is exactly one series $\Psi_k(z)=\sum_{m\ge0}c_{k,m}z^m\in K[[z]]$ satisfying the bridge relation
+\begin{equation}\label{eq:general-bridge}
+ \Psi_k(z)A(-z)=\e^{-z}A\bigl(-q^{-k}z\bigr),
+\end{equation}
+namely $\Psi_k(z)=\e^{-z}A(-q^{-k}z)/A(-z)$, the quotient being legitimate in $K[[z]]$ because $A(-z)$ has constant term $a_0=1$.  For that family, with the weights of \eqref{eq:reciprocal-nodes-weights},
+\begin{align}
+ \sum_{k=0}^{n}W_{n,k}(q)\,c_{k,d}&=0
+ \qquad(0\le d<n),\label{eq:transfer-lower-zero}\\
+ \sum_{k=0}^{n}W_{n,k}(q)\,c_{k,n}
+ &=q^{-\binom{n+1}{2}}(q;q)_n\,a_n.\label{eq:transfer-top}
+\end{align}
+\end{theorem}
+
+\begin{proof}
+Write $S_d\defeq\sum_{k=0}^{n}W_{n,k}(q)c_{k,d}$.  Comparing the coefficient of $z^d$ on the two sides of \eqref{eq:general-bridge} gives, for each fixed $k$,
+\begin{equation}\label{eq:bridge-coeff}
+ \sum_{i=0}^{d}(-1)^{d-i}a_{d-i}\,c_{k,i}
+ =\sum_{j=0}^{d}\frac{(-1)^j}{j!}\,a_{d-j}\bigl(-q^{-k}\bigr)^{d-j}.
+\end{equation}
+Multiply \eqref{eq:bridge-coeff} by $W_{n,k}(q)$ and sum over $k$.  Since $x_k=-q^{-k}$, the right-hand side becomes
+\begin{equation}\label{eq:bridge-coeff-summed}
+ \sum_{j=0}^{d}\frac{(-1)^j}{j!}\,a_{d-j}
+ \sum_{k=0}^{n}W_{n,k}(q)\,x_k^{\,d-j},
+\end{equation}
+and the left-hand side becomes $\sum_{i=0}^{d}(-1)^{d-i}a_{d-i}S_i$.
+
+Let $0\le d<n$ and induct on $d$.  Every exponent occurring in \eqref{eq:bridge-coeff-summed} satisfies $0\le d-j\le d<n$, so the entire right-hand side vanishes by \eqref{eq:geometric-moment-zero}.  On the left, the terms with $i<d$ vanish by the induction hypothesis (for $d=0$ there are none), and the term $i=d$ equals $a_0S_d=S_d$.  Hence $S_d=0$, which is \eqref{eq:transfer-lower-zero}.
+
+Now take $d=n$.  In \eqref{eq:bridge-coeff-summed} every term with $j\ge1$ carries an exponent $n-j<n$ and vanishes, while the term $j=0$ equals
+\[
+ a_n\sum_{k=0}^{n}W_{n,k}(q)\,x_k^{\,n}
+ =q^{-\binom{n+1}{2}}(q;q)_n\,a_n
+\]
+by \eqref{eq:geometric-moment-top}.  On the left, the terms with $i<n$ vanish by \eqref{eq:transfer-lower-zero} and the term $i=n$ equals $a_0S_n=S_n$.  This proves \eqref{eq:transfer-top}.
+\end{proof}
+
+\begin{remark}[On the normalization $a_0=1$]\label{rem:transfer-normalization}
+The proof uses $a_0=1$ three times: once for the invertibility of $A(-z)$ and once at the last step of each induction stage.  Only invertibility of $a_0$ is actually needed: for arbitrary $a_0\ne0$ the same argument gives $S_d=0$ for $d<n$ and $S_n=q^{-\binom{n+1}{2}}(q;q)_na_n/a_0$.  This is not a restriction, because \eqref{eq:general-bridge} is unchanged when $A$ is multiplied by a nonzero constant.
+\end{remark}
+
+\begin{remark}[The dyadic reading]\label{rem:transfer-dyadic-reading}
+At $q=1/2$ the data \eqref{eq:reciprocal-nodes-weights} are the half-base Prouhet data \eqref{eq:halfbase-prouhet-data}: the nodes are $x_k=-2^{k}=\xi_k$, the weights are
+\[
+ W_{n,k}(1/2)=(-1)^k2^{-\binom k2}\Qbinom nk{1/2}=w_{n,k},
+\]
+and the constant on the right of \eqref{eq:transfer-top} is $2^{\binom{n+1}{2}}\left(\tfrac12;\tfrac12\right)_n=\mathfrak m_n$ by \eqref{eq:halfbase-factorial}.  In that reading the theorem says: a family $\Psi_0,\ldots,\Psi_n$ tied to $A$ by $\Psi_k(z)A(-z)=\e^{-z}A(-2^kz)$ has $\sum_kw_{n,k}c_{k,d}=0$ for $d<n$ and $\sum_kw_{n,k}c_{k,n}=\mathfrak m_na_n$.  This is the form used throughout \Cref{chap:geometric-uniform-fabius}.
+% ed.: an incoming draft carried exactly this dyadic reading as a separate
+% ed.: theorem, together with the existence-and-uniqueness clause now in the
+% ed.: statement above; both are recorded here rather than duplicated.
+\end{remark}
+
+% ---- merged block A04 ----
+\begin{corollary}[Invariance under a common translation]\label{cor:transfer-translation}
+Under the hypotheses of \Cref{thm:gaussian-coefficient-transfer}, let $\alpha\in K$ and put $\widetilde\Psi_k(z)=\e^{\alpha z}\Psi_k(z)$.  Then
+\begin{equation}\label{eq:transfer-translation-invariance}
+ \sum_{k=0}^{n}W_{n,k}(q)\,[z^n]\widetilde\Psi_k(z)
+ =\sum_{k=0}^{n}W_{n,k}(q)\,c_{k,n}
+ =q^{-\binom{n+1}{2}}(q;q)_n\,a_n .
+\end{equation}
+\end{corollary}
+
+\begin{proof}
+Convolution gives $[z^n]\widetilde\Psi_k=\sum_{j=0}^{n}\alpha^jc_{k,n-j}/j!$.  Weighting by $W_{n,k}(q)$ and summing over $k$, the term with index $j$ carries the factor $S_{n-j}$; every $j\ge1$ has $n-j<n$ and therefore vanishes by \eqref{eq:transfer-lower-zero}.  Only $j=0$ survives, and \eqref{eq:transfer-top} evaluates it.
+\end{proof}
+
+\begin{remark}[Two nested triangular systems]\label{rem:double-cancellation}
+The proof runs two triangular cancellations in series.  First the finite $q$-binomial theorem annihilates every node power of degree below $n$.  Second, the coefficient comparison \eqref{eq:bridge-coeff} propagates that annihilation successively through $c_{k,0},c_{k,1},\ldots,c_{k,n-1}$.  The first quantity surviving both is $a_n$.  This double cancellation is what makes \Cref{thm:dyadic-gaussian-thue-morse} possible, and \Cref{cor:transfer-translation} is the reason a free parameter may be inserted there.
+\end{remark}
+
+% ---- merged block M06 ----
+\section{The normalized Thue--Morse block}
+\index{Thue--Morse sequence!normalized exponential block}
+
+The Thue--Morse polynomial of \Cref{thm:thue-morse-product} has a zero of order exactly
+$k$ at $z=1$.  Dividing that zero out produces an entire function whose Taylor
+coefficients are precisely the Thue--Morse power sums, and which bridges $\mathcal A$ to
+its own dilate: that bridge is the hypothesis \eqref{eq:general-bridge} of
+\Cref{thm:gaussian-coefficient-transfer} at $q=1/2$, where $q^{-k}=2^k$.  Throughout,
+$\mathcal A\defeq\mathcal A_{1/2}$, $\alpha_n\defeq\alpha^{(1/2)}_n$ and
+$\tau_r=(-1)^{s_2(r)}$.
+
+For $k\ge0$ put
+\begin{equation}\label{eq:Psi-k-definition}
+ \Psi_k(z)\defeq\e^{-z}\prod_{j=0}^{k-1}\Lambda\bigl(-2^jz\bigr)
+ =\sum_{m\ge0}c_{k,m}z^m,
+\end{equation}
+and, for a translation parameter $\theta\in\C$ and an integer $d\ge0$, write
+\begin{equation}\label{eq:thue-morse-power-sums}
+ \widetilde T_{k,d}(\theta)\defeq\sum_{r=0}^{2^k-1}\tau_r\,(r+\theta)^d,
+ \qquad
+ T_{k,d}(\theta)\defeq\widetilde T_{k,d}\bigl(\theta-2^k\bigr)
+ =\sum_{r=0}^{2^k-1}\tau_r\,\bigl(r-2^k+\theta\bigr)^d .
+\end{equation}
+
+\begin{lemma}[Thue--Morse blocks as dilation bridges]\label{lem:thue-morse-dilation-bridge}
+For every $k\ge0$ the function $\Psi_k$ is entire,
+\begin{align}
+ \Psi_k(z)&=\e^{-2^kz}\prod_{j=0}^{k-1}\Lambda\bigl(2^jz\bigr),
+ \label{eq:psi-positive-form}\\
+ \Psi_k(z)\,\mathcal A(-z)&=\e^{-z}\,\mathcal A\bigl(-2^kz\bigr),
+ \label{eq:TM-A-bridge}
+\end{align}
+and for every $\theta\in\C$
+\begin{equation}\label{eq:Psi-TM-expansion}
+ \e^{(1-\theta)z}\Psi_k(z)
+ =\frac1{2^{\binom k2}z^k}\sum_{r=0}^{2^k-1}\tau_r\,\e^{-(r+\theta)z},
+\end{equation}
+the singularity of the right-hand side at $z=0$ being removable.  Consequently
+\begin{equation}\label{eq:Psi-coefficients}
+ [z^m]\,\e^{(1-\theta)z}\Psi_k(z)
+ =\frac{(-1)^{m+k}}{2^{\binom k2}(m+k)!}\,\widetilde T_{k,m+k}(\theta)
+ \qquad(m\ge0).
+\end{equation}
+\end{lemma}
+
+\begin{proof}
+$\Lambda$ is entire, hence so is $\Psi_k$.  The reflection identity
+\[
+ \Lambda(-u)=\frac{\e^{-u}-1}{-u}=\e^{-u}\,\frac{\e^{u}-1}{u}=\e^{-u}\Lambda(u)
+\]
+turns $\prod_{j<k}\Lambda(-2^jz)$ into $\e^{-(2^k-1)z}\prod_{j<k}\Lambda(2^jz)$, because
+$\sum_{j<k}2^j=2^k-1$; multiplying by $\e^{-z}$ gives \eqref{eq:psi-positive-form}.
+
+Iterating \eqref{eq:fabius-dilation} at the arguments $-z,-2z,\ldots,-2^{k-1}z$ gives
+\[
+ \mathcal A\bigl(-2^kz\bigr)=\mathcal A(-z)\prod_{j=0}^{k-1}\Lambda\bigl(-2^jz\bigr),
+\]
+and multiplication by $\e^{-z}$ is \eqref{eq:TM-A-bridge}.
+
+Next, $\Lambda(-2^jz)=(1-\e^{-2^jz})/(2^jz)$ and $\sum_{j<k}j=\binom k2$, so
+\[
+ \e^{(1-\theta)z}\Psi_k(z)
+ =\frac{\e^{-\theta z}}{2^{\binom k2}z^k}
+  \prod_{j=0}^{k-1}\bigl(1-\e^{-2^jz}\bigr).
+\]
+Applying \eqref{eq:thue-morse-product} with its variable set to $\e^{-z}$ turns the
+product into $\sum_{r<2^k}\tau_r\e^{-rz}$, and multiplication by $\e^{-\theta z}$ gives
+\eqref{eq:Psi-TM-expansion}.  The numerator vanishes to order exactly $k$ at $z=0$ by
+\eqref{eq:thue-morse-moments}, so the quotient is entire.
+
+Finally, expand $\e^{-(r+\theta)z}=\sum_{p\ge0}(-1)^p(r+\theta)^pz^p/p!$.  For $p<k$ the
+polynomial $X\mapsto(X+\theta)^p$ has degree $p<k$, so
+$\widetilde T_{k,p}(\theta)=0$ by \eqref{eq:thue-morse-polynomial-functional} with $n=k$,
+$a=\theta$, $b=1$.  Hence
+\[
+ \sum_{r<2^k}\tau_r\e^{-(r+\theta)z}
+ =\sum_{p\ge k}\frac{(-1)^pz^p}{p!}\,\widetilde T_{k,p}(\theta),
+\]
+and dividing by $2^{\binom k2}z^k$ and writing $p=m+k$ gives \eqref{eq:Psi-coefficients}.
+\end{proof}
+
+\begin{corollary}[Centred form and the coefficient dictionary]\label{prop:psi-normalization}
+For every $k\ge0$,
+\begin{equation}\label{eq:thue-morse-normalized}
+ \sum_{r=0}^{2^k-1}\tau_r\,\e^{(r-2^k)z}
+ =(-1)^k2^{\binom k2}z^k\,\Psi_k(z),
+\end{equation}
+and the Taylor coefficients of $\Psi_k$ itself are the centred Thue--Morse power sums:
+\begin{equation}\label{eq:psi-coefficient-dictionary}
+ c_{k,m}
+ =(-1)^k2^{-\binom k2}\frac{T_{k,m+k}(0)}{(m+k)!}
+ =\frac{(-1)^{m+k}}{2^{\binom k2}(m+k)!}\,\widetilde T_{k,m+k}(1)
+ \qquad(m\ge0).
+\end{equation}
+\end{corollary}
+
+\begin{proof}
+Substituting $z\mapsto\e^{z}$ in \eqref{eq:thue-morse-product} gives
+$\sum_{r<2^k}\tau_r\e^{rz}=\prod_{j<k}(1-\e^{2^jz})$, and $1-\e^{u}=-u\Lambda(u)$, so
+\[
+ \prod_{j=0}^{k-1}\bigl(1-\e^{2^jz}\bigr)
+ =\prod_{j=0}^{k-1}\bigl(-2^jz\,\Lambda(2^jz)\bigr)
+ =(-1)^k2^{\binom k2}z^k\prod_{j=0}^{k-1}\Lambda\bigl(2^jz\bigr).
+\]
+Multiplying by $\e^{-2^kz}$ and applying \eqref{eq:psi-positive-form} proves
+\eqref{eq:thue-morse-normalized}.  Its left-hand side is the exponential generating
+function $\sum_{d\ge0}T_{k,d}(0)z^d/d!$, so comparing the coefficient of $z^{m+k}$ gives
+the first equality in \eqref{eq:psi-coefficient-dictionary}.  For the second, note that
+$2^k-1-r$ is the bitwise complement of $r$ in $k$ binary digits, whence
+$s_2(2^k-1-r)=k-s_2(r)$ and $\tau_{2^k-1-r}=(-1)^k\tau_r$; replacing $r$ by $2^k-1-r$ in
+$T_{k,d}(0)=\sum_r\tau_r(r-2^k)^d$ therefore gives
+$T_{k,d}(0)=(-1)^{d+k}\widetilde T_{k,d}(1)$.  Alternatively, the second equality is
+\eqref{eq:Psi-coefficients} at $\theta=1$, where the factor $\e^{(1-\theta)z}$ is $1$.
+\end{proof}
+
+\begin{remark}[Centred and raw coordinates]\label{rem:psi-two-coordinates}
+The two displays \eqref{eq:Psi-TM-expansion} and \eqref{eq:thue-morse-normalized} are one
+identity in two coordinate systems.  Indeed \eqref{eq:psi-positive-form} says
+$\Psi_k(z)=\e^{-(2^k+1)z}\Psi_k(-z)$, and substituting $z\mapsto-z$ in
+\eqref{eq:Psi-TM-expansion} at $\theta=-2^k$ returns \eqref{eq:thue-morse-normalized}.
+The centred sums $T_{k,d}$ are the natural coefficients of $\Psi_k$ itself, while the raw
+sums $\widetilde T_{k,d}(\theta)$ with a free $\theta$ are what
+\Cref{cor:transfer-translation} feeds into \Cref{thm:dyadic-gaussian-thue-morse}; by
+\eqref{eq:thue-morse-power-sums} the dictionary between them is
+$T_{k,d}(\theta)=(-1)^{d+k}\widetilde T_{k,d}(1-\theta)$.
+\end{remark}
+% ed.: this block merges the sibling lemma with the incoming
+% ed.: \texttt{prop:psi-normalization}: the two define the same $\Psi_k$, and the
+% ed.: incoming centred identity and dictionary are the case $\theta=1$ of
+% ed.: \eqref{eq:Psi-coefficients} after the complement antisymmetry.  Only
+% ed.: \eqref{eq:psi-positive-form} and the notation \eqref{eq:thue-morse-power-sums}
+% ed.: are genuinely new, and both are retained.
+
+% ---- merged block A09 ----
+\begin{theorem}[Dyadic Gaussian--Thue--Morse coefficient formula]\label{thm:dyadic-gaussian-thue-morse}
+For every $n\ge0$ and every $\theta\in\C$,
+\begin{equation}\label{eq:dyadic-gaussian-thue-morse}
+ \boxed{\;
+ a_n=\frac{(-1)^n}{\mathfrak m_n}
+ \sum_{k=0}^{n}
+ \frac{\Qbinom nk{1/2}}{4^{\binom k2}(n+k)!}
+ \sum_{r=0}^{2^k-1}(-1)^{s_2(r)}(r+\theta)^{\,n+k}.\;}
+\end{equation}
+Every inner power sum depends on $\theta$; the total does not.
+\end{theorem}
+
+\begin{proof}
+Fix $\theta$ and set $\widetilde\Psi_k(z)=\e^{(1-\theta)z}\Psi_k(z)$.  By \eqref{eq:TM-A-bridge} the family $\Psi_0,\ldots,\Psi_n$ satisfies the bridge relation \eqref{eq:general-bridge} with $q=1/2$, since then $q^{-k}=2^k$; and $A$ has constant term $1$ by \Cref{lem:fabius-moment-dilation}.  Hence \Cref{thm:gaussian-coefficient-transfer} applies, and \Cref{cor:transfer-translation} with $\alpha=1-\theta$ gives
+\begin{equation}\label{eq:dyadic-transfer-top}
+ \sum_{k=0}^{n}W_{n,k}(1/2)\,[z^n]\widetilde\Psi_k(z)
+ =2^{\binom{n+1}{2}}\left(\tfrac12;\tfrac12\right)_n a_n
+ =\mathfrak m_n\,a_n,
+\end{equation}
+the last equality by \eqref{eq:halfbase-factorial}.  Comparing \eqref{eq:reciprocal-nodes-weights} with \eqref{eq:halfbase-prouhet-data},
+\[
+ W_{n,k}(1/2)=(-1)^k2^{-\binom k2}\Qbinom nk{1/2}=w_{n,k},
+\]
+while \eqref{eq:Psi-coefficients} at $m=n$ gives
+\[
+ [z^n]\widetilde\Psi_k(z)
+ =\frac{(-1)^{n+k}}{2^{\binom k2}(n+k)!}
+  \sum_{r=0}^{2^k-1}\tau_r(r+\theta)^{\,n+k}.
+\]
+In the product of the two, the signs combine to $(-1)^k(-1)^{n+k}=(-1)^n$, independent of $k$, and the powers of two combine to $2^{-\binom k2}2^{-\binom k2}=4^{-\binom k2}$.  Substituting into \eqref{eq:dyadic-transfer-top} and dividing by $\mathfrak m_n$ proves \eqref{eq:dyadic-gaussian-thue-morse}.  The left side of \eqref{eq:dyadic-transfer-top} does not depend on $\theta$, by \Cref{cor:transfer-translation}; this is the asserted invariance.
+\end{proof}
+
+\begin{example}[The first two cases]\label{ex:dyadic-formula-small}
+Take $\theta=1$.  For $n=1$ one has $\mathfrak m_1=1$ and $\Qbinom 10{1/2}=\Qbinom 11{1/2}=1$; the inner sums are $1^1=1$ at $k=0$ and $1^2-2^2=-3$ at $k=1$, so
+\[
+ a_1=-\left(\frac{1}{1!}+\frac{-3}{2!}\right)=-\left(1-\frac32\right)=\frac12 .
+\]
+For $n=2$ one has $\mathfrak m_2=3$ and the half-base Gaussian row $1,\tfrac32,1$; the inner sums are $1$, $1^3-2^3=-7$, and $1^4-2^4-3^4+4^4=160$, so
+\[
+ a_2=\frac13\left(\frac{1}{2!}+\frac{3}{2}\cdot\frac{-7}{3!}
+      +\frac{160}{4^1\cdot4!}\right)
+    =\frac13\left(\frac12-\frac74+\frac53\right)
+    =\frac13\cdot\frac5{12}=\frac5{36},
+\]
+in agreement with the value produced by \eqref{eq:fabius-coefficient-recurrence}.
+\end{example}
+
+% ---- merged block M09 ----
+\begin{theorem}[Inverse-dyadic values of the Fabius function]\label{thm:fabius-inverse-dyadic}
+\index{Fabius function!closed formula at $2^{-n}$}
+% ed.: this theorem formerly restated the moment evaluation
+% ed.: $F(2^{-n})=\mathbb E(X^n)/(n!\,2^{\binom n2})$ and proved it by the
+% ed.: cube cut.  Both are now \Cref{thm:fabius-half-moment}, which also
+% ed.: carries the derivative-iterate proof; only the closed form is stated
+% ed.: here.
+By \Cref{thm:fabius-half-moment}, $F(2^{-n})=2^{-\binom n2}a_n$ with
+$a_n=\mathbb E(X^n)/n!$.  Consequently, for every $n\ge0$ and every
+$\theta\in\C$,
+
+\begin{equation}\label{eq:fabius-inverse-dyadic-closed}
+ \boxed{\;
+ F\bigl(2^{-n}\bigr)
+ =\frac{(-1)^n}{2^{\,n^2}\left(\frac12;\frac12\right)_n}
+ \sum_{k=0}^{n}
+ \frac{\Qbinom nk{1/2}}{4^{\binom k2}(n+k)!}
+ \sum_{r=0}^{2^k-1}(-1)^{s_2(r)}(r+\theta)^{\,n+k}.\;}
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+% ed.: the cube-cut derivation of the moment form that stood here is now
+% ed.: the second proof of \Cref{thm:fabius-half-moment}, together with the
+% ed.: scaled split \eqref{eq:fabius-scaled-split} it introduces; repeating
+% ed.: it would duplicate both the argument and those two equation labels.
+Only the closed form has to be proved.
+
+For \eqref{eq:fabius-inverse-dyadic-closed}, multiply \eqref{eq:dyadic-gaussian-thue-morse} by $2^{-\binom n2}$ and use \eqref{eq:halfbase-factorial} together with $\binom n2+\binom{n+1}{2}=n^2$:
+\[
+ 2^{\binom n2}\mathfrak m_n
+ =2^{\binom n2+\binom{n+1}{2}}\left(\tfrac12;\tfrac12\right)_n
+ =2^{\,n^2}\left(\tfrac12;\tfrac12\right)_n . \qedhere
+\]
+\end{proof}
+% ed.: since $n^2\equiv n\pmod2$ one may absorb the sign into the denominator
+% ed.: and write $(-1)^n2^{-n^2}=(-2)^{-n^2}$; an incoming draft stated
+% ed.: \eqref{eq:fabius-inverse-dyadic-closed} in that packaging.
+
+The blocks of \eqref{eq:fabius-inverse-dyadic-closed} may also be centred at their own right endpoints.  This is the normalization in which the inner sums are the bare Taylor coefficients of the Thue--Morse blocks $\Psi_k$, and it costs one application of digit complementation.
+
+\begin{corollary}[Centred form]\label{cor:fabius-centered-formula}
+\index{Thue--Morse sequence!digit complement}
+For $n\ge0$ and $\theta\in\C$ put
+\begin{equation}\label{eq:dyadic-numerator}
+ \mathcal N_n(\theta)
+ \defeq\sum_{k=0}^{n}
+ \frac{\Qbinom nk{1/2}}{4^{\binom k2}(n+k)!}
+ \sum_{r=0}^{2^k-1}\tau_r\,\bigl(r-2^k+\theta\bigr)^{\,n+k},
+ \qquad \tau_r=(-1)^{s_2(r)} .
+\end{equation}
+Then $\mathcal N_n(\theta)=\mathfrak m_n a_n$ for every $\theta$, and
+\begin{equation}\label{eq:fabius-centered-formula}
+ F\bigl(2^{-n}\bigr)
+ =\frac{\mathcal N_n(\theta)}{2^{\binom n2}\mathfrak m_n}
+ =\frac1{2^{\,n^2}\left(\frac12;\frac12\right)_n}
+ \sum_{k=0}^{n}
+ \frac{\Qbinom nk{1/2}}{4^{\binom k2}(n+k)!}
+ \sum_{r=0}^{2^k-1}\tau_r\,\bigl(r-2^k+\theta\bigr)^{\,n+k},
+\end{equation}
+with no sign $(-1)^n$ in front.
+\end{corollary}
+
+\begin{proof}
+Fix $\theta$ and substitute $r\mapsto2^k-1-r$ in the inner sum of $\mathcal N_n(1-\theta)$.  Complementing all $k$ binary digits gives $s_2(2^k-1-r)=k-s_2(r)$, hence $\tau_{2^k-1-r}=(-1)^k\tau_r$, while
+\[
+ (2^k-1-r)-2^k+(1-\theta)=-(r+\theta).
+\]
+Therefore
+\[
+ \sum_{r=0}^{2^k-1}\tau_r\bigl(r-2^k+1-\theta\bigr)^{\,n+k}
+ =(-1)^k\sum_{r=0}^{2^k-1}\tau_r\bigl(-(r+\theta)\bigr)^{\,n+k}
+ =(-1)^{n+2k}\sum_{r=0}^{2^k-1}\tau_r(r+\theta)^{\,n+k},
+\]
+and $(-1)^{n+2k}=(-1)^n$ does not depend on $k$, so it factors out of the sum over $k$:
+\[
+ \mathcal N_n(1-\theta)
+ =(-1)^n\sum_{k=0}^{n}
+ \frac{\Qbinom nk{1/2}}{4^{\binom k2}(n+k)!}
+ \sum_{r=0}^{2^k-1}\tau_r(r+\theta)^{\,n+k}.
+\]
+By \eqref{eq:dyadic-gaussian-thue-morse} the sum on the right is $(-1)^n\mathfrak m_na_n$, so $\mathcal N_n(1-\theta)=\mathfrak m_na_n$; as $\theta$ runs over $\C$ so does $1-\theta$.  Now \eqref{eq:fabius-half-moment} gives $F(2^{-n})=2^{-\binom n2}a_n=\mathcal N_n(\theta)/(2^{\binom n2}\mathfrak m_n)$, and the second expression in \eqref{eq:fabius-centered-formula} follows from $2^{\binom n2}\mathfrak m_n=2^{\,n^2}\left(\tfrac12;\tfrac12\right)_n$, as in the proof above.
+\end{proof}
+% ed.: \eqref{eq:fabius-centered-formula} at $\theta=0$ is what the transfer
+% ed.: theorem produces when applied to $\Psi_k$ with no auxiliary factor, the
+% ed.: inner sums then being $(n+k)!\,(-1)^k2^{\binom k2}[z^n]\Psi_k(z)$.  For
+% ed.: even $n$ the reflection is sign-free, so the centred sums at $\theta=0$
+% ed.: coincide term by term with the raw sums at $\theta=1$; this is why
+% ed.: \Cref{ex:dyadic-formula-small} serves both displays at $n=2$, and an
+% ed.: incoming draft's separate centred worked example at $n=2$ (inner sums
+% ed.: $1,-7,160$, total $5/12$) is that same computation.
+
+% ---- merged block M11 ----
+\begin{remark}[The shift must be common, with one systematic exception]\label{rem:dyadic-shift-common}
+\index{translation invariance!of the dyadic formula}
+The freedom in $\theta$ in \eqref{eq:dyadic-gaussian-thue-morse}, \eqref{eq:fabius-inverse-dyadic-closed} and \eqref{eq:fabius-centered-formula} is \Cref{cor:transfer-translation} at $q=1/2$: one exponential $\e^{\alpha z}$ is pulled out of all $n+1$ blocks \emph{simultaneously}, after which \eqref{eq:transfer-lower-zero} annihilates every convolution term but one.  It is not a symmetry of an individual block.  To see what is and is not allowed, give each block its own shift and set
+\begin{equation}\label{eq:dyadic-numerator-blockwise}
+ \mathcal N_n(\theta_0,\ldots,\theta_n)
+ \defeq\sum_{k=0}^{n}
+ \frac{\Qbinom nk{1/2}}{4^{\binom k2}(n+k)!}
+ \sum_{r=0}^{2^k-1}\tau_r\bigl(r-2^k+\theta_k\bigr)^{\,n+k}.
+\end{equation}
+Two one-parameter families of shifts leave this constant, and they are exactly the two displays above:
+\[
+ \mathcal N_n(\theta,\ldots,\theta)=\mathfrak m_na_n,
+ \qquad
+ \mathcal N_n\bigl(2^0+\theta,\ldots,2^n+\theta\bigr)=(-1)^n\mathfrak m_na_n ,
+\]
+the first by \Cref{cor:fabius-centered-formula}, the second by \eqref{eq:dyadic-gaussian-thue-morse} after cancelling $-2^k$ against $2^k$.  The second family is genuinely block-dependent, and it survives only because digit complementation converts it into the first, at the cost of the $k$-independent sign $(-1)^n$ computed in the proof of \Cref{cor:fabius-centered-formula}.  Apart from these, unequal shifts destroy the cancellation: for $n=3$ and $(\theta_0,\theta_1,\theta_2,\theta_3)=(0,1,2,3)$ one finds
+\[
+ \mathcal N_3(0,1,2,3)=\frac1{32},
+ \qquad\text{against}\qquad
+ \mathfrak m_3a_3=21\cdot\frac1{36}=\frac7{12}.
+\]
+% ed.: an incoming draft stated the invariance as a separate theorem -- it is
+% ed.: \Cref{cor:transfer-translation} at $q=1/2$ -- and asserted that any
+% ed.: per-block translation destroys the cancellation.  The counterexample is
+% ed.: kept; the assertion is corrected, since the shifts $\theta_k=2^k+\theta$
+% ed.: do preserve the sum.
+\end{remark}
+
+% ---- merged block M13 ----
+\begin{remark}[Anatomy and conditioning of the dyadic formula]\label{rem:dyadic-formula-anatomy}
+\index{Fabius function!closed formula at $2^{-n}$}
+\index{numerical stability!of the dyadic formula}
+\index{valuation!$2$-adic}
+The ingredients of \eqref{eq:fabius-inverse-dyadic-closed} separate cleanly, and each has a
+single identifiable origin.  One factor $2^{-\binom k2}$, together with the row
+$\Qbinom nk{1/2}$, is the geometric difference stencil $w_{n,k}$ on the nodes $-2^{k}$ of
+\Cref{thm:geometric-prouhet}; the second factor $2^{-\binom k2}$ appears when the order-$k$
+Thue--Morse zero is removed in \eqref{eq:Psi-TM-expansion}.  Their product is the
+$4^{-\binom k2}$ of the statement: the duplication is structural, not a misprint.  The
+product $\left(\tfrac12;\tfrac12\right)_n$ is the normalized geometric Vandermonde
+denominator of that stencil, equal by \eqref{eq:halfbase-factorial} to the odd Mersenne
+product $\mathfrak m_n=\prod_{j=1}^{n}(2^{j}-1)$ divided by $2^{\binom{n+1}{2}}$, and the
+remaining $2^{-\binom n2}$ is the Jacobian $\prod_{j=1}^{n}2^{\,n-j}$ of the cube cut
+\eqref{eq:fabius-scaled-split}.  The factorials $(n+k)!$ are contributed by the
+exponential generating functions, and each inner sum is an integer, being a power sum of
+Thue--Morse signs whose first $k$ moments vanish.
+
+Arithmetically, therefore, four independent sources meet in one line: dyadic dilation
+powers, of which \eqref{eq:halfbase-two-reciprocity} isolates the part carried by the
+Gaussian row, $\Qbinom nk{1/2}=2^{-k(n-k)}\Qbinom nk2$ with an \emph{odd} integer on the
+right (\Cref{cor:halfbase-gaussian-valuation}); the odd Mersenne product $\mathfrak m_n$;
+ordinary factorials; and integer Thue--Morse power sums.  The freedom in $\theta$ is not
+an accident among those power sums: by \Cref{cor:transfer-translation} it says precisely
+that the Gaussian stencil has already annihilated everything below degree $n$, so only
+the top coefficient of the shifted test polynomial is ever seen.
+
+The formula is an exact rational certificate, but it is ill conditioned in floating
+point, and the loss occurs \emph{inside} the blocks rather than between them.  The outer
+cancellation over $k$ is mild: at $\theta=1$ the largest block of
+\eqref{eq:fabius-inverse-dyadic-closed} exceeds the value of the whole sum by the factors
+$3.00,\;4.20,\;4.69,\;4.42,\;4.09,\;3.84,\;3.68,\;3.59,\;3.53,\;3.50$ for
+$n=1,\ldots,10$, peaking at $n=3$ and decreasing thereafter, and other choices of
+$\theta$ alter these ratios only by a bounded factor.  The digits are lost within a
+single block, in the alternating Thue--Morse power sum: for $k=n$ the largest summand
+exceeds $\sum_{r<2^{k}}(-1)^{s_2(r)}(r+\theta)^{\,n+k}$ by a factor $4.8$ at $n=4$,
+$5.2\cdot10^{3}$ at $n=8$, $3.9\cdot10^{6}$ at $n=10$ and $2.9\cdot10^{10}$ at $n=12$,
+and this ratio grows without bound.  For numerical work the triangular recursion
+\eqref{eq:fabius-coefficient-recurrence} is preferable: it delivers $a_n$, hence
+$F(2^{-n})=2^{-\binom n2}a_n$, with one rational division per index and no cancellation
+at all.
+% ed.: one incoming draft attributed the instability to the outer sum over $k$.  Measured
+% ed.: in exact arithmetic the outer cancellation is mild and bounded, while the inner
+% ed.: Thue--Morse sums lose arbitrarily many digits; corrected here, with the figures.
+% ed.: two sibling drafts carried this remark under the same label, one with the
+% ed.: stencil/Vandermonde/Jacobian reading and one with the $2$-adic reading and the
+% ed.: conditioning analysis; they are merged above.
+\end{remark}
+
+% ---- merged block M14 ----
+\begin{proposition}[The block is a Taylor polynomial]\label{prop:dyadic-taylor-reduction}
+\index{Taylor polynomial!dyadic Gaussian block}
+Put
+\begin{equation}\label{eq:dyadic-normalized-block}
+ \mathcal M_n(\theta):=\frac{\mathcal N_n(\theta)}{2^{\binom n2}(1/2;1/2)_n}
+ =2^n\alpha_n=2^{\binom{n+1}{2}}F(2^{-n}),
+\end{equation}
+and, for $m\ge0$,
+\begin{equation}\label{eq:dyadic-taylor-assembly}
+ \mathcal T_m(\theta,y)
+ :=2^{-\binom{m+1}{2}}\sum_{n=0}^{m}
+   \frac{(2^{m+1}y)^{m-n}}{(m-n)!}\,\mathcal M_n(\theta).
+\end{equation}
+Then $\mathcal T_m$ does not depend on $\theta$, contains no $q$-object, and is exactly
+the $m$th Taylor polynomial of $F$ at the point $2^{-m}$:
+\begin{equation}\label{eq:dyadic-taylor-identification}
+ \mathcal T_m(\theta,y)
+ =\sum_{r=0}^{m}2^{\binom{r+1}{2}-\binom{m-r}{2}}\alpha_{m-r}\frac{y^r}{r!}
+ =\sum_{r=0}^{m}F^{(r)}(2^{-m})\frac{y^r}{r!}.
+\end{equation}
+\end{proposition}
+
+\begin{proof}
+Independence of $\theta$ and the first equality in \eqref{eq:dyadic-normalized-block}
+are \Cref{cor:transfer-translation} combined with
+$\mathcal N_n(0)=\mathfrak m_n\alpha_n$ and
+$\mathfrak m_n=2^{\binom{n+1}{2}}(1/2;1/2)_n$; the second equality is
+\Cref{thm:fabius-half-moment}.  Substituting
+$\mathcal M_n=2^n\alpha_n$ into \eqref{eq:dyadic-taylor-assembly} and writing $r=m-n$
+gives the exponent
+\[
+ -\binom{m+1}{2}+(m+1)r+(m-r)=mr-\binom m2
+ =\binom{r+1}{2}-\binom{m-r}{2},
+\]
+which is the first equality in \eqref{eq:dyadic-taylor-identification}.  For the second,
+\Cref{thm:fabius-half-moment} gives
+$2^{-\binom{m-r}{2}}\alpha_{m-r}=F(2^{r-m})$, while
+\eqref{eq:fabius-derivative-iterate} at $x=2^{-m}$, legitimate because $r\le m$, gives
+$F^{(r)}(2^{-m})=2^{\binom{r+1}{2}}F(2^{r-m})$.
+\end{proof}
+
+\begin{remark}
+\Cref{prop:dyadic-taylor-reduction} explains \Cref{cor:transfer-translation} concretely: a
+common translation perturbs each block by terms of lower degree, and those are exactly
+the terms annihilated by the order-$n$ geometric divided difference of
+\Cref{thm:geometric-prouhet}.
+\end{remark}
+
+% ---- merged block M15 ----
+\section{Composition and determinant forms}
+\index{composition (of an integer)!Fabius values}
+
+Expanding the product \eqref{eq:mgf-product} instead of inverting it produces two
+further closed forms.  The combinatorial input is an ordered geometric sum.
+
+\begin{lemma}[Geometric simplex sum]\label{lem:geometric-simplex}
+Let $0<\abs q<1$, let $r_1,\ldots,r_\ell$ be positive integers, and put
+$t_h:=r_h+r_{h+1}+\cdots+r_\ell$.  Then
+\begin{equation}\label{eq:geometric-simplex}
+ \sum_{1\le j_1<j_2<\cdots<j_\ell}
+ q^{\,j_1r_1+\cdots+j_\ell r_\ell}
+ =\prod_{h=1}^{\ell}\frac{q^{t_h}}{1-q^{t_h}} .
+\end{equation}
+\end{lemma}
+
+\begin{proof}
+Every strictly increasing $\ell$-tuple of positive integers has a unique gap
+representation $j_i=i+g_1+\cdots+g_i$ with $g_h\ge0$.  Then
+\[
+ \sum_{i=1}^{\ell}j_ir_i
+ =\sum_{i=1}^{\ell}ir_i+\sum_{h=1}^{\ell}g_ht_h,
+\]
+because $g_h$ occurs in $j_i$ exactly for $i\ge h$.  Summing the independent geometric
+series in $g_1,\ldots,g_\ell$ gives
+\[
+ q^{\sum_iir_i}\prod_{h=1}^{\ell}\frac1{1-q^{t_h}},
+\]
+and $\sum_iir_i=\sum_ht_h$, which converts the prefactor into $\prod_hq^{t_h}$.
+\end{proof}
+
+% ---- merged block M16 ----
+An ordered composition $\rho=(r_1,\ldots,r_\ell)\vDash n$ is a sequence of positive
+integers with $r_1+\cdots+r_\ell=n$; write $\ell(\rho)=\ell$ and
+$s_j:=r_1+\cdots+r_j$.
+
+\begin{theorem}[Composition representation]\label{thm:fabius-composition}
+For $0<q<1$ and $n\ge1$,
+\begin{equation}\label{eq:q-composition-moments}
+ \alpha_n^{(q)}
+ =\left(\frac{1-q}{q}\right)^{\!n}
+  \sum_{\rho\vDash n}\ \prod_{j=1}^{\ell(\rho)}
+  \frac{q^{s_j}}{(1-q^{s_j})\,(r_j+1)!}.
+\end{equation}
+In particular, at $q=1/2$,
+\begin{equation}\label{eq:fabius-composition}
+ F(2^{-n})
+ =2^{-\binom n2}\sum_{\rho\vDash n}\
+ \prod_{j=1}^{\ell(\rho)}\frac1{(2^{s_j}-1)\,(r_j+1)!}.
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+Expand each factor of \eqref{eq:mgf-product} as
+$\Lambda((1-q)q^jz)=\sum_{r\ge0}(1-q)^rq^{jr}z^r/(r+1)!$ and collect the coefficient of
+$z^n$.  A nonzero contribution chooses an index set $0\le j_1<\cdots<j_\ell$ of factors
+and positive exponents $r_1,\ldots,r_\ell$ with $\sum r_i=n$, so that
+\[
+ \alpha_n^{(q)}
+ =(1-q)^n\sum_{\ell\ge1}
+  \sum_{\substack{r_1+\cdots+r_\ell=n\\ r_i\ge1}}
+  \frac1{\prod_i(r_i+1)!}
+  \sum_{0\le j_1<\cdots<j_\ell}q^{\sum_ij_ir_i}.
+\]
+Shifting $j_i\mapsto j_i+1$ multiplies the inner sum by $q^{-n}$ and puts it in the form
+\eqref{eq:geometric-simplex}, so the inner sum equals
+$q^{-n}\prod_hq^{t_h}/(1-q^{t_h})$.  Reversing the composition
+$(r_1,\ldots,r_\ell)\mapsto(r_\ell,\ldots,r_1)$ is a bijection of the compositions of
+$n$ that turns the tail sums $t_h$ into the prefix sums $s_j$.  This proves
+\eqref{eq:q-composition-moments}.  At $q=1/2$ the prefactor is $1$ and
+$q^{s_j}/(1-q^{s_j})=1/(2^{s_j}-1)$; multiply by $2^{-\binom n2}$ and apply
+\Cref{thm:fabius-half-moment}.
+\end{proof}
+
+% ---- merged block M17 ----
+\begin{theorem}[Lower-Hessenberg determinant]\label{thm:fabius-hessenberg}
+\index{determinant!Hessenberg, Fabius values}
+Put $\beta_{n,k}:=\dfrac1{(2^n-1)(n-k+1)!}$ for $0\le k\le n-1$, and let
+$\mathcal H_n$ be the $n\times n$ lower-Hessenberg matrix whose $(i,k)$ entry is
+$\beta_{i,k}$ for $0\le k\le i-1$, is $-1$ for $k=i$, and is $0$ for $k>i$
+(rows indexed by $1\le i\le n$, columns by $0\le k\le n-1$):
+\begin{equation}\label{eq:fabius-hessenberg-matrix}
+ \mathcal H_n=
+ \begin{pmatrix}
+ \beta_{1,0}&-1&0&\cdots&0\\
+ \beta_{2,0}&\beta_{2,1}&-1&\ddots&\vdots\\
+ \beta_{3,0}&\beta_{3,1}&\beta_{3,2}&\ddots&0\\
+ \vdots&\vdots&\vdots&\ddots&-1\\
+ \beta_{n,0}&\beta_{n,1}&\beta_{n,2}&\cdots&\beta_{n,n-1}
+ \end{pmatrix}.
+\end{equation}
+Then, for $n\ge1$,
+\begin{equation}\label{eq:fabius-hessenberg}
+ \alpha_n=\det\mathcal H_n,
+ \qquad
+ F(2^{-n})=2^{-\binom n2}\det\mathcal H_n .
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+Set $D_0:=1$ and $D_n:=\det\mathcal H_n$.  Note that $\mathcal H_k$ is the leading
+$k\times k$ principal submatrix of $\mathcal H_n$ for $k\le n$.  Expand $D_n$ along the
+last row, whose entries are $\beta_{n,k}$ for $0\le k\le n-1$, and let $M_{n,k}$ be the
+minor obtained by deleting row $n$ and column $k$.  In $M_{n,k}$ the rows $1,\ldots,k$
+have zero entries in every column of index greater than $k$, because the superdiagonal
+entry $-1$ of row $i\le k$ sits in column $i\le k$.  Hence $M_{n,k}$ is block lower
+triangular with diagonal blocks
+\[
+ \bigl(\text{rows }1..k,\ \text{columns }0..k-1\bigr)=\mathcal H_k,
+ \qquad
+ \bigl(\text{rows }k{+}1..n{-}1,\ \text{columns }k{+}1..n{-}1\bigr),
+\]
+and the second block is lower triangular with every diagonal entry equal to $-1$.
+Therefore $\det M_{n,k}=(-1)^{n-1-k}D_k$.  The cofactor sign of the entry in row $n$ and
+column $k$, that is, in matrix position $(n,k+1)$, is $(-1)^{n+k+1}$, so
+\[
+ D_n=\sum_{k=0}^{n-1}\beta_{n,k}(-1)^{n+k+1}(-1)^{n-1-k}D_k
+ =\sum_{k=0}^{n-1}\beta_{n,k}D_k .
+\]
+This is \eqref{eq:fabius-coefficient-recurrence} written as
+$\alpha_n=\sum_{k<n}\beta_{n,k}\alpha_k$, with the same initial value.  Induction gives
+$D_n=\alpha_n$, and \Cref{thm:fabius-half-moment} gives the second formula.
+\end{proof}
+
+\begin{remark}
+Expanding $\det\mathcal H_n$ over its nonzero Hessenberg paths reproduces
+\eqref{eq:fabius-composition}: a path that descends from row $n$ to row $0$ using the
+steps $r_1,\ldots,r_\ell$ contributes exactly the corresponding composition term.  The
+determinant and the composition sum are two descriptions of the same triangular
+resolvent, and the recursion \eqref{eq:fabius-coefficient-recurrence} is its unrolled form.
+\end{remark}
+
+% ---- merged block M18 ----
+\section{A Fourier formula for the Fabius function}
+
+\begin{corollary}[Sinc-product representation of $F$]\label{cor:fabius-fourier-formula}
+\index{sinc product!Fabius distribution function}
+For $0\le x\le1$,
+\begin{equation}\label{eq:fabius-fourier-formula}
+ F(x)=\frac12
+ +\frac1\pi\int_0^{\infty}
+ \frac{\sin\bigl((2x-1)t\bigr)}{t}
+ \prod_{k=1}^{\infty}\operatorname{sinc}\!\left(\frac t{2^k}\right)\dd t,
+\end{equation}
+the integral being absolutely convergent.
+\end{corollary}
+
+\begin{proof}
+Let $Y=2X-1$, whose density is $\operatorname{up}$ and whose Fourier transform is
+$\widehat{\operatorname{up}}(t)=\prod_{k\ge1}\operatorname{sinc}(t/2^k)$ by
+\Cref{thm:up-sinc-product}.  Since $\widehat{\operatorname{up}}(t)=\e^{-it}\varphi_{1/2}(2t)$,
+\Cref{thm:geometric-uniform-fourier-decay} shows that
+$\widehat{\operatorname{up}}$ is integrable, and indeed decays faster than every
+negative power of $t$.  Fourier inversion and evenness of $\operatorname{up}$ give
+\[
+ \operatorname{up}(y)=\frac1{2\pi}\int_{\R}\e^{-ity}\widehat{\operatorname{up}}(t)\,\dd t
+ =\frac1\pi\int_0^{\infty}\widehat{\operatorname{up}}(t)\cos(ty)\,\dd t .
+\]
+Because $\operatorname{up}$ is a probability density and is symmetric,
+$F(x)=\mathbb P(Y\le2x-1)=\tfrac12+\int_0^{2x-1}\operatorname{up}(y)\,\dd y$ for
+$0\le x\le1$.  Integrating the last display in $y$ over $[0,2x-1]$ and interchanging the
+order of integration, which is permitted by absolute convergence, replaces
+$\cos(ty)$ by $\sin((2x-1)t)/t$ and proves \eqref{eq:fabius-fourier-formula}.
+\end{proof}
+
+\begin{remark}
+The two exact descriptions of $F$ are complementary.  Formula
+\eqref{eq:fabius-fourier-formula} is global, analytic, and well suited to quadrature and
+to smoothness statements; formula \eqref{eq:fabius-centered-formula} is finite,
+rational, and adapted to dyadic arguments.  Their agreement encodes a highly nonlocal
+cancellation in the sinc integral.  At $x=1/4$, for instance, numerical evaluation of
+\eqref{eq:fabius-fourier-formula} reproduces $5/72$ to more than twenty digits.
+\end{remark}
+
+% ---- merged block A06 ----
+\section{Digital cancellation in an arbitrary radix}
+\index{Prouhet problem!radix $b$}
+\index{Thue--Morse sequence!radix generalization}
+\index{root of unity!as a digit weight}
+
+The signs $\tau_r=(-1)^{s_2(r)}$ are the case $b=2$, $\omega=-1$ of a roots-of-unity construction available in every radix.  Separating the radix from the special real signs that exist only at $b=2$ shows which half of \Cref{thm:thue-morse-product,thm:thue-morse-moments} comes from binary digits and which half comes from having a digit expansion at all.
+
+For $b\ge2$ let $s_b(r)$ denote the sum of the base-$b$ digits of $r$, and for $\omega\in\C$ put
+\begin{equation}\label{eq:radix-b-signs}
+ \tau^{(b)}_r\defeq\omega^{\,s_b(r)}
+ \qquad(r\ge0),
+\end{equation}
+so that $\tau^{(2)}_r=\tau_r$ when $\omega=-1$.
+
+\begin{theorem}[Radix-$b$ Prouhet filter]\label{thm:radix-b-prouhet}
+Let $b\ge2$ and let $\omega\in\C$ satisfy
+\begin{equation}\label{eq:radix-b-omega}
+ \omega^b=1,\qquad\omega\ne1 .
+\end{equation}
+Then for every $k\ge0$ the polynomial identity
+\begin{equation}\label{eq:radix-b-product}
+ \sum_{r=0}^{b^k-1}\tau^{(b)}_r z^r
+ =\prod_{j=0}^{k-1}
+   \left(\sum_{a=0}^{b-1}\omega^az^{\,ab^j}\right)
+\end{equation}
+holds, and for every $\theta\in\C$,
+\begin{align}
+ \sum_{r=0}^{b^k-1}\tau^{(b)}_r(r+\theta)^m&=0
+ \qquad(0\le m<k),\label{eq:radix-b-lower}\\
+ \sum_{r=0}^{b^k-1}\tau^{(b)}_r(r+\theta)^k
+ &=\frac{k!\;b^{\,k(k+1)/2}}{(\omega-1)^k}.\label{eq:radix-b-top}
+\end{align}
+Consequently, for every polynomial $p$ of degree at most $k$ and all $\alpha,\beta\in\C$,
+\begin{equation}\label{eq:radix-b-functional}
+ \sum_{r=0}^{b^k-1}\tau^{(b)}_r\,p(\alpha+\beta r)
+ =\frac{k!\;b^{\,k(k+1)/2}}{(\omega-1)^k}\;\beta^k\,[X^k]p(X).
+\end{equation}
+\end{theorem}
+% ed.: the incoming draft required $\omega$ to be a \emph{primitive} $b$th root
+% ed.: of unity.  Only \eqref{eq:radix-b-omega} is used, and the weaker
+% ed.: hypothesis is genuinely weaker: for composite $b$ it admits several
+% ed.: inequivalent sign systems, e.g. $b=4$, $\omega=-1$.
+
+\begin{proof}
+Every $r$ with $0\le r<b^k$ has a unique expansion $r=a_0+a_1b+\cdots+a_{k-1}b^{k-1}$ with $0\le a_j<b$, and then $s_b(r)=a_0+\cdots+a_{k-1}$.  Hence
+\[
+ \tau^{(b)}_rz^r=\prod_{j=0}^{k-1}\omega^{a_j}z^{\,a_jb^j},
+\]
+and summing independently over the $k$ digits gives \eqref{eq:radix-b-product}.
+
+Substitute $z\mapsto\e^{z}$ in \eqref{eq:radix-b-product} and multiply by $\e^{\theta z}$.  The left side becomes the exponential generating function
+\[
+ \sum_{r=0}^{b^k-1}\tau^{(b)}_r\e^{(r+\theta)z}
+ =\sum_{m\ge0}
+   \left(\sum_{r=0}^{b^k-1}\tau^{(b)}_r(r+\theta)^m\right)\frac{z^m}{m!},
+\]
+and the right side becomes $\e^{\theta z}\prod_{j=0}^{k-1}G_j(z)$, where
+$G_j(z)=\sum_{a=0}^{b-1}\omega^a\e^{\,ab^jz}$.
+
+Because $\omega^b=1$ and $\omega\ne1$, the finite geometric sum gives
+\[
+ G_j(0)=\sum_{a=0}^{b-1}\omega^a=\frac{\omega^b-1}{\omega-1}=0 .
+\]
+Differentiating the identity $\sum_{a=0}^{b-1}Z^a=(Z^b-1)/(Z-1)$ and multiplying by $Z$ gives
+\[
+ \sum_{a=0}^{b-1}aZ^a
+ =\frac{bZ^b(Z-1)-Z(Z^b-1)}{(Z-1)^2},
+\]
+so at $Z=\omega$, where $\omega^b=1$,
+\begin{equation}\label{eq:omega-first-moment}
+ \sum_{a=0}^{b-1}a\,\omega^a=\frac{b}{\omega-1}\ne0 .
+\end{equation}
+Hence $G_j'(0)=b^j\sum_{a<b}a\omega^a=b^{\,j+1}/(\omega-1)$, so each $G_j$ has a zero of order exactly one at the origin and $\prod_{j<k}G_j$ has a zero of order exactly $k$, with
+\[
+ [z^k]\prod_{j=0}^{k-1}G_j(z)
+ =\prod_{j=0}^{k-1}\frac{b^{\,j+1}}{\omega-1}
+ =\frac{b^{\,k(k+1)/2}}{(\omega-1)^k}.
+\]
+Multiplying by $\e^{\theta z}=1+\OO(z)$ changes neither the order of the zero nor the coefficient of $z^k$.  Comparing the coefficients of $z^m/m!$ for $0\le m\le k$ gives \eqref{eq:radix-b-lower} and \eqref{eq:radix-b-top}.
+
+For \eqref{eq:radix-b-functional}, expand $q(X)\defeq p(\alpha+\beta X)=\sum_{m=0}^{k}\gamma_mX^m$, a polynomial of degree at most $k$ with $\gamma_k=\beta^k[X^k]p$.  Applying \eqref{eq:radix-b-lower} with $\theta=0$ to each $m<k$ and \eqref{eq:radix-b-top} to $m=k$ leaves only the term $\gamma_k$.
+\end{proof}
+
+\begin{corollary}[The binary case]\label{cor:radix-two-recovers-thue-morse}
+For $b=2$ and $\omega=-1$, identity \eqref{eq:radix-b-product} is \eqref{eq:thue-morse-product}, identity \eqref{eq:radix-b-functional} is \eqref{eq:thue-morse-polynomial-functional}, and the top value \eqref{eq:radix-b-top} is
+\[
+ \frac{k!\,2^{\,k(k+1)/2}}{(-2)^k}
+ =(-1)^kk!\,2^{\binom k2},
+\]
+in agreement with \eqref{eq:thue-morse-moments}.
+\end{corollary}
+
+\begin{proof}
+Substitute $b=2$ and $\omega=-1$, and use $k(k+1)/2-k=\binom k2$.
+\end{proof}
+
+% ---- merged block M22 ----
+\begin{remark}[Rigidity of the binary radix]\label{rem:binary-radix-rigidity}%
+\label{rem:radix-prime-power}
+\index{Prouhet problem!radix $b$}
+\index{radix!what is special about $b=2$}
+\index{Gaussian coefficient!at a prime-power base}
+It is worth separating what in \eqref{eq:fabius-inverse-dyadic-closed} needs the radix $2$ from what does not.  Less needs it than one might expect.
+
+\emph{The $q$-calculus is radix-free.}  \Cref{chap:geometric-filters} is written at general $q$: for real $b>1$ the annihilator $(z;1/b)_n=\prod_{j=0}^{n-1}\bigl(1-zb^{-j}\bigr)$ has the roots $1,b,\ldots,b^{\,n-1}$ and supplies divided-difference weights on the nodes $-1,-b,\ldots,-b^{\,n}$.  This is \Cref{cor:reciprocal-leading-coefficient} at $q=1/b$, whose top moment \eqref{eq:geometric-moment-top} is
+\[
+ \mathfrak m^{(b)}_n\defeq\prod_{j=1}^{n}\bigl(b^{\,j}-1\bigr),
+\]
+the Mersenne product $\mathfrak m_n$ at $b=2$.  When $b$ is a prime power the same $b$ carries in addition a finite-field meaning through $\Qbinom nkb$ (\Cref{thm:subspace-count}), so that at such a radix three constructions share one parameter: digital cancellation \eqref{eq:radix-b-functional}, geometric interpolation on the nodes $-b^{\,k}$, and subspace enumeration.  For $b=2$ this is the coincidence exploited in \Cref{prin:two-prouhet-filters}.
+
+\emph{The digital signs are radix-free.}  \Cref{thm:radix-b-prouhet} produces, for every $b\ge2$ and every $\omega$ with $\omega^b=1$, $\omega\ne1$, a sign system $\tau^{(b)}_r=\omega^{\,s_b(r)}$ whose block exponential sum has a zero of order exactly $k$ at the origin --- the property of \eqref{eq:thue-morse-moments} that removes the apparent pole in \eqref{eq:Psi-TM-expansion}.  Since \eqref{eq:radix-b-omega} does not force $\omega$ to be primitive, a composite $b$ carries several inequivalent such systems; $b=4$, $\omega=-1$ gives $\tau^{(4)}_r=(-1)^{s_4(r)}$ with constant $k!\,4^{\,k(k+1)/2}/(-2)^k$.
+
+\emph{The coefficient formula is radix-free as well, in a shape that must be stated carefully.}  Put
+\[
+ Y_b\defeq\sum_{j\ge1}b^{-j}V_j=\frac{X_{1/b}}{b-1},
+ \qquad
+ a^{(b)}_n\defeq\frac{\mathbb E\bigl(Y_b^{\,n}\bigr)}{n!},
+\]
+with $V_1,V_2,\ldots$ independent and uniform on $[0,1]$, so that $Y_2=X$ and $a^{(2)}_n=a_n$.  Everything in \Cref{lem:fabius-moment-dilation,lem:thue-morse-dilation-bridge} runs verbatim with $2$ replaced by $b$: the moment generating function satisfies $A_b(bz)=\Phi(z)A_b(z)$, and $\Psi^{(b)}_k(z)=\e^{-z}\prod_{j<k}\Phi\bigl(-b^{\,j}z\bigr)$ satisfies the bridge relation \eqref{eq:general-bridge} at $q=1/b$, since then $q^{-k}=b^{\,k}$.  Expanding $\prod_{j<k}\bigl(1-\e^{-b^{j}z}\bigr)$ over subsets and applying \Cref{thm:gaussian-coefficient-transfer} together with \Cref{cor:transfer-translation} gives, for every $\theta\in\C$,
+\begin{equation}\label{eq:radix-b-coefficient-formula}
+ a^{(b)}_n
+ =\frac{(-1)^n}{\mathfrak m^{(b)}_n}
+  \sum_{k=0}^{n}\frac{\Qbinom nk{1/b}}{b^{\,2\binom k2}\,(n+k)!}
+  \sum_{r\in\mathcal B^{(b)}_k}(-1)^{\sigma(r)}(r+\theta)^{\,n+k},
+\end{equation}
+where $\mathcal B^{(b)}_k$ is the set of $r=\sum_{j<k}\varepsilon_jb^{\,j}$ with every $\varepsilon_j\in\set{0,1}$, and $\sigma(r)\defeq\varepsilon_0+\cdots+\varepsilon_{k-1}$.  The inner sums of \eqref{eq:radix-b-coefficient-formula} are \emph{not} the radix-$b$ Prouhet sums of \Cref{thm:radix-b-prouhet}: the refinement equation delivers the factor $1-y^{\,b^{j}}$, whose digit alphabet is $\set{0,1}$, whereas $\tau^{(b)}$ arises from $\sum_{a<b}\omega^ay^{\,ab^{j}}$, whose digit alphabet is $\set{0,\ldots,b-1}$.  The two coincide exactly when $\set{0,1}=\set{0,\ldots,b-1}$, that is when $b=2$; there $\mathcal B^{(2)}_k=\set{0,1,\ldots,2^k-1}$, $(-1)^{\sigma(r)}=\tau_r$, $b^{2\binom k2}=4^{\binom k2}$, and \eqref{eq:radix-b-coefficient-formula} is \eqref{eq:dyadic-gaussian-thue-morse}.
+
+\emph{What is genuinely rigid is the passage from coefficients to values.}  The simplex cut in the proof of \Cref{thm:fabius-inverse-dyadic} uses only $b^{\,n-j}\ge1$ and a threshold at most $1$, so it survives at every radix:
+\[
+ \mathbb P\bigl(Y_b\le b^{-n}\bigr)
+ =\frac{\mathbb E\bigl[(1-Y_b)^n\bigr]}{n!\;b^{\binom n2}} .
+\]
+Turning the right-hand side into the single moment $\mathbb E\bigl(Y_b^{\,n}\bigr)$ uses the reflection $1-Y_b\overset d=Y_b$.  But $Y_b$ has support $[0,1/(b-1)]$ while $1-Y_b$ has support $[1-1/(b-1),1]$, and these agree only when $1/(b-1)=1$.  Only at $b=2$, where the geometric mass $\sum_{j\ge1}b^{-j}$ is exactly $1$ and $Y_2=X_{1/2}$ is symmetric about $1/2$ by \eqref{eq:geometric-uniform-mean-symmetry}, does \eqref{eq:radix-b-coefficient-formula} evaluate a distribution function.  For $b\ge3$ one still gets every value, since
+\[
+ F_{1/b}\bigl((b-1)b^{-n}\bigr)
+ =\mathbb P\bigl(Y_b\le b^{-n}\bigr)
+ =\frac1{b^{\binom n2}}\sum_{m=0}^{n}(-1)^m\binom nm\frac{m!}{n!}\,a^{(b)}_m\cdot n!\Big/n!,
+\]
+a binomial combination of $a^{(b)}_0,\ldots,a^{(b)}_n$ rather than the single coefficient $a^{(b)}_n$.  The $q$-binomial and the digital ingredients are therefore automatic at every radix; what singles out $b=2$ is the one normalization in which the dilation factor of \eqref{eq:geometric-uniform-fixed-point}, the digit alphabet of the refinement factor, and the right endpoint of the support all agree.
+% ed.: this remark absorbs the incoming \emph{Rigidity of the binary radix} and
+% ed.: the prime-power remark that closed the radix-$b$ section.  The incoming
+% ed.: version named 'a digital sign whose block exponential sum has a zero of
+% ed.: controlled order' as the obstruction; \Cref{thm:radix-b-prouhet} supplies
+% ed.: one at every radix, and \eqref{eq:radix-b-coefficient-formula} shows the
+% ed.: coefficient formula itself generalizes, so the obstruction had to be
+% ed.: relocated to the endpoint bridge.  Formula
+% ed.: \eqref{eq:radix-b-coefficient-formula} was verified as an exact rational
+% ed.: identity for $b=2,3,4,5$, all $n\le6$ and $\theta=0,1,-3/7$.
+\end{remark}
+
+% ---- merged block M19 ----
+\section{The geometric row as a summability kernel}
+\index{Toeplitz theorem!bounded-variation rows}
+
+The Lagrange row $\lambda_{n,k}^{(q)}$ of \eqref{eq:geometric-lagrange-weight} was used
+in \Cref{chap:geometric-filters} for exactness.  It also has an exact and uniformly
+bounded $\ell^1$ norm, which turns it into a regular summability kernel.
+
+\begin{theorem}[Row mass and total variation]\label{thm:geometric-row-variation}
+Let $0<q<1$.  Then, for every $n\ge0$,
+\begin{align}
+ \sum_{k=0}^{n}\lambda_{n,k}^{(q)}&=1,
+ \label{eq:geometric-row-mass}\\
+ \sum_{k=0}^{n}\bigl|\lambda_{n,k}^{(q)}\bigr|
+ &=\frac{(-q;q)_n}{(q;q)_n}
+ \ \le\ \frac{(-q;q)_\infty}{(q;q)_\infty}<\infty .
+ \label{eq:geometric-row-variation}
+\end{align}
+At $q=1/2$ the supremum equals $(-1/2;1/2)_\infty/(1/2;1/2)_\infty
+=8.25598793577825\ldots$, and the elementary bound
+\begin{equation}\label{eq:halfbase-row-variation-bound}
+ \sum_{k=0}^{n}\bigl|\lambda_{n,k}^{(1/2)}\bigr|
+ =3\prod_{r=2}^{n}\frac{1+2^{-r}}{1-2^{-r}}
+ \le3\e^{4/3}
+\end{equation}
+holds uniformly in $n$.
+\end{theorem}
+
+\begin{proof}
+By \Cref{thm:reversed-qbinomial} and \eqref{eq:geometric-lagrange-weight},
+\begin{equation}\label{eq:geometric-row-polynomial}
+ \sum_{k=0}^{n}\lambda_{n,k}^{(q)}z^k
+ =\frac1{(q;q)_n}\prod_{j=1}^{n}(z-q^j).
+\end{equation}
+Evaluating at $z=1$ gives $(q;q)_n/(q;q)_n=1$, which is
+\eqref{eq:geometric-row-mass}.  For $0<q<1$ the sign of $\lambda_{n,k}^{(q)}$ is
+$(-1)^{n-k}$, so $\bigl|\lambda_{n,k}^{(q)}\bigr|=(-1)^{n-k}\lambda_{n,k}^{(q)}$ and
+\[
+ \sum_{k=0}^{n}\bigl|\lambda_{n,k}^{(q)}\bigr|
+ =(-1)^n\sum_{k=0}^{n}\lambda_{n,k}^{(q)}(-1)^k
+ =\frac{(-1)^n}{(q;q)_n}\prod_{j=1}^{n}(-1-q^j)
+ =\frac{(-q;q)_n}{(q;q)_n},
+\]
+by \eqref{eq:geometric-row-polynomial} at $z=-1$.  The quotient increases in $n$ and
+converges to $(-q;q)_\infty/(q;q)_\infty$, finite because both products converge for
+$0<q<1$.
+
+At $q=1/2$ the factor with $r=1$ contributes $(1+1/2)/(1-1/2)=3$.  For $0\le x\le1/4$,
+\[
+ \log\frac{1+x}{1-x}=\int_{-x}^{x}\frac{\dd t}{1+t}\le\frac{2x}{1-x}\le\frac83x,
+\]
+so the logarithm of the remaining product is at most
+$\tfrac83\sum_{r\ge2}2^{-r}=4/3$.
+\end{proof}
+
+\begin{remark}[The half-base row in reversed coordinates]\label{rem:halfbase-row-reversal}
+Put
+\[
+ W_{n,j}:=\frac{(-1)^j2^{-\binom{j+1}{2}}}{(1/2;1/2)_n}\Qbinom nj{1/2},
+ \qquad 0\le j\le n.
+\]
+The symmetry $\Qbinom nj{1/2}=\Qbinom n{n-j}{1/2}$ gives
+$W_{n,j}=\lambda_{n,n-j}^{(1/2)}$, and \eqref{eq:geometric-row-polynomial} becomes
+\[
+ \sum_{j=0}^{n}W_{n,j}z^j=\frac{(z/2;1/2)_n}{(1/2;1/2)_n}.
+\]
+The two rows are reversals of one another, so \Cref{thm:geometric-row-variation} applies
+verbatim to either.
+\end{remark}
+
+% ---- merged block M20 ----
+\begin{theorem}[Bounded-variation tail rows]\label{thm:tail-row-toeplitz}
+Let $(x_m)_{m\ge0}$ converge to $L$ in a normed vector space.  For each $n$ let
+$u_{n,0},\ldots,u_{n,n}$ be scalars and $r(n,0),\ldots,r(n,n)$ nonnegative integers with
+\[
+ \sum_{j=0}^{n}u_{n,j}=1,
+ \qquad
+ \sup_n\sum_{j=0}^{n}\abs{u_{n,j}}\le M<\infty,
+ \qquad
+ \min_{0\le j\le n}r(n,j)\longrightarrow\infty .
+\]
+Then $\sum_{j=0}^{n}u_{n,j}x_{r(n,j)}\to L$ as $n\to\infty$.
+\end{theorem}
+
+\begin{proof}
+Unit row mass gives
+\[
+ \Bigl\|\sum_{j=0}^{n}u_{n,j}x_{r(n,j)}-L\Bigr\|
+ =\Bigl\|\sum_{j=0}^{n}u_{n,j}\bigl(x_{r(n,j)}-L\bigr)\Bigr\|
+ \le\sum_{j=0}^{n}\abs{u_{n,j}}\,\bigl\|x_{r(n,j)}-L\bigr\| .
+\]
+Given $\varepsilon>0$, choose $N$ with $\norm{x_m-L}<\varepsilon/M$ for all $m\ge N$.
+For all $n$ large enough, $r(n,j)\ge N$ for every $j$, so the right side is at most
+$M\cdot\varepsilon/M=\varepsilon$.
+\end{proof}
+
+\begin{corollary}[Gaussian averages of the spline approximants]\label{cor:gaussian-row-spline-average}
+Let $0<q<1$ and let $F_{q,N}$ be the distribution function of $X_{q,N}$.  For any
+integers $r(n,j)\ge n$,
+\[
+ \sup_{x\in\R}\left|\sum_{j=0}^{n}\lambda_{n,j}^{(q)}F_{q,r(n,j)}(x)-F_q(x)\right|
+ \longrightarrow0
+ \qquad(n\to\infty).
+\]
+\end{corollary}
+
+\begin{proof}
+Apply \Cref{thm:tail-row-toeplitz} in the Banach space of bounded functions on $\R$ with
+the supremum norm, to the sequence $x_m:=F_{q,m}$, which converges to $F_q$ by
+\eqref{eq:cdf-uniform-rate}.  The hypotheses hold by
+\Cref{thm:geometric-row-variation}, with $M=(-q;q)_\infty/(q;q)_\infty$, and
+$\min_jr(n,j)\ge n\to\infty$.
+\end{proof}
+
+% ---- merged block M21 ----
+\begin{principle}[One polynomial, two roles]\label{prin:row-exactness-stability}
+The single finite product $\prod_{j=1}^{n}(z-q^j)$, normalized by $(q;q)_n$, controls
+both exactness and stability of the geometric row:
+\begin{enumerate}
+\item its \emph{roots} $q,q^2,\ldots,q^n$ make the row an order-$n$ geometric
+finite-difference stencil, annihilating $q^{kd}$ for $1\le d\le n$
+(\Cref{thm:geometric-evaluation-zero}) and extracting one leading coefficient
+(\Cref{thm:geometric-prouhet});
+\item its \emph{endpoint values} at $z=1$ and $z=-1$ give unit row mass and the exact
+$\ell^1$ norm $(-q;q)_n/(q;q)_n$ (\Cref{thm:geometric-row-variation}), which are
+precisely the two hypotheses of \Cref{thm:tail-row-toeplitz}.
+\end{enumerate}
+Roots control vanishing moments; endpoint values control norms.
+\end{principle}
+
+\begin{proof}
+Combine \Cref{thm:geometric-evaluation-zero,thm:geometric-prouhet,thm:geometric-row-variation,thm:tail-row-toeplitz}.
+\end{proof}
+
+% ---- merged block M23 ----
+\begin{remark}[Where the analysis actually enters]\label{rem:dyadic-algebraic-layer}
+\index{formalization!dyadic Fabius layer}
+The dyadic results of this chapter split along the boundary recommended in
+\Cref{prin:proof-architecture}, and the split is sharper than it may look.  Each of
+\Cref{thm:geometric-prouhet,thm:gaussian-coefficient-transfer,cor:fabius-centered-formula,cor:transfer-translation,thm:fabius-inverse-dyadic,prop:dyadic-taylor-reduction}
+is a finite identity between rational numbers, proved in polynomial rings and formal
+power series over $\Q$; none of them uses a convergence hypothesis, and each survives
+mapping into an arbitrary commutative $\Q$-algebra, exactly as in
+\Cref{rem:denominator-free-reversed}.  Analysis enters at precisely two points: the
+identification of $\mathcal A$ with $\mathbb E\e^{zX}$ in
+\Cref{thm:geometric-uniform-mgf}, and \Cref{thm:fabius-half-moment}, which converts the
+formal coefficient $\alpha_n$ into the value $F(2^{-n})$.  Every closed formula above is
+the algebraic core composed with that single analytic bridge.  The formalization status
+of the individual statements is recorded in \Cref{app:lean-status}.
+\end{remark}
+
 \appendix
 
 \chapter{Formula atlas}\label{app:atlas}
