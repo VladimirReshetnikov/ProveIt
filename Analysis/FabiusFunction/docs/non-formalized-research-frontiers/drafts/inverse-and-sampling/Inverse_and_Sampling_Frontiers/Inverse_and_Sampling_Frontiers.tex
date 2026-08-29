@@ -1703,8 +1703,27 @@ cancel, and the exponent collapses by the identity $pr+\binom{p-r}{2}=\binom{p}{
 (\nolinkurl{Fabius.plateau_exponent_identity}; the hypothesis $r\le p$ is necessary, the
 sides differing already at $p=1$, $r=2$).  Striking, and recorded separately: the constant
 depends on $r$ alone and not on the level of the spline
-(\nolinkurl{Fabius.iteratedDeriv_fabiusUniformSpline_dyadic_indep_order}).  What remains is
-only the corresponding statement for the limit function rather than the finite spline.
+(\nolinkurl{Fabius.iteratedDeriv_fabiusUniformSpline_dyadic_indep_order}).
+
+The relation to the limit function deserves a precise statement, because the two halves
+were in quite different states.  For the limit function the corpus \emph{already} had the
+value at the anchor: \(\partial^{k}\Up_{\mathrm{ext}}(2^{-k})=2^{\binom{k+1}{2}}\)
+(\nolinkurl{Fabius.iteratedDeriv_extendedFabius_inv_two_pow}, in \path{GlobalBounds.lean}).
+What was missing, and is what the work above supplies, is the \emph{finite-spline} plateau ---
+the same constant on a whole cell rather than at one point.  \path{PlateauLimit.lean} then
+joins them: at every admissible level the spline's derivative at the anchor \emph{equals}
+the limit function's, exactly and with no error term
+(\nolinkurl{Fabius.iteratedDeriv_fabiusUniformSpline_eq_globalFabius_dyadic},
+\nolinkurl{Fabius.iteratedDeriv_fabiusReal_dyadic}), so the convergence in \(p\) is by an
+eventually constant sequence
+(\nolinkurl{Fabius.tendsto_iteratedDeriv_fabiusUniformSpline_dyadic}).
+
+That module also records why a \emph{neighbourhood} version cannot be had by intersecting
+the levels: the cells around a point shrink, and
+\(\bigcap_p\left(a-2^{-(p+1)},a+2^{-(p+1)}\right)=\{a\}\)
+(\nolinkurl{Fabius.iInter_plateauCell}).  What survives every level is a single point, not
+an interval --- so the anchor statement is the sharp one, and no derivative convergence away
+from the anchor is claimed or used.
 \end{obligation}
 
 \begin{obligation}[Algebraic inverse germ]
@@ -1775,8 +1794,29 @@ supplies the route that works with what the corpus does have: from \emph{monoton
 together with the local quadratic on the cell, the anchor value is attained exactly at
 \(\mathrm{quarterQuantile}(n)\)
 (\nolinkurl{Fabius.eq_quarterQuantile_of_monotoneOn_of_localPoly},
-\nolinkurl{Fabius.existsUnique_mem_Icc_localPoly_root}, \nolinkurl{Fabius.strictMonoOn_quarterCell_of_localPoly}).  So
-the only remaining gap is the closed-form cell-polynomial evaluation itself.
+\nolinkurl{Fabius.existsUnique_mem_Icc_localPoly_root}, \nolinkurl{Fabius.strictMonoOn_quarterCell_of_localPoly}).  That gap is now closed too.
+\path{QuarterCellEvaluation.lean} evaluates the cell polynomial in closed form:
+\[
+  \mathrm{fabiusUniformSpline}\,p\left(\tfrac14+z\right)
+  =\tfrac{5}{72}+z+4z^{2}-\tfrac49\,4^{-(p+1)},
+  \qquad 2\le p,\quad \lvert z\rvert\le 2^{-(p+1)}
+\]
+(\nolinkurl{Fabius.fabiusUniformSpline_quarter_cell},
+\nolinkurl{Fabius.fabiusUniformSpline_eq_quarterLocalPoly}).  The hypothesis \(2\le p\) is
+necessary and the file says so with theorems rather than prose: the display fails at
+\(p=0,1\) (\nolinkurl{Fabius.not_forall_quarterLocalPoly_of_lt_two}) and the \(4^{-p}\)
+misreading already fails at \(p=2\)
+(\nolinkurl{Fabius.fabiusUniformSpline_two_quarter_ne_shifted_exponent}).  Supplying this to
+the conditional theorems makes them unconditional: the anchor value is attained exactly at
+\(\mathrm{quarterQuantile}(n)\) and nowhere else in the cell
+(\nolinkurl{Fabius.existsUnique_fabiusUniformSpline_eq_quarterAnchor},
+\nolinkurl{Fabius.eq_quarterQuantile_of_fabiusUniformSpline_eq},
+\nolinkurl{Fabius.fabiusUniformSpline_quarterQuantile}).  The chain from the algebraic germ
+to the displayed quantile formula is therefore complete for the finite spline.
+
+The two closed-form half-shifted Thue--Morse moments that drive it are of independent
+interest, being one and two orders \emph{above} the Prouhet vanishing threshold:
+(\nolinkurl{Fabius.sum_thueMorseSign_mul_half_shift_pow_succ}, \nolinkurl{Fabius.sum_thueMorseSign_mul_half_shift_pow_add_two}).
 \end{obligation}
 
 \begin{remark}[Formalized geometric Lagrange core]
