@@ -97,7 +97,7 @@ the principal or the lower branch value at `z`. -/
 theorem eq_principalLambertW_or_eq_lowerLambertW {z w : ℝ}
     (hwz : w * Real.exp w = z) :
     w = principalLambertW z ∨ w = lowerLambertW z := by
-  rcases le_or_lt w (-1) with hw | hw
+  rcases le_or_gt w (-1) with hw | hw
   · refine Or.inr (lowerLambertW_unique_of_mem_Ico ⟨?_, ?_⟩ hw hwz)
     · rw [← hwz]
       exact neg_exp_neg_one_le_mul_exp w
