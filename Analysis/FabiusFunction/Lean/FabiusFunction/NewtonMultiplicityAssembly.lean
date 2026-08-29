@@ -213,8 +213,13 @@ iterated forward differences at `0`:
 
 This is `weight_shift_eq_sum_fwdDiff` based at `0`; it exhibits
 `Δʳa 0` as a valid choice of the volume's coefficients `c r`.  That
-the choice is forced — that `Δˢ` applied to a Newton sum returns
-`c s` — is not formalized here. -/
+the choice is *forced* — that `Δˢ` applied to a Newton sum returns
+`c s` — is not proved here, but it is proved, in
+`FabiusFunction.NewtonCoefficientUniqueness`
+(`fwdDiff_iter_newtonCombination_zero`), which also runs the round
+trip: expanding a weight sequence by this lemma and inverting returns
+its iterated forward differences (`fwdDiff_iter_weight_zero`).  So
+`Δʳa 0` is the unique choice. -/
 theorem weight_eq_sum_choose_fwdDiff {G : Type*} [AddCommGroup G]
     (a : ℕ → G) (m : ℕ) :
     a m = ∑ r ∈ range (m + 1), m.choose r • Δ_[1]^[r] a 0 := by

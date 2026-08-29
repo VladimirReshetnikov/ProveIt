@@ -484,11 +484,30 @@ with $a_h\ne0$
 (\lean{Fabius.generalizedRvachevProduct\_eq\_zero\_iff}) --- as is the one-step
 refinement law (\lean{Fabius.generalizedRvachevProduct\_two\_mul}).
 
-What is \emph{not} formalized is the analytic and probabilistic content of the theorem:
-locally uniform convergence and hence entirety, the support statement (i), the random
-variable $X_a$ and the convolution reading of (iii), and the smoothness dichotomy (iv).
-The module proves the algebraic and convergence skeleton on which those would rest, and
-its docstring says so explicitly.
+Assertion (ii) is formalized as well, in \path{GeneralizedRvachevEntire.lean}: the product
+converges locally uniformly on every ball
+(\lean{Fabius.hasProdLocallyUniformlyOn\_generalizedRvachevProduct}) and $\Phi_a$ is therefore
+entire (\lean{Fabius.generalizedRvachevProduct\_differentiable}).  With that in hand the zero
+divisor is complete --- $\Phi_a$ vanishes exactly at the nonzero integers $n$ with
+$m_a(\lvert n\rvert)>0$, to order exactly $m_a(\lvert n\rvert)$, and nowhere else
+(\path{GeneralizedZeroDivisor.lean}).
+
+The characteristic-function reading of (i) now has all three of its prerequisites, though not
+the statement itself: $\Phi_a(0)=1$, continuity from entirety, and
+\[
+ \lVert\Phi_a(x)\rVert\le1
+ \qquad\text{for every real }x
+\]
+(\lean{Fabius.norm\_generalizedRvachevProduct\_ofReal\_le\_one},
+\path{GeneralizedRealBound.lean}), which had been missing at every weight, the constant one
+included.  The bound is attained at $x=0$, so it is sharp.
+
+What remains \emph{not} formalized is the probabilistic content proper: the support statement
+(i) --- that $R_a$ is the support radius rather than merely the number $A_a(1/2)$ --- the
+random variable $X_a$ and the convolution reading of (iii), and the smoothness dichotomy (iv).
+Assertion (iii) is formal as an identity of products but not as a statement about laws.  The
+modules prove the algebraic, convergence and analytic skeleton on which the probabilistic
+layer would rest, and their docstrings say so explicitly.
 \end{theorem}
 
 \begin{proof}
@@ -606,8 +625,30 @@ $1-z^2/n^2=(z+n)\cdot\bigl(-(z-n)/n^2\bigr)$
 (\lean{Fabius.canonicalComplexFactor\_eq\_add\_mul}) is the same one line of algebra as
 its sibling, so both halves of $\ord_{z=\pm n}$ are proved directly and the appeal to
 $\Phi_a(-z)=\Phi_a(z)$ (\lean{Fabius.generalizedRvachevProduct\_neg},
-\path{LobeSignNegative.lean}) is not needed.  At the \emph{constant} weight the
-sharper integer-indexed form remains available:
+\path{LobeSignNegative.lean}) is not needed.
+
+Third, the order statement now has a companion that completes it into a divisor.
+\path{GeneralizedRvachevProduct.lean} pins the zero set in \emph{scale} coordinates,
+$\exists h,\ a_h\ne0$ and $\exists k\ne0,\ z=k2^h$, and its header recorded that the
+translation into arithmetic coordinates was not carried out and the multiplicities not
+computed.  \path{GeneralizedZeroDivisor.lean} does both:
+\[
+ \Phi_a(z)=0
+ \iff
+ \exists\,n\in\Z,\ n\ne0,\ z=n,\ m_a(\lvert n\rvert)\ne0
+\]
+(\lean{Fabius.generalizedRvachevProduct\_eq\_zero\_iff\_int}), and
+$\ord_{z=n}\Phi_a=m_a(\lvert n\rvert)$ at every nonzero integer, both signs in one
+statement (\lean{Fabius.analyticOrderAt\_generalizedRvachevProduct\_int}).  Since $\Phi_a$
+is entire, the two together are its complete divisor: it vanishes precisely on
+$\{n\in\Z:n\ne0,\ m_a(\lvert n\rvert)>0\}$, to exactly that order, and nowhere else in
+$\C$ --- in particular nowhere off the real axis
+(\lean{Fabius.generalizedRvachevProduct\_ne\_zero\_of\_not\_int}).  The bridge between the
+two coordinate systems is arithmetic rather than analytic: $m_a(m)$ is a sum of naturals
+over $h\le\vtwo(m)$, so it is nonzero exactly when some $a_h$ with $2^h\mid m$ is
+(\lean{Fabius.weightedScaleMultiplicity\_two\_ne\_zero\_iff}).
+
+At the \emph{constant} weight the sharper integer-indexed form remains available:
 \lean{Fabius.analyticOrderAt\_generalizedRvachevProduct\_one} reads
 $\ord_{z=m}\Phi_{\mathbf1}=m_{\mathbf1}(\lvert m\rvert)$ for every nonzero integer $m$, chaining
 \lean{Fabius.analyticOrderAt\_rvachevFourierProduct\_int} (\path{IntegerZeroAnalyticOrder.lean})
@@ -824,9 +865,27 @@ vanishes, which is the volume's own scope on that range.
 Two residues are stated rather than glossed.  At $x=0$ no factor vanishes and
 $\Phi_a(0)=1$, but the hypothesis $m_a(0)=a_0$ need not hold, so that point is closed by a
 separate lemma (\lean{Fabius.canonicalRealProduct\_zero\_eq\_one}) rather than by the theorem
-above.  Negative arguments are not treated at all: $\Phi_a$ is even, so the law there reads
-$\varepsilon_a(\lfloor\lvert x\rvert\rfloor)$ rather than $\varepsilon_a(\lfloor x\rfloor)$, and neither
-file states it.
+above.  Negative arguments are carried by evenness of $\Phi_a$
+(\lean{Fabius.generalizedRvachevProduct\_neg}, \path{LobeSignNegative.lean}), and there the law
+reads $\varepsilon_a(\lfloor\lvert x\rvert\rfloor)$ rather than $\varepsilon_a(\lfloor x\rfloor)$:
+on $-(N+1)<x<-N$ the reflected point lies in the lobe $(N,N+1)$, so the sign is
+$\varepsilon_a(N)$, while $\lfloor x\rfloor=-(N+1)$ is not even a natural number.  We write
+$\lfloor x\rfloor$ because we have $x\ge0$ in mind.
+
+Assembled, these pieces give the law on the whole axis with no hypothesis at all, in
+\path{LobeSignComplete.lean}:
+\[
+ \Psi_a(x)=0
+ \quad\text{or}\quad
+ 0<\varepsilon_a\bigl(\lfloor\lvert x\rvert\rfloor\bigr)\,\Psi_a(x),
+ \qquad x\in\R
+\]
+(\lean{Fabius.parityCharacter\_mul\_canonicalRealProduct\_dichotomy}), the first alternative
+occurring exactly when $\lvert x\rvert$ is a positive integer of nonzero multiplicity
+(\lean{Fabius.canonicalRealProduct\_eq\_zero\_iff\_of\_nonneg}).  There is no third
+possibility and no remaining gap; what made the assembly possible is the complete zero set of
+\path{GeneralizedZeroDivisor.lean}, without which the exceptional set could be excluded but not
+identified.
 \end{theorem}
 
 \begin{proof}
@@ -1687,11 +1746,40 @@ family.  The crux is a single identity, and it is what makes the Newton basis th
 adapted to the dyadic problem: at $q=1/2$ \emph{every} Newton-basis generating function
 $q^r/(1-q)^{r+1}$ takes the value $2$, independently of $r$
 (\lean{Fabius.pow\_div\_one\_sub\_pow\_at\_half}), so the series collapses to the plain
-coefficient sum (\lean{Fabius.tsum\_newtonPoly}, \lean{Fabius.half\_mul\_tsum\_newtonPoly\_half}).  Reading that
-number as the \emph{support radius} of $\Phi_P$ is not formalized.  The product $\Phi_P$ is
-available (\path{GeneralizedRvachevProduct.lean}); what is missing is the \emph{support}
-statement of \cref{p1:thm:master-probability}, an analytic and probabilistic fact about
-the associated random variable rather than a property of the product itself.
+coefficient sum (\lean{Fabius.tsum\_newtonPoly}, \lean{Fabius.half\_mul\_tsum\_newtonPoly\_half}).
+
+Reading that number as the \emph{support radius} of $\Phi_P$ is half formalized.  The analytic
+half is, and needs no probability: by Paley--Wiener a law carried by $[-R,R]$ has a
+characteristic function of exponential type at most $R$, and that growth bound follows from the
+product directly,
+\[
+ \lVert\Phi_a(z)\rVert\le\exp\bigl(\pi\lVert z\rVert R_a\bigr),
+ \qquad R_a=\sum_{h\ge0}a_h2^{-h},
+\]
+for every $z\in\C$ (\lean{Fabius.norm\_generalizedRvachevProduct\_le\_exp},
+\path{GeneralizedExponentialType.lean}).  So $\Phi_a$ is entire of order at most one with type
+controlled by $R_a$, exactly as the support reading predicts.  The converse half --- that the
+type is no smaller, and that the law really is carried by $[-R_a,R_a]$ --- is the \emph{support}
+statement of \cref{p1:thm:master-probability}, a probabilistic fact about the associated random
+variable rather than a property of the product, and it remains unformalized.
+
+At the constant weight this says something checkable.  There $R_1=\sum_h2^{-h}=2$, so $\Phi$
+has exponential type at most $2\pi$ (\lean{Fabius.norm\_rvachevFourierProduct\_le\_exp},
+\path{ClassicalGrowth.lean}), and Paley--Wiener reads type $2\pi$ as support radius $1$ --- which
+is where the up-function actually lives, as \path{ProbabilityRepresentation.lean} establishes by
+a route that does not use any of this.  The agreement is a check on the normalization rather
+than a new claim about it.  The same module records
+$\lVert\Phi(x)\rVert\le1$ on the real axis
+(\lean{Fabius.norm\_rvachevFourierProduct\_ofReal\_le\_one}), which the corpus had not had for
+$\Phi$ either.
+
+The sharpness of the factor estimate is the whole difficulty and is worth recording, since the
+obvious routes all fail: any constant $C>1$ in $\lVert\sinc w\rVert\le Ce^{\lVert w\rVert}$
+compounds to $C^{\sum_ha_h}$ across the factors and diverges whenever the weight has infinite
+total mass.  Writing $\sin$ as a difference of exponentials gives $e^{3\lVert w\rVert}$, which
+would inflate the type threefold.  The constant $1$ comes from comparing the sine series
+termwise against the hyperbolic sine, $\lVert\sin w\rVert\le\sinh\lVert w\rVert$, followed by
+$\sinh t\le te^t$ --- which is $1-2t\le e^{-2t}$ rearranged.
 
 The spectral zeta \eqref{p1:eq:ZP} \emph{is} formalized, in \path{NewtonSpectralZeta.lean},
 and it is exactly the composite of two identities already in hand: the general-weight zeta
@@ -2002,6 +2090,15 @@ Every odd integer and every integer with $\nu_2(n)\le2$ remains a simple zero.  
 extra multiplicity occurs at $n=8$, where the order is $2$; at $n=16$ it is $5$; at
 $n=32$ it is $11$.  Yet the same entire function is the quotient
 $\Phi_1\Phi_3/\Phi_2$.
+
+Every number in this example is checked against the general formula in
+\path{AlternatingNewtonFamily.lean}: the weight values
+(\lean{Fabius.alternatingNewtonWeight\_two\_values}), the simple-zero range
+(\lean{Fabius.weightedScaleMultiplicity\_alternatingNewton\_two\_of\_le}), and the three
+multiplicities $2$, $5$, $11$, which are $1+\binom{\nu_2(n)}3$ at $\nu_2=3,4,5$.  Since the
+example was worked by hand and the formula proved independently, the agreement is evidence for
+both.  The final sentence is the one part not formalized: reading $\Psi_2$ as the quotient
+$\Phi_1\Phi_3/\Phi_2$ needs a signed exponent, which $\Phi_a$ does not accept.
 \end{example}
 
 \subsection{Automatic lobe signs and sparse Prouhet order}
@@ -3198,10 +3295,30 @@ presentations, all residual moments and their sign, and the exact finite
 \(\ell^1\) norm, including dedicated \(q=1/4\) corollaries.  The
 generic transformed-error series is now formalized in
 \path{AnalyticSeriesFilter.lean} under unconditional summability, with
-nonzero-weight hypotheses only at samples that actually contribute.  Identifying
-its coefficients with the sinc-product tail, and proving the report's signs,
-remainder and bracketing bounds, uniform spline limits, infinite condition-number
-limit, and inverse-function consequences, remain unformalized.
+nonzero-weight hypotheses only at samples that actually contribute.
+
+The infinite condition-number limit is formalized too, in
+\path{LimitConditionNumber.lean}, which lets $n$ grow in the closed form
+$\sum_{j\le n}\lvert w_q(n,j)\rvert=(-q;q)_n/(q;q)_n$ of
+\path{GeneralQConditionNumber.lean}: both families are multipliable, the finite
+symbols converge to $(a;q)_\infty$, and the condition numbers converge to
+$(-q;q)_\infty/(q;q)_\infty$
+(\lean{Fabius.tendsto\_sum\_abs\_qToeplitzWeight}) on the whole range
+$0\le q<1$.  The crux is positivity of the denominator, and it is worth
+recording how it is obtained, because the obvious route fails: the one-shot
+Weierstrass product bound has deficit budget $q/(1-q)$, which already reaches
+$1$ at $q=\tfrac12$, and its vacuity at $q=\tfrac34$ is recorded as a theorem
+rather than as prose (\lean{Fabius.weierstrass\_bound\_vacuous\_at\_three\_quarters}).
+Positivity instead comes from summability of the logarithms, which needs no
+threshold at all (\lean{Fabius.qPochhammerInf\_pos}).  The limit is bounded below
+by $1$, attained exactly at $q=0$, and by $1/(1-q)$
+(\lean{Fabius.one\_div\_one\_sub\_le\_qConditionNumberLimit}); it is unbounded as
+$q\uparrow1$, and at $q=999/1000$ is already at least $1000$.
+
+Identifying the coefficients of the transformed-error series with the
+sinc-product tail, and proving the report's signs, remainder and bracketing
+bounds, uniform spline limits, and inverse-function consequences, remain
+unformalized.
 
 
 

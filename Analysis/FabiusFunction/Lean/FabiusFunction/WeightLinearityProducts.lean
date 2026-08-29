@@ -6,11 +6,13 @@ import FabiusFunction.GeneralizedRvachevProduct
 `GeneralizedRvachevProduct` proves that `a ↦ Φ_a` turns a *sum* of two
 admissible weights into a *product*
 (`generalizedRvachevProduct_add`).  The exponents volume needs the
-consequence of that repeatedly, and names the gap exactly: of the
-finite-difference factorization it says the exponent-level content is
-formal "so what is missing is exactly the passage from the exponent
-identity to the product identity, not the combinatorics", and
-`generalizedRvachevProduct_two_mul` records the same thing.
+consequence of that repeatedly, and named the gap exactly: of the
+finite-difference factorization it said the exponent-level content was
+formal, so that "what is missing is exactly the passage from the
+exponent identity to the product identity, not the combinatorics".
+The docstring of `generalizedRvachevProduct_two_mul` recorded the same
+thing.  (Both have since been updated to point here, so neither now
+reads as written above.)
 
 This module supplies the passage once and in general.  If a weight is
 any `ℕ`-linear combination of admissible weights,
