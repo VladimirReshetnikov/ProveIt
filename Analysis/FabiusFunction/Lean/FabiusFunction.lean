@@ -1,5 +1,6 @@
 import FabiusFunction.CompleteHomogeneous
 import FabiusFunction.FiniteQBinomialCore
+import FabiusFunction.GaussianBinomialAtOne
 import FabiusFunction.GeometricCompleteHomogeneous
 import FabiusFunction.GeometricLagrange
 import FabiusFunction.LagrangeResidualMoments
