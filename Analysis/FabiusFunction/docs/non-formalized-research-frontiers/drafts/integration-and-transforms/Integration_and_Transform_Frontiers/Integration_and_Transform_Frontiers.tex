@@ -498,8 +498,15 @@ integrates the Cauchy kernel to a logarithm,
 the refinement tail gives \(R_1(z)=\E\log\frac{2z-X+1}{2z-X-1}\) for real \(z>1\)
 (\nolinkurl{Fabius.integral\_inv\_sub\_eq\_integral\_log}) --- the display of
 \cref{p10:thm:Cauchy-fixed-hierarchy}'s fixed-point equation, proved through the
-convolution form of the refinement.  The differentiated hierarchy, the complex-\(z\)
-forms, and the generalized-order layer remain open.
+convolution form of the refinement.  The hierarchy itself follows by the same
+conditioning, with no differentiation under the integral:
+\path{StieltjesResolventHierarchy.lean} proves
+\(R_{n+1}(z)=\tfrac{2^n}{n}\bigl(R_n(2z-1)-R_n(2z+1)\bigr)\) for every \(n\ge1\) and real
+\(z>1\) (\nolinkurl{Fabius.integral\_pow\_inv\_sub\_succ}), from the exact digit-level kernel
+integral \(\int_{-1/2}^{1/2}(c-u)^{-(n+1)}\dd u=\bigl((c-\tfrac12)^{-n}-(c+\tfrac12)^{-n}\bigr)/n\)
+(\nolinkurl{Fabius.integral\_pow\_inv\_sub\_uniform\_half}) and the integrability of all
+resolvent powers off the support (\nolinkurl{Fabius.integrable\_pow\_inv\_sub\_rvachevMeasure}).
+The complex-\(z\) forms and the generalized-order layer remain open.
 
 \path{CauchyRenormalization.lean} adds five public theorems.  The declarations
 \path{Fabius.mapsTo_rvachevCauchyDomain_two_mul_add_one} and
