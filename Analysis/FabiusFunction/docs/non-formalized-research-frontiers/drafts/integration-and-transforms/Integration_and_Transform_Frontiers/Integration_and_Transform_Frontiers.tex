@@ -565,9 +565,30 @@ and the far-field localisation \(\int_{\lvert t-x\rvert\ge\delta}\le\varepsilon/
 (\nolinkurl{Fabius.setIntegral\_poisson\_far\_le}, \nolinkurl{Fabius.tendsto\_setIntegral\_poisson\_far}) ---
 the concentration half of an approximate identity.  Consequently \(-\Ima R(x+i\varepsilon)/\pi\)
 is the up-measure integral of a probability density and lies in \([0,1/(\pi\varepsilon)]\)
-(\nolinkurl{Fabius.inv\_pi\_mul\_neg\_im\_rvachevCauchyTransform\_mem\_Icc}).  The normalisation
-half of the approximate identity, and the Stieltjes--Perron inversion theorem itself,
-remain open.
+(\nolinkurl{Fabius.inv\_pi\_mul\_neg\_im\_rvachevCauchyTransform\_mem\_Icc}).
+
+Both halves of the approximate identity are now formal.  \path{PoissonApproximateIdentity.lean}
+supplies the Lebesgue-side tail \emph{exactly}, not as an estimate: each half-line integrates
+to \(\pi/2-\arctan(\delta/\varepsilon)\)
+(\nolinkurl{Fabius.setIntegral\_poisson\_kernel\_Ioi}, \nolinkurl{Fabius.setIntegral\_poisson\_kernel\_Iic}),
+so the two-sided tail is \(1-\tfrac{2}{\pi}\arctan(\delta/\varepsilon)\)
+(\nolinkurl{Fabius.setIntegral\_poisson\_density\_compl\_Ioo}) and the near mass
+\(\tfrac{2}{\pi}\arctan(\delta/\varepsilon)\); letting \(\varepsilon\to0^{+}\) gives the concentration
+(\nolinkurl{Fabius.tendsto\_setIntegral\_poisson\_density\_Ioo}, and the packaged
+\nolinkurl{Fabius.poisson\_kernel\_approximate\_identity}).  Two theorems are carried purely to
+keep the reading honest: the tail is \emph{strictly positive} at every \(\varepsilon>0\) and
+\(\delta>0\), so \(0\) is a limit and never a value
+(\nolinkurl{Fabius.setIntegral\_poisson\_density\_compl\_Ioo\_pos}), and at \(\delta=\varepsilon\) the
+tail is exactly \(1/2\) (\nolinkurl{Fabius.setIntegral\_poisson\_density\_compl\_Ioo\_self}) --- a
+calibration that any sign or factor-of-two slip would break.
+
+\path{PoissonMassSwap.lean} supplies the other variable: for each fixed height the Poisson
+extension of the up-measure is itself a probability density in \(x\),
+\(\int_{\R}-\tfrac1\pi\Ima R(x+i\varepsilon)\dd x=1\)
+(\nolinkurl{Fabius.integral\_inv\_pi\_mul\_neg\_im\_rvachevCauchyTransform\_eq\_one},
+\nolinkurl{Fabius.integral\_neg\_im\_rvachevCauchyTransform\_eq\_pi}), by a Tonelli swap over
+the nonnegative kernel.  The Stieltjes--Perron inversion theorem itself remains open, but
+its two analytic inputs no longer do.
 
 \path{CauchyRenormalization.lean} adds five public theorems.  The declarations
 \path{Fabius.mapsTo_rvachevCauchyDomain_two_mul_add_one} and
