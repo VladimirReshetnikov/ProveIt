@@ -49,6 +49,7 @@ namespace Fabius
 /-- The length-`ℓ` window of the Thue–Morse word at position `i`. -/
 def thueMorseWindow (ℓ i : ℕ) : Fin ℓ → ℕ := fun j => thueMorseBit (i + j)
 
+/-- Evaluating a Thue--Morse window reads the bit at the translated index. -/
 @[simp] theorem thueMorseWindow_apply (ℓ i : ℕ) (j : Fin ℓ) :
     thueMorseWindow ℓ i j = thueMorseBit (i + j) := rfl
 

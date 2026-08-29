@@ -13,8 +13,9 @@ gate a commit alongside `audit_crosswalk_names.py`.
 """
 import io, os, re, sys
 
-ROOT = (r'C:/ProveIt/.claude/worktrees/fabius-function-formalization-4a6355'
-        r'/Analysis/FabiusFunction/Lean')
+HERE = os.path.dirname(os.path.abspath(__file__))
+FABIUS_ROOT = os.path.abspath(os.path.join(HERE, '..', '..'))
+ROOT = os.path.join(FABIUS_ROOT, 'Lean')
 PKG = os.path.join(ROOT, 'FabiusFunction')
 FACADE = os.path.join(ROOT, 'FabiusFunction.lean')
 
