@@ -497,7 +497,13 @@ At `a h = 1` the right-hand side describes the same subset of `ℂ` as
 nonzero integer, and conversely every `k · 2 ^ h` with `k ≠ 0` is a
 nonzero integer — but that
 identification of the two descriptions is not carried out here, and
-the multiplicity of each zero is not computed here either. -/
+the multiplicity of each zero is not computed here either.
+
+Both are carried out downstream, at general weight, in
+`FabiusFunction.GeneralizedZeroDivisor`: the arithmetic form of the
+zero set is `generalizedRvachevProduct_eq_zero_iff_int`
+(`Φ_a(z) = 0 ↔ ∃ n ≠ 0, z = n ∧ m_a(|n|) ≠ 0`) and the multiplicity
+is `analyticOrderAt_generalizedRvachevProduct_int`. -/
 theorem generalizedRvachevProduct_eq_zero_iff
     (a : ℕ → ℕ) (ha : Summable fun h : ℕ => (a h : ℝ) / 2 ^ h)
     (z : ℂ) :
