@@ -643,7 +643,18 @@ $(\bar a_h)_{h\ge0}$ is eventually periodic.  Both statements are \statusproved.
 $a_h\equiv1$ the sign law \eqref{p1:eq:sign-master} is formalized as
 \lean{Fabius.rvachevFourierProduct_eq_thueMorse_sign_mul_norm} (\lean{ThueMorseLobeSign.lean}),
 in the equivalent form $\Phi(x)=(-1)^{\wt(N)}\lVert\Phi(x)\rVert$ on the lobe $(N,N+1)$.  The
-general parity character \eqref{p1:eq:epsilon-a} is not formalized, and neither is the automaticity
+general parity character \eqref{p1:eq:epsilon-a} is now formalized as \lean{Fabius.parityCharacter}
+(\lean{ParityCharacter.lean}).  Because $b_h(N)=1$ exactly when $h$ lies in the bit support
+of $N$, the exponent is a plain sum of weights over that support, and the corpus's
+Boolean-cube machinery applies verbatim: \lean{Fabius.parityCharacter\_const\_one} recovers the
+Thue--Morse sign at $a_h\equiv1$, \lean{Fabius.parityCharacter\_mod\_two} confirms that only the
+parity word $(\bar a_h)$ enters, and
+\lean{Fabius.prod\_one\_add\_neg\_one\_pow\_eq\_sum\_parityCharacter} gives the weighted product
+identity
+$\prod_{j<m}\bigl(1+(-1)^{a_j}z^{2^j}\bigr)=\sum_{n<2^m}\varepsilon_a(n)z^n$
+over an arbitrary commutative ring --- which at $a_h\equiv1$ is the finite Thue--Morse
+product identity.  What remains unformalized is the sign law \eqref{p1:eq:sign-master}
+itself at general $a$, relating the character to $\sgn\Phi_a$, and the automaticity
 criterion, for want of any automatic-sequence or $2$-kernel theory in the library.
 \end{theorem}
 
