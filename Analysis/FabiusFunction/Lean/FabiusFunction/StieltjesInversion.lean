@@ -16,7 +16,8 @@ Stieltjes--Perron inversion runs on the kernel facts behind that
 display.  This module supplies them.
 
 * the kernel is strictly positive and bounded by `ε⁻¹` — sharply,
-  and the constant cannot be improved, since equality holds at `t = x` (attainment is recorded as `poisson_kernel_self`);
+  and the constant cannot be improved, since equality holds at
+  `t = x` (attainment is recorded as `poisson_kernel_self`);
 * off a `δ`-neighbourhood of `x` it is bounded by `ε/δ²`;
 * normalised by `π⁻¹` it is a probability density in `t`.  That
   density is exactly Mathlib's Cauchy law
@@ -33,11 +34,16 @@ display.  This module supplies them.
 ## Scope
 
 The Stieltjes--Perron inversion theorem itself is *not* proved
-here.  Neither is the Lebesgue-side approximate identity — the
-exact tail `∫_{|t-x| ≥ δ} π⁻¹ε/((x-t)²+ε²) dt = 1 - (2/π)·arctan
-(δ/ε)` — which needs the `arctan` antiderivative on `Ioi`/`Iic`
-rather than the finite-measure bound used below.  Only the
-`μ_up`-side localisation is established.
+here; it is `FabiusFunction.StieltjesPerron`.  Neither is the
+Lebesgue-side approximate identity — the exact tail
+`∫_{|t-x| ≥ δ} π⁻¹ε/((x-t)²+ε²) dt = 1 - (2/π)·arctan (δ/ε)` —
+which needs the `arctan` antiderivative on `Ioi`/`Iic` rather than
+the finite-measure bound used below; that is
+`FabiusFunction.PoissonApproximateIdentity`, which imports this
+module and proves the tail as
+`Fabius.setIntegral_poisson_kernel_compl_Ioo` and the identity as
+`Fabius.poisson_kernel_approximate_identity`.  What is established
+*here* is the `μ_up`-side localisation.
 
 ## Main declarations
 
@@ -249,8 +255,9 @@ theorem setIntegral_poisson_far_le (F : BoundedFabius)
   exact le_trans step1 step3
 
 /-- **Far-field localisation for the up-measure** (the concentration
-half of an approximate identity; the normalisation half is
-Lebesgue-side and is not proved here): for a fixed
+half of an approximate identity; the Lebesgue-side half is
+`Fabius.poisson_kernel_approximate_identity`, in the downstream
+module `FabiusFunction.PoissonApproximateIdentity`): for a fixed
 `x` and a fixed neighbourhood radius `δ > 0`, the Poisson mass the
 kernel puts outside `(x-δ, x+δ)` tends to `0` as `ε → 0⁺`. -/
 theorem tendsto_setIntegral_poisson_far (F : BoundedFabius)
