@@ -40,6 +40,7 @@ import FabiusFunction.PolynomialExpectationCumulant
 import FabiusFunction.ThueMorseBitSupport
 import FabiusFunction.AffineDifferenceOrbit
 import FabiusFunction.ThueMorseBooleanCube
+import FabiusFunction.BitPositionGenerating
 import FabiusFunction.ThueMorseValuation
 import FabiusFunction.ThueMorseDigits
 import FabiusFunction.ThueMorseEnumerators
