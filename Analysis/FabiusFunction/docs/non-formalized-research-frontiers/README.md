@@ -140,20 +140,28 @@ Laplace/vertical-line dual, geometric multisection, the two-nome
 Pochhammer–Prouhet partition function, the exact inverse-geometric
 endpoint lattice with its jets and two-term asymptotics, and the
 resolution of the periodic-cocycle conjecture via Part VI's exact
-Laplace decomposition.  Four revised or expanded editions of the atomic-functions
+Laplace decomposition.  Six revised or expanded editions of the atomic-functions
 reports were then merged into Part VI, adding the spectral
 Stieltjes–Wigert bridge, the distance-Mellin law, the q-Gaussian
 derivative Gram geometry with theta-function Riesz bounds, the
 log-Weibull jet-intermittency law, a proof of the Fup_n Edgeworth
-register conjecture, and — from the audit-aware expanded edition —
+register conjecture, then — from the audit-aware expanded editions —
 the closed Gaussian-binomial Gram–Schmidt orthogonalization with its
 Rogers–Szegő identification, the wrapped-heat-kernel circle model,
 the MacMahon determinant constant with triple-product Riesz bounds,
-and the overlap-regime theta conjecture.  For provenance the first of
+the physical-space Stieltjes–Wigert differential ladder (identified
+during the merge with the Gram–Schmidt vectors, a check that caught
+and repaired a sign-convention slip in that theorem's first
+printing), the derivative-jet Gram determinants, the autocorrelation
+germ with zero Taylor radius, the exact derivative-energy
+factorization with its Bernoulli-convolution limit and entropy laws,
+and three register conjectures (overlap-regime theta, overlap-regime
+energy, explicit spectral null modes).  For provenance the first of
 these editions shipped the Russian source scan itself; the scan and
 the raw OCR were deleted once their recoverable content was merged
 and verified against the volume (SHA-256 hashes stay in the volume's
-provenance list; git history archives the files).  A new
+provenance list; git history archives the files; two later editions
+re-shipped byte-identical copies, likewise not retained).  A new
 `lambert-w/` group collected four independently written articles on
 the Lambert W function itself; they were merged editorially into the
 single consolidated volume `Lambert_W_Guide/` (the most complete
