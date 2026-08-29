@@ -140,7 +140,7 @@ Laplace/vertical-line dual, geometric multisection, the two-nome
 Pochhammer–Prouhet partition function, the exact inverse-geometric
 endpoint lattice with its jets and two-term asymptotics, and the
 resolution of the periodic-cocycle conjecture via Part VI's exact
-Laplace decomposition.  Six revised or expanded editions of the atomic-functions
+Laplace decomposition.  Eight revised or expanded editions of the atomic-functions
 reports were then merged into Part VI, adding the spectral
 Stieltjes–Wigert bridge, the distance-Mellin law, the q-Gaussian
 derivative Gram geometry with theta-function Riesz bounds, the
@@ -155,8 +155,15 @@ and repaired a sign-convention slip in that theorem's first
 printing), the derivative-jet Gram determinants, the autocorrelation
 germ with zero Taylor radius, the exact derivative-energy
 factorization with its Bernoulli-convolution limit and entropy laws,
-and three register conjectures (overlap-regime theta, overlap-regime
-energy, explicit spectral null modes).  For provenance the first of
+the nodal-polynomial and exact-inverse closure of the orthogonalization
+with its minimum-phase theta whitening filter, the Schur-minor strict
+total positivity of the derivative Gram kernel, the two-term jet tail
+with its sharp Orlicz threshold, the highest-jet partial-theta law with
+the joint jet–distance transform, and eight register conjectures
+(overlap-regime theta and energy, explicit spectral null modes, infinite
+dual tower, finite-section boundary layer, centered staircase limit set,
+partial-theta recreation of the complex dimensions, and graph-directed
+Gaussian-binomial prediction).  For provenance the first of
 these editions shipped the Russian source scan itself; the scan and
 the raw OCR were deleted once their recoverable content was merged
 and verified against the volume (SHA-256 hashes stay in the volume's

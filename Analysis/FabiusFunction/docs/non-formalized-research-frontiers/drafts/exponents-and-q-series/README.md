@@ -27,7 +27,7 @@ shifts, negative-branch and hierarchy formulas, and inverse/quantile versions
 remain research frontiers. These API claims were checked at source checkpoint
 `22f801337`.
 
-Member: `Exponents_and_q_Series_Frontiers` (211 pp, seven parts) — the
+Member: `Exponents_and_q_Series_Frontiers` (216 pp, seven parts) — the
 2026-08-28 consolidation of the two former drafts (Part I:
 Newton-basis frontiers; Part II: q-binomial Richardson), joined the
 same day by the eighth-wave report as **Part III** — *Finite Dyadic
@@ -221,6 +221,25 @@ convergence to the symmetric Bernoulli convolution (Cantor measure on
 Rényi/Shannon entropy laws `H_β(n) = H_β(0) + n log(2/a)` with the
 information-dimension reading, and the overlap-regime energy conjecture;
 their figures and data live under the matching `assets/` directories.
+Two expanded fifteenth-wave editions
+(`Atomic_Functions_Rvachev_Report_Expanded/`,
+`Atomic_Functions_Rvachev_qBinomial_Frontiers/`; both audit-aware; the
+first also re-shipped the two previous editions of its lineage alongside
+the scan/OCR — all byte-identical to recorded files, none retained)
+completed the orthogonalization and jet theory: the nodal-polynomial
+reading of the Gram–Schmidt residuals (interpolation at geometric nodes;
+pivot = value at the next node), the exact inverse transform with the
+entrywise-positive Cholesky factorization, the minimum-phase theta
+whitening filter `A_q(z) = 1/(−qz;q²)_∞` with
+`|A_q|²·ϑ₃ = (q²;q²)_∞` (the Szegő factor of the q-Gaussian covariance),
+Schur-minor strict total positivity of the kernel with
+oscillation/checkerboard consequences, the two-term jet tail with the
+sharp exponential-Orlicz threshold, and the highest-jet partial-theta law
+with the joint jet–distance transform (the distance-Mellin pole lattice
+deforms into an entire partial theta series for `s > 0`); five register
+conjectures were added and the algebraic-breakpoint conjecture gained its
+transcendental-dichotomy sharpening; figures and data live under the
+matching `assets/` directories.
 (The q-orbit reports `Fabius_Q_Connections_Report/` and
 `Signed_Reciprocal_q_Fabius_Frontiers/` were merged editorially as the
 volume's Part VII; their figures/data are likewise under `assets/`.)
