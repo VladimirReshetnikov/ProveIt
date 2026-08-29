@@ -4756,10 +4756,19 @@ geometric and dyadic specializations
 \lean{Fabius.integral\_prod\_sin\_sq\_pow} and
 \lean{Fabius.integral\_prod\_sin\_sq\_two\_pow}) is what the
 Fourier-decay audit of the Rvachev up-function uses.  The offset
-\(m_0\) in the super-increasing hypothesis cannot be dropped when
+\(m_0\) in the super-increasing hypothesis cannot simply be deleted when
 \(K\ne0\) --- the frequencies \(3,4,8,16,\dots\) with \(K=1\)
-resonate through \(m_1-m_0=1\) --- but that counterexample is recorded
-in prose in the module header, not formalized.
+resonate through \(m_1-m_0=1\) --- and that counterexample, formerly
+recorded in prose in the module header, is now formalized in
+\path{RieszSharpness.lean}.  The integral is evaluated exactly,
+\(\int_0^1\cos(2\pi t)\,(1+\cos 6\pi t)(1+\cos 8\pi t)\dd t=\tfrac14\)
+(\lean{Fabius.integral\_cos\_mul\_sharpProduct}), and packaged as an
+existential refutation
+(\lean{Fabius.exists\_superIncreasing\_probe\_integral\_ne}) in which two
+factors already suffice.  What this establishes is precise and no more: plain
+super-increasingness together with \(\lvert K\rvert<m_0\) does not \emph{suffice} once
+\(K\ne0\).  It is a single witness, and does not show the headroom hypothesis is
+the weakest \(K\)-free hypothesis yielding the conclusion.
 
 The finite measures converge weakly to the Thue--Morse spectral measure.  The
 formal notation
