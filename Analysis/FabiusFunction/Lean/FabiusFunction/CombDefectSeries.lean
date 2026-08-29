@@ -159,4 +159,68 @@ theorem tsum_shifted_monomial_sub_integral_odd (F : BoundedFabius)
             fourier ℓ (θ : UnitAddCircle) := rfl
         _ = 0 := by rw [hz, zero_mul]
 
+/-- **Coefficient parity**: the transform of the degree-`p` sample
+function has the parity of `p` — the up-factor is even, so
+`𝓕f(-w) = (-1)^p·𝓕f(w)`.  Combined with the spectral display this
+pairs the `±ℓ` aliases: at even degree they reinforce, at odd degree
+they cancel at the endpoint phase. -/
+theorem fourier_monomialRvachevSchwartz_neg (F : BoundedFabius)
+    (hF : IsFabius F) {M : ℕ} (hM : M ≠ 0) (p : ℕ) (w : ℝ) :
+    𝓕 (⇑(monomialRvachevSchwartz F hF p ((M : ℝ))⁻¹
+        (inv_ne_zero (Nat.cast_ne_zero.mpr hM)))) (-w) =
+      (-1 : ℂ) ^ p *
+        𝓕 (⇑(monomialRvachevSchwartz F hF p ((M : ℝ))⁻¹
+          (inv_ne_zero (Nat.cast_ne_zero.mpr hM)))) w := by
+  rw [Real.fourier_real_eq_integral_exp_smul,
+    Real.fourier_real_eq_integral_exp_smul]
+  calc ∫ v : ℝ, Complex.exp (↑(-2 * π * v * -w) * Complex.I) •
+        monomialRvachevSchwartz F hF p ((M : ℝ))⁻¹
+          (inv_ne_zero (Nat.cast_ne_zero.mpr hM)) v
+      = ∫ v : ℝ, Complex.exp (↑(-2 * π * v * w) * Complex.I) •
+          monomialRvachevSchwartz F hF p ((M : ℝ))⁻¹
+            (inv_ne_zero (Nat.cast_ne_zero.mpr hM)) (-v) := by
+        have h := integral_neg_eq_self
+          (fun v : ℝ =>
+            Complex.exp (↑(-2 * π * v * -w) * Complex.I) •
+              monomialRvachevSchwartz F hF p ((M : ℝ))⁻¹
+                (inv_ne_zero (Nat.cast_ne_zero.mpr hM)) v) volume
+        rw [← h]
+        refine integral_congr_ae
+          (Filter.Eventually.of_forall fun v => ?_)
+        dsimp only
+        have harg : (-2 * π * -v * -w : ℝ) = -2 * π * v * w := by
+          ring
+        rw [harg]
+    _ = ∫ v : ℝ, (-1 : ℂ) ^ p *
+          (Complex.exp (↑(-2 * π * v * w) * Complex.I) •
+            monomialRvachevSchwartz F hF p ((M : ℝ))⁻¹
+              (inv_ne_zero (Nat.cast_ne_zero.mpr hM)) v) := by
+        refine integral_congr_ae
+          (Filter.Eventually.of_forall fun v => ?_)
+        dsimp only
+        rw [monomialRvachevSchwartz_apply, monomialRvachevSchwartz_apply]
+        have hup : rvachevUp F (((M : ℝ))⁻¹ * -v) =
+            rvachevUp F (((M : ℝ))⁻¹ * v) := by
+          rw [mul_neg]
+          exact rvachevUp_even F _
+        rw [hup, smul_eq_mul, smul_eq_mul]
+        push_cast [neg_pow]
+        ring
+    _ = (-1 : ℂ) ^ p *
+          ∫ v : ℝ, Complex.exp (↑(-2 * π * v * w) * Complex.I) •
+            monomialRvachevSchwartz F hF p ((M : ℝ))⁻¹
+              (inv_ne_zero (Nat.cast_ne_zero.mpr hM)) v :=
+        MeasureTheory.integral_const_mul _ _
+
+/-- Parity at integer frequencies. -/
+theorem fourier_monomialRvachevSchwartz_int_neg (F : BoundedFabius)
+    (hF : IsFabius F) {M : ℕ} (hM : M ≠ 0) (p : ℕ) (ℓ : ℤ) :
+    𝓕 (⇑(monomialRvachevSchwartz F hF p ((M : ℝ))⁻¹
+        (inv_ne_zero (Nat.cast_ne_zero.mpr hM)))) (((-ℓ : ℤ) : ℝ)) =
+      (-1 : ℂ) ^ p *
+        𝓕 (⇑(monomialRvachevSchwartz F hF p ((M : ℝ))⁻¹
+          (inv_ne_zero (Nat.cast_ne_zero.mpr hM)))) ((ℓ : ℤ) : ℝ) := by
+  have h := fourier_monomialRvachevSchwartz_neg F hF hM p (ℓ : ℝ)
+  simpa using h
+
 end Fabius
