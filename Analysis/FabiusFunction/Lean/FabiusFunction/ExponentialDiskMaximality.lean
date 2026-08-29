@@ -9,9 +9,10 @@ import FabiusFunction.SincZetaDyadic
 
 on the open unit disk `‖z‖ < 1`, and the prefix-corrected version
 `rvachevFourierProduct_eq_prefix_mul_cexp` on `‖z‖ < 2^m`.  The atlas
-records that the *maximality* of that disk is not formalized.  It is
-here, and by an obstruction that needs none of the analysis: `Φ`
-vanishes at every nonzero integer, while `Complex.exp` never vanishes.
+recorded, before this module, that the *maximality* of that disk was
+not formalized.  It is, here, and by an obstruction that needs none of
+the analysis: `Φ` vanishes at every nonzero integer, while
+`Complex.exp` never vanishes.
 So `Φ 1 = 0` is not the exponential of anything at all, and no disk
 centred at the origin of radius larger than `1` can carry a
 representation of `Φ` as an exponential — not this particular series,

@@ -9,9 +9,10 @@ condition number on the cumulant grid `q = 1/4` equals
 
 `(-1/4; 1/4)_∞ / (1/4; 1/4)_∞ = 1.969260353668269431947193696967…`
 
-and notes that this numerical value "is not formalized".  This module
-formalizes it, as far as a kernel-checked computation reasonably
-reaches: it proves a **rational enclosure**, not an evaluation.
+and recorded, before this module, that the numerical value was not
+formalized.  This module formalizes it as far as a kernel-checked
+computation reasonably reaches: it proves a **rational enclosure**,
+not an evaluation.
 
 ## What is actually certified
 

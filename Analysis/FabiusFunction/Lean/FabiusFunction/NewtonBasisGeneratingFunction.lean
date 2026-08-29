@@ -43,16 +43,24 @@ scope.
 ## What this module does NOT contain
 
 * The spectral zeta `Z_P(s) = ζ(s) ∑_{r ≤ d} c_r 2^s/(2^s-1)^(r+1)`
-  (`p1:eq:ZP`) is NOT formalized here, in any form -- not even the
+  (`p1:eq:ZP`) is not formalized here, in any form -- not even the
   algebraic substitution `q = 2^(-s)` that produces its inner sum.
+  It *is* formalized downstream, in
+  `FabiusFunction.NewtonSpectralZeta`, which imports this module and
+  composes `tsum_newtonPoly` at `q = 2^(-s)` with the general-weight
+  spectral zeta.
 * The even cumulants
   `κ_{2j}(X_P) = (B_{2j}/(2j)) ∑_{r ≤ d} c_r 4^j/(4^j-1)^(r+1)`
   (`p1:eq:kappaP`) are NOT formalized here, in any form.
 * The product form `Φ_P = ∏_{r ≤ d} Φ_{r+1}^(c_r)`
-  (`p1:eq:newton-Phi-factorization`) is NOT formalized here: it needs
-  the canonical sinc product at general weights (in particular at the
-  negative `c_r` that occur even for nonnegative `P`), which the
-  corpus does not carry.
+  (`p1:eq:newton-Phi-factorization`) is not formalized here, and not
+  elsewhere either.  The corpus now has the canonical sinc product at
+  a general weight (`FabiusFunction.GeneralizedRvachevProduct`), but
+  only at a **natural-number** exponent sequence, and the Newton
+  coefficients `c_r` are negative for some nonnegative `P`.  So what
+  this display needs is a signed exponent, i.e. a quotient of two
+  such products -- which is exactly the reading the volume gives it,
+  and which nothing in the corpus supplies.
 * The zero-multiplicity display `p1:eq:mP` is untouched; its
   one-Newton-component-at-a-time formalization is
   `Fabius.weightedScaleMultiplicity_choose` elsewhere in the corpus.
@@ -246,7 +254,10 @@ theorem half_mul_newtonGF_half (c : ℕ → ℝ) (d : ℕ) :
 `(1/2) ∑' h, P(h) (1/2)^h = ∑_{r ≤ d} c r`, with `A_P(1/2)` written
 as the actual infinite sum.  The volume calls this quantity `R_P`,
 the support radius of `Φ_P`; that identification is not formalized
-here. -/
+here, and would need the *support* statement of the volume's master
+probability theorem, not merely the product -- which does now exist,
+at natural exponents, as
+`FabiusFunction.GeneralizedRvachevProduct`. -/
 theorem half_mul_tsum_newtonPoly_half (c : ℕ → ℝ) (d : ℕ) :
     (1 / 2 : ℝ) * ∑' h : ℕ, newtonPoly c d h * (1 / 2 : ℝ) ^ h
       = ∑ r ∈ Finset.range (d + 1), c r := by
