@@ -69,4 +69,49 @@ theorem gaussianBinomial_one_eq_zero_of_lt {R : Type*} [Semiring R]
   rw [gaussianBinomial_one, Nat.choose_eq_zero_of_lt h]
   exact Nat.cast_zero
 
+/-! ## The `q`-Pochhammer symbol at the same specializations -/
+
+/-- **The finite `q`-Pochhammer symbol at `q = 1`**: every factor
+collapses to `1 - a`, so `(a; 1)_n = (1-a)^n`. -/
+theorem finiteQPochhammerIn_one {R : Type*} [CommRing R] (a : R)
+    (n : ℕ) : finiteQPochhammerIn a (1 : R) n = (1 - a) ^ n := by
+  rw [finiteQPochhammerIn]
+  rw [Finset.prod_congr rfl
+    (fun j _ => by rw [one_pow, mul_one] :
+      ∀ j ∈ Finset.range n, 1 - a * (1 : R) ^ j = 1 - a)]
+  rw [Finset.prod_const, Finset.card_range]
+
+/-- At `a = 0` the product is empty of content: every factor is one. -/
+@[simp] theorem finiteQPochhammerIn_zero_left {R : Type*} [CommRing R]
+    (q : R) (n : ℕ) : finiteQPochhammerIn (0 : R) q n = 1 := by
+  rw [finiteQPochhammerIn]
+  refine Finset.prod_eq_one fun j _ => ?_
+  rw [zero_mul, sub_zero]
+
+/-- At `a = 1` the `j = 0` factor is `1 - q^0 = 0`, so the product
+vanishes as soon as it is nonempty. -/
+theorem finiteQPochhammerIn_one_left {R : Type*} [CommRing R] (q : R)
+    (n : ℕ) : finiteQPochhammerIn (1 : R) q (n + 1) = 0 := by
+  rw [finiteQPochhammerIn]
+  refine Finset.prod_eq_zero
+    (Finset.mem_range.mpr (Nat.succ_pos n)) ?_
+  rw [pow_zero, mul_one, sub_self]
+
+/-- **The `q`-binomial theorem degenerates to the binomial theorem.**
+Specializing `finite_qBinomial_theorem` at `q = 1` — where the weight
+`q^{C(k,2)}` disappears and the Gaussian coefficient becomes the
+binomial one — gives `∑_{k≤n} (-1)^k·C(n,k)·z^k = (1-z)^n`.
+
+This is the consistency check the whole `q`-layer is measured
+against. -/
+theorem sum_neg_one_pow_choose_mul_pow {R : Type*} [CommRing R]
+    (z : R) (n : ℕ) :
+    (∑ k ∈ Finset.range (n + 1),
+      (-1 : R) ^ k * (n.choose k : R) * z ^ k) = (1 - z) ^ n := by
+  have h := finite_qBinomial_theorem (1 : R) z n
+  rw [finiteQPochhammerIn_one] at h
+  rw [← h]
+  refine Finset.sum_congr rfl fun k _ => ?_
+  rw [one_pow, gaussianBinomial_one]
+
 end Fabius
