@@ -13,6 +13,7 @@
 \usepackage{xcolor}
 \usepackage{fancyhdr}
 \usepackage{imakeidx}
+\usepackage{aliascnt}
 \usepackage{hyperref}
 \usepackage[nameinlink,capitalise,noabbrev]{cleveref}
 \usepackage{bookmark}
@@ -42,19 +43,74 @@
 \fancyhead[R]{\thepage}
 \renewcommand{\headrulewidth}{0.4pt}
 
+% ed.: every environment below shares the `theorem' counter so that the
+% ed.: numbering runs in one sequence.  Declared with \newtheorem{X}[theorem]{...},
+% ed.: however, each one also *reports* the counter name `theorem' to cleveref,
+% ed.: so \Cref to a lemma, proposition, corollary, identity, principle,
+% ed.: definition, example, algorithm or remark printed the word ``Theorem''.
+% ed.: aliascnt gives each environment its own counter name aliased to
+% ed.: `theorem': the shared numbering is unchanged, but cleveref now sees the
+% ed.: true type.  The \crefname pairs below fix the printed names.
 \newtheorem{theorem}{Theorem}[chapter]
-\newtheorem{lemma}[theorem]{Lemma}
-\newtheorem{proposition}[theorem]{Proposition}
-\newtheorem{corollary}[theorem]{Corollary}
-\newtheorem{identity}[theorem]{Identity}
-\newtheorem{principle}[theorem]{Principle}
+
+\newaliascnt{lemma}{theorem}
+\newtheorem{lemma}[lemma]{Lemma}
+\aliascntresetthe{lemma}
+
+\newaliascnt{proposition}{theorem}
+\newtheorem{proposition}[proposition]{Proposition}
+\aliascntresetthe{proposition}
+
+\newaliascnt{corollary}{theorem}
+\newtheorem{corollary}[corollary]{Corollary}
+\aliascntresetthe{corollary}
+
+\newaliascnt{identity}{theorem}
+\newtheorem{identity}[identity]{Identity}
+\aliascntresetthe{identity}
+
+\newaliascnt{principle}{theorem}
+\newtheorem{principle}[principle]{Principle}
+\aliascntresetthe{principle}
+
 \theoremstyle{definition}
-\newtheorem{definition}[theorem]{Definition}
-\newtheorem{example}[theorem]{Example}
-\newtheorem{algorithm}[theorem]{Algorithm}
+\newaliascnt{definition}{theorem}
+\newtheorem{definition}[definition]{Definition}
+\aliascntresetthe{definition}
+
+\newaliascnt{example}{theorem}
+\newtheorem{example}[example]{Example}
+\aliascntresetthe{example}
+
+\newaliascnt{algorithm}{theorem}
+\newtheorem{algorithm}[algorithm]{Algorithm}
+\aliascntresetthe{algorithm}
+
 \theoremstyle{remark}
-\newtheorem{remark}[theorem]{Remark}
-\newtheorem{historicalnote}[theorem]{Historical note}
+\newaliascnt{remark}{theorem}
+\newtheorem{remark}[remark]{Remark}
+\aliascntresetthe{remark}
+
+\newaliascnt{historicalnote}{theorem}
+\newtheorem{historicalnote}[historicalnote]{Historical note}
+\aliascntresetthe{historicalnote}
+
+\crefname{lemma}{lemma}{lemmas}
+\Crefname{lemma}{Lemma}{Lemmas}
+\crefname{proposition}{proposition}{propositions}
+\Crefname{proposition}{Proposition}{Propositions}
+\crefname{corollary}{corollary}{corollaries}
+\Crefname{corollary}{Corollary}{Corollaries}
+\crefname{principle}{principle}{principles}
+\Crefname{principle}{Principle}{Principles}
+\crefname{definition}{definition}{definitions}
+\Crefname{definition}{Definition}{Definitions}
+\crefname{example}{example}{examples}
+\Crefname{example}{Example}{Examples}
+\crefname{algorithm}{algorithm}{algorithms}
+\Crefname{algorithm}{Algorithm}{Algorithms}
+\crefname{remark}{remark}{remarks}
+\Crefname{remark}{Remark}{Remarks}
 
 \newcommand{\qbinom}[2]{\genfrac{[}{]}{0pt}{}{#1}{#2}_{q}}
 \newcommand{\Qbinom}[3]{\genfrac{[}{]}{0pt}{}{#1}{#2}_{#3}}
