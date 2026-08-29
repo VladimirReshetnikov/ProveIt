@@ -8113,32 +8113,83 @@ symmetric about $1/2$ as \eqref{eq:fabius-symmetry} requires.
 % ed.: $1,-7,160$, total $5/12$) is that same computation.
 
 % ---- merged block M11 ----
-\begin{remark}[The shift must be common, with one systematic exception]\label{rem:dyadic-shift-common}
+% ---- merged block M11 ----
+% ed.: self-contained replacement for \Cref{rem:dyadic-shift-common}.  It reuses
+% ed.: that label and \eqref{eq:dyadic-numerator-blockwise} and introduces no new
+% ed.: label.  The two displayed families, the counterexample and the sentence
+% ed.: about the $k$-independent sign (cited from the proof of
+% ed.: \Cref{cor:fabius-centered-formula}) are all retained verbatim; what is
+% ed.: corrected is the closing assertion, for the second time.  The first
+% ed.: correction added the family $\theta_k=2^k+\theta$; the present one records
+% ed.: that it and the common shift are the members $\vartheta=-1$ and
+% ed.: $\vartheta=0$ of one two-parameter family, on all of which the double
+% ed.: cancellation survives and \Cref{thm:fabius-appell-geometric-shift}
+% ed.: evaluates the sum.  All three displayed values recomputed in exact
+% ed.: rational arithmetic.
+\begin{remark}[The shift must be common, or geometric]\label{rem:dyadic-shift-common}
 \index{translation invariance!of the dyadic formula}
-The freedom in $\theta$ in \eqref{eq:dyadic-gaussian-thue-morse}, \eqref{eq:fabius-inverse-dyadic-closed} and \eqref{eq:fabius-centered-formula} is \Cref{cor:transfer-translation} at $q=1/2$: one exponential $\e^{\alpha z}$ is pulled out of all $n+1$ blocks \emph{simultaneously}, after which \eqref{eq:transfer-lower-zero} annihilates every convolution term but one.  It is not a symmetry of an individual block.  To see what is and is not allowed, give each block its own shift and set
+The freedom in $\theta$ in \eqref{eq:dyadic-gaussian-thue-morse},
+\eqref{eq:fabius-inverse-dyadic-closed} and \eqref{eq:fabius-centered-formula}
+is \Cref{cor:transfer-translation} at $q=1/2$: one exponential $\e^{\alpha z}$ is
+pulled out of all $n+1$ blocks \emph{simultaneously}, after which
+\eqref{eq:transfer-lower-zero} annihilates every convolution term but one.  It is
+not a symmetry of an individual block.  To see what is and is not allowed, give
+each block its own shift and set
 \begin{equation}\label{eq:dyadic-numerator-blockwise}
  \mathcal N_n(\theta_0,\ldots,\theta_n)
  \defeq\sum_{k=0}^{n}
  \frac{\Qbinom nk{1/2}}{4^{\binom k2}(n+k)!}
  \sum_{r=0}^{2^k-1}\tau_r\bigl(r-2^k+\theta_k\bigr)^{\,n+k}.
 \end{equation}
-Two one-parameter families of shifts leave this constant, and they are exactly the two displays above:
+Two one-parameter families of shifts leave this constant, and they are exactly
+the two displays above:
 \[
- \mathcal N_n(\theta,\ldots,\theta)=\mathfrak m_na_n,
+ \mathcal N_n(\theta,\ldots,\theta)=\mathfrak m_n\alpha_n,
  \qquad
- \mathcal N_n\bigl(2^0+\theta,\ldots,2^n+\theta\bigr)=(-1)^n\mathfrak m_na_n ,
+ \mathcal N_n\bigl(2^0+\theta,\ldots,2^n+\theta\bigr)
+ =(-1)^n\mathfrak m_n\alpha_n ,
 \]
-the first by \Cref{cor:fabius-centered-formula}, the second by \eqref{eq:dyadic-gaussian-thue-morse} after cancelling $-2^k$ against $2^k$.  The second family is genuinely block-dependent, and it survives only because digit complementation converts it into the first, at the cost of the $k$-independent sign $(-1)^n$ computed in the proof of \Cref{cor:fabius-centered-formula}.  Apart from these, unequal shifts destroy the cancellation: for $n=3$ and $(\theta_0,\theta_1,\theta_2,\theta_3)=(0,1,2,3)$ one finds
+the first by \Cref{cor:fabius-centered-formula}, the second by
+\eqref{eq:dyadic-gaussian-thue-morse} after cancelling $-2^k$ against $2^k$.  The
+second family is genuinely block-dependent, and it survives only because digit
+complementation converts it into the first, at the cost of the $k$-independent
+sign $(-1)^n$ computed in the proof of \Cref{cor:fabius-centered-formula}.
+
+These two families are not independent of each other, and they are not the only
+structured ones.  Both are members of the two-parameter geometric family
+$\theta_k=\eta-2^k\vartheta$ of \Cref{thm:fabius-appell-geometric-shift},
+at $\vartheta=0$ and at $\vartheta=-1$ respectively; and on the whole of that
+family the double cancellation of \Cref{rem:double-cancellation} survives and
+evaluates the sum in closed form,
+\[
+ \mathcal N_n\bigl(\eta-2^0\vartheta,\ldots,\eta-2^n\vartheta\bigr)
+ =\mathfrak m_n\,\frac{A_n(\vartheta)}{n!},
+\]
+a polynomial of degree $n$ in $\vartheta$, free of $\eta$, whose value at
+$\vartheta=0$ is the invariant $\mathfrak m_n\alpha_n$.  What fails away from
+$\vartheta\in\set{0,-1}$ is therefore not the cancellation but the constancy: the
+transfer theorem still extracts exactly one coefficient, only of
+$\e^{\vartheta u}\mathcal A(u)$ rather than of $\mathcal A(u)$.
+
+Outside that family, unequal shifts do destroy the extraction.  For $n=3$ take
+$(\theta_0,\theta_1,\theta_2,\theta_3)=(0,1,2,3)$, which is not of the form
+$\eta-2^k\vartheta$: matching the first two entries forces
+$\vartheta=\eta=-1$, and that choice produces $(0,1,3,7)$ instead.  One finds
 \[
  \mathcal N_3(0,1,2,3)=\frac1{32},
- \qquad\text{against}\qquad
- \mathfrak m_3a_3=21\cdot\frac1{36}=\frac7{12}.
+ \qquad
+ \mathcal N_3(0,1,3,7)=-\frac7{12},
+ \qquad
+ \mathfrak m_3\alpha_3=21\cdot\frac1{36}=\frac7{12},
 \]
+the middle value being $\mathfrak m_3A_3(-1)/3!$, as
+\Cref{thm:fabius-appell-geometric-shift} requires, and the first being nothing in
+particular.
 % ed.: an incoming draft stated the invariance as a separate theorem -- it is
 % ed.: \Cref{cor:transfer-translation} at $q=1/2$ -- and asserted that any
 % ed.: per-block translation destroys the cancellation.  The counterexample is
-% ed.: kept; the assertion is corrected, since the shifts $\theta_k=2^k+\theta$
-% ed.: do preserve the sum.
+% ed.: kept.  That assertion was corrected once, for the shifts
+% ed.: $\theta_k=2^k+\theta$, and again here, for the geometric family.
 \end{remark}
 
 % ---- merged block M13 ----
@@ -9526,6 +9577,1480 @@ The base case is the single term $r=0$.  For the recurrence, split $\{0,\dots,2^
 \]
 by the binomial theorem, the term $j=0$ cancelling.  This is \eqref{eq:thue-morse-power-recurrence}.  Filling the table in increasing $k$ and $d$ costs $O(d)$ operations per entry, hence $O(n\cdot n\cdot n)$ in total for the stated ranges.
 \end{proof}
+
+
+% ---- merged block D01 ----
+% ---- merged block D01 ----
+% ed.: new final section of \Cref{chap:geometric-filters}.  Blocks D02 and D03
+% ed.: continue the same section and must follow immediately.
+\section{A ring-level residual principle}
+\index{residual moment!ring-level principle}
+\index{symmetric function!complete homogeneous}
+\index{moment!first surviving}
+\index{commutative ring!moment residual}
+
+\Cref{thm:universal-lagrange-residual} is stated for the Lagrange weights of $N$
+distinct nodes in a field, and the free target $x$ carried by both sides of
+\eqref{eq:universal-residual} is what makes it a statement about interpolation.
+The mechanism it uses is narrower than its hypotheses.  The field, the
+distinctness of the nodes, the Lagrange normalization of the weights, and the
+invertibility of the differences $v_i-v_j$ can all be discarded if one asks only
+for the moments of a finite weight system: the single hypothesis that the first
+$p$ moments vanish already determines every later moment.  In that form the
+statement holds over an arbitrary commutative ring, and both exact tails of this
+part become instances of it.
+
+\begin{theorem}[All-degree residual from the first surviving moment]
+\label{thm:ring-moment-residual}
+Let $R$ be a commutative ring and let $x_0,\ldots,x_p\in R$ and
+$w_0,\ldots,w_p\in R$ be arbitrary elements.  Put
+\begin{equation}\label{eq:ring-moment-definition}
+ M_m\defeq\sum_{i=0}^{p}w_ix_i^{\,m}
+ \qquad(m\ge0),
+\end{equation}
+with the convention $x^0=1$ for every $x\in R$.  If
+\begin{equation}\label{eq:ring-moment-hypotheses}
+ M_0=M_1=\cdots=M_{p-1}=0,
+ \qquad
+ M_p=K,
+\end{equation}
+then
+\begin{equation}\label{eq:ring-moment-residual}
+ M_{p+r}=K\,h_r(x_0,\ldots,x_p)
+ \qquad(r\ge0),
+\end{equation}
+where $h_r$ is the complete homogeneous symmetric polynomial in the $p+1$
+displayed variables, evaluated in $R$.  No node is assumed distinct from another,
+no weight and no difference $x_i-x_j$ is assumed invertible, and $R$ may have
+zero divisors.  For $p=0$ the hypothesis \eqref{eq:ring-moment-hypotheses} is
+empty, $K=w_0$, and \eqref{eq:ring-moment-residual} is the definition of $M_r$.
+\end{theorem}
+
+\begin{proof}
+Work in $R[[t]]$ and put
+\[
+ M(t)=\sum_{m\ge0}M_mt^m,
+ \qquad
+ E(t)=\prod_{i=0}^{p}(1-x_it).
+\]
+Each factor $1-x_it$ is invertible in $R[[t]]$, with inverse
+$\sum_{m\ge0}x_i^{\,m}t^m$.  Interchanging the finite sum over $i$ with the sum
+over $m$ in \eqref{eq:ring-moment-definition} gives
+$M(t)=\sum_{i=0}^{p}w_i(1-x_it)^{-1}$, and therefore
+\begin{equation}\label{eq:ring-moment-transform}
+ E(t)M(t)=\sum_{i=0}^{p}w_i\prod_{j\ne i}(1-x_jt).
+\end{equation}
+The right-hand side of \eqref{eq:ring-moment-transform} is a polynomial in $t$ of
+degree at most $p$, each of its $p+1$ summands being a product of $p$ linear
+factors.
+
+Compute the same coefficients from the left.  By \eqref{eq:weighted-e-gen} with
+$z=-t$ one has $E(t)=\sum_{l=0}^{p+1}(-1)^le_lt^l$, where
+$e_l=e_l(x_0,\ldots,x_p)$, so
+\[
+ [t^m]\bigl(E(t)M(t)\bigr)=\sum_{l=0}^{m}(-1)^le_lM_{m-l}
+\]
+involves only $M_0,\ldots,M_m$.  For $m<p$ every moment occurring here has index
+at most $m<p$ and vanishes by \eqref{eq:ring-moment-hypotheses}; for $m=p$ the
+only surviving term is $e_0M_p=K$.  Comparing with the degree bound just
+obtained,
+\[
+ E(t)M(t)=Kt^p.
+\]
+Finally $E(t)$ has constant term $1$, and by \eqref{eq:weighted-h-gen} its inverse
+in $R[[t]]$ is $\sum_{r\ge0}h_r(x_0,\ldots,x_p)t^r$.  Multiplying the last display
+by that inverse gives
+\[
+ M(t)=Kt^p\sum_{r\ge0}h_r(x_0,\ldots,x_p)t^r,
+\]
+and comparison of the coefficients of $t^{p+r}$ is
+\eqref{eq:ring-moment-residual}.
+\end{proof}
+
+\begin{remark}[The exact scope of the hypotheses]\label{rem:ring-residual-scope}
+Three comments delimit the statement.
+\begin{enumerate}[label=\textup{(\roman*)}]
+\item \emph{The hypotheses are satisfiable with non-invertible data.}  In
+ $R=\Z/12\Z$ take nodes $(x_0,x_1,x_2)=(0,1,2)$ and weights
+ $(w_0,w_1,w_2)=(1,-2,1)$.  Then $M_0=M_1=0$ and $K=M_2=2$, a zero divisor; no
+ weight and no node difference is a unit.  Here
+ $h_r(0,1,2)=h_r(1,2)=2^{\,r+1}-1$ and
+ $M_{2+r}=2^{\,r+2}-2=2h_r(0,1,2)$, an identity of integers and hence one in
+ every quotient of $\Z$.
+\item \emph{Coincident nodes make the conclusion empty rather than false.}
+ Group the nodes by their distinct values $v_1,\ldots,v_s$ and let $W_j$ be the
+ sum of the weights carried by the value $v_j$, so that $M_m=\sum_jW_jv_j^{\,m}$.
+ If two nodes coincide then $s\le p$, and the first $s$ hypotheses say that the
+ $s\times s$ Vandermonde matrix of $v_1,\ldots,v_s$ annihilates
+ $(W_1,\ldots,W_s)$.  Whenever its determinant $\prod_{i<j}(v_j-v_i)$ is not a
+ zero divisor --- in particular over a field --- the adjugate identity forces
+ $W_1=\cdots=W_s=0$, hence $K=0$, and both sides of
+ \eqref{eq:ring-moment-residual} vanish.  Distinctness is thus not needed as a
+ hypothesis, and adding it would exclude nothing of substance.
+\item \emph{Neither residual theorem contains the other.}
+ \Cref{thm:universal-lagrange-residual} is not a corollary of
+ \Cref{thm:ring-moment-residual}: its two sides carry a free target $x$, and its
+ right-hand side involves the $(N+1)$-variable symmetric function
+ $h_r(x,v_1,\ldots,v_N)$, of which \eqref{eq:ring-moment-residual} sees only the
+ specialization $x=0$.  Conversely \eqref{eq:ring-moment-residual} is not a
+ corollary of \eqref{eq:universal-residual}, which presupposes a field, distinct
+ nodes, and one particular weight vector.  The present development uses
+ \eqref{eq:universal-residual} only at $x=0$, in the proof of
+ \Cref{thm:complete-geometric-moments}, and
+ \Cref{rem:one-principle-two-filters}\,(i) recovers exactly that use from
+ \eqref{eq:ring-moment-residual}.
+\end{enumerate}
+\end{remark}
+
+
+% ---- merged block D02 ----
+% ---- merged block D02 ----
+% ed.: continues the section opened by block D01; place immediately after
+% ed.: \Cref{rem:ring-residual-scope}.
+\begin{corollary}[Geometric Gaussian residual for arbitrary weights]
+\label{cor:ring-geometric-residual}
+\index{Gaussian coefficient!as a residual multiplier}
+Let $R$ be a commutative ring, let $c,q\in R$, and let $w_0,\ldots,w_p\in R$
+satisfy \eqref{eq:ring-moment-hypotheses} on the nodes $x_i=cq^i$.  Then
+\begin{equation}\label{eq:ring-geometric-residual}
+ \sum_{i=0}^{p}w_i\,(cq^i)^{\,p+r}
+ =K\,c^{\,r}\Qbinom{p+r}{p}{q}
+ \qquad(r\ge0),
+\end{equation}
+the Gaussian coefficient being read in $R$ as the value at $q$ of the universal
+polynomial of \Cref{def:universal-gaussian}, so that no factor $1-q^j$ is
+assumed invertible.
+\end{corollary}
+
+\begin{proof}
+By \Cref{thm:ring-moment-residual} the left-hand side of
+\eqref{eq:ring-geometric-residual} equals $K\,h_r(c,cq,\ldots,cq^p)$.  Since
+$h_r$ is homogeneous of degree $r$, scaling every variable by $c$ multiplies it
+by $c^{\,r}$, so $h_r(c,cq,\ldots,cq^p)=c^{\,r}h_r(1,q,\ldots,q^p)$.
+
+It remains to identify $h_r(1,q,\ldots,q^p)$.  In the notation of
+\Cref{chap:weighted} this is $S_r^{\,p+1}(\mathbf w)$ for $w_i=q^{\,i-1}$, which
+by \Cref{thm:weighted-specializations}\,(ii) with $n=p+1$ and $k=r$ equals
+$\qbinom{p+r}{r}$, hence $\qbinom{p+r}{p}$ by the symmetry
+\Cref{thm:qbinom-structure}\,(i).  Both sides of
+\begin{equation}\label{eq:ring-principal-specialization}
+ h_r(1,q,\ldots,q^p)=\Qbinom{p+r}{p}{q}
+\end{equation}
+lie in $\Z[q]$ --- the left one by inspection of
+\eqref{eq:weighted-h-gen}, the right one by
+\Cref{thm:universal-functoriality}\,(i),(ii) --- and they agree in $\Q(q)$, so
+they agree in $\Z[q]$.  Applying the evaluation homomorphism $\Z[q]\to R$ with
+$q\mapsto q$ and using the functoriality
+\Cref{thm:universal-functoriality}\,(iii) transports
+\eqref{eq:ring-principal-specialization} to $R$.
+\end{proof}
+
+\begin{remark}\label{rem:ring-geometric-vs-lagrange}
+\Cref{cor:scaled-geometric-moments} is the case of
+\eqref{eq:ring-geometric-residual} in which the weights are the Lagrange row
+$\lambda^{(q)}_{n,k}$, after the deflation described in
+\Cref{rem:one-principle-two-filters}\,(i); what is new here is that no property
+of the weight row is used beyond \eqref{eq:ring-moment-hypotheses}, and that
+$c$, $q$ and the $w_i$ need not lie in a field.
+\end{remark}
+
+
+% ---- merged block D03 ----
+% ---- merged block D03 ----
+% ed.: continues the section opened by block D01; place immediately after
+% ed.: \Cref{rem:ring-geometric-vs-lagrange}.  This block closes
+% ed.: \Cref{chap:geometric-filters}.
+\begin{corollary}[Formal-series filter for arbitrary weights]
+\label{cor:ring-series-filter}
+\index{filter!ring-level}
+\index{power series!coefficient filter}
+Let $R$ be a commutative ring and let $x_0,\ldots,x_p$ and $w_0,\ldots,w_p$ in
+$R$ satisfy \eqref{eq:ring-moment-hypotheses}.  For every
+$f(z)=\sum_{m\ge0}a_mz^m\in R[[z]]$,
+\begin{equation}\label{eq:ring-series-filter}
+ \sum_{i=0}^{p}w_if(x_iz)
+ =K\sum_{r\ge0}a_{p+r}\,h_r(x_0,\ldots,x_p)\,z^{\,p+r}.
+\end{equation}
+On a geometric node set $x_i=cq^i$ the multiplier of $a_{p+r}$ is
+$Kc^{\,r}\Qbinom{p+r}{p}{q}$.
+\end{corollary}
+
+\begin{proof}
+The left-hand side is a sum of \emph{finitely many} elements of $R[[z]]$, so
+coefficient extraction commutes with it:
+\[
+ [z^m]\sum_{i=0}^{p}w_if(x_iz)
+ =a_m\sum_{i=0}^{p}w_ix_i^{\,m}
+ =a_mM_m.
+\]
+By \eqref{eq:ring-moment-hypotheses} this vanishes for $m<p$, and for $m=p+r$ it
+is $Ka_{p+r}h_r(x_0,\ldots,x_p)$ by \Cref{thm:ring-moment-residual}.  The last
+assertion is \Cref{cor:ring-geometric-residual}.
+\end{proof}
+
+\begin{remark}[One principle, two exact tails]\label{rem:one-principle-two-filters}
+The two exact tails of this part are instances of
+\eqref{eq:ring-series-filter}.  This does not merge them --- what keeps them
+apart is recorded in \Cref{rem:two-exact-tails} --- but it does replace two
+separate residual computations by one.
+\begin{enumerate}[label=\textup{(\roman*)}]
+\item \emph{Evaluation at zero, after deflation.}  The Lagrange row
+ $\lambda^{(q)}_{n,k}$ has $M_0=1$, so \eqref{eq:ring-moment-hypotheses} fails
+ for it.  Adjoin one further node $x_{n+1}=0$ with weight $w_{n+1}=-1$.  The
+ augmented system has $n+2$ nodes, so $p=n+1$; its moments are $M_0=1-1=0$ and
+ $M_m=0$ for $1\le m\le n$ by \eqref{eq:geometric-eval-zero}, since $0^m=0$
+ there.  Its value of $K$ can be read off \eqref{eq:ring-moment-transform}
+ without any prior knowledge of the row: among the $n+2$ summands only the one
+ indexed by the adjoined node has degree $n+1$, namely
+ $-\prod_{k=0}^{n}(1-q^kt)$, whose coefficient of $t^{\,n+1}$ is
+ $-(-1)^{n+1}q^{\binom{n+1}{2}}$, so
+ \[
+ K=(-1)^nq^{\binom{n+1}{2}}.
+ \]
+ A variable equal to $0$ contributes the factor $1$ to
+ \eqref{eq:weighted-h-gen}, so
+ \[
+  h_r(1,q,\ldots,q^n,0)=h_r(1,q,\ldots,q^n),
+ \]
+ and \eqref{eq:ring-geometric-residual} returns
+ \eqref{eq:complete-geometric-moments} while \eqref{eq:ring-series-filter}
+ returns \eqref{eq:filter-exact-tail}.  Running the same argument on the nodes
+ $cq^k$ together with $0$ returns \Cref{cor:scaled-geometric-moments}.  This is
+ a proof of \Cref{thm:complete-geometric-moments} that does not pass through
+ \Cref{thm:universal-lagrange-residual} and uses no symmetric-function
+ orthogonality.
+\item \emph{Extraction of the top coefficient.}  The data
+ \eqref{eq:reciprocal-nodes-weights} satisfy \eqref{eq:ring-moment-hypotheses}
+ with $p=n$ and $K=q^{-\binom{n+1}{2}}(q;q)_n$, by \eqref{eq:geometric-moment-zero}
+ and \eqref{eq:geometric-moment-top}; no deflation is needed, because that row
+ already annihilates the constants.  Its nodes are $-q^{-k}=c\,\tilde q^{\,k}$
+ with $c=-1$ and $\tilde q=q^{-1}$, so
+ \eqref{eq:ring-principal-specialization} gives
+ \[
+ h_r\bigl(-1,-q^{-1},\ldots,-q^{-n}\bigr)
+ =(-1)^r\Qbinom{n+r}{n}{q^{-1}}
+ =(-1)^rq^{-nr}\Qbinom{n+r}{n}{q},
+ \]
+ the last step being the reciprocity \Cref{thm:qbinom-structure}\,(ii) with
+ $k(n-k)=nr$.  Multiplying \eqref{eq:ring-series-filter} by
+ $q^{\binom{n+1}{2}}/(q;q)_n$ therefore reproduces
+ \eqref{eq:reciprocal-filter-tail} exactly, giving a second proof of
+ \Cref{thm:reciprocal-exact-tail} in which no shifted factorial
+ $(q^{-n-r};q)_n$ is ever rewritten.
+\end{enumerate}
+The two instances differ in precisely one structural respect: the first has a
+nonzero moment of order $0$ and must be deflated by one extra node, the second
+does not.  Everything else --- the vanishing block, the single surviving
+constant $K$, and the Gaussian row that multiplies the tail --- is supplied by
+\Cref{thm:ring-moment-residual}.
+\end{remark}
+
+
+% ---- merged block D04 ----
+% ed.: PLACEMENT: chap:dyadic-gaussian-thue-morse, a new section inserted at the end
+% ed.: of the section ``A Fourier formula for the Fabius function'', immediately after
+% ed.: the unlabelled remark that contrasts \eqref{eq:fabius-fourier-formula} with
+% ed.: \eqref{eq:fabius-centered-formula}, and before \section{Digital cancellation in
+% ed.: an arbitrary radix}.  The two blocks that follow (the local reduction identity
+% ed.: and the digit expansion) depend on this one.
+% ed.: The case $\theta=0$ of \eqref{eq:fabius-dyadic-cell} is the filed
+% ed.: \eqref{eq:fabius-dyadic-moment}, proved in Step~1 of
+% ed.: \Cref{cor:fabius-centered-formula}; it is cited, not restated, so no label is
+% ed.: defined twice and that proof keeps its own internal equation.
+
+\section{Cells, a local reduction, and the digit expansion}
+\index{Fabius function!value at a non-dyadic point}
+
+Formula \eqref{eq:fabius-dyadic-value} evaluates $F$ exactly, but only at dyadic
+rationals; formula \eqref{eq:fabius-fourier-formula} evaluates it at every point, but
+only by quadrature.  This section supplies the missing third description: an exact,
+digit-driven expansion valid at every point of $[0,1)$, whose partial sums are finite
+rational combinations of the moments of $X$ and whose remainder is itself a value of
+$F$, at an argument smaller by a factor $2^{-N}$.  The mechanism is the moment
+functional of \Cref{cor:fabius-centered-formula} carried through with a fractional part
+attached.
+
+\begin{definition}[Shifted moment polynomials]\label{def:fabius-shift-polynomial}
+\index{Appell sequence!Fabius moments}
+For $n\ge0$ and $\theta\in\C$ put
+\begin{equation}\label{eq:fabius-shift-polynomial}
+ \mathfrak a_n(\theta)\defeq\mathbb E\,(X+\theta)^n
+ =\sum_{j=0}^{n}\binom nj\,\mathbb EX^{\,n-j}\,\theta^{\,j},
+\end{equation}
+a monic polynomial of degree $n$ with $\mathfrak a_n(0)=\mathbb EX^n=n!\,\alpha_n$ and
+exponential generating function
+$\sum_{n\ge0}\mathfrak a_n(\theta)z^n/n!=\e^{\theta z}\mathcal A(z)$.
+\end{definition}
+
+Thus $(\mathfrak a_n)$ is the Appell sequence attached to $\mathcal A$: differentiating
+the generating function gives $\mathfrak a_n'=n\,\mathfrak a_{n-1}$, multiplying it by
+$\e^{cz}$ gives the binomial translation law, of which
+\eqref{eq:raw-moments-from-centered} is the instance $c=1/2$ for the centred variable,
+and $X\overset d=1-X$ from \eqref{eq:geometric-uniform-mean-symmetry} gives the
+reflection $\mathfrak a_n(-1-\theta)=(-1)^n\mathfrak a_n(\theta)$, the moment
+counterpart of the $k$-independent digit-complementation sign $(-1)^n$ computed at the
+end of the proof of \Cref{cor:fabius-centered-formula}.  Only
+\eqref{eq:fabius-shift-polynomial} itself is
+used below; in this notation the numerator coefficient
+\eqref{eq:fabius-numerator-moment} reads
+$p_{m,n}=\frac1{n!}\sum_{h<m}\tau_h\,\mathfrak a_n(m-h-1)$.
+
+\begin{lemma}[Spline expectation at an arbitrary argument]\label{lem:fabius-spline-expectation}
+\index{spline!truncated-power expectation}
+Write $y_+\defeq\max(y,0)$.  For every $n\ge1$ and every real $t$,
+\begin{equation}\label{eq:fabius-spline-expectation}
+ F\!\left(\frac t{2^n}\right)
+ =\frac{2^{-\binom n2}}{n!}\sum_{r=0}^{2^n-1}\tau_r\,
+   \mathbb E\bigl(t-r-X\bigr)_+^{\,n}.
+\end{equation}
+\end{lemma}
+
+\begin{proof}
+Use the scaled splitting \eqref{eq:fabius-scaled-split}:
+$2^nX=\sum_{j=1}^{n}c_jV_j+X'$ with $c_j=2^{\,n-j}$, with $V_1,\ldots,V_n$ independent
+and uniform on $[0,1]$, and with $X'$ independent of them and distributed as $X$.  Since
+$(V_1,\ldots,V_n)$ is uniform on the unit cube, conditioning on $X'$ gives
+\[
+ \mathbb P\bigl(2^nX\le t\mid X'\bigr)
+ =\mathbb P\Bigl(\sum_{j=1}^{n}c_jV_j\le t-X'\;\Big|\;X'\Bigr)
+ =V_{\mathbf c}\bigl(t-X'\bigr),
+\]
+where $V_{\mathbf c}$ is the weighted cube cut \eqref{eq:weighted-cube-cut}.  For the
+integer weights $c_j=2^{\,n-j}$ that cut is \eqref{eq:dyadic-cube-cut}, an identity
+valid at every real argument.  Substituting it, averaging over $X'$, and exchanging the
+expectation with the finite sum --- legitimate because the sum has $2^n$ terms, each
+bounded on the bounded range of $X'$ --- gives \eqref{eq:fabius-spline-expectation},
+with $X$ written for $X'$.
+\end{proof}
+
+\begin{remark}[What the unrestricted argument buys]\label{rem:spline-expectation-scope}
+At an integer $t=m$ with $0\le m\le2^n$ every term with $r\ge m$ of
+\eqref{eq:fabius-spline-expectation} vanishes and every term with $r<m$ loses its
+positive part; that is exactly the computation performed in Step~1 of the proof of
+\Cref{cor:fabius-centered-formula}, and it produces \eqref{eq:fabius-dyadic-moment}.
+The content of the lemma is that no restriction on $t$ is needed.  At a non-integer $t$
+one term keeps its positive part, and \Cref{thm:fabius-dyadic-cell} identifies it.
+\end{remark}
+
+\begin{theorem}[Exact formula on every dyadic cell]\label{thm:fabius-dyadic-cell}
+\index{Fabius function!value at a non-dyadic point}
+Let $n\ge1$, let $m$ be an integer with $0\le m\le2^n$, and let $\theta$ be real with
+$0\le\theta<1$ and $m+\theta\le2^n$.  Then
+\begin{equation}\label{eq:fabius-dyadic-cell}
+ F\!\left(\frac{m+\theta}{2^n}\right)
+ =\tau_m\,F\!\left(\frac{\theta}{2^n}\right)
+  +\frac{2^{-\binom n2}}{n!}
+   \sum_{h=0}^{m-1}\tau_h\,\mathfrak a_n\bigl(m-h-1+\theta\bigr),
+\end{equation}
+the sum being empty when $m=0$.  At $\theta=0$ the first term vanishes and
+\eqref{eq:fabius-dyadic-cell} is \eqref{eq:fabius-dyadic-moment}.
+\end{theorem}
+
+\begin{proof}
+Apply \Cref{lem:fabius-spline-expectation} at $t=m+\theta$ and classify the $2^n$
+terms, using $0\le X\le1$ and $0\le\theta<1$.
+
+If $r\ge m+1$, then $t-r-X\le m+\theta-(m+1)=\theta-1<0$ and the term vanishes.
+
+If $r\le m-1$, then $t-r-X\ge m+\theta-(m-1)-1=\theta\ge0$, so the positive part is
+inactive and
+\[
+ \mathbb E\bigl(m+\theta-r-X\bigr)_+^{\,n}
+ =\mathbb E\bigl((1-X)+m-r-1+\theta\bigr)^{n}
+ =\mathfrak a_n\bigl(m-r-1+\theta\bigr),
+\]
+because $1-X\overset d=X$ by \eqref{eq:geometric-uniform-mean-symmetry}.  These terms
+contribute the sum in \eqref{eq:fabius-dyadic-cell}.
+
+There remains the term $r=m$, which occurs in the range $0\le r\le2^n-1$ precisely when
+$m\le2^n-1$.  In that case its contribution is
+$\tau_m\,2^{-\binom n2}\mathbb E(\theta-X)_+^{\,n}/n!$.  Apply
+\Cref{lem:fabius-spline-expectation} once more, now at $t=\theta$: since
+$0\le\theta<1$, every index $r\ge1$ gives $\theta-r-X\le\theta-1<0$ and drops out, so
+only $r=0$ survives and
+\begin{equation}\label{eq:fabius-cell-residual-term}
+ F\!\left(\frac{\theta}{2^n}\right)
+ =\frac{2^{-\binom n2}}{n!}\,\mathbb E\bigl(\theta-X\bigr)_+^{\,n} .
+\end{equation}
+The $r=m$ term is therefore $\tau_m F(\theta/2^n)$, which is the first summand of
+\eqref{eq:fabius-dyadic-cell}.
+
+If instead $m=2^n$, then $\theta=0$ by the hypothesis $m+\theta\le2^n$; the index $r=m$
+is absent from the range of summation, and the first summand of
+\eqref{eq:fabius-dyadic-cell} is $\tau_{2^n}F(0)=0$, so the formula again holds.  This
+proves \eqref{eq:fabius-dyadic-cell} in all cases.  Finally, at $\theta=0$ one has
+$F(0)=0$ and $\mathfrak a_n(m-h-1)$ in place of $\mathfrak a_n(m-h-1+\theta)$, so
+\eqref{eq:fabius-dyadic-cell} becomes
+$F(m/2^n)=2^{-\binom n2}p_{m,n}$ by \eqref{eq:fabius-numerator-moment}, which is
+\eqref{eq:fabius-dyadic-moment}.
+\end{proof}
+
+\begin{remark}[Both hypotheses on $\theta$ are needed, and how sharp they are]\label{rem:fabius-cell-sharpness}
+The restriction $m+\theta\le2^n$ cannot be dropped: at $n=1$, $m=2$, $\theta=1/4$ the
+right-hand side of \eqref{eq:fabius-dyadic-cell} is
+$-F(1/8)+\mathfrak a_1(5/4)-\mathfrak a_1(1/4)=1-\frac1{288}=\frac{287}{288}$, whereas
+$F(9/8)=1$.  The restriction $\theta<1$ can be relaxed to $\theta\le1$ but no further.
+At $\theta=1$ with $m+1\le2^n$ the identity persists, because
+$\mathfrak a_n(0)=n!\,\alpha_n$ and \eqref{eq:fabius-half-moment} turn the extra term
+$\tau_m\,2^{-\binom n2}\mathfrak a_n(0)/n!$ of \eqref{eq:fabius-dyadic-cell} at the
+numerator $m+1$ into $\tau_mF(2^{-n})$.  At $\theta=3/2$ it fails: for $n=2$, $m=1$ the
+right-hand side is
+$-F(3/8)+\frac14\mathfrak a_2(3/2)=-\frac{73}{288}+\frac{145}{144}=\frac{217}{288}$,
+whereas $F(5/8)=\frac{215}{288}$.
+% ed.: all three numbers verified in exact rational arithmetic.
+\end{remark}
+
+
+% ---- merged block D06 ----
+% ed.: this block kept only its worked example and description: the
+% ed.: digit-expansion theorem it also proved is stated in the fuller
+% ed.: Appell form of \Cref{thm:fabius-digit-expansion} below, which the
+% ed.: same sibling supplies from another chapter.
+% ed.: PLACEMENT: immediately after \Cref{cor:fabius-local-reduction}, closing the new
+% ed.: section.  \Cref{rem:fabius-third-description} completes the unlabelled remark
+% ed.: that follows \Cref{cor:fabius-fourier-formula}, which lists only two exact
+% ed.: descriptions of $F$.
+
+Let $x\in[0,1)$ and let $x=0.b_1b_2b_3\ldots$ in base two be its canonical binary
+expansion, the one that is not eventually constant equal to $1$.  Put
+\begin{equation}\label{eq:fabius-digit-prefix}
+ m_j\defeq\floor{2^jx},
+ \qquad
+ \theta_j\defeq2^jx-m_j\in[0,1)
+ \qquad(j\ge0),
+\end{equation}
+so that $m_0=0$ and $\theta_0=x$.  The binary digits of $m_j$ are $b_1\ldots b_j$;
+hence
+\begin{equation}\label{eq:fabius-digit-recursions}
+ m_j=2m_{j-1}+b_j,
+ \qquad
+ \tau_{m_j}=(-1)^{b_j}\tau_{m_{j-1}},
+ \qquad
+ \theta_{j-1}=\frac{b_j+\theta_j}2
+ \qquad(j\ge1),
+\end{equation}
+the middle relation because appending a digit $0$ leaves $s_2$ unchanged and appending
+a digit $1$ raises it by one.
+
+
+\begin{example}[A non-dyadic argument]\label{ex:fabius-digit-onethird}
+Let $x=1/3$, whose binary expansion is $0.\overline{01}$.  Then $b_j=1$ exactly for
+even $j$, and $\theta_j=1/3$ for even $j$, $\theta_j=2/3$ for odd $j$, while
+$m_1=0$, $m_3=2$, $m_5=10$, with $\tau_{m_1}=1$, $\tau_{m_3}=-1$,
+$\tau_{m_5}=1$.  Hence \eqref{eq:fabius-digit-appell} reads
+\[
+ F\!\left(\tfrac13\right)
+ =\frac{\mathfrak a_2(1/3)}{4}
+ -\frac{\mathfrak a_4(1/3)}{2^{6}\cdot4!}
+ +\frac{\mathfrak a_6(1/3)}{2^{15}\cdot6!}-\cdots
+ =\frac{13}{72}-\frac{2429}{6220800}+\frac{198007}{8427641241600}-\cdots,
+\]
+whose partial sums are
+\[
+ S_2=\tfrac{13}{72}=0.180555\ldots,\qquad
+ S_4=0.1801650913\ldots,\qquad
+ S_6=0.18016511480153\ldots,
+\]
+against $F(1/3)=0.1801651148014819\ldots$ obtained from
+\eqref{eq:fabius-fourier-formula}.  Three terms already agree with $F(1/3)$ to within
+$5.2\cdot10^{-14}$.  The guaranteed bound of \eqref{eq:fabius-digit-residual} at $N=6$
+is $2^{-15}/6!=4.2\cdot10^{-8}$; it is far from sharp here because the residual is
+$F(1/192)$ and $1/192$ lies well inside the interval $[0,2^{-6}]$ on which $F$ is
+extremely flat.
+% ed.: partial sums computed in exact rational arithmetic; the comparison value
+% ed.: computed from \eqref{eq:fabius-fourier-formula} to $25$ digits.
+\end{example}
+
+\begin{remark}[Three exact descriptions of $F$]\label{rem:fabius-third-description}
+The remark following \Cref{cor:fabius-fourier-formula} contrasts two exact descriptions
+of $F$: the global analytic one \eqref{eq:fabius-fourier-formula} and the finite
+rational one \eqref{eq:fabius-dyadic-value}, which applies only at dyadic arguments.
+Formula \eqref{eq:fabius-digit-appell} is a third, and it is the only one that is
+simultaneously exact, elementary, and valid at every argument.  Its cost structure is
+also different from both.  The $j$th term needs the moments
+$\mathbb EX^0,\ldots,\mathbb EX^j$, which \eqref{eq:fabius-coefficient-recurrence}
+produces through $\mathbb EX^n=n!\,\alpha_n$ at one rational division each; the
+accuracy is governed by the superfactorial
+weight $2^{-\binom N2}/N!$ of \eqref{eq:fabius-digit-residual}, which is
+$7.8\cdot10^{-21}$ at $N=10$ and $2.6\cdot10^{-76}$ at $N=20$, uniformly in $x$; and
+only the indices $j$ with $b_j=1$ contribute a term, so the number of nonzero terms is
+the binary weight of the truncated argument and not its length.  By contrast
+\eqref{eq:fabius-dyadic-value} needs a Thue--Morse block of length $m2^k$, and
+\eqref{eq:fabius-fourier-formula} needs quadrature of an oscillatory integral.
+\end{remark}
+
+
+% ---- merged block D07 ----
+% ---- merged block Q01 ----
+% ed.: PLACEMENT: chap:geometric-uniform-fabius, section ``Finite spline
+% ed.: approximants'', immediately after \Cref{cor:finite-uniform-convergence}
+% ed.: and before \Cref{rem:halfbase-density-normalizations}.  NEW.
+% ed.: An incoming draft introduced the midpoint-centred truncation and recorded
+% ed.: two things about it: the half-base spline formula, which it reproved by a
+% ed.: second inclusion--exclusion argument --- it is \eqref{eq:dyadic-cube-cut}
+% ed.: re-centred, and is obtained that way in (i) below, the duplicate proof
+% ed.: being dropped --- and the bound $\sup\abs{S_p-F}\le2^{-p}$, obtained by
+% ed.: coupling against an ad hoc re-proof of $\norm f_\infty\le2$, which is
+% ed.: \Cref{prop:geometric-uniform-density-band}(ii)--(iii) and is cited here.
+% ed.: That bound is true but is off by the factor $9\cdot2^{p}$: recentring at
+% ed.: the tail midpoint annihilates the first-order term, and the exact rate is
+% ed.: $q^{2N-1}/(24(1-q^2))$.  Its hypothesis $N\ge2$ is necessary, by (iv).
+
+The truncation $X_{q,N}$ of \eqref{eq:finite-geometric-uniform-sum} discards a
+nonnegative tail, so \Cref{cor:finite-uniform-convergence} is a one-sided
+coupling and its rate $q^N$ is the length of the discarded interval.  Adding back
+the \emph{mean} of that tail centres the coupling and removes the first-order
+term; the resulting rate is second order in $q^N$, and it can be computed
+exactly.
+
+\begin{proposition}[Midpoint-centred truncations, and an exact second-order rate]\label{prop:midpoint-truncation}
+\index{spline!midpoint-centred}
+\index{Fabius function!midpoint spline}
+\index{coupling!second-order}
+Let $0<q<1$ and $N\ge1$, and put
+\begin{equation}\label{eq:midpoint-truncation-def}
+ X_{q,N}^{\mathrm{mid}}\defeq X_{q,N}+\tfrac12q^N,
+ \qquad
+ F_{q,N}^{\mathrm{mid}}(x)\defeq\mathbb P\bigl(X_{q,N}^{\mathrm{mid}}\le x\bigr)
+  =F_{q,N}\bigl(x-\tfrac12q^N\bigr).
+\end{equation}
+At the half base write $S_p\defeq F^{\mathrm{mid}}_{1/2,p}$.  Then:
+\begin{enumerate}
+\item for every $p\ge1$ and every real $x$,
+\begin{equation}\label{eq:midpoint-spline}
+ S_p(x)=\frac{2^{-\binom p2}}{p!}
+  \sum_{r=0}^{2^p-1}\tau_r\bigl(2^px-\tfrac12-r\bigr)_+^{\,p},
+  \qquad \tau_r=(-1)^{s_2(r)};
+\end{equation}
+\item for every $N\ge2$,
+\begin{equation}\label{eq:midpoint-rate}
+ \sup_{x\in\R}\bigl|F^{\mathrm{mid}}_{q,N}(x)-F_q(x)\bigr|
+ \le\frac{q^{\,2N-1}}{24\bigl(1-q^{2}\bigr)};
+\end{equation}
+\item if moreover $0<q\le1/2$, then \eqref{eq:midpoint-rate} is an equality, the
+extreme value being attained at $x^\ast\defeq q(1-q)$:
+\begin{equation}\label{eq:midpoint-extremum}
+ F^{\mathrm{mid}}_{q,N}\bigl(x^\ast\bigr)-F_q\bigl(x^\ast\bigr)
+ =-\frac{q^{\,2N-1}}{24\bigl(1-q^{2}\bigr)} .
+\end{equation}
+At $q=1/2$ this reads
+$\sup_{x\in\R}\abs{S_p(x)-F(x)}=\tfrac19\,4^{-p}$ for $p\ge2$, attained at
+$x=1/4$;
+\item the hypothesis $N\ge2$ cannot be dropped: at $q=1/2$ and $N=1$ the variable
+$X^{\mathrm{mid}}_{1/2,1}=\tfrac12U_0+\tfrac14$ is uniform on $[1/4,3/4]$, so
+$S_1(1/4)=0$ while $F(1/4)=5/72$ by \Cref{rem:fabius-dyadic-architecture},
+whereas the right-hand side of \eqref{eq:midpoint-rate} would be $1/36<5/72$.
+\end{enumerate}
+\end{proposition}
+
+\begin{proof}
+\emph{(i).}  By \Cref{rem:dyadic-cube-cut} with $n=p$, the weights $c_j=2^{\,p-j}$
+are $2^p$ times the half-base weights $a_{j-1}=2^{-j}$, so
+$V_{\mathbf c}(t)=\mathbb P\bigl(2^pX_{1/2,p}\le t\bigr)=F_{1/2,p}\bigl(2^{-p}t\bigr)$
+and \eqref{eq:dyadic-cube-cut} reads
+\[
+ F_{1/2,p}\bigl(2^{-p}t\bigr)
+ =\frac{2^{-\binom p2}}{p!}\sum_{r=0}^{2^p-1}\tau_r\,(t-r)_+^{\,p}.
+\]
+By \eqref{eq:midpoint-truncation-def}, $S_p(x)=F_{1/2,p}\bigl(x-2^{-p-1}\bigr)$,
+which is the above at $t=2^px-\tfrac12$.  This is \eqref{eq:midpoint-spline}.
+
+\emph{An exact error integral.}  Iterating \eqref{eq:geometric-uniform-fixed-point}
+$N$ times gives $X_q\overset d=X_{q,N}+q^NX_q'$ with $X_q'$ an independent copy of
+$X_q$; at $q=1/2$ this is \eqref{eq:fabius-scaled-split} after scaling.  Write
+$Y\defeq X_{q,N}$, let $g_{q,N}$ be its density
+(\Cref{thm:finite-uniform-spline}), and put
+\[
+ H_q(u)\defeq\one_{[1/2,\infty)}(u)-F_q(u),
+\]
+which vanishes for $u<0$ and for $u>1$.  Conditioning on $Y$,
+\[
+ F_q(x)=\mathbb E\Bigl[F_q\bigl(q^{-N}(x-Y)\bigr)\Bigr],
+ \qquad
+ F^{\mathrm{mid}}_{q,N}(x)
+ =\mathbb P\bigl(Y\le x-\tfrac12q^N\bigr)
+ =\mathbb E\Bigl[\one_{[1/2,\infty)}\bigl(q^{-N}(x-Y)\bigr)\Bigr],
+\]
+so, substituting $u=q^{-N}(x-y)$,
+\begin{equation}\label{eq:midpoint-error-integral}
+ F^{\mathrm{mid}}_{q,N}(x)-F_q(x)
+ =\mathbb E\Bigl[H_q\bigl(q^{-N}(x-Y)\bigr)\Bigr]
+ =q^N\int_0^1g_{q,N}\bigl(x-q^Nu\bigr)H_q(u)\dd u .
+\end{equation}
+
+\emph{The two moments of $H_q$.}  Since $\mathbb EX_q=\int_0^1(1-F_q)$ and
+$\mathbb EX_q=1/2$ by \eqref{eq:geometric-uniform-mean-symmetry},
+\begin{equation}\label{eq:midpoint-H-moment-zero}
+ \int_0^1H_q(u)\dd u=\tfrac12-\int_0^1F_q(u)\dd u
+ =\tfrac12-\bigl(1-\mathbb EX_q\bigr)=0 .
+\end{equation}
+Integrating by parts, $\int_0^1uF_q(u)\dd u=\tfrac12-\tfrac12\mathbb EX_q^2$, whence
+\[
+ \int_0^1\bigl(u-\tfrac12\bigr)H_q(u)\dd u
+ =\int_{1/2}^1\bigl(u-\tfrac12\bigr)\dd u-\int_0^1\bigl(u-\tfrac12\bigr)F_q(u)\dd u
+ =\tfrac12\mathbb EX_q^2-\tfrac18
+ =\tfrac12\operatorname{Var}(X_q).
+\]
+By \eqref{eq:q-cumulants-uniform} at $m=1$, with $B_2=1/6$,
+$\operatorname{Var}(X_q)=\kappa_2(Y_q)=(1-q)/\bigl(12(1+q)\bigr)$, so
+\begin{equation}\label{eq:midpoint-H-moment-one}
+ \int_0^1\bigl(u-\tfrac12\bigr)H_q(u)\dd u=\frac{1-q}{24(1+q)} .
+\end{equation}
+Finally $H_q\le0$ on $[0,1/2)$ and $H_q\ge0$ on $[1/2,1]$, so
+$\bigl(u-\tfrac12\bigr)H_q(u)=\bigl|u-\tfrac12\bigr|\,\abs{H_q(u)}$ pointwise and
+\eqref{eq:midpoint-H-moment-one} also computes
+$\int_0^1\abs{u-\tfrac12}\abs{H_q(u)}\dd u$.
+
+\emph{The density and its Lipschitz constant.}  For $M\ge1$ write
+$X_{q,M}=(1-q)U_0+qX_{q,M-1}$ with the two summands independent and
+$X_{q,0}\defeq0$.  Conditioning on the second summand, which contributes the
+uniform density $1/(1-q)$ on a window of length $1-q$, gives
+\begin{equation}\label{eq:truncated-density-from-cdf}
+ g_{q,M}(x)=\frac1{1-q}
+ \left[F_{q,M-1}\!\left(\frac xq\right)-F_{q,M-1}\!\left(\frac{x-1+q}q\right)\right],
+\end{equation}
+the difference of two values of a distribution function; hence
+$0\le g_{q,M}\le1/(1-q)$, the finite-$M$ form of
+\Cref{prop:geometric-uniform-density-band}(ii).  If $M\ge2$ then $F_{q,M-1}$ has
+the bounded density $g_{q,M-1}$ and is therefore Lipschitz with constant
+$1/(1-q)$, so \eqref{eq:truncated-density-from-cdf} shows that $g_{q,M}$ is
+Lipschitz with constant
+\begin{equation}\label{eq:truncated-density-lipschitz}
+ \operatorname{Lip}(g_{q,M})\le\frac1{q(1-q)^2}
+ \qquad(M\ge2).
+\end{equation}
+
+\emph{(ii).}  Let $N\ge2$.  By \eqref{eq:midpoint-H-moment-zero} we may subtract
+the constant $g_{q,N}\bigl(x-\tfrac12q^N\bigr)$ inside
+\eqref{eq:midpoint-error-integral}, so that
+\[
+ \bigl|F^{\mathrm{mid}}_{q,N}(x)-F_q(x)\bigr|
+ \le q^N\int_0^1\Bigl|g_{q,N}\bigl(x-q^Nu\bigr)-g_{q,N}\bigl(x-\tfrac12q^N\bigr)\Bigr|
+   \,\abs{H_q(u)}\dd u
+ \le\frac{q^{2N}}{q(1-q)^2}\int_0^1\Bigl|u-\tfrac12\Bigr|\abs{H_q(u)}\dd u
+\]
+by \eqref{eq:truncated-density-lipschitz}.  Now insert
+\eqref{eq:midpoint-H-moment-one}:
+\[
+ \frac{q^{2N-1}}{(1-q)^2}\cdot\frac{1-q}{24(1+q)}
+ =\frac{q^{2N-1}}{24(1-q^2)} ,
+\]
+which is \eqref{eq:midpoint-rate}.
+
+\emph{(iii).}  Let $0<q\le1/2$ and $N\ge2$.  We claim that $g_{q,N}$ is affine
+with slope exactly $1/\bigl(q(1-q)^2\bigr)$ on
+$I\defeq[x^\ast-q^N,\,x^\ast]$, where $x^\ast=q(1-q)$.
+
+First, for $M\ge1$,
+\begin{equation}\label{eq:truncated-density-plateau}
+ g_{q,M}(y)=\frac1{1-q}
+ \qquad\text{for (almost) every }y\in\bigl[1-q-q^M,\,1-q\bigr].
+\end{equation}
+For $M=1$ the variable $X_{q,1}=(1-q)U_0$ is uniform on $[0,1-q]$ and
+$1-q-q\ge0$ because $q\le1/2$, so the interval lies in the support and the
+density is $1/(1-q)$ almost everywhere on it.  For $M\ge2$ use
+\eqref{eq:truncated-density-from-cdf}: such a $y$ has $y-1+q\le0$, and
+$X_{q,M-1}$ has a density, so $F_{q,M-1}\bigl((y-1+q)/q\bigr)=0$; moreover
+$y/q\ge(1-q)/q-q^{M-1}\ge1-q^{M-1}$ because $(1-q)/q\ge1$, while
+$X_{q,M-1}\le1-q^{M-1}$, so $F_{q,M-1}(y/q)=1$.  This proves
+\eqref{eq:truncated-density-plateau}, and hence $F_{q,M}$ is affine with slope
+$1/(1-q)$ on $\bigl[1-q-q^M,1-q\bigr]$.
+
+Now let $x\in I$.  Then $x\le q(1-q)<1-q$, so $x-1+q<0$ and the second term of
+\eqref{eq:truncated-density-from-cdf} vanishes, giving
+$g_{q,N}(x)=F_{q,N-1}(x/q)/(1-q)$.  As $x$ runs through $I$, the point $x/q$ runs
+through $\bigl[1-q-q^{N-1},\,1-q\bigr]$, on which $F_{q,N-1}$ is affine with slope
+$1/(1-q)$ by \eqref{eq:truncated-density-plateau} with $M=N-1\ge1$.  Composing
+the two affine maps proves the claim.
+
+Write therefore
+$g_{q,N}(x^\ast-q^Nu)=g_{q,N}(x^\ast)-q^Nu\big/\bigl(q(1-q)^2\bigr)$ for
+$0\le u\le1$ and substitute into \eqref{eq:midpoint-error-integral}.  The
+constant term is annihilated by \eqref{eq:midpoint-H-moment-zero}, which also
+gives $\int_0^1uH_q=\int_0^1\bigl(u-\tfrac12\bigr)H_q$, so by
+\eqref{eq:midpoint-H-moment-one}
+\[
+ F^{\mathrm{mid}}_{q,N}(x^\ast)-F_q(x^\ast)
+ =-\frac{q^{2N}}{q(1-q)^2}\int_0^1\bigl(u-\tfrac12\bigr)H_q(u)\dd u
+ =-\frac{q^{2N-1}}{24(1-q^2)} ,
+\]
+which is \eqref{eq:midpoint-extremum}; with (ii) it makes
+\eqref{eq:midpoint-rate} an equality.  At $q=1/2$ one has $x^\ast=1/4$ and
+$q^{2N-1}/\bigl(24(1-q^2)\bigr)=2^{1-2N}\big/18=\tfrac194^{-N}$.
+
+\emph{(iv).}  The computation is the one displayed in the statement.
+\end{proof}
+
+\begin{remark}[What the midpoint buys]\label{rem:midpoint-versus-plain}
+Against \eqref{eq:cdf-uniform-rate-explicit} the gain is a full extra factor
+$q^{N-1}(1-q)/\bigl(24(1+q)\bigr)$, and at the half base the gain is
+$9\cdot2^{N}$: the plain truncation obeys
+$\sup_x\abs{F_{1/2,N}-F}=2^{-N}$, while
+$\sup_x\abs{S_N-F}=\tfrac194^{-N}$.  The mechanism is visible in
+\eqref{eq:midpoint-error-integral}: the shift $\tfrac12q^N$ is exactly the one
+that makes the kernel $H_q$ have vanishing mean, after which only its first
+moment $\tfrac12\operatorname{Var}(X_q)$ survives.  The same identity shows why no
+further shift helps: the next obstruction is the second moment of $H_q$, which
+cannot be removed by a translation.
+% ed.: the exact half-base values $\sup_x\abs{S_p-F}=\tfrac194^{-p}$ were
+% ed.: confirmed in exact rational arithmetic for $2\le p\le7$ (extremum $-1/144$,
+% ed.: $-1/576$, $-1/2304$, $-1/9216$, $-1/36864$, $-1/147456$, always at
+% ed.: $x=1/4$), and \eqref{eq:midpoint-rate} was confirmed by Monte Carlo at
+% ed.: $q=1/3,1/2,7/10$ and $N=2,3$ with $4\cdot10^{7}$ samples.
+\end{remark}
+
+
+% ---- merged block D08 ----
+% ---- merged block Q02 ----
+% ed.: PLACEMENT: chap:dyadic-gaussian-thue-morse, new section ``An off-grid
+% ed.: continuation of the dyadic formula'', inserted after
+% ed.: \Cref{prin:row-exactness-stability} and before
+% ed.: \Cref{rem:dyadic-algebraic-layer}.  NEW.  This block and
+% ed.: \Cref{thm:offgrid-dyadic,thm:offgrid-uniform-rate} are the surviving
+% ed.: content of an incoming draft's half-base Toeplitz section; the row
+% ed.: identities it also stated (generating polynomial, unit mass, $\ell^1$
+% ed.: norm) are \Cref{rem:halfbase-row-reversal} together with
+% ed.: \eqref{eq:geometric-row-mass} and \eqref{eq:geometric-row-variation}, and
+% ed.: are cited rather than restated.
+
+\section{An off-grid continuation of the dyadic formula}
+
+\Cref{cor:fabius-centered-formula} evaluates $F$ at the dyadic points
+$m/2^n$ with $0\le m\le2^n$, and \Cref{rem:fabius-dyadic-architecture} shows that
+the hypothesis $m\le2^n$ cannot simply be dropped: at $n=2$, $m=5$ the right-hand
+side of \eqref{eq:fabius-dyadic-value} returns $67/72$ instead of $F(5/4)=1$.
+Both restrictions disappear at once if the block length $m2^k$ is replaced by a
+cutoff that is \emph{clamped} at the top.  The resulting function is defined for
+every real argument, agrees with $F$ on the grid, and is an explicit Gaussian
+average of the midpoint splines of \Cref{prop:midpoint-truncation}.
+
+\begin{definition}[The clamped midpoint cutoff]\label{def:clamped-cutoff}
+\index{cutoff!clamped midpoint}
+For an integer $p\ge1$ and $x\in\R$ put
+\begin{equation}\label{eq:clamped-cutoff}
+ N_p(x)\defeq\min\Bigl(2^p,\ \max\bigl(0,\ \floor{2^px+\tfrac12}\bigr)\Bigr)
+ \in\set{0,1,\ldots,2^p} .
+\end{equation}
+\end{definition}
+
+\begin{lemma}[Cutoff form of the midpoint spline]\label{lem:cutoff-to-spline}
+\index{spline!cutoff form}
+Let $p\ge1$.  For every real $x$,
+\begin{equation}\label{eq:cutoff-to-spline}
+ \frac1{p!}\sum_{r=0}^{N_p(x)-1}\tau_r\bigl(r-2^px+\tfrac12\bigr)^{\,p}
+ =(-1)^p2^{\binom p2}\,S_p(x),
+\end{equation}
+an empty sum being $0$.  Moreover, if $0\le n\le p$ and $m$ is an integer with
+$0\le m\le2^n$, then
+\begin{equation}\label{eq:clamped-cutoff-on-grid}
+ N_p\!\left(\frac m{2^n}\right)=m\,2^{\,p-n}.
+\end{equation}
+\end{lemma}
+
+\begin{proof}
+Put $t\defeq2^px-\tfrac12$.  In \eqref{eq:midpoint-spline} the term of index $r$
+is nonzero exactly when $t-r>0$; since $r$ is an integer this says
+$r<\ceil t$, so the terms that survive are those with
+$0\le r<\min\bigl(2^p,\max(0,\ceil t)\bigr)$.
+
+We check that $\ceil t$ may be replaced by $\floor{t+1}=\floor{2^px+\tfrac12}$.
+The two integers agree unless $t\in\Z$, in which case
+$\floor{t+1}=\ceil t+1$; the single extra index is then $r=t$, whose contribution
+to \eqref{eq:cutoff-to-spline} is $\tau_t\,(t-t)^p=0$ because $p\ge1$.  Neither
+side of \eqref{eq:cutoff-to-spline} changes, so the summation range in
+\eqref{eq:cutoff-to-spline} is exactly the active range of
+\eqref{eq:midpoint-spline}.
+% ed.: this is the one point where the floor convention of
+% ed.: \eqref{eq:clamped-cutoff} needs an argument; an incoming draft asserted it
+% ed.: without comment.
+
+Consequently, using $(t-r)^p=(-1)^p(r-t)^p$ and $r-t=r-2^px+\tfrac12$,
+\[
+ S_p(x)=\frac{2^{-\binom p2}}{p!}\sum_{r=0}^{2^p-1}\tau_r(t-r)_+^{\,p}
+ =\frac{(-1)^p2^{-\binom p2}}{p!}
+  \sum_{r=0}^{N_p(x)-1}\tau_r\bigl(r-2^px+\tfrac12\bigr)^{\,p},
+\]
+which is \eqref{eq:cutoff-to-spline} after multiplying by
+$(-1)^p2^{\binom p2}$.
+
+For \eqref{eq:clamped-cutoff-on-grid}, $2^p\cdot m/2^n=m2^{\,p-n}$ is a
+nonnegative integer, so $\floor{m2^{\,p-n}+\tfrac12}=m2^{\,p-n}$; and
+$0\le m2^{\,p-n}\le2^n2^{\,p-n}=2^p$, so neither clamp is active.
+\end{proof}
+
+\begin{remark}[The clamp repairs the hypothesis $m\le2^n$]\label{rem:clamp-repairs-hypothesis}
+The upper clamp in \eqref{eq:clamped-cutoff} is not cosmetic.  Without it the
+right-hand side of \eqref{eq:cutoff-to-spline} would continue to accumulate terms
+for $x>1$ and would describe a signed global extension rather than a bounded
+distribution function; the failure recorded in
+\Cref{rem:fabius-dyadic-architecture} at $n=2$, $m=5$ is precisely the case
+$N_{n+k}(x)$ replaced by an unclamped $m2^k>2^{\,n+k}$.  The lower clamp plays
+the symmetric role for $x<0$.
+\end{remark}
+
+
+% ---- merged block D09 ----
+% ---- merged block Q03 ----
+% ed.: PLACEMENT: chap:dyadic-gaussian-thue-morse, section ``An off-grid
+% ed.: continuation of the dyadic formula'', immediately after
+% ed.: \Cref{rem:clamp-repairs-hypothesis}.  NEW.  An incoming draft stated this
+% ed.: theorem together with the row-generating polynomial, the unit row mass and
+% ed.: the $\ell^1$ norm of $\omega_{n,\cdot}$; those three are
+% ed.: \Cref{rem:halfbase-row-reversal} with \eqref{eq:geometric-row-mass},
+% ed.: \eqref{eq:geometric-lagrange-signs} and
+% ed.: \eqref{eq:geometric-row-variation}, and are cited in (ii) instead of being
+% ed.: proved a second time.  Part (iv) is added here; the endpoint exponent is
+% ed.: $2n+1$ at both ends, the binding constraint being the longest spline
+% ed.: $S_{2n}$ and not the shortest.
+
+\begin{theorem}[Off-grid continuation of the dyadic formula]\label{thm:offgrid-dyadic}
+\index{Fabius function!off-grid continuation}
+\index{Toeplitz theorem!bounded-variation rows}
+For $n\ge1$ define, for every $x\in\R$,
+\begin{equation}\label{eq:offgrid-dyadic-def}
+ D_n(x)\defeq\frac1{2^{\,n^2}\poch{1/2}{1/2}{n}}
+ \sum_{k=0}^{n}\frac{\Qbinom nk{1/2}}{4^{\binom k2}(n+k)!}
+ \sum_{r=0}^{N_{n+k}(x)-1}
+ \tau_r\bigl(r-2^{\,n+k}x+\tfrac12\bigr)^{\,n+k},
+\end{equation}
+with $N_p$ as in \eqref{eq:clamped-cutoff}, and put
+\begin{equation}\label{eq:offgrid-weights}
+ \omega_{n,j}\defeq\frac{(-1)^j2^{-\binom{j+1}{2}}}{\poch{1/2}{1/2}{n}}
+ \Qbinom nj{1/2}
+ \qquad(0\le j\le n).
+\end{equation}
+Then:
+\begin{enumerate}
+\item for every $x\in\R$,
+\begin{equation}\label{eq:offgrid-decomposition}
+ D_n(x)=\sum_{j=0}^{n}\omega_{n,j}\,S_{2n-j}(x);
+\end{equation}
+\item $\omega_{n,j}=W_{n,j}=\lambda^{(1/2)}_{n,\,n-j}$ in the notation of
+\Cref{rem:halfbase-row-reversal}; in particular
+$\sum_{j=0}^{n}\omega_{n,j}=1$, $\sgn\omega_{n,j}=(-1)^j$,
+$\sum_{j=0}^{n}\omega_{n,j}z^j=\poch{z/2}{1/2}{n}\big/\poch{1/2}{1/2}{n}$ and
+$\sum_{j=0}^{n}\abs{\omega_{n,j}}=\poch{-1/2}{1/2}{n}\big/\poch{1/2}{1/2}{n}$;
+\item $D_n$ interpolates $F$ on the grid of resolution $2^{-n}$:
+\begin{equation}\label{eq:offgrid-interpolation}
+ D_n\!\left(\frac m{2^n}\right)=F\!\left(\frac m{2^n}\right)
+ \qquad(m\in\Z,\ 0\le m\le2^n);
+\end{equation}
+\item $D_n$ is a continuous piecewise polynomial of degree at most $2n$, its
+knots are the odd multiples of $2^{-2n-1}$, it satisfies
+$D_n(1-x)=1-D_n(x)$, and
+\begin{equation}\label{eq:offgrid-endpoints}
+ D_n(x)=0\ \ (x\le2^{-2n-1}),
+ \qquad
+ D_n(x)=1\ \ (x\ge1-2^{-2n-1}).
+\end{equation}
+\end{enumerate}
+\end{theorem}
+
+\begin{proof}
+\emph{(i).}  Apply \Cref{lem:cutoff-to-spline} with $p=n+k$: the inner sum of
+\eqref{eq:offgrid-dyadic-def}, divided by $(n+k)!$, equals
+$(-1)^{n+k}2^{\binom{n+k}{2}}S_{n+k}(x)$.  Hence
+\[
+ D_n(x)=\frac1{\poch{1/2}{1/2}{n}}\sum_{k=0}^{n}(-1)^{n+k}
+ 2^{\binom{n+k}{2}-n^2-2\binom k2}\Qbinom nk{1/2}\,S_{n+k}(x),
+\]
+since $4^{\binom k2}=2^{2\binom k2}$.  Substitute $j=n-k$, so that $n+k=2n-j$.
+The sign is $(-1)^{2n-j}=(-1)^j$; the Gaussian coefficient is unchanged because
+$\Qbinom n{n-j}{1/2}=\Qbinom nj{1/2}$, by the symmetry visible in
+\eqref{eq:halfbase-gaussian}; and the exponent of $2$ becomes
+\[
+ \binom{2n-j}{2}-2\binom{n-j}{2}-n^2
+ =\tfrac12(2n-j)(2n-j-1)-(n-j)(n-j-1)-n^2
+ =-\tfrac12 j(j+1)
+ =-\binom{j+1}{2},
+\]
+an identity in $n$ and $j$ verified by expanding both sides.  This is exactly
+\eqref{eq:offgrid-weights}, and \eqref{eq:offgrid-decomposition} follows.
+
+\emph{(ii).}  The displayed $\omega_{n,j}$ is the row $W_{n,j}$ of
+\Cref{rem:halfbase-row-reversal}, where it is identified with
+$\lambda^{(1/2)}_{n,n-j}$ and its generating polynomial is computed.  Unit mass
+is \eqref{eq:geometric-row-mass}, the sign pattern is
+\eqref{eq:geometric-lagrange-signs} read in reversed coordinates, and the
+$\ell^1$ norm is \eqref{eq:geometric-row-variation}, all at $q=1/2$.
+
+\emph{(iii).}  Let $0\le m\le2^n$.  By \eqref{eq:clamped-cutoff-on-grid} with
+$p=n+k\ge n$ we have $N_{n+k}(m/2^n)=m2^k$, while
+$2^{\,n+k}\cdot m/2^n=m2^k$; hence \eqref{eq:offgrid-dyadic-def} becomes
+\[
+ \frac1{2^{\,n^2}\poch{1/2}{1/2}{n}}
+ \sum_{k=0}^{n}\frac{\Qbinom nk{1/2}}{4^{\binom k2}(n+k)!}
+ \sum_{r=0}^{m2^k-1}\tau_r\bigl(r-m2^k+\tfrac12\bigr)^{\,n+k},
+\]
+which is the right-hand side of \eqref{eq:fabius-dyadic-value} at
+$\theta=\tfrac12$.  By \Cref{cor:fabius-centered-formula} its value is
+$F(m/2^n)$.
+
+\emph{(iv).}  Each $S_p$ is, by \eqref{eq:midpoint-spline}, a continuous
+piecewise polynomial of degree $p$ whose knots are the numbers
+$(2r+1)/2^{\,p+1}$; the degrees occurring in
+\eqref{eq:offgrid-decomposition} are $n,\ldots,2n$ and the finest knot set is
+that of $S_{2n}$.  The variable $X^{\mathrm{mid}}_{1/2,p}$ of
+\eqref{eq:midpoint-truncation-def} is symmetric about $\tfrac12$, because
+$X_{1/2,p}$ is symmetric about its mean $(1-2^{-p})/2$ and
+$(1-2^{-p})/2+2^{-p-1}=\tfrac12$; as it has no atoms, $S_p(1-x)=1-S_p(x)$, and
+the unit row mass of (ii) transfers this to $D_n$.  Finally
+$X^{\mathrm{mid}}_{1/2,p}$ takes values in $[2^{-p-1},1-2^{-p-1}]$, so $S_p=0$ on
+$(-\infty,2^{-p-1}]$ and $S_p=1$ on $[1-2^{-p-1},\infty)$; both hold
+simultaneously for all $p\in\set{n,\ldots,2n}$ exactly on the two rays of
+\eqref{eq:offgrid-endpoints}, the binding index being $p=2n$.
+\end{proof}
+
+\begin{remark}[Which part of the dyadic formula is being continued]\label{rem:offgrid-architecture}
+The separation of \Cref{rem:fabius-dyadic-architecture} survives the
+continuation: in \eqref{eq:offgrid-dyadic-def} the half-base Gaussian row
+$\Qbinom nk{1/2}\big/4^{\binom k2}$ still depends only on the resolution
+$2^{-n}$, and the argument $x$ enters only through the block length $N_{n+k}(x)$
+and the common shift.  What changes is that the block length is now a
+step function of a real variable instead of an integer parameter, and
+\eqref{eq:offgrid-decomposition} identifies the resulting object as a
+\emph{fixed} Gaussian average of box splines --- one Lagrange row of
+\Cref{chap:geometric-filters} applied to the family
+$S_{2n},S_{2n-1},\ldots,S_n$.  The choice $\theta=\tfrac12$ of the free shift in
+\eqref{eq:fabius-dyadic-value} is what forces the midpoint centring: no other
+value of $\theta$ produces a combination of distribution functions.
+\end{remark}
+
+
+% ---- merged block D10 ----
+% ---- merged block Q04 ----
+% ed.: PLACEMENT: chap:dyadic-gaussian-thue-morse, section ``An off-grid
+% ed.: continuation of the dyadic formula'', immediately after
+% ed.: \Cref{rem:offgrid-architecture}.  NEW.  An incoming draft stated this as
+% ed.: $\sup\abs{D_n-F}\le V_n2^{-n}$ with $V_n$ the $\ell^1$ row norm.  That is
+% ed.: true but not of the right order: it bounds every $\sup\abs{S_{2n-j}-F}$ by
+% ed.: $2^{-(2n-j)}$ and then by $2^{-n}$.  With the sharp spline rate of
+% ed.: \Cref{prop:midpoint-truncation}(iii), and keeping the dependence on $j$,
+% ed.: the rate is $16^{-n}$.  The improved bound requires $n\ge2$; see
+% ed.: \Cref{rem:offgrid-first-row} for the exact failure at $n=1$.
+
+\begin{theorem}[Uniform half-base Toeplitz limit, with the sharp rate]\label{thm:offgrid-uniform-rate}
+\index{Toeplitz theorem!bounded-variation rows}
+\index{Fabius function!uniform approximation}
+For every $n\ge2$,
+\begin{equation}\label{eq:offgrid-uniform-rate}
+ \sup_{x\in\R}\abs{D_n(x)-F(x)}
+ \le\frac1{9\cdot16^{\,n}}\,
+   \frac{\poch{-2}{1/2}{n}}{\poch{1/2}{1/2}{n}}
+ <\frac{2\mathcal L(1/2)}{3}\,16^{-n}
+ <6\cdot16^{-n},
+\end{equation}
+with $\mathcal L(1/2)=8.2559879357782500655\ldots$ as in
+\eqref{eq:halfbase-row-variation-bound}.  In particular $D_n\to F$ uniformly on
+the whole real line, and the convergence is geometric of ratio $16^{-1}$.
+\end{theorem}
+
+\begin{proof}
+By \Cref{thm:offgrid-dyadic}(i) and the unit row mass of
+\Cref{thm:offgrid-dyadic}(ii),
+\[
+ D_n(x)-F(x)=\sum_{j=0}^{n}\omega_{n,j}\bigl(S_{2n-j}(x)-F(x)\bigr)
+ \qquad(x\in\R).
+\]
+For $0\le j\le n$ one has $2n-j\ge n\ge2$, so
+\Cref{prop:midpoint-truncation}(iii) at $q=1/2$ applies to every summand and
+gives $\sup_x\abs{S_{2n-j}-F}=\tfrac194^{-(2n-j)}$.  Hence
+\[
+ \sup_{x\in\R}\abs{D_n(x)-F(x)}
+ \le\frac19\sum_{j=0}^{n}\abs{\omega_{n,j}}4^{\,j-2n}
+ =\frac{16^{-n}}9\sum_{j=0}^{n}\abs{\omega_{n,j}}4^{\,j}.
+\]
+By \Cref{thm:offgrid-dyadic}(ii) the signs alternate,
+$\abs{\omega_{n,j}}=(-1)^j\omega_{n,j}$, so the last sum is the value at $z=-4$
+of the row polynomial of \Cref{rem:halfbase-row-reversal}:
+\begin{equation}\label{eq:offgrid-weighted-row-norm}
+ \sum_{j=0}^{n}\abs{\omega_{n,j}}4^{\,j}
+ =\sum_{j=0}^{n}\omega_{n,j}(-4)^j
+ =\frac{\poch{-2}{1/2}{n}}{\poch{1/2}{1/2}{n}} .
+\end{equation}
+This proves the first inequality in \eqref{eq:offgrid-uniform-rate}.
+
+For the second, split off the first two factors of the numerator: for $n\ge2$,
+\[
+ \poch{-2}{1/2}{n}=\prod_{i=0}^{n-1}\bigl(1+2^{\,1-i}\bigr)
+ =3\cdot2\cdot\prod_{h=1}^{n-2}\bigl(1+2^{-h}\bigr)
+ =6\,\poch{-1/2}{1/2}{n-2}.
+\]
+Both infinite products in \eqref{eq:geometric-lebesgue-constant} converge at
+$q=1/2$, by \Cref{thm:geometric-row-variation}; since $\poch{-1/2}{1/2}{m}$
+increases in $m$ to $\poch{-1/2}{1/2}{\infty}$ and $\poch{1/2}{1/2}{m}$ decreases
+in $m$ to $\poch{1/2}{1/2}{\infty}>0$, we get
+\[
+ \frac{\poch{-2}{1/2}{n}}{\poch{1/2}{1/2}{n}}
+ =6\,\frac{\poch{-1/2}{1/2}{n-2}}{\poch{1/2}{1/2}{n}}
+ <6\,\frac{\poch{-1/2}{1/2}{\infty}}{\poch{1/2}{1/2}{\infty}}
+ =6\,\mathcal L(1/2).
+\]
+Dividing by $9$ gives $\tfrac23\mathcal L(1/2)=5.5039919571\ldots<6$.
+\end{proof}
+
+\begin{remark}[The first row, and what the abstract theorem gives]\label{rem:offgrid-first-row}
+The hypothesis $n\ge2$ in \Cref{thm:offgrid-uniform-rate} is necessary.  For
+$n=1$ the decomposition \eqref{eq:offgrid-decomposition} reads
+$D_1=2S_2-S_1$, and $S_1$ is outside the range of
+\Cref{prop:midpoint-truncation}(iii); indeed $S_1(1/4)=0$ and $S_2(1/4)=1/16$,
+so $D_1(1/4)=1/8$, whereas $F(1/4)=5/72$ by
+\Cref{rem:fabius-dyadic-architecture}.  Thus
+\[
+ D_1(1/4)-F(1/4)=\frac18-\frac5{72}=\frac1{18},
+\]
+against the value $6/144=1/24$ that the right-hand side of
+\eqref{eq:offgrid-uniform-rate} would take at $n=1$.  Replacing the term $j=1$
+by the exact bound $\sup_x\abs{S_1-F}=5/72$ restores a valid estimate
+$\abs{D_1-F}\le1/12$.
+
+It is worth separating what is and is not an instance of the abstract machinery.
+That $\sum_j\omega_{n,j}F_{1/2,r(n,j)}\to F$ uniformly, for any exponents
+$r(n,j)\ge n$, is \Cref{cor:gaussian-row-spline-average} at $q=1/2$, itself an
+application of \Cref{thm:tail-row-toeplitz} with the two hypotheses supplied by
+\Cref{thm:geometric-row-variation}; that argument gives no rate beyond the rate
+of its input, and applied to \eqref{eq:fabius-truncation-rate} it yields only
+$O(2^{-n})$.  What \Cref{thm:offgrid-uniform-rate} adds is, first, that the
+average being estimated is the concrete off-grid formula
+\eqref{eq:offgrid-dyadic-def} --- an object that exists only because of the
+clamped cutoff --- and second, that feeding the sharp midpoint rate
+\eqref{eq:midpoint-extremum} into the same sum improves the exponent from
+$2^{-n}$ to $16^{-n}$.  The improvement is entirely due to the input: the row
+is unchanged, and \eqref{eq:offgrid-weighted-row-norm} is the same endpoint
+evaluation as \eqref{eq:geometric-row-variation}, taken at $z=-4$ instead of
+$z=-1$.
+% ed.: exact rational computation on the grid $2^{-10}$ gives
+% ed.: $\sup_x\abs{D_n-F}=1/18$, $3.3396\cdot10^{-4}$ and $1.5006\cdot10^{-6}$ for
+% ed.: $n=1,2,3$, attained at $x=1/4$, $101/1024$ and $1/16$; the true decay is
+% ed.: faster still than $16^{-n}$, so \eqref{eq:offgrid-uniform-rate} is not
+% ed.: claimed to be sharp.
+\end{remark}
+
+
+% ---- merged block D11 ----
+% ---- merged block ----
+% ed.: PLACEMENT: chap:dyadic-gaussian-thue-morse, immediately after
+% ed.: \Cref{rem:fabius-dyadic-architecture} (monograph line 8113), just before the
+% ed.: line "% ---- merged block M11 ----" that opens \Cref{rem:dyadic-shift-common};
+% ed.: the replacement of that remark cites the theorem below.
+% ed.: NEW.  The monograph so far evaluates the transfer functional on exactly two
+% ed.: shift patterns: the common shift of \eqref{eq:fabius-centered-formula} and
+% ed.: the shift $2^k+\theta$ of \eqref{eq:dyadic-gaussian-thue-morse}.  Both are
+% ed.: members of the single geometric family below, which is what
+% ed.: \Cref{thm:gaussian-coefficient-transfer} yields when its second series is
+% ed.: taken to be $\e^{\theta u}\mathcal A(u)$ instead of $\mathcal A(u)$ --- the
+% ed.: decoupled case $U\ne V$ that the editorial note at merged block M08 records
+% ed.: as kept deliberately, but that no result until now instantiated.
+% ed.: The two incoming statements (a centred and a raw display) are one identity
+% ed.: in the two coordinate systems of \Cref{rem:psi-two-coordinates}, exchanged
+% ed.: by $\theta\mapsto-1-\theta$; they are stated here once, as one theorem with
+% ed.: two displays.
+
+Both shift patterns evaluated so far --- the common shift of
+\eqref{eq:fabius-centered-formula} and the shift $2^k+\theta$ of
+\eqref{eq:dyadic-gaussian-thue-morse} --- belong to a single two-parameter
+family, on which the weighted sum is not constant at all, but is a polynomial:
+the Appell polynomial attached to the Fabius law.  The mechanism is the
+decoupling $U\ne V$ permitted by \Cref{thm:gaussian-coefficient-transfer}.
+
+\begin{definition}[Fabius Appell polynomials]\label{def:fabius-appell}
+\index{Appell polynomial!Fabius moments}
+For $n\ge0$ and $\theta\in\C$ put
+\begin{equation}\label{eq:fabius-appell-def}
+ A_n(\theta)\defeq\mathbb E\,(X+\theta)^n
+ =\sum_{j=0}^{n}\binom nj\,\mathbb EX^{\,n-j}\,\theta^{\,j},
+\end{equation}
+a monic polynomial of degree $n$ in $\theta$ with
+$A_n(0)=\mathbb EX^n=n!\,\alpha_n$.  Since $0\le X\le1$, the exchange of
+expectation and summation in
+\begin{equation}\label{eq:fabius-appell-egf}
+ \sum_{n\ge0}A_n(\theta)\frac{z^n}{n!}
+ =\mathbb E\,\e^{z(X+\theta)}
+ =\e^{\theta z}\,\mathcal A(z)
+\end{equation}
+is legitimate for every $z\in\C$, by \eqref{eq:mgf-product} at $q=1/2$.  The
+roman $A_n$ is not the calligraphic $\mathcal A$ of
+\Cref{lem:fabius-moment-dilation}: the latter is one entire function of $z$, the
+former the coefficient sequence of its exponential shift, and
+$A_n(0)/n!=\alpha_n$ recovers it.
+\end{definition}
+
+\begin{proposition}[Appell and reflection laws]\label{prop:fabius-appell-laws}
+For $n\ge1$ and $\theta,c\in\C$,
+\begin{align}
+ A_n'(\theta)&=n\,A_{n-1}(\theta),
+ \qquad
+ A_n(\theta+c)=\sum_{j=0}^{n}\binom njA_{n-j}(\theta)\,c^{\,j},
+ \label{eq:fabius-appell-derivative}\\
+ A_n(-1-\theta)&=(-1)^nA_n(\theta).
+ \label{eq:fabius-appell-reflection}
+\end{align}
+\end{proposition}
+
+\begin{proof}
+Differentiating \eqref{eq:fabius-appell-egf} in $\theta$ multiplies it by $z$,
+which shifts the coefficient index by one; multiplying it by $\e^{cz}$ and
+expanding the product of the two exponential series gives the translation law.
+For the reflection, \eqref{eq:geometric-uniform-mean-symmetry} at $q=1/2$ gives
+$1-X\overset d=X$, whence
+\[
+ A_n(-1-\theta)=\mathbb E\,(X-1-\theta)^n
+ =(-1)^n\mathbb E\,(1-X+\theta)^n
+ =(-1)^n\mathbb E\,(X+\theta)^n. \qedhere
+\]
+\end{proof}
+
+\begin{theorem}[Geometric block shifts and the Appell polynomials]\label{thm:fabius-appell-geometric-shift}
+\index{Appell polynomial!Fabius moments}
+\index{translation invariance!of the dyadic formula}
+\index{coefficient transfer}
+For every $n\ge0$ and all $\theta,\eta\in\C$,
+\begin{equation}\label{eq:fabius-appell-geometric}
+ \sum_{k=0}^{n}\frac{\Qbinom nk{1/2}}{4^{\binom k2}(n+k)!}
+ \sum_{r=0}^{2^k-1}\tau_r
+ \bigl(r-2^k+\eta-2^k\theta\bigr)^{\,n+k}
+ =\mathfrak m_n\,\frac{A_n(\theta)}{n!} ;
+\end{equation}
+the left-hand side depends on $\theta$, but not on $\eta$.  Equivalently, in the
+centred normalization $\eta=0$,
+\begin{equation}\label{eq:fabius-appell-centred}
+ \boxed{\;
+ \frac{A_n(\theta)}{n!}
+ =\frac{2^{-\binom{n+1}{2}}}{\left(\frac12;\frac12\right)_n}
+ \sum_{k=0}^{n}\frac{\Qbinom nk{1/2}}{4^{\binom k2}(n+k)!}
+ \sum_{r=0}^{2^k-1}\tau_r\bigl(r-2^k(1+\theta)\bigr)^{\,n+k},\;}
+\end{equation}
+and, in the raw normalization, for all $\theta,\eta\in\C$,
+\begin{equation}\label{eq:fabius-appell-raw}
+ \boxed{\;
+ \frac{A_n(\theta)}{n!}
+ =\frac{(-1)^n2^{-\binom{n+1}{2}}}{\left(\frac12;\frac12\right)_n}
+ \sum_{k=0}^{n}\frac{\Qbinom nk{1/2}}{4^{\binom k2}(n+k)!}
+ \sum_{r=0}^{2^k-1}\tau_r\bigl(r+\eta+2^k\theta\bigr)^{\,n+k}.\;}
+\end{equation}
+The specialization $\theta=0$ of \eqref{eq:fabius-appell-geometric} is
+$\mathcal N_n(\eta)=\mathfrak m_n\alpha_n$, that is
+\eqref{eq:fabius-centered-formula}; the specialization $\theta=-1$ is
+\eqref{eq:dyadic-gaussian-thue-morse}, with $\eta$ in the role of the dummy
+parameter there.
+\end{theorem}
+
+\begin{proof}
+Apply \Cref{thm:gaussian-coefficient-transfer} at $q=1/2$, where $q^{-k}=2^k$,
+with
+\[
+ U(z)=\mathcal A(-z),\qquad V(u)=\e^{\theta u}\mathcal A(u).
+\]
+The normalization $u_0=1$ holds because $\mathcal A(0)=1$
+(\Cref{lem:fabius-moment-dilation}), and $v_n=A_n(\theta)/n!$ by
+\eqref{eq:fabius-appell-egf}.  The unique family satisfying the bridge relation
+\eqref{eq:general-bridge} is
+\[
+ \Psi^{\theta}_k(z)\defeq\frac{\e^{-z}\,V(-2^kz)}{\mathcal A(-z)}
+ =\e^{-2^k\theta z}\,\frac{\e^{-z}\mathcal A(-2^kz)}{\mathcal A(-z)}
+ =\e^{-2^k\theta z}\,\Psi_k(z),
+\]
+the last step by the dilation bridge \eqref{eq:TM-A-bridge}.
+
+Multiply the centred Thue--Morse identity \eqref{eq:thue-morse-normalized} by
+$\e^{(\eta-2^k\theta)z}$:
+\[
+ \sum_{r=0}^{2^k-1}\tau_r\,\e^{(r-2^k+\eta-2^k\theta)z}
+ =(-1)^k2^{\binom k2}z^k\,\e^{\eta z}\Psi^{\theta}_k(z).
+\]
+The left-hand side is the exponential generating function
+$\sum_{d\ge0}T_{k,d}(\eta-2^k\theta)z^d/d!$ of the centred power sums
+\eqref{eq:thue-morse-power-sums}, so comparing the coefficient of $z^{n+k}$
+gives
+\[
+ [z^n]\bigl(\e^{\eta z}\Psi^{\theta}_k(z)\bigr)
+ =\frac{(-1)^k}{2^{\binom k2}(n+k)!}\,
+  T_{k,n+k}\bigl(\eta-2^k\theta\bigr).
+\]
+By \Cref{cor:transfer-translation} with $\alpha=\eta$, together with
+\eqref{eq:transfer-top} and the Mersenne evaluation
+\eqref{eq:halfbase-factorial},
+\[
+ \sum_{k=0}^{n}W_{n,k}(1/2)\,[z^n]\bigl(\e^{\eta z}\Psi^{\theta}_k\bigr)
+ =2^{\binom{n+1}{2}}\left(\tfrac12;\tfrac12\right)_n\frac{A_n(\theta)}{n!}
+ =\mathfrak m_n\,\frac{A_n(\theta)}{n!},
+\]
+and the same corollary states that this value does not depend on $\eta$.
+Inserting $W_{n,k}(1/2)=(-1)^k2^{-\binom k2}\Qbinom nk{1/2}$ makes the two signs
+cancel and combines the two triangular powers of two into $4^{-\binom k2}$; that
+is \eqref{eq:fabius-appell-geometric}.
+
+Putting $\eta=0$, writing $r-2^k-2^k\theta=r-2^k(1+\theta)$ and dividing by
+$\mathfrak m_n=2^{\binom{n+1}{2}}\left(\tfrac12;\tfrac12\right)_n$ gives
+\eqref{eq:fabius-appell-centred}.  For \eqref{eq:fabius-appell-raw}, replace
+$\theta$ by $-1-\theta$ in \eqref{eq:fabius-appell-geometric}: the inner argument
+becomes $r-2^k+\eta+2^k(1+\theta)=r+\eta+2^k\theta$, while the right-hand side
+becomes $\mathfrak m_nA_n(-1-\theta)/n!=(-1)^n\mathfrak m_nA_n(\theta)/n!$ by
+\eqref{eq:fabius-appell-reflection}.
+
+Finally, $\theta=0$ in \eqref{eq:fabius-appell-geometric} is
+\eqref{eq:fabius-centered-formula}, because $A_n(0)=n!\alpha_n$ and the inner
+argument is then $r-2^k+\eta$; and $\theta=-1$ turns the inner argument into
+$r+\eta$ and the right-hand side into $(-1)^n\mathfrak m_n\alpha_n$, which is
+\eqref{eq:dyadic-gaussian-thue-morse}.
+\end{proof}
+
+\begin{remark}[Why $\theta$ is a variable and $\eta$ a dummy]
+\Cref{cor:transfer-translation} says that a shift common to all $n+1$ blocks is
+invisible; \Cref{thm:fabius-appell-geometric-shift} says that a shift scaled by
+$2^k$ in the $k$th block is visible, and is seen exactly once, in the top
+coefficient of $\e^{\theta u}\mathcal A(u)$.  The distinction is precisely the
+decoupling $U\ne V$ of \Cref{thm:gaussian-coefficient-transfer}: the
+self-referential instance $V=\mathcal A$ attached to $U(z)=\mathcal A(-z)$ can
+only ever return $\alpha_n$, whereas the factor $\e^{\theta u}$ inserted into $V$
+alone survives the double cancellation of \Cref{rem:double-cancellation}.  The
+two displays \eqref{eq:fabius-appell-centred} and \eqref{eq:fabius-appell-raw}
+are one identity in the two coordinate systems of
+\Cref{rem:psi-two-coordinates}, exchanged by the digit complementation carried
+out in the last paragraph of the proof of \Cref{cor:fabius-centered-formula}.
+\end{remark}
+
+\begin{example}[The case $n=2$]\label{ex:fabius-appell-small}
+Here $\mathfrak m_2=3$ and the half-base Gaussian row is $1,\tfrac32,1$.  At
+$\eta=0$ the three inner sums of \eqref{eq:fabius-appell-centred} are
+\[
+ (1+\theta)^2,\qquad
+ -8(1+\theta)^3+(1+2\theta)^3,\qquad
+ c^4-(1-c)^4-(2-c)^4+(3-c)^4\ \ \text{with } c=4(1+\theta),
+\]
+that is $\theta^2+2\theta+1$, $-12\theta^2-18\theta-7$ and
+$384\theta^2+480\theta+160$.  Weighted by $1/2!$, $\tfrac32/3!$ and
+$1/(4\cdot4!)$ they sum to
+\[
+ \tfrac32\theta^2+\tfrac32\theta+\tfrac5{12}
+ =3\left(\frac{\theta^2}2+\frac\theta2+\frac5{36}\right)
+ =\mathfrak m_2\,\frac{A_2(\theta)}{2!},
+\]
+as \eqref{eq:fabius-appell-geometric} asserts.  At $\theta=1$ the inner sums are
+the integers $4,-37,1024$, the terms are $2,-\tfrac{37}4,\tfrac{32}3$, the total
+is $41/12$, and $A_2(1)/2!=41/36=\tfrac12+\tfrac12+\tfrac5{36}$.  At $\theta=0$
+they are $1,-7,160$ with total $5/12=3\alpha_2$, which is
+\Cref{ex:dyadic-formula-small} once more.
+% ed.: all displayed polynomials and integers recomputed in exact arithmetic; the
+% ed.: symbolic identity was checked for every $n\le7$ and, at rational $\theta$
+% ed.: and $\eta$, for every $n\le8$.
+\end{example}
+
+
+% ---- merged block D13 ----
+% ---- merged block ----
+% ed.: PLACEMENT: chap:dyadic-gaussian-thue-morse, a new section inserted after
+% ed.: the section "A Fourier formula for the Fabius function" and immediately
+% ed.: before \section{Digital cancellation in an arbitrary radix} (monograph
+% ed.: line 8419).
+% ed.: NEW.  Until now the monograph evaluates $F$ at exactly two kinds of point:
+% ed.: at dyadic rationals in closed finite form (\Cref{cor:fabius-centered-formula})
+% ed.: and at an arbitrary $x$ analytically, by the sinc integral
+% ed.: \eqref{eq:fabius-fourier-formula}, the two being framed as complementary in
+% ed.: the remark after that corollary.  The expansion below is a third route,
+% ed.: finite and rational term by term, driven by the binary digits of $x$.  It
+% ed.: uses \Cref{thm:fabius-appell-geometric-shift} and must follow it.
+
+\section{A digit-sparse expansion at an arbitrary argument}
+\index{Fabius function!digit-sparse expansion}
+\index{binary expansion!of the argument of $F$}
+
+The dyadic formula \eqref{eq:fabius-dyadic-value} is exact but confined to the
+grid; the sinc integral \eqref{eq:fabius-fourier-formula} reaches every $x$ but
+is an integral of an infinite product.  Between them lies a third
+representation: an exact series whose $j$th term is a finite rational expression
+attached to the $j$th binary digit of $x$, which terminates on the grid and
+converges superexponentially off it.
+
+\begin{lemma}[Spline representation at a real argument]\label{lem:fabius-real-spline}
+For every $n\ge1$ and every real $t$ with $0\le t\le2^n$,
+\begin{equation}\label{eq:fabius-real-spline}
+ F\!\left(\frac t{2^n}\right)
+ =\frac{2^{-\binom n2}}{n!}
+  \sum_{r=0}^{2^n-1}\tau_r\,\mathbb E\bigl(t-r-X\bigr)_+^{\,n},
+\end{equation}
+where $y_+=\max(y,0)$.
+\end{lemma}
+
+\begin{proof}
+By \eqref{eq:fabius-scaled-split} we may write $X=X_{1/2,n}+2^{-n}X'$ with $X'$
+an independent copy of $X$, so conditioning on $X'$ gives
+$F(y)=\mathbb E\bigl[F_{1/2,n}(y-2^{-n}X')\bigr]$ for every real $y$, where
+$F_{1/2,n}$ is the distribution function of the truncation
+\eqref{eq:finite-geometric-uniform-sum} at $q=1/2$.  Integrating
+\eqref{eq:dyadic-thue-morse-spline} term by term, with
+$\int_0^{y}(u-c)_+^{\,n-1}\dd u=(y-c)_+^{\,n}/n$,
+\[
+ F_{1/2,n}(y)
+ =\frac{2^{\binom{n+1}{2}}}{n!}\sum_{r=0}^{2^n-1}\tau_r
+  \left(y-\frac r{2^n}\right)_+^{\,n}.
+\]
+Put $y=t/2^n$ and extract the factor $2^{-n}$ from each positive part,
+$\bigl(2^{-n}(t-X'-r)\bigr)_+^{\,n}=2^{-n^2}(t-X'-r)_+^{\,n}$.  With
+$\binom{n+1}{2}-n^2=-\binom n2$ and $X'\overset d=X$ this is
+\eqref{eq:fabius-real-spline}.
+\end{proof}
+
+\begin{corollary}[Local reduction identity]\label{cor:fabius-local-reduction}
+For every $n\ge1$ and every $\theta\in[0,1)$,
+\begin{equation}\label{eq:fabius-local-reduction}
+ F\!\left(\frac{1+\theta}{2^n}\right)+F\!\left(\frac{\theta}{2^n}\right)
+ =\frac{2^{-\binom n2}}{n!}\,A_n(\theta).
+\end{equation}
+\end{corollary}
+
+\begin{proof}
+Both $t=\theta$ and $t=1+\theta$ lie in $[0,2]\subseteq[0,2^n]$, so
+\Cref{lem:fabius-real-spline} applies to each.  Since $0\le X\le1$, a term with
+$r\ge1$ in the sum for $t=\theta$ has $\theta-r-X\le\theta-1<0$ and drops out,
+leaving
+\[
+ F\!\left(\frac{\theta}{2^n}\right)
+ =\frac{2^{-\binom n2}}{n!}\,\mathbb E(\theta-X)_+^{\,n}.
+\]
+In the sum for $t=1+\theta$ a term with $r\ge2$ has $1+\theta-r-X\le\theta-1<0$
+and drops out; the term $r=0$ has $1+\theta-X\ge\theta\ge0$, so its positive part
+is the plain power, and $1-X\overset d=X$ by
+\eqref{eq:geometric-uniform-mean-symmetry} turns
+$\mathbb E(1+\theta-X)^n$ into $\mathbb E(X+\theta)^n=A_n(\theta)$; the term
+$r=1$ carries $\tau_1=-1$ and contributes $-\mathbb E(\theta-X)_+^{\,n}$.  Hence
+\[
+ F\!\left(\frac{1+\theta}{2^n}\right)
+ =\frac{2^{-\binom n2}}{n!}\Bigl(A_n(\theta)-\mathbb E(\theta-X)_+^{\,n}\Bigr),
+\]
+and adding the two displays proves \eqref{eq:fabius-local-reduction}.
+\end{proof}
+
+Let $x\in[0,1)$ and let $x=\sum_{j\ge1}b_j2^{-j}$, $b_j\in\set{0,1}$, be its
+canonical binary expansion, the one that is not eventually constant equal to
+$1$.  Put
+\begin{equation}\label{eq:fabius-prefix-tail}
+ m_j\defeq\floor{2^jx},
+ \qquad
+ \theta_j\defeq2^jx-m_j\in[0,1),
+ \qquad
+ m_0=0,\quad\theta_0=x,
+\end{equation}
+the binary \emph{prefix} and \emph{tail} of $x$ at depth $j$; then
+$m_j=2m_{j-1}+b_j$ and $\theta_{j-1}=(b_j+\theta_j)/2$, and the floor in
+\eqref{eq:fabius-prefix-tail} selects the canonical expansion automatically.
+
+\begin{theorem}[Digit-sparse Appell expansion]\label{thm:fabius-digit-expansion}
+\index{Fabius function!digit-sparse expansion}
+For every $x\in[0,1)$, with the notation \eqref{eq:fabius-prefix-tail},
+\begin{equation}\label{eq:fabius-digit-appell}
+ \boxed{\;
+ F(x)=\sum_{j=1}^{\infty}
+ b_j\,\tau_{m_{j-1}}\,\frac{2^{-\binom j2}}{j!}\,A_j(\theta_j).\;}
+\end{equation}
+Writing $S_N(x)$ for the sum of the first $N$ terms,
+\begin{equation}\label{eq:fabius-digit-residual}
+ F(x)-S_N(x)=\tau_{m_N}\,F\!\left(\frac{\theta_N}{2^N}\right),
+ \qquad
+ \abs{F(x)-S_N(x)}\le\frac{2^{-\binom N2}}{N!}\,.
+\end{equation}
+The series therefore converges absolutely and uniformly on $[0,1)$, and at a
+dyadic rational $m/2^n$, taken in its canonical terminating expansion, it
+terminates after $n$ terms.
+\end{theorem}
+
+\begin{proof}
+Put $R_N\defeq\tau_{m_N}F(\theta_N/2^N)$, so that $R_0=\tau_0F(x)=F(x)$.  Fix
+$j\ge1$.  If $b_j=0$ then $m_j=2m_{j-1}$, and doubling shifts every binary digit
+without creating or destroying one, so $\tau_{m_j}=\tau_{m_{j-1}}$; moreover
+$\theta_{j-1}=\theta_j/2$, hence
+$\theta_{j-1}/2^{\,j-1}=\theta_j/2^{\,j}$ and $R_{j-1}=R_j$, which is also the
+$j$th term of \eqref{eq:fabius-digit-appell}, namely $0$.
+
+If $b_j=1$ then $m_j=2m_{j-1}+1$, so $s_2(m_j)=s_2(m_{j-1})+1$ and
+$\tau_{m_j}=-\tau_{m_{j-1}}$, while
+$\theta_{j-1}/2^{\,j-1}=(1+\theta_j)/2^{\,j}$.  Therefore
+\[
+ R_{j-1}-R_j
+ =\tau_{m_{j-1}}\left[
+   F\!\left(\frac{1+\theta_j}{2^{\,j}}\right)
+  +F\!\left(\frac{\theta_j}{2^{\,j}}\right)\right]
+ =\tau_{m_{j-1}}\,\frac{2^{-\binom j2}}{j!}\,A_j(\theta_j)
+\]
+by \Cref{cor:fabius-local-reduction}, which is again the $j$th term.  Summing
+over $j=1,\ldots,N$ telescopes to $R_0-R_N=S_N(x)$, which is the first half of
+\eqref{eq:fabius-digit-residual}.
+
+For the bound, $0\le\theta_N<1$ and $F$ is nondecreasing, so
+$F(\theta_N/2^N)\le F(2^{-N})=2^{-\binom N2}\alpha_N$ by
+\Cref{thm:fabius-half-moment}, and $\alpha_N=\mathbb EX^N/N!\le1/N!$ because
+$0\le X\le1$.  This bound is independent of $x$ and tends to $0$, so
+$S_N\to F$ uniformly on $[0,1)$ and \eqref{eq:fabius-digit-appell} holds.  The
+convergence is absolute because $0\le X+\theta_j<2$ gives
+$\abs{A_j(\theta_j)}\le2^j$, so the terms are dominated by the summable sequence
+$2^{\,j-\binom j2}/j!$.
+
+Finally, if $x=m/2^n$ then $2^jx\in\Z$ for every $j\ge n$, so $b_j=0$ and
+$\theta_j=0$ there; hence $R_N=\tau_{m_N}F(0)=0$ for $N\ge n$ and
+$F(x)=S_N(x)=S_n(x)$.
+\end{proof}
+
+\begin{corollary}[Digit-sparse half-base $q$-series]\label{cor:fabius-digit-qseries}
+\index{$q$-binomial coefficient!base one half}
+For every $x\in[0,1)$, with the notation \eqref{eq:fabius-prefix-tail},
+\begin{equation}\label{eq:fabius-digit-qseries}
+ \boxed{\;
+ F(x)=\sum_{j=1}^{\infty}
+ \frac{b_j\,\tau_{m_{j-1}}}
+      {2^{\,j^2}\left(\frac12;\frac12\right)_j}
+ \sum_{k=0}^{j}\frac{\Qbinom jk{1/2}}{4^{\binom k2}(j+k)!}
+ \sum_{r=0}^{2^k-1}\tau_r
+ \bigl(r-2^k(1+\theta_j)\bigr)^{\,j+k},\;}
+\end{equation}
+with the convergence, residual and termination properties of
+\Cref{thm:fabius-digit-expansion}.
+\end{corollary}
+
+\begin{proof}
+Insert \eqref{eq:fabius-appell-centred} with $n=j$ and $\theta=\theta_j$ into
+\eqref{eq:fabius-digit-appell}.  The two triangular powers of two combine as
+$2^{-\binom j2}2^{-\binom{j+1}{2}}=2^{-j^2}$.  This is a termwise replacement by
+an exact finite identity, so every analytic assertion is unchanged.
+\end{proof}
+
+\begin{remark}[Three ways to evaluate $F$]\label{rem:fabius-digit-vs-fourier}
+\index{Fabius function!value at a dyadic point}
+The monograph now evaluates $F$ by three mechanisms.
+\Cref{cor:fabius-centered-formula} is finite, rational and exact, but only on the
+dyadic grid; \Cref{cor:fabius-fourier-formula} is global and analytic, an
+integral of an infinite sinc product;
+\Cref{cor:fabius-digit-qseries} is global and \emph{arithmetic}, each term being
+a finite half-base Gaussian sum indexed by one binary digit of $x$.  The three
+agree where they overlap: at $x=2^{-n}$ only the digit $b_n$ is nonzero, with
+$m_{n-1}=0$ and $\theta_n=0$, so \eqref{eq:fabius-digit-appell} collapses to
+$F(2^{-n})=2^{-\binom n2}A_n(0)/n!=2^{-\binom n2}\alpha_n$, which is
+\Cref{thm:fabius-half-moment}.
+
+At $x=\tfrac13=0.\overline{01}_2$ the odd digits vanish and
+$\theta_j=\tfrac23$ or $\tfrac13$ according as $j$ is odd or even, so the first
+six terms contain only three nonzero summands:
+\[
+ S_2=\frac{13}{72}=0.18055\ldots,\quad
+ S_4=\frac{1120771}{6220800}=0.18016509\ldots,\quad
+ S_6=0.1801651148015\ldots,
+\]
+against $F(\tfrac13)=0.180165114801481906955\ldots$: thirteen correct digits
+from three terms, where \eqref{eq:fabius-digit-residual} guarantees only
+$2^{-15}/6!<4.3\cdot10^{-8}$.  Unlike
+\eqref{eq:fabius-inverse-dyadic-closed}, whose conditioning is analysed in
+\Cref{rem:dyadic-formula-anatomy}, the outer series here has no cancellation at
+all for $x<\tfrac12$ beyond the Thue--Morse signs $\tau_{m_{j-1}}$; the
+ill-conditioning of the inner blocks is inherited unchanged, so for numerical
+work one evaluates $A_j(\theta_j)$ from
+\eqref{eq:fabius-appell-def} and the recurrence
+\eqref{eq:fabius-coefficient-recurrence} rather than from
+\eqref{eq:fabius-digit-qseries}.
+% ed.: the partial sums, the exact residual identity and the termination were
+% ed.: verified in exact rational arithmetic; $F(1/3)$ was independently bracketed
+% ed.: by $F(5461/2^{14})<F(1/3)<F(5462/2^{14})$ and cross-checked against
+% ed.: Gil-Pelaez inversion of the characteristic function to the accuracy of the
+% ed.: quadrature ($\approx10^{-10}$).
+\end{remark}
 
 \appendix
 
