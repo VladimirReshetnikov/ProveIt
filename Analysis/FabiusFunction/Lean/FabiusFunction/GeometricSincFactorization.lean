@@ -163,22 +163,19 @@ is the corpus's `q = 1/2` instance, so at every depth `m`
 `E[e^{itX}] = e^{i(1-2⁻ᵐ)t/2}·∏_{k<m} sinc(t/2^{k+2})·E[e^{i2⁻ᵐtX}]`
 
 — the finite half of `F̂ₙ = Φ·A(2⁻ⁿt)`, with the phase collapsed
-along the dyadic geometric sum. -/
+along the dyadic geometric sum.  The `k`-th sinc argument
+`(1-½)·2⁻ᵏt/2` is `t/2^{k+2}`. -/
 theorem charFun_weightedSumDistribution_prefix_sinc (m : ℕ) (t : ℝ) :
     charFun weightedSumDistribution t =
       cexp (((2⁻¹ * ((1 - (1 / 2 : ℝ) ^ m) * t) : ℝ) : ℂ) * I) *
         (∏ k ∈ Finset.range m,
-          complexSinc (((((2 : ℝ) ^ (k + 2))⁻¹ * t : ℝ)) : ℂ)) *
+          complexSinc
+            ((2⁻¹ * ((1 - (1 / 2 : ℝ)) *
+              ((1 / 2 : ℝ) ^ k * t)) : ℝ)) *
         charFun weightedSumDistribution ((1 / 2 : ℝ) ^ m * t) := by
-  rw [weightedSumDistribution_eq_geometricUniformDistribution_one_half,
-    charFun_geometricUniformDistribution_prefix_sinc
-      abs_one_half_lt_one m t]
-  congr 2
-  refine Finset.prod_congr rfl fun k _ => ?_
-  congr 2
-  push_cast
-  rw [one_div (2 : ℝ)]
-  ring
+  rw [weightedSumDistribution_eq_geometricUniformDistribution_one_half]
+  exact charFun_geometricUniformDistribution_prefix_sinc
+    abs_one_half_lt_one m t
 
 /-- The dyadic finite products converge to the random-series
 characteristic function. -/
@@ -186,16 +183,11 @@ theorem tendsto_prefix_sinc_charFun_weightedSumDistribution (t : ℝ) :
     Filter.Tendsto (fun m : ℕ =>
       cexp (((2⁻¹ * ((1 - (1 / 2 : ℝ) ^ m) * t) : ℝ) : ℂ) * I) *
         ∏ k ∈ Finset.range m,
-          complexSinc (((((2 : ℝ) ^ (k + 2))⁻¹ * t : ℝ)) : ℂ))
+          complexSinc
+            ((2⁻¹ * ((1 - (1 / 2 : ℝ)) *
+              ((1 / 2 : ℝ) ^ k * t)) : ℝ)))
       Filter.atTop (nhds (charFun weightedSumDistribution t)) := by
   rw [weightedSumDistribution_eq_geometricUniformDistribution_one_half]
-  refine (tendsto_prefix_sinc_charFun abs_one_half_lt_one t).congr
-    fun m => ?_
-  congr 1
-  refine Finset.prod_congr rfl fun k _ => ?_
-  congr 2
-  push_cast
-  rw [one_div (2 : ℝ)]
-  ring
+  exact tendsto_prefix_sinc_charFun abs_one_half_lt_one t
 
 end Fabius
