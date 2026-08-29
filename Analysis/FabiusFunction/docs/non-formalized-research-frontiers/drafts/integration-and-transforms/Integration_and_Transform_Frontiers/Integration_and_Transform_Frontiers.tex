@@ -480,7 +480,19 @@ give the CDF and survival integration by parts at resolvent power $p$,
 \(\int(z-x)^{-p}\dd\mu=\mu(\R)(z-b)^{-p}-p\int_a^b\mu((-\infty,t])(z-t)^{-(p+1)}\dd t\)
 and its lower-endpoint survival companion, with the closed primitive
 \path{Fabius.intervalIntegral\_pow\_inv\_sub}; the first power recovers the formulas
-above.  The \emph{moment/Laurent layer} is now delivered on the symmetric side by
+above.  The orthogonal-polynomial arc now runs two steps further:
+\path{OrthogonalPolynomialJacobi.lean} computes the next exact Jacobi data of the
+up-law from the corpus's own moment recursion --- the even moments
+\(c_2=19/675\), \(c_3=583/59535\) (\nolinkurl{Fabius.moment\_two}, \nolinkurl{Fabius.moment\_three}),
+the third Hankel determinant \(h_3=32/18225\) (\nolinkurl{Fabius.hankelDet\_three}),
+the Jacobi ratios \(a_2=32/2025\) and \(a_3=19808/7441875\)
+(\nolinkurl{Fabius.hankelRatio\_two}, \nolinkurl{Fabius.hankelRatio\_three}, the latter read off the
+norm-producing moment rather than a \(4\times4\) determinant), \(h_4\)
+(\nolinkurl{Fabius.hankelDet\_four}), and the next two monic orthogonal polynomials
+\(P_3=x^3-\tfrac{19}{75}x\) and \(P_4=x^4-\tfrac{62}{147}x^2+\tfrac{619}{33075}\)
+(\nolinkurl{Fabius.upOrthoPolynomial\_three}, \nolinkurl{Fabius.upOrthoPolynomial\_four}),
+with their pointwise and squared-norm corollaries.  The \emph{moment/Laurent layer} is
+now delivered on the symmetric side by
 \path{StieltjesMomentLaurent.lean}: for every real \(|z|>1\) and every \(N\),
 \(\int(z-x)^{-1}\dd\mu_{\Up}=\sum_{k<N}m_k\,z^{-(k+1)}+z^{-N}\int x^N(z-x)^{-1}\dd\mu_{\Up}\)
 with the \emph{exact} remainder (\nolinkurl{Fabius.integral\_inv\_sub\_eq\_sum\_upMoment\_add}),
