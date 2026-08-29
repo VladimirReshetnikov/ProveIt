@@ -1650,7 +1650,16 @@ identification of $P_d(h)$ with the relevant binomial coefficient is not itself
 formalized.  This parity sequence is periodic, hence the Fourier-lobe sign sequence of $\Psi_d$ is
 $2$-automatic by \cref{p1:thm:lobe-sign}.  More precisely, among a complete sufficiently
 long binary block of values of $h-1$, the forced one-bits of $d$ reduce the density by a
-factor $2^{-s_2(d)}$.
+factor $2^{-s_2(d)}$.  That density count is now formal: for $d<2^m$,
+\[
+  \#\{\,n<2^m:\ d\ \text{a binary submask of}\ n\,\}\;=\;2^{\,m-s_2(d)}
+\]
+(\lean{Fabius.card\_filter\_bitSupport\_subset}, \lean{DigitalDensity.lean}), and combining it
+with the Lucas criterion gives the same count for the odd binomial coefficients across a
+row block (\lean{Fabius.card\_filter\_odd\_choose}).  The subset bijection it rests on ---
+that the subsets of $t$ containing a fixed $s$ are the subsets of $t\setminus s$ with $s$
+adjoined --- is proved there as well (\lean{Fabius.filter\_powerset\_subset}); Mathlib carries
+only the graded form of that bijection.
 
 \begin{corollary}[Linear Prouhet order with a digital density]
 \label{p1:cor:Pd-prouhet}
