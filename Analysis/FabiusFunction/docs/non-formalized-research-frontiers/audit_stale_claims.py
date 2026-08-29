@@ -25,9 +25,27 @@ import io, os, re
 
 DOCS = (r'C:/ProveIt/.claude/worktrees/fabius-function-formalization-4a6355'
         r'/Analysis/FabiusFunction/docs/non-formalized-research-frontiers')
+LEAN = (r'C:/ProveIt/.claude/worktrees/fabius-function-formalization-4a6355'
+        r'/Analysis/FabiusFunction/Lean/FabiusFunction')
+
+# Phrases in a Lean docstring that go stale silently.  "not proved
+# here" stays literally true forever -- "here" means this module -- so
+# it never trips a check, while a reader scanning the corpus concludes
+# the result is unformalized.  Four such claims were found stale by
+# hand in one sweep; this lists them all so the sweep is repeatable.
+LEAN_CLAIM = re.compile(
+    r'not formalized|is not formal|unformalized|not proved here|'
+    r'remains open|is still open|left open|not available here|'
+    r'no declaration of this file|not established here|is deferred',
+    re.IGNORECASE)
 
 # How far from the phrase a label still counts as "in the same claim".
 WINDOW = 320
+
+
+def ascii_only(s):
+    """The Windows console is cp1252; Lean docstrings are not."""
+    return s.encode('ascii', 'replace').decode('ascii')
 
 CLAIM = re.compile(
     r'not\s+formalized|is\s+not\s+formal\b|unformalized|'
@@ -77,6 +95,40 @@ for root, _dirs, names in os.walk(DOCS):
 
 print('files with candidates: %d' % files)
 print('label candidates:      %d' % total_hits)
+print()
+
+# ---- Lean side: every open-claim sentence in a module docstring ----
+print('=' * 62)
+print('LEAN DOCSTRING OPEN CLAIMS')
+print()
+print('Each of these says something is not proved.  Check that it is')
+print('still true, and that it carries a POINTER to whatever module')
+print('does prove it -- "not proved here" is true of its own module')
+print('forever, and misleads a reader scanning the corpus.')
+print()
+
+lean_hits = 0
+for fn in sorted(os.listdir(LEAN)):
+    if not fn.endswith('.lean'):
+        continue
+    text = io.open(os.path.join(LEAN, fn), encoding='utf-8',
+                   errors='replace').read()
+    lines = text.split('\n')
+    for i, line in enumerate(lines, 1):
+        if not LEAN_CLAIM.search(line):
+            continue
+        # A pointer names another module or declaration near the claim.
+        lo = max(0, i - 4)
+        window = '\n'.join(lines[lo:i + 4])
+        pointed = ('FabiusFunction.' in window or '.lean' in window or
+                   re.search(r'`Fabius\.\w', window) is not None)
+        lean_hits += 1
+        print('  %-38s :%-5d %s' % (fn, i, 'points elsewhere' if pointed
+                                    else 'open, no pointer'))
+        print('      %s' % ascii_only(line.strip()[:96]))
+
+print()
+print('lean open claims: %d' % lean_hits)
 print()
 print('ADVISORY ONLY.  A display may be half formalized, in which case')
 print('both kinds of prose are correct.  Read each hit before acting.')
