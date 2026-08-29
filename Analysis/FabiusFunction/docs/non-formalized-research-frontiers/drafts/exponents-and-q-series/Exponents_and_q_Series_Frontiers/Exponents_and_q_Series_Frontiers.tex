@@ -763,11 +763,23 @@ is formal in \path{DigitCharacterCongruence.lean}:
 (\lean{Fabius.sum\_div\_two\_pow\_mul\_mod\_two}, \lean{Fabius.neg\_one\_pow\_sum\_div\_two\_pow}); the bridge is simply that
 the $h$-th bit of $N$ \emph{is} $\lfloor N/2^h\rfloor\bmod2$, and at the constant weight the
 statement becomes Legendre's count read modulo two
-(\lean{Fabius.neg\_one\_pow\_sum\_div\_two\_pow\_const\_one}).  What remains unformalized is
-the \emph{analytic} half, that this sign is $\sgn\Phi_a$ on the lobe $(N,N+1)$.  The
-product $\Phi_a$ is itself now available (\path{GeneralizedRvachevProduct.lean}); what is
-still needed is the sign analysis on a lobe --- that every factor of index at most $N$
-is negative there and the rest positive, which is the content of \eqref{p1:eq:lobe-sign-count}.
+(\lean{Fabius.neg\_one\_pow\_sum\_div\_two\_pow\_const\_one}).  The analytic half is formal as
+well, in \path{LobeSignLaw.lean}, so \eqref{p1:eq:lobe-sign-count} and \eqref{p1:eq:sign-master}
+are theorems --- on the \emph{open} lobes.  On $N<x<N+1$ the canonical form splits into
+a finite prefix of factors of index $n\le N$, each with a negative base, and a tail of
+positive ones, so
+\[
+  \sgn\Phi_a(x)=(-1)^{M_a(N)}=\varepsilon_a(N)
+\]
+(\lean{Fabius.generalizedRvachevProduct\_ofReal\_eq\_parityCharacter\_mul\_norm}).  The statement is
+carried across to $\Phi_a$ itself, not merely to a real surrogate, and the constant-weight
+case reproduces the corpus's existing Thue--Morse lobe sign.
+
+One scope caveat, stated because the volume's phrasing is wider than what is proved:
+the display above is qualified here \emph{away from the integer points altogether}, whereas
+\eqref{p1:eq:sign-master} is stated "away from the integer zeros".  An integer $x$ at
+which no factor of $\Phi_a$ vanishes --- possible when $a$ has zero layers --- falls inside
+the volume's claim and outside the formalized one.
 \end{theorem}
 
 \begin{proof}
