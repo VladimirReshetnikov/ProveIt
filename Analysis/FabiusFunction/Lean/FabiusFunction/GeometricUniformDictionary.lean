@@ -24,11 +24,13 @@ open MeasureTheory Real Set
 
 namespace Fabius
 
+open ProbabilityRepresentation
+
 /-- The scaled uniform digit `(1-q)·U` of the normalized geometric
 law. -/
 noncomputable def geometricUniformDigit (q : ℝ) : Measure ℝ :=
   (volume : Measure (Set.Icc (0 : ℝ) 1)).map
-    (fun u => (1 - q) * (u : ℝ))
+    (fun u : Set.Icc (0 : ℝ) 1 => (1 - q) * (u : ℝ))
 
 instance isProbabilityMeasure_geometricUniformDigit (q : ℝ) :
     IsProbabilityMeasure (geometricUniformDigit q) :=
