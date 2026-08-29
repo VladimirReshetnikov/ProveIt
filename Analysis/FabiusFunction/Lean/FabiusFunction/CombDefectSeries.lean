@@ -209,4 +209,62 @@ theorem fourier_monomialRvachevSchwartz_int_neg (F : BoundedFabius)
   have h := fourier_monomialRvachevSchwartz_neg F hF hM p (ℓ : ℝ)
   simpa using h
 
+/-- **Endpoint super-exactness at odd threshold degree**: when
+`v₂(M)+1` is odd — every odd mesh, and every mesh of even two-adic
+valuation — the endpoint comb is exact one degree beyond the shifted
+threshold: the surviving odd-frequency aliases cancel in `±` pairs by
+coefficient parity. -/
+theorem tsum_monomial_eq_integral_of_odd_deg (F : BoundedFabius)
+    (hF : IsFabius F) {M : ℕ} (hM : M ≠ 0)
+    (hodd : Odd (padicValNat 2 M + 1)) :
+    (∑' k : ℤ, monomialRvachevSchwartz F hF (padicValNat 2 M + 1)
+        ((M : ℝ))⁻¹ (inv_ne_zero (Nat.cast_ne_zero.mpr hM)) (k : ℝ)) =
+      ∫ x : ℝ, ((x ^ (padicValNat 2 M + 1) *
+        rvachevUp F (((M : ℝ))⁻¹ * x) : ℝ) : ℂ) := by
+  have h := tsum_shifted_monomial_sub_integral_odd F hF hM 0
+  have hcomb : (∑' k : ℤ, monomialRvachevSchwartz F hF
+      (padicValNat 2 M + 1) ((M : ℝ))⁻¹
+      (inv_ne_zero (Nat.cast_ne_zero.mpr hM)) ((0 : ℝ) + k)) =
+      ∑' k : ℤ, monomialRvachevSchwartz F hF (padicValNat 2 M + 1)
+        ((M : ℝ))⁻¹ (inv_ne_zero (Nat.cast_ne_zero.mpr hM)) (k : ℝ) :=
+    tsum_congr fun k => by rw [zero_add]
+  rw [hcomb] at h
+  have h0c : ((0 : ℝ) : UnitAddCircle) = 0 := by norm_num
+  have hT : (∑' ℓ : ℤ, if Odd ℓ then
+      𝓕 (monomialRvachevSchwartz F hF (padicValNat 2 M + 1)
+          ((M : ℝ))⁻¹ (inv_ne_zero (Nat.cast_ne_zero.mpr hM))) ℓ *
+        fourier ℓ (((0 : ℝ)) : UnitAddCircle) else 0) = 0 := by
+    set f : ℤ → ℂ := fun ℓ => if Odd ℓ then
+      𝓕 (monomialRvachevSchwartz F hF (padicValNat 2 M + 1)
+          ((M : ℝ))⁻¹ (inv_ne_zero (Nat.cast_ne_zero.mpr hM))) ℓ *
+        fourier ℓ (((0 : ℝ)) : UnitAddCircle) else 0 with hf
+    have hneg : ∀ ℓ : ℤ, f (-ℓ) = -f ℓ := by
+      intro ℓ
+      simp only [hf]
+      by_cases hℓ : Odd ℓ
+      · rw [if_pos (odd_neg.mpr hℓ), if_pos hℓ, h0c,
+          fourier_eval_zero, fourier_eval_zero, mul_one, mul_one]
+        show 𝓕 (⇑(monomialRvachevSchwartz F hF (padicValNat 2 M + 1)
+            ((M : ℝ))⁻¹ (inv_ne_zero (Nat.cast_ne_zero.mpr hM))))
+            (((-ℓ : ℤ)) : ℝ) =
+          -(𝓕 (⇑(monomialRvachevSchwartz F hF (padicValNat 2 M + 1)
+            ((M : ℝ))⁻¹ (inv_ne_zero (Nat.cast_ne_zero.mpr hM))))
+            ((ℓ : ℤ) : ℝ))
+        have hpar := fourier_monomialRvachevSchwartz_int_neg F hF hM
+          (padicValNat 2 M + 1) ℓ
+        rw [Odd.neg_one_pow hodd, neg_one_mul] at hpar
+        exact hpar
+      · rw [if_neg (fun hc => hℓ (odd_neg.mp hc)), if_neg hℓ,
+          neg_zero]
+    have hswap : ∑' ℓ : ℤ, f (-ℓ) = ∑' ℓ : ℤ, f ℓ :=
+      (Equiv.neg ℤ).tsum_eq f
+    have hminus : ∑' ℓ : ℤ, f (-ℓ) = -∑' ℓ : ℤ, f ℓ := by
+      calc ∑' ℓ : ℤ, f (-ℓ) = ∑' ℓ : ℤ, -(f ℓ) := tsum_congr hneg
+        _ = -∑' ℓ : ℤ, f ℓ := tsum_neg
+    have hTT : ∑' ℓ : ℤ, f ℓ = -∑' ℓ : ℤ, f ℓ :=
+      hswap.symm.trans hminus
+    exact add_self_eq_zero.mp (eq_neg_iff_add_eq_zero.mp hTT)
+  rw [hT] at h
+  exact sub_eq_zero.mp h
+
 end Fabius

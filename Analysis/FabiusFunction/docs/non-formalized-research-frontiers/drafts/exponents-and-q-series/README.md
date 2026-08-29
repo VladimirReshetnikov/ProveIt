@@ -243,3 +243,12 @@ matching `assets/` directories.
 (The q-orbit reports `Fabius_Q_Connections_Report/` and
 `Signed_Reciprocal_q_Fabius_Frontiers/` were merged editorially as the
 volume's Part VII; their figures/data are likewise under `assets/`.)
+
+The wave volumes' central probabilistic object — the normalized
+geometric-uniform law `Y_q = (1-q)·∑ qʲU_j`, with `q = 1/2` the
+Fabius case and `q = 1/a` the atomic family `h_a` — now carries the
+kernel-verified four-face geometric-tail dictionary at every ratio
+`|q| < 1`: `GeometricUniformDictionary.lean` converts the corpus's
+product-form self-similarity into convolution form and instantiates
+`geometric_tail_dictionary` — the measure, characteristic-product,
+moment, and cumulant faces of the `m`-digit tail in one statement.
