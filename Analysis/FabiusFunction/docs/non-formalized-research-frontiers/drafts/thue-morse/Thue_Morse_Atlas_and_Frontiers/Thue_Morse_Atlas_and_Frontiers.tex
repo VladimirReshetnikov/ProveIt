@@ -2025,6 +2025,25 @@ sharpness witness for the parity hypothesis), and the Weierstrass product inequa
 (\lean{Fabius.one\_sub\_sum\_le\_prod\_one\_sub}, \lean{Fabius.one\_sub\_tsum\_le\_tprod\_one\_sub}) ---
 neither of which was available in Mathlib.
 
+Two further consequences of the same block algebra are formal.  Dividing the block's
+ladder factorization by \((1-X)^{d+1}\) in \(\Z[X]\) puts the corpus's approximation
+polynomial --- the \(q\)-integer product \(A_d=\prod_{m=1}^{d}[2^m]_X\) --- in closed form as a
+product of self-reciprocal factors with scale-decreasing multiplicity,
+\(A_d=\prod_{i<d}\bigl(1+X^{2^i}\bigr)^{d-i}\)
+(\lean{Fabius.approximationPolynomialInt\_eq\_ladder}, \lean{Fabius.approximationPolynomialInt\_eq\_ladder'}).
+And the Boolean-cube master identity acquires its \emph{bit-position} companion: where
+\lean{Fabius.prod\_one\_add\_mul\_pow} grades a dyadic block by the value \(z^n\),
+\[
+  \prod_{j<N}\bigl(1+y\,q^{j}\bigr)
+  =\sum_{n<2^{N}} y^{\wt(n)}\,q^{\sigma(n)},
+  \qquad \sigma(n)=\sum_{j\in\operatorname{bitSupport}(n)} j,
+\]
+grades it by the sum of its bit positions (\lean{Fabius.bitPositionSum},
+\lean{Fabius.prod\_one\_add\_mul\_pow\_bitPositionSum}), over any commutative semiring;
+the \(y=1\) and \(q=1\) faces recover the \(q^{\sigma}\)-enumerator and the binary-weight
+enumerator respectively.  This is the generating function whose \(y^{r}\)-coefficient is
+the \(q\)-binomial aggregation of a dyadic block by Hamming weight.
+
 \begin{corollary}[Coefficient and block formulae]
 \label{p1:cor:coefficient-block}
 For every \(n\ge0\),
