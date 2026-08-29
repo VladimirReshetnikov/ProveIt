@@ -57,7 +57,7 @@ theorem im_rvachevCauchyTransform_le (F : BoundedFabius)
   have hint : Integrable (fun x : ℝ => (z - x)⁻¹)
       (rvachevMeasure F) :=
     integrable_inv_sub_complex_of_im_ne_zero F hF (ne_of_gt hz)
-  have hbound : ∀ᵐ x ∂(rvachevMeasure F),
+  have hbound : ∀ᵐ x : ℝ ∂(rvachevMeasure F),
       RCLike.im ((z - (x : ℂ))⁻¹) ≤ -(z.im / (‖z‖ + 1) ^ 2) := by
     filter_upwards [ae_mem_Ioo_rvachevMeasure F hF] with x hx
     have hzx : z - (x : ℂ) ≠ 0 := by
@@ -89,10 +89,11 @@ theorem im_rvachevCauchyTransform_le (F : BoundedFabius)
         Complex.ofReal_im, sub_zero, neg_div]
     rw [him, div_eq_mul_one_div, div_eq_mul_one_div]
     exact neg_le_neg h2
-  have hkey : ∫ x, RCLike.im ((z - (x : ℂ))⁻¹) ∂(rvachevMeasure F) ≤
+  have hkey : ∫ x : ℝ,
+      RCLike.im ((z - (x : ℂ))⁻¹) ∂(rvachevMeasure F) ≤
       -(z.im / (‖z‖ + 1) ^ 2) := by
-    calc ∫ x, RCLike.im ((z - (x : ℂ))⁻¹) ∂(rvachevMeasure F)
-        ≤ ∫ _x, -(z.im / (‖z‖ + 1) ^ 2) ∂(rvachevMeasure F) :=
+    calc ∫ x : ℝ, RCLike.im ((z - (x : ℂ))⁻¹) ∂(rvachevMeasure F)
+        ≤ ∫ _x : ℝ, -(z.im / (‖z‖ + 1) ^ 2) ∂(rvachevMeasure F) :=
           integral_mono_ae hint.im (integrable_const _) hbound
       _ = -(z.im / (‖z‖ + 1) ^ 2) := by
           rw [integral_const]
