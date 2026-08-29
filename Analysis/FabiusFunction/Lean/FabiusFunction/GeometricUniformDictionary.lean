@@ -53,9 +53,7 @@ theorem geometricUniformDistribution_conv {q : ℝ} (hq : |q| < 1) :
     Measure.map_prod_map _ _
       (measurable_subtype_coe.const_mul _) (measurable_const_mul _),
     Measure.map_map (by fun_prop) (by fun_prop)]
-  congr 1
-  funext p
-  simp [Prod.map]
+  rfl
 
 /-- **The four-face dictionary at every ratio** `|q| < 1`: the
 measure face, the characteristic-product face, the unconditional
