@@ -138,11 +138,13 @@ Laplace/vertical-line dual, geometric multisection, the two-nome
 Pochhammer–Prouhet partition function, the exact inverse-geometric
 endpoint lattice with its jets and two-term asymptotics, and the
 resolution of the periodic-cocycle conjecture via Part VI's exact
-Laplace decomposition.  Two revised editions of the atomic-functions
-report were then merged into Part VI, adding the spectral
-Stieltjes–Wigert bridge, the distance-Mellin law, and — for
-provenance — the Russian source scan and OCR themselves, archived
-under the volume's assets.  Several volumes' part-boundary section numbering and
+Laplace decomposition.  Three revised editions of the atomic-functions
+reports were then merged into Part VI, adding the spectral
+Stieltjes–Wigert bridge, the distance-Mellin law, the q-Gaussian
+derivative Gram geometry with theta-function Riesz bounds, the
+log-Weibull jet-intermittency law, a proof of the Fup_n Edgeworth
+register conjecture, and — for provenance — the Russian source scan
+and OCR themselves, archived under the volume's assets.  Several volumes' part-boundary section numbering and
 page-counter handling were repaired along the way (edits are marked
 `% ed.:` in the sources).  Every volume carries
 a provenance section with each absorbed member's SHA-256; the absorbed

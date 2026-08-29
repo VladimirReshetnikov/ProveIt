@@ -27,7 +27,7 @@ shifts, negative-branch and hierarchy formulas, and inverse/quantile versions
 remain research frontiers. These API claims were checked at source checkpoint
 `22f801337`.
 
-Member: `Exponents_and_q_Series_Frontiers` (197 pp, seven parts) — the
+Member: `Exponents_and_q_Series_Frontiers` (201 pp, seven parts) — the
 2026-08-28 consolidation of the two former drafts (Part I:
 Newton-basis frontiers; Part II: q-binomial Richardson), joined the
 same day by the eighth-wave report as **Part III** — *Finite Dyadic
@@ -177,7 +177,12 @@ the spectral Stieltjes–Wigert bridge (squared-frequency moments
 Hankel determinants and orthogonal polynomials), the Mellin law of the
 distance to `K_a` (complex dimensions shifted by −1; distribution function =
 the exact tube formula), and — for provenance — the Russian source scan and
-OCR, archived under the volume's `assets/`.  (The q-orbit reports
+OCR, archived under the volume's `assets/`.  The revised fifteenth-wave
+edition (`Atomic_Functions_Rvachev_Report_Package/`) followed: the
+q-Gaussian derivative Gram kernel `q^{(j−k)²}` with Pochhammer determinants
+and sharp Jacobi-theta Riesz bounds, the log-Weibull jet-intermittency law,
+and the proof of the uniform all-orders `Fup_n` Edgeworth expansion
+(resolving that register conjecture).  (The q-orbit reports
 `Fabius_Q_Connections_Report/` and `Signed_Reciprocal_q_Fabius_Frontiers/`
 were merged editorially as the volume's Part VII; their packages are likewise
 preserved under `assets/`.)
