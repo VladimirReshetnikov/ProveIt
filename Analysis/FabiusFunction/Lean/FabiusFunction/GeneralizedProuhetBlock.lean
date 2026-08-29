@@ -294,6 +294,52 @@ theorem sum_range_two_pow_parityCharacter_mul_pow (a : ℕ → ℕ) (L : ℕ) :
   push_cast
   ring
 
+/-- **The vanishing of the lower moments.**  Below the threshold `ω`
+every power moment of the block is zero.  The decomposition is the
+same; only the core lemma changes, from the sharp evaluation to the
+degree bound. -/
+theorem sum_range_two_pow_parityCharacter_mul_pow_eq_zero (a : ℕ → ℕ)
+    (L k : ℕ) (hk : k < (oddLayers a L).card) :
+    ∑ n ∈ range (2 ^ L), parityCharacter a n * (n : ℤ) ^ k = 0 := by
+  classical
+  have step2 : ∑ T ∈ (range L).powerset,
+      parityCharacter a (∑ j ∈ T, 2 ^ j) *
+          ((∑ j ∈ T, 2 ^ j : ℕ) : ℤ) ^ k =
+      ∑ T ∈ (range L).powerset,
+        (-1 : ℤ) ^ (T ∩ oddLayers a L).card *
+          (((∑ j ∈ T ∩ evenLayers a L, 2 ^ j : ℕ) : ℤ) +
+            ∑ j ∈ T ∩ oddLayers a L, (2 : ℤ) ^ j) ^ k :=
+    Finset.sum_congr rfl fun T hT =>
+      summand_split a L _ (Finset.mem_powerset.mp hT)
+  have step3 : ∑ T ∈ (range L).powerset,
+      (-1 : ℤ) ^ (T ∩ oddLayers a L).card *
+          (((∑ j ∈ T ∩ evenLayers a L, 2 ^ j : ℕ) : ℤ) +
+            ∑ j ∈ T ∩ oddLayers a L, (2 : ℤ) ^ j) ^ k =
+      ∑ V ∈ (evenLayers a L).powerset,
+        ∑ U ∈ (oddLayers a L).powerset,
+          (-1 : ℤ) ^ U.card *
+            (((∑ j ∈ V, 2 ^ j : ℕ) : ℤ) +
+              ∑ j ∈ U, (2 : ℤ) ^ j) ^ k :=
+    sum_powerset_range_split a L
+      (fun U V => (-1 : ℤ) ^ U.card *
+        (((∑ j ∈ V, 2 ^ j : ℕ) : ℤ) + ∑ j ∈ U, (2 : ℤ) ^ j) ^ k)
+  have hzero : ∀ V ∈ (evenLayers a L).powerset,
+      (∑ U ∈ (oddLayers a L).powerset, (-1 : ℤ) ^ U.card *
+          (((∑ j ∈ V, 2 ^ j : ℕ) : ℤ) +
+            ∑ j ∈ U, (2 : ℤ) ^ j) ^ k) = 0 := by
+    intro V _
+    have hdeg : ((Polynomial.X : Polynomial ℤ) ^ k).degree <
+        ((oddLayers a L).card : WithBot ℕ) := by
+      rw [Polynomial.degree_X_pow]
+      exact_mod_cast hk
+    have h := sum_powerset_neg_one_pow_eval_of_degree_lt
+      (oddLayers a L) (fun j => (2 : ℤ) ^ j)
+      ((Polynomial.X : Polynomial ℤ) ^ k) hdeg
+      ((∑ j ∈ V, 2 ^ j : ℕ) : ℤ)
+    simpa using h
+  rw [sum_range_two_pow_eq_sum_powerset a L, step2, step3,
+    Finset.sum_congr rfl hzero, Finset.sum_const, smul_zero]
+
 /-- The constant-weight reading.  At `a ≡ 1` every layer below `L` is
 odd, so `ω = L`, the free factor is `1`, and the moment is the
 classical Prouhet–Thue–Morse evaluation
