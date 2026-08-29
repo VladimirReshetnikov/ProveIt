@@ -2265,7 +2265,20 @@ For \eqref{eq:qchu1}, put $b=q^{-n}$ in the $q$-Gauss sum.  The infinite product
  \frac{(cq^n,c/a;q)_\infty}{(c,cq^n/a;q)_\infty}
  =\frac{(c/a;q)_n}{(c;q)_n}.
 \]
-Because the series terminates, no convergence restriction remains.
+% ed.: the justification here formerly read ``Because the series terminates,
+% ed.: no convergence restriction remains.''  Termination makes both sides
+% ed.: DEFINED for all $(a,c)$, but it does not extend the EQUALITY, since the
+% ed.: product side was produced under the $q$-Gauss hypothesis
+% ed.: $\abs{cq^n/a}<1$.  What extends it is rationality plus agreement on a
+% ed.: nonempty open set, as stated below.
+The substitution is legitimate because $\{\abs b>\abs{c/a}\}$ is connected and
+meets Heine's initial region $\abs b<1$, so \Cref{thm:q-gauss} continues
+analytically to $b=q^{-n}$.  Both sides of \eqref{eq:qchu1} are now rational
+in $(a,c)$, and they agree on the nonempty open set $\abs{cq^n/a}<1$ where the
+$q$-Gauss hypothesis holds; a rational function vanishing on a nonempty open
+subset of $\C^2$ vanishes identically, so the identity holds wherever both
+sides are defined.  Termination alone would not give this: it makes the two
+sides defined, not equal.
 
 For \eqref{eq:qchu2}, let $b\to0$ in \Cref{thm:q-pfaff}, with its other numerator parameter equal to $a$.  Then $(b;q)_k\to1$ and $(abq^{1-n}/c;q)_k\to1$, so the left side becomes the displayed ${}_2\phi_1$.  On the right,
 \[
