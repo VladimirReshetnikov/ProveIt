@@ -121,9 +121,10 @@
 \large Exact arithmetic, probability, Fourier analysis, and corrected sharp asymptotics}
 \author{Human-readable synthesis of the formal development\\
 \small Vladimir Reshetnikov's \texttt{ProveIt} repository}
-\date{Integrated repository snapshot: 28 August 2026\\
+\date{Integrated repository snapshot: 29 August 2026\\
 \small Cauchy/complex-product checkpoint \nolinkurl{a81a13b46};
-CDF/implicit checkpoint \nolinkurl{e6f535e5d}}
+CDF/implicit checkpoint \nolinkurl{e6f535e5d};
+fractional-cutoff checkpoint \nolinkurl{149332f9d}}
 
 \begin{document}
 \maketitle
@@ -3001,6 +3002,19 @@ the two fractional kernels are interval-integrable and
  I_{a+}^{\alpha}(f+g)(x)
  =I_{a+}^{\alpha}f(x)+I_{a+}^{\alpha}g(x).                  \label{eq:fractional-volterra-add-input}
 \end{equation}
+More generally, let \(a\le b\), \(a\le x\), and let \(h\) be interval-integrable on
+\([a,x]\).  If \(h=0\) on the open tail \((b,x)\), then
+\begin{equation}
+ \int_a^x h(t)\dd t=\int_a^{\min(x,b)}h(t)\dd t.
+ \label{eq:interval-integral-support-cutoff}
+\end{equation}
+If \(0<\alpha\), \(f\) is continuous on \([a,x]\), and \(f=0\) on \((b,x)\), this
+specializes to
+\begin{equation}
+ I_{a+}^{\alpha}f(x)
+ =\int_a^{\min(x,b)}\frac{(x-t)^{\alpha-1}}{\Gamma(\alpha)}f(t)\dd t.
+ \label{eq:fractional-volterra-support-cutoff}
+\end{equation}
 For \(0<\alpha\), \(0<\beta\), and \(s\le x\), the shifted real beta kernel is
 interval-integrable.  If \(s<x\), its raw value is
 \begin{equation}
@@ -3069,10 +3083,12 @@ This includes \(a=x\); when \(g(a)=0\), the boundary term vanishes.  Only the ri
 derivative on the open interval is required; no two-sided derivative hypothesis is used.
 \end{theorem}
 
-The definition and eight exact theorems in \path{FractionalVolterra.lean} are
+The definition and ten exact theorems in \path{FractionalVolterra.lean} are
 \lean{fractionalVolterra}, \lean{fractionalVolterra_self},
 \lean{fractionalVolterra_congr}, \lean{fractionalVolterra_smul},
 \lean{intervalIntegrable_fractionalVolterra_kernel},
+\lean{intervalIntegral_eq_integral_min_of_eq_zero},
+\lean{fractionalVolterra_eq_intervalIntegral_min_of_eq_zero},
 \lean{fractionalVolterra_add_input}, \lean{fractionalVolterra_one}, and
 \lean{fractionalVolterra_nat_succ}, together with
 \lean{intervalIntegral_fractionalVolterra_betaKernel}.  The six theorems in
@@ -3086,19 +3102,41 @@ The definition and eight exact theorems in \path{FractionalVolterra.lean} are
 \lean{fractionalVolterra_affine}, \lean{fractionalVolterra_comp_affine},
 \lean{fractionalVolterra_add_one_deriv}, and
 \lean{fractionalVolterra_add_one_deriv_of_eq_zero}.  Thus these three reusable operator
-modules have one definition and eighteen public theorems.  They prove no classical
+modules have one definition and twenty public theorems.  They prove no classical
 order-zero law, reversed-endpoint fractional interpretation, semigroup theorem for merely
 interval-integrable inputs or noncomplete targets, Caputo or Riemann--Liouville derivative
-operator, complex-order theorem, nonpositive-scale affine covariance, or
-hierarchy-specific semigroup.  The positive-real Fabius-CDF specialization is recorded in
-\Cref{sec:probability-laplace-bridge}; the following three specialization theorems bring
-the four-module total to one definition and twenty-one public theorems.
+operator, complex-order theorem, nonpositive-scale affine covariance, or hierarchy-specific
+formula by themselves.  The positive-real Fabius-CDF specialization is recorded in
+\Cref{sec:probability-laplace-bridge}; the following total definition and six specialization
+theorems bring the four-module total to two definitions and twenty-six public theorems.
 
 The signed Fabius dilation law now enters only at the specialization step.
 
-\begin{theorem}[Exact first fractional shifts of the Fabius--Rvachev system]
+\begin{theorem}[Causal Rvachev fractional primitives and exact first shifts]
 \label{thm:fabius-fractional-volterra-shift}
-Let \(0<\alpha\).  The signed extension satisfies, for every \(x\ge0\),
+For every real \(\beta,x\), define the total causal primitive
+\begin{equation}
+ U_\beta(x):=I_{(-1)+}^{\beta}\Up(x).
+ \label{eq:rvachev-fractional-primitive}
+\end{equation}
+If \(0<\beta\) and \(-1\le x\), compact support gives the exact cutoff
+\begin{equation}
+ U_\beta(x)
+ =\frac1{\Gamma(\beta)}
+   \int_{-1}^{\min(x,1)}(x-t)^{\beta-1}\Up(t)\dd t.
+ \label{eq:rvachev-fractional-primitive-min}
+\end{equation}
+For every \(n\in\N\) and every real \(x\),
+\begin{equation}
+ U_{n+1}(x)=J_{-1}^{n+1}\Up(x).
+ \label{eq:rvachev-fractional-primitive-natural}
+\end{equation}
+If \(0<\alpha\), \(0<\beta\), and \(-1\le x\), then
+\begin{equation}
+ U_{\alpha+\beta}(x)=I_{(-1)+}^{\alpha}U_\beta(x).
+ \label{eq:rvachev-fractional-primitive-semigroup}
+\end{equation}
+For \(0<\alpha\), the signed extension satisfies, for every \(x\ge0\),
 \begin{equation}
  I_{0+}^{\alpha+1}\mathcal F(x)
  =2^\alpha I_{0+}^{\alpha}\mathcal F\!\left(\frac{x}{2}\right).
@@ -3119,13 +3157,17 @@ for every \(x\ge-1\)
 \end{equation}
 \end{theorem}
 
-The three statements are exactly
+The total definition and six theorems in \path{FabiusFractionalVolterra.lean} are
+\lean{rvachevFractionalPrimitive},
+\lean{rvachevFractionalPrimitive_eq_intervalIntegral_min},
+\lean{rvachevFractionalPrimitive_nat_succ},
+\lean{rvachevFractionalPrimitive_add},
 \lean{fractionalVolterra_add_one_extendedFabius_of_nonneg},
 \lean{fractionalVolterra_add_one_fabiusReal}, and
-\lean{fractionalVolterra_add_one_rvachevUp} in
-\path{FabiusFractionalVolterra.lean}.  Their domains are part of the statements:
+\lean{fractionalVolterra_add_one_rvachevUp}.  Their domains are part of the statements:
 the signed formula does not cover \(x<0\), the bounded formula is confined to
-\([0,1]\), and the \(\Up\) bridge starts at \(-1\).
+\([0,1]\), the cutoff and semigroup formulas start at \(-1\), and the support-truncated
+formula is asserted only at positive order.
 
 \begin{theorem}[Complete integer primitive ladder of the Fabius functions]
 \label{thm:fabius-volterra-ladder}
@@ -3174,7 +3216,7 @@ positive-real Fabius-CDF stopped-power and unit-endpoint moment formulas are for
 \Cref{thm:fabius-fractional-volterra-shift}.  What remains includes the signed branch for
 \(x<0\), iterated fractional shifts, the shifted dyadic lattice and its endpoint-\(\Up\)
 wrapper, reflected or piecewise support-tail formulas, weighted hierarchy-specific
-monomials, hierarchy- or support-truncated semigroups, a full two-branch refinement law,
+monomials, semigroups for shifted or reflected hierarchy variants, a full two-branch refinement law,
 fractional inverse/quantile formulas, classical order-zero or reversed-endpoint
 interpretations, Caputo and Riemann--Liouville derivative operators, complex powers and
 complex order, and normal or Mellin continuation.  At integer order, separately named
@@ -7660,7 +7702,9 @@ That rule explains several choices made above:
       Positive affine covariance holds at arbitrary real order for an ordered endpoint and
       positive scale, and Gamma-normalized order raising needs only a continuous primitive,
       an interval-integrable displayed derivative, and that derivative from the right on
-      the open interval.  The first exact fractional shifts are proved for the signed
+      the open interval.  The causal Rvachev primitive, its compact-support cutoff, its
+      positive-natural bridge, and its positive-order semigroup are formalized on
+      \(x\ge-1\).  The first exact fractional shifts are proved for the signed
       extension on \(x\ge0\), the bounded function on \([0,1]\), and the \(\Up\)-to-\(F\)
       bridge based at \(-1\) on \(x\ge-1\).  The modules prove no corresponding semigroup
       law for merely interval-integrable inputs or noncomplete targets, no Caputo or
@@ -7777,7 +7821,8 @@ Local all-order jet calculus &
 \path{LeadingJet.lean}\\
 Normalized integer- and positive-real-order Volterra calculus, affine covariance,
 shifted-power and constant evaluations, positive affine covariance and right-derivative
-order raising, base-point shifts, and exact integer and first fractional Fabius--Rvachev primitives &
+order raising, base-point shifts, exact integer Fabius primitives, causal Rvachev
+fractional primitives, and first fractional Fabius--Rvachev shifts &
 \path{NormalizedVolterra.lean}, \path{FractionalVolterra.lean},
 \path{FractionalVolterraSemigroup.lean},
 \path{FractionalVolterraCalculus.lean}, \path{FabiusAntiderivatives.lean},
@@ -7885,6 +7930,7 @@ Article & Lean & Meaning\\
 \(J_a^nf\) & \lean{normalizedVolterra}\hspace{0.35em}\lean{n}\hspace{0.35em}\lean{a}\hspace{0.35em}\lean{f} & normalized Cauchy-kernel primitive\\
 \(I_{a+}^{\alpha}f\) & \lean{fractionalVolterra} & total real-order Gamma-normalized Volterra operator\\
 \(I_{a+}^{\alpha+\beta}f=I_{a+}^{\alpha}I_{a+}^{\beta}f\) & \lean{fractionalVolterra_add} & positive orders, ordered endpoint, continuous Banach-valued input\\
+\(U_\beta(x)\) & \lean{rvachevFractionalPrimitive} & causal Rvachev fractional primitive based at \(-1\)\\
 \(I_{0+}^{\alpha}F(x)=\E[(x-X)_+^\alpha]/\Gamma(\alpha+1)\) & \lean{ProbabilityRepresentation.fractionalVolterra_fabiusReal_eq_uniformProduct_integral_posPart} & positive real order, every real endpoint\\
 affine \(I_{a+}^{\alpha}\) & \lean{fractionalVolterra_affine} & arbitrary real order, positive scale, ordered endpoint\\
 \(I_{a+}^{\alpha+1}g'\) & \lean{fractionalVolterra_add_one_deriv} & positive order, continuous primitive, integrable interior right derivative, exact Gamma boundary term\\
@@ -8040,11 +8086,12 @@ V.~Reshetnikov,
 \newblock Lean~4 formal development, integrated Cauchy source checkpoint
 \texttt{a81a13b46b4c7d525f273a52c9018a6d281c5ef2}, consulted 28 August 2026.
 \newblock \url{https://github.com/VladimirReshetnikov/ProveIt/tree/a81a13b46b4c7d525f273a52c9018a6d281c5ef2/Analysis/FabiusFunction}.
-\newblock Fractional affine/order-raising calculus, first fractional Fabius--Rvachev
-shifts, unconditionally summable analytic-series filters, and the finite complex
+\newblock Fractional affine/order-raising calculus, causal support-truncated Rvachev
+primitives, first fractional Fabius--Rvachev shifts, unconditionally summable
+analytic-series filters, and the finite complex
 Thue--Morse product bridge were also compiler-validated at checkpoint
-\texttt{22f801337}.
-\newblock \url{https://github.com/VladimirReshetnikov/ProveIt/tree/22f801337/Analysis/FabiusFunction}.
+\texttt{149332f9d}.
+\newblock \url{https://github.com/VladimirReshetnikov/ProveIt/tree/149332f9d/Analysis/FabiusFunction}.
 \newblock The integrated source additionally contains the atom-exact Cauchy--CDF
 integration-by-parts layer and the exact Rvachev Cauchy-transform DDE/all-order
 Thue--Morse orbit in \path{CauchyCDF.lean} and \path{CauchyRenormalization.lean}; it does

@@ -189,8 +189,8 @@
 \large Six thematic syntheses, crosswalked against the Lean corpus}
 \author{Boundary layer between prose and proof in the \texttt{ProveIt} Fabius development\\
 \small Eleven source notebooks in six syntheses plus a post-audit gap register}
-\date{Base research snapshot: 25 August 2026; formal-status audit updated 28 August 2026\\
-\small current compiler-validated checkpoint \nolinkurl{e6f535e5d}}
+\date{Base research snapshot: 25 August 2026; formal-status audit updated 29 August 2026\\
+\small current compiler-validated checkpoint \nolinkurl{149332f9d}}
 
 \begin{document}
 % Compatibility macros used by the consolidated source notebooks.  They are
@@ -387,11 +387,18 @@ Bounded Fabius function & \nolinkurl{fabiusReal}, \nolinkurl{IsFabius} & \nolink
 Rvachev up-function & \nolinkurl{rvachevUp} & \nolinkurl{Basic.lean}, \nolinkurl{Differential.lean} \\
 Signed global extension & \nolinkurl{extendedFabius} & \nolinkurl{GlobalExtension.lean} \\
 Fractional Volterra calculus &
-\nolinkurl{fractionalVolterra}, \nolinkurl{fractionalVolterra_add},
+\nolinkurl{fractionalVolterra},
+\nolinkurl{Fabius.intervalIntegral_eq_integral_min_of_eq_zero},
+\nolinkurl{Fabius.fractionalVolterra_eq_intervalIntegral_min_of_eq_zero},
+\nolinkurl{fractionalVolterra_add},
 \nolinkurl{fractionalVolterra_affine}, \nolinkurl{fractionalVolterra_add_one_deriv} &
 \nolinkurl{FractionalVolterra.lean}, \nolinkurl{FractionalVolterraSemigroup.lean},
 \nolinkurl{FractionalVolterraCalculus.lean} \\
-Fractional Fabius--Rvachev shifts &
+Fractional causal Rvachev primitives and Fabius--Rvachev shifts &
+\nolinkurl{Fabius.rvachevFractionalPrimitive},
+\nolinkurl{Fabius.rvachevFractionalPrimitive_eq_intervalIntegral_min},
+\nolinkurl{Fabius.rvachevFractionalPrimitive_nat_succ},
+\nolinkurl{Fabius.rvachevFractionalPrimitive_add},
 \nolinkurl{fractionalVolterra_add_one_extendedFabius_of_nonneg},
 \nolinkurl{fractionalVolterra_add_one_fabiusReal},
 \nolinkurl{fractionalVolterra_add_one_rvachevUp} &
@@ -454,10 +461,14 @@ Weighted survival, lower-CDF, fractional, and inverse layer cake &
 \nolinkurl{CDFLayerCake.lean}, \nolinkurl{FractionalCDFLayerCake.lean},
 \nolinkurl{FabiusFractionalIntegral.lean},
 \nolinkurl{InverseLayerCake.lean}, \nolinkurl{ProbabilityLaplaceMoments.lean} \\
-Fractional affine/order-raising calculus and Fabius--Rvachev shifts &
+Fractional affine/order-raising calculus, causal Rvachev primitives, and shifts &
 \nolinkurl{fractionalVolterra_affine},
 \nolinkurl{fractionalVolterra_comp_affine},
 \nolinkurl{fractionalVolterra_add_one_deriv},
+\nolinkurl{Fabius.rvachevFractionalPrimitive},
+\nolinkurl{Fabius.rvachevFractionalPrimitive_eq_intervalIntegral_min},
+\nolinkurl{Fabius.rvachevFractionalPrimitive_nat_succ},
+\nolinkurl{Fabius.rvachevFractionalPrimitive_add},
 \nolinkurl{fractionalVolterra_add_one_extendedFabius_of_nonneg},
 \nolinkurl{fractionalVolterra_add_one_fabiusReal},
 \nolinkurl{fractionalVolterra_add_one_rvachevUp} &
@@ -1596,7 +1607,7 @@ higher or fractional inverse primitives, or complex Mellin continuation.
 
 \begin{remark}[Formalized positive-real fractional Volterra boundary]
 \label{integration:rem:fractional-volterra-boundary}
-At compiled full-facade checkpoint \texttt{e6f535e5d}, the definition
+At compiled full-facade checkpoint \texttt{149332f9d}, the definition
 \lean{fractionalVolterra} in \path{FractionalVolterra.lean} is a total
 Gamma-normalized oriented interval integral for a real order, arbitrary real base and
 endpoint, and an input valued in any real normed space.  The unconditional declarations
@@ -1609,6 +1620,18 @@ In the classical regime \(0<\alpha\) and \(a\le x\), a continuous input has an
 interval-integrable fractional kernel by
 \lean{intervalIntegrable_fractionalVolterra_kernel}, and
 \lean{fractionalVolterra_add_input} gives additivity for two such continuous inputs.
+If \(a\le b\) and \(a\le x\), the operator-independent theorem
+\lean{intervalIntegral_eq_integral_min_of_eq_zero} cuts an interval-integrable kernel off
+at \(\min(x,b)\) whenever it vanishes on the open right tail \((b,x)\).
+Under the same endpoint bounds, \(0<\alpha\), and continuity on \([a,x]\), its fractional
+specialization is
+\lean{fractionalVolterra_eq_intervalIntegral_min_of_eq_zero}:
+\begin{equation}
+ I_{a+}^{\alpha}f(x)
+ =\int_a^{\min(x,b)}
+   \frac{(x-t)^{\alpha-1}}{\Gamma(\alpha)}f(t)\dd t.
+ \label{integration:eq:fractional-volterra-support-cutoff}
+\end{equation}
 For \(0<\alpha\), \(0<\beta\), and \(s\le x\),
 \lean{intervalIntegrable_fractionalVolterra_betaKernel} in
 \path{FractionalVolterraSemigroup.lean} proves interval integrability of the raw shifted
@@ -1676,8 +1699,25 @@ interval-integrable, \lean{fractionalVolterra_add_one_deriv} gives
  \label{integration:eq:fractional-volterra-add-one-deriv}
 \end{equation}
 including \(a=x\); \lean{fractionalVolterra_add_one_deriv_of_eq_zero} removes the
-boundary term when \(g(a)=0\).  The three declarations in
-\path{FabiusFractionalVolterra.lean} then prove
+boundary term when \(g(a)=0\).  The total definition
+\lean{rvachevFractionalPrimitive} in \path{FabiusFractionalVolterra.lean} sets
+\(U_\beta(x)=I_{(-1)+}^{\beta}\Up(x)\).  Its three causal declarations prove
+\begin{align}
+ U_\beta(x)
+ &=\frac1{\Gamma(\beta)}
+   \int_{-1}^{\min(x,1)}(x-t)^{\beta-1}\Up(t)\dd t,
+ &&\beta>0,\ -1\le x,
+ \label{integration:eq:rvachev-fractional-primitive-min}\\
+ U_{n+1}(x)&=J_{-1}^{n+1}\Up(x),
+ &&n\in\N,\ x\in\R,
+ \label{integration:eq:rvachev-fractional-primitive-natural}\\
+ U_{\alpha+\beta}(x)&=I_{(-1)+}^{\alpha}U_\beta(x),
+ &&\alpha,\beta>0,\ -1\le x.
+ \label{integration:eq:rvachev-fractional-primitive-semigroup}
+\end{align}
+They are \lean{rvachevFractionalPrimitive_eq_intervalIntegral_min},
+\lean{rvachevFractionalPrimitive_nat_succ}, and
+\lean{rvachevFractionalPrimitive_add}.  The module's other three declarations prove
 \begin{align}
  I_{0+}^{\alpha+1}\mathcal F(x)
  &=2^\alpha I_{0+}^{\alpha}\mathcal F(x/2), &&\alpha>0,\ x\ge0,
@@ -1695,8 +1735,8 @@ They are \lean{fractionalVolterra_add_one_extendedFabius_of_nonneg},
 reversed-endpoint fractional interpretation or covariance, nonpositive-scale covariance,
 semigroup theorem
 for merely interval-integrable inputs or noncomplete targets, Caputo or other fractional
-derivative, complex-order theorem, hierarchy-specific semigroup, iterated fractional shift,
-shifted dyadic-lattice or endpoint-\(\Up\) wrapper, or inverse-function fractional
+derivative, complex-order theorem, iterated fractional shift, shifted dyadic-lattice or
+endpoint-moment wrapper, transform or tail-series theorem, or inverse-function fractional
 specialization is included.  The positive-real Fabius-CDF
 specialization is recorded separately in
 \cref{integration:thm:fractional-cdf-layer-cake}.
@@ -3124,21 +3164,25 @@ order-one, and positive-natural-order rules, and its positive-order ordered-endp
 continuous-kernel integrability and input additivity; raw shifted-beta-kernel integrability
 for positive orders and ordered endpoints \(s\le x\); the raw and normalized values under a
 strict endpoint inequality; and additive composition of positive orders for continuous
-Banach-valued inputs on ordered compact intervals.  Normalized shifted powers, arbitrary
-shifted real powers in the sharp range \(\rho>-1\), and constants have their exact
-Gamma-quotient values.  No corresponding semigroup for merely interval-integrable inputs
-or noncomplete targets, fractional derivative, complex order, order-zero law,
-reversed-endpoint fractional interpretation, or hierarchy-specific semigroup;
+Banach-valued inputs on ordered compact intervals.  A generic open-tail cutoff and its
+fractional specialization truncate compact-right-support integrals at \(\min(x,b)\).
+Normalized shifted powers, arbitrary shifted real powers in the sharp range \(\rho>-1\),
+and constants have their exact Gamma-quotient values.  No corresponding semigroup for
+merely interval-integrable inputs or noncomplete targets, fractional derivative, complex
+order, order-zero law, or reversed-endpoint fractional interpretation;
 \cref{integration:rem:fractional-volterra-boundary}.\\
 \path{FractionalVolterraCalculus.lean}, \path{FabiusFractionalVolterra.lean} &
 Increasing-affine covariance for arbitrary real order, positive scale, and ordered endpoints;
 positive-order Banach-valued integration by parts across an interval-integrable right
 interior derivative with its exact
-left-boundary term; and the three positive-real single-step order shifts for the signed and
-bounded Fabius functions and \(\Up\).  These modules export four and three theorems,
-respectively, but no nonpositive-scale/reversed covariance, fractional derivative or Caputo
-operator, complex-order continuation, iterated/lattice or endpoint-\(\Up\) wrapper, or inverse
-specialization; \cref{integration:rem:fractional-volterra-boundary}.\\
+left-boundary term; a total causal Rvachev fractional primitive with its support-truncated
+formula, positive-natural bridge, and positive-order semigroup; and the three positive-real
+single-step order shifts for the signed and bounded Fabius functions and \(\Up\).  These
+modules export four theorems and one definition with six theorems, respectively, but no
+nonpositive-scale/reversed covariance, fractional derivative or Caputo operator,
+complex-order continuation, shifted dyadic-lattice or endpoint-moment wrapper,
+transform/tail series, or inverse specialization;
+\cref{integration:rem:fractional-volterra-boundary}.\\
 \path{ProbabilityLaplaceMoments.lean} &
 The survival function, partial/full Rvachev survival layer cake, differentiable
 compact-support Fubini identity, raw and endpoint moment identifications, zero-tilt
