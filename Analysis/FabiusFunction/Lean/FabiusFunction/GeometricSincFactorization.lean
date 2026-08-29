@@ -169,9 +169,8 @@ theorem charFun_weightedSumDistribution_prefix_sinc (m : ℕ) (t : ℝ) :
     charFun weightedSumDistribution t =
       cexp (((2⁻¹ * ((1 - (1 / 2 : ℝ) ^ m) * t) : ℝ) : ℂ) * I) *
         (∏ k ∈ Finset.range m,
-          complexSinc
-            ((2⁻¹ * ((1 - (1 / 2 : ℝ)) *
-              ((1 / 2 : ℝ) ^ k * t)) : ℝ)) *
+          complexSinc ((2⁻¹ * ((1 - (1 / 2 : ℝ)) *
+            ((1 / 2 : ℝ) ^ k * t)) : ℝ) : ℂ)) *
         charFun weightedSumDistribution ((1 / 2 : ℝ) ^ m * t) := by
   rw [weightedSumDistribution_eq_geometricUniformDistribution_one_half]
   exact charFun_geometricUniformDistribution_prefix_sinc
@@ -183,9 +182,8 @@ theorem tendsto_prefix_sinc_charFun_weightedSumDistribution (t : ℝ) :
     Filter.Tendsto (fun m : ℕ =>
       cexp (((2⁻¹ * ((1 - (1 / 2 : ℝ) ^ m) * t) : ℝ) : ℂ) * I) *
         ∏ k ∈ Finset.range m,
-          complexSinc
-            ((2⁻¹ * ((1 - (1 / 2 : ℝ)) *
-              ((1 / 2 : ℝ) ^ k * t)) : ℝ)))
+          complexSinc ((2⁻¹ * ((1 - (1 / 2 : ℝ)) *
+            ((1 / 2 : ℝ) ^ k * t)) : ℝ) : ℂ))
       Filter.atTop (nhds (charFun weightedSumDistribution t)) := by
   rw [weightedSumDistribution_eq_geometricUniformDistribution_one_half]
   exact tendsto_prefix_sinc_charFun abs_one_half_lt_one t
