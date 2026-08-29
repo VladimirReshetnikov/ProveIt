@@ -290,6 +290,11 @@ theorem coeff_prod_one_sub_X_two_pow (m n : ℕ) :
           PowerSeries ℤ) := by
     rw [prod_range_one_sub_X_two_pow_eq_coe,
       thueMorseBlockPolynomial_eq_product]
+    induction m with
+    | zero => simp
+    | succ k ih =>
+        rw [Finset.prod_range_succ, Finset.prod_range_succ, ih,
+          ← Polynomial.coe_mul]
   rw [hfold, Polynomial.coeff_coe]
   by_cases h : n < 2 ^ m
   · rw [if_pos h, coeff_thueMorseBlockPolynomial m n h]
