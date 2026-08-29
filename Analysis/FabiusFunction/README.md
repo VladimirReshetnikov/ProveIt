@@ -81,8 +81,8 @@ asymptotic, the general coefficient algebra for the recursive all-orders
 expansion, and the first two explicit periodic saddle corrections—is integrated
 into the primary exposition. Exploratory derivations, the small-argument
 notebook, and the primary-exposition gap register are preserved in the canonical
-[research-frontier LaTeX volume](docs/non-formalized-research-frontiers/non-formalized-research-frontiers.tex)
-([PDF](docs/non-formalized-research-frontiers/non-formalized-research-frontiers.pdf)).
+[research-frontier LaTeX volume](docs/semi-formalized-research-frontiers/semi-formalized-research-frontiers.tex)
+([PDF](docs/semi-formalized-research-frontiers/semi-formalized-research-frontiers.pdf)).
 That volume labels claims still awaiting literal Lean counterparts and records
 their exact outstanding proof obligations.
 
@@ -800,12 +800,12 @@ compiled PDF is committed alongside its source.
 - **Put unformalized work on the research frontier.** Any mathematical material
   without an exact proved Lean counterpart — however obvious, standard, or
   plausible — belongs in a LaTeX/PDF document under
-  [`docs/non-formalized-research-frontiers/`](docs/non-formalized-research-frontiers/),
+  [`docs/semi-formalized-research-frontiers/`](docs/semi-formalized-research-frontiers/),
   not in the primary exposition. Frontier documents label conjectures,
   heuristics, partial formalizations, refutations, and the precise outstanding
   Lean obligations rather than presenting them as established results.
 - **Treat drafts as a temporary inbox.** Content under
-  `docs/non-formalized-research-frontiers/drafts/incoming/` is reviewed claim-by-claim.
+  `docs/semi-formalized-research-frontiers/drafts/incoming/` is reviewed claim-by-claim.
   Lean-backed material is integrated organically into the primary exposition
   without duplication; everything else is relocated to the research-frontier
   tree with its provenance. Once a draft is fully dispositioned, it is removed,

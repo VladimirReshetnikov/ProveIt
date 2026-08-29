@@ -431,7 +431,7 @@ the expansion, so the public surface now carries
 `log F(x) = fabiusSharpLambertMain x + A₁(lambda)/lambda +
 A₂(lambda)/lambda² + O(lambda⁻³)` with both corrections written out.  See
 Part “Small-Argument Asymptotics Research Frontiers” of
-`docs/non-formalized-research-frontiers/non-formalized-research-frontiers.tex`.
+`docs/semi-formalized-research-frontiers/semi-formalized-research-frontiers.tex`.
 
 Finally, the canonical bounded Fabius function is proved computable in the
 Grzegorczyk sense: a primitive-recursive centered-spline evaluator preserves

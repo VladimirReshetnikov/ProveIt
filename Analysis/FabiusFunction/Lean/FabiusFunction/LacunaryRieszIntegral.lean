@@ -10,7 +10,7 @@ frequencies grow fast enough cannot resonate down to a low frequency,
 so its integral over a period sees only the constant term.  This file
 proves that principle in a reusable, fully general form and derives the
 exact `L²` identity used by the decay audit
-(`docs/non-formalized-research-frontiers/drafts/rvachev_up_fourier_decay/
+(`docs/semi-formalized-research-frontiers/drafts/rvachev_up_fourier_decay/
 Rvachev_Up_Fourier_Decay_Comparative_Audit/`, Proposition "exact `L²`
 identity").
 
