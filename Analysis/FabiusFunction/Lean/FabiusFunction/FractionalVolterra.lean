@@ -14,7 +14,9 @@ endpoint `x`, the operator is
 The definition is total, but its analytic theorems use the classical causal
 regime `0 < α` and `a ≤ x`.  The codomain is an arbitrary real normed
 space.  The main bridge identifies every positive natural order exactly with
-`normalizedVolterra`.
+`normalizedVolterra`.  A compact-right-support lemma also replaces the upper
+endpoint by a minimum, which is the reusable bridge to the causal formulas
+used for compactly supported inputs.
 
 The shifted beta-kernel integral is evaluated exactly.  The full
 fractional-order semigroup law is left to a later theorem because it additionally
@@ -94,6 +96,62 @@ theorem intervalIntegrable_fractionalVolterra_kernel
       volume a x :=
     hshift.div_const (Real.Gamma α)
   exact hscalar.smul_continuousOn (by simpa only [uIcc_of_le hax] using hf)
+
+/-- An interval integral whose integrand vanishes on the open right tail can
+be cut off at `min x b`.  Endpoint values are irrelevant.
+
+This operator-independent form is the reusable support-truncation engine for
+fractional Volterra integrals and other causal kernels. -/
+theorem intervalIntegral_eq_integral_min_of_eq_zero
+    {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {a b x : ℝ} (hab : a ≤ b) (hax : a ≤ x)
+    {g : ℝ → E} (hg : IntervalIntegrable g volume a x)
+    (hzero : Set.EqOn g 0 (Ioo b x)) :
+    (∫ t in a..x, g t) = ∫ t in a..min x b, g t := by
+  rcases le_total x b with hxb | hbx
+  · rw [min_eq_left hxb]
+  · rw [min_eq_right hbx]
+    have hbmem : b ∈ uIcc a x := by
+      rw [uIcc_of_le hax]
+      exact ⟨hab, hbx⟩
+    have hparts :
+        IntervalIntegrable g volume a b ∧
+          IntervalIntegrable g volume b x :=
+      (IntervalIntegrable.trans_iff hbmem).mp hg
+    have htail : (∫ t in b..x, g t) = 0 := by
+      calc
+        (∫ t in b..x, g t) = ∫ _t in b..x, (0 : E) := by
+          apply intervalIntegral.integral_congr_ae
+          filter_upwards [Measure.ae_ne volume x] with t htx ht
+          rw [uIoc_of_le hbx] at ht
+          have ht' : t ∈ Ioo b x := ⟨ht.1, ht.2.lt_of_ne htx⟩
+          simpa using hzero ht'
+        _ = 0 := by simp
+    have hjoin := intervalIntegral.integral_add_adjacent_intervals
+      hparts.1 hparts.2
+    rw [htail, add_zero] at hjoin
+    exact hjoin.symm
+
+/-- If a continuous input vanishes on the open interval from `b` to the
+endpoint, a positive-order fractional Volterra integral may be cut off at
+`min x b`.
+
+The kernel remains centered at the original endpoint `x`; only the zero tail
+of the integration interval is removed. -/
+theorem fractionalVolterra_eq_intervalIntegral_min_of_eq_zero
+    {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {α a b x : ℝ} (hα : 0 < α) (hab : a ≤ b) (hax : a ≤ x)
+    {f : ℝ → E} (hf : ContinuousOn f (Icc a x))
+    (hzero : Set.EqOn f 0 (Ioo b x)) :
+    fractionalVolterra α a f x =
+      ∫ t in a..min x b,
+        (((x - t) ^ (α - 1)) / Real.Gamma α) • f t := by
+  rw [fractionalVolterra]
+  apply intervalIntegral_eq_integral_min_of_eq_zero hab hax
+    (intervalIntegrable_fractionalVolterra_kernel hα hax hf)
+  intro t ht
+  have hft : f t = 0 := by simpa using hzero ht
+  simp only [hft, smul_zero, Pi.zero_apply]
 
 /-- Fractional Volterra integration is additive on continuous inputs in the
 positive-order, ordered-endpoint regime. -/
