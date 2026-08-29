@@ -1692,9 +1692,18 @@ one zero-constant formal root $\Delta(Q)$.  The truncated display form of
 \eqref{p1:eq:Ar-def} is \nolinkurl{Fabius.germPolynomial\_eq\_sum}, and the first concrete
 instance is formal too: \nolinkurl{Fabius.dyadicGermTwo} is the unique formal root of
 $\mathcal A_2(z,Q)=z+4z^2-\tfrac49Q$ from \eqref{p1:eq:A2local}, with $J_2=z+4z^2$ entered
-from $F(\tfrac12)=\tfrac12$, $F(1)=1$.  Still open are the analytic realization of the
-formal root, its identification with the local inverse, entry into the plateau
-interval for all large $n$, and the displayed quantile formula.
+from $F(\tfrac12)=\tfrac12$, $F(1)=1$.  The analytic realization of the concrete
+root is now delivered at the branch level: \path{AlgebraicInverseGermAnalytic.lean}
+defines the quadratic-formula branch \(z(Q)=\bigl(\sqrt{1+\tfrac{64}{9}Q}-1\bigr)/8\)
+(\nolinkurl{Fabius.dyadicRootFun}) and proves that it solves $z+4z^2=\tfrac49Q$ for every
+$Q\ge0$ (\nolinkurl{Fabius.dyadicRootFun\_solves}), vanishes at the origin, is the unique
+solution above the conjugate branch (\nolinkurl{Fabius.eq\_dyadicRootFun\_of\_solves}),
+is $C^n$ at the origin for every $n$ (\nolinkurl{Fabius.contDiffAt\_dyadicRootFun}), and
+has derivative $\tfrac49$ there (\nolinkurl{Fabius.hasDerivAt\_dyadicRootFun\_zero}) --- the
+linear coefficient of the formal root, identifying germ and branch to first order.
+Still open are the all-orders identification of the formal root with this branch, its
+identification with the local inverse, entry into the plateau interval for all large
+$n$, and the displayed quantile formula.
 \end{obligation}
 
 \begin{remark}[Formalized geometric Lagrange core]
