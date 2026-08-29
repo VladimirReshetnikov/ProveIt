@@ -846,9 +846,27 @@ vanishes, which is the volume's own scope on that range.
 Two residues are stated rather than glossed.  At $x=0$ no factor vanishes and
 $\Phi_a(0)=1$, but the hypothesis $m_a(0)=a_0$ need not hold, so that point is closed by a
 separate lemma (\lean{Fabius.canonicalRealProduct\_zero\_eq\_one}) rather than by the theorem
-above.  Negative arguments are not treated at all: $\Phi_a$ is even, so the law there reads
-$\varepsilon_a(\lfloor\lvert x\rvert\rfloor)$ rather than $\varepsilon_a(\lfloor x\rfloor)$, and neither
-file states it.
+above.  Negative arguments are carried by evenness of $\Phi_a$
+(\lean{Fabius.generalizedRvachevProduct\_neg}, \path{LobeSignNegative.lean}), and there the law
+reads $\varepsilon_a(\lfloor\lvert x\rvert\rfloor)$ rather than $\varepsilon_a(\lfloor x\rfloor)$:
+on $-(N+1)<x<-N$ the reflected point lies in the lobe $(N,N+1)$, so the sign is
+$\varepsilon_a(N)$, while $\lfloor x\rfloor=-(N+1)$ is not even a natural number.  We write
+$\lfloor x\rfloor$ because we have $x\ge0$ in mind.
+
+Assembled, these pieces give the law on the whole axis with no hypothesis at all, in
+\path{LobeSignComplete.lean}:
+\[
+ \Psi_a(x)=0
+ \quad\text{or}\quad
+ 0<\varepsilon_a\bigl(\lfloor\lvert x\rvert\rfloor\bigr)\,\Psi_a(x),
+ \qquad x\in\R
+\]
+(\lean{Fabius.parityCharacter\_mul\_canonicalRealProduct\_dichotomy}), the first alternative
+occurring exactly when $\lvert x\rvert$ is a positive integer of nonzero multiplicity
+(\lean{Fabius.canonicalRealProduct\_eq\_zero\_iff\_of\_nonneg}).  There is no third
+possibility and no remaining gap; what made the assembly possible is the complete zero set of
+\path{GeneralizedZeroDivisor.lean}, without which the exceptional set could be excluded but not
+identified.
 \end{theorem}
 
 \begin{proof}
@@ -2024,6 +2042,15 @@ Every odd integer and every integer with $\nu_2(n)\le2$ remains a simple zero.  
 extra multiplicity occurs at $n=8$, where the order is $2$; at $n=16$ it is $5$; at
 $n=32$ it is $11$.  Yet the same entire function is the quotient
 $\Phi_1\Phi_3/\Phi_2$.
+
+Every number in this example is checked against the general formula in
+\path{AlternatingNewtonFamily.lean}: the weight values
+(\lean{Fabius.alternatingNewtonWeight\_two\_values}), the simple-zero range
+(\lean{Fabius.weightedScaleMultiplicity\_alternatingNewton\_two\_of\_le}), and the three
+multiplicities $2$, $5$, $11$, which are $1+\binom{\nu_2(n)}3$ at $\nu_2=3,4,5$.  Since the
+example was worked by hand and the formula proved independently, the agreement is evidence for
+both.  The final sentence is the one part not formalized: reading $\Psi_2$ as the quotient
+$\Phi_1\Phi_3/\Phi_2$ needs a signed exponent, which $\Phi_a$ does not accept.
 \end{example}
 
 \subsection{Automatic lobe signs and sparse Prouhet order}
