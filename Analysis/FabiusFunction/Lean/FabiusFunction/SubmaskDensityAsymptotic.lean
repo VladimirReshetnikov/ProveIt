@@ -60,7 +60,7 @@ noncomputable def submaskCount (d L : ℕ) : ℕ :=
 theorem submaskCount_mono (d : ℕ) {L L' : ℕ} (h : L ≤ L') :
     submaskCount d L ≤ submaskCount d L' :=
   Finset.card_le_card
-    (Finset.filter_subset_filter _ (Finset.range_subset.mpr h))
+    (Finset.filter_subset_filter _ (Finset.range_subset_range.mpr h))
 
 /-- The full-block count, restated from `DigitalDensity`. -/
 theorem submaskCount_two_pow {m d : ℕ} (hd : d < 2 ^ m) :
@@ -137,7 +137,7 @@ implied constant made explicit. -/
 theorem abs_two_pow_weight_mul_submaskCount_sub_le {m d : ℕ}
     (hd : d < 2 ^ m) (L : ℕ) :
     |(2 ^ binaryWeight d * submaskCount d L : ℤ) - L| ≤ 2 ^ m := by
-  have hpos : 0 < 2 ^ m := Nat.pos_pow_of_pos m (by norm_num)
+  have hpos : 0 < 2 ^ m := pow_pos (by norm_num) m
   set k := L / 2 ^ m with hk
   set s := L % 2 ^ m with hsdef
   have hL : 2 ^ m * k + s = L := Nat.div_add_mod L (2 ^ m)
@@ -197,17 +197,12 @@ theorem abs_submaskCount_div_sub_le {m d : ℕ} (hd : d < 2 ^ m)
   have habs : |(2 : ℝ) ^ binaryWeight d * (submaskCount d L : ℝ) - (L : ℝ)|
       ≤ (2 : ℝ) ^ m := by
     have hZ := abs_two_pow_weight_mul_submaskCount_sub_le hd L
-    have hcast : (((2 ^ binaryWeight d * submaskCount d L : ℤ) - (L : ℤ)) : ℝ)
-        ≤ (((2 : ℤ) ^ m : ℤ) : ℝ) ∧
-        -((((2 : ℤ) ^ m : ℤ) : ℝ))
-          ≤ (((2 ^ binaryWeight d * submaskCount d L : ℤ) - (L : ℤ)) : ℝ) := by
-      rw [abs_sub_le_iff] at hZ
-      constructor
-      · have := hZ.1
-        exact_mod_cast (Int.cast_le (α := ℝ)).mpr (by linarith)
-      · have := hZ.2
-        exact_mod_cast (Int.cast_le (α := ℝ)).mpr (by linarith)
-    obtain ⟨hu, hl⟩ := hcast
+    rw [abs_sub_le_iff] at hZ
+    obtain ⟨hZu, hZl⟩ := hZ
+    have hu : (((2 ^ binaryWeight d * submaskCount d L : ℤ) - (L : ℤ)) : ℝ)
+        ≤ (((2 : ℤ) ^ m : ℤ) : ℝ) := by exact_mod_cast hZu
+    have hl : (((L : ℤ) - (2 ^ binaryWeight d * submaskCount d L : ℤ)) : ℝ)
+        ≤ (((2 : ℤ) ^ m : ℤ) : ℝ) := by exact_mod_cast hZl
     push_cast at hu hl
     rw [abs_sub_le_iff]
     exact ⟨by linarith, by linarith⟩
@@ -216,7 +211,6 @@ theorem abs_submaskCount_div_sub_le {m d : ℕ} (hd : d < 2 ^ m)
           / (2 ^ binaryWeight d * (L : ℝ)) := by
     rw [inv_pow]
     field_simp
-    ring
   rw [hkey, abs_div, abs_of_pos hden, div_div]
   gcongr
 
