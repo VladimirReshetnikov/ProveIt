@@ -119,6 +119,7 @@ import FabiusFunction.MomentHankelMatrix
 import FabiusFunction.MomentHankelValues
 import FabiusFunction.StieltjesMomentLaurent
 import FabiusFunction.StieltjesCauchyTransform
+import FabiusFunction.StieltjesHerglotz
 import FabiusFunction.RefinementConditioning
 import FabiusFunction.EntireKernelCalculus
 import FabiusFunction.StieltjesLogFixedPoint

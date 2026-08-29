@@ -21,9 +21,30 @@ in the real program.
 
 set_option autoImplicit false
 
-open MeasureTheory
+open MeasureTheory spectrum
 
 namespace Fabius
+
+private theorem neg_resolvent_eq_inv_sub' (z : ℂ) (x : ℝ) :
+    -resolvent z x = (z - (x : ℂ))⁻¹ := by
+  rw [resolvent, Ring.inverse_eq_inv]
+  rw [← inv_neg]
+  congr 1
+  simp only [Complex.coe_algebraMap, sub_eq_add_neg, neg_add_rev,
+    neg_neg]
+
+/-- Measurability of the complex Cauchy kernel, through the corpus's
+resolvent route. -/
+theorem measurable_inv_sub_complex (z : ℂ) :
+    Measurable fun x : ℝ => (z - (x : ℂ))⁻¹ := by
+  have hmeas : Measurable (-resolvent z) :=
+    (MeasureTheory.measurable_resolvent (𝕜 := ℝ) (A := ℂ)
+      (a := z)).neg
+  have heq : -resolvent z = fun x : ℝ => (z - (x : ℂ))⁻¹ := by
+    funext x
+    exact neg_resolvent_eq_inv_sub' z x
+  rw [← heq]
+  exact hmeas
 
 /-- Off the closed unit disc the complex Cauchy kernel is integrable:
 it is bounded by `(‖z‖-1)⁻¹` almost everywhere. -/
@@ -32,8 +53,7 @@ theorem integrable_inv_sub_complex_rvachevMeasure (F : BoundedFabius)
     Integrable (fun x : ℝ => (z - x)⁻¹) (rvachevMeasure F) := by
   haveI := rvachevMeasure_isProbability F hF
   refine Integrable.mono' (integrable_const ((‖z‖ - 1)⁻¹))
-    ((measurable_const.sub Complex.continuous_ofReal.measurable).inv
-      .aestronglyMeasurable) ?_
+    ((measurable_inv_sub_complex z).aestronglyMeasurable) ?_
   filter_upwards [ae_mem_Ioo_rvachevMeasure F hF] with x hx
   have hxabs : ‖(x : ℂ)‖ ≤ 1 := by
     rw [Complex.norm_real, Real.norm_eq_abs]
@@ -52,9 +72,11 @@ theorem integrable_pow_div_sub_complex_rvachevMeasure
       (rvachevMeasure F) := by
   haveI := rvachevMeasure_isProbability F hF
   refine Integrable.mono' (integrable_const ((‖z‖ - 1)⁻¹))
-    (((Complex.continuous_ofReal.measurable.pow_const N).div
-      (measurable_const.sub Complex.continuous_ofReal.measurable))
-      .aestronglyMeasurable) ?_
+    ((((Complex.continuous_ofReal.measurable.pow_const
+        N).aestronglyMeasurable).mul
+      ((measurable_inv_sub_complex z).aestronglyMeasurable)).congr
+      (Filter.Eventually.of_forall fun x =>
+        (div_eq_mul_inv _ _).symm)) ?_
   filter_upwards [ae_mem_Ioo_rvachevMeasure F hF] with x hx
   have hxabs : ‖(x : ℂ)‖ ≤ 1 := by
     rw [Complex.norm_real, Real.norm_eq_abs]
@@ -255,6 +277,7 @@ theorem integral_inv_sub_complex_ofReal (F : BoundedFabius)
       ((∫ x, (z - x)⁻¹ ∂(rvachevMeasure F) : ℝ) : ℂ) := by
   rw [← integral_complex_ofReal]
   refine integral_congr_ae (Filter.Eventually.of_forall fun x => ?_)
+  dsimp only
   rw [Complex.ofReal_inv, Complex.ofReal_sub]
 
 /-- **The Laurent expansion of the named Cauchy transform**: on the
