@@ -113,6 +113,9 @@ import FabiusFunction.GelfondLogisticBound
 import FabiusFunction.GeometricScaleProducts
 import FabiusFunction.WeierstrassProductBound
 import FabiusFunction.SincLowerBound
+import FabiusFunction.SincProductPositive
+import FabiusFunction.RelativeHarmonicDominance
+import FabiusFunction.PlateauLocalization
 import FabiusFunction.MultipleAngleBounds
 import FabiusFunction.TentMoment
 import FabiusFunction.FaberSchauderDefect
