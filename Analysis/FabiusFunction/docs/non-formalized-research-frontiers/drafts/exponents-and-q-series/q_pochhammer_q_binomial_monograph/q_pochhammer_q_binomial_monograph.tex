@@ -4570,6 +4570,39 @@ Take logarithms and apply \Cref{lem:basic-bernoulli-log} to every factor.  The l
 and the even terms give the sum in \eqref{eq:gaussian-bernoulli}.  Every argument of the basic series has modulus below $2\pi$ when $\abs t<2\pi/n$, so the finite sum converges there.
 \end{proof}
 
+\begin{remark}[Power-sum form of the coefficients]
+Let $S_m(N)=\sum_{j=1}^{N}j^{m}$ denote the $m$th power sum.  For every integer $m\ge1$, reindexing the first half of an inner sum by $i=n-k+j$ gives
+\[
+ \sum_{j=1}^{k}\left((n-k+j)^{m}-j^{m}\right)
+ =\sum_{i=n-k+1}^{n}i^{m}-\sum_{j=1}^{k}j^{m}
+ =S_{m}(n)-S_{m}(k)-S_{m}(n-k).
+\]
+Applied with $m=2r$ to the inner sum of \eqref{eq:gaussian-bernoulli}, and with $m=1$ to the sum $\sum_{j=1}^{k}\bigl((n-k+j)-j\bigr)=\sum_{j=1}^{k}(n-k)$ that produced the linear term in the proof of \Cref{thm:gaussian-bernoulli}, this turns the expansion into
+\[
+ \log\frac{\Qbinom nk{e^{-t}}}{\binom nk}
+ =-\frac t2\bigl(S_1(n)-S_1(k)-S_1(n-k)\bigr)
+ +\sum_{r=1}^{\infty}\frac{B_{2r}t^{2r}}{2r(2r)!}
+ \bigl(S_{2r}(n)-S_{2r}(k)-S_{2r}(n-k)\bigr),
+\]
+still for $\abs t<2\pi/n$, the factor $-\tfrac12$ being the coefficient of $x$ in \eqref{eq:basic-bernoulli-log}.  The case $m=1$ of the display evaluates the linear bracket outright: $S_1(n)-S_1(k)-S_1(n-k)=\sum_{j=1}^{k}(n-k)=k(n-k)=D$.
+
+Three features become visible in this form.  First, each coefficient is a difference of Faulhaber polynomials, hence itself a polynomial in $n$ and $k$ with rational coefficients, of total degree exactly $2r+1$: since $S_{2r}(N)=N^{2r+1}/(2r+1)+O(N^{2r})$, the homogeneous part of top degree is $\bigl(n^{2r+1}-k^{2r+1}-(n-k)^{2r+1}\bigr)/(2r+1)$, whose coefficient of $n^{2r}k$ is $-\tfrac1{2r+1}\binom{2r+1}{1}(-1)=1$, so no cancellation lowers the degree.  Second, the expression is manifestly invariant under $k\mapsto n-k$, as it must be by the symmetry recorded in \Cref{thm:qbinom-structure}.  Third, at $r=1$ the identity $S_2(N)=N(N+1)(2N+1)/6$ gives
+\begin{align*}
+ S_2(n)-S_2(k)-S_2(n-k)
+ &=\frac{n(n+1)(2n+1)-k(k+1)(2k+1)}{6}\\
+ &\qquad-\frac{(n-k)(n-k+1)(2n-2k+1)}{6}
+ =k(n-k)(n+1)=D(n+1),
+\end{align*}
+the value used in \Cref{cor:gaussian-first-asymptotic} below.
+\end{remark}
+
+% ed.: the source states the expansion only in the power-sum form and omits the
+% ed.: range of validity, mentioning merely that the underlying Bernoulli series
+% ed.: converges for $\abs x<2\pi$; the assembled range $\abs t<2\pi/n$ of
+% ed.: \Cref{thm:gaussian-bernoulli} is the correct statement and is retained here.
+
+[The second "% ed.:" note of the draft (lines 47-49) is deleted: the source's phrase "the linear power-sum difference is $k(n-k)$" is correct and, in parallel with the following clause "the quadratic difference is $S_2(n)-S_2(k)-S_2(n-k)=\ldots$", unambiguous.  The header verdict should read "sharper / verified", not "verified-after-repair".  Dropping the \label is also recommended, since nothing cross-references the remark and no other remark in the monograph carries one.]
+
 \begin{corollary}[First terms]\label{cor:gaussian-first-asymptotic}
 With $D=k(n-k)$,
 \begin{align}
@@ -4636,24 +4669,93 @@ The numerator tends to $1$.  Since the number of factors is fixed,
 which proves both assertions.
 \end{proof}
 
-\begin{theorem}[Central fixed-$q$ limit]\label{thm:central-fixed-q}
-For $0<\abs q<1$,
+% ed.: replaces the former statement of thm:central-fixed-q (monograph lines
+% ed.: 4205--4222), which covered only the exactly central column.  The
+% ed.: incoming survey's proposition is correct as it stands, under its own
+% ed.: convention (survey line 47) that a Gaussian coefficient vanishes when
+% ed.: its lower index leaves $0,\ldots,n$; what is added here is the uniform
+% ed.: two-index form with an explicit error term, in the style of
+% ed.: \eqref{eq:fixed-column-error}.
+\begin{theorem}[Fixed-$q$ limit with both indices growing]\label{thm:central-fixed-q}
+Let $0<\abs q<1$.  For all integers $0\le k\le n$,
 \[
- \lim_{m\to\infty}\qbinom{2m}{m}
- =\frac1{(q;q)_\infty}.
+ \qbinom nk
+ =\frac{(q^{k+1};q)_\infty\,(q^{n-k+1};q)_\infty}
+       {(q;q)_\infty\,(q^{n+1};q)_\infty},
+\]
+and consequently
+\[
+ \qbinom nk
+ =\frac1{(q;q)_\infty}
+ \Bigl(1+O\bigl(\abs q^{\,\min(k,n-k)+1}\bigr)\Bigr),
+\]
+the implied constant depending only on $q$.  In particular,
+\[
+ \lim_{\min(k,n-k)\to\infty}\qbinom nk=\frac1{(q;q)_\infty},
  \tag{19.7}\label{eq:central-fixed-q}
 \]
+and for every fixed $r\in\Z$,
+\[
+ \lim_{m\to\infty}\qbinom{2m}{m+r}=\frac1{(q;q)_\infty},
+\]
+the coefficient being read for $m\ge\abs r$, so that $m+r$ and $m-r$ are
+admissible indices.
 \end{theorem}
 
 \begin{proof}
-By the factorial form,
+By \Cref{thm:poch-entire} applied at $a=q$, the product $(q;q)_\infty$
+converges, and it is nonzero: the zeros of $a\mapsto(a;q)_\infty$ are the
+points $q^{-j}$ with $j\ge0$, and $q=q^{-j}$ would give $q^{j+1}=1$, hence
+$\abs q=1$.  The same theorem at $a=q^{N+1}$ gives $(q^{N+1};q)_\infty\ne0$
+for every $N\ge0$.  The tail factorization of \Cref{prop:concat},
 \[
- \qbinom{2m}{m}
- =\frac{(q;q)_{2m}}{(q;q)_m^2}.
+ (q;q)_\infty=(q;q)_N\,(q^{N+1};q)_\infty,
 \]
-Every finite shifted factorial tends to $(q;q)_\infty$ as its index tends to infinity.  The quotient therefore tends to
-$(q;q)_\infty/(q;q)_\infty^2$.
+therefore yields $(q;q)_N=(q;q)_\infty/(q^{N+1};q)_\infty$.  Substituting this
+at $N=n$, $N=k$, and $N=n-k$ in the factorial form
+$\qbinom nk=(q;q)_n/\bigl((q;q)_k(q;q)_{n-k}\bigr)$ gives the first display.
+
+For the error term, let $M\ge0$.  By the elementary product estimate,
+\[
+ \abs{(q^{M+1};q)_\infty-1}
+ \le\prod_{j\ge M+1}\bigl(1+\abs q^{\,j}\bigr)-1
+ \le\exp\Bigl(\frac{\abs q^{\,M+1}}{1-\abs q}\Bigr)-1
+ \le C_q\abs q^{\,M+1},
+ \qquad
+ C_q=\frac{e^{1/(1-\abs q)}}{1-\abs q},
+\]
+since $\abs q^{\,M+1}/(1-\abs q)\le1/(1-\abs q)$ and $e^x-1\le xe^{x_0}$ for
+$0\le x\le x_0$.  Moreover
+\[
+ \abs{(q^{M+1};q)_\infty}
+ \ge\prod_{j\ge1}\bigl(1-\abs q^{\,j}\bigr)
+ =(\abs q;\abs q)_\infty>0
+\]
+uniformly in $M$.  As $\min(k,n-k)\le n$, applying both bounds at $M=k$,
+$M=n-k$, and $M=n$ to the first display gives the second.
+
+The two limits follow at once: in the first, $\min(k,n-k)\to\infty$ by
+hypothesis; in the second, $n=2m$ and $k=m+r$ give
+$\min(k,n-k)=m-\abs r\to\infty$, which is also what makes both indices
+admissible once $m\ge\abs r$.
 \end{proof}
+
+\begin{remark}\label{rem:offcentre-qgreaterone}
+The off-centre column in the regime $q>1$ needs no new argument.  By
+\eqref{eq:qgreaterone-reciprocity} at upper index $2m$ and lower index $m+r$,
+whose exponent is $k(n-k)=(m+r)(m-r)=m^2-r^2$,
+\[
+ \qbinom{2m}{m+r}=q^{m^2-r^2}\Qbinom{2m}{m+r}{q^{-1}},
+\]
+and \Cref{thm:central-fixed-q} applied with $q^{-1}$ in place of $q$, which is
+legitimate because $0<q^{-1}<1$, gives
+$\Qbinom{2m}{m+r}{q^{-1}}\to(q^{-1};q^{-1})_\infty^{-1}$.  Hence
+\[
+ \qbinom{2m}{m+r}
+ \sim\frac{q^{m^2-r^2}}{(q^{-1};q^{-1})_\infty},
+\]
+which is \eqref{eq:qgreaterone-central} at $r=0$.
+\end{remark}
 
 \begin{proposition}[Uniform elementary bound]\label{prop:gaussian-bound}
 For $0<q<1$ and $0\le k\le n$,
