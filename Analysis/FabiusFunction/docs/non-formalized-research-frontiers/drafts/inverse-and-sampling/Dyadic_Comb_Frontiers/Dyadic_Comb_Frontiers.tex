@@ -2673,6 +2673,19 @@ itself \nolinkurl{Fabius.four_ninths_lt_re_rvachevFourierProduct_half}).  The co
 (\nolinkurl{Fabius.abs_sinc_nat_mul_le}), whence the dilated-product comparison at every
 odd \(\ell\) (\nolinkurl{Fabius.prod_abs_sinc_odd_dilate_le}), with sharpness witnesses
 showing the hypothesis \(m\ge1\) cannot be dropped.
+
+The same bound gives an explicit \emph{nonvanishing window}.  At every real point the
+transform is the real dyadic sinc product,
+\(\Phi(x)=\prod_{n\ge0}\operatorname{sinc}(\pi x/2^n)\)
+(\nolinkurl{Fabius.rvachevFourierProduct_ofReal_eq_tprod_sinc}), so
+\(1-2(\pi x)^2/9\le\Phi(x)\) for \((\pi x)^2\le6\)
+(\nolinkurl{Fabius.one_sub_le_re_rvachevFourierProduct_ofReal}) and hence \(\Phi(x)>0\),
+with no zero at all, as soon as \(2(\pi x)^2<9\)
+(\nolinkurl{Fabius.re_rvachevFourierProduct_ofReal_pos},
+\nolinkurl{Fabius.rvachevFourierProduct_ofReal_ne_zero}); concretely on \(\abs{x}\le2/3\)
+(\nolinkurl{Fabius.re_rvachevFourierProduct_ofReal_pos_of_abs_le}), which needs only
+\(\pi<3.15\).  The corpus already knew \(\Phi\) is nonzero there; what is new is the
+explicit constant, which is what the alias estimates actually consume.
 \Cref{thm:up-composite-mesh} itself is now kernel-verified in full polynomial form:
 \nolinkurl{Fabius.tsum_shifted_polynomial_eq_integral_nat} in
 \nolinkurl{CompositeMeshExactness.lean} proves
