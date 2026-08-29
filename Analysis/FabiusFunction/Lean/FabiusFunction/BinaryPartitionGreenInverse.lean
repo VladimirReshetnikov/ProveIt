@@ -284,8 +284,8 @@ theorem coeff_prod_one_sub_X_two_pow (m n : ℕ) :
     PowerSeries.coeff n
         (∏ j ∈ range m, (1 - (X : PowerSeries ℤ) ^ 2 ^ j)) =
       if n < 2 ^ m then thueMorseSign n else 0 := by
-  rw [prod_range_one_sub_X_two_pow_eq_coe, Polynomial.coeff_coe,
-    ← thueMorseBlockPolynomial_eq_product]
+  rw [prod_range_one_sub_X_two_pow_eq_coe,
+    ← thueMorseBlockPolynomial_eq_product, Polynomial.coeff_coe]
   by_cases h : n < 2 ^ m
   · rw [if_pos h, coeff_thueMorseBlockPolynomial m n h]
   · rw [if_neg h, coeff_block_of_le m n (by omega)]

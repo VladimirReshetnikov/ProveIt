@@ -123,7 +123,7 @@ theorem fract_natCast_div_two_pow (N h : ℕ) :
 theorem mod_two_pow_eq_sum_testBit (N h : ℕ) :
     N % 2 ^ h = ∑ j ∈ range h, (N.testBit j).toNat * 2 ^ j := by
   induction h with
-  | zero => simp
+  | zero => simp [Nat.mod_one]
   | succ h ih =>
       rw [Nat.mod_pow_succ, ih, Finset.sum_range_succ,
         Nat.toNat_testBit N h]
@@ -177,7 +177,8 @@ private theorem summable_defect
       exact div_le_div_of_nonneg_right hmod (by positivity)
     calc |a h * Int.fract ((N : ℝ) / 2 ^ h)|
         = |a h| * Int.fract ((N : ℝ) / 2 ^ h) := by
-          rw [abs_mul, abs_of_nonneg (Int.fract_nonneg _)]
+          rw [abs_mul,
+            abs_of_nonneg (Int.fract_nonneg ((N : ℝ) / 2 ^ h))]
       _ ≤ |a h| * ((N : ℝ) / 2 ^ h) :=
           mul_le_mul_of_nonneg_left hle (abs_nonneg _)
       _ = (N : ℝ) * (|a h| / 2 ^ h) := by ring
