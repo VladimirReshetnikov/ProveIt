@@ -61,15 +61,19 @@ sign character ignores and which supply the free offsets. -/
 def evenLayers (a : ℕ → ℕ) (L : ℕ) : Finset ℕ :=
   {h ∈ range L | ¬ a h % 2 = 1}
 
+/-- Odd layers are positions below the cutoff. -/
 theorem oddLayers_subset (a : ℕ → ℕ) (L : ℕ) :
     oddLayers a L ⊆ range L := Finset.filter_subset _ _
 
+/-- Even layers are positions below the cutoff. -/
 theorem evenLayers_subset (a : ℕ → ℕ) (L : ℕ) :
     evenLayers a L ⊆ range L := Finset.filter_subset _ _
 
+/-- Membership in the odd-layer set is the defining range-and-parity condition. -/
 theorem mem_oddLayers {a : ℕ → ℕ} {L h : ℕ} :
     h ∈ oddLayers a L ↔ h ∈ range L ∧ a h % 2 = 1 := Finset.mem_filter
 
+/-- Membership in the even-layer set is the complementary range-and-parity condition. -/
 theorem mem_evenLayers {a : ℕ → ℕ} {L h : ℕ} :
     h ∈ evenLayers a L ↔ h ∈ range L ∧ ¬ a h % 2 = 1 :=
   Finset.mem_filter
@@ -96,6 +100,7 @@ theorem card_oddLayers_add_card_evenLayers (a : ℕ → ℕ) (L : ℕ) :
     (s := range L) (fun h => a h % 2 = 1)
   rwa [Finset.card_range] at h
 
+/-- The number of even layers is the cutoff minus the number of odd layers. -/
 theorem card_evenLayers (a : ℕ → ℕ) (L : ℕ) :
     (evenLayers a L).card = L - (oddLayers a L).card := by
   have h := card_oddLayers_add_card_evenLayers a L

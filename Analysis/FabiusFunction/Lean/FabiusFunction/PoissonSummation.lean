@@ -51,11 +51,13 @@ noncomputable def scaledRvachevSchwartz
   exact (hf_compact.comp_left (map_zero Complex.ofRealCLM)).toSchwartzMap
     (Complex.ofRealCLM.contDiff.comp hf_smooth)
 
+/-- The scaled Rvachev Schwartz map evaluates to the rescaled up-function. -/
 lemma scaledRvachevSchwartz_apply
     (F : BoundedFabius) (hF : IsFabius F) (u : ℝ) (hu : u ≠ 0) (x : ℝ) :
     scaledRvachevSchwartz F hF u hu x = (rvachevUp F (u * x) : ℂ) :=
   rfl
 
+/-- The Fourier transform of the scaled Rvachev Schwartz map obeys the scaling law. -/
 lemma fourier_scaledRvachevSchwartz
     (F : BoundedFabius) (hF : IsFabius F) {u : ℝ} (hu : 0 < u) (w : ℝ) :
     𝓕 (scaledRvachevSchwartz F hF u hu.ne') w =

@@ -153,9 +153,11 @@ digit system. -/
 noncomputable def mulPrefix (ν : Measure ℝ) (c : ℝ) : ℕ → Measure ℝ :=
   digitPrefix ν (AddMonoidHom.mulLeft c)
 
+/-- The zero-length real prefix is the Dirac mass at zero. -/
 @[simp] theorem mulPrefix_zero (ν : Measure ℝ) (c : ℝ) :
     mulPrefix ν c 0 = Measure.dirac 0 := rfl
 
+/-- A successor real prefix is the digit law convolved with the scaled previous prefix. -/
 theorem mulPrefix_succ (ν : Measure ℝ) (c : ℝ) (m : ℕ) :
     mulPrefix ν c (m + 1) = ν ∗ (mulPrefix ν c m).map (c * ·) := rfl
 

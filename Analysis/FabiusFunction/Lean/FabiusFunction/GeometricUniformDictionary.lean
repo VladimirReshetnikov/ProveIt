@@ -32,6 +32,7 @@ noncomputable def geometricUniformDigit (q : ℝ) : Measure ℝ :=
   (volume : Measure (Set.Icc (0 : ℝ) 1)).map
     (fun u : Set.Icc (0 : ℝ) 1 => (1 - q) * (u : ℝ))
 
+/-- The scaled uniform digit law is a probability measure for every real parameter. -/
 instance isProbabilityMeasure_geometricUniformDigit (q : ℝ) :
     IsProbabilityMeasure (geometricUniformDigit q) :=
   Measure.isProbabilityMeasure_map

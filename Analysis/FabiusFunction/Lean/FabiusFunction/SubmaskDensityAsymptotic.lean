@@ -53,6 +53,7 @@ of `n < L` with `C(n, d)` odd. -/
 noncomputable def submaskCount (d L : ℕ) : ℕ :=
   #({n ∈ range L | bitSupport d ⊆ bitSupport n})
 
+/-- No submask occurs in an empty initial segment. -/
 @[simp] theorem submaskCount_zero (d : ℕ) : submaskCount d 0 = 0 := by
   simp [submaskCount]
 
