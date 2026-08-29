@@ -230,6 +230,7 @@ import FabiusFunction.LobeSignNegative
 import FabiusFunction.GeneralizedRvachevEntire
 import FabiusFunction.AlternatingNewtonFamily
 import FabiusFunction.AlternatingNewtonZeta
+import FabiusFunction.GeneralizedZeroDivisor
 import FabiusFunction.RMSTransferEigenfunctions
 import FabiusFunction.LogFactorConcavity
 import FabiusFunction.CentralLobeConcavity
