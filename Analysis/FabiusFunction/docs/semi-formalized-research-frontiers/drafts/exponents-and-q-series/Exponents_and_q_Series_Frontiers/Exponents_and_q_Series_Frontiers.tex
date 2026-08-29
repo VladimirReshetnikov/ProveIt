@@ -484,11 +484,30 @@ with $a_h\ne0$
 (\lean{Fabius.generalizedRvachevProduct\_eq\_zero\_iff}) --- as is the one-step
 refinement law (\lean{Fabius.generalizedRvachevProduct\_two\_mul}).
 
-What is \emph{not} formalized is the analytic and probabilistic content of the theorem:
-locally uniform convergence and hence entirety, the support statement (i), the random
-variable $X_a$ and the convolution reading of (iii), and the smoothness dichotomy (iv).
-The module proves the algebraic and convergence skeleton on which those would rest, and
-its docstring says so explicitly.
+Assertion (ii) is formalized as well, in \path{GeneralizedRvachevEntire.lean}: the product
+converges locally uniformly on every ball
+(\lean{Fabius.hasProdLocallyUniformlyOn\_generalizedRvachevProduct}) and $\Phi_a$ is therefore
+entire (\lean{Fabius.generalizedRvachevProduct\_differentiable}).  With that in hand the zero
+divisor is complete --- $\Phi_a$ vanishes exactly at the nonzero integers $n$ with
+$m_a(\lvert n\rvert)>0$, to order exactly $m_a(\lvert n\rvert)$, and nowhere else
+(\path{GeneralizedZeroDivisor.lean}).
+
+The characteristic-function reading of (i) now has all three of its prerequisites, though not
+the statement itself: $\Phi_a(0)=1$, continuity from entirety, and
+\[
+ \lVert\Phi_a(x)\rVert\le1
+ \qquad\text{for every real }x
+\]
+(\lean{Fabius.norm\_generalizedRvachevProduct\_ofReal\_le\_one},
+\path{GeneralizedRealBound.lean}), which had been missing at every weight, the constant one
+included.  The bound is attained at $x=0$, so it is sharp.
+
+What remains \emph{not} formalized is the probabilistic content proper: the support statement
+(i) --- that $R_a$ is the support radius rather than merely the number $A_a(1/2)$ --- the
+random variable $X_a$ and the convolution reading of (iii), and the smoothness dichotomy (iv).
+Assertion (iii) is formal as an identity of products but not as a statement about laws.  The
+modules prove the algebraic, convergence and analytic skeleton on which the probabilistic
+layer would rest, and their docstrings say so explicitly.
 \end{theorem}
 
 \begin{proof}
