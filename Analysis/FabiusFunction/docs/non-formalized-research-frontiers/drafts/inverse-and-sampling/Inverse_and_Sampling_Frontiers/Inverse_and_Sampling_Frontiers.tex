@@ -1701,9 +1701,16 @@ solution above the conjugate branch (\nolinkurl{Fabius.eq\_dyadicRootFun\_of\_so
 is $C^n$ at the origin for every $n$ (\nolinkurl{Fabius.contDiffAt\_dyadicRootFun}), and
 has derivative $\tfrac49$ there (\nolinkurl{Fabius.hasDerivAt\_dyadicRootFun\_zero}) --- the
 linear coefficient of the formal root, identifying germ and branch to first order.
-Still open are the all-orders identification of the formal root with this branch, its
-identification with the local inverse, entry into the plateau interval for all large
-$n$, and the displayed quantile formula.
+The \emph{all-orders identification} is now formal as well: \path{AlgebraicInverseGermBinomial.lean}
+proves $\Delta_2(Q)=\tfrac18\bigl((1+\tfrac{64}{9}Q)^{1/2}-1\bigr)$ as formal series ---
+the rescaled formal binomial series squares to $1+\tfrac{64}{9}Q$ (the half-integer
+instance of \nolinkurl{binomialSeries\_add}), so the explicit series is a zero-constant
+root of $z+4z^2=\tfrac49Q$ (\nolinkurl{Fabius.dyadicBinomialGerm\_solves}) and uniqueness
+identifies it with the germ (\nolinkurl{Fabius.dyadicGermTwo\_eq\_binomial}), giving the
+closed coefficient formula $[Q^n]\Delta_2=\tfrac18\binom{1/2}{n}(\tfrac{64}{9})^n$ for every $n\ge1$
+(\nolinkurl{Fabius.coeff\_dyadicGermTwo\_of\_pos}) --- the Taylor coefficients of the
+analytic branch.  Still open are the identification with the local inverse, entry into
+the plateau interval for all large $n$, and the displayed quantile formula.
 \end{obligation}
 
 \begin{remark}[Formalized geometric Lagrange core]
