@@ -1664,7 +1664,7 @@ that is the business of the algebraic-inverse-germ obligation below, not of the
 operator calculus.
 
 \begin{obligation}[Plateau-to-polynomial localization]
-\emph{Substantially discharged.}  \path{PlateauLocalization.lean} supplies both halves.
+\emph{Discharged for the finite spline.}  \path{PlateauLocalization.lean} supplies both halves.
 On the object side, the corpus's uniform spline agrees on each dyadic cell with an
 \emph{explicit} polynomial of the cell (\nolinkurl{Fabius.uniformSplineCellPolynomial}),
 \nolinkurl{Fabius.fabiusUniformSpline_eqOn_cellPolynomial} and its centred and dyadic
@@ -1678,15 +1678,24 @@ $[\xi_r-2^{-n},\xi_r+2^{-n}]$ with $n=p+1$.  Both endpoints are included; at the
 endpoint the newly activated truncated power vanishes identically, which is where
 $p>0$ enters.
 
-What remains is the \emph{degree} half, and only that.  The localization currently
-carries the unconditional bound $\deg\le p$ (\nolinkurl{Fabius.natDegree_uniformSplineCellPolynomial_le}); the
-sharper $\deg\le r$ predicted by the Thue--Morse plateau is not proved.  The bridge that
-delivers it is in place and general --- a function whose $r$-th iterated derivative is
-constant on an interval agrees there with a polynomial of degree at most $r$
-(\nolinkurl{Fabius.natDegree_le_of_eqOn_of_iteratedDeriv_const},
-\nolinkurl{Fabius.exists_natDegree_le_eqOn_of_iteratedDeriv_const}) --- so the obligation
-reduces to supplying the plateau itself on the closed cell, rather than merely almost
-everywhere.
+The \emph{degree} half is now proved as well, and without any plateau hypothesis.
+\path{PlateauDegree.lean} computes the exact degree of a full-block cell polynomial:
+the half-shifted Thue--Morse moments $\sum_{k<2^m}\eps_k(k+\tfrac12)^{\,j}$ vanish for
+$j<m$ by Prouhet, so
+\(\deg\bigl(\text{cell polynomial of the block } 2^m\bigr)=p-m\)
+(\nolinkurl{Fabius.natDegree_uniformSplineCellPolynomial_block_eq}).  The anchor cell at
+$\xi_r=2^{-r}$ has prefix length $2^{\,p-r}$, a block of order $p-r$, so the drop gives
+exactly $p-(p-r)=r$: on $[\xi_r-2^{-(p+1)},\xi_r+2^{-(p+1)}]$ the spline agrees with a
+polynomial of degree at most $r$
+(\nolinkurl{Fabius.exists_natDegree_le_eqOn_dyadic}), and the bound cannot be improved
+(\nolinkurl{Fabius.natDegree_uniformSplineCellPolynomial_dyadic}).  The obligation is
+therefore discharged for the finite spline.  The plateau, which the obligation treated as
+the \emph{input}, comes out as a \emph{corollary}: the $r$th iterated derivative of
+$\mathrm{fabiusUniformSpline}\,p$ is constant on the open dyadic cell
+(\nolinkurl{Fabius.iteratedDeriv_fabiusUniformSpline_const_dyadic}).  What is still open is
+only the closed-form \emph{value} of that constant, conjectured to be $2^{\binom{r+1}{2}}$
+up to sign, and the corresponding statement for the limit function rather than the finite
+spline.
 \end{obligation}
 
 \begin{obligation}[Algebraic inverse germ]
