@@ -73,8 +73,9 @@ def cexpRepresentable (R : ℝ) : Prop :=
 
 /-- The unit disk is representable: this is the Euler–zeta expansion
 of `rvachevFourierProduct_eq_cexp`, with the exponent forgotten. -/
-theorem cexpRepresentable_one : cexpRepresentable 1 := fun _ hz =>
-  ⟨_, rvachevFourierProduct_eq_cexp hz⟩
+theorem cexpRepresentable_one : cexpRepresentable 1 := by
+  intro z hz
+  exact ⟨_, rvachevFourierProduct_eq_cexp hz⟩
 
 /-- Smaller disks inherit representability. -/
 theorem cexpRepresentable_mono {R S : ℝ} (hRS : R ≤ S)
@@ -98,7 +99,7 @@ theorem isGreatest_cexpRepresentable_radius :
     IsGreatest {R : ℝ | cexpRepresentable R} 1 := by
   refine ⟨cexpRepresentable_one, fun R hR => ?_⟩
   by_contra hlt
-  exact not_cexpRepresentable_of_one_lt (lt_of_not_ge hlt) hR
+  exact not_cexpRepresentable_of_one_lt (not_le.mp hlt) hR
 
 /-- **Why the argument stops at `m = 0`.**  For `m ≥ 1` the prefix
 `∏_{j<m} sinc(π z / 2^j)` of the prefix-corrected representation
