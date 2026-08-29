@@ -1473,9 +1473,11 @@ The digit formula is unconditional in real \(q\).  For every \(|q|<1\), depth
 \]
 and the phase-bearing prefix without the residual converges pointwise to \(\phi_q(t)\).
 This includes \(q=0\) and negative \(q\); the final two declarations are exact
-\(q=1/2\) wrappers for \lean{weightedSumDistribution}.  The module does not yet package
-this limit as a standalone \lean{HasProd}/\lean{tprod} equality or uniform convergence on
-compact frequency sets.
+\(q=1/2\) wrappers for \lean{weightedSumDistribution}.  The existing
+\lean{geometricSincProduct} already packages the same sinc factors, after frequency
+rescaling, as a \lean{tprod}.  What is missing is a named
+characteristic-function-to-\lean{geometricSincProduct} bridge (or explicit
+\lean{HasProd} theorem) and compact-uniform convergence of the characteristic prefixes.
 
 The generic CDF mechanisms are
 \lean{continuous_cdf_of_nullSingleton},
@@ -1527,9 +1529,11 @@ throughout \(|q|<1\), the displayed total function \(f_q\) is identified as its
 Radon--Nikodym density only for \(0<q<1\); no such interpretation is claimed here at
 \(q=0\) or for negative \(q\).  The positive-ratio \(C^\infty\) theorem is proved by the
 real-space derivative refinement.  The phase-bearing general-\(q\) sinc prefixes and their
-pointwise characteristic-function limit are formal, but standalone product packaging,
-compact-uniform convergence, rapid-decay estimates, and a Fourier-inversion construction
-remain outside the formal API.  So do a named centered \(q\)-family, a closed all-order
+pointwise characteristic-function limit are formal, while \lean{geometricSincProduct}
+already packages the same rescaled sinc factors as a \lean{tprod}.  A named
+characteristic-function-to-\lean{geometricSincProduct} bridge (or explicit \lean{HasProd}
+theorem), compact-uniform convergence, rapid-decay estimates, and a Fourier-inversion
+construction remain outside the formal API.  So do a named centered \(q\)-family, a closed all-order
 derivative hierarchy and explicit endpoint-flatness wrappers, shape theorems, further
 transform formulas, and explicit Bernoulli-cumulant/Bell-moment formulas and asymptotics.
 The probability-law fixed point itself is uniquely characterized by
@@ -7717,8 +7721,11 @@ That rule explains several choices made above:
       The selected density has no proved interpretation here at \(q=0\) or
       negative \(q\).  \path{GeometricSincFactorization.lean} gives the exact finite
       residual sinc factorization and pointwise phase-bearing prefix limit for every
-      \(|q|<1\), with dyadic wrappers.  Standalone product and compact-uniform packaging,
-      general-\(q\) rapid decay and Fourier inversion, centered packaging, closed
+      \(|q|<1\), with dyadic wrappers; \lean{geometricSincProduct} already packages the
+      same rescaled sinc factors as a \lean{tprod}.  A named
+      characteristic-function-to-\lean{geometricSincProduct} bridge (or explicit
+      \lean{HasProd} theorem), compact-uniform convergence, general-\(q\) rapid decay and
+      Fourier inversion, centered packaging, closed
       higher-derivative and endpoint-flatness wrappers, shape results, further transforms,
       and explicit Bernoulli-cumulant/Bell-moment formulas and asymptotics remain outside
       this interface.

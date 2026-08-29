@@ -14613,7 +14613,8 @@ block.  Finally, we give a phase-preserving Lagrange/Richardson filter for asymp
 remainders whose coefficients are periodic in a lower-Lambert phase, together with a
 Fourier phase-averaging filter and exact Lambert-$W$ node construction.
 
-A post-snapshot Lean audit, checked at compiled source checkpoint
+The weighted-law, CDF, and affine fixed-point portion of the post-snapshot Lean audit,
+checked at compiled source checkpoint
 \path{d312c0603}, now supplies the generic continuous-linear naturality,
 conditional operator/scalar affine-recursion, real absolute-continuity, and exact-support
 engines for arbitrary norm-summable weighted uniform series.  It also defines this report's
@@ -14627,10 +14628,13 @@ Fabius function and the density with the affine Rvachev up-function.  A new gene
 affine-independent-copy API proves probability fixed-point uniqueness on every complete
 second-countable real inner-product target for a measurable digit map and \(|q|<1\), and its
 geometric corollary characterizes this report's law even at \(q=0\) and negative \(q\), with
-no support, density, or moment assumptions.  The phase-bearing sinc prefixes now have an
-exact finite residual formula and converge pointwise to the characteristic function for
-every \(|q|<1\).  Standalone product packaging, compact-uniform convergence, the report's
-rapid-decay and inversion proof, explicit Bernoulli-cumulant/Bell-moment formulas and
+no support, density, or moment assumptions.  A later mainline tranche, rechecked in the
+current combined full-facade build, gives the phase-bearing sinc prefixes an exact finite
+residual formula and proves their pointwise convergence to the characteristic function for
+every \(|q|<1\).  The existing \path{geometricSincProduct} packages the same sinc factors,
+after frequency rescaling, as a \path{tprod}; a named characteristic-function bridge to it
+(or explicit \path{HasProd} theorem), compact-uniform convergence of the characteristic
+prefixes, the report's rapid-decay and inversion proof, explicit Bernoulli-cumulant/Bell-moment formulas and
 asymptotics, further transforms, higher-derivative and endpoint-flatness wrappers, and shape
 theory remain outside that promotion.
 
@@ -14695,8 +14699,9 @@ law by its displayed affine independent-copy equation throughout that full param
 
 The definition of \path{geometricUniformDensity} is total, but no density formula or
 Radon--Nikodym interpretation is claimed here for \(q\le0\).  Also still frontier are the
-standalone \path{HasProd}/\path{tprod} packaging and compact-uniform convergence beyond the
-formal pointwise phase-bearing sinc-prefix limit, the rapid-decay bound and Fourier inversion
+named characteristic-function bridge to the existing \path{geometricSincProduct}
+\path{tprod} (or explicit \path{HasProd} theorem) and compact-uniform convergence beyond
+the formal pointwise phase-bearing sinc-prefix limit, the rapid-decay bound and Fourier inversion
 route, a closed higher-derivative refinement and endpoint-flatness wrapper, the shape
 transition, further transforms, and explicit Bernoulli-cumulant/Bell-moment formulas and
 asymptotics.  The geometric tail dictionary already gives finite characteristic-function,
@@ -15000,8 +15005,10 @@ The digit formula holds for every real \(q\).  For every \(|q|<1\), \(m\in\N\), 
 \]
 and the phase-bearing prefix without the residual converges pointwise to \(\phi_q(t)\).
 This includes \(q=0\) and negative \(q\); the last two declarations are exact
-\(q=1/2\) wrappers for the classical weighted-sum law.  No standalone
-\path{HasProd}/\path{tprod} identity or uniform-on-compacts version is asserted.
+\(q=1/2\) wrappers for the classical weighted-sum law.  The existing
+\path{geometricSincProduct} packages the same factors, after frequency rescaling, as a
+\path{tprod}; no named characteristic-function bridge to it (or explicit \path{HasProd}
+theorem) or uniform-on-compacts version of the characteristic-prefix convergence is asserted.
 
 The three generic real-CDF declarations in \path{ContinuousCDF.lean} are
 \path{continuous_cdf_of_nullSingleton},
@@ -15214,9 +15221,11 @@ formalization frontier independently of this Fourier proof:
 density are not separately named.  For the uncentered law, however,
 \path{GeometricSincFactorization.lean} proves the exact finite residual formula and
 pointwise convergence of the phase-bearing sinc prefixes for every \(|q|<1\); removing the
-limiting phase gives the paper-level centered product.  There is not yet a named centered
-wrapper, standalone \path{HasProd}/\path{tprod} equality, or compact-uniform convergence
-theorem.  The rapid bound \eqref{p10:eq:rapid-bound} and the absolutely convergent
+limiting phase gives the paper-level centered product, while
+\path{geometricSincProduct} packages the same factors after frequency rescaling as a
+\path{tprod}.  There is not yet a named centered wrapper, a named characteristic-function
+bridge to that product (or explicit \path{HasProd} theorem), or compact-uniform convergence
+theorem for the characteristic prefixes.  The rapid bound \eqref{p10:eq:rapid-bound} and the absolutely convergent
 Fourier-inversion formulas for higher derivatives have not been formalized.
 
 \begin{remark}[Relation to the existing Fourier-decay campaign]
@@ -16425,9 +16434,11 @@ conditioning integrals, its explicit Radon--Nikodym density, compact support, an
 \(q=0\) and negative contractions included and no support, density, or moment assumptions.
 The live \path{GeometricUniformDictionary.lean} and
 \path{GeometricSincFactorization.lean} now complete item 5 in finite-residual and pointwise
-\path{Tendsto} form for every \(|q|<1\), including exact dyadic wrappers.  Standalone
-product packaging, compact-uniform convergence, and quantitative Fourier estimates remain
-in the analysis layer.
+\path{Tendsto} form for every \(|q|<1\), including exact dyadic wrappers, while
+\path{geometricSincProduct} packages the same factors after frequency rescaling as a
+\path{tprod}.  A named characteristic-function bridge to that product (or explicit
+\path{HasProd} theorem), compact-uniform convergence of the characteristic prefixes, and
+quantitative Fourier estimates remain in the analysis layer.
 
 \subsection{Analysis layer}
 

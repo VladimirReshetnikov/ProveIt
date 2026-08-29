@@ -6533,7 +6533,8 @@ beta-weighted formulas, Bernoulli-polynomial integrals, order-statistic represen
 Cauchy transforms, and Gini/autocorrelation integrals expressed through the infinite
 sinc product.  Numerical experiments are supplied in a reproducible Python script.
 
-A post-snapshot Lean audit, checked at compiled source checkpoint
+The weighted-law, CDF, and affine fixed-point portion of the post-snapshot Lean audit,
+checked at compiled source checkpoint
 \texttt{d312c0603}, now provides the generic continuous-linear naturality and conditional
 operator/scalar affine-recursion substrate for weighted uniform laws, together with the
 named geometric weights \((1-q)q^n\), their probability law, self-similarity, reflection,
@@ -6550,11 +6551,15 @@ and a probability digit law determine at most one probability fixed point whenev
 hypotheses on a competing law.  This does not formalize the report's
 variable-upper-endpoint or improper-singular inverse-pair extensions, fractional-power,
 complex-Mellin, rapid-decay/Fourier-inversion, explicit Bernoulli-cumulant or Bell-moment
-formulas and asymptotics, shape, or higher-derivative-wrapper consequences.  The live
-geometric sinc module does prove the exact finite residual product and pointwise convergence
+formulas and asymptotics, shape, or higher-derivative-wrapper consequences.  A later
+mainline tranche, rechecked in the current combined full-facade build, does prove the exact
+finite residual product and pointwise convergence
 of its phase-bearing prefixes for every \(|q|<1\); finite characteristic-function, MGF, and
-CGF tail factorizations were already available in the geometric dictionary.  Standalone
-\texttt{HasProd}/\texttt{tprod} and compact-uniform packaging remain separate.
+CGF tail factorizations were already available in the geometric dictionary.  The existing
+\texttt{geometricSincProduct} packages the same sinc factors, after frequency rescaling,
+as a \texttt{tprod}; what remains separate is a named characteristic-function bridge to it
+(or explicit \texttt{HasProd} theorem) and compact-uniform convergence of the
+characteristic prefixes.
 A still later module, \path{InversePairIntegral.lean}, does
 formalize the complete proper-compact absolutely-continuous inverse-pair identity.
 
@@ -6731,9 +6736,10 @@ holds with \(U\sim\mathrm{Unif}[0,1]\) independent of a copy \(Y'\) of \(Y\).
 It will generate both the positive- and negative-moment recurrences.
 
 \begin{statusbox}[Formal arbitrary-weight law and geometric CDF underlying the dyadic split]
-The post-snapshot API recorded in this box was checked and frozen at compiled full-facade
-checkpoint \texttt{d312c0603}; the report's original novelty snapshot remains the one stated
-in its provenance metadata.
+The weighted-law, CDF, and affine fixed-point API recorded in this box was checked and
+frozen at compiled full-facade checkpoint \texttt{d312c0603}.  The sinc-prefix declarations
+below are later mainline additions rechecked in the current combined full-facade build; the
+report's original novelty snapshot remains the one stated in its provenance metadata.
 
 The current Lean source proves the distributional mechanism before specializing the
 weights.  For every norm-summable sequence in a real Banach space with its Borel
@@ -6957,8 +6963,10 @@ Thus the dyadic CDF and density identities used at the start of this report are 
 The definition \nolinkurl{Fabius.ProbabilityRepresentation.geometricUniformDensity} is
 totalized, but its classical density and Radon--Nikodym interpretation are not formal here for
 \(q\le0\).  The pointwise phase-bearing characteristic-function prefix limit is formal;
-still outside the formal layer are standalone product packaging, compact-uniform
-convergence, the rapid-decay/Fourier-inversion route, closed higher-derivative refinements
+\nolinkurl{geometricSincProduct} already packages the same rescaled sinc factors as a
+\nolinkurl{tprod}.  Still outside the formal layer are a named characteristic-function
+bridge to that product (or explicit \nolinkurl{HasProd} theorem), compact-uniform
+convergence of the characteristic prefixes, the rapid-decay/Fourier-inversion route, closed higher-derivative refinements
 and endpoint-flatness wrappers, shape results, further transform formulas, and explicit
 Bernoulli-cumulant/Bell-moment formulas and asymptotics.
 \end{statusbox}
