@@ -2653,6 +2653,26 @@ super-exact at odd threshold degree
 (\nolinkurl{Fabius.tsum_half_monomial_eq_integral_of_odd_deg}) and carries the mirrored
 Dirichlet fold at even threshold degree
 (\nolinkurl{Fabius.tsum_half_shifted_monomial_sub_integral_even_deg}).
+
+The quantitative input these defect series need --- that the first harmonic is not
+swallowed by the tail --- is now formal too.  The sinc factor obeys the quadratic lower
+bound \(1-x^2/6\le\operatorname{sinc}x\) (\nolinkurl{Fabius.one_sub_sq_div_six_le_sinc}),
+and the Weierstrass product inequality \(1-\sum u_i\le\prod(1-u_i)\)
+(\nolinkurl{Fabius.one_sub_sum_le_prod_one_sub}, \nolinkurl{Fabius.one_sub_tsum_le_tprod_one_sub}) ---
+neither of which Mathlib carried --- turns it into a bound on the whole dyadic product:
+\(1-2t^2/9\le\prod_{n}\operatorname{sinc}(t/2^n)\) for \(t^2\le6\)
+(\nolinkurl{Fabius.one_sub_le_prod_sinc_two_pow}, \nolinkurl{Fabius.one_sub_le_tprod_sinc_two_pow};
+the family is multipliable for \emph{every} real \(t\),
+\nolinkurl{Fabius.multipliable_sinc_two_pow}).  At the half-integer this gives the
+explicit constant the comb volume assumes,
+\(\Phi(1/2)>4/9\)
+(\nolinkurl{Fabius.four_ninths_lt_tprod_sinc_pi_div_two}, and for the corpus transform
+itself \nolinkurl{Fabius.four_ninths_lt_re_rvachevFourierProduct_half}).  The companion
+\emph{relative} bound is formal as well: every dilation contracts the sinc factor,
+\(\lvert\operatorname{sinc}(mx)\rvert\le\lvert\operatorname{sinc}x\rvert\) for \(m\ge1\)
+(\nolinkurl{Fabius.abs_sinc_nat_mul_le}), whence the dilated-product comparison at every
+odd \(\ell\) (\nolinkurl{Fabius.prod_abs_sinc_odd_dilate_le}), with sharpness witnesses
+showing the hypothesis \(m\ge1\) cannot be dropped.
 \Cref{thm:up-composite-mesh} itself is now kernel-verified in full polynomial form:
 \nolinkurl{Fabius.tsum_shifted_polynomial_eq_integral_nat} in
 \nolinkurl{CompositeMeshExactness.lean} proves

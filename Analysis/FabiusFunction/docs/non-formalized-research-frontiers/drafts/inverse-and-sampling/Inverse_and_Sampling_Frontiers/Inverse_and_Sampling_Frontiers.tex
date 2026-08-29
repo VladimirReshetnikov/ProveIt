@@ -1664,10 +1664,19 @@ that is the business of the algebraic-inverse-germ obligation below, not of the
 operator calculus.
 
 \begin{obligation}[Plateau-to-polynomial localization]
-Connect the existing almost-everywhere derivative plateau for $p_n^{(r)}$ to the statement
-that $p_n$ agrees with a degree-$r$ polynomial on the closed interval
-$[\xi_r-2^{-n},\xi_r+2^{-n}]$.  The clean route is repeated absolute continuity of the
-spline pieces.
+\emph{Substantially discharged.}  \path{PlateauLocalization.lean} supplies both halves.
+On the object side, the corpus's uniform spline agrees on each dyadic cell with an
+\emph{explicit} polynomial of the cell (\nolinkurl{Fabius.uniformSplineCellPolynomial}),
+\nolinkurl{Fabius.fabiusUniformSpline_eqOn_cellPolynomial} and its centred and dyadic
+forms, with the degree bound \nolinkurl{Fabius.natDegree_uniformSplineCellPolynomial_le} --- so
+``agrees with a polynomial of controlled degree on a closed cell'' is now a theorem
+rather than a reading of the plateau.  On the abstract side, the implication the
+obligation asks for is proved in general: a function whose $r$-th iterated derivative is
+constant on an interval agrees there with a polynomial of degree at most $r$
+(\nolinkurl{Fabius.natDegree_le_of_eqOn_of_iteratedDeriv_const},
+\nolinkurl{Fabius.exists_natDegree_le_eqOn_of_iteratedDeriv_const}).  What remains is only
+the bookkeeping that identifies the corpus's particular plateau interval
+$[\xi_r-2^{-n},\xi_r+2^{-n}]$ with a union of the cells above.
 \end{obligation}
 
 \begin{obligation}[Algebraic inverse germ]
