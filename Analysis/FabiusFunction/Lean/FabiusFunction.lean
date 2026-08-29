@@ -48,6 +48,7 @@ import FabiusFunction.ThueMorseAperiodicity
 import FabiusFunction.ThueMorseSparseProuhet
 import FabiusFunction.ThueMorseBlockAlgebra
 import FabiusFunction.ThueMorseProductIdentity
+import FabiusFunction.ApproximationLadder
 import FabiusFunction.ThueMorseMoments
 import FabiusFunction.ThueMorseArtinSchreier
 import FabiusFunction.ThueMorseEulerTransform
