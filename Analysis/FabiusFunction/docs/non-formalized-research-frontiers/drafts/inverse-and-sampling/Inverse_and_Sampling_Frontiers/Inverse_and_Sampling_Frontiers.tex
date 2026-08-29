@@ -1737,8 +1737,28 @@ root of $z+4z^2=\tfrac49Q$ (\nolinkurl{Fabius.dyadicBinomialGerm\_solves}) and u
 identifies it with the germ (\nolinkurl{Fabius.dyadicGermTwo\_eq\_binomial}), giving the
 closed coefficient formula $[Q^n]\Delta_2=\tfrac18\binom{1/2}{n}(\tfrac{64}{9})^n$ for every $n\ge1$
 (\nolinkurl{Fabius.coeff\_dyadicGermTwo\_of\_pos}) --- the Taylor coefficients of the
-analytic branch.  Still open are the identification with the local inverse, entry into
-the plateau interval for all large $n$, and the displayed quantile formula.
+analytic branch.
+
+The \emph{quantile layer} is now formal as far as the local data allow.
+\path{QuarterQuantile.lean} defines the candidate value
+\(\mathrm{quarterQuantile}(n)=\tfrac14+\mathrm{dyadicRootFun}(4^{-n})\)
+(\nolinkurl{Fabius.quarterQuantile}, \nolinkurl{Fabius.quarterQuantile\_eq}), which is exactly the
+volume's display \(\tfrac14+\bigl(\sqrt{1+\tfrac{64}{9}4^{-n}}-1\bigr)/8\); anchors the level
+\(5/72=F(1/4)\)
+(\nolinkurl{Fabius.quarterLocalPoly\_quarterQuantile\_eq\_fabiusReal}); proves the local
+quadratic strictly increasing above \(-1/8\)
+(\nolinkurl{Fabius.strictMonoOn\_quarterLocalPoly}) with the consequent uniqueness
+(\nolinkurl{Fabius.existsUnique\_quarterLocalPoly\_eq}); and locates the value in the cell
+with two-sided bounds and the limit \(\to\tfrac14\).  The identification itself is proved
+\emph{conditionally}: any \(P\) agreeing with the local quadratic on the cell and taking
+the value \(5/72\) there does so exactly at \(\mathrm{quarterQuantile}(n)\), for \(n\ge3\)
+(\nolinkurl{Fabius.eq\_quarterQuantile\_of\_localPoly}).  What is still missing is the
+closed-form evaluation of the cell polynomial, i.e.
+\(\mathrm{fabiusUniformSpline}\,p\,(\tfrac14+z)=\tfrac{5}{72}+z+4z^{2}-\tfrac49 4^{-(p+1)}\)
+for \(\lvert z\rvert\le2^{-(p+1)}\) and \(p\ge2\) (the hypothesis is not decoration --- the
+display fails at $p=0,1$), together with an injectivity statement strong enough to pin
+down \(G_n\): the corpus currently has only monotonicity of the spline, never the strict
+form.
 \end{obligation}
 
 \begin{remark}[Formalized geometric Lagrange core]
