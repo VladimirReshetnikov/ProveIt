@@ -59,6 +59,7 @@ theorem zetaRegularReal_hasDerivAt_one :
   simpa [firstStieltjesConstant] using
     (differentiable_zetaRegularReal 1).hasDerivAt
 
+/-- The regularized real zeta function takes the Euler--Mascheroni constant at one. -/
 @[simp] theorem zetaRegularReal_one :
     zetaRegularReal 1 = Real.eulerMascheroniConstant := by
   simp [zetaRegularReal]

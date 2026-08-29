@@ -144,15 +144,19 @@ def interleaveOddEquiv (n : ℕ) : Fin (n + 1) ⊕ Fin n ≃ Fin (2 * n + 1) whe
       dsimp only [Sum.elim_inr]
       exact Fin.ext (show 2 * ((k : ℕ) / 2) + 1 = (k : ℕ) by omega)
 
+/-- The left summand of `interleaveEquiv` occupies the even indices. -/
 @[simp] theorem interleaveEquiv_inl (n : ℕ) (i : Fin n) :
     ((interleaveEquiv n) (Sum.inl i) : ℕ) = 2 * i := rfl
 
+/-- The right summand of `interleaveEquiv` occupies the odd indices. -/
 @[simp] theorem interleaveEquiv_inr (n : ℕ) (i : Fin n) :
     ((interleaveEquiv n) (Sum.inr i) : ℕ) = 2 * i + 1 := rfl
 
+/-- The larger left summand of `interleaveOddEquiv` occupies the even indices. -/
 @[simp] theorem interleaveOddEquiv_inl (n : ℕ) (i : Fin (n + 1)) :
     ((interleaveOddEquiv n) (Sum.inl i) : ℕ) = 2 * i := rfl
 
+/-- The right summand of `interleaveOddEquiv` occupies the odd indices. -/
 @[simp] theorem interleaveOddEquiv_inr (n : ℕ) (i : Fin n) :
     ((interleaveOddEquiv n) (Sum.inr i) : ℕ) = 2 * i + 1 := rfl
 
@@ -162,6 +166,7 @@ def interleaveOddEquiv (n : ℕ) : Fin (n + 1) ⊕ Fin n ≃ Fin (2 * n + 1) whe
 def pdBit (k : ℕ) : ZMod 2 :=
   (thueMorseBit k : ZMod 2) + (thueMorseBit (k + 1) : ZMod 2)
 
+/-- Every even-indexed period-doubling bit equals `1` in `ZMod 2`. -/
 theorem pdBit_two_mul (k : ℕ) : pdBit (2 * k) = 1 := by
   have h1 := thueMorseBit_two_mul k
   have h2 := thueMorseBit_two_mul_add_one k
@@ -169,6 +174,7 @@ theorem pdBit_two_mul (k : ℕ) : pdBit (2 * k) = 1 := by
   rw [pdBit, h1, h2]
   rcases Nat.le_one_iff_eq_zero_or_eq_one.mp hb with h | h <;> rw [h] <;>
     decide
+/-- Odd-indexed period-doubling bits satisfy `pd(2k+1) = 1 + pd(k)`. -/
 theorem pdBit_two_mul_add_one (k : ℕ) :
     pdBit (2 * k + 1) = 1 + pdBit k := by
   have h2 := thueMorseBit_two_mul_add_one k

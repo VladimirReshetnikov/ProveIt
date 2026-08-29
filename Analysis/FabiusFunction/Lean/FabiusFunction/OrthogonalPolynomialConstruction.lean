@@ -267,7 +267,7 @@ theorem hankelOrthoPolynomial_coeff_eq_zero (F : BoundedFabius) (n : ℕ)
   rw [Polynomial.coeff_C_mul, Polynomial.coeff_X_pow,
     if_neg (by have := j.isLt; omega), mul_zero]
 
-/-- The determinant orthogonal polynomial has degree at most its index. -/
+/-- The determinant polynomial has degree at most its index. -/
 theorem natDegree_hankelOrthoPolynomial_le (F : BoundedFabius) (n : ℕ) :
     (hankelOrthoPolynomial F n).natDegree ≤ n :=
   Polynomial.natDegree_le_iff_coeff_eq_zero.mpr fun _ hm =>
@@ -283,7 +283,8 @@ theorem natDegree_hankelOrthoPolynomial (F : BoundedFabius)
       (by rw [hankelOrthoPolynomial_coeff_top]
           exact ne_of_gt (hankelDet_pos F hF n)))
 
-/-- The leading coefficient of the determinant orthogonal polynomial is its Hankel determinant. -/
+/-- The leading coefficient of the determinant polynomial is the corresponding
+Hankel determinant. -/
 theorem hankelOrthoPolynomial_leadingCoeff (F : BoundedFabius)
     (hF : IsFabius F) (n : ℕ) :
     (hankelOrthoPolynomial F n).leadingCoeff = hankelDet F n := by
@@ -291,7 +292,7 @@ theorem hankelOrthoPolynomial_leadingCoeff (F : BoundedFabius)
     natDegree_hankelOrthoPolynomial F hF n,
     hankelOrthoPolynomial_coeff_top]
 
-/-- Every determinant orthogonal polynomial is nonzero. -/
+/-- The determinant polynomial of a Fabius function is nonzero. -/
 theorem hankelOrthoPolynomial_ne_zero (F : BoundedFabius)
     (hF : IsFabius F) (n : ℕ) :
     hankelOrthoPolynomial F n ≠ 0 := fun h => by
@@ -321,7 +322,8 @@ theorem integrable_polynomial_eval_rvachevMeasure (F : BoundedFabius)
   exact integrable_finsetSum _ fun j _ =>
     (integrable_pow_rvachevMeasure F hF j).const_mul _
 
-/-- A determinant orthogonal polynomial times any monomial is integrable. -/
+/-- A determinant-polynomial value times any monomial is integrable against the
+up-measure. -/
 theorem integrable_hankelOrthoValue_mul_pow (F : BoundedFabius)
     (hF : IsFabius F) (n j' : ℕ) :
     Integrable (fun x => hankelOrthoValue F n x * x ^ j')
@@ -365,20 +367,21 @@ noncomputable def upOrthoPolynomial (F : BoundedFabius) (n : ℕ) :
     Polynomial ℝ :=
   Polynomial.C (hankelDet F n)⁻¹ * hankelOrthoPolynomial F n
 
-/-- Evaluation of the monic orthogonal polynomial is the normalized determinant value. -/
+/-- Evaluating the monic normalization divides the determinant-polynomial value
+by the corresponding Hankel determinant. -/
 theorem upOrthoPolynomial_eval (F : BoundedFabius) (n : ℕ) (x : ℝ) :
     (upOrthoPolynomial F n).eval x =
       (hankelDet F n)⁻¹ * hankelOrthoValue F n x := by
   rw [upOrthoPolynomial, Polynomial.eval_mul, Polynomial.eval_C,
     hankelOrthoPolynomial_eval]
 
-/-- The zeroth monic orthogonal polynomial is one. -/
+/-- The zeroth monic orthogonal polynomial is the constant `1`. -/
 theorem upOrthoPolynomial_zero (F : BoundedFabius) :
     upOrthoPolynomial F 0 = 1 := by
   rw [upOrthoPolynomial, hankelOrthoPolynomial_zero, hankelDet_zero]
   norm_num
 
-/-- The monic orthogonal polynomial has degree equal to its index. -/
+/-- The `n`-th monic orthogonal polynomial has degree exactly `n`. -/
 theorem natDegree_upOrthoPolynomial (F : BoundedFabius)
     (hF : IsFabius F) (n : ℕ) :
     (upOrthoPolynomial F n).natDegree = n := by
@@ -387,7 +390,7 @@ theorem natDegree_upOrthoPolynomial (F : BoundedFabius)
       (inv_ne_zero (ne_of_gt (hankelDet_pos F hF n))),
     natDegree_hankelOrthoPolynomial F hF n]
 
-/-- The normalized orthogonal polynomial is monic. -/
+/-- The normalized orthogonal polynomial has leading coefficient `1`. -/
 theorem upOrthoPolynomial_monic (F : BoundedFabius) (hF : IsFabius F)
     (n : ℕ) : (upOrthoPolynomial F n).Monic := by
   have hne : hankelDet F n ≠ 0 := ne_of_gt (hankelDet_pos F hF n)

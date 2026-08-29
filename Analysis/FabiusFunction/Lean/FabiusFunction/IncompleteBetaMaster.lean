@@ -45,7 +45,7 @@ open ProbabilityRepresentation
 noncomputable def incompleteBeta (z a b : ℝ) : ℝ :=
   ∫ u in (0 : ℝ)..z, u ^ (a - 1) * (1 - u) ^ (b - 1)
 
-/-- The incomplete beta integral vanishes at its zero endpoint. -/
+/-- The incomplete beta integral with upper endpoint zero vanishes. -/
 @[simp] theorem incompleteBeta_zero (a b : ℝ) :
     incompleteBeta 0 a b = 0 := by
   simp [incompleteBeta]

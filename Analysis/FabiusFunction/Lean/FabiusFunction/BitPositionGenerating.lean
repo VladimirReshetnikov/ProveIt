@@ -39,7 +39,7 @@ namespace Fabius
 def bitPositionSum (n : ℕ) : ℕ :=
   ∑ j ∈ bitSupport n, j
 
-/-- The bit-position sum of zero is zero. -/
+/-- The zero natural number has bit-position sum zero. -/
 @[simp] theorem bitPositionSum_zero : bitPositionSum 0 = 0 := by
   simp [bitPositionSum]
 
