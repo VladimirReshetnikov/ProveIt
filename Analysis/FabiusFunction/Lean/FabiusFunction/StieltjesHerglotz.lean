@@ -128,4 +128,52 @@ theorem im_rvachevCauchyTransform_pos (F : BoundedFabius)
   rw [rvachevCauchyTransform_conj F z, Complex.conj_im] at h
   linarith
 
+/-- **The Poisson display**: off the real axis the imaginary part of
+the Cauchy transform is exactly minus the Poisson integral of the
+up-measure — the entry identity of the Plemelj boundary theory. -/
+theorem im_rvachevCauchyTransform_eq (F : BoundedFabius)
+    (hF : IsFabius F) (x : ℝ) {ε : ℝ} (hε : ε ≠ 0) :
+    (rvachevCauchyTransform F (x + ε * Complex.I)).im =
+      -∫ t : ℝ, ε / ((x - t) ^ 2 + ε ^ 2) ∂(rvachevMeasure F) := by
+  have him : ((x : ℂ) + ε * Complex.I).im = ε := by simp
+  have hint : Integrable
+      (fun t : ℝ => ((x : ℂ) + ε * Complex.I - t)⁻¹)
+      (rvachevMeasure F) :=
+    integrable_inv_sub_complex_of_im_ne_zero F hF
+      (by rw [him]; exact hε)
+  rw [rvachevCauchyTransform_apply, ← RCLike.im_to_complex,
+    ← integral_im hint, ← integral_neg]
+  refine integral_congr_ae (Filter.Eventually.of_forall fun t => ?_)
+  dsimp only
+  have hre : ((x : ℂ) + ε * Complex.I - t).re = x - t := by simp
+  have him2 : ((x : ℂ) + ε * Complex.I - t).im = ε := by simp
+  have hD : (x - t) * (x - t) + ε * ε = (x - t) ^ 2 + ε ^ 2 := by
+    ring
+  rw [RCLike.im_to_complex, Complex.inv_im, Complex.normSq_apply,
+    hre, him2, hD, neg_div]
+
+/-- **The conjugate-Poisson display**: the real part of the Cauchy
+transform is the conjugate Poisson integral of the up-measure. -/
+theorem re_rvachevCauchyTransform_eq (F : BoundedFabius)
+    (hF : IsFabius F) (x : ℝ) {ε : ℝ} (hε : ε ≠ 0) :
+    (rvachevCauchyTransform F (x + ε * Complex.I)).re =
+      ∫ t : ℝ, (x - t) / ((x - t) ^ 2 + ε ^ 2)
+        ∂(rvachevMeasure F) := by
+  have him : ((x : ℂ) + ε * Complex.I).im = ε := by simp
+  have hint : Integrable
+      (fun t : ℝ => ((x : ℂ) + ε * Complex.I - t)⁻¹)
+      (rvachevMeasure F) :=
+    integrable_inv_sub_complex_of_im_ne_zero F hF
+      (by rw [him]; exact hε)
+  rw [rvachevCauchyTransform_apply, ← RCLike.re_to_complex,
+    ← integral_re hint]
+  refine integral_congr_ae (Filter.Eventually.of_forall fun t => ?_)
+  dsimp only
+  have hre : ((x : ℂ) + ε * Complex.I - t).re = x - t := by simp
+  have him2 : ((x : ℂ) + ε * Complex.I - t).im = ε := by simp
+  have hD : (x - t) * (x - t) + ε * ε = (x - t) ^ 2 + ε ^ 2 := by
+    ring
+  rw [RCLike.re_to_complex, Complex.inv_re, Complex.normSq_apply,
+    hre, him2, hD]
+
 end Fabius
