@@ -6164,38 +6164,101 @@ $x_+^r=(\max(x,0))^r$; when $r=0$, interpret $x_+^0$ as the indicator of $x>0$ a
 
 The following nonidentically scaled uniform-sum formula is a box-spline form of the generalized Irwin--Hall distribution; compare Bradley and Gupta~\cite{BradleyGupta2004}.
 
-\begin{theorem}[Generalized uniform-sum spline]\label{thm:finite-uniform-spline}
-For $N\ge1$, the density of $X_{q,N}$ is
+% ed.: PLACEMENT: chap:geometric-uniform-fabius, section ``Finite spline
+% ed.: approximants''.  This block REPLACES \Cref{thm:finite-uniform-spline}; the
+% ed.: sentence about the Irwin--Hall box-spline form and the Bradley--Gupta
+% ed.: citation that precedes it in the text are unchanged, and
+% ed.: \eqref{eq:finite-uniform-spline} keeps its label and its exact wording, so
+% ed.: the proof of \Cref{thm:dyadic-thue-morse-spline} still applies verbatim.
+% ed.: An incoming draft carried the cumulative form as an independent lemma with a
+% ed.: second inclusion--exclusion proof; since the Laplace argument below never uses
+% ed.: $a_j=(1-q)q^j$, the general weights and the cumulative form are recorded here
+% ed.: instead, and the duplicate proof is dropped.
+
+\begin{theorem}[Generalized uniform-sum spline and the weighted cube cut]\label{thm:finite-uniform-spline}
+\index{cube!weighted section of}
+\index{inclusion--exclusion}
+Let $N\ge1$, let $c_0,\ldots,c_{N-1}>0$, let $U_0,\ldots,U_{N-1}$ be independent and
+uniform on $[0,1]$, and put $S_{\mathbf c}\defeq\sum_{j=0}^{N-1}c_jU_j$.  Then the density
+of $S_{\mathbf c}$ is
+\begin{equation}\label{eq:general-uniform-spline}
+ f_{\mathbf c}(x)
+ =\frac1{(N-1)!\prod_{j=0}^{N-1}c_j}
+  \sum_{A\subseteq\set{0,\ldots,N-1}}(-1)^{\abs A}
+  \Bigl(x-\sum_{j\in A}c_j\Bigr)_+^{\,N-1},
+\end{equation}
+a compactly supported piecewise polynomial of degree at most $N-1$, and its distribution
+function is the volume of the corresponding section of the unit cube: for every
+$t\in\R$,
+\begin{equation}\label{eq:weighted-cube-cut}
+ V_{\mathbf c}(t)
+ \defeq\operatorname{vol}\set{u\in[0,1]^N:\ \sum_{j=0}^{N-1}c_ju_j\le t}
+ =\frac1{N!\prod_{j=0}^{N-1}c_j}
+  \sum_{A\subseteq\set{0,\ldots,N-1}}(-1)^{\abs A}
+  \Bigl(t-\sum_{j\in A}c_j\Bigr)_+^{\,N}.
+\end{equation}
+In particular, at the geometric weights $c_j=a_j=(1-q)q^j$ of
+\eqref{eq:finite-geometric-uniform-sum} the density of $X_{q,N}$ is
 \begin{equation}\label{eq:finite-uniform-spline}
  f_{q,N}(x)
  =\frac1{(N-1)!\prod_{j=0}^{N-1}a_j}
  \sum_{A\subseteq\{0,\ldots,N-1\}}
  (-1)^{\abs A}
- \left(x-\sum_{j\in A}a_j\right)_+^{N-1}.
+ \left(x-\sum_{j\in A}a_j\right)_+^{N-1},
 \end{equation}
-It is a compactly supported piecewise polynomial of degree at most $N-1$, and its Fourier transform is the corresponding finite product in
+and its Fourier transform is the corresponding finite product in
 \eqref{eq:geometric-uniform-characteristic}.
 \end{theorem}
 
 \begin{proof}
-The density of $a_jU_j$ is $a_j^{-1}\one_{[0,a_j]}$.  Thus $f_{q,N}$ is the convolution of these $N$ box densities.  For $s>0$, its Laplace transform is
+The density of $c_jU_j$ is $c_j^{-1}\one_{[0,c_j]}$, so $f_{\mathbf c}$ is the convolution
+of $N$ box densities and, for $s>0$, its Laplace transform is
 \[
- \prod_{j=0}^{N-1}\frac{1-e^{-a_js}}{a_js}.
+ \prod_{j=0}^{N-1}\frac{1-\e^{-c_js}}{c_js},
 \]
-On the other hand,
+which uses nothing about the numbers $c_j$ beyond $c_j>0$.  On the other hand
 \[
- \int_0^\infty e^{-sx}\frac{(x-c)_+^{N-1}}{(N-1)!}\,dx
- =\frac{e^{-cs}}{s^N}.
+ \int_0^\infty\e^{-sx}\frac{(x-c)_+^{N-1}}{(N-1)!}\dd x=\frac{\e^{-cs}}{s^N},
 \]
-Taking the Laplace transform of the right side of
-\eqref{eq:finite-uniform-spline} therefore gives
+so the Laplace transform of the right-hand side of \eqref{eq:general-uniform-spline} is
 \[
- \frac1{s^N\prod_j a_j}
- \sum_A(-1)^{\abs A}e^{-s\sum_{j\in A}a_j}
- =\prod_{j=0}^{N-1}\frac{1-e^{-a_js}}{a_js},
+ \frac1{s^N\prod_jc_j}\sum_A(-1)^{\abs A}\e^{-s\sum_{j\in A}c_j}
+ =\prod_{j=0}^{N-1}\frac{1-\e^{-c_js}}{c_js},
 \]
-because the subset sum factors as $\prod_j(1-e^{-a_js})$.  Uniqueness of the Laplace transform proves the density formula.  Piecewise polynomiality is immediate from the truncated-power representation.  The Fourier product follows either by taking Fourier transforms of the box convolutions or by the finite version of the proof of \Cref{thm:geometric-uniform-characteristic}.
+because the subset sum factors as $\prod_j\bigl(1-\e^{-c_js}\bigr)$.  Uniqueness of the
+Laplace transform proves \eqref{eq:general-uniform-spline}, and piecewise polynomiality is
+immediate from the truncated-power representation.
+
+Since $(U_0,\ldots,U_{N-1})$ is uniform on the cube,
+$V_{\mathbf c}(t)=\mathbb P\bigl(S_{\mathbf c}\le t\bigr)
+=\int_{-\infty}^{t}f_{\mathbf c}(x)\dd x$.  The sum in
+\eqref{eq:general-uniform-spline} is finite, so it may be integrated term by term, and
+\[
+ \int_{-\infty}^{t}(x-c)_+^{\,N-1}\dd x=\frac{(t-c)_+^{\,N}}{N}
+ \qquad(N\ge1)
+\]
+gives \eqref{eq:weighted-cube-cut}.  Specializing $c_j=a_j$ gives
+\eqref{eq:finite-uniform-spline}, and the Fourier product follows either by transforming
+the box convolutions or by the finite version of the proof of
+\Cref{thm:geometric-uniform-characteristic}.
 \end{proof}
+
+\begin{remark}[The dyadic instance]\label{rem:dyadic-cube-cut}
+For the integer weights $c_j=2^{\,n-j}$, $1\le j\le n$ --- that is, $2^n$ times the
+half-base weights $a_{j-1}=2^{-j}$ of \eqref{eq:finite-geometric-uniform-sum} at $q=1/2$
+--- the map $A\mapsto r=\sum_{j\in A}2^{\,n-j}$ is binary expansion, hence a bijection
+from the subsets of $\set{1,\ldots,n}$ onto $\set{0,1,\ldots,2^n-1}$ with
+$\abs A=s_2(r)$; consequently $(-1)^{\abs A}=\tau_r$ and
+$\prod_{j=1}^{n}c_j=2^{\binom n2}$, so \eqref{eq:weighted-cube-cut} becomes
+\begin{equation}\label{eq:dyadic-cube-cut}
+ V_{\mathbf c}(t)=\frac{2^{-\binom n2}}{n!}\sum_{r=0}^{2^n-1}\tau_r\,(t-r)_+^{\,n}.
+\end{equation}
+This is the cumulative counterpart of \Cref{thm:dyadic-thue-morse-spline}, which records
+the same signs in the density.  For $0\le t\le1$ every term with $r\ge1$ vanishes and
+\eqref{eq:dyadic-cube-cut} reduces to $t^n/(n!\,2^{\binom n2})$: that reduction is the
+simplex step of \Cref{rem:half-moment-cube-cut}, and the terms it discards are exactly
+what makes \eqref{eq:inverse-power-inequality} strict for $q>1/2$.
+\end{remark}
 
 \begin{theorem}[Dyadic Thue--Morse spline]\label{thm:dyadic-thue-morse-spline}
 At $q=1/2$,
@@ -6222,33 +6285,127 @@ Reversing the order of the bits identifies this number with $r/2^N$ for a unique
 $0\le r<2^N$, while $\abs A$ and $s_2(r)$ have the same parity.  Substitute these facts into \eqref{eq:finite-uniform-spline}.
 \end{proof}
 
-\begin{corollary}[A coupling convergence bound]\label{cor:finite-uniform-convergence}
+% ed.: PLACEMENT: chap:geometric-uniform-fabius, section ``Finite spline
+% ed.: approximants'': the proposition is new and is inserted immediately before
+% ed.: \Cref{cor:finite-uniform-convergence}, which is then REPLACED by the version
+% ed.: below (same label, same three equation labels, now with the constant
+% ed.: evaluated).  An incoming draft carried only the inequality
+% ed.: $\norm{f_q}_\infty\le1/(1-q)$; the identity on the band, the exact sup norm
+% ed.: and the failure above $q=1/2$ are proved here instead.  Its part (i) is the
+% ed.: general-base form of \eqref{eq:fabius-global-derivative} and its
+% ed.: \eqref{eq:density-first-band} the general-base form of
+% ed.: \eqref{eq:fabius-local-derivative}; those two are consequences, and
+% ed.: \Cref{thm:probabilistic-fabius} is left untouched.
+
+The constant $\norm{f_q}_\infty$ left implicit in \eqref{eq:cdf-uniform-rate} can be
+evaluated exactly.  The mechanism is the fixed point
+\eqref{eq:geometric-uniform-fixed-point} read as a convolution.
+
+\begin{proposition}[Exact density on the central band, and the sharp sup bound]\label{prop:geometric-uniform-density-band}
+\index{density!sharp sup bound}
+\index{Fabius function!Lipschitz constant}
+Let $0<q<1$ and let $f_q$ be the density of
+\Cref{thm:geometric-uniform-smooth-density}.  Then:
+\begin{enumerate}
+\item for every $x\in\R$,
+\begin{equation}\label{eq:density-from-cdf}
+ f_q(x)=\frac1{1-q}
+ \left[F_q\!\left(\frac xq\right)-F_q\!\left(\frac{x-1+q}{q}\right)\right];
+\end{equation}
+\item $\norm{f_q}_\infty\le\dfrac1{1-q}$;
+\item if $0<q\le1/2$, then
+\begin{equation}\label{eq:density-first-band}
+ f_q(x)=\frac1{1-q}\,F_q\!\left(\frac xq\right)
+ \qquad(0\le x\le1-q),
+\end{equation}
+so that $f_q$ is identically $1/(1-q)$ on the band $[q,1-q]$ and
+\begin{equation}\label{eq:density-sup-exact}
+ \norm{f_q}_\infty=\frac1{1-q};
+\end{equation}
+\item if $1/2<q<1$, the inequality in (ii) is strict.
+\end{enumerate}
+At $q=1/2$, \eqref{eq:density-from-cdf} is \eqref{eq:fabius-global-derivative} and
+\eqref{eq:density-first-band} is \eqref{eq:fabius-local-derivative}.
+\end{proposition}
+
+\begin{proof}
+By \eqref{eq:geometric-uniform-fixed-point} we may write $X_q=(1-q)U_0+qX_q'$ with $U_0$
+uniform on $[0,1]$ independent of the copy $X_q'$.  Conditionally on $X_q'=y$ the variable
+$X_q$ is uniform on $[qy,\,qy+1-q]$, whose density is the constant $1/(1-q)$; averaging
+over $y$ gives
+\begin{equation}\label{eq:density-as-probability}
+ f_q(x)=\frac1{1-q}\,\mathbb P\bigl(x-(1-q)\le qX_q'\le x\bigr)
+\end{equation}
+for almost every $x$, hence for every $x$: the left side is continuous by
+\Cref{thm:geometric-uniform-smooth-density} and the right side is continuous because
+$X_q'$ has no atoms.  For the same reason the probability equals
+$F_q(x/q)-F_q((x-1+q)/q)$, which is \eqref{eq:density-from-cdf}, and a probability is at
+most $1$, which is (ii).
+
+Let $q\le1/2$ and $0\le x\le1-q$.  Then $x-(1-q)\le0$, so the event in
+\eqref{eq:density-as-probability} reduces to $qX_q'\le x$ and its probability is
+$F_q(x/q)$; this is \eqref{eq:density-first-band}.  If moreover $x\ge q$ then $x/q\ge1$
+and $F_q(x/q)=1$, so $f_q\equiv1/(1-q)$ on $[q,1-q]$, an interval that is nonempty
+precisely because $q\le1/2$; with (ii) this gives \eqref{eq:density-sup-exact}.
+
+Finally let $q>1/2$.  The window $[x-(1-q),x]$ has length $1-q<q$, while $qX_q'$ has
+support $[0,q]$ by \Cref{thm:geometric-uniform-basic}.  An interval shorter than $q$
+cannot contain $[0,q]$, so its complement in $[0,q]$ contains a nonempty relatively open
+set, of positive probability; hence the probability in
+\eqref{eq:density-as-probability} is $<1$ for every $x$.  It is continuous and tends to
+$0$ as $\abs x\to\infty$, so its supremum is attained and is $<1$, which is the strict
+inequality.
+\end{proof}
+
+\begin{corollary}[A coupling convergence bound, with its constant]\label{cor:finite-uniform-convergence}
 Almost surely,
 \begin{equation}\label{eq:finite-uniform-tail-bound}
  0\le X_q-X_{q,N}\le q^N.
 \end{equation}
-Consequently,
+Consequently
 \begin{equation}\label{eq:cdf-coupling-bound}
- F_q(x-q^N)\le F_{q,N}(x)\le F_q(x+q^N).
+ F_q(x-q^N)\le F_{q,N}(x)\le F_q(x+q^N),
 \end{equation}
-In particular,
+and in particular
 \begin{equation}\label{eq:cdf-uniform-rate}
- \sup_x\abs{F_{q,N}(x)-F_q(x)}
- \le \norm{f_q}_\infty q^N.
+ \sup_x\abs{F_{q,N}(x)-F_q(x)}\le\norm{f_q}_\infty q^N .
+\end{equation}
+By \Cref{prop:geometric-uniform-density-band}, $F_q$ is Lipschitz with constant
+$1/(1-q)$, so
+\begin{equation}\label{eq:cdf-uniform-rate-explicit}
+ \sup_{x\in\R}\abs{F_{q,N}(x)-F_q(x)}\le\frac{q^N}{1-q},
+\end{equation}
+and for $0<q\le1/2$ the constant $1/(1-q)$ is the exact Lipschitz constant of $F_q$.  At
+$q=1/2$ this reads $\norm f_\infty=2$ and
+\begin{equation}\label{eq:fabius-truncation-rate}
+ \sup_{x\in\R}\abs{F_{1/2,N}(x)-F(x)}\le2^{\,1-N}.
 \end{equation}
 \end{corollary}
 
 \begin{proof}
-The omitted tail is nonnegative and bounded by
-$(1-q)\sum_{j\ge N}q^j=q^N$, proving
+The omitted tail is nonnegative and bounded by $(1-q)\sum_{j\ge N}q^j=q^N$, which is
 \eqref{eq:finite-uniform-tail-bound}.  The inclusions
 \[
- \{X_q\le x-q^N\}\subseteq\{X_{q,N}\le x\}
- \subseteq\{X_q\le x+q^N\}
+ \{X_q\le x-q^N\}\subseteq\{X_{q,N}\le x\}\subseteq\{X_q\le x+q^N\}
 \]
-give \eqref{eq:cdf-coupling-bound}.  Since $F_q$ has bounded density,
-$\abs{F_q(x+h)-F_q(x)}\le\norm{f_q}_\infty\abs h$; apply this on both sides.
+give \eqref{eq:cdf-coupling-bound}.  Since $F_q$ has a bounded continuous density,
+$\abs{F_q(x+h)-F_q(x)}\le\norm{f_q}_\infty\abs h$; applying this on both sides gives
+\eqref{eq:cdf-uniform-rate}, and
+\Cref{prop:geometric-uniform-density-band}(ii) turns it into
+\eqref{eq:cdf-uniform-rate-explicit}.  Exactness of the Lipschitz constant for
+$q\le1/2$ is \eqref{eq:density-sup-exact}, and $q=1/2$ gives
+\eqref{eq:fabius-truncation-rate}.
 \end{proof}
+
+\begin{remark}[The two normalizations at $q=1/2$]\label{rem:halfbase-density-normalizations}
+The value $\norm f_\infty=2$ is the Rvachev normalization seen through
+\Cref{prop:up-tail}: $f(x)=2\operatorname{up}(2x-1)=2F\bigl(1-\abs{2x-1}\bigr)$ on
+$[0,1]$, so $\norm{\operatorname{up}}_\infty=\operatorname{up}(0)=F(1)=1$ and the
+probability normalization $\int_\R\operatorname{up}=1$ agrees with the classical
+normalization $\operatorname{up}(0)=1$.
+% ed.: an incoming draft recorded $\operatorname{up}(0)=1=\norm{\operatorname{up}}_\infty$
+% ed.: as a separate proposition; it is this one line of \Cref{prop:up-tail}.
+\end{remark}
 
 \section{The Fabius and Rvachev specializations}
 
@@ -6432,73 +6589,136 @@ because $0\le X\le1$.  Now apply \eqref{eq:up-survival}.
 % ed.: need no re-referencing.  Two mechanical renames are required in that
 % ed.: chain: $\Phi\mapsto\Lambda$ and $a_n\mapsto\alpha_n$.
 Write
+% ed.: REPLACES the preamble equations \eqref{eq:uniform-mgf-kernel},
+% ed.: \eqref{eq:geometric-uniform-mgf-def} and \Cref{thm:geometric-uniform-mgf}
+% ed.: with its proof (monograph block M03, up to but excluding
+% ed.: \Cref{lem:fabius-moment-dilation}, which is unchanged).  The merge adds to
+% ed.: the filed theorem exactly what the incoming sibling item carried and the
+% ed.: filed text did not: the parameter is now an arbitrary complex $q$ with
+% ed.: $\abs q<1$, the transform is defined by the product rather than by an
+% ed.: expectation, and the coefficients are recorded as rational functions of
+% ed.: $q$.  All four equation labels and the theorem label are retained, so no
+% ed.: reference elsewhere in the chapter changes.  The complex parameter is not
+% ed.: a flourish: \Cref{prop:qF-negative-affine}, \Cref{thm:qF-germ-uniqueness}
+% ed.: and \Cref{thm:qF-spectral} act on $\mathcal A_q$ outside $(0,1)$, and
+% ed.: \Cref{thm:qF-moment-polynomial} expands $\alpha^{(q)}_n$ at $q=\infty$.
+
+% ed.: this block replaces the sibling lemma \texttt{lem:fabius-moment-dilation},
+% ed.: which stated only the case $q=1/2$.  Its labels are retained on the
+% ed.: corollary below, so that \Cref{lem:thue-morse-dilation-bridge},
+% ed.: \Cref{thm:dyadic-gaussian-thue-morse} and \Cref{thm:fabius-inverse-dyadic}
+% ed.: need no re-referencing.  Two mechanical renames are required in that
+% ed.: chain: $\Phi\mapsto\Lambda$ and $a_n\mapsto\alpha_n$.
+Write
 \begin{equation}\label{eq:uniform-mgf-kernel}
  \Lambda(z)\defeq\int_0^1\e^{zu}\,\dd u=\frac{\e^z-1}{z},
  \qquad\Lambda(0)\defeq1,
 \end{equation}
-an entire function with $\Lambda(z)=\sum_{r\ge0}z^r/(r+1)!$, and set
+an entire function with $\Lambda(z)=\sum_{r\ge0}z^r/(r+1)!$ and $\Lambda(z)=1+\OO(z)$ at the
+origin, whose zeros are exactly the points $2\pi\mathrm ik$ with $k\in\Z\setminus\set{0}$; in
+particular $\Lambda$ has no zero in the disc $\abs z<2\pi$.  For $q\in\C$ with $\abs q<1$ set
 \begin{equation}\label{eq:geometric-uniform-mgf-def}
- \mathcal A_q(z)\defeq\mathbb E\,\e^{zX_q}=\sum_{n\ge0}\alpha^{(q)}_nz^n,
- \qquad
- \alpha^{(q)}_n\defeq\frac{\mathbb EX_q^{\,n}}{n!}.
+ \mathcal A_q(z)\defeq\prod_{j=0}^{\infty}\Lambda\bigl((1-q)q^jz\bigr)
+ =\sum_{n\ge0}\alpha^{(q)}_nz^n .
 \end{equation}
 
 \begin{theorem}[Moment product, dilation equation, coefficient recurrence]
 \label{thm:geometric-uniform-mgf}
 \index{moment generating function}
 \index{Mahler functional equation}
-Let $0<q<1$.  Then $\mathcal A_q$ is entire, $\varphi_q(t)=\mathcal A_q(it)$ for all
-real $t$,
-\begin{align}
- \mathcal A_q(z)&=\prod_{j=0}^{\infty}\Lambda\bigl((1-q)q^jz\bigr),
- \label{eq:mgf-product}\\
- \mathcal A_q(z)&=\Lambda\bigl((1-q)z\bigr)\,\mathcal A_q(qz),
- \label{eq:mgf-refinement}
-\end{align}
-the product converging locally uniformly on $\C$.  Moreover $\mathcal A_q$ is the unique
-formal power series with constant term $1$ satisfying \eqref{eq:mgf-refinement}, and its
-coefficients satisfy $\alpha^{(q)}_0=1$ and
+Let $q\in\C$ with $\abs q<1$.  Then:
+\begin{enumerate}
+\item the product in \eqref{eq:geometric-uniform-mgf-def} converges locally uniformly on $\C$
+and defines an entire function with $\mathcal A_q(0)=1$;
+\item $\mathcal A_q$ satisfies the dilation equation
+\begin{equation}\label{eq:mgf-refinement}
+ \mathcal A_q(z)=\Lambda\bigl((1-q)z\bigr)\,\mathcal A_q(qz),
+\end{equation}
+and is the unique formal power series with constant term $1$ that does so; its coefficients
+satisfy $\alpha^{(q)}_0=1$ and
 \begin{equation}\label{eq:q-moment-recurrence}
  (1-q^n)\,\alpha^{(q)}_n
  =\sum_{r=0}^{n-1}\frac{(1-q)^{n-r}q^r}{(n-r+1)!}\,\alpha^{(q)}_r
- \qquad(n\ge1).
+ \qquad(n\ge1);
 \end{equation}
+\item consequently each $\alpha^{(q)}_n$ is a rational function of $q$ with rational
+coefficients, its poles are roots of unity, and it is regular on the open unit disc;
+\item for real $0<q<1$ the function $\mathcal A_q$ is the moment generating function of
+$X_q$:
+\begin{equation}\label{eq:mgf-product}
+ \mathcal A_q(z)=\mathbb E\,\e^{zX_q}
+ =\prod_{j=0}^{\infty}\Lambda\bigl((1-q)q^jz\bigr),
+ \qquad
+ \alpha^{(q)}_n=\frac{\mathbb EX_q^{\,n}}{n!},
+\end{equation}
+and $\varphi_q(t)=\mathcal A_q(it)$ for every real $t$.
+\end{enumerate}
 \end{theorem}
 
 \begin{proof}
-By \Cref{thm:geometric-uniform-basic} we have $0\le X_q\le1$, so
-$\mathbb EX_q^{\,n}\le1$ and $\sum_n\abs z^n\mathbb EX_q^{\,n}/n!\le\e^{\abs z}$.  Hence
-$\mathcal A_q$ is entire and term-by-term integration is legitimate; substituting $z=it$
-reproduces $\varphi_q$.
+(i)  On a compact set $K\subset\C$ the arguments $(1-q)q^jz$ are $\OO(\abs q^j)$ uniformly,
+and $\Lambda(w)-1=\OO(w)$ near the origin, so
+$\sum_{j\ge0}\sup_{z\in K}\abs{\Lambda((1-q)q^jz)-1}$ is dominated by a constant multiple of
+$\sum_{j\ge0}\abs q^j<\infty$.  The standard criterion for infinite products gives locally
+uniform convergence to an entire function, and every factor equals $1$ at $z=0$.
 
-For the truncation $X_{q,N}$ of \eqref{eq:finite-geometric-uniform-sum}, independence
-gives
+(ii)  Replacing $z$ by $qz$ shifts the index by one:
 \[
- \mathbb E\e^{zX_{q,N}}
- =\prod_{j=0}^{N-1}\int_0^1\e^{z(1-q)q^ju}\,\dd u
- =\prod_{j=0}^{N-1}\Lambda\bigl((1-q)q^jz\bigr).
+ \Lambda\bigl((1-q)z\bigr)\mathcal A_q(qz)
+ =\Lambda\bigl((1-q)z\bigr)\prod_{j\ge0}\Lambda\bigl((1-q)q^{\,j+1}z\bigr)
+ =\prod_{j\ge0}\Lambda\bigl((1-q)q^{\,j}z\bigr)
+ =\mathcal A_q(z),
 \]
-On $\abs z\le R$ the arguments satisfy $\sum_{j\ge0}(1-q)q^j\abs z\le R$ and
-$\Lambda(w)=1+\OO(w)$ near $0$, so the standard criterion for infinite products gives
-local uniform convergence.  By \eqref{eq:finite-uniform-tail-bound},
-$0\le X_q-X_{q,N}\le q^N$ pointwise, so $\e^{zX_{q,N}}\to\e^{zX_q}$ uniformly on the
-sample space while remaining bounded by $\e^{R}$; dominated convergence identifies the
-limit and proves \eqref{eq:mgf-product}.
-
-Taking expectations in \eqref{eq:geometric-uniform-fixed-point} and using independence of
-$U_0$ and $X_q'$ yields
-$\mathcal A_q(z)=\mathbb E\e^{z(1-q)U_0}\cdot\mathbb E\e^{zqX_q'}$, which is
-\eqref{eq:mgf-refinement}.  Comparing the coefficient of $z^n$ in
+which is \eqref{eq:mgf-refinement}.  Comparing the coefficient of $z^n$ in
 \[
  \sum_{n\ge0}\alpha^{(q)}_nz^n
  =\left(\sum_{s\ge0}\frac{(1-q)^sz^s}{(s+1)!}\right)
   \left(\sum_{r\ge0}\alpha^{(q)}_rq^rz^r\right)
 \]
-gives $\alpha^{(q)}_n=\sum_{r=0}^{n}(1-q)^{n-r}q^r\alpha^{(q)}_r/(n-r+1)!$; the term $r=n$
-on the right is $q^n\alpha^{(q)}_n$, and moving it to the left proves
+gives $\alpha^{(q)}_n=\sum_{r=0}^{n}(1-q)^{n-r}q^r\alpha^{(q)}_r/(n-r+1)!$; the term $r=n$ on
+the right is $q^n\alpha^{(q)}_n$, and moving it to the left proves
 \eqref{eq:q-moment-recurrence}.  Since $1-q^n\ne0$ for $n\ge1$, that recurrence determines
 every coefficient from its predecessors, which is the asserted formal uniqueness.
+
+(iii)  Induct on \eqref{eq:q-moment-recurrence}.  One has $\alpha^{(q)}_0=1$, and
+$\alpha^{(q)}_n$ is obtained from $\alpha^{(q)}_0,\ldots,\alpha^{(q)}_{n-1}$ by rational
+operations with the single new denominator $1-q^n$.  Hence $\alpha^{(q)}_n\in\Q(q)$ and its
+poles lie among the zeros of $\prod_{j=1}^{n}(1-q^j)$, all of which are roots of unity, and
+none of those lies in $\abs q<1$.
+
+(iv)  Let $0<q<1$.  By \Cref{thm:geometric-uniform-basic} we have $0\le X_q\le1$, so
+$\mathbb EX_q^{\,n}\le1$ and $\sum_n\abs z^n\mathbb EX_q^{\,n}/n!\le\e^{\abs z}$; hence
+$z\mapsto\mathbb E\e^{zX_q}$ is entire and term-by-term integration is legitimate.  For the
+truncation $X_{q,N}$ of \eqref{eq:finite-geometric-uniform-sum}, independence gives
+\[
+ \mathbb E\e^{zX_{q,N}}
+ =\prod_{j=0}^{N-1}\int_0^1\e^{z(1-q)q^ju}\,\dd u
+ =\prod_{j=0}^{N-1}\Lambda\bigl((1-q)q^jz\bigr).
+\]
+By \eqref{eq:finite-uniform-tail-bound}, $0\le X_q-X_{q,N}\le q^N$ pointwise, so
+$\e^{zX_{q,N}}\to\e^{zX_q}$ uniformly on the sample space while remaining bounded by
+$\e^{\abs z}$; dominated convergence identifies the limit with $\mathcal A_q(z)$ and proves
+\eqref{eq:mgf-product}.  Substituting $z=it$ reproduces $\varphi_q$, and comparison of Taylor
+coefficients gives $\alpha^{(q)}_n=\mathbb EX_q^{\,n}/n!$.
 \end{proof}
+
+\begin{remark}[Dilation, refinement, Mahler]\label{rem:mgf-names}
+\index{Mahler functional equation}
+Equation \eqref{eq:mgf-refinement} carries three names in three literatures: it is a
+\emph{dilation} or \emph{refinement} equation in approximation theory and wavelet analysis,
+and a \emph{Mahler functional equation} in transcendence theory and in the theory of automatic
+sequences.  This book uses them interchangeably.  Part (iii) is visible already in the first
+cases, which \eqref{eq:q-moment-recurrence} produces as
+\[
+ \alpha^{(q)}_1=\frac12,
+ \qquad
+ \alpha^{(q)}_2=\frac{q+2}{12(q+1)},
+ \qquad
+ \alpha^{(q)}_3=\frac1{24(q+1)};
+\]
+the half-base values are collected in \Cref{ex:fabius-first-coefficients}, and the systematic
+clearing of the denominators is \Cref{def:qF-moment-polynomial}.
+\end{remark}
 
 \begin{corollary}[The half-base moment generating function]\label{lem:fabius-moment-dilation}
 \index{Fabius function!moment generating function}
@@ -6530,7 +6750,15 @@ $z=it$ is \eqref{eq:geometric-uniform-characteristic} at $q=1/2$; this is the si
 of \Cref{thm:up-sinc-product}.
 \end{proof}
 
-\begin{example}[The first coefficients]\label{ex:fabius-first-coefficients}
+% ed.: self-contained replacement for \Cref{ex:fabius-first-coefficients}.  An
+% ed.: incoming draft carried the same six rationals $\alpha_0,\ldots,\alpha_5$
+% ed.: (there called $g_0,\ldots,g_5$) and converted them into the inverse-dyadic
+% ed.: values of $F$; only that second row was absent here, and it is appended
+% ed.: below.  The example now reaches $F(2^{-5})$, the first value a reader
+% ed.: cannot check by hand.  All six coefficients recomputed in exact rational
+% ed.: arithmetic from \eqref{eq:fabius-coefficient-recurrence}.
+\begin{example}[The first coefficients and the first dyadic values]\label{ex:fabius-first-coefficients}
+\index{Fabius function!value at $2^{-n}$}
 Recurrence \eqref{eq:fabius-coefficient-recurrence} gives
 \[
  \alpha_0=1,\quad
@@ -6544,6 +6772,23 @@ equivalently $\mathbb EX^2=2!\,\alpha_2=5/18$ and $\mathbb EX^4=4!\,\alpha_4=143
 These agree with the cumulant route of
 \Cref{cor:geometric-uniform-moments,cor:halfbase-cumulants}: for instance
 $\kappa_2(Y_{1/2})=B_2/(2\cdot3)=1/36$, so $\mathbb EX^2=\tfrac1{36}+\tfrac14=\tfrac5{18}$.
+
+By \Cref{thm:fabius-half-moment} below, $F(2^{-n})=2^{-\binom n2}\alpha_n$, so the same
+six rationals are the first inverse-dyadic values of the Fabius function:
+\[
+ F(1)=1,\qquad
+ F\!\left(\tfrac12\right)=\tfrac12,\qquad
+ F\!\left(\tfrac14\right)=\frac5{72},\qquad
+ F\!\left(\tfrac18\right)=\frac1{288},
+\]
+\[
+ F\!\left(\tfrac1{16}\right)=\frac{143}{2073600},\qquad
+ F\!\left(\tfrac1{32}\right)=\frac{19}{33177600}.
+\]
+The value $F(1/2)=1/2$ is forced by \eqref{eq:fabius-symmetry}; the remaining entries
+are the first concrete instances of the rationality asserted, without values, by
+\Cref{cor:halfbase-cumulants}.  The powers $2^{-\binom n2}$ are what makes the values
+fall off so much faster than the coefficients.
 \end{example}
 
 \begin{remark}[Two routes to the same rationals]\label{rem:moment-routes}
@@ -6617,25 +6862,147 @@ $t=1-u$ and applying \Cref{cor:up-moments},
 \]
 \end{proof}
 
-\begin{remark}[The same value by cutting a cube]\label{rem:half-moment-cube-cut}
-There is a second proof of \eqref{eq:fabius-half-moment} which uses neither
-\Cref{prop:up-tail} nor the smoothness of $F$.  Write
-$X=\sum_{j\ge1}2^{-j}V_j$ with $V_1,V_2,\ldots$ independent and uniform on $[0,1]$,
-multiply by $2^n$ and split the series after $n$ terms:
+% ed.: PLACEMENT: chap:dyadic-gaussian-thue-morse, immediately after
+% ed.: \Cref{thm:fabius-half-moment}.  This block REPLACES the remark
+% ed.: \texttt{rem:half-moment-cube-cut}: an incoming draft carried the same cube
+% ed.: cut at a general base $q$, together with the sharp threshold $q\le1/2$ and
+% ed.: the failure above it, so the argument is stated once, in the general form,
+% ed.: and the $q=1/2$ reading is retained as the remark below.  The remark keeps
+% ed.: its label and the split \eqref{eq:fabius-scaled-split}, which
+% ed.: \Cref{rem:dyadic-formula-anatomy} and \Cref{thm:fabius-inverse-dyadic} cite.
+% ed.: The same statement occurred twice in that draft (once as an ``inverse-power
+% ed.: value'', once as an ``inverse-geometric endpoint formula''); it is adopted
+% ed.: once, in the sharp form.  Its table of first values is
+% ed.: \Cref{ex:fabius-first-coefficients} and is not repeated.
+
+\begin{proposition}[Inverse-power values at a general base]\label{prop:inverse-power-values}
+\index{Fabius function!values at dyadic points}
+\index{cube!simplex section of}
+Let $0<q<1$ and $n\ge0$.  Then
+\begin{equation}\label{eq:inverse-power-inequality}
+ F_q\bigl(q^n\bigr)\le\frac{q^{\binom{n+1}{2}}}{(1-q)^n\,n!}\,\mathbb E\bigl(X_q^{\,n}\bigr),
+\end{equation}
+with equality for every $n$ if and only if $q\le1/2$; for $q>1/2$ and $n\ge1$ the
+inequality is strict.  Thus, for $0<q\le1/2$,
+\begin{equation}\label{eq:inverse-power-values}
+ F_q\bigl(q^n\bigr)
+ =\frac{q^{\binom{n+1}{2}}}{(1-q)^n\,n!}\,\mathbb E\bigl(X_q^{\,n}\bigr)
+ =\frac{q^{\binom{n+1}{2}}}{(1-q)^n}\,\alpha^{(q)}_n ,
+\end{equation}
+with $\alpha^{(q)}_n$ as in \eqref{eq:geometric-uniform-mgf-def}, and
+$F_q(1-q^n)=1-F_q(q^n)$.  At $q=1/2$ the prefactor is $2^{-\binom n2}$ and
+\eqref{eq:inverse-power-values} is \eqref{eq:fabius-half-moment}.
+\end{proposition}
+
+\begin{proof}
+For $n=0$ both sides are $F_q(1)=1$; let $n\ge1$.  Split the series
+\eqref{eq:geometric-uniform-series} after $n$ terms,
+\begin{equation}\label{eq:inverse-power-split}
+ X_q=\sum_{j=0}^{n-1}a_jU_j+q^nX_q',
+ \qquad a_j\defeq(1-q)q^j,
+ \qquad X_q'\defeq(1-q)\sum_{i\ge0}q^iU_{n+i},
+\end{equation}
+with the $a_j$ of \eqref{eq:finite-geometric-uniform-sum} and $X_q'$ a copy of $X_q$
+independent of $U_0,\ldots,U_{n-1}$; note $\prod_{j<n}a_j=(1-q)^nq^{\binom n2}$.
+Conditionally on $X_q'=y$, the event $\set{X_q\le q^n}$ reads $\sum_{j<n}a_jU_j\le t$
+with $t=q^n(1-y)\in[0,q^n]$, so its conditional probability is the cube section
+\[
+ V(t)\defeq\operatorname{vol}
+ \Bigl\{u\in[0,1]^n:\ \sum_{j=0}^{n-1}a_ju_j\le t\Bigr\}.
+\]
+Dropping the constraints $u_j\le1$ enlarges the region to a simplex, so
+\begin{equation}\label{eq:simplex-bound}
+ V(t)\le\frac{t^n}{n!\prod_{j<n}a_j}
+      =\frac{t^n}{n!\,(1-q)^nq^{\binom n2}},
+\end{equation}
+with equality precisely when the simplex lies inside the cube, that is when
+$t\le\min_ja_j=(1-q)q^{\,n-1}$: if $t>(1-q)q^{\,n-1}$, the point with
+$u_{n-1}=t/a_{n-1}>1$ and all other coordinates $0$ lies in the simplex but not in the
+cube, and so does a neighbourhood of it, of positive volume.  Averaging
+\eqref{eq:simplex-bound} over $y$ with $t=q^n(1-y)$ and using
+$1-X_q\overset d=X_q$ from \eqref{eq:geometric-uniform-mean-symmetry},
+\[
+ F_q(q^n)\le\frac{q^{\,n^2}\,\mathbb E\bigl[(1-X_q)^n\bigr]}
+                 {n!\,(1-q)^nq^{\binom n2}}
+ =\frac{q^{\,n^2-\binom n2}}{n!\,(1-q)^n}\,\mathbb E\bigl(X_q^{\,n}\bigr),
+\]
+and $n^2-\binom n2=\binom{n+1}{2}$; this is \eqref{eq:inverse-power-inequality}.
+
+If $q\le1/2$, then every admissible threshold satisfies
+$t\le q^n=q\cdot q^{\,n-1}\le(1-q)q^{\,n-1}$, so \eqref{eq:simplex-bound} is an equality
+almost surely and \eqref{eq:inverse-power-values} follows.  If $q>1/2$ and $n\ge1$, then
+$(1-q)q^{\,n-1}<q^n$ and
+\[
+ \mathbb P\bigl(t>(1-q)q^{\,n-1}\bigr)
+ =\mathbb P\Bigl(1-X_q'>\frac{1-q}q\Bigr)>0,
+\]
+because $(1-q)/q<1$ and $1-X_q'$ has support $[0,1]$ by
+\Cref{thm:geometric-uniform-basic}; on that event \eqref{eq:simplex-bound} is strict, and
+so therefore is the average.  Finally $X_q$ has no atoms and $X_q\overset d=1-X_q$, which
+gives $F_q(1-q^n)=1-F_q(q^n)$.
+\end{proof}
+
+\begin{remark}[The half-base cube cut]\label{rem:half-moment-cube-cut}
+At $q=1/2$, \Cref{prop:inverse-power-values} is a second proof of
+\eqref{eq:fabius-half-moment} which uses neither \Cref{prop:up-tail} nor the smoothness
+of $F$.  In scaled coordinates it reads as follows.  Write $X=\sum_{j\ge1}2^{-j}V_j$ with
+$V_1,V_2,\ldots$ independent and uniform on $[0,1]$, multiply by $2^n$ and split the
+series after $n$ terms:
 \begin{equation}\label{eq:fabius-scaled-split}
  2^nX=\sum_{j=1}^{n}c_jV_j+X',
  \qquad c_j\defeq2^{\,n-j},
  \qquad X'\defeq\sum_{i\ge1}2^{-i}V_{n+i},
 \end{equation}
 where $X'$ is independent of $V_1,\ldots,V_n$ and distributed as $X$.  Conditionally on
-$X'=x$, the event $2^nX\le1$ reads $\sum_jc_jV_j\le t$ with $t\defeq1-x\in[0,1]$.  Each
-$c_j$ is an integer with $c_j\ge1$, so any $u\in[0,\infty)^n$ with $\sum_jc_ju_j\le t$
-automatically satisfies $u_j\le c_ju_j\le t\le1$: no upper constraint is active, the
-admissible region is the entire simplex, and its volume is
-$t^n/\bigl(n!\prod_jc_j\bigr)=(1-x)^n/\bigl(n!\,2^{\binom n2}\bigr)$, since
+$X'=x$, the event $2^nX\le1$ is $\sum_jc_jV_j\le t$ with $t\defeq1-x\in[0,1]$.  Each $c_j$
+is an integer with $c_j\ge1$, so no upper constraint is active, the admissible region is
+the entire simplex, and its volume is
+$t^n/\bigl(n!\prod_jc_j\bigr)=(1-x)^n/\bigl(n!\,2^{\binom n2}\bigr)$ since
 $\prod_{j=1}^{n}2^{\,n-j}=2^{\binom n2}$.  Averaging over $X'$ and using
-$X\overset d=1-X$ from \eqref{eq:geometric-uniform-mean-symmetry} turns
-$\mathbb E[(1-X')^n]$ into $\mathbb E(X^n)$ and returns \eqref{eq:fabius-half-moment}.
+$X\overset d=1-X$ returns \eqref{eq:fabius-half-moment}.
+\end{remark}
+
+\begin{corollary}[Bell-polynomial form of the Fabius values]\label{cor:fabius-bell-values}
+\index{Bell polynomial!Fabius values}
+Put $\kappa_1\defeq1/2$ and $\kappa_r\defeq\kappa_r(Y_{1/2})$ for $r\ge2$, the half-base
+cumulants \eqref{eq:halfbase-cumulants}.  Then for every $n\ge0$
+\begin{equation}\label{eq:fabius-bell-value}
+ F\bigl(2^{-n}\bigr)
+ =\frac{2^{-\binom n2}}{n!}\,\mathcal B_n(\kappa_1,\ldots,\kappa_n)
+ =2^{-\binom n2}
+ \sum_{\substack{\nu_1,\ldots,\nu_n\ge0\\ \nu_1+2\nu_2+\cdots+n\nu_n=n}}
+ \prod_{r=1}^{n}\frac1{\nu_r!}\left(\frac{\kappa_r}{r!}\right)^{\nu_r}.
+\end{equation}
+Only $\kappa_1$ and the even $\kappa_r$ contribute, and every value $F(2^{-n})$ is
+rational.
+\end{corollary}
+
+\begin{proof}
+Cumulants of order $r\ge2$ are translation invariant, so $X=Y_{1/2}+1/2$ has
+$\kappa_1(X)=\mathbb EX=1/2$ by \eqref{eq:geometric-uniform-mean-symmetry} and
+$\kappa_r(X)=\kappa_r$ for $r\ge2$.  The moment generating function is the exponential of
+the cumulant generating function, so the defining identity
+\eqref{eq:complete-bell-definition} gives
+$\mathbb E(X^n)=\mathcal B_n(\kappa_1,\ldots,\kappa_n)$, exactly as in the proof of
+\Cref{cor:geometric-uniform-moments} but for the uncentred variable; now apply
+\eqref{eq:fabius-half-moment}.  The second expression is the explicit expansion of
+$\mathcal B_n$ obtained by multiplying out $\exp\bigl(\sum_r\kappa_rt^r/r!\bigr)$, and the
+odd cumulants beyond the first vanish by \eqref{eq:halfbase-cumulants}.
+\end{proof}
+
+\begin{remark}[Sharpness of the hypothesis $q\le1/2$]\label{rem:inverse-power-sharpness}
+For $q>1/2$ the closed form \eqref{eq:inverse-power-values} fails, and can fail grossly:
+at $q=4/5$ and $n=1$ its right side is $q/(2(1-q))=2$, which is not even a probability.
+At $q=3/5$ the right sides for $n=1,2,3$ exceed the true values by
+$1.3\cdot10^{-2}$, $5.6\cdot10^{-4}$ and $1.2\cdot10^{-5}$; in particular
+$F_{3/5}(3/5)=0.73738\ldots$ against $3/4$.  The reason is the one isolated in the proof:
+for $q>1/2$ the smallest coefficient $(1-q)q^{\,n-1}$ drops below the threshold $q^n$ and
+the cube truncates the simplex, the deficit being exactly the inclusion--exclusion terms
+of \Cref{thm:finite-uniform-spline} that \eqref{eq:fabius-scaled-split} annihilates.
+% ed.: the values quoted here were computed by iterating
+% ed.: \eqref{eq:geometric-uniform-cdf-equation} on a grid of $4\cdot10^5$ points; the
+% ed.: same computation reproduces $F(1/4)=5/72$, $F(1/8)=1/288$ and
+% ed.: $F(1/16)=143/2073600$ to $10^{-12}$, and confirms equality at $q=1/2,1/3,1/4$.
 \end{remark}
 % ed.: this block merges two independent proofs of one value theorem.  The
 % ed.: sibling's \texttt{thm:fabius-inverse-dyadic} stated
@@ -6802,73 +7169,73 @@ and by \Cref{thm:subspace-count} it counts the $k$-dimensional subspaces of $\F_
 \end{remark}
 
 % ---- merged block M08 ----
+% ed.: self-contained replacement for \Cref{thm:gaussian-coefficient-transfer},
+% ed.: \Cref{rem:transfer-normalization} and \Cref{cor:transfer-translation}.
+% ed.: The incoming draft carried this transfer principle at $q=1/2$ only, but
+% ed.: with two independent series $U$ and $V$ in place of the single series $A$;
+% ed.: the two generalizations are orthogonal and both are kept here.  The
+% ed.: decoupling is not cosmetic: \Cref{cor:fabius-centered-formula} applies the
+% ed.: theorem with $U(z)=\mathcal A(-z)$ and $V=\mathcal P_m\ne\mathcal A$, which
+% ed.: the self-referential statement cannot reach.  The incoming draft's repair
+% ed.: of its own hypothesis ($u_0$ invertible rather than $u_0=1$) is
+% ed.: \Cref{rem:transfer-normalization}, which already said this for $a_0$.
 \begin{theorem}[Gaussian coefficient transfer]\label{thm:gaussian-coefficient-transfer}
 \index{coefficient transfer}
 \index{coefficient extraction!dyadic Gaussian}
 \index{double cancellation}
 Let $K$ have characteristic zero, let $q\in K^{\times}$ satisfy $q^j\ne1$ for $1\le j\le n$, and let
 \[
- A(z)=\sum_{m\ge0}a_mz^m\in K[[z]],
- \qquad a_0=1 .
+ U(z)=\sum_{m\ge0}u_mz^m,\qquad u_0=1,
+ \qquad
+ V(z)=\sum_{m\ge0}v_mz^m
 \]
-For each $0\le k\le n$ there is exactly one series $\Psi_k(z)=\sum_{m\ge0}c_{k,m}z^m\in K[[z]]$ satisfying the bridge relation
+be power series in $K[[z]]$.  For each $0\le k\le n$ there is exactly one series $\Psi_k(z)=\sum_{m\ge0}c_{k,m}z^m\in K[[z]]$ satisfying the bridge relation
 \begin{equation}\label{eq:general-bridge}
- \Psi_k(z)A(-z)=\e^{-z}A\bigl(-q^{-k}z\bigr),
+ \Psi_k(z)\,U(z)=\e^{-z}\,V\bigl(-q^{-k}z\bigr),
 \end{equation}
-namely $\Psi_k(z)=\e^{-z}A(-q^{-k}z)/A(-z)$, the quotient being legitimate in $K[[z]]$ because $A(-z)$ has constant term $a_0=1$.  For that family, with the weights of \eqref{eq:reciprocal-nodes-weights},
+namely $\Psi_k(z)=\e^{-z}V(-q^{-k}z)/U(z)$, the quotient being legitimate in $K[[z]]$ because $U$ has constant term $1$.  For that family, with the weights of \eqref{eq:reciprocal-nodes-weights},
 \begin{align}
  \sum_{k=0}^{n}W_{n,k}(q)\,c_{k,d}&=0
  \qquad(0\le d<n),\label{eq:transfer-lower-zero}\\
  \sum_{k=0}^{n}W_{n,k}(q)\,c_{k,n}
- &=q^{-\binom{n+1}{2}}(q;q)_n\,a_n.\label{eq:transfer-top}
+ &=q^{-\binom{n+1}{2}}(q;q)_n\,v_n.\label{eq:transfer-top}
 \end{align}
+Of the two series, only the single coefficient $v_n$ is ever seen; $U$ enters through its constant term alone.  In the self-referential case $U(z)=A(-z)$, $V=A$ with $a_0=1$, in which \eqref{eq:general-bridge} reads $\Psi_k(z)A(-z)=\e^{-z}A(-q^{-k}z)$ and $v_n=a_n$, the theorem therefore extracts the $n$th coefficient of $A$ from the family attached to $A$ itself; that is the form used in \Cref{thm:dyadic-gaussian-thue-morse}.
 \end{theorem}
 
 \begin{proof}
 Write $S_d\defeq\sum_{k=0}^{n}W_{n,k}(q)c_{k,d}$.  Comparing the coefficient of $z^d$ on the two sides of \eqref{eq:general-bridge} gives, for each fixed $k$,
 \begin{equation}\label{eq:bridge-coeff}
- \sum_{i=0}^{d}(-1)^{d-i}a_{d-i}\,c_{k,i}
- =\sum_{j=0}^{d}\frac{(-1)^j}{j!}\,a_{d-j}\bigl(-q^{-k}\bigr)^{d-j}.
+ \sum_{i=0}^{d}u_{d-i}\,c_{k,i}
+ =\sum_{j=0}^{d}\frac{(-1)^j}{j!}\,v_{d-j}\bigl(-q^{-k}\bigr)^{d-j}.
 \end{equation}
 Multiply \eqref{eq:bridge-coeff} by $W_{n,k}(q)$ and sum over $k$.  Since $x_k=-q^{-k}$, the right-hand side becomes
 \begin{equation}\label{eq:bridge-coeff-summed}
- \sum_{j=0}^{d}\frac{(-1)^j}{j!}\,a_{d-j}
+ \sum_{j=0}^{d}\frac{(-1)^j}{j!}\,v_{d-j}
  \sum_{k=0}^{n}W_{n,k}(q)\,x_k^{\,d-j},
 \end{equation}
-and the left-hand side becomes $\sum_{i=0}^{d}(-1)^{d-i}a_{d-i}S_i$.
+and the left-hand side becomes $\sum_{i=0}^{d}u_{d-i}S_i$.
 
-Let $0\le d<n$ and induct on $d$.  Every exponent occurring in \eqref{eq:bridge-coeff-summed} satisfies $0\le d-j\le d<n$, so the entire right-hand side vanishes by \eqref{eq:geometric-moment-zero}.  On the left, the terms with $i<d$ vanish by the induction hypothesis (for $d=0$ there are none), and the term $i=d$ equals $a_0S_d=S_d$.  Hence $S_d=0$, which is \eqref{eq:transfer-lower-zero}.
+Let $0\le d<n$ and induct on $d$.  Every exponent occurring in \eqref{eq:bridge-coeff-summed} satisfies $0\le d-j\le d<n$, so the entire right-hand side vanishes by \eqref{eq:geometric-moment-zero}.  On the left, the terms with $i<d$ vanish by the induction hypothesis (for $d=0$ there are none), and the term $i=d$ equals $u_0S_d=S_d$.  Hence $S_d=0$, which is \eqref{eq:transfer-lower-zero}.
 
 Now take $d=n$.  In \eqref{eq:bridge-coeff-summed} every term with $j\ge1$ carries an exponent $n-j<n$ and vanishes, while the term $j=0$ equals
 \[
- a_n\sum_{k=0}^{n}W_{n,k}(q)\,x_k^{\,n}
- =q^{-\binom{n+1}{2}}(q;q)_n\,a_n
+ v_n\sum_{k=0}^{n}W_{n,k}(q)\,x_k^{\,n}
+ =q^{-\binom{n+1}{2}}(q;q)_n\,v_n
 \]
-by \eqref{eq:geometric-moment-top}.  On the left, the terms with $i<n$ vanish by \eqref{eq:transfer-lower-zero} and the term $i=n$ equals $a_0S_n=S_n$.  This proves \eqref{eq:transfer-top}.
+by \eqref{eq:geometric-moment-top}.  On the left, the terms with $i<n$ vanish by \eqref{eq:transfer-lower-zero} and the term $i=n$ equals $u_0S_n=S_n$.  This proves \eqref{eq:transfer-top}.
 \end{proof}
 
-\begin{remark}[On the normalization $a_0=1$]\label{rem:transfer-normalization}
-The proof uses $a_0=1$ three times: once for the invertibility of $A(-z)$ and once at the last step of each induction stage.  Only invertibility of $a_0$ is actually needed: for arbitrary $a_0\ne0$ the same argument gives $S_d=0$ for $d<n$ and $S_n=q^{-\binom{n+1}{2}}(q;q)_na_n/a_0$.  This is not a restriction, because \eqref{eq:general-bridge} is unchanged when $A$ is multiplied by a nonzero constant.
+\begin{remark}[On the normalization $u_0=1$]\label{rem:transfer-normalization}
+The proof uses $u_0=1$ twice: once for the invertibility of $U$, and once at the last step of each induction stage.  Only invertibility of $u_0$ is actually needed: for arbitrary $u_0\ne0$ the same argument gives $u_0S_d=0$ for $d<n$ and $u_0S_n=q^{-\binom{n+1}{2}}(q;q)_nv_n$.  This is not a restriction, because \eqref{eq:general-bridge} is unchanged when the pair $(U,V)$ is divided by $u_0$.  In every application below the normalization is automatic, $U$ being $\mathcal A(-z)$ or $A(-z)$ with $A(0)=1$.
 \end{remark}
 
-\begin{remark}[The dyadic reading]\label{rem:transfer-dyadic-reading}
-At $q=1/2$ the data \eqref{eq:reciprocal-nodes-weights} are the half-base Prouhet data \eqref{eq:halfbase-prouhet-data}: the nodes are $x_k=-2^{k}=\xi_k$, the weights are
-\[
- W_{n,k}(1/2)=(-1)^k2^{-\binom k2}\Qbinom nk{1/2}=w_{n,k},
-\]
-and the constant on the right of \eqref{eq:transfer-top} is $2^{\binom{n+1}{2}}\left(\tfrac12;\tfrac12\right)_n=\mathfrak m_n$ by \eqref{eq:halfbase-factorial}.  In that reading the theorem says: a family $\Psi_0,\ldots,\Psi_n$ tied to $A$ by $\Psi_k(z)A(-z)=\e^{-z}A(-2^kz)$ has $\sum_kw_{n,k}c_{k,d}=0$ for $d<n$ and $\sum_kw_{n,k}c_{k,n}=\mathfrak m_na_n$.  This is the form used throughout \Cref{chap:geometric-uniform-fabius}.
-% ed.: an incoming draft carried exactly this dyadic reading as a separate
-% ed.: theorem, together with the existence-and-uniqueness clause now in the
-% ed.: statement above; both are recorded here rather than duplicated.
-\end{remark}
-
-% ---- merged block A04 ----
 \begin{corollary}[Invariance under a common translation]\label{cor:transfer-translation}
 Under the hypotheses of \Cref{thm:gaussian-coefficient-transfer}, let $\alpha\in K$ and put $\widetilde\Psi_k(z)=\e^{\alpha z}\Psi_k(z)$.  Then
 \begin{equation}\label{eq:transfer-translation-invariance}
  \sum_{k=0}^{n}W_{n,k}(q)\,[z^n]\widetilde\Psi_k(z)
  =\sum_{k=0}^{n}W_{n,k}(q)\,c_{k,n}
- =q^{-\binom{n+1}{2}}(q;q)_n\,a_n .
+ =q^{-\binom{n+1}{2}}(q;q)_n\,v_n .
 \end{equation}
 \end{corollary}
 
@@ -7104,17 +7471,66 @@ For \eqref{eq:fabius-inverse-dyadic-closed}, multiply \eqref{eq:dyadic-gaussian-
 
 The blocks of \eqref{eq:fabius-inverse-dyadic-closed} may also be centred at their own right endpoints.  This is the normalization in which the inner sums are the bare Taylor coefficients of the Thue--Morse blocks $\Psi_k$, and it costs one application of digit complementation.
 
-\begin{corollary}[Centred form]\label{cor:fabius-centered-formula}
-\index{Thue--Morse sequence!digit complement}
-For $n\ge0$ and $\theta\in\C$ put
-\begin{equation}\label{eq:dyadic-numerator}
- \mathcal N_n(\theta)
- \defeq\sum_{k=0}^{n}
- \frac{\Qbinom nk{1/2}}{4^{\binom k2}(n+k)!}
- \sum_{r=0}^{2^k-1}\tau_r\,\bigl(r-2^k+\theta\bigr)^{\,n+k},
- \qquad \tau_r=(-1)^{s_2(r)} .
+% ed.: self-contained replacement for \Cref{cor:fabius-centered-formula}, which
+% ed.: stated the case $m=1$ only.  An incoming draft carried the same centred
+% ed.: formula for an arbitrary dyadic numerator $m/2^n$; since its $m=1$ case is
+% ed.: verbatim the corollary, the two are stated here once, in the general form,
+% ed.: under the corollary's own label.  The digit-complementation computation
+% ed.: that produced the $k$-independent sign $(-1)^n$ is retained in the last
+% ed.: paragraph of the proof, where \Cref{rem:dyadic-shift-common} cites it.
+% ed.: Notation: the incoming draft wrote $\mathcal H_m$ for the numerator factor,
+% ed.: which collides with the Hessenberg matrix of \Cref{thm:fabius-hessenberg};
+% ed.: renamed $\mathcal K_m$ here.
+% ed.: Retained from the replaced text: \eqref{eq:fabius-centered-formula} at
+% ed.: $\theta=0$ is what the transfer theorem produces when applied to $\Psi_k$
+% ed.: with no auxiliary factor, the inner sums then being
+% ed.: $(n+k)!\,(-1)^k2^{\binom k2}[z^n]\Psi_k(z)$.  For even $n$ the reflection is
+% ed.: sign-free, so the centred sums at $\theta=0$ coincide term by term with the
+% ed.: raw sums at $\theta=1$; this is why \Cref{ex:dyadic-formula-small} serves
+% ed.: both displays at $n=2$, and an incoming draft's separate centred worked
+% ed.: example at $n=2$ (inner sums $1,-7,160$, total $5/12$) is that same
+% ed.: computation.
+
+The blocks of \eqref{eq:fabius-inverse-dyadic-closed} may also be centred at their
+own right endpoints.  This is the normalization in which the inner sums are the
+bare Taylor coefficients of the Thue--Morse blocks $\Psi_k$, it costs one
+application of digit complementation, and --- unlike the raw normalization --- it
+extends from the inverse powers $2^{-n}$ to every dyadic point of $[0,1]$ at
+resolution $2^{-n}$, the numerator entering only through the length of the
+Thue--Morse block.
+
+For integers $m,k,d\ge0$ and $\theta\in\C$ define the \emph{long} Thue--Morse block
+\begin{equation}\label{eq:fabius-long-block}
+ T_{m;k,d}(\theta)\defeq\sum_{r=0}^{m2^k-1}\tau_r\,\bigl(r-m2^k+\theta\bigr)^d,
+ \qquad \tau_r=(-1)^{s_2(r)},
 \end{equation}
-Then $\mathcal N_n(\theta)=\mathfrak m_n a_n$ for every $\theta$, and
+an empty sum being $0$; thus $T_{0;k,d}=0$ and $T_{1;k,d}=T_{k,d}$ is the centred
+power sum of \eqref{eq:thue-morse-power-sums}.
+
+\begin{corollary}[Centred form, at an arbitrary dyadic point]\label{cor:fabius-centered-formula}
+\index{Thue--Morse sequence!digit complement}
+\index{Fabius function!value at a dyadic point}
+For $n,m\ge0$ and $\theta\in\C$ put
+\begin{equation}\label{eq:dyadic-numerator}
+ \mathcal N_{m,n}(\theta)
+ \defeq\sum_{k=0}^{n}
+ \frac{\Qbinom nk{1/2}}{4^{\binom k2}(n+k)!}\,T_{m;k,n+k}(\theta),
+ \qquad
+ \mathcal N_n(\theta)\defeq\mathcal N_{1,n}(\theta).
+\end{equation}
+Then $\mathcal N_{m,n}(\theta)$ does not depend on $\theta$, and for every integer $m$
+with $0\le m\le2^n$,
+\begin{equation}\label{eq:fabius-dyadic-value}
+ F\!\left(\frac m{2^n}\right)
+ =\frac{\mathcal N_{m,n}(\theta)}{2^{\binom n2}\mathfrak m_n}
+ =\frac1{2^{\,n^2}\left(\frac12;\frac12\right)_n}
+ \sum_{k=0}^{n}
+ \frac{\Qbinom nk{1/2}}{4^{\binom k2}(n+k)!}
+ \sum_{r=0}^{m2^k-1}\tau_r\,\bigl(r-m2^k+\theta\bigr)^{\,n+k}.
+\end{equation}
+In particular $\mathcal N_n(\theta)=\mathfrak m_n\alpha_n$ for every $\theta$, where
+$\alpha_n=\mathbb EX^n/n!$ is the coefficient called $a_n$ in
+\Cref{thm:dyadic-gaussian-thue-morse}, and the case $m=1$ reads
 \begin{equation}\label{eq:fabius-centered-formula}
  F\bigl(2^{-n}\bigr)
  =\frac{\mathcal N_n(\theta)}{2^{\binom n2}\mathfrak m_n}
@@ -7123,29 +7539,155 @@ Then $\mathcal N_n(\theta)=\mathfrak m_n a_n$ for every $\theta$, and
  \frac{\Qbinom nk{1/2}}{4^{\binom k2}(n+k)!}
  \sum_{r=0}^{2^k-1}\tau_r\,\bigl(r-2^k+\theta\bigr)^{\,n+k},
 \end{equation}
-with no sign $(-1)^n$ in front.
+with no sign $(-1)^n$ in front.  The hypothesis $m\le2^n$ cannot be dropped: at
+$n=2$, $m=5$ the right-hand side of \eqref{eq:fabius-dyadic-value} equals $67/72$,
+whereas $F(5/4)=1$.
 \end{corollary}
 
 \begin{proof}
-Fix $\theta$ and substitute $r\mapsto2^k-1-r$ in the inner sum of $\mathcal N_n(1-\theta)$.  Complementing all $k$ binary digits gives $s_2(2^k-1-r)=k-s_2(r)$, hence $\tau_{2^k-1-r}=(-1)^k\tau_r$, while
+For $n=0$ the admissible numerators are $m=0$ and $m=1$, and
+$\left(\tfrac12;\tfrac12\right)_0=1$; the single term $k=0$ is $\sum_{r<m}\tau_r$,
+which is $0$ for $m=0$ and $\tau_0=1$ for $m=1$, in agreement with $F(0)=0$ and
+$F(1)=1$.  Assume $n\ge1$.
+
+\emph{Step 1: the value is a moment functional.}  Put
+\begin{equation}\label{eq:fabius-numerator-series}
+ \mathcal K_m(z)\defeq\sum_{h=0}^{m-1}\tau_h\,\e^{(m-h-1)z},
+ \qquad
+ \mathcal P_m(z)\defeq\mathcal A(z)\,\mathcal K_m(z)=\sum_{d\ge0}p_{m,d}z^d,
+\end{equation}
+so that $\mathcal P_1=\mathcal A$ and, by \eqref{eq:geometric-uniform-mgf-def},
+\begin{equation}\label{eq:fabius-numerator-moment}
+ p_{m,n}=\frac1{n!}\sum_{h=0}^{m-1}\tau_h\,\mathbb E\,(X+m-h-1)^n .
+\end{equation}
+We claim that
+\begin{equation}\label{eq:fabius-dyadic-moment}
+ F\!\left(\frac m{2^n}\right)=2^{-\binom n2}\,p_{m,n}
+ \qquad(0\le m\le2^n).
+\end{equation}
+Integrating \eqref{eq:dyadic-thue-morse-spline} term by term, with
+$\int_0^x(t-c)_+^{\,n-1}\dd t=(x-c)_+^{\,n}/n$, gives the distribution function of the
+truncation $X_{1/2,n}$ of \eqref{eq:finite-geometric-uniform-sum}:
 \[
- (2^k-1-r)-2^k+(1-\theta)=-(r+\theta).
+ F_{1/2,n}(x)
+ =\frac{2^{\binom{n+1}{2}}}{n!}\sum_{r=0}^{2^n-1}\tau_r
+   \left(x-\frac r{2^n}\right)_+^{\,n}.
 \]
-Therefore
+By \eqref{eq:fabius-scaled-split}, $X=X_{1/2,n}+2^{-n}X'$ with $X'$ an independent
+copy of $X$, so conditioning on $X'$ and using $x\mapsto2^{-n}(m-x)$,
+\[
+ F\!\left(\frac m{2^n}\right)
+ =\mathbb E\Bigl[F_{1/2,n}\bigl(2^{-n}(m-X')\bigr)\Bigr]
+ =\frac{2^{\binom{n+1}{2}-n^2}}{n!}
+  \sum_{r=0}^{2^n-1}\tau_r\,\mathbb E\bigl[(m-r-X')_+^{\,n}\bigr],
+\]
+the factor $2^{-n\cdot n}$ coming from the $n$th power of $2^{-n}$.  Since
+$0\le X'\le1$ and $m\le2^n$, a term with $r\ge m$ has $m-r-X'\le0$ and drops out,
+while a term with $r<m$ has $m-r-X'\ge0$ and keeps its positive part.  With
+$\binom{n+1}{2}-n^2=-\binom n2$ and $1-X'\overset d=X$ from
+\eqref{eq:geometric-uniform-mean-symmetry},
+\[
+ F\!\left(\frac m{2^n}\right)
+ =\frac{2^{-\binom n2}}{n!}\sum_{r=0}^{m-1}\tau_r\,\mathbb E\,(m-r-X')^n
+ =\frac{2^{-\binom n2}}{n!}\sum_{r=0}^{m-1}\tau_r\,\mathbb E\,(X+m-r-1)^n,
+\]
+which is \eqref{eq:fabius-dyadic-moment} by \eqref{eq:fabius-numerator-moment}.  At
+$m=1$ this is \Cref{thm:fabius-half-moment} again, since $p_{1,n}=\alpha_n$.
+
+\emph{Step 2: the long block is a dilated bridge.}  Write $r=h2^k+s$ with
+$0\le h<m$ and $0\le s<2^k$; this is a bijection onto $\set{0,\ldots,m2^k-1}$, and the
+binary digits of $h2^k$ and of $s$ occupy disjoint positions, so
+$\tau_{h2^k+s}=\tau_h\tau_s$.  Hence
+\begin{align*}
+ \sum_{d\ge0}T_{m;k,d}(0)\frac{z^d}{d!}
+ &=\e^{-m2^kz}\sum_{r=0}^{m2^k-1}\tau_r\e^{rz}
+  =\e^{-m2^kz}
+   \Bigl(\sum_{h=0}^{m-1}\tau_h\e^{h2^kz}\Bigr)
+   \Bigl(\sum_{s=0}^{2^k-1}\tau_s\e^{sz}\Bigr)\\
+ &=\mathcal K_m\bigl(-2^kz\bigr)
+   \Bigl(\e^{-2^kz}\sum_{s=0}^{2^k-1}\tau_s\e^{sz}\Bigr)
+  =(-1)^k2^{\binom k2}z^k\,\Psi_{m,k}(z),
+\end{align*}
+where $\Psi_{m,k}(z)\defeq\mathcal K_m(-2^kz)\Psi_k(z)$; the third equality uses
+$\mathcal K_m(-2^kz)=\e^{-(m-1)2^kz}\sum_{h<m}\tau_h\e^{h2^kz}$ and the fourth is
+\eqref{eq:thue-morse-normalized}.  Consequently
+\begin{equation}\label{eq:long-block-coefficient}
+ [z^n]\,\Psi_{m,k}(z)
+ =\frac{(-1)^k}{2^{\binom k2}(n+k)!}\,T_{m;k,n+k}(0),
+\end{equation}
+and multiplying \eqref{eq:TM-A-bridge} by $\mathcal K_m(-2^kz)$ gives
+\[
+ \Psi_{m,k}(z)\,\mathcal A(-z)
+ =\e^{-z}\,\mathcal K_m\bigl(-2^kz\bigr)\mathcal A\bigl(-2^kz\bigr)
+ =\e^{-z}\,\mathcal P_m\bigl(-2^kz\bigr).
+\]
+
+\emph{Step 3: transfer.}  Apply \Cref{thm:gaussian-coefficient-transfer} at $q=1/2$,
+where $q^{-k}=2^k$, with $U(z)=\mathcal A(-z)$, whose constant term is $1$ by
+\Cref{lem:fabius-moment-dilation}, with $V=\mathcal P_m$, and with the family
+$\Psi_{m,0},\ldots,\Psi_{m,n}$, for which Step 2 is the bridge relation
+\eqref{eq:general-bridge}.  By \eqref{eq:transfer-top} and \eqref{eq:halfbase-factorial},
+\[
+ \sum_{k=0}^{n}W_{n,k}(1/2)\,[z^n]\Psi_{m,k}
+ =2^{\binom{n+1}{2}}\left(\tfrac12;\tfrac12\right)_np_{m,n}
+ =\mathfrak m_n\,p_{m,n},
+\]
+and inserting \eqref{eq:long-block-coefficient} together with
+$W_{n,k}(1/2)=(-1)^k2^{-\binom k2}\Qbinom nk{1/2}$ makes the two signs cancel and the
+two triangular powers of $2$ combine into $4^{-\binom k2}$:
+\[
+ \mathcal N_{m,n}(0)=\mathfrak m_n\,p_{m,n}.
+\]
+Dividing by $2^{\binom n2}\mathfrak m_n$ and using \eqref{eq:fabius-dyadic-moment}
+proves \eqref{eq:fabius-dyadic-value} at $\theta=0$; the second expression follows from
+$2^{\binom n2}\mathfrak m_n=2^{\,n^2}\left(\tfrac12;\tfrac12\right)_n$, which is
+\eqref{eq:halfbase-factorial} with $\binom n2+\binom{n+1}{2}=n^2$.
+
+\emph{The free parameter.}  Translating the inner argument multiplies the exponential
+generating function of Step 2 by $\e^{\theta z}$, so
+$[z^n]\bigl(\e^{\theta z}\Psi_{m,k}\bigr)
+ =(-1)^k2^{-\binom k2}T_{m;k,n+k}(\theta)/(n+k)!$, while
+\Cref{cor:transfer-translation} with $\alpha=\theta$ leaves the weighted sum
+unchanged.  Hence $\mathcal N_{m,n}(\theta)=\mathcal N_{m,n}(0)$ for every $\theta$.
+
+\emph{Consistency with the raw form.}  For $m=1$ the two normalizations are exchanged
+by digit complementation.  Substituting $r\mapsto2^k-1-r$ in the inner sum of
+$\mathcal N_n(1-\theta)$ and using $s_2(2^k-1-r)=k-s_2(r)$, hence
+$\tau_{2^k-1-r}=(-1)^k\tau_r$, together with
+$(2^k-1-r)-2^k+(1-\theta)=-(r+\theta)$, gives
 \[
  \sum_{r=0}^{2^k-1}\tau_r\bigl(r-2^k+1-\theta\bigr)^{\,n+k}
- =(-1)^k\sum_{r=0}^{2^k-1}\tau_r\bigl(-(r+\theta)\bigr)^{\,n+k}
  =(-1)^{n+2k}\sum_{r=0}^{2^k-1}\tau_r(r+\theta)^{\,n+k},
 \]
-and $(-1)^{n+2k}=(-1)^n$ does not depend on $k$, so it factors out of the sum over $k$:
-\[
- \mathcal N_n(1-\theta)
- =(-1)^n\sum_{k=0}^{n}
- \frac{\Qbinom nk{1/2}}{4^{\binom k2}(n+k)!}
- \sum_{r=0}^{2^k-1}\tau_r(r+\theta)^{\,n+k}.
-\]
-By \eqref{eq:dyadic-gaussian-thue-morse} the sum on the right is $(-1)^n\mathfrak m_na_n$, so $\mathcal N_n(1-\theta)=\mathfrak m_na_n$; as $\theta$ runs over $\C$ so does $1-\theta$.  Now \eqref{eq:fabius-half-moment} gives $F(2^{-n})=2^{-\binom n2}a_n=\mathcal N_n(\theta)/(2^{\binom n2}\mathfrak m_n)$, and the second expression in \eqref{eq:fabius-centered-formula} follows from $2^{\binom n2}\mathfrak m_n=2^{\,n^2}\left(\tfrac12;\tfrac12\right)_n$, as in the proof above.
+and $(-1)^{n+2k}=(-1)^n$ does not depend on $k$, so it factors out of the sum over
+$k$: $\mathcal N_n(1-\theta)$ is $(-1)^n$ times the sum in
+\eqref{eq:dyadic-gaussian-thue-morse}, which is $\mathfrak m_n\alpha_n$.  This
+recovers the case $m=1$ a second time, and it is the $k$-independent sign referred to
+in \Cref{rem:dyadic-shift-common}.
 \end{proof}
+
+\begin{remark}[Resolution and numerator are separated]\label{rem:fabius-dyadic-architecture}
+\index{Fabius function!value at a dyadic point}
+In \eqref{eq:fabius-dyadic-value} the half-base Gaussian row
+$\Qbinom nk{1/2}\big/4^{\binom k2}$ depends only on the resolution $2^{-n}$, while the
+numerator $m$ enters only through the length $m2^k$ of the Thue--Morse block.  It is
+instructive to compare \Cref{thm:dyadic-thue-morse-spline}, which writes the density of
+the truncation $X_{1/2,N}$ as a Thue--Morse signed spline: there the Thue--Morse signs
+appear alone and the identity is exact only for the truncation, whereas here they
+appear weighted by a Gaussian row and the identity is exact for the limit function $F$
+itself.  The formula returns $0$ at $m=0$ and $1$ at $m=2^n$, and since
+$F(m/2^n)=F(2m/2^{n+1})$ it is heavily overdetermined.  The row $n=3$ is
+\[
+ 0,\quad\frac1{288},\quad\frac5{72},\quad\frac{73}{288},\quad\frac12,
+ \quad\frac{215}{288},\quad\frac{67}{72},\quad\frac{287}{288},\quad1,
+\]
+symmetric about $1/2$ as \eqref{eq:fabius-symmetry} requires.
+% ed.: verified in exact rational arithmetic for every $n\le5$ and every
+% ed.: $0\le m\le2^n$ at $\theta\in\set{0,1,-3/2,7/3,11/5}$ ($\theta$-independence,
+% ed.: endpoints, symmetry, strict monotonicity, and agreement across resolutions),
+% ed.: and against Fourier inversion of \eqref{eq:fabius-fourier-formula} at
+% ed.: $m/2^n=1/4,\,1/8,\,3/8,\,5/16,\,7/32,\,11/16$ to $10^{-17}$.
+\end{remark}
 % ed.: \eqref{eq:fabius-centered-formula} at $\theta=0$ is what the transfer
 % ed.: theorem produces when applied to $\Psi_k$ with no auxiliary factor, the
 % ed.: inner sums then being $(n+k)!\,(-1)^k2^{\binom k2}[z^n]\Psi_k(z)$.  For
@@ -7617,24 +8159,51 @@ The Lagrange row $\lambda_{n,k}^{(q)}$ of \eqref{eq:geometric-lagrange-weight} w
 in \Cref{chap:geometric-filters} for exactness.  It also has an exact and uniformly
 bounded $\ell^1$ norm, which turns it into a regular summability kernel.
 
-\begin{theorem}[Row mass and total variation]\label{thm:geometric-row-variation}
-Let $0<q<1$.  Then, for every $n\ge0$,
+% ed.: PLACEMENT: chap:dyadic-gaussian-thue-morse, section ``The geometric row as a
+% ed.: summability kernel''.  This block REPLACES \Cref{thm:geometric-row-variation}
+% ed.: (label and all three equation labels retained, so
+% ed.: \Cref{cor:gaussian-row-spline-average,rem:halfbase-row-reversal,prin:row-exactness-stability}
+% ed.: need no change); the corollary and the remark after it are new.  An incoming
+% ed.: draft carried the same $\ell^1$ identity a third time -- it is the identity
+% ed.: already proved here -- together with the reciprocal-Pochhammer form, strict
+% ed.: monotonicity, the sharper half-base bound $<9$ (against $3\e^{4/3}=11.38\ldots$),
+% ed.: a conditioning corollary and a comparison with harmonic nodes; only those five
+% ed.: are added.  The limit is written $\mathcal L(q)$ because $\Lambda$ is the
+% ed.: uniform kernel \eqref{eq:uniform-mgf-kernel} in this chapter.  The half-base
+% ed.: display is now restricted to $n\ge1$: at $n=0$ its left side is $1$, not $3$.
+
+\begin{theorem}[Row mass, total variation, and the geometric Lebesgue constant]\label{thm:geometric-row-variation}
+\index{Toeplitz theorem!bounded-variation rows}
+\index{Lebesgue constant!geometric nodes}
+\index{extrapolation!conditioning}
+Let $0<q<1$.  The weights \eqref{eq:geometric-lagrange-weight} alternate in sign,
+\begin{equation}\label{eq:geometric-lagrange-signs}
+ \sgn\lambda_{n,k}^{(q)}=(-1)^{n-k}
+ \qquad(0\le k\le n),
+\end{equation}
+and for every $n\ge0$
 \begin{align}
  \sum_{k=0}^{n}\lambda_{n,k}^{(q)}&=1,
  \label{eq:geometric-row-mass}\\
  \sum_{k=0}^{n}\bigl|\lambda_{n,k}^{(q)}\bigr|
- &=\frac{(-q;q)_n}{(q;q)_n}
- \ \le\ \frac{(-q;q)_\infty}{(q;q)_\infty}<\infty .
+ &=\frac{\poch{-q}{q}{n}}{\poch{q}{q}{n}}
+  =\frac{\poch{q^2}{q^2}{n}}{\poch{q}{q}{n}^{2}} .
  \label{eq:geometric-row-variation}
 \end{align}
-At $q=1/2$ the supremum equals $(-1/2;1/2)_\infty/(1/2;1/2)_\infty
-=8.25598793577825\ldots$, and the elementary bound
+The right-hand side of \eqref{eq:geometric-row-variation} increases strictly with $n$ to
+the finite limit
+\begin{equation}\label{eq:geometric-lebesgue-constant}
+ \mathcal L(q)\defeq\frac{\poch{-q}{q}{\infty}}{\poch{q}{q}{\infty}}
+              =\frac{\poch{q^2}{q^2}{\infty}}{\poch{q}{q}{\infty}^{2}},
+\end{equation}
+so that $\sum_{k=0}^{n}\bigl|\lambda_{n,k}^{(q)}\bigr|<\mathcal L(q)<\infty$ for every
+$n$.  At the half base,
 \begin{equation}\label{eq:halfbase-row-variation-bound}
  \sum_{k=0}^{n}\bigl|\lambda_{n,k}^{(1/2)}\bigr|
  =3\prod_{r=2}^{n}\frac{1+2^{-r}}{1-2^{-r}}
- \le3\e^{4/3}
+ <\mathcal L(1/2)=8.2559879357782500655\ldots<9
+ \qquad(n\ge1).
 \end{equation}
-holds uniformly in $n$.
 \end{theorem}
 
 \begin{proof}
@@ -7644,25 +8213,76 @@ By \Cref{thm:reversed-qbinomial} and \eqref{eq:geometric-lagrange-weight},
  =\frac1{(q;q)_n}\prod_{j=1}^{n}(z-q^j).
 \end{equation}
 Evaluating at $z=1$ gives $(q;q)_n/(q;q)_n=1$, which is
-\eqref{eq:geometric-row-mass}.  For $0<q<1$ the sign of $\lambda_{n,k}^{(q)}$ is
-$(-1)^{n-k}$, so $\bigl|\lambda_{n,k}^{(q)}\bigr|=(-1)^{n-k}\lambda_{n,k}^{(q)}$ and
+\eqref{eq:geometric-row-mass}.  For $0<q<1$ the three factors $\poch{q}{q}{n}$,
+$q^{\binom{n-k+1}{2}}$ and $\qbinom nk$ occurring in
+\eqref{eq:geometric-lagrange-weight} are positive, which is
+\eqref{eq:geometric-lagrange-signs}; hence
+$\bigl|\lambda_{n,k}^{(q)}\bigr|=(-1)^{n}(-1)^{k}\lambda_{n,k}^{(q)}$ and, by
+\eqref{eq:geometric-row-polynomial} at $z=-1$,
 \[
  \sum_{k=0}^{n}\bigl|\lambda_{n,k}^{(q)}\bigr|
- =(-1)^n\sum_{k=0}^{n}\lambda_{n,k}^{(q)}(-1)^k
- =\frac{(-1)^n}{(q;q)_n}\prod_{j=1}^{n}(-1-q^j)
- =\frac{(-q;q)_n}{(q;q)_n},
+ =\frac{(-1)^n}{(q;q)_n}\prod_{j=1}^{n}\bigl(-1-q^j\bigr)
+ =\frac{\poch{-q}{q}{n}}{\poch{q}{q}{n}} .
 \]
-by \eqref{eq:geometric-row-polynomial} at $z=-1$.  The quotient increases in $n$ and
-converges to $(-q;q)_\infty/(q;q)_\infty$, finite because both products converge for
-$0<q<1$.
-
-At $q=1/2$ the factor with $r=1$ contributes $(1+1/2)/(1-1/2)=3$.  For $0\le x\le1/4$,
+The second form in \eqref{eq:geometric-row-variation} follows from
 \[
- \log\frac{1+x}{1-x}=\int_{-x}^{x}\frac{\dd t}{1+t}\le\frac{2x}{1-x}\le\frac83x,
+ \poch{-q}{q}{n}\poch{q}{q}{n}
+ =\prod_{j=1}^{n}\bigl(1+q^j\bigr)\bigl(1-q^j\bigr)
+ =\prod_{j=1}^{n}\bigl(1-q^{2j}\bigr)=\poch{q^2}{q^2}{n}.
 \]
-so the logarithm of the remaining product is at most
-$\tfrac83\sum_{r\ge2}2^{-r}=4/3$.
+Passing from $n$ to $n+1$ multiplies the quotient by $(1+q^{n+1})/(1-q^{n+1})>1$, so it
+increases strictly; it converges because
+\[
+ \sum_{j\ge1}\log\frac{1+q^j}{1-q^j}
+ =\sum_{j\ge1}\log\Bigl(1+\frac{2q^j}{1-q^j}\Bigr)
+ \le\frac2{1-q}\sum_{j\ge1}q^j<\infty,
+\]
+both products in \eqref{eq:geometric-lebesgue-constant} being convergent for $0<q<1$.
+
+At $q=1/2$ the factor $r=1$ contributes $(1+1/2)/(1-1/2)=3$, which is the displayed
+prefactor.  For the bound, split the infinite product at $r=4$: the factors $r=1,2,3$ give
+$3\cdot\frac53\cdot\frac97=\frac{45}7$, while for $r\ge4$ one has $x=2^{-r}\le1/16$ and
+\[
+ \frac{1+x}{1-x}=1+\frac{2x}{1-x}\le\exp\Bigl(\frac{2x}{1-x}\Bigr)
+ \le\exp\Bigl(\frac{32x}{15}\Bigr),
+\]
+so, since $\sum_{r\ge4}2^{-r}=1/8$, the tail is at most $\e^{4/15}<1.3063$ and
+$\mathcal L(1/2)\le\frac{45}7\e^{4/15}<8.4<9$.  The decimal expansion in
+\eqref{eq:halfbase-row-variation-bound} is obtained by evaluating the product
+numerically.
 \end{proof}
+
+\begin{corollary}[Conditioning of geometric extrapolation]\label{cor:geometric-extrapolation-conditioning}
+Let $0<q<1$, let $p$ be a polynomial of degree at most $n$, and let $y_0,\ldots,y_n$ be
+data with $\abs{y_k-p(q^k)}\le\eps$ for every $k$.  Then
+\begin{equation}\label{eq:geometric-extrapolation-conditioning}
+ \Bigl|\sum_{k=0}^{n}\lambda^{(q)}_{n,k}y_k-p(0)\Bigr|\le\mathcal L(q)\,\eps .
+\end{equation}
+The amplification of data error is therefore bounded independently of the number of
+nodes.
+\end{corollary}
+
+\begin{proof}
+By \Cref{thm:geometric-evaluation-zero}, $\sum_k\lambda^{(q)}_{n,k}p(q^k)=p(0)$;
+subtract, take absolute values, and apply \eqref{eq:geometric-row-variation} together
+with \eqref{eq:geometric-lebesgue-constant}.
+\end{proof}
+
+\begin{remark}[Geometric versus harmonic node sequences]\label{rem:geometric-vs-harmonic-nodes}
+The uniform bound is special to geometric nodes.  For the harmonic sequence
+$v_k=1/(k+1)$, $0\le k\le n$, the corresponding evaluation weights
+$\ell_k(0)=\prod_{j\ne k}v_j/(v_j-v_k)$ have absolute sums
+\[
+ 9,\quad 91.67,\quad 1.007\cdot10^{3},\quad 1.151\cdot10^{4},
+ \quad 1.600\cdot10^{6},\quad 3.495\cdot10^{10}
+\]
+at $n=2,4,6,8,12,20$ (computed in exact rational arithmetic), growing geometrically in
+$n$, whereas at $q=1/2$ the same quantity never reaches $9$.  Combined with
+\Cref{thm:geometric-filter-diagonal}, this says that the filters $\mathcal G_{n,q}$ are
+exact and simultaneously uniformly bounded on the sampled values: raising the order of a
+geometric filter costs nothing in stability.  This is the analytic half of
+\Cref{prin:row-exactness-stability}.
+\end{remark}
 
 \begin{remark}[The half-base row in reversed coordinates]\label{rem:halfbase-row-reversal}
 Put
@@ -7759,6 +8379,738 @@ formal coefficient $\alpha_n$ into the value $F(2^{-n})$.  Every closed formula 
 the algebraic core composed with that single analytic bridge.  The formalization status
 of the individual statements is recorded in \Cref{app:lean-status}.
 \end{remark}
+
+
+% ---- merged block B17 ----
+\subsection{Negative parameters}
+
+The series \eqref{eq:geometric-uniform-series} and the convergence estimate in
+the proof of \Cref{thm:geometric-uniform-basic} use only $\abs q<1$, so $X_q$ is
+a well-defined bounded random variable for every real $q\in(-1,1)$.  For negative
+$q$ it is no longer supported in $[0,1]$, but it is an affine image of a
+positive-parameter member of the same family.
+
+\begin{proposition}[Negative parameters as affine positive laws]\label{prop:qF-negative-affine}
+\index{geometric uniform sum!negative parameter}
+Let $0<a<1$ and set
+\begin{equation}\label{eq:qF-lambda-beta}
+ \lambda_a\defeq\frac{1+a}{1-a},
+ \qquad
+ \beta_a\defeq\frac{a}{1-a},
+ \qquad\text{so that }\lambda_a=1+2\beta_a.
+\end{equation}
+Then
+\begin{equation}\label{eq:qF-negative-affine}
+ X_{-a}\overset d=\lambda_aX_a-\beta_a,
+ \qquad
+ M_{-a}(t)=\e^{-\beta_at}M_a(\lambda_at).
+\end{equation}
+Consequently $\mathbb EX_{-a}=\tfrac12$ and $X_{-a}\overset d=1-X_{-a}$, and the
+topological support of $X_{-a}$ is the interval
+\begin{equation}\label{eq:qF-negative-support}
+ \Bigl[-\frac a{1-a},\ \frac1{1-a}\Bigr].
+\end{equation}
+\end{proposition}
+
+\begin{proof}
+Put $V_j\defeq U_j-\tfrac12$.  The $V_j$ are independent and symmetric, so the
+sequences $(V_j)_{j\ge0}$ and $\bigl((-1)^jV_j\bigr)_{j\ge0}$ have the same
+joint law.  Since $(1-q)\sum_{j\ge0}q^j=1$ for every $\abs q<1$,
+\[
+ X_q-\frac12=(1-q)\sum_{j\ge0}q^jV_j .
+\]
+Taking $q=-a$ and using $(1+a)(-a)^j=(1+a)a^j\cdot(-1)^j$,
+\begin{align*}
+ X_{-a}-\frac12
+ &=(1+a)\sum_{j\ge0}a^j\,(-1)^jV_j
+ \overset d=(1+a)\sum_{j\ge0}a^jV_j\\
+ &=\frac{1+a}{1-a}\Bigl[(1-a)\sum_{j\ge0}a^jV_j\Bigr]
+ =\lambda_a\Bigl(X_a-\frac12\Bigr),
+\end{align*}
+all three series converging absolutely.  Hence
+$X_{-a}\overset d=\lambda_aX_a-\tfrac{\lambda_a-1}2$, and
+$\tfrac{\lambda_a-1}2=\beta_a$ by \eqref{eq:qF-lambda-beta}.  Taking moment
+generating functions gives the second identity in
+\eqref{eq:qF-negative-affine}.
+
+For the remaining assertions, recall from \Cref{thm:geometric-uniform-basic}
+that $X_a$ has support $[0,1]$ and satisfies $X_a\overset d=1-X_a$.  An
+increasing affine map carries the support onto its image, so the support of
+$X_{-a}$ is $[-\beta_a,\lambda_a-\beta_a]$, and
+$\lambda_a-\beta_a=\frac{(1+a)-a}{1-a}=\frac1{1-a}$, which is
+\eqref{eq:qF-negative-support}.  Finally
+$\mathbb EX_{-a}=\tfrac{\lambda_a}2-\beta_a=\frac{(1+a)-2a}{2(1-a)}=\tfrac12$,
+and, using $\lambda_a-1-\beta_a=\beta_a$,
+\[
+ 1-X_{-a}\overset d=1-\lambda_aX_a+\beta_a
+ =\lambda_a(1-X_a)-\beta_a
+ \overset d=\lambda_aX_a-\beta_a
+ \overset d=X_{-a}. \qedhere
+\]
+\end{proof}
+
+For instance $X_{-1/2}\overset d=3X_{1/2}-1$, so the law of $X_{-1/2}$ is the
+Fabius law stretched by $3$ and supported on $[-1,2]$; likewise
+$X_{-1/4}\overset d=\tfrac53X_{1/4}-\tfrac13$.
+
+
+% ---- merged block B18 ----
+\subsection{Reciprocal germs and reciprocity}
+
+For $\abs q>1$ the series \eqref{eq:geometric-uniform-series} diverges and there
+is no random variable to expand.  The functional equation \eqref{eq:mgf-refinement}
+survives, however, and pins down a unique normalized germ.
+
+\begin{theorem}[The Mahler equation with a normalization is rigid]\label{thm:qF-germ-uniqueness}
+Let $q\in\C$ with $q\ne0$ and $\abs q\ne1$, and put
+$\rho\defeq2\pi\min(1,\abs q)/\abs{1-q}$.  Then there is exactly one function
+$M$, analytic on the disc $\abs t<\rho$, with
+\begin{equation}\label{eq:qF-mahler-abstract}
+ M(0)=1,
+ \qquad
+ M(t)=\mathcal E\bigl((1-q)t\bigr)M(qt)
+ \ \text{ for }\abs t<\rho,\ \abs{qt}<\rho,
+\end{equation}
+namely
+\begin{equation}\label{eq:qF-germ-def}
+ M(t)=
+ \begin{cases}
+  \displaystyle\prod_{j=0}^{\infty}\mathcal E\bigl((1-q)q^{j}t\bigr),
+  &\abs q<1,\\[12pt]
+  \displaystyle\Bigl[\prod_{j=1}^{\infty}\mathcal E\bigl((1-q)q^{-j}t\bigr)\Bigr]^{-1},
+  &\abs q>1.
+ \end{cases}
+\end{equation}
+Both products converge locally uniformly, and in the second case no factor
+vanishes on $\abs t<\rho$.
+\end{theorem}
+
+\begin{proof}
+Convergence of the first product is \Cref{thm:geometric-uniform-mgf}; the second
+is identical after replacing $q$ by $q^{-1}$ in the estimate, since
+$\sum_{j\ge1}\abs q^{-j}<\infty$.  When $\abs q>1$ one has
+$\rho=2\pi/\abs{1-q}$, so for $\abs t<\rho$ and $j\ge1$
+\[
+ \abs{(1-q)q^{-j}t}
+ \le\abs{1-q}\abs q^{-1}\abs t
+ <\abs{1-q}\abs q^{-1}\rho
+ =\frac{2\pi}{\abs q}<2\pi .
+\]
+Since every zero of $\mathcal E$ has modulus at least $2\pi$, no factor vanishes
+on that disc and the reciprocal is analytic there.
+
+That \eqref{eq:qF-germ-def} solves \eqref{eq:qF-mahler-abstract} is the
+computation of \Cref{thm:geometric-uniform-mgf} in the first case.  In the second
+case write $P(t)=\prod_{j\ge1}\mathcal E((1-q)q^{-j}t)$ and split off $j=1$ after
+replacing $t$ by $qt$:
+\[
+ P(qt)=\prod_{j\ge1}\mathcal E\bigl((1-q)q^{1-j}t\bigr)
+      =\mathcal E\bigl((1-q)t\bigr)P(t).
+\]
+Taking reciprocals gives $M(t)=\mathcal E((1-q)t)M(qt)$ with $M=P^{-1}$.
+
+For uniqueness, let $M$ be any solution.  If $\abs q<1$, then $\abs{q^kt}<\rho$
+for all $k\ge0$, so \eqref{eq:qF-mahler-abstract} may be iterated $N$ times:
+\[
+ M(t)=\Bigl[\prod_{j=0}^{N-1}\mathcal E\bigl((1-q)q^{j}t\bigr)\Bigr]M(q^Nt).
+\]
+Let $N\to\infty$: $q^Nt\to0$, so $M(q^Nt)\to M(0)=1$ by continuity, and the
+bracket converges to the first product in \eqref{eq:qF-germ-def}.
+
+If $\abs q>1$, apply \eqref{eq:qF-mahler-abstract} at the point $q^{-1}t$, which
+again lies in the disc, to get
+$M(q^{-1}t)=\mathcal E((1-q)q^{-1}t)M(t)$, that is,
+\[
+ M(t)=\frac{M(q^{-1}t)}{\mathcal E\bigl((1-q)q^{-1}t\bigr)} .
+\]
+Iterating $N$ times,
+\[
+ M(t)=M(q^{-N}t)\Bigl[\prod_{j=1}^{N}\mathcal E\bigl((1-q)q^{-j}t\bigr)\Bigr]^{-1},
+\]
+and letting $N\to\infty$ gives the second line of \eqref{eq:qF-germ-def}.
+\end{proof}
+
+\begin{definition}[The reciprocal germ]\label{def:qF-germ}
+For $\abs q>1$, $M_q$ denotes the unique germ of
+\Cref{thm:qF-germ-uniqueness}, that is, the reciprocal product in
+\eqref{eq:qF-germ-def}; its Taylor coefficients are again written
+$a_n(q)=d_n(q)/n!$.
+\end{definition}
+
+\begin{remark}\label{rem:qF-germ-not-mgf}
+% ed.: the source draft called this germ "canonical".  The Mahler equation by
+% ed.: itself determines a solution only up to a multiplicative $q$-periodic
+% ed.: factor, so the normalization that actually pins it down --- analyticity
+% ed.: at the origin together with $M_q(0)=1$ --- is now stated explicitly in
+% ed.: \Cref{thm:qF-germ-uniqueness}.
+The symbol $M_q$ is used in two senses.  For real $q$ with $\abs q<1$ it is a
+genuine moment generating function and $d_n(q)=\mathbb EX_q^n$.  For $\abs q>1$
+there is no underlying random variable, and $d_n(q)$ are merely normalized
+Taylor coefficients.  What is common to both regimes is \eqref{eq:mgf-refinement},
+and therefore also \eqref{eq:q-moment-recurrence}: the derivation of the
+recurrence used the Mahler equation and nothing else, so a single rational
+function $a_n$ of $q$ governs both regimes.
+\end{remark}
+
+\begin{theorem}[Reciprocity]\label{thm:qF-reciprocity}
+For every $q\in\C$ with $q\ne0$ and $\abs q\ne1$,
+\begin{equation}\label{eq:qF-reciprocity}
+ M_q(t)\,M_{1/q}(-t)=1
+\end{equation}
+as analytic germs at $t=0$.  Equivalently, at the level of coefficients,
+\begin{equation}\label{eq:qF-moment-convolution}
+ \sum_{k=0}^{n}\binom nk(-1)^{n-k}\,d_k(q)\,d_{n-k}(1/q)=\delta_{n0}
+ \qquad(n\ge0).
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+By symmetry it suffices to treat $\abs q<1$, so that $\abs{1/q}>1$ and
+$M_{1/q}$ is the germ of \Cref{def:qF-germ}.  Writing $Q=1/q$ in
+\eqref{eq:qF-germ-def} and evaluating at $-t$,
+\[
+ M_{1/q}(-t)^{-1}
+ =\prod_{j=1}^{\infty}\mathcal E\bigl((1-Q)Q^{-j}(-t)\bigr)
+ =\prod_{j=1}^{\infty}\mathcal E\bigl(-(1-q^{-1})q^{j}t\bigr).
+\]
+Now $-(1-q^{-1})q^{j}=(q^{-1}-1)q^{j}=q^{j-1}-q^{j}=(1-q)q^{j-1}$, so after the
+substitution $i=j-1$ the right-hand side is
+$\prod_{i\ge0}\mathcal E\bigl((1-q)q^{i}t\bigr)=M_q(t)$, which is
+\eqref{eq:qF-reciprocity}.
+
+For \eqref{eq:qF-moment-convolution}, multiply the two Taylor series
+\[
+ M_q(t)=\sum_{k\ge0}d_k(q)\frac{t^k}{k!},
+ \qquad
+ M_{1/q}(-t)=\sum_{m\ge0}(-1)^md_m(1/q)\frac{t^m}{m!},
+\]
+and read off the coefficient of $t^n/n!$ in the product; by
+\eqref{eq:qF-reciprocity} it must equal $\delta_{n0}$.
+\end{proof}
+
+
+% ---- merged block B19 ----
+\subsection{The spectral \texorpdfstring{$q^2$}{q2}-Pochhammer factorization}
+
+Splitting $\mathcal E$ into its centered part is the step that converts the
+geometric ratio $q$ of the random series into the \emph{nome} $q^2$ of a
+$q$-Pochhammer product.  From \eqref{eq:geometric-uniform-characteristic},
+\begin{equation}\label{eq:qF-Ecal-centered}
+ \mathcal E(z)
+ =\e^{z/2}\,\frac{\e^{z/2}-\e^{-z/2}}{z}
+ =\e^{z/2}\,\frac{\sinh(z/2)}{z/2},
+\end{equation}
+and Euler's product for the sine, in its hyperbolic form, is
+\begin{equation}\label{eq:qF-sinh-product}
+ \frac{\sinh(z/2)}{z/2}
+ =\prod_{m=1}^{\infty}\left(1+\frac{z^2}{4\pi^2m^2}\right).
+\end{equation}
+
+\begin{theorem}[Spectral Pochhammer factorization]\label{thm:qF-spectral}
+\index{Pochhammer symbol!spectral factorization}
+For $\abs q<1$,
+\begin{equation}\label{eq:qF-spectral-inside}
+ M_q(t)=\e^{t/2}\prod_{m=1}^{\infty}
+ \poch{-\dfrac{(1-q)^2t^2}{4\pi^2m^2}}{q^2}{\infty},
+\end{equation}
+and for $\abs q>1$,
+\begin{equation}\label{eq:qF-spectral-outside}
+ M_q(t)=\e^{t/2}\prod_{m=1}^{\infty}
+ \poch{-\dfrac{(1-q^{-1})^2t^2}{4\pi^2m^2}}{q^{-2}}{\infty}^{-1}.
+\end{equation}
+In both cases the double product converges normally on compact subsets of the
+$t$-plane.
+\end{theorem}
+
+\begin{proof}
+Let $\abs q<1$ and substitute \eqref{eq:qF-Ecal-centered} and
+\eqref{eq:qF-sinh-product} with $z=(1-q)q^jt$ into \eqref{eq:geometric-uniform-mgf-def}.  The
+exponential factors multiply to
+\[
+ \exp\Bigl(\frac t2(1-q)\sum_{j\ge0}q^{j}\Bigr)=\e^{t/2},
+\]
+leaving the double product
+$\prod_{j\ge0}\prod_{m\ge1}\bigl(1+(1-q)^2q^{2j}t^2/(4\pi^2m^2)\bigr)$.  On
+$\abs t\le T$ the sum of the absolute values of the perturbations is at most
+\[
+ \sum_{j\ge0}\sum_{m\ge1}\frac{\abs{1-q}^2\abs q^{2j}T^2}{4\pi^2m^2}
+ =\frac{\abs{1-q}^2T^2}{24\,(1-\abs q^2)}<\infty,
+\]
+using $\sum_mm^{-2}=\pi^2/6$.  The double product is therefore normally
+convergent and may be rearranged.  Fixing $m$ and multiplying over $j$,
+\[
+ \prod_{j\ge0}\Bigl(1+\frac{(1-q)^2t^2}{4\pi^2m^2}q^{2j}\Bigr)
+ =\poch{-\dfrac{(1-q)^2t^2}{4\pi^2m^2}}{q^{2}}{\infty}
+\]
+by the definition $(x;p)_\infty=\prod_{j\ge0}(1-xp^j)$ with $p=q^2$.  This proves
+\eqref{eq:qF-spectral-inside}.
+
+Let $\abs q>1$ and apply the same substitution to the product
+$P(t)=\prod_{j\ge1}\mathcal E((1-q)q^{-j}t)$ of \eqref{eq:qF-germ-def}, so that
+$M_q=P^{-1}$.  Here the linear arguments sum to
+\[
+ \frac t2(1-q)\sum_{j\ge1}q^{-j}
+ =\frac t2(1-q)\frac{q^{-1}}{1-q^{-1}}
+ =\frac t2\,\frac{1-q}{q-1}
+ =-\frac t2,
+\]
+so $P$ contributes $\e^{-t/2}$ and its reciprocal contributes $\e^{t/2}$, as
+claimed.  For the quadratic part, reindex by $i=j-1\ge0$ and use
+\[
+ (1-q)^2q^{-2j}=(1-q)^2q^{-2}\,q^{-2i}=(1-q^{-1})^2\,(q^{-2})^{i},
+\]
+which is legitimate because $(1-q)^2q^{-2}=(q^{-1}-1)^2=(1-q^{-1})^2$.  Fixing
+$m$ and multiplying over $i\ge0$ gives
+$\poch{-(1-q^{-1})^2t^2/(4\pi^2m^2)}{q^{-2}}{\infty}$; taking reciprocals proves
+\eqref{eq:qF-spectral-outside}.  Normal convergence is the previous estimate
+with $\abs q^{-1}<1$ in place of $\abs q$.
+\end{proof}
+
+\begin{remark}[The nome, and where the $q$-objects finally appear]\label{rem:qF-nome}
+The geometric ratio $q$ of the random series \eqref{eq:geometric-uniform-series}
+becomes the nome $q^2$ of the spectral product: at $q=\pm\tfrac12$ the nome is
+$\tfrac14$, and at $q=\pm\tfrac14$ it is $\tfrac1{16}$.  Reciprocal parameters
+exchange the zeros of \eqref{eq:qF-spectral-inside} with the poles of
+\eqref{eq:qF-spectral-outside}, in accordance with \Cref{thm:qF-reciprocity}.
+\Cref{thm:qF-spectral} is the point at which the two halves of this Part meet:
+the transform of the geometric uniform sum --- and hence, at $q=1/2$, of the
+Fabius law --- is literally an infinite product of $q$-Pochhammer symbols in the
+nome $q^2$, with the $m$th factor supplied by the $m$th spectral line of Euler's
+sine product.
+
+Taking logarithms in \eqref{eq:qF-spectral-inside} and expanding $\log(1+x)$
+gives, for small $\abs t$,
+\[
+ \log M_q(t)-\frac t2
+ =\sum_{r\ge1}\frac{(-1)^{r-1}}{r}\,
+   \frac{\zeta(2r)}{1-q^{2r}}\left(\frac{(1-q)^2t^2}{4\pi^2}\right)^{\!r},
+\]
+which, by $\zeta(2r)=(-1)^{r+1}B_{2r}(2\pi)^{2r}/\bigl(2\,(2r)!\bigr)$, is
+exactly the cumulant expansion \eqref{eq:q-cumulant-log-mgf} of
+\Cref{thm:q-cumulants-uniform}.  The spectral factorization and the Bernoulli
+cumulants are two readings of the same product.
+\end{remark}
+
+
+% ---- merged block B20 ----
+\section{The moment polynomial and the endpoint values}
+\index{moment polynomial}
+\index{Fabius function!inverse-dyadic values}
+
+The recurrence \eqref{eq:q-moment-recurrence} carries apparent poles at all
+roots of unity.  A single finite $q$-Pochhammer factor removes them.
+
+\begin{definition}[The moment polynomial]\label{def:qF-moment-polynomial}
+For $n\ge0$ set
+\begin{equation}\label{eq:qF-moment-polynomial}
+ \mathcal P_n(q)\defeq\frac{\poch qqn}{(1-q)^n}\,a_n(q)
+ =\frac{\poch qqn}{(1-q)^n}\,\frac{d_n(q)}{n!}.
+\end{equation}
+\end{definition}
+
+\begin{theorem}[Polynomiality and recurrence]\label{thm:qF-moment-polynomial}
+Each $\mathcal P_n$ lies in $\Q[q]$.  One has $\mathcal P_0=1$ and, for $n\ge1$,
+\begin{equation}\label{eq:qF-P-recurrence}
+ \mathcal P_n(q)=\sum_{k=0}^{n-1}
+ \frac{q^{k}}{(n-k+1)!}\,\frac{\poch qq{n-1}}{\poch qqk}\,\mathcal P_k(q),
+\end{equation}
+and moreover
+\begin{equation}\label{eq:qF-P-degree}
+ \deg\mathcal P_n\le\binom n2,
+ \qquad
+ \mathcal P_n(0)=\frac1{(n+1)!}.
+\end{equation}
+The first cases are
+\begin{gather*}
+ \mathcal P_0=1,\qquad
+ \mathcal P_1=\frac12,\qquad
+ \mathcal P_2=\frac{q+2}{12},\qquad
+ \mathcal P_3=\frac{q^2+q+1}{24},\\
+ \mathcal P_4=\frac{(q^2+q+1)\bigl(6+3q+5q^2+2q^3-q^4\bigr)}{720}.
+\end{gather*}
+\end{theorem}
+
+\begin{proof}
+Inverting \eqref{eq:qF-moment-polynomial} gives
+$a_k(q)=(1-q)^k\mathcal P_k(q)/\poch qqk$.  Substituting this into
+\eqref{eq:q-moment-recurrence} and multiplying through by
+$\poch qq{n-1}/(1-q)^n$ turns the left-hand side into
+\[
+ \frac{(1-q^n)\poch qq{n-1}}{(1-q)^n}a_n(q)
+ =\frac{\poch qqn}{(1-q)^n}a_n(q)
+ =\mathcal P_n(q),
+\]
+and the $k$th term on the right into
+$\frac{q^k}{(n-k+1)!}\frac{\poch qq{n-1}}{\poch qqk}\mathcal P_k(q)$.  This is
+\eqref{eq:qF-P-recurrence}.
+
+Each quotient $\poch qq{n-1}/\poch qqk=\prod_{j=k+1}^{n-1}(1-q^j)$ occurring in
+\eqref{eq:qF-P-recurrence} is a polynomial of degree
+$\sum_{j=k+1}^{n-1}j=\binom n2-\binom{k+1}2$.  Assuming inductively that
+$\mathcal P_k\in\Q[q]$ with $\deg\mathcal P_k\le\binom k2$ for all $k<n$, the
+$k$th summand is a polynomial of degree at most
+\[
+ k+\Bigl(\binom n2-\binom{k+1}2\Bigr)+\binom k2
+ =\binom n2,
+\]
+because $\binom{k+1}2-\binom k2=k$.  Hence $\mathcal P_n\in\Q[q]$ and
+$\deg\mathcal P_n\le\binom n2$.  Setting $q=0$ in \eqref{eq:qF-P-recurrence}
+kills every term with $k\ge1$ and leaves
+$\mathcal P_n(0)=\mathcal P_0(0)/(n+1)!=1/(n+1)!$.  The displayed values follow
+by evaluating \eqref{eq:qF-P-recurrence} for $n\le4$.
+\end{proof}
+
+% ed.: the source draft stated only the bound $\deg\mathcal P_n\le\binom n2$ and
+% ed.: did not record that it is not attained (already $\deg\mathcal P_3=2<3$).
+% ed.: The exact degree is determined below.
+\begin{proposition}[Exact degree and the two leading coefficients]\label{prop:qF-P-degree-sharp}
+Let $B_m$ be the Bernoulli numbers in the convention
+\eqref{eq:bernoulli-convention-fabius}, so that $B_1=-\tfrac12$.  For every
+$n\ge0$,
+\begin{equation}\label{eq:qF-P-leading}
+ [q^{\binom n2}]\,\mathcal P_n(q)=\frac{(-1)^nB_n}{n!},
+\end{equation}
+and for every $n\ge2$,
+\begin{equation}\label{eq:qF-P-subleading}
+ [q^{\binom n2-1}]\,\mathcal P_n(q)
+ =-\frac{(-1)^nB_n}{n!}+\frac{(-1)^{n-1}B_{n-1}}{2\,(n-1)!}.
+\end{equation}
+Consequently
+\begin{equation}\label{eq:qF-P-exact-degree}
+ \deg\mathcal P_n=
+ \begin{cases}
+  \binom n2, & n\text{ even, or }n=1,\\[2pt]
+  \binom n2-1, & n\ge3\text{ odd.}
+ \end{cases}
+\end{equation}
+\end{proposition}
+
+\begin{proof}
+Write $R_n(q)\defeq\poch qqn/(1-q)^n=\prod_{j=2}^{n}(1+q+\cdots+q^{j-1})$, a
+polynomial of degree $\sum_{j=2}^n(j-1)=\binom n2$.  Factoring the top power out
+of each of its $n-1$ factors,
+\begin{equation}\label{eq:qF-Rn-at-infinity}
+ R_n(q)=q^{\binom n2}\prod_{j=2}^{n}\bigl(1+q^{-1}+\cdots+q^{-(j-1)}\bigr)
+       =q^{\binom n2}\bigl(1+(n-1)q^{-1}+O(q^{-2})\bigr)
+\end{equation}
+as $q\to\infty$.  Since $\mathcal P_n=R_na_n$ is a polynomial of degree at most
+$\binom n2$, the rational function $a_n=\mathcal P_n/R_n$ is regular at
+$q=\infty$; let
+\begin{equation}\label{eq:qF-an-at-infinity}
+ a_n(q)=L_n+M_nq^{-1}+O(q^{-2})
+ \qquad(q\to\infty)
+\end{equation}
+be its expansion there.  Multiplying \eqref{eq:qF-Rn-at-infinity} by
+\eqref{eq:qF-an-at-infinity} and comparing coefficients gives
+\begin{equation}\label{eq:qF-P-coeffs-from-LM}
+ [q^{\binom n2}]\mathcal P_n=L_n,
+ \qquad
+ [q^{\binom n2-1}]\mathcal P_n=M_n+(n-1)L_n\quad(n\ge2).
+\end{equation}
+
+It remains to compute $L_n$ and $M_n$.  Multiply
+\eqref{eq:q-moment-recurrence} by $q^{-n}$:
+\begin{equation}\label{eq:qF-recurrence-scaled}
+ (q^{-n}-1)\,a_n(q)
+ =\sum_{k=0}^{n-1}\frac{(-1)^{n-k}(1-q^{-1})^{n-k}}{(n-k+1)!}\,a_k(q),
+\end{equation}
+using $q^{-n}q^k(1-q)^{n-k}=(-1)^{n-k}(1-q^{-1})^{n-k}$.  Letting
+$q\to\infty$ in \eqref{eq:qF-recurrence-scaled} gives
+\[
+ -L_n=\sum_{k<n}(-1)^{n-k}\frac{L_k}{(n-k+1)!},
+\]
+that is,
+\begin{equation}\label{eq:qF-L-relation}
+ \sum_{k=0}^{n}\frac{(-1)^{n-k}}{(n-k+1)!}\,L_k=0
+ \qquad(n\ge1),
+ \qquad L_0=1 .
+\end{equation}
+Set $L(s)=\sum_{n\ge0}L_ns^n$ and
+$\Psi(s)=\sum_{r\ge0}(-s)^r/(r+1)!=(1-\e^{-s})/s$.  Relation
+\eqref{eq:qF-L-relation} says precisely that $L(s)\Psi(s)=1$, whence
+\[
+ L(s)=\frac{s}{1-\e^{-s}}=\frac{-s}{\e^{-s}-1}
+      =\sum_{n\ge0}B_n\frac{(-s)^n}{n!}
+\]
+by \eqref{eq:bernoulli-convention-fabius}.  Thus $L_n=(-1)^nB_n/n!$, which with
+\eqref{eq:qF-P-coeffs-from-LM} is \eqref{eq:qF-P-leading}.
+
+For $M_n$, note first that $a_1\equiv\tfrac12$, so $M_0=M_1=0$.  For $n\ge2$ the
+term $q^{-n}a_n(q)$ on the left of \eqref{eq:qF-recurrence-scaled} is
+$O(q^{-2})$, so comparing coefficients of $q^{-1}$ there gives
+\[
+ -M_n=\sum_{k=0}^{n-1}\frac{(-1)^{n-k}\bigl(M_k-(n-k)L_k\bigr)}{(n-k+1)!},
+\]
+that is, $[s^n]\bigl(M\Psi\bigr)=[s^n]\bigl(L\Theta\bigr)$ for $n\ge2$, where
+$M(s)=\sum M_ns^n$ and $\Theta(s)=\sum_{r\ge0}(-1)^rr\,s^r/(r+1)!$.  Since
+$\sum_{r\ge0}(r+1)(-s)^r/(r+1)!=\e^{-s}$, we have $\Theta=\e^{-s}-\Psi$.  The two
+remaining coefficients are checked directly:
+$[s^0](M\Psi)=M_0=0=[s^0](L\Theta)$, while $[s^1](M\Psi)=M_1=0$ and
+$[s^1](L\Theta)=L_0\Theta_1=-\tfrac12$.  Hence $M\Psi=L\Theta+\tfrac s2$, and
+since $1/\Psi=L$,
+\[
+ M=L^2\Theta+\frac{sL}2=L^2\e^{-s}-L+\frac{sL}2 .
+\]
+Differentiating $L=s/(1-\e^{-s})$ gives $sL'=L-L^2\e^{-s}$, so
+$L^2\e^{-s}=L-sL'$ and therefore $M=-sL'+\tfrac{sL}2$.  Reading off
+coefficients, $M_n=-nL_n+\tfrac12L_{n-1}$, and substituting into
+\eqref{eq:qF-P-coeffs-from-LM},
+\[
+ [q^{\binom n2-1}]\mathcal P_n=-nL_n+\tfrac12L_{n-1}+(n-1)L_n
+ =-L_n+\tfrac12L_{n-1},
+\]
+which is \eqref{eq:qF-P-subleading}.
+
+Finally, $B_n\ne0$ for $n$ even and $B_n=0$ for odd $n\ge3$, while
+$L_1=\tfrac12\ne0$.  So \eqref{eq:qF-P-leading} is nonzero exactly for $n$ even
+and for $n=1$; and when $n\ge3$ is odd, \eqref{eq:qF-P-subleading} reduces to
+$\tfrac12L_{n-1}=B_{n-1}/\bigl(2(n-1)!\bigr)\ne0$, since $n-1$ is even and at
+least $2$.  This is \eqref{eq:qF-P-exact-degree}.
+\end{proof}
+
+\begin{example}\label{ex:qF-P-degrees}
+For $n=3,\ldots,8$ the degrees of $\mathcal P_n$ are
+\[
+ 2,\ 6,\ 9,\ 15,\ 20,\ 28,
+ \qquad\text{against}\qquad
+ \binom n2=3,\ 6,\ 10,\ 15,\ 21,\ 28 ,
+\]
+so the bound \eqref{eq:qF-P-degree} is missed by exactly one at each odd $n$.
+The leading coefficients of $\mathcal P_4$, $\mathcal P_6$, $\mathcal P_8$ are
+$-\tfrac1{720}$, $\tfrac1{30240}$, $-\tfrac1{1209600}$, in agreement with
+$B_4/4!$, $B_6/6!$, $B_8/8!$.
+\end{example}
+
+
+% ---- merged block B22 ----
+% ed.: the incoming item stated two identities, of which the second,
+% ed.: $F(2^{-n})=2^{-\binom n2}\mathbb EX^n/n!$, is \eqref{eq:fabius-half-moment}
+% ed.: of \Cref{thm:fabius-half-moment}; only the first is new and only it is kept
+% ed.: here.  The general-$q$ display \eqref{eq:qF-endpoint-poch} is
+% ed.: \eqref{eq:inverse-power-values} rewritten through \Cref{def:qF-moment-polynomial},
+% ed.: and is the form in which the $q$-Pochhammer denominator becomes visible.
+% ed.: Placement: immediately after \Cref{ex:qF-P-degrees}.
+
+\begin{corollary}[Pochhammer-cleared endpoint form and the half-base dictionary]
+\label{cor:qF-halfbase-dictionary}
+\index{Mersenne product!and Fabius values}
+\index{Pochhammer symbol!as endpoint denominator}
+For $0<q\le\tfrac12$ and $n\ge0$,
+\begin{equation}\label{eq:qF-endpoint-poch}
+ F_q\bigl(q^{\,n}\bigr)=\frac{q^{\binom{n+1}2}}{\poch qqn}\,\mathcal P_n(q).
+\end{equation}
+At $q=1/2$ this is a dictionary between the moment polynomial and the values of the Fabius
+function:
+\begin{equation}\label{eq:qF-halfbase-dictionary}
+ \mathcal P_n(1/2)=\mathfrak m_n\,F\bigl(2^{-n}\bigr),
+\end{equation}
+where $\mathfrak m_n=\prod_{j=1}^{n}(2^j-1)$ is the Mersenne product
+\eqref{eq:mersenne-product}.
+\end{corollary}
+
+\begin{proof}
+By \eqref{eq:qF-moment-polynomial}, $\alpha^{(q)}_n/(1-q)^n=\mathcal P_n(q)/\poch qqn$, so
+\eqref{eq:qF-endpoint-poch} is \eqref{eq:inverse-power-values} rewritten.  At $q=\tfrac12$,
+\eqref{eq:halfbase-factorial} gives
+$\poch{1/2}{1/2}n=2^{-\binom{n+1}2}\mathfrak m_n$, and the two powers of $2$ in
+\eqref{eq:qF-endpoint-poch} cancel, leaving
+$F(2^{-n})=\mathcal P_n(1/2)/\mathfrak m_n$.
+\end{proof}
+
+The first values, with $F(2^{-n})=2^{-\binom n2}\alpha_n$ from
+\Cref{thm:fabius-half-moment} and $\alpha_n$ as in \Cref{ex:fabius-first-coefficients}, are
+\[
+ \begin{array}{c|ccccc}
+  n & 1 & 2 & 3 & 4 & 5\\[2pt]\hline
+  \rule{0pt}{16pt}
+  \mathcal P_n(1/2) & \frac12 & \frac5{24} & \frac7{96}
+    & \frac{1001}{46080} & \frac{4123}{737280}\\[6pt]
+  \mathfrak m_n & 1 & 3 & 21 & 315 & 9765\\[6pt]
+  F(2^{-n}) & \frac12 & \frac5{72} & \frac1{288}
+    & \frac{143}{2073600} & \frac{19}{33177600}
+ \end{array}
+\]
+% ed.: the last row also appears in the sibling item drafted as
+% ed.: \texttt{ex:fabius-dyadic-values} (the first dyadic values attached to the
+% ed.: composition sum \eqref{eq:fabius-composition}).  Whichever of the two is
+% ed.: adopted second should drop its copy; the row is kept here because it is
+% ed.: the third factor of \eqref{eq:qF-halfbase-dictionary} and the table is
+% ed.: unreadable without it.
+
+\begin{remark}[The Pochhammer denominator is not imported notation]\label{rem:qF-not-imported}
+\Cref{cor:qF-halfbase-dictionary} closes the circle of this part.  The finite $q$-Pochhammer
+symbol $\poch qqn$ in \eqref{eq:qF-endpoint-poch} was not chosen for cosmetic reasons: by
+\Cref{def:qF-moment-polynomial,thm:qF-moment-polynomial} it is exactly the pole-clearing
+factor of the recurrence \eqref{eq:q-moment-recurrence}, whose denominators $1-q^n$ are forced
+by the self-similarity \eqref{eq:geometric-uniform-fixed-point}.  At $q=1/2$ it specializes,
+through \Cref{thm:halfbase-normalization}, to the Mersenne product $\mathfrak m_n$ of
+\Cref{chap:halfbase-thuemorse} --- the same constant that
+\Cref{thm:gaussian-coefficient-transfer} produces on the right of \eqref{eq:transfer-top}, and
+that normalizes the dyadic numerator $\mathcal N_n(\theta)=\mathfrak m_n\alpha_n$ of
+\Cref{cor:fabius-centered-formula}.  The three occurrences are one occurrence: the geometric
+Vandermonde denominator of the order-$n$ stencil on the nodes $-2^k$, the pole-clearing factor
+of the moment recurrence, and the Mersenne product are the same object read three ways.
+\end{remark}
+
+
+% ---- merged block N01 ----
+% ed.: new section for \Cref{chap:gaussian}, inserted immediately after the proof of
+% ed.: \Cref{cor:positivity} (filed line 684) and before "\section{Symmetry, reciprocity, and degree}".
+% ed.: The sibling stated a separate proposition for symmetry and the second Pascal recurrence;
+% ed.: both duplicate \Cref{thm:qbinom-structure}(i) and \Cref{thm:qpascal} and are dropped here.
+
+\section{The universal division-free definition}
+\index{Gaussian coefficient!universal Pascal definition}
+\index{Gaussian coefficient!over a semiring}
+\index{semiring}
+\index{specialization!denominator-free}
+
+The factorial quotient is a formula, not a definition: it presupposes that every factor $1-q^j$ with $j\le n$ is invertible.  Either recurrence of \Cref{thm:qpascal} is free of that hypothesis, and free of subtraction as well.  It therefore defines the Gaussian coefficient over an arbitrary commutative semiring, and it is this universal object, rather than the quotient, that makes the root-of-unity specializations of \Cref{chap:cyclotomic} and the layered architecture of \Cref{prin:proof-architecture} legitimate.
+
+\begin{definition}[Universal Gaussian polynomials]\label{def:universal-gaussian}
+Let $u$ be an indeterminate.  Define $G_{n,k}(u)$ for $n\in\N_0$ and $0\le k\le n$ by
+$G_{0,0}(u)=1$ and
+\begin{equation}\label{eq:universal-pascal}
+ G_{n+1,k}(u)=G_{n,k}(u)+u^{\,n+1-k}G_{n,k-1}(u)
+ \qquad(0\le k\le n+1),
+\end{equation}
+with the convention that $G_{n,k}(u)=0$ whenever $k<0$ or $k>n$.  In the displayed range the exponent $n+1-k$ is nonnegative, so no negative power occurs.  For a commutative semiring $R$ and $a\in R$, write $G_{n,k}(a)\in R$ for the element produced by the same recursion with $u$ replaced by $a$.
+\end{definition}
+
+\begin{theorem}[Existence, uniqueness, and functoriality]\label{thm:universal-functoriality}
+% ed.: the cross-reference in the first item is an unbreakable box in an
+% ed.: italic list of this width; \sloppy absorbs it locally.
+\sloppy
+\begin{enumerate}[label=\textup{(\roman*)}]
+\item There is exactly one family satisfying \eqref{eq:universal-pascal}
+ with $G_{0,0}=1$, and every $G_{n,k}(u)$ lies in $\N_0[u]$.
+\item $G_{n,k}(u)=\qbinom nk$ under $q=u$; that is, the factorial
+ quotient is the value of the universal polynomial.
+\item If $\phi\colon R\to S$ is a homomorphism of commutative semirings, then
+\[
+ \phi\bigl(G_{n,k}(a)\bigr)=G_{n,k}\bigl(\phi(a)\bigr)
+ \qquad(a\in R,\ 0\le k\le n).
+\]
+\end{enumerate}
+Hence the Gaussian coefficient is definable, and specializable, with no division, no subtraction, and no invertibility hypothesis on the factors $1-a^j$.
+\end{theorem}
+
+\begin{proof}
+(i)  Row $n+1$ is determined by row $n$ through \eqref{eq:universal-pascal}, and row $0$ is prescribed; induction on $n$ gives existence and uniqueness.  The recursion uses only $0$, $1$, addition, multiplication, and nonnegative powers of $u$, so every $G_{n,k}$ lies in $\N_0[u]$.
+
+(ii)  Replacing $n$ by $n+1$ in the second recurrence \eqref{eq:qpascal2} of \Cref{thm:qpascal} gives
+\[
+ \qbinom{n+1}{k}=\qbinom nk+q^{\,n+1-k}\qbinom n{k-1},
+\]
+which is \eqref{eq:universal-pascal} with $u=q$, and the boundary value $\qbinom00=1$ agrees.  The uniqueness argument of (i) is valid over any commutative ring, in particular over the field $\Q(u)$; hence the two families coincide there, and therefore in $\N_0[u]$ by \Cref{cor:positivity}.
+
+(iii)  Apply $\phi$ to \eqref{eq:universal-pascal}.  A semiring homomorphism preserves $0$, $1$, sums, products, and hence powers, so the family $\bigl(\phi(G_{n,k}(a))\bigr)$ satisfies the same boundary condition and the same recursion in $S$ with parameter $\phi(a)$.  Uniqueness in $S$, again by (i), gives the assertion.
+\end{proof}
+
+\begin{corollary}[Denominator-free factorial identities]\label{cor:universal-factorial-identities}
+Let $R$ be a commutative ring and let $a\in R$.  For $0\le k\le n$,
+\begin{align}
+ (a;a)_k\,G_{n,k}(a)&=(a^{\,n-k+1};a)_k,\label{eq:universal-short-factorial}\\
+ (a;a)_n&=(a;a)_k\,(a;a)_{n-k}\,G_{n,k}(a).\label{eq:universal-full-factorial}
+\end{align}
+No factor $1-a^j$ is assumed invertible; both identities hold even when every product displayed in them vanishes.  Thus \Cref{prop:qbinom-products} is a consequence of a polynomial identity rather than a prerequisite for the definition.
+\end{corollary}
+
+\begin{proof}
+By \Cref{thm:universal-functoriality}(ii), $G_{n,k}(u)=(u;u)_n/\bigl((u;u)_k(u;u)_{n-k}\bigr)$ in $\Q(u)$.  Both sides of \eqref{eq:universal-full-factorial} with $a=u$ are polynomials, so the equality holds in $\Z[u]$.  By \Cref{prop:concat} with $m=n-k$,
+\[
+ (u;u)_n=(u;u)_{n-k}\,(u^{\,n-k+1};u)_k;
+\]
+since $\Z[u]$ is an integral domain and $(u;u)_{n-k}\ne0$, cancelling it in \eqref{eq:universal-full-factorial} gives \eqref{eq:universal-short-factorial} in $\Z[u]$.  Finally apply the unique ring homomorphism $\Z[u]\to R$ with $u\mapsto a$.
+\end{proof}
+
+\begin{example}[A primitive root of unity]\label{ex:gaussian-root-of-unity}
+Let $a=e^{2\pi i/3}$, so $(a;a)_3=(1-a)(1-a^2)(1-a^3)=0$ while $(a;a)_2=3$.  The quotient $\qbinom63$ at $q=a$ displays $0/0$, but the polynomial value is unambiguous: $G_{6,3}(a)=2$, in agreement with the $q$-Lucas congruence of \Cref{chap:cyclotomic}.  Identity \eqref{eq:universal-full-factorial} reads $0=0\cdot0\cdot2$, and it is true.  For a nondegenerate instance take $n=5$, $k=2$: here $G_{5,2}(a)=1$ and \eqref{eq:universal-short-factorial} reads $(a;a)_2\cdot1=(a^4;a)_2$, both sides equal to $3$.
+\end{example}
+
+\begin{remark}
+The transport statement \Cref{thm:universal-functoriality}(iii) is what licenses steps 1--2 and 6 of \Cref{prin:proof-architecture}: an identity established without division descends to finite characteristic, to quotient rings, to truncated power-series rings, and to roots of unity with no cancellation theorem interposed.  The same observation applies verbatim to \Cref{thm:finite-qbinomial}, whose proof is an induction from \Cref{thm:qpascal} and therefore valid over every commutative ring, and to the reversed row of \Cref{chap:geometric-filters}; compare \Cref{rem:denominator-free-reversed}.
+\end{remark}
+
+
+% ---- merged block N03 ----
+% ed.: new section for \Cref{chap:finite-geometry}, inserted after the proof of
+% ed.: \Cref{thm:geometric-pascal} and before "\section{Flags and \texorpdfstring{$q$}{q}-multinomial
+% ed.: coefficients}".
+% ed.: the sibling followed this theorem with a $q$-binomial inversion corollary; that duplicates
+% ed.: \Cref{thm:qbinomial-inversion} and is replaced here by a cross-reference.
+
+\section{The M\"obius function of the subspace lattice}
+\index{Mobius function@M\"obius function!subspace lattice}
+\index{incidence algebra}
+\index{subspace lattice}
+
+Counting is only the first half of the finite-field picture.  The subspaces of $\F_Q^n$ form a lattice, and its M\"obius function is again a Gaussian datum: a sign and a quadratic power of $Q$.  This is the structural reason for the shape of the inverse kernel in \Cref{thm:qbinomial-inversion}.
+
+\begin{theorem}[M\"obius function of the subspace lattice]\label{thm:subspace-mobius}
+Let $Q$ be a prime power and let $V$ be a $d$-dimensional vector space over $\F_Q$.  In the lattice of subspaces of $V$, ordered by inclusion,
+\begin{equation}\label{eq:subspace-mobius}
+ \mu(0,V)=(-1)^dQ^{\binom d2}.
+\end{equation}
+More generally, if $U\subseteq W$ are subspaces and $r=\dim(W/U)$, then
+\[
+ \mu(U,W)=(-1)^rQ^{\binom r2}.
+\]
+\end{theorem}
+
+\begin{proof}
+The correspondence $X\mapsto X/U$ is an isomorphism from the interval $[U,W]$ onto the lattice of subspaces of $W/U$, and the M\"obius function of a poset depends only on the isomorphism type of the interval.  It therefore suffices to prove \eqref{eq:subspace-mobius}.
+
+Induct on $d$.  For $d=0$ the value is $\mu(0,0)=1$, as asserted.  Let $d\ge1$ and assume the formula for all smaller dimensions.  The defining relation for the M\"obius function of the interval $[0,V]$ is
+\[
+ \sum_{X\subseteq V}\mu(0,X)=0,
+\]
+the sum running over all subspaces of $V$.  Grouping the subspaces by dimension and using \Cref{thm:subspace-count} together with the induction hypothesis,
+\[
+ \mu(0,V)
+ =-\sum_{j=0}^{d-1}\Qbinom djQ(-1)^jQ^{\binom j2}.
+\]
+By \Cref{cor:alternating-qbinom} at base $Q$, which is \eqref{eq:finite-qbinomial-minus} at $z=1$,
+\[
+ \sum_{j=0}^{d}\Qbinom djQ(-1)^jQ^{\binom j2}=(1;Q)_d=0
+ \qquad(d\ge1),
+\]
+since the factor with index $0$ in $(1;Q)_d$ vanishes.  Hence the truncated sum through $j=d-1$ equals the negative of the omitted term $j=d$, and therefore
+$\mu(0,V)=(-1)^dQ^{\binom d2}$.
+\end{proof}
+
+\begin{remark}[Where this kernel is met again]\label{rem:mobius-inversion-kernel}
+The inverse kernel $(-1)^{n-k}q^{\binom{n-k}{2}}\qbinom nk$ of \Cref{thm:qbinomial-inversion} is exactly $\mu(U,W)$ of \Cref{thm:subspace-mobius} with $r=n-k$, multiplied by the number $\Qbinom nkQ$ of intermediate subspaces: for $q=Q$ a prime power, $q$-binomial inversion \emph{is} M\"obius inversion over the subspace lattice for functions depending only on dimension, and the polynomial identity then extends it to an indeterminate $q$.  The reversed Gaussian row $N_{n,k}(q)$ of \eqref{eq:reversed-gaussian-row} carries the additional monomial $q^{\,n-k}$, because
+$\binom{n-k}{2}+(n-k)=\binom{n-k+1}{2}$ and its nodes are $q^1,\dots,q^n$ rather than $q^0,\dots,q^{n-1}$.  This accounts for the sign and the quadratic exponent that recur throughout \Cref{chap:geometric-filters}.
+\end{remark}
+
+
+% ---- merged block N10 ----
+% ed.: drafted as \Cref{prop:thue-morse-power-recurrence} inside the synthesis section above;
+% ed.: reproduced here for convenience.  It is meaningful only if \Cref{thm:fabius-inverse-dyadic}
+% ed.: is imported, since it is what makes \eqref{eq:fabius-inverse-dyadic-closed} evaluable.
+
+\begin{proposition}[Recurrence for the translated Thue--Morse power sums]\label{prop:thue-morse-power-recurrence}
+For all $k,d\ge0$,
+\begin{equation}\label{eq:thue-morse-power-base}
+ M_{0,d}(c)=c^d,
+\end{equation}
+and
+\begin{equation}\label{eq:thue-morse-power-recurrence}
+ M_{k+1,d}(c)=-\sum_{j=1}^{d}\binom dj2^{kj}M_{k,d-j}(c).
+\end{equation}
+Consequently all the quantities $M_{k,d}(c)$ with $k\le n$ and $d\le2n$ needed in \eqref{eq:fabius-inverse-dyadic-closed} can be tabulated with $O(n^3)$ arithmetic operations, rather than the $2^k$ terms of the defining sum \eqref{eq:thue-morse-power-sums}.
+\end{proposition}
+
+\begin{proof}
+The base case is the single term $r=0$.  For the recurrence, split $\{0,\dots,2^{k+1}-1\}$ into $\{0,\dots,2^k-1\}$ and its translate by $2^k$.  Adding $2^k$ to an integer $r<2^k$ turns off no binary digit and turns on exactly one, so $\tau_{r+2^k}=-\tau_r$.  Hence
+\[
+ M_{k+1,d}(c)
+ =\sum_{r=0}^{2^k-1}\tau_r\Bigl((r+c)^d-\bigl(r+c+2^k\bigr)^d\Bigr)
+ =-\sum_{j=1}^{d}\binom dj2^{kj}\sum_{r=0}^{2^k-1}\tau_r(r+c)^{d-j},
+\]
+by the binomial theorem, the term $j=0$ cancelling.  This is \eqref{eq:thue-morse-power-recurrence}.  Filling the table in increasing $k$ and $d$ costs $O(d)$ operations per entry, hence $O(n\cdot n\cdot n)$ in total for the stated ranges.
+\end{proof}
 
 \appendix
 
