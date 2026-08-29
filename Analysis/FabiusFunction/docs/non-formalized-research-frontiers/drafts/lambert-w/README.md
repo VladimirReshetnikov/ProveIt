@@ -39,3 +39,10 @@ monotonicity of the branch and of the forward map `t·eᵗ`,
 continuity on the open domain, the exact image `(-1, ∞)`, and the
 inverse-function derivative `W₀' = 1/(e^{W₀}(W₀+1))` with its strict
 positivity) — the volume's central objects, kernel-verified.
+The pair-level facts live in `LambertBranchDichotomy.lean`: the global
+bound `-1/e ≤ t·e^t` derived from `1+x ≤ e^x` alone, the forward map
+strictly decreasing on `(-∞, -1]` (the mirror of the principal-side
+monotonicity), the closed value `W₋₁(-2e⁻²) = -2`, and the **branch
+dichotomy**: every real solution of `w·e^w = z` is `W₀(z)` or `W₋₁(z)`
+(`Fabius.eq_principalLambertW_or_eq_lowerLambertW`) — the guide's
+two-branch inversion statement, kernel-verified.
