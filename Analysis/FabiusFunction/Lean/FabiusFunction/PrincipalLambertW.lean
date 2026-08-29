@@ -43,9 +43,9 @@ private lemma exists_mulLogP_eq {z : ℝ} (hz : -Real.exp (-1) ≤ z) :
   have hlo : mulLogP (Real.exp (-1)) = -Real.exp (-1) := by
     simp [mulLogP]
   have hone : (1 : ℝ) ≤ Real.exp (max 1 z) := by
-    rw [show (1 : ℝ) = Real.exp 0 from (Real.exp_zero).symm]
-    exact Real.exp_le_exp.mpr
-      (le_trans zero_le_one (le_max_left _ _))
+    have h := Real.exp_le_exp.mpr
+      (le_trans zero_le_one (le_max_left 1 z) : (0 : ℝ) ≤ max 1 z)
+    rwa [Real.exp_zero] at h
   have hhi : z ≤ mulLogP (Real.exp (max 1 z)) := by
     have hval : mulLogP (Real.exp (max 1 z)) =
         max 1 z * Real.exp (max 1 z) := by
