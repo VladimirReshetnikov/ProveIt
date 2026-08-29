@@ -763,9 +763,19 @@ offset, so the block sum is a sum over even-layer offsets of a core that does no
 depend on the offset --- which is precisely why the factor $2^{L-\omega_L(a)}$ appears
 and nothing more.  The decomposition itself
 (\lean{Fabius.sum\_powerset\_range\_split}) is stated over an arbitrary additive
-commutative monoid for an arbitrary summand depending on the two parts, so it serves
-both displays; a constant-weight corollary recovers the classical Prouhet--Thue--Morse
-evaluation
+commutative monoid for an arbitrary summand depending on the two parts.  Both boxed
+displays are in fact extremal cases of a single statement, formalized here in that
+stronger form: for \emph{every} integer polynomial $p$ of degree at most $\omega_L(a)$,
+\[
+  \sum_{n<2^L}\varepsilon_a(n)\,p(n)
+  =p_{\omega_L(a)}\cdot(-1)^{\omega_L(a)}\,\omega_L(a)!\;2^{\,L-\omega_L(a)}\,2^{\sum_{h\in O_L(a)}h},
+\]
+with $p_{\omega}$ the coefficient of $z^{\omega}$ and no nonzeroness hypothesis anywhere ---
+the zero polynomial and the case $\omega_L(a)=0$ are included
+(\lean{Fabius.sum\_range\_two\_pow\_parityCharacter\_mul\_eval}).  The vanishing
+\eqref{p1:eq:Prouhet-vanish} is that coefficient being zero below the threshold, and
+\eqref{p1:eq:first-surviving} is $p=z^{\omega_L(a)}$, where it is one.  A constant-weight
+corollary recovers the classical Prouhet--Thue--Morse evaluation
 (\lean{Fabius.sum\_range\_two\_pow\_thueMorseSign\_mul\_pow}).  What is still not
 formalized is the exact order $\omega_L(a)$ of the zero of $T_{a,L}$ at $z=1$, which is
 the only remaining step of this theorem.
