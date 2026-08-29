@@ -60,8 +60,8 @@ theorem parityCharacter_sum_two_pow (a : ℕ → ℕ) (T : Finset ℕ) :
 sign, since the exponent counts the bits. -/
 theorem parityCharacter_const_one (n : ℕ) :
     parityCharacter (fun _ => 1) n = thueMorseSign n := by
-  rw [parityCharacter, thueMorseSign, Finset.sum_const,
-    smul_eq_mul, mul_one, card_bitSupport]
+  rw [parityCharacter, thueMorseSign, ← Finset.card_eq_sum_ones,
+    card_bitSupport]
 
 /-- A sign depends only on the residue of its exponent. -/
 private theorem neg_one_pow_mod_two (m : ℕ) :
@@ -76,7 +76,6 @@ theorem parityCharacter_mod_two (a : ℕ → ℕ) (n : ℕ) :
     neg_one_pow_mod_two (∑ h ∈ bitSupport n, a h),
     neg_one_pow_mod_two (∑ h ∈ bitSupport n, a h % 2),
     Finset.sum_nat_mod (bitSupport n) 2 a]
-  rw [Nat.mod_mod_self.symm]
 
 /-- **The weighted product identity.**  Over any commutative ring,
 
