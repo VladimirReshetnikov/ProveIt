@@ -19971,6 +19971,14 @@ Together with \cref{p10:eq:analytic-kernel-F}, this gives convergent moment seri
 Bessel, Airy, hypergeometric, and polylogarithmic kernels without requiring a separate
 quadrature of the flat endpoint function.
 
+\emph{Post-snapshot status.}  The principle \eqref{p10:eq:entire-kernel-up} is now formal:
+\path{EntireKernelCalculus.lean} proves
+\nolinkurl{Fabius.integral\_tsum\_eq\_tsum\_upMoment} --- for any coefficient sequence with
+\(\sum_n|a_n|<\infty\), \(\int\bigl(\sum_na_nx^n\bigr)\dd\mu_{\Up}=\sum_na_n\mu_n\); since the support lies
+in \((-1,1)\), the coefficients alone dominate, so every kernel entire on a
+neighbourhood of the closed support (Bessel, Airy, hypergeometric,
+polylogarithmic) integrates term by term through this single statement.
+
 \section{Products, order statistics, and correlation integrals}
 
 Integrals containing products of \(\F\) and \(\upf\) are generally not rational, but
