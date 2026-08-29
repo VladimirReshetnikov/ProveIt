@@ -113,6 +113,7 @@ import FabiusFunction.MomentHankelMatrix
 import FabiusFunction.MomentHankelValues
 import FabiusFunction.StieltjesMomentLaurent
 import FabiusFunction.RefinementConditioning
+import FabiusFunction.EntireKernelCalculus
 import FabiusFunction.StieltjesLogFixedPoint
 import FabiusFunction.StieltjesResolventHierarchy
 import FabiusFunction.OrthogonalPolynomialConstruction
