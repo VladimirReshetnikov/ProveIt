@@ -7,8 +7,11 @@ whole tree transitively, so a newly added *leaf* module that nothing
 imports is easy to forget.  Such a module is never elaborated by
 `lake build FabiusFunction`, and a whole-library build then reports
 success while silently skipping it.
+
+Exit status is 1 when anything is unreachable or phantom, so this can
+gate a commit alongside `audit_crosswalk_names.py`.
 """
-import io, os, re
+import io, os, re, sys
 
 ROOT = (r'C:/ProveIt/.claude/worktrees/fabius-function-formalization-4a6355'
         r'/Analysis/FabiusFunction/Lean')
@@ -62,3 +65,5 @@ if phantom:
     print('imported but missing on disk: %d' % len(phantom))
     for m in phantom:
         print('  PHANTOM      %s' % m)
+
+sys.exit(1 if (unreachable or phantom) else 0)
