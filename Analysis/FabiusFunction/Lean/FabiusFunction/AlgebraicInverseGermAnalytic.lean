@@ -2,7 +2,6 @@ import FabiusFunction.AlgebraicInverseGerm
 import Mathlib.Analysis.SpecialFunctions.Sqrt
 import Mathlib.Analysis.Calculus.Deriv.Add
 import Mathlib.Analysis.Calculus.Deriv.Mul
-import Mathlib.Analysis.Calculus.Deriv.Div
 
 /-!
 # Analytic realization of the concrete dyadic germ
