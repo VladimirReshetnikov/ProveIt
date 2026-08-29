@@ -159,6 +159,13 @@ theorem tsum_shifted_monomial_sub_integral_odd (F : BoundedFabius)
             fourier ℓ (θ : UnitAddCircle) := rfl
         _ = 0 := by rw [hz, zero_mul]
 
+private theorem neg_pow_ofReal_mul (v r : ℝ) (p : ℕ) :
+    (((-v) ^ p * r : ℝ) : ℂ) =
+      (-1 : ℂ) ^ p * ((v ^ p * r : ℝ) : ℂ) := by
+  rw [neg_pow]
+  push_cast
+  ring
+
 /-- **Coefficient parity**: the transform of the degree-`p` sample
 function has the parity of `p` — the up-factor is even, so
 `𝓕f(-w) = (-1)^p·𝓕f(w)`.  Combined with the spectral display this
@@ -188,8 +195,7 @@ theorem fourier_monomialRvachevSchwartz_neg (F : BoundedFabius)
     exact rvachevUp_even F _
   have harg : (-2 * Real.pi * -v * -w : ℝ) = -2 * Real.pi * v * w := by
     ring
-  rw [hup, harg, smul_eq_mul, smul_eq_mul]
-  push_cast [neg_pow]
+  rw [hup, harg, smul_eq_mul, smul_eq_mul, neg_pow_ofReal_mul]
   ring
 
 /-- Parity at integer frequencies. -/
