@@ -1920,13 +1920,64 @@ In particular,
  \Var(Y_d)=\frac1{12}\left(1+3^{-(d+1)}\right).
  \label{p1:eq:Psi-variance}
 \end{equation}
-These are \statusproved.  The hockey-stick step behind \eqref{p1:eq:Psi-multiplicity} is
-formalized as \lean{Fabius.inclusivePrefixSum_choose} (\lean{WeightedScaleMultiplicity.lean}),
-which proves $\sum_{h\le v}\binom hd=\binom{v+1}{d+1}$ for a general Pascal column; together
-with \lean{Fabius.weightedScaleMultiplicity} it supplies the whole arithmetic content of
-\eqref{p1:eq:Psi-multiplicity} apart from the exceptional $h=0$ term.  The spectral zeta
-\eqref{p1:eq:Psi-zeta}, the cumulants \eqref{p1:eq:Psi-cumulants} and the variance
-\eqref{p1:eq:Psi-variance} are not formalized.
+These are \statusproved.  The multiplicity \eqref{p1:eq:Psi-multiplicity} is now formalized in
+full, and as an order statement rather than only an exponent count, in
+\path{AlternatingNewtonFamily.lean}:
+\[
+ \ord_{z=\pm n}\Psi_d(z)=1+\binom{\vtwo(n)}{d+1},
+ \qquad n\ge1
+\]
+(\lean{Fabius.analyticOrderAt\_alternatingNewton},
+\lean{Fabius.analyticOrderAt\_alternatingNewton\_neg}).  What made this reachable is the order
+of vanishing at a general admissible weight, \path{GeneralizedRvachevEntire.lean}, which did not
+exist when this paragraph was written; before it, only the arithmetic was available.
+
+The arithmetic half is \lean{Fabius.weightedScaleMultiplicity\_alternatingNewton}, and it holds
+at \emph{every} $n$, the convention $\vtwo(0)=0$ making both sides $1$.  The exceptional $h=0$
+term, which the hockey stick does not cover, is handled by splitting it off the prefix sum; what
+remains is $\sum_{k<\vtwo(n)}\binom kd$, and that needs the hockey stick in \emph{exclusive}
+form, $\sum_{k<v}\binom kd=\binom{v}{d+1}$, which the corpus already carries as
+\lean{Fabius.sum\_range\_choose\_eq\_choose\_succ} (\path{ThueMorseMoments.lean}), where it was
+proved for the binomial moments of the Thue--Morse signs.  It is the form wanted here rather
+than the inclusive \lean{Fabius.inclusivePrefixSum\_choose},
+$\sum_{h\le v}\binom hd=\binom{v+1}{d+1}$, precisely because the $h=0$ term has already been
+removed: the inclusive form would need a $v\ge1$ side condition, while the exclusive one is
+correct at $v=0$ too, both sides vanishing.  A consequence worth naming: at odd $n$ the order
+is $1$ for every $d$ (\lean{Fabius.analyticOrderAt\_alternatingNewton\_odd}).
+
+One remark on the convention.  Our $\binom{-1}{d}=(-1)^d=1$ is legitimate only because $d$ is
+even, and that is the whole purpose of the parity restriction.  In the Lean weight there is no
+convention to make: \lean{Fabius.alternatingNewtonWeight} is defined by $P_d(0)=1$ and
+$P_d(h+1)=\binom hd$, so it is $\N_0$-valued for every $d$, and the parity enters only in the
+question of whether it agrees with our signed formula \eqref{p1:eq:Pd-newton}.
+
+The spectral zeta \eqref{p1:eq:Psi-zeta} is formalized as well, in
+\path{AlternatingNewtonZeta.lean}, together with the generating function \eqref{p1:eq:Ad} it
+rests on.  The latter,
+\[
+ A_d(q)=1+\frac{q^{d+1}}{(1-q)^{d+1}},
+ \qquad|q|<1,
+\]
+is \lean{Fabius.tsum\_alternatingNewtonWeight\_pow}: the $h=0$ term contributes the $1$, and the
+rest is the corpus's Newton generating function \lean{Fabius.tsum\_choose\_mul\_pow} with the
+index shifted by one.  Feeding it to the general weighted zeta at $q=2^{-s}$, where
+$q/(1-q)$ collapses to $1/(2^s-1)$, gives
+\[
+ \sum_{n\ge1}\frac{m_{P_d}(n)}{n^{s}}
+ =\Bigl(\sum_{n\ge1}n^{-s}\Bigr)\left(1+\frac1{(2^s-1)^{d+1}}\right),
+ \qquad s>1
+\]
+(\lean{Fabius.spectral\_zeta\_alternatingNewton}).  As in \path{SpectralZetaWeighted.lean} the
+first factor is left as its own $p$-series rather than identified with \lean{riemannZeta}, and
+$s$ is real; both are limitations of the corpus's zeta, not of this weight.  What this weight
+does contribute is that the summability hypothesis the general theorem must carry --- an
+arbitrary weight may grow too fast --- is here \emph{discharged}, since $P_d$ grows
+polynomially and is admissible at every $s>0$
+(\lean{Fabius.summable\_alternatingNewtonWeight\_rpow}).
+
+The cumulants \eqref{p1:eq:Psi-cumulants} and the variance \eqref{p1:eq:Psi-variance} remain
+unformalized; both need the probabilistic model behind $\Psi_d$, which the corpus does not
+have.
 \end{theorem}
 
 \begin{proof}
