@@ -680,9 +680,31 @@ parity word $(\bar a_h)$ enters, and
 identity
 $\prod_{j<m}\bigl(1+(-1)^{a_j}z^{2^j}\bigr)=\sum_{n<2^m}\varepsilon_a(n)z^n$
 over an arbitrary commutative ring --- which at $a_h\equiv1$ is the finite Thue--Morse
-product identity.  What remains unformalized is the sign law \eqref{p1:eq:sign-master}
-itself at general $a$, relating the character to $\sgn\Phi_a$, and the automaticity
-criterion, for want of any automatic-sequence or $2$-kernel theory in the library.
+product identity.  The automaticity criterion is formal too, in \path{ParityCharacterKernel.lean},
+and the assessment that it needed automatic-sequence theory was too pessimistic: taking
+the standard finite-$2$-kernel characterization as the definition, the criterion is purely
+combinatorial.  Writing $\mathcal K(f)=\{n\mapsto f(2^kn+r):r<2^k\}$, one has
+\[
+  \mathcal K(\varepsilon_a)\ \text{finite}\quad\Longleftrightarrow\quad
+  (\bar a_h)_{h\ge0}\ \text{eventually periodic}
+\]
+(\lean{Fabius.finite\_twoKernel\_parityCharacter\_iff}).  The engine is the volume's own
+kernel-shift identity \eqref{p1:eq:kernel-shift}
+(\lean{Fabius.parityCharacter\_two\_pow\_mul\_add}), which rests on the bit-support split of
+$2^kn+r$: read at $r=0$ it places every shifted character in the kernel, and read in
+general it makes every kernel element $\pm$ a shifted character, so the kernel is covered
+by one image together with its negation.  The converse direction uses the probe
+$\varepsilon_{S^ka}(2^j)=(-1)^{\bar a_{k+j}}$
+(\lean{Fabius.parityCharacter\_shiftSeq\_two\_pow}) to turn equal characters into equal
+shifted parity words.  What the library still lacks is the \emph{equivalence} between a
+finite $2$-kernel and an automaton definition; that is imported from the literature as
+the meaning of the word, not proved.  The constant weight is recorded as a guard
+(\lean{Fabius.finite\_twoKernel\_thueMorseSign}): the weight word is periodic and the
+kernel finite, while the corpus's \lean{Fabius.thueMorseSign\_not\_eventually\_periodic} says the \emph{sign}
+sequence is not eventually periodic --- the criterion constrains the weight word, not the
+character.  What remains unformalized is the sign law \eqref{p1:eq:sign-master} itself at
+general $a$, relating the character to $\sgn\Phi_a$, which needs the canonical product at
+a general weight.
 \end{theorem}
 
 \begin{proof}
@@ -1207,9 +1229,24 @@ unbounded as $q\to1^-$, with $q=999/1000$ exhibited
 exactly at $q=0$
 (\lean{Fabius.one\_lt\_qConditionNumberLimit}, \lean{Fabius.qConditionNumberLimit\_zero}).
 So the half-base constant $16$ has no general-$q$ analogue, and that is
-a theorem.  What is still not formalized is the numerical limiting
-value \eqref{p1:eq:qquarter-condition} at the cumulant grid: the limit
-is identified as a product, but its decimal expansion is not certified.
+a theorem.  The numerical value \eqref{p1:eq:qquarter-condition} at the
+cumulant grid is now certified as well, though only to finitely many
+places: \path{CumulantGridConstant.lean} proves the kernel-checked rational
+enclosure
+\[
+  1.969260353<\frac{(-1/4;1/4)_\infty}{(1/4;1/4)_\infty}<1.969260354
+\]
+(\lean{Fabius.qConditionNumberLimit\_quarter\_enclosure}), pinning the first
+nine decimals, with a coarser cut-$14$ companion at seven and a guard
+enclosing the denominator symbol alone to nine (\lean{Fabius.qPochhammerInf\_quarter\_enclosure}).  The reusable content is the
+machinery rather than the number: the prefix/tail split
+(\lean{Fabius.qPochhammerInf\_eq\_prefix\_mul\_tail}) exhibits the tail as again a
+$q$-Pochhammer symbol at the \emph{same} base with coefficient scaled by
+$q^N$, so each tail estimate is proved once rather than once per cut, and
+the estimates carry an abstract deficit budget rather than a threshold on
+$q$ --- there is no $q<1/2$ anywhere --- so they serve any base below $1$
+once the cut is taken large enough.  The remaining twenty quoted digits
+are not proved.
 \end{theorem}
 
 \begin{proof}
@@ -1456,8 +1493,27 @@ All formulas are \statusproved.  Of these, \eqref{p1:eq:mP} is formalized one Ne
 a time: \lean{Fabius.weightedScaleMultiplicity_choose} (\lean{WeightedScaleMultiplicity.lean})
 proves $m(n)=\binom{\vtwo(n)+1}{r+1}$ for the single Pascal weight $h\mapsto\binom hr$, for an
 arbitrary base, its hockey-stick input being \lean{Fabius.inclusivePrefixSum_choose}.
-Assembling those components into the signed sum over $r$, and every other formula in the
-theorem, is not formalized.
+The assembly of those components into the signed sum over $r$ is formal too, in
+\path{NewtonMultiplicityAssembly.lean}: it is nothing but linearity of the prefix sum
+in its weight sequence, so \eqref{p1:eq:mP} holds over an arbitrary Finset of Newton
+indices, at an arbitrary base, and over any semiring rather than only over $\Z$
+(\lean{Fabius.weightedScaleMultiplicity\_newton\_finset}, \lean{Fabius.weightedScaleMultiplicity\_newton}, and the literal display
+\lean{Fabius.weightedScaleMultiplicity\_newton\_two}).  The Gregory--Newton reading of the
+coefficients, $a_m=\sum_{r\le m}\binom mr(\Delta^ra)_0$, is
+\lean{Fabius.weight\_eq\_sum\_choose\_fwdDiff}; that it \emph{forces} the coefficients ---
+that $\Delta^s$ applied to a Newton sum returns $c_s$ --- is not formalized, so the module
+exhibits $\Delta^rP(0)$ as a valid choice rather than as the unique one.
+
+Equations \eqref{p1:eq:AP-newton} and the arithmetic half of \eqref{p1:eq:RP} are formal
+in \path{NewtonBasisGeneratingFunction.lean}, resting on Mathlib's choose-geometric
+family.  The crux is a single identity, and it is what makes the Newton basis the one
+adapted to the dyadic problem: at $q=1/2$ \emph{every} Newton-basis generating function
+$q^r/(1-q)^{r+1}$ takes the value $2$, independently of $r$
+(\lean{Fabius.pow\_div\_one\_sub\_pow\_at\_half}), so the series collapses to the plain
+coefficient sum (\lean{Fabius.tsum\_newtonPoly}, \lean{Fabius.half\_mul\_tsum\_newtonPoly\_half}).  Reading that
+number as the \emph{support radius} of $\Phi_P$ is not formalized: it needs the canonical
+product at a general weight, which the corpus does not carry.  Neither the spectral zeta
+\eqref{p1:eq:ZP} nor the cumulants \eqref{p1:eq:kappaP} are formalized.
 \end{theorem}
 
 \begin{proof}
