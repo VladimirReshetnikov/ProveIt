@@ -609,8 +609,22 @@ identity reduces to Legendre's $\sum_h\lfloor N/2^h\rfloor=2N-s_2(N)$, carried a
 test (\lean{Fabius.sum\_range\_div\_two\_pow\_add\_digitSum}, \lean{Fabius.dyadicDefect\_one}).  The
 per-scale digit expansion $\{N/2^h\}=\sum_{j<h}b_j(N)2^{\,j-h}$ that the bit form
 \eqref{p1:eq:M-bit} rests on is also formal
-(\lean{Fabius.fract\_natCast\_div\_two\_pow\_eq\_sum\_range}); what is not formalized is the
-exchange of summation that converts it into \eqref{p1:eq:M-bit} itself.
+(\lean{Fabius.fract\_natCast\_div\_two\_pow\_eq\_sum\_range}), and so is the exchange of
+summation that converts it into \eqref{p1:eq:M-bit}, in
+\path{DigitDefectBitForm.lean}.  The tail weight
+$\tau_j(a)=\sum_{k\ge1}a_{j+k}2^{-k}$ is \lean{Fabius.dyadicTailWeight}, well defined by
+\lean{Fabius.summable\_dyadicTailWeight\_terms} and pinned against an off-by-one in the
+index convention by the halving recursion
+$\tau_j=(a_{j+1}+\tau_{j+1})/2$ (\lean{Fabius.dyadicTailWeight\_succ}) together with
+$\tau_j(1)=1$ (\lean{Fabius.dyadicTailWeight\_one}); the resolved defect
+$\rho_a(N)=\sum_j b_j(N)\tau_j(a)$ is
+\lean{Fabius.dyadicDefect\_eq\_sum\_range\_testBit} in windowed form and
+\lean{Fabius.dyadicDefect\_eq\_tsum\_testBit} unconditionally, and \eqref{p1:eq:M-bit}
+itself is \lean{Fabius.sum\_range\_weightedScaleMultiplicity\_bit}.  The exchange needs no
+Fubini on a triangular index set: only finitely many digits of $N$ are nonzero, so a fixed
+window reduces it to a finite sum of convergent series.  As a regression test the module
+re-derives $\sum_j b_j(N)=s_2(N)$ from the new machinery and lands it on the corpus's
+audited Legendre count (\lean{Fabius.tsum\_testBit\_eq\_digitSum}).
 \end{theorem}
 
 \begin{proof}
@@ -1143,11 +1157,30 @@ $1$ and $1/3$, and at $q=2$ they are $3$ and $-3$
 (\lean{Fabius.sum\_abs\_qToeplitzWeight\_ne\_of\_neg}, \lean{Fabius.sum\_abs\_qToeplitzWeight\_ne\_of\_one\_lt}).  As a
 machine-checked consistency check the two established half-base theorems are re-derived from
 the general ones
-(\lean{Fabius.sum\_abs\_discreteLimitWeight\_of\_qToeplitz}, \lean{Fabius.sum\_range\_discreteLimitWeight\_mul\_pow\_of\_qToeplitz}).  What is still not
-formalized is the numerical limiting value \eqref{p1:eq:qquarter-condition} at the cumulant grid,
-and the uniform-in-$q$ bound: the ratio is not bounded as $q\to1^-$, so the half-base constant
-$16$ has no general-$q$ analogue --- only the lower bound $\ge1$ is proved
-(\lean{Fabius.one\_le\_sum\_abs\_qToeplitzWeight}).
+(\lean{Fabius.sum\_abs\_discreteLimitWeight\_of\_qToeplitz}, \lean{Fabius.sum\_range\_discreteLimitWeight\_mul\_pow\_of\_qToeplitz}).  The passage to the limit in $r$
+is formal too, in \path{LimitConditionNumber.lean}: for $0\le q<1$ both
+families $j\mapsto1-aq^{j}$ are multipliable
+(\lean{Fabius.multipliable\_one\_sub\_mul\_pow}), the finite symbols
+converge to the infinite ones
+(\lean{Fabius.qPochhammerInf}, \lean{Fabius.tendsto\_finiteQPochhammerIn}),
+and $(q;q)_\infty>0$ (\lean{Fabius.qPochhammerInf\_self\_pos}), so the
+condition numbers converge to $(-q;q)_\infty/(q;q)_\infty$
+(\lean{Fabius.tendsto\_sum\_abs\_qToeplitzWeight}).  Positivity of the
+denominator is the crux, and it is obtained from the summability of the
+logarithms rather than from a Weierstrass product bound, which unpeeled
+is vacuous past $q=1/2$ --- itself recorded as a theorem
+(\lean{Fabius.weierstrass\_bound\_vacuous\_at\_three\_quarters}) rather
+than as a remark.  The failure of a uniform-in-$q$ bound is now
+effective as well: the limit is at least $1/(1-q)$
+(\lean{Fabius.one\_div\_one\_sub\_le\_qConditionNumberLimit}), hence
+unbounded as $q\to1^-$, with $q=999/1000$ exhibited
+(\lean{Fabius.thousand\_le\_qConditionNumberLimit}), and it equals $1$
+exactly at $q=0$
+(\lean{Fabius.one\_lt\_qConditionNumberLimit}, \lean{Fabius.qConditionNumberLimit\_zero}).
+So the half-base constant $16$ has no general-$q$ analogue, and that is
+a theorem.  What is still not formalized is the numerical limiting
+value \eqref{p1:eq:qquarter-condition} at the cumulant grid: the limit
+is identified as a product, but its decimal expansion is not certified.
 \end{theorem}
 
 \begin{proof}
@@ -1691,7 +1724,33 @@ as \lean{Fabius.odd_choose_iff_bitSupport_subset} (\lean{ThueMorseLucasSupport.l
 submask form ``$\binom nk$ is odd exactly when the binary support of $k$ is contained in that of
 $n$'', with \lean{Fabius.oddBinomialIndices_eq_image_powerset} parametrizing the odd positions
 of a Pascal row by the powerset of the bit support.  The density count
-\eqref{p1:eq:Pd-prouhet-density} is not formalized.
+\eqref{p1:eq:Pd-prouhet-density} is now formalized as well, in
+\path{SubmaskDensityAsymptotic.lean}, and with the implied constant
+exhibited rather than hidden inside the $\bigO$: writing
+$\omega(d,L)=\#\{n<L:\binom{n}{d}\ \text{odd}\}$
+(\lean{Fabius.submaskCount}, identified with that count by
+\lean{Fabius.submaskCount\_eq\_card\_filter\_odd\_choose}), one has the
+two-sided bound
+\[
+  \bigl\lvert\,2^{s_2(d)}\,\omega(d,L)-L\,\bigr\rvert\;\le\;2^{m}
+  \qquad\text{whenever}\ d<2^{m}
+\]
+(\lean{Fabius.abs\_two\_pow\_weight\_mul\_submaskCount\_sub\_le}), valid
+for \emph{every} $L$, not merely along complete blocks; taking $m=d$
+makes the constant depend on $d$ alone
+(\lean{Fabius.abs\_two\_pow\_weight\_mul\_submaskCount\_sub\_le\_self}).
+Dividing by $L$ gives the density itself as a limit,
+$\omega(d,L)/L\to2^{-s_2(d)}$
+(\lean{Fabius.tendsto\_card\_filter\_odd\_choose\_div\_atTop}).  The
+mechanism is periodicity: all bits of $d$ lie below $m$, so adding a
+multiple of $2^{m}$ leaves the submask condition unchanged
+(\lean{Fabius.bitSupport\_subset\_two\_pow\_mul\_add\_iff}), and the count
+over $[0,L)$ splits into $\lfloor L/2^{m}\rfloor$ full blocks --- each
+counted exactly by \lean{Fabius.card\_filter\_bitSupport\_subset} --- plus
+a partial block dominated by a full one.  What still stands between
+this and \eqref{p1:eq:Pd-prouhet-density} as stated is only the
+identification of $P_d(h)$ with the binomial coefficient, noted above
+as the remaining informal step.
 \end{corollary}
 
 \begin{proof}
