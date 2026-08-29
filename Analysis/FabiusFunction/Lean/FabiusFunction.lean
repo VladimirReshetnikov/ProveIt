@@ -115,6 +115,7 @@ import FabiusFunction.AlgebraicInverseGermBinomial
 import FabiusFunction.GeometricCgfTails
 import FabiusFunction.GeometricTailDictionary
 import FabiusFunction.GeometricUniformDictionary
+import FabiusFunction.GeometricSincFactorization
 import FabiusFunction.DyadicCombTrapezoid
 import FabiusFunction.IncompleteBetaMaster
 import FabiusFunction.MomentHankelMatrix
