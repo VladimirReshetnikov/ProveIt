@@ -106,4 +106,49 @@ theorem charFun_geometricUniformDistribution_prefix_sinc {q : ℝ}
   rw [charFun_geometricUniformDistribution_prefix hq m t,
     Finset.prod_mul_distrib, hphase]
 
+/-- **The infinite master factorization at every ratio**: the finite
+phase-collapsed sinc products converge to the characteristic
+function, `e^{i(1-qᵐ)t/2}·∏_{k<m} sinc((1-q)qᵏt/2) → φ_q(t)` —
+the full sinc-product formula as the limit of its finite halves. -/
+theorem tendsto_prefix_sinc_charFun {q : ℝ} (hq : |q| < 1) (t : ℝ) :
+    Filter.Tendsto (fun m : ℕ =>
+      cexp (((2⁻¹ * ((1 - q ^ m) * t) : ℝ) : ℂ) * I) *
+        ∏ k ∈ Finset.range m,
+          complexSinc ((2⁻¹ * ((1 - q) * (q ^ k * t)) : ℝ) : ℂ))
+      Filter.atTop
+      (nhds (charFun (geometricUniformDistribution q) t)) := by
+  haveI := geometricUniformDistribution_isProbabilityMeasure hq
+  have htail : Filter.Tendsto
+      (fun m : ℕ =>
+        charFun (geometricUniformDistribution q) (q ^ m * t))
+      Filter.atTop (nhds 1) := by
+    have hq0 : Filter.Tendsto (fun m : ℕ => q ^ m * t)
+        Filter.atTop (nhds 0) := by
+      have h := tendsto_pow_atTop_nhds_zero_of_abs_lt_one hq
+      simpa using h.mul_const t
+    have h := ((continuous_charFun
+      (μ := geometricUniformDistribution q)).tendsto 0).comp hq0
+    simpa [charFun_zero] using h
+  have hfin : ∀ m : ℕ,
+      (cexp (((2⁻¹ * ((1 - q ^ m) * t) : ℝ) : ℂ) * I) *
+        ∏ k ∈ Finset.range m,
+          complexSinc ((2⁻¹ * ((1 - q) * (q ^ k * t)) : ℝ) : ℂ)) *
+        charFun (geometricUniformDistribution q) (q ^ m * t) =
+        charFun (geometricUniformDistribution q) t := fun m =>
+    (charFun_geometricUniformDistribution_prefix_sinc hq m t).symm
+  have hne : ∀ᶠ m : ℕ in Filter.atTop,
+      charFun (geometricUniformDistribution q) (q ^ m * t) ≠ 0 :=
+    htail.eventually_ne one_ne_zero
+  have hlim : Filter.Tendsto (fun m : ℕ =>
+      charFun (geometricUniformDistribution q) t *
+        (charFun (geometricUniformDistribution q) (q ^ m * t))⁻¹)
+      Filter.atTop
+      (nhds (charFun (geometricUniformDistribution q) t)) := by
+    have h := (htail.inv₀ one_ne_zero).const_mul
+      (charFun (geometricUniformDistribution q) t)
+    simpa using h
+  refine Filter.Tendsto.congr' ?_ hlim
+  filter_upwards [hne] with m hm
+  rw [← hfin m, mul_assoc, mul_inv_cancel₀ hm, mul_one]
+
 end Fabius
