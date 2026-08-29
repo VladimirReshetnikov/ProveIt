@@ -173,44 +173,24 @@ theorem fourier_monomialRvachevSchwartz_neg (F : BoundedFabius)
           (inv_ne_zero (Nat.cast_ne_zero.mpr hM)))) w := by
   rw [Real.fourier_real_eq_integral_exp_smul,
     Real.fourier_real_eq_integral_exp_smul]
-  calc ∫ v : ℝ, Complex.exp (↑(-2 * π * v * -w) * Complex.I) •
+  have h := integral_neg_eq_self
+    (fun v : ℝ =>
+      Complex.exp (↑(-2 * Real.pi * v * -w) * Complex.I) •
         monomialRvachevSchwartz F hF p ((M : ℝ))⁻¹
-          (inv_ne_zero (Nat.cast_ne_zero.mpr hM)) v
-      = ∫ v : ℝ, Complex.exp (↑(-2 * π * v * w) * Complex.I) •
-          monomialRvachevSchwartz F hF p ((M : ℝ))⁻¹
-            (inv_ne_zero (Nat.cast_ne_zero.mpr hM)) (-v) := by
-        have h := integral_neg_eq_self
-          (fun v : ℝ =>
-            Complex.exp (↑(-2 * π * v * -w) * Complex.I) •
-              monomialRvachevSchwartz F hF p ((M : ℝ))⁻¹
-                (inv_ne_zero (Nat.cast_ne_zero.mpr hM)) v) volume
-        rw [← h]
-        refine integral_congr_ae
-          (Filter.Eventually.of_forall fun v => ?_)
-        dsimp only
-        have harg : (-2 * π * -v * -w : ℝ) = -2 * π * v * w := by
-          ring
-        rw [harg]
-    _ = ∫ v : ℝ, (-1 : ℂ) ^ p *
-          (Complex.exp (↑(-2 * π * v * w) * Complex.I) •
-            monomialRvachevSchwartz F hF p ((M : ℝ))⁻¹
-              (inv_ne_zero (Nat.cast_ne_zero.mpr hM)) v) := by
-        refine integral_congr_ae
-          (Filter.Eventually.of_forall fun v => ?_)
-        dsimp only
-        rw [monomialRvachevSchwartz_apply, monomialRvachevSchwartz_apply]
-        have hup : rvachevUp F (((M : ℝ))⁻¹ * -v) =
-            rvachevUp F (((M : ℝ))⁻¹ * v) := by
-          rw [mul_neg]
-          exact rvachevUp_even F _
-        rw [hup, smul_eq_mul, smul_eq_mul]
-        push_cast [neg_pow]
-        ring
-    _ = (-1 : ℂ) ^ p *
-          ∫ v : ℝ, Complex.exp (↑(-2 * π * v * w) * Complex.I) •
-            monomialRvachevSchwartz F hF p ((M : ℝ))⁻¹
-              (inv_ne_zero (Nat.cast_ne_zero.mpr hM)) v :=
-        MeasureTheory.integral_const_mul _ _
+          (inv_ne_zero (Nat.cast_ne_zero.mpr hM)) v) volume
+  rw [← h, ← MeasureTheory.integral_const_mul]
+  refine integral_congr_ae (Filter.Eventually.of_forall fun v => ?_)
+  dsimp only
+  rw [monomialRvachevSchwartz_apply, monomialRvachevSchwartz_apply]
+  have hup : rvachevUp F (((M : ℝ))⁻¹ * -v) =
+      rvachevUp F (((M : ℝ))⁻¹ * v) := by
+    rw [mul_neg]
+    exact rvachevUp_even F _
+  have harg : (-2 * Real.pi * -v * -w : ℝ) = -2 * Real.pi * v * w := by
+    ring
+  rw [hup, harg, smul_eq_mul, smul_eq_mul]
+  push_cast [neg_pow]
+  ring
 
 /-- Parity at integer frequencies. -/
 theorem fourier_monomialRvachevSchwartz_int_neg (F : BoundedFabius)
