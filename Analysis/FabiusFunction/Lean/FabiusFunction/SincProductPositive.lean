@@ -1,4 +1,5 @@
 import FabiusFunction.SincLowerBound
+import FabiusFunction.WeakConvergence
 import Mathlib.Analysis.Complex.Basic
 import Mathlib.Analysis.Normed.Group.InfiniteSum
 import Mathlib.Analysis.SpecificLimits.Basic
@@ -52,6 +53,8 @@ is the explicit constant.)
 -/
 
 set_option autoImplicit false
+
+open MeasureTheory ProbabilityTheory
 
 namespace Fabius
 
@@ -255,5 +258,64 @@ theorem re_rvachevFourierProduct_ofReal_pos_of_abs_le {x : ℝ}
   refine re_rvachevFourierProduct_ofReal_pos ?_
   have hmul : (Real.pi * x) ^ 2 = Real.pi ^ 2 * x ^ 2 := by ring
   nlinarith [hpi, hpi0, hxsq, sq_nonneg x]
+
+/-! ## The window for the characteristic function -/
+
+/-- The up-measure's characteristic function is the real dyadic sinc
+product at the rescaled frequency: `charFun μ_up t = Φ(t/2π)`, and
+`Φ` at a real point is real. -/
+theorem charFun_rvachevMeasure_eq_ofReal (F : BoundedFabius)
+    (hF : IsFabius F) (t : ℝ) :
+    charFun (rvachevMeasure F) t =
+      ((∏' n : ℕ, Real.sinc (Real.pi * (t / (2 * Real.pi)) / 2 ^ n) :
+        ℝ) : ℂ) := by
+  have hpi : (2 * Real.pi : ℂ) ≠ 0 := by
+    simp [Complex.ofReal_ne_zero, Real.pi_ne_zero]
+  rw [rvachevMeasure_charFun_pos F hF t, rvachevFourier_eq_product F hF]
+  have harg : ((t : ℂ) / (2 * Real.pi)) =
+      (((t / (2 * Real.pi) : ℝ)) : ℂ) := by
+    push_cast
+    ring
+  rw [harg, rvachevFourierProduct_ofReal_eq_tprod_sinc]
+
+/-- **The characteristic function does not vanish on `|t| < 3√2`**:
+with `x = t/2π` the deficit budget is `2(t/2)² = t²/2`, so the window
+`2(πx)² < 9` reads `t² < 18`.  In particular the up-law's
+characteristic function is real and strictly positive there. -/
+theorem re_charFun_rvachevMeasure_pos (F : BoundedFabius)
+    (hF : IsFabius F) {t : ℝ} (ht : t ^ 2 < 18) :
+    0 < (charFun (rvachevMeasure F) t).re := by
+  have hpi0 : (0 : ℝ) < Real.pi := Real.pi_pos
+  have harg : Real.pi * (t / (2 * Real.pi)) = t / 2 := by
+    field_simp
+    ring
+  have hbudget : 2 * (Real.pi * (t / (2 * Real.pi))) ^ 2 < 9 := by
+    rw [harg]
+    nlinarith [ht]
+  have h := re_rvachevFourierProduct_ofReal_pos hbudget
+  rw [rvachevMeasure_charFun_pos F hF t, rvachevFourier_eq_product F hF]
+  have hcast : ((t : ℂ) / (2 * Real.pi)) =
+      (((t / (2 * Real.pi) : ℝ)) : ℂ) := by
+    push_cast
+    ring
+  rw [hcast]
+  exact h
+
+/-- Consequently the characteristic function has no zero there. -/
+theorem charFun_rvachevMeasure_ne_zero (F : BoundedFabius)
+    (hF : IsFabius F) {t : ℝ} (ht : t ^ 2 < 18) :
+    charFun (rvachevMeasure F) t ≠ 0 := by
+  intro h
+  have hpos := re_charFun_rvachevMeasure_pos F hF ht
+  rw [h, Complex.zero_re] at hpos
+  exact lt_irrefl 0 hpos
+
+/-- The concrete form: no zero for `|t| ≤ 4`, since `16 < 18`. -/
+theorem charFun_rvachevMeasure_ne_zero_of_abs_le_four
+    (F : BoundedFabius) (hF : IsFabius F) {t : ℝ} (ht : |t| ≤ 4) :
+    charFun (rvachevMeasure F) t ≠ 0 := by
+  refine charFun_rvachevMeasure_ne_zero F hF ?_
+  have habs : |t| ^ 2 = t ^ 2 := sq_abs t
+  nlinarith [abs_nonneg t, ht]
 
 end Fabius
