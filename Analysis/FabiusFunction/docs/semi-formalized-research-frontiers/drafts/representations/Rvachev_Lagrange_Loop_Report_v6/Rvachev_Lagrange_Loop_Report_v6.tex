@@ -94,6 +94,22 @@
 \author{Research report prepared for Vladimir Reshetnikov}
 \date{29 August 2026\\Repository snapshot \RepoCommit}
 
+% ed.: the document is book class, which provides no abstract environment, so the
+% abstract below raised "Environment abstract undefined" and its text was dropped
+% from the build. Supplied here in the standard report-class shape.
+\newenvironment{abstract}%
+  {\cleardoublepage\thispagestyle{plain}\begin{center}\bfseries Abstract\end{center}\quotation}%
+  {\endquotation\clearpage}
+
+% ed.: \Sha (the Dirac comb) is used in the weighted-Poisson appendix but never
+% defined. Rendered as an upright sans-serif Cyrillic Sha built from three rules,
+% which needs no Cyrillic font to be installed.
+\providecommand{\Sha}{\mathord{\vcenter{\hbox{%
+  \rule[-0.05ex]{0.09em}{1.15ex}\kern0.22em
+  \rule[-0.05ex]{0.09em}{1.15ex}\kern0.22em
+  \rule[-0.05ex]{0.09em}{1.15ex}%
+  \kern-0.62em\rule[-0.05ex]{0.62em}{0.09em}}}}}
+
 \begin{document}
 \frontmatter
 \maketitle
@@ -218,7 +234,10 @@ Equivalently, \(u\) is the density of the almost surely convergent random series
 \end{equation}
 Its support radius is \(\sum_{r\ge1}2^{-r}=1\).  Splitting off the first summand gives the familiar integral and differential equations
 \begin{align}
- u(x)&=\int_{2x-1}^{2x+1}u(t)\dd t,\label{eq:up-integral}\
+ u(x)&=\int_{2x-1}^{2x+1}u(t)\dd t,\label{eq:up-integral}\\
+% ed.: was a single "\", which escaped the newline instead of ending the
+% align row; amsmath then reported "Multiple \label's" and dropped
+% eq:up-integral.
  u'(x)&=2u(2x+1)-2u(2x-1).\label{eq:up-differential}
 \end{align}
 In particular \(u(0)=1\), and \(u\) together with all derivatives vanishes at \(\pm1\).
@@ -245,7 +264,10 @@ No argument of \(u\) is rescaled in \cref{eq:synthesis-operator}.  The atom is a
 Let \(X=(x_0,\ldots,x_d)\) be pairwise distinct nodes in \([-1,1]\).  The cardinal polynomials and interpolation projector are
 \begin{align}
  \ell_j^X(x)&:=\prod_{\substack{0\le r\le d\\r\ne j}}
- \frac{x-x_r}{x_j-x_r},\label{eq:lagrange-cardinal}\
+ \frac{x-x_r}{x_j-x_r},\label{eq:lagrange-cardinal}\\
+% ed.: was a single "\" here, which escaped the newline instead of ending the
+% align row; both labels then fell in one row and eq:lagrange-cardinal was
+% clobbered, leaving the two \cref's to it undefined.
  (\Iop_X f)(x)&:=\sum_{j=0}^{d}f(x_j)\ell_j^X(x).
  \label{eq:lagrange-projector}
 \end{align}
@@ -435,7 +457,7 @@ For the shift lattice \(h\Z=m^{-1}\Z\), the minimum zero order of \(\widehat u\)
  s(m):=\vtwo(m)+1.
  \label{eq:strang-fix-order}
 \end{equation}
-Consequently the undilated translates \(u(\,oldsymbol\cdot-k/m)\) have exact polynomial-reproduction degree \(\vtwo(m)\).  In particular, \(m=2^d\) gives order \(d+1\) and reproduces \(\Pp_d\); no smaller positive integer does so for all degree-\(d\) polynomials.
+Consequently the undilated translates \(u(\,\boldsymbol\cdot-k/m)\) have exact polynomial-reproduction degree \(\vtwo(m)\).  In particular, \(m=2^d\) gives order \(d+1\) and reproduces \(\Pp_d\); no smaller positive integer does so for all degree-\(d\) polynomials.
 \end{corollary}
 
 \begin{remark}[Density is not the invariant]
@@ -1493,6 +1515,10 @@ Substitution into the Lagrange expansion of \(u\) closes the loop, but the opera
 
 \IfFileExists{corpus_index.tex}{\input{corpus_index.tex}}{
 \chapter{Corpus audit and source map}
+\label{app:corpus}% ed.: the fallback branch carried no label, so the two \cref's
+% to app:corpus were undefined whenever corpus_index.tex is absent -- which is
+% always here, since this report arrived as a bare .tex with none of the
+% companion files (corpus index, CSV, extraction script) its text refers to.
 The generated corpus index was unavailable in this build.}
 
 \chapter{Proof details for the weighted Poisson identity}
