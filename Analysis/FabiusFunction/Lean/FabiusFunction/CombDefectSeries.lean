@@ -240,7 +240,7 @@ theorem tsum_monomial_eq_integral_of_odd_deg (F : BoundedFabius)
         fourier ℓ (((0 : ℝ)) : UnitAddCircle) else 0 with hf
     have hneg : ∀ ℓ : ℤ, f (-ℓ) = -f ℓ := by
       intro ℓ
-      rw [hf]
+      simp only [hf]
       by_cases hℓ : Odd ℓ
       · rw [if_pos (odd_neg.mpr hℓ), if_pos hℓ, h0c,
           fourier_eval_zero, fourier_eval_zero, mul_one, mul_one]
@@ -260,7 +260,7 @@ theorem tsum_monomial_eq_integral_of_odd_deg (F : BoundedFabius)
       (Equiv.neg ℤ).tsum_eq f
     have hminus : ∑' ℓ : ℤ, f (-ℓ) = -∑' ℓ : ℤ, f ℓ := by
       calc ∑' ℓ : ℤ, f (-ℓ) = ∑' ℓ : ℤ, -(f ℓ) := tsum_congr hneg
-        _ = -∑' ℓ : ℤ, f ℓ := tsum_neg _
+        _ = -∑' ℓ : ℤ, f ℓ := tsum_neg
     have hTT : ∑' ℓ : ℤ, f ℓ = -∑' ℓ : ℤ, f ℓ :=
       hswap.symm.trans hminus
     exact add_self_eq_zero.mp (eq_neg_iff_add_eq_zero.mp hTT)
