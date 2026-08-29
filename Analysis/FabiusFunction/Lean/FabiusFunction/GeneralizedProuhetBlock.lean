@@ -40,7 +40,9 @@ carries the factor `2^{L-ω}` and no more.
   reading, where every layer is odd and the free factor is `1`.
 
 The identification of `ω` with the order of the zero of the block
-polynomial at `z = 1` is not proved here.
+polynomial at `z = 1` is not proved here; it is
+`Fabius.rootMultiplicity_prouhetBlockPoly` in the downstream module
+`FabiusFunction.ProuhetBlockZeroOrder`, which imports this one.
 -/
 
 set_option autoImplicit false
