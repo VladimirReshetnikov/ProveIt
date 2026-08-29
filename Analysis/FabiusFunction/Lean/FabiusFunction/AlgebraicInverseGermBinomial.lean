@@ -133,12 +133,13 @@ theorem germPolynomial_dyadicTwo_eval (S : PowerSeries ℚ) :
       dyadicJetTwo).map (PowerSeries.C)).eval S = S + 4 * S ^ 2 := by
     show ((dyadicJetTwo).map (PowerSeries.C)).eval S = S + 4 * S ^ 2
     rw [dyadicJetTwo]
-    simp [Polynomial.eval_map]
-    ring
+    simp
   have h8eval : (((8 : Polynomial ℚ)).map
       (PowerSeries.C : ℚ →+* PowerSeries ℚ)).eval S = 8 := by
     simp
   rw [hJeval, h8eval]
+  have h22 : (2 / 2 : ℕ) = 1 := rfl
+  rw [h22, pow_one]
   have hfold : (PowerSeries.C (-(1 / 18 : ℚ)) * PowerSeries.X) •
       (8 : PowerSeries ℚ) =
       -(PowerSeries.C ((4 : ℚ) / 9) * PowerSeries.X) := by
