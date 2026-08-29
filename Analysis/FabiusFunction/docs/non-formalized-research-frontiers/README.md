@@ -92,8 +92,10 @@ The draft inboxes under [`drafts/`](drafts/) are grouped thematically
 (2026-08-28): `rvachev_up_fourier_decay/` (the Fourier-decay corpus),
 `thue-morse/`, `exponents-and-q-series/`, `spectra-and-arithmetic/`,
 `integration-and-transforms/`, `inverse-and-sampling/`,
-`representations/`, and `frontier-compilations/`, with new archives
-arriving through `drafts/incoming/` (see its README for the protocol).
+`representations/`, `frontier-compilations/`, and `lambert-w/` (added
+when four articles on the Lambert W function itself arrived), with new
+archives arriving through `drafts/incoming/` (see its README for the
+protocol).
 Later the same day every group except the Fourier-decay corpus was
 **consolidated into volumes**, in two styles: the original members were
 merged mechanically — one document per group, absorbing the member
