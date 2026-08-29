@@ -35,5 +35,7 @@ monotonicity, range, continuity) and the principal branch in
 `PrincipalLambertW.lean` (defining equation on `[-1/e, ∞)` with
 the branch bound `W₀ ≥ -1`, uniqueness among solutions `≥ -1`, the
 branch point `W₀(-1/e) = -1`, `W₀(0) = 0`, `W₀(e) = 1`, and strict
-monotonicity of the branch and of the forward map `t·eᵗ`) — the
-volume's central objects, kernel-verified.
+monotonicity of the branch and of the forward map `t·eᵗ`,
+continuity on the open domain, the exact image `(-1, ∞)`, and the
+inverse-function derivative `W₀' = 1/(e^{W₀}(W₀+1))` with its strict
+positivity) — the volume's central objects, kernel-verified.
