@@ -1669,14 +1669,24 @@ On the object side, the corpus's uniform spline agrees on each dyadic cell with 
 \emph{explicit} polynomial of the cell (\nolinkurl{Fabius.uniformSplineCellPolynomial}),
 \nolinkurl{Fabius.fabiusUniformSpline_eqOn_cellPolynomial} and its centred and dyadic
 forms, with the degree bound \nolinkurl{Fabius.natDegree_uniformSplineCellPolynomial_le} --- so
-``agrees with a polynomial of controlled degree on a closed cell'' is now a theorem
-rather than a reading of the plateau.  On the abstract side, the implication the
-obligation asks for is proved in general: a function whose $r$-th iterated derivative is
+``agrees with a polynomial on a closed cell'' is now a theorem rather than a reading of
+the plateau.  The obligation's \emph{exact} interval is reached: for $r\le p$ the point
+$\xi_r=2^{-r}$ is a cell centre, and the spline agrees with that cell's polynomial on
+$[\xi_r-2^{-(p+1)},\xi_r+2^{-(p+1)}]$ ---
+(\nolinkurl{Fabius.fabiusUniformSpline_eqOn_cellPolynomial_dyadic}), which is
+$[\xi_r-2^{-n},\xi_r+2^{-n}]$ with $n=p+1$.  Both endpoints are included; at the right
+endpoint the newly activated truncated power vanishes identically, which is where
+$p>0$ enters.
+
+What remains is the \emph{degree} half, and only that.  The localization currently
+carries the unconditional bound $\deg\le p$ (\nolinkurl{Fabius.natDegree_uniformSplineCellPolynomial_le}); the
+sharper $\deg\le r$ predicted by the Thue--Morse plateau is not proved.  The bridge that
+delivers it is in place and general --- a function whose $r$-th iterated derivative is
 constant on an interval agrees there with a polynomial of degree at most $r$
 (\nolinkurl{Fabius.natDegree_le_of_eqOn_of_iteratedDeriv_const},
-\nolinkurl{Fabius.exists_natDegree_le_eqOn_of_iteratedDeriv_const}).  What remains is only
-the bookkeeping that identifies the corpus's particular plateau interval
-$[\xi_r-2^{-n},\xi_r+2^{-n}]$ with a union of the cells above.
+\nolinkurl{Fabius.exists_natDegree_le_eqOn_of_iteratedDeriv_const}) --- so the obligation
+reduces to supplying the plateau itself on the closed cell, rather than merely almost
+everywhere.
 \end{obligation}
 
 \begin{obligation}[Algebraic inverse germ]
