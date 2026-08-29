@@ -573,10 +573,18 @@ exponent is the prefix sum --- which is exactly $m_a(n)$.  That is why the multi
 function was the right object to formalize first.  The classical statement is recovered
 as a corollary (\lean{Fabius.generalizedRvachevProduct\_one\_of\_canonical}).
 
-Two things the volume states alongside this display are \emph{not} formalized: the
-locally uniform convergence, and the consequence $\ord_{z=\pm n}\Phi_a=m_a(n)$.  The
-latter is a statement about an order of vanishing, and nothing in the corpus yet
-relates $m_a$ to \lean{analyticOrderAt}; the canonical form is its natural input.  The spectral zeta \eqref{p1:eq:zeta-a} is now
+The locally uniform convergence the volume states alongside this display is not
+formalized, and neither is the consequence $\ord_{z=\pm n}\Phi_a=m_a(n)$ at a general
+weight --- that is a statement about \lean{analyticOrderAt} and so needs analyticity of
+$\Phi_a$, which needs the locally uniform convergence.  At the \emph{constant} weight,
+however, the corpus has the whole story, and the display is a theorem:
+\lean{Fabius.analyticOrderAt\_generalizedRvachevProduct\_one} reads
+$\ord_{z=m}\Phi_{\mathbf1}=m_{\mathbf1}(\lvert m\rvert)$ for every nonzero integer $m$, chaining
+\lean{Fabius.analyticOrderAt\_rvachevFourierProduct\_int} (\path{IntegerZeroAnalyticOrder.lean})
+with the exponent identity.  For a general admissible $a$ the algebraic input is in place
+--- the factorization $\Phi_a(z)=(1-z^2/n^2)^{m_a(n)}R_n(z)$ with $R_n(\pm n)\ne0$
+(\lean{Fabius.generalizedRvachevProduct\_eq\_canonicalComplexFactor\_mul},
+\lean{Fabius.canonicalCofactor\_natCast\_ne\_zero}) --- and only the analyticity is missing.  The spectral zeta \eqref{p1:eq:zeta-a} is now
 formalized as well, in \path{SpectralZetaWeighted.lean}, for real $s>1$ and at an
 arbitrary base $b>1$, with the $\zeta$ factor left as its own $p$-series rather than
 identified with \lean{riemannZeta}
@@ -775,11 +783,21 @@ positive ones, so
 carried across to $\Phi_a$ itself, not merely to a real surrogate, and the constant-weight
 case reproduces the corpus's existing Thue--Morse lobe sign.
 
-One scope caveat, stated because the volume's phrasing is wider than what is proved:
-the display above is qualified here \emph{away from the integer points altogether}, whereas
-\eqref{p1:eq:sign-master} is stated "away from the integer zeros".  An integer $x$ at
-which no factor of $\Phi_a$ vanishes --- possible when $a$ has zero layers --- falls inside
-the volume's claim and outside the formalized one.
+The integer points are covered too, in \path{CanonicalIntegerPoint.lean}.  At $x=n\ge1$
+the canonical factor of index $n$ is $0^{m_a(n)}$, so when $m_a(n)=0$ it is $1$ --- neither
+negative nor vanishing --- and the same prefix/tail argument gives the same formula
+(\lean{Fabius.generalizedRvachevProduct\_natCast\_eq\_parityCharacter\_mul\_norm}); when
+$m_a(n)\ne0$ the product vanishes, which is the volume's exclusion
+(\lean{Fabius.generalizedRvachevProduct\_natCast\_eq\_zero\_of\_ne\_zero}).  So
+\eqref{p1:eq:sign-master} is formalized at every real $x>0$ at which no factor of $\Phi_a$
+vanishes, which is the volume's own scope on that range.
+
+Two residues are stated rather than glossed.  At $x=0$ no factor vanishes and
+$\Phi_a(0)=1$, but the hypothesis $m_a(0)=a_0$ need not hold, so that point is closed by a
+separate lemma (\lean{Fabius.canonicalRealProduct\_zero\_eq\_one}) rather than by the theorem
+above.  Negative arguments are not treated at all: $\Phi_a$ is even, so the law there reads
+$\varepsilon_a(\lfloor\lvert x\rvert\rfloor)$ rather than $\varepsilon_a(\lfloor x\rfloor)$, and neither
+file states it.
 \end{theorem}
 
 \begin{proof}
