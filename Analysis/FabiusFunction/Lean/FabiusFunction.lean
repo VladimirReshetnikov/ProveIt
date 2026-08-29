@@ -139,6 +139,7 @@ import FabiusFunction.PoissonMassSwap
 import FabiusFunction.StieltjesPerron
 import FabiusFunction.GeneralQConditionNumber
 import FabiusFunction.LimitConditionNumber
+import FabiusFunction.CumulantGridConstant
 import FabiusFunction.MultipleAngleBounds
 import FabiusFunction.TentMoment
 import FabiusFunction.FaberSchauderDefect
