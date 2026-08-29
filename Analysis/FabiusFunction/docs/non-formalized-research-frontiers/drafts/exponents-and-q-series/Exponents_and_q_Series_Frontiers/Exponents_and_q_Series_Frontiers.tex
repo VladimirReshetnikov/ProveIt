@@ -538,8 +538,19 @@ directions more generally than it is used here: the base $2$ is replaced by an a
 and the weights $a_h$ may lie in an arbitrary additive commutative monoid rather than in $\N_0$.
 The canonical product \eqref{p1:eq:canonical-a} is formalized only at $a_h\equiv1$, as
 \lean{Fabius.rvachevFourierProduct_eq_canonical} (\lean{SincCanonicalProduct.lean}), whose
-exponent is the classical $\vtwo(n)+1$; the general-$a$ product and the spectral zeta
-\eqref{p1:eq:zeta-a} are not formalized.
+exponent is the classical $\vtwo(n)+1$.  The spectral zeta \eqref{p1:eq:zeta-a} is now
+formalized as well, in \path{SpectralZetaWeighted.lean}, for real $s>1$ and at an
+arbitrary base $b>1$, with the $\zeta$ factor left as its own $p$-series rather than
+identified with \lean{riemannZeta}
+(\lean{Fabius.tsum\_weightedScaleMultiplicity\_succ\_rpow}).  Three hypotheses are
+carried and none is hidden: $1<s$, nonnegativity of the weights, and summability of
+$A(b^{-s})$ --- the last genuinely not automatic, since $a$ may grow arbitrarily fast.
+The rearrangement needs nothing about the canonical product: the fibre of
+$(h,k)\mapsto b^hk$ over $n$ is $\{h:b^h\mid n\}$, whose weight sum is exactly $m_a(n)$,
+and it is the formalization of $m_a$ at arbitrary base --- noted above --- that makes
+this reachable.  The unit-weight case is recorded as a guard
+(\lean{Fabius.tsum\_padicValNat\_succ\_rpow}).  The general-$a$ product remains
+unformalized.
 \end{theorem}
 
 \begin{proof}
@@ -702,9 +713,21 @@ the meaning of the word, not proved.  The constant weight is recorded as a guard
 (\lean{Fabius.finite\_twoKernel\_thueMorseSign}): the weight word is periodic and the
 kernel finite, while the corpus's \lean{Fabius.thueMorseSign\_not\_eventually\_periodic} says the \emph{sign}
 sequence is not eventually periodic --- the criterion constrains the weight word, not the
-character.  What remains unformalized is the sign law \eqref{p1:eq:sign-master} itself at
-general $a$, relating the character to $\sgn\Phi_a$, which needs the canonical product at
-a general weight.
+character.  The sign law \eqref{p1:eq:sign-master} splits in two, and its arithmetic
+half --- the observation, made here in one line, that $\lfloor N/2^h\rfloor\equiv b_h(N)$
+modulo two, so that the exponent \eqref{p1:eq:lobe-sign-count} is a digit character ---
+is formal in \path{DigitCharacterCongruence.lean}:
+\[
+  M_a(N)=\sum_h a_h\Bigl\lfloor\frac{N}{2^h}\Bigr\rfloor
+  \;\equiv\;\sum_{h\in\operatorname{supp}_2 N}a_h\pmod 2,
+  \qquad\text{hence}\quad(-1)^{M_a(N)}=\varepsilon_a(N)
+\]
+(\lean{Fabius.sum\_div\_two\_pow\_mul\_mod\_two}, \lean{Fabius.neg\_one\_pow\_sum\_div\_two\_pow}); the bridge is simply that
+the $h$-th bit of $N$ \emph{is} $\lfloor N/2^h\rfloor\bmod2$, and at the constant weight the
+statement becomes Legendre's count read modulo two
+(\lean{Fabius.neg\_one\_pow\_sum\_div\_two\_pow\_const\_one}).  What remains unformalized is
+the \emph{analytic} half, that this sign is $\sgn\Phi_a$ on the lobe $(N,N+1)$, which
+needs the canonical product at a general weight.
 \end{theorem}
 
 \begin{proof}
@@ -798,9 +821,18 @@ the zero polynomial and the case $\omega_L(a)=0$ are included
 \eqref{p1:eq:Prouhet-vanish} is that coefficient being zero below the threshold, and
 \eqref{p1:eq:first-surviving} is $p=z^{\omega_L(a)}$, where it is one.  A constant-weight
 corollary recovers the classical Prouhet--Thue--Morse evaluation
-(\lean{Fabius.sum\_range\_two\_pow\_thueMorseSign\_mul\_pow}).  What is still not
-formalized is the exact order $\omega_L(a)$ of the zero of $T_{a,L}$ at $z=1$, which is
-the only remaining step of this theorem.
+(\lean{Fabius.sum\_range\_two\_pow\_thueMorseSign\_mul\_pow}).  The exact order of the zero
+of $T_{a,L}$ at $z=1$ is formal as well, in \path{ProuhetBlockZeroOrder.lean}, so this
+theorem is now formalized in all three of its displays:
+\[
+  \ord_{z=1}T_{a,L}=\lvert O_L(a)\rvert
+\]
+(\lean{Fabius.rootMultiplicity\_prouhetBlockPoly}) --- and so no zero at all when every
+layer below $L$ is even, a case the statement covers.  The mechanism is the
+factorization read in $\Z[z]$: an odd layer contributes $1-z^{2^h}$, a simple zero, while
+an even layer contributes $1+z^{2^h}$, which is $2$ at $z=1$; root multiplicity is
+additive over the product, so the order counts the odd layers.  The classical case is
+recorded separately (\lean{Fabius.rootMultiplicity\_prouhetBlockPoly\_const\_one}).
 \end{theorem}
 
 \begin{proof}
