@@ -270,7 +270,7 @@ theorem natDegree_le_of_eqOn_of_iteratedDeriv_const
       hEqOn.eventuallyEq_of_mem (Icc_mem_nhds hx.1 hx.2)
     have hself : iteratedDeriv r f x =
         iteratedDeriv r (fun y : ℝ => Q.eval y) x :=
-      Filter.Eventually.self_of_nhds (hev.iteratedDeriv r)
+      (hev.iteratedDeriv r).eq_of_nhds
     have hx' : (Polynomial.derivative^[r] Q).eval x = c := by
       rw [← iteratedDeriv_eval_polynomial r Q x, ← hself]
       exact hplateau x hx
