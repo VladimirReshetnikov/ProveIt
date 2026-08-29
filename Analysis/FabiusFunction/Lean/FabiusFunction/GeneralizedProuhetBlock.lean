@@ -31,16 +31,16 @@ carries the factor `2^{L-ω}` and no more.
 * `card_oddLayers_add_card_evenLayers` — they partition it;
 * `parityCharacter_sum_two_pow_eq_inter` — the sign sees only `T ∩ O`;
 * `sum_powerset_range_split` — **the free-even-layer decomposition**;
-* `sum_range_two_pow_parityCharacter_mul_pow` — **the first surviving
-  moment**;
+* `sum_range_two_pow_parityCharacter_mul_eval` — **the general
+  evaluation**, for every polynomial of degree at most `ω`;
+* `sum_range_two_pow_parityCharacter_mul_pow_eq_zero` and
+  `sum_range_two_pow_parityCharacter_mul_pow` — its two extremal
+  cases, the volume's two boxed displays;
 * `sum_range_two_pow_thueMorseSign_mul_pow` — the constant-weight
   reading, where every layer is odd and the free factor is `1`.
 
-The *vanishing* of the lower moments, and the identification of `ω`
-with the order of the zero of the block polynomial at `z = 1`, are not
-proved here.  The first would follow from
-`sum_powerset_neg_one_pow_eval_of_degree_lt` by the same
-decomposition; the second is not formalized in this corpus.
+The identification of `ω` with the order of the zero of the block
+polynomial at `z = 1` is not proved here.
 -/
 
 set_option autoImplicit false
@@ -201,24 +201,24 @@ theorem sum_powerset_range_split {M : Type*} [AddCommMonoid M]
     rfl
 
 /-- The block sum recoded over the subsets of `range L`. -/
-private theorem sum_range_two_pow_eq_sum_powerset (a : ℕ → ℕ)
-    (L k : ℕ) :
-    ∑ n ∈ range (2 ^ L), parityCharacter a n * (n : ℤ) ^ k =
+private theorem sum_range_two_pow_eq_sum_powerset (a : ℕ → ℕ) (L : ℕ)
+    (p : Polynomial ℤ) :
+    ∑ n ∈ range (2 ^ L), parityCharacter a n * p.eval (n : ℤ) =
       ∑ T ∈ (range L).powerset,
         parityCharacter a (∑ j ∈ T, 2 ^ j) *
-          ((∑ j ∈ T, 2 ^ j : ℕ) : ℤ) ^ k :=
+          p.eval ((∑ j ∈ T, 2 ^ j : ℕ) : ℤ) :=
   (sum_powerset_two_pow L
-    (fun n => parityCharacter a n * (n : ℤ) ^ k)).symm
+    (fun n => parityCharacter a n * p.eval (n : ℤ))).symm
 
 /-- Each summand, resolved into an odd-layer part carrying the sign
 and an even-layer part carrying only an offset. -/
-private theorem summand_split (a : ℕ → ℕ) (L k : ℕ) {T : Finset ℕ}
-    (hT : T ⊆ range L) :
+private theorem summand_split (a : ℕ → ℕ) (L : ℕ) (p : Polynomial ℤ)
+    {T : Finset ℕ} (hT : T ⊆ range L) :
     parityCharacter a (∑ j ∈ T, 2 ^ j) *
-        ((∑ j ∈ T, 2 ^ j : ℕ) : ℤ) ^ k =
+        p.eval ((∑ j ∈ T, 2 ^ j : ℕ) : ℤ) =
       (-1 : ℤ) ^ (T ∩ oddLayers a L).card *
-        (((∑ j ∈ T ∩ evenLayers a L, 2 ^ j : ℕ) : ℤ) +
-          ∑ j ∈ T ∩ oddLayers a L, (2 : ℤ) ^ j) ^ k := by
+        p.eval (((∑ j ∈ T ∩ evenLayers a L, 2 ^ j : ℕ) : ℤ) +
+          ∑ j ∈ T ∩ oddLayers a L, (2 : ℤ) ^ j) := by
   classical
   have hdisj := disjoint_oddLayers_evenLayers a L
   have hdT : Disjoint (T ∩ oddLayers a L) (T ∩ evenLayers a L) :=
@@ -239,54 +239,62 @@ private theorem summand_split (a : ℕ → ℕ) (L k : ℕ) {T : Finset ℕ}
     ring
   rw [parityCharacter_sum_two_pow_eq_inter a L hT, hsplit, hcast]
 
-/-- **The first surviving moment of a generalized Prouhet block.**
-With `O` the odd layers below `L` and `ω = |O|`,
+/-- **The generalized Prouhet block evaluation.**  For every integer
+polynomial of degree at most `ω = |O_L(a)|`,
 
-`∑_{n<2^L} ε_a(n)·n^ω = (-1)^ω·ω!·2^{L-ω}·2^{∑_{h∈O} h}`.
+`∑_{n<2^L} ε_a(n)·p(n) = p_ω · (-1)^ω·ω!·2^{L-ω}·2^{∑_{h∈O} h}`,
+
+where `p_ω` is the coefficient of `X^ω`.  No nonzeroness hypothesis is
+needed anywhere: the statement includes the zero polynomial and the
+case `ω = 0`.
+
+Both boxed displays of the volume's theorem are extremal cases of this
+one — the vanishing below the threshold is `p_ω = 0`, and the first
+surviving moment is `p = X^ω`, where `p_ω = 1`.
 
 The factor `2^{L-ω}` counts the even-layer offsets, each of which
 contributes the same offset-independent core. -/
-theorem sum_range_two_pow_parityCharacter_mul_pow (a : ℕ → ℕ) (L : ℕ) :
-    ∑ n ∈ range (2 ^ L),
-        parityCharacter a n * (n : ℤ) ^ (oddLayers a L).card =
-      (-1 : ℤ) ^ (oddLayers a L).card *
-        ((oddLayers a L).card.factorial : ℤ) *
-        2 ^ (L - (oddLayers a L).card) *
-        2 ^ (∑ h ∈ oddLayers a L, h) := by
+theorem sum_range_two_pow_parityCharacter_mul_eval (a : ℕ → ℕ) (L : ℕ)
+    (p : Polynomial ℤ) (hdeg : p.natDegree ≤ (oddLayers a L).card) :
+    ∑ n ∈ range (2 ^ L), parityCharacter a n * p.eval (n : ℤ) =
+      p.coeff (oddLayers a L).card *
+        ((-1 : ℤ) ^ (oddLayers a L).card *
+          ((oddLayers a L).card.factorial : ℤ) *
+          2 ^ (L - (oddLayers a L).card) *
+          2 ^ (∑ h ∈ oddLayers a L, h)) := by
   classical
   have step2 : ∑ T ∈ (range L).powerset,
       parityCharacter a (∑ j ∈ T, 2 ^ j) *
-          ((∑ j ∈ T, 2 ^ j : ℕ) : ℤ) ^ (oddLayers a L).card =
+          p.eval ((∑ j ∈ T, 2 ^ j : ℕ) : ℤ) =
       ∑ T ∈ (range L).powerset,
         (-1 : ℤ) ^ (T ∩ oddLayers a L).card *
-          (((∑ j ∈ T ∩ evenLayers a L, 2 ^ j : ℕ) : ℤ) +
-            ∑ j ∈ T ∩ oddLayers a L, (2 : ℤ) ^ j) ^
-              (oddLayers a L).card :=
+          p.eval (((∑ j ∈ T ∩ evenLayers a L, 2 ^ j : ℕ) : ℤ) +
+            ∑ j ∈ T ∩ oddLayers a L, (2 : ℤ) ^ j) :=
     Finset.sum_congr rfl fun T hT =>
-      summand_split a L _ (Finset.mem_powerset.mp hT)
+      summand_split a L p (Finset.mem_powerset.mp hT)
   have step3 : ∑ T ∈ (range L).powerset,
       (-1 : ℤ) ^ (T ∩ oddLayers a L).card *
-          (((∑ j ∈ T ∩ evenLayers a L, 2 ^ j : ℕ) : ℤ) +
-            ∑ j ∈ T ∩ oddLayers a L, (2 : ℤ) ^ j) ^
-              (oddLayers a L).card =
+          p.eval (((∑ j ∈ T ∩ evenLayers a L, 2 ^ j : ℕ) : ℤ) +
+            ∑ j ∈ T ∩ oddLayers a L, (2 : ℤ) ^ j) =
       ∑ V ∈ (evenLayers a L).powerset,
         ∑ U ∈ (oddLayers a L).powerset,
           (-1 : ℤ) ^ U.card *
-            (((∑ j ∈ V, 2 ^ j : ℕ) : ℤ) +
-              ∑ j ∈ U, (2 : ℤ) ^ j) ^ (oddLayers a L).card :=
+            p.eval (((∑ j ∈ V, 2 ^ j : ℕ) : ℤ) +
+              ∑ j ∈ U, (2 : ℤ) ^ j) :=
     sum_powerset_range_split a L
       (fun U V => (-1 : ℤ) ^ U.card *
-        (((∑ j ∈ V, 2 ^ j : ℕ) : ℤ) + ∑ j ∈ U, (2 : ℤ) ^ j) ^
-          (oddLayers a L).card)
+        p.eval (((∑ j ∈ V, 2 ^ j : ℕ) : ℤ) + ∑ j ∈ U, (2 : ℤ) ^ j))
   have step4 : ∀ V ∈ (evenLayers a L).powerset,
       (∑ U ∈ (oddLayers a L).powerset, (-1 : ℤ) ^ U.card *
-          (((∑ j ∈ V, 2 ^ j : ℕ) : ℤ) +
-            ∑ j ∈ U, (2 : ℤ) ^ j) ^ (oddLayers a L).card) =
-        (-1 : ℤ) ^ (oddLayers a L).card *
-          ((oddLayers a L).card.factorial : ℤ) *
-          ∏ j ∈ oddLayers a L, (2 : ℤ) ^ j :=
-    fun V _ => sum_powerset_neg_one_pow_pow_card (oddLayers a L)
-      (fun j => (2 : ℤ) ^ j) ((∑ j ∈ V, 2 ^ j : ℕ) : ℤ)
+          p.eval (((∑ j ∈ V, 2 ^ j : ℕ) : ℤ) +
+            ∑ j ∈ U, (2 : ℤ) ^ j)) =
+        p.coeff (oddLayers a L).card *
+          ((-1 : ℤ) ^ (oddLayers a L).card *
+            ((oddLayers a L).card.factorial : ℤ) *
+            ∏ j ∈ oddLayers a L, (2 : ℤ) ^ j) :=
+    fun V _ => sum_powerset_neg_one_pow_eval_eq_coeff_card
+      (oddLayers a L) (fun j => (2 : ℤ) ^ j) p hdeg
+      ((∑ j ∈ V, 2 ^ j : ℕ) : ℤ)
   rw [sum_range_two_pow_eq_sum_powerset a L, step2, step3,
     Finset.sum_congr rfl step4, Finset.sum_const,
     Finset.card_powerset, nsmul_eq_mul, Finset.prod_pow_eq_pow_sum,
@@ -295,50 +303,42 @@ theorem sum_range_two_pow_parityCharacter_mul_pow (a : ℕ → ℕ) (L : ℕ) :
   ring
 
 /-- **The vanishing of the lower moments.**  Below the threshold `ω`
-every power moment of the block is zero.  The decomposition is the
-same; only the core lemma changes, from the sharp evaluation to the
-degree bound. -/
+every power moment of the block is zero: the coefficient of `X^ω` in
+`X^k` vanishes for `k < ω`. -/
 theorem sum_range_two_pow_parityCharacter_mul_pow_eq_zero (a : ℕ → ℕ)
     (L k : ℕ) (hk : k < (oddLayers a L).card) :
     ∑ n ∈ range (2 ^ L), parityCharacter a n * (n : ℤ) ^ k = 0 := by
-  classical
-  have step2 : ∑ T ∈ (range L).powerset,
-      parityCharacter a (∑ j ∈ T, 2 ^ j) *
-          ((∑ j ∈ T, 2 ^ j : ℕ) : ℤ) ^ k =
-      ∑ T ∈ (range L).powerset,
-        (-1 : ℤ) ^ (T ∩ oddLayers a L).card *
-          (((∑ j ∈ T ∩ evenLayers a L, 2 ^ j : ℕ) : ℤ) +
-            ∑ j ∈ T ∩ oddLayers a L, (2 : ℤ) ^ j) ^ k :=
-    Finset.sum_congr rfl fun T hT =>
-      summand_split a L _ (Finset.mem_powerset.mp hT)
-  have step3 : ∑ T ∈ (range L).powerset,
-      (-1 : ℤ) ^ (T ∩ oddLayers a L).card *
-          (((∑ j ∈ T ∩ evenLayers a L, 2 ^ j : ℕ) : ℤ) +
-            ∑ j ∈ T ∩ oddLayers a L, (2 : ℤ) ^ j) ^ k =
-      ∑ V ∈ (evenLayers a L).powerset,
-        ∑ U ∈ (oddLayers a L).powerset,
-          (-1 : ℤ) ^ U.card *
-            (((∑ j ∈ V, 2 ^ j : ℕ) : ℤ) +
-              ∑ j ∈ U, (2 : ℤ) ^ j) ^ k :=
-    sum_powerset_range_split a L
-      (fun U V => (-1 : ℤ) ^ U.card *
-        (((∑ j ∈ V, 2 ^ j : ℕ) : ℤ) + ∑ j ∈ U, (2 : ℤ) ^ j) ^ k)
-  have hzero : ∀ V ∈ (evenLayers a L).powerset,
-      (∑ U ∈ (oddLayers a L).powerset, (-1 : ℤ) ^ U.card *
-          (((∑ j ∈ V, 2 ^ j : ℕ) : ℤ) +
-            ∑ j ∈ U, (2 : ℤ) ^ j) ^ k) = 0 := by
-    intro V _
-    have hdeg : ((Polynomial.X : Polynomial ℤ) ^ k).degree <
-        ((oddLayers a L).card : WithBot ℕ) := by
-      rw [Polynomial.degree_X_pow]
-      exact_mod_cast hk
-    have h := sum_powerset_neg_one_pow_eval_of_degree_lt
-      (oddLayers a L) (fun j => (2 : ℤ) ^ j)
-      ((Polynomial.X : Polynomial ℤ) ^ k) hdeg
-      ((∑ j ∈ V, 2 ^ j : ℕ) : ℤ)
-    simpa using h
-  rw [sum_range_two_pow_eq_sum_powerset a L, step2, step3,
-    Finset.sum_congr rfl hzero, Finset.sum_const, smul_zero]
+  have hdeg : ((Polynomial.X : Polynomial ℤ) ^ k).natDegree ≤
+      (oddLayers a L).card := by
+    rw [Polynomial.natDegree_X_pow]
+    exact hk.le
+  have h := sum_range_two_pow_parityCharacter_mul_eval a L
+    ((Polynomial.X : Polynomial ℤ) ^ k) hdeg
+  rw [Polynomial.coeff_X_pow, if_neg (Ne.symm (Nat.ne_of_lt hk)),
+    zero_mul] at h
+  simpa using h
+
+/-- **The first surviving moment of a generalized Prouhet block.**
+With `O` the odd layers below `L` and `ω = |O|`,
+
+`∑_{n<2^L} ε_a(n)·n^ω = (-1)^ω·ω!·2^{L-ω}·2^{∑_{h∈O} h}`.
+
+This is the previous theorem at `p = X^ω`, whose `ω`-th coefficient
+is `1`. -/
+theorem sum_range_two_pow_parityCharacter_mul_pow (a : ℕ → ℕ) (L : ℕ) :
+    ∑ n ∈ range (2 ^ L),
+        parityCharacter a n * (n : ℤ) ^ (oddLayers a L).card =
+      (-1 : ℤ) ^ (oddLayers a L).card *
+        ((oddLayers a L).card.factorial : ℤ) *
+        2 ^ (L - (oddLayers a L).card) *
+        2 ^ (∑ h ∈ oddLayers a L, h) := by
+  have hdeg : ((Polynomial.X : Polynomial ℤ) ^
+      (oddLayers a L).card).natDegree ≤ (oddLayers a L).card := by
+    rw [Polynomial.natDegree_X_pow]
+  have h := sum_range_two_pow_parityCharacter_mul_eval a L
+    ((Polynomial.X : Polynomial ℤ) ^ (oddLayers a L).card) hdeg
+  rw [Polynomial.coeff_X_pow_self, one_mul] at h
+  simpa using h
 
 /-- The constant-weight reading.  At `a ≡ 1` every layer below `L` is
 odd, so `ω = L`, the free factor is `1`, and the moment is the
