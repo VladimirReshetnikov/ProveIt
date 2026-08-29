@@ -1,5 +1,8 @@
 import FabiusFunction.AlgebraicInverseGerm
 import Mathlib.Analysis.SpecialFunctions.Sqrt
+import Mathlib.Analysis.Calculus.Deriv.Add
+import Mathlib.Analysis.Calculus.Deriv.Mul
+import Mathlib.Analysis.Calculus.Deriv.Div
 
 /-!
 # Analytic realization of the concrete dyadic germ
@@ -84,8 +87,8 @@ coefficient of the formal root. -/
 theorem hasDerivAt_dyadicRootFun_zero :
     HasDerivAt dyadicRootFun (4 / 9) 0 := by
   have h1 : HasDerivAt (fun q : ℝ => 1 + (64 / 9) * q) (64 / 9) 0 := by
-    simpa using HasDerivAt.const_add 1
-      (HasDerivAt.const_mul ((64 : ℝ) / 9) (hasDerivAt_id (0 : ℝ)))
+    simpa using ((hasDerivAt_id (0 : ℝ)).const_mul
+      ((64 : ℝ) / 9)).const_add 1
   have h2 : HasDerivAt (√·)
       (1 / (2 * √(1 + (64 / 9) * (0 : ℝ))))
       (1 + (64 / 9) * (0 : ℝ)) :=
@@ -100,7 +103,7 @@ theorem hasDerivAt_dyadicRootFun_zero :
     have h3 := h2.comp 0 h1
     rw [hval] at h3
     exact h3
-  have h5 := HasDerivAt.div_const (HasDerivAt.sub_const h4 1) 8
+  have h5 := (h4.sub_const 1).div_const 8
   have hfin : ((32 : ℝ) / 9) / 8 = 4 / 9 := by norm_num
   rw [hfin] at h5
   exact h5
