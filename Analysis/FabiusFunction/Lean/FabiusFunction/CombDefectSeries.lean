@@ -330,7 +330,7 @@ theorem tsum_shifted_monomial_sub_integral_even_deg
       f (n : ℤ) + f (-((n : ℤ) + 1)) = f (n : ℤ) + f ((n : ℤ) + 1) :=
     fun n => by rw [hnegf ((n : ℤ) + 1)]
   have hshift : ∑' n : ℕ, f ((n : ℤ) + 1) = ∑' n : ℕ, f (n : ℤ) := by
-    have hzero := (tsum_eq_zero_add hfnat)
+    have hzero := hfnat.tsum_eq_zero_add
     have hcast : ∀ n : ℕ, f (((n + 1 : ℕ)) : ℤ) = f ((n : ℤ) + 1) :=
       fun n => by push_cast; rfl
     calc ∑' n : ℕ, f ((n : ℤ) + 1)
