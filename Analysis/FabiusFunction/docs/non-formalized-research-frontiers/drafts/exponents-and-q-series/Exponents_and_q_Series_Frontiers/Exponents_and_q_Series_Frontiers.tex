@@ -197,6 +197,7 @@ The absorbed drafts are deleted from the working tree; git history is the archiv
 \item \path{Signed_Reciprocal_q_Fabius_Frontiers/Signed_Reciprocal_q_Fabius_Frontiers.tex} \\ {\footnotesize SHA-256 \path{ba843c7a4e0cc250e889c398ab5b72f9ade276f6ad9587b56cf22a4a5e7e2db8}} (seventeenth wave; merged editorially into Part~VII with its sixteenth-wave twin --- signed and reciprocal parameter orbits of the geometric-uniform family)
 \item \path{Atomic_Functions_Beyond_Dyadic_Report-2/Atomic_Functions_Beyond_Dyadic.tex} \\ {\footnotesize SHA-256 \path{c560d350d80655759a463c7930b8d1131137d214c40d834f3b7e95d2ca253b11}} (revised fourteenth-wave edition; merged into Part~VI --- Orlicz/rearrangement equimeasurability and the spectral Stieltjes--Wigert bridge; ships the Russian source scan \path{source_rvachev_scan.pdf}, SHA-256 \path{ad4b0078dc1d5de133e5f2bf8f673ea080197c16a624d4fec7cb5126c59c6320}, and its OCR \path{source_rvachev_ocr.tex}, SHA-256 \path{c1a5074f2b3099f5d48b166ab43bc2726139282fe174537c60bc1ae4010be46b})
 \item \path{Atomic_Functions_Beyond_Dyadic_Report-3/Atomic_Functions_Beyond_Dyadic.tex} \\ {\footnotesize SHA-256 \path{8b846f7e6e32efd926bcd770ae1aa195ba051d1db81b7ee45857e8eb4d07ba51}} (second revised fourteenth-wave edition; merged into Part~VI --- the Mellin law of the distance to $K_a$ with the shifted complex-dimension pole lattice and the critical logarithmic gap scale)
+\item \path{Atomic_Functions_Rvachev_Report_Package/Atomic_Functions_Rvachev_Report.tex} \\ {\footnotesize SHA-256 \path{4db6ab0d19ecab7ef9291910548f5a26aaf9d5380b9e7be094586f351eeb01f1}} (revised fifteenth-wave edition; merged into Part~VI --- the $q$-Gaussian derivative Gram kernel with Pochhammer determinants and sharp theta Riesz bounds, the log-Weibull jet-intermittency law, and the proof of the uniform all-orders $\operatorname{Fup}_n$ Edgeworth expansion)
 \end{itemize}
 \clearpage
 \part{Exponent-Sequence and Newton-Basis Frontiers for the Fabius--Rvachev System}
@@ -8471,7 +8472,10 @@ Decisively for provenance, the first revised edition ships the surviving
 \path{source_rvachev_ocr.tex} are archived verbatim under
 \path{assets/Atomic_Functions_Beyond_Dyadic_Report-2/}, so the translation
 layers of this part can now be checked against the primary source inside the
-repository.
+repository.  A revised edition of the \emph{fifteenth}-wave report is merged
+as well; its post-merge layers are the $q$-Gaussian Gram geometry of the
+derivative tower, the log-Weibull jet-intermittency law, and the proof of
+the $\Fup_n$ Edgeworth program.
 \end{scopebox}
 
 
@@ -8600,6 +8604,16 @@ $\Delta\overset d=\tfrac12\ell_0a^{-N_a}V$ and has an explicit Mellin
 transform whose poles are the complex dimensions shifted by $-1$; its
 distribution function is the exact tube formula.  The Russian source scan and
 OCR are archived under \path{assets/}.
+
+\item \newflag\ (Revised fifteenth-wave edition.)  The normalized derivative
+tower splits into two orthogonal $q$-Gaussian Riesz sequences with exact
+kernel $q^{(j-k)^2}$, $q=1/a$, Gram determinants
+$\prod_r(q^2;q^2)_r$, Gram--Schmidt pivots $(q^2;q^2)_N$, and sharp Riesz
+constants $\vartheta_4(0,q)$, $\vartheta_3(0,q)$.  The leading jet amplitude
+at a uniform point has an exact geometric staircase tail, a log-Weibull law,
+and no finite positive moments.  The $\Fup_n$ Edgeworth program is proved to
+all orders, uniformly on $\R$ and after any fixed number of
+differentiations (\cref{p6:thm:fup-edgeworth}).
 \end{enumerate}
 
 \section{Corpus audit, normalization, and editorial method}
@@ -9345,6 +9359,91 @@ $-0.456$, $-0.214$, $-0.0682$, $-0.0183$ (\cref{p6:thm:fupn-clt}).}
 \label{p6:fig:fup-clt}
 \end{figure}
 
+\subsection{The Edgeworth program is a theorem}
+
+The all-orders Edgeworth expansion, conjectured by the fifteenth wave and
+recorded in the register below, is proved by its revised edition.  Let
+$g_n$ be the density of $W_n=Z_n/\sigma_n$, whose exact standardized
+cumulants are, by \eqref{p6:eq:Zn-cumulants},
+\begin{equation}\label{p6:eq:lambda-2m-n}
+ \lambda_{2m,n}:=\kappa_{2m}(W_n)
+ =\frac{2^{2m-1}B_{2m}}{m}
+ \left(n+\frac{2^{2m}}{2^{2m}-1}\right)
+ \left(\frac9{3n+4}\right)^{\!m},
+ \qquad \lambda_{2,n}=1,
+\end{equation}
+and for $R\ge1$ define the exact-cumulant Edgeworth polynomial
+\begin{equation}\label{p6:eq:edgeworth-polynomial}
+ \mathcal E_{R,n}(x)=
+ \sum_{\substack{k_2,\ldots,k_{R+1}\ge0\\
+ \sum_m(m-1)k_m\le R}}
+ H_{2\sum_mmk_m}(x)
+ \prod_{m=2}^{R+1}\frac1{k_m!}
+ \left(\frac{\lambda_{2m,n}}{(2m)!}\right)^{\!k_m},
+\end{equation}
+with $H_k$ the probabilists' Hermite polynomials and
+$\phi(x)=\e^{-x^2/2}/\sqrt{2\pi}$.
+
+\begin{theorem}[Uniform differentiated all-orders Edgeworth expansion]
+\label{p6:thm:fup-edgeworth}
+For all fixed integers $R,r\ge0$ there is $C_{R,r}$ with
+\begin{equation}\label{p6:eq:edgeworth-uniform}
+ \sup_{x\in\R}
+ \Bigl|g_n^{(r)}(x)-\frac{\dd^r}{\dd x^r}
+ \bigl(\phi(x)\,\mathcal E_{R,n}(x)\bigr)\Bigr|
+ \le C_{R,r}\,n^{-R-1}
+\end{equation}
+for all large $n$: the expansion is uniform on the whole real line, to
+arbitrary algebraic order, after any fixed number of differentiations.
+\end{theorem}
+
+\begin{proof}[Proof (condensed from the revised fifteenth wave)]
+Rescale to $V_n=2^{n+1}Z_n=2X_2+U_1+\cdots+U_n$, $s_n^2=(3n+4)/9$, so
+$W_n=V_n/s_n$ has characteristic function
+$\chi_n(t)=\widehat\Up\bigl(2t/(2\pi s_n)\bigr)\sinc(t/s_n)^n$ in the volume's
+convention.  Fix $0<\delta<\pi/2$.  On $|t|\le\delta s_n$ the cumulant series
+converges, $|\lambda_{2m,n}|\le C_mn^{1-m}$, and
+$|\sinc u|\le\e^{-c_\delta u^2}$ for $|u|\le\delta$, so truncating the
+exponential of the cumulant series at total weight
+$\sum(m-1)k_m\le R$ leaves an error
+$\le C_Rn^{-R-1}(1+|t|^{M_R})\e^{-ct^2}$, integrable against every fixed
+$|t|^r$.  On $|t|>\delta s_n$, substituting $u=t/s_n$ and using
+$|\widehat\Up|\le1$, $\max_{\delta\le|u|\le A}|\sinc u|<1$, and
+$|\sinc u|\le|u|^{-1}$ beyond a fixed $A>1$ makes
+$\int_{|t|>\delta s_n}|t|^r|\chi_n|$ exponentially small in $n$, as is the
+tail of the Gaussian--polynomial approximant.  Hence
+$\int|t|^r|\chi_n(t)-\e^{-t^2/2}Q_{R,n}(t)|\dd t=\bigO(n^{-R-1})$, and
+Fourier inversion --- $(\ii t)^k\e^{-t^2/2}\mapsto H_k(x)\phi(x)$ for even
+$k$ --- identifies the approximant with $\phi\,\mathcal E_{R,n}$ and its
+derivatives.
+\end{proof}
+
+The first two nontrivial orders, uniformly in $x$:
+\begin{align}
+ g_n&=\phi\Bigl[1+\tfrac{\lambda_{4,n}}{24}H_4\Bigr]+\bigO(n^{-2}),
+ \qquad
+ g_n=\phi\Bigl[1+\tfrac{\lambda_{4,n}}{24}H_4
+ +\tfrac{\lambda_{6,n}}{720}H_6
+ +\tfrac{\lambda_{4,n}^2}{1152}H_8\Bigr]+\bigO(n^{-3}),
+ \label{p6:eq:edgeworth-orders}\\
+ &\qquad
+ \lambda_{4,n}=-\frac{18(15n+16)}{25(3n+4)^2},
+ \qquad
+ \lambda_{6,n}=\frac{144(63n+64)}{49(3n+4)^3}.
+ \notag
+\end{align}
+The exact-cumulant convention absorbs the finite-$n$ corrections into the
+displayed coefficients instead of re-expanding them in powers of $1/n$.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.92\textwidth]{assets/Atomic_Functions_Rvachev_Report_Package/figures/fup_edgeworth_error.pdf}
+\caption{Deterministic FFT inversion confirming the uniform error scales of
+\cref{p6:thm:fup-edgeworth}: Gaussian $=n^{-1}$, with $H_4$ $=n^{-2}$, with
+$H_4,H_6,H_8$ $=n^{-3}$.}
+\label{p6:fig:fup-edgeworth-error}
+\end{figure}
+
 \begin{novelbox}
 The two continuations of the source's $\Fup_1$ complement each other.  The
 ladder $G_n$ of \cref{p6:prop:fup-ladder} keeps the support radius essentially
@@ -9902,6 +10001,90 @@ representative bases.  The two densities share every moment
 \label{p6:fig:spectral-lognormal}
 \end{figure}
 
+\section{The derivative tower as a \texorpdfstring{$q$}{q}-Gaussian Riesz sequence}
+\label{p6:sec:q-gaussian-tower}
+
+The $L^2$ ladder also fixes every \emph{mutual} inner product of the
+derivatives (revised fifteenth wave), and the resulting Hilbert-space
+geometry is exactly solvable.
+
+\begin{theorem}[Exact derivative Gram kernel]\label{p6:thm:derivative-gram}
+Let $a>2$ and $\psi_n=h_a^{(n)}/\|h_a^{(n)}\|_2$.  Then
+$\langle\psi_n,\psi_m\rangle=0$ for $n-m$ odd and
+\begin{equation}\label{p6:eq:derivative-gram}
+ \langle\psi_n,\psi_m\rangle
+ =(-1)^{(n-m)/2}\,a^{-(n-m)^2/4}
+ \qquad(n-m\ \text{even}).
+\end{equation}
+Consequently, for each parity $\epsilon\in\{0,1\}$ the sign-corrected tower
+$\eta_j=(-1)^j\psi_{2j+\epsilon}$ has the stationary $q$-Gaussian kernel
+\begin{equation}\label{p6:eq:q-gaussian-kernel}
+ \boxed{\ \langle\eta_j,\eta_k\rangle=q^{(j-k)^2},
+ \qquad q=a^{-1},\ }
+\end{equation}
+and the even and odd towers are mutually orthogonal.
+\end{theorem}
+
+\begin{proof}
+Parity of $h_a^{(n)}$ is $(-1)^n$, killing odd differences.  For $n=m+2r$,
+$r$ integrations by parts give
+$\langle h_a^{(m+2r)},h_a^{(m)}\rangle=(-1)^r\|h_a^{(m+r)}\|_2^2$.
+Normalizing by $\|h_a^{(s)}\|_2^2=a^{s(s+2)}2^{-s}\|h_a\|_2^2$
+(\cref{p6:thm:spectral-moments}) at $s=(n+m)/2$ cancels every power of $2$,
+and the $a$-exponent is
+$s(s+2)-\tfrac12[n(n+2)+m(m+2)]=-(n-m)^2/4$.  The sign correction
+$(-1)^{j+k}$ absorbs $(-1)^{(n-m)/2}=(-1)^{j-k}$.
+\end{proof}
+
+\begin{theorem}[Gram determinants, pivots, and sharp Riesz bounds]
+\label{p6:thm:gram-package}
+For $0<q<1$ and $G_N(q)=[q^{(i-j)^2}]_{i,j=0}^N$,
+\begin{equation}\label{p6:eq:gram-determinant}
+ \boxed{\ \det G_N(q)=\prod_{d=1}^{N}(1-q^{2d})^{N+1-d}
+ =\prod_{r=1}^{N}(q^2;q^2)_r,\ }
+\end{equation}
+so the squared Gram--Schmidt pivot of $\eta_N$ against its predecessors is
+$\det G_N/\det G_{N-1}=(q^2;q^2)_N$.  Moreover, for every finitely supported
+$(c_j)$,
+\begin{equation}\label{p6:eq:riesz-bounds}
+ \vartheta_4(0,q)\sum_j|c_j|^2
+ \le\Bigl\|\sum_jc_j\eta_j\Bigr\|_2^2
+ \le\vartheta_3(0,q)\sum_j|c_j|^2,
+\end{equation}
+with both Jacobi-theta constants optimal: each parity tower is a Riesz
+sequence in $L^2(\R)$.
+\end{theorem}
+
+\begin{proof}
+Factoring $q^{i^2}$ from row $i$ and $q^{j^2}$ from column $j$ leaves the
+Vandermonde matrix $((q^{-2i})^j)$; the extracted powers cancel against the
+$q^{-2\sum j^2}$ from the Vandermonde product, and each difference $d=j-i$
+occurs $N+1-d$ times.  For the bounds, the quadratic form has Toeplitz symbol
+$\Theta_q(\theta)=\sum_kq^{k^2}\e^{\ii k\theta}=\vartheta_3(\theta/2,q)$,
+whose Jacobi triple product
+$\prod_r(1-q^{2r})(1+2q^{2r-1}\cos\theta+q^{4r-2})$ is factorwise increasing
+in $\cos\theta$: the extremes are $\vartheta_4(0,q)$ at $\theta=\pi$ and
+$\vartheta_3(0,q)$ at $0$, attained asymptotically by concentrated Fej\'er
+sequences.
+\end{proof}
+
+Asymptotically
+$\log\det G_N=(N+1)\log(q^2;q^2)_\infty-\sum_{d\ge1}d\log(1-q^{2d})
++\bigO(q^{2N})$.  The theorem ties the Rvachev derivative tower to Gaussian
+Toeplitz kernels, Jacobi theta functions, and finite $q$-Pochhammer products
+at once, and shows that --- in stark contrast to the explosive unnormalized
+norms --- the normalized towers stay uniformly well conditioned no matter how
+many derivatives are taken.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.92\textwidth]{assets/Atomic_Functions_Rvachev_Report_Package/figures/derivative_gram_spectrum.pdf}
+\caption{Eigenvalues of the finite $q$-Gaussian derivative Gram matrices at
+$a=3$ against the sharp infinite Riesz bounds $\vartheta_4(0,\tfrac13)$ and
+$\vartheta_3(0,\tfrac13)$ (\cref{p6:thm:gram-package}).}
+\label{p6:fig:gram-spectrum}
+\end{figure}
+
 \section{The fractal spline atlas for \texorpdfstring{$a>2$}{a greater than 2}}\label{p6:sec:symbolic-localization}
 
 \subsection{The exceptional self-similar set}
@@ -10449,6 +10632,52 @@ law of a uniform sample against the exact tube-formula distribution
 \eqref{p6:eq:distance-tail-tube}.}
 \label{p6:fig:distance-set}
 \end{figure}
+
+\subsection{Log-Weibull intermittency of the leading jets}
+
+Combining the degree law with the signed leading coefficients quantifies how
+violently the highest jets grow (revised fifteenth wave).  Let
+$A=|L_\omega|$ be the leading-coefficient magnitude of the gap polynomial at
+a uniform point, i.e.\ $A=L_{N_a}$ with
+$L_r=a^{(r+1)(r+2)/2}/(2^{r+1}r!)$ by \cref{p6:cor:signed-leading}.
+
+\begin{theorem}[Exact step tail and log-Weibull law]
+\label{p6:thm:jet-intermittency}
+For $a>2$ the levels $L_r$ are strictly increasing
+($L_{r+1}/L_r=a^{r+2}/(2(r+1))>1$), the tail is the exact geometric
+staircase
+\begin{equation}\label{p6:eq:jet-tail}
+ \Prob(A\ge L_r)=\Prob(N_a\ge r)=(2/a)^r,
+\end{equation}
+and
+\begin{equation}\label{p6:eq:jet-log-weibull}
+ \lim_{x\to\infty}
+ \frac{\log\Prob(A>x)}{\sqrt{\log x}}
+ =-\log\!\Bigl(\frac a2\Bigr)\sqrt{\frac2{\log a}}.
+\end{equation}
+Every positive moment of $A$ diverges, while
+$\E[\log(1+A)]^p<\infty$ for all $p>0$; conditional on $N_a=r\ge1$, the sign
+of the leading coefficient is a fair Rademacher variable.
+\end{theorem}
+
+\begin{proof}
+Stirling gives $\log L_r=\tfrac{\log a}2r^2-r\log r+\bigO(r)$, so the
+crossing index of level $x$ is $r(x)\sim\sqrt{2\log x/\log a}$; the tail is
+constant between consecutive levels and equals $(2/a)^{r(x)}$ up to one
+index, giving \eqref{p6:eq:jet-log-weibull}.  For $s>0$ the summands of
+$\E A^s$ have logarithms $\tfrac{s\log a}2r^2+\bigO(r\log r)\to\infty$;
+$\log(1+L_r)=\bigO(r^2)$ against a geometric law has all polynomial moments.
+Exactly half of the $2^r$ depth-$r$ words have even $N_+(\omega)$ for
+$r\ge1$.
+\end{proof}
+
+A random point almost surely lies on a single finite polynomial piece, yet
+increasingly rare pieces carry superexponentially large top coefficients:
+spatial sparsity is exponential while amplitude growth is
+quadratic-exponential.  This \emph{jet intermittency} warns against judging
+numerical conditioning from the almost-everywhere polynomial description
+alone, and complements the uniformly well-conditioned \emph{normalized}
+derivative towers of \cref{p6:sec:q-gaussian-tower}.
 
 \begin{novelbox}
 Two periodic phenomena with the same vertical spacing $2\pi/\log a$ occur in
@@ -11518,11 +11747,23 @@ The standardized density of $\Fup_n$ admits, uniformly on $\R$, an Edgeworth
 expansion to arbitrary order, with coefficients that are explicit polynomials
 in Bernoulli numbers and Hermite polynomials generated by the exact cumulants
 \eqref{p6:eq:Zn-cumulants}, and a remainder one order smaller than the last
-retained term.  Compact support, a standardization-uniform Cram\'er condition,
-and control of the scaled $X_2$ remainder are the expected ingredients
-(fifteenth wave).  This discrete-index expansion is the companion of the
-continuous-parameter Edgeworth program for $a\downarrow1$ in
-\cref{p6:sec:parameter-limits}.
+retained term.
+% ed.: RESOLVED by the revised fifteenth wave.
+This is now \cref{p6:thm:fup-edgeworth}, proved uniformly on $\R$ and after
+any fixed number of differentiations, exactly by the expected ingredients.
+The continuous-parameter Edgeworth program for $a\downarrow1$ in
+\cref{p6:sec:parameter-limits} remains open, and the discrete side advances
+to the beyond-all-orders layer:
+\end{conjecture}
+
+\begin{conjecture}[Exponentially improved $\Fup_n$ asymptotics]
+After optimal truncation of the algebraic expansion of
+\cref{p6:thm:fup-edgeworth}, the remaining error admits a transseries
+governed by the nearest nonreal zeros of $\sinc(t/s_n)^n$, with exponentially
+small sectors uniform through the central and moderate-deviation regimes:
+saddlepoint continuation, zero-induced Stokes transitions, and a uniform
+bridge from the central-limit scale to the compact-support edge (revised
+fifteenth wave).
 \end{conjecture}
 
 \begin{conjecture}[Graph-directed atomic splines]
