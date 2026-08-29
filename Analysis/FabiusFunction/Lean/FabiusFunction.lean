@@ -116,6 +116,9 @@ import FabiusFunction.SincLowerBound
 import FabiusFunction.SincProductPositive
 import FabiusFunction.RelativeHarmonicDominance
 import FabiusFunction.PlateauLocalization
+import FabiusFunction.PlateauDegree
+import FabiusFunction.QuarterQuantile
+import FabiusFunction.StieltjesInversion
 import FabiusFunction.MultipleAngleBounds
 import FabiusFunction.TentMoment
 import FabiusFunction.FaberSchauderDefect
