@@ -239,6 +239,7 @@ import FabiusFunction.ClassicalGrowth
 import FabiusFunction.RMSTransferEigenfunctions
 import FabiusFunction.LogFactorConcavity
 import FabiusFunction.CentralLobeConcavity
+import FabiusFunction.LobeDerivativeFormulas
 import FabiusFunction.CentralLobeOnePeak
 import FabiusFunction.CentralLobePeakAtZero
 import FabiusFunction.LobeLogFactorization
