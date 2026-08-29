@@ -108,6 +108,7 @@ import FabiusFunction.LacunaryRieszIntegral
 import FabiusFunction.GelfondLogisticBound
 import FabiusFunction.GeometricScaleProducts
 import FabiusFunction.WeierstrassProductBound
+import FabiusFunction.MultipleAngleBounds
 import FabiusFunction.GeometricConvolutionTails
 import FabiusFunction.SmoothingOperatorInversion
 import FabiusFunction.SmoothingOperatorExponential
