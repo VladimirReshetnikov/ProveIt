@@ -178,7 +178,7 @@ theorem principalLambertW_image_Ioi :
     have hgt : -Real.exp (-1) < w * Real.exp w := by
       have h := mul_exp_strictMonoOn (mem_Ici.mpr le_rfl)
         (mem_Ici.mpr (le_of_lt hw)) hw
-      rwa [neg_one_mul] at h
+      simpa [neg_one_mul] using h
     exact ⟨w * Real.exp w, hgt,
       (principalLambertW_unique hgt.le (le_of_lt hw) rfl).symm⟩
 
