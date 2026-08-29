@@ -2,7 +2,7 @@
 
 Series and orthogonal-expansion representations of the up-function,
 consolidated (2026-08-28) into the single volume
-[`Representation_Frontiers/`](Representation_Frontiers/) (295 pp,
+[`Representation_Frontiers/`](Representation_Frontiers/) (296 pp,
 eight parts):
 
 - **Part I** — *Resolvent, Continued-Fraction, and Transform
@@ -35,21 +35,32 @@ eight parts):
 (The random-variable representation is formalized in
 `ProbabilityRepresentation.lean`, and `RandomSeriesLaw.lean` identifies the
 unit-interval law with the affine image of the up measure.
-`CauchyTransform.lean` defines the report-sign Cauchy--Stieltjes transforms and
-proves their measure forms, the up-density form, holomorphy off the named interval cuts,
-first-derivative kernel formulas, and the affine bridge
-`S(z) = 2 R(2z - 1)`.  `CauchyCDF.lean` proves atom-exact compact-support
-integration by parts for arbitrary finite measures with almost-everywhere
-interval support, its probability-CDF normalization, and
-`S(z) = (z - 1)⁻¹ - ∫₀¹ F(t) (z - t)⁻² dt` off `[0,1]`.
-`CauchyRenormalization.lean` proves that both dyadic branches preserve the
-up-transform slit domain, establishes
-`R'(z) = 2 (R(2z + 1) - R(2z - 1))` there, and instantiates the reusable
-`AffineDifferenceOrbit.lean` engine to obtain the exact all-order finite
-Thue--Morse derivative orbit.  The logarithmic fixed point, the separate
-higher-Cauchy-kernel integral identity, a named Stieltjes-transform DDE,
-boundary/Plemelj formulas, moment/Laurent expansions, generalized order, and
-Jacobi/Padé theory remain open.)
+`MeasureCauchyTransform.lean` supplies the reusable finite-measure foundation:
+oriented transforms and every kernel power, affine pushforward naturality,
+holomorphy off complexified support, and transform/power recurrences for an
+arbitrary uniform affine fixed-point law.  Its invariant carrier needs no
+topological or measurable structure and the law need not be normalized.
+`GeometricUniformCauchy.lean` specializes this calculus to every real
+`|q| < 1`; its divided DDE and adjacent-power hierarchy assume only `q ≠ 0`
+and include negative ratios.  `CauchyTransform.lean` defines the canonical
+unit and centered transforms and powers, proves their measure/density forms,
+slit-domain calculus, transform and all-power affine bridges, the direct named
+unit equation `S'(z) = 4(S(2z) - S(2z - 1))`, and both complex-slit
+adjacent-power recurrences.  `CauchyCDF.lean`, `CauchySurvival.lean`, and
+`CauchyHigherPowers.lean` give atom-exact CDF/survival integration by parts at
+every positive kernel power.  `CauchyRenormalization.lean` proves the centered
+DDE and exact all-order finite Thue--Morse derivative orbit.
+
+The merged Stieltjes layer also proves the real logarithmic fixed point and
+positive integer hierarchy for `z > 1`, real order lowering for `α > 1`,
+real and complex exterior Laurent series with exact remainders, finite-height
+Herglotz--Poisson formulas, integrated interval Stieltjes--Perron inversion,
+and initial exact Jacobi data.  These are direct named results, not evidence
+for the still-open complex logarithmic continuation, complex order,
+pointwise/nontangential Sokhotski--Plemelj and principal-value Hilbert formulas,
+or complete J-fraction/Padé convergence and Jacobi asymptotics.  The separate
+conversion of the Thue--Morse derivative orbit into one explicit all-order
+higher-kernel formula also remains open.)
 
 The reciprocal-Gamma portion of Part II is now formal at source checkpoint
 `71ab6f6728fceb753c88d8b0573077a59acf2682`.  The reusable convergence engine

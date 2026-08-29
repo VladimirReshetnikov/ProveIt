@@ -37,6 +37,7 @@ def tmBitPR : ℕ → ℕ
 termination_by n => n
 decreasing_by exact Nat.div_lt_self (by omega) (by omega)
 
+/-- The primitive-recursive Thue--Morse bit is zero at the origin. -/
 @[simp] theorem tmBitPR_zero : tmBitPR 0 = 0 := by
   rw [tmBitPR]
 

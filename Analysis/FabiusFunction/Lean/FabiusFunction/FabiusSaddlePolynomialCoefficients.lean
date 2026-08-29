@@ -37,6 +37,7 @@ noncomputable def negativeLaplaceExponentPolynomial
         C (I ^ (n + 3) * (negativeLaplaceJetSlope (n + 2) : ℂ) /
           ((n + 3).factorial : ℕ)) * X ^ (n + 3)
 
+/-- The order-zero negative-Laplace exponent polynomial is zero. -/
 @[simp] theorem negativeLaplaceExponentPolynomial_zero (t : ℝ) :
     negativeLaplaceExponentPolynomial 0 t = 0 := by
   rfl

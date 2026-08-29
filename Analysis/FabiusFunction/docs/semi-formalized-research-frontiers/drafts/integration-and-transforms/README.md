@@ -4,7 +4,7 @@ Antiderivatives, integral calculus, transform dualities, and fractional
 calculus of the Fabius–Rvachev system, consolidated (2026-08-28) into
 the single volume
 [`Integration_and_Transform_Frontiers/`](Integration_and_Transform_Frontiers/)
-(362 pp, twelve parts):
+(366 pp, twelve parts):
 
 - **Part I** — *Antiderivatives of Monomially Weighted Fabius-Type
   Functions* (formerly `Fabius_Antiderivatives_Report/`);
@@ -42,32 +42,31 @@ asset paths mechanically prefixed per part; no mathematical content
 altered) and their directories deleted; provenance with SHA-256 hashes
 is recorded in the volume itself, and git history is the archive.
 
-The current ordinary Cauchy–Stieltjes foundation is formalized in
-`CauchyTransform.lean`: it defines the report-oriented transforms of the
-canonical up and unit-interval laws, proves their measure forms, the up-density
-form, holomorphy off the named interval cuts, first-derivative kernel formulas,
-and the affine bridge.  In Lean's totalized Bochner-integral convention the
-bridge holds for every complex argument; in its classical analytic
-interpretation it reads `S(z) = 2 R(2z - 1)` off `[0,1]`, equivalently in the
-reverse direction off `[-1,1]`.  `CauchyCDF.lean` adds atom-exact
-integration by parts for a finite measure almost everywhere supported on an
-ordered compact interval and a spectral parameter off its complexification,
-its probability-CDF normalization, and the exact Fabius formula
-`S(z) = (z - 1)⁻¹ - ∫₀¹ F(t) (z - t)⁻² dt` on the unit-interval
-slit domain.  `CauchyRenormalization.lean` proves invariance of the up-law
-slit domain under both dyadic branches, the exact equation
-`R'(z) = 2 (R(2z + 1) - R(2z - 1))`, and its all-order finite Thue--Morse
-derivative orbit for every natural order.  The affine bridge makes a
-unit-interval Stieltjes DDE an unexported consequence; no named wrapper is
-claimed.  Logarithmic fixed points, survival and higher resolvent-power
-wrappers, the separate higher-kernel integral identity, moment/Laurent and
-Laplace/Fourier expansions, boundary/Plemelj theory, generalized complex
-order, and Jacobi/Padé theory remain open.
+The current ordinary Cauchy–Stieltjes foundation starts in
+`MeasureCauchyTransform.lean`, which packages oriented transforms and every
+kernel power, affine naturality, slit-domain calculus, and the DDE/adjacent
+power recurrence of an arbitrary uniform affine fixed-point measure.  The law
+need not be normalized and its invariant carrier needs no topology or
+measurability.  `GeometricUniformCauchy.lean` specializes this to every
+nonzero real `|q| < 1`, including negative ratios.  `CauchyTransform.lean`
+then gives the canonical unit and centered transforms and powers, their
+measure/density forms, the transform and all-power affine bridges, the direct
+named unit equation `S'(z) = 4(S(2z) - S(2z - 1))`, and both complex-slit
+adjacent-power recurrences.  `CauchyCDF.lean`, `CauchySurvival.lean`, and
+`CauchyHigherPowers.lean` supply atom-exact CDF/survival integration by parts
+at every positive kernel power; `CauchyRenormalization.lean` supplies the
+centered DDE and its all-order finite Thue--Morse orbit.
 
-A new separate member arrived 2026-08-28 and stays unmerged until
-deliberately folded into the volume:
-`Fabius_Integral_Transforms_Report` (*Integral and Transform Calculus
-for the Fabius–Rvachev–Quantile System*) — distinct from the
-same-named 2026-08-27 report already absorbed as Part IV.
+The merged Stieltjes modules also prove the real logarithmic fixed point and
+positive integer hierarchy for `z > 1`, real order lowering for `α > 1`,
+real/complex exterior Laurent series, finite-height Herglotz--Poisson
+identities, integrated interval Stieltjes--Perron inversion, and initial exact
+Jacobi data.  Complex logarithmic continuation, complex order,
+pointwise/nontangential Sokhotski--Plemelj and principal-value Hilbert
+formulas, the separate explicit Thue--Morse higher-kernel identity, and the
+full J-fraction/Padé theory remain open.
+
+The independent 2026-08-28 `Fabius_Integral_Transforms_Report` arrival is now
+absorbed as Part XII; it is no longer an unmerged member.
 
 See [`../MANIFEST.md`](../MANIFEST.md) for titles and the previous paths.

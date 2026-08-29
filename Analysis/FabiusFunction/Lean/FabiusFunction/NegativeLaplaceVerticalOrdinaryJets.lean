@@ -154,6 +154,8 @@ noncomputable def negativeLaplaceComplexVerticalFirst
     negativeLaplaceComplexLogFirst F
       ((r : ℂ) + ((r : ℂ) * Complex.I) * z)
 
+/-- On real vertical parameters, the complexified first vertical derivative
+agrees with the real first vertical logarithmic derivative. -/
 @[simp] theorem negativeLaplaceComplexVerticalFirst_ofReal
     (F : BoundedFabius) (r θ : ℝ) :
     negativeLaplaceComplexVerticalFirst F r θ =

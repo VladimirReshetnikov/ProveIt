@@ -411,6 +411,41 @@ tail estimate, affine lacunary cosine companion, or measure-specific transform t
 asserted by this module.
 \end{statusbox}
 \begin{statusbox}[Current Lean status of the ordinary Cauchy--Stieltjes core]
+The reusable foundation is \path{MeasureCauchyTransform.lean}.  Its three definitions
+\path{Fabius.measureCauchyDomain}, \path{Fabius.measureCauchyTransform}, and
+\path{Fabius.measureCauchyPower} package the oriented transform and every unnormalized
+kernel power of a real measure.  The nine direct theorems are the integral and index-one
+forms, affine naturality for transforms and powers, openness, first derivative,
+holomorphy, and the transform/power recurrences of a uniform affine fixed-point law:
+\path{Fabius.measureCauchyTransform_apply},
+\path{Fabius.measureCauchyPower_one},
+\path{Fabius.measureCauchyPower_map_affine},
+\path{Fabius.measureCauchyTransform_map_affine},
+\path{Fabius.isOpen_measureCauchyDomain},
+\path{Fabius.hasDerivAt_measureCauchyTransform},
+\path{Fabius.analyticOn_measureCauchyTransform},
+\path{Fabius.measureCauchyPower_succ_of_uniformAffineFixedPoint}, and
+\path{Fabius.hasDerivAt_measureCauchyTransform_of_uniformAffineFixedPoint}.
+The fixed-point interface assumes only a finite measure, support in an affine-invariant
+carrier, nonzero uniform and tail scales, and the displayed equality in law; the carrier
+need not be closed, compact, measurable, or nonempty, and the measure need not be a
+probability measure.  Negative nonzero scales are allowed.
+
+\path{GeometricUniformCauchy.lean} specializes that interface to the law of
+\(X_q=(1-q)U_0+qX_q'\).  Its three definitions and six theorems are
+\path{Fabius.geometricUniformStieltjesDomain},
+\path{Fabius.geometricUniformStieltjesTransform},
+\path{Fabius.geometricUniformStieltjesPower},
+\path{Fabius.geometricUniformStieltjesTransform_apply},
+\path{Fabius.geometricUniformStieltjesPower_one},
+\path{Fabius.isOpen_geometricUniformStieltjesDomain},
+\path{Fabius.analyticOn_geometricUniformStieltjesTransform},
+\path{Fabius.hasDerivAt_geometricUniformStieltjesTransform_refinement}, and
+\path{Fabius.geometricUniformStieltjesPower_succ}.  The definitions are total in real
+\(q\), holomorphy assumes \(|q|<1\), and the divided DDE and adjacent-power recurrence
+also assume \(q\ne0\).  Because the proof uses the exact series range as its invariant
+carrier, negative ratios are included; only the divided formulas exclude \(q=0\).
+
 For a bounded Fabius solution \(F\), the later module
 \path{CauchyTransform.lean} defines the report-sign transforms
 \path{Fabius.rvachevCauchyTransform} and
@@ -437,6 +472,26 @@ the negatives of the integrals of the squared Cauchy kernels.  Finally,
 The equalities are total in Lean's Bochner-integral convention.  Their classical analytic
 interpretation uses \(z\notin[0,1]\) in the first formula and
 \(w\notin[-1,1]\) in the second.
+The same module now also defines \path{Fabius.rvachevCauchyPower} and
+\path{Fabius.fabiusStieltjesPower}.  The direct named bridge
+\path{Fabius.fabiusStieltjesPower_eq_two_pow_mul_rvachevCauchyPower} proves
+\(S_n(z)=2^nR_n(2z-1)\) for every natural \(n\).  More importantly for the status of the
+absorbed reports, \path{Fabius.hasDerivAt_fabiusStieltjesTransform_refinement} directly
+exports
+\[
+ S'_{\rm unit}(z)=4\bigl(S_{\rm unit}(2z)-S_{\rm unit}(2z-1)\bigr)
+\]
+on the unit slit domain: this is no longer merely an unnamed corollary through the affine
+bridge.  The direct named theorems \path{Fabius.fabiusStieltjesPower_succ} and
+\path{Fabius.rvachevCauchyPower_succ} give both adjacent-order recurrences throughout
+their complex slit domains.
+For completeness, the remaining public names in this exact module inventory are the two
+domain definitions \path{Fabius.rvachevCauchyDomain} and
+\path{Fabius.fabiusStieltjesDomain}, the index-one identities
+\path{Fabius.rvachevCauchyPower_one} and \path{Fabius.fabiusStieltjesPower_one}, and the
+openness declarations \path{Fabius.isOpen_rvachevCauchyDomain} and
+\path{Fabius.isOpen_fabiusStieltjesDomain}.  Thus the module has six public definitions
+and seventeen public theorems; every one is crosswalked in this status box.
 This discharges the ordinary compact-support measure-transform content of the later
 formulas \eqref{p5:eq:S-def}, \eqref{p5:eq:Cauchy-up},
 \eqref{p6:eq:Cauchy-def}, \eqref{p7:eq:Stieltjes-up},
@@ -631,14 +686,22 @@ This exactly discharges \eqref{p6:eq:Cauchy-functional},
   \sum_{j=0}^{2^n-1}\varepsilon_j
    R_{\rm up}\!\left(2^nz+2^n-1-2j\right).
 \]
-The affine bridge makes a unit-interval Stieltjes derivative equation an
-unexported consequence; no named Stieltjes-DDE declaration is claimed.
+The unit-interval Stieltjes derivative equation is now the direct named theorem
+\path{Fabius.hasDerivAt_fabiusStieltjesTransform_refinement}; the all-power affine bridge
+and both complex-slit adjacent-order recurrences are direct named theorems in the same
+module, as recorded above.
 
-No logarithmic potential or fixed point, moment/Laurent or Laplace/Fourier
-expansion, survival-CDF or higher-resolvent-power wrapper, conversion of the
-all-order orbit into a higher-Cauchy-kernel integral identity,
-boundary/Plemelj theorem, generalized complex order, or Jacobi/Pad\'e result
-is claimed.
+The real logarithmic fixed point for \(z>1\), the positive-integer real hierarchy, real
+order lowering for \(\alpha>1\), real and complex exterior all-moment Laurent series,
+finite-height Herglotz--Poisson formulas, integrated interval Stieltjes--Perron inversion,
+and initial exact Jacobi data are also formalized by the merged \path{Stieltjes*.lean} and
+\path{OrthogonalPolynomialJacobi.lean} layers described in this status box.  What remains
+open is the complex logarithmic continuation/logarithmic potential, Laplace/Fourier
+transform forms, complex order, pointwise or nontangential Sokhotski--Plemelj and
+principal-value Hilbert-transform formulas, the full J-fraction/Pad\'e theory, and the
+separate explicit conversion of the all-order Thue--Morse orbit into a named
+higher-Cauchy-kernel identity.  The generic CDF/survival integration-by-parts formulas at
+every positive power do not by themselves prove that last orbit formula.
 This status box supersedes only contrary historical formalization wording in the absorbed
 snapshots; their provenance hashes remain unchanged.
 \end{statusbox}
@@ -6893,8 +6956,13 @@ The definition \nolinkurl{Fabius.ProbabilityRepresentation.geometricUniformDensi
 totalized, but its classical density and Radon--Nikodym interpretation are not formal here for
 \(q\le0\).  Still outside the formal layer are the characteristic-function product and
 rapid-decay/Fourier-inversion route, closed higher-derivative refinements and endpoint-flatness
-wrappers, shape results, moments and transforms, and uniqueness of the affine measure fixed
-point.
+wrappers, shape results, and general-\(q\) moment/cumulant formulas.  The affine measure
+fixed point is unique by
+\nolinkurl{Fabius.ProbabilityRepresentation.eq_geometricUniformDistribution_of_selfSimilar}
+for every \(|q|<1\).  The oriented transform DDE and adjacent Cauchy-power recurrence are
+also formal for every nonzero \(|q|<1\), including negative ratios, in
+\path{GeometricUniformCauchy.lean}; these are distinct from the still-open
+characteristic-function/Fourier products.
 \end{statusbox}
 
 \subsection{Moment-generating and Fourier products}
@@ -15916,15 +15984,24 @@ through the survival and lower-CDF layer cakes and one scaling substitution $t=x
 the exponent range $p\in(-1,0)$ and complex continuation remain outside, as the
 obligation allows.
 
-\begin{obligation}[Transform layer]
-The compact-interval transforms, their first derivatives, the atom-exact
-Fabius-CDF integration-by-parts formula at squared-kernel order, and
-\eqref{p8:eq:Cauchy-functional} are delivered by
-\path{CauchyTransform.lean}, \path{CauchyCDF.lean}, and
-\path{CauchyRenormalization.lean}.  The remaining transform-layer obligations
-include the logarithmic fixed point, survival and higher resolvent-power
-wrappers, the separate higher-kernel integral identity, boundary/Plemelj
-theory, and the moment/Laurent and generalized-order layers.
+\begin{obligation}[Transform layer --- partially discharged]
+The compact-interval transforms and powers, their first derivatives, the named unit and
+centered DDEs, the all-power affine bridge, both complex-slit adjacent-order recurrences,
+the atom-exact CDF and survival formulas at every positive kernel power, and
+\eqref{p8:eq:Cauchy-functional} are direct named results of
+\path{MeasureCauchyTransform.lean}, \path{GeometricUniformCauchy.lean},
+\path{CauchyTransform.lean}, \path{CauchyCDF.lean},
+\path{CauchySurvival.lean}, \path{CauchyHigherPowers.lean}, and
+\path{CauchyRenormalization.lean}.  The real logarithmic fixed point, real integer and
+real-order hierarchies, real/complex exterior Laurent series, finite-height
+Herglotz--Poisson identities, integrated interval Stieltjes--Perron inversion, and initial
+Jacobi data are also discharged by direct named theorems in the merged Stieltjes and
+orthogonal-polynomial modules.
+
+The remaining obligations are complex logarithmic continuation, Laplace/Fourier transform
+forms, complex order, pointwise/nontangential Plemelj and principal-value Hilbert theory,
+the complete J-fraction/Pad\'e package, and the separate explicit higher-kernel
+Thue--Morse orbit formula.
 \end{obligation}
 
 \begin{obligation}[Orthogonal-polynomial layer]
@@ -18092,9 +18169,12 @@ be layered on top in increasing order of analytic difficulty.
 \item \textbf{Endpoint asymptotics.}  Package rapid variation and convexity
       into a dominated-convergence lemma for kernels
       $t^{r-1}(1-F(qt)/F(q))^{-\beta}$.
-\item \textbf{Generalized Stieltjes hierarchy.}  Formalize the bounded random
-      variable $Z$, complex powers for real $z>1$, the moment series, and the
-      smoothing equation.  The order-lowering identity is then elementary.
+\item \textbf{Generalized Stieltjes hierarchy --- real-order stage discharged.}
+      \path{StieltjesGeneralizedOrder.lean} formalizes the bounded variable, kernel
+      integrability, digit integral, and order-lowering identity for every real
+      \(\alpha>1\) and real \(z>1\).  Integer powers now also satisfy direct named
+      recurrences throughout the complex slit domains.  Complex order and a complex
+      logarithmic branch remain later stages.
 \item \textbf{Exterior Riesz theorem.}  Avoid principal values entirely by
       restricting first to $|x|>1$; compact support reduces the proof to an
       ordinary integral and the Stieltjes identity.
@@ -24182,10 +24262,10 @@ from the grid and
 from oscillatory quadrature agree to the expected grid accuracy.  The normalized
 balanced values begin
 \[
- K_1\approx0.5733793921,
- \quad K_{10}\approx0.5030089983,
- \quad K_{100}\approx0.5000147741,
- \quad K_{1000}\approx0.50000000757,
+ \begin{aligned}
+ K_1&\approx0.5733793921, & K_{10}&\approx0.5030089983,\\
+ K_{100}&\approx0.5000147741, & K_{1000}&\approx0.50000000757,
+ \end{aligned}
 \]
 consistent with strict decrease and superalgebraic localization.  They are far
 from the ultimate logarithmic regime in \eqref{p12:eq:Klog}, as the Lambert saddle
@@ -24281,7 +24361,7 @@ transform layer is formalized.
 
 For convenient reference, the central formulas are collected here.
 
-\begin{longtable}{>{\raggedright\arraybackslash}p{0.29\textwidth}p{0.66\textwidth}}
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{0.29\textwidth}p{0.66\textwidth}@{}}
 \toprule
 Object & Formula \\
 \midrule

@@ -22,11 +22,10 @@ but not the analytic conclusion -- and then both kinds of prose are
 correct.  Every hit needs reading.  Exit status is always 0.
 """
 import io, os, re
+from pathlib import Path
 
-DOCS = (r'C:/ProveIt/.claude/worktrees/fabius-function-formalization-4a6355'
-        r'/Analysis/FabiusFunction/docs/semi-formalized-research-frontiers')
-LEAN = (r'C:/ProveIt/.claude/worktrees/fabius-function-formalization-4a6355'
-        r'/Analysis/FabiusFunction/Lean/FabiusFunction')
+DOCS = Path(__file__).resolve().parent
+LEAN = DOCS.parent.parent / 'Lean' / 'FabiusFunction'
 
 # Phrases in a Lean docstring that go stale silently.  "not proved
 # here" stays literally true forever -- "here" means this module -- so

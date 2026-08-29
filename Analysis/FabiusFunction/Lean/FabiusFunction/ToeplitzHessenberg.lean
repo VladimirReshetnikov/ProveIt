@@ -99,11 +99,13 @@ def hessBand (n : ℕ) (d a : ℕ → R) : Matrix (Fin n) (Fin n) R :=
     if (j : ℕ) = (i : ℕ) + 1 then d (i : ℕ)
     else if (j : ℕ) ≤ (i : ℕ) then a ((i : ℕ) - (j : ℕ) + 1) else 0
 
+/-- A diagonal entry of `triBand` is the corresponding value of `d`. -/
 @[simp]
 theorem triBand_apply_diag (n : ℕ) (d a : ℕ → R) (m : Fin n) :
     triBand n d a m m = d (m : ℕ) := by
   simp [triBand]
 
+/-- The first-column entry in row `i` of `hessBand` is `a (i + 1)`. -/
 @[simp]
 theorem hessBand_apply_zero (n : ℕ) (d a : ℕ → R) (i : Fin (n + 1)) :
     hessBand (n + 1) d a i 0 = a ((i : ℕ) + 1) := by

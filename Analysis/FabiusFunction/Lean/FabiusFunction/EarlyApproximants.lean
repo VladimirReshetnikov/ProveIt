@@ -38,6 +38,7 @@ open Polynomial
 noncomputable def geometricPolynomial (r : ℕ) : Polynomial ℕ :=
   ∑ j : Fin r, X ^ j.val
 
+/-- The geometric polynomial with no terms is zero. -/
 @[simp] theorem geometricPolynomial_zero : geometricPolynomial 0 = 0 := by
   simp [geometricPolynomial]
 
@@ -64,6 +65,7 @@ theorem geometricPolynomial_two_mul (r : ℕ) :
 noncomputable def approximationPolynomial (n : ℕ) : Polynomial ℕ :=
   ∏ k ∈ range n, geometricPolynomial (2 ^ (k + 1))
 
+/-- The zeroth approximation polynomial is the empty product `1`. -/
 @[simp] theorem approximationPolynomial_zero : approximationPolynomial 0 = 1 := by
   simp [approximationPolynomial]
 
@@ -100,6 +102,7 @@ theorem approximationPolynomial_succ (n : ℕ) :
 def approximationDegree (n : ℕ) : ℕ :=
   ∑ k ∈ range n, (2 ^ (k + 1) - 1)
 
+/-- The degree parameter of the zeroth approximation is zero. -/
 @[simp] theorem approximationDegree_zero : approximationDegree 0 = 0 := by
   simp [approximationDegree]
 
@@ -493,10 +496,12 @@ theorem stepIntervalLeft_lt_right (n m : ℕ) :
   apply (div_lt_div_iff₀ hden hden).2
   linarith
 
+/-- The half-endpoint interval representative takes value `1/2` at its left endpoint. -/
 @[simp] theorem halfEndpointIntervalIndicator_self_left {a b : ℝ} :
     halfEndpointIntervalIndicator a b a = 1 / 2 := by
   simp [halfEndpointIntervalIndicator]
 
+/-- The half-endpoint interval representative takes value `1/2` at its right endpoint. -/
 @[simp] theorem halfEndpointIntervalIndicator_self_right {a b : ℝ} :
     halfEndpointIntervalIndicator a b b = 1 / 2 := by
   simp [halfEndpointIntervalIndicator]
@@ -513,6 +518,7 @@ theorem halfEndpointIntervalIndicator_nonneg (a b x : ℝ) :
     0 ≤ halfEndpointIntervalIndicator a b x :=
   (halfEndpointIntervalIndicator_mem_Icc a b x).1
 
+/-- The base step approximant is the half-endpoint indicator of `[-1/2, 1/2]`. -/
 @[simp] theorem stepApproximant_zero (x : ℝ) :
     stepApproximant 0 x = halfEndpointIntervalIndicator (-1 / 2) (1 / 2) x := by
   simp [stepApproximant, stepIntervalLeft, stepIntervalRight, approximationDegree,
@@ -523,6 +529,7 @@ theorem stepApproximant_zero_zero : stepApproximant 0 0 = 1 := by
   rw [stepApproximant_zero]
   norm_num [halfEndpointIntervalIndicator]
 
+/-- The first step approximant takes value one at the origin. -/
 @[simp] theorem stepApproximant_one_zero : stepApproximant 1 0 = 1 := by
   have hp : approximationPolynomial 1 = 1 + X := by
     rw [show 1 = 0 + 1 by omega, approximationPolynomial_succ]

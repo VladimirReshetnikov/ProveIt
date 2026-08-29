@@ -99,8 +99,9 @@ def saddleJetExponentPolynomial (d : ℕ → ℂ) : ℕ → Polynomial ℂ
   | 0 => 0
   | n + 1 =>
       C (I ^ (n + 1) * d n / (((n + 1).factorial : ℕ) : ℂ)) * X ^ (n + 1) +
-        C (I ^ (n + 1) * (-1 : ℂ) ^ n / ((n : ℂ) + 3)) * X ^ (n + 3)
+      C (I ^ (n + 1) * (-1 : ℂ) ^ n / ((n : ℂ) + 3)) * X ^ (n + 3)
 
+/-- The order-zero saddle exponent polynomial is zero. -/
 @[simp] theorem saddleJetExponentPolynomial_zero (d : ℕ → ℂ) :
     saddleJetExponentPolynomial d 0 = 0 := rfl
 

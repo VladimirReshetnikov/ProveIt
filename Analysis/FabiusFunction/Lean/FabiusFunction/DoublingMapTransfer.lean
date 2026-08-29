@@ -32,22 +32,27 @@ namespace Fabius
 /-- The doubling map mod one. -/
 noncomputable def doublingMap (t : ℝ) : ℝ := Int.fract (2 * t)
 
+/-- The doubling map takes nonnegative values. -/
 theorem doublingMap_nonneg (t : ℝ) : 0 ≤ doublingMap t :=
   Int.fract_nonneg _
 
+/-- The doubling map takes values strictly below one. -/
 theorem doublingMap_lt_one (t : ℝ) : doublingMap t < 1 :=
   Int.fract_lt_one _
 
+/-- On the left half of the unit interval, the doubling map is `t ↦ 2t`. -/
 theorem doublingMap_eq_left {t : ℝ} (h0 : 0 ≤ t) (h1 : t < 1 / 2) :
     doublingMap t = 2 * t :=
   Int.fract_eq_self.mpr ⟨by linarith, by linarith⟩
 
+/-- On the right half of the unit interval, the doubling map is `t ↦ 2t - 1`. -/
 theorem doublingMap_eq_right {t : ℝ} (h0 : 1 / 2 ≤ t) (h1 : t < 1) :
     doublingMap t = 2 * t - 1 := by
   have h := Int.fract_sub_one (2 * t)
   rw [doublingMap, ← h]
   exact Int.fract_eq_self.mpr ⟨by linarith, by linarith⟩
 
+/-- The doubling map is measurable. -/
 theorem measurable_doublingMap : Measurable doublingMap :=
   (measurable_const_mul 2).fract
 

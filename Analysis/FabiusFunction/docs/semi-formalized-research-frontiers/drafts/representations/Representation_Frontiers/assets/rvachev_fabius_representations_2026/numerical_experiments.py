@@ -251,7 +251,8 @@ def write_data(c, betas, alphas):
     ]
     for name, rows in specs:
         with (HERE/name).open('w', newline='', encoding='utf-8') as f:
-            w = csv.writer(f); w.writerow(['index','numerator','denominator','decimal'])
+            w = csv.writer(f, lineterminator='\n')
+            w.writerow(['index','numerator','denominator','decimal'])
             for n,q in rows:
                 w.writerow([n,q.numerator,q.denominator,dec(q,30)])
 

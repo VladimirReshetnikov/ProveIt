@@ -14623,9 +14623,12 @@ midpoint.  For \(0\le q<1\), its exterior tails are exactly zero and one; for \(
 the two conditioning integrals, pointwise derivative formula, Radon--Nikodym density,
 density reflection and compact support, and \(C^\infty\) regularity of both CDF and density
 are formal.  At \(q=1/2\), exact all-real declarations identify the CDF with the bounded
-Fabius function and the density with the affine Rvachev up-function.  The report's Fourier
-products and inversion proof, moments and transforms, higher-derivative and endpoint-flatness
-wrappers, shape theory, and fixed-point uniqueness remain outside that promotion.
+Fabius function and the density with the affine Rvachev up-function.  A later tranche also
+proves uniqueness of the affine measure fixed point for every \(|q|<1\), and for every
+nonzero such \(q\) gives direct named Cauchy-transform and adjacent-power refinement
+equations off the exact support.  The report's characteristic-function products and
+Fourier inversion proof, moments/cumulants, real-space higher-density-derivative and
+endpoint-flatness wrappers, and shape theory remain outside that promotion.
 
 The word \emph{new} is used only in a corpus-relative sense: these statements were not found
 in the 57 TeX sources inspected in the specified repository snapshot.  No claim of global
@@ -14674,10 +14677,23 @@ support, and \(C^\infty\) regularity.  \path{ProbabilityRepresentation.lean} sup
 all-real \(q=1/2\) Fabius-CDF and Rvachev-density bridges.
 
 The definition of \path{geometricUniformDensity} is total, but no density formula or
-Radon--Nikodym interpretation is claimed here for \(q\le0\).  Also still frontier are the
-characteristic-function products, rapid-decay bound and Fourier inversion route, a closed
-higher-derivative refinement and endpoint-flatness wrapper, the shape transition, moments
-and transforms, and uniqueness of the affine fixed point.
+Radon--Nikodym interpretation is claimed here for \(q\le0\).  Fixed-point uniqueness is now
+the direct theorem \path{eq_geometricUniformDistribution_of_selfSimilar}, valid for every
+\(|q|<1\), including negative \(q\) and \(q=0\).  The definitions
+\path{geometricUniformStieltjesDomain},
+\path{geometricUniformStieltjesTransform}, and
+\path{geometricUniformStieltjesPower} are total in real \(q\); for \(|q|<1\), the transform
+is holomorphic off the exact support, and for \(q\ne0\) the direct named theorems
+\path{hasDerivAt_geometricUniformStieltjesTransform_refinement} and
+\path{geometricUniformStieltjesPower_succ} give the transform DDE and every positive
+adjacent-power recurrence, including negative ratios.  At \(q=1/2\), the all-power affine
+bridge, named unit Stieltjes DDE, and both canonical complex-slit adjacent-order recurrences
+are direct theorems of \path{CauchyTransform.lean}.
+
+Still frontier are the characteristic-function products, rapid-decay bound and Fourier
+inversion route, a closed real-space density-derivative refinement and endpoint-flatness
+wrapper, the shape transition, and general-\(q\) moment/cumulant formulas.  The closed
+density hierarchy here is distinct from the proved Cauchy-power hierarchy.
 \end{boxedremark}
 
 
@@ -15045,9 +15061,14 @@ derivative of the CDF.  Finally,
 measure with this nonnegative Radon--Nikodym density.  The exterior-value convention used
 in the proposition is formalized for \(0\le q<1\) by
 \path{geometricUniformCDF_zero_of_nonpos} and
-\path{geometricUniformCDF_one_of_one_le}.  None of these declarations asserts uniqueness
-of the affine measure fixed point, and the classical density interpretation has not been
-extended to the totalized \(q\le0\) formula.
+\path{geometricUniformCDF_one_of_one_le}.  Uniqueness is supplied separately and directly
+by \path{eq_geometricUniformDistribution_of_selfSimilar} for every \(|q|<1\), including
+negative \(q\) and \(q=0\); it requires no support, density, or moment hypothesis on the
+competing probability law.  The classical density interpretation has not been extended to
+the selected totalized \(q\le0\) formula.  Also separately,
+\path{GeometricUniformCauchy.lean} gives the exact-support transform DDE and adjacent
+Cauchy-power hierarchy for every nonzero \(|q|<1\); those declarations do not formalize
+the characteristic-function product or the real-space density-derivative hierarchy below.
 
 For $q=1/2$ and $0\le x\le1/2$, the second term in
 \eqref{p10:eq:density-refinement} vanishes, so
@@ -16323,15 +16344,19 @@ The following order minimizes dependence on asymptotic machinery.
 \item Derive characteristic-function products from finite products plus dominated convergence.
 \end{enumerate}
 
-At compiled source checkpoint \path{e6f535e5d}, items 1--3 have been formalized, in
+At compiled source checkpoint \path{e6f535e5d}, items 1--3 had been formalized, in
 stronger pointwise form where applicable, by \path{WeightedUniformSeries.lean},
 \path{WeightedUniformDistribution.lean}, \path{WeightedUniformSupport.lean},
 \path{GeometricUniformLaw.lean}, \path{ContinuousCDF.lean}, and
 \path{GeometricUniformCDF.lean}.  This includes law reflection, independent-copy affine
 refinement, absolute continuity, null singletons, exact support, the named CDF and both
 conditioning integrals, its explicit Radon--Nikodym density, compact support, and
-\(C^\infty\) regularity.  Fixed-point uniqueness in item 4 and the
-characteristic-function program in item 5 remain open.
+\(C^\infty\) regularity.  Item 4 is now discharged by
+\path{GeometricUniformUniqueness.lean}; its direct theorem covers every \(|q|<1\),
+including negative \(q\) and \(q=0\).  The characteristic-function program in item 5
+remains open.  The distinct oriented Cauchy-transform DDE and adjacent-power hierarchy are
+now formal in \path{GeometricUniformCauchy.lean}; they are not substitutes for item 5's
+Fourier product.
 
 \subsection{Analysis layer}
 

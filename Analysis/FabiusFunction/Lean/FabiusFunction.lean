@@ -338,6 +338,8 @@ import FabiusFunction.KappaOneEnclosure
 import FabiusFunction.KappaConstantEnclosures
 import FabiusFunction.MeasureRefinement
 import FabiusFunction.RandomSeriesLaw
+import FabiusFunction.MeasureCauchyTransform
+import FabiusFunction.GeometricUniformCauchy
 import FabiusFunction.CauchyTransform
 import FabiusFunction.CauchyCDF
 import FabiusFunction.CauchyRenormalization

@@ -828,14 +828,31 @@ every \(z\in\C\setminus[-1,1]\),
 using the logarithmic fixed point.  Finally,
 \path{iteratedDeriv_rvachevCauchyTransform_eq_thueMorse_sum} instantiates the
 generic open-domain engine and proves exactly the derivative formula
-\eqref{p1:eq:R-derivative-tree} for every \(n\in\N\).  The affine bridge makes
-the corresponding unit-interval Stieltjes derivative relation an immediate
-mathematical consequence, but no named Stieltjes-DDE declaration is exported.
+\eqref{p1:eq:R-derivative-tree} for every \(n\in\N\).  The corresponding
+unit-interval relation is now a direct named theorem, not merely a corollary through the
+affine bridge:
+\path{hasDerivAt_fabiusStieltjesTransform_refinement} proves
+\(S'(z)=4(S(2z)-S(2z-1))\) throughout the unit slit domain.
+The bridge itself has an all-power version
+\path{fabiusStieltjesPower_eq_two_pow_mul_rvachevCauchyPower}, and
+\path{fabiusStieltjesPower_succ} and \path{rvachevCauchyPower_succ} give the two
+adjacent-order recurrences throughout their complex slit domains.
 
-The logarithmic identity \eqref{p1:eq:R-log-fixed} and the separate conversion
-of the all-order derivative orbit into the higher-kernel integral identity
-\eqref{p1:eq:R-kernel-tree} remain formalization obligations, as do the
-boundary/Plemelj, Laurent/moment, generalized-order, and Jacobi--Pad\'e layers.
+The real \(z>1\) instance of the logarithmic identity
+\eqref{p1:eq:R-log-fixed} is a direct theorem of
+\path{StieltjesLogFixedPoint.lean}, namely
+\path{integral_inv_sub_eq_integral_log}; it is not a complex-logarithm or branch
+continuation theorem.  \path{StieltjesResolventHierarchy.lean} gives the real positive
+integer hierarchy, while \path{StieltjesGeneralizedOrder.lean} lowers real
+\(\alpha>1\) at real \(z>1\).  The real and complex exterior moment/Laurent series,
+finite-height Herglotz--Poisson formulas, integrated interval Stieltjes--Perron inversion,
+and initial exact Jacobi data are likewise direct named results in the corresponding
+\path{Stieltjes*.lean} and \path{OrthogonalPolynomialJacobi.lean} modules.
+
+Still open are the complex logarithmic continuation, complex order, pointwise or
+nontangential Sokhotski--Plemelj/Hilbert-principal-value formulas, the full
+J-fraction/Pad\'e package, and the separate conversion of the all-order derivative orbit
+into the explicit higher-kernel identity \eqref{p1:eq:R-kernel-tree}.
 \end{proof}
 
 Taking boundary imaginary parts in \eqref{p1:eq:R-derivative-tree} recovers the familiar
@@ -1625,12 +1642,22 @@ A Lean development can be staged as follows:
 \item postpone the Denisov--Rakhmanov limit, which depends on substantial external
       orthogonal-polynomial theory.
 \end{enumerate}
-Item 1 is delivered by \path{CauchyTransform.lean}.  Item 2 remains open.
+Item 1 is delivered by \path{CauchyTransform.lean}, now with the all-power affine bridge,
+named unit Stieltjes DDE, and both complex-slit adjacent-power recurrences; its reusable
+finite-measure and general geometric-law foundations are
+\path{MeasureCauchyTransform.lean} and \path{GeometricUniformCauchy.lean}.  Item 2 is
+delivered exactly on the proposed first domain, real \(z>1\), by
+\path{StieltjesLogFixedPoint.lean}; complex logarithmic continuation remains open.
 \path{CauchyRenormalization.lean} delivers item 3 directly from the differential
 refinement equation and compact support, without depending on item 2, and instantiates
-the generic engine from \path{AffineDifferenceOrbit.lean} to deliver the derivative
-formula in item 4.  The higher-kernel integral conversion stated in
-\eqref{p1:eq:R-kernel-tree}, as well as items 5--7, remains open.
+the generic engine from \path{AffineDifferenceOrbit.lean} to deliver item 4.
+
+The moment side of item 5 and the first exact Jacobi data are now formal in the Laurent,
+Hankel, and \path{OrthogonalPolynomialJacobi.lean} modules.  Item 6's complete finite
+convergents and Gaussian error theorem and item 7's asymptotics remain open.  So does the
+separate higher-kernel conversion stated in \eqref{p1:eq:R-kernel-tree}; the generic
+CDF/survival formulas at every positive kernel power do not by themselves prove that
+explicit Thue--Morse sum identity.
 \end{problem}
 
 \section{Promising research program}
@@ -6775,7 +6802,7 @@ formalization.
 
 The requested source boundary is the recursive \texttt{*.tex} tree below
 \path{Analysis/FabiusFunction/docs}.  The repository's own most recent audit draft
-pins commit \texttt{32d6d36c51d803289e6d6a0dc0c37753766eba47} and records 67
+pins commit \path{32d6d36c51d803289e6d6a0dc0c37753766eba47} and records 67
 distinct LaTeX paths: five living synthesis/reference documents, thirty-two frozen
 historical sources, twenty-three active frontier drafts (including twelve Fourier-decay
 dossiers), and seven transcribed or corrected papers~\cite{p4:ReshetnikovRepo}.  The present study used those same lineages and compared the living primary exposition, the consolidated frontier
@@ -8477,10 +8504,10 @@ to formalize the finite-block approximations and their trace-class limit.
 \label{p4:app:atlas}
 
 \small
-\begin{longtable}{>{\raggedright\arraybackslash}p{0.15\textwidth}
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{0.15\textwidth}
                   >{\raggedright\arraybackslash}p{0.49\textwidth}
                   >{\raggedright\arraybackslash}p{0.14\textwidth}
-                  >{\raggedright\arraybackslash}p{0.12\textwidth}}
+                  >{\raggedright\arraybackslash}p{0.12\textwidth}@{}}
 \caption{A compact map of the principal representations.}\label{p4:tab:master-atlas}\\
 \toprule
 Object&type of representation&status&reference\\
@@ -11023,8 +11050,8 @@ The script performs four independent checks.
 $\prod_{a=0}^{r-1}\Psi_r(z/2^a)$ at real and genuinely complex points for
 $r=2,3,4,5$, using 90 decimal digits.
 \item It compares the direct finite atomic transform
-$\sum_k\eps_k\e^{-2\pi\ii zx_k}$ with
-$(2\pi\ii z)^Nq^{\binom N2}\Psi_r(z)/\Psi_r(q^Nz)$.
+$\sum_k\eps_k\e^{-2\pi\ii zx_k}$\linebreak
+with $(2\pi\ii z)^Nq^{\binom N2}\Psi_r(z)/\Psi_r(q^Nz)$.
 \item It constructs finite moments from the hyperbolic MGF in exact rational
 arithmetic and independently reconstructs them from the signed high power sum
 \eqref{p5:eq:moment-from-TM}.
@@ -15362,7 +15389,7 @@ Synthesis; overlaps repository cardinal program\\
 \label{p7:sec:numerics}
 
 The file \texttt{numerical\_experiments.py} is deliberately self-contained. It uses
-\texttt{fractions.Fraction} for exact moments, Chebyshev moments, Jacobi coefficients, and
+\path{fractions.Fraction} for exact moments, Chebyshev moments, Jacobi coefficients, and
 Verblunsky coefficients; \texttt{mpmath} for 70-digit analytic checks; and
 \texttt{matplotlib} for the figures. The code follows two independent coefficient routes:
 
@@ -15683,7 +15710,7 @@ File & Purpose\\
 \endhead
 \bottomrule
 \endfoot
-\texttt{numerical\_experiments.py} & Exact moments, \(c_n\), Jacobi and Verblunsky
+\path{numerical_experiments.py} & Exact moments, \(c_n\), Jacobi and Verblunsky
 coefficients; Bessel/product, Cauchy, spectral, Abel, and monodromy checks; figure and table
 generation.\\
 \texttt{numerical\_results.txt} & Human-readable verification transcript with decimal

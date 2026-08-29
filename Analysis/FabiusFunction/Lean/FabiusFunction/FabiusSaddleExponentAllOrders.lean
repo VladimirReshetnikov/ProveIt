@@ -98,6 +98,7 @@ noncomputable def negativeLaplaceExactExponentCoefficient
       negativeLaplaceExactExponentBoundedTerm (n + 1) t v +
         negativeLaplaceExponentSlopeTerm (n + 3) v
 
+/-- The order-zero exact exponent coefficient vanishes. -/
 @[simp] theorem negativeLaplaceExactExponentCoefficient_zero
     (t : ℝ) (v : ℂ) :
     negativeLaplaceExactExponentCoefficient 0 t v = 0 := rfl
@@ -125,10 +126,12 @@ theorem negativeLaplaceExactExponentCoefficient_eq
       push_cast
       ring
 
+/-- The order-zero bounded exponent term vanishes. -/
 @[simp] theorem negativeLaplaceExactExponentBoundedTerm_zero
     (t : ℝ) (v : ℂ) :
     negativeLaplaceExactExponentBoundedTerm 0 t v = 0 := rfl
 
+/-- The order-zero exponent slope term vanishes. -/
 @[simp] theorem negativeLaplaceExponentSlopeTerm_zero (v : ℂ) :
     negativeLaplaceExponentSlopeTerm 0 v = 0 := rfl
 

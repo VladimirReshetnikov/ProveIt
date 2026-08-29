@@ -320,6 +320,8 @@ theorem atom_lt_stepIntervalRight (n m : ℕ) :
   apply (div_lt_div_iff_of_pos_right hden).2
   linarith
 
+/-- The half-endpoint indicator of a histogram cell equals one at its
+polynomial atom location. -/
 @[simp] theorem halfEndpointIntervalIndicator_atom (n m : ℕ) :
     halfEndpointIntervalIndicator (stepIntervalLeft n m) (stepIntervalRight n m)
       (polynomialAtomLocation n m) = 1 := by

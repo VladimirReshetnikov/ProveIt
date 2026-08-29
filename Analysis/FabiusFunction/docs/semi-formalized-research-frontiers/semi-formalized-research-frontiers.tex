@@ -441,6 +441,46 @@ Half-base CDF and density bridges &
 \nolinkurl{geometricUniformCDF_one_half_eq_fabiusReal},
 \nolinkurl{geometricUniformDensity_one_half_eq_rvachevUp} &
 \nolinkurl{ProbabilityRepresentation.lean} \\
+Generic finite-measure Cauchy calculus &
+\nolinkurl{measureCauchyDomain}, \nolinkurl{measureCauchyTransform},
+\nolinkurl{measureCauchyPower}, \nolinkurl{measureCauchyTransform_apply},
+\nolinkurl{measureCauchyPower_one}, \nolinkurl{measureCauchyPower_map_affine},
+\nolinkurl{measureCauchyTransform_map_affine}, \nolinkurl{isOpen_measureCauchyDomain},
+\nolinkurl{hasDerivAt_measureCauchyTransform},
+\nolinkurl{analyticOn_measureCauchyTransform},
+\nolinkurl{measureCauchyPower_succ_of_uniformAffineFixedPoint},
+\nolinkurl{hasDerivAt_measureCauchyTransform_of_uniformAffineFixedPoint} &
+\nolinkurl{MeasureCauchyTransform.lean} \\
+Geometric-uniform Cauchy hierarchy &
+\nolinkurl{geometricUniformStieltjesDomain},
+\nolinkurl{geometricUniformStieltjesTransform},
+\nolinkurl{geometricUniformStieltjesPower},
+\nolinkurl{geometricUniformStieltjesTransform_apply},
+\nolinkurl{geometricUniformStieltjesPower_one},
+\nolinkurl{isOpen_geometricUniformStieltjesDomain},
+\nolinkurl{analyticOn_geometricUniformStieltjesTransform},
+\nolinkurl{hasDerivAt_geometricUniformStieltjesTransform_refinement},
+\nolinkurl{geometricUniformStieltjesPower_succ} &
+\nolinkurl{GeometricUniformCauchy.lean} \\
+Canonical Cauchy--Stieltjes powers and refinement &
+\nolinkurl{rvachevCauchyDomain}, \nolinkurl{fabiusStieltjesDomain},
+\nolinkurl{rvachevCauchyTransform}, \nolinkurl{fabiusStieltjesTransform},
+\nolinkurl{rvachevCauchyPower}, \nolinkurl{fabiusStieltjesPower},
+\nolinkurl{rvachevCauchyTransform_apply},
+\nolinkurl{fabiusStieltjesTransform_apply},
+\nolinkurl{rvachevCauchyPower_one}, \nolinkurl{fabiusStieltjesPower_one},
+\nolinkurl{rvachevCauchyTransform_eq_integral_rvachevUp},
+\nolinkurl{isOpen_rvachevCauchyDomain}, \nolinkurl{isOpen_fabiusStieltjesDomain},
+\nolinkurl{hasDerivAt_rvachevCauchyTransform},
+\nolinkurl{hasDerivAt_fabiusStieltjesTransform},
+\nolinkurl{analyticOn_rvachevCauchyTransform},
+\nolinkurl{analyticOn_fabiusStieltjesTransform},
+\nolinkurl{fabiusStieltjesTransform_eq_two_mul_rvachevCauchyTransform},
+\nolinkurl{rvachevCauchyTransform_eq_inv_two_mul_fabiusStieltjesTransform},
+\nolinkurl{fabiusStieltjesPower_eq_two_pow_mul_rvachevCauchyPower},
+\nolinkurl{hasDerivAt_fabiusStieltjesTransform_refinement},
+\nolinkurl{fabiusStieltjesPower_succ}, \nolinkurl{rvachevCauchyPower_succ} &
+\nolinkurl{CauchyTransform.lean} \\
 Weighted survival, lower-CDF, fractional, and inverse layer cake &
 \nolinkurl{integral_smul_setIntegral_subgraph},
 \nolinkurl{integral_smul_setIntegral_supergraph},
@@ -518,11 +558,17 @@ reflection, support equal to the series range for \(|q|<1\), and exact support \
 are now exact formal inputs.  So are the named CDF, its continuity and reflection for
 \(|q|<1\), its tails for \(0\le q<1\), and, for \(0<q<1\), its refinement integrals,
 explicit compactly supported density, measure-level Radon--Nikodym identity, and real-space
-\(C^\infty\) regularity.  What remains here is the density interpretation at \(q=0\) and at
-negative \(q\), the general-\(q\) characteristic-function product, rapid decay and Fourier
-inversion route, named centered packaging, a closed higher-derivative hierarchy and endpoint
-flatness wrappers, shape theorems, transforms, moments/cumulants, and uniqueness of the
-affine measure fixed point.
+\(C^\infty\) regularity.  The affine measure fixed point is also unique for every
+\(|q|<1\), including negative \(q\) and \(q=0\), by
+\nolinkurl{eq_geometricUniformDistribution_of_selfSimilar}.  The generic and geometric
+Cauchy rows above additionally make the transform DDE and adjacent-power hierarchy direct
+named theorems, including negative nonzero ratios.  What remains here is the density
+interpretation at \(q=0\) and at negative \(q\), the general-\(q\)
+characteristic-function product, rapid decay and Fourier inversion route, named centered
+packaging, a closed density higher-derivative hierarchy and endpoint-flatness wrappers,
+shape theorems, and general-\(q\) moments/cumulants.  Here ``closed density hierarchy''
+means the report's real-space derivatives and endpoint wrappers; it does not deny the
+proved Cauchy-power recurrence.
 \end{boxedremark}
 
 
@@ -577,10 +623,12 @@ notebook should be attributed to the formal library merely because a related def
 weaker theorem exists.  The primary exposition contains the audited, declaration-backed
 subset.  Among the obligations retained here are generic moment-matrix consequences,
 arbitrary-family Toeplitz wording, generic Gaussian coefficient bounds, and the geometric-
-\(q\) Fourier, centered-family, higher-derivative, endpoint-flatness, shape,
-transform, moment/cumulant, and fixed-point-uniqueness layers beyond the formalized CDF and
-positive-ratio smooth-density API.  The explicit density's interpretation at zero and
-negative parameters is also not supplied by that API.  The inverse
+\(q\) characteristic-function/Fourier, centered-density, higher-density-derivative,
+endpoint-flatness, shape, and moment/cumulant layers beyond the formalized CDF and
+positive-ratio smooth-density API.  Fixed-point uniqueness and the oriented Cauchy-transform
+DDE/adjacent-power hierarchy are now formal; the latter should not be confused with the
+still-open Fourier transform.  The explicit density's interpretation at zero and negative
+parameters is also not supplied by that API.  The inverse
 endpoint and Fabius-specific coefficient obligations are tracked in \cref{part:inverse}.
 \end{boxedremark}
 
@@ -650,8 +698,12 @@ a longer proof-oriented or frontier discussion here: principally
 \path{InversePairIntegral.lean}, \path{FinitePowerSeriesFilter.lean}, and
 \path{GeometricPowerSeriesFilter.lean}, together with
 \path{AnalyticSeriesFilter.lean}, \path{ThueMorseComplexProductBridge.lean},
-\path{CauchyTransform.lean}, \path{CauchyCDF.lean}, and
-\path{CauchyRenormalization.lean}, together with
+\path{MeasureCauchyTransform.lean}, \path{GeometricUniformCauchy.lean},
+\path{CauchyTransform.lean}, \path{CauchyCDF.lean},
+\path{CauchySurvival.lean}, \path{CauchyHigherPowers.lean}, and
+\path{CauchyRenormalization.lean}, together with the real logarithmic and
+generalized-order, complex Laurent/Herglotz, integrated Stieltjes--Perron, and initial
+Jacobi-data modules, and
 \path{ContinuousCDF.lean}, \path{GeometricUniformCDF.lean}, and
 \path{ImplicitPowerSeries.lean}.\\
 \textbf{Missing engine} & A generic theorem family that the main article deliberately leaves in
@@ -1340,10 +1392,14 @@ the research quarantine:
 \item a closed all-order derivative-refinement hierarchy and explicit endpoint-flatness
       wrappers, beyond the formal existence of all finite derivatives;
 \item log-concavity, strictness, central plateaux and other parameter-dependent shape claims;
-\item transform formulas, Bernoulli cumulants, Bell moments, and related asymptotic or
-      Gaussian-limit statements; and
-\item uniqueness of the affine measure fixed point.
+\item characteristic-function products, Bernoulli cumulants, Bell moments, and related
+      asymptotic or Gaussian-limit statements.
 \end{itemize}
+The affine measure fixed point is unique by the direct theorem
+\lean{eq_geometricUniformDistribution_of_selfSimilar}.  The transform DDE and
+adjacent Cauchy-power hierarchy are also direct named results in
+\path{GeometricUniformCauchy.lean}; the transform bullet above refers only to the report's
+still-open Fourier/Laplace and moment formulas.
 \end{boxedremark}
 
 \begin{proposition}[The smoothing equation for the CDF]
@@ -3110,14 +3166,28 @@ The real two-function absolutely-continuous inverse-pair identity on arbitrary o
 compact rectangles, with clock monotonicity and measurable clamped representatives derived
 from interval preservation and the strict order equivalence; its Fabius wrapper and area sum;
 \cref{integration:sec:survival-fubini}.\\
+\path{MeasureCauchyTransform.lean}, \path{GeometricUniformCauchy.lean},
 \path{CauchyTransform.lean}, \path{CauchyCDF.lean},
+\path{CauchySurvival.lean}, \path{CauchyHigherPowers.lean},
 \path{CauchyRenormalization.lean} &
-The ordinary up-law and Fabius Cauchy--Stieltjes transforms on their slit domains; three
-atom-exact compact-support Cauchy--CDF integration-by-parts theorems; and five
-renormalization theorems giving the two affine domain maps, the exact Rvachev-transform DDE,
-and its all-order finite Thue--Morse derivative orbit.  No logarithmic fixed point,
-higher-kernel integral identity, named Stieltjes DDE, boundary/Plemelj theorem,
-moment/Laurent expansion, generalized order, or Jacobi/Pad\'e result is asserted.\\
+The generic finite-measure affine Cauchy calculus; the exact-support geometric-
+\(q\) transform DDE and adjacent-power hierarchy for every nonzero \(|q|<1\), including
+negative ratios; the canonical unit/centered all-power bridge, named unit Stieltjes DDE,
+and both complex-slit adjacent-order recurrences; atom-exact CDF and survival integration by
+parts at every positive kernel power; and the centered DDE and all-order finite
+Thue--Morse derivative orbit.  The generic fixed-point theorems need no probability
+normalization or topological/measurability assumptions on their invariant carrier.\\
+\path{StieltjesLogFixedPoint.lean}, \path{StieltjesResolventHierarchy.lean},
+\path{StieltjesGeneralizedOrder.lean}, \path{StieltjesMomentLaurent.lean},
+\path{StieltjesCauchyTransform.lean}, \path{StieltjesHerglotz.lean},
+\path{StieltjesInversion.lean}, \path{StieltjesPerron.lean},
+\path{OrthogonalPolynomialJacobi.lean} &
+The real logarithmic fixed point and integer hierarchy for \(z>1\), real order lowering for
+\(\alpha>1\), real and complex exterior all-moment Laurent expansions, finite-height
+Herglotz--Poisson formulas, integrated interval Stieltjes--Perron inversion, and initial
+exact Jacobi data.  No complex logarithmic continuation, complex order, pointwise or
+nontangential Sokhotski--Plemelj/Hilbert-principal-value formula, or complete
+J-fraction/Pad\'e theory is asserted.\\
 \path{FractionalVolterra.lean}, \path{FractionalVolterraSemigroup.lean} &
 The total real-order Gamma-normalized operator, its unconditional endpoint/locality/scalar,
 order-one, and positive-natural-order rules, and its positive-order ordered-endpoint
@@ -3261,10 +3331,12 @@ reflection, absolute continuity, null singletons, and support equal to the serie
 \(|q|<1\), exact support \([0,1]\) for \(0\le q<1\), a named CDF continuous and symmetric
 for \(|q|<1\), its exact nonnegative-range tails, and, for \(0<q<1\), refinement integrals,
 an explicit compactly supported Radon--Nikodym density, and real-space \(C^\infty\)
-regularity.  Series, law, CDF, and density half-base bridges are formal.  The zero/negative
-parameter density interpretation, general-\(q\) Fourier route, centered package, closed
-higher-derivative and endpoint-flatness wrappers, shape, transforms, moments/cumulants, and
-fixed-point uniqueness remain outside the formal boundary.\\
+regularity.  Series, law, CDF, density, and all-power half-base bridges are formal; so are
+affine fixed-point uniqueness and the transform DDE/adjacent-power hierarchy for every
+nonzero \(|q|<1\).  The zero/negative-parameter density interpretation, general-\(q\)
+Fourier route, centered density package, closed real-space derivative and endpoint-flatness
+wrappers, shape, and general-\(q\) moment/cumulant formulas remain outside the formal
+boundary.\\
 Probability--Laplace bridge & Absent & Generic Banach-valued partial and full survival layer
 cake, inverse layer cake and exact inverse area, identification of raw, endpoint, and tilted
 moments, complete monotonicity, and half-moment interpretation.\\

@@ -121,6 +121,7 @@ theorem principalLambertW_unique {z w : ℝ} (hz : -Real.exp (-1) ≤ z)
   (principalLambertW_unique le_rfl le_rfl (by
     rw [neg_one_mul])).symm
 
+/-- The principal real Lambert branch vanishes at zero. -/
 @[simp] theorem principalLambertW_zero : principalLambertW 0 = 0 :=
   (principalLambertW_unique (neg_nonpos.mpr (Real.exp_pos _).le)
     (by norm_num) (by simp)).symm
