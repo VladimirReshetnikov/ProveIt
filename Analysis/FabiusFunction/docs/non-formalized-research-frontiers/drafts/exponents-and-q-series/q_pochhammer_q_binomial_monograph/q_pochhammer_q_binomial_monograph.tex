@@ -126,7 +126,7 @@
 \addcontentsline{toc}{chapter}{Abstract}
 The finite and infinite $q$-Pochhammer symbols and the Gaussian, or $q$-binomial, coefficients form a small set of notational primitives from which a remarkable amount of mathematics can be built.  They simultaneously encode weighted subsets, partitions inside rectangles, lattice paths, subspaces over finite fields, Schubert cells in Grassmannians, noncommutative binomial expansions, $q$-difference operators, basic hypergeometric summations, theta products, partition identities, and congruences at roots of unity.
 
-This monograph develops those themes from first principles.  It proves the algebraic laws of shifted factorials; the polynomial, reciprocal, and cyclotomic structure of Gaussian coefficients; finite and infinite $q$-binomial theorems; weighted generalizations through elementary and complete symmetric functions; combinatorial and finite-geometric models; unimodality by $\mathfrak{sl}_2$ representation theory; the $q$-Gauss, $q$-Chu--Vandermonde, and $q$-Pfaff--Saalsch\"utz summations; Jackson calculus and the $q$-gamma and $q$-beta functions; Jacobi's triple product, Euler's pentagonal theorem, and the Rogers--Ramanujan identities through Bailey pairs; cyclotomic factorization, $q$-Lucas and $q$-Babbage congruences; negative upper indices and $q$-Newton interpolation; and a recent family of central $q$-binomial/Lambert-series evaluations.  Every displayed theorem used in the main development is accompanied by a proof, and the final appendices collect formulas, limiting transitions, and computational recipes.
+This monograph develops those themes from first principles.  It proves the algebraic laws of shifted factorials; the polynomial, reciprocal, and cyclotomic structure of Gaussian coefficients; finite and infinite $q$-binomial theorems; weighted generalizations through elementary and complete symmetric functions; combinatorial and finite-geometric models; unimodality by $\mathfrak{sl}_2$ representation theory; the $q$-Gauss, $q$-Chu--Vandermonde, and $q$-Pfaff--Saalsch\"utz summations; Jackson calculus and the $q$-gamma and $q$-beta functions; Jacobi's triple product, Euler's pentagonal theorem, and the Rogers--Ramanujan identities through Bailey pairs; cyclotomic factorization, $q$-Lucas and $q$-Babbage congruences; negative upper indices and $q$-Newton interpolation; a recent family of central $q$-binomial/Lambert-series evaluations; geometric Lagrange filters with exact Gaussian residual moments; half-base Mersenne normalizations and Prouhet--Thue--Morse cancellation; and geometric uniform sums, $q$-cumulants, finite spline approximants, and the Fabius--Rvachev specializations.  Every displayed theorem used in the main development is accompanied by a proof, and the final appendices collect formulas, limiting transitions, computational recipes, and a per-result record of what has and has not yet been formalized in Lean.
 
 \chapter*{Preface and source map}
 \addcontentsline{toc}{chapter}{Preface and source map}
@@ -138,7 +138,7 @@ The aim is not merely to list identities, but to expose the mechanisms that repe
 \end{enumerate}
 Once these mechanisms are visible, many formulas that initially appear unrelated become instances of the same principle.
 
-The supplied archive was used throughout.  In particular, the weighted subset framework of Konvalina motivates \Cref{chap:weighted}; Kupershmidt's treatment of the $q$-Newton binomial informs \Cref{chap:qcalculus,chap:qnewton}; Straub's seminar on $q$-binomial congruences is reflected in \Cref{chap:cyclotomic}; the formalized $q$-series project of Lau, Lee, and Ono motivates the algebraic-versus-analytic distinctions in \Cref{chap:formalization} and supplies a modern Bailey-pair route to the Rogers--Ramanujan identities; and the central $q$-binomial paper of Chern, Dilcher, and Jiu is developed, with a complete proof, in \Cref{chap:central}.  The archive's reference chapters and encyclopedia snapshots were checked against the standard sources listed in the bibliography.  Additional material was drawn from the classical books and articles of Andrews, Askey, Bailey, Gasper, Rahman, Rota, Goldman, Reiner, Stanton, White, and others, as well as the NIST Digital Library of Mathematical Functions.
+The supplied archive was used throughout.  In particular, the weighted subset framework of Konvalina motivates \Cref{chap:weighted}; Kupershmidt's treatment of the $q$-Newton binomial informs \Cref{chap:qcalculus,chap:qnewton}; Straub's seminar on $q$-binomial congruences is reflected in \Cref{chap:cyclotomic}; the formalized $q$-series project of Lau, Lee, and Ono motivates the algebraic-versus-analytic distinctions in \Cref{chap:formalization} and supplies a modern Bailey-pair route to the Rogers--Ramanujan identities; and the central $q$-binomial paper of Chern, Dilcher, and Jiu is developed, with a complete proof, in \Cref{chap:central}.  The archive's reference chapters and encyclopedia snapshots were checked against the standard sources listed in the bibliography.  The current \emph{ProveIt} Fabius-function documentation~\cite{ReshetnikovProveIt2026}, including its main exposition and non-formalized research-frontier drafts, supplies the geometric-node interpolation rows, exact residual moments, half-base identities, formal filters, and dyadic Thue--Morse connections expanded independently in \Cref{chap:geometric-filters,chap:halfbase-thuemorse,chap:geometric-uniform-fabius}.  Online research also led to the recent automated identity-translation framework of Zhong and Zhao~\cite{ZhongZhao2026} and the Isabelle formalization of combinatorial $q$-analogues by Eberl~\cite{Eberl2024QAnalogues}.  Additional material was drawn from the classical books and articles of Andrews, Askey, Bailey, Gasper, Rahman, Rota, Goldman, Reiner, Stanton, White, and others, as well as the NIST Digital Library of Mathematical Functions.
 
 \section*{Two regimes for $q$}
 Throughout the finite algebraic chapters, $q$ may be an indeterminate and identities are understood in a polynomial or rational-function ring.  In analytic chapters, unless stated otherwise,
@@ -6481,6 +6481,18 @@ Read \Cref{chap:cyclotomic}.
 \end{gathered}
 \]
 Read \Cref{chap:pochhammer,chap:qgamma,chap:central,chap:asymptotics}.
+
+\section*{Route to geometric filters and the Fabius bridge}
+\[
+\begin{gathered}
+ \text{reversed Gaussian rows}
+ \longrightarrow \text{geometric Lagrange moments}
+ \longrightarrow \text{exact coefficient filters}\\
+ \longrightarrow \text{dyadic Prouhet cancellation}
+ \longrightarrow \text{Fabius--Rvachev sinc products}.
+\end{gathered}
+\]
+Read \Cref{chap:geometric-filters,chap:halfbase-thuemorse,chap:geometric-uniform-fabius}.
 
 \chapter{Formalization status}\label{app:lean-status}
 \index{formalization status}
