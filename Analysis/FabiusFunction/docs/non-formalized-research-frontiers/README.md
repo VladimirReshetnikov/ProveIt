@@ -92,8 +92,10 @@ The draft inboxes under [`drafts/`](drafts/) are grouped thematically
 (2026-08-28): `rvachev_up_fourier_decay/` (the Fourier-decay corpus),
 `thue-morse/`, `exponents-and-q-series/`, `spectra-and-arithmetic/`,
 `integration-and-transforms/`, `inverse-and-sampling/`,
-`representations/`, and `frontier-compilations/`, with new archives
-arriving through `drafts/incoming/` (see its README for the protocol).
+`representations/`, `frontier-compilations/`, and `lambert-w/` (added
+when four articles on the Lambert W function itself arrived), with new
+archives arriving through `drafts/incoming/` (see its README for the
+protocol).
 Later the same day every group except the Fourier-decay corpus was
 **consolidated into volumes**, in two styles: the original members were
 merged mechanically — one document per group, absorbing the member
@@ -144,7 +146,13 @@ Stieltjes–Wigert bridge, the distance-Mellin law, the q-Gaussian
 derivative Gram geometry with theta-function Riesz bounds, the
 log-Weibull jet-intermittency law, a proof of the Fup_n Edgeworth
 register conjecture, and — for provenance — the Russian source scan
-and OCR themselves, archived under the volume's assets.  Several volumes' part-boundary section numbering and
+and OCR themselves, archived under the volume's assets.  A new
+`lambert-w/` group collected four independently written articles on
+the Lambert W function itself; they were merged editorially into the
+single consolidated volume `Lambert_W_Guide/` (the most complete
+treatment as the body, the other three's unique layers in a
+complements section, a four-way concordance, and a corpus-role
+section tying W₋₁ to the endpoint theory).  Several volumes' part-boundary section numbering and
 page-counter handling were repaired along the way (edits are marked
 `% ed.:` in the sources).  Every volume carries
 a provenance section with each absorbed member's SHA-256; the absorbed
