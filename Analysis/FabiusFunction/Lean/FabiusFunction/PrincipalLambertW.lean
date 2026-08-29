@@ -159,6 +159,86 @@ theorem principalLambertW_strictMonoOn :
   rw [h1, h2] at hmono
   linarith
 
+/-- Above the branch point the branch exceeds `-1`. -/
+theorem neg_one_lt_principalLambertW {z : ℝ}
+    (hz : -Real.exp (-1) < z) :
+    -1 < principalLambertW z := by
+  have h := principalLambertW_strictMonoOn (mem_Ici.mpr le_rfl)
+    (mem_Ici.mpr hz.le) hz
+  rwa [principalLambertW_branchPoint] at h
+
+/-- Exact image of the open domain: `W₀ '' (-e⁻¹, ∞) = (-1, ∞)`. -/
+theorem principalLambertW_image_Ioi :
+    principalLambertW '' Ioi (-Real.exp (-1)) = Ioi (-1 : ℝ) := by
+  ext w
+  constructor
+  · rintro ⟨z, hz, rfl⟩
+    exact neg_one_lt_principalLambertW hz
+  · intro hw
+    have hgt : -Real.exp (-1) < w * Real.exp w := by
+      have h := mul_exp_strictMonoOn (mem_Ici.mpr le_rfl)
+        (mem_Ici.mpr (le_of_lt hw)) hw
+      rwa [neg_one_mul] at h
+    exact ⟨w * Real.exp w, hgt,
+      (principalLambertW_unique hgt.le (le_of_lt hw) rfl).symm⟩
+
+/-- The principal branch is continuous at every point of the open
+domain. -/
+theorem principalLambertW_continuousAt {z : ℝ}
+    (hz : -Real.exp (-1) < z) :
+    ContinuousAt principalLambertW z := by
+  have hmono : StrictMonoOn principalLambertW
+      (Ioi (-Real.exp (-1))) := fun a ha b hb hab =>
+    principalLambertW_strictMonoOn (mem_Ici.mpr (le_of_lt ha))
+      (mem_Ici.mpr (le_of_lt hb)) hab
+  exact hmono.continuousAt_of_image_mem_nhds
+    (isOpen_Ioi.mem_nhds hz) (by
+      rw [principalLambertW_image_Ioi]
+      exact Ioi_mem_nhds (neg_one_lt_principalLambertW hz))
+
+/-- Continuity of the principal branch on the open domain. -/
+theorem principalLambertW_continuousOn :
+    ContinuousOn principalLambertW (Ioi (-Real.exp (-1))) :=
+  fun _ hz => (principalLambertW_continuousAt hz).continuousWithinAt
+
+/-- Inverse-function derivative of the principal branch. -/
+theorem principalLambertW_hasDerivAt {z : ℝ}
+    (hz : -Real.exp (-1) < z) :
+    HasDerivAt principalLambertW
+      (Real.exp (principalLambertW z) *
+        (principalLambertW z + 1))⁻¹ z := by
+  have hf : HasDerivAt (fun w : ℝ => w * Real.exp w)
+      (Real.exp (principalLambertW z) * (principalLambertW z + 1))
+      (principalLambertW z) := by
+    have h0 := (hasDerivAt_id (principalLambertW z)).mul
+      (Real.hasDerivAt_exp (principalLambertW z))
+    have hfun : (fun w : ℝ => w * Real.exp w)
+        =ᶠ[nhds (principalLambertW z)] (id * Real.exp) :=
+      Filter.Eventually.of_forall fun w => by
+        simp only [Pi.mul_apply, id_eq]
+    exact (h0.congr_of_eventuallyEq hfun).congr_deriv (by
+      simp only [id_eq]
+      ring_nf)
+  have hW := neg_one_lt_principalLambertW hz
+  have hderiv : Real.exp (principalLambertW z) *
+      (principalLambertW z + 1) ≠ 0 :=
+    mul_ne_zero (Real.exp_ne_zero _) (by linarith)
+  have hinverse : ∀ᶠ y in nhds z,
+      principalLambertW y * Real.exp (principalLambertW y) = y := by
+    filter_upwards [isOpen_Ioi.mem_nhds hz] with y hy
+    exact principalLambertW_mul_exp (le_of_lt hy)
+  exact hf.of_local_left_inverse
+    (principalLambertW_continuousAt hz) hderiv hinverse
+
+/-- The derivative of the principal branch is strictly positive on
+the open domain. -/
+theorem deriv_principalLambertW_pos {z : ℝ}
+    (hz : -Real.exp (-1) < z) :
+    0 < deriv principalLambertW z := by
+  rw [(principalLambertW_hasDerivAt hz).deriv]
+  have hW := neg_one_lt_principalLambertW hz
+  exact inv_pos.mpr (mul_pos (Real.exp_pos _) (by linarith))
+
 end
 
 end Fabius
