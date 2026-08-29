@@ -78,9 +78,15 @@ private theorem sum_deficit_le {y : ℝ} (hy : 0 ≤ y) (N : ℕ) :
       (((1 : ℝ) / 4) ^ N - 1) / ((1 : ℝ) / 4 - 1) :=
     geom_sum_eq (by norm_num) N
   have hpow : (0 : ℝ) ≤ ((1 : ℝ) / 4) ^ N := by positivity
+  have hval : (((1 : ℝ) / 4) ^ N - 1) / ((1 : ℝ) / 4 - 1) =
+      4 / 3 - 4 / 3 * ((1 : ℝ) / 4) ^ N := by
+    have hden : ((1 : ℝ) / 4 - 1) = -(3 / 4) := by norm_num
+    rw [hden]
+    field_simp
+    ring
   have hle : ∑ n ∈ Finset.range N, ((1 : ℝ) / 4) ^ n ≤ 4 / 3 := by
-    rw [hgeom]
-    nlinarith [hpow]
+    rw [hgeom, hval]
+    linarith [hpow]
   have hrw : ∑ n ∈ Finset.range N, y / (6 * 4 ^ n) =
       y / 6 * ∑ n ∈ Finset.range N, ((1 : ℝ) / 4) ^ n := by
     rw [Finset.mul_sum]
