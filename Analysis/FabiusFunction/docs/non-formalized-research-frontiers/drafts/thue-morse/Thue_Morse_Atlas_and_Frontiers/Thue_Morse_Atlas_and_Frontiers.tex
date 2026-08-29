@@ -1994,6 +1994,19 @@ the product chooses a subset of powers of two; its sum is an integer
 \((-1)^{\#\text{chosen bits}}=\eps_n\).
 \end{proof}
 
+\emph{Formal version.}  \lean{Fabius.prod\_one\_sub\_pow\_two\_pow}
+(\path{ThueMorseProductIdentity.lean}) proves
+\eqref{p1:eq:finite-product} over an arbitrary commutative ring and an arbitrary ring
+element \(z\): the Boolean-cube expansion (\lean{Finset.prod\_add}) is reindexed by
+the corpus's dyadic-code dictionary, so each subset's sign becomes the binary-weight
+sign of its code.  The same module proves the subset-sum polynomial layer of the
+exact-spline theory: \lean{Fabius.one\_sub\_mul\_prod\_one\_sub\_pow\_two\_pow} shows that
+multiplying by the duplicated smallest factor \(1-z\) takes first differences of the
+sign word (the knot weights \lean{Fabius.thueMorseWordDelta} of the finite box
+splines), \lean{Fabius.one\_sub\_mul\_prod\_eq\_sq\_mul} records the \((1-z)^2\)-form,
+and evaluation at \(z=1\) (\lean{Fabius.sum\_thueMorseSign\_two\_pow}) recovers the
+balance of every level-\(m\) sign block.
+
 \begin{corollary}[Coefficient and block formulae]
 \label{p1:cor:coefficient-block}
 For every \(n\ge0\),
