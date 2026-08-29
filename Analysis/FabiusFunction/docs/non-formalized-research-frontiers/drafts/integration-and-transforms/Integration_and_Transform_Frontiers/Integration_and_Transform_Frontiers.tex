@@ -506,7 +506,16 @@ conditioning, with no differentiation under the integral:
 integral \(\int_{-1/2}^{1/2}(c-u)^{-(n+1)}\dd u=\bigl((c-\tfrac12)^{-n}-(c+\tfrac12)^{-n}\bigr)/n\)
 (\nolinkurl{Fabius.integral\_pow\_inv\_sub\_uniform\_half}) and the integrability of all
 resolvent powers off the support (\nolinkurl{Fabius.integrable\_pow\_inv\_sub\_rvachevMeasure}).
-The complex-\(z\) forms and the generalized-order layer remain open.
+The \emph{generalized-order layer} is delivered in real form by the same conditioning:
+\path{StieltjesGeneralizedOrder.lean} proves the fractional hierarchy
+\(R_\alpha(z)=\tfrac{2^{\alpha-1}}{\alpha-1}\bigl(R_{\alpha-1}(2z-1)-R_{\alpha-1}(2z+1)\bigr)\)
+for every real \(\alpha>1\) and \(z>1\)
+(\nolinkurl{Fabius.integral\_rpow\_inv\_sub\_hierarchy}), from the fractional digit-level
+kernel integral
+\(\int_{-1/2}^{1/2}(c-u)^{-\alpha}\dd u=\bigl((c-\tfrac12)^{1-\alpha}-(c+\tfrac12)^{1-\alpha}\bigr)/(\alpha-1)\)
+(\nolinkurl{Fabius.integral\_rpow\_inv\_sub\_uniform\_half}) and fractional-kernel
+integrability off the support; the integer hierarchy is the specialization
+\(\alpha=n+1\).  The complex-\(z\) forms and the boundary/Plemelj layer remain open.
 
 \path{CauchyRenormalization.lean} adds five public theorems.  The declarations
 \path{Fabius.mapsTo_rvachevCauchyDomain_two_mul_add_one} and

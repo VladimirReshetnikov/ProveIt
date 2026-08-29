@@ -116,6 +116,7 @@ import FabiusFunction.RefinementConditioning
 import FabiusFunction.EntireKernelCalculus
 import FabiusFunction.StieltjesLogFixedPoint
 import FabiusFunction.StieltjesResolventHierarchy
+import FabiusFunction.StieltjesGeneralizedOrder
 import FabiusFunction.OrthogonalPolynomialConstruction
 import FabiusFunction.OrthogonalPolynomialValues
 import FabiusFunction.OrthogonalPolynomialParity
