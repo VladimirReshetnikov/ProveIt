@@ -32,8 +32,8 @@ theorem integrable_rpow_inv_sub_rvachevMeasure (F : BoundedFabius)
     Integrable (fun x => (z - x) ^ (-α)) (rvachevMeasure F) := by
   haveI := rvachevMeasure_isProbability F hF
   refine Integrable.mono' (integrable_const ((z - 1) ^ (-α)))
-    (((measurable_const.sub measurable_id).rpow_const
-      _).aestronglyMeasurable) ?_
+    (((measurable_const.sub measurable_id).pow
+      measurable_const).aestronglyMeasurable) ?_
   filter_upwards [ae_mem_Ioo_rvachevMeasure F hF] with x hx
   have h1 : (0 : ℝ) < z - 1 := by linarith
   have h2 : z - 1 ≤ z - x := by linarith [hx.2]
@@ -125,9 +125,9 @@ theorem integral_rpow_inv_sub_hierarchy (F : BoundedFabius)
       (((z - x) - 2⁻¹) ^ (1 - α) - ((z - x) + 2⁻¹) ^ (1 - α)) /
         (α - 1) :=
     ((((measurable_const.sub measurable_id).sub
-      measurable_const).rpow_const _).sub
+      measurable_const).pow measurable_const).sub
       (((measurable_const.sub measurable_id).add
-        measurable_const).rpow_const _)).div_const _
+        measurable_const).pow measurable_const)).div_const _
   have hcond := integral_eq_integral_digit_conditioning F hF
     (integrable_rpow_inv_sub_rvachevMeasure F hF hz
       (by linarith : (0:ℝ) ≤ α)) hmeas ?_
