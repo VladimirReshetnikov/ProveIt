@@ -125,6 +125,8 @@ import FabiusFunction.QuarterCellEvaluation
 import FabiusFunction.PlateauLimit
 import FabiusFunction.QuarterQuantile
 import FabiusFunction.StieltjesInversion
+import FabiusFunction.PoissonApproximateIdentity
+import FabiusFunction.PoissonMassSwap
 import FabiusFunction.MultipleAngleBounds
 import FabiusFunction.TentMoment
 import FabiusFunction.FaberSchauderDefect
