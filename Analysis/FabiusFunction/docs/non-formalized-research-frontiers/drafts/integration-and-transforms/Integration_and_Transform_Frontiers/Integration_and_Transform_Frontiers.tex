@@ -587,8 +587,28 @@ extension of the up-measure is itself a probability density in \(x\),
 \(\int_{\R}-\tfrac1\pi\Ima R(x+i\varepsilon)\dd x=1\)
 (\nolinkurl{Fabius.integral\_inv\_pi\_mul\_neg\_im\_rvachevCauchyTransform\_eq\_one},
 \nolinkurl{Fabius.integral\_neg\_im\_rvachevCauchyTransform\_eq\_pi}), by a Tonelli swap over
-the nonnegative kernel.  The Stieltjes--Perron inversion theorem itself remains open, but
-its two analytic inputs no longer do.
+the nonnegative kernel.
+
+With both inputs in place the inversion theorem itself is now formal.
+\path{StieltjesPerron.lean} proves
+\[
+  \lim_{\varepsilon\to0^{+}}\;-\frac1\pi\int_{(a,b)}\Ima R(x+i\varepsilon)\dd x\;=\;\mu_{\Up}\bigl((a,b)\bigr)
+\]
+for every $a<b$ (\nolinkurl{Fabius.stieltjesPerron\_inversion},
+\nolinkurl{Fabius.tendsto\_setIntegral\_inv\_pi\_mul\_neg\_im}).  Notably there is \emph{no}
+endpoint hypothesis: the classical requirement $\mu(\{a\})=\mu(\{b\})=0$ is discharged rather
+than assumed, because the up-measure is absolutely continuous (\nolinkurl{Fabius.rvachevMeasure\_singleton}), and the reading is backed by the guard
+\nolinkurl{Fabius.rvachevMeasure\_real\_Icc\_eq\_Ioo} --- closed and open intervals carry the same
+mass, so nothing was quietly dropped.  The route is the expected one: the exchange
+(\nolinkurl{Fabius.setIntegral\_inv\_pi\_mul\_neg\_im\_eq}) turns the $x$-integral into a
+$\mu_{\Up}$-integral of the interval mass
+$P_\varepsilon(t)=\tfrac1\pi\bigl(\arctan\frac{b-t}{\varepsilon}-\arctan\frac{a-t}{\varepsilon}\bigr)$, whose pointwise
+limits are $1$ inside, $0$ outside and $\tfrac12$ at each endpoint
+(\nolinkurl{Fabius.tendsto\_poissonIntervalMass\_of\_mem\_Ioo} and neighbours), and dominated
+convergence finishes.  Here too the limits are guarded rather than described: $P_\varepsilon$
+is strictly positive and strictly below one everywhere
+(\nolinkurl{Fabius.poissonIntervalMass\_pos}, \nolinkurl{Fabius.poissonIntervalMass\_lt\_one}), so neither limit
+is ever attained, and \nolinkurl{Fabius.poissonIntervalMass\_calibration} pins the $\pi^{-1}$.
 
 \path{CauchyRenormalization.lean} adds five public theorems.  The declarations
 \path{Fabius.mapsTo_rvachevCauchyDomain_two_mul_add_one} and

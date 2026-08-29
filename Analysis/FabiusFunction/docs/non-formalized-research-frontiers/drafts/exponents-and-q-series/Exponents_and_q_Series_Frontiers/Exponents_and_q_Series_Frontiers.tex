@@ -1129,12 +1129,25 @@ base $q=1/2$, and is therefore a strict specialization of what is stated here:
 \lean{Fabius.sum_abs_discreteLimitWeight} (\lean{FabiusDiscreteLimitToeplitz.lean}) evaluates
 the $\ell^1$ norm of the $r$th Toeplitz row as $(-1/2;1/2)_r/(1/2;1/2)_r$, and
 \lean{Fabius.discreteLimitWeight_eq_geometricLagrangeWeight} identifies that row, after the
-reversal $j\mapsto r-j$, with the weights \eqref{p1:eq:lagrange-weight-product}.  General $q$, and
-hence both the cumulant grid $q=1/4$ and the limiting value \eqref{p1:eq:qquarter-condition}, is
-not formalized.  The finite $q$-binomial theorem used in the proof below is however available
-in full generality as \lean{Fabius.finite_qBinomial_theorem} (\lean{FiniteQBinomialCore.lean}),
-over an arbitrary commutative ring and for every $q$ and $z$, which is exactly the input a
-general-$q$ proof would need.
+reversal $j\mapsto r-j$, with the weights \eqref{p1:eq:lagrange-weight-product}.  General $q$ is now formalized too, in
+\path{GeneralQConditionNumber.lean}, and the hypotheses turn out to split three ways.  The
+\emph{signed} generating identity needs \emph{no} hypothesis at all --- it is a direct reading
+of \lean{Fabius.finite_qBinomial_theorem} at the argument $qz$
+(\lean{Fabius.sum\_qToeplitzNumerator\_mul\_pow}, \lean{Fabius.sum\_qToeplitzWeight\_mul\_pow}), so the half base
+is entirely incidental there.  The strict alternation $(-1)^jw_q(n,j)>0$ needs $0<q<1$
+(\lean{Fabius.neg\_one\_pow\_mul\_qToeplitzWeight\_pos}), and the absolute-value identity
+$\sum_j\lvert w_q(n,j)\rvert=(-q;q)_n/(q;q)_n$ needs only $0\le q<1$ --- $q=0$ is admissible ---
+(\lean{Fabius.sum\_abs\_qToeplitzWeight}).  Both order hypotheses are shown necessary by
+counterexample rather than asserted: at $q=-1/2$ the alternation fails and the two sides are
+$1$ and $1/3$, and at $q=2$ they are $3$ and $-3$
+(\lean{Fabius.sum\_abs\_qToeplitzWeight\_ne\_of\_neg}, \lean{Fabius.sum\_abs\_qToeplitzWeight\_ne\_of\_one\_lt}).  As a
+machine-checked consistency check the two established half-base theorems are re-derived from
+the general ones
+(\lean{Fabius.sum\_abs\_discreteLimitWeight\_of\_qToeplitz}, \lean{Fabius.sum\_range\_discreteLimitWeight\_mul\_pow\_of\_qToeplitz}).  What is still not
+formalized is the numerical limiting value \eqref{p1:eq:qquarter-condition} at the cumulant grid,
+and the uniform-in-$q$ bound: the ratio is not bounded as $q\to1^-$, so the half-base constant
+$16$ has no general-$q$ analogue --- only the lower bound $\ge1$ is proved
+(\lean{Fabius.one\_le\_sum\_abs\_qToeplitzWeight}).
 \end{theorem}
 
 \begin{proof}
