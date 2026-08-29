@@ -180,9 +180,12 @@ Part~VII is an editorial merge of the two independent sixteenth/seventeenth-wave
 signed/reciprocal-$q$ reports (shared core --- sign conjugacy, multisection,
 cumulants, spectral Pochhammer factorization --- stated once with
 cross-checked constants; each wave's unique layers retained and labeled).
-The verification packages of all merged drafts are preserved verbatim under \path{assets/}.  Later edits add status-only Lean
+The verification material of every merged draft --- figures, data tables, and
+deterministic scripts --- is preserved under \path{assets/}; the absorbed
+source documents themselves are deleted from the working tree once their
+content is merged (git history is the archive, and the SHA-256 hashes below
+pin the absorbed snapshots).  Later edits add status-only Lean
 crosswalk annotations; the historical source hashes below are unchanged.
-The absorbed drafts are deleted from the working tree; git history is the archive.
 \begin{itemize}
 \item \path{Fabius_Newton_Rvachev_Frontier_Report/Exponent_Sequence_Newton_Rvachev_Frontiers.tex} \\ {\footnotesize SHA-256 \path{2c068211b3e5f85f410976f89eda3616b3d48c1e1817dabdded0db5e41429a22}}
 \item \path{fabius_frontier_results/q_richardson_sinc_frontier.tex} \\ {\footnotesize SHA-256 \path{3b612cf8bbc34c4bfa9b3fbefbee14c618ff2edbbe84bc38d7cbe6baece8fcf4}}
@@ -195,7 +198,7 @@ The absorbed drafts are deleted from the working tree; git history is the archiv
 \item \path{Rvachev_Atomic_Functions_Report/Atomic_Functions_Rvachev_Report.tex} \\ {\footnotesize SHA-256 \path{6a7f769197b695ce6f73510ecbead96997e75ae3856e5372e93950169b96a662}} (fifteenth wave; merged editorially into Part~VI --- third independent reconstruction of the same chapter, contributing the signed gap leading coefficients, derivative equimeasurability with the full $L^p$ ladder, the classical $\operatorname{Fup}_n$ hierarchy with its triangular reconstruction mask and Gaussian regime, and the edge pantograph equations)
 \item \path{Fabius_Q_Connections_Report/fabius_q_connections_report.tex} \\ {\footnotesize SHA-256 \path{5e45c732e77a72616c37d5d4d0617b065bb43fe2b525631a6bb2e589cd869f29}} (sixteenth wave, ``Beyond the Dyadic Fabius Web''; merged editorially into Part~VII with its seventeenth-wave twin)
 \item \path{Signed_Reciprocal_q_Fabius_Frontiers/Signed_Reciprocal_q_Fabius_Frontiers.tex} \\ {\footnotesize SHA-256 \path{ba843c7a4e0cc250e889c398ab5b72f9ade276f6ad9587b56cf22a4a5e7e2db8}} (seventeenth wave; merged editorially into Part~VII with its sixteenth-wave twin --- signed and reciprocal parameter orbits of the geometric-uniform family)
-\item \path{Atomic_Functions_Beyond_Dyadic_Report-2/Atomic_Functions_Beyond_Dyadic.tex} \\ {\footnotesize SHA-256 \path{c560d350d80655759a463c7930b8d1131137d214c40d834f3b7e95d2ca253b11}} (revised fourteenth-wave edition; merged into Part~VI --- Orlicz/rearrangement equimeasurability and the spectral Stieltjes--Wigert bridge; ships the Russian source scan \path{source_rvachev_scan.pdf}, SHA-256 \path{ad4b0078dc1d5de133e5f2bf8f673ea080197c16a624d4fec7cb5126c59c6320}, and its OCR \path{source_rvachev_ocr.tex}, SHA-256 \path{c1a5074f2b3099f5d48b166ab43bc2726139282fe174537c60bc1ae4010be46b})
+\item \path{Atomic_Functions_Beyond_Dyadic_Report-2/Atomic_Functions_Beyond_Dyadic.tex} \\ {\footnotesize SHA-256 \path{c560d350d80655759a463c7930b8d1131137d214c40d834f3b7e95d2ca253b11}} (revised fourteenth-wave edition; merged into Part~VI --- Orlicz/rearrangement equimeasurability and the spectral Stieltjes--Wigert bridge; ships the Russian source scan \path{source_rvachev_scan.pdf}, SHA-256 \path{ad4b0078dc1d5de133e5f2bf8f673ea080197c16a624d4fec7cb5126c59c6320}, kept under \path{assets/}, and its raw OCR transcription \path{source_rvachev_ocr.tex}, SHA-256 \path{c1a5074f2b3099f5d48b166ab43bc2726139282fe174537c60bc1ae4010be46b}, deleted after its recoverable content was merged --- the repair ledger is in Part~VI's concordance appendix)
 \item \path{Atomic_Functions_Beyond_Dyadic_Report-3/Atomic_Functions_Beyond_Dyadic.tex} \\ {\footnotesize SHA-256 \path{8b846f7e6e32efd926bcd770ae1aa195ba051d1db81b7ee45857e8eb4d07ba51}} (second revised fourteenth-wave edition; merged into Part~VI --- the Mellin law of the distance to $K_a$ with the shifted complex-dimension pole lattice and the critical logarithmic gap scale)
 \item \path{Atomic_Functions_Rvachev_Report_Package/Atomic_Functions_Rvachev_Report.tex} \\ {\footnotesize SHA-256 \path{4db6ab0d19ecab7ef9291910548f5a26aaf9d5380b9e7be094586f351eeb01f1}} (revised fifteenth-wave edition; merged into Part~VI --- the $q$-Gaussian derivative Gram kernel with Pochhammer determinants and sharp theta Riesz bounds, the log-Weibull jet-intermittency law, and the proof of the uniform all-orders $\operatorname{Fup}_n$ Edgeworth expansion)
 \end{itemize}
@@ -5834,8 +5837,9 @@ and as a meromorphic function,
  \left(1-\frac{z^2}{\pi^2m^2}\right)^{1-\vtwo(m)},
  \label{p4:eq:w-A-canonical}
 \end{equation}
-both locally uniformly in their natural domains (legitimate because
-$\sum_m\vtwo(m)m^{-2}=\sum_{j\ge1}\sum_{2^j\mid m}m^{-2}<\infty$).
+both locally uniformly in their natural domains; the exponent sum is
+legitimate because
+$\sum_m\vtwo(m)m^{-2}<\infty$ (count the multiples of each $2^j$).
 \end{theorem}
 
 \subsection{The complete divisor and local principal parts}
@@ -5876,10 +5880,12 @@ nearest singularities are the simple poles at $\pm4\pi$, with
 The order formula is immediate from \eqref{p4:eq:w-A-canonical}.  For the local
 jets use $A(z)=\cos(z/2)/\Phi(z/2)$ and put $w=z/2$, $w_0=z_0/2$.  Iterating
 the head splitting $r-1$ times,
-$\Phi(w)=\bigl(\prod_{k=1}^{r-1}\sinc(w/2^k)\bigr)\Phi(w/2^{r-1})$; at
-$w=w_0$ every displayed factor vanishes linearly, all the associated integer
-multiples are even except the last, so the product of their sign slopes is
-$-1$ and
+\[
+ \Phi(w)=\Bigl(\prod_{k=1}^{r-1}\sinc(w/2^k)\Bigr)\Phi(w/2^{r-1});
+\]
+at $w=w_0$ every displayed factor vanishes linearly, all the associated
+integer multiples are even except the last, so the product of their sign
+slopes is $-1$ and
 $\Phi(w)=-\bigl((w-w_0)/w_0\bigr)^{r-1}\Phi(\pi q)(1+\bigO(w-w_0))$.
 For $r\ge2$, $\cos(z_0/2)=1$, giving \eqref{p4:eq:w-principal-part}; for $r=1$,
 $\cos(\pi q)=-1$ gives \eqref{p4:eq:w-removable}.  The residue at $4\pi$ is the
@@ -5919,13 +5925,14 @@ the total pole multiplicity on $\{\pi,\ldots,M\pi\}$ is
 $\lceil M/2\rceil-s_2(M)$, and the divisor has the Lambert and Dirichlet
 series
 \begin{equation}
+\begin{gathered}
  \sum_{m\ge1}(1-\vtwo(m))q^m
  =\frac{q}{1-q}-\sum_{j\ge1}\frac{q^{2^j}}{1-q^{2^j}}
- \quad(|q|<1),
- \qquad
+ \quad(|q|<1),\\
  \sum_{m\ge1}\frac{1-\vtwo(m)}{m^s}
  =\zeta(s)\,\frac{2^s-2}{2^s-1}
  \quad(\Re s>1).
+\end{gathered}
  \label{p4:eq:w-divisor-series}
 \end{equation}
 \end{theorem}
@@ -6026,11 +6033,12 @@ $\pm4\pi$.  Moreover there is a function $H$ holomorphic in $|z|<8\pi$ with
 \end{equation}
 so for every fixed $\rho<8\pi$,
 \begin{equation}
+\begin{gathered}
  \rho_r=\frac{2}{\Phi(\pi)\,(4\pi)^{2r}}
- +\bigO_\rho(\rho^{-2r}),
- \qquad
+ +\bigO_\rho(\rho^{-2r}),\\
  \lim_{r\to\infty}\rho_r(4\pi)^{2r}=\frac{2}{\Phi(\pi)}
  =3.6115993860280564486832331013\ldots,
+\end{gathered}
  \label{p4:eq:w-rho-asymptotic}
 \end{equation}
 and $\rho_{r+1}/\rho_r\to(16\pi^2)^{-1}$.  In particular $\rho_r>0$ for all
@@ -6149,10 +6157,10 @@ $\ord_{2\pi m}\Phi=v+1$, while
  \end{cases}
  \label{p4:eq:w-finite-order}
 \end{equation}
-(The two groupings, from the factorizations
-$F_n=P_n\cdot\sinc(t/2^n)$ and
-$F_n=\bigl(\prod_{k<n}\sinc(t/2^k)\bigr)\sinc^2(t/2^n)$ respectively, were
-derived independently in the two sources and agree in all regimes.)
+(The two groupings were derived independently in the two sources, from the
+factorizations $F_n=P_n\cdot\sinc(t/2^n)$ and
+$F_n=\bigl(\prod_{k<n}\sinc(t/2^k)\bigr)\sinc^2(t/2^n)$ respectively, and
+agree in all regimes.)
 Consequently the defect
 $\Delta_n(m)=\ord_{2\pi m}F_n-\ord_{2\pi m}\Phi$ is
 \begin{equation}
@@ -6479,11 +6487,12 @@ $I_n=\frac1\pi\int_0^\pi\sin^4u\prod_{j=1}^{n-1}\sin^2(2^ju)\dd u$.  Then
 \end{equation}
 and consequently
 \begin{equation}
+\begin{gathered}
  \lim_{T\to\infty}\frac1T\int_0^Tt^{2n+2}|F_n(t)|^2\dd t
- =2^{n(n+3)}I_n,
- \qquad
+ =2^{n(n+3)}I_n,\\
  \int_{|t|>T}|F_n|^2\dd t
  =\frac{2^{n(n+3)+1}I_n}{2n+1}\,T^{-2n-1}+\bigO_n(T^{-2n-2}),
+\end{gathered}
  \label{p4:eq:w-tail-laws}
 \end{equation}
 with the ideal low-pass error
@@ -7730,6 +7739,7 @@ The archive contains the fully commented script \texttt{finite\_sinc\_experiment
 \small
 \caption{FFT verification of two representative exact identities.  The table uses $M=2^{18}$ period-two samples.}
 \label{p5:tab:metric-check}
+\setlength{\tabcolsep}{4pt}% ed.: tightened so the seven columns fit
 \begin{tabular}{@{}rcccccc@{}}
 \toprule
 $N$ & $W_1$ numeric & $W_1$ exact & rel. error & $\max K_N$ numeric & exact & rel. error\\
@@ -7852,10 +7862,12 @@ and
 \end{equation}
 The FFT computation gives
 \begin{equation}
+\begin{gathered}
  \Ent(u)\approx0.297039912826071,
- \quad I\approx11.8007105434191,
- \quad J\approx1619.745753585,
- \quad L\approx485.548634253.
+ \qquad I\approx11.8007105434191,\\
+ J\approx1619.745753585,
+ \qquad L\approx485.548634253.
+\end{gathered}
  \label{p5:eq:numeric-info-constants}
 \end{equation}
 
@@ -8165,7 +8177,8 @@ Multiplication by $\eps_N^2/18$ therefore yields the conjectured first correctio
 
 The companion archive contains:
 
-\begin{longtable}{@{}p{0.36\textwidth}p{0.56\textwidth}@{}}
+% ed.: first column widened so the long mono paths fit without overfull
+\begin{longtable}{@{}p{0.43\textwidth}p{0.49\textwidth}@{}}
 \toprule
 Path & Purpose\\
 \midrule
@@ -8458,21 +8471,24 @@ editions transcribe in common, including the damaged ranges (3.51)--(3.58) and
 moment reduction at cylinder endpoints; the bit-recursive evaluator with
 remainder at most $\Up(-1+2^{-N})$) rather than a fabricated literal
 transcription.  The fifteenth wave additionally repairs the endpoint indexing
-of (3.51)--(3.58) into an explicit binary-encoded form.  The two packages'
-OCR-reconstruction ledgers are preserved in
-\path{assets/Atomic_Functions_Beyond_Dyadic_Report/} and
-\path{assets/Rvachev_Atomic_Functions_Report/}.
+of (3.51)--(3.58) into an explicit binary-encoded form.  The packages'
+OCR-reconstruction ledgers are merged into the concordance appendix of this
+part; the absorbed source documents are archived in git history, with
+SHA-256 hashes in the volume's provenance list.
 
 Two revised editions of the fourteenth-wave report arrived subsequently and
 are merged below (their unique layers: the spectral Stieltjes--Wigert bridge,
 the rearrangement form of equimeasurability, and the distance-Mellin law).
 Decisively for provenance, the first revised edition ships the surviving
 \emph{Russian source itself}: the page scan
-\path{source_rvachev_scan.pdf} and its OCR transcription
-\path{source_rvachev_ocr.tex} are archived verbatim under
+\path{source_rvachev_scan.pdf} is archived verbatim under
 \path{assets/Atomic_Functions_Beyond_Dyadic_Report-2/}, so the translation
-layers of this part can now be checked against the primary source inside the
-repository.  A revised edition of the \emph{fifteenth}-wave report is merged
+layers of this part can be checked against the primary source inside the
+repository.  (The raw OCR transcription that accompanied it was deleted
+after its recoverable content had been merged --- three independent
+reconstructions agree on every recoverable equation, and the merged repair
+ledger in the concordance appendix records every correction; the OCR file's
+SHA-256 remains in the provenance list and git history archives it.)  A revised edition of the \emph{fifteenth}-wave report is merged
 as well; its post-merge layers are the $q$-Gaussian Gram geometry of the
 derivative tower, the log-Weibull jet-intermittency law, and the proof of
 the $\Fup_n$ Edgeworth program.
@@ -11934,13 +11950,58 @@ endpoint evaluation & \Cref{p6:thm:gap-decomposition,p6:prop:polynomial-gap,p6:t
 The fourteenth-wave package reconstructed the same equation ranges
 independently under the labels (S3.1)--(S3.100) and reached identical
 readings, as did the fifteenth-wave package with its own repairs ledger and
-crosswalk table (which additionally records the chapter-number typo
-``(8.85)'' for (3.85) and rebuilds the damaged endpoint indexing of
-(3.51)--(3.58) in binary-encoded form).  Both ledgers are preserved verbatim
-in
-\path{assets/Atomic_Functions_Beyond_Dyadic_Report/Atomic_Functions_Beyond_Dyadic.tex}
-and
-\path{assets/Rvachev_Atomic_Functions_Report/Atomic_Functions_Rvachev_Report.tex}.
+crosswalk table.  Their OCR-reconstruction ledgers are merged and
+deduplicated below; the absorbed source documents themselves are archived in
+git history, with SHA-256 hashes in the volume's provenance list.
+
+\subsection*{Merged OCR-reconstruction ledger}
+
+% ed.: union of the fourteenth- and fifteenth-wave repair ledgers,
+% deduplicated; the absorbed report sources are archived in git history.
+\begin{longtable}{@{}p{0.22\textwidth}p{0.30\textwidth}p{0.40\textwidth}@{}}
+\toprule
+Source location & OCR/transcription issue & Reconstruction adopted \\
+\midrule
+\endhead
+Fourier convention, (3.2) & mixed signs in the exponential and in $D$ &
+one convention fixed globally; every mask sign and inverse transform
+adjusted consistently.\\
+(3.5), (3.8) & the mask read variously as $g,\xi,\varepsilon,\mathcal E$ &
+uniformly $\mathcal E$, with the origin normalization fixing $\lambda$.\\
+\texttt{ta-j}, \texttt{a-i} & geometric scales flattened & $ta^{-j}$,
+$a^{-j}$, from the printed superscripts.\\
+(3.31)--(3.35) & indices alternating among $j,\ell,k$; factorial bars read
+as absolute values (\texttt{l l} for $l!$) & the coefficient recurrence
+re-derived from the one-step refinement; the source's superfactorial bound
+retained.\\
+\texttt{C\_n\textasciicircum2} in exponents & damaged binomials &
+$\binom n2$ (triangular exponents).\\
+\texttt{up}, mixed Cyrillic glyphs & name of the atom & $\Up$.\\
+\texttt{Pj(k)} & digit notation & $p_j(k)$, the $j$th binary digit.\\
+$\delta$ indices shifted by one & sign sequence &
+$\delta_k=(-1)^{\wt(k-1)}$, matching the printed recursion
+$\delta_{2k-1}=\delta_k$, $\delta_{2k}=-\delta_k$.\\
+(3.48) & damaged parentheses and powers of $a$ & superseded by the general
+derivative induction.\\
+(3.51)--(3.58) & binary subscripts, powers, and summation limits heavily
+corrupted & invariant content kept (finite moment reduction at cylinder
+endpoints); the fifteenth wave rebuilds the indexing in binary-encoded
+form (\cref{p6:rem:jet-reduction}); no literal transcription fabricated.\\
+(3.59) & denominator $l!$ read as \texttt{ll} & restored in the gap Taylor
+polynomial.\\
+(3.63)--(3.64) & visually ambiguous derivative exponent & $2^{\binom{n+1}2}$
+by direct induction, consistent with the norm identity.\\
+(3.66) & index mismatch in the half-moment definition & a single
+half-moment sequence with the recurrence from integration by parts.\\
+(3.73)--(3.75) & binary-tail variables unrecoverable & the recursive
+identity and the remainder bound $\le\Up(-1+2^{-N})$ stated instead.\\
+(8.85) & chapter-number typo & read as (3.85).\\
+Uniqueness hypothesis & growth denominator split and malformed &
+$2^{\binom{n+2}2}$, confirmed by the counterexample $\Up+\alpha\Up'$.\\
+(3.98) & inconsistent factor index & re-derived from
+$\sinc z=\cos(z/2)\sinc(z/2)$.\\
+\bottomrule
+\end{longtable}
 
 \section{Reproducibility and package contents}
 
@@ -11967,8 +12028,7 @@ latexmk -pdf -interaction=nonstopmode -halt-on-error \
 The computations require no network access.
 
 The fourteenth-wave archive
-(\path{assets/Atomic_Functions_Beyond_Dyadic_Report/}) contains the merged
-report source \texttt{Atomic\_Functions\_Beyond\_Dyadic.tex}, the script
+(\path{assets/Atomic_Functions_Beyond_Dyadic_Report/}) contains the script
 \texttt{experiments.py} (NumPy, Matplotlib, mpmath; fixed seed
 \texttt{20260828}), the five figures in vector form, the four CSV tables
 cited in the numerics section, \texttt{README.md}, \texttt{requirements.txt},
@@ -11979,8 +12039,7 @@ python experiments.py --output .
 regenerates every figure and table deterministically.
 
 The fifteenth-wave archive
-(\path{assets/Rvachev_Atomic_Functions_Report/}) contains the merged report
-source \texttt{Atomic\_Functions\_Rvachev\_Report.tex}, the deterministic
+(\path{assets/Rvachev_Atomic_Functions_Report/}) contains the deterministic
 script \texttt{numerical\_experiments.py} (Python 3.10+, NumPy, SciPy,
 Matplotlib), the three figures, six CSV/TXT diagnostic tables,
 \texttt{README.md}, \texttt{requirements.txt}, and \texttt{SHA256SUMS.txt};
@@ -11988,7 +12047,9 @@ running
 \begin{lstlisting}[style=repoPython]
 python numerical_experiments.py
 \end{lstlisting}
-regenerates all of them.
+regenerates all of them.  In every archive under \path{assets/}, the
+absorbed report source itself is deleted after merging; git history and the
+provenance hashes are the archive of record.
 
 \begin{thebibliography}{99}
 
@@ -12601,8 +12662,8 @@ maximizer.
 
 \begin{proof}
 Log-concavity: finite partial sums are convolutions of interval uniforms,
-log-concave by Pr\'ekopa--Leindler; the class is weakly closed, and the limit
-density is smooth.  Plateau: the fixed point \eqref{p7:eq:affine-fixed-point}
+which are log-concave by the Pr\'ekopa--Leindler theorem; the class is
+weakly closed, and the limit density is smooth.  Plateau: the fixed point \eqref{p7:eq:affine-fixed-point}
 writes $g_a$ as the uniform average
 $g_a(x)=\tfrac1{1-a}[G_a(x/a)-G_a((x-1+a)/a)]$; for $x\in[a,1-a]$ the first
 CDF value is $1$ and the second is $0$.  Convolution with a uniform kernel
