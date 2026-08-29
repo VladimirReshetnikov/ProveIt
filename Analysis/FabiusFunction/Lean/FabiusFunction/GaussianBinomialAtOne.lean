@@ -113,5 +113,6 @@ theorem sum_neg_one_pow_choose_mul_pow {R : Type*} [CommRing R]
   rw [← h]
   refine Finset.sum_congr rfl fun k _ => ?_
   rw [one_pow, gaussianBinomial_one]
+  ring
 
 end Fabius
