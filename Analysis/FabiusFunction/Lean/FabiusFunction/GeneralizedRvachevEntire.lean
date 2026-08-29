@@ -361,8 +361,7 @@ theorem generalizedRvachevProduct_differentiable
   intro z
   have hR : (0 : ℝ) < ‖z‖ + 1 := by positivity
   have hmem : z ∈ Metric.ball (0 : ℂ) (‖z‖ + 1) := by
-    have hlt : ‖z‖ < ‖z‖ + 1 := by linarith
-    simpa [Metric.mem_ball, dist_zero_right] using hlt
+    simp [Metric.mem_ball, dist_zero_right]
   exact (differentiableOn_generalizedRvachevProduct_ball a ha hR
     z hmem).differentiableAt (Metric.isOpen_ball.mem_nhds hmem)
 
@@ -554,8 +553,7 @@ theorem canonicalCofactor_differentiable (a : ℕ → ℕ)
   intro z
   have hR : (0 : ℝ) < ‖z‖ + 1 := by positivity
   have hmem : z ∈ Metric.ball (0 : ℂ) (‖z‖ + 1) := by
-    have hlt : ‖z‖ < ‖z‖ + 1 := by linarith
-    simpa [Metric.mem_ball, dist_zero_right] using hlt
+    simp [Metric.mem_ball, dist_zero_right]
   exact (differentiableOn_canonicalCofactor_ball a ha m hR
     z hmem).differentiableAt (Metric.isOpen_ball.mem_nhds hmem)
 
