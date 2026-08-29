@@ -29,6 +29,7 @@ import FabiusFunction.Paper06487
 import FabiusFunction.PaperFabiusAsymptotic
 import FabiusFunction.PaperKFoldThueMorse
 import FabiusFunction.FinitePolynomialFunctional
+import FabiusFunction.PolynomialMomentFunctional
 import FabiusFunction.WeightedScaleMultiplicity
 import FabiusFunction.BellPolynomialInversion
 import FabiusFunction.AppellSequence
