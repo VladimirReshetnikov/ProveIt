@@ -40,6 +40,7 @@ import FabiusFunction.PolynomialExpectationCumulant
 import FabiusFunction.ThueMorseBitSupport
 import FabiusFunction.AffineDifferenceOrbit
 import FabiusFunction.ThueMorseBooleanCube
+import FabiusFunction.BitPositionGenerating
 import FabiusFunction.ThueMorseValuation
 import FabiusFunction.ThueMorseDigits
 import FabiusFunction.ThueMorseEnumerators
@@ -107,6 +108,8 @@ import FabiusFunction.ThueMorseHankel
 import FabiusFunction.LacunaryRieszIntegral
 import FabiusFunction.GelfondLogisticBound
 import FabiusFunction.GeometricScaleProducts
+import FabiusFunction.WeierstrassProductBound
+import FabiusFunction.MultipleAngleBounds
 import FabiusFunction.GeometricConvolutionTails
 import FabiusFunction.SmoothingOperatorInversion
 import FabiusFunction.SmoothingOperatorExponential
@@ -133,6 +136,7 @@ import FabiusFunction.OrthogonalPolynomialConstruction
 import FabiusFunction.OrthogonalPolynomialValues
 import FabiusFunction.OrthogonalPolynomialParity
 import FabiusFunction.OrthogonalPolynomialRecurrence
+import FabiusFunction.OrthogonalPolynomialJacobi
 import FabiusFunction.CompositeMeshExactness
 import FabiusFunction.CombFirstDefect
 import FabiusFunction.CombDefectSeries

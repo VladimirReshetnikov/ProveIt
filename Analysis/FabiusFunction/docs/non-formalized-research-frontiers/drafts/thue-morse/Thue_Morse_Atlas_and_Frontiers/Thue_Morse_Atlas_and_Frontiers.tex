@@ -2007,6 +2007,24 @@ splines), \lean{Fabius.one\_sub\_mul\_prod\_eq\_sq\_mul} records the \((1-z)^2\)
 and evaluation at \(z=1\) (\lean{Fabius.sum\_thueMorseSign\_two\_pow}) recovers the
 balance of every level-\(m\) sign block.
 
+\emph{Formal version.}  The cosine companion of the lacunary product-to-sum identity
+is formal in \path{LacunaryProductToSumCosine.lean}.  Shifting the affine phase by a
+quarter turn turns the corpus's affine sine factorization into its cosine counterpart
+(\lean{Fabius.sum\_thueMorseSign\_mul\_cos\_affine}), and hence the lacunary product
+with its top factor replaced by a cosine into the Thue--Morse cosine polynomial at
+the same odd frequencies,
+\(2^m\cos(2^mw)\prod_{j<m}\sin(2^jw)=\sum_{n<2^m}\eps_n\cos(m\pi/2+(2n+1)w)\)
+(\lean{Fabius.prod\_sin\_two\_pow\_mul\_cos\_eq\_thueMorse\_sum}); the rescaled \(z\)-form
+(\lean{Fabius.prod\_sin\_inv\_two\_pow\_mul\_cos\_eq\_thueMorse\_sum}) is the display used
+here.  Two elementary inputs of the shell estimates are formal as well:
+the multiple-angle domination bounds \(|\sin mx|\le m|\sin x|\) for every \(m\) and
+\(|\cos mx|\le m|\cos x|\) for odd \(m\)
+(\lean{Fabius.abs\_sin\_nat\_mul\_le}, \lean{Fabius.abs\_cos\_nat\_mul\_le\_of\_odd}, with a
+sharpness witness for the parity hypothesis), and the Weierstrass product inequality
+\(1-\sum u_i\le\prod(1-u_i)\) in finite and infinite form
+(\lean{Fabius.one\_sub\_sum\_le\_prod\_one\_sub}, \lean{Fabius.one\_sub\_tsum\_le\_tprod\_one\_sub}) ---
+neither of which was available in Mathlib.
+
 \begin{corollary}[Coefficient and block formulae]
 \label{p1:cor:coefficient-block}
 For every \(n\ge0\),
