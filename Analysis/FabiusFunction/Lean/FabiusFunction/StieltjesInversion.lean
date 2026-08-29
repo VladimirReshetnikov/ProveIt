@@ -85,8 +85,10 @@ theorem poisson_kernel_pos (x t : ℝ) {ε : ℝ} (hε : 0 < ε) :
 `poisson_kernel_le_inv` cannot be improved. -/
 theorem poisson_kernel_self (x : ℝ) {ε : ℝ} (hε : 0 < ε) :
     ε / ((x - x) ^ 2 + ε ^ 2) = ε⁻¹ := by
-  rw [sub_self]
-  field_simp
+  have h0 : (x - x) ^ 2 + ε ^ 2 = ε ^ 2 := by
+    rw [sub_self]
+    ring
+  rw [h0, pow_two, ← div_div, div_self (ne_of_gt hε), one_div]
 
 /-- **The sharp height bound**: the Poisson kernel never exceeds
 `ε⁻¹`; the constant is optimal, by `poisson_kernel_self`. -/
