@@ -39,7 +39,7 @@ def negativeLaplaceJetPolynomial : ℕ → Polynomial ℝ
   | 0 => 1
   | n + 1 => negativeLaplaceJetPolynomial n * (X - C ((n : ℝ) + 1))
 
-/-- The zeroth falling-factorial jet polynomial is one. -/
+/-- The order-zero falling-factorial jet polynomial is one. -/
 @[simp] theorem negativeLaplaceJetPolynomial_zero :
     negativeLaplaceJetPolynomial 0 = 1 := rfl
 

@@ -37,7 +37,7 @@ def normalizedThueMorseSplineBranch
       (thueMorseSign r : ℂ) * (z - (r : ℂ)) ^ p) /
     ((2 : ℂ) ^ p.choose 2 * (p.factorial : ℂ))
 
-/-- A normalized Thue--Morse spline branch with empty prefix vanishes. -/
+/-- A normalized Thue--Morse spline branch with empty prefix is identically zero. -/
 @[simp] theorem normalizedThueMorseSplineBranch_zero_prefix
     (p : ℕ) (z : ℂ) :
     normalizedThueMorseSplineBranch p 0 z = 0 := by

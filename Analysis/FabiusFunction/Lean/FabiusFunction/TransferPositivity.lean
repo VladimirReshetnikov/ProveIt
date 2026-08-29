@@ -38,7 +38,7 @@ noncomputable def rpfTransfer (h : ℝ → ℝ) : ℝ → ℝ := fun x =>
   (Real.sin (π * x / 2) * h (x / 2) +
     Real.cos (π * x / 2) * h ((x + 1) / 2)) / 2
 
-/-- Expands the arithmetic transfer operator at a point. -/
+/-- Expands the arithmetic RPF transfer operator into its two weighted branches. -/
 theorem rpfTransfer_apply (h : ℝ → ℝ) (x : ℝ) :
     rpfTransfer h x = (Real.sin (π * x / 2) * h (x / 2) +
       Real.cos (π * x / 2) * h ((x + 1) / 2)) / 2 := rfl
@@ -84,7 +84,7 @@ theorem branch_left_mem {x : ℝ} (hx : x ∈ Set.Icc (0:ℝ) 1) :
     x / 2 ∈ Set.Icc (0:ℝ) 1 :=
   ⟨by linarith [hx.1], by linarith [hx.2]⟩
 
-/-- The right branch point `(x + 1) / 2` stays in `[0,1]`. -/
+/-- The right branch `(x + 1) / 2` maps the unit interval into itself. -/
 theorem branch_right_mem {x : ℝ} (hx : x ∈ Set.Icc (0:ℝ) 1) :
     (x + 1) / 2 ∈ Set.Icc (0:ℝ) 1 :=
   ⟨by linarith [hx.1], by linarith [hx.2]⟩

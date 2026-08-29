@@ -694,7 +694,7 @@ theorem polynomialAtomMass_le_cellWidth_unconditional (n m : ℕ) :
   polynomialAtomMass_le_cellWidth n m
     (stepApproximant_le_one n (polynomialAtomLocation n m))
 
-/-- Every histogram approximant takes the value one at the origin. -/
+/-- Every step/histogram approximant takes its normalized peak value one at the origin. -/
 @[simp] theorem stepApproximant_apply_zero (n : ℕ) : stepApproximant n 0 = 1 := by
   cases n with
   | zero =>

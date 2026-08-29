@@ -42,8 +42,8 @@ noncomputable def monomialRvachevSchwartz (F : BoundedFabius)
   exact (hf_compact.comp_left (map_zero Complex.ofRealCLM)).toSchwartzMap
     (Complex.ofRealCLM.contDiff.comp hf_smooth)
 
-/-- Evaluating the monomial Schwartz map recovers
-`x ^ p * rvachevUp F (u * x)`, coerced to `ℂ`. -/
+/-- Evaluating the monomial Rvachev Schwartz map at `x` gives the
+complexification of `x ^ p * rvachevUp F (u * x)`. -/
 @[simp] theorem monomialRvachevSchwartz_apply (F : BoundedFabius)
     (hF : IsFabius F) (p : ℕ) (u : ℝ) (hu : u ≠ 0) (x : ℝ) :
     monomialRvachevSchwartz F hF p u hu x =

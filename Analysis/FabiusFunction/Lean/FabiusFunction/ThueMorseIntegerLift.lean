@@ -152,11 +152,11 @@ of `(√((1+3z)/(1-z)) - 1)/(2(1-z))`, manifestly integers. -/
 def integerLift (n : ℕ) : ℤ :=
   ∑ k ∈ Icc 1 n, (-1) ^ (k - 1) * (catalan (k - 1) : ℤ) * (n.choose k : ℤ)
 
-/-- The integral algebraic lift vanishes at zero. -/
+/-- The integral algebraic lift vanishes in degree zero. -/
 @[simp] theorem integerLift_zero : integerLift 0 = 0 := by
   simp [integerLift]
 
-/-- The integral algebraic lift takes the value one at one. -/
+/-- The integral algebraic lift equals `1` in degree one. -/
 theorem integerLift_one : integerLift 1 = 1 := by
   simp [integerLift]
 

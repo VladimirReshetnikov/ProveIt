@@ -99,7 +99,7 @@ def hessBand (n : ℕ) (d a : ℕ → R) : Matrix (Fin n) (Fin n) R :=
     if (j : ℕ) = (i : ℕ) + 1 then d (i : ℕ)
     else if (j : ℕ) ≤ (i : ℕ) then a ((i : ℕ) - (j : ℕ) + 1) else 0
 
-/-- A diagonal entry of `triBand` is the corresponding value of `d`. -/
+/-- The diagonal entries of the triangular band matrix are the diagonal sequence `d`. -/
 @[simp]
 theorem triBand_apply_diag (n : ℕ) (d a : ℕ → R) (m : Fin n) :
     triBand n d a m m = d (m : ℕ) := by

@@ -68,8 +68,8 @@ noncomputable def negativeLaplaceVerticalKernelLogFirstComplex
   ((s : ℂ) * Complex.I) * negativeLaplaceComplexKernelFirst
     ((s : ℂ) * (1 + z * Complex.I))
 
-/-- Restricting the complex vertical kernel derivative to a real parameter
-recovers the real vertical kernel derivative. -/
+/-- On real vertical parameters, the complex vertical kernel logarithmic
+derivative agrees with its real counterpart. -/
 @[simp] theorem negativeLaplaceVerticalKernelLogFirstComplex_ofReal
     (s θ : ℝ) :
     negativeLaplaceVerticalKernelLogFirstComplex s θ =

@@ -26,7 +26,7 @@ noncomputable def negativeLaplaceLogOrdinaryDeriv : ℕ → ℝ → ℝ
         s ^ (n + 1) -
       negativeLaplaceForwardTailDeriv (n + 1) s
 
-/-- The zeroth explicit ordinary derivative is the negative-Laplace logarithm. -/
+/-- The zeroth ordinary derivative of the negative-Laplace logarithm is the logarithm itself. -/
 @[simp] theorem negativeLaplaceLogOrdinaryDeriv_zero :
     negativeLaplaceLogOrdinaryDeriv 0 = negativeLaplaceLog := by
   rfl

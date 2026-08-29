@@ -35,7 +35,7 @@ noncomputable def legendrePolynomial (n : ℕ) : ℝ[X] :=
   ((2 : ℝ) ^ n * (n.factorial : ℝ))⁻¹ •
     derivative^[n] ((X ^ 2 - 1) ^ n : ℝ[X])
 
-/-- The zeroth Legendre polynomial is the constant polynomial one. -/
+/-- The zeroth Legendre polynomial is the constant polynomial `1`. -/
 @[simp] theorem legendrePolynomial_zero : legendrePolynomial 0 = 1 := by
   simp [legendrePolynomial]
 

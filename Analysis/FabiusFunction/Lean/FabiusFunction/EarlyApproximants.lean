@@ -496,12 +496,12 @@ theorem stepIntervalLeft_lt_right (n m : ℕ) :
   apply (div_lt_div_iff₀ hden hden).2
   linarith
 
-/-- The half-endpoint interval representative takes value `1/2` at its left endpoint. -/
+/-- The half-endpoint indicator takes the value `1/2` at its left endpoint. -/
 @[simp] theorem halfEndpointIntervalIndicator_self_left {a b : ℝ} :
     halfEndpointIntervalIndicator a b a = 1 / 2 := by
   simp [halfEndpointIntervalIndicator]
 
-/-- The half-endpoint interval representative takes value `1/2` at its right endpoint. -/
+/-- The half-endpoint indicator takes the value `1/2` at its right endpoint. -/
 @[simp] theorem halfEndpointIntervalIndicator_self_right {a b : ℝ} :
     halfEndpointIntervalIndicator a b b = 1 / 2 := by
   simp [halfEndpointIntervalIndicator]
@@ -518,7 +518,7 @@ theorem halfEndpointIntervalIndicator_nonneg (a b x : ℝ) :
     0 ≤ halfEndpointIntervalIndicator a b x :=
   (halfEndpointIntervalIndicator_mem_Icc a b x).1
 
-/-- The base step approximant is the half-endpoint indicator of `[-1/2, 1/2]`. -/
+/-- The zeroth step approximant is the half-endpoint indicator of `[-1/2, 1/2]`. -/
 @[simp] theorem stepApproximant_zero (x : ℝ) :
     stepApproximant 0 x = halfEndpointIntervalIndicator (-1 / 2) (1 / 2) x := by
   simp [stepApproximant, stepIntervalLeft, stepIntervalRight, approximationDegree,
@@ -529,7 +529,7 @@ theorem stepApproximant_zero_zero : stepApproximant 0 0 = 1 := by
   rw [stepApproximant_zero]
   norm_num [halfEndpointIntervalIndicator]
 
-/-- The first step approximant takes value one at the origin. -/
+/-- The first step approximant takes the value one at the origin. -/
 @[simp] theorem stepApproximant_one_zero : stepApproximant 1 0 = 1 := by
   have hp : approximationPolynomial 1 = 1 + X := by
     rw [show 1 = 0 + 1 by omega, approximationPolynomial_succ]
