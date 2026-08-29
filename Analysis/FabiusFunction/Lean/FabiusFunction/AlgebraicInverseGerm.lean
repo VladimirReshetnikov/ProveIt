@@ -60,12 +60,15 @@ noncomputable def evenWeightSeries (b : ℕ → R) :
     if Even m then PowerSeries.C (b (m / 2)) * PowerSeries.X ^ (m / 2)
     else 0
 
+/-- The coefficient of `evenWeightSeries b` at index `m` is
+`b (m / 2) Q^(m / 2)` when `m` is even, and zero otherwise. -/
 @[simp] theorem coeff_evenWeightSeries (b : ℕ → R) (m : ℕ) :
     PowerSeries.coeff m (evenWeightSeries b) =
       if Even m then PowerSeries.C (b (m / 2)) * PowerSeries.X ^ (m / 2)
       else 0 :=
   PowerSeries.coeff_mk _ _
 
+/-- Every odd-indexed coefficient of `evenWeightSeries b` vanishes. -/
 theorem coeff_evenWeightSeries_odd (b : ℕ → R) {m : ℕ} (hm : Odd m) :
     PowerSeries.coeff m (evenWeightSeries b) = 0 := by
   rw [coeff_evenWeightSeries, if_neg (Nat.not_even_iff_odd.mpr hm)]
@@ -120,11 +123,14 @@ noncomputable def germRoot (b : ℕ → R) (J : R[X]) (hb0 : b 0 = 1)
     (by rw [constantCoeff_coeff_germPolynomial b hb0]; exact hJ0)
     (by rw [constantCoeff_coeff_germPolynomial b hb0]; exact hJ1)
 
+/-- The distinguished germ root has zero constant coefficient. -/
 @[simp] theorem constantCoeff_germRoot (b : ℕ → R) (J : R[X])
     (hb0 : b 0 = 1) (hJ0 : J.coeff 0 = 0) (hJ1 : IsUnit (J.coeff 1)) :
     PowerSeries.constantCoeff (germRoot b J hb0 hJ0 hJ1) = 0 :=
   PowerSeries.Implicit.constantCoeff_root _ _ _
 
+/-- Substituting the distinguished germ root into its germ polynomial
+gives zero. -/
 @[simp] theorem eval_germRoot (b : ℕ → R) (J : R[X]) (hb0 : b 0 = 1)
     (hJ0 : J.coeff 0 = 0) (hJ1 : IsUnit (J.coeff 1)) :
     (germPolynomial b J).eval (germRoot b J hb0 hJ0 hJ1) = 0 :=
@@ -171,9 +177,11 @@ noncomputable def dyadicJetTwo : Polynomial ℚ :=
 def dyadicWeightsTwo : ℕ → ℚ := fun j =>
   if j = 0 then 1 else if j = 1 then -(1 / 18) else 0
 
+/-- The `r = 2` dyadic jet has zero constant coefficient. -/
 theorem dyadicJetTwo_coeff_zero : dyadicJetTwo.coeff 0 = 0 := by
   simp [dyadicJetTwo]
 
+/-- The linear coefficient of the `r = 2` dyadic jet is one. -/
 theorem dyadicJetTwo_coeff_one : dyadicJetTwo.coeff 1 = 1 := by
   simp [dyadicJetTwo]
 

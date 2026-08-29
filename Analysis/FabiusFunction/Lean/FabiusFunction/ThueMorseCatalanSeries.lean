@@ -130,8 +130,10 @@ def catalanSeriesDelta (m : ℕ) : ℤ :=
   if m = 0 then 1
   else ∑ t ∈ Icc 1 m, (-1) ^ t * (catalan t : ℤ) * ((m - 1).choose (t - 1) : ℤ)
 
+/-- The substituted alternating Catalan coefficient in degree zero is `1`. -/
 @[simp] theorem catalanSeriesDelta_zero : catalanSeriesDelta 0 = 1 := rfl
 
+/-- The substituted alternating Catalan coefficient in degree one is `-1`. -/
 theorem catalanSeriesDelta_one : catalanSeriesDelta 1 = -1 := by
   simp [catalanSeriesDelta]
 
