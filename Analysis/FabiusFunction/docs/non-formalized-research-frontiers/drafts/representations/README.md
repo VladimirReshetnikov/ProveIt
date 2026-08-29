@@ -29,6 +29,32 @@ conditional all-order passage.  The logarithmic fixed point, the one-step
 resolvent DDE, and hence its measure-specific Thue--Morse orbit and kernel
 identity remain open.)
 
+## Post-snapshot finite Gram--Stieltjes checkpoint
+
+This status postdates the absorbed-draft hashes and pinned audit commits in
+the consolidated volume; it does not revise their provenance or novelty
+boundary.  At Lean source checkpoint `b3720d4b5`, the generic finite-algebra
+layer consists of:
+
+- `FiniteMomentGram.lean`: `momentFunctional`, `momentPairing`,
+  `momentHankelMatrix`, `momentHankelDet`, and `finiteMomentPairing`, together
+  with monomial and pure-power evaluation, support and bounded-range sums,
+  scalar base change, the exact monomial-basis Gram-matrix identification
+  `finiteMomentPairing_toMatrix`, and the integral-domain equivalence
+  `finiteMomentPairing_nondegenerate_iff`;
+- `GramStieltjes.lean`: the adjugate-column construction
+  `gramStieltjesNumerator`, its lower-power orthogonality, top coefficient,
+  next-determinant pairing, coefficient-extraction, and self-pairing
+  identities; and, over a field, `gramStieltjesPolynomial`, its conditional
+  monicity and exact degree, lower-degree orthogonality, uniqueness, and
+  consecutive-Hankel-determinant self-pairing quotient.
+
+These modules treat an arbitrary scalar moment sequence and finite linear
+algebra only.  They do not identify that sequence with the analytic Fabius
+moments, prove either moment or three-term recurrences, establish positivity
+or determinant nonvanishing, locate roots, construct quadrature, or prove a
+Jacobi/Stieltjes fraction or its convergence.
+
 The mathematical bodies of the member drafts were preserved (labels,
 citation keys, and asset paths were mechanically prefixed per part),
 with top-level counters and reproduction instructions adapted to the

@@ -45,4 +45,43 @@ exact-support, absolute-continuity, and null-singleton results. The former
 report directories were deleted. Provenance with SHA-256 hashes is recorded
 in the volume itself, and git history is the archive.
 
+Post-snapshot Lean status at source checkpoint `b3720d4b5` adds two generic
+finite-algebra modules relevant to Report I:
+
+- `FiniteMomentGram.lean` exports `momentFunctional`,
+  `momentFunctional_apply`, `momentFunctional_monomial`,
+  `momentFunctional_C`, `momentFunctional_X_pow`,
+  `momentFunctional_of_linearMap`, `momentFunctional_injective`,
+  `momentFunctional_eq_sum_support`, `momentFunctional_eq_sum_range`,
+  `momentFunctional_map`, `momentPairing`, `momentPairing_apply`,
+  `momentPairing_monomial`, `momentPairing_X_pow`,
+  `momentPairing_isSymm`, `momentHankelMatrix`,
+  `momentHankelMatrix_apply`, `momentHankelMatrix_transpose`,
+  `momentHankelMatrix_succ_submatrix`, `momentHankelMatrix_map`,
+  `momentHankelDet`, `momentHankelDet_zero`, `map_momentHankelDet`,
+  `finiteMomentPairing`, `finiteMomentPairing_toMatrix`, and
+  `finiteMomentPairing_nondegenerate_iff`.
+- `GramStieltjes.lean` exports `gramStieltjesNumerator`,
+  `gramStieltjesNumerator_coeff`, `gramStieltjesNumerator_natDegree_le`,
+  `momentPairing_gramStieltjesNumerator_X_pow_eq_zero`,
+  `momentPairing_gramStieltjesNumerator_X_pow_eq_det`,
+  `gramStieltjesNumerator_coeff_top`,
+  `momentPairing_gramStieltjesNumerator_eq_coeff_mul_det`,
+  `momentPairing_gramStieltjesNumerator_self`,
+  `gramStieltjesPolynomial`, `gramStieltjesPolynomial_natDegree_le`,
+  `gramStieltjesPolynomial_coeff_top`,
+  `gramStieltjesPolynomial_isMonicOfDegree`,
+  `momentPairing_gramStieltjesPolynomial_X_pow_eq_zero`,
+  `momentPairing_gramStieltjesPolynomial_eq_zero`,
+  `eq_gramStieltjesPolynomial_of_isMonicOfDegree_of_orthogonal`,
+  `momentPairing_gramStieltjesPolynomial_self`, and
+  `momentPairing_gramStieltjesPolynomial_self_ne_zero`.
+
+This is a finite, generic Gram--Stieltjes layer under nonzero-Hankel-minor
+hypotheses. It does not prove positivity, a three-term recurrence or Jacobi
+parameters, root location or simplicity, Gaussian/Lobatto quadrature, finite
+or infinite Jacobi/Stieltjes fractions, transform identification, or
+convergence. This status update does not alter the absorbed reports or their
+recorded provenance hashes.
+
 See [`../MANIFEST.md`](../MANIFEST.md) for titles and the previous paths.

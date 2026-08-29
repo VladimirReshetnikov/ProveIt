@@ -9552,6 +9552,54 @@ regenerates \texttt{numerical\_results.txt} and
 
 The Stieltjes transform admits one more exact structure that appears not to have been exploited in the audited corpus.  Let $P_n$ be the monic polynomials orthogonal with respect to $\dd F$ on $[0,1]$, normalized by $P_{-1}=0$, $P_0=1$.
 
+\begin{statusbox}[Post-snapshot Lean status of the finite Gram--Stieltjes algebra]
+At Lean checkpoint \texttt{b3720d4b5}, the later modules
+\path{FiniteMomentGram.lean} and \path{GramStieltjes.lean} formalize a generic finite
+algebraic foundation for this section.  They take an arbitrary scalar sequence
+\path{moment : Nat -> R}; they do not identify that sequence with the Fabius moments
+$d_n$ or with the moments of any measure.
+
+In \path{FiniteMomentGram.lean}, \path{Fabius.momentFunctional} is the polynomial
+linear functional determined by its values on powers of $X$.  The declarations
+\path{Fabius.momentFunctional_of_linearMap},
+\path{Fabius.momentFunctional_injective}, and
+\path{Fabius.momentFunctional_map} give recovery, uniqueness, and scalar base change.
+The symmetric bilinear form \path{Fabius.momentPairing}, the matrix
+\path{Fabius.momentHankelMatrix}, its determinant
+\path{Fabius.momentHankelDet}, and the degree-bounded restriction
+\path{Fabius.finiteMomentPairing} are likewise generic.  The exact matrix theorem
+\path{Fabius.finiteMomentPairing_toMatrix} identifies the restricted pairing in the
+monomial basis with the Hankel matrix.  Over a commutative integral domain,
+\path{Fabius.finiteMomentPairing_nondegenerate_iff} identifies nondegeneracy with
+nonvanishing of the corresponding Hankel determinant.
+
+In \path{GramStieltjes.lean}, \path{Fabius.gramStieltjesNumerator} is the
+fraction-free polynomial obtained from the last column of the adjugate of the
+order-$(n+1)$ Hankel matrix.  The declarations
+\path{Fabius.momentPairing_gramStieltjesNumerator_X_pow_eq_zero},
+\path{Fabius.momentPairing_gramStieltjesNumerator_X_pow_eq_det},
+\path{Fabius.gramStieltjesNumerator_coeff_top}, and
+\path{Fabius.momentPairing_gramStieltjesNumerator_self} prove, respectively, its
+lower-power orthogonality, its pairing with $X^n$, its degree-$n$ coefficient, and its
+self-pairing in terms of consecutive Hankel determinants.  Over a field, after assuming
+the order-$n$ determinant is nonzero,
+\path{Fabius.gramStieltjesPolynomial_isMonicOfDegree},
+\path{Fabius.momentPairing_gramStieltjesPolynomial_eq_zero}, and
+\path{Fabius.eq_gramStieltjesPolynomial_of_isMonicOfDegree_of_orthogonal} give the
+monic degree-$n$ normalization, orthogonality to every lower-degree polynomial, and
+uniqueness.  The exact self-pairing quotient is
+\path{Fabius.momentPairing_gramStieltjesPolynomial_self}; its nonzero corollary assumes
+both consecutive determinants are nonzero.
+
+This checkpoint does not formalize the three-term recurrence below, the
+measure-specific rationality or displayed values of the Fabius Jacobi coefficients,
+positivity or nonvanishing supplied by the Fabius measure, root location or simplicity,
+Gaussian quadrature, finite or infinite $J$-fraction identities, or convergence of an
+infinite $J$-fraction.  Thus the proposition and proof below retain their paper-level
+status; the post-snapshot Lean result is precisely the generic finite determinant and
+orthogonality layer just listed.
+\end{statusbox}
+
 \begin{proposition}[Rational Jacobi parameters]\label{p5:prop:rational-Jacobi}
 There are positive rational numbers $b_n$ such that
 \begin{equation}\label{p5:eq:orthogonal-recurrence}

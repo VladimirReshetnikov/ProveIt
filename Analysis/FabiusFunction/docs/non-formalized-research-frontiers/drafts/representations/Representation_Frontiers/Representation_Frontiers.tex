@@ -1235,6 +1235,54 @@ Because odd moments vanish, each \(\Delta_n\) factors after a parity permutation
 even-even and odd-odd moment determinant.  This parity factorization is useful for exact
 arithmetic and should be exploited in future Lean formalization.
 
+\begin{remark}[Post-snapshot finite Gram--Stieltjes checkpoint]
+\label{p1:rem:post-snapshot-gram-stieltjes}
+This status note postdates the absorbed-draft hashes and the pinned audit commits above; it
+does not alter their provenance or novelty boundary.  At Lean source checkpoint
+\texttt{b3720d4b5}, the following generic finite-algebra API is proved.
+
+\begin{center}
+\small
+\begin{tabularx}{\textwidth}{@{}p{0.24\textwidth}X@{}}
+\toprule
+Layer & Exact Lean declarations and content \\
+\midrule
+Moment functional &
+\path{FabiusFunction.FiniteMomentGram}: \path{momentFunctional}, with evaluation on
+monomials, constants, and powers, support and bounded-range sums, reconstruction from an
+arbitrary polynomial linear functional, injectivity, and scalar base change. \\
+Moment pairing and Hankel form &
+\path{momentPairing}, \path{momentHankelMatrix}, \path{momentHankelDet}, and
+\path{finiteMomentPairing}; \path{finiteMomentPairing_toMatrix} identifies the restricted
+pairing matrix with the Hankel matrix, while
+\path{finiteMomentPairing_nondegenerate_iff} gives nondegeneracy if and only if the
+determinant is nonzero over an integral domain. \\
+Fraction-free construction &
+\path{FabiusFunction.GramStieltjes}: \path{gramStieltjesNumerator} is the final adjugate
+column encoded as a polynomial.  The proved identities give its degree bound, vanishing
+pairings with all lower powers, pairing with \(X^n\) equal to \(\Delta_{n+1}\), top
+coefficient \(\Delta_n\), coefficient extraction against every polynomial of degree at
+most \(n\), and self-pairing \(\Delta_n\Delta_{n+1}\). \\
+Monic field normalization &
+\path{gramStieltjesPolynomial}; assuming \(\Delta_n\ne0\),
+\path{gramStieltjesPolynomial_isMonicOfDegree} gives monicity of exact degree \(n\),
+\path{eq_gramStieltjesPolynomial_of_isMonicOfDegree_of_orthogonal} gives uniqueness among
+monic degree-\(n\) polynomials orthogonal to every lower-degree polynomial, and
+\path{momentPairing_gramStieltjesPolynomial_self} gives the finite self-pairing identity
+\(\langle P_n,P_n\rangle=\Delta_{n+1}/\Delta_n\). \\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+The two modules take an arbitrary scalar moment sequence; they do not identify it with the
+analytic Fabius moments.  They also do not prove the moment recurrence
+\eqref{p1:eq:moment-recurrence}, determinant positivity or nonvanishing, a three-term
+recurrence, the second identity for \(\beta_n\) in \eqref{p1:eq:beta-Hankel}, root location
+or simplicity, Gaussian quadrature, either continued fraction, or convergence.  Thus the
+finite self-pairing quotient is now formalized under its explicit field and determinant hypotheses,
+while the analytic and infinite-fraction assertions of this section remain frontier claims.
+\end{remark}
+
 \subsection{Exact coefficients and numerical evidence}
 
 The accompanying Python program computes the moments by

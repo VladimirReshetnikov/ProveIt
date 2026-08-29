@@ -47,4 +47,19 @@ points, integration by parts through the CDF, boundary/Plemelj theory, the
 resolvent DDE and its all-order orbit, generalized complex order, or the
 Jacobi-fraction layer.
 
+Post-snapshot Lean checkpoint `b3720d4b5` now supplies the generic finite
+algebra beneath the last topic.  `FiniteMomentGram.lean` defines the polynomial
+moment functional and symmetric moment pairing for an arbitrary scalar
+sequence, identifies its degree-bounded monomial-basis matrix with the finite
+Hankel matrix, and equates nondegeneracy with a nonzero Hankel determinant over
+a commutative integral domain.  `GramStieltjes.lean` uses an adjugate column to
+construct a fraction-free orthogonal numerator and, over a field with the
+leading determinant nonzero, the unique monic degree-`n` Gram–Stieltjes
+polynomial; it also proves the consecutive-determinant self-pairing formula.
+These APIs are not specialized to the Fabius moment sequence or a measure.
+The Fabius three-term recurrence, measure-specific rational Jacobi
+coefficients and their displayed values, positivity/nonvanishing, root and
+quadrature theorems, finite and infinite J-fraction identities, and infinite
+J-fraction convergence therefore remain open formalization work.
+
 See [`../MANIFEST.md`](../MANIFEST.md) for titles and the previous paths.
