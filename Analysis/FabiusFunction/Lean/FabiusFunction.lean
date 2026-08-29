@@ -213,6 +213,7 @@ import FabiusFunction.KappaDictionary
 import FabiusFunction.DyadicReflection
 import FabiusFunction.CollatzWielandt
 import FabiusFunction.LacunaryProductToSum
+import FabiusFunction.LacunaryProductToSumCosine
 import FabiusFunction.LogSeriesMultiplicative
 import FabiusFunction.BaseLayerRegrouping
 import FabiusFunction.ShellEnvelopeExplicit
