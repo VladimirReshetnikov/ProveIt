@@ -372,9 +372,33 @@ $\Lambda$ (\lean{kappaOf\_strictAntiOn}), and evaluates it at the three
 closed-form means $\Lambda=\tfrac12,\ \sqrt2/2,\ \sqrt3/2$ --- that is, at
 $\kappa_0$, $\kappa_2$, $\kappa_\infty$ (\lean{kappaOf\_half},
 \lean{kappaOf\_sqrt\_two}, \lean{kappaOf\_sqrt\_three}), together with the
-exact gaps.  The $\kappa_1$ row is deliberately absent there: the Perron
-root exists in the library only existentially, so every Lean statement
-about $\kappa_1$ carries it as a hypothesis.  What the dictionary does not
+exact gaps.  Since \lean{Fabius.log\_pi\_bracket} became available, all
+three also carry numerical enclosures, in
+\lean{KappaConstantEnclosures}:
+\[
+ \begin{aligned}
+  3.1514961287&\le\kappa_0     \le3.1514961300,\\
+  2.6514961287&\le\kappa_2     \le2.6514961300,\\
+  2.3590148784&\le\kappa_\infty\le2.3590148796,
+ \end{aligned}
+\]
+(\lean{Fabius.kappa\_zero\_bracket}, \lean{Fabius.kappa\_two\_bracket},
+\lean{Fabius.kappa\_inf\_bracket}), of widths $1.3$, $1.3$ and
+$1.2\cdot10^{-9}$, so seven decimals of $\kappa_0$ and $\kappa_2$ and
+eight of $\kappa_\infty$ are kernel-checked --- the extra decimal being
+where the values fall against a decimal boundary, not extra precision.
+Because $\kappa_0$ and $\kappa_2$ differ from $\log_2\pi$ by an additive
+rational, that one quantity is bracketed once
+(\lean{Fabius.logTwo\_pi\_bracket}) and both are read off with no
+further loss.  These use Mathlib's $\log2$ and $\log3$ in their
+tightest form, \lean{Real.log\_two\_near\_10} and
+\lean{Real.log\_three\_near\_10}, rather than the \lean{\_d9} decimal
+corollaries; what dominates the residual width is $\log\pi$, whose own
+$5\cdot10^{-10}$ width is inherited from the \lean{\_d9} form of
+$\log3$ used to prove it.  The $\kappa_1$ row is deliberately absent
+from the dictionary: the Perron root exists in the library only
+existentially, so every Lean statement about $\kappa_1$ carries it as a
+hypothesis (see \lean{KappaOneEnclosure}, below).  What the dictionary does not
 supply is the \emph{attribution} of each $\kappa$ to its interpretation;
 that is formal so far only for $\kappa_\infty$, pinned from both sides by
 \lean{GlobalDecayEnvelope} and \lean{PeakRayEnvelope}, and, in measure
@@ -2144,8 +2168,39 @@ enclosure $0.66126798\le\varrho_1\le0.66134921$.  Only the last two
 digits of the SymPy enclosure above are given up; recovering them
 needs on the order of two thousand pieces, since the endpoints above
 approximate the exact range of $\Lop_1h/h$ to within $10^{-8}$.
-The $\kappa_1$ consequence remains unformalized (it needs interval
-bounds on $\log\pi$, $\log2$, and $\log\varrho_1$).
+The $\kappa_1$ consequence is now formalized as well, in
+\lean{KappaOneEnclosure}, and it is precisely the three interval bounds
+just named that it had to supply.  Two of them were new.  Mathlib
+brackets $\log2$ and $\log3$ but carries no bound on $\log\pi$; that is
+proved here to eight decimals,
+\[
+ 1.1447298855<\log\pi<1.1447298860
+ \qquad(\lean{Fabius.log\_pi\_bracket}),
+\]
+by anchoring at the \emph{rational} $c=3.1415926535$ --- so that
+$3/c=1-283185307/6283185307$ makes the Taylor partial sum of
+\lean{Real.abs\_log\_sub\_add\_sum\_range\_le} a numeral --- and closing
+the gap from $c$ to $\pi$ with \lean{Real.pi\_gt\_d20} below and
+\lean{Real.pi\_lt\_d20} above.  Anchoring at $1-3/\pi$ directly, the
+obvious route, is not formalizable at all: that point is irrational, so
+the partial sum is not a numeral and no \lean{norm\_num} can evaluate
+it.  The logarithms at the two rational Perron endpoints follow from
+$\varrho=\tfrac23\cdot\tfrac32\varrho$, which lets Mathlib's $\log2$
+carry the scale.  Combining them with the dictionary and its
+antitonicity gives
+\[
+ 2.7480118\le\kappa_1\le2.7481893
+ \qquad(\lean{Fabius.kappa\_one\_enclosure}),
+\]
+so three decimals of $\kappa_1$ are kernel-checked.  Of the width
+$1.775\cdot10^{-4}$, the $\varrho_1$ bracket contributes $99.84\%$ and
+the four logarithm brackets only $0.004\%$: sharpening $\kappa_1$ is
+entirely a question of sharpening $\varrho_1$.  The orientation is worth
+recording, since it is easy to get backwards --- the dictionary is
+antitone, so the \emph{lower} Perron endpoint yields the \emph{upper}
+bound on $\kappa_1$.  The audit's own
+$\kappa_1=2.74807001487133267\ldots$ lies strictly inside but is not
+proved.
 
 \subsection{Exact spot identities}
 
@@ -2208,7 +2263,9 @@ package (\lean{BirkhoffVariance}, \lean{BirkhoffProductBridge},
 the lobe geometry --- zero orders, one peak, Thue--Morse sign
 (\lean{PhiZeroOrder}, \lean{OnePeakPerLobe},
 \lean{RvachevProductContinuity}, \lean{ThueMorseLobeSign}); the exponent
-dictionary (\lean{KappaDictionary}); the two-sided $\kappa_\infty$
+dictionary (\lean{KappaDictionary}) and the certified enclosures of all
+four exponents (\lean{KappaOneEnclosure},
+\lean{KappaConstantEnclosures}); the two-sided $\kappa_\infty$
 envelope (\lean{GlobalDecayEnvelope}, \lean{PeakRayEnvelope}); and the
 hypothesis-carrying skeletons of the mean theorems
 (\lean{ShellLinearity}, \lean{BoundednessSkeleton},
