@@ -105,6 +105,7 @@ import FabiusFunction.GeometricScaleProducts
 import FabiusFunction.GeometricConvolutionTails
 import FabiusFunction.SmoothingOperatorInversion
 import FabiusFunction.AlgebraicInverseGerm
+import FabiusFunction.AlgebraicInverseGermAnalytic
 import FabiusFunction.GeometricCgfTails
 import FabiusFunction.GeometricTailDictionary
 import FabiusFunction.DyadicCombTrapezoid
