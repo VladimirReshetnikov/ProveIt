@@ -48,6 +48,7 @@ import FabiusFunction.ParityCharacter
 import FabiusFunction.BitPositionQBinomial
 import FabiusFunction.BinaryPartitionGreenInverse
 import FabiusFunction.DigitDefectCounting
+import FabiusFunction.DigitDefectBitForm
 import FabiusFunction.ThueMorseValuation
 import FabiusFunction.ThueMorseDigits
 import FabiusFunction.ThueMorseEnumerators
@@ -62,6 +63,7 @@ import FabiusFunction.ThueMorseArtinSchreier
 import FabiusFunction.ThueMorseEulerTransform
 import FabiusFunction.ThueMorseLucasSupport
 import FabiusFunction.DigitalDensity
+import FabiusFunction.SubmaskDensityAsymptotic
 import FabiusFunction.ThueMorseWalsh
 import FabiusFunction.ThueMorseComplexProductBridge
 import FabiusFunction.ThueMorseSparseMoments
@@ -132,6 +134,7 @@ import FabiusFunction.PoissonApproximateIdentity
 import FabiusFunction.PoissonMassSwap
 import FabiusFunction.StieltjesPerron
 import FabiusFunction.GeneralQConditionNumber
+import FabiusFunction.LimitConditionNumber
 import FabiusFunction.MultipleAngleBounds
 import FabiusFunction.TentMoment
 import FabiusFunction.FaberSchauderDefect
