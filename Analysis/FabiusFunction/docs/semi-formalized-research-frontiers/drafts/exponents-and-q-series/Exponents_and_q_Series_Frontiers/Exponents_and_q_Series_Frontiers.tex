@@ -1746,11 +1746,40 @@ family.  The crux is a single identity, and it is what makes the Newton basis th
 adapted to the dyadic problem: at $q=1/2$ \emph{every} Newton-basis generating function
 $q^r/(1-q)^{r+1}$ takes the value $2$, independently of $r$
 (\lean{Fabius.pow\_div\_one\_sub\_pow\_at\_half}), so the series collapses to the plain
-coefficient sum (\lean{Fabius.tsum\_newtonPoly}, \lean{Fabius.half\_mul\_tsum\_newtonPoly\_half}).  Reading that
-number as the \emph{support radius} of $\Phi_P$ is not formalized.  The product $\Phi_P$ is
-available (\path{GeneralizedRvachevProduct.lean}); what is missing is the \emph{support}
-statement of \cref{p1:thm:master-probability}, an analytic and probabilistic fact about
-the associated random variable rather than a property of the product itself.
+coefficient sum (\lean{Fabius.tsum\_newtonPoly}, \lean{Fabius.half\_mul\_tsum\_newtonPoly\_half}).
+
+Reading that number as the \emph{support radius} of $\Phi_P$ is half formalized.  The analytic
+half is, and needs no probability: by Paley--Wiener a law carried by $[-S,S]$ has a
+characteristic function of exponential type at most $2\pi S$ in the present Fourier
+normalization, and that growth bound follows from the product directly,
+\[
+ \lVert\Phi_a(z)\rVert\le\exp\bigl(2\pi\lVert z\rVert S_a\bigr),
+ \qquad S_a=\frac12\sum_{h\ge0}a_h2^{-h},
+\]
+for every $z\in\C$ (\lean{Fabius.norm\_generalizedRvachevProduct\_le\_exp},
+\path{GeneralizedExponentialType.lean}).  So $\Phi_a$ is entire of order at most one with type
+controlled by $S_a$, exactly as the support reading predicts.  The converse half --- that the
+type is no smaller, and that the law really is carried by $[-S_a,S_a]$ --- is the \emph{support}
+statement of \cref{p1:thm:master-probability}, a probabilistic fact about the associated random
+variable rather than a property of the product, and it remains unformalized.
+
+At the constant weight this says something checkable.  There $S_1=\frac12\sum_h2^{-h}=1$, so $\Phi$
+has exponential type at most $2\pi$ (\lean{Fabius.norm\_rvachevFourierProduct\_le\_exp},
+\path{ClassicalGrowth.lean}), and Paley--Wiener reads type $2\pi$ as support radius $1$ --- which
+is where the up-function actually lives, as \path{ProbabilityRepresentation.lean} establishes by
+a route that does not use any of this.  The agreement is a check on the normalization rather
+than a new claim about it.  The same module records
+$\lVert\Phi(x)\rVert\le1$ on the real axis
+(\lean{Fabius.norm\_rvachevFourierProduct\_ofReal\_le\_one}), which the corpus had not had for
+$\Phi$ either.
+
+The sharpness of the factor estimate is the whole difficulty and is worth recording, since the
+obvious routes all fail: any constant $C>1$ in $\lVert\sinc w\rVert\le Ce^{\lVert w\rVert}$
+compounds to $C^{\sum_ha_h}$ across the factors and diverges whenever the weight has infinite
+total mass.  Writing $\sin$ as a difference of exponentials gives $e^{3\lVert w\rVert}$, which
+would inflate the type threefold.  The constant $1$ comes from comparing the sine series
+termwise against the hyperbolic sine, $\lVert\sin w\rVert\le\sinh\lVert w\rVert$, followed by
+$\sinh t\le te^t$ --- which is $1-2t\le e^{-2t}$ rearranged.
 
 The spectral zeta \eqref{p1:eq:ZP} \emph{is} formalized, in \path{NewtonSpectralZeta.lean},
 and it is exactly the composite of two identities already in hand: the general-weight zeta
@@ -1860,12 +1889,31 @@ For $p=2$ this is the familiar lower-Lambert coordinate of the classical Fabius 
 the branch notation and inversion conventions follow \cite{p1:corless1996}.
 For $p>2$ it gives a single closed coordinate in which the polynomial-weight endpoint
 transseries should be organized; the Mellin calculation in \cref{p1:sec:mellin} explains the
-periodic coefficients that decorate it.  Only the $p=2$ coordinate is formalized:
+periodic coefficients that decorate it.
+
+Equation \eqref{p1:eq:generalized-lambert} is formalized, in
+\path{GeneralizedLambertCoordinate.lean}: writing $q=p-1$,
+\lean{Fabius.generalizedLambertCoordinate} is $\lambda_P$ and
+\lean{Fabius.generalizedLambertCoordinate\_solves\_saddle} is the assertion that it solves
+\eqref{p1:eq:generalized-saddle-equation}.  The verification is pure algebra once
+$W\e^W=z$ is available; nothing analytic beyond that is used.  It is worth separating out the
+core, which carries the whole content and has no real powers in it: with $w=W_{-1}(u)$ and
+$\lambda=-qw$,
+\[
+ \lambda^{q}\e^{-\lambda}=(-q)^{q}\bigl(w\e^{w}\bigr)^{q}=(-qu)^{q}
+ \qquad(\lean{Fabius.pow\_mul\_exp\_neg\_lambert}).
+\]
+Everything else is the choice of $u$ making $(-qu)^q$ equal to $x/(C_Pp)$, and that is the only
+place the real power $(x/(C_Pp))^{1/q}$ enters, bringing its round-trip hypothesis
+$x/(C_Pp)\ge0$ with it.  The branch hypothesis is carried rather than derived: $W_{-1}$ satisfies
+its defining equation only on $(-\e^{-1},0)$, and which $x$ land there depends on $C_P$, $p$ and
+$q$ --- something settled here by context rather than by a formula, so the Lean statement asks
+for it.  At $q=1$ the coordinate collapses to $-W_{-1}(-x/(C_Pp))$
+(\lean{Fabius.generalizedLambertCoordinate\_one}), the shape the classical $p=2$ analysis uses:
 \lean{Fabius.lowerLambertW} (\lean{LowerLambertW.lean}), a definitional alias of the library's
 real lower branch \lean{Real.lambertWLower}, inverts $w\mapsto w\e^w$ on $(-\infty,-1]$, with
 functional equation \lean{Fabius.lowerLambertW_mul_exp} and uniqueness
-\lean{Fabius.lowerLambertW_unique}.  The generalized coordinate
-\eqref{p1:eq:generalized-lambert} itself has no Lean counterpart.
+\lean{Fabius.lowerLambertW_unique}.
 
 
 \section{An alternating Newton family of positive-definite Pascal quotients}

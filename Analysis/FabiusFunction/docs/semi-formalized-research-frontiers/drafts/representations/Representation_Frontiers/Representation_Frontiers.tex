@@ -2867,9 +2867,31 @@ hypothesis and narrower in analytic content: for every \(q\in\C\) with
 \leanPartx{Fabius.geometricGamma_mahler} give the meromorphic inverse and Gamma-side Mahler
 equation, and \leanPartx{Fabius.geometricReciprocalGamma_mul_neg} gives the corresponding
 entire reciprocal analogue of \eqref{p2:eq:q-gamma-reflection}.  The raw Gamma product in
-\eqref{p2:eq:q-geometric-gamma}, the logarithmic series \eqref{p2:eq:q-gamma-series}, and the
-general integer-base pole-order formula are not formalized.  Only the dyadic order has an
-exact counterpart in \path{DyadicGammaOrder.lean}.
+\eqref{p2:eq:q-geometric-gamma} and the logarithmic series \eqref{p2:eq:q-gamma-series} are not
+formalized.
+
+The general integer-base statement is now half formalized, and the halves are worth separating.
+Its \emph{zero set} is, at every integer base: for $b\ge2$,
+\[
+ G_{1/b}(z)=0
+ \iff
+ z\in\{-1,-2,-3,\dots\},
+\]
+independently of $b$
+(\leanPartx{Fabius.geometricReciprocalGamma_inv_natCast_eq_zero_iff},
+\path{ReciprocalIntegerGammaZeros.lean}).  \path{GeometricReciprocalGamma.lean} states the zeros
+in the \emph{affine} form $\exists n,m,\ 1+q^nz=-m$, which is the shape that stays safe at $q=0$
+where no scale can be divided out; at reciprocal-integer base it collapses to the arithmetic one,
+since $(m+1)b^n$ runs over the positive integers --- surjectively already at $n=0$.
+
+The \emph{order} is not, and is not a corollary of the set.  At $b=2$ it is obtained by
+transferring the integer-zero order of the Rvachev product through $G_2(z)G_2(-z)=\Phi(z)$, and
+the corpus has no $\Phi_b$ to transfer through at another base; a direct proof would have to
+split off the finitely many vanishing factors --- the $h$ with $b^h\mid n$ --- and show the
+remainder is an analytic unit.  Only the dyadic order has an exact counterpart, in
+\path{DyadicGammaOrder.lean}.  The arithmetic side of the count is available at arbitrary base as
+\leanPartx{Fabius.weightedScaleMultiplicity}, so what is missing is the analytic splitting, not
+the combinatorics.
 
 \section{Gaussian variance mixtures and the logistic dual}
 \label{p2:sec:gaussian-mixture}
@@ -6797,7 +6819,7 @@ formalization.
 
 The requested source boundary is the recursive \texttt{*.tex} tree below
 \path{Analysis/FabiusFunction/docs}.  The repository's own most recent audit draft
-pins commit \texttt{32d6d36c51d803289e6d6a0dc0c37753766eba47} and records 67
+pins commit \path{32d6d36c51d803289e6d6a0dc0c37753766eba47} and records 67
 distinct LaTeX paths: five living synthesis/reference documents, thirty-two frozen
 historical sources, twenty-three active frontier drafts (including twelve Fourier-decay
 dossiers), and seven transcribed or corrected papers~\cite{p4:ReshetnikovRepo}.  The present study used those same lineages and compared the living primary exposition, the consolidated frontier

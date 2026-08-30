@@ -220,7 +220,8 @@ group README on removal.
 
 Two scripts here check the volumes against the Lean corpus, and both exit
 nonzero on failure. Run them together with `sh audit_all.sh` before pushing
-any change that touches either side.
+any change that touches either side. A third, build-log-specific checker is
+run separately after compiling a changed volume.
 
 - `audit_crosswalk_names.py` — every `Fabius.*` name cited in a `.tex` file
   resolves to a declaration or a namespace that exists in the corpus. The
@@ -232,6 +233,10 @@ any change that touches either side.
   library root `FabiusFunction.lean`. A newly added leaf module that nothing
   imports is never elaborated by `lake build FabiusFunction`, so a whole-library
   build would report success while silently skipping it.
+- `audit_overfull.py LOG [THRESHOLD_PT]` — reports every overfull box in a
+  generated LaTeX log and exits nonzero when one exceeds the threshold
+  (20 pt by default). It is intentionally outside `audit_all.sh`, because logs
+  are generated locally and never committed.
 
 Neither script has standing exceptions. If one starts reporting a failure that
 looks spurious, fix the script rather than carrying the exception: the three

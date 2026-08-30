@@ -16,7 +16,7 @@
 \usepackage{titlesec}
 \usepackage{listings}
 \usepackage{xurl}
-\usepackage{hyperref}
+\usepackage[hypertexnames=false]{hyperref}
 \usepackage[nameinlink,noabbrev]{cleveref}
 
 \definecolor{linkblue}{RGB}{25,75,135}
@@ -485,8 +485,7 @@ Let $\Lop_1$ be the weighted doubling transfer operator
 so that $\int_0^1P_n(t)q(t)\dd t=\int_0^1(\Lop_1^nq)(x)\dd x$, and let
 $\varrho_1$ be its Perron root.  Then:
 \begin{align}
- \varrho_1&=0.661322602060565\ldots
- &&\text{(collocation, $N=16$--$40$, stable to $2\cdot10^{-15}$)}\notag\\
+ \varrho_1&=0.661322602060565\ldots\notag\\
  \kappa_1&=\frac{\log\pi+\frac a2-\log\varrho_1}{a}
  =\tfrac12+\log_2\frac{\pi}{\varrho_1}
  =2.748070014871334\ldots\notag\\
@@ -495,7 +494,9 @@ $\varrho_1$ be its Perron root.  Then:
  A_1=0.09126612\ldots
  \label{eq:gauge}
 \end{align}
-where $A_1$ is the limit of the dyadic-shell means of $|f|/g_1$
+The displayed Perron value comes from collocation with $N=16$--$40$ and is
+stable to $2\cdot10^{-15}$.
+Here $A_1$ is the limit of the dyadic-shell means of $|f|/g_1$
 (\cref{ssec:shells}).  The asymptotic $I_1(n):=\int_0^1P_n\to\kappa
 \lambda^n$ with $\lambda=\varrho_1$ is due to Fouvry--Mauduit
 \cite{fouvrymauduit1996}; the enclosure $0.66130<\lambda<0.66135$ is
@@ -1015,8 +1016,29 @@ $\log\|\Phi(x)\|=\sum_{(h,r)}\log\bigl(1-x^2/(2^h(r+1))^2\bigr)$ at every
 non-lattice real $x$, \lean{CentralLobeConcavity} and
 \lean{SideLobeConcavity} give strict negativity of its termwise second
 derivative on the central and on every side lobe, and
-\lean{OnePeakPerLobe} assembles them.  The closed derivative formulas
-\eqref{eq:lobe-derivatives} themselves are not separately stated there.
+\lean{OnePeakPerLobe} assembles them.  The central-lobe specializations of the
+closed derivative formulas \eqref{eq:lobe-derivatives} are now stated, for
+$|x|<1$, in
+\lean{LobeDerivativeFormulas}
+(\lean{Fabius.tsum\_central\_log\_deriv\_eq},
+\lean{Fabius.tsum\_central\_log\_second\_deriv\_eq}), and the gap between
+the two indexings turns out to be combinatorial rather than analytic: it
+is the same fibre equivalence \lean{Fabius.dyadicFactorEquiv} that turns
+the scale product into the canonical product.  The fibre of
+$(h,r)\mapsto2^h(r+1)$ over $k$ has exactly $\vtwo(k)+1$ elements and the
+summand depends only on the fibre base, so the lattice sum collapses to
+the integer sum with that multiplicity.  This is stated once for an
+arbitrary summand (\lean{Fabius.tsum\_lobeZero\_regroup}), which is the
+reusable part: \emph{any} absolutely convergent sum over the dyadic zero
+lattice is the sum over the positive integers weighted by $\vtwo(k)+1$.
+The two central-lobe sum identities are instances.  Summability of the two
+families had to be supplied, since \lean{CentralLobeConcavity} establishes
+it only inside a proof and does not export it; both are dominated by
+$1/(2^h(r+1))^2$, because $|x|<1$ and $L\ge1$ give
+$L^2-x^2\ge L^2(1-x^2)$.  The displayed identities away from every integer,
+including a closed side-lobe form, remain prose obligations; the separate
+formal side-lobe results establish concavity and the unique peak without
+asserting those global sums.
 The following comparison is the workhorse of the mean layer; it does not
 appear in any of the four documents, and it is not formalized either ---
 the log-concavity input is, the quantitative $\delta_{\min}$ and
@@ -1569,12 +1591,12 @@ boundary layers, and two-adic troughs})}
 
 \emph{Content.}  Everything in Document 1's extremal track, sharpened: the
 annular maximum in closed Lambert form,
-\[
- \log M_k=-\tfrac{\lambda}{2}k(k+1)-(k{+}1)\log\pi+(k{+}1)\beta
- -\frac{W(c(k{+}1))^2+2W(c(k{+}1))}{2\lambda}
+\begin{multline*}
+ \log M_k=-\tfrac{\lambda}{2}k(k+1)-(k{+}1)\log\pi+(k{+}1)\beta\\
+ {}-\frac{W(c(k{+}1))^2+2W(c(k{+}1))}{2\lambda}
  +\bigO\bigl((\log\log k)^2\bigr),
- \quad c=\tfrac{\lambda}{\pi}\sqrt{\tfrac32},
-\]
+ \qquad c=\tfrac{\lambda}{\pi}\sqrt{\tfrac32}.
+\end{multline*}
 an elementary sharp Gelfond bound
 $Q_n\le\sqrt{5/3}\,(\sqrt3/2)^n$ via an explicit algebraic subaction,
 two-adic trough asymptotics
@@ -1644,8 +1666,13 @@ paper and the authors' arXiv source); the $L^2$ identity; the
 identification $\tfrac12+\log_2(\pi\sqrt2)=\log_2(2\pi)$.
 
 \emph{Defects.}
-(i) \textbf{Its Theorem 4.2 (sharp upper metric fluctuation) states
-$\limsup_nS_n(t)/\sqrt{n\log\log n}=\pi$ a.e.}  The quotation is a
+(i) \textbf{Its Theorem 4.2 gives the constant $\pi$ in the sharp upper
+metric fluctuation:}
+\[
+ \limsup_n\frac{S_n(t)}{\sqrt{n\log\log n}}=\pi
+ \quad\text{a.e.}
+\]
+The quotation is a
 \emph{faithful} rendering of the published Theorem 1.2 of \cite{ahl2017},
 but the published constant is itself erroneous by a factor $\sqrt2$; the
 correct value is $\pi/\sqrt2$ (\cref{sec:lil}).  Every restatement
@@ -1810,13 +1837,13 @@ after \cref{thm:lil-correct}).
 \label{thm:lil-correct}
 For Lebesgue-almost every $\alpha$,
 \[
+ \begin{aligned}
  \limsup_{L\to\infty}
- \frac{S_L(\alpha)}{\sqrt{2L\log\log L}}=\frac{\pi}{2},
- \qquad\text{equivalently}\qquad
- \limsup_{L\to\infty}
+ \frac{S_L(\alpha)}{\sqrt{2L\log\log L}}&=\frac{\pi}{2},\\
+ \text{equivalently,}\qquad \limsup_{L\to\infty}
  \frac{\log\prod_{\ell=0}^{L}|2\sin\pi2^\ell\alpha|}
- {\sqrt{L\log\log L}}
- =\frac{\pi}{\sqrt2}=2.2214\ldots
+ {\sqrt{L\log\log L}}&=\frac{\pi}{\sqrt2}=2.2214\ldots .
+ \end{aligned}
 \]
 \end{theorem}
 
@@ -2204,13 +2231,20 @@ proved.
 
 \subsection{Exact spot identities}
 
-$I_2(n)=2^{-n}$ verified to $10^{-12}$ ($n=2,5,8,11$); the slow-ray
-identity $|f(2^k\tfrac43)|=|f(\tfrac43)|(3\sqrt3/(8\pi))^k2^{-k(k+1)/2}$
-verified to $10^{-14}$ ($k=6$); Document 4's peak-ray constant
-$W_{\kappa_\infty}(2/3)=0.139129774734829$ reproduced to all digits and
-its ray identity verified to $10^{-13}$ ($n=9$); the collocation
-eigenvalues $\varrho_2=\tfrac12$ (exact to $10^{-15}$),
-$\varrho_3,\varrho_4$ as printed in Document 4.
+\begin{itemize}
+\item $I_2(n)=2^{-n}$ was verified to $10^{-12}$ for $n=2,5,8,11$.
+\item The slow-ray identity
+\[
+ |f(2^k\tfrac43)|
+ =|f(\tfrac43)|\left(\frac{3\sqrt3}{8\pi}\right)^k2^{-k(k+1)/2}
+\]
+was verified to $10^{-14}$ at $k=6$.
+\item Document 4's peak-ray constant
+$W_{\kappa_\infty}(2/3)=0.139129774734829$ was reproduced to all digits,
+and its ray identity was verified to $10^{-13}$ at $n=9$.
+\item The collocation eigenvalues $\varrho_2=\tfrac12$ (exact to
+$10^{-15}$), $\varrho_3$, and $\varrho_4$ agree with Document 4.
+\end{itemize}
 
 \section{Relation to the repository corpus}
 \label{sec:corpus}
@@ -2219,8 +2253,8 @@ $\varrho_3,\varrho_4$ as printed in Document 4.
 \label{sec:draft}
 
 The \emph{Decay rate conjecture} draft (removed from the working tree;
-recover with
-\lstinline[basicstyle=\ttfamily\footnotesize]|git show e1cdd6260:".../Decay rate conjecture.tex"|)
+recover with \texttt{git show} from commit \texttt{e1cdd6260}; the archived
+file is named \texttt{Decay rate conjecture.tex})
 claimed
 \[
  g(x)\approx x^{\log(2\pi)/\log2}(\log x)^{-1/2}
@@ -2489,7 +2523,9 @@ second wave unanimously confirms \cref{find:ahl}.
 \label{app:constants}
 
 \begin{center}
-\begin{tabular}{@{}lll@{}}
+\begin{tabularx}{\textwidth}{@{}l
+ >{\raggedright\arraybackslash}p{0.28\textwidth}
+ >{\raggedright\arraybackslash}X@{}}
 \toprule
 symbol & value & provenance \\
 \midrule
@@ -2529,7 +2565,7 @@ $\sigma^2$ (per step) & $\pi^2/4=2.4674011$ & proved
 (\cref{thm:variance}); measured $2.4595$ at $L=10^3$\\
 LIL constant & $\pi/\sqrt2=2.2214415$ & corrected; printed value $\pi$\\
 \bottomrule
-\end{tabular}
+\end{tabularx}
 \end{center}
 
 \section{Verification scripts}
