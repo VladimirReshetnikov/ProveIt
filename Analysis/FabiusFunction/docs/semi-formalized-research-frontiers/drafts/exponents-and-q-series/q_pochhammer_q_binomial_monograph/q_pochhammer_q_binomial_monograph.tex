@@ -937,6 +937,17 @@ More generally,
 Set $z=1$ and $z=q^m$, respectively, in \eqref{eq:finite-qbinomial-minus}.
 \end{proof}
 
+\begin{remark}[Formal version]
+Over every commutative ring, including \(q=0\), roots of unity, zero
+divisors, and positive characteristic,
+\lean{Fabius.sum_gaussianBinomial_alternating_mul_pow} proves the second
+display for all \(m,n\in\N\), and
+\lean{Fabius.sum_gaussianBinomial_alternating} proves the first with its exact
+row-zero boundary \(1\).  Both declarations are in
+\path{QBinomialInversion.lean}; neither uses a quotient or cancellation
+hypothesis.
+\end{remark}
+
 \begin{corollary}[Weighted subset sum]\label{cor:weighted-subsets}
 For $0\le k\le n$,
 \[
@@ -953,6 +964,16 @@ Equivalently,
 \begin{proof}
 Expand $\prod_{i=0}^{n-1}(1+zq^i)$ by choosing either $1$ or $zq^i$ from each factor, and compare the coefficient of $z^k$ with \eqref{eq:finite-qbinomial-plus}.
 \end{proof}
+
+\begin{remark}[Formal version]
+The zero-based and one-based formulas are respectively
+\lean{Fabius.sum_pow_sum_powersetCard_eq_gaussianBinomial} and
+\lean{Fabius.sum_pow_sum_powersetCard_Icc_eq_gaussianBinomial} in
+\path{BitPositionQBinomial.lean}.  They are total in \(n,k\in\N\) over every
+commutative ring: the first uses \texttt{range n}, and the second literally
+uses the interval \texttt{Icc 1 n}.  The latter is obtained by translating
+each chosen index upward by one, which contributes the extra factor \(q^k\).
+\end{remark}
 
 \section{Reciprocal finite products}
 
@@ -1119,6 +1140,72 @@ For $0\le j\le n$,
 \begin{proof}
 This is the kernel computation in the preceding proof.
 \end{proof}
+
+\begin{remark}[Formal version and scaled strengthening]
+\sloppy
+The scalar algebra is formalized in \path{QBinomialInversion.lean}.  Its
+public surface consists exhaustively of the four definitions
+\lean{Fabius.gaussianBinomialKernel},
+\lean{Fabius.gaussianBinomialInverseKernel},
+\lean{Fabius.scaledGaussianBinomialKernel}, and
+\lean{Fabius.scaledGaussianBinomialInverseKernel}, and the seven theorems
+\lean{Fabius.gaussianBinomial_mul},
+\lean{Fabius.sum_gaussianBinomial_alternating_mul_pow},
+\lean{Fabius.sum_gaussianBinomial_alternating},
+\lean{Fabius.gaussianBinomialKernel_left_orthogonality},
+\lean{Fabius.gaussianBinomialKernel_right_orthogonality},
+\lean{Fabius.scaledGaussianBinomialKernel_left_orthogonality}, and
+\lean{Fabius.scaledGaussianBinomialKernel_right_orthogonality}.  The chain
+identity already holds over every commutative semiring.  The alternating and
+orthogonality results hold over every commutative ring.  Both multiplication
+orders are stated on the total interval \texttt{Icc j n}, including the empty
+case \(n<j\).  The scaled forward and inverse entries are
+\[
+ s^{n-k}\qbinom nk,
+ \qquad
+ (-s)^{n-k}q^{\binom{n-k}{2}}\qbinom nk,
+\]
+for an arbitrary independent \(s\); neither \(s\) nor \(q\) is assumed
+nonzero or invertible.
+
+The module-valued sequence theorem is formalized in
+\path{QBinomialTransform.lean}, whose exhaustive public surface is the four
+definitions
+\lean{Fabius.scaledGaussianBinomialTransform},
+\lean{Fabius.scaledGaussianBinomialInverseTransform},
+\lean{Fabius.gaussianBinomialTransform}, and
+\lean{Fabius.gaussianBinomialInverseTransform}, together with the four
+theorems
+\lean{Fabius.scaledGaussianBinomialInverseTransform_transform},
+\lean{Fabius.scaledGaussianBinomialTransform_inverseTransform},
+\lean{Fabius.scaledGaussianBinomial_inversion}, and
+\lean{Fabius.gaussianBinomial_inversion}.  Under exactly
+\texttt{[CommRing R] [AddCommGroup M] [Module R M]}, the first two theorems
+give both pointwise compositions and the last two give the scaled and
+classical iff statements.  Taking \(M=R\) yields
+\Cref{thm:qbinomial-inversion}; the formal theorem is stronger in allowing
+arbitrary module-valued sequences and requires no topology or convergence.
+
+Finally, \path{QBinomialInversionSpecializations.lean} has exactly two public
+definitions and five public theorems:
+\lean{Fabius.qGaussianResidualCoeff},
+\lean{Fabius.qGaussianReconstructionCoeff},
+\lean{Fabius.geometricQBinomialWeightNumerator_eq_scaledGaussianBinomialInverseKernel},
+\lean{Fabius.qGaussianResidualCoeff_eq},
+\lean{Fabius.qGaussianReconstructionCoeff_eq},
+\lean{Fabius.qGaussianReconstructionCoeff_residualCoeff_delta}, and
+\lean{Fabius.qGaussianResidualCoeff_reconstructionCoeff_delta}.  The first
+theorem identifies the denominator-free geometric Lagrange numerator
+globally with the inverse kernel at base and scale \(q\), without \(k\le n\).
+At base \(q^2\) and scale \(-q\), the remaining coefficients are
+\[
+ (-q)^{n-k}{n\brack k}_{q^2},
+ \qquad q^{(n-k)^2}{n\brack k}_{q^2},
+\]
+and both total finite convolution orders are the Kronecker delta.  This
+global numerator bridge does not remove the field, finite-node injectivity,
+or in-range assumptions from separately normalized Lagrange quotients.
+\end{remark}
 
 \section{A \texorpdfstring{$q$}{q}-Cauchy product identity}
 
@@ -11301,8 +11388,8 @@ inside the proof below does not formalize the result the proof concludes.
   than a mathematical claim.
 \end{description}
 
-Of the 183 labelled results, 21 are \statusexact, 26 are \statuspartial,
-133 are \statusnone, and 3 are \statusna.
+Of the 183 labelled results, 25 are \statusexact, 25 are \statuspartial,
+130 are \statusnone, and 3 are \statusna.
 The formalized part is concentrated exactly where the Fabius development
 needed it: the finite Gaussian-coefficient core, the geometric Lagrange and
 filter calculus, half-base and Thue--Morse cancellation, and the geometric
@@ -11327,7 +11414,7 @@ Chapter & \statusexact & \statuspartial & \statusnone & \statusna\\
 \midrule
 The algebra of $q$-shifted factorials & 1 & 2 & 12 & 0\\
 $q$-integers and Gaussian coefficients & 1 & 2 & 5 & 0\\
-Finite $q$-binomial theorems and inversion & 4 & 1 & 5 & 0\\
+Finite $q$-binomial theorems and inversion & 8 & 0 & 2 & 0\\
 Weighted binomial coefficients and symmetric functions & 0 & 2 & 6 & 0\\
 Partitions, words, paths, and inversion statistics & 1 & 1 & 7 & 0\\
 Finite fields, Grassmannians, and rank enumeration & 0 & 1 & 5 & 0\\
@@ -11349,7 +11436,7 @@ Geometric interpolation and exact $q$-filters & 6 & 2 & 1 & 0\\
 Half-base arithmetic and Prouhet--Thue--Morse cancellation & 6 & 3 & 0 & 0\\
 Geometric uniform sums, $q$-cumulants, and the Fabius--Rvachev functions & 2 & 7 & 3 & 0\\
 \midrule
-\textbf{Total} & 21 & 26 & 133 & 3\\
+\textbf{Total} & 25 & 25 & 130 & 3\\
 \bottomrule
 \end{tabular}
 \end{center}
@@ -11398,8 +11485,14 @@ Result & Status & Lean counterpart\\
 \multicolumn{3}{@{}l}{\itshape Finite $q$-binomial theorems and inversion}\\
 \midrule
 \Cref{thm:finite-qbinomial} & \statusexact & \texttt{finite\_\allowbreak{}qBinomial\_\allowbreak{}theorem}\newline{\footnotesize\texttt{FiniteQBinomialCore}}\\[2pt]
-\Cref{cor:alternating-qbinom} & \statuspartial & \texttt{halfQBinomial\_\allowbreak{}two\_\allowbreak{}pow\_\allowbreak{}sum\_\allowbreak{}eq\_\allowbreak{}zero}\newline{\footnotesize\texttt{HalfQBinomial}}\\[2pt]
-\Cref{cor:weighted-subsets} & \statusnone & ---\\[2pt]
+\Cref{cor:alternating-qbinom} & \statusexact &
+\texttt{sum\_\allowbreak{}gaussianBinomial\_\allowbreak{}alternating\_\allowbreak{}mul\_\allowbreak{}pow},
+\texttt{sum\_\allowbreak{}gaussianBinomial\_\allowbreak{}alternating}\newline
+{\footnotesize\texttt{QBinomialInversion}; arbitrary commutative ring, with the row-zero boundary included}\\[2pt]
+\Cref{cor:weighted-subsets} & \statusexact &
+\texttt{sum\_\allowbreak{}pow\_\allowbreak{}sum\_\allowbreak{}powersetCard\_\allowbreak{}eq\_\allowbreak{}gaussianBinomial},
+\texttt{sum\_\allowbreak{}pow\_\allowbreak{}sum\_\allowbreak{}powersetCard\_\allowbreak{}Icc\_\allowbreak{}eq\_\allowbreak{}gaussianBinomial}\newline
+{\footnotesize\texttt{BitPositionQBinomial}; total zero-based and literal one-based forms}\\[2pt]
 \Cref{thm:reciprocal-finite} & \statusnone & ---\\[2pt]
 \Cref{thm:q-vandermonde} & \statusexact &
 \texttt{gaussianBinomial\_\allowbreak{}add\_\allowbreak{}vandermonde},
@@ -11413,8 +11506,13 @@ Result & Status & Lean counterpart\\
 {\footnotesize\texttt{QBinomialVandermonde}, using
 \texttt{gaussianBinomialInt} from \texttt{FiniteQBinomialCore}; total in
 \(k\in\Z\), with support contained in \(0\le\ell\le N\)}\\[2pt]
-\Cref{thm:qbinomial-inversion} & \statusnone & ---\\[2pt]
-\Cref{cor:qbinomial-orthogonality} & \statusnone & ---\\[2pt]
+\Cref{thm:qbinomial-inversion} & \statusexact &
+\texttt{gaussianBinomial\_\allowbreak{}inversion}\newline
+{\footnotesize\texttt{QBinomialTransform}; module-valued, hence in particular ring-valued sequences}\\[2pt]
+\Cref{cor:qbinomial-orthogonality} & \statusexact &
+\texttt{gaussianBinomialKernel\_\allowbreak{}left\_\allowbreak{}orthogonality},
+\texttt{gaussianBinomialKernel\_\allowbreak{}right\_\allowbreak{}orthogonality}\newline
+{\footnotesize\texttt{QBinomialInversion}; both total \texttt{Icc} convolution orders}\\[2pt]
 \Cref{thm:q-cauchy} & \statusnone & ---\\[2pt]
 \midrule
 \multicolumn{3}{@{}l}{\itshape Weighted binomial coefficients and symmetric functions}\\

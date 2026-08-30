@@ -4914,6 +4914,148 @@ The three natural-shift theorems retain their stated domains, while the last
 two are total in \(k\in\Z\).
 \end{proof}
 
+\begin{theorem}[Weighted subsets and scaled $q$-binomial inversion]
+\label{thm:q-binomial-inversion-formal}
+Let \(R\) be a commutative ring and \(q,s\in R\); the first identity below
+already holds when \(R\) is only a commutative semiring.  For
+\(j\le k\le n\), the Gaussian chain identity is
+\begin{equation}
+ {n\brack k}_q{k\brack j}_q
+ ={n\brack j}_q{n-j\brack k-j}_q.                     \label{eq:q-gaussian-chain}
+\end{equation}
+For every \(m,n\in\N\), the alternating row specializes exactly to
+\begin{align}
+ \sum_{k=0}^{n}(-1)^kq^{\binom k2+mk}{n\brack k}_q
+   &=(q^m;q)_n,                                         \label{eq:q-alternating-general}\\
+ \sum_{k=0}^{n}(-1)^kq^{\binom k2}{n\brack k}_q
+   &=\begin{cases}1,&n=0,\\0,&n>0.\end{cases}          \label{eq:q-alternating-delta}
+\end{align}
+The same finite product has the two exact weighted-subset faces
+\begin{align}
+ \sum_{\substack{T\subseteq\{0,\ldots,N-1\}\\|T|=r}}
+   q^{\sum_{t\in T}t}
+   &=q^{\binom r2}{N\brack r}_q,                        \label{eq:q-subsets-zero-based}\\
+ \sum_{\substack{T\subseteq\{1,\ldots,N\}\\|T|=r}}
+   q^{\sum_{t\in T}t}
+   &=q^{\binom{r+1}{2}}{N\brack r}_q.                  \label{eq:q-subsets-one-based}
+\end{align}
+Both formulas are total in \(N,r\in\N\); above the Gaussian diagonal both
+sides vanish.
+
+Define total lower-triangular kernels on natural indices by
+\begin{align}
+ K^{q,s}_{n,k}&=s^{n-k}{n\brack k}_q,\label{eq:q-scaled-forward-kernel}\\
+ L^{q,s}_{n,k}&=(-s)^{n-k}q^{\binom{n-k}{2}}{n\brack k}_q.
+                                                        \label{eq:q-scaled-inverse-kernel}
+\end{align}
+Natural subtraction causes no ambiguity above the diagonal because the
+Gaussian coefficient is zero there.  With an empty sum when \(n<j\), both
+finite convolution orders are the Kronecker delta:
+\begin{align}
+ \sum_{k\in [j,n]\cap\N}L^{q,s}_{n,k}K^{q,s}_{k,j}
+   &=\delta_{n,j},                                      \label{eq:q-scaled-left-delta}\\
+ \sum_{k\in [j,n]\cap\N}K^{q,s}_{n,k}L^{q,s}_{k,j}
+   &=\delta_{n,j}.                                      \label{eq:q-scaled-right-delta}
+\end{align}
+In particular the scale \(s\) is independent of \(q\) and need not be
+nonzero or invertible.
+
+More generally, let \(M\) be an additive commutative group and an
+\(R\)-module.  For sequences \(a,b:\N\to M\), put
+\begin{equation}
+ (\mathcal T_{q,s}a)_n=\sum_{k=0}^{n}K^{q,s}_{n,k}\,a_k,
+ \qquad
+ (\mathcal T^{-1}_{q,s}b)_n=\sum_{k=0}^{n}L^{q,s}_{n,k}\,b_k,       \label{eq:q-scaled-module-transforms}
+\end{equation}
+where multiplication denotes the scalar action on \(M\).  Then
+\begin{equation}
+ \mathcal T^{-1}_{q,s}\mathcal T_{q,s}=1,
+ \qquad \mathcal T_{q,s}\mathcal T^{-1}_{q,s}=1,
+ \qquad
+ b=\mathcal T_{q,s}a\ \Longleftrightarrow\
+ a=\mathcal T^{-1}_{q,s}b.                              \label{eq:q-scaled-module-inversion}
+\end{equation}
+At \(s=1\) this is classical \(q\)-binomial inversion, now for
+module-valued rather than merely scalar-valued sequences.
+
+There are two useful exact specializations.  The denominator-free geometric
+Lagrange numerator in \eqref{eq:geometric-q-numerator} satisfies globally
+\begin{equation}
+ N_{n,k}(q)=L^{q,q}_{n,k},                               \label{eq:q-geometric-numerator-kernel}
+\end{equation}
+including \(n<k\), without an in-range hypothesis.  At Gaussian base
+\(Q=q^2\) and scale \(s=-q\), put
+\begin{equation}
+ C'_{n,k}=K^{q^2,-q}_{n,k}
+   =(-q)^{n-k}{n\brack k}_{q^2},
+ \qquad
+ B_{n,k}=L^{q^2,-q}_{n,k}
+   =q^{(n-k)^2}{n\brack k}_{q^2}.                        \label{eq:q-gaussian-inverse-kernels}
+\end{equation}
+Then both total finite products satisfy \(C'B=BC'=I\).  These coefficient
+identities use no analytic or nonvanishing assumption.  By contrast, the
+normalized Lagrange quotient in \eqref{eq:geometric-lagrange-gaussian}
+retains its separate field, finite-node injectivity, and displayed in-range
+hypotheses.
+\end{theorem}
+
+\begin{proof}[Formal proof]
+The eight public theorems of \path{BitPositionQBinomial.lean} are, exhaustively,
+\lean{prod_one_add_mul_pow_eq_gaussianBinomial},
+\lean{prod_one_add_pow_eq_sum_gaussianBinomial},
+\lean{sum_powersetCard_two_pow},
+\lean{sum_pow_bitPositionSum_filter_eq_gaussianBinomial},
+\lean{sum_pow_bitPositionSum_filter_eq_gaussianBinomial'},
+\lean{sum_pow_sum_powersetCard_eq_gaussianBinomial},
+\lean{sum_pow_sum_powersetCard_Icc_eq_gaussianBinomial}, and
+\lean{gaussianBinomial_one_eq_choose}.  The sixth and seventh declarations
+are \eqref{eq:q-subsets-zero-based} and
+\eqref{eq:q-subsets-one-based}.
+
+The four definitions and seven theorems of
+\path{QBinomialInversion.lean} are, exhaustively,
+\lean{gaussianBinomial_mul},
+\lean{sum_gaussianBinomial_alternating_mul_pow},
+\lean{sum_gaussianBinomial_alternating},
+\lean{gaussianBinomialKernel},
+\lean{gaussianBinomialInverseKernel},
+\lean{scaledGaussianBinomialKernel},
+\lean{scaledGaussianBinomialInverseKernel},
+\lean{gaussianBinomialKernel_left_orthogonality},
+\lean{gaussianBinomialKernel_right_orthogonality},
+\lean{scaledGaussianBinomialKernel_left_orthogonality}, and
+\lean{scaledGaussianBinomialKernel_right_orthogonality}.  They prove
+\eqref{eq:q-gaussian-chain},
+\eqref{eq:q-alternating-general}--\eqref{eq:q-alternating-delta}, and both
+unscaled and scaled forms of
+\eqref{eq:q-scaled-left-delta}--\eqref{eq:q-scaled-right-delta}.
+
+The four definitions and four theorems of \path{QBinomialTransform.lean} are,
+exhaustively,
+\lean{scaledGaussianBinomialTransform},
+\lean{scaledGaussianBinomialInverseTransform},
+\lean{scaledGaussianBinomialInverseTransform_transform},
+\lean{scaledGaussianBinomialTransform_inverseTransform},
+\lean{scaledGaussianBinomial_inversion},
+\lean{gaussianBinomialTransform},
+\lean{gaussianBinomialInverseTransform}, and
+\lean{gaussianBinomial_inversion}.  They prove
+\eqref{eq:q-scaled-module-transforms}--\eqref{eq:q-scaled-module-inversion}
+under exactly the module assumptions stated above.
+
+Finally, the two definitions and five theorems of
+\path{QBinomialInversionSpecializations.lean} are, exhaustively,
+\lean{geometricQBinomialWeightNumerator_eq_scaledGaussianBinomialInverseKernel},
+\lean{qGaussianResidualCoeff},
+\lean{qGaussianReconstructionCoeff},
+\lean{qGaussianResidualCoeff_eq},
+\lean{qGaussianReconstructionCoeff_eq},
+\lean{qGaussianReconstructionCoeff_residualCoeff_delta}, and
+\lean{qGaussianResidualCoeff_reconstructionCoeff_delta}.  These are
+\eqref{eq:q-geometric-numerator-kernel}, the two closed forms in
+\eqref{eq:q-gaussian-inverse-kernels}, and both convolution orders.
+\end{proof}
+
 \begin{theorem}[Reversed Gaussian row, Lagrange weights, and all residual moments]
 \label{thm:geometric-q-binomial-lagrange}
 Let $R$ be a commutative ring and $q\in R$.  The zero-extended numerator row is
@@ -8422,6 +8564,11 @@ and geometric Lagrange/Richardson exactness &
 \path{GeometricLagrangeQMoments.lean}\\
 Phase-locked reciprocal-grid Richardson algebra &
 \path{LambertPhaseLockedRichardson.lean}\\
+Weighted-subset Gaussian enumeration, scalar kernels, module-valued
+$q$-binomial inversion, and q-Gaussian specializations &
+\path{BitPositionQBinomial.lean}, \path{QBinomialInversion.lean},
+\path{QBinomialTransform.lean},
+\path{QBinomialInversionSpecializations.lean}\\
 Dyadic and \(q\)-binomial formulas &
 \path{DyadicClosedForm.lean}, \path{DyadicAnalytic.lean}, \path{GlobalDyadic.lean},
 \path{DyadicCorrectness.lean}, \path{FiniteQBinomialCore.lean},

@@ -5,7 +5,16 @@ sequences and the q-series calculus that organizes them: the
 exponent-sequence convolution monoid with its Newton-basis frontiers, and
 q-binomial Richardson acceleration of geometric sinc products. The
 denominator-free Gaussian/q-binomial core used by both is formalized at arbitrary
-ratio. The normalized geometric-Lagrange and analytic Lagrange layers additionally
+ratio. `BitPositionQBinomial.lean` gives both the zero-based and literal
+one-based weighted-subset enumerations. `QBinomialInversion.lean` proves the
+Gaussian chain law, general alternating rows, and both finite convolution
+orders for unscaled and independently scaled kernels; the scale is arbitrary
+and need not be invertible. `QBinomialTransform.lean` packages both pointwise
+compositions and the exact inversion iff for sequences in any module over a
+commutative ring. `QBinomialInversionSpecializations.lean` identifies the
+denominator-free geometric numerator globally with the scaled inverse kernel
+and proves both q-Gaussian coefficient inversions at base `q^2`, scale `-q`.
+The normalized geometric-Lagrange and analytic Lagrange layers additionally
 assume injectivity of `j |-> q^j` on the finite node set (see the status boxes and
 crosswalk paragraphs inside the documents). `AnalyticSeriesFilter.lean` carries the core to exact
 diagonal and Gaussian-tail identities for unconditionally summable sampled
@@ -280,8 +289,12 @@ Chern–Dilcher–Jiu deleted-singularity identity and Ramanujan's ₁ψ₁
 verified numerically to 30 digits; one dominated-convergence majorant
 repaired with an `% ed.:` note).
 
-Its current formalization ledger has 183 labelled results: 21 exact, 26
-partial, 133 with no counterpart, and 3 interface-only. Both orientations
+Its current formalization ledger has 183 labelled results: 25 exact, 25
+partial, 130 with no counterpart, and 3 interface-only. The finite
+q-binomial/inversion chapter now accounts for 8 exact, 0 partial, and 2
+unformalized results. Its alternating sums, both weighted-subset conventions,
+named module-valued inversion iff, and both kernel orthogonalities are exact.
+Both orientations
 of q-Vandermonde and both central-support presentations are exact in
 `QBinomialVandermonde.lean`; the monograph's single signed shifted-central
 formula is now exact for every integer shift through the zero-extended
