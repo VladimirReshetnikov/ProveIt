@@ -185,6 +185,7 @@ import FabiusFunction.OrthogonalPolynomialParity
 import FabiusFunction.OrthogonalPolynomialRecurrence
 import FabiusFunction.OrthogonalPolynomialJacobi
 import FabiusFunction.CompositeMeshExactness
+import FabiusFunction.RvachevPolynomialSynthesis
 import FabiusFunction.CombFirstDefect
 import FabiusFunction.CombDefectSeries
 import FabiusFunction.CauchySurvival
@@ -309,6 +310,7 @@ import FabiusFunction.FabiusLegendreLeastSquares
 import FabiusFunction.FabiusLegendreEnergy
 import FabiusFunction.FabiusLegendreRationalEnergy
 import FabiusFunction.FabiusSquareEnergyFourier
+import FabiusFunction.FabiusLegendreTranslateBlocks
 import FabiusFunction.FabiusBinaryReductionSeries
 import FabiusFunction.FabiusComputability
 import FabiusFunction.Monotonicity
