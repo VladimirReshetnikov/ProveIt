@@ -1,5 +1,6 @@
 import FabiusFunction.CompleteHomogeneous
 import FabiusFunction.FiniteQBinomialCore
+import FabiusFunction.QBinomialCauchy
 import FabiusFunction.QBinomialInversion
 import FabiusFunction.QBinomialTransform
 import FabiusFunction.QBinomialVandermonde
@@ -169,6 +170,8 @@ import FabiusFunction.SmoothingOperatorExponential
 import FabiusFunction.AlgebraicInverseGerm
 import FabiusFunction.AlgebraicInverseGermAnalytic
 import FabiusFunction.AlgebraicInverseGermBinomial
+import FabiusFunction.QuarterCatalanGerm
+import FabiusFunction.FabiusInverseQuarterJet
 import FabiusFunction.GeometricCgfTails
 import FabiusFunction.GeometricTailDictionary
 import FabiusFunction.GeometricUniformDictionary
