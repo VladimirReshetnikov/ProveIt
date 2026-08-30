@@ -1016,7 +1016,23 @@ non-lattice real $x$, \lean{CentralLobeConcavity} and
 \lean{SideLobeConcavity} give strict negativity of its termwise second
 derivative on the central and on every side lobe, and
 \lean{OnePeakPerLobe} assembles them.  The closed derivative formulas
-\eqref{eq:lobe-derivatives} themselves are not separately stated there.
+\eqref{eq:lobe-derivatives} themselves are now stated, in
+\lean{LobeDerivativeFormulas}
+(\lean{Fabius.tsum\_central\_log\_deriv\_eq},
+\lean{Fabius.tsum\_central\_log\_second\_deriv\_eq}), and the gap between
+the two indexings turns out to be combinatorial rather than analytic: it
+is the same fibre equivalence \lean{Fabius.dyadicFactorEquiv} that turns
+the scale product into the canonical product.  The fibre of
+$(h,r)\mapsto2^h(r+1)$ over $k$ has exactly $\vtwo(k)+1$ elements and the
+summand depends only on the fibre base, so the lattice sum collapses to
+the integer sum with that multiplicity.  This is stated once for an
+arbitrary summand (\lean{Fabius.tsum\_lobeZero\_regroup}), which is the
+reusable part: \emph{any} absolutely convergent sum over the dyadic zero
+lattice is the sum over the positive integers weighted by $\vtwo(k)+1$.
+The two derivative formulas are instances.  Summability of the two
+families had to be supplied, since \lean{CentralLobeConcavity} establishes
+it only inside a proof and does not export it; both are dominated by
+$1/(2^h(r+1))^2$, because $L\ge1$ gives $L^2-x^2\ge L^2(1-x^2)$.
 The following comparison is the workhorse of the mean layer; it does not
 appear in any of the four documents, and it is not formalized either ---
 the log-concavity input is, the quantitative $\delta_{\min}$ and
