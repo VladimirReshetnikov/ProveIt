@@ -137,6 +137,27 @@ theorem fabiusSquareEnergyPartialSumRat_pos (N : ℕ) :
   rw [fabiusSquareEnergyTermRat_zero] at hle
   exact lt_of_lt_of_le (by norm_num : (0 : ℚ) < 1 / 4) hle
 
+/-- The zeroth rational Legendre-energy partial sum is `1 / 4`. -/
+@[simp] theorem fabiusSquareEnergyPartialSumRat_zero :
+    fabiusSquareEnergyPartialSumRat 0 = 1 / 4 := by
+  native_decide
+
+/-- The first rational Legendre-energy partial sum is `7 / 18`. -/
+theorem fabiusSquareEnergyPartialSumRat_one :
+    fabiusSquareEnergyPartialSumRat 1 = 7 / 18 := by
+  native_decide
+
+/-- The second rational Legendre-energy partial sum is `3271 / 8100`. -/
+theorem fabiusSquareEnergyPartialSumRat_two :
+    fabiusSquareEnergyPartialSumRat 2 = 3271 / 8100 := by
+  native_decide
+
+/-- The third rational Legendre-energy partial sum is
+`3246043 / 8037225`. -/
+theorem fabiusSquareEnergyPartialSumRat_three :
+    fabiusSquareEnergyPartialSumRat 3 = 3246043 / 8037225 := by
+  native_decide
+
 /-- The real casts of the exact rational energy terms sum to the square
 energy `A₂`. -/
 theorem hasSum_fabiusSquareEnergy_ratCast :
