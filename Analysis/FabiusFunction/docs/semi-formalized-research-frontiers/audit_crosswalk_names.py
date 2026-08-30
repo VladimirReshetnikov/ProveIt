@@ -10,7 +10,9 @@ and `Fabius.IsOriginalFabius.mk_of_derivative_law` are matched whole
 rather than truncated at the first dot, which is what previously made
 them look missing.
 
-Exit status is 1 when anything is unresolved, so this can gate a commit.
+Sections explicitly titled ``Suggested theorem names`` describe proposed API,
+not compiled crosswalks, and are excluded. Exit status is 1 when any other
+citation is unresolved, so this can gate a commit.
 """
 import io, os, re, sys
 from pathlib import Path
@@ -65,6 +67,7 @@ for full in list(defined) + list(namespaces):
 
 # 2. Citations.  Dotted names are captured whole.
 CITE = re.compile(r"Fabius\.((?:[A-Za-z0-9_'\\]|\.(?=[A-Za-z_]))+)")
+SECTION = re.compile(r'^\s*\\(?:chapter|section)\*?\{([^}]*)\}')
 cited = {}
 for root, _dirs, files in os.walk(DOCS):
     for fn in sorted(files):
@@ -72,7 +75,15 @@ for root, _dirs, files in os.walk(DOCS):
             continue
         path = os.path.join(root, fn)
         with io.open(path, encoding='utf-8', errors='replace') as fh:
+            suggested_names = False
             for i, line in enumerate(fh, 1):
+                heading = SECTION.match(line)
+                if heading:
+                    suggested_names = (
+                        heading.group(1).strip().casefold() ==
+                        'suggested theorem names')
+                if suggested_names:
+                    continue
                 # Discretionary TeX break commands may occur inside long
                 # monospaced Lean identifiers.  They affect layout only and
                 # are not part of the cited declaration name.
