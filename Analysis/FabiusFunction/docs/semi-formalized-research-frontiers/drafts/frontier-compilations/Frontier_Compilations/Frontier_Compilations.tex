@@ -176,8 +176,8 @@ This volume consolidates ten source reports.  Their theorem and proof bodies are
 modulo removal of standalone document, title-page, and table-of-contents wrappers and
 mechanical prefixing of labels, citation keys, macro names, and asset paths.  Later edits add
 status-only Lean crosswalk annotations throughout, including exact-support,
-absolute-continuity, null-singleton, analytic-series-filter, and fractional-Volterra results
-proved after the reports' pinned audits.
+absolute-continuity, null-singleton, contractive affine fixed-point, analytic-series-filter,
+and fractional-Volterra results proved after the reports' pinned audits.
 The hashes below identify the unmodified source files at their former paths.  The absorbed
 standalone drafts are deleted from the working tree; git history is the archive.
 \begin{itemize}
@@ -14659,8 +14659,9 @@ block.  Finally, we give a phase-preserving Lagrange/Richardson filter for asymp
 remainders whose coefficients are periodic in a lower-Lambert phase, together with a
 Fourier phase-averaging filter and exact Lambert-$W$ node construction.
 
-A post-snapshot Lean audit, checked at compiled source checkpoint
-\path{e6f535e5d}, now supplies the generic continuous-linear naturality,
+The weighted-law, CDF, and affine fixed-point portion of the post-snapshot Lean audit,
+checked at compiled source checkpoint
+\path{d312c0603}, now supplies the generic continuous-linear naturality,
 conditional operator/scalar affine-recursion, real absolute-continuity, and exact-support
 engines for arbitrary norm-summable weighted uniform series.  It also defines this report's
 geometric-\(q\) weights, series, law, CDF, and explicit positive-ratio density.  For
@@ -14669,9 +14670,19 @@ midpoint.  For \(0\le q<1\), its exterior tails are exactly zero and one; for \(
 the two conditioning integrals, pointwise derivative formula, Radon--Nikodym density,
 density reflection and compact support, and \(C^\infty\) regularity of both CDF and density
 are formal.  At \(q=1/2\), exact all-real declarations identify the CDF with the bounded
-Fabius function and the density with the affine Rvachev up-function.  The report's Fourier
-products and inversion proof, moments and transforms, higher-derivative and endpoint-flatness
-wrappers, shape theory, and fixed-point uniqueness remain outside that promotion.
+Fabius function and the density with the affine Rvachev up-function.  A new generic
+affine-independent-copy API proves probability fixed-point uniqueness on every complete
+second-countable real inner-product target for a measurable digit map and \(|q|<1\), and its
+geometric corollary characterizes this report's law even at \(q=0\) and negative \(q\), with
+no support, density, or moment assumptions.  A later mainline tranche, rechecked in the
+current combined full-facade build, gives the phase-bearing sinc prefixes an exact finite
+residual formula and proves their pointwise convergence to the characteristic function for
+every \(|q|<1\).  The existing \path{geometricSincProduct} packages the same sinc factors,
+after frequency rescaling, as a \path{tprod}; a named characteristic-function bridge to it
+(or explicit \path{HasProd} theorem), compact-uniform convergence of the characteristic
+prefixes, the report's rapid-decay and inversion proof, explicit Bernoulli-cumulant/Bell-moment formulas and
+asymptotics, further transforms, higher-derivative and endpoint-flatness wrappers, and shape
+theory remain outside that promotion.
 
 The word \emph{new} is used only in a corpus-relative sense: these statements were not found
 in the 57 TeX sources inspected in the specified repository snapshot.  No claim of global
@@ -14691,7 +14702,7 @@ the Thue--Morse atlas, all included paper sources, and the twelve Fourier-decay 
 audits.
 
 Since that pinned snapshot, and as checked at compiled source checkpoint
-\path{e6f535e5d}, \path{WeightedUniformSeries.lean},
+\path{d312c0603}, \path{WeightedUniformSeries.lean},
 \path{WeightedUniformDistribution.lean}, and \path{WeightedUniformSupport.lean} have
 formalized the reusable product space, absolutely summable Banach-valued uniform-coordinate
 series, and their pushforward laws, including the eleven-declaration generic naturality and
@@ -14719,11 +14730,28 @@ pointwise derivative, the resulting Radon--Nikodym identity, density symmetry an
 support, and \(C^\infty\) regularity.  \path{ProbabilityRepresentation.lean} supplies the
 all-real \(q=1/2\) Fabius-CDF and Rvachev-density bridges.
 
+The new module \path{AffineIndependentCopy.lean} adds one definition and eight theorems:
+the affine independent-copy law, probability preservation, its equality with the direct
+product pushforward, the one-step characteristic-function factorization and fixed-point
+recurrence, its finite iterate, uniqueness from a common contractive characteristic-function
+recurrence, and uniqueness in convolution and product-map forms.  The uniqueness scope is
+an arbitrary complete second-countable real inner-product target with its Borel structure,
+an arbitrary probability digit space and measurable digit map, probability candidate laws,
+and a real scalar satisfying \(|q|<1\).  It includes \(q=0\) and negative \(q\), and assumes
+no support, absolute continuity, density, or moments.  The corollary
+\path{eq_geometricUniformDistribution_of_selfSimilar} in
+\path{GeometricUniformUniqueness.lean} therefore characterizes the named geometric-uniform
+law by its displayed affine independent-copy equation throughout that full parameter range.
+
 The definition of \path{geometricUniformDensity} is total, but no density formula or
 Radon--Nikodym interpretation is claimed here for \(q\le0\).  Also still frontier are the
-characteristic-function products, rapid-decay bound and Fourier inversion route, a closed
-higher-derivative refinement and endpoint-flatness wrapper, the shape transition, moments
-and transforms, and uniqueness of the affine fixed point.
+named characteristic-function bridge to the existing \path{geometricSincProduct}
+\path{tprod} (or explicit \path{HasProd} theorem) and compact-uniform convergence beyond
+the formal pointwise phase-bearing sinc-prefix limit, the rapid-decay bound and Fourier inversion
+route, a closed higher-derivative refinement and endpoint-flatness wrapper, the shape
+transition, further transforms, and explicit Bernoulli-cumulant/Bell-moment formulas and
+asymptotics.  The geometric tail dictionary already gives finite characteristic-function,
+MGF, and CGF tail factorizations.
 \end{boxedremark}
 
 
@@ -14874,10 +14902,38 @@ every \(|q|<1\).  On \(0\le q<1\),
 \path{geometricUniformCDF_one_of_one_le} give the exact exterior values.  For \(0<q<1\),
 \path{geometricUniformDensity_reflection} packages the displayed density symmetry for the
 explicit density \path{geometricUniformDensity}; its Radon--Nikodym interpretation and
-regularity are recorded in the crosswalk below.
+regularity are recorded in the crosswalk below.  Independently of those positive-ratio
+density results, \path{eq_geometricUniformDistribution_of_selfSimilar} proves that the
+affine independent-copy equation uniquely determines the probability law for every
+\(|q|<1\), including \(q=0\) and negative \(q\), without any support, density, or moment
+hypothesis on the competing measure.
 
 \paragraph{Exact public API crosswalk.}
-All names in this paragraph lie in the namespace
+The one-definition, eight-theorem contractive layer in
+\path{AffineIndependentCopy.lean} lies in the namespace \path{ProbabilityTheory}.  Its
+public declarations are
+\path{affineIndependentCopyLaw},
+\path{affineIndependentCopyLaw_isProbabilityMeasure},
+\path{affineIndependentCopyLaw_eq_map_prod},
+\path{charFun_affineIndependentCopyLaw},
+\path{charFun_eq_mul_charFun_of_affineIndependentCopy_fixedPoint},
+\path{charFun_iterate_of_affineIndependentCopy_fixedPoint},
+\path{eq_of_charFun_affine_recurrence},
+\path{affineIndependentCopyLaw_fixedPoint_unique}, and
+\path{affineIndependentCopy_map_fixedPoint_unique}.
+They define
+\[
+ T_{\rho,d,q}(\mu)=d_*\rho\ast(q\,\cdot)_*\mu,
+\]
+identify it with the pushforward of \(\rho\otimes\mu\) by
+\((a,x)\mapsto d(a)+qx\), prove probability preservation and characteristic-function
+factorization, iterate the fixed-point recurrence to \(q^n t\), and prove uniqueness.
+The final uniqueness theorems assume a complete second-countable real inner-product target
+with its Borel structure, a probability digit space with measurable digit map, probability
+candidate laws, and \(|q|<1\); they need no support, absolute-continuity, density, or moment
+hypothesis and include \(q=0\) and negative contractions.
+
+The remaining weighted-series names in this crosswalk lie in the namespace
 \path{Fabius.ProbabilityRepresentation}.  The generic almost-everywhere recursion assumes
 measurability of the tail statistic and combining map but not of the recursively described
 function; its pointwise wrapper is separate.  Continuous-linear naturality requires
@@ -14967,6 +15023,38 @@ The twenty-three declarations in the named specialization are
 \path{weightedSumDistribution_eq_geometricUniformDistribution_one_half} are the exact
 series- and law-level bridges at \(q=1/2\), while
 \path{weightedSumDistribution_support_eq_Icc} is the exact dyadic support corollary.
+The single declaration in \path{GeometricUniformUniqueness.lean} is
+\path{eq_geometricUniformDistribution_of_selfSimilar}.  For every real \(q\) with
+\(|q|<1\), it concludes \(\mu=\mathcal L(X_q)\) from
+\[
+ \mu=\bigl((u,x)\mapsto(1-q)u+qx\bigr)_*
+      \bigl(\lambda_{[0,1]}\otimes\mu\bigr)
+\]
+for an arbitrary probability measure \(\mu\), with no support, density, or moment premise.
+
+The predecessor \path{GeometricUniformDictionary.lean} already supplies finite measure,
+characteristic-function, MGF, and CGF tail factorizations.  The six public declarations in
+\path{GeometricSincFactorization.lean} are
+\path{charFun_geometricUniformDigit},
+\path{charFun_geometricUniformDistribution_prefix},
+\path{charFun_geometricUniformDistribution_prefix_sinc},
+\path{tendsto_prefix_sinc_charFun},
+\path{charFun_weightedSumDistribution_prefix_sinc}, and
+\path{tendsto_prefix_sinc_charFun_weightedSumDistribution}.
+The digit formula holds for every real \(q\).  For every \(|q|<1\), \(m\in\N\), and
+\(t\in\R\), if \(\phi_q(t)=\operatorname{charFun}(\mathcal L(X_q))(t)\), then
+\[
+ \phi_q(t)=e^{\ii(1-q^m)t/2}
+ \left(\prod_{k=0}^{m-1}
+   \sinc\!\left(\frac{(1-q)q^kt}{2}\right)\right)
+ \phi_q(q^m t),
+\]
+and the phase-bearing prefix without the residual converges pointwise to \(\phi_q(t)\).
+This includes \(q=0\) and negative \(q\); the last two declarations are exact
+\(q=1/2\) wrappers for the classical weighted-sum law.  The existing
+\path{geometricSincProduct} packages the same factors, after frequency rescaling, as a
+\path{tprod}; no named characteristic-function bridge to it (or explicit \path{HasProd}
+theorem) or uniform-on-compacts version of the characteristic-prefix convergence is asserted.
 
 The three generic real-CDF declarations in \path{ContinuousCDF.lean} are
 \path{continuous_cdf_of_nullSingleton},
@@ -15091,8 +15179,11 @@ derivative of the CDF.  Finally,
 measure with this nonnegative Radon--Nikodym density.  The exterior-value convention used
 in the proposition is formalized for \(0\le q<1\) by
 \path{geometricUniformCDF_zero_of_nonpos} and
-\path{geometricUniformCDF_one_of_one_le}.  None of these declarations asserts uniqueness
-of the affine measure fixed point, and the classical density interpretation has not been
+\path{geometricUniformCDF_one_of_one_le}.  Conversely,
+\path{eq_geometricUniformDistribution_of_selfSimilar} now proves that this product-map
+equation characterizes the geometric-uniform law among all probability measures whenever
+\(|q|<1\).  The characterization includes \(q=0\) and negative \(q\) and requires no
+support, density, or moment hypothesis.  The classical density interpretation has not been
 extended to the totalized \(q\le0\) formula.
 
 For $q=1/2$ and $0\le x\le1/2$, the second term in
@@ -15173,10 +15264,15 @@ formalization frontier independently of this Fourier proof:
 \path{geometricUniformDensity_hasCompactSupport} gives compact support, and
 \path{contDiff_geometricUniformCDF} and
 \path{contDiff_geometricUniformDensity} give \(C^\infty\) regularity.  The centered law and
-density are not separately named, and the product formulas
-\eqref{p10:eq:phi-z}--\eqref{p10:eq:phi-y}, the rapid bound
-\eqref{p10:eq:rapid-bound}, and the absolutely convergent Fourier-inversion formulas for
-higher derivatives have not been formalized.
+density are not separately named.  For the uncentered law, however,
+\path{GeometricSincFactorization.lean} proves the exact finite residual formula and
+pointwise convergence of the phase-bearing sinc prefixes for every \(|q|<1\); removing the
+limiting phase gives the paper-level centered product, while
+\path{geometricSincProduct} packages the same factors after frequency rescaling as a
+\path{tprod}.  There is not yet a named centered wrapper, a named characteristic-function
+bridge to that product (or explicit \path{HasProd} theorem), or compact-uniform convergence
+theorem for the characteristic prefixes.  The rapid bound \eqref{p10:eq:rapid-bound} and the absolutely convergent
+Fourier-inversion formulas for higher derivatives have not been formalized.
 
 \begin{remark}[Relation to the existing Fourier-decay campaign]
 Bound \eqref{p10:eq:rapid-bound} is intentionally elementary.  Optimizing $N$ as a function of
@@ -16365,19 +16461,30 @@ The following order minimizes dependence on asymptotic machinery.
 \item Use the exact topological support \([0,1]\), absolute continuity, and null singletons to
       define the real CDF, derive its conditioning equations and explicit density refinement,
       and bootstrap compactly supported \(C^\infty\) regularity.
-\item Prove uniqueness of the affine measure fixed point in an appropriate probability class.
-\item Derive characteristic-function products from finite products plus dominated convergence.
+\item Specialize a generic contractive affine-independent-copy theorem to characterize the
+      geometric-uniform law among all probability fixed points.
+\item Derive the characteristic-function sinc product as a pointwise limit of exact finite
+      residual factorizations.
 \end{enumerate}
 
-At compiled source checkpoint \path{e6f535e5d}, items 1--3 have been formalized, in
+At the affine-law compiled source checkpoint \path{d312c0603}, items 1--4 had been formalized, in
 stronger pointwise form where applicable, by \path{WeightedUniformSeries.lean},
 \path{WeightedUniformDistribution.lean}, \path{WeightedUniformSupport.lean},
 \path{GeometricUniformLaw.lean}, \path{ContinuousCDF.lean}, and
-\path{GeometricUniformCDF.lean}.  This includes law reflection, independent-copy affine
+\path{GeometricUniformCDF.lean}, together with the generic
+\path{AffineIndependentCopy.lean} and its specialization
+\path{GeometricUniformUniqueness.lean}.  This includes law reflection, independent-copy affine
 refinement, absolute continuity, null singletons, exact support, the named CDF and both
 conditioning integrals, its explicit Radon--Nikodym density, compact support, and
-\(C^\infty\) regularity.  Fixed-point uniqueness in item 4 and the
-characteristic-function program in item 5 remain open.
+\(C^\infty\) regularity, as well as fixed-point uniqueness for every real \(|q|<1\), with
+\(q=0\) and negative contractions included and no support, density, or moment assumptions.
+The live \path{GeometricUniformDictionary.lean} and
+\path{GeometricSincFactorization.lean} now complete item 5 in finite-residual and pointwise
+\path{Tendsto} form for every \(|q|<1\), including exact dyadic wrappers, while
+\path{geometricSincProduct} packages the same factors after frequency rescaling as a
+\path{tprod}.  A named characteristic-function bridge to that product (or explicit
+\path{HasProd} theorem), compact-uniform convergence of the characteristic prefixes, and
+quantitative Fourier estimates remain in the analysis layer.
 
 \subsection{Analysis layer}
 

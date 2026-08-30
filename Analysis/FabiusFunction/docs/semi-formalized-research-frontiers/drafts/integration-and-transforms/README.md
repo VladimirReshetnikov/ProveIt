@@ -4,7 +4,7 @@ Antiderivatives, integral calculus, transform dualities, and fractional
 calculus of the Fabius–Rvachev system, consolidated (2026-08-28) into
 the single volume
 [`Integration_and_Transform_Frontiers/`](Integration_and_Transform_Frontiers/)
-(369 pages; twelve parts):
+(370 pp, twelve parts):
 
 - **Part I** — *Antiderivatives of Monomially Weighted Fabius-Type
   Functions* (formerly `Fabius_Antiderivatives_Report/`);
@@ -42,27 +42,21 @@ asset paths mechanically prefixed per part; no mathematical content
 altered) and their directories deleted; provenance with SHA-256 hashes
 is recorded in the volume itself, and git history is the archive.
 
-The current ordinary Cauchy–Stieltjes foundation is formalized in
-`CauchyTransform.lean`: it defines the report-oriented transforms of the
-canonical up and unit-interval laws, proves their measure forms, the up-density
-form, holomorphy off the named interval cuts, first-derivative kernel formulas,
-and the affine bridge.  In Lean's totalized Bochner-integral convention the
-bridge holds for every complex argument; in its classical analytic
-interpretation it reads `S(z) = 2 R(2z - 1)` off `[0,1]`, equivalently in the
-reverse direction off `[-1,1]`.  `CauchyCDF.lean` adds atom-exact
-integration by parts for a finite measure almost everywhere supported on an
-ordered compact interval and a spectral parameter off its complexification,
-its probability-CDF normalization, and the exact Fabius formula
-`S(z) = (z - 1)⁻¹ - ∫₀¹ F(t) (z - t)⁻² dt` on the unit-interval
-slit domain.  `CauchyRenormalization.lean` proves invariance of the up-law
-slit domain under both dyadic branches, the exact equation
-`R'(z) = 2 (R(2z + 1) - R(2z - 1))`, and its all-order finite Thue--Morse
-derivative orbit for every natural order.  The affine bridge makes a
-unit-interval Stieltjes DDE an unexported consequence; no named wrapper is
-claimed.  Logarithmic fixed points, survival and higher resolvent-power
-wrappers, the separate higher-kernel integral identity, moment/Laurent and
-Laplace/Fourier expansions, boundary/Plemelj theory, generalized complex
-order, and second-kind/J-fraction/Padé transform identification remain open.
+The current ordinary Cauchy–Stieltjes layer is formalized across
+`CauchyTransform.lean`, `CauchyCDF.lean`, `CauchySurvival.lean`,
+`CauchyHigherPowers.lean`, the `Stieltjes*.lean` modules,
+`PoissonApproximateIdentity.lean`, `PoissonMassSwap.lean`,
+`OrthogonalPolynomialJacobi.lean`, and `CauchyRenormalization.lean`. It includes
+the report-oriented unit and up-law transforms and affine bridge; CDF and
+survival integration by parts at every positive resolvent power; real
+logarithmic and real-order resolvent hierarchies; real and complex exterior
+Laurent expansions; finite-height Herglotz–Poisson identities; integrated
+interval Stieltjes–Perron inversion; initial exact Jacobi data; and the up-law
+derivative DDE with its all-order finite Thue–Morse orbit. A direct named
+unit-interval Stieltjes DDE, complex logarithmic continuation, named
+Laplace/Fourier forms, complex order, pointwise/nontangential Plemelj and
+principal-value Hilbert-transform formulas, the full J-fraction/Padé package,
+and a separate higher-kernel integral form of the Thue–Morse orbit remain open.
 
 Part VI's positive-real causal Rvachev primitive and semigroup are now exact
 Lean theorems.  `FabiusFractionalVolterra.lean` defines the total

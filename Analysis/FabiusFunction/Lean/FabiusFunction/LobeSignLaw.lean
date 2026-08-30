@@ -88,8 +88,10 @@ vanishes exactly when `m_a(|n|) ≠ 0`
 `generalizedRvachevProduct_eq_zero_iff_int`), and in the remaining
 case `m_a(n) = 0` the sign is the one this law predicts
 (`FabiusFunction.CanonicalIntegerPoint`,
-`parityCharacter_mul_canonicalRealProduct_natCast_pos`).  So the two
-modules together cover every real point.  The volume's automaticity criterion for
+`parityCharacter_mul_canonicalRealProduct_natCast_pos`).  Thus this
+module and the integer-point modules cover the nonnegative axis;
+`FabiusFunction.LobeSignComplete` combines them with reflection into a
+whole-axis dichotomy.  The volume's automaticity criterion for
 `ε_a` is not touched here; it is addressed elsewhere, in
 `ParityCharacterKernel.lean`, which proves that the `2`-kernel of
 `ε_a` is finite exactly when the parity word is eventually periodic —

@@ -32,8 +32,8 @@
   citecolor=deepgreen,
   urlcolor=linkblue,
   pdftitle={Exponent-Sequence and q-Series Frontiers for the Fabius--Rvachev System},
-  pdfauthor={OpenAI GPT-5.6 Pro},
-  pdfsubject={New spectral, cumulant, q-Richardson, automatic-sequence, Newton-basis, and endpoint results},
+  pdfauthor={},
+  pdfsubject={Seven-part consolidated research frontier on exponent sequences, q-series, sinc products, and atomic functions},
   pdfkeywords={Fabius function, inverse Fabius function, Rvachev up-function, Thue-Morse, q-binomial, Richardson extrapolation, Bell polynomial, Bernoulli polynomial, Lambert W}
 }
 
@@ -461,8 +461,9 @@ For every admissible $a$:
 \item if $\sum_ha_h=\infty$, then $X_a$ has a compactly supported $C^\infty$ density;
       if only finitely many $a_h$ are nonzero, its law is a finite uniform box spline.
 \end{enumerate}
-All four assertions are \statusproved.  Formally, only the classical case $a_h\equiv1$ is
-represented: \lean{Fabius.rvachevFourier_eq_product} (\lean{FourierProduct.lean}) identifies the
+All four assertions are \statusproved.  At the probability-law level, only the classical case
+$a_h\equiv1$ is represented: \lean{Fabius.rvachevFourier_eq_product}
+(\lean{FourierProduct.lean}) identifies the
 Fourier transform of the Rvachev up-function with the sinc product \eqref{p1:eq:Phi-a} at
 $a_h\equiv1$, in the same normalization \eqref{p1:eq:sinc-normalized}, and
 \lean{Fabius.ProbabilityRepresentation.rvachevUp_eq_weightedSum_probability_global}
@@ -494,18 +495,21 @@ divisor is complete --- $\Phi_a$ vanishes exactly at the nonzero integers $n$ wi
 $m_a(\lvert n\rvert)>0$, to order exactly $m_a(\lvert n\rvert)$, and nowhere else
 (\path{GeneralizedZeroDivisor.lean}).
 
-The characteristic-function reading of (i) now has all three of its prerequisites, though not
-the statement itself: $\Phi_a(0)=1$, continuity from entirety, and
+The characteristic-function reading of (i) now has three elementary necessary checks, though
+not positive-definiteness or the statement itself: $\Phi_a(0)=1$, continuity from entirety, and
 \[
  \lVert\Phi_a(x)\rVert\le1
  \qquad\text{for every real }x
 \]
 (\lean{Fabius.norm\_generalizedRvachevProduct\_ofReal\_le\_one},
-\path{GeneralizedRealBound.lean}), which had been missing at every weight, the constant one
-included.  The bound is attained at $x=0$, so it is sharp.
+\path{GeneralizedRealBound.lean}), which had been missing for arbitrary admissible weights.
+The classical constant-weight case already appears as
+\lean{Fabius.norm\_rvachevFourierProduct\_le\_one} in \path{BaselineDecay.lean}.
+The generalized bound is attained at $x=0$, so it is sharp.
 
 What remains \emph{not} formalized is the probabilistic content proper: the support statement
-(i) --- that $R_a$ is the support radius rather than merely the number $A_a(1/2)$ --- the
+(i) --- that $R_a=A_a(1/2)/2$ is the actual support radius rather than only the
+deterministic radius bound --- the
 random variable $X_a$ and the convolution reading of (iii), and the smoothness dichotomy (iv).
 Assertion (iii) is formal as an identity of products but not as a statement about laws.  The
 modules prove the algebraic, convergence and analytic skeleton on which the probabilistic
@@ -865,7 +869,8 @@ $m_a(n)\ne0$ the product vanishes, which is the volume's exclusion
 vanishes, which is the volume's own scope on that range.
 
 Two residues are stated rather than glossed.  At $x=0$ no factor vanishes and
-$\Phi_a(0)=1$, but the hypothesis $m_a(0)=a_0$ need not hold, so that point is closed by a
+$\Phi_a(0)=1$, but the hypothesis $m_a(0)=0$ need not hold (indeed $m_a(0)=a_0$), so that
+point is closed by a
 separate lemma (\lean{Fabius.canonicalRealProduct\_zero\_eq\_one}) rather than by the theorem
 above.  Negative arguments are carried by evenness of $\Phi_a$
 (\lean{Fabius.generalizedRvachevProduct\_neg}, \path{LobeSignNegative.lean}), and there the law
@@ -1381,8 +1386,8 @@ $q=1/4$,
  =1.96926035366826943194719369697\ldots.
  \label{p1:eq:qquarter-condition}
 \end{equation}
-This is \statusproved.  Identity \eqref{p1:eq:condition-number} is formalized only at the half
-base $q=1/2$, and is therefore a strict specialization of what is stated here:
+This is \statusproved.  Identity \eqref{p1:eq:condition-number} was initially formalized only
+at the half base $q=1/2$, as a strict specialization of what is stated here:
 \lean{Fabius.sum_abs_discreteLimitWeight} (\lean{FabiusDiscreteLimitToeplitz.lean}) evaluates
 the $\ell^1$ norm of the $r$th Toeplitz row as $(-1/2;1/2)_r/(1/2;1/2)_r$, and
 \lean{Fabius.discreteLimitWeight_eq_geometricLagrangeWeight} identifies that row, after the
@@ -1532,7 +1537,8 @@ content of \eqref{p1:eq:shift-refinement}--\eqref{p1:eq:mshift-refinement}---tha
 exposes the first $m$ layers and shifts the rest---is formalized as
 \lean{Fabius.weightedScaleMultiplicity_base_pow_mul} (\lean{WeightedScaleMultiplicity.lean}),
 for an arbitrary base $b>1$ and weights in an arbitrary additive commutative monoid.  The
-analytic identities themselves are formalized only at $a_h\equiv1$, as
+iterated dilation identities \eqref{p1:eq:shift-refinement}--\eqref{p1:eq:mshift-refinement}
+are formalized only at $a_h\equiv1$, as
 \lean{Fabius.rvachevFourierProduct_two_mul} and \lean{Fabius.rvachevFourierProduct_two_pow_mul}
 (\lean{SincProductShells.lean}); these are instances of \lean{Fabius.tprod_geom_scale} and
 \lean{Fabius.tprod_geom_scale_pow} (\lean{GeometricScaleProducts.lean}), which renormalize a
@@ -1747,33 +1753,39 @@ in \path{NewtonBasisGeneratingFunction.lean}, resting on Mathlib's choose-geomet
 family.  The crux is a single identity, and it is what makes the Newton basis the one
 adapted to the dyadic problem: at $q=1/2$ \emph{every} Newton-basis generating function
 $q^r/(1-q)^{r+1}$ takes the value $2$, independently of $r$
-(\lean{Fabius.pow\_div\_one\_sub\_pow\_at\_half}), so the series collapses to the plain
-coefficient sum (\lean{Fabius.tsum\_newtonPoly}, \lean{Fabius.half\_mul\_tsum\_newtonPoly\_half}).
+(\lean{Fabius.pow\_div\_one\_sub\_pow\_at\_half}), so
+$A_P(1/2)=2\sum_r c_r$ while the halved series $A_P(1/2)/2=R_P$ collapses to the
+plain coefficient sum (\lean{Fabius.tsum\_newtonPoly},
+\lean{Fabius.half\_mul\_tsum\_newtonPoly\_half}).
 
-Reading that number as the \emph{support radius} of $\Phi_P$ is half formalized.  The analytic
-half is, and needs no probability: by Paley--Wiener a law carried by $[-S,S]$ has a
-characteristic function of exponential type at most $2\pi S$ in the present Fourier
-normalization, and that growth bound follows from the product directly,
+The arithmetic above computes $A_P(1/2)$; the volume's candidate support radius is
+$R_P=A_P(1/2)/2$.  The matching analytic bound is formal and needs no probability: in the
+$\e^{-2\pi\ii zx}$ convention, a law carried by $[-R,R]$ has a characteristic function of
+exponential type at most $2\pi R$, and the product directly satisfies
 \[
- \lVert\Phi_a(z)\rVert\le\exp\bigl(2\pi\lVert z\rVert S_a\bigr),
- \qquad S_a=\frac12\sum_{h\ge0}a_h2^{-h},
+ \lVert\Phi_a(z)\rVert\le\exp\bigl(\pi\lVert z\rVert A_a(1/2)\bigr)
+ =\exp\bigl(2\pi R_a\lVert z\rVert\bigr),
+ \qquad A_a(1/2)=\sum_{h\ge0}a_h2^{-h}=2R_a,
 \]
 for every $z\in\C$ (\lean{Fabius.norm\_generalizedRvachevProduct\_le\_exp},
 \path{GeneralizedExponentialType.lean}).  So $\Phi_a$ is entire of order at most one with type
-controlled by $S_a$, exactly as the support reading predicts.  The converse half --- that the
-type is no smaller, and that the law really is carried by $[-S_a,S_a]$ --- is the \emph{support}
+at most $\pi A_a(1/2)=2\pi R_a$, exactly as the support normalization predicts.  The
+converse half --- that the type is no smaller, and that the law really is carried by
+$[-R_a,R_a]$ --- is the \emph{support}
 statement of \cref{p1:thm:master-probability}, a probabilistic fact about the associated random
 variable rather than a property of the product, and it remains unformalized.
 
-At the constant weight this says something checkable.  There $S_1=\frac12\sum_h2^{-h}=1$, so $\Phi$
-has exponential type at most $2\pi$ (\lean{Fabius.norm\_rvachevFourierProduct\_le\_exp},
+At the constant weight this says something checkable.  There
+$A_1(1/2)=\sum_h2^{-h}=2$ and $R_1=1$, so $\Phi$ has exponential type at most
+$2\pi$ (\lean{Fabius.norm\_rvachevFourierProduct\_le\_exp},
 \path{ClassicalGrowth.lean}), and Paley--Wiener reads type $2\pi$ as support radius $1$ --- which
 is where the up-function actually lives, as \path{ProbabilityRepresentation.lean} establishes by
 a route that does not use any of this.  The agreement is a check on the normalization rather
 than a new claim about it.  The same module records
 $\lVert\Phi(x)\rVert\le1$ on the real axis
-(\lean{Fabius.norm\_rvachevFourierProduct\_ofReal\_le\_one}), which the corpus had not had for
-$\Phi$ either.
+(\lean{Fabius.norm\_rvachevFourierProduct\_ofReal\_le\_one}), a compatibility corollary that
+recovers the existing \lean{Fabius.norm\_rvachevFourierProduct\_le\_one} from
+\path{BaselineDecay.lean}.
 
 The sharpness of the factor estimate is the whole difficulty and is worth recording, since the
 obvious routes all fail: any constant $C>1$ in $\lVert\sinc w\rVert\le Ce^{\lVert w\rVert}$
@@ -1930,15 +1942,17 @@ $\lambda=-qw$,
 \]
 Everything else is the choice of $u$ making $(-qu)^q$ equal to $x/(C_Pp)$, and that is the only
 place the real power $(x/(C_Pp))^{1/q}$ enters, bringing its round-trip hypothesis
-$x/(C_Pp)\ge0$ with it.  The branch hypothesis is carried rather than derived: $W_{-1}$ satisfies
-its defining equation only on $(-\e^{-1},0)$, and which $x$ land there depends on $C_P$, $p$ and
-$q$ --- something settled here by context rather than by a formula, so the Lean statement asks
-for it.  At $q=1$ the coordinate collapses to $-W_{-1}(-x/(C_Pp))$
+$x/(C_Pp)\ge0$ with it.  The current theorem carries the open-interval branch hypothesis
+$(-\e^{-1},0)$ rather than deriving it; which $x$ land there depends on $C_P$, $p$ and $q$,
+something settled here by context rather than by a formula.  The lower-branch defining identity
+also holds at the endpoint $-\e^{-1}$, but that broader closed-endpoint API is not used by this
+statement.  At $q=1$ the coordinate collapses to $-W_{-1}(-x/(C_Pp))$
 (\lean{Fabius.generalizedLambertCoordinate\_one}), the shape the classical $p=2$ analysis uses:
-\lean{Fabius.lowerLambertW} (\lean{LowerLambertW.lean}), a definitional alias of the library's
-real lower branch \lean{Real.lambertWLower}, inverts $w\mapsto w\e^w$ on $(-\infty,-1]$, with
-functional equation \lean{Fabius.lowerLambertW_mul_exp} and uniqueness
-\lean{Fabius.lowerLambertW_unique}.
+\lean{Fabius.lowerLambertW} (\lean{LowerLambertW.lean}), the project's totalized construction
+of the lower real branch, satisfies $W_{-1}(z)\e^{W_{-1}(z)}=z$ on
+$[-\e^{-1},0)$, with functional equation
+\lean{Fabius.lowerLambertW_mul_exp_of_mem_Ico} and uniqueness
+\lean{Fabius.lowerLambertW_unique_of_mem_Ico}.
 
 
 \section{An alternating Newton family of positive-definite Pascal quotients}
@@ -2944,7 +2958,7 @@ function
 The same $A$ then appears at four geometrically related arguments:
 \begin{equation}
  \begin{array}{ccl}
- A(1/2) &:& \text{support radius},\\
+ A(1/2) &:& \text{twice the support radius},\\
  A(2^{-s}) &:& \text{spectral zeta and zero divisor},\\
  A(4^{-j}) &:& \text{even cumulants},\\
  A(2^w) &:& \text{endpoint Mellin transform}.
@@ -5885,7 +5899,7 @@ weights.
 
 \begin{figure}[htbp]
 \centering
-\includegraphics[width=0.88\textwidth]{assets/finite_sinc_products_report/finite_sinc_approximants.pdf}
+\includegraphics[width=0.88\textwidth]{assets/finite_sinc_products_report/finite_sinc_approximants.png}
 \caption{Inverse transforms of the first few finite sinc products.  The support expands
 to $[-1,1]$, the polynomial degree and smoothness increase, and the central plateau
 shrinks dyadically.}
@@ -5894,7 +5908,7 @@ shrinks dyadically.}
 
 \begin{figure}[htbp]
 \centering
-\includegraphics[width=0.88\textwidth]{assets/finite_sinc_products_report/scaled_error_profiles.pdf}
+\includegraphics[width=0.88\textwidth]{assets/finite_sinc_products_report/scaled_error_profiles.png}
 \caption{The profiles $4^n(p_n-\Up)$ collapse onto $-\Up''/18$, in agreement with
 \cref{p3:eq:leading-profile}.}
 \label{p3:fig:scaled-errors}
@@ -5902,7 +5916,7 @@ shrinks dyadically.}
 
 \begin{figure}[htbp]
 \centering
-\includegraphics[width=0.88\textwidth]{assets/finite_sinc_products_report/convergence_comparison.pdf}
+\includegraphics[width=0.88\textwidth]{assets/finite_sinc_products_report/convergence_comparison.png}
 \caption{Raw second-order convergence and positive Gauss, Lobatto, and Radau tail
 acceleration.  The highest-order Radau values approach the double-precision floor.}
 \label{p3:fig:convergence}
@@ -6526,7 +6540,7 @@ multiples of $\pi$ --- the first layer of the closed-jet program posed in
 
 \begin{figure}[htbp]
  \centering
- \includegraphics[width=0.92\textwidth]{assets/Rvachev_Piecewise_Approximation_Fourier_Images/data/transfer_profile.pdf}
+ \includegraphics[width=0.92\textwidth]{assets/Rvachev_Piecewise_Approximation_Fourier_Images/data/transfer_profile.png}
  \caption{The universal transfer function on the first positive meromorphic
  cell: simple zeros at $\pi$ and $3\pi$, a removable point at $2\pi$ with
  value $-1/\Phi(\pi)$, and the first pole at $4\pi$.}
@@ -6751,7 +6765,7 @@ sign-regular interpretation of the tail comparison.
 
 \begin{figure}[htbp]
  \centering
- \includegraphics[width=0.9\textwidth]{assets/Rvachev_Piecewise_Approximation_Fourier_Images/data/coefficient_asymptotic.pdf}
+ \includegraphics[width=0.9\textwidth]{assets/Rvachev_Piecewise_Approximation_Fourier_Images/data/coefficient_asymptotic.png}
  \caption{Normalized exact rational coefficients
  $\rho_r\Phi(\pi)(4\pi)^{2r}/2$ against the nearest-pole prediction $1$; the
  asymptotic is already highly accurate from $r=4$ onward.  The nearly linear
@@ -6927,7 +6941,7 @@ the multiplicity filtration \eqref{p4:eq:w-finite-order}.
 
 \begin{figure}[htbp]
  \centering
- \includegraphics[width=0.94\textwidth]{assets/Rvachev_Piecewise_Approximation_Fourier_Images/data/finite_spectra_log.pdf}
+ \includegraphics[width=0.94\textwidth]{assets/Rvachev_Piecewise_Approximation_Fourier_Images/data/finite_spectra_log.png}
  \caption{Absolute finite and limiting spectra on a logarithmic scale: each
  fixed finite product has only algebraic far-field decay
  (\cref{p4:sec:w-tails}), while $\Phi$ is rapidly decreasing; increasing $n$
@@ -7043,7 +7057,7 @@ $\norm{\Up}_{\dot H^s}$ (from the negative $4^{-n}$ term in
 
 \begin{figure}[htbp]
  \centering
- \includegraphics[width=0.94\textwidth]{assets/Rvachev_Piecewise_Approximation_Fourier_Images/data/scaled_fourier_error.pdf}
+ \includegraphics[width=0.94\textwidth]{assets/Rvachev_Piecewise_Approximation_Fourier_Images/data/scaled_fourier_error.png}
  \caption{The scaled errors $4^n(F_n-\Phi)$ converge globally to
  $-t^2\Phi/9$, not only near the origin; \cref{p4:thm:w-weighted} makes the
  convergence valid in every polynomially weighted $L^p$.}
@@ -7277,7 +7291,7 @@ Lobatto--5 at $n=14$: $873.5187$ against $873.5103$).
 
 \begin{figure}[htbp]
  \centering
- \includegraphics[width=0.94\textwidth]{assets/Rvachev_Piecewise_Approximation_Fourier_Images/data/accelerated_surrogates.pdf}
+ \includegraphics[width=0.94\textwidth]{assets/Rvachev_Piecewise_Approximation_Fourier_Images/data/accelerated_surrogates.png}
  \caption{Absolute Fourier errors of the closure menu at stage $n=3$; the
  faster rates are visible over most of the frequency range, with leading
  profiles attaining maxima on progressively more distant lobes.}
@@ -8340,21 +8354,21 @@ The archive contains the fully commented script \texttt{finite\_sinc\_experiment
 
 \begin{figure}[htbp]
 \centering
-\includegraphics[width=0.91\textwidth]{assets/fabius_finite_products_frontier/figures/finite_spline_approximants.pdf}
+\includegraphics[width=0.91\textwidth]{assets/fabius_finite_products_frontier/figures/finite_spline_approximants.png}
 \caption{The inverse transforms $u_N$ are nonnegative degree-$N-1$ splines with support $[-1+2^{-N},1-2^{-N}]$ and plateau $[-2^{-N},2^{-N}]$.  Their geometric convergence is already visually rapid.}
 \label{p5:fig:approximants}
 \end{figure}
 
 \begin{figure}[htbp]
 \centering
-\includegraphics[width=0.91\textwidth]{assets/fabius_finite_products_frontier/figures/scaled_density_error.pdf}
+\includegraphics[width=0.91\textwidth]{assets/fabius_finite_products_frontier/figures/scaled_density_error.png}
 \caption{The scaled errors $4^N(u_N-u)$ collapse onto the baseline limit $-u''/18$.  The zero pattern at $0$ and $\pm1/2$ is exact at every stage.}
 \label{p5:fig:density-error}
 \end{figure}
 
 \begin{figure}[htbp]
 \centering
-\includegraphics[width=0.91\textwidth]{assets/fabius_finite_products_frontier/figures/scaled_stop_loss.pdf}
+\includegraphics[width=0.91\textwidth]{assets/fabius_finite_products_frontier/figures/scaled_stop_loss.png}
 \caption{The exact call-potential gaps satisfy $K_N(0)=4^{-N}/18$ and converge after scaling to $u/18$.  The central flatness is inherited from the up-function.}
 \label{p5:fig:stoploss}
 \end{figure}
@@ -8397,7 +8411,7 @@ to double precision.  The last identity also follows analytically from $u'(1/2)=
 
 \begin{figure}[htbp]
 \centering
-\includegraphics[width=0.88\textwidth]{assets/fabius_finite_products_frontier/figures/exact_metric_rates.pdf}
+\includegraphics[width=0.88\textwidth]{assets/fabius_finite_products_frontier/figures/exact_metric_rates.png}
 \caption{The finite metrics have exact $4^{-N}$ rates, whereas $W_\infty$ has exact rate $2^{-N}$.  This is the first indication of the finite-$p$/$p=\infty$ crossover.}
 \label{p5:fig:metric-rates}
 \end{figure}
@@ -8564,7 +8578,7 @@ Integrating over $s$ gives \eqref{p5:eq:Wp-conj}.  The endpoint layers must agai
 
 \begin{figure}[htbp]
 \centering
-\includegraphics[width=0.88\textwidth]{assets/fabius_finite_products_frontier/figures/information_transport_ratios.pdf}
+\includegraphics[width=0.88\textwidth]{assets/fabius_finite_products_frontier/figures/information_transport_ratios.png}
 \caption{Measured values divided by the predicted leading terms in \eqref{p5:eq:entropy-conj}, \eqref{p5:eq:KL-conj}, and \eqref{p5:eq:W2-conj}.  All ratios approach one rapidly.}
 \label{p5:fig:info-ratios}
 \end{figure}
@@ -8592,7 +8606,7 @@ $N$ & entropy gap & ratio & $D(u_N\Vert u)$ & ratio & $W_2$ & ratio\\
 
 \begin{figure}[htbp]
 \centering
-\includegraphics[width=0.86\textwidth]{assets/fabius_finite_products_frontier/figures/fisher_information.pdf}
+\includegraphics[width=0.86\textwidth]{assets/fabius_finite_products_frontier/figures/fisher_information.png}
 \caption{Numerical monotone convergence of $\Fish(u_N)$ to $\Fish(u)\approx11.8007105434191$.  The measured first correction agrees with $4^{-N}L/9$.}
 \label{p5:fig:fisher}
 \end{figure}
@@ -10179,7 +10193,7 @@ displayed coefficients instead of re-expanding them in powers of $1/n$.
 
 \begin{figure}[H]
 \centering
-\includegraphics[width=0.92\textwidth]{assets/Atomic_Functions_Rvachev_Report_Package/figures/fup_edgeworth_error.pdf}
+\includegraphics[width=0.92\textwidth]{assets/Atomic_Functions_Rvachev_Report_Package/figures/fup_edgeworth_error.png}
 \caption{Deterministic FFT inversion confirming the uniform error scales of
 \cref{p6:thm:fup-edgeworth}: Gaussian $=n^{-1}$, with $H_4$ $=n^{-2}$, with
 $H_4,H_6,H_8$ $=n^{-3}$.}
@@ -10763,7 +10777,7 @@ derivatives turns every normalized derivative energy into the uniform law.
 
 \begin{figure}[H]
 \centering
-\includegraphics[width=0.92\textwidth]{assets/Atomic_Functions_Beyond_Dyadic_Frontiers/figures/derivative_energy_cantor_limit_a_3.pdf}
+\includegraphics[width=0.92\textwidth]{assets/Atomic_Functions_Beyond_Dyadic_Frontiers/figures/derivative_energy_cantor_limit_a_3.png}
 \caption{Distribution functions of the normalized $p=1$ derivative-energy
 measures $\mu_{3,n,1}$ for increasing $n$, against the Bernoulli-convolution
 limit $\nu_3$ (\cref{p6:thm:energy-factorization}).  The exact coupling
@@ -10854,7 +10868,7 @@ open Nevanlinna--Pick question for this family is recorded in
 
 \begin{figure}[H]
 \centering
-\includegraphics[width=0.9\textwidth]{assets/Atomic_Functions_Beyond_Dyadic_Report-2/figures/spectral_lognormal_general_base.pdf}
+\includegraphics[width=0.9\textwidth]{assets/Atomic_Functions_Beyond_Dyadic_Report-2/figures/spectral_lognormal_general_base.png}
 \caption{The spectral density of $Z_a$ against its lognormal moment twin for
 representative bases.  The two densities share every moment
 \eqref{p6:eq:spectral-moments} yet differ on an interval
@@ -10978,7 +10992,7 @@ $1$ like $4q$ as $a\to\infty$.
 
 \begin{figure}[H]
 \centering
-\includegraphics[width=0.92\textwidth]{assets/Atomic_Functions_Rvachev_Report_Package/figures/derivative_gram_spectrum.pdf}
+\includegraphics[width=0.92\textwidth]{assets/Atomic_Functions_Rvachev_Report_Package/figures/derivative_gram_spectrum.png}
 \caption{Eigenvalues of the finite $q$-Gaussian derivative Gram matrices at
 $a=3$ against the sharp infinite Riesz bounds $\vartheta_4(0,\tfrac13)$ and
 $\vartheta_3(0,\tfrac13)$ (\cref{p6:thm:gram-package}).}
@@ -11478,7 +11492,7 @@ bounded one is the subject of \cref{p6:conj:spectral-null-modes}.
 
 \begin{figure}[H]
 \centering
-\includegraphics[width=0.92\textwidth]{assets/Atomic_Functions_Beyond_Dyadic_Expanded/figures/orthogonal_derivative_ladder_a_2_6.pdf}
+\includegraphics[width=0.92\textwidth]{assets/Atomic_Functions_Beyond_Dyadic_Expanded/figures/orthogonal_derivative_ladder_a_2_6.png}
 \caption{The first four normalized spectral modes
 $P_{a,n}(t^2)\widehat h_a(t)$ of the differential ladder at $a=2.6$,
 displayed against $\log(t^2)$ (\cref{p6:thm:sw-ladder}).  Their numerical
@@ -11899,7 +11913,7 @@ Minkowski contents, and nonconstancy denies Minkowski measurability.
 
 \begin{figure}[H]
 \centering
-\includegraphics[width=0.94\textwidth]{assets/Atomic_Functions_Beyond_Dyadic_Report/figures/tube_oscillation_a_3.pdf}
+\includegraphics[width=0.94\textwidth]{assets/Atomic_Functions_Beyond_Dyadic_Report/figures/tube_oscillation_a_3.png}
 \caption{The exact normalized tube volume for $a=3$.  The approach to a
 nonconstant one-periodic profile in $\log_a(1/\eps)$ verifies the lattice
 oscillation of \cref{p6:thm:tube-formula}.}
@@ -11953,7 +11967,7 @@ coefficients.
 
 \begin{figure}[H]
 \centering
-\includegraphics[width=0.94\textwidth]{assets/Atomic_Functions_Beyond_Dyadic_Report/figures/degree_critical_limit.pdf}
+\includegraphics[width=0.94\textwidth]{assets/Atomic_Functions_Beyond_Dyadic_Report/figures/degree_critical_limit.png}
 \caption{Distribution functions of $p_aN_a$ approaching $1-\e^{-x}$ as
 $a\downarrow2$ (\cref{p6:thm:degree-law}).}
 \label{p6:fig:degree-limit}
@@ -12028,7 +12042,7 @@ is no longer a geometric series and is left as a further direction.
 
 \begin{figure}[H]
 \centering
-\includegraphics[width=0.9\textwidth]{assets/Atomic_Functions_Beyond_Dyadic_Report-3/figures/distance_to_singular_set_a_3.pdf}
+\includegraphics[width=0.9\textwidth]{assets/Atomic_Functions_Beyond_Dyadic_Report-3/figures/distance_to_singular_set_a_3.png}
 \caption{The distance $\Delta$ to the nonanalytic set at $a=3$: empirical
 law of a uniform sample against the exact tube-formula distribution
 \eqref{p6:eq:distance-tail-tube}.}
@@ -12702,7 +12716,7 @@ a threshold that itself diverges in the joint limit.
 
 \begin{figure}[H]
 \centering
-\includegraphics[width=0.94\textwidth]{assets/Atomic_Functions_Beyond_Dyadic_Report/figures/gaussian_cumulant_limit.pdf}
+\includegraphics[width=0.94\textwidth]{assets/Atomic_Functions_Beyond_Dyadic_Report/figures/gaussian_cumulant_limit.png}
 \caption{The exact standardized fourth cumulant \eqref{p6:eq:lambda4} and its
 first asymptotic term as $a\downarrow1$.}
 \label{p6:fig:gaussian-limit}
@@ -12932,7 +12946,7 @@ $t\ne0$, every mode \eqref{p6:eq:general-gamma-zeta} is nonzero.
 
 \begin{figure}[H]
 \centering
-\includegraphics[width=0.94\textwidth]{assets/Atomic_Functions_Beyond_Dyadic_Report/figures/periodic_correction_bases.pdf}
+\includegraphics[width=0.94\textwidth]{assets/Atomic_Functions_Beyond_Dyadic_Report/figures/periodic_correction_bases.png}
 \caption{Centered periodic corrections $\Psi_a=P_a-\overline P_a$ for several
 bases.  The dyadic oscillation has amplitude of order $10^{-6}$; the amplitude
 grows substantially with the base, following the mode formula
@@ -14115,7 +14129,7 @@ $\tfrac23\Up\bigl(\tfrac{2x-1}3\bigr)$ in Rvachev normalization.
 
 \begin{figure}[H]
 \centering
-\includegraphics[width=0.9\textwidth]{assets/Fabius_Q_Connections_Report/figures/physical_densities.pdf}
+\includegraphics[width=0.9\textwidth]{assets/Fabius_Q_Connections_Report/figures/physical_densities.png}
 \caption{Physical densities for $q=\pm\tfrac12,\pm\tfrac14$ (sixteenth-wave
 package).  The negative curves are exact affine stretches of their positive
 partners; the quarter-base profiles carry positive-length plateaus, while the

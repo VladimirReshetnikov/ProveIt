@@ -28,9 +28,10 @@ function `∑_h C(h, r) q^h = q^r / (1-q)^(r+1)`
 Why the Newton basis is the basis adapted to the dyadic problem is
 isolated as `pow_div_one_sub_pow_at_half`: at `q = 1/2` *every*
 Newton-basis generating function takes the value `2`, independently
-of `r`.  The coefficient sum `∑_{r ≤ d} c_r` is therefore what the
-series collapses to at `q = 1/2`; the volume reads that number as the
-support radius of `Φ_P`, an identification not made here.
+of `r`.  Hence `A_P(1/2) = 2 ∑_{r ≤ d} c_r`, and the halved quantity
+`A_P(1/2) / 2 = ∑_{r ≤ d} c_r` is what collapses to the coefficient
+sum.  The volume reads that halved quantity as the support radius of
+`Φ_P`, an identification not made here.
 
 Everything is stated for an arbitrary real coefficient sequence
 `c : ℕ → ℝ` and an arbitrary degree bound `d`.  The volume's standing
@@ -65,8 +66,10 @@ scope.
   corresponding product identity,
   `Fabius.generalizedRvachevProduct_linearCombination` in
   `FabiusFunction.WeightLinearityProducts`, which settles this display
-  for every `P` whose Newton coefficients happen to be nonnegative,
-  and settles nothing for the rest.
+  when the coefficient sequence is `ℕ`-valued.  Under the volume's
+  standing integer-coefficient hypotheses this means the Newton
+  coefficients are nonnegative; arbitrary nonnegative real
+  coefficients are not covered.  The signed cases remain unavailable.
 * The zero-multiplicity display `p1:eq:mP` is untouched; its
   one-Newton-component-at-a-time formalization is
   `Fabius.weightedScaleMultiplicity_choose` elsewhere in the corpus.

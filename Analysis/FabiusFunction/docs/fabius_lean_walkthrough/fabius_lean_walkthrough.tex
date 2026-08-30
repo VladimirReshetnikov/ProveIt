@@ -1336,12 +1336,14 @@ approximants.
 
 The self-similarity of \(X\) is the probabilistic counterpart of the fixed-point integral equation.  It supplies a second route to the same canonical bounded function once uniqueness of the \nolinkurl{IsFabius} specification is available.
 
-\subsection{The reusable geometric CDF and density layer}
+\subsection{The reusable affine-law, geometric CDF, and density layer}
 The post-snapshot modules \nolinkurl{ContinuousCDF.lean},
-\nolinkurl{GeometricUniformLaw.lean}, and
+\nolinkurl{AffineIndependentCopy.lean},
+\nolinkurl{GeometricUniformLaw.lean},
+\nolinkurl{GeometricUniformUniqueness.lean}, and
 \nolinkurl{GeometricUniformCDF.lean} separate the measure-theoretic argument
-from its dyadic specialization.  The generic layer proves three facts for real
-probability laws.  A law with null singletons has a continuous CDF; invariance
+from its dyadic specialization.  The generic CDF layer proves three facts for
+real probability laws.  A law with null singletons has a continuous CDF; invariance
 under \(y\mapsto a-y\) gives
 \[
   H(a-x)=1-H(x);
@@ -1355,16 +1357,105 @@ nonnegativity and local integrability inside the proof.  The declarations are
 \nolinkurl{cdf_reflection_sub}, and
 \nolinkurl{measure_eq_withDensity_of_cdf_hasDerivAt}.
 
+The generic independent-copy layer starts with an arbitrary measurable digit
+space \(D\) and a second-countable Borel real inner-product space \(E\).  For a
+digit law \(\rho\), a map \(d:D\to E\), a real scale \(q\), and a candidate law
+\(\mu\) on \(E\), it packages
+\[
+ \mathcal T_{\rho,d,q}(\mu)
+   =(d_*\rho)\mathbin{\ast}((q\,\cdot)_*\mu)
+\]
+as \nolinkurl{affineIndependentCopyLaw}.  A measurable digit makes this a
+probability law when \(\rho\) and \(\mu\) are probability laws, and for s-finite input
+measures the convolution is exactly the direct product pushforward
+\[
+ \mathcal T_{\rho,d,q}(\mu)
+   =(\rho\otimes\mu)_*\bigl((u,x)\mapsto d(u)+qx\bigr).
+\]
+These are
+\nolinkurl{affineIndependentCopyLaw_isProbabilityMeasure} and
+\nolinkurl{affineIndependentCopyLaw_eq_map_prod}.  Characteristic functions
+then give the factorization, fixed-point recurrence, and its finite iterate:
+\[
+ \widehat{\mathcal T_{\rho,d,q}(\mu)}(t)
+  =\widehat{d_*\rho}(t)\widehat\mu(qt),\qquad
+ \widehat\mu(t)
+  =\prod_{k=0}^{n-1}\widehat{d_*\rho}(q^kt)\,
+    \widehat\mu(q^nt).
+\]
+The corresponding declarations are
+\nolinkurl{charFun_affineIndependentCopyLaw},
+\nolinkurl{charFun_eq_mul_charFun_of_affineIndependentCopy_fixedPoint}, and
+\nolinkurl{charFun_iterate_of_affineIndependentCopy_fixedPoint}.
+
+At compiled checkpoint \nolinkurl{d312c0603}, the module's public crosswalk
+consists of the definition above and eight theorems.  The final three declarations
+\nolinkurl{eq_of_charFun_affine_recurrence},
+\nolinkurl{affineIndependentCopyLaw_fixedPoint_unique}, and
+\nolinkurl{affineIndependentCopy_map_fixedPoint_unique} prove uniqueness when
+\(\lvert q\rvert<1\).  Completeness of \(E\) is used only by these three
+uniqueness theorems; the earlier definition, probability, product-map, and
+characteristic-function formulas require no completeness.  For the two
+fixed-point wrappers the digit is measurable and the digit and candidate laws
+are probability measures.  The argument includes \(q=0\) and negative \(q\),
+and assumes no support, density, or moment information.
+
 For the geometric weights \(w_n(q)=(1-q)q^n\), write \(\mu_q\) for the law,
 \(F_q\) for \nolinkurl{geometricUniformCDF q}, and, when \(0<q<1\), set
 \[
   f_q(x)=
   \frac{F_q(x/q)-F_q((x-(1-q))/q)}{1-q}.
 \]
-The Lean definition \nolinkurl{geometricUniformDensity q} is total in (q),
-but only (0<q<1) gives this classical density interpretation: at (q=0)
-field division is totalized, while for (q<0) the affine event inequality is
+The Lean definition \nolinkurl{geometricUniformDensity q} is total in \(q\),
+but only \(0<q<1\) gives this classical density interpretation: at \(q=0\)
+field division is totalized, while for \(q<0\) the affine event inequality is
 reversed.
+The single theorem in \nolinkurl{GeometricUniformUniqueness.lean} specializes
+the generic product-map theorem to the already proved head--tail identity:
+\[
+ \mu=(\operatorname{Unif}[0,1]\otimes\mu)_*
+       \bigl((u,x)\mapsto(1-q)u+qx\bigr)
+ \quad\Longrightarrow\quad \mu=\mu_q.
+\]
+This is
+\nolinkurl{eq_geometricUniformDistribution_of_selfSimilar}; it holds for every
+\(\lvert q\rvert<1\), including \(q=0\) and negative \(q\), among all
+probability measures, with no support, density, or moment hypothesis.
+
+The finite-tail dictionary is already stronger than a characteristic-function-only
+statement: \nolinkurl{geometric_tail_dictionary_geometricUniform} packages finite
+measure, characteristic-function, MGF, and CGF factorizations.  The later
+\nolinkurl{GeometricSincFactorization.lean} evaluates the scaled digit explicitly.  If
+\(\phi_q(t)=\operatorname{charFun}(\mu_q)(t)\), then for every real \(q\) with
+\(\lvert q\rvert<1\), every \(m\in\N\), and every \(t\in\R\),
+\[
+ \phi_q(t)=
+ e^{\ii(1-q^m)t/2}
+ \left(\prod_{k=0}^{m-1}
+   \operatorname{sinc}\!\left(\frac{(1-q)q^kt}{2}\right)\right)
+ \phi_q(q^m t),
+\]
+and the phase-bearing prefix obtained by deleting the residual factor
+\(\phi_q(q^m t)\) converges pointwise to \(\phi_q(t)\).  The digit identity itself,
+\(\widehat\eta_q(t)=e^{\ii(1-q)t/2}\operatorname{sinc}((1-q)t/2)\), is unconditional
+in real \(q\).  Thus the contraction-range result includes \(q=0\) and negative
+ratios; at \(q=1/2\) it has exact wrappers for the classical weighted-sum law.
+
+The six-declaration inventory is
+\nolinkurl{charFun_geometricUniformDigit},
+\nolinkurl{charFun_geometricUniformDistribution_prefix},
+\nolinkurl{charFun_geometricUniformDistribution_prefix_sinc},
+\nolinkurl{tendsto_prefix_sinc_charFun},
+\nolinkurl{charFun_weightedSumDistribution_prefix_sinc}, and
+\nolinkurl{tendsto_prefix_sinc_charFun_weightedSumDistribution}.
+This is pointwise prefix convergence.  The existing
+\nolinkurl{geometricSincProduct} already packages the same sinc factors, after frequency
+rescaling, as a \nolinkurl{tprod}; what is missing is a named characteristic-function
+bridge to it (or an explicit \nolinkurl{HasProd} theorem) and compact-uniform convergence
+of the characteristic prefixes.  Rapid-decay bounds, Fourier inversion, a named centered family, explicit Bernoulli-cumulant and
+Bell-moment formulas and asymptotics, further transform formulas, and shape theory remain
+separate targets.
+
 The definition of \(F_q\), together with its monotonicity, range bounds, and
 measurability, is total in real \(q\).  If \(\lvert q\rvert<1\), then \(F_q\)
 is continuous and
@@ -1404,11 +1495,11 @@ all-real bridges
  f_{1/2}(x)=2\Up(2x-1).
 \]
 Accordingly the dyadic smoothing, interval-integral, continuity, exterior-value,
-and reflection proofs now route through the reusable half-base API.  The new
-modules do not yet provide a separately named centered random variable or
-general-\(q\) centered density, characteristic-function product, moment or
-cumulant theory, log-concavity and shape transition, or uniqueness of the
-affine measure fixed point.
+and reflection proofs now route through the reusable half-base API.  There is still no
+separately named centered random variable or general-\(q\) centered density.  The finite
+MGF/CGF dictionary and pointwise sinc-prefix limit above also stop short of explicit
+Bernoulli-cumulant and Bell-moment evaluations, their asymptotics, and log-concavity or
+shape-transition theorems.
 
 \subsection{Finite convolution measures}
 A formal convolution proof must verify that every measure involved is finite, usually a probability measure.  The source defines the elementary measures, proves their support and total mass, and then uses induction to show the convolution remains a probability measure.  Associativity is applied only after the necessary sigma-finiteness or finiteness instances are in scope.
@@ -3081,7 +3172,8 @@ Total dyadic evaluator & \nolinkurl{fabiusDyadicValue} & \nolinkurl{Arithmetic.l
 Dyadic common denominator \(D_n\) & \nolinkurl{dyadicDenominator} & \nolinkurl{Arithmetic.lean} and \nolinkurl{DenominatorBound.lean} \\
 Reshetnikov quantity \(R_n\) & \nolinkurl{reshetnikov} & \nolinkurl{Arithmetic.lean} and \nolinkurl{PaperStatements.lean} \\
 Generic continuous-CDF and density extraction & \nolinkurl{continuous_cdf_of_nullSingleton}, \nolinkurl{cdf_reflection_sub}, \nolinkurl{measure_eq_withDensity_of_cdf_hasDerivAt} & \nolinkurl{ContinuousCDF.lean} \\
-Geometric uniform law \(\mu_q\) & \nolinkurl{geometricUniformDistribution}, \nolinkurl{geometricUniformDistribution_selfSimilar}, \nolinkurl{geometricUniformDistribution_support_eq_Icc} & \nolinkurl{GeometricUniformLaw.lean} \\
+Affine independent-copy operator and uniqueness & \nolinkurl{affineIndependentCopyLaw}, \nolinkurl{affineIndependentCopyLaw_isProbabilityMeasure}, \nolinkurl{affineIndependentCopyLaw_eq_map_prod}, \nolinkurl{charFun_affineIndependentCopyLaw}, \nolinkurl{charFun_eq_mul_charFun_of_affineIndependentCopy_fixedPoint}, \nolinkurl{charFun_iterate_of_affineIndependentCopy_fixedPoint}, \nolinkurl{eq_of_charFun_affine_recurrence}, \nolinkurl{affineIndependentCopyLaw_fixedPoint_unique}, \nolinkurl{affineIndependentCopy_map_fixedPoint_unique} & \nolinkurl{AffineIndependentCopy.lean}; arbitrary measurable digit space and second-countable Borel real inner-product target, with completeness only for the three uniqueness declarations \\
+Geometric uniform law \(\mu_q\) & \nolinkurl{geometricUniformDistribution}, \nolinkurl{geometricUniformDistribution_selfSimilar}, \nolinkurl{geometricUniformDistribution_support_eq_Icc}, \nolinkurl{eq_geometricUniformDistribution_of_selfSimilar} & \nolinkurl{GeometricUniformLaw.lean} and \nolinkurl{GeometricUniformUniqueness.lean}; the characterization holds for \(\lvert q\rvert<1\) without support, density, or moment assumptions \\
 Geometric CDF \(F_q\) and density \(f_q\) & \nolinkurl{geometricUniformCDF}, \nolinkurl{geometricUniformDensity}, \nolinkurl{geometricUniformCDF_hasDerivAt}, \nolinkurl{geometricUniformDistribution_eq_withDensity}, \nolinkurl{contDiff_geometricUniformCDF}, \nolinkurl{contDiff_geometricUniformDensity} & \nolinkurl{GeometricUniformCDF.lean} \\
 Weighted-sum CDF and half-base bridges & \nolinkurl{weightedSumCDF}, \nolinkurl{weightedSumCDF_eq_geometricUniformCDF_one_half}, \nolinkurl{geometricUniformCDF_one_half_eq_fabiusReal}, \nolinkurl{geometricUniformDensity_one_half_eq_rvachevUp} & \nolinkurl{ProbabilityRepresentation.lean} \\
 Forward curvature profile & \nolinkurl{deriv_deriv_fabiusReal}, \nolinkurl{deriv_deriv_fabiusReal_eq_zero_iff} & \nolinkurl{Convexity.lean} \\
@@ -3189,7 +3281,10 @@ Module & Role in the development \\
 \nolinkurl{WeightedUniformDistribution.lean} & Compatibility and naturality API for weighted laws, including scalar transport, affine recursion, sharp absolute continuity from any nonzero real coefficient, and null singletons. \\
 \nolinkurl{WeightedUniformSupport.lean} & Support equal to the continuous series range, exact signed-real min/max support intervals, and nonnegative unit-mass specializations. \\
 \nolinkurl{ContinuousCDF.lean} & Generic continuity of atomless probability CDFs, reflection symmetry from measure invariance, and the theorem identifying any everywhere pointwise CDF derivative as the exact Lebesgue density without prior regularity or absolute continuity assumptions. \\
+\nolinkurl{AffineIndependentCopy.lean} & The affine independent-copy convolution operator, its probability and product-map forms, characteristic-function factorization and finite fixed-point iteration, and contractive uniqueness.  The digit space is arbitrary measurable, the target is second-countable Borel real inner-product, and completeness is confined to the three uniqueness declarations; \(\lvert q\rvert<1\) includes zero and negative scales without support, density, or moment hypotheses. \\
 \nolinkurl{GeometricUniformLaw.lean} & Named weights \((1-q)q^n\), their series and probability law, affine self-similarity, reflection, absolute continuity, null singletons, and exact range/support statements. \\
+\nolinkurl{GeometricUniformUniqueness.lean} & Specializes the generic product-map theorem to prove \nolinkurl{eq_geometricUniformDistribution_of_selfSimilar}: every probability solution of the geometric affine head--tail equation is \(\mu_q\) when \(\lvert q\rvert<1\), including \(q=0\) and negative \(q\), with no support, density, or moment assumption. \\
+\nolinkurl{GeometricSincFactorization.lean} & Closed characteristic function of the scaled uniform digit, exact closed-factor and phase-collapsed finite residual formulas for \(\lvert q\rvert<1\), pointwise convergence of the phase-bearing sinc prefixes, and the two dyadic weighted-sum wrappers. \\
 \nolinkurl{GeometricUniformCDF.lean} & The named \(F_q\) and explicit \(f_q\), conditioning and interval-integral equations, pointwise derivative and exact \nolinkurl{withDensity} law, continuity, reflection, exterior zeros, ordinary/topological support containments, compact support, and \(C^\infty\) regularity under their exact parameter hypotheses. \\
 \nolinkurl{ProbabilityRepresentation.lean} & Product measure on \([0,1]^{\N}\), weighted coordinate sum, self-similarity, and exact CDF/\(\Up\) identifications.  Its dyadic CDF smoothing, continuity, exterior-value, and reflection proofs are half-base specializations of \nolinkurl{GeometricUniformCDF.lean}; it also identifies \(F_{1/2}\) with every bounded Fabius function and \(f_{1/2}(x)\) with \(2\Up(2x-1)\). \\
 \nolinkurl{WeakConvergence.lean} & Characteristic-function convergence, Lévy continuity, bounded-continuous test convergence, positivity on every open set meeting \((-1,1)\), and exact limiting-measure support \([-1,1]\). \\

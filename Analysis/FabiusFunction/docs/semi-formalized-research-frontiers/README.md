@@ -218,10 +218,11 @@ group README on removal.
 
 ### Consistency audits
 
-Two scripts here check the volumes against the Lean corpus, and both exit
+Four scripts here form the mechanical gate against the Lean corpus and exit
 nonzero on failure. Run them together with `sh audit_all.sh` before pushing
-any change that touches either side. A third, build-log-specific checker is
-run separately after compiling a changed volume.
+any change that touches either side. The stale-claim and crosswalk-coverage
+surveys are advisory; the build-log checker is run separately after compiling
+a changed volume.
 
 - `audit_crosswalk_names.py` — every `Fabius.*` name cited in a `.tex` file
   resolves to a declaration or a namespace that exists in the corpus. The
@@ -233,6 +234,13 @@ run separately after compiling a changed volume.
   library root `FabiusFunction.lean`. A newly added leaf module that nothing
   imports is never elaborated by `lake build FabiusFunction`, so a whole-library
   build would report success while silently skipping it.
+- `audit_duplicate_names.py` — no declaration name is introduced by more than
+  one module.
+- `audit_docstring_names.py` — every fully qualified `Fabius.*` declaration
+  advertised by a module docstring exists in the corpus.
+- `audit_stale_claims.py` and `audit_crosswalk_coverage.py` — advisory worklists
+  for contradictory “open” claims and theorem environments lacking either a
+  nearby Lean citation or an explicit formalization disclaimer.
 - `audit_overfull.py LOG [THRESHOLD_PT]` — reports every overfull box in a
   generated LaTeX log and exits nonzero when one exceeds the threshold
   (20 pt by default). It is intentionally outside `audit_all.sh`, because logs
