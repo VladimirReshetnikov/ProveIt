@@ -3957,12 +3957,14 @@ not the analytic transfer expansion or its remainder estimates.
 \subsection{Rvachev moment--Appell deconvolution and polynomial synthesis}
 \label{sec:rvachev-moment-appell}
 
-At compiled source checkpoint \texttt{1f9ce6fd9},
+Starting from compiled source checkpoint \texttt{1f9ce6fd9} and including the
+current focused-build extension,
 \path{RvachevMomentAppell.lean} specializes the formal Bell and Appell engines
-to the Rvachev probability law.  Its five public definitions are
+to the Rvachev probability law.  Its six public definitions are
 \lean{rvachevRawMomentRat}, \lean{rvachevReciprocalMomentRat},
 \lean{rvachevAppellPolynomialRat}, \lean{rvachevAppellPolynomial}, and
-\lean{rvachevDeconvolvedPolynomial}.  Its sixteen public theorems are
+\lean{rvachevDeconvolvedPolynomial}, together with
+\lean{rvachevDeconvolutionLinearMap}.  Its twenty-two public theorems are
 \lean{rvachevRawMomentRat_zero}, \lean{rvachevRawMomentRat_even},
 \lean{rvachevRawMomentRat_odd}, \lean{rvachevReciprocalMomentRat_zero},
 \lean{binomialConv_rvachevRawMomentRat_reciprocal},
@@ -3975,6 +3977,12 @@ to the Rvachev probability law.  Its five public definitions are
 \lean{eval_rvachevAppellPolynomial_add},
 \lean{integral_pow_mul_rvachev_eq_rvachevRawMomentRat_cast},
 \lean{integral_eval_rvachevAppellPolynomial_add_mul_rvachev},
+\lean{rvachevDeconvolutionLinearMap_apply},
+\lean{rvachevDeconvolvedPolynomial_zero},
+\lean{rvachevDeconvolvedPolynomial_add},
+\lean{rvachevDeconvolvedPolynomial_smul},
+\lean{rvachevDeconvolvedPolynomial_finsetSum},
+\lean{rvachevDeconvolvedPolynomial_C_mul},
 \lean{natDegree_rvachevDeconvolvedPolynomial_le}, and
 \lean{integral_eval_rvachevDeconvolvedPolynomial_add_mul_rvachev}.
 
@@ -3993,7 +4001,10 @@ bridges are
 \end{align}
 where \(\mathcal D_{\Up}P\) denotes
 \lean{rvachevDeconvolvedPolynomial}\(P\).  This coefficientwise operation does
-not raise polynomial degree.
+not raise polynomial degree.  Its linear-map package proves preservation of
+zero, addition, real scalar multiplication, finite sums, and multiplication by
+a constant polynomial; these are algebraic identities and do not assert an
+analytic reciprocal-MGF, differential-series, or Appell generating function.
 
 At compiled source checkpoint \texttt{c51a41fcf},
 \path{RvachevPolynomialSynthesis.lean} exports no public definitions and
@@ -8145,6 +8156,55 @@ the fully expanded atom-Gram identity is
  =\delta_{mn}\frac{2u_n^2}{4n+1}.                         \label{eq:legendre-atom-gram}
 \end{equation}
 
+The focused-build module \path{FabiusLegendreTranslateSeries.lean} closes the
+literal outer series and the common-mesh partial sums.  Its four public
+definitions are \lean{rvachevLegendrePartialSumDeconvolutionPolynomial},
+\lean{rvachevLegendrePartialSumAtomCoefficient},
+\lean{rvachevLegendrePartialSumTranslateBlock}, and
+\lean{rvachevLegendreTranslateBlockOnInterval}.  Its sixteen public theorems are
+\lean{summable_norm_rvachevLegendreTranslateBlock},
+\lean{summable_rvachevLegendreTranslateBlock},
+\lean{hasSum_rvachevLegendreTranslateBlock},
+\lean{tsum_rvachevLegendreTranslateBlock},
+\lean{rvachevLegendrePartialSumDeconvolutionPolynomial_eq_sum},
+\lean{rvachevLegendrePartialSumAtomCoefficient_eq_sum},
+\lean{eval_rvachevLegendrePartialSumPolynomial_eq_tsum_rvachevUp},
+\lean{eval_rvachevLegendrePartialSumPolynomial_eq_sum_rvachevUp},
+\lean{rvachevLegendrePartialSumTranslateBlock_eq_eval_partialSumPolynomial},
+\lean{rvachevLegendrePartialSumTranslateBlock_eq_sum_translateBlock},
+\lean{rvachevLegendreTranslateBlockOnInterval_apply},
+\lean{rvachevLegendreTranslateBlockOnInterval_eq_smul},
+\lean{summable_norm_rvachevLegendreTranslateBlockOnInterval},
+\lean{summable_rvachevLegendreTranslateBlockOnInterval},
+\lean{hasSum_rvachevLegendreTranslateBlock_uniform}, and
+\lean{tsum_rvachevLegendreTranslateBlock_uniform}.
+
+Consequently the literal finite trains in
+\eqref{eq:legendre-translate-block} are absolutely summable both pointwise and
+in the supremum norm on the interval, and their pointwise and uniform sums are
+exactly
+\begin{equation}
+ \Up(x)=\sum_{n=0}^{\infty}\widetilde B_n(x),
+ \qquad -1\le x\le1.                                      \label{eq:legendre-translate-block-series}
+\end{equation}
+For the existing polynomial partial sum
+\(S_N=\sum_{n=0}^{N}u_nP_{2n}\), define
+\begin{equation}
+ C_N:=\mathcal D_{\Up}S_N
+     =\sum_{n=0}^{N}u_nQ_{2n}.                             \label{eq:legendre-partial-sum-deconvolution}
+\end{equation}
+The equality is
+\lean{rvachevLegendrePartialSumDeconvolutionPolynomial_eq_sum}.  With
+\(M_N=4^N\), the global theorem uses a compactly supported \texttt{tsum} for
+every real input, while on the Legendre interval its exact finite form is
+\begin{equation}
+ S_N(x)=\frac1{M_N}\sum_{-2M_N<k<2M_N}
+ C_N(k/M_N)\Up(x-k/M_N).                                  \label{eq:legendre-fixed-scale-partial-sum}
+\end{equation}
+On $[-1,1]$, the named fixed-scale train is equal pointwise both to \(S_N\)
+and to the finite sum of the separately scaled blocks.  The latter statement
+does not identify the two coefficient vectors.
+
 At compiled source checkpoint \texttt{ca66a1247}, the polynomial-form Legendre blocks
 \(B_n(x)=u_nP_{2n}(x)\) satisfy the complete orthogonality formula
 \begin{equation}
@@ -8222,9 +8282,9 @@ positive-half-line half with $A_2$.  The last two give exactly
 The synthesis declarations establish the displayed sufficient dyadic meshes,
 but not their minimality or the report's sharpness statement.  They also do not
 formalize parity, derivative/Gegenbauer/Appell closed forms, or the displayed
-low-degree values of \(Q_d\); rationality of the atom rows; a named outer
-translate-block \texttt{HasSum}; one-mesh synthesis of an entire partial sum;
-or the later refinement, projector, and asymptotic layers.
+low-degree values of \(Q_d\); rationality of the atom rows; equality of the
+fixed-scale and separately scaled coefficient vectors; exact degree of every
+partial sum; or the later refinement, projector, and asymptotic layers.
 
 On $[0,2]$, the signed global extension has the
 corresponding translated Legendre series
@@ -8819,6 +8879,7 @@ Legendre expansion and computability &
 \path{FabiusSquareEnergyFourier.lean},
 \path{RvachevPolynomialSynthesis.lean},
 \path{FabiusLegendreTranslateBlocks.lean},
+\path{FabiusLegendreTranslateSeries.lean},
 \path{FabiusTranslatedLegendreSeries.lean},
 \path{FabiusComputableSpline.lean}\\
 \bottomrule
