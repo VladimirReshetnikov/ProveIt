@@ -2,6 +2,18 @@
 
 New standalone intake members:
 
+- [`geometric_comb_interpolation_report/`](geometric_comb_interpolation_report/),
+  *Interpolation on a Geometric Comb* (34 pp), arrived on 2026-08-30 from
+  `geometric_comb_interpolation_report_bundle.zip` (outer SHA-256
+  `9a2e33f6a7dc3ac4c30b0da212349b9d91b1da6dd2fabacce14329a6458ade12`).
+  All 11 submitted payload hashes verified; four CSV entries were refreshed
+  after CRLF-to-LF repository normalization. Its arbitrary-ratio interpolation
+  layer belongs beside `Dyadic_Comb_Frontiers/` and cross-links to the finite
+  q-Lagrange/Gaussian row in
+  [`../exponents-and-q-series/q_pochhammer_q_binomial_monograph/`](../exponents-and-q-series/q_pochhammer_q_binomial_monograph/).
+  It remains standalone pending post-publication assessment and a Lean
+  crosswalk; manuscript labels do not establish Lean verification.
+
 - [`Inverse_Fabius_Computability_Report/`](Inverse_Fabius_Computability_Report/),
   *Computability of the Inverse Fabius Function* (29 pp), arrived on
   2026-08-30 from `Inverse_Fabius_Computability_Report.zip` (outer SHA-256
