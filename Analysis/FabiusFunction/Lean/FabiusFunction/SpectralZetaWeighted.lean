@@ -463,10 +463,7 @@ layer count `ν_b(n) + 1`. -/
 theorem weightedScaleMultiplicity_one (b n : ℕ) :
     weightedScaleMultiplicity b (fun _ => (1 : ℝ)) n
       = (padicValNat b n : ℝ) + 1 := by
-  have hexp : weightedScaleMultiplicity b (fun _ => (1 : ℝ)) n
-      = ∑ _h ∈ range (padicValNat b n + 1), (1 : ℝ) := rfl
-  rw [hexp, Finset.sum_const, Finset.card_range, nsmul_eq_mul,
-    mul_one, Nat.cast_add, Nat.cast_one]
+  simp [Nat.cast_add]
 
 /-- **The guard at unit weights.**  With `a ≡ 1` the multiplicity is
 `ν_b(n) + 1` and the layer series is the geometric series `1/(1-q)` at
