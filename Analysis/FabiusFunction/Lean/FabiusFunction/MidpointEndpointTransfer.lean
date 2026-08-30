@@ -62,44 +62,41 @@ theorem fabiusReal_midpoint_add_eq
       HasDerivWithinAt lhs 2 (Ici t) t := by
     intro t ht
     have htclosed : t ∈ Icc (0 : ℝ) (1 / 2) := ⟨ht.1, ht.2.le⟩
-    have htlow : (1 / 2 : ℝ) ≤ 1 / 2 + t := by
-      calc
-        (1 / 2 : ℝ) = 1 / 2 + 0 := by ring
-        _ ≤ 1 / 2 + t := by
-          simpa only [add_comm] using add_le_add_left ht.1 (1 / 2 : ℝ)
-    have htwice : 2 * t ∈ Icc (0 : ℝ) 1 := by
-      constructor
-      · exact mul_nonneg (by norm_num) htclosed.1
-      · calc
-          2 * t ≤ 2 * (1 / 2) :=
-            mul_le_mul_of_nonneg_left htclosed.2 (by norm_num)
-          _ = 1 := by norm_num
-    have hhigh := fabius_hasDerivAt_reflected_of_half_le F hF
-      (t := 1 / 2 + t) htlow
-    have hshift := hhigh.comp_const_add (1 / 2 : ℝ) t
+    have hshift : HasDerivAt (fun z : ℝ => fabiusReal F (1 / 2 + z))
+        (2 * fabiusReal F (1 - 2 * t)) t := by
+      have hhigh := fabius_hasDerivAt_reflected_of_half_le F hF
+        (t := 1 / 2 + t) (by
+          simpa only [add_zero] using
+            add_le_add_right ht.1 (1 / 2 : ℝ))
+      have hcomp := hhigh.comp t
+        ((hasDerivAt_id t).const_add (1 / 2 : ℝ))
+      have harg :
+          (2 : ℝ) - 2 * (1 / 2 + t) = 1 - 2 * t := by
+        ring
+      simpa only [Function.comp_def, mul_one, harg] using hcomp
     have hlow := hF.hasDerivAt t htclosed
-    have hsum := hshift.fun_add hlow
-    have harg :
-        (2 : ℝ) - 2 * (1 / 2 + t) = 1 - 2 * t := by
-      ring
+    have hsum : HasDerivAt lhs
+        (2 * fabiusReal F (1 - 2 * t) + 2 * fabiusReal F (2 * t)) t := by
+      simpa only [lhs, Pi.add_apply] using hshift.fun_add hlow
     have hsymmetry :
         fabiusReal F (1 - 2 * t) = 1 - fabiusReal F (2 * t) :=
-      hF.symmetry (2 * t) htwice
+      hF.symmetry (2 * t) ⟨
+        mul_nonneg (by norm_num) ht.1,
+        calc
+          2 * t ≤ 2 * (1 / 2 : ℝ) :=
+            mul_le_mul_of_nonneg_left ht.2.le (by norm_num)
+          _ = 1 := by norm_num⟩
     have hcoefficient :
-        2 * fabiusReal F (2 - 2 * (1 / 2 + t)) +
-            2 * fabiusReal F (2 * t) = 2 := by
-      rw [harg, hsymmetry]
+        2 * fabiusReal F (1 - 2 * t) + 2 * fabiusReal F (2 * t) = 2 := by
+      rw [hsymmetry]
       ring
-    have hsum' : HasDerivAt lhs 2 t := by
-      simpa only [lhs, Pi.add_apply] using hsum.congr_deriv hcoefficient
-    exact hsum'.hasDerivWithinAt
+    exact (hsum.congr_deriv hcoefficient).hasDerivWithinAt
   have hrhsDeriv : ∀ t ∈ Ico (0 : ℝ) (1 / 2),
       HasDerivWithinAt rhs 2 (Ici t) t := by
     intro t _ht
     have hderiv : HasDerivAt rhs 2 t := by
-      dsimp only [rhs]
-      convert! (((hasDerivAt_id t).const_mul (2 : ℝ)).const_add (1 / 2 : ℝ)) using 1
-      norm_num
+      simpa only [rhs, id_eq, mul_one] using
+        (((hasDerivAt_id t).const_mul (2 : ℝ)).const_add (1 / 2 : ℝ))
     exact hderiv.hasDerivWithinAt
   have hinitial : lhs 0 = rhs 0 := by
     dsimp only [lhs, rhs]
@@ -248,15 +245,10 @@ theorem intervalIntegral_mul_fabiusReal_midpoint_add_defect_eq_neg
   apply intervalIntegral.integral_congr
   intro h hh
   rw [uIcc_of_le ha0] at hh
-  have hdefect :
-      fabiusReal F (1 / 2 + h) - 1 / 2 - 2 * h =
-        -fabiusReal F h := by
-    rw [fabiusReal_midpoint_add_eq F hF (h := h) hh.1
-      (hh.2.trans hahalf)]
-    ring
-  change w h * (fabiusReal F (1 / 2 + h) - 1 / 2 - 2 * h) =
-    -(w h * fabiusReal F h)
-  rw [hdefect]
+  change
+    w h * (fabiusReal F (1 / 2 + h) - 1 / 2 - 2 * h) =
+      -(w h * fabiusReal F h)
+  rw [fabiusReal_midpoint_add_eq F hF hh.1 (hh.2.trans hahalf)]
   ring
 
 /-- **Weighted left midpoint-defect transfer.**  The companion defect to the
@@ -270,15 +262,11 @@ theorem intervalIntegral_mul_fabiusReal_midpoint_sub_defect_eq
   apply intervalIntegral.integral_congr
   intro h hh
   rw [uIcc_of_le ha0] at hh
-  have hdefect :
-      fabiusReal F (1 / 2 - h) - 1 / 2 + 2 * h =
-        fabiusReal F h := by
-    rw [fabiusReal_midpoint_sub_eq F hF (h := h) hh.1
-      (hh.2.trans hahalf)]
-    ring
-  change w h * (fabiusReal F (1 / 2 - h) - 1 / 2 + 2 * h) =
-    w h * fabiusReal F h
-  rw [hdefect]
+  change
+    w h * (fabiusReal F (1 / 2 - h) - 1 / 2 + 2 * h) =
+      w h * fabiusReal F h
+  rw [fabiusReal_midpoint_sub_eq F hF hh.1 (hh.2.trans hahalf)]
+  ring
 
 /-- The frontier report's unweighted central-defect identity: its integral
 is exactly the negative endpoint mass. -/

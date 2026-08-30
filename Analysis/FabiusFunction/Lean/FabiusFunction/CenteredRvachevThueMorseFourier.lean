@@ -213,6 +213,12 @@ theorem centeredSincPartialProduct_dyadic_eq_thueMorse
           ((2 : ℂ) ^ (m + 1) * (w : ℂ)) (m + 1) =
       (thueMorseSinePolynomial m w : ℂ) := by
   have hclear := centeredSincPartialProduct_dyadic_clear m w
+  have htmC :
+      (2 : ℂ) ^ m *
+          (∏ j ∈ Finset.range (m + 1),
+            (Real.sin ((2 : ℝ) ^ j * w) : ℂ)) =
+        (thueMorseSinePolynomial m w : ℂ) := by
+    exact_mod_cast (thueMorseSinePolynomial_eq_prod_sin_two_pow m w).symm
   calc
     ((2 : ℂ) ^ (m + (m + 1).choose 2) * (w : ℂ) ^ (m + 1)) *
           centeredSincPartialProduct
@@ -226,14 +232,7 @@ theorem centeredSincPartialProduct_dyadic_eq_thueMorse
     _ = (2 : ℂ) ^ m *
         (∏ j ∈ Finset.range (m + 1),
           (Real.sin ((2 : ℝ) ^ j * w) : ℂ)) := by rw [hclear]
-    _ = (((2 : ℝ) ^ m *
-        ∏ j ∈ Finset.range (m + 1),
-          Real.sin ((2 : ℝ) ^ j * w)) : ℂ) := by
-          push_cast
-          rfl
-    _ = (thueMorseSinePolynomial m w : ℂ) := by
-          exact_mod_cast
-            (thueMorseSinePolynomial_eq_prod_sin_two_pow m w).symm
+    _ = (thueMorseSinePolynomial m w : ℂ) := htmC
 
 /-- **The finite zero criterion.**  Away from the removable point `w = 0`,
 the centered sinc prefix vanishes exactly at the zeros of its associated
