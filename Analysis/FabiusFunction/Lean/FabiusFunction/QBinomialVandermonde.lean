@@ -1,5 +1,7 @@
 import FabiusFunction.FiniteQBinomialCore
+import Mathlib.Algebra.BigOperators.Finprod
 import Mathlib.Algebra.BigOperators.Intervals
+import Mathlib.Data.Int.Interval
 
 /-!
 # The q-Vandermonde convolution
@@ -35,6 +37,10 @@ gives the central square-weighted identity
 * `gaussianBinomial_two_mul_add_shifted_central` and the two negative-shift
   forms give the monograph's shifted central convolution without introducing
   a signed-index Gaussian coefficient.
+* The finite-range and literal finite-support integer-sum forms use the total
+  integer-indexed Gaussian coefficient from `FiniteQBinomialCore` to package
+  the same convolution for an arbitrary integer shift exactly as in the
+  monograph.
 -/
 
 set_option autoImplicit false
@@ -443,5 +449,164 @@ theorem gaussianBinomial_two_mul_sub_shifted_central_Icc
         have hjN : j ≤ N := by omega
         have hsub : N - k - j = N - j - k := by omega
         rw [hsub, gaussianBinomial_symm q hjN]
+
+/-- **Shifted-central q-Vandermonde for an arbitrary integer shift.**
+
+The lower index is interpreted through `gaussianBinomialInt`, hence is zero
+outside `0, …, N`.  The report's sum over every integer may therefore be
+trimmed exactly to `ℓ = 0, …, N`:
+
+`[2N choose N+k]_q = ∑_{ℓ=0}^N q^(ℓ(ℓ+k))
+  [N choose ℓ]_q [N choose ℓ+k]_q`.
+
+The exponent is written with `Int.toNat`.  Whenever the second Gaussian
+factor is nonzero, `ℓ+k ≥ 0`, so this is literally the displayed exponent;
+when it is negative, the whole summand is zero.  Thus the theorem is total in
+`k : ℤ`, including `|k| > N`, over every commutative semiring and without
+division or cancellation. -/
+theorem gaussianBinomial_two_mul_int_shifted_central
+    {R : Type*} [CommSemiring R]
+    (q : R) (N : ℕ) (k : ℤ) :
+    gaussianBinomialInt q (2 * N) ((N : ℤ) + k) =
+      ∑ ℓ ∈ Finset.range (N + 1),
+        q ^ (ℓ * (((ℓ : ℤ) + k).toNat)) * gaussianBinomial q N ℓ *
+          gaussianBinomialInt q N ((ℓ : ℤ) + k) := by
+  cases k with
+  | ofNat k =>
+      change gaussianBinomialInt q (2 * N) ((N : ℤ) + (k : ℤ)) =
+        ∑ ℓ ∈ Finset.range (N + 1),
+          q ^ (ℓ * (((ℓ : ℤ) + (k : ℤ)).toNat)) *
+            gaussianBinomial q N ℓ *
+              gaussianBinomialInt q N ((ℓ : ℤ) + (k : ℤ))
+      have hleft : (N : ℤ) + k = ((N + k : ℕ) : ℤ) := by
+        omega
+      rw [hleft, gaussianBinomialInt_ofNat]
+      calc
+        gaussianBinomial q (2 * N) (N + k) =
+            ∑ ℓ ∈ Finset.range (N + 1),
+              q ^ (ℓ * (ℓ + k)) * gaussianBinomial q N ℓ *
+                gaussianBinomial q N (ℓ + k) :=
+          gaussianBinomial_two_mul_add_shifted_central q N k
+        _ = ∑ ℓ ∈ Finset.range (N + 1),
+              q ^ (ℓ * (((ℓ : ℤ) + k).toNat)) * gaussianBinomial q N ℓ *
+                gaussianBinomialInt q N ((ℓ : ℤ) + k) := by
+          apply Finset.sum_congr rfl
+          intro ℓ _hℓ
+          have htoNat : (((ℓ : ℤ) + (k : ℤ)).toNat) = ℓ + k := by
+            omega
+          have hshift : (ℓ : ℤ) + (k : ℤ) = ((ℓ + k : ℕ) : ℤ) := by
+            omega
+          rw [htoNat, hshift, gaussianBinomialInt_ofNat]
+  | negSucc k =>
+      let d := k + 1
+      have hk : Int.negSucc k = -(d : ℤ) := by
+        omega
+      rw [hk]
+      change gaussianBinomialInt q (2 * N) ((N : ℤ) - d) =
+        ∑ ℓ ∈ Finset.range (N + 1),
+          q ^ (ℓ * (((ℓ : ℤ) - d).toNat)) * gaussianBinomial q N ℓ *
+            gaussianBinomialInt q N ((ℓ : ℤ) - d)
+      by_cases hd : d ≤ N
+      · have hleft : (N : ℤ) - d = ((N - d : ℕ) : ℤ) := by
+          omega
+        rw [hleft, gaussianBinomialInt_ofNat]
+        calc
+          gaussianBinomial q (2 * N) (N - d) =
+              ∑ ℓ ∈ Finset.Icc d N,
+                q ^ (ℓ * (ℓ - d)) * gaussianBinomial q N ℓ *
+                  gaussianBinomial q N (ℓ - d) :=
+            gaussianBinomial_two_mul_sub_shifted_central_Icc q N d hd
+          _ = ∑ ℓ ∈ Finset.range (N + 1),
+                q ^ (ℓ * (((ℓ : ℤ) - d).toNat)) *
+                  gaussianBinomial q N ℓ *
+                    gaussianBinomialInt q N ((ℓ : ℤ) - d) := by
+            calc
+              (∑ ℓ ∈ Finset.Icc d N,
+                  q ^ (ℓ * (ℓ - d)) * gaussianBinomial q N ℓ *
+                    gaussianBinomial q N (ℓ - d)) =
+                  ∑ ℓ ∈ Finset.Icc d N,
+                    q ^ (ℓ * (((ℓ : ℤ) - d).toNat)) *
+                      gaussianBinomial q N ℓ *
+                        gaussianBinomialInt q N ((ℓ : ℤ) - d) := by
+                apply Finset.sum_congr rfl
+                intro ℓ hℓ
+                have hℓ' := Finset.mem_Icc.mp hℓ
+                have hshift :
+                    (ℓ : ℤ) - d = ((ℓ - d : ℕ) : ℤ) := by
+                  omega
+                rw [hshift, gaussianBinomialInt_ofNat]
+                simp
+              _ = ∑ ℓ ∈ Finset.range (N + 1),
+                    q ^ (ℓ * (((ℓ : ℤ) - d).toNat)) *
+                      gaussianBinomial q N ℓ *
+                        gaussianBinomialInt q N ((ℓ : ℤ) - d) := by
+                apply Finset.sum_subset
+                · intro ℓ hℓ
+                  have hℓ' := Finset.mem_Icc.mp hℓ
+                  exact Finset.mem_range.mpr (by omega)
+                · intro ℓ hℓ hnot
+                  have hℓN : ℓ ≤ N :=
+                    Nat.lt_succ_iff.mp (Finset.mem_range.mp hℓ)
+                  have hℓd : ℓ < d := by
+                    by_contra h
+                    exact hnot
+                      (Finset.mem_Icc.mpr ⟨Nat.le_of_not_gt h, hℓN⟩)
+                  have hneg : (ℓ : ℤ) - d < 0 := by omega
+                  rw [gaussianBinomialInt_eq_zero_of_neg q N hneg, mul_zero]
+      · have hdN : N < d := Nat.lt_of_not_ge hd
+        have hleft : (N : ℤ) - d < 0 := by omega
+        rw [gaussianBinomialInt_eq_zero_of_neg q (2 * N) hleft]
+        symm
+        apply Finset.sum_eq_zero
+        intro ℓ hℓ
+        have hℓN : ℓ ≤ N :=
+          Nat.lt_succ_iff.mp (Finset.mem_range.mp hℓ)
+        have hneg : (ℓ : ℤ) - d < 0 := by omega
+        rw [gaussianBinomialInt_eq_zero_of_neg q N hneg, mul_zero]
+
+/-- **Literal integer-sum shifted-central q-Vandermonde.**  With both lower
+indices extended by zero, the monograph's sum may be written over every
+integer without choosing separate positive- and negative-shift ranges:
+
+`[2N choose N+k]_q = ∑_{ℓ∈ℤ} q^(ℓ(ℓ+k))
+  [N choose ℓ]_q [N choose ℓ+k]_q`.
+
+The `finsum` is genuinely finite: its support lies in `0 ≤ ℓ ≤ N`.  The
+natural exponent displayed in Lean agrees with the integer product on every
+possibly nonzero summand. -/
+theorem gaussianBinomial_two_mul_int_shifted_central_finsum
+    {R : Type*} [CommSemiring R] (q : R) (N : ℕ) (k : ℤ) :
+    gaussianBinomialInt q (2 * N) ((N : ℤ) + k) =
+      ∑ᶠ ℓ : ℤ,
+        q ^ (ℓ.toNat * (ℓ + k).toNat) * gaussianBinomialInt q N ℓ *
+          gaussianBinomialInt q N (ℓ + k) := by
+  let f : ℤ → R := fun ℓ =>
+    q ^ (ℓ.toNat * (ℓ + k).toNat) * gaussianBinomialInt q N ℓ *
+      gaussianBinomialInt q N (ℓ + k)
+  have hsupp : Function.support f ⊆
+      (Finset.Icc (0 : ℤ) (N : ℤ) : Set ℤ) := by
+    intro ℓ hℓ
+    rw [Function.mem_support] at hℓ
+    have h0 : 0 ≤ ℓ := by
+      by_contra h
+      apply hℓ
+      simp [f, gaussianBinomialInt_eq_zero_of_neg q N (lt_of_not_ge h)]
+    have hN : ℓ ≤ (N : ℤ) := by
+      by_contra h
+      apply hℓ
+      simp [f, gaussianBinomialInt_eq_zero_of_lt q N (lt_of_not_ge h)]
+    exact Finset.mem_Icc.mpr ⟨h0, hN⟩
+  calc
+    gaussianBinomialInt q (2 * N) ((N : ℤ) + k) =
+        ∑ ℓ ∈ Finset.range (N + 1),
+          q ^ (ℓ * (((ℓ : ℤ) + k).toNat)) * gaussianBinomial q N ℓ *
+            gaussianBinomialInt q N ((ℓ : ℤ) + k) :=
+      gaussianBinomial_two_mul_int_shifted_central q N k
+    _ = ∑ ℓ ∈ Finset.Icc (0 : ℤ) (N : ℤ), f ℓ := by
+      rw [Int.Icc_eq_finset_map, Finset.sum_map]
+      simp [f]
+    _ = ∑ᶠ ℓ : ℤ, f ℓ :=
+      (finsum_eq_sum_of_support_subset f hsupp).symm
+    _ = _ := rfl
 
 end Fabius

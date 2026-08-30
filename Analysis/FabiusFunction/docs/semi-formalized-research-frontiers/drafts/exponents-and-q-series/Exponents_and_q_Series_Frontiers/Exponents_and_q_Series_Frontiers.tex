@@ -4605,10 +4605,20 @@ The companion \path{QBinomialVandermonde.lean} exhaustively exports
 \lean{Fabius.gaussianBinomial_add_central_min},
 \lean{Fabius.gaussianBinomial_two_mul_add_shifted_central},
 \lean{Fabius.gaussianBinomial_two_mul_sub_shifted_central}, and
-\lean{Fabius.gaussianBinomial_two_mul_sub_shifted_central_Icc}.
-All seven are denominator-free commutative-semiring identities; the positive
-shift is total in natural \(k\), while the two negative-shift forms assume
-exactly \(k\le N\).
+\lean{Fabius.gaussianBinomial_two_mul_sub_shifted_central_Icc}, together with
+the total signed forms
+\lean{Fabius.gaussianBinomial_two_mul_int_shifted_central} and
+\lean{Fabius.gaussianBinomial_two_mul_int_shifted_central_finsum}.
+All nine are denominator-free commutative-semiring identities.
+\path{FiniteQBinomialCore.lean} supplies the reusable integer-index extension
+\lean{Fabius.gaussianBinomialInt}, its cast and lower/upper zero laws
+\lean{Fabius.gaussianBinomialInt_ofNat},
+\lean{Fabius.gaussianBinomialInt_eq_zero_of_neg}, and
+\lean{Fabius.gaussianBinomialInt_eq_zero_of_lt}, and the total reflection law
+\lean{Fabius.gaussianBinomialInt_symm}.  Consequently the two final
+Vandermonde theorems state the monograph's single convolution for every
+\(k\in\Z\), including \(\lvert k\rvert>N\), both on the natural support and
+as a literal finite-support sum over \(\Z\).
 
 \item \textbf{Formal and unconditionally summable series (partially formalized).}
 The coefficientwise geometric filter and its Gaussian residual are in
