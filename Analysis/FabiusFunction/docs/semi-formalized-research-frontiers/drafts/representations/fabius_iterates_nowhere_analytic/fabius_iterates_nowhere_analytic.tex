@@ -464,16 +464,23 @@ those elements and partitioning them gives at most
  \label{eq:count-near-singletons}
 \end{equation}
 possibilities.  Also $s(\pi)\leq e$, while \eqref{eq:defect-e} gives
-$D(\pi)\geq e(3m/4-1)$.  For fixed $K$, the logarithm of the counting and weight
-factor is $\bigO(e\log m)$, whereas the negative dyadic exponent is
-$-\Omega(em)$.  Summing over $e$ therefore gives $\bigO(\rho^m)$ for some
-$\rho<1$.
+$D(\pi)\geq e(3m/4-1)$.  Uniformly for $1\leq e\leq m/4$, the base-two logarithm
+of the counting and weight factor is at most
+\[
+ \log_2(2e+1)+4e\log_2m+e\log_2\max(1,2K).
+\]
+For fixed $K$ this is at most $em/4$ once $m$ is large enough, whereas the
+negative defect exponent is at most $-e(3m/4-1)$.  Thus the $e$-th contribution
+is at most $2^{-em/3}$ after enlarging the threshold once more, uniformly in
+$e$.  The resulting geometric sum is $\bigO(2^{-m/3})$.
 
 Next consider partitions with $1\leq t\leq m/4$.  Choose the $t$ elements outside a
 largest block and partition them.  Up to harmless overcounting there are at most
 $m^t t^t$ choices, and $s(\pi)\leq t+1$.  By \eqref{eq:defect-t},
-$D(\pi)\geq t(3m/4-1)$.  The same comparison, $\bigO(t\log m)$ versus
-$-\Omega(tm)$, gives another exponentially decaying sum.
+$D(\pi)\geq t(3m/4-1)$.  The same explicit estimate as above, now with $t$ in
+place of $e$ (and one harmless extra factor $\max(1,2K)$), bounds the $t$-th
+contribution by $2^{-tm/3}$ for all sufficiently large $m$, uniformly for
+$1\leq t\leq m/4$.  Its sum is again exponentially small.
 
 It remains to treat the middle region $e>m/4$ and $t>m/4$.  If $t\leq3m/4$, then
 \eqref{eq:defect-t} gives $D(\pi)\geq c_1m^2$ for all sufficiently large $m$ and an
@@ -501,7 +508,8 @@ binary chain rule.
 
 \begin{lemma}[Two-spine reduction]
 \label{lem:two-spine}
-Let $f$ and $h$ be smooth near $x$, and put $y=h(x)$, $B=\abs{h'(x)}$.  Suppose
+Let $h$ be smooth near $x$, let $f$ be smooth near $y=h(x)$, and put
+$B=\abs{h'(x)}$.  Suppose
 there are constants $H>0$ and $K\geq1$ such that
 \begin{align}
  \abs{f^{(r)}(y)}&\leq Q_r &&(r\geq1),
@@ -664,11 +672,11 @@ Because $F'$ rises strictly from $0$ to $2$ on $[0,\half]$, there is a unique
 $u\in(0,\half)$ with $F'(u)=1$.  Symmetry gives the only other solution $1-u$.
 For a fixed $n$, the tie set is therefore
 \begin{equation}
- T_n:=\bigcup_{k=0}^{n-2}G_k^{-1}\set{u,1-u}.
- \label{eq:tie-set}
+ T_n:=\bigcup_{\substack{k\geq0\\k+1<n}}G_k^{-1}\set{u,1-u}.
+\label{eq:tie-set}
 \end{equation}
-Each $G_k$ is a homeomorphism of $[0,1]$, so $T_n$ is finite, with at most
-$2(n-1)$ points.
+Thus $T_1=\varnothing$.  Each $G_k$ is a homeomorphism of $[0,1]$, so in
+general $T_n$ is finite, with at most $2(n-1)$ points.
 
 \section{Binary transitions force recurrent large amplitudes}
 \label{sec:binary}
@@ -1258,7 +1266,7 @@ directly connected to the proof are:
  for the primary exposition;
  \item \path{GlobalExtension.lean}
  and \path{BoundedDerivatives.lean} in \path{Lean/FabiusFunction/} for the derivative atlas;
- \item \path{Convexity.lean}, \path{StrictMonotonicity.lean}, and the order-isomorphism
+ \item \path{Convexity.lean}, \path{Monotonicity.lean}, and the order-isomorphism
  modules for the orbit dynamics;
  \item \path{OriginalPaperSupplement.lean} and \path{NowhereAnalytic.lean} for the
  base nonanalyticity proof;

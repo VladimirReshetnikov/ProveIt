@@ -14,12 +14,20 @@ New standalone intake members:
   rather than a new Thue--Morse atlas member.  The `n = 1` case and the
   inverse/non-elementarity infrastructure already exist in Lean; the
   `n ≥ 2` theorem appears genuinely new and remains unformalized.  The report
-  has 14 nonconjectural labelled results and three conjectures.  Its source
-  map says `StrictMonotonicity.lean`, but the live module is
-  `Monotonicity.lean`; a deeper claim-by-claim review is pending.  All 19
-  clean A4 PDF pages were rendered during intake, while the experiment, TeX,
-  and Lean were not run.  Manuscript proof labels do not establish Lean
-  status.
+  has 14 nonconjectural labelled results and three conjectures.  A hostile
+  post-intake proof pass found no fatal gap and made three proof-exposition
+  repairs: an explicit uniform estimate in the weighted-defect decay, the
+  correct neighborhood for the outer function in the two-spine lemma, and an
+  empty-union-safe definition of the `n = 1` tie set.  It also corrected the
+  landing source map's nonexistent `StrictMonotonicity.lean` to the live
+  `Monotonicity.lean`.  Three direct `pdflatex` passes then rebuilt a clean
+  19-page PDF, and every page was rendered again.  The shipped command also
+  reproduced all six numerical outputs byte-for-byte in a recovered,
+  fully-pinned Ubuntu/Python environment.  The companion
+  [`REPOSITORY_AUDIT.md`](fabius_iterates_nowhere_analytic/REPOSITORY_AUDIT.md)
+  records that environment, the output hashes, the cross-platform drift, and
+  the remaining reproducibility limitations.  None of this elevates a
+  manuscript proof label to Lean status.
 - [`Fabius_Rvachev_Shape_Divisibility_Stein_Geometry/`](Fabius_Rvachev_Shape_Divisibility_Stein_Geometry/),
   *Shape, Divisibility, and Stein Geometry of the Fabius--Rvachev Law*
   (50 pp), arrived on 2026-08-30 with all 14 submitted payload checksums
