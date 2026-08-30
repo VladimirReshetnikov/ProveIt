@@ -67,6 +67,8 @@ import FabiusFunction.GramStieltjesNaturality
 import FabiusFunction.PolynomialMomentGramDeterminant
 import FabiusFunction.LegendrePolynomialRational
 import FabiusFunction.WeightedScaleMultiplicity
+import FabiusFunction.BaseDigitMultiplicity
+import FabiusFunction.PartitionDefect
 import FabiusFunction.SpectralZetaWeighted
 import FabiusFunction.ShiftDifferenceWeights
 import FabiusFunction.NewtonMultiplicityAssembly
