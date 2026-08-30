@@ -1,5 +1,5 @@
-Fabius Integral and Transform Calculus Report
-=============================================
+Fabius Integral and Transform Calculus Report: archived second-wave companion
+=============================================================================
 
 Consolidated report
 -------------------
@@ -25,10 +25,11 @@ requirements.txt
     Exact NumPy and SciPy versions used for the numerical checks.
 
 PDF_VALIDATION.txt
-    PDF preflight, render, reference, and numerical reproducibility checks.
+    Historical preflight, render, reference, and numerical reproducibility
+    checks for the removed standalone PDF.
 
 SHA256SUMS.txt
-    SHA-256 checksums for every deliverable file in this directory.
+    SHA-256 checksums for the retained files and the consolidated source/PDF.
 
 Corpus snapshot
 ---------------

@@ -4824,7 +4824,19 @@ with the established rational quotient, and
 \begin{theorem}[Denominator-free \(q\)-Vandermonde and shifted central forms]
 \label{thm:q-vandermonde-formal}
 Let \(R\) be a commutative semiring, let \(q\in R\), and let all displayed
-indices be natural numbers.  The two zero-extended Vandermonde orientations are
+unsigned indices be natural numbers.  Extend a Gaussian row to integer lower
+indices by
+\begin{equation}
+ \mathcal G_q(n,t)=
+ \begin{cases}{n\brack t}_q,&0\le t,\\0,&t<0,\end{cases}
+ \qquad t\in\Z,                                      \label{eq:q-gaussian-int}
+\end{equation}
+where the natural coefficient already vanishes for \(n<t\).  This extension
+has the total reflection law
+\begin{equation}
+ \mathcal G_q(n,n-t)=\mathcal G_q(n,t)\qquad(t\in\Z). \label{eq:q-gaussian-int-symm}
+\end{equation}
+The two zero-extended Vandermonde orientations are
 \begin{align}
  {m+n\brack r}_q
  &=\sum_{j=0}^{r}q^{(m-j)(r-j)}
@@ -4859,6 +4871,18 @@ If \(k\le N\), row reflection gives the same right side for
  =\sum_{\ell=k}^{N}q^{\ell(\ell-k)}
    {N\brack\ell}_q{N\brack\ell-k}_q.                    \label{eq:q-vandermonde-shift-minus}
 \end{equation}
+Most strongly, for every \(k\in\Z\), put \(t^\natural=\max(t,0)\in\N\).
+Then the two natural cases combine into the literal finite-support integer sum
+\begin{equation}
+ \mathcal G_q(2N,N+k)
+ =\sum_{\ell\in\Z}
+   q^{\ell^\natural(\ell+k)^\natural}
+   \mathcal G_q(N,\ell)\mathcal G_q(N,\ell+k).           \label{eq:q-vandermonde-shift-int}
+\end{equation}
+Only \(0\le\ell\le N\) can contribute; a nonzero term also has
+\(0\le\ell+k\le N\), so its exponent is exactly
+\(\ell(\ell+k)=\ell^2+\ell k\), as in the signed report formula.  In
+particular, both sides vanish automatically when \(\lvert k\rvert>N\).
 No identity in this theorem uses division, cancellation, a nonvanishing
 hypothesis, or an exclusion of \(q=0\), roots of unity, positive
 characteristic, or zero divisors.
@@ -4869,16 +4893,25 @@ Equations \eqref{eq:q-vandermonde-first} and
 \eqref{eq:q-vandermonde-second} are
 \lean{gaussianBinomial_add_vandermonde} and
 \lean{gaussianBinomial_add_vandermonde'}.
+The definition \eqref{eq:q-gaussian-int}, its cast, lower-zero, upper-zero,
+and total-reflection laws are respectively
+\lean{gaussianBinomialInt}, \lean{gaussianBinomialInt_ofNat},
+\lean{gaussianBinomialInt_eq_zero_of_neg},
+\lean{gaussianBinomialInt_eq_zero_of_lt}, and
+\lean{gaussianBinomialInt_symm} in \path{FiniteQBinomialCore.lean}.
 The full-range and literal-\(\min(m,n)\) central identities are
 \lean{gaussianBinomial_add_central} and
 \lean{gaussianBinomial_add_central_min}; the positive shift is
 \lean{gaussianBinomial_two_mul_add_shifted_central}; and the two
 negative-shift presentations are
 \lean{gaussianBinomial_two_mul_sub_shifted_central} and
-\lean{gaussianBinomial_two_mul_sub_shifted_central_Icc}.  These seven
-declarations exhaust the public surface of
-\path{QBinomialVandermonde.lean}.  The positive shift is total in \(k\);
-the last two declarations assume exactly \(k\le N\).
+\lean{gaussianBinomial_two_mul_sub_shifted_central_Icc}.  The total signed
+finite-range and integer-sum forms are
+\lean{gaussianBinomial_two_mul_int_shifted_central} and
+\lean{gaussianBinomial_two_mul_int_shifted_central_finsum}.  These nine
+theorems exhaust the public surface of \path{QBinomialVandermonde.lean}.
+The three natural-shift theorems retain their stated domains, while the last
+two are total in \(k\in\Z\).
 \end{proof}
 
 \begin{theorem}[Reversed Gaussian row, Lagrange weights, and all residual moments]
@@ -8096,8 +8129,11 @@ That rule explains several choices made above:
       tail for the actual infinite Rvachev sinc product: arbitrary complex \(c,z\) need
       only injectivity of the finite powers of \(c^2\), and \(c=1/2\), \(q=1/4\) is
       assumption-free.  The two \(q\)-Vandermonde orientations, the central convolution,
-      the total positive shift, and both \(k\le N\) negative-shift forms are also
-      denominator-free commutative-semiring theorems.  Conditionally-only convergent
+      and all natural shifted forms are denominator-free commutative-semiring theorems.
+      The core also zero-extends the Gaussian lower index to \(\Z\), proves its total
+      reflection symmetry, and packages the report's single shifted-central formula for
+      every signed \(k\), both over \(0,\ldots,N\) and as a literal finite-support
+      integer sum.  Conditionally-only convergent
       boundary series, formal-to-analytic evaluation outside the named entire series,
       the report's finite-prefix quotient and Bell package, analytic sign/error bounds,
       uniform or derivative convergence, and asymptotic quarter-sinc acceleration remain

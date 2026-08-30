@@ -64,7 +64,7 @@ namespace Fabius
 Multiplying `1 - 2t ≤ e^{-2t}` (`Real.add_one_le_exp`) by `e^{2t} > 0`
 gives `e^{2t} - 1 ≤ 2t e^{2t}`, which is the claim after halving and
 dividing by `e^t`. -/
-theorem sinh_le_mul_exp {t : ℝ} (ht : 0 ≤ t) :
+theorem sinh_le_mul_exp {t : ℝ} (_ht : 0 ≤ t) :
     Real.sinh t ≤ t * Real.exp t := by
   have hE : (0 : ℝ) < Real.exp t := Real.exp_pos t
   have hkey : 1 + -(2 * t) ≤ Real.exp (-(2 * t)) :=
@@ -129,7 +129,7 @@ theorem prod_norm_generalizedSincFactor_le (a : ℕ → ℕ)
     have harg : ‖(Real.pi : ℂ) * z / (2 : ℂ) ^ h‖
         = Real.pi * ‖z‖ / 2 ^ h := by
       rw [norm_div, norm_mul, norm_pow]
-      simp [Real.pi_nonneg, abs_of_nonneg Real.pi_nonneg]
+      simp [abs_of_nonneg Real.pi_nonneg]
     rw [norm_pow]
     calc ‖complexSinc ((Real.pi : ℂ) * z / (2 : ℂ) ^ h)‖ ^ a h
         ≤ (Real.exp ‖(Real.pi : ℂ) * z / (2 : ℂ) ^ h‖) ^ a h :=

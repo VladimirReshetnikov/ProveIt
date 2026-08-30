@@ -85,7 +85,6 @@ theorem geometricReciprocalGamma_inv_natCast_eq_zero_iff {b : ℕ}
     have hpow : ((b : ℂ)) ^ n ≠ 0 := pow_ne_zero n hbne
     have hz : (((b : ℂ))⁻¹) ^ n * z = -((m + 1 : ℕ) : ℂ) := by
       push_cast
-      push_cast at hnm
       linear_combination hnm
     have hmul : z = ((b : ℂ)) ^ n * ((((b : ℂ))⁻¹) ^ n * z) := by
       rw [← mul_assoc, ← mul_pow, mul_inv_cancel₀ hbne, one_pow, one_mul]

@@ -187,13 +187,14 @@ single consolidated volume `Lambert_W_Guide/` (the most complete
 treatment as the body, the other three's unique layers in a
 complements section, a four-way concordance, and a corpus-role
 section tying W₋₁ to the endpoint theory).  By the same precedent, a
-standalone 96-page reference monograph on q-Pochhammer symbols and
-q-binomial coefficients — the machinery consumed by the exponents
+standalone reference monograph on q-Pochhammer symbols and q-binomial
+coefficients — the machinery consumed by the exponents
 volume's Parts II/VI/VII and the formalized Gaussian-binomial core —
 was filed as a second member of `exponents-and-q-series/` rather than
 merged into the frontier volume, after an on-arrival audit (symbolic
 re-verification of its core theorems, 30-digit numerical checks of
-its two newest identities, one repaired majorant).  Several volumes' part-boundary section numbering and
+its two newest identities, one repaired majorant).  Initially 96 pages, the
+monograph now has 195 pages after consolidation.  Several volumes' part-boundary section numbering and
 page-counter handling were repaired along the way (edits are marked
 `% ed.:` in the sources).  Every volume carries
 a provenance section with each absorbed member's SHA-256; the absorbed
@@ -221,7 +222,9 @@ group README on removal.
 
 Four scripts here check the volumes and module documentation against the Lean
 corpus. `audit_all.sh` runs all four and exits nonzero if any hard check fails;
-run it before pushing any change that touches either side.
+run it before pushing any change that touches either side. The stale-claim and
+crosswalk-coverage surveys are advisory; the build-log checker is run
+separately after compiling a changed volume.
 
 - `audit_facade_reachability.py` — every module on disk is reachable from the
   library root `FabiusFunction.lean`. A newly added leaf module that nothing
@@ -241,6 +244,9 @@ run it before pushing any change that touches either side.
   `Fabius.*` name is a hard failure. An unresolved unqualified name is advisory
   only, because it may be a root-namespace Mathlib declaration that this
   lexical audit cannot distinguish from a stale local name.
+- `audit_stale_claims.py` and `audit_crosswalk_coverage.py` — advisory worklists
+  for contradictory “open” claims and theorem environments lacking either a
+  nearby Lean citation or an explicit formalization disclaimer.
 
 The four hard checks have no standing exceptions. If one starts reporting a
 failure that looks spurious, fix the script rather than carrying the exception:

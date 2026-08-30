@@ -17,11 +17,11 @@ and Gaussian base `q = c^2`, only injectivity of `j |-> q^j` on
 This does not formalize the reports' finite prefixes `P_(b,n)`, their
 quotient or Bell coefficients, conditionally convergent boundary series, or
 the analytic signs, error bounds, uniform/derivative convergence, and
-asymptotics. `QBinomialVandermonde.lean` separately proves both
-q-Vandermonde orientations, both the full-range and exact-min-support central
-identities, the total natural
-positive shift, and two negative-shift forms under exactly `k <= N`, all
-over arbitrary commutative semirings.
+asymptotics. `FiniteQBinomialCore.lean` zero-extends Gaussian lower indices
+to all integers and proves total row reflection. `QBinomialVandermonde.lean`
+separately proves both q-Vandermonde orientations, both central supports, the
+three natural shifted forms, and the monograph's single shifted-central
+identity for every integer shift, all over arbitrary commutative semirings.
 
 The documents also cross-reference the independent real fractional-Volterra
 layer. `FractionalVolterraCalculus.lean` proves positive affine covariance on
@@ -38,7 +38,7 @@ bounded Fabius function for `0 <= x <= 1`, and the Up-to-Fabius bridge for
 Complex orders, Caputo/Riemann--Liouville derivatives, weighted-monomial or iterated
 shifts, negative-branch, shifted-lattice, endpoint-moment, transform/tail,
 piecewise/refinement, and inverse/quantile formulas
-remain research frontiers. These API claims were checked at source checkpoint
+remain research frontiers. These fractional-Volterra API claims were checked at source checkpoint
 `149332f9d`.
 
 Member: `Exponents_and_q_Series_Frontiers`
@@ -280,12 +280,13 @@ Chern–Dilcher–Jiu deleted-singularity identity and Ramanujan's ₁ψ₁
 verified numerically to 30 digits; one dominated-convergence majorant
 repaired with an `% ed.:` note).
 
-Its current formalization ledger has 183 labelled results: 20 exact, 27
+Its current formalization ledger has 183 labelled results: 21 exact, 26
 partial, 133 with no counterpart, and 3 interface-only. Both orientations
 of q-Vandermonde and both central-support presentations are exact in
 `QBinomialVandermonde.lean`; the monograph's single signed shifted-central
-formula is partial because Lean exposes a total natural positive shift and
-two natural negative forms under `k <= N`. The ledger also now records the
+formula is now exact for every integer shift through the zero-extended
+`gaussianBinomialInt`, both as a finite natural-range sum and literally as a
+finite-support `finsum` over all integers. The ledger also now records the
 genuine real infinite product `qPochhammerInf` and its contractive-base
 convergence/positivity layer, replacing the stale claim that every infinite
 q-Pochhammer in the development was merely a finite `Finset.range` product.

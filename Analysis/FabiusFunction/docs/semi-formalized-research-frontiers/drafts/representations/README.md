@@ -62,6 +62,22 @@ or complete J-fraction/Padé convergence and Jacobi asymptotics.  The separate
 conversion of the Thue--Morse derivative orbit into one explicit all-order
 higher-kernel formula also remains open.)
 
+The finite moment layer now has both a reusable and a Fabius-specific form.
+`FiniteMomentGram.lean`, `GramStieltjes.lean`, and
+`FiniteMomentJacobi.lean` provide measure-free commutative-ring/field Hankel,
+normalized Gram--Stieltjes, and the complete finite Jacobi recurrence,
+including its degree-zero base equation.
+`OrthogonalPolynomialGramBridge.lean` proves that the up-moment functional is
+integration against the canonical up measure and identifies the generic
+matrix, determinant, fraction-free polynomial, and monic normalization with
+their up-specific counterparts.
+`MomentHankelMatrix.lean`, `MomentHankelValues.lean`, and the
+`OrthogonalPolynomial*.lean` modules separately prove up-measure positivity,
+the monic orthogonal construction, parity, the symmetric three-term
+recurrence, and the first exact Jacobi data.  Roots and quadrature,
+second-kind polynomials, finite/infinite continued-fraction identification,
+and analytic convergence remain open.
+
 The reciprocal-Gamma portion of Part II is now formal at source checkpoint
 `71ab6f6728fceb753c88d8b0573077a59acf2682`.  The reusable convergence engine
 is `ScaledInfiniteProducts.lean`; `GeometricReciprocalGamma.lean` constructs
@@ -157,7 +173,20 @@ verification package lives under
 Absorbed directories deleted; provenance with SHA-256 in the volume's
 Appendix B and `assets/SHA256SUMS-absorbed.txt`.
 
-`Legendre_Rvachev_Self_Reconstruction/` (*Legendre--Rvachev
+Six same-question Lagrange-loop reconstruction reports landed on 2026-08-29
+and remain separate pending a deliberate fold into
+[`Up_Polynomial_Synthesis/`](Up_Polynomial_Synthesis/):
+`rvachev_lagrange_loop_report/`, `Lagrange_Rvachev_Loop_Package/`,
+`lagrange_rvachev_loop_report_v3/`,
+`Lagrange_Rvachev_Closed_Loop_Report/`,
+`Rvachev_Lagrange_Loop_Report_v5/`,
+and `Rvachev_Lagrange_Loop_Report_v6/`.
+The v6 member was delivered as a bare TeX file; its rendered landing notes
+record the missing companion assets and the absence of a declaration-level
+Lean crosswalk.
+
+[`Legendre_Rvachev_Self_Reconstruction/`](Legendre_Rvachev_Self_Reconstruction/)
+(*Legendre--Rvachev
 Self-Reconstruction on [-1,1]*) landed 2026-08-29 and is **pending
 merge into `Up_Polynomial_Synthesis/`**.  It is not a seventh
 Lagrange-loop sibling: the six loop reports synthesize *Lagrange
@@ -174,7 +203,10 @@ decomposition, Hilbert--Schmidt identities for the even-projector
 factorization, and a sharp central-coefficient root law.  Its
 theorem-level checks are exact rational with residual `0`; the reported
 energy value is a stabilized display of an exact partial sum, not a
-certified enclosure of the limit, and the report says so.
+certified enclosure of the limit, and the report says so.  This is a
+checksum-verified 22-file package with a 27-page Libertinus rebuild, exact
+data certificates, four dual-format figures, and snapshot
+`faa3a9b94ac0e71abdc53c36fdf428222e4d2a8c`.
 Subsequent Lean module `FabiusLegendreEnergy.lean` now defines the
 polynomial-form blocks `B_n = u_n*P_(2n)` and proves exactly their complete
 orthogonality, the coefficient Parseval identity, the shifted coefficient-tail

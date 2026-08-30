@@ -27,6 +27,8 @@ whereas the recursive coefficient and the finite theorem do not.
   without division or cancellation.
 * `gaussianBinomial_eq_zero_of_lt` and `gaussianBinomial_self` give the two
   triangular boundaries.
+* `gaussianBinomialInt` extends the lower index by zero to all integers;
+  `gaussianBinomialInt_symm` makes row reflection total outside the triangle.
 * `finiteQPochhammerIn_succ_shift` peels the first product factor.
 * `finiteQPochhammerIn_add` splits a product after an arbitrary prefix.
 * `finiteQPochhammerIn_self_mul_gaussianBinomial` is the denominator-free
@@ -349,6 +351,70 @@ theorem gaussianBinomial_symm
             rw [show n - (k + 1) + 1 = n - k by omega,
               ih hkn, ih hk1n, gaussianBinomial_succ_succ]
             ac_rfl
+
+/-! ## Integer lower indices -/
+
+/-- A Gaussian coefficient whose lower index is an integer, extended by zero
+on negative indices.  The natural-index definition already vanishes above
+the row, so this is the usual total convention on all of `ℤ`. -/
+def gaussianBinomialInt {R : Type*} [Semiring R]
+    (q : R) (n : ℕ) : ℤ → R
+  | .ofNat k => gaussianBinomial q n k
+  | .negSucc _ => 0
+
+/-- On a nonnegative integer lower index, `gaussianBinomialInt` is the
+ordinary recursive Gaussian coefficient. -/
+@[simp]
+theorem gaussianBinomialInt_ofNat
+    {R : Type*} [Semiring R] (q : R) (n k : ℕ) :
+    gaussianBinomialInt q n (k : ℤ) = gaussianBinomial q n k := by
+  rfl
+
+/-- Every negative lower index gives zero. -/
+theorem gaussianBinomialInt_eq_zero_of_neg
+    {R : Type*} [Semiring R] (q : R) (n : ℕ) {k : ℤ} (hk : k < 0) :
+    gaussianBinomialInt q n k = 0 := by
+  cases k with
+  | ofNat k =>
+      exact (not_lt_of_ge (Int.natCast_nonneg k) hk).elim
+  | negSucc k => rfl
+
+/-- Every lower index strictly above the row gives zero. -/
+theorem gaussianBinomialInt_eq_zero_of_lt
+    {R : Type*} [Semiring R] (q : R) (n : ℕ) {k : ℤ}
+    (hk : (n : ℤ) < k) :
+    gaussianBinomialInt q n k = 0 := by
+  cases k with
+  | ofNat k =>
+      change gaussianBinomial q n k = 0
+      exact gaussianBinomial_eq_zero_of_lt q (Int.ofNat_lt.mp hk)
+  | negSucc k => rfl
+
+/-- **Total symmetry of an integer-indexed Gaussian row.**  Reflection in
+the row midpoint remains valid on all of `ℤ`; outside the natural triangle,
+both reflected coefficients vanish. -/
+theorem gaussianBinomialInt_symm
+    {R : Type*} [CommSemiring R] (q : R) (n : ℕ) (k : ℤ) :
+    gaussianBinomialInt q n ((n : ℤ) - k) =
+      gaussianBinomialInt q n k := by
+  cases k with
+  | ofNat k =>
+      change gaussianBinomialInt q n ((n : ℤ) - (k : ℤ)) =
+        gaussianBinomialInt q n (k : ℤ)
+      by_cases hk : k ≤ n
+      · have hi : (n : ℤ) - (k : ℤ) = ((n - k : ℕ) : ℤ) := by
+          omega
+        rw [hi, gaussianBinomialInt_ofNat, gaussianBinomialInt_ofNat,
+          gaussianBinomial_symm q hk]
+      · have hneg : (n : ℤ) - (k : ℤ) < 0 := by omega
+        have habove : (n : ℤ) < (k : ℤ) := by omega
+        rw [gaussianBinomialInt_eq_zero_of_neg q n hneg,
+          gaussianBinomialInt_eq_zero_of_lt q n habove]
+  | negSucc k =>
+      have hneg : Int.negSucc k < 0 := Int.negSucc_lt_zero k
+      have habove : (n : ℤ) < (n : ℤ) - Int.negSucc k := by omega
+      rw [gaussianBinomialInt_eq_zero_of_lt q n habove,
+        gaussianBinomialInt_eq_zero_of_neg q n hneg]
 
 /-- **Denominator-free q-factorial quotient identity.**  Multiplying the
 Gaussian coefficient `[n choose k]_q` by `(q;q)_k` selects the final `k`

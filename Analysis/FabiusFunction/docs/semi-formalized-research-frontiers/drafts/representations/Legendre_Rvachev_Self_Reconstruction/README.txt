@@ -12,7 +12,8 @@ legendre_rvachev_self_reconstruction.tex
     Complete LaTeX source of the report.
 
 legendre_rvachev_self_reconstruction.pdf
-    Compiled 27-page report.
+    Compiled report: 27 A4 pages, rebuilt with embedded/subset Libertinus prose
+    fonts under the repository's three-pass policy.
 
 legendre_rvachev_experiments.py
     Standalone, extensively commented Python program.  It computes the exact
@@ -62,14 +63,22 @@ coefficient scan and plotting.
 RECOMPILING THE REPORT
 ----------------------
 
-Run from this directory so that the relative generated/ figure paths resolve:
+Run from this directory so that the relative generated/ figure paths resolve.
+Repository policy requires exactly three successful pdfLaTeX passes:
 
-    latexmk -pdf -interaction=nonstopmode -halt-on-error \
-        legendre_rvachev_self_reconstruction.tex
+    pdflatex -interaction=nonstopmode -halt-on-error legendre_rvachev_self_reconstruction.tex
+    pdflatex -interaction=nonstopmode -halt-on-error legendre_rvachev_self_reconstruction.tex
+    pdflatex -interaction=nonstopmode -halt-on-error legendre_rvachev_self_reconstruction.tex
+    rm -f *.aux *.log *.out *.toc
 
-A standard TeX Live installation with the packages named in the source
-preamble is sufficient.  The delivered PDF was compiled with pdfTeX and then
-rendered page-by-page for visual inspection.
+The prose font must be Libertinus.  After building, check the committed PDF:
+
+    pdffonts legendre_rvachev_self_reconstruction.pdf | grep -c Libertinus
+
+The command must print a nonzero count.  A successful TeX build alone is not
+sufficient because the source falls back silently to Latin Modern when the
+Libertinus package is unavailable.  Inspect the final page count and render
+every page before regenerating SHA256SUMS.txt.
 
 KEY VERIFIED OUTPUT
 -------------------
