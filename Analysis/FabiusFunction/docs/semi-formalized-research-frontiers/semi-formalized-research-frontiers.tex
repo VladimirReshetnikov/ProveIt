@@ -3828,7 +3828,24 @@ nonzero natural mesh $M$ and polynomial of degree at most $v_2(M)$, these give t
 raw and normalized \texttt{tsum} identities and, on $[-1,1]$, their exact finite
 $k\in(-2M,2M)$ forms.
 
-At the same checkpoint, \path{FabiusLegendreTranslateBlocks.lean} exports six public
+At the focused-build checkpoint of 30 August 2026,
+\path{CompositeMeshSharpness.lean} exports one public definition,
+\lean{rvachevCombExactThrough}, and seven public theorems:
+\lean{exists_shift_tsum_shifted_monomial_ne_integral_nat_real},
+\lean{rvachevCombExactThrough_iff_padicValNat},
+\lean{rvachevCombExactThrough_iff_pow_two_dvd},
+\mbox{\texttt{rvachevCombExactThrough\_two\_pow}},
+\lean{two_pow_le_of_rvachevCombExactThrough},
+\lean{isLeast_rvachevCombExactThrough}, and
+\lean{isLeast_rvachevCombExactThrough_even}.  Universal shifted-comb exactness through
+degree $d$ holds for a nonzero natural mesh $M$ exactly when $d\le v_2(M)$, equivalently
+when $2^d\mid M$.  The monomial of degree $v_2(M)+1$ fails at some real shift, $2^d$ is
+the least universally exact mesh, and $4^N$ is the least mesh for the complete polynomial
+space through degree $2N$.  These statements do not assert minimality for an individual
+Legendre polynomial, one fixed $S_N$, or a target-adapted mesh.
+
+At compiled source checkpoint \texttt{a3854643d},
+\path{FabiusLegendreTranslateBlocks.lean} exports six public
 definitions: \lean{rvachevLegendreDeconvolutionPolynomial},
 \lean{rvachevLegendreScale}, \lean{rvachevLegendreIndexSet},
 \lean{rvachevLegendreAtomCoefficient}, \lean{rvachevLegendreTranslateBlock}, and
@@ -3890,9 +3907,10 @@ interval supremum norm; raw \texttt{TendstoUniformlyOn}, norm-error-to-zero, and
 forms are exported as well.  No rate, coefficientwise limit, or uniform convergence outside
 $[-1,1]$ is asserted.
 
-These four modules have public definition/theorem inventories $6/30$, $0/4$, $6/7$, and
-$5/25$, respectively, for exactly $83$ public declarations.  Their APIs still do not prove
-minimality or sharpness of the displayed mesh, an analytic
+These five modules have public definition/theorem inventories $6/30$, $0/4$, $1/7$,
+$6/7$, and $5/25$, respectively, for exactly $91$ public declarations.  Universal
+whole-space mesh sharpness is now proved, but minimality for an individual Legendre mode,
+block, or partial sum is not.  Their APIs also do not prove an analytic
 reciprocal-MGF or Appell generating-series identity, a literal differential-series
 realization of deconvolution, the displayed low reciprocal coefficients, parity or the
 displayed closed formulas for the deconvolved Legendre family, rationality of the atom rows,
@@ -7579,6 +7597,33 @@ are the Kronecker delta.
 \noindent The remaining finite geometric \(q\)-layer has the following
 exhaustive public surface.
 \begin{itemize}
+\item\label{dyadicq:item:elementary-qpochhammer}
+\path{QPochhammerElementaryIdentities.lean} has exactly 13 public theorems:
+\path{Fabius.finiteQPochhammerIn_base_reversal_units},
+\path{Fabius.finiteQPochhammerIn_inv_base_reversal_units},
+\path{Fabius.finiteQPochhammerIn_base_reversal},
+\path{Fabius.finiteQPochhammerIn_inv_base_reversal},
+\path{Fabius.prod_pow_sub_pow_eq_finiteQPochhammerIn},
+\path{Fabius.pow_mul_finiteQPochhammerIn_inv_pow_eq},
+\path{Fabius.finiteQPochhammerIn_inv_pow_eq_self_div},
+\path{Fabius.finiteQPochhammerIn_inv_pow_eq_zero_of_lt},
+\path{Fabius.one_sub_mul_gaussianBinomial_one},
+\path{Fabius.gaussianBinomial_adjacent_mul},
+\path{Fabius.gaussianBinomial_row_adjacent_mul},
+\path{Fabius.gaussianBinomial_adjacent_div}, and
+\path{Fabius.gaussianBinomial_row_adjacent_div}.
+The two unit reversals, the root-safe terminating numerator, the first-column
+clearer, and both adjacent cross identities hold over every commutative ring.
+In particular the polynomial identities remain valid at roots of unity, and
+the two adjacent cross identities are total in all natural \(n,k\): zero
+extension makes both sides vanish on and above the row boundary.  The two
+field reversal wrappers require exactly \(a\ne0\) and \(q\ne0\).  The cleared
+terminating formula and the \(k>N\) zero theorem require \(q\ne0\), while the
+displayed quotient for \(k\le N\) additionally requires
+\((q;q)_{N-k}\ne0\).  The two adjacent quotient theorems instead retain the
+strict range \(k<n\) and require exactly their displayed Gaussian and
+linear-factor denominators to be nonzero; neither assumes \(q\ne0\).
+
 \item The six theorems of \path{GeometricCompleteHomogeneous.lean} are
 \path{Fabius.completeHomogeneousEval_geometric},
 \path{Fabius.completeHomogeneousEval_scaled_geometric},
@@ -9074,6 +9119,7 @@ Module & Role in the present article \\
 \endhead
 \path{DyadicClosedForm.lean} & Exact Thue--Morse/even-moment formula for arbitrary dyadic numerators. \\
 \path{HalfQBinomial.lean} & Finite $q$-Pochhammer and Gaussian-binomial calculus at $q=1/2$, including the interpolation annihilation row. \\
+\path{QPochhammerElementaryIdentities.lean} & Exactly 13 public theorems: unit-valued ring reversals, root-safe terminating and adjacent cross identities, and field quotient forms with their exact nonzero-denominator hypotheses; the cross identities are total by zero extension, while the adjacent quotients retain \(k<n\). \\
 \path{QDifferenceAnnihilation.lean} & Exactly four public theorems: the scaled inverse-Gaussian characteristic polynomial, its complete geometric monomial moments, scalar-extension top-coefficient extraction, and strict-degree \(q\)-difference annihilation; \cref{dyadicq:rem:scaled-qdiff}. \\
 \path{GeometricQBinomialLagrange.lean} & Denominator-free geometric Lagrange numerators and residual moments, including the global identification of the numerator with the scaled inverse kernel at base and scale \(q\); normalized quotient results retain their distinct-node field hypotheses. \\
 \path{QBinomialInversionSpecializations.lean} & Exactly two public definitions and four public theorems: the residual and reconstruction rows at Gaussian base \(q^2\), scale \(-q\), and their pointwise closed forms need only a ring; exactly the two total convolution inverses require a commutative ring. \\

@@ -9,10 +9,10 @@ MAIN FILES
 ----------
 
 legendre_rvachev_self_reconstruction.tex
-    Complete LaTeX source of the report.
+    Complete 2,204-line LaTeX source of the report.
 
 legendre_rvachev_self_reconstruction.pdf
-    Compiled report: 30 A4 pages, rebuilt with embedded/subset Libertinus prose
+    Compiled report: 31 A4 pages, rebuilt with embedded/subset Libertinus prose
     fonts under the repository's three-pass policy.
 
 legendre_rvachev_experiments.py
