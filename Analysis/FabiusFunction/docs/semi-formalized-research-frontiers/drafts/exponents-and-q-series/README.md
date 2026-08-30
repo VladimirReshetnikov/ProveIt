@@ -2,6 +2,20 @@
 
 New standalone intake members:
 
+- [`inverse_q_analog_functions_report/`](inverse_q_analog_functions_report/),
+  *Inverse Functions of q-Pochhammer Symbols, Gaussian Coefficients, and
+  Related q-Analogues* (59 pp), arrived on 2026-08-30 from
+  `inverse_q_analog_functions_report.zip` (outer SHA-256
+  `19cc7da37f71ddbbc0c46b91c55c23059a1e305500260bd0a306394f4c21f4de`).
+  The archive supplied nine payloads but no checksum ledger; the
+  repository-added `SHA256SUMS` records and verifies all nine, and all five
+  text payloads were already LF. Its title and abstract place its branchwise
+  inverse q-Pochhammer, Gaussian-coefficient, and q-special-function material
+  beside the existing inverse-q reports in this group. It remains standalone
+  pending post-publication comparison and deliberate consolidation, plus a
+  Lean crosswalk; manuscript classifications and numerical checks do not
+  establish Lean verification.
+
 - [`Cyclotomic_q_Fabius_Rvachev_Frontier/`](Cyclotomic_q_Fabius_Rvachev_Frontier/),
   *Cyclotomic Blow-Ups and Natural Boundaries for the q-Fabius--Rvachev Sinc
   Product* (25 pp), arrived on 2026-08-30 from
