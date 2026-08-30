@@ -17,7 +17,11 @@ New standalone intake member:
   spectral zeta and digit count, log-periodic complex dimensions, endpoint and
   inverse-Fabius saddles, Appell/Strang--Fix reproduction, and integer-base
   generalization substantially overlap Parts II, V, VII, and VIII of the
-  consolidated volume below. It remains standalone only until a claim-by-claim
+  consolidated volume below. One conjecture is already false as stated:
+  strict log-concavity for every real base `b > 1` is refuted for `b > 2` by
+  the canonical exact plateau, and at `b = 2` by the flat mode (equivalently
+  `q < 1/2` and `q = 1/2`, respectively), so it is not a live frontier claim.
+  The package remains standalone only until a claim-by-claim
   deduplication and Lean crosswalk determine whether any refinement should be
   retained; manuscript theorem labels do not establish Lean proof status.
 
