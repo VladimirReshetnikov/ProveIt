@@ -260,7 +260,7 @@ points:
 | Exact dyadic computation and analytic correctness | `FabiusFunction.DyadicAnalytic`, `FabiusFunction.GlobalDyadic` | `fabiusDyadicValue`, `evalFabiusDyadic`, `fabiusDyadicUnit_cast`, `extendedFabiusDyadicValue_cast` |
 | First and second published papers | `FabiusFunction.Paper05442`, `FabiusFunction.Paper06487` | the theorem maps in the module docstrings and [`docs/PAPER_COVERAGE.md`](docs/PAPER_COVERAGE.md) |
 | Corrected sharp and all-orders asymptotics | `FabiusFunction.PaperFabiusAsymptotic` | `abs_log_fabius_dyadic_sub_explicitCumulantMain_le`, `log_fabius_sub_sharpLambertMain_hasAsymptoticExpansion`, `fabiusSharpLambertExpansion_two` |
-| Fourier--Legendre expansions | `FabiusFunction.FabiusTranslatedLegendreSeries`, `FabiusFunction.FabiusLegendreLeastSquares` | `hasSum_canonical_rvachevLegendreSeries_formula`, `rvachevLegendrePartialSum_pythagorean` |
+| Fourier--Legendre expansions, least squares, and coefficient energy | `FabiusFunction.FabiusTranslatedLegendreSeries`, `FabiusFunction.FabiusLegendreLeastSquares`, `FabiusFunction.FabiusLegendreEnergy` | `hasSum_canonical_rvachevLegendreSeries_formula`, `rvachevLegendrePartialSum_pythagorean`, `rvachevLegendreBlock`, `intervalIntegral_rvachevLegendreBlock_mul`, `hasSum_rvachevLegendreCoefficient_energy`, `hasSum_rvachevLegendreCoefficient_energy_tail`, `rvachevLegendreSquaredError_partialSum_eq_tsum_tail`, `fabiusSquareEnergy_eq_tsum_legendre` |
 | Inverse construction, exact smoothness locus, interior calculus, curvature, and endpoint steepness | `FabiusFunction.FabiusInverse` | `fabiusInv`, `fabiusReal_fabiusInv`, `fabiusInv_hasDerivAt`, `deriv_fabiusInv_eq_inv_two_mul_rvachevUp`, `deriv_fabiusInv_pos`, `fabiusInv_contDiffOn_Ioo`, `fabiusInv_contDiffAt_infty_iff`, `fabiusInv_differentiableAt_iff`, `deriv_deriv_fabiusInv`, `deriv_fabiusInv_half`, `deriv_deriv_fabiusInv_half`, `deriv_deriv_fabiusInv_neg_iff`, `deriv_deriv_fabiusInv_pos_iff`, `deriv_deriv_fabiusInv_eq_zero_iff`, `strictConcaveOn_fabiusInv_firstHalf`, `strictConvexOn_fabiusInv_secondHalf`, `id_isLittleO_fabiusInv_pow_at_zero_right`, `one_sub_isLittleO_one_sub_fabiusInv_pow_at_one_left`, `tendsto_deriv_fabiusInv_atTop_at_zero_right`, `tendsto_deriv_fabiusInv_atTop_at_one_left` |
 | Elementary functions and non-elementarity | `FabiusFunction.ElementaryFunction`, `FabiusFunction.AlgebraicBranch`, `FabiusFunction.InverseBranch`, `FabiusFunction.NotElementary`, `FabiusFunction.InverseNotElementary` | `IsElementary`, `IsElementary.comp`, `IsElementary.rpow_of_ne_zero`, `IsElementary.dense_analyticLocus`, `analyticDenseOn_of_algebraic`, `canonical_fabius_not_isElementary_on_Ioo`, `canonical_fabius_not_isElementary`, `canonical_fabius_not_algebraicBranch_on_Ioo`, `IsElementaryOrInverse`, `fabiusInv_not_analyticAt`, `canonical_fabiusInv_not_isElementary_on_Ioo`, `canonical_fabiusInv_not_isElementaryOrInverse_on_Ioo` |
 | Computable-real-function theorems | `FabiusFunction.FabiusComputableSpline` | `fabiusSplineApproxPR_computable`, `extendedFabiusSplineApproxPR_computable`, `fabius_isComputableRealFunction`, `globalFabius_isComputableRealFunction` |
@@ -410,6 +410,36 @@ The primary public results are
 `Fabius.rvachevLegendrePartialSum_least_squares`,
 `Fabius.rvachevLegendrePartialSum_error_eq_iff`, and
 `Fabius.canonical_rvachevLegendrePartialSum_mem_and_isMinOn`.
+
+`FabiusLegendreEnergy.lean` defines the Legendre blocks
+`B_n(x) = u_n * P_(2n)(x)`, proves their complete orthogonality formula, and
+closes the coefficient-energy side of this expansion.  In the notation above
+it proves
+
+```text
+integral (-1..1), B_m(x) * B_n(x) dx
+  = if m = n then 2 * u_n^2 / (4n+1) else 0,
+integral (-1..1), up(x)^2 dx
+  = sum (n = 0..infinity), 2 * u_n^2 / (4n+1),
+E(S_N)
+  = sum (n = N+1..infinity), 2 * u_n^2 / (4n+1),
+A_2 := integral (0..1), F(t)^2 dt
+  = sum (n = 0..infinity), u_n^2 / (4n+1).
+```
+
+The ten public declarations consist of the two definitions
+`Fabius.rvachevLegendreBlock` and `Fabius.fabiusSquareEnergy`, together with
+the eight theorems `Fabius.intervalIntegral_rvachevLegendreBlock_mul`,
+`Fabius.integral_sq_eval_rvachevLegendrePartialSumPolynomial`,
+`Fabius.hasSum_rvachevLegendreCoefficient_energy`,
+`Fabius.hasSum_rvachevLegendreCoefficient_energy_tail`,
+`Fabius.rvachevLegendreSquaredError_partialSum_eq_tsum_tail`,
+`Fabius.integral_sq_rvachevUp_eq_two_mul_fabiusSquareEnergy`,
+`Fabius.hasSum_fabiusSquareEnergy_legendre`, and
+`Fabius.fabiusSquareEnergy_eq_tsum_legendre`.  The block is defined directly
+in its polynomial form; these declarations do not formalize its finite
+up-translate realization, the separate Fourier-product or infinite-sinc
+integral for `A_2`, or a rationality theorem for its partial sums.
 
 `FabiusTranslatedLegendreSeries.lean` translates this expansion to the
 signed global Fabius function on `[0,2]`.  It proves
