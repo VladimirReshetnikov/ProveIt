@@ -2,6 +2,24 @@
 
 New standalone intake members:
 
+- [`Fabius_Rvachev_Shape_Divisibility_Stein_Geometry/`](Fabius_Rvachev_Shape_Divisibility_Stein_Geometry/),
+  *Shape, Divisibility, and Stein Geometry of the Fabius--Rvachev Law*
+  (50 pp), arrived on 2026-08-30 with all 14 submitted payload checksums
+  verified; three CSV entries were then refreshed after repository-mandated
+  LF normalization. Its strict log-concavity and reliability consequences,
+  convolution-rootlessness, exact scalar Stein calculus, weighted invariant
+  diffusion, Legendre formal-jet rigidity, and endpoint bounds form a
+  probability/representation layer. The strictness, rootlessness, diffusion,
+  and Legendre-jet strands are distinct, while the scalar Stein kernel,
+  Bell-moment, shape-conjecture, and endpoint material substantially overlaps
+  `Fabius_Stein_Koopman_Frontier_Report/`; both remain separate pending a
+  claim-by-claim editorial merge. Its claim of repository-distinctness is
+  therefore stale: that earlier report already gives the same exact kernel
+  values, rationality and mean identities, and proves a stronger two-term
+  Lambert-periodic endpoint theorem than this intake leaves conjectural. Its
+  bespoke letter-paper Latin Modern build,
+  incomplete metadata, and Type-3 plot fonts remain post-intake normalization
+  work, and manuscript theorem labels do not establish Lean status.
 - [`Fabius_Rvachev_Noncommutative_Frontiers/`](Fabius_Rvachev_Noncommutative_Frontiers/),
   *Noncommutative Cumulant Frontiers for the Fabius--Rvachev Law* (29 pp),
   arrived on 2026-08-30 with all 21 payload checksums verified after four CSV
@@ -29,7 +47,7 @@ New standalone intake members:
   Poisson operators, martingales, nonreversibility certificate, scalar Stein
   kernel, and endpoint asymptotics extend the operator-representation theme.
 
-All three remain standalone pending claim-by-claim Lean crosswalk and deliberate
+All four remain standalone pending claim-by-claim Lean crosswalk and deliberate
 consolidation; paper theorem labels do not by themselves assert Lean status.
 
 Series and orthogonal-expansion representations of the up-function,
