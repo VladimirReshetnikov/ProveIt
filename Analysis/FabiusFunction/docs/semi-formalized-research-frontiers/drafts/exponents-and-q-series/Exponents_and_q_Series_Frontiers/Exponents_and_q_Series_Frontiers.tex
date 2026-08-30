@@ -1790,8 +1790,31 @@ term $q^r/(1-q)^{r+1}$ into $2^s/(2^s-1)^{r+1}$, which is the display
 the juxtaposition of its inputs: the summability hypothesis that the general zeta must
 carry --- an arbitrary weight may grow too fast --- is here \emph{discharged}, since a
 polynomial weight is always admissible at a dyadic base
-(\lean{Fabius.summable\_newtonPoly\_rpow}).  The cumulants \eqref{p1:eq:kappaP} remain
-unformalized: they need the probabilistic model behind $\Phi_P$.
+(\lean{Fabius.summable\_newtonPoly\_rpow}).
+
+The cumulants \eqref{p1:eq:kappaP} are half formalized.  Their \emph{analytic} content needs no
+probabilistic model, and is proved in \path{GeneralizedSincZeta.lean}: on the central disk,
+\[
+ \Phi_a(z)=\exp\Bigl(-\sum_{r\ge1}\frac{\zeta(2r)\,A_a(4^{-r})}{r}\,z^{2r}\Bigr),
+ \qquad\lVert z\rVert<1
+\]
+(\lean{Fabius.generalizedRvachevProduct\_eq\_cexp}), at every admissible $a$.  The coefficient of
+$z^{2r}$ in $-\log\Phi_a$ is therefore $\zeta(2r)A_a(4^{-r})/r$, which is
+\eqref{p1:eq:kappaP} with the random variable removed; what is still missing is the
+identification of $\Phi_a$ as a characteristic function of $X_a$, not any further analysis.  At
+the constant weight $A_{\mathbf1}(4^{-r})=4^r/(4^r-1)$ and the display is the corpus's existing
+\path{SincZetaDyadic.lean}.
+
+Reaching the general weight needed one new tool, and it is reusable.  The pair form of $\Phi_a$
+carries the exponents $a_h$, and the Euler log transform does not apply to a product of powers;
+adding the exponent to the transform would raise a branch question, since
+$\log((1-x)^c)=c\log(1-x)$ can leave the principal branch.  \path{WeightedEulerTransform.lean}
+avoids it by putting the multiplicity into the \emph{index} rather than the exponent --- over
+$\Sigma_i\,\mathrm{Fin}(c_i)$ the family is exponent-free, the existing transform applies
+verbatim, and both sides transfer back along the finite fibres
+(\lean{Fabius.tprod\_one\_sub\_pow\_eq\_cexp\_powerSum}).  No logarithm of a power is taken
+anywhere.  The scale direction then contributes $\sum_h a_h(4^{-r})^h$ in place of the geometric
+series, which is exactly $A_a(4^{-r})$.
 \end{theorem}
 
 \begin{proof}
