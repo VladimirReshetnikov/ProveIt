@@ -2,6 +2,58 @@
 
 New standalone intake members:
 
+- [`inverse_q_analog_functions_report/`](inverse_q_analog_functions_report/),
+  *Inverse Functions of q-Pochhammer Symbols, Gaussian Coefficients, and
+  Related q-Analogues* (59 pp), arrived on 2026-08-30 from
+  `inverse_q_analog_functions_report.zip` (outer SHA-256
+  `19cc7da37f71ddbbc0c46b91c55c23059a1e305500260bd0a306394f4c21f4de`).
+  The archive supplied nine payloads but no checksum ledger; the
+  repository-added `SHA256SUMS` records and verifies all nine, and all five
+  text payloads were already LF. Its title and abstract place its branchwise
+  inverse q-Pochhammer, Gaussian-coefficient, and q-special-function material
+  beside the existing inverse-q reports in this group. It remains standalone
+  pending post-publication comparison and deliberate consolidation, plus a
+  Lean crosswalk; manuscript classifications and numerical checks do not
+  establish Lean verification.
+
+- [`Cyclotomic_q_Fabius_Rvachev_Frontier/`](Cyclotomic_q_Fabius_Rvachev_Frontier/),
+  *Cyclotomic Blow-Ups and Natural Boundaries for the q-Fabius--Rvachev Sinc
+  Product* (25 pp), arrived on 2026-08-30 from
+  `Cyclotomic_q_Fabius_Rvachev_Frontier.zip` (outer SHA-256
+  `029da7d9ec96a0b2e5c4164c37f2b361dd015112bd0c6237263e3c538c5b0f64`).
+  All 22 submitted payload hashes verified; five CSV entries were refreshed
+  after CRLF-to-LF repository normalization. Its title and abstract place its
+  radial root-of-unity expansions, claimed natural-boundary theorem,
+  cyclotomic blow-ups, Bell/moment condensation, and inverse branches beside
+  the consolidated q-series frontier. It remains standalone pending the
+  required post-publication claim-level comparison and a Lean crosswalk;
+  manuscript labels and numerical evidence do not establish Lean verification.
+
+- [`inverse_q_analogs_extended_report/`](inverse_q_analogs_extended_report/),
+  *Inverse q-Analogs in All Parameters* (104 pp), arrived on 2026-08-30 from
+  `inverse_q_analogs_all_parameters_report.zip` (outer SHA-256
+  `0263542a7a6a50459eeb0359015b4086245e7311528e80e3875657529825669f`).
+  All 26 submitted payload hashes verified; seven CSV entries were refreshed
+  after CRLF-to-LF normalization. Its README identifies it as an extension of
+  the filed inverse-q drafts, covering regular, singular, endpoint,
+  cyclotomic, and multivariate parameter inversion and Fabius--Rvachev
+  parameter recovery. It remains standalone pending post-publication
+  comparison and deliberate consolidation with both inverse-q siblings, plus
+  a Lean crosswalk; manuscript labels and numerical checks do not establish
+  Lean verification.
+
+- [`inverse_q_analogs_report-2/`](inverse_q_analogs_report-2/),
+  *Inverse Functions of q-Pochhammer Symbols, Gaussian Coefficients, and
+  Related q-Analogs* (59 pp), arrived on 2026-08-30 from
+  `inverse_q_analogs_report_bundle.zip` (outer SHA-256
+  `82ab1dc2cbdd4e69d638cfc045d9ca331e8152e1faeba763732fa9231578b875`).
+  It was given a collision-safe suffix because `inverse_q_analogs_report/`
+  already exists. All five submitted payload hashes verified, every text
+  payload was already LF, and none matches the existing report byte-for-byte.
+  It remains standalone pending post-publication semantic deduplication and a
+  Lean crosswalk; manuscript classifications and numerical checks do not
+  establish Lean verification.
+
 - [`Fabius_Rvachev_Frontier_Report/`](Fabius_Rvachev_Frontier_Report/),
 *Negative Parameters, Reciprocal Bases, and the Gaussian Boundary* (26 pp),
 arrived on 2026-08-30 with all 13 payload checksums verified.  It develops
@@ -17,7 +69,8 @@ An exact reship, `Fabius_Rvachev_Frontier_Report_2026-08-30-E.zip`
 `174bf733156cd874cf4f9321c6ab71ca44f311856cc01dc158ddf83dc00cf813`),
 was verified and deleted on 2026-08-30 without creating a redundant directory:
 its payloads are byte-identical to this filed member after the existing CSV
-LF normalization.
+LF normalization. No claim-level reassessment or experiment rerun was
+performed.
 
 - [`inverse_q_analogs_report/`](inverse_q_analogs_report/),
   *Inverse q-Analogs: Branch Geometry, Asymptotic Inversion, and Computation

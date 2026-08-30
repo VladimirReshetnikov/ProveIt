@@ -6,14 +6,14 @@ import Mathlib.Data.Nat.Choose.Basic
 
 The value of a Gaussian coefficient at the second root of unity is an
 ordinary binomial coefficient, except in the even-row/odd-column parity where
-it vanishes.  This module proves the complete four-case table over every
-commutative ring:
+it vanishes.  Together with the reciprocity theorem imported from
+`QBinomialReciprocity`, this module gives the complete four-case table over
+every commutative ring:
 
 * `gaussianBinomial_neg_one_even_even` gives
   `[2a choose 2b]_(-1) = (a choose b)`;
-* `gaussianBinomial_neg_one_even_odd` exposes the specialization of
-  `gaussianBinomial_neg_one_even_odd_eq_zero` from `QBinomialReciprocity`,
-  giving `[2a choose 2b+1]_(-1) = 0`;
+* `gaussianBinomial_neg_one_even_odd_eq_zero` gives
+  `[2a choose 2b+1]_(-1) = 0`;
 * `gaussianBinomial_neg_one_odd_even` gives
   `[2a+1 choose 2b]_(-1) = (a choose b)`;
 * `gaussianBinomial_neg_one_odd_odd` gives
@@ -26,7 +26,7 @@ The same parity collapse already occurs in the finite product:
 * `finiteQPochhammerIn_neg_one_odd` leaves one final even factor and gives
   `(z; -1)_(2a+1) = (1 - z^2)^a (1-z)`.
 
-All four statements are total in `a` and `b`; when the column lies above the
+All four value statements are total in `a` and `b`; when the column lies above the
 row, both the recursive Gaussian coefficient and the ordinary binomial
 coefficient are zero.  The proof never forms a factorial quotient at
 `q = -1`.  Instead, two applications of the denominator-free q-Pascal
@@ -79,14 +79,6 @@ theorem gaussianBinomial_neg_one_even_even
             gaussianBinomial_succ_succ_alt, heven.neg_one_pow, one_mul,
             hOddEven, hOddOdd, Nat.choose_succ_succ, Nat.cast_add]
           exact add_comm _ _
-
-/-- **Even row, odd column at `q = -1`.**  Every Gaussian coefficient
-`[2a choose 2b+1]_{-1}` vanishes.  This uniform API name specializes the
-universal odd-degree reciprocity theorem from `QBinomialReciprocity`. -/
-theorem gaussianBinomial_neg_one_even_odd
-    {R : Type*} [CommRing R] (a b : ℕ) :
-    gaussianBinomial (-1 : R) (2 * a) (2 * b + 1) = 0 := by
-  exact gaussianBinomial_neg_one_even_odd_eq_zero (R := R) a b
 
 /-- **Odd row, even column at `q = -1`.**  Over every commutative ring,
 

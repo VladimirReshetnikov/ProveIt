@@ -1114,19 +1114,25 @@ which is the derivative at the simple zero.
 
 \begin{remark}[Lean status of the second-root calculation]
 The complete four-case value table is machine-checked over every commutative
-ring in the module
-\path|FabiusFunction.GaussianBinomialAtNegOne|.  Its four value theorems are:
+ring.  Its four exact declarations are:
 \begin{itemize}[nosep,leftmargin=2em]
-\item \path|gaussianBinomial_neg_one_even_even|;
-\item \path|gaussianBinomial_neg_one_even_odd|;
-\item \path|gaussianBinomial_neg_one_odd_even|;
-\item \path|gaussianBinomial_neg_one_odd_odd|.
+\item \path|Fabius.gaussianBinomial_neg_one_even_even|;
+\item \path|Fabius.gaussianBinomial_neg_one_even_odd_eq_zero|;
+\item \path|Fabius.gaussianBinomial_neg_one_odd_even|;
+\item \path|Fabius.gaussianBinomial_neg_one_odd_odd|.
 \end{itemize}
-The two product identities
-in~\eqref{eq:poc-minus-one-paired} are checked there as well.  The first-jet
-formulas~\eqref{eq:minus-one-der-nonzero} and
+The odd-column zero lives in \path|FabiusFunction.QBinomialReciprocity|, where
+it follows from reciprocal symmetry.  The other three values and the two
+product identities \path|Fabius.finiteQPochhammerIn_neg_one_even| and
+\path|Fabius.finiteQPochhammerIn_neg_one_odd| live in
+\path|FabiusFunction.GaussianBinomialAtNegOne|.  That module reuses the zero
+theorem, then needs only $q$-Pascal, parity, ordinary Pascal, and factor pairing.
+The first-jet formulas~\eqref{eq:minus-one-der-nonzero} and
 \eqref{eq:minus-one-der-zero} remain the next formalization layer; this report
-does not treat numerical checks as a substitute for that proof.
+does not treat numerical checks as a substitute for that proof.  Their eventual
+formalization requires a polynomial Gaussian-coefficient interface; simplicity
+must be stated over the integers or in characteristic zero, because a nonzero
+integral slope may vanish after reduction modulo a prime.
 \end{remark}
 
 \begin{remark}[Why the derivative formula is structurally natural]
