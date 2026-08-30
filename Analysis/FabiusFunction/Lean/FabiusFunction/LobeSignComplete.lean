@@ -12,11 +12,13 @@ in pieces, each with its own hypothesis:
   and separately at `x = 0`;
 * `LobeSignNegative` — the reflections of both.
 
-Each header records that the others are missing, and `LobeSignLaw`
-says outright that "the behaviour of `Φ_a` *at* an integer is not
-addressed".  This module assembles them into one statement covering
-every real point, using the last ingredient that was missing: the
-complete zero set, from `GeneralizedZeroDivisor`.
+Those modules supply the component statements but no single theorem
+there assembles all cases.  In particular, the statements proved in
+`LobeSignLaw` assume an open lobe and do not themselves address an
+integer point.  This module assembles the pieces into one statement
+covering every real point, using the complete zero set from
+`GeneralizedZeroDivisor`.  The `LobeSignLaw` header now points here for
+the completed result.
 
 The law holds everywhere it can, and the exceptions are exactly the
 zeros, which are known:

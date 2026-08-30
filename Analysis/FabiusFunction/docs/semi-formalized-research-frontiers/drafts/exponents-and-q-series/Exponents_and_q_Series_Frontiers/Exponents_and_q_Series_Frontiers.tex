@@ -401,11 +401,10 @@ checked at source checkpoint
 These labels concern representation only, not correctness: report-specific
 probability and sinc-product instantiations still require their own bridges.  In
 particular the sign and bound in \eqref{p1:eq:Rrm-sign}--\eqref{p1:eq:Rrm-bound},
-the infinite condition-number limit, Fourier envelopes for the Pascal hierarchy
-of rank at least two, Mellin contour displacement, exponential Tauberian transfer,
-Berry--Esseen for non-identically-distributed summands, total-variation and
-Wasserstein distances, and the automatic-sequence machinery have no Lean
-counterpart here.
+Fourier envelopes for the Pascal hierarchy of rank at least two, Mellin contour
+displacement, exponential Tauberian transfer, Berry--Esseen for
+non-identically-distributed summands, total-variation and Wasserstein distances,
+and the automatic-sequence machinery have no Lean counterpart here.
 \end{statusbox}
 
 \section{The exponent-sequence convolution monoid}
@@ -492,8 +491,8 @@ divisor is complete --- $\Phi_a$ vanishes exactly at the nonzero integers $n$ wi
 $m_a(\lvert n\rvert)>0$, to order exactly $m_a(\lvert n\rvert)$, and nowhere else
 (\path{GeneralizedZeroDivisor.lean}).
 
-The characteristic-function reading of (i) now has all three of its prerequisites, though not
-the statement itself: $\Phi_a(0)=1$, continuity from entirety, and
+The characteristic-function reading of (i) now has three of its necessary analytic
+properties, though not the statement itself: $\Phi_a(0)=1$, continuity from entirety, and
 \[
  \lVert\Phi_a(x)\rVert\le1
  \qquad\text{for every real }x
@@ -503,7 +502,7 @@ the statement itself: $\Phi_a(0)=1$, continuity from entirety, and
 included.  The bound is attained at $x=0$, so it is sharp.
 
 What remains \emph{not} formalized is the probabilistic content proper: the support statement
-(i) --- that $R_a$ is the support radius rather than merely the number $A_a(1/2)$ --- the
+(i) --- that the number $R_a=\tfrac12A(1/2)$ is the support radius --- the
 random variable $X_a$ and the convolution reading of (iii), and the smoothness dichotomy (iv).
 Assertion (iii) is formal as an identity of products but not as a statement about laws.  The
 modules prove the algebraic, convergence and analytic skeleton on which the probabilistic
@@ -1749,21 +1748,22 @@ $q^r/(1-q)^{r+1}$ takes the value $2$, independently of $r$
 coefficient sum (\lean{Fabius.tsum\_newtonPoly}, \lean{Fabius.half\_mul\_tsum\_newtonPoly\_half}).
 
 Reading that number as the \emph{support radius} of $\Phi_P$ is half formalized.  The analytic
-half is, and needs no probability: by Paley--Wiener a law carried by $[-R,R]$ has a
-characteristic function of exponential type at most $R$, and that growth bound follows from the
-product directly,
+half is, and needs no probability: with the Fourier kernel $\e^{-2\pi\ii zx}$, a law carried
+by $[-R,R]$ has a characteristic function of conventional exponential type at most $2\pi R$.
+The product directly satisfies the corresponding growth estimate
 \[
- \lVert\Phi_a(z)\rVert\le\exp\bigl(\pi\lVert z\rVert R_a\bigr),
- \qquad R_a=\sum_{h\ge0}a_h2^{-h},
+ \lVert\Phi_a(z)\rVert\le\exp\bigl(2\pi\lVert z\rVert R_a\bigr),
+ \qquad R_a=\frac12\sum_{h\ge0}a_h2^{-h}=\frac12A(1/2),
 \]
 for every $z\in\C$ (\lean{Fabius.norm\_generalizedRvachevProduct\_le\_exp},
 \path{GeneralizedExponentialType.lean}).  So $\Phi_a$ is entire of order at most one with type
-controlled by $R_a$, exactly as the support reading predicts.  The converse half --- that the
+at most $2\pi R_a$, exactly as the support reading predicts.  The converse half --- that the
 type is no smaller, and that the law really is carried by $[-R_a,R_a]$ --- is the \emph{support}
 statement of \cref{p1:thm:master-probability}, a probabilistic fact about the associated random
 variable rather than a property of the product, and it remains unformalized.
 
-At the constant weight this says something checkable.  There $R_1=\sum_h2^{-h}=2$, so $\Phi$
+At the constant weight this says something checkable.  There $A_1(1/2)=\sum_h2^{-h}=2$ and
+$R_1=1$, so $\Phi$
 has exponential type at most $2\pi$ (\lean{Fabius.norm\_rvachevFourierProduct\_le\_exp},
 \path{ClassicalGrowth.lean}), and Paley--Wiener reads type $2\pi$ as support radius $1$ --- which
 is where the up-function actually lives, as \path{ProbabilityRepresentation.lean} establishes by
@@ -2885,7 +2885,7 @@ function
 The same $A$ then appears at four geometrically related arguments:
 \begin{equation}
  \begin{array}{ccl}
- A(1/2) &:& \text{support radius},\\
+ \tfrac12A(1/2) &:& \text{support radius},\\
  A(2^{-s}) &:& \text{spectral zeta and zero divisor},\\
  A(4^{-j}) &:& \text{even cumulants},\\
  A(2^w) &:& \text{endpoint Mellin transform}.
@@ -3068,8 +3068,8 @@ transformed series, including the shifted Gaussian tail, is formalized in
 \path{AnalyticSeriesFilter.lean}; zero-weight nodes require no convergence of
 their unweighted samples.  The conditionally convergent boundary, the ordered
 one-sided sign and bound, the actual exponent-generating-function instantiation,
-uniform estimates, and the infinite condition-number limit remain results of
-this report rather than claims about the current Lean corpus.
+and uniform estimates remain results of this report rather than claims about
+the current Lean corpus.
 
 \section{Reproducibility manifest}
 \label{p1:app:manifest}

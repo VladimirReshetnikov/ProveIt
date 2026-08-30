@@ -9,12 +9,15 @@ through iterated forward differences, `S^m = (I + Δ)^m`, giving
 
 `Φ_{Sᵐa} = ∏_{r≤m} Φ_{Δʳa}^{C(m,r)}`.
 
-The analytic identity needs the canonical product at a *general*
-weight sequence, which the corpus does not have — it carries `Φ` only
-at the constant weight.  Its **exponent-level** content, however, is
-the Gregory–Newton formula, and that is available: the `m`-fold shift
-of a weight sequence is the binomial combination of its iterated
-forward differences,
+The general-weight product now exists in
+`FabiusFunction.GeneralizedRvachevProduct`, and
+`FabiusFunction.WeightLinearityProducts` carries this identity from
+admissible `ℕ`-valued exponent sequences to products whenever every
+displayed difference has that form.  The signed, germ-level
+interpretation still lies outside that API.  The **exponent-level**
+content recorded here is the Gregory–Newton formula: the `m`-fold
+shift of a weight sequence is the binomial combination of its
+iterated forward differences,
 
 `a_{h+m} = ∑_{r≤m} C(m,r)·(Δʳa)_h`.
 
@@ -42,16 +45,13 @@ variable {G : Type*} [AddCommGroup G]
 a weight sequence by `m` is the binomial combination of its iterated
 forward differences: `a_{h+m} = ∑_{r≤m} C(m,r)·(Δʳa)_h`.
 
-This is the exponent-level content of the volume's finite-difference
-factorization.  The factorization of the products themselves is
+This module records that exponent-level identity.  The factorization
+of the products themselves is
 `FabiusFunction.WeightLinearityProducts`
 (`generalizedRvachevProduct_shift_factorization`), wherever the
-differences `Δʳa` are nonnegative — which is where both sides are
-defined, `Φ_a` accepting only `ℕ`-valued weights; the signed,
-germ-level reading is not formalized.  (An earlier version of this
-comment said the corpus had `Φ` only at the constant weight.  That
-was never true: `FabiusFunction.GeneralizedRvachevProduct` builds
-`Φ_a` at every admissible weight.) -/
+differences `Δʳa` are represented by admissible `ℕ`-valued weights,
+which is exactly the scope of that theorem; the signed, germ-level
+reading is not formalized. -/
 theorem weight_shift_eq_sum_fwdDiff (a : ℕ → G) (m h : ℕ) :
     a (h + m) = ∑ r ∈ range (m + 1), m.choose r • Δ_[1]^[r] a h := by
   have hshift := shift_eq_sum_fwdDiff_iter (h := (1 : ℕ)) a m h
