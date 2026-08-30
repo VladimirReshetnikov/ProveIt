@@ -304,6 +304,7 @@ import FabiusFunction.LaplacePeriodicSecondOrder
 import FabiusFunction.FabiusTranslatedLegendreSeries
 import FabiusFunction.FabiusLegendreLeastSquares
 import FabiusFunction.FabiusLegendreEnergy
+import FabiusFunction.FabiusLegendreRationalEnergy
 import FabiusFunction.FabiusBinaryReductionSeries
 import FabiusFunction.FabiusComputability
 import FabiusFunction.Monotonicity
