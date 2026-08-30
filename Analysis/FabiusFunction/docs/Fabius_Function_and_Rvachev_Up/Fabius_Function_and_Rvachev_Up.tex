@@ -3954,6 +3954,72 @@ They formalize the finite moment-to-Bell rewrite used by endpoint transfer,
 not the analytic transfer expansion or its remainder estimates.
 \end{proof}
 
+\subsection{Rvachev moment--Appell deconvolution and polynomial synthesis}
+\label{sec:rvachev-moment-appell}
+
+At compiled source checkpoint \texttt{1f9ce6fd9},
+\path{RvachevMomentAppell.lean} specializes the formal Bell and Appell engines
+to the Rvachev probability law.  Its five public definitions are
+\lean{rvachevRawMomentRat}, \lean{rvachevReciprocalMomentRat},
+\lean{rvachevAppellPolynomialRat}, \lean{rvachevAppellPolynomial}, and
+\lean{rvachevDeconvolvedPolynomial}.  Its sixteen public theorems are
+\lean{rvachevRawMomentRat_zero}, \lean{rvachevRawMomentRat_even},
+\lean{rvachevRawMomentRat_odd}, \lean{rvachevReciprocalMomentRat_zero},
+\lean{binomialConv_rvachevRawMomentRat_reciprocal},
+\lean{rvachevReciprocalMomentRat_eq_completeBellPolynomial},
+\lean{monic_rvachevAppellPolynomialRat},
+\lean{natDegree_rvachevAppellPolynomialRat},
+\lean{rvachevAppellPolynomial_eq_poly_cast},
+\lean{monic_rvachevAppellPolynomial},
+\lean{natDegree_rvachevAppellPolynomial},
+\lean{eval_rvachevAppellPolynomial_add},
+\lean{integral_pow_mul_rvachev_eq_rvachevRawMomentRat_cast},
+\lean{integral_eval_rvachevAppellPolynomial_add_mul_rvachev},
+\lean{natDegree_rvachevDeconvolvedPolynomial_le}, and
+\lean{integral_eval_rvachevDeconvolvedPolynomial_add_mul_rvachev}.
+
+Thus the full rational raw-moment sequence has the executable even moments at
+even indices and zero at odd indices; its formal binomial-convolution
+reciprocal is the corresponding complete-Bell family.  The rational and real
+Rvachev reciprocal-moment Appell polynomials are monic of exact degree.  Write
+\(A_n=\lean{rvachevAppellPolynomial}\ n\).  If
+\(u_F=\lean{rvachevUp}\ F\) for any bounded Fabius solution, their analytic
+bridges are
+\begin{align}
+ \int_{\R} A_n(x+y)u_F(y)\dd y&=x^n,
+   \label{eq:rvachev-appell-smoothing}\\
+ \int_{\R} (\mathcal D_{\Up}P)(x+y)u_F(y)\dd y&=P(x),
+   \label{eq:rvachev-deconvolution-smoothing}
+\end{align}
+where \(\mathcal D_{\Up}P\) denotes
+\lean{rvachevDeconvolvedPolynomial}\(P\).  This coefficientwise operation does
+not raise polynomial degree.
+
+At compiled source checkpoint \texttt{c51a41fcf},
+\path{RvachevPolynomialSynthesis.lean} exports no public definitions and
+exactly four public theorems:
+\lean{tsum_rvachevDeconvolvedPolynomial_mul_shifted_rvachevUp},
+\lean{normalized_tsum_rvachevDeconvolvedPolynomial_mul_shifted_rvachevUp},
+\lean{sum_Ioo_rvachevDeconvolvedPolynomial_mul_shifted_rvachevUp}, and
+\lean{normalized_sum_Ioo_rvachevDeconvolvedPolynomial_mul_shifted_rvachevUp}.
+For \(M\in\N\setminus\{0\}\) and
+\(\deg P\le v_2(M)\), they give
+\begin{align}
+ \sum_{k\in\Z}(\mathcal D_{\Up}P)(k/M)u_F(x-k/M)
+   &=M P(x),                                                 \label{eq:rvachev-polynomial-synthesis-global}\\
+ P(x)&=\frac1M\sum_{-2M<k<2M}
+  (\mathcal D_{\Up}P)(k/M)u_F(x-k/M),\qquad -1\le x\le1. \label{eq:rvachev-polynomial-synthesis-finite}
+\end{align}
+The first sum is Lean's global \texttt{tsum}; compact support makes it
+pointwise finite.  The second is the exact uniform support truncation, including
+the vanishing boundary atoms.
+
+These two modules prove formal coefficient reciprocity and polynomial
+smoothing/synthesis, not an analytic reciprocal-MGF or Appell generating
+series, a literal reciprocal-MGF differential-operator identity, parity of the
+reciprocal or deconvolved families, the displayed low reciprocal coefficients,
+or minimality and sharpness of the admissible mesh.
+
 \subsection{The probability--Laplace bridge}
 \label{sec:probability-laplace-bridge}
 
@@ -8076,6 +8142,49 @@ competitor has strictly larger error.  These are
 \lean{rvachevLegendrePartialSum_strict_least_squares} in
 \path{FabiusLegendreLeastSquares.lean}.
 
+At compiled source checkpoint \texttt{c51a41fcf},
+\path{FabiusLegendreTranslateBlocks.lean} specializes
+\eqref{eq:rvachev-polynomial-synthesis-finite} to the Legendre family.  Its six
+public definitions are \lean{rvachevLegendreDeconvolutionPolynomial},
+\lean{rvachevLegendreScale}, \lean{rvachevLegendreIndexSet},
+\lean{rvachevLegendreAtomCoefficient},
+\lean{rvachevLegendreTranslateBlock}, and \lean{rvachevTranslateGram}.  Its five
+public theorems are \lean{eval_legendrePolynomial_eq_sum_rvachevUp},
+\lean{eval_legendrePolynomial_even_eq_sum_rvachevUp},
+\lean{rvachevLegendreTranslateBlock_eq_rvachevLegendreBlock},
+\lean{intervalIntegral_rvachevLegendreTranslateBlock_mul}, and
+\lean{sum_rvachevLegendreAtomCoefficient_mul_gram}.
+
+Writing \(Q_d=\mathcal D_{\Up}P_d\), the first two theorems give
+\begin{align}
+ P_d(x)&=2^{-d}\sum_{-2^{d+1}<k<2^{d+1}}
+ Q_d(k/2^d)\Up(x-k/2^d),                                  \label{eq:legendre-rvachev-synthesis}\\
+ P_{2n}(x)&=4^{-n}\sum_{-2\cdot4^n<k<2\cdot4^n}
+ Q_{2n}(k/4^n)\Up(x-k/4^n),                               \label{eq:legendre-rvachev-even-synthesis}
+\end{align}
+for \(-1\le x\le1\).  More explicitly, let
+\[
+ M_n=4^n,\qquad I_n=\{k\in\Z:-2M_n<k<2M_n\},\qquad
+ a_{n,k}=\frac{u_n}{M_n}Q_{2n}(k/M_n),
+\]
+and define the literal finite translate block
+\begin{equation}
+ \widetilde B_n(x)=\sum_{k\in I_n}a_{n,k}\Up(x-k/M_n).
+ \label{eq:legendre-translate-block}
+\end{equation}
+Then \(\widetilde B_n(x)=u_nP_{2n}(x)\) throughout \([-1,1]\), and these
+finite trains satisfy the same complete orthogonality formula as the polynomial
+blocks.  With
+\[
+ G_{m,n}(k,\ell)=\int_{-1}^{1}
+ \Up(x-k/M_m)\Up(x-\ell/M_n)\dd x,
+\]
+the fully expanded atom-Gram identity is
+\begin{equation}
+ \sum_{k\in I_m}\sum_{\ell\in I_n}a_{m,k}a_{n,\ell}G_{m,n}(k,\ell)
+ =\delta_{mn}\frac{2u_n^2}{4n+1}.                         \label{eq:legendre-atom-gram}
+\end{equation}
+
 At compiled source checkpoint \texttt{ca66a1247}, the polynomial-form Legendre blocks
 \(B_n(x)=u_nP_{2n}(x)\) satisfy the complete orthogonality formula
 \begin{equation}
@@ -8107,9 +8216,55 @@ so that \(A_2=\lean{fabiusSquareEnergy}\ F\), the bridge and series declarations
 \lean{hasSum_fabiusSquareEnergy_legendre}, and
 \lean{fabiusSquareEnergy_eq_tsum_legendre} in
 \path{FabiusLegendreEnergy.lean}.  The block is defined directly in its
-polynomial form: these declarations do not formalize its finite up-translate
-realization, a Fourier-product or infinite-sinc integral for $A_2$, or
-rationality of its partial sums.
+polynomial form.
+
+At compiled source checkpoint \texttt{9d5f41c2c},
+\path{FabiusLegendreRationalEnergy.lean} supplies three executable rational
+definitions: \lean{canonicalRvachevLegendreCoefficientRat},
+\lean{fabiusSquareEnergyTermRat}, and
+\lean{fabiusSquareEnergyPartialSumRat}.  Its fifteen public theorems are
+\lean{canonicalRvachevLegendreCoefficientRat_cast},
+\lean{canonicalRvachevLegendreCoefficientRat_zero},
+\lean{fabiusSquareEnergyTermRat_cast},
+\lean{fabiusSquareEnergyTermRat_nonneg},
+\lean{fabiusSquareEnergyTermRat_zero},
+\lean{fabiusSquareEnergyPartialSumRat_cast},
+\lean{monotone_fabiusSquareEnergyPartialSumRat},
+\lean{fabiusSquareEnergyPartialSumRat_pos},
+\lean{fabiusSquareEnergyPartialSumRat_zero},
+\lean{fabiusSquareEnergyPartialSumRat_one},
+\lean{fabiusSquareEnergyPartialSumRat_two},
+\lean{fabiusSquareEnergyPartialSumRat_three},
+\lean{hasSum_fabiusSquareEnergy_ratCast},
+\lean{fabiusSquareEnergy_eq_tsum_ratCast}, and
+\lean{tendsto_fabiusSquareEnergyPartialSumRat_cast}.  Thus every finite
+Legendre-energy partial sum is represented by a positive rational number,
+the rational partial sums are monotone, and their real casts converge to
+$A_2$.  For cutoffs $N=0,1,2,3$, respectively, the four certified values are
+$1/4$, $7/18$, $3271/8100$, and $3246043/8037225$.
+
+At compiled source checkpoint \texttt{b9b240bc0},
+\path{FabiusSquareEnergyFourier.lean} exports no definitions and exactly four
+theorems:
+\lean{integral_norm_sq_rvachevFourier_eq_two_mul_fabiusSquareEnergy},
+\lean{fabiusSquareEnergy_eq_integral_Ioi_norm_sq_rvachevFourier},
+\lean{fabiusSquareEnergy_eq_integral_Ioi_tprod_sinc_sq}, and
+\lean{fabiusSquareEnergy_eq_scaled_integral_Ioi_tprod_sinc_sq}.  The first two
+identify the full real-axis squared Fourier mass with $2A_2$ and its
+positive-half-line half with $A_2$.  The last two give exactly
+\begin{align}
+ A_2
+ &=\int_0^\infty\prod_{j=0}^{\infty}
+   \sinc^2\!\left(\frac{\pi\xi}{2^j}\right)\dd\xi,\label{eq:fabius-square-energy-fourier}\\
+ &=\frac1{2\pi}\int_0^\infty\prod_{r=1}^{\infty}
+   \left(\frac{\sin(t/2^r)}{t/2^r}\right)^2\dd t.\label{eq:fabius-square-energy-sinc}
+\end{align}
+The synthesis declarations establish the displayed sufficient dyadic meshes,
+but not their minimality or the report's sharpness statement.  They also do not
+formalize parity, derivative/Gegenbauer/Appell closed forms, or the displayed
+low-degree values of \(Q_d\); rationality of the atom rows; a named outer
+translate-block \texttt{HasSum}; one-mesh synthesis of an entire partial sum;
+or the later refinement, projector, and asymptotic layers.
 
 On $[0,2]$, the signed global extension has the
 corresponding translated Legendre series
@@ -8577,7 +8732,7 @@ Moments and exact arithmetic &
 \path{MomentPowerSeries.lean}, \path{UnitLaplaceMomentBounds.lean},
 \path{NormalizedEvenMoments.lean},
 \path{BernoulliRecurrences.lean}, \path{MomentCumulantAlgebra.lean},
-\path{PolynomialExpectationCumulant.lean},
+\path{PolynomialExpectationCumulant.lean}, \path{RvachevMomentAppell.lean},
 \path{WeightedScaleMultiplicity.lean},
 \path{ExactInversePower.lean}, \path{Parity.lean}, \path{TwoAdic.lean},
 \path{CentralBinomialValuation.lean}\\
@@ -8649,6 +8804,10 @@ Endpoint asymptotics &
 Legendre expansion and computability &
 \path{FabiusLegendreCoefficients.lean}, \path{FabiusLegendreSeries.lean},
 \path{FabiusLegendreLeastSquares.lean}, \path{FabiusLegendreEnergy.lean},
+\path{FabiusLegendreRationalEnergy.lean},
+\path{FabiusSquareEnergyFourier.lean},
+\path{RvachevPolynomialSynthesis.lean},
+\path{FabiusLegendreTranslateBlocks.lean},
 \path{FabiusTranslatedLegendreSeries.lean},
 \path{FabiusComputableSpline.lean}\\
 \bottomrule

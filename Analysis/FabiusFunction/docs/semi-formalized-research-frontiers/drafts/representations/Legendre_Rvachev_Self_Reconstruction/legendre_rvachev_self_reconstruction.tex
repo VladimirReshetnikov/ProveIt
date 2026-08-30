@@ -211,7 +211,9 @@ that snapshot after searches for their defining formulas and terminology.
 This is a corpus-relative novelty statement, not an assertion of worldwide
 priority.  Conjectures are explicitly labeled; numerical evidence is never
 used in place of a proof.
+\end{statusbox}
 
+\begin{statusbox}{Formal status: Legendre energy}
 Editorial update (2026-08-29): at compiled source checkpoint
 \texttt{ca66a1247}, the subsequent Lean module
 \path{FabiusLegendreEnergy.lean} defines the polynomial-form blocks
@@ -220,10 +222,113 @@ $B_n=u_nP_{2n}$ and formalizes their complete orthogonality formula
 \eqref{eq:parseval-up}, the exact coefficient tail
 \eqref{eq:exact-L2-tail}, and the real-variable Legendre equality
 \eqref{eq:A2-legendre}.  Its public tail API includes both a
-\texttt{HasSum} theorem and a \texttt{tsum} equality.  It does not formalize
-the blocks' finite up-translate realization or atom-Gram formula, the
-Fourier-product and infinite-sinc formulas \eqref{eq:A2-fourier} and
-\eqref{eq:A2-sinc}, or the assertion that the partial sums are rational.
+\texttt{HasSum} theorem and a \texttt{tsum} equality.
+\end{statusbox}
+
+\begin{statusbox}{Formal status: rational and Fourier energy}
+At compiled source checkpoint \texttt{9d5f41c2c}, the further module
+\path{FabiusLegendreRationalEnergy.lean} adds the three executable definitions
+\path{canonicalRvachevLegendreCoefficientRat},
+\path{fabiusSquareEnergyTermRat}, and
+\path{fabiusSquareEnergyPartialSumRat}.  Its fifteen public theorems are
+\path{canonicalRvachevLegendreCoefficientRat_cast},
+\path{canonicalRvachevLegendreCoefficientRat_zero},
+\path{fabiusSquareEnergyTermRat_cast},
+\path{fabiusSquareEnergyTermRat_nonneg},
+\path{fabiusSquareEnergyTermRat_zero},
+\path{fabiusSquareEnergyPartialSumRat_cast},
+\path{monotone_fabiusSquareEnergyPartialSumRat},
+\path{fabiusSquareEnergyPartialSumRat_pos},
+\path{fabiusSquareEnergyPartialSumRat_zero},
+\path{fabiusSquareEnergyPartialSumRat_one},
+\path{fabiusSquareEnergyPartialSumRat_two},
+\path{fabiusSquareEnergyPartialSumRat_three},
+\path{hasSum_fabiusSquareEnergy_ratCast},
+\path{fabiusSquareEnergy_eq_tsum_ratCast}, and
+\path{tendsto_fabiusSquareEnergyPartialSumRat_cast}.  They certify the report's
+claim that every partial sum in \eqref{eq:A2-legendre} is a positive rational
+number and that the sequence is monotone with real casts converging to $A_2$.
+They also certify all four displayed values in \eqref{eq:A2-first}: $1/4$,
+$7/18$, $3271/8100$, and $3246043/8037225$ at $N=0,1,2,3$, respectively.
+
+At compiled source checkpoint \texttt{b9b240bc0}, the further module
+\path{FabiusSquareEnergyFourier.lean} exports no definitions and exactly four
+theorems:
+\path{integral_norm_sq_rvachevFourier_eq_two_mul_fabiusSquareEnergy},
+\path{fabiusSquareEnergy_eq_integral_Ioi_norm_sq_rvachevFourier},
+\path{fabiusSquareEnergy_eq_integral_Ioi_tprod_sinc_sq}, and
+\path{fabiusSquareEnergy_eq_scaled_integral_Ioi_tprod_sinc_sq}.  The first two
+identify the full real-axis squared Fourier mass with $2A_2$ and the
+positive-half-line mass with $A_2$.  The last two close exactly the
+Fourier-product and infinite-sinc equalities \eqref{eq:A2-fourier} and
+\eqref{eq:A2-sinc}, including the $1/(2\pi)$ normalization and the shift from
+the zero-based product to the one-based product.
+\end{statusbox}
+
+\begin{statusbox}{Formal status: moment--Appell foundation}
+At compiled source checkpoint \texttt{1f9ce6fd9}, the subsequent module
+\path{RvachevMomentAppell.lean} exports five public definitions:
+\path{rvachevRawMomentRat}, \path{rvachevReciprocalMomentRat},
+\path{rvachevAppellPolynomialRat}, \path{rvachevAppellPolynomial}, and
+\path{rvachevDeconvolvedPolynomial}.  Its sixteen public theorems are
+\path{rvachevRawMomentRat_zero}, \path{rvachevRawMomentRat_even},
+\path{rvachevRawMomentRat_odd}, \path{rvachevReciprocalMomentRat_zero},
+\path{binomialConv_rvachevRawMomentRat_reciprocal},
+\path{rvachevReciprocalMomentRat_eq_completeBellPolynomial},
+\path{monic_rvachevAppellPolynomialRat},
+\path{natDegree_rvachevAppellPolynomialRat},
+\path{rvachevAppellPolynomial_eq_poly_cast},
+\path{monic_rvachevAppellPolynomial},
+\path{natDegree_rvachevAppellPolynomial},
+\path{eval_rvachevAppellPolynomial_add},
+\path{integral_pow_mul_rvachev_eq_rvachevRawMomentRat_cast},
+\path{integral_eval_rvachevAppellPolynomial_add_mul_rvachev},
+\path{natDegree_rvachevDeconvolvedPolynomial_le}, and
+\path{integral_eval_rvachevDeconvolvedPolynomial_add_mul_rvachev}.  They
+formalize the full rational raw-moment sequence, its formal
+binomial-convolution reciprocal and complete-Bell description, rational and
+real monic Appell families of exact degree, and the polynomial smoothing
+inverse used below.  This closes the formal coefficient content behind
+\eqref{eq:beta-bell} and the operational polynomial-deconvolution content of
+\eqref{eq:deconvolution}--\eqref{eq:appell}, but not the displayed analytic
+reciprocal-MGF, differential-series, or Appell generating-function identities.
+\end{statusbox}
+
+\begin{statusbox}{Formal status: synthesis and translate blocks}
+At compiled source checkpoint \texttt{c51a41fcf},
+\path{RvachevPolynomialSynthesis.lean} exports no public definitions and
+exactly four public theorems:
+\path{tsum_rvachevDeconvolvedPolynomial_mul_shifted_rvachevUp},
+\path{normalized_tsum_rvachevDeconvolvedPolynomial_mul_shifted_rvachevUp},
+\path{sum_Ioo_rvachevDeconvolvedPolynomial_mul_shifted_rvachevUp}, and
+\path{normalized_sum_Ioo_rvachevDeconvolvedPolynomial_mul_shifted_rvachevUp}.
+They prove global raw and normalized \texttt{tsum} synthesis for every nonzero
+natural mesh $m$ with \(\deg p\le\nu_2(m)\), and on $[-1,1]$ its exact finite
+open-index form $-2m<k<2m$.  Thus the sufficient-condition and boxed-formula
+content of \eqref{eq:generic-synthesis} is formalized.
+
+At the same checkpoint, \path{FabiusLegendreTranslateBlocks.lean} exports six
+public definitions: \path{rvachevLegendreDeconvolutionPolynomial},
+\path{rvachevLegendreScale}, \path{rvachevLegendreIndexSet},
+\path{rvachevLegendreAtomCoefficient},
+\path{rvachevLegendreTranslateBlock}, and \path{rvachevTranslateGram}.  Its five
+public theorems are \path{eval_legendrePolynomial_eq_sum_rvachevUp},
+\path{eval_legendrePolynomial_even_eq_sum_rvachevUp},
+\path{rvachevLegendreTranslateBlock_eq_rvachevLegendreBlock},
+\path{intervalIntegral_rvachevLegendreTranslateBlock_mul}, and
+\path{sum_rvachevLegendreAtomCoefficient_mul_gram}.  They formalize the
+deconvolved Legendre definition \eqref{eq:Q-def}, the finite formulas
+\eqref{eq:Pd-synthesis} and \eqref{eq:even-P-synthesis}, the literal finite
+block data and equality \eqref{eq:block-def}--\eqref{eq:block-mode}, complete
+orthogonality of those translate blocks, and the atom-Gram identity
+\eqref{eq:atom-gram}.
+
+The new APIs do not prove minimality or sharpness of the displayed mesh;
+reciprocal/deconvolution parity or the derivative, Gegenbauer, Appell, and
+low-degree formulas for $Q_d$; rationality of the atom rows; a named outer
+translate-block \texttt{HasSum} for \eqref{eq:block-loop}; the one-mesh
+partial-sum identity \eqref{eq:fixed-scale}; or the later refinement,
+projector, and asymptotic layers.
 \end{statusbox}
 
 \clearpage
@@ -1666,20 +1771,37 @@ The new results divide naturally into finite algebra and standard Hilbert-space
 arguments.
 
 \begin{enumerate}
- \item \textbf{Polynomial layer.}  Define $\Dscr$ on Lean polynomials by the
- terminating reciprocal-MGF differential sum.  Prove degree preservation,
- parity, and the Bell recurrence for $\beta_r$.
- \item \textbf{Legendre specialization.}  Instantiate the existing synthesis
- theorem with $p=P_d$, $m=2^d$, and interval $[-1,1]$.  Package
- \eqref{eq:Pd-synthesis} and the even specialization.
+ \item \textbf{Polynomial layer.}  At checkpoint \texttt{1f9ce6fd9},
+ \path{RvachevMomentAppell.lean} formalizes the full rational raw moments,
+ their formal reciprocal/Bell sequence, the rational and real monic
+ reciprocal-moment Appell families, and coefficientwise polynomial
+ deconvolution with exact smoothing recovery and a degree-nonincrease bound.
+ The analytic reciprocal-MGF/differential-series display, specialized parity,
+ explicit low coefficients, and a specialized reciprocal recurrence remain
+ outside that API.
+ \item \textbf{Synthesis and Legendre specialization.}  At checkpoint
+ \texttt{c51a41fcf}, \path{RvachevPolynomialSynthesis.lean} formalizes the
+ global and finite sufficient-mesh forms of \eqref{eq:generic-synthesis}, and
+ \path{FabiusLegendreTranslateBlocks.lean} packages \eqref{eq:Pd-synthesis}
+ and \eqref{eq:even-P-synthesis} at meshes $2^d$ and $4^n$.  Minimality and
+ sharpness of those meshes and the closed derivative/Gegenbauer/Appell forms
+ of $Q_d$ remain targets.
  \item \textbf{Orthogonal block layer.}  Complete orthogonality of the
  polynomial-form blocks, the coefficient Parseval identity, and the exact tail
- are now formalized in \path{FabiusLegendreEnergy.lean}.  The finite
- up-translate realization and atom-Gram formula remain targets.
+ are formalized in \path{FabiusLegendreEnergy.lean}.  The same checkpoint's
+ \path{FabiusLegendreTranslateBlocks.lean} now formalizes the literal finite
+ up-translate realization, its complete block orthogonality, and the atom-Gram
+ formula.  A named outer translate-block \texttt{HasSum} and the fixed-scale
+ partial-sum synthesis remain outside these APIs.
  \item \textbf{Energy layer.}  The real-variable equality
- \eqref{eq:A2-legendre} is now formalized.  The Fourier-product and
- infinite-sinc equalities \eqref{eq:A2-fourier}--\eqref{eq:A2-sinc} remain
- targets.
+ \eqref{eq:A2-legendre} is formalized in \path{FabiusLegendreEnergy.lean}.
+ At checkpoint \texttt{9d5f41c2c},
+ \path{FabiusLegendreRationalEnergy.lean} also formalizes its positive rational
+ monotone partial sums, convergence of their real casts to $A_2$, and all four
+ exact values in \eqref{eq:A2-first}.  At checkpoint \texttt{b9b240bc0},
+ \path{FabiusSquareEnergyFourier.lean} formalizes the full and positive-half-line
+ Fourier energies and closes \eqref{eq:A2-fourier}--\eqref{eq:A2-sinc} with its
+ four-theorem API.
  \item \textbf{Refinement layer.}  Define finite index embeddings $E_r$ and
  prove \eqref{eq:interlevel-null} by subtraction.  The lifting theorem then
  reduces to coefficient normalization and linearity.
