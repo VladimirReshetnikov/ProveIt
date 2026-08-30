@@ -9,10 +9,11 @@ through iterated forward differences, `S^m = (I + Δ)^m`, giving
 
 `Φ_{Sᵐa} = ∏_{r≤m} Φ_{Δʳa}^{C(m,r)}`.
 
-The analytic identity needs the canonical product at a *general*
-weight sequence, which the corpus does not have — it carries `Φ` only
-at the constant weight.  Its **exponent-level** content, however, is
-the Gregory–Newton formula, and that is available: the `m`-fold shift
+The corpus now has the analytic product at every admissible natural-valued
+weight (`GeneralizedRvachevProduct`) and its product factorization
+(`WeightLinearityProducts`); the signed germ-level version remains outside
+that API.  The reusable **exponent-level** content is the Gregory–Newton
+formula: the `m`-fold shift
 of a weight sequence is the binomial combination of its iterated
 forward differences,
 
@@ -43,9 +44,13 @@ a weight sequence by `m` is the binomial combination of its iterated
 forward differences: `a_{h+m} = ∑_{r≤m} C(m,r)·(Δʳa)_h`.
 
 This is the exponent-level content of the volume's finite-difference
-factorization; the analytic factorization of the canonical products
-themselves is not formalized, since the corpus has `Φ` only at the
-constant weight. -/
+factorization.  The factorization of the products themselves is
+`FabiusFunction.WeightLinearityProducts`
+(`generalizedRvachevProduct_shift_factorization`), wherever the
+differences `Δʳa` are nonnegative — which is where both sides are
+defined, `Φ_a` accepting only `ℕ`-valued weights; the signed,
+germ-level reading is not formalized.  The general product API was
+added after this shift identity's original constant-weight-era boundary. -/
 theorem weight_shift_eq_sum_fwdDiff (a : ℕ → G) (m h : ℕ) :
     a (h + m) = ∑ r ∈ range (m + 1), m.choose r • Δ_[1]^[r] a h := by
   have hshift := shift_eq_sum_fwdDiff_iter (h := (1 : ℕ)) a m h

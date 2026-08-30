@@ -28,9 +28,10 @@ function `∑_h C(h, r) q^h = q^r / (1-q)^(r+1)`
 Why the Newton basis is the basis adapted to the dyadic problem is
 isolated as `pow_div_one_sub_pow_at_half`: at `q = 1/2` *every*
 Newton-basis generating function takes the value `2`, independently
-of `r`.  The coefficient sum `∑_{r ≤ d} c_r` is therefore what the
-series collapses to at `q = 1/2`; the volume reads that number as the
-support radius of `Φ_P`, an identification not made here.
+of `r`.  Hence `A_P(1/2) = 2 ∑_{r ≤ d} c_r`, and the halved quantity
+`A_P(1/2) / 2 = ∑_{r ≤ d} c_r` is what collapses to the coefficient
+sum.  The volume reads that halved quantity as the support radius of
+`Φ_P`, an identification not made here.
 
 Everything is stated for an arbitrary real coefficient sequence
 `c : ℕ → ℝ` and an arbitrary degree bound `d`.  The volume's standing
@@ -53,14 +54,22 @@ scope.
   `κ_{2j}(X_P) = (B_{2j}/(2j)) ∑_{r ≤ d} c_r 4^j/(4^j-1)^(r+1)`
   (`p1:eq:kappaP`) are NOT formalized here, in any form.
 * The product form `Φ_P = ∏_{r ≤ d} Φ_{r+1}^(c_r)`
-  (`p1:eq:newton-Phi-factorization`) is not formalized here, and not
-  elsewhere either.  The corpus now has the canonical sinc product at
-  a general weight (`FabiusFunction.GeneralizedRvachevProduct`), but
-  only at a **natural-number** exponent sequence, and the Newton
-  coefficients `c_r` are negative for some nonnegative `P`.  So what
-  this display needs is a signed exponent, i.e. a quotient of two
-  such products -- which is exactly the reading the volume gives it,
-  and which nothing in the corpus supplies.
+  (`p1:eq:newton-Phi-factorization`) is not formalized here, and only
+  half formalized elsewhere.  The corpus has the canonical sinc
+  product at a general weight
+  (`FabiusFunction.GeneralizedRvachevProduct`), but only at a
+  **natural-number** exponent sequence, and the Newton coefficients
+  `c_r` are negative for some nonnegative `P`.  So the display in the
+  reading the volume gives it -- a signed exponent, i.e. a quotient of
+  two such products -- is still unavailable.  What *is* available is
+  the passage from any `ℕ`-linear exponent identity to the
+  corresponding product identity,
+  `Fabius.generalizedRvachevProduct_linearCombination` in
+  `FabiusFunction.WeightLinearityProducts`, which settles this display
+  when the coefficient sequence is `ℕ`-valued.  Under the volume's
+  standing integer-coefficient hypotheses this means the Newton
+  coefficients are nonnegative; arbitrary nonnegative real
+  coefficients are not covered.  The signed cases remain unavailable.
 * The zero-multiplicity display `p1:eq:mP` is untouched; its
   one-Newton-component-at-a-time formalization is
   `Fabius.weightedScaleMultiplicity_choose` elsewhere in the corpus.
