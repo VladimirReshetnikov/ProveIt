@@ -7,6 +7,7 @@ import FabiusFunction.SymmetricFunctionTransform
 import FabiusFunction.SymmetricFunctionGenerating
 import FabiusFunction.FiniteQBinomialCore
 import FabiusFunction.QBinomialReciprocity
+import FabiusFunction.GaussianBinomialAtNegOne
 import FabiusFunction.QBinomialInversion
 import FabiusFunction.QPochhammerElementaryIdentities
 import FabiusFunction.QDifferenceAnnihilation
