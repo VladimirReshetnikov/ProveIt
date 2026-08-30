@@ -7,27 +7,30 @@ import FabiusFunction.GeneralizedRealBound
 Everything proved about `Φ_a` at a general admissible weight applies
 to the classical sinc product `Φ = ∏_h sinc(π z / 2^h)`, which is the
 case `a ≡ 1` — `Fabius.generalizedRvachevProduct_one` states that as
-an identity, not a specialization.  Two of today's general results are
-worth recording in the classical form, because they are about the
-object the rest of the corpus is built on and neither was available
-for it either.
+an identity, not a specialization.  The general results are worth
+recording in the classical form because they concern the object the
+rest of the corpus is built on.  The real-axis bound already existed
+as `Fabius.norm_rvachevFourierProduct_le_one` in `BaselineDecay.lean`;
+the wrapper here aligns its name with the generalized API, while the
+exponential-type estimate is new.
 
 `‖Φ(x)‖ ≤ 1` for real `x`, and
 
 `‖Φ(z)‖ ≤ exp (2π ‖z‖)` for every `z : ℂ`.
 
-The constant in the second is `π R_1` with
-`R_1 = ∑_h 2^{-h} = 2`, so `Φ` has exponential type at most `2π`.
+The constant in the second is `π A_1(1/2)` with
+`A_1(1/2) = ∑_h 2^{-h} = 2 = 2 R_1`, so `Φ` has exponential type at
+most `2π` and the candidate support radius is `R_1 = 1`.
 That is the right number: in the `e^{-2πixt}` convention Paley–Wiener
 turns type `2π` into a support radius `1`, and the up-function whose
-Fourier transform `Φ` is is supported on `[-1, 1]`.  So the growth
+Fourier transform is `Φ` is supported on `[-1, 1]`.  So the growth
 bound is consistent with the support that
 `FabiusFunction.ProbabilityRepresentation` establishes independently,
 which is a check on the normalization rather than a new claim about
 it.
 
 * `Fabius.summable_one_weight` — `a ≡ 1` is admissible;
-* `Fabius.tsum_one_weight` — its total mass `R_1` is `2`;
+* `Fabius.tsum_one_weight` — its weight sum `A_1(1/2) = 2 R_1` is `2`;
 * `Fabius.norm_rvachevFourierProduct_ofReal_le_one` — the bound on
   the real axis;
 * `Fabius.norm_rvachevFourierProduct_le_exp` — **exponential type at
@@ -46,8 +49,8 @@ theorem summable_one_weight :
   rw [div_pow, one_pow]
   norm_num
 
-/-- The total mass of the constant weight is `R_1 = ∑_h 2^{-h} = 2`,
-the classical support radius. -/
+/-- The constant-weight sum is `A_1(1/2) = ∑_h 2^{-h} = 2`, twice the
+classical support radius `R_1 = 1`. -/
 theorem tsum_one_weight :
     (∑' h : ℕ, ((1 : ℕ) : ℝ) / 2 ^ h) = 2 := by
   have hcongr : ∀ h : ℕ, ((1 : ℕ) : ℝ) / 2 ^ h = ((1 : ℝ) / 2) ^ h := by
@@ -59,7 +62,8 @@ theorem tsum_one_weight :
 
 /-- **The classical transform is bounded by one on the real axis.**
 This is `Fabius.norm_generalizedRvachevProduct_ofReal_le_one` at
-`a ≡ 1`; it was not available for `Φ` before. -/
+`a ≡ 1`; it is a compatibility wrapper for the existing
+`Fabius.norm_rvachevFourierProduct_le_one`. -/
 theorem norm_rvachevFourierProduct_ofReal_le_one (x : ℝ) :
     ‖rvachevFourierProduct ((x : ℝ) : ℂ)‖ ≤ 1 := by
   have h := norm_generalizedRvachevProduct_ofReal_le_one
@@ -70,8 +74,9 @@ theorem norm_rvachevFourierProduct_ofReal_le_one (x : ℝ) :
 
 `‖Φ(z)‖ ≤ exp (2π ‖z‖)`.
 
-The constant is `π R_1` with `R_1 = 2`, and Paley–Wiener reads type
-`2π` as support radius `1` in the `e^{-2πixt}` convention — matching
+The constant is `π A_1(1/2)` with `A_1(1/2) = 2 = 2 R_1`, and
+Paley–Wiener reads type `2π` as support radius `R_1 = 1` in the
+`e^{-2πixt}` convention — matching
 the support of the up-function. -/
 theorem norm_rvachevFourierProduct_le_exp (z : ℂ) :
     ‖rvachevFourierProduct z‖ ≤ Real.exp (2 * Real.pi * ‖z‖) := by
