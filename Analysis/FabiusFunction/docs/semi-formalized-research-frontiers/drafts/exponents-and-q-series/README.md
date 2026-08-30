@@ -2,6 +2,23 @@
 
 New standalone intake members:
 
+- [`inverse_q_analog_jet_atlas/`](inverse_q_analog_jet_atlas/),
+  *An Inverse-Jet Atlas for q-Analogs: Multivariate Reversion, Singular
+  Branches, and Asymptotics at q=0,1,-1, Roots of Unity, and q=±∞*
+  (72 pp), arrived on 2026-08-30 from
+  `inverse_q_analog_jet_atlas_2026-08-30.zip` (outer SHA-256
+  `9c9a0353eb355e6defb87845c4a2a79d85c537fe5a6c38c5473f9d3d56448ead`).
+  The rootless archive supplied five non-ledger payloads plus
+  `SHA256SUMS.txt`; all five submitted payload hashes verified, and all five
+  text members were already LF. Its title and abstract place its inverse-jet
+  treatment of finite and infinite q-Pochhammer products, Gaussian and
+  q-multinomial coefficients, q-special functions, singular bases, roots of
+  unity, and the Fabius--Rvachev effective geometric base beside the existing
+  inverse-q reports in this group. It remains standalone pending
+  post-publication comparison and deliberate consolidation, plus a Lean
+  crosswalk; manuscript classifications and symbolic/numerical checks do not
+  establish Lean verification.
+
 - [`inverse_q_analog_functions_report/`](inverse_q_analog_functions_report/),
   *Inverse Functions of q-Pochhammer Symbols, Gaussian Coefficients, and
   Related q-Analogues* (59 pp), arrived on 2026-08-30 from
