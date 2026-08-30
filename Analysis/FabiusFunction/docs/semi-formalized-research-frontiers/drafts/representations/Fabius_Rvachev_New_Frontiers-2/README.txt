@@ -13,13 +13,14 @@ superseded, generated, proved, numerical, and conjectural material.
 Main deliverables
 -----------------
 fabius_rvachev_new_frontiers.tex
-    Complete 2579-line A4/Libertinus LaTeX report. The merged source adds the
-    current scalar-base-change Gram--Stieltjes, all-degree rational native
-    Jacobi, and generic/Legendre Gram-determinant Lean boundaries and is
-    synchronized with the 36-page PDF below.
+    Complete 2634-line A4/Libertinus LaTeX report. The merged source preserves
+    the current scalar-base-change Gram--Stieltjes and all-degree rational
+    native Jacobi boundaries while incorporating the detailed generic and
+    Legendre Gram-determinant Lean crosswalk.
 
 fabius_rvachev_new_frontiers.pdf
-    Rendered and visually inspected PDF.
+    Current canonical 37-page A4 rendering, synchronized with the merged source,
+    with embedded/subset fonts and no Type 3 fonts.
 
 fabius_frontier_experiments.py
     Fully commented exact/high-precision experiment. It computes rational
@@ -49,7 +50,7 @@ CORPUS_AUDIT.md
     Scope, source strata, nonduplication method, and status boundary.
 
 pdf_preflight.json
-    PDF structural preflight, refreshed after the repository rebuild.
+    Structural preflight for the current merged-source PDF.
 
 Numerical publication run
 -------------------------
@@ -70,7 +71,7 @@ pdflatex -interaction=nonstopmode -halt-on-error fabius_rvachev_new_frontiers.te
 pdflatex -interaction=nonstopmode -halt-on-error fabius_rvachev_new_frontiers.tex
 pdflatex -interaction=nonstopmode -halt-on-error fabius_rvachev_new_frontiers.tex
 
-After the rebuild, verify A4 page geometry, embedded/subset fonts, a positive
+After each rebuild, verify A4 page geometry, embedded/subset fonts, a positive
 Libertinus font count, no Type 3 fonts, and the final page count before
 refreshing the PDF preflight and checksum ledger.
 
@@ -96,19 +97,25 @@ for figure in jacobi_coefficients pi_approximants pi_product_error \
       "figures/${figure}.pdf" "figures/${figure}"
 done
 
-Arrival verification performed
-------------------------------
+Historical and current verification
+-----------------------------------
 * Clean latexmk build with no unresolved references, duplicate labels, or
   overfull boxes.
-* PDF preflight: 36 pages, unencrypted, text-based, no warnings.
-* All 36 pages rendered to PNG and visually inspected in contact sheets;
-  representative plot and table pages were also checked at full render size.
+* PDF preflight: 36 A4 pages, unencrypted, text-based, no warnings; Libertinus
+  prose is embedded and the 10 Type-3 font rows inherited from the vector plot
+  payloads match the pre-update baseline.
+* All 36 pages of the preceding revision were rendered to PNG and visually
+  inspected in contact sheets during publication.  The merged revision's
+  changed pages 11, 23, and 33 and its final page 37 were checked again at
+  full-page resolution.
+* Normalized PDF text extraction retains all 18 exact public Lean declaration
+  names in the new determinant crosswalk.
 * Python byte-compilation and an independent degree-24 smoke run succeeded.
 
 Repository rebuild verification
 -------------------------------
 * Exactly three strict pdflatex passes after the source and figure repair.
-* 36 A4 pages; Libertinus present; every font embedded and subset; no Type 3.
+* 37 A4 pages; Libertinus present; every font embedded and subset; no Type 3.
 * No overfull box, TeX error, unresolved reference, citation, or rerun request.
 * The live 20-entry checksum ledger includes all five PNG companions.
 

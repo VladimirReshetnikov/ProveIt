@@ -10056,26 +10056,6 @@ The pairing and fraction-free statements work over their commutative-semiring an
 commutative-ring boundaries; normalization, norms, and Jacobi quotients use fields.
 They assert finite scalar naturality, not positivity or analytic convergence.
 
-The polynomial change-of-basis layer \path{PolynomialMomentGramDeterminant.lean} has two
-public definitions,
-\lean{polynomialCoefficientMatrix} and
-\lean{polynomialMomentGramMatrix}, and exactly seven public theorems:
-\lean{polynomialCoefficientMatrix_apply},
-\lean{polynomialMomentGramMatrix_apply},
-\lean{polynomialMomentGramMatrix_eq_transpose_mul_hankel_mul},
-\lean{polynomialMomentGramMatrix_det_eq_coefficient_det_sq_mul},
-\lean{polynomialCoefficientMatrix_det_eq_prod_coeff},
-\lean{polynomialMomentGramMatrix_det_eq_prod_coeff_sq_mul}, and
-\lean{gramStieltjesJacobiSubdiagonal_eq_polynomialMomentGramMatrix_det_ratio}.
-For a family \(p_k\) satisfying \(\deg p_k\le k\), these results identify its finite moment
-Gram matrix with \(C_n^{\mathsf T}H_nC_n\), then transport the Hankel determinant through
-the upper-triangular coefficient matrix.  The matrix identity works over a commutative
-semiring and the determinant identities over a commutative ring.  Over a field, nonzero
-diagonal coefficients give the Jacobi cross-ratio with the square of the quotient of two
-consecutive diagonal coefficients; no Hankel nonvanishing assumption is needed because
-division is total.  This module uses no measure, positivity, orthogonality, root,
-quadrature, continued-fraction, or convergence theorem.
-
 \path{RvachevRationalJacobi.lean} has four public definitions:
 \lean{rvachevHankelDetRat},
 \lean{rvachevOrthoPolynomialRat},
@@ -10107,24 +10087,71 @@ These four rational definitions are noncomputable finite-algebra objects, not na
 evaluators.  In particular, this layer proves all-degree rationality but does not evaluate
 the report's displayed \(H_4\) or \(\beta_4\) fractions.
 
-The Legendre specialization \path{FabiusLegendreHankelDeterminant.lean} has two public
-definitions,
-\lean{upLegendreGramMatrix} and
-\lean{upLegendreGramDet}, and exactly seven public theorems:
+The polynomial change-of-basis layer is now explicit as well.
+\path{PolynomialMomentGramDeterminant.lean} has exactly two public definitions,
+\lean{polynomialCoefficientMatrix} and \lean{polynomialMomentGramMatrix}, and exactly seven
+public theorems:
+\lean{polynomialCoefficientMatrix_apply},
+\lean{polynomialMomentGramMatrix_apply},
+\lean{polynomialMomentGramMatrix_eq_transpose_mul_hankel_mul},
+\lean{polynomialMomentGramMatrix_det_eq_coefficient_det_sq_mul},
+\lean{polynomialCoefficientMatrix_det_eq_prod_coeff},
+\lean{polynomialMomentGramMatrix_det_eq_prod_coeff_sq_mul}, and
+\lean{gramStieltjesJacobiSubdiagonal_eq_polynomialMomentGramMatrix_det_ratio}.
+For a family \(p_j\) with \(\deg p_j\le j\), put its monomial coefficient vectors in the
+columns of \(C_n\), let \(H_n\) be the monomial Hankel matrix, and let \(G_n\) be the moment
+Gram matrix.  Expanding the bilinear pairing coefficient by coefficient gives
+\[
+ G_n=C_n^{\mathsf T}H_nC_n.
+\]
+The degree bound makes \(C_n\) upper triangular, with diagonal
+\([X^j]p_j\).  Determinant multiplicativity and \(\det C_n=\prod_{j<n}[X^j]p_j\) therefore
+give
+\[
+ \det G_n=\left(\prod_{j<n}[X^j]p_j\right)^2\det H_n,
+\]
+and the final generic theorem transports the zero-based Jacobi cross-ratio through any such
+family with nonzero diagonal coefficients.  That equality has no Hankel-nonvanishing
+hypothesis: Lean uses totalized field division, so when the middle Hankel determinant
+vanishes both cross-ratios are zero.  The singular equality is therefore not a genuine
+nonsingular Jacobi recurrence.
+
+\path{FabiusLegendreHankelDeterminant.lean} specializes this calculation to the ordinary
+Legendre family and the up-law moments.  It has exactly two public definitions,
+\lean{upLegendreGramMatrix} and \lean{upLegendreGramDet}, and exactly seven public theorems:
 \lean{upLegendreGramMatrix_apply_eq_integral},
 \lean{upLegendreGramDet_eq_prod_leadingCoeff_sq_mul_hankelDet},
-\lean{upLegendreGramDet_zero},
-\lean{upLegendreGramDet_pos},
+\lean{upLegendreGramDet_zero}, \lean{upLegendreGramDet_pos},
 \lean{coeff_legendrePolynomial_self_div_succ},
 \lean{gramStieltjesJacobiSubdiagonal_upMoment_eq_upLegendreGramDet_ratio}, and
 \lean{rvachevJacobiSubdiagonalRat_cast_eq_upLegendreGramDet_ratio}.
-The determinant identity and generic up-moment cross-ratio hold for every
-\lean{BoundedFabius}; identifying entries with integrals, strict positivity, and the exact
-rational-cast comparison additionally require \lean{IsFabius}.  The leading-coefficient
-quotient is \((n+1)/(2n+1)\), and the zero-based subdiagonal index \(n\) is the conventional
-\(\beta_{n+1}\).  This is finite linear algebra: it supplies no finite Gaunt/Wigner-symbol
-entry expansion or entry-rationality proof by that route, Christoffel reconstruction,
-root or quadrature theorem, infinite Jacobi product/continued fraction, or asymptotics.
+For arbitrary \(F:\lean{BoundedFabius}\), let \(D_n\) be the determinant of the first \(n\)
+Legendre polynomials in its up-moment pairing and put
+\(L_j=2^{-j}\binom{2j}{j}\).  At \(n=0\), ``the first zero polynomials'' means the empty
+\(0\mathbin{\times}0\) Gram matrix, whose determinant is one; this convention extends the
+paper's prior \(N\geq1\) matrix definition.  The determinant identity and empty case hold for
+every such \(F\):
+\[
+ D_n=\left(\prod_{j<n}L_j^2\right)\det H_n,
+ \qquad D_0=1.
+\]
+The leading-coefficient quotient is independent of \(F\), and, with Lean's index \(n\)
+denoting the conventional coefficient \(\beta_{n+1}\), the real Gram cross-ratio also holds
+for arbitrary \(F:\lean{BoundedFabius}\):
+\[
+ \beta_{n+1}=\left(\frac{n+1}{2n+1}\right)^2
+ \frac{D_{n+2}D_n}{D_{n+1}^2}.
+\]
+Here the arbitrary-\(F\) formula inherits totalized division from the generic theorem.  The
+entry-as-integral theorem, strict positivity \(D_n>0\), and identification with the real cast
+of the exact rational Rvachev subdiagonal each additionally require
+\(h_F:\lean{IsFabius}\,F\).  Under that hypothesis positivity removes the singular case and
+the cross-ratio is a genuine Jacobi formula.  Neither module proves the individual Gram entries by a
+finite Gaunt, Wigner, or \(3j\)-symbol expansion, entry rationality by that route,
+Christoffel reconstruction, or an infinite Jacobi product.  Also,
+\lean{rvachevTranslateGram} is a different object: it pairs shifted-up atoms under
+unweighted interval integration, whereas \lean{upLegendreGramMatrix} pairs polynomials under
+the up-law moment functional.
 
 This closure does not supply a complex logarithmic fixed point, complex order,
 pointwise or nontangential Sokhotski--Plemelj limits, a principal-value Hilbert-transform
@@ -10200,8 +10227,9 @@ renormalization, Laurent/Herglotz/inversion layers, initial Jacobi data, and fin
 \path{StieltjesMomentLaurent.lean}, \path{StieltjesCauchyTransform.lean},
 \path{StieltjesHerglotz.lean}, \path{StieltjesInversion.lean},
 \path{StieltjesPerron.lean}, \path{OrthogonalPolynomialJacobi.lean},
-\path{PolynomialMomentGramDeterminant.lean}, \path{GramStieltjesNaturality.lean},
-\path{RvachevRationalJacobi.lean}, \path{FabiusLegendreHankelDeterminant.lean},
+\path{GramStieltjesNaturality.lean}, \path{RvachevRationalJacobi.lean},
+\path{PolynomialMomentGramDeterminant.lean},
+\path{FabiusLegendreHankelDeterminant.lean},
 \path{EarlyApproximants.lean},
 \path{EarlyMeasureBridge.lean}, \path{WeakConvergence.lean},
 \path{ProbabilityLaplaceMoments.lean}, \path{LaplaceMoments.lean},

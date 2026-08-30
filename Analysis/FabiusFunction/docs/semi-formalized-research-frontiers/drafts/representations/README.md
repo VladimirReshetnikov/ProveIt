@@ -2,6 +2,16 @@
 
 New standalone intake members:
 
+- [`Fabius_Zero_Bias_Frontier_Report/`](Fabius_Zero_Bias_Frontier_Report/),
+  *Zero-Bias Towers and Spectral Peeling in the Fabius--Rvachev System*
+  (26 pp), arrived on 2026-08-30 from
+  `Fabius_Zero_Bias_Frontier_Report.zip` (outer SHA-256
+  `fb8bbf8e34a2f5eb4e5bbe7b06b22566502be7583696f01960a6e41d25b518ee`).
+  All 21 submitted payload hashes verified; six CSV entries were refreshed
+  after CRLF-to-LF repository normalization. The package remains standalone
+  pending post-publication assessment and a Lean crosswalk; manuscript labels
+  do not establish Lean verification.
+
 - [`fabius_iterates_nowhere_analytic/`](fabius_iterates_nowhere_analytic/),
   *Nowhere Analyticity of Every Positive Compositional Iterate of the Fabius
   Function* (20 A4 pp, 1398 source lines; with a 469-line numerical
@@ -78,25 +88,27 @@ New standalone intake members:
   The original 29-page Letter/Type-3 rendering remains recoverable from the
   recorded arrival commit and archive SHA-256.
 - [`Fabius_Rvachev_New_Frontiers-2/`](Fabius_Rvachev_New_Frontiers-2/),
-  *Fabius--Rvachev New Frontiers* (36 A4 pp, 2579 source lines), arrived on 2026-08-30
-  from a rootless archive with all 15 arrival payload checksums verified. The
-  normalized package adds five PNG companions and embeds them to keep the
-  report PDF free of the vector plots' Type 3 fonts. Its current canonical
-  A4/Libertinus build is 36 pages with a verified 20-entry live ledger. The
-  merged report records the exact Lean boundary: scalar-base-change
-  Gram--Stieltjes naturality, all-degree rational native Jacobi coefficients,
-  the polynomial Gram/Hankel determinant transport, and its Legendre up-law
-  determinant and zero-based Jacobi cross-ratio specialization are formalized.
-  Finite Gaunt/Wigner entry expansions, rationality by that route, roots,
-  Christoffel products, quadrature, Padé identification, and asymptotics remain
-  outside that tranche. Its native up-law
+  *Fabius--Rvachev New Frontiers* (37 A4 pp, 2634 source lines), arrived on
+  2026-08-30 from a rootless
+  archive with all 15 arrival payload checksums verified. Its native up-law
   orthogonal polynomials, Jacobi and Christoffel reconstruction, rational
   limits and products for pi, Gauss--Pade structure, and Legendre--Gaunt
   determinants extend the moment, transform, and representation theme. It is
   distinct from the homonymous historical report already absorbed into
   `Frontier_Compilations/`. Its original novelty screen overstated the gap:
   the pinned representation frontier already contained the Nevai-limit,
-  J-fraction, Hankel, and Gauss--Padé program.
+  J-fraction, Hankel, and Gauss--Padé program. A post-intake Lean crosswalk
+  closes exactly the polynomial change-of-basis determinant sublayer. The
+  exhaustive generic and Legendre declaration inventories and their precise
+  hypotheses are catalogued once in the finite-moment crosswalk below. They
+  formalize the finite `G = Cᵀ H C` transport, determinant identities, and the
+  zero-based Jacobi cross-ratio, but not the finite Gaunt/Wigner/`3j` entry
+  formulas, rationality by that route, or Christoffel reconstruction. The
+  normalized package adds five PNG companions and
+  embeds them to keep the report PDF free of the vector plots' Type 3 fonts.
+  Its current 37-page A4/Libertinus PDF has embedded/subset fonts and no Type 3
+  fonts, and its refreshed 20-entry live ledger verifies the synchronized
+  source/PDF package.
 - [`Fabius_Stein_Koopman_Frontier_Report/`](Fabius_Stein_Koopman_Frontier_Report/),
   *Dyadic Stein--Koopman and q-Oscillator Calculus for the Fabius--Rvachev
   Law* (32 pp), arrived on 2026-08-30 with all 20 payload checksums verified.
@@ -104,8 +116,10 @@ New standalone intake members:
   Poisson operators, martingales, nonreversibility certificate, scalar Stein
   kernel, and endpoint asymptotics extend the operator-representation theme.
 
-All five remain standalone pending claim-by-claim Lean crosswalk and deliberate
-consolidation; paper theorem labels do not by themselves assert Lean status.
+All six remain standalone pending deliberate consolidation and completion of
+their claim-by-claim Lean crosswalks; the determinant sublayer just identified
+is the recorded partial crosswalk for `Fabius_Rvachev_New_Frontiers-2/`.
+Other paper theorem labels do not by themselves assert Lean status.
 
 Series and orthogonal-expansion representations of the up-function,
 consolidated (2026-08-28) into the single volume
@@ -215,7 +229,9 @@ identity is over a commutative semiring, determinant transport over a
 commutative ring, and the final field-level ratio also requires every diagonal
 coefficient to be nonzero.  It requires no Hankel nonvanishing and asserts no
 measure, positivity, orthogonality, root, quadrature, continued-fraction, or
-convergence result.
+convergence result. Because field division is total, a zero middle Hankel
+determinant makes both displayed cross-ratios zero; that equality alone is not
+a genuine nonsingular Jacobi recurrence.
 
 `FabiusLegendreHankelDeterminant.lean` specializes that transport with the
 exhaustive definitions `upLegendreGramMatrix`, `upLegendreGramDet` and
@@ -227,9 +243,13 @@ theorems `upLegendreGramMatrix_apply_eq_integral`,
 `rvachevJacobiSubdiagonalRat_cast_eq_upLegendreGramDet_ratio`.  The determinant
 identity and up-moment cross-ratio need only `BoundedFabius`; entry integration,
 positivity, and the rational-cast ratio additionally need `IsFabius`.  The
-subdiagonal index is zero-based (`beta_(n+1)`).  Finite Gaunt/Wigner entry
+empty `0×0` determinant is `D_0 = 1`, and the zero-based subdiagonal index `n`
+is the conventional `beta_(n+1)`, with prefactor `((n+1)/(2*n+1))^2`.
+Positivity excludes the totalized singular case. Finite Gaunt/Wigner entry
 expansions, Christoffel reconstruction, roots, quadrature, infinite Jacobi
 products/continued fractions, and asymptotics remain outside this module.
+The existing `rvachevTranslateGram` is instead the unweighted Gram kernel of
+shifted-up atoms.
 
 The reciprocal-Gamma portion of Part II is now formal at source checkpoint
 `71ab6f6728fceb753c88d8b0573077a59acf2682`.  The reusable convergence engine
