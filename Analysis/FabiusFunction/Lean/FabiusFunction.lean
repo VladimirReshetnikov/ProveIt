@@ -63,6 +63,7 @@ import FabiusFunction.FiniteMomentGram
 import FabiusFunction.GramStieltjes
 import FabiusFunction.FiniteMomentJacobi
 import FabiusFunction.GramStieltjesNaturality
+import FabiusFunction.PolynomialMomentGramDeterminant
 import FabiusFunction.WeightedScaleMultiplicity
 import FabiusFunction.SpectralZetaWeighted
 import FabiusFunction.ShiftDifferenceWeights
@@ -221,6 +222,7 @@ import FabiusFunction.StieltjesGeneralizedOrder
 import FabiusFunction.OrthogonalPolynomialConstruction
 import FabiusFunction.OrthogonalPolynomialGramBridge
 import FabiusFunction.RvachevRationalJacobi
+import FabiusFunction.FabiusLegendreHankelDeterminant
 import FabiusFunction.OrthogonalPolynomialValues
 import FabiusFunction.OrthogonalPolynomialParity
 import FabiusFunction.OrthogonalPolynomialRecurrence
