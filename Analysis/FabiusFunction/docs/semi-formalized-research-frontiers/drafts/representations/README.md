@@ -2,6 +2,24 @@
 
 New standalone intake members:
 
+- [`fabius_iterates_nowhere_analytic/`](fabius_iterates_nowhere_analytic/),
+  *Nowhere Analyticity of Every Positive Compositional Iterate of the Fabius
+  Function* (19 pp), arrived on 2026-08-30 with all 14 submitted payload
+  checksums verified; the single CSV entry was refreshed after LF
+  normalization.  A Faà di Bruno partition defect, two-spine expansion,
+  strict weight-unimodality argument, and Thue--Morse binary-transition lemma
+  yield the manuscript's claimed nowhere-analyticity theorem for every
+  positive self-composition, together with a co-countable dense zero-radius
+  set.  This is primarily a derivative/composition representation result,
+  rather than a new Thue--Morse atlas member.  The `n = 1` case and the
+  inverse/non-elementarity infrastructure already exist in Lean; the
+  `n ≥ 2` theorem appears genuinely new and remains unformalized.  The report
+  has 14 nonconjectural labelled results and three conjectures.  Its source
+  map says `StrictMonotonicity.lean`, but the live module is
+  `Monotonicity.lean`; a deeper claim-by-claim review is pending.  All 19
+  clean A4 PDF pages were rendered during intake, while the experiment, TeX,
+  and Lean were not run.  Manuscript proof labels do not establish Lean
+  status.
 - [`Fabius_Rvachev_Shape_Divisibility_Stein_Geometry/`](Fabius_Rvachev_Shape_Divisibility_Stein_Geometry/),
   *Shape, Divisibility, and Stein Geometry of the Fabius--Rvachev Law*
   (50 pp), arrived on 2026-08-30 with all 14 submitted payload checksums
