@@ -286,6 +286,23 @@ theorem rvachevDeconvolvedPolynomial_C_mul (a : ℝ) (P : ℝ[X]) :
   simpa only [Polynomial.smul_eq_C_mul] using
     rvachevDeconvolvedPolynomial_smul a P
 
+/-- Rvachev polynomial deconvolution sends a monomial to the corresponding
+Rvachev--Appell polynomial, scaled by its coefficient. -/
+@[simp]
+theorem rvachevDeconvolvedPolynomial_monomial (n : ℕ) (a : ℝ) :
+    rvachevDeconvolvedPolynomial (monomial n a) =
+      C a * rvachevAppellPolynomial n := by
+  simp [rvachevDeconvolvedPolynomial]
+
+/-- Rvachev polynomial deconvolution sends `X ^ n` to the `n`-th
+Rvachev--Appell polynomial. -/
+@[simp]
+theorem rvachevDeconvolvedPolynomial_X_pow (n : ℕ) :
+    rvachevDeconvolvedPolynomial (X ^ n) =
+      rvachevAppellPolynomial n := by
+  rw [X_pow_eq_monomial, rvachevDeconvolvedPolynomial_monomial, C_1,
+    one_mul]
+
 /-- Rvachev polynomial deconvolution does not raise degree. -/
 theorem natDegree_rvachevDeconvolvedPolynomial_le (P : ℝ[X]) :
     (rvachevDeconvolvedPolynomial P).natDegree ≤ P.natDegree := by
