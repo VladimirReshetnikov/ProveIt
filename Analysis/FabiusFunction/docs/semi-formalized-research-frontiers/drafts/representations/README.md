@@ -1,5 +1,15 @@
 # Representations
 
+New standalone intake member:
+[`Fabius_Stein_Koopman_Frontier_Report/`](Fabius_Stein_Koopman_Frontier_Report/),
+*Dyadic Stein--Koopman and q-Oscillator Calculus for the Fabius--Rvachev
+Law* (32 pp), arrived on 2026-08-30 with all 20 payload checksums verified.
+Its Appell eigenmodes, transfer determinants, q-Weyl calculus, Stein and
+Poisson operators, martingales, nonreversibility certificate, scalar Stein
+kernel, and endpoint asymptotics extend the operator-representation theme.
+It remains standalone pending claim-by-claim Lean crosswalk and deliberate
+consolidation; paper theorem labels do not by themselves assert Lean status.
+
 Series and orthogonal-expansion representations of the up-function,
 consolidated (2026-08-28) into the single volume
 [`Representation_Frontiers/`](Representation_Frontiers/) (298 pp,
