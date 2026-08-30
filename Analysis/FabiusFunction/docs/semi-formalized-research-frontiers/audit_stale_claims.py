@@ -24,8 +24,10 @@ correct.  Every hit needs reading.  Exit status is always 0.
 import io, os, re
 from pathlib import Path
 
-DOCS = Path(__file__).resolve().parent
-LEAN = DOCS.parent.parent / 'Lean' / 'FabiusFunction'
+FRONTIER_ROOT = Path(__file__).resolve().parent
+FABIUS_ROOT = FRONTIER_ROOT.parent.parent
+DOCS = FRONTIER_ROOT
+LEAN = FABIUS_ROOT / 'Lean' / 'FabiusFunction'
 
 # Phrases in a Lean docstring that go stale silently.  "not proved
 # here" stays literally true forever -- "here" means this module -- so

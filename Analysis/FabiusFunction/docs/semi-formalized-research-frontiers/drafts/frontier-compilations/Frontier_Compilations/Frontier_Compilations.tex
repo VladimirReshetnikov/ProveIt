@@ -288,6 +288,51 @@ Those two sentences are the main launch point of this report.  The first becomes
 
 \statusbox{\textbf{Mathematical status.}  Every displayed frontier theorem below is accompanied by a proof or by an explicit reduction to standard Gaussian/Lobatto quadrature facts.  The low-order constants were independently checked by exact rational arithmetic or high-precision evaluation.  The results are presented as new relative to the audited \texttt{ProveIt} corpus.  A broad literature search did not locate these Fabius-specific formulas, but this report does not assert an exhaustive priority claim.  The finite algebraic bridge cross-referenced to \path{GeometricQBinomialLagrange.lean} is Lean-formalized, and \path{AnalyticSeriesFilter.lean} now proves the abstract exact Gaussian tail under unconditional summability, with no unweighted convergence condition at a zero-weight node.  It does not cover conditionally-only boundary series, signs, bounds, uniform convergence, or the report's sinc-product instantiation.  Separately, \path{FractionalVolterraCalculus.lean} proves positive affine covariance on ordered real intervals for arbitrary real order, and Gamma-normalized order raising for real $\alpha>0$ from a continuous Banach-valued primitive with an interval-integrable right derivative; for $\alpha\le0$, affine covariance is an identity for the totalized Lean interval-integral definition, and a classical Riemann--Liouville or integrability interpretation is asserted only for positive order.  \path{FabiusFractionalVolterra.lean} defines the total causal Rvachev fractional primitive, proves its support cutoff, positive-natural bridge, and positive-order semigroup on $x\ge-1$, and specializes order raising to the signed extension for $x\ge0$, bounded Fabius for $0\le x\le1$, and the $\Up$ bridge from $-1$ for $x\ge-1$.  These series and fractional APIs were checked at source checkpoint \path{149332f9d}.  Complex, weighted-monomial, iterated, negative-branch, shifted-lattice, endpoint-moment, transform/tail, piecewise/refinement, and inverse/quantile fractional formulas, and the report-specific analytic theorem families, remain frontier.}
 
+\statusbox{\textbf{Post-snapshot finite moment, Gram--Stieltjes, and Jacobi status.}
+The generic layer begins with \path{FiniteMomentGram.lean}, which defines the
+generic polynomial \path{momentFunctional}, symmetric \path{momentPairing},
+\path{momentHankelMatrix}, \path{momentHankelDet}, and
+\path{finiteMomentPairing}.  The declarations
+\path{momentFunctional_of_linearMap}, \path{momentFunctional_map},
+\path{momentHankelMatrix_succ_submatrix}, \path{map_momentHankelDet},
+\path{finiteMomentPairing_toMatrix}, and
+\path{finiteMomentPairing_nondegenerate_iff} give completeness, base change,
+leading-principal truncation, the exact monomial-basis Gram matrix, and---over
+an integral domain---fixed-order nondegeneracy exactly when the corresponding
+Hankel determinant is nonzero.
+The downstream \path{GramStieltjes.lean} constructs the fraction-free
+\path{gramStieltjesNumerator} and field-normalized
+\path{gramStieltjesPolynomial}.  Its public endpoint declarations
+\path{momentPairing_gramStieltjesNumerator_eq_coeff_mul_det},
+\path{momentPairing_gramStieltjesNumerator_self},
+\path{gramStieltjesPolynomial_isMonicOfDegree},
+\path{momentPairing_gramStieltjesPolynomial_eq_zero},
+\path{eq_gramStieltjesPolynomial_of_isMonicOfDegree_of_orthogonal}, and
+\path{momentPairing_gramStieltjesPolynomial_self} prove finite
+Gram--Stieltjes orthogonality, uniqueness under a nonzero leading minor, and
+the quotient of consecutive Hankel determinants for the self-pairing.
+\path{FiniteMomentJacobi.lean} continues without a measure: it defines
+\path{gramStieltjesNorm}, \path{gramStieltjesJacobiDiagonal}, and
+\path{gramStieltjesJacobiSubdiagonal}; proves the determinant cross-ratio for
+the subdiagonal; proves the degree-zero equation through
+\path{gramStieltjesPolynomial_three_term_zero}; and proves every higher finite
+three-term recurrence through \path{gramStieltjesPolynomial_three_term} from
+the three consecutive nonzero minors.  These three generic modules themselves
+assume no measure and prove no positivity.
+The complementary up-measure pipeline in \path{MomentHankelMatrix.lean},
+\path{MomentHankelValues.lean}, and the \path{OrthogonalPolynomial*.lean}
+modules proves strict positivity, constructs the normalized polynomials, proves
+parity and the symmetric three-term recurrence, and evaluates the first exact
+Jacobi data.  \path{OrthogonalPolynomialGramBridge.lean} now identifies the
+generic up-moment functional and pairing with integration, both Hankel
+objects, both determinant polynomials, and both monic normalizations; its
+Jacobi wrappers identify the norm, zero diagonal, and subdiagonal ratio with
+the up-specific data.  Root location or simplicity, Gaussian or Lobatto nodes, weights,
+exactness, or error signs, finite or infinite Jacobi/Stieltjes-fraction
+identification, and convergence remain outside Lean.  This post-snapshot
+proof-status update does not alter the absorbed reports' provenance hashes or
+their pinned novelty comparison.}
+
 \subsection{Executive list of new results}
 
 \frontierbox{\textbf{New results proved in this report.}
@@ -1850,13 +1895,30 @@ The only delicate issue is the a.e. nature of the finite spline derivative at kn
 A reusable finite-dimensional module can avoid committing immediately to explicit roots.
 
 \begin{enumerate}
-\item Develop monic orthogonal polynomials for a compactly supported probability measure with positive moments.
+\item Develop monic orthogonal polynomials for a compactly supported probability measure whose moment functional is strictly positive on the square of every nonzero polynomial; for a fixed finite algebraic tranche, one may instead assume the required leading Hankel minors are nonzero.
 \item Prove the Gram determinant formula $h_r=\Delta_{r+1}/\Delta_r$.
 \item Import or prove Gaussian quadrature existence, positivity, and exactness.
 \item Formalize Hermite interpolation and the sign of the Gaussian remainder.
 \item Define the Peano kernel by the truncated-power formula and prove nonnegativity and mass.
 \item Repeat with the weighted measure $(1-x^2)\mu$ for Lobatto quadrature, including the positive-weight proof from isolating nonnegative polynomials.
 \end{enumerate}
+
+The generic finite-algebraic portions of the first two items are now supplied
+by \path{FiniteMomentGram.lean} and \path{GramStieltjes.lean}: the latter gives
+the unique normalized monic
+polynomial under a nonzero leading Hankel determinant and proves
+\(h_r=\Delta_{r+1}/\Delta_r\) as a self-pairing identity.  Those generic
+modules do not connect the hypotheses to a measure or prove positivity.
+\path{FiniteMomentJacobi.lean} also proves the generic finite three-term
+recurrence, including its degree-zero base equation, and the determinant
+formula for its subdiagonal coefficient.
+Separately, the up-law modules now prove strict positivity, construct the
+normalized orthogonal polynomials, and establish their symmetric three-term
+recurrence, while \path{OrthogonalPolynomialGramBridge.lean} proves that their
+objects are exactly the generic construction specialized to
+\path{upMoment}.  The positive Gaussian/Lobatto construction, root and weight
+theory, Hermite-remainder sign, and Peano-kernel tasks in this phase remain
+open.
 
 The density error theorem then becomes a generic lemma:
 

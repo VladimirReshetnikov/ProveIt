@@ -16,7 +16,7 @@
 \usepackage{titlesec}
 \usepackage{listings}
 \usepackage{xurl}
-\usepackage{hyperref}
+\usepackage[unicode,hypertexnames=false]{hyperref}
 \usepackage[nameinlink,noabbrev]{cleveref}
 
 \definecolor{linkblue}{RGB}{25,75,135}
@@ -53,9 +53,12 @@
 \titleformat{\subsubsection}{\normalsize\bfseries}{\thesubsubsection}{0.7em}{}
 \setcounter{secnumdepth}{3}
 \setcounter{tocdepth}{2}
+\setlength{\parindent}{1.4em}
+\setlength{\parskip}{0.15em}
 \setlist[itemize]{leftmargin=2em,itemsep=0.25em,topsep=0.4em}
 \setlist[enumerate]{leftmargin=2.3em,itemsep=0.25em,topsep=0.4em}
 \setlength{\emergencystretch}{3em}
+\allowdisplaybreaks
 
 \newtheorem{theorem}{Theorem}[chapter]
 \newtheorem{proposition}[theorem]{Proposition}
@@ -145,6 +148,12 @@
 \Large Exact polynomial synthesis by undilated dyadic translates of the Rvachev \(\operatorname{up}\)-function, interpolation factorizations, and coefficient-space projectors}
 \author{Research report prepared for Vladimir Reshetnikov}
 \date{29 August 2026\\Repository snapshot \RepoCommit}
+\hypersetup{
+  pdftitle={Closing the Lagrange--Rvachev Loop},
+  pdfauthor={Research report prepared for Vladimir Reshetnikov},
+  pdfsubject={Exact polynomial synthesis by undilated dyadic translates of the Rvachev up-function},
+  pdfkeywords={Fabius function, Rvachev up-function, Lagrange interpolation, polynomial synthesis}
+}
 
 % ed.: the document is book class, which provides no abstract environment, so the
 % abstract below raised "Environment abstract undefined" and its text was dropped
@@ -217,6 +226,16 @@ For data \(y_j=f(x_j)\), the synthesized loop equals the Lagrange interpolant \(
 
 For a convergent nested or telescoping Lagrange expansion, the substitution yields a level-grouped double series of shifted copies of \(u\), and its partial sum through level \(N\) is precisely \(\mathcal I_Nu\).  The report develops this identity, proves the collocation and projector results, derives explicit dyadic inter-level null vectors, gives low-degree closed forms, reports numerical checks, and formulates several conjectures about coefficient measures, asymptotic obliquity, and stable node families.  Claims described as ``new in this report'' mean that they were not found in the recursively scanned repository corpus; no claim of priority over the entire external literature is intended.
 \end{abstract}
+
+\begin{remark}[Formalization boundary]
+This inbox report arrived without a declaration-level Lean crosswalk.  Its
+inclusion in the research-frontier corpus does not assert that the displayed
+synthesis, interpolation-factorization, projector, conditioning, or
+conjectural statements have been formalized.  Unless a named Lean declaration
+is supplied in a later audited crosswalk, they remain prose proof obligations;
+existing repository theorems on related polynomial synthesis are not claimed
+here to match these statements literally.
+\end{remark}
 
 \tableofcontents
 \listoftables
@@ -379,9 +398,9 @@ Because \(M(0)=1\), the reciprocal has a formal and locally convergent expansion
  \label{eq:inverse-moments}
 \end{equation}
 On \(\Pp_d\), define
+% ed.: restored the dropped backslash in the restriction operator.
 \begin{equation}
- \Aop_d:=M(D)^{-1}
-\restricted_{\Pp_d}
+ \Aop_d:=M(D)^{-1}\restricted_{\Pp_d}
  =\sum_{n=0}^{d}\lambda_n\frac{D^n}{n!},
  \qquad D:=\frac{\dd}{\dd x}.
  \label{eq:inverse-moment-operator}
@@ -397,8 +416,11 @@ There are three complementary closed descriptions.
  \label{eq:appell-bell-generating}
 \end{equation}
 so its coefficients are complete exponential Bell polynomials evaluated at
-\((x,-\kappa_2,0,-\kappa_4,0,\ldots)\).
+\[
+ (x,-\kappa_2,0,-\kappa_4,0,\ldots).
+\]
 
+\par\medskip
 \item \emph{Bernoulli product form.}  Since
 \[
  \frac{w}{\sinh w}=\frac{2w\e^w}{\e^{2w}-1}
@@ -416,6 +438,7 @@ we have, modulo \(D^{d+1}\),
 \end{equation}
 The infinite product is computationally finite to every prescribed degree after collecting powers of \(D\).
 
+\par\medskip
 \item \emph{Appell form.}  Define \(A_n\) by
 \begin{equation}
  \sum_{n=0}^{\infty}A_n(x)\frac{z^n}{n!}
@@ -1131,7 +1154,7 @@ where
 \end{equation}
 The level-by-level and single-level partial sums are identical as functions but generally have different coefficient vectors and even live on different grids.  Their differences are explicit local null combinations of translates, studied next.
 
-\section{Direct cardinal substitution at level \(N\)}
+\section{Direct cardinal substitution at level \texorpdfstring{\(N\)}{N}}
 If \(X_N=(x_{N,0},\ldots,x_{N,d_N})\), then
 \begin{equation}
  b_{N,k}=\sum_{j=0}^{d_N}u(x_{N,j})C_{kj}^{X_N,M_N}.
@@ -1292,10 +1315,22 @@ At high degree, explicitly materializing \(m=2^d\) is primarily of theoretical v
 \chapter{Numerical experiments}
 \label{ch:numerics}
 
-\section{Numerical method}
-The preparation calculation used exact SymPy arithmetic for cumulants, inverse moments,
-Appell polynomials, Lagrange cardinals, and synthesis coefficients.  It tabulated \(u\)
-independently by inverse Fourier series on a period-four box:
+\begin{remark}[Landing provenance]
+The repository received this report as a bare TeX source.  The script, tables,
+figures, corpus manifests, and source maps described below were not supplied.
+Accordingly the fallback build displays placeholders, the numerical checks
+reported in this chapter have not been independently reproduced here, and the
+source's 65-file novelty scan is not auditable from the delivered artifact.
+The fallback repository metadata also records its source checkpoint as
+\texttt{unknown}.
+\end{remark}
+
+\section{Reproducible method}
+The source describes an intended script \RepoPath{numerical\_experiments.py},
+not included in the delivered artifact, that uses exact SymPy arithmetic for
+cumulants, inverse moments, Appell polynomials, Lagrange cardinals, and
+synthesis coefficients.  It would tabulate \(u\) independently by inverse
+Fourier series on a period-four box:
 \begin{equation}
  u(x)\approx\frac1{4}\sum_{|n|<N/2}
  \widehat u\!\left(\frac{\pi n}{2}\right)
@@ -1313,8 +1348,9 @@ The tests are deliberately redundant:
 \end{enumerate}
 
 \IfFileExists{experiment_tables.tex}{\input{experiment_tables.tex}}{
-\paragraph{Archive note.} The generated numerical tables are not retained in this
-source-and-PDF distribution.}
+\paragraph{Archive/build note.} The generated numerical tables and their
+unsupplied script are not retained in this source-and-PDF distribution, so
+this fallback build uses the exact formulas and notes embedded in the source.}
 
 \begin{figure}[htbp]
  \centering
@@ -1546,7 +1582,7 @@ Because the loop exactly inherits its projector, the strongest immediate improve
 \end{enumerate}
 For each family one should report both the usual Lebesgue/projection norm and the new coefficient metrics \(\norm{C}\), \(\norm{CR}\), and \(\norm{\mu_d}_{\mathrm{TV}}\).
 
-\section{Base-\(b\) and nonuniform analogues}
+\section{\texorpdfstring{Base-\(b\)}{Base-b} and nonuniform analogues}
 Replace the binary random series by other nested uniform convolutions or compactly supported refinable densities.  The central questions are which reciprocal lattices acquire high multiplicity, which arithmetic valuation replaces \(\vtwo\), and whether the inverse cumulants retain a recognizable Bernoulli or \(q\)-series form.  This direction connects naturally to the repository's broader work on \(q\)-binomial coefficients and infinite products.
 
 \section{Computer algebra and formal verification}
@@ -1669,7 +1705,9 @@ The identity \(RC=I\) is both a theorem and an exact-arithmetic regression test.
 
 \chapter{Reproducibility files}
 \label{app:reproducibility}
-The live report directory contains:
+The source describes an intended accompanying archive containing the following
+files.  They were not part of the bare-source delivery; only the renamed TeX
+source and its repository-built PDF are maintained in this directory.
 \begin{description}[style=nextline]
 \item[\RepoPath{Rvachev\_Lagrange\_Loop\_Report\_v6.tex}]
 The complete report source.
@@ -1681,7 +1719,7 @@ The preparation archive's numerical scripts, corpus inventories, raw outputs, an
 figures are not retained in this source-and-PDF directory.  Conditional inputs above therefore
 fall back to the exact formulas and archive notes embedded in this source.
 
-To rebuild the PDF from the report directory:
+The maintained PDF is rebuilt from the report directory with three serial passes:
 \begin{lstlisting}[language=bash]
 pdflatex -interaction=nonstopmode -halt-on-error Rvachev_Lagrange_Loop_Report_v6.tex
 pdflatex -interaction=nonstopmode -halt-on-error Rvachev_Lagrange_Loop_Report_v6.tex

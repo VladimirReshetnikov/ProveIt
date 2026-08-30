@@ -1357,6 +1357,43 @@ Because odd moments vanish, each \(\Delta_n\) factors after a parity permutation
 even-even and odd-odd moment determinant.  This parity factorization is useful for exact
 arithmetic and should be exploited in future Lean formalization.
 
+\begin{remark}[Formal finite-algebra boundary]
+\path{FiniteMomentGram.lean} and \path{GramStieltjes.lean} provide a
+measure-free version of the finite determinant algebra: an arbitrary scalar
+sequence gives a moment functional, symmetric Hankel pairing, fixed-order
+nondegeneracy criterion, fraction-free adjugate polynomial, and---over a field
+with the leading minor nonzero---the unique normalized monic orthogonal
+polynomial with self-pairing \(\Delta_{n+1}/\Delta_n\).  The complementary
+up-measure modules \path{MomentHankelMatrix.lean},
+\path{MomentHankelValues.lean}, and \path{OrthogonalPolynomial*.lean} prove
+strict positivity, identify the exact moments, construct the monic
+polynomials, prove parity and the symmetric three-term recurrence, and compute
+the first exact Jacobi data.  The generic continuation
+\path{FiniteMomentJacobi.lean} defines the norm quotients, diagonal and
+subdiagonal Jacobi coefficients, proves the unconditional total-field identity
+\[
+ \beta_{n+1}=\frac{\Delta_{n+2}\Delta_n}{\Delta_{n+1}^2},
+\]
+and, under the three consecutive nonzero-minor hypotheses, proves
+\[
+ XP_{n+1}=P_{n+2}+\alpha_{n+1}P_{n+1}+\beta_{n+1}P_n.
+\]
+Its separate theorem
+\path{gramStieltjesPolynomial_three_term_zero} supplies the base equation
+$XP_0=P_1+\alpha_0P_0$ from the nonzero first minor.  This complete finite
+recurrence layer uses no measure or positivity.  Finally,
+\path{OrthogonalPolynomialGramBridge.lean} proves that
+the up-moment functional is integration against the canonical up measure and
+identifies the generic matrix, determinant, fraction-free polynomial, and
+monic polynomial exactly with \path{momentHankel}, \path{hankelDet},
+\path{hankelOrthoPolynomial}, and \path{upOrthoPolynomial}; it also identifies
+the generic norm with \path{hankelRatio}, proves that symmetry kills the
+generic diagonal coefficient, and identifies the generic subdiagonal with the
+quotient of consecutive Hankel ratios.  Root and
+quadrature theorems, second-kind polynomials, continued-fraction
+identification, and analytic convergence remain open.
+\end{remark}
+
 \subsection{Exact coefficients and numerical evidence}
 
 The accompanying Python program computes the moments by
@@ -1637,8 +1674,11 @@ A Lean development can be staged as follows:
 \item apply the generic open-domain theorem in \path{AffineDifferenceOrbit.lean} to
       obtain the Thue--Morse derivative tree once the preceding resolvent equation is
       available;
-\item define rational moments and the monic Stieltjes procedure;
-\item construct finite Jacobi convergents and prove the Gaussian error identity;
+\item use the named comparison in \path{OrthogonalPolynomialGramBridge.lean}
+      to identify the generic Gram--Stieltjes construction with the
+      up-measure-specific monic polynomials;
+\item construct second-kind polynomials and finite Jacobi convergents, then
+      prove the Gaussian error identity;
 \item postpone the Denisov--Rakhmanov limit, which depends on substantial external
       orthogonal-polynomial theory.
 \end{enumerate}
@@ -1652,12 +1692,16 @@ delivered exactly on the proposed first domain, real \(z>1\), by
 refinement equation and compact support, without depending on item 2, and instantiates
 the generic engine from \path{AffineDifferenceOrbit.lean} to deliver item 4.
 
-The moment side of item 5 and the first exact Jacobi data are now formal in the Laurent,
-Hankel, and \path{OrthogonalPolynomialJacobi.lean} modules.  Item 6's complete finite
-convergents and Gaussian error theorem and item 7's asymptotics remain open.  So does the
-separate higher-kernel conversion stated in \eqref{p1:eq:R-kernel-tree}; the generic
-CDF/survival formulas at every positive kernel power do not by themselves prove that
-explicit Thue--Morse sum identity.
+The separate higher-kernel conversion stated in \eqref{p1:eq:R-kernel-tree}
+remains open; the generic CDF/survival formulas at every positive kernel power
+do not by themselves prove that explicit Thue--Morse sum identity.  The
+Laurent, Hankel, and \path{OrthogonalPolynomialJacobi.lean} modules formalize
+the up-specific moment side and first exact Jacobi data, while the generic
+finite-algebra modules above formalize the determinant construction and
+complete finite three-term recurrence without positivity.  Item 5 is now
+delivered by \path{OrthogonalPolynomialGramBridge.lean}.  Item 6's second-kind
+polynomials, complete finite convergents, and Gaussian error theorem and item
+7's asymptotics remain open.
 \end{problem}
 
 \section{Promising research program}

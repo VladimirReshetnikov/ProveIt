@@ -30,8 +30,8 @@ which is a check on the normalization rather than a new claim about
 it.
 
 * `Fabius.summable_one_weight` — `a ≡ 1` is admissible;
-* `Fabius.tsum_one_weight` — its generating-function value and weight
-  sum `A_1(1/2) = 2 R_1` is `2`, twice the support radius;
+* `Fabius.tsum_one_weight` — its weighted dyadic mass / generating-function
+  value `A_1(1/2) = 2 R_1` is `2`, twice the support radius;
 * `Fabius.norm_rvachevFourierProduct_ofReal_le_one` — the bound on
   the real axis;
 * `Fabius.norm_rvachevFourierProduct_le_exp` — **exponential type at
@@ -50,7 +50,8 @@ theorem summable_one_weight :
   rw [div_pow, one_pow]
   norm_num
 
-/-- The constant-weight sum is `A_1(1/2) = ∑_h 2^{-h} = 2`, twice the
+/-- The weighted dyadic mass of the constant weight is
+`A_1(1/2) = ∑_h 2^{-h} = 2`, twice the
 classical support radius `R_1 = 1`. -/
 theorem tsum_one_weight :
     (∑' h : ℕ, ((1 : ℕ) : ℝ) / 2 ^ h) = 2 := by

@@ -4,7 +4,7 @@ Antiderivatives, integral calculus, transform dualities, and fractional
 calculus of the Fabius–Rvachev system, consolidated (2026-08-28) into
 the single volume
 [`Integration_and_Transform_Frontiers/`](Integration_and_Transform_Frontiers/)
-(371 pp, twelve parts):
+(372 pp; twelve parts):
 
 - **Part I** — *Antiderivatives of Monomially Weighted Fabius-Type
   Functions* (formerly `Fabius_Antiderivatives_Report/`);
@@ -75,6 +75,23 @@ Lean theorems.  `FabiusFractionalVolterra.lean` defines the total
 proves additive composition of positive real orders on `x ≥ -1`.  The
 transform and tail series, endpoint-moment and shifted-lattice formulas,
 complex orders, and fractional derivatives remain frontier claims.
+
+The generic finite algebra is supplied by `FiniteMomentGram.lean`,
+`GramStieltjes.lean`, and `FiniteMomentJacobi.lean`.  They construct moment
+functionals, symmetric pairings, finite Hankel matrices and determinants, a
+fraction-free adjugate polynomial, the unique normalized monic orthogonal
+polynomial under a nonzero leading minor, its norm quotient, the degree-zero
+Jacobi equation, and—under three consecutive nonzero minors—every higher
+finite recurrence.  These modules are deliberately measure-free and make no
+positivity claim by themselves.  `OrthogonalPolynomialGramBridge.lean`
+identifies these generic objects and finite Jacobi data with the up-measure
+constructions.  The complementary Fabius-specific pipeline in
+`MomentHankelMatrix.lean`, `MomentHankelValues.lean`, and the
+`OrthogonalPolynomial*.lean` modules proves strict positivity, identifies the
+up moments, constructs the monic polynomials, proves parity and the symmetric
+three-term recurrence, and computes the first exact Jacobi data.  Root and
+quadrature theorems, finite and infinite J-fraction identification, and
+continued-fraction convergence remain open formalization work.
 
 The independent 2026-08-28 `Fabius_Integral_Transforms_Report` arrival is now
 absorbed as Part XII; it is no longer an unmerged member.

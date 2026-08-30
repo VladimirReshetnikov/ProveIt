@@ -222,7 +222,9 @@ group README on removal.
 
 Four scripts here check the volumes and module documentation against the Lean
 corpus. `audit_all.sh` runs all four and exits nonzero if any hard check fails;
-run it before pushing any change that touches either side.
+run it before pushing any change that touches either side. The stale-claim and
+crosswalk-coverage surveys are advisory; the build-log checker is run
+separately after compiling a changed volume.
 
 - `audit_facade_reachability.py` — every module on disk is reachable from the
   library root `FabiusFunction.lean`. A newly added leaf module that nothing
@@ -242,6 +244,9 @@ run it before pushing any change that touches either side.
   `Fabius.*` name is a hard failure. An unresolved unqualified name is advisory
   only, because it may be a root-namespace Mathlib declaration that this
   lexical audit cannot distinguish from a stale local name.
+- `audit_stale_claims.py` and `audit_crosswalk_coverage.py` — advisory worklists
+  for contradictory “open” claims and theorem environments lacking either a
+  nearby Lean citation or an explicit formalization disclaimer.
 
 The four hard checks have no standing exceptions. If one starts reporting a
 failure that looks spurious, fix the script rather than carrying the exception:

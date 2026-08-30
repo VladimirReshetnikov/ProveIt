@@ -1,7 +1,7 @@
 # Frontier compilations
 
 The broad multi-topic "collected new results" report series,
-consolidated (2026-08-28) into the 267-page single volume
+consolidated (2026-08-28) into the 268-page single volume
 [`Frontier_Compilations/`](Frontier_Compilations/): ten absorbed reports,
 displayed as ten outer parts.
 
@@ -44,5 +44,70 @@ received the same treatment plus post-snapshot Lean-status updates recording
 exact-support, absolute-continuity, and null-singleton results. The former
 report directories were deleted. Provenance with SHA-256 hashes is recorded
 in the volume itself, and git history is the archive.
+
+Post-snapshot Lean status began at source checkpoint `b3720d4b5` with two
+generic finite-algebra modules relevant to Report I; the current tree adds the
+generic Jacobi layer and its exact up-measure comparison:
+
+- `FiniteMomentGram.lean` exports `momentFunctional`,
+  `momentFunctional_apply`, `momentFunctional_monomial`,
+  `momentFunctional_C`, `momentFunctional_X_pow`,
+  `momentFunctional_of_linearMap`, `momentFunctional_injective`,
+  `momentFunctional_eq_sum_support`, `momentFunctional_eq_sum_range`,
+  `momentFunctional_map`, `momentPairing`, `momentPairing_apply`,
+  `momentPairing_monomial`, `momentPairing_X_pow`,
+  `momentPairing_isSymm`, `momentHankelMatrix`,
+  `momentHankelMatrix_apply`, `momentHankelMatrix_transpose`,
+  `momentHankelMatrix_succ_submatrix`, `momentHankelMatrix_map`,
+  `momentHankelDet`, `momentHankelDet_zero`, `map_momentHankelDet`,
+  `finiteMomentPairing`, `finiteMomentPairing_toMatrix`, and
+  `finiteMomentPairing_nondegenerate_iff`.
+- `GramStieltjes.lean` exports `gramStieltjesNumerator`,
+  `gramStieltjesNumerator_coeff`, `gramStieltjesNumerator_natDegree_le`,
+  `momentPairing_gramStieltjesNumerator_X_pow_eq_zero`,
+  `momentPairing_gramStieltjesNumerator_X_pow_eq_det`,
+  `gramStieltjesNumerator_coeff_top`,
+  `momentPairing_gramStieltjesNumerator_eq_coeff_mul_det`,
+  `momentPairing_gramStieltjesNumerator_self`,
+  `gramStieltjesPolynomial`, `gramStieltjesPolynomial_natDegree_le`,
+  `gramStieltjesPolynomial_coeff_top`,
+  `gramStieltjesPolynomial_isMonicOfDegree`,
+  `momentPairing_gramStieltjesPolynomial_X_pow_eq_zero`,
+  `momentPairing_gramStieltjesPolynomial_eq_zero`,
+  `eq_gramStieltjesPolynomial_of_isMonicOfDegree_of_orthogonal`,
+  `momentPairing_gramStieltjesPolynomial_self`, and
+  `momentPairing_gramStieltjesPolynomial_self_ne_zero`.
+- `FiniteMomentJacobi.lean` adds `momentPairing_X_mul_left`,
+  `momentPairing_eq_zero_of_forall_X_pow`, `gramStieltjesNorm`,
+  `momentPairing_gramStieltjesPolynomial_X_pow_eq_norm`,
+  `momentPairing_gramStieltjesPolynomial_self_eq_norm`,
+  `gramStieltjesNorm_ne_zero`, `gramStieltjesJacobiDiagonal`,
+  `gramStieltjesJacobiSubdiagonal`,
+  `gramStieltjesJacobiSubdiagonal_eq_det_ratio`,
+  `gramStieltjesPolynomial_three_term_zero`, and
+  `gramStieltjesPolynomial_three_term`.
+- `OrthogonalPolynomialGramBridge.lean` adds
+  `momentFunctional_upMoment_eq_integral`,
+  `momentPairing_upMoment_eq_integral`,
+  `momentHankel_eq_momentHankelMatrix`,
+  `hankelDet_eq_momentHankelDet`,
+  `hankelOrthoPolynomial_eq_gramStieltjesNumerator`, and
+  `upOrthoPolynomial_eq_gramStieltjesPolynomial`, together with
+  `hankelRatio_eq_gramStieltjesNorm`,
+  `gramStieltjesJacobiDiagonal_upMoment_eq_zero`, and
+  `gramStieltjesJacobiSubdiagonal_upMoment_eq` for the recurrence data.
+
+This is a finite, generic Gram--Stieltjes layer under nonzero-Hankel-minor
+hypotheses; the first three modules themselves assume no measure and prove no
+positivity.  The bridge identifies their objects exactly with the
+up-measure-specific matrix, determinant, determinant polynomial, and monic
+normalization.  The complementary Fabius-specific modules
+`MomentHankelMatrix.lean`, `MomentHankelValues.lean`, and
+`OrthogonalPolynomial*.lean` prove positivity and nonvanishing, the monic
+orthogonal construction, parity, the symmetric three-term recurrence, and the
+first exact Jacobi data.  Root location or simplicity, Gaussian/Lobatto
+quadrature, finite or infinite Jacobi/Stieltjes-fraction identification, and
+convergence remain open.  This status update does not alter the absorbed
+reports or their recorded provenance hashes.
 
 See [`../MANIFEST.md`](../MANIFEST.md) for titles and the previous paths.
