@@ -286,7 +286,39 @@ Those two sentences are the main launch point of this report.  The first becomes
 
 \subsection{Status discipline}
 
-\statusbox{\textbf{Mathematical status.}  Every displayed frontier theorem below is accompanied by a proof or by an explicit reduction to standard Gaussian/Lobatto quadrature facts.  The low-order constants were independently checked by exact rational arithmetic or high-precision evaluation.  The results are presented as new relative to the audited \texttt{ProveIt} corpus.  A broad literature search did not locate these Fabius-specific formulas, but this report does not assert an exhaustive priority claim.  The finite algebraic bridge cross-referenced to \path{GeometricQBinomialLagrange.lean} is Lean-formalized, and \path{AnalyticSeriesFilter.lean} now proves the abstract exact Gaussian tail under unconditional summability, with no unweighted convergence condition at a zero-weight node.  It does not cover conditionally-only boundary series, signs, bounds, uniform convergence, or the report's sinc-product instantiation.  Separately, \path{FractionalVolterraCalculus.lean} proves positive affine covariance on ordered real intervals for arbitrary real order, and Gamma-normalized order raising for real $\alpha>0$ from a continuous Banach-valued primitive with an interval-integrable right derivative; for $\alpha\le0$, affine covariance is an identity for the totalized Lean interval-integral definition, and a classical Riemann--Liouville or integrability interpretation is asserted only for positive order.  \path{FabiusFractionalVolterra.lean} defines the total causal Rvachev fractional primitive, proves its support cutoff, positive-natural bridge, and positive-order semigroup on $x\ge-1$, and specializes order raising to the signed extension for $x\ge0$, bounded Fabius for $0\le x\le1$, and the $\Up$ bridge from $-1$ for $x\ge-1$.  These series and fractional APIs were checked at source checkpoint \path{149332f9d}.  Complex, weighted-monomial, iterated, negative-branch, shifted-lattice, endpoint-moment, transform/tail, piecewise/refinement, and inverse/quantile fractional formulas, and the report-specific analytic theorem families, remain frontier.}
+\statusbox{\textbf{Mathematical status.}  Every displayed frontier theorem
+below is accompanied by a proof or by an explicit reduction to standard
+Gaussian/Lobatto quadrature facts.  The low-order constants were independently
+checked by exact rational arithmetic or high-precision evaluation.  The results
+are presented as new relative to the audited \texttt{ProveIt} corpus.  A broad
+literature search did not locate these Fabius-specific formulas, but this report
+does not assert an exhaustive priority claim.  The finite algebraic bridge
+cross-referenced to \path{GeometricQBinomialLagrange.lean} is Lean-formalized,
+and \path{AnalyticSeriesFilter.lean} proves the abstract exact Gaussian tail
+under unconditional summability, with no unweighted convergence condition at a
+zero-weight node.  The later \path{RvachevQBinomialFilter.lean} specializes
+that mechanism to the actual infinite Rvachev sinc product for complex scale
+$c$, with Gaussian base $q=c^2$ and only finite node injectivity; its
+$c=1/2$, $q=1/4$ form is assumption-free.  This infinite-product theorem is
+not an identification of the report's finite-prefix quotient or its
+reciprocal-sinc/Bell coefficients, and it proves none of the report's analytic
+signs, bounds, uniform convergence, or asymptotics.  Separately,
+\path{FractionalVolterraCalculus.lean} proves positive affine covariance on
+ordered real intervals for arbitrary real order, and Gamma-normalized order
+raising for real $\alpha>0$ from a continuous Banach-valued primitive with an
+interval-integrable right derivative; for $\alpha\le0$, affine covariance is
+an identity for the totalized Lean interval-integral definition, and a
+classical Riemann--Liouville or integrability interpretation is asserted only
+for positive order.  \path{FabiusFractionalVolterra.lean} defines the total
+causal Rvachev fractional primitive, proves its support cutoff,
+positive-natural bridge, and positive-order semigroup on $x\ge-1$, and
+specializes order raising to the signed extension for $x\ge0$, bounded Fabius
+for $0\le x\le1$, and the $\Up$ bridge from $-1$ for $x\ge-1$.  The
+fractional APIs were checked at source checkpoint \path{149332f9d}; the
+infinite-product filter is a current-tree result.  Complex,
+weighted-monomial, iterated, negative-branch, shifted-lattice, endpoint-moment,
+transform/tail, piecewise/refinement, and inverse/quantile fractional formulas,
+and the report-specific analytic theorem families, remain frontier.}
 
 \statusbox{\textbf{Post-snapshot finite moment, Gram--Stieltjes, and Jacobi status.}
 The generic layer begins with \path{FiniteMomentGram.lean}, which defines the
@@ -1557,11 +1589,15 @@ identity under Mathlib's unconditional \path{Summable} hypothesis: arbitrary
 finite filters act diagonally and split into exact heads and tails, and the
 geometric-Lagrange specialization has the full Gaussian tail, including shifted
 scales.  Summability is required only at nonzero-weight samples; a zero-weight
-node is automatic.  This does not cover conditionally-only boundary summation,
-identify the abstract coefficients with the spline or sinc-product sequence,
-or prove signs, bounds, asymptotics, or uniform convergence.  Consequently the
-concrete expansion and convergence rate in \cref{p1:thm:q-richardson} remain
-frontier.
+node is automatic.  The later module
+\path{RvachevQBinomialFilter.lean} identifies the named even-moment series
+with the actual infinite Rvachev product and gives its exact Gaussian filter;
+at quarter base it discharges node injectivity internally.  It does not
+identify the reciprocal-sinc coefficients of the finite-prefix quotient used
+here.  Conditionally-only boundary summation, that finite-prefix/Bell bridge,
+and the report's signs, bounds, asymptotics, and uniform convergence remain
+open.  Consequently the concrete expansion and convergence rate in
+\cref{p1:thm:q-richardson} remain frontier.
 
 \subsection{Accelerated combinations}
 
@@ -1953,14 +1989,17 @@ These cases can be formalized before a fully general quadrature library is compl
       \path{GeometricPowerSeriesFilter.lean} for their complete coefficientwise
       action on a formal series.
 \item Use \path{AnalyticSeriesFilter.lean} for the exact abstract
-      unconditionally summable Gaussian tail, then identify its coefficients
-      with the reciprocal-sinc expansion and prove the controlled uniform
-      remainder in \cref{p1:thm:q-richardson}.
+      unconditionally summable Gaussian tail and
+      \path{RvachevQBinomialFilter.lean} for its actual infinite-product
+      specialization; then separately identify the finite-prefix quotient's
+      reciprocal-sinc coefficients and prove the controlled uniform remainder
+      in \cref{p1:thm:q-richardson}.
 \end{enumerate}
-The finite algebraic, formal-series, and abstract unconditionally summable
-steps are now available at arbitrary ratio under node injectivity, including
-\(q=1/4\); the remaining steps are the reciprocal-sinc coefficient bridge and
-combination with controlled uniform remainders.  Its
+The finite algebraic and formal-series steps are now available at arbitrary
+ratio under node injectivity, and the actual infinite Rvachev product has the
+corresponding entire filter, assumption-free at \(q=1/4\).  The remaining
+steps are the finite-prefix reciprocal-sinc coefficient bridge and its
+combination with controlled uniform remainders.  The
 \(q=1/2\) specialization is the existing half-base Toeplitz bridge.
 
 \section{Open problems and next frontier}
@@ -4165,12 +4204,14 @@ arbitrary finite rescaling filter, and
 as an all-index formal-series residual identity.  The further module
 \path{AnalyticSeriesFilter.lean} gives an exact evaluated-series residual under
 unconditional summability of the contributing samples; zero-weight nodes impose
-no convergence condition on their unweighted samples.  This abstract theorem
-does not cover a conditionally convergent boundary series, identify its input
-with the product or holomorphic logarithm on \(D_N\), or prove the signs, bounds,
-brackets, asymptotics, or uniform convergence in this part.  Those concrete
-assertions retain their frontier status unless an explicit analytic declaration
-is cited.
+no convergence condition on their unweighted samples.  The distinct module
+\path{RvachevQBinomialFilter.lean} now identifies the named even-moment series
+with the dyadic infinite Rvachev product and filters it exactly.  It does not
+identify the general-base finite prefix \(P_{b,N}\), its quotient, or its
+holomorphic logarithm on \(D_N\).  A conditionally convergent boundary series
+and the signs, bounds, brackets, asymptotics, and uniform convergence in this
+part likewise remain outside that theorem.  Those concrete assertions retain
+their frontier status unless an explicit analytic declaration is cited.
 
 Away from zeros, the existing multiplicative transform can be written schematically as
 \[
@@ -11491,9 +11532,12 @@ A targeted literature search located general Richardson-extrapolation theory and
 Every substantial assertion is tagged implicitly by its placement:
 \begin{itemize}
 \item Results in Sections~\ref{p8:sec:tail}--\ref{p8:sec:thue-morse-transfer} are \statusprovedPartll.
-\item The phase-locked Lambert transform in Section~\ref{p8:sec:lambert} is \statusconditional:
-the interpolation algebra is proved here, while the all-orders endpoint input is inherited
-from the formally verified endpoint theory.
+\item The logarithmic phase-locked Lambert transform in
+Section~\ref{p8:sec:lambert} is \statusprovedPartll{} and Lean-backed at every
+fixed extrapolation order and residual depth.  Its all-orders endpoint input is
+inherited from the formally verified endpoint theory, and the compiled
+pullback, growing-weight, and finite-residual layers now discharge the
+uniformity step.
 \item Items in Section~\ref{p8:sec:open} are explicitly conjectural or open.
 \end{itemize}
 Here ``proved'' means proved in this mathematical report, not necessarily formalized in
@@ -11501,7 +11545,16 @@ Lean.  In particular, the endpoint input is represented by
 \texttt{fabiusSaddleLogCoefficient},
 \path{log_fabius_sub_sharpLambertMain_hasAsymptoticExpansion}, and
 \path{log_fabius_sub_sharpLambertExpansion_isBigO} in the Lean development,
-whereas the sinc-tail and phase-extraction transforms remain formalization obligations.
+while the logarithmic phase-extraction transform is implemented by
+\path{FabiusLambertPhaseLockedPullback.lean},
+\path{CompleteHomogeneousAsymptotics.lean},
+\path{LambertReciprocalAsymptotics.lean}, and
+\path{FabiusLambertPhaseExtraction.lean}.  This closed status does not extend
+to the Bell/generalized-harmonic conversion, the exponentiated estimator's
+Bell relative-error hierarchy, the higher derivative extractors, a Lambert
+sign/bracketing theorem, or estimates uniform in growing extrapolation order.
+The remaining sinc-tail sign, bracketing, and quantitative analytic claims are
+separate formalization obligations.
 
 \section{Notation and structural background}
 \label{p8:sec:notation}
@@ -12385,6 +12438,19 @@ Let $h_n(a_0,\ldots,a_r)$ denote the complete homogeneous symmetric polynomial, 
 \label{p8:eq:complete-homogeneous}
 \end{equation}
 
+\paragraph{Formalization status.}
+The finite formal-power-series content of
+\cref{p8:eq:complete-homogeneous} is now Lean-backed.  For an arbitrary
+finite alphabet, \path{CompleteHomogeneousGenerating.lean} defines the series
+whose coefficient of degree $n$ is the corresponding complete homogeneous
+evaluation, proves the adjoining-variable geometric recurrence over every
+commutative semiring, and, over every commutative ring, proves both the
+denominator-cleared finite-product identity and identification with
+\texttt{PowerSeries.invOfUnit} of the denominator product.  This is a purely
+formal coefficient identity: it does not evaluate the series at an analytic
+argument, prove convergence, take a logarithm, or establish the
+Bell/generalized-harmonic formula \eqref{p8:eq:h-Bell} below.
+
 \begin{theorem}[Exact inverse-power moments]
 \label{p8:thm:lambert-moments}
 For $s\ge1$,
@@ -12454,6 +12520,10 @@ Assume the all-orders expansion \cref{p8:eq:endpoint-template} holds uniformly a
 \label{p8:eq:Psi-leading-error}
 \end{align}
 In particular, the first $r$ inverse-$\lambda$ corrections are cancelled exactly.
+Here the symbol $\sim$ in \eqref{p8:eq:Psi-full-error} has its finite-order
+Poincar\'e meaning: for every fixed $S\ge0$, subtracting the terms
+$s=0,\ldots,S$ leaves $O_r(\lambda^{-r-S-2})$.  It does not assert that the
+displayed infinite series converges for any fixed $\lambda$.
 \end{theorem}
 
 \begin{proof}
@@ -12463,6 +12533,50 @@ Y(x_j)=\Psi(\lambda)+\sum_{m\ge1}A_m(\lambda)(\lambda+j)^{-m}.
 \]
 The constant survives because the weights sum to one. Terms $1\le m\le r$ vanish by \cref{p8:eq:omega-cancel}. Write $m=r+1+s$ and apply \cref{p8:thm:lambert-moments}. A small uniformity point is essential: the absolute weight sum is $O_r(\lambda^r)$. To obtain the expansion through residual index $s=S$, apply the input all-orders theorem through order $2r+S+1$. Its transformed remainder is then $O_r(\lambda^{-r-S-2})$, while the finitely many undisplayed transformed coefficients start at the same order. This proves the displayed Poincar\'e expansion despite the growing weights.
 \end{proof}
+
+\paragraph{Lean formalization status.}
+The logarithmic theorem, in the finite-order sense just specified, is now
+compiled.  The module \path{FabiusLambertPhaseLockedPullback.lean} proves
+\path{tendsto_lambertPhaseLockedNode_smallArgument} and the arbitrary-order
+single-node estimate
+\path{log_fabius_phaseLockedNode_sub_WikipediaLambertExpansion_isBigO}.
+The modules \path{CompleteHomogeneousAsymptotics.lean} and
+\path{LambertReciprocalAsymptotics.lean} provide, respectively,
+\path{completeHomogeneousEvalOn_isBigO_pow} and
+\path{sum_norm_shiftedReciprocalLagrangeWeight_isBigO_pow_atTop}, together
+with the balanced product estimate
+\path{shiftedReciprocalLagrangeWeight_mul_invPow_isBigO_atTop}.  These control
+the complete-homogeneous residual and the polynomially growing row.
+
+The report-facing definitions in
+\path{FabiusLambertPhaseExtraction.lean} are
+\path{fabiusPhaseLockedReducedSample},
+\path{fabiusPhaseLockedPeriodicEstimator},
+\path{fabiusPhaseLockedResidualTerm}, and
+\path{fabiusPhaseLockedResidualPartialSum}.  Under the dictionary
+$\Psi=\texttt{negativeLaplacePsi}$ and
+$A_m=\texttt{fabiusSaddleLogCoefficient}\ m$, the declaration
+\path{fabiusPhaseLockedPeriodicEstimator_sub_residual_isBigO} proves the
+finite truncation of \eqref{p8:eq:Psi-full-error};
+\path{fabiusPhaseLockedPeriodicEstimator_sub_periodic_isBigO} is its
+unsubtracted $O(\lambda^{-r-1})$ specialization;
+\path{fabiusPhaseLockedPeriodicEstimator_sub_firstOmitted_isBigO} is exactly
+\eqref{p8:eq:Psi-leading-error}, and
+\path{fabiusPhaseLockedPeriodicEstimator_tendsto_periodicAlong} gives the
+fixed-phase limit along $\lambda=a+n$.  The moving-target Big-$O$ statements
+hold on unrestricted real $\lambda\to+\infty$, so the fixed-phase result is a
+corollary rather than an additional uniformity assumption.
+
+There are two harmless indexing conventions.  Lean's residual parameter
+$S_{\mathrm L}$ counts the first $S_{\mathrm L}$ terms, whereas the report's
+$S$ is the last retained index; hence $S_{\mathrm L}=S+1$.  Lean also writes
+the input partial sum as \texttt{range N}, so its remainder has order
+$\lambda^{-N}$ and its highest retained coefficient is $N-1$.  The internal
+choice $N=2r+S_{\mathrm L}+1$ is therefore
+$N=2r+S+2$, with highest retained coefficient $2r+S+1$, exactly as used in
+the proof above.  All these theorems keep $r$ and $S$ fixed; no growing-order
+uniformity is claimed.  Their natural-number statements include the singleton
+row $r=0$ and the empty residual truncation $S_{\mathrm L}=0$.
 
 Exponentiating produces a multiplicative estimator of the periodic amplitude:
 \begin{equation}
@@ -12474,6 +12588,9 @@ Exponentiating produces a multiplicative estimator of the periodic amplitude:
 \label{p8:eq:Ahat}
 \end{equation}
 Its relative-error coefficients are again complete Bell polynomials applied to the logarithmic coefficients in \cref{p8:eq:Psi-full-error}.
+The identity \eqref{p8:eq:Ahat} is an immediate mathematical exponentiation,
+but this multiplicative estimator and its Bell relative-error hierarchy are
+not part of the closed Lean phase-extraction tranche.
 
 \subsection{Coefficient extraction beyond \texorpdfstring{$\Psi$}{Psi}}
 
@@ -12491,6 +12608,7 @@ with $\widehat A_0^{(r)}=\widehat\Psi_r$. For $s=1$,
 \label{p8:eq:first-derivative-weight}
 \end{equation}
 Higher derivative weights are elementary symmetric polynomials in the numbers $-(\lambda+k)$ and can be generated by Bell polynomials. Thus a single phase-locked sample block can recover a triangular set of periodic coefficient functions.
+These higher derivative extractors likewise remain a formalization target.
 
 \section{Bernoulli-polynomial geometry and conditioning of the Lambert lattice}
 \label{p8:sec:lambert-conditioning}
@@ -12608,27 +12726,38 @@ or a finite product times this tail, the same acceleration and bracketing apply 
 
 The sinc-side results are well suited to formalization because their analytic and algebraic components separate cleanly.
 
-\subsection{Suggested definitions}
+\subsection{Suggested definitions and compiled Lambert crosswalk}
 
 \begin{enumerate}
 \item \texttt{lacunarySincProd b N t}: finite product over $k=1,\ldots,N$.
 \item \texttt{lacunarySincProdInf b t}: infinite product, with convergence proved from $\sum t^2b^{-2k}$.
 \item \texttt{qRichardsonWeight q r j}: the closed form \cref{p8:eq:qweights}.
 \item \texttt{qRichardsonLog q r f N}: weighted sum of $f(N+j)$.
-\item \texttt{lambertPhaseNode lambda j}: $(\lambda+j)2^{-(\lambda+j)}$.
-\item \texttt{lambertRichardsonWeight lambda r j}: \cref{p8:eq:omega}.
+\item \texttt{lambertPhaseLockedNode lambda j}: the compiled definition
+      $(\lambda+j)2^{-(\lambda+j)}$.
+\item \texttt{shiftedReciprocalLagrangeWeight lambda r j}: the compiled
+      Lagrange definition underlying \cref{p8:eq:omega}.
+\item \texttt{fabiusPhaseLockedReducedSample} and
+      \texttt{fabiusPhaseLockedPeriodicEstimator}: the compiled forms of
+      $Y(x_j)$ and $\widehat\Psi_r$.
+\item \texttt{fabiusPhaseLockedResidualTerm} and
+      \texttt{fabiusPhaseLockedResidualPartialSum}: the compiled individual
+      and finite residual expressions in \eqref{p8:eq:Psi-full-error}.
 \end{enumerate}
 
 \subsection{Algebraic theorem chain}
 
-The absolute-weight, Lambert-weight/cancellation, and reciprocal-moment tasks
-in the post-snapshot plan are now discharged.  The remaining purely algebraic
-packaging task is:
+The absolute-weight, Lambert-weight/cancellation, reciprocal-moment, and
+finite complete-homogeneous generating-product tasks in the post-snapshot
+plan are now discharged.  The remaining purely algebraic packaging task is:
 \begin{enumerate}
-\item package the complete-homogeneous/Bell power-sum identity using the
-      already formalized complete-Bell machinery.
+\item package the Bell/generalized-harmonic power-sum presentation
+      \eqref{p8:eq:h-Bell} using the already formalized complete-Bell
+      machinery.
 \end{enumerate}
-This step requires no delicate asymptotics.
+The newly formalized product identity supplies the nonlogarithmic generating
+series input, but it does not discharge this Bell conversion.  The remaining
+step requires no delicate asymptotics.
 
 \paragraph{Post-snapshot algebraic progress.}
 The later module \path{GeometricLagrange.lean} now formalizes Lagrange
@@ -12686,10 +12815,13 @@ mass boundary and all positive degrees in one formal-series identity.
 counterpart: under unconditional summability, the filter has an exact head/tail
 split and its geometric-Lagrange form has the complete shifted Gaussian tail.
 Only nonzero-weight samples require unweighted summability, so zero weights are
-handled sharply.  This still excludes conditionally-only boundary series and
-does not connect the abstract coefficients to the sinc product; convergence of
-product truncations, signs, bounds, brackets, asymptotics, and uniform remainder
-control remain governed by the analytic frontier stated below.
+handled sharply.  The later \path{RvachevQBinomialFilter.lean} connects the
+named even-moment coefficients to the actual infinite Rvachev sinc product and
+gives the corresponding entire filter, assumption-free at quarter base.  It
+does not connect the present logarithmic tail coefficients to the finite
+lacunary-product truncations.  Conditionally-only boundary series, convergence
+of those truncations, signs, bounds, brackets, asymptotics, and uniform
+remainder control remain governed by the analytic frontier stated below.
 
 At post-snapshot checkpoint
 \nolinkurl{1e761ed77583e9870ceeaeb2c74ac824094f0f3f}, the algebraic route to the
@@ -12711,6 +12843,25 @@ as \nolinkurl{completeHomogeneousEval_geometric} and
 \nolinkurl{completeHomogeneousEval_scaled_geometric}; the range-indexed form
 is
 \nolinkurl{completeHomogeneousEvalOn_range_pow_eq_gaussianBinomial}.
+
+The later module \path{CompleteHomogeneousGenerating.lean} packages these
+evaluations into a formal power series.  Its coefficient and empty-alphabet
+interfaces are
+\nolinkurl{coeff_completeHomogeneousGeneratingSeriesOn} and
+\nolinkurl{completeHomogeneousGeneratingSeriesOn_empty}.  The theorem
+\nolinkurl{completeHomogeneousGeneratingSeriesOn_insert} is the
+adjoining-variable geometric recurrence over a commutative semiring.  Over a
+commutative ring,
+\nolinkurl{one_sub_mul_completeHomogeneousGeneratingSeriesOn_insert} clears
+one linear denominator,
+\nolinkurl{prod_one_sub_mul_completeHomogeneousGeneratingSeriesOn} clears the
+whole finite product, and
+\nolinkurl{completeHomogeneousGeneratingSeriesOn_eq_invOfUnit_prod}
+identifies the coefficient series with the canonical formal inverse of that
+product.  These declarations close the formal finite-product content of
+\eqref{p8:eq:complete-homogeneous}, including empty alphabets, repeated
+values, zero divisors, and nilpotents; they assert no analytic convergence or
+Bell/generalized-harmonic identity.
 
 Over every commutative ring, the hypotheses of
 \nolinkurl{sum_weight_mul_scaled_geometric_pow_succ_add} and
@@ -12771,12 +12922,31 @@ Finally, \texttt{LambertPhaseLockedRichardson.lean} proves the exact
 lower-Lambert phase locking, factorial and binomial reciprocal-grid weights,
 their cancellation moments, and the report-shaped all-order identity
 \path{sum_shiftedReciprocalLagrangeWeight_mul_invPow_eq_completeHomogeneous}.
-The still-open algebraic item is the Bell/harmonic-sum presentation
-\eqref{p8:eq:h-Bell}; the transformed sinc-tail identities, analytic Richardson
-remainder and bracketing, infinite condition-number limits, and analytic
-phase-extraction estimates also remain frontier obligations.
+Together with \path{CompleteHomogeneousGenerating.lean}, this closes the
+finite formal generating-product layer.  Four further modules close the
+logarithmic finite-order phase-extraction layer:
+\path{FabiusLambertPhaseLockedPullback.lean} pulls the uniform endpoint
+remainder to each fixed node;
+\path{CompleteHomogeneousAsymptotics.lean} bounds the homogeneous residuals;
+\path{LambertReciprocalAsymptotics.lean} controls the growing reciprocal row;
+and \path{FabiusLambertPhaseExtraction.lean} combines these estimates with the
+exact moments.  Its declarations
+\path{fabiusPhaseLockedPeriodicEstimator_sub_residual_isBigO},
+\path{fabiusPhaseLockedPeriodicEstimator_sub_periodic_isBigO},
+\path{fabiusPhaseLockedPeriodicEstimator_sub_firstOmitted_isBigO}, and
+\path{fabiusPhaseLockedPeriodicEstimator_tendsto_periodicAlong} give the full
+finite Poincar\'e truncations, the raw error order, the leading formula, and
+the fixed-phase limit, respectively.
 
-\subsection{Analytic theorem chain}
+The still-open algebraic item is the Bell/generalized-harmonic presentation
+\eqref{p8:eq:h-Bell}.  Also outside this closed tranche are the multiplicative
+estimator's Bell relative-error hierarchy, the higher derivative coefficient
+extractors, Lambert residual sign/bracketing results, and bounds uniform when
+$r$ or the residual depth grows with $\lambda$.  The transformed sinc-tail
+identities, analytic Richardson bracketing, and infinite condition-number
+limits are separate sinc-side frontier obligations.
+
+\subsection{Remaining sinc-side analytic theorem chain}
 
 The analytic side can then proceed as follows:
 \begin{enumerate}
@@ -12788,16 +12958,15 @@ The analytic side can then proceed as follows:
 \item add termwise differentiation on compact zero-free intervals.
 \end{enumerate}
 
-The endpoint input is already formalized with its exact phase and every finite
-remainder: the periodic coefficient functions are
-\texttt{fabiusSaddleLogCoefficient}, and the expansion is proved in
-\path{FabiusFullAsymptoticExpansion.lean}.  Exact phase locking, the closed
-reciprocal-grid weights, their low-order cancellations, and all their residual
-moments are now supplied by
-\path{LambertPhaseLockedRichardson.lean}.  What remains in the frontier is the
-analytic phase-extraction transform itself: no current declaration combines
-the growing reciprocal-grid weights with the uniform saddle remainders at the
-strength asserted in \cref{p8:thm:Psi-extraction}.
+The endpoint chain is independent of this remaining sinc-side list and is now
+complete at fixed finite order.  Its exact phase and endpoint coefficients
+come from \path{FabiusFullAsymptoticExpansion.lean}; its interpolation algebra
+comes from \path{LambertPhaseLockedRichardson.lean}; and the four-module
+pullback/asymptotic/extraction tranche listed above combines the growing row
+with the uniform saddle remainder at the strength asserted in
+\cref{p8:thm:Psi-extraction}.  The formal result is the family of finite
+Big-$O$ truncations specified after that theorem, not convergence of the
+displayed infinite residual series.
 
 \section{Open problems and next frontier steps}
 \label{p8:sec:open}
@@ -13020,6 +13189,12 @@ whose remaining factors are positive for $m\ge r+1$.
 Their product therefore has the same sign for every residual degree. This is the mechanism behind the certified brackets.
 
 \subsection{Bell form of complete homogeneous functions}
+
+The denominator-cleared formal product and its canonical formal inverse are
+now proved in \path{CompleteHomogeneousGenerating.lean}.  The logarithmic
+coefficient comparison in this subsection, including its specialization to
+generalized harmonic sums, is not part of that result and remains a separate
+formalization obligation.
 
 Taking logarithms of \cref{p8:eq:complete-homogeneous},
 \[

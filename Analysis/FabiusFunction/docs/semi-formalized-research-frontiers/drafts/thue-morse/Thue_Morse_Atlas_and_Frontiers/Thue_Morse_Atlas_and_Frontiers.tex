@@ -322,7 +322,7 @@ is not by itself evidence of formalization.  Statements proved in Lean carry the
 declaration names in the text, typeset as \lean{Fabius.thueMorseSign}; statements without
 such a citation must not be inferred to have a formal counterpart.
 
-The current inventory in \cref{p1:sec:formalized-modules} consists of ninety-nine compiled
+The current inventory in \cref{p1:sec:formalized-modules} consists of one hundred and two compiled
 Lean modules.  It covers the finite algebraic, automata, moment, Fourier, rarefaction,
 Dirichlet--Mellin, word-combinatorial, and Fabius--Rvachev bridges recorded there, often in
 greater generality than the displayed prose.  The dependency-aware map in
@@ -6562,7 +6562,7 @@ valuation, carry, and Pascal-row formulas remain genuinely base-two features.
 \subsection{Formalized modules (August 2026)}
 \label{p1:sec:formalized-modules}
 
-The first tranches of the formalization now exist as ninety-nine
+The first tranches of the formalization now exist as one hundred and two
 compiled Lean modules in \repo{}, complementing the corpus modules
 (\path{Parity.lean}, \path{TwoAdic.lean}, \path{ThueMorsePrefix.lean},
 \path{ThueMorseGenerating.lean}, \path{ThueMorseExponential.lean},
@@ -6597,16 +6597,19 @@ Module & Contents \\
 \path{FinitePolynomialFunctional.lean} & Moment expansion for finite weighted polynomial evaluations, selected-, top-, and constant-coefficient extraction, scalar-extension forms, degree-valued strict cancellation, and same-ring conveniences over commutative semirings; repeated nodes and a zero surviving moment are allowed. \\
 \path{FinitePowerSeriesFilter.lean} & The universal finite rescaling filter on formal power series over arbitrary commutative semirings: diagonal coefficient action by the finite node moments, constant-term preservation from mass one or exactness, and compatibility with further rescaling and coefficient maps.  This is coefficientwise algebra only; it makes no analytic evaluation or convergence claim. \\
 \path{CompleteHomogeneous.lean} & Evaluated complete homogeneous symmetric polynomials over arbitrary commutative semirings: explicit multiset and universal-symmetric-polynomial forms, adjoining-variable and map/reindex laws, and the univariate complete-homogeneous quotient; only the linear-factor identity requires subtraction. \\
+\path{CompleteHomogeneousGenerating.lean} & Finite formal generating series for complete homogeneous evaluations: exact coefficients, empty-family and adjoining-variable recurrences over commutative semirings, and one-factor/full-product denominator clearing plus the canonical \path{PowerSeries.invOfUnit} reciprocal over commutative rings.  Repeated values, zero divisors, and nilpotents are allowed; analytic evaluation, convergence, and the Bell/generalized-harmonic conversion are not asserted. \\
 \path{LagrangeResidualMoments.lean} & The all-order residual-moment formula for any finite weighted row exact below the node count, over an arbitrary commutative ring with repeated nodes allowed; distinct field-valued nodes enter only in the Lagrange-weight specialization. \\
 \path{BaseLayerRegrouping.lean} & Finite base-\(b\) layer reindexing and regrouping over arbitrary commutative monoids, with additive companions; the truncated divisor count and its evaluation as \(1+\nu_b(m)\) under explicit layer-range coverage.  No infinite-product or convergence assertion is made. \\
 \path{GeometricCompleteHomogeneous.lean} & The denominator-free principal specialization \(h_n(1,q,\ldots,q^r)={n+r\brack r}_q\) over arbitrary commutative semirings, including arbitrary common scale and the range-indexed form. \\
 \path{GeometricResidualMoments.lean} & Every positive moment of an arbitrary exact geometric row over any commutative ring, with repeated nodes and arbitrary scales allowed; geometric Lagrange rows, common dilations, and shifted blocks follow over fields under finite-node injectivity. \\
 \path{GeometricPowerSeriesFilter.lean} & Formal-series filtering at the nodes \(1,q,\ldots,q^p\): coefficient cancellation through the exactness order, the Gaussian multiplier in every positive degree, an all-index residual-series identity with the mass-one degree-zero boundary, and the geometric Lagrange specialization.  Analytic substitution, convergence, and remainder bounds are not asserted. \\
-\path{AnalyticSeriesFilter.lean} & Convergent-series form of an arbitrary finite rescaling filter: diagonal action, exact finite head and infinite tail, the target-zero constant boundary, and geometric and geometric-Lagrange Gaussian tails, including shifted scales.  Mathlib \path{Summable} is unconditional; hypotheses are imposed on weighted samples, so a zero-weight node needs no unweighted convergence.  Conditionally-only boundary series, signs, bounds, uniform convergence, and sinc-product instantiations are not asserted. \\
+\path{AnalyticSeriesFilter.lean} & Convergent-series form of an arbitrary finite rescaling filter: diagonal action, exact finite head and infinite tail, the target-zero constant boundary, and geometric and geometric-Lagrange Gaussian tails, including shifted scales.  Mathlib \path{Summable} is unconditional; hypotheses are imposed on weighted samples, so a zero-weight node needs no unweighted convergence.  Conditionally-only boundary series, signs, bounds, uniform convergence, and sinc-product instantiations are not asserted by this generic module. \\
+\path{RvachevQBinomialFilter.lean} & Exact specialization of the Gaussian filter to the actual infinite Rvachev product: the named even Fourier modes sum to the product and scale by powers of \(c^2\); the generic complex theorem assumes exactly injectivity of the finite powers of \(c^2\), while \(c=1/2\), \(q=1/4\) is assumption-free.  This does not identify the finite prefixes \(Q_m\) or \(P_{b,N}\), their quotient or Bell coefficients, or prove the report's analytic acceleration estimates. \\
 \path{FractionalVolterraCalculus.lean} & Positive affine covariance on ordered real intervals for arbitrary real order and Gamma-normalized order raising for real \(\alpha>0\) in a complete normed real space, assuming continuity of the primitive, interval integrability of its displayed derivative, and the right derivative \path{HasDerivWithinAt} on the open interval; includes the zero-boundary form.  For \(\alpha\le0\), affine covariance is an identity for the totalized Lean interval-integral definition; a classical Riemann--Liouville or integrability interpretation is asserted only for positive order. \\
 \path{FabiusFractionalVolterra.lean} & Total causal Rvachev fractional primitive with its support-truncated integral, positive-natural bridge, and positive-order semigroup on \(x\ge-1\), plus boundary-free order raising and affine covariance specialized to the dyadic system: the signed extension for \(x\ge0\), bounded Fabius for \(0\le x\le1\), and the \(\operatorname{up}\)-to-Fabius bridge based at \(-1\) for \(x\ge-1\), all for real \(\alpha>0\).  Complex, weighted-monomial, iterated, negative-branch, shifted-lattice, endpoint-moment, transform/tail, piecewise/refinement, and inverse/quantile extensions remain outside the module. \\
 \path{LogSeriesMultiplicative.lean} & The recurrence-defined formal power-series logarithm over arbitrary commutative \(\mathbb Q\)-algebras: coefficient reconstruction, zero constant term, differential-equation characterization and uniqueness, binary product rule, unit law, and finite-product additivity; no analytic-logarithm or infinite-product claim. \\
-\path{FiniteQBinomialCore.lean} & Denominator-free Gaussian coefficients by both \(q\)-Pascal recurrences, functoriality under semiring maps, and reflection symmetry over commutative semirings; finite \(q\)-Pochhammer shift/concatenation laws, the full product--Gaussian factorial identities, and the finite \(q\)-binomial theorem over commutative rings, including zero and roots of unity. \\
+\path{FiniteQBinomialCore.lean} & Denominator-free Gaussian coefficients by both \(q\)-Pascal recurrences, functoriality under semiring maps, and reflection symmetry over commutative semirings; the integer-index extension \path{gaussianBinomialInt}, with its natural-index, negative-index, out-of-range, and reflection laws; finite \(q\)-Pochhammer shift/concatenation laws, the full product--Gaussian factorial identities, and the finite \(q\)-binomial theorem over commutative rings, including zero and roots of unity. \\
+\path{QBinomialVandermonde.lean} & Both zero-extended \(q\)-Vandermonde orientations, the full-range and exact-\(\min\)-support central identities, the total positive shifted-central form, and two negative-shift forms under exactly \(k\leq N\), plus the total integer-shift identity \path{gaussianBinomial_two_mul_int_shifted_central} and its finitely supported \path{finsum} form, all denominator-free over arbitrary commutative semirings. \\
 \path{GeometricQBinomialLagrange.lean} & The reversed finite \(q\)-binomial product for geometric Lagrange numerators, their global forward-index Gaussian form via division-free symmetry and zero extension, normalized weights under the intrinsic node-injectivity hypothesis, and every positive residual moment. \\
 \path{ThueMorseSparseProuhet.lean} & Arbitrary-weight Prouhet annihilation and exact top-moment formula (\cref{p1:thm:arbitrary-weights}), degree-valued wrappers covering the zero polynomial on empty supports, the direct affine block extraction and cancellation API (\cref{p1:thm:prouhet-block-extraction}), and all-index sparse submask identities. \\
 \path{ThueMorseRarefied.lean} & Modulo-three rarefaction recursion and closed vectors, Newman positivity at dyadic endpoints, block balance, even-modulus collapse. \\
@@ -6718,7 +6721,7 @@ Ordinary addition & Carry cocycle \eqref{p1:eq:carry-sign} & Isolates the exact 
 Number-theoretic disguise & Central binomial valuation \eqref{p1:eq:central-thue-morse} & One classical integer stores the full binary weight. \\
 Pascal-row interpretation & Glaisher count or modulo-three residue & Uses the odd support of one row; the residue form avoids logarithms. \\
 Higher-dimensional Pascal & Multinomial count \eqref{p1:eq:multinomial-support} & Works with any number of variables. \\
-Formal and convergent power series & Formal products plus coefficient-diagonal and analytic filters & Coefficients and Mahler equations remain algebraic; exact analytic filtering is available under unconditional summability, with zero-weight nodes discharged sharply.  Conditional boundary convergence, concrete product instantiation, signs, bounds, and uniform control remain separate obligations. \\
+Formal and convergent power series & Formal products plus coefficient-diagonal and analytic filters & Coefficients and Mahler equations remain algebraic; exact analytic filtering is available under unconditional summability, with zero-weight nodes discharged sharply, and the named even modes now instantiate the actual infinite Rvachev product.  Conditional boundary convergence, the finite-prefix \(Q_m\) or \(P_{b,N}\) quotient, signs, bounds, and uniform control remain separate obligations. \\
 Nonlocal coefficient formulas & Euler/Bell/determinant forms & Eliminate explicit digit notation and expose ruler convolutions. \\
 Finite polynomial row & Moment-functional extraction & Separates polynomial coefficients from row moments, supports scalar extension, and does not require distinct nodes or a nonzero surviving moment. \\
 Polynomial cancellation & Mixed finite differences & Proves all Prouhet moments in one operator identity. \\
@@ -8419,9 +8422,13 @@ shifted geometric-Lagrange row.  Its hypotheses are imposed only at nonzero
 weights, so a zero-weight node requires no convergence of the unweighted
 sample.  It neither covers conditionally-only boundary series nor identifies
 the abstract coefficients with the functions \(Q_m\); it also supplies no
-sign, bound, asymptotic, or uniform-convergence theorem.  Consequently the
-concrete product bridge and the uniform analytic remainder claims in
-\cref{p2:thm:qRichardson} remain frontier.
+sign, bound, asymptotic, or uniform-convergence theorem.  Separately,
+\path{RvachevQBinomialFilter.lean} uses the named even modes from
+\path{AnalyticMoments.lean} to instantiate the filter for the actual infinite
+Rvachev product, with only finite-power injectivity in the generic complex
+theorem and no hypothesis at \(c=1/2\).  It does not identify the finite
+prefixes \(Q_m\) in \cref{p2:thm:qRichardson}; that finite-prefix bridge and
+the uniform analytic remainder claims remain frontier.
 
 \begin{theorem}[$q$-binomial spectral Richardson extrapolation]
 \label{p2:thm:qRichardson}
@@ -9233,8 +9240,11 @@ prefix--corrections--tail split (\path{EulerLogTransform.lean}, \path{SincZetaSe
 \path{SincZetaDyadic.lean}, \path{SincZetaRemainder.lean}) --- already have Lean
 counterparts, several of them more general than the statements printed here.  The abstract
 weighted Richardson tail is now formal under unconditional summability in
-\path{AnalyticSeriesFilter.lean}.  Its sinc-product instantiation, ordered and uniform
-remainder bounds, and the probabilistic layer are the remaining formalization targets.
+\path{AnalyticSeriesFilter.lean}, and \path{RvachevQBinomialFilter.lean}
+instantiates it exactly for the actual infinite Rvachev product.  The
+identification with the finite prefixes \(Q_m\) used in
+\cref{p2:thm:qRichardson}, ordered and uniform remainder bounds, and the
+probabilistic layer are the remaining formalization targets.
 
 \section{Lean formalization roadmap}
 \label{p2:sec:formalization}
@@ -9269,14 +9279,17 @@ ratio.  The last item is the generic diagonal-filter API of
 \path{AnalyticSeriesFilter.lean} evaluates an abstract coefficient series
 directly and gives the exact Gaussian tail whenever every contributing sample
 is unconditionally summable; zero weights impose no unweighted convergence
-condition.  It excludes conditionally-only boundary series and does not connect
-the abstract coefficients to the sinc product.  The Euler--zeta logarithm and certified zeta remainder
-have likewise since been delivered in \path{SincZetaSeries.lean} and
-\path{SincZetaRemainder.lean}, and the random-tail law exists in measure form in
-\path{MeasureRefinement.lean}.  What remains includes the concrete sinc-product
-Richardson identification, weighted uniform remainder and convergence theorem,
-the random-variable weak expansion, the Lambert depth law, and the
-parameter-\(a\) differential and iterated differential Gamma-tower ladder.
+condition.  It excludes conditionally-only boundary series.  The separate
+\path{RvachevQBinomialFilter.lean} connects the named even modes to the actual
+infinite Rvachev product, but it does not identify the finite prefixes \(Q_m\)
+or their quotient and Bell coefficients.  The Euler--zeta logarithm and
+certified zeta remainder have likewise since been delivered in
+\path{SincZetaSeries.lean} and \path{SincZetaRemainder.lean}, and the
+random-tail law exists in measure form in \path{MeasureRefinement.lean}.  What
+remains includes the finite-prefix Richardson identification, weighted uniform
+remainder and convergence theorem, the random-variable weak expansion, the
+Lambert depth law, and the parameter-\(a\) differential and iterated
+differential Gamma-tower ladder.
 In particular, neither the formal filter identity
 nor the abstract unconditionally summable tail implies the analytic bounds or
 brackets stated later in this part.
@@ -9337,9 +9350,12 @@ normalized weight under node injectivity, and every positive residual moment.
 \path{GeometricPowerSeriesFilter.lean} further packages the entire
 coefficientwise filter, while \path{AnalyticSeriesFilter.lean} supplies the exact
 unconditionally summable analytic Gaussian tail and its shifted-scale form,
-with convergence required only for nonzero-weight samples.  Conditional boundary
-summation, the sinc-product coefficient bridge, and ordered or uniform remainder
-bounds are not part of this row.  The case \(q=1/2\) is linked to the Toeplitz row. \\
+with convergence required only for nonzero-weight samples.
+\path{RvachevQBinomialFilter.lean} instantiates the actual infinite Rvachev
+product, but not the finite-prefix \(Q_m\) family in the displayed theorem.
+Conditional boundary summation, that finite-prefix coefficient bridge, and
+ordered or uniform remainder bounds are not part of this row.  The case
+\(q=1/2\) is linked to the Toeplitz row. \\
 Random-tail law
 \eqref{p2:eq:random-tail} & independent random variables, almost-sure summation, equality in law &
 \emph{Delivered} in measure form in \path{MeasureRefinement.lean}, by exactly the
