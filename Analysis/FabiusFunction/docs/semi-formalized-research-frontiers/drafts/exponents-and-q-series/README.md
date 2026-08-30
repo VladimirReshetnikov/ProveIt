@@ -17,7 +17,8 @@ An exact reship, `Fabius_Rvachev_Frontier_Report_2026-08-30-E.zip`
 `174bf733156cd874cf4f9321c6ab71ca44f311856cc01dc158ddf83dc00cf813`),
 was verified and deleted on 2026-08-30 without creating a redundant directory:
 its payloads are byte-identical to this filed member after the existing CSV
-LF normalization.
+LF normalization. No claim-level reassessment or experiment rerun was
+performed.
 
 - [`inverse_q_analogs_report/`](inverse_q_analogs_report/),
   *Inverse q-Analogs: Branch Geometry, Asymptotic Inversion, and Computation

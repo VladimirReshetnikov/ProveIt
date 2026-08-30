@@ -11,7 +11,8 @@ New standalone intake members:
   after CRLF-to-LF repository normalization. It belongs beside the geometric
   and dyadic comb reports below, while cross-linking the q-Pochhammer monograph.
   It remains standalone pending post-publication assessment and a Lean
-  crosswalk; its formalization section is explicitly future work.
+  crosswalk; its formalization section is explicitly future work. Manuscript
+  labels do not establish Lean verification.
 
 - [`geometric_comb_interpolation_report/`](geometric_comb_interpolation_report/),
   *Interpolation on a Geometric Comb* (34 pp), arrived on 2026-08-30 from
