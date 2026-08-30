@@ -322,7 +322,7 @@ is not by itself evidence of formalization.  Statements proved in Lean carry the
 declaration names in the text, typeset as \lean{Fabius.thueMorseSign}; statements without
 such a citation must not be inferred to have a formal counterpart.
 
-The current inventory in \cref{p1:sec:formalized-modules} consists of one hundred and one compiled
+The current inventory in \cref{p1:sec:formalized-modules} consists of one hundred and two compiled
 Lean modules.  It covers the finite algebraic, automata, moment, Fourier, rarefaction,
 Dirichlet--Mellin, word-combinatorial, and Fabius--Rvachev bridges recorded there, often in
 greater generality than the displayed prose.  The dependency-aware map in
@@ -361,6 +361,8 @@ Log-free Pascal residue & \(\tau(n)=\bigl(2^{\wt(n)}\bmod3\bigr)-1\). \\
 Multinomial support & \(O_r(n)=r^{\wt(n)}\). \\
 Boolean M\"obius & \(\mu_2(k,n)=\eps_{n\xor k}\) for \(k\submask n\). \\
 Finite product & \(P_m(z)=\prod_{j=0}^{m-1}(1-z^{2^j})\). \\
+Weighted complex block & \(\sum_{n<2^m}u^{\wt(n)}\e^{a+nz}=\e^a\prod_{j<m}(1+u\e^{2^jz})\), including the base case \(a=0\). \\
+Signed complex block & \(\sum_{n<2^m}\eps_n\e^{a+nz}=\e^a\prod_{j<m}(1-\e^{2^jz})\), including the base case \(a=0\). \\
 Infinite product & \(E(z)=\prod_{j\ge0}(1-z^{2^j})\), \(|z|<1\). \\
 Mahler equation & \(E(z)=(1-z)E(z^2)\). \\
 Euler transform & \(\log E(z)=-\sum_{r\ge1}(2^{\vtwo(r)+1}-1)z^r/r\). \\
@@ -3612,7 +3614,51 @@ Define
   M_{m,r}=\sum_{n=0}^{2^m-1}\eps_nn^r.
   \label{p1:eq:moment-definition}
 \end{equation}
-Substitute \(z=\e^t\) in \eqref{p1:eq:finite-product}:
+
+\begin{theorem}[Finite complex Hamming-weight and Thue--Morse transforms]
+\label{p1:thm:complex-finite-block-transforms}
+For every \(m\in\N\) and \(u,a,z\in\C\),
+\begin{align}
+ \sum_{n<2^m}u^{\wt(n)}\e^{nz}
+  &=\prod_{j<m}\left(1+u\e^{2^jz}\right),
+  \label{p1:eq:complex-weighted-block}\\
+ \sum_{n<2^m}u^{\wt(n)}\e^{a+nz}
+  &=\e^a\prod_{j<m}\left(1+u\e^{2^jz}\right),
+  \label{p1:eq:complex-weighted-block-affine}\\
+ \sum_{n<2^m}\eps_n\e^{nz}
+  &=\prod_{j<m}\left(1-\e^{2^jz}\right),
+  \label{p1:eq:complex-signed-block}\\
+ \sum_{n<2^m}\eps_n\e^{a+nz}
+  &=\e^a\prod_{j<m}\left(1-\e^{2^jz}\right).
+  \label{p1:eq:complex-signed-block-affine}
+\end{align}
+All four identities include \(m=0\), with the usual empty-product convention.
+No convergence hypothesis is present: every sum and product is finite.
+\end{theorem}
+
+\begin{proof}
+Expand the product in \eqref{p1:eq:complex-weighted-block}.  Choosing the
+\(u\e^{2^jz}\) term at the bit positions of \(n<2^m\) contributes
+\(u^{\wt(n)}\e^{nz}\), because the selected powers of two sum to \(n\).
+The exponential addition law factors the common translate \(\e^a\) and gives
+\eqref{p1:eq:complex-weighted-block-affine}.  Finally put \(u=-1\) and use
+\((-1)^{\wt(n)}=\eps_n\) to obtain
+\eqref{p1:eq:complex-signed-block} and
+\eqref{p1:eq:complex-signed-block-affine}.
+\end{proof}
+
+\emph{Formal versions.}  The four displayed identities are, in order,
+\lean{Fabius.sum\_range\_two\_pow\_binaryWeight\_cexp},
+\lean{Fabius.sum\_range\_two\_pow\_binaryWeight\_cexp\_affine},
+\lean{Fabius.sum\_range\_two\_pow\_thueMorseSign\_cexp}, and
+\lean{Fabius.sum\_range\_two\_pow\_thueMorseSign\_cexp\_affine} in
+\path{ThueMorseComplexExponential.lean}.  Their parameters are genuinely
+complex, their affine shifts are arbitrary, and their statements include the
+empty block.  They are finite identities only: this module asserts neither an
+infinite product nor any sine or sinc normalization.
+
+Taking \(z=t\) in \eqref{p1:eq:complex-signed-block} and expanding the finite
+sum of exponentials gives
 \begin{equation}
   \boxed{
   \sum_{r\ge0}M_{m,r}\frac{t^r}{r!}
@@ -3628,7 +3674,7 @@ The order-\(m\) zero at \(t=0\) immediately gives
   \label{p1:eq:first-surviving-moment}
 \end{equation}
 
-\emph{Formal versions.}  The vanishing and sharp value
+\emph{Further formal versions.}  The vanishing and sharp value
 \eqref{p1:eq:first-surviving-moment} have long been formal --- for an
 \emph{arbitrary} rational translation --- as
 \lean{Fabius.thueMorseTranslatedPowerSum\_eq\_zero\_of\_lt} and
@@ -3636,13 +3682,19 @@ The order-\(m\) zero at \(t=0\) immediately gives
 (\path{ThueMorseExponential.lean}); the raw moments
 \(M_{m,r}\) are the translation \(c=2^m\) of that interface,
 \lean{Fabius.thueMorseTranslatedPowerSum\_two\_pow}
-(\path{ThueMorseMoments.lean}).  The transform \eqref{p1:eq:moment-egf}
-itself is formal at the coefficient level: the dictionary
+(\path{ThueMorseMoments.lean}).  In \eqref{p1:eq:moment-egf}, the equality
+between the finite exponential sum and the finite product is now exactly
+\lean{Fabius.sum\_range\_two\_pow\_thueMorseSign\_cexp}, for every complex
+\(t\).  The first equality, which reads that finite exponential sum as an
+analytic exponential generating function, is formal at the coefficient level:
+the dictionary
 \([t^r]\sum_{n<2^m}\eps_n\e^{nt}=M_{m,r}/r!\) is
 \lean{Fabius.coeff\_sum\_thueMorseSign\_exp\_pow}, and the right-hand
 product is the algebraic master product evaluated at
-\(z=\e^{t}\in\mathbb Q[[t]]\) --- no convergence argument is used
-anywhere.
+\(z=\e^{t}\in\mathbb Q[[t]]\).  No named Lean theorem in this crosswalk
+identifies that coefficientwise formal series with an analytically convergent
+EGF; the new complex theorem delivers precisely the finite middle-to-right
+identity, without silently adding that separate analytic bridge.
 
 The normalized translated series itself has the exact finite product
 \begin{equation}
@@ -3860,7 +3912,17 @@ valid over any commutative ring; the selection rule is its fixed point at
 the self-reflective translation \(x=-c_m\).
 \end{remark}
 
-\emph{Formal versions.}  The reflection functional equation is
+\emph{Formal boundary.}  At the raw exponential level, the centered precursor
+\[
+ \sum_{n<2^m}\eps_n\e^{(n-c_m)t}
+ =\e^{-c_mt}\prod_{j<m}\left(1-\e^{2^jt}\right)
+\]
+is formal for every complex \(t\): it is
+\lean{Fabius.sum\_range\_two\_pow\_thueMorseSign\_cexp\_affine} with
+\(a=-c_mt\) and \(z=t\).  The subsequent complex half-angle rewrite
+\(1-\e^u=-2\e^{u/2}\sinh(u/2)\), and hence the centered sinh product
+\eqref{p1:eq:centered-sinh} as a named complex theorem, is not yet packaged in
+Lean.  At the moment level, the reflection functional equation is
 \lean{Fabius.sum\_thueMorseSign\_mul\_add\_pow\_reflect}
 (\path{ThueMorseMoments.lean}, any commutative ring); the selection rule
 \eqref{p1:eq:centered-parity-zero} for odd \(m+r\) is
@@ -4492,9 +4554,18 @@ Hence
   \label{p1:eq:finite-Fourier-magnitude}
 \end{equation}
 
-\emph{Formal versions.}  \eqref{p1:eq:finite-Fourier-product-raw} is the
-master product \lean{Fabius.prod\_one\_sub\_pow\_eq\_sum\_thueMorseSign}
-evaluated at \(z=\e^{\ii\theta}\in\mathbb C\).  The sine form
+\emph{Formal versions.}  The raw identity
+\eqref{p1:eq:finite-Fourier-product-raw} is the specialization
+\(z=\ii\theta\) of
+\lean{Fabius.sum\_range\_two\_pow\_thueMorseSign\_cexp}
+(\path{ThueMorseComplexExponential.lean}); it is valid for every
+\emph{complex} \(\theta\), with no reality or convergence hypothesis.  The
+affine companion
+\lean{Fabius.sum\_range\_two\_pow\_thueMorseSign\_cexp\_affine}
+also allows an arbitrary complex translate of the exponent.  Equivalently,
+the raw identity follows by evaluating the ring-valued master product
+\lean{Fabius.prod\_one\_sub\_pow\_eq\_sum\_thueMorseSign} at
+\(\e^{\ii\theta}\).  The sine form
 \eqref{p1:eq:finite-Fourier-sine} is
 \lean{Fabius.sum\_thueMorseSign\_exp\_eq\_sin\_prod}
 (\path{ThueMorseSineProduct.lean}), built on the half-angle
@@ -4606,16 +4677,21 @@ are identities between entire functions of \(z\), so the identity theorem
 extends them to every complex \(z\).
 \end{proof}
 
-\emph{Exact status boundary.}  Lean proves both
-\eqref{p1:eq:affine-real-sine-form} and
-\eqref{p1:eq:formal-lacunary-sine-product} over \(\R\), together with the three
-supporting complement and phase identities named above.  It does \emph{not}
-contain a declaration for the complex analytic continuation of
-\eqref{p1:eq:sine-product-to-sum}, nor for the cosine formula
-\eqref{p1:eq:cosine-product-to-sum}.  Those adjacent analytic statements remain
-natural-language results in this frontier atlas.  Together they make explicit
-the Fourier route from finite Thue--Morse blocks to the sinc products in the
-Fabius/Rvachev analysis.
+\emph{Exact status boundary.}  Lean proves the raw finite exponential
+product for every complex parameter, together with its arbitrary affine
+translate.  The complex half-angle and total sinc normalization are
+\lean{Fabius.sum\_thueMorseSign\_cexp\_eq\_sin\_prod} and
+\lean{Fabius.thueMorseBlock\_cexp\_eq\_sincPrefix} in
+\path{ThueMorseComplexProductBridge.lean}.  Over \(\R\), Lean proves
+\eqref{p1:eq:affine-real-sine-form},
+\eqref{p1:eq:formal-lacunary-sine-product}, and the cosine companion
+\eqref{p1:eq:cosine-product-to-sum}; the last is
+\lean{Fabius.prod\_sin\_inv\_two\_pow\_mul\_cos\_eq\_thueMorse\_sum} in
+\path{LacunaryProductToSumCosine.lean}.  Thus the remaining packaging gap in
+this paragraph is only a pair of declarations stated directly in the two
+rescaled product-to-sum forms for arbitrary complex \(z\).  No raw complex
+transform, complex half-angle normalization, or real cosine companion remains
+unproved.
 
 \subsection{The exact dyadic discrete Fourier transform}
 
@@ -6486,7 +6562,7 @@ valuation, carry, and Pascal-row formulas remain genuinely base-two features.
 \subsection{Formalized modules (August 2026)}
 \label{p1:sec:formalized-modules}
 
-The first tranches of the formalization now exist as one hundred and one
+The first tranches of the formalization now exist as one hundred and two
 compiled Lean modules in \repo{}, complementing the corpus modules
 (\path{Parity.lean}, \path{TwoAdic.lean}, \path{ThueMorsePrefix.lean},
 \path{ThueMorseGenerating.lean}, \path{ThueMorseExponential.lean},
@@ -6512,6 +6588,7 @@ Module & Contents \\
 \endhead
 \path{ThueMorseBitSupport.lean} & Canonical binary support and two-power equivalence, both reconstruction directions, test-bit and empty/zero laws, shifts, weight and sign laws, support bounds, the bounded Boolean-cube equivalence including level zero, image equality, and powerset-sum reindexing. \\
 \path{ThueMorseBooleanCube.lean} & Two-parameter master product over any commutative semiring, signed product over any commutative ring, and weight enumerator, using the centralized bit-support reindexing API. \\
+\path{ThueMorseComplexExponential.lean} & Finite complex exponential transforms of dyadic blocks: Hamming-weighted base and arbitrary affine forms, and signed Thue--Morse base and arbitrary affine forms, all including level zero.  The separate \path{ThueMorseComplexProductBridge.lean} supplies the total complex sinc and negative-Laplace normalizations. \\
 \path{ThueMorseValuation.lean} & Successor law, weight subadditivity, ruler product, Catalan valuation, additive Kummer, borrow cocycle. \\
 \path{CentralBinomialValuation.lean} & Exhaustive three-theorem bridge: central-binomial valuation equals binary weight, its parity gives the Thue--Morse sign, and zero valuation is equivalent to zero binary weight (hence occurs only at \(n=0\)). \\
 \path{BinaryDigitFloor.lean} & Exhaustive four-theorem total-natural bridge from dyadic quotients to floor-difference binary digits: quotient-by-two normalization, parity remainder, the consecutive-floor difference, and the test-bit indicator identity; no analytic or real-floor generalization. \\
@@ -6738,7 +6815,7 @@ Proposed module & Main declarations \\
 \path{ThueMorseProuhetMoments.lean} & Difference operators, all moments, centered parity.  \emph{Delivered} (\path{ThueMorseMoments.lean}, \path{ThueMorseMixedDifference.lean}). \\
 \path{ThueMorseSparseProuhet.lean} & Arbitrary Pascal-support products and sparse moments.  \emph{Delivered} (plus \path{ThueMorseSparseMoments.lean}). \\
 \path{ThueMorseFormalSeriesF2.lean} & Artin--Schreier equation and explicit solution.  \emph{Delivered} (\path{ThueMorseArtinSchreier.lean}, with uniqueness and the integer lift). \\
-\path{ThueMorseFourier.lean} & Finite DFT, Walsh transform, product-to-sum identities.  \emph{Delivered} across \path{ThueMorseFourier.lean}, \path{ThueMorseSineProduct.lean}, \path{LacunaryProductToSum.lean}, and \path{ThueMorseFourierInversion.lean}: the Walsh and Riesz factorizations, complex sine-product and arbitrary-phase affine real forms, the real lacunary product-to-sum identity with its complement and phase lemmas, and Fourier inversion are formal.  The complex continuation and cosine companion in \eqref{p1:eq:cosine-product-to-sum} are not delivered declarations. \\
+\path{ThueMorseFourier.lean} & Finite DFT, Walsh transform, product-to-sum identities.  \emph{Delivered} across \path{ThueMorseComplexExponential.lean}, \path{ThueMorseComplexProductBridge.lean}, \path{ThueMorseFourier.lean}, \path{ThueMorseSineProduct.lean}, \path{LacunaryProductToSum.lean}, \path{LacunaryProductToSumCosine.lean}, and \path{ThueMorseFourierInversion.lean}: the raw weighted and signed exponential transforms for every complex parameter and affine translate, the total complex half-angle and sinc normalizations, the Walsh and Riesz factorizations, the affine real sine and cosine forms, both real lacunary product-to-sum identities, and Fourier inversion are formal.  Only direct arbitrary-complex declarations in the two rescaled product-to-sum forms remain unbundled. \\
 \path{ThueMorseDirichlet.lean} & Boundary flatness, Mellin integral, entire continuation.  \emph{Delivered} (\path{ThueMorseBoundaryFlatness.lean}, \path{ThueMorseDirichlet.lean}, \path{ThueMorseMellin.lean}, \path{ThueMorseEntireContinuation.lean}). \\
 \path{ThueMorseRarefied.lean} & Root-of-unity filters, modulo-three closed forms, odd-modulus matrix recursion.  \emph{Delivered in full} (\path{ThueMorseArithmeticFilter.lean}, \path{ThueMorseRarefied.lean}). \\
 \path{ThueMorseWords.lean} & Uniform recurrence, aperiodicity, and the elementary complexity bounds.  \emph{Delivered} in full (\path{ThueMorseAperiodicity.lean}, \path{ThueMorseOverlapFree.lean}, \path{ThueMorseRecurrence.lean}, \path{ThueMorseComplexity.lean}). \\
@@ -7515,9 +7592,20 @@ cancellation of moments of degrees below $m$.
 \emph{Formal version.}  The product identity in \eqref{p2:eq:Pm} is
 \leanPartx{Fabius.prod_one_sub_pow_eq_sum_thueMorseSign} (\path{ThueMorseBooleanCube.lean}),
 which is more general than the form used here: it is stated for $z$ in an arbitrary
-commutative ring, not for complex $z$, and is proved once by a Boolean-cube expansion.  Every
-substitution made below --- $z=\e^{\ii t/2^{m-1}}$ in \cref{p2:thm:finite-sinc},
-$z=\e^{-s/2^m}$ in \cref{p2:thm:finite-Laplace} --- is an instance of that single statement.
+commutative ring rather than being restricted to complex $z$, and is proved once by a
+Boolean-cube expansion.  The complex substitution step is now also exposed directly by four
+theorems in \path{ThueMorseComplexExponential.lean}:
+\leanPartx{Fabius.sum_range_two_pow_binaryWeight_cexp} and its affine companion
+\leanPartx{Fabius.sum_range_two_pow_binaryWeight_cexp_affine}, together with the signed forms
+\leanPartx{Fabius.sum_range_two_pow_thueMorseSign_cexp} and
+\leanPartx{Fabius.sum_range_two_pow_thueMorseSign_cexp_affine}.  Thus the raw finite exponential
+block and an arbitrary common complex exponent shift are formal for every complex parameter,
+including $m=0$.  The substitutions below --- exponent parameter
+$\ii t/2^{m-1}$ in \cref{p2:thm:finite-sinc} and $-s/2^m$ in
+\cref{p2:thm:finite-Laplace} --- are instances of the signed theorem.  This module is the raw
+finite layer; \path{ThueMorseComplexProductBridge.lean} separately supplies the total complex
+sinc and negative-Laplace normalizations, including their removable origins.  Neither module
+asserts an infinite product.
 
 \subsection{Fourier and Laplace products}
 

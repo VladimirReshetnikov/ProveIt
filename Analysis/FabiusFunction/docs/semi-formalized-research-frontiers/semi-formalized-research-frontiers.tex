@@ -189,7 +189,8 @@
 \large Six thematic syntheses, crosswalked against the Lean corpus}
 \author{Boundary layer between prose and proof in the \texttt{ProveIt} Fabius development\\
 \small Eleven source notebooks in six syntheses plus a post-audit gap register}
-\date{Base research snapshot: 25 August 2026; formal-status audit updated 29 August 2026\\
+\date{Base research snapshot: 25 August 2026; consolidated repository updated
+28 August 2026; formal-status audit updated 29 August 2026\\
 \small affine-law checkpoint \nolinkurl{d312c0603};
 fractional and inverse-layer-cake checkpoint \nolinkurl{37eab3c56}}
 
@@ -420,6 +421,12 @@ Pointwise analytic finite filters &
 Exact dyadic evaluator & \nolinkurl{fabiusDyadicValue} & \nolinkurl{Arithmetic.lean}, \nolinkurl{PaperStatements.lean} \\
 Binary and q-binomial series & \nolinkurl{fabiusReductionSum} and global q-series declarations & \nolinkurl{TaylorReduction.lean}, \nolinkurl{FabiusGlobalQBinomialSeries.lean} \\
 Thue--Morse grid samples & \nolinkurl{correctedPrefixGridSample} & \nolinkurl{ThueMorseApproximation.lean} \\
+Finite complex Thue--Morse block transforms &
+\nolinkurl{sum_range_two_pow_binaryWeight_cexp},
+\nolinkurl{sum_range_two_pow_binaryWeight_cexp_affine},
+\nolinkurl{sum_range_two_pow_thueMorseSign_cexp},
+\nolinkurl{sum_range_two_pow_thueMorseSign_cexp_affine} &
+\nolinkurl{ThueMorseComplexExponential.lean} \\
 Generic weighted uniform series and laws &
 \nolinkurl{uniformProduct_map_of_ae_head_tail_recursion},
 \nolinkurl{weightedUniformSeries_map},
@@ -1687,10 +1694,14 @@ for every $x\in\R$.
 \subsection{The survival-function Fubini identity}
 \label{integration:sec:survival-fubini}
 
-The main article's probability chapter records the scalar differentiable bridge between
-integration against the Fabius law and an ordinary integral against $\Up$.  The formal
-development now also contains the stronger Banach-valued partial and full layer-cake forms
-recorded below.
+A particularly useful bridge identifies integration against the Fabius law
+with an ordinary integral against $\Up$.  It has now been promoted in the
+main article from the scalar differentiable bridge to a Banach-valued
+\(L^1\) family.  The formal development contains interval-general
+finite-measure full and clipped survival-kernel identities, together with
+support-free clamped and interval-supported partial/full layer-cake forms.
+This section retains the Fubini mechanism and records the exact stronger API
+below.
 
 For $t\ge0$, support and \eqref{integration:eq:CDF-is-F} give
 \begin{equation}
@@ -1699,7 +1710,39 @@ For $t\ge0$, support and \eqref{integration:eq:CDF-is-F} give
 \end{equation}
 The equality remains correct for $t>1$, when both sides are zero.
 
-\begin{theorem}[Expectation from the survival function]
+\begin{theorem}[Banach-valued survival-kernel identity]
+\label{integration:thm:survival-kernel-Banach}
+Let $E$ be a real Banach space and let $k:[0,1]\to E$ be Bochner integrable.
+Then
+\begin{equation}
+ \int_{[0,1]}\left(\int_0^x k(t)\dd t\right)\dd\mu(x)
+ =\int_0^1 \Up(t)\,k(t)\dd t.
+ \label{integration:eq:survival-kernel-Banach}
+\end{equation}
+In particular, for scalar $k$ and
+$K(x)=\int_0^xk(t)\dd t$,
+\[
+ \int_0^1k(t)\Up(t)\dd t=\E[K(X)].
+\]
+The choice $E=\C$, regarded as a real Banach space, gives the same identity
+for complex kernels.
+\end{theorem}
+
+\begin{proof}
+Put
+\[
+ A=\{(t,x)\in[0,1]\times\R:t<x\},
+ \qquad
+ H(t,x)=\mathbf1_A(t,x)k(t).
+\]
+Integrability of $k$ and finiteness of the probability law make $H$
+Bochner integrable.  Integrating first in $t$ gives
+$\int_0^xk(t)\dd t$ for $x\in[0,1]$; integrating first in $x$ gives
+$\mu((t,\infty))k(t)=\Up(t)k(t)$.  Bochner--Fubini equates the two
+iterated integrals.
+\end{proof}
+
+\begin{corollary}[Expectation from the survival function]
 \label{integration:thm:survival-Fubini}
 Let $g,g':\R\to\R$ be continuous and suppose
 \begin{equation}
@@ -1713,32 +1756,29 @@ Then
  =g(0)+\int_0^1 g'(t)\Up(t)\dd t.
  \label{integration:eq:survival-Fubini}
 \end{equation}
-\end{theorem}
+\end{corollary}
 
 \begin{proof}
-Put
-\begin{equation}
- A=\{(t,x)\in[0,1]\times\R:t<x\},
- \qquad
- K(t,x)=\mathbf1_A(t,x)g'(t).
- \label{integration:eq:Fubini-kernel}
-\end{equation}
-Continuity of $g'$ on the compact interval makes $K$ integrable with respect to
-$\operatorname{Leb}_{[0,1]}\otimes\mu$.  Integrating first in $t$ and using
-\eqref{integration:eq:g-FTC-hypothesis} gives, for $x\in[0,1]$,
-\begin{equation}
- \int_0^1K(t,x)\dd t=\int_0^xg'(t)\dd t=g(x)-g(0).
- \label{integration:eq:Fubini-first-order}
-\end{equation}
-Integrating first in $x$ gives
-\begin{equation}
- \int K(t,x)\dd\mu(x)=g'(t)\mu((t,\infty))=g'(t)\Up(t)
- \label{integration:eq:Fubini-second-order}
-\end{equation}
-by \eqref{integration:eq:survival-is-up}.  Fubini equates the two iterated integrals.  Since $\mu$ is a
-probability measure supported on $[0,1]$, the integral of the constant $g(0)$ is $g(0)$,
-and rearrangement yields \eqref{integration:eq:survival-Fubini}.
+Apply \cref{integration:thm:survival-kernel-Banach} to $k=g'$, use
+\eqref{integration:eq:g-FTC-hypothesis}, and add the constant $g(0)$.
 \end{proof}
+
+\paragraph{Formalization status.}
+The interval-general Banach theorem is
+\lean{integral_Icc_intervalIntegral_eq_intervalIntegral_smul_survival}.
+Its finite-measure clipped companion is
+\lean{integral_Icc_intervalIntegral_min_eq_intervalIntegral_smul_survival}.
+The Fabius full-endpoint specializations are
+\lean{integral_Icc_intervalIntegral_eq_intervalIntegral_smul_rvachevUp} and
+\lean{intervalIntegral_mul_rvachevUp_eq_integral_Icc_intervalIntegral};
+the corresponding clipped declarations proving the full
+\(c\in[0,1]\) family are
+\lean{integral_Icc_intervalIntegral_min_eq_intervalIntegral_smul_rvachevUp}
+and
+\lean{intervalIntegral_mul_rvachevUp_eq_integral_Icc_intervalIntegral_min};
+the differentiable corollary is
+\lean{integral_unit_eq_zero_add_integral_deriv_mul_rvachevUp}, all in
+\path{ProbabilityLaplaceMoments.lean}.
 
 \begin{remark}[Endpoint conventions disappear under integration]
 The survival function uses the open ray $(t,\infty)$.  The CDF uses $(-\infty,t]$.  Their
@@ -3508,9 +3548,11 @@ complex-order continuation, shifted dyadic-lattice or endpoint-moment wrapper,
 transform/tail series, or inverse specialization;
 \cref{integration:rem:fractional-volterra-boundary}.\\
 \path{ProbabilityLaplaceMoments.lean} &
-The survival function, partial/full Rvachev survival layer cake, differentiable
-compact-support Fubini identity, raw and endpoint moment identifications, zero-tilt
-normalization, and positivity; the dyadic almost-sure support and restriction declarations
+The survival function, the finite-measure Banach-valued $L^1$ full and clipped
+survival-kernel identities, their partial/full Rvachev layer-cake specializations,
+the differentiable compact-support Fubini identity, raw and endpoint moment
+identifications, zero-tilt normalization, and positivity; the dyadic almost-sure
+support and restriction declarations
 are owned upstream by \path{ProbabilityRepresentation.lean};
 \cref{integration:sec:survival-fubini,integration:sec:probability-laplace}.\\
 \path{LaplaceMoments.lean} &
@@ -3731,13 +3773,12 @@ that half-line integral with the Self-Reconstruction report's unscaled
 $\prod_{j\ge0}\sinc^2(\pi\xi/2^j)$ formula and its $1/(2\pi)$-scaled sine-quotient formula
 indexed from one.
 
-Starting from compiled source checkpoint \texttt{1f9ce6fd9} and including the focused-build
-extension at compiled checkpoint \texttt{e2c310e7c}, the Rvachev moment--Appell concordance is
+At compiled source checkpoint \texttt{a3854643d}, the Rvachev moment--Appell concordance is
 \path{RvachevMomentAppell.lean}.  Its six public definitions are
 \lean{rvachevRawMomentRat}, \lean{rvachevReciprocalMomentRat},
 \lean{rvachevAppellPolynomialRat}, \lean{rvachevAppellPolynomial}, and
 \lean{rvachevDeconvolvedPolynomial}, together with
-\lean{rvachevDeconvolutionLinearMap}.  Its twenty-four public theorems are
+\lean{rvachevDeconvolutionLinearMap}.  Its thirty public theorems are
 \lean{rvachevRawMomentRat_zero}, \lean{rvachevRawMomentRat_even},
 \lean{rvachevRawMomentRat_odd}, \lean{rvachevReciprocalMomentRat_zero},
 \lean{binomialConv_rvachevRawMomentRat_reciprocal},
@@ -3758,18 +3799,26 @@ extension at compiled checkpoint \texttt{e2c310e7c}, the Rvachev moment--Appell 
 \lean{rvachevDeconvolvedPolynomial_C_mul},
 \lean{rvachevDeconvolvedPolynomial_monomial},
 \lean{rvachevDeconvolvedPolynomial_X_pow},
-\lean{natDegree_rvachevDeconvolvedPolynomial_le}, and
+\lean{coeff_rvachevDeconvolvedPolynomial_natDegree},
+\lean{natDegree_rvachevDeconvolvedPolynomial_le},
+\lean{natDegree_rvachevDeconvolvedPolynomial},
+\lean{leadingCoeff_rvachevDeconvolvedPolynomial},
+\lean{rvachevDeconvolvedPolynomial_eq_zero_iff},
+\lean{rvachevDeconvolutionLinearMap_injective},
+\lean{rvachevDeconvolvedPolynomial_injective}, and
 \lean{integral_eval_rvachevDeconvolvedPolynomial_add_mul_rvachev}.  They package the full
 rational raw-moment sequence, its formal binomial-convolution reciprocal and complete-Bell
 description, rational and real monic Appell families of exact degree, and coefficientwise
 polynomial deconvolution as a real linear map preserving zero, addition, scalar
 multiplication, finite sums, and constant-polynomial multiplication.  It sends a monomial
-and $X^n$ to the correspondingly scaled and unscaled Rvachev--Appell polynomial; its degree
-does not increase and Rvachev smoothing recovers the original polynomial.  This reciprocal-moment
+and $X^n$ to the correspondingly scaled and unscaled Rvachev--Appell polynomial.  Its
+triangular top term is unchanged, so it preserves exact natural degree and leading
+coefficient, has trivial kernel, and is injective as both the packaged linear map and the
+underlying operation.  Rvachev smoothing recovers the original polynomial.  This reciprocal-moment
 Appell family is not the dyadic
 $\operatorname{App}_n$ family fixed in the global notation convention above.
 
-At compiled source checkpoint \texttt{c51a41fcf},
+At compiled source checkpoint \texttt{a3854643d},
 \path{RvachevPolynomialSynthesis.lean} exports no public definitions and exactly four public
 theorems: \lean{tsum_rvachevDeconvolvedPolynomial_mul_shifted_rvachevUp},
 \lean{normalized_tsum_rvachevDeconvolvedPolynomial_mul_shifted_rvachevUp},
@@ -3783,23 +3832,29 @@ At the same checkpoint, \path{FabiusLegendreTranslateBlocks.lean} exports six pu
 definitions: \lean{rvachevLegendreDeconvolutionPolynomial},
 \lean{rvachevLegendreScale}, \lean{rvachevLegendreIndexSet},
 \lean{rvachevLegendreAtomCoefficient}, \lean{rvachevLegendreTranslateBlock}, and
-\lean{rvachevTranslateGram}.  Its five public theorems are
+\lean{rvachevTranslateGram}.  Its seven public theorems are
+\lean{natDegree_rvachevLegendreDeconvolutionPolynomial},
+\lean{leadingCoeff_rvachevLegendreDeconvolutionPolynomial},
 \lean{eval_legendrePolynomial_eq_sum_rvachevUp},
 \lean{eval_legendrePolynomial_even_eq_sum_rvachevUp},
 \lean{rvachevLegendreTranslateBlock_eq_rvachevLegendreBlock},
 \lean{intervalIntegral_rvachevLegendreTranslateBlock_mul}, and
-\lean{sum_rvachevLegendreAtomCoefficient_mul_gram}.  They specialize the exact finite
+\lean{sum_rvachevLegendreAtomCoefficient_mul_gram}.  For
+$Q_d=\mathcal D_{\Up}P_d$, the first two prove exact natural degree $d$ and the explicit unchanged
+leading coefficient $2^{-d}\binom{2d}{d}$.  The remaining theorems specialize the exact finite
 synthesis to mesh $2^d$, then to $4^n$ for the even mode, identify each literal finite
 translate block with the existing polynomial block on $[-1,1]$, and prove both its complete
 orthogonality and the expanded finite atom-Gram identity.
 
-At compiled source checkpoint \texttt{e2c310e7c}, the focused-build
+At compiled source checkpoint \texttt{a3854643d}, the focused-build
 \path{FabiusLegendreTranslateSeries.lean} exports five public definitions:
 \lean{rvachevLegendrePartialSumDeconvolutionPolynomial},
 \lean{rvachevLegendrePartialSumAtomCoefficient},
 \lean{rvachevLegendrePartialSumTranslateBlock},
 \lean{rvachevLegendreTranslateBlockOnInterval}, and
-\lean{rvachevLegendrePartialSumTranslateBlockOnInterval}.  Its twenty-three public theorems are
+\lean{rvachevLegendrePartialSumTranslateBlockOnInterval}.  Its twenty-five public theorems are
+\lean{natDegree_rvachevLegendrePartialSumDeconvolutionPolynomial},
+\lean{leadingCoeff_rvachevLegendrePartialSumDeconvolutionPolynomial},
 \lean{summable_norm_rvachevLegendreTranslateBlock},
 \lean{summable_rvachevLegendreTranslateBlock},
 \lean{hasSum_rvachevLegendreTranslateBlock},
@@ -3825,7 +3880,9 @@ At compiled source checkpoint \texttt{e2c310e7c}, the focused-build
 \lean{tendsto_rvachevLegendrePartialSumTranslateBlock}.  They close the literal outer
 translate-block series with pointwise and supremum-norm absolute summability and pointwise
 and uniform \texttt{HasSum}/\texttt{tsum} forms.  They also identify
-$C_N=\mathcal D_{\Up}S_N$ with the finite sum of deconvolved modes, expand its common-mesh
+$C_N=\mathcal D_{\Up}S_N$ with the finite sum of deconvolved modes, prove that $C_N$ has the
+same natural degree and leading coefficient as $S_N$ (including degenerate visible-degree
+drops), expand its common-mesh
 coefficients, prove global and finite synthesis at mesh $4^N$, and identify the resulting
 function with both the polynomial partial sum and the sum of the separately scaled blocks.
 The bundled common-mesh partial trains converge to $\Up$ in $C([-1,1])$, hence in the
@@ -3833,12 +3890,15 @@ interval supremum norm; raw \texttt{TendstoUniformlyOn}, norm-error-to-zero, and
 forms are exported as well.  No rate, coefficientwise limit, or uniform convergence outside
 $[-1,1]$ is asserted.
 
-These APIs still do not prove minimality or sharpness of the displayed mesh, an analytic
+These four modules have public definition/theorem inventories $6/30$, $0/4$, $6/7$, and
+$5/25$, respectively, for exactly $83$ public declarations.  Their APIs still do not prove
+minimality or sharpness of the displayed mesh, an analytic
 reciprocal-MGF or Appell generating-series identity, a literal differential-series
 realization of deconvolution, the displayed low reciprocal coefficients, parity or the
 displayed closed formulas for the deconvolved Legendre family, rationality of the atom rows,
-equality of the fixed-scale and separately scaled coefficient vectors, exact degree for every
-partial sum, or the later refinement, projector, and asymptotic layers.
+equality of the fixed-scale and separately scaled coefficient vectors, an unconditional
+$\operatorname{natDegree}(S_N)=2N$ theorem or nonvanishing of the top Legendre coefficient, or the later
+refinement, projector, and asymptotic layers.
 
 \subsection{Notation crosswalk}
 \label{integration:app:notation}
@@ -4472,6 +4532,53 @@ The classical finite Thue--Morse identity is
  =\sum_{j\in\mathbb Z}\tau_n(j)z^j.
  \label{repeated2:eq:thue-morse-product}
 \end{equation}
+
+\begin{theorem}[Finite complex Boolean-cube and Thue--Morse transforms; \Formalized]
+\label{repeated2:thm:complex-thue-morse-transform}
+Let $m\in\N$ and $u,a,z\in\C$, and write
+$\varepsilon_n=(-1)^{\wt(n)}$.  Then
+\begin{align}
+ \sum_{n=0}^{2^m-1}u^{\wt(n)}\exp(nz)
+ &=\prod_{j=0}^{m-1}\left(1+u\exp(2^jz)\right),
+ \label{repeated2:eq:weighted-complex-block}\\
+ \sum_{n=0}^{2^m-1}u^{\wt(n)}\exp(a+nz)
+ &=\exp(a)\prod_{j=0}^{m-1}\left(1+u\exp(2^jz)\right),
+ \label{repeated2:eq:weighted-complex-block-affine}\\
+ \sum_{n=0}^{2^m-1}\varepsilon_n\exp(nz)
+ &=\prod_{j=0}^{m-1}\left(1-\exp(2^jz)\right),
+ \label{repeated2:eq:signed-complex-block}\\
+ \sum_{n=0}^{2^m-1}\varepsilon_n\exp(a+nz)
+ &=\exp(a)\prod_{j=0}^{m-1}\left(1-\exp(2^jz)\right).
+ \label{repeated2:eq:signed-complex-block-affine}
+\end{align}
+The statement includes $m=0$: the sum then contains the unique zero-bit word $n=0$ and
+the product is empty.  The unshifted identities read $1=1$, while the affine identities
+read $\exp(a)=\exp(a)$.
+\end{theorem}
+
+\begin{proof}
+The four identities are, in order, the Lean declarations
+\lean{sum_range_two_pow_binaryWeight_cexp},
+\lean{sum_range_two_pow_binaryWeight_cexp_affine},
+\lean{sum_range_two_pow_thueMorseSign_cexp}, and
+\lean{sum_range_two_pow_thueMorseSign_cexp_affine} in
+\path{ThueMorseComplexExponential.lean}.  Conceptually, the binary expansion of
+$n<2^m$ identifies $n$ with a subset of $\{0,\ldots,m-1\}$; multiplying the independent
+choices produces \eqref{repeated2:eq:weighted-complex-block}.  The affine identity factors
+out $\exp(a)$, and the two signed identities replace the Hamming-weight marker by the
+Thue--Morse sign.
+\end{proof}
+
+\begin{boxedremark}
+\textbf{Exact formal boundary.}
+These are finite identities valid at every complex argument, so they require no convergence
+or reality hypothesis.  The cited declarations are the raw exponential layer; the complex
+half-angle conversion and total sinc and negative-Laplace prefixes, including their removable
+origins, are separately formal in \path{ThueMorseComplexProductBridge.lean}.  Neither finite
+module proves an infinite product or exponential-generating-function convergence statement,
+nor do they cover a parity word with position-dependent digit weights.
+\end{boxedremark}
+
 Multiplication by $1-z$ takes first differences of the coefficient sequence:
 \begin{equation}
  B_n(z)=\sum_{j=0}^{2^n}\Delta\tau_n(j)z^j.
@@ -7467,6 +7574,129 @@ The two definitions and these two pointwise closed-form theorems require only
 an arbitrary, possibly noncommutative ring.  Exactly the two convolution
 theorems require a commutative ring, and prove that both total finite orders
 are the Kronecker delta.
+
+\medskip
+\noindent The remaining finite geometric \(q\)-layer has the following
+exhaustive public surface.
+\begin{itemize}
+\item The six theorems of \path{GeometricCompleteHomogeneous.lean} are
+\path{Fabius.completeHomogeneousEval_geometric},
+\path{Fabius.completeHomogeneousEval_scaled_geometric},
+\path{Fabius.completeHomogeneousEvalOn_range_pow_eq_gaussianBinomial},
+\path{Fabius.completeHomogeneousEvalOn_range_pow_eq_gaussianBinomial_degree},
+\path{Fabius.gaussianBinomial_add_symm}, and
+\path{Fabius.gaussianBinomial_symm_via_completeHomogeneous}.  They prove both
+principal-specialization orientations, common scaling, and both generic
+Gaussian symmetry laws over every commutative semiring, without division,
+distinctness, or cancellation.
+
+\item The five theorems of
+\path{GeometricLagrangeCompleteHomogeneous.lean} are
+\path{Fabius.completeHomogeneousEvalOn_geometric_range},
+\path{Fabius.sum_geometricLagrangeWeight_mul_pow_succ_add_eq_gaussianBinomial},
+\path{Fabius.geometricLagrangeQMoment_eq_residual_gaussianBinomial},
+\path{Fabius.completeHomogeneousEvalOn_geometric_range_eq_qBinomial}, and
+\path{Fabius.geometricLagrangeQMoment_eq_residual_qBinomial_via_completeHomogeneous}.
+The first is semiring-level; the field statement uses finite-node injectivity;
+the rational quotient bridges retain their explicit nonzero-Pochhammer or
+\(0<q<1\) assumptions.
+
+\item \path{GeometricLagrangeQMoments.lean} has the one definition
+\path{Fabius.geometricLagrangeQMoment} and exactly 37 theorems:
+\path{Fabius.geometricLagrangeQMoment_eq_weightPolynomial_eval},
+\path{Fabius.geometricLagrangeQMoment_eq_forwardRichardson_eval},
+\path{Fabius.geometricRootPolynomial_inv_eval_pow_mul_signedPowers},
+\path{Fabius.geometricRootPolynomial_inv_eval_pow_mul_triangular},
+\path{Fabius.geometricRootPolynomial_inv_eval_one_mul_triangular},
+\path{Fabius.geometricLagrangeQMoment_eq_qPochhammer},
+\path{Fabius.geometricLagrangeQMoment_zero},
+\path{Fabius.geometricLagrangeQMoment_eq_zero},
+\path{Fabius.geometricRootPolynomial_inv_eval_pow_eq_qPochhammer_of_le},
+\path{Fabius.geometricLagrangeQMoment_eq_residual_qPochhammer},
+\path{Fabius.qPochhammer_self_add},
+\path{Fabius.qPochhammer_self_pos_of_pos_of_lt_one},
+\path{Fabius.qBinomial_pos_of_pos_of_lt_one},
+\path{Fabius.gaussianBinomial_eq_qBinomial_of_pos_of_lt_one},
+\path{Fabius.qPochhammer_pow_pos_of_pos_of_lt_one},
+\path{Fabius.qPochhammer_tail_div_self_eq_qBinomial},
+\path{Fabius.geometricLagrangeQMoment_eq_residual_qBinomial},
+\path{Fabius.geometricLagrangeQMoment_firstUncancelled},
+\path{Fabius.negOnePow_mul_geometricLagrangeQMoment_eq_positiveResidual},
+\path{Fabius.negOnePow_mul_geometricLagrangeQMoment_pos},
+\path{Fabius.qPochhammer_self_succ},
+\path{Fabius.qBinomial_succ_succ_of_pos_of_lt_one'},
+\path{Fabius.qBinomial_succ_succ_of_pos_of_lt_one},
+\path{Fabius.qBinomial_theorem_of_pos_of_lt_one},
+\path{Fabius.sum_qBinomial_triangular_succ_eq_neg_qPochhammer},
+\path{Fabius.abs_geometricLagrangeWeight_eq_qBinomial},
+\path{Fabius.abs_geometricLagrangeWeight_eq_sign_mul},
+\path{Fabius.abs_geometricLagrangeWeight_complement_eq_qBinomial},
+\path{Fabius.sum_abs_geometricLagrangeWeight_eq_qPochhammer_ratio},
+\path{Fabius.neg_qPochhammer_div_self_eq_prod},
+\path{Fabius.sum_abs_geometricLagrangeWeight_eq_prod},
+\path{Fabius.quarterGeometricLagrangeQMoment_eq_qPochhammer},
+\path{Fabius.quarterGeometricLagrangeQMoment_eq_zero},
+\path{Fabius.quarterGeometricLagrangeQMoment_eq_residual_qPochhammer},
+\path{Fabius.quarterGeometricLagrangeQMoment_eq_residual_qBinomial},
+\path{Fabius.quarterGeometricLagrangeQMoment_firstUncancelled}, and
+\path{Fabius.sum_abs_quarterGeometricLagrangeWeight_eq_qPochhammer_ratio}.
+These are finite rational identities.  Quotient statements retain their
+nonzero denominators, and positivity, sign, and absolute-value formulas retain
+\(0<q<1\); the module makes no analytic convergence or remainder claim.
+
+\item The five theorems of \path{FinitePolynomialFilterExactness.lean} are
+\path{Fabius.polynomialFilter_response_eq},
+\path{Fabius.polynomialFilter_exact},
+\path{Fabius.normalizedGeometricRootPolynomial_filter_exact},
+\path{Fabius.forwardGeometricRichardsonPolynomial_filter_exact}, and
+\path{Fabius.forwardGeometricRichardsonPolynomial_filter_firstUncancelled}.
+The first two are arbitrary commutative-semiring response and exactness laws;
+the field-valued geometric forms retain their nonzero-base and normalization-
+denominator hypotheses and expose the first surviving mode.
+
+\item \path{QuarterCatalanGerm.lean} has the two definitions
+\path{Fabius.quarterCatalanCoefficient} and
+\path{Fabius.quarterCatalanGermSeries}, and the nine theorems
+\path{Fabius.quarterCatalanCoefficient_zero},
+\path{Fabius.quarterCatalanCoefficient_succ_eq_report},
+\path{Fabius.quarterCatalanGermSeries_coeff},
+\path{Fabius.quarterCatalanGermSeries_coeff_succ},
+\path{Fabius.quarterCatalanGermSeries_constantCoeff},
+\path{Fabius.quarterCatalanGermSeries_equation},
+\path{Fabius.powerSeries_quadratic_injectiveOn_zeroConstant},
+\path{Fabius.eq_quarterCatalanGermSeries_of_equation}, and
+\path{Fabius.existsUnique_quarterCatalanGermSeries}.  This is the unique
+zero-constant solution of \(D+4D^2=(4/9)X\) in \(\Q[[X]]\), with its complete
+coefficient formula, but no convergence or real-inverse identification.
+
+\item \path{QuarterCatalanRichardson.lean} has the three definitions
+\path{Fabius.finiteRescaleFilter},
+\path{Fabius.geometricRichardsonPowerSeriesFilter}, and
+\path{Fabius.quarterCatalanRichardsonFilter}, and the 15 theorems
+\path{Fabius.finiteRescaleFilter_coeff},
+\path{Fabius.geometricRichardsonPowerSeriesFilter_coeff},
+\path{Fabius.geometricRichardsonPowerSeriesFilter_coeff_zero},
+\path{Fabius.geometricRichardsonPowerSeriesFilter_coeff_eq_zero},
+\path{Fabius.geometricRichardsonPowerSeriesFilter_coeff_eq_qPochhammer},
+\path{Fabius.geometricRichardsonPowerSeriesFilter_coeff_eq_qBinomial},
+\path{Fabius.geometricRichardsonPowerSeriesFilter_firstUncancelled_coeff_of_nonzero},
+\path{Fabius.geometricRichardsonPowerSeriesFilter_firstUncancelled_coeff},
+\path{Fabius.quarterCatalanRichardsonFilter_coeff},
+\path{Fabius.quarterCatalanRichardsonFilter_coeff_zero},
+\path{Fabius.quarterCatalanRichardsonFilter_coeff_eq_zero},
+\path{Fabius.quarterCatalanRichardsonFilter_coeff_eq_zero_of_le},
+\path{Fabius.quarterCatalanRichardsonFilter_coeff_eq_qBinomial},
+\path{Fabius.quarterCatalanRichardsonFilter_coeff_succ_eq_qBinomial}, and
+\path{Fabius.quarterCatalanRichardsonFilter_firstUncancelled_coeff}.  These are
+coefficientwise formal-power-series identities only: no convergence, real
+error sign, remainder estimate, or analytic acceleration is asserted.
+\end{itemize}
+The additional theorem
+\path{Fabius.sum_lagrangeEvalWeight_mul_pow_card_add_zero} in
+\path{LagrangeResidualMoments.lean} gives every higher evaluation-at-zero
+moment of a nonempty distinct field-valued node family as the negative signed
+nodal product times its complete homogeneous function.  Its nonempty premise
+is exactly what removes the exceptional empty-row \(0^0\) term.
 \end{remark}
 
 The $q$-symbols in the dyadic formula therefore have a concrete and limited task: they are the
@@ -8848,6 +9078,7 @@ Module & Role in the present article \\
 \path{GeometricQBinomialLagrange.lean} & Denominator-free geometric Lagrange numerators and residual moments, including the global identification of the numerator with the scaled inverse kernel at base and scale \(q\); normalized quotient results retain their distinct-node field hypotheses. \\
 \path{QBinomialInversionSpecializations.lean} & Exactly two public definitions and four public theorems: the residual and reconstruction rows at Gaussian base \(q^2\), scale \(-q\), and their pointwise closed forms need only a ring; exactly the two total convolution inverses require a commutative ring. \\
 \path{ThueMorseExponential.lean} & Complete-block exponential factorization, Prouhet cancellation, and translation of inner powers. \\
+\path{ThueMorseComplexExponential.lean} & Weighted and signed finite complex-exponential block transforms, including arbitrary affine shifts and the empty block. \\
 \path{FabiusQBinomialFormula.lean} & Centered and translated finite $q$-binomial formulas, arbitrary numerators, common-translation invariance, and invariance under equal rational dyadic representations. \\
 \path{FabiusQBinomialTaylor.lean} & Identification of the finite $q$ expression with the Taylor reduction polynomial. \\
 \path{FabiusQBinomialScalarFormula.lean} and \path{FabiusDyadicQBinomialScalar.lean} & Scalar normalizations, real/complex translated forms, and the constant-polynomial coefficient theorem. \\

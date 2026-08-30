@@ -369,6 +369,37 @@ theorem qBinomial_pos_of_pos_of_lt_one
       (qPochhammer_self_pos_of_pos_of_lt_one q hqpos hqone k)
       (qPochhammer_self_pos_of_pos_of_lt_one q hqpos hqone (n - k)))
 
+/-- On `0 < q < 1`, the quotient-defined rational `qBinomial` agrees with
+the denominator-free Gaussian coefficient from the finite q-binomial core.
+
+The proof uses the denominator-free q-factorial identity and one legitimate
+cancellation; it does not replay q-Pascal. -/
+theorem gaussianBinomial_eq_qBinomial_of_pos_of_lt_one
+    (q : ℚ) (hqpos : 0 < q) (hqone : q < 1) (n k : ℕ) :
+    gaussianBinomial q n k = qBinomial n k q := by
+  by_cases hk : k ≤ n
+  · have hkNe : qPochhammer q q k ≠ 0 :=
+      (qPochhammer_self_pos_of_pos_of_lt_one q hqpos hqone k).ne'
+    have hnkNe : qPochhammer q q (n - k) ≠ 0 :=
+      (qPochhammer_self_pos_of_pos_of_lt_one
+        q hqpos hqone (n - k)).ne'
+    have hfactorial :
+        qPochhammer q q k * gaussianBinomial q n k =
+          qPochhammer (q ^ (n - k + 1)) q k := by
+      simpa only [finiteQPochhammerIn_rat_eq] using
+        (finiteQPochhammerIn_self_mul_gaussianBinomial q hk)
+    have hsplit :
+        qPochhammer q q n =
+          qPochhammer q q (n - k) *
+            qPochhammer (q ^ (n - k + 1)) q k := by
+      simpa only [Nat.sub_add_cancel hk] using
+        (qPochhammer_self_add q (n - k) k)
+    rw [qBinomial_eq_quotient q hk, hsplit, ← hfactorial]
+    field_simp [hkNe, hnkNe]
+  · have hkn : n < k := Nat.lt_of_not_ge hk
+    rw [gaussianBinomial_eq_zero_of_lt q hkn,
+      qBinomial_eq_zero_of_lt q hkn]
+
 /-- If `d` is positive, then `(q^d;q)_n` is positive for `0 < q < 1`.
 This is the positivity input for every factor in the residual moment. -/
 theorem qPochhammer_pow_pos_of_pos_of_lt_one
@@ -480,6 +511,113 @@ theorem negOnePow_mul_geometricLagrangeQMoment_pos
       (qPochhammer_pow_pos_of_pos_of_lt_one
         q hqpos hqone (m - p) (by omega) p))
     (qPochhammer_self_pos_of_pos_of_lt_one q hqpos hqone p)
+
+/-! ## A rational finite q-binomial theorem -/
+
+/-- The self q-Pochhammer recurrence with its factor written as
+`1 - q^(n+1)`. -/
+theorem qPochhammer_self_succ (q : ℚ) (n : ℕ) :
+    qPochhammer q q (n + 1) =
+      qPochhammer q q n * (1 - q ^ (n + 1)) := by
+  rw [qPochhammer_succ, pow_succ]
+  ring
+
+/-- Symmetric q-Pascal recurrence, in the orientation used by the finite
+q-binomial theorem. -/
+theorem qBinomial_succ_succ_of_pos_of_lt_one'
+    (q : ℚ) (hqpos : 0 < q) (hqone : q < 1) (n k : ℕ) :
+    qBinomial (n + 1) (k + 1) q =
+      qBinomial n (k + 1) q + q ^ (n - k) * qBinomial n k q := by
+  simpa only [gaussianBinomial_eq_qBinomial_of_pos_of_lt_one
+      q hqpos hqone] using
+    (gaussianBinomial_succ_succ q n k)
+
+/-- The complementary q-Pascal recurrence for the quotient-defined Gaussian
+coefficient.  It is the symmetric reflection of
+`qBinomial_succ_succ_of_pos_of_lt_one'`. -/
+theorem qBinomial_succ_succ_of_pos_of_lt_one
+    (q : ℚ) (hqpos : 0 < q) (hqone : q < 1) (n k : ℕ) :
+    qBinomial (n + 1) (k + 1) q =
+      qBinomial n k q + q ^ (k + 1) * qBinomial n (k + 1) q := by
+  by_cases hkn : k < n
+  · have hk1n : k + 1 ≤ n := hkn
+    have hk1n1 : k + 1 ≤ n + 1 := by omega
+    calc
+      qBinomial (n + 1) (k + 1) q =
+          qBinomial (n + 1) ((n + 1) - (k + 1)) q :=
+        (qBinomial_symm q hk1n1).symm
+      _ = qBinomial (n + 1) ((n - (k + 1)) + 1) q := by
+        rw [show (n + 1) - (k + 1) = (n - (k + 1)) + 1 by omega]
+      _ = qBinomial n ((n - (k + 1)) + 1) q +
+          q ^ (n - (n - (k + 1))) *
+            qBinomial n (n - (k + 1)) q :=
+        qBinomial_succ_succ_of_pos_of_lt_one'
+          q hqpos hqone n (n - (k + 1))
+      _ = qBinomial n k q +
+          q ^ (k + 1) * qBinomial n (k + 1) q := by
+        rw [show n - (k + 1) + 1 = n - k by omega,
+          qBinomial_symm q hkn.le,
+          Nat.sub_sub_self hk1n,
+          qBinomial_symm q hk1n]
+  · have hnk : n ≤ k := Nat.le_of_not_gt hkn
+    have hPochhammerNe (r : ℕ) : qPochhammer q q r ≠ 0 :=
+      (qPochhammer_self_pos_of_pos_of_lt_one q hqpos hqone r).ne'
+    rcases hnk.eq_or_lt with rfl | hnk
+    · rw [qBinomial_eq_quotient q (le_refl (n + 1)),
+        qBinomial_eq_quotient q (le_refl n),
+        qBinomial_eq_zero_of_lt q (Nat.lt_succ_self n)]
+      simp [hPochhammerNe]
+    · rw [qBinomial_eq_zero_of_lt q (by omega),
+        qBinomial_eq_zero_of_lt q hnk,
+        qBinomial_eq_zero_of_lt q (by omega)]
+      ring
+
+/-- Finite q-binomial theorem over the rational interval `0 < q < 1`:
+
+`sum_(k=0)^n (-1)^k q^choose(k,2) [n choose k]_q z^k = (z;q)_n`.
+
+The interval hypothesis is used only to make every quotient denominator
+nonzero; no limiting or analytic argument appears. -/
+theorem qBinomial_theorem_of_pos_of_lt_one
+    (q : ℚ) (hqpos : 0 < q) (hqone : q < 1)
+    (n : ℕ) (z : ℚ) :
+    (∑ k ∈ Finset.range (n + 1),
+      (-1 : ℚ) ^ k * q ^ (k.choose 2) * qBinomial n k q * z ^ k) =
+      qPochhammer z q n := by
+  simpa only [gaussianBinomial_eq_qBinomial_of_pos_of_lt_one
+      q hqpos hqone, finiteQPochhammerIn_rat_eq] using
+    (finite_qBinomial_theorem q z n)
+
+/-- The positive triangular Gaussian sum is the numerator `(-q;q)_p` of
+the exact condition number. -/
+theorem sum_qBinomial_triangular_succ_eq_neg_qPochhammer
+    (q : ℚ) (hqpos : 0 < q) (hqone : q < 1) (p : ℕ) :
+    (∑ k ∈ Finset.range (p + 1),
+      q ^ (k + 1).choose 2 * qBinomial p k q) =
+      qPochhammer (-q) q p := by
+  calc
+    (∑ k ∈ Finset.range (p + 1),
+        q ^ (k + 1).choose 2 * qBinomial p k q) =
+        ∑ k ∈ Finset.range (p + 1),
+          (-1 : ℚ) ^ k * q ^ (k.choose 2) *
+            qBinomial p k q * (-q) ^ k := by
+      apply Finset.sum_congr rfl
+      intro k _hk
+      have hsign : (-1 : ℚ) ^ k * (-1 : ℚ) ^ k = 1 := by
+        rw [← mul_pow]
+        norm_num
+      have hneg : (-q) ^ k = (-1 : ℚ) ^ k * q ^ k := by
+        rw [neg_pow]
+      rw [choose_succ_two, pow_add, hneg]
+      calc
+        q ^ (k.choose 2) * q ^ k * qBinomial p k q =
+            1 * q ^ (k.choose 2) * q ^ k * qBinomial p k q := by ring
+        _ = ((-1 : ℚ) ^ k * (-1 : ℚ) ^ k) *
+            q ^ (k.choose 2) * q ^ k * qBinomial p k q := by rw [hsign]
+        _ = (-1 : ℚ) ^ k * q ^ (k.choose 2) *
+            qBinomial p k q * ((-1 : ℚ) ^ k * q ^ k) := by ring
+    _ = qPochhammer (-q) q p :=
+      qBinomial_theorem_of_pos_of_lt_one q hqpos hqone p (-q)
 
 /-! ## Exact total variation -/
 

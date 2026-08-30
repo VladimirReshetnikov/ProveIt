@@ -194,7 +194,7 @@ was filed as a second member of `exponents-and-q-series/` rather than
 merged into the frontier volume, after an on-arrival audit (symbolic
 re-verification of its core theorems, 30-digit numerical checks of
 its two newest identities, one repaired majorant).  Initially 96 pages, the
-monograph now has 205 pages after consolidation.  Several
+monograph now has 207 pages after consolidation.  Several
 volumes' part-boundary section numbering and
 page-counter handling were repaired along the way (edits are marked
 `% ed.:` in the sources).  Every volume carries
@@ -257,9 +257,11 @@ advisories are printed for review but intentionally do not change the exit
 status.
 
 `audit_overfull.py <file.log> [threshold_pt]` is a separate post-build helper,
-not part of `audit_all.sh`: it parses LaTeX overfull-box widths without the
-shell-escaping ambiguity of the old `grep` pipeline and exits nonzero above the
-chosen threshold.
+not part of `audit_all.sh`: it parses both horizontal excess widths and vertical
+excess heights without the shell-escaping ambiguity of the old `grep` pipeline,
+and exits nonzero above the chosen threshold.  Output-routine vertical boxes,
+which carry no source-line range in a LaTeX log, are reported explicitly rather
+than mistaken for a checker failure.
 
 Build the canonical document with exactly three `pdflatex` passes, inspect the
 rendered PDF, and commit the PDF with its source. A coordinator may authorize a

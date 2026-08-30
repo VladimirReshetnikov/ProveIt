@@ -128,6 +128,120 @@ four theorems: `qGaussianResidualCoeff`,
 q-Gaussian coefficient inversions at base `q^2`, scale `-q`. The two
 definitions and their pointwise closed-form theorems require only `[Ring R]`;
 exactly the two convolution-delta theorems require `[CommRing R]`.
+
+The current geometric q-layer has the following exhaustive public surfaces:
+
+- `GeometricCompleteHomogeneous.lean` has six theorems:
+  `completeHomogeneousEval_geometric`,
+  `completeHomogeneousEval_scaled_geometric`,
+  `completeHomogeneousEvalOn_range_pow_eq_gaussianBinomial`,
+  `completeHomogeneousEvalOn_range_pow_eq_gaussianBinomial_degree`,
+  `gaussianBinomial_add_symm`, and
+  `gaussianBinomial_symm_via_completeHomogeneous`. They prove both orientations
+  of the denominator-free principal specialization, its range and common-scale
+  forms, and two Gaussian symmetry laws over every commutative semiring.
+
+- `GeometricLagrangeCompleteHomogeneous.lean` has five theorems:
+  `completeHomogeneousEvalOn_geometric_range`,
+  `sum_geometricLagrangeWeight_mul_pow_succ_add_eq_gaussianBinomial`,
+  `geometricLagrangeQMoment_eq_residual_gaussianBinomial`,
+  `completeHomogeneousEvalOn_geometric_range_eq_qBinomial`, and
+  `geometricLagrangeQMoment_eq_residual_qBinomial_via_completeHomogeneous`.
+  The first is a commutative-semiring alias; the field residual uses finite-node
+  injectivity; the rational quotient bridges keep their explicit
+  nonzero-Pochhammer or `0 < q < 1` assumptions.
+
+- `GeometricLagrangeQMoments.lean` has one definition,
+  `geometricLagrangeQMoment`, and 37 theorems:
+  `geometricLagrangeQMoment_eq_weightPolynomial_eval`,
+  `geometricLagrangeQMoment_eq_forwardRichardson_eval`,
+  `geometricRootPolynomial_inv_eval_pow_mul_signedPowers`,
+  `geometricRootPolynomial_inv_eval_pow_mul_triangular`,
+  `geometricRootPolynomial_inv_eval_one_mul_triangular`,
+  `geometricLagrangeQMoment_eq_qPochhammer`,
+  `geometricLagrangeQMoment_zero`, `geometricLagrangeQMoment_eq_zero`,
+  `geometricRootPolynomial_inv_eval_pow_eq_qPochhammer_of_le`,
+  `geometricLagrangeQMoment_eq_residual_qPochhammer`,
+  `qPochhammer_self_add`, `qPochhammer_self_pos_of_pos_of_lt_one`,
+  `qBinomial_pos_of_pos_of_lt_one`,
+  `gaussianBinomial_eq_qBinomial_of_pos_of_lt_one`,
+  `qPochhammer_pow_pos_of_pos_of_lt_one`,
+  `qPochhammer_tail_div_self_eq_qBinomial`,
+  `geometricLagrangeQMoment_eq_residual_qBinomial`,
+  `geometricLagrangeQMoment_firstUncancelled`,
+  `negOnePow_mul_geometricLagrangeQMoment_eq_positiveResidual`,
+  `negOnePow_mul_geometricLagrangeQMoment_pos`, `qPochhammer_self_succ`,
+  `qBinomial_succ_succ_of_pos_of_lt_one'`,
+  `qBinomial_succ_succ_of_pos_of_lt_one`,
+  `qBinomial_theorem_of_pos_of_lt_one`,
+  `sum_qBinomial_triangular_succ_eq_neg_qPochhammer`,
+  `abs_geometricLagrangeWeight_eq_qBinomial`,
+  `abs_geometricLagrangeWeight_eq_sign_mul`,
+  `abs_geometricLagrangeWeight_complement_eq_qBinomial`,
+  `sum_abs_geometricLagrangeWeight_eq_qPochhammer_ratio`,
+  `neg_qPochhammer_div_self_eq_prod`,
+  `sum_abs_geometricLagrangeWeight_eq_prod`,
+  `quarterGeometricLagrangeQMoment_eq_qPochhammer`,
+  `quarterGeometricLagrangeQMoment_eq_zero`,
+  `quarterGeometricLagrangeQMoment_eq_residual_qPochhammer`,
+  `quarterGeometricLagrangeQMoment_eq_residual_qBinomial`,
+  `quarterGeometricLagrangeQMoment_firstUncancelled`, and
+  `sum_abs_quarterGeometricLagrangeWeight_eq_qPochhammer_ratio`. These are
+  finite rational identities. Quotient results retain their stated nonzero
+  denominators; positivity, sign, and absolute-value formulas retain
+  `0 < q < 1`; no analytic convergence or error estimate is claimed.
+
+- `FinitePolynomialFilterExactness.lean` has five theorems:
+  `polynomialFilter_response_eq`, `polynomialFilter_exact`,
+  `normalizedGeometricRootPolynomial_filter_exact`,
+  `forwardGeometricRichardsonPolynomial_filter_exact`, and
+  `forwardGeometricRichardsonPolynomial_filter_firstUncancelled`. The generic
+  response and mass-one/root laws hold over commutative semirings. The
+  geometric field forms retain their nonzero-base and normalization-denominator
+  assumptions, cancel the prescribed modes, and expose the first survivor.
+
+- `QuarterCatalanGerm.lean` has two definitions,
+  `quarterCatalanCoefficient` and `quarterCatalanGermSeries`, and nine
+  theorems: `quarterCatalanCoefficient_zero`,
+  `quarterCatalanCoefficient_succ_eq_report`,
+  `quarterCatalanGermSeries_coeff`, `quarterCatalanGermSeries_coeff_succ`,
+  `quarterCatalanGermSeries_constantCoeff`,
+  `quarterCatalanGermSeries_equation`,
+  `powerSeries_quadratic_injectiveOn_zeroConstant`,
+  `eq_quarterCatalanGermSeries_of_equation`, and
+  `existsUnique_quarterCatalanGermSeries`. They give the unique zero-constant
+  solution of `D + 4D^2 = (4/9)X` in `ℚ[[X]]` and all of its report
+  coefficients, but no analytic convergence or real-inverse identification.
+
+- `QuarterCatalanRichardson.lean` has three definitions,
+  `finiteRescaleFilter`, `geometricRichardsonPowerSeriesFilter`, and
+  `quarterCatalanRichardsonFilter`, and 15 theorems:
+  `finiteRescaleFilter_coeff`,
+  `geometricRichardsonPowerSeriesFilter_coeff`,
+  `geometricRichardsonPowerSeriesFilter_coeff_zero`,
+  `geometricRichardsonPowerSeriesFilter_coeff_eq_zero`,
+  `geometricRichardsonPowerSeriesFilter_coeff_eq_qPochhammer`,
+  `geometricRichardsonPowerSeriesFilter_coeff_eq_qBinomial`,
+  `geometricRichardsonPowerSeriesFilter_firstUncancelled_coeff_of_nonzero`,
+  `geometricRichardsonPowerSeriesFilter_firstUncancelled_coeff`,
+  `quarterCatalanRichardsonFilter_coeff`,
+  `quarterCatalanRichardsonFilter_coeff_zero`,
+  `quarterCatalanRichardsonFilter_coeff_eq_zero`,
+  `quarterCatalanRichardsonFilter_coeff_eq_zero_of_le`,
+  `quarterCatalanRichardsonFilter_coeff_eq_qBinomial`,
+  `quarterCatalanRichardsonFilter_coeff_succ_eq_qBinomial`, and
+  `quarterCatalanRichardsonFilter_firstUncancelled_coeff`. These are strictly
+  coefficientwise formal-power-series results: they preserve degree zero,
+  cancel the prescribed low degrees, and identify all residual coefficients
+  and the first survivor, without a convergence, real error-sign, remainder,
+  or analytic-acceleration claim.
+
+Finally, `sum_lagrangeEvalWeight_mul_pow_card_add_zero` in
+`LagrangeResidualMoments.lean` gives every higher evaluation-at-zero moment
+for a nonempty distinct field-valued node family as the negative signed nodal
+product times the complete homogeneous function. The nonempty premise is
+exactly what excludes the exceptional empty-row `0^0` term.
+
 The normalized geometric-Lagrange and analytic Lagrange layers additionally
 assume injectivity of `j |-> q^j` on the finite node set (see the status boxes and
 crosswalk paragraphs inside the documents). `AnalyticSeriesFilter.lean` carries the core to exact
@@ -165,7 +279,7 @@ remain research frontiers. These fractional-Volterra API claims were checked at 
 `149332f9d`.
 
 Member: `Exponents_and_q_Series_Frontiers`
-(currently 229 pp, seven parts) — the
+(currently 231 pp, seven parts) — the
 2026-08-28 consolidation of the two former drafts (Part I:
 Newton-basis frontiers; Part II: q-binomial Richardson), joined the
 same day by the eighth-wave report as **Part III** — *Finite Dyadic
@@ -382,7 +496,7 @@ matching `assets/` directories.
 `Signed_Reciprocal_q_Fabius_Frontiers/` were merged editorially as the
 volume's Part VII; their figures/data are likewise under `assets/`.)
 
-Second member: `q_pochhammer_q_binomial_monograph/` (205 pp, book class) —
+Second member: `q_pochhammer_q_binomial_monograph/` (207 pp, book class) —
 *q-Pochhammer Symbols and q-Binomial Coefficients*, a standalone
 proof-oriented reference monograph on the q-machinery itself, filed
 2026-08-28 per the Lambert-W precedent (a reference companion rather
