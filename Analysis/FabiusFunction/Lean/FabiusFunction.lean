@@ -337,6 +337,7 @@ import FabiusFunction.FabiusSaddleLeadingCoefficient
 import FabiusFunction.FabiusSecondSaddleCorrection
 import FabiusFunction.FabiusSecondSaddleExpansion
 import FabiusFunction.EulerLogTransform
+import FabiusFunction.WeightedEulerTransform
 import FabiusFunction.EvenZetaSeries
 import FabiusFunction.EvenZetaValues
 import FabiusFunction.SincZetaSeries
