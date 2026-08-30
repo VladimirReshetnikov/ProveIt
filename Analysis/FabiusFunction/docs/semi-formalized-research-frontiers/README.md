@@ -249,6 +249,11 @@ citations that were only being checked at their first component. Docstring-name
 advisories are printed for review but intentionally do not change the exit
 status.
 
+`audit_overfull.py <file.log> [threshold_pt]` is a separate post-build helper,
+not part of `audit_all.sh`: it parses LaTeX overfull-box widths without the
+shell-escaping ambiguity of the old `grep` pipeline and exits nonzero above the
+chosen threshold.
+
 Build the canonical document with exactly three `pdflatex` passes, inspect the
 rendered PDF, and commit the PDF with its source. A coordinator may authorize a
 source-only feature-branch checkpoint for semantic review before the rebuild;

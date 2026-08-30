@@ -16,6 +16,7 @@ import FabiusFunction.GeometricLagrangeQMoments
 import FabiusFunction.LambertPhaseLockedRichardson
 import FabiusFunction.PrincipalLambertW
 import FabiusFunction.LowerLambertW
+import FabiusFunction.GeneralizedLambertCoordinate
 import FabiusFunction.LambertBranchDichotomy
 import FabiusFunction.WeightedUniformSeries
 import FabiusFunction.WeightedUniformDistribution
@@ -238,6 +239,7 @@ import FabiusFunction.ClassicalGrowth
 import FabiusFunction.RMSTransferEigenfunctions
 import FabiusFunction.LogFactorConcavity
 import FabiusFunction.CentralLobeConcavity
+import FabiusFunction.LobeDerivativeFormulas
 import FabiusFunction.CentralLobeOnePeak
 import FabiusFunction.CentralLobePeakAtZero
 import FabiusFunction.LobeLogFactorization
