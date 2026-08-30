@@ -14,7 +14,8 @@ New standalone intake members:
   rather than a new Thue--Morse atlas member.  The `n = 1` case and the
   inverse/non-elementarity infrastructure already exist in Lean; the
   `n ≥ 2` theorem appears genuinely new and remains unformalized.  The report
-  has 14 nonconjectural labelled results and three conjectures.  A hostile
+  has 14 nonconjectural labelled results and three conjecture environments.
+  A hostile
   post-intake proof pass found no fatal gap and made three proof-exposition
   repairs: an explicit uniform estimate in the weighted-defect decay, the
   correct neighborhood for the outer function in the two-spine lemma, and an
@@ -26,8 +27,15 @@ New standalone intake members:
   fully-pinned Ubuntu/Python environment.  The companion
   [`REPOSITORY_AUDIT.md`](fabius_iterates_nowhere_analytic/REPOSITORY_AUDIT.md)
   records that environment, the output hashes, the cross-platform drift, and
-  the remaining reproducibility limitations.  None of this elevates a
-  manuscript proof label to Lean status.
+  the remaining reproducibility limitations.  Two conjecture labels are
+  quarantined rather than treated as open: the proposed Taylor-series
+  “trichotomy” is nonexclusive at an `n = 1` interior dyadic point unless its
+  third class excludes eventually-zero polynomial series, while the
+  tie-cancellation statement follows from the canonical quarter-point facts
+  and the report's own binary-transition lemma.  The floating-point/FFT
+  diagnostic also does not substantiate the manuscript's separate claim of
+  symbolic verification.  None of the manuscript or numerical labels elevate
+  a result to Lean status.
 - [`Fabius_Rvachev_Shape_Divisibility_Stein_Geometry/`](Fabius_Rvachev_Shape_Divisibility_Stein_Geometry/),
   *Shape, Divisibility, and Stein Geometry of the Fabius--Rvachev Law*
   (50 pp), arrived on 2026-08-30 with all 14 submitted payload checksums

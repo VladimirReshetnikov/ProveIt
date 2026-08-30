@@ -19,9 +19,13 @@ The source map was also corrected from the nonexistent
 passes rebuilt the 19-page PDF without warnings, overfull boxes, or unresolved
 references.  Every rebuilt page was rendered and visually inspected.  The
 revised report still contains 14 nonconjectural labelled manuscript results
-and three explicitly labelled conjectures.  The positive-iterate theorem for
-`n >= 2`, its finite-spine machinery, and its partition estimates remain to be
-formalized in Lean.
+and three conjecture environments.  Two conjecture labels are quarantined:
+the proposed Taylor-series trichotomy is nonexclusive at an `n = 1` interior
+dyadic point unless its third class excludes eventually-zero polynomial
+series, while the tie-cancellation statement follows from canonical
+quarter-point facts and the report's binary-transition lemma.  The
+positive-iterate theorem for `n >= 2`, its finite-spine machinery, and its
+partition estimates remain to be formalized in Lean.
 
 ## Exact numerical replay
 
