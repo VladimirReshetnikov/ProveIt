@@ -4478,14 +4478,13 @@ not the analytic transfer expansion or its remainder estimates.
 \subsection{Rvachev moment--Appell deconvolution and polynomial synthesis}
 \label{sec:rvachev-moment-appell}
 
-Starting from compiled source checkpoint \texttt{1f9ce6fd9} and including the
-current focused-build extension at compiled checkpoint \texttt{e2c310e7c},
+At compiled source checkpoint \texttt{a3854643d},
 \path{RvachevMomentAppell.lean} specializes the formal Bell and Appell engines
 to the Rvachev probability law.  Its six public definitions are
 \lean{rvachevRawMomentRat}, \lean{rvachevReciprocalMomentRat},
 \lean{rvachevAppellPolynomialRat}, \lean{rvachevAppellPolynomial}, and
 \lean{rvachevDeconvolvedPolynomial}, together with
-\lean{rvachevDeconvolutionLinearMap}.  Its twenty-four public theorems are
+\lean{rvachevDeconvolutionLinearMap}.  Its thirty public theorems are
 \lean{rvachevRawMomentRat_zero}, \lean{rvachevRawMomentRat_even},
 \lean{rvachevRawMomentRat_odd}, \lean{rvachevReciprocalMomentRat_zero},
 \lean{binomialConv_rvachevRawMomentRat_reciprocal},
@@ -4506,7 +4505,13 @@ to the Rvachev probability law.  Its six public definitions are
 \lean{rvachevDeconvolvedPolynomial_C_mul},
 \lean{rvachevDeconvolvedPolynomial_monomial},
 \lean{rvachevDeconvolvedPolynomial_X_pow},
-\lean{natDegree_rvachevDeconvolvedPolynomial_le}, and
+\lean{coeff_rvachevDeconvolvedPolynomial_natDegree},
+\lean{natDegree_rvachevDeconvolvedPolynomial_le},
+\lean{natDegree_rvachevDeconvolvedPolynomial},
+\lean{leadingCoeff_rvachevDeconvolvedPolynomial},
+\lean{rvachevDeconvolvedPolynomial_eq_zero_iff},
+\lean{rvachevDeconvolutionLinearMap_injective},
+\lean{rvachevDeconvolvedPolynomial_injective}, and
 \lean{integral_eval_rvachevDeconvolvedPolynomial_add_mul_rvachev}.
 
 Thus the full rational raw-moment sequence has the executable even moments at
@@ -4525,13 +4530,16 @@ bridges are
 where \(\mathcal D_{\Up}P\) denotes
 \lean{rvachevDeconvolvedPolynomial}\(P\).  This coefficientwise operation sends
 a monomial and \(X^n\) to the correspondingly scaled and unscaled
-Rvachev--Appell polynomial and does not raise polynomial degree.  Its linear-map
+Rvachev--Appell polynomial.  Its triangular top term is exact: the coefficient
+in the original natural degree is unchanged, so both natural degree and
+leading coefficient are preserved.  Its kernel is trivial, and both the
+linear-map package and the underlying operation are injective.  The linear-map
 package proves preservation of zero, addition, real scalar multiplication,
 finite sums, and multiplication by a constant polynomial; these are algebraic
 identities and do not assert an analytic reciprocal-MGF, differential-series,
 or Appell generating function.
 
-At compiled source checkpoint \texttt{c51a41fcf},
+At compiled source checkpoint \texttt{a3854643d},
 \path{RvachevPolynomialSynthesis.lean} exports no public definitions and
 exactly four public theorems:
 \lean{tsum_rvachevDeconvolvedPolynomial_mul_shifted_rvachevUp},
@@ -4544,13 +4552,13 @@ For \(M\in\N\setminus\{0\}\) and
  \sum_{k\in\Z}(\mathcal D_{\Up}P)(k/M)u_F(x-k/M)
    &=M P(x),                                                 \label{eq:rvachev-polynomial-synthesis-global}\\
  P(x)&=\frac1M\sum_{-2M<k<2M}
-  (\mathcal D_{\Up}P)(k/M)u_F(x-k/M),\qquad -1\le x\le1. \label{eq:rvachev-polynomial-synthesis-finite}
+  (\mathcal D_{\Up}P)(k/M)u_F(x-k/M),\quad -1\le x\le1. \label{eq:rvachev-polynomial-synthesis-finite}
 \end{align}
 The first sum is Lean's global \texttt{tsum}; compact support makes it
 pointwise finite.  The second is the exact uniform support truncation, including
 the vanishing boundary atoms.
 
-These two modules prove formal coefficient reciprocity and polynomial
+These modules prove formal coefficient reciprocity and polynomial
 smoothing/synthesis, not an analytic reciprocal-MGF or Appell generating
 series, a literal reciprocal-MGF differential-operator identity, parity of the
 reciprocal or deconvolved families, the displayed low reciprocal coefficients,
@@ -9115,20 +9123,29 @@ competitor has strictly larger error.  These are
 \lean{rvachevLegendrePartialSum_strict_least_squares} in
 \path{FabiusLegendreLeastSquares.lean}.
 
-At compiled source checkpoint \texttt{c51a41fcf},
+At compiled source checkpoint \texttt{a3854643d},
 \path{FabiusLegendreTranslateBlocks.lean} specializes
 \eqref{eq:rvachev-polynomial-synthesis-finite} to the Legendre family.  Its six
 public definitions are \lean{rvachevLegendreDeconvolutionPolynomial},
 \lean{rvachevLegendreScale}, \lean{rvachevLegendreIndexSet},
 \lean{rvachevLegendreAtomCoefficient},
-\lean{rvachevLegendreTranslateBlock}, and \lean{rvachevTranslateGram}.  Its five
-public theorems are \lean{eval_legendrePolynomial_eq_sum_rvachevUp},
+\lean{rvachevLegendreTranslateBlock}, and \lean{rvachevTranslateGram}.  Its seven
+public theorems are
+\lean{natDegree_rvachevLegendreDeconvolutionPolynomial},
+\lean{leadingCoeff_rvachevLegendreDeconvolutionPolynomial},
+\lean{eval_legendrePolynomial_eq_sum_rvachevUp},
 \lean{eval_legendrePolynomial_even_eq_sum_rvachevUp},
 \lean{rvachevLegendreTranslateBlock_eq_rvachevLegendreBlock},
 \lean{intervalIntegral_rvachevLegendreTranslateBlock_mul}, and
 \lean{sum_rvachevLegendreAtomCoefficient_mul_gram}.
 
-Writing \(Q_d=\mathcal D_{\Up}P_d\), the first two theorems give
+Writing \(Q_d=\mathcal D_{\Up}P_d\), the two degree theorems give
+\begin{equation}
+ \deg Q_d=d,\qquad \operatorname{lc}(Q_d)
+ =2^{-d}\binom{2d}{d},                                    \label{eq:legendre-rvachev-degree}
+\end{equation}
+so deconvolution preserves the exact Legendre degree and its explicit leading
+coefficient.  The two synthesis theorems then give
 \begin{align}
  P_d(x)&=2^{-d}\sum_{-2^{d+1}<k<2^{d+1}}
  Q_d(k/2^d)\Up(x-k/2^d),                                  \label{eq:legendre-rvachev-synthesis}\\
@@ -9158,15 +9175,17 @@ the fully expanded atom-Gram identity is
  =\delta_{mn}\frac{2u_n^2}{4n+1}.                         \label{eq:legendre-atom-gram}
 \end{equation}
 
-At compiled source checkpoint \texttt{e2c310e7c}, the focused-build module
+At compiled source checkpoint \texttt{a3854643d}, the focused-build module
 \path{FabiusLegendreTranslateSeries.lean} closes the literal outer series and
 the common-mesh partial sums.  Its five public
 definitions are \lean{rvachevLegendrePartialSumDeconvolutionPolynomial},
 \lean{rvachevLegendrePartialSumAtomCoefficient},
 \lean{rvachevLegendrePartialSumTranslateBlock},
 \lean{rvachevLegendreTranslateBlockOnInterval}, and
-\lean{rvachevLegendrePartialSumTranslateBlockOnInterval}.  Its twenty-three
+\lean{rvachevLegendrePartialSumTranslateBlockOnInterval}.  Its twenty-five
 public theorems are
+\lean{natDegree_rvachevLegendrePartialSumDeconvolutionPolynomial},
+\lean{leadingCoeff_rvachevLegendrePartialSumDeconvolutionPolynomial},
 \lean{summable_norm_rvachevLegendreTranslateBlock},
 \lean{summable_rvachevLegendreTranslateBlock},
 \lean{hasSum_rvachevLegendreTranslateBlock},
@@ -9207,6 +9226,12 @@ For the existing polynomial partial sum
 \end{equation}
 The equality is
 \lean{rvachevLegendrePartialSumDeconvolutionPolynomial_eq_sum}.  With
+the same hypotheses, the two new triangularity wrappers prove
+\begin{equation}
+ \operatorname{natDegree}(C_N)=\operatorname{natDegree}(S_N),\qquad
+ \operatorname{lc}(C_N)=\operatorname{lc}(S_N),            \label{eq:legendre-partial-sum-degree}
+\end{equation}
+including degenerate partial sums whose visible degree drops.  With
 \(M_N=4^N\), the global theorem uses a compactly supported \texttt{tsum} for
 every real input, while on the Legendre interval its exact finite form is
 \begin{equation}
@@ -9221,6 +9246,17 @@ supremum norm.  The API also provides the raw
 \texttt{TendstoUniformlyOn} statement, convergence of the supremum-norm error
 to zero, and the pointwise corollary at every \(x\in[-1,1]\).  It asserts no
 rate, coefficientwise limit, or uniform convergence outside this interval.
+
+The four modules \path{RvachevMomentAppell.lean},
+\path{RvachevPolynomialSynthesis.lean},
+\path{FabiusLegendreTranslateBlocks.lean}, and
+\path{FabiusLegendreTranslateSeries.lean} therefore have public
+definition/theorem inventories $6/30$, $0/4$, $6/7$, and $5/25$,
+respectively: exactly $83$ public declarations.  They do not prove
+minimality or sharpness of the displayed meshes, rationality of the atom
+rows, equality of the fixed-scale and separately scaled coefficient vectors,
+an unconditional \(\operatorname{natDegree}(S_N)=2N\) theorem or nonvanishing of the top Legendre
+coefficient, or the later refinement, projector, and asymptotic layers.
 
 At compiled source checkpoint \texttt{ca66a1247}, the polynomial-form Legendre blocks
 \(B_n(x)=u_nP_{2n}(x)\) satisfy the complete orthogonality formula
