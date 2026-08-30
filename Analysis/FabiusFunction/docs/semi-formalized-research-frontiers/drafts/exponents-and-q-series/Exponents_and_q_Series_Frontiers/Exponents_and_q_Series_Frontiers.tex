@@ -15047,6 +15047,32 @@ permits reordering, and the product over the scale index is a
 $q^2$-Pochhammer symbol.  Outside the disk, apply this to $1/C_{1/q}$.
 \end{proof}
 
+\begin{statusbox}{Lean crosswalk: the fixed dyadic inside specialization}
+The current formal API does not prove the whole compound statement
+\cref{p7:thm:sinc-poch}.  It defines the complex symbol through
+\path{complexQPochhammerInf} and exposes exactly the six theorems
+\path{complexQPochhammerInf_eq_tprod},
+\path{multipliable_one_sub_mul_pow_complex},
+\path{hasProd_complexQPochhammerInf},
+\path{tendsto_finiteQPochhammerIn_complex},
+\path{rvachevFourierProduct_eq_tprod_complexQPochhammerInf}, and
+\path{rvachevFourier_eq_tprod_complexQPochhammerInf} in
+\path{RvachevPochhammerFactorization.lean}.  The first three convergence
+results after the definitional equality allow arbitrary complex $a$ and
+require exactly $\lVert q\rVert<1$.  The spectral theorems themselves fix the
+dyadic scale and hence the nome $1/4$, and are global in $z\in\C$, including
+at individual zero factors; the Fourier-transform form additionally assumes
+a bounded Fabius witness satisfying \path{IsFabius}.
+
+Under $t=4\pi z$, the standalone-product theorem is exactly the inside
+$q=1/2$ specialization of \eqref{p7:eq:sinc-poch}.  The general real
+$\abs q<1$ identity, a named bridge to $\psi_q$ or $M_q$, the outside
+$\abs q>1$ reciprocal formula and zero--pole exchange, and the asserted
+local-uniform/normal convergence are not declarations of this module.
+Consequently the full label \cref{p7:thm:sinc-poch} remains only partially
+formalized.
+\end{statusbox}
+
 The nome is $q^2$, not $q$: centering makes every factor even, and evenness
 forgets the sign of each geometric scale.  Thus $q=\pm\tfrac12$ share nome
 $\tfrac14$ and $q=\pm\tfrac14$ share nome $\tfrac1{16}$, with
@@ -15883,7 +15909,9 @@ simplex-volume stop-loss formula (upper cube constraints inactive under
 jets from the CDF pantograph equation, and the two-term asymptotic
 (Stirling, crude moment bounds, monotone bracketing) --- far lighter than the
 existing all-orders dyadic saddle machinery.  The reciprocal analytic
-tranche: the inverse product germ, the Euler rearrangement, the $L^2$ Laplace
+tranche: the inverse product germ, the general-$q$ and outside-disk Euler
+rearrangements (the fixed inside $q=1/2$ rearrangement is now formalized in
+\path{RvachevPochhammerFactorization.lean}), the $L^2$ Laplace
 series, Hankel positivity and affine transport of determinants, and the
 quasi-definite orthogonal recurrence.  Suggested module names:
 \texttt{GeometricUniformSign}, \texttt{GeometricUniformMultisection},

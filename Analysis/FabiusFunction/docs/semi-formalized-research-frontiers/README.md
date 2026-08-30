@@ -194,7 +194,7 @@ was filed as a second member of `exponents-and-q-series/` rather than
 merged into the frontier volume, after an on-arrival audit (symbolic
 re-verification of its core theorems, 30-digit numerical checks of
 its two newest identities, one repaired majorant).  Initially 96 pages, the
-monograph now has 200 pages after consolidation.  Several
+monograph now has 201 pages after consolidation.  Several
 volumes' part-boundary section numbering and
 page-counter handling were repaired along the way (edits are marked
 `% ed.:` in the sources).  Every volume carries

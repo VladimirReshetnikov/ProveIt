@@ -1,5 +1,24 @@
 # Spectra and arithmetic
 
+New standalone intake member:
+[`Fabius_Total_Positivity_Frontier_Report/`](Fabius_Total_Positivity_Frontier_Report/),
+*Total Positivity and Cartwright Geometry in the Fabius--Rvachev Dyadic Sinc
+Product* (22 pp), arrived as a bare TeX/PDF/script package on 2026-08-30.
+Its imaginary-square-root transform, Laguerre--Polya and multiplier-sequence
+structure, exact zero divisor and Thue--Morse sign interpolation, Cartwright
+geometry, and geometric-scale deformation extend the arithmetic/spectral
+Fourier-product theme. The package shipped no checksum ledger, README,
+environment pin, or captured run output. Its TeX also depends on four absent
+generated figure/table inputs, and the script's four CSV evidence tables were
+not delivered; exact arrival hashes and filenames are recorded in the global
+manifest. Its novelty screen is already stale at its pinned
+snapshot: matching Laguerre--Polya/PF-infinity/shifted-Jensen and zero-sign
+material appears in `Frontier_Compilations/`. It therefore remains standalone
+pending claim-by-claim crosswalk and deliberate deduplication. Its paper
+theorem labels do not by themselves assert Lean status, and its shipped Latin
+Modern source/PDF still needs canonical-preamble and Libertinus normalization
+in a later post-intake commit.
+
 Arithmetic and spectral structure of the Rvachev Fourier product,
 consolidated (2026-08-28) into the single volume
 [`Spectra_and_Arithmetic_Frontiers/`](Spectra_and_Arithmetic_Frontiers/):
