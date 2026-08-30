@@ -81,7 +81,7 @@ def log_L_MB(s, c=mp.mpf('0.75'), cutoff=mp.mpf('35')):
 
 def write_csv(path: Path, header: Iterable[str], rows: Iterable[Iterable[object]]) -> None:
     with path.open('w', newline='', encoding='utf-8') as f:
-        w = csv.writer(f)
+        w = csv.writer(f, lineterminator='\n')
         w.writerow(list(header))
         w.writerows(rows)
 

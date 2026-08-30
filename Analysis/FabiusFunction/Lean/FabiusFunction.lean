@@ -56,6 +56,7 @@ import FabiusFunction.BitPositionGenerating
 import FabiusFunction.ParityCharacter
 import FabiusFunction.ParityCharacterKernel
 import FabiusFunction.DigitCharacterCongruence
+import FabiusFunction.BinaryDigitFloor
 import FabiusFunction.GeneralizedProuhetBlock
 import FabiusFunction.ProuhetBlockZeroOrder
 import FabiusFunction.BitPositionQBinomial
@@ -356,6 +357,8 @@ import FabiusFunction.KappaOneEnclosure
 import FabiusFunction.KappaConstantEnclosures
 import FabiusFunction.MeasureRefinement
 import FabiusFunction.RandomSeriesLaw
+import FabiusFunction.MeasureCauchyTransform
+import FabiusFunction.GeometricUniformCauchy
 import FabiusFunction.CauchyTransform
 import FabiusFunction.CauchyCDF
 import FabiusFunction.CauchyRenormalization

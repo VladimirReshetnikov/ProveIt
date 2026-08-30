@@ -32,7 +32,7 @@ namespace Fabius
 /-- The doubling map mod one. -/
 noncomputable def doublingMap (t : ℝ) : ℝ := Int.fract (2 * t)
 
-/-- The doubling map takes only nonnegative values. -/
+/-- The doubling map takes nonnegative values. -/
 theorem doublingMap_nonneg (t : ℝ) : 0 ≤ doublingMap t :=
   Int.fract_nonneg _
 

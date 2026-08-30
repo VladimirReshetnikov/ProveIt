@@ -144,19 +144,19 @@ def interleaveOddEquiv (n : ℕ) : Fin (n + 1) ⊕ Fin n ≃ Fin (2 * n + 1) whe
       dsimp only [Sum.elim_inr]
       exact Fin.ext (show 2 * ((k : ℕ) / 2) + 1 = (k : ℕ) by omega)
 
-/-- The left summand of `interleaveEquiv` occupies the even indices. -/
+/-- The left summand of `interleaveEquiv` maps to the even index `2i`. -/
 @[simp] theorem interleaveEquiv_inl (n : ℕ) (i : Fin n) :
     ((interleaveEquiv n) (Sum.inl i) : ℕ) = 2 * i := rfl
 
-/-- The right summand of `interleaveEquiv` occupies the odd indices. -/
+/-- The right summand of `interleaveEquiv` maps to the odd index `2i+1`. -/
 @[simp] theorem interleaveEquiv_inr (n : ℕ) (i : Fin n) :
     ((interleaveEquiv n) (Sum.inr i) : ℕ) = 2 * i + 1 := rfl
 
-/-- The larger left summand of `interleaveOddEquiv` occupies the even indices. -/
+/-- The larger left summand of `interleaveOddEquiv` maps to the even index `2i`. -/
 @[simp] theorem interleaveOddEquiv_inl (n : ℕ) (i : Fin (n + 1)) :
     ((interleaveOddEquiv n) (Sum.inl i) : ℕ) = 2 * i := rfl
 
-/-- The right summand of `interleaveOddEquiv` occupies the odd indices. -/
+/-- The right summand of `interleaveOddEquiv` maps to the odd index `2i+1`. -/
 @[simp] theorem interleaveOddEquiv_inr (n : ℕ) (i : Fin n) :
     ((interleaveOddEquiv n) (Sum.inr i) : ℕ) = 2 * i + 1 := rfl
 
@@ -174,7 +174,8 @@ theorem pdBit_two_mul (k : ℕ) : pdBit (2 * k) = 1 := by
   rw [pdBit, h1, h2]
   rcases Nat.le_one_iff_eq_zero_or_eq_one.mp hb with h | h <;> rw [h] <;>
     decide
-/-- Odd-indexed period-doubling bits satisfy `pd(2k+1) = 1 + pd(k)`. -/
+/-- Odd-indexed period-doubling bits satisfy
+`pdBit (2 * k + 1) = 1 + pdBit k` in `ZMod 2`. -/
 theorem pdBit_two_mul_add_one (k : ℕ) :
     pdBit (2 * k + 1) = 1 + pdBit k := by
   have h2 := thueMorseBit_two_mul_add_one k

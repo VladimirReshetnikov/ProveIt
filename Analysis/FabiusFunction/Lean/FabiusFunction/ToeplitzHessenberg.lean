@@ -105,7 +105,7 @@ theorem triBand_apply_diag (n : ℕ) (d a : ℕ → R) (m : Fin n) :
     triBand n d a m m = d (m : ℕ) := by
   simp [triBand]
 
-/-- The first column of the lower Hessenberg band records the shifted Toeplitz sequence `a`. -/
+/-- The first-column entry in row `i` of `hessBand` is `a (i + 1)`. -/
 @[simp]
 theorem hessBand_apply_zero (n : ℕ) (d a : ℕ → R) (i : Fin (n + 1)) :
     hessBand (n + 1) d a i 0 = a ((i : ℕ) + 1) := by

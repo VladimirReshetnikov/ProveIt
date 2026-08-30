@@ -65,7 +65,7 @@ theorem geometricPolynomial_two_mul (r : ℕ) :
 noncomputable def approximationPolynomial (n : ℕ) : Polynomial ℕ :=
   ∏ k ∈ range n, geometricPolynomial (2 ^ (k + 1))
 
-/-- The zeroth approximation polynomial is the multiplicative identity. -/
+/-- The zeroth approximation polynomial is the empty product `1`. -/
 @[simp] theorem approximationPolynomial_zero : approximationPolynomial 0 = 1 := by
   simp [approximationPolynomial]
 
@@ -102,7 +102,7 @@ theorem approximationPolynomial_succ (n : ℕ) :
 def approximationDegree (n : ℕ) : ℕ :=
   ∑ k ∈ range n, (2 ^ (k + 1) - 1)
 
-/-- The zeroth approximation polynomial has degree parameter zero. -/
+/-- The degree parameter of the zeroth approximation is zero. -/
 @[simp] theorem approximationDegree_zero : approximationDegree 0 = 0 := by
   simp [approximationDegree]
 

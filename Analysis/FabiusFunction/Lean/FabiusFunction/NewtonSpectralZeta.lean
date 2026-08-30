@@ -41,11 +41,12 @@ than a mechanical juxtaposition of its two inputs.
 * `summable_newtonPoly_rpow` — polynomial weights are admissible;
 * `tsum_newtonPoly_spectral_zeta` — **the volume's `p1:eq:ZP`**.
 
-The cumulants `p1:eq:kappaP` of the same theorem are *not*
-formalized: they need the probabilistic model behind `Φ_P`.  The
-product itself is available — it is
-`FabiusFunction.GeneralizedRvachevProduct` — but the random
-variable, its moments and its cumulants are not.
+The probabilistic cumulants `p1:eq:kappaP` of the same theorem remain
+unformalized because they need the random-variable model behind `Φ_P`.
+The analytic Euler--zeta expansion of the logarithmic product kernel is
+formalized downstream in `FabiusFunction.GeneralizedSincZeta`, built on
+`FabiusFunction.WeightedEulerTransform`; that transform-side identity does
+not construct the random variable, its moments, or its cumulants.
 -/
 
 set_option autoImplicit false

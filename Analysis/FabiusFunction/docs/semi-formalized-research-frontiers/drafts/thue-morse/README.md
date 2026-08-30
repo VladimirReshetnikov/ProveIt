@@ -3,7 +3,7 @@
 The Thue-Morse side of the corpus, consolidated (2026-08-28) into the
 single volume [`Thue_Morse_Atlas_and_Frontiers.tex`](Thue_Morse_Atlas_and_Frontiers/Thue_Morse_Atlas_and_Frontiers.tex)
 ([PDF](Thue_Morse_Atlas_and_Frontiers/Thue_Morse_Atlas_and_Frontiers.pdf),
-132 pp):
+133 pp):
 
 - **Part I** — *A Unified Formula Atlas for the Thue–Morse Sequence*
   (formerly `Thue_Morse_Formula_Atlas/`);
@@ -44,6 +44,22 @@ At the same commit, the first eight public declarations of
 parameters.  GammaLog is the chosen derivative coordinate, not a proved
 `Complex.log` identity.  Only the parameter-`a` differential and iterated
 differential ladder remains open in this tower tranche.
+
+`CentralBinomialValuation.lean` supplies the atlas's direct central-binomial
+crosswalk.  Its exhaustive public API is
+`padicValNat_two_centralBinom`,
+`thueMorseSign_eq_neg_one_pow_centralBinom`, and
+`padicValNat_two_centralBinom_eq_zero_iff`: the valuation of `C(2n,n)` is
+`binaryWeight n`, its parity gives the Thue--Morse sign, and it vanishes only
+at `n = 0` (positive powers of two have valuation one).
+
+`BinaryDigitFloor.lean` supplies the exact floor-difference form of a binary
+digit.  Its exhaustive public API is `div_two_pow_succ_eq_div_div`,
+`sub_two_mul_div_two`, `div_two_pow_sub_two_mul_div_two_pow_succ`, and
+`testBit_toNat_eq_div_sub_two_mul_div`: dyadic quotients compose, parity is the
+remainder after twice the quotient, and the `j`-th bit indicator is the
+difference of two consecutive dyadic quotients.  These are total identities on
+natural-number inputs; they do not assert a real-floor or analytic extension.
 
 The member drafts were absorbed content-preservingly (labels, citation
 keys, and asset paths mechanically prefixed per part; wrapper metadata

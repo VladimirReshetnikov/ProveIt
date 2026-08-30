@@ -453,7 +453,7 @@ def write_text_results() -> None:
     (RESULTS / "numerical_results.txt").write_text("\n".join(lines) + "\n", encoding="utf-8")
 
     # Machine-readable CSV versions of the two principal numerical tables.
-    with (RESULTS / "inverse_defect.csv").open("w", encoding="utf-8") as handle:
+    with (RESULTS / "inverse_defect.csv").open("w", encoding="utf-8", newline="") as handle:
         handle.write("delta,defect,leading_endpoint_term,ratio\n")
         for delta, defect, leading, ratio in inverse:
             handle.write(
@@ -461,7 +461,7 @@ def write_text_results() -> None:
                 f"{mp.nstr(leading, 30)},{mp.nstr(ratio, 30)}\n"
             )
 
-    with (RESULTS / "reproduction_errors.csv").open("w", encoding="utf-8") as handle:
+    with (RESULTS / "reproduction_errors.csv").open("w", encoding="utf-8", newline="") as handle:
         handle.write("scale_r,degree_n,max_abs_residual\n")
         for r, n, error in reproduction:
             handle.write(f"{r},{n},{mp.nstr(error, 30)}\n")

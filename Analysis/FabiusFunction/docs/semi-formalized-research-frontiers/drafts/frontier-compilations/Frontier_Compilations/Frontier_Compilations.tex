@@ -14631,7 +14631,9 @@ geometric corollary characterizes this report's law even at \(q=0\) and negative
 no support, density, or moment assumptions.  A later mainline tranche, rechecked in the
 current combined full-facade build, gives the phase-bearing sinc prefixes an exact finite
 residual formula and proves their pointwise convergence to the characteristic function for
-every \(|q|<1\).  The existing \path{geometricSincProduct} packages the same sinc factors,
+every \(|q|<1\).  Independently, for every nonzero such \(q\), direct named Cauchy-transform
+and adjacent-power refinement equations hold off the exact support.  The existing
+\path{geometricSincProduct} packages the same sinc factors,
 after frequency rescaling, as a \path{tprod}; a named characteristic-function bridge to it
 (or explicit \path{HasProd} theorem), compact-uniform convergence of the characteristic
 prefixes, the report's rapid-decay and inversion proof, explicit Bernoulli-cumulant/Bell-moment formulas and
@@ -14698,14 +14700,29 @@ no support, absolute continuity, density, or moments.  The corollary
 law by its displayed affine independent-copy equation throughout that full parameter range.
 
 The definition of \path{geometricUniformDensity} is total, but no density formula or
-Radon--Nikodym interpretation is claimed here for \(q\le0\).  Also still frontier are the
-named characteristic-function bridge to the existing \path{geometricSincProduct}
+Radon--Nikodym interpretation is claimed here for \(q\le0\).  Fixed-point uniqueness is now
+the direct theorem \path{eq_geometricUniformDistribution_of_selfSimilar}, valid for every
+\(|q|<1\), including negative \(q\) and \(q=0\).  The definitions
+\path{geometricUniformStieltjesDomain},
+\path{geometricUniformStieltjesTransform}, and
+\path{geometricUniformStieltjesPower} are total in real \(q\); for \(|q|<1\), the transform
+is holomorphic off the exact support, and for \(q\ne0\) the direct named theorems
+\path{hasDerivAt_geometricUniformStieltjesTransform_refinement} and
+\path{geometricUniformStieltjesPower_succ} give the transform DDE and every positive
+adjacent-power recurrence, including negative ratios.  At \(q=1/2\), the all-power affine
+bridge, named unit Stieltjes DDE, and both canonical complex-slit adjacent-order recurrences
+are direct theorems of \path{CauchyTransform.lean}.
+
+The finite characteristic-function residual formula and its pointwise prefix limit are now
+formal.  Still frontier are the named characteristic-function bridge to the existing
+\path{geometricSincProduct}
 \path{tprod} (or explicit \path{HasProd} theorem) and compact-uniform convergence beyond
 the formal pointwise phase-bearing sinc-prefix limit, the rapid-decay bound and Fourier inversion
 route, a closed higher-derivative refinement and endpoint-flatness wrapper, the shape
 transition, further transforms, and explicit Bernoulli-cumulant/Bell-moment formulas and
 asymptotics.  The geometric tail dictionary already gives finite characteristic-function,
-MGF, and CGF tail factorizations.
+MGF, and CGF tail factorizations.  The closed density hierarchy here is distinct from the
+proved Cauchy-power hierarchy.
 \end{boxedremark}
 
 
@@ -15133,12 +15150,14 @@ derivative of the CDF.  Finally,
 measure with this nonnegative Radon--Nikodym density.  The exterior-value convention used
 in the proposition is formalized for \(0\le q<1\) by
 \path{geometricUniformCDF_zero_of_nonpos} and
-\path{geometricUniformCDF_one_of_one_le}.  Conversely,
-\path{eq_geometricUniformDistribution_of_selfSimilar} now proves that this product-map
-equation characterizes the geometric-uniform law among all probability measures whenever
-\(|q|<1\).  The characterization includes \(q=0\) and negative \(q\) and requires no
-support, density, or moment hypothesis.  The classical density interpretation has not been
-extended to the totalized \(q\le0\) formula.
+\path{geometricUniformCDF_one_of_one_le}.  Uniqueness is supplied separately and directly
+by \path{eq_geometricUniformDistribution_of_selfSimilar} for every \(|q|<1\), including
+negative \(q\) and \(q=0\); it requires no support, density, or moment hypothesis on the
+competing probability law.  The classical density interpretation has not been extended to
+the selected totalized \(q\le0\) formula.  Also separately,
+\path{GeometricUniformCauchy.lean} gives the exact-support transform DDE and adjacent
+Cauchy-power hierarchy for every nonzero \(|q|<1\); those declarations do not formalize
+the characteristic-function product or the real-space density-derivative hierarchy below.
 
 For $q=1/2$ and $0\le x\le1/2$, the second term in
 \eqref{p10:eq:density-refinement} vanishes, so
@@ -16439,6 +16458,9 @@ The live \path{GeometricUniformDictionary.lean} and
 \path{tprod}.  A named characteristic-function bridge to that product (or explicit
 \path{HasProd} theorem), compact-uniform convergence of the characteristic prefixes, and
 quantitative Fourier estimates remain in the analysis layer.
+The distinct oriented Cauchy-transform DDE and adjacent-power hierarchy are now formal in
+\path{GeometricUniformCauchy.lean}; they are separate from the characteristic-function
+product and real-space density-derivative hierarchies.
 
 \subsection{Analysis layer}
 

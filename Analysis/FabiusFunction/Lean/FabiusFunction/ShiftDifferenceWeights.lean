@@ -9,13 +9,15 @@ through iterated forward differences, `S^m = (I + Δ)^m`, giving
 
 `Φ_{Sᵐa} = ∏_{r≤m} Φ_{Δʳa}^{C(m,r)}`.
 
-The corpus now has the analytic product at every admissible natural-valued
-weight (`GeneralizedRvachevProduct`) and its product factorization
-(`WeightLinearityProducts`); the signed germ-level version remains outside
-that API.  The reusable **exponent-level** content is the Gregory–Newton
-formula: the `m`-fold shift
-of a weight sequence is the binomial combination of its iterated
-forward differences,
+The general-weight product now exists in
+`FabiusFunction.GeneralizedRvachevProduct`, and
+`FabiusFunction.WeightLinearityProducts` carries this identity from
+admissible `ℕ`-valued exponent sequences to products whenever every
+displayed difference has that form.  The signed, germ-level
+interpretation still lies outside that API.  The **exponent-level**
+content recorded here is the Gregory–Newton formula: the `m`-fold
+shift of a weight sequence is the binomial combination of its
+iterated forward differences,
 
 `a_{h+m} = ∑_{r≤m} C(m,r)·(Δʳa)_h`.
 
@@ -43,14 +45,16 @@ variable {G : Type*} [AddCommGroup G]
 a weight sequence by `m` is the binomial combination of its iterated
 forward differences: `a_{h+m} = ∑_{r≤m} C(m,r)·(Δʳa)_h`.
 
-This is the exponent-level content of the volume's finite-difference
-factorization.  The factorization of the products themselves is
+This module records that exponent-level identity.  The factorization
+of the products themselves is
 `FabiusFunction.WeightLinearityProducts`
 (`generalizedRvachevProduct_shift_factorization`), wherever the
-differences `Δʳa` are nonnegative — which is where both sides are
-defined, `Φ_a` accepting only `ℕ`-valued weights; the signed,
-germ-level reading is not formalized.  The general product API was
-added after this shift identity's original constant-weight-era boundary. -/
+differences `Δʳa` are represented by admissible `ℕ`-valued weights,
+which is exactly the scope of that theorem; the signed, germ-level
+reading is not formalized.  Equivalently, the intended difference
+families must be nonnegative and summable, because `Φ_a` accepts only
+`ℕ`-valued weights.  The general product API was added after this shift
+identity's original constant-weight-era boundary. -/
 theorem weight_shift_eq_sum_fwdDiff (a : ℕ → G) (m h : ℕ) :
     a (h + m) = ∑ r ∈ range (m + 1), m.choose r • Δ_[1]^[r] a h := by
   have hshift := shift_eq_sum_fwdDiff_iter (h := (1 : ℕ)) a m h

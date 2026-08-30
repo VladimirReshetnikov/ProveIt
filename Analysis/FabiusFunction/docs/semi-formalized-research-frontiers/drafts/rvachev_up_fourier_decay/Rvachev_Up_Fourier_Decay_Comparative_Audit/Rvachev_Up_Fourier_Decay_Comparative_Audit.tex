@@ -1015,8 +1015,8 @@ $\log\|\Phi(x)\|=\sum_{(h,r)}\log\bigl(1-x^2/(2^h(r+1))^2\bigr)$ at every
 non-lattice real $x$, \lean{CentralLobeConcavity} and
 \lean{SideLobeConcavity} give strict negativity of its termwise second
 derivative on the central and on every side lobe, and
-\lean{OnePeakPerLobe} assembles them.  The closed derivative formulas
-\eqref{eq:lobe-derivatives} themselves are now stated, in
+\lean{OnePeakPerLobe} assembles them.  The central-lobe sum and regrouping identities
+underlying \eqref{eq:lobe-derivatives} are now stated, for $|x|<1$, in
 \lean{LobeDerivativeFormulas}
 (\lean{Fabius.tsum\_central\_log\_deriv\_eq},
 \lean{Fabius.tsum\_central\_log\_second\_deriv\_eq}), and the gap between
@@ -1029,7 +1029,9 @@ the integer sum with that multiplicity.  This is stated once for an
 arbitrary summand (\lean{Fabius.tsum\_lobeZero\_regroup}), which is the
 reusable part: \emph{any} absolutely convergent sum over the dyadic zero
 lattice is the sum over the positive integers weighted by $\vtwo(k)+1$.
-The two derivative formulas are instances.  Summability of the two
+The two central-lobe derivative formulas are instances.  The unrestricted identities away
+from all integers remain report-level statements; the all-lobe concavity and one-peak
+conclusions above are formalized through the separate factorization route.  Summability of the two
 families had to be supplied, since \lean{CentralLobeConcavity} establishes
 it only inside a proof and does not export it; both are dominated by
 $1/(2^h(r+1))^2$, because $L\ge1$ gives $L^2-x^2\ge L^2(1-x^2)$.

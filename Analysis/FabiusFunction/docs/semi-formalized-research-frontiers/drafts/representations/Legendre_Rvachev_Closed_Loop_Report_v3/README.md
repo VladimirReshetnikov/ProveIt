@@ -2,7 +2,7 @@
 
 This bundle accompanies the 33-page report
 
-> **Legendre Polynomials in the Rvachev Up Dictionary:**  
+> **Legendre Polynomials in the Rvachev Up Dictionary:**
 > *Symmetric finite synthesis, closed Fourier--Legendre loops, and transmuted spectral geometry.*
 
 ## Main files

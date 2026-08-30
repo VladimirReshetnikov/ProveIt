@@ -193,7 +193,7 @@ theorem momentHankel_posDef (F : BoundedFabius) (hF : IsFabius F)
 noncomputable def hankelDet (F : BoundedFabius) (n : ℕ) : ℝ :=
   (momentHankel F n).det
 
-/-- The zeroth Hankel determinant is `1`. -/
+/-- The zeroth (empty) Hankel determinant is `1`. -/
 @[simp] theorem hankelDet_zero (F : BoundedFabius) :
     hankelDet F 0 = 1 := by
   simp [hankelDet]

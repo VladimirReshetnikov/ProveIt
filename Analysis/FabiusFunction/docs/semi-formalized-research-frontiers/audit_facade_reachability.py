@@ -12,9 +12,9 @@ Exit status is 1 when anything is unreachable or phantom, so this can
 gate a commit alongside `audit_crosswalk_names.py`.
 """
 import io, os, re, sys
+from pathlib import Path
 
-DOCS = os.path.dirname(os.path.abspath(__file__))
-ROOT = os.path.normpath(os.path.join(DOCS, '..', '..', 'Lean'))
+ROOT = Path(__file__).resolve().parent.parent.parent / 'Lean'
 PKG = os.path.join(ROOT, 'FabiusFunction')
 FACADE = os.path.join(ROOT, 'FabiusFunction.lean')
 
