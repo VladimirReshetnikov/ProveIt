@@ -313,7 +313,7 @@ remain research frontiers. These fractional-Volterra API claims were checked at 
 `149332f9d`.
 
 Member: `Exponents_and_q_Series_Frontiers`
-(232 pp, seven parts) — the
+(233 pp; seven parts) — the
 2026-08-28 consolidation of the two former drafts (Part I:
 Newton-basis frontiers; Part II: q-binomial Richardson), joined the
 same day by the eighth-wave report as **Part III** — *Finite Dyadic
@@ -451,7 +451,12 @@ sixteenth wave's periodic-cocycle conjecture by Part VI's exact
 Gamma–zeta Laplace decomposition.  The eighth-wave fold also
 repaired the volume's part-boundary section numbering (Part II had
 rendered with `\appendix` letters G–N).  Supporting files under
-`assets/`, provenance with SHA-256 in the document itself.
+`assets/`, provenance with SHA-256 in the document itself.  For the
+spectral q²-Pochhammer theorem, the current Lean crosswalk is deliberately
+partial: under `t = 4πz` it proves the inside `q = 1/2` Rvachev-product
+specialization, not the general-`q` characteristic/MGF identity, the
+reciprocal outside-disk formula, zero–pole exchange, or local-uniform/normal
+convergence.
 
 See [`../MANIFEST.md`](../MANIFEST.md) for titles and the previous paths.
 
@@ -531,7 +536,7 @@ matching `assets/` directories.
 volume's Part VII; their figures/data are likewise under `assets/`.)
 
 Second member: `q_pochhammer_q_binomial_monograph/`
-(209 pp, A4 book class) —
+(209 pp; A4 book class) —
 *q-Pochhammer Symbols and q-Binomial Coefficients*, a standalone
 proof-oriented reference monograph on the q-machinery itself, filed
 2026-08-28 per the Lambert-W precedent (a reference companion rather
@@ -553,7 +558,15 @@ verified numerically to 30 digits; one dominated-convergence majorant
 repaired with an `% ed.:` note).
 
 Its current formalization ledger has 247 labelled results: 40 exact, 74
-partial, 130 with no counterpart, and 3 interface-only. The finite
+partial, 130 with no counterpart, and 3 interface-only.  Within that
+exhaustive total, the 190-result core in Chapters 1–23 has 34 exact, 29
+partial, 124 with no counterpart, and 3 interface-only entries.  The later
+Chapter 24 Fabius bridge is included in the full ledger and crosswalked
+locally; in particular its general spectral Pochhammer theorem remains
+partial despite the now-formal inside `q = 1/2` specialization. The algebra of
+q-shifted factorials now accounts for 3 exact, 1 partial, and 11
+unformalized results; the q-integer and Gaussian-coefficient chapter for
+2 exact, 2 partial, and 4 unformalized results. The finite
 q-binomial/inversion chapter now accounts for 9 exact, 1 partial, and 0
 unformalized results; the weighted chapter for 3 exact, 2 partial, and 3
 unformalized results; and the basic-hypergeometric chapter for 1 exact, 0
@@ -576,7 +589,8 @@ compatibility spelling of its primary identity),
 `SymmetricFunctionGenerating.lean` (two definitions and six theorems),
 `QDifferenceAnnihilation.lean` (four theorems),
 `QBinomialInversionSpecializations.lean` (two definitions, four theorems),
-and `QPochhammerElementaryIdentities.lean` (13 theorems).
+`QPochhammerElementaryIdentities.lean` (13 theorems), and
+`RvachevPochhammerFactorization.lean` (one definition, six theorems).
 The q-difference annihilation row is exact through
 `qDifference_sum_eval₂_eq_zero_of_degree_lt`, with the stronger
 characteristic-polynomial, all-moment, and scalar-extension top-coefficient
@@ -592,6 +606,9 @@ finite-support `finsum` over all integers. The ledger also now records the
 genuine real infinite product `qPochhammerInf` and its contractive-base
 convergence/positivity layer, replacing the stale claim that every infinite
 q-Pochhammer in the development was merely a finite `Finset.range` product.
+The separate complex symbol now has its own contractive-nome convergence
+API; its Rvachev spectral factorization nevertheless fixes the nome to
+`1/4` and does not promote the general Chapter 24 theorem to exact.
 The complementary formal surfaces of
 `CompleteHomogeneousGenerating.lean` and
 `SymmetricFunctionGenerating.lean` prove both the finite elementary product
@@ -632,3 +649,19 @@ factorization at every ratio**
 raw closed-factor form `_prefix`) — the finite half of Part IV's master
 factorization `F̂ₙ = Φ·A(2⁻ⁿs)` at `q = 1/2` and of Part VI's `ĥ_a`
 sinc products at `q = 1/a`, kernel-verified.
+
+`RvachevPochhammerFactorization.lean` adds the exhaustive complex
+Pochhammer surface: the one definition `Fabius.complexQPochhammerInf` and
+the six theorems `Fabius.complexQPochhammerInf_eq_tprod`,
+`Fabius.multipliable_one_sub_mul_pow_complex`,
+`Fabius.hasProd_complexQPochhammerInf`,
+`Fabius.tendsto_finiteQPochhammerIn_complex`,
+`Fabius.rvachevFourierProduct_eq_tprod_complexQPochhammerInf`, and
+`Fabius.rvachevFourier_eq_tprod_complexQPochhammerInf`.  The symbol is total;
+the named multipliability, product, and finite-prefix convergence theorems
+require exactly `‖q‖ < 1` and allow arbitrary complex `a`.  The two spectral
+theorems instead fix the dyadic scale and nome `1/4`, hold for every complex
+`z` including at zero factors, and the Fourier form assumes exactly a
+bounded Fabius witness satisfying `IsFabius`.  With `t = 4πz` this is the
+inside `q = 1/2` centered factorization only; it supplies neither a named
+general-`q` characteristic bridge nor compact-uniform convergence.

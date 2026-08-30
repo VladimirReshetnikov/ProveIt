@@ -183,9 +183,7 @@ theorem normalizedDyadicSineProduct_mul_add_of_dyadic_period
       calc
         normalizedDyadicSineProduct ((q + 1) * d + r) t =
             normalizedDyadicSineProduct ((q * d + r) + d) t := by
-          rw [show (q + 1) * d + r = (q * d + r) + d by
-            simp only [Nat.add_mul, one_mul]
-            ac_rfl]
+          rw [show (q + 1) * d + r = (q * d + r) + d by ring]
         _ = normalizedDyadicSineProduct d t *
             normalizedDyadicSineProduct (q * d + r) t :=
           normalizedDyadicSineProduct_add_of_dyadic_period
@@ -258,7 +256,7 @@ theorem norm_rvachevFourierProduct_two_pow_mul_half_cross (n : ℕ) (y : ℝ) :
           ((2 : ℂ) ^ n * ((y / 2 : ℝ) : ℂ))‖ =
       (2 : ℝ) ^ n *
         (((2 : ℝ) ^ (n * (n + 1) / 2) *
-          (Real.pi * |y / 2|) ^ n) *
+            (Real.pi * |y / 2|) ^ n) *
             ‖rvachevFourierProduct
               ((2 : ℂ) ^ n * ((y / 2 : ℝ) : ℂ))‖) := by
         rw [← hden]
@@ -288,29 +286,18 @@ theorem norm_rvachevFourierProduct_two_pow_mul_half
     ‖rvachevFourierProduct
         ((2 : ℂ) ^ n * ((y / 2 : ℝ) : ℂ))‖ =
       normalizedDyadicSineProduct n (y - 1) /
-        ((2 : ℝ) ^ (n * (n + 1) / 2) *
+          ((2 : ℝ) ^ (n * (n + 1) / 2) *
             (Real.pi * |y|) ^ n) *
         rvachevFixedMantissaTail y := by
   have hcross := norm_rvachevFourierProduct_two_pow_mul_half_cross n y
   have hden :
       (2 : ℝ) ^ (n * (n + 1) / 2) *
-          (Real.pi * |y|) ^ n ≠ 0 := by
-    have hyabs : 0 < |y| := abs_pos.mpr hy
-    positivity
-  calc
-    ‖rvachevFourierProduct
-        ((2 : ℂ) ^ n * ((y / 2 : ℝ) : ℂ))‖ =
-        (normalizedDyadicSineProduct n (y - 1) *
-            rvachevFixedMantissaTail y) /
-          ((2 : ℝ) ^ (n * (n + 1) / 2) *
-            (Real.pi * |y|) ^ n) := by
-      apply (eq_div_iff hden).2
-      simpa only [mul_comm] using hcross
-    _ = normalizedDyadicSineProduct n (y - 1) /
-          ((2 : ℝ) ^ (n * (n + 1) / 2) *
-            (Real.pi * |y|) ^ n) *
-        rvachevFixedMantissaTail y := by
-      ring
+          (Real.pi * |y|) ^ n ≠ 0 :=
+    mul_ne_zero (pow_ne_zero _ (by norm_num))
+      (pow_ne_zero _ (mul_ne_zero Real.pi_ne_zero (abs_ne_zero.mpr hy)))
+  rw [div_mul_eq_mul_div]
+  apply (eq_div_iff hden).2
+  simpa only [mul_comm] using hcross
 
 /-- **Exact fixed-mantissa factorization, zero-valid form.**  For all
 `N : ℕ` and all real mantissas `y`,

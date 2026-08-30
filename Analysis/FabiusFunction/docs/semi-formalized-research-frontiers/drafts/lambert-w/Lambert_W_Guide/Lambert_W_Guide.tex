@@ -327,6 +327,14 @@ existence, range, and two-solution classification of
 \cref{thm:realbranches}.  The endpoint-inclusive principal restriction is
 also the range theorem used by the formal two-branch power--exponential
 inverse package below.
+The endpoint continuity now has theorem-level names as well:
+\path{principalLambertW_continuousWithinAt_branchPoint} and
+\path{principalLambertW_continuousOn_Ici} cover the principal branch at the
+branch point and on its full real domain, while
+\path{lowerLambertW_continuousWithinAt_branchPoint} and
+\path{lowerLambertW_continuousOn_Ico} do the same for the lower branch.  These
+continuity declarations do not include the vertical-tangent limits or the
+square-root (Puiseux) expansion at the branch point.
 \end{remark}
 
 \begin{figure}[H]
@@ -678,10 +686,12 @@ nonprincipal branch.  The remaining factors tend to nonzero finite values.
 The first-derivative identities and their strict signs on the two branch
 interiors are formalized in \path{PrincipalLambertW.lean} and
 \path{LowerLambertW.lean}; the scaled power--exponential specializations are
-in \path{PowerExponentialLambertCalculus.lean}.  The second-derivative
-formulas \eqref{eq:secondder-exp}--\eqref{eq:secondder}, their endpoint
-limits, and the full curvature classification below are not yet packaged as
-Lean declarations.
+in \path{PowerExponentialLambertCalculus.lean}.  The endpoint identity
+\(\Wz'(0)=1\) is \path{deriv_principalLambertW_zero}.  The two
+vertical-tangent limits above, the second-derivative formulas
+\eqref{eq:secondder-exp}--\eqref{eq:secondder} (including
+\(\Wz''(0)=-2\)), and the full curvature classification below are not yet
+packaged as Lean declarations.
 \end{remark}
 
 \begin{theorem}[Concavity and the inflection point]\label{thm:curvature}
@@ -1213,6 +1223,10 @@ the left endpoint by continuity.  Consequently
  \frac{(-n)^{n-1}}{n!}\left(-\frac1\ee\right)^n
  =\Wz(-1/\ee)=-1.
 \]
+The one-sided branch-point continuity used in this endpoint argument is now
+available as \path{principalLambertW_continuousWithinAt_branchPoint}; that
+declaration does not itself formalize the Maclaurin series or its endpoint
+sum.
 
 \subsection{The tree function and Cayley's formula}
 
@@ -2768,8 +2782,58 @@ displayed interval pair.  All four declarations are in
 endpoint-safe integer-power specialization of \cref{thm:xpowerexp}, without
 making an arbitrary-real-power root claim.
 
+The normalized Lambert argument is continuous by
+\path{powerExponentialLambertArgument_continuous}; the full phase statements
+are \path{principalPowerExponentialPhase_continuousOn_Icc} on
+\([0,P_{m,A,\beta}]\) and
+\path{lowerPowerExponentialPhase_continuousOn_Ioc} on
+\((0,P_{m,A,\beta}]\).  Moreover, if
+\(0<x\leq P_{m,A,\beta}\) and \(\lambda\geq0\), then the exact equivalence
+\[
+ S_{m,A,\beta}(\lambda)=x
+ \quad\Longleftrightarrow\quad
+ \lambda=\lambda_0(x)\ \text{or}\ \lambda=\lambda_{-1}(x)
+\]
+is \path{powerExponentialSaddle_eq_iff_eq_principal_or_eq_lower}.  Strictly
+inside the value interval the alternatives are distinct, by
+\path{principalPowerExponentialPhase_ne_lowerPowerExponentialPhase}.  The
+nonnegativity restriction is essential when even \(m\) permits additional
+negative roots.
+
+The current zero-endpoint asymptotic package is exactly
+\path{PowerExponentialLambertAsymptotics.lean}.  It proves
+\path{principalPowerExponentialPhase_isEquivalent_rpow}, namely
+\[
+ \lambda_0(x)\sim\left(\frac{x}{A}\right)^{1/m}
+ \qquad (x\downarrow0),
+\]
+and \path{tendsto_lowerPowerExponentialPhase_nhdsGT_zero_atTop}, namely
+\(\lambda_{-1}(x)\to+\infty\).  For the intrinsic variable
+\[
+ \varepsilon(x)=\frac{\beta}{m}
+   \left(\frac{x}{A}\right)^{1/m},
+\]
+\path{lowerPowerExponentialPhase_sub_intrinsicMain_tendsto_zero} gives only
+the two-term statement
+\[
+ \lambda_{-1}(x)+\frac{m}{\beta}
+ \bigl(\log\varepsilon(x)-\log|\log\varepsilon(x)|\bigr)
+ \longrightarrow 0.
+\]
+No cleaned normalization in \(L=\log(A/x)\), nor a full generic asymptotic
+series, is claimed by that module.
+
 At \((m,A,\beta)=(1,1,\log2)\), the profile is
-\(t2^{-t}\), its peak is \(\ee^{-1}/\log2\), and
+\(t2^{-t}\), its peak is \(\ee^{-1}/\log2\), and the principal specialization
+is \path{fabiusPrincipalLambertPhase}.  The exact two-root equivalence and
+strict interior distinctness become
+\path{fabiusSaddle_eq_iff_eq_principal_or_eq_lower} and
+\path{fabiusPrincipalLambertPhase_ne_fabiusLambertPhase}; continuity on the
+closed principal and positive endpoint-inclusive lower value intervals is
+\path{fabiusPrincipalLambertPhase_continuousOn_Icc} and
+\path{fabiusLambertPhase_continuousOn_Ioc}.  Finally,
+\path{fabiusPrincipalLambertPhase_isEquivalent_id} states that the principal
+Fabius phase is asymptotic to \(x\) at zero, while
 \path{lowerPowerExponentialPhase_one_one_log_two} in
 \path{PowerExponentialLambertFabius}\texttt{.lean} identifies the lower generic phase
 exactly with the Fabius lower-Lambert phase.
