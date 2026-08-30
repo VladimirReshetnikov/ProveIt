@@ -37,6 +37,8 @@ the Lagrange weights.
   moment theorem for an arbitrary polynomially exact finite row.
 * `sum_lagrangeEvalWeight_mul_pow_card_add` specializes it to finite Lagrange
   evaluation at arbitrary distinct field-valued nodes.
+* `sum_lagrangeEvalWeight_mul_pow_card_add_zero` removes the distinguished
+  zero variable for nonempty evaluation-at-zero rows.
 -/
 
 set_option autoImplicit false
@@ -217,6 +219,23 @@ theorem sum_lagrangeEvalWeight_mul_pow_card_add
   exact sum_weight_mul_pow_card_add s
     (lagrangeEvalWeight s v x) v x
     (fun d hd => sum_lagrangeEvalWeight_mul_pow s v x hvs d hd) r
+
+/-- At target zero, every residual moment of a nonempty Lagrange row is the
+negative signed nodal product times the complete homogeneous function of the
+nodes.  The nonempty hypothesis is exactly what rules out the exceptional
+`0 ^ 0` term. -/
+theorem sum_lagrangeEvalWeight_mul_pow_card_add_zero
+    {F ι : Type*} [Field F]
+    (s : Finset ι) (v : ι → F) (hvs : Set.InjOn v s)
+    (hs : s.Nonempty) (r : ℕ) :
+    (∑ i ∈ s,
+      lagrangeEvalWeight s v 0 i * v i ^ (s.card + r)) =
+      -(∏ i ∈ s, -v i) * completeHomogeneousEvalOn s v r := by
+  have hdegree : s.card + r ≠ 0 :=
+    (Nat.add_pos_left (Finset.card_pos.mpr hs) r).ne'
+  simpa only [completeHomogeneousEvalAt_zero, zero_pow hdegree,
+    zero_sub, neg_mul] using
+    sum_lagrangeEvalWeight_mul_pow_card_add s v 0 hvs r
 
 end
 

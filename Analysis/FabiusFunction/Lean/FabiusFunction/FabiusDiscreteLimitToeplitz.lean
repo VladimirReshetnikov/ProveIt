@@ -1,5 +1,8 @@
 import FabiusFunction.FabiusRawQBinomialFormula
+import FabiusFunction.GeometricLagrange
+import FabiusFunction.GeometricRichardson
 import FabiusFunction.GeometricQBinomialLagrange
+import Mathlib.Algebra.Polynomial.Roots
 import Mathlib.Topology.MetricSpace.Pseudo.Constructions
 
 /-!
@@ -8,9 +11,23 @@ import Mathlib.Topology.MetricSpace.Pseudo.Constructions
 This module packages the finite q-binomial coefficients that arise after
 reindexing the proposed discrete-limit formula.  It identifies the complete
 row generating polynomial and its dyadic roots, derives exact q-Richardson
-cancellation for sequences in arbitrary `ℚ`-modules, proves that every row has
-mass one, gives both an exact formula and a uniform bound for its total
-variation, and supplies a general finite-row Toeplitz convergence theorem.
+cancellation for sequences in arbitrary `ℚ`-modules, and proves quantitative
+row estimates.  The normalized
+generating polynomial is
+
+`W_n(z) = (z / 2; 1 / 2)_n / (1 / 2; 1 / 2)_n`.
+
+Thus every row has mass one, while `W_n(2^r) = 0` for `1 ≤ r ≤ n`.
+These roots make the row an exact Richardson extrapolator for the first `n`
+inverse-dyadic correction terms.  Evaluating instead at `z = -2` gives the
+weighted variation
+
+`H_n = ∑_j |w_{n,j}| 2^j = (-1; 1 / 2)_n / (1 / 2; 1 / 2)_n`,
+
+and a head-shift identity bounds `H_n` uniformly by `64`.  The unweighted
+total variation has its sharper uniform bound `16`.  The module also supplies
+a general finite-row Toeplitz convergence theorem and casts the row mass and
+norm estimates into arbitrary `RCLike` fields.
 
 The algebraic row is also identified pointwise with the Lagrange evaluation
 weights on the reversed geometric grid `1, 1/2, ..., (1/2)^n`.  Consequently
@@ -28,6 +45,19 @@ Finite rows genuinely retain the translation parameter.  At depth one and
 `q ^ 2 / 2 - q / 3 + 2 / 9`; in particular its real values at `q = 0` and
 `q = 1` are different.  The companion integration module proves that this
 finite dependence disappears pairwise in the limit.
+
+## Main results
+
+* `discreteLimitWeightPolynomial_eval` and
+  `discreteLimitWeightPolynomial_eq_product` identify the normalized row
+  polynomial.
+* `discreteLimitWeightPolynomial_two_pow_eq_zero` and
+  `sum_discreteLimitWeight_mul_two_pow_eq_zero` record its dyadic roots.
+* `sum_abs_discreteLimitWeight` and
+  `sum_abs_discreteLimitWeight_mul_two_pow` compute the ordinary and dyadically
+  weighted variations; their uniform bounds are `16` and `64`.
+* `tendsto_weighted_rows_of_tendsto` is the abstract finite-row Toeplitz
+  convergence theorem used by the discrete-limit integration layer.
 -/
 
 set_option autoImplicit false
@@ -267,7 +297,7 @@ theorem sum_range_discreteLimitWeight_mul_pow (n : ℕ) (z : ℚ) :
     (∑ j ∈ Finset.range (n + 1), discreteLimitWeight n j * z ^ j) =
         (∑ j ∈ Finset.range (n + 1),
           (-1 : ℚ) ^ j * (1 / 2 : ℚ) ^ j.choose 2 *
-            halfQBinomial n j * (z / 2) ^ j) /
+          halfQBinomial n j * (z / 2) ^ j) /
           halfQPochhammer n := by
       rw [Finset.sum_div]
       apply Finset.sum_congr rfl
@@ -280,6 +310,85 @@ theorem sum_range_discreteLimitWeight_mul_pow (n : ℕ) (z : ℚ) :
     _ = finiteQPochhammer (z / 2) (1 / 2) n /
           halfQPochhammer n := by
       rw [halfQBinomial_theorem]
+
+/-- The normalized generating polynomial of the `n`-th Toeplitz row:
+`W_n(z) = ∑_{j=0}^n w_{n,j} z^j`. -/
+noncomputable def discreteLimitWeightPolynomial (n : ℕ) : Polynomial ℚ :=
+  ∑ j ∈ Finset.range (n + 1),
+    Polynomial.monomial j (discreteLimitWeight n j)
+
+/-- Evaluation of the normalized row polynomial:
+`W_n(z) = (z / 2; 1 / 2)_n / (1 / 2; 1 / 2)_n`. -/
+@[simp] theorem discreteLimitWeightPolynomial_eval (n : ℕ) (z : ℚ) :
+    (discreteLimitWeightPolynomial n).eval z =
+      finiteQPochhammer (z / 2) (1 / 2) n / halfQPochhammer n := by
+  simpa only [discreteLimitWeightPolynomial, Polynomial.eval_finsetSum,
+    Polynomial.eval_monomial] using
+    sum_range_discreteLimitWeight_mul_pow n z
+
+private theorem geometricRootPolynomial_half_eval_one (n : ℕ) :
+    (geometricRootPolynomial (1 / 2 : ℚ) n).eval 1 =
+      halfQPochhammer n := by
+  rw [geometricRootPolynomial_eval_one]
+  unfold halfQPochhammer finiteQPochhammer
+  apply Finset.prod_congr rfl
+  intro r _hr
+  rw [pow_succ]
+  ring
+
+/-- The Toeplitz row polynomial is the half-base specialization of the
+general normalized geometric-root polynomial.  This is the structural bridge
+between the Fabius q-binomial row and arbitrary-base Richardson filters. -/
+theorem discreteLimitWeightPolynomial_eq_normalizedGeometricRootPolynomial
+    (n : ℕ) :
+    discreteLimitWeightPolynomial n =
+      normalizedGeometricRootPolynomial (1 / 2 : ℚ) n := by
+  apply Polynomial.funext
+  intro z
+  rw [discreteLimitWeightPolynomial_eval,
+    normalizedGeometricRootPolynomial_eval,
+    geometricRootPolynomial_half_eval_one, finiteQPochhammer,
+    geometricRootPolynomial_eval]
+  congr 1
+  apply Finset.prod_congr rfl
+  intro r _hr
+  rw [pow_succ]
+  ring
+
+/-- Product form of the normalized row polynomial.  Its factors exhibit the
+simple dyadic roots `2, 4, ..., 2^n` before any evaluation argument. -/
+theorem discreteLimitWeightPolynomial_eq_product (n : ℕ) :
+    discreteLimitWeightPolynomial n =
+      Polynomial.C ((halfQPochhammer n)⁻¹) *
+        ∏ r ∈ Finset.range n,
+          (1 - Polynomial.C ((1 / 2 : ℚ) ^ (r + 1)) * Polynomial.X) := by
+  rw [discreteLimitWeightPolynomial_eq_normalizedGeometricRootPolynomial,
+    normalizedGeometricRootPolynomial,
+    geometricRootPolynomial_half_eval_one, geometricRootPolynomial]
+  ring
+
+/-- Every dyadic node `2^r` with `1 ≤ r ≤ n` is a root of the normalized
+row polynomial `W_n`. -/
+theorem discreteLimitWeightPolynomial_two_pow_eq_zero
+    {n r : ℕ} (hr0 : 1 ≤ r) (hrn : r ≤ n) :
+    (discreteLimitWeightPolynomial n).eval ((2 : ℚ) ^ r) = 0 := by
+  rw [discreteLimitWeightPolynomial_eq_normalizedGeometricRootPolynomial]
+  apply normalizedGeometricRootPolynomial_eval_eq_zero_of_mul_eq_one
+    (1 / 2 : ℚ) (r := r - 1)
+  · omega
+  · rw [show r - 1 + 1 = r by omega, ← mul_pow]
+    norm_num
+
+/-- Sum-facing form of the dyadic root identity: the `r`-th geometric mode
+`j ↦ (2^r)^j` is annihilated whenever `1 ≤ r ≤ n`. -/
+theorem sum_discreteLimitWeight_mul_two_pow_eq_zero
+    {n r : ℕ} (hr0 : 1 ≤ r) (hrn : r ≤ n) :
+    (∑ j ∈ Finset.range (n + 1),
+      discreteLimitWeight n j * ((2 : ℚ) ^ r) ^ j) = 0 := by
+  have hroot :=
+    discreteLimitWeightPolynomial_two_pow_eq_zero hr0 hrn
+  simpa only [discreteLimitWeightPolynomial, Polynomial.eval_finsetSum,
+    Polynomial.eval_monomial] using hroot
 
 /-- Every Toeplitz row has mass one.  This is the value at `z = 1` of
 `sum_range_discreteLimitWeight_mul_pow`. -/
@@ -748,6 +857,81 @@ theorem sum_abs_discreteLimitWeight (n : ℕ) :
       _ = _ := by rw [← Finset.sum_div, hsum]
   exact hl1
 
+/-- The dyadically weighted variation of row `n`:
+`H_n = (-1; 1 / 2)_n / (1 / 2; 1 / 2)_n`.  The theorem
+`sum_abs_discreteLimitWeight_mul_two_pow` identifies this quotient with
+`∑_j |w_{n,j}| 2^j`. -/
+noncomputable def discreteLimitWeightedVariation (n : ℕ) : ℚ :=
+  finiteQPochhammer (-1) (1 / 2) n / halfQPochhammer n
+
+/-- Exact dyadically weighted variation of the `n`-th Toeplitz row:
+`∑_{j=0}^n |w_{n,j}| 2^j = H_n`.  Conceptually this is the generating
+polynomial identity `W_n(-2) = H_n`: the two alternating signs cancel. -/
+theorem sum_abs_discreteLimitWeight_mul_two_pow (n : ℕ) :
+    (∑ j ∈ Finset.range (n + 1),
+      |discreteLimitWeight n j| * (2 : ℚ) ^ j) =
+        discreteLimitWeightedVariation n := by
+  have hterm (j : ℕ) (hj : j ∈ Finset.range (n + 1)) :
+      |discreteLimitWeight n j| * (2 : ℚ) ^ j =
+        discreteLimitWeight n j * (-2 : ℚ) ^ j := by
+    have hjle : j ≤ n := Nat.le_of_lt_succ (Finset.mem_range.mp hj)
+    rw [abs_discreteLimitWeight hjle, discreteLimitWeight]
+    have hneg : (-2 : ℚ) ^ j = (-1 : ℚ) ^ j * (2 : ℚ) ^ j := by
+      rw [show (-2 : ℚ) = (-1 : ℚ) * 2 by norm_num, mul_pow]
+    have hsign : (-1 : ℚ) ^ j * (-1 : ℚ) ^ j = 1 := by
+      rw [← pow_add, ← two_mul, pow_mul]
+      norm_num
+    rw [hneg]
+    calc
+      halfQBinomial n j * (1 / 2 : ℚ) ^ ((j + 1).choose 2) /
+            halfQPochhammer n * (2 : ℚ) ^ j =
+          ((-1 : ℚ) ^ j * (-1 : ℚ) ^ j) *
+            (halfQBinomial n j * (1 / 2 : ℚ) ^ ((j + 1).choose 2) /
+              halfQPochhammer n * (2 : ℚ) ^ j) := by
+        rw [hsign, one_mul]
+      _ = ((-1 : ℚ) ^ j * halfQBinomial n j *
+              (1 / 2 : ℚ) ^ ((j + 1).choose 2) /
+            halfQPochhammer n) *
+          ((-1 : ℚ) ^ j * (2 : ℚ) ^ j) := by
+        ring
+  calc
+    (∑ j ∈ Finset.range (n + 1),
+        |discreteLimitWeight n j| * (2 : ℚ) ^ j) =
+        ∑ j ∈ Finset.range (n + 1),
+          discreteLimitWeight n j * (-2 : ℚ) ^ j := by
+      apply Finset.sum_congr rfl
+      intro j hj
+      exact hterm j hj
+    _ = (discreteLimitWeightPolynomial n).eval (-2) := by
+      rw [discreteLimitWeightPolynomial, Polynomial.eval_finsetSum]
+      simp only [Polynomial.eval_monomial]
+    _ = discreteLimitWeightedVariation n := by
+      norm_num [discreteLimitWeightedVariation]
+
+/-- Removing the head factor from `(-1; 1 / 2)_(n+1)` leaves twice the
+shifted product `(-1 / 2; 1 / 2)_n`.  This is the structural bridge from the
+weighted variation `H_(n+1)` to the ordinary variation of row `n`. -/
+theorem finiteQPochhammer_neg_one_succ (n : ℕ) :
+    finiteQPochhammer (-1) (1 / 2) (n + 1) =
+      2 * finiteQPochhammer (-1 / 2) (1 / 2) n := by
+  induction n with
+  | zero => norm_num [finiteQPochhammer]
+  | succ n ih =>
+      calc
+        finiteQPochhammer (-1) (1 / 2) (n + 1 + 1) =
+            finiteQPochhammer (-1) (1 / 2) (n + 1) *
+              (1 - (-1) * (1 / 2 : ℚ) ^ (n + 1)) :=
+          finiteQPochhammer_succ _ _ _
+        _ = 2 * finiteQPochhammer (-1 / 2) (1 / 2) n *
+              (1 - (-1) * (1 / 2 : ℚ) ^ (n + 1)) := by
+          rw [ih]
+        _ = 2 * (finiteQPochhammer (-1 / 2) (1 / 2) n *
+              (1 - (-1 / 2) * (1 / 2 : ℚ) ^ n)) := by
+          rw [pow_succ]
+          ring
+        _ = 2 * finiteQPochhammer (-1 / 2) (1 / 2) (n + 1) := by
+          rw [finiteQPochhammer_succ]
+
 /-- The total variations of the Toeplitz rows are bounded uniformly in the
 row index. -/
 theorem sum_abs_discreteLimitWeight_le (n : ℕ) :
@@ -771,6 +955,60 @@ theorem sum_abs_discreteLimitWeight_le (n : ℕ) :
     _ ≤ (4 : ℚ) ^ 2 :=
       (sq_le_sq₀ (by positivity) (by norm_num)).2 hinv_le
     _ = 16 := by norm_num
+
+/-- Successor formula for the dyadically weighted variation.  It separates
+the head factor `2 / (1 - 2^(-(n+1)))` from the ordinary variation of row
+`n`, making the uniform estimate transparent. -/
+theorem discreteLimitWeightedVariation_succ (n : ℕ) :
+    discreteLimitWeightedVariation (n + 1) =
+      (2 / (1 - (1 / 2 : ℚ) ^ (n + 1))) *
+        (finiteQPochhammer (-1 / 2) (1 / 2) n / halfQPochhammer n) := by
+  have hpow_lt : (1 / 2 : ℚ) ^ (n + 1) < 1 :=
+    pow_lt_one₀ (by norm_num) (by norm_num) (by omega)
+  have hfac : 1 - (1 / 2 : ℚ) ^ (n + 1) ≠ 0 :=
+    (sub_pos.mpr hpow_lt).ne'
+  rw [discreteLimitWeightedVariation, finiteQPochhammer_neg_one_succ,
+    halfQPochhammer_succ]
+  field_simp [halfQPochhammer_ne_zero, hfac]
+
+/-- The dyadically weighted variations satisfy the uniform estimate
+`H_n ≤ 64`, including the zeroth row.  For a successor row the head factor
+is at most `4`, while the remaining ordinary variation is at most `16`. -/
+theorem discreteLimitWeightedVariation_le (n : ℕ) :
+    discreteLimitWeightedVariation n ≤ 64 := by
+  cases n with
+  | zero => norm_num [discreteLimitWeightedVariation, finiteQPochhammer]
+  | succ n =>
+      rw [discreteLimitWeightedVariation_succ]
+      have hpow_le : (1 / 2 : ℚ) ^ (n + 1) ≤ 1 / 2 := by
+        rw [show n + 1 = 1 + n by omega, pow_add]
+        norm_num
+        exact pow_le_one₀ (by norm_num) (by norm_num)
+      have hfac_pos : 0 < 1 - (1 / 2 : ℚ) ^ (n + 1) := by
+        have hpow_lt : (1 / 2 : ℚ) ^ (n + 1) < 1 :=
+          pow_lt_one₀ (by norm_num) (by norm_num) (by omega)
+        linarith
+      have hhead_le :
+          2 / (1 - (1 / 2 : ℚ) ^ (n + 1)) ≤ 4 := by
+        rw [div_le_iff₀ hfac_pos]
+        linarith
+      have hvariation_nonneg :
+          0 ≤ finiteQPochhammer (-1 / 2) (1 / 2) n /
+            halfQPochhammer n := by
+        rw [← sum_abs_discreteLimitWeight]
+        positivity
+      have hvariation_le :
+          finiteQPochhammer (-1 / 2) (1 / 2) n /
+              halfQPochhammer n ≤ 16 := by
+        rw [← sum_abs_discreteLimitWeight]
+        exact sum_abs_discreteLimitWeight_le n
+      calc
+        (2 / (1 - (1 / 2 : ℚ) ^ (n + 1))) *
+              (finiteQPochhammer (-1 / 2) (1 / 2) n /
+                halfQPochhammer n) ≤
+            (4 : ℚ) * 16 :=
+          mul_le_mul hhead_le hvariation_le hvariation_nonneg (by norm_num)
+        _ = 64 := by norm_num
 
 /-- A finite-row Toeplitz convergence lemma.  The row sums are one, their
 total variations are uniformly bounded, and every sampled index in a row
@@ -836,6 +1074,14 @@ theorem tendsto_weighted_rows_of_tendsto
 def discreteLimitWeightIn (K : Type*) [RCLike K] (n j : ℕ) : K :=
   (discreteLimitWeight n j : K)
 
+/-- The norm of a rational Toeplitz weight in any `RCLike` field is the
+ordinary absolute value of the rational coefficient, cast to `ℝ`. -/
+@[simp] theorem norm_discreteLimitWeightIn
+    (K : Type*) [RCLike K] (n j : ℕ) :
+    ‖discreteLimitWeightIn K n j‖ = |discreteLimitWeight n j| := by
+  rw [discreteLimitWeightIn, ← RCLike.ofReal_ratCast,
+    RCLike.norm_ofReal, Rat.cast_abs]
+
 /-- Row mass one after casting the rational weights into an
 `RCLike` field. -/
 theorem sum_range_discreteLimitWeightIn
@@ -853,12 +1099,28 @@ in `tendsto_discreteLimitWeightIn_sum` below. -/
 theorem sum_norm_discreteLimitWeightIn_le
     (K : Type*) [RCLike K] (n : ℕ) :
     (∑ j ∈ Finset.range (n + 1), ‖discreteLimitWeightIn K n j‖) ≤ 16 := by
-  have hnorm (j : ℕ) :
-      ‖discreteLimitWeightIn K n j‖ = |discreteLimitWeight n j| := by
-    rw [discreteLimitWeightIn, ← RCLike.ofReal_ratCast,
-      RCLike.norm_ofReal, Rat.cast_abs]
-  simp_rw [hnorm]
+  simp_rw [norm_discreteLimitWeightIn]
   exact_mod_cast sum_abs_discreteLimitWeight_le n
+
+/-- Exact dyadically weighted norm sum after casting the rational row into
+an arbitrary `RCLike` field.  This is the real-valued form of
+`sum_abs_discreteLimitWeight_mul_two_pow` used in quantitative estimates. -/
+theorem sum_norm_discreteLimitWeightIn_mul_two_pow
+    (K : Type*) [RCLike K] (n : ℕ) :
+    (∑ j ∈ Finset.range (n + 1),
+      ‖discreteLimitWeightIn K n j‖ * (2 : ℝ) ^ j) =
+        (discreteLimitWeightedVariation n : ℝ) := by
+  simp_rw [norm_discreteLimitWeightIn]
+  exact_mod_cast sum_abs_discreteLimitWeight_mul_two_pow n
+
+/-- The cast dyadically weighted norm sum is at most `64`, uniformly in the
+row and independently of the chosen `RCLike` coefficient field. -/
+theorem sum_norm_discreteLimitWeightIn_mul_two_pow_le
+    (K : Type*) [RCLike K] (n : ℕ) :
+    (∑ j ∈ Finset.range (n + 1),
+      ‖discreteLimitWeightIn K n j‖ * (2 : ℝ) ^ j) ≤ 64 := by
+  rw [sum_norm_discreteLimitWeightIn_mul_two_pow]
+  exact_mod_cast discreteLimitWeightedVariation_le n
 
 /-- Every index `2n-j` occurring in row `n` is at least `n`. -/
 theorem discreteLimit_index_ge {n j : ℕ} (hj : j ∈ Finset.range (n + 1)) :

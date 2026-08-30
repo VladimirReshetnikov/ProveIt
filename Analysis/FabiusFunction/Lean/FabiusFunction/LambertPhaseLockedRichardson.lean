@@ -405,6 +405,32 @@ theorem sum_shiftedReciprocalLagrangeWeight_eq_one
     sum_shiftedReciprocalLagrangeWeight_mul_pow lambda r 0
       (Nat.zero_le r)
 
+/-- A phase-locked Richardson row preserves a periodic endpoint factor
+exactly.  This is stronger than asymptotic phase stability: every sampled
+phase is literally the same modulo the period, and the interpolation weights
+have total mass one. -/
+theorem sum_shiftedReciprocalLagrangeWeight_mul_periodicPhaseLocked
+    (G : ℝ → ℝ) (hG : Periodic G 1)
+    {lambda : ℝ} (hlambda : (Real.log 2)⁻¹ < lambda) (r : ℕ) :
+    (∑ j ∈ Finset.range (r + 1),
+      shiftedReciprocalLagrangeWeight lambda r j *
+        G (fabiusLambertPhase (lambertPhaseLockedNode lambda j))) =
+      G lambda := by
+  calc
+    (∑ j ∈ Finset.range (r + 1),
+        shiftedReciprocalLagrangeWeight lambda r j *
+          G (fabiusLambertPhase (lambertPhaseLockedNode lambda j))) =
+        ∑ j ∈ Finset.range (r + 1),
+          shiftedReciprocalLagrangeWeight lambda r j * G lambda := by
+      apply Finset.sum_congr rfl
+      intro j _hj
+      rw [Periodic.apply_fabiusLambertPhase_phaseLockedNode hG hlambda j]
+    _ = (∑ j ∈ Finset.range (r + 1),
+          shiftedReciprocalLagrangeWeight lambda r j) * G lambda := by
+      rw [Finset.sum_mul]
+    _ = G lambda := by
+      rw [sum_shiftedReciprocalLagrangeWeight_eq_one, one_mul]
+
 /-- Every positive inverse-power moment through order `r` is cancelled
 exactly. -/
 theorem sum_shiftedReciprocalLagrangeWeight_mul_invPow_eq_zero
@@ -489,6 +515,26 @@ theorem
     Finset.prod_inv_distrib, div_eq_mul_inv] using
       sum_shiftedReciprocalLagrangeWeight_mul_invPow_card_add
         lambda r (s - 1)
+
+/-- Compatibility form of the all-order reciprocal-grid identity used in the
+frontier report.  After the `r` cancelled positive moments, residual offset
+`t` is the signed reciprocal nodal product times the complete homogeneous
+polynomial of degree `t`. -/
+theorem sum_shiftedReciprocalLagrangeWeight_residual
+    {K : Type*} [Field K] [CharZero K] (lambda : K) (r t : ℕ) :
+    (∑ j ∈ Finset.range (r + 1),
+      shiftedReciprocalLagrangeWeight lambda r j *
+        (lambda + (j : K))⁻¹ ^ (r + 1 + t)) =
+      (-1 : K) ^ r *
+        (∏ j ∈ Finset.range (r + 1), (lambda + (j : K)))⁻¹ *
+          completeHomogeneousEvalOn (Finset.range (r + 1))
+            (shiftedReciprocalNode lambda) t := by
+  change _ = (-1 : K) ^ r *
+    (∏ j ∈ Finset.range (r + 1), (lambda + (j : K)))⁻¹ *
+      completeHomogeneousEvalOn (Finset.range (r + 1))
+        (fun j : ℕ ↦ (lambda + (j : K))⁻¹) t
+  simpa only [Finset.prod_inv_distrib] using
+    (sum_shiftedReciprocalLagrangeWeight_mul_invPow_card_add lambda r t)
 
 /-- The first inverse-power moment beyond the cancelled range is the signed
 reciprocal nodal product.  This identity is valid even if one shift is zero,
