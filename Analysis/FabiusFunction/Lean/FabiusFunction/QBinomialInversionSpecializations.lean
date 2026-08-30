@@ -1,14 +1,13 @@
 import FabiusFunction.QBinomialInversion
-import FabiusFunction.GeometricQBinomialLagrange
 import FabiusFunction.Arithmetic
 
 /-!
 # Exact specializations of finite q-binomial inversion
 
-This module records two division-free specializations of the scaled Gaussian
-kernel and its inverse.  First, the numerator of the geometric Lagrange weight
-is identified globally with the scaled inverse kernel at scale `q`.  Second,
-specializing the Gaussian base to `q ^ 2` and the scale to `-q` produces the
+This module records the q-Gaussian specialization of the scaled Gaussian
+kernel and its inverse.  The upstream geometric-Lagrange module identifies
+its numerator globally with the scaled inverse kernel at scale `q`;
+specializing instead to Gaussian base `q ^ 2` and scale `-q` produces the
 residual and reconstruction coefficients used by the q-Gaussian transform.
 
 The residual coefficient has the signed form
@@ -19,15 +18,14 @@ whereas the two powers in the reconstruction coefficient combine to
 
 `q^((n-k)^2) [n choose k]_(q^2)`.
 
-Both coefficient families are total on natural indices.  Their two finite
-`Icc` convolutions are the Kronecker delta, directly by scaled q-binomial
-orthogonality.  All results hold over an arbitrary commutative ring and use no
-analytic, nonvanishing, or invertibility hypotheses.
+Both coefficient families and their pointwise closed forms are defined over
+an arbitrary ring and are total on natural indices.  Over a commutative ring,
+their two finite `Icc` convolutions are the Kronecker delta, directly by scaled
+q-binomial orthogonality.  No result uses an analytic, nonvanishing, or
+invertibility hypothesis.
 
 ## Main results
 
-* `geometricQBinomialWeightNumerator_eq_scaledGaussianBinomialInverseKernel`
-  identifies the geometric numerator with a scaled inverse kernel globally.
 * `qGaussianResidualCoeff` and `qGaussianReconstructionCoeff` are the two
   specialized coefficient kernels.
 * `qGaussianResidualCoeff_eq` and `qGaussianReconstructionCoeff_eq` give their
@@ -45,39 +43,23 @@ namespace Fabius
 
 open Finset
 
-/-- **Global kernel form of the geometric Lagrange numerator.**  For every
-pair of natural indices, including indices above the diagonal, the
-denominator-free numerator is the scaled Gaussian inverse kernel with both
-base and scale equal to `q`.
-
-The equality above the diagonal follows from the zero extension on both
-sides, so no hypothesis `k ≤ n` is required. -/
-theorem geometricQBinomialWeightNumerator_eq_scaledGaussianBinomialInverseKernel
-    {R : Type*} [CommRing R] (q : R) (n k : ℕ) :
-    geometricQBinomialWeightNumerator q n k =
-      scaledGaussianBinomialInverseKernel q q n k := by
-  rw [geometricQBinomialWeightNumerator_eq_forward,
-    scaledGaussianBinomialInverseKernel, choose_succ_two, pow_add,
-    show (-q : R) = (-1 : R) * q by ring, mul_pow]
-  ring
-
 /-- The q-Gaussian residual coefficient: the scaled Gaussian forward kernel
 at Gaussian base `q ^ 2` and independent scale `-q`. -/
 def qGaussianResidualCoeff
-    {R : Type*} [CommRing R] (q : R) (n k : ℕ) : R :=
+    {R : Type*} [Ring R] (q : R) (n k : ℕ) : R :=
   scaledGaussianBinomialKernel (q ^ 2) (-q) n k
 
 /-- The q-Gaussian reconstruction coefficient: the scaled Gaussian inverse
 kernel at Gaussian base `q ^ 2` and independent scale `-q`. -/
 def qGaussianReconstructionCoeff
-    {R : Type*} [CommRing R] (q : R) (n k : ℕ) : R :=
+    {R : Type*} [Ring R] (q : R) (n k : ℕ) : R :=
   scaledGaussianBinomialInverseKernel (q ^ 2) (-q) n k
 
 /-- Closed form of the q-Gaussian residual coefficient:
 `(-q)^(n-k) [n choose k]_(q^2)`.  The formula is total, since the Gaussian
 binomial coefficient vanishes above the diagonal. -/
 theorem qGaussianResidualCoeff_eq
-    {R : Type*} [CommRing R] (q : R) (n k : ℕ) :
+    {R : Type*} [Ring R] (q : R) (n k : ℕ) :
     qGaussianResidualCoeff q n k =
       (-q) ^ (n - k) * gaussianBinomial (q ^ 2) n k := by
   rfl
@@ -86,7 +68,7 @@ theorem qGaussianResidualCoeff_eq
 `q^((n-k)^2) [n choose k]_(q^2)`.  The square exponent is the sum of the
 linear scale exponent and twice the triangular inverse-kernel exponent. -/
 theorem qGaussianReconstructionCoeff_eq
-    {R : Type*} [CommRing R] (q : R) (n k : ℕ) :
+    {R : Type*} [Ring R] (q : R) (n k : ℕ) :
     qGaussianReconstructionCoeff q n k =
       q ^ ((n - k) ^ 2) * gaussianBinomial (q ^ 2) n k := by
   rw [qGaussianReconstructionCoeff,

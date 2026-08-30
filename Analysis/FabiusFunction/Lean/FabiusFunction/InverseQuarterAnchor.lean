@@ -53,8 +53,8 @@ noncomputable section
 This is the first nontrivial inverse-dyadic value, extracted from the general
 exact evaluator `fabiusAtInverseTwoPow_cast`. -/
 theorem fabiusReal_quarter (F : BoundedFabius) (hF : IsFabius F) :
-    fabiusReal F (1 / 4) = 5 / 72 := by
-  exact fabiusReal_one_quarter F hF
+    fabiusReal F (1 / 4) = 5 / 72 :=
+  fabiusReal_one_quarter F hF
 
 /-- The exact quarter quantile of every bounded Fabius function:
 `F^{-1}(5 / 72) = 1 / 4`. -/

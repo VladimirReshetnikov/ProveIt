@@ -382,15 +382,17 @@ private theorem quarter_range_length_of_mem_left_closed_right_open
     rw [mul_add, dyadic_quarterAnchor_scale]
     have hpowNonneg : 0 ≤ (2 : ℝ) ^ m := by positivity
     linarith
+  have hpowCast : ((2 ^ m : ℕ) : ℝ) = (2 : ℝ) ^ m := by
+    norm_num
   rw [fabiusDiscreteLimitRangeLength]
   apply (Nat.floor_eq_iff hargNonneg).2
   rw [show (2 : ℝ) ^ (m + 2) * (1 / 4 + z) + 1 / 2 =
       (2 : ℝ) ^ m + (2 : ℝ) ^ (m + 2) * z + 1 / 2 by
         rw [mul_add, dyadic_quarterAnchor_scale]]
   constructor
-  · push_cast
+  · rw [hpowCast]
     linarith
-  · push_cast
+  · rw [hpowCast]
     linarith
 
 private theorem quarter_range_length_at_endpoint (m : ℕ) :
@@ -467,7 +469,7 @@ theorem reportFiniteFabiusApproximant_quarter_eq_quadratic
   have hz' :
       z ∈ Icc (-((2 : ℝ) ^ (m + 3))⁻¹) (((2 : ℝ) ^ (m + 3))⁻¹) := by
     simpa only [hadd] using hz
-  simpa only [reportFiniteFabiusApproximant, hsub, hadd] using
+  simpa only [reportFiniteFabiusApproximant, hadd, hsub] using
     fabiusUniformSpline_quarter_eq_quadratic m hz'
 
 /-! ## The exact local polynomial and inverse transfer -/

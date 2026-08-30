@@ -183,7 +183,9 @@ theorem normalizedDyadicSineProduct_mul_add_of_dyadic_period
       calc
         normalizedDyadicSineProduct ((q + 1) * d + r) t =
             normalizedDyadicSineProduct ((q * d + r) + d) t := by
-          rw [show (q + 1) * d + r = (q * d + r) + d by ring]
+          rw [show (q + 1) * d + r = (q * d + r) + d by
+            simp only [Nat.add_mul, one_mul]
+            ac_rfl]
         _ = normalizedDyadicSineProduct d t *
             normalizedDyadicSineProduct (q * d + r) t :=
           normalizedDyadicSineProduct_add_of_dyadic_period
@@ -286,42 +288,29 @@ theorem norm_rvachevFourierProduct_two_pow_mul_half
     ‖rvachevFourierProduct
         ((2 : ℂ) ^ n * ((y / 2 : ℝ) : ℂ))‖ =
       normalizedDyadicSineProduct n (y - 1) /
+        ((2 : ℝ) ^ (n * (n + 1) / 2) *
+            (Real.pi * |y|) ^ n) *
+        rvachevFixedMantissaTail y := by
+  have hcross := norm_rvachevFourierProduct_two_pow_mul_half_cross n y
+  have hden :
+      (2 : ℝ) ^ (n * (n + 1) / 2) *
+          (Real.pi * |y|) ^ n ≠ 0 := by
+    have hyabs : 0 < |y| := abs_pos.mpr hy
+    positivity
+  calc
+    ‖rvachevFourierProduct
+        ((2 : ℂ) ^ n * ((y / 2 : ℝ) : ℂ))‖ =
+        (normalizedDyadicSineProduct n (y - 1) *
+            rvachevFixedMantissaTail y) /
+          ((2 : ℝ) ^ (n * (n + 1) / 2) *
+            (Real.pi * |y|) ^ n) := by
+      apply (eq_div_iff hden).2
+      simpa only [mul_comm] using hcross
+    _ = normalizedDyadicSineProduct n (y - 1) /
           ((2 : ℝ) ^ (n * (n + 1) / 2) *
             (Real.pi * |y|) ^ n) *
         rvachevFixedMantissaTail y := by
-  have hyhalf : y / 2 ≠ 0 := div_ne_zero hy (by norm_num)
-  have hdyadicCancel : (1 / 2 : ℝ) ^ n * 2 ^ n = 1 := by
-    rw [← mul_pow]
-    norm_num
-  have hreassociate (a b c : ℝ) :
-      a * b * c = c * (1 / 2 : ℝ) ^ n * b * 2 ^ n * a := by
-    calc
-      a * b * c = c * b * a := by ring
-      _ = c * b * a * ((1 / 2 : ℝ) ^ n * 2 ^ n) := by
-        rw [hdyadicCancel, mul_one]
-      _ = c * (1 / 2 : ℝ) ^ n * b * 2 ^ n * a := by ring
-  have hsine :
-      (∏ x ∈ range n,
-          |Real.sin (Real.pi * (2 : ℝ) ^ x * y)|) =
-        ∏ x ∈ range n,
-          |Real.sin (Real.pi * y * (2 : ℝ) ^ x)| := by
-    apply Finset.prod_congr rfl
-    intro x _
-    rw [show Real.pi * (2 : ℝ) ^ x * y =
-        Real.pi * y * (2 : ℝ) ^ x by ring]
-  have hhalfPow :
-      (Real.pi * |y| / 2) ^ n =
-        (Real.pi * |y|) ^ n * (1 / 2 : ℝ) ^ n := by
-    simp only [div_eq_mul_inv, mul_pow, one_mul]
-  unfold rvachevFixedMantissaTail
-  rw [norm_rvachevFourierProduct_two_pow_mul n (y / 2) hyhalf,
-    prod_abs_sin_shell_half_eq,
-    normalizedDyadicSineProduct_sub_one,
-    normalizedDyadicSineProduct_eq_two_pow_mul,
-    abs_div, abs_of_pos (by norm_num : (0 : ℝ) < 2)]
-  field_simp [Real.pi_ne_zero, abs_ne_zero.mpr hy]
-  rw [hsine, hhalfPow]
-  exact hreassociate _ _ _
+      ring
 
 /-- **Exact fixed-mantissa factorization, zero-valid form.**  For all
 `N : ℕ` and all real mantissas `y`,
@@ -346,7 +335,7 @@ theorem norm_rvachevFourierProduct_fixedMantissa_cross (N : ℕ) (y : ℝ) :
     ring
   have htri :
       (N + 1) * ((N + 1) + 1) / 2 = (N + 1) * (N + 2) / 2 := by
-    simp only [Nat.add_assoc, Nat.reduceAdd]
+    rfl
   simpa only [harg, htri] using h
 
 /-- **Exact fixed-mantissa factorization, divided form.**  Away from the
@@ -374,7 +363,7 @@ theorem norm_rvachevFourierProduct_fixedMantissa
     ring
   have htri :
       (N + 1) * ((N + 1) + 1) / 2 = (N + 1) * (N + 2) / 2 := by
-    simp only [Nat.add_assoc, Nat.reduceAdd]
+    rfl
   simpa only [harg, htri] using h
 
 /-- **The report's exact ray factorization.**  If `1 < y < 2`, then
@@ -405,7 +394,7 @@ theorem norm_rvachevFourierProduct_fixedMantissa_of_mem_Ioo
         have htri :
             (N + 1) * ((N + 1) + 1) / 2 =
               (N + 1) * (N + 2) / 2 := by
-          simp only [Nat.add_assoc, Nat.reduceAdd]
+          rfl
         simpa only [htri] using h.symm
       _ = (∏ j ∈ range N, (2 : ℝ) ^ (j + 1)) *
           (2 : ℝ) ^ (N + 1) := by

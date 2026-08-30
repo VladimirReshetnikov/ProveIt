@@ -65,7 +65,9 @@ theorem fabiusReal_midpoint_add_eq
     have hshift : HasDerivAt (fun z : ℝ => fabiusReal F (1 / 2 + z))
         (2 * fabiusReal F (1 - 2 * t)) t := by
       have hhigh := fabius_hasDerivAt_reflected_of_half_le F hF
-        (t := 1 / 2 + t) (le_add_of_nonneg_right ht.1)
+        (t := 1 / 2 + t) (by
+          simpa only [add_zero] using
+            add_le_add_right ht.1 (1 / 2 : ℝ))
       have hcomp := hhigh.comp t
         ((hasDerivAt_id t).const_add (1 / 2 : ℝ))
       have harg :
@@ -76,11 +78,14 @@ theorem fabiusReal_midpoint_add_eq
     have hsum : HasDerivAt lhs
         (2 * fabiusReal F (1 - 2 * t) + 2 * fabiusReal F (2 * t)) t := by
       simpa only [lhs, Pi.add_apply] using hshift.fun_add hlow
-    have ht2low : 0 ≤ 2 * t := mul_nonneg (by norm_num) ht.1
-    have ht2high : 2 * t ≤ 1 := by linarith [ht.2.le]
     have hsymmetry :
         fabiusReal F (1 - 2 * t) = 1 - fabiusReal F (2 * t) :=
-      hF.symmetry (2 * t) ⟨ht2low, ht2high⟩
+      hF.symmetry (2 * t) ⟨
+        mul_nonneg (by norm_num) ht.1,
+        calc
+          2 * t ≤ 2 * (1 / 2 : ℝ) :=
+            mul_le_mul_of_nonneg_left ht.2.le (by norm_num)
+          _ = 1 := by norm_num⟩
     have hcoefficient :
         2 * fabiusReal F (1 - 2 * t) + 2 * fabiusReal F (2 * t) = 2 := by
       rw [hsymmetry]
@@ -240,8 +245,9 @@ theorem intervalIntegral_mul_fabiusReal_midpoint_add_defect_eq_neg
   apply intervalIntegral.integral_congr
   intro h hh
   rw [uIcc_of_le ha0] at hh
-  change w h * (fabiusReal F (1 / 2 + h) - 1 / 2 - 2 * h) =
-    -(w h * fabiusReal F h)
+  change
+    w h * (fabiusReal F (1 / 2 + h) - 1 / 2 - 2 * h) =
+      -(w h * fabiusReal F h)
   rw [fabiusReal_midpoint_add_eq F hF hh.1 (hh.2.trans hahalf)]
   ring
 
@@ -256,8 +262,9 @@ theorem intervalIntegral_mul_fabiusReal_midpoint_sub_defect_eq
   apply intervalIntegral.integral_congr
   intro h hh
   rw [uIcc_of_le ha0] at hh
-  change w h * (fabiusReal F (1 / 2 - h) - 1 / 2 + 2 * h) =
-    w h * fabiusReal F h
+  change
+    w h * (fabiusReal F (1 / 2 - h) - 1 / 2 + 2 * h) =
+      w h * fabiusReal F h
   rw [fabiusReal_midpoint_sub_eq F hF hh.1 (hh.2.trans hahalf)]
   ring
 

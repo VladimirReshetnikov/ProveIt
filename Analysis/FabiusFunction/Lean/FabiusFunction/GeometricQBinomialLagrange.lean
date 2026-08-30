@@ -1,5 +1,5 @@
-import FabiusFunction.FiniteQBinomialCore
 import FabiusFunction.GeometricResidualMoments
+import FabiusFunction.QDifferenceAnnihilation
 import Mathlib.Algebra.BigOperators.Field
 
 /-!
@@ -102,204 +102,55 @@ theorem geometricQBinomialWeightNumerator_eq_forward
     simp only [geometricQBinomialWeightNumerator, if_neg hk,
       gaussianBinomial_eq_zero_of_lt q hnk, mul_zero]
 
+/-- **Global inverse-kernel form of the geometric Lagrange numerator.**
+For every pair of natural indices, including indices above the diagonal,
+the denominator-free numerator is the scaled inverse Gaussian kernel with
+both base and scale equal to `q`.
+
+This bridge makes the geometric numerator polynomial the `s = q`
+specialization of the general scaled Gaussian characteristic polynomial. -/
+theorem geometricQBinomialWeightNumerator_eq_scaledGaussianBinomialInverseKernel
+    {R : Type*} [CommRing R] (q : R) (n k : ℕ) :
+    geometricQBinomialWeightNumerator q n k =
+      scaledGaussianBinomialInverseKernel q q n k := by
+  have hchoose :
+      (n - k + 1).choose 2 = (n - k).choose 2 + (n - k) := by
+    simpa [Nat.add_comm] using Nat.choose_succ_succ (n - k) 1
+  rw [geometricQBinomialWeightNumerator_eq_forward,
+    scaledGaussianBinomialInverseKernel, hchoose, pow_add,
+    show (-q : R) = (-1 : R) * q by ring, mul_pow]
+  ring
+
 /-- Above its natural row range, the numerator vanishes. -/
 @[simp] theorem geometricQBinomialWeightNumerator_eq_zero_of_lt
     {R : Type*} [CommRing R] (q : R) {n k : ℕ} (hk : n < k) :
     geometricQBinomialWeightNumerator q n k = 0 := by
   simp [geometricQBinomialWeightNumerator, show ¬ k ≤ n by omega]
 
-private def reversedQBinomialSummand
-    {R : Type*} [CommRing R] (q z : R) (n k : ℕ) : R :=
-  (-1 : R) ^ k * q ^ ((k + 1).choose 2) *
-    gaussianBinomial q n k * z ^ (n - k)
-
-@[simp] private theorem reversedQBinomialSummand_zero
-    {R : Type*} [CommRing R] (q z : R) (n : ℕ) :
-    reversedQBinomialSummand q z n 0 = z ^ n := by
-  simp [reversedQBinomialSummand]
-
-private theorem reversedQBinomialSummand_above
-    {R : Type*} [CommRing R] (q z : R) (n : ℕ) :
-    reversedQBinomialSummand q z n (n + 1) = 0 := by
-  rw [reversedQBinomialSummand,
-    gaussianBinomial_eq_zero_of_lt q (Nat.lt_succ_self n)]
-  ring
-
-private theorem choose_succ_two_bridge (k : ℕ) :
-    (k + 1).choose 2 = k.choose 2 + k := by
-  simpa [Nat.add_comm] using Nat.choose_succ_succ k 1
-
-private theorem reversedQBinomialSummand_succ_succ
-    {R : Type*} [CommRing R] (q z : R)
-    (n k : ℕ) (hk : k ≤ n) :
-    reversedQBinomialSummand q z (n + 1) (k + 1) =
-      z * reversedQBinomialSummand q z n (k + 1) -
-        q ^ (n + 1) * reversedQBinomialSummand q z n k := by
-  have hsub : n + 1 - (k + 1) = n - k := by omega
-  have hchoose :
-      (k + 1 + 1).choose 2 = (k + 1).choose 2 + (k + 1) :=
-    choose_succ_two_bridge (k + 1)
-  have hqpow : q ^ (k + 1) * q ^ (n - k) = q ^ (n + 1) := by
-    rw [← pow_add]
-    congr 1
-    omega
-  have hqtotal :
-      q ^ ((k + 1 + 1).choose 2) * q ^ (n - k) =
-        q ^ (n + 1) * q ^ ((k + 1).choose 2) := by
-    rw [hchoose, pow_add]
-    calc
-      q ^ ((k + 1).choose 2) * q ^ (k + 1) * q ^ (n - k) =
-          q ^ ((k + 1).choose 2) *
-            (q ^ (k + 1) * q ^ (n - k)) := by ring
-      _ = q ^ ((k + 1).choose 2) * q ^ (n + 1) := by rw [hqpow]
-      _ = q ^ (n + 1) * q ^ ((k + 1).choose 2) := by ring
-  have hfirst :
-      z * reversedQBinomialSummand q z n (k + 1) =
-        (-1 : R) ^ (k + 1) * q ^ ((k + 1 + 1).choose 2) *
-          gaussianBinomial q n (k + 1) * z ^ (n - k) := by
-    rcases Nat.lt_or_eq_of_le hk with hlt | heq
-    · have hzexp : n - (k + 1) + 1 = n - k := by omega
-      have hzpow : z * z ^ (n - (k + 1)) = z ^ (n - k) := by
-        rw [← hzexp, pow_succ]
-        ring
-      rw [reversedQBinomialSummand]
-      calc
-        z *
-              ((-1 : R) ^ (k + 1) * q ^ ((k + 1 + 1).choose 2) *
-                gaussianBinomial q n (k + 1) * z ^ (n - (k + 1))) =
-            (-1 : R) ^ (k + 1) * q ^ ((k + 1 + 1).choose 2) *
-              gaussianBinomial q n (k + 1) *
-                (z * z ^ (n - (k + 1))) := by ring
-        _ = (-1 : R) ^ (k + 1) * q ^ ((k + 1 + 1).choose 2) *
-              gaussianBinomial q n (k + 1) * z ^ (n - k) := by
-          rw [hzpow]
-    · rw [reversedQBinomialSummand,
-        gaussianBinomial_eq_zero_of_lt q (by omega : n < k + 1)]
-      ring
-  have hsecond :
-      (-1 : R) ^ (k + 1) * q ^ ((k + 1 + 1).choose 2) *
-          (q ^ (n - k) * gaussianBinomial q n k) * z ^ (n - k) =
-        -(q ^ (n + 1) * reversedQBinomialSummand q z n k) := by
-    calc
-      (-1 : R) ^ (k + 1) * q ^ ((k + 1 + 1).choose 2) *
-            (q ^ (n - k) * gaussianBinomial q n k) * z ^ (n - k) =
-          (-1 : R) ^ (k + 1) *
-            (q ^ ((k + 1 + 1).choose 2) * q ^ (n - k)) *
-              gaussianBinomial q n k * z ^ (n - k) := by ring
-      _ = (-1 : R) ^ (k + 1) *
-            (q ^ (n + 1) * q ^ ((k + 1).choose 2)) *
-              gaussianBinomial q n k * z ^ (n - k) := by rw [hqtotal]
-      _ = -(q ^ (n + 1) * reversedQBinomialSummand q z n k) := by
-        rw [reversedQBinomialSummand, pow_succ]
-        ring
-  calc
-    reversedQBinomialSummand q z (n + 1) (k + 1) =
-        (-1 : R) ^ (k + 1) * q ^ ((k + 1 + 1).choose 2) *
-          (gaussianBinomial q n (k + 1) +
-            q ^ (n - k) * gaussianBinomial q n k) * z ^ (n - k) := by
-      rw [reversedQBinomialSummand, gaussianBinomial_succ_succ, hsub]
-    _ =
-        ((-1 : R) ^ (k + 1) * q ^ ((k + 1 + 1).choose 2) *
-          gaussianBinomial q n (k + 1) * z ^ (n - k)) +
-        ((-1 : R) ^ (k + 1) * q ^ ((k + 1 + 1).choose 2) *
-          (q ^ (n - k) * gaussianBinomial q n k) * z ^ (n - k)) := by
-      ring
-    _ = z * reversedQBinomialSummand q z n (k + 1) -
-        q ^ (n + 1) * reversedQBinomialSummand q z n k := by
-      rw [← hfirst, hsecond]
-      ring
-
-private theorem reversed_finite_qBinomial_theorem_aux
-    {R : Type*} [CommRing R] (q z : R) (n : ℕ) :
-    (∑ k ∈ Finset.range (n + 1),
-      reversedQBinomialSummand q z n k) =
-      ∏ j ∈ Finset.range n, (z - q ^ (j + 1)) := by
-  induction n with
-  | zero => simp [reversedQBinomialSummand]
-  | succ n ih =>
-      have hrec :
-          (∑ k ∈ Finset.range (n + 1),
-              reversedQBinomialSummand q z (n + 1) (k + 1)) =
-            ∑ k ∈ Finset.range (n + 1),
-              (z * reversedQBinomialSummand q z n (k + 1) -
-                q ^ (n + 1) * reversedQBinomialSummand q z n k) := by
-        apply Finset.sum_congr rfl
-        intro k hk
-        exact reversedQBinomialSummand_succ_succ q z n k
-          (Nat.lt_succ_iff.mp (Finset.mem_range.mp hk))
-      have htail :
-          z ^ n + (∑ k ∈ Finset.range (n + 1),
-              reversedQBinomialSummand q z n (k + 1)) =
-            ∑ k ∈ Finset.range (n + 1),
-              reversedQBinomialSummand q z n k := by
-        calc
-          z ^ n + (∑ k ∈ Finset.range (n + 1),
-              reversedQBinomialSummand q z n (k + 1)) =
-              ∑ k ∈ Finset.range (n + 2),
-                reversedQBinomialSummand q z n k := by
-            have hs := (Finset.sum_range_succ'
-              (fun k => reversedQBinomialSummand q z n k) (n + 1)).symm
-            rw [show n + 1 + 1 = n + 2 by omega] at hs
-            simpa [add_comm] using hs
-          _ = (∑ k ∈ Finset.range (n + 1),
-                reversedQBinomialSummand q z n k) +
-              reversedQBinomialSummand q z n (n + 1) := by
-            exact Finset.sum_range_succ _ _
-          _ = _ := by
-            rw [reversedQBinomialSummand_above, add_zero]
-      rw [show n + 1 + 1 = n + 2 by omega, Finset.sum_range_succ']
-      rw [reversedQBinomialSummand_zero, hrec, Finset.sum_sub_distrib]
-      rw [← Finset.mul_sum, ← Finset.mul_sum]
-      calc
-        (z * (∑ k ∈ Finset.range (n + 1),
-                  reversedQBinomialSummand q z n (k + 1)) -
-                q ^ (n + 1) * (∑ k ∈ Finset.range (n + 1),
-                  reversedQBinomialSummand q z n k)) + z ^ (n + 1) =
-            z * (z ^ n + ∑ k ∈ Finset.range (n + 1),
-                reversedQBinomialSummand q z n (k + 1)) -
-              q ^ (n + 1) * (∑ k ∈ Finset.range (n + 1),
-                reversedQBinomialSummand q z n k) := by
-          rw [pow_succ]
-          ring
-        _ = z * (∑ k ∈ Finset.range (n + 1),
-                reversedQBinomialSummand q z n k) -
-              q ^ (n + 1) * (∑ k ∈ Finset.range (n + 1),
-                reversedQBinomialSummand q z n k) := by
-          rw [htail]
-        _ = (z - q ^ (n + 1)) *
-              (∑ k ∈ Finset.range (n + 1),
-                reversedQBinomialSummand q z n k) := by ring
-        _ = (z - q ^ (n + 1)) *
-              (∏ j ∈ Finset.range n, (z - q ^ (j + 1))) := by rw [ih]
-        _ = ∏ j ∈ Finset.range (n + 1), (z - q ^ (j + 1)) := by
-          rw [Finset.prod_range_succ]
-          ring
-
 /-- **Reversed finite q-binomial polynomial identity.**  These are exactly
 the denominator-free numerators of the geometric Lagrange row.  The theorem
-is valid over every commutative ring, without division and for every `q`. -/
+is the scale-`q` specialization of the general inverse-Gaussian
+characteristic polynomial.  It is valid over every commutative ring,
+without division and for every `q`. -/
 theorem reversed_finite_qBinomial_theorem
     {R : Type*} [CommRing R] (q z : R) (n : ℕ) :
     (∑ k ∈ Finset.range (n + 1),
       geometricQBinomialWeightNumerator q n k * z ^ k) =
       ∏ j ∈ Finset.range n, (z - q ^ (j + 1)) := by
-  have hreflect := Finset.sum_range_reflect
-    (fun k => reversedQBinomialSummand q z n k) (n + 1)
   calc
     (∑ k ∈ Finset.range (n + 1),
         geometricQBinomialWeightNumerator q n k * z ^ k) =
         ∑ k ∈ Finset.range (n + 1),
-          reversedQBinomialSummand q z n (n - k) := by
+          scaledGaussianBinomialInverseKernel q q n k * z ^ k := by
       apply Finset.sum_congr rfl
-      intro k hk
-      have hkn : k ≤ n := Nat.lt_succ_iff.mp (Finset.mem_range.mp hk)
-      simp only [geometricQBinomialWeightNumerator_eq_of_le q hkn,
-        reversedQBinomialSummand, Nat.sub_sub_self hkn]
-    _ = ∑ k ∈ Finset.range (n + 1),
-          reversedQBinomialSummand q z n k := by
-      simpa only [Nat.add_sub_cancel] using hreflect
-    _ = ∏ j ∈ Finset.range n, (z - q ^ (j + 1)) :=
-      reversed_finite_qBinomial_theorem_aux q z n
+      intro k _hk
+      rw [geometricQBinomialWeightNumerator_eq_scaledGaussianBinomialInverseKernel]
+    _ = ∏ j ∈ Finset.range n, (z - q * q ^ j) :=
+      sum_scaledGaussianBinomialInverseKernel_mul_pow q q z n
+    _ = _ := by
+      apply Finset.prod_congr rfl
+      intro j _hj
+      rw [pow_succ']
 
 /-- The numerator row has the normalized Lagrange moments before division
 by `(q;q)_n`: degree zero gives `(q;q)_n`, while every positive degree at

@@ -5465,6 +5465,49 @@ including empty products, zero divisors, positive characteristic, \(q=0\), and
 roots of unity.  The final identity is the full denominator-free replacement
 for the usual quotient definition of a Gaussian coefficient.
 
+The companion \path{QPochhammerElementaryIdentities.lean} has exactly thirteen
+public theorems.  Its commutative-ring layer consists of the two unit-valued
+base reversals
+\lean{finiteQPochhammerIn_base_reversal_units} and
+\lean{finiteQPochhammerIn_inv_base_reversal_units}, the root-safe terminating
+numerator \lean{prod_pow_sub_pow_eq_finiteQPochhammerIn}, the first-column
+clearer \lean{one_sub_mul_gaussianBinomial_one}, and the two adjacent cross
+identities \lean{gaussianBinomial_adjacent_mul} and
+\lean{gaussianBinomial_row_adjacent_mul}.  In human notation these identities
+are
+\begin{align*}
+ \prod_{j<k}(q^N-q^j)
+   &=(-1)^kq^{\binom k2}(q^{N-k+1};q)_k \qquad(k\le N),\\
+ (1-q^{k+1}){n\brack k+1}_q
+   &=(1-q^{n-k}){n\brack k}_q,\\
+ (1-q^{n-k}){n\brack k}_q
+   &=(1-q^n){n-1\brack k}_q.
+\end{align*}
+These formulas remain valid at roots of unity; the first also permits zero
+divisors and \(q=0\), while the last two are total for all natural \(n,k\).
+On and above the row boundary, zero extension makes both sides of each
+adjacent identity vanish.
+
+The seven field declarations are
+\lean{finiteQPochhammerIn_base_reversal},
+\lean{finiteQPochhammerIn_inv_base_reversal},
+\lean{pow_mul_finiteQPochhammerIn_inv_pow_eq},
+\lean{finiteQPochhammerIn_inv_pow_eq_self_div},
+\lean{finiteQPochhammerIn_inv_pow_eq_zero_of_lt},
+\lean{gaussianBinomial_adjacent_div}, and
+\lean{gaussianBinomial_row_adjacent_div}.  Both numerical base-reversal
+orientations require exactly \(a\ne0\) and \(q\ne0\).  For \(k\le N\), the
+cleared terminating identity needs only \(q\ne0\); the quotient
+\[
+ (q^{-N};q)_k
+ =\frac{(-1)^kq^{\binom k2}(q;q)_N}
+        {q^{Nk}(q;q)_{N-k}}
+\]
+additionally requires \((q;q)_{N-k}\ne0\), while the vanishing for \(k>N\)
+again needs only \(q\ne0\).  For \(k<n\), the adjacent quotient corollaries
+require, respectively, \({n\brack k}_q\ne0\) and \(1-q^{k+1}\ne0\), or
+\({n-1\brack k}_q\ne0\) and \(1-q^{n-k}\ne0\); neither assumes \(q\ne0\).
+
 Over the rationals, \lean{finiteQPochhammerIn_rat_eq} identifies the generic product
 with the established finite \(q\)-Pochhammer notation.  At $q=1/2$,
 \lean{gaussianBinomial_half_eq_halfQBinomial} identifies the recursive coefficient
@@ -5643,11 +5686,13 @@ including \(n<k\), without an in-range hypothesis.  At Gaussian base
  B_{n,k}=L^{q^2,-q}_{n,k}
    =q^{(n-k)^2}\qbinom{n}{k}{q^2}.                        \label{eq:q-gaussian-inverse-kernels}
 \end{equation}
-Then both total finite products satisfy \(C'B=BC'=I\).  These coefficient
-identities use no analytic or nonvanishing assumption.  By contrast, the
-normalized Lagrange quotient in \eqref{eq:geometric-lagrange-gaussian}
-retains its separate field, finite-node injectivity, and displayed in-range
-hypotheses.
+The two coefficient definitions and their displayed pointwise closed forms
+already hold in an arbitrary, possibly noncommutative ring.  Commutativity is
+needed only for the two convolution theorems, under which both total finite
+products satisfy \(C'B=BC'=I\).  These identities use no analytic or
+nonvanishing assumption.  By contrast, the normalized Lagrange quotient in
+\eqref{eq:geometric-lagrange-gaussian} retains its separate field,
+finite-node injectivity, and displayed in-range hypotheses.
 \end{theorem}
 
 \begin{proof}[Formal proof]
@@ -5709,17 +5754,84 @@ inverse definitions need a ring with the same target assumptions.  The four
 inversion theorems require a commutative ring, again acting on an additive
 commutative monoid.  No additive inverses are required in the target.
 
-Finally, the two definitions and five theorems of
+The global bridge
+\lean{geometricQBinomialWeightNumerator_eq_scaledGaussianBinomialInverseKernel}
+belongs to \path{GeometricQBinomialLagrange.lean}.  It proves
+\eqref{eq:q-geometric-numerator-kernel} for every pair of natural indices,
+including above the diagonal, and makes the geometric numerator the
+scale-\(q\) specialization of the characteristic polynomial in
+\cref{thm:q-difference-annihilation-formal}.
+
+Finally, the two definitions and four theorems of
 \path{QBinomialInversionSpecializations.lean} are, exhaustively,
-\lean{geometricQBinomialWeightNumerator_eq_scaledGaussianBinomialInverseKernel},
 \lean{qGaussianResidualCoeff},
 \lean{qGaussianReconstructionCoeff},
 \lean{qGaussianResidualCoeff_eq},
 \lean{qGaussianReconstructionCoeff_eq},
 \lean{qGaussianReconstructionCoeff_residualCoeff_delta}, and
 \lean{qGaussianResidualCoeff_reconstructionCoeff_delta}.  These are
-\eqref{eq:q-geometric-numerator-kernel}, the two closed forms in
-\eqref{eq:q-gaussian-inverse-kernels}, and both convolution orders.
+the two closed forms in \eqref{eq:q-gaussian-inverse-kernels} and both
+convolution orders.  The two definitions and the two pointwise equality
+theorems require only \texttt{[Ring R]}; exactly the two convolution-delta
+theorems require \texttt{[CommRing R]}.
+\end{proof}
+
+\begin{theorem}[Scaled Gaussian characteristic and exact \(q\)-difference annihilation]
+\label{thm:q-difference-annihilation-formal}
+Let \(R\) be a commutative ring and let \(q,s,z\in R\).  With the total
+inverse Gaussian row from \eqref{eq:q-scaled-inverse-kernel},
+\[
+ L^{q,s}_{n,k}=(-s)^{n-k}q^{\binom{n-k}{2}}{n\brack k}_q,
+\]
+one has the homogeneous, denominator-free characteristic identity
+\begin{equation}
+ \sum_{k=0}^{n}L^{q,s}_{n,k}z^k
+ =\prod_{j=0}^{n-1}(z-sq^j).                           \label{eq:q-scaled-characteristic}
+\end{equation}
+In particular, taking \(s=1\) and \(z=q^d\) gives every monomial moment:
+\begin{equation}
+ \sum_{k=0}^{n}L^{q,1}_{n,k}(q^k)^d
+ =\prod_{j=0}^{n-1}(q^d-q^j).                         \label{eq:q-difference-moments}
+\end{equation}
+The product contains the zero factor indexed by \(j=d\) whenever \(d<n\).
+
+More generally, let \(A\) be a semiring, let
+\(\varphi\colon A\to R\) be a semiring homomorphism, and let \(P\in A[X]\).
+Write \(P^\varphi\in R[X]\) for coefficientwise scalar extension.  If
+\(\deg P\le n\), then the row extracts the mapped top coefficient with its
+exact surviving moment:
+\begin{equation}
+ \sum_{k=0}^{n}L^{q,1}_{n,k}P^\varphi(q^k)
+ =\varphi([X^n]P)\prod_{j=0}^{n-1}(q^n-q^j).          \label{eq:q-difference-top-coeff}
+\end{equation}
+If instead \(\deg P<n\), then
+\begin{equation}
+ \sum_{k=0}^{n}L^{q,1}_{n,k}P^\varphi(q^k)=0.          \label{eq:q-difference-annihilation}
+\end{equation}
+All four statements include \(n=0\) and the zero polynomial.  The geometric
+nodes may collide and the surviving product in
+\eqref{eq:q-difference-top-coeff} may itself vanish.  No division,
+distinctness, nonzero or invertible base, domain, characteristic, topology,
+or convergence assumption is present.
+\end{theorem}
+
+\begin{proof}[Formal proof]
+The public surface of \path{QDifferenceAnnihilation.lean} consists
+exhaustively of four theorems:
+\lean{sum_scaledGaussianBinomialInverseKernel_mul_pow},
+\lean{sum_gaussianBinomialInverseKernel_mul_geometric_pow},
+\texttt{qDifference\_sum\_eval}\textsubscript{2}\allowbreak
+\texttt{\_eq\_map\_coeff\_mul}, and
+\texttt{qDifference\_sum\_eval}\textsubscript{2}\allowbreak
+\texttt{\_eq\_zero\_of\_degree\_lt}.
+They prove, respectively,
+\eqref{eq:q-scaled-characteristic}--\eqref{eq:q-difference-annihilation}.
+The first two specialize the scaled inverse-kernel algebra over an arbitrary
+commutative ring; the last two use the generic finite-polynomial-functional
+API to retain semiring coefficients and arbitrary scalar extension into that
+ring.  Thus the hypotheses and every boundary case in the statement are
+literal formal interfaces, not consequences of an unrecorded
+distinct-geometric-node assumption.
 \end{proof}
 
 \begin{theorem}[Finite \(q\)-Cauchy identities and the \(q\)-Bernstein partition]
@@ -5962,6 +6074,11 @@ The numerator and its two branches are
 Its forward-index forms on the natural range and globally are
 \lean{geometricQBinomialWeightNumerator_eq_forward_of_le} and
 \lean{geometricQBinomialWeightNumerator_eq_forward}.
+Its global inverse-kernel form is
+\lean{geometricQBinomialWeightNumerator_eq_scaledGaussianBinomialInverseKernel};
+this declaration is owned here by
+\path{GeometricQBinomialLagrange.lean} and proves
+\eqref{eq:q-geometric-numerator-kernel}.
 Equations \eqref{eq:reversed-q-binomial} and
 \eqref{eq:geometric-q-numerator-moments} are
 \lean{reversed_finite_qBinomial_theorem} and
@@ -9931,9 +10048,14 @@ specializations &
 \path{BitPositionQBinomial.lean}, \path{QBinomialInversion.lean},
 \path{QBinomialTransform.lean},
 \path{QBinomialInversionSpecializations.lean}\\
+Exhaustive four-theorem scaled inverse-Gaussian characteristic, complete
+geometric moments, scalar-extension top-coefficient extraction, and exact
+\(q\)-difference annihilation API &
+\path{QDifferenceAnnihilation.lean}\\
 Dyadic and \(q\)-binomial formulas &
 \path{DyadicClosedForm.lean}, \path{DyadicAnalytic.lean}, \path{GlobalDyadic.lean},
 \path{DyadicCorrectness.lean}, \path{FiniteQBinomialCore.lean},
+\path{QPochhammerElementaryIdentities.lean},
 \path{QBinomialCauchy.lean}, \path{QBinomialVandermonde.lean},
 \path{HalfQBinomial.lean},
 \path{QuarterCatalanGerm.lean}, \path{QuarterCatalanRichardson.lean},
