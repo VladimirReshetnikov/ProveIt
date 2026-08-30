@@ -55,6 +55,20 @@ python q_expansion_experiments.py
 The committed output was produced with 80 decimal digits of working precision.
 The exact q=1 and q=-1 suites each cover all 230 pairs `0 <= k <= n <= 20`.
 
+## Lean crosswalk
+
+The value half of the report's complete first-jet theorem at `q = -1` is now
+formalized in the stronger setting of an arbitrary commutative ring.  The
+even-row/odd-column zero follows from reciprocal symmetry in
+`FabiusFunction.QBinomialReciprocity`; the other three parity values and the
+paired even- and odd-length finite q-Pochhammer product identities live in
+`FabiusFunction.GaussianBinomialAtNegOne`, whose induction reuses that zero
+theorem.  The focused Lake target has been compiled successfully.
+
+The first-derivative formulas and the resulting characteristic-zero
+simple-root theorem are not yet formalized.  The report's manuscript proof is
+not a substitute for those remaining Lean declarations.
+
 ## Baseline source
 
 The report was written as a self-contained companion to:
