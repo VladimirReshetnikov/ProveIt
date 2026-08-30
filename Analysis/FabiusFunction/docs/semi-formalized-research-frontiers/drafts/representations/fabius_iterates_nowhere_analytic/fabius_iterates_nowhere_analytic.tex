@@ -144,8 +144,10 @@
 
 \statusnote{\textbf{Result status.}
 The theorem proved here is a new mathematical extension of the repository's formally verified base case.
-The proof is self-contained and has been checked symbolically and numerically, but it has not yet been translated into Lean.
-Repository statements explicitly marked as formalized are used only as established input facts; the composition theorem, the weighted partition-defect lemma, and the spine asymptotic are proved in this report.}
+The proof is self-contained and has undergone a repository claim-level review and finite-order numerical diagnostics, but it has not yet been translated into Lean.
+The delivered floating-point/FFT computation is not a symbolic verification and is not used as a premise.
+Repository statements explicitly marked as formalized are used only as established input facts; the composition theorem, the weighted partition-defect lemma, and the spine asymptotic are proved in this report.
+Former Conjectures 14.1 and 14.2 are retained below only as numbered quarantine warnings: the first is nonexclusive as stated, and the second is already discharged by the exact quarter-point facts and the binary-transition lemma.}
 
 \begin{abstract}
 Let $F\colon[0,1]\to[0,1]$ be the bounded Fabius function and let
@@ -178,9 +180,10 @@ resulting derivative lower bound grows like $Q_m$ times an ordinary exponential,
 faster than $m!$, and hence forces zero Taylor radius.
 
 The report also records consequences for inverse iterates and local elementary
-representations, gives a reproducible sinc-product computation, and formulates
-several concrete research directions involving tie-point cancellation, $q$-Bell
-polynomials, Lambert--$W$ endpoint transseries, Legendre expansions, and formalization.
+representations, gives a reproducible sinc-product computation, disposes of the
+tie-point cancellation question, and formulates concrete research directions involving
+$q$-Bell polynomials, Lambert--$W$ endpoint transseries, Legendre expansions, and
+formalization.
 \end{abstract}
 
 \tableofcontents
@@ -515,16 +518,23 @@ those elements and partitioning them gives at most
  \label{eq:count-near-singletons}
 \end{equation}
 possibilities.  Also $s(\pi)\leq e$, while \eqref{eq:defect-e} gives
-$D(\pi)\geq e(3m/4-1)$.  For fixed $K$, the logarithm of the counting and weight
-factor is $\bigO(e\log m)$, whereas the negative dyadic exponent is
-$-\Omega(em)$.  Summing over $e$ therefore gives $\bigO(\rho^m)$ for some
-$\rho<1$.
+$D(\pi)\geq e(3m/4-1)$.  Uniformly for $1\leq e\leq m/4$, the base-two logarithm
+of the counting and weight factor is at most
+\[
+ \log_2(2e+1)+4e\log_2m+e\log_2\max(1,2K).
+\]
+For fixed $K$ this is at most $em/4$ once $m$ is large enough, whereas the
+negative defect exponent is at most $-e(3m/4-1)$.  Thus the $e$-th contribution
+is at most $2^{-em/3}$ after enlarging the threshold once more, uniformly in
+$e$.  The resulting geometric sum is $\bigO(2^{-m/3})$.
 
 Next consider partitions with $1\leq t\leq m/4$.  Choose the $t$ elements outside a
 largest block and partition them.  Up to harmless overcounting there are at most
 $m^t t^t$ choices, and $s(\pi)\leq t+1$.  By \eqref{eq:defect-t},
-$D(\pi)\geq t(3m/4-1)$.  The same comparison, $\bigO(t\log m)$ versus
-$-\Omega(tm)$, gives another exponentially decaying sum.
+$D(\pi)\geq t(3m/4-1)$.  The same explicit estimate as above, now with $t$ in
+place of $e$ (and one harmless extra factor $\max(1,2K)$), bounds the $t$-th
+contribution by $2^{-tm/3}$ for all sufficiently large $m$, uniformly for
+$1\leq t\leq m/4$.  Its sum is again exponentially small.
 
 It remains to treat the middle region $e>m/4$ and $t>m/4$.  If $t\leq3m/4$, then
 \eqref{eq:defect-t} gives $D(\pi)\geq c_1m^2$ for all sufficiently large $m$ and an
@@ -552,7 +562,8 @@ binary chain rule.
 
 \begin{lemma}[Two-spine reduction]
 \label{lem:two-spine}
-Let $f$ and $h$ be smooth near $x$, and put $y=h(x)$, $B=\abs{h'(x)}$.  Suppose
+Let $h$ be smooth near $x$, let $f$ be smooth near $y=h(x)$, and put
+$B=\abs{h'(x)}$.  Suppose
 there are constants $H>0$ and $K\geq1$ such that
 \begin{align}
  \abs{f^{(r)}(y)}&\leq Q_r &&(r\geq1),
@@ -715,11 +726,11 @@ Because $F'$ rises strictly from $0$ to $2$ on $[0,\half]$, there is a unique
 $u\in(0,\half)$ with $F'(u)=1$.  Symmetry gives the only other solution $1-u$.
 For a fixed $n$, the tie set is therefore
 \begin{equation}
- T_n:=\bigcup_{k=0}^{n-2}G_k^{-1}\set{u,1-u}.
- \label{eq:tie-set}
+ T_n:=\bigcup_{\substack{k\geq0\\k+1<n}}G_k^{-1}\set{u,1-u}.
+\label{eq:tie-set}
 \end{equation}
-Each $G_k$ is a homeomorphism of $[0,1]$, so $T_n$ is finite, with at most
-$2(n-1)$ points.
+Thus $T_1=\varnothing$.  Each $G_k$ is a homeomorphism of $[0,1]$, so in
+general $T_n$ is finite, with at most $2(n-1)$ points.
 
 \section{Binary transitions force recurrent large amplitudes}
 \label{sec:binary}
@@ -1102,40 +1113,49 @@ conclusion.
 A tempting strengthening would assert zero Taylor radius at every interior point.
 That statement is already false for $n=1$: at a dyadic point, the high-order jet of
 $F$ eventually vanishes, so the formal Taylor series is a finite polynomial, although
-it does not represent $F$ on any neighborhood.  The appropriate open problem is a
-classification rather than a universal zero-radius assertion.
+it does not represent $F$ on any neighborhood.  A corrected classification, rather
+than a universal zero-radius assertion, is the appropriate open problem.
 
-\begin{conjecture}[Complete Taylor-series trichotomy]
-\label{conj:trichotomy}
-For fixed $n$, every interior point belongs to exactly one of three explicitly
-classifiable classes:
+\begin{warning}[Former Conjecture 14.1 is nonexclusive]
+\label{warn:trichotomy}
+The submitted formulation claimed that, for fixed $n$, every interior point belongs
+to exactly one of the following classes:
 \begin{enumerate}[label=(\roman*)]
  \item the Taylor series has radius zero;
  \item the Taylor series is a finite polynomial because the entire high-order jet
  eventually vanishes;
  \item the Taylor series has positive radius but does not represent the function.
 \end{enumerate}
-The third class is empty, and the second class is a countable orbit-arithmetic set
-that can be described using dyadic orbit points and exact tie cancellations.
-\end{conjecture}
+This is not a trichotomy.  For $n=1$ and any interior dyadic point, the eventually
+zero jet puts the Taylor series in class (ii); that finite polynomial has positive
+(indeed infinite) radius but cannot represent the nowhere-analytic function locally,
+so the same point also lies in class (iii).  A corrected version must at least exclude
+eventually-zero polynomial series from class (iii), or classify local representation
+before radius.  No corrected trichotomy is asserted here, and the exceptional-point
+classification for $n\geq2$ remains open.
+\end{warning}
 
-The correction above illustrates why it is valuable to distinguish nowhere
-analyticity from zero Taylor radius.  The present theorem proves class (i) on a
-co-countable set and rules out local representation everywhere, while the detailed
-Taylor behavior at the exceptional points remains open for $n\geq2$.
+The failure above illustrates why nowhere analyticity and zero Taylor radius must be
+kept distinct.  The present theorem proves class (i) on a co-countable set and rules
+out local representation everywhere, while the detailed Taylor behavior at the
+exceptional points remains open for $n\geq2$.
 
-\begin{conjecture}[No persistent cancellation at a tie]
-\label{conj:ties}
-Suppose $x\in T_n$ so two adjacent spine weights are maximal.  Then the two leading
-symbolic amplitudes do not cancel to exponential accuracy for all sufficiently large
-orders.  More precisely, there is an infinite sequence $m_k$ and a constant $c>0$
-such that the sum of the two tied spine terms has absolute value at least
-$cH_n(x)^{m_k}$.
-\end{conjecture}
-
-A proof may use the fact that the two orbit points are related by one application of
-$F$ while their signed-extension samples are taken at the same dyadic scale.  This
-creates a nonlinear symbolic correlation problem for the doubling map.
+\begin{warning}[Former Conjecture 14.2 is already discharged]
+\label{warn:ties}
+The submitted tie-cancellation statement is not a live conjecture.  If
+$x\in T_n$, the tied adjacent weights satisfy $a_k=1$.  Strict monotonicity of $F'$,
+together with $F'(1/4)=F'(3/4)=1$, forces
+$x_k\in\{1/4,3/4\}$.  Hence
+$x_{k+1}=F(x_k)\in\{5/72,67/72\}$.  The first orbit point is dyadic, so
+$\ThetaF(2^m x_k)=0$ for every sufficiently large $m$ by
+\eqref{eq:dyadic-jet}; the second is non-dyadic, so
+\cref{lem:binary-transition} supplies infinitely many $m$ with
+$\abs{\ThetaF(2^m x_{k+1})}\geq1/2$.  Since the fixed suffix coefficient
+$A_{k+1,n}$ is positive, along that subsequence the surviving tied spine term has
+absolute value at least $(A_{k+1,n}/2)H_n(x)^m$.  Thus the claimed absence of
+persistent cancellation follows from the exact quarter-point facts and the report's
+own binary-transition lemma; no additional symbolic-correlation conjecture remains.
+\end{warning}
 
 \begin{conjecture}[Defect-polynomial spectral gap]
 \label{conj:defect-polynomial}

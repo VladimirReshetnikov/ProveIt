@@ -11,6 +11,36 @@ consolidated volume, the report remains standalone until its genuinely new
 claims are isolated and the overlap is deliberately deduplicated.  Paper
 theorem labels do not by themselves assert Lean formalization.
 
+[`q_pochhammer_q_binomial_expansions_report/`](q_pochhammer_q_binomial_expansions_report/)
+is a 39-page A4 companion on q-Pochhammer and q-binomial jets,
+resonances, and asymptotic frontiers, filed from the 730,285-byte archive
+`q_pochhammer_q_binomial_expansions_report.zip` (SHA-256
+`e8c6e5be4512abc0bacfd904e3f0027b35fd5e47e916a6ad11cc76b2893b3a07`).
+Its five arrival hashes and seven-file current ledger pass, and its
+exact-rational numerical output replays byte-for-byte.  The canonical
+A4/27 mm/Libertinus report is deliberately crosswalked as a companion:
+the finite Pascal, symmetry, factorial, evaluation, and base-reversal layer
+has Lean counterparts, while the general jet, higher-cyclotomic, analytic,
+operator, and double-scaling claims remain paper-level.
+
+[`inverse_q_analogs_report/`](inverse_q_analogs_report/) is the 51-page
+A4/27 mm/Libertinus research-frontier companion *Inverse q-Analogues:
+Branch Geometry, Asymptotic Inversion, and Computation for q-Pochhammer
+Symbols, Gaussian Coefficients, and Related Functions*, filed 2026-08-30
+from `inverse_q_analogs_report.zip` (894,405 bytes; SHA-256
+`471ee715022df77f2c5f45b86c213e50e980478eee1a6fc48dd91556cdaeb627`).
+No checksum ledger was submitted; a repository-created 17-row arrival
+snapshot verifies 17/17, while the current 21-row ledger verifies 21/21.
+The 3,324-line TeX and 708-line deterministic script reproduce seven data
+outputs (five CSVs after LF normalization) and five regenerated vector
+figures. A hostile
+audit corrected the order endpoint, Newton convergence hypotheses,
+near-unit-base truncation cost, and conditional radicals boundary.
+Paper-proof labels do not assert Lean formalization: selected finite
+q-algebra and product convergence are formalized, but none of the
+report-specific inverse, branch, Maxwell/discriminant, monodromy, or
+inverse-asymptotic results has an exact public Lean counterpart.
+
 Generalizations of the dyadic construction to arbitrary exponent
 sequences and the q-series calculus that organizes them: the
 exponent-sequence convolution monoid with its Newton-basis frontiers, and

@@ -14,16 +14,32 @@ New standalone intake members:
   rather than a new Thue--Morse atlas member.  The `n = 1` case and the
   inverse/non-elementarity infrastructure already exist in Lean; the
   `n ≥ 2` theorem appears genuinely new and remains unformalized.  The report
-  has 14 nonconjectural labelled results and three conjectures.  Its source
-  map was corrected during normalization to name the live
-  `Monotonicity.lean` module; a deeper claim-by-claim review remains pending.
-  The final 19-page PDF was rebuilt from a clean state with exactly three
-  strict serial `pdflatex` passes using the canonical A4/27 mm preamble and
-  Libertinus prose.  All fonts are embedded and subset Type 1 fonts, no Type
-  3 fonts occur, every page renders with extractable text, and the final log
-  has no warnings, unresolved references, or box defects.  The numerical
-  script and Lean were not rerun during document-policy normalization.
-  Manuscript proof labels do not establish Lean status.
+  has 14 nonconjectural labelled results, two numbered warning quarantines,
+  and one live conjecture.  A hostile post-intake proof pass found no fatal gap
+  and made three proof-exposition repairs: an explicit uniform estimate in the
+  weighted-defect decay, the correct neighborhood for the outer function in
+  the two-spine lemma, and an empty-union-safe definition of the `n = 1` tie
+  set.  It also corrected the landing source map's nonexistent
+  `StrictMonotonicity.lean` to the live `Monotonicity.lean`.  Three direct
+  `pdflatex` passes then rebuilt a clean
+  19-page PDF using the canonical A4/27 mm preamble and Libertinus prose; all
+  fonts were embedded and subset Type 1 fonts, no Type 3 fonts occurred, and
+  every page was rendered again.  The shipped command also reproduced all six
+  numerical outputs byte-for-byte in a recovered, fully-pinned Ubuntu/Python
+  environment.  The companion
+  [`REPOSITORY_AUDIT.md`](fabius_iterates_nowhere_analytic/REPOSITORY_AUDIT.md)
+  records that environment, the output hashes, the cross-platform drift, and
+  remaining reproducibility limitations: exact bytes are platform-sensitive,
+  plot regeneration requires a manual copy from `numerical_output/` to
+  `figures/`, one delivered diagnostic is not included in the TeX, the code
+  checks only two anchors, and its CSV gap convention differs from the report's
+  table and plot.  The TeX itself now records that former Conjecture 14.1 is
+  nonexclusive at an `n = 1` interior dyadic point and that former Conjecture
+  14.2 follows from the exact quarter-point facts and the report's own
+  binary-transition lemma; neither remains live.  The floating-point/FFT
+  diagnostic does not substantiate symbolic verification.  The numerical
+  script and Lean were not rerun during document-policy normalization, and
+  none of the manuscript or numerical labels elevate a result to Lean status.
 - [`Fabius_Rvachev_Shape_Divisibility_Stein_Geometry/`](Fabius_Rvachev_Shape_Divisibility_Stein_Geometry/),
   *Shape, Divisibility, and Stein Geometry of the Fabius--Rvachev Law*
   (32 pp), arrived on 2026-08-30 with all 14 submitted payload checksums
@@ -48,6 +64,25 @@ New standalone intake members:
   and its four regenerated vector plots preserve every submitted CSV/text
   diagnostic byte-for-byte.  The current package ledger verifies all 14
   retained files, and manuscript theorem labels do not establish Lean status.
+- [`Fabius_Zero_Bias_Frontier_Report/`](Fabius_Zero_Bias_Frontier_Report/),
+  *Zero-Bias Towers and Spectral Peeling in the Fabius--Rvachev System*
+  (26 pp), arrived on 2026-08-30 with its 21-entry payload ledger verified and
+  preserved as `ARRIVAL_SHA256SUMS`.  The paper develops a random-index
+  zero-bias recursion, iterated moment and spherical factorizations,
+  normalized Laguerre--Pólya derivatives, arithmetic spectral peeling,
+  q-occupancy, compact-support Gaussianization, and phase-sensitive endpoint
+  asymptotics.  These remain paper-level results: the current Lean corpus
+  supplies many random-series, moment, divisor, shape, and endpoint inputs but
+  no zero-bias tower, occupancy, peeling, or tower-Gaussianization API.  The
+  five conjectures remain explicitly conjectural.  The 839-line experiment
+  was replayed at its full default depth under a pinned Python stack: three
+  exact/released CSVs reproduced the arrival bytes before repository LF
+  normalization, and the three floating tables differed only by measured
+  last-place drift (maximum absolute difference `7.31e-14`).  Five plots were
+  regenerated without Type 3 fonts.  The
+  normalized report uses the canonical A4/27 mm/Libertinus preamble and its
+  exactly-three-pass 26-page PDF has embedded/subset fonts throughout; the
+  current 23-entry ledger passes in full.
 - [`Fabius_Rvachev_Noncommutative_Frontiers/`](Fabius_Rvachev_Noncommutative_Frontiers/),
   *Noncommutative Cumulant Frontiers for the Fabius--Rvachev Law* (29 pp),
   arrived on 2026-08-30 with all 21 payload checksums verified after four CSV
@@ -61,13 +96,19 @@ New standalone intake members:
   Libertinus prose, incomplete PDF metadata, and Type-3 plot fonts remain
   explicit post-intake normalization work.
 - [`Fabius_Rvachev_New_Frontiers-2/`](Fabius_Rvachev_New_Frontiers-2/),
-  *Fabius--Rvachev New Frontiers* (35 pp), arrived on 2026-08-30 from a
+  *Fabius--Rvachev New Frontiers* (36 pp; 2,568 source lines), arrived on
+  2026-08-30 from a
   rootless archive with all 15 payload checksums verified. Its native up-law
   orthogonal polynomials, Jacobi and Christoffel reconstruction, rational
   limits and products for pi, Gauss--Pade structure, and Legendre--Gaunt
   determinants extend the moment, transform, and representation theme. It is
   distinct from the homonymous historical report already absorbed into
-  `Frontier_Compilations/`.
+  `Frontier_Compilations/`.  Intake normalization moved it to the canonical
+  A4/27 mm/Libertinus preamble and regenerated all five one-page vector plots
+  with embedded/subset CID TrueType fonts and no Type 3 or raster content.
+  Its 580-line high-precision experiment retains the three delivered CSVs
+  byte-for-byte; the clean final report received exactly three strict serial
+  passes, and the current 15-entry ledger verifies in full.
 - [`Fabius_Stein_Koopman_Frontier_Report/`](Fabius_Stein_Koopman_Frontier_Report/),
   *Dyadic Stein--Koopman and q-Oscillator Calculus for the Fabius--Rvachev
   Law* (32 pp), arrived on 2026-08-30 with all 20 payload checksums verified.
@@ -75,12 +116,12 @@ New standalone intake members:
   Poisson operators, martingales, nonreversibility certificate, scalar Stein
   kernel, and endpoint asymptotics extend the operator-representation theme.
 
-All four remain standalone pending claim-by-claim Lean crosswalk and deliberate
+All six remain standalone pending claim-by-claim Lean crosswalk and deliberate
 consolidation; paper theorem labels do not by themselves assert Lean status.
 
 Series and orthogonal-expansion representations of the up-function,
 consolidated (2026-08-28) into the single volume
-[`Representation_Frontiers/`](Representation_Frontiers/) (298 pp,
+[`Representation_Frontiers/`](Representation_Frontiers/) (299 pp;
 eight parts):
 
 - **Part I** — *Resolvent, Continued-Fraction, and Transform

@@ -13,15 +13,16 @@ superseded, generated, proved, numerical, and conjectural material.
 Main deliverables
 -----------------
 fabius_rvachev_new_frontiers.tex
-    Complete 35-page LaTeX report.
+    Complete 36-page, 2,568-line LaTeX report using the canonical primary
+    A4/27 mm/Libertinus preamble.
 
 fabius_rvachev_new_frontiers.pdf
     Rendered and visually inspected PDF.
 
 fabius_frontier_experiments.py
-    Fully commented exact/high-precision experiment. It computes rational
-    moments and low-degree Jacobi data exactly, then computes high-degree data
-    using mpmath without sampling the Fabius or up functions.
+    Fully commented 580-line exact/high-precision experiment. It computes
+    rational moments and low-degree Jacobi data exactly, then computes
+    high-degree data using mpmath without sampling the Fabius or up functions.
 
 experiment_run.log
     Diagnostics from the publication run.
@@ -38,13 +39,15 @@ data/pi_product_approximants.csv
     Jacobi-product and Christoffel approximants to pi.
 
 figures/*.pdf
-    Five vector figures embedded in the report.
+    Five one-page vector figures embedded in the report.  The publication run
+    writes embedded, subset CID TrueType fonts; none contains Type 3 fonts or
+    raster images.
 
 CORPUS_AUDIT.md
     Scope, source strata, nonduplication method, and status boundary.
 
 pdf_preflight.json
-    PDF structural preflight; no warnings were reported.
+    PDF structural, geometry, font, text, build-log, and visual preflight.
 
 Numerical publication run
 -------------------------
@@ -53,15 +56,18 @@ python fabius_frontier_experiments.py \
 
 The run independently checks exact rational output through degree 24.  It
 found beta_1 < ... < beta_200 < 1/4.  This finite observation is recorded in
-the report as evidence, not as a theorem.
+the report as evidence, not as a theorem.  The three regenerated CSV files
+have 22, 201, and 101 lines respectively; their normalized LF bytes are
+unchanged from the audited publication data.
 
 Rebuild the PDF
 ---------------
-Required: a reasonably complete TeX Live installation with pdflatex/latexmk.
+Required: a reasonably complete TeX Live installation with pdflatex.
 From this directory:
 
-latexmk -pdf -interaction=nonstopmode -halt-on-error \
-    fabius_rvachev_new_frontiers.tex
+pdflatex -interaction=nonstopmode -halt-on-error fabius_rvachev_new_frontiers.tex
+pdflatex -interaction=nonstopmode -halt-on-error fabius_rvachev_new_frontiers.tex
+pdflatex -interaction=nonstopmode -halt-on-error fabius_rvachev_new_frontiers.tex
 
 Re-run the numerical experiment
 -------------------------------
@@ -77,12 +83,22 @@ current monomial-basis recurrence is cancellation-prone.
 
 Verification performed
 ----------------------
-* Clean latexmk build with no unresolved references, duplicate labels, or
-  overfull boxes.
-* PDF preflight: 35 pages, unencrypted, text-based, no warnings.
-* All 35 pages rendered to PNG and visually inspected in contact sheets;
-  representative plot and table pages were also checked at full render size.
-* Python byte-compilation and an independent degree-24 smoke run succeeded.
+* Clean, exactly three-pass, strict serial pdflatex build from the frozen final
+  source.  The third-pass log has no LaTeX or package warnings, unresolved
+  references, duplicate labels or destinations, or overfull boxes.  Its nine
+  benign underfull notices are confined to the narrow claim-status table on
+  page 6, whose readability was checked at full render size.
+* PDF preflight: 36 unencrypted A4 pages at 595.276 x 841.890 points, zero
+  rotation, and A4 MediaBox/CropBox/BleedBox/TrimBox/ArtBox on every page.
+  All 35 font rows are embedded and subset, Libertinus is present, and there
+  are no Type 3 or Latin Modern fonts.
+* Text extraction produced 2,185 lines (124,917 bytes), including the title,
+  public names, theorem names, formulas, and conjecture-status boundaries.
+* All 36 pages rendered to PNG and visually inspected in contact sheets;
+  the claim-status table and representative formula and plot pages were also
+  checked at full render size.  All five standalone figure PDFs were inspected.
+* Python byte-compilation and an independent degree-24 smoke run succeeded;
+  its exact low-degree CSV is byte-identical to the publication artifact.
 
 Claim status
 ------------

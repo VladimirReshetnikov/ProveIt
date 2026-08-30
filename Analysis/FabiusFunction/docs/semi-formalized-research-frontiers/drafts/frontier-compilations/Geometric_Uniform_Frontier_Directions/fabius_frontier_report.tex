@@ -1,0 +1,1641 @@
+\documentclass[11pt,oneside]{article}
+
+\usepackage[a4paper,margin=27mm,headheight=15pt]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\IfFileExists{libertinus.sty}{\usepackage{libertinus}}{\usepackage{lmodern}}
+\usepackage{microtype}
+\usepackage{amsmath,amssymb,amsthm,mathtools,mathrsfs}
+\usepackage{bm}
+\usepackage{booktabs,longtable,array,tabularx}
+\usepackage{graphicx}
+\usepackage{pgfplots}
+\usepackage{xcolor}
+\usepackage{enumitem}
+\usepackage{fancyhdr}
+\usepackage{titlesec}
+\usepackage{listings}
+\usepackage{xurl}
+\usepackage{hyperref}
+\usepackage[nameinlink,noabbrev]{cleveref}
+
+\definecolor{linkblue}{RGB}{25,75,135}
+\definecolor{shadegray}{RGB}{246,247,249}
+\definecolor{rulegray}{RGB}{195,201,208}
+\pgfplotsset{compat=1.18}
+\hypersetup{
+  colorlinks=true,
+  linkcolor=linkblue,
+  citecolor=linkblue,
+  urlcolor=linkblue,
+  pdftitle={Frontier Directions for Fabius--Rvachev Analysis},
+  pdfsubject={Fabius function, Rvachev up-function, Thue--Morse sequence, q-series, sinc products, Lambert W}
+}
+
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small Fabius--Rvachev frontier directions}
+\fancyhead[R]{\small\nouppercase{\leftmark}}
+\fancyfoot[C]{\thepage}
+\renewcommand{\headrulewidth}{0.4pt}
+
+\titleformat{\section}{\Large\bfseries}{\thesection}{0.7em}{}
+\titleformat{\subsection}{\large\bfseries}{\thesubsection}{0.7em}{}
+\titleformat{\subsubsection}{\normalsize\bfseries}{\thesubsubsection}{0.7em}{}
+\setcounter{secnumdepth}{3}
+\setcounter{tocdepth}{2}
+\setlist[itemize]{leftmargin=2em,itemsep=0.25em,topsep=0.4em}
+\setlist[enumerate]{leftmargin=2.3em,itemsep=0.25em,topsep=0.4em}
+
+% Long unbreakable inline mathematics occasionally leaves a line with no legal
+% break point.  A small emergency stretch lets TeX loosen such a line rather
+% than let it protrude into the margin; it applies only to lines that would
+% otherwise be overfull.
+\setlength{\emergencystretch}{2em}
+
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{conjecture}[theorem]{Conjecture}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{algorithm}[theorem]{Algorithm}
+\newtheorem{example}[theorem]{Example}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+\newtheorem{warning}[theorem]{Warning}
+
+\newcommand{\R}{\mathbb R}
+\newcommand{\C}{\mathbb C}
+\newcommand{\Q}{\mathbb Q}
+\newcommand{\N}{\mathbb N}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\Up}{\operatorname{up}}
+\newcommand{\sinc}{\operatorname{sinc}}
+\newcommand{\wt}{\operatorname{wt}_2}
+\newcommand{\e}{\mathrm e}
+\newcommand{\ii}{\mathrm i}
+\newcommand{\dd}{\,\mathrm d}
+\newcommand{\Li}{\operatorname{Li}}
+\newcommand{\Var}{\operatorname{Var}}
+\newcommand{\E}{\mathbb E}
+\newcommand{\Prob}{\mathbb P}
+\newcommand{\bigO}{\mathcal O}
+\newcommand{\smallo}{o}
+\newcommand{\supp}{\operatorname{supp}}
+\newcommand{\sgn}{\operatorname{sgn}}
+\newcommand{\lcm}{\operatorname{lcm}}
+\newcommand{\vtwo}{v_2}
+\newcommand{\qbinom}[3]{\genfrac{[}{]}{0pt}{}{#1}{#2}_{#3}}
+\newcommand{\repo}{\nolinkurl{Analysis/FabiusFunction}}
+\newcommand{\lean}[1]{%
+  \ifmmode\text{\nolinkurl{#1}}\else\nolinkurl{#1}\fi}
+\newcommand{\leanevaltwo}[1]{%
+  \nolinkurl{integral_eval}\texttt{\textsubscript{2}}\nolinkurl{#1}}
+
+\newenvironment{proofidea}{\par\smallskip\noindent\textit{Proof architecture.}\ }{\hfill$\square$\par\smallskip}
+\newenvironment{boxedremark}{%
+  \par\smallskip\noindent\begin{center}\begin{minipage}{0.94\textwidth}%
+  \color{black}\hrule\vspace{0.6em}\small
+}{%
+  \vspace{0.6em}\hrule\end{minipage}\end{center}\smallskip
+}
+
+\lstdefinestyle{pseudo}{
+  basicstyle=\ttfamily\small,
+  backgroundcolor=\color{shadegray},
+  frame=single,
+  rulecolor=\color{rulegray},
+  columns=fullflexible,
+  keepspaces=true,
+  showstringspaces=false,
+  xleftmargin=0.7em,
+  xrightmargin=0.7em,
+  aboveskip=0.8em,
+  belowskip=0.8em
+}
+
+% Report-local notation, environments, and float policy.
+\usepackage{float}
+\definecolor{proofgreen}{RGB}{20,105,65}
+\definecolor{conjred}{RGB}{145,35,35}
+\graphicspath{{figures/}}
+\urlstyle{same}
+\renewcommand{\arraystretch}{1.12}
+\newtheorem{problem}[theorem]{Problem}
+\newtheorem{experiment}[theorem]{Numerical experiment}
+\newcommand{\Pp}{\mathbb P}
+\newcommand{\eps}{\varepsilon}
+\newcommand{\Law}{\mathcal L}
+\newcommand{\PhiN}{\Phi}
+\newcommand{\phiN}{\varphi}
+\newcommand{\qpoch}[2]{(#1;#2)}
+\newcommand{\proved}{\textcolor{proofgreen}{\textbf{proved here}}}
+\newcommand{\numerical}{\textcolor{linkblue}{\textbf{numerically supported}}}
+\newcommand{\conjectural}{\textcolor{conjred}{\textbf{conjectural}}}
+
+\title{\bfseries Frontier Directions for Fabius--Rvachev Analysis\\[0.45em]
+\large General-$q$ geometry, spectral zeta functions, Gaussian and large-deviation limits, Legendre scaling, and Lambert phases}
+\author{Prepared with OpenAI GPT-5.6 Pro}
+\date{Repository snapshot and experiments: 30 August 2026}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+The current \repo{} documentation already contains a highly developed theory of the Thue--Morse sequence, the Fabius function, the Rvachev up-function, exact dyadic values, $q$-binomial formulas, infinite sinc products, repeated integration, Fourier--Legendre expansions, and sharp Lambert-$W$ endpoint asymptotics with a nonconstant log-periodic term.  This report therefore treats those results as a nonduplication baseline and develops a different layer of the theory around the geometric-uniform family
+\[
+ X_q=(1-q)\sum_{n\ge 0}q^nU_n,\qquad -1<q<1,
+\]
+where the $U_n$ are independent uniform random variables on $[0,1]$.  The dyadic value $q=1/2$ recovers the Fabius--Rvachev density after an affine change of variables.
+
+The principal theorem-level results obtained here are: an exact affine duality reducing every negative parameter to a positive one, including the correct sign in the density recursion; closed Bernoulli cumulants and Bell-polynomial moments for all $q$; log-concavity and an exact central plateau; a signed-copy formula for every derivative and an exact derivative sup norm throughout the subdyadic phase $0<q\le 1/2$; an entire-function zero divisor, spectral zeta function, and universal zero density for the sinc product; exact base-$B$ digit-sum zero counts at $q=1/B$; a parity formula that reconstructs the Thue--Morse sign from the number of sinc zeros; and an exact dilation-periodic decomposition of the negative Laplace product for arbitrary $q\in(0,1)$, with explicit Fourier coefficients involving $\Gamma$ and $\zeta$.
+
+Further results and conjectures describe the Gaussian limit as $|q|\uparrow1$, a first Edgeworth correction and candidate sharp Kolmogorov constant, a full large-deviation rate function bridging the Gaussian core to the endpoint regime, $q$-Pochhammer-normalized moment polynomials with experimentally positive integral coefficients, a Legendre heat-kernel double scaling, and a general-$q$ Lambert-$W$ endpoint/inverse expansion.  A deterministic numerical suite and all generating code are included in the accompanying archive.  ``Novel'' in this report means absent from the inspected repository snapshot; no claim of global priority is made without a separate exhaustive literature review.
+\end{abstract}
+
+\tableofcontents
+\newpage
+
+\section{Scope, source audit, and status discipline}
+
+\subsection{What was treated as already known}
+
+The full-text nonduplication baseline consists primarily of the current main exposition
+\emph{The Fabius Function and the Rvachev Up-Function} \cite{repo-main} and the consolidated fourteen-thousand-line volume \emph{Semi-formalized Research Frontiers} \cite{repo-frontier}.  The latter records the provenance of, and consolidates, eleven former research notebooks concerning dyadic formulas, $q$-connections, repeated integration, Thue--Morse convergence, inverse asymptotics, and small-argument saddle analysis.  The repository's paper-coverage and documentation audits were also used to distinguish formalized facts, semi-formal arguments, and historical source material \cite{repo-paper-coverage,repo-asymptotic-audit,repo-doc-audit}.
+
+The following subjects are therefore
+\emph{not} presented as new here:
+\begin{itemize}
+  \item the basic Fabius functional equation and the affine relation between the Fabius density and $\Up$;
+  \item exact dyadic values, Thue--Morse finite sums, $2$-adic arithmetic, and the existing $q$-binomial identities;
+  \item the probability representation by a dyadically weighted sum of independent uniforms;
+  \item the infinite sinc/cosine products, Fourier inversion, repeated integration, and existing Legendre expansions;
+  \item the dyadic derivative peak theorem and its exact norm at $q=1/2$;
+  \item the sharp $q=1/2$ endpoint asymptotic, its Lambert-$W_{-1}$ phase, its nonconstant periodic fluctuation, and the existing inverse asymptotic.
+\end{itemize}
+
+The source tree also includes the foundational papers of Arias de Reyna \cite{arias-up,arias-arithmetic}, Haugland's exact evaluation formulas \cite{haugland}, Have's moment recurrences \cite{have}, work on parametric Thue--Morse products \cite{aistleitner}, and T\'oth's Thue--Morse Dirichlet series \cite{toth}.  Recent independent work has connected Fabius products to Vi\`ete and partition products \cite{sebbar}, while recent kernel research again uses compactly supported $C^\infty$ Rvachev/Fabius constructions \cite{schaback}.  These sources help delimit, but do not subsume, the directions developed below.
+
+\subsection{Meaning of the status labels}
+
+Every substantial assertion carries one of four statuses.
+\begin{center}
+\begin{tabularx}{0.94\textwidth}{>{\bfseries}l X}
+\toprule
+Status & Meaning\\
+\midrule
+Proved here & A complete proof, or a proof reduced only to a standard named theorem whose hypotheses are checked, is given in this report.\\
+Proof program & The decisive algebraic or saddle structure is derived, but one technical uniformity or contour estimate remains to be written in full.\\
+Numerically supported & Deterministic high-precision or FFT evidence is supplied, together with reproducible code.\\
+Conjectural & A mathematically precise statement is proposed with motivation and falsifiable consequences.\\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+This discipline matters because the repository audits explicitly warn against promoting special cases, vacuous identities, or unproved sharpness claims to universal theorems.  The report follows that advice.
+
+\begin{boxedremark}
+\textbf{Post-arrival repository crosswalk.}
+The status words in this report classify its manuscript arguments; they are
+not Lean status.  The current formal corpus now constructs
+\lean{geometricUniformSeries} and \lean{geometricUniformDistribution} for
+$|q|<1$, proves self-similarity, reflection, absolute continuity, support,
+the positive-parameter CDF and smooth density, the convolution/cumulant-tail
+dictionary, and finite sinc-product factorizations.  It also contains a
+general weighted analytic sinc--zeta expansion and the fixed dyadic
+half--quarter multisection.  Those APIs are substantial antecedents that
+postdate or exceed the arrival audit.
+
+No current declaration, however, packages this report's negative-$q$ affine
+duality, closed all-$q$ Bernoulli cumulants, Gaussian/LDP limits, exact
+subdyadic plateaux and derivative norms, arbitrary-$q$ zero divisor and
+spectral zeta, normalized moment-polynomial recurrence, Legendre
+$q\uparrow1$ expansion, or arbitrary-$q$ periodic Laplace phase.  These
+remain paper-level claims or conjectures according to their environments;
+the Fourier-phase theorem in particular uses a manuscript contour argument,
+not a formal proof.  The spectral/digit-sum material also overlaps the
+separately audited \emph{Digital Spectral Geometry} and reciprocal-integer
+reports, so ``new'' below retains only its historical, snapshot-relative
+meaning.  This intake changes no formal coverage ledger.
+\end{boxedremark}
+
+\subsection{Nonduplication matrix}
+
+\begin{longtable}{p{0.25\textwidth}p{0.30\textwidth}p{0.33\textwidth}}
+\toprule
+Theme & Repository baseline & Added here\\
+\midrule
+\endfirsthead
+\toprule
+Theme & Repository baseline & Added here\\
+\midrule
+\endhead
+General geometric-uniform law & construction and uniqueness for $|q|<1$, especially $0<q<1$ & exact negative-$q$ affine duality, support, density sign, standardized equivalence\\
+Bernoulli/Bell moments & detailed dyadic cumulants and moments & all-$q$ cumulants, standardized cumulants, Gaussian analytic limit, Berry--Esseen scale\\
+Shape and derivatives & dyadic derivative peaks and flatness & log-concavity for all $0<q<1$; exact plateau and all derivative norms for $q\le1/2$\\
+Sinc product & product representation and Fourier analysis & entire zero divisor, collision criterion, spectral zeta, zero counting, digit-sum collapse\\
+Thue--Morse & many finite sums and Dirichlet identities & recovery of the Thue--Morse sign from spectral zero-count parity\\
+$q$-binomial layer & exact dyadic and parametric identities & normalized moment-polynomial recurrence and positivity/integrality conjecture\\
+Legendre layer & expansions of $\Up$ and polynomial reconstruction & fixed-degree $q\uparrow1$ expansion and heat-kernel double scaling\\
+Endpoint asymptotics & rigorous sharp $q=1/2$ periodic Lambert expansion & exact arbitrary-$q$ periodic Laplace decomposition and a general-$q$ endpoint program\\
+Inverse function & dyadic inverse evaluator and $q=1/2$ asymptotic & central quantile Edgeworth expansion, fixed-$q$ endpoint inversion, crossover problem\\
+\bottomrule
+\end{longtable}
+
+\section{The geometric-uniform master family}
+
+Let $U_0,U_1,\ldots$ be independent uniform random variables on $[0,1]$.  For $-1<q<1$ define
+\begin{equation}\label{eq:Xq-def}
+ X_q=(1-q)\sum_{n=0}^{\infty}q^nU_n,
+ \qquad
+ Y_q=X_q-\frac12.
+\end{equation}
+The series converges absolutely almost surely.  Write $F_q$ for the CDF of $X_q$, and write $g_q$ for its density whenever one is being used.  For $0<q<1$ the support is $[0,1]$ and the repository establishes that $g_q$ is $C^\infty$ and compactly supported.  At $q=1/2$,
+\begin{equation}\label{eq:fabius-up-bridge}
+ g_{1/2}(x)=2\,\Up(2x-1),\qquad 0\le x\le1.
+\end{equation}
+Thus the family is a genuine one-parameter deformation of the Fabius--Rvachev density rather than an unrelated probabilistic analogy.
+
+Put $V_n=U_n-1/2$, so $V_n$ is uniform on $[-1/2,1/2]$.  The centered law is symmetric and satisfies
+\begin{equation}\label{eq:centered-series}
+ Y_q=(1-q)\sum_{n\ge0}q^nV_n.
+\end{equation}
+If $X_q'$ is an independent copy, then
+\begin{equation}\label{eq:distributional-recursion}
+ X_q\overset d=(1-q)U_0+qX_q'.
+\end{equation}
+This recursion is the common source of the density equation, the central plateau, the derivative-copy formulas, and the dilation identities.
+
+We use the normalization $\sinc z=\sin z/z$.  The centered characteristic and moment-generating functions are
+\begin{align}
+ C_q(t)&=\E e^{itY_q}
+ =\prod_{n\ge0}\sinc\!\left(\frac{(1-q)q^nt}{2}\right),\label{eq:Cq}\\
+ M_q(t)&=\E e^{tY_q}
+ =\prod_{n\ge0}\frac{\sinh((1-q)q^nt/2)}{(1-q)q^nt/2}.
+ \label{eq:Mq}
+\end{align}
+Both products converge locally uniformly in $t\in\C$; the characteristic product will be studied as an entire function in \cref{sec:spectral}.
+
+\section{Negative parameters are affine images of positive parameters}
+
+The repository identifies the interpretation of the selected negative-parameter density as an open issue.  Symmetry of the centered uniform summands resolves it completely.
+
+\begin{theorem}[negative-$q$ affine duality]\label{thm:negative-duality}
+Let $0<r<1$ and
+\[
+ c_r=\frac{1+r}{1-r}.
+\]
+Then
+\begin{equation}\label{eq:negative-duality}
+ Y_{-r}\overset d=c_rY_r,
+ \qquad
+ X_{-r}\overset d=\frac12+c_r\left(X_r-\frac12\right).
+\end{equation}
+Consequently the support of $X_{-r}$ is
+\begin{equation}\label{eq:negative-support}
+ \left[-\frac{r}{1-r},\frac{1}{1-r}\right],
+\end{equation}
+and its CDF and density are
+\begin{align}
+ F_{-r}(x)&=F_r\!\left(\frac12+c_r^{-1}\left(x-\frac12\right)\right),\label{eq:negative-cdf}\\
+ g_{-r}(x)&=c_r^{-1}g_r\!\left(\frac12+c_r^{-1}\left(x-\frac12\right)\right).
+ \label{eq:negative-density}
+\end{align}
+\end{theorem}
+
+\begin{proof}
+From \cref{eq:centered-series},
+\[
+ Y_{-r}=(1+r)\sum_{n\ge0}(-1)^nr^nV_n.
+\]
+The variables $(-1)^nV_n$ are again independent and uniform on $[-1/2,1/2]$.  Therefore
+\[
+ Y_{-r}\overset d=(1+r)\sum_{n\ge0}r^nV_n
+ =\frac{1+r}{1-r}Y_r.
+\]
+The remaining statements follow by affine transport.  Since $X_r\in[0,1]$, the endpoints in \cref{eq:negative-support} are the images of $0$ and $1$.
+\end{proof}
+
+\begin{proposition}[sign-correct density recursion]\label{prop:density-sign}
+For $q\ne0$ the genuine nonnegative density satisfies
+\begin{equation}\label{eq:density-sign}
+ g_q(x)=\frac{\sgn(q)}{1-q}
+ \left[
+ F_q\!\left(\frac{x}{q}\right)
+ -F_q\!\left(\frac{x-(1-q)}{q}\right)
+ \right].
+\end{equation}
+At $q=0$, $X_0$ is uniform on $[0,1]$.
+\end{proposition}
+
+\begin{proof}
+For $q>0$, condition on $U_0$ in \cref{eq:distributional-recursion}, integrate the CDF of $X_q'$, and differentiate.  For $q<0$, division by $q$ reverses the inequality, so the conditional probability is $1-F_q$ rather than $F_q$.  This introduces exactly the factor $\sgn(q)$ in \cref{eq:density-sign}.  Equivalently, the formula follows immediately by differentiating \cref{eq:negative-cdf} and using the positive-parameter recursion.
+\end{proof}
+
+The selected expression without $\sgn(q)$ is therefore the negative of the probability density when $q<0$.  This is not a pathology of the law; it is an orientation sign caused by the negative affine contraction.
+
+\begin{corollary}[standardized equivalence]\label{cor:standardized-duality}
+Let
+\begin{equation}\label{eq:sigmaq}
+ \sigma_q^2=\Var(Y_q)=\frac{1-q}{12(1+q)},
+ \qquad Z_q=\frac{Y_q}{\sigma_q}.
+\end{equation}
+Then $Z_{-r}\overset d=Z_r$.  Every standardized cumulant, standardized moment, and standardized quantile depends only on $q^2$.
+\end{corollary}
+
+\begin{proof}
+The variance relation $\sigma_{-r}=c_r\sigma_r$ and \cref{thm:negative-duality} give the result.
+\end{proof}
+
+The accompanying deterministic check evaluates $C_{-r}(t)=C_r(c_rt)$ on $24{,}001$ frequencies for $r=0.2,0.4,0.7,0.9$.  The largest absolute discrepancy is $4.45\times10^{-16}$.
+
+\section{Bernoulli cumulants, Bell moments, and the Gaussian regime}
+
+\subsection{Closed cumulants for every parameter}
+
+Use the Bernoulli-number convention
+\[
+ \frac{z}{e^z-1}=\sum_{n\ge0}B_n\frac{z^n}{n!},
+ \qquad B_2=\frac16,\quad B_4=-\frac1{30}.
+\]
+The elementary expansion
+\begin{equation}\label{eq:uniform-logmgf}
+ \log\frac{\sinh(t/2)}{t/2}
+ =\sum_{m\ge1}\frac{B_{2m}}{2m}\frac{t^{2m}}{(2m)!}
+\end{equation}
+turns the product \cref{eq:Mq} into a complete cumulant formula.
+
+\begin{theorem}[all-$q$ Bernoulli cumulants]\label{thm:cumulants}
+For $-1<q<1$,
+\begin{equation}\label{eq:cumulants}
+ \kappa_{2m}(Y_q)
+ =\frac{B_{2m}}{2m}\frac{(1-q)^{2m}}{1-q^{2m}},
+ \qquad
+ \kappa_{2m+1}(Y_q)=0.
+\end{equation}
+Consequently
+\begin{equation}\label{eq:bell-moments}
+ \E Y_q^{2n}
+ =\mathfrak B_{2n}\bigl(0,\kappa_2,0,\kappa_4,\ldots,0,\kappa_{2n}\bigr),
+\end{equation}
+where $\mathfrak B_n$ is the complete exponential Bell polynomial.
+\end{theorem}
+
+\begin{proof}
+Apply \cref{eq:uniform-logmgf} to each factor of \cref{eq:Mq}.  Cumulants add over independent summands, and the sum of the $2m$-th powers of the weights is
+\[
+ (1-q)^{2m}\sum_{n\ge0}q^{2mn}
+ =\frac{(1-q)^{2m}}{1-q^{2m}}.
+\]
+Symmetry kills odd cumulants.  The moment--cumulant identity is precisely the Bell-polynomial formula \cref{eq:bell-moments}.
+\end{proof}
+
+This extends the dyadic Bernoulli/Bell layer to the complete geometric-uniform family.  It also makes the negative-parameter duality algebraically visible: after standardization, only even powers of $q$ remain.
+
+\begin{corollary}[standardized cumulants]\label{cor:standardized-cumulants}
+For $m\ge1$,
+\begin{equation}\label{eq:standardized-cumulants}
+ \lambda_{2m}(q):=\kappa_{2m}(Z_q)
+ =\frac{12^mB_{2m}}{2m}
+ \frac{(1-q^2)^{m-1}}{1+q^2+\cdots+q^{2m-2}}.
+\end{equation}
+In particular,
+\begin{align}
+ \lambda_4(q)&=-\frac65\frac{1-q^2}{1+q^2},\label{eq:lambda4}\\
+ \lambda_6(q)&=\frac{48}{7}\frac{(1-q^2)^2}{1+q^2+q^4}.
+ \label{eq:lambda6}
+\end{align}
+For every $m\ge2$, $\lambda_{2m}(q)\to0$ as $|q|\uparrow1$.
+\end{corollary}
+
+\subsection{Central limit theorem and a quantitative scale}
+
+\begin{theorem}[Gaussian limit]\label{thm:clt}
+As $q\uparrow1$ or $q\downarrow-1$,
+\[
+ Z_q\Longrightarrow N(0,1).
+\]
+For $q\uparrow1$, the moment-generating functions converge locally uniformly on $\C$ after restriction to any fixed compact set.  More precisely, for every compact $K\subset\C$,
+\begin{equation}\label{eq:analytic-gaussian}
+ \log\E e^{zZ_q}
+ =\frac{z^2}{2}+\frac{\lambda_4(q)}{24}z^4
+ +O_K\bigl((1-q^2)^2\bigr).
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+For $q>0$, write $Z_q$ as the sum of independent centered terms with total variance one.  The largest normalized coefficient equals
+\[
+ \frac{1-q}{\sigma_q}=\sqrt{12(1-q^2)}\longrightarrow0.
+\]
+Since the summands are uniformly bounded after division by their coefficients, the Lindeberg condition follows, proving weak convergence.  The negative limit follows from \cref{cor:standardized-duality}.
+
+For the analytic statement, insert \cref{eq:standardized-cumulants} into the cumulant expansion.  The nearest zero of the standardized moment-generating function escapes to infinity; this is quantified spectrally in \cref{cor:standardized-spectral}.  Hence the cumulant series is uniformly valid on each fixed compact set for all sufficiently large $q$.  The fourth cumulant has order $1-q^2$, while every cumulant of order at least six has order $(1-q^2)^2$ or smaller.
+\end{proof}
+
+A direct Berry--Esseen estimate records the natural square-root rate.
+
+\begin{proposition}[Berry--Esseen scale]\label{prop:berry-esseen}
+For $0<q<1$,
+\begin{equation}\label{eq:berry-esseen}
+ d_K(Z_q,N(0,1))
+ \le C_{\mathrm{BE}}\frac{12^{3/2}}{32}
+ \frac{\sqrt{1-q}\,(1+q)^{3/2}}{1+q+q^2},
+\end{equation}
+where $C_{\mathrm{BE}}$ is any valid universal Berry--Esseen constant.  Thus the bound is asymptotic to
+$C_{\mathrm{BE}}\sqrt{3/2}\,\sqrt{1-q}$.
+\end{proposition}
+
+\begin{proof}
+For $V\sim U[-1/2,1/2]$, $\E|V|^3=1/32$.  Sum the absolute third moments of the independent terms in \cref{eq:centered-series}, divide by $\sigma_q^3$, and simplify using $1-q^3=(1-q)(1+q+q^2)$.
+\end{proof}
+
+The bound is not expected to be sharp because symmetry cancels the third cumulant.  The true first correction is of order $1-q$, not $\sqrt{1-q}$.
+
+\subsection{Edgeworth and inverse-quantile conjectures}
+
+Let $G_q$ be the CDF of $Z_q$, let $\PhiN$ and $\phiN$ be the standard normal CDF and density, and let $H_3(z)=z^3-3z$, $H_4(z)=z^4-6z^2+3$ be probabilists' Hermite polynomials.
+
+\begin{conjecture}[uniform first Edgeworth expansion]\label{conj:edgeworth}
+As $q\uparrow1$,
+\begin{align}
+ p_q(z)&=\phiN(z)\left[1+\frac{\lambda_4(q)}{24}H_4(z)\right]
+ +O\bigl((1-q)^2\bigr),\label{eq:edge-density}\\
+ G_q(z)&=\PhiN(z)-\frac{\lambda_4(q)}{24}\phiN(z)H_3(z)
+ +O\bigl((1-q)^2\bigr),\label{eq:edge-cdf}
+\end{align}
+with uniform error on $\R$.  At minimum, the same estimates should hold uniformly on every moderate-deviation window $|z|\le (1-q)^{-\alpha}$ for some explicit $\alpha>0$.
+\end{conjecture}
+
+The formal characteristic-function expansion follows from \cref{eq:analytic-gaussian}; the missing step is a uniform Fourier-tail estimate strong enough to retain the $O((1-q)^2)$ remainder after inversion.  The sinc product has far more decay than a generic triangular array, so this appears tractable.
+
+Since $\lambda_4(q)=-(6/5)(1-q)+O((1-q)^2)$, \cref{eq:edge-cdf} predicts
+\begin{equation}\label{eq:edge-limit-profile}
+ \frac{G_q(z)-\PhiN(z)}{1-q}
+ \longrightarrow\frac1{20}\phiN(z)H_3(z).
+\end{equation}
+
+\begin{conjecture}[sharp Kolmogorov constant]\label{conj:sharp-kolmogorov}
+\begin{equation}\label{eq:sharp-kolmogorov}
+ \lim_{q\uparrow1}\frac{d_K(G_q,\PhiN)}{1-q}=C_*,
+\end{equation}
+where
+\begin{equation}\label{eq:Cstar}
+ C_*=\frac{\sqrt{6(3-\sqrt6)}}{20\sqrt{2\pi}}
+ \exp\!\left(-\frac{3-\sqrt6}{2}\right)
+ =0.027529391975040975\ldots.
+\end{equation}
+\end{conjecture}
+
+\begin{proof}[Derivation of the candidate constant]
+The extrema of $\phiN H_3$ occur at zeros of $H_4$.  The global absolute maximum is at
+$z=\sqrt{3-\sqrt6}$, where $|H_3(z)|=\sqrt6\,z$.  Multiply by $1/20$.
+\end{proof}
+
+For fixed $p\in(0,1)$, bounded away from the endpoints, put $z_p=\PhiN^{-1}(p)$.
+
+\begin{conjecture}[central inverse expansion]\label{conj:central-quantile}
+The standardized quantile $Q_q(p)=G_q^{-1}(p)$ satisfies
+\begin{equation}\label{eq:central-quantile}
+ Q_q(p)=z_p+\frac{\lambda_4(q)}{24}H_3(z_p)+O_p((1-q)^2)
+ =z_p-\frac{1-q}{20}H_3(z_p)+O_p((1-q)^2).
+\end{equation}
+Therefore
+\[
+ F_q^{-1}(p)=\frac12+\sigma_qQ_q(p).
+\]
+\end{conjecture}
+
+\subsection{Numerical evidence}
+
+The density was recovered deterministically by inverse FFT from the entire sinc product.  No Monte Carlo sampling was used.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.86\textwidth]{density_family.pdf}
+\caption{Densities $g_q$.  The exact plateau $g_q=1/(1-q)$ on $[q,1-q]$ is visible at $q=0.3$.  The case $q=1/2$ is the Fabius--Rvachev density under affine normalization.}
+\label{fig:density-family}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.86\textwidth]{edgeworth_profile.pdf}
+\caption{Scaled CDF correction compared with the predicted limit $\phiN H_3/20$.}
+\label{fig:edgeworth-profile}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.86\textwidth]{kolmogorov_scaling.pdf}
+\caption{The ratio $d_K(G_q,\PhiN)/(1-q)$ approaches the candidate constant $C_*$.}
+\label{fig:kolmogorov}
+\end{figure}
+
+\begin{table}[H]
+\centering
+\caption{Deterministic FFT errors.  The first Edgeworth correction changes the apparent error from order $1-q$ to order $(1-q)^2$.}
+\label{tab:edgeworth-errors}
+\begin{tabular}{rrrrr}
+\toprule
+$q$ & $d_K$ & $d_K/(1-q)$ & Edgeworth sup error & error$/ (1-q)^2$\\
+\midrule
+0.80 & $6.8471\!\times10^{-3}$ & 0.034236 & $8.1244\!\times10^{-4}$ & 0.020311\\
+0.90 & $3.0497\!\times10^{-3}$ & 0.030497 & $1.6200\!\times10^{-4}$ & 0.016200\\
+0.95 & $1.4468\!\times10^{-3}$ & 0.028935 & $3.6457\!\times10^{-5}$ & 0.014583\\
+0.97 & $8.5068\!\times10^{-4}$ & 0.028356 & $1.2609\!\times10^{-5}$ & 0.014009\\
+0.98 & $5.6151\!\times10^{-4}$ & 0.028076 & $5.5065\!\times10^{-6}$ & 0.013766\\
+0.99 & $2.7803\!\times10^{-4}$ & 0.027803 & $1.3872\!\times10^{-6}$ & 0.013872\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\section{A large-deviation bridge as $q\uparrow1$}
+\label{sec:ldp}
+
+The central limit theorem describes fluctuations of size $\sqrt{1-q}$ around $1/2$, while the fixed-$q$ Lambert theory describes the extreme endpoint $x\downarrow0$.  A missing intermediate object is a large-deviation principle on the natural $x$-scale.
+
+Put $\eps=1-q$ and consider
+\[
+ \Lambda_q(\theta)=\eps\log\E\exp\!\left(\frac{\theta X_q}{\eps}\right).
+\]
+Since $X_q/\eps=\sum q^nU_n$,
+\begin{equation}\label{eq:scaled-cgf-finite}
+ \Lambda_q(\theta)=\eps\sum_{n\ge0}
+ \log\frac{e^{\theta q^n}-1}{\theta q^n}.
+\end{equation}
+
+\begin{theorem}[limiting scaled cumulant-generating function]\label{thm:scaled-cgf}
+As $q\uparrow1$, the convergence below is locally uniform for real $\theta$.  It also holds locally uniformly on every compact complex set $K$ for which an analytic logarithm of $(e^{\theta u}-1)/(\theta u)$ can be chosen consistently for all $\theta\in K$ and $0\le u\le1$:
+\begin{equation}\label{eq:scaled-cgf-limit}
+ \Lambda_q(\theta)\longrightarrow
+ \Lambda(\theta)=\int_0^1
+ \log\frac{e^{\theta u}-1}{\theta u}\,\frac{\dd u}{u}.
+\end{equation}
+For the centered variable,
+\begin{equation}\label{eq:centered-scaled-cgf}
+ \Lambda_c(\theta)=\Lambda(\theta)-\frac\theta2
+ =\int_0^1\log\frac{\sinh(\theta u/2)}{\theta u/2}\,\frac{\dd u}{u}.
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+Let $L=-\log q$.  Then $q^n=e^{-Ln}$ and $\eps/L\to1$.  The sum in \cref{eq:scaled-cgf-finite}, multiplied by $L$, is a Riemann sum for
+\[
+ \int_0^\infty \log\frac{e^{\theta e^{-t}}-1}{\theta e^{-t}}\dd t.
+\]
+The substitution $u=e^{-t}$ gives \cref{eq:scaled-cgf-limit}.  The integrand has a removable singularity at $u=0$, uniformly on compact real $\theta$-sets.  The same Riemann-sum argument is locally uniform on the admissible complex compact sets specified in the theorem, once the logarithm is chosen consistently.  Centering subtracts $\theta/2$ and yields the hyperbolic-sine form.
+\end{proof}
+
+\begin{theorem}[interior large-deviation principle]\label{thm:ldp}
+The family $X_q$, $q\uparrow1$, satisfies a large-deviation principle on every compact subinterval of $(0,1)$ with speed $(1-q)^{-1}$ and good strictly convex rate function
+\begin{equation}\label{eq:rate-function}
+ I(x)=\sup_{\theta\in\R}\{\theta x-\Lambda(\theta)\}.
+\end{equation}
+Equivalently,
+\begin{equation}\label{eq:centered-rate}
+ I\left(\frac12+y\right)
+ =\sup_{\theta\in\R}\{\theta y-\Lambda_c(\theta)\},
+ \qquad |y|<\frac12.
+\end{equation}
+The rate is symmetric, $I(x)=I(1-x)$, and diverges as $x\downarrow0$ or $x\uparrow1$.
+\end{theorem}
+
+\begin{proof}
+The limiting function is finite and differentiable for every real $\theta$, and strict convexity follows because its second derivative is an integral of positive variances.  Its derivative maps $\R$ onto $(0,1)$.  The G\"artner--Ellis theorem gives the interior LDP, while compact support gives exponential tightness.  Symmetry follows from \cref{eq:centered-scaled-cgf}.  As $\theta\to-\infty$, $\Lambda(\theta)\to-\infty$ with quadratic logarithmic growth, so the Legendre transform diverges at $x=0$; the other endpoint follows by symmetry.
+\end{proof}
+
+The Bernoulli expansion gives
+\begin{equation}\label{eq:scaled-cgf-series}
+ \Lambda_c(\theta)=
+ \sum_{m\ge1}\frac{B_{2m}}{(2m)^2(2m)!}\theta^{2m}
+ =\frac{\theta^2}{48}-\frac{\theta^4}{11520}+O(\theta^6).
+\end{equation}
+Legendre inversion therefore yields the local rate expansion
+\begin{equation}\label{eq:rate-local}
+ I\left(\frac12+y\right)
+ =12y^2+\frac{144}{5}y^4+O(y^6).
+\end{equation}
+The quadratic term agrees with $\Var(X_q)\sim(1-q)/24$; the positive quartic correction reflects the negative excess kurtosis.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.86\textwidth]{large_deviation_rate.pdf}
+\caption{Numerical Legendre transform of \cref{eq:centered-scaled-cgf}.  The Gaussian quadratic core is accurate near the center but cannot describe the divergent endpoint cost.}
+\label{fig:large-deviation}
+\end{figure}
+
+\begin{problem}[matching large deviations to Lambert asymptotics]\label{prob:ldp-lambert}
+Obtain a uniform two-parameter expansion for $F_q(x)$ as $q\uparrow1$ and $x\downarrow0$ that reduces to
+\[
+ \log F_q(x)\sim-\frac{I(x)}{1-q}
+\]
+for fixed $x\in(0,1/2)$ and to the fixed-$q$ periodic Lambert expansion of \cref{conj:general-q-endpoint} when $q$ is held away from $1$.  The divergence of $I(x)$ as $x\downarrow0$ should match the quadratic-logarithmic endpoint action after a boundary-layer rescaling.
+\end{problem}
+
+This is a more precise formulation of the Gaussian-to-endpoint crossover than simply asking where a normal approximation fails.
+
+\section{Log-concavity, central plateaux, and exact subdyadic derivative geometry}
+
+\subsection{Shape theorem}
+
+\begin{theorem}[log-concavity and central plateau]\label{thm:shape}
+Let $0<q<1$.  The probability law of $X_q$ is log-concave, and its positive interior density $g_q$ is log-concave on $(0,1)$.  It is symmetric about $1/2$ and hence unimodal.
+
+If $0<q\le1/2$, then
+\begin{equation}\label{eq:plateau}
+ \|g_q\|_\infty=\frac1{1-q},
+ \qquad
+ g_q(x)=\frac1{1-q}\quad(q\le x\le1-q).
+\end{equation}
+For $q<1/2$, the displayed interval is exactly the set on which the maximum is attained.  At $q=1/2$, it collapses to the single point $x=1/2$.
+\end{theorem}
+
+\begin{proof}
+Every finite partial sum in \cref{eq:Xq-def} has a density equal to a convolution of uniform interval densities.  Uniform interval measures are log-concave; convolution preserves log-concavity; and weak limits preserve log-concavity of probability measures.  The nondegenerate limiting measure has a positive log-concave density on the interior of its support.  Symmetry follows from $U_n\mapsto1-U_n$.
+
+For the plateau, write $X_q=(1-q)U_0+R_q$, where $R_q=qX_q'$ is supported on $[0,q]$.  Convolution with the first uniform density gives
+\[
+ g_q(x)=\frac1{1-q}\Pp\bigl(x-(1-q)\le R_q\le x\bigr)
+ \le\frac1{1-q}.
+\]
+If $q\le x\le1-q$, the interval in the probability contains all of $[0,q]$, so equality holds.  If $q<1/2$ and $x$ lies outside that interval but inside $(0,1)$, an open portion of the support is missed; interior positivity makes the probability strictly smaller than one.
+\end{proof}
+
+\begin{conjecture}[strict superdyadic shape]\label{conj:strict-logconcavity}
+For $1/2<q<1$, $g_q$ is strictly log-concave on $(0,1)$ and strictly decreasing on $(1/2,1)$.  More quantitatively, there should be a positive curvature function $K_q(x)$ such that
+\[
+ -\frac{\dd^2}{\dd x^2}\log g_q(x)\ge K_q(x)>0
+\]
+on every compact subinterval of $(0,1)$.
+\end{conjecture}
+
+The threshold $q=1/2$ is geometrically natural: below it, the first interval is longer than the entire tail support and forces a plateau; above it, all first-level copies overlap.
+
+\subsection{Every derivative as separated signed copies}
+
+Define the centered density $h_q(x)=g_q(x+1/2)$ and the normalized interval density
+\[
+ u_a(x)=\frac{1}{2a}\mathbf 1_{[-a,a]}(x),
+ \qquad a_n=\frac{1-q}{2}q^n.
+\]
+Then
+\begin{equation}\label{eq:convolution-density}
+ h_q=u_{a_0}*u_{a_1}*u_{a_2}*\cdots.
+\end{equation}
+For a sign vector $\bm\epsilon=(\epsilon_0,\ldots,\epsilon_{m-1})\in\{\pm1\}^m$, put
+\begin{equation}\label{eq:centers}
+ c_{\bm\epsilon}=\frac{1-q}{2}\sum_{j=0}^{m-1}\epsilon_jq^j,
+ \qquad
+ A_{m,q}=(1-q)^{-m}q^{-m(m+1)/2}.
+\end{equation}
+
+\begin{theorem}[signed-copy derivative formula]\label{thm:derivative-copies}
+For every $m\ge0$ and $0<q<1$,
+\begin{equation}\label{eq:derivative-copies}
+ h_q^{(m)}(x)=A_{m,q}
+ \sum_{\bm\epsilon\in\{\pm1\}^m}
+ (-1)^m\left(\prod_{j=0}^{m-1}\epsilon_j\right)
+ h_q\!\left(\frac{x-c_{\bm\epsilon}}{q^m}\right),
+\end{equation}
+with the empty sum convention giving $m=0$.
+\end{theorem}
+
+\begin{proof}
+In distributions,
+\[
+ D u_a=\frac{\delta_{-a}-\delta_a}{2a}.
+\]
+Differentiate the first $m$ factors in \cref{eq:convolution-density}.  The coefficient of the point mass at $\sum\epsilon_ja_j$ is $(-1)^m\prod\epsilon_j$, divided by
+\[
+ \prod_{j=0}^{m-1}(2a_j)=(1-q)^mq^{m(m-1)/2}.
+\]
+The remaining tail convolution is the density of $q^mY_q$, namely $q^{-m}h_q(x/q^m)$.  Combining the factors gives $A_{m,q}$.
+\end{proof}
+
+For $q\le1/2$, the copies in \cref{eq:derivative-copies} separate completely.
+
+\begin{lemma}[strong separation]\label{lem:center-separation}
+If $0<q\le1/2$ and $\bm\epsilon\ne\bm\eta$, then
+\[
+ |c_{\bm\epsilon}-c_{\bm\eta}|\ge q^m.
+\]
+The support of each translated tail copy in \cref{eq:derivative-copies} has diameter $q^m$.  Hence their interiors are disjoint.
+\end{lemma}
+
+\begin{proof}
+Let $j$ be the first index at which the signs differ.  The leading separation is $(1-q)q^j$, while all later digits can cancel at most
+$(1-q)\sum_{k=j+1}^{m-1}q^k$.  Therefore
+\[
+ |c_{\bm\epsilon}-c_{\bm\eta}|
+ \ge q^j(1-2q+q^{m-j})\ge q^m.
+\]
+The remaining tail has centered support $[-q^m/2,q^m/2]$.
+\end{proof}
+
+\begin{theorem}[exact subdyadic derivative norms and plateaux]\label{thm:derivative-norm}
+For $0<q\le1/2$ and every $m\ge0$,
+\begin{equation}\label{eq:derivative-norm}
+ \boxed{\quad
+ \|g_q^{(m)}\|_\infty
+ =(1-q)^{-(m+1)}q^{-m(m+1)/2}.
+ \quad}
+\end{equation}
+For $q<1/2$, each derivative has $2^m$ disjoint constant-magnitude plateaux centered at the points $c_{\bm\epsilon}$, each with half-width
+\begin{equation}\label{eq:derivative-plateau-width}
+ \frac12q^m(1-2q).
+\end{equation}
+On that plateau the value is
+\begin{equation}\label{eq:derivative-plateau-value}
+ (-1)^m\left(\prod_j\epsilon_j\right)
+ (1-q)^{-(m+1)}q^{-m(m+1)/2}.
+\end{equation}
+At $q=1/2$ the plateaux collapse to peak points, and \cref{eq:derivative-norm} becomes
+\[
+ \|g_{1/2}^{(m)}\|_\infty=2^{(m+1)(m+2)/2},
+\]
+recovering the dyadic Rvachev peak theorem after \cref{eq:fabius-up-bridge}.
+\end{theorem}
+
+\begin{proof}
+By \cref{lem:center-separation}, at every interior point at most one term of \cref{eq:derivative-copies} is nonzero.  Its maximum is $A_{m,q}\|h_q\|_\infty$.  Apply \cref{eq:plateau}.  The plateau of $h_q$ has half-width $(1-2q)/2$; scaling by $q^m$ gives \cref{eq:derivative-plateau-width}, and the sign is read from \cref{eq:derivative-copies}.
+\end{proof}
+
+\begin{corollary}[negative subdyadic derivative norms]\label{cor:negative-derivative-norm}
+If $0<r\le1/2$, then
+\begin{equation}\label{eq:negative-derivative-norm}
+ \|g_{-r}^{(m)}\|_\infty
+ =(1+r)^{-(m+1)}r^{-m(m+1)/2}.
+\end{equation}
+\end{corollary}
+
+\begin{proof}
+Differentiate the affine density transport \cref{eq:negative-density} $m$ times and use \cref{eq:derivative-norm}.
+\end{proof}
+
+The formulas show that the celebrated dyadic derivative peaks are the critical limit of a much broader separated-copy phase.  The dyadic parameter is exactly where positive-width derivative plateaux collapse into isolated peaks.
+
+\section{Sinc zeros, a spectral zeta function, and digit sums}
+\label{sec:spectral}
+
+Fix $0<q<1$ and regard
+\begin{equation}\label{eq:entire-Cq}
+ C_q(z)=\prod_{n\ge0}\sinc\!\left(\frac{(1-q)q^nz}{2}\right)
+\end{equation}
+as a function of $z\in\C$.  Set
+\begin{equation}\label{eq:cq}
+ c_q=\frac{2\pi}{1-q}.
+\end{equation}
+
+\begin{theorem}[entire product and zero divisor]\label{thm:zero-divisor}
+The product \cref{eq:entire-Cq} converges locally uniformly to an even entire function.  Its positive zeros, counted with multiplicity, are the multiset
+\begin{equation}\label{eq:zeros}
+ \rho_{n,k}=c_qkq^{-n},
+ \qquad n\ge0,\quad k\ge1.
+\end{equation}
+A nonzero zero is simple whenever it has a unique representation in \cref{eq:zeros}.  In particular, if $q^d\notin\mathbb Q$ for every integer $d\ge1$, all nonzero zeros are simple.
+\end{theorem}
+
+\begin{proof}
+On compact sets, $\sinc w=1-w^2/6+O(w^4)$ and $\sum q^{2n}<\infty$, so the infinite-product criterion gives local uniform convergence.  The zeros of the $n$-th factor are exactly \cref{eq:zeros}.  A collision
+$kq^{-n}=\ell q^{-m}$ with $m\ne n$ implies $q^{m-n}=\ell/k\in\mathbb Q$.
+\end{proof}
+
+Define the positive-zero spectral zeta function, with multiplicities, by
+\begin{equation}\label{eq:spectral-zeta-def}
+ \mathfrak Z_q(s)=\sum_{\rho>0}m(\rho)\rho^{-s}.
+\end{equation}
+
+\begin{theorem}[spectral zeta and Hadamard product]\label{thm:spectral-zeta}
+For $\Re s>1$,
+\begin{equation}\label{eq:spectral-zeta}
+ \boxed{\quad
+ \mathfrak Z_q(s)=c_q^{-s}\frac{\zeta(s)}{1-q^s}.
+ \quad}
+\end{equation}
+The right side gives a meromorphic continuation.  Moreover,
+\begin{align}
+ C_q(z)&=\prod_{\rho>0}\left(1-\frac{z^2}{\rho^2}\right)^{m(\rho)},
+ \label{eq:hadamard}\\
+ \log C_q(z)&=-\sum_{r\ge1}\frac{\mathfrak Z_q(2r)}{r}z^{2r},
+ \qquad |z|<c_q.
+ \label{eq:log-spectral}
+\end{align}
+The cumulants are recovered spectrally by
+\begin{equation}\label{eq:cumulant-spectral}
+ \kappa_{2r}(Y_q)=(-1)^{r+1}\frac{(2r)!}{r}\mathfrak Z_q(2r).
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+Sum over the double index in \cref{eq:zeros}:
+\[
+ \sum_{n\ge0}\sum_{k\ge1}(c_qkq^{-n})^{-s}
+ =c_q^{-s}\zeta(s)\sum_{n\ge0}q^{ns}.
+\]
+Euler's product $\sinc w=\prod_{k\ge1}(1-w^2/(\pi^2k^2))$, followed by an absolutely convergent rearrangement, gives \cref{eq:hadamard}.  Expanding its logarithm gives \cref{eq:log-spectral}.  Comparing with
+\[
+ \log C_q(z)=\sum_{r\ge1}\kappa_{2r}(Y_q)\frac{(iz)^{2r}}{(2r)!}
+\]
+gives \cref{eq:cumulant-spectral}; Euler's evaluation of $\zeta(2r)$ then reproduces \cref{eq:cumulants}.
+\end{proof}
+
+This packages the Bernoulli cumulants and the sinc zeros into the same object: the Bernoulli numbers enter because the even spectral zeta values are Riemann zeta values.
+
+\begin{theorem}[universal positive-zero density]\label{thm:zero-count-general}
+Let $N_q^+(R)$ count positive zeros up to $R$, with multiplicity.  Then
+\begin{equation}\label{eq:zero-count-floor}
+ N_q^+(R)=\sum_{n\ge0}\left\lfloor\frac{R}{c_q}q^n\right\rfloor
+ =\frac{R}{2\pi}+O_q(\log R).
+\end{equation}
+The leading density $1/(2\pi)$ is independent of $q$.
+\end{theorem}
+
+\begin{proof}
+The first equality counts the allowed positive integers $k$ for every scale $n$.  Replacing each floor by its argument gives
+\[
+ \frac{R/c_q}{1-q}=\frac{R}{2\pi}.
+\]
+Only $O_q(\log R)$ summands are nonzero, and the omitted geometric tail is bounded, proving the error estimate.
+\end{proof}
+
+\subsection{Reciprocal-integer collapse and base-$B$ arithmetic}
+
+Let $q=1/B$ with integer $B\ge2$ and
+\begin{equation}\label{eq:cB}
+ c_B=\frac{2\pi B}{B-1}.
+\end{equation}
+Write
+\[
+ v_B(M)=\max\{j\ge0:B^j\mid M\}
+\]
+for divisibility by powers of the whole base $B$, and let $s_B(M)$ be the sum of the base-$B$ digits of $M$.
+
+\begin{theorem}[lattice collapse, multiplicities, and exact zero count]\label{thm:digit-zero-count}
+For $q=1/B$, the distinct positive zeros are $c_BM$, $M\ge1$, and
+\begin{equation}\label{eq:multiplicity-B}
+ m(c_BM)=v_B(M)+1.
+\end{equation}
+Thus
+\begin{align}
+ C_{1/B}(z)&=\prod_{M\ge1}
+ \left(1-\frac{z^2}{c_B^2M^2}\right)^{v_B(M)+1},\label{eq:digit-hadamard}\\
+ \sum_{M\ge1}\frac{v_B(M)+1}{M^s}
+ &=\frac{\zeta(s)}{1-B^{-s}},\qquad \Re s>1.
+ \label{eq:valuation-dirichlet}
+\end{align}
+At the lattice endpoint $R=c_BM$,
+\begin{equation}\label{eq:digit-count}
+ \boxed{\quad
+ N_{1/B}^+(c_BM)
+ =\sum_{j\ge0}\left\lfloor\frac{M}{B^j}\right\rfloor
+ =\frac{BM-s_B(M)}{B-1}.
+ \quad}
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+The zero $c_BkB^n$ equals $c_BM$ precisely when $k=M/B^n$ is a positive integer, which occurs for $0\le n\le v_B(M)$.  This proves the multiplicity and product.  The Dirichlet series is \cref{eq:spectral-zeta} after removing the factor $c_B^{-s}$.  Finally, the classical base-$B$ digit-sum identity
+\[
+ \sum_{j\ge1}\left\lfloor\frac{M}{B^j}\right\rfloor
+ =\frac{M-s_B(M)}{B-1}
+\]
+becomes \cref{eq:digit-count} after adding the $j=0$ term.
+\end{proof}
+
+For $B=2$, $c_B=4\pi$ and
+\begin{equation}\label{eq:binary-zero-count}
+ N_{1/2}^+(4\pi M)=2M-s_2(M).
+\end{equation}
+The binary digit sum therefore sits directly in the zero geometry of the Fabius--Rvachev characteristic function.
+
+\begin{corollary}[spectral reconstruction of the Thue--Morse sign]\label{cor:tm-spectral}
+Let $\tau_M=(-1)^{s_2(M)}$ be the $\{\pm1\}$ Thue--Morse sequence.  Then
+\begin{equation}\label{eq:tm-zero-parity}
+ \boxed{\quad
+ \tau_M=(-1)^{N_{1/2}^+(4\pi M)}.
+ \quad}
+\end{equation}
+Thus the Thue--Morse sign is the parity of the number of positive sinc zeros encountered up to the $M$-th zero lattice point.
+\end{corollary}
+
+\begin{proof}
+Reduce \cref{eq:binary-zero-count} modulo $2$.
+\end{proof}
+
+There is also a twisted Dirichlet identity.  If
+\[
+ A(s)=\sum_{M\ge1}\frac{\tau_M}{M^s},\qquad \Re s>1,
+\]
+then
+\begin{equation}\label{eq:twisted-multiplicity}
+ \sum_{M\ge1}\frac{\tau_M\,[v_2(M)+1]}{M^s}
+ =\frac{A(s)}{1-2^{-s}}.
+\end{equation}
+Indeed, write $M=2^jm$ with $m$ odd and use $\tau_{2^jm}=\tau_m$.  This places the Thue--Morse Dirichlet series studied in \cite{toth} beside the spectral zeta factor $1/(1-2^{-s})$.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.86\textwidth]{zero_count_discrepancy.pdf}
+\caption{The exact discrepancy is $-s_B(M)/(B-1)$.  For $B=2$ its parity is the Thue--Morse sequence.}
+\label{fig:zero-count}
+\end{figure}
+
+\subsection{Standardized zeros and why the Gaussian is zero-free}
+
+The characteristic function of $Z_q$ is $C_q(t/\sigma_q)$.  Its first positive zero is
+\begin{equation}\label{eq:standardized-first-zero}
+ d_q=\sigma_qc_q=\frac{\pi}{\sqrt{3(1-q^2)}}.
+\end{equation}
+
+\begin{corollary}[standardized spectral collapse]\label{cor:standardized-spectral}
+The standardized positive-zero spectral zeta function is
+\begin{equation}\label{eq:standardized-spectral-zeta}
+ \mathfrak Z_q^{\mathrm{std}}(s)
+ =d_q^{-s}\frac{\zeta(s)}{1-q^s}.
+\end{equation}
+It satisfies $\mathfrak Z_q^{\mathrm{std}}(2)=1/2$, while for every integer $m\ge2$,
+\begin{equation}\label{eq:std-zeta-vanish}
+ \mathfrak Z_q^{\mathrm{std}}(2m)
+ \sim\frac{3^m\zeta(2m)}{m\pi^{2m}}(1-q^2)^{m-1}
+ \longrightarrow0
+ \qquad(q\uparrow1).
+\end{equation}
+All nonzero zeros escape to infinity, leaving the zero-free Gaussian characteristic function $e^{-t^2/2}$.
+\end{corollary}
+
+This gives an entire-function explanation of the central limit theorem: Gaussianization is the evacuation of the sinc zero divisor to infinity, while the second spectral moment remains fixed by the variance normalization.
+
+\section{$q$-Pochhammer-normalized moment polynomials}
+\label{sec:moment-polynomials}
+
+Let $W_0,W_1,\ldots$ be independent uniform variables on $[-1,1]$ and define
+\begin{equation}\label{eq:Sqr}
+ S_q=\sum_{j\ge0}q^jW_j,
+ \qquad r=q^2,
+ \qquad m_n(r)=\E S_q^{2n}.
+\end{equation}
+Since $2Y_q=(1-q)S_q$, these moments are equivalent to the moments of the geometric-uniform density.  The distributional identity $S_q\overset d=W_0+qS_q'$ gives
+\begin{equation}\label{eq:moment-recurrence}
+ (1-r^n)m_n(r)=
+ \sum_{k=1}^n\binom{2n}{2k}\frac{r^{n-k}}{2k+1}m_{n-k}(r),
+ \qquad m_0=1.
+\end{equation}
+
+Define
+\begin{equation}\label{eq:PQ-def}
+ P_n(r)=(r;r)_n m_n(r),
+ \qquad
+ Q_n(r)=(2n+1)!!\,P_n(r),
+\end{equation}
+where $(r;r)_n=\prod_{j=1}^n(1-r^j)$.
+
+\begin{proposition}[polynomial recurrence and $q$-binomial form]\label{prop:P-recurrence}
+Each $P_n$ is a rational-coefficient polynomial satisfying
+\begin{align}
+ P_n(r)
+ &=\sum_{k=1}^n\binom{2n}{2k}\frac{r^{n-k}}{2k+1}
+ P_{n-k}(r)\prod_{j=n-k+1}^{n-1}(1-r^j)\label{eq:P-recurrence}\\
+ &=\sum_{k=1}^n\binom{2n}{2k}\frac{r^{n-k}}{2k+1}
+ (r;r)_{k-1}\binom{n-1}{k-1}_rP_{n-k}(r).
+ \label{eq:P-qbinomial}
+\end{align}
+Moreover,
+\begin{align}
+ \deg P_n&\le\binom n2,\label{eq:P-degree-bound}\\
+ P_n(0)&=\frac1{2n+1},\label{eq:P-zero}\\
+ P_n(1)&=\frac{(2n)!}{6^n}.
+ \label{eq:P-one}
+\end{align}
+\end{proposition}
+
+\begin{proof}
+Multiply \cref{eq:moment-recurrence} by $(r;r)_{n-1}$.  The ratio
+$(r;r)_{n-1}/(r;r)_{n-k}$ is the product in \cref{eq:P-recurrence}, and factoring it as a Gaussian binomial gives \cref{eq:P-qbinomial}.  Induction gives the triangular degree bound.  At $r=0$, only $k=n$ survives.  At $r=1$, every term with $k\ge2$ contains a vanishing factor; the $k=1$ term gives
+\[
+ P_n(1)=\frac{\binom{2n}{2}}3P_{n-1}(1)
+ =\frac{n(2n-1)}3P_{n-1}(1),
+\]
+which solves to \cref{eq:P-one}.
+\end{proof}
+
+The first normalized polynomials are
+\begin{align*}
+ Q_1(r)&=1,\\
+ Q_2(r)&=3+7r,\\
+ Q_3(r)&=15+90r+90r^2+155r^3,\\
+ Q_4(r)&=105+1155r+2541r^2+6174r^3+6405r^4+5019r^5+8001r^6.
+\end{align*}
+
+\begin{conjecture}[positive integral moment polynomials]\label{conj:moment-polynomial}
+For every $n\ge1$,
+\begin{equation}\label{eq:Q-positive}
+ Q_n(r)\in\mathbb Z_{>0}[r],
+ \qquad
+ \deg Q_n=\binom n2,
+\end{equation}
+meaning that every coefficient from degree $0$ through $\binom n2$ is a strictly positive integer.
+\end{conjecture}
+
+The experiment verifies \cref{conj:moment-polynomial} through $n=30$, including all $436$ triangular-degree tests and all coefficients.  The endpoint identities become
+\begin{align}
+ Q_n(0)&=(2n-1)!!,\label{eq:Q-zero}\\
+ Q_n(1)&=(2n+1)!!\frac{(2n)!}{6^n}.
+ \label{eq:Q-one}
+\end{align}
+The positivity is not transparent from \cref{eq:P-recurrence}, because the factors $(1-r^j)$ introduce alternating signs before cancellation.  That makes a combinatorial model especially desirable.
+
+\begin{problem}[combinatorial interpretation]\label{prob:moment-combinatorics}
+Construct a finite set $\mathcal A_n$ and a statistic $w:\mathcal A_n\to\{0,1,\ldots,\binom n2\}$ such that
+\[
+ Q_n(r)=\sum_{A\in\mathcal A_n}r^{w(A)}.
+\]
+The even-block moment expansion, the Gaussian binomial in \cref{eq:P-qbinomial}, and the denominator $(2k+1)$ suggest a model involving ordered even set partitions with a major-index-type statistic.  A successful model would prove integrality and positivity simultaneously.
+\end{problem}
+
+\section{A Legendre heat-kernel frontier}
+\label{sec:legendre}
+
+For the density on $[0,1]$, define the shifted Legendre moments
+\begin{equation}\label{eq:legendre-moment}
+ \ell_n(q)=\int_0^1g_q(x)P_n(2x-1)\dd x
+ =\E P_n(2X_q-1).
+\end{equation}
+Symmetry gives $\ell_{2m+1}=0$.  Formally, and in the appropriate $L^2$ or distributional sense,
+\begin{equation}\label{eq:legendre-expansion}
+ g_q(x)=\sum_{n\ge0}(2n+1)\ell_n(q)P_n(2x-1).
+\end{equation}
+As $q\uparrow1$, the density concentrates at $1/2$, so fixed-degree coefficients approach the Legendre values at zero rather than vanishing.
+
+Put
+\begin{equation}\label{eq:vq}
+ Z_q^{\natural}=2X_q-1=2Y_q,
+ \qquad
+ v_q=\Var(Z_q^{\natural})=\frac{1-q}{3(1+q)}.
+\end{equation}
+
+\begin{theorem}[fixed-degree Legendre expansion]\label{thm:legendre-fixed}
+Fix $m\ge0$ and set $M=(2m)(2m+1)$.  As $q\uparrow1$,
+\begin{equation}\label{eq:legendre-fixed}
+ \ell_{2m}(q)=P_{2m}(0)
+ \left[1-\frac{M}{2}v_q+\frac{M(M-6)}8v_q^2\right]
+ +O_m(v_q^3),
+\end{equation}
+where
+\begin{equation}\label{eq:P-even-zero}
+ P_{2m}(0)=(-1)^m\frac{\binom{2m}{m}}{4^m}.
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+Taylor-expand the even polynomial $P_{2m}$ at zero.  The Legendre differential equation gives
+\[
+ P_{2m}''(0)=-MP_{2m}(0),
+ \qquad
+ P_{2m}^{(4)}(0)=M(M-6)P_{2m}(0).
+\]
+Now $\E(Z_q^{\natural})^2=v_q$.  By \cref{eq:lambda4}, the absolute fourth cumulant is $O(v_q^3)$, so
+\[
+ \E(Z_q^{\natural})^4=3v_q^2+O(v_q^3).
+\]
+All moments of order at least six are $O_m(v_q^3)$ for fixed order.  Substitution into the Taylor expansion gives \cref{eq:legendre-fixed}.
+\end{proof}
+
+The fixed-degree theorem is a distributional heat expansion.  Indeed, the first terms are what one obtains by applying $e^{(v_q/2)D^2}$ to $P_{2m}$ at zero.  A more interesting limit appears when the Legendre degree grows at the same time that the density narrows.
+
+\begin{conjecture}[Legendre heat-kernel double scaling]\label{conj:legendre-heat}
+Let $q\uparrow1$ and $m=m(q)\to\infty$ so that
+\begin{equation}\label{eq:tau-legendre}
+ \tau_q=\left(2m+\frac12\right)\sqrt{v_q}\longrightarrow\tau\in[0,\infty).
+\end{equation}
+Then
+\begin{equation}\label{eq:legendre-heat}
+ \boxed{\quad
+ \frac{\E P_{2m}(2X_q-1)}{P_{2m}(0)}
+ \longrightarrow e^{-\tau^2/2}.
+ \quad}
+\end{equation}
+The convergence should be locally uniform in bounded $\tau$-intervals, with a full expansion whose first nonuniversal term is controlled by $\lambda_4(q)$.
+\end{conjecture}
+
+\paragraph{Heuristic.}
+Hilb's oscillatory asymptotic near the center gives
+\[
+ \frac{P_{2m}(x)}{P_{2m}(0)}
+ \approx\cos\!\left(\left(2m+\frac12\right)x\right)
+\]
+
+after the slowly varying amplitude is divided out.  Since
+$Z_q^{\natural}/\sqrt{v_q}\Rightarrow N(0,1)$, the expectation tends to the Gaussian characteristic function $e^{-\tau^2/2}$.  A proof should combine a uniform Hilb expansion on $x=O(\sqrt{v_q})$ with the large-deviation tail control from \cref{sec:ldp}.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.86\textwidth]{legendre_heat_scaling.pdf}
+\caption{High-precision moment evaluation of the Legendre double scaling.  At $q=0.99$ the largest absolute discrepancy over the plotted range is about $1.26\times10^{-3}$.}
+\label{fig:legendre-heat}
+\end{figure}
+
+A practical consequence is that the effective Legendre spectral width of the concentrating density is of order
+\[
+ m\asymp v_q^{-1/2}\asymp(1-q)^{-1/2}.
+\]
+This gives a quantitative bridge between the repository's fixed-$q$ Fourier--Legendre expansions and a Hermite/heat-semigroup limit near $q=1$.
+
+\section{Exact arbitrary-$q$ dilation-periodic Laplace decomposition}
+\label{sec:periodic-laplace}
+
+For $0<q<1$ define the negative Laplace transform
+\begin{equation}\label{eq:Bq}
+ B_q(s)=\E e^{-sX_q}
+ =\prod_{n\ge0}\frac{1-e^{-(1-q)q^ns}}{(1-q)q^ns},
+ \qquad s>0.
+\end{equation}
+Let
+\begin{equation}\label{eq:Laplace-definitions}
+ L=\log\frac1q,
+ \qquad
+ a=\frac{1-q}{q}s,
+ \qquad
+ \kappa(u)=\log\frac{1-e^{-u}}{u},
+\end{equation}
+and put
+\begin{align}
+ \Lambda_q(a)&=\sum_{n\ge1}\kappa(aq^n),\label{eq:Lambdaq}\\
+ T_q(a)&=\sum_{m\ge0}\log(1-e^{-aq^{-m}}).
+ \label{eq:Tq}
+\end{align}
+Then $\log B_q(s)=\Lambda_q(a)$.
+
+\begin{theorem}[exact periodic decomposition]\label{thm:periodic-decomposition}
+The function $\Lambda_q$ satisfies
+\begin{equation}\label{eq:dilation-Lambda}
+ \Lambda_q(a/q)=\Lambda_q(a)+\kappa(a).
+\end{equation}
+The function
+\begin{equation}\label{eq:Pq-def}
+ P_q(u)=\Lambda_q(q^{-u})+\frac L2(u^2-u)+T_q(q^{-u})
+\end{equation}
+is exactly $1$-periodic.  Equivalently,
+\begin{equation}\label{eq:Lambda-periodic}
+ \boxed{\quad
+ \Lambda_q(a)=
+ -\frac{(\log a)^2}{2L}+\frac12\log a
+ +P_q\!\left(\log_{1/q}a\right)-T_q(a).
+ \quad}
+\end{equation}
+The tail $T_q(a)$ is exponentially small as $a\to+\infty$.
+\end{theorem}
+
+\begin{proof}
+Shift the index in \cref{eq:Lambdaq} to obtain \cref{eq:dilation-Lambda}.  Also
+\[
+ T_q(a/q)=T_q(a)-\log(1-e^{-a}).
+\]
+If $a=q^{-u}$, then $\kappa(a)=\log(1-e^{-a})-\log a=\log(1-e^{-a})-Lu$.  The change in the quadratic term under $u\mapsto u+1$ is $Lu$.  All increments cancel, proving periodicity.  Rearranging gives \cref{eq:Lambda-periodic}.  Exponential smallness follows directly from the first term $\log(1-e^{-a})$ and the faster-growing arguments $aq^{-m}$.
+\end{proof}
+
+The $q=1/2$ instance underlies the repository's rigorous endpoint theorem.  The point here is that the exact coboundary cancellation and its periodic remainder require no dyadic specialization.
+
+\begin{theorem}[Fourier coefficients of the periodic phase]\label{thm:periodic-fourier}
+Let
+\[
+ \chi_k=\frac{2\pi i k}{L}.
+\]
+For every nonzero integer $k$, the Fourier coefficient
+$\widehat P_q(k)=\int_0^1P_q(u)e^{-2\pi iku}\dd u$ is
+\begin{equation}\label{eq:Pq-fourier}
+ \boxed{\quad
+ \widehat P_q(k)=-\frac1L\Gamma(-\chi_k)\zeta(1-\chi_k).
+ \quad}
+\end{equation}
+In particular, $P_q$ is nonconstant for every $0<q<1$.
+\end{theorem}
+
+\begin{proof}[Proof sketch with the analytic step made explicit]
+Apply Mellin inversion to the harmonic sum generated by
+$\log(1-e^{-x})$.  Its Mellin transform in the relevant strip is
+\[
+ \int_0^\infty\log(1-e^{-x})x^{s-1}\dd x
+ =-\Gamma(s)\zeta(s+1).
+\]
+The poles of the geometric factor $1/(1-q^{-s})$ at $s=\chi_k$ generate the Fourier modes after the change $a=q^{-u}$.  The polynomial terms in \cref{eq:Lambda-periodic} remove the multiple pole at $s=0$, while $T_q$ supplies the exponentially regularized forward part; neither changes nonzero Fourier modes.  Taking the residue at $s=\chi_k$ gives \cref{eq:Pq-fourier}.  Standard vertical-line bounds for $\Gamma$ and polynomial bounds for $\zeta$ justify contour displacement.  Since $\zeta$ has no zeros on $\Re s=1$ away from its pole and $\Gamma$ has no zeros, the first coefficient is nonzero.
+\end{proof}
+
+The coefficient decays exponentially in $|k|$ by Stirling's formula, so $P_q$ is real analytic.  Its first-harmonic amplitude is
+\begin{equation}\label{eq:first-harmonic-amplitude}
+ 2|\widehat P_q(1)|
+ =\frac2L\left|\Gamma\!\left(-\frac{2\pi i}{L}\right)
+ \zeta\!\left(1-\frac{2\pi i}{L}\right)\right|.
+\end{equation}
+It becomes extremely small as $q\uparrow1$, but it never vanishes.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.86\textwidth]{periodic_phase_normalized.pdf}
+\caption{Centered periodic phases normalized by their first-harmonic amplitude.  The phase as well as the amplitude varies with $q$.}
+\label{fig:periodic-phase}
+\end{figure}
+
+The numerical experiment computes \cref{eq:Pq-def} directly and compares the first three discrete Fourier coefficients with \cref{eq:Pq-fourier}.  The largest absolute discrepancy in the tested table is $1.42\times10^{-16}$.  For reference,
+\[
+\begin{aligned}
+ |\widehat P_{1/3}(1)|&=1.0468623\times10^{-4},&
+ |\widehat P_{1/2}(1)|&=1.0627109\times10^{-6},\\
+ |\widehat P_{0.7}(1)|&=2.9676846\times10^{-12}.&&
+\end{aligned}
+\]
+
+\section{A general-$q$ Lambert-$W$ endpoint and inverse program}
+\label{sec:general-q-endpoint}
+
+The exact periodic decomposition determines the correct saddle variable.  For $0<q<1$, $L=\log(1/q)$, and small $x>0$, define
+\begin{equation}\label{eq:lambda-q}
+ \lambda_q(x)=-\frac1L
+ W_{-1}\!\left(-\frac{Lq}{1-q}x\right).
+\end{equation}
+It is the large positive solution of
+\begin{equation}\label{eq:lambda-relation}
+ \lambda_qe^{-L\lambda_q}=\frac{q}{1-q}x.
+\end{equation}
+If the Laplace saddle is $s=\lambda_q/x$, then the variable in \cref{eq:Laplace-definitions} is exactly
+\[
+ a=\frac{1-q}{q}s=q^{-\lambda_q}.
+\]
+Therefore the periodic phase in \cref{eq:Lambda-periodic} is evaluated at $\lambda_q$ without an ad hoc shift.
+
+\begin{conjecture}[general-$q$ endpoint expansion]\label{conj:general-q-endpoint}
+For each fixed $q\in(0,1)$ there is a constant $C_q$ such that, as $x\downarrow0$,
+\begin{equation}\label{eq:general-q-endpoint}
+ \boxed{\begin{aligned}
+ \log F_q(x)={}&-\frac L2\lambda_q(x)^2
+ +\left(1+\frac L2\right)\lambda_q(x)
+ -\frac12\log\lambda_q(x)\\
+ &+C_q+\Psi_q(\lambda_q(x))
+ +O_q(\lambda_q(x)^{-1})
+ \end{aligned}}
+\end{equation}
+where $\Psi_q=P_q-\int_0^1P_q$ under a compatible normalization.  More generally, an all-order expansion should exist,
+\begin{equation}\label{eq:all-order-endpoint}
+ \log F_q(x)=\text{main terms}
+ +\sum_{j=1}^N\frac{A_{j,q}(\lambda_q)}{\lambda_q^j}
+ +O_{q,N}(\lambda_q^{-N-1}),
+\end{equation}
+with $1$-periodic analytic coefficient functions $A_{j,q}$ built from $\Psi_q$ and its derivatives.
+\end{conjecture}
+
+\paragraph{Why the structure is forced.}
+Laplace inversion for the CDF contains the exponent
+$sx+\log B_q(s)-\log s$.  At $s=\lambda/x$, the first term is $\lambda$, while \cref{eq:Lambda-periodic} contributes
+$-L\lambda^2/2+L\lambda/2+P_q(\lambda)$; Gaussian saddle normalization and the $1/s$ factor combine to give $-\tfrac12\log\lambda$ plus a constant.  This exactly reproduces the coefficient pattern of the rigorous dyadic theorem.  What remains is a uniform steepest-descent proof for arbitrary fixed $q$ and bookkeeping of the higher periodic coefficients.
+
+The periodic term cannot consistently be deleted: \cref{eq:Pq-fourier} gives an explicit nonzero first Fourier mode for every $q$.  Its practical size may be tiny near $q=1$, but asymptotic correctness and numerical detectability are different questions.
+
+\begin{conjecture}[endpoint inverse expansion]\label{conj:endpoint-inverse}
+Let $y\downarrow0$, $T=-\log y$, and let $\lambda_y$ solve
+\begin{equation}\label{eq:inverse-lambda-equation}
+ T=\frac L2\lambda_y^2-
+ \left(1+\frac L2\right)\lambda_y
+ +\frac12\log\lambda_y-C_q-\Psi_q(\lambda_y)
+\end{equation}
+after including as many inverse-power corrections as desired.  Then
+\begin{equation}\label{eq:endpoint-inverse}
+ F_q^{-1}(y)=\frac{1-q}{q}\lambda_y e^{-L\lambda_y}
+ \left(1+O_q(\lambda_y^{-2})\right).
+\end{equation}
+At leading order, $\lambda_y\sim\sqrt{2T/L}$.
+\end{conjecture}
+
+The equation for $\lambda_y$ is numerically preferable to first expanding $W_{-1}$ into nested logarithms: it retains the exact periodic phase and avoids large cancellation.  Newton iteration has derivative $L\lambda+O(1)$ and is therefore strongly stable in the endpoint regime.
+
+\subsection{Three inverse regimes}
+
+The combined results suggest three qualitatively different inverse asymptotics.
+\begin{enumerate}
+  \item \textbf{Central probability, $q\uparrow1$.}  For fixed $p\in(0,1)$, use the Gaussian/Edgeworth quantile \cref{eq:central-quantile}.
+  \item \textbf{Large-deviation probability.}  If $p\asymp\exp[-a/(1-q)]$ and the quantile stays in a compact subset of $(0,1/2)$, solve $I(x)=a$ using \cref{eq:rate-function} and then compute prefactors.
+  \item \textbf{Endpoint probability at fixed $q$.}  If $q$ is fixed and $p\downarrow0$, use the periodic Lambert inversion \cref{eq:endpoint-inverse}.
+\end{enumerate}
+A complete two-parameter theory must show how regimes 2 and 3 match when $x\downarrow0$ while $q\uparrow1$.
+
+\section{Further Thue--Morse, $q$-series, and transform consequences}
+
+\subsection{Pole lattices and log-periodicity}
+
+Two meromorphic factors recur throughout the theory:
+\[
+ \frac1{1-q^s}
+ \qquad\text{and}\qquad
+ \frac1{1-B^{-s}}\quad(q=1/B).
+\]
+Their poles lie on the imaginary lattice
+\[
+ s=\frac{2\pi ik}{\log(1/q)}.
+\]
+In the Laplace problem these poles generate the periodic Fourier modes \cref{eq:Pq-fourier}; in the spectral problem they occur in \cref{eq:spectral-zeta}; and at reciprocal-integer $q$ they collapse zero scales into a lattice with digit-sum fluctuations.  Thus log-periodicity, the sinc zero divisor, and base-$B$ arithmetic are three manifestations of one dilation spectrum.
+
+\subsection{A hierarchy of twisted zero statistics}
+
+The multiplicity $v_2(M)+1$ is the first derivative, in a generating-parameter sense, of the scale count.  More generally, for $z$ with $|z|<2^{\Re s}$,
+\begin{equation}\label{eq:valuation-generating}
+ \sum_{M\ge1}\frac{\tau_M z^{v_2(M)}}{M^s}
+ =\frac{1-2^{-s}}{1-z2^{-s}}A(s).
+\end{equation}
+Differentiation at $z=1$ generates Dirichlet series weighted by powers or falling factorials of $v_2(M)$, hence by polynomial functions of sinc-zero multiplicity.  This opens a direct route from the zero divisor to the family of Thue--Morse Dirichlet combinations studied in \cite{toth}.
+
+\begin{problem}[spectral Thue--Morse functional equations]\label{prob:spectral-TM}
+Determine which functional or Mahler-type equations for $A(s)$ lift to natural identities for the zero-multiplicity twists in \cref{eq:valuation-generating}.  In particular, seek a transform interpretation in which the parity identity \cref{eq:tm-zero-parity} becomes an operator-level statement rather than a congruence.
+\end{problem}
+
+\subsection{Spectral determinants}
+
+The Hadamard product suggests a regularized determinant
+\[
+ \det{}_q(I-z^2\mathcal A_q)
+ :=C_q(z),
+\]
+where the hypothetical positive operator $\mathcal A_q$ has eigenvalues $\rho^{-2}$ with multiplicity $m(\rho)$.  Its spectral traces are exactly $\mathfrak Z_q(2m)$.  At $q=1/B$, the eigenspace multiplicities are $v_B(M)+1$.  Constructing a natural operator, perhaps on a dilation tree or a direct sum of one-dimensional Laplacians, would turn the formal determinant analogy into genuine spectral geometry.
+
+\section{Research agenda and formalization priorities}
+
+The following projects appear both high-value and realistically attackable.
+
+\subsection{Tier I: short proofs with immediate payoff}
+
+\begin{enumerate}
+  \item \textbf{Formalize negative-$q$ duality.}  \cref{thm:negative-duality,prop:density-sign} are elementary and close a named repository gap.  In Lean, the key step is invariance of an independent symmetric sequence under deterministic sign flips.
+  \item \textbf{Formalize the subdyadic derivative theorem.}  The proof reduces to convolution with interval measures, differentiation into signed Dirac masses, and a finite strong-separation inequality.
+  \item \textbf{Formalize the spectral zeta identity.}  The positive-zero multiset and the double geometric--zeta sum are explicit.  The reciprocal-integer digit-sum count can reuse standard floor-sum lemmas.
+  \item \textbf{Prove strict log-concavity for $q>1/2$.}  A route through equality cases in Pr\'ekopa--Leindler or through total positivity of convolution kernels should be tested.
+\end{enumerate}
+
+\subsection{Tier II: analytic projects}
+
+\begin{enumerate}
+  \item \textbf{Uniform Edgeworth expansion.}  Combine the exact cumulants with a frequency split: Taylor expansion below $|t|\asymp(1-q)^{-\beta}$ and multi-factor sinc decay above it.  This should prove \cref{conj:edgeworth} and the sharp constant \cref{conj:sharp-kolmogorov}.
+  \item \textbf{Large-deviation prefactors.}  The rate function is explicit as a one-dimensional Legendre transform.  Bahadur--Rao or saddlepoint methods should yield a uniform prefactor for $F_q(x)$ on compact subsets of $(0,1/2)$.
+  \item \textbf{General-$q$ endpoint theorem.}  Adapt the rigorous dyadic contour argument to \cref{eq:Lambda-periodic}.  The exact periodic decomposition and Fourier coefficients are already available.
+  \item \textbf{Two-parameter matching.}  Analyze $q\uparrow1$, $x\downarrow0$ with $I(x)/(1-q)$ and the Lambert action simultaneously large.  This is likely the most conceptually important asymptotic project.
+\end{enumerate}
+
+\subsection{Tier III: algebraic and combinatorial projects}
+
+\begin{enumerate}
+  \item \textbf{Moment-polynomial positivity.}  Prove \cref{conj:moment-polynomial}; search for a set-partition, increasing-tree, or major-index model for $Q_n$.
+  \item \textbf{Zero-collision classification.}  If $q^d=a/b\in\mathbb Q$ for a minimal $d$, classify all collisions by residue classes of the scale index modulo $d$, and derive the resulting multiplicity Dirichlet series.
+  \item \textbf{Legendre double scaling.}  Prove \cref{conj:legendre-heat} with Hilb asymptotics and the LDP.  Then compute the first correction from $\lambda_4$ and the amplitude variation.
+  \item \textbf{A genuine spectral operator.}  Realize $C_q$ as a Fredholm or zeta-regularized determinant of a dilation-tree operator.
+\end{enumerate}
+
+\subsection{Additional long-range conjectures}
+
+\begin{conjecture}[uniform periodic transseries]\label{conj:uniform-transseries}
+For $q$ in every compact subset of $(0,1)$, the endpoint saddle expansion \cref{eq:all-order-endpoint} is Gevrey-1 uniformly in $q$, with Borel singularities determined by adjacent complex saddles and the pole lattice $2\pi i\mathbb Z/L$.
+\end{conjecture}
+
+\begin{conjecture}[spectral rigidity]\label{conj:spectral-rigidity}
+The multiset of nonzero zeros of $C_q$, up to a global linear scaling, determines $|q|$.  More precisely, if $C_q(az)$ and $C_r(z)$ have the same zero divisor for some $a>0$, then $q=r$ for $q,r\in(0,1)$.
+\end{conjecture}
+
+A proof may use the ratios between successive scale families or, more invariantly, the pole spacing of the spectral zeta factor $1/(1-q^s)$.
+
+\begin{conjecture}[strictly positive moment triangle]\label{conj:moment-triangle}
+Write $Q_n(r)=\sum_{j=0}^{\binom n2}a_{n,j}r^j$.  Besides $a_{n,j}>0$, the normalized rows may satisfy a two-sided ratio-monotonicity or total-positivity property after an explicit diagonal rescaling, even though the raw rows are not generally log-concave.
+\end{conjecture}
+
+\section{Reproducibility and numerical methodology}
+
+The archive contains the fully commented script
+\begin{center}
+\texttt{source/fabius\_frontier\_experiments.py}.
+\end{center}
+It uses NumPy, SciPy, SymPy, mpmath, and Matplotlib.  The computations are deterministic.
+
+\subsection{FFT density inversion}
+
+On a Fourier period larger than the support, the script samples \cref{eq:Cq} at the FFT frequencies.  Sinc factors are multiplied until the largest remaining argument is below $10^{-7}$; the residual product is replaced by the quadratic log-sinc tail
+\[
+ \exp\left(-\frac12t^2\Var(\text{omitted tail})\right).
+\]
+The omitted fourth-order contribution is far below the reported precision.  Densities are clipped only at roundoff-level negative values and renormalized before CDF integration.
+
+\subsection{High-precision Legendre evaluation}
+
+Direct quadrature of high-degree Legendre polynomials is catastrophically ill-conditioned because the desired expectation is a cancellation of large monomial terms.  The script instead computes the exact even moments from \cref{eq:moment-recurrence}, expands $P_{2m}$ into monomials, and evaluates with $180$ decimal digits.
+
+\subsection{Periodic phase}
+
+The two convergent sums in \cref{eq:Pq-def} are evaluated directly and then discrete Fourier transformed.  The first three coefficients are compared with \cref{eq:Pq-fourier}.  The largest absolute discrepancy is $1.42\times10^{-16}$.
+
+\subsection{Moment polynomials}
+
+The recurrence \cref{eq:P-recurrence} is implemented directly in the polynomial ring $\mathbb Q[r]$, avoiding rational-function simplification.  Integrality, positivity, full coefficient support, and triangular degree are checked through $n=30$.  Full coefficients through $n=20$ are included as CSV.
+
+\subsection{Generated files}
+
+{\small
+\begin{longtable}{>{\raggedright\arraybackslash}p{0.47\textwidth}>{\raggedright\arraybackslash}p{0.42\textwidth}}
+\toprule
+File & Purpose\\
+\midrule
+\endfirsthead
+\toprule
+File & Purpose\\
+\midrule
+\endhead
+\path{data/edgeworth_errors.csv} & Gaussian and first-Edgeworth sup errors\\
+\path{data/large_deviation_rate.csv} & numerical Legendre transform of the limiting scaled CGF\\
+\path{data/legendre_heat_scaling.csv} & high-precision double-scaling ratios\\
+\path{data/moment_polynomial_summary.csv} & degree, integrality, positivity, endpoint checks through $n=30$\\
+\path{data/moment_polynomial_coefficients.csv} & full coefficients through $n=20$\\
+\path{data/negative_q_duality_check.csv} & characteristic-function duality errors\\
+\path{data/periodic_fourier_check.csv} & direct versus Gamma--zeta Fourier modes\\
+\path{data/subdyadic_derivative_norms.csv} & exact derivative-norm and plateau predictions\\
+\path{data/zero_counts.csv} & floor sums, digit sums, and exact zero counts for $B=2,3$\\
+\path{data/experiment_metadata.json} & aggregate checks and maximum errors\\
+\bottomrule
+\end{longtable}
+}
+
+\section{Conclusion}
+
+The geometric-uniform family contains considerably more rigid structure than is visible from the dyadic case alone.  Negative parameters are not a separate analytic species but affine expansions of positive laws.  The subdyadic interval $0<q<1/2$ is a strong-separation phase in which every derivative decomposes into disjoint signed copies and therefore has an exact norm and explicit plateaux.  The sinc product carries a spectral zeta function whose reciprocal-integer specializations encode base-$B$ digit sums; at $q=1/2$, the parity of the cumulative zero count is exactly the Thue--Morse sequence.  At the opposite parameter boundary $q\uparrow1$, standardized zeros escape to infinity, Bernoulli cumulants collapse, Legendre coefficients evolve by a heat-kernel law, and a nonquadratic large-deviation rate bridges the Gaussian core toward the endpoint.
+
+The exact periodic decomposition \cref{eq:Lambda-periodic} shows that the repository's dyadic Lambert oscillation is one member of a complete arbitrary-$q$ family with explicit Gamma--zeta Fourier modes.  This gives a concrete route to a general-$q$ endpoint theorem rather than a merely analogous conjecture.  The most promising immediate targets are the negative-$q$ and derivative formalizations, the sharp Edgeworth theorem, the moment-polynomial positivity conjecture, and the matched large-deviation/Lambert boundary layer.
+
+\appendix
+
+\section{Selected numerical tables}
+
+\subsection{First-harmonic endpoint phases}
+
+\begin{center}
+\begin{tabular}{rrr}
+\toprule
+$q$ & $|\widehat P_q(1)|$ & $2|\widehat P_q(1)|$\\
+\midrule
+$1/3$ & $1.0468623258\times10^{-4}$ & $2.0937246516\times10^{-4}$\\
+$1/2$ & $1.0627108821\times10^{-6}$ & $2.1254217642\times10^{-6}$\\
+$0.7$ & $2.9676845609\times10^{-12}$ & $5.9353691218\times10^{-12}$\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\subsection{Moment-polynomial checks}
+
+\begin{center}
+\begin{tabular}{rrrrr}
+\toprule
+$n$ & degree & coefficient count & constant coefficient & leading coefficient\\
+\midrule
+2 & 1 & 2 & 3 & 7\\
+3 & 3 & 4 & 15 & 155\\
+4 & 6 & 7 & 105 & 8001\\
+5 & 10 & 11 & 945 & 804825\\
+6 & 15 & 16 & 10395 & 140033223\\
+8 & 28 & 29 & 2027025 & 16015962227265\\
+10 & 45 & 46 & 654729075 & 7628473935554443335\\
+\bottomrule
+\end{tabular}
+\end{center}
+Every tested coefficient through $n=30$ is a strictly positive integer.
+
+\section{Repository source-lineage crosswalk}
+
+The current source tree was treated by lineage rather than by counting renamed copies as independent mathematical sources.  The main categories inspected were:
+\begin{itemize}
+  \item the primary exposition \texttt{Fabius\_Function\_and\_Rvachev\_Up};
+  \item the consolidated \texttt{semi-formalized-research-frontiers} volume;
+  \item glossary, Lean walkthrough, non-elementarity, and paper-coverage documents;
+  \item archived primary-exposition variants and ``missing parts'' supplements;
+  \item archived $q$-special-function and dyadic-asymptotic notebooks;
+  \item Thue--Morse formula atlases and convergence-rate notebooks;
+  \item repeated-integration/Rvachev and small-argument/inverse notebooks;
+  \item TeX sources of the external papers stored under \texttt{docs/papers}.
+\end{itemize}
+The consolidated frontier source explicitly records the eleven former notebooks it supersedes.  Consequently, duplication was checked against the current canonical statements and their provenance rather than by treating every archived copy as an independent result.  Since the GitHub branch is live, exact line counts and filenames may change after the snapshot date.
+
+\section{Conjecture catalogue}
+
+{\small
+\begin{longtable}{>{\raggedright\arraybackslash}p{0.18\textwidth}>{\raggedright\arraybackslash}p{0.32\textwidth}>{\raggedright\arraybackslash}p{0.39\textwidth}}
+\toprule
+Label & Statement & Main required tool\\
+\midrule
+\endfirsthead
+\toprule
+Label & Statement & Main required tool\\
+\midrule
+\endhead
+Conjecture~\ref{conj:strict-logconcavity} & strict log-concavity for $q>1/2$ & equality cases in convolution log-concavity\\
+Conjecture~\ref{conj:edgeworth} & uniform first Edgeworth expansion & sinc-tail Fourier bounds\\
+Conjecture~\ref{conj:sharp-kolmogorov} & exact $O(1-q)$ Kolmogorov constant & uniform Edgeworth remainder\\
+Conjecture~\ref{conj:central-quantile} & central inverse expansion & inversion of the CDF expansion\\
+Conjecture~\ref{conj:moment-polynomial} & positive integral $Q_n$ coefficients & combinatorial model or cancellation-free recurrence\\
+Conjecture~\ref{conj:legendre-heat} & Legendre heat-kernel scaling & Hilb asymptotics plus LDP\\
+Conjecture~\ref{conj:general-q-endpoint} & periodic Lambert endpoint for all fixed $q$ & steepest descent using \cref{eq:Lambda-periodic}\\
+Conjecture~\ref{conj:endpoint-inverse} & periodic endpoint inverse & stable asymptotic inversion\\
+Conjecture~\ref{conj:uniform-transseries} & Gevrey/Borel structure & resurgence of neighboring saddles\\
+Conjecture~\ref{conj:spectral-rigidity} & zeros determine $q$ up to scale & spectral-zeta pole spacing\\
+Conjecture~\ref{conj:moment-triangle} & stronger positivity of coefficient triangle & total positivity after normalization\\
+\bottomrule
+\end{longtable}
+}
+
+\begin{thebibliography}{99}
+
+\bibitem{repo-main}
+V. Reshetnikov,
+\emph{The Fabius Function and the Rvachev Up-Function},
+current \repo{} source,
+\url{https://github.com/VladimirReshetnikov/ProveIt/blob/main/Analysis/FabiusFunction/docs/Fabius_Function_and_Rvachev_Up/Fabius_Function_and_Rvachev_Up.tex},
+accessed 30 August 2026.
+
+\bibitem{repo-frontier}
+V. Reshetnikov,
+\emph{Semi-formalized Research Frontiers},
+current consolidated \repo{} source,
+\url{https://github.com/VladimirReshetnikov/ProveIt/blob/main/Analysis/FabiusFunction/docs/semi-formalized-research-frontiers/semi-formalized-research-frontiers.tex},
+accessed 30 August 2026.
+
+\bibitem{repo-paper-coverage}
+V. Reshetnikov,
+\emph{Paper Coverage Audit},
+\repo{} documentation,
+\url{https://github.com/VladimirReshetnikov/ProveIt/blob/main/Analysis/FabiusFunction/docs/PAPER_COVERAGE.md},
+accessed 30 August 2026.
+
+\bibitem{repo-asymptotic-audit}
+V. Reshetnikov,
+\emph{Asymptotic Completion Audit},
+\repo{} documentation,
+\url{https://github.com/VladimirReshetnikov/ProveIt/blob/main/Analysis/FabiusFunction/docs/ASYMPTOTIC_COMPLETION_AUDIT.md},
+accessed 30 August 2026.
+
+\bibitem{repo-doc-audit}
+V. Reshetnikov,
+\emph{Documentation Audit},
+\repo{} documentation,
+\url{https://github.com/VladimirReshetnikov/ProveIt/blob/main/Analysis/FabiusFunction/docs/DOCUMENTATION_AUDIT.md},
+accessed 30 August 2026.
+
+\bibitem{arias-up}
+J. Arias de Reyna,
+\emph{An infinitely differentiable function with compact support: Definition and properties},
+arXiv:1702.05442, 2017; English translation of Rev. Real Acad. Ciencias Madrid 76 (1982), 21--38.
+
+\bibitem{arias-arithmetic}
+J. Arias de Reyna,
+\emph{Arithmetic of the Fabius function},
+Integers 18 (2018), A51; arXiv:1702.06487.
+
+\bibitem{haugland}
+J. K. Haugland,
+\emph{Evaluating the Fabius function},
+arXiv:1609.07999, revised 2020.
+
+\bibitem{have}
+S. G. Have,
+\emph{A recurrence relation for the odd order moments of the Fabius function},
+arXiv:1703.01904, 2017.
+
+\bibitem{aistleitner}
+C. Aistleitner, R. Hofer, and G. Larcher,
+\emph{On parametric Thue--Morse sequences and lacunary trigonometric products},
+Ann. Inst. Fourier 67 (2017), 637--680; arXiv:1502.06738.
+
+\bibitem{toth}
+L. T\'oth,
+\emph{Linear combinations of Dirichlet series associated with the Thue--Morse sequence},
+Integers 22 (2022), Article 98; arXiv:2211.13570.
+
+\bibitem{sebbar}
+A. Sebbar,
+\emph{Vi\`ete's Formula, the Fabius Function and the Partition Function},
+Amer. Math. Monthly 132 (2025), 237--250,
+\url{https://doi.org/10.1080/00029890.2024.2421140}.
+
+\bibitem{schaback}
+R. Schaback,
+\emph{Kernel Construction Techniques},
+preprint/version of 12 February 2026,
+\url{https://num.math.uni-goettingen.de/schaback/research/papers/KCT.pdf}.
+
+\bibitem{rvachev1977}
+V. A. Rvachev,
+\emph{On approximation by means of the function $\Up(x)$},
+Dokl. Akad. Nauk SSSR 233 (1977), 295--296.
+
+\bibitem{rvachev1990}
+V. A. Rvachev,
+\emph{Compactly supported solutions of functional-differential equations and their applications},
+Russian Math. Surveys 45:1 (1990), 87--120.
+
+\bibitem{saumard}
+A. Saumard and J. A. Wellner,
+\emph{Log-concavity and strong log-concavity: a review},
+Statistical Surveys 8 (2014), 45--114.
+
+\end{thebibliography}
+
+\end{document}

@@ -1,7 +1,7 @@
 # Inverse and sampling
 
 The inverse function's frontiers and the sampling/deconvolution circle of
-ideas, in two consolidated volumes.
+ideas, in three consolidated volumes and two retained standalone reports.
 
 ## `Inverse_and_Sampling_Frontiers/`
 
@@ -101,5 +101,44 @@ Complements — and imports the prior inverse corrections of —
 `Inverse_and_Sampling_Frontiers/`.  Absorbed directories deleted;
 provenance with SHA-256 in the volume's Appendix C and
 `assets/SHA256SUMS-absorbed.txt`.
+
+## `Inverse_Fabius_Computability_Report/`
+
+Filed 2026-08-30 from `Inverse_Fabius_Computability_Report.zip` (689,198
+bytes; SHA-256
+`755d77354490d25d4f327419d0345623e91ea49dd4ba681ba97c84a0b686b8c1`).
+The canonical 30-page A4/27 mm/Libertinus report gives self-contained
+paper-level proofs of the least-interval-mass identity, exact inverse modulus,
+elementary endpoint-mass estimate, tolerant-bisection realizer,
+inverse-computability packaging, and optimal input-bit law.  Those results do
+not yet have matching public Lean declarations.  The crosswalk separately
+identifies the already formalized forward spline/computability, strict shape,
+inverse identities/calculus, exact dyadic evaluation, and leading inverse
+endpoint equivalent; explicit periodic and all-orders inverse reversion remain
+frontier-document results.  The standard-library exact-rational supplement
+reproduces its captured output byte for byte.  Original five-file hashes are
+preserved in `ARRIVAL_SHA256SUMS.txt`; the current six-entry
+`SHA256SUMS.txt` verifies 6/6.
+
+## `inverse_fabius_iterates_nowhere_analytic/`
+
+Filed 2026-08-30 from `inverse_fabius_iterates_nowhere_analytic.zip`
+(1,137,032 bytes; SHA-256
+`8b1c05d59e120ecd20d69cd5aeb0009639f2b3b9a6c9fef32bdf82270eee16bd`).
+This canonical 24-page A4/27 mm/Libertinus inverse-iterate companion derives
+nowhere analyticity and formal-radius transport from the corrected forward
+iterate report, then proves the affine but nonrepresenting center jet and the
+iterated endpoint obstruction.  The inverse-nowhere-analytic conclusion is
+already a corollary of that forward report and is not independent novelty.
+Lean status is limited to the existing one-fold inverse analytic locus and
+one-fold endpoint Hölder obstruction; the higher iterates, formal-radius
+transport, all-order center jet, and iterated endpoint scale remain
+manuscript-only.  The hostile audit retains 19 nonconjectural labelled results,
+quarantines three stale, false, or duplicate conjecture claims as warnings,
+and leaves only two explicitly unformalized conjectures. The pinned numerical
+replay reproduced all 7 generated outputs byte for byte before repository LF
+normalization; it proves none of the analytic claims. The submitted 13-entry arrival ledger is preserved as
+`SHA256SUMS.arrival.txt` and verified 13/13 before normalization; the current
+15-entry `SHA256SUMS.txt` verifies 15/15.
 
 See [`../MANIFEST.md`](../MANIFEST.md) for titles and previous paths.

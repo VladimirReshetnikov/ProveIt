@@ -63,10 +63,10 @@ curvature range was corrected after accounting for center flatness at
 
 The delivered `repository_audit.md` had inspected zero TeX files. The repaired
 audit reads the repository recursively while excluding this newly filed
-package directory. Against the final merged corpus it reads 140 prior TeX
-files (311,911 lines; 13,787,029 bytes; raw-byte
+package directory. Against the final merged corpus it reads 146 prior TeX
+files (325,928 lines; 14,336,859 bytes; raw-byte
 concatenated SHA-256
-`a6edc75336626f99b4a1a13e6d7b90dc14f8f2dede15b4a3de80879442932a2d`).
+`c36b53eb68b6db52e4f15eb458214b1d8bf4dfcdb7a947252deda552bc369e83`).
 All six advertised contribution clusters have substantial prior textual
 overlap, and no theorem-level novelty is accepted on intake. The
 divisor/zeta/count/heat/cumulant spine specializes existing Exponents and

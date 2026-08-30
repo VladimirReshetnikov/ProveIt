@@ -7,6 +7,27 @@ numerical generation, corrects the false curvature claim, and supplies the
 policy-conforming canonical build; the unrepaired duplicate formerly listed
 here has been removed.
 
+The standalone
+[`Geometric_Uniform_Frontier_Directions/`](Geometric_Uniform_Frontier_Directions/)
+package, *Frontier Directions for Fabius--Rvachev Analysis*, was filed on
+2026-08-30 from `fabius_frontier_report_bundle-D.zip` (1,508,514 bytes;
+SHA-256
+`39f3638f52f19955b88b7a865a60b76d9ce31154d98967d1400a6ad97396fa9a`).
+Its submitted 34-row ledger was verified and is preserved as
+`ARRIVAL_SHA256SUMS`; the normalized 36-row current ledger passes in full.
+The 1,641-line report and 874-line deterministic experiment suite were
+replayed, audited, normalized to the shared A4/27 mm/Libertinus style, and
+rebuilt as a 30-page PDF with embedded/subset fonts and no Type 3.  Exact
+tables reproduced; the three floating-point tables exhibit only documented
+last-place platform drift.  The report is paper-level: current Lean already
+covers the geometric-uniform law, its positive-parameter density and
+convolution interfaces, weighted sinc--zeta expansions, and the fixed
+half--quarter split, but not the report's negative-parameter duality,
+all-parameter asymptotics, exact subdyadic derivative norms, arbitrary-base
+spectral divisor, Legendre scaling, or periodic Laplace phase.  Its spectral
+and reciprocal-integer directions conceptually overlap the separately
+audited packages, without wholesale textual duplication.
+
 The broad multi-topic "collected new results" report series,
 consolidated (2026-08-28) into the 272-page single volume
 [`Frontier_Compilations/`](Frontier_Compilations/): ten absorbed reports,
