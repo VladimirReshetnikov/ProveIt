@@ -68,7 +68,6 @@ theorem dyadicZeroMultiplicity_two_mul (n : ℕ) (hn : 1 ≤ n) :
   have hn0 : n ≠ 0 := Nat.one_le_iff_ne_zero.mp hn
   simp only [dyadicZeroMultiplicity,
     padicValNat_base_mul (p := 2) (by omega) hn0]
-  omega
 
 /-- Every positive odd index is a simple zero. -/
 @[simp] theorem dyadicZeroMultiplicity_two_mul_add_one (n : ℕ) :
@@ -259,10 +258,7 @@ theorem dyadicZeroMultiplicity_mul_of_coprime
       rw [hcop.gcd_eq_one] at hgcd
       norm_num at hgcd
     · exact Or.inl (padicValNat.eq_zero_of_not_dvd heven)
-  rcases hzero with hzero | hzero
-  · simp only [dyadicZeroMultiplicity, padicValNat.mul hm0 hn0,
-      hzero, zero_add, one_mul]
-  · simp only [dyadicZeroMultiplicity, padicValNat.mul hm0 hn0,
-      hzero, add_zero, mul_one]
+  rcases hzero with hzero | hzero <;>
+    simp [dyadicZeroMultiplicity, padicValNat.mul hm0 hn0, hzero]
 
 end Fabius

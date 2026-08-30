@@ -203,7 +203,8 @@ compressed-even cumulant indexed by `n`. -/
   rw [centeredRvachevFullCumulant, factorialDenormalize,
     centeredRvachevFullLogCoefficient_even,
     centeredRvachevEvenCumulant, EvenMomentCumulant.evenMomentCumulant,
-    centeredRvachevLogCoefficient, centeredRvachevMomentCoefficient]
+    centeredRvachevLogCoefficient]
+  rfl
 
 /-- Every odd centered Rvachev cumulant vanishes. -/
 theorem centeredRvachevFullCumulant_eq_zero_of_odd

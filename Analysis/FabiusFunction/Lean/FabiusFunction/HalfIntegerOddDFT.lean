@@ -69,14 +69,15 @@ then summing the characters with labels `1, 3, ..., 2N - 1` detects whether
 This raw form is useful even without primitivity: the surviving value retains
 the phase `z ^ S`. -/
 theorem sum_odd_powers_eq_root_filter {R : Type*} [CommRing R] [IsDomain R]
+    [DecidableEq R]
     (z : R) (N S : ℕ) (hz : z ^ (2 * N) = 1) :
     ∑ k ∈ range N, z ^ ((2 * k + 1) * S) =
       if z ^ (2 * S) = 1 then (N : R) * z ^ S else 0 := by
-  classical
   have hperiod : (z ^ (2 * S)) ^ N = 1 := by
     calc
-      (z ^ (2 * S)) ^ N = z ^ ((2 * S) * N) := by rw [pow_mul]
-      _ = z ^ ((2 * N) * S) := by congr 1 <;> ring
+      (z ^ (2 * S)) ^ N = z ^ ((2 * S) * N) :=
+        (pow_mul z (2 * S) N).symm
+      _ = z ^ ((2 * N) * S) := by congr 1; ring
       _ = (z ^ (2 * N)) ^ S := by rw [pow_mul]
       _ = 1 := by rw [hz, one_pow]
   have hterm : ∀ k ∈ range N,
@@ -86,7 +87,7 @@ theorem sum_odd_powers_eq_root_filter {R : Type*} [CommRing R] [IsDomain R]
       pow_add, pow_mul]
   rw [Finset.sum_congr rfl hterm, ← Finset.mul_sum,
     sum_pow_eq_ite (z ^ (2 * S)) N hperiod]
-  split_ifs <;> ring
+  split_ifs <;> simp [mul_comm]
 
 /-- Cancelling the common factor two in the divisibility condition which
 appears in the odd-coset filter. -/
@@ -102,11 +103,9 @@ theorem sum_odd_powers_eq_dvd {R : Type*} [CommRing R] [IsDomain R]
     ∑ k ∈ range N, ζ ^ ((2 * k + 1) * S) =
       if N ∣ S then (N : R) * ζ ^ S else 0 := by
   classical
-  rw [sum_odd_powers_eq_root_filter ζ N S hζ.pow_eq_one]
-  have hfilter : (ζ ^ (2 * S) = 1) ↔ N ∣ S := by
-    rw [hζ.pow_eq_one_iff_dvd]
-    exact two_mul_dvd_two_mul_iff N S
-  simp only [hfilter]
+  rw [sum_odd_powers_eq_root_filter ζ N S hζ.pow_eq_one,
+    hζ.pow_eq_one_iff_dvd (2 * S), two_mul_dvd_two_mul_iff]
+  by_cases h : N ∣ S <;> simp [h]
 
 /-- The half-period of a primitive root of even order is `-1`.
 
@@ -164,7 +163,7 @@ theorem oddDFT_add_period {R : Type*} [Semiring R]
   unfold oddDFT
   refine Finset.sum_congr rfl (fun j _hj => ?_)
   have hperiod : ζ ^ ((2 * N) * j.val) = 1 := by
-    rw [← pow_mul, hζ, one_pow]
+    rw [pow_mul, hζ, one_pow]
   rw [show (2 * (k + N) + 1) * j.val =
       (2 * k + 1) * j.val + (2 * N) * j.val by ring,
     pow_add, hperiod, mul_one]
@@ -201,7 +200,10 @@ theorem oddDFTPowerTrace_eq_indexSumExpansion {R : Type*}
           ∏ ℓ : Fin m,
             (f (J ℓ) * ζ ^ ((2 * k + 1) * (J ℓ).val)) := by
       refine Finset.sum_congr rfl (fun k _ => ?_)
-      exact Fintype.sum_pow
+      simpa using
+        (Fintype.sum_pow
+          (f := fun j : Fin (2 * N) =>
+            f j * ζ ^ ((2 * k + 1) * j.val)) m)
     _ = ∑ J : Fin m → Fin (2 * N), ∑ k ∈ range N,
           ∏ ℓ : Fin m,
             (f (J ℓ) * ζ ^ ((2 * k + 1) * (J ℓ).val)) := by
@@ -320,7 +322,8 @@ theorem normalizedOddDFTPowerTrace_eq_ramanujanConvolution {F : Type*}
       refine Finset.sum_congr rfl (fun k _ => ?_)
       rw [mul_pow]
     _ = ((N : F)⁻¹) ^ m * oddDFTPowerTrace ζ N f m := by
-      rw [← Finset.mul_sum]
+      unfold oddDFTPowerTrace
+      rw [Finset.mul_sum]
     _ = ((N : F)⁻¹) ^ m *
           ((N : F) * oddRamanujanConvolution N m f) := by
       rw [oddDFTPowerTrace_eq_ramanujanConvolution hζ hN]
