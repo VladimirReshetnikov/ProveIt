@@ -1,0 +1,93 @@
+LEGENDRE--RVACHEV EXACT/NUMERICAL EXPERIMENTS
+================================================
+
+Reciprocal-MGF coefficients gamma_{2r}:
+  gamma_0 = 1
+  gamma_2 = -1/9
+  gamma_4 = 31/675
+  gamma_6 = -2347/59535
+  gamma_8 = 1904369/32531625
+  gamma_10 = -3309760579/24405225075
+  gamma_12 = 1884491755011469/4133856862760625
+  gamma_14 = -151616054172597829/72022308028295625
+  gamma_16 = 1873493926271757503307961/146319440655664967315625
+
+Deconvolved Legendre polynomials Q_n=M_u(D)^{-1}P_n:
+  Q_0(x) = 1
+  Q_1(x) = x
+  Q_2(x) = (3*x - 2)*(3*x + 2)/6
+  Q_3(x) = x*(15*x**2 - 14)/6
+  Q_4(x) = (4725*x**4 - 7200*x**2 + 1072)/1080
+  Q_5(x) = x*(315*x**4 - 700*x**2 + 264)/40
+  Q_6(x) = (654885*x**6 - 1984500*x**4 + 1344168*x**2 - 114080)/45360
+  Q_7(x) = x*(1216215*x**6 - 4802490*x**4 + 5030928*x**2 - 1183664)/45360
+  Q_8(x) = (4652022375*x**8 - 23156733600*x**6 + 34438219200*x**4 - 15367956480*x**2 + 971252992)/92534400
+
+Direct central determinant checks:
+  N=0 M=1 rank=1 det=1 formula=1 match=True
+  N=1 M=4 rank=2 det=1 formula=1 match=True
+  N=2 M=16 rank=3 det=255 formula=255 match=True
+  N=3 M=64 rank=4 det=524289 formula=524289 match=True
+  N=4 M=256 rank=5 det=17179869183 formula=17179869183 match=True
+  N=5 M=1024 rank=6 det=9007199254740993 formula=9007199254740993 match=True
+
+First sigma_N values:
+  sigma_0 = 1
+  sigma_1 = 0
+  sigma_2 = 2
+  sigma_3 = -8
+  sigma_4 = 32
+  sigma_5 = -128
+  sigma_6 = 512
+  sigma_7 = -2048
+  sigma_8 = 8194
+  sigma_9 = -32800
+  sigma_10 = 131380
+  sigma_11 = -526608
+  sigma_12 = 2112248
+  sigma_13 = -8477760
+  sigma_14 = 34046096
+  sigma_15 = -136795584
+  sigma_16 = 549875680
+
+Alternating-sign conjecture verified exactly for all 2<=N<=128: True.
+
+Exact up-Legendre coefficients:
+  u_0 = 1/2
+  u_1 = -5/6
+  u_2 = 11/30
+  u_3 = 143/5670
+  u_4 = -7291/85050
+  u_5 = 99137/2485890
+  u_6 = -5726162257/213774110550
+  u_7 = 27288832157947/1167420417713550
+  u_8 = -144048691053129139/11591954102251136250
+  u_9 = 245262858648906702103531/100278737599471847129463750
+  u_10 = 190920333865973179103798951/82729958519564273881807593750
+  u_11 = -45956358119729097218525273579033/23132967547232266175685815725893750
+  u_12 = -288790922470991027558048162741110956139/831657364559867966928661506179358237656250
+
+Exact Favard obstruction:
+  q_4 = x q_3 - (62/105)q_2 - (8/225)q_0.
+
+Exact Sturm root count:
+  Q_n has exactly n real roots for 1 <= n <= 11.
+  Q_12 has exactly 8 real and 4 nonreal roots.
+
+Numerical root locations:
+  The first nonreal quartet occurs at n=12, near
+  +/-1.58181382985647 +/- 0.189564695738147 i.
+  Nonreal-root counts for n=12,...,20: 4, 4, 4, 8, 8, 8, 8, 12, 12
+
+Floating-point diagnostics:
+  N=1 max|raw P coefficient|=9.466667e+01, P atom error=9.220402e-14, max|raw loop coefficient|=7.788889e+01, loop atom-vs-polynomial error=7.283063e-14, partial-sum error=3.333333e-01
+  N=2 max|raw P coefficient|=1.585032e+05, P atom error=2.376296e-10, max|raw loop coefficient|=5.747927e+04, loop atom-vs-polynomial error=8.879941e-11, partial-sum error=5.416667e-02
+  N=3 max|raw P coefficient|=2.941088e+10, P atom error=4.211387e-05, max|raw loop coefficient|=7.626038e+08, loop atom-vs-polynomial error=1.003970e-06, partial-sum error=5.855379e-02
+  N=4 max|raw P coefficient|=1.795990e+17, P atom error=2.601460e+02, max|raw loop coefficient|=1.539167e+16, loop atom-vs-polynomial error=2.249719e+01, partial-sum error=2.717225e-02
+
+Interpretation:
+  Endpoint-coordinate and determinant checks are exact.  The
+  nonzero floating residuals come from evaluating huge signed atom
+  coefficients in IEEE double precision.  They are not defects of
+  the functional identities.  Stable evaluation should preserve
+  Legendre blocks or use a Gram-metric-aware atom algorithm.

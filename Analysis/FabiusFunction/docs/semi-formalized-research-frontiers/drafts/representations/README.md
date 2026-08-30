@@ -165,4 +165,24 @@ theorem-level checks are exact rational with residual `0`; the reported
 energy value is a stabilized display of an exact partial sum, not a
 certified enclosure of the limit, and the report says so.
 
+Three further Legendre-closure reports landed the same day, all
+**pending merge into `Up_Polynomial_Synthesis/`** and all answering the
+same question from different angles:
+`legendre_rvachev_closed_loop/` (*Legendre--Rvachev Biorthogonal
+Closure*) carries the arithmetic — exact `u_n` to `n=80` with 2-adic
+valuations, reciprocal-MGF coefficients, and exact spectral sum rules;
+`Legendre_Rvachev_Closed_Loop_Report_v3/` (*Legendre Polynomials in the
+Rvachev Up Dictionary*) is the widest, and the only one to study the
+**root geometry** of the deconvolved Legendre polynomials, with Sturm
+certificates and an explicit Favard obstruction showing the family is
+orthogonal for no measure; `Legendre_Rvachev_Closed_Loop_Report_v4/`
+(*A One-Scale Legendre--Rvachev Closure*) is the narrowest by design,
+restricting to a single scale.  The `_v3`/`_v4` suffixes are
+deliberate: those two archives share a top-level directory name.
+
+Together with `Legendre_Rvachev_Self_Reconstruction/` these make four
+same-day Legendre reports beside the six Lagrange-loop ones, so the
+pending merge into `Up_Polynomial_Synthesis/` now has ten members
+waiting.
+
 See [`../MANIFEST.md`](../MANIFEST.md) for titles and provenance.
