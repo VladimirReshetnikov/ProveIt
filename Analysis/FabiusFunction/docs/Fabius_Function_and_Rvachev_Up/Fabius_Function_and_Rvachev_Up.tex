@@ -4564,11 +4564,50 @@ The first sum is Lean's global \texttt{tsum}; compact support makes it
 pointwise finite.  The second is the exact uniform support truncation, including
 the vanishing boundary atoms.
 
-These modules prove formal coefficient reciprocity and polynomial
-smoothing/synthesis, not an analytic reciprocal-MGF or Appell generating
-series, a literal reciprocal-MGF differential-operator identity, parity of the
-reciprocal or deconvolved families, the displayed low reciprocal coefficients,
-or minimality and sharpness of the admissible mesh.
+\clearpage
+At the focused-build checkpoint of 30 August 2026,
+\path{CompositeMeshSharpness.lean} exports one public definition,
+\lean{rvachevCombExactThrough}, and seven public theorems:
+\lean{exists_shift_tsum_shifted_monomial_ne_integral_nat_real},
+\lean{rvachevCombExactThrough_iff_padicValNat},
+\lean{rvachevCombExactThrough_iff_pow_two_dvd},
+\lean{rvachevCombExactThrough_two_pow},
+\lean{two_pow_le_of_rvachevCombExactThrough},
+\lean{isLeast_rvachevCombExactThrough}, and
+\lean{isLeast_rvachevCombExactThrough_even}.
+The definition requires a nonzero natural mesh \(M\) and, for every real
+polynomial \(P\) of natural degree at most \(d\) and every real shift
+\(\theta\), the identity
+\begin{equation}
+ \sum_{k\in\Z}P(\theta+k)u_F((\theta+k)/M)
+ =\int_{\R}P(x)u_F(x/M)\dd x.                              \label{eq:rvachev-comb-exact-through}
+\end{equation}
+The two classification theorems prove
+\begin{align}
+ \text{\ttfamily rvachevCombExactThrough}(F,M,d)
+  &\quad\Longleftrightarrow\quad M\ne0\ \hbox{ and }\ d\le v_2(M)\notag\\
+  &\quad\Longleftrightarrow\quad M\ne0\ \hbox{ and }\ 2^d\mid M.
+ \label{eq:rvachev-comb-sharp-classification}
+\end{align}
+For every nonzero \(M\), the first theorem supplies a real shift at which the
+monomial of degree \(v_2(M)+1\) fails
+\eqref{eq:rvachev-comb-exact-through}.  The remaining order theorems put
+\(2^d\) in the exact class, bound every member below by \(2^d\), and prove
+that \(2^d\) is its least member; at even cutoff \(2N\), this least universal
+mesh is \(4^N\).
+
+The word \emph{universal} is essential.  These declarations quantify over the
+complete polynomial space through the cutoff.  They do not prove that \(2^d\)
+is a least mesh for one individual \(P_d\), that \(4^N\) is least for one
+particular Legendre partial sum \(S_N\), or that a target-adapted formula
+cannot use a coarser mesh.
+
+Together these modules prove formal coefficient reciprocity, polynomial
+smoothing/synthesis, and the sharp universal comb threshold.  They do not
+prove an analytic reciprocal-MGF or Appell generating series, a literal
+reciprocal-MGF differential-operator identity, parity of the reciprocal or
+deconvolved families, the displayed low reciprocal coefficients, or any
+target-by-target minimality statement for the synthesis formulas.
 
 \subsection{The probability--Laplace bridge}
 \label{sec:probability-laplace-bridge}
@@ -9378,16 +9417,21 @@ supremum norm.  The API also provides the raw
 to zero, and the pointwise corollary at every \(x\in[-1,1]\).  It asserts no
 rate, coefficientwise limit, or uniform convergence outside this interval.
 
-The four modules \path{RvachevMomentAppell.lean},
+The five modules \path{RvachevMomentAppell.lean},
 \path{RvachevPolynomialSynthesis.lean},
+\path{CompositeMeshSharpness.lean},
 \path{FabiusLegendreTranslateBlocks.lean}, and
 \path{FabiusLegendreTranslateSeries.lean} therefore have public
-definition/theorem inventories $6/30$, $0/4$, $6/7$, and $5/25$,
-respectively: exactly $83$ public declarations.  They do not prove
-minimality or sharpness of the displayed meshes, rationality of the atom
-rows, equality of the fixed-scale and separately scaled coefficient vectors,
-an unconditional \(\operatorname{natDegree}(S_N)=2N\) theorem or nonvanishing of the top Legendre
-coefficient, or the later refinement, projector, and asymptotic layers.
+definition/theorem inventories $6/30$, $0/4$, $1/7$, $6/7$, and $5/25$,
+respectively: exactly $91$ public declarations.  The third module proves
+least-mesh sharpness only for universal exactness on the complete polynomial
+space through a degree cutoff.  It does not prove minimality for an individual
+Legendre polynomial or a particular partial sum.  The five modules also do not
+prove rationality of the atom rows, equality of the fixed-scale and separately
+scaled coefficient vectors, an unconditional
+\(\operatorname{natDegree}(S_N)=2N\) theorem or nonvanishing of the top
+Legendre coefficient, or the later refinement, projector, and asymptotic
+layers.
 
 At compiled source checkpoint \texttt{ca66a1247}, the polynomial-form Legendre blocks
 \(B_n(x)=u_nP_{2n}(x)\) satisfy the complete orthogonality formula
@@ -9463,9 +9507,12 @@ positive-half-line half with $A_2$.  The last two give exactly
  &=\frac1{2\pi}\int_0^\infty\prod_{r=1}^{\infty}
    \left(\frac{\sin(t/2^r)}{t/2^r}\right)^2\dd t.\label{eq:fabius-square-energy-sinc}
 \end{align}
-The synthesis declarations establish the displayed sufficient dyadic meshes,
-but not their minimality or the report's sharpness statement.  They also do not
-formalize parity, derivative/Gegenbauer/Appell closed forms, or the displayed
+The sharpness declarations show that \(2^d\), and hence \(4^N\) at cutoff
+\(2N\), is least for universal exactness on the whole degree-bounded
+polynomial space.  They do not show that the displayed mesh is least for an
+individual Legendre mode or for one fixed \(S_N\).  The synthesis declarations
+also do not formalize parity, derivative/Gegenbauer/Appell closed forms, or the
+displayed
 low-degree values of \(Q_d\); rationality of the atom rows; equality of the
 fixed-scale and separately scaled coefficient vectors; exact degree of every
 partial sum; or the later refinement, projector, and asymptotic layers.
@@ -10100,6 +10147,7 @@ Legendre expansion and computability &
 \path{FabiusLegendreRationalEnergy.lean},
 \path{FabiusSquareEnergyFourier.lean},
 \path{RvachevPolynomialSynthesis.lean},
+\path{CompositeMeshSharpness.lean},
 \path{FabiusLegendreTranslateBlocks.lean},
 \path{FabiusLegendreTranslateSeries.lean},
 \path{FabiusTranslatedLegendreSeries.lean},

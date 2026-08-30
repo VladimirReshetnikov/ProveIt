@@ -253,7 +253,8 @@ theorem quarterPrefixDisplacement_le_inv_two_pow (n : ℕ) :
     (by positivity)).trans ?_
   calc
     (4 / 9 : ℝ) * ((4 : ℝ) ^ n)⁻¹ =
-        (4 / 9 : ℝ) / (4 : ℝ) ^ n := by simp only [div_eq_mul_inv]
+        (4 / 9 : ℝ) / (4 : ℝ) ^ n :=
+      (div_eq_mul_inv (4 / 9 : ℝ) ((4 : ℝ) ^ n)).symm
     _ ≤ 1 / (2 : ℝ) ^ n := by
       rw [div_le_div_iff₀ (by positivity) (by positivity)]
       have hbase : (4 / 9 : ℝ) ≤ (2 : ℝ) ^ n :=

@@ -357,6 +357,26 @@ degree $d$ and the explicit unchanged leading coefficient
 $2^{-d}\binom{2d}{d}$.
 
 \end{statusbox}
+\begin{statusbox}{Formal status: universal composite-mesh sharpness}
+Editorial update (2026-08-30): the focused-build module
+\path{CompositeMeshSharpness.lean} exports one public definition,
+\path{rvachevCombExactThrough}, and seven public theorems:
+\path{exists_shift_tsum_shifted_monomial_ne_integral_nat_real},
+\path{rvachevCombExactThrough_iff_padicValNat},
+\path{rvachevCombExactThrough_iff_pow_two_dvd},
+\path{rvachevCombExactThrough_two_pow},
+\path{two_pow_le_of_rvachevCombExactThrough},
+\path{isLeast_rvachevCombExactThrough}, and
+\path{isLeast_rvachevCombExactThrough_even}.  Universal exactness means
+exactness at every real shift for every real polynomial of natural degree at
+most \(d\), with a nonzero natural mesh \(M\).  The classification is exactly
+\(d\le\vtwo(M)\), equivalently \(2^d\mid M\); a monomial of degree
+\(\vtwo(M)+1\) fails at some real shift; and \(2^d\) is the least universally
+exact mesh.  The even-degree specialization makes \(4^N\) least for the
+\emph{whole} polynomial space through degree \(2N\).  It does not assert
+minimality for one Legendre polynomial, one fixed \(S_N\), or any
+target-adapted mesh.
+\end{statusbox}
 
 \begin{statusbox}{Formal status: translate-block series and common-mesh convergence}
 
@@ -410,19 +430,22 @@ pointwise forms also exposed.  The two new triangularity wrappers prove that
 $C_N=\Dscr S_N$ has exactly the natural degree and leading coefficient of
 $S_N$, including degenerate partial sums whose visible degree drops.
 
-The new APIs still do not prove minimality or sharpness of the displayed mesh;
-reciprocal/deconvolution parity or the derivative, Gegenbauer, Appell, and
-low-degree formulas for $Q_d$; rationality of the atom rows; equality of the
+The universal-space API now proves the least natural mesh for the complete
+degree-bounded polynomial space, but not minimality of the displayed mesh for
+an individual \(P_d\), Legendre block, or particular \(S_N\).  The APIs still
+do not prove reciprocal/deconvolution parity or the derivative, Gegenbauer,
+Appell, and low-degree formulas for $Q_d$; rationality of the atom rows;
+equality of the
 fixed-scale and separately scaled coefficient vectors; an unconditional
 $\operatorname{natDegree}(S_N)=2N$ theorem or nonvanishing of its top Legendre
 coefficient; or the later refinement, projector, and asymptotic layers.
 \end{statusbox}
 
-At checkpoint \texttt{a3854643d}, the public definition/theorem inventories of
+At the recorded checkpoints, the public definition/theorem inventories of
 \path{RvachevMomentAppell.lean}, \path{RvachevPolynomialSynthesis.lean},
-\path{FabiusLegendreTranslateBlocks.lean}, and
-\path{FabiusLegendreTranslateSeries.lean} are respectively $6/30$, $0/4$,
-$6/7$, and $5/25$: exactly $83$ public declarations.
+\path{CompositeMeshSharpness.lean}, \path{FabiusLegendreTranslateBlocks.lean},
+and \path{FabiusLegendreTranslateSeries.lean} are respectively $6/30$, $0/4$,
+$1/7$, $6/7$, and $5/25$: exactly $91$ public declarations.
 
 \clearpage
 \tableofcontents
@@ -648,6 +671,14 @@ locally finite train to the displayed finite range on $[-1,1]$.  The leading
 coefficient of a degree-$d$ polynomial shows why the condition
 $\vtwo(m)\ge d$ is sharp within this stationary Poisson-synthesis scheme.
 \end{proof}
+
+The focused-build declaration \path{isLeast_rvachevCombExactThrough} now
+certifies the corresponding least-mesh statement when exactness is required
+for \emph{every} polynomial of degree at most $d$ and every shift.  Its
+classification companions are \path{rvachevCombExactThrough_iff_padicValNat}
+and \path{rvachevCombExactThrough_iff_pow_two_dvd}.  This is the universal
+whole-space reading of the last sentence of the theorem, not a
+target-by-target minimality result.
 
 \section{Finite shifted-up synthesis of Legendre polynomials}
 \label{sec:legendre-synthesis}
@@ -1919,9 +1950,11 @@ arguments.
  \path{FabiusLegendreTranslateBlocks.lean} packages \eqref{eq:Pd-synthesis}
  and \eqref{eq:even-P-synthesis} at meshes $2^d$ and $4^n$, together with
  exact degree $d$ and leading coefficient $2^{-d}\binom{2d}{d}$ for $Q_d$.
- Minimality and
- sharpness of those meshes and the closed derivative/Gegenbauer/Appell forms
- of $Q_d$ remain targets.
+ The focused-build \path{CompositeMeshSharpness.lean} now proves the sharp
+ classification and least natural mesh for universal exactness on the entire
+ degree-$d$ space, including the $4^N$ specialization for the whole space
+ through degree $2N$.  Minimality for an individual $P_d$, block, or $S_N$ and
+ the closed derivative/Gegenbauer/Appell forms of $Q_d$ remain targets.
  \item \textbf{Orthogonal block layer.}  Complete orthogonality of the
  polynomial-form blocks, the coefficient Parseval identity, and the exact tail
  are formalized in \path{FabiusLegendreEnergy.lean}.  The same checkpoint's

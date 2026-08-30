@@ -404,6 +404,6 @@ theorem norm_rvachevFourierProduct_fixedMantissa_of_mem_Ioo
         rw [prod_range_pow_succ]
   rw [norm_rvachevFourierProduct_fixedMantissa N y hyne,
     abs_of_pos hypos, hpow]
-  field_simp [Real.pi_ne_zero, hyne] <;> ring
+  field_simp [Real.pi_ne_zero, hyne]
 
 end Fabius

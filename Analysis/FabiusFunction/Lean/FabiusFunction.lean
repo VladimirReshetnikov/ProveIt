@@ -227,6 +227,7 @@ import FabiusFunction.OrthogonalPolynomialJacobi
 import FabiusFunction.CompositeMeshExactness
 import FabiusFunction.RvachevPolynomialSynthesis
 import FabiusFunction.CombFirstDefect
+import FabiusFunction.CompositeMeshSharpness
 import FabiusFunction.CombDefectSeries
 import FabiusFunction.CauchySurvival
 import FabiusFunction.CauchyHigherPowers

@@ -255,6 +255,7 @@ points:
 | Actual quarter inverse Catalan jet | `FabiusFunction.FabiusInverseQuarterJet` | Exhaustive public surface: `iteratedDeriv_centeredFabiusInv_quarter_eq_quadraticInverse`, `iteratedDeriv_fabiusInv_five_seventy_two_succ`.  For every bounded Fabius solution, the full centered derivative jet at `5/72 = F(1/4)` equals the factorial-scaled coefficient sequence of `QuadraticInverse.inverse 4`; in particular `G^(m+1)(5/72) = (m+1)! (-4)^m C_m`.  This is equality of all jets, not local analytic equality: it neither erases the known nonanalytic flat defect nor proves that defect is nonzero by a named remainder theorem. |
 | Finite polynomial integrals from raw moments and formal cumulants | `FabiusFunction.PolynomialExpectationCumulant` | `integral_eval₂_eq_sum_moment`, `integral_eval₂_eq_sum_completeBell_momentCumulant_with_mass_correction`, `integral_eval₂_eq_sum_completeBell_momentCumulant_of_moment_zero_eq_one`, `integral_eval₂_eq_sum_completeBell_momentCumulant` |
 | Rvachev raw moments, triangular and injective reciprocal-moment Appell deconvolution, and exact shifted-up polynomial synthesis | `FabiusFunction.RvachevMomentAppell`, `FabiusFunction.RvachevPolynomialSynthesis` | `rvachevRawMomentRat`, `rvachevReciprocalMomentRat`, `rvachevAppellPolynomial`, `rvachevDeconvolvedPolynomial`, `rvachevDeconvolutionLinearMap`, `rvachevDeconvolvedPolynomial_finsetSum`, `rvachevDeconvolvedPolynomial_monomial`, `rvachevDeconvolvedPolynomial_X_pow`, `coeff_rvachevDeconvolvedPolynomial_natDegree`, `natDegree_rvachevDeconvolvedPolynomial`, `leadingCoeff_rvachevDeconvolvedPolynomial`, `rvachevDeconvolvedPolynomial_eq_zero_iff`, `rvachevDeconvolutionLinearMap_injective`, `rvachevDeconvolvedPolynomial_injective`, `integral_eval_rvachevDeconvolvedPolynomial_add_mul_rvachev`, `tsum_rvachevDeconvolvedPolynomial_mul_shifted_rvachevUp`, `normalized_sum_Ioo_rvachevDeconvolvedPolynomial_mul_shifted_rvachevUp` |
+| Sharp universal composite-mesh exactness and least natural meshes | `FabiusFunction.CompositeMeshSharpness` | Exhaustive public surface: `exists_shift_tsum_shifted_monomial_ne_integral_nat_real`, `rvachevCombExactThrough`, `rvachevCombExactThrough_iff_padicValNat`, `rvachevCombExactThrough_iff_pow_two_dvd`, `rvachevCombExactThrough_two_pow`, `two_pow_le_of_rvachevCombExactThrough`, `isLeast_rvachevCombExactThrough`, `isLeast_rvachevCombExactThrough_even`.  The `IsLeast` results quantify over meshes exact for the whole real polynomial space through the stated degree; they do not assert minimality for an individual Legendre polynomial, a fixed Legendre partial sum, or a target-adapted mesh. |
 | Universal endpoint-transfer polynomials and their formal exponential series | `FabiusFunction.EndpointTransferPolynomials` | `endpointTransferPolynomial_succ`, `endpointTransferPolynomial_eq_partitionExpSum`, `endpointTransferSeries_eq_exp_subst`, `aeval_endpointTransferPolynomial`, `map_endpointTransferSeries` |
 | Finite base-`b` layer regrouping in multiplicative and additive form | `FabiusFunction.BaseLayerRegrouping` | `filter_dvd_eq_image`, `prod_multiples_eq_prod_filter`, `sum_multiples_eq_sum_filter`, `prod_layers_eq_prod_pow_card`, `sum_layers_eq_sum_nsmul_card`, `card_filter_pow_dvd`, `prod_layers_eq_prod_pow_multiplicity`, `sum_layers_eq_sum_nsmul_multiplicity` |
 | Complete homogeneous evaluations, their finite formal generating series, fixed-degree asymptotic bounds, denominator-free geometric principal specialization, and a second proof of Gaussian symmetry | `FabiusFunction.CompleteHomogeneous`, `FabiusFunction.CompleteHomogeneousGenerating`, `FabiusFunction.CompleteHomogeneousAsymptotics`, `FabiusFunction.GeometricCompleteHomogeneous` | In addition to the generic evaluator, generating-series, and asymptotic APIs, `GeometricCompleteHomogeneous` exhaustively exports six theorems: `completeHomogeneousEval_geometric`, `completeHomogeneousEval_scaled_geometric`, `completeHomogeneousEvalOn_range_pow_eq_gaussianBinomial`, `completeHomogeneousEvalOn_range_pow_eq_gaussianBinomial_degree`, `gaussianBinomial_add_symm`, and `gaussianBinomial_symm_via_completeHomogeneous`.  The principal specializations and both symmetry proofs hold over every commutative semiring without distinctness, division, cancellation, ordering, topology, or convergence assumptions; the separate generating identities are purely formal, while the asymptotic theorem transfers coordinatewise Big-O through every fixed homogeneous degree. |
@@ -587,6 +588,20 @@ For every nonzero natural mesh `M` and polynomial of degree at most `v₂(M)`,
 they give both global `tsum` synthesis and, on `[-1,1]`, its exact finite
 `k ∈ (-2M,2M)` form with the `1/M` normalization.
 
+The focused-build `CompositeMeshSharpness.lean` module exports one public
+definition and seven public theorems.  The definition
+`Fabius.rvachevCombExactThrough F M d` requires `M ≠ 0` and shifted-comb
+exactness at every real shift for every real polynomial of natural degree at
+most `d`.  Its two classification theorems prove that this is equivalent to
+`M ≠ 0 ∧ d ≤ v₂(M)`, equivalently `M ≠ 0 ∧ 2^d ∣ M`.  The
+remaining order theorems put the canonical mesh `2^d` in this class, bound
+every member below by `2^d`, prove that it is the least member, and specialize
+the least mesh for the complete degree-`2N` space to `4^N`.  The real
+first-defect theorem supplies a shift where the monomial of degree
+`v₂(M)+1` fails.  These are universal polynomial-space statements: they do
+not prove that `2^d` is minimal for one Legendre polynomial or that `4^N` is
+minimal for one particular partial sum `S_N`.
+
 At compiled source checkpoint `a3854643d`,
 `FabiusLegendreTranslateBlocks.lean` exports six
 public definitions: `Fabius.rvachevLegendreDeconvolutionPolynomial`,
@@ -655,10 +670,11 @@ interval supremum norm; the module also exports the raw `TendstoUniformlyOn`
 form, convergence of the supremum-norm error to zero, and the pointwise
 corollary on `[-1,1]`.
 
-The four modules in this tranche have respectively `6/30`, `0/4`, `6/7`, and
-`5/25` public definition/theorem inventories, for exactly 83 public
-declarations in total.  They still do not assert the report's minimal-mesh or
-sharpness claims, an
+The five modules in this tranche have respectively `6/30`, `0/4`, `1/7`,
+`6/7`, and `5/25` public definition/theorem inventories, for exactly 91 public
+declarations in total.  Universal whole-space mesh sharpness is now proved,
+but target-specific minimality for an individual Legendre polynomial or
+partial sum is not.  The modules also do not assert an
 analytic reciprocal-MGF or differential-series realization of deconvolution,
 the displayed low reciprocal coefficients, parity or the displayed closed
 formulas for the deconvolved Legendre family,

@@ -189,15 +189,11 @@ theorem quarterCatalanGermSeries_equation :
     ring
   rw [hscale] at hC
   have hbranch : C + 4 * A * PowerSeries.X * C ^ 2 = 1 := by
-    have hz :
-        C ^ 2 * (-(4 * A) * PowerSeries.X) + 1 - C = 0 :=
-      sub_eq_zero.mpr hC
-    apply sub_eq_zero.mp
     calc
-      (C + 4 * A * PowerSeries.X * C ^ 2) - 1 =
-          -(C ^ 2 * (-(4 * A) * PowerSeries.X) + 1 - C) := by
-            ring
-      _ = 0 := by rw [hz, neg_zero]
+      C + 4 * A * PowerSeries.X * C ^ 2 =
+          (C ^ 2 * (-(4 * A) * PowerSeries.X) + 1) +
+            4 * A * PowerSeries.X * C ^ 2 := by rw [hC]
+      _ = 1 := by ring
   change
     A * (PowerSeries.X * C) +
         4 * (A * (PowerSeries.X * C)) ^ 2 =

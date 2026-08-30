@@ -22,6 +22,18 @@ archive per externally prepared report.
 4. **Record it**: add a row to [`../MANIFEST.md`](../MANIFEST.md) and
    mention it in the receiving group's `README.md`.
 5. **Commit** the unpack as its own commit.
+6. **Publish the quick intake immediately**: push the intake commit to the
+   current feature branch, then push that same commit to `origin/main` with a
+   fast-forward-only push (never force-push).  If `origin/main` has advanced,
+   merge it first, resolve and validate the merge, and then retry the
+   fast-forward push.
+
+Only after that quick archival intake is visible on `origin/main` should the
+deeper phase begin: claim-by-claim mathematical reassessment, comparison with
+the Lean corpus, deduplication against consolidated volumes, editorial
+integration, documentation correction, or new formalization.  Keep those
+substantive changes in later commits so the original filed package remains a
+clean, reviewable baseline.
 
 If the group already has a consolidated volume (a single merged
 document absorbing former member drafts), the new draft usually stays a
