@@ -1998,6 +1998,20 @@ For commuting indeterminates \(x_0,\ldots,x_{m-1}\),
 \end{equation}
 \end{theorem}
 
+\emph{Formal versions.}  The multi-variable identity is formal in two pieces, and the
+split is the interesting part.  Over any commutative semiring,
+\lean{Fabius.prod\_one\_add\_eq\_sum\_powerset} in \path{ThueMorseBooleanCube.lean} is
+\(\prod_{j\in S}(1+x_j)=\sum_{T\subseteq S}\prod_{j\in T}x_j\) --- the display with the
+sum still indexed by \emph{subsets} --- and
+\lean{Fabius.sum\_powerset\_two\_pow} in \path{ThueMorseBitSupport.lean} is the
+re-indexing \(T\mapsto\sum_{j\in T}2^j\) that turns subsets of \(\{0,\dots,m-1\}\) into
+\(\{0,\dots,2^m-1\}\).  Composing them is \eqref{p1:eq:boolean-mother}.  The corpus
+states the composite itself only in the one-variable specialization
+\(x_j=z^{2^j}\), as \lean{Fabius.prod\_one\_sub\_pow\_eq\_sum\_thueMorseSign}, and in the
+two-parameter form \lean{Fabius.prod\_one\_add\_mul\_pow},
+\(\prod_{j<m}(1+uz^{2^j})=\sum_{n<2^m}u^{\wt(n)}z^n\), from which the finite
+Thue--Morse product and the weight enumerator both follow by choosing \(u\).
+
 \begin{proof}
 Identify \(n\) with its bit vector \(b\in\{0,1\}^m\).  The sum factors over
 coordinates:
@@ -2368,6 +2382,17 @@ Then, for \(|z|<1\),
   \label{p1:eq:lacunary-quotient}
 \end{equation}
 \end{theorem}
+
+\emph{Formal version, and where it stops.}  The \emph{exact finite} form --- the
+display above truncated at \(M\) with its remainder retained --- is
+\lean{Fabius.thueMorseBitZSeries\_lacunary\_quotient} in
+\path{ThueMorseLacunaryQuotient.lean}, stated over the formal power series ring \(\Z[[X]]\) for
+every \(M\), with the remainder written as the \(M\)-fold
+\lean{PowerSeries.expand} of the series.  That is the identity in the line below,
+proved as an identity of formal power series and so with no hypothesis on \(z\).  The
+passage to the limit \(M\to\infty\) that produces the infinite sum
+\eqref{p1:eq:lacunary-quotient} is not formalized: it needs \(|z|<1\) and a convergence
+argument for \(P_M(z)T(z^{2^M})\to0\), neither of which a formal series carries.
 
 \begin{proof}
 After \(M\) iterations of \eqref{p1:eq:T-Mahler},
@@ -3238,6 +3263,20 @@ framework are surveyed in
 \cite{p1:bugeaudQueffelec2013,p1:bugeaudHanWenYao2015}.  This is the cleanest
 place where the determinant rigidity of \cref{p1:thm:hankel-nonzero} pays an
 explicitly Diophantine dividend.
+
+\emph{Formal versions.}  Neither theorem of this subsection has one, and neither is
+planned: both are imported literature results about the \emph{analytic value} of \(E\)
+at an algebraic point, and transcendence and irrationality exponents are outside what
+the corpus develops.  What is formal is each of the two ingredients their proofs use,
+and in both cases as a statement about a \emph{formal power series}, which by itself
+says nothing about values: the Mahler equation \eqref{p1:eq:E-Mahler} is
+\lean{Fabius.thueMorseSeries\_mahler} in \path{ThueMorseMahler.lean}, in the form
+\(E=(1-X)\cdot\operatorname{expand}_2E\), and the determinant rigidity of
+\cref{p1:thm:hankel-nonzero} is \lean{Fabius.thueMorseHankel\_ne\_zero} in
+\path{ThueMorseHankel.lean}, proved through the sharper
+\lean{Fabius.hankelSign\_det\_eq\_two\_pow\_mul\_odd} --- the determinant is a power of
+two times an odd number, so its nonvanishing is a parity fact rather than an
+estimate.
 
 \section[Finite differences and moments]{Finite differences, Prouhet cancellation, and all dyadic moments}
 \label{p1:sec:finite-differences}
@@ -4944,6 +4983,30 @@ forms of the same spectral object.  Extending by evenness,
  -\tfrac13,\;\tfrac16,\;0,\;-\tfrac16,\;\tfrac13,\;-\tfrac16,\;0,\;\tfrac16.
  \label{p1:eq:eta-first-values}
 \end{equation}
+
+\emph{Formal versions, and where they stop.}  \path{ThueMorseAutocorrelation.lean}
+formalizes the \emph{finite-level} structure exactly, on the unnormalized
+\(A_m(k)=\sum_{n<2^m}\eps_n\eps_{n+k}\): the zero shift
+\lean{Fabius.thueMorseAutocorrelation\_zero\_shift} (\(A_m(0)=2^m\)), the even branch
+\lean{Fabius.thueMorseAutocorrelation\_succ\_even} (\(A_{m+1}(2r)=2A_m(r)\)), the odd
+branch \lean{Fabius.thueMorseAutocorrelation\_succ\_odd}
+(\(A_{m+1}(2r+1)=-(A_m(r)+A_m(r+1))\)), and the bound
+\lean{Fabius.abs\_thueMorseAutocorrelation\_le}, which is what puts every normalized
+value in \([-1,1]\).  These are \eqref{p1:eq:eta-even} and \eqref{p1:eq:eta-odd} before
+the limit is taken.
+
+The \emph{limit} is formalized only at the first three shifts:
+\lean{Fabius.tendsto\_thueMorseAutocorrelation\_zero\_shift},
+\lean{Fabius.tendsto\_thueMorseAutocorrelation\_one} and
+\lean{Fabius.tendsto\_thueMorseAutocorrelation\_two}, giving
+\(\eta(0)=1\) and \(\eta(1)=\eta(2)=-\tfrac13\).  Those three go through closed forms
+that leave \(\Z\) only at the last step --- \(3A_m(1)=-2^m-2(-1)^m\)
+(\lean{Fabius.three\_mul\_thueMorseAutocorrelation\_one}) and its shift-two companion
+--- so the geometric error term \((-\tfrac23)(-\tfrac12)^m\) is explicit rather than
+asymptotic.  Existence of \(\eta(k)\) at a general \(k\), and the remaining samples in
+\eqref{p1:eq:eta-samples} and \eqref{p1:eq:eta-first-values}, are not formalized; this
+is the analytic frontier flagged above the theorem, and the corpus stops exactly
+there.
 
 \subsection{A Mahler equation for the autocorrelation series}
 
