@@ -60,7 +60,7 @@ clauses is formalized here.
 * `Fabius.norm_sineTerm_div_two_pow` — the modulus of the scaled Euler
   factor deviation, `‖sineTerm (z / 2 ^ h) r‖`, as
   `‖z‖² / 4 ^ h · (1 / (r+1)²)`.
-* `Fabius.summable_natCast_mul_norm_sineTerm_pair` — the comparison test
+* `Fabius.summable_norm_of_norm_le_exp_sub_one` — the comparison test
   of `GeneralizedRvachevProduct` restated for an arbitrary index type.
 * `Fabius.summable_natCast_mul_norm_sineTerm_pair` — the weighted
   double series `∑_{(h,r)} a h · ‖sineTerm (z / 2 ^ h) r‖` converges.
@@ -255,18 +255,6 @@ theorem one_add_sineTerm_dyadic (z : ℂ) (m j : ℕ)
     rw [div_pow, div_div, ← mul_pow, hkey]
   rw [neg_div, hexpand]
   ring
-
-/-- Unit `ℕ`-valued weights turn the weighted scale multiplicity into
-the plain layer count `padicValNat b n + 1`.
-
-`SpectralZetaWeighted` records the same statement for the `ℝ`-valued
-constant weight `fun _ => (1 : ℝ)`; the exponents of a product are
-natural numbers, so the `ℕ`-valued version is the one needed here. -/
-theorem weightedScaleMultiplicity_one_nat (b n : ℕ) :
-    weightedScaleMultiplicity b (fun _ => (1 : ℕ)) n
-      = padicValNat b n + 1 := by
-  rw [weightedScaleMultiplicity, inclusivePrefixSum]
-  simp
 
 /-- **The canonical product of a generalized Rvachev transform** — the
 boxed display `p1:eq:canonical-a` of the exponents volume, inside its

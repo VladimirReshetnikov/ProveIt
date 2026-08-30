@@ -63,6 +63,8 @@ import FabiusFunction.FiniteMomentGram
 import FabiusFunction.GramStieltjes
 import FabiusFunction.FiniteMomentJacobi
 import FabiusFunction.WeightedScaleMultiplicity
+import FabiusFunction.BaseDigitMultiplicity
+import FabiusFunction.PartitionDefect
 import FabiusFunction.SpectralZetaWeighted
 import FabiusFunction.ShiftDifferenceWeights
 import FabiusFunction.NewtonMultiplicityAssembly
