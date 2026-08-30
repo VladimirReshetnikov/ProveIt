@@ -13,9 +13,8 @@ gate a commit alongside `audit_crosswalk_names.py`.
 """
 import io, os, re, sys
 
-HERE = os.path.dirname(os.path.abspath(__file__))
-FABIUS_ROOT = os.path.abspath(os.path.join(HERE, '..', '..'))
-ROOT = os.path.join(FABIUS_ROOT, 'Lean')
+DOCS = os.path.dirname(os.path.abspath(__file__))
+ROOT = os.path.normpath(os.path.join(DOCS, '..', '..', 'Lean'))
 PKG = os.path.join(ROOT, 'FabiusFunction')
 FACADE = os.path.join(ROOT, 'FabiusFunction.lean')
 

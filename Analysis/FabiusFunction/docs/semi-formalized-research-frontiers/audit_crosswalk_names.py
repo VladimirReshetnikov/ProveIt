@@ -15,8 +15,7 @@ Exit status is 1 when anything is unresolved, so this can gate a commit.
 import io, os, re, sys
 
 DOCS = os.path.dirname(os.path.abspath(__file__))
-FABIUS_ROOT = os.path.abspath(os.path.join(DOCS, '..', '..'))
-LEAN = os.path.join(FABIUS_ROOT, 'Lean', 'FabiusFunction')
+LEAN = os.path.normpath(os.path.join(DOCS, '..', '..', 'Lean', 'FabiusFunction'))
 
 DECL = re.compile(
     r'^\s*(?:@\[[^\]]*\]\s*)?'

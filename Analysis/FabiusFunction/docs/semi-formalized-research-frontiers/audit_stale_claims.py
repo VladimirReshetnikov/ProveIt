@@ -24,8 +24,7 @@ correct.  Every hit needs reading.  Exit status is always 0.
 import io, os, re
 
 DOCS = os.path.dirname(os.path.abspath(__file__))
-FABIUS_ROOT = os.path.abspath(os.path.join(DOCS, '..', '..'))
-LEAN = os.path.join(FABIUS_ROOT, 'Lean', 'FabiusFunction')
+LEAN = os.path.normpath(os.path.join(DOCS, '..', '..', 'Lean', 'FabiusFunction'))
 
 # Phrases in a Lean docstring that go stale silently.  "not proved
 # here" stays literally true forever -- "here" means this module -- so
