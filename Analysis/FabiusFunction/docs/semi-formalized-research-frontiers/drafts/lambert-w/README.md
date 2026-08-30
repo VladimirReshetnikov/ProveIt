@@ -16,7 +16,7 @@ Four independently written article packages arrived together on
 consolidated volume:
 
 Member: `Lambert_W_Guide/` — *The Lambert W Function: A Real-Variable
-Guide* (59 pp, consolidated edition).  The most complete of the four
+Guide* (60 pp, consolidated edition).  The most complete of the four
 treatments forms the body; the unique layers of the other three (the
 complete power-tower convergence theorem, inverse-Taylor corrections,
 the branch-exchange involution, the transcendence theorem, a
@@ -34,15 +34,20 @@ See [`../MANIFEST.md`](../MANIFEST.md) for the group record.
 
 The corpus formalizes the real Lambert pair: the lower branch in
 `LowerLambertW.lean` (definition, defining equation, uniqueness,
-monotonicity, range, continuity) and the principal branch in
-`PrincipalLambertW.lean` (defining equation on `[-1/e, ∞)` with
-the branch bound `W₀ ≥ -1`, uniqueness among solutions `≥ -1`, the
-branch point `W₀(-1/e) = -1`, `W₀(0) = 0`, `W₀(e) = 1`, and strict
-monotonicity of the branch and of the forward map `t·eᵗ`,
-continuity on the open domain, the exact image `(-1, ∞)`, and the
-exact restricted image `W₀([-1/e, 0]) = [-1, 0]`, together with the
-inverse-function derivative `W₀' = 1/(e^{W₀}(W₀+1))` with its strict
-positivity) — the volume's central objects, kernel-verified.
+monotonicity, range, branch-point continuity, and continuity on the full
+domain `[-1/e, 0)`) and the principal branch in `PrincipalLambertW.lean`
+(defining equation on `[-1/e, ∞)` with the branch bound `W₀ ≥ -1`, uniqueness
+among solutions `≥ -1`, the branch point `W₀(-1/e) = -1`, `W₀(0) = 0`,
+`W₀(e) = 1`, strict monotonicity of the branch and of the forward map
+`t·eᵗ`, branch-point continuity, continuity on the full domain
+`[-1/e, ∞)`, the exact image `(-1, ∞)`, and the restricted image
+`W₀([-1/e, 0]) = [-1, 0]`).  The endpoint/full-domain declarations are
+`principalLambertW_continuousWithinAt_branchPoint`,
+`principalLambertW_continuousOn_Ici`,
+`lowerLambertW_continuousWithinAt_branchPoint`, and
+`lowerLambertW_continuousOn_Ico`.  The inverse-function derivative
+`W₀' = 1/(e^{W₀}(W₀+1))`, its strict positivity, and the exact endpoint value
+`W₀'(0) = 1` (`deriv_principalLambertW_zero`) are kernel-verified.
 The pair-level facts live in `LambertBranchDichotomy.lean`: the global
 bound `-1/e ≤ t·e^t` derived from `1+x ≤ e^x` alone, the forward map
 strictly decreasing on `(-∞, -1]` (the mirror of the principal-side
@@ -53,13 +58,44 @@ two-branch inversion statement, kernel-verified.
 
 The scaled integer-power profile package lives in
 `PowerExponentialLambert.lean`, `PowerExponentialLambertCalculus.lean`,
-`PowerExponentialLambertInverse.lean`, and
+`PowerExponentialLambertInverse.lean`,
+`PowerExponentialLambertAsymptotics.lean`, and
 `PowerExponentialLambertFabius.lean`.  For nonzero natural power and positive
-amplitude/rate it gives both real phases, their endpoint-inclusive solve
-laws, exact branch images, interior derivatives and signs, and two-sided
-`InvOn` laws; the unit-rate generalized coordinate and the Fabius
-`(m,A,beta) = (1,1,log 2)` phase are exact specializations.  General
-small-argument asymptotics for this scaled family remain open.
+amplitude/rate it gives both real phases, endpoint-inclusive solve laws,
+exact branch images, interior derivatives and signs, and two-sided `InvOn`
+laws.  The normalized argument is continuous
+(`powerExponentialLambertArgument_continuous`), the principal phase is
+continuous on the full closed value interval
+(`principalPowerExponentialPhase_continuousOn_Icc`), and the lower phase is
+continuous on the positive endpoint-inclusive interval
+(`lowerPowerExponentialPhase_continuousOn_Ioc`).  Among nonnegative
+variables, `powerExponentialSaddle_eq_iff_eq_principal_or_eq_lower` is the
+exact solution iff through the peak, and
+`principalPowerExponentialPhase_ne_lowerPowerExponentialPhase` makes the two
+roots distinct strictly below it.  This does not classify additional
+negative roots possible for even powers.
+
+At zero, `principalPowerExponentialPhase_isEquivalent_rpow` identifies the
+principal root equivalent `(x/A)^(1/m)`, while
+`tendsto_lowerPowerExponentialPhase_nhdsGT_zero_atTop` gives divergence of
+the lower phase to `+∞`.  The lower result
+`lowerPowerExponentialPhase_sub_intrinsicMain_tendsto_zero` is specifically
+the intrinsic-epsilon two-term expansion for
+`epsilon = (beta/m)(x/A)^(1/m)`.  It does not yet give a cleaned
+`L = log(A/x)` normalization or a full generic asymptotic series.
+
+The Fabius specialization `(m,A,beta) = (1,1,log 2)` now includes the
+principal phase `fabiusPrincipalLambertPhase`, the exact nonnegative-root iff
+`fabiusSaddle_eq_iff_eq_principal_or_eq_lower`, strict interior distinctness
+`fabiusPrincipalLambertPhase_ne_fabiusLambertPhase`, full interval
+continuity in `fabiusPrincipalLambertPhase_continuousOn_Icc` and
+`fabiusLambertPhase_continuousOn_Ioc`, and the zero-endpoint equivalence
+`fabiusPrincipalLambertPhase_isEquivalent_id`; the lower generic phase is
+identified with `fabiusLambertPhase` by
+`lowerPowerExponentialPhase_one_one_log_two`.
+
+Still open in Lean are the raw-branch second derivatives and curvature
+package, both branch-point vertical-tangent limits, and the Puiseux package.
 
 For the Fabius endpoint observable itself,
 `FabiusLambertPhaseLockedPullback.lean`,

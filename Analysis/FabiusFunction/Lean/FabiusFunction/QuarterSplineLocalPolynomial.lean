@@ -171,37 +171,6 @@ theorem thueMorsePowerSumRing_add_two_real (m : ℕ) :
         calc
           (4 : ℝ) ^ m = ((2 : ℝ) * 2) ^ m := by norm_num
           _ = (2 : ℝ) ^ m * (2 : ℝ) ^ m := by rw [mul_pow]
-      have hsign : (-1 : ℝ) ^ (m + 1) = -((-1 : ℝ) ^ m) := by
-        rw [pow_succ]
-        ring
-      have htriangular :
-          (2 : ℝ) ^ (m + 1).choose 2 =
-            (2 : ℝ) ^ m.choose 2 * (2 : ℝ) ^ m := by
-        rw [choose_succ_two, pow_add]
-      have hfactorial :
-          (((m + 1).factorial : ℕ) : ℝ) =
-            ((m : ℝ) + 1) * (m.factorial : ℝ) := by
-        rw [Nat.factorial_succ]
-        push_cast
-        rfl
-      have htwoSucc :
-          (2 : ℝ) ^ (m + 1) = (2 : ℝ) ^ m * 2 := by
-        rw [pow_succ]
-      have htwoAddTwo :
-          (2 : ℝ) ^ (m + 2) = (2 : ℝ) ^ m * 4 := by
-        rw [pow_add]
-        norm_num
-      have hresidualStep :
-          ((((2 : ℝ) ^ (m + 1) - 1) ^ 2 / 8) +
-              ((4 : ℝ) ^ (m + 1) - 1) / 72) =
-            1 / 6 + ((2 : ℝ) ^ m - 1) / 2 +
-              4 * ((((2 : ℝ) ^ m - 1) ^ 2 / 8) +
-                ((4 : ℝ) ^ m - 1) / 72) := by
-        have hfourSucc :
-            (4 : ℝ) ^ (m + 1) = (4 : ℝ) ^ m * 4 := by
-          rw [pow_succ]
-        rw [htwoSucc, hfourSucc, hfour]
-        ring
       rw [show m + 1 + 2 = m + 3 by omega,
         thueMorsePowerSumRing_succ (R := ℝ) m (m + 3),
         show m + 3 = (m + 2) + 1 by omega,
@@ -210,10 +179,11 @@ theorem thueMorsePowerSumRing_add_two_real (m : ℕ) :
         thueMorsePowerSumRing_self,
         thueMorsePowerSumRing_add_one_real, ih,
         Nat.choose_succ_self_right]
-      rw [hchooseThree, hchooseTwo, hsign, htriangular, hfactorial,
-        hresidualStep, htwoSucc, htwoAddTwo]
+      rw [hchooseThree, hchooseTwo, choose_succ_two,
+        Nat.factorial_succ]
       push_cast
-      simp only [pow_zero, pow_succ, pow_add, hfour]
+      simp only [pow_add]
+      rw [hfour]
       ring
 
 /-! ## A reusable degree-two residual extractor -/
@@ -308,7 +278,7 @@ theorem normalized_thueMorse_translated_power_sum_add_two
   field_simp [hm1, hm2, hfac]
   ring_nf
   rw [hsignMulTwo]
-  simp only [one_mul, mul_one]
+  ring
 
 /-! ## The quarter block and the half-cell endpoint -/
 

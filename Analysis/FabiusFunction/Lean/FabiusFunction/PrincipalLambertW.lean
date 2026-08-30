@@ -1,4 +1,5 @@
 import FabiusFunction.LowerLambertW
+import Mathlib.Analysis.Asymptotics.AsymptoticEquivalent
 
 /-!
 # The principal real Lambert branch
@@ -16,7 +17,9 @@ that map is strictly increasing.
 * branch point `W₀(-e⁻¹) = -1`, `W₀(0) = 0`, `W₀(e) = 1`;
 * `principalLambertW_strictMonoOn` — strict monotonicity;
 * `principalLambertW_image_Icc` — the exact restricted image
-  `W₀ '' [-e⁻¹, 0] = [-1, 0]`.
+  `W₀ '' [-e⁻¹, 0] = [-1, 0]`;
+* continuity on the full closed natural domain, the derivative value
+  `W₀'(0) = 1`, and the local equivalence `W₀(z) ~ z`.
 
 Together with the lower branch this completes the real Lambert pair —
 the subject of the `lambert-w` draft group and the function behind
@@ -25,7 +28,7 @@ the corpus's two-scale endpoint asymptotics.
 
 set_option autoImplicit false
 
-open Set Function
+open Set Filter Function Asymptotics
 
 namespace Fabius
 
@@ -152,7 +155,7 @@ theorem principalLambertW_strictMonoOn :
     StrictMonoOn principalLambertW (Ici (-Real.exp (-1))) := by
   intro a ha b hb hab
   by_contra hcon
-  push_neg at hcon
+  push Not at hcon
   have h1 := principalLambertW_mul_exp (mem_Ici.mp ha)
   have h2 := principalLambertW_mul_exp (mem_Ici.mp hb)
   have hWa := neg_one_le_principalLambertW (mem_Ici.mp ha)
@@ -214,6 +217,22 @@ theorem principalLambertW_image_Icc :
     exact ⟨w * Real.exp w, ⟨hlo, hhi⟩,
       (principalLambertW_unique hlo hw.1 rfl).symm⟩
 
+/-- The principal branch is right-continuous at the real branch point.
+
+The statement uses the full natural half-line rather than only a compact
+test interval.  Exact monotonicity and the restricted image
+`W₀ '' [-exp (-1), 0] = [-1, 0]` rule out a jump at the endpoint. -/
+theorem principalLambertW_continuousWithinAt_branchPoint :
+    ContinuousWithinAt principalLambertW (Ici (-Real.exp (-1)))
+      (-Real.exp (-1)) := by
+  have hmono : StrictMonoOn principalLambertW
+      (Icc (-Real.exp (-1)) 0) :=
+    principalLambertW_strictMonoOn.mono fun _ hz ↦ mem_Ici.mpr hz.1
+  apply hmono.continuousWithinAt_right_of_image_mem_nhdsWithin
+  · exact Icc_mem_nhdsGE (neg_lt_zero.mpr (Real.exp_pos _))
+  · rw [principalLambertW_image_Icc, principalLambertW_branchPoint]
+    exact Icc_mem_nhdsGE (by norm_num : (-1 : ℝ) < 0)
+
 /-- The principal branch is continuous at every point of the open
 domain. -/
 theorem principalLambertW_continuousAt {z : ℝ}
@@ -232,6 +251,15 @@ theorem principalLambertW_continuousAt {z : ℝ}
 theorem principalLambertW_continuousOn :
     ContinuousOn principalLambertW (Ioi (-Real.exp (-1))) :=
   fun _ hz => (principalLambertW_continuousAt hz).continuousWithinAt
+
+/-- Continuity of the principal branch on its full closed natural domain. -/
+theorem principalLambertW_continuousOn_Ici :
+    ContinuousOn principalLambertW (Ici (-Real.exp (-1))) := by
+  intro z hz
+  rcases eq_or_lt_of_le (mem_Ici.mp hz) with h | h
+  · subst z
+    exact principalLambertW_continuousWithinAt_branchPoint
+  · exact (principalLambertW_continuousAt h).continuousWithinAt
 
 /-- Inverse-function derivative of the principal branch. -/
 theorem principalLambertW_hasDerivAt {z : ℝ}
@@ -270,6 +298,22 @@ theorem deriv_principalLambertW_pos {z : ℝ}
   rw [(principalLambertW_hasDerivAt hz).deriv]
   have hW := neg_one_lt_principalLambertW hz
   exact inv_pos.mpr (mul_pos (Real.exp_pos _) (by linarith))
+
+/-- The principal branch has unit derivative at the origin. -/
+@[simp] theorem deriv_principalLambertW_zero :
+    deriv principalLambertW 0 = 1 := by
+  rw [(principalLambertW_hasDerivAt
+    (neg_lt_zero.mpr (Real.exp_pos (-1)))).deriv]
+  simp
+
+/-- The principal Lambert branch is asymptotic to the identity at the
+origin: `W₀(z) ~ z`. -/
+theorem principalLambertW_isEquivalent_zero :
+    (fun z : ℝ ↦ principalLambertW z) ~[nhds 0] (fun z : ℝ ↦ z) := by
+  have hderiv : HasDerivAt principalLambertW 1 0 := by
+    simpa using principalLambertW_hasDerivAt
+      (neg_lt_zero.mpr (Real.exp_pos (-1)))
+  simpa [Function.comp_def] using hderiv.isEquivalent_sub one_ne_zero
 
 end
 
