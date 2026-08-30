@@ -3786,7 +3786,24 @@ nonzero natural mesh $M$ and polynomial of degree at most $v_2(M)$, these give t
 raw and normalized \texttt{tsum} identities and, on $[-1,1]$, their exact finite
 $k\in(-2M,2M)$ forms.
 
-At the same checkpoint, \path{FabiusLegendreTranslateBlocks.lean} exports six public
+At the focused-build checkpoint of 30 August 2026,
+\path{CompositeMeshSharpness.lean} exports one public definition,
+\lean{rvachevCombExactThrough}, and seven public theorems:
+\lean{exists_shift_tsum_shifted_monomial_ne_integral_nat_real},
+\lean{rvachevCombExactThrough_iff_padicValNat},
+\lean{rvachevCombExactThrough_iff_pow_two_dvd},
+\mbox{\texttt{rvachevCombExactThrough\_two\_pow}},
+\lean{two_pow_le_of_rvachevCombExactThrough},
+\lean{isLeast_rvachevCombExactThrough}, and
+\lean{isLeast_rvachevCombExactThrough_even}.  Universal shifted-comb exactness through
+degree $d$ holds for a nonzero natural mesh $M$ exactly when $d\le v_2(M)$, equivalently
+when $2^d\mid M$.  The monomial of degree $v_2(M)+1$ fails at some real shift, $2^d$ is
+the least universally exact mesh, and $4^N$ is the least mesh for the complete polynomial
+space through degree $2N$.  These statements do not assert minimality for an individual
+Legendre polynomial, one fixed $S_N$, or a target-adapted mesh.
+
+At compiled source checkpoint \texttt{a3854643d},
+\path{FabiusLegendreTranslateBlocks.lean} exports six public
 definitions: \lean{rvachevLegendreDeconvolutionPolynomial},
 \lean{rvachevLegendreScale}, \lean{rvachevLegendreIndexSet},
 \lean{rvachevLegendreAtomCoefficient}, \lean{rvachevLegendreTranslateBlock}, and
@@ -3848,9 +3865,10 @@ interval supremum norm; raw \texttt{TendstoUniformlyOn}, norm-error-to-zero, and
 forms are exported as well.  No rate, coefficientwise limit, or uniform convergence outside
 $[-1,1]$ is asserted.
 
-These four modules have public definition/theorem inventories $6/30$, $0/4$, $6/7$, and
-$5/25$, respectively, for exactly $83$ public declarations.  Their APIs still do not prove
-minimality or sharpness of the displayed mesh, an analytic
+These five modules have public definition/theorem inventories $6/30$, $0/4$, $1/7$,
+$6/7$, and $5/25$, respectively, for exactly $91$ public declarations.  Universal
+whole-space mesh sharpness is now proved, but minimality for an individual Legendre mode,
+block, or partial sum is not.  Their APIs also do not prove an analytic
 reciprocal-MGF or Appell generating-series identity, a literal differential-series
 realization of deconvolution, the displayed low reciprocal coefficients, parity or the
 displayed closed formulas for the deconvolved Legendre family, rationality of the atom rows,

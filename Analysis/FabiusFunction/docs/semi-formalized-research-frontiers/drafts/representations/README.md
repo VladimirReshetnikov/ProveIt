@@ -188,6 +188,12 @@ verification package lives under
 `assets/Rvachev_Up_Exact_Polynomial_Representation_Report/`.
 Absorbed directories deleted; provenance with SHA-256 in the volume's
 Appendix B and `assets/SHA256SUMS-absorbed.txt`.
+The focused-build `CompositeMeshSharpness.lean` module now certifies the
+natural-mesh universal slice of the sharp order statement: exactness for the
+whole polynomial space through degree `d` is equivalent to `d <= v_2(M)`, or
+to `2^d | M`; `2^d` is least, and `4^N` is least for the complete degree-`2N`
+space.  This is not a minimality result for one target polynomial, Legendre
+mode, or partial sum.
 
 Six same-question Lagrange-loop reconstruction reports landed on 2026-08-29
 and remain separate pending a deliberate fold into
@@ -220,9 +226,12 @@ factorization, and a sharp central-coefficient root law.  Its
 theorem-level checks are exact rational with residual `0`; the reported
 energy value is a stabilized display of an exact partial sum, not a
 certified enclosure of the limit, and the report says so.  This is a
-checksum-verified 22-file package with a 27-page Libertinus rebuild, exact
-data certificates, four dual-format figures, and snapshot
+22-file package with a 31-page Libertinus rebuild and exactly 2204 source
+lines, exact data certificates,
+four dual-format figures, and snapshot
 `faa3a9b94ac0e71abdc53c36fdf428222e4d2a8c`.
+Its checksum ledger was refreshed after the 2026-08-30 parity render and all
+21 entries verify.
 Subsequent Lean module `FabiusLegendreEnergy.lean` now defines the
 polynomial-form blocks `B_n = u_n*P_(2n)` and proves exactly their complete
 orthogonality, the coefficient Parseval identity, the shifted coefficient-tail
@@ -312,7 +321,23 @@ They prove the global raw and normalized sums for every nonzero natural mesh
 `M` with `deg P ≤ v₂(M)`, and on `[-1,1]` the exact finite open-index form
 `-2M < k < 2M`.
 
-At the same checkpoint, `FabiusLegendreTranslateBlocks.lean` exports six
+The focused-build `CompositeMeshSharpness.lean` module exports one public
+definition, `rvachevCombExactThrough`, and seven public theorems:
+`exists_shift_tsum_shifted_monomial_ne_integral_nat_real`,
+`rvachevCombExactThrough_iff_padicValNat`,
+`rvachevCombExactThrough_iff_pow_two_dvd`,
+`rvachevCombExactThrough_two_pow`,
+`two_pow_le_of_rvachevCombExactThrough`,
+`isLeast_rvachevCombExactThrough`, and
+`isLeast_rvachevCombExactThrough_even`.  It classifies universal exactness at
+every real shift for the whole real polynomial space through degree `d` as
+`M != 0 && d <= v_2(M)`, equivalently `M != 0 && 2^d | M`; proves a real
+first-defect witness in degree `v_2(M)+1`; and makes `2^d` the least such mesh,
+with the complete even-degree specialization `4^N`.  It does not make an
+individual Legendre polynomial or a particular `S_N` minimal on that mesh.
+
+At compiled checkpoint `a3854643d`,
+`FabiusLegendreTranslateBlocks.lean` exports six
 public definitions: `rvachevLegendreDeconvolutionPolynomial`,
 `rvachevLegendreScale`, `rvachevLegendreIndexSet`,
 `rvachevLegendreAtomCoefficient`, `rvachevLegendreTranslateBlock`, and
@@ -375,9 +400,11 @@ norm; raw `TendstoUniformlyOn`, norm-error-to-zero, and pointwise corollaries
 are also exported.  No convergence rate, coefficientwise limit, or uniform
 convergence outside `[-1,1]` is asserted.
 
-These four modules have public definition/theorem inventories `6/30`, `0/4`,
-`6/7`, and `5/25`, for exactly 83 public declarations.  They still do not
-certify minimality or sharpness of the mesh, analytic
+These five modules have public definition/theorem inventories `6/30`, `0/4`,
+`1/7`, `6/7`, and `5/25`, for exactly 91 public declarations.  Universal
+whole-space mesh sharpness is now certified, but target-specific minimality
+for an individual Legendre mode or partial sum is not.  The modules also do
+not certify analytic
 reciprocal-MGF/Appell generating-series or differential-operator identities,
 the displayed low reciprocal coefficients, parity and the displayed closed
 forms for the deconvolved Legendre family, rationality of the atom rows,

@@ -261,7 +261,11 @@ polynomials goes back to V.~L. and V.~A. Rvachev
 explicit finite constructions, dimensions, algorithms, certificates,
 and identities below, relative to the audited corpus and a targeted
 literature search --- never unqualified global priority.  Conjectures
-and problems are labeled.  Nothing here is formalized in Lean yet.
+and problems are labeled.  Most of the finite dictionaries, local dimensions,
+algorithms, and atom-count results are not formalized in Lean.  The focused
+2026-08-30 module \path{CompositeMeshSharpness.lean} now formalizes only the
+natural-mesh, universally quantified shifted-comb threshold described below;
+its claim boundary is recorded after \cref{thm:scale-classification}.
 \end{statusbox}
 
 \subsection*{Notation}
@@ -277,11 +281,12 @@ $\mu_6=\tfrac{583}{59535}$, \dots), and cumulants
 $\kappa_{2m}=B_{2m}/\bigl(2m(1-4^{-m})\bigr)$.  Two dual Appell
 families recur:
 \begin{equation}
- G_n(y):=\E\,(y-Z)^{n}=\MM_u(D)\,y^{n}
- =\sum_{r}\binom nr\mu_r\,y^{n-r},
- \qquad
- \Gd_n(y):=\MM_u(D)^{-1}y^{n}
+ \begin{aligned}
+ G_n(y)&:=\E\,(y-Z)^{n}=\MM_u(D)\,y^{n}
+ =\sum_{r}\binom nr\mu_r\,y^{n-r},\\
+ \Gd_n(y)&:=\MM_u(D)^{-1}y^{n}
  =\sum_{r}\binom nr\gamma_r\,y^{n-r},
+ \end{aligned}
  \label{eq:appell-pair}
 \end{equation}
 the \emph{moment family} $G_n$ (the same polynomials as the Appell
@@ -527,6 +532,25 @@ Strang--Fix equivalence \cite{StrangFix1973,Jia1998} gives order
 $\vtwo(\rho)$.
 \end{proof}
 
+The exact Lean anchor for the natural-mesh universal slice is
+\path{rvachevCombExactThrough} in \path{CompositeMeshSharpness.lean}.
+The focused build exports that one definition and the seven theorems
+\path{exists_shift_tsum_shifted_monomial_ne_integral_nat_real},
+\path{rvachevCombExactThrough_iff_padicValNat},
+\path{rvachevCombExactThrough_iff_pow_two_dvd},
+\path{rvachevCombExactThrough_two_pow},
+\path{two_pow_le_of_rvachevCombExactThrough},
+\path{isLeast_rvachevCombExactThrough}, and
+\path{isLeast_rvachevCombExactThrough_even}.  They prove, for nonzero natural
+$M$, that shifted-comb exactness at every real shift for every real polynomial
+of degree at most $d$ is equivalent to $d\le\vtwo(M)$, equivalently
+$2^d\mid M$; the monomial of degree $\vtwo(M)+1$ fails at some shift; and
+$2^d$ is the least such universal mesh, with $4^N$ least for the complete
+space through degree $2N$.  This does \emph{not} formalize the full theorem
+above for arbitrary real $\rho$, the Strang--Fix equivalence as such, an
+individual target polynomial, a Legendre mode or partial sum, the local
+dictionary dimension, or any atom-count minimality claim.
+
 Fix henceforth $M=2^{d}$ and $\psi_k=\psi_{M,k}$.
 
 \subsection{Global synthesis by moment deconvolution}
@@ -708,9 +732,12 @@ $u((t-k)/M)$):
  \label{eq:monomial-examples}
 \end{align}
 all on $[0,1]$; the six coefficients for $t^{4}$ at scale $16$ are
-$\bigl(\tfrac{257824}{675},-\tfrac{358624}{225},
+\[
+\bigl(\tfrac{257824}{675},-\tfrac{358624}{225},
 \tfrac{2010496}{675},-\tfrac{2528896}{675},
-\tfrac{661024}{135},-\tfrac{2567968}{675}\bigr)$ at centers
+\tfrac{661024}{135},-\tfrac{2567968}{675}\bigr)
+\]
+at centers
 $11,\dots,16$.
 
 \subsection{The output-sensitive algorithm}
@@ -761,8 +788,11 @@ and the two product formulas
 \end{gather*}
 cancel factor by factor to \eqref{eq:H-def}.  The logarithm follows
 from the classical expansion
-$\log\bigl[2\sinh(z/2)/z\bigr]
-=\sum_mB_{2m}z^{2m}/(2m\,(2m)!)$ together with the cumulant series
+\[
+\log\bigl[2\sinh(z/2)/z\bigr]
+=\sum_mB_{2m}z^{2m}/(2m\,(2m)!)
+\]
+together with the cumulant series
 of $\MM_u$.
 \end{proof}
 
@@ -1847,6 +1877,9 @@ finite prefix-sum primitive, and the Thue--Morse stencil
 \eqref{eq:tm-stencil} (pure finite algebra plus support
 reasoning).  Steps (1)--(3), (5)--(8), and (10) are finite
 algebra; only (4) and (9) need Schwartz-class Poisson summation.
+\end{statusbox}
+
+\begin{statusbox}{Compiled Poisson and sharpness updates}
 \emph{Update (28 Aug 2026):} the analytic engine of (4) and (9) is
 now largely in the library ---
 \nolinkurl{Fabius.tsum_shifted_monomial_eq_integral_real}
@@ -1858,6 +1891,13 @@ via Schwartz-class Poisson summation with the nonzero aliases killed
 by the integer-zero-order theorem
 (\nolinkurl{MonomialCombAlias.lean}); what remains for (4)/(9) is
 the Appell-weighted synthesis direction over the same machinery.
+\emph{Update (30 Aug 2026):} \path{CompositeMeshSharpness.lean} closes
+the natural-mesh universal exactness threshold itself: one definition and
+seven theorems give the real first defect, the equivalent valuation and
+divisibility classifications, canonical membership, the lower bound, and both
+\texttt{IsLeast} forms.  This closure is for the complete polynomial space
+through the cutoff only; target-specific synthesis, local dictionaries, and
+atom counts remain outside it.
 \end{statusbox}
 
 \appendix
