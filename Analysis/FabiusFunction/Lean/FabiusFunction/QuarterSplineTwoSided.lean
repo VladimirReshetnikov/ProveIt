@@ -36,7 +36,7 @@ noncomputable section
 closed cell. -/
 def IsQuarterTwoSidedLocalPolynomial
     (P : ℝ → ℝ) (Q radius : ℝ) : Prop :=
-  ∀ z, |z| ≤ radius,
+  ∀ z, |z| ≤ radius →
     P (1 / 4 + z) = 5 / 72 + z + 4 * z ^ 2 - (4 / 9) * Q
 
 /-- Interval form of the symmetric local-polynomial predicate.  This is often

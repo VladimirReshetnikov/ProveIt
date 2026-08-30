@@ -220,7 +220,7 @@ factorization, and a sharp central-coefficient root law.  Its
 theorem-level checks are exact rational with residual `0`; the reported
 energy value is a stabilized display of an exact partial sum, not a
 certified enclosure of the limit, and the report says so.  This is a
-checksum-verified 22-file package with a 27-page Libertinus rebuild, exact
+checksum-verified 22-file package with a 30-page Libertinus rebuild, exact
 data certificates, four dual-format figures, and snapshot
 `faa3a9b94ac0e71abdc53c36fdf428222e4d2a8c`.
 Subsequent Lean module `FabiusLegendreEnergy.lean` now defines the

@@ -73,7 +73,12 @@ for root, _dirs, files in os.walk(DOCS):
         path = os.path.join(root, fn)
         with io.open(path, encoding='utf-8', errors='replace') as fh:
             for i, line in enumerate(fh, 1):
-                for m in CITE.finditer(line):
+                # Discretionary TeX break commands may occur inside long
+                # monospaced Lean identifiers.  They affect layout only and
+                # are not part of the cited declaration name.
+                citation_line = line.replace(r'\allowbreak{}', '')
+                citation_line = citation_line.replace(r'\allowbreak', '')
+                for m in CITE.finditer(citation_line):
                     name = m.group(1).replace('\\_', '_')
                     name = name.rstrip('\\').rstrip('.')
                     if not name:
