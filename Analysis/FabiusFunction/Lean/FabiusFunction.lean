@@ -6,6 +6,7 @@ import FabiusFunction.FiniteTriangularTransform
 import FabiusFunction.SymmetricFunctionTransform
 import FabiusFunction.SymmetricFunctionGenerating
 import FabiusFunction.FiniteQBinomialCore
+import FabiusFunction.QBinomialReciprocity
 import FabiusFunction.QBinomialInversion
 import FabiusFunction.QPochhammerElementaryIdentities
 import FabiusFunction.QDifferenceAnnihilation
@@ -65,7 +66,10 @@ import FabiusFunction.GramStieltjes
 import FabiusFunction.FiniteMomentJacobi
 import FabiusFunction.GramStieltjesNaturality
 import FabiusFunction.PolynomialMomentGramDeterminant
+import FabiusFunction.LegendrePolynomialRational
 import FabiusFunction.WeightedScaleMultiplicity
+import FabiusFunction.BaseDigitMultiplicity
+import FabiusFunction.PartitionDefect
 import FabiusFunction.SpectralZetaWeighted
 import FabiusFunction.ShiftDifferenceWeights
 import FabiusFunction.NewtonMultiplicityAssembly
@@ -94,6 +98,7 @@ import FabiusFunction.ParityCharacter
 import FabiusFunction.ParityCharacterKernel
 import FabiusFunction.DigitCharacterCongruence
 import FabiusFunction.BinaryDigitFloor
+import FabiusFunction.RademacherSine
 import FabiusFunction.GeneralizedProuhetBlock
 import FabiusFunction.ProuhetBlockZeroOrder
 import FabiusFunction.BitPositionQBinomial
@@ -224,6 +229,8 @@ import FabiusFunction.OrthogonalPolynomialConstruction
 import FabiusFunction.OrthogonalPolynomialGramBridge
 import FabiusFunction.RvachevRationalJacobi
 import FabiusFunction.FabiusLegendreHankelDeterminant
+import FabiusFunction.FabiusLegendreRationalGram
+import FabiusFunction.FabiusLegendreRationalGramValues
 import FabiusFunction.OrthogonalPolynomialValues
 import FabiusFunction.OrthogonalPolynomialParity
 import FabiusFunction.OrthogonalPolynomialRecurrence

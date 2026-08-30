@@ -2,6 +2,19 @@
 
 New standalone intake members:
 
+- [`Cyclotomic_q_Fabius_Rvachev_Frontier/`](Cyclotomic_q_Fabius_Rvachev_Frontier/),
+  *Cyclotomic Blow-Ups and Natural Boundaries for the q-Fabius--Rvachev Sinc
+  Product* (25 pp), arrived on 2026-08-30 from
+  `Cyclotomic_q_Fabius_Rvachev_Frontier.zip` (outer SHA-256
+  `029da7d9ec96a0b2e5c4164c37f2b361dd015112bd0c6237263e3c538c5b0f64`).
+  All 22 submitted payload hashes verified; five CSV entries were refreshed
+  after CRLF-to-LF repository normalization. Its title and abstract place its
+  radial root-of-unity expansions, claimed natural-boundary theorem,
+  cyclotomic blow-ups, Bell/moment condensation, and inverse branches beside
+  the consolidated q-series frontier. It remains standalone pending the
+  required post-publication claim-level comparison and a Lean crosswalk;
+  manuscript labels and numerical evidence do not establish Lean verification.
+
 - [`Fabius_Rvachev_Frontier_Report/`](Fabius_Rvachev_Frontier_Report/),
 *Negative Parameters, Reciprocal Bases, and the Gaussian Boundary* (26 pp),
 arrived on 2026-08-30 with all 13 payload checksums verified.  It develops
@@ -11,6 +24,14 @@ laws.  Because much of that subject already appears in Part VII of the
 consolidated volume, the report remains standalone until its genuinely new
 claims are isolated and the overlap is deliberately deduplicated.  Paper
 theorem labels do not by themselves assert Lean formalization.
+
+An exact reship, `Fabius_Rvachev_Frontier_Report_2026-08-30-E.zip`
+(outer SHA-256
+`174bf733156cd874cf4f9321c6ab71ca44f311856cc01dc158ddf83dc00cf813`),
+was verified and deleted on 2026-08-30 without creating a redundant directory:
+its payloads are byte-identical to this filed member after the existing CSV
+LF normalization. No claim-level reassessment or experiment rerun was
+performed.
 
 - [`inverse_q_analogs_report/`](inverse_q_analogs_report/),
   *Inverse q-Analogs: Branch Geometry, Asymptotic Inversion, and Computation
