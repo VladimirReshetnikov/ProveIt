@@ -108,7 +108,7 @@ The shift is harmless because the remainder `n % 2 ^ j` is an integer
 strictly below `2 ^ j`, hence at most `2 ^ j - 1`, leaving room for the
 extra half. -/
 theorem floor_rademacherPoint (n j : ℕ) :
-    ⌊((n : ℝ) + 1 / 2) / 2 ^ j⌋ = (n / 2 ^ j : ℕ) := by
+    ⌊((n : ℝ) + 1 / 2) / 2 ^ j⌋ = ((n / 2 ^ j : ℕ) : ℤ) := by
   have hpos : (0 : ℝ) < 2 ^ j := by positivity
   have hmod : n % 2 ^ j + 2 ^ j * (n / 2 ^ j) = n := Nat.mod_add_div n (2 ^ j)
   have hlt : n % 2 ^ j < 2 ^ j := Nat.mod_lt _ (Nat.two_pow_pos j)
@@ -160,15 +160,16 @@ theorem sign_sin_rademacherPoint (n j : ℕ) :
     rw [pow_add, pow_mul]
     norm_num
   have hbit : n / 2 ^ j % 2 = (n.testBit j).toNat := by
-    by_cases h : n.testBit j
-    · rw [testBit_iff_div_two_pow_mod_two.mp h, h]
+    rcases Nat.mod_two_eq_zero_or_one (n / 2 ^ j) with h0 | h1
+    · have hfalse : n.testBit j = false := by
+        by_contra hc
+        rw [Bool.not_eq_false] at hc
+        rw [testBit_iff_div_two_pow_mod_two.mp hc] at h0
+        exact absurd h0 one_ne_zero
+      rw [h0, hfalse]
       rfl
-    · have h0 : n / 2 ^ j % 2 = 0 := by
-        rcases Nat.mod_two_eq_zero_or_one (n / 2 ^ j) with h0 | h1
-        · exact h0
-        · exact absurd (testBit_iff_div_two_pow_mod_two.mpr h1) h
-      rw [h0]
-      simp [h]
+    · rw [h1, testBit_iff_div_two_pow_mod_two.mpr h1]
+      rfl
   rw [sign_sin_pi_mul (fract_rademacherPoint_ne_zero n j), floor_rademacherPoint,
     zpow_natCast, hparity (n / 2 ^ j), hbit]
 
