@@ -1219,25 +1219,74 @@ two give the scaled and classical iff statements.  Taking \(M=R\) yields
 \Cref{thm:qbinomial-inversion}; the formal theorem is stronger in allowing
 arbitrary module-valued sequences and requires no topology or convergence.
 
+The scaled characteristic polynomial and the \(q\)-difference functional are
+formalized in \path{QDifferenceAnnihilation.lean}, whose public surface is
+exhaustively the four theorems
+\lean{Fabius.sum_scaledGaussianBinomialInverseKernel_mul_pow},
+\lean{Fabius.sum_gaussianBinomialInverseKernel_mul_geometric_pow},
+\texttt{Fabius.qDifference\_sum\_eval}\textsubscript{2}\allowbreak
+\texttt{\_eq\_map\_coeff\_mul}, and
+\texttt{Fabius.qDifference\_sum\_eval}\textsubscript{2}\allowbreak
+\texttt{\_eq\_zero\_of\_degree\_lt}.
+Writing
+\[
+ K^{-1}_{q,s}(n,k)=(-s)^{n-k}q^{\binom{n-k}{2}}{n\brack k}_q,
+\]
+the first theorem is the homogeneous identity
+\begin{equation}
+ \sum_{k=0}^{n}K^{-1}_{q,s}(n,k)z^k
+ =\prod_{j=0}^{n-1}(z-sq^j).                         \label{eq:scaled-qdiff-characteristic}
+\end{equation}
+It holds over every commutative ring for arbitrary \(q,s,z\).  With \(s=1\)
+and \(z=q^d\), the second theorem gives the complete moment table
+\begin{equation}
+ \sum_{k=0}^{n}K^{-1}_{q,1}(n,k)(q^k)^d
+ =\prod_{j=0}^{n-1}(q^d-q^j),                         \label{eq:qdiff-moments}
+\end{equation}
+so the row annihilates every monomial of degree \(d<n\).
+
+The last two theorems make the polynomial statement strictly stronger than
+the scalar lemma usually quoted in Bailey inversion.  If \(A\) is a semiring,
+\(R\) a commutative ring, \(\varphi\colon A\to R\) a semiring homomorphism,
+and \(P\in A[X]\) has degree at most \(n\), then
+\begin{equation}
+ \sum_{k=0}^{n}K^{-1}_{q,1}(n,k)\,P^{\varphi}(q^k)
+ =\varphi([X^n]P)\prod_{j=0}^{n-1}(q^n-q^j),          \label{eq:qdiff-top-coefficient}
+\end{equation}
+where \(P^{\varphi}\) denotes coefficientwise scalar extension.  If
+\(\deg P<n\), the left side is zero.  These degree statements include
+\(n=0\) and the zero polynomial.  Nodes may collide and the surviving factor
+in \eqref{eq:qdiff-top-coefficient} may vanish: no division, distinctness,
+nonzero or invertible base, domain, characteristic, topology, or convergence
+hypothesis is present.
+
+The global geometric-numerator bridge
+\lean{Fabius.geometricQBinomialWeightNumerator_eq_scaledGaussianBinomialInverseKernel}
+is owned by \path{GeometricQBinomialLagrange.lean}.  It identifies the
+denominator-free numerator with \(K^{-1}_{q,q}(n,k)\) for every pair of
+natural indices, including indices above the diagonal; equivalently, its
+generating polynomial is the \(s=q\) specialization of
+\eqref{eq:scaled-qdiff-characteristic}.  This global identity does not remove
+the field, finite-node injectivity, or in-range assumptions from separately
+normalized Lagrange quotients.
+
 Finally, \path{QBinomialInversionSpecializations.lean} has exactly two public
-definitions and five public theorems:
+definitions and four public theorems:
 \lean{Fabius.qGaussianResidualCoeff},
 \lean{Fabius.qGaussianReconstructionCoeff},
-\lean{Fabius.geometricQBinomialWeightNumerator_eq_scaledGaussianBinomialInverseKernel},
 \lean{Fabius.qGaussianResidualCoeff_eq},
 \lean{Fabius.qGaussianReconstructionCoeff_eq},
 \lean{Fabius.qGaussianReconstructionCoeff_residualCoeff_delta}, and
-\lean{Fabius.qGaussianResidualCoeff_reconstructionCoeff_delta}.  The first
-theorem identifies the denominator-free geometric Lagrange numerator
-globally with the inverse kernel at base and scale \(q\), without \(k\le n\).
-At base \(q^2\) and scale \(-q\), the remaining coefficients are
+\lean{Fabius.qGaussianResidualCoeff_reconstructionCoeff_delta}.  At base
+\(q^2\) and scale \(-q\), the coefficients are
 \[
  (-q)^{n-k}{n\brack k}_{q^2},
  \qquad q^{(n-k)^2}{n\brack k}_{q^2},
 \]
-and both total finite convolution orders are the Kronecker delta.  This
-global numerator bridge does not remove the field, finite-node injectivity,
-or in-range assumptions from separately normalized Lagrange quotients.
+The two definitions and these two pointwise closed forms require only an
+arbitrary, possibly noncommutative ring.  Exactly the two convolution-delta
+theorems require a commutative ring, and prove that both total finite orders
+are the Kronecker delta.
 \end{remark}
 
 \section{A \texorpdfstring{$q$}{q}-Cauchy product identity}
@@ -4125,6 +4174,21 @@ By linearity it suffices to take $P(x)=x^m$ with $0\le m<N$.  Put $t=N-s$ and us
 \end{align*}
 for the product contains the factor $1-q^0$.
 \end{proof}
+
+\begin{remark}[Exact Lean counterpart and boundary]
+This lemma is \statusexact, by
+\texttt{Fabius.qDifference\_\allowbreak{}sum\_\allowbreak{}eval}\textsubscript{2}\allowbreak
+\texttt{\_eq\_zero\_of\_degree\_lt} in
+\path{QDifferenceAnnihilation.lean}.  The formal result is stronger than the
+displayed field-style proof: coefficients may lie in any semiring and be
+mapped into an arbitrary commutative ring before evaluation, \(q\) need not
+be nonzero or invertible, the geometric nodes may collide, and no use of
+\(q^{-m}\) or division is made.  Its degree comparison includes \(N=0\) and
+the zero polynomial.  The same module proves the scaled characteristic
+identity \eqref{eq:scaled-qdiff-characteristic}, every monomial moment
+\eqref{eq:qdiff-moments}, and the exact scalar-extension top-coefficient
+formula \eqref{eq:qdiff-top-coefficient}.
+\end{remark}
 
 \begin{theorem}[Bailey inversion]\label{thm:bailey-inversion}
 Assume $a\ne1$ initially.  The Bailey-pair relation is equivalent to
@@ -11622,7 +11686,7 @@ inside the proof below does not formalize the result the proof concludes.
   than a mathematical claim.
 \end{description}
 
-Of the 183 labelled results, 30 are \statusexact, 26 are \statuspartial,
+Of the 183 labelled results, 31 are \statusexact, 25 are \statuspartial,
 124 are \statusnone, and 3 are \statusna.
 The formalized part is concentrated exactly where the Fabius development
 needed it: the finite Gaussian-coefficient core, the geometric Lagrange and
@@ -11636,8 +11700,10 @@ formalized.  The finite-family theorem in
 \texttt{CompleteHomogeneousAsymptotics} separately transfers coordinatewise
 Big-O bounds through a fixed complete homogeneous degree, without asserting
 formal-series convergence.  Most of the classical analytic layer --- nonterminating basic
-hypergeometric summation, Jacobi triple product, and Bailey pairs --- remains
-untouched.  The former claim that every infinite \(q\)-Pochhammer symbol in
+hypergeometric summation, Jacobi triple product, Bailey inversion and the
+Bailey lemma, and the Rogers--Ramanujan identities --- remains untouched;
+the algebraic \(q\)-difference annihilation input to that chapter is now
+exact.  The former claim that every infinite \(q\)-Pochhammer symbol in
 the development was a finite \texttt{Finset.range} product is now false:
 \texttt{LimitConditionNumber.qPochhammerInf} is the genuine real
 \(\prod'_{j\ge0}(1-aq^j)\); for \(0\le q<1\) the factors are multipliable for
@@ -11658,7 +11724,9 @@ declaration lists:
 \path{CompleteHomogeneousAsymptotics.lean}: one theorem;\\
 \path{FiniteTriangularTransform.lean}: one definition and one theorem;\\
 \path{SymmetricFunctionTransform.lean}: four definitions and five theorems;\\
-\path{SymmetricFunctionGenerating.lean}: two definitions and six theorems.
+\path{SymmetricFunctionGenerating.lean}: two definitions and six theorems;\\
+\path{QDifferenceAnnihilation.lean}: four theorems;\\
+\path{QBinomialInversionSpecializations.lean}: two definitions and four theorems.
 \end{center}
 The theorem statements were checked at arbitrary parameters and
 degrees, including the empty and degree-zero boundaries.  Weighted inversion
@@ -11689,7 +11757,7 @@ $q$-difference calculus and the quantum binomial & 0 & 0 & 10 & 0\\
 The $q$-gamma and $q$-beta functions & 0 & 0 & 8 & 0\\
 Jacobi's triple product & 0 & 0 & 6 & 0\\
 Partitions and product--sum identities & 0 & 0 & 4 & 0\\
-Bailey pairs and the Rogers--Ramanujan identities & 0 & 1 & 6 & 0\\
+Bailey pairs and the Rogers--Ramanujan identities & 1 & 0 & 6 & 0\\
 Cyclotomic factorization and congruences & 0 & 0 & 9 & 0\\
 Negative upper indices and geometric Newton interpolation & 0 & 2 & 7 & 0\\
 Central $q$-binomial sums and Lambert series & 0 & 0 & 7 & 0\\
@@ -11699,7 +11767,7 @@ Geometric interpolation and exact $q$-filters & 6 & 2 & 1 & 0\\
 Half-base arithmetic and Prouhet--Thue--Morse cancellation & 6 & 3 & 0 & 0\\
 Geometric uniform sums, $q$-cumulants, and the Fabius--Rvachev functions & 2 & 7 & 3 & 0\\
 \midrule
-\textbf{Total} & 30 & 26 & 124 & 3\\
+\textbf{Total} & 31 & 25 & 124 & 3\\
 \bottomrule
 \end{tabular}
 \end{center}
@@ -11909,7 +11977,7 @@ monoid carrying the module structure}\\[2pt]
 \midrule
 \multicolumn{3}{@{}l}{\itshape Bailey pairs and the Rogers--Ramanujan identities}\\
 \midrule
-\Cref{lem:qdiff-annihilation} & \statuspartial & \texttt{halfQBinomial\_\allowbreak{}negativeDyadic\_\allowbreak{}polynomial\_\allowbreak{}sum\_\allowbreak{}eq\_\allowbreak{}zero\_\allowbreak{}of\_\allowbreak{}degre}\newline{\footnotesize\texttt{HalfQBinomial}}\\[2pt]
+\Cref{lem:qdiff-annihilation} & \statusexact & \texttt{qDifference\_\allowbreak{}sum\_\allowbreak{}eval}\textsubscript{2}\texttt{\_\allowbreak{}eq\_\allowbreak{}zero\_\allowbreak{}of\_\allowbreak{}degree\_\allowbreak{}lt}\newline{\footnotesize\texttt{QDifferenceAnnihilation}; semiring coefficients, arbitrary scalar extension, commutative-ring target; no division or distinct-node hypothesis}\\[2pt]
 \Cref{thm:bailey-inversion} & \statusnone & ---\\[2pt]
 \Cref{cor:unit-bailey-pairs} & \statusnone & ---\\[2pt]
 \Cref{lem:bailey-aux} & \statusnone & ---\\[2pt]

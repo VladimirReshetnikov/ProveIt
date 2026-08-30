@@ -7392,6 +7392,83 @@ Thus the half-base stencil above is the $q=1/2$ instance of a generic geometric 
 difference, not an isolated Gaussian-binomial coincidence.
 \end{remark}
 
+\begin{remark}[Division-free scaled characteristic and \(q\)-difference functional]
+\label{dyadicq:rem:scaled-qdiff}
+There is a stronger denominator-free row, valid without ordering or
+distinctness assumptions.  Over a commutative ring put
+\[
+ K^{-1}_{q,s}(n,k)
+ =(-s)^{n-k}q^{\binom{n-k}{2}}\qbinom{n}{k}{q}.
+\]
+Then, for arbitrary \(q,s,z\) and every \(n\ge0\),
+\begin{equation}
+ \sum_{k=0}^{n}K^{-1}_{q,s}(n,k)z^k
+ =\prod_{j=0}^{n-1}(z-sq^j).
+ \label{dyadicq:eq:scaled-qdiff-characteristic}
+\end{equation}
+This is the scaled characteristic polynomial.  Its \(s=1,\ z=q^d\)
+specialization gives every monomial moment,
+\begin{equation}
+ \sum_{k=0}^{n}K^{-1}_{q,1}(n,k)(q^k)^d
+ =\prod_{j=0}^{n-1}(q^d-q^j),
+ \label{dyadicq:eq:qdiff-moment}
+\end{equation}
+and therefore vanishes whenever \(d<n\).
+
+The exact polynomial statement survives arbitrary scalar extension.  If
+\(A\) is a semiring, \(R\) a commutative ring,
+\(\varphi\colon A\to R\) a semiring homomorphism, and \(P\in A[X]\) has
+degree at most \(n\), then
+\begin{equation}
+ \sum_{k=0}^{n}K^{-1}_{q,1}(n,k)\,P^\varphi(q^k)
+ =\varphi([X^n]P)\prod_{j=0}^{n-1}(q^n-q^j),
+ \label{dyadicq:eq:qdiff-top-coeff}
+\end{equation}
+where \(P^\varphi\) is obtained by mapping coefficients through \(\varphi\).
+If \(\deg P<n\), the left side is exactly zero.  This includes \(n=0\) and
+the zero polynomial.  The nodes may collide and the surviving product in
+\eqref{dyadicq:eq:qdiff-top-coeff} may itself vanish; there is no division,
+nonzero or invertible base, domain, characteristic, topology, or convergence
+hypothesis.
+
+These four claims are exactly the four public theorems of
+\path{QDifferenceAnnihilation.lean}:
+\lean{Fabius.sum_scaledGaussianBinomialInverseKernel_mul_pow},
+\lean{Fabius.sum_gaussianBinomialInverseKernel_mul_geometric_pow},
+\texttt{Fabius.qDifference\_sum\_eval}\textsubscript{2}\allowbreak
+\texttt{\_eq\_map\_coeff\_mul}, and
+\texttt{Fabius.qDifference\_sum\_eval}\textsubscript{2}\allowbreak
+\texttt{\_eq\_zero\_of\_degree\_lt}.
+The theorem
+\lean{Fabius.geometricQBinomialWeightNumerator_eq_scaledGaussianBinomialInverseKernel},
+now in \path{GeometricQBinomialLagrange.lean}, identifies the
+denominator-free geometric Lagrange numerator with
+\(K^{-1}_{q,q}(n,k)\) at every pair of natural indices, including above the
+diagonal.  Thus its generating polynomial is the \(s=q\) specialization of
+\eqref{dyadicq:eq:scaled-qdiff-characteristic}.  This global numerator
+identity does not weaken the field, finite-node injectivity, or in-range
+assumptions in the normalized quotient formula
+\eqref{dyadicq:eq:q-leading-extractor-general}.
+
+For completeness, \path{QBinomialInversionSpecializations.lean} now has
+exactly two public definitions and four public theorems:
+\lean{Fabius.qGaussianResidualCoeff},
+\lean{Fabius.qGaussianReconstructionCoeff},
+\lean{Fabius.qGaussianResidualCoeff_eq},
+\lean{Fabius.qGaussianReconstructionCoeff_eq},
+\lean{Fabius.qGaussianReconstructionCoeff_residualCoeff_delta}, and
+\lean{Fabius.qGaussianResidualCoeff_reconstructionCoeff_delta}.  At base
+\(q^2\) and independent scale \(-q\), these give the two rows
+\[
+ (-q)^{n-k}\qbinom{n}{k}{q^2},
+ \qquad q^{(n-k)^2}\qbinom{n}{k}{q^2},
+\]
+The two definitions and these two pointwise closed-form theorems require only
+an arbitrary, possibly noncommutative ring.  Exactly the two convolution
+theorems require a commutative ring, and prove that both total finite orders
+are the Kronecker delta.
+\end{remark}
+
 The $q$-symbols in the dyadic formula therefore have a concrete and limited task: they are the
 closed form of a divided-difference stencil on a geometric grid.  No infinite
 basic-hypergeometric summation is involved.
@@ -8767,6 +8844,9 @@ Module & Role in the present article \\
 \endhead
 \path{DyadicClosedForm.lean} & Exact Thue--Morse/even-moment formula for arbitrary dyadic numerators. \\
 \path{HalfQBinomial.lean} & Finite $q$-Pochhammer and Gaussian-binomial calculus at $q=1/2$, including the interpolation annihilation row. \\
+\path{QDifferenceAnnihilation.lean} & Exactly four public theorems: the scaled inverse-Gaussian characteristic polynomial, its complete geometric monomial moments, scalar-extension top-coefficient extraction, and strict-degree \(q\)-difference annihilation; \cref{dyadicq:rem:scaled-qdiff}. \\
+\path{GeometricQBinomialLagrange.lean} & Denominator-free geometric Lagrange numerators and residual moments, including the global identification of the numerator with the scaled inverse kernel at base and scale \(q\); normalized quotient results retain their distinct-node field hypotheses. \\
+\path{QBinomialInversionSpecializations.lean} & Exactly two public definitions and four public theorems: the residual and reconstruction rows at Gaussian base \(q^2\), scale \(-q\), and their pointwise closed forms need only a ring; exactly the two total convolution inverses require a commutative ring. \\
 \path{ThueMorseExponential.lean} & Complete-block exponential factorization, Prouhet cancellation, and translation of inner powers. \\
 \path{FabiusQBinomialFormula.lean} & Centered and translated finite $q$-binomial formulas, arbitrary numerators, common-translation invariance, and invariance under equal rational dyadic representations. \\
 \path{FabiusQBinomialTaylor.lean} & Identification of the finite $q$ expression with the Taylor reduction polynomial. \\

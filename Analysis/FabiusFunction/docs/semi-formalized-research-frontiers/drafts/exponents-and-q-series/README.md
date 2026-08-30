@@ -95,9 +95,39 @@ above the row. Its exhaustive four-definition, four-theorem surface is
 `scaledGaussianBinomialTransform_inverseTransform`,
 `scaledGaussianBinomial_inversion`, `gaussianBinomialTransform`,
 `gaussianBinomialInverseTransform`, and `gaussianBinomial_inversion`.
-`QBinomialInversionSpecializations.lean` identifies the
-denominator-free geometric numerator globally with the scaled inverse kernel
-and proves both q-Gaussian coefficient inversions at base `q^2`, scale `-q`.
+
+`QDifferenceAnnihilation.lean` has the exhaustive four-theorem surface
+`sum_scaledGaussianBinomialInverseKernel_mul_pow`,
+`sum_gaussianBinomialInverseKernel_mul_geometric_pow`,
+`qDifference_sum_eval₂_eq_map_coeff_mul`, and
+`qDifference_sum_eval₂_eq_zero_of_degree_lt`. Over every commutative ring,
+the scaled signed row has characteristic polynomial
+`sum_(k=0)^n (-s)^(n-k) q^(choose (n-k) 2) [n choose k]_q z^k = prod_(j<n) (z-s q^j)`.
+With `s = 1` and `z = q^d`, its exact monomial moment
+is `prod_(j<n) (q^d-q^j)`, hence is zero whenever `d < n`. More generally,
+for a polynomial over any semiring and any scalar-extension homomorphism into
+a commutative ring, the row in degree at most `n` extracts the mapped
+coefficient of degree `n` times `prod_(j<n) (q^n-q^j)`; it annihilates every
+polynomial of degree strictly below `n`. These results include `n = 0` and the
+zero polynomial, allow repeated nodes and a zero surviving product, and use no
+division, nonzero or invertible base, domain, characteristic, topology, or
+convergence hypothesis.
+
+The global identity
+`geometricQBinomialWeightNumerator_eq_scaledGaussianBinomialInverseKernel`
+is now owned by `GeometricQBinomialLagrange.lean`: it identifies the
+denominator-free geometric numerator with the scaled inverse kernel at base
+and scale `q` for all natural indices, including above the diagonal. It is
+the `s = q` specialization of the preceding characteristic polynomial.
+`QBinomialInversionSpecializations.lean` now has exactly two definitions and
+four theorems: `qGaussianResidualCoeff`,
+`qGaussianReconstructionCoeff`, `qGaussianResidualCoeff_eq`,
+`qGaussianReconstructionCoeff_eq`,
+`qGaussianReconstructionCoeff_residualCoeff_delta`, and
+`qGaussianResidualCoeff_reconstructionCoeff_delta`. These prove both
+q-Gaussian coefficient inversions at base `q^2`, scale `-q`. The two
+definitions and their pointwise closed-form theorems require only `[Ring R]`;
+exactly the two convolution-delta theorems require `[CommRing R]`.
 The normalized geometric-Lagrange and analytic Lagrange layers additionally
 assume injectivity of `j |-> q^j` on the finite node set (see the status boxes and
 crosswalk paragraphs inside the documents). `AnalyticSeriesFilter.lean` carries the core to exact
@@ -352,7 +382,7 @@ matching `assets/` directories.
 `Signed_Reciprocal_q_Fabius_Frontiers/` were merged editorially as the
 volume's Part VII; their figures/data are likewise under `assets/`.)
 
-Second member: `q_pochhammer_q_binomial_monograph/` (203 pp, book class) —
+Second member: `q_pochhammer_q_binomial_monograph/` (205 pp, book class) —
 *q-Pochhammer Symbols and q-Binomial Coefficients*, a standalone
 proof-oriented reference monograph on the q-machinery itself, filed
 2026-08-28 per the Lambert-W precedent (a reference companion rather
@@ -373,13 +403,17 @@ Chern–Dilcher–Jiu deleted-singularity identity and Ramanujan's ₁ψ₁
 verified numerically to 30 digits; one dominated-convergence majorant
 repaired with an `% ed.:` note).
 
-Its current formalization ledger has 183 labelled results: 30 exact, 26
+Its current formalization ledger has 183 labelled results: 31 exact, 25
 partial, 124 with no counterpart, and 3 interface-only. The finite
 q-binomial/inversion chapter now accounts for 9 exact, 1 partial, and 0
 unformalized results; the weighted chapter for 3 exact, 2 partial, and 3
-unformalized results; and the basic-hypergeometric chapter for 1 exact, 0
-partial, and 5 unformalized results. Weighted symmetric-function inversion is
-now exact. Weighted generating products and the reciprocal finite theorem are
+unformalized results; the basic-hypergeometric chapter for 1 exact, 0
+partial, and 5 unformalized results; and the Bailey chapter for 1 exact, 0
+partial, and 6 unformalized results. Its q-difference annihilation lemma is
+now exact through `qDifference_sum_eval₂_eq_zero_of_degree_lt`, with the
+stronger characteristic-polynomial, all-moment, and scalar-extension
+top-coefficient results recorded above. Weighted symmetric-function inversion
+is now exact. Weighted generating products and the reciprocal finite theorem are
 partial because their formal power-series identities are exact while their
 analytic evaluation and convergence clauses remain open. The q-Pfaff--Saalschutz
 summation remains unformalized; no status is inferred from a related finite
@@ -388,7 +422,9 @@ the exhaustive public surfaces of `QBinomialCauchy.lean` (one definition,
 four theorems), `SymmetricFunctionOrthogonality.lean` (one definition, six
 theorems), `FiniteTriangularTransform.lean` (one definition, one theorem),
 `SymmetricFunctionTransform.lean` (four definitions, five theorems), and
-`SymmetricFunctionGenerating.lean` (two definitions, six theorems).
+`SymmetricFunctionGenerating.lean` (two definitions, six theorems), as well
+as `QDifferenceAnnihilation.lean` (four theorems) and
+`QBinomialInversionSpecializations.lean` (two definitions, four theorems).
 The chapter's alternating sums, both weighted-subset conventions,
 named module-valued inversion iff, and both kernel orthogonalities are exact.
 Both orientations
