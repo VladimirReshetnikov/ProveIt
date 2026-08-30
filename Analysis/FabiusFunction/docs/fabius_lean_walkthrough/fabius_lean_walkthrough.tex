@@ -2249,6 +2249,26 @@ of an adjoined zero variable, the head--tail recurrence on a nonempty
 \texttt{Fin} family, reindexing of a natural-number range by \texttt{Fin}, and
 specialization of the distinguished target to zero.
 
+The later \nolinkurl{CompleteHomogeneousGenerating.lean} packages these
+evaluations as the formal power series
+\nolinkurl{completeHomogeneousGeneratingSeriesOn}.  Its coefficient and
+empty-family interfaces are
+\nolinkurl{coeff_completeHomogeneousGeneratingSeriesOn} and
+\nolinkurl{completeHomogeneousGeneratingSeriesOn_empty}, while
+\nolinkurl{completeHomogeneousGeneratingSeriesOn_insert} is the
+adjoining-variable geometric recurrence over every commutative semiring.
+Over a commutative ring,
+\nolinkurl{one_sub_mul_completeHomogeneousGeneratingSeriesOn_insert} clears
+one linear denominator,
+\nolinkurl{prod_one_sub_mul_completeHomogeneousGeneratingSeriesOn} clears the
+whole finite denominator product, and
+\nolinkurl{completeHomogeneousGeneratingSeriesOn_eq_invOfUnit_prod}
+identifies the coefficient series with its canonical formal reciprocal.
+These are finite formal-series identities, valid without distinct values,
+division, cancellation, or domain hypotheses.  They assert no analytic
+evaluation or convergence and do not prove the Bell/generalized-harmonic
+power-sum presentation.
+
 Over every commutative semiring, without division or a hypothesis on \(q\),
 \nolinkurl{GeometricCompleteHomogeneous.lean} proves
 \[
@@ -3368,6 +3388,7 @@ Module & Role in the development \\
 \nolinkurl{EndpointTransferPolynomials.lean} & Universal endpoint-transfer polynomials over \(\mathbb Q[X]\): recurrence, weighted-partition formula, exact formal exponential series, finite truncation, evaluation naturality, and the coefficients through order three. \\
 \nolinkurl{PolynomialExpectationCumulant.lean} & Finite polynomial integrals as coefficient-weighted raw moments and complete Bell transforms of formal cumulants, including the exact zeroth-moment correction and the probability-measure specialization. \\
 \nolinkurl{CompleteHomogeneous.lean} & Evaluation and adjoining-variable recurrences for complete homogeneous symmetric polynomials, together with their univariate quotient polynomial, over arbitrary commutative semirings or rings as appropriate. \\
+\nolinkurl{CompleteHomogeneousGenerating.lean} & Finite formal generating series for complete homogeneous evaluations: coefficient and adjoining-variable recurrences over commutative semirings, and one-factor/full-product denominator clearing plus the canonical \nolinkurl{PowerSeries.invOfUnit} reciprocal over commutative rings.  No analytic evaluation, convergence, or Bell/generalized-harmonic conversion is asserted. \\
 \nolinkurl{GeometricCompleteHomogeneous.lean} & Denominator-free principal specialization \(h_n(1,q,\ldots,q^p)=\qbinom{n+p}{p}{q}\), its arbitrary common-scale form over every commutative semiring, and the range-indexed bridge used by interpolation rows. \\
 \nolinkurl{LagrangeResidualMoments.lean} & Every higher residual moment of a polynomially exact finite row, with a representation-independent commutative-ring theorem and the distinct-node Lagrange specialization. \\
 \nolinkurl{GeometricResidualMoments.lean} & Every positive residual moment on \(c,cq,\ldots,cq^p\) over a commutative ring, assuming exactness directly on those scaled nodes, together with distinct-node Lagrange, arbitrary-dilation, and shifted-block field corollaries. \\
@@ -3458,9 +3479,9 @@ checked at code checkpoint \nolinkurl{3da579387}.  The four current declarations
 \nolinkurl{normalizedVolterra_basepoint_shift}, and
 \nolinkurl{normalizedVolterra_succ_eq_taylor_of_eq_zero} are later
 post-snapshot additions checked at code checkpoint \nolinkurl{e109088ed}.
-The fourteen rows from \nolinkurl{ExponentialPartition.lean} through
+The sixteen rows from \nolinkurl{ExponentialPartition.lean} through
 \nolinkurl{LambertPhaseLockedRichardson.lean} are a post-snapshot addendum.
-The first two of those fourteen were checked at code checkpoint
+The first two of those sixteen were checked at code checkpoint
 \nolinkurl{e119db9032ab2641955d47e1da1338a8386aac4d}; the third reflects
 mainline checkpoint \nolinkurl{3989cd9d3}; the endpoint-transfer polynomials
 were checked at checkpoint
@@ -3469,7 +3490,10 @@ polynomial-integral bridge is present at checkpoint
 \nolinkurl{6e9148873264978eef43181d6bd214c36cdc405a}.  The two interpolation
 rows reflect checkpoints
 \nolinkurl{deefddd335b55bd74b7ac13d782a0b58fb7e2e93} and
-\nolinkurl{cf6cd332660db235675fe3214d5bf757cb424086}.  The two geometric
+\nolinkurl{cf6cd332660db235675fe3214d5bf757cb424086}.
+The \nolinkurl{CompleteHomogeneousGenerating.lean} row is a later current-tree
+formal-series addition with the formal/analytic boundary stated explicitly.
+The two geometric
 specialization rows, including the sixteen exact declarations named in the
 post-snapshot discussion above, were checked at checkpoint
 \nolinkurl{1e761ed77583e9870ceeaeb2c74ac824094f0f3f}, all on 27 August 2026.

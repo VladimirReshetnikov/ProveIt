@@ -12278,6 +12278,19 @@ Let $h_n(a_0,\ldots,a_r)$ denote the complete homogeneous symmetric polynomial, 
 \label{p8:eq:complete-homogeneous}
 \end{equation}
 
+\paragraph{Formalization status.}
+The finite formal-power-series content of
+\cref{p8:eq:complete-homogeneous} is now Lean-backed.  For an arbitrary
+finite alphabet, \path{CompleteHomogeneousGenerating.lean} defines the series
+whose coefficient of degree $n$ is the corresponding complete homogeneous
+evaluation, proves the adjoining-variable geometric recurrence over every
+commutative semiring, and, over every commutative ring, proves both the
+denominator-cleared finite-product identity and identification with
+\texttt{PowerSeries.invOfUnit} of the denominator product.  This is a purely
+formal coefficient identity: it does not evaluate the series at an analytic
+argument, prove convergence, take a logarithm, or establish the
+Bell/generalized-harmonic formula \eqref{p8:eq:h-Bell} below.
+
 \begin{theorem}[Exact inverse-power moments]
 \label{p8:thm:lambert-moments}
 For $s\ge1$,
@@ -12514,14 +12527,17 @@ The sinc-side results are well suited to formalization because their analytic an
 
 \subsection{Algebraic theorem chain}
 
-The absolute-weight, Lambert-weight/cancellation, and reciprocal-moment tasks
-in the post-snapshot plan are now discharged.  The remaining purely algebraic
-packaging task is:
+The absolute-weight, Lambert-weight/cancellation, reciprocal-moment, and
+finite complete-homogeneous generating-product tasks in the post-snapshot
+plan are now discharged.  The remaining purely algebraic packaging task is:
 \begin{enumerate}
-\item package the complete-homogeneous/Bell power-sum identity using the
-      already formalized complete-Bell machinery.
+\item package the Bell/generalized-harmonic power-sum presentation
+      \eqref{p8:eq:h-Bell} using the already formalized complete-Bell
+      machinery.
 \end{enumerate}
-This step requires no delicate asymptotics.
+The newly formalized product identity supplies the nonlogarithmic generating
+series input, but it does not discharge this Bell conversion.  The remaining
+step requires no delicate asymptotics.
 
 \paragraph{Post-snapshot algebraic progress.}
 The later module \path{GeometricLagrange.lean} now formalizes Lagrange
@@ -12605,6 +12621,25 @@ as \nolinkurl{completeHomogeneousEval_geometric} and
 is
 \nolinkurl{completeHomogeneousEvalOn_range_pow_eq_gaussianBinomial}.
 
+The later module \path{CompleteHomogeneousGenerating.lean} packages these
+evaluations into a formal power series.  Its coefficient and empty-alphabet
+interfaces are
+\nolinkurl{coeff_completeHomogeneousGeneratingSeriesOn} and
+\nolinkurl{completeHomogeneousGeneratingSeriesOn_empty}.  The theorem
+\nolinkurl{completeHomogeneousGeneratingSeriesOn_insert} is the
+adjoining-variable geometric recurrence over a commutative semiring.  Over a
+commutative ring,
+\nolinkurl{one_sub_mul_completeHomogeneousGeneratingSeriesOn_insert} clears
+one linear denominator,
+\nolinkurl{prod_one_sub_mul_completeHomogeneousGeneratingSeriesOn} clears the
+whole finite product, and
+\nolinkurl{completeHomogeneousGeneratingSeriesOn_eq_invOfUnit_prod}
+identifies the coefficient series with the canonical formal inverse of that
+product.  These declarations close the formal finite-product content of
+\eqref{p8:eq:complete-homogeneous}, including empty alphabets, repeated
+values, zero divisors, and nilpotents; they assert no analytic convergence or
+Bell/generalized-harmonic identity.
+
 Over every commutative ring, the hypotheses of
 \nolinkurl{sum_weight_mul_scaled_geometric_pow_succ_add} and
 \nolinkurl{sum_weight_mul_scaled_geometric_pow_of_pos} impose exactness
@@ -12664,10 +12699,12 @@ Finally, \texttt{LambertPhaseLockedRichardson.lean} proves the exact
 lower-Lambert phase locking, factorial and binomial reciprocal-grid weights,
 their cancellation moments, and the report-shaped all-order identity
 \path{sum_shiftedReciprocalLagrangeWeight_mul_invPow_eq_completeHomogeneous}.
-The still-open algebraic item is the Bell/harmonic-sum presentation
-\eqref{p8:eq:h-Bell}; the transformed sinc-tail identities, analytic Richardson
-remainder and bracketing, infinite condition-number limits, and analytic
-phase-extraction estimates also remain frontier obligations.
+Together with \path{CompleteHomogeneousGenerating.lean}, this closes the
+finite formal generating-product layer.  The still-open algebraic item is the
+Bell/generalized-harmonic presentation \eqref{p8:eq:h-Bell}; the transformed
+sinc-tail identities, analytic Richardson remainder and bracketing, infinite
+condition-number limits, and analytic phase-extraction estimates also remain
+frontier obligations.
 
 \subsection{Analytic theorem chain}
 
@@ -12913,6 +12950,12 @@ whose remaining factors are positive for $m\ge r+1$.
 Their product therefore has the same sign for every residual degree. This is the mechanism behind the certified brackets.
 
 \subsection{Bell form of complete homogeneous functions}
+
+The denominator-cleared formal product and its canonical formal inverse are
+now proved in \path{CompleteHomogeneousGenerating.lean}.  The logarithmic
+coefficient comparison in this subsection, including its specialization to
+generalized harmonic sums, is not part of that result and remains a separate
+formalization obligation.
 
 Taking logarithms of \cref{p8:eq:complete-homogeneous},
 \[

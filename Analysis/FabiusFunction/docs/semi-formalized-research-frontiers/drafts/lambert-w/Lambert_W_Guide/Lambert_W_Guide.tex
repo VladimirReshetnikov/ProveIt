@@ -2,9 +2,9 @@
 
 \usepackage[T1]{fontenc}
 \usepackage[utf8]{inputenc}
-\usepackage{lmodern}
+\IfFileExists{libertinus.sty}{\usepackage{libertinus}}{\usepackage{lmodern}}
 \usepackage{microtype}
-\usepackage[margin=1in]{geometry}
+\usepackage[a4paper,margin=27mm,headheight=15pt]{geometry}
 \usepackage{amsmath,amssymb,amsthm,mathtools}
 \usepackage{booktabs,longtable,array,tabularx}
 \usepackage{graphicx}
@@ -13,7 +13,7 @@
 \usepackage{enumitem}
 \usepackage{xcolor}
 \usepackage{listings}
-\usepackage{url}
+\usepackage{xurl}
 \usepackage{hyperref}
 \usepackage[nameinlink,noabbrev,capitalise]{cleveref}
 \usepackage{aliascnt}
@@ -311,6 +311,17 @@ restriction to \((-\infty,-1]\) maps that interval bijectively, with reversed
 orientation, onto \([-1/\ee,0)\), and its inverse is \(\Wm\).  The listed
 numbers of solutions follow immediately.
 \end{proof}
+
+\begin{remark}[Formalized closed principal restriction]
+The project records the exact nonpositive principal-branch image
+\[
+ \Wz\bigl([-1/\ee,0]\bigr)=[-1,0]
+\]
+as \path{principalLambertW_image_Icc} in
+\path{PrincipalLambertW.lean}.  This endpoint-inclusive restriction is the
+range theorem used by the formal two-branch power--exponential inverse
+package below.
+\end{remark}
 
 \begin{figure}[H]
 \centering
@@ -2714,6 +2725,39 @@ Lambert equation.  Conversely, substitution verifies every value in
 When \(p\) is even, taking a real root can introduce two signs.  Each sign
 must be treated separately, and each resulting Lambert argument may itself
 admit two real branches.
+
+\begin{remark}[Endpoint-safe integer-power inverse package]
+For \(m\in\N\setminus\{0\}\), \(A>0\), and \(\beta>0\), the project sets
+\[
+ S_{m,A,\beta}(t)=At^m\ee^{-\beta t},
+ \qquad
+ P_{m,A,\beta}=A\left(\frac m\beta\ee^{-1}\right)^m
+\]
+and defines principal and lower Lambert phases \(\lambda_0\) and
+\(\lambda_{-1}\).  Their exact endpoint-inclusive images are
+\[
+ \lambda_0\bigl([0,P_{m,A,\beta}]\bigr)
+   =\left[0,\frac m\beta\right],
+ \qquad
+ \lambda_{-1}\bigl((0,P_{m,A,\beta}]\bigr)
+   =\left[\frac m\beta,\infty\right].
+\]
+These are \path{principalPowerExponentialPhase_image_Icc} and
+\path{lowerPowerExponentialPhase_image_Ioc}.  The theorems
+\path{principalPowerExponentialPhase_invOn} and
+\path{lowerPowerExponentialPhase_invOn} further say that each phase and
+\(S_{m,A,\beta}\) are two-sided setwise inverses on the corresponding
+displayed interval pair.  All four declarations are in
+\path{PowerExponentialLambertInverse.lean}.  Thus this is a branch-explicit,
+endpoint-safe integer-power specialization of \cref{thm:xpowerexp}, without
+making an arbitrary-real-power root claim.
+
+At \((m,A,\beta)=(1,1,\log2)\), the profile is
+\(t2^{-t}\), its peak is \(\ee^{-1}/\log2\), and
+\path{lowerPowerExponentialPhase_one_one_log_two} in
+\path{PowerExponentialLambertFabius}\texttt{.lean} identifies the lower generic phase
+exactly with the Fabius lower-Lambert phase.
+\end{remark}
 
 \subsection{An exponential equal to an affine function}
 

@@ -13,7 +13,7 @@ Four independently written article packages arrived together on
 consolidated volume:
 
 Member: `Lambert_W_Guide/` — *The Lambert W Function: A Real-Variable
-Guide* (61 pp, consolidated edition).  The most complete of the four
+Guide* (58 pp, consolidated edition).  The most complete of the four
 treatments forms the body; the unique layers of the other three (the
 complete power-tower convergence theorem, inverse-Taylor corrections,
 the branch-exchange involution, the transcendence theorem, a
@@ -37,6 +37,7 @@ the branch bound `W₀ ≥ -1`, uniqueness among solutions `≥ -1`, the
 branch point `W₀(-1/e) = -1`, `W₀(0) = 0`, `W₀(e) = 1`, and strict
 monotonicity of the branch and of the forward map `t·eᵗ`,
 continuity on the open domain, the exact image `(-1, ∞)`, and the
+exact restricted image `W₀([-1/e, 0]) = [-1, 0]`, together with the
 inverse-function derivative `W₀' = 1/(e^{W₀}(W₀+1))` with its strict
 positivity) — the volume's central objects, kernel-verified.
 The pair-level facts live in `LambertBranchDichotomy.lean`: the global
@@ -46,3 +47,13 @@ monotonicity), the closed value `W₋₁(-2e⁻²) = -2`, and the **branch
 dichotomy**: every real solution of `w·e^w = z` is `W₀(z)` or `W₋₁(z)`
 (`Fabius.eq_principalLambertW_or_eq_lowerLambertW`) — the guide's
 two-branch inversion statement, kernel-verified.
+
+The scaled integer-power profile package lives in
+`PowerExponentialLambert.lean`, `PowerExponentialLambertCalculus.lean`,
+`PowerExponentialLambertInverse.lean`, and
+`PowerExponentialLambertFabius.lean`.  For nonzero natural power and positive
+amplitude/rate it gives both real phases, their endpoint-inclusive solve
+laws, exact branch images, interior derivatives and signs, and two-sided
+`InvOn` laws; the unit-rate generalized coordinate and the Fabius
+`(m,A,beta) = (1,1,log 2)` phase are exact specializations.  General
+small-argument asymptotics for this scaled family remain open.

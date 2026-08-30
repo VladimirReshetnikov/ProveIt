@@ -1,4 +1,5 @@
 import FabiusFunction.CompleteHomogeneous
+import FabiusFunction.CompleteHomogeneousGenerating
 import FabiusFunction.FiniteQBinomialCore
 import FabiusFunction.GaussianBinomialAtOne
 import FabiusFunction.GeometricCompleteHomogeneous
@@ -20,6 +21,7 @@ import FabiusFunction.GeneralizedLambertCoordinate
 import FabiusFunction.LambertBranchDichotomy
 import FabiusFunction.PowerExponentialLambert
 import FabiusFunction.PowerExponentialLambertCalculus
+import FabiusFunction.PowerExponentialLambertInverse
 import FabiusFunction.PowerExponentialLambertFabius
 import FabiusFunction.WeightedUniformSeries
 import FabiusFunction.WeightedUniformDistribution

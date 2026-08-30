@@ -5645,7 +5645,18 @@ evaluation and its adjoining-variable recurrence are
 \lean{completeHomogeneousEval_eq_eval_hsymm} and
 \lean{completeHomogeneousEval_option_succ}; the quotient evaluation is
 \lean{eval_completeHomogeneousQuotient} in
-\path{CompleteHomogeneous.lean}.  The generic residual theorem
+\path{CompleteHomogeneous.lean}.  The companion
+\path{CompleteHomogeneousGenerating.lean} packages these evaluations as the
+formal series \lean{completeHomogeneousGeneratingSeriesOn}.  Its coefficient
+and adjoining-variable laws are
+\lean{coeff_completeHomogeneousGeneratingSeriesOn} and
+\lean{completeHomogeneousGeneratingSeriesOn_insert}; over every commutative
+ring, \lean{prod_one_sub_mul_completeHomogeneousGeneratingSeriesOn} clears the
+finite linear-denominator product and
+\lean{completeHomogeneousGeneratingSeriesOn_eq_invOfUnit_prod} identifies the
+series with its canonical \texttt{PowerSeries.invOfUnit} reciprocal.  This is
+a formal coefficient identity and asserts no analytic evaluation,
+convergence, or Bell/generalized-harmonic conversion.  The generic residual theorem
 \lean{sum_weight_mul_pow_card_add} and its distinct-node Lagrange
 specialization \lean{sum_lagrangeEvalWeight_mul_pow_card_add} are in
 \path{LagrangeResidualMoments.lean}.  Thus
@@ -7149,6 +7160,35 @@ strict-interior wrappers are \lean{fabiusLambertPhase_div_radius} and
 \lean{fabiusLambertRadius_mul_argument}.  All five declarations are in
 \path{FabiusLambertSaddle.lean}.
 
+This lower phase is also the exact specialization at
+\((m,A,\beta)=(1,1,L)\) of the generic scaled power--exponential inverse;
+this is \lean{lowerPowerExponentialPhase_one_one_log_two} in
+\path{PowerExponentialLambertFabius}\texttt{.lean}.  More generally, for
+\(m\in\mathbb N\setminus\{0\}\), \(A>0\), and \(\beta>0\), put
+\[
+ S_{m,A,\beta}(t)=At^m\e^{-\beta t},
+ \qquad P_{m,A,\beta}=A\left(\frac m\beta\e^{-1}\right)^m.
+\]
+Writing \(\lambda_0\) and \(\lambda_{-1}\) for the principal and lower
+Lambert phases, their exact images are
+\[
+ \lambda_0\bigl([0,P_{m,A,\beta}]\bigr)
+   =\left[0,\frac m\beta\right],
+ \qquad
+ \lambda_{-1}\bigl((0,P_{m,A,\beta}]\bigr)
+   =\left[\frac m\beta,\infty\right].
+\]
+These are \lean{principalPowerExponentialPhase_image_Icc} and
+\lean{lowerPowerExponentialPhase_image_Ioc}; the companion declarations
+\lean{principalPowerExponentialPhase_invOn} and
+\lean{lowerPowerExponentialPhase_invOn} make each phase a two-sided
+\(\operatorname{InvOn}\) inverse of \(S_{m,A,\beta}\) on the corresponding
+displayed interval pair.  They are proved in
+\path{PowerExponentialLambertInverse.lean}.  On the principal branch, the
+closed endpoint step uses the exact restriction
+\(W_0([-\e^{-1},0])=[-1,0]\), namely
+\lean{principalLambertW_image_Icc} in \path{PrincipalLambertW.lean}.
+
 On the same closed-upper domain, the phase has the sharp lower bound and endpoint
 characterization
 \begin{equation}
@@ -8204,6 +8244,7 @@ Finite base-layer arithmetic &
 Finite polynomial, formal-series, and unconditionally summable analytic-series filters,
 and geometric Lagrange/Richardson exactness &
 \path{FinitePolynomialFunctional.lean}, \path{CompleteHomogeneous.lean},
+\path{CompleteHomogeneousGenerating.lean},
 \path{FinitePowerSeriesFilter.lean}, \path{GeometricPowerSeriesFilter.lean},
 \path{AnalyticSeriesFilter.lean},
 \path{GeometricLagrange.lean}, \path{LagrangeResidualMoments.lean},
@@ -8237,7 +8278,10 @@ Endpoint asymptotics &
 \path{PeriodicCorrection.lean}, \path{PeriodicFourier.lean},
 \path{MellinBose.lean}, \path{MellinFinitePart.lean},
 \path{BoseFinitePartIntegral.lean},
-\path{LowerLambertW.lean}, \path{FabiusLambertPhase.lean},
+\path{PrincipalLambertW.lean}, \path{LowerLambertW.lean},
+\path{PowerExponentialLambert.lean}, \path{PowerExponentialLambertCalculus.lean},
+\path{PowerExponentialLambertInverse.lean},
+\path{PowerExponentialLambertFabius}\texttt{.lean}, \path{FabiusLambertPhase.lean},
 \path{FabiusLambertSaddle.lean}, \path{FabiusSharpLambertMain.lean},
 \path{FabiusWikipediaMain.lean},
 \path{FabiusDecayComparison.lean},

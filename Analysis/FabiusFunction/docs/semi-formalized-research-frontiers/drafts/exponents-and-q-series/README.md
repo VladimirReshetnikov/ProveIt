@@ -32,7 +32,7 @@ remain research frontiers. These API claims were checked at source checkpoint
 `149332f9d`.
 
 Member: `Exponents_and_q_Series_Frontiers`
-(225 pp, seven parts) — the
+(226 pp, seven parts) — the
 2026-08-28 consolidation of the two former drafts (Part I:
 Newton-basis frontiers; Part II: q-binomial Richardson), joined the
 same day by the eighth-wave report as **Part III** — *Finite Dyadic
