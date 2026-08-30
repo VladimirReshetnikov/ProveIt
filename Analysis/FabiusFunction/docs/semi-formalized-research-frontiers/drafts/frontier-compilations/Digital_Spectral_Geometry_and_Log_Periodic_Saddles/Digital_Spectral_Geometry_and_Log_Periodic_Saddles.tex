@@ -1546,8 +1546,14 @@ The Rvachev density \(u\), and more generally every \(u_b\), is log-concave
 on its support.
 \end{proposition}
 
-Strict log-concavity is more delicate because every finite stage has spline
-facets.  It is isolated below as a conjecture.
+Strictness has a sharp parameter boundary that the former all-base conjecture
+in this report missed.  If \(b>2\), the first uniform summand has half-width
+\((b-1)/b\), while the remaining tail has half-width \(1/b\); hence \(u_b\)
+has an exact central plateau on
+\([-(b-2)/b,(b-2)/b]\).  At \(b=2\), the density can be strictly
+log-concave in the chord sense while its logarithm is infinitely flat at the
+mode.  The false all-base formulation is quarantined below, leaving only the
+overlap range \(1<b<2\) as a live strict-curvature question.
 
 \subsection{A distributional smoothing/deconvolution calculus}
 
@@ -1598,18 +1604,23 @@ highly plausible and numerically testable.  A proof should follow from an
 explicit domination inequality for \(\sum_{|k|\geq2}k c_k\e^{2\pi\ii
 k\theta}\) by the first harmonic.
 
-\begin{conjecture}[Strict log-concavity]
-\label{conj:strict-logconcavity}
-For every real \(b>1\), the density \(u_b\) is strictly log-concave on
-\((-1,1)\):
+\begin{warning}[Quarantined all-base strictness claim]
+\label{warn:strict-logconcavity}
+The former conjecture that
 \[
- (\log u_b)''(x)<0,\qquad -1<x<1.
+ (\log u_b)''(x)<0,\qquad -1<x<1,
 \]
-\end{conjecture}
-
-The non-strict statement is proved above.  Strictness would sharpen
-concentration bounds and imply uniqueness properties for tilted saddle
-measures.
+for every real \(b>1\) is false.  For \(b>2\), the exact plateau
+\([-(b-2)/b,(b-2)/b]\) prevents even order-theoretic strict
+log-concavity.  At \(b=2\), the neighboring
+\emph{Shape, Divisibility, and Stein Geometry} manuscript proves strict
+log-concavity in the chord sense, but the central mode is infinitely flat, so
+the displayed pointwise curvature inequality fails at \(x=0\).  That
+strictness theorem is paper-level in the current corpus and is not asserted
+here to have an exact Lean counterpart.  For \(1<b<2\), pointwise strict
+logarithmic curvature remains a live frontier question; neither this report
+nor the present Lean development proves it.
+\end{warning}
 
 \begin{conjecture}[Complete endpoint transseries]
 \label{conj:resurgence}

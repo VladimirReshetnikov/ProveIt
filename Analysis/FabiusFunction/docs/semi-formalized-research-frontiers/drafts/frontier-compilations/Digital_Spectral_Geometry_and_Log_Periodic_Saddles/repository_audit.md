@@ -1,6 +1,6 @@
 # Repository audit
 
-Audit capture: 2026-08-30 12:56:10 PDT
+Audit capture: 2026-08-30 13:47:01 PDT
 
 Scope: the materialized worktree during source repair, including the active
 merge contents; this is a dated worktree snapshot, not a commit identifier.
@@ -10,11 +10,11 @@ merge contents; this is a dated worktree snapshot, not a commit identifier.
 The inventory read every regular `*.tex` file recursively below
 `Analysis/FabiusFunction/docs`, sorted by repository-relative path.
 
-- TeX files: **140**
-- Newline-counted source lines: **308,689**
-- Source bytes: **13,652,690**
+- TeX files: **143**
+- Newline-counted source lines: **314,509**
+- Source bytes: **13,882,029**
 - Path-and-content SHA-256:
-  `cd17f787bc4bc0aeb06f3898500ba221885632b0002f0b801e1a0a70cc8ef697`
+  `34c73db4cbfbf7eb1441241933e2a4dfd259b387caf2c0a9100eee66d35c567b`
 
 The digest stream is, for each sorted file, its path relative to
 `Analysis/FabiusFunction/docs`, a NUL byte, the raw file bytes, and a final
@@ -28,7 +28,7 @@ All TeX bytes were read for the inventory and aggregate digest. The overlap
 review then used targeted source searches and direct inspection of the
 current primary exposition, frontier compilations, representation synthesis,
 and relevant Lean modules. It was not a line-by-line semantic comparison of
-all 140 TeX files, a Lean build, or an external literature search. Lexical or
+all 143 TeX files, a Lean build, or an external literature search. Lexical or
 declaration-level overlap can refute a blanket novelty claim, but it cannot by
 itself prove that two mathematical statements are equivalent.
 

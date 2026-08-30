@@ -5,7 +5,7 @@ New standalone intake member:
 - [`Digital_Spectral_Geometry_and_Log_Periodic_Saddles/`](Digital_Spectral_Geometry_and_Log_Periodic_Saddles/),
   *Digital Spectral Geometry and Log-Periodic Saddles: Frontier Results for
   the Thue--Morse, Fabius, Inverse-Fabius, and Rvachev Systems* (24 A4 pp,
-  1938 source lines; with a 488-line numerical generator),
+  1949 source lines; with a 490-line numerical generator),
   arrived on 2026-08-30 from the rootless archive
   `Fabius_Rvachev_Frontier_Report_Package.zip` (outer SHA-256
   `0028cb4f47134574ba7cd698bfc0ec11f08776b320cbc82b8467bea20d865f6d`).
@@ -20,7 +20,11 @@ New standalone intake member:
   spectral zeta and digit count, log-periodic complex dimensions, endpoint and
   inverse-Fabius saddles, Appell/Strang--Fix reproduction, and integer-base
   generalization substantially overlap Parts II, V, VII, and VIII of the
-  consolidated volume below. It remains standalone only until a claim-by-claim
+  consolidated volume below. One conjecture is already false as stated:
+  strict log-concavity for every real base `b > 1` is refuted for `b > 2` by
+  the canonical exact plateau, and at `b = 2` by the flat mode (equivalently
+  `q < 1/2` and `q = 1/2`, respectively), so it is not a live frontier claim.
+  The package remains standalone only until a claim-by-claim
   deduplication and Lean crosswalk determine whether any refinement should be
   retained; manuscript theorem labels do not establish Lean proof status.
 
