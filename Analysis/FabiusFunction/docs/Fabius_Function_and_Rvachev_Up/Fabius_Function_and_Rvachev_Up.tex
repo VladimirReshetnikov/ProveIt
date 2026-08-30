@@ -5122,6 +5122,106 @@ Finally, the two definitions and five theorems of
 \eqref{eq:q-gaussian-inverse-kernels}, and both convolution orders.
 \end{proof}
 
+\begin{theorem}[Finite \(q\)-Cauchy identities and the \(q\)-Bernstein partition]
+\label{thm:q-cauchy-formal}
+Let \(R\) be a commutative ring, let \(q,u,v,a,b,c,x\in R\), and let
+\(n\in\N\).  The primary and reflected finite \(q\)-Cauchy identities are
+\begin{align}
+ (uv;q)_n
+ &=\sum_{k=0}^{n}{n\brack k}_q (u;q)_k v^k(v;q)_{n-k},
+                                                        \label{eq:q-cauchy-formal}\\
+ &=\sum_{k=0}^{n}{n\brack k}_q (v;q)_k v^{n-k}(u;q)_{n-k}.
+                                                        \label{eq:q-cauchy-reflected-formal}
+\end{align}
+Define the denominator-free \(q\)-Bernstein term by
+\begin{equation}
+ B^{(q)}_{n,k}(x)={n\brack k}_q x^k(x;q)_{n-k}.          \label{eq:q-bernstein-basis}
+\end{equation}
+Then its full row is a partition of unity,
+\begin{equation}
+ \sum_{k=0}^{n}B^{(q)}_{n,k}(x)=1.                       \label{eq:q-bernstein-unity}
+\end{equation}
+Finally, the second finite Cauchy convolution is
+\begin{equation}
+ (ac;q)_n(bc;q)_n
+ =\sum_{k=0}^{n}{n\brack k}_q
+ (a;q)_k(b;q)_k c^k(c;q)_{n-k}(abcq^k;q)_{n-k}.          \label{eq:q-cauchy-second-formal}
+\end{equation}
+All four identities are total in the displayed parameters and degree.  They
+include \(n=0\), \(q=0\), roots of unity, positive characteristic, and zero
+divisors, and use no quotient, cancellation, domain, or nonvanishing
+hypothesis.
+\end{theorem}
+
+\begin{proof}[Formal proof and exhaustive API]
+Equations \eqref{eq:q-cauchy-formal} and
+\eqref{eq:q-cauchy-reflected-formal} are
+\lean{finite_qCauchy_identity} and
+\lean{finite_qCauchy_identity_reflected};
+\eqref{eq:q-bernstein-basis} is the definition
+\lean{qBernsteinBasis}; \eqref{eq:q-bernstein-unity} is
+\lean{sum_qBernsteinBasis}; and \eqref{eq:q-cauchy-second-formal} is
+\lean{finite_qCauchy_second_identity}.  These are exhaustively the one public
+definition and four public theorems of \path{QBinomialCauchy.lean}.  The
+partition of unity is the primary identity at \(u=0\); the second identity is
+proved by expanding a finite triangle, reindexing it, and applying both
+orientations of finite \(q\)-Cauchy.  Thus the proof never divides by a
+\(q\)-Pochhammer factor.
+\end{proof}
+
+\begin{theorem}[Weighted Pascal and elementary--complete orthogonality]
+\label{thm:symmetric-orthogonality-formal}
+Let \(R\) be a commutative semiring and let \(a:\iota\to R\) be a family on a
+finite index type.  Write \(e_r(a)\) for the evaluation of the universal
+elementary symmetric polynomial and \(h_r(a)\) for the existing complete
+homogeneous evaluation.  Then \(e_0(a)=1\), and reindexing by any equivalence
+\(e:\kappa\simeq\iota\) leaves the value unchanged:
+\begin{equation}
+ e_r(a\circ e)=e_r(a).                                   \label{eq:elementary-reindex}
+\end{equation}
+For a family indexed by a distinguished point and a finite tail, the two
+weighted-Pascal laws are
+\begin{align}
+ e_{r+1}(x,a)&=x e_r(a)+e_{r+1}(a),                       \label{eq:elementary-option-pascal}\\
+ h_{r+1}(x,a)&=x h_r(x,a)+h_{r+1}(a).                    \label{eq:complete-option-pascal}
+\end{align}
+The elementary identity is also exposed on a literal nonempty finite list as
+\begin{equation}
+ e_{r+1}(a_0,a_1,\ldots,a_m)
+ =a_0e_r(a_1,\ldots,a_m)+e_{r+1}(a_1,\ldots,a_m).         \label{eq:elementary-fin-pascal}
+\end{equation}
+If \(R\) is a commutative ring, then for every degree \(n\in\N\),
+\begin{equation}
+ \sum_{k=0}^{n}(-1)^k e_k(a)h_{n-k}(a)
+ =\begin{cases}1,&n=0,\\0,&n>0.
+ \end{cases}                                             \label{eq:elementary-complete-delta}
+\end{equation}
+This includes the empty family and degree zero and uses no division,
+characteristic, domain, or nonvanishing assumption.
+\end{theorem}
+
+\begin{proof}[Formal proof and exhaustive API]
+The definition is \lean{elementarySymmetricEval}; its identification with
+Mathlib's evaluated universal \texttt{MvPolynomial.esymm} is
+\lean{elementarySymmetricEval_eq_eval_esymm}.  The equation \(e_0=1\),
+\eqref{eq:elementary-reindex}, \eqref{eq:elementary-option-pascal}, and
+\eqref{eq:elementary-fin-pascal} are respectively
+\lean{elementarySymmetricEval_zero},
+\lean{elementarySymmetricEval_comp_equiv},
+\lean{elementarySymmetricEval_option_succ}, and
+\lean{elementarySymmetricEval_fin_succ}.  Equation
+\eqref{eq:elementary-complete-delta} is
+\lean{sum_elementarySymmetricEval_mul_completeHomogeneousEval}.  These are
+exhaustively the one public definition and six public theorems of
+\path{SymmetricFunctionOrthogonality.lean}.  The companion complete recurrence
+\eqref{eq:complete-option-pascal} is
+\lean{completeHomogeneousEval_option_succ} in
+\path{CompleteHomogeneous.lean}.  The structural elementary identities and
+both Pascal recurrences hold already over commutative semirings; subtraction
+is needed only for the final alternating convolution.  This result does not
+assert a general weighted-inversion formula beyond that convolution.
+\end{proof}
+
 \begin{theorem}[Reversed Gaussian row, Lagrange weights, and all residual moments]
 \label{thm:geometric-q-binomial-lagrange}
 Let $R$ be a commutative ring and $q\in R$.  The zero-extended numerator row is
@@ -8719,6 +8819,11 @@ and geometric Lagrange/Richardson exactness &
 \path{GeometricLagrangeQMoments.lean}\\
 Phase-locked reciprocal-grid Richardson algebra &
 \path{LambertPhaseLockedRichardson.lean}\\
+Finite \(q\)-Cauchy convolutions, \(q\)-Bernstein partition of unity, weighted
+Pascal, and elementary--complete orthogonality &
+\path{QBinomialCauchy.lean},
+\path{SymmetricFunctionOrthogonality.lean},
+\path{CompleteHomogeneous.lean}\\
 Weighted-subset Gaussian enumeration, scalar kernels, module-valued
 $q$-binomial inversion, and q-Gaussian specializations &
 \path{BitPositionQBinomial.lean}, \path{QBinomialInversion.lean},

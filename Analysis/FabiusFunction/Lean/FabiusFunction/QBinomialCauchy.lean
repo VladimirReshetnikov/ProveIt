@@ -24,8 +24,6 @@ in positive characteristic, and in rings with zero divisors.
   the orientation used in nested finite convolutions.
 * `qBernsteinBasis` and `sum_qBernsteinBasis` package the `u = 0`
   specialization as a denominator-free partition of unity.
-* `finite_qCauchy_second_identity` is the nested Cauchy convolution used by
-  the finite q-Pfaff--Saalschütz argument.
 * `finite_qCauchy_second_identity` is the two-product finite Cauchy
   convolution used in the q-Pfaff--Saalschutz summation.
 -/
