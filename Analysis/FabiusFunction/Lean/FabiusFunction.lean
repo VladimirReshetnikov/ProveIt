@@ -51,6 +51,7 @@ import FabiusFunction.BellPolynomialInversion
 import FabiusFunction.AppellSequence
 import FabiusFunction.MomentCumulantAlgebra
 import FabiusFunction.ReciprocalExponentialGenerating
+import FabiusFunction.RvachevMomentAppell
 import FabiusFunction.ImplicitPowerSeries
 import FabiusFunction.QuadraticCompositionalInverse
 import FabiusFunction.PolynomialExpectationCumulant
@@ -193,6 +194,7 @@ import FabiusFunction.OrthogonalPolynomialParity
 import FabiusFunction.OrthogonalPolynomialRecurrence
 import FabiusFunction.OrthogonalPolynomialJacobi
 import FabiusFunction.CompositeMeshExactness
+import FabiusFunction.RvachevPolynomialSynthesis
 import FabiusFunction.CombFirstDefect
 import FabiusFunction.CombDefectSeries
 import FabiusFunction.CauchySurvival
@@ -315,6 +317,9 @@ import FabiusFunction.LaplacePeriodicSecondOrder
 import FabiusFunction.FabiusTranslatedLegendreSeries
 import FabiusFunction.FabiusLegendreLeastSquares
 import FabiusFunction.FabiusLegendreEnergy
+import FabiusFunction.FabiusLegendreRationalEnergy
+import FabiusFunction.FabiusSquareEnergyFourier
+import FabiusFunction.FabiusLegendreTranslateBlocks
 import FabiusFunction.FabiusBinaryReductionSeries
 import FabiusFunction.FabiusComputability
 import FabiusFunction.Monotonicity

@@ -227,9 +227,90 @@ Subsequent Lean module `FabiusLegendreEnergy.lean` now defines the
 polynomial-form blocks `B_n = u_n*P_(2n)` and proves exactly their complete
 orthogonality, the coefficient Parseval identity, the shifted coefficient-tail
 identity in both `HasSum` and `tsum` forms, and the real-variable Legendre
-series for `A_2`.  The blocks' finite up-translate realization and atom-Gram
-formula, the report's Fourier-product and infinite-sinc integrals, and its
-rationality claim for the partial sums remain outside that formalized tranche.
+series for `A_2`.  At compiled checkpoint `9d5f41c2c`, the subsequent
+`FabiusLegendreRationalEnergy.lean` adds the three executable definitions
+`canonicalRvachevLegendreCoefficientRat`, `fabiusSquareEnergyTermRat`, and
+`fabiusSquareEnergyPartialSumRat`.  Its fifteen public theorems are
+`canonicalRvachevLegendreCoefficientRat_cast`,
+`canonicalRvachevLegendreCoefficientRat_zero`,
+`fabiusSquareEnergyTermRat_cast`, `fabiusSquareEnergyTermRat_nonneg`,
+`fabiusSquareEnergyTermRat_zero`, `fabiusSquareEnergyPartialSumRat_cast`,
+`monotone_fabiusSquareEnergyPartialSumRat`,
+`fabiusSquareEnergyPartialSumRat_pos`,
+`fabiusSquareEnergyPartialSumRat_zero`,
+`fabiusSquareEnergyPartialSumRat_one`,
+`fabiusSquareEnergyPartialSumRat_two`,
+`fabiusSquareEnergyPartialSumRat_three`,
+`hasSum_fabiusSquareEnergy_ratCast`,
+`fabiusSquareEnergy_eq_tsum_ratCast`, and
+`tendsto_fabiusSquareEnergyPartialSumRat_cast`.  Thus every energy partial sum
+has a positive rational representative, the rational sequence is monotone,
+and its real casts converge to `A_2`.  The report's four displayed cutoffs
+`N = 0, 1, 2, 3` are certified exactly as `1/4`, `7/18`, `3271/8100`, and
+`3246043/8037225`.
+
+At compiled checkpoint `b9b240bc0`, the further
+`FabiusSquareEnergyFourier.lean` exports no definitions and exactly four
+theorems:
+`integral_norm_sq_rvachevFourier_eq_two_mul_fabiusSquareEnergy`,
+`fabiusSquareEnergy_eq_integral_Ioi_norm_sq_rvachevFourier`,
+`fabiusSquareEnergy_eq_integral_Ioi_tprod_sinc_sq`, and
+`fabiusSquareEnergy_eq_scaled_integral_Ioi_tprod_sinc_sq`.  They identify the
+full real-axis squared Fourier mass with twice `A_2`, the positive-half-line
+mass with `A_2`, and certify the report's Fourier-product and infinite-sinc
+integrals with their exact normalizations and index ranges.
+
+At compiled checkpoint `1f9ce6fd9`, `RvachevMomentAppell.lean` exports five
+public definitions: `rvachevRawMomentRat`, `rvachevReciprocalMomentRat`,
+`rvachevAppellPolynomialRat`, `rvachevAppellPolynomial`, and
+`rvachevDeconvolvedPolynomial`.  Its sixteen public theorems are
+`rvachevRawMomentRat_zero`, `rvachevRawMomentRat_even`,
+`rvachevRawMomentRat_odd`, `rvachevReciprocalMomentRat_zero`,
+`binomialConv_rvachevRawMomentRat_reciprocal`,
+`rvachevReciprocalMomentRat_eq_completeBellPolynomial`,
+`monic_rvachevAppellPolynomialRat`,
+`natDegree_rvachevAppellPolynomialRat`,
+`rvachevAppellPolynomial_eq_poly_cast`,
+`monic_rvachevAppellPolynomial`, `natDegree_rvachevAppellPolynomial`,
+`eval_rvachevAppellPolynomial_add`,
+`integral_pow_mul_rvachev_eq_rvachevRawMomentRat_cast`,
+`integral_eval_rvachevAppellPolynomial_add_mul_rvachev`,
+`natDegree_rvachevDeconvolvedPolynomial_le`, and
+`integral_eval_rvachevDeconvolvedPolynomial_add_mul_rvachev`.  This is the
+exact rational raw-moment, formal reciprocal/Bell, reciprocal-moment Appell,
+and polynomial-smoothing/deconvolution foundation used by the report.
+
+At compiled checkpoint `c51a41fcf`, `RvachevPolynomialSynthesis.lean` exports
+no public definitions and exactly four public theorems:
+`tsum_rvachevDeconvolvedPolynomial_mul_shifted_rvachevUp`,
+`normalized_tsum_rvachevDeconvolvedPolynomial_mul_shifted_rvachevUp`,
+`sum_Ioo_rvachevDeconvolvedPolynomial_mul_shifted_rvachevUp`, and
+`normalized_sum_Ioo_rvachevDeconvolvedPolynomial_mul_shifted_rvachevUp`.
+They prove the global raw and normalized sums for every nonzero natural mesh
+`M` with `deg P ≤ v₂(M)`, and on `[-1,1]` the exact finite open-index form
+`-2M < k < 2M`.
+
+At the same checkpoint, `FabiusLegendreTranslateBlocks.lean` exports six
+public definitions: `rvachevLegendreDeconvolutionPolynomial`,
+`rvachevLegendreScale`, `rvachevLegendreIndexSet`,
+`rvachevLegendreAtomCoefficient`, `rvachevLegendreTranslateBlock`, and
+`rvachevTranslateGram`.  Its five public theorems are
+`eval_legendrePolynomial_eq_sum_rvachevUp`,
+`eval_legendrePolynomial_even_eq_sum_rvachevUp`,
+`rvachevLegendreTranslateBlock_eq_rvachevLegendreBlock`,
+`intervalIntegral_rvachevLegendreTranslateBlock_mul`, and
+`sum_rvachevLegendreAtomCoefficient_mul_gram`.  They specialize the finite
+synthesis to meshes `2^d` and `4^n`, identify each literal finite translate
+block with the existing polynomial block on `[-1,1]`, and prove its complete
+orthogonality and exact finite atom-Gram expansion.
+
+These modules do not certify minimality or sharpness of the mesh, analytic
+reciprocal-MGF/Appell generating-series or differential-operator identities,
+the displayed low reciprocal coefficients, parity and the displayed closed
+forms for the deconvolved Legendre family, rationality of the atom rows, a
+named outer translate-block `HasSum`, the
+fixed-scale partial-sum identity, or the later refinement, projector, and
+asymptotic layers.
 
 Three further Legendre-closure reports landed the same day, all
 **pending merge into `Up_Polynomial_Synthesis/`** and all answering the

@@ -3678,8 +3678,11 @@ shape, and nowhere analyticity; exact moment recurrences and denominator arithme
 rational evaluation, $q$-Pochhammer and $q$-binomial formulas; Thue--Morse interpolation and
 iterated difference identities; Legendre expansions, coefficient Parseval and exact tails, the
 complete orthogonality of the polynomial-form Legendre blocks, the $A_2$ Legendre energy
-identity, and least-squares approximation; and the computational API.  Their use as input above
-is always signposted.
+identity, exact rational energy approximants and their casted convergence, the Fourier and
+dyadic sinc-product energy integrals, least-squares approximation, Rvachev reciprocal-moment
+Appell deconvolution, exact shifted-up polynomial synthesis, and literal finite Legendre
+translate blocks with their atom-Gram expansion; and the computational API.  Their use as
+input above is always signposted.
 
 At compiled source checkpoint \texttt{ca66a1247}, the exact concordance for the newly closed
 Legendre energy input is
@@ -3694,9 +3697,96 @@ Legendre energy input is
 \lean{hasSum_fabiusSquareEnergy_legendre}, and
 \lean{fabiusSquareEnergy_eq_tsum_legendre}.  This closes complete orthogonality for the
 polynomial-form blocks, coefficient Parseval and its exact shifted tail, and the real-variable
-Legendre series for $A_2=\int_0^1F(t)^2\dd t$.  It does not formalize the blocks' finite
-up-translate realization or atom-Gram identity, the Fourier-product or infinite-sinc formulas
-for $A_2$, or rationality of the energy partial sums.
+Legendre series for $A_2=\int_0^1F(t)^2\dd t$.
+
+At compiled source checkpoint \texttt{9d5f41c2c}, the exact concordance for the rational
+energy layer is \path{FabiusLegendreRationalEnergy.lean}.  Its three executable definitions are
+\lean{canonicalRvachevLegendreCoefficientRat}, \lean{fabiusSquareEnergyTermRat}, and
+\lean{fabiusSquareEnergyPartialSumRat}.  Its fifteen public theorems are
+\lean{canonicalRvachevLegendreCoefficientRat_cast},
+\lean{canonicalRvachevLegendreCoefficientRat_zero},
+\lean{fabiusSquareEnergyTermRat_cast}, \lean{fabiusSquareEnergyTermRat_nonneg},
+\lean{fabiusSquareEnergyTermRat_zero}, \lean{fabiusSquareEnergyPartialSumRat_cast},
+\lean{monotone_fabiusSquareEnergyPartialSumRat},
+\lean{fabiusSquareEnergyPartialSumRat_pos},
+\lean{fabiusSquareEnergyPartialSumRat_zero},
+\lean{fabiusSquareEnergyPartialSumRat_one},
+\lean{fabiusSquareEnergyPartialSumRat_two},
+\lean{fabiusSquareEnergyPartialSumRat_three},
+\lean{hasSum_fabiusSquareEnergy_ratCast}, \lean{fabiusSquareEnergy_eq_tsum_ratCast}, and
+\lean{tendsto_fabiusSquareEnergyPartialSumRat_cast}.  Consequently every finite
+Legendre-energy partial sum has a positive rational representative, those representatives are
+monotone, and their real casts converge to $A_2$.  The report's four displayed cutoffs
+$N=0,1,2,3$ are certified exactly as $1/4$, $7/18$, $3271/8100$, and
+$3246043/8037225$.
+
+At compiled source checkpoint \texttt{b9b240bc0}, the Fourier-energy concordance is
+\path{FabiusSquareEnergyFourier.lean}.  It exports no definitions and exactly four theorems:
+\lean{integral_norm_sq_rvachevFourier_eq_two_mul_fabiusSquareEnergy},
+\lean{fabiusSquareEnergy_eq_integral_Ioi_norm_sq_rvachevFourier},
+\lean{fabiusSquareEnergy_eq_integral_Ioi_tprod_sinc_sq}, and
+\lean{fabiusSquareEnergy_eq_scaled_integral_Ioi_tprod_sinc_sq}.  They identify the full
+real-axis squared Fourier mass with $2A_2$, its positive-half-line integral with $A_2$, and
+that half-line integral with the Self-Reconstruction report's unscaled
+$\prod_{j\ge0}\sinc^2(\pi\xi/2^j)$ formula and its $1/(2\pi)$-scaled sine-quotient formula
+indexed from one.
+
+At compiled source checkpoint \texttt{1f9ce6fd9}, the Rvachev moment--Appell concordance is
+\path{RvachevMomentAppell.lean}.  Its five public definitions are
+\lean{rvachevRawMomentRat}, \lean{rvachevReciprocalMomentRat},
+\lean{rvachevAppellPolynomialRat}, \lean{rvachevAppellPolynomial}, and
+\lean{rvachevDeconvolvedPolynomial}.  Its sixteen public theorems are
+\lean{rvachevRawMomentRat_zero}, \lean{rvachevRawMomentRat_even},
+\lean{rvachevRawMomentRat_odd}, \lean{rvachevReciprocalMomentRat_zero},
+\lean{binomialConv_rvachevRawMomentRat_reciprocal},
+\lean{rvachevReciprocalMomentRat_eq_completeBellPolynomial},
+\lean{monic_rvachevAppellPolynomialRat},
+\lean{natDegree_rvachevAppellPolynomialRat},
+\lean{rvachevAppellPolynomial_eq_poly_cast},
+\lean{monic_rvachevAppellPolynomial},
+\lean{natDegree_rvachevAppellPolynomial},
+\lean{eval_rvachevAppellPolynomial_add},
+\lean{integral_pow_mul_rvachev_eq_rvachevRawMomentRat_cast},
+\lean{integral_eval_rvachevAppellPolynomial_add_mul_rvachev},
+\lean{natDegree_rvachevDeconvolvedPolynomial_le}, and
+\lean{integral_eval_rvachevDeconvolvedPolynomial_add_mul_rvachev}.  They package the full
+rational raw-moment sequence, its formal binomial-convolution reciprocal and complete-Bell
+description, rational and real monic Appell families of exact degree, and coefficientwise
+polynomial deconvolution whose degree does not increase and whose Rvachev smoothing recovers
+the original polynomial.  This reciprocal-moment Appell family is not the dyadic
+$\operatorname{App}_n$ family fixed in the global notation convention above.
+
+At compiled source checkpoint \texttt{c51a41fcf},
+\path{RvachevPolynomialSynthesis.lean} exports no public definitions and exactly four public
+theorems: \lean{tsum_rvachevDeconvolvedPolynomial_mul_shifted_rvachevUp},
+\lean{normalized_tsum_rvachevDeconvolvedPolynomial_mul_shifted_rvachevUp},
+\lean{sum_Ioo_rvachevDeconvolvedPolynomial_mul_shifted_rvachevUp}, and
+\lean{normalized_sum_Ioo_rvachevDeconvolvedPolynomial_mul_shifted_rvachevUp}.  For every
+nonzero natural mesh $M$ and polynomial of degree at most $v_2(M)$, these give the global
+raw and normalized \texttt{tsum} identities and, on $[-1,1]$, their exact finite
+$k\in(-2M,2M)$ forms.
+
+At the same checkpoint, \path{FabiusLegendreTranslateBlocks.lean} exports six public
+definitions: \lean{rvachevLegendreDeconvolutionPolynomial},
+\lean{rvachevLegendreScale}, \lean{rvachevLegendreIndexSet},
+\lean{rvachevLegendreAtomCoefficient}, \lean{rvachevLegendreTranslateBlock}, and
+\lean{rvachevTranslateGram}.  Its five public theorems are
+\lean{eval_legendrePolynomial_eq_sum_rvachevUp},
+\lean{eval_legendrePolynomial_even_eq_sum_rvachevUp},
+\lean{rvachevLegendreTranslateBlock_eq_rvachevLegendreBlock},
+\lean{intervalIntegral_rvachevLegendreTranslateBlock_mul}, and
+\lean{sum_rvachevLegendreAtomCoefficient_mul_gram}.  They specialize the exact finite
+synthesis to mesh $2^d$, then to $4^n$ for the even mode, identify each literal finite
+translate block with the existing polynomial block on $[-1,1]$, and prove both its complete
+orthogonality and the expanded finite atom-Gram identity.
+
+These APIs do not prove minimality or sharpness of the displayed mesh, an analytic
+reciprocal-MGF or Appell generating-series identity, a literal differential-series
+realization of deconvolution, the displayed low reciprocal coefficients, parity or the
+displayed closed formulas for the deconvolved Legendre family, rationality of the atom rows,
+a named outer translate-block \texttt{HasSum},
+the fixed-scale partial-sum identity, or the later refinement, projector, and asymptotic
+layers.
 
 \subsection{Notation crosswalk}
 \label{integration:app:notation}
