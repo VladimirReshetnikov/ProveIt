@@ -484,11 +484,30 @@ with $a_h\ne0$
 (\lean{Fabius.generalizedRvachevProduct\_eq\_zero\_iff}) --- as is the one-step
 refinement law (\lean{Fabius.generalizedRvachevProduct\_two\_mul}).
 
-What is \emph{not} formalized is the analytic and probabilistic content of the theorem:
-locally uniform convergence and hence entirety, the support statement (i), the random
-variable $X_a$ and the convolution reading of (iii), and the smoothness dichotomy (iv).
-The module proves the algebraic and convergence skeleton on which those would rest, and
-its docstring says so explicitly.
+Assertion (ii) is formalized as well, in \path{GeneralizedRvachevEntire.lean}: the product
+converges locally uniformly on every ball
+(\lean{Fabius.hasProdLocallyUniformlyOn\_generalizedRvachevProduct}) and $\Phi_a$ is therefore
+entire (\lean{Fabius.generalizedRvachevProduct\_differentiable}).  With that in hand the zero
+divisor is complete --- $\Phi_a$ vanishes exactly at the nonzero integers $n$ with
+$m_a(\lvert n\rvert)>0$, to order exactly $m_a(\lvert n\rvert)$, and nowhere else
+(\path{GeneralizedZeroDivisor.lean}).
+
+The characteristic-function reading of (i) now has all three of its prerequisites, though not
+the statement itself: $\Phi_a(0)=1$, continuity from entirety, and
+\[
+ \lVert\Phi_a(x)\rVert\le1
+ \qquad\text{for every real }x
+\]
+(\lean{Fabius.norm\_generalizedRvachevProduct\_ofReal\_le\_one},
+\path{GeneralizedRealBound.lean}), which had been missing at every weight, the constant one
+included.  The bound is attained at $x=0$, so it is sharp.
+
+What remains \emph{not} formalized is the probabilistic content proper: the support statement
+(i) --- that $R_a$ is the support radius rather than merely the number $A_a(1/2)$ --- the
+random variable $X_a$ and the convolution reading of (iii), and the smoothness dichotomy (iv).
+Assertion (iii) is formal as an identity of products but not as a statement about laws.  The
+modules prove the algebraic, convergence and analytic skeleton on which the probabilistic
+layer would rest, and their docstrings say so explicitly.
 \end{theorem}
 
 \begin{proof}
@@ -606,8 +625,30 @@ $1-z^2/n^2=(z+n)\cdot\bigl(-(z-n)/n^2\bigr)$
 (\lean{Fabius.canonicalComplexFactor\_eq\_add\_mul}) is the same one line of algebra as
 its sibling, so both halves of $\ord_{z=\pm n}$ are proved directly and the appeal to
 $\Phi_a(-z)=\Phi_a(z)$ (\lean{Fabius.generalizedRvachevProduct\_neg},
-\path{LobeSignNegative.lean}) is not needed.  At the \emph{constant} weight the
-sharper integer-indexed form remains available:
+\path{LobeSignNegative.lean}) is not needed.
+
+Third, the order statement now has a companion that completes it into a divisor.
+\path{GeneralizedRvachevProduct.lean} pins the zero set in \emph{scale} coordinates,
+$\exists h,\ a_h\ne0$ and $\exists k\ne0,\ z=k2^h$, and its header recorded that the
+translation into arithmetic coordinates was not carried out and the multiplicities not
+computed.  \path{GeneralizedZeroDivisor.lean} does both:
+\[
+ \Phi_a(z)=0
+ \iff
+ \exists\,n\in\Z,\ n\ne0,\ z=n,\ m_a(\lvert n\rvert)\ne0
+\]
+(\lean{Fabius.generalizedRvachevProduct\_eq\_zero\_iff\_int}), and
+$\ord_{z=n}\Phi_a=m_a(\lvert n\rvert)$ at every nonzero integer, both signs in one
+statement (\lean{Fabius.analyticOrderAt\_generalizedRvachevProduct\_int}).  Since $\Phi_a$
+is entire, the two together are its complete divisor: it vanishes precisely on
+$\{n\in\Z:n\ne0,\ m_a(\lvert n\rvert)>0\}$, to exactly that order, and nowhere else in
+$\C$ --- in particular nowhere off the real axis
+(\lean{Fabius.generalizedRvachevProduct\_ne\_zero\_of\_not\_int}).  The bridge between the
+two coordinate systems is arithmetic rather than analytic: $m_a(m)$ is a sum of naturals
+over $h\le\vtwo(m)$, so it is nonzero exactly when some $a_h$ with $2^h\mid m$ is
+(\lean{Fabius.weightedScaleMultiplicity\_two\_ne\_zero\_iff}).
+
+At the \emph{constant} weight the sharper integer-indexed form remains available:
 \lean{Fabius.analyticOrderAt\_generalizedRvachevProduct\_one} reads
 $\ord_{z=m}\Phi_{\mathbf1}=m_{\mathbf1}(\lvert m\rvert)$ for every nonzero integer $m$, chaining
 \lean{Fabius.analyticOrderAt\_rvachevFourierProduct\_int} (\path{IntegerZeroAnalyticOrder.lean})
@@ -824,9 +865,27 @@ vanishes, which is the volume's own scope on that range.
 Two residues are stated rather than glossed.  At $x=0$ no factor vanishes and
 $\Phi_a(0)=1$, but the hypothesis $m_a(0)=a_0$ need not hold, so that point is closed by a
 separate lemma (\lean{Fabius.canonicalRealProduct\_zero\_eq\_one}) rather than by the theorem
-above.  Negative arguments are not treated at all: $\Phi_a$ is even, so the law there reads
-$\varepsilon_a(\lfloor\lvert x\rvert\rfloor)$ rather than $\varepsilon_a(\lfloor x\rfloor)$, and neither
-file states it.
+above.  Negative arguments are carried by evenness of $\Phi_a$
+(\lean{Fabius.generalizedRvachevProduct\_neg}, \path{LobeSignNegative.lean}), and there the law
+reads $\varepsilon_a(\lfloor\lvert x\rvert\rfloor)$ rather than $\varepsilon_a(\lfloor x\rfloor)$:
+on $-(N+1)<x<-N$ the reflected point lies in the lobe $(N,N+1)$, so the sign is
+$\varepsilon_a(N)$, while $\lfloor x\rfloor=-(N+1)$ is not even a natural number.  We write
+$\lfloor x\rfloor$ because we have $x\ge0$ in mind.
+
+Assembled, these pieces give the law on the whole axis with no hypothesis at all, in
+\path{LobeSignComplete.lean}:
+\[
+ \Psi_a(x)=0
+ \quad\text{or}\quad
+ 0<\varepsilon_a\bigl(\lfloor\lvert x\rvert\rfloor\bigr)\,\Psi_a(x),
+ \qquad x\in\R
+\]
+(\lean{Fabius.parityCharacter\_mul\_canonicalRealProduct\_dichotomy}), the first alternative
+occurring exactly when $\lvert x\rvert$ is a positive integer of nonzero multiplicity
+(\lean{Fabius.canonicalRealProduct\_eq\_zero\_iff\_of\_nonneg}).  There is no third
+possibility and no remaining gap; what made the assembly possible is the complete zero set of
+\path{GeneralizedZeroDivisor.lean}, without which the exceptional set could be excluded but not
+identified.
 \end{theorem}
 
 \begin{proof}
@@ -1478,9 +1537,33 @@ analytic identities themselves are formalized only at $a_h\equiv1$, as
 scale product $\prod_ng(z/c^n)$ for an arbitrary factor function $g$, an arbitrary nonzero ratio
 $c$ and an arbitrary commutative topological monoid---but for one fixed $g$, so they do not by
 themselves reach a variable exponent sequence.  The finite-difference factorization
-\eqref{p1:eq:finite-difference-factorization} is not formalized \emph{as an identity of products},
-for the same reason: it quantifies over canonical products at general weights.  Its
-exponent-level content is formal, however, in
+\eqref{p1:eq:finite-difference-factorization} is now formalized as an identity of products,
+in \path{WeightLinearityProducts.lean}, and by supplying the passage the last sentence of this
+paragraph calls for --- once, and in the generality that sentence describes rather than for this
+display alone.  If a weight is any $\N$-linear combination of admissible weights,
+$a_h=\sum_{i\in s}c_i\,w_{i,h}$ over an arbitrary finite index set, then
+\[
+ \Phi_a(z)=\prod_{i\in s}\Phi_{w_i}(z)^{c_i}
+\]
+at every $z$ (\lean{Fabius.generalizedRvachevProduct\_linearCombination}), the proof being
+induction over $s$ on \lean{Fabius.generalizedRvachevProduct\_add} and the scaling law
+$\Phi_{k\cdot a}=\Phi_a^{\,k}$ (\lean{Fabius.generalizedRvachevProduct\_natMul}), with
+admissibility closed under the same combination.  Our display is the instance
+$s=\{0,\dots,m\}$, $c_r=\binom mr$, recorded as
+\lean{Fabius.generalizedRvachevProduct\_shift\_factorization} together with the identification
+$S^ma=(h\mapsto a_{h+m})$ (\lean{Fabius.shiftExponent\_iterate}).
+
+One hypothesis is genuinely needed and is exactly the germ caveat above.  The coefficients and
+the weights $w_i$ are natural numbers, because $\Phi_a$ is defined only for $a$ valued in
+$\N_0$; a combination with a negative coefficient names no transform at all.  So the Lean
+statement is the factorization \emph{wherever the differences $\Delta^ra$ are nonnegative},
+which is precisely the case in which our own display needs no passage through germs.  The
+signed case --- where the apparent poles cancel because the left side is entire --- is not
+formalized.  The remaining unformalized analytic identity in this theorem is the iterated
+dilation $\Phi_a(2^mz)$ itself; only the one-step law
+\lean{Fabius.generalizedRvachevProduct\_two\_mul} is available.
+
+The exponent-level content is formal as well, in
 \path{ShiftDifferenceWeights.lean}: the identity $S^m=(I+\Delta)^m$ that drives it is the
 Gregory--Newton formula, and for a weight sequence valued in any additive commutative
 group
@@ -1488,8 +1571,16 @@ group
   a_{h+m}=\sum_{r\le m}\binom{m}{r}\,(\Delta^{r}a)_h
 \]
 (\lean{Fabius.weight\_shift\_eq\_sum\_fwdDiff}), together with the inverse alternating form
-(\lean{Fabius.weight\_fwdDiff\_eq\_sum\_shift}).  So what is missing is exactly the passage
-from the exponent identity to the product identity, not the combinatorics.
+(\lean{Fabius.weight\_fwdDiff\_eq\_sum\_shift}).  These coefficients are moreover the only
+ones: applying $\Delta^s$ at $0$ to a Newton combination returns $c_s$ and annihilates every
+other basis vector, so the Newton basis is free and not merely spanning
+(\lean{Fabius.fwdDiff\_iter\_newtonCombination\_zero}, \lean{Fabius.newtonCombination\_injOn},
+\path{NewtonCoefficientUniqueness.lean}).
+
+So the split that this paragraph once described as a gap --- combinatorics formal, passage to
+products missing --- is closed on both sides, and the passage turned out to be cheaper than the
+combinatorics: it is one induction on \lean{Fabius.generalizedRvachevProduct\_add}, needing
+nothing about the particular identity being transported.
 \end{theorem}
 
 \begin{proof}
@@ -1631,9 +1722,23 @@ indices, at an arbitrary base, and over any semiring rather than only over $\Z$
 (\lean{Fabius.weightedScaleMultiplicity\_newton\_finset}, \lean{Fabius.weightedScaleMultiplicity\_newton}, and the literal display
 \lean{Fabius.weightedScaleMultiplicity\_newton\_two}).  The Gregory--Newton reading of the
 coefficients, $a_m=\sum_{r\le m}\binom mr(\Delta^ra)_0$, is
-\lean{Fabius.weight\_eq\_sum\_choose\_fwdDiff}; that it \emph{forces} the coefficients ---
-that $\Delta^s$ applied to a Newton sum returns $c_s$ --- is not formalized, so the module
-exhibits $\Delta^rP(0)$ as a valid choice rather than as the unique one.
+\lean{Fabius.weight\_eq\_sum\_choose\_fwdDiff}, and that it \emph{forces} the coefficients is
+now formal too, in \path{NewtonCoefficientUniqueness.lean}.  The Newton basis is triangular
+under $\Delta$, so applying $\Delta^k$ at $0$ to a Newton combination reads off the $k$-th
+coefficient and kills every other basis vector:
+\[
+ \Delta^k\Bigl(\textstyle\sum_{r\in s}\binom{\cdot}{r}c_r\Bigr)(0)
+ =\begin{cases}c_k,&k\in s,\\0,&k\notin s,\end{cases}
+\]
+over an arbitrary finite index set and an arbitrary additive commutative group of
+coefficients (\lean{Fabius.fwdDiff\_iter\_newtonCombination\_zero}).  The $k\notin s$ branch is
+what makes this an inversion rather than an evaluation --- it says the basis is free, not
+merely spanning --- and it is the half uniqueness needs
+(\lean{Fabius.newtonCombination\_injOn}, and over $\R$ for our own $\Phi_P$
+\lean{Fabius.fwdDiff\_iter\_newtonPoly\_zero}, \lean{Fabius.newtonPoly\_coeff\_unique}).
+Running the Gregory--Newton expansion back through the inversion returns the iterated forward
+differences (\lean{Fabius.fwdDiff\_iter\_weight\_zero}), so existence and uniqueness meet and
+$\Delta^rP(0)$ is the unique choice, not merely a valid one.
 
 Equations \eqref{p1:eq:AP-newton} and the arithmetic half of \eqref{p1:eq:RP} are formal
 in \path{NewtonBasisGeneratingFunction.lean}, resting on Mathlib's choose-geometric
@@ -1874,13 +1979,64 @@ In particular,
  \Var(Y_d)=\frac1{12}\left(1+3^{-(d+1)}\right).
  \label{p1:eq:Psi-variance}
 \end{equation}
-These are \statusproved.  The hockey-stick step behind \eqref{p1:eq:Psi-multiplicity} is
-formalized as \lean{Fabius.inclusivePrefixSum_choose} (\lean{WeightedScaleMultiplicity.lean}),
-which proves $\sum_{h\le v}\binom hd=\binom{v+1}{d+1}$ for a general Pascal column; together
-with \lean{Fabius.weightedScaleMultiplicity} it supplies the whole arithmetic content of
-\eqref{p1:eq:Psi-multiplicity} apart from the exceptional $h=0$ term.  The spectral zeta
-\eqref{p1:eq:Psi-zeta}, the cumulants \eqref{p1:eq:Psi-cumulants} and the variance
-\eqref{p1:eq:Psi-variance} are not formalized.
+These are \statusproved.  The multiplicity \eqref{p1:eq:Psi-multiplicity} is now formalized in
+full, and as an order statement rather than only an exponent count, in
+\path{AlternatingNewtonFamily.lean}:
+\[
+ \ord_{z=\pm n}\Psi_d(z)=1+\binom{\vtwo(n)}{d+1},
+ \qquad n\ge1
+\]
+(\lean{Fabius.analyticOrderAt\_alternatingNewton},
+\lean{Fabius.analyticOrderAt\_alternatingNewton\_neg}).  What made this reachable is the order
+of vanishing at a general admissible weight, \path{GeneralizedRvachevEntire.lean}, which did not
+exist when this paragraph was written; before it, only the arithmetic was available.
+
+The arithmetic half is \lean{Fabius.weightedScaleMultiplicity\_alternatingNewton}, and it holds
+at \emph{every} $n$, the convention $\vtwo(0)=0$ making both sides $1$.  The exceptional $h=0$
+term, which the hockey stick does not cover, is handled by splitting it off the prefix sum; what
+remains is $\sum_{k<\vtwo(n)}\binom kd$, and that needs the hockey stick in \emph{exclusive}
+form, $\sum_{k<v}\binom kd=\binom{v}{d+1}$, which the corpus already carries as
+\lean{Fabius.sum\_range\_choose\_eq\_choose\_succ} (\path{ThueMorseMoments.lean}), where it was
+proved for the binomial moments of the Thue--Morse signs.  It is the form wanted here rather
+than the inclusive \lean{Fabius.inclusivePrefixSum\_choose},
+$\sum_{h\le v}\binom hd=\binom{v+1}{d+1}$, precisely because the $h=0$ term has already been
+removed: the inclusive form would need a $v\ge1$ side condition, while the exclusive one is
+correct at $v=0$ too, both sides vanishing.  A consequence worth naming: at odd $n$ the order
+is $1$ for every $d$ (\lean{Fabius.analyticOrderAt\_alternatingNewton\_odd}).
+
+One remark on the convention.  Our $\binom{-1}{d}=(-1)^d=1$ is legitimate only because $d$ is
+even, and that is the whole purpose of the parity restriction.  In the Lean weight there is no
+convention to make: \lean{Fabius.alternatingNewtonWeight} is defined by $P_d(0)=1$ and
+$P_d(h+1)=\binom hd$, so it is $\N_0$-valued for every $d$, and the parity enters only in the
+question of whether it agrees with our signed formula \eqref{p1:eq:Pd-newton}.
+
+The spectral zeta \eqref{p1:eq:Psi-zeta} is formalized as well, in
+\path{AlternatingNewtonZeta.lean}, together with the generating function \eqref{p1:eq:Ad} it
+rests on.  The latter,
+\[
+ A_d(q)=1+\frac{q^{d+1}}{(1-q)^{d+1}},
+ \qquad|q|<1,
+\]
+is \lean{Fabius.tsum\_alternatingNewtonWeight\_pow}: the $h=0$ term contributes the $1$, and the
+rest is the corpus's Newton generating function \lean{Fabius.tsum\_choose\_mul\_pow} with the
+index shifted by one.  Feeding it to the general weighted zeta at $q=2^{-s}$, where
+$q/(1-q)$ collapses to $1/(2^s-1)$, gives
+\[
+ \sum_{n\ge1}\frac{m_{P_d}(n)}{n^{s}}
+ =\Bigl(\sum_{n\ge1}n^{-s}\Bigr)\left(1+\frac1{(2^s-1)^{d+1}}\right),
+ \qquad s>1
+\]
+(\lean{Fabius.spectral\_zeta\_alternatingNewton}).  As in \path{SpectralZetaWeighted.lean} the
+first factor is left as its own $p$-series rather than identified with \lean{riemannZeta}, and
+$s$ is real; both are limitations of the corpus's zeta, not of this weight.  What this weight
+does contribute is that the summability hypothesis the general theorem must carry --- an
+arbitrary weight may grow too fast --- is here \emph{discharged}, since $P_d$ grows
+polynomially and is admissible at every $s>0$
+(\lean{Fabius.summable\_alternatingNewtonWeight\_rpow}).
+
+The cumulants \eqref{p1:eq:Psi-cumulants} and the variance \eqref{p1:eq:Psi-variance} remain
+unformalized; both need the probabilistic model behind $\Psi_d$, which the corpus does not
+have.
 \end{theorem}
 
 \begin{proof}
@@ -1905,6 +2061,15 @@ Every odd integer and every integer with $\nu_2(n)\le2$ remains a simple zero.  
 extra multiplicity occurs at $n=8$, where the order is $2$; at $n=16$ it is $5$; at
 $n=32$ it is $11$.  Yet the same entire function is the quotient
 $\Phi_1\Phi_3/\Phi_2$.
+
+Every number in this example is checked against the general formula in
+\path{AlternatingNewtonFamily.lean}: the weight values
+(\lean{Fabius.alternatingNewtonWeight\_two\_values}), the simple-zero range
+(\lean{Fabius.weightedScaleMultiplicity\_alternatingNewton\_two\_of\_le}), and the three
+multiplicities $2$, $5$, $11$, which are $1+\binom{\nu_2(n)}3$ at $\nu_2=3,4,5$.  Since the
+example was worked by hand and the formula proved independently, the agreement is evidence for
+both.  The final sentence is the one part not formalized: reading $\Psi_2$ as the quotient
+$\Phi_1\Phi_3/\Phi_2$ needs a signed exponent, which $\Phi_a$ does not accept.
 \end{example}
 
 \subsection{Automatic lobe signs and sparse Prouhet order}
@@ -3101,10 +3266,30 @@ presentations, all residual moments and their sign, and the exact finite
 \(\ell^1\) norm, including dedicated \(q=1/4\) corollaries.  The
 generic transformed-error series is now formalized in
 \path{AnalyticSeriesFilter.lean} under unconditional summability, with
-nonzero-weight hypotheses only at samples that actually contribute.  Identifying
-its coefficients with the sinc-product tail, and proving the report's signs,
-remainder and bracketing bounds, uniform spline limits, infinite condition-number
-limit, and inverse-function consequences, remain unformalized.
+nonzero-weight hypotheses only at samples that actually contribute.
+
+The infinite condition-number limit is formalized too, in
+\path{LimitConditionNumber.lean}, which lets $n$ grow in the closed form
+$\sum_{j\le n}\lvert w_q(n,j)\rvert=(-q;q)_n/(q;q)_n$ of
+\path{GeneralQConditionNumber.lean}: both families are multipliable, the finite
+symbols converge to $(a;q)_\infty$, and the condition numbers converge to
+$(-q;q)_\infty/(q;q)_\infty$
+(\lean{Fabius.tendsto\_sum\_abs\_qToeplitzWeight}) on the whole range
+$0\le q<1$.  The crux is positivity of the denominator, and it is worth
+recording how it is obtained, because the obvious route fails: the one-shot
+Weierstrass product bound has deficit budget $q/(1-q)$, which already reaches
+$1$ at $q=\tfrac12$, and its vacuity at $q=\tfrac34$ is recorded as a theorem
+rather than as prose (\lean{Fabius.weierstrass\_bound\_vacuous\_at\_three\_quarters}).
+Positivity instead comes from summability of the logarithms, which needs no
+threshold at all (\lean{Fabius.qPochhammerInf\_pos}).  The limit is bounded below
+by $1$, attained exactly at $q=0$, and by $1/(1-q)$
+(\lean{Fabius.one\_div\_one\_sub\_le\_qConditionNumberLimit}); it is unbounded as
+$q\uparrow1$, and at $q=999/1000$ is already at least $1000$.
+
+Identifying the coefficients of the transformed-error series with the
+sinc-product tail, and proving the report's signs, remainder and bracketing
+bounds, uniform spline limits, and inverse-function consequences, remain
+unformalized.
 
 
 

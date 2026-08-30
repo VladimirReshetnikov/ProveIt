@@ -76,12 +76,15 @@ This is the **arithmetic half** of the volume's theorem
 own `p`-series.  The other half, the canonical product
 `p1:eq:canonical-a`, is independent of it.
 
-The volume records both as proved and lists the **general-`a`**
-product and this zeta identity as its two unformalized items; the
-`a ≡ 1` case of the product *is* formalized, as
-`Fabius.rvachevFourierProduct_eq_canonical` in
-`SincCanonicalProduct.lean`.  The general-`a` product remains out of
-reach in this corpus, but the zeta identity never needed it: it is a
+The volume recorded both as proved and listed the **general-`a`**
+product and this zeta identity as its two unformalized items.  The
+`a ≡ 1` case of the product is `Fabius.rvachevFourierProduct_eq_canonical`
+in `SincCanonicalProduct.lean`, and the general-`a` case is
+`Fabius.generalizedRvachevProduct_eq_canonical` in
+`FabiusFunction.GeneralizedCanonicalForm` — so both items are now
+closed, and with the order of vanishing on top of the product
+(`FabiusFunction.GeneralizedRvachevEntire`).  The zeta identity never
+needed the product in any case: it is a
 pure Dirichlet-series rearrangement about `m_a`, and `m_a` is
 already formalized — at arbitrary base and in an arbitrary additive
 commutative monoid, as the volume itself notes.

@@ -53,14 +53,20 @@ scope.
   `κ_{2j}(X_P) = (B_{2j}/(2j)) ∑_{r ≤ d} c_r 4^j/(4^j-1)^(r+1)`
   (`p1:eq:kappaP`) are NOT formalized here, in any form.
 * The product form `Φ_P = ∏_{r ≤ d} Φ_{r+1}^(c_r)`
-  (`p1:eq:newton-Phi-factorization`) is not formalized here, and not
-  elsewhere either.  The corpus now has the canonical sinc product at
-  a general weight (`FabiusFunction.GeneralizedRvachevProduct`), but
-  only at a **natural-number** exponent sequence, and the Newton
-  coefficients `c_r` are negative for some nonnegative `P`.  So what
-  this display needs is a signed exponent, i.e. a quotient of two
-  such products -- which is exactly the reading the volume gives it,
-  and which nothing in the corpus supplies.
+  (`p1:eq:newton-Phi-factorization`) is not formalized here, and only
+  half formalized elsewhere.  The corpus has the canonical sinc
+  product at a general weight
+  (`FabiusFunction.GeneralizedRvachevProduct`), but only at a
+  **natural-number** exponent sequence, and the Newton coefficients
+  `c_r` are negative for some nonnegative `P`.  So the display in the
+  reading the volume gives it -- a signed exponent, i.e. a quotient of
+  two such products -- is still unavailable.  What *is* available is
+  the passage from any `ℕ`-linear exponent identity to the
+  corresponding product identity,
+  `Fabius.generalizedRvachevProduct_linearCombination` in
+  `FabiusFunction.WeightLinearityProducts`, which settles this display
+  for every `P` whose Newton coefficients happen to be nonnegative,
+  and settles nothing for the rest.
 * The zero-multiplicity display `p1:eq:mP` is untouched; its
   one-Newton-component-at-a-time formalization is
   `Fabius.weightedScaleMultiplicity_choose` elsewhere in the corpus.

@@ -2,7 +2,7 @@
 
 \usepackage[T1]{fontenc}
 \usepackage[utf8]{inputenc}
-\usepackage{lmodern}
+\IfFileExists{libertinus.sty}{\usepackage{libertinus}}{\usepackage{lmodern}}
 \usepackage{microtype}
 \usepackage[a4paper,margin=28mm,headheight=14pt]{geometry}
 \usepackage{amsmath,amssymb,amsthm,amscd,mathtools,bm}
@@ -12,7 +12,7 @@
 \usepackage{caption}
 \usepackage{xcolor}
 \usepackage{url}
-\usepackage[unicode,colorlinks=true,linkcolor=blue!55!black,citecolor=blue!55!black,urlcolor=blue!55!black]{hyperref}
+\usepackage[unicode,hypertexnames=false,colorlinks=true,linkcolor=blue!55!black,citecolor=blue!55!black,urlcolor=blue!55!black]{hyperref}
 \usepackage[nameinlink,noabbrev]{cleveref}
 \usepackage{fancyhdr}
 \usepackage{listings}
@@ -31,6 +31,7 @@
 \fancyhead[R]{\thepage}
 \setlength{\parindent}{1.4em}
 \setlength{\parskip}{0.15em}
+\setlength{\emergencystretch}{3em}
 \setlist[itemize]{topsep=0.35em,itemsep=0.15em}
 \setlist[enumerate]{topsep=0.35em,itemsep=0.15em}
 \allowdisplaybreaks
@@ -93,6 +94,28 @@
 \Large Exact polynomial synthesis by undilated dyadic translates of the Rvachev \(\operatorname{up}\)-function, interpolation factorizations, and coefficient-space projectors}
 \author{Research report prepared for Vladimir Reshetnikov}
 \date{29 August 2026\\Repository snapshot \RepoCommit}
+\hypersetup{
+  pdftitle={Closing the Lagrange--Rvachev Loop},
+  pdfauthor={Research report prepared for Vladimir Reshetnikov},
+  pdfsubject={Exact polynomial synthesis by undilated dyadic translates of the Rvachev up-function},
+  pdfkeywords={Fabius function, Rvachev up-function, Lagrange interpolation, polynomial synthesis}
+}
+
+% ed.: the document is book class, which provides no abstract environment, so the
+% abstract below raised "Environment abstract undefined" and its text was dropped
+% from the build. Supplied here in the standard report-class shape.
+\newenvironment{abstract}%
+  {\cleardoublepage\thispagestyle{plain}\begin{center}\bfseries Abstract\end{center}\quotation}%
+  {\endquotation\clearpage}
+
+% ed.: \Sha (the Dirac comb) is used in the weighted-Poisson appendix but never
+% defined. Rendered as an upright sans-serif Cyrillic Sha built from three rules,
+% which needs no Cyrillic font to be installed.
+\providecommand{\Sha}{\mathord{\vcenter{\hbox{%
+  \rule[-0.05ex]{0.09em}{1.15ex}\kern0.22em
+  \rule[-0.05ex]{0.09em}{1.15ex}\kern0.22em
+  \rule[-0.05ex]{0.09em}{1.15ex}%
+  \kern-0.62em\rule[-0.05ex]{0.62em}{0.09em}}}}}
 
 \begin{document}
 \frontmatter
@@ -149,6 +172,16 @@ For data \(y_j=f(x_j)\), the synthesized loop equals the Lagrange interpolant \(
 
 For a convergent nested or telescoping Lagrange expansion, the substitution yields a level-grouped double series of shifted copies of \(u\), and its partial sum through level \(N\) is precisely \(\mathcal I_Nu\).  The report develops this identity, proves the collocation and projector results, derives explicit dyadic inter-level null vectors, gives low-degree closed forms, reports numerical checks, and formulates several conjectures about coefficient measures, asymptotic obliquity, and stable node families.  Claims described as ``new in this report'' mean that they were not found in the recursively scanned repository corpus; no claim of priority over the entire external literature is intended.
 \end{abstract}
+
+\begin{remark}[Formalization boundary]
+This inbox report arrived without a declaration-level Lean crosswalk.  Its
+inclusion in the research-frontier corpus does not assert that the displayed
+synthesis, interpolation-factorization, projector, conditioning, or
+conjectural statements have been formalized.  Unless a named Lean declaration
+is supplied in a later audited crosswalk, they remain prose proof obligations;
+existing repository theorems on related polynomial synthesis are not claimed
+here to match these statements literally.
+\end{remark}
 
 \tableofcontents
 \listoftables
@@ -218,7 +251,10 @@ Equivalently, \(u\) is the density of the almost surely convergent random series
 \end{equation}
 Its support radius is \(\sum_{r\ge1}2^{-r}=1\).  Splitting off the first summand gives the familiar integral and differential equations
 \begin{align}
- u(x)&=\int_{2x-1}^{2x+1}u(t)\dd t,\label{eq:up-integral}\
+ u(x)&=\int_{2x-1}^{2x+1}u(t)\dd t,\label{eq:up-integral}\\
+% ed.: was a single "\", which escaped the newline instead of ending the
+% align row; amsmath then reported "Multiple \label's" and dropped
+% eq:up-integral.
  u'(x)&=2u(2x+1)-2u(2x-1).\label{eq:up-differential}
 \end{align}
 In particular \(u(0)=1\), and \(u\) together with all derivatives vanishes at \(\pm1\).
@@ -245,7 +281,10 @@ No argument of \(u\) is rescaled in \cref{eq:synthesis-operator}.  The atom is a
 Let \(X=(x_0,\ldots,x_d)\) be pairwise distinct nodes in \([-1,1]\).  The cardinal polynomials and interpolation projector are
 \begin{align}
  \ell_j^X(x)&:=\prod_{\substack{0\le r\le d\\r\ne j}}
- \frac{x-x_r}{x_j-x_r},\label{eq:lagrange-cardinal}\
+ \frac{x-x_r}{x_j-x_r},\label{eq:lagrange-cardinal}\\
+% ed.: was a single "\" here, which escaped the newline instead of ending the
+% align row; both labels then fell in one row and eq:lagrange-cardinal was
+% clobbered, leaving the two \cref's to it undefined.
  (\Iop_X f)(x)&:=\sum_{j=0}^{d}f(x_j)\ell_j^X(x).
  \label{eq:lagrange-projector}
 \end{align}
@@ -305,9 +344,9 @@ Because \(M(0)=1\), the reciprocal has a formal and locally convergent expansion
  \label{eq:inverse-moments}
 \end{equation}
 On \(\Pp_d\), define
+% ed.: restored the dropped backslash in the restriction operator.
 \begin{equation}
- \Aop_d:=M(D)^{-1}
-estricted_{\Pp_d}
+ \Aop_d:=M(D)^{-1}\restricted_{\Pp_d}
  =\sum_{n=0}^{d}\lambda_n\frac{D^n}{n!},
  \qquad D:=\frac{\dd}{\dd x}.
  \label{eq:inverse-moment-operator}
@@ -323,8 +362,11 @@ There are three complementary closed descriptions.
  \label{eq:appell-bell-generating}
 \end{equation}
 so its coefficients are complete exponential Bell polynomials evaluated at
-\((x,-\kappa_2,0,-\kappa_4,0,\ldots)\).
+\[
+ (x,-\kappa_2,0,-\kappa_4,0,\ldots).
+\]
 
+\par\medskip
 \item \emph{Bernoulli product form.}  Since
 \[
  \frac{w}{\sinh w}=\frac{2w\e^w}{\e^{2w}-1}
@@ -342,6 +384,7 @@ we have, modulo \(D^{d+1}\),
 \end{equation}
 The infinite product is computationally finite to every prescribed degree after collecting powers of \(D\).
 
+\par\medskip
 \item \emph{Appell form.}  Define \(A_n\) by
 \begin{equation}
  \sum_{n=0}^{\infty}A_n(x)\frac{z^n}{n!}
@@ -435,7 +478,7 @@ For the shift lattice \(h\Z=m^{-1}\Z\), the minimum zero order of \(\widehat u\)
  s(m):=\vtwo(m)+1.
  \label{eq:strang-fix-order}
 \end{equation}
-Consequently the undilated translates \(u(\,oldsymbol\cdot-k/m)\) have exact polynomial-reproduction degree \(\vtwo(m)\).  In particular, \(m=2^d\) gives order \(d+1\) and reproduces \(\Pp_d\); no smaller positive integer does so for all degree-\(d\) polynomials.
+Consequently the undilated translates \(u(\,\boldsymbol\cdot-k/m)\) have exact polynomial-reproduction degree \(\vtwo(m)\).  In particular, \(m=2^d\) gives order \(d+1\) and reproduces \(\Pp_d\); no smaller positive integer does so for all degree-\(d\) polynomials.
 \end{corollary}
 
 \begin{remark}[Density is not the invariant]
@@ -1057,7 +1100,7 @@ where
 \end{equation}
 The level-by-level and single-level partial sums are identical as functions but generally have different coefficient vectors and even live on different grids.  Their differences are explicit local null combinations of translates, studied next.
 
-\section{Direct cardinal substitution at level \(N\)}
+\section{Direct cardinal substitution at level \texorpdfstring{\(N\)}{N}}
 If \(X_N=(x_{N,0},\ldots,x_{N,d_N})\), then
 \begin{equation}
  b_{N,k}=\sum_{j=0}^{d_N}u(x_{N,j})C_{kj}^{X_N,M_N}.
@@ -1212,8 +1255,22 @@ At high degree, explicitly materializing \(m=2^d\) is primarily of theoretical v
 \chapter{Numerical experiments}
 \label{ch:numerics}
 
+\begin{remark}[Landing provenance]
+The repository received this report as a bare TeX source.  The script, tables,
+figures, corpus manifests, and source maps described below were not supplied.
+Accordingly the fallback build displays placeholders, the numerical checks
+reported in this chapter have not been independently reproduced here, and the
+source's 65-file novelty scan is not auditable from the delivered artifact.
+The fallback repository metadata also records its source checkpoint as
+\texttt{unknown}.
+\end{remark}
+
 \section{Reproducible method}
-The accompanying script \RepoPath{numerical\_experiments.py} uses exact SymPy arithmetic for cumulants, inverse moments, Appell polynomials, Lagrange cardinals, and synthesis coefficients.  It tabulates \(u\) independently by inverse Fourier series on a period-four box:
+The source describes an intended script \RepoPath{numerical\_experiments.py},
+not included in the delivered artifact, that uses exact SymPy arithmetic for
+cumulants, inverse moments, Appell polynomials, Lagrange cardinals, and
+synthesis coefficients.  It would tabulate \(u\) independently by inverse
+Fourier series on a period-four box:
 \begin{equation}
  u(x)\approx\frac1{4}\sum_{|n|<N/2}
  \widehat u\!\left(\frac{\pi n}{2}\right)
@@ -1231,7 +1288,9 @@ The tests are deliberately redundant:
 \end{enumerate}
 
 \IfFileExists{experiment_tables.tex}{\input{experiment_tables.tex}}{
-\paragraph{Build note.} Numerical tables were not generated in this fallback build; run \texttt{python numerical\_experiments.py} before compiling.}
+\paragraph{Build note.} Numerical tables were not generated in this fallback
+build; the unsupplied script would be run as \texttt{python}
+\path{numerical_experiments.py} before compiling.}
 
 \begin{figure}[htbp]
  \centering
@@ -1463,7 +1522,7 @@ Because the loop exactly inherits its projector, the strongest immediate improve
 \end{enumerate}
 For each family one should report both the usual Lebesgue/projection norm and the new coefficient metrics \(\norm{C}\), \(\norm{CR}\), and \(\norm{\mu_d}_{\mathrm{TV}}\).
 
-\section{Base-\(b\) and nonuniform analogues}
+\section{\texorpdfstring{Base-\(b\)}{Base-b} and nonuniform analogues}
 Replace the binary random series by other nested uniform convolutions or compactly supported refinable densities.  The central questions are which reciprocal lattices acquire high multiplicity, which arithmetic valuation replaces \(\vtwo\), and whether the inverse cumulants retain a recognizable Bernoulli or \(q\)-series form.  This direction connects naturally to the repository's broader work on \(q\)-binomial coefficients and infinite products.
 
 \section{Computer algebra and formal verification}
@@ -1493,6 +1552,10 @@ Substitution into the Lagrange expansion of \(u\) closes the loop, but the opera
 
 \IfFileExists{corpus_index.tex}{\input{corpus_index.tex}}{
 \chapter{Corpus audit and source map}
+\label{app:corpus}% ed.: the fallback branch carried no label, so the two \cref's
+% to app:corpus were undefined whenever corpus_index.tex is absent -- which is
+% always here, since this report arrived as a bare .tex with none of the
+% companion files (corpus index, CSV, extraction script) its text refers to.
 The generated corpus index was unavailable in this build.}
 
 \chapter{Proof details for the weighted Poisson identity}
@@ -1582,7 +1645,9 @@ The identity \(RC=I\) is both a theorem and an exact-arithmetic regression test.
 
 \chapter{Reproducibility files}
 \label{app:reproducibility}
-The accompanying archive contains:
+The source describes an intended accompanying archive containing the following
+files.  They were not part of the bare-source delivery; only the renamed TeX
+source and its repository-built PDF are maintained in this directory.
 \begin{description}[style=nextline]
 \item[\RepoPath{rvachev\_lagrange\_loop.tex}]
 The complete report source.
@@ -1602,11 +1667,13 @@ A conservative lexical overlap audit for the report's operator-level deductions 
 Raw numerical outputs and generated figure files.
 \end{description}
 
-To regenerate the numerical material and PDF from the report directory:
+The numerical command below requires the unsupplied script.  The maintained
+PDF itself is rebuilt from the report directory with three serial passes:
 \begin{lstlisting}[language=bash]
 python numerical_experiments.py
-pdflatex -interaction=nonstopmode -halt-on-error rvachev_lagrange_loop.tex
-pdflatex -interaction=nonstopmode -halt-on-error rvachev_lagrange_loop.tex
+pdflatex -interaction=nonstopmode -halt-on-error Rvachev_Lagrange_Loop_Report_v6.tex
+pdflatex -interaction=nonstopmode -halt-on-error Rvachev_Lagrange_Loop_Report_v6.tex
+pdflatex -interaction=nonstopmode -halt-on-error Rvachev_Lagrange_Loop_Report_v6.tex
 \end{lstlisting}
 
 \backmatter
@@ -1655,7 +1722,8 @@ V.~Reshetnikov,
 \bibitem{UpPolynomialSynthesis}
 V.~Reshetnikov,
 \newblock \emph{Up Polynomial Synthesis},
-\newblock \RepoPath{Analysis/FabiusFunction/docs/Up\_Polynomial\_Synthesis.tex}, in \cite{ProveItCorpus}.
+\newblock \path{Analysis/FabiusFunction/docs/Up_Polynomial_Synthesis.tex}, in
+\cite{ProveItCorpus}.
 
 \end{thebibliography}
 

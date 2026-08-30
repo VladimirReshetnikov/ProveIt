@@ -97,6 +97,7 @@ lemma oddPhase_neg (a c v : ℝ) : oddPhase a c (-v) = -oddPhase a c v := by
   simp [oddPhase]
   ring
 
+/-- The retained odd phase has vanishing real part. -/
 @[simp] lemma oddPhase_re (a c v : ℝ) : (oddPhase a c v).re = 0 := by
   simp [oddPhase, Complex.mul_re, pow_succ]
 

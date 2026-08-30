@@ -153,11 +153,12 @@ digit system. -/
 noncomputable def mulPrefix (ν : Measure ℝ) (c : ℝ) : ℕ → Measure ℝ :=
   digitPrefix ν (AddMonoidHom.mulLeft c)
 
-/-- The real geometric prefix of length zero is the point mass at zero. -/
+/-- The length-zero geometric prefix is the point mass at zero. -/
 @[simp] theorem mulPrefix_zero (ν : Measure ℝ) (c : ℝ) :
     mulPrefix ν c 0 = Measure.dirac 0 := rfl
 
-/-- Extending a real geometric prefix adds one digit and rescales the old prefix by `c`. -/
+/-- A successor geometric prefix is one digit convolved with the scaled
+preceding prefix. -/
 theorem mulPrefix_succ (ν : Measure ℝ) (c : ℝ) (m : ℕ) :
     mulPrefix ν c (m + 1) = ν ∗ (mulPrefix ν c m).map (c * ·) := rfl
 

@@ -46,7 +46,7 @@ namespace Fabius
 def parityCharacter (a : ℕ → ℕ) (n : ℕ) : ℤ :=
   (-1) ^ (∑ h ∈ bitSupport n, a h)
 
-/-- The weighted parity character takes the value one at zero. -/
+/-- The weighted parity character is one at the empty binary support. -/
 @[simp] theorem parityCharacter_zero (a : ℕ → ℕ) :
     parityCharacter a 0 = 1 := by
   simp [parityCharacter]

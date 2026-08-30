@@ -1601,6 +1601,7 @@ noncomputable def negativeLaplacePsiCircle : C(AddCircle (1 : ℝ), ℂ) where
     change Continuous (fun t : ℝ => (negativeLaplacePsi t : ℂ))
     exact continuous_ofReal.comp continuous_negativeLaplacePsi)
 
+/-- The circle-valued correction evaluated at the class of `t` is the original periodic correction. -/
 @[simp] lemma negativeLaplacePsiCircle_coe (t : ℝ) :
     negativeLaplacePsiCircle (t : AddCircle (1 : ℝ)) =
       (negativeLaplacePsi t : ℂ) := by

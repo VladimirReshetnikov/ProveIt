@@ -157,4 +157,19 @@ verification package lives under
 Absorbed directories deleted; provenance with SHA-256 in the volume's
 Appendix B and `assets/SHA256SUMS-absorbed.txt`.
 
+Seven additional same-question reconstruction reports landed on 2026-08-29
+and remain separate pending a deliberate fold into
+[`Up_Polynomial_Synthesis/`](Up_Polynomial_Synthesis/):
+`rvachev_lagrange_loop_report/`, `Lagrange_Rvachev_Loop_Package/`,
+`lagrange_rvachev_loop_report_v3/`,
+`Lagrange_Rvachev_Closed_Loop_Report/`,
+`Rvachev_Lagrange_Loop_Report_v5/`,
+`Rvachev_Lagrange_Loop_Report_v6/`, and
+[`Legendre_Rvachev_Self_Reconstruction/`](Legendre_Rvachev_Self_Reconstruction/).
+The v6 member was delivered as a bare TeX file; its rendered landing notes
+record the missing companion assets and the absence of a declaration-level
+Lean crosswalk.  The Legendre member is a checksum-verified 22-file package
+with a 27-page Libertinus rebuild, exact data certificates, four dual-format
+figures, and snapshot `faa3a9b94ac0e71abdc53c36fdf428222e4d2a8c`.
+
 See [`../MANIFEST.md`](../MANIFEST.md) for titles and provenance.

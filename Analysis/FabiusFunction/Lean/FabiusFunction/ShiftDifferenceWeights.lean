@@ -43,9 +43,15 @@ a weight sequence by `m` is the binomial combination of its iterated
 forward differences: `a_{h+m} = ∑_{r≤m} C(m,r)·(Δʳa)_h`.
 
 This is the exponent-level content of the volume's finite-difference
-factorization; the analytic factorization of the canonical products
-themselves is not formalized, since the corpus has `Φ` only at the
-constant weight. -/
+factorization.  The factorization of the products themselves is
+`FabiusFunction.WeightLinearityProducts`
+(`generalizedRvachevProduct_shift_factorization`), wherever the
+differences `Δʳa` are nonnegative — which is where both sides are
+defined, `Φ_a` accepting only `ℕ`-valued weights; the signed,
+germ-level reading is not formalized.  (An earlier version of this
+comment said the corpus had `Φ` only at the constant weight.  That
+was never true: `FabiusFunction.GeneralizedRvachevProduct` builds
+`Φ_a` at every admissible weight.) -/
 theorem weight_shift_eq_sum_fwdDiff (a : ℕ → G) (m h : ℕ) :
     a (h + m) = ∑ r ∈ range (m + 1), m.choose r • Δ_[1]^[r] a h := by
   have hshift := shift_eq_sum_fwdDiff_iter (h := (1 : ℕ)) a m h

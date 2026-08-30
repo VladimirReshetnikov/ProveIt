@@ -13,13 +13,13 @@ of an admissible exponent sequence and proves that the factors are
 `Multipliable` at every `z : ℂ`.  Its own header records what is
 missing: "Nothing in this file asserts convergence that is uniform on
 compact sets, nothing asserts that `Φ_a` is differentiable or
-entire".  `FabiusFunction.GeneralizedCanonicalForm` repeats the gap,
-and `FabiusFunction.CanonicalIntegerPoint` says of its factorization
-`Φ_a(z) = (1 - z²/n²)^(m_a n) · R_n(z)`:
-
-> "Turning it into an order statement would require, in addition,
-> that `R_n` be analytic near `±n` — not proved anywhere in the
-> corpus."
+entire".  `FabiusFunction.GeneralizedCanonicalForm` repeated the gap,
+and `FabiusFunction.CanonicalIntegerPoint` said of its factorization
+`Φ_a(z) = (1 - z²/n²)^(m_a n) · R_n(z)` that turning it into an order
+statement "would require, in addition, that `R_n` be analytic near
+`±n` — not proved anywhere in the corpus".  (That sentence has since
+been rewritten to point here; it is quoted as the statement of the
+gap this module was written to close, not as current text.)
 
 This module closes that gap for **every** admissible weight.  The
 route is Mathlib's locally uniform product machinery, of which

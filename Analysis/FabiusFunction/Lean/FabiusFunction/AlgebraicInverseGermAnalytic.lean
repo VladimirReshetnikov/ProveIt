@@ -36,7 +36,7 @@ quadratic-formula root vanishing at `q = 0`. -/
 noncomputable def dyadicRootFun (q : ℝ) : ℝ :=
   (Real.sqrt (1 + (64 / 9) * q) - 1) / 8
 
-/-- The analytic quadratic-formula branch vanishes at the origin. -/
+/-- The analytic dyadic root branch vanishes at the origin. -/
 @[simp] theorem dyadicRootFun_zero : dyadicRootFun 0 = 0 := by
   simp [dyadicRootFun]
 
