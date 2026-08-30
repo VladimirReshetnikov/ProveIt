@@ -146,4 +146,23 @@ verification package lives under
 Absorbed directories deleted; provenance with SHA-256 in the volume's
 Appendix B and `assets/SHA256SUMS-absorbed.txt`.
 
+`Legendre_Rvachev_Self_Reconstruction/` (*Legendre--Rvachev
+Self-Reconstruction on [-1,1]*) landed 2026-08-29 and is **pending
+merge into `Up_Polynomial_Synthesis/`**.  It is not a seventh
+Lagrange-loop sibling: the six loop reports synthesize *Lagrange
+cardinals* from shifted up-atoms, whereas this one turns the Legendre
+strand inward, onto the self-reconstruction and energy structure of up
+itself.  Its own `CORPUS_AUDIT.md` names
+`lagrange_rvachev_loop_report_v3/` as the directly preceding
+Legendre-aware report and lists what it imports rather than claims.
+New here: exact orthogonality of the finite self-translate blocks,
+Pythagorean tails and a Sobolev energy hierarchy, a positive rational
+series and an infinite-sinc integral for the energy constant
+`A_2 = int_0^1 F^2`, interlevel null trains with a quarter-grid lifting
+decomposition, Hilbert--Schmidt identities for the even-projector
+factorization, and a sharp central-coefficient root law.  Its
+theorem-level checks are exact rational with residual `0`; the reported
+energy value is a stabilized display of an exact partial sum, not a
+certified enclosure of the limit, and the report says so.
+
 See [`../MANIFEST.md`](../MANIFEST.md) for titles and provenance.
