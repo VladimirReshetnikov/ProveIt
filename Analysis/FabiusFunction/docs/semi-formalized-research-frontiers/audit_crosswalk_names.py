@@ -15,8 +15,10 @@ Exit status is 1 when anything is unresolved, so this can gate a commit.
 import io, os, re, sys
 from pathlib import Path
 
-DOCS = Path(__file__).resolve().parent
-LEAN = DOCS.parent.parent / 'Lean' / 'FabiusFunction'
+FRONTIER_ROOT = Path(__file__).resolve().parent
+FABIUS_ROOT = FRONTIER_ROOT.parent.parent
+DOCS = FRONTIER_ROOT
+LEAN = FABIUS_ROOT / 'Lean' / 'FabiusFunction'
 
 DECL = re.compile(
     r'^\s*(?:@\[[^\]]*\]\s*)?'

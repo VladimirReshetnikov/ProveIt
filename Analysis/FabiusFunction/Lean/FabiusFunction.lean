@@ -39,6 +39,9 @@ import FabiusFunction.PaperFabiusAsymptotic
 import FabiusFunction.PaperKFoldThueMorse
 import FabiusFunction.FinitePolynomialFunctional
 import FabiusFunction.PolynomialMomentFunctional
+import FabiusFunction.FiniteMomentGram
+import FabiusFunction.GramStieltjes
+import FabiusFunction.FiniteMomentJacobi
 import FabiusFunction.WeightedScaleMultiplicity
 import FabiusFunction.SpectralZetaWeighted
 import FabiusFunction.ShiftDifferenceWeights
@@ -184,6 +187,7 @@ import FabiusFunction.StieltjesLogFixedPoint
 import FabiusFunction.StieltjesResolventHierarchy
 import FabiusFunction.StieltjesGeneralizedOrder
 import FabiusFunction.OrthogonalPolynomialConstruction
+import FabiusFunction.OrthogonalPolynomialGramBridge
 import FabiusFunction.OrthogonalPolynomialValues
 import FabiusFunction.OrthogonalPolynomialParity
 import FabiusFunction.OrthogonalPolynomialRecurrence

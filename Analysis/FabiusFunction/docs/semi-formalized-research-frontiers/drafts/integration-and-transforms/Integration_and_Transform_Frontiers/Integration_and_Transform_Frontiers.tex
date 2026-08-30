@@ -10095,6 +10095,81 @@ regenerates \texttt{numerical\_results.txt} and
 
 The Stieltjes transform admits one more exact structure that appears not to have been exploited in the audited corpus.  Let $P_n$ be the monic polynomials orthogonal with respect to $\dd F$ on $[0,1]$, normalized by $P_{-1}=0$, $P_0=1$.
 
+\begin{statusbox}[Post-snapshot Lean status of the finite Gram--Stieltjes algebra]
+The post-snapshot development begins with
+\path{FiniteMomentGram.lean} and \path{GramStieltjes.lean}, and the current
+\path{FiniteMomentJacobi.lean} completes their generic finite recurrence
+layer.  They take an arbitrary scalar sequence
+\path{moment : Nat -> R}; they do not identify that sequence with the Fabius moments
+$d_n$ or with the moments of any measure.  This measure-free generality complements,
+rather than replaces, the up-measure-specific pipeline described later in this section.
+
+In \path{FiniteMomentGram.lean}, \path{Fabius.momentFunctional} is the polynomial
+linear functional determined by its values on powers of $X$.  The declarations
+\path{Fabius.momentFunctional_of_linearMap},
+\path{Fabius.momentFunctional_injective}, and
+\path{Fabius.momentFunctional_map} give recovery, uniqueness, and scalar base change.
+The symmetric bilinear form \path{Fabius.momentPairing}, the matrix
+\path{Fabius.momentHankelMatrix}, its determinant
+\path{Fabius.momentHankelDet}, and the degree-bounded restriction
+\path{Fabius.finiteMomentPairing} are likewise generic.  The exact matrix theorem
+\path{Fabius.finiteMomentPairing_toMatrix} identifies the restricted pairing in the
+monomial basis with the Hankel matrix.  Over a commutative integral domain,
+\path{Fabius.finiteMomentPairing_nondegenerate_iff} identifies nondegeneracy with
+nonvanishing of the corresponding Hankel determinant.
+
+In \path{GramStieltjes.lean}, \path{Fabius.gramStieltjesNumerator} is the
+fraction-free polynomial obtained from the last column of the adjugate of the
+order-$(n+1)$ Hankel matrix.  The declarations
+\path{Fabius.momentPairing_gramStieltjesNumerator_X_pow_eq_zero},
+\path{Fabius.momentPairing_gramStieltjesNumerator_X_pow_eq_det},
+\path{Fabius.gramStieltjesNumerator_coeff_top}, and
+\path{Fabius.momentPairing_gramStieltjesNumerator_self} prove, respectively, its
+lower-power orthogonality, its pairing with $X^n$, its degree-$n$ coefficient, and its
+self-pairing in terms of consecutive Hankel determinants.  Over a field, after assuming
+the order-$n$ determinant is nonzero,
+\path{Fabius.gramStieltjesPolynomial_isMonicOfDegree},
+\path{Fabius.momentPairing_gramStieltjesPolynomial_eq_zero}, and
+\path{Fabius.eq_gramStieltjesPolynomial_of_isMonicOfDegree_of_orthogonal} give the
+monic degree-$n$ normalization, orthogonality to every lower-degree polynomial, and
+uniqueness.  The exact self-pairing quotient is
+\path{Fabius.momentPairing_gramStieltjesPolynomial_self}; its nonzero corollary assumes
+both consecutive determinants are nonzero.
+
+\path{FiniteMomentJacobi.lean} defines the norm quotient
+\path{Fabius.gramStieltjesNorm}, the diagonal coefficient
+\path{Fabius.gramStieltjesJacobiDiagonal}, and the subdiagonal coefficient
+\path{Fabius.gramStieltjesJacobiSubdiagonal}.  The theorem
+\path{Fabius.gramStieltjesJacobiSubdiagonal_eq_det_ratio} proves
+\[
+ \frac{h_{n+1}}{h_n}
+ =\frac{\Delta_{n+2}\Delta_n}{\Delta_{n+1}^{\,2}}.
+\]
+The theorem \path{Fabius.gramStieltjesPolynomial_three_term_zero} proves
+$XP_0=P_1+\alpha_0P_0$ from the nonzero first minor, and
+\path{Fabius.gramStieltjesPolynomial_three_term} proves every higher monic
+three-term recurrence from exactly the three nonzero minors of orders
+$n,n+1,n+2$.  These theorems are finite field algebra and assume neither a
+measure nor positivity.
+
+The separate up-measure pipeline in \path{MomentHankelMatrix.lean},
+\path{MomentHankelValues.lean}, and the \path{OrthogonalPolynomial*.lean} modules now
+supplies strict positivity of the Hankel matrices and ratios, identifies the exact
+moments, constructs the normalized polynomials, proves parity and the symmetric
+three-term recurrence, and evaluates the first displayed Jacobi data.  The generic
+modules above remain useful because their determinant and orthogonality algebra assumes
+neither a measure nor positivity.  The comparison module
+\path{OrthogonalPolynomialGramBridge.lean} proves that the generic functional
+for \path{upMoment} is integration against the canonical up measure and
+identifies both Hankel objects, both fraction-free determinant polynomials,
+and both monic normalizations.  Its Jacobi wrappers identify the generic norm
+with the up-specific Hankel ratio, prove the generic diagonal is zero, and
+identify the generic subdiagonal with the quotient of consecutive ratios.
+Root location and simplicity, Gaussian
+quadrature, finite or infinite $J$-fraction identification, and
+continued-fraction convergence remain outside the formal corpus.
+\end{statusbox}
+
 \begin{proposition}[Rational Jacobi parameters]\label{p5:prop:rational-Jacobi}
 There are positive rational numbers $b_n$ such that
 \begin{equation}\label{p5:eq:orthogonal-recurrence}
@@ -24578,6 +24653,8 @@ The constants
  \Phi\!\left(-\sum\xi_j\right)\dd\bm\xi=2A_q
 \end{equation}
 form a natural period family attached to the dyadic sinc product.
+
+\par\smallskip
 
 \begin{problem}
 Find recurrences, functional equations, or arithmetic obstructions for

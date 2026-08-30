@@ -581,7 +581,7 @@ def generate_outputs(output_dir: Path, max_power: int, max_level: int) -> None:
     ]
     for n, value in moments:
         moment_lines.append(
-            f"{n} & ${fraction_tex(value)}$ & ${float(value):.12f}$ \\\\" 
+            f"{n} & ${fraction_tex(value)}$ & ${float(value):.12f}$ \\\\"
         )
     moment_lines.extend([r"\bottomrule", r"\end{tabular}"])
     (output_dir / "moment_table.tex").write_text(
@@ -597,7 +597,7 @@ def generate_outputs(output_dir: Path, max_power: int, max_level: int) -> None:
     for record in thresholds:
         before = "--" if record.error_before is None else f"${fraction_tex(record.error_before, factor_large_denominator=True)}$"
         threshold_lines.append(
-            f"{record.power} & {record.predicted} & {before} & $0$ \\\\" 
+            f"{record.power} & {record.predicted} & {before} & $0$ \\\\"
         )
     threshold_lines.extend([r"\bottomrule", r"\end{tabular}"])
     (output_dir / "threshold_table.tex").write_text(
@@ -612,7 +612,7 @@ def generate_outputs(output_dir: Path, max_power: int, max_level: int) -> None:
     ]
     for order, coeff, numeric, _ in spectral_rows:
         spectral_lines.append(
-            f"{order} & ${fraction_tex(coeff)}$ & ${numeric:.14g}$ \\\\" 
+            f"{order} & ${fraction_tex(coeff)}$ & ${numeric:.14g}$ \\\\"
         )
     spectral_lines.extend([r"\bottomrule", r"\end{tabular}"])
     (output_dir / "spectral_table.tex").write_text(

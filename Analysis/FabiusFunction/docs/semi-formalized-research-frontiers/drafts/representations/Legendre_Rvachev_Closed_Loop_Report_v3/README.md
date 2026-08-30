@@ -1,8 +1,8 @@
 # Legendre Polynomials in the Rvachev Up Dictionary
 
-This bundle accompanies the 33-page report
+This bundle accompanies the 32-page report
 
-> **Legendre Polynomials in the Rvachev Up Dictionary:**
+> **Legendre Polynomials in the Rvachev Up Dictionary:**<br>
 > *Symmetric finite synthesis, closed Fourier--Legendre loops, and transmuted spectral geometry.*
 
 ## Main files
@@ -31,13 +31,20 @@ Python environment used for the archived outputs:
 
 ## Compiling the report
 
-A standard TeX Live installation with `latexmk` is sufficient:
+A standard TeX Live installation is sufficient.  Run exactly three serial
+pdfLaTeX passes:
 
 ```bash
-latexmk -pdf -interaction=nonstopmode -halt-on-error legendre_rvachev_closed_loop.tex
+pdflatex -interaction=nonstopmode -halt-on-error legendre_rvachev_closed_loop.tex
+pdflatex -interaction=nonstopmode -halt-on-error legendre_rvachev_closed_loop.tex
+pdflatex -interaction=nonstopmode -halt-on-error legendre_rvachev_closed_loop.tex
 ```
 
-The archived PDF was built with pdfLaTeX under TeX Live 2025. The four generated PNG files must remain in the same directory as the source.
+The source selects Libertinus when available and otherwise falls back to Latin
+Modern; release artifacts must be checked with `pdffonts` for embedded,
+subsetted Libertinus fonts.  The archived PDF was built with pdfLaTeX under
+TeX Live 2025. The four generated PNG files must remain in the same directory
+as the source.
 
 ## Exact certificates and tables
 
