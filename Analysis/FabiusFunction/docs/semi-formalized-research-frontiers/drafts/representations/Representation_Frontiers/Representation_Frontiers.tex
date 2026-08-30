@@ -849,6 +849,44 @@ finite-height Herglotz--Poisson formulas, integrated interval Stieltjes--Perron 
 and initial exact Jacobi data are likewise direct named results in the corresponding
 \path{Stieltjes*.lean} and \path{OrthogonalPolynomialJacobi.lean} modules.
 
+The bounded-measure Laurent status is stronger than those two named
+specializations.  \path{MeasureCauchyMomentLaurent.lean} contains exactly one
+public definition and fifteen public theorems.  For every finite real measure,
+every scalar field \(\mathbb K\) through Lean's
+\texttt{\{K\} [RCLike K]} interface, arbitrary center \(c\in\mathbb K\),
+radius \(R\ge0\), and almost-everywhere relative-ball bound
+\(\lVert(x:\mathbb K)-c\rVert\le R\), it defines
+\[
+ m_n^{(c)}=\int ((x:\mathbb K)-c)^n\,\dd\mu(x)
+\]
+and, when \(R<\lVert z-c\rVert\), proves the exact finite identity
+\[
+ \int\frac{\dd\mu(x)}{z-x}
+ =\sum_{k<N}\frac{m_k^{(c)}}{(z-c)^{k+1}}
+  +(z-c)^{-N}\int\frac{((x:\mathbb K)-c)^N}{z-x}\,\dd\mu(x).
+\]
+The same module proves measurability and the required kernel/remainder
+integrability, the mass-scaled moment estimate, the sharp uniform remainder
+bound
+\[
+ \left\lVert\int\frac{\dd\mu(x)}{z-x}
+ -\sum_{k<N}\frac{m_k^{(c)}}{(z-c)^{k+1}}\right\rVert
+ \le \mu(\R)(\lVert z-c\rVert-R)^{-1}
+       \left(\frac{R}{\lVert z-c\rVert}\right)^N,
+\]
+and the resulting \path{Summable}, \path{tsum}, and \path{HasSum} forms;
+complex wrappers connect the direct integral to
+\path{measureCauchyTransform}.  The earlier up-measure statements in
+\path{StieltjesMomentLaurent.lean} and
+\path{StieltjesCauchyTransform.lean} are the \(c=0,R=1\) instances.
+The compatibility declarations
+\path{ae_norm_sub_zero_le_one_rvachevMeasure} and
+\path{measureCauchyMoment_rvachevMeasure_zero} supply respectively the
+relative-ball hypothesis and the coefficient identification with
+\path{upMoment}.  None of these declarations proves the coefficient recursion
+or the compact moment-determinacy/uniqueness argument used later in this
+report.
+
 Still open are the complex logarithmic continuation, complex order, pointwise or
 nontangential Sokhotski--Plemelj/Hilbert-principal-value formulas, the full
 J-fraction/Pad\'e package, and the separate conversion of the all-order derivative orbit
@@ -1695,13 +1733,20 @@ the generic engine from \path{AffineDifferenceOrbit.lean} to deliver item 4.
 The separate higher-kernel conversion stated in \eqref{p1:eq:R-kernel-tree}
 remains open; the generic CDF/survival formulas at every positive kernel power
 do not by themselves prove that explicit Thue--Morse sum identity.  The
-Laurent, Hankel, and \path{OrthogonalPolynomialJacobi.lean} modules formalize
-the up-specific moment side and first exact Jacobi data, while the generic
-finite-algebra modules above formalize the determinant construction and
-complete finite three-term recurrence without positivity.  Item 5 is now
-delivered by \path{OrthogonalPolynomialGramBridge.lean}.  Item 6's second-kind
-polynomials, complete finite convergents, and Gaussian error theorem and item
-7's asymptotics remain open.
+bounded-measure Laurent obligation is delivered generically by the one-definition,
+fifteen-theorem \path{MeasureCauchyMomentLaurent.lean} API under its
+\texttt{RCLike}, almost-everywhere relative-ball, and finite-mass hypotheses.
+The bridge declarations \path{ae_norm_sub_zero_le_one_rvachevMeasure} and
+\path{measureCauchyMoment_rvachevMeasure_zero} recover the existing up-specific
+\(c=0,R=1\) Laurent results and their \path{upMoment} coefficients.  This does
+not formalize the coefficient recursion or moment-determinacy argument.  The
+up-specific Laurent, Hankel, and \path{OrthogonalPolynomialJacobi.lean}
+modules formalize the moment side and first exact Jacobi data, while the
+generic finite-algebra modules above formalize the determinant construction
+and complete finite three-term recurrence without positivity.  Item 5 is now
+delivered by \path{OrthogonalPolynomialGramBridge.lean}.  Item 6's
+second-kind polynomials, complete finite convergents, and Gaussian error
+theorem and item 7's asymptotics remain open.
 \end{problem}
 
 \section{Promising research program}

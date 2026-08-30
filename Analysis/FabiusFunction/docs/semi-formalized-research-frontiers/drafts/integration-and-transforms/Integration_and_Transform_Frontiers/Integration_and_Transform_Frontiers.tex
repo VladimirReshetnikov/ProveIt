@@ -485,7 +485,50 @@ carrier, nonzero uniform and tail scales, and the displayed equality in law; the
 need not be closed, compact, measurable, or nonempty, and the measure need not be a
 probability measure.  Negative nonzero scales are allowed.
 
-\path{GeometricUniformCauchy.lean} specializes that interface to the law of
+The adjacent generic bounded-support layer is
+\path{MeasureCauchyMomentLaurent.lean}, with exactly one public definition and fifteen
+public theorems.  For a finite real measure and any scalar field
+\(\mathbb K\) with \path{RCLike} structure, the definition
+\path{Fabius.measureCauchyMoment} is
+\[
+ m_n(c):=\int_{\R}\bigl((x:\mathbb K)-c\bigr)^n\,\dd\mu(x).
+\]
+Given \(R\ge0\), the measure-theoretic relative-support hypothesis
+\(\lVert(x:\mathbb K)-c\rVert\le R\) almost everywhere, and
+\(R<\lVert z-c\rVert\), the exact generic identity is
+\[
+ \int_{\R}\frac{\dd\mu(x)}{z-x}
+ =\sum_{k<N}\frac{m_k(c)}{(z-c)^{k+1}}
+  +(z-c)^{-N}\int_{\R}\frac{((x:\mathbb K)-c)^N}{z-x}\,\dd\mu(x),
+\]
+and its sharp mass-sensitive bound is
+\[
+ \left\lVert\int_{\R}\frac{\dd\mu(x)}{z-x}
+ -\sum_{k<N}\frac{m_k(c)}{(z-c)^{k+1}}\right\rVert
+ \le \mu(\R)\,(\lVert z-c\rVert-R)^{-1}
+       \left(\frac{R}{\lVert z-c\rVert}\right)^N.
+\]
+No probability normalization is assumed: the zeroth moment is the total mass.
+The theorem inventory is exact.  The field identity is
+\path{Fabius.inv_sub_eq_sum_range_add}; the five foundational results are
+\path{Fabius.measureCauchyMoment_zero},
+\path{Fabius.measurable_inv_sub_rclike},
+\path{Fabius.integrable_centered_pow_div_sub_of_ae_norm_sub_le},
+\path{Fabius.integrable_inv_sub_of_ae_norm_sub_le}, and
+\path{Fabius.norm_measureCauchyMoment_le}.  The five direct-integral Laurent results are
+\path{Fabius.integral_inv_sub_eq_sum_range_measureCauchyMoment_add},
+\path{Fabius.norm_integral_inv_sub_sub_sum_range_measureCauchyMoment_le},
+\path{Fabius.summable_measureCauchyMoment_laurent},
+\path{Fabius.integral_inv_sub_eq_tsum_measureCauchyMoment}, and
+\path{Fabius.hasSum_measureCauchyMoment_laurent}.  Finally, the four complex
+named-transform wrappers are
+\path{Fabius.measureCauchyTransform_eq_sum_range_measureCauchyMoment_add},
+\path{Fabius.norm_measureCauchyTransform_sub_sum_range_measureCauchyMoment_le},
+\path{Fabius.measureCauchyTransform_eq_tsum_measureCauchyMoment}, and
+\path{Fabius.hasSum_measureCauchyTransform_measureCauchyMoment_laurent}.
+
+\path{GeometricUniformCauchy.lean} specializes the preceding uniform-affine fixed-point
+interface to the law of
 \(X_q=(1-q)U_0+qX_q'\).  Its three definitions and six theorems are
 \path{Fabius.geometricUniformStieltjesDomain},
 \path{Fabius.geometricUniformStieltjesTransform},
@@ -611,7 +654,15 @@ the geometric tail bound \((|z|-1)^{-1}|z|^{-N}\)
 (\nolinkurl{Fabius.integral\_inv\_sub\_eq\_tsum\_upMoment}, \nolinkurl{Fabius.hasSum\_upMoment\_laurent});
 the moments \(m_k=\)~\nolinkurl{Fabius.upMoment} are the Hankel data of the orthogonal-polynomial
 layer, so the same numbers drive the determinant polynomials, the three-term recurrence,
-and the asymptotic expansion of the transform.  The \emph{logarithmic fixed point} is
+and the asymptotic expansion of the transform.  These named real up-measure results are
+the \(\mathbb K=\R\), \(c=0\), \(R=1\), probability specialization of the generic
+\path{MeasureCauchyMomentLaurent.lean} layer, rather than a replacement of its
+arbitrary-center finite-measure interface.  The compatibility theorems
+\path{Fabius.ae_norm_sub_zero_le_one_rvachevMeasure} and
+\path{Fabius.measureCauchyMoment_rvachevMeasure_zero} identify the generic almost-everywhere
+relative-ball condition and centered coefficients with the up-law's unit support and
+\path{upMoment} data in every \path{RCLike} field; the probability hypothesis reduces the
+generic total-mass factor to one.  The \emph{logarithmic fixed point} is
 delivered in real form by \path{StieltjesLogFixedPoint.lean}: the uniform digit
 integrates the Cauchy kernel to a logarithm,
 \(\int_{-1/2}^{1/2}(c-u)^{-1}\dd u=\log\frac{c+1/2}{c-1/2}\) for \(c>\tfrac12\)
@@ -647,7 +698,13 @@ having been generalized to an arbitrary field
 (\nolinkurl{Fabius.inv\_sub\_eq\_sum\_range\_add}); the named transform of the
 renormalization layer carries the same series
 (\nolinkurl{Fabius.rvachevCauchyTransform\_eq\_tsum\_upMoment}), and the real program is
-its restriction (\nolinkurl{Fabius.integral\_inv\_sub\_complex\_ofReal}).  Off the real
+its restriction (\nolinkurl{Fabius.integral\_inv\_sub\_complex\_ofReal}).  This is the
+\(\mathbb K=\C\), \(c=0\), \(R=1\) up-probability face of the generic direct-integral
+and named-transform theorems above; in particular,
+\path{Fabius.measureCauchyMoment_rvachevMeasure_zero} supplies the complex embedding of
+the same real Hankel moments, while
+\path{Fabius.ae_norm_sub_zero_le_one_rvachevMeasure} supplies the relative unit-ball
+hypothesis.  Off the real
 axis the kernel is integrable with bound \(\lvert\Ima z\rvert^{-1}\)
 (\nolinkurl{Fabius.integrable\_inv\_sub\_complex\_of\_im\_ne\_zero}), the transform
 reflects under conjugation, \(R(\bar z)=\overline{R(z)}\)
@@ -746,10 +803,13 @@ and both complex-slit adjacent-order recurrences are direct named theorems in th
 module, as recorded above.
 
 The real logarithmic fixed point for \(z>1\), the positive-integer real hierarchy,
-real-order lowering for \(\alpha>1\), real and complex exterior all-moment Laurent
-series, finite-height Herglotz--Poisson formulas, integrated interval
+real-order lowering for \(\alpha>1\), the arbitrary-center finite-measure
+\path{RCLike} moment/Laurent expansion with its exact mass-sensitive remainder,
+its \(c=0,R=1\) real and complex up-probability specializations, finite-height
+Herglotz--Poisson formulas, integrated interval
 Stieltjes--Perron inversion, and initial exact Jacobi data are formalized by the
-\path{Stieltjes*.lean} and \path{OrthogonalPolynomialJacobi.lean} layers described
+\path{MeasureCauchyMomentLaurent.lean}, \path{Stieltjes*.lean}, and
+\path{OrthogonalPolynomialJacobi.lean} layers described
 above.  What remains open is the complex logarithmic continuation/logarithmic
 potential, named Laplace/Fourier transform forms, complex order, pointwise or
 nontangential Sokhotski--Plemelj and principal-value Hilbert-transform formulas,
@@ -16310,6 +16370,16 @@ real-order hierarchies, real/complex exterior Laurent series, finite-height
 Herglotz--Poisson identities, integrated interval Stieltjes--Perron inversion, and initial
 Jacobi data are also discharged by direct named theorems in the merged Stieltjes and
 orthogonal-polynomial modules.
+
+The Laurent obligation is now discharged at greater generality by the one-definition,
+fifteen-theorem \path{MeasureCauchyMomentLaurent.lean} API: arbitrary centers and
+\path{RCLike} coefficients, almost-everywhere relative-ball support, finite total mass,
+the exact finite remainder and its sharp mass factor, and the full
+\path{Summable}/\path{tsum}/\path{HasSum} series are all direct named results.  The older
+real and complex up-measure statements remain the named \(c=0,R=1\) probability cases;
+\path{Fabius.ae_norm_sub_zero_le_one_rvachevMeasure} and
+\path{Fabius.measureCauchyMoment_rvachevMeasure_zero} are the exact support and coefficient
+bridges to that specialization.
 
 The remaining obligations are complex logarithmic continuation, Laplace/Fourier transform
 forms, complex order, pointwise/nontangential Plemelj and principal-value Hilbert theory,
