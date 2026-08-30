@@ -42,3 +42,11 @@ separate member until it is deliberately merged into that volume.
 This `README.md` is the permanent explanation of the directory and
 **must not be deleted** — it also keeps the directory present in git
 when no archives are waiting.
+
+Most recent processed archive: `Fabius_Rvachev_Frontier_Report_Package.zip`
+(outer SHA-256
+`0028cb4f47134574ba7cd698bfc0ec11f08776b320cbc82b8467bea20d865f6d`),
+filed on 2026-08-30 as
+[`../spectra-and-arithmetic/Digital_Spectral_Geometry_and_Log_Periodic_Saddles/`](../spectra-and-arithmetic/Digital_Spectral_Geometry_and_Log_Periodic_Saddles/).
+The collision-safe title directory avoids the already occupied generic report
+stem in `exponents-and-q-series/`.

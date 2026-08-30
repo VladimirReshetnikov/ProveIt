@@ -1480,6 +1480,40 @@ At the half base the named objects recover the classical functions globally:
  \qquad f_{1/2}(x)=2\Up(2x-1)\quad(x\in\R).                 \label{eq:geometric-half-bridges}
 \end{equation}
 
+\begin{theorem}[Fixed half--quarter multisection]
+\label{thm:geometric-half-quarter-multisection}
+For a coordinate sequence \(\omega\), put
+\(\omega^{(0)}_n=\omega_{2n}\) and \(\omega^{(1)}_n=\omega_{2n+1}\).
+Then the normalized geometric series obeys the pointwise identity
+\begin{equation}
+ X_{1/2}(\omega)=\frac23X_{1/4}(\omega^{(0)})
+                 +\frac13X_{1/4}(\omega^{(1)}).             \label{eq:geometric-half-quarter-pointwise}
+\end{equation}
+Under product Lebesgue measure, the two reindexed processes are independent copies.
+Consequently, if \(\mu_q\) is the law of \(X_q\) and
+\(\sigma_c(x)=cx\), then
+\begin{equation}
+ \mu_{1/2}
+ =\bigl(\mu_{1/4}\otimes\mu_{1/4}\bigr)
+    \mathbin{\mathrm{map}}\bigl((x,y)\mapsto\tfrac23x+\tfrac13y\bigr)
+ =(\sigma_{2/3})_*\mu_{1/4}*(\sigma_{1/3})_*\mu_{1/4}.     \label{eq:geometric-half-quarter-law}
+\end{equation}
+No user hypothesis is needed at these fixed ratios.
+\end{theorem}
+
+\begin{proof}[Formal Lean counterpart]
+The two public definitions \lean{ProbabilityRepresentation.evenCoordinates} and
+\lean{ProbabilityRepresentation.oddCoordinates}, followed by the three theorems
+\lean{ProbabilityRepresentation.geometricUniformSeries_one_half_multisection},
+\lean{ProbabilityRepresentation.geometricUniformDistribution_one_half_multisection}, and
+\lean{ProbabilityRepresentation.geometricUniformDistribution_one_half_conv_one_quarter},
+form the complete public surface of \path{GeometricUniformMultisection.lean}.
+The first theorem is pointwise.  The second proves the full parity-process product law,
+and the third rewrites its affine pushforward as measure convolution.  This fixed result
+does not assert a general \(q\)- or \(m\)-multisection, an MGF or cumulant formula, a
+centered-density convolution, or a spectral dissection.
+\end{proof}
+
 \begin{proof}[Formal API crosswalk]
 The twenty-three public declarations in \path{GeometricUniformLaw.lean} are
 \lean{ProbabilityRepresentation.geometricUniformWeight},
@@ -10001,11 +10035,13 @@ Shape and regularity &
 \path{Differential.lean}, \path{Monotonicity.lean}, \path{Convexity.lean},
 \path{Regularity.lean}\\
 Probability, weighted-law naturality, absolute continuity, exact support and affine recursion,
-contractive affine-law uniqueness, geometric sinc-prefix factorization, quantile transport,
+fixed half--quarter multisection, contractive affine-law uniqueness,
+geometric sinc-prefix factorization, quantile transport,
 survival/CDF layer cake, fractional stopped powers, affine Cauchy--Stieltjes calculus,
 renormalization, Laurent/Herglotz/inversion layers, initial Jacobi data, and finite approximants &
 \path{WeightedUniformSeries.lean}, \path{WeightedUniformDistribution.lean},
 \path{WeightedUniformSupport.lean}, \path{GeometricUniformLaw.lean},
+\path{GeometricUniformMultisection.lean},
 \path{AffineIndependentCopy.lean}, \path{GeometricUniformUniqueness.lean},
 \path{GeometricSincFactorization.lean},
 \path{ContinuousCDF.lean}, \path{GeometricUniformCDF.lean},

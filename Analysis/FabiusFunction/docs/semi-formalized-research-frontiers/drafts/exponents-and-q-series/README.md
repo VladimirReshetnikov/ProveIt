@@ -313,7 +313,7 @@ remain research frontiers. These fractional-Volterra API claims were checked at 
 `149332f9d`.
 
 Member: `Exponents_and_q_Series_Frontiers`
-(currently 232 pp, seven parts) — the
+(currently 233 pp, seven parts) — the
 2026-08-28 consolidation of the two former drafts (Part I:
 Newton-basis frontiers; Part II: q-binomial Richardson), joined the
 same day by the eighth-wave report as **Part III** — *Finite Dyadic
@@ -431,8 +431,10 @@ the Dyadic Fabius Web*, and `Signed_Reciprocal_q_Fabius_Frontiers/`):
 affine sign conjugacy (negative q creates no new normalized shapes),
 the reciprocal moment germ with `M_q(t)·M_{1/q}(−t) = 1` and finite
 digit-reversal duality giving `q = ±2, ±4` exact meaning, geometric
-multisection (the Fabius law as an explicit convolution of two
-quarter-base laws), the spectral q²-Pochhammer factorization, the
+multisection (whose fixed normalized half--quarter series, product-law,
+and scaled-measure convolution are now formal, while the general `q,m`, MGF,
+cumulant, centered-density, and spectral forms remain frontier), the spectral
+q²-Pochhammer factorization, the
 Bernoulli cumulant dictionary with closed spectral zeta, log-concavity
 with the exact plateau phase `|q| ≤ 1/2`, the positive Laplace
 representation of reciprocal germs (vertical-line moments, Hankel
@@ -621,6 +623,20 @@ kernel-verified four-face geometric-tail dictionary at every ratio
 product-form self-similarity into convolution form and instantiates
 `geometric_tail_dictionary` — the measure, characteristic-product,
 moment, and cumulant faces of the `m`-digit tail in one statement.
+The separate fixed two-section layer in
+`GeometricUniformMultisection.lean` has exactly two public definitions,
+`Fabius.ProbabilityRepresentation.evenCoordinates` and
+`Fabius.ProbabilityRepresentation.oddCoordinates`, and three public theorems:
+`Fabius.ProbabilityRepresentation.geometricUniformSeries_one_half_multisection`,
+`Fabius.ProbabilityRepresentation.geometricUniformDistribution_one_half_multisection`,
+and
+`Fabius.ProbabilityRepresentation.geometricUniformDistribution_one_half_conv_one_quarter`.
+They prove, without user hypotheses, the pointwise normalized identity
+`Y_(1/2)(ω) = (2/3)Y_(1/4)(ω_even) + (1/3)Y_(1/4)(ω_odd)`, the independence and
+product-map law of the two parity processes, and the equivalent convolution of
+the `2/3`- and `1/3`-scaled quarter laws.  This does not by itself prove a
+general multisection theorem, the centered-density formula, or the MGF,
+cumulant, Fourier, Pochhammer, `Z`, and comb identities in Part VII.
 The characteristic-product face is now closed in elementary terms:
 `GeometricSincFactorization.lean` computes the digit,
 `φ_digit(t) = e^{i(1-q)t/2}·sinc((1-q)t/2)`
