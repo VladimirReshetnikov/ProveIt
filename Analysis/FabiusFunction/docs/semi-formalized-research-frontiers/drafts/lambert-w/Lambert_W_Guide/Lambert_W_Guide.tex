@@ -3749,7 +3749,27 @@ expansions, their periodic Gamma--zeta phases, and the general-base
 transform-level theory live in the exponents-and-\(q\)-series volume
 (Parts VI--VII) and in the inverse-endpoint volume of this draft corpus,
 with the exact phase-locked interpolation algebra formalized in
-\path{LambertPhaseLockedRichardson.lean}.  The downstream modules
+\path{LambertPhaseLockedRichardson.lean}.  A new finite algebraic rewrite
+tranche identifies the complete-homogeneous factors in those exact moments
+with complete Bell polynomials.  The division-free identity
+\path{bellComplete_completeHomogeneousBellInput} and its factorially
+normalized form
+\path{completeHomogeneousEvalOn_eq_factorialNormalize_completeBellPolynomial}
+are proved in \path{CompleteHomogeneousBell.lean}; the input at index
+\(k+1\) is \(k!\) times the \((k+1)\)-st power sum.  The specialization in
+\path{LambertPhaseLockedBell.lean} takes the alphabet
+\((\lambda+j)^{-1}\), \(0\leq j\leq r\):
+\path{completeHomogeneousEvalOn_shiftedReciprocal_eq_bell} rewrites its
+degree-\(n\) complete-homogeneous value, while
+\path{sum_shiftedReciprocalLagrangeWeight_mul_invPow_card_add_eq_bell} and
+\path{sum_shiftedReciprocalLagrangeWeight_mul_invPow_eq_bell} give the exact
+Bell forms of the residual moments at exponents \(r+1+n\) and \(r+s\)
+(\(s\geq1\)), respectively.  The direct normalized specialization is stated
+for a field with rational-algebra structure, and the weighted moment forms
+assume characteristic zero.  Within that setting field inversion is total,
+so no positivity or nonzero-shift hypothesis is added.
+
+On the analytic side, the downstream modules
 \path{FabiusLambertPhaseLockedPullback.lean},
 \path{CompleteHomogeneousAsymptotics.lean},
 \path{LambertReciprocalAsymptotics.lean}, and
@@ -3759,8 +3779,11 @@ order \(r\) and residual depth \(S\), the periodic estimator minus its first
 \(S\) exact residuals differs from the periodic endpoint term by
 \(\bigO(\lambda^{-r-1-S})\), and it converges to the corresponding periodic
 value along every integer phase ray.  This is a finite Poincar\'e statement,
-not convergence of an infinite residual series or uniformity in growing
-orders.  The two-term inversion
+and the Bell conversion is likewise an exact finite rewrite.  Neither gives
+convergence of an infinite residual series, a multiplicative relative-error
+hierarchy, a derivative extractor, uniformity in growing row order or
+residual depth, or the outstanding sign control for those extensions.  The
+two-term inversion
 \(\log(1/G^{-1}(y))=\sqrt{2L\log(1/y)}-\tfrac12\log\log(1/y)+\bigO(1)\)
 proved there is precisely the leading behavior of \(-W_{-1}\) in the
 logarithmic regime of \cref{sec:asymptotics}, and the fixed-point/cocycle

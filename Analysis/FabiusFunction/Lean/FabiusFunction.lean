@@ -1,5 +1,6 @@
 import FabiusFunction.CompleteHomogeneous
 import FabiusFunction.CompleteHomogeneousGenerating
+import FabiusFunction.CompleteHomogeneousBell
 import FabiusFunction.CompleteHomogeneousAsymptotics
 import FabiusFunction.SymmetricFunctionOrthogonality
 import FabiusFunction.FiniteTriangularTransform
@@ -29,9 +30,11 @@ import FabiusFunction.GeometricLagrangeQBinomial
 import FabiusFunction.GeometricLagrangeQMoments
 import FabiusFunction.GeometricLagrangeCompleteHomogeneous
 import FabiusFunction.LambertPhaseLockedRichardson
+import FabiusFunction.LambertPhaseLockedBell
 import FabiusFunction.LambertReciprocalAsymptotics
 import FabiusFunction.FabiusLambertPhaseLockedPullback
 import FabiusFunction.FabiusLambertPhaseExtraction
+import FabiusFunction.FabiusLambertPhaseExtractionBell
 import FabiusFunction.PrincipalLambertW
 import FabiusFunction.LowerLambertW
 import FabiusFunction.GeneralizedLambertCoordinate
