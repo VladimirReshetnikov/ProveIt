@@ -171,6 +171,37 @@ theorem thueMorsePowerSumRing_add_two_real (m : ℕ) :
         calc
           (4 : ℝ) ^ m = ((2 : ℝ) * 2) ^ m := by norm_num
           _ = (2 : ℝ) ^ m * (2 : ℝ) ^ m := by rw [mul_pow]
+      have hsign : (-1 : ℝ) ^ (m + 1) = -((-1 : ℝ) ^ m) := by
+        rw [pow_succ]
+        ring
+      have htriangular :
+          (2 : ℝ) ^ (m + 1).choose 2 =
+            (2 : ℝ) ^ m.choose 2 * (2 : ℝ) ^ m := by
+        rw [choose_succ_two, pow_add]
+      have hfactorial :
+          (((m + 1).factorial : ℕ) : ℝ) =
+            ((m : ℝ) + 1) * (m.factorial : ℝ) := by
+        rw [Nat.factorial_succ]
+        push_cast
+        rfl
+      have htwoSucc :
+          (2 : ℝ) ^ (m + 1) = (2 : ℝ) ^ m * 2 := by
+        rw [pow_succ]
+      have htwoAddTwo :
+          (2 : ℝ) ^ (m + 2) = (2 : ℝ) ^ m * 4 := by
+        rw [pow_add]
+        norm_num
+      have hresidualStep :
+          ((((2 : ℝ) ^ (m + 1) - 1) ^ 2 / 8) +
+              ((4 : ℝ) ^ (m + 1) - 1) / 72) =
+            1 / 6 + ((2 : ℝ) ^ m - 1) / 2 +
+              4 * ((((2 : ℝ) ^ m - 1) ^ 2 / 8) +
+                ((4 : ℝ) ^ m - 1) / 72) := by
+        have hfourSucc :
+            (4 : ℝ) ^ (m + 1) = (4 : ℝ) ^ m * 4 := by
+          rw [pow_succ]
+        rw [htwoSucc, hfourSucc, hfour]
+        ring
       rw [show m + 1 + 2 = m + 3 by omega,
         thueMorsePowerSumRing_succ (R := ℝ) m (m + 3),
         show m + 3 = (m + 2) + 1 by omega,
@@ -179,8 +210,8 @@ theorem thueMorsePowerSumRing_add_two_real (m : ℕ) :
         thueMorsePowerSumRing_self,
         thueMorsePowerSumRing_add_one_real, ih,
         Nat.choose_succ_self_right]
-      rw [hchooseThree, hchooseTwo, choose_succ_two, pow_add, pow_succ,
-        Nat.factorial_succ]
+      rw [hchooseThree, hchooseTwo, hsign, htriangular, hfactorial,
+        hresidualStep, htwoSucc, htwoAddTwo]
       push_cast
       simp only [pow_zero, pow_succ, pow_add, hfour]
       ring
@@ -219,7 +250,7 @@ theorem thueMorse_translated_power_sum_add_two_real (m : ℕ) (x : ℝ) :
           thueMorsePowerSumRing ℝ m (m + 2 - (3 + k))) = 0 := by
     apply Finset.sum_eq_zero
     intro k hk
-    have hklt : k < m := Finset.mem_range.mp hk
+    have hklt : k < m := mem_range.mp hk
     have hdegree : m + 2 - (3 + k) < m := by omega
     rw [thueMorsePowerSumRing_eq_zero_of_lt m _ hdegree, mul_zero]
   rw [htail, add_zero]
@@ -266,19 +297,18 @@ theorem normalized_thueMorse_translated_power_sum_add_two
     push_cast
     ring
   rw [hsign, hpow, hfactorial, hchooseCast]
-  have hsignSq : ((-1 : ℝ) ^ m) ^ 2 = 1 := by
-    rw [pow_two, ← pow_add, ← two_mul, pow_mul]
-    norm_num
-  have hsignDouble : (-1 : ℝ) ^ (m * 2) = 1 := by
-    rw [pow_mul]
-    exact hsignSq
+  have hsignMulTwo : (-1 : ℝ) ^ (m * 2) = 1 := by
+    calc
+      (-1 : ℝ) ^ (m * 2) = ((-1 : ℝ) ^ 2) ^ m := by
+        rw [Nat.mul_comm, pow_mul]
+      _ = 1 := by norm_num
   have hm1 : (m : ℝ) + 1 ≠ 0 := by positivity
   have hm2 : (m : ℝ) + 2 ≠ 0 := by positivity
   have hfac : (m.factorial : ℝ) ≠ 0 := by positivity
   field_simp [hm1, hm2, hfac]
   ring_nf
-  rw [hsignDouble]
-  ring
+  rw [hsignMulTwo]
+  simp only [one_mul, mul_one]
 
 /-! ## The quarter block and the half-cell endpoint -/
 
@@ -312,7 +342,8 @@ theorem normalized_quarter_thueMorse_block (m : ℕ) (z : ℝ) :
   have htwoAdd :
       (2 : ℝ) ^ (m + 2) = 4 * (2 : ℝ) ^ m := by
     rw [pow_add]
-    norm_num <;> ring
+    norm_num
+    ring
   have htwoDoubleOne :
       (2 : ℝ) ^ (2 * m + 1) = 2 * ((2 : ℝ) ^ m) ^ 2 := by
     rw [pow_add]
@@ -330,7 +361,8 @@ theorem normalized_quarter_thueMorse_block (m : ℕ) (z : ℝ) :
       congr 1
       omega
     rw [hdouble]
-    norm_num <;> ring
+    norm_num
+    ring
   have hfour : (4 : ℝ) ^ m = ((2 : ℝ) ^ m) ^ 2 := by
     calc
       (4 : ℝ) ^ m = ((2 : ℝ) * 2) ^ m := by norm_num
@@ -346,17 +378,15 @@ theorem normalized_quarter_thueMorse_block (m : ℕ) (z : ℝ) :
 
 private theorem dyadic_quarterCellRadius_scale (m : ℕ) :
     (2 : ℝ) ^ (m + 2) * (((2 : ℝ) ^ (m + 3))⁻¹) = 1 / 2 := by
-  have hscale :
-      (2 : ℝ) ^ (m + 3) = (2 : ℝ) ^ (m + 2) * 2 := by
-    rw [show m + 3 = (m + 2) + 1 by omega, pow_succ]
-  rw [hscale]
-  have hne : (2 : ℝ) ^ (m + 2) ≠ 0 := by positivity
-  field_simp [hne]
+  rw [show m + 3 = (m + 2) + 1 by omega, pow_succ]
+  field_simp
+  rw [← pow_add]
 
 private theorem dyadic_quarterAnchor_scale (m : ℕ) :
     (2 : ℝ) ^ (m + 2) * (1 / 4) = (2 : ℝ) ^ m := by
   rw [pow_add]
-  norm_num <;> ring
+  norm_num
+  ring
 
 private theorem quarter_range_length_of_mem_left_closed_right_open
     (m : ℕ) {z : ℝ}
@@ -383,15 +413,17 @@ private theorem quarter_range_length_of_mem_left_closed_right_open
     rw [mul_add, dyadic_quarterAnchor_scale]
     have hpowNonneg : 0 ≤ (2 : ℝ) ^ m := by positivity
     linarith
+  have hpowCast : ((2 ^ m : ℕ) : ℝ) = (2 : ℝ) ^ m := by
+    norm_num
   rw [fabiusDiscreteLimitRangeLength]
   apply (Nat.floor_eq_iff hargNonneg).2
   rw [show (2 : ℝ) ^ (m + 2) * (1 / 4 + z) + 1 / 2 =
       (2 : ℝ) ^ m + (2 : ℝ) ^ (m + 2) * z + 1 / 2 by
         rw [mul_add, dyadic_quarterAnchor_scale]]
   constructor
-  · norm_num only [Nat.cast_pow, Nat.cast_ofNat]
+  · rw [hpowCast]
     linarith
-  · norm_num only [Nat.cast_pow, Nat.cast_ofNat]
+  · rw [hpowCast]
     linarith
 
 private theorem quarter_range_length_at_endpoint (m : ℕ) :
@@ -463,13 +495,13 @@ theorem reportFiniteFabiusApproximant_quarter_eq_quadratic
     reportFiniteFabiusApproximant n (1 / 4 + z) =
       5 / 72 + z + 4 * z ^ 2 - (4 / 9) * ((4 : ℝ) ^ n)⁻¹ := by
   obtain ⟨m, rfl⟩ := Nat.exists_eq_add_of_le hn
-  have hsub : 3 + m - 1 = m + 2 := by omega
   have hadd : 3 + m = m + 3 := by omega
+  have hsub' : m + 3 - 1 = m + 2 := by omega
   have hz' :
       z ∈ Icc (-((2 : ℝ) ^ (m + 3))⁻¹) (((2 : ℝ) ^ (m + 3))⁻¹) := by
     simpa only [hadd] using hz
-  rw [reportFiniteFabiusApproximant, hsub, hadd]
-  exact fabiusUniformSpline_quarter_eq_quadratic m hz'
+  simpa only [reportFiniteFabiusApproximant, hadd, hsub'] using
+    fabiusUniformSpline_quarter_eq_quadratic m hz'
 
 /-! ## The exact local polynomial and inverse transfer -/
 

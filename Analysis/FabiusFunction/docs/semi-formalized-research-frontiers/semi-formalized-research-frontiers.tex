@@ -7517,6 +7517,206 @@ Thus the half-base stencil above is the $q=1/2$ instance of a generic geometric 
 difference, not an isolated Gaussian-binomial coincidence.
 \end{remark}
 
+\begin{remark}[Division-free scaled characteristic and \(q\)-difference functional]
+\label{dyadicq:rem:scaled-qdiff}
+There is a stronger denominator-free row, valid without ordering or
+distinctness assumptions.  Over a commutative ring put
+\[
+ K^{-1}_{q,s}(n,k)
+ =(-s)^{n-k}q^{\binom{n-k}{2}}\qbinom{n}{k}{q}.
+\]
+Then, for arbitrary \(q,s,z\) and every \(n\ge0\),
+\begin{equation}
+ \sum_{k=0}^{n}K^{-1}_{q,s}(n,k)z^k
+ =\prod_{j=0}^{n-1}(z-sq^j).
+ \label{dyadicq:eq:scaled-qdiff-characteristic}
+\end{equation}
+This is the scaled characteristic polynomial.  Its \(s=1,\ z=q^d\)
+specialization gives every monomial moment,
+\begin{equation}
+ \sum_{k=0}^{n}K^{-1}_{q,1}(n,k)(q^k)^d
+ =\prod_{j=0}^{n-1}(q^d-q^j),
+ \label{dyadicq:eq:qdiff-moment}
+\end{equation}
+and therefore vanishes whenever \(d<n\).
+
+The exact polynomial statement survives arbitrary scalar extension.  If
+\(A\) is a semiring, \(R\) a commutative ring,
+\(\varphi\colon A\to R\) a semiring homomorphism, and \(P\in A[X]\) has
+degree at most \(n\), then
+\begin{equation}
+ \sum_{k=0}^{n}K^{-1}_{q,1}(n,k)\,P^\varphi(q^k)
+ =\varphi([X^n]P)\prod_{j=0}^{n-1}(q^n-q^j),
+ \label{dyadicq:eq:qdiff-top-coeff}
+\end{equation}
+where \(P^\varphi\) is obtained by mapping coefficients through \(\varphi\).
+If \(\deg P<n\), the left side is exactly zero.  This includes \(n=0\) and
+the zero polynomial.  The nodes may collide and the surviving product in
+\eqref{dyadicq:eq:qdiff-top-coeff} may itself vanish; there is no division,
+nonzero or invertible base, domain, characteristic, topology, or convergence
+hypothesis.
+
+These four claims are exactly the four public theorems of
+\path{QDifferenceAnnihilation.lean}:
+\lean{Fabius.sum_scaledGaussianBinomialInverseKernel_mul_pow},
+\lean{Fabius.sum_gaussianBinomialInverseKernel_mul_geometric_pow},
+\texttt{Fabius.qDifference\_sum\_eval}\textsubscript{2}\allowbreak
+\texttt{\_eq\_map\_coeff\_mul}, and
+\texttt{Fabius.qDifference\_sum\_eval}\textsubscript{2}\allowbreak
+\texttt{\_eq\_zero\_of\_degree\_lt}.
+The theorem
+\lean{Fabius.geometricQBinomialWeightNumerator_eq_scaledGaussianBinomialInverseKernel},
+now in \path{GeometricQBinomialLagrange.lean}, identifies the
+denominator-free geometric Lagrange numerator with
+\(K^{-1}_{q,q}(n,k)\) at every pair of natural indices, including above the
+diagonal.  Thus its generating polynomial is the \(s=q\) specialization of
+\eqref{dyadicq:eq:scaled-qdiff-characteristic}.  This global numerator
+identity does not weaken the field, finite-node injectivity, or in-range
+assumptions in the normalized quotient formula
+\eqref{dyadicq:eq:q-leading-extractor-general}.
+
+For completeness, \path{QBinomialInversionSpecializations.lean} now has
+exactly two public definitions and four public theorems:
+\lean{Fabius.qGaussianResidualCoeff},
+\lean{Fabius.qGaussianReconstructionCoeff},
+\lean{Fabius.qGaussianResidualCoeff_eq},
+\lean{Fabius.qGaussianReconstructionCoeff_eq},
+\lean{Fabius.qGaussianReconstructionCoeff_residualCoeff_delta}, and
+\lean{Fabius.qGaussianResidualCoeff_reconstructionCoeff_delta}.  At base
+\(q^2\) and independent scale \(-q\), these give the two rows
+\[
+ (-q)^{n-k}\qbinom{n}{k}{q^2},
+ \qquad q^{(n-k)^2}\qbinom{n}{k}{q^2},
+\]
+The two definitions and these two pointwise closed-form theorems require only
+an arbitrary, possibly noncommutative ring.  Exactly the two convolution
+theorems require a commutative ring, and prove that both total finite orders
+are the Kronecker delta.
+
+\medskip
+\noindent The remaining finite geometric \(q\)-layer has the following
+exhaustive public surface.
+\begin{itemize}
+\item The six theorems of \path{GeometricCompleteHomogeneous.lean} are
+\path{Fabius.completeHomogeneousEval_geometric},
+\path{Fabius.completeHomogeneousEval_scaled_geometric},
+\path{Fabius.completeHomogeneousEvalOn_range_pow_eq_gaussianBinomial},
+\path{Fabius.completeHomogeneousEvalOn_range_pow_eq_gaussianBinomial_degree},
+\path{Fabius.gaussianBinomial_add_symm}, and
+\path{Fabius.gaussianBinomial_symm_via_completeHomogeneous}.  They prove both
+principal-specialization orientations, common scaling, and both generic
+Gaussian symmetry laws over every commutative semiring, without division,
+distinctness, or cancellation.
+
+\item The five theorems of
+\path{GeometricLagrangeCompleteHomogeneous.lean} are
+\path{Fabius.completeHomogeneousEvalOn_geometric_range},
+\path{Fabius.sum_geometricLagrangeWeight_mul_pow_succ_add_eq_gaussianBinomial},
+\path{Fabius.geometricLagrangeQMoment_eq_residual_gaussianBinomial},
+\path{Fabius.completeHomogeneousEvalOn_geometric_range_eq_qBinomial}, and
+\path{Fabius.geometricLagrangeQMoment_eq_residual_qBinomial_via_completeHomogeneous}.
+The first is semiring-level; the field statement uses finite-node injectivity;
+the rational quotient bridges retain their explicit nonzero-Pochhammer or
+\(0<q<1\) assumptions.
+
+\item \path{GeometricLagrangeQMoments.lean} has the one definition
+\path{Fabius.geometricLagrangeQMoment} and exactly 37 theorems:
+\path{Fabius.geometricLagrangeQMoment_eq_weightPolynomial_eval},
+\path{Fabius.geometricLagrangeQMoment_eq_forwardRichardson_eval},
+\path{Fabius.geometricRootPolynomial_inv_eval_pow_mul_signedPowers},
+\path{Fabius.geometricRootPolynomial_inv_eval_pow_mul_triangular},
+\path{Fabius.geometricRootPolynomial_inv_eval_one_mul_triangular},
+\path{Fabius.geometricLagrangeQMoment_eq_qPochhammer},
+\path{Fabius.geometricLagrangeQMoment_zero},
+\path{Fabius.geometricLagrangeQMoment_eq_zero},
+\path{Fabius.geometricRootPolynomial_inv_eval_pow_eq_qPochhammer_of_le},
+\path{Fabius.geometricLagrangeQMoment_eq_residual_qPochhammer},
+\path{Fabius.qPochhammer_self_add},
+\path{Fabius.qPochhammer_self_pos_of_pos_of_lt_one},
+\path{Fabius.qBinomial_pos_of_pos_of_lt_one},
+\path{Fabius.gaussianBinomial_eq_qBinomial_of_pos_of_lt_one},
+\path{Fabius.qPochhammer_pow_pos_of_pos_of_lt_one},
+\path{Fabius.qPochhammer_tail_div_self_eq_qBinomial},
+\path{Fabius.geometricLagrangeQMoment_eq_residual_qBinomial},
+\path{Fabius.geometricLagrangeQMoment_firstUncancelled},
+\path{Fabius.negOnePow_mul_geometricLagrangeQMoment_eq_positiveResidual},
+\path{Fabius.negOnePow_mul_geometricLagrangeQMoment_pos},
+\path{Fabius.qPochhammer_self_succ},
+\path{Fabius.qBinomial_succ_succ_of_pos_of_lt_one'},
+\path{Fabius.qBinomial_succ_succ_of_pos_of_lt_one},
+\path{Fabius.qBinomial_theorem_of_pos_of_lt_one},
+\path{Fabius.sum_qBinomial_triangular_succ_eq_neg_qPochhammer},
+\path{Fabius.abs_geometricLagrangeWeight_eq_qBinomial},
+\path{Fabius.abs_geometricLagrangeWeight_eq_sign_mul},
+\path{Fabius.abs_geometricLagrangeWeight_complement_eq_qBinomial},
+\path{Fabius.sum_abs_geometricLagrangeWeight_eq_qPochhammer_ratio},
+\path{Fabius.neg_qPochhammer_div_self_eq_prod},
+\path{Fabius.sum_abs_geometricLagrangeWeight_eq_prod},
+\path{Fabius.quarterGeometricLagrangeQMoment_eq_qPochhammer},
+\path{Fabius.quarterGeometricLagrangeQMoment_eq_zero},
+\path{Fabius.quarterGeometricLagrangeQMoment_eq_residual_qPochhammer},
+\path{Fabius.quarterGeometricLagrangeQMoment_eq_residual_qBinomial},
+\path{Fabius.quarterGeometricLagrangeQMoment_firstUncancelled}, and
+\path{Fabius.sum_abs_quarterGeometricLagrangeWeight_eq_qPochhammer_ratio}.
+These are finite rational identities.  Quotient statements retain their
+nonzero denominators, and positivity, sign, and absolute-value formulas retain
+\(0<q<1\); the module makes no analytic convergence or remainder claim.
+
+\item The five theorems of \path{FinitePolynomialFilterExactness.lean} are
+\path{Fabius.polynomialFilter_response_eq},
+\path{Fabius.polynomialFilter_exact},
+\path{Fabius.normalizedGeometricRootPolynomial_filter_exact},
+\path{Fabius.forwardGeometricRichardsonPolynomial_filter_exact}, and
+\path{Fabius.forwardGeometricRichardsonPolynomial_filter_firstUncancelled}.
+The first two are arbitrary commutative-semiring response and exactness laws;
+the field-valued geometric forms retain their nonzero-base and normalization-
+denominator hypotheses and expose the first surviving mode.
+
+\item \path{QuarterCatalanGerm.lean} has the two definitions
+\path{Fabius.quarterCatalanCoefficient} and
+\path{Fabius.quarterCatalanGermSeries}, and the nine theorems
+\path{Fabius.quarterCatalanCoefficient_zero},
+\path{Fabius.quarterCatalanCoefficient_succ_eq_report},
+\path{Fabius.quarterCatalanGermSeries_coeff},
+\path{Fabius.quarterCatalanGermSeries_coeff_succ},
+\path{Fabius.quarterCatalanGermSeries_constantCoeff},
+\path{Fabius.quarterCatalanGermSeries_equation},
+\path{Fabius.powerSeries_quadratic_injectiveOn_zeroConstant},
+\path{Fabius.eq_quarterCatalanGermSeries_of_equation}, and
+\path{Fabius.existsUnique_quarterCatalanGermSeries}.  This is the unique
+zero-constant solution of \(D+4D^2=(4/9)X\) in \(\Q[[X]]\), with its complete
+coefficient formula, but no convergence or real-inverse identification.
+
+\item \path{QuarterCatalanRichardson.lean} has the three definitions
+\path{Fabius.finiteRescaleFilter},
+\path{Fabius.geometricRichardsonPowerSeriesFilter}, and
+\path{Fabius.quarterCatalanRichardsonFilter}, and the 15 theorems
+\path{Fabius.finiteRescaleFilter_coeff},
+\path{Fabius.geometricRichardsonPowerSeriesFilter_coeff},
+\path{Fabius.geometricRichardsonPowerSeriesFilter_coeff_zero},
+\path{Fabius.geometricRichardsonPowerSeriesFilter_coeff_eq_zero},
+\path{Fabius.geometricRichardsonPowerSeriesFilter_coeff_eq_qPochhammer},
+\path{Fabius.geometricRichardsonPowerSeriesFilter_coeff_eq_qBinomial},
+\path{Fabius.geometricRichardsonPowerSeriesFilter_firstUncancelled_coeff_of_nonzero},
+\path{Fabius.geometricRichardsonPowerSeriesFilter_firstUncancelled_coeff},
+\path{Fabius.quarterCatalanRichardsonFilter_coeff},
+\path{Fabius.quarterCatalanRichardsonFilter_coeff_zero},
+\path{Fabius.quarterCatalanRichardsonFilter_coeff_eq_zero},
+\path{Fabius.quarterCatalanRichardsonFilter_coeff_eq_zero_of_le},
+\path{Fabius.quarterCatalanRichardsonFilter_coeff_eq_qBinomial},
+\path{Fabius.quarterCatalanRichardsonFilter_coeff_succ_eq_qBinomial}, and
+\path{Fabius.quarterCatalanRichardsonFilter_firstUncancelled_coeff}.  These are
+coefficientwise formal-power-series identities only: no convergence, real
+error sign, remainder estimate, or analytic acceleration is asserted.
+\end{itemize}
+The additional theorem
+\path{Fabius.sum_lagrangeEvalWeight_mul_pow_card_add_zero} in
+\path{LagrangeResidualMoments.lean} gives every higher evaluation-at-zero
+moment of a nonempty distinct field-valued node family as the negative signed
+nodal product times its complete homogeneous function.  Its nonempty premise
+is exactly what removes the exceptional empty-row \(0^0\) term.
+\end{remark}
+
 The $q$-symbols in the dyadic formula therefore have a concrete and limited task: they are the
 closed form of a divided-difference stencil on a geometric grid.  No infinite
 basic-hypergeometric summation is involved.
@@ -8892,6 +9092,9 @@ Module & Role in the present article \\
 \endhead
 \path{DyadicClosedForm.lean} & Exact Thue--Morse/even-moment formula for arbitrary dyadic numerators. \\
 \path{HalfQBinomial.lean} & Finite $q$-Pochhammer and Gaussian-binomial calculus at $q=1/2$, including the interpolation annihilation row. \\
+\path{QDifferenceAnnihilation.lean} & Exactly four public theorems: the scaled inverse-Gaussian characteristic polynomial, its complete geometric monomial moments, scalar-extension top-coefficient extraction, and strict-degree \(q\)-difference annihilation; \cref{dyadicq:rem:scaled-qdiff}. \\
+\path{GeometricQBinomialLagrange.lean} & Denominator-free geometric Lagrange numerators and residual moments, including the global identification of the numerator with the scaled inverse kernel at base and scale \(q\); normalized quotient results retain their distinct-node field hypotheses. \\
+\path{QBinomialInversionSpecializations.lean} & Exactly two public definitions and four public theorems: the residual and reconstruction rows at Gaussian base \(q^2\), scale \(-q\), and their pointwise closed forms need only a ring; exactly the two total convolution inverses require a commutative ring. \\
 \path{ThueMorseExponential.lean} & Complete-block exponential factorization, Prouhet cancellation, and translation of inner powers. \\
 \path{ThueMorseComplexExponential.lean} & Weighted and signed finite complex-exponential block transforms, including arbitrary affine shifts and the empty block. \\
 \path{FabiusQBinomialFormula.lean} & Centered and translated finite $q$-binomial formulas, arbitrary numerators, common-translation invariance, and invariance under equal rational dyadic representations. \\

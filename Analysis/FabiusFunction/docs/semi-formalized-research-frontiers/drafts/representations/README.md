@@ -226,9 +226,8 @@ factorization, and a sharp central-coefficient root law.  Its
 theorem-level checks are exact rational with residual `0`; the reported
 energy value is a stabilized display of an exact partial sum, not a
 certified enclosure of the limit, and the report says so.  This is a
-22-file package with a 31-page Libertinus rebuild and exactly 2204 source
-lines, exact data certificates,
-four dual-format figures, and snapshot
+checksum-verified 22-file package with a 31-page Libertinus rebuild and exactly
+2204 source lines, exact data certificates, four dual-format figures, and snapshot
 `faa3a9b94ac0e71abdc53c36fdf428222e4d2a8c`.
 Its checksum ledger was refreshed after the 2026-08-30 parity render and all
 21 entries verify.
