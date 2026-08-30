@@ -265,6 +265,7 @@ import FabiusFunction.IntegerZeroAnalyticOrder
 import FabiusFunction.ScaledInfiniteProducts
 import FabiusFunction.GeometricReciprocalGamma
 import FabiusFunction.DyadicGammaOrder
+import FabiusFunction.ReciprocalIntegerGammaZeros
 import FabiusFunction.SincPrefixBound
 import FabiusFunction.GlobalDecayEnvelope
 import FabiusFunction.LacunaryMeanSharp

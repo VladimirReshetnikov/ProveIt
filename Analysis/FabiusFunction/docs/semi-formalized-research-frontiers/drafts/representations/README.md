@@ -2,7 +2,7 @@
 
 Series and orthogonal-expansion representations of the up-function,
 consolidated (2026-08-28) into the single volume
-[`Representation_Frontiers/`](Representation_Frontiers/) (296 pp,
+[`Representation_Frontiers/`](Representation_Frontiers/) (297 pp,
 eight parts):
 
 - **Part I** — *Resolvent, Continued-Fraction, and Transform

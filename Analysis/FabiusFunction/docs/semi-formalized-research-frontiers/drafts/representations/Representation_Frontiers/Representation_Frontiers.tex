@@ -1979,7 +1979,8 @@ the level-zero tower quotient for positive \(a,b\).  Accordingly the first-jet,
 Mellin/integral GammaLog, dyadic log/tower, and ratio layers are no longer
 frontiers.  The parameter-\(a\) differential and iterated differential ladder
 remains open, as do the raw Gamma tprod, canonical regrouping,
-logarithmic/digamma, Gamma-product Malmsten/heat-trace integrals, D-finite, and general-base claims
+logarithmic/digamma, Gamma-product Malmsten/heat-trace integrals, D-finite, and
+general-base collision-order claims
 listed above.
 
 A fully commented Python program independently checks the principal identities, produces
@@ -2872,9 +2873,32 @@ hypothesis and narrower in analytic content: for every \(q\in\C\) with
 \leanPartx{Fabius.geometricGamma_mahler} give the meromorphic inverse and Gamma-side Mahler
 equation, and \leanPartx{Fabius.geometricReciprocalGamma_mul_neg} gives the corresponding
 entire reciprocal analogue of \eqref{p2:eq:q-gamma-reflection}.  The raw Gamma product in
-\eqref{p2:eq:q-geometric-gamma}, the logarithmic series \eqref{p2:eq:q-gamma-series}, and the
-general integer-base pole-order formula are not formalized.  Only the dyadic order has an
-exact counterpart in \path{DyadicGammaOrder.lean}.
+\eqref{p2:eq:q-geometric-gamma} and the logarithmic series \eqref{p2:eq:q-gamma-series} are not
+formalized.
+
+The general integer-base statement is now half formalized, and the halves are worth separating.
+Its \emph{zero set} is, at every integer base: for $b\ge2$,
+\[
+ G_{1/b}(z)=0
+ \iff
+ z\in\{-1,-2,-3,\dots\},
+\]
+independently of $b$
+(\leanPartx{Fabius.geometricReciprocalGamma_inv_natCast_eq_zero_iff},
+\path{ReciprocalIntegerGammaZeros.lean}).  \path{GeometricReciprocalGamma.lean} states the zeros
+in the \emph{affine} form $\exists n,m,\ 1+q^nz=-m$, which is the shape that stays safe at $q=0$
+where no scale can be divided out; at reciprocal-integer base it collapses to the arithmetic one,
+since $(m+1)b^n$ runs over the positive integers --- surjectively already at $n=0$.
+
+The \emph{order} is not, and is not a corollary of the set.  At $b=2$ it is obtained by
+transferring the integer-zero order of the Rvachev product through
+$G_{1/2}(z)G_{1/2}(-z)=\Phi(z)$, and
+the corpus has no $\Phi_b$ to transfer through at another base; a direct proof would have to
+split off the finitely many vanishing factors --- the $h$ with $b^h\mid n$ --- and show the
+remainder is an analytic unit.  Only the dyadic order has an exact counterpart, in
+\path{DyadicGammaOrder.lean}.  The arithmetic side of the count is available at arbitrary base as
+\leanPartx{Fabius.weightedScaleMultiplicity}, so what is missing is the analytic splitting, not
+the combinatorics.
 
 \section{Gaussian variance mixtures and the logistic dual}
 \label{p2:sec:gaussian-mixture}
@@ -3796,15 +3820,17 @@ zero/pole orders.  The raw Gamma-product realization and the canonical, logarith
 digamma, integral, heat-trace, D-finite, derivative-tower, and general-base extensions retain
 their frontier status.
 
-The current overlay sharpens only the last of those historical boundaries:
+The current overlay sharpens two of those historical boundaries:
 commit \path{0ba35abd4} supplies all reciprocal-Gamma first jets and the
 first eight continuation GammaLog/tower declarations, and the current
-integrated tree adds the level-zero master-product ratio.  Thus the
+integrated tree adds the level-zero master-product ratio.  It also closes the
+zero set of \(G_{1/b}\) at every integer base \(b\ge2\) in
+\path{ReciprocalIntegerGammaZeros.lean}.  Thus the
 Mellin/integral GammaLog and dyadic log/tower layers are formal at every natural
 level.  Only the parameter-differential and iterated differential ladder remains
 frontier within that tower; the raw Gamma product and the canonical,
-logarithmic/digamma, Malmsten/heat-trace, D-finite, and general-base extensions
-remain frontier claims.
+logarithmic/digamma, Malmsten/heat-trace, and D-finite extensions remain frontier,
+as does the collision \emph{order} at general integer base.
 
 \appendix
 

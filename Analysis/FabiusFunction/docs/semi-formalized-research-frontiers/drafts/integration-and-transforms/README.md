@@ -4,7 +4,7 @@ Antiderivatives, integral calculus, transform dualities, and fractional
 calculus of the Fabius–Rvachev system, consolidated (2026-08-28) into
 the single volume
 [`Integration_and_Transform_Frontiers/`](Integration_and_Transform_Frontiers/)
-(366 pp, twelve parts):
+(369 pp, twelve parts):
 
 - **Part I** — *Antiderivatives of Monomially Weighted Fabius-Type
   Functions* (formerly `Fabius_Antiderivatives_Report/`);
@@ -65,6 +65,14 @@ Jacobi data.  Complex logarithmic continuation, complex order,
 pointwise/nontangential Sokhotski--Plemelj and principal-value Hilbert
 formulas, the separate explicit Thue--Morse higher-kernel identity, and the
 full J-fraction/Padé theory remain open.
+
+Part VI's positive-real causal Rvachev primitive and semigroup are now exact
+Lean theorems.  `FabiusFractionalVolterra.lean` defines the total
+`rvachevFractionalPrimitive`, identifies its compact-support cutoff at
+`min x 1`, bridges every positive natural order to `normalizedVolterra`, and
+proves additive composition of positive real orders on `x ≥ -1`.  The
+transform and tail series, endpoint-moment and shifted-lattice formulas,
+complex orders, and fractional derivatives remain frontier claims.
 
 The independent 2026-08-28 `Fabius_Integral_Transforms_Report` arrival is now
 absorbed as Part XII; it is no longer an unmerged member.
