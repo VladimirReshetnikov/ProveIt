@@ -55,6 +55,30 @@ Everything else in this file is ordinary project policy; the rule above is the
 one whose violation has repeatedly destroyed build state, so it comes first.
 See [Building Lean](#building-lean) for the full serialization recipe.
 
+> [!IMPORTANT]
+> ## Incoming reports have a mandatory publication gate
+>
+> For every report delivered under
+> `docs/semi-formalized-research-frontiers/drafts/incoming/`, first perform a
+> **quick archival intake and nothing deeper**: merge current `origin/main`,
+> verify archive safety/integrity, unpack and file the report by theme, normalize
+> repository line endings and refresh affected ledgers, delete the ZIP, update
+> the manifest and destination README, commit, push the feature branch, push
+> ff-only to `origin/main`, and verify the remote SHA.
+>
+> **That verified `origin/main` push is a hard phase boundary.** Before it,
+> agents must not start claim-by-claim mathematical review, semantic duplicate
+> analysis, proof repair, editorial consolidation, experiment reproduction,
+> document rewriting, or Lean formalization of the arrival. Read only enough
+> title/abstract/package metadata to choose the destination and record accurate
+> provenance and status. If more reports arrive during a batch, publish the
+> current batch first and handle the newcomers in the next intake commit. Never
+> let a moving inbox delay publication of already-filed reports.
+>
+> After publication, deeper reassessment and integration belong in one or more
+> later commits. The canonical detailed checklist is
+> [`docs/semi-formalized-research-frontiers/drafts/incoming/README.md`](docs/semi-formalized-research-frontiers/drafts/incoming/README.md).
+
 This directory is sometimes developed by several agents concurrently.
 Whether multi-agent coordination is in effect is stated by exactly one file:
 [`AGENTS/STATUS.md`](AGENTS/STATUS.md).  While it says

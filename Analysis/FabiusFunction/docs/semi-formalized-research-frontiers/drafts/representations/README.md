@@ -2,6 +2,16 @@
 
 New standalone intake members:
 
+- [`Fabius_Zero_Bias_Frontier_Report/`](Fabius_Zero_Bias_Frontier_Report/),
+  *Zero-Bias Towers and Spectral Peeling in the Fabius--Rvachev System*
+  (26 pp), arrived on 2026-08-30 from
+  `Fabius_Zero_Bias_Frontier_Report.zip` (outer SHA-256
+  `fb8bbf8e34a2f5eb4e5bbe7b06b22566502be7583696f01960a6e41d25b518ee`).
+  All 21 submitted payload hashes verified; six CSV entries were refreshed
+  after CRLF-to-LF repository normalization. The package remains standalone
+  pending post-publication assessment and a Lean crosswalk; manuscript labels
+  do not establish Lean verification.
+
 - [`fabius_iterates_nowhere_analytic/`](fabius_iterates_nowhere_analytic/),
   *Nowhere Analyticity of Every Positive Compositional Iterate of the Fabius
   Function* (19 pp), arrived on 2026-08-30 with all 14 submitted payload

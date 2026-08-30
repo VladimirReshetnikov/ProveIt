@@ -1,5 +1,27 @@
 # Inverse and sampling
 
+New standalone intake members:
+
+- [`Inverse_Fabius_Computability_Report/`](Inverse_Fabius_Computability_Report/),
+  *Computability of the Inverse Fabius Function* (29 pp), arrived on
+  2026-08-30 from `Inverse_Fabius_Computability_Report.zip` (outer SHA-256
+  `755d77354490d25d4f327419d0345623e91ea49dd4ba681ba97c84a0b686b8c1`).
+  All five submitted payload hashes verified and every text payload was
+  already LF. It remains standalone pending post-publication assessment and a
+  Lean crosswalk; the newly submitted bridge is not thereby Lean-verified.
+
+- [`inverse_fabius_iterates_nowhere_analytic/`](inverse_fabius_iterates_nowhere_analytic/),
+  *Nowhere Analyticity of Every Positive Compositional Iterate of the Inverse
+  Fabius Function* (23 pp), arrived on 2026-08-30 from
+  `inverse_fabius_iterates_nowhere_analytic.zip` (outer SHA-256
+  `8b1c05d59e120ecd20d69cd5aeb0009639f2f3b9a6c9fef32bdf82270eee16bd`).
+  All 13 submitted payload hashes verified; `spine_diagnostic.csv` was
+  refreshed after CRLF-to-LF repository normalization. It remains standalone
+  pending post-publication reconciliation with
+  [`../representations/fabius_iterates_nowhere_analytic/`](../representations/fabius_iterates_nowhere_analytic/)
+  and a Lean crosswalk; its own status note says the principal claims have not
+  been translated into Lean.
+
 The inverse function's frontiers and the sampling/deconvolution circle of
 ideas, in two consolidated volumes.
 
