@@ -2,19 +2,40 @@
 
 New standalone intake members:
 
+- [`inverse_q_analog_jet_atlas/`](inverse_q_analog_jet_atlas/),
+  *An Inverse-Jet Atlas for q-Analogs: Multivariate Reversion, Singular
+  Branches, and Asymptotics at q=0,1,-1, Roots of Unity, and q=±∞*
+  (72 pp), arrived on 2026-08-30 from
+  `inverse_q_analog_jet_atlas_2026-08-30.zip` (outer SHA-256
+  `9c9a0353eb355e6defb87845c4a2a79d85c537fe5a6c38c5473f9d3d56448ead`).
+  The rootless archive supplied five non-ledger payloads plus
+  `SHA256SUMS.txt`; all five submitted payload hashes verified, and all five
+  text members were already LF. Its title and abstract place its inverse-jet
+  treatment of finite and infinite q-Pochhammer products, Gaussian and
+  q-multinomial coefficients, q-special functions, singular bases, roots of
+  unity, and the Fabius--Rvachev effective geometric base beside the existing
+  inverse-q reports in this group. It remains standalone pending
+  post-publication comparison and deliberate consolidation, plus a Lean
+  crosswalk; manuscript classifications and symbolic/numerical checks do not
+  establish Lean verification.
+
 - [`inverse_q_analog_functions_report/`](inverse_q_analog_functions_report/),
   *Inverse Functions of q-Pochhammer Symbols, Gaussian Coefficients, and
-  Related q-Analogues* (59 pp), arrived on 2026-08-30 from
+  Related q-Analogues: Branch Geometry, Local Reversion, Singular Limits, and
+  Computation* (59 pp), arrived on 2026-08-30 from
   `inverse_q_analog_functions_report.zip` (outer SHA-256
   `19cc7da37f71ddbbc0c46b91c55c23059a1e305500260bd0a306394f4c21f4de`).
   The archive supplied nine payloads but no checksum ledger; the
-  repository-added `SHA256SUMS` records and verifies all nine, and all five
-  text payloads were already LF. Its title and abstract place its branchwise
-  inverse q-Pochhammer, Gaussian-coefficient, and q-special-function material
-  beside the existing inverse-q reports in this group. It remains standalone
-  pending post-publication comparison and deliberate consolidation, plus a
-  Lean crosswalk; manuscript classifications and numerical checks do not
-  establish Lean verification.
+  repository-generated `SHA256SUMS` records and verifies all nine, and all five
+  text payloads were already LF. None of its nine payload hashes matches any
+  of the 48 payloads in the three previously filed inverse-q report wrappers.
+  Its finite and infinite q-Pochhammer, Gaussian, q-gamma/q-beta,
+  q-exponential, normalized q-polylogarithm, and basic hypergeometric inverse
+  branches nevertheless place it beside those reports. All four delivered
+  PDFs are structurally readable and unencrypted (62 pages total). It remains
+  standalone pending post-publication semantic comparison, deliberate
+  consolidation, and a Lean crosswalk; manuscript classifications and
+  numerical evidence do not establish Lean verification.
 
 - [`Cyclotomic_q_Fabius_Rvachev_Frontier/`](Cyclotomic_q_Fabius_Rvachev_Frontier/),
   *Cyclotomic Blow-Ups and Natural Boundaries for the q-Fabius--Rvachev Sinc
