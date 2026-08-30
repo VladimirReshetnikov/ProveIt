@@ -1,10 +1,28 @@
-PDF validation — canonical-preamble normalization, 2026-08-30
+PDF validation — final merged-corpus audit refresh, 2026-08-30
+
+Repository audit:
+- repository_audit.py was run against Analysis/FabiusFunction/docs/**/*.tex,
+  excluding this package directory
+- prior TeX files read: 140
+- total source lines: 311911
+- total source bytes: 13787029
+- raw-byte concatenated corpus SHA-256, in lexicographic relative-path order:
+  a6edc75336626f99b4a1a13e6d7b90dc14f8f2dede15b4a3de80879442932a2d
+- generated repository_audit.md SHA-256:
+  aeeb3eaff2a9a099b52613c13a087f4b121fc0ffc78a336a2ae476d20fecc2fa
+- a second independent output-path run matched repository_audit.md byte for byte
+- preserved ARRIVAL_SHA256SUMS SHA-256:
+  4c177281eec24f00edf6041ec11779444e24e455db965503207b32c301749629
 
 Build:
 - exactly three clean, strict, serial pdfLaTeX passes completed with exit 0
-- final-source TeX SHA-256: a26714bad366a144145a307d148c4039458cbf64a2233ff7de928eebee182e8c
+- pass page counts: 23, 24, 24; final settled page count: 24
+- final-source TeX SHA-256: 957b59ef30bd2a14330457276375a16c8b0000beb168ed632cb113a716d11091
+- final-source TeX lines: 1931
 - generated TeX input SHA-256: da703d296abdff0a61a67cfe0699568859c903a27c31eb43b321e8457cf3f6e7
-- PDF SHA-256: e397531b22d5b40a4465c5c99ebc0293bafcaccd53b9f8b0d296cee04ca18aef
+- PDF SHA-256: e286e8f36e321ac39e5849942c5acb8ba133d915d5a22538516f1804db3abb3f
+- final-pass compile_transcript.txt SHA-256:
+  8dccf5035a1dbc59cb532e567bb4fd88c4afea32037b854314d90e27d84f41f7
 - PDF is newer than the final TeX source and generated TeX input
 - the shared preamble through the canonical listing style is byte-for-byte
   identical to the primary document except for permitted PDF metadata and
@@ -21,19 +39,26 @@ Final log and source checks:
 - non-blocking hyperref PDF-string warnings: 4 (mathematics in headings)
 
 PDF structure:
-- readable and text-extractable: yes
+- readable and text-extractable: yes; all 24 pages contain text
 - pages: 24
 - every page: 595.276 x 841.89 pt (A4), rotation 0
-- file size: 848009 bytes
+- file size: 848230 bytes
 - PDF version: 1.5
 - font rows: 24; embedded: 24/24; subset: 24/24; Type 3: 0
 - canonical face: Libertinus (5 rows); Latin Modern rows: 0
 - raster images: three generated 1440 x 684 PNG figures, all present
+- all 24 pages rendered successfully with Poppler
 
 Search and visual checks:
-- title, repaired 137-file corpus audit, exact audit digest, zero-multiplicity
-  formula, numerical tables, and claim-by-claim deduplication boundary extract
+- title, exact 140-file corpus statistics and digest, zero-multiplicity/count
+  formula, numerical tables, Lean/novelty boundary, proof-gap quarantine,
+  corrected plateau boundary, and conjecture boundary extract correctly
 - title/audit page; zero-count figure; periodic and Fourier-coefficient figures;
   A4-wrapped numerical tables; all-orders and inverse proof-gap quarantine;
   corrected plateau boundary; research register; and final audit/bibliography
-  pages inspected without clipping, overlap, or malformed layout
+  pages were inspected without clipping, overlap, or malformed layout
+
+Numerical outputs:
+- audit regeneration did not require numerical regeneration
+- numerical_results.tex, numerical_summary.txt, and all three PNG figures remain
+  byte-identical to the previously validated regenerated outputs

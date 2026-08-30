@@ -6,8 +6,10 @@ New standalone intake member:
 rootless `Fabius_Rvachev_Frontier_Report_Package.zip` on 2026-08-30. The
 title-based directory avoids collision with an unrelated q-series package
 that used the same generic report filename. Its delivered zero-file audit was
-replaced by a reproducible recursive audit of 137 prior TeX files excluding
-this package directory, and its
+replaced by a reproducible recursive audit of 140 prior TeX files (311,911
+lines and 13,787,029 bytes) excluding this package directory, with raw corpus
+digest `a6edc75336626f99b4a1a13e6d7b90dc14f8f2dede15b4a3de80879442932a2d`.
+Its
 failed numerical generation was repaired and rerun at 80-digit precision,
 producing all three optional figures and the generated tables. No theorem-
 level novelty is accepted on intake: the divisor/zeta/count/heat/cumulant,
@@ -22,9 +24,48 @@ The report remains a separate overlap intake; its labels assert neither
 novelty nor Lean status. It now reproduces the current primary document's
 canonical A4 package, theorem, macro, boxed-environment, and listing-style
 block verbatim, apart from permitted metadata and running-head text, with only
-four required local notation commands appended. The validated PDF uses fully
-embedded, subset Libertinus fonts and no Type 3 fonts. Current payload checksums
-pass completely.
+four required local notation commands appended. The validated PDF
+uses fully embedded, subset Libertinus fonts and no Type 3 fonts. Current
+payload checksums, including the preserved ten-entry arrival ledger, pass
+completely (18/18).
+
+New standalone intake member:
+[`Fabius_Rvachev_Reciprocal_Integer_Convolution_Divisors/`](Fabius_Rvachev_Reciprocal_Integer_Convolution_Divisors/),
+*Reciprocal-Integer Convolution Divisors of the Rvachev Law* (34 A4 pp,
+2303 source lines; with a 352-line exact/numerical experiment, six data files,
+four PNG figures, and a README), arrived from a rootless 14-file archive on
+2026-08-30.  The package's
+characteristic quotients
+`Q_M(z) = Phi(z) / Phi(z/M)` classify reciprocal-integer decompositions of
+the Rvachev law.  Its digit IFS and multiplicative cocycle lead to an exact
+odd-singular/even-regular trichotomy, transport and inverse-Fabius bounds,
+an arithmetic zero divisor and spectral zeta function, and finite
+Thue--Morse quotients whose `M = 3` case recovers Stern/hyperbinary
+coefficients.
+
+This is a distinct sibling of the shape/Stein report under
+[`../representations/`](../representations/): unequal reciprocal-scale
+factors here do not conflict with that report's obstruction to identical
+convolution roots.  The report nevertheless shares foundational zero-count,
+Bernoulli/Bell, endpoint, and inverse-Fabius infrastructure with the
+consolidated corpus, so it remains separate pending a theorem-by-theorem
+crosswalk.  The rootless archive supplied no checksum ledger or dependency
+lock; the repository-generated `SHA256SUMS` covers every stored payload after
+five CSV files were normalized to LF.  The report now reproduces the primary
+document's canonical A4 package, theorem, macro, boxed-environment, and listing
+block verbatim apart from permitted metadata and running-head text; only the
+required local settings, eight notation commands, status box, and Python
+listing style follow it.  Exactly three strict serial `pdflatex` passes rebuilt
+the 34-page PDF.  All 34 pages were text-checked and representative theorem,
+figure, appendix-table, and bibliography pages were rendered visually.  All
+25 fonts are embedded and subset, six faces are Libertinus, and no Type 3 font
+is present.  A temp-isolated Python 3.13 replay with NumPy 2.5.2, Matplotlib
+3.11.1, and mpmath 1.4.1 regenerated every output: four CSVs were
+EOL-normalized exact, the text summary was byte-identical, and the endpoint CSV
+had only 65 last-place differences (maximum `1.11e-16`).  All four PNGs showed
+the expected unpinned-Matplotlib layout drift (1475 versus 1476 pixels wide),
+strengthening the case for a dependency lock.  Lean was not run.  Manuscript
+theorem labels do not imply Lean proof status.
 
 New standalone intake member:
 [`Fabius_Total_Positivity_Frontier_Report/`](Fabius_Total_Positivity_Frontier_Report/),

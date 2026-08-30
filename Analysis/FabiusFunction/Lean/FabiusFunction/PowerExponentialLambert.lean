@@ -21,7 +21,7 @@ probabilistic assumption is used.
 ## Main declarations
 
 * `powerExponentialSaddle` is the scaled power--exponential profile.
-* `powerExponentialPeak` is its value at `m / beta`.
+* `powerExponentialPeak` is its nonnegative-half-line peak value at `m / beta`.
 * `powerExponentialLambertArgument` is the normalized real Lambert argument.
 * `principalPowerExponentialPhase` and `lowerPowerExponentialPhase` are the
   two real inverse branches.
@@ -44,8 +44,8 @@ noncomputable def powerExponentialSaddle
     (m : ℕ) (A beta lambda : ℝ) : ℝ :=
   A * lambda ^ m * Real.exp (-beta * lambda)
 
-/-- The peak value of `powerExponentialSaddle`, attained at `m / beta` when
-`m ≠ 0`, `A > 0`, and `beta > 0`.
+/-- The nonnegative-half-line peak value of `powerExponentialSaddle`, attained
+at `m / beta` when `m ≠ 0`, `A > 0`, and `beta > 0`.
 
 The definition is `A * ((m / beta) * exp (-1)) ^ m`; a separate theorem
 rewrites it as `A * (m / beta) ^ m * exp (-m)`. -/
@@ -89,8 +89,8 @@ private lemma powerExponentialBase_pos
   exact mul_pos (div_pos (Nat.cast_pos.mpr (Nat.pos_of_ne_zero hm)) hbeta)
     (Real.exp_pos _)
 
-/-- The profile peak is strictly positive under the natural positive
-parameters. -/
+/-- The nonnegative-half-line profile peak is strictly positive under the
+natural positive parameters. -/
 theorem powerExponentialPeak_pos
     {m : ℕ} (hm : m ≠ 0) {A beta : ℝ}
     (hA : 0 < A) (hbeta : 0 < beta) :

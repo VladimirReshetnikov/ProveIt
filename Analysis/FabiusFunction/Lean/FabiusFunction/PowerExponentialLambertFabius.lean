@@ -1,5 +1,5 @@
 import FabiusFunction.GeneralizedLambertCoordinate
-import FabiusFunction.PowerExponentialLambert
+import FabiusFunction.PowerExponentialLambertAsymptotics
 import FabiusFunction.FabiusLambertSaddle
 
 /-!
@@ -16,12 +16,15 @@ previously separate constructions in this corpus:
 The bridge supplies both an interior argument theorem that discharges the
 natural Lambert-domain premise of the older generalized saddle theorem and
 an endpoint-inclusive replacement based on the generic closed-branch solve
-law.  No new branch choice or analytic assumption is introduced.
+law.  It also exports the principal Fabius phase, the exact two-root
+classification on the nonnegative half-line, endpoint-inclusive continuity,
+and the principal small-input equivalence.  No new branch choice or analytic
+assumption is introduced.
 -/
 
 set_option autoImplicit false
 
-open Set
+open Filter Asymptotics Set
 
 namespace Fabius
 
@@ -119,6 +122,84 @@ theorem lowerPowerExponentialPhase_one_one_log_two (x : ℝ) :
       lowerLambertW (-(Real.log 2 * x)) =
     -lowerLambertW (-(Real.log 2 * x)) / Real.log 2
   field_simp [hlog]
+
+/-- The principal nonnegative inverse of the classical Fabius saddle map. -/
+noncomputable def fabiusPrincipalLambertPhase (x : ℝ) : ℝ :=
+  principalPowerExponentialPhase 1 1 (Real.log 2) x
+
+/-- Every nonnegative solution of the classical Fabius saddle equation is
+one of its principal or lower Lambert phases.  At the turning value the two
+alternatives coincide. -/
+theorem fabiusSaddle_eq_iff_eq_principal_or_eq_lower
+    {x lambda : ℝ}
+    (hx : x ∈ Ioc 0 (Real.exp (-1) / Real.log 2))
+    (hlambda : 0 ≤ lambda) :
+    lambda * (2 : ℝ) ^ (-lambda) = x ↔
+      lambda = fabiusPrincipalLambertPhase x ∨
+        lambda = fabiusLambertPhase x := by
+  have hx' : x ∈ Ioc 0
+      (powerExponentialPeak 1 1 (Real.log 2)) := by
+    rwa [powerExponentialPeak_one_one_log_two]
+  simpa only [powerExponentialSaddle_one_one_log_two,
+    fabiusPrincipalLambertPhase,
+    lowerPowerExponentialPhase_one_one_log_two] using
+      (powerExponentialSaddle_eq_iff_eq_principal_or_eq_lower
+        (m := 1) one_ne_zero (A := 1) (beta := Real.log 2)
+        (x := x) (lambda := lambda) zero_lt_one
+        (Real.log_pos (by norm_num)) hx' hlambda)
+
+/-- Strictly below the classical turning value, the two nonnegative Fabius
+saddle roots are distinct. -/
+theorem fabiusPrincipalLambertPhase_ne_fabiusLambertPhase
+    {x : ℝ} (hx : x ∈ Ioo 0 (Real.exp (-1) / Real.log 2)) :
+    fabiusPrincipalLambertPhase x ≠ fabiusLambertPhase x := by
+  have hx' : x ∈ Ioo 0
+      (powerExponentialPeak 1 1 (Real.log 2)) := by
+    rwa [powerExponentialPeak_one_one_log_two]
+  simpa only [fabiusPrincipalLambertPhase,
+    lowerPowerExponentialPhase_one_one_log_two] using
+      (principalPowerExponentialPhase_ne_lowerPowerExponentialPhase
+        (m := 1) one_ne_zero (A := 1) (beta := Real.log 2)
+        zero_lt_one (Real.log_pos (by norm_num)) hx')
+
+/-- The principal Fabius saddle phase is continuous on the full closed
+profile-value interval. -/
+theorem fabiusPrincipalLambertPhase_continuousOn_Icc :
+    ContinuousOn fabiusPrincipalLambertPhase
+      (Icc 0 (Real.exp (-1) / Real.log 2)) := by
+  change ContinuousOn
+    (principalPowerExponentialPhase 1 1 (Real.log 2))
+      (Icc 0 (Real.exp (-1) / Real.log 2))
+  simpa only [powerExponentialPeak_one_one_log_two] using
+      (principalPowerExponentialPhase_continuousOn_Icc
+        (m := 1) one_ne_zero (A := 1) (beta := Real.log 2)
+        zero_lt_one (Real.log_pos (by norm_num)))
+
+/-- The lower Fabius saddle phase is continuous through its finite branch
+point on the positive endpoint-inclusive interval. -/
+theorem fabiusLambertPhase_continuousOn_Ioc :
+    ContinuousOn fabiusLambertPhase
+      (Ioc 0 (Real.exp (-1) / Real.log 2)) := by
+  have h := lowerPowerExponentialPhase_continuousOn_Ioc
+    (m := 1) one_ne_zero (A := 1) (beta := Real.log 2)
+    zero_lt_one (Real.log_pos (by norm_num))
+  rw [powerExponentialPeak_one_one_log_two] at h
+  have hfun : lowerPowerExponentialPhase 1 1 (Real.log 2) =
+      fabiusLambertPhase := by
+    funext x
+    exact lowerPowerExponentialPhase_one_one_log_two x
+  rwa [hfun] at h
+
+/-- Near zero, the principal Fabius saddle phase is asymptotic to the input
+itself. -/
+theorem fabiusPrincipalLambertPhase_isEquivalent_id :
+    (fun x : ℝ ↦ fabiusPrincipalLambertPhase x)
+      ~[nhdsWithin 0 (Ioi 0)] (fun x : ℝ ↦ x) := by
+  simpa only [fabiusPrincipalLambertPhase, Nat.cast_one, inv_one, div_one,
+    Real.rpow_one] using
+      (principalPowerExponentialPhase_isEquivalent_rpow
+        (m := 1) one_ne_zero (A := 1) (beta := Real.log 2)
+        zero_lt_one (Real.log_pos (by norm_num)))
 
 end
 

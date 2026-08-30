@@ -2,10 +2,10 @@
 
 Target: `Analysis/FabiusFunction/docs/**/*.tex`, excluding this newly filed package directory.
 
-- TeX files read: **137**
-- Total source lines: **305894**
-- Total source bytes: **13550024**
-- Concatenated-corpus SHA-256: `ec91386907e5083241ae7d1732b084356c85be026b03ba330a6674a9e1a06954`
+- TeX files read: **140**
+- Total source lines: **311911**
+- Total source bytes: **13787029**
+- Concatenated-corpus SHA-256: `a6edc75336626f99b4a1a13e6d7b90dc14f8f2dede15b4a3de80879442932a2d`
 
 The corpus digest hashes raw file bytes concatenated in lexicographic relative-path order.
 Phrase clusters are a broad overlap screen, not a decision procedure for mathematical equivalence
@@ -15,7 +15,7 @@ or a claim of worldwide priority.
 
 ### Fourier-zero spectral zeta
 
-Matched **25** prior TeX files:
+Matched **27** prior TeX files:
 
 - `Fabius_Function_and_Rvachev_Up/Fabius_Function_and_Rvachev_Up.tex`
 - `fabius_lean_walkthrough/fabius_lean_walkthrough.tex`
@@ -25,6 +25,7 @@ Matched **25** prior TeX files:
 - `semi-formalized-research-frontiers/drafts/integration-and-transforms/Integration_and_Transform_Frontiers/Integration_and_Transform_Frontiers.tex`
 - `semi-formalized-research-frontiers/drafts/inverse-and-sampling/Dyadic_Comb_Frontiers/Dyadic_Comb_Frontiers.tex`
 - `semi-formalized-research-frontiers/drafts/inverse-and-sampling/Inverse_and_Sampling_Frontiers/Inverse_and_Sampling_Frontiers.tex`
+- `semi-formalized-research-frontiers/drafts/representations/Fabius_Rvachev_Shape_Divisibility_Stein_Geometry/fabius_rvachev_frontier_report.tex`
 - `semi-formalized-research-frontiers/drafts/representations/Fabius_Stein_Koopman_Frontier_Report/dyadic_stein_koopman_frontier.tex`
 - `semi-formalized-research-frontiers/drafts/representations/Lagrange_Rvachev_Loop_Package/Lagrange_Rvachev_Loop.tex`
 - `semi-formalized-research-frontiers/drafts/representations/Legendre_Rvachev_Closed_Loop_Report_v3/legendre_rvachev_closed_loop.tex`
@@ -39,13 +40,14 @@ Matched **25** prior TeX files:
 - `semi-formalized-research-frontiers/drafts/rvachev_up_fourier_decay/Rvachev_Up_Fourier_Decay_Comparative_Audit/Rvachev_Up_Fourier_Decay_Comparative_Audit.tex`
 - `semi-formalized-research-frontiers/drafts/rvachev_up_fourier_decay/rvachev_up_fourier_decay-4/rvachev_up_fourier_decay.tex`
 - `semi-formalized-research-frontiers/drafts/rvachev_up_fourier_decay/rvachev_up_fourier_decay-6/Rvachev_Up_Fourier_Decay_Final_Synthesis.tex`
+- `semi-formalized-research-frontiers/drafts/spectra-and-arithmetic/Fabius_Rvachev_Reciprocal_Integer_Convolution_Divisors/frontier_report.tex`
 - `semi-formalized-research-frontiers/drafts/spectra-and-arithmetic/Fabius_Total_Positivity_Frontier_Report/Fabius_Total_Positivity_Frontier_Report.tex`
 - `semi-formalized-research-frontiers/drafts/spectra-and-arithmetic/Spectra_and_Arithmetic_Frontiers/Spectra_and_Arithmetic_Frontiers.tex`
 - `semi-formalized-research-frontiers/drafts/thue-morse/Thue_Morse_Atlas_and_Frontiers/Thue_Morse_Atlas_and_Frontiers.tex`
 
 ### Exact digit-sum zero count
 
-Matched **62** prior TeX files:
+Matched **65** prior TeX files:
 
 - `FabiusFunction_Mathematical_Glossary/FabiusFunction_Mathematical_Glossary.tex`
 - `Fabius_Function_and_Rvachev_Up/Fabius_Function_and_Rvachev_Up.tex`
@@ -83,6 +85,7 @@ Matched **62** prior TeX files:
 - `semi-formalized-research-frontiers/drafts/inverse-and-sampling/Inverse_Endpoint_All_Orders/Inverse_Endpoint_All_Orders.tex`
 - `semi-formalized-research-frontiers/drafts/inverse-and-sampling/Inverse_and_Sampling_Frontiers/Inverse_and_Sampling_Frontiers.tex`
 - `semi-formalized-research-frontiers/drafts/representations/Fabius_Rvachev_New_Frontiers-2/fabius_rvachev_new_frontiers.tex`
+- `semi-formalized-research-frontiers/drafts/representations/Fabius_Rvachev_Shape_Divisibility_Stein_Geometry/fabius_rvachev_frontier_report.tex`
 - `semi-formalized-research-frontiers/drafts/representations/Lagrange_Rvachev_Closed_Loop_Report/lagrange_up_loop.tex`
 - `semi-formalized-research-frontiers/drafts/representations/Lagrange_Rvachev_Loop_Package/Lagrange_Rvachev_Loop.tex`
 - `semi-formalized-research-frontiers/drafts/representations/Legendre_Rvachev_Closed_Loop_Report_v3/legendre_rvachev_closed_loop.tex`
@@ -92,6 +95,7 @@ Matched **62** prior TeX files:
 - `semi-formalized-research-frontiers/drafts/representations/Rvachev_Lagrange_Loop_Report_v5/Rvachev_Lagrange_Loop_Report.tex`
 - `semi-formalized-research-frontiers/drafts/representations/Rvachev_Lagrange_Loop_Report_v6/Rvachev_Lagrange_Loop_Report_v6.tex`
 - `semi-formalized-research-frontiers/drafts/representations/Up_Polynomial_Synthesis/Up_Polynomial_Synthesis.tex`
+- `semi-formalized-research-frontiers/drafts/representations/fabius_iterates_nowhere_analytic/fabius_iterates_nowhere_analytic.tex`
 - `semi-formalized-research-frontiers/drafts/representations/lagrange_rvachev_loop_report_v3/lagrange_rvachev_loop.tex`
 - `semi-formalized-research-frontiers/drafts/representations/legendre_rvachev_closed_loop/legendre_rvachev_closed_loop.tex`
 - `semi-formalized-research-frontiers/drafts/representations/rvachev_lagrange_loop_report/rvachev_lagrange_loop_report.tex`
@@ -105,6 +109,7 @@ Matched **62** prior TeX files:
 - `semi-formalized-research-frontiers/drafts/rvachev_up_fourier_decay/rvachev_up_fourier_decay-6/Rvachev_Up_Fourier_Decay_Final_Synthesis.tex`
 - `semi-formalized-research-frontiers/drafts/rvachev_up_fourier_decay/rvachev_up_fourier_decay-7/rvachev_up_fourier_decay_final.tex`
 - `semi-formalized-research-frontiers/drafts/rvachev_up_fourier_decay/rvachev_up_fourier_decay-8/rvachev_up_fourier_decay_final.tex`
+- `semi-formalized-research-frontiers/drafts/spectra-and-arithmetic/Fabius_Rvachev_Reciprocal_Integer_Convolution_Divisors/frontier_report.tex`
 - `semi-formalized-research-frontiers/drafts/spectra-and-arithmetic/Fabius_Total_Positivity_Frontier_Report/Fabius_Total_Positivity_Frontier_Report.tex`
 - `semi-formalized-research-frontiers/drafts/spectra-and-arithmetic/Spectra_and_Arithmetic_Frontiers/Spectra_and_Arithmetic_Frontiers.tex`
 - `semi-formalized-research-frontiers/drafts/thue-morse/Thue_Morse_Atlas_and_Frontiers/Thue_Morse_Atlas_and_Frontiers.tex`
@@ -112,7 +117,7 @@ Matched **62** prior TeX files:
 
 ### Complex dimensions / heat trace
 
-Matched **27** prior TeX files:
+Matched **28** prior TeX files:
 
 - `FabiusFunction_Mathematical_Glossary/FabiusFunction_Mathematical_Glossary.tex`
 - `Fabius_Function_and_Rvachev_Up/Fabius_Function_and_Rvachev_Up.tex`
@@ -138,13 +143,14 @@ Matched **27** prior TeX files:
 - `semi-formalized-research-frontiers/drafts/lambert-w/Lambert_W_Guide/Lambert_W_Guide.tex`
 - `semi-formalized-research-frontiers/drafts/representations/Fabius_Stein_Koopman_Frontier_Report/dyadic_stein_koopman_frontier.tex`
 - `semi-formalized-research-frontiers/drafts/representations/Representation_Frontiers/Representation_Frontiers.tex`
+- `semi-formalized-research-frontiers/drafts/spectra-and-arithmetic/Fabius_Rvachev_Reciprocal_Integer_Convolution_Divisors/frontier_report.tex`
 - `semi-formalized-research-frontiers/drafts/spectra-and-arithmetic/Fabius_Total_Positivity_Frontier_Report/Fabius_Total_Positivity_Frontier_Report.tex`
 - `semi-formalized-research-frontiers/drafts/spectra-and-arithmetic/Spectra_and_Arithmetic_Frontiers/Spectra_and_Arithmetic_Frontiers.tex`
 - `semi-formalized-research-frontiers/semi-formalized-research-frontiers.tex`
 
 ### Sharp Strang--Fix aliasing defect
 
-Matched **20** prior TeX files:
+Matched **21** prior TeX files:
 
 - `FabiusFunction_Mathematical_Glossary/FabiusFunction_Mathematical_Glossary.tex`
 - `archive/glossary/FabiusFunction_Mathematical_Glossary/FabiusFunction_Mathematical_Glossary.tex`
@@ -166,10 +172,11 @@ Matched **20** prior TeX files:
 - `semi-formalized-research-frontiers/drafts/representations/lagrange_rvachev_loop_report_v3/lagrange_rvachev_loop.tex`
 - `semi-formalized-research-frontiers/drafts/representations/legendre_rvachev_closed_loop/legendre_rvachev_closed_loop.tex`
 - `semi-formalized-research-frontiers/drafts/representations/rvachev_lagrange_loop_report/rvachev_lagrange_loop_report.tex`
+- `semi-formalized-research-frontiers/drafts/spectra-and-arithmetic/Fabius_Rvachev_Reciprocal_Integer_Convolution_Divisors/frontier_report.tex`
 
 ### Phase-locked Lambert-W saddle
 
-Matched **51** prior TeX files:
+Matched **54** prior TeX files:
 
 - `FabiusFunction_Mathematical_Glossary/FabiusFunction_Mathematical_Glossary.tex`
 - `Fabius_Function_and_Rvachev_Up/Fabius_Function_and_Rvachev_Up.tex`
@@ -204,6 +211,7 @@ Matched **51** prior TeX files:
 - `semi-formalized-research-frontiers/drafts/lambert-w/Lambert_W_Guide/assets/Lambert-W-Function-article-4/numerical_values.tex`
 - `semi-formalized-research-frontiers/drafts/lambert-w/Lambert_W_Guide/assets/Lambert_W_article/numerical_results.tex`
 - `semi-formalized-research-frontiers/drafts/representations/Fabius_Rvachev_New_Frontiers-2/fabius_rvachev_new_frontiers.tex`
+- `semi-formalized-research-frontiers/drafts/representations/Fabius_Rvachev_Shape_Divisibility_Stein_Geometry/fabius_rvachev_frontier_report.tex`
 - `semi-formalized-research-frontiers/drafts/representations/Fabius_Stein_Koopman_Frontier_Report/dyadic_stein_koopman_frontier.tex`
 - `semi-formalized-research-frontiers/drafts/representations/Lagrange_Rvachev_Closed_Loop_Report/lagrange_up_loop.tex`
 - `semi-formalized-research-frontiers/drafts/representations/Lagrange_Rvachev_Loop_Package/Lagrange_Rvachev_Loop.tex`
@@ -212,12 +220,14 @@ Matched **51** prior TeX files:
 - `semi-formalized-research-frontiers/drafts/representations/Legendre_Rvachev_Self_Reconstruction/legendre_rvachev_self_reconstruction.tex`
 - `semi-formalized-research-frontiers/drafts/representations/Representation_Frontiers/Representation_Frontiers.tex`
 - `semi-formalized-research-frontiers/drafts/representations/Rvachev_Lagrange_Loop_Report_v5/Rvachev_Lagrange_Loop_Report.tex`
+- `semi-formalized-research-frontiers/drafts/representations/fabius_iterates_nowhere_analytic/fabius_iterates_nowhere_analytic.tex`
 - `semi-formalized-research-frontiers/drafts/representations/lagrange_rvachev_loop_report_v3/lagrange_rvachev_loop.tex`
 - `semi-formalized-research-frontiers/drafts/representations/legendre_rvachev_closed_loop/legendre_rvachev_closed_loop.tex`
 - `semi-formalized-research-frontiers/drafts/rvachev_up_fourier_decay/Rvachev_Up_Fourier_Decay_Comparative_Audit/Rvachev_Up_Fourier_Decay_Comparative_Audit.tex`
 - `semi-formalized-research-frontiers/drafts/rvachev_up_fourier_decay/Rvachev_Up_Fourier_Decay_Gentle_Guide/Rvachev_Up_Fourier_Decay_Gentle_Guide.tex`
 - `semi-formalized-research-frontiers/drafts/rvachev_up_fourier_decay/rvachev_up_fourier_decay-5/Rvachev_Up_Fourier_Decay_Final.tex`
 - `semi-formalized-research-frontiers/drafts/rvachev_up_fourier_decay/rvachev_up_fourier_decay-6/Rvachev_Up_Fourier_Decay_Final_Synthesis.tex`
+- `semi-formalized-research-frontiers/drafts/spectra-and-arithmetic/Fabius_Rvachev_Reciprocal_Integer_Convolution_Divisors/frontier_report.tex`
 - `semi-formalized-research-frontiers/drafts/spectra-and-arithmetic/Fabius_Total_Positivity_Frontier_Report/Fabius_Total_Positivity_Frontier_Report.tex`
 - `semi-formalized-research-frontiers/drafts/spectra-and-arithmetic/Spectra_and_Arithmetic_Frontiers/Spectra_and_Arithmetic_Frontiers.tex`
 - `semi-formalized-research-frontiers/drafts/thue-morse/Thue_Morse_Atlas_and_Frontiers/Thue_Morse_Atlas_and_Frontiers.tex`
@@ -225,7 +235,7 @@ Matched **51** prior TeX files:
 
 ### Integer-base atomic family
 
-Matched **21** prior TeX files:
+Matched **22** prior TeX files:
 
 - `Fabius_Function_and_Rvachev_Up/Fabius_Function_and_Rvachev_Up.tex`
 - `archive/primary-exposition/Fabius_Function_and_Rvachev_Up-3/Fabius_Function_and_Rvachev_Up.tex`
@@ -245,6 +255,7 @@ Matched **21** prior TeX files:
 - `semi-formalized-research-frontiers/drafts/representations/Rvachev_Lagrange_Loop_Report_v6/Rvachev_Lagrange_Loop_Report_v6.tex`
 - `semi-formalized-research-frontiers/drafts/representations/Up_Polynomial_Synthesis/Up_Polynomial_Synthesis.tex`
 - `semi-formalized-research-frontiers/drafts/rvachev_up_fourier_decay/Rvachev_Up_Fourier_Decay_Comparative_Audit/Rvachev_Up_Fourier_Decay_Comparative_Audit.tex`
+- `semi-formalized-research-frontiers/drafts/spectra-and-arithmetic/Fabius_Rvachev_Reciprocal_Integer_Convolution_Divisors/frontier_report.tex`
 - `semi-formalized-research-frontiers/drafts/spectra-and-arithmetic/Fabius_Total_Positivity_Frontier_Report/Fabius_Total_Positivity_Frontier_Report.tex`
 - `semi-formalized-research-frontiers/drafts/spectra-and-arithmetic/Spectra_and_Arithmetic_Frontiers/Spectra_and_Arithmetic_Frontiers.tex`
 - `semi-formalized-research-frontiers/drafts/thue-morse/Thue_Morse_Atlas_and_Frontiers/Thue_Morse_Atlas_and_Frontiers.tex`
@@ -287,7 +298,7 @@ Matched **21** prior TeX files:
 
 ### `Fabius_Function_and_Rvachev_Up/Fabius_Function_and_Rvachev_Up.tex`
 
-- SHA-256: `c99d74c93f25bbc3f0e1dc6a9660ca3bf4d5fc3e821a6c891c615f935a7f6777`
+- SHA-256: `cdde77e87f3c0c1a817bac08e6d65cf4d9945e943de5c32cb17d92d57f2d3384`
 - Phrase clusters: Fourier-zero spectral zeta; Exact digit-sum zero count; Complex dimensions / heat trace; Phase-locked Lambert-W saddle; Integer-base atomic family
 - Structural headings:
   - section: Historical note and scope
@@ -2907,7 +2918,7 @@ Matched **21** prior TeX files:
 
 ### `fabius_lean_walkthrough/fabius_lean_walkthrough.tex`
 
-- SHA-256: `5f1c7ddd17e41b1c3d8a1a03a1e522badb33f3551cbd07a4ecb82fb43dafa869`
+- SHA-256: `319065fe2e87465adccba83462d8e96822c1bad023e329455c41726689b40a63`
 - Phrase clusters: Fourier-zero spectral zeta; Exact digit-sum zero count; Complex dimensions / heat trace; Phase-locked Lambert-W saddle
 - Structural headings:
   - section: Scope and conventions
@@ -3253,7 +3264,7 @@ Matched **21** prior TeX files:
 
 ### `semi-formalized-research-frontiers/drafts/exponents-and-q-series/Exponents_and_q_Series_Frontiers/Exponents_and_q_Series_Frontiers.tex`
 
-- SHA-256: `ac09038d81a60e9993fbb3c8cb4737de9c83741569549644180d4e7177742c1f`
+- SHA-256: `f32759ccb31acb9223db0ab01a7e3718a9bef67c4eeb518c20f46f26d29beb6a`
 - Phrase clusters: Fourier-zero spectral zeta; Exact digit-sum zero count; Complex dimensions / heat trace; Sharp Strang--Fix aliasing defect; Phase-locked Lambert-W saddle; Integer-base atomic family
 - Structural headings:
   - section: Provenance
@@ -3706,7 +3717,7 @@ Matched **21** prior TeX files:
 
 ### `semi-formalized-research-frontiers/drafts/exponents-and-q-series/q_pochhammer_q_binomial_monograph/q_pochhammer_q_binomial_monograph.tex`
 
-- SHA-256: `ccd55105d81b015aff9afd6fd42f5183e7c329e7a78c072654d4490317a1655a`
+- SHA-256: `8b4a624c6c3645a70ae25e985eee46dc63c52ddfea3caad52345d58405409ea6`
 - Phrase clusters: Fourier-zero spectral zeta; Exact digit-sum zero count; Integer-base atomic family
 - Structural headings:
   - chapter: Abstract
@@ -5677,7 +5688,7 @@ Matched **21** prior TeX files:
 
 ### `semi-formalized-research-frontiers/drafts/lambert-w/Lambert_W_Guide/Lambert_W_Guide.tex`
 
-- SHA-256: `9b271afd8807a07edebd9f2245aebea54d4af7b3a3930f57d310b008ccb00033`
+- SHA-256: `113b019207217c015d262a467416b7a89aa4c1532aad90a49b34c9745f17a450`
 - Phrase clusters: Complex dimensions / heat trace; Phase-locked Lambert-W saddle; Integer-base atomic family
 - Structural headings:
   - subsection: Provenance
@@ -5930,6 +5941,80 @@ Matched **21** prior TeX files:
   - section: The degree-thirty Sturm polynomial}\label{app:P30
   - section: Additional finite-level polynomials
   - section: A compact proof certificate for the dyadic theorem
+
+### `semi-formalized-research-frontiers/drafts/representations/Fabius_Rvachev_Shape_Divisibility_Stein_Geometry/fabius_rvachev_frontier_report.tex`
+
+- SHA-256: `04d48b6903ec202c672d69adc14db1b1848e00a5d35466d806705c324c7746ec`
+- Phrase clusters: Fourier-zero spectral zeta; Exact digit-sum zero count; Phase-locked Lambert-W saddle
+- Structural headings:
+  - section: Research-status convention
+  - section: Orientation and principal results
+  - subsection: Why a new direction was necessary
+  - subsection: Executive theorem map
+  - subsection: A compact notation table
+  - section: Corpus audit and nonduplication method
+  - subsection: Inventory strategy
+  - subsection: Imported facts used in this report
+  - subsection: External literature boundary
+  - section: The dyadic probability fixed point
+  - subsection: Random-series and refinement descriptions
+  - subsection: The survival identity
+  - subsection: Flatness at the mode
+  - section: Strict log-concavity at the critical binary point
+  - subsection: A general strictness lemma
+  - subsection: Resolution of the binary strictness conjecture
+  - subsection: Strict log-concavity of the distribution tails
+  - subsection: Hazard, reverse hazard, and likelihood ratio
+  - subsection: The inverse Fabius function
+  - section: Fourier zeros and convolution power-rootlessness
+  - subsection: The entire characteristic function
+  - subsection: A general zero-multiplicity obstruction
+  - subsection: Extension to geometric atomic laws
+  - subsection: A factor-classification conjecture
+  - section: The canonical Rvachev Stein kernel
+  - subsection: Definition and Stein identity
+  - subsection: Exact Fabius-tail representations
+  - subsection: Exact absolute moment and special values
+  - subsection: Dyadic rationality
+  - subsection: Bell--Bernoulli moment bridge
+  - section: The Rvachev--Stein diffusion and its Legendre shadow
+  - subsection: Weighted Poincare inequality and exact gap
+  - subsection: A canonical symmetric generator
+  - subsection: The Stein kernel is nowhere analytic
+  - subsection: The exact quadratic jet at the mode
+  - subsection: Legendre equation in the eigenfunction jet
+  - subsection: No higher analytic eigenfunctions
+  - subsection: A rational jet at the half point
+  - section: Endpoint Stein asymptotics and Lambert scales
+  - subsection: Exact endpoint formula
+  - subsection: Tangent and chord bounds
+  - subsection: Logarithmic-coordinate representation
+  - subsection: Multiplicative concavity conjecture
+  - section: Numerical experiments and reproducibility
+  - subsection: Fixed-point discretization
+  - subsection: Density, score, and Stein kernel
+  - subsection: Endpoint diagnostic
+  - subsection: Stein discrepancy from Gaussianity
+  - subsection: A monotonicity conjecture suggested by the data
+  - section: Conjecture register and frontier program
+  - subsection: Strictness for the full connected-support family
+  - subsection: Factor divisors and Thue--Morse automata
+  - subsection: Stein arithmetic
+  - subsection: Stein spectral theory and Legendre comparison
+  - subsection: Endpoint completion
+  - subsection: Inverse-function consequences
+  - section: A Lean-oriented formalization blueprint
+  - subsection: Dependency graph
+  - subsection: Suggested theorem names
+  - subsection: Formalization risk ledger
+  - section: Conclusions
+  - section: Proof supplement: standard log-concavity facts
+  - subsection: Convolution and weak limits
+  - subsection: Half-line marginals
+  - subsection: Derivative monotonicity
+  - section: Proof supplement: Fourier multiplicities
+  - section: Numerical file guide
+  - section: Corpus map used for the audit
 
 ### `semi-formalized-research-frontiers/drafts/representations/Fabius_Stein_Koopman_Frontier_Report/data/appell_polynomials.tex`
 
@@ -7150,6 +7235,46 @@ Matched **21** prior TeX files:
   - section: Low-order operator data
   - section: Provenance of the absorbed sources
 
+### `semi-formalized-research-frontiers/drafts/representations/fabius_iterates_nowhere_analytic/fabius_iterates_nowhere_analytic.tex`
+
+- SHA-256: `be56c6f075504d9c6fa3c774caea3b695eabc6b973653e196a4f4dede498523c`
+- Phrase clusters: Exact digit-sum zero count; Phase-locked Lambert-W saddle
+- Structural headings:
+  - section: Statement of the problem and the strengthened result
+  - section: Repository audit and novelty boundary
+  - subsection: Canonical sources inspected
+  - subsection: Existing formal result and the new step
+  - section: Fabius, Rvachev, Thue--Morse, and the derivative atlas
+  - subsection: The Rvachev bump and the signed global extension
+  - subsection: Exact all-order derivatives
+  - subsection: Shape and orbit dynamics
+  - section: Why a direct dyadic-jet induction fails
+  - section: The dyadic defect of a Fa\`a di Bruno partition
+  - section: A two-spine composition lemma
+  - section: Strict unimodality of the spine weights
+  - section: Binary transitions force recurrent large amplitudes
+  - section: Proof of the zero-radius theorem
+  - section: Consequences and refinements
+  - subsection: Inverse compositional iterates
+  - subsection: No local elementary representation
+  - subsection: A pointwise derivative-growth invariant
+  - subsection: A Denjoy--Carleman interpretation
+  - section: Numerical diagnostics
+  - subsection: Sinc-product reconstruction
+  - subsection: Taylor-series composition and the spine comparison
+  - section: Connections to the broader Fabius corpus
+  - subsection: Bell polynomials and Bernoulli cumulants
+  - subsection: q-binomial and Thue--Morse structure
+  - subsection: Infinite sinc products
+  - subsection: Legendre expansions and polynomial representations
+  - section: Conjectures and research directions
+  - subsection: Promising formalization route
+  - subsection: Generalization to other atomic functions
+  - section: Summary of the proof mechanism
+  - section: Auxiliary details on the partition defect
+  - section: Reproducibility guide
+  - section: Repository source map
+
 ### `semi-formalized-research-frontiers/drafts/representations/lagrange_rvachev_loop_report_v3/endpoint_degree2_matrix.tex`
 
 - SHA-256: `9e8638e16a76ac52fa7939dea09b96054f20d17b03038d6d651baf37e7800713`
@@ -7766,6 +7891,86 @@ Matched **21** prior TeX files:
   - section: Conclusion
   - section: Constants and conversions
   - section: Source map
+
+### `semi-formalized-research-frontiers/drafts/spectra-and-arithmetic/Fabius_Rvachev_Reciprocal_Integer_Convolution_Divisors/frontier_report.tex`
+
+- SHA-256: `59818dc3fcf70494960d862c2c174a6d437b02896d14e954d78df5011afe3651`
+- Phrase clusters: Fourier-zero spectral zeta; Exact digit-sum zero count; Complex dimensions / heat trace; Sharp Strang--Fix aliasing defect; Phase-locked Lambert-W saddle; Integer-base atomic family
+- Structural headings:
+  - section: Corpus audit, scope, and novelty controls
+  - subsection: Operational reading protocol
+  - subsection: Targeted duplication tests
+  - subsection: Map of genuinely distinct results
+  - section: The Rvachev probability law and its established Fourier backbone
+  - subsection: Normalization
+  - subsection: The integer zero lattice
+  - section: Reciprocal-integer convolution divisors
+  - subsection: A Dirichlet-kernel factor at every dyadic level
+  - subsection: Complete classification of independent-copy scales
+  - subsection: New refinement equations for $\Up$ and $F$
+  - section: The digit IFS and the multiplicative convolution cocycle
+  - subsection: Affine digit coordinates
+  - subsection: The multiplicative cocycle
+  - subsection: Cocycle factorization by the $2$-adic valuation
+  - section: Singular-to-smooth parity and exact regularity
+  - subsection: A pure-type lemma for the digit measures
+  - subsection: Odd divisors are singular continuous
+  - subsection: Even divisors and a complete regularity trichotomy
+  - subsection: A torus aliasing dichotomy
+  - section: Transport convergence, singular approximants, and the inverse Fabius function
+  - subsection: Exact $W_\infty$ distance
+  - subsection: Certified quantile approximants
+  - subsection: Iterated and radix-$M$ quantile schemes
+  - subsection: A $q=M^{-2}$ Richardson hierarchy
+  - section: The arithmetic zero divisor and its spectral zeta function
+  - subsection: Exact zero multiplicities
+  - subsection: A closed spectral zeta function
+  - subsection: Power-of-two rigidity and complex dimensions
+  - subsection: Values at the origin and a zeta-regularized determinant
+  - section: Bernoulli cumulants, Bell moments, and Appell cocycles
+  - subsection: The discrete digit cumulants
+  - subsection: Bernoulli-polynomial digit moments
+  - subsection: Complete Bell-polynomial moments
+  - subsection: An Appell semigroup law
+  - section: Thue--Morse quotients, bounded binary partitions, and Stern's sequence
+  - subsection: Finite digit polynomials
+  - subsection: Carry recurrence
+  - subsection: The $M=3$ Stern/hyperbinary specialization
+  - subsection: Power-of-two rationality versus nonpower Mahler structure
+  - section: Exact endpoint log-periodicity and inverse scaling
+  - subsection: CDF refinement and the endpoint phase
+  - subsection: Quantile phase
+  - section: Polynomial and Legendre transfer formulas
+  - subsection: A finite polynomial smoothing operator
+  - subsection: Cocycle composition of polynomial smoothing
+  - subsection: A representation-theoretic interpretation
+  - section: Numerical experiments and reproducibility
+  - subsection: What was computed
+  - subsection: Odd and even cascade behavior
+  - subsection: Endpoint phases
+  - subsection: Zero multiplicities and Fourier resonance
+  - subsection: Reproduction command
+  - section: Mellin complex dimensions of the endpoint phase
+  - section: Conjectures and frontier problems
+  - subsection: Fractional regularity from carry matrices
+  - subsection: Infinitely rich endpoint phases
+  - subsection: Dyadic arithmetic of the divisor CDF
+  - subsection: Stern multifractality inside the singular $M=3$ divisor
+  - subsection: Mahler and natural-boundary rigidity
+  - subsection: General integer bases
+  - subsection: Legendre spectra and arithmetic preconditioners
+  - subsection: Hybrid Lambert-$W$/divisor inversion
+  - section: A formalization and research program
+  - subsection: Lean-sized theorem units
+  - subsection: Computational priorities
+  - subsection: Conceptual payoff
+  - section: Conclusion
+  - section: Proof supplements
+  - subsection: The zero-zeta computation in one line
+  - subsection: Expansion at $s=0$
+  - subsection: The finite-cascade coefficient recurrence
+  - section: Corpus coverage matrix
+  - section: Archive contents and file map
 
 ### `semi-formalized-research-frontiers/drafts/spectra-and-arithmetic/Fabius_Total_Positivity_Frontier_Report/Fabius_Total_Positivity_Frontier_Report.tex`
 

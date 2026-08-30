@@ -1,5 +1,12 @@
 # Frontier compilations
 
+The Digital Spectral Geometry intake is registered once, in the
+[`spectra-and-arithmetic`](../spectra-and-arithmetic/) group.  That filing
+preserves the full verified arrival ledger, repairs the failed audit and
+numerical generation, corrects the false curvature claim, and supplies the
+policy-conforming canonical build; the unrepaired duplicate formerly listed
+here has been removed.
+
 The broad multi-topic "collected new results" report series,
 consolidated (2026-08-28) into the 272-page single volume
 [`Frontier_Compilations/`](Frontier_Compilations/): ten absorbed reports,

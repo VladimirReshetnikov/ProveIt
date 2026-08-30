@@ -13,7 +13,9 @@ identities with the exact ranges of the two real Lambert branches gives
 * the principal phase image `[0, m / beta]`;
 * the lower phase image `[m / beta, ∞)`;
 * full `InvOn` laws between each phase and `powerExponentialSaddle` on the
-  corresponding branch domains.
+  corresponding branch domains;
+* an exact classification of every nonnegative solution below or at the
+  peak, together with strict separation of the two roots below the peak.
 
 The range proofs are algebraic: they invert the normalized Lambert argument
 explicitly and then use the exact branch images.  No endpoint continuity or
@@ -260,6 +262,53 @@ theorem lowerPowerExponentialPhase_invOn
       (Ioc 0 (powerExponentialPeak m A beta)) :=
   ⟨lowerPowerExponentialPhase_leftInvOn hm hA hbeta,
     lowerPowerExponentialPhase_rightInvOn hm hA hbeta⟩
+
+/-- Exact classification of the nonnegative solutions of a scaled
+power--exponential profile equation below and at its peak.
+
+The nonnegativity hypothesis is essential: for even `m`, negative inputs of
+the profile may produce additional positive values.  On the nonnegative
+half-line, every solution lies on exactly one of the principal or lower
+Lambert branches (with the two values coinciding at the peak). -/
+theorem powerExponentialSaddle_eq_iff_eq_principal_or_eq_lower
+    {m : ℕ} (hm : m ≠ 0) {A beta x lambda : ℝ}
+    (hA : 0 < A) (hbeta : 0 < beta)
+    (hx : x ∈ Ioc 0 (powerExponentialPeak m A beta))
+    (hlambda : 0 ≤ lambda) :
+    powerExponentialSaddle m A beta lambda = x ↔
+      lambda = principalPowerExponentialPhase m A beta x ∨
+        lambda = lowerPowerExponentialPhase m A beta x := by
+  constructor
+  · intro hsolve
+    rcases le_total lambda ((m : ℝ) / beta) with hprincipal | hlower
+    · left
+      have hinv := principalPowerExponentialPhase_leftInvOn hm hA hbeta
+        (⟨hlambda, hprincipal⟩ : lambda ∈ Icc 0 ((m : ℝ) / beta))
+      rw [hsolve] at hinv
+      exact hinv.symm
+    · right
+      have hinv := lowerPowerExponentialPhase_leftInvOn hm hA hbeta
+        (mem_Ici.mpr hlower)
+      rw [hsolve] at hinv
+      exact hinv.symm
+  · rintro (hprincipal | hlower)
+    · rw [hprincipal]
+      exact principalPowerExponentialPhase_solves hm hA hbeta
+        ⟨hx.1.le, hx.2⟩
+    · rw [hlower]
+      exact lowerPowerExponentialPhase_solves hm hA hbeta hx
+
+/-- Strictly below the profile peak, the principal and lower nonnegative
+solutions are distinct. -/
+theorem principalPowerExponentialPhase_ne_lowerPowerExponentialPhase
+    {m : ℕ} (hm : m ≠ 0) {A beta x : ℝ}
+    (hA : 0 < A) (hbeta : 0 < beta)
+    (hx : x ∈ Ioo 0 (powerExponentialPeak m A beta)) :
+    principalPowerExponentialPhase m A beta x ≠
+      lowerPowerExponentialPhase m A beta x := by
+  exact ne_of_lt <|
+    (principalPowerExponentialPhase_lt_turningPoint hm hA hbeta hx).trans
+      (turningPoint_lt_lowerPowerExponentialPhase hm hA hbeta hx)
 
 end
 

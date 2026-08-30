@@ -24,6 +24,10 @@ Main files:
 - `pdf_validation.txt` and `compile_transcript.txt` — current artifact
   validation and LaTeX build records.
 - `ARRIVAL_MANIFEST.txt` — the delivered two-file size/hash manifest.
+- `ARRIVAL_SHA256SUMS` — the verified ten-entry checksum ledger for the full
+  archive payload, preserved byte-for-byte from the independent arrival
+  filing before that duplicate directory was removed (ledger SHA-256
+  `4c177281eec24f00edf6041ec11779444e24e455db965503207b32c301749629`).
 - `CHECKSUMS.sha256` — hashes of the current repository-normalized package
   payload (excluding the ledger itself).
 
@@ -38,6 +42,7 @@ fonts.
 Rebuild from this directory:
 
 ```bash
+python repository_audit.py
 uv run --with-requirements requirements.txt \
   python numerical_experiments.py --output-dir .
 pdflatex -interaction=nonstopmode -halt-on-error -file-line-error Fabius_Rvachev_Frontier_Report.tex
@@ -58,10 +63,10 @@ curvature range was corrected after accounting for center flatness at
 
 The delivered `repository_audit.md` had inspected zero TeX files. The repaired
 audit reads the repository recursively while excluding this newly filed
-package directory. At intake it read 137 prior TeX files (305,894 lines;
-13,550,024 bytes; raw-byte
+package directory. Against the final merged corpus it reads 140 prior TeX
+files (311,911 lines; 13,787,029 bytes; raw-byte
 concatenated SHA-256
-`ec91386907e5083241ae7d1732b084356c85be026b03ba330a6674a9e1a06954`).
+`a6edc75336626f99b4a1a13e6d7b90dc14f8f2dede15b4a3de80879442932a2d`).
 All six advertised contribution clusters have substantial prior textual
 overlap, and no theorem-level novelty is accepted on intake. The
 divisor/zeta/count/heat/cumulant spine specializes existing Exponents and

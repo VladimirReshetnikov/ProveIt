@@ -2,6 +2,52 @@
 
 New standalone intake members:
 
+- [`fabius_iterates_nowhere_analytic/`](fabius_iterates_nowhere_analytic/),
+  *Nowhere Analyticity of Every Positive Compositional Iterate of the Fabius
+  Function* (19 pp), arrived on 2026-08-30 with all 14 submitted payload
+  checksums verified; the single CSV entry was refreshed after LF
+  normalization.  A Faà di Bruno partition defect, two-spine expansion,
+  strict weight-unimodality argument, and Thue--Morse binary-transition lemma
+  yield the manuscript's claimed nowhere-analyticity theorem for every
+  positive self-composition, together with a co-countable dense zero-radius
+  set.  This is primarily a derivative/composition representation result,
+  rather than a new Thue--Morse atlas member.  The `n = 1` case and the
+  inverse/non-elementarity infrastructure already exist in Lean; the
+  `n ≥ 2` theorem appears genuinely new and remains unformalized.  The report
+  has 14 nonconjectural labelled results and three conjectures.  Its source
+  map was corrected during normalization to name the live
+  `Monotonicity.lean` module; a deeper claim-by-claim review remains pending.
+  The final 19-page PDF was rebuilt from a clean state with exactly three
+  strict serial `pdflatex` passes using the canonical A4/27 mm preamble and
+  Libertinus prose.  All fonts are embedded and subset Type 1 fonts, no Type
+  3 fonts occur, every page renders with extractable text, and the final log
+  has no warnings, unresolved references, or box defects.  The numerical
+  script and Lean were not rerun during document-policy normalization.
+  Manuscript proof labels do not establish Lean status.
+- [`Fabius_Rvachev_Shape_Divisibility_Stein_Geometry/`](Fabius_Rvachev_Shape_Divisibility_Stein_Geometry/),
+  *Shape, Divisibility, and Stein Geometry of the Fabius--Rvachev Law*
+  (32 pp), arrived on 2026-08-30 with all 14 submitted payload checksums
+  verified; three CSV entries were then refreshed after repository-mandated
+  LF normalization. Its strict log-concavity and reliability consequences,
+  convolution-rootlessness, exact scalar Stein calculus, weighted invariant
+  diffusion, Legendre formal-jet rigidity, and endpoint bounds form a
+  probability/representation layer. The strictness, rootlessness, diffusion,
+  and Legendre-jet strands are distinct, while the scalar Stein kernel,
+  Bell-moment, shape-conjecture, and endpoint material substantially overlaps
+  `Fabius_Stein_Koopman_Frontier_Report/`; both remain separate pending a
+  claim-by-claim editorial merge. Its claim of repository-distinctness is
+  therefore stale: that earlier report already gives the same exact kernel
+  values, rationality and mean identities, and proves a stronger two-term
+  Lambert-periodic endpoint theorem than this intake leaves conjectural.  Its
+  2,001-line TeX source was mechanically converted from book front matter and
+  chapters to a coherent article hierarchy, then rebuilt from a clean state
+  with exactly three strict serial `pdflatex` passes.  The final 32-page PDF
+  uses the canonical A4/27 mm preamble and Libertinus prose; its complete PDF
+  metadata is searchable, all fonts are embedded and subset, and no Type 3
+  fonts occur.  The 453-line numerical script now requests TrueType outlines,
+  and its four regenerated vector plots preserve every submitted CSV/text
+  diagnostic byte-for-byte.  The current package ledger verifies all 14
+  retained files, and manuscript theorem labels do not establish Lean status.
 - [`Fabius_Rvachev_Noncommutative_Frontiers/`](Fabius_Rvachev_Noncommutative_Frontiers/),
   *Noncommutative Cumulant Frontiers for the Fabius--Rvachev Law* (29 pp),
   arrived on 2026-08-30 with all 21 payload checksums verified after four CSV
@@ -29,7 +75,7 @@ New standalone intake members:
   Poisson operators, martingales, nonreversibility certificate, scalar Stein
   kernel, and endpoint asymptotics extend the operator-representation theme.
 
-All three remain standalone pending claim-by-claim Lean crosswalk and deliberate
+All four remain standalone pending claim-by-claim Lean crosswalk and deliberate
 consolidation; paper theorem labels do not by themselves assert Lean status.
 
 Series and orthogonal-expansion representations of the up-function,
@@ -192,7 +238,7 @@ SHA-256 for all eight sources in the volume's front matter.
 The two fourth-wave polynomial-representation drafts (2026-08-28) were
 merged the same day into the volume
 [`Up_Polynomial_Synthesis/`](Up_Polynomial_Synthesis/) (*Exact
-Polynomial Synthesis from Rvachev Up-Atoms*, 22 pp): the common-scale
+Polynomial Synthesis from Rvachev Up-Atoms*, 23 pp): the common-scale
 dictionary construction (formerly
 `Rvachev_Up_Polynomial_Representation_Package/`, *Exact Polynomial
 Synthesis by Finite Rvachev Up-Function Dictionaries*) and the
