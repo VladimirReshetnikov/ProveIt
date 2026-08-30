@@ -51,7 +51,10 @@ of the products themselves is
 (`generalizedRvachevProduct_shift_factorization`), wherever the
 differences `Δʳa` are represented by admissible `ℕ`-valued weights,
 which is exactly the scope of that theorem; the signed, germ-level
-reading is not formalized. -/
+reading is not formalized.  Equivalently, the intended difference
+families must be nonnegative and summable, because `Φ_a` accepts only
+`ℕ`-valued weights.  The general product API was added after this shift
+identity's original constant-weight-era boundary. -/
 theorem weight_shift_eq_sum_fwdDiff (a : ℕ → G) (m h : ℕ) :
     a (h + m) = ∑ r ∈ range (m + 1), m.choose r • Δ_[1]^[r] a h := by
   have hshift := shift_eq_sum_fwdDiff_iter (h := (1 : ℕ)) a m h

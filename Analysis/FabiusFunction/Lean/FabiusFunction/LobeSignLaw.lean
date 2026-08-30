@@ -85,11 +85,13 @@ every sign statement below assumes `N < x < N + 1` strictly.  It is
 settled downstream in `FabiusFunction.LobeSignComplete`, which combines
 this open-lobe law with `FabiusFunction.CanonicalIntegerPoint` at
 nonnegative integers, `FabiusFunction.LobeSignNegative` under
-reflection, and `FabiusFunction.GeneralizedZeroDivisor` to identify
-the zeros.  In particular, at a positive integer `n`, `Φ_a` vanishes
-exactly when `m_a(n) ≠ 0`; at a negative integer the multiplicity is
-indexed by `|n|`.  The resulting dichotomy covers every real point.
-The volume's automaticity criterion for
+reflection, and `FabiusFunction.GeneralizedZeroDivisor` to identify the
+zeros.  In particular, at a nonzero integer `n`, `Φ_a` vanishes exactly
+when `m_a(|n|) ≠ 0`
+(`generalizedRvachevProduct_eq_zero_iff_int`); at a nonnegative integer
+of zero multiplicity, the sign is the one this law predicts
+(`parityCharacter_mul_canonicalRealProduct_natCast_pos`).  The resulting
+dichotomy covers every real point.  The volume's automaticity criterion for
 `ε_a` is not touched here; it is addressed elsewhere, in
 `ParityCharacterKernel.lean`, which proves that the `2`-kernel of
 `ε_a` is finite exactly when the parity word is eventually periodic —

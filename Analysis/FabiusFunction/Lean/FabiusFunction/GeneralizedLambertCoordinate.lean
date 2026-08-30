@@ -12,7 +12,7 @@ and gives it in closed form on the lower branch,
 
 `λ_P(x) = -(p-1) · W₋₁( -(1/(p-1)) · (x / (C p))^{1/(p-1)} )`.
 
-The volume records that only the `p = 2` coordinate is formalized
+The volume recorded that only the `p = 2` coordinate was formalized
 (`Fabius.lowerLambertW`) and that the generalized display has no Lean
 counterpart.  It does now, and the verification is pure algebra: the
 only analytic input is the defining property `W e^W = z` of the lower
@@ -31,11 +31,12 @@ already in that line; what remains is only to choose `u` so that
 `(x/(Cp))^{1/q}` enters, and with it its round-trip hypothesis
 `x / (C p) ≥ 0`.
 
-The theorem carries an interior branch hypothesis explicitly rather than
-deriving it: its proof uses the `(-e⁻¹, 0)` version of the defining
-equation (the lower-branch API separately includes the branch point),
-and for which `x` that hypothesis holds is a question about `C`, `p` and
-`q` that the volume answers by context, not by a formula.
+The current theorem carries the open-interval hypothesis `(-e⁻¹, 0)`
+explicitly rather than deriving it: its proof uses that version of the
+lower-branch defining equation.  The identity also holds at the endpoint
+`-e⁻¹`, but that broader closed-endpoint API is not used here.  Deciding
+which `x` satisfy the theorem's hypothesis is a question about `C`, `p`
+and `q` that the volume answers by context, not by a formula.
 
 * `Fabius.generalizedLambertCoordinate` — `λ_P`, at `q = p - 1`;
 * `Fabius.pow_mul_exp_neg_lambert` — **the core identity**, free of
@@ -88,10 +89,10 @@ equation
 
 `C p · λ_P(x)^q · e^{-λ_P(x)} = x`.
 
-The interior branch hypothesis used by this theorem is carried, not
-derived: its proof invokes the defining equation on `(-e⁻¹, 0)` (the
-lower-branch API separately includes the branch point), and which `x`
-land there depends on `C`, `p` and `q`. -/
+The open-interval branch hypothesis is carried, not derived; the
+defining identity also holds at `-e⁻¹`, but this theorem does not use
+that closed-endpoint extension.  Which `x` land in the stated interval
+depends on `C`, `p` and `q`. -/
 theorem generalizedLambertCoordinate_solves_saddle {q : ℕ} (hq : q ≠ 0)
     {C p x : ℝ} (hCp : C * p ≠ 0) (hx : 0 ≤ x / (C * p))
     (hmem : -((x / (C * p)) ^ ((q : ℝ)⁻¹) / (q : ℝ))

@@ -4,7 +4,7 @@ Antiderivatives, integral calculus, transform dualities, and fractional
 calculus of the Fabius–Rvachev system, consolidated (2026-08-28) into
 the single volume
 [`Integration_and_Transform_Frontiers/`](Integration_and_Transform_Frontiers/)
-(369 pp, twelve parts):
+(370 pp, twelve parts):
 
 - **Part I** — *Antiderivatives of Monomially Weighted Fabius-Type
   Functions* (formerly `Fabius_Antiderivatives_Report/`);
@@ -57,14 +57,16 @@ adjacent-power recurrences.  `CauchyCDF.lean`, `CauchySurvival.lean`, and
 at every positive kernel power; `CauchyRenormalization.lean` supplies the
 centered DDE and its all-order finite Thue--Morse orbit.
 
-The merged Stieltjes modules also prove the real logarithmic fixed point and
-positive integer hierarchy for `z > 1`, real order lowering for `α > 1`,
-real/complex exterior Laurent series, finite-height Herglotz--Poisson
-identities, integrated interval Stieltjes--Perron inversion, and initial exact
-Jacobi data.  Complex logarithmic continuation, complex order,
+The merged `Stieltjes*.lean`, `PoissonApproximateIdentity.lean`,
+`PoissonMassSwap.lean`, and `OrthogonalPolynomialJacobi.lean` modules also
+prove the real logarithmic fixed point and positive integer hierarchy for
+`z > 1`, real order lowering for `α > 1`, real/complex exterior Laurent
+series, finite-height Herglotz--Poisson identities, integrated interval
+Stieltjes--Perron inversion, and initial exact Jacobi data.  Complex
+logarithmic continuation, named Laplace/Fourier forms, complex order,
 pointwise/nontangential Sokhotski--Plemelj and principal-value Hilbert
-formulas, the separate explicit Thue--Morse higher-kernel identity, and the
-full J-fraction/Padé theory remain open.
+formulas, the separate explicit Thue--Morse higher-kernel integral identity,
+and the full J-fraction/Padé theory remain open.
 
 Part VI's positive-real causal Rvachev primitive and semigroup are now exact
 Lean theorems.  `FabiusFractionalVolterra.lean` defines the total

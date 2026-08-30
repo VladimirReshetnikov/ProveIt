@@ -1,39 +1,61 @@
 \documentclass[11pt,oneside]{book}
 
+\usepackage[a4paper,margin=27mm,headheight=15pt]{geometry}
 \usepackage[T1]{fontenc}
 \usepackage[utf8]{inputenc}
-\usepackage{lmodern}
+\IfFileExists{libertinus.sty}{\usepackage{libertinus}}{\usepackage{lmodern}}
 \usepackage{microtype}
-\usepackage[a4paper,margin=28mm,headheight=14pt]{geometry}
-\usepackage{amsmath,amssymb,amsthm,amscd,mathtools,bm}
+\usepackage{amsmath,amssymb,amsthm,amscd,mathtools,mathrsfs}
+\usepackage{bm}
 \usepackage{booktabs,longtable,array,tabularx}
-\usepackage{enumitem}
 \usepackage{graphicx}
-\usepackage{caption}
+\usepackage{pgfplots}
 \usepackage{xcolor}
-\usepackage{url}
-\usepackage[unicode,colorlinks=true,linkcolor=blue!55!black,citecolor=blue!55!black,urlcolor=blue!55!black]{hyperref}
-\usepackage[nameinlink,noabbrev]{cleveref}
+\usepackage{enumitem}
 \usepackage{fancyhdr}
+\usepackage{titlesec}
 \usepackage{listings}
-\usepackage{etoolbox}
+\usepackage{xurl}
+\usepackage{hyperref}
+\usepackage[nameinlink,noabbrev]{cleveref}
+
+\definecolor{linkblue}{RGB}{25,75,135}
+\definecolor{shadegray}{RGB}{246,247,249}
+\definecolor{rulegray}{RGB}{195,201,208}
+\pgfplotsset{compat=1.18}
+\hypersetup{
+  colorlinks=true,
+  linkcolor=linkblue,
+  citecolor=linkblue,
+  urlcolor=linkblue,
+  pdftitle={Closing the Lagrange--Rvachev Loop: Exact Polynomial Synthesis by Undilated Dyadic Translates of the Rvachev Up-Function},
+  pdfauthor={Research report prepared for Vladimir Reshetnikov},
+  pdfsubject={Interpolation factorizations and coefficient-space projectors for exact Rvachev up-function synthesis},
+  pdfkeywords={Fabius function, Rvachev up-function, Lagrange interpolation, polynomial synthesis, Appell polynomial, Strang--Fix, coefficient projector}
+}
 
 \IfFileExists{corpus_metadata.tex}{\input{corpus_metadata.tex}}{%
-  \newcommand{\CorpusCount}{65}%
-  \newcommand{\RepoCommit}{\texttt{unknown}}%
-  \newcommand{\RepoCommitDate}{unknown}%
+  \newcommand{\CorpusCount}{118}%
+  \newcommand{\RepoCommit}{\texttt{57c2ad230}}%
+  \newcommand{\RepoCommitDate}{29 August 2026}%
   \newcommand{\CorpusRoot}{\texttt{Analysis/FabiusFunction/docs}}%
 }
 
 \pagestyle{fancy}
 \fancyhf{}
-\fancyhead[L]{Closing the Lagrange--Rvachev loop}
-\fancyhead[R]{\thepage}
-\setlength{\parindent}{1.4em}
-\setlength{\parskip}{0.15em}
-\setlist[itemize]{topsep=0.35em,itemsep=0.15em}
-\setlist[enumerate]{topsep=0.35em,itemsep=0.15em}
-\allowdisplaybreaks
+\fancyhead[L]{\small Closing the Lagrange--Rvachev loop}
+\fancyhead[R]{\small\nouppercase{\leftmark}}
+\fancyfoot[C]{\thepage}
+\renewcommand{\headrulewidth}{0.4pt}
+
+\titleformat{\section}{\Large\bfseries}{\thesection}{0.7em}{}
+\titleformat{\subsection}{\large\bfseries}{\thesubsection}{0.7em}{}
+\titleformat{\subsubsection}{\normalsize\bfseries}{\thesubsubsection}{0.7em}{}
+\setcounter{secnumdepth}{3}
+\setcounter{tocdepth}{2}
+\setlist[itemize]{leftmargin=2em,itemsep=0.25em,topsep=0.4em}
+\setlist[enumerate]{leftmargin=2.3em,itemsep=0.25em,topsep=0.4em}
+\setlength{\emergencystretch}{3em}
 
 \newtheorem{theorem}{Theorem}[chapter]
 \newtheorem{proposition}[theorem]{Proposition}
@@ -47,6 +69,7 @@
 \newtheorem{algorithm}[theorem]{Algorithm}
 \theoremstyle{remark}
 \newtheorem{remark}[theorem]{Remark}
+\newtheorem{warning}[theorem]{Warning}
 
 \DeclareMathOperator{\upf}{up}
 \DeclareMathOperator{\supp}{supp}
@@ -59,8 +82,11 @@
 \DeclareMathOperator{\dist}{dist}
 \newcommand{\R}{\mathbb R}
 \newcommand{\C}{\mathbb C}
+\newcommand{\Q}{\mathbb Q}
 \newcommand{\N}{\mathbb N}
 \newcommand{\Z}{\mathbb Z}
+\newcommand{\Up}{\operatorname{up}}
+\newcommand{\sinc}{\operatorname{sinc}}
 \newcommand{\Pp}{\mathcal P}
 \newcommand{\Iop}{\mathcal I}
 \newcommand{\Aop}{\mathcal A}
@@ -71,7 +97,18 @@
 \newcommand{\vtwo}{\nu_2}
 \newcommand{\dd}{\,\mathrm d}
 \newcommand{\e}{\mathrm e}
+\newcommand{\ii}{\mathrm i}
 \newcommand{\iu}{\mathrm i}
+\newcommand{\Var}{\operatorname{Var}}
+\newcommand{\E}{\mathbb E}
+\newcommand{\Prob}{\mathbb P}
+\newcommand{\bigO}{\mathcal O}
+\newcommand{\smallo}{o}
+\newcommand{\sgn}{\operatorname{sgn}}
+\newcommand{\qbinom}[3]{\genfrac{[}{]}{0pt}{}{#1}{#2}_{#3}}
+\newcommand{\repo}{\nolinkurl{Analysis/FabiusFunction}}
+\newcommand{\lean}[1]{%
+  \ifmmode\text{\nolinkurl{#1}}\else\nolinkurl{#1}\fi}
 \newcommand{\norm}[1]{\left\lVert#1\right\rVert}
 \newcommand{\abs}[1]{\left\lvert#1\right\rvert}
 \newcommand{\set}[1]{\left\{#1\right\}}
@@ -80,14 +117,29 @@
 \newcommand{\trans}[1]{\tau_{#1}}
 \newcommand{\RepoPath}[1]{\texttt{#1}}
 
-\lstdefinestyle{code}{
+\newenvironment{proofidea}{\par\smallskip\noindent\textit{Proof architecture.}\ }{\hfill$\square$\par\smallskip}
+\newenvironment{boxedremark}{%
+  \par\smallskip\noindent\begin{center}\begin{minipage}{0.94\textwidth}%
+  \color{black}\hrule\vspace{0.6em}\small
+}{%
+  \vspace{0.6em}\hrule\end{minipage}\end{center}\smallskip
+}
+
+\lstdefinestyle{pseudo}{
   basicstyle=\ttfamily\small,
+  backgroundcolor=\color{shadegray},
+  frame=single,
+  rulecolor=\color{rulegray},
   columns=fullflexible,
   breaklines=true,
-  frame=single,
-  showstringspaces=false
+  keepspaces=true,
+  showstringspaces=false,
+  xleftmargin=0.7em,
+  xrightmargin=0.7em,
+  aboveskip=0.8em,
+  belowskip=0.8em
 }
-\lstset{style=code}
+\lstset{style=pseudo}
 
 \title{\textbf{Closing the Lagrange--Rvachev Loop}\\[0.35em]
 \Large Exact polynomial synthesis by undilated dyadic translates of the Rvachev \(\operatorname{up}\)-function, interpolation factorizations, and coefficient-space projectors}
@@ -193,7 +245,7 @@ On sample vectors this says \(RC=I\).  On coefficient vectors it produces the id
 \label{ch:corpus}
 
 \section{Repository scope}
-The analysis used the recursively scanned directory \CorpusRoot\ at repository commit \RepoCommit\ (commit date \RepoCommitDate).  The snapshot contains \CorpusCount\ TeX files.  The scan includes top-level notes, archived expositions, papers, and the newer frontier drafts in subdirectories.  A path-by-path manifest, extracted title, leading section headings, line count, and a reproducible lexical source map appear in \cref{app:corpus}; the machine-readable CSV and the extraction script accompany the report.
+The analysis used the recursively scanned directory \CorpusRoot\ at repository commit \RepoCommit\ (commit date \RepoCommitDate).  The snapshot contains \CorpusCount\ TeX files.  The scan includes top-level notes, archived expositions, papers, and the newer frontier drafts in subdirectories.  The preparation archive recorded a path-by-path manifest, extracted title, leading section headings, line count, and a lexical source map.  Those generated inventories, their machine-readable CSV, and the extraction script are not retained in this source-and-PDF distribution; \cref{app:corpus} records that boundary.
 
 The directly relevant starting point is \RepoPath{Up\_Polynomial\_Synthesis.tex}.  The corpus already goes substantially beyond the naive statement that ``some compactly supported shifts span some polynomials'': it supplies an exact finite synthesis mechanism.  The present report therefore concentrates on the nonduplicative layer requested in the problem:
 \begin{enumerate}
@@ -329,7 +381,7 @@ Because \(M(0)=1\), the reciprocal has a formal and locally convergent expansion
 On \(\Pp_d\), define
 \begin{equation}
  \Aop_d:=M(D)^{-1}
-estricted_{\Pp_d}
+\restricted_{\Pp_d}
  =\sum_{n=0}^{d}\lambda_n\frac{D^n}{n!},
  \qquad D:=\frac{\dd}{\dd x}.
  \label{eq:inverse-moment-operator}
@@ -399,7 +451,7 @@ Differentiate \cref{eq:appell-definition} with respect to \(z\).  The logarithmi
 Equating exponential-generating-function coefficients gives \cref{eq:appell-recurrence}.
 \end{proof}
 
-The first terms, generated exactly by the accompanying Python code, are as follows.
+The first terms, generated exactly during the report's preparation, are as follows.
 \IfFileExists{appell_table.tex}{\input{appell_table.tex}}{
 \begin{align*}
 A_0(x)&=1,&A_1(x)&=x,&A_2(x)&=x^2-\frac19,\\
@@ -1178,7 +1230,13 @@ for every norm in which both sides are interpreted.  Thus:
 \end{itemize}
 
 \section{Node geometry remains decisive}
-For equispaced degree-\(d\) interpolation, the Lebesgue constant grows exponentially in \(d\); for Chebyshev--Lobatto nodes it grows logarithmically.  The compact support and infinite smoothness of \(u\) do not alter these operator norms.  Since the zero extension of \(u\) is \(C^\infty\) but not analytic at the support boundary, Chebyshev approximation is expected to be superalgebraic rather than geometrically convergent.  Equispaced interpolation has no comparable general stability guarantee, and the corpus's Runge investigations should be read directly through \cref{eq:interpolation-factorization}.
+For equispaced interpolation of degree \(d\), the Lebesgue constant grows exponentially;
+for Chebyshev--Lobatto nodes it grows logarithmically in \(d\).  The compact support and
+infinite smoothness of \(u\) do not alter these operator norms.  Since the zero extension
+of \(u\) is \(C^\infty\) but not analytic at the support boundary, Chebyshev approximation
+is expected to be superalgebraic rather than geometrically convergent.  Equispaced
+interpolation has no comparable general stability guarantee, and the corpus's Runge
+investigations should be read directly through \cref{eq:interpolation-factorization}.
 
 The practical recommendation is therefore simple: choose the polynomial approximation mechanism first.  Once a stable polynomial \(p_d\) has been selected---by Chebyshev interpolation, Hermite interpolation, constrained least squares, or another projector---the synthesis theorem provides an exact shifted-up coordinate representation of that \(p_d\).
 
@@ -1234,8 +1292,10 @@ At high degree, explicitly materializing \(m=2^d\) is primarily of theoretical v
 \chapter{Numerical experiments}
 \label{ch:numerics}
 
-\section{Reproducible method}
-The accompanying script \RepoPath{numerical\_experiments.py} uses exact SymPy arithmetic for cumulants, inverse moments, Appell polynomials, Lagrange cardinals, and synthesis coefficients.  It tabulates \(u\) independently by inverse Fourier series on a period-four box:
+\section{Numerical method}
+The preparation calculation used exact SymPy arithmetic for cumulants, inverse moments,
+Appell polynomials, Lagrange cardinals, and synthesis coefficients.  It tabulated \(u\)
+independently by inverse Fourier series on a period-four box:
 \begin{equation}
  u(x)\approx\frac1{4}\sum_{|n|<N/2}
  \widehat u\!\left(\frac{\pi n}{2}\right)
@@ -1253,12 +1313,13 @@ The tests are deliberately redundant:
 \end{enumerate}
 
 \IfFileExists{experiment_tables.tex}{\input{experiment_tables.tex}}{
-\paragraph{Build note.} Numerical tables were not generated in this fallback build; run \texttt{python numerical\_experiments.py} before compiling.}
+\paragraph{Archive note.} The generated numerical tables are not retained in this
+source-and-PDF distribution.}
 
 \begin{figure}[htbp]
  \centering
- \IfFileExists{interpolation_error.pdf}{\includegraphics[width=0.82\textwidth]{interpolation_error.pdf}}{\fbox{Run the numerical script to generate the interpolation-error plot.}}
- \caption{Maximum interpolation error for two node families.  The plotted curves are simultaneously the exact-arithmetic errors of the corresponding shifted-up loop truncations, because the loop equals the interpolation projector.}
+ \IfFileExists{interpolation_error.pdf}{\includegraphics[width=0.82\textwidth]{interpolation_error.pdf}}{\fbox{The archived interpolation-error plot is not included in this distribution.}}
+ \caption{Maximum interpolation error for two node families in the archived numerical experiment.  Those curves are simultaneously the exact-arithmetic errors of the corresponding shifted-up loop truncations, because the loop equals the interpolation projector.}
  \label{fig:interpolation-error}
 \end{figure}
 
@@ -1608,31 +1669,23 @@ The identity \(RC=I\) is both a theorem and an exact-arithmetic regression test.
 
 \chapter{Reproducibility files}
 \label{app:reproducibility}
-The accompanying archive contains:
+The live report directory contains:
 \begin{description}[style=nextline]
-\item[\RepoPath{rvachev\_lagrange\_loop.tex}]
+\item[\RepoPath{Rvachev\_Lagrange\_Loop\_Report\_v6.tex}]
 The complete report source.
-\item[\RepoPath{rvachev\_lagrange\_loop.pdf}]
+\item[\RepoPath{Rvachev\_Lagrange\_Loop\_Report\_v6.pdf}]
 The compiled report.
-\item[\RepoPath{numerical\_experiments.py}]
-Exact symbolic coefficient generation, FFT tabulation of \(u\), synthesis/right-inverse/projector checks, interpolation experiments, and figure/table generation.
-\item[\RepoPath{prepare\_corpus.py}]
-Recursive indexer for every TeX file in the repository corpus.
-\item[\RepoPath{corpus\_manifest.txt} and \RepoPath{corpus\_manifest.csv}]
-Human- and machine-readable source manifests.
-\item[\RepoPath{relevant\_source\_excerpts.txt} and \RepoPath{lagrange\_source\_map.txt}]
-Line-numbered contexts and a ranked map of files coupling Lagrange/interpolation terminology to the Rvachev function.
-\item[\RepoPath{novelty\_overlap\_audit.txt}]
-A conservative lexical overlap audit for the report's operator-level deductions and conjectural language.
-\item[\RepoPath{*.csv}, \RepoPath{experiment\_summary.txt}, and \RepoPath{interpolation\_error.*}]
-Raw numerical outputs and generated figure files.
 \end{description}
 
-To regenerate the numerical material and PDF from the report directory:
+The preparation archive's numerical scripts, corpus inventories, raw outputs, and generated
+figures are not retained in this source-and-PDF directory.  Conditional inputs above therefore
+fall back to the exact formulas and archive notes embedded in this source.
+
+To rebuild the PDF from the report directory:
 \begin{lstlisting}[language=bash]
-python numerical_experiments.py
-pdflatex -interaction=nonstopmode -halt-on-error rvachev_lagrange_loop.tex
-pdflatex -interaction=nonstopmode -halt-on-error rvachev_lagrange_loop.tex
+pdflatex -interaction=nonstopmode -halt-on-error Rvachev_Lagrange_Loop_Report_v6.tex
+pdflatex -interaction=nonstopmode -halt-on-error Rvachev_Lagrange_Loop_Report_v6.tex
+pdflatex -interaction=nonstopmode -halt-on-error Rvachev_Lagrange_Loop_Report_v6.tex
 \end{lstlisting}
 
 \backmatter
@@ -1681,7 +1734,9 @@ V.~Reshetnikov,
 \bibitem{UpPolynomialSynthesis}
 V.~Reshetnikov,
 \newblock \emph{Up Polynomial Synthesis},
-\newblock \RepoPath{Analysis/FabiusFunction/docs/Up\_Polynomial\_Synthesis.tex}, in \cite{ProveItCorpus}.
+\newblock
+\nolinkurl{Analysis/FabiusFunction/docs/semi-formalized-research-frontiers/drafts/representations/Up_Polynomial_Synthesis/Up_Polynomial_Synthesis.tex},
+in \cite{ProveItCorpus}.
 
 \end{thebibliography}
 

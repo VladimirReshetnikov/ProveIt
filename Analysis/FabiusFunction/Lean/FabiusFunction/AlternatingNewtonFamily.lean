@@ -75,13 +75,13 @@ definition of the `h = 0` clause. -/
 def alternatingNewtonWeight (d h : ℕ) : ℕ :=
   if h = 0 then 1 else (h - 1).choose d
 
-/-- The alternating Newton weight has exceptional value one at height zero. -/
+/-- The alternating Newton weight has the exceptional value one at height (scale) zero. -/
 @[simp]
 theorem alternatingNewtonWeight_zero (d : ℕ) :
     alternatingNewtonWeight d 0 = 1 := rfl
 
-/-- At positive height, the alternating Newton weight is the corresponding
-binomial coefficient. -/
+/-- At positive height (scale) `h + 1`, the alternating Newton weight is
+`h.choose d`. -/
 @[simp]
 theorem alternatingNewtonWeight_succ (d h : ℕ) :
     alternatingNewtonWeight d (h + 1) = h.choose d := by

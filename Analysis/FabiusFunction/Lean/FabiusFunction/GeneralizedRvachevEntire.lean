@@ -68,10 +68,12 @@ Two remarks on the shape of the two bounds proved here.
 
 Nothing probabilistic: the random variable `X_a`, its convolution
 reading, the smoothness dichotomy and the cumulants are all absent,
-as they are from the rest of the corpus.  Nothing is claimed at the
-negative integers, at `z = 0`, or about the *global* order (genus,
-Hadamard factorization) of `Φ_a`; only the local analytic order at a
-positive integer is computed.  No growth estimate on `Φ_a` is given.
+as they are from the rest of the corpus.  The local analytic orders at
+both positive and negative nonzero integers are computed below, while
+entirety already includes `z = 0`.  No local order at zero or *global*
+order statement (genus or Hadamard factorization) is claimed here, and
+the growth estimate for `Φ_a` lives downstream in
+`GeneralizedExponentialType.lean`.
 
 ## Main declarations
 
