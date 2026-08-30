@@ -1,5 +1,16 @@
 # Exponents and q-series
 
+New standalone intake member:
+[`Fabius_Rvachev_Frontier_Report/`](Fabius_Rvachev_Frontier_Report/),
+*Negative Parameters, Reciprocal Bases, and the Gaussian Boundary* (26 pp),
+arrived on 2026-08-30 with all 13 payload checksums verified.  It develops
+negative-parameter affine transport, reciprocal-base digit reversal,
+multisection, shape theory, and the Gaussian boundary for geometric-uniform
+laws.  Because much of that subject already appears in Part VII of the
+consolidated volume, the report remains standalone until its genuinely new
+claims are isolated and the overlap is deliberately deduplicated.  Paper
+theorem labels do not by themselves assert Lean formalization.
+
 Generalizations of the dyadic construction to arbitrary exponent
 sequences and the q-series calculus that organizes them: the
 exponent-sequence convolution monoid with its Newton-basis frontiers, and
