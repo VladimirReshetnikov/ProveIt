@@ -2,6 +2,16 @@
 
 New standalone intake members:
 
+- [`Fabius_Zero_Bias_Frontier_Report/`](Fabius_Zero_Bias_Frontier_Report/),
+  *Zero-Bias Towers and Spectral Peeling in the Fabius--Rvachev System*
+  (26 pp), arrived on 2026-08-30 from
+  `Fabius_Zero_Bias_Frontier_Report.zip` (outer SHA-256
+  `fb8bbf8e34a2f5eb4e5bbe7b06b22566502be7583696f01960a6e41d25b518ee`).
+  All 21 submitted payload hashes verified; six CSV entries were refreshed
+  after CRLF-to-LF repository normalization. The package remains standalone
+  pending post-publication assessment and a Lean crosswalk; manuscript labels
+  do not establish Lean verification.
+
 - [`fabius_iterates_nowhere_analytic/`](fabius_iterates_nowhere_analytic/),
   *Nowhere Analyticity of Every Positive Compositional Iterate of the Fabius
   Function* (19 pp), arrived on 2026-08-30 with all 14 submitted payload
@@ -96,7 +106,8 @@ New standalone intake members:
   Libertinus prose, incomplete PDF metadata, and Type-3 plot fonts remain
   explicit post-intake normalization work.
 - [`Fabius_Rvachev_New_Frontiers-2/`](Fabius_Rvachev_New_Frontiers-2/),
-  *Fabius--Rvachev New Frontiers* (36 pp; 2,568 source lines), arrived on
+  *Fabius--Rvachev New Frontiers* (2,648 source lines after normalization and
+  the 2026-08-30 formal crosswalk; 2,539 at landing), arrived on
   2026-08-30 from a
   rootless archive with all 15 payload checksums verified. Its native up-law
   orthogonal polynomials, Jacobi and Christoffel reconstruction, rational
@@ -107,8 +118,43 @@ New standalone intake members:
   A4/27 mm/Libertinus preamble and regenerated all five one-page vector plots
   with embedded/subset CID TrueType fonts and no Type 3 or raster content.
   Its 580-line high-precision experiment retains the three delivered CSVs
-  byte-for-byte; the clean final report received exactly three strict serial
-  passes, and the current 15-entry ledger verifies in full.
+  byte-for-byte. A post-intake source-only Lean crosswalk now closes
+  exactly the polynomial change-of-basis determinant sublayer.  The two
+  definitions `polynomialCoefficientMatrix`, `polynomialMomentGramMatrix` and
+  seven theorems `polynomialCoefficientMatrix_apply`,
+  `polynomialMomentGramMatrix_apply`,
+  `polynomialMomentGramMatrix_eq_transpose_mul_hankel_mul`,
+  `polynomialMomentGramMatrix_det_eq_coefficient_det_sq_mul`,
+  `polynomialCoefficientMatrix_det_eq_prod_coeff`,
+  `polynomialMomentGramMatrix_det_eq_prod_coeff_sq_mul`, and
+  `gramStieltjesJacobiSubdiagonal_eq_polynomialMomentGramMatrix_det_ratio` in
+  `PolynomialMomentGramDeterminant.lean` prove the finite
+  `G = Cᵀ H C` identity, triangular coefficient determinant, Gram/Hankel
+  determinant formula, and arbitrary-basis Jacobi cross-ratio.  The last
+  equality assumes no Hankel nonvanishing only because Lean's field division
+  is total: a zero middle Hankel determinant makes both cross-ratios zero and
+  does not give a genuine nonsingular Jacobi recurrence.  The two
+  definitions `upLegendreGramMatrix`, `upLegendreGramDet` and seven theorems
+  `upLegendreGramMatrix_apply_eq_integral`,
+  `upLegendreGramDet_eq_prod_leadingCoeff_sq_mul_hankelDet`,
+  `upLegendreGramDet_zero`, `upLegendreGramDet_pos`,
+  `coeff_legendrePolynomial_self_div_succ`,
+  `gramStieltjesJacobiSubdiagonal_upMoment_eq_upLegendreGramDet_ratio`, and
+  `rvachevJacobiSubdiagonalRat_cast_eq_upLegendreGramDet_ratio` in
+  `FabiusLegendreHankelDeterminant.lean` specialize this to the up moments.
+  For arbitrary `F : BoundedFabius`, the determinant identity, the convention
+  `D_0 = 1` for the empty `0×0` Gram determinant, the leading-coefficient
+  quotient, and the real Gram cross-ratio hold.  Entry-as-integral, strict
+  positivity, and the rational-cast bridge require `IsFabius F`; positivity
+  then excludes the totalized singular case.  Its zero-based index `n` is the
+  conventional `beta_(n+1)` and has prefactor `((n+1)/(2*n+1))^2`.  The finite
+  Gaunt/Wigner/`3j` entry formula, entry
+  rationality by that route, and Christoffel reconstruction remain outside
+  this closure; `rvachevTranslateGram` is the distinct unweighted Gram kernel
+  of shifted-up atoms. The merged 2,648-line source was rebuilt in exactly
+  three strict passes as a 37-page A4/Libertinus PDF; all report and figure
+  fonts are embedded/subset, no Type 3 or raster content remains, and the
+  exhaustive 15-entry current ledger passes.
 - [`Fabius_Stein_Koopman_Frontier_Report/`](Fabius_Stein_Koopman_Frontier_Report/),
   *Dyadic Stein--Koopman and q-Oscillator Calculus for the Fabius--Rvachev
   Law* (32 pp), arrived on 2026-08-30 with all 20 payload checksums verified.
@@ -116,8 +162,10 @@ New standalone intake members:
   Poisson operators, martingales, nonreversibility certificate, scalar Stein
   kernel, and endpoint asymptotics extend the operator-representation theme.
 
-All six remain standalone pending claim-by-claim Lean crosswalk and deliberate
-consolidation; paper theorem labels do not by themselves assert Lean status.
+All six remain standalone pending deliberate consolidation and completion of
+their claim-by-claim Lean crosswalks; the determinant sublayer just identified
+is the recorded partial crosswalk for `Fabius_Rvachev_New_Frontiers-2/`.
+Other paper theorem labels do not by themselves assert Lean status.
 
 Series and orthogonal-expansion representations of the up-function,
 consolidated (2026-08-28) into the single volume

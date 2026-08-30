@@ -3,26 +3,27 @@ PDF validation — final merged-corpus audit refresh, 2026-08-30
 Repository audit:
 - repository_audit.py was run against Analysis/FabiusFunction/docs/**/*.tex,
   excluding this package directory
-- prior TeX files read: 146
-- total source lines: 325928
-- total source bytes: 14336859
+- prior TeX files read: 150
+- total source lines: 336929
+- total source bytes: 14731917
 - raw-byte concatenated corpus SHA-256, in lexicographic relative-path order:
-  c36b53eb68b6db52e4f15eb458214b1d8bf4dfcdb7a947252deda552bc369e83
+  87ef3355cc3cf545140ca660dfbfa4295bfe5d32433f810cf2fdc357f6d2f880
 - generated repository_audit.md SHA-256:
-  4f7b7ffd6e4844560d72e13c6f8213ae0b46f810f76708ac85df8111cf98c88c
+  e6c0301337f975888d06753026add87982aba1c37e78f258ea43e471c43d7b5b
 - a second independent output-path run matched repository_audit.md byte for byte
+- phrase-cluster hit counts, in report order: 32, 75, 32, 22, 60, 27
 - preserved ARRIVAL_SHA256SUMS SHA-256:
   4c177281eec24f00edf6041ec11779444e24e455db965503207b32c301749629
 
 Build:
 - exactly three clean, strict, serial pdfLaTeX passes completed with exit 0
 - pass page counts: 23, 24, 24; final settled page count: 24
-- final-source TeX SHA-256: 3532356732529c93d220f30b6bb4b2a4e1dd4cc4939d093ee2fa0eb5e6050aed
+- final-source TeX SHA-256: dce88a59f77ceaf393cba9f247b366b896941a810d689f9de3af6d57e6518aa0
 - final-source TeX lines: 1931
 - generated TeX input SHA-256: da703d296abdff0a61a67cfe0699568859c903a27c31eb43b321e8457cf3f6e7
-- PDF SHA-256: 4c2d7e99676087b79c9e788b6b2aa78ee10761e8849b43c8e90e9493c14b97ed
+- PDF SHA-256: f5037efe8b93a17f775313eeafd869ec5f3e9436a115938baae91c83f5535549
 - final-pass compile_transcript.txt SHA-256:
-  0e3b1f1539e1def17542b67f6bd727357b55a9f0bcc995a1978932de306cc63b
+  3a1c37ab080f1ad75816c6f7c21112b667b220fbafa9a115f67d6e4d94ab5236
 - PDF is newer than the final TeX source and generated TeX input
 - the shared preamble through the canonical listing style is byte-for-byte
   identical to the primary document except for permitted PDF metadata and
@@ -42,7 +43,7 @@ PDF structure:
 - readable and text-extractable: yes; all 24 pages contain text
 - pages: 24
 - every page: 595.276 x 841.89 pt (A4), rotation 0
-- file size: 848103 bytes
+- file size: 848235 bytes
 - PDF version: 1.5
 - font rows: 24; embedded: 24/24; subset: 24/24; Type 3: 0
 - canonical face: Libertinus (5 rows); Latin Modern rows: 0
@@ -50,7 +51,7 @@ PDF structure:
 - all 24 pages rendered successfully with Poppler
 
 Search and visual checks:
-- title, exact 146-file corpus statistics and digest, zero-multiplicity/count
+- title, exact 150-file corpus statistics and digest, zero-multiplicity/count
   formula, numerical tables, Lean/novelty boundary, proof-gap quarantine,
   corrected plateau boundary, and conjecture boundary extract correctly
 - title/audit page; zero-count figure; periodic and Fourier-coefficient figures;
@@ -62,3 +63,8 @@ Numerical outputs:
 - audit regeneration did not require numerical regeneration
 - numerical_results.tex, numerical_summary.txt, and all three PNG figures remain
   byte-identical to the previously validated regenerated outputs
+
+Checksum ledger:
+- CHECKSUMS.sha256 covers all 18 other regular files in this package exactly
+  once, excluding only the ledger itself
+- all 18 current hashes pass `sha256sum -c CHECKSUMS.sha256`

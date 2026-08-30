@@ -5622,6 +5622,21 @@ again needs only \(q\ne0\).  For \(k<n\), the adjacent quotient corollaries
 require, respectively, \({n\brack k}_q\ne0\) and \(1-q^{k+1}\ne0\), or
 \({n-1\brack k}_q\ne0\) and \(1-q^{n-k}\ne0\); neither assumes \(q\ne0\).
 
+The four-theorem module \path{QBinomialReciprocity.lean} supplies the exact
+palindromic counterpart.  Its unit-valued theorem
+\lean{gaussianBinomial_reciprocity_units} holds in every commutative semiring,
+including semirings with zero divisors, and is total in both indices:
+\[
+ q^{k(n-k)}{n\brack k}_{q^{-1}}={n\brack k}_q.
+\]
+The wrapper \lean{gaussianBinomial_reciprocity} assumes a semifield and only
+\(q\ne0\).  The remaining two theorems,
+\lean{gaussianBinomial_neg_one_eq_zero_of_odd_degree} and
+\lean{gaussianBinomial_neg_one_even_odd_eq_zero}, show over every commutative
+ring that odd Gaussian degree forces vanishing at \(q=-1\), and in particular
+\({2a\brack 2b+1}_{-1}=0\).  The latter is total above the row as well.  These
+proofs use neither a q-Pochhammer quotient nor domain cancellation.
+
 Over the rationals, \lean{finiteQPochhammerIn_rat_eq} identifies the generic product
 with the established finite \(q\)-Pochhammer notation.  At $q=1/2$,
 \lean{gaussianBinomial_half_eq_halfQBinomial} identifies the recursive coefficient
@@ -10107,6 +10122,120 @@ These four rational definitions are noncomputable finite-algebra objects, not na
 evaluators.  In particular, this layer proves all-degree rationality but does not evaluate
 the report's displayed \(H_4\) or \(\beta_4\) fractions.
 
+The polynomial change-of-basis layer is now explicit as well.
+\path{PolynomialMomentGramDeterminant.lean} has exactly two public definitions,
+\lean{polynomialCoefficientMatrix} and \lean{polynomialMomentGramMatrix}, and exactly seven
+public theorems:
+\lean{polynomialCoefficientMatrix_apply},
+\lean{polynomialMomentGramMatrix_apply},
+\lean{polynomialMomentGramMatrix_eq_transpose_mul_hankel_mul},
+\lean{polynomialMomentGramMatrix_det_eq_coefficient_det_sq_mul},
+\lean{polynomialCoefficientMatrix_det_eq_prod_coeff},
+\lean{polynomialMomentGramMatrix_det_eq_prod_coeff_sq_mul}, and
+\lean{gramStieltjesJacobiSubdiagonal_eq_polynomialMomentGramMatrix_det_ratio}.
+For a family \(p_j\) with \(\deg p_j\le j\), put its monomial coefficient vectors in the
+columns of \(C_n\), let \(H_n\) be the monomial Hankel matrix, and let \(G_n\) be the moment
+Gram matrix.  Expanding the bilinear pairing coefficient by coefficient gives
+\[
+ G_n=C_n^{\mathsf T}H_nC_n.
+\]
+The degree bound makes \(C_n\) upper triangular, with diagonal
+\([X^j]p_j\).  Determinant multiplicativity and \(\det C_n=\prod_{j<n}[X^j]p_j\) therefore
+give
+\[
+ \det G_n=\left(\prod_{j<n}[X^j]p_j\right)^2\det H_n,
+\]
+and the final generic theorem transports the zero-based Jacobi cross-ratio through any such
+family with nonzero diagonal coefficients.  That equality has no Hankel-nonvanishing
+hypothesis: Lean uses totalized field division, so when the middle Hankel determinant
+vanishes both cross-ratios are zero.  The singular equality is therefore not a genuine
+nonsingular Jacobi recurrence.
+
+\path{FabiusLegendreHankelDeterminant.lean} specializes this calculation to the ordinary
+Legendre family and the up-law moments.  It has exactly two public definitions,
+\lean{upLegendreGramMatrix} and \lean{upLegendreGramDet}, and exactly seven public theorems:
+\lean{upLegendreGramMatrix_apply_eq_integral},
+\lean{upLegendreGramDet_eq_prod_leadingCoeff_sq_mul_hankelDet},
+\lean{upLegendreGramDet_zero}, \lean{upLegendreGramDet_pos},
+\lean{coeff_legendrePolynomial_self_div_succ},
+\lean{gramStieltjesJacobiSubdiagonal_upMoment_eq_upLegendreGramDet_ratio}, and
+\lean{rvachevJacobiSubdiagonalRat_cast_eq_upLegendreGramDet_ratio}.
+For arbitrary \(F:\lean{BoundedFabius}\), let \(D_n\) be the determinant of the first \(n\)
+Legendre polynomials in its up-moment pairing and put
+\(L_j=2^{-j}\binom{2j}{j}\).  At \(n=0\), ``the first zero polynomials'' means the empty
+\(0\mathbin{\times}0\) Gram matrix, whose determinant is one; this convention extends the
+paper's prior \(N\geq1\) matrix definition.  The determinant identity and empty case hold for
+every such \(F\):
+\[
+ D_n=\left(\prod_{j<n}L_j^2\right)\det H_n,
+ \qquad D_0=1.
+\]
+The leading-coefficient quotient is independent of \(F\), and, with Lean's index \(n\)
+denoting the conventional coefficient \(\beta_{n+1}\), the real Gram cross-ratio also holds
+for arbitrary \(F:\lean{BoundedFabius}\):
+\[
+ \beta_{n+1}=\left(\frac{n+1}{2n+1}\right)^2
+ \frac{D_{n+2}D_n}{D_{n+1}^2}.
+\]
+Here the arbitrary-\(F\) formula inherits totalized division from the generic theorem.  The
+entry-as-integral theorem, strict positivity \(D_n>0\), and identification with the real cast
+of the exact rational Rvachev subdiagonal each additionally require
+\(h_F:\lean{IsFabius}\,F\).  Under that hypothesis positivity removes the singular case and
+the cross-ratio is a genuine Jacobi formula.  Neither module proves the individual Gram entries by a
+finite Gaunt, Wigner, or \(3j\)-symbol expansion, entry rationality by that route,
+Christoffel reconstruction, or an infinite Jacobi product.  Also,
+\lean{rvachevTranslateGram} is a different object: it pairs shifted-up atoms under
+unweighted interval integration, whereas \lean{upLegendreGramMatrix} pairs polynomials under
+the up-law moment functional.
+
+The rational Legendre layer makes both the polynomial basis and its up-law Gram data
+finite and explicit.  The module \path{LegendrePolynomialRational.lean} has two public
+definitions, \lean{legendrePolynomialCoeffRat} and
+\lean{legendrePolynomialRat}, and six public theorems:
+\lean{legendrePolynomialRat_cast}, \lean{coeff_legendrePolynomialRat},
+\lean{natDegree_legendrePolynomialRat},
+\lean{coeff_legendrePolynomialRat_self},
+\lean{coeff_legendrePolynomialRat_self_ne_zero}, and
+\lean{coeff_legendrePolynomialRat_self_div_succ}.  The scalar definition is an
+executable finite coefficient sum.  The polynomial wrapper maps to the ordinary real
+Legendre polynomial, has degree exactly \(n\), and has leading coefficient and consecutive
+quotient
+\[
+ [X^n]P_n^{\Q}=2^{-n}\binom{2n}{n},
+ \qquad
+ \frac{[X^n]P_n^{\Q}}{[X^{n+1}]P_{n+1}^{\Q}}=\frac{n+1}{2n+1}.
+\]
+The wrapper itself is noncomputable finite algebra; the coefficient function is the
+executable surface.
+
+The companion \path{FabiusLegendreRationalGram.lean} has three public definitions,
+\lean{rvachevLegendreGramEntryRat}, \lean{rvachevLegendreGramMatrixRat}, and
+\lean{rvachevLegendreGramDetRat}.  Its eleven public theorems are
+\lean{rvachevLegendreGramEntryRat_eq_momentPairing},
+\lean{rvachevLegendreGramMatrixRat_apply},
+\lean{rvachevLegendreGramMatrixRat_eq_polynomialMomentGramMatrix},
+\lean{rvachevLegendreGramEntryRat_cast},
+\lean{rvachevLegendreGramMatrixRat_cast},
+\lean{rvachevLegendreGramDetRat_cast},
+\lean{rvachevLegendreGramDetRat_eq_prod_leadingCoeff_sq_mul_rvachevHankelDetRat},
+\lean{rvachevLegendreGramDetRat_zero},
+\lean{rvachevLegendreGramDetRat_pos},
+\lean{rvachevOrthoNormRat_eq_rvachevLegendreGramDetRat_ratio}, and
+\lean{rvachevJacobiSubdiagonalRat_eq_rvachevLegendreGramDetRat_ratio}.
+Writing \(E_{ij}\) for the first definition and \(m_r\) for
+\lean{rvachevRawMomentRat}, its executable content is the bounded double sum
+\[
+ E_{ij}=\sum_{a=0}^{i}\sum_{b=0}^{j}
+ [X^a]P_i^{\Q}\,[X^b]P_j^{\Q}\,m_{a+b}.
+\]
+The resulting finite matrix is exactly the generic polynomial moment Gram matrix.
+Under \lean{IsFabius}, its entries, matrix, and determinant cast to the real up-law
+objects.  Its determinant is one in order zero, positive in every order, and equals the
+rational Hankel determinant times the squared product of the Legendre leading
+coefficients; the exact rational monic norm and zero-based Jacobi subdiagonal are the
+corresponding consecutive-determinant ratios.  This finite exact layer still makes no
+Gaunt--Wigner--\(3j\), Christoffel-reconstruction, or infinite-Jacobi-product claim.
+
 This closure does not supply a complex logarithmic fixed point, complex order,
 pointwise or nontangential Sokhotski--Plemelj limits, a principal-value Hilbert-transform
 identity, or the full Jacobi/Pad\'e theory.  Separate current modules do prove the real
@@ -10184,6 +10313,10 @@ renormalization, Laurent/Herglotz/inversion layers, initial Jacobi data, and fin
 \path{StieltjesHerglotz.lean}, \path{StieltjesInversion.lean},
 \path{StieltjesPerron.lean}, \path{OrthogonalPolynomialJacobi.lean},
 \path{GramStieltjesNaturality.lean}, \path{RvachevRationalJacobi.lean},
+\path{PolynomialMomentGramDeterminant.lean},
+\path{FabiusLegendreHankelDeterminant.lean},
+\path{LegendrePolynomialRational.lean},
+\path{FabiusLegendreRationalGram.lean},
 \path{EarlyApproximants.lean},
 \path{EarlyMeasureBridge.lean}, \path{WeakConvergence.lean},
 \path{ProbabilityLaplaceMoments.lean}, \path{LaplaceMoments.lean},
@@ -10300,6 +10433,7 @@ Dyadic and \(q\)-binomial formulas &
 \path{DyadicClosedForm.lean}, \path{DyadicAnalytic.lean}, \path{GlobalDyadic.lean},
 \path{DyadicCorrectness.lean}, \path{FiniteQBinomialCore.lean},
 \path{QPochhammerElementaryIdentities.lean},
+\path{QBinomialReciprocity.lean},
 \path{QBinomialVandermonde.lean}, \path{HalfQBinomial.lean},
 \path{QuarterCatalanGerm.lean}, \path{QuarterCatalanRichardson.lean},
 \path{FabiusDyadicQBinomialScalar.lean}, \path{FabiusQBinomialFormula.lean},

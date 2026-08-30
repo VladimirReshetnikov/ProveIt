@@ -2,10 +2,10 @@
 
 Target: `Analysis/FabiusFunction/docs/**/*.tex`, excluding this newly filed package directory.
 
-- TeX files read: **146**
-- Total source lines: **325928**
-- Total source bytes: **14336859**
-- Concatenated-corpus SHA-256: `c36b53eb68b6db52e4f15eb458214b1d8bf4dfcdb7a947252deda552bc369e83`
+- TeX files read: **150**
+- Total source lines: **336929**
+- Total source bytes: **14731917**
+- Concatenated-corpus SHA-256: `87ef3355cc3cf545140ca660dfbfa4295bfe5d32433f810cf2fdc357f6d2f880`
 
 The corpus digest hashes raw file bytes concatenated in lexicographic relative-path order.
 Phrase clusters are a broad overlap screen, not a decision procedure for mathematical equivalence
@@ -15,7 +15,7 @@ or a claim of worldwide priority.
 
 ### Fourier-zero spectral zeta
 
-Matched **30** prior TeX files:
+Matched **32** prior TeX files:
 
 - `Fabius_Function_and_Rvachev_Up/Fabius_Function_and_Rvachev_Up.tex`
 - `fabius_lean_walkthrough/fabius_lean_walkthrough.tex`
@@ -27,6 +27,8 @@ Matched **30** prior TeX files:
 - `semi-formalized-research-frontiers/drafts/integration-and-transforms/Integration_and_Transform_Frontiers/Integration_and_Transform_Frontiers.tex`
 - `semi-formalized-research-frontiers/drafts/inverse-and-sampling/Dyadic_Comb_Frontiers/Dyadic_Comb_Frontiers.tex`
 - `semi-formalized-research-frontiers/drafts/inverse-and-sampling/Inverse_and_Sampling_Frontiers/Inverse_and_Sampling_Frontiers.tex`
+- `semi-formalized-research-frontiers/drafts/inverse-and-sampling/geometric_comb_lagrange_jackson_newton_report/geometric_comb_interpolation.tex`
+- `semi-formalized-research-frontiers/drafts/inverse-and-sampling/geometric_comb_q_fabius_report/geometric_comb_q_fabius_report.tex`
 - `semi-formalized-research-frontiers/drafts/representations/Fabius_Rvachev_Shape_Divisibility_Stein_Geometry/fabius_rvachev_frontier_report.tex`
 - `semi-formalized-research-frontiers/drafts/representations/Fabius_Stein_Koopman_Frontier_Report/dyadic_stein_koopman_frontier.tex`
 - `semi-formalized-research-frontiers/drafts/representations/Fabius_Zero_Bias_Frontier_Report/Zero_Bias_Towers_and_Spectral_Peeling.tex`
@@ -50,7 +52,7 @@ Matched **30** prior TeX files:
 
 ### Exact digit-sum zero count
 
-Matched **71** prior TeX files:
+Matched **75** prior TeX files:
 
 - `FabiusFunction_Mathematical_Glossary/FabiusFunction_Mathematical_Glossary.tex`
 - `Fabius_Function_and_Rvachev_Up/Fabius_Function_and_Rvachev_Up.tex`
@@ -81,6 +83,7 @@ Matched **71** prior TeX files:
 - `papers/arXiv-1702.06487v3/157-Arithmetic-v3.tex`
 - `papers/arXiv-2211.13570v1/document.tex`
 - `semi-formalized-research-frontiers/drafts/exponents-and-q-series/Exponents_and_q_Series_Frontiers/Exponents_and_q_Series_Frontiers.tex`
+- `semi-formalized-research-frontiers/drafts/exponents-and-q-series/Fabius_Flat_Parameter_Response_Dynamics/fabius_frontier_report.tex`
 - `semi-formalized-research-frontiers/drafts/exponents-and-q-series/inverse_q_analogs_report/inverse_q_analogs_report.tex`
 - `semi-formalized-research-frontiers/drafts/exponents-and-q-series/q_pochhammer_q_binomial_expansions_report/q_analog_expansions_report.tex`
 - `semi-formalized-research-frontiers/drafts/exponents-and-q-series/q_pochhammer_q_binomial_monograph/q_pochhammer_q_binomial_monograph.tex`
@@ -91,6 +94,9 @@ Matched **71** prior TeX files:
 - `semi-formalized-research-frontiers/drafts/inverse-and-sampling/Inverse_Endpoint_All_Orders/Inverse_Endpoint_All_Orders.tex`
 - `semi-formalized-research-frontiers/drafts/inverse-and-sampling/Inverse_Fabius_Computability_Report/inverse_fabius_computability.tex`
 - `semi-formalized-research-frontiers/drafts/inverse-and-sampling/Inverse_and_Sampling_Frontiers/Inverse_and_Sampling_Frontiers.tex`
+- `semi-formalized-research-frontiers/drafts/inverse-and-sampling/geometric_comb_interpolation_report/geometric_comb_interpolation_report.tex`
+- `semi-formalized-research-frontiers/drafts/inverse-and-sampling/geometric_comb_lagrange_jackson_newton_report/geometric_comb_interpolation.tex`
+- `semi-formalized-research-frontiers/drafts/inverse-and-sampling/geometric_comb_q_fabius_report/geometric_comb_q_fabius_report.tex`
 - `semi-formalized-research-frontiers/drafts/inverse-and-sampling/inverse_fabius_iterates_nowhere_analytic/inverse_fabius_iterates_nowhere_analytic.tex`
 - `semi-formalized-research-frontiers/drafts/representations/Fabius_Rvachev_New_Frontiers-2/fabius_rvachev_new_frontiers.tex`
 - `semi-formalized-research-frontiers/drafts/representations/Fabius_Rvachev_Shape_Divisibility_Stein_Geometry/fabius_rvachev_frontier_report.tex`
@@ -126,7 +132,7 @@ Matched **71** prior TeX files:
 
 ### Complex dimensions / heat trace
 
-Matched **31** prior TeX files:
+Matched **32** prior TeX files:
 
 - `FabiusFunction_Mathematical_Glossary/FabiusFunction_Mathematical_Glossary.tex`
 - `Fabius_Function_and_Rvachev_Up/Fabius_Function_and_Rvachev_Up.tex`
@@ -145,6 +151,7 @@ Matched **31** prior TeX files:
 - `archive/standalone-studies/Small_Argument_Asymptotics/Small_Argument_Asymptotics.tex`
 - `fabius_lean_walkthrough/fabius_lean_walkthrough.tex`
 - `semi-formalized-research-frontiers/drafts/exponents-and-q-series/Exponents_and_q_Series_Frontiers/Exponents_and_q_Series_Frontiers.tex`
+- `semi-formalized-research-frontiers/drafts/exponents-and-q-series/Fabius_Flat_Parameter_Response_Dynamics/fabius_frontier_report.tex`
 - `semi-formalized-research-frontiers/drafts/frontier-compilations/Frontier_Compilations/Frontier_Compilations.tex`
 - `semi-formalized-research-frontiers/drafts/frontier-compilations/Geometric_Uniform_Frontier_Directions/fabius_frontier_report.tex`
 - `semi-formalized-research-frontiers/drafts/integration-and-transforms/Integration_and_Transform_Frontiers/Integration_and_Transform_Frontiers.tex`
@@ -162,7 +169,7 @@ Matched **31** prior TeX files:
 
 ### Sharp Strang--Fix aliasing defect
 
-Matched **21** prior TeX files:
+Matched **22** prior TeX files:
 
 - `FabiusFunction_Mathematical_Glossary/FabiusFunction_Mathematical_Glossary.tex`
 - `archive/glossary/FabiusFunction_Mathematical_Glossary/FabiusFunction_Mathematical_Glossary.tex`
@@ -173,6 +180,7 @@ Matched **21** prior TeX files:
 - `semi-formalized-research-frontiers/drafts/frontier-compilations/Frontier_Compilations/Frontier_Compilations.tex`
 - `semi-formalized-research-frontiers/drafts/inverse-and-sampling/Dyadic_Comb_Frontiers/Dyadic_Comb_Frontiers.tex`
 - `semi-formalized-research-frontiers/drafts/inverse-and-sampling/Inverse_and_Sampling_Frontiers/Inverse_and_Sampling_Frontiers.tex`
+- `semi-formalized-research-frontiers/drafts/inverse-and-sampling/geometric_comb_q_fabius_report/geometric_comb_q_fabius_report.tex`
 - `semi-formalized-research-frontiers/drafts/representations/Lagrange_Rvachev_Closed_Loop_Report/lagrange_up_loop.tex`
 - `semi-formalized-research-frontiers/drafts/representations/Lagrange_Rvachev_Loop_Package/Lagrange_Rvachev_Loop.tex`
 - `semi-formalized-research-frontiers/drafts/representations/Legendre_Rvachev_Closed_Loop_Report_v4/legendre_rvachev_closed_loop.tex`
@@ -188,7 +196,7 @@ Matched **21** prior TeX files:
 
 ### Phase-locked Lambert-W saddle
 
-Matched **59** prior TeX files:
+Matched **60** prior TeX files:
 
 - `FabiusFunction_Mathematical_Glossary/FabiusFunction_Mathematical_Glossary.tex`
 - `Fabius_Function_and_Rvachev_Up/Fabius_Function_and_Rvachev_Up.tex`
@@ -220,6 +228,7 @@ Matched **59** prior TeX files:
 - `semi-formalized-research-frontiers/drafts/inverse-and-sampling/Inverse_Endpoint_All_Orders/Inverse_Endpoint_All_Orders.tex`
 - `semi-formalized-research-frontiers/drafts/inverse-and-sampling/Inverse_Fabius_Computability_Report/inverse_fabius_computability.tex`
 - `semi-formalized-research-frontiers/drafts/inverse-and-sampling/Inverse_and_Sampling_Frontiers/Inverse_and_Sampling_Frontiers.tex`
+- `semi-formalized-research-frontiers/drafts/inverse-and-sampling/geometric_comb_interpolation_report/geometric_comb_interpolation_report.tex`
 - `semi-formalized-research-frontiers/drafts/inverse-and-sampling/inverse_fabius_iterates_nowhere_analytic/inverse_fabius_iterates_nowhere_analytic.tex`
 - `semi-formalized-research-frontiers/drafts/lambert-w/Lambert_W_Guide/Lambert_W_Guide.tex`
 - `semi-formalized-research-frontiers/drafts/lambert-w/Lambert_W_Guide/assets/Lambert-W-Article/generated/iteration_counts.tex`
@@ -252,7 +261,7 @@ Matched **59** prior TeX files:
 
 ### Integer-base atomic family
 
-Matched **25** prior TeX files:
+Matched **27** prior TeX files:
 
 - `Fabius_Function_and_Rvachev_Up/Fabius_Function_and_Rvachev_Up.tex`
 - `archive/primary-exposition/Fabius_Function_and_Rvachev_Up-3/Fabius_Function_and_Rvachev_Up.tex`
@@ -261,6 +270,7 @@ Matched **25** prior TeX files:
 - `archive/research-frontiers/Thue_Morse_Formula_Atlas-3/Thue_Morse_Formula_Atlas.tex`
 - `papers/ubiq15/ubiq15-corrected.tex`
 - `semi-formalized-research-frontiers/drafts/exponents-and-q-series/Exponents_and_q_Series_Frontiers/Exponents_and_q_Series_Frontiers.tex`
+- `semi-formalized-research-frontiers/drafts/exponents-and-q-series/Fabius_Flat_Parameter_Response_Dynamics/fabius_frontier_report.tex`
 - `semi-formalized-research-frontiers/drafts/exponents-and-q-series/q_pochhammer_q_binomial_monograph/q_pochhammer_q_binomial_monograph.tex`
 - `semi-formalized-research-frontiers/drafts/frontier-compilations/Frontier_Compilations/Frontier_Compilations.tex`
 - `semi-formalized-research-frontiers/drafts/frontier-compilations/Geometric_Uniform_Frontier_Directions/fabius_frontier_report.tex`
@@ -268,6 +278,7 @@ Matched **25** prior TeX files:
 - `semi-formalized-research-frontiers/drafts/inverse-and-sampling/Dyadic_Comb_Frontiers/Dyadic_Comb_Frontiers.tex`
 - `semi-formalized-research-frontiers/drafts/inverse-and-sampling/Inverse_Fabius_Computability_Report/inverse_fabius_computability.tex`
 - `semi-formalized-research-frontiers/drafts/inverse-and-sampling/Inverse_and_Sampling_Frontiers/Inverse_and_Sampling_Frontiers.tex`
+- `semi-formalized-research-frontiers/drafts/inverse-and-sampling/geometric_comb_q_fabius_report/geometric_comb_q_fabius_report.tex`
 - `semi-formalized-research-frontiers/drafts/lambert-w/Lambert_W_Guide/Lambert_W_Guide.tex`
 - `semi-formalized-research-frontiers/drafts/representations/Fabius_Zero_Bias_Frontier_Report/Zero_Bias_Towers_and_Spectral_Peeling.tex`
 - `semi-formalized-research-frontiers/drafts/representations/Legendre_Rvachev_Closed_Loop_Report_v4/legendre_rvachev_closed_loop.tex`
@@ -318,7 +329,7 @@ Matched **25** prior TeX files:
 
 ### `Fabius_Function_and_Rvachev_Up/Fabius_Function_and_Rvachev_Up.tex`
 
-- SHA-256: `2829a43bc5cf76331ab97407ccbe241c1eb8644d9f84d42f5259ca24a94a6688`
+- SHA-256: `5fc05b68aea07063091cf6907a014d0fa37f60451ef7b99eaddefafcb4a943db`
 - Phrase clusters: Fourier-zero spectral zeta; Exact digit-sum zero count; Complex dimensions / heat trace; Phase-locked Lambert-W saddle; Integer-base atomic family
 - Structural headings:
   - section: Historical note and scope
@@ -3670,6 +3681,57 @@ Matched **25** prior TeX files:
 - Structural headings:
   - none detected
 
+### `semi-formalized-research-frontiers/drafts/exponents-and-q-series/Fabius_Flat_Parameter_Response_Dynamics/fabius_frontier_report.tex`
+
+- SHA-256: `5b6b142e80be2050027278ca4e14d470fbd033a7351cda13950ab43b72c44b78`
+- Phrase clusters: Exact digit-sum zero count; Complex dimensions / heat trace; Integer-base atomic family
+- Structural headings:
+  - section: Scope, corpus audit, and novelty boundary
+  - subsection: What was surveyed
+  - subsection: Existing inputs deliberately not reproved from first principles
+  - subsection: Exact formalization boundary
+  - subsection: Relation to the major existing themes
+  - section: The normalized geometric-uniform family
+  - section: Joint smoothness and flat nonanalytic parameter fronts
+  - subsection: Uniform Schwartz bounds in the parameter
+  - subsection: The exact plateau and its moving boundary
+  - section: The first \texorpdfstring{\(q\)}{q}-response at the Fabius point
+  - subsection: Pathwise differentiation and the tangent measure
+  - subsection: A contractive susceptibility resolvent
+  - subsection: Exact refinement equations for the tangent CDF and density
+  - subsection: Conditional transport form
+  - section: Fourier, Bernoulli--Bell, and Legendre faces of the response
+  - subsection: A marked infinite-sinc product
+  - subsection: Closed cumulants and first moment jets
+  - subsection: An exact rational shifted-Legendre spectrum
+  - section: A conditional global smooth Schr\"oder coordinate for Fabius iteration
+  - subsection: The global basin of the midpoint
+  - subsection: A flat local contraction
+  - subsection: Globalization and exact conjugacy
+  - subsection: Exact escape clocks
+  - section: A logarithmic B\"ottcher height at the endpoints
+  - subsection: A conditional periodic quotient of the two dynamical coordinates
+  - section: Numerical experiments and exact symbolic checks
+  - subsection: Reproducibility package
+  - subsection: Pathwise moment checks
+  - subsection: Tangent CDF and antisymmetry
+  - section: Further deductions and frontier conjectures
+  - subsection: Uniform transseries at the flat fronts
+  - subsection: Analyticity above the critical ratio
+  - subsection: Asymptotics of the tangent Legendre spectrum
+  - subsection: The dynamical periodic factor
+  - subsection: A \texorpdfstring{\(q\)}{q}-family of global dynamical coordinates
+  - subsection: Arithmetic of higher response jets
+  - subsection: Thue--Morse finite models for susceptibility
+  - section: Lean formalization roadmap
+  - subsection: Tranche A: parameter calculus for the probability law
+  - subsection: Tranche B: joint smoothness and flat fronts
+  - subsection: Tranche C: exact response algebra
+  - subsection: Tranche D: smooth dynamics
+  - section: Conclusions
+  - section: Derivation of selected exact coefficients
+  - section: Numerical file inventory
+
 ### `semi-formalized-research-frontiers/drafts/exponents-and-q-series/Fabius_Rvachev_Frontier_Report/fabius_frontier_report.tex`
 
 - SHA-256: `fdae9f58c5eee7b4cfcbda09ae7e2c01aa3f85b572bb373edb2165c078e82b6c`
@@ -3737,7 +3799,7 @@ Matched **25** prior TeX files:
 
 ### `semi-formalized-research-frontiers/drafts/exponents-and-q-series/inverse_q_analogs_report/inverse_q_analogs_report.tex`
 
-- SHA-256: `1ad39fa46424d95ad604827992aad49796334f921aa06ecee434cb88d647aa23`
+- SHA-256: `de375ee059e0ee9485286aea13e917363854d610b5ff77672001828fa663699b`
 - Phrase clusters: Exact digit-sum zero count; Phase-locked Lambert-W saddle
 - Structural headings:
   - chapter: Abstract
@@ -3969,7 +4031,7 @@ Matched **25** prior TeX files:
 
 ### `semi-formalized-research-frontiers/drafts/exponents-and-q-series/q_pochhammer_q_binomial_monograph/q_pochhammer_q_binomial_monograph.tex`
 
-- SHA-256: `8b4a624c6c3645a70ae25e985eee46dc63c52ddfea3caad52345d58405409ea6`
+- SHA-256: `ee2aad6b5d88b95af7c0867caf6e68fd1975ccc78d5c7370192db65707de067c`
 - Phrase clusters: Fourier-zero spectral zeta; Exact digit-sum zero count; Integer-base atomic family
 - Structural headings:
   - chapter: Abstract
@@ -6059,6 +6121,258 @@ Matched **25** prior TeX files:
 - Structural headings:
   - none detected
 
+### `semi-formalized-research-frontiers/drafts/inverse-and-sampling/geometric_comb_interpolation_report/geometric_comb_interpolation_report.tex`
+
+- SHA-256: `02dd81e5d1480e867c2482a38574accf06b6bedd19cbef5dccc6a585cca01711`
+- Phrase clusters: Exact digit-sum zero count; Phase-locked Lambert-W saddle
+- Structural headings:
+  - section: Introduction and contribution map
+  - subsection: Why a geometric comb is different
+  - subsection: Baseline from the linked monograph
+  - subsection: Results developed here
+  - section: Notation and elementary $q$-identities
+  - section: Geometry of the comb
+  - subsection: Scale covariance
+  - subsection: Vandermonde determinant
+  - section: Lagrange interpolation on a finite comb
+  - subsection: Cardinal functions and barycentric weights
+  - subsection: The origin row
+  - subsection: Residuals at an arbitrary target
+  - subsection: Exact analytic tail and a sharp majorant
+  - section: Newton interpolation and Jackson calculus
+  - subsection: Jackson derivative as a divided difference
+  - subsection: Newton formula and explicit coefficients
+  - subsection: Two inverse Gaussian basis transforms
+  - subsection: Infinite Newton reconstruction
+  - section: Dilation-operator calculus and the Gaussian filter
+  - subsection: Spectral polynomial
+  - subsection: Exact action on powers and logarithmic powers
+  - subsection: Uniqueness
+  - section: Confluent modal extrapolation
+  - section: Stability, boundary layers, and regular variation
+  - subsection: Exact total variation
+  - subsection: The singular regime $q\uparrow1$
+  - subsection: The reversed-row boundary layer
+  - subsection: Convergence for merely continuous data
+  - subsection: Regularly varying endpoint germs
+  - section: Smooth remainders and geometric-knot B-splines
+  - subsection: Hermite--Genocchi representation
+  - subsection: Peano kernel and a positive spline density
+  - subsection: Exact moments
+  - subsection: A $q$-Pochhammer scaling limit
+  - section: Geometric-uniform random sums and finite splines
+  - subsection: The generic law
+  - subsection: Finite generalized Irwin--Hall splines
+  - subsection: Convergence to the infinite law
+  - subsection: Centered law, Bernoulli cumulants, and sinc products
+  - section: Fabius and Rvachev functions at the flat boundary
+  - subsection: Definitions and endpoint differential scaling
+  - subsection: An exact boundary-comb identity
+  - subsection: The boundary B-spline and its $q$-exponential scale
+  - subsection: Exact rational computation
+  - section: Fourier-scale interpolation for the Rvachev function
+  - subsection: The base-squaring principle
+  - subsection: Exact moment-flat filter
+  - subsection: Application to $\Up$
+  - subsection: Entire Newton reconstruction of all scales
+  - section: Algorithms and numerical implementation
+  - subsection: Barycentric interpolation away from zero
+  - subsection: Newton--Horner evaluation
+  - subsection: Origin extrapolation by factor recursion
+  - subsection: Exact dyadic arithmetic
+  - subsection: Precision budgeting
+  - section: Numerical experiments
+  - subsection: Moment cancellation and factor recursion
+  - subsection: Noise amplification
+  - subsection: Regular-variation constants
+  - subsection: Exact Fabius boundary remainders
+  - subsection: Reproducibility files
+  - section: Research frontiers and conjectures
+  - subsection: A local limit theorem for geometric B-splines
+  - subsection: Fabius--Dirichlet small-value asymptotics
+  - subsection: Second-order regular variation
+  - subsection: The double-scaling transition $q\uparrow1$, $n\to\infty$
+  - subsection: Optimal filters under analytic priors
+  - subsection: Inverse Fabius and nonlinear combs
+  - subsection: Multivariate geometric combs
+  - subsection: Formalization boundary and remaining roadmap
+  - section: Conclusions
+  - section: Additional derivations
+  - subsection: Partial fractions for the $q$-exponential perpetuity
+  - subsection: Equivalence of the power formulas
+  - subsection: A generating function for the smooth remainder on exponentials
+  - section: Companion-code notes
+
+### `semi-formalized-research-frontiers/drafts/inverse-and-sampling/geometric_comb_lagrange_jackson_newton_report/geometric_comb_interpolation.tex`
+
+- SHA-256: `5b2aef31fe8a5f936fb32404306e1168c4de5e4ad22ed7ef1dcb3e5841c3b785`
+- Phrase clusters: Fourier-zero spectral zeta; Exact digit-sum zero count
+- Structural headings:
+  - section: Orientation and the four equivalent pictures
+  - subsection: The geometric comb
+  - subsection: Basic notation
+  - subsection: A map of the proved results
+  - section: Algebra of the geometric Vandermonde system
+  - subsection: Nodal polynomial and Vandermonde determinant
+  - subsection: The Gaussian Pascal factorization
+  - subsection: Two inverse basis changes
+  - section: Lagrange cardinal functions on the comb
+  - subsection: Barycentric weights
+  - subsection: A target on the same multiplicative line
+  - subsection: The zero row as a dilation polynomial
+  - subsection: Exact total variation and conditioning at the accumulation point
+  - section: Mellin symbols and exact residuals
+  - subsection: Complex powers
+  - subsection: Logarithmic powers by spectral differentiation
+  - subsection: Mellin-transform interpretation
+  - subsection: The universal complete-symmetric residual
+  - section: Newton interpolation is Jackson calculus
+  - subsection: Divided differences and iterated \texorpdfstring{$q$}{q}-derivatives
+  - subsection: Infinite Jackson--Newton series for analytic functions
+  - subsection: The limits \texorpdfstring{$q\to1$}{q to 1} and \texorpdfstring{$q\to0$}{q to 0}
+  - subsection: Neville, Richardson, and Romberg recurrences
+  - section: Convergence at an accumulation point and divergence away from it
+  - subsection: The zero row is a regular summability method
+  - subsection: The limiting profile viewed from the finest tooth
+  - subsection: Power, Puiseux, and logarithmic endpoint expansions
+  - subsection: Superflat data force divergence off the comb
+  - section: The geometric-uniform family
+  - subsection: Probability law, support, and refinement
+  - subsection: Moments and Bernoulli cumulants
+  - subsection: The left boundary layer
+  - subsection: Comb samples are normalized moments
+  - subsection: The classical Fabius and Rvachev normalizations
+  - section: Exact Fabius transforms on the dyadic comb
+  - subsection: Dyadic values and Mersenne products
+  - subsection: The endpoint extrapolant as a Mersenne--moment convolution
+  - subsection: Newton coefficients as a Gaussian moment transform
+  - subsection: Generating-function factorization
+  - subsection: Exact divergence of the Fabius interpolants
+  - section: The Rvachev Fourier product through the same filter
+  - subsection: Tail products along a geometric comb
+  - subsection: Moment interpretation of the residual
+  - subsection: Exact synthesis of geometric cardinals by shifted up-functions
+  - subsection: The additive Thue--Morse companion
+  - section: Numerical experiments and exact checks
+  - subsection: Reproducibility
+  - subsection: Exact endpoint values
+  - subsection: Divergence away from the comb
+  - subsection: Quadratic growth of the Newton coefficients
+  - subsection: Bounded row variation
+  - subsection: Reciprocal Rvachev product
+  - section: Research frontiers
+  - subsection: Asymptotics of the Fabius Newton coefficients
+  - subsection: Boundary-crossing formulas for \texorpdfstring{$q>1/2$}{q greater than 1/2}
+  - subsection: Confluent limits and roots of unity
+  - subsection: Regularization near Fourier zeros
+  - subsection: Exact Lebesgue functions below the finest node
+  - subsection: Flatness-adapted approximation spaces
+  - subsection: Multivariate geometric meshes
+  - subsection: Adaptive ratios and asymptotic optimization
+  - subsection: Formal verification roadmap
+  - section: Conclusions
+  - section: Selected finite identities
+  - section: Pseudocode for exact dyadic computation
+  - section: Source map
+
+### `semi-formalized-research-frontiers/drafts/inverse-and-sampling/geometric_comb_q_fabius_report/geometric_comb_q_fabius_report.tex`
+
+- SHA-256: `37e71ad371673a8c301d1b2f23e516cf34b904fb98f22e18448e4dedfe939c08`
+- Phrase clusters: Fourier-zero spectral zeta; Exact digit-sum zero count; Sharp Strang--Fix aliasing defect; Integer-base atomic family
+- Structural headings:
+  - chapter: Abstract
+  - chapter: Executive summary of the main formulas
+  - part: Algebra of the geometric comb
+  - chapter: Scope, provenance, and normalization
+  - section: Relation to the source monograph and neighboring reports
+  - section: Manuscript proof versus Lean proof
+  - section: The affine geometric comb
+  - section: Notation for \texorpdfstring{$q$}{q}-analogues
+  - chapter: Newton interpolation as \texorpdfstring{$q$}{q}-Taylor calculus
+  - section: The \texorpdfstring{$q$}{q}-Pochhammer Newton basis
+  - section: Triangular evaluation and the geometric Vandermonde determinant
+  - section: Online extension of the comb
+  - chapter: The Gaussian Pascal change of coordinates
+  - section: Monomials versus geometric falling powers
+  - section: Coefficient transforms and Rogers--Szeg\H{o} polynomials
+  - section: A matrix factorization of geometric sampling
+  - section: Combinatorics at reciprocal integer base
+  - section: The classical limit in logarithmic coordinates
+  - chapter: Lagrange cardinals and geometric filters
+  - section: Closed barycentric weights
+  - section: Cardinals in Newton coordinates
+  - section: Evaluation at the accumulation point: \texorpdfstring{$q$}{q}-Richardson weights
+  - section: Generating function of the Richardson triangle
+  - part: Exact residuals, convergence, and stability
+  - chapter: Complete-homogeneous residual calculus
+  - section: A universal moment theorem
+  - section: Exact monomial interpolation error
+  - section: Residual of a power series
+  - section: Divided differences of analytic functions
+  - chapter: Infinite Newton series at an accumulating comb
+  - section: Why an accumulation point changes the problem
+  - section: Complex bases and spiralling combs
+  - section: Meromorphic targets
+  - chapter: A sharp stability dichotomy
+  - section: Lebesgue functions
+  - section: Bounded extrapolation to the accumulation point
+  - section: Boundary-layer profile near the isolated outer node
+  - section: The global asymptotic
+  - section: Interpretation: stable at the accumulation end, unstable in the gap
+  - chapter: Jackson integration and confluent geometric data
+  - section: The Newton--Jackson integral formula
+  - section: Repeated geometric nodes
+  - section: Anchoring ordinary derivatives at the accumulation point
+  - part: The dyadic Fabius--Rvachev specialization
+  - chapter: Fabius moments and the exact half-base Gaussian transform
+  - section: Probability model, moments, and the preferred normalization
+  - section: Inverse-dyadic values are normalized moments
+  - section: The exact Gaussian transform of Fabius data
+  - section: A finite Gaussian-cardinal formula
+  - chapter: Boundary recovery and gap divergence
+  - section: The boundary residue and its generating function
+  - section: Recovery of every fixed flat jet
+  - section: A rigorous gap-growth upper bound
+  - section: A saddle-point conjecture for the actual interpolation error
+  - chapter: The Rvachev synthesis loop in geometric coordinates
+  - section: Fourier zeros and inverse-moment Appell polynomials
+  - section: Exact fixed-radius polynomial reproduction
+  - section: A \texorpdfstring{$q$}{q}-Appell deformation of geometric falling powers
+  - section: Geometric cardinals as finite sums of \texorpdfstring{$\Up$}{up} translates
+  - section: Collocation, a stochastic encoder, and a signed right inverse
+  - section: Closing the loop for the Rvachev function
+  - section: The reflected boundary comb
+  - part: Experiments, conjectures, and implementation
+  - chapter: Exact and high-dynamic-range numerical experiments
+  - section: Reproducibility protocol
+  - section: Exact algebraic checks
+  - section: Lebesgue growth and boundary-layer location
+  - section: Exact Fabius interpolation in the gap
+  - section: What the experiments do and do not establish
+  - chapter: Further deductions, conjectures, and research directions
+  - section: Second-order Lebesgue asymptotics
+  - section: A function-space criterion for infinite geometric Newton series
+  - section: Signed saddle analysis for Fabius data
+  - section: Boundary-residue entire functions
+  - section: Geometric Hermite stability
+  - section: The mixed \texorpdfstring{$q$}{q}-Appell family
+  - section: Decoder variation, total positivity, and optimal gauges
+  - section: Stable alternatives to global gap interpolation
+  - section: Complex and arithmetic geometric combs
+  - section: Formalization program
+  - chapter: Formula dictionary
+  - section: General geometric comb
+  - section: Half-base Fabius formulas
+  - section: Atomic synthesis formulas
+  - chapter: Selected exact dyadic data
+  - section: Moments and inverse-dyadic values
+  - section: First geometric Newton coefficients
+  - chapter: Archive and reproduction notes
+  - section: Archive layout
+  - section: Commands
+  - section: Source boundary
+  - chapter: Status ledger
+
 ### `semi-formalized-research-frontiers/drafts/inverse-and-sampling/inverse_fabius_iterates_nowhere_analytic/inverse_fabius_iterates_nowhere_analytic.tex`
 
 - SHA-256: `224aae891f145ff1ad677cfa9b555305430c5894b0f864263ca07cb184e56ca1`
@@ -6222,7 +6536,7 @@ Matched **25** prior TeX files:
 
 ### `semi-formalized-research-frontiers/drafts/representations/Fabius_Rvachev_New_Frontiers-2/fabius_rvachev_new_frontiers.tex`
 
-- SHA-256: `fb8ae88cb10eef256e300ea906dff7a735f1186c48d99b990dc093d874893827`
+- SHA-256: `1a758bc0076a9e8debf668baa330511f7355e989e39ca19610b1e59f524fe677`
 - Phrase clusters: Exact digit-sum zero count; Phase-locked Lambert-W saddle
 - Structural headings:
   - section: Corpus audit and choice of frontier
@@ -8858,7 +9172,7 @@ Matched **25** prior TeX files:
 
 ### `semi-formalized-research-frontiers/semi-formalized-research-frontiers.tex`
 
-- SHA-256: `6393a9a6d790955995b8794cfb70f6de6ecc21743948312108bbda762620060c`
+- SHA-256: `6816b5d573adc93845a4bdaaacfaa414b2d9a02d8f7da9a0d345c48ac00fafb0`
 - Phrase clusters: Exact digit-sum zero count; Complex dimensions / heat trace; Phase-locked Lambert-W saddle
 - Structural headings:
   - section: Consolidation map and reading conventions

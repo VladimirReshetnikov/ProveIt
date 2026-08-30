@@ -1,7 +1,8 @@
 # Exponents and q-series
 
-New standalone intake member:
-[`Fabius_Rvachev_Frontier_Report/`](Fabius_Rvachev_Frontier_Report/),
+New standalone intake members:
+
+- [`Fabius_Rvachev_Frontier_Report/`](Fabius_Rvachev_Frontier_Report/),
 *Negative Parameters, Reciprocal Bases, and the Gaussian Boundary* (26 pp),
 arrived on 2026-08-30 with all 13 payload checksums verified.  It develops
 negative-parameter affine transport, reciprocal-base digit reversal,
@@ -40,6 +41,32 @@ Paper-proof labels do not assert Lean formalization: selected finite
 q-algebra and product convergence are formalized, but none of the
 report-specific inverse, branch, Maxwell/discriminant, monodromy, or
 inverse-asymptotic results has an exact public Lean counterpart.
+An exact reship, `Fabius_Rvachev_Frontier_Report_2026-08-30-E.zip`
+(outer SHA-256
+`174bf733156cd874cf4f9321c6ab71ca44f311856cc01dc158ddf83dc00cf813`),
+was verified and deleted on 2026-08-30 without creating a redundant directory:
+its payloads are byte-identical to this filed member after the existing CSV
+LF normalization. No claim-level reassessment or experiment rerun was
+performed.
+
+- [`Fabius_Flat_Parameter_Response_Dynamics/`](Fabius_Flat_Parameter_Response_Dynamics/),
+  *Flat Parameter Fronts, q-Susceptibility, and Smooth Dynamics* (26 A4 pp;
+  1,944-line TeX and 519-line deterministic exact/Monte-Carlo program), was
+  filed on 2026-08-30 from `fabius_frontier_report_2026.zip` (803,598 bytes;
+  SHA-256
+  `afdcf522589a7baad82c81a527c02dcc09e58455ab14c57a9c492e65563c647e`).
+  Its immutable 13-entry arrival ledger verifies 13/13 and the exhaustive
+  current ledger verifies 17/17. The pinned replay reproduced the two exact
+  algebra tables, common-random-number table, and two figures byte-for-byte;
+  the two Monte-Carlo tables differed only at documented last-bit levels far
+  below their sampling errors. A hostile review repaired the conditional-law
+  quantifier in the velocity theorem, the KR basepoint argument, endpoint and
+  orbit hypotheses, and the false small-divisor expression. Higher-response
+  resolvents now require a finite zero-mass representing measure, while the
+  all-orders Koenigs/dynamical layer is explicitly conditional on hypothesis
+  (K); none of the new parameter-response claims is asserted as an exact Lean
+  theorem. The canonical A4/27 mm/Libertinus PDF was rebuilt in exactly three
+  strict passes with every font embedded/subset and no Type 3 fonts.
 
 Generalizations of the dyadic construction to arbitrary exponent
 sequences and the q-series calculus that organizes them: the
@@ -324,6 +351,16 @@ quotient also assumes `(q;q)_(N-k) != 0`. The adjacent quotient corollaries
 remain restricted to `k < n` and instead assume exactly their displayed Gaussian and linear-factor
 denominators are nonzero and do not require `q != 0`.
 
+`QBinomialReciprocity.lean` adds exactly four public theorems:
+`gaussianBinomial_reciprocity_units`, `gaussianBinomial_reciprocity`,
+`gaussianBinomial_neg_one_eq_zero_of_odd_degree`, and
+`gaussianBinomial_neg_one_even_odd_eq_zero`.  Unit reciprocity is total over
+every commutative semiring; its semifield wrapper assumes only `q != 0`.
+The two `q = -1` theorems hold over every commutative ring, including
+characteristic two and above-diagonal zero-extension cases.  This proves the
+reciprocity clause of the monograph's compound structure theorem, while its
+separate degree and coefficient-polynomial clauses keep that full row partial.
+
 The documents also cross-reference the independent real fractional-Volterra
 layer. `FractionalVolterraCalculus.lean` proves positive affine covariance on
 ordered intervals for arbitrary real order. For `alpha <= 0`, this covariance is
@@ -567,7 +604,7 @@ matching `assets/` directories.
 `Signed_Reciprocal_q_Fabius_Frontiers/` were merged editorially as the
 volume's Part VII; their figures/data are likewise under `assets/`.)
 
-Second member: `q_pochhammer_q_binomial_monograph/` (201 pp, book class) —
+Second member: `q_pochhammer_q_binomial_monograph/` (202 pp, book class) —
 *q-Pochhammer Symbols and q-Binomial Coefficients*, a standalone
 proof-oriented reference monograph on the q-machinery itself, filed
 2026-08-28 per the Lambert-W precedent (a reference companion rather
@@ -588,15 +625,15 @@ Chern–Dilcher–Jiu deleted-singularity identity and Ramanujan's ₁ψ₁
 verified numerically to 30 digits; one dominated-convergence majorant
 repaired with an `% ed.:` note).
 
-Its current formalization ledger covers the 183-result core in Chapters
-1–23: 34 exact, 24 partial, 122 with no counterpart, and 3 interface-only.
+Its current formalization ledger covers the 184-result core in Chapters
+1–23: 35 exact, 24 partial, 122 with no counterpart, and 3 interface-only.
 The later Chapter 24 Fabius bridge is crosswalked locally and is outside
 those aggregate counts; in particular its general spectral Pochhammer
 theorem remains partial despite the now-formal inside `q = 1/2`
 specialization. The algebra of
 q-shifted factorials now accounts for 3 exact, 1 partial, and 11
 unformalized results; the q-integer and Gaussian-coefficient chapter for
-2 exact, 2 partial, and 4 unformalized results. The finite
+3 exact, 2 partial, and 4 unformalized results. The finite
 q-binomial/inversion chapter now accounts for 9 exact, 1 partial, and 0
 unformalized results; the weighted chapter for 3 exact, 2 partial, and 3
 unformalized results; the basic-hypergeometric chapter for 1 exact, 0
@@ -618,6 +655,7 @@ theorems), `FiniteTriangularTransform.lean` (one definition, one theorem),
 as `QDifferenceAnnihilation.lean` (four theorems) and
 `QBinomialInversionSpecializations.lean` (two definitions, four theorems),
 `QPochhammerElementaryIdentities.lean` (13 theorems), and
+`QBinomialReciprocity.lean` (four theorems),
 `RvachevPochhammerFactorization.lean` (one definition, six theorems).
 The chapter's alternating sums, both weighted-subset conventions,
 named module-valued inversion iff, and both kernel orthogonalities are exact.

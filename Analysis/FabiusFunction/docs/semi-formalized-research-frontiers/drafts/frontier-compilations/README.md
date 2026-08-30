@@ -6,6 +6,7 @@ preserves the full verified arrival ledger, repairs the failed audit and
 numerical generation, corrects the false curvature claim, and supplies the
 policy-conforming canonical build; the unrepaired duplicate formerly listed
 here has been removed.
+New standalone intake members:
 
 The standalone
 [`Geometric_Uniform_Frontier_Directions/`](Geometric_Uniform_Frontier_Directions/)

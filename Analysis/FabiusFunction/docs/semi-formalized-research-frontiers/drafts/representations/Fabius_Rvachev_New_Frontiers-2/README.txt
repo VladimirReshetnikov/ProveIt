@@ -13,11 +13,13 @@ superseded, generated, proved, numerical, and conjectural material.
 Main deliverables
 -----------------
 fabius_rvachev_new_frontiers.tex
-    Complete 36-page, 2,568-line LaTeX report using the canonical primary
-    A4/27 mm/Libertinus preamble.
+    Complete 37-page, 2,648-line LaTeX report.  The semantic merge retains
+    the canonical A4/27 mm/Libertinus preamble and incorporates the current
+    determinant/rational Lean crosswalk.
 
 fabius_rvachev_new_frontiers.pdf
-    Rendered and visually inspected PDF.
+    Rendered and visually inspected PDF, refreshed after the post-intake
+    formal crosswalk.
 
 fabius_frontier_experiments.py
     Fully commented 580-line exact/high-precision experiment. It computes
@@ -88,17 +90,22 @@ Verification performed
   references, duplicate labels or destinations, or overfull boxes.  Its nine
   benign underfull notices are confined to the narrow claim-status table on
   page 6, whose readability was checked at full render size.
-* PDF preflight: 36 unencrypted A4 pages at 595.276 x 841.890 points, zero
+* PDF preflight: 37 unencrypted A4 pages at 595.276 x 841.890 points, zero
   rotation, and A4 MediaBox/CropBox/BleedBox/TrimBox/ArtBox on every page.
   All 35 font rows are embedded and subset, Libertinus is present, and there
-  are no Type 3 or Latin Modern fonts.
-* Text extraction produced 2,185 lines (124,917 bytes), including the title,
-  public names, theorem names, formulas, and conjecture-status boundaries.
-* All 36 pages rendered to PNG and visually inspected in contact sheets;
-  the claim-status table and representative formula and plot pages were also
-  checked at full render size.  All five standalone figure PDFs were inspected.
-* Python byte-compilation and an independent degree-24 smoke run succeeded;
-  its exact low-degree CSV is byte-identical to the publication artifact.
+  are no Type 3 or Latin Modern fonts.  The report and all five standalone
+  figure PDFs contain vector content and no raster images.
+* Layout-preserving text extraction produced 2,248 lines (129,168 bytes).
+  Whitespace-normalized text retains all 41 unique public Lean declaration
+  names inventoried in the report, including all 18 names in the new
+  determinant crosswalk.
+* All 37 pages were rendered and visually inspected in four contact sheets.
+  Pages 1, 6, 11, 12, 23, 33, and 37 were also checked at 150 dpi; all five
+  standalone figure PDFs were inspected together at full plot scale.
+* Python byte-compilation was rechecked.  The numerical program, CSV files,
+  figure PDFs, and publication log are byte-identical to the audited local
+  publication run, whose independent degree-24 smoke output matched the
+  publication exact-low-degree CSV byte for byte.
 
 Claim status
 ------------

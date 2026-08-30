@@ -739,10 +739,60 @@ its value at index \(n\) is the report coefficient \(\beta_{n+1}\).
 
 These are noncomputable adjugate-based finite definitions, not a rational
 evaluator.  In particular, they do not name or evaluate the explicit \(H_4\) and
-\(\beta_4\) fractions displayed below.  This tranche also proves no roots,
-Christoffel reconstruction or central products, Gauss quadrature, second-kind
-polynomials, continued-fraction/Pad\'e identification, Legendre--Gaunt determinant
-bridge, or Szeg\H{o}/Nevai/Rakhmanov asymptotics.
+\(\beta_4\) fractions displayed below.  Those two modules by themselves also prove no
+roots, Christoffel reconstruction or central products, Gauss quadrature, second-kind
+polynomials, continued-fraction/Pad\'e identification, or
+Szeg\H{o}/Nevai/Rakhmanov asymptotics.
+
+The later finite change-of-basis tranche closes precisely the determinant part of
+\cref{sec:legendre-gaunt}.  The generic module
+\path{PolynomialMomentGramDeterminant.lean} has exactly two public definitions,
+\path{polynomialCoefficientMatrix} and \path{polynomialMomentGramMatrix}, and seven
+public theorems:
+\path{polynomialCoefficientMatrix_apply},
+\path{polynomialMomentGramMatrix_apply},
+\path{polynomialMomentGramMatrix_eq_transpose_mul_hankel_mul},
+\path{polynomialMomentGramMatrix_det_eq_coefficient_det_sq_mul},
+\path{polynomialCoefficientMatrix_det_eq_prod_coeff},
+\path{polynomialMomentGramMatrix_det_eq_prod_coeff_sq_mul}, and
+\path{gramStieltjesJacobiSubdiagonal_eq_polynomialMomentGramMatrix_det_ratio}.
+For a coherent polynomial family, it expands the moment pairing to
+\(G=C^{\mathsf T}HC\), observes that the degree bound makes \(C\) upper
+triangular with the leading coefficients on its diagonal, takes determinants, and
+then transports the zero-based Hankel cross-ratio through the resulting diagonal
+product.  The generic cross-ratio theorem has no Hankel-nonvanishing hypothesis:
+Lean's field division is total, so a zero middle Hankel determinant makes both
+cross-ratios zero.  That singular equality is not a genuine nonsingular Jacobi
+recurrence.
+
+The specialization \path{FabiusLegendreHankelDeterminant.lean} has exactly two
+public definitions, \path{upLegendreGramMatrix} and \path{upLegendreGramDet}, and
+seven public theorems:
+\path{upLegendreGramMatrix_apply_eq_integral},
+\path{upLegendreGramDet_eq_prod_leadingCoeff_sq_mul_hankelDet},
+\path{upLegendreGramDet_zero}, \path{upLegendreGramDet_pos},
+\path{coeff_legendrePolynomial_self_div_succ},
+\path{gramStieltjesJacobiSubdiagonal_upMoment_eq_upLegendreGramDet_ratio}, and
+\path{rvachevJacobiSubdiagonalRat_cast_eq_upLegendreGramDet_ratio}.
+It formalizes \cref{eq:legendre-hankel} and the zero-based form of
+\cref{eq:beta-gaunt-determinants}: its input index \(n\) denotes the report
+coefficient \(\beta_{n+1}\), so the prefactor is
+\(((n+1)/(2n+1))^2\) and the determinant quotient is
+\(D_{n+2}D_n/D_{n+1}^2\).  For an arbitrary \path{BoundedFabius} input, Lean proves
+the determinant identity, the empty-determinant case \(D_0=1\), the Legendre
+leading-coefficient quotient, and this real Gram cross-ratio.  The entry-as-integral
+identity, strict positivity, and the bridge identifying the ratio with the real cast
+of the exact rational Rvachev subdiagonal additionally require \path{IsFabius}.
+Under that hypothesis positivity excludes the totalized singular case.
+
+This closure does \emph{not} formalize the finite Gaunt integral,
+Wigner/\(3j\)-symbol, or factorial entry formulas
+\cref{eq:gaunt-integral,eq:finite-gaunt-matrix,eq:wigner-factorial}; consequently it
+does not establish entry rationality by that route.  It also proves no Christoffel
+reconstruction.  Finally, the existing \path{rvachevTranslateGram} is a different
+object: it pairs shifted-up atoms under unweighted interval integration, whereas
+\path{upLegendreGramMatrix} pairs ordinary polynomials under the up-law moment
+functional.
 \end{remark}
 
 This is an unusually rigid situation.  The infinite Jacobi matrix
@@ -1551,6 +1601,9 @@ For $N\ge1$, form the Gram matrix of the first $N$ Legendre polynomials in the
  \right]_{j,k=0}^{N-1}.
  \label{eq:legendre-gram}
 \end{equation}
+For $N=0$, set $G_0$ to be the empty $0\mathbin{\times}0$ Gram matrix.  This
+standard convention extends the preceding $N\ge1$ definition and gives
+$\det G_0=1$.
 
 \subsection{Finite Gaunt expansion}
 The Gaunt integral is
@@ -1594,7 +1647,8 @@ The leading coefficient of $P_n$ is
  L_n=2^{-n}\binom{2n}{n}.
  \label{eq:legendre-leading}
 \end{equation}
-Let $D_N=\det G_N$.  The triangular change of basis from monomials to
+Let $D_N=\det G_N$, so in particular the empty-determinant convention gives
+$D_0=1$.  The triangular change of basis from monomials to
 $P_0,\ldots,P_{N-1}$ has determinant $\prod_{j=0}^{N-1}L_j$.  Hence:
 
 \begin{theorem}[Legendre--Hankel determinant identity]
@@ -1624,6 +1678,23 @@ $\beta_n=\Delta_{n+1}\Delta_{n-1}/\Delta_n^2$.  The products telescope to
 $(L_{n-1}/L_n)^2$, and
 $L_n/L_{n-1}=(2n-1)/n$.
 \end{proof}
+
+\begin{remark}[Exact Lean crosswalk and indexing]
+Equation \eqref{eq:legendre-hankel} is the specialization
+\path{upLegendreGramDet_eq_prod_leadingCoeff_sq_mul_hankelDet}.  The theorem
+\path{gramStieltjesJacobiSubdiagonal_upMoment_eq_upLegendreGramDet_ratio} and its
+rational-cast companion
+\path{rvachevJacobiSubdiagonalRat_cast_eq_upLegendreGramDet_ratio} use index $k\ge0$
+for the conventional coefficient $\beta_{k+1}$; replacing $k$ by $n-1$ gives
+exactly \eqref{eq:beta-gaunt-determinants}.  Their proof is the displayed
+$G=C^{\mathsf T}HC$ determinant argument and does not pass through the still-open
+Gaunt/Wigner entry expansion.  The determinant identity, $D_0=1$, the
+leading-coefficient quotient, and the real Gram cross-ratio hold for every
+\path{BoundedFabius}; entry-as-integral, strict positivity, and the rational-cast
+bridge require \path{IsFabius}.  Without Hankel nonvanishing, the generic and real
+Gram cross-ratios are unconditional only through totalized division: a zero middle
+determinant makes both sides zero and does not supply a nonsingular Jacobi recurrence.
+\end{remark}
 
 A low-degree check is instructive.  From the moments,
 \begin{equation}
@@ -2237,14 +2308,17 @@ the finite scalar-naturality API and the all-degree rational native Jacobi layer
 catalogued in \cref{sec:native-op}: exact \(\Q\)-valued determinants, polynomial
 coefficients, norms, zero diagonal, positive subdiagonals, determinant cross-ratio,
 orthogonality, centered recurrence, and real-cast bridges, with zero-based index
-\(n\) corresponding to \(\beta_{n+1}\).  The remaining formalization sequence is:
+\(n\) corresponding to \(\beta_{n+1}\).  The polynomial change-of-basis and Legendre
+specialization catalogued there now formalize
+\cref{eq:legendre-hankel,eq:beta-gaunt-determinants}, without formalizing the
+Gaunt/Wigner entry expansion.  The remaining formalization sequence is:
 \begin{enumerate}
 \item \textbf{Finite algebra:} formalize
       \cref{eq:inverse-hankel-christoffel,eq:monic-center-product,%
-eq:orthonormal-center-product,eq:harmonic-mean,%
-eq:legendre-hankel,eq:beta-gaunt-determinants}.  These need only finite
-      linear algebra and the existing positivity and rational-native APIs; none is
-      supplied by \path{RvachevRationalJacobi.lean} itself.
+eq:orthonormal-center-product,eq:harmonic-mean}.  These need only finite
+      linear algebra and the existing positivity and rational-native APIs.  Separately,
+      formalize \cref{eq:gaunt-integral,eq:finite-gaunt-matrix,eq:wigner-factorial}
+      if an entrywise Gaunt/\(3j\)-symbol realization is desired.
 \item \textbf{Quadrature and rational approximation:} define second-kind
       polynomials, prove \cref{eq:pade-exact-error}, and derive the Gaussian
       weights and exactness theorem.
@@ -2263,6 +2337,12 @@ The finite identities should not be blocked on the much larger formalization
 of OPRL asymptotics.  In particular, the harmonic-mean theorem is already a
 useful exact target even if convergence to $\pi$ remains an imported classical
 corollary initially.
+
+\begin{remark}[Historical provenance]
+The pinned audit and novelty boxes above remain historical statements about their
+declared repository snapshot.  This crosswalk updates current Lean status without
+retroactively altering those snapshot claims.
+\end{remark}
 
 \section{Conclusion}
 \label{sec:conclusion}

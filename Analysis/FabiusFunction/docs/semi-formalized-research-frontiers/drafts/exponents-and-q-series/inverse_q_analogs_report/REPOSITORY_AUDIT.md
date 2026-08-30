@@ -48,8 +48,8 @@ These declarations do not prove coefficientwise positivity, strict
 monotonicity in the base, inverse branches, critical-value discriminants,
 Maxwell collisions, monodromy, q-special-function inverses, or inverse
 asymptotics. No report-specific labelled inverse/branch/discriminant/asymptotic
-result has an exact public Lean counterpart. The source monograph's 183-row
-ledger independently records 34 exact, 24 partial, 122 without counterparts,
+result has an exact public Lean counterpart. The source monograph's 184-row
+ledger independently records 35 exact, 24 partial, 122 without counterparts,
 and 3 interface-only rows.
 
 ## Hostile mathematical review

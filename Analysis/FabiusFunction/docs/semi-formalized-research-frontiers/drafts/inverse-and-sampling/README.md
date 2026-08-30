@@ -1,7 +1,82 @@
 # Inverse and sampling
 
+New standalone intake members:
+
+- [`geometric_comb_q_fabius_report/`](geometric_comb_q_fabius_report/),
+  *Geometric-Comb Interpolation, Gaussian Pascal Transforms, and the
+  Fabius--Rvachev Boundary Layer* (68 A4 pp; 3,575-line TeX and 637-line
+  deterministic experiment). No attributable source archive remains, so no
+  outer-archive hash is inferred; the immutable submitted ledger verifies
+  16/16 and the exhaustive current ledger verifies 20/20. A pinned CPython
+  3.13.14 replay was byte-identical across all 11 generated artifacts. The
+  canonical A4/27 mm/Libertinus PDF was rebuilt in exactly three strict passes
+  with every font embedded/subset and no Type 3 fonts. The finite Gaussian,
+  complete-homogeneous, geometric-Lagrange, moment, condition-number,
+  half-moment, and Rvachev-deconvolution layers are crosswalked to their named
+  Lean declarations. The report-specific Jackson basis, arbitrary-point
+  residual, analytic convergence, Lebesgue asymptotics, Fabius bounds, and
+  Gaussian--Appell packaging remain manuscript-only; the two-sided gap,
+  second-order Lebesgue, and Hermite-saddle claims remain conjectures, and the
+  growing-order Hermite problem remains open. It belongs beside the geometric
+  and dyadic comb reports below and cross-links the q-Pochhammer monograph;
+  manuscript labels do not establish Lean verification.
+
+- [`geometric_comb_interpolation_report/`](geometric_comb_interpolation_report/),
+  *Interpolation on a Geometric Comb* (32 A4 pp; 2,372-line TeX), is the
+  canonical A4/27 mm/Libertinus edition of the report filed on 2026-08-30.
+  The source archive is no longer available in the repository, but its
+  preserved 11-entry arrival ledger verifies 11/11 and the exhaustive current
+  ledger verifies 17/17. A pinned CPython 3.13.14 replay reproduced all four
+  CSV tables and three PNG figures byte-for-byte. Its 37 nonconjectural
+  manuscript results, two conjectures, and five problems were hostile-audited;
+  no fatal counterexample was found, the perpetuity-density proof was hardened,
+  and the Lean crosswalk now distinguishes exact finite q-Lagrange/Gaussian
+  infrastructure from the report-level interpolation and asymptotic claims.
+  Its arbitrary-ratio interpolation layer belongs beside
+  `Dyadic_Comb_Frontiers/` and cross-links to the finite q-Lagrange/Gaussian row in
+  [`../exponents-and-q-series/q_pochhammer_q_binomial_monograph/`](../exponents-and-q-series/q_pochhammer_q_binomial_monograph/).
+  The PDF was rebuilt in exactly three strict passes with embedded/subset
+  fonts and no Type 3 fonts; manuscript labels do not establish Lean
+  verification.
+
+- [`geometric_comb_lagrange_jackson_newton_report/`](geometric_comb_lagrange_jackson_newton_report/),
+  *Interpolation on a Geometric Comb: Lagrange Filters, Jackson--Newton
+  Series, q-Analogues, and the Fabius--Rvachev Bridge*, is a distinct 36-page
+  A4 intake filed from
+  `geometric_comb_interpolation_report-3.zip` (1,296,171 bytes; SHA-256
+  `89c9de31b9b78b614c13d5a3ff24ae41b73ef6704a9daef77ba724b396e90fa0`).
+  Its submitted 20-entry ledger is preserved and verifies 20/20; after only
+  four CSV files were normalized from CRLF to LF, the exhaustive current
+  ledger verifies 25/25. The 2,763-line submitted TeX and 36-page submitted
+  PDF are otherwise unchanged. This is not a reship of the neighboring comb
+  report: none of their non-ledger payload hashes coincide. In accordance
+  with the incoming-archive gate, replay, hostile claim audit, dependency
+  pinning, canonical-preamble normalization, rebuild, and page-by-page visual
+  audit are deliberately deferred until after this archival checkpoint is
+  committed and pushed.
+
+- [`Inverse_Fabius_Computability_Report/`](Inverse_Fabius_Computability_Report/),
+  *Computability of the Inverse Fabius Function* (29 pp), arrived on
+  2026-08-30 from `Inverse_Fabius_Computability_Report.zip` (outer SHA-256
+  `755d77354490d25d4f327419d0345623e91ea49dd4ba681ba97c84a0b686b8c1`).
+  All five submitted payload hashes verified and every text payload was
+  already LF. It remains standalone pending post-publication assessment and a
+  Lean crosswalk; the newly submitted bridge is not thereby Lean-verified.
+
+- [`inverse_fabius_iterates_nowhere_analytic/`](inverse_fabius_iterates_nowhere_analytic/),
+  *Nowhere Analyticity of Every Positive Compositional Iterate of the Inverse
+  Fabius Function* (23 pp), arrived on 2026-08-30 from
+  `inverse_fabius_iterates_nowhere_analytic.zip` (outer SHA-256
+  `8b1c05d59e120ecd20d69cd5aeb0009639f2f3b9a6c9fef32bdf82270eee16bd`).
+  All 13 submitted payload hashes verified; `spine_diagnostic.csv` was
+  refreshed after CRLF-to-LF repository normalization. It remains standalone
+  pending post-publication reconciliation with
+  [`../representations/fabius_iterates_nowhere_analytic/`](../representations/fabius_iterates_nowhere_analytic/)
+  and a Lean crosswalk; its own status note says the principal claims have not
+  been translated into Lean.
+
 The inverse function's frontiers and the sampling/deconvolution circle of
-ideas, in three consolidated volumes and two retained standalone reports.
+ideas, in three consolidated volumes and five retained standalone reports.
 
 ## `Inverse_and_Sampling_Frontiers/`
 
