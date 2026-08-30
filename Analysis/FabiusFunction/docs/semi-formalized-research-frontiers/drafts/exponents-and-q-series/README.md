@@ -20,14 +20,18 @@ an identity for the totalized Lean interval-integral definition; a classical
 Riemann--Liouville/integrability interpretation is asserted only for positive
 order. Gamma-normalized order raising holds for real `alpha > 0` from a continuous Banach-valued primitive with an
 interval-integrable right derivative. `FabiusFractionalVolterra.lean`
-specializes this to the signed Fabius extension for `x >= 0`, the bounded
-Fabius function for `0 <= x <= 1`, and the Up-to-Fabius bridge for `x >= -1`.
+defines the total causal Rvachev fractional primitive, proves its support cutoff,
+positive-natural bridge, and positive-order semigroup on `x >= -1`, and
+specializes order raising to the signed Fabius extension for `x >= 0`, the
+bounded Fabius function for `0 <= x <= 1`, and the Up-to-Fabius bridge for
+`x >= -1`.
 Complex orders, Caputo/Riemann--Liouville derivatives, weighted-monomial or iterated
-shifts, negative-branch and hierarchy formulas, and inverse/quantile versions
+shifts, negative-branch, shifted-lattice, endpoint-moment, transform/tail,
+piecewise/refinement, and inverse/quantile formulas
 remain research frontiers. These API claims were checked at source checkpoint
-`22f801337`.
+`149332f9d`.
 
-Member: `Exponents_and_q_Series_Frontiers` (224 pp, seven parts) — the
+Member: `Exponents_and_q_Series_Frontiers` (225 pages; seven parts) — the
 2026-08-28 consolidation of the two former drafts (Part I:
 Newton-basis frontiers; Part II: q-binomial Richardson), joined the
 same day by the eighth-wave report as **Part III** — *Finite Dyadic

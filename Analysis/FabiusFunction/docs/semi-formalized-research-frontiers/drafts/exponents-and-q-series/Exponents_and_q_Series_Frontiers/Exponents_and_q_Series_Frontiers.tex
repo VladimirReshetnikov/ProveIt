@@ -31,7 +31,7 @@
   linkcolor=linkblue,
   citecolor=deepgreen,
   urlcolor=linkblue,
-  pdftitle={Exponent-Sequence and Newton-Basis Frontiers for the Fabius--Rvachev System},
+  pdftitle={Exponent-Sequence and q-Series Frontiers for the Fabius--Rvachev System},
   pdfauthor={OpenAI GPT-5.6 Pro},
   pdfsubject={New spectral, cumulant, q-Richardson, automatic-sequence, Newton-basis, and endpoint results},
   pdfkeywords={Fabius function, inverse Fabius function, Rvachev up-function, Thue-Morse, q-binomial, Richardson extrapolation, Bell polynomial, Bernoulli polynomial, Lambert W}
@@ -389,14 +389,16 @@ integrability interpretation is asserted only for positive order.  Gamma-normali
 order raising assumes real $\alpha>0$, a
 continuous Banach-valued primitive, an interval-integrable derivative, and the
 right derivative \path{HasDerivWithinAt} on the open interval.  Its boundary-free
-form yields the exact dyadic shift for the signed Fabius extension when $x\ge0$,
-for the bounded Fabius function when $0\le x\le1$, and the $\Up$--Fabius bridge
+form yields the exact dyadic shift for the signed Fabius extension when $x\ge0$.
+The total causal Rvachev fractional primitive has its support-truncated integral,
+positive-natural bridge, and positive-order semigroup formalized on $x\ge-1$; the same
+module gives the bounded Fabius shift when $0\le x\le1$ and the $\Up$--Fabius bridge
 from base $-1$ when $x\ge-1$.  Complex orders and powers, Caputo or
 Riemann--Liouville derivative operators, weighted-monomial or iterated identities, negative-
-$x$ signed branches, endpoint lattices, hierarchy versions, and inverse/quantile
-formulas remain frontier.  These post-snapshot series and fractional APIs were
-checked at source checkpoint
-\path{22f801337}.
+$x$ signed branches, shifted endpoint lattices, endpoint moments, transform/tail and
+piecewise/refinement formulas, and inverse/quantile formulas remain frontier.  These
+post-snapshot series and fractional APIs were checked at source checkpoint
+\path{149332f9d}.
 
 These labels concern representation only, not correctness: report-specific
 probability and sinc-product instantiations still require their own bridges.  In
@@ -1790,8 +1792,31 @@ term $q^r/(1-q)^{r+1}$ into $2^s/(2^s-1)^{r+1}$, which is the display
 the juxtaposition of its inputs: the summability hypothesis that the general zeta must
 carry --- an arbitrary weight may grow too fast --- is here \emph{discharged}, since a
 polynomial weight is always admissible at a dyadic base
-(\lean{Fabius.summable\_newtonPoly\_rpow}).  The cumulants \eqref{p1:eq:kappaP} remain
-unformalized: they need the probabilistic model behind $\Phi_P$.
+(\lean{Fabius.summable\_newtonPoly\_rpow}).
+
+The cumulants \eqref{p1:eq:kappaP} are half formalized.  Their \emph{analytic} content needs no
+probabilistic model, and is proved in \path{GeneralizedSincZeta.lean}: on the central disk,
+\[
+ \Phi_a(z)=\exp\Bigl(-\sum_{r\ge1}\frac{\zeta(2r)\,A_a(4^{-r})}{r}\,z^{2r}\Bigr),
+ \qquad\lVert z\rVert<1
+\]
+(\lean{Fabius.generalizedRvachevProduct\_eq\_cexp}), at every admissible $a$.  The coefficient of
+$z^{2r}$ in $-\log\Phi_a$ is therefore $\zeta(2r)A_a(4^{-r})/r$, which is
+\eqref{p1:eq:kappaP} with the random variable removed; what is still missing is the
+identification of $\Phi_a$ as a characteristic function of $X_a$, not any further analysis.  At
+the constant weight $A_{\mathbf1}(4^{-r})=4^r/(4^r-1)$ and the display is the corpus's existing
+\path{SincZetaDyadic.lean}.
+
+Reaching the general weight needed one new tool, and it is reusable.  The pair form of $\Phi_a$
+carries the exponents $a_h$, and the Euler log transform does not apply to a product of powers;
+adding the exponent to the transform would raise a branch question, since
+$\log((1-x)^c)=c\log(1-x)$ can leave the principal branch.  \path{WeightedEulerTransform.lean}
+avoids it by putting the multiplicity into the \emph{index} rather than the exponent --- over
+$\Sigma_i\,\mathrm{Fin}(c_i)$ the family is exponent-free, the existing transform applies
+verbatim, and both sides transfer back along the finite fibres
+(\lean{Fabius.tprod\_one\_sub\_pow\_eq\_cexp\_powerSum}).  No logarithm of a power is taken
+anywhere.  The scale direction then contributes $\sum_h a_h(4^{-r})^h$ in place of the geometric
+series, which is exactly $A_a(4^{-r})$.
 \end{theorem}
 
 \begin{proof}
@@ -2082,9 +2107,24 @@ arbitrary weight may grow too fast --- is here \emph{discharged}, since $P_d$ gr
 polynomially and is admissible at every $s>0$
 (\lean{Fabius.summable\_alternatingNewtonWeight\_rpow}).
 
-The cumulants \eqref{p1:eq:Psi-cumulants} and the variance \eqref{p1:eq:Psi-variance} remain
-unformalized; both need the probabilistic model behind $\Psi_d$, which the corpus does not
-have.
+The cumulants \eqref{p1:eq:Psi-cumulants} are half formalized, in the same sense as
+\eqref{p1:eq:kappaP} and for the same reason.  Their analytic content is proved, in
+\path{AlternatingNewtonCumulantKernel.lean}: on the central disk,
+\[
+ \Psi_d(z)=\exp\Bigl(-\sum_{r\ge1}
+   \frac{\zeta(2r)\bigl(1+(4^r-1)^{-(d+1)}\bigr)}{r}\,z^{2r}\Bigr),
+ \qquad\lVert z\rVert<1
+\]
+(\lean{Fabius.alternatingNewton\_eq\_cexp}), and the bracket is exactly the one in
+\eqref{p1:eq:Psi-cumulants}.  So the coefficient of $z^{2r}$ in $-\log\Psi_d$ already carries
+the cumulant bracket; what separates the two statements is the probabilistic reading of
+$\Psi_d$ as the characteristic function of $Y_d$, not any further analysis.  The identity is
+the composite of the general-weight expansion (\path{GeneralizedSincZeta.lean}) with the closed
+form of $A_d$ (\path{AlternatingNewtonZeta.lean}), and the only work between them is a
+coercion, since both the weight and the ratio $4^{-r}$ are real.
+
+The variance \eqref{p1:eq:Psi-variance} remains unformalized: it is the $j=1$ cumulant, so it
+needs exactly the probabilistic step that is missing.
 \end{theorem}
 
 \begin{proof}
