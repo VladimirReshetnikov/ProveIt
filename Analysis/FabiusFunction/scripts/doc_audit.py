@@ -6,20 +6,20 @@ The project requires
 * a ``/-! ... -/`` module header on every source file, and
 * a ``/-- ... -/`` doc comment on every non-``private`` declaration.
 
-Both are stated in ``Analysis/FabiusFunction/AGENTS.md``.  Neither currently
-holds corpus-wide, so this script exists to make the gap measurable and to let
-a reviewer check that a change does not make it worse.  It is the executable
-form of the numbers quoted in ``docs/DOCUMENTATION_AUDIT.md``.
+Both are stated in ``Analysis/FabiusFunction/AGENTS.md``.  The current corpus
+satisfies both; this script makes that claim reproducible and lets a reviewer
+check that a change preserves it.  It is the executable form of the numbers
+quoted in ``docs/DOCUMENTATION_AUDIT.md``.
 
 Run from anywhere::
 
     python3 Analysis/FabiusFunction/scripts/doc_audit.py
     python3 Analysis/FabiusFunction/scripts/doc_audit.py --list
-    python3 Analysis/FabiusFunction/scripts/doc_audit.py --baseline docs/doc_audit_baseline.json
+    python3 Analysis/FabiusFunction/scripts/doc_audit.py --baseline Analysis/FabiusFunction/docs/doc_audit_baseline.json
 
-Exit status is 0 unless ``--baseline`` is given and the corpus has regressed
-against it, which makes the script usable as a CI gate once a baseline is
-pinned.
+Exit status is 0 unless ``--baseline`` is given and either the corpus has
+regressed or its inventory no longer matches.  This makes the script usable as
+a CI gate once a reviewed baseline is pinned.
 
 This is a lexical check, not a Lean elaboration.  It tracks nested block
 comments, string literals and line comments so that declarations quoted inside
@@ -279,6 +279,13 @@ def main() -> int:
         with open(args.baseline, encoding="utf-8") as handle:
             base = json.load(handle)
         bad = []
+        stale = []
+        if len(names) != base.get("files", len(names)):
+            stale.append("files changed from %d to %d"
+                         % (base["files"], len(names)))
+        if total_public != base.get("publicDeclarations", total_public):
+            stale.append("public declarations changed from %d to %d"
+                         % (base["publicDeclarations"], total_public))
         if total_missing > base.get("missingDocComments", total_missing):
             bad.append("missing doc comments rose from %d to %d"
                        % (base["missingDocComments"], total_missing))
@@ -295,6 +302,12 @@ def main() -> int:
             print("\nREGRESSION against %s:" % args.baseline)
             for line in bad:
                 print("  " + line)
+            return 1
+        if stale:
+            print("\nBASELINE INVENTORY CHANGED against %s:" % args.baseline)
+            for line in stale:
+                print("  " + line)
+            print("  audit the new corpus, then refresh with --write-baseline")
             return 1
         print("\nno regression against %s" % args.baseline)
     return 0

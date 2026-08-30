@@ -16,9 +16,11 @@ vanishes; the remaining point `x = 1` is caught by continuity, because the set
 where a continuous function is bounded by a constant is closed and `Iic 1` is
 the closure of `Iio 1`.
 
-Two consequences are worth naming separately: `fabiusReal` is flat at the
-origin (every derivative vanishes there, since `extendedFabius 0 = 0`), and
-`2^C(k+1,2)` is the exact, attained supremum of `|F^(k)|`.
+Three consequences are worth naming separately: `fabiusReal` is flat at the
+origin (every derivative vanishes there, since `extendedFabius 0 = 0`); on
+the matched dyadic grid its derivative values are a zero-interleaved,
+sharply scaled Thue--Morse word; and `2^C(k+1,2)` is the exact, attained
+supremum of `|F^(k)|`.
 -/
 
 set_option autoImplicit false
@@ -37,6 +39,48 @@ theorem iteratedDeriv_fabiusReal_of_lt_one (F : BoundedFabius) (hF : IsFabius F)
     filter_upwards [Iio_mem_nhds hx] with y hy
     exact fabiusReal_eq_extendedFabius_of_le_one F hF (le_of_lt hy)
   rw [heq.iteratedDeriv_eq k, iteratedDeriv_extendedFabius F hF k x]
+
+/-- **Exact matched-dyadic derivative grid.**  On the mesh of spacing
+`2⁻ᵏ`, the `k`-th derivative vanishes at every even numerator.  After
+deleting those zeros, its values are the Thue--Morse word multiplied by the
+sharp derivative amplitude `2 ^ C(k+1,2)`. -/
+theorem iteratedDeriv_fabiusReal_dyadicGrid_eq_ite
+    (F : BoundedFabius) (hF : IsFabius F)
+    (k m : ℕ) (hm : m < 2 ^ k) :
+    iteratedDeriv k (fabiusReal F) ((m : ℝ) / (2 : ℝ) ^ k) =
+      if Even m then 0 else
+        (thueMorseSign (m / 2) : ℝ) *
+          (2 : ℝ) ^ (k + 1).choose 2 := by
+  have hx : (m : ℝ) / (2 : ℝ) ^ k < 1 := by
+    apply (div_lt_one (by positivity)).2
+    exact_mod_cast hm
+  rw [iteratedDeriv_fabiusReal_of_lt_one F hF k hx,
+    show (2 : ℝ) ^ k * ((m : ℝ) / (2 : ℝ) ^ k) = (m : ℝ) by
+      field_simp,
+    extendedFabius_natCast_eq_ite F hF]
+  by_cases heven : Even m
+  · simp [heven]
+  · simp [heven, thueMorseSign, mul_comm]
+
+/-- A matched-grid jet vanishes exactly at an even numerator. -/
+theorem iteratedDeriv_fabiusReal_dyadicGrid_eq_zero_iff
+    (F : BoundedFabius) (hF : IsFabius F)
+    (k m : ℕ) (hm : m < 2 ^ k) :
+    iteratedDeriv k (fabiusReal F) ((m : ℝ) / (2 : ℝ) ^ k) = 0 ↔
+      Even m := by
+  rw [iteratedDeriv_fabiusReal_dyadicGrid_eq_ite F hF k m hm]
+  by_cases heven : Even m <;> simp [heven, thueMorseSign]
+
+/-- Every odd point of the matched dyadic grid attains the sharp derivative
+supremum in absolute value. -/
+theorem abs_iteratedDeriv_fabiusReal_dyadicGrid_of_odd
+    (F : BoundedFabius) (hF : IsFabius F)
+    (k m : ℕ) (hm : m < 2 ^ k) (hodd : Odd m) :
+    |iteratedDeriv k (fabiusReal F) ((m : ℝ) / (2 : ℝ) ^ k)| =
+      (2 : ℝ) ^ (k + 1).choose 2 := by
+  rw [iteratedDeriv_fabiusReal_dyadicGrid_eq_ite F hF k m hm,
+    if_neg (Nat.not_even_iff_odd.mpr hodd)]
+  simp [thueMorseSign, abs_mul]
 
 /-- The bounded Fabius function is flat at the origin: every derivative
 vanishes there. -/

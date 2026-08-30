@@ -138,6 +138,14 @@ theorem trunc_endpointTransferSeries_eq_sum (N : ℕ) :
   rw [PowerSeries.trunc_apply, Nat.Ico_zero_eq_range]
   simp only [coeff_endpointTransferSeries]
 
+/-- Backward-compatible short name for the finite endpoint-transfer
+truncation identity. -/
+theorem trunc_endpointTransferSeries (N : ℕ) :
+    PowerSeries.trunc N endpointTransferSeries =
+      ∑ r ∈ range N, Polynomial.monomial r
+        (endpointTransferPolynomial r) :=
+  trunc_endpointTransferSeries_eq_sum N
+
 /-! ## Universality under evaluation -/
 
 /-- Evaluate a universal endpoint exponent coefficient at `z`.  This
@@ -147,6 +155,11 @@ def endpointTransferExponentCoefficientAt
     {R : Type*} [Semiring R] [Algebra ℚ R]
     (z : R) (r : ℕ) : R :=
   Polynomial.aeval z (endpointTransferExponentCoefficient r)
+
+/-- Concise compatibility alias for scalar endpoint exponent coefficients. -/
+abbrev endpointTransferExponentAt
+    {R : Type*} [Semiring R] [Algebra ℚ R] (z : R) : ℕ → R :=
+  endpointTransferExponentCoefficientAt z
 
 /-- Evaluation at any scalar preserves the zero constant exponent
 coefficient. -/

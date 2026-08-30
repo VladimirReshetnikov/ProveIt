@@ -205,6 +205,17 @@ theorem deriv_fabiusReal (F : BoundedFabius) (hF : IsFabius F) :
   funext x
   exact (fabius_hasDerivAt F hF x).deriv
 
+/-- The first derivative inherits the reflection symmetry of the Rvachev
+bump: reflecting an argument across the midpoint leaves the derivative
+unchanged.  The identity is global, including both constant exterior tails. -/
+theorem deriv_fabiusReal_one_sub
+    (F : BoundedFabius) (hF : IsFabius F) (x : ℝ) :
+    deriv (fabiusReal F) (1 - x) = deriv (fabiusReal F) x := by
+  rw [(fabius_hasDerivAt F hF (1 - x)).deriv,
+    (fabius_hasDerivAt F hF x).deriv,
+    show 2 * (1 - x) - 1 = -(2 * x - 1) by ring,
+    rvachevUp_even F (2 * x - 1)]
+
 /-- The bounded Fabius function is differentiable on all of `ℝ`. -/
 theorem fabius_differentiable (F : BoundedFabius) (hF : IsFabius F) :
     Differentiable ℝ (fabiusReal F) :=
