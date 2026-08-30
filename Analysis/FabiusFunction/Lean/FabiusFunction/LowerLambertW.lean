@@ -41,8 +41,8 @@ private lemma exists_mulLog_eq {z : ℝ} (hz : z ∈ Ioo (-Real.exp (-1)) 0) :
 noncomputable def lowerLambertArg (z : ℝ) : ℝ :=
   Function.invFunOn mulLog (Icc (0 : ℝ) (Real.exp (-1))) z
 
-/-- A totalized definition of the lower real Lambert branch.  Its intended
-domain is `(-exp (-1), 0)`. -/
+/-- A totalized definition of the lower real Lambert branch.  Its natural
+domain is `[-exp (-1), 0)`; derivative statements use the smooth interior. -/
 noncomputable def lowerLambertW (z : ℝ) : ℝ :=
   Real.log (lowerLambertArg z)
 
@@ -112,7 +112,7 @@ theorem lowerLambertW_le_neg_one {z : ℝ}
   have hu := (lowerLambertArg_spec_of_mem_Ico hz).1
   exact (Real.log_le_iff_le_exp hu.1).2 hu.2
 
-/-- On its natural domain, the lower branch is strictly below `-1`. -/
+/-- On the smooth interior of its natural domain, the lower branch is strictly below `-1`. -/
 theorem lowerLambertW_lt_neg_one {z : ℝ} (hz : z ∈ Ioo (-Real.exp (-1)) 0) :
     lowerLambertW z < -1 := by
   rw [lowerLambertW]
@@ -187,7 +187,7 @@ theorem lowerLambertW_strictAntiOn :
     StrictAntiOn lowerLambertW (Ioo (-Real.exp (-1)) 0) :=
   lowerLambertW_strictAntiOn_Ico.mono fun _ hz ↦ ⟨hz.1.le, hz.2⟩
 
-/-- Exact range of the lower real Lambert branch on its natural domain. -/
+/-- Exact range of the lower real Lambert branch on its smooth interior. -/
 theorem lowerLambertW_image :
     lowerLambertW '' Ioo (-Real.exp (-1)) 0 = Iio (-1) := by
   apply Subset.antisymm
@@ -225,8 +225,54 @@ theorem lowerLambertW_image_Ico :
       obtain ⟨z, hz, hzw⟩ := hwmem
       exact ⟨z, ⟨hz.1.le, hz.2⟩, hzw⟩
 
-/-- The lower real Lambert branch is continuous at every point of its natural
-domain. -/
+/-- The lower branch is right-continuous at the real branch point relative
+to its closed-left natural domain.
+
+Negating the branch turns its strict antitonicity into strict monotonicity;
+the exact image `(-W₋₁) '' [-exp (-1), 0) = [1, ∞)` then rules out a
+jump at the endpoint. -/
+theorem lowerLambertW_continuousWithinAt_branchPoint :
+    ContinuousWithinAt lowerLambertW (Ico (-Real.exp (-1)) 0)
+      (-Real.exp (-1)) := by
+  let g : ℝ → ℝ := fun x ↦ -lowerLambertW x
+  have hgmono : StrictMonoOn g (Ico (-Real.exp (-1)) 0) := by
+    intro a ha b hb hab
+    exact neg_lt_neg (lowerLambertW_strictAntiOn_Ico ha hb hab)
+  have hgimage : g '' Ico (-Real.exp (-1)) 0 = Ici 1 := by
+    ext y
+    constructor
+    · rintro ⟨x, hx, rfl⟩
+      exact mem_Ici.mpr (by
+        dsimp only [g]
+        linarith [lowerLambertW_le_neg_one hx])
+    · intro hy
+      have hneg : -y ∈ Iic (-1) := by
+        exact mem_Iic.mpr (by linarith [mem_Ici.mp hy])
+      rw [← lowerLambertW_image_Ico] at hneg
+      obtain ⟨x, hx, hxy⟩ := hneg
+      refine ⟨x, hx, ?_⟩
+      dsimp only [g]
+      rw [hxy]
+      simp
+  have hg : ContinuousWithinAt g (Ici (-Real.exp (-1)))
+      (-Real.exp (-1)) := by
+    apply hgmono.continuousWithinAt_right_of_image_mem_nhdsWithin
+    · exact Ico_mem_nhdsGE (neg_lt_zero.mpr (Real.exp_pos _))
+    · rw [hgimage]
+      have hgbp : g (-Real.exp (-1)) = 1 := by
+        simp [g]
+      rw [hgbp]
+      exact self_mem_nhdsWithin
+  have hgneg : ContinuousWithinAt (fun x ↦ -g x)
+      (Ici (-Real.exp (-1))) (-Real.exp (-1)) := hg.neg
+  have hfun : (fun x ↦ -g x) = lowerLambertW := by
+    funext x
+    simp [g]
+  rw [hfun] at hgneg
+  exact hgneg.mono fun _ hx ↦ mem_Ici.mpr hx.1
+
+/-- The lower real Lambert branch is continuous at every point of the smooth
+interior of its natural domain. -/
 theorem lowerLambertW_continuousAt {z : ℝ}
     (hz : z ∈ Ioo (-Real.exp (-1)) 0) :
     ContinuousAt lowerLambertW z := by
@@ -262,10 +308,20 @@ theorem lowerLambertW_continuousAt {z : ℝ}
     simp [g]
   rwa [hfun] at hgneg
 
-/-- Continuity of the lower real Lambert branch on its natural domain. -/
+/-- Continuity of the lower real Lambert branch on its smooth interior. -/
 theorem lowerLambertW_continuousOn :
     ContinuousOn lowerLambertW (Ioo (-Real.exp (-1)) 0) :=
   fun _ hz => (lowerLambertW_continuousAt hz).continuousWithinAt
+
+/-- Continuity of the lower branch on the full endpoint-inclusive natural
+domain `[-exp (-1), 0)`. -/
+theorem lowerLambertW_continuousOn_Ico :
+    ContinuousOn lowerLambertW (Ico (-Real.exp (-1)) 0) := by
+  intro z hz
+  rcases eq_or_lt_of_le hz.1 with h | h
+  · subst z
+    exact lowerLambertW_continuousWithinAt_branchPoint
+  · exact (lowerLambertW_continuousAt ⟨h, hz.2⟩).continuousWithinAt
 
 /-- Inverse-function derivative of the lower real Lambert branch. -/
 theorem lowerLambertW_hasDerivAt {z : ℝ}
@@ -314,7 +370,7 @@ theorem deriv_lowerLambertW {z : ℝ}
       rw [lowerLambertW_mul_exp hz, add_comm]
 
 /-- The derivative of the lower real Lambert branch is strictly negative on
-its natural domain. -/
+the smooth interior of its natural domain. -/
 theorem deriv_lowerLambertW_neg {z : ℝ}
     (hz : z ∈ Ioo (-Real.exp (-1)) 0) :
     deriv lowerLambertW z < 0 := by
@@ -456,6 +512,18 @@ private theorem tendsto_lowerLambertY_nhdsGT_zero_atTop :
   have hanti := mulExpNeg_strictAntiOn hy1.le hA1.le hyA
   rw [lowerLambertY_mul_exp_neg hepsDomain] at hanti
   exact (not_lt_of_ge (le_of_lt (heps.2.trans_le (min_le_right _ _)))) hanti
+
+/-- The lower Lambert branch diverges to negative infinity as its negative
+argument approaches zero: `W₋₁(-eps) → -∞` as `eps ↓0`. -/
+theorem tendsto_lowerLambertW_neg_nhdsGT_zero_atBot :
+    Tendsto (fun eps : ℝ ↦ lowerLambertW (-eps))
+      (nhdsWithin (0 : ℝ) (Ioi 0)) atBot := by
+  have hneg : Tendsto (fun eps : ℝ ↦ -(lowerLambertW (-eps)))
+      (nhdsWithin (0 : ℝ) (Ioi 0)) atTop := by
+    change Tendsto lowerLambertY
+      (nhdsWithin (0 : ℝ) (Ioi 0)) atTop
+    exact tendsto_lowerLambertY_nhdsGT_zero_atTop
+  exact tendsto_neg_atTop_iff.mp hneg
 
 private lemma log_eq_log_lowerLambertY_sub {eps : ℝ}
     (heps : eps ∈ Ioo 0 (Real.exp (-1))) :

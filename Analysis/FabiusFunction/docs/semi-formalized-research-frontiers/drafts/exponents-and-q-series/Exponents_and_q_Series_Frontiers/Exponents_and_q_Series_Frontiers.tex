@@ -1983,22 +1983,106 @@ $0<x\le P_q$ puts it in $[-\e^{-1},0)$.  These are respectively
 interval $(0,P_q]$, \lean{Fabius.generalizedLambertCoordinate\_solves\_saddle\_of\_mem}
 proves \eqref{p1:eq:generalized-saddle-equation}, including the peak.
 
-The generic inverse package in \path{PowerExponentialLambertInverse.lean} is stronger still:
-via the unit-rate bridge,
+The generic two-branch package is stronger still.  Let
+\(\lambda_{P,0}\) be the principal phase paired with the lower phase
+\(\lambda_P\).  The full-domain continuity declarations
+\lean{Fabius.principalPowerExponentialPhase\_continuousOn\_Icc} and
+\lean{Fabius.lowerPowerExponentialPhase\_continuousOn\_Ioc} in
+\path{PowerExponentialLambertCalculus.lean} give
+\[
+\lambda_{P,0}\in C([0,P_q]),
+\qquad
+\lambda_P\in C((0,P_q]).
+\]
+They are obtained by composing the raw branch endpoint theorems with
+\lean{Fabius.powerExponentialLambertArgument\_continuous}.
+Via the unit-rate bridge,
 \lean{Fabius.lowerPowerExponentialPhase\_image\_Ioc} gives the exact image
-$\lambda_P((0,P_q])=[q,\infty)$, and
+\(\lambda_P((0,P_q])=[q,\infty)\), and
 \lean{Fabius.lowerPowerExponentialPhase\_invOn} gives the two-sided
-$\operatorname{InvOn}$ law with $\lambda\mapsto C_Pp\lambda^q\e^{-\lambda}$ on
-$[q,\infty)$ and $(0,P_q]$.  At $q=1$ the coordinate collapses to
-$-W_{-1}(-x/(C_Pp))$
-(\lean{Fabius.generalizedLambertCoordinate\_one}), the shape the classical $p=2$ analysis uses:
-\lean{Fabius.lowerLambertW} (\lean{LowerLambertW.lean}), the project's totalized construction
-of the lower real branch, satisfies $W_{-1}(z)\e^{W_{-1}(z)}=z$ on
-$[-\e^{-1},0)$, with functional equation
-\lean{Fabius.lowerLambertW_mul_exp_of_mem_Ico} and uniqueness
-\lean{Fabius.lowerLambertW_unique_of_mem_Ico}.  Thus the coordinate, its intrinsic
-endpoint-inclusive solve law, and its exact inverse geometry have Lean counterparts; the
-endpoint transseries organized by that coordinate remains outside the formal boundary.
+\(\operatorname{InvOn}\) law with
+\(\lambda\mapsto C_Pp\lambda^q\e^{-\lambda}\) on
+\([q,\infty)\) and \((0,P_q]\).  More completely, for
+\(x\in(0,P_q]\) and every \(\mu\ge0\),
+\[
+ C_Pp\,\mu^q\e^{-\mu}=x
+ \quad\Longleftrightarrow\quad
+ \mu=\lambda_{P,0}(x)\ \text{or}\ \mu=\lambda_P(x).
+\]
+This is the specialization of
+\lean{Fabius.powerExponentialSaddle\_eq\_iff\_eq\_principal\_or\_eq\_lower};
+on \(0<x<P_q\) the two roots are distinct by
+\lean{Fabius.principalPowerExponentialPhase\_ne\_lowerPowerExponentialPhase},
+both in \path{PowerExponentialLambertInverse.lean}.  The restriction
+\(\mu\ge0\) is part of the theorem and cannot be dropped for even \(q\).
+
+The compiled small-input theorem is expressed in the intrinsic variable
+\[
+ \epsilon_q(x)
+ =\frac1q\left(\frac{x}{C_Pp}\right)^{1/q}.
+\]
+Specializing \path{PowerExponentialLambertAsymptotics.lean} to
+\((m,A,\beta)=(q,C_Pp,1)\) gives
+\begin{align}
+ \lambda_{P,0}(x)
+   &\sim\left(\frac{x}{C_Pp}\right)^{1/q},\\
+ \lambda_P(x)&\longrightarrow+\infty,\\
+ \lambda_P(x)
+   +q\bigl(\log\epsilon_q(x)-\log|\log\epsilon_q(x)|\bigr)
+   &\longrightarrow0
+ \qquad(x\downarrow0).
+\end{align}
+The exact generic declarations are
+\lean{Fabius.powerExponentialLambertEpsilon},
+\lean{Fabius.principalPowerExponentialPhase\_isEquivalent\_rpow},
+\lean{Fabius.tendsto\_lowerPowerExponentialPhase\_nhdsGT\_zero\_atTop},
+\lean{Fabius.lowerPowerExponentialPhaseIntrinsicMain}, and
+\lean{Fabius.lowerPowerExponentialPhase\_sub\_intrinsicMain\_tendsto\_zero}.
+
+At \(q=1\) the lower coordinate collapses to
+\(-W_{-1}(-x/(C_Pp))\)
+(\lean{Fabius.generalizedLambertCoordinate\_one}), the shape used by the
+classical \(p=2\) analysis.  The totalized raw lower branch satisfies
+\(W_{-1}(z)\e^{W_{-1}(z)}=z\) on \([-\e^{-1},0)\), through
+\lean{Fabius.lowerLambertW\_mul\_exp\_of\_mem\_Ico} and
+\lean{Fabius.lowerLambertW\_unique\_of\_mem\_Ico}.
+Its branch-point and full-domain continuity are
+\lean{Fabius.lowerLambertW\_continuousWithinAt\_branchPoint} and
+\lean{Fabius.lowerLambertW\_continuousOn\_Ico}; the principal companion
+has \lean{Fabius.principalLambertW\_continuousWithinAt\_branchPoint} and
+\lean{Fabius.principalLambertW\_continuousOn\_Ici}.  At zero,
+\lean{Fabius.deriv\_principalLambertW\_zero} states
+\(\operatorname{deriv}W_0(0)=1\), while
+\lean{Fabius.principalLambertW\_isEquivalent\_zero} states \(W_0(z)\sim z\).
+
+For the classical Fabius rate, the specialization
+\((m,A,\beta)=(1,1,\log2)\) is named explicitly in
+\path{PowerExponentialLambertFabius}\texttt{.lean}:
+\lean{Fabius.fabiusPrincipalLambertPhase} is the principal root and
+\lean{Fabius.fabiusLambertPhase} the lower root.
+\lean{Fabius.fabiusSaddle\_eq\_iff\_eq\_principal\_or\_eq\_lower},
+\lean{Fabius.fabiusPrincipalLambertPhase\_ne\_fabiusLambertPhase},
+\lean{Fabius.fabiusPrincipalLambertPhase\_continuousOn\_Icc}, and
+\lean{Fabius.fabiusLambertPhase\_continuousOn\_Ioc} specialize the
+dichotomy, strict-interior separation, and full-domain continuity.
+\lean{Fabius.fabiusPrincipalLambertPhase\_isEquivalent\_id} gives the
+principal small-\(x\) law; the generic lower divergence and intrinsic
+expansion specialize to the lower Fabius phase.
+
+The import order is
+\path{PowerExponentialLambert.lean},
+\path{PowerExponentialLambertCalculus.lean},
+\path{PowerExponentialLambertInverse.lean},
+\path{PowerExponentialLambertAsymptotics.lean}, and then the Fabius bridge.
+Thus the coordinate, continuity, exact nonnegative-root geometry, principal
+equivalence, lower divergence, and intrinsic two-term lower expansion have
+Lean counterparts.  The endpoint-continuity result does not include a
+branch-point derivative, vertical-tangent limit, second derivative,
+curvature, or Puiseux law.  The generic asymptotic result does not yet
+replace \(\epsilon_q\) by a cleaned \(L=\log(C_Pp/x)\) expression and does
+not provide further terms or a full logarithmic series; the endpoint
+transseries organized by the coordinate remains outside this formal
+boundary.
 
 
 \section{An alternating Newton family of positive-definite Pascal quotients}
