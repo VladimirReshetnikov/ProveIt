@@ -1,3 +1,4 @@
+import FabiusFunction.LowerLambertW
 import FabiusFunction.PrincipalLambertW
 
 /-!

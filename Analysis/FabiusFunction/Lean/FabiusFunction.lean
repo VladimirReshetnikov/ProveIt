@@ -19,6 +19,7 @@ import FabiusFunction.LowerLambertW
 import FabiusFunction.GeneralizedLambertCoordinate
 import FabiusFunction.LambertBranchDichotomy
 import FabiusFunction.PowerExponentialLambert
+import FabiusFunction.PowerExponentialLambertCalculus
 import FabiusFunction.PowerExponentialLambertFabius
 import FabiusFunction.WeightedUniformSeries
 import FabiusFunction.WeightedUniformDistribution

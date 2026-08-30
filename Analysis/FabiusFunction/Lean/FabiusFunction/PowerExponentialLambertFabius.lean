@@ -13,9 +13,10 @@ previously separate constructions in this corpus:
 * at power `m = 1`, amplitude `A = 1`, and rate `beta = log 2`, its lower
   branch is the exact Fabius phase `fabiusLambertPhase`.
 
-The bridge also discharges the natural Lambert-domain premise of the older
-generalized saddle theorem from the intrinsic peak interval.  No new branch
-choice or analytic assumption is introduced.
+The bridge supplies both an interior argument theorem that discharges the
+natural Lambert-domain premise of the older generalized saddle theorem and
+an endpoint-inclusive replacement based on the generic closed-branch solve
+law.  No new branch choice or analytic assumption is introduced.
 -/
 
 set_option autoImplicit false
@@ -57,9 +58,27 @@ theorem generalizedLambertCoordinate_argument_mem_Ico
   rw [← harg]
   exact hmem
 
+/-- Strictly below the profile peak, the generalized Lambert argument lies
+in the open domain required by the older generalized saddle theorem. -/
+theorem generalizedLambertCoordinate_argument_mem_Ioo
+    {m : ℕ} (hm : m ≠ 0) {C p x : ℝ} (hCp : 0 < C * p)
+    (hx : x ∈ Ioo 0 (powerExponentialPeak m (C * p) 1)) :
+    -((x / (C * p)) ^ ((m : ℝ)⁻¹) / (m : ℝ)) ∈
+      Ioo (-Real.exp (-1)) 0 := by
+  have hmem := powerExponentialLambertArgument_mem_Ioo hm hCp zero_lt_one hx
+  have harg : powerExponentialLambertArgument m (C * p) 1 x =
+      -((x / (C * p)) ^ ((m : ℝ)⁻¹) / (m : ℝ)) := by
+    unfold powerExponentialLambertArgument
+    rw [one_div, div_eq_mul_inv]
+    ring
+  rw [← harg]
+  exact hmem
+
 /-- The generalized lower-Lambert coordinate solves its saddle equation on
-the intrinsic positive interval up to the profile peak.  This version derives
-the branch-domain condition instead of asking the caller to provide it. -/
+the intrinsic positive interval through the profile peak.  This
+endpoint-inclusive replacement uses the generic closed lower-branch solve
+law; the separate open-domain lemma above directly supplies the older
+theorem's premise away from the peak. -/
 theorem generalizedLambertCoordinate_solves_saddle_of_mem
     {m : ℕ} (hm : m ≠ 0) {C p x : ℝ} (hCp : 0 < C * p)
     (hx : x ∈ Ioc 0 (powerExponentialPeak m (C * p) 1)) :
